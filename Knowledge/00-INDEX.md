@@ -56,6 +56,7 @@
     - [10.3 边缘流处理](#103-边缘流处理)
     - [10.4 云边协同与Serverless](#104-云边协同与serverless)
     - [10.5 流式湖仓与访问控制](#105-流式湖仓与访问控制)
+    - [10.6 向量搜索与流处理融合 ⭐ NEW](#106-向量搜索与流处理融合--new)
   - [11. 国际顶尖课程映射](#11-国际顶尖课程映射)
     - [11.1 MIT 6.824 Distributed Systems](#111-mit-6824-distributed-systems)
     - [11.2 Stanford CS240](#112-stanford-cs240)
@@ -807,7 +808,8 @@ Knowledge/
 │   ├── wasm-dataflow-patterns.md                  [Wasm数据流模式] ✅
 │   ├── streaming-access-control.md                [流访问控制] ✅
 │   ├── streaming-slo-definition.md                [流SLO定义] ✅
-│   └── real-time-rag-architecture.md              [实时RAG架构] ✅
+│   ├── real-time-rag-architecture.md              [实时RAG架构] ✅
+│   └── vector-search-streaming-convergence.md     [向量搜索与流处理融合 🆕] ✅
 └── 98-exercises/
     ├── README.md                                  [练习说明] ✅
     ├── exercise-01-process-calculus.md            [练习1: 进程演算] ✅
@@ -827,9 +829,9 @@ Knowledge/
 | 03-business-patterns | 11 | 0 | 11 | L4 |
 | 04-technology-selection | 4 | 0 | 4 | L3 |
 | 05-mapping-guides | 2 | 0 | 2 | L4-L5 |
-| 06-frontier | 11 | 0 | 11 | L4-L5 |
+| 06-frontier | 12 | 0 | 12 | L4-L5 |
 | 98-exercises | 7 | 0 | 7 | L3-L4 |
-| **总计** | **45** | **0** | **45** | L3-L5 |
+| **总计** | **46** | **0** | **46** | L3-L5 |
 
 ### 9.3 核心定义索引
 
@@ -976,6 +978,40 @@ graph TB
 | [streaming-slo-definition.md](./06-frontier/streaming-slo-definition.md) | SLO定义 | 流处理服务质量指标 |
 | [real-time-rag-architecture.md](./06-frontier/real-time-rag-architecture.md) | 实时RAG | LLM+流处理架构 |
 
+### 10.6 向量搜索与流处理融合 ⭐ NEW
+
+AI-Native数据库将向量搜索作为一等公民，与流处理能力深度融合。
+
+| 文档 | 主题 | 核心内容 | 技术栈 |
+|------|------|----------|--------|
+| [vector-search-streaming-convergence.md](./06-frontier/vector-search-streaming-convergence.md) | 向量搜索融合 | AI-Native数据库定义、实时RAG架构、向量索引增量更新 | RisingWave, Milvus, Flink |
+
+**AI-Native数据库架构**:
+
+```mermaid
+flowchart TB
+    subgraph "AI-Native Database"
+        S[结构化存储] --> U[统一查询层]
+        V[向量存储] --> U
+        M[模型推理] --> V
+        F[流处理引擎] --> S
+        F --> V
+        L[LLM集成] --> U
+    end
+
+    subgraph "应用场景"
+        U --> RAG[实时RAG]
+        U --> REC[智能推荐]
+        U --> SEARCH[语义搜索]
+    end
+
+    style U fill:#c8e6c9,stroke:#2e7d32
+    style V fill:#e1bee7,stroke:#6a1b9a
+    style F fill:#bbdefb,stroke:#1565c0
+```
+
+| [vector-search-streaming-convergence.md](./06-frontier/vector-search-streaming-convergence.md) | 向量搜索融合 | AI-Native数据库演进 |
+
 ---
 
 ## 11. 国际顶尖课程映射
@@ -1101,8 +1137,8 @@ graph TB
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-02 (新增前沿技术导航、流数据库指南、边缘流处理、Rust生态)*
-*版本: v3.0*
+*更新时间: 2026-04-02 (新增向量搜索与流处理融合、AI-Native数据库、前沿技术导航)*
+*版本: v3.1*
 *维护者: Knowledge Team*
-*状态: ✅ 100% 完成*
-*关联: [Struct/00-INDEX.md](../Struct/00-INDEX.md) · [Flink/](../Flink/)*
+*状态: ✅ 100% 完成 | 46文档 | 7设计模式 | 12前沿技术*
+*关联: [Struct/00-INDEX.md](../Struct/00-INDEX.md) · [Flink/00-INDEX.md](../Flink/00-INDEX.md)*

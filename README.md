@@ -1,25 +1,130 @@
 # AnalysisDataFlow
 
-Formal Data Flow Model of  Flink.
+> **统一流计算理论模型与工程实践知识库**
+> 
+> 涵盖流计算的形式化理论、Flink 核心技术、工程实践模式与前沿趋势
 
-本项目是针对 流计算的理论模型 层次 工程实践 业务建模 等
-全面的梳理和体系的构建。
+## 项目概览
 
-AcotorCSPWorkflow 本地文件夹是原始材料
-请全面递归迭代的梳理下所有内容相关的
-关于流计算模型的分析 形式分析论证证明等
-关于Flink所有相关的内容和分析对比
-关于 流计算建模的 设计模式等等相关的分析论证
-关于 流计算的商业领域 成熟的应用模式等
-梳理出后续的计划和任务
+本项目是对**流计算的理论模型、层次结构、工程实践、业务建模**的全面梳理与体系构建，目标是为学术研究、工业工程和技术选型提供**严格、完整、可导航**的知识库。
 
-对齐 网络上全面的充分的国际化的权威内容
-对齐 网络上的国际著名大学的相关权威课程内容等
-结合 概念定义属性关系关联解释分析论证证明等
-结合 多种思维表征方式 比如 思维导图 多维矩阵对比
-决策树图 场景树图 等等
+### 三大核心目录
 
-对于相关的知识结构 输出到 Knowledge目录
-对于理论分析论证证明 输出到 Struct目录
-对于Flink相关的计划任务后续的推进 输出到 Flink目录
-对于技术工程 应用都是需要全面展开的
+| 目录 | 定位 | 内容特征 | 文档数量 |
+|------|------|----------|----------|
+| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 30文档, 21定理, 56定义 |
+| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 46文档, 7设计模式, 12前沿技术 |
+| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 60+核心文档, L3-L5形式化 |
+
+## 快速导航
+
+### 按主题导航
+
+- **理论基础**: [Struct/ 统一流计算理论](Struct/00-INDEX.md)
+- **设计模式**: [Knowledge/ 流处理7大核心模式](Knowledge/02-design-patterns/)
+- **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+- **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)
+
+### 最新更新 (2026-04)
+
+- **Flink 2.2 前沿特性**: [Delta Join V2](Flink/02-core-mechanisms/flink-2.2-frontier-features.md)、VECTOR_SEARCH、Python Async API
+- **Timely Dataflow 优化分析**: [100x 性能提升深度解析](Flink/09-language-foundations/07.01-timely-dataflow-optimization.md)
+- **向量搜索融合**: [AI-Native数据库演进](Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **WASI 0.3 前瞻**: [原生异步支持预览](Flink/13-wasm/wasi-0.3-async-preview.md)
+
+## 项目结构
+
+```
+.
+├── Struct/               # 形式理论、分析论证、严格证明
+│   ├── 01-foundation/    # 基础理论 (USTM, 进程演算, Dataflow)
+│   ├── 02-properties/    # 性质推导 (一致性层级, Watermark单调性)
+│   ├── 03-relationships/ # 关系建立 (模型映射, 表达能力层次)
+│   ├── 04-proofs/        # 形式证明 (Checkpoint正确性, Exactly-Once)
+│   └── 06-frontier/      # 前沿理论探索
+│
+├── Knowledge/            # 知识结构、设计模式、商业应用
+│   ├── 01-concept-atlas/ # 概念图谱 (并发范式矩阵)
+│   ├── 02-design-patterns/ # 7大核心流处理模式
+│   ├── 03-business-patterns/ # 业务场景 (金融风控, IoT, 实时推荐)
+│   ├── 04-technology-selection/ # 技术选型决策树
+│   └── 06-frontier/      # 前沿技术 (流数据库, Rust生态, 向量搜索)
+│
+├── Flink/                # Flink 专项技术
+│   ├── 01-architecture/  # 架构设计 (1.x vs 2.0, 分离状态分析)
+│   ├── 02-core-mechanisms/ # 核心机制 (Checkpoint, Exactly-Once, Watermark)
+│   ├── 03-sql-table-api/ # SQL与Table API
+│   ├── 09-language-foundations/ # 多语言基础 (Scala, Python, Rust, WASM)
+│   ├── 12-ai-ml/         # AI/ML集成
+│   ├── 13-wasm/          # WebAssembly与WASI
+│   └── 14-lakehouse/     # 湖仓集成
+│
+└── 00.md                 # 项目总览与路线图
+```
+
+## 核心特色
+
+### 1. 六段式文档结构
+每篇核心文档遵循统一模板：
+1. 概念定义 (Definitions) - 严格形式化定义
+2. 属性推导 (Properties) - 从定义推导的引理与性质
+3. 关系建立 (Relations) - 与其他概念/模型的关联
+4. 论证过程 (Argumentation) - 辅助定理、反例分析
+5. 形式证明 / 工程论证 (Proof) - 完整证明或严谨论证
+6. 实例验证 (Examples) - 简化实例、代码片段
+7. 可视化 (Visualizations) - Mermaid图表
+8. 引用参考 (References) - 权威来源引用
+
+### 2. 定理/定义编号体系
+全局统一编号：`{类型}-{阶段}-{文档序号}-{顺序号}`
+- **Thm-S-17-01**: Struct Stage, 17文档, 第1个定理
+- **Def-F-02-23**: Flink Stage, 02文档, 第23个定义
+- **Prop-K-06-12**: Knowledge Stage, 06文档, 第12个命题
+
+### 3. 跨目录引用网络
+```
+Struct/ 形式化定义 ──→ Knowledge/ 设计模式 ──→ Flink/ 工程实现
+      ↑                                              ↓
+      └────────────── 反馈验证 ←─────────────────────┘
+```
+
+## 学习路径
+
+### 初学者路径 (2-3周)
+```
+Week 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
+Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
+```
+
+### 进阶工程师路径 (4-6周)
+```
+Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
+Week 5-6: Knowledge/02-design-patterns/ (全模式深入)
+```
+
+### 架构师路径 (持续)
+```
+Struct/01-foundation/ (理论基础)
+  → Knowledge/04-technology-selection/ (选型决策)
+    → Flink/01-architecture/ (架构实现)
+```
+
+## 项目状态
+
+| 目录 | 进度 | 统计 |
+|------|------|------|
+| Struct/ | [████████████████████] 100% | 30文档, 21定理, 56定义 |
+| Knowledge/ | [████████████████████] 100% | 46文档, 7设计模式, 12前沿技术 |
+| Flink/ | [████████████████████] 100% | 60+文档, 核心机制全覆盖 |
+
+## 贡献与维护
+
+- **更新频率**: 随上游技术变化同步更新
+- **贡献指南**: 新增文档需遵循六段式模板
+- **质量门禁**: 引用需可验证、Mermaid图需通过语法校验
+
+## 许可证
+
+[LICENSE](./LICENSE)

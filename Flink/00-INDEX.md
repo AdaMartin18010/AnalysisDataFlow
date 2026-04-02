@@ -40,6 +40,8 @@
     - [6.12 12-ai-ml/ AI与机器学习层](#612-12-ai-ml-ai与机器学习层)
     - [6.13 13-security/ 安全与可信计算层](#613-13-security-安全与可信计算层)
     - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层)
+    - [6.13 13-wasm/ WASM与WebAssembly层](#613-13-wasm-wasm与webassembly层)
+    - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层-1)
     - [6.15 15-observability/ 可观测性层](#615-15-observability-可观测性层)
   - [7. 跨引用索引：Flink ↔ Struct](#7-跨引用索引flink--struct)
     - [7.1 核心概念对应关系](#71-核心概念对应关系)
@@ -116,6 +118,8 @@ graph LR
 | **核心机制** | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) | L4 | 50 min |
 | **核心机制** | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) | L4 | 45 min |
 | **核心机制** | [backpressure-and-flow-control.md](02-core-mechanisms/backpressure-and-flow-control.md) | L4 | 40 min |
+| **核心机制** | [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) | L4 | 55 min |
+| **核心机制** | [delta-join.md](02-core-mechanisms/delta-join.md) | L4 | 45 min |
 | **SQL/Table API** | [sql-vs-datastream-comparison.md](03-sql-table-api/sql-vs-datastream-comparison.md) | L3 | 35 min |
 | **SQL/Table API** | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) | L4 | 45 min |
 | **AI/ML** | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) | L4 | 50 min |
@@ -144,6 +148,8 @@ graph LR
 | **AI/ML** | 流式机器学习如何实现？ | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
 | **AI/ML** | RAG 流式架构如何设计？ | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
 | **AI/ML** | 向量数据库如何集成？ | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+| **前沿特性** | Flink 2.2 新特性有哪些？ | [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) |
+| **SQL/Table API** | Delta Join 如何使用？ | [delta-join.md](02-core-mechanisms/delta-join.md) |
 | **Lakehouse** | 流批统一存储选哪个？ | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | **Security** | 敏感数据如何保护？ | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
 
@@ -239,9 +245,15 @@ timeline
     section 1.16-1.19
         云原生 : K8s 原生支持
               : Adaptive Scheduler
-    section 2.0+
+    section 2.0-2.1
         下一代架构 : Disaggregated State
                    : Async Execution
+                   : Materialized Tables
+    section 2.2+
+        智能优化 : Delta Join V2
+                 : VECTOR_SEARCH
+                 : Python Async API
+                 : Balanced Scheduling
 ```
 
 ### 4.3 各版本关键特性速查
@@ -251,7 +263,9 @@ timeline
 | **1.16** | 自适应调度器、检查点清理策略 | ★★★★★ |
 | **1.17** | 通用增量 Checkpoint、SQL 优化 | ★★★★★ |
 | **1.18** | 云原生检查点、动态扩展 | ★★★★★ |
-| **2.0** | 分离状态存储、异步执行 | ★★★★★ (预览) |
+| **2.0** | 分离状态存储、异步执行 | ★★★★★ |
+| **2.1** | Delta Join、ML_PREDICT | ★★★★★ |
+| **2.2** | VECTOR_SEARCH、Python Async API、Balanced Scheduling | ★★★★★ (预览) |
 
 ---
 
@@ -341,6 +355,9 @@ flowchart TD
 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) | Exactly-Once | [04.02-flink-exactly-once-correctness.md](../Struct/04-proofs/04.02-flink-exactly-once-correctness.md) |
 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) | 时间语义 | [02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md) |
 | [backpressure-and-flow-control.md](02-core-mechanisms/backpressure-and-flow-control.md) | 背压流控 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
+| [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) | Flink 2.2 前沿特性 | [vector-search.md](03-sql-table-api/vector-search.md) |
+| [delta-join.md](02-core-mechanisms/delta-join.md) | Delta Join 机制 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+| [async-execution-model.md](02-core-mechanisms/async-execution-model.md) | 异步执行模型 | - |
 
 ### 6.3 03-sql-table-api/ SQL与表API层
 
@@ -400,6 +417,8 @@ flowchart TD
 | [03-rust-native.md](09-language-foundations/03-rust-native.md) | Rust原生 | - |
 | [03.01-migration-guide.md](09-language-foundations/03.01-migration-guide.md) | 迁移指南 | - |
 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) | 流式湖仓 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [06-risingwave-deep-dive.md](09-language-foundations/06-risingwave-deep-dive.md) | RisingWave深度分析 | [07-rust-streaming-landscape.md](09-language-foundations/07-rust-streaming-landscape.md) |
+| [07.01-timely-dataflow-optimization.md](09-language-foundations/07.01-timely-dataflow-optimization.md) | Timely Dataflow优化 | [06-risingwave-deep-dive.md](09-language-foundations/06-risingwave-deep-dive.md) |
 | [00-INDEX.md](09-language-foundations/00-INDEX.md) | 子索引 | - |
 
 ### 6.10 10-deployment/ 部署层
@@ -431,6 +450,20 @@ flowchart TD
 |------|------|----------|
 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) | GPU机密计算 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) |
 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) | TEE可信执行 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
+
+### 6.14 14-lakehouse/ 湖仓集成层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | Paimon集成 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) |
+| [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | Iceberg集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+
+### 6.13 13-wasm/ WASM与WebAssembly层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [wasi-0.3-async-preview.md](13-wasm/wasi-0.3-async-preview.md) | WASI 0.3异步预览 | [10-wasi-component-model.md](09-language-foundations/10-wasi-component-model.md) |
+| [wasm-streaming.md](13-wasm/wasm-streaming.md) | WASM流处理 | [09-wasm-udf-frameworks.md](09-language-foundations/09-wasm-udf-frameworks.md) |
 
 ### 6.14 14-lakehouse/ 湖仓集成层
 
@@ -588,5 +621,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
+*更新时间: 2026-04-02 (新增 Flink 2.2 特性、WASI 0.3、Timely Dataflow 优化分析)*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 55+ 核心文档 | L3-L5 形式化等级*
+*文档统计: 60+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*

@@ -1,518 +1,619 @@
-# Flink Scala 语言基础模块索引
+# Flink 多语言编程基础模块索引
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink/00-INDEX.md](../00-INDEX.md), [Struct/01-foundation/01.02-type-system-hierarchy.md](../../Struct/01-foundation/01.02-type-system-hierarchy.md) | **形式化等级**: L2-L4 | **版本**: Flink 2.0+
-
----
-
-## 目录
-
-- [Flink Scala 语言基础模块索引](#flink-scala-语言基础模块索引)
-  - [目录](#目录)
-  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-F-09-01: Scala API 生态](#def-f-09-01-scala-api-生态)
-    - [Def-F-09-02: DOT/pDOT 类型理论映射](#def-f-09-02-dotpdot-类型理论映射)
-    - [Def-F-09-03: API 方案分类](#def-f-09-03-api-方案分类)
-  - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-F-09-01: API 方案类型安全层级](#prop-f-09-01-api-方案类型安全层级)
-    - [Prop-F-09-02: Flink 2.0+ 兼容性约束](#prop-f-09-02-flink-20-兼容性约束)
-    - [Prop-F-09-03: DOT 类型与流算子安全的关联](#prop-f-09-03-dot-类型与流算子安全的关联)
-  - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [3.1 与 Struct/ 理论的关联](#31-与-struct-理论的关联)
-    - [3.2 两种 API 方案的关系矩阵](#32-两种-api-方案的关系矩阵)
-    - [3.3 目录结构依赖关系](#33-目录结构依赖关系)
-  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-    - [4.1 为何 Flink 2.0 移除官方 Scala API](#41-为何-flink-20-移除官方-scala-api)
-    - [4.2 类型擦除 vs 类型保留的工程权衡](#42-类型擦除-vs-类型保留的工程权衡)
-    - [4.3 DOT 理论在流计算中的适用性边界](#43-dot-理论在流计算中的适用性边界)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-    - [5.1 API 选择决策树工程论证](#51-api-选择决策树工程论证)
-    - [5.2 关键决策矩阵](#52-关键决策矩阵)
-    - [5.3 DOT 类型理论工程映射正确性论证](#53-dot-类型理论工程映射正确性论证)
-  - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 方案 A1: Java API from Scala](#61-方案-a1-java-api-from-scala)
-    - [6.2 方案 A2: flink-scala-api](#62-方案-a2-flink-scala-api)
-    - [6.3 DOT 路径依赖类型示例](#63-dot-路径依赖类型示例)
-  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-    - [7.1 模块知识图谱](#71-模块知识图谱)
-    - [7.2 API 方案对比雷达图](#72-api-方案对比雷达图)
-    - [7.3 决策流程图](#73-决策流程图)
-    - [7.4 目录结构可视化](#74-目录结构可视化)
-  - [8. 引用参考 (References)](#8-引用参考-references)
-  - [附录: 快速导航表](#附录-快速导航表)
-    - [按主题导航](#按主题导航)
-    - [按使用场景导航](#按使用场景导航)
-    - [跨引用索引](#跨引用索引)
-
-## 1. 概念定义 (Definitions)
-
-### Def-F-09-01: Scala API 生态
-
-**定义**: Flink Scala API 生态是指在 Apache Flink 流计算框架中，使用 Scala 编程语言进行作业开发时所涉及的所有编程接口、类型系统和语言特性的集合。
-
-**组成要素**:
-
-- **Flink Java API**: Apache 官方提供的 Java API，Scala 程序可通过互操作调用
-- **flink-scala-api**: 社区维护的 Scala 原生 API，提供类型安全的函数式接口
-- **Scala 3 类型系统**: 依赖 DOT (Dependent Object Types) 演算的先进类型特性
-
-### Def-F-09-02: DOT/pDOT 类型理论映射
-
-**定义**: DOT (Dependent Object Types) 是 Scala 3 类型系统的形式化基础，pDOT 是其扩展变体。在 Flink 上下文中，该理论为流计算类型安全提供形式化保障。
-
-**形式化表达**:
-
-```
-T ::= x.L | { def m: T } | T ∧ T | T ∨ T | ⊥ | ⊤
-```
-
-其中：
-
-- `x.L` 表示路径依赖类型 (Path-dependent types)
-- `{ def m: T }` 表示类型成员声明
-- `∧` / `∨` 表示交集/并集类型 (Intersection/Union types)
-
-### Def-F-09-03: API 方案分类
-
-**定义**: 在 Flink 2.0+ 环境下，Scala 开发者可用的 API 方案按来源和特性分为两类：
-
-| 方案代号 | 名称 | 维护方 | 类型安全等级 | 适用场景 |
-|----------|------|--------|--------------|----------|
-| **A1** | Java API from Scala | Apache Flink 官方 | L2 (类型擦除) | 生产环境、团队 Java 背景 |
-| **A2** | flink-scala-api | 社区 (SBT/Scala 生态) | L3 (泛型保留) | Scala 原生体验、类型安全优先 |
+> **所属阶段**: Flink/ | **前置依赖**: [Flink/00-INDEX.md](../00-INDEX.md), [Struct/01-foundation/01.02-type-system-hierarchy.md](../../Struct/01-foundation/01.02-type-system-hierarchy.md) | **形式化等级**: L2-L4 | **版本**: Flink 1.18+ / 2.0+
 
 ---
 
-## 2. 属性推导 (Properties)
+## Section 1: Quick Navigation
 
-### Prop-F-09-01: API 方案类型安全层级
+### 1.1 By Flink Version
 
-**命题**: 两种 API 方案在 Scala 编译期的类型安全保障存在显著差异。
+| Version | Status | Recommended API | Key Documents |
+|---------|--------|-----------------|---------------|
+| **Flink 1.x** | Maintenance | Java API / Scala API (deprecated) | [Migration Guide](03.01-migration-guide.md) |
+| **Flink 2.0** | Active | DataStream V2 / Java API | [DataStream V2 API](05-datastream-v2-api.md), [Migration Guide](03.01-migration-guide.md) |
 
-**推导**:
-
-- **方案 A1 (Java API)**: 依赖 Java 泛型，存在类型擦除 (`Type Erasure`)，运行期丢失参数化类型信息
-- **方案 A2 (flink-scala-api)**: 利用 Scala 3 的 `Typeable`/`ClassTag` 机制，在编译期保留更多类型信息
-
-### Prop-F-09-02: Flink 2.0+ 兼容性约束
-
-**命题**: Flink 2.0 移除了官方 Scala API，开发者必须选择上述两种方案之一。
-
-**推导**:
-
-1. **向后兼容性断裂**: Flink 1.x 的 `flink-streaming-scala` 模块已被移除
-2. **互操作性要求**: 无论选择哪种方案，都需要与 Java 生态（Source/Sink/Connector）良好互操作
-3. **类型系统映射**: Scala 的 `given`/`using` 机制需正确映射到 Flink 的 `TypeInformation`
-
-### Prop-F-09-03: DOT 类型与流算子安全的关联
-
-**命题**: DOT 理论中的路径依赖类型可用于建模流计算算子的类型安全。
-
-**推导**:
-
-- **输入类型依赖**: 算子输出类型可依赖输入流的元素类型 `Output[In <: Element]`
-- **状态类型依赖**: KeyedProcessFunction 的状态类型与 key 类型关联 `State[K <: Key, V <: Value]`
-- **类型成员精化**: 利用 Scala 3 的 `Type Member` 实现流拓扑的编译期验证
-
----
-
-## 3. 关系建立 (Relations)
-
-### 3.1 与 Struct/ 理论的关联
+### 1.2 By Programming Language
 
 ```mermaid
-graph TB
-    subgraph "Struct/ 类型理论基础"
-        DOT["DOT/pDOT 演算<br/>Struct/01-foundation/01.02-type-system-hierarchy.md"]
-        FG["FG/FGG 演算<br/>泛型与子类型"]
-        SessionT["Session Types<br/>流通信协议"]
+flowchart LR
+    subgraph "Language Choice"
+        LANG{选择语言}
+        LANG -->|Scala| SCALA_PATH[Scala 生态]
+        LANG -->|Python| PYTHON_PATH[Python API]
+        LANG -->|Rust| RUST_PATH[Rust 原生]
+        LANG -->|Java| JAVA_PATH[Java API<br/>via 02.01-java-api-from-scala.md]
     end
 
-    subgraph "Flink/09-language-foundations 工程映射"
-        TypeInfo["TypeInformation 系统"]
-        SerDe["序列化/反序列化"]
-        TypeSafe["类型安全算子链"]
+    subgraph "Scala Ecosystem"
+        SCALA_PATH --> S1[01.01-scala-types-for-streaming.md]
+        SCALA_PATH --> S2[01.02-typeinformation-derivation.md]
+        SCALA_PATH --> S3[01.03-scala3-type-system-formalization.md]
+        SCALA_PATH --> S4[02.02-flink-scala-api-community.md]
     end
 
-    DOT -->|路径依赖类型| TypeInfo
-    FG -->|泛型约束| SerDe
-    SessionT -->|通道类型| TypeSafe
+    subgraph "Rust Ecosystem"
+        RUST_PATH --> R1[03-rust-native.md]
+        RUST_PATH --> R2[06-risingwave-deep-dive.md]
+        RUST_PATH --> R3[07-rust-streaming-landscape.md]
+        RUST_PATH --> R3_1[07.01-timely-dataflow-optimization.md]
+        RUST_PATH --> R4[08-flink-rust-connector-dev.md]
+    end
 
-    style DOT fill:#c8e6c9,stroke:#2e7d32
-    style TypeInfo fill:#bbdefb,stroke:#1565c0
+    style LANG fill:#fff9c4,stroke:#f57f17
+    style SCALA_PATH fill:#e3f2fd,stroke:#1976d2
+    style RUST_PATH fill:#ffccbc,stroke:#d84315
 ```
 
-### 3.2 两种 API 方案的关系矩阵
+### 1.3 By Use Case
 
-| 关系维度 | 方案 A1 (Java API) | 方案 A2 (flink-scala-api) |
-|----------|-------------------|---------------------------|
-| **类型系统基础** | Java 泛型 (类型擦除) | Scala 3 泛型 (类型保留) |
-| **互操作成本** | 低 (原生支持) | 中 (需适配层) |
-| **学习曲线** | 低 (Java 开发者友好) | 高 (Scala 特性深度利用) |
-| **生态成熟度** | 高 (官方维护) | 中 (社区维护) |
-| **IDE 支持** | 优秀 | 良好 |
-| **DOT 理论应用** | 间接 (通过 Java 类型边界) | 直接 (Scala 3 原生支持) |
+| Use Case | Entry Point | Difficulty | Time |
+|----------|-------------|------------|------|
+| **New Flink 2.0 Project** | [05-datastream-v2-api.md](05-datastream-v2-api.md) | L2 | 30 min |
+| **Migration from 1.x** | [03.01-migration-guide.md](03.01-migration-guide.md) | L3 | 45 min |
+| **Scala Type System Deep Dive** | [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | L4 | 60 min |
+| **Rust UDF Development** | [03-rust-native.md](03-rust-native.md) | L3 | 40 min |
+| **WASM UDF Framework** | [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | L3 | 35 min |
+| **Streaming Lakehouse** | [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | L3 | 45 min |
 
-### 3.3 目录结构依赖关系
+---
+
+## Section 2: Document Categories
+
+### 2.1 Flink 2.0 New Features ⭐ NEW
+
+> **Status**: New section for Flink 2.0+ features
+
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [05-datastream-v2-api.md](05-datastream-v2-api.md) | 🆕 NEW | DataStream V2 API with Scala 3 support | L3 |
+| Flink 2.0 Migration Overview | 🆕 NEW | High-level migration strategy and breaking changes | L2 |
+
+**Key Features of Flink 2.0:**
+
+- DataStream V2 API with improved type inference
+- Removal of official Scala API (community migration)
+- Enhanced checkpointing and state management
+- Native Kubernetes improvements
+
+### 2.2 Scala Programming
+
+> **Status**: Core Scala documentation with Flink 2.0 updates
+
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | ✅ | Scala types for streaming applications | L3 |
+| [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | ✅ | TypeInformation derivation mechanisms | L3 |
+| [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | 🆕 NEW | DOT calculus formalization for streaming | L4 |
+| [02.01-java-api-from-scala.md](02.01-java-api-from-scala.md) | ✅ | Using Java API from Scala | L2 |
+| [02.02-flink-scala-api-community.md](02.02-flink-scala-api-community.md) | 📝 UPDATED | Community flink-scala-api guide | L3 |
+| [03.01-migration-guide.md](03.01-migration-guide.md) | 📝 UPDATED | Flink 1.x to 2.0 migration guide | L3 |
+
+**Scala Ecosystem Decision Matrix:**
 
 ```mermaid
 graph TD
-    INDEX["00-INDEX.md<br/>本索引"] --> SCALA["01-scala-essentials/<br/>Scala 类型系统基础"]
-    INDEX --> API["02-api-approaches/<br/>两种 API 方案"]
-    INDEX --> MIGRATION["03-migration/<br/>迁移指南"]
+    START[Scala Developer] --> Q1{Flink Version?}
 
-    SCALA -->|类型基础| API
-    API -->|方案对比| MIGRATION
-    SCALA -->|类型理论| MIGRATION
+    Q1 -->|1.x| LEGACY[Legacy Scala API<br/>Deprecated]
+    Q1 -->|2.0+| Q2{Type Safety Priority?}
 
-    style INDEX fill:#fff9c4,stroke:#f57f17
-    style SCALA fill:#e3f2fd,stroke:#1976d2
-    style API fill:#e8f5e9,stroke:#388e3c
-    style MIGRATION fill:#fce4ec,stroke:#c2185b
+    Q2 -->|High| COMMUNITY[flink-scala-api<br/>Community maintained]
+    Q2 -->|Standard| JAVA_FROM_SCALA[Java API from Scala<br/>Official support]
+
+    COMMUNITY --> S1[01.01-scala-types-for-streaming.md]
+    COMMUNITY --> S2[02.02-flink-scala-api-community.md]
+    JAVA_FROM_SCALA --> J1[02.01-java-api-from-scala.md]
+
+    LEGACY --> MIGRATE[03.01-migration-guide.md]
+
+    style COMMUNITY fill:#c8e6c9,stroke:#2e7d32
+    style JAVA_FROM_SCALA fill:#bbdefb,stroke:#1565c0
+    style LEGACY fill:#ffccbc,stroke:#d84315
 ```
 
----
+### 2.3 Python Programming
 
-## 4. 论证过程 (Argumentation)
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [02-python-api.md](02-python-api.md) | ✅ | PyFlink API and integration patterns | L2 |
+| [02.03-python-async-api.md](02.03-python-async-api.md) | 🆕 NEW | Python Async DataStream API (Flink 2.2) | L3 |
 
-### 4.1 为何 Flink 2.0 移除官方 Scala API
+### 2.4 Rust Programming ⭐ NEW SECTION
 
-**背景**: Apache Flink 2.0 正式发布时，`flink-streaming-scala` 模块被完全移除。
+> **Status**: New section covering Rust-native streaming and Flink integration
 
-**核心原因**:
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [03-rust-native.md](03-rust-native.md) | ✅ | High-performance native UDF with Rust | L3 |
+| [06-risingwave-deep-dive.md](06-risingwave-deep-dive.md) | ✅ | RisingWave streaming database deep dive with vector search | L3 |
+| [07-rust-streaming-landscape.md](07-rust-streaming-landscape.md) | 🆕 NEW | Rust streaming ecosystem overview | L2 |
+| [07.01-timely-dataflow-optimization.md](07.01-timely-dataflow-optimization.md) | 🆕 NEW | Materialize 100x performance optimization analysis | L4-L5 |
+| [08-flink-rust-connector-dev.md](08-flink-rust-connector-dev.md) | 🆕 NEW | Developing Flink connectors in Rust | L3 |
 
-1. **维护成本**: Scala 二进制兼容性噩梦 (Binary Compatibility Hell) 导致升级成本高昂
-2. **生态趋势**: Java 17+ 的现代特性（Records、Pattern Matching、Virtual Threads）缩小了与 Scala 的表达能力差距
-3. **战略聚焦**: Flink 社区决定聚焦流计算核心引擎，语言绑定由生态解决
-
-**对 Scala 用户的影响**:
-
-- 现有 Flink 1.x Scala 代码无法直接迁移到 2.0
-- 必须选择 Java API + Scala 互操作，或社区 flink-scala-api
-- 类型安全策略需要重新评估
-
-### 4.2 类型擦除 vs 类型保留的工程权衡
-
-**Java 泛型的类型擦除**:
-
-```scala
-// 方案 A1: 使用 Flink Java API
-// 问题: 类型信息在运行期丢失
-val stream: DataStream[UserEvent] = env.fromCollection(events)
-// 编译后: DataStream (raw type)，需显式提供 TypeInformation
-```
-
-**Scala 3 的类型保留**:
-
-```scala
-// 方案 A2: 使用 flink-scala-api
-// 优势: 利用 ClassTag/Typeable 保留类型
-val stream = env.fromData(events) // 类型自动推断
-```
-
-**边界条件**:
-
-- 当序列化器需要运行时类型信息（如 Avro、Protobuf）时，两种方案都需要显式类型标注
-- 在泛型嵌套场景下（`DataStream[Map[String, List[Event]]]`），Scala 方案的类型推断优势更明显
-
-### 4.3 DOT 理论在流计算中的适用性边界
-
-**适用场景**:
-
-- 算子链的类型精化 (Operator Chain Type Refinement)
-- 状态后端的类型安全封装
-- 用户自定义函数的输入/输出契约
-
-**不适用场景**:
-
-- 跨网络边界的类型验证（序列化后类型信息丢失）
-- 动态类型 Source（如 JSON 无 Schema 输入）
-- 与 Java 生态的互操作边界
-
----
-
-## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
-
-### 5.1 API 选择决策树工程论证
-
-**论证目标**: 为不同场景提供严谨的 API 方案选择依据。
-
-**决策因子**:
-
-| 因子 | 权重 | 评估标准 |
-|------|------|----------|
-| 团队 Scala 熟练度 | 0.25 | 1-5 分，5 分为专家 |
-| 类型安全要求 | 0.20 | 严格/中等/宽松 |
-| 生产环境稳定性要求 | 0.25 | 关键业务/一般业务/实验 |
-| 第三方库依赖 | 0.15 | Java 生态为主/混合/Scala 原生 |
-| 长期维护成本敏感度 | 0.15 | 高/中/低 |
-
-**决策规则**:
-
-```
-IF (团队 Scala 熟练度 >= 4) AND (类型安全要求 = 严格) THEN
-    推荐方案 A2 (flink-scala-api)
-ELSE IF (生产环境稳定性要求 = 关键业务) THEN
-    推荐方案 A1 (Java API) + 适配层
-ELSE
-    推荐方案 A1 (Java API)
-END IF
-```
-
-### 5.2 关键决策矩阵
-
-| 场景特征 | 推荐方案 | 核心理由 | 风险提示 |
-|----------|----------|----------|----------|
-| **新 Scala 3 项目** | A2 | 类型安全最大化，函数式风格 | 社区维护，版本跟进风险 |
-| **遗留 Flink 1.x Scala 项目迁移** | A1 | 官方支持，文档完备 | 需重写部分类型相关代码 |
-| **Java/Scala 混合团队** | A1 | 降低协作成本 | Scala 表达能力受限 |
-| **金融/关键业务系统** | A1 | 官方维护，SLA 保障 | 类型安全不如 A2 |
-| **数据探索/原型开发** | A2 | 开发效率优先 | 生产环境需评估 |
-| **大量使用第三方 Java Connector** | A1 | 互操作零成本 | 无 |
-| **需要自定义复杂 TypeInformation** | A2 | Scala 类型系统更灵活 | 需理解 DOT 理论 |
-
-### 5.3 DOT 类型理论工程映射正确性论证
-
-**定理 (Thm-F-09-01)**: 在 flink-scala-api 中，利用 Scala 3 的路径依赖类型可以实现算子链的编译期类型验证。
-
-**工程论证**:
-
-1. **前提**: Scala 3 编译器基于 DOT 演算实现，支持路径依赖类型 `x.L`
-2. **构造**: 定义流算子类型为 `trait Operator { type Input; type Output }`
-3. **推导**: 当 `op1.Output <: op2.Input` 时，编译器接受链式组合 `op1 |> op2`
-4. **边界**: 该验证仅在 Scala 编译期有效，序列化后的跨 JVM 传输仍需运行时检查
-
-**工程意义**: 该类型验证可在开发期捕获约 70% 的类型不匹配错误（基于 Scala 3 编译器错误报告统计）。
-
----
-
-## 6. 实例验证 (Examples)
-
-### 6.1 方案 A1: Java API from Scala
-
-```scala
-import org.apache.flink.streaming.api.scala._
-import org.apache.flink.api.common.typeinfo.TypeInformation
-
-// Flink 2.0: 需显式引入 Java API 并处理类型
-import org.apache.flink.streaming.api.datastream.DataStream
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
-
-// 示例: 简单的单词计数
-object WordCountJavaAPI {
-  def main(args: Array[String]): Unit = {
-    val env = StreamExecutionEnvironment.getExecutionEnvironment
-
-    // 显式提供 TypeInformation (类型擦除补偿)
-    implicit val stringTypeInfo: TypeInformation[String] =
-      TypeInformation.of(classOf[String])
-    implicit val wordCountTypeInfo: TypeInformation[(String, Int)] =
-      TypeInformation.of(classOf[(String, Int)])
-
-    val text: DataStream[String] = env.socketTextStream("localhost", 9999)
-
-    val counts = text
-      .flatMap(_.toLowerCase.split("\\W+"))
-      .map((_, 1))
-      .keyBy(_._1)
-      .sum(1)
-
-    counts.print()
-    env.execute("WordCount with Java API")
-  }
-}
-```
-
-**特点**:
-
-- 需显式声明 `TypeInformation`
-- Java API 的 `DataStream` 类与 Scala 集合 API 风格不一致
-- 完全官方支持，生产环境稳定
-
-### 6.2 方案 A2: flink-scala-api
-
-```scala
-import org.apache.flinkx.api._
-import org.apache.flinkx.api.serializers._
-
-// 示例: 同样的单词计数，Scala 原生风格
-object WordCountScalaAPI {
-  def main(args: Array[String]): Unit = {
-    val env = StreamExecutionEnvironment.getExecutionEnvironment
-
-    // 无需显式 TypeInformation，Scala 3 自动推断
-    val text = env.socketTextStream("localhost", 9999)
-
-    val counts = text
-      .flatMap(_.toLowerCase.split("\\W+"))
-      .map(word => (word, 1))
-      .keyBy(_._1)
-      .sum()
-
-    counts.print()
-    env.execute("WordCount with flink-scala-api")
-  }
-}
-```
-
-**特点**:
-
-- 利用 Scala 3 的类型推断，无需显式 `TypeInformation`
-- 函数式风格更接近 Scala 惯用法
-- 社区维护，需关注版本兼容性
-
-### 6.3 DOT 路径依赖类型示例
-
-```scala
-import org.apache.flinkx.api._
-
-// 利用 Scala 3 路径依赖类型实现类型安全算子链
-trait TypedOperator {
-  type Input
-  type Output
-  def apply(in: DataStream[Input]): DataStream[Output]
-}
-
-// 具体算子实现保留类型信息
-object Tokenizer extends TypedOperator {
-  type Input = String
-  type Output = String
-
-  def apply(in: DataStream[String]): DataStream[String] =
-    in.flatMap(_.split("\\s+"))
-}
-
-object Counter extends TypedOperator {
-  type Input = String
-  type Output = (String, Int)
-
-  def apply(in: DataStream[String]): DataStream[(String, Int)] =
-    in.map((_, 1)).keyBy(_._1).sum(1)
-}
-
-// 编译期验证算子链类型兼容性
-val pipeline = Tokenizer andThen Counter
-// 编译器验证: Tokenizer.Output =:= Counter.Input ✓
-```
-
----
-
-## 7. 可视化 (Visualizations)
-
-### 7.1 模块知识图谱
+**Rust Ecosystem Overview:**
 
 ```mermaid
 mindmap
-  root((Flink Scala<br/>语言基础模块))
-    01-scala-essentials
-      ::icon(Qualifier)
-      Scala 3 类型系统
-      DOT/pDOT 演算
-      Path-dependent Types
-      Intersection/Union Types
-    02-api-approaches
-      ::icon(Function)
-      方案 A1: Java API
-        官方维护
-        类型擦除
-        生产优先
-      方案 A2: flink-scala-api
-        社区维护
-        类型保留
-        Scala 原生
-    03-migration
-      ::icon(Transfer)
-      Flink 1.x → 2.0 迁移
-      类型系统适配
-      代码重构策略
-      风险评估
-    理论基础
-      ::icon(Book)
-      Struct/DOT 类型理论
-      TypeInformation 机制
-      序列化类型安全
+  root((Rust Streaming<br/>Ecosystem))
+    Flink Integration
+      Native UDF via JNI
+      WASM Bridge
+      gRPC External Service
+    RisingWave
+      SQL-native streaming
+      Materialized views
+      Vector search integration
+      Arrow Flight protocol
+    Alternative Frameworks
+      Timely Dataflow
+      Differential Dataflow
+      Arcon
+      Hazelcast Jet
+    Connector Development
+      Arrow native
+      Rust-native sources/sinks
+      High-performance serialization
 ```
 
-### 7.2 API 方案对比雷达图
+### 2.5 WebAssembly ⭐ NEW SECTION
+
+> **Status**: New section for WASM-based UDF frameworks
+
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | 🆕 NEW | WASM UDF frameworks and integration | L3 |
+| [10-wasi-component-model.md](10-wasi-component-model.md) | 🆕 NEW | WASI Component Model for portable UDFs | L3 |
+
+**WASM Integration Architecture:**
+
+```mermaid
+graph TB
+    subgraph "Flink Runtime"
+        FLINK[Apache Flink]
+        UDF_MGR[UDF Manager]
+    end
+
+    subgraph "WASM Runtime"
+        WASMTIME[Wasmtime / Wasmer]
+        SANDBOX[Secure Sandbox]
+    end
+
+    subgraph "WASM Modules"
+        MOD1[JSON Parser.wasm]
+        MOD2[Crypto.wasm]
+        MOD3[ML Inference.wasm]
+    end
+
+    subgraph "Source Languages"
+        RUST[Rust]
+        GO[Go]
+        C[C/C++]
+    end
+
+    FLINK --> UDF_MGR
+    UDF_MGR --> WASMTIME
+    WASMTIME --> SANDBOX
+    SANDBOX --> MOD1
+    SANDBOX --> MOD2
+    SANDBOX --> MOD3
+
+    RUST -.->|compile| MOD1
+    RUST -.->|compile| MOD2
+    GO -.->|compile| MOD3
+    C -.->|compile| MOD3
+
+    style WASMTIME fill:#c8e6c9,stroke:#2e7d32
+    style SANDBOX fill:#fff9c4,stroke:#f57f17
+```
+
+### 2.6 Streaming Lakehouse
+
+| Document | Status | Description | Formality |
+|----------|--------|-------------|-----------|
+| [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | ✅ | Streaming lakehouse architecture | L3 |
+
+---
+
+## Section 3: Reading Paths
+
+### Path A: New Flink 2.0 + Scala 3 Project 🚀
+
+> **Target**: Starting a greenfield project with Flink 2.0 and Scala 3
+
+**Step-by-Step Guide:**
+
+1. **Start with DataStream V2 API** (30 min)
+   - Read: [05-datastream-v2-api.md](05-datastream-v2-api.md)
+   - Focus: New API patterns, type inference improvements
+
+2. **Setup flink-scala-api** (20 min)
+   - Read: [02.02-flink-scala-api-community.md](02.02-flink-scala-api-community.md)
+   - Focus: Dependency setup, basic configuration
+
+3. **Understand Scala 3 Type System** (45 min)
+   - Read: [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md)
+   - Focus: DOT calculus, path-dependent types for streaming
+
+4. **Follow Complete Examples** (40 min)
+   - Read: [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md)
+   - Focus: End-to-end streaming job examples
+
+**Total Time**: ~2.5 hours
+
+```mermaid
+journey
+    title Path A: New Flink 2.0 + Scala 3 Project
+    section Foundation
+      Read DataStream V2 API: 5: Reader
+      Setup Environment: 3: Reader
+    section Deep Dive
+      Scala 3 Type System: 5: Reader
+      TypeInformation Derivation: 4: Reader
+    section Application
+      Complete Examples: 5: Reader
+      Production Checklist: 3: Reader
+```
+
+### Path B: Migrating from Flink 1.x 🔄
+
+> **Target**: Migrating existing Flink 1.x applications to 2.0
+
+**Step-by-Step Guide:**
+
+1. **Migration Guide Overview** (30 min)
+   - Read: [03.01-migration-guide.md](03.01-migration-guide.md)
+   - Focus: Breaking changes, compatibility matrix
+
+2. **API Comparison** (25 min)
+   - Read: [02.01-java-api-from-scala.md](02.01-java-api-from-scala.md) vs [02.02-flink-scala-api-community.md](02.02-flink-scala-api-community.md)
+   - Focus: API differences, feature parity
+
+3. **Type System Adaptation** (35 min)
+   - Read: [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md)
+   - Focus: TypeInformation changes, migration patterns
+
+4. **Testing Strategies** (30 min)
+   - Focus: Compatibility testing, validation approaches
+
+**Total Time**: ~2 hours
+
+### Path C: Exploring Rust Alternatives 🦀
+
+> **Target**: Evaluating Rust-based streaming solutions and Flink integration
+
+**Step-by-Step Guide:**
+
+1. **RisingWave Deep Dive** (40 min)
+   - Read: [06-risingwave-deep-dive.md](06-risingwave-deep-dive.md)
+   - Focus: SQL-native streaming, materialized views architecture
+
+2. **Rust Streaming Landscape** (30 min)
+   - Read: [07-rust-streaming-landscape.md](07-rust-streaming-landscape.md)
+   - Focus: Timely Dataflow, Differential Dataflow, Arcon comparison
+
+3. **Flink-Rust Integration** (35 min)
+   - Read: [03-rust-native.md](03-rust-native.md)
+   - Focus: JNI vs WASM bridge, performance characteristics
+
+4. **Connector Development** (45 min) - Optional
+   - Read: [08-flink-rust-connector-dev.md](08-flink-rust-connector-dev.md)
+   - Focus: Building native connectors in Rust
+
+**Total Time**: ~2.5 hours (~3.5 with optional)
 
 ```mermaid
 graph LR
-    subgraph "方案对比维度"
-        direction TB
-        TYPE[类型安全]
-        PROD[生产稳定性]
-        ECO[生态丰富度]
-        LEARN[学习曲线]
-        PERF[运行时性能]
-        MAINT[维护成本]
+    subgraph "Path C: Rust Exploration"
+        C1[RisingWave<br/>SQL-native] --> C2[Rust Landscape<br/>Alternatives]
+        C2 --> C3[Flink-Rust<br/>Integration]
+        C3 --> C4[Connector Dev<br/>Optional]
+
+        C1 -.->|Compare| C5{Decision}
+        C2 -.->|Evaluate| C5
+        C3 -.->|Integrate| C5
+
+        C5 -->|Use RisingWave| D1[Production Deploy]
+        C5 -->|Stay with Flink| D2[Rust UDF]
+        C5 -->|Hybrid| D3[Both Systems]
     end
 
-    subgraph "方案 A1: Java API"
-        A1_VAL["★★★☆☆<br/>★★★★★<br/>★★★★★<br/>★★★★☆<br/>★★★★★<br/>★★★★☆"]
-    end
-
-    subgraph "方案 A2: flink-scala-api"
-        A2_VAL["★★★★★<br/>★★★☆☆<br/>★★★☆☆<br/>★★☆☆☆<br/>★★★★☆<br/>★★★☆☆"]
-    end
+    style C1 fill:#e3f2fd,stroke:#1976d2
+    style C3 fill:#c8e6c9,stroke:#2e7d32
 ```
 
-### 7.3 决策流程图
+### Path D: Advanced WASM UDFs 🔷
+
+> **Target**: Implementing portable, secure UDFs using WebAssembly
+
+**Step-by-Step Guide:**
+
+1. **WASM Frameworks Overview** (30 min)
+   - Read: [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md)
+   - Focus: Wasmtime, Wasmer, language support matrix
+
+2. **WASI Component Model** (35 min)
+   - Read: [10-wasi-component-model.md](10-wasi-component-model.md)
+   - Focus: Portable component interfaces, wit-bindgen
+
+3. **Production Deployment** (40 min)
+   - Focus: Security hardening, performance tuning, monitoring
+
+**Total Time**: ~1.75 hours
+
+---
+
+## Section 4: Formality Levels
+
+### L2: Quick Start Guides
+
+> **Accessible introductions for immediate productivity**
+
+| Document | Topic | Prerequisites |
+|----------|-------|---------------|
+| [02-python-api.md](02-python-api.md) | PyFlink basics | Python, basic streaming concepts |
+| [02.01-java-api-from-scala.md](02.01-java-api-from-scala.md) | Java API from Scala | Scala basics |
+| [05-datastream-v2-api.md](05-datastream-v2-api.md) | DataStream V2 quick start | Basic Flink knowledge |
+
+### L3: API Documentation
+
+> **Detailed technical documentation with examples**
+
+| Document | Topic | Prerequisites |
+|----------|-------|---------------|
+| [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | Scala types for streaming | Scala, Flink basics |
+| [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | TypeInformation derivation | Scala implicits |
+| [02.02-flink-scala-api-community.md](02.02-flink-scala-api-community.md) | Community Scala API | Scala 3, Flink |
+| [03.01-migration-guide.md](03.01-migration-guide.md) | Migration guide | Flink 1.x experience |
+| [03-rust-native.md](03-rust-native.md) | Rust UDF development | Rust, basic Flink |
+| [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | Streaming lakehouse | Lakehouse concepts |
+| [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM UDF frameworks | WASM basics |
+| [10-wasi-component-model.md](10-wasi-component-model.md) | WASI Component Model | WASM, component design |
+
+### L4: Type System Formalization
+
+> **Rigorous theoretical foundations**
+
+| Document | Topic | Prerequisites |
+|----------|-------|---------------|
+| [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | DOT calculus for streaming | Type theory, Scala 3 |
+| [06-risingwave-deep-dive.md](06-risingwave-deep-dive.md) | RisingWave internals with vector search | Database internals, streaming theory |
+| [07-rust-streaming-landscape.md](07-rust-streaming-landscape.md) | Comparative analysis | Multiple streaming frameworks |
+| [07.01-timely-dataflow-optimization.md](07.01-timely-dataflow-optimization.md) | Timely Dataflow optimization (100x perf) | Rust, differential dataflow |
+| [08-flink-rust-connector-dev.md](08-flink-rust-connector-dev.md) | Advanced connector patterns | Rust, Flink internals |
+
+---
+
+## Section 5: Cross-References
+
+### 5.1 Links to Struct/ Type Theory
+
+| Struct/ Document | Flink/09 Document | Relationship |
+|------------------|-------------------|--------------|
+| [Struct/01-foundation/01.02-type-system-hierarchy.md](../../Struct/01-foundation/01.02-type-system-hierarchy.md) | [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | DOT calculus → Scala 3 type system |
+| [Struct/01-foundation/01.03-type-safety-boundaries.md](../../Struct/01-foundation/01.03-type-safety-boundaries.md) | [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Type boundaries → TypeInformation |
+| [Struct/02-concurrency/02.01-actor-model-semantics.md](../../Struct/02-concurrency/02.01-actor-model-semantics.md) | [03-rust-native.md](03-rust-native.md) | Actor semantics → Rust async |
+
+### 5.2 Links to Knowledge/ Patterns
+
+| Knowledge/ Document | Flink/09 Document | Relationship |
+|---------------------|-------------------|--------------|
+| [Knowledge/03-patterns/stream-processing-patterns.md](../../Knowledge/03-patterns/stream-processing-patterns.md) | [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | Patterns → Type-safe implementation |
+| [Knowledge/04-business/real-time-analytics.md](../../Knowledge/04-business/real-time-analytics.md) | [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | Business patterns → Lakehouse architecture |
+| [Knowledge/05-case-studies/financial-risk.md](../../Knowledge/05-case-studies/financial-risk.md) | [03-rust-native.md](03-rust-native.md) | Financial use cases → High-performance UDF |
+
+### 5.3 Links to Flink/ Core Mechanisms
+
+| Flink/ Document | Flink/09 Document | Relationship |
+|-----------------|-------------------|--------------|
+| [Flink/01-architecture/datastream-v2-semantics.md](../01-architecture/datastream-v2-semantics.md) | [05-datastream-v2-api.md](05-datastream-v2-api.md) | V2 semantics → V2 API usage |
+| [Flink/02-mechanisms/checkpointing.md](../02-mechanisms/checkpointing.md) | [03.01-migration-guide.md](03.01-migration-guide.md) | Checkpointing → Migration considerations |
+| [Flink/13-wasm/wasm-streaming.md](../13-wasm/wasm-streaming.md) | [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM streaming → UDF frameworks |
+
+---
+
+## Section 6: Decision Trees
+
+### 6.1 Language Selection Decision Tree
 
 ```mermaid
 flowchart TD
-    START([开始选择 API]) --> Q1{团队 Scala<br/>熟练度 ≥ 4?}
+    START([选择编程语言]) --> Q1{性能要求?}
 
-    Q1 -->|是| Q2{类型安全<br/>要求严格?}
-    Q1 -->|否| Q3{关键<br/>业务系统?}
+    Q1 -->|极致性能| Q2{语言偏好?}
+    Q1 -->|标准性能| Q3{团队技能?}
 
-    Q2 -->|是| Q4{接受社区<br/>维护风险?}
-    Q2 -->|否| Q5{已有 Java<br/>代码基础?}
+    Q2 -->|系统级| RUST[Rust<br/>03-rust-native.md]
+    Q2 -->|JVM生态| SCALA3[Scala 3<br/>01.03-scala3-type-system-formalization.md]
 
-    Q4 -->|是| A2["方案 A2<br/>flink-scala-api<br/>🎯 类型安全优先"]
-    Q4 -->|否| A1_WARN["方案 A1<br/>+ 类型检查工具"]
+    Q3 -->|数据科学| PYTHON[Python<br/>02-python-api.md]
+    Q3 -->|企业级Java| JAVA_SCALA[Java API from Scala<br/>02.01-java-api-from-scala.md]
+    Q3 -->|函数式编程| SCALA_COMM[flink-scala-api<br/>02.02-flink-scala-api-community.md]
 
-    Q3 -->|是| A1_PROD["方案 A1<br/>Java API<br/>🛡️ 生产稳定优先"]
-    Q3 -->|否| Q5
+    RUST --> RUST_DEC{部署模式?}
+    RUST_DEC -->|UDF| WASM[WebAssembly<br/>09-wasm-udf-frameworks.md]
+    RUST_DEC -->|独立服务| RISING[RisingWave<br/>06-risingwave-deep-dive.md]
 
-    Q5 -->|是| A1["方案 A1<br/>Java API<br/>🔄 互操作优先"]
-    Q5 -->|否| EVAL["评估原型<br/>两种方案 POC"]
-
-    EVAL -->|A2 胜出| A2
-    EVAL -->|A1 胜出| A1
-
-    A1 --> MIGRATE["参考 03-migration/<br/>迁移指南"]
-    A2 --> MIGRATE
-
-    style START fill:#e3f2fd,stroke:#1976d2
-    style A2 fill:#c8e6c9,stroke:#2e7d32
-    style A1 fill:#bbdefb,stroke:#1565c0
-    style A1_PROD fill:#bbdefb,stroke:#1565c0
-    style MIGRATE fill:#fff9c4,stroke:#f57f17
+    style RUST fill:#ffccbc,stroke:#d84315
+    style SCALA3 fill:#e3f2fd,stroke:#1976d2
+    style WASM fill:#c8e6c9,stroke:#2e7d32
 ```
 
-### 7.4 目录结构可视化
+### 6.2 API Selection for Scala Developers
 
 ```mermaid
-tree
-  root["09-language-foundations/"]
-    00-INDEX.md
-    01-scala-essentials/
-      01-type-system-basics.md
-      02-path-dependent-types.md
-      03-implicit-mechanisms.md
-    02-api-approaches/
-      01-java-api-from-scala.md
-      02-flink-scala-api.md
-      03-comparison-matrix.md
-    03-migration/
-      01-flink1x-to-2x-guide.md
-      02-type-adapter-patterns.md
-      03-compatibility-testing.md
+flowchart TD
+    START([Scala Developer]) --> Q1{Flink Version?}
+
+    Q1 -->|1.x| MIGRATE[Migration Required<br/>03.01-migration-guide.md]
+    Q1 -->|2.0+| Q2{类型安全需求?}
+
+    Q2 -->|严格| Q3{接受社区维护?}
+    Q2 -->|标准| JAVA_API[Java API from Scala<br/>02.01-java-api-from-scala.md]
+
+    Q3 -->|是| SCALA_API[flink-scala-api<br/>02.02-flink-scala-api-community.md]
+    Q3 -->|否| JAVA_API
+
+    MIGRATE --> MIGRATE_CHOICE{目标API?}
+    MIGRATE_CHOICE -->|社区Scala| SCALA_API
+    MIGRATE_CHOICE -->|官方Java| JAVA_API
+
+    style SCALA_API fill:#c8e6c9,stroke:#2e7d32
+    style JAVA_API fill:#bbdefb,stroke:#1565c0
 ```
 
 ---
 
-## 8. 引用参考 (References)
+## Section 7: Module Visualization
 
+### 7.1 Complete Module Structure
+
+```mermaid
+graph TB
+    subgraph "09-language-foundations"
+        INDEX[00-INDEX.md]
+
+        subgraph "2.1 Flink 2.0"
+            F2_1[05-datastream-v2-api.md]
+        end
+
+        subgraph "2.2 Scala"
+            S_1[01.01-scala-types-for-streaming.md]
+            S_2[01.02-typeinformation-derivation.md]
+            S_3[01.03-scala3-type-system-formalization.md]
+            S_4[02.01-java-api-from-scala.md]
+            S_5[02.02-flink-scala-api-community.md]
+            S_6[03.01-migration-guide.md]
+        end
+
+        subgraph "2.3 Python"
+            P_1[02-python-api.md]
+        end
+
+        subgraph "2.4 Rust"
+            R_1[03-rust-native.md]
+            R_2[06-risingwave-deep-dive.md]
+            R_3[07-rust-streaming-landscape.md]
+            R_4[08-flink-rust-connector-dev.md]
+        end
+
+        subgraph "2.5 WebAssembly"
+            W_1[09-wasm-udf-frameworks.md]
+            W_2[10-wasi-component-model.md]
+        end
+
+        subgraph "2.6 Lakehouse"
+            L_1[04-streaming-lakehouse.md]
+        end
+    end
+
+    INDEX --> F2_1
+    INDEX --> S_1 & S_2 & S_3 & S_4 & S_5 & S_6
+    INDEX --> P_1
+    INDEX --> R_1 & R_2 & R_3 & R_4
+    INDEX --> W_1 & W_2
+    INDEX --> L_1
+
+    S_1 --> S_2 --> S_3
+    S_4 --> S_5
+    S_6 -.-> S_4 & S_5
+
+    R_1 --> R_4
+    R_2 -.-> R_3
+
+    W_1 --> W_2
+
+    style INDEX fill:#fff9c4,stroke:#f57f17
+    style F2_1 fill:#c8e6c9,stroke:#2e7d32
+    style S_3 fill:#e3f2fd,stroke:#1976d2
+    style R_2 fill:#ffccbc,stroke:#d84315
+```
+
+### 7.2 Document Dependency Graph
+
+```mermaid
+graph TD
+    %% Foundation
+    S101[01.01-scala-types-for-streaming.md<br/>L3] --> S102[01.02-typeinformation-derivation.md<br/>L3]
+    S102 --> S103[01.03-scala3-type-system-formalization.md<br/>L4]
+
+    %% API Approaches
+    S201[02.01-java-api-from-scala.md<br/>L2] --> S202[02.02-flink-scala-api-community.md<br/>L3]
+    S101 -.-> S201
+
+    %% Migration
+    S301[03.01-migration-guide.md<br/>L3]
+    S201 -.-> S301
+    S202 -.-> S301
+
+    %% Flink 2.0
+    F205[05-datastream-v2-api.md<br/>L2] --> S202
+    F205 --> S301
+
+    %% Rust
+    R303[03-rust-native.md<br/>L3] --> R306[06-risingwave-deep-dive.md<br/>L3]
+    R303 --> R308[08-flink-rust-connector-dev.md<br/>L3]
+    R306 -.-> R307[07-rust-streaming-landscape.md<br/>L2]
+
+    %% WASM
+    W309[09-wasm-udf-frameworks.md<br/>L3] --> W310[10-wasi-component-model.md<br/>L3]
+    R303 -.-> W309
+
+    %% Lakehouse
+    L404[04-streaming-lakehouse.md<br/>L3]
+
+    %% Python
+    P202[02-python-api.md<br/>L2]
+
+    style S103 fill:#e3f2fd,stroke:#1976d2
+    style S202 fill:#c8e6c9,stroke:#2e7d32
+    style R306 fill:#ffccbc,stroke:#d84315
+    style W310 fill:#fff9c4,stroke:#f57f17
+```
+
+---
+
+## Section 8: Quick Reference Tables
+
+### 8.1 All Documents Summary
+
+| # | Document | Language | Level | Status | Reading Time |
+|---|----------|----------|-------|--------|--------------|
+| 01.01 | [scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | Scala | L3 | ✅ | 35 min |
+| 01.02 | [typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Scala | L3 | ✅ | 40 min |
+| 01.03 | [scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | Scala | L4 | 🆕 | 60 min |
+| 02 | [python-api.md](02-python-api.md) | Python | L2 | ✅ | 30 min |
+| 02.01 | [java-api-from-scala.md](02.01-java-api-from-scala.md) | Scala | L2 | ✅ | 25 min |
+| 02.02 | [flink-scala-api-community.md](02.02-flink-scala-api-community.md) | Scala | L3 | 📝 | 35 min |
+| 03 | [rust-native.md](03-rust-native.md) | Rust | L3 | ✅ | 45 min |
+| 03.01 | [migration-guide.md](03.01-migration-guide.md) | Scala | L3 | 📝 | 40 min |
+| 04 | [streaming-lakehouse.md](04-streaming-lakehouse.md) | Multi | L3 | ✅ | 45 min |
+| 05 | [datastream-v2-api.md](05-datastream-v2-api.md) | Scala/Java | L2 | 🆕 | 30 min |
+| 06 | [risingwave-deep-dive.md](06-risingwave-deep-dive.md) | Rust/SQL | L4 | ✅ | 50 min |
+| 07 | [rust-streaming-landscape.md](07-rust-streaming-landscape.md) | Rust | L2 | 🆕 | 35 min |
+| 07.01 | [07.01-timely-dataflow-optimization.md](07.01-timely-dataflow-optimization.md) | Rust | L4-L5 | 🆕 | 60 min |
+| 08 | [flink-rust-connector-dev.md](08-flink-rust-connector-dev.md) | Rust | L3 | 🆕 | 55 min |
+| 09 | [wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM | L3 | 🆕 | 35 min |
+| 10 | [wasi-component-model.md](10-wasi-component-model.md) | WASM | L3 | 🆕 | 40 min |
+
+**Legend:**
+
+- ✅ Available
+- 🆕 New (planned/to be created)
+- 📝 Updated
+
+### 8.2 Formality Level Distribution
+
+```
+L2 (Quick Start):     ████████░░░░░░░░░░░░  4 docs (24%)
+L3 (API/Technical):   ██████████████░░░░░░  10 docs (59%)
+L4 (Formalization):   ███░░░░░░░░░░░░░░░░░  3 docs (18%)
+                      Total: 17 documents
+```
+
+---
+
+## Section 9: References
 
 
 
@@ -523,41 +624,6 @@ tree
 
 ---
 
-## 附录: 快速导航表
-
-### 按主题导航
-
-| 主题 | 文档 | 难度 | 阅读时间 |
-|------|------|------|----------|
-| **Scala 类型基础** | 01-scala-essentials/01-type-system-basics.md | L2 | 30 min |
-| **路径依赖类型** | 01-scala-essentials/02-path-dependent-types.md | L4 | 45 min |
-| **隐式机制** | 01-scala-essentials/03-implicit-mechanisms.md | L3 | 35 min |
-| **Java API 方案** | 02-api-approaches/01-java-api-from-scala.md | L2 | 25 min |
-| **flink-scala-api 方案** | 02-api-approaches/02-flink-scala-api.md | L3 | 35 min |
-| **方案对比矩阵** | 02-api-approaches/03-comparison-matrix.md | L3 | 30 min |
-| **迁移指南** | 03-migration/01-flink1x-to-2x-guide.md | L3 | 40 min |
-| **类型适配模式** | 03-migration/02-type-adapter-patterns.md | L4 | 45 min |
-| **兼容性测试** | 03-migration/03-compatibility-testing.md | L3 | 35 min |
-
-### 按使用场景导航
-
-| 场景 | 问题描述 | 推荐阅读 |
-|------|----------|----------|
-| **新 Scala 项目启动** | Flink 2.0+ 下如何选择 API？ | [02-api-approaches/03-comparison-matrix.md](02-api-approaches/03-comparison-matrix.md) |
-| **遗留系统迁移** | Flink 1.x Scala 代码如何迁移到 2.0？ | [03-migration/01-flink1x-to-2x-guide.md](03-migration/01-flink1x-to-2x-guide.md) |
-| **类型安全优化** | 如何最大化编译期类型检查？ | [01-scala-essentials/02-path-dependent-types.md](01-scala-essentials/02-path-dependent-types.md) |
-| **Java 互操作** | 如何在 Scala 中调用 Flink Java API？ | [02-api-approaches/01-java-api-from-scala.md](02-api-approaches/01-java-api-from-scala.md) |
-| **测试策略** | 如何确保迁移后代码正确性？ | [03-migration/03-compatibility-testing.md](03-migration/03-compatibility-testing.md) |
-
-### 跨引用索引
-
-| Struct/ 理论文档 | Flink/09 工程文档 | 映射关系 |
-|------------------|-------------------|----------|
-| [Struct/01-foundation/01.02-type-system-hierarchy.md](../../Struct/01-foundation/01.02-type-system-hierarchy.md) | [01-scala-essentials/01-type-system-basics.md](01-scala-essentials/01-type-system-basics.md) | DOT 理论 → Scala 类型系统 |
-| [Struct/01-foundation/01.03-type-safety-boundaries.md](../../Struct/01-foundation/01.03-type-safety-boundaries.md) | [03-migration/02-type-adapter-patterns.md](03-migration/02-type-adapter-patterns.md) | 类型边界 → 适配器模式 |
-
----
-
-*索引创建时间: 2026-04-02*
-*适用版本: Flink 2.0+ | Scala 3.x*
-*文档统计: 9 子文档 | L2-L4 形式化等级*
+*索引更新时间: 2026-04-02*
+*适用版本: Flink 1.18+ / 2.0+ / 2.2+ | Scala 3.x | Python 3.9+ | Rust 1.75+*
+*文档统计: 17 文档 | 4 L2 | 10 L3 | 3 L4 | 新增: Timely Dataflow优化分析、Python Async API*

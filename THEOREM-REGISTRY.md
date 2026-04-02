@@ -1,8 +1,8 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v1.1 | **更新日期**: 2026-04-02 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v1.2 | **更新日期**: 2026-04-02 | **范围**: AnalysisDataFlow 全项目
 >
-> 本文档是 Struct/ 和 Knowledge/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
+> 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
 ---
 
@@ -14,7 +14,7 @@
     - [1.1 编号格式](#11-编号格式)
     - [1.2 阶段标识](#12-阶段标识)
     - [1.3 文档序号映射](#13-文档序号映射)
-  - [2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX)](#2-定理注册表-thm-s-xx-xx--thm-k-xx-xx)
+  - [2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX / Thm-F-XX-XX)](#2-定理注册表-thm-s-xx-xx--thm-k-xx-xx--thm-f-xx-xx)
     - [2.1 基础层定理 (01-foundation)](#21-基础层定理-01-foundation)
     - [2.2 性质层定理 (02-properties)](#22-性质层定理-02-properties)
     - [2.3 关系层定理 (03-relationships)](#23-关系层定理-03-relationships)
@@ -25,20 +25,28 @@
     - [2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)](#28-gpu-tee属性定理-knowledge07-gpu-tee)
     - [2.9 流式Lakehouse一致性定理 (Knowledge/08-lakehouse-consistency)](#29-流式lakehouse一致性定理-knowledge08-lakehouse-consistency)
     - [2.10 RAG流式正确性定理 (Knowledge/09-rag-streaming)](#210-rag流式正确性定理-knowledge09-rag-streaming)
-  - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx)
+    - [2.11 Flink扩展定理 (Flink/02-core-mechanisms)](#211-flink扩展定理-flink02-core-mechanisms)
+    - [2.12 Flink扩展定理 (Flink/09-language-foundations)](#212-flink扩展定理-flink09-language-foundations)
+    - [2.13 Flink扩展定理 (Flink/13-wasm)](#213-flink扩展定理-flink13-wasm)
+  - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx)
     - [3.1 基础层定义 (01-foundation)](#31-基础层定义-01-foundation)
     - [3.2 性质层定义 (02-properties)](#32-性质层定义-02-properties)
     - [3.3 关系层定义 (03-relationships)](#33-关系层定义-03-relationships)
     - [3.4 证明层定义 (04-proofs)](#34-证明层定义-04-proofs)
     - [3.5 知识层定义 (Knowledge)](#35-知识层定义-knowledge)
-  - [4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX)](#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx)
+    - [3.6 Flink扩展定义 (Flink/02-core-mechanisms)](#36-flink扩展定义-flink02-core-mechanisms)
+    - [3.7 Flink扩展定义 (Flink/09-language-foundations)](#37-flink扩展定义-flink09-language-foundations)
+    - [3.8 Flink扩展定义 (Flink/13-wasm)](#38-flink扩展定义-flink13-wasm)
+  - [4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)](#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx)
     - [4.1 基础层引理 (01-foundation)](#41-基础层引理-01-foundation)
     - [4.2 性质层引理 (02-properties)](#42-性质层引理-02-properties)
     - [4.3 关系层引理 (03-relationships)](#43-关系层引理-03-relationships)
     - [4.4 证明层引理 (04-proofs)](#44-证明层引理-04-proofs)
     - [4.5 知识层引理 (Knowledge)](#45-知识层引理-knowledge)
+    - [4.6 Flink扩展引理 (Flink/09-language-foundations)](#46-flink扩展引理-flink09-language-foundations)
+    - [4.7 Flink扩展引理 (Flink/13-wasm)](#47-flink扩展引理-flink13-wasm)
   - [5. 命题与推论注册表](#5-命题与推论注册表)
-    - [5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX)](#51-命题-prop-s-xx-xx--prop-k-xx-xx)
+    - [5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)](#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx)
     - [5.2 推论 (Cor-S-XX-XX)](#52-推论-cor-s-xx-xx)
   - [6. 空缺编号标记](#6-空缺编号标记)
   - [7. 统计信息](#7-统计信息)
@@ -108,7 +116,7 @@
 
 ---
 
-## 2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX)
+## 2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX / Thm-F-XX-XX)
 
 ### 2.1 基础层定理 (01-foundation)
 
@@ -181,10 +189,6 @@
 | Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | ✅ |
 | Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | ✅ |
 | Thm-K-02-02 | 日志关联完整性条件 | Knowledge/02 | L4 | ✅ |
-| Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-04-01 | Fluss TCO成本效率定理 | Flink/04-connectors | L3-L4 | ✅ |
 
 ### 2.7 Rust流系统定理 (Knowledge/06-rust-streaming)
 
@@ -194,8 +198,6 @@
 | Thm-K-06-02 | Rust借用检查器正确性定理 | Knowledge/06 | L4-L5 | ✅ |
 | Thm-K-06-03 | Send/Sync边界线程安全定理 | Knowledge/06 | L4 | ✅ |
 | Thm-K-06-04 | 异步流处理无数据竞争定理 | Knowledge/06 | L4-L5 | ✅ |
-| Thm-F-06-01 | Rust Flink状态后端内存安全 | Flink/06-rust-integration | L4 | ✅ |
-| Thm-F-06-02 | Tokio运行时确定性调度定理 | Flink/06-rust-integration | L3-L4 | ✅ |
 
 ### 2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)
 
@@ -224,9 +226,47 @@
 | Thm-K-09-03 | 向量索引实时更新一致性定理 | Knowledge/09 | L4-L5 | ✅ |
 | Thm-K-09-04 | RAG端到端正确性定理 | Knowledge/09 | L4-L5 | ✅ |
 
+### 2.11 Flink扩展定理 (Flink/02-core-mechanisms)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
+| Thm-F-02-12 | Delta Join V2缓存有效性定理 | Flink/02-core-mechanisms | L3-L4 | ✅ |
+| Thm-F-02-13 | VECTOR_SEARCH精度-延迟权衡边界 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-14 | Balanced Scheduling最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+
+### 2.12 Flink扩展定理 (Flink/09-language-foundations)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| **DataStream V2** | | | | |
+| Thm-F-09-10 | V2 API Backward Compatibility | Flink/09 | L4 | ✅ |
+| Thm-F-09-11 | Scala 3 Type Safety in Flink | Flink/09 | L5 | ✅ |
+| Thm-F-09-12 | Compile-time Type Preservation | Flink/09 | L5 | ✅ |
+| **RisingWave** | | | | |
+| Thm-F-09-13 | Hummock Performance Bounds | Flink/09 | L4 | ✅ |
+| Thm-F-09-14 | Materialized View Consistency | Flink/09 | L4-L5 | ✅ |
+| Thm-F-09-15 | 向量搜索性能定理 | Flink/09 | L4 | ✅ |
+| **WASM** | | | | |
+| Thm-F-09-16 | WASM Sandbox Isolation | Flink/09 | L4-L5 | ✅ |
+| Thm-F-09-17 | Component Composability | Flink/09 | L4 | ✅ |
+| **Timely Dataflow优化** | | | | |
+| Thm-F-09-20 | 100x性能提升定理 | Flink/09.01 | L4-L5 | ✅ |
+| Thm-F-09-21 | REGION优化正确性定理 | Flink/09.01 | L4-L5 | ✅ |
+| Thm-F-09-22 | Differential Dataflow内部一致性定理 | Flink/09.01 | L4-L5 | ✅ |
+
+### 2.13 Flink扩展定理 (Flink/13-wasm)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-F-13-01 | async/sync组合正确性定理 | Flink/13-wasm | L4 | ✅ |
+| Thm-F-13-02 | Stream流水线性能保证定理 | Flink/13-wasm | L4 | ✅ |
+
 ---
 
-## 3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX)
+## 3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)
 
 ### 3.1 基础层定义 (01-foundation)
 
@@ -374,10 +414,82 @@
 | Def-K-09-04 | 流式向量索引 | Knowledge/09 | Streaming Vector Index |
 | Def-K-09-05 | 上下文窗口约束 | Knowledge/09 | Context Window |
 | Def-K-09-06 | 检索-生成一致性 | Knowledge/09 | Retrieval-Generation Consistency |
+| **AI-Native数据库与向量搜索** | | | |
+| Def-K-06-30 | AI-Native数据库 | Knowledge/06-frontier | 六元组模型 |
+| Def-K-06-31 | 实时RAG架构 | Knowledge/06-frontier | 事件驱动RAG模式 |
+| Def-K-06-32 | 向量索引增量更新 | Knowledge/06-frontier | 状态转换函数 |
+| Def-K-06-33 | 流式近似最近邻搜索 | Knowledge/06-frontier | 时变查询操作 |
+| Def-K-06-34 | 混合检索语义 | Knowledge/06-frontier | 向量+结构化过滤 |
+
+### 3.6 Flink扩展定义 (Flink/02-core-mechanisms)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| Def-F-02-23 | Delta Join V2 | Flink/02-core-mechanisms | 增强型增量Join算子 |
+| Def-F-02-24 | Delta Join缓存层级架构 | Flink/02-core-mechanisms | L1/L2/L3三级缓存 |
+| Def-F-02-25 | VECTOR_SEARCH向量搜索算子 | Flink/02-core-mechanisms | 流式向量相似度搜索 |
+| Def-F-02-26 | Materialized Table V2 | Flink/02-core-mechanisms | 可选FRESHNESS与智能推断 |
+| Def-F-02-27 | MaterializedTableEnricher | Flink/02-core-mechanisms | SPI扩展接口 |
+| Def-F-02-28 | DISTRIBUTED BY/INTO分桶语义 | Flink/02-core-mechanisms | 物理分布策略声明 |
+| Def-F-02-29 | SinkUpsertMaterializer V2 | Flink/02-core-mechanisms | 乱序变更事件协调优化 |
+| Def-F-02-30 | Python Async DataStream API | Flink/02-core-mechanisms | 异步函数支持 |
+| Def-F-02-31 | Source RateLimiter | Flink/02-core-mechanisms | Scan Source限流接口 |
+| Def-F-02-32 | Balanced Tasks Scheduling | Flink/02-core-mechanisms | 任务负载均衡调度策略 |
+| Def-F-02-33 | Event Reporting系统 | Flink/02-core-mechanisms | 结构化事件报告系统 |
+| Def-F-02-34 | Protobuf 4.x序列化升级 | Flink/02-core-mechanisms | Protobuf 4.32.1支持 |
+
+### 3.7 Flink扩展定义 (Flink/09-language-foundations)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **DataStream V2** | | | |
+| Def-F-09-30 | DataStream V2 Architecture | Flink/09 | V2架构组件模型 |
+| Def-F-09-31 | ProcessFunction V2 | Flink/09 | V2处理函数抽象 |
+| Def-F-09-32 | State V2 Abstraction | Flink/09 | V2状态抽象接口 |
+| Def-F-09-33 | RecordAttributes V2 | Flink/09 | V2记录属性元数据 |
+| **Scala 3 Formalization** | | | |
+| Def-F-09-34 | Scala 3 Type System (DOT extension) | Flink/09 | DOT类型系统扩展 |
+| Def-F-09-35 | Path-Dependent Types in Streaming | Flink/09 | 流计算路径依赖类型 |
+| Def-F-09-36 | Typeclass Derivation | Flink/09 | 类型类自动派生 |
+| Def-F-09-37 | Opaque Types | Flink/09 | 不透明类型抽象 |
+| Def-F-09-38 | Inline Functions | Flink/09 | 内联函数优化 |
+| **RisingWave** | | | |
+| Def-F-09-39 | RisingWave Architecture | Flink/09 | RisingWave系统架构 |
+| Def-F-09-40 | Materialized View Consistency | Flink/09 | 物化视图一致性模型 |
+| Def-F-09-41 | Hummock LSM-Tree Storage | Flink/09 | Hummock存储引擎 |
+| Def-F-09-45 | Compute-Storage Disaggregation | Flink/09 | 计算-存储分离架构 |
+| Def-F-09-46 | Native CDC Implementation | Flink/09 | 原生CDC实现 |
+| Def-F-09-47 | 向量数据类型与相似度算子 | Flink/09 | 高维向量支持 |
+| Def-F-09-48 | 向量索引算法 | Flink/09 | HNSW/IVF索引 |
+| Def-F-09-49 | 实时RAG架构 | Flink/09 | 流式RAG形式化 |
+| Def-F-09-50 | 统一数据库架构 | Flink/09 | 关系+向量+流统一模型 |
+| **Timely Dataflow优化** | | | |
+| Def-F-09-51 | Timely Dataflow系统定义 | Flink/09.01 | 基于有向图的数据流模型 |
+| Def-F-09-52 | Timestamp Capability语义 | Flink/09.01 | 权限令牌形式化 |
+| Def-F-09-53 | 系统级进度跟踪 | Flink/09.01 | 全局Frontier集合 |
+| Def-F-09-54 | 惰性算子调度策略 | Flink/09.01 | Never/Always/IfHoldsCapability |
+| Def-F-09-55 | REGION算子 | Flink/09.01 | 高阶封装算子 |
+| Def-F-09-56 | Differential Dataflow更新模型 | Flink/09.01 | 差分更新形式化 |
+| Def-F-09-57 | ARRANGE算子双重功能 | Flink/09.01 | 索引构建与跨流共享 |
+| **WASM** | | | |
+| Def-F-09-42 | WASI 0.2 Interface | Flink/09 | WASI 0.2标准接口 |
+| Def-F-09-43 | Component Model | Flink/09 | WASM组件模型 |
+| Def-F-09-44 | WASM Sandbox Security | Flink/09 | WASM沙箱安全模型 |
+
+### 3.8 Flink扩展定义 (Flink/13-wasm)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| Def-F-13-10 | WASI 0.3 (Preview 3) | Flink/13-wasm | 原生异步支持规范 |
+| Def-F-13-11 | Canonical ABI Async | Flink/13-wasm | 异步函数调用约定 |
+| Def-F-13-12 | Stream<T>类型 | Flink/13-wasm | 异步流类型 |
+| Def-F-13-13 | Future<T>类型 | Flink/13-wasm | 异步计算类型 |
+| Def-F-13-14 | 函数着色问题 | Flink/13-wasm | async/sync互操作问题 |
+| Def-F-13-15 | wasi:http@0.3.0 | Flink/13-wasm | 精简HTTP接口包 |
 
 ---
 
-## 4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX)
+## 4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)
 
 ### 4.1 基础层引理 (01-foundation)
 
@@ -461,12 +573,44 @@
 | Lemma-K-09-01 | 向量相似度保持性 | Knowledge/09 | 检索正确性 |
 | Lemma-K-09-02 | 上下文窗口边界引理 | Knowledge/09 | 生成一致性 |
 | Lemma-K-09-03 | 检索-生成组合性 | Knowledge/09 | 端到端正确性 |
+| **向量搜索与AI-Native数据库** | | | |
+| Lemma-K-06-08 | 流式嵌入延迟分解 | Knowledge/06-frontier | 端到端延迟分析 |
+
+### 4.6 Flink扩展引理 (Flink/09-language-foundations)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **DataStream V2** | | | |
+| Lemma-F-09-15 | V2状态兼容性引理 | Flink/09 | Thm-F-09-10基础 |
+| Lemma-F-09-16 | V2算子语义保持性 | Flink/09 | 算子行为一致性 |
+| **Scala 3** | | | |
+| Lemma-F-09-17 | DOT类型保持性 | Flink/09 | Thm-F-09-11基础 |
+| Lemma-F-09-18 | 路径类型消解引理 | Flink/09 | 类型推导支撑 |
+| **RisingWave** | | | |
+| Lemma-F-09-01 | Stateless Compute Node Elasticity | Flink/09 | 无状态计算节点弹性 |
+| Lemma-F-09-02 | MV Incremental Computation Correctness | Flink/09 | 物化视图增量计算正确性 |
+| Lemma-F-09-19 | Hummock写入原子性 | Flink/09 | Thm-F-09-13基础 |
+| Lemma-F-09-20 | LSM-Tree合并单调性 | Flink/09 | 存储正确性 |
+| **Timely Dataflow优化** | | | |
+| Lemma-F-09-21 | 传统流处理器固定成本下界 | Flink/09.01 | 性能对比基准 |
+| Lemma-F-09-22 | Timely Dataflow优化后成本 | Flink/09.01 | 优化效果量化 |
+| Lemma-F-09-23 | Capability跟踪空间复杂度 | Flink/09.01 | 资源边界分析 |
+| Lemma-F-09-24 | 事件驱动调度复杂度 | Flink/09.01 | 调度性能保证 |
+| **WASM** | | | |
+| Lemma-F-09-25 | WASI能力隔离性 | Flink/09 | Thm-F-09-15基础 |
+| Lemma-F-09-26 | 组件接口类型保持 | Flink/09 | Thm-F-09-16基础 |
+
+### 4.7 Flink扩展引理 (Flink/13-wasm)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| (暂无新增引理) | | | |
 
 ---
 
 ## 5. 命题与推论注册表
 
-### 5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX)
+### 5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)
 
 | 编号 | 名称 | 位置 | 说明 |
 |------|------|------|------|
@@ -494,6 +638,24 @@
 | Prop-K-07-01 | GPU TEE副作用隔离 | Knowledge/07 | Side-effect Isolation |
 | Prop-K-08-01 | Lakehouse读写分离一致性 | Knowledge/08 | 读写不冲突 |
 | Prop-K-09-01 | RAG延迟-准确性权衡 | Knowledge/09 | Latency-Accuracy Tradeoff |
+| **RisingWave** | | | |
+| Prop-F-09-01 | Storage Tier Latency Tradeoff | Flink/09 | 存储层级访问延迟权衡 |
+| Prop-F-09-02 | PostgreSQL Protocol Compatibility | Flink/09 | PG协议兼容性保证 |
+| **Flink 2.2核心机制** | | | |
+| Prop-F-02-12 | Balanced Scheduling负载均衡效果 | Flink/02-core-mechanisms | TaskManager任务差异≤1 |
+| Prop-F-02-13 | Delta Join V2缓存命中率下界 | Flink/02-core-mechanisms | Zipf分布下界分析 |
+| Prop-F-02-14 | VECTOR_SEARCH与ML_PREDICT组合复杂度 | Flink/02-core-mechanisms | RAG管道复杂度分析 |
+| Prop-F-02-15 | Materialized Table V2智能推断完备性 | Flink/02-core-mechanisms | FRESHNESS推断正确性 |
+| Prop-F-02-16 | SinkUpsertMaterializer V2性能边界 | Flink/02-core-mechanisms | O(δ log δ)复杂度 |
+| Prop-F-02-17 | Python Async API吞吐量上界 | Flink/02-core-mechanisms | 并发度与延迟关系 |
+| **WASI 0.3异步支持** | | | |
+| Prop-F-13-04 | 无缝async/sync互操作 | Flink/13-wasm | 无需适配器代码 |
+| Prop-F-13-05 | Stream背压传播 | Flink/13-wasm | 消费者速率限制生产者 |
+| Prop-F-13-06 | 零成本异步抽象 | Flink/13-wasm | 运行时开销<25% |
+| **AI-Native数据库与向量搜索** | | | |
+| Prop-K-06-12 | 向量索引一致性边界 | Knowledge/06-frontier | 一致性偏差有界 |
+| Prop-K-06-13 | 近似搜索误差累积 | Knowledge/06-frontier | 增量更新误差控制 |
+| Prop-K-06-14 | 混合查询成本模型 | Knowledge/06-frontier | 向量+结构化过滤成本 |
 
 ### 5.2 推论 (Cor-S-XX-XX)
 
@@ -522,6 +684,8 @@
 | Def-S-16-05 ~ Def-S-16-99 | 跨模型映射文档(03.05) | 扩展定义预留 |
 | Lemma-S-15-03 ~ Lemma-S-15-99 | 互模拟等价文档(03.04) | 扩展引理预留 |
 | Lemma-S-16-03 ~ Lemma-S-16-99 | 跨模型映射文档(03.05) | 扩展引理预留 |
+| Def-F-09-42 ~ Def-F-09-44 | WASM定义 | 已整合到WASM部分 |
+| Def-F-09-51 ~ Def-F-09-57 | Timely Dataflow定义 | 已添加 |
 
 ---
 
@@ -531,12 +695,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 21 | 9 | **54** |
-| **定义** | 56 | 27 | 0 | **83** |
-| **引理** | 33 | 15 | 0 | **48** |
-| **命题** | 19 | 5 | 0 | **24** |
+| **定理** | 24 | 21 | 25 | **70** |
+| **定义** | 56 | 32 | 39 | **127** |
+| **引理** | 33 | 16 | 16 | **65** |
+| **命题** | 19 | 8 | 11 | **38** |
 | **推论** | 4 | 0 | 0 | **4** |
-| **合计** | 136 | 68 | 9 | **213** |
+| **合计** | 136 | 77 | 91 | **304** |
 
 ### 7.2 按文档统计
 
@@ -548,13 +712,16 @@
 | 04-proofs (17-23) | 9 | 24 | 13 | 9 | 1 |
 | 05-comparative (24) | 1 | 0 | 0 | 0 | 0 |
 | Knowledge (05) | 1 | 4 | 3 | 1 | 0 |
-| Knowledge (06) Rust流系统 | 6 | 6 | 3 | 1 | 0 |
+| Knowledge (06) Rust流系统 | 4 | 6 | 3 | 1 | 0 |
+| Knowledge (06) 向量搜索 | 0 | 5 | 1 | 3 | 0 |
 | Knowledge (07) GPU TEE | 4 | 5 | 2 | 1 | 0 |
 | Knowledge (08) Lakehouse | 4 | 5 | 2 | 1 | 0 |
 | Knowledge (09) RAG流式 | 4 | 6 | 3 | 1 | 0 |
-| Flink (02) 核心机制 | 3 | 0 | 0 | 0 | 0 |
+| Flink (02) 核心机制 | 6 | 12 | 0 | 6 | 0 |
 | Flink (04) 连接器 | 1 | 0 | 0 | 0 | 0 |
 | Flink (06) Rust集成 | 2 | 0 | 0 | 0 | 0 |
+| Flink (09) 语言基础 | 10 | 22 | 10 | 2 | 0 |
+| Flink (13) WASM | 2 | 6 | 0 | 3 | 0 |
 
 ### 7.3 形式化等级分布
 
@@ -562,10 +729,10 @@
 |------|------|------|
 | L1 | Regular (有限状态) | 2 |
 | L2 | Context-Free (单栈) | 5 |
-| L3 | Process Algebra (静态命名) | 18 |
-| L4 | Mobile (动态拓扑) | 45 |
-| L5 | Higher-Order (进程作为数据) | 58 |
-| L6 | Turing-Complete | 17 |
+| L3 | Process Algebra (静态命名) | 25 |
+| L4 | Mobile (动态拓扑) | 55 |
+| L5 | Higher-Order (进程作为数据) | 65 |
+| L6 | Turing-Complete | 18 |
 
 ---
 
@@ -574,6 +741,7 @@
 
 ---
 
-*注册表创建时间: 2026-04-02*
-*适用范围: AnalysisDataFlow 全项目*
+*注册表创建时间: 2026-04-02*  
+*最后更新时间: 2026-04-02*  
+*适用范围: AnalysisDataFlow 全项目*  
 *维护建议: 新增文档后更新本注册表*
