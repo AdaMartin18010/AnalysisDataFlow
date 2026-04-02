@@ -2,6 +2,37 @@
 
 > 所属阶段: Knowledge/03-business-patterns | 前置依赖: [Flink流处理核心机制](../02-design-patterns/pattern-event-time-processing.md), [实时推荐系统设计](./real-time-recommendation.md) | 形式化等级: L3-L4
 
+## 目录
+
+- [Netflix流处理架构 - 从Keystone到Flink](#netflix流处理架构---从keystone到flink)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-03-08: Netflix数据管道 (Netflix Data Pipeline)](#def-k-03-08-netflix数据管道-netflix-data-pipeline)
+    - [Def-K-03-09: Keystone平台 (Keystone Platform)](#def-k-03-09-keystone平台-keystone-platform)
+    - [Def-K-03-10: 实时推荐特征 (Real-time Recommendation Features)](#def-k-03-10-实时推荐特征-real-time-recommendation-features)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-K-03-03: 事件处理延迟边界](#prop-k-03-03-事件处理延迟边界)
+    - [Prop-K-03-04: 弹性伸缩响应时间](#prop-k-03-04-弹性伸缩响应时间)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [架构演进映射](#架构演进映射)
+    - [技术选型对比](#技术选型对比)
+    - [与Flink核心机制的关联](#与flink核心机制的关联)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [为什么从Chukwa迁移到Flink？](#为什么从chukwa迁移到flink)
+    - [全球化部署挑战](#全球化部署挑战)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [定理: Keystone平台满足Netflix流处理SLA](#定理-keystone平台满足netflix流处理sla)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [案例一: 观看体验实时优化](#案例一-观看体验实时优化)
+    - [案例二: 内容热度预测](#案例二-内容热度预测)
+    - [案例三: 设备异常检测](#案例三-设备异常检测)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [Keystone平台整体架构](#keystone平台整体架构)
+    - [推荐特征工程流水线](#推荐特征工程流水线)
+    - [Netflix流处理演进时间线](#netflix流处理演进时间线)
+    - [A/B测试实时指标计算架构](#ab测试实时指标计算架构)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 ### Def-K-03-08: Netflix数据管道 (Netflix Data Pipeline)
