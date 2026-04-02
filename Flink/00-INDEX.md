@@ -322,7 +322,8 @@ flowchart TD
 | **05-vs-competitors/** | 1 | Flink vs Spark Streaming 对比分析 |
 | **06-engineering/** | 1 | 性能调优完整指南 |
 | **07-case-studies/** | (预留) | 生产案例研究 |
-| **08-roadmap/** | (预留) | 发展路线图 |
+| **08-roadmap/** | 2 | 发展路线图、Flink 2.1 前沿追踪 |
+| **09-language-foundations/** | 6 | Scala语言基础、TypeInformation派生、Java API调用、社区API、迁移指南 |
 
 ---
 
@@ -457,4 +458,4 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 
 *索引创建时间: 2026-04-02*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 13+ 核心文档 | L3-L5 形式化等级*
+*文档统计: 22 核心文档 | L3-L5 形式化等级*
