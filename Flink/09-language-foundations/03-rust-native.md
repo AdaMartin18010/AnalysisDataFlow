@@ -47,14 +47,16 @@ $$\mathcal{B}_{Wasm} = \langle \mathcal{M}_{wasm}, \phi_{host}, \psi_{mem}, \mat
 
 对比矩阵定义：
 
-$$\mathcal{Comparison} = \begin{bmatrix}
+$$
+\mathcal{Comparison} = \begin{bmatrix}
 \text{维度} & \text{JNI} & \text{Wasm} \\
 \text{性能开销} & \text{高（边界穿越+JNI表查找）} & \text{低（直接内存访问）} \\
 \text{安全性} & \text{低（原生代码可崩溃JVM）} & \text{高（沙箱隔离）} \\
 \text{部署复杂度} & \text{高（平台相关库）} & \text{低（单一.wasm文件）} \\
 \text{启动延迟} & \text{低} & \text{中等（JIT编译）} \\
 \text{生态系统} & \text{成熟} & \text{快速增长} \\
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 ## 2. 属性推导 (Properties)
 
@@ -69,6 +71,7 @@ $$\mathcal{Comparison} = \begin{bmatrix}
 $$\eta = \frac{T_{Java} - T_{Rust}}{T_{Java}} \times 100\%$$
 
 基于以下属性：
+
 1. **零成本抽象**：Rust的高级抽象在编译期完全展开，无运行时开销
 2. **无GC暂停**：确定性内存管理，无垃圾回收导致的延迟抖动
 3. **SIMD优化**：编译器自动向量化，充分利用现代CPU指令集
@@ -81,6 +84,7 @@ $$\eta = \frac{T_{Java} - T_{Rust}}{T_{Java}} \times 100\%$$
 **命题**：Wasm桥梁提供比JNI更强的安全隔离保证。
 
 **证明概要**：
+
 - Wasm线性内存与主机内存隔离，访问越界立即触发陷阱(trap)
 - 能力安全模型：模块只能访问显式导入的功能
 - 确定性执行：无未定义行为，适合需要exactly-once语义的场景
@@ -174,16 +178,19 @@ graph TB
 ### 4.1 为什么Rust适合Flink UDF？
 
 **论据1：性能对齐**
+
 - Flink底层使用Java，但JIT编译器对数值计算优化有限
 - Rust的LLVM后端生成接近手写的机器码
 - 加密/压缩/解析等场景Rust库性能领先
 
 **论据2：内存效率**
+
 - 流计算场景数据量巨大，GC压力显著
 - Rust所有权模型实现零成本内存管理
 - 减少Flink TaskManager的堆内存压力
 
 **论据3：工程可靠性**
+
 - 编译期内存安全消除数据竞争
 - 适合有状态算子的复杂逻辑
 - 生产环境稳定性记录优秀
@@ -191,6 +198,7 @@ graph TB
 ### 4.2 桥梁技术选型分析
 
 **JNI路径**：
+
 - ✅ 成熟稳定，生产验证充分
 - ✅ 调用开销相对较低
 - ❌ 平台依赖（需编译不同平台的.so/.dll）
@@ -198,6 +206,7 @@ graph TB
 - ❌ 部署复杂（库路径、版本兼容性）
 
 **Wasm路径**（推荐）：
+
 - ✅ 沙箱安全，故障隔离
 - ✅ 单一.wasm文件跨平台部署
 - ✅ 确定性执行适合流计算
@@ -206,6 +215,7 @@ graph TB
 - ⚠️ 生态系统相对年轻
 
 **gRPC路径**：
+
 - ✅ 完全解耦，独立扩展
 - ✅ 语言无关，多语言UDF统一接入
 - ✅ 利用Service Mesh治理能力
@@ -215,11 +225,13 @@ graph TB
 ### 4.3 边界与限制
 
 **Wasm边界**：
+
 - 无直接I/O能力（需通过Host Functions）
 - 64位Wasm支持仍在发展中
 - 与JVM对象转换有序列化成本
 
 **JNI边界**：
+
 - 线程安全需手动管理（JNIEnv per thread）
 - 跨版本兼容性风险
 - 调试困难（混合栈追踪复杂）
@@ -252,6 +264,7 @@ graph TB
 ### 5.2 性能工程论证：Rust vs Java UDF
 
 **实验设计**：
+
 - 基准：JSON解析UDF（1KB payload）
 - 环境：Flink 1.18, 8 vCPU, 16GB RAM
 - 负载：100K events/s，持续5分钟
@@ -351,6 +364,7 @@ public class RustJsonParser extends ScalarFunction {
 ```
 
 **性能对比**：
+
 - Java Jackson解析：~50K events/s
 - Rust SIMD优化解析：~200K events/s（4倍提升）
 
@@ -389,6 +403,7 @@ impl CryptoOperator {
 ```
 
 **性能数据**：
+
 - Java JCE AES-GCM：~100 MB/s
 - Rust aes-gcm（AES-NI）：~1 GB/s（10倍提升）
 
@@ -567,23 +582,3 @@ Rust/gRPC:   吞吐: ▓▓▓▓░  启动: ▓▓░░░  内存: ▓▓▓
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "User-Defined Functions", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/udfs/
-
-[^2]: WebAssembly Consortium, "WebAssembly Core Specification 2.0", 2023. https://webassembly.github.io/spec/core/
-
-[^3]: Rust and WebAssembly Working Group, "The Rust and WebAssembly Book", 2024. https://rustwasm.github.io/docs/book/
-
-[^4]: JNI Specification, "Java Native Interface 6.0 Specification", Oracle, 2022.
-
-[^5]: Wasmtime Project, "Wasmtime: A fast and secure runtime for WebAssembly", Bytecode Alliance, 2024. https://wasmtime.dev/
-
-[^6]: P. Bhatotia et al., "FaaSdom: Benchmarking Serverless Computing and the Rust-Wasm Ecosystem", USENIX ATC, 2023.
-
-[^7]: Apache Arrow Project, "Arrow Flight: A high-performance RPC framework", 2024. https://arrow.apache.org/docs/format/Flight.html
-
-[^8]: Tonic Framework, "A native gRPC client & server implementation", 2024. https://github.com/hyperium/tonic
-
-[^9]: serde.rs, "Serde: A powerful serialization framework for Rust", 2024. https://serde.rs/
-
-[^10]: RustCrypto Project, "aes-gcm: Pure Rust implementation of AES-GCM", 2024. https://github.com/RustCrypto/AEADs

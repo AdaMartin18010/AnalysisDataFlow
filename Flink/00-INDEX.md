@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 16 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 50+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -28,7 +28,19 @@
   - [6. 文档详细索引](#6-文档详细索引)
     - [6.1 01-architecture/ 架构层](#61-01-architecture-架构层)
     - [6.2 02-core-mechanisms/ 核心机制层](#62-02-core-mechanisms-核心机制层)
-    - [6.3 其他层级](#63-其他层级)
+    - [6.3 03-sql-table-api/ SQL与表API层](#63-03-sql-table-api-sql与表api层)
+    - [6.4 04-connectors/ 连接器层](#64-04-connectors-连接器层)
+    - [6.5 05-vs-competitors/ 竞品对比层](#65-05-vs-competitors-竞品对比层)
+    - [6.6 06-engineering/ 工程实践层](#66-06-engineering-工程实践层)
+    - [6.7 07-case-studies/ 案例研究层](#67-07-case-studies-案例研究层)
+    - [6.8 08-roadmap/ 发展路线图层](#68-08-roadmap-发展路线图层)
+    - [6.9 09-language-foundations/ 语言基础层](#69-09-language-foundations-语言基础层)
+    - [6.10 10-deployment/ 部署层](#610-10-deployment-部署层)
+    - [6.11 11-benchmarking/ 基准测试层](#611-11-benchmarking-基准测试层)
+    - [6.12 12-ai-ml/ AI与机器学习层](#612-12-ai-ml-ai与机器学习层)
+    - [6.13 13-security/ 安全与可信计算层](#613-13-security-安全与可信计算层)
+    - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层)
+    - [6.15 15-observability/ 可观测性层](#615-15-observability-可观测性层)
   - [7. 跨引用索引：Flink ↔ Struct](#7-跨引用索引flink--struct)
     - [7.1 核心概念对应关系](#71-核心概念对应关系)
     - [7.2 形式化证明与工程实现对照](#72-形式化证明与工程实现对照)
@@ -106,6 +118,13 @@ graph LR
 | **核心机制** | [backpressure-and-flow-control.md](02-core-mechanisms/backpressure-and-flow-control.md) | L4 | 40 min |
 | **SQL/Table API** | [sql-vs-datastream-comparison.md](03-sql-table-api/sql-vs-datastream-comparison.md) | L3 | 35 min |
 | **SQL/Table API** | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) | L4 | 45 min |
+| **AI/ML** | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) | L4 | 50 min |
+| **AI/ML** | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) | L3 | 40 min |
+| **AI/ML** | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) | L4-L5 | 55 min |
+| **Lakehouse** | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | L4-L5 | 50 min |
+| **Lakehouse** | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | L4-L5 | 45 min |
+| **Security** | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) | L4-L5 | 50 min |
+| **Security** | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) | L3-L4 | 40 min |
 | **连接器** | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) | L3 | 35 min |
 | **竞品对比** | [flink-vs-spark-streaming.md](05-vs-competitors/flink-vs-spark-streaming.md) | L3 | 30 min |
 | **工程实践** | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) | L4 | 50 min |
@@ -122,6 +141,11 @@ graph LR
 | **性能优化** | 如何提升作业吞吐？ | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 | **一致性保障** | 如何确保 Exactly-Once？ | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
 | **系统集成** | Kafka 集成最佳实践？ | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
+| **AI/ML** | 流式机器学习如何实现？ | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
+| **AI/ML** | RAG 流式架构如何设计？ | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
+| **AI/ML** | 向量数据库如何集成？ | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+| **Lakehouse** | 流批统一存储选哪个？ | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| **Security** | 敏感数据如何保护？ | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
 
 ---
 
@@ -266,6 +290,11 @@ Week 4: 背压与流控
 Week 5-6: 性能调优
 ├── [performance-tuning-guide.md] - 完整调优指南
 └── [query-optimization-analysis.md] - SQL 优化
+
+Week 7-8: AI/ML 与 Lakehouse (可选)
+├── [flink-ml-architecture.md] - Flink ML 架构
+├── [online-learning-algorithms.md] - 在线学习算法
+└── [flink-paimon-integration.md] - Paimon 集成
 ```
 
 ### 5.3 学习路径流程图
@@ -313,20 +342,111 @@ flowchart TD
 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) | 时间语义 | [02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md) |
 | [backpressure-and-flow-control.md](02-core-mechanisms/backpressure-and-flow-control.md) | 背压流控 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 
-### 6.3 其他层级
+### 6.3 03-sql-table-api/ SQL与表API层
 
-| 目录 | 文档数量 | 内容概要 |
-|------|----------|----------|
-| **03-sql-table-api/** | 2 | SQL vs DataStream 对比、查询优化分析 |
-| **04-connectors/** | 1 | Kafka 集成模式与最佳实践 |
-| **05-vs-competitors/** | 1 | Flink vs Spark Streaming 对比分析 |
-| **06-engineering/** | 1 | 性能调优完整指南 |
-| **07-case-studies/** | (预留) | 生产案例研究 |
-| **08-roadmap/** | 2 | 发展路线图、Flink 2.1 前沿追踪 |
-| **09-language-foundations/** | 6 | Scala语言基础、TypeInformation派生、Java API调用、社区API、迁移指南 |
-| **10-deployment/** | 1 | Kubernetes 部署指南 |
-| **11-benchmarking/** | 1 | 流式基准测试 |
-| **12-ai-ml/** | 1 | 在线学习算法、流式机器学习 |
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [sql-vs-datastream-comparison.md](03-sql-table-api/sql-vs-datastream-comparison.md) | API 对比 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
+| [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) | 查询优化 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
+| [vector-search.md](03-sql-table-api/vector-search.md) | 向量搜索 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+| [model-ddl-and-ml-predict.md](03-sql-table-api/model-ddl-and-ml-predict.md) | ML预测 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
+| [materialized-tables.md](03-sql-table-api/materialized-tables.md) | 物化表 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+
+### 6.4 04-connectors/ 连接器层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) | Kafka集成 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
+| [fluss-integration.md](04-connectors/fluss-integration.md) | Fluss集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+
+### 6.5 05-vs-competitors/ 竞品对比层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [flink-vs-spark-streaming.md](05-vs-competitors/flink-vs-spark-streaming.md) | vs Spark | [flink-1.x-vs-2.0-comparison.md](01-architecture/flink-1.x-vs-2.0-comparison.md) |
+| [flink-vs-kafka-streams.md](05-vs-competitors/flink-vs-kafka-streams.md) | vs Kafka | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
+| [linkedin-samza-deep-dive.md](05-vs-competitors/linkedin-samza-deep-dive.md) | Samza分析 | - |
+
+### 6.6 06-engineering/ 工程实践层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) | 性能调优 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [state-backend-selection.md](06-engineering/state-backend-selection.md) | 状态后端 | [forst-state-backend.md](02-core-mechanisms/forst-state-backend.md) |
+
+### 6.7 07-case-studies/ 案例研究层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) | IoT案例 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) |
+| [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) | 实时分析 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
+
+### 6.8 08-roadmap/ 发展路线图层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [flink-2.1-frontier-tracking.md](08-roadmap/flink-2.1-frontier-tracking.md) | 2.1前沿 | [disaggregated-state-analysis.md](01-architecture/disaggregated-state-analysis.md) |
+| [2026-q2-flink-tasks.md](08-roadmap/2026-q2-flink-tasks.md) | Q2任务 | - |
+
+### 6.9 09-language-foundations/ 语言基础层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [01.01-scala-types-for-streaming.md](09-language-foundations/01.01-scala-types-for-streaming.md) | Scala类型 | [01.02-typeinformation-derivation.md](09-language-foundations/01.02-typeinformation-derivation.md) |
+| [01.02-typeinformation-derivation.md](09-language-foundations/01.02-typeinformation-derivation.md) | 类型派生 | [02.01-java-api-from-scala.md](09-language-foundations/02.01-java-api-from-scala.md) |
+| [02.01-java-api-from-scala.md](09-language-foundations/02.01-java-api-from-scala.md) | Java API | - |
+| [02.02-flink-scala-api-community.md](09-language-foundations/02.02-flink-scala-api-community.md) | 社区API | [03.01-migration-guide.md](09-language-foundations/03.01-migration-guide.md) |
+| [02-python-api.md](09-language-foundations/02-python-api.md) | Python API | - |
+| [03-rust-native.md](09-language-foundations/03-rust-native.md) | Rust原生 | - |
+| [03.01-migration-guide.md](09-language-foundations/03.01-migration-guide.md) | 迁移指南 | - |
+| [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) | 流式湖仓 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [00-INDEX.md](09-language-foundations/00-INDEX.md) | 子索引 | - |
+
+### 6.10 10-deployment/ 部署层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) | K8s部署 | [deployment-architectures.md](01-architecture/deployment-architectures.md) |
+
+### 6.11 11-benchmarking/ 基准测试层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [streaming-benchmarks.md](11-benchmarking/streaming-benchmarks.md) | 流式基准 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
+
+### 6.12 12-ai-ml/ AI与机器学习层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) | ML架构 | [model-ddl-and-ml-predict.md](03-sql-table-api/model-ddl-and-ml-predict.md) |
+| [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) | 在线学习 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [online-learning-production.md](12-ai-ml/online-learning-production.md) | 生产实践 | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
+| [model-serving-streaming.md](12-ai-ml/model-serving-streaming.md) | 模型服务 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+| [vector-database-integration.md](12-ai-ml/vector-database-integration.md) | 向量数据库 | [vector-search.md](03-sql-table-api/vector-search.md) |
+| [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) | RAG架构 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+
+### 6.13 13-security/ 安全与可信计算层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) | GPU机密计算 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) |
+| [trusted-execution-flink.md](13-security/trusted-execution-flink.md) | TEE可信执行 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
+
+### 6.14 14-lakehouse/ 湖仓集成层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | Paimon集成 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) |
+| [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | Iceberg集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+
+### 6.15 15-observability/ 可观测性层
+
+| 文档 | 主题 | 关联文档 |
+|------|------|----------|
+| [metrics-and-monitoring.md](15-observability/metrics-and-monitoring.md) | 指标监控 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
+| [distributed-tracing.md](15-observability/distributed-tracing.md) | 分布式追踪 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [event-reporting.md](15-observability/event-reporting.md) | 事件报告 | [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) |
+| [split-level-watermark-metrics.md](15-observability/split-level-watermark-metrics.md) | Watermark指标 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) |
 
 ---
 
@@ -351,6 +471,10 @@ flowchart TD
 | **Thm-S-18-01** Exactly-Once 正确性定理 | [2PC Sink + 可重放 Source](02-core-mechanisms/exactly-once-end-to-end.md) |
 | **Thm-S-19-01** Chandy-Lamport 一致性 | [Barrier 传播协议](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
 | **Thm-S-09-01** Watermark 单调性定理 | [Watermark 生成器](02-core-mechanisms/time-semantics-and-watermark.md) |
+| **Thm-F-12-01** 在线学习参数收敛性 | [Flink ML 在线学习](12-ai-ml/online-learning-algorithms.md) |
+| **Thm-F-12-02** Flink 模型状态一致性保障 | [模型状态管理](12-ai-ml/online-learning-algorithms.md) |
+| **Def-F-14-01** Iceberg 表格式形式化 | [Iceberg 集成](14-lakehouse/flink-iceberg-integration.md) |
+| **Def-F-14-01** Apache Paimon 形式化定义 | [Paimon 集成](14-lakehouse/flink-paimon-integration.md) |
 
 ---
 
@@ -366,6 +490,10 @@ flowchart TD
 | **内存溢出** | OOM、GC 频繁 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 | **数据倾斜** | 部分 subtask 负载过高 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 | **Exactly-Once 失效** | 数据重复或丢失 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
+| **模型推理延迟高** | ML服务响应慢 | [model-serving-streaming.md](12-ai-ml/model-serving-streaming.md) |
+| **向量检索精度低** | RAG结果不相关 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
+| **湖仓数据不一致** | 流批结果差异 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| **敏感数据泄露** | 安全合规问题 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) |
 
 ### 8.2 问题诊断决策树
 
@@ -461,4 +589,4 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 
 *索引创建时间: 2026-04-02*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 16 核心文档 | L3-L5 形式化等级*
+*文档统计: 55+ 核心文档 | L3-L5 形式化等级*

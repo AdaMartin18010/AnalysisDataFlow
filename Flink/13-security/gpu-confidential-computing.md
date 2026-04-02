@@ -31,7 +31,7 @@ $$\text{GPU-TEE} = (H_{GPU}, M_{CPR}, K_{session}, A_{attest}, F_{firewall})$$
 
 ---
 
-### Def-F-13-09: NVIDIA H100 CC Mode
+### Def-F-13-09: NVIDIA H100 Confidential Computing (CC Mode)
 
 **形式化定义**:
 
@@ -115,9 +115,169 @@ $$\text{MI300-TEE} = \text{GPU-TEE}(\text{SEV-SNP}_{ext}, \text{TSME}, \text{TIO
 | L3 | HBM3 Stack | 内存加密引擎 |
 | L4 | PCIe/CXL | 可信 I/O 通道 |
 
+**MI300 vs H100 CC 对比**:
+
+| 特性 | AMD MI300X | NVIDIA H100 |
+|------|:----------:|:-----------:|
+| HBM 容量 | 192GB | 80GB |
+| 内存带宽 | 5.3 TB/s | 3 TB/s |
+| 计算单元 | 304 XCD CU | 132 SM |
+| TEE 方案 | Infinity Guard + SNP | Hopper CC Mode |
+| CPU 依赖 | AMD SEV-SNP | Intel TDX / AMD SEV-SNP |
+| 内存加密 | TSME | AES-GCM 256 (DMA) |
+
 ---
 
-### Def-F-13-11: 安全流处理会话 (Secure Stream Processing Session)
+### Def-F-13-11: Intel TDX Connect for GPUs
+
+**形式化定义**:
+
+Intel TDX Connect 是将 Intel TDX 机密虚拟机技术扩展到 GPU 加速器的架构：
+
+$$\text{TDX-Connect} = \text{GPU-TEE}(\text{TDX}_{CVM}, \text{PCIe}_{IDE}, \text{TDI})$$
+
+其中：
+
+- $\text{TDX}_{CVM}$: Intel TDX 机密虚拟机作为主机环境
+- $\text{PCIe}_{IDE}$: PCIe Integrity and Data Encryption，PCIe 完整性及数据加密
+- $\text{TDI}$: TDX Device Interface，设备与 TDX CVM 的安全接口规范
+
+**TDX Connect 架构**:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Intel TDX Connect Architecture               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              Intel TDX Confidential VM                  │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │   │
+│  │  │  Flink      │  │  GPU        │  │  SPDM       │     │   │
+│  │  │  Runtime    │  │  Driver     │  │  Stack      │     │   │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘     │   │
+│  │         │                │                │            │   │
+│  │         └────────────────┴────────────────┘            │   │
+│  │                          │                             │   │
+│  │                   ┌──────┴──────┐                      │   │
+│  │                   │ TDX Module  │ ← 硬件信任根         │   │
+│  │                   │ (SEAM)      │                      │   │
+│  │                   └──────┬──────┘                      │   │
+│  └──────────────────────────┼──────────────────────────────┘   │
+│                             │                                   │
+│  ┌──────────────────────────┼──────────────────────────────┐    │
+│  │                   PCIe IDE                               │    │
+│  │  ┌───────────────────────┴──────────────────────────┐   │    │
+│  │  │          Integrity Check + Data Encryption         │   │    │
+│  │  │         (TLP Digest + AES-256-GCM)                 │   │    │
+│  │  └───────────────────────┬──────────────────────────┘   │    │
+│  └──────────────────────────┼──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────┼──────────────────────────────┐    │
+│  │              GPU with TDX Support                        │    │
+│  │  ┌───────────────────────┴──────────────────────────┐   │    │
+│  │  │         Device TEE (NVIDIA/Intel Arc)              │   │    │
+│  │  │    ┌─────────┐  ┌─────────┐  ┌─────────┐         │   │    │
+│  │  │    │ Compute │  │ Memory  │  │ DMA     │         │   │    │
+│  │  │    │ Units   │  │ Encryption  │  │ Engine  │         │   │    │
+│  │  │    └─────────┘  └─────────┘  └─────────┘         │   │    │
+│  │  └──────────────────────────────────────────────────┘   │    │
+│  └──────────────────────────────────────────────────────────┘    │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**TDX Connect 安全特性**:
+
+| 特性 | 实现 | 安全保证 |
+|------|------|---------|
+| VM 隔离 | Intel TDX Module | Hypervisor 无法访问 CVM 内存 |
+| 设备认证 | PCIe IDE + SPDM | 设备身份密码学验证 |
+| 数据加密 | AES-256-GCM | 传输中数据机密性 |
+| 完整性保护 | PCIe TLP Digest | 防止数据篡改 |
+| 证明链 | Intel Trust Authority | 端到端可信验证 |
+
+---
+
+### Def-F-13-12: 硬件发展时间线 (2022-2025)
+
+**GPU TEE 演进时间线**:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      GPU Confidential Computing Timeline                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  2022 Q1                                                                    │
+│     │                                                                       │
+│     ├── NVIDIA announces H100 Hopper with CC capability (GTC 2022)         │
+│     │   └── First GPU with native TEE support announced [^1]               │
+│     │                                                                       │
+│  2023 Q1                                                                    │
+│     │                                                                       │
+│     ├── NVIDIA H100 CC Mode Early Access                                   │
+│     │   └── Preview availability for cloud partners                        │
+│     │                                                                       │
+│  2023 Q4                                                                    │
+│     │                                                                       │
+│     ├── AMD announces MI300X with Infinity Guard                           │
+│     │   └── 192GB HBM3 + SEV-SNP extended to GPU [^9]                      │
+│     │                                                                       │
+│  2024 Q1                                                                    │
+│     │                                                                       │
+│     ├── NVIDIA H100 CC Mode GA (General Availability)                      │
+│     │   └── Azure, AWS, GCP production deployment [^2]                     │
+│     │                                                                       │
+│  2024 Q2                                                                    │
+│     │                                                                       │
+│     ├── Intel announces TDX Connect specification                          │
+│     │   └── PCIe IDE + TDI for GPU integration [^11]                       │
+│     │                                                                       │
+│     ├── AMD MI300X shipping with TEE support                               │
+│     │   └── Azure ND MI300X v5 instances                                   │
+│     │                                                                       │
+│  2024 Q4                                                                    │
+│     │                                                                       │
+│     ├── Intel Trust Authority adds NVIDIA H100 attestation [^7]            │
+│     │   └── Unified CPU+GPU attestation service                            │
+│     │                                                                       │
+│     ├── NVIDIA Blackwell B100/B200 announced                               │
+│     │   └── Next-gen CC with enhanced security [^12]                       │
+│     │                                                                       │
+│  2025 Q1 (Current)                                                          │
+│     │                                                                       │
+│     ├── AMD MI350 series roadmap                                           │
+│     │   └── CDNA 4 architecture with enhanced TEE                          │
+│     │                                                                       │
+│     ├── Intel discrete GPU TDX support                                     │
+│     │   └── Arc Battlemage with TEE capabilities                           │
+│     │                                                                       │
+│  2025 Q2-Q4 (Projected)                                                     │
+│     │                                                                       │
+│     ├── NVIDIA Blackwell CC Mode GA                                        │
+│     │   └── Multi-GPU TEE with NVLink CC [^12]                             │
+│     │                                                                       │
+│     ├── AMD MI400 series                                                   │
+│     │   └── Full APU+GPU unified TEE                                       │
+│     │                                                                       │
+│     └── Industry standardization efforts                                   │
+│         └── CCC (Confidential Computing Consortium) GPU specs              │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**关键里程碑**:
+
+| 时间 | 事件 | 意义 |
+|------|------|------|
+| 2022-03 | H100 Architecture Reveal | 首个原生 GPU TEE 架构公布 |
+| 2024-01 | H100 CC GA | GPU TEE 进入生产环境 |
+| 2024-06 | TDX Connect Spec | Intel 统一异构 TEE 标准 |
+| 2024-12 | MI300X Azure GA | AMD GPU TEE 云规模部署 |
+| 2025+ | Blackwell CC | 下一代 GPU TEE 架构 |
+
+---
+
+### Def-F-13-13: 安全流处理会话 (Secure Stream Processing Session)
 
 **形式化定义**:
 
@@ -196,6 +356,24 @@ $$\text{Confidentiality}(D) \Rightarrow \forall A \in \text{Privileged}, \Pr[A \
 
 ---
 
+### Prop-F-13-06: PCIe/NVLink 加密安全定理
+
+**命题**: GPU TEE 的 PCIe/NVLink 加密满足 IND-CCA2 安全级别：
+
+$$\text{PCIe-Enc} = \text{AES-GCM-256}(K_{session}, P, AAD_{PCIe})$$
+
+其中 $AAD_{PCIe}$ 包含 PCIe 事务层包 (TLP) 头信息，防止重放和重排序攻击。
+
+**加密范围**:
+
+| 通道类型 | 加密范围 | 密钥派生 |
+|---------|---------|---------|
+| PCIe Gen5 | CPU-GPU 全部 DMA 传输 | SPDM Session Key |
+| NVLink 4 | GPU-GPU P2P 传输 | 多 GPU 组密钥 |
+| CXL 2.0 | 内存扩展设备 | TDX/SEV 集成密钥 |
+
+---
+
 ### Lemma-F-13-02: 性能开销上界
 
 **引理**: 对于大规模模型（如 Llama-3.1-70B），GPU TEE 的性能开销满足：
@@ -217,17 +395,18 @@ $$\text{Overhead}_{TEE} = \frac{T_{TEE} - T_{baseline}}{T_{baseline}} < 2\%$$
 
 ### 3.1 CPU TEE vs GPU TEE 对比矩阵
 
-| 维度 | Intel SGX | Intel TDX | AMD SEV-SNP | NVIDIA H100 CC | AMD MI300 TEE |
-|------|:---------:|:---------:|:-----------:|:--------------:|:-------------:|
-| **隔离粒度** | 进程级 | VM级 | VM级 | GPU设备级 | GPU设备级 |
-| **内存容量** | 128MB-1GB EPC | 无限制 | 无限制 | 80GB HBM3 | 192GB HBM3 |
-| **TCB 大小** | 小 (CPU+uCode) | 较大 (TDX Module) | 较大 (SEV FW) | 中 (GPU RoT+FW) | 中 (SP+IF) |
-| **计算特性** | 通用 | 通用 | 通用 | 张量加速 | 张量加速 |
-| **带宽** | 内存带宽 | 内存带宽 | 内存带宽 | 3 TB/s | ~5 TB/s |
-| **加密引擎** | 内存加密 | MKTME | SME | AES-GCM 256 (DMA) | TSME |
-| **证明服务** | Intel PCS | Intel Trust Authority | AMD ASP | NVIDIA NRAS | AMD ASP |
-| **依赖 CPU TEE** | 独立 | 独立 | 独立 | **必须** (TDX/SNP) | **必须** (SNP) |
-| **代表应用** | 密钥管理 | 机密VM | 云原生安全 | 安全AI推理 | 安全AI训练 |
+| 维度 | Intel SGX | Intel TDX | AMD SEV-SNP | NVIDIA H100 CC | AMD MI300 TEE | Intel TDX Connect |
+|------|:---------:|:---------:|:-----------:|:--------------:|:-------------:|:-----------------:|
+| **隔离粒度** | 进程级 | VM级 | VM级 | GPU设备级 | GPU设备级 | VM+设备级 |
+| **内存容量** | 128MB-1GB EPC | 无限制 | 无限制 | 80GB HBM3 | 192GB HBM3 | 无限制+GPU |
+| **TCB 大小** | 小 (CPU+uCode) | 较大 (TDX Module) | 较大 (SEV FW) | 中 (GPU RoT+FW) | 中 (SP+IF) | 较大 (TDX+GPU) |
+| **计算特性** | 通用 | 通用 | 通用 | 张量加速 | 张量加速 | 通用+加速 |
+| **带宽** | 内存带宽 | 内存带宽 | 内存带宽 | 3 TB/s | ~5 TB/s | 内存+PCIe |
+| **加密引擎** | 内存加密 | MKTME | SME | AES-GCM 256 (DMA) | TSME | PCIe IDE |
+| **证明服务** | Intel PCS | Intel Trust Authority | AMD ASP | NVIDIA NRAS | AMD ASP | Intel Trust Authority |
+| **依赖 CPU TEE** | 独立 | 独立 | 独立 | **必须** (TDX/SNP) | **必须** (SNP) | **必须** (TDX) |
+| **代表应用** | 密钥管理 | 机密VM | 云原生安全 | 安全AI推理 | 安全AI训练 | 异构安全计算 |
+| **可用年份** | 2015-2024 | 2023+ | 2021+ | 2024+ | 2024+ | 2024+ |
 
 ### 3.2 CPU-GPU TEE 协作架构
 
@@ -343,7 +522,7 @@ graph TB
 │ Layer 3: GPU TEE (CPR 隔离、DMA 加密)                           │
 │         - 硬件级内存保护、AES-GCM 256                           │
 ├─────────────────────────────────────────────────────────────────┤
-│ Layer 2: CPU-GPU 通道安全 (SPDM 1.2)                            │
+│ Layer 2: CPU-GPU 通道安全 (SPDM 1.2 / PCIe IDE)                 │
 │         - 相互认证、会话密钥派生                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 1: CPU TEE (CVM 隔离)                                     │
@@ -360,10 +539,20 @@ graph TB
 |------|---------|---------|---------|
 | 无 TEE | L0 | 0% | 非敏感数据 |
 | 仅 CPU TEE | L3 | 3-5% | 一般敏感数据 |
-| CPU+GPU TEE | L4 | 1-7% | 高敏感 AI/ML |
+| CPU+GPU TEE | L4 | <2% | 高敏感 AI/ML |
 | + MIG 隔离 | L4+ | 2-10% | 多租户安全 |
 
 **关键观察**: 对于大规模流处理（大 batch），开销趋近于零。
+
+### 4.4 安全属性对比分析
+
+| 属性 | 软件加密 | CPU TEE | GPU TEE | 说明 |
+|------|---------|---------|---------|------|
+| 数据机密性 | ✅ | ✅ | ✅ | 三者均可实现 |
+| 使用中保护 | ❌ | ✅ | ✅ | 软件加密无法保护内存中的明文 |
+| 算子完整性 | ❌ | ⚠️ | ✅ | GPU 硬件隔离更强 |
+| 远程证明 | ❌ | ✅ | ✅ | 硬件信任根必需 |
+| 性能 | 基准 | -5% | <2% | GPU TEE 开销最小 |
 
 ---
 
@@ -498,7 +687,7 @@ $$T_{compute} > 50 \times T_{encrypt}$$
   - $T_{encrypt}$ ≈ 1-2ms (数据传输)
   - $\text{Overhead} = \frac{1}{100} = 1\%$
 
-**实证数据** (来源: arXiv 2409.03992):
+**实证数据** (来源: arXiv 2409.03992 [^8]):
 
 | 模型 | 参数 | Batch Size | TEE Overhead |
 |------|------|-----------|--------------|
@@ -671,6 +860,117 @@ public class SecureGPUInference extends RichAsyncFunction<byte[], byte[]> {
 
 ---
 
+### 6.3 金融数据实时风控
+
+**场景**: 投资银行使用 Flink 处理实时市场数据，执行高频交易策略，防止模型泄露。
+
+**安全需求**:
+- 交易策略模型不可被云运营商访问
+- 市场数据解密在 TEE 内完成
+- 交易信号输出加密
+
+```java
+public class TradingStrategyOperator extends ProcessFunction<MarketData, Signal> {
+
+    private transient GpuTEEContext teeCtx;
+    private transient SecureModel tradingModel;
+
+    @Override
+    public void open(Configuration params) {
+        // 在 GPU TEE 内加载量化交易策略模型
+        teeCtx = GpuTEEContext.create("nvidia-h100")
+            .withAttestation(NVIDIANRAS.getInstance())
+            .withCVM(TEEType.INTEL_TDX)
+            .initialize();
+
+        // 模型在 TEE 内解密，密钥永不离开 GPU
+        tradingModel = teeCtx.loadSealedModel(
+            "hdfs:///models/trading-model-v2.sealed"
+        );
+    }
+
+    @Override
+    public void processElement(MarketData data, Context ctx, Collector<Signal> out) {
+        // 市场数据加密输入 GPU TEE
+        byte[] encryptedSignal = teeCtx.execute(tradingModel, encrypt(data));
+
+        // 输出加密信号，仅授权交易系统可解密
+        out.collect(new Signal(encryptedSignal, ctx.timestamp()));
+    }
+}
+```
+
+---
+
+### 6.4 医疗健康数据分析
+
+**场景**: 医疗机构使用 Flink 分析患者数据，确保 HIPAA/GDPR 合规。
+
+```mermaid
+flowchart TB
+    subgraph "医院数据源"
+        H1[医院 A<br/>加密 EHR]
+        H2[医院 B<br/>加密 EHR]
+        H3[医院 C<br/>加密 EHR]
+    end
+
+    subgraph "Flink GPU TEE 集群"
+        subgraph "Intel TDX CVM"
+            JM[JobManager]
+            TM[TaskManager]
+        end
+
+        subgraph "NVIDIA H100 CC"
+            DECRYPT[TEE 内解密]
+            ANALYTICS[联邦学习聚合]
+            DP[差分隐私噪声]
+            ENCRYPT[结果加密]
+        end
+    end
+
+    subgraph "合规验证"
+        ATT[远程证明日志]
+        AUD[审计报告]
+    end
+
+    H1 & H2 & H3 --> JM --> TM --> DECRYPT --> ANALYTICS --> DP --> ENCRYPT
+    DECRYPT --> ATT
+    ANALYTICS --> AUD
+```
+
+---
+
+### 6.5 联邦学习安全聚合
+
+**场景**: 跨机构联邦学习，在 GPU TEE 内执行安全聚合协议。
+
+```python
+# 伪代码：Flink GPU TEE 联邦学习
+class SecureAggregation:
+    def __init__(self, gpu_tee_context):
+        self.tee = gpu_tee_context
+
+    def secure_aggregate(self, encrypted_gradients):
+        """
+        在 GPU TEE 内执行安全聚合
+        """
+        # 进入 TEE 安全执行域
+        with self.tee.secure_execution():
+            # 解密各方梯度
+            gradients = [self.tee.decrypt(g) for g in encrypted_gradients]
+
+            # 执行安全聚合（带差分隐私）
+            aggregated = self.federated_average(gradients)
+
+            # 添加噪声保护隐私
+            noisy_result = self.add_dp_noise(aggregated, epsilon=1.0)
+
+            # 加密输出
+            return self.tee.encrypt(noisy_result)
+```
+
+---
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 GPU TEE 安全架构全景图
@@ -707,6 +1007,11 @@ graph TB
             MI300_CPR[CPR - 192GB HBM3]
             MI300_TSME[TSME Engine]
         end
+
+        subgraph "Intel Arc (TDX)"
+            ARC_TEE[Intel Arc TEE]
+            ARC_PCIE[PCIe IDE]
+        end
     end
 
     subgraph "CPU TEE 层 (必需)"
@@ -729,6 +1034,7 @@ graph TB
 
     TEE_API --> H100_CC
     TEE_API --> MI300_TEE
+    TEE_API --> ARC_TEE
 
     ATTEST_MGR <-->|GPU Attestation| NRAS
     ATTEST_MGR <-->|CPU Attestation| ITA
@@ -737,6 +1043,7 @@ graph TB
     H100_CC <-->|SPDM Session| TDX
     H100_CC <-->|SPDM Session| SNP
     MI300_TEE <-->|TIO| SNP
+    ARC_TEE <-->|PCIe IDE| TDX
 
     H100_CC --> H100_DMA --> H100_CPR
     MI300_TEE --> MI300_TSME --> MI300_CPR
@@ -837,6 +1144,7 @@ flowchart TD
     GPU_TEE --> Q8{GPU 厂商?}
     Q8 -->|NVIDIA| H100[NVIDIA H100<br/>CC Mode + TDX/SNP]
     Q8 -->|AMD| MI300[AMD MI300<br/>Infinity Guard + SNP]
+    Q8 -->|Intel| ARC[Intel Arc<br/>TDX Connect]
 
     SGX --> FLINK[Flink TEE 集成]
     TDX_AZURE --> FLINK
@@ -848,12 +1156,148 @@ flowchart TD
     GPU_TEE_INF --> FLINK
     H100 --> FLINK
     MI300 --> FLINK
+    ARC --> FLINK
     GPU_TEE_TRAIN --> FLINK
+```
+
+### 7.4 Flink GPU TEE 部署架构
+
+```mermaid
+graph TB
+    subgraph "Kubernetes Cluster"
+        subgraph "Confidential VM Node (Intel TDX)"
+            CVM[TDX CVM]
+
+            subgraph "Flink Pod"
+                JM[JobManager]
+                TM[TaskManager]
+
+                subgraph "GPU TEE Container"
+                    GPU_DRV[NVIDIA GPU Driver]
+                    SPDM[SPDM Stack]
+                    APP[Flink GPU UDF]
+                end
+            end
+        end
+
+        subgraph "GPU Node"
+            H100[NVIDIA H100 CC Mode]
+        end
+    end
+
+    subgraph "External Services"
+        NRAS[NVIDIA NRAS]
+        ITA[Intel Trust Authority]
+        KMS[Key Management Service]
+    end
+
+    JM --> TM --> APP
+    APP --> GPU_DRV --> SPDM --> H100
+
+    SPDM <-->|Attestation| NRAS
+    CVM <-->|Attestation| ITA
+    APP <-->|Key Request| KMS
 ```
 
 ---
 
-## 8. 引用参考 (References)
+## 8. 实施指南 (Implementation Guide)
+
+### 8.1 机密 VM 配置
+
+**Intel TDX 配置 (Ubuntu 24.04)**:
+
+```bash
+# 1. 安装 TDX 驱动和工具
+sudo apt install -y tdx-tools qemu-system-x86
+
+# 2. 创建 TDX 机密 VM
+qemu-system-x86_64 \
+    -enable-kvm \
+    -cpu host,+tdx_guest \
+    -object tdx-guest,id=tdx \
+    -machine q35,memory-backend=ram1,kernel-irqchip=split \
+    -m 32G \
+    -smp 8 \
+    -hda tdx-vm-image.qcow2 \
+    -device vfio-pci,host=01:00.0  # GPU passthrough
+
+# 3. 验证 TDX 激活
+tdvmcheck
+```
+
+**AMD SEV-SNP 配置**:
+
+```bash
+# 1. 启用 SEV-SNP BIOS 设置
+# AMD CBS -> CPU Common Options -> SEV-SNP = Enabled
+
+# 2. 验证 SEV-SNP 可用
+cat /sys/module/kvm_amd/parameters/sev_snp
+# 输出: 1
+
+# 3. 启动 SEV-SNP VM
+qemu-system-x86_64 \
+    -enable-kvm \
+    -cpu EPYC-v4,host-phys-bits=true,sev-snp=on \
+    -machine q35,memory-backend=ram1,vmport=off \
+    -object memory-backend-memfd-private,id=ram1,size=32G \
+    -smp 8 \
+    -hda snp-vm-image.qcow2 \
+    -device vfio-pci,host=01:00.0
+```
+
+### 8.2 Flink GPU TEE 部署配置
+
+**flink-conf.yaml 配置**:
+
+```yaml
+# GPU TEE 安全配置
+security.gpu.tee.enabled: true
+security.gpu.tee.type: NVIDIA_H100_CC
+security.gpu.attestation.service: https://nras.attestation.nvidia.com
+
+# CPU TEE 配置（必需）
+security.cpu.tee.type: INTEL_TDX
+security.cpu.attestation.service: https://trustauthority.intel.com
+
+# 复合证明配置
+security.composite.attestation.enabled: true
+security.composite.policy: BOTH_REQUIRED
+
+# GPU 资源配置
+kubernetes.gpu.enabled: true
+kubernetes.gpu.resource-type: nvidia.com/gpu
+kubernetes.gpu.cc-mode: true
+```
+
+**Flink GPU TEE 作业提交**:
+
+```bash
+# 提交 GPU TEE 作业
+flink run \
+    -t kubernetes-application \
+    -Dkubernetes.cluster-id=flink-gpu-tee \
+    -Dkubernetes.container.image=flink-gpu-tee:1.18 \
+    -Dsecurity.gpu.tee.enabled=true \
+    -Dsecurity.gpu.tee.type=NVIDIA_H100_CC \
+    ./secure-ml-inference.jar
+```
+
+### 8.3 最佳实践
+
+| 实践项 | 建议 | 理由 |
+|-------|------|------|
+| **复合证明** | 必须同时验证 CPU 和 GPU TEE | 单一 TEE 可被旁路 |
+| **密钥管理** | 使用密封密钥绑定至 TEE 身份 | 防止密钥泄露 |
+| **模型保护** | 加密模型在 TEE 内解密 | 保护知识产权 |
+| **性能优化** | 批处理大小 ≥ 32 | 摊平加密开销 |
+| **监控审计** | 记录所有证明事件 | 合规要求 |
+| **更新策略** | 及时更新固件和驱动 | 修复安全漏洞 |
+
+---
+
+## 9. 引用参考 (References)
 
 [^1]: NVIDIA, "NVIDIA H100 Tensor Core GPU Architecture", GTC 2022 Whitepaper. https://www.advancedclustering.com/wp-content/uploads/2022/03/gtc22-whitepaper-hopper.pdf
 
@@ -874,3 +1318,7 @@ flowchart TD
 [^9]: AMD, "AMD Infinity Guard", Official Product Page. https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html
 
 [^10]: DMTF, "Security Protocol and Data Model (SPDM) Specification", Version 1.2, 2022.
+
+[^11]: Intel, "Intel TDX Connect Specification", 2024. https://www.intel.com/content/www/us/en/developer/topic-technology/trusted-execution-technology/overview.html
+
+[^12]: NVIDIA, "NVIDIA Blackwell Architecture", GTC 2024. https://www.nvidia.com/en-us/data-center/blackwell-architecture/

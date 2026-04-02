@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v1.0 | **更新日期**: 2026-04-02 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v1.1 | **更新日期**: 2026-04-02 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/ 和 Knowledge/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -21,6 +21,10 @@
     - [2.4 证明层定理 (04-proofs)](#24-证明层定理-04-proofs)
     - [2.5 对比层定理 (05-comparative)](#25-对比层定理-05-comparative)
     - [2.6 知识层定理 (Knowledge)](#26-知识层定理-knowledge)
+    - [2.7 Rust流系统定理 (Knowledge/06-rust-streaming)](#27-rust流系统定理-knowledge06-rust-streaming)
+    - [2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)](#28-gpu-tee属性定理-knowledge07-gpu-tee)
+    - [2.9 流式Lakehouse一致性定理 (Knowledge/08-lakehouse-consistency)](#29-流式lakehouse一致性定理-knowledge08-lakehouse-consistency)
+    - [2.10 RAG流式正确性定理 (Knowledge/09-rag-streaming)](#210-rag流式正确性定理-knowledge09-rag-streaming)
   - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx)
     - [3.1 基础层定义 (01-foundation)](#31-基础层定义-01-foundation)
     - [3.2 性质层定义 (02-properties)](#32-性质层定义-02-properties)
@@ -96,6 +100,10 @@
 | 23 | Struct/04-proofs/04.07 | Choreographic死锁自由 |
 | 24 | Struct/05-comparative/05.01 | Go vs Scala |
 | 05 | Knowledge/05-mapping-guides/ | 形式化到实现映射 |
+| 06 | Knowledge/06-rust-streaming/ | Rust流系统 |
+| 07 | Knowledge/07-gpu-tee/ | GPU TEE属性 |
+| 08 | Knowledge/08-lakehouse-consistency/ | 流式Lakehouse一致性 |
+| 09 | Knowledge/09-rag-streaming/ | RAG流式正确性 |
 | 08 | Struct/08-standards/ | 流式SQL标准 |
 
 ---
@@ -177,6 +185,44 @@
 | Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
 | Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
 | Thm-F-04-01 | Fluss TCO成本效率定理 | Flink/04-connectors | L3-L4 | ✅ |
+
+### 2.7 Rust流系统定理 (Knowledge/06-rust-streaming)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-K-06-01 | Rust所有权系统内存安全定理 | Knowledge/06 | L4-L5 | ✅ |
+| Thm-K-06-02 | Rust借用检查器正确性定理 | Knowledge/06 | L4-L5 | ✅ |
+| Thm-K-06-03 | Send/Sync边界线程安全定理 | Knowledge/06 | L4 | ✅ |
+| Thm-K-06-04 | 异步流处理无数据竞争定理 | Knowledge/06 | L4-L5 | ✅ |
+| Thm-F-06-01 | Rust Flink状态后端内存安全 | Flink/06-rust-integration | L4 | ✅ |
+| Thm-F-06-02 | Tokio运行时确定性调度定理 | Flink/06-rust-integration | L3-L4 | ✅ |
+
+### 2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-K-07-01 | GPU TEE机密性定理 | Knowledge/07 | L4-L5 | ✅ |
+| Thm-K-07-02 | GPU TEE完整性定理 | Knowledge/07 | L4-L5 | ✅ |
+| Thm-K-07-03 | GPU TEE远程证明正确性定理 | Knowledge/07 | L4 | ✅ |
+| Thm-K-07-04 | GPU流计算安全执行定理 | Knowledge/07 | L4-L5 | ✅ |
+
+### 2.9 流式Lakehouse一致性定理 (Knowledge/08-lakehouse-consistency)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-K-08-01 | Lakehouse时间旅行一致性定理 | Knowledge/08 | L4-L5 | ✅ |
+| Thm-K-08-02 | 流批一体ACID隔离性定理 | Knowledge/08 | L4 | ✅ |
+| Thm-K-08-03 | 元数据层一致性保证定理 | Knowledge/08 | L4 | ✅ |
+| Thm-K-08-04 | 增量处理正确性定理 | Knowledge/08 | L4-L5 | ✅ |
+
+### 2.10 RAG流式正确性定理 (Knowledge/09-rag-streaming)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-K-09-01 | RAG检索正确性定理 | Knowledge/09 | L4 | ✅ |
+| Thm-K-09-02 | RAG流式生成一致性定理 | Knowledge/09 | L4 | ✅ |
+| Thm-K-09-03 | 向量索引实时更新一致性定理 | Knowledge/09 | L4-L5 | ✅ |
+| Thm-K-09-04 | RAG端到端正确性定理 | Knowledge/09 | L4-L5 | ✅ |
 
 ---
 
@@ -306,6 +352,28 @@
 | Def-K-05-02 | 语义保持性 | Knowledge/05 | Semantic Preservation |
 | Def-K-05-03 | 实现近似性 | Knowledge/05 | (ε,δ)-近似 |
 | Def-K-05-04 | 验证金字塔 | Knowledge/05 | 多层验证策略 |
+| Def-K-06-01 | Rust所有权模型 | Knowledge/06 | Ownership System |
+| Def-K-06-02 | 借用检查器 | Knowledge/06 | Borrow Checker |
+| Def-K-06-03 | Send/Sync Trait | Knowledge/06 | 线程安全边界 |
+| Def-K-06-04 | 生命周期参数 | Knowledge/06 | Lifetime Parameter |
+| Def-K-06-05 | 异步流(Async Stream) | Knowledge/06 | Stream Trait |
+| Def-K-06-06 | Pin与自引用结构 | Knowledge/06 | Pin<Ptr> |
+| Def-K-07-01 | GPU TEE威胁模型 | Knowledge/07 | Threat Model |
+| Def-K-07-02 | 机密计算隔离域 | Knowledge/07 | TEE Isolation Domain |
+| Def-K-07-03 | GPU可信执行环境 | Knowledge/07 | GPU TEE (H100/H200) |
+| Def-K-07-04 | 远程证明协议 | Knowledge/07 | Remote Attestation |
+| Def-K-07-05 | 内存加密语义 | Knowledge/07 | Memory Encryption |
+| Def-K-08-01 | Lakehouse存储模型 | Knowledge/08 | Table Format |
+| Def-K-08-02 | 时间旅行查询 | Knowledge/08 | Time Travel Query |
+| Def-K-08-03 | ACID事务语义 | Knowledge/08 | ACID Properties |
+| Def-K-08-04 | 元数据层 | Knowledge/08 | Metadata Layer |
+| Def-K-08-05 | 增量表格式 | Knowledge/08 | Delta/Iceberg/Hudi |
+| Def-K-09-01 | RAG系统架构 | Knowledge/09 | Retrieval-Augmented Generation |
+| Def-K-09-02 | 向量嵌入空间 | Knowledge/09 | Embedding Space |
+| Def-K-09-03 | 语义检索 | Knowledge/09 | Semantic Retrieval |
+| Def-K-09-04 | 流式向量索引 | Knowledge/09 | Streaming Vector Index |
+| Def-K-09-05 | 上下文窗口约束 | Knowledge/09 | Context Window |
+| Def-K-09-06 | 检索-生成一致性 | Knowledge/09 | Retrieval-Generation Consistency |
 
 ---
 
@@ -383,6 +451,16 @@
 | Lemma-K-05-01 | 映射传递性引理 | Knowledge/05 | 复合映射保持 |
 | Lemma-K-05-02 | 理论保持性引理 | Knowledge/05 | 性质传导 |
 | Lemma-K-05-03 | 代码等价性保持 | Knowledge/05 | 模式实例化 |
+| Lemma-K-06-01 | 所有权转移不变式 | Knowledge/06 | 内存安全基础 |
+| Lemma-K-06-02 | 借用生命周期包含性 | Knowledge/06 | 借用检查支撑 |
+| Lemma-K-06-03 | Send/Sync传递性 | Knowledge/06 | 线程安全组合 |
+| Lemma-K-07-01 | TEE执行隔离性 | Knowledge/07 | 机密性基础 |
+| Lemma-K-07-02 | GPU内存加密原子性 | Knowledge/07 | 完整性支撑 |
+| Lemma-K-08-01 | 时间戳单调性引理 | Knowledge/08 | 时间旅行正确性 |
+| Lemma-K-08-02 | 快照隔离一致性 | Knowledge/08 | ACID支撑 |
+| Lemma-K-09-01 | 向量相似度保持性 | Knowledge/09 | 检索正确性 |
+| Lemma-K-09-02 | 上下文窗口边界引理 | Knowledge/09 | 生成一致性 |
+| Lemma-K-09-03 | 检索-生成组合性 | Knowledge/09 | 端到端正确性 |
 
 ---
 
@@ -412,6 +490,10 @@
 | Prop-S-23-01 | Choreography的合流性 | Struct/04.07 | 合流性质 |
 | Prop-S-23-02 | 投影语义等价性 | Struct/04.07 | 语义等价 |
 | Prop-K-05-01 | 语义等价性命题 | Knowledge/05 | 语义等价 |
+| Prop-K-06-01 | Rust零成本抽象保持 | Knowledge/06 | 抽象无运行时开销 |
+| Prop-K-07-01 | GPU TEE副作用隔离 | Knowledge/07 | Side-effect Isolation |
+| Prop-K-08-01 | Lakehouse读写分离一致性 | Knowledge/08 | 读写不冲突 |
+| Prop-K-09-01 | RAG延迟-准确性权衡 | Knowledge/09 | Latency-Accuracy Tradeoff |
 
 ### 5.2 推论 (Cor-S-XX-XX)
 
@@ -447,14 +529,14 @@
 
 ### 7.1 总体统计
 
-| 类别 | Struct/ | Knowledge/ | 总计 |
-|------|---------|------------|------|
-| **定理** | 24 | 1 | **25** |
-| **定义** | 56 | 4 | **60** |
-| **引理** | 33 | 3 | **36** |
-| **命题** | 19 | 1 | **20** |
-| **推论** | 4 | 0 | **4** |
-| **合计** | 136 | 9 | **145** |
+| 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
+|------|---------|------------|--------|------|
+| **定理** | 24 | 21 | 9 | **54** |
+| **定义** | 56 | 27 | 0 | **83** |
+| **引理** | 33 | 15 | 0 | **48** |
+| **命题** | 19 | 5 | 0 | **24** |
+| **推论** | 4 | 0 | 0 | **4** |
+| **合计** | 136 | 68 | 9 | **213** |
 
 ### 7.2 按文档统计
 
@@ -466,6 +548,13 @@
 | 04-proofs (17-23) | 9 | 24 | 13 | 9 | 1 |
 | 05-comparative (24) | 1 | 0 | 0 | 0 | 0 |
 | Knowledge (05) | 1 | 4 | 3 | 1 | 0 |
+| Knowledge (06) Rust流系统 | 6 | 6 | 3 | 1 | 0 |
+| Knowledge (07) GPU TEE | 4 | 5 | 2 | 1 | 0 |
+| Knowledge (08) Lakehouse | 4 | 5 | 2 | 1 | 0 |
+| Knowledge (09) RAG流式 | 4 | 6 | 3 | 1 | 0 |
+| Flink (02) 核心机制 | 3 | 0 | 0 | 0 | 0 |
+| Flink (04) 连接器 | 1 | 0 | 0 | 0 | 0 |
+| Flink (06) Rust集成 | 2 | 0 | 0 | 0 | 0 |
 
 ### 7.3 形式化等级分布
 

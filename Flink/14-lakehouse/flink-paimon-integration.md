@@ -167,6 +167,79 @@ SELECT * FROM paimon_table /*+ OPTIONS('scan.snapshot-id'='123') */;
 
 ---
 
+### Def-F-14-05: Changelog Producer 类型详解
+
+**Changelog Producer** 定义了 Paimon 如何生成变更日志，直接影响流式消费的数据完整性：
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     Changelog Producer 对比                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. INPUT 模式                                                       │
+│  ┌──────────┐    CDC (+I/-U/+U/-D)    ┌──────────┐                 │
+│  │  MySQL   │ ───────────────────────▶│  Paimon  │                 │
+│  │  CDC源   │    直接透传变更类型      │  表存储   │                 │
+│  └──────────┘                         └──────────┘                 │
+│  特点: 延迟最低，要求上游提供完整变更类型                              │
+│                                                                     │
+│  2. LOOKUP 模式                                                      │
+│  ┌──────────┐    +I/+U/-D            ┌──────────┐    完整Changelog │
+│  │  Source  │ ───────────────────────▶│  Paimon  │ ───────────────▶│
+│  │  (无-U)  │                         │  LSM查询  │  (+I/-U/+U/-D)  │
+│  └──────────┘                         └──────────┘                 │
+│  特点: 通过LSM点查补全UPDATE_BEFORE，适合Kafka等源                   │
+│                                                                     │
+│  3. FULL-COMPACTION 模式                                             │
+│  ┌──────────┐    Append Only          ┌──────────┐    对比生成       │
+│  │  Source  │ ───────────────────────▶│Compaction│ ───────────────▶│
+│  │          │                         │  前后对比 │    Changelog    │
+│  └──────────┘                         └──────────┘                 │
+│  特点: 延迟最高，适合无CDC场景的批量导入                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Changelog Producer 配置矩阵**：
+
+| Producer 类型 | 延迟 | 资源消耗 | 变更完整性 | 推荐场景 |
+|--------------|------|---------|-----------|---------|
+| `none` | 无 | 最低 | 仅Append | 日志型数据 |
+| `input` | 毫秒级 | 低 | 完整(+I/-U/+U/-D) | CDC数据入湖 |
+| `lookup` | 百毫秒级 | 中 | 完整(+I/-U/+U/-D) | 需要补全变更 |
+| `full-compaction` | 分钟级 | 高 | 最终一致 | 批量导入 |
+
+---
+
+### Def-F-14-06: Compaction 策略形式化定义
+
+**Compaction** 是 LSM-Tree 的核心维护操作，Paimon 支持多种策略：
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      Compaction 策略对比                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  策略1: Size-tiered (默认)                                           │
+│  ├── 触发条件: 同层级文件数超过阈值                                   │
+│  ├── 合并方式: 相邻文件合并为更大文件                                 │
+│  └── 适用: 写入密集场景                                              │
+│                                                                     │
+│  策略2: Leveled                                                      │
+│  ├── 触发条件: 层级大小超过目标值                                     │
+│  ├── 合并方式: 与下层文件合并，保持层级有序                           │
+│  └── 适用: 读取密集场景                                              │
+│                                                                     │
+│  策略3: Full-Compaction (全量合并)                                    │
+│  ├── 触发条件: 时间间隔或手动触发                                     │
+│  ├── 合并方式: 全表合并为最优结构                                     │
+│  └── 适用: 批处理优化、Changelog生成                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 2. 属性推导 (Properties)
 
 ### Lemma-F-14-01: LSM 写入放大与读优化权衡
@@ -368,30 +441,52 @@ graph TB
     style CHANGELOG fill:#fce4ec,stroke:#c2185b
 ```
 
-### 3.2 Paimon 与 Flink Checkpoint 的协同
+### 3.2 Paimon Catalog 配置详解
 
-Paimon 的 Exactly-Once 语义依赖于 Flink Checkpoint 机制：
+**Catalog 类型对比**：
 
-| Flink Checkpoint 阶段 | Paimon 动作 | 一致性保证 |
-|---------------------|------------|-----------|
-| **Checkpoint 触发** | 刷新 MemTable 到 L0 | 内存数据持久化 |
-| **Pre-commit 阶段** | 提交数据文件，生成 pending snapshot | 数据文件可见但未激活 |
-| **Checkpoint ACK** | 原子更新当前快照指针 | 元数据一致性 |
-| **Checkpoint 完成** | 清理过期快照 | 存储回收 |
-| **故障恢复** | 从最后成功快照恢复 | 无数据丢失 |
+| Catalog 类型 | 元数据存储 | 适用场景 | 特点 |
+|-------------|-----------|---------|------|
+| `filesystem` | 文件系统 | 开发测试 | 简单，无需外部依赖 |
+| `hive` | Hive Metastore | 生产环境 | 生态成熟，支持多引擎 |
+| `jdbc` | 关系型数据库 | 云原生 | 高可用，易运维 |
+| `rest` | REST API | 统一元数据服务 | 灵活，可自定义 |
 
-**两阶段提交协议形式化**：
+**完整 Catalog 配置矩阵**：
 
-```
-Phase 1: Pre-commit
-├── Sink Task: 将缓冲数据写入 LSM L0 文件
-├── Sink Task: 生成 Manifest 文件列表
-└── Coordinator: 收集所有 Task 的预提交信息
+```sql
+-- ============================================
+-- FileSystem Catalog (开发测试)
+-- ============================================
+CREATE CATALOG paimon_fs WITH (
+    'type' = 'paimon',
+    'warehouse' = 'file:///tmp/paimon-warehouse'
+);
 
-Phase 2: Commit
-├── Coordinator: 收到所有 ACK 后
-├── Coordinator: 原子更新 Snapshot 元数据
-└── All: 新快照可见，旧数据可清理
+-- ============================================
+-- Hive Metastore Catalog (生产推荐)
+-- ============================================
+CREATE CATALOG paimon_hive WITH (
+    'type' = 'paimon',
+    'warehouse' = 'oss://my-bucket/paimon-warehouse',
+    'metastore' = 'hive',
+    'uri' = 'thrift://hive-metastore:9083',
+    -- 并发控制
+    'lock.enabled' = 'true',
+    'lock.expire-time' = '5min'
+);
+
+-- ============================================
+-- JDBC Catalog (高可用)
+-- ============================================
+CREATE CATALOG paimon_jdbc WITH (
+    'type' = 'paimon',
+    'warehouse' = 'oss://my-bucket/paimon-warehouse',
+    'metastore' = 'jdbc',
+    'jdbc.url' = 'jdbc:mysql://mysql:3306/paimon_meta',
+    'jdbc.user' = '${JDBC_USER}',
+    'jdbc.password' = '${JDBC_PASSWORD}'
+);
 ```
 
 ### 3.3 与开放表格式的对比关系
@@ -488,6 +583,17 @@ $$
 | Bucket 过多 | 小文件过多，元数据膨胀 | 减少Bucket数，合并小文件 |
 | 数据倾斜 | 部分Bucket数据量远高于其他 | 使用动态Bucket或Salting |
 | 分区过多 | 元数据管理开销大 | 合理分区粒度，避免过度分区 |
+
+### 4.4 CDC 集成模式对比
+
+**Upsert vs Append-Only 决策矩阵**：
+
+| 场景 | 表类型 | 主键 | Changelog Producer | 适用场景 |
+|------|--------|------|-------------------|---------|
+| 状态表同步 | Primary Key Table | Yes | `input`/`lookup` | 用户表、订单表 |
+| 事件流存储 | Append-Only Table | No | `none` | 点击流、日志 |
+| 时序数据 | Append-Only Table | No | `none` | 传感器数据 |
+| 拉链表 | Primary Key Table | Yes | `full-compaction` | 缓慢变化维 |
 
 ---
 
@@ -665,7 +771,84 @@ CREATE CATALOG paimon_prod WITH (
 USE CATALOG paimon_prod;
 ```
 
-### 6.2 CDC 实时入湖 Pipeline (MySQL → Paimon)
+### 6.2 Streaming Read 模式详解
+
+```sql
+-- ============================================
+-- 流式读取模式配置
+-- ============================================
+
+-- 模式1: 最新数据消费 (默认)
+SET 'scan.mode' = 'latest';
+SELECT * FROM paimon_table;
+
+-- 模式2: 从最早快照开始消费
+SET 'scan.mode' = 'earliest';
+SELECT * FROM paimon_table;
+
+-- 模式3: 从指定快照消费
+SELECT * FROM paimon_table
+/*+ OPTIONS('scan.snapshot-id' = '123456') */;
+
+-- 模式4: 从指定时间戳消费
+SELECT * FROM paimon_table
+/*+ OPTIONS('scan.timestamp-millis' = '1712054400000') */;
+
+-- 模式5: 增量快照消费 (Bounded Stream)
+SELECT * FROM paimon_table
+/*+ OPTIONS(
+    'scan.mode' = 'from-snapshot',
+    'scan.snapshot-id' = '100',
+    'scan.end-snapshot-id' = '200'
+) */;
+```
+
+**Streaming Read 配置矩阵**：
+
+| 配置项 | 默认值 | 说明 |
+|--------|--------|------|
+| `scan.mode` | `latest` | 扫描模式：latest/earliest/from-snapshot |
+| `scan.snapshot-id` | - | 起始快照ID |
+| `scan.timestamp-millis` | - | 起始时间戳 |
+| `streaming-read-parallelism` | 作业并行度 | 流式读取并行度 |
+| `scan.bounded.watermark` | - | Bounded Stream 水位线 |
+
+### 6.3 Batch Read 优化配置
+
+```sql
+-- ============================================
+-- 批式读取优化
+-- ============================================
+
+-- 启用批模式
+SET 'execution.runtime-mode' = 'batch';
+
+-- 分区裁剪
+SELECT * FROM paimon_table
+WHERE dt = '2026-04-01';
+
+-- 谓词下推
+SELECT * FROM paimon_table
+WHERE user_id = 'U12345' AND amount > 100;
+
+-- 投影下推
+SELECT user_id, amount FROM paimon_table;
+
+-- 时间旅行查询
+SELECT * FROM paimon_table
+FOR SYSTEM_TIME AS OF TIMESTAMP '2026-04-01 12:00:00';
+```
+
+**Batch Read 优化参数**：
+
+| 配置项 | 默认值 | 调优建议 |
+|--------|--------|---------|
+| `read.batch-size` | 1024 | 增大可提升吞吐 |
+| `read.split.max-files` | 100 | 控制分片粒度 |
+| `read.split.max-bytes` | 128MB | 与文件大小对齐 |
+| `read.parallelism` | 作业并行度 | 根据数据量调整 |
+
+### 6.4 CDC 实时入湖 Pipeline (MySQL → Paimon)
 
 ```sql
 -- ============================================
@@ -720,11 +903,6 @@ CREATE TABLE paimon_users (
     'num-sorted-run.compaction-trigger' = '5',
     'num-sorted-run.stop-trigger' = '10',
 
-    -- 分区配置 (按时间分区，便于生命周期管理)
-    'partition' = 'dt',
-    'partition.timestamp-formatter' = 'yyyy-MM-dd',
-    'partition.timestamp-pattern' = '$updated_at',
-
     -- 快照管理
     'snapshot.num-retained.max' = '100',
     'snapshot.expire.limit' = '10',
@@ -738,16 +916,51 @@ CREATE TABLE paimon_users (
 -- 步骤 3: 启动同步 Job
 -- ============================================
 INSERT INTO paimon_users
-SELECT
-    id,
-    name,
-    email,
-    updated_at,
-    DATE_FORMAT(updated_at, 'yyyy-MM-dd') AS dt
-FROM mysql_users;
+SELECT id, name, email, updated_at FROM mysql_users;
 ```
 
-### 6.3 分层实时数仓构建 (ODS → DWD → DWS)
+### 6.5 Schema Evolution 示例
+
+```sql
+-- ============================================
+-- Schema Evolution 演进示例
+-- ============================================
+
+-- 初始表结构 (Schema V1)
+CREATE TABLE orders (
+    order_id STRING,
+    user_id STRING,
+    amount DECIMAL(18,2),
+    PRIMARY KEY (order_id) NOT ENFORCED
+);
+
+-- 添加列 (Schema V2) - 支持
+ALTER TABLE orders ADD COLUMN status STRING;
+
+-- 修改列类型 (Schema V3) - 支持兼容类型
+ALTER TABLE orders MODIFY COLUMN amount DECIMAL(20,4);
+
+-- 删除列 (Schema V4) - 支持
+ALTER TABLE orders DROP COLUMN status;
+
+-- 重命名列 (Schema V5) - 支持
+ALTER TABLE orders RENAME COLUMN user_id TO customer_id;
+
+-- 查看 Schema 历史
+SELECT * FROM orders$schemas;
+```
+
+**Schema Evolution 兼容性矩阵**：
+
+| 操作 | 支持 | 限制条件 |
+|------|------|---------|
+| ADD COLUMN | ✅ | 新增列默认NULL |
+| DROP COLUMN | ✅ | 不影响现有数据 |
+| RENAME COLUMN | ✅ | 元数据级别操作 |
+| MODIFY TYPE | ⚠️ | 需兼容类型转换 |
+| REORDER COLUMN | ✅ | 不影响存储 |
+
+### 6.6 分层实时数仓构建 (ODS → DWD → DWS)
 
 ```sql
 -- ============================================
@@ -852,7 +1065,276 @@ SELECT
 FROM dws_category_stats_5min;
 ```
 
-### 6.4 Flink DataStream API 集成
+### 6.7 Compaction 调优配置
+
+```sql
+-- ============================================
+-- Compaction 调优配置
+-- ============================================
+
+-- 创建表时配置 Compaction 参数
+CREATE TABLE high_throughput_table (
+    id STRING,
+    data STRING,
+    PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+    -- 基础配置
+    'bucket' = '32',
+
+    -- Compaction 触发条件
+    'num-sorted-run.compaction-trigger' = '5',
+    'num-sorted-run.stop-trigger' = '15',
+    'compaction.min.file-num' = '5',
+    'compaction.max.file-num' = '100',
+
+    -- 异步 Compaction
+    'compaction.async' = 'true',
+    'compaction.tasks' = '8',
+
+    -- 目标文件大小
+    'compaction.target-file-size' = '256mb',
+
+    -- 提前 Compaction (防止小文件过多)
+    'compaction.early-max.file-num' = '50'
+);
+```
+
+**Compaction 调优决策矩阵**：
+
+| 场景 | 配置策略 | 参数调整 |
+|------|---------|---------|
+| 高吞吐写入 | 降低触发阈值 | `compaction-trigger=3`, `stop-trigger=8` |
+| 低延迟查询 | 积极Compaction | `target-file-size=128mb`, `async=true` |
+| 资源受限 | 限制Compaction资源 | `tasks=2`, `max.file-num=200` |
+| 批量导入 | 全量Compaction | `full-compaction.interval=1h` |
+
+### 6.8 Tag 管理与时间旅行
+
+```sql
+-- ============================================
+-- Tag 管理 DDL
+-- ============================================
+
+-- 创建 Tag (基于当前快照)
+CREATE TAG tag_2026_q1 FOR TABLE paimon_users;
+
+-- 创建 Tag (基于指定快照)
+CREATE TAG tag_backup_20260401
+FOR TABLE paimon_users
+AS OF SNAPSHOT 123456;
+
+-- 查看所有 Tag
+SHOW TAGS FOR TABLE paimon_users;
+
+-- 基于 Tag 查询
+SELECT * FROM paimon_users AS OF TAG 'tag_2026_q1';
+
+-- 删除 Tag
+DROP TAG tag_backup_20260401 FOR TABLE paimon_users;
+
+-- ============================================
+-- 自动 Tag 策略 (通过 Flink Job)
+-- ============================================
+-- 创建定时作业自动打 Tag
+CREATE TABLE tag_management_job (
+    tag_name STRING,
+    created_at TIMESTAMP(3)
+) WITH (
+    'connector' = 'jdbc',
+    'url' = 'jdbc:mysql://...',
+    'table-name' = 'tag_schedule'
+);
+```
+
+### 6.9 分区管理 DDL
+
+```sql
+-- ============================================
+-- 分区管理操作
+-- ============================================
+
+-- 查看分区列表
+SHOW PARTITIONS paimon_users;
+
+-- 删除指定分区
+ALTER TABLE paimon_users DROP PARTITION (dt = '2026-03-01');
+
+-- 覆盖分区数据
+INSERT OVERWRITE paimon_users PARTITION (dt = '2026-04-01')
+SELECT * FROM staging_data;
+
+-- 分区生命周期管理 (自动过期)
+CREATE TABLE partitioned_table (
+    id STRING,
+    event_time TIMESTAMP(3)
+) WITH (
+    'partition' = 'dt',
+    'partition.expiration-time' = '7d',
+    'partition.expiration-check-interval' = '1h'
+);
+```
+
+### 6.10 文件格式选择 (ORC vs Parquet)
+
+```sql
+-- ============================================
+-- 文件格式配置对比
+-- ============================================
+
+-- Parquet 配置 (默认，适合复杂查询)
+CREATE TABLE parquet_table (...) WITH (
+    'file.format' = 'parquet',
+    'file.compression' = 'zstd',
+    'file.compression.zstd-level' = '3',
+    'parquet.block-size' = '134217728',  -- 128MB
+    'parquet.page-size' = '1048576'       -- 1MB
+);
+
+-- ORC 配置 (适合 Hive 生态)
+CREATE TABLE orc_table (...) WITH (
+    'file.format' = 'orc',
+    'file.compression' = 'zlib',
+    'orc.block-size' = '134217728',
+    'orc.stripe-size' = '67108864'
+);
+
+-- Avro 配置 (适合 Schema 演变频繁场景)
+CREATE TABLE avro_table (...) WITH (
+    'file.format' = 'avro',
+    'file.compression' = 'snappy'
+);
+```
+
+**文件格式对比矩阵**：
+
+| 特性 | Parquet | ORC | Avro |
+|------|---------|-----|------|
+| **列式存储** | ✅ | ✅ | ❌ |
+| **压缩率** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **查询性能** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **Schema 演变** | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Flink 集成** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **跨引擎支持** | 广泛 | Hive 优 | Java 生态 |
+
+### 6.11 Bloom Filter 优化
+
+```sql
+-- ============================================
+-- Bloom Filter 优化配置
+-- ============================================
+
+CREATE TABLE bloom_filter_optimized_table (
+    id STRING,
+    user_id STRING,
+    order_id STRING,
+    data STRING,
+    PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+    'file.format' = 'parquet',
+
+    -- 为高频查询列启用 Bloom Filter
+    'parquet.bloom.filter.enabled' = 'true',
+    'parquet.bloom.filter.columns' = 'user_id,order_id',
+    'parquet.bloom.filter.fpp' = '0.01',  -- 假阳性率 1%
+
+    -- 针对 Lookup Join 优化
+    'lookup.bloom.filter.enabled' = 'true'
+);
+```
+
+**Bloom Filter 优化效果**：
+
+| 查询模式 | 优化前 I/O | 优化后 I/O | 提升 |
+|---------|-----------|-----------|------|
+| 点查 (user_id=?) | 扫描全文件 | 仅扫描候选文件 | 10-100x |
+| Lookup Join | 高 I/O | 低 I/O | 5-20x |
+| 范围查询 | 无优化 | 无优化 | - |
+
+### 6.12 Lookup Join 优化配置
+
+```sql
+-- ============================================
+-- Lookup Join 优化维度表
+-- ============================================
+
+CREATE TABLE dim_users (
+    user_id STRING,
+    user_name STRING,
+    age INT,
+    city STRING,
+    PRIMARY KEY (user_id) NOT ENFORCED
+) WITH (
+    'bucket' = '16',
+    'file.format' = 'parquet',
+
+    -- Lookup Join 专用优化
+    'lookup.async' = 'true',
+    'lookup.async-thread-number' = '16',
+    'lookup.cache' = 'PARTIAL',
+    'lookup.partial-cache.max-rows' = '100000',
+    'lookup.partial-cache.expire-after-write' = '10min',
+    'lookup.partial-cache.expire-after-access' = '5min',
+
+    -- 局部缓存刷新
+    'changelog-producer' = 'input',
+    'scan.mode' = 'latest'
+);
+
+-- ============================================
+-- 使用 Lookup Join 进行维度关联
+-- ============================================
+INSERT INTO dwd_orders
+SELECT
+    o.order_id,
+    o.user_id,
+    u.user_name,
+    u.city,
+    o.amount
+FROM ods_orders AS o
+LEFT JOIN dim_users FOR SYSTEM_TIME AS OF o.proc_time AS u
+    ON o.user_id = u.user_id;
+```
+
+**Lookup Join 性能调优矩阵**：
+
+| 配置项 | 默认值 | 优化建议 | 场景 |
+|--------|--------|---------|------|
+| `lookup.async` | false | true | 高并发 Lookup |
+| `lookup.async-thread-number` | 16 | 32-64 | 大规模维度表 |
+| `lookup.cache` | NONE | PARTIAL | 热点数据 |
+| `lookup.partial-cache.max-rows` | 10000 | 100000+ | 内存充足 |
+| `lookup.partial-cache.expire-after-write` | 10min | 1-5min | 频繁更新 |
+
+### 6.13 Full-Compaction 配置
+
+```sql
+-- ============================================
+-- Full-Compaction 配置 (用于 Changelog 生成)
+-- ============================================
+
+CREATE TABLE full_compact_table (
+    id STRING,
+    value STRING,
+    PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+    'bucket' = '16',
+
+    -- Changelog Producer 配置
+    'changelog-producer' = 'full-compaction',
+    'changelog-producer.compaction-interval' = '10min',
+
+    -- Compaction 配置
+    'compaction.async' = 'true',
+    'compaction.tasks' = '4',
+    'full-compaction.delta-commits' = '5',
+
+    -- 文件格式
+    'file.format' = 'parquet',
+    'file.compression' = 'zstd'
+);
+```
+
+### 6.14 Flink DataStream API 集成
 
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -895,11 +1377,9 @@ public class PaimonDataStreamIntegration {
         // ============================================
         // 2. 流式写入 Paimon
         // ============================================
-        // 获取 Paimon 表
         Table paimonTable = catalog.getTable(
             Identifier.create("db", "orders"));
 
-        // 创建 DataStream Source
         DataStream<Row> kafkaStream = env
             .fromSource(
                 KafkaSource.<Row>builder()
@@ -914,7 +1394,6 @@ public class PaimonDataStreamIntegration {
                 "kafka-source"
             );
 
-        // 使用 Paimon Sink
         kafkaStream.sinkTo(
             FlinkSink.forRowData()
                 .withTable(paimonTable)
@@ -925,7 +1404,6 @@ public class PaimonDataStreamIntegration {
         // ============================================
         // 3. 流式读取 Paimon (增量消费)
         // ============================================
-        // 获取表的增量流
         DataStream<Row> paimonStream = env.fromSource(
             FlinkSource.forRowData()
                 .withTable(paimonTable)
@@ -936,7 +1414,6 @@ public class PaimonDataStreamIntegration {
             "paimon-source"
         );
 
-        // 处理增量数据
         paimonStream
             .map(row -> process(row))
             .addSink(new SomeSink());
@@ -944,7 +1421,6 @@ public class PaimonDataStreamIntegration {
         // ============================================
         // 4. Lookup Join 优化
         // ============================================
-        // 注册维度表为 Temporal Table
         tEnv.executeSql("""
             CREATE TABLE dim_users (
                 user_id STRING PRIMARY KEY NOT ENFORCED,
@@ -961,7 +1437,6 @@ public class PaimonDataStreamIntegration {
             )
         """);
 
-        // 执行 Lookup Join
         tEnv.executeSql("""
             SELECT
                 o.*,
@@ -976,7 +1451,7 @@ public class PaimonDataStreamIntegration {
 }
 ```
 
-### 6.5 独立 Compaction 作业配置
+### 6.15 独立 Compaction 作业配置
 
 ```java
 /**
@@ -1016,6 +1491,34 @@ public class PaimonCompactionJob {
     }
 }
 ```
+
+### 6.16 监控指标配置
+
+```sql
+-- ============================================
+-- 监控指标配置
+-- ============================================
+
+-- Paimon 自动暴露的指标
+-- 通过 Flink Metrics Reporter 收集
+
+-- 表级别指标
+-- paimon.table.<table_name>.snapshot.latest
+curl http://flink-jobmanager:9241/metrics
+
+-- 或使用 Prometheus 集成
+```
+
+**关键监控指标**：
+
+| 指标类别 | 指标名 | 说明 | 告警阈值 |
+|---------|--------|------|---------|
+| **Snapshot** | `latest-snapshot-id` | 最新快照ID | - |
+| **Compaction** | `compaction.queue.size` | 待合并队列 | > 100 |
+| **File Count** | `file-count.level-0` | L0 文件数 | > 50 |
+| **File Size** | `avg-file-size.mb` | 平均文件大小 | < 64MB |
+| **Lookup** | `lookup.hit-rate` | 缓存命中率 | < 80% |
+| **Latency** | `write-latency.p99` | P99 写入延迟 | > 1s |
 
 ---
 
@@ -1163,60 +1666,57 @@ graph TB
     style F5 fill:#ffcc99,stroke:#e65100
 ```
 
-### 7.3 流批统一查询流程
+### 7.3 CDC 入湖架构流程图
 
 ```mermaid
 flowchart TB
-    subgraph "统一入口"
-        SQL["Flink SQL 查询"]
+    subgraph "数据源"
+        MYSQL[(MySQL<br/>业务库)]
     end
 
-    subgraph "查询解析"
-        PARSE["SQL Parser"]
-        OPT["Optimizer"]
-        PLAN["Physical Plan"]
+    subgraph "Flink CDC 采集层"
+        CDC_CONNECTOR["MySQL CDC Connector<br/>• 全量读取<br/>• Binlog 监听"]
+        WATERMARK["Watermark 生成<br/>• 事件时间提取"]
     end
 
-    subgraph "执行模式选择"
-        MODE{执行模式?}
+    subgraph "数据转换层"
+        TRANSFORM["数据清洗<br/>• 格式转换<br/>• 脱敏处理"]
+        SCHEMA_CHECK["Schema 检查<br/>• 类型校验<br/>• 演进处理"]
     end
 
-    subgraph "流处理路径"
-        STREAM["Streaming Execution"]
-        INC["增量扫描<br/>Delta Scan"]
-        CHANGELOG["Change Log<br/>生成"]
-        WATERMARK["Watermark<br/>对齐"]
+    subgraph "Paimon 写入层"
+        SINK["Paimon Sink<br/>• 两阶段提交<br/>• Exactly-Once"]
+
+        subgraph "写入路径"
+            MEM_TABLE["MemTable<br/>内存缓冲"]
+            L0_FILES["L0 增量文件"]
+            WAL["Write-Ahead Log"]
+        end
+
+        COMPACT_SERVICE["Compaction 服务<br/>• 异步合并<br/>• 小文件治理"]
     end
 
-    subgraph "批处理路径"
-        BATCH["Batch Execution"]
-        SNAPSHOT_SCAN["快照扫描<br/>Snapshot Scan"]
-        FULL["全表扫描<br/>Full Scan"]
-        SORT["排序合并<br/>Merge Sort"]
+    subgraph "消费层"
+        STREAM_READ["流式消费<br/>实时分析"]
+        BATCH_READ["批式查询<br/>离线报表"]
+        LOOKUP["Lookup Join<br/>维度关联"]
     end
 
-    subgraph "存储访问"
-        LSM["Paimon LSM 存储"]
-    end
+    MYSQL -->|Binlog| CDC_CONNECTOR --> WATERMARK --> TRANSFORM --> SCHEMA_CHECK --> SINK
+    SINK --> MEM_TABLE --> L0_FILES
+    MEM_TABLE --> WAL
+    L0_FILES --> COMPACT_SERVICE
 
-    SQL --> PARSE --> OPT --> PLAN
-    PLAN --> MODE
+    L0_FILES -.->|增量读取| STREAM_READ
+    COMPACT_SERVICE -.->|全量读取| BATCH_READ
+    L0_FILES -.->|点查| LOOKUP
 
-    MODE -->|"SET 'execution.runtime-mode' = 'streaming'"| STREAM
-    MODE -->|"SET 'execution.runtime-mode' = 'batch'"| BATCH
-
-    STREAM --> INC --> CHANGELOG --> WATERMARK
-    BATCH --> SNAPSHOT_SCAN --> FULL --> SORT
-
-    WATERMARK --> LSM
-    SORT --> LSM
-
-    style STREAM fill:#e8f5e9,stroke:#2e7d32
-    style BATCH fill:#e3f2fd,stroke:#1565c0
-    style LSM fill:#c8e6c9,stroke:#2e7d32
+    style CDC_CONNECTOR fill:#e3f2fd,stroke:#1565c0
+    style SINK fill:#fff3e0,stroke:#e65100
+    style COMPACT_SERVICE fill:#c8e6c9,stroke:#2e7d32
 ```
 
-### 7.4 实时湖仓架构最佳实践
+### 7.4 实时湖仓分层架构
 
 ```mermaid
 graph TB
@@ -1291,6 +1791,43 @@ graph TB
     style ADS1 fill:#99ff99,stroke:#2e7d32
 ```
 
+### 7.5 Compaction 策略决策树
+
+```mermaid
+flowchart TD
+    START([选择 Compaction 策略])
+
+    Q1{写入模式?}
+    Q2{查询延迟要求?}
+    Q3{数据更新频率?}
+    Q4{资源配置?}
+
+    STRATEGY1["Size-Tiered<br/>默认策略<br/>• 适合写入密集<br/>• 延迟较低"]
+    STRATEGY2["Leveled<br/>• 适合查询密集<br/>• 读放大低"]
+    STRATEGY3["Full-Compaction<br/>• 适合批量导入<br/>• 生成 Changelog"]
+    STRATEGY4["禁用 Auto-Compaction<br/>• 独立 Compaction 作业<br/>• 资源隔离"]
+
+    START --> Q1
+
+    Q1 -->|流式写入| Q2
+    Q1 -->|批量导入| Q3
+
+    Q2 -->|低延迟| STRATEGY2
+    Q2 -->|可接受延迟| STRATEGY1
+
+    Q3 -->|频繁更新| STRATEGY3
+    Q3 -->|追加为主| STRATEGY1
+
+    Q1 -->|资源敏感| Q4
+    Q4 -->|需要隔离| STRATEGY4
+    Q4 -->|共享资源| STRATEGY1
+
+    style STRATEGY1 fill:#c8e6c9,stroke:#2e7d32
+    style STRATEGY2 fill:#e3f2fd,stroke:#1565c0
+    style STRATEGY3 fill:#fff3e0,stroke:#e65100
+    style STRATEGY4 fill:#fce4ec,stroke:#c2185b
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -1300,9 +1837,6 @@ graph TB
 [^2]: Jingsong Lee et al., "Apache Paimon: A Streaming Lakehouse Unifying Streaming and Batch Processing", Apache Software Foundation, 2023. <https://paimon.apache.org/>
 
 [^3]: Apache Flink Documentation, "Exactly-once Semantics", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/>
-
-
-
 
 
 

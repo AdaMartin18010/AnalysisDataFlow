@@ -222,6 +222,99 @@ Output: 新增数据文件集合 ΔFiles
 
 ---
 
+### Def-F-14-05: Hidden Partitioning（隐藏分区）
+
+**定义**: Hidden Partitioning 是 Iceberg 的核心特性，允许数据按**派生列**分区，而无需用户显式创建分区列，实现分区策略的透明化。
+
+**形式化定义**:
+
+```
+隐藏分区函数: H: Domain(SourceColumn) → Domain(PartitionColumn)
+
+常见隐藏分区函数:
+- Year(ts):   TIMESTAMP → INT (年份)
+- Month(ts):  TIMESTAMP → INT (年月编码)
+- Day(ts):    TIMESTAMP → INT (日期)
+- Hour(ts):   TIMESTAMP → INT (小时)
+- Bucket(n, col):  ANY → INT (哈希分桶，0..n-1)
+- Truncate(w, col): STRING → STRING (前缀截断)
+```
+
+**与传统 Hive 分区对比**:
+
+| 特性 | Hive 分区 | Iceberg 隐藏分区 |
+|------|-----------|------------------|
+| **分区列可见性** | 显式列（如 `dt STRING`） | 透明（无物理列） |
+| **分区值生成** | 用户负责（INSERT 时指定） | 自动派生（基于源列） |
+| **分区演进** | 需重建表 | 支持在线变更 |
+| **查询语法** | `WHERE dt='2024-01-01'` | `WHERE event_time >= '2024-01-01'` |
+
+**Flink SQL 隐藏分区示例**:
+
+```sql
+-- 创建带隐藏分区的 Iceberg 表
+CREATE TABLE events (
+    event_id STRING,
+    user_id STRING,
+    event_time TIMESTAMP(3),
+    payload STRING
+) PARTITIONED BY (
+    -- 按天分区，基于 event_time 自动派生
+    days(event_time),
+    -- 按 user_id 哈希分 16 桶
+    bucket(16, user_id)
+) WITH (
+    'connector' = 'iceberg',
+    'catalog-name' = 'iceberg_catalog'
+);
+
+-- 查询时无需指定分区列，自动分区裁剪
+SELECT * FROM events
+WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
+  AND event_time < TIMESTAMP '2024-01-02 00:00:00';
+```
+
+---
+
+### Def-F-14-06: Snapshot Isolation（快照隔离）
+
+**定义**: Snapshot Isolation 是 Iceberg 的 ACID 保证机制，确保读写操作在**快照级别**互不影响，实现无锁并发控制。
+
+**形式化模型**:
+
+```
+事务 T_i 的操作集: Ops(T_i) = {read_set(T_i), write_set(T_i)}
+
+快照隔离条件:
+  ∀ T_i, T_j (i ≠ j):
+    1. 读一致性: read_set(T_i) 基于快照 S(T_i.start_time)
+    2. 写隔离: write_set(T_i) ∩ write_set(T_j) = ∅ ∨ T_i 先提交
+    3. 不可重复读保护: T_i 内多次读取同一快照
+
+冲突检测:
+  冲突(T_i, T_j) = write_set(T_i) ∩ write_set(T_j) ≠ ∅
+                   ∧ commit_time(T_i) 与 commit_time(T_j) 重叠
+```
+
+**乐观并发控制 (OCC) 流程**:
+
+```
+事务生命周期:
+┌─────────────────────────────────────────────────────────────┐
+│  1. 开始: 获取当前快照指针 → S_base                          │
+│                                                             │
+│  2. 读取: 所有读操作基于 S_base 的快照状态                    │
+│                                                             │
+│  3. 写入: 生成新数据文件，本地构建 S_new                     │
+│                                                             │
+│  4. 提交: CAS 操作更新元数据指针                              │
+│     - 成功: 如果当前指针仍指向 S_base                       │
+│     - 失败: 如果指针已被其他事务更新，重试                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 2. 属性推导 (Properties)
 
 ### Lemma-F-14-01: Iceberg 快照的不可变性与线性历史
@@ -460,6 +553,82 @@ graph LR
 
 ---
 
+### 3.4 Flink + Iceberg + Trino 统一架构
+
+**定义**: 统一湖仓架构结合 Flink（流处理）、Iceberg（存储格式）、Trino（交互式查询），实现真正的流批统一。
+
+```mermaid
+graph TB
+    subgraph "数据采集层"
+        CDC["MySQL/PostgreSQL CDC"]
+        KAFKA["Apache Kafka"]
+        LOG["日志/事件流"]
+        API["业务 API"]
+    end
+
+    subgraph "流处理层 - Apache Flink"
+        FLINK_SOURCE["Flink Source<br/>• Kafka Consumer<br/>• CDC Connector"]
+        FLINK_TRANSFORM["Flink Transform<br/>• ETL<br/>• 窗口聚合<br/>• 维度关联"]
+        FLINK_SINK["Flink Iceberg Sink<br/>• 流式写入<br/>• Checkpoint 提交"]
+    end
+
+    subgraph "存储层 - Apache Iceberg"
+        CATALOG["Iceberg Catalog<br/>Hive / Glue / REST"]
+        ODS["ODS 层<br/>原始数据"]
+        DWD["DWD 层<br/>明细数据"]
+        DWS["DWS 层<br/>汇总数据"]
+        ADS["ADS 层<br/>应用数据"]
+    end
+
+    subgraph "查询层 - Trino/Spark"
+        TRINO["Trino<br/>• 即席查询<br/>• BI 报表"]
+        SPARK["Spark SQL<br/>• 批处理<br/>• 机器学习"]
+        FLINK_BATCH["Flink Batch<br/>• 流批一体"]
+    end
+
+    subgraph "消费层"
+        BI["Tableau/Superset"]
+        ML["ML Training"]
+        APP["业务应用"]
+    end
+
+    %% 数据流
+    CDC --> FLINK_SOURCE
+    KAFKA --> FLINK_SOURCE
+    LOG --> FLINK_SOURCE
+    API --> FLINK_SOURCE
+
+    FLINK_SOURCE --> FLINK_TRANSFORM --> FLINK_SINK
+    FLINK_SINK --> ODS --> DWD --> DWS --> ADS
+
+    CATALOG -.->|"元数据管理"| ODS
+    CATALOG -.->|"元数据管理"| DWD
+    CATALOG -.->|"元数据管理"| DWS
+    CATALOG -.->|"元数据管理"| ADS
+
+    ODS --> TRINO
+    DWD --> TRINO
+    DWS --> TRINO
+    ADS --> TRINO
+
+    ODS --> SPARK
+    DWS --> SPARK
+    ADS --> SPARK
+
+    DWD --> FLINK_BATCH
+    DWS --> FLINK_BATCH
+
+    TRINO --> BI
+    SPARK --> ML
+    FLINK_BATCH --> APP
+
+    style FLINK_SINK fill:#e3f2fd,stroke:#1565c0
+    style CATALOG fill:#fce4ec,stroke:#c2185b
+    style TRINO fill:#e8f5e9,stroke:#2e7d32
+```
+
+---
+
 ## 4. 论证过程 (Argumentation)
 
 ### 4.1 为何 Flink 需要 Iceberg
@@ -565,6 +734,50 @@ Iceberg 统一方案:
 │  风险 3: 元数据膨胀影响性能                                  │
 │  缓解: 定期压缩元数据文件，删除历史版本                       │
 └─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 4.4 UPSERT vs Append 模式选择
+
+**形式化对比**:
+
+```
+Append 模式:
+  操作: T_append(R) = Table ∪ R
+  特性: 仅追加，不可变
+  适用: 事件流、日志、时序数据
+
+UPSERT 模式 (基于 Equality Delete):
+  操作: T_upsert(K, R) = (Table \ {r | r.K = R.K}) ∪ {R}
+  特性: 按主键更新，支持删除
+  适用: CDC 同步、维度表、状态表
+```
+
+**实现机制对比**:
+
+| 维度 | Append 模式 | UPSERT 模式 |
+|------|-------------|-------------|
+| **写入路径** | 直接追加数据文件 | 数据文件 + Equality Delete 文件 |
+| **读取开销** | 无额外开销 | 需合并 Delete 文件过滤 |
+| **Compaction** | 简单文件合并 | 需处理 Delete 文件合并 |
+| **延迟** | Checkpoint 间隔 | Checkpoint 间隔 + 合并延迟 |
+| **存储放大** | 1x | 1.2-2x（含 Delete 文件） |
+
+**选择决策矩阵**:
+
+```
+IF 数据源是 CDC (MySQL/PostgreSQL):
+    IF 表有主键 AND 需要更新/删除:
+        → UPSERT 模式
+    ELSE:
+        → Append 模式
+ELSE IF 数据源是事件流 (Kafka):
+    → Append 模式（事件天然追加）
+ELSE IF 需要维护最新状态:
+    → UPSERT 模式 + 定期 Compaction
+ELSE:
+    → Append 模式（默认，性能最优）
 ```
 
 ---
@@ -1244,6 +1457,500 @@ public class IcebergCDCPipeline {
 
 ---
 
+### 6.3 高级特性示例
+
+#### 6.3.1 分支 (Branch) 与标签 (Tag)
+
+```sql
+-- ============================================
+-- Iceberg 分支与标签管理
+-- ============================================
+
+-- 创建标签（固定历史快照）
+ALTER TABLE user_orders CREATE TAG etl_checkpoint_2026q1
+    AS OF VERSION 1234567890123;
+
+-- 创建分支（独立开发线）
+ALTER TABLE user_orders CREATE BRANCH experiment_feature_x
+    AS OF VERSION 1234567890123;
+
+-- 在分支上写入数据（不影响主线）
+SET 'iceberg.catalog.default-branch' = 'experiment_feature_x';
+INSERT INTO user_orders VALUES (...);
+
+-- 合并分支到主线
+ALTER TABLE user_orders REPLACE BRANCH main WITH
+    (main AS OF VERSION 1234567890123, experiment_feature_x);
+
+-- 删除分支
+ALTER TABLE user_orders DROP BRANCH experiment_feature_x;
+
+-- 查询历史标签
+SELECT * FROM user_orders$history;
+SELECT * FROM user_orders$tags;
+SELECT * FROM user_orders$branches;
+```
+
+#### 6.3.2 元数据表查询
+
+```sql
+-- ============================================
+-- Iceberg 元数据表查询
+-- ============================================
+
+-- 查看所有快照历史
+SELECT * FROM user_orders$snapshots;
+
+-- 查看文件清单
+SELECT * FROM user_orders$files;
+
+-- 查看 Manifest 文件列表
+SELECT * FROM user_orders$manifests;
+
+-- 查看分区信息
+SELECT * FROM user_orders$partitions;
+
+-- 查看历史操作日志
+SELECT * FROM user_orders$history;
+
+-- 查看表属性
+SELECT * FROM user_orders$properties;
+
+-- 实用查询：查找大文件
+SELECT file_path, file_size_in_bytes, record_count
+FROM user_orders$files
+ORDER BY file_size_in_bytes DESC
+LIMIT 10;
+
+-- 实用查询：分区数据分布
+SELECT partition, file_count, record_count, total_size
+FROM user_orders$partitions
+ORDER BY record_count DESC;
+```
+
+#### 6.3.3 分区演进 (Partition Evolution)
+
+```sql
+-- ============================================
+-- 分区演进：在线修改分区策略
+-- ============================================
+
+-- 初始表：按天分区
+CREATE TABLE events (
+    event_id STRING,
+    user_id STRING,
+    event_time TIMESTAMP(3)
+) PARTITIONED BY (days(event_time));
+
+-- 演进 1：添加小时级分区（更细粒度）
+ALTER TABLE events ADD PARTITION FIELD hours(event_time);
+
+-- 演进 2：添加哈希分桶（优化查询）
+ALTER TABLE events ADD PARTITION FIELD bucket(16, user_id);
+
+-- 演进 3：删除旧分区字段（保留新数据按新策略）
+ALTER TABLE events DROP PARTITION FIELD days(event_time);
+
+-- 查看分区演进历史
+SELECT * FROM events$partition_specs;
+
+-- 注意：分区演进是增量式的，历史数据保持原分区，新数据使用新分区策略
+```
+
+#### 6.3.4 行级操作与 Delete 文件
+
+```sql
+-- ============================================
+-- 行级删除与更新（需要 Equality Delete 支持）
+-- ============================================
+
+-- 行级删除
+DELETE FROM user_orders
+WHERE status = 'CANCELLED'
+  AND order_time < TIMESTAMP '2026-01-01 00:00:00';
+
+-- 行级更新（通过 Delete + Insert 实现）
+-- 注意：Iceberg 不直接支持 UPDATE，需要应用层处理
+
+-- 查看 Delete 文件统计
+SELECT
+    content,
+    file_path,
+    record_count,
+    equality_field_ids
+FROM user_orders$files
+WHERE content = 2;  -- content=2 表示 Equality Delete 文件
+
+-- 强制 Compaction（合并 Delete 文件）
+CALL iceberg_catalog.system.rewrite_data_files(
+    table => 'ecommerce.user_orders',
+    options => map(
+        'min-input-files', '2',
+        'delete-file-threshold', '1'
+    )
+);
+```
+
+---
+
+### 6.4 集成模式示例
+
+#### 6.4.1 SCD Type 2（缓慢变化维）实现
+
+```sql
+-- ============================================
+-- SCD Type 2：支持历史追踪的维度表
+-- ============================================
+
+-- 创建 SCD Type 2 维度表
+CREATE TABLE dim_customer_scd2 (
+    customer_sk BIGINT,           -- 代理键
+    customer_id STRING,           -- 业务主键
+    customer_name STRING,
+    customer_email STRING,
+    customer_segment STRING,
+    effective_date TIMESTAMP(3),  -- 生效日期
+    expiration_date TIMESTAMP(3), -- 失效日期（9999-12-31 表示当前有效）
+    is_current BOOLEAN,           -- 是否当前记录
+    PRIMARY KEY (customer_sk) NOT ENFORCED
+) PARTITIONED BY (bucket(16, customer_id)) WITH (
+    'write.upsert.enabled' = 'true',
+    'write.delete.mode' = 'merge-on-read'
+);
+
+-- SCD Type 2 处理逻辑（Flink SQL）
+INSERT INTO dim_customer_scd2
+SELECT
+    -- 生成新的代理键
+    ROW_NUMBER() OVER (ORDER BY customer_id, updated_at) AS customer_sk,
+    customer_id,
+    customer_name,
+    customer_email,
+    customer_segment,
+    updated_at AS effective_date,
+    -- 如果是当前记录，设为最大值
+    CASE
+        WHEN LEAD(updated_at) OVER (PARTITION BY customer_id ORDER BY updated_at) IS NULL
+        THEN TIMESTAMP '9999-12-31 23:59:59.999'
+        ELSE LEAD(updated_at) OVER (PARTITION BY customer_id ORDER BY updated_at)
+    END AS expiration_date,
+    -- 标记当前记录
+    CASE
+        WHEN LEAD(updated_at) OVER (PARTITION BY customer_id ORDER BY updated_at) IS NULL
+        THEN TRUE
+        ELSE FALSE
+    END AS is_current
+FROM (
+    -- 合并历史记录和新变更
+    SELECT customer_id, customer_name, customer_email, customer_segment, updated_at
+    FROM dim_customer_scd2
+    WHERE is_current = TRUE
+    UNION ALL
+    SELECT customer_id, customer_name, customer_email, customer_segment, updated_at
+    FROM cdc_customer_changes
+) t;
+
+-- 查询当前有效记录
+SELECT * FROM dim_customer_scd2 WHERE is_current = TRUE;
+
+-- 查询历史快照（时点查询）
+SELECT * FROM dim_customer_scd2
+WHERE effective_date <= TIMESTAMP '2026-03-01 00:00:00'
+  AND expiration_date > TIMESTAMP '2026-03-01 00:00:00';
+```
+
+#### 6.4.2 增量处理模式
+
+```sql
+-- ============================================
+-- 增量处理：从 Iceberg 读取增量并写入下游
+-- ============================================
+
+-- 创建增量消费视图
+CREATE TABLE iceberg_incremental_source (
+    order_id STRING,
+    user_id STRING,
+    amount DECIMAL(18,2),
+    order_time TIMESTAMP(3),
+    -- 增量元数据
+    _change_type STRING,
+    _commit_snapshot_id BIGINT,
+    _commit_timestamp TIMESTAMP(3)
+) WITH (
+    'connector' = 'iceberg',
+    'catalog-name' = 'iceberg_catalog',
+    'catalog-database' = 'ecommerce',
+    'catalog-table' = 'user_orders',
+    'streaming' = 'true',
+    'monitor-interval' = '30s',
+    'start-snapshot-id' = 'earliest'  -- 或指定具体 ID
+);
+
+-- 增量聚合（滑动窗口）
+INSERT INTO category_stats_5min
+SELECT
+    TUMBLE_START(order_time, INTERVAL '5' MINUTE) AS window_start,
+    TUMBLE_END(order_time, INTERVAL '5' MINUTE) AS window_end,
+    category,
+    SUM(amount) AS gmv,
+    COUNT(*) AS order_count
+FROM iceberg_incremental_source
+WHERE _change_type IN ('INSERT', 'UPDATE_AFTER')
+GROUP BY
+    TUMBLE(order_time, INTERVAL '5' MINUTE),
+    category;
+
+-- 变更数据捕获到 Kafka
+INSERT INTO kafka_order_cdc
+SELECT
+    order_id,
+    user_id,
+    amount,
+    _change_type AS op_type,
+    _commit_timestamp AS op_time
+FROM iceberg_incremental_source;
+```
+
+---
+
+### 6.5 优化配置示例
+
+#### 6.5.1 写入优化
+
+```sql
+-- ============================================
+-- 写入优化配置
+-- ============================================
+
+CREATE TABLE optimized_table (
+    id STRING,
+    data STRING,
+    ts TIMESTAMP(3)
+) PARTITIONED BY (days(ts)) WITH (
+    -- 目标文件大小：128MB 是 Parquet 的甜点值
+    'write.target-file-size-bytes' = '134217728',
+
+    -- 写入格式与压缩
+    'write.format.default' = 'parquet',
+    'write.parquet.compression-codec' = 'zstd',
+    'write.parquet.compression-level' = '3',
+    'write.parquet.dictionary-enabled' = 'true',
+    'write.parquet.page-size-bytes' = '1048576',
+    'write.parquet.row-group-size-bytes' = '134217728',
+
+    -- 分片与并行度
+    'write.distribution-mode' = 'hash',  -- hash | range | none
+
+    -- Manifest 合并优化
+    'commit.manifest.min-count-to-merge' = '5',
+    'commit.manifest-merge-enabled' = 'true',
+
+    -- 写确认等待
+    'write.metadata.delete-after-commit.enabled' = 'false',
+    'write.metadata.previous-versions-max' = '100'
+);
+```
+
+#### 6.5.2 读取优化
+
+```sql
+-- ============================================
+-- 读取优化配置
+-- ============================================
+
+-- 启用布隆过滤器（点查优化）
+ALTER TABLE user_orders SET TBLPROPERTIES (
+    'write.parquet.bloom-filter-enabled.column.order_id' = 'true',
+    'write.parquet.bloom-filter-max-bytes' = '1048576'
+);
+
+-- 收集列统计信息
+ALTER TABLE user_orders SET TBLPROPERTIES (
+    'write.metadata.metrics.default' = 'full',
+    'write.metadata.metrics.column.order_id' = 'full',
+    'write.metadata.metrics.column.amount' = 'truncate(16)'
+);
+
+-- 查询优化提示
+SELECT
+    order_id,
+    amount
+FROM user_orders
+WHERE order_id = 'ORD-12345'  -- 布隆过滤器加速
+  AND order_time >= TIMESTAMP '2026-01-01 00:00:00';  -- 分区裁剪
+```
+
+#### 6.5.3 Compaction 作业
+
+```java
+// ============================================
+// 独立 Compaction 作业（Flink DataStream）
+// ============================================
+
+public class IcebergCompactionJob {
+
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 加载表
+        Table table = loadTable("ecommerce", "user_orders");
+
+        // 配置 Rewrite 策略
+        RewriteDataFiles.Result result = Actions.forTable(table)
+            .rewriteDataFiles()
+            .targetSizeInBytes(128 * 1024 * 1024)  // 128MB
+            .maxConcurrentFileGroupRewrites(5)
+            .filter(Expressions.greaterThanOrEqual(
+                "order_time",
+                TimestampLiteral.from("2026-01-01T00:00:00.000Z")
+            ))
+            .execute();
+
+        System.out.println("Rewrote " + result.rewrittenDataFilesCount() +
+                          " files into " + result.addedDataFilesCount() +
+                          " files");
+
+        // 删除文件清理
+        DeleteOrphanFiles.Result orphanResult = Actions.forTable(table)
+            .deleteOrphanFiles()
+            .olderThan(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))
+            .execute();
+
+        System.out.println("Deleted " + orphanResult.orphanFileLocations().size() +
+                          " orphan files");
+    }
+}
+```
+
+---
+
+### 6.6 Hive 迁移策略
+
+#### 6.6.1 原地迁移 (In-Place Migration)
+
+```sql
+-- ============================================
+-- 原地迁移：复用现有 Hive 表数据
+-- ============================================
+
+-- 步骤 1: 在 Iceberg 中注册 Hive 外表
+CREATE EXTERNAL TABLE hive_orders_iceberg (
+    order_id STRING,
+    user_id STRING,
+    amount DECIMAL(18,2)
+) PARTITIONED BY (dt STRING)
+LOCATION 'hdfs:///user/hive/warehouse/orders'
+TBLPROPERTIES (
+    'table_type' = 'ICEBERG',
+    'format-version' = '2',
+    'engine.hive.enabled' = 'true'
+);
+
+-- 步骤 2: 使用 Spark 的 migrate 工具迁移
+-- spark-sql> CALL iceberg_catalog.system.migrate('db.hive_orders');
+
+-- 步骤 3: 迁移后，Flink 可以直接读写
+INSERT INTO hive_orders_iceberg
+SELECT * FROM kafka_new_orders;
+```
+
+#### 6.6.2 影子迁移 (Shadow Migration)
+
+```sql
+-- ============================================
+-- 影子迁移：双写 + 切换
+-- ============================================
+
+-- 阶段 1: 创建新的 Iceberg 表（并行运行）
+CREATE TABLE orders_iceberg_new (
+    order_id STRING,
+    user_id STRING,
+    amount DECIMAL(18,2),
+    dt STRING
+) PARTITIONED BY (dt) WITH (
+    'write.format.default' = 'parquet',
+    'write.upsert.enabled' = 'true'
+);
+
+-- 阶段 2: 双写（Flink 双 Sink）
+-- Sink 1: 写入 Hive 表（保持兼容）
+-- Sink 2: 写入 Iceberg 表（新架构）
+
+-- 阶段 3: 历史数据回填
+INSERT INTO orders_iceberg_new
+SELECT * FROM hive_orders
+WHERE dt < '2026-04-01';
+
+-- 阶段 4: 数据一致性验证
+-- 对比 Hive 和 Iceberg 表的记录数、SUM(amount) 等
+
+-- 阶段 5: 切换读流量到 Iceberg
+-- 更新视图或应用配置，指向新表
+
+-- 阶段 6: 停止写入 Hive，保留只读一段时间
+```
+
+#### 6.6.3 数据验证脚本
+
+```python
+# ============================================
+# 迁移数据验证（PySpark/Flink Python API）
+# ============================================
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Migration Validation") \
+    .getOrCreate()
+
+# 读取 Hive 表
+hive_df = spark.table("hive_db.orders")
+
+# 读取 Iceberg 表
+iceberg_df = spark.table("iceberg_catalog.iceberg_db.orders")
+
+# 记录数对比
+hive_count = hive_df.count()
+iceberg_count = iceberg_df.count()
+print(f"Hive count: {hive_count}, Iceberg count: {iceberg_count}")
+assert hive_count == iceberg_count, "Record count mismatch!"
+
+# 关键指标对比
+hive_metrics = hive_df.groupBy("dt").agg(
+    count("*").alias("hive_cnt"),
+    sum("amount").alias("hive_gmv")
+)
+
+iceberg_metrics = iceberg_df.groupBy("dt").agg(
+    count("*").alias("iceberg_cnt"),
+    sum("amount").alias("iceberg_gmv")
+)
+
+# 对比结果
+comparison = hive_metrics.join(
+    iceberg_metrics,
+    on="dt",
+    how="outer"
+).withColumn(
+    "cnt_diff", col("hive_cnt") - col("iceberg_cnt")
+).withColumn(
+    "gmv_diff", col("hive_gmv") - col("iceberg_gmv")
+)
+
+comparison.show()
+
+# 抽样验证
+sample_diff = hive_df.sample(0.001).exceptAll(
+    iceberg_df.sample(0.001)
+)
+assert sample_diff.count() == 0, "Sample data mismatch!"
+
+print("Validation passed!")
+```
+
+---
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 Flink + Iceberg 流式写入架构图
@@ -1492,6 +2199,86 @@ graph TB
     style P4 fill:#c8e6c9
 ```
 
+### 7.5 Flink + Iceberg + Trino 统一架构图
+
+```mermaid
+graph TB
+    subgraph "数据层"
+        MYSQL["MySQL/PostgreSQL"]
+        KAFKA["Kafka/Event Stream"]
+        API["API/日志"]
+    end
+
+    subgraph "处理层 - Flink"
+        FLINK_CDC["CDC Connector"]
+        FLINK_KAFKA["Kafka Source"]
+        FLINK_TRANSFORM["Transform/ETL"]
+        FLINK_SINK["Iceberg Sink"]
+    end
+
+    subgraph "存储层 - Iceberg"
+        CATALOG["Catalog<br/>Hive/Glue/REST"]
+        ODS["ODS"]
+        DWD["DWD"]
+        DWS["DWS"]
+    end
+
+    subgraph "查询层"
+        TRINO["Trino<br/>交互式查询"]
+        SPARK["Spark SQL<br/>批处理"]
+        FLINK_SQL["Flink SQL<br/>流处理"]
+    end
+
+    subgraph "应用层"
+        BI["BI 报表"]
+        ML["机器学习"]
+        APP["业务应用"]
+    end
+
+    MYSQL --> FLINK_CDC
+    KAFKA --> FLINK_KAFKA
+    API --> FLINK_TRANSFORM
+
+    FLINK_CDC --> FLINK_TRANSFORM
+    FLINK_KAFKA --> FLINK_TRANSFORM
+    FLINK_TRANSFORM --> FLINK_SINK
+    FLINK_SINK --> ODS --> DWD --> DWS
+
+    CATALOG -.-> ODS
+    CATALOG -.-> DWD
+    CATALOG -.-> DWS
+
+    ODS --> TRINO
+    DWD --> TRINO
+    DWS --> TRINO
+    DWS --> SPARK
+    DWD --> FLINK_SQL
+
+    TRINO --> BI
+    SPARK --> ML
+    FLINK_SQL --> APP
+
+    style FLINK_SINK fill:#e3f2fd,stroke:#1565c0
+    style CATALOG fill:#fce4ec,stroke:#c2185b
+    style TRINO fill:#e8f5e9,stroke:#2e7d32
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
+
+
+
+
+
+
+
+
+
+
+---
+
+*文档创建时间: 2026-04-02*
+*适用版本: Apache Flink 1.17+, Apache Iceberg 1.4+*
+*维护状态: Active*

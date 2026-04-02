@@ -50,10 +50,16 @@
     - [9.2 文档统计](#92-文档统计)
     - [9.3 核心定义索引](#93-核心定义索引)
     - [9.4 维护说明](#94-维护说明)
-  - [10. 国际顶尖课程映射](#10-国际顶尖课程映射)
-    - [10.1 MIT 6.824 Distributed Systems](#101-mit-6824-distributed-systems)
-    - [10.2 Stanford CS240](#102-stanford-cs240)
-    - [10.3 CMU 15-712](#103-cmu-15-712)
+  - [10. 前沿技术导航 (Frontier)](#10-前沿技术导航-frontier)
+    - [10.1 流数据库 (Streaming Databases)](#101-流数据库-streaming-databases)
+    - [10.2 Rust流生态](#102-rust流生态)
+    - [10.3 边缘流处理](#103-边缘流处理)
+    - [10.4 云边协同与Serverless](#104-云边协同与serverless)
+    - [10.5 流式湖仓与访问控制](#105-流式湖仓与访问控制)
+  - [11. 国际顶尖课程映射](#11-国际顶尖课程映射)
+    - [11.1 MIT 6.824 Distributed Systems](#111-mit-6824-distributed-systems)
+    - [11.2 Stanford CS240](#112-stanford-cs240)
+    - [11.3 CMU 15-712](#113-cmu-15-712)
 
 ---
 
@@ -205,8 +211,10 @@ graph TB
 | **概念图谱** | `01-concept-atlas/` | 并发范式对比、流计算模型 | [并发范式矩阵](./01-concept-atlas/concurrency-paradigms-matrix.md) · [流模型心智图](./01-concept-atlas/streaming-models-mindmap.md) |
 | **设计模式** | `02-design-patterns/` | 7大核心流处理模式 | [Pattern 01: Event Time](./02-design-patterns/pattern-event-time-processing.md) |
 | **业务场景** | `03-business-patterns/` | 5大领域场景分析 | [IoT场景](./03-business-patterns/) · [金融场景](./03-business-patterns/) |
-| **技术选型** | `04-technology-selection/` | 引擎/存储/范式选型 | [决策树](./04-technology-selection/) |
+| **技术选型** | `04-technology-selection/` | 引擎/存储/范式/流数据库选型 | [决策树](./04-technology-selection/) · [流数据库指南](./04-technology-selection/streaming-database-guide.md) |
 | **映射指南** | `05-mapping-guides/` | 理论到代码映射 | [Struct→Flink](./05-mapping-guides/) |
+| **前沿技术** | `06-frontier/` | 流数据库/Rust/边缘计算 | [流数据库](./06-frontier/streaming-databases.md) · [Rust生态](./06-frontier/rust-streaming-ecosystem.md) |
+| **实践练习** | `98-exercises/` | 配套练习与实验 | [练习目录](./98-exercises/) |
 
 ### 2.2 按场景导航
 
@@ -329,6 +337,9 @@ graph TB
 | **实时推荐** | P02 + P04 + P05 | Dataflow | AL | Flink + Redis |
 | **游戏实时分析** | P01 + P02 + P06 | Actor | AL | Flink + Pulsar |
 | **日志/监控** | P02 + P06 + P07 | Dataflow | AM/AL | Flink + ES |
+| **Uber实时平台** | P01 + P04 + P05 | Dataflow | EO | Flink + Kafka |
+| **Netflix流水线** | P02 + P03 + P07 | Dataflow | AL | Flink + CEP |
+| **支付处理** | P01 + P05 + P07 | Dataflow | EO | RisingWave/ Flink |
 
 ### 4.2 场景深度分析
 
@@ -755,25 +766,56 @@ Knowledge/
 ├── 02-design-patterns/
 │   ├── pattern-event-time-processing.md           [P01: 事件时间处理] ✅
 │   ├── pattern-windowed-aggregation.md            [P02: 窗口聚合] ✅
-│   ├── pattern-complex-event-processing.md        [P03: CEP] ✅
+│   ├── pattern-cep-complex-event.md               [P03: CEP复杂事件] ✅
 │   ├── pattern-async-io-enrichment.md             [P04: 异步I/O] ✅
-│   ├── pattern-state-management.md                [P05: 状态管理] ✅
+│   ├── pattern-stateful-computation.md            [P05: 有状态计算] ✅
 │   ├── pattern-side-output.md                     [P06: 侧输出] ✅
-│   └── pattern-checkpoint-recovery.md             [P07: 检查点] ✅
+│   ├── pattern-checkpoint-recovery.md             [P07: 检查点] ✅
+│   ├── pattern-log-analysis.md                    [P08: 日志分析] ✅
+│   └── pattern-realtime-feature-engineering.md    [P09: 实时特征工程] ✅
 ├── 03-business-patterns/
 │   ├── iot-stream-processing.md                   [IoT场景] ✅
 │   ├── fintech-realtime-risk-control.md           [金融风控] ✅
 │   ├── alibaba-double11-flink.md                  [阿里双11] ✅
 │   ├── real-time-recommendation.md                [实时推荐] ✅
 │   ├── gaming-analytics.md                        [游戏分析] ✅
-│   └── log-monitoring.md                          [日志监控] ✅
+│   ├── log-monitoring.md                          [日志监控] ✅
+│   ├── netflix-streaming-pipeline.md              [Netflix流处理] ✅
+│   ├── uber-realtime-platform.md                  [Uber实时平台] ✅
+│   ├── airbnb-marketplace-dynamics.md             [Airbnb市场动态] ✅
+│   ├── spotify-music-recommendation.md            [Spotify音乐推荐] ✅
+│   └── stripe-payment-processing.md               [Stripe支付处理] ✅
 ├── 04-technology-selection/
 │   ├── engine-selection-guide.md                  [引擎选型] ✅
 │   ├── paradigm-selection-guide.md                [范式选型] ✅
-│   └── storage-selection-guide.md                 [存储选型] ✅
-└── 05-mapping-guides/
-    ├── struct-to-flink-mapping.md                 [理论到实现] ✅
-    └── theory-to-code-patterns.md                 [模式映射] ✅
+│   ├── storage-selection-guide.md                 [存储选型] ✅
+│   └── streaming-database-guide.md                [流数据库选型] ✅
+├── 05-mapping-guides/
+│   ├── struct-to-flink-mapping.md                 [理论到实现] ✅
+│   └── theory-to-code-patterns.md                 [模式映射] ✅
+├── 06-frontier/
+│   ├── streaming-databases.md                     [流数据库] ✅
+│   ├── streaming-database-guide.md                [流数据库选型指南] ✅
+│   ├── risingwave-deep-dive.md                    [RisingWave深度分析] ✅
+│   ├── rust-streaming-ecosystem.md                [Rust流生态] ✅
+│   ├── rust-streaming-comparison.md               [Rust流框架对比] ✅
+│   ├── streaming-lakehouse-iceberg-delta.md       [流式湖仓] ✅
+│   ├── edge-streaming-patterns.md                 [边缘流处理模式] ✅
+│   ├── cloud-edge-continuum.md                    [云边协同] ✅
+│   ├── faas-dataflow.md                           [FaaS数据流] ✅
+│   ├── stateful-serverless.md                     [有状态无服务器] ✅
+│   ├── wasm-dataflow-patterns.md                  [Wasm数据流模式] ✅
+│   ├── streaming-access-control.md                [流访问控制] ✅
+│   ├── streaming-slo-definition.md                [流SLO定义] ✅
+│   └── real-time-rag-architecture.md              [实时RAG架构] ✅
+└── 98-exercises/
+    ├── README.md                                  [练习说明] ✅
+    ├── exercise-01-process-calculus.md            [练习1: 进程演算] ✅
+    ├── exercise-02-flink-basics.md                [练习2: Flink基础] ✅
+    ├── exercise-03-checkpoint-analysis.md         [练习3: Checkpoint分析] ✅
+    ├── exercise-04-consistency-models.md          [练习4: 一致性模型] ✅
+    ├── exercise-05-pattern-implementation.md      [练习5: 模式实现] ✅
+    └── exercise-06-tla-practice.md                [练习6: TLA+实践] ✅
 ```
 
 ### 9.2 文档统计
@@ -781,11 +823,13 @@ Knowledge/
 | 类别 | 已完成 | 规划中 | 总计 | 形式化等级 |
 |------|--------|--------|------|------------|
 | 01-concept-atlas | 2 | 0 | 2 | L3-L4 |
-| 02-design-patterns | 7 | 0 | 7 | L4-L5 |
-| 03-business-patterns | 6 | 0 | 6 | L4 |
-| 04-technology-selection | 3 | 0 | 3 | L3 |
+| 02-design-patterns | 9 | 0 | 9 | L4-L5 |
+| 03-business-patterns | 11 | 0 | 11 | L4 |
+| 04-technology-selection | 4 | 0 | 4 | L3 |
 | 05-mapping-guides | 2 | 0 | 2 | L4-L5 |
-| **总计** | **20** | **0** | **20** | L3-L5 |
+| 06-frontier | 11 | 0 | 11 | L4-L5 |
+| 98-exercises | 7 | 0 | 7 | L3-L4 |
+| **总计** | **45** | **0** | **45** | L3-L5 |
 
 ### 9.3 核心定义索引
 
@@ -821,11 +865,124 @@ Knowledge/
 
 ---
 
-## 10. 国际顶尖课程映射
+## 10. 前沿技术导航 (Frontier)
+
+> **定位**: 探索流计算领域最新技术趋势与前沿方向
+> **覆盖范围**: 流数据库、Rust生态、边缘计算、云边协同、流式湖仓
+
+### 10.1 流数据库 (Streaming Databases)
+
+流数据库将流处理与存储统一，提供物化视图和实时查询能力。
+
+| 文档 | 主题 | 核心内容 | 技术栈 |
+|------|------|----------|--------|
+| [streaming-databases.md](./06-frontier/streaming-databases.md) | 流数据库综述 | 架构、查询模型、一致性 | RisingWave, Materialize, Timeplus |
+| [streaming-database-guide.md](./06-frontier/streaming-database-guide.md) | 流数据库选型 | 对比矩阵、选型决策树 | 全生态对比 |
+| [risingwave-deep-dive.md](./06-frontier/risingwave-deep-dive.md) | RisingWave深度分析 | 架构设计、性能优化 | RisingWave |
+
+**关键特性对比**:
+
+```mermaid
+flowchart TD
+    START([流数据库选型])
+
+    START --> Q1{SQL兼容性要求?}
+    Q1 -->|PostgreSQL兼容| RW[RisingWave]
+    Q1 -->|标准SQL| MZ[Materialize]
+    Q1 -->|特定DSL| OTHERS[专用方案]
+
+    START --> Q2{部署环境?}
+    Q2 -->|云原生托管| CLOUD[RisingWave Cloud]
+    Q2 -->|私有化部署| ONPREM[开源版本]
+    Q2 -->|边缘设备| EDGE[轻量级方案]
+
+    style START fill:#e1bee7,stroke:#6a1b9a
+    style RW fill:#c8e6c9,stroke:#2e7d32
+    style MZ fill:#bbdefb,stroke:#1565c0
+```
+
+### 10.2 Rust流生态
+
+Rust因其零成本抽象和内存安全特性，成为新一代流处理框架的首选语言。
+
+| 文档 | 主题 | 核心框架 | 适用场景 |
+|------|------|----------|----------|
+| [rust-streaming-ecosystem.md](./06-frontier/rust-streaming-ecosystem.md) | 生态全景 | Arroyo, Materialize, RisingWave | 全览 |
+| [rust-streaming-comparison.md](./06-frontier/rust-streaming-comparison.md) | 框架对比 | 性能/功能/易用性 | 选型参考 |
+
+**Rust流框架矩阵**:
+
+| 框架 | 延迟 | 吞吐量 | SQL支持 | 部署模式 | 成熟度 |
+|------|:----:|:------:|:-------:|----------|:------:|
+| Arroyo | <10ms | 高 | 原生 | 边缘/云端 | ★★★☆☆ |
+| Materialize | <100ms | 中高 | 完整 | 云/私有 | ★★★★☆ |
+| RisingWave | <200ms | 高 | 完整 | 云原生 | ★★★★☆ |
+
+### 10.3 边缘流处理
+
+边缘计算场景对延迟、带宽和离线能力提出特殊要求。
+
+| 文档 | 主题 | 核心挑战 | 解决方案 |
+|------|------|----------|----------|
+| [edge-streaming-patterns.md](./06-frontier/edge-streaming-patterns.md) | 边缘模式 | 断网续传、资源限制 | 本地Checkpoint, 增量同步 |
+| [cloud-edge-continuum.md](./06-frontier/cloud-edge-continuum.md) | 云边协同 | 分层处理、数据分流 | 边缘预处理+云端聚合 |
+
+**边缘流处理架构**:
+
+```mermaid
+graph TB
+    subgraph "边缘层"
+        E1[边缘设备]
+        E2[边缘网关]
+        E3[边缘集群]
+    end
+
+    subgraph "网络层"
+        N1[间歇连接]
+        N2[带宽限制]
+    end
+
+    subgraph "云端层"
+        C1[中心集群]
+        C2[长期存储]
+        C3[全局分析]
+    end
+
+    E1 -->|原始数据| E2
+    E2 -->|预聚合| E3
+    E3 -.->|同步| N1
+    N1 -.->|恢复| E3
+    N1 -->|上传| C1
+    C1 --> C2 & C3
+
+    style E2 fill:#c8e6c9,stroke:#2e7d32
+    style C1 fill:#bbdefb,stroke:#1565c0
+```
+
+### 10.4 云边协同与Serverless
+
+| 文档 | 主题 | 核心概念 | 技术栈 |
+|------|------|----------|--------|
+| [faas-dataflow.md](./06-frontier/faas-dataflow.md) | FaaS数据流 | 事件驱动函数编排 | AWS Lambda, Knative |
+| [stateful-serverless.md](./06-frontier/stateful-serverless.md) | 有状态无服务器 | 状态持久化、函数恢复 | Temporal, Durable Functions |
+| [wasm-dataflow-patterns.md](./06-frontier/wasm-dataflow-patterns.md) | Wasm数据流 | 轻量级运行时、安全沙箱 | Wasmtime, Spin |
+
+### 10.5 流式湖仓与访问控制
+
+| 文档 | 主题 | 核心内容 |
+|------|------|----------|
+| [streaming-lakehouse-iceberg-delta.md](./06-frontier/streaming-lakehouse-iceberg-delta.md) | 流式湖仓 | Iceberg/Delta实时集成 |
+| [streaming-access-control.md](./06-frontier/streaming-access-control.md) | 访问控制 | 流数据权限模型 |
+| [streaming-slo-definition.md](./06-frontier/streaming-slo-definition.md) | SLO定义 | 流处理服务质量指标 |
+| [real-time-rag-architecture.md](./06-frontier/real-time-rag-architecture.md) | 实时RAG | LLM+流处理架构 |
+
+---
+
+## 11. 国际顶尖课程映射
 
 本章节建立本项目知识体系与国际顶尖分布式系统课程（MIT 6.824、Stanford CS240、CMU 15-712）的映射关系，为学习者提供从课程理论到工程实践的对照路径。
 
-### 10.1 MIT 6.824 Distributed Systems
+### 11.1 MIT 6.824 Distributed Systems
 
 > **课程主页**: <https://pdos.csail.mit.edu/6.824/>
 > **核心内容**: 分布式系统理论基础 + 4个核心Lab实现
@@ -882,7 +1039,7 @@ Lab 4 (Sharded KV) ─► 掌握分布式状态与分片处理
                       └── 推荐阅读: Knowledge/03-business-patterns/iot-stream-processing.md
 ```
 
-### 10.2 Stanford CS240
+### 11.2 Stanford CS240
 
 > **课程主页**: <https://web.stanford.edu/class/cs240/>
 > **核心内容**: 高级操作系统与分布式系统安全
@@ -896,7 +1053,7 @@ Stanford CS240 从操作系统视角深入分布式系统，重点涵盖：
 | **Distributed Systems** | RPC、分布式文件系统、一致性模型 | Knowledge/04-technology-selection/engine-selection-guide.md |
 | **Security** | 认证、授权、可信计算 | (待补充) |
 
-### 10.3 CMU 15-712
+### 11.3 CMU 15-712
 
 > **课程主页**: <https://www.cs.cmu.edu/~dga/15-712/>
 > **核心内容**: 高级分布式系统与云基础设施
@@ -944,8 +1101,8 @@ graph TB
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-02 (新增国际顶尖课程映射)*
-*版本: v2.1*
+*更新时间: 2026-04-02 (新增前沿技术导航、流数据库指南、边缘流处理、Rust生态)*
+*版本: v3.0*
 *维护者: Knowledge Team*
 *状态: ✅ 100% 完成*
 *关联: [Struct/00-INDEX.md](../Struct/00-INDEX.md) · [Flink/](../Flink/)*
