@@ -4,6 +4,34 @@
 
 ---
 
+## 目录
+
+- [Flink 部署架构模式 (Flink Deployment Architectures)](#flink-部署架构模式-flink-deployment-architectures)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 部署配置抽象](#11-部署配置抽象)
+    - [1.2 Session Cluster 模式](#12-session-cluster-模式)
+    - [1.3 Per-Job Cluster 模式](#13-per-job-cluster-模式)
+    - [1.4 Application Mode 模式](#14-application-mode-模式)
+    - [1.5 底层资源管理平台](#15-底层资源管理平台)
+  - [2. 属性/特征 (Properties)](#2-属性特征-properties)
+    - [2.1 部署模式的隔离性与共享性](#21-部署模式的隔离性与共享性)
+    - [2.2 资源平台的弹性特征](#22-资源平台的弹性特征)
+  - [3. 关系/对比 (Relations \& Comparisons)](#3-关系对比-relations--comparisons)
+    - [3.1 部署模式 × 资源平台的组合空间](#31-部署模式--资源平台的组合空间)
+    - [3.2 部署模式综合对比表](#32-部署模式综合对比表)
+    - [3.3 架构对比图](#33-架构对比图)
+    - [3.4 资源平台的关系映射](#34-资源平台的关系映射)
+  - [4. 论证/选型逻辑 (Argumentation \& Selection Logic)](#4-论证选型逻辑-argumentation--selection-logic)
+    - [4.1 选型决策的形式化框架](#41-选型决策的形式化框架)
+    - [4.2 决策树：选择哪种部署模式？](#42-决策树选择哪种部署模式)
+    - [4.3 选型逻辑的边界条件分析](#43-选型逻辑的边界条件分析)
+  - [5. 工程实例 (Engineering Examples)](#5-工程实例-engineering-examples)
+    - [5.1 实例 1：Kubernetes Native Application Mode 部署](#51-实例-1kubernetes-native-application-mode-部署)
+    - [5.2 实例 2：YARN Session Cluster 部署（多租户数据平台）](#52-实例-2yarn-session-cluster-部署多租户数据平台)
+    - [5.3 实例 3：Standalone Per-Job 的变通实现（边缘计算）](#53-实例-3standalone-per-job-的变通实现边缘计算)
+  - [6. 引用参考 (References)](#6-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 部署配置抽象

@@ -4,6 +4,35 @@
 
 ---
 
+## 目录
+
+- [Struct 到 Flink 实现映射指南 (Struct-to-Flink Implementation Mapping)](#struct-到-flink-实现映射指南-struct-to-flink-implementation-mapping)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-05-01 (形式化定义到 API 的映射)](#def-k-05-01-形式化定义到-api-的映射)
+    - [Def-K-05-02 (语义保持性)](#def-k-05-02-语义保持性)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-05-01 (Watermark 语义保持性)](#lemma-k-05-01-watermark-语义保持性)
+    - [Lemma-K-05-02 (窗口算子实现完备性)](#lemma-k-05-02-窗口算子实现完备性)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: Struct 形式化定义 $\\leftrightarrow$ Flink 核心 API](#关系-1-struct-形式化定义-leftrightarrow-flink-核心-api)
+      - [映射表 1: Watermark 与时间管理](#映射表-1-watermark-与时间管理)
+      - [映射表 2: Checkpoint 与一致性](#映射表-2-checkpoint-与一致性)
+    - [关系 2: 理论保证到工程约束的转化](#关系-2-理论保证到工程约束的转化)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 Watermark 策略配置与形式化参数的对应](#41-watermark-策略配置与形式化参数的对应)
+    - [4.2 窗口触发条件的形式化验证](#42-窗口触发条件的形式化验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Prop-K-05-01 (映射语义等价性)](#prop-k-05-01-映射语义等价性)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [示例 6.1: 从 Def-S-04-04 到 WatermarkStrategy 的完整映射](#示例-61-从-def-s-04-04-到-watermarkstrategy-的完整映射)
+    - [示例 6.2: 从 Def-S-04-05 到 Window Operator 的映射](#示例-62-从-def-s-04-05-到-window-operator-的映射)
+    - [示例 6.3: 从 Thm-S-18-01 到 2PC Sink 的实现](#示例-63-从-thm-s-18-01-到-2pc-sink-的实现)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [概念映射图: Struct 形式化到 Flink API](#概念映射图-struct-形式化到-flink-api)
+    - [实现对应关系图](#实现对应关系图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 本节建立 Struct/ 目录中形式化定义与 Flink/ 工程实现之间的精确映射关系，为理论到实践的转化提供导航指南。

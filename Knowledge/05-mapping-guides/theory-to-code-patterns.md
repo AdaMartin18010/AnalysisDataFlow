@@ -4,6 +4,36 @@
 
 ---
 
+## 目录
+
+- [理论到代码模式映射指南 (Theory-to-Code Patterns Mapping)](#理论到代码模式映射指南-theory-to-code-patterns-mapping)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-05-03 (代码模式)](#def-k-05-03-代码模式)
+    - [Def-K-05-04 (知识转化)](#def-k-05-04-知识转化)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-05-03 (进程演算到算子链的组合保持)](#lemma-k-05-03-进程演算到算子链的组合保持)
+    - [Lemma-K-05-04 (类型安全到泛型约束的保持)](#lemma-k-05-04-类型安全到泛型约束的保持)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: 进程演算组合 $\\leftrightarrow$ Flink 算子链](#关系-1-进程演算组合-leftrightarrow-flink-算子链)
+    - [关系 2: 类型安全 $\\leftrightarrow$ 泛型与序列化](#关系-2-类型安全-leftrightarrow-泛型与序列化)
+    - [关系 3: 一致性层级 $\\leftrightarrow$ Checkpoint 配置](#关系-3-一致性层级-leftrightarrow-checkpoint-配置)
+    - [关系 4: 活性/安全性 $\\leftrightarrow$ 监控与告警](#关系-4-活性安全性-leftrightarrow-监控与告警)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 进程演算到流处理的模式转化](#41-进程演算到流处理的模式转化)
+    - [4.2 类型系统的工程约束转化](#42-类型系统的工程约束转化)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Prop-K-05-02 (代码模式库完备性)](#prop-k-05-02-代码模式库完备性)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [示例 6.1: 进程演算组合模式 → Flink 算子链](#示例-61-进程演算组合模式--flink-算子链)
+    - [示例 6.2: 类型安全 → 泛型与序列化模式](#示例-62-类型安全--泛型与序列化模式)
+    - [示例 6.3: 一致性层级 → Checkpoint 配置模式](#示例-63-一致性层级--checkpoint-配置模式)
+    - [示例 6.4: 活性/安全性 → 监控告警模式](#示例-64-活性安全性--监控告警模式)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [知识转化流程图](#知识转化流程图)
+    - [代码模式库结构图](#代码模式库结构图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 本节定义理论知识到可复用代码模式的转化框架，建立形式化理论与工程实现模式之间的系统映射。
