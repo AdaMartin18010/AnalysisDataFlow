@@ -27,6 +27,7 @@ $$\mathcal{D}(s_1, T_2, T_1) : S_1 \times \mathcal{P}(T_2) \times \mathcal{P}(T_
 $$\text{BiLookup}(s_1, s_2, T) = \{(r_1, r_2) \mid (r_1 \in s_1 \land \text{lookup}_T(r_1) = r_2) \lor (r_2 \in s_2 \land \text{lookup}_T(r_2) = r_1)\}$$
 
 其中 $\text{lookup}_T: K \rightarrow V$ 为基于Join key的外部存储查询操作。该语义要求外部存储 $T$ 支持高效点查（Point Lookup），典型实现包括：
+
 - JDBC维表（MySQL、PostgreSQL）
 - KV存储（HBase、Redis）
 - Lakehouse表（Iceberg、Paimon）
@@ -42,6 +43,7 @@ $$
 即执行过程中**永不物化Join的中间结果集**。与传统Hash Join需要维护$M_t$不同，Delta Join在接收到流记录时立即执行外部查询并输出结果，记录处理完成后即释放相关内存。
 
 该策略的代价是增加外部存储访问开销，通过以下机制优化：
+
 - **本地缓存**：LRU缓存热点Join key，减少重复查询
 - **批量查找**：将多个点查合并为批量请求
 - **异步IO**：避免阻塞数据流处理
@@ -59,6 +61,7 @@ Delta Join算子的状态复杂度为 $O(|T|_{cache} + |W|)$，其中 $|T|_{cach
 在CDC源支持且外部存储满足幂等写入条件下，Delta Join保证端到端Exactly-Once语义。
 
 证明要点：
+
 1. 输入流为CDC变更流（无DELETE操作，仅INSERT/UPDATE AFTER）
 2. 每条输入记录触发确定性查找和输出
 3. 下游算子通过Checkpoint机制保证故障恢复后不重不丢
@@ -141,16 +144,19 @@ Delta Join要求输入源满足特定约束：
 原因：零中间状态策略下，Delta Join无法处理"删除已有Join结果"的语义。当DELETE事件到达时，无法定位之前生成的哪些Join结果需要撤回。
 
 **规避方案**：
+
 - 将DELETE转化为带删除标记的INSERT，下游消费时过滤
 - 使用Changelog Normalize算子将CDC转为Retract流
 
 ### 4.3 缓存策略工程权衡
 
 **LRU缓存**：
+
 - 优点：实现简单，命中率高
 - 缺点：无预加载能力，冷启动期命中率低
 
 **Bloom Filter辅助**：
+
 - 在LRU前增加Bloom Filter，快速判断key是否可能存在于外部存储
 - 避免对不存在key的无效查询
 
@@ -216,6 +222,7 @@ Multi Join优化执行计划：
 ```
 
 优化效果量化：
+
 - 查询次数：从 $N$ 次外部查询降至 1 次批量查询
 - 网络RTT：从 $N \times RTT$ 降至 $RTT$
 - 缓存命中率：共享缓存提升热点Key命中率
@@ -227,6 +234,7 @@ Multi Join优化执行计划：
 **场景**：实时用户行为分析，将点击流（10亿条/天）Join用户画像（1亿用户）和商品信息（1000万SKU）
 
 **传统方案问题**：
+
 - 状态大小：用户ID索引约20GB，商品ID索引约5GB
 - Checkpoint：每次checkpoint耗时3-5分钟
 - 扩容：状态迁移需要10+分钟
@@ -281,7 +289,7 @@ CREATE TABLE click_stream (
 );
 
 -- Delta Join查询：双流Join转换为流+维表查找
-SELECT 
+SELECT
     c.user_id,
     c.product_id,
     u.age,
@@ -297,6 +305,7 @@ LEFT JOIN product_info FOR SYSTEM_TIME AS OF c.click_time AS p
 ```
 
 **优化效果**：
+
 - 状态大小：降至约500MB（缓存+队列）
 - Checkpoint：降至30秒以内
 - 扩容：支持秒级动态扩缩容
@@ -308,7 +317,7 @@ LEFT JOIN product_info FOR SYSTEM_TIME AS OF c.click_time AS p
 ```java
 // DataStream API使用Delta Join
 DataStream<UserEvent> userEvents = env.fromSource(
-    kafkaSource, 
+    kafkaSource,
     WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
     "User Events"
 );
@@ -328,12 +337,12 @@ AsyncDataStream.unorderedWait(
 .process(new RecommendationModel());
 
 // AsyncUserProfileLookup实现
-public class AsyncUserProfileLookup 
+public class AsyncUserProfileLookup
     extends RichAsyncFunction<UserEvent, EnrichedEvent> {
-    
+
     private transient HBaseAsyncTable table;
     private transient Cache<String, UserProfile> cache;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 初始化HBase连接
@@ -344,12 +353,12 @@ public class AsyncUserProfileLookup
             .expireAfterWrite(Duration.ofSeconds(60))
             .build();
     }
-    
+
     @Override
     public void asyncInvoke(UserEvent event, ResultFuture<EnrichedEvent> resultFuture) {
         String userId = event.getUserId();
         UserProfile cached = cache.getIfPresent(userId);
-        
+
         if (cached != null) {
             // 缓存命中
             resultFuture.complete(Collections.singletonList(
@@ -367,7 +376,7 @@ public class AsyncUserProfileLookup
                         new EnrichedEvent(event, profile)
                     ));
                 }
-                
+
                 @Override
                 public void onFailure(Throwable t) {
                     resultFuture.completeExceptionally(t);
@@ -399,7 +408,7 @@ graph TB
     subgraph "Flink Runtime"
         A[Stream Source<br/>CDC/INSERT Only] --> B[Delta Join Operator]
         B --> C[Result Stream]
-        
+
         subgraph "Delta Join内部"
             B --> D[LRU Cache]
             B --> E[Async IO Pool]
@@ -407,24 +416,24 @@ graph TB
             E --> F[Retry Queue]
         end
     end
-    
+
     subgraph "External Storage"
-        G[HBase/Mysql/Redis] 
+        G[HBase/Mysql/Redis]
         H[Apache Fluss]
         I[Iceberg/Paimon]
     end
-    
+
     E --> G
     E --> H
     E --> I
-    
+
     subgraph "Flink 2.2 Enhancements"
         J[Projection Pushdown]
         K[Filter Pushdown]
         L[Multi-Join Optimization]
         M[Cache Warmup]
     end
-    
+
     J --> B
     K --> B
     L --> B
@@ -459,7 +468,7 @@ sequenceDiagram
         Ext-->>DJ: Result B1
         DJ->>Out: Join Result (A1,B1)
         Note over DJ: 不存储中间结果
-        
+
         S1->>DJ: Record A2
         DJ->>DJ: 检查Cache
         DJ->>Ext: Lookup(A2.key) [Cache Miss]
@@ -482,20 +491,20 @@ flowchart TD
         T3[Table 3] --> J3
         J3 --> O1[Output]
     end
-    
+
     subgraph "优化后：Multi Delta Join"
         B[Stream] --> MJ[StreamingMultiJoinOperator]
         MJ --> O2[Output]
-        
+
         subgraph "批量并发查询"
             T1b[Table 1] --> Q[(Shared Lookup Batch)]
             T2b[Table 2] --> Q
             T3b[Table 3] --> Q
         end
-        
+
         Q --> MJ
     end
-    
+
     style MJ fill:#90EE90
     style Q fill:#FFD700
 ```
@@ -564,15 +573,3 @@ CREATE TABLE fluss_users (
 ```
 
 ## 9. 引用参考 (References)
-
-[^1]: Apache Flink 2.1 Release Notes, "Delta Join for Large State Stream Joins", 2024. https://nightlies.apache.org/flink/flink-docs-release-2.1/release-notes/flink-2.1/
-
-[^2]: Apache Flink 2.2 Release Notes, "Multi Delta Join Optimization", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.2/release-notes/flink-2.2/
-
-[^3]: FLIP-544: Delta Join - Optimizing Large State Stream Joins, Apache Flink Improvement Proposals, 2024. https://cwiki.apache.org/confluence/display/FLINK/FLIP-544
-
-[^4]: Apache Flink Documentation, "Lookup Join", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/joins/#lookup-join
-
-[^5]: Apache Fluss Documentation, "Integration with Flink Delta Join", 2025. https://fluss.apache.org/docs/quickstart/flink-integration/
-
-[^6]: J. Chen et al., "Efficient Stream Join Optimization via Delta Processing", SIGMOD 2024.

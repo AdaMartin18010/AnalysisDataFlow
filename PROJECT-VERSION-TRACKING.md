@@ -9,6 +9,7 @@
 **Def-V-01-02** (覆盖度指标): 项目覆盖度 = 已文档化特性数 / 该版本发布特性总数 × 100%。
 
 **Def-V-01-03** (版本差距等级):
+
 - ✅ 同步: 项目版本 ≥ 当前版本
 - ⚠️ 需更新: 当前版本 - 项目版本 ≤ 2 个 minor 版本
 - 🔴 严重滞后: 当前版本 - 项目版本 > 2 个 minor 版本
@@ -38,6 +39,7 @@
 | 混合模式 | 平衡 | 复杂度高 | 中型项目 |
 
 **选择**: 手工维护，原因：
+
 1. 项目聚焦于核心概念，非全特性覆盖
 2. 学术内容无法自动追踪
 3. 团队规模小，手工成本可控
@@ -68,7 +70,8 @@
 | Delta Lake | 3.3 | 3.0 | ⚠️ 需更新 |
 | Materialize | v0.130 | v0.120 | ⚠️ 需更新 |
 
-**升级触发条件**: 
+**升级触发条件**:
+
 - Iceberg ≥ 2.0 时强制更新
 - Delta Lake ≥ 4.0 时强制更新
 - Materialize ≥ v0.150 时评估
@@ -82,6 +85,7 @@
 | Process Calculus | - | ✅ 已覆盖 | - |
 
 **学术会议追踪列表**:
+
 - PLDI: 每年 6 月
 - POPL: 每年 1 月
 - CONCUR: 每年 9 月
@@ -137,17 +141,17 @@ graph TB
         F2.1[Flink 2.1 ✅]
         F2.2[Flink 2.2 ✅]
     end
-    
+
     subgraph 存储技术
         I[Iceberg 1.6<br/>→ 1.8 ⚠️]
         D[Delta 3.0<br/>→ 3.3 ⚠️]
     end
-    
+
     subgraph 运行时
         W[Wasm 3.0 ✅]
         M[Materialize v0.120<br/>→ v0.130 ⚠️]
     end
-    
+
     subgraph 理论基础
         C[Choreographic ✅]
         S[Session Types ✅]
@@ -163,13 +167,13 @@ graph TB
 ## YYYY-MM-DD 版本更新
 
 ### 新增
-- 
+-
 
 ### 更新
-- 
+-
 
 ### 废弃
-- 
+-
 ```
 
 ### 历史记录
@@ -185,9 +189,3 @@ graph TB
 ```
 
 ## 9. 引用参考 (References)
-
-[^1]: Apache Flink Release Notes, https://nightlies.apache.org/flink/flink-docs-stable/release-notes/
-[^2]: Apache Iceberg Releases, https://iceberg.apache.org/releases/
-[^3]: Delta Lake Releases, https://github.com/delta-io/delta/releases
-[^4]: Materialize Documentation, https://materialize.com/docs/releases/
-[^5]: WebAssembly Proposals, https://github.com/WebAssembly/proposals

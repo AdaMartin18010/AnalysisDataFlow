@@ -433,12 +433,12 @@ interface data-processing {
         value: f64,
         unit: string,
     }
-    
+
     variant filter-result {
         valid(f64),
         invalid(string),
     }
-    
+
     process: func(reading: sensor-reading) -> filter-result;
 }
 
@@ -454,26 +454,26 @@ world sensor-processor {
 graph TB
     subgraph Component["Component Model架构"]
         direction TB
-        
+
         subgraph Lang["多语言实现"]
             Rust["Rust Component<br/>wit-bindgen"]
             Go["Go Component<br/>wit-bindgen-go"]
             Java["Java Component<br/>jco"]
             JS["JavaScript Component<br/>jco"]
         end
-        
+
         subgraph WIT["接口定义层"]
             WIT1["WIT Interfaces"]
             WIT2["World Definitions"]
             WIT3["Package Registry"]
         end
-        
+
         subgraph Runtime["运行时组合"]
             Linker["Component Linker"]
             Store["Linear Memory Store"]
             LiftLower["Lift/Lower<br/>类型转换"]
         end
-        
+
         Lang --> WIT
         WIT --> Runtime
     end
@@ -498,7 +498,7 @@ Wasm 3.0提案引入了多项关键特性，显著扩展了Wasm的应用场景[^
 ;; Wasm 3.0 异常处理示例
 (module
   (tag $parse-error (param i32 i32))  ;; 异常类型定义
-  
+
   (func $parse-json (param i32 i32) (result i32)
     ;; 解析逻辑
     (if (i32.eq (local.get 0) (i32.const 0))
@@ -506,7 +506,7 @@ Wasm 3.0提案引入了多项关键特性，显著扩展了Wasm的应用场景[^
     )
     (i32.const 1)  ;; 成功
   )
-  
+
   (func $process-data (param i32 i32) (result i32)
     (block $handler (result i32 i32)
       (try
@@ -573,13 +573,13 @@ graph TB
         C --> D[动态内容生成
         边缘个性化]
     end
-    
+
     subgraph Impact["业务影响"]
         E[延迟降低60%]
         F[成本降低40%]
         G[全球2500+节点]
     end
-    
+
     Akamai --> Impact
 ```
 
@@ -681,13 +681,13 @@ flowchart LR
         O1[Flink AsyncFunction] -->|手动状态机| O2[Wasm Runtime]
         O2 -->|回调复杂| O3[JS API]
     end
-    
+
     subgraph New["JSPI新路径"]
         N1[Flink AsyncFunction] -->|直接await| N2[Wasm Component
         with WASI 0.3]
         N2 -->|JSPI透明转换| N3[JS API]
     end
-    
+
     Old -.->|简化| New
 ```
 
@@ -958,31 +958,31 @@ pub async fn run_wasi03_component(component_path: &str) -> Result<(), Box<dyn Er
     let mut config = Config::new();
     config.async_support(true);
     config.wasm_backtrace_details(wasmtime::WasmBacktraceDetails::Enable);
-    
+
     let engine = Engine::new(&config)?;
     let module = Module::from_file(&engine, component_path)?;
-    
+
     // WASI 0.3上下文
     let wasi = WasiCtxBuilder::new()
         .inherit_stdio()
         .inherit_network()
         .allow_ip_name_lookup(true)
         .build();
-    
+
     let mut store = Store::new(&engine, wasi);
-    
+
     // 异步实例化与执行
     let instance = wasmtime::component::Instance::new_async(
-        &mut store, 
+        &mut store,
         &module
     ).await?;
-    
+
     // 调用异步导出函数
     let process_fn = instance
         .get_typed_func::<(Vec<u8>,), Vec<u8>>(&mut store, "process_async")?;
-    
+
     let result = process_fn.call_async(&mut store, (input_data,)).await?;
-    
+
     Ok(result)
 }
 ```
@@ -1035,36 +1035,36 @@ warg publish target/wasm32-wasi/release/sensor_processor.wasm \
 public class WasmComponentUDF extends ScalarFunction {
     private ComponentInstance instance;
     private Store<WasiCtx> store;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 加载WASI 0.3组件
         Engine engine = new Engine.Builder()
             .asyncSupport(true)
             .build();
-            
+
         Component component = Component.fromFile(engine, "sensor_processor.wasm");
-        
+
         // WASI 0.3配置
         WasiCtx wasi = WasiCtxBuilder.newBuilder()
             .inheritNetwork()
             .inheritStdio()
             .build();
-            
+
         store = Store.newBuilder(engine, wasi).build();
-        
+
         // 实例化组件
         Linker linker = new Linker(engine);
         WasmtimeWasi.addToLinker(linker);
-        
+
         instance = linker.instantiate(store, component);
     }
-    
+
     public Boolean eval(Double temperature) {
         // 调用组件导出函数
         TypedFunc<Double, FilterResult> process = instance
             .getTypedFunc(store, "flink:edge/data-processing#process");
-            
+
         FilterResult result = process.call(store, temperature);
         return result instanceof FilterResult.Valid;
     }
@@ -1082,19 +1082,19 @@ graph TB
         F2 --> F3[WASI 0.3 Runtime
         wasmtime/wasmedge]
     end
-    
+
     subgraph Components["Component Ecosystem"]
         C1[数据处理组件<br/>flink:processor]
         C2[状态存储组件<br/>flink:state]
         C3[网络组件<br/>flink:network]
     end
-    
+
     subgraph Interface["WIT接口层"]
         W1[数据处理接口]
         W2[状态管理接口]
         W3[背压控制接口]
     end
-    
+
     Flink --> Interface
     Interface --> Components
 ```
@@ -1111,7 +1111,7 @@ runtime:
 components:
   - name: stream-processor
     package: "flink:stream-processor@0.2.0"
-    source: 
+    source:
       registry: "https://warg.flink.apache.org"
     imports:
       - "flink:state/key-value-store@0.1.0"
@@ -1119,7 +1119,7 @@ components:
     exports:
       - "process-record"
       - "checkpoint"
-      
+
   - name: state-backend
     package: "flink:rocksdb-backend@0.1.0"
     source:
@@ -1263,30 +1263,18 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
 
-[^2]: WasmEdge Documentation, "Flink Integration", 2024. https://wasmedge.org/docs/develop/usecases/flink/
 
-[^3]: WebAssembly Specification, "WebAssembly Core Specification 2.0", W3C, 2023. https://www.w3.org/TR/wasm-core-2/
 
-[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^5]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
 
-[^6]: WASI Subgroup, "WebAssembly System Interface", Bytecode Alliance, 2024. https://github.com/WebAssembly/WASI
 
-[^7]: Bytecode Alliance, "WASI 0.3 Release Notes", February 2026. https://bytecodealliance.org/articles/wasi-0-3
+[^7]: Bytecode Alliance, "WASI 0.3 Release Notes", February 2026. <https://bytecodealliance.org/articles/wasi-0-3>
 
-[^8]: WebAssembly Component Model Working Group, "Component Model 1.0 Specification", Bytecode Alliance, 2025. https://component-model.bytecodealliance.org/
+[^8]: WebAssembly Component Model Working Group, "Component Model 1.0 Specification", Bytecode Alliance, 2025. <https://component-model.bytecodealliance.org/>
 
 [^9]: Wasm I/O 2026, "Wasm 3.0: The Next Generation of WebAssembly", Barcelona, March 2026.
 
-[^10]: Akamai Technologies, "Akamai Completes Acquisition of Fermyon Technologies", Press Release, 2025. https://www.akamai.com/company/press-room/press-releases/akamai-completes-fermyon-acquisition
+[^10]: Akamai Technologies, "Akamai Completes Acquisition of Fermyon Technologies", Press Release, 2025. <https://www.akamai.com/company/press-room/press-releases/akamai-completes-fermyon-acquisition>
 
-[^11]: Uno Platform, "State of WebAssembly 2025-2026", WebAssembly Survey Report, 2026. https://platform.uno/blog/state-of-webassembly-2025-2026/
-
-[^12]: Cloudflare, "Cloudflare Workers Documentation", 2025. https://developers.cloudflare.com/workers/
-
-[^13]: Fastly, "Compute@Edge Documentation", 2025. https://developer.fastly.com/learning/compute/
-
-[^14]: Google Chrome Developers, "JavaScript Promise Integration for WebAssembly", Chrome Platform Status, 2024. https://chromestatus.com/feature/6068014294159360
+[^11]: Uno Platform, "State of WebAssembly 2025-2026", WebAssembly Survey Report, 2026. <https://platform.uno/blog/state-of-webassembly-2025-2026/>

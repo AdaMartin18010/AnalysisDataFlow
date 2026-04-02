@@ -115,7 +115,7 @@ graph TB
         D[Stream Scan] --> B
         E[Temporal Join] --> C
     end
-    
+
     subgraph "Fluss Cluster"
         B --> F[Tablet Server]
         C --> F
@@ -123,7 +123,7 @@ graph TB
         F --> H[Cold Storage]
         I[MV Engine] --> J[Materialized View]
     end
-    
+
     subgraph "Flink SQL"
         K[CREATE TABLE fluss_table] --> L[Fluss Catalog]
         L --> M[Schema Registry]
@@ -178,6 +178,7 @@ Flink 2.2 引入的 Delta Join 特性与 Fluss 形成原生支持：
 Flink 2.2 Delta Join 与 Fluss 结合实现零中间状态 Join：
 
 **传统 Stream-Stream Join**:
+
 ```
 Stream A ──┐
            ├──[State Store: RocksDB]──[Join Operator]──► Output
@@ -187,6 +188,7 @@ Stream B ──┘           ▲
 ```
 
 **Fluss Delta Join**:
+
 ```
 Stream A (Delta) ──┐
                    ├──[Remote Lookup]──[Join]──► Output
@@ -196,6 +198,7 @@ Fluss Table B ─────┘      ▲
 ```
 
 **优势分析**:
+
 - 状态大小与流速率无关，仅取决于 Fluss 表大小
 - 支持无限时间窗口 Join
 - 作业重启无需恢复 Join 状态
@@ -259,7 +262,7 @@ CREATE TABLE product_dim (
 
 -- Delta Join：实时销售与维度关联
 CREATE TABLE enriched_sales AS
-SELECT 
+SELECT
     s.order_id,
     s.product_id,
     p.category,
@@ -275,13 +278,13 @@ CREATE TABLE category_stats WITH (
     'connector' = 'fluss',
     'topic' = 'category_stats_mv'
 ) AS
-SELECT 
+SELECT
     category,
     TUMBLE_START(event_time, INTERVAL '1' MINUTE) as window_start,
     COUNT(*) as order_count,
     SUM(amount) as total_amount
 FROM enriched_sales
-GROUP BY 
+GROUP BY
     category,
     TUMBLE(event_time, INTERVAL '1' MINUTE);
 ```
@@ -289,6 +292,7 @@ GROUP BY
 ### 6.2 替代 Kafka 的简化架构
 
 **Before (Kafka + 数据湖)**:
+
 ```
 App ──► Kafka ──► Flink ──► Iceberg ──► Trino/Spark
          │           │
@@ -297,6 +301,7 @@ App ──► Kafka ──► Flink ──► Iceberg ──► Trino/Spark
 ```
 
 **After (Fluss 统一存储)**:
+
 ```
 App ──► Fluss ◄──► Flink SQL
           │
@@ -304,6 +309,7 @@ App ──► Fluss ◄──► Flink SQL
 ```
 
 **架构简化收益**:
+
 - 组件数量: 5+ → 2
 - 数据拷贝次数: 3 → 1
 - 端到端延迟: 分钟级 → 秒级
@@ -322,14 +328,14 @@ graph TB
         C[Flink Connector] --> B
         D[SQL Gateway] --> B
     end
-    
+
     subgraph "计算层"
         B --> E[Coordinator]
         E --> F[Tablet Server 1]
         E --> G[Tablet Server 2]
         E --> H[Tablet Server N]
     end
-    
+
     subgraph "存储层 - 自动分层"
         F --> I[Hot SSD<br/>最近 24h]
         F --> J[Warm HDD<br/>7d-30d]
@@ -341,14 +347,14 @@ graph TB
         H --> J
         H --> K
     end
-    
+
     subgraph "分析层"
         L[Materialized View<br/>实时预聚合] --> M[Query Engine]
         K --> M
         J --> M
         I --> M
     end
-    
+
     style I fill:#ff9999
     style J fill:#ffcc99
     style K fill:#99ccff
@@ -366,14 +372,14 @@ graph LR
         K4 --> K5[Data Lake]
         K5 --> K6[Analytics]
     end
-    
+
     subgraph "Fluss 架构"
         F1[Producer] --> F2[Fluss Cluster]
         F2 --> F3[Flink/Consumer]
         F2 --> F4[内置 Analytics]
         F2 -.-> F5[物化视图]
     end
-    
+
     style K5 fill:#ff9999
     style F4 fill:#99ff99
 ```
@@ -385,19 +391,19 @@ flowchart TD
     A[选择 Fluss 部署模式] --> B{环境类型?}
     B -->|开发/测试| C[本地模式]
     B -->|生产环境| D{集群规模?}
-    
+
     C --> C1[Docker Compose]
     C --> C2[单机二进制]
-    
+
     D -->|小规模<br/>< 10TB/天| E[VM 部署]
     D -->|大规模<br/>> 10TB/天| F[Kubernetes]
-    
+
     E --> E1[systemd 服务]
     E --> E2[Ansible 编排]
-    
+
     F --> F1[Helm Chart]
     F --> F2[Operator 模式]
-    
+
     F2 --> F2a[自动扩缩容]
     F2 --> F2b[故障自愈]
 ```
@@ -405,13 +411,3 @@ flowchart TD
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Fluss Documentation, "Architecture Overview", 2025. https://fluss.apache.org/docs/concepts/architecture/
-
-[^2]: Apache Fluss Documentation, "Kafka Protocol Compatibility", 2025. https://fluss.apache.org/docs/concepts/kafka-compatibility/
-
-[^3]: Apache Flink Release Notes 2.2, "Delta Join Support", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.2/release-notes/
-
-[^4]: Apache Fluss Blog, "Introducing Fluss: Storage for Real-Time Analytics", 2024. https://fluss.apache.org/blog/introducing-fluss/
-
-[^5]: Apache Flink FLIP-XXX, "Delta Join: State-efficient Stream-Stream Join", 2024.

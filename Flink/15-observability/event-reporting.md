@@ -14,14 +14,14 @@
 public interface EventReporter {
     /** 报告单个事件 */
     void report(Event event);
-    
+
     /** 批量报告事件（可选优化） */
     default void report(List<Event> events) {
         for (Event event : events) {
             report(event);
         }
     }
-    
+
     /** 关闭Reporter，释放资源 */
     void close();
 }
@@ -33,13 +33,13 @@ public interface EventReporter {
 public interface Event {
     /** 事件类型标识符 */
     String getType();
-    
+
     /** 事件发生时间戳（毫秒） */
     long getTimestamp();
-    
+
     /** 事件属性映射 */
     Map<String, Object> getAttributes();
-    
+
     /** 事件严重级别 */
     Severity getSeverity();
 }
@@ -142,6 +142,7 @@ public class AuditEvent implements Event {
 **命题**：Flink EventReporter 默认提供至少一次（At-Least-Once）事件传递保证。
 
 **论证**：
+
 1. EventReporter 在算子上下文中调用
 2. Checkpoint 机制确保算子状态一致性
 3. 事件报告与状态更新可绑定在同一事务中
@@ -235,6 +236,7 @@ Event (接口)
 | Tracing | 聚焦请求链路，不擅长业务里程碑 |
 
 **EventReporter 的设计目标**：
+
 1. **结构化**：强类型事件定义，便于下游消费
 2. **语义明确**：业务含义清晰，非技术指标
 3. **可扩展**：支持自定义事件类型
@@ -321,21 +323,21 @@ public class KafkaEventReporter implements EventReporter {
     private final KafkaProducer<String, String> producer;
     private final String topic;
     private final ObjectMapper objectMapper;
-    
+
     public KafkaEventReporter(Properties props, String topic) {
         this.producer = new KafkaProducer<>(props);
         this.topic = topic;
         this.objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule());
     }
-    
+
     @Override
     public void report(Event event) {
         try {
             String json = objectMapper.writeValueAsString(event);
-            ProducerRecord<String, String> record = 
+            ProducerRecord<String, String> record =
                 new ProducerRecord<>(topic, event.getType(), json);
-            
+
             producer.send(record, (metadata, exception) -> {
                 if (exception != null) {
                     LOG.error("Failed to report event to Kafka", exception);
@@ -345,19 +347,19 @@ public class KafkaEventReporter implements EventReporter {
             LOG.error("Failed to serialize event", e);
         }
     }
-    
+
     @Override
     public void report(List<Event> events) {
         // 批量发送优化
         List<ProducerRecord<String, String>> records = events.stream()
             .map(this::toRecord)
             .collect(Collectors.toList());
-        
+
         for (ProducerRecord<String, String> record : records) {
             producer.send(record);
         }
     }
-    
+
     @Override
     public void close() {
         producer.flush();
@@ -373,7 +375,7 @@ public class WebhookEventReporter implements EventReporter {
     private final HttpClient httpClient;
     private final String webhookUrl;
     private final String authToken;
-    
+
     public WebhookEventReporter(String webhookUrl, String authToken) {
         this.httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
@@ -381,7 +383,7 @@ public class WebhookEventReporter implements EventReporter {
         this.webhookUrl = webhookUrl;
         this.authToken = authToken;
     }
-    
+
     @Override
     public void report(Event event) {
         try {
@@ -392,7 +394,7 @@ public class WebhookEventReporter implements EventReporter {
                 .header("Authorization", "Bearer " + authToken)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-            
+
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.discarding())
                 .orTimeout(30, TimeUnit.SECONDS)
                 .exceptionally(ex -> {
@@ -403,7 +405,7 @@ public class WebhookEventReporter implements EventReporter {
             LOG.error("Failed to send webhook", e);
         }
     }
-    
+
     @Override
     public void close() {
         // HttpClient 无需显式关闭
@@ -415,31 +417,31 @@ public class WebhookEventReporter implements EventReporter {
 
 ```java
 public class OrderProcessingJob {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 注册自定义 EventReporter
         env.getConfig().registerEventReporter(
             new KafkaEventReporter(kafkaProps, "flink-events")
         );
-        
+
         DataStream<Order> orders = env
             .addSource(new OrderSource())
             .map(new RichMapFunction<Order, Order>() {
                 private transient EventReporter eventReporter;
-                
+
                 @Override
                 public void open(Configuration parameters) {
                     eventReporter = getRuntimeContext()
                         .getEventReporter();
                 }
-                
+
                 @Override
                 public Order map(Order order) {
                     // 处理订单...
-                    
+
                     // 报告业务事件
                     eventReporter.report(BusinessEvent.builder()
                         .type("order.validated")
@@ -449,11 +451,11 @@ public class OrderProcessingJob {
                         .attribute("amount", order.getAmount())
                         .severity(Severity.INFO)
                         .build());
-                    
+
                     return order;
                 }
             });
-        
+
         env.execute("Order Processing with Events");
     }
 }
@@ -463,29 +465,29 @@ public class OrderProcessingJob {
 
 ```java
 public class AuditEventReporter implements EventReporter {
-    
+
     @Override
     public void report(Event event) {
         if (event instanceof AuditEvent) {
             AuditEvent auditEvent = (AuditEvent) event;
-            
+
             // 确保审计事件的不可变性
             validateAuditEvent(auditEvent);
-            
+
             // 写入审计日志（不可删除、不可修改）
             writeToImmutableStorage(auditEvent);
-            
+
             // 同时发送实时通知
             notifyComplianceTeam(auditEvent);
         }
     }
-    
+
     private void validateAuditEvent(AuditEvent event) {
         Preconditions.checkNotNull(event.getAction(), "Action required");
         Preconditions.checkNotNull(event.getUserId(), "User ID required");
         Preconditions.checkNotNull(event.getTimestamp(), "Timestamp required");
     }
-    
+
     private void writeToImmutableStorage(AuditEvent event) {
         // 写入 WORM (Write Once Read Many) 存储
         // 如 AWS Glacier, Azure Immutable Blob
@@ -508,25 +510,25 @@ graph TB
         B --> C1[Source Operator]
         B --> C2[Process Operator]
         B --> C3[Sink Operator]
-        
+
         C1 --> D[EventReporter]
         C2 --> D
         C3 --> D
     end
-    
+
     subgraph "Event Types"
         D --> E1[System Events]
         D --> E2[Business Events]
         D --> E3[Audit Events]
     end
-    
+
     subgraph "Destinations"
         E1 --> F1[Kafka]
         E2 --> F2[Webhook]
         E3 --> F3[Immutable Storage]
         E1 --> F4[OpenTelemetry]
     end
-    
+
     subgraph "Consumers"
         F1 --> G1[SIEM]
         F1 --> G2[Analytics]
@@ -545,32 +547,32 @@ flowchart TD
     A[Operator 执行业务逻辑] --> B{需要报告事件?}
     B -->|是| C[构造 Event 对象]
     B -->|否| Z[继续处理]
-    
+
     C --> D[调用 EventReporter.report]
     D --> E{Reporter 实现}
-    
+
     E -->|同步| F[直接发送]
     E -->|异步| G[写入缓冲区]
-    
+
     G --> H[后台线程批量发送]
     F --> I[外部系统接收]
     H --> I
-    
+
     I --> J{发送结果}
     J -->|成功| K[确认提交]
     J -->|失败| L{重试策略}
-    
+
     L -->|可重试| M[指数退避重试]
     L -->|不可重试| N[记录错误]
     L -->|超过上限| O[丢弃事件]
-    
+
     M --> D
     N --> P[写入死信队列]
     O --> Q[触发降级告警]
-    
+
     K --> R[消费者处理]
     P --> R
-    
+
     style A fill:#e1f5ff
     style R fill:#d4edda
     style O fill:#f8d7da
@@ -586,26 +588,26 @@ graph LR
         FE2[BusinessEvent]
         FE3[AuditEvent]
     end
-    
+
     subgraph "OpenTelemetry Span"
         SP1[Span: Checkpoint]
         SP2[Span: Process]
         SP3[Span: Access]
     end
-    
+
     subgraph "Integration"
         INT1["Span.addEvent(Event)"]
         INT2["Event.traceId = Span.traceId"]
     end
-    
+
     FE1 --> INT1 --> SP1
     FE2 --> INT2 --> SP2
     FE3 --> INT1 --> SP3
-    
+
     SP1 --> OT[OpenTelemetry Collector]
     SP2 --> OT
     SP3 --> OT
-    
+
     OT --> JAEGER[Jaeger UI]
     OT --> PROM[Prometheus]
 ```
@@ -615,32 +617,32 @@ graph LR
 ```mermaid
 flowchart TD
     A[需要记录运行时信息?] --> B{数据类型?}
-    
+
     B -->|数值型聚合| C[使用 Metrics]
     B -->|请求链路| D[使用 Tracing]
     C --> E[结束]
     D --> E
-    
+
     B -->|离散事件| F{事件特征?}
-    
+
     F -->|需要富上下文| G{使用场景?}
     F -->|仅需计数| H[使用 Metrics Counter]
-    
+
     G -->|业务里程碑| I[使用 BusinessEvent]
     G -->|合规审计| J[使用 AuditEvent]
     G -->|系统状态变更| K[使用 SystemEvent]
-    
+
     I --> L[配置 EventReporter]
     J --> L
     K --> L
-    
+
     L --> M{目标系统?}
-    
+
     M -->|Kafka| N[实现 KafkaReporter]
     M -->|HTTP| O[实现 WebhookReporter]
     M -->|日志| P[实现 LogReporter]
     M -->|混合| Q[实现 MultiReporter]
-    
+
     N --> R[注册到 Flink 环境]
     O --> R
     P --> R
@@ -648,7 +650,7 @@ flowchart TD
     H --> E
     R --> S[验证事件输出]
     S --> E
-    
+
     style C fill:#d4edda
     style D fill:#d4edda
     style H fill:#d4edda
@@ -661,21 +663,13 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink 2.2 Release Notes, "Event Reporting API", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.2/
 
-[^2]: Apache Flink JIRA, FLINK-37426: "Introduce EventReporter interface for custom event reporting", https://issues.apache.org/jira/browse/FLINK-37426
 
-[^3]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^4]: OpenTelemetry Specification, "Events", https://opentelemetry.io/docs/concepts/signals/traces/#events
 
-[^5]: Martin Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017. Chapter 11: Stream Processing (Section on Observability)
 
-[^6]: Apache Flink Documentation, "Metrics and Monitoring", https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/
 
-[^7]: Apache Flink Documentation, "Application Profiling", https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/debugging/profiling/
 
-[^8]: Jay Kreps, "The Log: What every software engineer should know about real-time data's unifying abstraction", LinkedIn Engineering Blog, 2013.
 
 ---
 

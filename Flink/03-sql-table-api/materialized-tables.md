@@ -98,10 +98,10 @@ FRESHNESS 支持两种指定方式：
 public interface MaterializedTableEnricher {
     // 推断 FRESHNESS 约束
     Optional<Duration> inferFreshness(Context ctx);
-    
+
     // 推断分区策略
     Optional<Distribution> inferDistribution(Context ctx);
-    
+
     // 推断存储格式
     Optional<StorageFormat> inferStorageFormat(Context ctx);
 }
@@ -290,6 +290,7 @@ $$
 ```
 
 **优势**：
+
 - 物化表提供**预计算**的维度数据，避免实时 join 大表
 - Delta Join 仅获取**增量变更**，降低 I/O 开销
 - 适合**流-表关联**场景（如用户行为关联用户画像）
@@ -352,7 +353,7 @@ flowchart TD
 function inferFreshness(query):
     sources = extractSources(query)
     maxFreshness = 0
-    
+
     for source in sources:
         if source.hasWatermark():
             candidate = source.watermarkDelay + buffer
@@ -360,9 +361,9 @@ function inferFreshness(query):
             candidate = source.refreshInterval * 2
         else:
             candidate = DEFAULT_FRESHNESS  // 1h
-        
+
         maxFreshness = max(maxFreshness, candidate)
-    
+
     // 考虑查询复杂度
     complexityFactor = estimateComplexity(query)
     return maxFreshness * complexityFactor
@@ -380,6 +381,7 @@ function inferFreshness(query):
 | 重度乱序 (k=1000) | 5s+ | 100ms | 50x+ |
 
 **根因**：
+
 1. V1 使用简单 `ArrayDeque` 缓冲，每次 flush 需要全量扫描
 2. V2 使用 `PriorityQueue` + 时间窗口索引，实现 $O(\log k)$ 操作
 
@@ -466,7 +468,7 @@ AS SELECT
 FROM orders;
 
 -- 查询时自动分区裁剪
-SELECT * FROM order_summary 
+SELECT * FROM order_summary
 WHERE user_id = 'U12345';  -- 仅扫描 1/32 数据
 ```
 
@@ -494,7 +496,7 @@ AS SELECT
   MAX(event_time) as last_active,
   TUMBLE_START(event_time, INTERVAL '1' HOUR) as window_start
 FROM user_events
-GROUP BY 
+GROUP BY
   user_id,
   TUMBLE(event_time, INTERVAL '1' HOUR);
 
@@ -882,7 +884,7 @@ flowchart TB
         V1_Buffer["简单队列 (ArrayDeque)<br/>O(k²) 复杂度"]
         V1_Flush["全量扫描排序<br/>性能指数下降"]
         V1_Output[输出到存储]
-        
+
         V1_Input --> V1_Buffer --> V1_Flush --> V1_Output
     end
 
@@ -893,7 +895,7 @@ flowchart TB
         V2_Window["时间窗口索引<br/>有界内存管理"]
         V2_Parallel["并行事务协调<br/>线性扩展"]
         V2_Output[输出到存储]
-        
+
         V2_Input --> V2_Heap --> V2_Window --> V2_Parallel --> V2_Output
     end
 
@@ -958,20 +960,20 @@ flowchart TD
     B -->|高基数字段| C[DISTRIBUTED BY HASH]
     B -->|时间序列| D[DISTRIBUTED BY RANGE]
     B -->|均匀分布| E[DISTRIBUTED BY ROUND-ROBIN]
-    
+
     C --> F{Join 模式?}
     D --> G{查询模式?}
     E --> H{写入模式?}
-    
+
     F -->|频繁 Join| I[选择 Join Key 作为分区键]
     F -->|点查为主| J[选择过滤条件字段]
-    
+
     G -->|范围查询| K[按时间/ID 范围分区]
     G -->|全表扫描| L[减少分区数]
-    
+
     H -->|批量写入| M[增大分桶数]
     H -->|实时写入| N[平衡分区数]
-    
+
     I --> O[确定 BUCKET 数量]
     J --> O
     K --> O
@@ -984,17 +986,11 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink 2.2 Release Notes, "Materialized Tables Improvements", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/materialized-table/
 
-[^2]: FLINK-38532: "Support FRESHNESS inference in MaterializedTableEnricher", Apache Flink JIRA, 2025.
 
-[^3]: FLINK-38459: "Upgrade SinkUpsertMaterializer to V2 for out-of-order handling", Apache Flink JIRA, 2025.
 
-[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^5]: Apache Paimon Documentation, "Materialized Table Integration", 2025. https://paimon.apache.org/docs/master/flink/materialized-table/
 
-[^6]: Apache Iceberg Documentation, "Flink Integration", 2025. https://iceberg.apache.org/docs/latest/flink/
 
 ---
 

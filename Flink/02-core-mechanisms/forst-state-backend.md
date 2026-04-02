@@ -13,6 +13,7 @@
 $$\text{ForSt} = \langle \text{UFS}, \text{LocalCache}, \text{StateMapping}, \text{SyncPolicy} \rangle$$
 
 其中：
+
 - $\text{UFS}$: Unified File System 抽象层
 - $\text{LocalCache}$: 本地缓存层（LRU/SLRU 管理）
 - $\text{StateMapping}$: 状态键到文件位置的映射表
@@ -27,17 +28,18 @@ $$\text{ForSt} = \langle \text{UFS}, \text{LocalCache}, \text{StateMapping}, \te
 $$\text{UFS} = \langle \text{StorageBackend}, \text{PathMapping}, \text{AtomicOps}, \text{ConsistencyLevel} \rangle$$
 
 **接口规范**:
+
 ```
 interface UFS {
   // 原子写操作
   WriteResult writeAtomic(Path temp, Path target);
-  
+
   // 一致性读操作
   InputStream readConsistent(Path path, ConsistencyLevel level);
-  
+
   // 列表操作（含一致性快照）
   List<FileStatus> listStatus(Path dir, SnapshotId snapshot);
-  
+
   // 多版本支持
   VersionedFile getVersioned(Path path, Version v);
 }
@@ -75,7 +77,7 @@ $$\text{evict}: S_{active} \times \text{LRUPolicy} \rightarrow S_{remote}$$
    $$\text{restoreMetadata}(): M \leftarrow \text{load}(\text{checkpoint}_\text{metadata})$$
 
 2. **延迟数据恢复阶段** (时间 $t > t_0$):
-   $$\forall k \in \text{Keys}: \text{onAccess}(k) \Rightarrow \begin{cases} 
+   $$\forall k \in \text{Keys}: \text{onAccess}(k) \Rightarrow \begin{cases}
    \text{if } k \in S_{active}: & \text{directRead}(k) \\
    \text{if } k \in S_{remote}: & \text{asyncFetch}(k) \rightarrow S_{active}
    \end{cases}$$
@@ -93,13 +95,14 @@ $$\text{recoveryComplete} \iff S_{active} \cup S_{fetched} = S_{checkpointed}$$
 $$\text{CompactionService} = \langle \text{CompactionWorkerPool}, \text{Scheduler}, \text{VersionManager} \rangle$$
 
 **执行流程**:
+
 1. TaskManager 识别需要 Compaction 的 SST 文件集合 $F_{compact}$
 2. 通过 RPC 将 Compaction 任务提交到远程服务
 3. 远程服务执行合并、去重、排序操作
 4. 新生成的 SST 文件原子替换旧文件
 5. TaskManager 更新本地元数据引用
 
-**资源解耦**: 
+**资源解耦**:
 $$\text{Resource}_{TM} \perp \text{Resource}_{Compaction}$$
 
 ---
@@ -144,6 +147,7 @@ $$T_{recovery}^{RocksDB} \approx T_{metadata} + |S| \cdot T_{download}$$
 **引理**: 在分离式架构下，若 UFS 提供原子写和读-after-写一致性，则 ForSt 的状态操作满足线性一致性 (Linearizability)。
 
 **条件**:
+
 1. $\text{UFS.write}()$ 是原子的（全有或全无）
 2. $\text{UFS.read}()$ 满足顺序一致性
 3. 元数据更新使用原子 compare-and-swap
@@ -210,7 +214,7 @@ Checkpoint Barrier → Snapshot State Mapping
 
 在 Flink 1.x + RocksDB 架构中，存在以下矛盾：
 
-1. **容量与成本的矛盾**: 
+1. **容量与成本的矛盾**:
    - 大状态作业需要大量本地 SSD 存储
    - SSD 成本高于对象存储 3-5 倍
    - TaskManager 磁盘容量固定，无法弹性扩展
@@ -237,7 +241,8 @@ Checkpoint Barrier → Snapshot State Mapping
 
 **场景**: 在分离式架构下，如何保证 Checkpoint 的一致性？
 
-**挑战**: 
+**挑战**:
+
 - DFS 操作通常具有最终一致性
 - 并发读写可能导致观察到不完整状态
 
@@ -254,12 +259,13 @@ Checkpoint Barrier → Snapshot State Mapping
    - 垃圾回收延后到确认无引用后执行
 
 3. **两阶段提交协议**:
+
    ```
    Phase 1 (Prepare):
      - Flush 所有脏页到 DFS
      - 生成新的 SST 文件列表
      - 预提交元数据（标记为 PENDING）
-   
+
    Phase 2 (Commit):
      - 收到 Checkpoint Coordinator 确认
      - 原子更新元数据状态为 COMMITTED
@@ -290,6 +296,7 @@ Checkpoint Barrier → Snapshot State Mapping
 **形式化表述**:
 
 设：
+
 - $S_t$: 时刻 $t$ 的状态
 - $C_i$: 第 $i$ 个 Checkpoint
 - $\text{restore}(C_i)$: 从 $C_i$ 恢复的状态
@@ -301,13 +308,14 @@ $$\forall i: \text{restore}(C_i) = S_{t_i}$$
 
 **证明**:
 
-**基础**: 
+**基础**:
+
 - 假设 UFS 保证：若文件 $f$ 完成写入（close），则后续读取得到完整内容
 - 假设原子重命名：rename 操作是原子的，不存在观察到部分重命名的状态
 
 **归纳步骤**:
 
-1. **SST 文件层**: 
+1. **SST 文件层**:
    - 每个 SST 文件一旦创建即为不可变
    - 写入完成后通过原子重命名提交
    - 因此 SST 文件内容具有原子可见性
@@ -391,6 +399,7 @@ $$\frac{T_{RB}^{recovery}}{T_{FS}^{recovery}} \approx \frac{|S|}{0.01 \cdot |S|}
 ### 6.1 Nexmark Benchmark 结果
 
 **测试配置**:
+
 - 查询类型: Q5 (窗口聚合), Q8 (连接操作), Q11 (会话窗口)
 - 数据规模: 10亿条事件，峰值吞吐 100K events/s
 - 状态大小: 500GB - 2TB
@@ -435,7 +444,7 @@ state.backend.forst.restore.preload.hot-keys: true
 **编程方式配置**:
 
 ```java
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置 ForSt State Backend
@@ -457,7 +466,7 @@ env.getCheckpointConfig().setCheckpointingMode(
 ```yaml
 # 远程 Compaction 服务配置
 state.backend.forst.compaction.remote.enabled: true
-state.backend.forst.compaction.remote.endpoint: 
+state.backend.forst.compaction.remote.endpoint:
   compaction-service.flink.svc.cluster.local:9090
 state.backend.compaction.remote.parallelism: 4
 
@@ -484,13 +493,13 @@ graph TB
         D --> F[Memory Mapped SST]
         E --> D
     end
-    
+
     subgraph "ForSt State Backend"
         G[State Mapping Manager] --> H[UFS Client]
         I[Compaction Scheduler] --> J[Remote Compaction Service]
         K[LazyRestore Manager]
     end
-    
+
     subgraph "Unified File System (UFS)"
         H --> L[S3 / HDFS / GCS / Azure]
         L --> M[SST Files v1]
@@ -498,11 +507,11 @@ graph TB
         L --> O[Metadata Files]
         L --> P[Checkpoint References]
     end
-    
+
     B -.-> G
     J -.-> L
     K -.-> E
-    
+
     style A fill:#e1f5fe
     style D fill:#fff3e0
     style L fill:#e8f5e9
@@ -520,24 +529,25 @@ flowchart TB
         R3 --> R4[Upload to DFS]
         R4 --> R5[Persist Metadata]
         R5 --> R6[Checkpoint Complete]
-    
+
         style R2 fill:#ffccbc
         style R3 fill:#ffccbc
         style R4 fill:#ffccbc
     end
-    
+
     subgraph "ForSt Checkpoint"
         F1[Barrier Received] --> F2[Capture SST List]
         F2 --> F3[Flush Dirty Pages<br/>Async, Non-blocking]
         F3 --> F4[Persist Metadata<br/>File References Only]
         F4 --> F5[Checkpoint Complete]
-        
+
         style F2 fill:#c8e6c9
         style F4 fill:#c8e6c9
     end
 ```
 
-**关键区别**: 
+**关键区别**:
+
 - RocksDB 需要复制/上传 SST 文件（红色）
 - ForSt 仅需持久化元数据引用（绿色）
 
@@ -549,16 +559,16 @@ sequenceDiagram
     participant TM as TaskManager (New)
     participant DFS as DFS (UFS)
     participant Cache as Local Cache
-    
+
     JM->>DFS: 1. Request Latest Checkpoint
     DFS-->>JM: 2. Return Metadata
     JM->>TM: 3. Deploy Task with Metadata
-    
+
     Note over TM: LazyRestore Begins
-    
+
     TM->>DFS: 4. Load State Mapping
     TM->>TM: 5. Start Processing (No State Yet)
-    
+
     alt Hot Key Access
         TM->>Cache: 6a. Check Local Cache
         Cache-->>TM: 6b. Cache Miss
@@ -567,12 +577,12 @@ sequenceDiagram
         TM->>Cache: 6e. Populate Cache
         Cache-->>TM: 6f. Return State Value
     end
-    
+
     alt Cold Key Access
         TM->>DFS: 7a. Direct Read from DFS
         DFS-->>TM: 7b. Return State Value
     end
-    
+
     Note over TM: Background: Preload Predicted Hot Keys
     TM->>DFS: 8. Preload Hot SSTs
     DFS-->>Cache: 9. Populate Cache Proactively
@@ -587,7 +597,7 @@ graph LR
         R2 --> R3[预留容量<br/>1.5x]
         R3 --> R4[总成本系数<br/>3.0x]
     end
-    
+
     subgraph "ForSt 成本结构"
         F1[S3 Standard<br/>$0.023/GB/月] --> F2[自动冗余<br/>内置]
         F2 --> F3[按需付费<br/>1.0x]
@@ -595,7 +605,7 @@ graph LR
         F5[本地缓存<br/>10%热数据] --> F6[额外成本<br/>0.3x]
         F4 --> F7[综合成本<br/>~1.1x]
     end
-    
+
     style R4 fill:#ffccbc
     style F7 fill:#c8e6c9
 ```
@@ -608,15 +618,10 @@ graph LR
 
 [^2]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12):1792-1803, 2015.
 
-[^3]: Apache Flink Documentation, "ForSt State Backend", https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/forst/
 
-[^4]: F. Yang et al., "Disaggregating Stateful Stream Processing", ACM SIGMOD, 2024.
 
-[^5]: Nexmark Benchmark, https://github.com/nexmark/nexmark
 
-[^6]: S. Chandrasekaran et al., "Linearizability: A Correctness Condition for Concurrent Objects", ACM TOPLAS, 12(3):463-492, 1990.
 
-[^7]: Apache Flink Blog, "Announcing Apache Flink 2.0: Disaggregated State and Cloud-Native Streaming", 2025.
 
 ---
 

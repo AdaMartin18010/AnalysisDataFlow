@@ -127,14 +127,14 @@ public interface ModelProviderFactory {
 public interface ModelProvider {
     // 初始化模型连接
     void open(Configuration config);
-    
+
     // 批量推理（Flink 自动批处理）
     List<RowData> inferBatch(List<RowData> inputs);
-    
+
     // 获取输入/输出 schema
     ResolvedSchema getInputSchema();
     ResolvedSchema getOutputSchema();
-    
+
     // 关闭资源
     void close();
 }
@@ -209,9 +209,9 @@ $$\frac{d|buf|}{dt} \geq 0 \quad \text{(仅当批次触发时重置为 0)}$$
 **验证规则：**
 
 ```
-相容性(INPUT_model, PASSING_actual) = 
+相容性(INPUT_model, PASSING_actual) =
     ∀col ∈ INPUT_model, ∃col' ∈ PASSING_actual :
-        col.name = col'.name ∧ 
+        col.name = col'.name ∧
         col.type ⊑ col'.type  (子类型关系)
 ```
 
@@ -251,14 +251,14 @@ DataStream<Row> result = events
     .keyBy(row -> row.getField("user_id"))
     .process(new KeyedProcessFunction<..., Row, Row>() {
         private transient ModelInferenceClient client;
-        
+
         @Override
         public void open(Configuration parameters) {
             client = ModelProviderRegistry
                 .getProvider("openai")
                 .createClient(config);
         }
-        
+
         @Override
         public void processElement(Row input, Context ctx, Collector<Row> out) {
             // 异步调用
@@ -365,6 +365,7 @@ $$T_{async} = \frac{C_{max}}{L_{api}} \quad \text{其中 } C_{max} \text{ 为最
 | 容错保障 | Checkpoint 精确一次 | 应用层处理 | 应用层处理 |
 
 **Flink 的适用场景：**
+
 - 大规模实时日志分类
 - 流式内容审核
 - 实时推荐特征生成
@@ -378,13 +379,13 @@ $$T_{async} = \frac{C_{max}}{L_{api}} \quad \text{其中 } C_{max} \text{ 为最
 ```
 Level 1: API 超时
   └── 策略: 重试 3 次，指数退避
-  
+
 Level 2: 速率限制 (429)
   └── 策略: 动态背压，降低并发度
-  
+
 Level 3: 模型错误 (5xx)
   └── 策略: 发送到 Side Output，人工审查
-  
+
 Level 4: Schema 不匹配
   └── 策略: 编译期报错，拒绝提交
 ```
@@ -432,7 +433,7 @@ CREATE TABLE user_logs (
 
 -- 步骤 3: 使用 ML_PREDICT 进行实时分类
 CREATE TABLE classified_logs AS
-SELECT 
+SELECT
   user_id,
   log_time,
   log_message,
@@ -459,7 +460,7 @@ CREATE TABLE security_alerts (
 );
 
 INSERT INTO security_alerts
-SELECT 
+SELECT
   user_id,
   log_category AS alert_type,
   confidence_score AS risk_score,
@@ -504,7 +505,7 @@ CREATE TABLE user_questions (
 
 -- 步骤 4: 向量化问题并检索相关文档
 CREATE VIEW question_with_context AS
-SELECT 
+SELECT
   q.question_id,
   q.user_id,
   q.question_text,
@@ -518,7 +519,7 @@ JOIN ML_PREDICT(
 
 -- 步骤 5: 执行问答（简化示例，实际需要向量检索 JOIN）
 CREATE TABLE qa_results AS
-SELECT 
+SELECT
   question_id,
   user_id,
   question_text,
@@ -544,7 +545,7 @@ public class InternalMLProviderFactory implements ModelProviderFactory {
     public String getProviderType() {
         return "internal-ml";
     }
-    
+
     @Override
     public ModelProvider createProvider(Map<String, String> config) {
         return new InternalMLProvider(config);
@@ -556,7 +557,7 @@ public class InternalMLProvider implements ModelProvider {
     private HttpClient httpClient;
     private String endpoint;
     private ObjectMapper mapper;
-    
+
     @Override
     public void open(Configuration config) {
         this.httpClient = HttpClient.newBuilder()
@@ -565,7 +566,7 @@ public class InternalMLProvider implements ModelProvider {
         this.endpoint = config.getString("internal.endpoint");
         this.mapper = new ObjectMapper();
     }
-    
+
     @Override
     public List<RowData> inferBatch(List<RowData> inputs) {
         // 构建批量请求
@@ -574,7 +575,7 @@ public class InternalMLProvider implements ModelProvider {
                 .map(row -> row.getString(0))
                 .collect(Collectors.toList())
         );
-        
+
         // 发送 HTTP 请求
         HttpRequest httpRequest = HttpRequest.newBuilder()
             .uri(URI.create(endpoint + "/batch-infer"))
@@ -583,16 +584,16 @@ public class InternalMLProvider implements ModelProvider {
                 mapper.writeValueAsString(request)
             ))
             .build();
-            
+
         HttpResponse<String> response = httpClient.send(
             httpRequest, HttpResponse.BodyHandlers.ofString()
         );
-        
+
         // 解析响应
         BatchResponse batchResponse = mapper.readValue(
             response.body(), BatchResponse.class
         );
-        
+
         // 转换为 RowData
         return batchResponse.getResults().stream()
             .map(result -> GenericRowData.of(
@@ -601,14 +602,14 @@ public class InternalMLProvider implements ModelProvider {
             ))
             .collect(Collectors.toList());
     }
-    
+
     @Override
     public ResolvedSchema getInputSchema() {
         return ResolvedSchema.of(
             Column.physical("input_text", DataTypes.STRING())
         );
     }
-    
+
     @Override
     public ResolvedSchema getOutputSchema() {
         return ResolvedSchema.of(
@@ -616,7 +617,7 @@ public class InternalMLProvider implements ModelProvider {
             Column.physical("confidence", DataTypes.DOUBLE())
         );
     }
-    
+
     @Override
     public void close() {
         // 清理资源
@@ -659,47 +660,47 @@ graph TB
         A2[ML_PREDICT TVF]
         A3[Regular SQL Operations]
     end
-    
+
     subgraph Planner["Flink SQL Planner"]
         B1[Model Definition Registry]
         B2[Schema Validation]
         B3[Physical Plan Generation]
     end
-    
+
     subgraph Runtime["Runtime Layer"]
         C1[AsyncWaitOperator]
         C2[ModelProvider Interface]
         C3[Batch Buffer]
         C4[Error Handler]
     end
-    
+
     subgraph Providers["Model Providers"]
         D1[OpenAI Provider]
         D2[HuggingFace Provider]
         D3[Custom Provider]
     end
-    
+
     subgraph External["External Services"]
         E1[OpenAI API]
         E2[HF Inference API]
         E3[Internal ML Service]
     end
-    
+
     A1 --> B1
     A2 --> B2
     B2 --> B3
     B1 --> B3
     B3 --> C1
     A3 --> B3
-    
+
     C1 --> C2
     C1 --> C3
     C1 --> C4
-    
+
     C2 --> D1
     C2 --> D2
     C2 --> D3
-    
+
     D1 --> E1
     D2 --> E2
     D3 --> E3
@@ -715,24 +716,24 @@ flowchart LR
         I3[事件 3]
         I4[...]
     end
-    
+
     subgraph Buffer["批量缓冲区"]
         B1[(Batch Buffer)]
     end
-    
+
     subgraph Async["异步推理"]
         A1[Request 1]
         A2[Request 2]
         A3[并发执行]
     end
-    
+
     subgraph Output["输出流"]
         O1[事件 1 + 预测]
         O2[事件 2 + 预测]
         O3[事件 3 + 预测]
         O4[...]
     end
-    
+
     I1 & I2 & I3 --> B1
     B1 --> A1 & A2
     A1 & A2 --> A3
@@ -750,7 +751,7 @@ gantt
     ML_PREDICT TVF              :done, a2, 2025-01, 2025-03
     OpenAI Provider             :done, a3, 2025-01, 2025-03
     HuggingFace Provider        :done, a4, 2025-02, 2025-04
-    
+
     section Flink 2.2
     Table API Support           :active, b1, 2025-04, 2025-07
     Python Table API ML         :b2, 2025-05, 2025-08
@@ -764,13 +765,13 @@ gantt
 flowchart TD
     A[需要实时 AI 推理？] -->|是| B[数据规模？]
     A -->|否| C[使用离线批处理]
-    
+
     B -->|> 1000 TPS| D{延迟要求？}
     B -->|< 100 TPS| E[使用 REST API 直连]
-    
+
     D -->|< 1s| F[使用 Flink ML_PREDICT]
     D -->|> 5s| G[使用批处理引擎]
-    
+
     F --> H[部署模式？]
     H -->|托管 SaaS| I[OpenAI Provider]
     H -->|自托管模型| J[Custom Provider]
@@ -781,21 +782,13 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink 2.1 Release Notes, "Model DDL and ML_PREDICT Support", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.1/release-notes/flink-2.1/
 
-[^2]: Apache Flink FLIP-375: "Model DDL for ML Inference in Flink SQL", 2024. https://cwiki.apache.org/confluence/display/FLINK/FLIP-375
 
-[^3]: OpenAI API Documentation, "Batch API", 2025. https://platform.openai.com/docs/guides/batch
 
-[^4]: Hugging Face Inference API Documentation, 2025. https://huggingface.co/docs/api-inference/index
 
-[^5]: Apache Flink JIRA, FLINK-37548: "Implement ML_PREDICT table-valued function", https://issues.apache.org/jira/browse/FLINK-37548
 
-[^6]: Apache Flink JIRA, FLINK-34992: "Add Model DDL syntax support", https://issues.apache.org/jira/browse/FLINK-34992
 
-[^7]: Apache Flink 2.2 Roadmap, "Enhanced ML Integration", 2025. https://cwiki.apache.org/confluence/display/FLINK/2.2+Release
 
-[^8]: Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
 ---
 

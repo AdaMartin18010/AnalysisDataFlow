@@ -15,6 +15,7 @@ M_{split}(split_i, t) = \langle w_i(t), a_i(t), p_i(t), idle_i(t) \rangle
 $$
 
 其中：
+
 - $w_i(t)$: 分片$split_i$在时刻$t$的当前Watermark值
 - $a_i(t)$: 分片在时刻$t$的活跃时间(active time)
 - $p_i(t)$: 分片在时刻$t$的暂停时间(paused time)
@@ -33,6 +34,7 @@ WP(split_i, t) = \min_{e \in B_i(t)} \{ T_{event}(e) \}
 $$
 
 其中：
+
 - $B_i(t)$: 分片$split_i$在时刻$t$的待处理记录缓冲区
 - $T_{event}(e)$: 记录$e$的事件时间戳
 
@@ -87,6 +89,7 @@ $$
 **证明概要**:
 
 由Def-F-15-11的定义，三个状态构成完备事件组：
+
 - 分片在任意时刻只能处于 `READING`、`PAUSED`、`IDLE` 三种状态之一
 - 根据状态机设计，状态转移是确定性的且互斥的
 - 因此时间积分覆盖整个采样周期：
@@ -134,7 +137,7 @@ $$
 WP_{global}^{\prime}(t) = \min_{j: T_{idle}^{(j)} = 0} WP(split_j, t)
 $$
 
-3. 该机制防止慢速或停滞分片阻塞整个管道的Watermark推进
+1. 该机制防止慢速或停滞分片阻塞整个管道的Watermark推进
 
 ---
 
@@ -189,6 +192,7 @@ Flink 2.1新增的7个Split-level指标构成完整的分片状态描述：
 **原理**: 通过观察下游算子的`records-lag-max`或输出延迟来推断数据倾斜。
 
 **局限性**:
+
 - 滞后性：延迟是倾斜的间接结果，检测时倾斜已影响业务
 - 模糊性：无法区分是数据倾斜还是源读取能力不足
 - 粒度缺失：只能定位到算子级别，无法定位具体分片
@@ -198,6 +202,7 @@ Flink 2.1新增的7个Split-level指标构成完整的分片状态描述：
 **原理**: 直接测量每个分片因Watermark对齐而被迫暂停的时间。
 
 **优势**:
+
 - 实时性：暂停时间在对齐策略触发时立即累积
 - 精确性：量化了倾斜的严重程度（毫秒级精度）
 - 可定位：直接指向具体分片（如Kafka的特定Partition）
@@ -245,6 +250,7 @@ if (noRecordsFetchedFor(split, idleTimeout)):
 ```
 
 **空闲与暂停的本质区别**:
+
 - **空闲**: 数据源无数据可读取（外部因素）
 - **暂停**: 有数据但故意不读取（内部控制策略）
 
@@ -278,7 +284,8 @@ flink_taskmanager_job_task_source_split_accumulatedPausedTimeMs{split_id="partit
 flink_taskmanager_job_task_source_split_accumulatedIdleTimeMs{split_id="partition-0"}
 ```
 
-**论证**: 
+**论证**:
+
 - 使用`split_id`标签支持PromQL的分片级聚合与过滤
 - 符合OpenMetrics标准，兼容Grafana等可视化工具
 
@@ -347,9 +354,9 @@ groups:
       - alert: FlinkSplitHighPausedTime
         expr: |
           (
-            flink_taskmanager_job_task_source_split_pausedTimeMsPerSecond 
-            / 
-            (flink_taskmanager_job_task_source_split_activeTimeMsPerSecond 
+            flink_taskmanager_job_task_source_split_pausedTimeMsPerSecond
+            /
+            (flink_taskmanager_job_task_source_split_activeTimeMsPerSecond
              + flink_taskmanager_job_task_source_split_pausedTimeMsPerSecond)
           ) > 0.3
         for: 5m
@@ -420,7 +427,7 @@ flink_taskmanager_job_task_source_split_currentWatermark{job="flink-job", source
 # 各Partition的暂停时间占比（倾斜指标）
 (
   flink_taskmanager_job_task_source_split_accumulatedPausedTimeMs
-  / 
+  /
   (
     flink_taskmanager_job_task_source_split_accumulatedActiveTimeMs
     + flink_taskmanager_job_task_source_split_accumulatedPausedTimeMs
@@ -454,21 +461,22 @@ partition-3     | 1743580800000    | 60                    | 6%
 min(flink_taskmanager_job_task_source_split_currentWatermark)
 ```
 
-2. **查看各分片Watermark**: 发现大部分分片Watermark正常，但`partition-5`停滞不前
+1. **查看各分片Watermark**: 发现大部分分片Watermark正常，但`partition-5`停滞不前
 
 ```promql
 flink_taskmanager_job_task_source_split_currentWatermark
 ```
 
-3. **分析时间分布**: 发现`partition-5`的`idleTimeMsPerSecond`接近1000ms
+1. **分析时间分布**: 发现`partition-5`的`idleTimeMsPerSecond`接近1000ms
 
 ```promql
 flink_taskmanager_job_task_source_split_idleTimeMsPerSecond{split_id="partition-5"}
 ```
 
-4. **根因定位**: 该Partition的数据生产者出现故障，无新数据写入
+1. **根因定位**: 该Partition的数据生产者出现故障，无新数据写入
 
 **解决方案**:
+
 - 检查上游数据生产者状态
 - 考虑启用空闲超时自动推进该分片的Watermark
 - 或调整Watermark策略，对该分片使用处理时间
@@ -585,17 +593,17 @@ Split-level时间分布的堆叠面积图示意：
 graph LR
     subgraph "1000ms / 1秒"
         subgraph Split0["Split-0 (健康)"]
-            A0[Active: 850ms] 
+            A0[Active: 850ms]
             P0[Paused: 50ms]
             I0[Idle: 100ms]
         end
-        
+
         subgraph Split1["Split-1 (数据倾斜)"]
             A1[Active: 100ms]
             P1[Paused: 850ms]
             I1[Idle: 50ms]
         end
-        
+
         subgraph Split2["Split-2 (空闲)"]
             A2[Active: 50ms]
             P2[Paused: 0ms]
@@ -606,11 +614,11 @@ graph LR
     style A0 fill:#90EE90
     style P0 fill:#FFD700
     style I0 fill:#87CEEB
-    
+
     style A1 fill:#90EE90
     style P1 fill:#FF6B6B
     style I1 fill:#87CEEB
-    
+
     style A2 fill:#90EE90
     style P2 fill:#FFD700
     style I2 fill:#6495ED
@@ -619,13 +627,3 @@ graph LR
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink 2.1 Release Notes, "Split-level Watermark Metrics", 2026. https://nightlies.apache.org/flink/flink-docs-release-2.1/docs/ops/monitoring/split_level_metrics/
-
-[^2]: FLINK-37410: "Expose split-level watermark and time metrics for sources", Apache Flink JIRA, 2025. https://issues.apache.org/jira/browse/FLINK-37410
-
-[^3]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
-
-[^4]: Apache Flink Documentation, "Watermark Strategies", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/time/#watermark-strategies
-
-[^5]: Prometheus Documentation, "Metric and Label Naming", 2025. https://prometheus.io/docs/practices/naming/

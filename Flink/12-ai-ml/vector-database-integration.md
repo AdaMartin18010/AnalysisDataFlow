@@ -15,6 +15,7 @@
 $$C_{vdb}: \mathcal{D}_F \times \mathbb{N}^d \rightarrow \mathcal{VDB} \times \mathbb{R}^{k \times d}$$
 
 其中：
+
 - $d$: 向量维度
 - $k$: 检索返回的Top-K结果数
 - 输入：Flink数据流 + 嵌入向量 $\mathbf{v} \in \mathbb{R}^d$
@@ -29,7 +30,7 @@ interface VectorSink<T> extends RichSinkFunction<T> {
     void flushBatch(List<VectorRecord<T>> batch);
 }
 
-// 向量检索接口  
+// 向量检索接口
 interface VectorLookupFunction extends TableFunction<Row> {
     @DataTypeHint("ROW<id STRING, vector ARRAY<FLOAT>, score FLOAT>")
     void eval(@DataTypeHint("ARRAY<FLOAT>") float[] queryVector, int topK);
@@ -93,6 +94,7 @@ $$\mathcal{K}(\mathbf{q}, k) = \{ (\mathbf{v}_i, \delta(\mathbf{q}, \mathbf{v}_i
 $$T(B) = \frac{B}{L_{net} + B \cdot L_{proc}} \cdot \frac{1}{1 + \alpha \cdot e^{-\beta B}}$$
 
 其中：
+
 - $L_{net}$: 网络延迟
 - $L_{proc}$: 单条处理延迟
 - $\alpha, \beta$: 批处理效率系数
@@ -114,6 +116,7 @@ $$R(d) = R_0 \cdot \left(1 - \gamma \cdot \frac{d - d_0}{d_{max}}\right)$$
 其中 $\gamma$ 为索引类型相关常数，HNSW索引 $\gamma_{HNSW} < \gamma_{IVF}$。
 
 **证明概要：**
+
 1. 高维空间中点间距离趋于集中（维度灾难）
 2. HNSW通过分层图结构保持局部连通性，缓解此效应
 3. 维度增加导致索引划分粒度降低，召回率下降
@@ -161,7 +164,7 @@ graph TB
         B --> C[Vector Batch Buffer]
         C --> D{Sink选择}
     end
-    
+
     subgraph "向量数据库层"
         D -->|gRPC| E[Milvus Cluster]
         D -->|JDBC| F[PostgreSQL+PgVector]
@@ -169,7 +172,7 @@ graph TB
         D -->|HTTP| H[Weaviate]
         D -->|gRPC| I[Qdrant]
     end
-    
+
     subgraph "查询层"
         J[Query Stream] --> K[Vector Lookup Join]
         E --> K
@@ -203,19 +206,19 @@ flowchart TD
     B -->|< 1M| C[考虑PgVector]
     B -->|1M - 100M| D[考虑Qdrant/Weaviate]
     B -->|> 100M| E[考虑Milvus/Pinecone]
-    
+
     C --> F{已有PostgreSQL?}
     F -->|是| G[PgVector推荐]
     F -->|否| H[评估迁移成本]
-    
+
     D --> I{运维能力?}
     I -->|强| J[Qdrant自托管]
     I -->|弱| K[Weaviate Cloud]
-    
+
     E --> L{预算偏好?}
     L -->|CAPEX优先| M[Milvus自托管]
     L -->|OPEX优先| N[Pinecone托管]
-    
+
     G --> O[决策完成]
     H --> O
     J --> O
@@ -237,6 +240,7 @@ flowchart TD
 | **召回率** | >95% @ef=128 | 85-95% @nprobe=128 |
 
 **选型建议：**
+
 - **HNSW**：实时写入场景、对召回率敏感、内存充足
 - **IVF**：批量导入场景、内存受限、可接受定期重建
 
@@ -245,17 +249,20 @@ flowchart TD
 **场景：** 检索与"electronics"类别相关的相似产品向量。
 
 **策略A - 预过滤（Pre-filtering）：**
+
 ```sql
 -- PgVector示例
-SELECT * FROM products 
+SELECT * FROM products
 WHERE category = 'electronics'
-ORDER BY embedding <-> ? 
+ORDER BY embedding <-> ?
 LIMIT 10;
 ```
+
 - 优点：精确过滤，无冗余计算
 - 缺点：类别数据稀疏时向量索引失效
 
 **策略B - 后过滤（Post-filtering）：**
+
 ```java
 // Milvus示例
 // 1. 先执行ANN检索
@@ -266,15 +273,18 @@ candidates.stream()
     .limit(10)
     .collect();
 ```
+
 - 优点：向量检索效率高
 - 缺点：可能返回不足k条结果
 
 **策略C - 联合索引（Filtered Index）：**
+
 ```python
 # Milvus partition key
 milvus.create_partition("products_electronics")
 milvus.load_partition("products_electronics")
 ```
+
 - 优点：两者优势兼得
 - 缺点：存储开销增加
 
@@ -295,7 +305,7 @@ graph LR
         A2[TaskManager-2] -->|gRPC| B
         A3[TaskManager-3] -->|gRPC| B
     end
-    
+
     subgraph "Milvus Cluster"
         B --> C[RootCoord]
         C --> D[QueryNode-1]
@@ -304,7 +314,7 @@ graph LR
         B --> G[DataNode-1]
         B --> H[DataNode-2]
     end
-    
+
     subgraph "存储层"
         G --> I[MinIO/S3]
         H --> I
@@ -364,6 +374,7 @@ Flink TaskManager → Internet → Pinecone API Gateway → Vector Index
 ```
 
 **优化策略：**
+
 1. **批量写入**：聚合减少API调用次数
 2. **异步检索**：使用Flink Async I/O降低阻塞
 3. **区域部署**：Flink与Pinecone同区域部署
@@ -380,14 +391,14 @@ import org.apache.flink.streaming.connectors.milvus.*;
 
 public class MilvusSyncPipeline {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 源数据流：产品描述
         DataStream<ProductDocument> source = env
             .addSource(new KafkaSource<>())
             .map(new EmbeddingUDF("text-embedding-3-small"));
-        
+
         // Milvus Sink配置
         MilvusSinkConfig config = MilvusSinkConfig.builder()
             .withHost("milvus-cluster.default.svc")
@@ -396,7 +407,7 @@ public class MilvusSyncPipeline {
             .withBatchSize(200)
             .withFlushInterval(Duration.ofSeconds(5))
             .build();
-        
+
         // 嵌入转换 + 批量写入
         source
             .map(doc -> VectorRecord.builder()
@@ -408,7 +419,7 @@ public class MilvusSyncPipeline {
                 .build())
             .addSink(new MilvusSink<>(config))
             .name("Milvus Vector Sink");
-        
+
         env.execute("Product Vector Sync");
     }
 }
@@ -416,12 +427,12 @@ public class MilvusSyncPipeline {
 // 嵌入UDF实现
 class EmbeddingUDF extends RichMapFunction<String, ProductDocument> {
     private transient EmbeddingClient client;
-    
+
     @Override
     public void open(Configuration params) {
         client = EmbeddingClient.create("text-embedding-3-small");
     }
-    
+
     @Override
     public ProductDocument map(String description) {
         float[] embedding = client.embed(description);
@@ -439,7 +450,7 @@ class EmbeddingUDF extends RichMapFunction<String, ProductDocument> {
 ```java
 // 向量检索Lookup Join
 TableResult result = tEnv.sqlQuery("""
-    SELECT 
+    SELECT
         q.query_id,
         d.doc_id,
         d.title,
@@ -461,8 +472,8 @@ TableResult result = tEnv.sqlQuery("""
 // Lookup Function实现
 class MilvusLookupFunction extends TableFunction<Row> {
     private MilvusClient client;
-    
-    public void eval(float[] queryVector, String collection, 
+
+    public void eval(float[] queryVector, String collection,
                      int topK, String metric) {
         SearchResults results = client.search(
             SearchParam.newBuilder()
@@ -472,7 +483,7 @@ class MilvusLookupFunction extends TableFunction<Row> {
                 .withMetricType(MetricType.valueOf(metric))
                 .build()
         );
-        
+
         for (SearchResult result : results.getResults()) {
             collect(Row.of(
                 result.getId(),
@@ -498,7 +509,7 @@ graph TB
         A[用户行为流] --> B[用户画像构建]
         C[内容库] --> D[内容嵌入]
     end
-    
+
     subgraph "Flink处理层"
         B --> E[用户偏好向量]
         D --> F[内容向量索引]
@@ -508,7 +519,7 @@ graph TB
         H --> I[混合排序]
         J[业务规则] --> I
     end
-    
+
     subgraph "输出层"
         I --> K[Top-N推荐结果]
         K --> L[推荐服务]
@@ -517,36 +528,36 @@ graph TB
 
 ```java
 // 混合推荐实现
-DataStream<Recommendation> recommendations = 
+DataStream<Recommendation> recommendations =
     userBehaviorStream
         // 1. 构建用户实时兴趣向量
         .keyBy(UserBehavior::getUserId)
         .window(TumblingEventTimeWindows.of(Time.minutes(5)))
         .aggregate(new InterestVectorAggregate())
-        
+
         // 2. 向量检索获取候选
         .flatMap(new AsyncFunction<UserVector, Candidate>() {
             @Override
-            public void asyncInvoke(UserVector userVec, 
+            public void asyncInvoke(UserVector userVec,
                                    ResultFuture<Candidate> resultFuture) {
                 // 异步调用Milvus
                 milvusAsync.search(
                     userVec.getInterestVector(),
                     topK = 100,
                     filter = "status = 'active'"  // 结构化过滤
-                ).thenAccept(results -> 
+                ).thenAccept(results ->
                     resultFuture.complete(results.stream()
                         .map(r -> new Candidate(r.getId(), r.getScore()))
                         .collect(Collectors.toList()))
                 );
             }
         })
-        
+
         // 3. 精排（实时特征拼接）
         .keyBy(Candidate::getItemId)
         .connect(itemFeatureStream)
         .process(new RankingProcessFunction())
-        
+
         // 4. 多样性后处理
         .keyBy(Rec::getUserId)
         .process(new DiversityRerankFunction(topN = 20));
@@ -609,23 +620,23 @@ mindmap
 ```mermaid
 stateDiagram-v2
     [*] --> 数据摄取: Kafka/Source
-    
+
     数据摄取 --> 预处理: 清洗/过滤
     预处理 --> 嵌入计算: UDF
-    
+
     嵌入计算 --> 批量缓冲: Buffer
     嵌入计算 --> 异常处理: 嵌入失败
-    
+
     批量缓冲 --> 写入Milvus: Batch=200
     批量缓冲 --> 写入PgVector: JDBC Batch
     批量缓冲 --> 写入Pinecone: REST API
-    
+
     写入Milvus --> Checkpoint: Barrier
     写入PgVector --> Checkpoint: Barrier
     写入Pinecone --> Checkpoint: Barrier
-    
+
     Checkpoint --> [*]: Commit
-    
+
     异常处理 --> 死信队列: DLQ
     死信队列 --> [*]: 人工处理
 ```
@@ -640,14 +651,14 @@ graph LR
         A3[Pinecone] -->|30K| B3[▓▓▓▓▓▓░░░]
         A4[Qdrant] -->|40K| B4[▓▓▓▓▓▓▓▓░]
     end
-    
+
     subgraph "检索延迟 (p99, ms)"
         C1[Milvus] -->|8| D1[▓▓░░░░░░░]
         C2[PgVector] -->|45| D2[▓▓▓▓▓░░░░]
         C3[Pinecone] -->|35| D3[▓▓▓▓░░░░░]
         C4[Qdrant] -->|12| D4[▓▓▓░░░░░░]
     end
-    
+
     subgraph "运维复杂度"
         E1[Milvus] -->|高| F1[▓▓▓▓▓▓▓▓░]
         E2[PgVector] -->|低| F2[▓▓▓░░░░░░]
@@ -659,23 +670,3 @@ graph LR
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Milvus Documentation, "Milvus Overview", 2025. https://milvus.io/docs/overview.md
-
-[^2]: PgVector GitHub Repository, "pgvector/pgvector: Open-source vector similarity search for Postgres", 2025. https://github.com/pgvector/pgvector
-
-[^3]: Pinecone Documentation, "Pinecone API Reference", 2025. https://docs.pinecone.io/reference
-
-[^4]: Zilliz, "Milvus Flink Connector", Milvus Connectors, 2025. https://github.com/zilliztech/flink-connector-milvus
-
-[^5]: Qdrant Documentation, "Qdrant Vector Database", 2025. https://qdrant.tech/documentation/
-
-[^6]: Weaviate Documentation, "Weaviate Vector Search Engine", 2025. https://weaviate.io/developers/weaviate
-
-[^7]: Malkov, Yu A., and D. A. Yashunin. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs." IEEE TPAMI, 42(4), 2018.
-
-[^8]: Jegou, Hervé, et al. "Product quantization for nearest neighbor search." IEEE TPAMI, 33(1), 2011.
-
-[^9]: Apache Flink Documentation, "Async I/O", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/
-
-[^10]: OpenAI Documentation, "Embeddings API", 2025. https://platform.openai.com/docs/guides/embeddings
