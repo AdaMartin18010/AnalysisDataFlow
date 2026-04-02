@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 12 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 16 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -324,6 +324,9 @@ flowchart TD
 | **07-case-studies/** | (预留) | 生产案例研究 |
 | **08-roadmap/** | 2 | 发展路线图、Flink 2.1 前沿追踪 |
 | **09-language-foundations/** | 6 | Scala语言基础、TypeInformation派生、Java API调用、社区API、迁移指南 |
+| **10-deployment/** | 1 | Kubernetes 部署指南 |
+| **11-benchmarking/** | 1 | 流式基准测试 |
+| **12-ai-ml/** | 1 | 在线学习算法、流式机器学习 |
 
 ---
 
@@ -458,4 +461,4 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 
 *索引创建时间: 2026-04-02*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 22 核心文档 | L3-L5 形式化等级*
+*文档统计: 16 核心文档 | L3-L5 形式化等级*

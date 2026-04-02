@@ -113,6 +113,9 @@
 | Thm-S-04-01 | Dataflow确定性定理 | Struct/01.04 | L4 | ✅ |
 | Thm-S-05-01 | Go-CS-sync与CSP编码保持迹语义等价 | Struct/01.05 | L3 | ✅ |
 | Thm-S-06-01 | Petri网活性与有界性的可达图判定 | Struct/01.06 | L2 | ✅ |
+| Thm-S-01-03 | 会话类型安全性 (Type Safety) | Struct/01.07 | L4-L5 | ✅ |
+| Thm-S-01-04 | 会话类型无死锁性 (Deadlock Freedom) | Struct/01.07 | L4-L5 | ✅ |
+| Thm-S-01-05 | 协议合规性 (Protocol Compliance) | Struct/01.07 | L4-L5 | ✅ |
 
 ### 2.2 性质层定理 (02-properties)
 
@@ -125,6 +128,7 @@
 | Thm-S-09-01 | Watermark单调性定理 | Struct/02.03 | L4 | ✅ |
 | Thm-S-10-01 | Actor安全/活性组合性 | Struct/02.04 | L4 | ✅ |
 | Thm-S-11-01 | 类型安全(Progress + Preservation) | Struct/02.05 | L3 | ✅ |
+| Thm-S-02-08 | CALM定理 (Consistency As Logical Monotonicity) | Struct/02.06 | L5 | ✅ |
 
 ### 2.3 关系层定理 (03-relationships)
 
@@ -160,6 +164,11 @@
 | 编号 | 名称 | 位置 | 形式化等级 | 状态 |
 |------|------|------|-----------|------|
 | Thm-K-05-01 | 核心映射语义保持性定理 | Knowledge/05 | L4-L5 | ✅ |
+| Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | ✅ |
+| Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | ✅ |
+| Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
 
 ---
 

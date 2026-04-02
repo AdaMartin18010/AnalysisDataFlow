@@ -50,6 +50,10 @@
     - [9.2 文档统计](#92-文档统计)
     - [9.3 核心定义索引](#93-核心定义索引)
     - [9.4 维护说明](#94-维护说明)
+  - [10. 国际顶尖课程映射](#10-国际顶尖课程映射)
+    - [10.1 MIT 6.824 Distributed Systems](#101-mit-6824-distributed-systems)
+    - [10.2 Stanford CS240](#102-stanford-cs240)
+    - [10.3 CMU 15-712](#103-cmu-15-712)
 
 ---
 
@@ -172,6 +176,7 @@ graph TB
         BP --> BP3[E-Commerce 电商]
         BP --> BP4[Gaming 游戏]
         BP --> BP5[Log Analytics 日志]
+        BP --> BP6[Double11 双11]
 
         TS --> TS1[引擎选型]
         TS --> TS2[存储选型]
@@ -758,6 +763,7 @@ Knowledge/
 ├── 03-business-patterns/
 │   ├── iot-stream-processing.md                   [IoT场景] ✅
 │   ├── fintech-realtime-risk-control.md           [金融风控] ✅
+│   ├── alibaba-double11-flink.md                  [阿里双11] ✅
 │   ├── real-time-recommendation.md                [实时推荐] ✅
 │   ├── gaming-analytics.md                        [游戏分析] ✅
 │   └── log-monitoring.md                          [日志监控] ✅
@@ -776,10 +782,10 @@ Knowledge/
 |------|--------|--------|------|------------|
 | 01-concept-atlas | 2 | 0 | 2 | L3-L4 |
 | 02-design-patterns | 7 | 0 | 7 | L4-L5 |
-| 03-business-patterns | 5 | 0 | 5 | L4 |
+| 03-business-patterns | 6 | 0 | 6 | L4 |
 | 04-technology-selection | 3 | 0 | 3 | L3 |
 | 05-mapping-guides | 2 | 0 | 2 | L4-L5 |
-| **总计** | **19** | **0** | **19** | L3-L5 |
+| **总计** | **20** | **0** | **20** | L3-L5 |
 
 ### 9.3 核心定义索引
 
@@ -790,6 +796,9 @@ Knowledge/
 | Def-K-01-03 | Actor 模型 | concept-atlas/streaming-models-mindmap.md | 消息驱动并发 |
 | Def-K-02-01 | Event Time Processing | design-patterns/pattern-event-time-processing.md | 模式P01定义 |
 | Def-K-02-02 | Watermark 策略 | design-patterns/pattern-event-time-processing.md | Watermark生成策略 |
+| Def-K-03-11 | 双11实时计算架构 | business-patterns/alibaba-double11-flink.md | 阿里巴巴双11五层架构 |
+| Def-K-03-12 | 每秒40亿+ TPS处理 | business-patterns/alibaba-double11-flink.md | 超大规模吞吐量定义 |
+| Def-K-03-13 | 全球数据中心协同 | business-patterns/alibaba-double11-flink.md | 异地多活架构 |
 
 ### 9.4 维护说明
 
@@ -812,9 +821,131 @@ Knowledge/
 
 ---
 
+## 10. 国际顶尖课程映射
+
+本章节建立本项目知识体系与国际顶尖分布式系统课程（MIT 6.824、Stanford CS240、CMU 15-712）的映射关系，为学习者提供从课程理论到工程实践的对照路径。
+
+### 10.1 MIT 6.824 Distributed Systems
+
+> **课程主页**: <https://pdos.csail.mit.edu/6.824/>
+> **核心内容**: 分布式系统理论基础 + 4个核心Lab实现
+
+MIT 6.824 是分布式系统领域的标杆课程，其4个Lab覆盖了从批处理到分布式共识、从KV存储到分片系统的完整链路。
+
+| Lab | 主题 | 核心概念 | 本项目映射 | 形式化基础 |
+|-----|------|----------|------------|------------|
+| **Lab 1** | MapReduce | 批处理并行计算、容错、Straggler处理 | [Pattern: Event Time Processing](./02-design-patterns/pattern-event-time-processing.md) | `Def-S-04-04` Watermark语义 |
+| **Lab 2** | Raft | 共识算法、Leader选举、日志复制、持久化 | [Struct: Cross-Model Mappings](../Struct/03-relationships/03.05-cross-model-mappings.md) | `Thm-S-16-01` 共识等价性 |
+| **Lab 3** | KV Store (无分片) | 线性一致性、快照隔离、状态机复制 | [Flink: Checkpoint机制](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | `Thm-S-17-01` Checkpoint一致性 |
+| **Lab 4** | Sharded KV | 分片路由、两阶段提交、配置变更 | [Pattern: IoT流处理](./03-business-patterns/iot-stream-processing.md) | `Thm-S-18-01` Exactly-Once |
+
+**Lab映射关系图**:
+
+```mermaid
+graph LR
+    subgraph "MIT 6.824 Lab 链路"
+        LAB1[Lab 1: MapReduce]
+        LAB2[Lab 2: Raft]
+        LAB3[Lab 3: KV Store]
+        LAB4[Lab 4: Sharded KV]
+    end
+
+    subgraph "本项目知识体系"
+        P01[Pattern 01: Event Time]
+        RAFT[Struct: 跨模型映射]
+        CKPT[Flink: Checkpoint]
+        IOT[IoT流处理场景]
+    end
+
+    LAB1 -->|批流统一基础| P01
+    LAB2 -->|共识形式化| RAFT
+    LAB3 -->|状态快照| CKPT
+    LAB4 -->|分布式状态| IOT
+
+    style LAB2 fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+    style RAFT fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+```
+
+**学习路径建议**:
+
+```
+Lab 1 (MapReduce) ──► 理解批流统一的基础
+         │
+         ▼
+Lab 2 (Raft) ───────► 深入共识算法的形式化基础
+         │                └── 推荐阅读: Struct/03-relationships/03.05-cross-model-mappings.md
+         ▼
+Lab 3 (KV Store) ───► 理解状态管理与Checkpoint机制
+         │                └── 推荐阅读: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+         ▼
+Lab 4 (Sharded KV) ─► 掌握分布式状态与分片处理
+                      └── 推荐阅读: Knowledge/03-business-patterns/iot-stream-processing.md
+```
+
+### 10.2 Stanford CS240
+
+> **课程主页**: <https://web.stanford.edu/class/cs240/>
+> **核心内容**: 高级操作系统与分布式系统安全
+
+Stanford CS240 从操作系统视角深入分布式系统，重点涵盖：
+
+| 模块 | 主题 | 本项目映射 |
+|------|------|------------|
+| **OS Fundamentals** | 进程调度、内存管理、文件系统 | Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md |
+| **Concurrency** | 同步原语、死锁、事务内存 | Struct/03-relationships/03.02-flink-to-process-calculus.md |
+| **Distributed Systems** | RPC、分布式文件系统、一致性模型 | Knowledge/04-technology-selection/engine-selection-guide.md |
+| **Security** | 认证、授权、可信计算 | (待补充) |
+
+### 10.3 CMU 15-712
+
+> **课程主页**: <https://www.cs.cmu.edu/~dga/15-712/>
+> **核心内容**: 高级分布式系统与云基础设施
+
+CMU 15-712 聚焦于大规模分布式系统的前沿研究：
+
+| 模块 | 主题 | 本项目映射 |
+|------|------|------------|
+| **Cloud Infrastructure** | 虚拟化、容器编排、资源调度 | Knowledge/04-technology-selection/engine-selection-guide.md |
+| **Stream Processing** | 流计算模型、Exactly-Once语义 | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
+| **Storage Systems** | 分布式存储、一致性协议 | Struct/03-relationships/03.05-cross-model-mappings.md |
+| **ML Systems** | 分布式训练、推理服务 | (待补充) |
+
+**三课程对比**:
+
+```mermaid
+graph TB
+    subgraph "国际顶尖课程对比"
+        MIT[MIT 6.824<br/>Distributed Systems]
+        STAN[Stanford CS240<br/>Advanced OS]
+        CMU[CMU 15-712<br/>Advanced Distributed Systems]
+    end
+
+    subgraph "核心侧重点"
+        M1[共识算法<br/>Lab驱动]
+        S1[系统安全<br/>OS视角]
+        C1[云原生<br/>研究前沿]
+    end
+
+    subgraph "本项目对应"
+        K1[Struct/ 形式化理论]
+        K2[Knowledge/ 工程实践]
+        K3[Flink/ 技术实现]
+    end
+
+    MIT --> M1 --> K1
+    STAN --> S1 --> K2
+    CMU --> C1 --> K3
+
+    style MIT fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style STAN fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style CMU fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+```
+
+---
+
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-02 (全面补全完成)*
-*版本: v2.0*
+*更新时间: 2026-04-02 (新增国际顶尖课程映射)*
+*版本: v2.1*
 *维护者: Knowledge Team*
 *状态: ✅ 100% 完成*
 *关联: [Struct/00-INDEX.md](../Struct/00-INDEX.md) · [Flink/](../Flink/)*
