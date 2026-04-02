@@ -51,6 +51,7 @@ $$
 其中 $\mathtt{Pid}$ 表示进程标识符类型，允许进程作为一等公民传递。
 
 **关键特性**：
+
 1. **高阶性**：进程可作为参数传递给其他进程
 2. **动态绑定**：进程引用在运行时解析
 3. **作用域控制**：通过 $(\nu p)$ 限制进程可见性
@@ -67,6 +68,7 @@ p \rightarrow q[M \triangleright K]. C
 $$
 
 其中：
+
 - $M$: 传递的数据值
 - $K$: 延续，描述接收方处理 $M$ 后的下一步交互
 - $C$: 发送方的后续Choreography
@@ -99,6 +101,7 @@ $$
 **命题**：若 $C$ 是良类型的进程参数化Choreography，则对于任意合法的进程替换 $\sigma = [\vec{q}/\vec{p}]$，$C\sigma$ 仍保持良类型性。
 
 **证明概要**：
+
 1. 由定义 $\Lambda \vec{p}. C$ 满足 $fv(C) \subseteq \{\vec{p}\}$
 2. 类型系统保证 $\vec{p}$ 在 $C$ 中仅用于通信端点
 3. 替换 $\sigma$ 保持类型一致性（$\Gamma \vdash \vec{q} : \mathtt{Pid}$）
@@ -111,6 +114,7 @@ $$
 **命题**：1CP可表达所有动态拓扑分布式系统，其表达力严格超过程程参数化Choreographic语言（如MultiChor）。
 
 **论证**：
+
 1. 任何动态拓扑系统可建模为进程创建/销毁序列
 2. 1CP的 $\mathbf{spawn}$ 和 $(\nu p)$ 可模拟此序列
 3. MultiChor的静态角色集无法表示运行时角色变化
@@ -140,18 +144,18 @@ graph TB
         CL[Core Choreographic<br/>语言核心] --> CO[Choral<br/>对象化扩展]
         CL --> MC[MultiChor<br/>参数化角色]
         CL --> CP[Chorλ<br/>函数式扩展]
-        
+
         CO --> 1CP[1CP<br/>第一人称Choreographic]
         MC --> 1CP
         CP --> 1CP
-        
+
         1CP --> CPC[CPC<br/>Continuation-Passing]
         1CP --> PP[Process Param.<br/>进程参数化]
-        
+
         CPC --> CC[Census-Polymorphic<br/>PLDI 2025]
         PP --> CC
     end
-    
+
     style 1CP fill:#f9f,stroke:#333,stroke-width:4px
     style CC fill:#bbf,stroke:#333,stroke-width:2px
 ```
@@ -180,6 +184,7 @@ $$
 $$
 
 **关键区别**：
+
 - MultiChor的 $l$ 是**编译期**参数，类型擦除后确定
 - 1CP的 $p$ 是**运行期**值，可动态传递
 
@@ -192,6 +197,7 @@ $$
 $$
 
 1CP与Census的关系：
+
 - 1CP的进程参数化可表达Census的动态参与者
 - Census的人口统计约束可嵌入1CP的类型系统
 - 两者在理论上可相互编码（参见 §5 证明）
@@ -212,11 +218,13 @@ $$
 ```
 
 **传统Choreographic的限制**：
+
 - 必须在设计时固定所有可能角色
 - 动态节点需要预先定义为"潜在角色"
 - 导致Choreography膨胀（$O(2^n)$ 复杂度）
 
 **1CP的解决方案**：
+
 ```
 1. C spawn W3  // 动态创建
 2. C → W3[Init] // 初始化
@@ -246,6 +254,7 @@ $$
 ### 4.3 边界讨论
 
 **1CP不适用场景**：
+
 1. **完全静态系统**：传统Choreographic更简单
 2. **强安全约束**：动态进程需额外验证
 3. **实时系统**：spawn开销不可预测
@@ -271,9 +280,11 @@ $$
 **证明**（结构归纳法）：
 
 **基例**：$C = 0$
+
 - 显然无死锁（已终止）
 
 **归纳步骤**：
+
 1. **通信情形** $C = p \rightarrow q[M]. C'$
    - 由线性性，$p, q$ 未被阻塞
    - 由延续一致性，$C'$ 满足归纳假设
@@ -318,6 +329,7 @@ $$
 $$
 
 **说明**：
+
 - 发送方投影输出消息值和Continuation
 - 接收方投影接收后执行Continuation
 
@@ -334,11 +346,13 @@ $$
 **证明概要**（双向模拟）：
 
 **1CP → Census**：
+
 - 将1CP的进程参数编码为Census的角色参数
 - spawn操作编码为角色实例化
 - CPC编码为带回调的会话类型
 
 **Census → 1CP**：
+
 - Census的人口统计参数 $n$ 编码为进程集合管理器
 - 可变参与者编码为动态spawn/leave
 - 人口约束编码为线性类型约束
@@ -357,7 +371,7 @@ $$
 Coordinator ──spawn──> Worker1
            ──spawn──> Worker2
            ──spawn──> Worker3
-           
+
 Coordinator → Worker1[Task1]
 Coordinator → Worker2[Task2]
 Coordinator → Worker3[Task3]
@@ -388,7 +402,7 @@ let loadBalancer = λcoordinator. λtaskQueue.
 
 ```
 Primary ──K=(λx. promoteToPrimary x)──> Backup
-         
+
 // Primary故障后，Backup执行K，提升自己为主节点
 Backup executing K(Primary) → NewPrimary
 NewPrimary → Clients[ResumeService]
@@ -404,17 +418,17 @@ sequenceDiagram
     participant W1 as Worker1
     participant W2 as Worker2
     participant R as Reducer
-    
+
     M->>M: spawn(W1, MapWorker)
     M->>M: spawn(W2, MapWorker)
     M->>M: spawn(R, ReduceWorker)
-    
+
     M->>W1: mapTask[split1]<br/>▷(λr. r→R[intermediate])
     M->>W2: mapTask[split2]<br/>▷(λr. r→R[intermediate])
-    
+
     W1->>R: intermediate1
     W2->>R: intermediate2
-    
+
     R->>M: reduceComplete[result]
 ```
 
@@ -467,14 +481,14 @@ graph LR
         TC3[上帝视角]
         TC4[直接通信]
     end
-    
+
     subgraph "First-Person Choreographic"
         FPC1[动态进程创建]
         FPC2[运行期绑定]
         FPC3[第一人称视角]
         FPC4[CPC通信]
     end
-    
+
     TC1 -.->|spawn/ν| FPC1
     TC2 -.->|进程参数化| FPC2
     TC3 -.->|进程作为值| FPC3
@@ -487,25 +501,25 @@ graph LR
 flowchart TB
     subgraph "1CP语言栈"
         direction TB
-        
+
         Syntax["语法层<br/>spawn | →[▷] | (νp)"]
-        
+
         TypeSystem["类型系统层<br/>Pid | Chan(τ) | ▷(τ,τ')"]
-        
+
         Semantics["操作语义<br/>COMM | SPAWN | CPC-COMM"]
-        
+
         Projection["投影算法 EPP<br/>⟦C⟧_p = P_p"]
-        
+
         Target["目标语言<br/>Go / Scala / Rust"]
     end
-    
+
     Syntax --> TypeSystem
     TypeSystem --> Semantics
     Semantics --> Projection
     Projection --> Target
-    
+
     Validation{"验证"}
-    
+
     TypeSystem -.->|类型检查| Validation
     Semantics -.->|死锁检测| Validation
 ```
@@ -517,13 +531,13 @@ flowchart TD
     A[分布式系统需求] --> B{需要动态拓扑?}
     B -->|是| C{角色数量固定?}
     B -->|否| D[使用传统Choreographic]
-    
+
     C -->|是| E{需要进程传递?}
     C -->|否| F[使用Census/人口多态]
-    
+
     E -->|是| G[使用1CP]
     E -->|否| H[使用MultiChor]
-    
+
     G --> I{具体场景}
     I --> J[负载均衡集群]
     I --> K[P2P网络]
@@ -534,25 +548,15 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: S. Jongmans, "First-Person Choreographic Programming", arXiv preprint, 2025. (forthcoming)
 
-[^2]: S. Jongmans et al., "Census-Polymorphic Choreographies", Proc. ACM Program. Lang. (PLDI), 2025. (PLDI 2025)
 
-[^3]: P. Lluch Lafuente et al., "Choreographies as Objects", arXiv:2205.01322, 2022.
 
-[^4]: B. Hildebrandt et al., "MultiChor: Functional Choreographies with Explicit Locations", PLACES 2023.
 
-[^5]: F. Montesi, "Introduction to Choreographies", Cambridge University Press, 2023.
 
-[^6]: M. Carbone et al., "Choreographies and Behavioural Contracts", Trustworthy Global Computing, 2013.
 
-[^7]: R. Hu et al., "Distributed Programming Using Role-Parametric Session Types", ESOP 2021.
 
-[^8]: L. Cruz-Filipe et al., "Certified Compilation of Choreographies with hac", FORTE 2023.
 
-[^9]: S. Balzer et al., "Choreographic Programming in Practice", arXiv:2401.17297, 2024.
 
-[^10]: M. Viering et al., "A Multiparty Session Calculus with Reversibility", Models, Languages, and Tools, 2024.
 
 ---
 

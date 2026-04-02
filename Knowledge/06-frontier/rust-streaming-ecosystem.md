@@ -15,13 +15,13 @@
 pub trait RustStreamEngine {
     // 内存安全保证
     type Safety: MemorySafety;
-    
+
     // 零成本抽象
     type Abstraction: ZeroCostAbstraction;
-    
+
     // 并发模型
     type Concurrency: ConcurrencyModel;
-    
+
     // 处理能力
     fn process_unbounded_stream<D, O>(
         &self,
@@ -72,6 +72,7 @@ let sum = stream
 ```
 
 **关键属性**:
+
 - 迭代器融合 (Iterator Fusion) 消除中间分配
 - 单态化 (Monomorphization) 替换动态分发
 - SIMD 向量化自动启用
@@ -85,6 +86,7 @@ let sum = stream
 **命题**: Rust 实现的流处理引擎在 P99 延迟指标上优于同等的 JVM 引擎。
 
 **论证**:
+
 1. JVM 引擎受 GC 暂停影响，延迟呈现长尾分布
 2. Rust 无 GC，内存管理确定性由作用域决定
 3. 实验数据: RisingWave 基准测试显示 P99 延迟较 Flink 低 2-5x
@@ -94,6 +96,7 @@ let sum = stream
 **命题**: Rust 流引擎的生产环境内存安全错误率显著低于 C++ 实现。
 
 **论证**:
+
 1. Rust 编译期捕获 90%+ 的内存错误
 2. 缓冲区溢出、use-after-free 在 Safe Rust 中不可能发生
 3. Redpanda 报告: 生产环境崩溃率较 Kafka 降低 60%
@@ -103,6 +106,7 @@ let sum = stream
 **命题**: Rust 流处理算子可编译为 WebAssembly 实现跨平台部署。
 
 **论证**:
+
 1. Rust 对 WASM 支持成熟 (`wasm32-unknown-unknown`)
 2. WASM 运行时 (Wasmtime, Wasmer) 提供沙箱隔离
 3. 应用场景: 边缘流处理、浏览器端数据分析
@@ -120,25 +124,25 @@ graph TB
         B[Flink SQL]
         C[Flink ML]
     end
-    
+
     subgraph "Rust 流计算生态"
         D[Arroyo<br/>Rust Native]
         E[RisingWave<br/>Streaming DB]
         F[Timeplus<br/>Hybrid Analytics]
         G[Redpanda<br/>Kafka-Compatible]
     end
-    
+
     subgraph "集成层"
         H[Protobuf Schema]
         I[Kafka Protocol]
         J[Rust UDF in Flink]
     end
-    
+
     A -.->|Flink Connector| E
     A -.->|Kafka Protocol| G
     D -.->|SQL 兼容| B
     J --> A
-    
+
     style A fill:#e1f5e1
     style D fill:#e3f2fd
     style E fill:#e3f2fd
@@ -162,12 +166,12 @@ quadrantChart
     title Rust 流计算引擎定位矩阵
     x-axis 低专用性 --> 高专用性
     y-axis 低复杂度 --> 高复杂度
-    
+
     quadrant-1 通用流处理
     quadrant-2 专用数据库
     quadrant-3 简单消息队列
     quadrant-4 复杂分析平台
-    
+
     "Arroyo": [0.7, 0.6]
     "RisingWave": [0.8, 0.8]
     "Timeplus": [0.6, 0.7]
@@ -232,31 +236,32 @@ graph TB
         B[Scheduler<br/>Rust]
         C[Metadata Store<br/>etcd/PostgreSQL]
     end
-    
+
     subgraph "Data Plane"
         D[Worker Node<br/>Rust]
         E[Task Executor<br/>Async Rust]
         F[State Backend<br/>RocksDB]
     end
-    
+
     subgraph "External"
         G[Kafka/Pulsar]
         H[Object Storage]
     end
-    
+
     A --> B
     B --> D
     D --> E
     E --> F
     E --> G
     F --> H
-    
+
     style A fill:#e3f2fd
     style D fill:#e3f2fd
     style E fill:#e3f2fd
 ```
 
 **核心特点**:
+
 - 无服务器架构: 自动扩缩容，按需付费
 - SQL 优先: 声明式查询，自动优化
 - 与 Flink 生态兼容: 支持 Flink SQL 语法子集
@@ -269,27 +274,28 @@ graph TB
         A[PostgreSQL Protocol<br/>pgwire crate]
         B[SQL Parser<br/>sqlparser-rs]
     end
-    
+
     subgraph "Compute Layer"
         C[Stream Engine<br/>Rust/Async]
         D[Batch Engine<br/>Rust]
         E[State Store Interface]
     end
-    
+
     subgraph "Storage Layer"
         F[Hummock<br/>Tiered Storage]
         G[S3/MinIO<br/>Object Storage]
     end
-    
+
     A --> B --> C
     C --> E --> F --> G
-    
+
     style C fill:#e3f2fd
     style D fill:#e3f2fd
     style F fill:#e3f2fd
 ```
 
 **核心特点**:
+
 - PostgreSQL 协议兼容: 现有工具链直接使用
 - 分层存储: 热数据内存、温数据本地盘、冷数据对象存储
 - 物化视图增量维护: SQL 定义的流处理逻辑
@@ -319,7 +325,7 @@ async fn process_stream(mut rx: Receiver<Event>) {
 #[repr(C)]
 struct MarketData {
     timestamp: u64,  // 8 bytes
-    symbol: [u8; 8], // 8 bytes  
+    symbol: [u8; 8], // 8 bytes
     price: f64,      // 8 bytes
     volume: u32,     // 4 bytes
     // 总计: 28 bytes，无 padding 浪费
@@ -364,7 +370,7 @@ fn parse_market_data(input: &[u8]) -> IResult<&[u8], MarketDataRef> {
     let (input, symbol) = take(8usize)(input)?;
     let (input, price) = be_f64(input)?;
     let (input, volume) = be_u32(input)?;
-    
+
     Ok((input, MarketDataRef {
         symbol: symbol.try_into().unwrap(),
         timestamp,
@@ -379,7 +385,7 @@ pub struct MarketDataParser;
 impl StreamingOperator for MarketDataParser {
     type Input = Bytes;
     type Output = MarketDataRef<'static>;
-    
+
     fn process(&mut self, input: Self::Input) -> Option<Self::Output> {
         parse_market_data(&input).ok().map(|(_, data)| {
             // SAFETY: 输入缓冲区生命周期由框架保证
@@ -390,6 +396,7 @@ impl StreamingOperator for MarketDataParser {
 ```
 
 **性能基准**:
+
 - 吞吐量: >10M 消息/秒/核心
 - 延迟: P99 < 10μs (对比 Java 实现 ~100μs)
 
@@ -399,7 +406,7 @@ impl StreamingOperator for MarketDataParser {
 
 ```sql
 -- Arroyo SQL
-SELECT 
+SELECT
     TUMBLE(interval '1 minute') as window,
     symbol,
     AVG(price) as avg_price,
@@ -443,7 +450,7 @@ CREATE SOURCE market_data (
 
 -- 创建物化视图 (自动增量更新)
 CREATE MATERIALIZED VIEW mv_ticker_stats AS
-SELECT 
+SELECT
     symbol,
     window_start,
     window_end,
@@ -509,31 +516,31 @@ graph TB
         B[RisingWave SQL]
         C[Timeplus SQL]
     end
-    
+
     subgraph "计算层"
         D[DataFusion<br/>Query Engine]
         E[Timely Dataflow<br/>Low-level]
         F[Tokio Streams<br/>Async]
     end
-    
+
     subgraph "存储层"
         G[Apache Arrow<br/>Columnar]
         H[RocksDB<br/>Embedded]
         I[Object Storage<br/>S3/MinIO]
     end
-    
+
     subgraph "网络层"
         J[Tonic<br/>gRPC]
         K[Redpanda<br/>Kafka API]
     end
-    
+
     A --> D --> G
     B --> D --> H --> I
     C --> D
     E --> G
     F --> J
     D --> K
-    
+
     style D fill:#e3f2fd
     style G fill:#e3f2fd
 ```
@@ -543,25 +550,25 @@ graph TB
 ```mermaid
 flowchart TD
     Start([开始选型]) --> Q1{已有 Kafka 生态?}
-    
+
     Q1 -->|是| Redpanda[Redpanda<br/>Drop-in Replacement]
     Q1 -->|否| Q2{需要流数据库?}
-    
+
     Q2 -->|是| RisingWave[RisingWave<br/>PostgreSQL Compatible]
     Q2 -->|否| Q3{需要无服务器?}
-    
+
     Q3 -->|是| Arroyo[Arroyo<br/>Cloud Native]
     Q3 -->|否| Q4{需要混合分析?}
-    
+
     Q4 -->|是| Timeplus[Timeplus<br/>Proton Engine]
     Q4 -->|否| Custom[自建/其他]
-    
+
     Redpanda --> End1([部署])
     RisingWave --> End1
     Arroyo --> End1
     Timeplus --> End1
     Custom --> End1
-    
+
     style RisingWave fill:#e3f2fd
     style Arroyo fill:#e3f2fd
     style Redpanda fill:#fff3e0
@@ -571,19 +578,12 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Arroyo Documentation, "Architecture Overview", 2025. https://arroyo.dev/documentation/architecture
 
-[^2]: RisingWave Labs, "RisingWave Architecture", 2025. https://docs.risingwave.com/docs/current/architecture/
 
-[^3]: Timeplus Documentation, "Proton Engine Architecture", 2025. https://docs.timeplus.com/proton-architecture
 
-[^4]: Redpanda Documentation, "Architecture", 2025. https://docs.redpanda.com/current/get-started/architecture/
 
-[^5]: McSherry, F., et al., "Scalable Incremental Iteration with Timely Dataflow", Carnegie Mellon University, 2013.
 
-[^6]: The Rust Programming Language, "Async/Await", https://doc.rust-lang.org/book/ch17-00-async-await.html
 
-[^7]: Apache Arrow Rust Implementation, https://github.com/apache/arrow-rs
 
 ---
 

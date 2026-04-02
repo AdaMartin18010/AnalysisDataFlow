@@ -26,11 +26,13 @@ $$\Phi_{embed}: \text{Stream}(\mathcal{D}) \rightarrow \text{Stream}(\mathbb{R}^
 $$\Phi_{embed}(d_t) = \text{ML\_PREDICT}(\text{model}_{emb}, \text{chunk}(d_t))$$
 
 其中：
+
 - $\text{chunk}(\cdot)$: 文档分块函数，将长文档分割为语义连贯的片段
 - $\text{model}_{emb}$: 预训练嵌入模型（如text-embedding-3、BGE、E5）
 - $\text{ML\_PREDICT}$: 模型推理操作，延迟约束为 $L_{embed} < 100\text{ms}$
 
-**关键属性**: 
+**关键属性**:
+
 - **流式处理**: 单条文档处理延迟与批量大小无关
 - **版本控制**: 模型版本变更触发向量重新计算
 - **维度对齐**: 输出维度必须与向量存储 schema 一致
@@ -46,6 +48,7 @@ $$\Phi_{retrieve}: (q_t, \mathcal{V}_t) \rightarrow \mathcal{C}_t$$
 $$\mathcal{C}_t = \text{TOP\_K}\left\{ v \in \mathcal{V}_t \mid \text{sim}(\mathcal{E}(q_t), v) \geq \theta \right\}$$
 
 其中：
+
 - $q_t$: 时间 $t$ 的查询请求
 - $\mathcal{V}_t$: 时间 $t$ 的向量存储状态
 - $\text{sim}(\cdot, \cdot)$: 相似度函数（余弦相似度或点积）
@@ -53,6 +56,7 @@ $$\mathcal{C}_t = \text{TOP\_K}\left\{ v \in \mathcal{V}_t \mid \text{sim}(\math
 - $\text{TOP\_K}$: 返回前 $k$ 个最相关结果
 
 **检索策略**:
+
 | 策略 | 适用场景 | 复杂度 |
 |------|----------|--------|
 | 精确KNN | 小数据集(<10K) | $O(n)$ |
@@ -69,11 +73,13 @@ $$\mathcal{C}_t = \text{TOP\_K}\left\{ v \in \mathcal{V}_t \mid \text{sim}(\math
 $$\forall t, \mathcal{V}_t = \bigcup_{t' \leq t} \Phi_{embed}(d_{t'})$$
 
 **同步模式**:
+
 1. **强一致性同步**: 嵌入生成完成后立即写入，等待确认
 2. **最终一致性同步**: 异步批量写入，容忍短暂不一致
 3. **增量同步**: 仅传播变更(delta)，减少网络开销
 
 **一致性级别**:
+
 - **Write-Through**: 写入主存储同时更新向量索引
 - **Write-Behind**: 缓冲批量写入，优化吞吐量
 - **CQRS模式**: 读写分离，独立扩展检索和更新路径
@@ -89,6 +95,7 @@ $$\forall t, \mathcal{V}_t = \bigcup_{t' \leq t} \Phi_{embed}(d_{t'})$$
 $$L_{total} \leq L_{embed} + L_{index} + L_{retrieve} + L_{llm}$$
 
 **典型值** (p99):
+
 | 组件 | 延迟 | 优化手段 |
 |------|------|----------|
 | 嵌入生成 | 50-150ms | 模型量化、批处理 |
@@ -108,6 +115,7 @@ $$\text{Recall} = \frac{|\mathcal{C} \cap \mathcal{C}^*|}{|\mathcal{C}^*|}$$
 $$\text{Precision} = \frac{|\mathcal{C} \cap \mathcal{C}^*|}{|\mathcal{C}|}$$
 
 **质量保障条件**:
+
 1. **嵌入质量**: $\text{rank-sim}(d_{relevant}, d_{query}) < \text{rank-sim}(d_{irrelevant}, d_{query})$
 2. **索引覆盖**: 向量存储包含全部候选文档的嵌入
 3. **阈值调优**: $\theta$ 根据业务容忍度动态调整
@@ -122,7 +130,8 @@ $$|\mathcal{D}_t \setminus \mathcal{V}_t| \leq \lambda \cdot \Delta t$$
 
 其中 $\lambda$ 为文档到达率，$\Delta t$ 为同步窗口。
 
-**证明概要**: 
+**证明概要**:
+
 1. 文档到达服从泊松过程，速率为 $\lambda$
 2. 同步窗口 $\Delta t$ 内积累的未同步文档期望为 $\lambda \Delta t$
 3. 批量同步机制确保窗口结束时完成写入 $\square$
@@ -196,6 +205,7 @@ $$|\mathcal{D}_t \setminus \mathcal{V}_t| \leq \lambda \cdot \Delta t$$
 **Q: 为何选择Flink而非批处理系统？**
 
 **论证**:
+
 | 维度 | 批处理方案 | Flink流式方案 |
 |------|------------|---------------|
 | 延迟 | 分钟级(T+1) | 秒级/毫秒级 |
@@ -219,6 +229,7 @@ $$|\mathcal{D}_t \setminus \mathcal{V}_t| \leq \lambda \cdot \Delta t$$
 | 与Flink集成 | 官方Connector | JDBC | REST API | REST API |
 
 **推荐策略**:
+
 - **企业级**: Milvus（功能完整、生态丰富）
 - **轻量级**: PgVector（已有PostgreSQL基础设施）
 - **快速启动**: Pinecone（零运维、按量付费）
@@ -230,6 +241,7 @@ $$|\mathcal{D}_t \setminus \mathcal{V}_t| \leq \lambda \cdot \Delta t$$
 **场景**: 尝试仅用Redis缓存预计算嵌入
 
 **问题**:
+
 1. **内存爆炸**: 千万级文档 × 1536维 × 4字节 = 60GB+ RAM
 2. **更新延迟**: 缓存失效策略难以保证一致性
 3. **检索精度**: Redis无原生ANN支持，需全量扫描
@@ -248,31 +260,31 @@ flowchart TB
         A[Kafka/文档源] --> B[文档解析]
         B --> C[文本分块]
     end
-    
+
     subgraph EmbeddingLayer["嵌入生成层"]
         C --> D[Async ML_PREDICT]
         D --> E[向量归一化]
     end
-    
+
     subgraph VectorStore["向量存储层"]
         E --> F[(Milvus/PgVector)]
         F --> G[索引更新]
     end
-    
+
     subgraph QueryLayer["查询处理层"]
         H[用户查询] --> I[查询嵌入]
         I --> J[VECTOR_SEARCH]
         J --> K[上下文组装]
     end
-    
+
     subgraph LLMLayer["LLM推理层"]
         K --> L[Prompt构建]
         L --> M[LLM API调用]
         M --> N[流式响应]
     end
-    
+
     G -.->|同步索引| J
-    
+
     style DataIngestion fill:#e1f5fe
     style EmbeddingLayer fill:#f3e5f5
     style VectorStore fill:#e8f5e9
@@ -283,6 +295,7 @@ flowchart TB
 ### 5.2 端到端延迟优化策略
 
 **优化1: 嵌入并行化**
+
 ```java
 // Flink AsyncFunction实现
 class EmbeddingAsyncFn extends AsyncFunction<Document, Vector> {
@@ -296,12 +309,13 @@ class EmbeddingAsyncFn extends AsyncFunction<Document, Vector> {
 ```
 
 **优化2: 向量批处理写入**
+
 ```java
 // 批量Sink减少网络RTT
 class VectorBulkSink extends RichSinkFunction<Vector> {
     private List<Vector> buffer = new ArrayList<>();
     private static final int BATCH_SIZE = 100;
-    
+
     @Override
     public void invoke(Vector value) {
         buffer.add(value);
@@ -314,6 +328,7 @@ class VectorBulkSink extends RichSinkFunction<Vector> {
 ```
 
 **优化3: 查询-索引分离**
+
 - 写路径：Flink实时更新向量
 - 读路径：独立服务集群处理查询
 - 优势：读写独立扩缩容，避免资源争抢
@@ -327,6 +342,7 @@ class VectorBulkSink extends RichSinkFunction<Vector> {
 **场景**: SaaS产品技术支持，要求基于最新文档回答用户问题
 
 **数据流**:
+
 ```
 产品文档(Git) → Webhook → Kafka → Flink → Milvus
                               ↓
@@ -334,6 +350,7 @@ class VectorBulkSink extends RichSinkFunction<Vector> {
 ```
 
 **Flink SQL实现**:
+
 ```sql
 -- 文档流表
 CREATE TABLE document_stream (
@@ -361,7 +378,7 @@ CREATE TABLE vector_store (
 
 -- 嵌入生成Pipeline
 INSERT INTO vector_store
-SELECT 
+SELECT
     doc_id,
     ML_PREDICT('text-embedding-3', content) as vector,
     TO_JSON(metadata) as metadata
@@ -369,6 +386,7 @@ FROM document_stream;
 ```
 
 **性能指标**:
+
 - 文档可见延迟: < 3秒
 - 查询响应时间(p99): 800ms
 - 支持文档规模: 100万+
@@ -380,14 +398,16 @@ FROM document_stream;
 **场景**: 实时解析上市公司公告，回答分析师查询
 
 **架构特点**:
+
 1. **多模态输入**: 支持PDF、HTML、表格解析
 2. **增量更新**: 仅处理变更部分，避免全量重算
 3. **权限控制**: 基于文档metadata的检索过滤
 
 **关键代码**:
+
 ```java
 public class FinancialDocProcessor {
-    
+
     // 文档分块策略
     public List<Chunk> chunkDocument(Document doc) {
         if (doc.getType() == DocumentType.TABLE) {
@@ -396,7 +416,7 @@ public class FinancialDocProcessor {
             return semanticChunker.chunk(doc, 512);  // 语义分块
         }
     }
-    
+
     // 带权限的检索
     public List<Vector> searchWithAuth(Query query, User user) {
         return vectorStore.search(
@@ -449,7 +469,7 @@ stateDiagram-v2
     文本分块 --> 嵌入生成: 分块就绪
     嵌入生成 --> 向量索引: 嵌入计算完成
     向量索引 --> [*]: 可检索状态
-    
+
     [*] --> 查询接收: 用户查询
     查询接收 --> 查询嵌入: 预处理
     查询嵌入 --> 向量检索: 嵌入就绪
@@ -457,7 +477,7 @@ stateDiagram-v2
     上下文组装 --> LLM推理: 上下文就绪
     LLM推理 --> 流式输出: 生成开始
     流式输出 --> [*]: 响应完成
-    
+
     向量索引 --> 向量检索: 提供索引
 ```
 
@@ -469,25 +489,25 @@ flowchart TD
     B -->|百万级| C[Milvus]
     B -->|十万级| D[PgVector]
     B -->|未知/变化| E[Pinecone托管]
-    
+
     C --> F{延迟要求?}
     D --> F
     E --> F
-    
+
     F -->|毫秒级| G[内存HNSW索引]
     F -->|秒级| H[磁盘IVF索引]
-    
+
     G --> I{LLM选择?}
     H --> I
-    
+
     I -->|OpenAI| J[OpenAI API]
     I -->|自托管| K[vLLM/TGI]
     I -->|混合| L[Router+Fallback]
-    
+
     J --> M[部署完成]
     K --> M
     L --> M
-    
+
     style A fill:#e3f2fd
     style M fill:#e8f5e9
 ```
@@ -501,19 +521,19 @@ graph LR
         E2[BGE-M3]
         E3[E5-large]
     end
-    
+
     subgraph 向量数据库
         V1[Milvus]
         V2[PgVector]
         V3[Pinecone]
     end
-    
+
     subgraph LLM服务
         L1[GPT-4]
         L2[Claude-3]
         L3[Llama-3]
     end
-    
+
     E1 --> V1
     E1 --> V2
     E1 --> V3
@@ -521,7 +541,7 @@ graph LR
     E2 --> V2
     E3 --> V1
     E3 --> V3
-    
+
     V1 --> L1
     V1 --> L2
     V2 --> L1
@@ -534,21 +554,13 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "ML Inference in Flink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/datastream_tutorial/
 
-[^2]: Milvus Documentation, "Vector Index", 2025. https://milvus.io/docs/index.md
 
-[^3]: PgVector GitHub, "Approximate Nearest Neighbor Search", 2025. https://github.com/pgvector/pgvector
 
-[^4]: OpenAI Documentation, "Embeddings API", 2025. https://platform.openai.com/docs/guides/embeddings
 
-[^5]: Pinecone Documentation, "Understanding Metadata Filtering", 2025. https://docs.pinecone.io/docs/metadata-filtering
 
-[^6]: Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS, 2020.
 
-[^7]: LangChain Documentation, "RAG Concepts", 2025. https://python.langchain.com/docs/concepts/rag/
 
-[^8]: Hugging Face Documentation, "Text Embedding Models", 2025. https://huggingface.co/docs/transformers/model_doc/sentence-transformers
 
 ---
 
