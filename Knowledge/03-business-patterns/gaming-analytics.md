@@ -1,690 +1,1140 @@
-# 业务模式: 游戏实时分析 (business-pattern: gaming-analytics)
+# 业务模式: 游戏实时分析 (Business Pattern: Gaming Analytics)
 
-> **所属阶段**: knowledge/03-business-patterns | **前置依赖**: [pattern-event-time-processing](../02-design-patterns/pattern-event-time-processing.md), [pattern-windowed-aggregation](../02-design-patterns/pattern-windowed-aggregation.md), [pattern-side-output](../02-design-patterns/pattern-side-output.md) | **形式化等级**: l4-l5
+> **业务领域**: 游戏行业 (Gaming) | **复杂度等级**: ★★★★★ | **延迟要求**: < 500ms | **形式化等级**: L4-L5
 >
-> 本模式解决游戏行业中**游戏事件采集**、**实时 dau 计算**、**异常行为检测**与**充值流水分析**的核心需求，提供基于 flink + pulsar + actor 模型的完整解决方案。
+> 本模式解决游戏行业中**高并发事件采集**、**实时排行榜**、**反作弊检测**与**玩家行为分析**等核心需求，提供基于 Flink + Actor 模型的低延迟、高吞吐实时分析解决方案。
 
 ---
 
 ## 目录
 
-- [业务模式: 游戏实时分析 (business-pattern: gaming-analytics)](#业务模式-游戏实时分析-business-pattern-gaming-analytics)
+- [业务模式: 游戏实时分析 (Business Pattern: Gaming Analytics)](#业务模式-游戏实时分析-business-pattern-gaming-analytics)
   - [目录](#目录)
-  - [1. 概念定义 (definitions)](#1-概念定义-definitions)
-    - [def-k-03-07: 游戏事件 (game-event)](#def-k-03-07-游戏事件-game-event)
-    - [def-k-03-08: 日活跃用户 (dau)](#def-k-03-08-日活跃用户-dau)
-    - [def-k-03-09: 异常行为模式 (abnormal-behavior-pattern)](#def-k-03-09-异常行为模式-abnormal-behavior-pattern)
-  - [2. 属性推导 (properties)](#2-属性推导-properties)
-    - [prop-k-03-07: dau 计算单调性](#prop-k-03-07-dau-计算单调性)
-    - [prop-k-03-08: 异常检测实时性边界](#prop-k-03-08-异常检测实时性边界)
-    - [prop-k-03-09: 充值分析一致性](#prop-k-03-09-充值分析一致性)
-  - [3. 关系建立 (relations)](#3-关系建立-relations)
-    - [3.1 与核心设计模式的关系](#31-与核心设计模式的关系)
-    - [3.2 技术栈组件映射](#32-技术栈组件映射)
-    - [3.3 与 actor 模型的集成](#33-与-actor-模型的集成)
-  - [4. 论证过程 (argumentation)](#4-论证过程-argumentation)
-    - [4.1 业务场景特点分析](#41-业务场景特点分析)
-    - [4.2 异常行为检测策略](#42-异常行为检测策略)
-    - [4.3 实时 vs 离线分析权衡](#43-实时-vs-离线分析权衡)
-  - [5. 工程论证 (engineering-argument)](#5-工程论证-engineering-argument)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-03-03: 游戏事件 (Game Event)](#def-k-03-03-游戏事件-game-event)
+    - [Def-K-03-04: 实时排行榜 (Real-time Leaderboard)](#def-k-03-04-实时排行榜-real-time-leaderboard)
+    - [Def-K-03-05: 反作弊检测 (Anti-Cheat Detection)](#def-k-03-05-反作弊检测-anti-cheat-detection)
+    - [Def-K-03-06: 玩家会话 (Player Session)](#def-k-03-06-玩家会话-player-session)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-03-03: 排行榜一致性边界](#lemma-k-03-03-排行榜一致性边界)
+    - [Lemma-K-03-04: 作弊检测延迟下界](#lemma-k-03-04-作弊检测延迟下界)
+    - [Prop-K-03-03: 事件乱序容忍度](#prop-k-03-03-事件乱序容忍度)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 与设计模式的映射](#31-与设计模式的映射)
+    - [3.2 并发范式组合](#32-并发范式组合)
+    - [3.3 技术栈组件映射](#33-技术栈组件映射)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 游戏分析场景特征分析](#41-游戏分析场景特征分析)
+    - [4.2 实时排行榜设计挑战](#42-实时排行榜设计挑战)
+    - [4.3 反作弊检测策略对比](#43-反作弊检测策略对比)
+  - [5. 工程论证 (Engineering Argument)](#5-工程论证-engineering-argument)
     - [5.1 架构设计决策](#51-架构设计决策)
-    - [5.2 性能基准](#52-性能基准)
-  - [6. 实例验证 (examples)](#6-实例验证-examples)
-    - [6.1 实时 dau 计算](#61-实时-dau-计算)
-    - [6.2 异常行为检测 (cep)](#62-异常行为检测-cep)
-    - [6.3 充值流水实时分析](#63-充值流水实时分析)
-    - [6.4 游戏会话分析](#64-游戏会话分析)
-  - [7. 可视化 (visualizations)](#7-可视化-visualizations)
-    - [7.1 游戏数据流架构](#71-游戏数据流架构)
-    - [7.2 实时指标计算](#72-实时指标计算)
-  - [8. 引用参考 (references)](#8-引用参考-references)
+    - [5.2 性能基准与优化](#52-性能基准与优化)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 实时排行榜计算](#61-实时排行榜计算)
+    - [6.2 反作弊 CEP 检测](#62-反作弊-cep-检测)
+    - [6.3 完整 Flink 作业](#63-完整-flink-作业)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 整体架构图](#71-整体架构图)
+    - [7.2 数据流处理管道](#72-数据流处理管道)
+    - [7.3 排行榜更新流程](#73-排行榜更新流程)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
-## 1. 概念定义 (definitions)
+## 1. 概念定义 (Definitions)
 
-### def-k-03-07: 游戏事件 (game-event)
+### Def-K-03-03: 游戏事件 (Game Event)
 
-设玩家集合为 $P = \{p_1, p_2, \ldots, p_n\}$，游戏世界状态为 $\mathcal{W}$，事件类型集合为 $E = \{\text{login}, \text{logout}, \text{levelup}, \text{battle}, \text{payment}, \ldots\}$。
+设玩家集合为 $\mathcal{P} = \{p_1, p_2, \ldots, p_n\}$，事件类型集合为 $\mathcal{E} = \{login, logout, battle, payment, levelup, chat, \ldots\}$，服务器集合为 $\mathcal{S}$。
 
-**游戏事件**定义为六元组：
+**游戏事件**定义为七元组：
 
 $$
-g = (p, e, a, w, s, t) \in P \times E \times \mathcal{A} \times \mathcal{W} \times S \times \mathbb{T}
+g = (p, e, a, s, w, m, t) \in \mathcal{P} \times \mathcal{E} \times \mathcal{A} \times \mathcal{S} \times \mathcal{W} \times \mathcal{M} \times \mathbb{T}
 $$
 
 其中：
 
-- $p \in P$ 为玩家标识
-- $e \in E$ 为事件类型
-- $a \in \mathcal{A}$ 为事件属性（如战斗结果、充值金额）
-- $w \in \mathcal{W}$ 为世界状态快照
-- $s \in S$ 为服务器/分区标识
-- $t \in \mathbb{T}$ 为事件时间戳
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| $p \in \mathcal{P}$ | String | 玩家唯一标识 (Player ID) |
+| $e \in \mathcal{E}$ | Enum | 事件类型 |
+| $a \in \mathcal{A}$ | JSON | 事件属性（战斗结果、充值金额等） |
+| $s \in \mathcal{S}$ | String | 服务器/分区标识 |
+| $w \in \mathcal{W}$ | Object | 游戏世界状态快照 |
+| $m \in \mathcal{M}$ | Map | 元数据（版本、渠道、设备） |
+| $t \in \mathbb{T}$ | Timestamp | 事件时间戳（毫秒级） |
 
-### def-k-03-08: 日活跃用户 (dau)
+**事件分类**：
 
-dau 是游戏核心运营指标，定义为：
+```
+游戏事件类型层次
+├── 生命周期事件
+│   ├── login / logout    # 登录/登出
+│   ├── register          # 注册
+│   └── heartbeat         # 在线心跳
+├── 玩法事件
+│   ├── battle_start/end  # 战斗开始/结束
+│   ├── levelup           # 等级提升
+│   ├── mission_complete  # 任务完成
+│   └── achievement       # 成就达成
+├── 经济事件
+│   ├── payment           # 充值
+│   ├── consume           # 消费
+│   ├── reward            # 奖励
+│   └── trade             # 交易
+└── 社交事件
+    ├── chat              # 聊天
+    ├── friend            # 好友操作
+    └── guild             # 公会操作
+```
+
+### Def-K-03-04: 实时排行榜 (Real-time Leaderboard)
+
+**实时排行榜**是在时间窗口 $\Delta$ 内，对玩家集合按得分函数 $f: \mathcal{P} \rightarrow \mathbb{R}$ 进行排序的有序集合：
 
 $$
-\text{dau}(t) = |\{ p \in P \mid \exists g \in G(p, [t-24h, t]) \}|
-$$
-
-其中 $G(p, \Delta)$ 表示玩家 $p$ 在时间区间 $\Delta$ 内产生的事件集合。
-
-### def-k-03-09: 异常行为模式 (abnormal-behavior-pattern)
-
-异常行为由偏离正常统计分布的事件序列定义：
-
-$$
-\text{abnormal}(p) \iff \exists f \in \mathcal{F}: \left| \frac{f(p) - \mu_f}{\sigma_f} \right| > \theta_{\text{threshold}}
+\text{Leaderboard}(\Delta, f, k) = \{(p_i, f(p_i)) \mid p_i \in \mathcal{P}, i = 1, \ldots, k\}
 $$
 
 其中：
 
-- $\mathcal{F}$ 为行为特征集合（如登录频率、操作速度、资源获取速率）
-- $\mu_f, \sigma_f$ 为特征 $f$ 的均值和标准差
-- $\theta_{\text{threshold}}$ 为异常判定阈值（通常 3-5 个标准差）
+- $\Delta$ 为时间窗口（日榜/周榜/赛季榜）
+- $f(p_i)$ 为玩家 $p_i$ 在窗口内的累计得分
+- $k$ 为排行榜容量（如前 100 名）
+
+**排行榜类型**：
+
+| 类型 | 聚合函数 $f$ | 更新频率 | 一致性要求 |
+|------|-------------|---------|-----------|
+| **战力榜** | $f(p) = \sum_{e \in E_{battle}} score(e)$ | 实时 | 最终一致 |
+| **等级榜** | $f(p) = \max level(p)$ | 实时 | 强一致 |
+| **充值榜** | $f(p) = \sum_{e \in E_{payment}} amount(e)$ | 分钟级 | 强一致 |
+| **活跃榜** | $f(p) = |E_p \cap \Delta|$ | 准实时 | 最终一致 |
+
+### Def-K-03-05: 反作弊检测 (Anti-Cheat Detection)
+
+**反作弊检测**是识别偏离正常玩家行为分布 $\mathcal{D}_{normal}$ 的异常玩家子集：
+
+$$
+\text{Cheaters} = \{ p \in \mathcal{P} \mid \exists f \in \mathcal{F}: \frac{f(p) - \mu_f}{\sigma_f} > \theta_{cheat} \}
+$$
+
+其中：
+
+- $\mathcal{F}$ 为行为特征集合（移动速度、操作频率、资源获取率等）
+- $\mu_f, \sigma_f$ 为特征 $f$ 的全局均值和标准差
+- $\theta_{cheat}$ 为作弊判定阈值（通常取 3-5 个标准差）
+
+**作弊类型分类**：
+
+```
+作弊行为分类
+├── 客户端作弊
+│   ├── 加速器 (Speed Hack)       # 修改游戏速度
+│   ├── 透视 (Wall Hack)          # 修改渲染逻辑
+│   ├── 自动瞄准 (Aim Bot)        # 自动化操作
+│   └── 内存修改 (Memory Hack)    # 修改游戏内存
+├── 行为异常
+│   ├── 脚本挂机 (Botting)        # 自动化脚本
+│   ├── 多开刷取 (Multi-boxing)   # 多账号协同
+│   └── 工作室 (Gold Farming)     # 规模化刷资源
+└── 网络层作弊
+    ├── 延迟作弊 (Lag Switch)     # 利用网络延迟
+    └── 包篡改 (Packet Hack)      # 修改网络包
+```
+
+### Def-K-03-06: 玩家会话 (Player Session)
+
+**玩家会话**是玩家连续活动的时段，由会话开始事件 $e_{start}$ 和会话结束事件 $e_{end}$ 界定：
+
+$$
+\text{Session}(p) = \{ g \in G_p \mid t_{start} \leq t_g \leq t_{end} \}
+$$
+
+其中会话边界由**会话间隙** (Session Gap) $\delta_{gap}$ 决定：
+
+$$
+t_{end} = \min \{ t \mid t - t_{prev} > \delta_{gap} \}
+$$
+
+通常 $\delta_{gap} = 5$ 分钟，即 5 分钟无活动视为会话结束。
 
 ---
 
-## 2. 属性推导 (properties)
+## 2. 属性推导 (Properties)
 
-### prop-k-03-07: dau 计算单调性
+### Lemma-K-03-03: 排行榜一致性边界
 
-**命题**: 若使用事件时间处理，dau 计算结果具有单调不减性（在窗口内）。
-
-**证明**:
-设时间窗口为 $[t_0, t_1]$，在时刻 $\tau$ 观测到的 dau 为：
-
-$$
-\text{dau}(\tau) = |\{ p \mid \exists g: t_g \in [t_0, \min(\tau, t_1)] \}|
-$$
-
-对于 $\tau_1 < \tau_2$：
-
-$$
-\{ p \mid \exists g: t_g \in [t_0, \min(\tau_1, t_1)] \} \subseteq \{ p \mid \exists g: t_g \in [t_0, \min(\tau_2, t_1)] \}
-$$
-
-因此 $\text{dau}(\tau_1) \leq \text{dau}(\tau_2)$，即 dau 在窗口内单调不减。
-
-### prop-k-03-08: 异常检测实时性边界
-
-**命题**: 异常检测的实时性受限于窗口大小和 watermark 延迟。
+**引理**: 在分布式环境下，实时排行榜的最终一致性与 Watermark 延迟 $\delta_w$ 和聚合窗口大小 $\Delta_w$ 相关。
 
 **证明**:
-设滑动窗口大小为 $\Delta_w$，滑动间隔为 $\Delta_s$，watermark 延迟为 $\delta_w$。
 
-事件 $g$ 到达后，异常检测的最快触发时间为：
+设事件 $e$ 在时刻 $t_e$ 产生，到达 Flink 时间为 $t_{arrive}$，Watermark 推进到 $t_w$ 时触发窗口计算。
 
-$$
-t_{\text{alert}} \leq t_g + \delta_w + \Delta_s
-$$
-
-对于会话内实时异常检测，使用 processing time 可将延迟降至：
+排行榜更新延迟为：
 
 $$
-t_{\text{alert}} \leq t_g + \delta_{\text{proc}}
+\Delta_{update} = t_w - t_e = (t_{arrive} - t_e) + (t_w - t_{arrive}) \leq \delta_{network} + \delta_w
 $$
 
-其中 $\delta_{\text{proc}}$ 为纯处理延迟（通常 < 100ms）。
-
-### prop-k-03-09: 充值分析一致性
-
-**命题**: 在 exactly-once 语义下，充值金额统计不会重复或丢失。
-
-**证明要点**:
-
-1. 充值事件由 pulsar 持久化存储
-2. flink 通过 checkpoint 记录消费 offset
-3. 故障恢复时从 checkpoint offset 重放
-4. idempotent sink 确保重复事件只生效一次
-
-因此充值统计满足一致性：
+对于使用 Redis Sorted Set 的排行榜，最终一致性保证为：
 
 $$
-\sum \text{payment}(p) = \sum_{\text{exactly-once}} \text{amount}(g_{\text{payment}})
+\forall p \in \mathcal{P}: \quad |f_{redis}(p) - f_{actual}(p)| \leq \Delta_{score}(\delta_w)
+$$
+
+其中 $\Delta_{score}(\delta_w)$ 为 $\delta_w$ 时间窗口内的最大可能得分差。
+
+### Lemma-K-03-04: 作弊检测延迟下界
+
+**引理**: 基于 CEP 的实时作弊检测存在理论延迟下界，由模式复杂度决定。
+
+**证明**:
+
+设 CEP 模式需要匹配 $n$ 个连续事件，事件到达间隔服从指数分布 $\sim Exp(\lambda)$。
+
+模式匹配完成时间的期望为：
+
+$$
+E[T_{match}] = \frac{n}{\lambda}
+$$
+
+考虑 Watermark 延迟 $\delta_w$，总检测延迟下界为：
+
+$$
+T_{detect} \geq \frac{n}{\lambda} + \delta_w
+$$
+
+对于需要 3 个连续异常事件、平均每秒 10 个事件的模式：
+
+$$
+T_{detect} \geq \frac{3}{10} + 0.5 = 0.8\text{s}
+$$
+
+### Prop-K-03-03: 事件乱序容忍度
+
+**命题**: 游戏事件流的乱序程度与网络延迟方差成正比。
+
+**论证**:
+
+设游戏服务器 $s_i$ 到 Flink 的网络延迟为 $L_i \sim \mathcal{N}(\mu_i, \sigma_i^2)$。
+
+全局乱序程度可用最大延迟差衡量：
+
+$$
+\Delta_{disorder} = \max_{i,j} |L_i - L_j| \approx 3 \cdot \max_i \sigma_i
+$$
+
+因此 Watermark 延迟应设置为：
+
+$$
+\delta_w \geq 3 \cdot \max_i \sigma_i
 $$
 
 ---
 
-## 3. 关系建立 (relations)
+## 3. 关系建立 (Relations)
 
-### 3.1 与核心设计模式的关系
+### 3.1 与设计模式的映射
 
-| 模式 | 关系类型 | 说明 |
-|------|----------|------|
-| **p01: event-time-processing** | 强依赖 | dau 等运营指标必须基于事件时间保证准确性 [^1] |
-| **p02: windowed-aggregation** | 强依赖 | 实时指标计算依赖窗口聚合 [^2] |
-| **p06: side-output** | 强依赖 | 异常事件通过侧输出分流处理 [^3] |
-| **p05: state-management** | 配合 | 玩家会话状态维护 |
-| **p07: checkpoint-recovery** | 配合 | 充值分析需要 exactly-once 保证 |
+| 设计模式 | 应用场景 | 关键配置 |
+|---------|---------|---------|
+| **P01: Event Time Processing** | 游戏事件时序正确性保证 | Watermark 延迟 2-5s，容忍网络抖动 [^1] |
+| **P02: Windowed Aggregation** | DAU/收入/战力统计 | 滑动窗口 1min/1h，增量聚合 [^2] |
+| **P06: Side Output** | 作弊事件分流、延迟数据处理 | 侧输出到专门 Topic [^3] |
+| **P05: State Management** | 玩家会话状态、排行榜缓存 | Keyed State + TTL 24h |
+| **P03: CEP** | 复杂作弊模式识别 | 模式窗口 10s-5min |
 
-### 3.2 技术栈组件映射
+### 3.2 并发范式组合
+
+游戏实时分析采用 **Actor + Dataflow** 混合并发范式：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    游戏实时分析技术栈映射                        │
+│                    Actor + Dataflow 混合架构                     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│   游戏服务器层                                                   │
-│   ├── actor 模型: 游戏逻辑处理 (akka/pekko)                      │
-│   ├── 事件采集: 游戏内事件实时上报                               │
-│   └── 批量发送: 10s 批量发送到消息队列                            │
+│   Actor 层 (游戏服务器)                                          │
+│   ├── 每个玩家 → 一个 PlayerActor                                │
+│   ├── 每个房间 → 一个 RoomActor                                  │
+│   └── 每个会话 → 一个 SessionActor (事件收集器)                   │
+│       └── 批量发送: 10s/1000 事件                                │
 │                                                                 │
-│   消息队列层 (pulsar)                                            │
-│   ├── 多租户: 不同游戏/分区隔离                                  │
-│   ├── 持久化: 事件不丢失                                         │
-│   ├── geo-replication: 多数据中心同步                            │
-│   └── 分区策略: player-id 哈希保证顺序                            │
+│   消息队列层 (Kafka/Pulsar)                                      │
+│   ├── Topic: game-events (按 player-id 分区)                     │
+│   ├── Topic: payment-events (强一致，独立分区)                    │
+│   └── Topic: battle-events (高吞吐，多分区)                       │
 │                                                                 │
-│   流处理层 (flink)                                               │
-│   ├── 事件解析: 反序列化、字段提取                                │
-│   ├── 窗口聚合: 滑动窗口计算 dau/收入                             │
-│   ├── 异常检测: cep 模式匹配外挂行为                              │
-│   ├── 侧输出: 异常事件分流                                        │
-│   └── 多维分析: 服务器/渠道/版本分组                              │
-│                                                                 │
-│   存储层                                                         │
-│   ├── clickhouse: 明细事件存储                                    │
-│   ├── druid/pinot: 实时 olap 查询                                 │
-│   ├── redis: 实时指标缓存                                         │
-│   └── mysql: 维度表                                               │
+│   Dataflow 层 (Flink)                                            │
+│   ├── KeyBy(player-id) → 保证玩家事件顺序处理                     │
+│   ├── Window → 时间窗口聚合                                       │
+│   ├── Async I/O → 查询玩家画像/设备指纹                            │
+│   └── CEP → 复杂模式匹配                                          │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.3 与 actor 模型的集成
+**范式分工**：
 
-游戏服务器通常采用 actor 模型处理并发，与 flink 的集成点：
+| 层级 | 范式 | 职责 | 优势 |
+|------|------|------|------|
+| 游戏逻辑 | Actor | 并发会话管理、状态隔离 | 容错、弹性伸缩 |
+| 事件传输 | 消息队列 | 可靠传输、流量削峰 | 持久化、高吞吐 |
+| 实时分析 | Dataflow | 聚合计算、模式匹配 | 低延迟、一致性 |
+
+### 3.3 技术栈组件映射
 
 ```
-游戏服务器 (actor)
-  │
-  ├─ 游戏事件 actor
-  │     ├─ 处理游戏逻辑
-  │     └─ 生成事件 → event collector actor
-  │
-  └─ event collector actor
-        ├─ 批量缓冲 (10s/1000 事件)
-        └─ 发送到 pulsar
-
-pulsar
-  │
-  └─ topic: game-events-{server-id}
-
-flink
-  │
-  └─ source: 消费 game-events 分区
+┌─────────────────────────────────────────────────────────────────┐
+│                    游戏实时分析技术栈                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   数据采集层                                                    │
+│   ├── 游戏客户端 → SDK 埋点                                     │
+│   └── 游戏服务器 → Actor Event Collector                        │
+│                                                                 │
+│   消息队列层 (Kafka / Pulsar)                                   │
+│   ├── game-events: 高吞吐，100+ 分区                            │
+│   ├── payment-events: 强一致，10 分区                           │
+│   └── cheat-alerts: 低吞吐，3 分区                              │
+│                                                                 │
+│   流计算层 (Flink)                                              │
+│   ├── Source: Kafka Consumer                                    │
+│   ├── Process: KeyBy → Window → Aggregate                     │
+│   ├── CEP: 作弊模式匹配                                         │
+│   └── Sink: Redis / ClickHouse                                  │
+│                                                                 │
+│   存储层                                                        │
+│   ├── Redis: 实时排行榜 (Sorted Set)                            │
+│   ├── ClickHouse: 明细事件存储 + OLAP                          │
+│   └── HBase: 玩家画像长期存储                                   │
+│                                                                 │
+│   展示层                                                        │
+│   ├── Grafana: 实时监控看板                                     │
+│   └── WebSocket: 排行榜实时推送                                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 4. 论证过程 (argumentation)
+## 4. 论证过程 (Argumentation)
 
-### 4.1 业务场景特点分析
+### 4.1 游戏分析场景特征分析
 
-**场景 1: mmo 大型多人在线游戏**
+**特征 1: 超高并发事件**
 
-| 特点 | 技术挑战 | 解决方案 |
-|------|----------|----------|
-| 同屏人数多 (100+) | 高频事件爆发 | 服务器本地聚合 + 批量发送 |
-| 实时战斗同步 | 延迟敏感 | actor 模型本地处理，旁路分析 |
-| 跨服玩法 | 数据分散 | 统一事件格式，中心聚合 |
-| 充值实时到账 | 一致性要求高 | exactly-once 处理 |
+| 指标 | 规模 | 技术挑战 |
+|------|------|---------|
+| 峰值事件率 | 1M+ 事件/秒 | 需要水平扩展的流处理能力 |
+| 事件大小 | 0.5-2 KB | 网络带宽和存储成本 |
+| 事件类型 | 50+ 种 | 需要灵活的模式演化支持 |
+| 峰值时段 | 晚间 8-10 点 | 需要弹性伸缩能力 |
 
-**场景 2: 休闲竞技游戏**
-
-| 特点 | 技术挑战 | 解决方案 |
-|------|----------|----------|
-| 单局时长短 (3-5min) | 会话窗口频繁开关 | 动态会话 gap 配置 |
-| 匹配算法依赖 | 实时匹配质量分析 | 滑动窗口统计匹配指标 |
-| 外挂检测急迫 | 实时异常检测 | processing time 快速路径 |
-| 留存敏感 | 流失预警 | 行为模式偏离检测 |
-
-**场景 3: 卡牌/策略游戏**
-
-| 特点 | 技术挑战 | 解决方案 |
-|------|----------|----------|
-| 付费点设计复杂 | 付费漏斗分析 | 事件归因链路追踪 |
-| 养成周期长 | 长期价值预测 | 特征工程 + 滚动窗口 |
-| 运营活动频繁 | 活动效果实时评估 | 对比窗口分析 |
-
-### 4.2 异常行为检测策略
-
-**策略 1: 基于统计阈值**
+**特征 2: 乱序事件**
 
 ```
-特征: 每分钟操作次数
-阈值: μ + 3σ (正常玩家均值 + 3 倍标准差)
-判定: 超过阈值标记为可疑
+时间线:
+═══════════════════════════════════════════════════════════════►
+
+服务端产生:  T1    T2    T3    T4    T5    T6    T7
+             │     │     │     │     │     │     │
+             ▼     ▼     ▼     ▼     ▼     ▼     ▼
+Flink接收:   T1         T3 T2       T5 T4       T6 T7
+                          ↑─ 乱序    ↑─ 乱序
+
+Watermark:   ─────────────────────────────────────────►
+                    2s 延迟容忍
 ```
 
-**策略 2: 基于 cep 模式**
+**特征 3: 实时排行榜一致性**
+
+排行榜更新面临的一致性问题：
+
+| 场景 | 问题 | 解决方案 |
+|------|------|---------|
+| 并发更新 | 多个分区同时更新同一排行榜 | Redis 单线程 + Flink KeyBy |
+| 网络分区 | 部分事件延迟到达 | Watermark 延迟触发 |
+| 状态丢失 | Flink 重启导致排行榜中断 | Checkpoint 恢复 + 最终一致 |
+
+### 4.2 实时排行榜设计挑战
+
+**挑战 1: 全局排序 vs 分区聚合**
 
 ```
-模式: 速度异常
-- 5 秒内移动距离 > 正常速度上限
-- 连续击败 10 个玩家无死亡
-- 资源获取速率 > 理论上限
+方案对比:
+
+全局排序 (Global Leaderboard)
+├── 优点: 精确排名，无误差
+├── 缺点: 单点瓶颈，扩展性差
+└── 适用: 小型游戏，<10万玩家
+
+分区聚合 (Partitioned Leaderboard)
+├── 优点: 水平扩展，高吞吐
+├── 缺点: 需要合并阶段，略有延迟
+└── 适用: 大型游戏，>100万玩家
+
+推荐方案: 分层聚合
+├── Level 1: 服务器内排名 (Flink KeyBy server)
+├── Level 2: 全服排名 (Redis Sorted Set)
+└── 延迟: < 5s
 ```
 
-**策略 3: 基于机器学习**
+**挑战 2: 多种排行榜类型**
+
+| 排行榜 | 排序键 | 更新策略 | 存储方案 |
+|--------|--------|---------|---------|
+| 战力榜 | 总战力 | 增量更新 | Redis ZINCRBY |
+| 等级榜 | 等级/经验 | 实时替换 | Redis ZADD |
+| 充值榜 | 累计金额 | 分钟聚合 | Flink Window + Redis |
+| 公会榜 | 公会总战力 | 定时刷新 | 每小时批处理 |
+
+### 4.3 反作弊检测策略对比
+
+| 策略 | 延迟 | 准确率 | 复杂度 | 适用场景 |
+|------|------|--------|--------|---------|
+| **规则引擎** | < 10ms | 70-80% | 低 | 已知作弊模式 |
+| **统计阈值** | < 1s | 75-85% | 中 | 行为异常检测 |
+| **CEP 模式** | < 5s | 80-90% | 中 | 复杂时序模式 |
+| **机器学习** | > 1s | 85-95% | 高 | 未知作弊类型 |
+
+**混合策略架构**：
 
 ```
-输入: 玩家行为序列
-模型: lstm/autoencoder
-输出: 异常分数
-判定: 分数 > 阈值，人工复核
+作弊检测流水线:
+
+游戏事件
+    │
+    ▼
+┌─────────────────┐
+│ Level 1: 规则引擎 │ ◄── 黑名单/白名单，< 10ms
+│   - 设备指纹    │
+│   - IP 封禁     │
+└─────────────────┘
+    │ (通过)
+    ▼
+┌─────────────────┐
+│ Level 2: 统计阈值 │ ◄── 实时计算，< 100ms
+│   - 速度检测    │
+│   - 频率检测    │
+└─────────────────┘
+    │ (可疑)
+    ▼
+┌─────────────────┐
+│ Level 3: CEP    │ ◄── 复杂模式，< 5s
+│   - 行为序列    │
+│   - 群体检测    │
+└─────────────────┘
+    │ (确认作弊)
+    ▼
+┌─────────────────┐
+│ Level 4: 人工审核 │ ◄── 离线 ML 辅助
+└─────────────────┘
 ```
-
-### 4.3 实时 vs 离线分析权衡
-
-| 指标类型 | 实时需求 | 延迟容忍 | 实现方式 |
-|----------|----------|----------|----------|
-| dau/mau | 高 (运营看板) | < 1min | flink 滑动窗口 |
-| 在线人数 | 高 (服务器扩容) | < 10s | 全局窗口 + 定时触发 |
-| 充值金额 | 高 (财务监控) | < 1min | tumbling window |
-| 留存率 | 低 | t+1d | 离线计算 |
-| arpu/ltv | 低 | t+1d | 离线计算 |
-| 外挂检测 | 高 | < 1min | cep + 侧输出 |
 
 ---
 
-## 5. 工程论证 (engineering-argument)
+## 5. 工程论证 (Engineering Argument)
 
 ### 5.1 架构设计决策
 
-**决策 1: 为什么使用 pulsar 而非 kafka**
+**决策 1: Kafka vs Pulsar 选择**
 
-| 维度 | pulsar | kafka |
-|------|--------|-------|
-| 多租户 | 原生支持 | 需额外隔离 |
-| geo-replication | 内置 | mirror-maker |
-| 存储分离 | 计算存储分离 | 紧耦合 |
-| 游戏适用性 | **推荐** | 可用 |
+| 维度 | Kafka | Pulsar | 建议 |
+|------|-------|--------|------|
+| 单集群吞吐 | 极高 | 高 | Kafka 胜出 |
+| 多租户 | 需额外配置 | 原生支持 | Pulsar 胜出 |
+| 异地复制 | MirrorMaker | 内置 Geo-Replication | Pulsar 胜出 |
+| 存储分离 | 紧耦合 | 计算存储分离 | Pulsar 胜出 |
+| 生态成熟度 | 极成熟 | 成熟 | Kafka 胜出 |
 
-mmo 游戏需要多区服数据汇聚和异地容灾，pulsar 更合适。
+**建议**: 单数据中心大型游戏用 Kafka；多区域部署用 Pulsar。
 
-**决策 2: 游戏服务器与 flink 的耦合策略**
-
-| 策略 | 描述 | 适用场景 |
-|------|------|----------|
-| 旁路分析 | 游戏逻辑与 analytics 解耦 | **推荐**，不影响游戏性能 |
-| 嵌入式 | flink 嵌入游戏进程 | 小规模，需要 colocation |
-| 混合式 | 关键路径嵌入式，旁路批量 | 复杂场景 |
-
-选择旁路分析，保证游戏核心性能。
-
-**决策 3: 状态后端选择**
+**决策 2: Flink 状态后端选择**
 
 | 场景 | 推荐后端 | 原因 |
-|------|----------|------|
-| dau 计算 | heap | 状态小，恢复快 |
-| 玩家会话 | rocksdb | 状态大，需持久化 |
-| 充值分析 | rocksdb | exactly-once 要求 |
+|------|---------|------|
+| 实时排行榜 | HashMap | 状态小，查询快 |
+| 作弊检测 | RocksDB | 大状态，需持久化 |
+| 玩家会话 | RocksDB | TTL 管理，大键空间 |
+| DAU 计算 | HashMap | 去重集合，内存效率高 |
 
-### 5.2 性能基准
+**决策 3: 排行榜存储方案**
 
-| 指标 | 目标值 | 测试条件 |
-|------|--------|----------|
-| 事件吞吐 | 100万 tps | 1kb 事件 |
-| dau 更新延迟 | < 30s | 滑动窗口 1min |
-| 异常检测延迟 | < 10s | cep 模式匹配 |
-| 充值统计延迟 | < 1min | tumbling window 1min |
-| 数据保留 | 90 天 | pulsar 持久化 |
+```
+Redis Sorted Set 结构:
+
+战力排行榜 (daily:power:2026-04-02)
+┌─────────────────────────────────────┐
+│  ZSET                               │
+│  player_1001 → 150000              │
+│  player_2048 → 148000              │
+│  player_0555 → 145000              │
+│  ...                                │
+└─────────────────────────────────────┘
+
+操作复杂度:
+├── ZINCRBY: O(log N)  增量更新分数
+├── ZRANK: O(log N)    查询排名
+├── ZRANGE: O(log N + M) 查询前 M 名
+└── ZREMRANGEBYRANK: O(log N) 裁剪
+```
+
+### 5.2 性能基准与优化
+
+**关键性能指标 (SLA)**:
+
+| 指标 | P50 | P99 | 目标值 | 说明 |
+|------|-----|-----|--------|------|
+| 事件处理延迟 | 20ms | 200ms | < 500ms | 端到端延迟 |
+| 排行榜更新 | 1s | 5s | < 10s | 分数变更到可见 |
+| 作弊检测 | 2s | 10s | < 30s | 异常行为到告警 |
+| 系统吞吐 | - | - | 100万 TPS | 峰值处理能力 |
+| 反作弊准确率 | - | - | > 90% | 正确识别率 |
+| 误报率 | - | - | < 5% | 正常玩家误判率 |
+
+**优化策略**：
+
+```
+性能优化策略矩阵:
+
+延迟优化                    吞吐优化
+├── 异步 I/O (Async I/O)    ├── 批量处理 (Mini-batch)
+├── 本地状态访问             ├── 分区并行 (Partition Scaling)
+├── Mini-batch 处理          ├── 序列化优化 (Protobuf)
+└── 预聚合 (Pre-aggregation) └── 压缩传输 (Snappy/LZ4)
+
+资源优化                    一致性优化
+├── 状态 TTL 管理            ├── Checkpoint 增量模式
+├── 内存池复用               ├── 两阶段提交 Sink
+├── 对象池化                 └── 幂等性设计
+└── 垃圾回收调优
+```
 
 ---
 
-## 6. 实例验证 (examples)
+## 6. 实例验证 (Examples)
 
-### 6.1 实时 dau 计算
+### 6.1 实时排行榜计算
 
-**场景**: 计算游戏实时日活跃用户。
+**场景**: 计算游戏实时战力排行榜，支持全服和分区排名。
 
 ```scala
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.streaming.api.windowing.assigners.tumblingeventtimewindows
-import org.apache.flink.streaming.api.windowing.time.time
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
+import org.apache.flink.streaming.api.windowing.time.Time
+import org.apache.flink.connector.redis.sink.RedisSink
 
-// 定义游戏登录事件
-case class loginevent(playerid: string, serverid: string, channel: string, timestamp: long)
+// 定义战力变更事件
+case class PowerEvent(
+  playerId: String,
+  serverId: String,
+  powerDelta: Long,
+  timestamp: Long
+)
 
-// 实时 dau 计算
-val daustream = loginevents
-  .assign timestampsandwatermarks(
-    watermarkstrategy
-      .forboundedoutoforderness[loginevent](duration.ofseconds(10))
-      .withtimestampassigner((event, _) => event.timestamp)
-  )
-  .keyby(_.serverid)  // 按服务器分组
-  .window(tumblingeventtimewindows.of(time.minutes(1)))  // 1 分钟窗口
-  .aggregate(new dauaggregate())
+// 排行榜结果
+case class LeaderboardEntry(
+  windowTime: Long,
+  playerId: String,
+  totalPower: Long,
+  serverId: String,
+  rank: Int
+)
 
-// dau 聚合函数
-class dauaggregate extends aggregatefunction[loginevent, mutable.set[string], dauresult] {
-  override def createaccumulator(): mutable.set[string] = mutable.set.empty
+// 战力排行榜计算 Job
+object PowerLeaderboardJob {
+  def main(args: Array[String]): Unit = {
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
+    env.setParallelism(12)
 
-  override def add(event: loginevent, acc: mutable.set[string]): mutable.set[string] = {
-    acc += event.playerid
-    acc
+    // Checkpoint 配置
+    env.enableCheckpointing(30000)
+    env.getCheckpointConfig.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE)
+    env.setStateBackend(new EmbeddedRocksDBStateBackend(true))
+
+    // Kafka Source
+    val kafkaSource = KafkaSource.builder[PowerEvent]()
+      .setBootstrapServers("kafka:9092")
+      .setTopics("power-events")
+      .setGroupId("power-leaderboard")
+      .setStartingOffsets(OffsetsInitializer.latest())
+      .setValueDeserializer(new PowerEventDeserializer())
+      .build()
+
+    val watermarkStrategy = WatermarkStrategy
+      .forBoundedOutOfOrderness[PowerEvent](Duration.ofSeconds(5))
+      .withTimestampAssigner((event, _) => event.timestamp)
+
+    val powerStream = env
+      .fromSource(kafkaSource, watermarkStrategy, "Power Events")
+      .uid("power-source")
+
+    // 全服排行榜: 按 playerId 聚合战力
+    val globalLeaderboard = powerStream
+      .keyBy(_.playerId)
+      .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+      .aggregate(
+        new AggregateFunction[PowerEvent, Long, Long] {
+          override def createAccumulator(): Long = 0L
+          override def add(value: PowerEvent, accumulator: Long): Long = accumulator + value.powerDelta
+          override def getResult(accumulator: Long): Long = accumulator
+          override def merge(a: Long, b: Long): Long = a + b
+        },
+        new ProcessWindowFunction[Long, LeaderboardEntry, String, TimeWindow] {
+          override def process(
+            playerId: String,
+            context: Context,
+            elements: Iterable[Long],
+            out: Collector[LeaderboardEntry]
+          ): Unit = {
+            val totalPower = elements.head
+            out.collect(LeaderboardEntry(
+              windowTime = context.window.getEnd,
+              playerId = playerId,
+              totalPower = totalPower,
+              serverId = "global",
+              rank = 0  // 排名在 Redis 中计算
+            ))
+          }
+        }
+      )
+      .name("Global Power Aggregation")
+      .uid("global-agg")
+
+    // 写入 Redis Sorted Set
+    globalLeaderboard.addSink(new RedisLeaderboardSink(
+      keyPrefix = "leaderboard:power:global",
+      expireSeconds = 86400 * 2  // 2 天过期
+    ))
+    .name("Redis Global Leaderboard Sink")
+    .uid("redis-global-sink")
+
+    // 分区排行榜
+    val serverLeaderboard = powerStream
+      .keyBy(_.serverId)
+      .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+      .process(new ServerLeaderboardFunction(topN = 100))
+      .name("Server Leaderboard")
+      .uid("server-leaderboard")
+
+    serverLeaderboard.addSink(new RedisLeaderboardSink(
+      keyPrefix = "leaderboard:power:server",
+      expireSeconds = 86400
+    ))
+
+    env.execute("Power Leaderboard Job")
+  }
+}
+
+// Redis Sink 实现
+class RedisLeaderboardSink(keyPrefix: String, expireSeconds: Int)
+  extends RichSinkFunction[LeaderboardEntry] {
+
+  @transient private var jedis: Jedis = _
+
+  override def open(parameters: Configuration): Unit = {
+    jedis = new Jedis("redis", 6379)
   }
 
-  override def getresult(acc: mutable.set[string]): dauresult = dauresult(
-    windowtime = 0,  // 在 window function 中填充
-    uniqueplayers = acc.size,
-    playerids = acc.toset  // 可选：输出玩家列表
-  )
+  override def invoke(entry: LeaderboardEntry, context: SinkFunction.Context): Unit = {
+    val key = s"$keyPrefix:${formatDate(entry.windowTime)}"
+    // 使用 ZINCRBY 增量更新分数
+    jedis.zincrby(key, entry.totalPower, entry.playerId)
+    // 设置过期时间
+    jedis.expire(key, expireSeconds)
+  }
 
-  override def merge(a: mutable.set[string], b: mutable.set[string]): mutable.set[string] = {
+  override def close(): Unit = {
+    if (jedis != null) jedis.close()
+  }
+}
+```
+
+### 6.2 反作弊 CEP 检测
+
+**场景**: 检测加速外挂行为（速度异常）。
+
+```scala
+import org.apache.flink.cep.scala.CEP
+import org.apache.flink.cep.scala.pattern.Pattern
+import org.apache.flink.cep.PatternSelectFunction
+
+// 移动事件
+case class MoveEvent(
+  playerId: String,
+  position: (Double, Double),  // (x, y)
+  timestamp: Long
+)
+
+// 作弊告警
+case class CheatAlert(
+  playerId: String,
+  alertType: String,
+  description: String,
+  confidence: Double,
+  timestamp: Long
+)
+
+// 速度异常检测
+object SpeedCheatDetectionJob {
+  def main(args: Array[String]): Unit = {
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
+
+    val moveStream = env
+      .fromSource(kafkaSource, watermarkStrategy, "Move Events")
+      .keyBy(_.playerId)
+
+    // 定义速度异常模式: 连续 3 次移动速度超过阈值
+    val speedCheatPattern = Pattern
+      .begin[MoveEvent]("first")
+      .where(_.position != null)
+
+      .next("second")
+      .where { (event, ctx) =>
+        val firstEvent = ctx.getEventsForPattern("first").head
+        val distance = calculateDistance(firstEvent.position, event.position)
+        val timeDiff = (event.timestamp - firstEvent.timestamp) / 1000.0
+        val speed = distance / timeDiff  // m/s
+
+        speed > MAX_SPEED_LIMIT && timeDiff < 5  // 5 秒内移动过远
+      }
+
+      .next("third")
+      .where { (event, ctx) =>
+        val secondEvent = ctx.getEventsForPattern("second").head
+        val distance = calculateDistance(secondEvent.position, event.position)
+        val timeDiff = (event.timestamp - secondEvent.timestamp) / 1000.0
+        val speed = distance / timeDiff
+
+        speed > MAX_SPEED_LIMIT && timeDiff < 5
+      }
+      .within(Time.seconds(15))
+
+    // 应用模式匹配
+    val patternStream = CEP.pattern(moveStream, speedCheatPattern)
+
+    // 处理匹配结果
+    val alertStream = patternStream
+      .process(new PatternHandler[MoveEvent, CheatAlert] {
+        override def processMatch(
+          matchMap: Map[String, List[MoveEvent]],
+          ctx: PatternHandler.Context,
+          out: Collector[CheatAlert]
+        ): Unit = {
+          val events = matchMap.values.flatten.toList
+          val playerId = events.head.playerId
+
+          val speeds = events.sliding(2).map {
+            case List(e1, e2) =>
+              val dist = calculateDistance(e1.position, e2.position)
+              val time = (e2.timestamp - e1.timestamp) / 1000.0
+              dist / time
+          }.toList
+
+          val avgSpeed = speeds.sum / speeds.size
+          val confidence = math.min(avgSpeed / MAX_SPEED_LIMIT * 0.5, 0.99)
+
+          out.collect(CheatAlert(
+            playerId = playerId,
+            alertType = "SPEED_HACK",
+            description = s"异常移动速度: ${avgSpeed.formatted("%.2f")} m/s",
+            confidence = confidence,
+            timestamp = ctx.timestamp()
+          ))
+        }
+      })
+
+    // 分流处理: 高置信度直接封号，低置信度人工审核
+    val highConfidenceTag = OutputTag[CheatAlert]("high-confidence")
+    val lowConfidenceTag = OutputTag[CheatAlert]("low-confidence")
+
+    val processedAlerts = alertStream
+      .process(new ProcessFunction[CheatAlert, CheatAlert] {
+        override def processElement(
+          alert: CheatAlert,
+          ctx: ProcessFunction[CheatAlert, CheatAlert]#Context,
+          out: Collector[CheatAlert]
+        ): Unit = {
+          if (alert.confidence > 0.9) {
+            ctx.output(highConfidenceTag, alert)
+          } else {
+            ctx.output(lowConfidenceTag, alert)
+          }
+        }
+      })
+
+    // 高置信度告警 → 自动封号系统
+    processedAlerts
+      .getSideOutput(highConfidenceTag)
+      .addSink(new BanSink())
+
+    // 低置信度告警 → 人工审核队列
+    processedAlerts
+      .getSideOutput(lowConfidenceTag)
+      .addSink(new AuditQueueSink())
+
+    env.execute("Speed Cheat Detection")
+  }
+
+  val MAX_SPEED_LIMIT = 15.0  // m/s, 游戏设定的最大移动速度
+
+  def calculateDistance(p1: (Double, Double), p2: (Double, Double)): Double = {
+    math.sqrt(math.pow(p2._1 - p1._1, 2) + math.pow(p2._2 - p1._2, 2))
+  }
+}
+```
+
+### 6.3 完整 Flink 作业
+
+```scala
+import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
+import org.apache.flink.connector.kafka.source.KafkaSource
+import org.apache.flink.connector.kafka.sink.KafkaSink
+import org.apache.flink.api.common.eventtime.WatermarkStrategy
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend
+import org.apache.flink.streaming.api.checkpointing.CheckpointingMode
+import org.apache.flink.api.common.restartstrategy.RestartStrategies
+import java.util.concurrent.TimeUnit
+
+/**
+ * 游戏实时分析完整作业
+ * - 实时 DAU 计算
+ * - 战力排行榜
+ * - 反作弊检测
+ * - 充值分析
+ */
+object GamingAnalyticsJob {
+
+  def main(args: Array[String]): Unit = {
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
+
+    // ========================================
+    // Checkpoint & 状态配置
+    // ========================================
+    env.enableCheckpointing(30000) // 30s 间隔
+    env.getCheckpointConfig.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE)
+    env.getCheckpointConfig.setCheckpointTimeout(120000)
+    env.getCheckpointConfig.setMinPauseBetweenCheckpoints(1000)
+    env.getCheckpointConfig.enableUnalignedCheckpoints()
+
+    val rocksDbBackend = new EmbeddedRocksDBStateBackend(true)
+    env.setStateBackend(rocksDbBackend)
+    env.getCheckpointConfig.setCheckpointStorage("hdfs:///flink/gaming-checkpoints")
+
+    env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+      10, Time.of(10, TimeUnit.SECONDS)
+    ))
+
+    // ========================================
+    // Source 配置
+    // ========================================
+    val watermarkStrategy = WatermarkStrategy
+      .forBoundedOutOfOrderness[GameEvent](Duration.ofSeconds(5))
+      .withTimestampAssigner((event, _) => event.timestamp)
+      .withIdleness(Duration.ofSeconds(60))
+
+    val kafkaSource = KafkaSource.builder[GameEvent]()
+      .setBootstrapServers("kafka:9092")
+      .setTopics("game-events", "payment-events", "battle-events")
+      .setGroupId("gaming-analytics-flink")
+      .setStartingOffsets(OffsetsInitializer.latest())
+      .setValueDeserializer(new GameEventDeserializer())
+      .build()
+
+    val gameEventStream = env
+      .fromSource(kafkaSource, watermarkStrategy, "Game Events")
+      .uid("game-source")
+      .setParallelism(12)
+
+    // ========================================
+    // 分流处理
+    // ========================================
+    val loginEvents = gameEventStream.filter(_.eventType == "login")
+    val paymentEvents = gameEventStream.filter(_.eventType == "payment")
+    val battleEvents = gameEventStream.filter(_.eventType == "battle_end")
+    val moveEvents = gameEventStream.filter(_.eventType == "move")
+
+    // ========================================
+    // 1. 实时 DAU 计算
+    // ========================================
+    val dauStream = loginEvents
+      .keyBy(_.serverId)
+      .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+      .aggregate(new DauAggregateFunction())
+      .name("DAU Calculation")
+      .uid("dau-calc")
+      .setParallelism(8)
+
+    dauStream.addSink(new RedisMetricSink("metrics:dau"))
+      .name("DAU Sink")
+      .uid("dau-sink")
+
+    // ========================================
+    // 2. 战力排行榜
+    // ========================================
+    val powerStream = battleEvents
+      .map(e => PowerEvent(e.playerId, e.serverId, e.getPowerGain, e.timestamp))
+      .keyBy(_.playerId)
+      .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+      .aggregate(new PowerAggregateFunction())
+      .name("Power Aggregation")
+      .uid("power-agg")
+
+    powerStream.addSink(new RedisLeaderboardSink(
+      keyPrefix = "leaderboard:power",
+      expireSeconds = 172800 // 2 days
+    ))
+    .name("Power Leaderboard Sink")
+    .uid("power-sink")
+
+    // ========================================
+    // 3. 反作弊检测 (CEP)
+    // ========================================
+    val cheatPattern = Pattern.begin[MoveEvent]("move1")
+      .next("move2").where(speedCheck(_, _, MAX_SPEED))
+      .next("move3").where(speedCheck(_, _, MAX_SPEED))
+      .within(Time.seconds(10))
+
+    val cheatAlerts = CEP.pattern(
+      moveEvents.keyBy(_.playerId),
+      cheatPattern
+    )
+    .process(new CheatPatternHandler())
+    .name("Cheat Detection")
+    .uid("cheat-detection")
+    .setParallelism(6)
+
+    // 作弊告警分流
+    val highConfTag = OutputTag[CheatAlert]("high-confidence")
+    val lowConfTag = OutputTag[CheatAlert]("low-confidence")
+
+    val splitAlerts = cheatAlerts
+      .process(new AlertSplitFunction(highConfTag, lowConfTag))
+
+    splitAlerts.getSideOutput(highConfTag)
+      .addSink(new KafkaSink("cheat-ban"))
+      .name("Auto Ban Sink")
+      .uid("ban-sink")
+
+    splitAlerts.getSideOutput(lowConfTag)
+      .addSink(new ClickHouseAuditSink("cheat_audit"))
+      .name("Audit Sink")
+      .uid("audit-sink")
+
+    // ========================================
+    // 4. 充值分析
+    // ========================================
+    val paymentStats = paymentEvents
+      .keyBy(_.getChannel)
+      .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+      .aggregate(new PaymentAggregateFunction())
+      .name("Payment Stats")
+      .uid("payment-stats")
+
+    paymentStats.addSink(new ClickHouseSink("payment_stats"))
+      .name("Payment Stats Sink")
+      .uid("payment-stats-sink")
+
+    // ========================================
+    // 执行
+    // ========================================
+    env.execute("Gaming Analytics - Complete Pipeline")
+  }
+
+  // 辅助函数
+  def speedCheck(current: MoveEvent, ctx: PatternContext, maxSpeed: Double): Boolean = {
+    val prev = ctx.getEventsForPattern("move1").head
+    val distance = calculateDistance(prev.position, current.position)
+    val timeSec = (current.timestamp - prev.timestamp) / 1000.0
+    (distance / timeSec) > maxSpeed
+  }
+
+  def calculateDistance(p1: (Double, Double), p2: (Double, Double)): Double = {
+    math.sqrt(math.pow(p2._1 - p1._1, 2) + math.pow(p2._2 - p1._2, 2))
+  }
+
+  val MAX_SPEED = 15.0  // m/s
+}
+
+// ==================== 聚合函数实现 ====================
+
+class DauAggregateFunction extends AggregateFunction[GameEvent, mutable.Set[String], DauResult] {
+  override def createAccumulator(): mutable.Set[String] = mutable.Set.empty
+  override def add(value: GameEvent, accumulator: mutable.Set[String]): mutable.Set[String] = {
+    accumulator += value.playerId
+    accumulator
+  }
+  override def getResult(accumulator: mutable.Set[String]): DauResult =
+    DauResult(accumulator.size, accumulator.toSet)
+  override def merge(a: mutable.Set[String], b: mutable.Set[String]): mutable.Set[String] = {
     a ++= b
     a
   }
 }
 
-// 多维度 dau 统计
-val multidimdaustream = loginevents
-  .map(event => (event.serverid, event.channel, event.playerid, event.timestamp))
-  .keyby(t => (t._1, t._2))  // 按服务器+渠道分组
-  .window(tumblingeventtimewindows.of(time.minutes(1)))
-  .process(new multidimdaufunction())
-```
+case class DauResult(uniqueCount: Int, playerIds: Set[String])
 
-### 6.2 异常行为检测 (cep)
-
-**场景**: 检测外挂加速行为。
-
-```scala
-import org.apache.flink.cep.scala.cep
-import org.apache.flink.cep.scala.pattern.pattern
-
-// 定义移动事件
-case class moveevent(playerid: string, position: (double, double), timestamp: long)
-
-// 定义速度异常模式：短时间内移动距离过大
-val speedcheatpattern = pattern
-  .begin[moveevent]("first")
-  .where(_.position != null)
-  .next("second")
-  .where { (event, ctx) =>
-    val firstevent = ctx.geteventsforpattern("first").head
-    val timediff = event.timestamp - firstevent.timestamp
-    val distancediff = calculatedistance(firstevent.position, event.position)
-    val speed = distancediff / (timediff / 1000.0)  // 米/秒
-
-    // 速度超过游戏设定上限 (如 50m/s)
-    speed > 50.0 && timediff < 5000  // 5 秒内
-  }
-  .next("third")
-  .where { (event, ctx) =>
-    val secondevent = ctx.geteventsforpattern("second").head
-    val timediff = event.timestamp - secondevent.timestamp
-    val distancediff = calculatedistance(secondevent.position, event.position)
-    val speed = distancediff / (timediff / 1000.0)
-
-    // 连续异常加速
-    speed > 50.0 && timediff < 5000
-  }
-  .within(time.seconds(10))
-
-// 应用模式匹配
-val cheatstream = cep.pattern(moveevents.keyby(_.playerid), speedcheatpattern)
-  .process(new patternhandler[moveevent, cheatalert]() {
-    override def processmatch(
-      matchmap: map[string, list[moveevent]],
-      ctx: context,
-      out: collector[cheatalert]
-    ): unit = {
-      val playerid = matchmap("first").head.playerid
-      val positions = matchmap.values.flatten.map(_.position).tolist
-
-      out.collect(cheatalert(
-        playerid = playerid,
-        alerttype = "speed_cheat",
-        description = s"玩家 $playerid 检测到异常加速",
-        positions = positions,
-        timestamp = ctx.timestamp()
-      ))
-    }
-  })
-
-// 异常事件侧输出到专门处理流
-cheatstream.addsink(new cheatauditsink())
-```
-
-### 6.3 充值流水实时分析
-
-**场景**: 实时监控充值金额，检测异常充值模式。
-
-```scala
-// 定义充值事件
-case class paymentevent(
-  playerid: string,
-  orderid: string,
-  amount: double,
-  currency: string,
-  channel: string,
-  timestamp: long
-)
-
-// 充值金额实时统计
-val paymentstream = paymentevents
-  .assign timestampsandwatermarks(
-    watermarkstrategy
-      .forboundedoutoforderness[paymentevent](duration.ofseconds(5))
-      .withtimestampassigner((event, _) => event.timestamp)
-  )
-  .keyby(_.channel)  // 按支付渠道分组
-  .window(tumblingeventtimewindows.of(time.minutes(1)))  // 每分钟统计
-  .aggregate(new paymentaggregate())
-
-// 充值聚合结果
-case class paymentstats(
-  windowstart: long,
-  channel: string,
-  totalamount: double,
-  ordercount: int,
-  uniqueplayers: int,
-  avgamount: double,
-  maxamount: double
-)
-
-// 异常充值检测 (侧输出)
-val latepaymenttag = outputtag[paymentevent]("suspicious-payment")
-
-val validatedpayments = paymentevents
-  .process(new paymentvalidationfunction(latepaymenttag))
-
-// 处理可疑充值
-val suspiciouspayments: datastream[paymentevent] = validatedpayments.getsideoutput(latepaymenttag)
-suspiciouspayments.addsink(new fraudalertsink())
-
-// 充值验证函数
-class paymentvalidationfunction(lateoutputtag: outputtag[paymentevent])
-  extends processfunction[paymentevent, paymentevent] {
-
-  private var playerhistory: mapstate[string, list[paymentevent]] = _
-
-  override def open(parameters: configuration): unit = {
-    playerhistory = getruntimecontext.getmapstate(
-      new mapstatedescriptor[string, list[paymentevent]]("payment-history", classof[string], classof[list[paymentevent]])
-    )
-  }
-
-  override def processelement(
-    event: paymentevent,
-    ctx: context,
-    out: collector[paymentevent]
-  ): unit = {
-    val history = option(playerhistory.get(event.playerid)).getorelse(list.empty)
-    val recentamount = history.filter(_.timestamp > event.timestamp - 3600000).map(_.amount).sum  // 过去 1 小时
-
-    // 检测异常：1 小时内累计充值超过阈值
-    if (recentamount + event.amount > 10000.0) {
-      ctx.output(lateoutputtag, event)  // 侧输出可疑交易
-    }
-
-    // 更新历史
-    val updatedhistory = (event :: history).take(100)  // 保留最近 100 笔
-    playerhistory.put(event.playerid, updatedhistory)
-
-    out.collect(event)  // 正常输出
-  }
-}
-```
-
-### 6.4 游戏会话分析
-
-**场景**: 分析玩家游戏会话时长和活跃度。
-
-```scala
-// 游戏事件
-case class gameevent(playerid: string, eventtype: string, timestamp: long)
-
-// 会话窗口分析
-val sessionstream = gameevents
-  .assign timestampsandwatermarks(
-    watermarkstrategy
-      .forboundedoutoforderness[gameevent](duration.ofseconds(15))
-      .withtimestampassigner((event, _) => event.timestamp)
-  )
-  .keyby(_.playerid)
-  .window(events timesessionwindows.withgap(time.minutes(5)))  // 5 分钟无事件视为会话结束
-  .allowedlateness(time.seconds(30))
-  .process(new sessionanalyzer())
-
-// 会话分析结果
-case class playersession(
-  playerid: string,
-  sessionstart: long,
-  sessionend: long,
-  duration: long,
-  eventcount: int,
-  loginlogout: int  // 登录登出次数
-)
-
-class sessionanalyzer extends processwindowfunction[gameevent, playersession, string, sessionwindow] {
-  override def process(
-    playerid: string,
-    context: context,
-    events: iterable[gameevent],
-    out: collector[playersession]
-  ): unit = {
-    val sortedevents = events.tolist.sortby(_.timestamp)
-    val starttime = sortedevents.head.timestamp
-    val endtime = sortedevents.last.timestamp
-    val duration = endtime - starttime
-
-    val logincount = sortedevents.count(_.eventtype == "login")
-    val logoutcount = sortedevents.count(_.eventtype == "logout")
-
-    out.collect(playersession(
-      playerid = playerid,
-      sessionstart = starttime,
-      sessionend = endtime,
-      duration = duration,
-      eventcount = sortedevents.size,
-      loginlogout = logincount + logoutcount
-    ))
-  }
+class PowerAggregateFunction extends AggregateFunction[PowerEvent, Long, LeaderboardEntry] {
+  override def createAccumulator(): Long = 0L
+  override def add(value: PowerEvent, accumulator: Long): Long = accumulator + value.powerDelta
+  override def getResult(accumulator: Long): LeaderboardEntry =
+    LeaderboardEntry(0, "", accumulator, "", 0)
+  override def merge(a: Long, b: Long): Long = a + b
 }
 ```
 
 ---
 
-## 7. 可视化 (visualizations)
+## 7. 可视化 (Visualizations)
 
-### 7.1 游戏数据流架构
+### 7.1 整体架构图
 
 ```mermaid
-graph tb
-    subgraph "游戏服务器 (actor 模型)"
-        gs1[游戏服 1<br/>akka cluster]
-        gs2[游戏服 2<br/>akka cluster]
-        gs3[游戏服 n<br/>akka cluster]
-        actor[event collector actor]
+graph TB
+    subgraph "游戏客户端"
+        CLIENT1[移动客户端]
+        CLIENT2[PC 客户端]
+        CLIENT3[Web 客户端]
     end
 
-    subgraph "消息队列 (pulsar)"
-        p1[topic: game-events]
-        p2[topic: payment-events]
-        p3[topic: login-events]
+    subgraph "游戏服务器 (Actor 模型)"
+        GS1[游戏服 1<br/>Akka/Pekko]
+        GS2[游戏服 2<br/>Akka/Pekko]
+        GS3[游戏服 N<br/>Akka/Pekko]
+        ACTOR[Event Collector Actor]
     end
 
-    subgraph "flink 实时计算"
-        src[source]
-        wm[watermark]
+    subgraph "消息队列层 (Kafka + Pulsar)"
+        K1[Kafka<br/>Topic: game-events<br/>100+ 分区]
+        K2[Pulsar<br/>Topic: payment-events<br/>强一致]
+        K3[Kafka<br/>Topic: battle-events]
+    end
 
-        subgraph "指标计算"
-            dau[dau 计算<br/>tumbling window]
-            online[在线人数<br/>global window]
-            revenue[收入统计<br/>tumbling window]
+    subgraph "Flink 实时计算"
+        SRC[Source<br/>多 Topic 消费]
+        WM[Watermark<br/>5s 延迟容忍]
+
+        subgraph "核心计算"
+            DAU[DAU 计算<br/>Tumbling Window]
+            RANK[战力排行榜<br/>Sliding Window]
+            PAY[充值统计<br/>Exactly-Once]
         end
 
-        subgraph "异常检测"
-            cep[cep 模式<br/>外挂检测]
-            side[侧输出<br/>可疑事件]
+        subgraph "反作弊"
+            CEP[CEP 模式匹配<br/>速度/行为检测]
+            SIDE[Side Output<br/>可疑事件分流]
         end
 
-        subgraph "会话分析"
-            sw[session window<br/>玩家会话]
-            sa[会话聚合]
-        end
+        CK[Checkpoint<br/>30s 间隔]
     end
 
-    subgraph "存储与展示"
-        redis[(redis<br/>实时指标)]
-        clickhouse[(clickhouse<br/>明细存储)]
-        druid[(druid<br/>olap 查询)]
-        grafana[grafana 看板]
+    subgraph "存储层"
+        REDIS[(Redis<br/>Sorted Set<br/>实时排行榜)]
+        CH[(ClickHouse<br/>明细存储<br/>OLAP)]
+        HBASE[(HBase<br/>玩家画像)]
     end
 
-    gs1 --> actor --> p1
-    gs2 --> actor --> p2
-    gs3 --> actor --> p3
+    subgraph "展示层"
+        GRAFANA[Grafana 看板]
+        WEB[WebSocket<br/>实时推送]
+    end
 
-    p1 --> src --> wm
-    p2 --> src
-    p3 --> src
+    CLIENT1 --> GS1 --> ACTOR --> K1
+    CLIENT2 --> GS2 --> ACTOR --> K2
+    CLIENT3 --> GS3 --> ACTOR --> K3
 
-    wm --> dau --> redis
-    wm --> online --> redis
-    wm --> revenue --> redis
-    wm --> cep --> side --> clickhouse
-    wm --> sw --> sa --> druid
+    K1 --> SRC
+    K2 --> SRC
+    K3 --> SRC
 
-    redis --> grafana
-    clickhouse --> grafana
-    druid --> grafana
+    SRC --> WM
+    WM --> DAU --> REDIS
+    WM --> RANK --> REDIS
+    WM --> PAY --> CH
+    WM --> CEP --> SIDE
+
+    SIDE --> CH
+    CEP --> HBASE
+
+    REDIS --> GRAFANA
+    REDIS --> WEB
+    CH --> GRAFANA
+
+    style CEP fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style RANK fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style REDIS fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
-### 7.2 实时指标计算
+### 7.2 数据流处理管道
 
 ```mermaid
-flowchart lr
-    a[游戏事件] --> b[event time 提取]
-    b --> c[keyby 维度]
-    c --> d[窗口分配]
-    d -->|dau| e[tumbling 1min<br/>去重计数]
-    d -->|在线| f[global window<br/>定时触发]
-    d -->|收入| g[tumbling 1min<br/>金额求和]
-    d -->|会话| h[session window<br/>5min gap]
-    e --> i[实时看板]
-    f --> i
-    g --> i
-    h --> j[留存分析]
+flowchart LR
+    A[游戏事件] --> B[Event Time 提取]
+    B --> C[KeyBy 玩家ID]
+    C --> D{事件类型}
+
+    D -->|login| E[DAU 窗口<br/>1min Tumbling]
+    D -->|battle| F[战力聚合<br/>Sliding Window]
+    D -->|move| G[CEP 模式<br/>速度检测]
+    D -->|payment| H[充值统计<br/>Exactly-Once]
+
+    E --> I[Redis<br/>Set Cardinality]
+    F --> J[Redis<br/>ZINCRBY]
+    G -->|异常| K[Side Output<br/>ClickHouse]
+    G -->|正常| L[丢弃]
+    H --> M[ClickHouse<br/>MergeTree]
+
+    I --> N[Grafana]
+    J --> N
+    K --> O[人工审核]
+    M --> P[财务报表]
+```
+
+### 7.3 排行榜更新流程
+
+```mermaid
+sequenceDiagram
+    participant Player as 玩家
+    participant GameServer as 游戏服务器
+    participant Kafka as Kafka
+    participant Flink as Flink
+    participant Redis as Redis
+    participant Client as 客户端
+
+    Player->>GameServer: 战斗结束 +100 战力
+    GameServer->>Kafka: 发送 battle_event
+
+    Note over Kafka: Topic: battle-events<br/>Partition: hash(player_id)
+
+    Kafka->>Flink: 消费事件
+
+    Note over Flink: KeyBy(player_id)<br/>Window(1min)<br/>Aggregate(sum)
+
+    Flink->>Redis: ZINCRBY leaderboard:power player_123 100
+
+    Note over Redis: Sorted Set 更新<br/>O(log N) 复杂度
+
+    Redis-->>Flink: OK
+
+    Redis->>Client: Pub/Sub 推送排名变更
+    Client->>Player: 显示新排名
 ```
 
 ---
 
-## 8. 引用参考 (references)
+## 8. 引用参考 (References)
 
-[^1]: apache flink documentation, "event time and watermarks," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/time/>
+[^1]: Apache Flink Documentation, "Event Time and Watermarks," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/time/>
 
-[^2]: apache flink documentation, "windowing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/>
+[^2]: Apache Flink Documentation, "Windowing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/>
 
-[^3]: apache flink documentation, "side outputs," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/side_output/>
+[^3]: Apache Flink Documentation, "Side Outputs," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/side_output/>
+
+
 
 
 
@@ -693,3 +1143,4 @@ flowchart lr
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+*关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 06: Side Output](../02-design-patterns/pattern-side-output.md)*

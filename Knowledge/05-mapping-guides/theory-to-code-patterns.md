@@ -1,531 +1,983 @@
-# 理论到代码模式映射指南 (Theory-to-Code Patterns Mapping)
+# 5.1 理论到代码的模式语言
 
-> 所属阶段: Knowledge/05-mapping-guides | 前置依赖: [Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md), [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) | 形式化等级: L4
+> **所属阶段**: Knowledge/05-mapping-guides/
+> **前置依赖**: [Struct/07-deterministic-semantics.md](../../Struct/07-deterministic-semantics.md), [Struct/09-watermark-theory.md](../../Struct/09-watermark-theory.md), [Struct/17-checkpoint-mechanism.md](../../Struct/17-checkpoint-mechanism.md), [Struct/18-exactly-once-semantics.md](../../Struct/18-exactly-once-semantics.md)
+> **形式化等级**: L4-L5
 
 ---
-
-## 目录
-
-- [理论到代码模式映射指南 (Theory-to-Code Patterns Mapping)](#理论到代码模式映射指南-theory-to-code-patterns-mapping)
-  - [目录](#目录)
-  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-K-05-03 (代码模式)](#def-k-05-03-代码模式)
-    - [Def-K-05-04 (知识转化)](#def-k-05-04-知识转化)
-  - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-K-05-03 (进程演算到算子链的组合保持)](#lemma-k-05-03-进程演算到算子链的组合保持)
-    - [Lemma-K-05-04 (类型安全到泛型约束的保持)](#lemma-k-05-04-类型安全到泛型约束的保持)
-  - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: 进程演算组合 $\\leftrightarrow$ Flink 算子链](#关系-1-进程演算组合-leftrightarrow-flink-算子链)
-    - [关系 2: 类型安全 $\\leftrightarrow$ 泛型与序列化](#关系-2-类型安全-leftrightarrow-泛型与序列化)
-    - [关系 3: 一致性层级 $\\leftrightarrow$ Checkpoint 配置](#关系-3-一致性层级-leftrightarrow-checkpoint-配置)
-    - [关系 4: 活性/安全性 $\\leftrightarrow$ 监控与告警](#关系-4-活性安全性-leftrightarrow-监控与告警)
-  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-    - [4.1 进程演算到流处理的模式转化](#41-进程演算到流处理的模式转化)
-    - [4.2 类型系统的工程约束转化](#42-类型系统的工程约束转化)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-    - [Prop-K-05-02 (代码模式库完备性)](#prop-k-05-02-代码模式库完备性)
-  - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 进程演算组合模式 → Flink 算子链](#示例-61-进程演算组合模式--flink-算子链)
-    - [示例 6.2: 类型安全 → 泛型与序列化模式](#示例-62-类型安全--泛型与序列化模式)
-    - [示例 6.3: 一致性层级 → Checkpoint 配置模式](#示例-63-一致性层级--checkpoint-配置模式)
-    - [示例 6.4: 活性/安全性 → 监控告警模式](#示例-64-活性安全性--监控告警模式)
-  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-    - [知识转化流程图](#知识转化流程图)
-    - [代码模式库结构图](#代码模式库结构图)
-  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ## 1. 概念定义 (Definitions)
 
-本节定义理论知识到可复用代码模式的转化框架，建立形式化理论与工程实现模式之间的系统映射。
+### Def-K-05-01: 形式化→代码模式 (Formal-to-Code Pattern)
 
-### Def-K-05-03 (代码模式)
+> 一个形式化到代码的模式是一个五元组 $P = (F, C, M, V, I)$，其中：
+>
+> - $F$ 是形式化规范（定理、性质、约束）
+> - $C$ 是代码模板（多语言实现骨架）
+> - $M$ 是映射规则（形式化→代码的转换函数）
+> - $V$ 是验证策略（如何验证代码满足形式化约束）
+> - $I$ 是组合不变量（与其他模式组合时的约束保持条件）
 
-**代码模式** (Code Pattern) 是针对特定计算问题的可复用解决方案模板，包含：
+**直观解释**: 模式语言提供了一座桥梁，将 Struct/ 目录中的严格数学定义转换为工程实践中可复用的代码结构。每个模式都携带了形式化"血统"，确保代码实现具有可验证的语义保证。
 
-- **结构模板**: 类/接口/方法的组织结构
-- **行为契约**: 输入-输出不变式
-- **约束条件**: 前置条件、后置条件、不变式
+### Def-K-05-02: 模式实例化 (Pattern Instantiation)
 
-形式化定义为一个三元组：
-$$
-\text{Pattern} = (S, B, C)
-$$
-其中 $S$ 为结构模板，$B$ 为行为契约，$C$ 为约束条件集合。
+> 给定模式 $P$ 和具体业务逻辑 $L$，实例化操作 $\llbracket P \rrbracket_L$ 产生具体代码 $C_L$，满足：
+> $$C_L \in C \land \text{sat}(C_L, F)$$
+> 即实例化后的代码必须满足模式的形式化约束。
 
----
+### Def-K-05-03: 模式组合 (Pattern Composition)
 
-### Def-K-05-04 (知识转化)
-
-**知识转化** (Knowledge Transformation) 是从理论概念 $\tau$ 到代码模式 $\pi$ 的映射过程：
-
-$$
-\mathcal{K}: \tau \to \pi, \quad \text{s.t.} \; \text{Sem}(\tau) \approx \text{Sem}(\pi)
-$$
-
-其中 $\text{Sem}$ 表示语义解释函数，$\approx$ 表示可观察等价。
-
-**转化类型**:
-
-- **直接映射**: 理论概念有直接的编程语言对应
-- **模式封装**: 理论概念需要封装为设计模式
-- **运行时实现**: 理论概念通过运行时系统实现
+> 模式 $P_1$ 与 $P_2$ 的组合 $P_1 \oplus P_2$ 定义当且仅当：
+> $$I_{P_1}(C_2) \land I_{P_2}(C_1) = \text{true}$$
+> 即双方的不变量在组合后仍然保持。
 
 ---
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-K-05-03 (进程演算到算子链的组合保持)
+### Lemma-K-05-01: 模式传递性
 
-**陈述**: 进程演算中的组合运算符 $(|, \parallel, ;)$ 在 Flink 算子链中保持组合语义。
+> 若模式 $P_1$ 的形式化规范 $F_1$ 蕴含 $F_2$（$F_1 \Rightarrow F_2$），且 $P_2$ 基于 $F_2$ 构建，则任何 $P_1$ 的正确实例化也是 $P_2$ 的正确实例化。
 
-**推导**:
+**工程含义**: 基于更强形式化保证实现的代码自动继承较弱的保证。例如，满足确定性语义（Thm-S-07-01）的算子自动满足幂等性要求。
 
-1. 进程演算中 $P | Q$ 表示并行组合，通信通过通道同步
-2. Flink 中 `DataStream.union()` / `DataStream.connect()` 实现流的并行组合
-3. 进程演算中 $P;Q$ 表示顺序组合
-4. Flink 中 `map().filter()` 等链式调用实现顺序组合
-5. 两者在数据流依赖关系上等价
+### Lemma-K-05-02: 组合封闭性
 
-∎
+> 对于任意两个满足组合条件的模式 $P_i$ 和 $P_j$，其组合 $P_i \oplus P_j$ 的不变量 $I_{ij}$ 是各自不变量的合取：
+> $$I_{ij} = I_i \land I_j \land I_{compat}(i,j)$$
+> 其中 $I_{compat}$ 是模式特定的兼容性约束。
 
----
+### Lemma-K-05-03: 代码等价性保持
 
-### Lemma-K-05-04 (类型安全到泛型约束的保持)
-
-**陈述**: 形式化类型系统中的类型安全保证可以通过编程语言泛型机制实现。
-
-**推导**:
-
-1. 形式化类型系统通过类型规则保证"良类型程序不会陷入特定错误"
-2. Java/Scala 泛型提供编译期类型检查
-3. Flink 的 `DataStream<T>` 使用泛型参数保证流元素类型一致
-4. 序列化框架 (Kryo/Avro) 在运行期维护类型信息
-5. 类型安全性质在转化后保持
-
-∎
+> 若两个代码实现 $C_A$ 和 $C_B$ 都是同一模式 $P$ 的正确实例化，则在相同输入流 $S$ 下：
+> $$\llbracket C_A \rrbracket(S) = \llbracket C_B \rrbracket(S)$$
+> 即输出流在观测等价意义下相同。
 
 ---
 
 ## 3. 关系建立 (Relations)
 
-### 关系 1: 进程演算组合 $\leftrightarrow$ Flink 算子链
+### 理论↔代码 映射矩阵
 
-**论证**:
+| 形式化定理/定义 (Struct/) | 代码模式 (Knowledge/) | 实现载体 | 验证方法 |
+|--------------------------|----------------------|----------|----------|
+| Thm-S-07-01: 确定性语义 | **确定性算子模式** | `MapFunction`, `FlatMapFunction` | 纯函数检查 + 无副作用分析 |
+| Thm-S-09-01: Watermark 单调性 | **Watermark生成器模式** | `WatermarkGenerator` | 单调性断言 + 边界测试 |
+| Thm-S-17-01: Checkpoint 一致性 | **状态快照模式** | `CheckpointedFunction` | 快照恢复测试 + 状态一致性校验 |
+| Thm-S-18-01: Exactly-Once 语义 | **两阶段提交 Sink 模式** | `TwoPhaseCommitSinkFunction` | 故障注入测试 + 幂等性验证 |
+| Def-S-08-01: 时间域分类 | **时间语义选择模式** | `TimeCharacteristic` 配置 | 时间戳提取验证 |
+| Thm-S-10-01: 窗口正确性 | **窗口算子模式** | `WindowFunction` | 窗口边界测试 + 触发器验证 |
+| Def-S-11-01: 状态类型 | **状态后端选择模式** | `StateBackend` 配置 | 状态访问模式分析 |
+| Thm-S-12-01: Backpressure 控制 | **反压处理模式** | `BoundedOutOfOrdernessGenerator` | 缓冲区监控 + 速率测试 |
 
-进程演算提供了并发计算的形式化基础，Flink 算子链是其工程实现。映射关系如下：
+### 映射关系说明
 
-| 进程演算概念 | 形式化表示 | Flink 实现 | 代码模式 |
-|-------------|-----------|-----------|---------|
-| 顺序组合 | $P ; Q$ | 算子链式调用 | `stream.map().filter().keyBy()` |
-| 并行组合 | $P \parallel Q$ | Union/Connect | `stream1.union(stream2)` |
-| 选择 | $P + Q$ | 分流/侧输出 | `ProcessFunction.output()` |
-| 限制/隐藏 | $P \setminus L$ | 内部状态封装 | `KeyedProcessFunction` |
-| 复制 | $!P$ | 广播/复制 | `broadcast()` / `rebalance()` |
+```mermaid
+graph TB
+    subgraph "形式化层 (Struct/)"
+        F1[Thm-S-07-01<br/>确定性语义]
+        F2[Thm-S-09-01<br/>Watermark单调性]
+        F3[Thm-S-17-01<br/>Checkpoint一致性]
+        F4[Thm-S-18-01<br/>Exactly-Once语义]
+    end
 
-**编码示例**:
+    subgraph "模式层 (Knowledge/)"
+        P1[确定性算子模式]
+        P2[Watermark生成器模式]
+        P3[状态快照模式]
+        P4[两阶段提交Sink模式]
+    end
 
-```java
-// 进程演算: (Source | Map) ; KeyBy ; Window
-// 对应 Flink 代码:
-DataStream<Result> result = env
-    .addSource(new SourceFunction<>())  // Source
-    .map(new Mapper())                   // Map
-    .union(otherStream)                  // Parallel composition
-    .keyBy(Event::getKey)                // KeyBy (restriction)
-    .window(TumblingEventTimeWindows.of(Time.seconds(5)))  // Window
-    .aggregate(new Aggregator());        // Aggregation
-```
+    subgraph "实现层 (Flink/)"
+        C1[MapFunction<br/>FlatMapFunction]
+        C2[WatermarkGenerator]
+        C3[CheckpointedFunction]
+        C4[TwoPhaseCommitSinkFunction]
+    end
 
----
+    F1 -->|实例化| P1
+    F2 -->|实例化| P2
+    F3 -->|实例化| P3
+    F4 -->|实例化| P4
 
-### 关系 2: 类型安全 $\leftrightarrow$ 泛型与序列化
-
-**论证**:
-
-形式化类型系统通过类型规则保证计算安全，Flink 通过泛型和序列化框架实现类似保证。
-
-| 形式化类型概念 | 理论保证 | Flink 实现机制 | 代码模式 |
-|---------------|---------|---------------|---------|
-| 类型正确性 | 良类型程序不崩溃 | Java 泛型 + Flink 类型信息 | `DataStream<T>` |
-| 类型推导 | 自动推断表达式类型 | Flink TypeInformation | `TypeInformation.of(MyClass.class)` |
-| 子类型多态 | 子类替换父类 | 泛型通配符 + 协变 | `DataStream<? extends Event>` |
-| 序列化类型安全 | 跨进程类型一致 | Kryo/Avro/POJO 序列化 | `TypeSerializer<T>` |
-
-**代码模式示例**:
-
-```java
-// 类型安全模式: 泛型数据流
-public class TypeSafeStream<T extends Event> {
-    private final DataStream<T> stream;
-    private final TypeInformation<T> typeInfo;
-
-    public TypeSafeStream(DataStream<T> stream, TypeInformation<T> typeInfo) {
-        this.stream = stream;
-        this.typeInfo = typeInfo;  // 运行时类型信息保留
-    }
-
-    // 类型安全的转换操作
-    public <R extends Event> TypeSafeStream<R> map(
-            MapFunction<T, R> mapper,
-            TypeInformation<R> resultType) {
-        return new TypeSafeStream<>(
-            stream.map(mapper).returns(resultType),
-            resultType
-        );
-    }
-}
-```
-
----
-
-### 关系 3: 一致性层级 $\leftrightarrow$ Checkpoint 配置
-
-**论证**:
-
-一致性层级理论定义了不同强度的一致性保证，Flink 通过 Checkpoint 配置实现这些保证。
-
-| 一致性层级 | 形式化定义 | Flink 配置 | 代码模式 |
-|-----------|-----------|-----------|---------|
-| At-Most-Once | 无重复，可能丢失 | 禁用 Checkpoint | 无特殊配置 |
-| At-Least-Once | 无丢失，可能重复 | `enableCheckpointing(mode=AT_LEAST_ONCE)` | 简单重试 |
-| Exactly-Once | 无丢失，无重复 | `enableCheckpointing(mode=EXACTLY_ONCE)` | Barrier 对齐 + 2PC |
-
-**配置代码模式**:
-
-```java
-// Exactly-Once 配置模式
-public class ExactlyOnceConfiguration {
-    public static void configureExactlyOnce(StreamExecutionEnvironment env) {
-        // 启用 Checkpoint，精确一次语义
-        env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
-
-        // 对齐超时配置
-        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
-
-        // 外部化 Checkpoint 清理
-        env.getCheckpointConfig().setExternalizedCheckpointCleanup(
-            ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
-        );
-    }
-}
-```
-
----
-
-### 关系 4: 活性/安全性 $\leftrightarrow$ 监控与告警
-
-**论证**:
-
-形式化验证中的活性 (Liveness) 和安全性 (Safety) 属性在工程实践中通过监控告警系统实现。
-
-| 形式化属性 | 理论描述 | 工程映射 | 监控指标 |
-|-----------|---------|---------|---------|
-| 活性 (Liveness) | "好事最终发生" | 进度推进保证 | Watermark 延迟、处理延迟 |
-| 安全性 (Safety) | "坏事永不发生" | 异常检测 | 失败率、反压指标 |
-| 公平性 (Fairness) | "机会均等" | 负载均衡 | 各 Subtask 吞吐量 |
-
-**监控代码模式**:
-
-```java
-// 活性监控模式
-public class LivenessMonitor {
-    private final MeterView watermarkLag;
-    private final Gauge<Long> currentWatermark;
-
-    public void monitorWatermarkProgress(Watermark watermark) {
-        long lag = System.currentTimeMillis() - watermark.getTimestamp();
-        if (lag > ALERT_THRESHOLD) {
-            // 触发告警: Watermark 推进延迟
-            alert("Watermark lag exceeds threshold: " + lag + "ms");
-        }
-    }
-}
+    P1 -->|模板实现| C1
+    P2 -->|模板实现| C2
+    P3 -->|模板实现| C3
+    P4 -->|模板实现| C4
 ```
 
 ---
 
 ## 4. 论证过程 (Argumentation)
 
-### 4.1 进程演算到流处理的模式转化
+### 4.1 模式正确性论证框架
 
-**核心问题**: 如何将进程演算的理论模型转化为可执行的流处理代码？
+每个模式的正确性需要验证三个层次：
 
-**转化框架**:
+1. **语义保持性**: 代码实现是否保持了形式化规范定义的语义
+2. **实例化正确性**: 业务逻辑注入后是否破坏模式保证
+3. **组合安全性**: 多个模式组合使用时是否产生冲突
 
-```
-进程演算理论
-    ↓ 识别基本进程和通道
-基本进程 → Flink 算子 (Map/Filter/Join)
-通道 → DataStream 数据流
-    ↓ 应用组合规则
-并行组合 → Union/Connect
-顺序组合 → 算子链
-    ↓ 处理状态与同步
-状态进程 → KeyedProcessFunction
-同步通信 → Checkpoint 屏障
-```
+### 4.2 反模式识别标准
 
-**实例论证**:
-
-考虑一个进程演算模型：
-$$
-\text{System} = (\text{Sensor}_1 \parallel \text{Sensor}_2) ; \text{Join} ; \text{Alert}
-$$
-
-对应 Flink 实现：
-
-```java
-// Sensor1 和 Sensor2 并行 (||)
-DataStream<Reading> sensor1 = env.addSource(new Sensor1Source());
-DataStream<Reading> sensor2 = env.addSource(new Sensor2Source());
-
-// 顺序组合 (;): Join
-DataStream<Alert> alerts = sensor1
-    .connect(sensor2)           // 双流连接
-    .keyBy(r -> r.getSensorId())
-    .process(new JoinFunction());  // Join 算子
-
-// 顺序组合 (;): Alert Sink
-alerts.addSink(new AlertSink());
-```
+| 反模式 | 违反的形式化约束 | 症状 | 检测方法 |
+|-------|----------------|------|---------|
+| **非确定性映射** | Thm-S-07-01 | 相同输入产生不同输出 | 静态分析 + 随机测试 |
+| **非单调 Watermark** | Thm-S-09-01 | 时间倒退触发异常 | 运行时断言 |
+| **状态逃逸** | Thm-S-17-01 | 恢复后状态不一致 | 快照对比测试 |
+| **非幂等写入** | Thm-S-18-01 | 故障恢复后重复数据 | 幂等键检查 |
+| **共享可变状态** | Lemma-K-05-01 | 并发修改导致竞态 | 逃逸分析 |
+| **跨算子状态依赖** | Lemma-K-05-02 | 算子重启后顺序错乱 | 拓扑验证 |
 
 ---
 
-### 4.2 类型系统的工程约束转化
+## 5. 形式证明 / 工程论证
 
-**类型安全保证的工程实现**:
+### 5.1 模式验证的工程方法
 
-| 理论约束 | 工程检查点 | 运行时保障 |
-|---------|-----------|-----------|
-| 类型一致性 | 编译期泛型检查 | Kryo 序列化验证 |
-| 不可变性 | `final` 关键字 | 状态后端只读视图 |
-| 空安全 | `@NonNull` 注解 | 运行时空值检查 |
+由于代码层面的形式化验证成本极高，我们采用以下工程验证策略：
 
-**反例分析**:
+**Def-K-05-04: 验证金字塔**
 
-```java
-// 错误: 类型擦除导致运行时失败
-DataStream stream = env.fromElements(1, 2, 3);  // 原始类型
-stream.map(x -> (String) x);  // 运行时 ClassCastException
-
-// 正确: 显式类型信息
-DataStream<Integer> stream = env.fromElements(1, 2, 3);
-stream.map(x -> x.toString());  // 类型安全
+```
+         ┌─────────────┐
+         │   形式验证   │  ← 核心不变量 (关键代码路径)
+         │  (Coq/TLA+) │
+        ┌┴─────────────┴┐
+        │   属性测试     │  ← 随机输入 + 性质断言
+        │  (ScalaCheck) │
+       ┌┴───────────────┴┐
+       │   集成测试       │  ← 故障注入 + 端到端验证
+       │  (MiniCluster)  │
+      ┌┴─────────────────┴┐
+      │    单元测试        │  ← 边界条件 + 正常路径
+      │   (JUnit/TestNG)  │
+      └───────────────────┘
 ```
 
----
+### 5.2 各模式验证策略
 
-## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+**确定性算子模式**:
 
-### Prop-K-05-02 (代码模式库完备性)
+- 静态检查: 函数是否纯函数（无外部 IO、无静态可变状态）
+- 动态检查: 相同输入序列的多次执行输出一致性
+- 反例测试: 注入随机延迟，验证输出稳定性
 
-**命题**: 本文档定义的代码模式库覆盖了流处理系统的核心形式化概念。
+**Watermark 生成器模式**:
 
-**工程论证**:
+- 单调性断言: `currentWatermark >= lastEmittedWatermark`
+- 延迟边界测试: 验证最大乱序时间容差
+- 空流测试: 无数据时 Watermark 推进行为
 
-**覆盖维度分析**:
+**两阶段提交 Sink 模式**:
 
-| 维度 | 形式化概念 | 代码模式 | 覆盖状态 |
-|-----|-----------|---------|---------|
-| 计算模型 | 进程演算 | 算子链模式 | ✓ 完整 |
-| 数据流 | Dataflow 图 | DAG 构建模式 | ✓ 完整 |
-| 时间语义 | Watermark/窗口 | 时间窗口模式 | ✓ 完整 |
-| 容错 | Checkpoint/一致性 | 容错配置模式 | ✓ 完整 |
-| 类型 | 类型系统 | 泛型序列化模式 | ✓ 完整 |
-| 验证 | 活性/安全性 | 监控告警模式 | ✓ 部分 |
-
-**论证**: 前五维度实现完整覆盖，验证维度通过运行时监控近似实现。对于形式化验证要求的完全正确性保证，仍需结合模型检验工具（如 TLA+）补充。
-
-∎
+- 故障注入: 在 pre-commit/commit/abort 各阶段注入故障
+- 幂等性验证: 重复执行事务结果不变
+- 隔离性验证: 并发事务互不干扰
 
 ---
 
 ## 6. 实例验证 (Examples)
 
-### 示例 6.1: 进程演算组合模式 → Flink 算子链
+### 6.1 确定性算子模式 (Deterministic Operator Pattern)
 
-**理论模式**: 顺序组合 + 并行组合的混合结构
-$$
-\text{Pipeline} = (A ; B) \parallel (C ; D) ; E
-$$
+**理论来源**: Thm-S-07-01 — 确定性语义要求算子在相同输入历史下产生相同输出。
 
-**Flink 代码模式**:
+#### Java 实现模板
 
 ```java
-/**
- * 模式: 多源流并行处理后再合并
- * 对应理论: (A;B) || (C;D) ; E
- */
-public class ParallelBranchPattern {
+// ✅ 正确实现：纯函数式映射
+public class DeterministicMapFunction
+    implements MapFunction<Event, EnrichedEvent> {
 
-    public DataStream<Result> apply(
-            DataStream<Input> source1,
-            DataStream<Input> source2) {
+    // 允许：不可变配置参数
+    private final String staticConfig;
 
-        // 分支 1: A ; B
-        DataStream<Intermediate> branch1 = source1
-            .map(new OperationA())  // A
-            .filter(new FilterB());  // B
+    // 禁止：可变静态状态
+    // private static int counter; // ❌ 违反确定性
 
-        // 分支 2: C ; D
-        DataStream<Intermediate> branch2 = source2
-            .flatMap(new FlatMapC())  // C
-            .keyBy(x -> x.getKey())
-            .window(TumblingEventTimeWindows.of(Time.seconds(5)))
-            .aggregate(new AggD());  // D
+    // 禁止：外部可变依赖
+    // private ExternalCache cache; // ❌ 违反确定性
 
-        // 合并后处理: E
-        return branch1
-            .union(branch2)  // 并行组合 (||)
-            .process(new MergeOperationE());  // E
+    public DeterministicMapFunction(String config) {
+        this.staticConfig = config;
+    }
+
+    @Override
+    public EnrichedEvent map(Event event) {
+        // ✅ 纯函数：输出仅依赖于输入和不可变配置
+        return new EnrichedEvent(
+            event.getId(),
+            event.getTimestamp(),
+            enrich(event.getData(), staticConfig)
+        );
+    }
+
+    private String enrich(String data, String config) {
+        // 确定性转换逻辑
+        return data + "_" + config;
+    }
+}
+```
+
+#### Scala 实现模板
+
+```scala
+// ✅ 正确实现：函数式风格
+class DeterministicMapFunction(config: String)
+  extends MapFunction[Event, EnrichedEvent] {
+
+  override def map(event: Event): EnrichedEvent = {
+    // 纯函数转换
+    EnrichedEvent(
+      id = event.id,
+      timestamp = event.timestamp,
+      data = enrich(event.data, config)
+    )
+  }
+
+  private def enrich(data: String, cfg: String): String = {
+    s"${data}_$cfg"
+  }
+}
+
+// 更简洁的匿名函数形式
+val deterministicMap: Event => EnrichedEvent = { event =>
+  EnrichedEvent(
+    id = event.id,
+    timestamp = event.timestamp,
+    data = event.data + "_suffix"
+  )
+}
+```
+
+#### Python 实现模板
+
+```python
+from pyflink.datastream import MapFunction
+
+class DeterministicMapFunction(MapFunction):
+    def __init__(self, config: str):
+        # 仅存储不可变配置
+        self._static_config = config
+        # 禁止：self._cache = {}  # ❌ 可变状态
+
+    def map(self, event: Event) -> EnrichedEvent:
+        # 纯函数：无副作用，无外部依赖
+        return EnrichedEvent(
+            id=event.id,
+            timestamp=event.timestamp,
+            data=self._enrich(event.data)
+        )
+
+    def _enrich(self, data: str) -> str:
+        return f"{data}_{self._static_config}"
+
+# 使用示例
+stream.map(DeterministicMapFunction("config_value"))
+```
+
+**反模式示例**:
+
+```java
+// ❌ 错误实现：非确定性
+public class NonDeterministicMap implements MapFunction<Event, Result> {
+    private Random random = new Random(); // 非确定性来源
+    private static int counter = 0;       // 共享可变状态
+    private ExternalService client;       // 外部依赖
+
+    @Override
+    public Result map(Event event) {
+        counter++;  // ❌ 竞态条件
+        int salt = random.nextInt();  // ❌ 不可重现
+        String ext = client.fetch(event.getId());  // ❌ 外部状态
+        return new Result(event, salt, ext);
     }
 }
 ```
 
 ---
 
-### 示例 6.2: 类型安全 → 泛型与序列化模式
+### 6.2 Watermark 生成器模式 (Watermark Generator Pattern)
 
-**理论模式**: 参数化多态 + 类型保持序列化
+**理论来源**: Thm-S-09-01 — Watermark 必须保持单调不减性质。
+
+#### Java 实现模板
 
 ```java
-/**
- * 模式: 类型安全的泛型算子
- * 保证: 编译期类型检查 + 运行期序列化一致性
- */
-public class TypeSafeOperator<T extends Serializable & Comparable<T>>
-        extends ProcessFunction<T, T> {
+// ✅ 正确实现：带乱序容忍的 Watermark 生成器
+public class BoundedOutOfOrdernessGenerator
+    implements WatermarkGenerator<Event> {
 
-    private final TypeInformation<T> typeInfo;
-    private ListState<T> state;
+    private final long maxOutOfOrderness;
+    private long currentMaxTimestamp = Long.MIN_VALUE;
+
+    public BoundedOutOfOrdernessGenerator(Duration maxOutOfOrderness) {
+        this.maxOutOfOrderness = maxOutOfOrderness.toMillis();
+    }
+
+    @Override
+    public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
+        // 更新当前最大时间戳
+        currentMaxTimestamp = Math.max(currentMaxTimestamp, eventTimestamp);
+    }
+
+    @Override
+    public void onPeriodicEmit(WatermarkOutput output) {
+        // 发射 watermark = 当前最大时间 - 乱序容忍度
+        long watermarkTimestamp = currentMaxTimestamp - maxOutOfOrderness;
+
+        // ✅ 单调性保证：确保不发射倒退的 watermark
+        if (watermarkTimestamp > Long.MIN_VALUE) {
+            output.emitWatermark(new Watermark(watermarkTimestamp));
+        }
+    }
+}
+
+// ✅ 正确实现：空闲数据源处理
+public class IdleSourceAwareGenerator
+    implements WatermarkGenerator<Event> {
+
+    private final WatermarkGenerator<Event> delegate;
+    private final long idleTimeout;
+    private volatile long lastEventTime = System.currentTimeMillis();
+
+    @Override
+    public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
+        lastEventTime = System.currentTimeMillis();
+        delegate.onEvent(event, eventTimestamp, output);
+    }
+
+    @Override
+    public void onPeriodicEmit(WatermarkOutput output) {
+        // 空闲检测：长时间无数据时标记为空闲
+        if (System.currentTimeMillis() - lastEventTime > idleTimeout) {
+            output.markIdle();
+        }
+        delegate.onPeriodicEmit(output);
+    }
+}
+```
+
+#### Scala 实现模板
+
+```scala
+// ✅ 正确实现：函数式风格的 Watermark 策略
+class BoundedOutOfOrdernessGenerator(
+    maxOutOfOrderness: Duration
+) extends WatermarkGenerator[Event] {
+
+  private val maxOutOfOrdernessMs = maxOutOfOrderness.toMillis
+  @volatile private var currentMaxTimestamp = Long.MinValue
+
+  override def onEvent(
+      event: Event,
+      eventTimestamp: Long,
+      output: WatermarkOutput
+  ): Unit = {
+    currentMaxTimestamp = math.max(currentMaxTimestamp, eventTimestamp)
+  }
+
+  override def onPeriodicEmit(output: WatermarkOutput): Unit = {
+    val watermarkTimestamp = currentMaxTimestamp - maxOutOfOrdernessMs
+    if (watermarkTimestamp > Long.MinValue) {
+      output.emitWatermark(new Watermark(watermarkTimestamp))
+    }
+  }
+}
+
+// 简洁的 Watermark 策略构建器
+object WatermarkStrategies {
+  def boundedOutOfOrderness[T: TimestampAssigner](
+      maxOutOfOrderness: Duration
+  ): WatermarkStrategy[T] = {
+    WatermarkStrategy
+      .forBoundedOutOfOrderness(maxOutOfOrderness)
+      .withTimestampAssigner(implicitly[TimestampAssigner[T]])
+  }
+}
+```
+
+#### Python 实现模板
+
+```python
+from pyflink.datastream import WatermarkStrategy
+from pyflink.common import Duration
+
+# ✅ 正确实现：使用内置策略
+watermark_strategy = (
+    WatermarkStrategy
+    .for_bounded_out_of_orderness(Duration.of_seconds(5))
+    .with_timestamp_assigner(lambda event, _: event.timestamp)
+)
+
+# ✅ 正确实现：自定义 Watermark 生成器
+class BoundedOutOfOrdernessGenerator:
+    def __init__(self, max_out_of_orderness: int):
+        self._max_out_of_orderness = max_out_of_orderness
+        self._current_max_timestamp = float('-inf')
+
+    def on_event(self, event, event_timestamp, output):
+        self._current_max_timestamp = max(
+            self._current_max_timestamp,
+            event_timestamp
+        )
+
+    def on_periodic_emit(self, output):
+        watermark_timestamp = (
+            self._current_max_timestamp - self._max_out_of_orderness
+        )
+        if watermark_timestamp > float('-inf'):
+            output.emit_watermark(watermark_timestamp)
+
+# 应用策略
+stream.assign_timestamps_and_watermarks(watermark_strategy)
+```
+
+**反模式示例**:
+
+```java
+// ❌ 错误实现：非单调 Watermark
+public class BrokenWatermarkGenerator implements WatermarkGenerator<Event> {
+    @Override
+    public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
+        // ❌ 直接发射基于事件时间的 watermark，无乱序容忍
+        output.emitWatermark(new Watermark(eventTimestamp));
+    }
+
+    @Override
+    public void onPeriodicEmit(WatermarkOutput output) {
+        // ❌ 发射系统时间作为 watermark
+        output.emitWatermark(new Watermark(System.currentTimeMillis()));
+    }
+}
+```
+
+---
+
+### 6.3 状态快照模式 (Checkpointed State Pattern)
+
+**理论来源**: Thm-S-17-01 — Checkpoint 机制保证状态一致性快照。
+
+#### Java 实现模板
+
+```java
+// ✅ 正确实现：带状态管理的 KeyedProcessFunction
+public class StatefulCounterFunction
+    extends KeyedProcessFunction<String, Event, Result>
+    implements CheckpointedFunction {
+
+    // 状态声明：使用 Flink 托管状态
+    private ValueState<Long> counterState;
+    private ListState<Event> bufferedEvents;
+
+    // 非状态变量（瞬态）：不参与 Checkpoint
+    private transient Map<String, LocalCache> localCache;
 
     @Override
     public void open(Configuration parameters) {
-        // 使用 TypeInformation 创建类型安全的状态
-        ListStateDescriptor<T> descriptor = new ListStateDescriptor<>(
-            "buffer",
-            typeInfo
-        );
-        state = getRuntimeContext().getListState(descriptor);
+        // 初始化状态描述符
+        ValueStateDescriptor<Long> counterDescriptor =
+            new ValueState<>("counter", Types.LONG);
+        counterState = getRuntimeContext().getState(counterDescriptor);
+
+        ListStateDescriptor<Event> bufferDescriptor =
+            new ListState<>("buffer", Event.class);
+        bufferedEvents = getRuntimeContext().getListState(bufferDescriptor);
+
+        // 初始化瞬态缓存（仅本地使用，不 Checkpoint）
+        localCache = new HashMap<>();
     }
 
     @Override
-    public void processElement(T element, Context ctx, Collector<T> out)
+    public void processElement(Event event, Context ctx, Collector<Result> out)
             throws Exception {
-        // 类型安全的操作
-        for (T buffered : state.get()) {
-            if (element.compareTo(buffered) > 0) {
-                out.collect(element);
-            }
-        }
-        state.add(element);
+        // 读取/更新状态
+        Long current = counterState.value();
+        if (current == null) current = 0L;
+        counterState.update(current + 1);
+
+        // 使用状态做业务逻辑
+        bufferedEvents.add(event);
+
+        // 设置定时器
+        ctx.timerService().registerEventTimeTimer(event.timestamp + 60000);
     }
+
+    @Override
+    public void onTimer(long timestamp, OnTimerContext ctx, Collector<Result> out)
+            throws Exception {
+        // 定时器触发时的状态处理
+        for (Event e : bufferedEvents.get()) {
+            out.collect(new Result(e, counterState.value()));
+        }
+        bufferedEvents.clear();
+    }
+
+    // ===== CheckpointedFunction 接口实现 =====
+
+    @Override
+    public void snapshotState(FunctionSnapshotContext context) throws Exception {
+        // ✅ Flink 自动处理 ValueState 和 ListState 的快照
+        // 无需额外操作，已注册的状态会自动参与 Checkpoint
+    }
+
+    @Override
+    public void initializeState(FunctionInitializationContext context) throws Exception {
+        // ✅ 从 Checkpoint 或 Savepoint 恢复状态
+        ValueStateDescriptor<Long> counterDescriptor =
+            new ValueState<>("counter", Types.LONG);
+        counterState = context.getKeyedStateStore().getState(counterDescriptor);
+
+        ListStateDescriptor<Event> bufferDescriptor =
+            new ListState<>("buffer", Event.class);
+        bufferedEvents = context.getKeyedStateStore().getListState(bufferDescriptor);
+    }
+}
+```
+
+#### Scala 实现模板
+
+```scala
+// ✅ 正确实现：Scala 风格的状态管理
+class StatefulCounterFunction
+  extends KeyedProcessFunction[String, Event, Result]
+     with CheckpointedFunction {
+
+  // 使用 lazy val 延迟初始化状态
+  private lazy val counterState: ValueState[Long] = {
+    val descriptor = new ValueStateDescriptor[Long]("counter", classOf[Long])
+    getRuntimeContext.getState(descriptor)
+  }
+
+  private lazy val bufferState: ListState[Event] = {
+    val descriptor = new ListStateDescriptor[Event]("buffer", classOf[Event])
+    getRuntimeContext.getListState(descriptor)
+  }
+
+  override def processElement(
+      event: Event,
+      ctx: KeyedProcessFunction[String, Event, Result]#Context,
+      out: Collector[Result]
+  ): Unit = {
+    val current = Option(counterState.value()).getOrElse(0L)
+    counterState.update(current + 1)
+    bufferState.add(event)
+
+    ctx.timerService.registerEventTimeTimer(event.timestamp + 60000)
+  }
+
+  override def onTimer(
+      timestamp: Long,
+      ctx: KeyedProcessFunction[String, Event, Result]#OnTimerContext,
+      out: Collector[Result]
+  ): Unit = {
+    val count = counterState.value()
+    bufferState.get().forEach { event =>
+      out.collect(Result(event, count))
+    }
+    bufferState.clear()
+  }
+
+  override def snapshotState(context: FunctionSnapshotContext): Unit = {
+    // 状态自动快照
+  }
+
+  override def initializeState(context: FunctionInitializationContext): Unit = {
+    // 状态自动恢复
+  }
+}
+
+// 使用 Flink Scala DSL 的简化版本
+class SimpleStatefulFunction extends ProcessFunction[Event, Result] {
+
+  private var counter: ValueState[Long] = _
+
+  override def open(parameters: Configuration): Unit = {
+    counter = getRuntimeContext.getState(
+      new ValueStateDescriptor[Long]("counter", createTypeInformation[Long])
+    )
+  }
+
+  override def processElement(
+      event: Event,
+      ctx: ProcessFunction[Event, Result]#Context,
+      out: Collector[Result]
+  ): Unit = {
+    val newCount = Option(counter.value()).getOrElse(0L) + 1
+    counter.update(newCount)
+    out.collect(Result(event, newCount))
+  }
+}
+```
+
+#### Python 实现模板
+
+```python
+from pyflink.datastream import (
+    KeyedProcessFunction,
+    ValueStateDescriptor,
+    ListStateDescriptor
+)
+from pyflink.common.typeinfo import Types
+
+class StatefulCounterFunction(KeyedProcessFunction):
+    def __init__(self):
+        self._counter_state = None
+        self._buffer_state = None
+
+    def open(self, runtime_context):
+        # 初始化状态
+        counter_descriptor = ValueStateDescriptor(
+            "counter",
+            Types.LONG()
+        )
+        self._counter_state = runtime_context.get_state(counter_descriptor)
+
+        buffer_descriptor = ListStateDescriptor(
+            "buffer",
+            Types.PICKLED_BYTE_ARRAY()
+        )
+        self._buffer_state = runtime_context.get_list_state(buffer_descriptor)
+
+    def process_element(self, event, ctx):
+        # 读取/更新状态
+        current = self._counter_state.value()
+        if current is None:
+            current = 0
+        self._counter_state.update(current + 1)
+
+        # 添加到缓冲区
+        self._buffer_state.add(event)
+
+        # 注册定时器
+        ctx.timer_service().register_event_time_timer(
+            event.timestamp + 60000
+        )
+
+    def on_timer(self, timestamp, ctx):
+        # 定时器触发，处理缓冲数据
+        count = self._counter_state.value()
+        for event in self._buffer_state.get():
+            yield Result(event, count)
+        self._buffer_state.clear()
+
+# 应用函数
+stream.key_by(lambda e: e.key).process(StatefulCounterFunction())
+```
+
+**反模式示例**:
+
+```java
+// ❌ 错误实现：状态管理违规
+public class BadStatefulFunction extends ProcessFunction<Event, Result> {
+
+    // ❌ 禁止：使用普通实例变量存储需要恢复的状态
+    private int counter = 0;
+    private List<Event> buffer = new ArrayList<>();
+
+    // ❌ 禁止：使用静态共享状态
+    private static Map<String, Object> sharedState = new HashMap<>();
+
+    @Override
+    public void processElement(Event event, Context ctx, Collector<Result> out) {
+        // 更新实例变量 —— 不会在 Checkpoint 中保存
+        counter++;
+        buffer.add(event);
+        out.collect(new Result(event, counter));
+    }
+
+    // ❌ 缺失：没有实现 CheckpointedFunction 接口
 }
 ```
 
 ---
 
-### 示例 6.3: 一致性层级 → Checkpoint 配置模式
+### 6.4 两阶段提交 Sink 模式 (Two-Phase Commit Sink Pattern)
 
-**理论模式**: 端到端 Exactly-Once (Thm-S-18-01)
+**理论来源**: Thm-S-18-01 — Exactly-Once 语义通过两阶段提交协议实现。
+
+#### Java 实现模板
 
 ```java
-/**
- * 模式: 端到端 Exactly-Once 管道配置
- * 理论依据: Thm-S-18-01 (Flink Exactly-Once 正确性定理)
- */
-public class ExactlyOncePipelinePattern {
+// ✅ 正确实现：两阶段提交 Sink（Kafka 示例）
+public class KafkaExactlyOnceSink
+    extends TwoPhaseCommitSinkFunction<Event, KafkaTransactionState, Void> {
 
-    public static <T> void configureExactlyOncePipeline(
-            StreamExecutionEnvironment env,
-            SourceFunction<T> replayableSource,
-            TwoPhaseCommitSinkFunction<T, Transaction, Context> transactionalSink) {
+    private transient FlinkKafkaProducer<String> producer;
+    private final Properties kafkaProps;
+    private final String topic;
 
-        // 1. 配置 Checkpoint (Thm-S-17-01)
-        env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
-        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
-
-        // 2. 配置状态后端 (状态一致性保证)
-        env.setStateBackend(new EmbeddedRocksDBStateBackend());
-        env.getCheckpointConfig().setCheckpointStorage("file:///checkpoint-dir");
-
-        // 3. 构建管道
-        env.addSource(replayableSource)
-           .keyBy(event -> event.getKey())
-           .process(new StatefulProcessor())
-           .addSink(transactionalSink);  // 2PC Sink (Def-S-18-03)
+    public KafkaExactlyOnceSink(String topic, Properties kafkaProps) {
+        // 序列化类型信息
+        super(
+            TypeInformation.of(Event.class).createSerializer(new ExecutionConfig()),
+            TypeInformation.of(KafkaTransactionState.class).createSerializer(new ExecutionConfig())
+        );
+        this.topic = topic;
+        this.kafkaProps = kafkaProps;
     }
+
+    @Override
+    protected void invoke(
+            KafkaTransactionState transaction,
+            Event event,
+            Context context) throws Exception {
+        // 写入到当前事务
+        producer.send(new ProducerRecord<>(
+            topic,
+            event.getKey(),
+            serialize(event)
+        ));
+    }
+
+    @Override
+    protected KafkaTransactionState beginTransaction() throws Exception {
+        // 开始新事务
+        producer.beginTransaction();
+        return new KafkaTransactionState(producer.getTransactionId());
+    }
+
+    @Override
+    protected void preCommit(KafkaTransactionState transaction) throws Exception {
+        // 预提交：刷新缓冲区，确保数据已发送到 Kafka
+        producer.flush();
+        // 注意：此时不提交事务，等待 Checkpoint 完成
+    }
+
+    @Override
+    protected void commit(KafkaTransactionState transaction) {
+        // 提交事务：Checkpoint 成功后调用
+        try {
+            producer.commitTransaction();
+        } catch (ProducerFencedException e) {
+            // 事务已被其他生产者实例接管（正常情况）
+            log.info("Transaction {} already committed by another instance",
+                    transaction.getTransactionId());
+        }
+    }
+
+    @Override
+    protected void abort(KafkaTransactionState transaction) {
+        // 中止事务：Checkpoint 失败时调用
+        try {
+            producer.abortTransaction();
+        } catch (ProducerFencedException e) {
+            // 事务已被接管，忽略
+        }
+    }
+
+    @Override
+    protected void initializeTransaction(
+            KafkaTransactionState transaction,
+            Context context) {
+        // 初始化生产者
+        this.producer = new FlinkKafkaProducer<>(topic, kafkaProps);
+
+        // 恢复未完成的事务（如果存在）
+        if (transaction != null) {
+            producer.resumeTransaction(transaction.getTransactionId());
+        }
+    }
+}
+
+// 事务状态类
+public class KafkaTransactionState {
+    private final String transactionId;
+    private final long checkpointId;
+
+    public KafkaTransactionState(String transactionId) {
+        this.transactionId = transactionId;
+        this.checkpointId = -1;
+    }
+
+    // 必须支持序列化以参与 Checkpoint
+    // getter / setter ...
+}
+```
+
+#### Scala 实现模板
+
+```scala
+// ✅ 正确实现：Scala 风格的两阶段提交 Sink
+class KafkaExactlyOnceSink(
+    topic: String,
+    kafkaProps: Properties
+) extends TwoPhaseCommitSinkFunction[Event, TransactionState, Void](
+    createTypeInformation[Event].createSerializer(new ExecutionConfig),
+    createTypeInformation[TransactionState].createSerializer(new ExecutionConfig)
+) {
+
+  @transient private var producer: FlinkKafkaProducer[String] = _
+
+  override def invoke(
+      transaction: TransactionState,
+      event: Event,
+      context: Context
+  ): Unit = {
+    producer.send(new ProducerRecord(topic, event.key, serialize(event)))
+  }
+
+  override def beginTransaction(): TransactionState = {
+    producer.beginTransaction()
+    TransactionState(producer.getTransactionId)
+  }
+
+  override def preCommit(transaction: TransactionState): Unit = {
+    producer.flush()
+  }
+
+  override def commit(transaction: TransactionState): Unit = {
+    try {
+      producer.commitTransaction()
+    } catch {
+      case _: ProducerFencedException =>
+        // 事务已被其他实例提交
+        log.info(s"Transaction ${transaction.id} already committed")
+    }
+  }
+
+  override def abort(transaction: TransactionState): Unit = {
+    try {
+      producer.abortTransaction()
+    } catch {
+      case _: ProducerFencedException => ()
+    }
+  }
+}
+
+case class TransactionState(
+    id: String,
+    checkpointId: Long = -1L
+)
+```
+
+#### Python 实现模板
+
+```python
+from pyflink.datastream import TwoPhaseCommitSinkFunction
+from pyflink.common.typeinfo import Types
+
+class KafkaExactlyOnceSink(TwoPhaseCommitSinkFunction):
+    def __init__(self, topic: str, kafka_props: dict):
+        super().__init__(
+            Types.PICKLED_BYTE_ARRAY(),  # 输入序列化器
+            Types.PICKLED_BYTE_ARRAY()   # 事务状态序列化器
+        )
+        self._topic = topic
+        self._kafka_props = kafka_props
+        self._producer = None
+
+    def invoke(self, transaction, event, context):
+        """将事件写入当前事务"""
+        self._producer.send(
+            self._topic,
+            key=event.key,
+            value=self._serialize(event)
+        )
+
+    def begin_transaction(self):
+        """开始新事务"""
+        self._producer.begin_transaction()
+        return {
+            'transaction_id': self._producer.transaction_id,
+            'checkpoint_id': -1
+        }
+
+    def pre_commit(self, transaction):
+        """预提交：刷新数据"""
+        self._producer.flush()
+
+    def commit(self, transaction):
+        """提交事务"""
+        try:
+            self._producer.commit_transaction()
+        except ProducerFencedException:
+            # 事务已被其他实例处理
+            pass
+
+    def abort(self, transaction):
+        """中止事务"""
+        try:
+            self._producer.abort_transaction()
+        except ProducerFencedException:
+            pass
+
+    def _serialize(self, event):
+        """序列化事件"""
+        import pickle
+        return pickle.dumps(event)
+
+# 应用 Sink
+stream.add_sink(KafkaExactlyOnceSink("output-topic", kafka_config))
+```
+
+**反模式示例**:
+
+```java
+// ❌ 错误实现：非幂等 Sink
+public class BadSink extends RichSinkFunction<Event> {
+    private DatabaseConnection db;
+
+    @Override
+    public void invoke(Event event, Context context) {
+        // ❌ 直接写入，无事务保护
+        // ❌ 无幂等键，故障恢复后可能重复写入
+        db.execute("INSERT INTO events VALUES (?, ?)",
+                   event.getId(), event.getData());
+    }
+
+    // ❌ 缺失：没有两阶段提交协议
+    // ❌ 缺失：没有处理故障恢复场景
 }
 ```
 
 ---
 
-### 示例 6.4: 活性/安全性 → 监控告警模式
+### 6.5 模式组合示例
 
-**理论模式**: 活性属性监控 + 安全性属性检测
+以下展示如何将多个模式组合使用：
 
 ```java
-/**
- * 模式: 流处理活性与安全性监控
- * 理论依据: Liveness (好事最终发生) + Safety (坏事永不发生)
- */
-public class StreamHealthMonitor {
+// ✅ 正确实现：组合多个模式
+public class ComplexStreamPipeline {
 
-    // 活性监控: Watermark 推进检查
-    public class WatermarkLivenessCheck implements WatermarkStrategy<Event> {
-        private static final long MAX_LAG_MS = 60000;
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-        @Override
-        public WatermarkGenerator<Event> createWatermarkGenerator(
-                WatermarkGeneratorSupplier.Context context) {
-            return new WatermarkGenerator<Event>() {
-                private long maxTimestamp = Long.MIN_VALUE;
+        // 启用 Checkpoint（状态快照模式）
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointingMode(
+            CheckpointingMode.EXACTLY_ONCE
+        );
 
-                @Override
-                public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
-                    maxTimestamp = Math.max(maxTimestamp, eventTimestamp);
-                }
+        // 1. 输入源 + Watermark 生成器模式
+        DataStream<Event> source = env
+            .addSource(new KafkaSource<>())
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy
+                    .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                    .withTimestampAssigner((event, ts) -> event.getTimestamp())
+            );
 
-                @Override
-                public void onPeriodicEmit(WatermarkOutput output) {
-                    long watermark = maxTimestamp - MAX_LAG_MS;
-                    output.emitWatermark(new Watermark(watermark));
+        // 2. 确定性算子模式
+        DataStream<EnrichedEvent> mapped = source
+            .map(new DeterministicMapFunction("config"))
+            .returns(EnrichedEvent.class);
 
-                    // 活性检查: Watermark 是否停滞
-                    checkLiveness(watermark);
-                }
-            };
-        }
+        // 3. 状态管理模式（KeyedProcessFunction）
+        DataStream<Result> processed = mapped
+            .keyBy(EnrichedEvent::getKey)
+            .process(new StatefulCounterFunction())
+            .uid("stateful-counter");  // 必须设置 UID 以支持状态恢复
 
-        private void checkLiveness(long watermark) {
-            long lag = System.currentTimeMillis() - watermark;
-            if (lag > MAX_LAG_MS * 2) {
-                // 触发告警: 活性违反
-                alert("Liveness violation: Watermark stalled, lag=" + lag + "ms");
-            }
-        }
-    }
+        // 4. 两阶段提交 Sink 模式
+        processed.addSink(new KafkaExactlyOnceSink("output", kafkaProps))
+            .uid("exactly-once-sink");
 
-    // 安全性监控: 异常检测
-    public class SafetyViolationDetector extends ProcessFunction<Event, Alert> {
-        private ValueState<Long> errorCountState;
-        private static final long ERROR_THRESHOLD = 100;
-
-        @Override
-        public void processElement(Event event, Context ctx, Collector<Alert> out)
-                throws Exception {
-            if (event.isError()) {
-                long count = errorCountState.value() == null ? 0 : errorCountState.value();
-                count++;
-                errorCountState.update(count);
-
-                // 安全性检查: 错误率超过阈值
-                if (count > ERROR_THRESHOLD) {
-                    // 触发告警: 安全性违反
-                    out.collect(new Alert("Safety violation: Error count exceeded threshold"));
-                }
-            }
-        }
+        env.execute("Complex Pipeline with Multiple Patterns");
     }
 }
 ```
@@ -534,124 +986,89 @@ public class StreamHealthMonitor {
 
 ## 7. 可视化 (Visualizations)
 
-### 知识转化流程图
-
-下图展示了从形式化理论知识到可复用代码模式的完整转化流程。
-
-```mermaid
-flowchart TB
-    subgraph "形式化理论"
-        T1[进程演算<br/>CCS/CSP/π-calculus]
-        T2[类型理论<br/>FG/FGG]
-        T3[一致性理论<br/>CAP/BASE]
-        T4[时序逻辑<br/>LTL/CTL]
-    end
-
-    subgraph "抽象模式"
-        A1[组合模式<br/>顺序/并行/选择]
-        A2[类型模式<br/>泛型/协变/逆变]
-        A3[容错模式<br/>重试/补偿/2PC]
-        A4[监控模式<br/>指标/告警/自愈]
-    end
-
-    subgraph "Flink 代码模式"
-        C1[算子链模式<br/>map/filter/keyBy]
-        C2[泛型流模式<br/>DataStream&lt;T&gt;]
-        C3[Checkpoint 模式<br/>EXACTLY_ONCE]
-        C4[指标监控模式<br/>Flink Metrics]
-    end
-
-    subgraph "应用层"
-        APP1[实时 ETL 管道]
-        APP2[事件驱动微服务]
-        APP3[流式分析平台]
-    end
-
-    T1 --> A1
-    T2 --> A2
-    T3 --> A3
-    T4 --> A4
-
-    A1 --> C1
-    A2 --> C2
-    A3 --> C3
-    A4 --> C4
-
-    C1 --> APP1
-    C2 --> APP2
-    C3 --> APP3
-    C4 --> APP3
-
-    style T1 fill:#e1bee7,stroke:#6a1b9a
-    style T2 fill:#e1bee7,stroke:#6a1b9a
-    style A1 fill:#bbdefb,stroke:#1565c0
-    style A2 fill:#bbdefb,stroke:#1565c0
-    style C1 fill:#c8e6c9,stroke:#2e7d32
-    style C2 fill:#c8e6c9,stroke:#2e7d32
-    style APP1 fill:#fff9c4,stroke:#f57f17
-```
-
-**图说明**:
-
-- 紫色节点为形式化理论层
-- 蓝色节点为抽象设计模式层
-- 绿色节点为 Flink 代码实现层
-- 黄色节点为最终应用层
-
----
-
-### 代码模式库结构图
-
-下图展示了本文档定义的代码模式库的组织结构和依赖关系。
+### 7.1 模式层次关系图
 
 ```mermaid
 graph TB
-    subgraph "基础模式"
-        B1[泛型类型模式<br/>TypeSafeStream&lt;T&gt;]
-        B2[序列化模式<br/>TypeSerializer&lt;T&gt;]
-        B3[状态访问模式<br/>KeyedState&lt;K, V&gt;]
+    subgraph "基础层 (Core Patterns)"
+        P1[确定性算子模式<br/>Deterministic Operator]
+        P2[Watermark 生成器模式<br/>Watermark Generator]
     end
 
-    subgraph "组合模式"
-        C1[顺序组合<br/>Operator Chain]
-        C2[并行组合<br/>Union/Connect]
-        C3[条件分支<br/>ProcessFunction Output]
+    subgraph "状态层 (State Patterns)"
+        P3[状态快照模式<br/>Checkpointed State]
+        P4[键控状态模式<br/>Keyed State]
+        P5[操作状态模式<br/>Operator State]
     end
 
-    subgraph "容错模式"
-        F1[Checkpoint 配置<br/>EXACTLY_ONCE]
-        F2[2PC Sink 模式<br/>TwoPhaseCommit]
-        F3[幂等写入模式<br/>Idempotent Sink]
+    subgraph "输出层 (Sink Patterns)"
+        P6[两阶段提交 Sink<br/>Two-Phase Commit]
+        P7[幂等 Sink 模式<br/>Idempotent Sink]
+        P8[预写日志 Sink<br/>WAL Sink]
     end
 
-    subgraph "监控模式"
-        M1[Watermark 监控<br/>Liveness Check]
-        M2[错误率检测<br/>Safety Check]
-        M3[背压监控<br/>Backpressure Alert]
+    subgraph "组合模式 (Composite)"
+        P9[Exactly-Once 管道<br/>Exactly-Once Pipeline]
+        P10[有状态窗口计算<br/>Stateful Window]
     end
 
-    B1 --> C1
-    B2 --> F1
-    B3 --> F2
-
-    C1 --> F1
-    C2 --> F2
-
-    F1 --> M1
-    F2 --> M2
-    F3 --> M3
-
-    style B1 fill:#e1bee7,stroke:#6a1b9a
-    style B2 fill:#e1bee7,stroke:#6a1b9a
-    style C1 fill:#bbdefb,stroke:#1565c0
-    style C2 fill:#bbdefb,stroke:#1565c0
-    style F1 fill:#c8e6c9,stroke:#2e7d32
-    style F2 fill:#c8e6c9,stroke:#2e7d32
-    style M1 fill:#fff9c4,stroke:#f57f17
-    style M2 fill:#fff9c4,stroke:#f57f17
+    P1 --> P4
+    P2 --> P10
+    P3 --> P4
+    P3 --> P5
+    P4 --> P9
+    P5 --> P9
+    P6 --> P9
+    P1 --> P10
+    P4 --> P10
 ```
 
-**图说明**: 展示了代码模式库的四层结构（基础→组合→容错→监控）及其依赖关系。
+### 7.2 模式选择决策树
+
+```mermaid
+flowchart TD
+    A[开始：需要 Exactly-Once 保证？] -->|是| B[下游支持事务？]
+    A -->|否| C[使用 At-Least-Once]
+
+    B -->|是| D[使用 Two-Phase Commit Sink]
+    B -->|否| E[下游支持幂等写入？]
+
+    E -->|是| F[使用 Idempotent Sink + 幂等键]
+    E -->|否| G[使用 WAL Sink 或降级为 At-Least-Once]
+
+    D --> H[配置 Checkpoint 间隔]
+    F --> H
+
+    H --> I[需要状态恢复？]
+    I -->|是| J[使用 CheckpointedFunction]
+    I -->|否| K[使用无状态算子]
+
+    J --> L[需要按键聚合？]
+    L -->|是| M[使用 KeyedProcessFunction]
+    L -->|否| N[使用 ProcessFunction + Operator State]
+```
+
+### 7.3 模式实例化流程
+
+```mermaid
+sequenceDiagram
+    participant Dev as 开发者
+    participant PL as 模式库
+    participant Gen as 代码生成器
+    participant Val as 验证器
+
+    Dev->>PL: 选择模式 (确定性算子)
+    PL-->>Dev: 返回模板规范
+    Dev->>Dev: 注入业务逻辑
+    Dev->>Gen: 实例化代码
+    Gen->>Val: 提交验证
+    Val->>Val: 静态检查 (纯函数分析)
+    Val->>Val: 动态测试 (确定性验证)
+    Val-->>Gen: 验证报告
+    Gen-->>Dev: 生成最终代码
+    Dev->>Val: 集成测试
+    Val-->>Dev: 测试报告
+```
 
 ---
 
@@ -663,6 +1080,10 @@ graph TB
 
 
 
+
+
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+*文档版本: v1.0*
+*创建日期: 2026-04-02*
+*最后更新: 2026-04-02*
