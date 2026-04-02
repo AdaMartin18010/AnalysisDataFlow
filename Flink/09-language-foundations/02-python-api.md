@@ -713,4 +713,834 @@ flowchart LR
 
 ---
 
+## 9. Flink 2.2 PyFlink 异步函数支持 (Async Function Support)
+
+> 所属阶段: Flink | 前置依赖: [09.02-python-api.md](./02-python-api.md) | 形式化等级: L4 | 适用版本: Flink 2.2+
+
+### 9.1 概念定义 (Definitions)
+
+#### Def-F-09-20: PyFlink AsyncFunction
+
+**形式化定义**
+
+PyFlink 异步函数定义为五元组 \( \mathcal{A}_{py} = (F_{async}, C_{limit}, T_{timeout}, R_{retry}, E_{exec}) \)：
+
+- \( F_{async} \): 异步计算函数，返回 `Awaitable[T]`
+- \( C_{limit} \): 并发请求上限（capacity）
+- \( T_{timeout} \): 单次调用超时时间
+- \( R_{retry} \): 重试策略配置（指数退避、最大重试次数）
+- \( E_{exec} \): 异步执行器（基于 `asyncio` 的事件循环）
+
+**接口定义**
+
+```python
+from pyflink.datastream.functions import AsyncFunction
+from pyflink.datastream.async_operations import AsyncRetryStrategy
+
+class AsyncLLMCaller(AsyncFunction):
+    """
+    异步大模型调用函数
+    适用于大模型部署在独立GPU集群的场景
+    """
+    
+    def __init__(self, api_endpoint: str, capacity: int = 100):
+        self.api_endpoint = api_endpoint
+        self.capacity = capacity
+        self.session = None
+    
+    async def async_invoke(self, input_record, result_future):
+        """
+        核心异步处理逻辑
+        
+        Args:
+            input_record: 输入记录
+            result_future: 结果 Future 对象，用于异步返回
+        """
+        try:
+            # 异步 HTTP 调用
+            async with self.session.post(
+                self.api_endpoint,
+                json={"prompt": input_record.text}
+            ) as response:
+                result = await response.json()
+                result_future.complete(result)
+        except Exception as e:
+            result_future.complete_exceptionally(e)
+    
+    async def open(self, runtime_context):
+        """初始化异步资源"""
+        import aiohttp
+        self.session = aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(limit=self.capacity)
+        )
+    
+    async def close(self):
+        """清理异步资源"""
+        if self.session:
+            await self.session.close()
+```
+
+**装饰器语法糖**
+
+```python
+from pyflink.datastream.functions import async_func
+
+@async_func(
+    capacity=100,           # 最大并发数
+    timeout=5000,           # 超时时间（毫秒）
+    retry_strategy=AsyncRetryStrategy(
+        max_attempts=3,
+        backoff_base=100,   # 初始退避（毫秒）
+        backoff_max=10000   # 最大退避（毫秒）
+    )
+)
+async def query_llm_async(record):
+    """使用装饰器定义异步函数"""
+    async with aiohttp.ClientSession() as session:
+        response = await session.post(
+            "http://gpu-cluster/llm/v1/generate",
+            json={"prompt": record["query"]},
+            timeout=aiohttp.ClientTimeout(total=5)
+        )
+        return await response.json()
+
+# 应用到 DataStream
+result_stream = input_stream.map_async(query_llm_async)
+```
+
+---
+
+#### Def-F-09-21: 并发控制与背压 (Concurrency Control & Backpressure)
+
+**形式化定义**
+
+并发控制定义为三元组 \( \mathcal{C} = (Q_{pending}, L_{semaphore}, B_{strategy}) \)：
+
+- \( Q_{pending} \): 待处理请求队列，长度受限于 `capacity`
+- \( L_{semaphore} \): 信号量机制，控制并发中的请求数
+- \( B_{strategy} \): 背压策略（阻塞/丢弃/超时）
+
+**背压传播机制**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Python Worker Process                    │
+│  ┌─────────────┐    ┌──────────────┐    ┌──────────────┐   │
+│  │ Input Queue │───▶│   Semaphore  │───▶│ Async Worker │   │
+│  │  (Arrow)    │    │  (capacity)  │    │   (asyncio)  │   │
+│  └─────────────┘    └──────────────┘    └──────────────┘   │
+│         ▲                    │                              │
+│         │                    ▼                              │
+│         │            ┌──────────────┐                       │
+│         └────────────│ Pending Queue│ (bounded)             │
+│                      │ (capacity*2) │                       │
+│                      └──────────────┘                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                    ┌─────────────────┐
+                    │  gRPC Backpressure │ (Propagation to TM)
+                    └─────────────────┘
+```
+
+---
+
+### 9.2 属性推导 (Properties)
+
+#### Prop-F-09-04: 异步函数并发上限
+
+**命题**: 单个 Python Worker 的异步函数并发数受限于 `capacity` 参数和 Python 异步事件循环能力。
+
+**推导**:
+
+设配置并发上限为 \( C \)，外部服务平均响应时间为 \( T_{resp} \)，则理论最大吞吐量为：
+
+$$
+Throughput_{max} = \frac{C}{T_{resp}} \quad (\text{records/second})
+$$
+
+实际吞吐量还受限于：
+
+$$
+Throughput_{actual} = \min\left(\frac{C}{T_{resp}}, \frac{1}{T_{serde} + T_{sched}}\right)
+$$
+
+其中 \( T_{serde} \) 为序列化开销，\( T_{sched} \) 为事件循环调度开销。
+
+---
+
+#### Prop-F-09-05: 超时与重试的容错边界
+
+**命题**: 配置超时 \( T_{timeout} \) 和最大重试次数 \( N_{retry} \) 时，最坏情况下的延迟上界为：
+
+$$
+Latency_{worst} = N_{retry} \times (T_{timeout} + T_{backoff}^{max})
+$$
+
+**证明**:
+
+每次重试包含：
+1. 等待超时：\( T_{timeout} \)
+2. 退避等待：\( T_{backoff}^{(i)} = \min(T_{backoff}^{base} \times 2^{i}, T_{backoff}^{max}) \)
+
+求和得：
+
+$$
+\sum_{i=0}^{N_{retry}-1} (T_{timeout} + T_{backoff}^{(i)}) \leq N_{retry} \times (T_{timeout} + T_{backoff}^{max})
+$$
+
+**工程意义**: 需根据 SLA 要求合理设置参数，避免级联延迟。
+
+---
+
+#### Prop-F-09-06: 异步 I/O 的吞吐量优势
+
+**命题**: 对于 I/O 密集型操作，异步函数相比同步函数可显著提升吞吐量。
+
+**对比分析**:
+
+| 指标 | 同步 UDF | 异步 AsyncFunction |
+|------|----------|-------------------|
+| 并发模型 | 每记录阻塞等待 | 事件驱动非阻塞 |
+| 资源占用 | 高（阻塞线程/进程） | 低（单事件循环） |
+| 吞吐量上限 | \( \frac{1}{T_{io}} \) | \( \frac{C}{T_{io}} \) |
+| 适用场景 | CPU 密集型 | I/O 密集型 |
+
+其中 \( C \) 为并发配置，典型值 100-1000。
+
+---
+
+### 9.3 关系建立 (Relations)
+
+#### 9.3.1 与 Java AsyncFunction 的语义等价性
+
+**语义映射表**
+
+| Java AsyncFunction | PyFlink AsyncFunction | 语义等价性 |
+|-------------------|----------------------|-----------|
+| `asyncInvoke(IN input, ResultFuture<OUT> resultFuture)` | `async_invoke(self, input_record, result_future)` | ✅ 完全等价 |
+| `timeout(IN input, ResultFuture<OUT> resultFuture)` | `timeout(self, input_record, result_future)` | ✅ 完全等价 |
+| `AsyncFunction#open(Configuration)` | `async open(self, runtime_context)` | ✅ 语义等价（async修饰） |
+| `AsyncFunction#close()` | `async close(self)` | ✅ 语义等价（async修饰） |
+| `AsyncDataStream.orderedWait()` | `map_async(..., output_mode='ordered')` | ✅ 等价 |
+| `AsyncDataStream.unorderedWait()` | `map_async(..., output_mode='unordered')` | ✅ 等价 |
+
+**关键差异**
+
+```mermaid
+graph TB
+    subgraph "Java AsyncFunction"
+        J1[CompletableFuture] --> J2[ForkJoinPool<br/>common pool]
+        J2 --> J3[原生线程调度]
+    end
+    
+    subgraph "PyFlink AsyncFunction"
+        P1[asyncio.Future] --> P2[asyncio Event Loop]
+        P2 --> P3[单线程协程调度]
+        P3 --> P4[多Worker进程]
+    end
+```
+
+**性能差异分析**
+
+| 维度 | Java AsyncFunction | PyFlink AsyncFunction |
+|------|-------------------|----------------------|
+| 线程模型 | 基于 JVM 线程池 | 基于 `asyncio` 协程 |
+| 上下文切换 | 内核级（较重） | 用户级（轻量） |
+| 跨语言开销 | 无 | 有（Arrow序列化） |
+| 延迟（空载） | ~1ms | ~5-10ms |
+| 吞吐量（I/O密集型） | 高 | 中等（受限于序列化） |
+| 适用并发 | 1000+ | 100-500（推荐） |
+
+---
+
+#### 9.3.2 外部服务集成模式
+
+**大模型 GPU 集群场景**
+
+```mermaid
+graph TB
+    subgraph "Flink Cluster"
+        JM[JobManager]
+        TM1[TaskManager 1]
+        TM2[TaskManager 2]
+        
+        subgraph "Python Workers"
+            P1[Async Worker 1<br/>capacity=100]
+            P2[Async Worker 2<br/>capacity=100]
+        end
+    end
+    
+    subgraph "GPU Cluster"
+        LB[Load Balancer]
+        GPU1[GPU Node 1]
+        GPU2[GPU Node 2]
+        GPU3[GPU Node 3]
+    end
+    
+    TM1 <-->|gRPC/Arrow| P1
+    TM2 <-->|gRPC/Arrow| P2
+    P1 -->|HTTP/async| LB
+    P2 -->|HTTP/async| LB
+    LB --> GPU1
+    LB --> GPU2
+    LB --> GPU3
+```
+
+---
+
+### 9.4 论证过程 (Argumentation)
+
+#### 9.4.1 大模型部署场景下的性能优化论证
+
+**场景假设**
+
+- 大模型部署在独立 GPU 集群，平均推理延迟 \( T_{infer} = 200ms \)
+- 同步调用吞吐量：\( 1 / 0.2 = 5 \) TPS/Worker
+- 目标吞吐量：500 TPS
+
+**方案对比**
+
+| 方案 | 配置 | 理论吞吐量 | 资源需求 |
+|------|------|-----------|---------|
+| 同步 UDF | 增加 Worker 数 | 5 TPS × 100 Workers | 100 Python Workers |
+| 异步 AsyncFunction | capacity=100 | 100 / 0.2 = 500 TPS | 5 Python Workers |
+
+**结论**: 异步方案可减少 95% 的 Python Worker 资源消耗。
+
+---
+
+#### 9.4.2 并发限制与资源竞争分析
+
+**问题**: 无限制并发会导致什么后果？
+
+**反例分析**:
+
+```python
+# 危险配置：无并发限制
+@async_func(capacity=10000)  # 过高并发
+def query_external_service(record):
+    return await http_client.get(url)
+```
+
+后果：
+1. **连接池耗尽**: 外部服务端连接数达到上限
+2. **内存溢出**: 大量待处理请求堆积
+3. **级联故障**: 超时累积导致服务雪崩
+
+**最佳实践**:
+
+```python
+# 合理配置
+@async_func(
+    capacity=min(external_service_max_conns, 100),
+    timeout=5000,
+    retry_strategy=AsyncRetryStrategy(max_attempts=3)
+)
+```
+
+---
+
+### 9.5 工程论证 (Engineering Argument)
+
+#### 9.5.1 稳定性保障策略
+
+**三层防护体系**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Layer 1: 并发控制 (Capacity Control)                       │
+│  - 配置合理的 capacity 参数（推荐：10-200）                 │
+│  - 信号量机制防止资源耗尽                                  │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: 超时控制 (Timeout Control)                        │
+│  - 单次调用超时（默认5000ms）                              │
+│  - 分层超时：连接超时 < 读取超时 < 总超时                  │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 3: 异常恢复 (Fault Recovery)                         │
+│  - 指数退避重试机制                                        │
+│  - 熔断器模式（Circuit Breaker）                           │
+│  - 死信队列（DLQ）用于失败记录                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**熔断器实现**
+
+```python
+from pyflink.datastream.functions import AsyncFunction
+from pyflink.datastream.async_operations import CircuitBreaker
+
+class ResilientAsyncFunction(AsyncFunction):
+    def __init__(self):
+        self.circuit_breaker = CircuitBreaker(
+            failure_threshold=5,        # 5次失败后开启
+            recovery_timeout=30000,     # 30秒后尝试恢复
+            half_open_max_calls=3       # 半开状态最多3次试探
+        )
+    
+    async def async_invoke(self, record, result_future):
+        if not self.circuit_breaker.allow_request():
+            result_future.complete_exceptionally(
+                CircuitBreakerOpenException("Service temporarily unavailable")
+            )
+            return
+        
+        try:
+            result = await self.call_external_service(record)
+            self.circuit_breaker.record_success()
+            result_future.complete(result)
+        except Exception as e:
+            self.circuit_breaker.record_failure()
+            result_future.complete_exceptionally(e)
+```
+
+---
+
+#### 9.5.2 版本矩阵更新
+
+**PyFlink 版本特性矩阵**
+
+| Flink 版本 | Python 版本支持 | 核心特性 |
+|-----------|----------------|---------|
+| 1.18 | 3.8, 3.9, 3.10 | 基础 DataStream API |
+| 1.19 | 3.8, 3.9, 3.10, 3.11 | Table API 改进 |
+| 2.0 | 3.9, 3.10, 3.11 | Pandas UDF 优化 |
+| **2.1** | **3.9, 3.10, 3.11, 3.12** | **Python 3.12 支持，移除 3.8** [^10] |
+| **2.2** | **3.9, 3.10, 3.11, 3.12** | **异步函数支持 (AsyncFunction)** [^11] |
+
+---
+
+### 9.6 实例验证 (Examples)
+
+#### 9.6.1 异步调用 OpenAI API
+
+```python
+from pyflink.datastream import StreamExecutionEnvironment
+from pyflink.datastream.functions import AsyncFunction
+from pyflink.common.typeinfo import Types
+import asyncio
+import aiohttp
+
+class OpenAIAsyncCaller(AsyncFunction):
+    """
+    异步调用 OpenAI API 进行实时文本生成
+    适用于客服机器人、内容生成等场景
+    """
+    
+    def __init__(self, api_key: str, model: str = "gpt-4", capacity: int = 50):
+        self.api_key = api_key
+        self.model = model
+        self.capacity = capacity
+        self.api_url = "https://api.openai.com/v1/chat/completions"
+        self.session = None
+        self.semaphore = None
+    
+    async def open(self, runtime_context):
+        """初始化异步HTTP会话"""
+        self.session = aiohttp.ClientSession(
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            connector=aiohttp.TCPConnector(
+                limit=self.capacity,
+                limit_per_host=self.capacity
+            ),
+            timeout=aiohttp.ClientTimeout(total=30)
+        )
+        self.semaphore = asyncio.Semaphore(self.capacity)
+    
+    async def async_invoke(self, input_record, result_future):
+        """
+        异步调用 OpenAI API
+        
+        输入: {"user_id": str, "query": str, "context": List}
+        输出: {"user_id": str, "response": str, "tokens": int}
+        """
+        try:
+            async with self.semaphore:  # 并发控制
+                payload = {
+                    "model": self.model,
+                    "messages": [
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": input_record["query"]}
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 500
+                }
+                
+                async with self.session.post(
+                    self.api_url,
+                    json=payload
+                ) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        result = {
+                            "user_id": input_record["user_id"],
+                            "response": data["choices"][0]["message"]["content"],
+                            "tokens": data["usage"]["total_tokens"],
+                            "latency_ms": data.get("response_ms", 0)
+                        }
+                        result_future.complete(result)
+                    else:
+                        error_text = await response.text()
+                        result_future.complete_exceptionally(
+                            Exception(f"API Error {response.status}: {error_text}")
+                        )
+        
+        except asyncio.TimeoutError:
+            result_future.complete_exceptionally(
+                TimeoutError(f"OpenAI API timeout for user {input_record['user_id']}")
+            )
+        except Exception as e:
+            result_future.complete_exceptionally(e)
+    
+    async def timeout(self, input_record, result_future):
+        """超时回调：返回降级结果"""
+        result_future.complete({
+            "user_id": input_record["user_id"],
+            "response": "服务繁忙，请稍后重试",
+            "tokens": 0,
+            "fallback": True
+        })
+    
+    async def close(self):
+        if self.session:
+            await self.session.close()
+
+
+# 构建 Pipeline
+env = StreamExecutionEnvironment.get_execution_environment()
+
+# 配置异步函数参数
+async_config = {
+    "capacity": 50,           # 最大并发50
+    "timeout": 30000,         # 30秒超时
+    "output_mode": "ordered"  # 保持顺序
+}
+
+# 数据源：用户查询流
+user_queries = env.add_source(KafkaSource(...))
+
+# 异步调用大模型
+responses = user_queries.map_async(
+    OpenAIAsyncCaller(api_key="${OPENAI_API_KEY}"),
+    **async_config
+)
+
+# 结果输出到 Kafka
+responses.add_sink(KafkaSink(...))
+
+env.execute("Async OpenAI Inference")
+```
+
+**配置参数说明**:
+
+| 参数 | 说明 | 推荐值 |
+|------|------|-------|
+| `capacity` | 最大并发请求数 | 50-200（根据OpenAI tier） |
+| `timeout` | 单次调用超时 | 30000ms（GPT-4平均响应） |
+| `output_mode` | 输出顺序模式 | `ordered`/`unordered` |
+
+---
+
+#### 9.6.2 异步数据库查询
+
+```python
+import asyncpg
+from pyflink.datastream.functions import AsyncFunction
+
+class AsyncPostgresLookup(AsyncFunction):
+    """
+    异步 PostgreSQL 维表查询
+    适用于实时特征补全、用户信息关联
+    """
+    
+    def __init__(self, dsn: str, capacity: int = 100):
+        self.dsn = dsn
+        self.capacity = capacity
+        self.pool = None
+    
+    async def open(self, runtime_context):
+        """初始化连接池"""
+        self.pool = await asyncpg.create_pool(
+            self.dsn,
+            min_size=5,
+            max_size=self.capacity,
+            command_timeout=5
+        )
+    
+    async def async_invoke(self, record, result_future):
+        """
+        异步查询用户特征
+        
+        输入: {"user_id": str, "event": dict}
+        输出: {"user_id": str, "event": dict, "features": dict}
+        """
+        try:
+            async with self.pool.acquire() as conn:
+                row = await conn.fetchrow(
+                    """
+                    SELECT age_segment, purchase_history, risk_score
+                    FROM user_features
+                    WHERE user_id = $1
+                    """,
+                    record["user_id"]
+                )
+                
+                if row:
+                    record["features"] = dict(row)
+                else:
+                    record["features"] = None
+                
+                result_future.complete(record)
+        
+        except Exception as e:
+            result_future.complete_exceptionally(e)
+    
+    async def close(self):
+        if self.pool:
+            await self.pool.close()
+
+
+# 使用装饰器简化
+@async_func(capacity=100, timeout=5000)
+async def enrich_with_user_profile(event):
+    """异步用户画像补全"""
+    async with aiohttp.ClientSession() as session:
+        # 调用用户服务
+        async with session.get(
+            f"http://user-service:8080/profile/{event['user_id']}",
+            timeout=aiohttp.ClientTimeout(total=3)
+        ) as resp:
+            profile = await resp.json()
+            event["profile"] = profile
+            return event
+```
+
+---
+
+#### 9.6.3 异步特征服务调用
+
+```python
+from dataclasses import dataclass
+from typing import List, Dict
+import asyncio
+
+@dataclass
+class FeatureRequest:
+    entity_id: str
+    feature_names: List[str]
+    timestamp: int
+
+class AsyncFeatureServiceClient(AsyncFunction):
+    """
+    异步特征服务客户端
+    支持批量特征获取，适用于实时推荐系统
+    """
+    
+    def __init__(
+        self,
+        service_endpoint: str,
+        capacity: int = 200,
+        batch_size: int = 10,
+        batch_timeout_ms: int = 50
+    ):
+        self.endpoint = service_endpoint
+        self.capacity = capacity
+        self.batch_size = batch_size
+        self.batch_timeout_ms = batch_timeout_ms
+        
+        self.batch_buffer = []
+        self.batch_timer = None
+        self.session = None
+        self.lock = asyncio.Lock()
+    
+    async def open(self, runtime_context):
+        import aiohttp
+        self.session = aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(limit=self.capacity),
+            timeout=aiohttp.ClientTimeout(total=10)
+        )
+    
+    async def async_invoke(self, request: FeatureRequest, result_future):
+        """
+        支持微批处理的异步特征获取
+        将短时间内的多个请求聚合为批量请求
+        """
+        async with self.lock:
+            self.batch_buffer.append((request, result_future))
+            
+            # 触发批量发送条件
+            should_flush = (
+                len(self.batch_buffer) >= self.batch_size or
+                self.batch_timer is None
+            )
+            
+            if should_flush:
+                if self.batch_timer:
+                    self.batch_timer.cancel()
+                await self._flush_batch()
+                self.batch_timer = asyncio.create_task(
+                    self._schedule_flush()
+                )
+    
+    async def _schedule_flush(self):
+        """定时刷新缓冲区"""
+        await asyncio.sleep(self.batch_timeout_ms / 1000)
+        async with self.lock:
+            if self.batch_buffer:
+                await self._flush_batch()
+    
+    async def _flush_batch(self):
+        """发送批量特征请求"""
+        if not self.batch_buffer:
+            return
+        
+        batch = self.batch_buffer[:self.batch_size]
+        self.batch_buffer = self.batch_buffer[self.batch_size:]
+        
+        entity_ids = [req.entity_id for req, _ in batch]
+        feature_names = list(set(
+            name for req, _ in batch for name in req.feature_names
+        ))
+        
+        try:
+            async with self.session.post(
+                f"{self.endpoint}/features/batch",
+                json={
+                    "entity_ids": entity_ids,
+                    "feature_names": feature_names
+                }
+            ) as resp:
+                results = await resp.json()
+                
+                # 分发结果
+                for (req, future), entity_id in zip(batch, entity_ids):
+                    features = results.get(entity_id, {})
+                    future.complete({
+                        "entity_id": entity_id,
+                        "features": features,
+                        "requested_at": req.timestamp
+                    })
+        
+        except Exception as e:
+            # 批量失败时逐个返回异常
+            for _, future in batch:
+                future.complete_exceptionally(e)
+    
+    async def close(self):
+        # 清空剩余请求
+        async with self.lock:
+            for _, future in self.batch_buffer:
+                future.complete_exceptionally(
+                    Exception("Function closing")
+                )
+            self.batch_buffer.clear()
+        
+        if self.session:
+            await self.session.close()
+```
+
+---
+
+### 9.7 可视化 (Visualizations)
+
+#### 9.7.1 PyFlink AsyncFunction 执行模型
+
+```mermaid
+graph TB
+    subgraph "Java TaskManager"
+        TM[TaskManager]
+        AO[AsyncOperator]
+        TM --> AO
+    end
+    
+    subgraph "Python Worker Process"
+        subgraph "Main Thread"
+            RT[Runtime Thread<br/>gRPC Handler]
+            EQ[Event Loop<br/>asyncio]
+        end
+        
+        subgraph "Async Tasks"
+            T1[Task 1<br/>HTTP Request]
+            T2[Task 2<br/>HTTP Request]
+            T3[Task N<br/>HTTP Request]
+        end
+        
+        SEM[Semaphore<br/>capacity=100]
+    end
+    
+    subgraph "External Services"
+        GPU[GPU Cluster<br/>LLM Inference]
+        DB[(Database<br/>Feature Store)]
+        API[REST API<br/>Third Party]
+    end
+    
+    AO <-->|gRPC/Arrow| RT
+    RT --> EQ
+    EQ --> SEM
+    SEM --> T1
+    SEM --> T2
+    SEM --> T3
+    T1 --> GPU
+    T2 --> DB
+    T3 --> API
+```
+
+#### 9.7.2 异步函数配置决策树
+
+```mermaid
+flowchart TD
+    A[使用 AsyncFunction?] -->|否| B[使用同步 UDF]
+    A -->|是| C{外部服务类型?}
+    
+    C -->|HTTP API| D{API 特性?}
+    C -->|数据库| E[capacity=50-200<br/>timeout=5000ms]
+    C -->|GPU集群| F[capacity=GPU并发<br/>timeout=30000ms]
+    
+    D -->|OpenAI| G[capacity=50<br/>ordered output]
+    D -->|内部服务| H[capacity=200<br/>unordered output]
+    
+    E --> I{是否需要重试?}
+    F --> I
+    G --> I
+    H --> I
+    
+    I -->|是| J[max_attempts=3<br/>exponential backoff]
+    I -->|否| K[no retry]
+    
+    J --> L[配置完成]
+    K --> L
+```
+
+#### 9.7.3 Java vs PyFlink AsyncFunction 对比矩阵
+
+```mermaid
+graph TD
+    subgraph "性能对比"
+        direction TB
+        J1[Java AsyncFunction<br/>延迟: ~1ms] 
+        P1[PyFlink AsyncFunction<br/>延迟: ~5-10ms]
+        J1 -.->|跨语言开销| P1
+    end
+    
+    subgraph "并发能力"
+        direction TB
+        J2[Java: 1000+ 并发] 
+        P2[PyFlink: 100-500 并发]
+    end
+    
+    subgraph "适用场景"
+        direction TB
+        J3[高频金融交易<br/>核心支付链路]
+        P3[AI/ML 推理<br/>数据科学工作流]
+    end
+    
+    J1 --> J2 --> J3
+    P1 --> P2 --> P3
+```
+
+---
+
 ## 8. 引用参考 (References)
+
+[^10]: Apache Flink 2.1 Release Notes, "Python 3.12 Support", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.1/release-notes/flink-2.1/#python-312-support
+[^11]: Apache Flink 2.2 Release Notes, "Async Function Support in PyFlink", FLINK-38190, 2025. https://issues.apache.org/jira/browse/FLINK-38190

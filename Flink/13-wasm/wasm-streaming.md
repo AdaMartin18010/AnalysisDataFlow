@@ -369,6 +369,328 @@ sync:
   compression: zstd
 ```
 
+### 5.4 WASI 0.3与Component Model
+
+#### 5.4.1 WASI 0.3 (2026年2月发布)
+
+WASI 0.3是WebAssembly系统接口的重大版本更新，引入了原生异步支持[^7]：
+
+**核心特性**:
+
+| 特性 | 说明 | Flink集成意义 |
+|-----|------|--------------|
+| 原生异步支持 | 内置async/await语义，无需状态机转换 | 简化Flink AsyncFunction实现 |
+| 取消令牌 | 标准化取消信号传播机制 | 支持Flink检查点超时中断 |
+| 流优化 | 背压感知的数据流接口 | 与Flink背压机制原生对接 |
+| 线程支持 | 标准线程API和并发原语 | 多线程Wasm UDF执行 |
+
+**WASI 0.3异步模型**:
+
+```mermaid
+flowchart TD
+    subgraph WASI03["WASI 0.3 Async Model"]
+        A[Async Operation] -->|returns| P[Promise/Handle]
+        P -->|await| E[Event Loop]
+        E -->|poll| C[Completion Check]
+        C -->|not ready| S[Yield Control]
+        C -->|ready| R[Resume Execution]
+        S -->|yield| E
+        CT[Cancel Token] -.->|cancel| P
+    end
+```
+
+**与Flink集成优势**:
+
+$$
+\text{AsyncLatency}_{\text{WASI 0.3}} = T_{\text{syscall}} + T_{\text{poll}} < T_{\text{context switch}}^{\text{traditional}}
+$$
+
+#### 5.4.2 WebAssembly Component Model
+
+WebAssembly Component Model 1.0定义了Wasm模块的跨语言组合标准[^8]：
+
+**Def-F-13-04: 组件模型核心概念**
+
+$$
+\text{Component} = \langle \text{Interface}, \text{Implementation}, \text{Dependency}, \text{Package} \rangle
+$$
+
+- **Interface**: WIT (Wasm Interface Types) 定义的类型契约
+- **Implementation**: 一个或多个核心Wasm模块
+- **Dependency**: 对其他组件的接口依赖
+- **Package**: 版本化分发单元
+
+**接口类型系统**:
+
+```wit
+// sensor-processor.wit
+package flink:edge-sensor@0.1.0;
+
+interface data-processing {
+    record sensor-reading {
+        sensor-id: string,
+        timestamp: u64,
+        value: f64,
+        unit: string,
+    }
+    
+    variant filter-result {
+        valid(f64),
+        invalid(string),
+    }
+    
+    process: func(reading: sensor-reading) -> filter-result;
+}
+
+world sensor-processor {
+    import flink:state/state-store@0.1.0;
+    export data-processing;
+}
+```
+
+**跨语言组合架构**:
+
+```mermaid
+graph TB
+    subgraph Component["Component Model架构"]
+        direction TB
+        
+        subgraph Lang["多语言实现"]
+            Rust["Rust Component<br/>wit-bindgen"]
+            Go["Go Component<br/>wit-bindgen-go"]
+            Java["Java Component<br/>jco"]
+            JS["JavaScript Component<br/>jco"]
+        end
+        
+        subgraph WIT["接口定义层"]
+            WIT1["WIT Interfaces"]
+            WIT2["World Definitions"]
+            WIT3["Package Registry"]
+        end
+        
+        subgraph Runtime["运行时组合"]
+            Linker["Component Linker"]
+            Store["Linear Memory Store"]
+            LiftLower["Lift/Lower<br/>类型转换"]
+        end
+        
+        Lang --> WIT
+        WIT --> Runtime
+    end
+```
+
+**组件模型1.0路线图状态** (2026年):
+
+| 阶段 | 特性 | 状态 |
+|-----|------|------|
+| Phase 1 | 核心规范 + WASI Preview 2 | ✅ 完成 |
+| Phase 2 | 包管理器 (warg) | ✅ 完成 |
+| Phase 3 | 多组件动态链接 | 🔄 Beta |
+| Phase 4 | 完整生态系统工具链 | 🔄 RC |
+
+#### 5.4.3 Wasm 3.0新特性
+
+Wasm 3.0提案引入了多项关键特性，显著扩展了Wasm的应用场景[^9]：
+
+**异常处理（exnref）**:
+
+```wat
+;; Wasm 3.0 异常处理示例
+(module
+  (tag $parse-error (param i32 i32))  ;; 异常类型定义
+  
+  (func $parse-json (param i32 i32) (result i32)
+    ;; 解析逻辑
+    (if (i32.eq (local.get 0) (i32.const 0))
+      (throw $parse-error (i32.const 0) (i32.const 11))  ;; "parse failed"
+    )
+    (i32.const 1)  ;; 成功
+  )
+  
+  (func $process-data (param i32 i32) (result i32)
+    (block $handler (result i32 i32)
+      (try
+        (do (call $parse-json (local.get 0) (local.get 1)))
+        (catch $parse-error (return (i32.const 0)))
+      )
+    )
+  )
+)
+```
+
+**JavaScript String Builtins**:
+
+| 特性 | 描述 | 性能提升 |
+|-----|------|---------|
+| 共享字符串表示 | Wasm与JS共享UTF-16字符串 | 消除复制开销 |
+| 内置编码API | 原生UTF-8/UTF-16转换 | 减少WASM-JS边界开销 |
+| Stringref类型 | 直接引用JS字符串 | 零拷贝互操作 |
+
+**垃圾回收（GC）**:
+
+```rust
+// 使用Wasm GC的类型定义（Rust示例）
+#[wasm_bindgen]
+pub struct StreamProcessor {
+    config: ProcessingConfig,
+    state: RefCell<ProcessingState>,
+}
+
+#[wasm_bindgen]
+impl StreamProcessor {
+    // Wasm GC自动管理内存，无需手动释放
+    pub fn new(config: ProcessingConfig) -> StreamProcessor {
+        StreamProcessor {
+            config,
+            state: RefCell::new(ProcessingState::default()),
+        }
+    }
+}
+```
+
+**新语言支持状态**:
+
+| 语言 | 编译目标 | 状态 | 适用场景 |
+|-----|---------|------|---------|
+| Java (TeaVM) | Wasm GC | ✅ 生产可用 | 企业级UDF迁移 |
+| Kotlin (Wasm) | Wasm GC | ✅ 生产可用 | 安卓生态复用 |
+| Dart | Wasm GC | ✅ 稳定 | Flutter边缘计算 |
+| C# (Mono) | Wasm MVP + GC | 🔄 Beta | .NET生态集成 |
+| Swift | Wasm MVP | 🔄 Alpha | iOS生态扩展 |
+
+#### 5.4.4 边缘计算生产案例
+
+**Akamai收购Fermyon** (2025年)[^10]:
+
+Akamai于2025年完成对Fermyon的收购，将Wasm运行时整合到其全球CDN网络：
+
+```mermaid
+graph TB
+    subgraph Akamai["Akamai Edge Platform"]
+        A[CDN PoP] --> B[Wasm Runtime<br/>Spin-based]
+        B --> C[轻量级计算
+        <10ms冷启动]
+        C --> D[动态内容生成
+        边缘个性化]
+    end
+    
+    subgraph Impact["业务影响"]
+        E[延迟降低60%]
+        F[成本降低40%]
+        G[全球2500+节点]
+    end
+    
+    Akamai --> Impact
+```
+
+**Cloudflare Workers**:
+
+Cloudflare Workers是最早大规模生产化部署Wasm的平台之一：
+
+| 指标 | 数据 |
+|-----|------|
+| 部署规模 | 全球300+城市 |
+| 冷启动 | <1ms (V8 isolates) |
+| Wasm支持 | WASI Preview 1/2 |
+| 语言生态 | Rust, C++, Go, AssemblyScript |
+
+**Fastly Compute@Edge**:
+
+Fastly基于Wasmtime构建的边缘计算平台：
+
+```yaml
+# fastly-compute.toml
+name = "flink-edge-processor"
+description = "Flink-compatible edge processor"
+language = "rust"
+manifest_version = 3
+
+[local_server]
+  [local_server.backends]
+    [local_server.backends.flink-cloud]
+      url = "https://flink-cluster.example.com"
+
+[wasm]
+  module = "target/wasm32-wasi/release/flink_edge_processor.wasm"
+  wasi-preview-2 = true  # 启用WASI 0.3特性
+```
+
+#### 5.4.5 JSPI (JavaScript Promise Integration)
+
+JSPI解决了Wasm与JavaScript异步API互操作的核心问题[^11]：
+
+**Def-F-13-05: JSPI机制**
+
+JSPI允许同步编译的Wasm代码调用异步JavaScript API，无需复杂的状态机转换：
+
+$$
+\text{JSPI}: \text{WasmSyncFunction} \times \text{JSAsyncAPI} \rightarrow \text{Promise}
+$$
+
+**浏览器支持状态** (2026年):
+
+| 浏览器 | 支持状态 | 版本 |
+|-------|---------|------|
+| Chrome | ✅ 已支持 | 123+ |
+| Edge | ✅ 已支持 | 123+ |
+| Firefox | 🔄 开发中 | Nightly |
+| Safari | ❌ 已移除反对 | WebKit立场不变 |
+
+**JSPI使用示例**:
+
+```javascript
+// JSPI 集成示例
+const { instance } = await WebAssembly.instantiate(module, {
+  env: {
+    // 异步外部函数
+    async fetch_sensor_data(sensor_id) {
+      const response = await fetch(`/api/sensors/${sensor_id}`);
+      return response.json();
+    }
+  }
+});
+
+// Wasm内部以同步方式调用，JSPI自动处理异步转换
+const result = instance.exports.process_sensor_data(sensor_id);
+```
+
+```rust
+// Rust侧代码（使用wasm-bindgen-futures）
+use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::JsFuture;
+
+#[wasm_bindgen]
+extern "C" {
+    async fn fetch_sensor_data(sensor_id: &str) -> JsValue;
+}
+
+#[wasm_bindgen]
+pub async fn process_sensor_data(sensor_id: String) -> Result<JsValue, JsValue> {
+    // 同步风格代码，JSPI自动转换为异步
+    let data = fetch_sensor_data(&sensor_id).await;
+    let processed = transform_data(data)?;
+    Ok(processed)
+}
+```
+
+**Flink集成新路径**:
+
+```mermaid
+flowchart LR
+    subgraph Old["传统集成路径"]
+        O1[Flink AsyncFunction] -->|手动状态机| O2[Wasm Runtime]
+        O2 -->|回调复杂| O3[JS API]
+    end
+    
+    subgraph New["JSPI新路径"]
+        N1[Flink AsyncFunction] -->|直接await| N2[Wasm Component
+        with WASI 0.3]
+        N2 -->|JSPI透明转换| N3[JS API]
+    end
+    
+    Old -.->|简化| New
+```
+
 ---
 
 ## 6. 实例验证 (Examples)
@@ -617,6 +939,203 @@ pipeline:
       flush_interval: 5s
 ```
 
+### 6.4 WASI 0.3 API变更实现
+
+**WASI 0.3异步I/O示例** (Rust + wasmtime):
+
+```rust
+// wasi03_async_processor.rs
+use wasmtime::{Engine, Module, Store, Config};
+use wasmtime_wasi::{WasiCtx, WasiCtxBuilder, async_trait};
+
+#[async_trait]
+trait AsyncProcessor {
+    async fn process_stream(&self, data: Vec<u8>) -> Result<Vec<u8>, String>;
+}
+
+// WASI 0.3 支持原生async/await
+pub async fn run_wasi03_component(component_path: &str) -> Result<(), Box<dyn Error>> {
+    let mut config = Config::new();
+    config.async_support(true);
+    config.wasm_backtrace_details(wasmtime::WasmBacktraceDetails::Enable);
+    
+    let engine = Engine::new(&config)?;
+    let module = Module::from_file(&engine, component_path)?;
+    
+    // WASI 0.3上下文
+    let wasi = WasiCtxBuilder::new()
+        .inherit_stdio()
+        .inherit_network()
+        .allow_ip_name_lookup(true)
+        .build();
+    
+    let mut store = Store::new(&engine, wasi);
+    
+    // 异步实例化与执行
+    let instance = wasmtime::component::Instance::new_async(
+        &mut store, 
+        &module
+    ).await?;
+    
+    // 调用异步导出函数
+    let process_fn = instance
+        .get_typed_func::<(Vec<u8>,), Vec<u8>>(&mut store, "process_async")?;
+    
+    let result = process_fn.call_async(&mut store, (input_data,)).await?;
+    
+    Ok(result)
+}
+```
+
+### 6.5 Component Model开发流程
+
+**完整开发工作流**:
+
+```bash
+# 1. 安装工具链
+cargo install cargo-component wit-bindgen-cli wasm-tools
+
+# 2. 创建组件项目
+cargo component new sensor-processor --lib
+
+# 3. 定义WIT接口
+# wit/sensor-processor.wit (见5.4.2节)
+
+# 4. 实现组件逻辑
+# src/lib.rs
+use bindings::exports::flink::edge::data_processing::{Guest, SensorReading, FilterResult};
+
+struct Component;
+
+impl Guest for Component {
+    fn process(reading: SensorReading) -> FilterResult {
+        if reading.value < -40.0 || reading.value > 85.0 {
+            FilterResult::Invalid("out of range".to_string())
+        } else {
+            FilterResult::Valid(reading.value)
+        }
+    }
+}
+
+bindings::export!(Component with_types_in bindings);
+
+# 5. 构建组件
+cargo component build --release
+
+# 6. 发布到注册表 (warg)
+warg publish target/wasm32-wasi/release/sensor_processor.wasm \
+    --registry https://warg.bytecodealliance.org \
+    --package flink:edge-sensor@0.1.0
+```
+
+**Flink Component集成**:
+
+```java
+// Flink WASI 0.3 Component集成
+public class WasmComponentUDF extends ScalarFunction {
+    private ComponentInstance instance;
+    private Store<WasiCtx> store;
+    
+    @Override
+    public void open(Configuration parameters) {
+        // 加载WASI 0.3组件
+        Engine engine = new Engine.Builder()
+            .asyncSupport(true)
+            .build();
+            
+        Component component = Component.fromFile(engine, "sensor_processor.wasm");
+        
+        // WASI 0.3配置
+        WasiCtx wasi = WasiCtxBuilder.newBuilder()
+            .inheritNetwork()
+            .inheritStdio()
+            .build();
+            
+        store = Store.newBuilder(engine, wasi).build();
+        
+        // 实例化组件
+        Linker linker = new Linker(engine);
+        WasmtimeWasi.addToLinker(linker);
+        
+        instance = linker.instantiate(store, component);
+    }
+    
+    public Boolean eval(Double temperature) {
+        // 调用组件导出函数
+        TypedFunc<Double, FilterResult> process = instance
+            .getTypedFunc(store, "flink:edge/data-processing#process");
+            
+        FilterResult result = process.call(store, temperature);
+        return result instanceof FilterResult.Valid;
+    }
+}
+```
+
+### 6.6 与Flink集成新路径
+
+**基于Component Model的现代集成架构**:
+
+```mermaid
+graph TB
+    subgraph Flink["Flink Runtime"]
+        F1[TaskManager] --> F2[Wasm Component Host]
+        F2 --> F3[WASI 0.3 Runtime
+        wasmtime/wasmedge]
+    end
+    
+    subgraph Components["Component Ecosystem"]
+        C1[数据处理组件<br/>flink:processor]
+        C2[状态存储组件<br/>flink:state]
+        C3[网络组件<br/>flink:network]
+    end
+    
+    subgraph Interface["WIT接口层"]
+        W1[数据处理接口]
+        W2[状态管理接口]
+        W3[背压控制接口]
+    end
+    
+    Flink --> Interface
+    Interface --> Components
+```
+
+**组件组合配置**:
+
+```yaml
+# flink-wasm-component.yaml
+runtime:
+  engine: wasmtime
+  wasi_version: "0.3"
+  async_support: true
+
+components:
+  - name: stream-processor
+    package: "flink:stream-processor@0.2.0"
+    source: 
+      registry: "https://warg.flink.apache.org"
+    imports:
+      - "flink:state/key-value-store@0.1.0"
+      - "flink:metrics/prometheus@0.1.0"
+    exports:
+      - "process-record"
+      - "checkpoint"
+      
+  - name: state-backend
+    package: "flink:rocksdb-backend@0.1.0"
+    source:
+      path: "./backends/rocksdb.wasm"
+    exports:
+      - "get-state"
+      - "put-state"
+      - "snapshot"
+
+composition:
+  # 组件组合配置
+  - from: stream-processor
+    to: state-backend
+    interface: "flink:state/key-value-store"
+```
+
 ---
 
 ## 7. 可视化 (Visualizations)
@@ -743,3 +1262,31 @@ flowchart TD
 ---
 
 ## 8. 引用参考 (References)
+
+[^1]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+
+[^2]: WasmEdge Documentation, "Flink Integration", 2024. https://wasmedge.org/docs/develop/usecases/flink/
+
+[^3]: WebAssembly Specification, "WebAssembly Core Specification 2.0", W3C, 2023. https://www.w3.org/TR/wasm-core-2/
+
+[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
+
+[^5]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
+
+[^6]: WASI Subgroup, "WebAssembly System Interface", Bytecode Alliance, 2024. https://github.com/WebAssembly/WASI
+
+[^7]: Bytecode Alliance, "WASI 0.3 Release Notes", February 2026. https://bytecodealliance.org/articles/wasi-0-3
+
+[^8]: WebAssembly Component Model Working Group, "Component Model 1.0 Specification", Bytecode Alliance, 2025. https://component-model.bytecodealliance.org/
+
+[^9]: Wasm I/O 2026, "Wasm 3.0: The Next Generation of WebAssembly", Barcelona, March 2026.
+
+[^10]: Akamai Technologies, "Akamai Completes Acquisition of Fermyon Technologies", Press Release, 2025. https://www.akamai.com/company/press-room/press-releases/akamai-completes-fermyon-acquisition
+
+[^11]: Uno Platform, "State of WebAssembly 2025-2026", WebAssembly Survey Report, 2026. https://platform.uno/blog/state-of-webassembly-2025-2026/
+
+[^12]: Cloudflare, "Cloudflare Workers Documentation", 2025. https://developers.cloudflare.com/workers/
+
+[^13]: Fastly, "Compute@Edge Documentation", 2025. https://developer.fastly.com/learning/compute/
+
+[^14]: Google Chrome Developers, "JavaScript Promise Integration for WebAssembly", Chrome Platform Status, 2024. https://chromestatus.com/feature/6068014294159360

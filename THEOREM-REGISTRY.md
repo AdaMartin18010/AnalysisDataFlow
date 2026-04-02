@@ -142,6 +142,9 @@
 | Thm-S-14-01 | 表达能力严格层次定理 | Struct/03.03 | L3-L6 | ✅ |
 | Thm-S-15-01 | 互模拟同余定理 | Struct/03.04 | L3-L4 | ✅ |
 | Thm-S-16-01 | 跨层映射组合定理 | Struct/03.05 | L5-L6 | ✅ |
+| Thm-S-06-01 | 第一人称Choreographic死锁自由 | Struct/06.01 | L5 | ✅ |
+| Thm-S-06-02 | 1CP的EPP完备性 | Struct/06.01 | L5 | ✅ |
+| Thm-S-06-03 | 1CP与Census-Polymorphic互编码 | Struct/06.01 | L5 | ✅ |
 
 ### 2.4 证明层定理 (04-proofs)
 
@@ -173,6 +176,7 @@
 | Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
 | Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
 | Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
+| Thm-F-04-01 | Fluss TCO成本效率定理 | Flink/04-connectors | L3-L4 | ✅ |
 
 ---
 
