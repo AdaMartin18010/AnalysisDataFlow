@@ -60,7 +60,7 @@ MusicEventStream ≜ ⟨E, U, T, C⟩
   ├── AddToPlaylist (添加到播放列表)
   ├── Share (分享)
   └── Complete (播放完成)
-  
+
 - U: UserID → 用户标识
 - T: EventTime → 事件时间戳 (毫秒级)
 - C: TrackID → 音乐内容标识
@@ -331,6 +331,7 @@ P50 < 50ms, P99 < 100ms, P99.9 < 200ms
 ```
 
 **问题**:
+
 - 批处理与实时层逻辑不一致
 - Storm无状态管理，实现复杂
 - 维护成本高
@@ -367,6 +368,7 @@ P50 < 50ms, P99 < 100ms, P99.9 < 200ms
 用户在手机、电脑、车载设备间切换，需要识别为同一会话。
 
 **解决方案**:
+
 ```java
 // 跨设备会话合并逻辑
 public class CrossDeviceSessionMerger extends KeyedProcessFunction<
@@ -380,15 +382,15 @@ public class CrossDeviceSessionMerger extends KeyedProcessFunction<
                                Collector<UnifiedSession> out) {
         String deviceId = event.deviceId;
         SessionState deviceSession = deviceSessions.get(deviceId);
-        
+
         if (deviceSession == null || isExpired(deviceSession, event)) {
             // 新设备会话
             deviceSession = new SessionState(event.timestamp);
         }
-        
+
         deviceSession.addEvent(event);
         deviceSessions.put(deviceId, deviceSession);
-        
+
         // 更新统一会话
         UnifiedSession unified = unifiedSession.value();
         if (unified == null) {
@@ -396,7 +398,7 @@ public class CrossDeviceSessionMerger extends KeyedProcessFunction<
         }
         unified.merge(deviceSession);
         unifiedSession.update(unified);
-        
+
         // 输出更新后的统一会话
         out.collect(unified);
     }
@@ -408,6 +410,7 @@ public class CrossDeviceSessionMerger extends KeyedProcessFunction<
 长期画像(离线计算)与实时行为(流计算)需要高效融合。
 
 **解决方案**:
+
 ```
 用户画像 = α · 离线画像 + (1-α) · 实时画像
 
@@ -460,6 +463,7 @@ public class CrossDeviceSessionMerger extends KeyedProcessFunction<
 **论证**:
 
 **定义**:
+
 - 设用户数为 U
 - 设每个用户的平均会话数为 S
 - 设每个会话的平均事件数为 E
@@ -552,7 +556,7 @@ A(L) = A_base + (A_max - A_base) · (1 - e^(-L/τ))
 public class SessionAwareRecommendationJob {
 
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(2000);
 
@@ -600,7 +604,7 @@ class SessionAggregator implements AggregateFunction<
     public SessionAccumulator add(PlaybackEvent event, SessionAccumulator acc) {
         acc.totalTracks++;
         acc.totalListenTime += event.listenDurationMs;
-        
+
         if (event.eventType.equals("SKIP")) {
             acc.skipCount++;
             acc.skippedGenres.add(event.trackGenre);
@@ -608,14 +612,14 @@ class SessionAggregator implements AggregateFunction<
             acc.completeCount++;
             acc.completedGenres.add(event.trackGenre);
         }
-        
+
         if (event.eventType.equals("LIKE")) {
             acc.likedTracks.add(event.trackId);
         }
-        
+
         // 更新活跃流派
         acc.genreCounts.merge(event.trackGenre, 1, Integer::sum);
-        
+
         return acc;
     }
 
@@ -623,13 +627,13 @@ class SessionAggregator implements AggregateFunction<
     public SessionInsight getResult(SessionAccumulator acc) {
         double skipRate = (double) acc.skipCount / acc.totalTracks;
         double completionRate = (double) acc.completeCount / acc.totalTracks;
-        
+
         // 找出最活跃的流派
         String dominantGenre = acc.genreCounts.entrySet().stream()
             .max(Map.Entry.comparingByValue())
             .map(Map.Entry::getKey)
             .orElse("unknown");
-        
+
         // 检测情绪变化
         SessionMood mood;
         if (skipRate > 0.7) {
@@ -641,9 +645,9 @@ class SessionAggregator implements AggregateFunction<
         } else {
             mood = SessionMood.NEUTRAL;
         }
-        
+
         return new SessionInsight(
-            skipRate, completionRate, dominantGenre, 
+            skipRate, completionRate, dominantGenre,
             mood, acc.likedTracks, acc.skippedGenres
         );
     }
@@ -662,19 +666,19 @@ class RealtimeRecommender extends KeyedProcessFunction<
         // 每播放3首歌后触发推荐更新
         List<String> recent = recentTracks.value();
         if (recent == null) recent = new ArrayList<>();
-        
+
         recent.add(event.trackId);
         if (recent.size() > 10) recent.remove(0);
         recentTracks.update(recent);
-        
+
         // 获取会话洞察
         SessionInsight insight = sessionState.value();
         if (insight == null) return;
-        
+
         // 根据会话状态调整推荐策略
         if (recent.size() % 3 == 0) {
             RecommendationStrategy strategy;
-            
+
             switch (insight.mood) {
                 case FRUSTRATED:
                     // 用户不满意，尝试不同流派
@@ -691,7 +695,7 @@ class RealtimeRecommender extends KeyedProcessFunction<
                 default:
                     strategy = RecommendationStrategy.DEFAULT;
             }
-            
+
             out.collect(new RecommendationRequest(
                 ctx.getCurrentKey(),
                 recent,
@@ -727,7 +731,7 @@ class RealtimeRecommender extends KeyedProcessFunction<
 public class DiscoverWeeklyJob {
 
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(5000);
 
@@ -792,7 +796,7 @@ public class DiscoverWeeklyJob {
 public class UserProfileUpdateJob {
 
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1000);
 
@@ -889,27 +893,27 @@ graph TB
     C2 --> E1
     C3 --> E1
     C4 --> E1
-    
+
     E1 --> E2
     E2 --> F1
     E2 --> F2
     E2 --> F3
     E2 --> F4
-    
+
     F1 --> S1
     F2 --> S2
     F3 --> S1
-    
+
     R1 --> M1
     R1 --> M2
     R1 --> M3
-    
+
     M1 --> S3
     M2 --> S1
     M3 --> S2
-    
+
     R2 --> R1
-    
+
     F4 --> R1
 
     style F1 fill:#c8e6c9,stroke:#2e7d32
@@ -922,35 +926,35 @@ graph TB
 ```mermaid
 flowchart TD
     A[播放事件] --> B{Event Time<br/>Watermark}
-    
+
     B --> C[KeyBy UserID]
     C --> D[Session Window<br/>30min Gap]
-    
+
     D --> E[增量聚合]
     E --> E1[播放计数]
     E --> E2[跳过计数]
     E --> E3[完成计数]
     E --> E4[总聆听时长]
     E --> E5[流派分布]
-    
+
     E1 --> F[会话洞察计算]
     E2 --> F
     E3 --> F
     E4 --> F
     E5 --> F
-    
+
     F --> G{会话情绪}
-    
+
     G -->|SkipRate>0.7| H[FRUSTRATED<br/>探索新流派]
     G -->|CompleteRate>0.8| I[ENGAGED<br/>深化当前流派]
     G -->|Likes>3| J[HAPPY<br/>混合推荐]
     G -->|其他| K[NEUTRAL<br/>默认策略]
-    
+
     H --> L[更新推荐策略]
     I --> L
     J --> L
     K --> L
-    
+
     L --> M[实时推荐API]
 
     style G fill:#fff9c4,stroke:#f57f17
@@ -1000,23 +1004,23 @@ graph TB
     P --> CG2
     P --> CG3
     C --> CG4
-    
+
     CG1 --> CP
     CG2 --> CP
     CG3 --> CP
     CG4 --> CP
-    
+
     CP --> R1
     U --> R1
     C --> R1
-    
+
     R1 --> R2
     R2 --> R3
-    
+
     R3 --> PP1
     PP1 --> PP2
     PP2 --> PP3
-    
+
     PP3 --> O
 
     style R2 fill:#c8e6c9,stroke:#2e7d32
@@ -1027,7 +1031,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Spotify Engineering Blog, "Building the Future of Music Listening", 2023. https://engineering.atspotify.com/
+[^1]: Spotify Engineering Blog, "Building the Future of Music Listening", 2023. <https://engineering.atspotify.com/>
 
 [^2]: Spotify Research, "Learning User Preferences for Music Recommendation", 2022.
 
