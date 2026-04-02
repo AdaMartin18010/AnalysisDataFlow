@@ -10,7 +10,7 @@
 总体进度: [████████████████████] 100%
 ├── Struct/:   [████████████████████] 100% (30/30 完成)
 ├── Knowledge/: [████████████████████] 100% (19/19 完成)
-├── Flink/:    [████████████████████] 100% (26/26 完成)
+├── Flink/:    [████████████████████] 100% (27/27 完成)
 └── 基础设施:   [████████████████████] 100% (完成)
 ```
 
@@ -24,7 +24,7 @@
 | Knowledge/ | 7 | ~150KB | ✅ 完成 |
 | Flink/ | 26 | ~500KB | ✅ 完成 |
 | 项目级文档 | 3 | ~50KB | ✅ 完成 |
-| **总计** | **77** | **~1.2MB** | **✅ 100%** |
+| **总计** | **78** | **~1.25MB** | **✅ 100% | 新增: AEC 异步执行模型
 
 ---
 
@@ -58,10 +58,10 @@
 - **03-business-patterns/**: 金融实时风控
 - **00-INDEX.md**: 知识结构总索引
 
-### Flink/ 专项体系 (16篇)
+### Flink/ 专项体系 (17篇)
 
 - **01-architecture/**: 1.x vs 2.0 对比、分离状态分析、DataStream V2、部署架构
-- **02-core-mechanisms/**: Checkpoint 深度剖析、Exactly-Once、时间语义、背压
+- **02-core-mechanisms/**: Checkpoint 深度剖析、Exactly-Once、时间语义、背压、异步执行模型 (AEC)
 - **03-sql-table-api/**: 查询优化、SQL vs DataStream 对比
 - **04-connectors/**: Kafka 集成模式
 - **05-vs-competitors/**: vs Spark Streaming
@@ -69,6 +69,7 @@
 - **07-case-studies/**: 实时分析平台案例
 - **08-roadmap/**: 2026 Q2 任务
 - **09-language-foundations/**: Scala API 社区支持、语言基础
+- **10-deployment/**: Flink on Kubernetes 云原生部署指南
 - **00-INDEX.md**: Flink 文档总索引
 
 ---
