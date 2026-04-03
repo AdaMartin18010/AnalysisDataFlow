@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.7 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.8 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -316,6 +316,10 @@
 | Thm-F-03-70 | Broadcast Join可行性条件定理 | Flink/03-sql-table-api | L3 | ✅ |
 | Thm-F-03-71 | State TTL与结果正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
 | Thm-F-03-72 | JSON聚合函数内存上界定理 | Flink/03-sql-table-api | L2 | ✅ |
+| **Flink AI Agents (FLIP-531)** | | | | |
+| Thm-F-12-90 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-91 | A2A消息可靠性定理 | Flink/12-ai-ml | L3 | ✅ |
+| Thm-F-12-92 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | ✅ |
 
 ### 2.11.2 Flink工程实践扩展定理 (Flink/06-engineering)
 
@@ -482,6 +486,14 @@
 | Thm-K-06-145 | 流式上下文一致性定理 | Knowledge/06-frontier | L3 | ✅ |
 | Thm-K-06-146 | Tool调用安全性定理 | Knowledge/06-frontier | L3 | ✅ |
 | Thm-K-06-147 | 流式更新完整性定理 | Knowledge/06-frontier | L4 | ✅ |
+| **实时图流处理TGN** | | | | |
+| Thm-K-06-150 | 增量计算正确性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-151 | StreamTGN延迟上界定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-152 | 时序因果一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| **多模态流处理架构** | | | | |
+| Thm-K-06-155 | 多模态同步正确性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-156 | 延迟栈压缩效果定理 | Knowledge/06-frontier | L2 | ✅ |
+| Thm-K-06-157 | Barge-in响应性定理 | Knowledge/06-frontier | L2 | ✅ |
 
 ---
 
@@ -766,6 +778,12 @@
 | Def-F-03-93 | State Hint语义 | Flink/03-sql-table-api | STATE_TTL |
 | Def-F-03-94 | JSON函数族 | Flink/03-sql-table-api | JSON_PATH/AGG |
 | Def-F-03-95 | 执行计划定义 | Flink/03-sql-table-api | Physical Plan |
+| **Flink 2.3/2.4路线图** | | | |
+| Def-F-08-40 | Flink 2.3 Release Scope | Flink/08-roadmap | 发布范围 |
+| Def-F-08-41 | FLIP-531 Flink AI Agents | Flink/08-roadmap | Agent FLIP |
+| Def-F-08-42 | Security SSL Enhancement | Flink/08-roadmap | SSL增强 |
+| Def-F-08-43 | Kafka 2PC Integration | Flink/08-roadmap | 2PC集成 |
+| Def-F-08-44 | Flink 2.4 Preview | Flink/08-roadmap | 2.4预览 |
 
 ### 3.6.2 Flink工程实践扩展定义 (Flink/06-engineering)
 
