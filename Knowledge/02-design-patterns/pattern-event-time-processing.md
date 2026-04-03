@@ -27,7 +27,13 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用场景](#41-推荐使用场景)
     - [4.2 不推荐使用场景](#42-不推荐使用场景)
-  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
+    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
+    - [5.2 满足的形式化性质](#52-满足的形式化性质)
+    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
+    - [5.4 边界条件与约束](#54-边界条件与约束)
+    - [5.5 工程实现与理论的对应](#55-工程实现与理论的对应)
+  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
   - [6. 引用参考 (References)](#6-引用参考-references)
 
 ---
@@ -601,7 +607,60 @@ Source B wm=10 ──┘ (空闲)
 
 ---
 
-## 5. 相关模式 (Related Patterns)
+## 5. 形式化保证 (Formal Guarantees)
+
+本节建立 Event Time Processing 模式与 Struct/ 理论层的形式化连接，明确该模式依赖的定理、定义及其提供的语义保证。
+
+### 5.1 依赖的形式化定义
+
+| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
+|----------|------|------|-----------------|
+| **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 定义 Watermark 为单调不减的进度指示器 ω(t) ≤ t，是本模式的核心抽象 |
+| **Def-S-09-02** | Watermark 进度语义 | Struct/02.03 | 形式化 Watermark 的推进规则与迟到数据判定条件 |
+| **Def-S-07-01** | 确定性流计算系统 | Struct/02.01 | 事件时间是实现确定性处理的六元组组成部分 |
+| **Def-S-08-04** | Exactly-Once 语义 | Struct/02.02 | 迟到数据处理不破坏端到端一致性 |
+
+### 5.2 满足的形式化性质
+
+| 定理/引理编号 | 名称 | 来源 | 保证内容 |
+|---------------|------|------|----------|
+| **Thm-S-09-01** | Watermark 单调性定理 | Struct/02.03 | 保证窗口触发时刻的唯一性，防止同一窗口重复触发 |
+| **Lemma-S-04-02** | Watermark 单调性引理 | Struct/01.04 | Watermark 在 Dataflow 图中传播保持单调不减 |
+| **Thm-S-07-01** | 流计算确定性定理 | Struct/02.01 | 纯函数 + FIFO + 事件时间 → 确定性输出 |
+| **Prop-S-08-01** | 端到端 Exactly-Once 分解 | Struct/02.02 | Source ∧ Checkpoint ∧ Sink 三要素合取 |
+
+### 5.3 模式组合时的性质保持
+
+**Event Time + Windowed Aggregation 组合**：
+
+- Watermark 单调性（Thm-S-09-01）保证窗口触发的幂等性
+- 允许延迟（Allowed Lateness）机制引入的修正输出仍保持 Exactly-Once 语义
+
+**Event Time + Checkpoint 组合**：
+
+- Checkpoint 持久化 Watermark 状态，保证故障恢复后的单调性延续
+- 恢复后的 Watermark 从 checkpointed 值继续推进，满足 Lemma-S-04-02
+
+### 5.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| 乱序边界 L ≥ D_actual | Watermark 延迟参数必须大于等于实际乱序程度 | 数据丢失或结果不完整 |
+| 单调性保持 | ∀t₁ ≤ t₂: w(t₁) ≤ w(t₂) | 窗口重复触发，结果错误 |
+| 空闲源处理 | withIdleness(T) 配置 | 停滞 Watermark 阻塞全局进度 |
+
+### 5.5 工程实现与理论的对应
+
+| 理论概念 | Flink API | 形式化基础 |
+|----------|-----------|-----------|
+| Watermark 生成 | `WatermarkStrategy.forBoundedOutOfOrderness()` | Def-S-04-04 |
+| 迟到数据处理 | `.allowedLateness()` + `.sideOutputLateData()` | Def-S-09-02 |
+| 空闲源处理 | `.withIdleness()` | Thm-S-09-01 扩展 |
+| 事件时间提取 | `SerializableTimestampAssigner` | Def-S-07-01 |
+
+---
+
+## 6. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|

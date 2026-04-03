@@ -29,7 +29,13 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用场景](#41-推荐使用场景)
     - [4.2 不推荐场景](#42-不推荐场景)
-  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
+    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
+    - [5.2 满足的形式化性质](#52-满足的形式化性质)
+    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
+    - [5.4 边界条件与约束](#54-边界条件与约束)
+    - [5.5 CEP 形式化语义](#55-cep-形式化语义)
+  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
   - [6. 引用参考 (References)](#6-引用参考-references)
 
 ---
@@ -848,7 +854,73 @@ Pattern<Event, ?> efficient = Pattern
 
 ---
 
-## 5. 相关模式 (Related Patterns)
+## 5. 形式化保证 (Formal Guarantees)
+
+本节建立 CEP 复杂事件处理模式与 Struct/ 理论层的形式化连接。
+
+### 5.1 依赖的形式化定义
+
+| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
+|----------|------|------|-----------------|
+| **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 定义 CEP 时间窗口的进度边界 |
+| **Def-S-08-04** | Exactly-Once 语义 | Struct/02.02 | 复杂事件输出因果影响计数 = 1 |
+| **Def-S-10-01** | 安全性 (Safety) | Struct/02.04 | 模式匹配不会产生假阳性 (可通过有限执行验证) |
+| **Def-S-10-02** | 活性 (Liveness) | Struct/02.04 | 有效模式最终会被检测到 (在公平性假设下) |
+
+### 5.2 满足的形式化性质
+
+| 定理/引理编号 | 名称 | 来源 | 保证内容 |
+|---------------|------|------|----------|
+| **Thm-S-09-01** | Watermark 单调性定理 | Struct/02.03 | CEP 时间窗口不会重复触发 |
+| **Lemma-S-04-02** | Watermark 单调性引理 | Struct/01.04 | NFA 状态机的事件时间推进保持单调 |
+| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | Keyed CEP 状态更新串行化，保证局部确定性 |
+| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | CEP NFA 状态快照的一致性保证 |
+
+### 5.3 模式组合时的性质保持
+
+**CEP + Event Time 组合**：
+
+- Watermark 单调性保证模式匹配的时间边界确定
+- 迟到数据通过侧输出隔离，不影响已匹配结果
+
+**CEP + Stateful Computation 组合**：
+
+- NFA 状态使用 Keyed State 实现，满足 Thm-S-03-01 的局部确定性
+- Checkpoint 机制保证 NFA 状态恢复的一致性
+
+**CEP + Windowed Aggregation 组合**：
+
+- 窗口聚合结果可作为 CEP 的原子事件输入
+- 窗口触发事件时间戳作为 CEP 的时序基准
+
+### 5.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| 模式窗口有界 | within(Δ), Δ < ∞ | 无限窗口导致状态膨胀 |
+| NFA 状态有限 | 活跃匹配数 ≤ C_max | 状态爆炸，内存耗尽 |
+| 事件时间有序 | t_e(e_i) ≤ t_e(e_{i+1}) + δ | 严重乱序导致模式漏检 |
+| Key 分区一致性 | hash(k) mod parallelism 固定 | Key 漂移导致状态丢失 |
+
+### 5.5 CEP 形式化语义
+
+CEP 模式匹配可形式化为**时序正则表达式**的求值问题：
+
+$$
+\mathcal{L}(\mathcal{P}) = \{ \sigma \in \text{Stream}(E) \mid \sigma \models \mathcal{P} \}
+$$
+
+其中 $\mathcal{P}$ 为模式，$\sigma$ 为事件序列，$\models$ 为满足关系。
+
+**NFA 编码保持性**：
+
+- 模式 $\mathcal{P}$ 编译为 NFA $N_{\mathcal{P}}$
+- $N_{\mathcal{P}}$ 接受的语言等于 $\mathcal{L}(\mathcal{P})$
+- Checkpoint 捕获 NFA 状态，保证恢复后语言等价
+
+---
+
+## 6. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|

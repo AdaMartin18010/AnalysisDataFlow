@@ -9,7 +9,7 @@
 ```
 总体进度: [████████████████████] 100%
 ├── Struct/:   [████████████████████] 100% (42/42 完成)
-├── Knowledge/: [████████████████████] 100% (25/25 完成)
+├── Knowledge/: [████████████████████] 100% (26/26 完成)
 ├── Flink/:    [████████████████████] 100% (62/62 完成)
 └── 基础设施:   [████████████████████] 100% (完成)
 ```
@@ -21,10 +21,11 @@
 | 目录 | 文档数 | 大小 | 状态 |
 |------|--------|------|------|
 | Struct/ | 42 | ~850KB | ✅ 完成 |
-| Knowledge/ | 66 | ~1.7MB | ✅ 完成 |
+| Knowledge/ | 78 | ~2.1MB | ✅ 完成 |
 | Flink/ | 130 | ~3.5MB | ✅ 完成 |
+| **总计** | **250** | **~6.45MB** | **✅ 100%** |
 | 项目级文档 | 4 | ~60KB | ✅ 完成 |
-| **总计** | **238** | **~5.98MB** | **✅ 100%** |
+
 
 **形式化指标** (v2.8):
 
@@ -91,7 +92,7 @@
 - **07-tools/**: TLA+验证
 - **08-standards/**: 流式SQL标准
 
-### Knowledge/ 知识结构 (37篇)
+### Knowledge/ 知识结构 (78篇)
 
 - **01-concept-atlas/**: 概念图谱
 - **02-design-patterns/**: 事件时间、日志分析
@@ -99,6 +100,17 @@
 - **05-mapping-guides/**: 形式化到实现映射
 - **06-frontier/**: 流数据库、访问控制、SLO、✅Streaming Lakehouse、✅实时RAG、✅Rust生态、✅RisingWave深度分析、✅GPU TEE、✅Edge Streaming、✅流数据库生态对比、✅边缘流处理架构、✅实时数据网格、✅流式物化视图、✅特征平台、✅MCP协议、✅图流处理TGN、✅多模态流处理
 - **08-standards/**: 流数据治理与质量管理
+- **09-anti-patterns/**: **流处理反模式专题** ⭐新增 (10个反模式 + 检测清单)
+  - AP-01: 全局状态滥用
+  - AP-02: Watermark 设置不当
+  - AP-03: Checkpoint 间隔不合理
+  - AP-04: 热点 Key 未处理
+  - AP-05: ProcessFunction 中阻塞 I/O
+  - AP-06: 序列化开销忽视
+  - AP-07: 窗口函数状态爆炸
+  - AP-08: 忽略背压信号
+  - AP-09: 多流 Join 时间未对齐
+  - AP-10: 资源估算不足导致 OOM
 
 ### Flink/ 专项体系 (68篇)
 
@@ -159,6 +171,7 @@
 | **Streaming ETL Tools Landscape 2026** | ✅ 完成 | 2026年Streaming ETL工具全景对比，含详细选型框架 | Knowledge/05-mapping-guides/ |
 | **Streaming Security & Compliance** | ✅ 完成 | 流处理安全架构与合规实践完整指南，含GDPR/SOC2/PCI-DSS映射 | Knowledge/06-frontier/ |
 | **All Index Updates** | ✅ 完成 | 所有目录INDEX更新，交叉引用完整性验证 | 全部目录 |
+| **Serverless Streaming Cost Optimization** | ✅ 完成 | Serverless流处理成本优化完整指南，含TCO模型与决策树 | Knowledge/06-frontier/ |
 
 ---
 

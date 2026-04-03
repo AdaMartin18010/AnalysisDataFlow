@@ -28,7 +28,13 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用](#41-推荐使用)
     - [4.2 不推荐](#42-不推荐)
-  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
+    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
+    - [5.2 满足的形式化性质](#52-满足的形式化性质)
+    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
+    - [5.4 边界条件与约束](#54-边界条件与约束)
+    - [5.5 状态后端的形式化特性](#55-状态后端的形式化特性)
+  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
   - [6. 引用参考 (References)](#6-引用参考-references)
 
 ---
@@ -303,7 +309,65 @@ val future = client.getKvState(
 
 ---
 
-## 5. 相关模式 (Related Patterns)
+## 5. 形式化保证 (Formal Guarantees)
+
+本节建立有状态计算模式与 Struct/ 理论层的形式化连接。
+
+### 5.1 依赖的形式化定义
+
+| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
+|----------|------|------|-----------------|
+| **Def-S-03-01** | 经典 Actor 四元组 | Struct/01.03 | Keyed State 的并发模型基础：⟨α, b, m, σ⟩ |
+| **Def-S-04-01** | Dataflow 图 (DAG) | Struct/01.04 | 状态算子作为带状态顶点 ⟨V, E, P, Σ, 𝕋⟩ |
+| **Def-S-17-02** | 一致全局状态 | Struct/04.01 | Checkpoint 捕获的状态必须构成一致割集 |
+| **Def-S-18-05** | 幂等性 | Struct/04.02 | 状态更新重放需满足幂等性 |
+
+### 5.2 满足的形式化性质
+
+| 定理/引理编号 | 名称 | 来源 | 保证内容 |
+|---------------|------|------|----------|
+| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | 单 Key 状态更新串行化，保证局部确定性 |
+| **Lemma-S-03-01** | Actor 邮箱串行处理引理 | Struct/01.03 | 同一 Key 的消息按 FIFO 处理 |
+| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | 状态快照构成一致全局状态 |
+| **Thm-S-18-01** | Exactly-Once 正确性定理 | Struct/04.02 | 状态恢复 + Source 重放 = Exactly-Once |
+| **Lemma-S-18-03** | 状态恢复一致性引理 | Struct/04.02 | 恢复后状态与故障前某时刻一致 |
+
+### 5.3 模式组合时的性质保持
+
+**Stateful Computation + Event Time 组合**：
+
+- 状态访问可结合事件时间戳实现时间窗口状态
+- Watermark 驱动状态过期清理（TTL）
+
+**Stateful Computation + Checkpoint 组合**：
+
+- 状态后端实现 Thm-S-17-01 的快照要求
+- 增量 Checkpoint 优化不改变一致性保证
+
+**Stateful Computation + Windowed Aggregation 组合**：
+
+- 窗口状态使用 Keyed State 实现
+- 窗口触发器状态与计算状态分离存储
+
+### 5.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| Key 分区固定 | hash(k) mod parallelism 不变 | Key 漂移，状态丢失 |
+| 状态大小有限 | |S| < ∞ | OOM，作业崩溃 |
+| TTL 配置合理 | TTL < Checkpoint 间隔 × N | 状态膨胀，恢复时间增长 |
+| 并发访问隔离 | 单 Key 单线程访问 | 数据竞争，状态损坏 |
+
+### 5.5 状态后端的形式化特性
+
+| 后端类型 | 存储模型 | 一致性保证 | 适用场景 |
+|----------|----------|-----------|----------|
+| HashMapStateBackend | 内存 KV | Thm-S-17-01 | 小状态 (<100MB) |
+| RocksDBStateBackend | LSM-Tree | Thm-S-17-01 | 大状态 (TB级) |
+
+---
+
+## 6. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|

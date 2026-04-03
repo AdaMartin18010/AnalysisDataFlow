@@ -494,6 +494,10 @@
 | Thm-K-06-155 | 多模态同步正确性定理 | Knowledge/06-frontier | L3 | ✅ |
 | Thm-K-06-156 | 延迟栈压缩效果定理 | Knowledge/06-frontier | L2 | ✅ |
 | Thm-K-06-157 | Barge-in响应性定理 | Knowledge/06-frontier | L2 | ✅ |
+| **Serverless流处理成本优化** | | | | |
+| Thm-K-06-160 | Serverless TCO最优性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-161 | 混合架构成本平衡点定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-162 | 成本优化决策完备性定理 | Knowledge/06-frontier | L3 | ✅ |
 
 ---
 
@@ -1043,6 +1047,13 @@
 | Def-K-06-173 | 计算-存储分离 | Knowledge/06-frontier | 架构模式 |
 | Def-K-06-174 | 级联物化视图 | Knowledge/06-frontier | Cascading MV |
 | Def-K-06-175 | 流式一致性模型 | Knowledge/06-frontier | Consistency模型 |
+| **Serverless流处理成本优化** | | | |
+| Def-K-06-180 | Serverless流处理TCO模型 | Knowledge/06-frontier | 八元组成本模型 |
+| Def-K-06-181 | 批处理vs实时成本函数 | Knowledge/06-frontier | 窗口优化成本模型 |
+| Def-K-06-182 | 冷启动成本因子 | Knowledge/06-frontier | 冷启动成本量化 |
+| Def-K-06-183 | 状态外置成本模型 | Knowledge/06-frontier | Externalized State成本 |
+| Def-K-06-184 | 预留并发成本函数 | Knowledge/06-frontier | Provisioned Concurrency成本 |
+| Def-K-06-185 | Spot实例成本优化模型 | Knowledge/06-frontier | Spot/Preemptible成本模型 |
 
 ---
 
@@ -1329,6 +1340,10 @@
 | Lemma-K-06-117 | 存储空间优化引理 | Knowledge/06-frontier | Thm-K-06-117基础 |
 | Lemma-K-06-125 | 边缘延迟优势引理 | Knowledge/06-frontier | Thm-K-06-125基础 |
 | Lemma-K-06-201 | 实时数据网格去中心化优势引理 | Knowledge/06-frontier | Thm-K-06-130基础 |
+| **Serverless流处理成本优化** | | | |
+| Lemma-K-06-130 | Serverless成本边界引理 | Knowledge/06-frontier | 成本上下界分析 |
+| Lemma-K-06-131 | 冷启动频率成本影响 | Knowledge/06-frontier | 冷启动成本量化 |
+| Lemma-K-06-132 | 批处理窗口成本效益 | Knowledge/06-frontier | 窗口优化分析 |
 
 ---
 
@@ -1397,6 +1412,10 @@
 | Prop-K-06-63 | Serverless成本-性能权衡 | Knowledge/06-frontier | 成本模型分析 |
 | Prop-K-06-95 | 自动扩缩容响应时间边界 | Knowledge/06-frontier | 弹性延迟分析 |
 | Prop-K-06-96 | 混合架构最优配置 | Knowledge/06-frontier | 资源配置优化 |
+| **Serverless流处理成本优化** | | | |
+| Prop-K-06-100 | 成本最优部署形态 | Knowledge/06-frontier | 部署形态决策 |
+| Prop-K-06-101 | 状态外置成本临界点 | Knowledge/06-frontier | 状态外置盈亏分析 |
+| Prop-K-06-102 | 自动扩缩容成本稳定性 | Knowledge/06-frontier | 成本波动分析 |
 | **边缘流处理架构** | | | |
 | Prop-K-06-126 | 数据本地化收益 | Knowledge/06-frontier | 带宽优化分析 |
 | Prop-K-06-127 | 边缘AI推理延迟边界 | Knowledge/06-frontier | 实时性保证 |
@@ -1522,12 +1541,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 33 | 96 | **153** |
-| **定义** | 56 | 69 | 210 | **335** |
-| **引理** | 33 | 34 | 77 | **144** |
-| **命题** | 19 | 21 | 63 | **103** |
+| **定理** | 24 | 36 | 96 | **156** |
+| **定义** | 56 | 75 | 210 | **341** |
+| **引理** | 33 | 37 | 77 | **147** |
+| **命题** | 19 | 24 | 63 | **106** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 136 | 158 | 447 | **741** |
+| **合计** | 136 | 173 | 447 | **756** |
 
 ### 7.2 按文档统计
 
@@ -1594,6 +1613,8 @@
 | Flink (10) K8s自动扩缩容 | 3 | 6 | 3 | 0 | 0 |
 | Flink (15) 指标监控SLO | 3 | 6 | 3 | 0 | 0 |
 | Knowledge (06) 流式物化视图 | 3 | 6 | 3 | 0 | 0 |
+| **v2.6 新增文档** | | | | | |
+| Knowledge (06) Serverless成本优化 | 3 | 6 | 3 | 3 | 0 |
 
 ### 7.3 形式化等级分布
 
