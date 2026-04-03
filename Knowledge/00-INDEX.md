@@ -811,7 +811,9 @@ Knowledge/
 │   ├── streaming-slo-definition.md                [流SLO定义] ✅
 │   ├── real-time-rag-architecture.md              [实时RAG架构] ✅
 │   ├── vector-search-streaming-convergence.md     [向量搜索与流处理融合] ✅
-│   └── web3-blockchain-streaming-architecture.md  [Web3区块链流处理架构 🆕] ✅
+│   ├── web3-blockchain-streaming-architecture.md  [Web3区块链流处理架构 🆕] ✅
+│   ├── realtime-data-product-architecture.md      [实时数据产品架构 🆕] ✅
+│   └── ai-agent-streaming-architecture.md         [AI Agent流式处理架构 🆕] ✅
 ├── 08-standards/
 │   └── streaming-data-governance.md               [流数据治理 🆕] ✅
 └── 98-exercises/
@@ -833,10 +835,10 @@ Knowledge/
 | 03-business-patterns | 11 | 0 | 11 | L4 |
 | 04-technology-selection | 4 | 0 | 4 | L3 |
 | 05-mapping-guides | 2 | 0 | 2 | L4-L5 |
-| 06-frontier | 14 | 0 | 14 | L4-L5 |
+| 06-frontier | 16 | 0 | 16 | L4-L5 |
 | 98-exercises | 7 | 0 | 7 | L3-L4 |
 | 08-standards | 1 | 0 | 1 | L4 |
-| **总计** | **49** | **0** | **49** | L3-L5 |
+| **总计** | **51** | **0** | **51** | L3-L5 |
 
 ### 9.3 核心定义索引
 
