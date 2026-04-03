@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 70+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04-v2.3 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 74+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -369,6 +369,7 @@ flowchart TD
 | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 | [multi-way-join-optimization.md](02-core-mechanisms/multi-way-join-optimization.md) | 多路Join优化 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
 | [flink-state-ttl-best-practices.md](02-core-mechanisms/flink-state-ttl-best-practices.md) | State TTL最佳实践 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [exactly-once-semantics-deep-dive.md](02-core-mechanisms/exactly-once-semantics-deep-dive.md) | Exactly-Once语义深度解析 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
 
 ### 6.3 03-sql-table-api/ SQL与表API层
 
@@ -411,6 +412,7 @@ flowchart TD
 | [state-backend-selection.md](06-engineering/state-backend-selection.md) | 状态后端 | [forst-state-backend.md](02-core-mechanisms/forst-state-backend.md) |
 | [flink-dbt-integration.md](06-engineering/flink-dbt-integration.md) | Flink与dbt集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [stream-processing-testing-strategies.md](06-engineering/stream-processing-testing-strategies.md) | 流处理测试策略 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [stream-processing-cost-optimization.md](06-engineering/stream-processing-cost-optimization.md) | 流处理云成本优化 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 
 ### 6.7 07-case-studies/ 案例研究层
 
@@ -470,6 +472,8 @@ flowchart TD
 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) | 向量数据库 | [vector-search.md](03-sql-table-api/vector-search.md) |
 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) | RAG架构 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
 | [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) | 实时特征工程 | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
+| [flink-realtime-ml-inference.md](12-ai-ml/flink-realtime-ml-inference.md) | 实时ML推理 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
+| [flink-llm-integration.md](12-ai-ml/flink-llm-integration.md) | Flink与LLM集成 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
 
 ### 6.13 13-security/ 安全与可信计算层
 

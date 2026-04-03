@@ -12,9 +12,9 @@
 
 | 目录 | 定位 | 内容特征 | 文档数量 |
 |------|------|----------|----------|
-| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 39文档, 85定理, 175定义 |
-| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 24文档, 8设计模式, 7业务场景 |
-| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 68文档, 核心机制全覆盖, Streaming Lakehouse架构 |
+| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 42文档, 85定理, 175定义 |
+| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 53文档, 8设计模式, 7业务场景 |
+| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 120文档, 核心机制全覆盖, Streaming Lakehouse架构 |
 
 ## 快速导航
 
@@ -25,12 +25,12 @@
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
 - **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)
 
-### 最新更新 (2026-04-03)
+### 最新更新 (2026-04-03 v2.3)
 
-- **Flink 2.2 前沿特性**: [Delta Join V2](Flink/02-core-mechanisms/flink-2.2-frontier-features.md)、VECTOR_SEARCH、Python Async API
-- **Timely Dataflow 优化分析**: [100x 性能提升深度解析](Flink/09-language-foundations/07.01-timely-dataflow-optimization.md)
-- **向量搜索融合**: [AI-Native数据库演进](Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **WASI 0.3 前瞻**: [原生异步支持预览](Flink/13-wasm/wasi-0.3-async-preview.md)
+- **Flink实时ML推理**: [模型服务与特征工程](Flink/12-ai-ml/flink-realtime-ml-inference.md) - TensorFlow Serving、KServe、Feast集成
+- **Flink与LLM集成**: [生成式AI流式应用](Flink/12-ai-ml/flink-llm-integration.md) - OpenAI API、RAG、Model DDL
+- **流处理Data Mesh**: [实时数据产品架构](Knowledge/06-frontier/streaming-data-mesh-architecture.md) - 域所有权、数据契约、联邦治理
+- **Serverless流处理**: [云原生事件驱动架构](Knowledge/06-frontier/serverless-streaming-architecture.md) - Lambda、自动扩缩容、成本优化
 
 ## 项目结构
 
