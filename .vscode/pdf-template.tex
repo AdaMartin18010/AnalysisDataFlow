@@ -1,0 +1,454 @@
+% =============================================================================
+% AnalysisDataFlow PDF 导出 LaTeX 模板
+% AnalysisDataFlow PDF Export LaTeX Template
+% 
+% 基于 Pandoc 的默认 LaTeX 模板定制
+% Customized based on Pandoc's default LaTeX template
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+% 文档类设置
+% -----------------------------------------------------------------------------
+\documentclass[
+    11pt,
+    a4paper
+]{scrartcl}
+
+% -----------------------------------------------------------------------------
+% 基础包
+% -----------------------------------------------------------------------------
+\usepackage[UTF8]{ctex}                    % 中文支持
+\usepackage{lmodern}                       % Latin Modern 字体
+\usepackage{amsmath,amssymb,amsthm}        % 数学公式
+\usepackage{graphicx}                      % 图片支持
+\usepackage{xcolor}                        % 颜色支持
+\usepackage{fancyvrb}                      % 代码块
+\usepackage{fancyhdr}                      % 页眉页脚
+\usepackage{geometry}                      % 页面几何
+\usepackage{hyperref}                      % 超链接
+\usepackage{booktabs}                      % 表格
+\usepackage{longtable}                     % 长表格
+\usepackage{multirow}                      % 多行单元格
+\usepackage{array}                         % 表格增强
+\usepackage{float}                         % 浮动体控制
+\usepackage{caption}                       % 标题样式
+\usepackage{subcaption}                    % 子标题
+\usepackage{enumitem}                      % 列表样式
+\usepackage{tcolorbox}                     % 彩色盒子
+\usepackage{mdframed}                      % 框架盒子
+\usepackage{tikz}                          % 绘图
+\usepackage{titlesec}                      % 标题样式
+\usepackage{tocloft}                       % 目录样式
+\usepackage{listings}                      % 代码高亮
+\usepackage{fontspec}                      % 字体设置
+\usepackage{microtype}                     % 微排版
+\usepackage{setspace}                      % 行间距
+
+% -----------------------------------------------------------------------------
+% 页面设置
+% -----------------------------------------------------------------------------
+\geometry{
+    top=25mm,
+    bottom=25mm,
+    left=30mm,
+    right=25mm,
+    headheight=14pt
+}
+
+% -----------------------------------------------------------------------------
+% 字体设置
+% -----------------------------------------------------------------------------
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}[Scale=0.9]
+
+% 中文字体设置
+\setCJKmainfont{Source Han Serif SC}[
+    BoldFont=Source Han Serif SC Bold,
+    ItalicFont=Source Han Serif SC Light
+]
+\setCJKsansfont{Source Han Sans SC}[
+    BoldFont=Source Han Sans SC Bold
+]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+
+% -----------------------------------------------------------------------------
+% 颜色定义
+% -----------------------------------------------------------------------------
+\definecolor{ADFPrimary}{HTML}{1565C0}      % 主色 - 深蓝
+\definecolor{ADFSecondary}{HTML}{2E7D32}    % 次色 - 深绿
+\definecolor{ADFAccent}{HTML}{E65100}       % 强调色 - 橙
+\definecolor{ADFGray}{HTML}{616161}         % 灰色
+\definecolor{ADFLightGray}{HTML}{F5F5F5}    % 浅灰
+\definecolor{ADFCodeBG}{HTML}{F5F5F5}       % 代码背景
+\definecolor{ADFBorder}{HTML}{E0E0E0}       % 边框色
+
+% 定理框颜色
+\definecolor{ThmBg}{HTML}{E8F4FD}
+\definecolor{ThmBorder}{HTML}{2196F3}
+\definecolor{ThmTitle}{HTML}{1976D2}
+
+\definecolor{DefBg}{HTML}{E8F5E9}
+\definecolor{DefBorder}{HTML}{4CAF50}
+\definecolor{DefTitle}{HTML}{388E3C}
+
+\definecolor{LemmaBg}{HTML}{FFF3E0}
+\definecolor{LemmaBorder}{HTML}{FF9800}
+\definecolor{LemmaTitle}{HTML}{F57C00}
+
+\definecolor{PropBg}{HTML}{F3E5F5}
+\definecolor{PropBorder}{HTML}{9C27B0}
+\definecolor{PropTitle}{HTML}{7B1FA2}
+
+\definecolor{CorBg}{HTML}{E0F2F1}
+\definecolor{CorBorder}{HTML}{009688}
+\definecolor{CorTitle}{HTML}{00796B}
+
+% -----------------------------------------------------------------------------
+% 超链接设置
+% -----------------------------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=ADFPrimary,
+    filecolor=ADFSecondary,
+    urlcolor=ADFSecondary,
+    citecolor=ADFPrimary,
+    bookmarks=true,
+    bookmarksopen=true,
+    bookmarksnumbered=true,
+    pdfencoding=auto,
+    psdextra
+}
+
+% -----------------------------------------------------------------------------
+% 页眉页脚设置
+% -----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ADFGray}{AnalysisDataFlow}}
+\fancyhead[R]{\small\textcolor{ADFGray}{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% -----------------------------------------------------------------------------
+% 标题样式设置
+% -----------------------------------------------------------------------------
+\titleformat{\section}
+    {\normalfont\Large\bfseries\color{ADFPrimary}}
+    {\thesection}{1em}{}
+\titleformat{\subsection}
+    {\normalfont\large\bfseries\color{ADFPrimary}}
+    {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+    {\normalfont\normalsize\bfseries\color{ADFGray}}
+    {\thesubsubsection}{1em}{}
+
+% -----------------------------------------------------------------------------
+% 行间距设置
+% -----------------------------------------------------------------------------
+\setstretch{1.3}
+
+% -----------------------------------------------------------------------------
+% 列表样式设置
+% -----------------------------------------------------------------------------
+\setlist[itemize]{
+    leftmargin=2em,
+    itemsep=0.3em,
+    parsep=0.2em
+}
+\setlist[enumerate]{
+    leftmargin=2em,
+    itemsep=0.3em,
+    parsep=0.2em
+}
+
+% -----------------------------------------------------------------------------
+% 代码块设置 (使用 listings)
+% -----------------------------------------------------------------------------
+\lstset{
+    backgroundcolor=\color{ADFCodeBG},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{ADFSecondary},
+    escapeinside={(*@}{@*)},
+    extendedchars=true,
+    frame=single,
+    rulecolor=\color{ADFBorder},
+    keepspaces=true,
+    keywordstyle=\color{ADFPrimary}\bfseries,
+    numbers=left,
+    numbersep=10pt,
+    numberstyle=\tiny\color{ADFGray},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stringstyle=\color{ADFAccent},
+    tabsize=2,
+    xleftmargin=15pt,
+    xrightmargin=5pt,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+
+% 代码语言定义
+\lstdefinelanguage{yaml}{
+    keywords={true,false,null,y,n},
+    keywordstyle=\color{ADFPrimary}\bfseries,
+    basicstyle=\ttfamily\small,
+    sensitive=false,
+    comment=[l]{\#},
+    commentstyle=\color{ADFSecondary}\ttfamily,
+    stringstyle=\color{ADFAccent}\ttfamily,
+    moredelim=[l]{:},
+    morestring=[b]',
+    morestring=[b]"
+}
+
+% -----------------------------------------------------------------------------
+% 定理/定义/引理/命题/推论 环境设置
+% -----------------------------------------------------------------------------
+\usepackage[most]{tcolorbox}
+
+% 定理环境
+\newtcolorbox{theorembox}[1][]{
+    enhanced,
+    colback=ThmBg,
+    colframe=ThmBorder,
+    coltitle=ThmTitle,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+% 定义环境
+\newtcolorbox{definitionbox}[1][]{
+    enhanced,
+    colback=DefBg,
+    colframe=DefBorder,
+    coltitle=DefTitle,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+% 引理环境
+\newtcolorbox{lemmabox}[1][]{
+    enhanced,
+    colback=LemmaBg,
+    colframe=LemmaBorder,
+    coltitle=LemmaTitle,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+% 命题环境
+\newtcolorbox{propositionbox}[1][]{
+    enhanced,
+    colback=PropBg,
+    colframe=PropBorder,
+    coltitle=PropTitle,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+% 推论环境
+\newtcolorbox{corollarybox}[1][]{
+    enhanced,
+    colback=CorBg,
+    colframe=CorBorder,
+    coltitle=CorTitle,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+% 注意框环境
+\newtcolorbox{notebox}[1][注意 Note]{
+    enhanced,
+    colback=ADFLightGray,
+    colframe=ADFGray,
+    coltitle=white,
+    boxrule=0pt,
+    leftrule=4pt,
+    arc=0pt,
+    outer arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    fonttitle=\bfseries\color{white},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={colback=ADFGray, arc=2pt},
+    title=#1
+}
+
+% -----------------------------------------------------------------------------
+% 表格样式设置
+% -----------------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% 表头样式
+\newcommand{\thead}[1]{\textbf{#1}}
+
+% -----------------------------------------------------------------------------
+% 目录样式设置
+% -----------------------------------------------------------------------------
+\renewcommand{\cftsecfont}{\bfseries\color{ADFPrimary}}
+\renewcommand{\cftsubsecfont}{\color{ADFGray}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{ADFPrimary}}
+\renewcommand{\cftsubsecpagefont}{\color{ADFGray}}
+\setlength{\cftbeforesecskip}{6pt}
+\setlength{\cftbeforesubsecskip}{3pt}
+
+% -----------------------------------------------------------------------------
+% 封面页定义
+% -----------------------------------------------------------------------------
+\newcommand{\makeadfcover}[6]{%
+    \begin{titlepage}
+        \begin{tikzpicture}[remember picture,overlay]
+            % 背景渐变
+            \fill[ADFPrimary!10] (current page.south west) rectangle (current page.north east);
+            
+            % 装饰线条
+            \draw[ADFPrimary, line width=3pt] 
+                ([xshift=20mm,yshift=-30mm]current page.north west) -- 
+                ([xshift=20mm,yshift=30mm]current page.south west);
+            \draw[ADFSecondary, line width=1.5pt] 
+                ([xshift=25mm,yshift=-30mm]current page.north west) -- 
+                ([xshift=25mm,yshift=30mm]current page.south west);
+            
+            % 顶部装饰
+            \fill[ADFPrimary] ([yshift=-20mm]current page.north west) rectangle 
+                ([yshift=-25mm]current page.north east);
+        \end{tikzpicture}
+        
+        \vspace*{4cm}
+        
+        \begin{center}
+            {\fontsize{40}{48}\selectfont\bfseries\textcolor{ADFPrimary}{#1}}\\[0.8cm]
+            {\Large\textcolor{ADFGray}{#2}}\\[2cm]
+            
+            \rule{0.6\textwidth}{0.5pt}\\[1.5cm]
+            
+            {\LARGE\bfseries #3}\\[0.5cm]
+            {\large\textcolor{ADFGray}{#4}}\\[3cm]
+            
+            \begin{tikzpicture}
+                \node[draw=ADFPrimary, line width=1.5pt, rounded corners=5pt, 
+                      inner sep=15pt, fill=white] {
+                    \begin{minipage}{0.5\textwidth}
+                        \centering
+                        \large\textbf{版本 Version}\\[0.3cm]
+                        \textcolor{ADFPrimary}{\Large #5}\\[0.5cm]
+                        \large\textbf{日期 Date}\\[0.3cm]
+                        \textcolor{ADFPrimary}{\Large #6}
+                    \end{minipage}
+                };
+            \end{tikzpicture}
+            
+            \vfill
+            
+            {\small\textcolor{ADFGray}{\textit{由 PDF Export Tool 生成 | Generated by PDF Export Tool}}}
+        \end{center}
+    \end{titlepage}
+}
+
+% -----------------------------------------------------------------------------
+% 章节前封面定义
+% -----------------------------------------------------------------------------
+\newcommand{\makechaptercover}[2]{%
+    \newpage
+    \thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        \fill[ADFPrimary!5] (current page.south west) rectangle (current page.north east);
+        \draw[ADFPrimary, line width=2pt] 
+            ([xshift=15mm]current page.north west) -- 
+            ([xshift=15mm]current page.south west);
+    \end{tikzpicture}
+    
+    \vspace*{6cm}
+    
+    \begin{center}
+        {\fontsize{30}{36}\selectfont\bfseries\textcolor{ADFPrimary}{#1}}\\[1cm]
+        {\large\textcolor{ADFGray}{#2}}
+    \end{center}
+    
+    \newpage
+}
+
+% -----------------------------------------------------------------------------
+% 文档信息变量
+% -----------------------------------------------------------------------------
+\title{AnalysisDataFlow}
+\subtitle{流计算理论模型与工程实践知识库}
+\author{AnalysisDataFlow Project Team}
+\date{\today}
+
+% =============================================================================
+% 文档开始
+% =============================================================================
+\begin{document}
+
+% 封面页
+\makeadfcover
+    {AnalysisDataFlow}
+    {流计算理论模型与工程实践知识库}
+    {Unified Streaming Theory Model}
+    {and Engineering Practice Knowledge Base}
+    {v2.9}
+    {\today}
+
+% 目录
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{1}
+
+% 正文内容
+$body$
+
+\end{document}
