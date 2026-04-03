@@ -13,8 +13,8 @@
 | 目录 | 定位 | 内容特征 | 文档数量 |
 |------|------|----------|----------|
 | **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 42文档, 85定理, 175定义 |
-| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 53文档, 8设计模式, 7业务场景 |
-| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 120文档, 核心机制全覆盖, Streaming Lakehouse架构 |
+| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 54文档, 8设计模式, 7业务场景 |
+| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 124文档, 核心机制全覆盖, Streaming Lakehouse架构 |
 
 ## 快速导航
 
@@ -25,12 +25,12 @@
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
 - **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)
 
-### 最新更新 (2026-04-03 v2.3)
+### 最新更新 (2026-04-03 v2.5)
 
-- **Flink实时ML推理**: [模型服务与特征工程](Flink/12-ai-ml/flink-realtime-ml-inference.md) - TensorFlow Serving、KServe、Feast集成
-- **Flink与LLM集成**: [生成式AI流式应用](Flink/12-ai-ml/flink-llm-integration.md) - OpenAI API、RAG、Model DDL
-- **流处理Data Mesh**: [实时数据产品架构](Knowledge/06-frontier/streaming-data-mesh-architecture.md) - 域所有权、数据契约、联邦治理
-- **Serverless流处理**: [云原生事件驱动架构](Knowledge/06-frontier/serverless-streaming-architecture.md) - Lambda、自动扩缩容、成本优化
+- **Flink物化表深度指南**: [Materialized Table全面解析](Flink/03-sql-table-api/flink-materialized-table-deep-dive.md) - FRESHNESS语义、智能推断、分桶策略
+- **Flink K8s自动扩缩容**: [Kubernetes Operator自动扩缩容](Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md) - 背压检测、Vertex级别扩缩容
+- **流处理指标监控**: [SLO定义与监控最佳实践](Flink/15-observability/streaming-metrics-monitoring-slo.md) - 延迟/吞吐/Checkpoint监控
+- **流式物化视图**: [物化视图架构与实时分析](Knowledge/06-frontier/streaming-materialized-view-architecture.md) - RisingWave/Materialize对比
 
 ## 项目结构
 

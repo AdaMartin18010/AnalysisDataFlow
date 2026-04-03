@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04-v2.3 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 74+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04-v2.5 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 78+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -383,6 +383,7 @@ flowchart TD
 | [flink-python-udf.md](03-sql-table-api/flink-python-udf.md) | Python UDF | [02-python-api.md](09-language-foundations/02-python-api.md) |
 | [flink-process-table-functions.md](03-sql-table-api/flink-process-table-functions.md) | Process Table Functions | [flink-python-udf.md](03-sql-table-api/flink-python-udf.md) |
 | [flink-sql-window-functions-deep-dive.md](03-sql-table-api/flink-sql-window-functions-deep-dive.md) | SQL窗口函数深度指南 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
+| [flink-materialized-table-deep-dive.md](03-sql-table-api/flink-materialized-table-deep-dive.md) | Flink 2.2物化表深度指南 🆕 v2.5 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 
 ### 6.4 04-connectors/ 连接器层
 
@@ -454,6 +455,7 @@ flowchart TD
 |------|------|----------|
 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) | K8s部署 | [deployment-architectures.md](01-architecture/deployment-architectures.md) |
 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) | Flink Kubernetes Operator深度指南 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) |
+| [flink-kubernetes-autoscaler-deep-dive.md](10-deployment/flink-kubernetes-autoscaler-deep-dive.md) | Flink K8s自动扩缩容深度指南 🆕 v2.5 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) |
 
 ### 6.11 11-benchmarking/ 基准测试层
 

@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.3 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.7 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -309,6 +309,13 @@
 | Thm-F-03-50 | 物化表一致性定理 | Flink/03-sql-table-api | L4-L5 | ✅ |
 | Thm-F-03-51 | 物化表最优分桶定理 | Flink/03-sql-table-api | L4 | ✅ |
 | Thm-F-03-52 | 新鲜度推断完备性定理 | Flink/03-sql-table-api | L4 | ✅ |
+| Thm-F-03-60 | VECTOR_SEARCH类型安全性定理 | Flink/03-sql-table-api | L3 | ✅ |
+| Thm-F-03-61 | RAG延迟边界定理 | Flink/03-sql-table-api | L2 | ✅ |
+| Thm-F-03-62 | 混合搜索成本优化定理 | Flink/03-sql-table-api | L1 | ✅ |
+| **Flink SQL Hints优化** | | | | |
+| Thm-F-03-70 | Broadcast Join可行性条件定理 | Flink/03-sql-table-api | L3 | ✅ |
+| Thm-F-03-71 | State TTL与结果正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
+| Thm-F-03-72 | JSON聚合函数内存上界定理 | Flink/03-sql-table-api | L2 | ✅ |
 
 ### 2.11.2 Flink工程实践扩展定理 (Flink/06-engineering)
 
@@ -455,6 +462,26 @@
 | Thm-K-06-115 | 视图选择NP完全性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
 | Thm-K-06-116 | 流式物化视图一致性边界定理 | Knowledge/06-frontier | L4 | ✅ |
 | Thm-K-06-117 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | ✅ |
+| **流数据库生态对比** | | | | |
+| Thm-K-06-120 | 物化视图一致性保证定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-121 | 计算-存储分离可扩展性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-122 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | ✅ |
+| **边缘流处理架构** | | | | |
+| Thm-K-06-125 | Flink边缘部署资源优化定理 | Knowledge/06-frontier | L2 | ✅ |
+| Thm-K-06-126 | 断网容错与数据一致性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-127 | CRDT边缘数据一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| **实时数据网格实践** | | | | |
+| Thm-K-06-130 | 实时数据网格CAP权衡定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-131 | 数据契约验证完备性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-132 | 血缘追踪传递闭包定理 | Knowledge/06-frontier | L3 | ✅ |
+| **实时特征平台架构** | | | | |
+| Thm-K-06-140 | 在线-离线一致性保证定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-141 | 特征服务延迟下界定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-142 | 特征血缘变更传播定理 | Knowledge/06-frontier | L3 | ✅ |
+| **MCP协议与Agent集成** | | | | |
+| Thm-K-06-145 | 流式上下文一致性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-146 | Tool调用安全性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-147 | 流式更新完整性定理 | Knowledge/06-frontier | L4 | ✅ |
 
 ---
 
@@ -727,6 +754,18 @@
 | Def-F-03-71 | 新鲜度语义 | Flink/03-sql-table-api | FRESHNESS约束 |
 | Def-F-03-72 | 分桶策略 | Flink/03-sql-table-api | DISTRIBUTED BY/INTO |
 | Def-F-03-73 | MaterializedTableEnricher | Flink/03-sql-table-api | SPI扩展接口 |
+| Def-F-03-80 | 向量搜索TVF | Flink/03-sql-table-api | VECTOR_SEARCH算子 |
+| Def-F-03-81 | 向量嵌入空间 | Flink/03-sql-table-api | Embedding Space |
+| Def-F-03-82 | 相似度度量 | Flink/03-sql-table-api | Cosine/Dot/Euclidean |
+| Def-F-03-83 | RAG管道 | Flink/03-sql-table-api | RAG Pipeline |
+| Def-F-03-84 | 向量数据库集成 | Flink/03-sql-table-api | 外部索引 |
+| Def-F-03-85 | 向量索引算法 | Flink/03-sql-table-api | HNSW/IVF/PQ |
+| Def-F-03-90 | SQL Hint | Flink/03-sql-table-api | 查询优化提示 |
+| Def-F-03-91 | Hint分类体系 | Flink/03-sql-table-api | Join/State/JSON |
+| Def-F-03-92 | Join Hint语义 | Flink/03-sql-table-api | BROADCAST/SHUFFLE |
+| Def-F-03-93 | State Hint语义 | Flink/03-sql-table-api | STATE_TTL |
+| Def-F-03-94 | JSON函数族 | Flink/03-sql-table-api | JSON_PATH/AGG |
+| Def-F-03-95 | 执行计划定义 | Flink/03-sql-table-api | Physical Plan |
 
 ### 3.6.2 Flink工程实践扩展定义 (Flink/06-engineering)
 
@@ -1226,6 +1265,10 @@
 | Lemma-F-10-20 | CRD状态一致性引理 | Flink/10-deployment | 声明式配置正确性 |
 | Lemma-F-10-21 | 滚动升级零停机引理 | Flink/10-deployment | Thm-F-10-20基础 |
 | Lemma-F-10-22 | 自动扩缩容响应时间引理 | Flink/10-deployment | Thm-F-10-21基础 |
+| **Flink K8s自动扩缩容深度指南** | | | |
+| Lemma-F-10-30 | 背压与并行度单调关系引理 | Flink/10-deployment | Thm-F-10-30基础 |
+| Lemma-F-10-31 | 目标利用率最优性引理 | Flink/10-deployment | Thm-F-10-31基础 |
+| Lemma-F-10-32 | 顶点独立扩缩容兼容性引理 | Flink/10-deployment | Thm-F-10-32基础 |
 
 ### 4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)
 
@@ -1262,6 +1305,12 @@
 | Lemma-K-06-110 | TLS机密性引理 | Knowledge/06-frontier | Thm-K-06-110基础 |
 | Lemma-K-06-111 | RBAC权限继承引理 | Knowledge/06-frontier | Thm-K-06-111基础 |
 | Lemma-K-06-112 | 端到端加密独立性引理 | Knowledge/06-frontier | Thm-K-06-112基础 |
+| **流式物化视图架构** | | | |
+| Lemma-K-06-115 | 增量计算正确性引理 | Knowledge/06-frontier | Thm-K-06-115基础 |
+| Lemma-K-06-116 | 级联更新传播引理 | Knowledge/06-frontier | Thm-K-06-116基础 |
+| Lemma-K-06-117 | 存储空间优化引理 | Knowledge/06-frontier | Thm-K-06-117基础 |
+| Lemma-K-06-125 | 边缘延迟优势引理 | Knowledge/06-frontier | Thm-K-06-125基础 |
+| Lemma-K-06-201 | 实时数据网格去中心化优势引理 | Knowledge/06-frontier | Thm-K-06-130基础 |
 
 ---
 
@@ -1330,8 +1379,15 @@
 | Prop-K-06-63 | Serverless成本-性能权衡 | Knowledge/06-frontier | 成本模型分析 |
 | Prop-K-06-95 | 自动扩缩容响应时间边界 | Knowledge/06-frontier | 弹性延迟分析 |
 | Prop-K-06-96 | 混合架构最优配置 | Knowledge/06-frontier | 资源配置优化 |
+| **边缘流处理架构** | | | |
+| Prop-K-06-126 | 数据本地化收益 | Knowledge/06-frontier | 带宽优化分析 |
+| Prop-K-06-127 | 边缘AI推理延迟边界 | Knowledge/06-frontier | 实时性保证 |
 | **流处理Data Mesh** | | | |
 | Prop-K-06-90 | Data Mesh域间协作效率 | Knowledge/06-frontier | 协作成本分析 |
+| **实时数据网格实践** | | | |
+| Prop-K-06-130 | 数据契约验证完备性 | Knowledge/06-frontier | 契约检查正确性 |
+| Prop-K-06-131 | 事件流作为数据产品接口 | Knowledge/06-frontier | 流式接口设计 |
+| Prop-K-06-132 | 联邦治理边界 | Knowledge/06-frontier | 治理范围分析 |
 | **Clickstream用户行为分析** | | | |
 | Prop-F-07-71 | 实时用户画像延迟边界 | Flink/07-case-studies | 端到端延迟分析 |
 | **智能制造IoT** | | | |
@@ -1390,6 +1446,8 @@
 | Prop-F-03-05 | 会话窗口动态边界 | Flink/03-sql-table-api | SESSION窗口特性 |
 | Prop-F-03-06 | 窗口帧范围边界 | Flink/03-sql-table-api | ROWS vs RANGE分析 |
 | Prop-F-03-07 | 多窗口并行执行效率 | Flink/03-sql-table-api | 性能边界分析 |
+| **Flink 2.2物化表深度指南** | | | |
+| Prop-F-03-40 | 物化表延迟-新鲜度权衡 | Flink/03-sql-table-api | 性能边界分析 |
 | **Flink工程实践 - dbt集成** | | | | |
 | Prop-F-06-20 | dbt增量物化一致性 | Flink/06-engineering | 增量更新正确性 |
 | **CDC 3.0数据集成** | | | |
@@ -1446,12 +1504,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 30 | 87 | **141** |
-| **定义** | 56 | 63 | 195 | **314** |
-| **引理** | 33 | 31 | 68 | **132** |
-| **命题** | 19 | 21 | 62 | **102** |
+| **定理** | 24 | 33 | 96 | **153** |
+| **定义** | 56 | 69 | 210 | **335** |
+| **引理** | 33 | 34 | 77 | **144** |
+| **命题** | 19 | 21 | 63 | **103** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 136 | 146 | 413 | **695** |
+| **合计** | 136 | 158 | 447 | **741** |
 
 ### 7.2 按文档统计
 
@@ -1507,6 +1565,17 @@
 | Flink (12) LLM集成 | 3 | 6 | 3 | 3 | 0 |
 | Knowledge (06) Data Mesh | 1 | 4 | 3 | 1 | 0 |
 | Knowledge (06) Serverless流处理 | 3 | 6 | 2 | 2 | 0 |
+| **v2.4 新增文档** | | | | | |
+| Flink (15) 可观测性OpenTelemetry | 3 | 6 | 3 | 0 | 0 |
+| Flink (06) 流处理云成本优化 | 3 | 4 | 2 | 3 | 0 |
+| Knowledge (06) 实时数据质量 | 3 | 4 | 3 | 0 | 0 |
+| Knowledge (06) 多云流处理 | 3 | 6 | 2 | 0 | 0 |
+| Knowledge (06) 流处理安全 | 3 | 6 | 3 | 0 | 0 |
+| **v2.5 新增文档** | | | | | |
+| Flink (03) 物化表深度指南 | 3 | 4 | 2 | 1 | 0 |
+| Flink (10) K8s自动扩缩容 | 3 | 6 | 3 | 0 | 0 |
+| Flink (15) 指标监控SLO | 3 | 6 | 3 | 0 | 0 |
+| Knowledge (06) 流式物化视图 | 3 | 6 | 3 | 0 | 0 |
 
 ### 7.3 形式化等级分布
 
@@ -1527,6 +1596,6 @@
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-03 (v2.3 更新: 添加4篇新文档 - Flink实时ML推理、Flink与LLM集成、流处理Data Mesh、Serverless流处理)*
+*最后更新时间: 2026-04-03 (v2.5 更新: 添加4篇新文档 - Flink物化表、K8s自动扩缩容、指标监控SLO、流式物化视图)*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
