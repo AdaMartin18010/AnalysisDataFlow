@@ -375,6 +375,7 @@ flowchart TD
 |------|------|----------|
 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) | Kafka集成 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
 | [fluss-integration.md](04-connectors/fluss-integration.md) | Fluss集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [04.04-cdc-debezium-integration.md](04-connectors/04.04-cdc-debezium-integration.md) | CDC与Debezium集成 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md), [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 
 ### 6.5 05-vs-competitors/ 竞品对比层
 

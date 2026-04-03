@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v1.2 | **更新日期**: 2026-04-02 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v1.3 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -28,6 +28,9 @@
     - [2.11 Flink扩展定理 (Flink/02-core-mechanisms)](#211-flink扩展定理-flink02-core-mechanisms)
     - [2.12 Flink扩展定理 (Flink/09-language-foundations)](#212-flink扩展定理-flink09-language-foundations)
     - [2.13 Flink扩展定理 (Flink/13-wasm)](#213-flink扩展定理-flink13-wasm)
+    - [2.14 Flink AI/ML扩展定理 (Flink/12-ai-ml)](#214-flink-aiml扩展定理-flink12-ai-ml)
+    - [2.15 Flink案例研究定理 (Flink/07-case-studies)](#215-flink案例研究定理-flink07-case-studies)
+    - [2.16 Knowledge前沿扩展定理 (Knowledge/06-frontier)](#216-knowledge前沿扩展定理-knowledge06-frontier)
   - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx)
     - [3.1 基础层定义 (01-foundation)](#31-基础层定义-01-foundation)
     - [3.2 性质层定义 (02-properties)](#32-性质层定义-02-properties)
@@ -37,6 +40,9 @@
     - [3.6 Flink扩展定义 (Flink/02-core-mechanisms)](#36-flink扩展定义-flink02-core-mechanisms)
     - [3.7 Flink扩展定义 (Flink/09-language-foundations)](#37-flink扩展定义-flink09-language-foundations)
     - [3.8 Flink扩展定义 (Flink/13-wasm)](#38-flink扩展定义-flink13-wasm)
+    - [3.9 Flink AI/ML扩展定义 (Flink/12-ai-ml)](#39-flink-aiml扩展定义-flink12-ai-ml)
+    - [3.10 Flink案例研究定义 (Flink/07-case-studies)](#310-flink案例研究定义-flink07-case-studies)
+    - [3.11 Knowledge前沿扩展定义 (Knowledge/06-frontier)](#311-knowledge前沿扩展定义-knowledge06-frontier)
   - [4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)](#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx)
     - [4.1 基础层引理 (01-foundation)](#41-基础层引理-01-foundation)
     - [4.2 性质层引理 (02-properties)](#42-性质层引理-02-properties)
@@ -45,9 +51,12 @@
     - [4.5 知识层引理 (Knowledge)](#45-知识层引理-knowledge)
     - [4.6 Flink扩展引理 (Flink/09-language-foundations)](#46-flink扩展引理-flink09-language-foundations)
     - [4.7 Flink扩展引理 (Flink/13-wasm)](#47-flink扩展引理-flink13-wasm)
+    - [4.8 Flink AI/ML扩展引理 (Flink/12-ai-ml)](#48-flink-aiml扩展引理-flink12-ai-ml)
+    - [4.9 Flink案例研究引理 (Flink/07-case-studies)](#49-flink案例研究引理-flink07-case-studies)
+    - [4.10 Knowledge前沿扩展引理 (Knowledge/06-frontier)](#410-knowledge前沿扩展引理-knowledge06-frontier)
   - [5. 命题与推论注册表](#5-命题与推论注册表)
     - [5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)](#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx)
-    - [5.2 推论 (Cor-S-XX-XX)](#52-推论-cor-s-xx-xx)
+    - [5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)](#52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx)
   - [6. 空缺编号标记](#6-空缺编号标记)
   - [7. 统计信息](#7-统计信息)
     - [7.1 总体统计](#71-总体统计)
@@ -113,6 +122,8 @@
 | 08 | Knowledge/08-lakehouse-consistency/ | 流式Lakehouse一致性 |
 | 09 | Knowledge/09-rag-streaming/ | RAG流式正确性 |
 | 08 | Struct/08-standards/ | 流式SQL标准 |
+| 12 | Flink/12-ai-ml/ | AI/ML流处理 |
+| 07 | Flink/07-case-studies/ | 案例研究 |
 
 ---
 
@@ -263,6 +274,27 @@
 |------|------|------|-----------|------|
 | Thm-F-13-01 | async/sync组合正确性定理 | Flink/13-wasm | L4 | ✅ |
 | Thm-F-13-02 | Stream流水线性能保证定理 | Flink/13-wasm | L4 | ✅ |
+
+### 2.14 Flink AI/ML扩展定理 (Flink/12-ai-ml)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-F-12-15 | 实时特征一致性定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-16 | Feature Store物化视图正确性定理 | Flink/12-ai-ml | L4-L5 | ✅ |
+| Thm-F-12-17 | 在线/离线特征一致性定理 | Flink/12-ai-ml | L4 | ✅ |
+
+### 2.15 Flink案例研究定理 (Flink/07-case-studies)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-F-07-32 | 智能制造IoT实时检测正确性定理 | Flink/07-case-studies | L4 | ✅ |
+
+### 2.16 Knowledge前沿扩展定理 (Knowledge/06-frontier)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-K-06-50 | 区块链流处理一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-51 | 智能合约事件驱动执行正确性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
 
 ---
 
@@ -487,6 +519,36 @@
 | Def-F-13-14 | 函数着色问题 | Flink/13-wasm | async/sync互操作问题 |
 | Def-F-13-15 | wasi:http@0.3.0 | Flink/13-wasm | 精简HTTP接口包 |
 
+### 3.9 Flink AI/ML扩展定义 (Flink/12-ai-ml)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| Def-F-12-20 | 实时特征工程系统 | Flink/12-ai-ml | 特征提取、转换、服务六元组 |
+| Def-F-12-21 | Feature Store架构 | Flink/12-ai-ml | 在线/离线特征存储模型 |
+| Def-F-12-22 | 特征版本控制语义 | Flink/12-ai-ml | 时间版本与Schema演化 |
+| Def-F-12-23 | 特征一致性模型 | Flink/12-ai-ml | 在线/离线一致性度量 |
+
+### 3.10 Flink案例研究定义 (Flink/07-case-studies)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| Def-F-07-30 | 智能制造IoT架构 | Flink/07-case-studies | 边缘-云协同流处理模型 |
+| Def-F-07-31 | 工业数字孪生系统 | Flink/07-case-studies | 物理-虚拟映射形式化 |
+| Def-F-07-32 | 预测性维护模型 | Flink/07-case-studies | 设备健康状态推断 |
+| Def-F-07-33 | 实时质量检测 | Flink/07-case-studies | 产线缺陷检测流处理 |
+| Def-F-07-34 | OEE计算语义 | Flink/07-case-studies | 设备综合效率实时计算 |
+| Def-F-07-35 | 工业时序数据模型 | Flink/07-case-studies | 传感器数据时间序列 |
+
+### 3.11 Knowledge前沿扩展定义 (Knowledge/06-frontier)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| Def-K-06-80 | Web3流处理架构 | Knowledge/06-frontier | 去中心化流计算模型 |
+| Def-K-06-81 | 区块链事件日志 | Knowledge/06-frontier | 链上事件流形式化 |
+| Def-K-06-82 | 智能合约执行环境 | Knowledge/06-frontier | EVM/WASM运行时语义 |
+| Def-K-06-83 | 去中心化身份验证 | Knowledge/06-frontier | DID与零知识证明 |
+| Def-K-06-84 | 链上/链下数据桥 | Knowledge/06-frontier | Oracle与数据可用性层 |
+
 ---
 
 ## 4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)
@@ -606,6 +668,28 @@
 |------|------|------|----------|
 | (暂无新增引理) | | | |
 
+### 4.8 Flink AI/ML扩展引理 (Flink/12-ai-ml)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| Lemma-F-12-12 | 特征点查一致性引理 | Flink/12-ai-ml | Thm-F-12-15基础 |
+| Lemma-F-12-13 | 特征物化视图增量更新引理 | Flink/12-ai-ml | Thm-F-12-16基础 |
+
+### 4.9 Flink案例研究引理 (Flink/07-case-studies)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| Lemma-F-07-30 | IoT数据完整性引理 | Flink/07-case-studies | 传感器数据验证 |
+| Lemma-F-07-31 | 实时检测响应时间边界引理 | Flink/07-case-studies | Thm-F-07-32基础 |
+
+### 4.10 Knowledge前沿扩展引理 (Knowledge/06-frontier)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| Lemma-K-06-50 | 区块链最终一致性引理 | Knowledge/06-frontier | Thm-K-06-50基础 |
+| Lemma-K-06-51 | 智能合约原子性执行引理 | Knowledge/06-frontier | Thm-K-06-51基础 |
+| Lemma-K-06-52 | 链上数据不可篡改引理 | Knowledge/06-frontier | 数据完整性保证 |
+
 ---
 
 ## 5. 命题与推论注册表
@@ -656,8 +740,16 @@
 | Prop-K-06-12 | 向量索引一致性边界 | Knowledge/06-frontier | 一致性偏差有界 |
 | Prop-K-06-13 | 近似搜索误差累积 | Knowledge/06-frontier | 增量更新误差控制 |
 | Prop-K-06-14 | 混合查询成本模型 | Knowledge/06-frontier | 向量+结构化过滤成本 |
+| **Flink AI/ML** | | | |
+| Prop-F-12-08 | 特征 freshness 与准确性权衡 | Flink/12-ai-ml | 实时性-一致性权衡 |
+| **Web3区块链流处理** | | | |
+| Prop-K-06-50 | 去中心化流处理活性保证 | Knowledge/06-frontier | 活性与容错 |
+| Prop-K-06-51 | 链上/链下数据一致性 | Knowledge/06-frontier | 数据桥一致性 |
+| **智能制造IoT** | | | |
+| Prop-F-07-08 | 边缘-云协同延迟边界 | Flink/07-case-studies | 端到端延迟分析 |
+| Prop-F-07-09 | 预测性维护置信度 | Flink/07-case-studies | 故障预测准确性 |
 
-### 5.2 推论 (Cor-S-XX-XX)
+### 5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)
 
 | 编号 | 名称 | 位置 | 说明 |
 |------|------|------|------|
@@ -665,6 +757,12 @@
 | Cor-S-07-01 | 容错一致性推论 | Struct/02.01 | Checkpoint恢复保持确定性 |
 | Cor-S-14-01 | 可判定性递减推论 | Struct/03.03 | Thm-S-14-01直接推论 |
 | Cor-S-15-01 | 互模拟等价类构成商LTS | Struct/03.04 | 商结构 |
+| **Flink AI/ML** | | | |
+| Cor-F-12-05 | 特征存储物化视图一致性推论 | Flink/12-ai-ml | Thm-F-12-16直接推论 |
+| **Web3区块链流处理** | | | |
+| Cor-K-06-05 | 智能合约事件驱动活性推论 | Knowledge/06-frontier | Thm-K-06-51直接推论 |
+| **智能制造IoT** | | | |
+| Cor-F-07-05 | 预测性维护误报率边界推论 | Flink/07-case-studies | Thm-F-07-32直接推论 |
 
 ---
 
@@ -695,12 +793,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 21 | 25 | **70** |
-| **定义** | 56 | 32 | 39 | **127** |
-| **引理** | 33 | 16 | 16 | **65** |
-| **命题** | 19 | 8 | 11 | **38** |
-| **推论** | 4 | 0 | 0 | **4** |
-| **合计** | 136 | 77 | 91 | **304** |
+| **定理** | 24 | 23 | 29 | **76** |
+| **定义** | 56 | 37 | 49 | **142** |
+| **引理** | 33 | 19 | 20 | **72** |
+| **命题** | 19 | 10 | 13 | **42** |
+| **推论** | 4 | 1 | 1 | **6** |
+| **合计** | 136 | 90 | 112 | **338** |
 
 ### 7.2 按文档统计
 
@@ -714,13 +812,16 @@
 | Knowledge (05) | 1 | 4 | 3 | 1 | 0 |
 | Knowledge (06) Rust流系统 | 4 | 6 | 3 | 1 | 0 |
 | Knowledge (06) 向量搜索 | 0 | 5 | 1 | 3 | 0 |
+| Knowledge (06) Web3区块链 | 2 | 5 | 3 | 2 | 1 |
 | Knowledge (07) GPU TEE | 4 | 5 | 2 | 1 | 0 |
 | Knowledge (08) Lakehouse | 4 | 5 | 2 | 1 | 0 |
 | Knowledge (09) RAG流式 | 4 | 6 | 3 | 1 | 0 |
 | Flink (02) 核心机制 | 6 | 12 | 0 | 6 | 0 |
 | Flink (04) 连接器 | 1 | 0 | 0 | 0 | 0 |
 | Flink (06) Rust集成 | 2 | 0 | 0 | 0 | 0 |
+| Flink (07) 案例研究 | 1 | 6 | 2 | 2 | 1 |
 | Flink (09) 语言基础 | 10 | 22 | 10 | 2 | 0 |
+| Flink (12) AI/ML | 3 | 4 | 2 | 1 | 1 |
 | Flink (13) WASM | 2 | 6 | 0 | 3 | 0 |
 
 ### 7.3 形式化等级分布
@@ -741,7 +842,7 @@
 
 ---
 
-*注册表创建时间: 2026-04-02*  
-*最后更新时间: 2026-04-02*  
-*适用范围: AnalysisDataFlow 全项目*  
+*注册表创建时间: 2026-04-02*
+*最后更新时间: 2026-04-03*
+*适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*

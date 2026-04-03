@@ -138,6 +138,7 @@
 | **Edge Streaming** | ✅ 完成 | 边缘流处理完整指南，含延迟优化与资源约束 | Knowledge/06-frontier/ |
 | **Streaming Database Guide** | ✅ 完成 | 流数据库选型与生产实践完整指南 | Flink/14-lakehouse/ |
 | **Online Learning Production** | ✅ 完成 | 在线学习生产化部署，含模型漂移检测 | Flink/12-ai-ml/ |
+| **Streaming ETL Tools Landscape 2026** | ✅ 完成 | 2026年Streaming ETL工具全景对比，含详细选型框架 | Knowledge/05-mapping-guides/ |
 | **All Index Updates** | ✅ 完成 | 所有目录INDEX更新，交叉引用完整性验证 | 全部目录 |
 
 ---
