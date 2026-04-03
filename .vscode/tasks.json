@@ -1,0 +1,154 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Validate Project - Full",
+      "detail": "执行完整的项目验证（编号、重复、注册表、链接）",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        ".vscode/validate-project.py"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(.+):(\\d+):\\s*(.+)$",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        }
+      }
+    },
+    {
+      "label": "Validate Project - JSON Output",
+      "detail": "执行项目验证并输出JSON报告",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        ".vscode/validate-project.py",
+        "--json"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Validate Mermaid Diagrams",
+      "detail": "验证所有Mermaid图表语法",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        ".vscode/validate-mermaid.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Validate Mermaid - Online",
+      "detail": "使用在线API验证Mermaid图表（需要网络）",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        ".vscode/validate-mermaid.py",
+        "--online"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Validate Cross References",
+      "detail": "验证文档交叉引用和链接",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        ".vscode/validate-cross-refs.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Run All Validations",
+      "detail": "运行所有验证脚本",
+      "type": "shell",
+      "command": "echo \"=== 1. 项目验证 ===\" && python .vscode/validate-project.py && echo \"\" && echo \"=== 2. Mermaid验证 ===\" && python .vscode/validate-mermaid.py && echo \"\" && echo \"=== 3. 交叉引用验证 ===\" && python .vscode/validate-cross-refs.py",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "Generate Validation Report (JSON)",
+      "detail": "生成JSON格式的完整验证报告",
+      "type": "shell",
+      "command": "python .vscode/validate-project.py --json > validation-report.json && python .vscode/validate-mermaid.py --json > mermaid-report.json && python .vscode/validate-cross-refs.py --json > crossrefs-report.json && echo \"报告已生成: validation-report.json, mermaid-report.json, crossrefs-report.json\"",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Check Theorem Registry Consistency",
+      "detail": "检查定理注册表与文档的一致性",
+      "type": "shell",
+      "command": "python -c \"import sys; sys.path.insert(0, '.vscode'); from validate_project import ProjectValidator; v = ProjectValidator('.'); v.load_registry(); v.scan_all_files(); v.validate(); print(f'文档中元素数: {len(v.all_elements)}'); print(f'注册表元素数: {len(v.registry_elements)}'); print(f'未注册: {len(v.report.missing_in_registry)}'); print(f'注册表多余: {len(v.report.orphaned_in_registry)}')\"",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    }
+  ]
+}

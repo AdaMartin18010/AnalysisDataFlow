@@ -1,0 +1,84 @@
+# Git目录
+.git/
+.gitignore
+
+# Docker相关文件（自身）
+Dockerfile
+docker-compose.yml
+.dockerignore
+docker/
+
+# 报告和输出目录
+reports/
+*.log
+
+# 编辑器配置
+.vscode/settings.json
+.vscode/extensions.json
+.vscode/launch.json
+.vscode/*.code-snippets
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.cache
+
+# 文档构建输出
+site/
+build/
+dist/
+
+# 大文件和媒资
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.mp3
+*.wav
+*.flac
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# 可能包含敏感信息的文件
+.env
+.env.local
+.env.*.local
+secrets/
+credentials/
+
+# Node.js（如果有）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 备份文件
+*.backup
+*.old
+*.orig

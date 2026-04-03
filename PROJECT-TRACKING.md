@@ -21,16 +21,16 @@
 | 目录 | 文档数 | 大小 | 状态 |
 |------|--------|------|------|
 | Struct/ | 42 | ~850KB | ✅ 完成 |
-| Knowledge/ | 78 | ~2.1MB | ✅ 完成 |
+| Knowledge/ | 81 | ~2.2MB | ✅ 完成 |
 | Flink/ | 130 | ~3.5MB | ✅ 完成 |
-| **总计** | **250** | **~6.45MB** | **✅ 100%** |
+| **总计** | **254** | **~6.55MB** | **✅ 100%** |
 | 项目级文档 | 4 | ~60KB | ✅ 完成 |
 
 
 **形式化指标** (v2.8):
 
 - **定理**: 188 个 (Thm-S-*: 24, Thm-K-*: 57, Thm-F-*: 107)
-- **定义**: 399 个严格形式化定义
+- **定义**: 410 个严格形式化定义
 - **引理**: 158 个辅助引理
 - **命题**: 121 个
 - **推论**: 6 个
@@ -172,6 +172,10 @@
 | **Streaming Security & Compliance** | ✅ 完成 | 流处理安全架构与合规实践完整指南，含GDPR/SOC2/PCI-DSS映射 | Knowledge/06-frontier/ |
 | **All Index Updates** | ✅ 完成 | 所有目录INDEX更新，交叉引用完整性验证 | 全部目录 |
 | **Serverless Streaming Cost Optimization** | ✅ 完成 | Serverless流处理成本优化完整指南，含TCO模型与决策树 | Knowledge/06-frontier/ |
+| **AI Agent A2A Protocol** | ✅ 完成 | Google A2A协议深度解析，多Agent互操作标准 | Knowledge/06-frontier/ |
+| **Temporal+Flink Layered Architecture** | ✅ 完成 | Temporal与Flink分层架构整合指南，持久化执行与工作流编排 | Knowledge/06-frontier/ |
+| **Smart Casual Verification** | ✅ 完成 | 智能轻量验证方法，Microsoft CCF实践案例 | Struct/07-tools/ |
+| **Flink vs RisingWave** | ✅ 完成 | Flink与RisingWave深度对比分析，选型决策指南 | Knowledge/04-technology-selection/ |
 
 ---
 

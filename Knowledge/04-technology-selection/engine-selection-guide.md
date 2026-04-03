@@ -889,6 +889,7 @@ quadrantChart
 
 - [../../Flink/](../../Flink/) —— Flink 专项深度文档
 - [../../Struct/](../../Struct/) —— 形式化理论文档
+- [./flink-vs-risingwave.md](./flink-vs-risingwave.md) —— Flink vs RisingWave深度对比
 
 ### 下游应用
 

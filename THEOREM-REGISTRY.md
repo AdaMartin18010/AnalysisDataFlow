@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.8 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.9 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -210,10 +210,19 @@
 |------|------|------|-----------|------|
 | Thm-S-24-01 | Go与Scala图灵完备等价 | Struct/05.01 | L6 | ✅ |
 
+### 2.5.1 Smart Casual Verification定理 (Struct/07)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| Thm-S-07-03 | Smart Casual Verification有效性 | Struct/07 | L4-L5 | ✅ |
+| Thm-S-07-04 | CCF共识安全性质 | Struct/07 | L5 | ✅ |
+| Thm-S-07-05 | Trace验证搜索优化 | Struct/07 | L4 | ✅ |
+
 ### 2.6 知识层定理 (Knowledge)
 
 | 编号 | 名称 | 位置 | 形式化等级 | 状态 |
 |------|------|------|-----------|------|
+| Thm-K-04-01 | 流数据库vs流引擎选择定理 | Knowledge/04 | L4 | ✅ |
 | Thm-K-05-01 | 核心映射语义保持性定理 | Knowledge/05 | L4-L5 | ✅ |
 | Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | ✅ |
 | Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | ✅ |
@@ -498,6 +507,14 @@
 | Thm-K-06-160 | Serverless TCO最优性定理 | Knowledge/06-frontier | L4 | ✅ |
 | Thm-K-06-161 | 混合架构成本平衡点定理 | Knowledge/06-frontier | L4 | ✅ |
 | Thm-K-06-162 | 成本优化决策完备性定理 | Knowledge/06-frontier | L3 | ✅ |
+| **A2A协议与Agent通信** | | | | |
+| Thm-K-06-240 | A2A互操作性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-241 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-242 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | ✅ |
+| **A2A协议扩展 (ai-agent-a2a-protocol)** | | | | |
+| Thm-K-06-250 | A2A互操作性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-251 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-252 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | ✅ |
 
 ---
 
@@ -585,6 +602,10 @@
 
 | 编号 | 名称 | 位置 | 说明 |
 |------|------|------|------|
+| Def-S-07-13 | Smart Casual Verification | Struct/07 | 轻量级形式化验证方法 |
+| Def-S-07-14 | Casual Verification | Struct/07 | 概率性验证方法 |
+| Def-S-07-15 | Trace-规格一致性 | Struct/07 | 执行迹与形式规格关系 |
+| Def-S-07-16 | Smart Casual Bug分类 | Struct/07 | Bug严重性分级模型 |
 | Def-S-17-01 | Checkpoint Barrier语义 | Struct/04.01 | B_n=<BARRIER,cid,ts,source> |
 | Def-S-17-02 | 一致全局状态 | Struct/04.01 | G=<𝒮,𝒞> |
 | Def-S-17-03 | Checkpoint对齐 | Struct/04.01 | 多输入算子Barrier同步 |
@@ -623,6 +644,9 @@
 
 | 编号 | 名称 | 位置 | 说明 |
 |------|------|------|------|
+| Def-K-04-10 | 流处理引擎架构模型 | Knowledge/04 | 引擎六元组形式化 |
+| Def-K-04-11 | 状态存储架构分类 | Knowledge/04 | 存储模式分类体系 |
+| Def-K-04-12 | 流数据库形式化定义 | Knowledge/04 | 流数据库数学模型 |
 | Def-K-05-01 | 形式化到实现映射 | Knowledge/05 | ℳ:ℱ⇀ℐ |
 | Def-K-05-02 | 语义保持性 | Knowledge/05 | Semantic Preservation |
 | Def-K-05-03 | 实现近似性 | Knowledge/05 | (ε,δ)-近似 |
@@ -1054,6 +1078,12 @@
 | Def-K-06-183 | 状态外置成本模型 | Knowledge/06-frontier | Externalized State成本 |
 | Def-K-06-184 | 预留并发成本函数 | Knowledge/06-frontier | Provisioned Concurrency成本 |
 | Def-K-06-185 | Spot实例成本优化模型 | Knowledge/06-frontier | Spot/Preemptible成本模型 |
+| **A2A协议与Agent通信** | | | |
+| Def-K-06-240 | Agent-to-Agent Protocol | Knowledge/06-frontier | A2A六元组模型 |
+| Def-K-06-241 | Agent拓扑与角色模型 | Knowledge/06-frontier | 图结构与角色映射 |
+| Def-K-06-242 | Task生命周期状态机 | Knowledge/06-frontier | 状态转移系统 |
+| Def-K-06-243 | Agent Card能力描述 | Knowledge/06-frontier | 能力本体模型 |
+| Def-K-06-244 | Artifact多模态产出物 | Knowledge/06-frontier | 产出物形式化 |
 
 ---
 
@@ -1104,6 +1134,8 @@
 
 | 编号 | 名称 | 位置 | 关键作用 |
 |------|------|------|----------|
+| Lemma-S-07-07 | 完备性边界 | Struct/07 | Thm-S-07-03基础 |
+| Lemma-S-07-08 | TLA+自动转换 | Struct/07 | 规格转换正确性 |
 | Lemma-S-17-01 | Barrier传播不变式 | Struct/04.01 | Thm-S-17-01 Part 1 |
 | Lemma-S-17-02 | 状态一致性引理 | Struct/04.01 | Thm-S-17-01 Part 2 |
 | Lemma-S-17-03 | 对齐点唯一性 | Struct/04.01 | 快照时刻确定 |
@@ -1128,6 +1160,8 @@
 
 | 编号 | 名称 | 位置 | 关键作用 |
 |------|------|------|----------|
+| Lemma-K-04-03 | 存储分离与恢复时间关系 | Knowledge/04 | 架构权衡分析 |
+| Lemma-K-04-04 | 状态位置与扩展性权衡 | Knowledge/04 | Thm-K-04-01基础 |
 | Lemma-K-05-01 | 映射传递性引理 | Knowledge/05 | 复合映射保持 |
 | Lemma-K-05-02 | 理论保持性引理 | Knowledge/05 | 性质传导 |
 | Lemma-K-05-03 | 代码等价性保持 | Knowledge/05 | 模式实例化 |
@@ -1344,6 +1378,9 @@
 | Lemma-K-06-130 | Serverless成本边界引理 | Knowledge/06-frontier | 成本上下界分析 |
 | Lemma-K-06-131 | 冷启动频率成本影响 | Knowledge/06-frontier | 冷启动成本量化 |
 | Lemma-K-06-132 | 批处理窗口成本效益 | Knowledge/06-frontier | 窗口优化分析 |
+| **A2A协议与Agent通信** | | | |
+| Lemma-K-06-230 | A2A协议分层延迟分解 | Knowledge/06-frontier | 延迟来源分析 |
+| Lemma-K-06-231 | Task并发与隔离性 | Knowledge/06-frontier | Thm-K-06-250基础 |
 
 ---
 
@@ -1372,6 +1409,8 @@
 | Prop-S-20-01 | Watermark单调性与格结构兼容性 | Struct/04.04 | 兼容保证 |
 | Prop-S-23-01 | Choreography的合流性 | Struct/04.07 | 合流性质 |
 | Prop-S-23-02 | 投影语义等价性 | Struct/04.07 | 语义等价 |
+| Prop-S-07-03 | Trace覆盖与Bug发现率关系 | Struct/07 | 验证覆盖率分析 |
+| Prop-K-04-03 | SQL原生性对开发效率的影响 | Knowledge/04 | 开发效率量化 |
 | Prop-K-05-01 | 语义等价性命题 | Knowledge/05 | 语义等价 |
 | Prop-K-06-01 | Rust零成本抽象保持 | Knowledge/06 | 抽象无运行时开销 |
 | Prop-K-07-01 | GPU TEE副作用隔离 | Knowledge/07 | Side-effect Isolation |
@@ -1416,6 +1455,9 @@
 | Prop-K-06-100 | 成本最优部署形态 | Knowledge/06-frontier | 部署形态决策 |
 | Prop-K-06-101 | 状态外置成本临界点 | Knowledge/06-frontier | 状态外置盈亏分析 |
 | Prop-K-06-102 | 自动扩缩容成本稳定性 | Knowledge/06-frontier | 成本波动分析 |
+| **A2A协议与Agent通信** | | | |
+| Prop-K-06-230 | Agent Card缓存一致性 | Knowledge/06-frontier | 缓存一致性分析 |
+| Prop-K-06-231 | SSE流式传输可靠性边界 | Knowledge/06-frontier | 传输可靠性分析 |
 | **边缘流处理架构** | | | |
 | Prop-K-06-126 | 数据本地化收益 | Knowledge/06-frontier | 带宽优化分析 |
 | Prop-K-06-127 | 边缘AI推理延迟边界 | Knowledge/06-frontier | 实时性保证 |
@@ -1541,12 +1583,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 36 | 96 | **156** |
-| **定义** | 56 | 75 | 210 | **341** |
-| **引理** | 33 | 37 | 77 | **147** |
-| **命题** | 19 | 24 | 63 | **106** |
+| **定理** | 27 | 40 | 96 | **163** |
+| **定义** | 64 | 88 | 210 | **362** |
+| **引理** | 35 | 43 | 77 | **155** |
+| **命题** | 20 | 27 | 63 | **110** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 136 | 173 | 447 | **756** |
+| **合计** | 150 | 199 | 447 | **796** |
 
 ### 7.2 按文档统计
 
@@ -1615,6 +1657,11 @@
 | Knowledge (06) 流式物化视图 | 3 | 6 | 3 | 0 | 0 |
 | **v2.6 新增文档** | | | | | |
 | Knowledge (06) Serverless成本优化 | 3 | 6 | 3 | 3 | 0 |
+| **v2.8 新增文档** | | | | | |
+| Knowledge (06) A2A协议 | 3 | 5 | 4 | 2 | 0 |
+| Knowledge (06) Temporal+Flink | 0 | 4 | 0 | 3 | 0 |
+| Knowledge (04) Flink vs RisingWave | 1 | 3 | 2 | 1 | 0 |
+| Struct (07) Smart Casual验证 | 3 | 4 | 2 | 1 | 0 |
 
 ### 7.3 形式化等级分布
 
@@ -1635,6 +1682,6 @@
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-03 (v2.5 更新: 添加4篇新文档 - Flink物化表、K8s自动扩缩容、指标监控SLO、流式物化视图)*
+*最后更新时间: 2026-04-03 (v2.9 更新: 注册19个未注册形式化元素 - Smart Casual Verification 10个、Flink vs RisingWave 7个、A2A协议 2个引理)*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*

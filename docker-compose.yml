@@ -1,0 +1,100 @@
+# AnalysisDataFlow Docker Compose 配置
+# 提供验证、统计和开发环境服务
+
+version: "3.8"
+
+services:
+  # 验证服务 - 运行所有验证脚本
+  validate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-validate
+    volumes:
+      - .:/workspace:ro
+      - ./reports:/workspace/reports
+    command: >
+      sh -c "
+        echo '=== AnalysisDataFlow 项目验证 ===' &&
+        echo '' &&
+        echo '1. 运行项目验证...' &&
+        python3 .vscode/validate-project.py &&
+        echo '' &&
+        echo '2. 运行交叉引用验证...' &&
+        python3 .vscode/validate-cross-refs.py &&
+        echo '' &&
+        echo '3. 运行Mermaid验证...' &&
+        python3 .vscode/validate-mermaid.py &&
+        echo '' &&
+        echo '=== 所有验证完成 ==='
+      "
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # 统计服务 - 生成项目统计报告
+  stats:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-stats
+    volumes:
+      - .:/workspace:ro
+      - ./reports:/workspace/reports
+    command: >
+      sh -c "
+        echo '=== AnalysisDataFlow 项目统计 ===' &&
+        echo '' &&
+        echo '生成统计报告...' &&
+        mkdir -p reports &&
+        python3 .vscode/validate-project.py --json > reports/validation-report.json &&
+        python3 .vscode/validate-cross-refs.py --json > reports/cross-ref-report.json &&
+        python3 .vscode/validate-mermaid.py --json > reports/mermaid-report.json &&
+        echo '' &&
+        echo '统计报告已保存到 reports/' &&
+        ls -la reports/
+      "
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Shell服务 - 交互式开发环境
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-shell
+    volumes:
+      - .:/workspace
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PS1=\"\\[\\e[32m\\]adf\\[\\e[0m\\]:\\w\\$ \"
+
+  # 单独验证服务 - 可单独运行特定验证
+  validate-project:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-validate-project
+    volumes:
+      - .:/workspace:ro
+    command: python3 .vscode/validate-project.py
+
+  validate-crossrefs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-validate-crossrefs
+    volumes:
+      - .:/workspace:ro
+    command: python3 .vscode/validate-cross-refs.py
+
+  validate-mermaid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adf-validate-mermaid
+    volumes:
+      - .:/workspace:ro
+    command: python3 .vscode/validate-mermaid.py

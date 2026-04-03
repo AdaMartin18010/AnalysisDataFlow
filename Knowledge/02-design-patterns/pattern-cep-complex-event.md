@@ -29,14 +29,14 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用场景](#41-推荐使用场景)
     - [4.2 不推荐场景](#42-不推荐场景)
-  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
-    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
-    - [5.2 满足的形式化性质](#52-满足的形式化性质)
-    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
-    - [5.4 边界条件与约束](#54-边界条件与约束)
-    - [5.5 CEP 形式化语义](#55-cep-形式化语义)
-  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
-  - [6. 引用参考 (References)](#6-引用参考-references)
+  - [6. 形式化保证 (Formal Guarantees)](#6-形式化保证-formal-guarantees)
+    - [6.1 依赖的形式化定义](#61-依赖的形式化定义)
+    - [6.2 满足的形式化性质](#62-满足的形式化性质)
+    - [6.3 模式组合时的性质保持](#63-模式组合时的性质保持)
+    - [6.4 边界条件与约束](#64-边界条件与约束)
+    - [6.5 CEP 形式化语义](#65-cep-形式化语义)
+  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [7. 引用参考 (References)](#7-引用参考-references)
 
 ---
 
@@ -854,11 +854,11 @@ Pattern<Event, ?> efficient = Pattern
 
 ---
 
-## 5. 形式化保证 (Formal Guarantees)
+## 6. 形式化保证 (Formal Guarantees)
 
 本节建立 CEP 复杂事件处理模式与 Struct/ 理论层的形式化连接。
 
-### 5.1 依赖的形式化定义
+### 6.1 依赖的形式化定义
 
 | 定义编号 | 名称 | 来源 | 在本模式中的作用 |
 |----------|------|------|-----------------|
@@ -867,7 +867,7 @@ Pattern<Event, ?> efficient = Pattern
 | **Def-S-10-01** | 安全性 (Safety) | Struct/02.04 | 模式匹配不会产生假阳性 (可通过有限执行验证) |
 | **Def-S-10-02** | 活性 (Liveness) | Struct/02.04 | 有效模式最终会被检测到 (在公平性假设下) |
 
-### 5.2 满足的形式化性质
+### 6.2 满足的形式化性质
 
 | 定理/引理编号 | 名称 | 来源 | 保证内容 |
 |---------------|------|------|----------|
@@ -876,7 +876,7 @@ Pattern<Event, ?> efficient = Pattern
 | **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | Keyed CEP 状态更新串行化，保证局部确定性 |
 | **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | CEP NFA 状态快照的一致性保证 |
 
-### 5.3 模式组合时的性质保持
+### 6.3 模式组合时的性质保持
 
 **CEP + Event Time 组合**：
 
@@ -893,7 +893,7 @@ Pattern<Event, ?> efficient = Pattern
 - 窗口聚合结果可作为 CEP 的原子事件输入
 - 窗口触发事件时间戳作为 CEP 的时序基准
 
-### 5.4 边界条件与约束
+### 6.4 边界条件与约束
 
 | 约束条件 | 形式化描述 | 违反后果 |
 |----------|-----------|----------|
@@ -902,7 +902,7 @@ Pattern<Event, ?> efficient = Pattern
 | 事件时间有序 | t_e(e_i) ≤ t_e(e_{i+1}) + δ | 严重乱序导致模式漏检 |
 | Key 分区一致性 | hash(k) mod parallelism 固定 | Key 漂移导致状态丢失 |
 
-### 5.5 CEP 形式化语义
+### 6.5 CEP 形式化语义
 
 CEP 模式匹配可形式化为**时序正则表达式**的求值问题：
 
@@ -920,7 +920,7 @@ $$
 
 ---
 
-## 6. 相关模式 (Related Patterns)
+## 5. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|
@@ -970,7 +970,7 @@ $$
 
 ---
 
-## 6. 引用参考 (References)
+## 7. 引用参考 (References)
 
 [^1]: D. Luckham, *The Power of Events: An Introduction to Complex Event Processing in Distributed Enterprise Systems*, Addison-Wesley, 2002.
 

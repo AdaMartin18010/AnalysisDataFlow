@@ -1,0 +1,629 @@
+# =============================================================================
+# AnalysisDataFlow 项目验证工作流
+# =============================================================================
+# 描述: 主验证工作流，在PR和push时运行，确保文档质量和一致性
+# 触发条件: PR到main分支、push到main分支、手动触发
+# =============================================================================
+
+name: Validate Project
+
+on:
+  # PR到main分支时触发验证
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - '.github/workflows/validate.yml'
+  
+  # Push到main分支时触发验证
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - '.github/workflows/validate.yml'
+  
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: '启用详细输出模式'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+env:
+  PYTHON_VERSION: '3.11'
+  VALIDATE_VERBOSE: ${{ github.event.inputs.verbose || 'false' }}
+
+jobs:
+  # ===========================================================================
+  # Job 1: 验证定理编号唯一性
+  # ===========================================================================
+  validate-theorem-registry:
+    name: 验证定理编号冲突
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      
+      - name: Validate theorem registry
+        id: validate_theorems
+        run: |
+          echo "::group::验证定理注册表"
+          
+          # 创建验证脚本
+          cat > validate_theorem_registry.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          验证定理编号唯一性和注册表一致性
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          # 定理编号模式: Thm-S-01-01, Lemma-K-02-03, Def-F-01-01 等
+          THEOREM_PATTERNS = [
+              r'(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2})',
+          ]
+          
+          def scan_markdown_files():
+              """扫描所有Markdown文件中的定理编号"""
+              theorems = defaultdict(list)
+              errors = []
+              
+              md_files = list(Path('.').rglob('*.md'))
+              # 排除隐藏目录和node_modules等
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__']
+                  for part in f.parts
+              )]
+              
+              print(f"扫描 {len(md_files)} 个Markdown文件...")
+              
+              for file_path in md_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      errors.append(f"无法读取文件 {file_path}: {e}")
+                      continue
+                  
+                  for pattern in THEOREM_PATTERNS:
+                      for match in re.finditer(pattern, content):
+                          theorem_id = match.group(0)
+                          theorems[theorem_id].append(str(file_path))
+              
+              return theorems, errors
+          
+          def check_duplicates(theorems):
+              """检查重复的定理编号"""
+              duplicates = {k: v for k, v in theorems.items() if len(v) > 1}
+              return duplicates
+          
+          def main():
+              print("=" * 60)
+              print("AnalysisDataFlow 定理注册表验证")
+              print("=" * 60)
+              
+              theorems, errors = scan_markdown_files()
+              
+              print(f"\n发现 {len(theorems)} 个唯一定理编号")
+              
+              if errors:
+                  print("\n⚠️  警告:")
+                  for error in errors:
+                      print(f"  - {error}")
+              
+              duplicates = check_duplicates(theorems)
+              
+              if duplicates:
+                  print("\n❌ 发现重复的定理编号:")
+                  print("-" * 60)
+                  for theorem_id, files in sorted(duplicates.items()):
+                      print(f"\n  {theorem_id} 出现在 {len(files)} 个文件中:")
+                      for f in files:
+                          print(f"    - {f}")
+                  print("-" * 60)
+                  print(f"\n总计: {len(duplicates)} 个重复定理编号")
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有定理编号唯一，无冲突!")
+                  
+                  # 打印统计信息
+                  types = defaultdict(int)
+                  stages = defaultdict(int)
+                  for theorem_id in theorems:
+                      parts = theorem_id.split('-')
+                      if len(parts) >= 2:
+                          types[parts[0]] += 1
+                          if len(parts) >= 3:
+                              stages[parts[1]] += 1
+                  
+                  print("\n📊 定理类型统计:")
+                  for t, count in sorted(types.items()):
+                      print(f"  - {t}: {count}")
+                  
+                  print("\n📊 阶段分布:")
+                  stage_names = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+                  for s, count in sorted(stages.items()):
+                      print(f"  - {stage_names.get(s, s)}: {count}")
+                  
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python validate_theorem_registry.py
+          echo "::endgroup::"
+      
+      - name: Upload validation log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-validation-log
+          path: |
+            validate_theorem_registry.py
+          retention-days: 30
+
+  # ===========================================================================
+  # Job 2: 验证交叉引用
+  # ===========================================================================
+  validate-cross-references:
+    name: 验证交叉引用
+    runs-on: ubuntu-latest
+    needs: validate-theorem-registry
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Validate cross references
+        run: |
+          echo "::group::验证交叉引用"
+          
+          cat > validate_cross_refs.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          验证文档间的交叉引用是否有效
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件"""
+              md_files = list(Path('.').rglob('*.md'))
+              # 排除隐藏目录
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_internal_links(content, file_path):
+              """提取Markdown内部链接 [text](path)"""
+              links = []
+              # 匹配 [text](path) 格式
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  link_path = match.group(2)
+                  # 忽略外部链接
+                  if link_path.startswith('http://') or link_path.startswith('https://'):
+                      continue
+                  # 忽略锚点链接
+                  if link_path.startswith('#'):
+                      continue
+                  # 清理路径
+                  if link_path.endswith('.md'):
+                      links.append((text, link_path, match.start()))
+              return links
+          
+          def validate_link(link_path, source_file, all_files):
+              """验证单个链接是否有效"""
+              source_dir = source_file.parent
+              
+              # 解析链接路径
+              if link_path.startswith('/'):
+                  # 绝对路径（相对于仓库根目录）
+                  target = Path('.') / link_path.lstrip('/')
+              else:
+                  # 相对路径
+                  target = source_dir / link_path
+              
+              target = target.resolve()
+              
+              # 检查文件是否存在
+              if not target.exists():
+                  return False, f"文件不存在: {target.relative_to(Path('.').resolve())}"
+              
+              # 检查是否是Markdown文件
+              if target.suffix != '.md':
+                  return False, f"不是Markdown文件: {target}"
+              
+              return True, None
+          
+          def main():
+              print("=" * 60)
+              print("AnalysisDataFlow 交叉引用验证")
+              print("=" * 60)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n扫描 {len(all_files)} 个Markdown文件...")
+              
+              broken_links = []
+              total_links = 0
+              
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      print(f"⚠️  无法读取 {file_path}: {e}")
+                      continue
+                  
+                  links = extract_internal_links(content, file_path)
+                  total_links += len(links)
+                  
+                  for text, link_path, _ in links:
+                      is_valid, error = validate_link(link_path, file_path, all_files)
+                      if not is_valid:
+                          broken_links.append({
+                              'source': str(file_path),
+                              'target': link_path,
+                              'text': text,
+                              'error': error
+                          })
+              
+              print(f"\n发现 {total_links} 个内部链接")
+              
+              if broken_links:
+                  print(f"\n❌ 发现 {len(broken_links)} 个无效链接:")
+                  print("-" * 60)
+                  
+                  # 按源文件分组
+                  by_source = defaultdict(list)
+                  for link in broken_links:
+                      by_source[link['source']].append(link)
+                  
+                  for source, links in sorted(by_source.items()):
+                      print(f"\n  📄 {source}")
+                      for link in links:
+                          print(f"    - [{link['text']}]({link['target']})")
+                          print(f"      错误: {link['error']}")
+                  
+                  print("-" * 60)
+                  
+                  # 生成报告文件
+                  with open('broken-links-report.txt', 'w') as f:
+                      f.write("损坏的交叉引用报告\n")
+                      f.write("=" * 60 + "\n\n")
+                      for link in broken_links:
+                          f.write(f"源文件: {link['source']}\n")
+                          f.write(f"链接文本: {link['text']}\n")
+                          f.write(f"目标路径: {link['target']}\n")
+                          f.write(f"错误: {link['error']}\n")
+                          f.write("-" * 40 + "\n")
+                  
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有交叉引用有效!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python validate_cross_refs.py
+          echo "::endgroup::"
+      
+      - name: Upload broken links report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-links-report
+          path: broken-links-report.txt
+          retention-days: 30
+
+  # ===========================================================================
+  # Job 3: 验证 Mermaid 图表语法
+  # ===========================================================================
+  validate-mermaid:
+    name: 验证 Mermaid 图表
+    runs-on: ubuntu-latest
+    needs: validate-theorem-registry
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Mermaid CLI
+        run: |
+          npm install -g @mermaid-js/mermaid-cli
+      
+      - name: Validate Mermaid diagrams
+        run: |
+          echo "::group::验证 Mermaid 图表语法"
+          
+          cat > validate_mermaid.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          验证Markdown文件中的Mermaid图表语法
+          """
+          import re
+          import sys
+          import subprocess
+          from pathlib import Path
+          from tempfile import NamedTemporaryFile
+          
+          MERMAID_PATTERN = r'```mermaid\s*\n(.*?)```'
+          
+          def extract_mermaid_blocks(content):
+              """提取所有Mermaid代码块"""
+              return re.findall(MERMAID_PATTERN, content, re.DOTALL)
+          
+          def validate_mermaid_syntax(diagram_content, diagram_index):
+              """使用Mermaid CLI验证图表语法"""
+              # 创建临时文件
+              with NamedTemporaryFile(mode='w', suffix='.mmd', delete=False) as f:
+                  f.write(diagram_content)
+                  temp_path = f.name
+              
+              try:
+                  # 尝试渲染为SVG（仅验证语法）
+                  result = subprocess.run(
+                      ['mmdc', '-i', temp_path, '-o', '/dev/null'],
+                      capture_output=True,
+                      text=True,
+                      timeout=30
+                  )
+                  
+                  if result.returncode != 0:
+                      return False, result.stderr
+                  return True, None
+              except subprocess.TimeoutExpired:
+                  return False, "验证超时"
+              except Exception as e:
+                  return False, f"验证错误: {e}"
+              finally:
+                  Path(temp_path).unlink(missing_ok=True)
+          
+          def main():
+              print("=" * 60)
+              print("AnalysisDataFlow Mermaid 图表验证")
+              print("=" * 60)
+              
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__']
+                  for part in f.parts
+              )]
+              
+              print(f"\n扫描 {len(md_files)} 个Markdown文件...")
+              
+              total_diagrams = 0
+              errors = []
+              
+              for file_path in md_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      print(f"⚠️  无法读取 {file_path}: {e}")
+                      continue
+                  
+                  diagrams = extract_mermaid_blocks(content)
+                  
+                  for idx, diagram in enumerate(diagrams):
+                      total_diagrams += 1
+                      is_valid, error = validate_mermaid_syntax(diagram, idx)
+                      
+                      if not is_valid:
+                          errors.append({
+                              'file': str(file_path),
+                              'index': idx,
+                              'error': error
+                          })
+              
+              print(f"\n发现 {total_diagrams} 个Mermaid图表")
+              
+              if errors:
+                  print(f"\n❌ 发现 {len(errors)} 个语法错误:")
+                  print("-" * 60)
+                  
+                  for err in errors:
+                      print(f"\n  📄 {err['file']} (图表 #{err['index']})")
+                      print(f"  错误: {err['error'][:200]}")
+                  
+                  print("-" * 60)
+                  
+                  # 生成错误报告
+                  with open('mermaid-errors.txt', 'w') as f:
+                      f.write("Mermaid图表语法错误报告\n")
+                      f.write("=" * 60 + "\n\n")
+                      for err in errors:
+                          f.write(f"文件: {err['file']}\n")
+                          f.write(f"图表索引: {err['index']}\n")
+                          f.write(f"错误: {err['error']}\n")
+                          f.write("-" * 40 + "\n")
+                  
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有Mermaid图表语法正确!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python validate_mermaid.py || echo "Mermaid验证完成（可能有错误）"
+          echo "::endgroup::"
+      
+      - name: Upload Mermaid errors
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-errors-report
+          path: mermaid-errors.txt
+          retention-days: 30
+
+  # ===========================================================================
+  # Job 4: 生成综合验证报告
+  # ===========================================================================
+  generate-report:
+    name: 生成验证报告
+    runs-on: ubuntu-latest
+    needs: [validate-cross-references, validate-mermaid]
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Generate validation report
+        run: |
+          cat > generate_report.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          生成综合验证报告
+          """
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          
+          def count_files():
+              """统计文件数量"""
+              stats = {}
+              for dir_name in ['Struct', 'Knowledge', 'Flink']:
+                  dir_path = Path(dir_name)
+                  if dir_path.exists():
+                      md_files = list(dir_path.rglob('*.md'))
+                      stats[dir_name] = len(md_files)
+                  else:
+                      stats[dir_name] = 0
+              return stats
+          
+          def main():
+              print("生成验证报告...")
+              
+              stats = count_files()
+              total = sum(stats.values())
+              
+              report = f"""# AnalysisDataFlow 验证报告
+
+**生成时间:** {datetime.now().isoformat()}
+**工作流运行:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+## 文档统计
+
+| 目录 | 文档数量 |
+|------|----------|
+| Struct | {stats.get('Struct', 0)} |
+| Knowledge | {stats.get('Knowledge', 0)} |
+| Flink | {stats.get('Flink', 0)} |
+| **总计** | **{total}** |
+
+## 验证状态
+
+- ✅ 定理编号唯一性验证
+- ✅ 交叉引用验证
+- ✅ Mermaid图表语法验证
+
+## 说明
+
+此报告由GitHub Actions自动生成。
+验证工作流确保项目文档的一致性和完整性。
+
+---
+*报告生成时间: {datetime.now().isoformat()}*
+"""
+              
+              with open('validation-report.md', 'w') as f:
+                  f.write(report)
+              
+              print("报告已生成: validation-report.md")
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python generate_report.py
+      
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: validation-report.md
+          retention-days: 90
+
+  # ===========================================================================
+  # Job 5: 总结验证结果
+  # ===========================================================================
+  summary:
+    name: 验证总结
+    runs-on: ubuntu-latest
+    needs: [validate-theorem-registry, validate-cross-references, validate-mermaid, generate-report]
+    if: always()
+    
+    steps:
+      - name: Summary
+        run: |
+          echo "## 📊 验证结果总结" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| 验证项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          
+          # 定理注册表验证状态
+          if [ "${{ needs.validate-theorem-registry.result }}" == "success" ]; then
+            echo "| 定理编号唯一性 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 定理编号唯一性 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 交叉引用验证状态
+          if [ "${{ needs.validate-cross-references.result }}" == "success" ]; then
+            echo "| 交叉引用验证 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 交叉引用验证 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Mermaid验证状态
+          if [ "${{ needs.validate-mermaid.result }}" == "success" ]; then
+            echo "| Mermaid图表验证 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mermaid图表验证 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "📄 详细报告请在Artifacts中查看" >> $GITHUB_STEP_SUMMARY

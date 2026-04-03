@@ -66,7 +66,7 @@
 | **形式证明** | [04.01 Checkpoint正确性](./04-proofs/04.01-flink-checkpoint-correctness.md) · [04.02 Exactly-Once正确性](./04-proofs/04.02-flink-exactly-once-correctness.md) · [04.03 Chandy-Lamport一致性](./04-proofs/04.03-chandy-lamport-consistency.md) |
 | **比较分析** | [05.01 Go vs Scala](./05-comparative-analysis/05.01-go-vs-scala-expressiveness.md) |
 | **前沿研究** | [06.01 开放问题](./06-frontier/06.01-open-problems-streaming-verification.md) · [06.02 Choreographic流编程](./06-frontier/06.02-choreographic-streaming-programming.md) · [06.03 AI Agent与会话类型](./06-frontier/06.03-ai-agent-session-types.md) · [06.04 pDOT路径依赖类型](./06-frontier/06.04-pdot-path-dependent-types.md) |
-| **形式化工具** | [Coq机械化证明](./07-tools/coq-mechanization.md) · [TLA+验证Flink](./07-tools/tla-for-flink.md) · [Iris分离逻辑](./07-tools/iris-separation-logic.md) · [模型检查实践](./07-tools/model-checking-practice.md) |
+| **形式化工具** | [Coq机械化证明](./07-tools/coq-mechanization.md) · [TLA+验证Flink](./07-tools/tla-for-flink.md) · [Iris分离逻辑](./07-tools/iris-separation-logic.md) · [模型检查实践](./07-tools/model-checking-practice.md) · [Smart Casual验证](./07-tools/smart-casual-verification.md) |
 | **标准规范** | [流式SQL标准](./08-standards/streaming-sql-standard.md) |
 
 ---
@@ -839,7 +839,8 @@ Struct/
 │   ├── coq-mechanization.md                    [Coq机械化证明, Thm-S-07-01/02]
 │   ├── tla-for-flink.md                        [TLA+验证Flink, Thm-S-07-01]
 │   ├── iris-separation-logic.md                [Iris分离逻辑, Thm-S-07-01/02]
-│   └── model-checking-practice.md              [模型检查实践, Prop-S-07-01]
+│   ├── model-checking-practice.md              [模型检查实践, Prop-S-07-01]
+│   └── smart-casual-verification.md            [Smart Casual验证, Def-S-07-13~16]
 └── 08-standards/                             [标准规范]
     └── streaming-sql-standard.md               [流式SQL标准, Thm-S-08-01]
 ```
@@ -860,9 +861,9 @@ Struct/
 | 类别 | 数量 | 总定理 | 总定义 | 总引理 |
 |------|------|--------|--------|--------|
 | 06-frontier | 5 | 7 | 23 | 12 |
-| 07-tools | 4 | 2 | 14 | 8 |
+| 07-tools | 5 | 2 | 18 | 8 |
 | 08-standards | 1 | 1 | 3 | 2 |
-| **新文档总计** | **10** | **10** | **40** | **22** |
+| **新文档总计** | **11** | **10** | **44** | **22** |
 
 ### 11.4 更新后完整统计
 
@@ -874,9 +875,9 @@ Struct/
 | 04-proofs | 3 | 4 | 15 | 12 |
 | 05-comparative | 1 | 1 | 4 | 4 |
 | 06-frontier | 5 | 7 | 23 | 12 |
-| 07-tools | 4 | 2 | 14 | 8 |
+| 07-tools | 5 | 2 | 18 | 8 |
 | 08-standards | 1 | 1 | 3 | 2 |
-| **总计** | **28** | **31** | **96** | **55** |
+| **总计** | **29** | **31** | **100** | **55** |
 
 ---
 

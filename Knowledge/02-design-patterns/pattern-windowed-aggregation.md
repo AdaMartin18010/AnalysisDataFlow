@@ -35,11 +35,13 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [窗口类型对比图](#窗口类型对比图)
     - [窗口聚合执行流程](#窗口聚合执行流程)
-  - [5.1 形式化保证总结 (Formal Guarantee Summary)](#51-形式化保证总结-formal-guarantee-summary)
-    - [依赖的核心定义](#依赖的核心定义)
-    - [依赖的核心定理](#依赖的核心定理)
-    - [模式组合性质保持](#模式组合性质保持)
-  - [8. 引用参考 (References)](#8-引用参考-references)
+  - [8. 形式化保证 (Formal Guarantees)](#8-形式化保证-formal-guarantees)
+    - [8.1 依赖的形式化定义](#81-依赖的形式化定义)
+    - [8.2 满足的形式化性质](#82-满足的形式化性质)
+    - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
+    - [8.4 边界条件与约束](#84-边界条件与约束)
+    - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
@@ -841,11 +843,11 @@ flowchart TD
 
 ---
 
-## 5.1 形式化保证总结 (Formal Guarantee Summary)
+## 8. 形式化保证 (Formal Guarantees)
 
-本节总结窗口聚合模式与 Struct/ 理论层的形式化连接。
+本节建立窗口聚合模式与 Struct/ 理论层的形式化连接，明确该模式依赖的定理、定义及其提供的语义保证。
 
-### 依赖的核心定义
+### 8.1 依赖的形式化定义
 
 | 定义编号 | 名称 | 来源 | 作用 |
 |----------|------|------|------|
@@ -853,7 +855,7 @@ flowchart TD
 | **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 窗口触发依赖 Watermark 单调性 |
 | **Def-S-07-01** | 确定性流计算系统 | Struct/02.01 | 窗口分配确定性保证结果可复现 |
 
-### 依赖的核心定理
+### 8.2 满足的形式化性质
 
 | 定理编号 | 名称 | 来源 | 保证内容 |
 |----------|------|------|----------|
@@ -861,7 +863,7 @@ flowchart TD
 | **Thm-S-04-01** | Dataflow 确定性定理 | Struct/01.04 | 窗口聚合结果与到达顺序无关 |
 | **Thm-S-07-01** | 流计算确定性定理 | Struct/02.01 | 纯函数 + 事件时间 → 确定性 |
 
-### 模式组合性质保持
+### 8.3 模式组合时的性质保持
 
 | 组合模式 | 保持性质 | 证明依据 |
 |----------|----------|----------|
@@ -869,9 +871,29 @@ flowchart TD
 | Window + Checkpoint | 状态恢复一致性 | Thm-S-17-01 |
 | Window + Async I/O | 聚合前富化顺序保持 | Lemma-S-04-02 |
 
+### 8.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| 乱序边界 L ≥ D_actual | Watermark 延迟参数必须大于等于实际乱序程度 | 数据丢失或结果不完整 |
+| 单调性保持 | ∀t₁ ≤ t₂: w(t₁) ≤ w(t₂) | 窗口重复触发，结果错误 |
+| 窗口时间覆盖 | $\bigcup_{wid \in W} [t_{start}, t_{end}) \supseteq \text{EventTimeRange}$ | 数据遗漏 |
+| 触发器确定性 | Trigger 函数在给定状态下输出确定 | 非确定性触发，结果不一致 |
+
+### 8.5 工程实现与理论的对应
+
+| 理论概念 | Flink API | 形式化基础 |
+|----------|-----------|-----------|
+| 窗口分配器 | `WindowAssigner` | Def-S-04-05 的窗口函数 W |
+| 滚动窗口 | `TumblingEventTimeWindows` | Def-K-02-02 Tumbling(δ) |
+| 滑动窗口 | `SlidingEventTimeWindows` | Def-K-02-02 Sliding(δ, s) |
+| 会话窗口 | `EventTimeSessionWindows` | Def-K-02-02 Session(g) |
+| 触发器 | `Trigger` | Def-S-04-05 的触发器 T |
+| 允许延迟 | `.allowedLateness()` | Def-S-04-05 的 F 参数 |
+
 ---
 
-## 8. 引用参考 (References)
+## 9. 引用参考 (References)
 
 [^1]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015. <https://doi.org/10.14778/2824032.2824076>
 

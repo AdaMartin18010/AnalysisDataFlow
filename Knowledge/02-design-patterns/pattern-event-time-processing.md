@@ -27,14 +27,14 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用场景](#41-推荐使用场景)
     - [4.2 不推荐使用场景](#42-不推荐使用场景)
-  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
-    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
-    - [5.2 满足的形式化性质](#52-满足的形式化性质)
-    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
-    - [5.4 边界条件与约束](#54-边界条件与约束)
-    - [5.5 工程实现与理论的对应](#55-工程实现与理论的对应)
-  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
-  - [6. 引用参考 (References)](#6-引用参考-references)
+  - [6. 形式化保证 (Formal Guarantees)](#6-形式化保证-formal-guarantees)
+    - [6.1 依赖的形式化定义](#61-依赖的形式化定义)
+    - [6.2 满足的形式化性质](#62-满足的形式化性质)
+    - [6.3 模式组合时的性质保持](#63-模式组合时的性质保持)
+    - [6.4 边界条件与约束](#64-边界条件与约束)
+    - [6.5 工程实现与理论的对应](#65-工程实现与理论的对应)
+  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [7. 引用参考 (References)](#7-引用参考-references)
 
 ---
 
@@ -607,11 +607,11 @@ Source B wm=10 ──┘ (空闲)
 
 ---
 
-## 5. 形式化保证 (Formal Guarantees)
+## 6. 形式化保证 (Formal Guarantees)
 
 本节建立 Event Time Processing 模式与 Struct/ 理论层的形式化连接，明确该模式依赖的定理、定义及其提供的语义保证。
 
-### 5.1 依赖的形式化定义
+### 6.1 依赖的形式化定义
 
 | 定义编号 | 名称 | 来源 | 在本模式中的作用 |
 |----------|------|------|-----------------|
@@ -620,7 +620,7 @@ Source B wm=10 ──┘ (空闲)
 | **Def-S-07-01** | 确定性流计算系统 | Struct/02.01 | 事件时间是实现确定性处理的六元组组成部分 |
 | **Def-S-08-04** | Exactly-Once 语义 | Struct/02.02 | 迟到数据处理不破坏端到端一致性 |
 
-### 5.2 满足的形式化性质
+### 6.2 满足的形式化性质
 
 | 定理/引理编号 | 名称 | 来源 | 保证内容 |
 |---------------|------|------|----------|
@@ -629,7 +629,7 @@ Source B wm=10 ──┘ (空闲)
 | **Thm-S-07-01** | 流计算确定性定理 | Struct/02.01 | 纯函数 + FIFO + 事件时间 → 确定性输出 |
 | **Prop-S-08-01** | 端到端 Exactly-Once 分解 | Struct/02.02 | Source ∧ Checkpoint ∧ Sink 三要素合取 |
 
-### 5.3 模式组合时的性质保持
+### 6.3 模式组合时的性质保持
 
 **Event Time + Windowed Aggregation 组合**：
 
@@ -641,7 +641,7 @@ Source B wm=10 ──┘ (空闲)
 - Checkpoint 持久化 Watermark 状态，保证故障恢复后的单调性延续
 - 恢复后的 Watermark 从 checkpointed 值继续推进，满足 Lemma-S-04-02
 
-### 5.4 边界条件与约束
+### 6.4 边界条件与约束
 
 | 约束条件 | 形式化描述 | 违反后果 |
 |----------|-----------|----------|
@@ -649,7 +649,7 @@ Source B wm=10 ──┘ (空闲)
 | 单调性保持 | ∀t₁ ≤ t₂: w(t₁) ≤ w(t₂) | 窗口重复触发，结果错误 |
 | 空闲源处理 | withIdleness(T) 配置 | 停滞 Watermark 阻塞全局进度 |
 
-### 5.5 工程实现与理论的对应
+### 6.5 工程实现与理论的对应
 
 | 理论概念 | Flink API | 形式化基础 |
 |----------|-----------|-----------|
@@ -660,7 +660,7 @@ Source B wm=10 ──┘ (空闲)
 
 ---
 
-## 6. 相关模式 (Related Patterns)
+## 5. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|
@@ -681,7 +681,7 @@ Flink 的 Event Time 处理机制是对 Google Dataflow 模型的工程实现：
 
 ---
 
-## 6. 引用参考 (References)
+## 7. 引用参考 (References)
 
 [^1]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015. <https://doi.org/10.14778/2824032.2824076>
 

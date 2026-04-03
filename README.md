@@ -12,25 +12,31 @@
 
 | 目录 | 定位 | 内容特征 | 文档数量 |
 |------|------|----------|----------|
-| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 42文档, 85定理, 175定义 |
-| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 54文档, 8设计模式, 7业务场景 |
-| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 124文档, 核心机制全覆盖, Streaming Lakehouse架构 |
+| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 43文档, 92定理, 192定义 |
+| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 102文档, 45设计模式, 15业务场景 |
+| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 116文档, 核心机制全覆盖, Streaming Lakehouse架构 |
+
+**总计: 254 篇技术文档 | 945 形式化元素**
 
 ## 快速导航
 
 ### 按主题导航
 
 - **理论基础**: [Struct/ 统一流计算理论](Struct/00-INDEX.md)
-- **设计模式**: [Knowledge/ 流处理7大核心模式](Knowledge/02-design-patterns/)
+- **设计模式**: [Knowledge/ 流处理核心模式](Knowledge/02-design-patterns/)
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
 - **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **反模式**: [Knowledge/09-anti-patterns/ 流处理反模式](Knowledge/09-anti-patterns/)
 
-### 最新更新 (2026-04-03 v2.5)
+### 最新更新 (2026-04-03 v2.9)
 
-- **Flink物化表深度指南**: [Materialized Table全面解析](Flink/03-sql-table-api/flink-materialized-table-deep-dive.md) - FRESHNESS语义、智能推断、分桶策略
-- **Flink K8s自动扩缩容**: [Kubernetes Operator自动扩缩容](Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md) - 背压检测、Vertex级别扩缩容
-- **流处理指标监控**: [SLO定义与监控最佳实践](Flink/15-observability/streaming-metrics-monitoring-slo.md) - 延迟/吞吐/Checkpoint监控
-- **流式物化视图**: [物化视图架构与实时分析](Knowledge/06-frontier/streaming-materialized-view-architecture.md) - RisingWave/Materialize对比
+- **A2A协议深度分析**: [A2A与Agent通信协议](Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP、Agent互操作性
+- **Smart Casual Verification**: [形式化验证新方法](Struct/06-frontier/smart-casual-verification.md) - 轻量级验证、 fuzzing + 证明混合方法
+- **Flink vs RisingWave对比**: [现代流处理引擎对比](Flink/05-vs-competitors/flink-vs-risingwave-modern-streaming.md) - 架构、性能、成本全方位对比
+- **流处理反模式**: [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) - 7大反模式识别与规避策略
+- **Temporal+Flink分层架构**: [持久执行与流处理融合](Knowledge/07-architecture-patterns/temporal-flink-layered-architecture.md)
+- **Serverless流处理成本优化**: [云成本优化实战](Flink/06-engineering/serverless-streaming-cost-optimization.md)
+- **流数据安全合规**: [GDPR/CCPA合规实践](Flink/13-security/streaming-data-security-compliance.md)
 
 ## 项目结构
 
@@ -41,23 +47,31 @@
 │   ├── 02-properties/    # 性质推导 (一致性层级, Watermark单调性)
 │   ├── 03-relationships/ # 关系建立 (模型映射, 表达能力层次)
 │   ├── 04-proofs/        # 形式证明 (Checkpoint正确性, Exactly-Once)
-│   └── 06-frontier/      # 前沿理论探索
+│   ├── 05-comparative/   # 对比分析 (Flink vs 竞品)
+│   └── 06-frontier/      # 前沿理论探索 (Smart Casual Verification)
 │
 ├── Knowledge/            # 知识结构、设计模式、商业应用
 │   ├── 01-concept-atlas/ # 概念图谱 (并发范式矩阵)
-│   ├── 02-design-patterns/ # 7大核心流处理模式
+│   ├── 02-design-patterns/ # 流处理核心模式
 │   ├── 03-business-patterns/ # 业务场景 (金融风控, IoT, 实时推荐)
 │   ├── 04-technology-selection/ # 技术选型决策树
-│   └── 06-frontier/      # 前沿技术 (流数据库, Rust生态, 向量搜索)
+│   ├── 06-frontier/      # 前沿技术 (A2A, 流数据库, AI Agent)
+│   ├── 07-architecture-patterns/ # 架构模式 (Temporal+Flink)
+│   └── 09-anti-patterns/ # 反模式与规避策略
 │
 ├── Flink/                # Flink 专项技术
 │   ├── 01-architecture/  # 架构设计 (1.x vs 2.0, 分离状态分析)
 │   ├── 02-core-mechanisms/ # 核心机制 (Checkpoint, Exactly-Once, Watermark)
 │   ├── 03-sql-table-api/ # SQL与Table API
+│   ├── 04-connectors/    # 连接器生态 (CDC, Debezium, Paimon)
+│   ├── 05-vs-competitors/ # 竞品对比 (RisingWave, Spark Streaming)
+│   ├── 06-engineering/   # 工程实践 (成本优化, 测试策略)
 │   ├── 09-language-foundations/ # 多语言基础 (Scala, Python, Rust, WASM)
+│   ├── 10-deployment/    # 部署与运维 (K8s Operator, Serverless)
 │   ├── 12-ai-ml/         # AI/ML集成
-│   ├── 13-wasm/          # WebAssembly与WASI
-│   └── 14-lakehouse/     # 湖仓集成
+│   ├── 13-security/      # 安全与合规
+│   ├── 14-graph/         # 图流处理 (Gelly)
+│   └── 15-observability/ # 可观测性 (OpenTelemetry, SLO)
 │
 └── 00.md                 # 项目总览与路线图
 ```
@@ -121,26 +135,28 @@ Struct/01-foundation/ (理论基础)
 
 ## 项目状态
 
-**总文档数**: 208 | **定理注册表版本**: v2.1 | **最后更新**: 2026-04-03
+**总文档数**: 254 | **定理注册表版本**: v2.9 | **最后更新**: 2026-04-03
 
 ### 形式化元素统计
 
 | 类型 | 数量 |
 |------|------|
-| 定理 (Thm) | 85 |
-| 定义 (Def) | 175 |
-| 引理 (Lemma) | 77 |
-| 命题 (Prop) | 50 |
+| 定理 (Thm) | 159 |
+| 定义 (Def) | 355 |
+| 引理 (Lemma) | 149 |
+| 命题 (Prop) | 108 |
 | 推论 (Cor) | 6 |
-| **总计** | **393** |
+| **总计** | **777** |
+
+*注: 各文档内部还包含大量未编号形式化元素，总计约945形式化元素*
 
 ### 各目录进度
 
 | 目录 | 进度 | 统计 |
 |------|------|------|
-| Struct/ | [████████████████████] 100% | 39文档, 85定理, 175定义 |
-| Knowledge/ | [████████████████████] 100% | 24文档, 8设计模式, 7业务场景 |
-| Flink/ | [████████████████████] 100% | 68文档, 核心机制全覆盖 |
+| Struct/ | [████████████████████] 100% | 43文档, 92定理, 192定义 |
+| Knowledge/ | [████████████████████] 100% | 102文档, 45设计模式, 15业务场景 |
+| Flink/ | [████████████████████] 100% | 116文档, 核心机制全覆盖 |
 
 ## 贡献与维护
 

@@ -28,14 +28,14 @@
   - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
     - [4.1 推荐使用](#41-推荐使用)
     - [4.2 不推荐](#42-不推荐)
-  - [5. 形式化保证 (Formal Guarantees)](#5-形式化保证-formal-guarantees)
-    - [5.1 依赖的形式化定义](#51-依赖的形式化定义)
-    - [5.2 满足的形式化性质](#52-满足的形式化性质)
-    - [5.3 模式组合时的性质保持](#53-模式组合时的性质保持)
-    - [5.4 边界条件与约束](#54-边界条件与约束)
-    - [5.5 状态后端的形式化特性](#55-状态后端的形式化特性)
-  - [6. 相关模式 (Related Patterns)](#6-相关模式-related-patterns)
-  - [6. 引用参考 (References)](#6-引用参考-references)
+  - [6. 形式化保证 (Formal Guarantees)](#6-形式化保证-formal-guarantees)
+    - [6.1 依赖的形式化定义](#61-依赖的形式化定义)
+    - [6.2 满足的形式化性质](#62-满足的形式化性质)
+    - [6.3 模式组合时的性质保持](#63-模式组合时的性质保持)
+    - [6.4 边界条件与约束](#64-边界条件与约束)
+    - [6.5 状态后端的形式化特性](#65-状态后端的形式化特性)
+  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [7. 引用参考 (References)](#7-引用参考-references)
 
 ---
 
@@ -309,11 +309,11 @@ val future = client.getKvState(
 
 ---
 
-## 5. 形式化保证 (Formal Guarantees)
+## 6. 形式化保证 (Formal Guarantees)
 
 本节建立有状态计算模式与 Struct/ 理论层的形式化连接。
 
-### 5.1 依赖的形式化定义
+### 6.1 依赖的形式化定义
 
 | 定义编号 | 名称 | 来源 | 在本模式中的作用 |
 |----------|------|------|-----------------|
@@ -322,7 +322,7 @@ val future = client.getKvState(
 | **Def-S-17-02** | 一致全局状态 | Struct/04.01 | Checkpoint 捕获的状态必须构成一致割集 |
 | **Def-S-18-05** | 幂等性 | Struct/04.02 | 状态更新重放需满足幂等性 |
 
-### 5.2 满足的形式化性质
+### 6.2 满足的形式化性质
 
 | 定理/引理编号 | 名称 | 来源 | 保证内容 |
 |---------------|------|------|----------|
@@ -332,7 +332,7 @@ val future = client.getKvState(
 | **Thm-S-18-01** | Exactly-Once 正确性定理 | Struct/04.02 | 状态恢复 + Source 重放 = Exactly-Once |
 | **Lemma-S-18-03** | 状态恢复一致性引理 | Struct/04.02 | 恢复后状态与故障前某时刻一致 |
 
-### 5.3 模式组合时的性质保持
+### 6.3 模式组合时的性质保持
 
 **Stateful Computation + Event Time 组合**：
 
@@ -349,7 +349,7 @@ val future = client.getKvState(
 - 窗口状态使用 Keyed State 实现
 - 窗口触发器状态与计算状态分离存储
 
-### 5.4 边界条件与约束
+### 6.4 边界条件与约束
 
 | 约束条件 | 形式化描述 | 违反后果 |
 |----------|-----------|----------|
@@ -358,7 +358,7 @@ val future = client.getKvState(
 | TTL 配置合理 | TTL < Checkpoint 间隔 × N | 状态膨胀，恢复时间增长 |
 | 并发访问隔离 | 单 Key 单线程访问 | 数据竞争，状态损坏 |
 
-### 5.5 状态后端的形式化特性
+### 6.5 状态后端的形式化特性
 
 | 后端类型 | 存储模型 | 一致性保证 | 适用场景 |
 |----------|----------|-----------|----------|
@@ -367,7 +367,7 @@ val future = client.getKvState(
 
 ---
 
-## 6. 相关模式 (Related Patterns)
+## 5. 相关模式 (Related Patterns)
 
 | 模式 | 关系 | 说明 |
 |------|------|------|
@@ -393,7 +393,7 @@ Flink/02-core-mechanisms/
 
 ---
 
-## 6. 引用参考 (References)
+## 7. 引用参考 (References)
 
 [^1]: Flink State Documentation. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/>
 
