@@ -1188,6 +1188,11 @@
 | Prop-F-03-07 | 多窗口并行执行效率 | Flink/03-sql-table-api | 性能边界分析 |
 | **Flink工程实践 - dbt集成** | | | | |
 | Prop-F-06-20 | dbt增量物化一致性 | Flink/06-engineering | 增量更新正确性 |
+| **CDC 3.0数据集成** | | | |
+| Prop-F-04-60 | CDC延迟-一致性权衡 | Flink/04-connectors | 实时性分析 |
+| Prop-F-04-61 | 模式演化兼容性边界 | Flink/04-connectors | Schema变更影响 |
+| **流处理测试策略** | | | |
+| Prop-F-06-01 | 测试覆盖率与缺陷检测关系 | Flink/06-engineering | 覆盖率效用分析 |
 | **流数据治理** | | | | |
 | Prop-K-08-12 | 数据质量规则覆盖率 | Knowledge/08-standards | 规则完备性分析 |
 | Prop-K-08-13 | 血缘传播延迟边界 | Knowledge/08-standards | 端到端延迟分析 |
