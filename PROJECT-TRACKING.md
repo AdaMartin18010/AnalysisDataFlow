@@ -54,20 +54,23 @@
 - **Flink AI Agents** - FLIP-531原生Agent支持 ⭐新增
 - **Flink 2.3 Roadmap** - 2.3/2.4路线图全解 ⭐新增
 
-### 🚀 前沿技术 (12篇)
+### 🚀 前沿技术 (15篇)
 
 - **First-Person Choreographic Programming (1CP)** - PLDI 2025最新研究
 - **Streaming Lakehouse** - Iceberg/Delta + Flink深度集成
 - **Apache Fluss** - 为流分析而生的分布式存储
 - **Real-time RAG** - 流式检索增强生成架构
 - **Vector Database Integration** - Milvus/PgVector/Pinecone
-- **Streaming Database Ecosystem** - RisingWave/Materialize/Flink深度对比 ⭐新增
-- **Edge Streaming Architecture** - IoT边缘流处理与AI推理 ⭐新增
-- **Real-time Data Mesh** - 实时数据网格实践指南 ⭐新增
+- **Streaming Database Ecosystem** - RisingWave/Materialize/Flink深度对比
+- **Edge Streaming Architecture** - IoT边缘流处理与AI推理
+- **Real-time Data Mesh** - 实时数据网格实践指南
 - **Streaming Materialized Views** - 流式物化视图架构详解
-- **Real-time Feature Store** - 实时特征平台架构实践 ⭐新增
-- **MCP Protocol** - Model Context Protocol与流处理集成 ⭐新增
-- **Streaming Data Governance** - 流数据治理与质量管理 ⭐新增
+- **Real-time Feature Store** - 实时特征平台架构实践
+- **MCP Protocol** - Model Context Protocol与流处理集成
+- **Streaming Data Governance** - 流数据治理与质量管理
+- **Streaming Graph Processing** - 实时图流处理与TGN ⭐新增
+- **Multimodal Streaming** - 多模态流处理架构 ⭐新增
+- **Flink AI Agents** - 原生Agent运行时 ⭐新增
 
 ### 🦀 Rust生态 (✅ 已完成)
 
@@ -88,16 +91,16 @@
 - **07-tools/**: TLA+验证
 - **08-standards/**: 流式SQL标准
 
-### Knowledge/ 知识结构 (33篇)
+### Knowledge/ 知识结构 (37篇)
 
 - **01-concept-atlas/**: 概念图谱
 - **02-design-patterns/**: 事件时间、日志分析
 - **03-business-patterns/**: Uber/Netflix/Alibaba/**Stripe/Spotify/Airbnb**
 - **05-mapping-guides/**: 形式化到实现映射
-- **06-frontier/**: 流数据库、访问控制、SLO、✅Streaming Lakehouse、✅实时RAG、✅Rust生态、✅RisingWave深度分析、✅GPU TEE、✅Edge Streaming、✅流数据库生态对比、✅边缘流处理架构、✅实时数据网格、✅流式物化视图、✅特征平台、✅MCP协议
-- **08-standards/**: 流数据治理与质量管理 ⭐新增
+- **06-frontier/**: 流数据库、访问控制、SLO、✅Streaming Lakehouse、✅实时RAG、✅Rust生态、✅RisingWave深度分析、✅GPU TEE、✅Edge Streaming、✅流数据库生态对比、✅边缘流处理架构、✅实时数据网格、✅流式物化视图、✅特征平台、✅MCP协议、✅图流处理TGN、✅多模态流处理
+- **08-standards/**: 流数据治理与质量管理
 
-### Flink/ 专项体系 (64篇)
+### Flink/ 专项体系 (68篇)
 
 - **01-architecture/**: 架构演进
 - **02-core-mechanisms/**: Checkpoint、Exactly-Once、**Delta Join**、**Materialized Table v2**
@@ -106,11 +109,11 @@
 - **05-vs-competitors/**: vs Spark
 - **06-engineering/**: 性能调优
 - **07-case-studies/**: 实时分析平台
-- **08-roadmap/**: 2026路线图
+- **08-roadmap/**: 2026路线图、**Flink 2.3/2.4 Roadmap** ⭐新增
 - **09-language-foundations/**: Scala、**PyFlink (含Async)**、Rust
 - **10-deployment/**: Kubernetes、**Kubernetes Autoscaler**
 - **11-future/**: 路线图
-- **12-ai-ml/**: Flink ML、特征工程、在线学习、模型服务、**向量数据库集成**
+- **12-ai-ml/**: Flink ML、特征工程、在线学习、模型服务、**向量数据库集成**、**Flink AI Agents (FLIP-531)** ⭐新增
 - **13-wasm/**: WebAssembly (**WASI 0.3 + Component Model**)
 - **13-security/**: TEE
 - **14-lakehouse/**: ✅Streaming Lakehouse架构、✅Iceberg集成、✅Paimon集成、✅Streaming DB Guide
