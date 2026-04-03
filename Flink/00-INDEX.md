@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 50+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 58+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -125,6 +125,7 @@ graph LR
 | **AI/ML** | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) | L4 | 50 min |
 | **AI/ML** | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) | L3 | 40 min |
 | **AI/ML** | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) | L4-L5 | 55 min |
+| **AI/ML** | [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) | L4 | 50 min |
 | **Lakehouse** | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | L4-L5 | 50 min |
 | **Lakehouse** | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | L4-L5 | 45 min |
 | **Security** | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) | L4-L5 | 50 min |
@@ -151,6 +152,11 @@ graph LR
 | **前沿特性** | Flink 2.2 新特性有哪些？ | [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) |
 | **SQL/Table API** | Delta Join 如何使用？ | [delta-join.md](02-core-mechanisms/delta-join.md) |
 | **Lakehouse** | 流批统一存储选哪个？ | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| **Lakehouse** | Delta Lake 如何集成？ | [flink-delta-lake-integration.md](04-connectors/flink-delta-lake-integration.md) |
+| **AI/ML** | 实时特征工程如何实现？ | [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) |
+| **数据质量** | 实时数据质量如何监控？ | [realtime-data-quality-monitoring.md](15-observability/realtime-data-quality-monitoring.md) |
+| **ETL** | Streaming ETL 最佳实践？ | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) |
+| **案例** | 智能制造IoT案例 | [case-smart-manufacturing-iot.md](07-case-studies/case-smart-manufacturing-iot.md) |
 | **Security** | 敏感数据如何保护？ | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
 
 ---
@@ -358,6 +364,7 @@ flowchart TD
 | [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) | Flink 2.2 前沿特性 | [vector-search.md](03-sql-table-api/vector-search.md) |
 | [delta-join.md](02-core-mechanisms/delta-join.md) | Delta Join 机制 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [async-execution-model.md](02-core-mechanisms/async-execution-model.md) | 异步执行模型 | - |
+| [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 
 ### 6.3 03-sql-table-api/ SQL与表API层
 
@@ -376,6 +383,7 @@ flowchart TD
 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) | Kafka集成 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
 | [fluss-integration.md](04-connectors/fluss-integration.md) | Fluss集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | [04.04-cdc-debezium-integration.md](04-connectors/04.04-cdc-debezium-integration.md) | CDC与Debezium集成 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md), [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [flink-delta-lake-integration.md](04-connectors/flink-delta-lake-integration.md) | Delta Lake集成 | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) |
 
 ### 6.5 05-vs-competitors/ 竞品对比层
 
@@ -398,6 +406,9 @@ flowchart TD
 |------|------|----------|
 | [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) | IoT案例 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) |
 | [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) | 实时分析 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
+| [case-smart-manufacturing-iot.md](07-case-studies/case-smart-manufacturing-iot.md) | 智能制造IoT | [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) |
+| [case-logistics-realtime-tracking.md](07-case-studies/case-logistics-realtime-tracking.md) | 物流实时追踪 | [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) |
+| [case-smart-grid-energy-management.md](07-case-studies/case-smart-grid-energy-management.md) | 智能电网能源管理 | [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) |
 
 ### 6.8 08-roadmap/ 发展路线图层
 
@@ -444,6 +455,7 @@ flowchart TD
 | [model-serving-streaming.md](12-ai-ml/model-serving-streaming.md) | 模型服务 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) | 向量数据库 | [vector-search.md](03-sql-table-api/vector-search.md) |
 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) | RAG架构 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
+| [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) | 实时特征工程 | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
 
 ### 6.13 13-security/ 安全与可信计算层
 
@@ -481,6 +493,7 @@ flowchart TD
 | [distributed-tracing.md](15-observability/distributed-tracing.md) | 分布式追踪 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
 | [event-reporting.md](15-observability/event-reporting.md) | 事件报告 | [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) |
 | [split-level-watermark-metrics.md](15-observability/split-level-watermark-metrics.md) | Watermark指标 | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) |
+| [realtime-data-quality-monitoring.md](15-observability/realtime-data-quality-monitoring.md) | 实时数据质量监控 | [metrics-and-monitoring.md](15-observability/metrics-and-monitoring.md) |
 
 ---
 
@@ -622,6 +635,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-02 (新增 Flink 2.2 特性、WASI 0.3、Timely Dataflow 优化分析)*
+*更新时间: 2026-04-03 (新增7篇文档：Streaming ETL、Delta Lake集成、智能制造IoT、物流追踪、智能电网、实时特征工程、数据质量监控)*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 60+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*
+*文档统计: 58+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*
