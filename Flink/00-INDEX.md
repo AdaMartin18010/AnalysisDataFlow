@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 60+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 64+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -365,6 +365,7 @@ flowchart TD
 | [delta-join.md](02-core-mechanisms/delta-join.md) | Delta Join 机制 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [async-execution-model.md](02-core-mechanisms/async-execution-model.md) | 异步执行模型 | - |
 | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
+| [multi-way-join-optimization.md](02-core-mechanisms/multi-way-join-optimization.md) | 多路Join优化 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
 
 ### 6.3 03-sql-table-api/ SQL与表API层
 
@@ -375,6 +376,8 @@ flowchart TD
 | [vector-search.md](03-sql-table-api/vector-search.md) | 向量搜索 | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
 | [model-ddl-and-ml-predict.md](03-sql-table-api/model-ddl-and-ml-predict.md) | ML预测 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) | 物化表 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [flink-python-udf.md](03-sql-table-api/flink-python-udf.md) | Python UDF | [02-python-api.md](09-language-foundations/02-python-api.md) |
+| [flink-process-table-functions.md](03-sql-table-api/flink-process-table-functions.md) | Process Table Functions | [flink-python-udf.md](03-sql-table-api/flink-python-udf.md) |
 
 ### 6.4 04-connectors/ 连接器层
 
@@ -401,6 +404,7 @@ flowchart TD
 |------|------|----------|
 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) | 性能调优 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
 | [state-backend-selection.md](06-engineering/state-backend-selection.md) | 状态后端 | [forst-state-backend.md](02-core-mechanisms/forst-state-backend.md) |
+| [flink-dbt-integration.md](06-engineering/flink-dbt-integration.md) | Flink与dbt集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 
 ### 6.7 07-case-studies/ 案例研究层
 
@@ -411,6 +415,7 @@ flowchart TD
 | [case-smart-manufacturing-iot.md](07-case-studies/case-smart-manufacturing-iot.md) | 智能制造IoT | [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) |
 | [case-logistics-realtime-tracking.md](07-case-studies/case-logistics-realtime-tracking.md) | 物流实时追踪 | [case-realtime-analytics.md](07-case-studies/case-realtime-analytics.md) |
 | [case-smart-grid-energy-management.md](07-case-studies/case-smart-grid-energy-management.md) | 智能电网能源管理 | [case-iot-stream-processing.md](07-case-studies/case-iot-stream-processing.md) |
+| [case-clickstream-user-behavior-analytics.md](07-case-studies/case-clickstream-user-behavior-analytics.md) | Clickstream用户行为分析 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 
 ### 6.8 08-roadmap/ 发展路线图层
 
@@ -440,6 +445,7 @@ flowchart TD
 | 文档 | 主题 | 关联文档 |
 |------|------|----------|
 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) | K8s部署 | [deployment-architectures.md](01-architecture/deployment-architectures.md) |
+| [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) | Flink Kubernetes Operator深度指南 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) |
 
 ### 6.11 11-benchmarking/ 基准测试层
 
@@ -637,6 +643,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-03 (新增9篇文档：Streaming ETL、Delta Lake集成、智能制造IoT、物流追踪、智能电网、实时特征工程、数据质量监控、Iceberg集成、Paimon集成)*
+*更新时间: 2026-04-03 (新增2篇文档：Flink Kubernetes Operator深度指南、Clickstream用户行为分析案例)*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 60+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*
+*文档统计: 64+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*

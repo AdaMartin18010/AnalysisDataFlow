@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v1.6 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v1.8 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -26,13 +26,16 @@
     - [2.9 流式Lakehouse一致性定理 (Knowledge/08-lakehouse-consistency)](#29-流式lakehouse一致性定理-knowledge08-lakehouse-consistency)
     - [2.10 RAG流式正确性定理 (Knowledge/09-rag-streaming)](#210-rag流式正确性定理-knowledge09-rag-streaming)
     - [2.11 Flink扩展定理 (Flink/02-core-mechanisms)](#211-flink扩展定理-flink02-core-mechanisms)
+    - [2.11.1 Flink SQL/Table API扩展定理 (Flink/03-sql-table-api)](#2111-flink-sqltable-api扩展定理-flink03-sql-table-api)
+    - [2.11.2 Flink工程实践扩展定理 (Flink/06-engineering)](#2112-flink工程实践扩展定理-flink06-engineering)
     - [2.12 Flink扩展定理 (Flink/09-language-foundations)](#212-flink扩展定理-flink09-language-foundations)
     - [2.13 Flink扩展定理 (Flink/13-wasm)](#213-flink扩展定理-flink13-wasm)
     - [2.14 Flink AI/ML扩展定理 (Flink/12-ai-ml)](#214-flink-aiml扩展定理-flink12-ai-ml)
     - [2.15 Flink案例研究定理 (Flink/07-case-studies)](#215-flink案例研究定理-flink07-case-studies)
     - [2.16 Flink观测性定理 (Flink/15-observability)](#216-flink观测性定理-flink15-observability)
     - [2.17 Flink连接器定理 (Flink/04-connectors)](#217-flink连接器定理-flink04-connectors)
-    - [2.18 Knowledge前沿扩展定理 (Knowledge/06-frontier)](#218-knowledge前沿扩展定理-knowledge06-frontier)
+    - [2.18 Flink部署定理 (Flink/10-deployment)](#218-flink部署定理-flink10-deployment)
+    - [2.19 Knowledge前沿扩展定理 (Knowledge/06-frontier)](#219-knowledge前沿扩展定理-knowledge06-frontier)
   - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx)
     - [3.1 基础层定义 (01-foundation)](#31-基础层定义-01-foundation)
     - [3.2 性质层定义 (02-properties)](#32-性质层定义-02-properties)
@@ -40,13 +43,16 @@
     - [3.4 证明层定义 (04-proofs)](#34-证明层定义-04-proofs)
     - [3.5 知识层定义 (Knowledge)](#35-知识层定义-knowledge)
     - [3.6 Flink扩展定义 (Flink/02-core-mechanisms)](#36-flink扩展定义-flink02-core-mechanisms)
+    - [3.6.1 Flink SQL/Table API扩展定义 (Flink/03-sql-table-api)](#361-flink-sqltable-api扩展定义-flink03-sql-table-api)
+    - [3.6.2 Flink工程实践扩展定义 (Flink/06-engineering)](#362-flink工程实践扩展定义-flink06-engineering)
     - [3.7 Flink扩展定义 (Flink/09-language-foundations)](#37-flink扩展定义-flink09-language-foundations)
     - [3.8 Flink扩展定义 (Flink/13-wasm)](#38-flink扩展定义-flink13-wasm)
     - [3.9 Flink AI/ML扩展定义 (Flink/12-ai-ml)](#39-flink-aiml扩展定义-flink12-ai-ml)
     - [3.10 Flink案例研究定义 (Flink/07-case-studies)](#310-flink案例研究定义-flink07-case-studies)
     - [3.11 Flink观测性定义 (Flink/15-observability)](#311-flink观测性定义-flink15-observability)
     - [3.12 Flink连接器定义 (Flink/04-connectors)](#312-flink连接器定义-flink04-connectors)
-    - [3.13 Knowledge前沿扩展定义 (Knowledge/06-frontier)](#313-knowledge前沿扩展定义-knowledge06-frontier)
+    - [3.13 Flink部署定义 (Flink/10-deployment)](#313-flink部署定义-flink10-deployment)
+    - [3.14 Knowledge前沿扩展定义 (Knowledge/06-frontier)](#314-knowledge前沿扩展定义-knowledge06-frontier)
   - [4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)](#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx)
     - [4.1 基础层引理 (01-foundation)](#41-基础层引理-01-foundation)
     - [4.2 性质层引理 (02-properties)](#42-性质层引理-02-properties)
@@ -58,8 +64,11 @@
     - [4.8 Flink AI/ML扩展引理 (Flink/12-ai-ml)](#48-flink-aiml扩展引理-flink12-ai-ml)
     - [4.9 Flink案例研究引理 (Flink/07-case-studies)](#49-flink案例研究引理-flink07-case-studies)
     - [4.10 Flink核心机制扩展引理 (Flink/02-core-mechanisms)](#410-flink核心机制扩展引理-flink02-core-mechanisms)
+    - [4.10.1 Flink SQL/Table API扩展引理 (Flink/03-sql-table-api)](#4101-flink-sqltable-api扩展引理-flink03-sql-table-api)
+    - [4.10.2 Flink工程实践扩展引理 (Flink/06-engineering)](#4102-flink工程实践扩展引理-flink06-engineering)
     - [4.11 Flink连接器引理 (Flink/04-connectors)](#411-flink连接器引理-flink04-connectors)
-    - [4.12 Knowledge前沿扩展引理 (Knowledge/06-frontier)](#412-knowledge前沿扩展引理-knowledge06-frontier)
+    - [4.12 Flink部署引理 (Flink/10-deployment)](#412-flink部署引理-flink10-deployment)
+    - [4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)](#413-knowledge前沿扩展引理-knowledge06-frontier)
   - [5. 命题与推论注册表](#5-命题与推论注册表)
     - [5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)](#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx)
     - [5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)](#52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx)
@@ -128,6 +137,9 @@
 | 08 | Knowledge/08-lakehouse-consistency/ | 流式Lakehouse一致性 |
 | 09 | Knowledge/09-rag-streaming/ | RAG流式正确性 |
 | 08 | Struct/08-standards/ | 流式SQL标准 |
+| 08 | Knowledge/08-standards/ | 流数据治理 |
+| 03 | Flink/03-sql-table-api/ | SQL/Table API |
+| 06 | Flink/06-engineering/ | 工程实践 |
 | 12 | Flink/12-ai-ml/ | AI/ML流处理 |
 | 07 | Flink/07-case-studies/ | 案例研究 |
 
@@ -257,6 +269,25 @@
 | Thm-F-02-35 | Streaming ETL端到端一致性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
 | Thm-F-02-36 | Schema演化兼容性定理 | Flink/02-core-mechanisms | L4 | ✅ |
 | Thm-F-02-37 | 乱序数据处理正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| **多路Join优化** | | | | |
+| Thm-F-02-40 | 多路Join最优计划选择定理 | Flink/02-core-mechanisms | L4 | ✅ |
+
+### 2.11.1 Flink SQL/Table API扩展定理 (Flink/03-sql-table-api)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| **Python UDF** | | | | |
+| Thm-F-03-15 | Python UDF执行正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
+| **Process Table Functions** | | | | |
+| Thm-F-03-20 | PTF多态处理正确性定理 | Flink/03-sql-table-api | L4-L5 | ✅ |
+
+### 2.11.2 Flink工程实践扩展定理 (Flink/06-engineering)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| **Flink与dbt集成** | | | | |
+| Thm-F-06-20 | dbt模型增量编译正确性定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-21 | Flink-dbt血缘追踪完整性定理 | Flink/06-engineering | L4 | ✅ |
 
 ### 2.12 Flink扩展定理 (Flink/09-language-foundations)
 
@@ -301,6 +332,8 @@
 | **游戏实时分析与反作弊** | | | | |
 | Thm-F-07-61 | 游戏反作弊检测正确性定理 | Flink/07-case-studies | L4 | ✅ |
 | Thm-F-07-62 | 实时玩家匹配公平性定理 | Flink/07-case-studies | L4 | ✅ |
+| **Clickstream用户行为分析** | | | | |
+| Thm-F-07-71 | Clickstream实时分析正确性定理 | Flink/07-case-studies | L4 | ✅ |
 
 ### 2.16 Flink观测性定理 (Flink/15-observability)
 
@@ -328,12 +361,22 @@
 | Thm-F-04-52 | 变更日志生成正确性定理 | Flink/04-connectors | L4 | ✅ |
 | Thm-F-04-53 | Paimon合并引擎正确性定理 | Flink/04-connectors | L4 | ✅ |
 
-### 2.18 Knowledge前沿扩展定理 (Knowledge/06-frontier)
+### 2.18 Flink部署定理 (Flink/10-deployment)
+
+| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
+|------|------|------|-----------|------|
+| **Flink Kubernetes Operator深度指南** | | | | |
+| Thm-F-10-20 | Flink Kubernetes Operator部署一致性定理 | Flink/10-deployment | L4 | ✅ |
+| Thm-F-10-21 | Operator自动扩缩容正确性定理 | Flink/10-deployment | L4 | ✅ |
+
+### 2.19 Knowledge前沿扩展定理 (Knowledge/06-frontier)
 
 | 编号 | 名称 | 位置 | 形式化等级 | 状态 |
 |------|------|------|-----------|------|
 | Thm-K-06-50 | 区块链流处理一致性定理 | Knowledge/06-frontier | L4 | ✅ |
 | Thm-K-06-51 | 智能合约事件驱动执行正确性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
+| **流数据治理** | | | | |
+| Thm-K-08-15 | 流数据治理策略一致性定理 | Knowledge/08-standards | L4 | ✅ |
 
 ---
 
@@ -525,6 +568,42 @@
 | Def-F-02-53 | 状态后端选型 | Flink/02-core-mechanisms | StateBackend配置 |
 | Def-F-02-54 | 检查点策略 | Flink/02-core-mechanisms | CheckpointPolicy定义 |
 | Def-F-02-55 | 恢复点管理 | Flink/02-core-mechanisms | SavepointManagement |
+| **多路Join优化** | | | | |
+| Def-F-02-56 | 多路Join查询图 | Flink/02-core-mechanisms | MultiWayJoinGraph定义 |
+| Def-F-02-57 | Join树结构 | Flink/02-core-mechanisms | JoinTree形式化 |
+| Def-F-02-58 | 代价模型 | Flink/02-core-mechanisms | CostModel定义 |
+| Def-F-02-59 | 左深树与浓密树 | Flink/02-core-mechanisms | LeftDeep/BushyTree |
+| Def-F-02-60 | 动态规划优化器 | Flink/02-core-mechanisms | DPOptimizer定义 |
+
+### 3.6.1 Flink SQL/Table API扩展定义 (Flink/03-sql-table-api)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Python UDF** | | | |
+| Def-F-03-20 | Python UDF抽象 | Flink/03-sql-table-api | Python函数封装语义 |
+| Def-F-03-21 | 向量化的Python UDF | Flink/03-sql-table-api | Vectorized Python UDF |
+| Def-F-03-22 | Python UDF状态管理 | Flink/03-sql-table-api | 状态生命周期管理 |
+| **Process Table Functions** | | | |
+| Def-F-03-30 | PTF基本抽象 | Flink/03-sql-table-api | ProcessTableFunction定义 |
+| Def-F-03-31 | 表值函数语义 | Flink/03-sql-table-api | TableValuedFunction |
+| Def-F-03-32 | PTF输入表句柄 | Flink/03-sql-table-api | TableHandle抽象 |
+| Def-F-03-33 | PTF分区与排序 | Flink/03-sql-table-api | Partition/Order语义 |
+| Def-F-03-34 | PTF输出行语义 | Flink/03-sql-table-api | Emit语义定义 |
+| Def-F-03-35 | PTF多态处理 | Flink/03-sql-table-api | PolymorphicProcessing |
+| Def-F-03-36 | PTF与标准SQL对比 | Flink/03-sql-table-api | PTF vs SQL:2016 PTF |
+| Def-F-03-37 | PTF在Flink中的实现 | Flink/03-sql-table-api | Flink PTF实现细节 |
+| Def-F-03-38 | PTF应用场景 | Flink/03-sql-table-api | Top-N/范围分析等 |
+
+### 3.6.2 Flink工程实践扩展定义 (Flink/06-engineering)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Flink与dbt集成** | | | |
+| Def-F-06-20 | dbt项目结构 | Flink/06-engineering | dbt项目元模型 |
+| Def-F-06-21 | dbt模型语义 | Flink/06-engineering | Model定义与编译 |
+| Def-F-06-22 | dbt物化策略 | Flink/06-engineering | Materialization策略 |
+| Def-F-06-23 | Flink-dbt适配器 | Flink/06-engineering | Adapter接口定义 |
+| Def-F-06-24 | 血缘元数据模型 | Flink/06-engineering | Lineage Metadata |
 
 ### 3.7 Flink扩展定义 (Flink/09-language-foundations)
 
@@ -602,6 +681,12 @@
 | Def-F-07-65 | 游戏经济系统模型 | Flink/07-case-studies | 虚拟经济流处理形式化 |
 | Def-F-07-66 | 实时排行榜语义 | Flink/07-case-studies | 全球/好友排行榜更新模型 |
 | Def-F-07-67 | 异常行为检测窗口 | Flink/07-case-studies | 滑动窗口异常检测定义 |
+| **Clickstream用户行为分析** | | | |
+| Def-F-07-71 | 点击流事件模型 | Flink/07-case-studies | 用户点击行为事件形式化 |
+| Def-F-07-72 | 会话(session)语义 | Flink/07-case-studies | 用户会话识别与分割 |
+| Def-F-07-73 | 漏斗分析模型 | Flink/07-case-studies | 多步骤转化漏斗定义 |
+| Def-F-07-74 | 用户路径分析 | Flink/07-case-studies | 页面浏览路径序列模型 |
+| Def-F-07-75 | 留存分析计算 | Flink/07-case-studies | 用户留存率实时计算语义 |
 
 ### 3.11 Flink观测性定义 (Flink/15-observability)
 
@@ -648,7 +733,19 @@
 | Def-F-04-66 | 分区与桶 | Flink/04-connectors | Partition与Bucket策略 |
 | Def-F-04-67 | 全增量一体化 | Flink/04-connectors | 批读流读统一接口 |
 
-### 3.13 Knowledge前沿扩展定义 (Knowledge/06-frontier)
+### 3.13 Flink部署定义 (Flink/10-deployment)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Flink Kubernetes Operator深度指南** | | | |
+| Def-F-10-20 | Kubernetes Operator模式 | Flink/10-deployment | CRD + Controller架构 |
+| Def-F-10-21 | FlinkDeployment CRD | Flink/10-deployment | 声明式部署规范 |
+| Def-F-10-22 | FlinkSessionJob CRD | Flink/10-deployment | 会话模式作业定义 |
+| Def-F-10-23 | 自动扩缩容策略 | Flink/10-deployment | 水平/垂直扩缩容语义 |
+| Def-F-10-24 | 滚动升级机制 | Flink/10-deployment | 无中断升级过程 |
+| Def-F-10-25 | 资源调度优化 | Flink/10-deployment | TaskManager资源分配 |
+
+### 3.14 Knowledge前沿扩展定义 (Knowledge/06-frontier)
 
 | 编号 | 名称 | 位置 | 说明 |
 |------|------|------|------|
@@ -657,6 +754,10 @@
 | Def-K-06-82 | 智能合约执行环境 | Knowledge/06-frontier | EVM/WASM运行时语义 |
 | Def-K-06-83 | 去中心化身份验证 | Knowledge/06-frontier | DID与零知识证明 |
 | Def-K-06-84 | 链上/链下数据桥 | Knowledge/06-frontier | Oracle与数据可用性层 |
+| **流数据治理** | | | |
+| Def-K-08-20 | 数据治理框架 | Knowledge/08-standards | DataGovernance定义 |
+| Def-K-08-21 | 数据质量维度 | Knowledge/08-standards | QualityDimension模型 |
+| Def-K-08-22 | 数据血缘追踪 | Knowledge/08-standards | DataLineage形式化 |
 
 ---
 
@@ -795,6 +896,10 @@
 | Lemma-F-07-62 | 反作弊规则触发一致性引理 | Flink/07-case-studies | Thm-F-07-61基础 |
 | Lemma-F-07-63 | 玩家匹配公平性边界引理 | Flink/07-case-studies | Thm-F-07-62基础 |
 | Lemma-F-07-64 | 排行榜更新单调性引理 | Flink/07-case-studies | 排名一致性保证 |
+| **Clickstream用户行为分析** | | | |
+| Lemma-F-07-71 | 点击事件时间窗口完整性引理 | Flink/07-case-studies | 会话边界保证 |
+| Lemma-F-07-72 | 用户路径追踪一致性引理 | Flink/07-case-studies | Thm-F-07-71基础 |
+| Lemma-F-07-73 | 漏斗转化率计算准确性引理 | Flink/07-case-studies | 转化计算正确性 |
 
 ### 4.10 Flink核心机制扩展引理 (Flink/02-core-mechanisms)
 
@@ -802,6 +907,25 @@
 |------|------|------|----------|
 | Lemma-F-02-20 | ETL管道可组合性引理 | Flink/02-core-mechanisms | 管道拼接正确性 |
 | Lemma-F-02-21 | Schema演化保持性引理 | Flink/02-core-mechanisms | Thm-F-02-36基础 |
+| **多路Join优化** | | | | |
+| Lemma-F-02-40 | Join计划代价单调性引理 | Flink/02-core-mechanisms | Thm-F-02-40基础 |
+| Lemma-F-02-41 | 动态规划最优子结构引理 | Flink/02-core-mechanisms | 优化器正确性基础 |
+
+### 4.10.1 Flink SQL/Table API扩展引理 (Flink/03-sql-table-api)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Python UDF** | | | |
+| Lemma-F-03-07 | Python UDF序列化引理 | Flink/03-sql-table-api | 函数传输正确性 |
+| Lemma-F-03-08 | Python-Java互操作类型保持引理 | Flink/03-sql-table-api | 跨语言类型安全 |
+
+### 4.10.2 Flink工程实践扩展引理 (Flink/06-engineering)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Flink与dbt集成** | | | |
+| Lemma-F-06-20 | dbt模型增量编译引理 | Flink/06-engineering | Thm-F-06-20基础 |
+| Lemma-F-06-21 | 血缘传播完整性引理 | Flink/06-engineering | Thm-F-06-21基础 |
 
 ### 4.11 Flink连接器引理 (Flink/04-connectors)
 
@@ -818,13 +942,27 @@
 | Lemma-F-04-50 | Paimon LSM写入原子性引理 | Flink/04-connectors | Thm-F-04-50基础 |
 | Lemma-F-04-51 | 变更日志完备性引理 | Flink/04-connectors | Thm-F-04-52基础 |
 
-### 4.12 Knowledge前沿扩展引理 (Knowledge/06-frontier)
+### 4.12 Flink部署引理 (Flink/10-deployment)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Flink Kubernetes Operator深度指南** | | | |
+| Lemma-F-10-20 | CRD状态一致性引理 | Flink/10-deployment | 声明式配置正确性 |
+| Lemma-F-10-21 | 滚动升级零停机引理 | Flink/10-deployment | Thm-F-10-20基础 |
+| Lemma-F-10-22 | 自动扩缩容响应时间引理 | Flink/10-deployment | Thm-F-10-21基础 |
+
+### 4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)
 
 | 编号 | 名称 | 位置 | 关键作用 |
 |------|------|------|----------|
 | Lemma-K-06-50 | 区块链最终一致性引理 | Knowledge/06-frontier | Thm-K-06-50基础 |
 | Lemma-K-06-51 | 智能合约原子性执行引理 | Knowledge/06-frontier | Thm-K-06-51基础 |
 | Lemma-K-06-52 | 链上数据不可篡改引理 | Knowledge/06-frontier | 数据完整性保证 |
+| **Serverless流处理架构** | | | |
+| Lemma-K-06-61 | 冷启动延迟分解引理 | Knowledge/06-frontier | 延迟来源分析 |
+| Lemma-K-06-62 | 弹性伸缩资源利用率引理 | Knowledge/06-frontier | Thm-K-06-64基础 |
+| **流数据治理** | | | | |
+| (暂无新增引理) | | | | |
 
 ---
 
@@ -881,6 +1019,10 @@
 | **Web3区块链流处理** | | | |
 | Prop-K-06-50 | 去中心化流处理活性保证 | Knowledge/06-frontier | 活性与容错 |
 | Prop-K-06-51 | 链上/链下数据一致性 | Knowledge/06-frontier | 数据桥一致性 |
+| **Serverless流处理架构** | | | |
+| Prop-K-06-63 | Serverless成本-性能权衡 | Knowledge/06-frontier | 成本模型分析 |
+| **Clickstream用户行为分析** | | | |
+| Prop-F-07-71 | 实时用户画像延迟边界 | Flink/07-case-studies | 端到端延迟分析 |
 | **智能制造IoT** | | | |
 | Prop-F-07-08 | 边缘-云协同延迟边界 | Flink/07-case-studies | 端到端延迟分析 |
 | Prop-F-07-09 | 预测性维护置信度 | Flink/07-case-studies | 故障预测准确性 |
@@ -899,6 +1041,23 @@
 | **Flink 04-connectors Paimon集成** | | | |
 | Prop-F-04-50 | Paimon流批读取一致性 | Flink/04-connectors | 批读与流读等价性 |
 | Prop-F-04-51 | Paimon全增量一体性能 | Flink/04-connectors | 无重复计算保证 |
+| **多路Join优化** | | | | |
+| Prop-F-02-40 | 左深树最优性条件 | Flink/02-core-mechanisms | 星型查询优化 |
+| Prop-F-02-41 | 浓密树与左深树代价比较 | Flink/02-core-mechanisms | 计划空间分析 |
+| Prop-F-02-42 | 基数估计误差传播 | Flink/02-core-mechanisms | 估计准确性分析 |
+| **Flink SQL/Table API - Python UDF** | | | | |
+| Prop-F-03-07 | 向量化UDF性能提升边界 | Flink/03-sql-table-api | 批处理增益分析 |
+| **Flink SQL/Table API - PTF** | | | | |
+| Prop-F-03-15 | PTF分区剪枝效果 | Flink/03-sql-table-api | 分区优化分析 |
+| Prop-F-03-16 | PTF与标准窗口函数等价性 | Flink/03-sql-table-api | 语义等价证明 |
+| Prop-F-03-17 | PTF多态处理复杂度 | Flink/03-sql-table-api | 运行时开销分析 |
+| Prop-F-03-18 | PTF物化策略选择 | Flink/03-sql-table-api | 内存-计算权衡 |
+| **Flink工程实践 - dbt集成** | | | | |
+| Prop-F-06-20 | dbt增量物化一致性 | Flink/06-engineering | 增量更新正确性 |
+| **流数据治理** | | | | |
+| Prop-K-08-12 | 数据质量规则覆盖率 | Knowledge/08-standards | 规则完备性分析 |
+| Prop-K-08-13 | 血缘传播延迟边界 | Knowledge/08-standards | 端到端延迟分析 |
+| Prop-K-08-14 | 治理策略执行一致性 | Knowledge/08-standards | 策略生效保证 |
 
 ### 5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)
 
@@ -944,12 +1103,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 23 | 48 | **95** |
-| **定义** | 56 | 37 | 105 | **198** |
-| **引理** | 33 | 19 | 34 | **86** |
-| **命题** | 19 | 10 | 25 | **54** |
+| **定理** | 24 | 24 | 52 | **100** |
+| **定义** | 56 | 40 | 122 | **218** |
+| **引理** | 33 | 19 | 38 | **90** |
+| **命题** | 19 | 13 | 33 | **65** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 136 | 90 | 213 | **439** |
+| **合计** | 136 | 97 | 246 | **479** |
 
 ### 7.2 按文档统计
 
@@ -977,6 +1136,12 @@
 | Flink (09) 语言基础 | 10 | 22 | 10 | 2 | 0 |
 | Flink (12) AI/ML | 3 | 4 | 2 | 1 | 1 |
 | Flink (13) WASM | 2 | 6 | 0 | 3 | 0 |
+| **新增文档** | | | | | |
+| Flink (02) 多路Join优化 | 1 | 5 | 2 | 3 | 0 |
+| Flink (03) Python UDF | 1 | 3 | 2 | 1 | 0 |
+| Flink (03) PTF | 1 | 9 | 0 | 4 | 0 |
+| Flink (06) dbt集成 | 2 | 5 | 2 | 1 | 0 |
+| Knowledge (08) 流数据治理 | 1 | 3 | 0 | 3 | 0 |
 
 ### 7.3 形式化等级分布
 
@@ -997,6 +1162,6 @@
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-03 (v1.6 更新: 添加Flink/04-connectors Iceberg与Paimon集成文档)*
+*最后更新时间: 2026-04-03 (v1.7 更新: 添加5篇新文档 - Flink Python UDF/PTF/dbt集成/多路Join优化、Knowledge流数据治理)*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
