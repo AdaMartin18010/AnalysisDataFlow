@@ -1,0 +1,30 @@
+{
+  "project": {
+    "name": "AnalysisDataFlow",
+    "version": "3.0.0",
+    "status": "production",
+    "completion": "100%"
+  },
+  "stats": {
+    "documents": 295,
+    "formal_elements": 964,
+    "theorems": 188,
+    "definitions": 410,
+    "lemmas": 168,
+    "propositions": 128,
+    "corollaries": 6,
+    "mermaid_diagrams": 750,
+    "code_examples": 2200,
+    "size_mb": 9
+  },
+  "structure": {
+    "struct": 43,
+    "knowledge": 107,
+    "flink": 116,
+    "visuals": 20,
+    "root": 9
+  },
+  "created": "2026-04-03",
+  "updated": "2026-04-03",
+  "license": "Apache-2.0"
+}

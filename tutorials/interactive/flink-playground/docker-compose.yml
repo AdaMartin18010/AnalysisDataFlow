@@ -1,0 +1,218 @@
+# Flink Playground - Docker Compose 环境
+# 适用于 Flink 1.18+
+# 启动命令: docker-compose up -d
+
+version: "3.8"
+
+services:
+  # JobManager - Flink 集群主节点
+  jobmanager:
+    image: flink:1.18-scala_2.12
+    container_name: flink-jobmanager
+    hostname: jobmanager
+    ports:
+      - "8081:8081"  # Web UI
+      - "6123:6123"  # RPC 端口
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.memory.process.size: 2048m
+          jobmanager.memory.jvm-heap.size: 1536m
+          jobmanager.memory.off-heap.size: 512m
+    command: jobmanager
+    volumes:
+      - ./data:/data
+      - ./jobs:/jobs
+      - ./conf/flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
+    networks:
+      - flink-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # TaskManager - Flink 集群工作节点
+  taskmanager:
+    image: flink:1.18-scala_2.12
+    container_name: flink-taskmanager
+    hostname: taskmanager
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          taskmanager.memory.process.size: 4096m
+          taskmanager.memory.flink.size: 3072m
+          taskmanager.memory.managed.size: 1024m
+          taskmanager.numberOfTaskSlots: 4
+    command: taskmanager
+    volumes:
+      - ./data:/data
+      - ./jobs:/jobs
+      - ./conf/flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
+    networks:
+      - flink-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  # Kafka - 消息队列 (用于流数据源)
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: flink-kafka
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - flink-network
+
+  # Zookeeper - Kafka 依赖
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: flink-zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    networks:
+      - flink-network
+
+  # Kafka UI - 可视化管理工具
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: flink-kafka-ui
+    ports:
+      - "8082:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    depends_on:
+      - kafka
+    networks:
+      - flink-network
+
+  # PostgreSQL - 状态存储和结果输出
+  postgres:
+    image: postgres:15-alpine
+    container_name: flink-postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: flink
+      POSTGRES_PASSWORD: flink123
+      POSTGRES_DB: flink_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - flink-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flink"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis - 缓存和状态存储
+  redis:
+    image: redis:7-alpine
+    container_name: flink-redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - flink-network
+    command: redis-server --appendonly yes
+
+  # MinIO - 对象存储 (用于Checkpoint)
+  minio:
+    image: minio/minio:latest
+    container_name: flink-minio
+    hostname: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - flink-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # 初始化 MinIO Bucket
+  minio-init:
+    image: minio/mc:latest
+    container_name: flink-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add minio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb minio/flink-checkpoints || true;
+      /usr/bin/mc mb minio/flink-savepoints || true;
+      /usr/bin/mc policy set public minio/flink-checkpoints;
+      /usr/bin/mc policy set public minio/flink-savepoints;
+      exit 0;
+      "
+    networks:
+      - flink-network
+
+  # Jupyter Notebook - 交互式开发环境
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    container_name: flink-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data:/home/jovyan/data
+    networks:
+      - flink-network
+    command: start-notebook.sh --NotebookApp.token=''
+
+networks:
+  flink-network:
+    driver: bridge
+
+volumes:
+  kafka-data:
+  zookeeper-data:
+  zookeeper-logs:
+  postgres-data:
+  redis-data:
+  minio-data:

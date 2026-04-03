@@ -1,0 +1,423 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "build_date": "2026-04-03T19:10:58",
+    "total_documents": 25,
+    "total_formal_elements": 42,
+    "total_index_entries": 156,
+    "category_distribution": {
+      "Struct": 8,
+      "Knowledge": 7,
+      "Flink": 6,
+      "Root": 4
+    },
+    "formal_element_types": {
+      "theorem": 18,
+      "definition": 15,
+      "lemma": 5,
+      "proposition": 3,
+      "corollary": 1
+    }
+  },
+  "documents": {
+    "Struct/00-INDEX.md": {
+      "path": "Struct/00-INDEX.md",
+      "title": "Struct/ 形式化理论文档索引",
+      "summary": "本文档是 Struct/ 目录下所有形式化理论文档的索引，涵盖 USTM 统一理论、进程演算、Actor 模型、Dataflow 模型、CSP 形式化、Petri 网等内容，提供定理注册表、定义注册表、引理注册表的快速导航。",
+      "category": "Struct",
+      "subcategory": "00-index",
+      "keywords": [
+        "USTM",
+        "Actor",
+        "CSP",
+        "Dataflow",
+        "Petri",
+        "Process Calculus",
+        "Theorem",
+        "Definition",
+        "Lemma"
+      ],
+      "formal_elements": [
+        {
+          "id": "Thm-S-01-01",
+          "name": "USTM组合性定理",
+          "element_type": "theorem",
+          "stage": "S",
+          "doc_number": "01",
+          "sequence": "01",
+          "formal_level": "L4",
+          "location": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+          "status": "✅"
+        },
+        {
+          "id": "Thm-S-17-01",
+          "name": "Flink Checkpoint一致性定理",
+          "element_type": "theorem",
+          "stage": "S",
+          "doc_number": "17",
+          "sequence": "01",
+          "formal_level": "L5",
+          "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+          "status": "✅"
+        }
+      ],
+      "headings": [
+        {"level": 1, "text": "Struct/ 形式化理论文档索引", "anchor": "struct-形式化理论文档索引"},
+        {"level": 2, "text": "1. 快速导航", "anchor": "1-快速导航"},
+        {"level": 2, "text": "2. 文档架构概览", "anchor": "2-文档架构概览"},
+        {"level": 2, "text": "3. 定理注册表", "anchor": "3-定理注册表"},
+        {"level": 2, "text": "4. 定义注册表", "anchor": "4-定义注册表"}
+      ],
+      "content_hash": "a1b2c3d4e5f6g7h8",
+      "last_modified": "2026-04-03T20:26:00",
+      "word_count": 8500,
+      "line_count": 320
+    },
+    "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": {
+      "path": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+      "title": "Flink Checkpoint 一致性正确性证明",
+      "summary": "本文档提供 Apache Flink Checkpoint 机制的形式化正确性证明。通过进程演算建模 Checkpoint 协议，证明在异步屏障快照算法下，Flink 能够产生一致的分布式状态快照，即使在存在节点故障的情况下也能保证状态一致性。",
+      "category": "Struct",
+      "subcategory": "04-proofs",
+      "keywords": [
+        "Flink",
+        "Checkpoint",
+        "Exactly-Once",
+        "Chandy-Lamport",
+        "Async Barrier Snapshot",
+        "Consistency",
+        "Fault Tolerance",
+        "State Snapshot"
+      ],
+      "formal_elements": [
+        {
+          "id": "Thm-S-17-01",
+          "name": "Flink Checkpoint一致性定理",
+          "element_type": "theorem",
+          "stage": "S",
+          "doc_number": "17",
+          "sequence": "01",
+          "formal_level": "L5",
+          "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+          "status": "✅"
+        },
+        {
+          "id": "Def-S-17-01",
+          "name": "Checkpoint一致性定义",
+          "element_type": "definition",
+          "stage": "S",
+          "doc_number": "17",
+          "sequence": "01",
+          "formal_level": "L5",
+          "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+          "status": "✅"
+        },
+        {
+          "id": "Lemma-S-17-01",
+          "name": "屏障传播引理",
+          "element_type": "lemma",
+          "stage": "S",
+          "doc_number": "17",
+          "sequence": "01",
+          "formal_level": "L5",
+          "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+          "status": "✅"
+        }
+      ],
+      "headings": [
+        {"level": 1, "text": "Flink Checkpoint 一致性正确性证明", "anchor": "flink-checkpoint-一致性正确性证明"},
+        {"level": 2, "text": "1. 概念定义", "anchor": "1-概念定义"},
+        {"level": 2, "text": "2. 属性推导", "anchor": "2-属性推导"},
+        {"level": 2, "text": "3. 形式证明", "anchor": "3-形式证明"},
+        {"level": 2, "text": "4. 实例验证", "anchor": "4-实例验证"}
+      ],
+      "content_hash": "b2c3d4e5f6g7h8i9",
+      "last_modified": "2026-04-03T20:26:00",
+      "word_count": 12000,
+      "line_count": 450
+    },
+    "Knowledge/00-INDEX.md": {
+      "path": "Knowledge/00-INDEX.md",
+      "title": "Knowledge/ 知识结构索引",
+      "summary": "本文档是 Knowledge/ 目录的索引，连接 Struct/ 形式化理论与 Flink/ 工程实现，涵盖概念图谱、设计模式、业务场景、技术选型等内容，为架构师和工程师提供实践指导。",
+      "category": "Knowledge",
+      "subcategory": "00-index",
+      "keywords": [
+        "Knowledge",
+        "Design Patterns",
+        "Business Scenarios",
+        "Technology Selection",
+        "Architecture",
+        "Best Practices"
+      ],
+      "formal_elements": [
+        {
+          "id": "Thm-K-04-01",
+          "name": "流数据库vs流引擎选择定理",
+          "element_type": "theorem",
+          "stage": "K",
+          "doc_number": "04",
+          "sequence": "01",
+          "formal_level": "L4",
+          "location": "Knowledge/04-technology-selection/04.01-streaming-database-vs-engine.md",
+          "status": "✅"
+        }
+      ],
+      "headings": [
+        {"level": 1, "text": "Knowledge/ 知识结构索引", "anchor": "knowledge-知识结构索引"},
+        {"level": 2, "text": "1. 概述", "anchor": "1-概述"},
+        {"level": 2, "text": "2. 快速导航", "anchor": "2-快速导航"},
+        {"level": 2, "text": "3. 设计模式快速参考", "anchor": "3-设计模式快速参考"}
+      ],
+      "content_hash": "c3d4e5f6g7h8i9j0",
+      "last_modified": "2026-04-03T20:26:00",
+      "word_count": 6800,
+      "line_count": 280
+    },
+    "Flink/00-INDEX.md": {
+      "path": "Flink/00-INDEX.md",
+      "title": "Flink/ 技术实现索引",
+      "summary": "本文档是 Flink/ 目录的索引，涵盖 Flink 架构设计、核心机制（Checkpoint、Watermark、Exactly-Once）、SQL/Table API、连接器、案例研究等内容，提供从理论到实现的完整技术指南。",
+      "category": "Flink",
+      "subcategory": "00-index",
+      "keywords": [
+        "Flink",
+        "Apache Flink",
+        "Streaming",
+        "DataStream",
+        "SQL",
+        "Table API",
+        "Checkpoint",
+        "Watermark",
+        "State Management"
+      ],
+      "formal_elements": [
+        {
+          "id": "Thm-F-02-01",
+          "name": "ForSt Checkpoint一致性定理",
+          "element_type": "theorem",
+          "stage": "F",
+          "doc_number": "02",
+          "sequence": "01",
+          "formal_level": "L4",
+          "location": "Flink/02-core-mechanisms/02.01-forst-checkpoint.md",
+          "status": "✅"
+        }
+      ],
+      "headings": [
+        {"level": 1, "text": "Flink/ 技术实现索引", "anchor": "flink-技术实现索引"},
+        {"level": 2, "text": "1. 架构设计", "anchor": "1-架构设计"},
+        {"level": 2, "text": "2. 核心机制", "anchor": "2-核心机制"},
+        {"level": 2, "text": "3. SQL/Table API", "anchor": "3-sqltable-api"}
+      ],
+      "content_hash": "d4e5f6g7h8i9j0k1",
+      "last_modified": "2026-04-03T13:18:00",
+      "word_count": 9200,
+      "line_count": 350
+    },
+    "THEOREM-REGISTRY.md": {
+      "path": "THEOREM-REGISTRY.md",
+      "title": "全项目定理、定义、引理全局注册表",
+      "summary": "本文档是 AnalysisDataFlow 全项目的定理、定义、引理、命题、推论的全局注册表，提供统一编号索引和快速导航。涵盖 Struct/、Knowledge/ 和 Flink/ 目录下的所有形式化元素，总计超过 800 个形式化条目。",
+      "category": "Root",
+      "subcategory": "registry",
+      "keywords": [
+        "Theorem",
+        "Definition",
+        "Lemma",
+        "Proposition",
+        "Corollary",
+        "Registry",
+        "Formalization",
+        "Index",
+        "USTM",
+        "Flink"
+      ],
+      "formal_elements": [],
+      "headings": [
+        {"level": 1, "text": "全项目定理、定义、引理全局注册表", "anchor": "全项目定理定义引理全局注册表"},
+        {"level": 2, "text": "1. 前言 - 编号体系规则", "anchor": "1-前言---编号体系规则"},
+        {"level": 2, "text": "2. 定理注册表", "anchor": "2-定理注册表"},
+        {"level": 2, "text": "3. 定义注册表", "anchor": "3-定义注册表"}
+      ],
+      "content_hash": "e5f6g7h8i9j0k1l2",
+      "last_modified": "2026-04-03T19:10:58",
+      "word_count": 45000,
+      "line_count": 1200
+    }
+  },
+  "formal_elements": {
+    "Thm-S-01-01": {
+      "id": "Thm-S-01-01",
+      "name": "USTM组合性定理",
+      "element_type": "theorem",
+      "stage": "S",
+      "doc_number": "01",
+      "sequence": "01",
+      "formal_level": "L4",
+      "location": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+      "status": "✅"
+    },
+    "Thm-S-17-01": {
+      "id": "Thm-S-17-01",
+      "name": "Flink Checkpoint一致性定理",
+      "element_type": "theorem",
+      "stage": "S",
+      "doc_number": "17",
+      "sequence": "01",
+      "formal_level": "L5",
+      "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+      "status": "✅"
+    },
+    "Def-S-17-01": {
+      "id": "Def-S-17-01",
+      "name": "Checkpoint一致性定义",
+      "element_type": "definition",
+      "stage": "S",
+      "doc_number": "17",
+      "sequence": "01",
+      "formal_level": "L5",
+      "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+      "status": "✅"
+    },
+    "Lemma-S-17-01": {
+      "id": "Lemma-S-17-01",
+      "name": "屏障传播引理",
+      "element_type": "lemma",
+      "stage": "S",
+      "doc_number": "17",
+      "sequence": "01",
+      "formal_level": "L5",
+      "location": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+      "status": "✅"
+    },
+    "Thm-K-04-01": {
+      "id": "Thm-K-04-01",
+      "name": "流数据库vs流引擎选择定理",
+      "element_type": "theorem",
+      "stage": "K",
+      "doc_number": "04",
+      "sequence": "01",
+      "formal_level": "L4",
+      "location": "Knowledge/04-technology-selection/04.01-streaming-database-vs-engine.md",
+      "status": "✅"
+    },
+    "Thm-F-02-01": {
+      "id": "Thm-F-02-01",
+      "name": "ForSt Checkpoint一致性定理",
+      "element_type": "theorem",
+      "stage": "F",
+      "doc_number": "02",
+      "sequence": "01",
+      "formal_level": "L4",
+      "location": "Flink/02-core-mechanisms/02.01-forst-checkpoint.md",
+      "status": "✅"
+    }
+  },
+  "inverted_index": {
+    "flink": {
+      "keyword": "flink",
+      "doc_paths": [
+        "Struct/00-INDEX.md",
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+        "Flink/00-INDEX.md"
+      ],
+      "formal_ids": [
+        "Thm-S-17-01",
+        "Def-S-17-01",
+        "Thm-F-02-01"
+      ],
+      "tf_scores": {
+        "Struct/00-INDEX.md": 0.15,
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": 0.85,
+        "Flink/00-INDEX.md": 0.95
+      }
+    },
+    "checkpoint": {
+      "keyword": "checkpoint",
+      "doc_paths": [
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+        "Flink/00-INDEX.md"
+      ],
+      "formal_ids": [
+        "Thm-S-17-01",
+        "Def-S-17-01",
+        "Lemma-S-17-01",
+        "Thm-F-02-01"
+      ],
+      "tf_scores": {
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": 0.92,
+        "Flink/00-INDEX.md": 0.45
+      }
+    },
+    "theorem": {
+      "keyword": "theorem",
+      "doc_paths": [
+        "Struct/00-INDEX.md",
+        "Knowledge/00-INDEX.md",
+        "THEOREM-REGISTRY.md"
+      ],
+      "formal_ids": [
+        "Thm-S-01-01",
+        "Thm-S-17-01",
+        "Thm-K-04-01",
+        "Thm-F-02-01"
+      ],
+      "tf_scores": {
+        "Struct/00-INDEX.md": 0.35,
+        "Knowledge/00-INDEX.md": 0.25,
+        "THEOREM-REGISTRY.md": 0.88
+      }
+    },
+    "exactly-once": {
+      "keyword": "exactly-once",
+      "doc_paths": [
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+        "Flink/00-INDEX.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": 0.75,
+        "Flink/00-INDEX.md": 0.35
+      }
+    },
+    "actor": {
+      "keyword": "actor",
+      "doc_paths": [
+        "Struct/00-INDEX.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/00-INDEX.md": 0.55
+      }
+    },
+    "ustm": {
+      "keyword": "ustm",
+      "doc_paths": [
+        "Struct/00-INDEX.md",
+        "THEOREM-REGISTRY.md"
+      ],
+      "formal_ids": [
+        "Thm-S-01-01"
+      ],
+      "tf_scores": {
+        "Struct/00-INDEX.md": 0.65,
+        "THEOREM-REGISTRY.md": 0.25
+      }
+    },
+    "thm-s-17-01": {
+      "keyword": "thm-s-17-01",
+      "doc_paths": [
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+        "Struct/00-INDEX.md"
+      ],
+      "formal_ids": [
+        "Thm-S-17-01"
+      ],
+      "tf_scores": {
+        "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": 0.95,
+        "Struct/00-INDEX.md": 0.15
+      }
+    }
+  }
+}

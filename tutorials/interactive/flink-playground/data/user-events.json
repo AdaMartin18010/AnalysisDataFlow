@@ -1,0 +1,8 @@
+{"user_id": "user_001", "event_type": "page_view", "page_url": "/home", "session_id": "sess_abc123", "timestamp": "2024-01-15T08:00:00Z"}
+{"user_id": "user_001", "event_type": "click", "page_url": "/products", "session_id": "sess_abc123", "timestamp": "2024-01-15T08:00:15Z"}
+{"user_id": "user_002", "event_type": "page_view", "page_url": "/home", "session_id": "sess_def456", "timestamp": "2024-01-15T08:00:30Z"}
+{"user_id": "user_001", "event_type": "click", "page_url": "/cart", "session_id": "sess_abc123", "timestamp": "2024-01-15T08:00:45Z"}
+{"user_id": "user_003", "event_type": "page_view", "page_url": "/about", "session_id": "sess_ghi789", "timestamp": "2024-01-15T08:01:00Z"}
+{"user_id": "user_002", "event_type": "click", "page_url": "/products", "session_id": "sess_def456", "timestamp": "2024-01-15T08:01:15Z"}
+{"user_id": "user_001", "event_type": "purchase", "page_url": "/checkout", "session_id": "sess_abc123", "timestamp": "2024-01-15T08:01:30Z"}
+{"user_id": "user_003", "event_type": "click", "page_url": "/contact", "session_id": "sess_ghi789", "timestamp": "2024-01-15T08:01:45Z"}

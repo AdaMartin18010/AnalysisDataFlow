@@ -23,6 +23,15 @@
     - [格式化不生效](#格式化不生效)
     - [某些规则想要禁用](#某些规则想要禁用)
     - [某个文件想要跳过检查](#某个文件想要跳过检查)
+  - [📄 PDF 导出功能](#-pdf-导出功能)
+    - [PDF 导出文件](#pdf-导出文件)
+    - [快速使用](#快速使用)
+  - [🔍 文档差异分析工具](#-文档差异分析工具)
+    - [功能特性](#功能特性)
+    - [使用方法](#使用方法)
+    - [命令行参数](#命令行参数)
+    - [报告输出](#报告输出)
+    - [在CI/CD中使用](#在cicd中使用)
   - [📚 参考文档](#-参考文档)
 
 ---
@@ -165,7 +174,109 @@ Markdownlint 规则配置（项目根目录）：
 <!-- markdownlint-enable MD033 -->
 ```
 
+## 📄 PDF 导出功能
+
+本项目支持将 Markdown 文档导出为 PDF 格式，便于离线阅读和分享。
+
+### PDF 导出文件
+
+| 文件 | 说明 |
+|------|------|
+| `export-to-pdf.py` | PDF 导出主脚本 |
+| `pdf-config.yaml` | PDF 导出配置 |
+| `pdf-template.tex` | LaTeX 模板 |
+
+### 快速使用
+
+```bash
+# 检查环境
+make check
+
+# 导出单个文件
+make pdf-single FILE=README.md
+
+# 批量导出目录
+make pdf-batch DIR=Struct/
+
+# 导出完整项目
+make pdf-full
+```
+
+更多详情请参阅项目根目录的 `PDF-EXPORT-GUIDE.md`。
+
+---
+
+## 🔍 文档差异分析工具
+
+`doc-diff.py` 是一个用于分析文档变更的专业工具，可以检测变更、分析影响、检查质量回归，并生成合并建议。
+
+### 功能特性
+
+1. **文档变更检测** - 比较文档版本差异，识别新增/删除/修改的定理和定义
+2. **交叉引用影响分析** - 检测文档变更对其他文档的影响
+3. **变更分类统计** - 按类型分类变更，统计变更规模
+4. **质量回归检测** - 检测链接破坏、定理编号冲突、格式规范
+5. **合并建议生成** - 分析PR变更，生成合并建议，识别潜在冲突
+
+### 使用方法
+
+```bash
+# 分析两个提交之间的差异
+python .vscode/doc-diff.py --base main --head feature-branch
+
+# 分析暂存区的变更
+python .vscode/doc-diff.py --staged
+
+# 分析指定文件
+python .vscode/doc-diff.py --files Struct/01-foundation/01.01-ustm.md
+
+# 输出JSON格式报告
+python .vscode/doc-diff.py --base HEAD~1 --head HEAD --json
+
+# 跳过影响分析（加快分析速度）
+python .vscode/doc-diff.py --base main --head HEAD --no-impact
+```
+
+### 命令行参数
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `--base` | 基准引用 | `HEAD` |
+| `--head` | 目标引用 | 工作目录 |
+| `--staged` | 分析暂存区变更 | - |
+| `--files` | 分析指定文件 | - |
+| `--json` | 输出JSON格式 | - |
+| `--no-impact` | 跳过影响分析 | - |
+| `--root` | 项目根目录 | `.` |
+
+### 报告输出
+
+工具会生成详细的分析报告，包括：
+
+- 📊 变更统计（文件数、元素数、按类型/阶段分布）
+- 🧮 形式化元素变更详情
+- 🔗 交叉引用影响分析
+- ⚠️ 质量问题检测
+- 💡 合并建议
+- 📝 变更日志建议
+
+### 在CI/CD中使用
+
+工具返回适当的退出码：
+
+- `0` - 建议合并（无严重问题）
+- `1` - 建议阻止合并（存在严重问题）
+
+示例 GitHub Actions 工作流：
+
+```yaml
+- name: Analyze Documentation Changes
+  run: |
+    python .vscode/doc-diff.py --base origin/main --head HEAD
+```
+
 ## 📚 参考文档
 
 - [Markdownlint 规则列表](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
 - [VSCode Markdown 支持](https://code.visualstudio.com/docs/languages/markdown)
+- [PDF 导出指南](../PDF-EXPORT-GUIDE.md)

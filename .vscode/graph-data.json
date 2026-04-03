@@ -1,0 +1,646 @@
+{
+  "nodes": [
+    {
+      "id": "Struct/01.01-unified-streaming-theory",
+      "label": "USTM统一流计算理论",
+      "type": "document",
+      "group": "Struct",
+      "size": 25,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+        "formality_level": "L5",
+        "category": "01-foundation",
+        "word_count": 4500
+      }
+    },
+    {
+      "id": "Struct/01.02-process-calculus-primer",
+      "label": "进程演算基础",
+      "type": "document",
+      "group": "Struct",
+      "size": 22,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/01.02-process-calculus-primer.md",
+        "formality_level": "L5",
+        "category": "01-foundation",
+        "word_count": 3800
+      }
+    },
+    {
+      "id": "Struct/01.03-actor-model-formalization",
+      "label": "Actor模型形式化",
+      "type": "document",
+      "group": "Struct",
+      "size": 24,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/01.03-actor-model-formalization.md",
+        "formality_level": "L5",
+        "category": "01-foundation",
+        "word_count": 4200
+      }
+    },
+    {
+      "id": "Struct/01.04-dataflow-model-formalization",
+      "label": "Dataflow模型形式化",
+      "type": "document",
+      "group": "Struct",
+      "size": 26,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
+        "formality_level": "L5",
+        "category": "01-foundation",
+        "word_count": 4800
+      }
+    },
+    {
+      "id": "Struct/02.01-determinism-in-streaming",
+      "label": "流计算确定性",
+      "type": "document",
+      "group": "Struct",
+      "size": 20,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/02-properties/02.01-determinism-in-streaming.md",
+        "formality_level": "L4",
+        "category": "02-properties",
+        "word_count": 3200
+      }
+    },
+    {
+      "id": "Struct/02.02-consistency-hierarchy",
+      "label": "一致性层次",
+      "type": "document",
+      "group": "Struct",
+      "size": 23,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/02-properties/02.02-consistency-hierarchy.md",
+        "formality_level": "L4",
+        "category": "02-properties",
+        "word_count": 3900
+      }
+    },
+    {
+      "id": "Struct/03.01-actor-to-csp-encoding",
+      "label": "Actor到CSP编码",
+      "type": "document",
+      "group": "Struct",
+      "size": 21,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
+        "formality_level": "L5",
+        "category": "03-relationships",
+        "word_count": 3500
+      }
+    },
+    {
+      "id": "Struct/04.01-flink-checkpoint-correctness",
+      "label": "Flink Checkpoint正确性",
+      "type": "document",
+      "group": "Struct",
+      "size": 28,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+        "formality_level": "L6",
+        "category": "04-proofs",
+        "word_count": 5200
+      }
+    },
+    {
+      "id": "Knowledge/01-stream-processing-overview",
+      "label": "流处理概述",
+      "type": "document",
+      "group": "Knowledge",
+      "size": 18,
+      "color": "#5CB85C",
+      "metadata": {
+        "path": "Knowledge/01-overview/stream-processing-overview.md",
+        "formality_level": "L2",
+        "category": "01-overview",
+        "word_count": 2800
+      }
+    },
+    {
+      "id": "Knowledge/02-design-patterns",
+      "label": "流处理设计模式",
+      "type": "document",
+      "group": "Knowledge",
+      "size": 20,
+      "color": "#5CB85C",
+      "metadata": {
+        "path": "Knowledge/02-patterns/design-patterns.md",
+        "formality_level": "L3",
+        "category": "02-patterns",
+        "word_count": 3400
+      }
+    },
+    {
+      "id": "Knowledge/03-state-management",
+      "label": "状态管理实践",
+      "type": "document",
+      "group": "Knowledge",
+      "size": 22,
+      "color": "#5CB85C",
+      "metadata": {
+        "path": "Knowledge/03-practices/state-management.md",
+        "formality_level": "L3",
+        "category": "03-practices",
+        "word_count": 3600
+      }
+    },
+    {
+      "id": "Flink/01-architecture-overview",
+      "label": "Flink架构概述",
+      "type": "document",
+      "group": "Flink",
+      "size": 24,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/01-architecture/architecture-overview.md",
+        "formality_level": "L3",
+        "category": "01-architecture",
+        "word_count": 4100
+      }
+    },
+    {
+      "id": "Flink/02-checkpoint-mechanism",
+      "label": "Checkpoint机制",
+      "type": "document",
+      "group": "Flink",
+      "size": 26,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/02-core-mechanisms/checkpoint-mechanism.md",
+        "formality_level": "L4",
+        "category": "02-core-mechanisms",
+        "word_count": 4500
+      }
+    },
+    {
+      "id": "Flink/02-watermark-system",
+      "label": "Watermark系统",
+      "type": "document",
+      "group": "Flink",
+      "size": 25,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/02-core-mechanisms/watermark-system.md",
+        "formality_level": "L4",
+        "category": "02-core-mechanisms",
+        "word_count": 4300
+      }
+    },
+    {
+      "id": "Flink/03-sql-table-api",
+      "label": "SQL与Table API",
+      "type": "document",
+      "group": "Flink",
+      "size": 23,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/03-sql-table-api/sql-table-api.md",
+        "formality_level": "L3",
+        "category": "03-sql-table-api",
+        "word_count": 3800
+      }
+    },
+    {
+      "id": "Flink/04-connectors",
+      "label": "Flink连接器",
+      "type": "document",
+      "group": "Flink",
+      "size": 21,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/04-connectors/connectors.md",
+        "formality_level": "L2",
+        "category": "04-connectors",
+        "word_count": 3500
+      }
+    },
+    {
+      "id": "Thm-S-01-01",
+      "label": "Thm-S-01-01",
+      "type": "theorem",
+      "group": "theorem",
+      "size": 8,
+      "color": "#D9534F",
+      "metadata": {
+        "description": "流计算统一理论存在性定理",
+        "document": "Struct/01.01-unified-streaming-theory",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Thm-S-01-02",
+      "label": "Thm-S-01-02",
+      "type": "theorem",
+      "group": "theorem",
+      "size": 8,
+      "color": "#D9534F",
+      "metadata": {
+        "description": "Dataflow模型完备性定理",
+        "document": "Struct/01.04-dataflow-model-formalization",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Thm-S-02-01",
+      "label": "Thm-S-02-01",
+      "type": "theorem",
+      "group": "theorem",
+      "size": 8,
+      "color": "#D9534F",
+      "metadata": {
+        "description": "确定性流计算等价条件定理",
+        "document": "Struct/02.01-determinism-in-streaming",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Thm-S-04-01",
+      "label": "Thm-S-04-01",
+      "type": "theorem",
+      "group": "theorem",
+      "size": 10,
+      "color": "#D9534F",
+      "metadata": {
+        "description": "Flink Checkpoint正确性定理",
+        "document": "Struct/04.01-flink-checkpoint-correctness",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Thm-F-02-01",
+      "label": "Thm-F-02-01",
+      "type": "theorem",
+      "group": "theorem",
+      "size": 8,
+      "color": "#D9534F",
+      "metadata": {
+        "description": "Exactly-Once语义保证定理",
+        "document": "Flink/02-checkpoint-mechanism",
+        "stage": "F"
+      }
+    },
+    {
+      "id": "Def-S-01-01",
+      "label": "Def-S-01-01",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "统一流计算理论形式化定义",
+        "document": "Struct/01.01-unified-streaming-theory",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Def-S-01-02",
+      "label": "Def-S-01-02",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "进程演算语法定义",
+        "document": "Struct/01.02-process-calculus-primer",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Def-S-01-03",
+      "label": "Def-S-01-03",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "Actor模型形式化定义",
+        "document": "Struct/01.03-actor-model-formalization",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Def-S-02-01",
+      "label": "Def-S-02-01",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "一致性层次定义",
+        "document": "Struct/02.02-consistency-hierarchy",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Def-F-02-01",
+      "label": "Def-F-02-01",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "Checkpoint状态定义",
+        "document": "Flink/02-checkpoint-mechanism",
+        "stage": "F"
+      }
+    },
+    {
+      "id": "Def-F-02-02",
+      "label": "Def-F-02-02",
+      "type": "definition",
+      "group": "definition",
+      "size": 7,
+      "color": "#9B59B6",
+      "metadata": {
+        "description": "Watermark形式化定义",
+        "document": "Flink/02-watermark-system",
+        "stage": "F"
+      }
+    },
+    {
+      "id": "Lemma-S-01-01",
+      "label": "Lemma-S-01-01",
+      "type": "lemma",
+      "group": "lemma",
+      "size": 6,
+      "color": "#17A2B8",
+      "metadata": {
+        "description": "流计算单调性引理",
+        "document": "Struct/01.01-unified-streaming-theory",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Lemma-S-04-01",
+      "label": "Lemma-S-04-01",
+      "type": "lemma",
+      "group": "lemma",
+      "size": 6,
+      "color": "#17A2B8",
+      "metadata": {
+        "description": "Barrier对齐引理",
+        "document": "Struct/04.01-flink-checkpoint-correctness",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Prop-S-02-01",
+      "label": "Prop-S-02-01",
+      "type": "proposition",
+      "group": "proposition",
+      "size": 6,
+      "color": "#E83E8C",
+      "metadata": {
+        "description": "确定性蕴含一致性",
+        "document": "Struct/02.01-determinism-in-streaming",
+        "stage": "S"
+      }
+    },
+    {
+      "id": "Cor-S-04-01",
+      "label": "Cor-S-04-01",
+      "type": "corollary",
+      "group": "corollary",
+      "size": 5,
+      "color": "#6C757D",
+      "metadata": {
+        "description": "Exactly-Once恢复推论",
+        "document": "Struct/04.01-flink-checkpoint-correctness",
+        "stage": "S"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "Struct/01.01-unified-streaming-theory",
+      "target": "Thm-S-01-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/01.01-unified-streaming-theory",
+      "target": "Def-S-01-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/01.01-unified-streaming-theory",
+      "target": "Lemma-S-01-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/01.02-process-calculus-primer",
+      "target": "Def-S-01-02",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/01.03-actor-model-formalization",
+      "target": "Def-S-01-03",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/01.04-dataflow-model-formalization",
+      "target": "Thm-S-01-02",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/02.01-determinism-in-streaming",
+      "target": "Thm-S-02-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/02.01-determinism-in-streaming",
+      "target": "Prop-S-02-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/02.02-consistency-hierarchy",
+      "target": "Def-S-02-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Thm-S-04-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Lemma-S-04-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Cor-S-04-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Flink/02-checkpoint-mechanism",
+      "target": "Thm-F-02-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Flink/02-checkpoint-mechanism",
+      "target": "Def-F-02-01",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Flink/02-watermark-system",
+      "target": "Def-F-02-02",
+      "type": "contains",
+      "weight": 1
+    },
+    {
+      "source": "Struct/02.01-determinism-in-streaming",
+      "target": "Struct/01.01-unified-streaming-theory",
+      "type": "dependency",
+      "weight": 2
+    },
+    {
+      "source": "Struct/02.02-consistency-hierarchy",
+      "target": "Struct/01.01-unified-streaming-theory",
+      "type": "dependency",
+      "weight": 2
+    },
+    {
+      "source": "Struct/03.01-actor-to-csp-encoding",
+      "target": "Struct/01.03-actor-model-formalization",
+      "type": "dependency",
+      "weight": 2
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Struct/02.02-consistency-hierarchy",
+      "type": "dependency",
+      "weight": 2
+    },
+    {
+      "source": "Flink/02-checkpoint-mechanism",
+      "target": "Struct/04.01-flink-checkpoint-correctness",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink/02-watermark-system",
+      "target": "Struct/01.04-dataflow-model-formalization",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Knowledge/02-design-patterns",
+      "target": "Struct/01.04-dataflow-model-formalization",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Knowledge/03-state-management",
+      "target": "Flink/02-checkpoint-mechanism",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Knowledge/03-state-management",
+      "target": "Struct/02.02-consistency-hierarchy",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct/03.01-actor-to-csp-encoding",
+      "target": "Thm-S-01-01",
+      "type": "references",
+      "weight": 1
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Thm-S-02-01",
+      "type": "references",
+      "weight": 1
+    },
+    {
+      "source": "Struct/04.01-flink-checkpoint-correctness",
+      "target": "Def-S-02-01",
+      "type": "references",
+      "weight": 1
+    },
+    {
+      "source": "Thm-S-04-01",
+      "target": "Lemma-S-04-01",
+      "type": "depends_on",
+      "weight": 1
+    },
+    {
+      "source": "Cor-S-04-01",
+      "target": "Thm-S-04-01",
+      "type": "derived_from",
+      "weight": 1
+    },
+    {
+      "source": "Flink/01-architecture-overview",
+      "target": "Struct/01.04-dataflow-model-formalization",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink/03-sql-table-api",
+      "target": "Flink/02-watermark-system",
+      "type": "dependency",
+      "weight": 2
+    },
+    {
+      "source": "Flink/04-connectors",
+      "target": "Flink/02-checkpoint-mechanism",
+      "type": "dependency",
+      "weight": 2
+    }
+  ],
+  "stats": {
+    "documents": {
+      "Struct": 8,
+      "Knowledge": 3,
+      "Flink": 5
+    },
+    "theorems": 5,
+    "definitions": 6,
+    "lemmas": 2,
+    "propositions": 1,
+    "corollaries": 1,
+    "citations": 10,
+    "dependencies": 8,
+    "total_nodes": 31,
+    "total_edges": 32,
+    "isolated_documents": 0,
+    "hot_documents": [
+      ["Struct/01.01-unified-streaming-theory", 3],
+      ["Struct/01.04-dataflow-model-formalization", 3],
+      ["Struct/02.02-consistency-hierarchy", 3],
+      ["Struct/04.01-flink-checkpoint-correctness", 3],
+      ["Flink/02-checkpoint-mechanism", 2]
+    ]
+  },
+  "metadata": {
+    "generated_at": "2026-04-03T19:10:00",
+    "version": "1.0",
+    "project": "AnalysisDataFlow"
+  }
+}

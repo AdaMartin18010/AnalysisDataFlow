@@ -1,0 +1,513 @@
+# =============================================================================
+# AnalysisDataFlow 链接检查工作流
+# =============================================================================
+# 描述: 检查Markdown文件中的内部和外部链接有效性
+# 触发条件: 每周三凌晨运行，PR到main分支时，或手动触发
+# =============================================================================
+
+name: Check Links
+
+on:
+  # 定期运行: 每周三凌晨 3:00 UTC
+  schedule:
+    - cron: '0 3 * * 3'
+  
+  # PR到main分支时检查
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+  
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      check_external:
+        description: '检查外部链接（较慢）'
+        required: false
+        default: false
+        type: boolean
+      timeout:
+        description: '外部链接检查超时（秒）'
+        required: false
+        default: '30'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.11'
+  CHECK_EXTERNAL: ${{ github.event.inputs.check_external || 'false' }}
+  LINK_TIMEOUT: ${{ github.event.inputs.timeout || '30' }}
+
+jobs:
+  # ===========================================================================
+  # Job 1: 检查内部链接
+  # ===========================================================================
+  check-internal-links:
+    name: 检查内部链接
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check internal links
+        run: |
+          echo "::group::检查内部链接"
+          
+          cat > check_internal_links.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          检查Markdown文件中的内部链接
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          from urllib.parse import urlparse, unquote
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件路径映射"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              # 创建路径到文件的映射
+              path_map = {}
+              for f in md_files:
+                  path_map[f.name] = f
+                  path_map[str(f)] = f
+                  path_map[str(f).replace('\\', '/')] = f
+              return md_files, path_map
+          
+          def extract_links(content):
+              """提取所有链接 [text](url)"""
+              links = []
+              # Markdown链接 [text](url)
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  url = match.group(2)
+                  links.append((text, url, match.start()))
+              return links
+          
+          def classify_link(url):
+              """分类链接类型"""
+              if url.startswith('http://') or url.startswith('https://'):
+                  return 'external'
+              if url.startswith('#'):
+                  return 'anchor'
+              if url.startswith('mailto:'):
+                  return 'email'
+              return 'internal'
+          
+          def validate_internal_link(url, source_file, path_map):
+              """验证内部链接"""
+              source_dir = source_file.parent
+              
+              # 移除锚点
+              url_without_anchor = url.split('#')[0]
+              
+              if not url_without_anchor:
+                  # 纯锚点链接
+                  return True, None
+              
+              # 解析路径
+              if url_without_anchor.startswith('/'):
+                  # 绝对路径（相对于仓库根）
+                  target = Path('.') / url_without_anchor.lstrip('/')
+              else:
+                  # 相对路径
+                  target = source_dir / url_without_anchor
+              
+              target = target.resolve()
+              
+              # 检查文件是否存在
+              if not target.exists():
+                  # 尝试添加.md后缀
+                  target_with_md = Path(str(target) + '.md')
+                  if target_with_md.exists():
+                      return True, None
+                  
+                  # 尝试作为目录/index.md
+                  target_index = target / 'index.md'
+                  if target_index.exists():
+                      return True, None
+                  
+                  return False, f"文件不存在: {target.relative_to(Path('.').resolve())}"
+              
+              return True, None
+          
+          def main():
+              print("=" * 70)
+              print("AnalysisDataFlow 内部链接检查")
+              print("=" * 70)
+              
+              all_files, path_map = find_all_markdown_files()
+              print(f"\n扫描 {len(all_files)} 个Markdown文件...")
+              
+              broken_links = []
+              stats = {'total': 0, 'internal': 0, 'external': 0, 'anchor': 0, 'email': 0}
+              
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      print(f"⚠️  无法读取 {file_path}: {e}")
+                      continue
+                  
+                  links = extract_links(content)
+                  
+                  for text, url, _ in links:
+                      stats['total'] += 1
+                      link_type = classify_link(url)
+                      stats[link_type] += 1
+                      
+                      if link_type == 'internal':
+                          is_valid, error = validate_internal_link(url, file_path, path_map)
+                          if not is_valid:
+                              broken_links.append({
+                                  'source': str(file_path),
+                                  'text': text,
+                                  'url': url,
+                                  'error': error
+                              })
+              
+              # 打印统计
+              print(f"\n📊 链接统计:")
+              print(f"  总链接数: {stats['total']}")
+              print(f"  内部链接: {stats['internal']}")
+              print(f"  外部链接: {stats['external']}")
+              print(f"  锚点链接: {stats['anchor']}")
+              print(f"  邮件链接: {stats['email']}")
+              
+              if broken_links:
+                  print(f"\n❌ 发现 {len(broken_links)} 个无效内部链接:")
+                  print("-" * 70)
+                  
+                  # 按源文件分组
+                  by_source = defaultdict(list)
+                  for link in broken_links:
+                      by_source[link['source']].append(link)
+                  
+                  for source, links in sorted(by_source.items()):
+                      print(f"\n  📄 {source}")
+                      for link in links:
+                          print(f"    - [{link['text']}]({link['url']})")
+                          print(f"      错误: {link['error']}")
+                  
+                  print("-" * 70)
+                  
+                  # 生成报告
+                  with open('broken-internal-links.md', 'w') as f:
+                      f.write("# 损坏的内部链接报告\n\n")
+                      f.write(f"生成时间: 自动检查\n\n")
+                      f.write(f"发现 {len(broken_links)} 个无效内部链接\n\n")
+                      
+                      for source, links in sorted(by_source.items()):
+                          f.write(f"## {source}\n\n")
+                          for link in links:
+                              f.write(f"- [{link['text']}]({link['url']})\n")
+                              f.write(f"  - 错误: {link['error']}\n\n")
+                  
+                  print("\n📄 详细报告已保存到: broken-internal-links.md")
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有内部链接有效!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python check_internal_links.py
+          echo "::endgroup::"
+      
+      - name: Upload broken links report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-internal-links
+          path: broken-internal-links.md
+          retention-days: 30
+
+  # ===========================================================================
+  # Job 2: 检查外部链接（可选，较慢）
+  # ===========================================================================
+  check-external-links:
+    name: 检查外部链接
+    runs-on: ubuntu-latest
+    if: env.CHECK_EXTERNAL == 'true'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: Check external links
+        run: |
+          echo "::group::检查外部链接"
+          
+          cat > check_external_links.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          检查Markdown文件中的外部链接
+          """
+          import re
+          import sys
+          import requests
+          from pathlib import Path
+          from collections import defaultdict
+          from urllib.parse import urlparse
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          import time
+          
+          TIMEOUT = int('${{ env.LINK_TIMEOUT }}')
+          
+          # 排除的URL模式（不需要检查或会失败的）
+          EXCLUDE_PATTERNS = [
+              'localhost',
+              '127.0.0.1',
+              'example.com',
+              'your-domain.com',
+              'github.com/[^/]+/[^/]+/edit/',  # 编辑页面需要登录
+          ]
+          
+          def should_skip(url):
+              """检查是否应该跳过此URL"""
+              for pattern in EXCLUDE_PATTERNS:
+                  if re.search(pattern, url):
+                      return True
+              return False
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_external_links(content):
+              """提取外部链接"""
+              links = []
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  url = match.group(2)
+                  if url.startswith('http://') or url.startswith('https://'):
+                      if not should_skip(url):
+                          links.append((text, url))
+              return links
+          
+          def check_url(url):
+              """检查URL是否可访问"""
+              try:
+                  headers = {
+                      'User-Agent': 'Mozilla/5.0 (compatible; AnalysisDataFlow-LinkChecker/1.0)'
+                  }
+                  response = requests.head(
+                      url, 
+                      timeout=TIMEOUT, 
+                      headers=headers,
+                      allow_redirects=True
+                  )
+                  
+                  # 某些网站不支持HEAD请求，尝试GET
+                  if response.status_code in [405, 501]:
+                      response = requests.get(
+                          url, 
+                          timeout=TIMEOUT, 
+                          headers=headers,
+                          stream=True,
+                          allow_redirects=True
+                      )
+                      response.close()
+                  
+                  # 检查状态码
+                  if response.status_code >= 400:
+                      return False, f"HTTP {response.status_code}"
+                  
+                  return True, None
+                  
+              except requests.exceptions.Timeout:
+                  return False, "请求超时"
+              except requests.exceptions.ConnectionError:
+                  return False, "连接错误"
+              except requests.exceptions.TooManyRedirects:
+                  return False, "重定向过多"
+                  return False, f"请求错误: {e}"
+          
+          def main():
+              print("=" * 70)
+              print("AnalysisDataFlow 外部链接检查")
+              print(f"超时设置: {TIMEOUT}秒")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n扫描 {len(all_files)} 个Markdown文件...")
+              
+              # 收集所有外部链接
+              all_external_links = []
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      continue
+                  
+                  links = extract_external_links(content)
+                  for text, url in links:
+                      all_external_links.append({
+                          'file': str(file_path),
+                          'text': text,
+                          'url': url
+                      })
+              
+              # 去重URL
+              unique_urls = list(set(link['url'] for link in all_external_links))
+              print(f"\n发现 {len(all_external_links)} 个外部链接（{len(unique_urls)} 个唯一URL）")
+              print("开始检查...")
+              
+              # 并发检查URL
+              url_status = {}
+              broken_urls = set()
+              
+              with ThreadPoolExecutor(max_workers=10) as executor:
+                  future_to_url = {
+                      executor.submit(check_url, url): url 
+                      for url in unique_urls
+                  }
+                  
+                  for i, future in enumerate(as_completed(future_to_url)):
+                      url = future_to_url[future]
+                      try:
+                          is_valid, error = future.result()
+                          url_status[url] = (is_valid, error)
+                          if not is_valid:
+                              broken_urls.add(url)
+                          
+                          # 进度显示
+                          if (i + 1) % 10 == 0:
+                              print(f"  已检查 {i + 1}/{len(unique_urls)} 个URL...")
+                          
+                          # 避免请求过快
+                          time.sleep(0.5)
+                          
+                      except Exception as e:
+                          url_status[url] = (False, str(e))
+                          broken_urls.add(url)
+              
+              # 汇总结果
+              broken_links = [
+                  link for link in all_external_links 
+                  if link['url'] in broken_urls
+              ]
+              
+              print(f"\n📊 检查结果:")
+              print(f"  总URL数: {len(unique_urls)}")
+              print(f"  有效: {len(unique_urls) - len(broken_urls)}")
+              print(f"  无效: {len(broken_urls)}")
+              
+              if broken_links:
+                  print(f"\n❌ 发现 {len(broken_links)} 个无效外部链接:")
+                  print("-" * 70)
+                  
+                  # 按文件分组
+                  by_file = defaultdict(list)
+                  for link in broken_links:
+                      by_file[link['file']].append(link)
+                  
+                  for file, links in sorted(by_file.items()):
+                      print(f"\n  📄 {file}")
+                      for link in links:
+                          status = url_status.get(link['url'], (False, '未知错误'))
+                          print(f"    - [{link['text']}]({link['url']})")
+                          print(f"      错误: {status[1]}")
+                  
+                  print("-" * 70)
+                  
+                  # 生成报告
+                  with open('broken-external-links.md', 'w') as f:
+                      f.write("# 损坏的外部链接报告\n\n")
+                      f.write(f"发现 {len(broken_links)} 个无效外部链接\n\n")
+                      
+                      for file, links in sorted(by_file.items()):
+                          f.write(f"## {file}\n\n")
+                          for link in links:
+                              status = url_status.get(link['url'], (False, '未知错误'))
+                              f.write(f"- [{link['text']}]({link['url']})\n")
+                              f.write(f"  - 错误: {status[1]}\n\n")
+                  
+                  print("\n📄 详细报告已保存到: broken-external-links.md")
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有外部链接可访问!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python check_external_links.py || echo "外部链接检查完成（可能有错误）"
+          echo "::endgroup::"
+      
+      - name: Upload external links report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-external-links
+          path: broken-external-links.md
+          retention-days: 30
+
+  # ===========================================================================
+  # Job 3: 生成链接检查报告
+  # ===========================================================================
+  generate-report:
+    name: 生成报告
+    runs-on: ubuntu-latest
+    needs: [check-internal-links, check-external-links]
+    if: always()
+    
+    steps:
+      - name: Summary
+        run: |
+          echo "## 🔗 链接检查结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| 检查项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.check-internal-links.result }}" == "success" ]; then
+            echo "| 内部链接 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.check-internal-links.result }}" == "failure" ]; then
+            echo "| 内部链接 | ❌ 发现死链 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 内部链接 | ⏭️  跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.check-external-links.result }}" == "success" ]; then
+            echo "| 外部链接 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.check-external-links.result }}" == "failure" ]; then
+            echo "| 外部链接 | ❌ 发现死链 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 外部链接 | ⏭️  跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📄 如有问题，请在Artifacts中查看详细报告" >> $GITHUB_STEP_SUMMARY

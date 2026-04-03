@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.9 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.9.1 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -20,6 +20,7 @@
     - [2.3 关系层定理 (03-relationships)](#23-关系层定理-03-relationships)
     - [2.4 证明层定理 (04-proofs)](#24-证明层定理-04-proofs)
     - [2.5 对比层定理 (05-comparative)](#25-对比层定理-05-comparative)
+    - [2.5.1 Smart Casual Verification定理 (Struct/07)](#251-smart-casual-verification定理-struct07)
     - [2.6 知识层定理 (Knowledge)](#26-知识层定理-knowledge)
     - [2.7 Rust流系统定理 (Knowledge/06-rust-streaming)](#27-rust流系统定理-knowledge06-rust-streaming)
     - [2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)](#28-gpu-tee属性定理-knowledge07-gpu-tee)
@@ -52,6 +53,7 @@
     - [3.11 Flink观测性定义 (Flink/15-observability)](#311-flink观测性定义-flink15-observability)
     - [3.12 Flink连接器定义 (Flink/04-connectors)](#312-flink连接器定义-flink04-connectors)
     - [3.13 Flink部署定义 (Flink/10-deployment)](#313-flink部署定义-flink10-deployment)
+    - [3.13.1 Flink性能基准测试定义 (Flink/11-benchmarking)](#3131-flink性能基准测试定义-flink11-benchmarking)
     - [3.14 Knowledge前沿扩展定义 (Knowledge/06-frontier)](#314-knowledge前沿扩展定义-knowledge06-frontier)
   - [4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)](#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx)
     - [4.1 基础层引理 (01-foundation)](#41-基础层引理-01-foundation)
@@ -68,6 +70,7 @@
     - [4.10.2 Flink工程实践扩展引理 (Flink/06-engineering)](#4102-flink工程实践扩展引理-flink06-engineering)
     - [4.11 Flink连接器引理 (Flink/04-connectors)](#411-flink连接器引理-flink04-connectors)
     - [4.12 Flink部署引理 (Flink/10-deployment)](#412-flink部署引理-flink10-deployment)
+    - [4.12.1 Flink性能基准测试引理 (Flink/11-benchmarking)](#4121-flink性能基准测试引理-flink11-benchmarking)
     - [4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)](#413-knowledge前沿扩展引理-knowledge06-frontier)
   - [5. 命题与推论注册表](#5-命题与推论注册表)
     - [5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)](#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx)
@@ -224,6 +227,15 @@
 |------|------|------|-----------|------|
 | Thm-K-04-01 | 流数据库vs流引擎选择定理 | Knowledge/04 | L4 | ✅ |
 | Thm-K-05-01 | 核心映射语义保持性定理 | Knowledge/05 | L4-L5 | ✅ |
+| **迁移指南定理 (Knowledge/05-mapping-guides)** | | | | |
+| Thm-K-05-01-01 | Spark Streaming到Flink语义等价 | Knowledge/05.1 | L4 | ✅ |
+| Thm-K-05-01-02 | Checkpoint机制完备性 | Knowledge/05.1 | L4 | ✅ |
+| Thm-K-05-02-01 | Kafka Streams到Flink语义保持 | Knowledge/05.2 | L4 | ✅ |
+| Thm-K-05-02-02 | 状态迁移完备性 | Knowledge/05.2 | L4 | ✅ |
+| Thm-K-05-03-01 | Storm到Flink语义等价 | Knowledge/05.3 | L4 | ✅ |
+| Thm-K-05-04-01 | Flink 1.x到2.x语义等价 | Knowledge/05.4 | L4 | ✅ |
+| Thm-K-05-04-02 | API兼容性保证 | Knowledge/05.4 | L4 | ✅ |
+| Thm-K-05-05-01 | 批流到流迁移语义保持 | Knowledge/05.5 | L3 | ✅ |
 | Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | ✅ |
 | Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | ✅ |
 | Thm-K-02-02 | 日志关联完整性条件 | Knowledge/02 | L4 | ✅ |
@@ -651,6 +663,24 @@
 | Def-K-05-02 | 语义保持性 | Knowledge/05 | Semantic Preservation |
 | Def-K-05-03 | 实现近似性 | Knowledge/05 | (ε,δ)-近似 |
 | Def-K-05-04 | 验证金字塔 | Knowledge/05 | 多层验证策略 |
+| **迁移指南定义 (Knowledge/05-mapping-guides)** | | | |
+| Def-K-05-01-01 | Spark Streaming DStream | Knowledge/05.1 | 离散化流形式化定义 |
+| Def-K-05-01-02 | Flink DataStream | Knowledge/05.1 | 连续流处理模型 |
+| Def-K-05-01-03 | 状态管理模型对比 | Knowledge/05.1 | 跨框架状态语义对比 |
+| Def-K-05-02-01 | Kafka Streams核心抽象 | Knowledge/05.2 | KStream与KTable形式化 |
+| Def-K-05-02-02 | Flink流表对偶性 | Knowledge/05.2 | Stream-Table对偶映射 |
+| Def-K-05-02-03 | 状态存储对比 | Knowledge/05.2 | 存储引擎与持久化对比 |
+| Def-K-05-03-01 | Storm核心抽象 | Knowledge/05.3 | Topology/Spout/Bolt形式化 |
+| Def-K-05-03-02 | Storm Tuple数据模型 | Knowledge/05.3 | 类型擦除元组模型 |
+| Def-K-05-03-03 | Flink JobGraph | Knowledge/05.3 | 执行图模型 |
+| Def-K-05-03-04 | 可靠性语义对比 | Knowledge/05.3 | ACK/Checkpoint语义对比 |
+| Def-K-05-04-01 | Flink 1.x架构模型 | Knowledge/05.4 | 经典DataStream API模型 |
+| Def-K-05-04-02 | Flink 2.x架构演进 | Knowledge/05.4 | Materialized View语义 |
+| Def-K-05-04-03 | 弃用与移除组件 | Knowledge/05.4 | 版本兼容性变更 |
+| Def-K-05-05-01 | 批处理计算模型 | Knowledge/05.5 | 有界数据集模型 |
+| Def-K-05-05-02 | 流处理计算模型 | Knowledge/05.5 | 无界数据流模型 |
+| Def-K-05-05-03 | Lambda与Kappa架构 | Knowledge/05.5 | 批流架构对比 |
+| Def-K-05-05-04 | 时间语义类型 | Knowledge/05.5 | 三种时间语义定义 |
 | Def-K-06-01 | Rust所有权模型 | Knowledge/06 | Ownership System |
 | Def-K-06-02 | 借用检查器 | Knowledge/06 | Borrow Checker |
 | Def-K-06-03 | Send/Sync Trait | Knowledge/06 | 线程安全边界 |
@@ -1004,6 +1034,17 @@
 | Def-F-10-34 | 追赶容量 | Flink/10-deployment | Catch-up Capacity |
 | Def-F-10-35 | 稳定窗口 | Flink/10-deployment | Stabilization Window |
 
+### 3.13.1 Flink性能基准测试定义 (Flink/11-benchmarking)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **性能基准测试形式化定义** | | | |
+| Def-F-11-04 | Nexmark基准测试套件 | Flink/11-benchmarking | 六元组 $N = \langle E, A, B, Q, D, M \rangle$ |
+| Def-F-11-05 | 端到端延迟 | Flink/11-benchmarking | $\Lambda_{e2e}(e) = t_{out}(e) - t_{in}(e)$ |
+| Def-F-11-06 | 吞吐-延迟曲线 | Flink/11-benchmarking | $\Lambda_{p99} = f(\Theta)$ 有效工作区 |
+| Def-F-11-07 | 状态规模指标 | Flink/11-benchmarking | $\text{State} = \langle S_{keyed}, S_{operator}, S_{window}, S_{raw} \rangle$ |
+| Def-F-11-08 | Checkpoint性能指标 | Flink/11-benchmarking | 持续时间/同步时长/状态大小 |
+
 ### 3.14 Knowledge前沿扩展定义 (Knowledge/06-frontier)
 
 | 编号 | 名称 | 位置 | 说明 |
@@ -1165,6 +1206,12 @@
 | Lemma-K-05-01 | 映射传递性引理 | Knowledge/05 | 复合映射保持 |
 | Lemma-K-05-02 | 理论保持性引理 | Knowledge/05 | 性质传导 |
 | Lemma-K-05-03 | 代码等价性保持 | Knowledge/05 | 模式实例化 |
+| **迁移指南引理 (Knowledge/05-mapping-guides)** | | | |
+| Lemma-K-05-01-01 | Watermark生成等价性 | Knowledge/05.1 | 时间语义映射 |
+| Lemma-K-05-01-02 | 再平衡行为差异 | Knowledge/05.2 | 分区策略对比 |
+| Lemma-K-05-01-03 | 状态管理差异 | Knowledge/05.3 | 状态持久化对比 |
+| Lemma-K-05-01-04 | 配置迁移规则 | Knowledge/05.4 | 版本兼容性 |
+| Lemma-K-05-01-05 | 窗口化批处理等价性 | Knowledge/05.5 | 批流语义映射 |
 | Lemma-K-06-01 | 所有权转移不变式 | Knowledge/06 | 内存安全基础 |
 | Lemma-K-06-02 | 借用生命周期包含性 | Knowledge/06 | 借用检查支撑 |
 | Lemma-K-06-03 | Send/Sync传递性 | Knowledge/06 | 线程安全组合 |
@@ -1333,6 +1380,16 @@
 | Lemma-F-10-31 | 目标利用率最优性引理 | Flink/10-deployment | Thm-F-10-31基础 |
 | Lemma-F-10-32 | 顶点独立扩缩容兼容性引理 | Flink/10-deployment | Thm-F-10-32基础 |
 
+### 4.12.1 Flink性能基准测试引理 (Flink/11-benchmarking)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **性能基准测试引理** | | | |
+| Lemma-F-11-04 | Nexmark查询复杂度递增规律 | Flink/11-benchmarking | 查询复杂度分层理论 |
+| Lemma-F-11-05 | 并行度扩展效率边界 | Flink/11-benchmarking | Amdahl定律在Flink中的应用 |
+| Lemma-F-11-06 | 状态后端性能权衡 | Flink/11-benchmarking | 最优后端选择决策边界 |
+| Lemma-F-11-07 | Checkpoint频率与恢复RTO关系 | Flink/11-benchmarking | $T_{RTO}$ 优化公式 |
+
 ### 4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)
 
 | 编号 | 名称 | 位置 | 关键作用 |
@@ -1412,6 +1469,17 @@
 | Prop-S-07-03 | Trace覆盖与Bug发现率关系 | Struct/07 | 验证覆盖率分析 |
 | Prop-K-04-03 | SQL原生性对开发效率的影响 | Knowledge/04 | 开发效率量化 |
 | Prop-K-05-01 | 语义等价性命题 | Knowledge/05 | 语义等价 |
+| **迁移指南命题 (Knowledge/05-mapping-guides)** | | | |
+| Prop-K-05-01-01 | 延迟特性对比 | Knowledge/05.1 | 批vs流延迟模型 |
+| Prop-K-05-01-02 | 状态一致性保证 | Knowledge/05.1 | 跨框架一致性 |
+| Prop-K-05-02-01 | 拓扑结构等价性 | Knowledge/05.2 | KStreams与JobGraph |
+| Prop-K-05-02-02 | 分区分配语义 | Knowledge/05.2 | 并行度差异 |
+| Prop-K-05-03-01 | 拓扑结构等价性 | Knowledge/05.3 | Storm与Flink映射 |
+| Prop-K-05-03-02 | 分组策略映射 | Knowledge/05.3 | Stream Grouping等价 |
+| Prop-K-05-04-01 | API兼容性保证 | Knowledge/05.4 | 版本向后兼容 |
+| Prop-K-05-04-02 | 状态迁移完备性 | Knowledge/05.4 | Savepoint升级 |
+| Prop-K-05-05-01 | 批流语义等价条件 | Knowledge/05.5 | 语义一致性 |
+| Prop-K-05-05-02 | 状态需求推导 | Knowledge/05.5 | 有界vs无界 |
 | Prop-K-06-01 | Rust零成本抽象保持 | Knowledge/06 | 抽象无运行时开销 |
 | Prop-K-07-01 | GPU TEE副作用隔离 | Knowledge/07 | Side-effect Isolation |
 | Prop-K-08-01 | Lakehouse读写分离一致性 | Knowledge/08 | 读写不冲突 |
@@ -1538,6 +1606,11 @@
 | Prop-K-08-12 | 数据质量规则覆盖率 | Knowledge/08-standards | 规则完备性分析 |
 | Prop-K-08-13 | 血缘传播延迟边界 | Knowledge/08-standards | 端到端延迟分析 |
 | Prop-K-08-14 | 治理策略执行一致性 | Knowledge/08-standards | 策略生效保证 |
+| **Flink 11-benchmarking性能基准测试** | | | |
+| Prop-F-11-04 | Benchmark可复现性条件 | Flink/11-benchmarking | 硬件/软件/数据/时长控制 |
+| Prop-F-11-05 | 指标单调性约束 | Flink/11-benchmarking | 吞吐/延迟/利用率单调关系 |
+| Prop-F-11-06 | 故障恢复时间边界 | Flink/11-benchmarking | $T_{rec}$分解公式 |
+| Prop-F-11-07 | Checkpoint性能边界 | Flink/11-benchmarking | 频率与延迟关系证明 |
 
 ### 5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)
 
@@ -1584,11 +1657,11 @@
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
 | **定理** | 27 | 40 | 96 | **163** |
-| **定义** | 64 | 88 | 210 | **362** |
-| **引理** | 35 | 43 | 77 | **155** |
-| **命题** | 20 | 27 | 63 | **110** |
+| **定义** | 64 | 88 | 215 | **367** |
+| **引理** | 35 | 43 | 81 | **159** |
+| **命题** | 20 | 27 | 67 | **114** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 150 | 199 | 447 | **796** |
+| **合计** | 150 | 199 | 460 | **809** |
 
 ### 7.2 按文档统计
 
@@ -1618,6 +1691,7 @@
 | Flink (13) WASM | 2 | 6 | 0 | 3 | 0 |
 | **新增文档** | | | | | |
 | Flink (10) Kubernetes Operator | 2 | 6 | 3 | 0 | 0 |
+| Flink (11) 性能基准测试 | 0 | 5 | 4 | 4 | 0 |
 | Knowledge (06) Serverless架构 | 1 | 4 | 2 | 1 | 0 |
 | Flink (07) Clickstream分析 | 1 | 5 | 3 | 1 | 0 |
 | Flink (02) 多路Join优化 | 1 | 5 | 2 | 3 | 0 |

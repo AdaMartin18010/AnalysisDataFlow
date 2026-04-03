@@ -1,0 +1,9 @@
+{"user_id": "user_001", "ip_address": "192.168.1.100", "status": "FAIL", "location": "Beijing", "device": "Chrome", "timestamp": "2024-01-15T10:00:00Z"}
+{"user_id": "user_001", "ip_address": "192.168.1.100", "status": "FAIL", "location": "Beijing", "device": "Chrome", "timestamp": "2024-01-15T10:01:00Z"}
+{"user_id": "user_001", "ip_address": "192.168.1.100", "status": "FAIL", "location": "Beijing", "device": "Chrome", "timestamp": "2024-01-15T10:02:00Z"}
+{"user_id": "user_001", "ip_address": "10.0.0.50", "status": "SUCCESS", "location": "Shanghai", "device": "Chrome", "timestamp": "2024-01-15T10:30:00Z"}
+{"user_id": "user_002", "ip_address": "192.168.2.100", "status": "SUCCESS", "location": "Beijing", "device": "Firefox", "timestamp": "2024-01-15T10:05:00Z"}
+{"user_id": "user_003", "ip_address": "172.16.0.100", "status": "FAIL", "location": "Guangzhou", "device": "Safari", "timestamp": "2024-01-15T10:10:00Z"}
+{"user_id": "user_003", "ip_address": "172.16.0.100", "status": "FAIL", "location": "Guangzhou", "device": "Safari", "timestamp": "2024-01-15T10:11:00Z"}
+{"user_id": "user_003", "ip_address": "172.16.0.100", "status": "FAIL", "location": "Guangzhou", "device": "Safari", "timestamp": "2024-01-15T10:12:00Z"}
+{"user_id": "user_003", "ip_address": "172.16.0.100", "status": "SUCCESS", "location": "Guangzhou", "device": "Safari", "timestamp": "2024-01-15T10:13:00Z"}
