@@ -1,6 +1,6 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 58+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 60+ 核心文档 | **形式化等级**: L3-L5
 
 ---
 
@@ -384,6 +384,8 @@ flowchart TD
 | [fluss-integration.md](04-connectors/fluss-integration.md) | Fluss集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | [04.04-cdc-debezium-integration.md](04-connectors/04.04-cdc-debezium-integration.md) | CDC与Debezium集成 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md), [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | [flink-delta-lake-integration.md](04-connectors/flink-delta-lake-integration.md) | Delta Lake集成 | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) |
+| [flink-iceberg-integration.md](04-connectors/flink-iceberg-integration.md) | Iceberg集成 | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) |
+| [flink-paimon-integration.md](04-connectors/flink-paimon-integration.md) | Paimon集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 
 ### 6.5 05-vs-competitors/ 竞品对比层
 
@@ -635,6 +637,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-03 (新增7篇文档：Streaming ETL、Delta Lake集成、智能制造IoT、物流追踪、智能电网、实时特征工程、数据质量监控)*
+*更新时间: 2026-04-03 (新增9篇文档：Streaming ETL、Delta Lake集成、智能制造IoT、物流追踪、智能电网、实时特征工程、数据质量监控、Iceberg集成、Paimon集成)*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 58+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*
+*文档统计: 60+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*

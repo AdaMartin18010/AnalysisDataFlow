@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v1.5 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v1.6 | **更新日期**: 2026-04-03 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -317,6 +317,16 @@
 | Thm-F-04-31 | Flink-Delta事务隔离性定理 | Flink/04-connectors | L4 | ✅ |
 | Thm-F-04-32 | 增量提交原子性定理 | Flink/04-connectors | L4 | ✅ |
 | Thm-F-04-33 | 流批一体存储正确性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| **Iceberg集成** | | | | |
+| Thm-F-04-40 | Iceberg快照一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| Thm-F-04-41 | Flink-Iceberg事务隔离性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-42 | 隐藏分区正确性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-43 | 模式演化兼容性定理 | Flink/04-connectors | L4 | ✅ |
+| **Paimon集成** | | | | |
+| Thm-F-04-50 | Paimon LSM-Tree一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| Thm-F-04-51 | Paimon流批统一正确性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| Thm-F-04-52 | 变更日志生成正确性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-53 | Paimon合并引擎正确性定理 | Flink/04-connectors | L4 | ✅ |
 
 ### 2.18 Knowledge前沿扩展定理 (Knowledge/06-frontier)
 
@@ -619,6 +629,24 @@
 | Def-F-04-45 | 文件编排优化 | Flink/04-connectors | OPTIMIZE与VACUUM语义 |
 | Def-F-04-46 | Checkpoint与Delta提交 | Flink/04-connectors | 两阶段提交协调 |
 | Def-F-04-47 | 流批统一Sink | Flink/04-connectors | UnifiedSink接口定义 |
+| **Iceberg集成** | | | |
+| Def-F-04-50 | Iceberg表格式 | Flink/04-connectors | 开放表格式元数据模型 |
+| Def-F-04-51 | Iceberg快照语义 | Flink/04-connectors | 时间戳与版本管理 |
+| Def-F-04-52 | 隐藏分区 | Flink/04-connectors | Hidden Partitioning语义 |
+| Def-F-04-53 | 模式演化 | Flink/04-connectors | Schema Evolution规则 |
+| Def-F-04-54 | 增量扫描 | Flink/04-connectors | Incremental Scan语义 |
+| Def-F-04-55 | 元数据层 | Flink/04-connectors | Metadata Layer结构 |
+| Def-F-04-56 | 清单文件 | Flink/04-connectors | Manifest文件组织 |
+| Def-F-04-57 | Iceberg Catalog | Flink/04-connectors | 目录服务接口 |
+| **Paimon集成** | | | |
+| Def-F-04-60 | Paimon表格式 | Flink/04-connectors | 流批统一存储模型 |
+| Def-F-04-61 | LSM-Tree存储引擎 | Flink/04-connectors | Log-Structured Merge Tree |
+| Def-F-04-62 | 变更日志生成 | Flink/04-connectors | Changelog Producer |
+| Def-F-04-63 | 合并引擎 | Flink/04-connectors | Merge Engine语义 |
+| Def-F-04-64 | 快照管理 | Flink/04-connectors | Snapshot生命周期管理 |
+| Def-F-04-65 | 文件格式 | Flink/04-connectors | ORC/Parquet/Avro支持 |
+| Def-F-04-66 | 分区与桶 | Flink/04-connectors | Partition与Bucket策略 |
+| Def-F-04-67 | 全增量一体化 | Flink/04-connectors | 批读流读统一接口 |
 
 ### 3.13 Knowledge前沿扩展定义 (Knowledge/06-frontier)
 
@@ -782,6 +810,13 @@
 | Lemma-F-04-40 | Delta写入原子性引理 | Flink/04-connectors | Thm-F-04-30基础 |
 | Lemma-F-04-41 | 事务日志持久性引理 | Flink/04-connectors | Thm-F-04-31基础 |
 | Lemma-F-04-42 | 增量读取完备性引理 | Flink/04-connectors | Thm-F-04-33基础 |
+| **Iceberg集成** | | | |
+| Lemma-F-04-50 | Iceberg快照原子性引理 | Flink/04-connectors | Thm-F-04-40基础 |
+| Lemma-F-04-51 | 清单文件一致性引理 | Flink/04-connectors | Thm-F-04-41基础 |
+| Lemma-F-04-52 | 隐藏分区映射引理 | Flink/04-connectors | Thm-F-04-42基础 |
+| **Paimon集成** | | | |
+| Lemma-F-04-50 | Paimon LSM写入原子性引理 | Flink/04-connectors | Thm-F-04-50基础 |
+| Lemma-F-04-51 | 变更日志完备性引理 | Flink/04-connectors | Thm-F-04-52基础 |
 
 ### 4.12 Knowledge前沿扩展引理 (Knowledge/06-frontier)
 
@@ -858,6 +893,12 @@
 | Prop-F-02-25 | ETL管道吞吐量边界 | Flink/02-core-mechanisms | 瓶颈分析 |
 | **Flink 04-connectors Delta Lake集成** | | | |
 | Prop-F-04-40 | Delta-Flink延迟权衡 | Flink/04-connectors | 一致性-延迟分析 |
+| **Flink 04-connectors Iceberg集成** | | | |
+| Prop-F-04-50 | Iceberg-Flink时间旅行一致性 | Flink/04-connectors | 快照读取语义 |
+| Prop-F-04-51 | Iceberg模式演化兼容性 | Flink/04-connectors | 列添加/删除/重命名 |
+| **Flink 04-connectors Paimon集成** | | | |
+| Prop-F-04-50 | Paimon流批读取一致性 | Flink/04-connectors | 批读与流读等价性 |
+| Prop-F-04-51 | Paimon全增量一体性能 | Flink/04-connectors | 无重复计算保证 |
 
 ### 5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)
 
@@ -903,12 +944,12 @@
 
 | 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
 |------|---------|------------|--------|------|
-| **定理** | 24 | 23 | 40 | **87** |
-| **定义** | 56 | 37 | 89 | **182** |
-| **引理** | 33 | 19 | 29 | **81** |
-| **命题** | 19 | 10 | 21 | **50** |
+| **定理** | 24 | 23 | 48 | **95** |
+| **定义** | 56 | 37 | 105 | **198** |
+| **引理** | 33 | 19 | 34 | **86** |
+| **命题** | 19 | 10 | 25 | **54** |
 | **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 136 | 90 | 180 | **406** |
+| **合计** | 136 | 90 | 213 | **439** |
 
 ### 7.2 按文档统计
 
@@ -927,7 +968,9 @@
 | Knowledge (08) Lakehouse | 4 | 5 | 2 | 1 | 0 |
 | Knowledge (09) RAG流式 | 4 | 6 | 3 | 1 | 0 |
 | Flink (02) 核心机制 | 9 | 28 | 2 | 7 | 0 |
-| Flink (04) 连接器 | 4 | 8 | 3 | 1 | 0 |
+| Flink (04) Delta Lake集成 | 4 | 8 | 3 | 1 | 0 |
+| Flink (04) Iceberg集成 | 4 | 8 | 3 | 2 | 0 |
+| Flink (04) Paimon集成 | 4 | 8 | 2 | 2 | 0 |
 | Flink (15) 观测性 | 2 | 9 | 0 | 4 | 0 |
 | Flink (06) Rust集成 | 2 | 0 | 0 | 0 | 0 |
 | Flink (07) 案例研究 | 3 | 13 | 6 | 2 | 1 |
@@ -954,6 +997,6 @@
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-03 (v1.5 更新: 添加Flink/07-case-studies游戏实时分析案例文档)*
+*最后更新时间: 2026-04-03 (v1.6 更新: 添加Flink/04-connectors Iceberg与Paimon集成文档)*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
