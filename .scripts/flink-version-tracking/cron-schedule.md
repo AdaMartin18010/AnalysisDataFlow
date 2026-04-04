@@ -8,7 +8,7 @@
 - [GitHub Actions 配置](#github-actions-配置)
 - [本地定时任务配置](#本地定时任务配置)
 - [Windows 任务计划程序](#windows-任务计划程序)
-- [Linux Cron 配置](#linux-cron-配置)
+- [Linux Cron 配置](#使用-cron-linuxmacos)
 - [Docker 定时任务](#docker-定时任务)
 - [监控和日志](#监控和日志)
 - [故障排除](#故障排除)
@@ -294,24 +294,24 @@ function New-FlinkTrackerTask {
         [string]$Schedule,
         [string]$Modifier
     )
-    
+
     $action = New-ScheduledTaskAction `
         -Execute $pythonPath `
         -Argument "$scriptPath\$ScriptName" `
         -WorkingDirectory $scriptPath
-    
+
     $trigger = switch ($Schedule) {
         "Hourly" { New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Hours $Modifier) }
         "Daily" { New-ScheduledTaskTrigger -Daily -At $Modifier }
         "Weekly" { New-ScheduledTaskTrigger -Weekly -DaysOfWeek $Modifier -At "09:00" }
     }
-    
+
     $settings = New-ScheduledTaskSettingsSet `
         -AllowStartIfOnBatteries `
         -DontStopIfGoingOnBatteries `
         -StartWhenAvailable `
         -RunOnlyIfNetworkAvailable
-    
+
     Register-ScheduledTask `
         -TaskName "FlinkTracker-$TaskName" `
         -Action $action `
@@ -319,7 +319,7 @@ function New-FlinkTrackerTask {
         -Settings $settings `
         -Description "Flink Version Tracking - $TaskName" `
         -Force
-    
+
     Write-Host "已创建任务: FlinkTracker-$TaskName"
 }
 
@@ -492,19 +492,19 @@ LOG_DIR="$SCRIPT_DIR/logs"
 check_data_freshness() {
     local file=$1
     local max_age_hours=$2
-    
+
     if [ ! -f "$file" ]; then
         echo "❌ 数据文件不存在: $file"
         return 1
     fi
-    
+
     local file_age=$(( ($(date +%s) - $(stat -c %Y "$file")) / 3600 ))
-    
+
     if [ $file_age -gt $max_age_hours ]; then
         echo "⚠️ 数据文件过期 ($file_age 小时): $file"
         return 1
     fi
-    
+
     echo "✅ 数据文件正常: $file (年龄: $file_age 小时)"
     return 0
 }
@@ -543,6 +543,7 @@ echo "检查完成"
 **错误**: `API rate limit exceeded`
 
 **解决**:
+
 - 使用 GitHub Personal Access Token
 - 降低检查频率
 - 添加缓存机制
@@ -559,6 +560,7 @@ headers = {
 **错误**: `Connection timeout`
 
 **解决**:
+
 - 增加超时时间
 - 启用重试机制
 - 检查代理设置
@@ -568,6 +570,7 @@ headers = {
 **错误**: `SMTP authentication failed`
 
 **解决**:
+
 - 检查 SMTP 凭据
 - 使用应用专用密码 (Gmail)
 - 启用 "不够安全的应用访问" (不推荐用于生产)
@@ -577,6 +580,7 @@ headers = {
 **错误**: `Webhook returned 404`
 
 **解决**:
+
 - 检查 Webhook URL
 - 重新生成 Webhook
 - 确认频道存在

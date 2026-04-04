@@ -8,7 +8,7 @@
 
 ## 快速字母导航
 
-[A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#术语快速查找索引-glossary-quick-index) · [H](GLOSSARY.md#h) · [I](#术语快速查找索引-glossary-quick-index) · [J](GLOSSARY.md#j) · [K](#术语快速查找索引-glossary-quick-index) · [L](#术语快速查找索引-glossary-quick-index) · [M](#m) · [N](#术语快速查找索引-glossary-quick-index) · [O](#o) · [P](#p) · [Q](#术语快速查找索引-glossary-quick-index) · [R](#r) · [S](#s) · [T](#核心流计算术语-top-20) · [U](#术语快速查找索引-glossary-quick-index) · [V](GLOSSARY.md#v) · [W](#t-w) · [X](#术语快速查找索引-glossary-quick-index) · [Y](#术语快速查找索引-glossary-quick-index) · [Z](GLOSSARY.md#z)
+[A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#术语快速查找索引-glossary-quick-index) · [H](GLOSSARY.md#h) · [I](#术语快速查找索引-glossary-quick-index) · [J](GLOSSARY.md#j) · [K](#术语快速查找索引-glossary-quick-index) · [L](#术语快速查找索引-glossary-quick-index) · [M](#m) · [N](#术语快速查找索引-glossary-quick-index) · [O](#o) · [P](#p) · [Q](#术语快速查找索引-glossary-quick-index) · [R](#r) · [S](#s) · [T](#核心流计算术语-top-20) · [U](#术语快速查找索引-glossary-quick-index) · [V](GLOSSARY.md#v) · [W](#t-w) · [X](#术语快速查找索引-glossary-quick-index) · [Y](#术语快速查找索引-glossary-quick-index) · [Z](GLOSSARY.md#版本历史)
 
 ---
 

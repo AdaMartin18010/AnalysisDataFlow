@@ -119,6 +119,7 @@ graph TD
 |----------|--------|-------------|-----------|
 | [02-python-api.md](02-python-api.md) | ✅ | PyFlink API and integration patterns | L2 |
 | [02.03-python-async-api.md](02.03-python-async-api.md) | 🆕 NEW | Python Async DataStream API (Flink 2.2) | L3 |
+| [pyflink-complete-guide.md](pyflink-complete-guide.md) | 🆕 NEW | PyFlink 深度完整指南 (环境配置/UDF/Pandas/ML/部署) | L2-L3 |
 
 ### 2.4 Rust Programming ⭐ NEW SECTION
 
@@ -584,6 +585,7 @@ graph TD
 | 01.02 | [typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Scala | L3 | ✅ | 40 min |
 | 01.03 | [scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | Scala | L4 | 🆕 | 60 min |
 | 02 | [python-api.md](02-python-api.md) | Python | L2 | ✅ | 30 min |
+| - | [pyflink-complete-guide.md](pyflink-complete-guide.md) | Python | L2-L3 | 🆕 NEW | 90 min |
 | 02.01 | [java-api-from-scala.md](02.01-java-api-from-scala.md) | Scala | L2 | ✅ | 25 min |
 | 02.02 | [flink-scala-api-community.md](02.02-flink-scala-api-community.md) | Scala | L3 | 📝 | 35 min |
 | 03 | [rust-native.md](03-rust-native.md) | Rust | L3 | ✅ | 45 min |
