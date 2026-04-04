@@ -279,9 +279,19 @@
     "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\log-monitoring.md",
     "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\netflix-streaming-pipeline.md",
     "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\real-time-recommendation.md",
-    "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\spotify-music-recommendation.md"
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\spotify-music-recommendation.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\streaming-data-product-economics.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\stripe-payment-processing.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\03-business-patterns\\uber-realtime-platform.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\04-technology-selection\\engine-selection-guide.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\04-technology-selection\\flink-vs-risingwave.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\04-technology-selection\\paradigm-selection-guide.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\04-technology-selection\\storage-selection-guide.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\04-technology-selection\\streaming-database-guide.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\05-mapping-guides\\multi-agent-frameworks-2026-comparison.md",
+    "E:\\_src\\AnalysisDataFlow\\Knowledge\\05-mapping-guides\\streaming-etl-tools-landscape-2026.md"
   ],
   "total_files": 694,
-  "saved_at": "2026-04-04T19:00:55.846973",
+  "saved_at": "2026-04-04T19:01:05.847750",
   "version": "2.0.0"
 }
