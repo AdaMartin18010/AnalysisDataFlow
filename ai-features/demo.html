@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI辅助功能演示 | AnalysisDataFlow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .feature-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .result-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-box.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .result-item h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .result-item p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .result-item .meta {
+            color: #999;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .code-block .comment {
+            color: #75715e;
+        }
+        
+        .code-block .keyword {
+            color: #66d9ef;
+        }
+        
+        .code-block .string {
+            color: #e6db74;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI辅助功能演示</h1>
+            <p>探索 AnalysisDataFlow 的智能文档助手</p>
+        </header>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h2>文档摘要</h2>
+                <p>自动生成技术文档摘要，提取关键概念、定理和定义，支持批量处理整个目录。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h2>智能搜索</h2>
+                <p>支持关键词搜索（BM25）和语义搜索（向量嵌入），快速定位所需知识。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">❓</div>
+                <h2>问答机器人</h2>
+                <p>从文档自动生成FAQ，支持自然语言提问，智能匹配最相关的答案。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h2>学习路径</h2>
+                <p>根据用户目标和技术背景，生成个性化学习路径和推荐文档。</p>
+            </div>
+        </div>
+        
+        <!-- 文档摘要演示 -->
+        <div class="demo-section">
+            <h2>📝 文档摘要生成器</h2>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('summarize-single')">单文档</div>
+                <div class="tab" onclick="switchTab('summarize-batch')">批量处理</div>
+            </div>
+            
+            <div id="summarize-single" class="tab-content active">
+                <div class="input-group">
+                    <label>文档路径</label>
+                    <select id="doc-path">
+                        <option value="README.md">README.md - 项目总览</option>
+                        <option value="Struct/00-INDEX.md">Struct/00-INDEX.md - 理论索引</option>
+                        <option value="Struct/01-foundation/01.01-unified-streaming-theory.md">统一流计算理论</option>
+                        <option value="Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md">Checkpoint机制</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="generateSummary()">生成摘要</button>
+            </div>
+            
+            <div id="summarize-batch" class="tab-content">
+                <div class="input-group">
+                    <label>目录路径</label>
+                    <input type="text" value="Struct/01-foundation/" placeholder="输入目录路径">
+                </div>
+                <button class="btn" onclick="generateBatchSummary()">批量生成</button>
+            </div>
+            
+            <div id="summary-result" class="result-box">
+                <!-- 动态显示结果 -->
+            </div>
+        </div>
+        
+        <!-- 智能搜索演示 -->
+        <div class="demo-section">
+            <h2>🔍 智能文档搜索</h2>
+            <div class="input-group">
+                <label>搜索查询</label>
+                <input type="text" id="search-query" placeholder="输入搜索关键词，如: checkpoint mechanism, 流处理容错...">
+            </div>
+            <div class="input-group">
+                <label>搜索类型</label>
+                <select id="search-type">
+                    <option value="keyword">关键词搜索 (BM25)</option>
+                    <option value="semantic">语义搜索 (向量嵌入)</option>
+                    <option value="hybrid">混合搜索</option>
+                </select>
+            </div>
+            <button class="btn" onclick="performSearch()">搜索</button>
+            <button class="btn btn-secondary" onclick="buildIndex()">重建索引</button>
+            
+            <div id="search-result" class="result-box">
+                <!-- 动态显示结果 -->
+            </div>
+        </div>
+        
+        <!-- 问答机器人演示 -->
+        <div class="demo-section">
+            <h2>❓ 智能问答</h2>
+            <div class="input-group">
+                <label>你的问题</label>
+                <input type="text" id="qa-question" placeholder="输入问题，如: 什么是Checkpoint? Watermark如何工作?">
+            </div>
+            <button class="btn" onclick="askQuestion()">提问</button>
+            <button class="btn btn-secondary" onclick="showFAQ()">查看FAQ</button>
+            
+            <div id="qa-result" class="result-box">
+                <!-- 动态显示结果 -->
+            </div>
+        </div>
+        
+        <!-- 学习路径演示 -->
+        <div class="demo-section">
+            <h2>🎯 个性化学习路径</h2>
+            <div class="input-group">
+                <label>学习目标</label>
+                <select id="learning-goal">
+                    <option value="flink-developer">Flink开发工程师 - 掌握Flink应用开发</option>
+                    <option value="streaming-architect">流计算架构师 - 设计大规模流处理系统</option>
+                    <option value="data-engineer">流式数据工程师 - 构建实时数据pipeline</option>
+                    <option value="researcher">流计算研究员 - 深入理论研究</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>技术背景</label>
+                <input type="text" id="learning-bg" placeholder="如: Java后端3年，熟悉Spring和MySQL">
+            </div>
+            <div class="input-group">
+                <label>当前水平</label>
+                <select id="learning-level">
+                    <option value="beginner">初学者</option>
+                    <option value="intermediate" selected>中级</option>
+                    <option value="advanced">高级</option>
+                    <option value="expert">专家</option>
+                </select>
+            </div>
+            <button class="btn" onclick="generateLearningPath()">生成学习路径</button>
+            
+            <div id="learning-result" class="result-box">
+                <!-- 动态显示结果 -->
+            </div>
+        </div>
+        
+        <!-- 命令行使用说明 -->
+        <div class="demo-section">
+            <h2>💻 命令行使用</h2>
+            <p>所有AI功能都可以通过命令行脚本使用：</p>
+            
+            <div class="code-block">
+<span class="comment"># 文档摘要</span>
+python scripts/ai-features/document-summarizer.py --input README.md
+python scripts/ai-features/document-summarizer.py --input Struct/ --batch --format json
+
+<span class="comment"># 智能搜索</span>
+python scripts/ai-features/smart-search-indexer.py --build --source .
+python scripts/ai-features/smart-search-indexer.py --search <span class="string">"checkpoint mechanism"</span>
+python scripts/ai-features/smart-search-indexer.py --semantic-search <span class="string">"流处理容错"</span>
+
+<span class="comment"># 问答机器人</span>
+python scripts/ai-features/qa-bot-knowledge-base.py --build --source .
+python scripts/ai-features/qa-bot-knowledge-base.py --ask <span class="string">"什么是Checkpoint?"</span>
+
+<span class="comment"># 学习路径</span>
+python scripts/ai-features/learning-path-personalizer.py \
+    --goal <span class="string">"成为Flink专家"</span> \
+    --background <span class="string">"Java后端3年"</span> \
+    --level intermediate
+            </div>
+        </div>
+        
+        <footer>
+            <p>AnalysisDataFlow AI Features Demo | 使用 OpenAI API 提供智能支持</p>
+            <p>本地运行需要先设置 OPENAI_API_KEY 环境变量</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Tab切换
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // 模拟生成摘要
+        function generateSummary() {
+            const docPath = document.getElementById('doc-path').value;
+            const resultBox = document.getElementById('summary-result');
+            
+            resultBox.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>正在分析文档...</p></div>';
+            resultBox.classList.add('active');
+            
+            setTimeout(() => {
+                const summaries = {
+                    'README.md': {
+                        title: 'AnalysisDataFlow 项目总览',
+                        summary: '本项目是对流计算的理论模型、层次结构、工程实践、业务建模的全面梳理与体系构建。涵盖流计算的形式化理论、Flink核心技术、工程实践模式与前沿趋势。',
+                        concepts: ['流计算', 'Flink', '形式化理论', 'Dataflow模型', 'Actor模型'],
+                        theorems: 1198,
+                        definitions: 3149,
+                        readingTime: 15
+                    },
+                    'Struct/00-INDEX.md': {
+                        title: '统一流计算理论索引',
+                        summary: 'Struct目录包含流计算的形式化理论基础，包括USTM统一流元组模型、进程演算、Actor模型、Dataflow模型等核心理论的形式化定义和证明。',
+                        concepts: ['USTM', '进程演算', 'CSP', 'Actor模型', '会话类型'],
+                        theorems: 380,
+                        definitions: 835,
+                        readingTime: 45
+                    },
+                    'Struct/01-foundation/01.01-unified-streaming-theory.md': {
+                        title: '统一流计算理论',
+                        summary: '提出通用流元组模型(USTM)作为流计算的形式化基础，定义流、操作符、执行图等核心概念，建立流计算语义的理论框架。',
+                        concepts: ['USTM', '流元组', '操作符语义', '执行图', '时间语义'],
+                        theorems: 24,
+                        definitions: 60,
+                        readingTime: 30
+                    },
+                    'Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md': {
+                        title: 'Checkpoint机制深度解析',
+                        summary: '详细分析Flink的分布式快照机制，基于Chandy-Lamport算法实现容错，包括Barrier传播、状态快照、恢复流程等核心实现细节。',
+                        concepts: ['Checkpoint', 'Barrier', 'Chandy-Lamport', '状态快照', '增量Checkpoint'],
+                        theorems: 15,
+                        definitions: 42,
+                        readingTime: 25
+                    }
+                };
+                
+                const summary = summaries[docPath] || summaries['README.md'];
+                
+                resultBox.innerHTML = `
+                    <h3>📄 ${summary.title}</h3>
+                    <p><strong>摘要:</strong> ${summary.summary}</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag">📊 ${summary.theorems} 定理</span>
+                        <span class="tag">📐 ${summary.definitions} 定义</span>
+                        <span class="tag">⏱️ ${summary.readingTime} 分钟阅读</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <strong>关键概念:</strong>
+                        ${summary.concepts.map(c => `<span class="tag">${c}</span>`).join('')}
+                    </div>
+                `;
+            }, 1500);
+        }
+        
+        function generateBatchSummary() {
+            const resultBox = document.getElementById('summary-result');
+            resultBox.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>正在批量分析文档...</p></div>';
+            resultBox.classList.add('active');
+            
+            setTimeout(() => {
+                resultBox.innerHTML = `
+                    <h3>📚 批量分析完成</h3>
+                    <div class="result-item">
+                        <h4>01.01-unified-streaming-theory.md</h4>
+                        <p>统一流计算理论 - 24个定理，60个定义</p>
+                    </div>
+                    <div class="result-item">
+                        <h4>01.02-process-calculus-primer.md</h4>
+                        <p>进程演算基础 - 18个定理，45个定义</p>
+                    </div>
+                    <div class="result-item">
+                        <h4>01.03-actor-model-formalization.md</h4>
+                        <p>Actor模型形式化 - 15个定理，38个定义</p>
+                    </div>
+                    <p style="margin-top: 15px;">
+                        <strong>总计:</strong> 8篇文档，156个定理，412个定义
+                    </p>
+                `;
+            }, 2000);
+        }
+        
+        // 模拟搜索
+        function performSearch() {
+            const query = document.getElementById('search-query').value || 'checkpoint';
+            const type = document.getElementById('search-type').value;
+            const resultBox = document.getElementById('search-result');
+            
+            resultBox.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>正在搜索...</p></div>';
+            resultBox.classList.add('active');
+            
+            setTimeout(() => {
+                const results = [
+                    {
+                        title: 'Checkpoint机制深度解析',
+                        path: 'Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md',
+                        snippet: 'Checkpoint是Flink容错机制的核心，基于Chandy-Lamport分布式快照算法实现...',
+                        section: '核心机制',
+                        score: 0.95
+                    },
+                    {
+                        title: 'Flink Checkpoint正确性证明',
+                        path: 'Struct/04-proofs/04.01-flink-checkpoint-correctness.md',
+                        snippet: '定理 Thm-S-04-01: Flink的Checkpoint机制满足一致性保证...',
+                        section: '形式证明',
+                        score: 0.88
+                    },
+                    {
+                        title: 'Exactly-Once语义保证',
+                        path: 'Flink/02-core-mechanisms/exactly-once-semantics.md',
+                        snippet: '基于Checkpoint和两阶段提交协议实现端到端的Exactly-Once保证...',
+                        section: '语义保证',
+                        score: 0.82
+                    }
+                ];
+                
+                resultBox.innerHTML = `
+                    <h3>🔍 "${query}" 的搜索结果 (${type === 'semantic' ? '语义搜索' : type === 'hybrid' ? '混合搜索' : '关键词搜索'})</h3>
+                    ${results.map((r, i) => `
+                        <div class="result-item">
+                            <h4>[${i+1}] ${r.title}</h4>
+                            <p>${r.snippet}</p>
+                            <div class="meta">
+                                📄 ${r.path} | 📑 ${r.section} | ⭐ 相关度: ${(r.score * 100).toFixed(1)}%
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+            }, 1200);
+        }
+        
+        function buildIndex() {
+            alert('索引重建功能需要在本地运行:\npython scripts/ai-features/smart-search-indexer.py --build --source .');
+        }
+        
+        // 模拟问答
+        function askQuestion() {
+            const question = document.getElementById('qa-question').value || '什么是Checkpoint?';
+            const resultBox = document.getElementById('qa-result');
+            
+            resultBox.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>正在分析问题...</p></div>';
+            resultBox.classList.add('active');
+            
+            setTimeout(() => {
+                resultBox.innerHTML = `
+                    <h3>💡 回答</h3>
+                    <p><strong>问题:</strong> ${question}</p>
+                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                        <p><strong>Checkpoint (检查点)</strong> 是 Apache Flink 的容错机制核心组件。</p>
+                        <p style="margin-top: 10px;">
+                            Checkpoint 通过定期对分布式数据流应用的所有状态进行一致性快照来实现容错。
+                            当发生故障时，Flink 可以从最近的 Checkpoint 恢复，确保数据处理的不丢失和不重复。
+                        </p>
+                        <p style="margin-top: 10px;">
+                            核心特点：
+                            <br>• 基于 Chandy-Lamport 分布式快照算法
+                            <br>• 支持增量 Checkpoint 减少开销
+                            <br>• 保证 Exactly-Once 语义
+                        </p>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <span class="tag">置信度: 92%</span>
+                        <span class="tag">来源: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <strong>相关问题:</strong>
+                        <ul style="margin-top: 8px; padding-left: 20px;">
+                            <li>Checkpoint和Savepoint有什么区别?</li>
+                            <li>如何优化Checkpoint性能?</li>
+                            <li>Checkpoint失败的常见原因?</li>
+                        </ul>
+                    </div>
+                `;
+            }, 1500);
+        }
+        
+        function showFAQ() {
+            const resultBox = document.getElementById('qa-result');
+            resultBox.innerHTML = `
+                <h3>📚 常见问题 (FAQ)</h3>
+                <div class="result-item">
+                    <h4>Q1: 什么是Watermark?</h4>
+                    <p>Watermark是Flink中用于处理乱序事件的机制，表示事件时间的进度...</p>
+                </div>
+                <div class="result-item">
+                    <h4>Q2: Flink如何保证Exactly-Once?</h4>
+                    <p>通过Checkpoint机制和两阶段提交协议，配合幂等性sink实现端到端Exactly-Once...</p>
+                </div>
+                <div class="result-item">
+                    <h4>Q3: State Backend如何选择?</h4>
+                    <p>MemoryStateBackend适合测试，FsStateBackend适合大状态，RocksDBStateBackend适合超大状态...</p>
+                </div>
+            `;
+            resultBox.classList.add('active');
+        }
+        
+        // 模拟生成学习路径
+        function generateLearningPath() {
+            const goal = document.getElementById('learning-goal').value;
+            const bg = document.getElementById('learning-bg').value || '有一定编程基础';
+            const level = document.getElementById('learning-level').value;
+            const resultBox = document.getElementById('learning-result');
+            
+            resultBox.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>正在生成个性化学习路径...</p></div>';
+            resultBox.classList.add('active');
+            
+            setTimeout(() => {
+                const paths = {
+                    'flink-developer': {
+                        name: 'Flink开发工程师',
+                        hours: 120,
+                        phases: [
+                            { name: '阶段1: 基础入门', nodes: ['Flink架构概览', 'DataStream API基础', '环境搭建'], hours: 20 },
+                            { name: '阶段2: 核心概念', nodes: ['时间语义与Watermark', '窗口操作', '状态管理'], hours: 40 },
+                            { name: '阶段3: 进阶应用', nodes: ['Checkpoint机制', 'Connector使用', '性能调优'], hours: 35 },
+                            { name: '阶段4: 生产实践', nodes: ['部署运维', '监控告警', '故障排查'], hours: 25 }
+                        ]
+                    },
+                    'streaming-architect': {
+                        name: '流计算架构师',
+                        hours: 200,
+                        phases: [
+                            { name: '阶段1: 理论基础', nodes: ['统一流计算理论', '一致性模型', '进程演算基础'], hours: 50 },
+                            { name: '阶段2: Flink内核', nodes: ['Checkpoint算法', '状态后端设计', '调度机制'], hours: 50 },
+                            { name: '阶段3: 系统设计', nodes: ['架构设计模式', '容量规划', '容错设计'], hours: 60 },
+                            { name: '阶段4: 前沿技术', nodes: ['存算分离', 'Serverless', 'AI集成'], hours: 40 }
+                        ]
+                    }
+                };
+                
+                const path = paths[goal] || paths['flink-developer'];
+                
+                resultBox.innerHTML = `
+                    <h3>🎯 ${path.name}</h3>
+                    <p><strong>背景:</strong> ${bg} | <strong>水平:</strong> ${level}</p>
+                    <p style="margin-top: 10px;"><strong>预计总时长:</strong> ${path.hours} 小时</p>
+                    
+                    <div style="margin-top: 20px;">
+                        ${path.phases.map((p, i) => `
+                            <div class="result-item">
+                                <h4>${p.name} (${p.hours}h)</h4>
+                                <p>${p.nodes.map(n => `• ${n}`).join(' ')}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="alert('学习路径已保存到 learning-path.md')">导出学习路径</button>
+                        <button class="btn btn-secondary" onclick="alert('已添加到学习追踪')">开始追踪</button>
+                    </div>
+                `;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

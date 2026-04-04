@@ -1,6 +1,6 @@
 # Flink 与 LLM 集成：实时生成式 AI 应用
 
-> **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink SQL 高级特性](../03-sql-table-api/flink-sql-advanced-features.md), [Flink ML 基础](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
+> **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink SQL 高级特性](../03-sql-table-api/built-in-functions-complete-list.md), [Flink ML 基础](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
 
 ---
 

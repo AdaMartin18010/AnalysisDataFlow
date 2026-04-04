@@ -1,0 +1,96 @@
+{
+  "title": "AnalysisDataFlow",
+  "summary": "> **统一流计算理论模型与工程实践知识库** > 涵盖流计算的形式化理论、Flink 核心技术、工程实践模式与前沿趋势 本项目是对**流计算的理论模型、层次结构、工程实践、业务建模**的全面梳理与体系构建，目标是为学术研究、工业工程和技术选型提供**严格、完整、可导航**的知识库。",
+  "key_concepts": [
+    {
+      "term": "质量门禁",
+      "frequency": 2,
+      "category": "concept"
+    },
+    {
+      "term": "统一流计算理论模型与工程实践知识库",
+      "frequency": 1,
+      "category": "model"
+    },
+    {
+      "term": "流计算的理论模型、层次结构、工程实践、业务建模",
+      "frequency": 1,
+      "category": "model"
+    },
+    {
+      "term": "严格、完整、可导航",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "Struct/",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "Knowledge/",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "Flink/",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "visuals/",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "tutorials/",
+      "frequency": 1,
+      "category": "concept"
+    },
+    {
+      "term": "理论基础",
+      "frequency": 1,
+      "category": "concept"
+    }
+  ],
+  "theorems": [
+    {
+      "reference": "Thm-S-17-01",
+      "type": "theorem",
+      "statement": "Struct Stage, 17文档, 第1个定理\n- **Def-F-02-23**: Flink Stage, 02文档, 第23个定义\n- **Prop-K-06-12**: Knowledge Stage, 06文档, 第12个命题"
+    },
+    {
+      "reference": "Def-F-02-23",
+      "type": "definition",
+      "statement": "Flink Stage, 02文档, 第23个定义\n- **Prop-K-06-12**: Knowledge Stage, 06文档, 第12个命题"
+    },
+    {
+      "reference": "Prop-K-06-12",
+      "type": "proposition",
+      "statement": "Knowledge Stage, 06文档, 第12个命题"
+    }
+  ],
+  "definitions": [
+    {
+      "reference": "Def-F-02-23",
+      "type": "definition",
+      "statement": "Flink Stage, 02文档, 第23个定义\n- **Prop-K-06-12**: Knowledge Stage, 06文档, 第12个命题"
+    }
+  ],
+  "word_count": 10109,
+  "reading_time_minutes": 12,
+  "difficulty_score": 3,
+  "prerequisites": [],
+  "related_docs": [
+    "Struct/00-INDEX.md",
+    "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
+    "Knowledge/06-frontier/vector-search-streaming-convergence.md",
+    "visuals/selection-tree-streaming.md",
+    "visuals/matrix-engines.md",
+    "visuals/mindmap-complete.md",
+    "visuals/struct-model-relations.md",
+    "ROADMAP-v3.3-and-beyond.md",
+    "E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md",
+    "tutorials/00-5-MINUTE-QUICK-START.md"
+  ]
+}

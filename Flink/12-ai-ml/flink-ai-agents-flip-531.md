@@ -1,6 +1,6 @@
 # Flink AI Agents (FLIP-531) 原生Agent支持
 
-> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

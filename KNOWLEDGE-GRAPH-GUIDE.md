@@ -1,6 +1,6 @@
-# AnalysisDataFlow 知识图谱使用指南
+# AnalysisDataFlow 知识图谱 2.0 使用指南
 
-> **版本**: v1.0 | **更新日期**: 2026-04-03 | **状态**: 可用
+> **版本**: v2.0 | **更新日期**: 2026-04-04 | **状态**: 可用
 
 ---
 
@@ -8,31 +8,33 @@
 
 - [概述](#概述)
 - [快速开始](#快速开始)
+- [功能特性](#功能特性)
 - [生成图谱数据](#生成图谱数据)
-- [打开可视化页面](#打开可视化页面)
-- [图谱解读](#图谱解读)
-- [分析知识关联](#分析知识关联)
+- [交互式图谱浏览](#交互式图谱浏览)
+- [学习路径推荐](#学习路径推荐)
+- [文档关系映射](#文档关系映射)
 - [故障排除](#故障排除)
 
 ---
 
 ## 概述
 
-AnalysisDataFlow 知识图谱是一个交互式可视化工具，帮助您：
+AnalysisDataFlow 知识图谱 2.0 是一个**交互式、智能化**的知识可视化系统，帮助您：
 
-- 🔍 **探索知识结构** - 浏览 200+ 文档、800+ 形式化元素的关系网络
+- 🔍 **探索知识结构** - 浏览 350+ 文档、800+ 形式化元素的关系网络
+- 🎯 **智能学习推荐** - 基于已掌握的知识推荐下一步学习内容
 - 📊 **发现知识热点** - 识别被引用最多的核心文档和定理
-- 🎯 **定位知识孤岛** - 发现未被引用的独立文档
 - 🔗 **追踪知识流转** - 理解 Struct/Knowledge/Flink 三大目录间的关联
+- 🔄 **检测循环依赖** - 自动发现文档间的循环依赖问题
 
-### 图谱组件
+### 系统组件
 
 | 组件 | 描述 | 文件 |
 |------|------|------|
-| 构建脚本 | Python脚本，解析文档生成图谱数据 | `.vscode/build-knowledge-graph.py` |
-| 图谱数据 | GraphJSON格式，包含节点和边 | `.vscode/graph-data.json` |
-| 可视化页面 | 交互式HTML页面，使用D3.js | `knowledge-graph.html` |
-| 使用指南 | 本文档 | `KNOWLEDGE-GRAPH-GUIDE.md` |
+| 知识图谱页面 | 交互式可视化页面，使用 D3.js | `knowledge-graph-v2.html` |
+| 学习路径推荐器 | 基于依赖图的智能推荐算法 | `learning-path-recommender.js` |
+| 数据生成器 | 扫描文档生成图谱数据 | `scripts/knowledge-graph-generator.py` |
+| 关系映射器 | 分析文档依赖关系 | `scripts/doc-relationship-mapper.py` |
 
 ---
 
@@ -42,199 +44,163 @@ AnalysisDataFlow 知识图谱是一个交互式可视化工具，帮助您：
 
 ```bash
 # 在项目根目录运行
-python .vscode/build-knowledge-graph.py
+python scripts/knowledge-graph-generator.py
 
-# 带统计信息输出
-python .vscode/build-knowledge-graph.py --stats
+# 显示详细统计信息
+python scripts/knowledge-graph-generator.py --stats
 
-# 指定输出路径
-python .vscode/build-knowledge-graph.py --output ./my-graph.json
+# 强制完整更新（忽略缓存）
+python scripts/knowledge-graph-generator.py --force
 ```
 
-### 2. 打开可视化页面
+### 2. 打开交互式图谱
 
 **方式一：直接打开**
 
 ```bash
 # macOS
-open knowledge-graph.html
+open knowledge-graph-v2.html
 
 # Windows
-start knowledge-graph.html
+start knowledge-graph-v2.html
 
 # Linux
-xdg-open knowledge-graph.html
+xdg-open knowledge-graph-v2.html
 ```
 
-**方式二：使用VS Code Live Server**
-
-1. 安装 VS Code 插件 "Live Server"
-2. 右键 `knowledge-graph.html` → "Open with Live Server"
-3. 浏览器自动打开 `http://127.0.0.1:5500/knowledge-graph.html`
-
-**方式三：使用Python简单HTTP服务器**
+**方式二：使用 Python HTTP 服务器**
 
 ```bash
-# Python 3
 python -m http.server 8000
-
-# 然后访问 http://localhost:8000/knowledge-graph.html
+# 访问 http://localhost:8000/knowledge-graph-v2.html
 ```
+
+### 3. 生成文档关系报告
+
+```bash
+# 生成完整报告
+python scripts/doc-relationship-mapper.py
+
+# 仅检测循环依赖
+python scripts/doc-relationship-mapper.py --cycles-only
+```
+
+---
+
+## 功能特性
+
+### 知识图谱 2.0 新特性
+
+| 特性 | 描述 | 版本 |
+|------|------|------|
+| **交互式力导向图** | 使用 D3.js 实现流畅的力导向布局 | 2.0 |
+| **多模式布局** | 支持力导向、层次、环形、聚类四种布局 | 2.0 |
+| **智能搜索** | 支持节点名称、ID、描述全文搜索 | 2.0 |
+| **动态推荐** | 基于依赖满足度的学习路径推荐 | 2.0 |
+| **标签页界面** | 详情/推荐/路径/图例四标签页 | 2.0 |
+| **实时过滤** | 按类型、阶段动态过滤显示 | 2.0 |
+| **关系高亮** | 点击节点高亮相关节点和边 | 2.0 |
+| **响应式设计** | 适配不同屏幕尺寸 | 2.0 |
 
 ---
 
 ## 生成图谱数据
 
-### 构建脚本功能
-
-`.vscode/build-knowledge-graph.py` 脚本执行以下任务：
+### 知识图谱生成器功能
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    知识图谱构建流程                       │
+│                    知识图谱构建流程 v2.0                   │
 ├─────────────────────────────────────────────────────────┤
-│ 1. 文档解析                                              │
+│ 1. 文档扫描                                              │
 │    ├── 扫描 Struct/, Knowledge/, Flink/ 目录            │
 │    ├── 提取文档元数据（标题、类型、形式化等级）          │
-│    └── 统计文档规模（字数、定理数量等）                  │
+│    └── 统计文档规模（字数、引用数量）                    │
 ├─────────────────────────────────────────────────────────┤
 │ 2. 形式化元素提取                                        │
-│    ├── 定理 (Thm-*)：Thm-S-01-01, Thm-F-02-01          │
-│    ├── 定义 (Def-*)：Def-S-01-01, Def-K-01-01          │
-│    ├── 引理 (Lemma-*)：Lemma-S-01-01                   │
-│    ├── 命题 (Prop-*)：Prop-S-02-01                     │
-│    └── 推论 (Cor-*)：Cor-S-04-01                       │
+│    ├── 定理 (Thm-*): Thm-S-01-01, Thm-F-02-01          │
+│    ├── 定义 (Def-*): Def-S-01-01, Def-K-01-01          │
+│    ├── 引理 (Lemma-*): Lemma-S-01-01                   │
+│    ├── 命题 (Prop-*): Prop-S-02-01                     │
+│    └── 推论 (Cor-*): Cor-S-04-01                       │
 ├─────────────────────────────────────────────────────────┤
 │ 3. 关系提取                                              │
-│    ├── 包含关系：文档 → 定理/定义                        │
-│    ├── 依赖关系：文档 → 前置依赖文档                     │
-│    ├── 引用关系：文档 → 引用的定理                       │
-│    └── 交叉引用：定理 → 引用的其他定理                   │
+│    ├── 包含关系: 文档 → 定理/定义                        │
+│    ├── 依赖关系: 文档 → 前置依赖文档                     │
+│    ├── 引用关系: 文档 → 引用的文档                       │
+│    └── 层次关系: 子文档 → 父目录                         │
 ├─────────────────────────────────────────────────────────┤
 │ 4. 图谱分析                                              │
-│    ├── 计算节点度中心性（识别热门文档）                  │
-│    ├── 检测孤立节点（未被引用的文档）                    │
-│    └── 分析连通分量（发现知识孤岛）                      │
+│    ├── 计算节点 PageRank 中心性                          │
+│    ├── 检测孤立节点                                      │
+│    └── 计算依赖深度                                      │
 ├─────────────────────────────────────────────────────────┤
-│ 5. 输出GraphJSON                                         │
+│ 5. 增量更新                                              │
+│    ├── 检测修改的文件                                    │
+│    ├── 仅更新变化部分                                    │
+│    └── 更新缓存索引                                      │
+├─────────────────────────────────────────────────────────┤
+│ 6. 输出 GraphJSON                                        │
 │    └── .vscode/graph-data.json                           │
 └─────────────────────────────────────────────────────────┘
 ```
 
-### 图谱数据结构
+### 命令行选项
 
-生成的 `graph-data.json` 包含以下结构：
+```bash
+python scripts/knowledge-graph-generator.py [选项]
 
-```json
-{
-  "nodes": [
-    {
-      "id": "Struct/01.01-unified-streaming-theory",
-      "label": "USTM统一流计算理论",
-      "type": "document",
-      "group": "Struct",
-      "size": 25,
-      "color": "#4A90D9",
-      "metadata": {
-        "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
-        "formality_level": "L5",
-        "category": "01-foundation",
-        "word_count": 4500
-      }
-    },
-    {
-      "id": "Thm-S-01-01",
-      "label": "Thm-S-01-01",
-      "type": "theorem",
-      "group": "theorem",
-      "size": 8,
-      "color": "#D9534F",
-      "metadata": {
-        "description": "流计算统一理论存在性定理",
-        "document": "Struct/01.01-unified-streaming-theory",
-        "stage": "S"
-      }
-    }
-  ],
-  "edges": [
-    {
-      "source": "Struct/01.01-unified-streaming-theory",
-      "target": "Thm-S-01-01",
-      "type": "contains",
-      "weight": 1
-    }
-  ],
-  "stats": {
-    "total_nodes": 100,
-    "total_edges": 150,
-    "isolated_documents": 5,
-    "hot_documents": [...]
-  }
-}
+选项:
+  -h, --help            显示帮助信息
+  -b, --base-path PATH  项目根目录 (默认: .)
+  -o, --output PATH     输出文件路径 (默认: .vscode/graph-data.json)
+  --cache PATH          缓存文件路径 (默认: .cache/kg-cache.json)
+  --force               强制完整更新，忽略缓存
+  --stats               显示统计信息
 ```
-
-### 节点类型
-
-| 类型 | 说明 | 颜色 |
-|------|------|------|
-| `document` | Markdown文档 | 按目录着色 |
-| `theorem` | 定理 | 🔴 红色 |
-| `definition` | 定义 | 🟣 紫色 |
-| `lemma` | 引理 | 🔵 青色 |
-| `proposition` | 命题 | 🩷 粉色 |
-| `corollary` | 推论 | ⚪ 灰色 |
-
-### 边类型
-
-| 类型 | 说明 | 样式 |
-|------|------|------|
-| `contains` | 文档包含定理/定义 | 灰色细线 |
-| `depends_on` | 文档依赖其他文档 | 🟠 橙色虚线 |
-| `citation` | 文档引用其他文档 | 🟢 绿色实线 |
-| `references` | 引用定理/定义 | 蓝色实线 |
 
 ---
 
-## 打开可视化页面
+## 交互式图谱浏览
 
 ### 界面布局
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  🔮 知识图谱                    [+] [−] [⊡] [↺]                  │
-│  AnalysisDataFlow 项目知识可视化                                 │
+│ 🔮 知识图谱 v2.0              [+] [−] [⊡] [↺] [💾]              │
+│ AnalysisDataFlow 项目知识可视化                                  │
 ├──────────┬──────────────────────────────────────────────────────┤
 │          │                                                      │
-│  布局模式 │                    知识图谱                          │
-│  [力导向 ▼]│                   ╭──────╮                           │
+│ 🔍 搜索  │                    知识图谱                          │
+│ [______] │                   ╭──────╮                           │
 │          │                  ╱   📄   ╲                          │
-│  搜索节点 │    ╭──────╮─────│Struct  │─────╭──────╮              │
-│  [______]│    │  📄   │     ╰──┬───╯     │  📄  │              │
+│ 📐 布局  │    ╭──────╮─────│Struct  │─────╭──────╮              │
+│ [力导向▼]│    │  📄   │     ╰──┬───╯     │  📄  │              │
 │          │    │Flink  │        │         │Knowledge           │
-│  显示类型 │    └───┬───┘        │         └──┬───┘              │
-│  ☑ 文档   │        │       ╭────┴────╮       │                  │
-│  ☑ 定理   │        └──────│   📄     │───────┘                  │
-│  ☑ 定义   │               │Theorem   │                          │
-│          │               ╰───────────╯                          │
-│  ────────┤                                                      │
-│  文档目录 │       节点: 100  边: 150  文档: 50                   │
-│  🔵 Struct│       定理: 30   孤立: 5                             │
-│  🟢 Knowl.│                                                      │
-│  🟠 Flink │                                                      │
+│ 📁 类型  │    └───┬───┘        │         └──┬───┘              │
+│ ☑ 文档   │        │       ╭────┴────╮       │                  │
+│ ☑ 定理   │        └──────│   📄     │───────┘                  │
+│ ☑ 定义   │               │Theorem   │                          │
+│ ☑ 引理   │               ╰───────────╯                          │
 │          │                                                      │
-│  ────────┤                                                      │
-│  选中节点 │                                                      │
-│  详情     │                                                      │
+│ 🎯 阶段  │       节点: 1,234  边: 3,456                         │
+│ ☑ Struct │       文档: 350    定理: 188                         │
+│ ☑ Knowl. │       覆盖率: 85%                                    │
+│ ☑ Flink  │                                                      │
+├──────────┼──────────────────────────────────────────────────────┤
+│ 📋 详情  │                                                      │
+│ 💡 推荐  │                                                      │
+│ 🎯 路径  │                                                      │
+│ 📖 图例  │                                                      │
+├──────────┤                                                      │
+│ 选中节点 │                                                      │
+│ 详情面板 │                                                      │
 │          │                                                      │
-│  标题     │                                                      │
-│  USTM...  │                                                      │
-│          │                                                      │
-│  类型     │                                                      │
-│  document │                                                      │
-│          │                                                      │
-│  被引用(3)│                                                      │
-│  ← Flink  │                                                      │
-│  ← Knowl. │                                                      │
+│ [类型]   │                                                      │
+│ 标题     │                                                      │
+│ 元数据   │                                                      │
+│ 相关节点 │                                                      │
+│ [操作]   │                                                      │
 │          │                                                      │
 └──────────┴──────────────────────────────────────────────────────┘
 ```
@@ -243,7 +209,7 @@ python -m http.server 8000
 
 | 操作 | 说明 |
 |------|------|
-| **拖拽节点** | 调整节点位置 |
+| **拖拽节点** | 调整节点位置（临时固定） |
 | **滚轮缩放** | 放大/缩小视图 |
 | **点击节点** | 选中并显示详情，高亮关联节点 |
 | **点击空白** | 取消选择，恢复默认视图 |
@@ -251,200 +217,155 @@ python -m http.server 8000
 
 ### 工具栏按钮
 
-| 按钮 | 功能 |
-|------|------|
-| `+` | 放大 |
-| `−` | 缩小 |
-| `⊡` | 适应窗口（自动缩放以显示全部节点） |
-| `↺` | 重置视图 |
+| 按钮 | 功能 | 快捷键 |
+|------|------|--------|
+| `+` | 放大 | - |
+| `−` | 缩小 | - |
+| `⊡` | 适应窗口（自动缩放显示全部节点） | - |
+| `↺` | 重置视图 | R |
+| `💾` | 导出SVG图像 | S |
 
 ### 布局模式
 
-| 模式 | 适用场景 |
-|------|----------|
-| **力导向布局** | 默认模式，自动排列，适合探索整体结构 |
-| **层次布局** | 按目录分组，适合查看层级关系 |
-| **环形布局** | 文档围绕中心，适合对比不同目录 |
+| 模式 | 适用场景 | 特点 |
+|------|----------|------|
+| **力导向布局** | 默认模式，适合探索整体结构 | 自动排列，物理模拟 |
+| **层次布局** | 适合查看层级关系 | 按类别垂直分组 |
+| **环形布局** | 适合对比不同目录 | 文档围绕中心排列 |
+| **聚类布局** | 适合发现模块结构 | 按类别聚类显示 |
 
 ---
 
-## 图谱解读
+## 学习路径推荐
 
-### 1. 颜色识别
+### 使用方法
 
-```mermaid
-graph TB
-    subgraph 文档节点["📄 文档节点（按目录着色）"]
-        S["🔵 Struct<br/>形式理论"]
-        K["🟢 Knowledge<br/>知识结构"]
-        F["🟠 Flink<br/>Flink专项"]
-    end
+1. 切换到 **💡 推荐** 标签页
+2. 在文本框中输入已掌握的概念ID（用逗号分隔）
+   ```
+   Thm-S-01-01, Def-K-02-01, Lemma-F-03-02
+   ```
+3. 点击 **🎯 生成学习推荐** 按钮
+4. 查看推荐结果
 
-    subgraph 形式化节点["📐 形式化元素（按类型着色）"]
-        T["🔴 定理 Theorem"]
-        D["🟣 定义 Definition"]
-        L["🔵 引理 Lemma"]
-        P["🩷 命题 Proposition"]
-        C["⚪ 推论 Corollary"]
-    end
+### 推荐算法原理
 
-    S -.-> T
-    S -.-> D
+```
+推荐得分 = 重要性(25%) + 依赖满足度(30%) + 进度(20%) + 类型(15%) + 层次(10%)
+
+其中：
+- 重要性：基于 PageRank 算法计算
+- 依赖满足度：前置知识已掌握的比例
+- 进度：当前学习进度评估
+- 类型：定理/定义/引理的权重
+- 层次：形式化等级的适宜性
 ```
 
-### 2. 关系识别
+### 推荐结果解读
 
-```mermaid
-graph LR
-    A["📄 文档A"] -- "包含" --> B["📐 定理B"]
-    C["📄 文档C"] -. "依赖" .-> D["📄 文档D"]
-    E["📄 文档E"] -- "引用" --> F["📄 文档F"]
-    G["📐 定理G"] -- "引用" --> H["📐 定理H"]
+每个推荐项显示：
 
-    style B fill:#D9534F,stroke:#fff,color:#fff
-    style H fill:#D9534F,stroke:#fff,color:#fff
+```
+┌─────────────────────────────────────┐
+│ 1. Checkpoint机制深入           95% │
+│ 前置知识已完备 · 核心概念 · 重要定理 │
+│ 📄 theorem  |  🔗 3个依赖           │
+│ [查看节点]  [已掌握]                │
+└─────────────────────────────────────┘
 ```
 
-| 视觉特征 | 含义 |
-|----------|------|
-| 实线 | 引用/包含关系 |
-| 虚线 | 依赖关系 |
-| 线粗细 | 关系强度（引用次数） |
-| 节点大小 | 文档规模/重要性 |
-
-### 3. 热门文档识别
-
-**热门文档特征：**
-
-- 节点较大（被引用次数多）
-- 入度边较多（箭头指向该节点）
-- 通常是核心理论文档或基础概念文档
-
-**示例热门文档：**
-
-| 排名 | 文档 | 被引用数 | 说明 |
-|------|------|----------|------|
-| 1 | `Struct/01.01-unified-streaming-theory` | 15 | USTM统一理论，被大量性质和证明文档引用 |
-| 2 | `Struct/01.04-dataflow-model-formalization` | 12 | Dataflow模型，Flink实现的基础 |
-| 3 | `Struct/02.02-consistency-hierarchy` | 10 | 一致性层次，Checkpoint正确性证明的依赖 |
-
-### 4. 知识孤岛识别
-
-**知识孤岛特征：**
-
-- 孤立节点（无任何连线）
-- 仅含出边（只引用别人，不被引用）
-- 远离图谱中心
-
-**处理建议：**
-
-1. 检查是否为独立教程/概述文档（正常）
-2. 检查是否应该被其他文档引用（需建立链接）
-3. 检查是否为过时内容（考虑归档）
+| 字段 | 说明 |
+|------|------|
+| **标题** | 推荐的文档或形式化元素名称 |
+| **匹配度** | 综合推荐得分百分比 |
+| **理由** | 为什么推荐此项 |
+| **类型** | 文档类型 |
+| **依赖** | 前置依赖数量 |
 
 ---
 
-## 分析知识关联
+## 文档关系映射
 
-### 场景1：追踪理论到实践的映射
+### 功能说明
 
-**问题**：某个形式化定理在Flink中如何体现？
+文档关系映射脚本自动分析文档间的依赖关系，生成详细报告：
 
-**操作步骤**：
+1. **交叉引用分析** - 识别文档间的引用关系
+2. **循环依赖检测** - 发现 A→B→C→A 类型的循环
+3. **入口点识别** - 找出无依赖的入门文档
+4. **孤立节点发现** - 识别无关联的独立文档
 
-1. 搜索定理节点（如 `Thm-S-04-01`）
-2. 查看其父文档（`Struct/04.01-flink-checkpoint-correctness`）
-3. 追踪引用该文档的Flink文档
-4. 发现知识流转路径：
+### 使用方法
 
-```
-Thm-S-04-01 (定理)
-    ↓ contains
-Struct/04.01-flink-checkpoint-correctness (形式证明)
-    ↓ citation
-Flink/02-checkpoint-mechanism (机制实现)
-    ↓ dependency
-Flink/04-connectors (连接器实践)
-```
+```bash
+# 生成完整报告
+python scripts/doc-relationship-mapper.py
 
-### 场景2：发现知识缺口
+# 仅检测循环依赖
+python scripts/doc-relationship-mapper.py --cycles-only
 
-**问题**：某个领域是否缺少文档覆盖？
-
-**操作步骤**：
-
-1. 切换到"层次布局"
-2. 检查各目录的节点密度
-3. 发现稀疏区域即为知识缺口
-
-### 场景3：规划阅读路径
-
-**问题**：如何系统学习流计算一致性？
-
-**操作步骤**：
-
-1. 搜索"一致性"相关文档
-2. 按依赖关系排序（拓扑排序）
-3. 生成学习路径：
-
-```
-Struct/01.01-unified-streaming-theory (基础)
-    ↓
-Struct/01.04-dataflow-model-formalization (模型)
-    ↓
-Struct/02.01-determinism-in-streaming (确定性)
-    ↓
-Struct/02.02-consistency-hierarchy (一致性层次)
-    ↓
-Struct/04.01-flink-checkpoint-correctness (正确性证明)
-    ↓
-Flink/02-checkpoint-mechanism (Flink实现)
+# 指定输出目录
+python scripts/doc-relationship-mapper.py --output ./reports
 ```
 
-### 场景4：验证文档完整性
+### 输出文件
 
-**问题**：新添加的文档是否正确链接到现有知识网络？
+| 文件 | 描述 |
+|------|------|
+| `doc-relationship-report.json` | 完整的JSON格式报告 |
+| `doc-relationship-report.md` | Markdown格式报告 |
+| `doc-relationship-graph.dot` | Graphviz DOT格式图 |
+| `doc-statistics.json` | 统计数据 |
 
-**操作步骤**：
+### 报告内容示例
 
-1. 重新生成图谱数据
-2. 搜索新文档节点
-3. 检查其依赖和引用关系
-4. 确保无孤立节点（除非是故意的）
+```markdown
+## 📈 概览统计
+
+| 指标 | 数值 |
+|------|------|
+| 文档总数 | 354 |
+| 循环依赖数 | 3 |
+| 入口点数量 | 12 |
+| 孤立文档数 | 5 |
+
+## 🔄 循环依赖
+
+### 🔴 循环 #1
+- **严重程度**: HIGH
+- **涉及节点**: 3 个
+- **路径**: 文档A → 文档B → 文档C → (回到起点)
+
+## 🚪 入口点
+- **流计算形式化基础** (`Struct/01-foundation/...`)
+- **概念地图** (`Knowledge/01-concept-atlas/...`)
+```
 
 ---
 
 ## 故障排除
 
-### 问题1：页面显示"暂无数据"
+### 问题1：页面显示"加载中"
 
-**原因**：`graph-data.json` 文件不存在
+**原因**：`graph-data.json` 文件不存在或路径错误
 
 **解决**：
 
 ```bash
-python .vscode/build-knowledge-graph.py
+python scripts/knowledge-graph-generator.py
 ```
 
-### 问题2：图谱加载缓慢
+### 问题2：推荐功能不工作
 
-**原因**：节点/边数量过多（>1000）
-
-**解决**：
-
-1. 在可视化页面筛选显示类型（取消勾选"定理"或"定义"）
-2. 修改脚本增加采样逻辑
-3. 使用更强大的浏览器
-
-### 问题3：节点重叠严重
+**原因**：推荐器JavaScript未正确加载
 
 **解决**：
 
-1. 切换到"层次布局"或"环形布局"
-2. 手动拖拽调整节点位置
-3. 使用缩放功能聚焦局部区域
+1. 确保 `learning-path-recommender.js` 与 `knowledge-graph-v2.html` 在同一目录
+2. 检查浏览器控制台是否有错误信息
+3. 确保已生成 `graph-data.json` 数据文件
 
-### 问题4：搜索不到节点
+### 问题3：节点搜索无结果
 
 **检查**：
 
@@ -452,7 +373,7 @@ python .vscode/build-knowledge-graph.py
 2. 检查节点类型是否被筛选隐藏
 3. 重新生成图谱数据确保包含最新文档
 
-### 问题5：Python脚本报错
+### 问题4：Python脚本报错
 
 **常见错误及解决**：
 
@@ -462,20 +383,29 @@ python .vscode/build-knowledge-graph.py
 
 # 错误：Permission denied
 # 解决：检查文件权限
-chmod +x .vscode/build-knowledge-graph.py
+chmod +x scripts/*.py
 
 # 错误：编码错误
 # 解决：确保文档为UTF-8编码
-file -i Struct/*.md
 ```
+
+### 问题5：图谱加载缓慢
+
+**原因**：节点/边数量过多（>2000）
+
+**解决**：
+
+1. 在可视化页面使用过滤器减少显示节点
+2. 切换布局模式到"层次布局"提高性能
+3. 使用缩放功能聚焦局部区域
 
 ---
 
 ## 进阶使用
 
-### 自定义图谱样式
+### 自定义节点样式
 
-编辑 `knowledge-graph.html` 中的CSS变量：
+编辑 `knowledge-graph-v2.html` 中的CSS变量：
 
 ```css
 :root {
@@ -487,28 +417,33 @@ file -i Struct/*.md
 }
 ```
 
-### 导出图谱图像
-
-1. 调整视图到理想状态
-2. 使用浏览器开发者工具 → 截图
-3. 或使用SVG导出功能（需额外脚本）
-
 ### 集成到其他工具
 
 GraphJSON格式兼容多种可视化工具：
 
-- **Gephi**：导入JSON后使用力导向布局
-- **Cytoscape**：直接加载JSON数据
-- **Neo4j**：转换为Cypher语句导入图数据库
+```python
+# 转换为 NetworkX
+import networkx as nx
+import json
+
+with open('.vscode/graph-data.json') as f:
+    data = json.load(f)
+
+G = nx.DiGraph()
+for node in data['nodes']:
+    G.add_node(node['id'], **node)
+for edge in data['edges']:
+    G.add_edge(edge['source'], edge['target'], **edge)
+```
 
 ---
 
 ## 参考
 
 - [D3.js Documentation](https://d3js.org/)
-- [Graph Visualization](https://www.cs.mun.ca/~hamed/teaching/Graph_Visualization.html)
+- [Force-Directed Graph](https://observablehq.com/@d3/force-directed-graph)
 - [AnalysisDataFlow 项目文档](../README.md)
 
 ---
 
-*本指南由知识图谱构建工具自动生成，如有问题请反馈。*
+*本指南由知识图谱 2.0 系统自动生成*
