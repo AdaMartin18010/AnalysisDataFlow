@@ -1,0 +1,227 @@
+# =============================================================================
+# AWS EMR Flink 配置
+# 服务: Amazon EMR (Elastic MapReduce)
+# 版本: EMR 6.x (Flink 1.18+)
+# 特性: 与 AWS 生态集成 (S3, Glue, Kinesis, MSK)
+# =============================================================================
+
+# ============================================
+# 1. EMR 集群基础配置
+# ============================================
+
+# Flink 版本选择
+# EMR 6.15.0 默认包含 Flink 1.18.1
+
+# EMR 配置文件 (emr-flink-config.json)
+{
+  "Classification": "flink-conf",
+  "Properties": {
+    "jobmanager.memory.process.size": "4096m",
+    "taskmanager.memory.process.size": "16384m",
+    "taskmanager.numberOfTaskSlots": "8",
+    "parallelism.default": "16",
+    
+    # Checkpoint 配置 - 使用 S3
+    "state.backend": "rocksdb",
+    "state.checkpoint-storage": "filesystem",
+    "state.checkpoints.dir": "s3://your-bucket/flink/checkpoints",
+    "state.savepoints.dir": "s3://your-bucket/flink/savepoints",
+    "execution.checkpointing.interval": "60000",
+    
+    # S3 优化
+    "fs.s3a.access.key": "${AWS_ACCESS_KEY_ID}",
+    "fs.s3a.secret.key": "${AWS_SECRET_ACCESS_KEY}",
+    "fs.s3a.endpoint": "s3.amazonaws.com",
+    "fs.s3a.path.style.access": "false",
+    "fs.s3a.connection.maximum": "200",
+    "fs.s3a.multipart.size": "128mb",
+    "fs.s3a.fast.upload": "true"
+  }
+}
+
+# ============================================
+# 2. EMR 启动配置 (AWS CLI)
+# ============================================
+
+# aws emr create-cluster \
+#   --name "Flink-Production-Cluster" \
+#   --release-label emr-6.15.0 \
+#   --applications Name=Flink \
+#   --ec2-attributes KeyName=your-key,InstanceProfile=EMR_EC2_DefaultRole \
+#   --service-role EMR_DefaultRole \
+#   --instance-groups \
+#     InstanceGroupType=MASTER,InstanceType=m5.2xlarge,InstanceCount=2 \
+#     InstanceGroupType=CORE,InstanceType=m5.4xlarge,InstanceCount=4 \
+#     InstanceGroupType=TASK,InstanceType=m5.4xlarge,InstanceCount=8 \
+#   --configurations file://emr-flink-config.json \
+#   --log-uri s3://your-bucket/emr-logs/ \
+#   --auto-scaling-role EMR_AutoScaling_DefaultRole \
+#   --enable-debugging \
+#   --auto-terminate
+
+# ============================================
+# 3. S3 访问优化
+# ============================================
+
+# S3A 文件系统配置
+fs.s3a.impl: org.apache.hadoop.fs.s3a.S3AFileSystem
+fs.s3a.aws.credentials.provider: 
+  - com.amazonaws.auth.EC2ContainerCredentialsProviderWrapper
+  - com.amazonaws.auth.InstanceProfileCredentialsProvider
+
+# S3 性能优化
+fs.s3a.connection.maximum: 200
+fs.s3a.connection.timeout: 200000
+fs.s3a.socket.timeout: 600000
+fs.s3a.multipart.size: 128mb
+fs.s3a.multipart.threshold: 512mb
+fs.s3a.fast.upload: true
+fs.s3a.fast.upload.buffer: disk
+fs.s3a.fast.upload.active.blocks: 8
+fs.s3a.block.size: 256mb
+
+# S3Guard (可选 - 用于一致性)
+fs.s3a.metadatastore.impl: org.apache.hadoop.fs.s3a.s3guard.DynamoDBMetadataStore
+fs.s3a.s3guard.ddb.table: flink-s3guard
+
+# ============================================
+# 4. Kinesis 集成
+# ============================================
+
+# Flink Kinesis 连接器配置
+# 在代码中配置:
+
+# Kinesis 消费者配置
+kinesis.shard.discovery.intervalMillis: 10000
+kinesis.stream.arn: arn:aws:kinesis:us-east-1:account:stream/my-stream
+kinesis.aws.region: us-east-1
+
+# Kinesis 生产者配置
+kinesis.producer.aggregation.enabled: true
+kinesis.producer.collection.maxCount: 500
+kinesis.producer.collection.maxSize: 5242880
+kinesis.producer.maxConnections: 24
+
+# ============================================
+# 5. MSK (Managed Kafka) 集成
+# ============================================
+
+# Kafka 连接器配置
+bootstrap.servers: b-1.msk-cluster.kafka.us-east-1.amazonaws.com:9092
+security.protocol: SASL_SSL
+sasl.mechanism: AWS_MSK_IAM
+sasl.jaas.config: software.amazon.msk.auth.iam.IAMLoginModule required;
+sasl.client.callback.handler.class: software.amazon.msk.auth.iam.IAMClientCallbackHandler
+
+# ============================================
+# 6. Glue 数据目录集成
+# ============================================
+
+# Hive Catalog 配置
+catalog.hive-metastore: glue
+
+# 在代码中使用:
+# tEnv.useCatalog("GlueCatalog");
+# tEnv.useDatabase("my_database");
+
+# ============================================
+# 7. IAM 角色配置
+# ============================================
+
+# EMR EC2 实例角色策略
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-flink-bucket/*",
+        "arn:aws:s3:::your-flink-bucket"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DescribeStream",
+        "kinesis:GetRecords",
+        "kinesis:GetShardIterator",
+        "kinesis:ListShards",
+        "kinesis:PutRecord",
+        "kinesis:PutRecords"
+      ],
+      "Resource": "arn:aws:kinesis:*:*:stream/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kafka-cluster:Connect",
+        "kafka-cluster:DescribeCluster",
+        "kafka-cluster:ReadData",
+        "kafka-cluster:WriteData"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+
+# ============================================
+# 8. EMR Auto Scaling 配置
+# ============================================
+
+{
+  "Classification": "auto-scaling",
+  "Properties": {
+    "cluster-scaling.enabled": "true",
+    "cluster-scaling.scale-up-cooldown": "300",
+    "cluster-scaling.scale-down-cooldown": "600"
+  }
+}
+
+# ============================================
+# 9. CloudWatch 监控集成
+# ============================================
+
+# Metrics 报告到 CloudWatch
+metrics.reporters: cloudwatch
+metrics.reporter.cloudwatch.class: org.apache.flink.metrics.cloudwatch.CloudWatchReporter
+metrics.reporter.cloudwatch.namespace: Flink/EMR
+metrics.reporter.cloudwatch.region: us-east-1
+metrics.reporter.cloudwatch.interval: 60 SECONDS
+
+# ============================================
+# 10. EMR Serverless 配置
+# ============================================
+
+# 适用于无服务器 Flink 作业
+# aws emr-serverless create-application \
+#   --type FLINK \
+#   --name flink-serverless-app \
+#   --release-label emr-6.15.0-latest \
+#   --runtime-configuration '{"classification":"flink-conf","properties":{"taskmanager.memory.process.size":"4096m"}}'
+
+# =============================================================================
+# EMR 部署最佳实践:
+# -----------------------------------------------------------------------------
+# 1. 使用 Spot 实例降低 CORE/TASK 节点成本 (最高节省 90%)
+# 2. 启用 S3 传输加速用于跨区域 Checkpoint
+# 3. 使用 EMRFS 一致性视图确保 S3 强一致性
+# 4. 配置 VPC 端点减少 S3/Kinesis 访问延迟
+# 5. 使用 EMR Studio 进行交互式开发和调试
+# -----------------------------------------------------------------------------
+#
+# 成本优化建议:
+# -----------------------------------------------------------------------------
+# | 策略 | 节省 | 风险 |
+# |------|------|------|
+# | Spot 实例 | 60-90% | 中断 |
+# | 自动扩缩容 | 30-50% | 冷启动 |
+# | S3 IA/Glacier | 40-60% | 访问延迟 |
+# | EMR Serverless | 按量付费 | 启动延迟 |
+# -----------------------------------------------------------------------------
+# =============================================================================

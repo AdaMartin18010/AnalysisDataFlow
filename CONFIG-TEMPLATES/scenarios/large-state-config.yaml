@@ -1,0 +1,207 @@
+# =============================================================================
+# Flink 大状态场景配置
+# 用途: 复杂事件处理 (CEP)、长窗口聚合、会话分析
+# 目标: 支持 TB 级状态，优化状态访问性能
+# =============================================================================
+
+# ============================================
+# 1. 状态后端选择
+# ============================================
+
+# 必须使用 RocksDB 支持大状态
+state.backend: rocksdb
+
+# 增量 Checkpoint 必开
+state.backend.incremental: true
+
+# 本地恢复加速
+state.backend.local-recovery: true
+
+# ============================================
+# 2. RocksDB 深度调优
+# ============================================
+
+# 内存分配模式
+state.backend.rocksdb.memory.managed: true
+state.backend.rocksdb.memory.fixed-per-slot: 8192mb  # 大内存
+state.backend.rocksdb.memory.high-prio-pool-ratio: 0.2
+
+# 预定义配置选项 - 针对 SSD 优化
+state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+
+# 自定义列族选项
+state.backend.rocksdb.options-factory: org.apache.flink.contrib.streaming.state.RocksDBOptionsFactory
+
+# ============================================
+# 3. 写缓冲区优化 (Write Buffer)
+# ============================================
+
+# 写缓冲区大小
+state.backend.rocksdb.writebuffer.size: 512mb
+
+# 每个列族的写缓冲区数量
+state.backend.rocksdb.writebuffer.count: 6
+
+# 合并前的写缓冲区数量
+state.backend.rocksdb.writebuffer.number-to-merge: 3
+
+# 总写缓冲区限制 (防止 OOM)
+state.backend.rocksdb.writebuffer.total-limit: 2gb
+
+# ============================================
+# 4. 压缩策略优化
+# ============================================
+
+# 压缩算法选择
+# 吞吐优先: LZ4
+# 存储优先: ZLIB/ZSTD
+state.backend.rocksdb.compression: LZ4
+
+# 压缩策略
+state.backend.rocksdb.compaction.style: LEVEL
+
+# Level 压缩参数
+state.backend.rocksdb.compaction.level.target-file-size-base: 256mb
+state.backend.rocksdb.compaction.level.max-size-level-base: 2gb
+state.backend.rocksdb.compaction.level.dynamic-level-bytes: true
+
+# 压缩并行度
+state.backend.rocksdb.max-background-jobs: 8
+state.backend.rocksdb.max-background-compactions: 4
+state.backend.rocksdb.max-background-flushes: 4
+
+# ============================================
+# 5. 内存表与缓存优化
+# ============================================
+
+# 块缓存大小
+state.backend.rocksdb.block.cache-size: 4096mb
+
+# 索引和过滤器块缓存
+state.backend.rocksdb.block.metadata-cache-size: 512mb
+
+# 布隆过滤器
+state.backend.rocksdb.use-bloom-filter: true
+state.backend.rocksdb.bloom-filter.bits-per-key: 10
+
+# ============================================
+# 6. 文件系统与 I/O 优化
+# ============================================
+
+# 文件描述符限制
+state.backend.rocksdb.max-open-files: -1  # 无限制
+
+# 文件句柄缓存
+state.backend.rocksdb.table.format: BLOCK_BASED
+
+# I/O 参数
+state.backend.rocksdb.files.open: -1
+
+# ============================================
+# 7. 检查点与恢复优化
+# ============================================
+
+# Checkpoint 间隔 (平衡延迟和恢复时间)
+execution.checkpointing.interval: 300s  # 5 分钟
+execution.checkpointing.min-pause-between-checkpoints: 180s
+execution.checkpointing.timeout: 20m
+
+# 增量 Checkpoint 配置
+state.backend.incremental: true
+state.checkpoint-storage: filesystem
+state.checkpoints.dir: ${CHECKPOINT_DIR}
+
+# Checkpoint 压缩
+state.backend.rocksdb.checkpoint.transfer.thread.num: 8
+
+# ============================================
+# 8. 内存配置 (超大内存)
+# ============================================
+
+# TaskManager 超大内存
+taskmanager.memory.process.size: 65536m  # 64GB
+taskmanager.memory.flink.size: 49152m    # 48GB
+taskmanager.memory.managed.size: 16384m  # 16GB
+
+# 网络内存
+taskmanager.memory.network.fraction: 0.05  # 减少网络内存
+taskmanager.memory.network.min: 512m
+taskmanager.memory.network.max: 2048m
+
+# JVM 参数
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=200
+  -XX:G1HeapRegionSize=32m
+  -XX:InitiatingHeapOccupancyPercent=25
+  -XX:+ParallelRefProcEnabled
+  -XX:+AlwaysPreTouch
+  -XX:+DisableExplicitGC
+  -XX:MaxDirectMemorySize=8g
+
+# ============================================
+# 9. 状态访问优化
+# ============================================
+
+# 启用状态访问缓存
+state.backend.rocksdb.memory.managed: true
+
+# 状态分区优化
+# 使用 KeyGroup 均匀分布状态
+# 调整最大并行度以控制 KeyGroup 数量
+
+# ============================================
+# 10. 垃圾回收与 TTL
+# ============================================
+
+# RocksDB TTL 配置
+state.backend.rocksdb.compaction.filter.periodic-compaction: 86400  # 1天
+
+# 状态 TTL 策略 (在代码中配置)
+# StateTtlConfig.newBuilder(Time.days(7))
+#     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+#     .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+#     .cleanupFullSnapshot()
+#     .build()
+
+# ============================================
+# 11. 性能监控
+# ============================================
+
+# RocksDB 原生指标
+state.backend.rocksdb.metrics.block-cache-capacity: true
+state.backend.rocksdb.metrics.block-cache-usage: true
+state.backend.rocksdb.metrics.block-cache-pinned-usage: true
+state.backend.rocksdb.metrics.estimate-table-readers-mem: true
+state.backend.rocksdb.metrics.estimate-live-data-size: true
+state.backend.rocksdb.metrics.total-sst-files-size: true
+state.backend.rocksdb.metrics.live-sst-files-size: true
+state.backend.rocksdb.metrics.estimate-num-keys: true
+state.backend.rocksdb.metrics.estimate-memory-by-tables: true
+
+# 通用指标
+metrics.reporters: prom,influxdb
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+
+# =============================================================================
+# 大状态最佳实践:
+# -----------------------------------------------------------------------------
+# 1. 状态分区: 使用合适的 KeyBy 策略均匀分布状态
+# 2. 状态大小: 单个 KeyGroup < 1GB
+# 3. TTL 配置: 及时清理过期状态
+# 4. 压缩策略: 根据读写比例选择合适策略
+# 5. 监控告警: 关注 RocksDB SST 文件数量和大小
+# -----------------------------------------------------------------------------
+#
+# 关键监控指标:
+# -----------------------------------------------------------------------------
+# | 指标 | 目标值 | 告警阈值 |
+# |------|--------|----------|
+# | 状态大小 | - | > 80% 磁盘容量 |
+# | SST 文件数 | < 1000/列族 | > 5000 |
+# | 压缩速度 | > 10MB/s | < 1MB/s |
+# | 读放大 | < 10 | > 100 |
+# | 写放大 | < 30 | > 100 |
+# -----------------------------------------------------------------------------
+# =============================================================================

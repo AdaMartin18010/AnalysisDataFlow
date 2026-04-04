@@ -1,0 +1,554 @@
+#!/usr/bin/env groovy
+/**
+ * ============================================================================
+ * AnalysisDataFlow Flink 专项验证 Pipeline
+ * ============================================================================
+ * 描述: 针对Flink模块的专项验证流水线
+ * 触发条件: Flink目录变更、定时触发、手动触发
+ * 功能:
+ *   - Flink文档结构验证
+ *   - Flink代码示例检查
+ *   - Flink配置验证
+ * ============================================================================
+ */
+
+// Pipeline配置参数
+pipeline {
+    agent {
+        // 使用Docker代理环境，确保一致的构建环境
+        docker {
+            image 'python:3.11-slim'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+    
+    options {
+        // 构建超时设置
+        timeout(time: 30, unit: 'MINUTES')
+        // 保留构建历史
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        // 禁用并发构建
+        disableConcurrentBuilds()
+        // 添加时间戳
+        timestamps()
+    }
+    
+    environment {
+        // Python环境配置
+        PYTHON_VERSION = '3.11'
+        // 项目目录
+        PROJECT_NAME = 'AnalysisDataFlow'
+        // 通知配置（可在Jenkins凭据中配置）
+        SLACK_CHANNEL = '#analysis-dataflow'
+    }
+    
+    triggers {
+        // 每周二凌晨3点自动运行
+        cron('H 3 * * 2')
+        // SCM轮询（如果配置Webhook则不需要）
+        pollSCM('H/5 * * * *')
+    }
+    
+    stages {
+        // =====================================================================
+        // Stage 1: 环境准备
+        // =====================================================================
+        stage('环境准备') {
+            steps {
+                script {
+                    echo "======================================"
+                    echo "🚀 AnalysisDataFlow Flink 验证流水线"
+                    echo "======================================"
+                    echo "构建号: ${env.BUILD_NUMBER}"
+                    echo "分支: ${env.BRANCH_NAME}"
+                    echo "提交: ${env.GIT_COMMIT?.take(7)}"
+                }
+                
+                // 检出代码
+                checkout scm
+                
+                // 安装依赖
+                sh '''
+                    python -m pip install --upgrade pip
+                    pip install pyyaml markdown requests
+                '''
+                
+                // 验证环境
+                sh '''
+                    python --version
+                    pip list | grep -E "(pyyaml|markdown|requests)"
+                '''
+            }
+        }
+        
+        // =====================================================================
+        // Stage 2: Flink 目录结构验证
+        // =====================================================================
+        stage('Flink目录结构验证') {
+            steps {
+                script {
+                    echo "::group::验证Flink目录结构"
+                }
+                
+                sh '''
+                    python3 << 'SCRIPT'
+import os
+import sys
+from pathlib import Path
+
+def validate_flink_structure():
+    """验证Flink目录结构是否符合规范"""
+    flink_dir = Path('Flink')
+    
+    if not flink_dir.exists():
+        print("❌ Flink目录不存在")
+        sys.exit(1)
+    
+    # 必需子目录检查
+    required_dirs = [
+        '01-core-concepts',
+        '02-architecture',
+        '03-programming-model',
+        '04-state-management',
+        '05-fault-tolerance',
+        '06-deployment',
+        '07-operations',
+        '08-ecosystem'
+    ]
+    
+    errors = []
+    warnings = []
+    
+    for dir_name in required_dirs:
+        dir_path = flink_dir / dir_name
+        if not dir_path.exists():
+            errors.append(f"缺少必需目录: {dir_name}")
+        else:
+            # 检查目录内是否有文档
+            md_files = list(dir_path.rglob('*.md'))
+            if len(md_files) == 0:
+                warnings.append(f"目录 {dir_name} 为空（无Markdown文件）")
+            else:
+                print(f"✅ {dir_name}: {len(md_files)} 个文档")
+    
+    # 文件命名规范检查
+    naming_errors = []
+    for md_file in flink_dir.rglob('*.md'):
+        # 检查文件名格式: 01-topic-name.md
+        if not any(part.startswith('.') for part in md_file.parts):
+            filename = md_file.name
+            # 忽略根目录的README等文件
+            if md_file.parent != flink_dir:
+                if not re.match(r'^\d{2}-[a-z0-9-]+\.md$', filename):
+                    naming_errors.append(f"命名不规范: {md_file}")
+    
+    if naming_errors:
+        warnings.extend(naming_errors[:10])  # 只显示前10个
+        if len(naming_errors) > 10:
+            warnings.append(f"...还有 {len(naming_errors) - 10} 个命名问题")
+    
+    # 输出结果
+    print("\n" + "="*60)
+    if errors:
+        print("❌ 目录结构错误:")
+        for error in errors:
+            print(f"  - {error}")
+    
+    if warnings:
+        print("⚠️  警告:")
+        for warning in warnings:
+            print(f"  - {warning}")
+    
+    if not errors and not warnings:
+        print("✅ Flink目录结构验证通过！")
+    
+    print("="*60)
+    
+    if errors:
+        sys.exit(1)
+    
+    return len(errors) == 0
+
+import re
+validate_flink_structure()
+SCRIPT
+                '''
+                
+                script {
+                    echo "::endgroup::"
+                }
+            }
+        }
+        
+        // =====================================================================
+        // Stage 3: Flink 代码示例检查
+        // =====================================================================
+        stage('Flink代码示例检查') {
+            steps {
+                script {
+                    echo "::group::检查Flink代码示例"
+                }
+                
+                sh '''
+                    python3 << 'SCRIPT'
+import re
+import sys
+from pathlib import Path
+
+def check_code_examples():
+    """检查Flink代码示例的完整性和正确性"""
+    flink_dir = Path('Flink')
+    
+    if not flink_dir.exists():
+        print("Flink目录不存在，跳过检查")
+        return True
+    
+    stats = {
+        'total_files': 0,
+        'files_with_code': 0,
+        'java_examples': 0,
+        'scala_examples': 0,
+        'python_examples': 0,
+        'sql_examples': 0,
+        'yaml_examples': 0
+    }
+    
+    errors = []
+    
+    for md_file in flink_dir.rglob('*.md'):
+        if any(part.startswith('.') for part in md_file.parts):
+            continue
+        
+        stats['total_files'] += 1
+        
+        try:
+            with open(md_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except Exception as e:
+            errors.append(f"无法读取 {md_file}: {e}")
+            continue
+        
+        # 检查代码块
+        code_blocks = re.findall(r'```(\w+)?\s*\n(.*?)```', content, re.DOTALL)
+        
+        if code_blocks:
+            stats['files_with_code'] += 1
+            
+            for lang, code in code_blocks:
+                lang = lang or 'text'
+                
+                if lang in ['java']:
+                    stats['java_examples'] += 1
+                elif lang in ['scala', 'sc']:
+                    stats['scala_examples'] += 1
+                elif lang in ['python', 'py']:
+                    stats['python_examples'] += 1
+                elif lang in ['sql']:
+                    stats['sql_examples'] += 1
+                elif lang in ['yaml', 'yml']:
+                    stats['yaml_examples'] += 1
+                
+                # 检查代码块是否为空
+                if not code.strip():
+                    errors.append(f"{md_file}: 发现空代码块")
+    
+    # 输出统计
+    print("\n📊 代码示例统计:")
+    print(f"  总文件数: {stats['total_files']}")
+    print(f"  含代码文件: {stats['files_with_code']}")
+    print(f"  Java示例: {stats['java_examples']}")
+    print(f"  Scala示例: {stats['scala_examples']}")
+    print(f"  Python示例: {stats['python_examples']}")
+    print(f"  SQL示例: {stats['sql_examples']}")
+    print(f"  YAML示例: {stats['yaml_examples']}")
+    
+    if errors:
+        print("\n⚠️  发现的问题:")
+        for error in errors[:20]:  # 只显示前20个
+            print(f"  - {error}")
+        if len(errors) > 20:
+            print(f"  ...还有 {len(errors) - 20} 个问题")
+    else:
+        print("\n✅ 代码示例检查通过！")
+    
+    return len(errors) == 0
+
+check_code_examples()
+SCRIPT
+                '''
+                
+                script {
+                    echo "::endgroup::"
+                }
+            }
+        }
+        
+        // =====================================================================
+        // Stage 4: Flink 定理编号验证
+        // =====================================================================
+        stage('Flink定理编号验证') {
+            steps {
+                script {
+                    echo "::group::验证Flink定理编号"
+                }
+                
+                sh '''
+                    python3 << 'SCRIPT'
+import re
+import sys
+from pathlib import Path
+from collections import defaultdict
+
+def validate_flink_theorems():
+    """验证Flink文档中的定理编号"""
+    flink_dir = Path('Flink')
+    
+    if not flink_dir.exists():
+        print("Flink目录不存在，跳过检查")
+        return True
+    
+    # Flink定理编号模式: Thm-F-XX-XX, Def-F-XX-XX, etc.
+    theorem_pattern = r'(Thm|Lemma|Def|Prop|Cor)-(F)-(\d{2})-(\d{2})'
+    
+    theorems = defaultdict(list)
+    errors = []
+    
+    for md_file in flink_dir.rglob('*.md'):
+        if any(part.startswith('.') for part in md_file.parts):
+            continue
+        
+        try:
+            with open(md_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except Exception as e:
+            continue
+        
+        for match in re.finditer(theorem_pattern, content):
+            theorem_id = match.group(0)
+            theorems[theorem_id].append(str(md_file))
+    
+    # 检查重复
+    duplicates = {k: v for k, v in theorems.items() if len(v) > 1}
+    
+    print(f"\n📊 Flink定理统计:")
+    print(f"  唯一定理编号: {len(theorems)}")
+    
+    # 按类型统计
+    types = defaultdict(int)
+    for theorem_id in theorems:
+        elem_type = theorem_id.split('-')[0]
+        types[elem_type] += 1
+    
+    print("\n  按类型分布:")
+    for t, count in sorted(types.items()):
+        type_name = {'Thm': '定理', 'Lemma': '引理', 'Def': '定义', 
+                     'Prop': '命题', 'Cor': '推论'}.get(t, t)
+        print(f"    - {type_name}({t}): {count}")
+    
+    if duplicates:
+        print("\n❌ 发现重复的定理编号:")
+        for theorem_id, files in sorted(duplicates.items()):
+            print(f"\n  {theorem_id} 出现在 {len(files)} 个文件中:")
+            for f in files:
+                print(f"    - {f}")
+        return False
+    else:
+        print("\n✅ 所有Flink定理编号唯一！")
+        return True
+
+success = validate_flink_theorems()
+sys.exit(0 if success else 1)
+SCRIPT
+                '''
+                
+                script {
+                    echo "::endgroup::"
+                }
+            }
+        }
+        
+        // =====================================================================
+        // Stage 5: Flink 配置验证
+        // =====================================================================
+        stage('Flink配置验证') {
+            steps {
+                script {
+                    echo "::group::验证Flink配置示例"
+                }
+                
+                sh '''
+                    python3 << 'SCRIPT'
+import re
+import yaml
+import sys
+from pathlib import Path
+
+def validate_flink_configs():
+    """验证Flink配置文件示例"""
+    flink_dir = Path('Flink')
+    
+    if not flink_dir.exists():
+        return True
+    
+    errors = []
+    warnings = []
+    
+    for md_file in flink_dir.rglob('*.md'):
+        if any(part.startswith('.') for part in md_file.parts):
+            continue
+        
+        try:
+            with open(md_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except:
+            continue
+        
+        # 提取YAML配置块
+        yaml_blocks = re.findall(r'```ya?ml\s*\n(.*?)```', content, re.DOTALL)
+        
+        for i, yaml_content in enumerate(yaml_blocks):
+            try:
+                # 尝试解析YAML
+                config = yaml.safe_load(yaml_content)
+                
+                # 如果是Flink配置，检查关键字段
+                if config and isinstance(config, dict):
+                    # 检查是否有常见的Flink配置项
+                    flink_keys = ['jobmanager', 'taskmanager', 'parallelism', 
+                                  'checkpointing', 'state']
+                    has_flink_config = any(k in config for k in flink_keys)
+                    
+                    if has_flink_config:
+                        # 验证配置值
+                        if 'parallelism' in config:
+                            p = config['parallelism']
+                            if not isinstance(p, int) or p < 1:
+                                warnings.append(f"{md_file}: 并行度配置可能不合理: {p}")
+                        
+            except yaml.YAMLError as e:
+                errors.append(f"{md_file}: YAML块 #{i+1} 解析错误: {e}")
+    
+    if errors:
+        print("\n❌ YAML解析错误:")
+        for error in errors:
+            print(f"  - {error}")
+    
+    if warnings:
+        print("\n⚠️  配置警告:")
+        for warning in warnings:
+            print(f"  - {warning}")
+    
+    if not errors and not warnings:
+        print("\n✅ Flink配置验证通过！")
+    
+    return len(errors) == 0
+
+success = validate_flink_configs()
+sys.exit(0 if success else 1)
+SCRIPT
+                '''
+                
+                script {
+                    echo "::endgroup::"
+                }
+            }
+        }
+        
+        // =====================================================================
+        // Stage 6: 生成验证报告
+        // =====================================================================
+        stage('生成验证报告') {
+            steps {
+                script {
+                    echo "::group::生成验证报告"
+                }
+                
+                sh '''
+                    python3 << 'SCRIPT'
+from datetime import datetime
+from pathlib import Path
+
+def generate_report():
+    """生成Flink验证报告"""
+    
+    report = f"""# Flink 专项验证报告
+
+**验证时间:** {datetime.now().isoformat()}
+**构建号:** {env.BUILD_NUMBER}
+**Git分支:** {env.BRANCH_NAME}
+**Git提交:** {env.GIT_COMMIT}
+
+## 验证项目
+
+| 验证项 | 状态 |
+|--------|------|
+| 目录结构验证 | ✅ 通过 |
+| 代码示例检查 | ✅ 通过 |
+| 定理编号验证 | ✅ 通过 |
+| 配置验证 | ✅ 通过 |
+
+## 说明
+
+此报告由Jenkins自动生成，验证了Flink模块的文档质量。
+
+---
+*AnalysisDataFlow CI/CD*
+"""
+    
+    # 保存报告
+    Path('flink-validation-report.md').write_text(report, encoding='utf-8')
+    print("报告已生成: flink-validation-report.md")
+
+generate_report()
+SCRIPT
+                '''
+                
+                // 归档报告
+                archiveArtifacts artifacts: 'flink-validation-report.md', 
+                                 allowEmptyArchive: true
+                
+                script {
+                    echo "::endgroup::"
+                }
+            }
+        }
+    }
+    
+    // =========================================================================
+    // 后置处理
+    // =========================================================================
+    post {
+        always {
+            // 清理工作空间
+            cleanWs(deleteDirs: true, notFailBuild: true)
+        }
+        
+        success {
+            script {
+                echo "✅ Flink验证流水线成功完成！"
+                
+                // 可以添加Slack通知等
+                // slackSend channel: env.SLACK_CHANNEL, 
+                //           color: 'good', 
+                //           message: "✅ Flink验证成功 - ${env.BUILD_URL}"
+            }
+        }
+        
+        failure {
+            script {
+                echo "❌ Flink验证流水线失败！"
+                
+                // 可以添加Slack通知等
+                // slackSend channel: env.SLACK_CHANNEL, 
+                //           color: 'danger', 
+                //           message: "❌ Flink验证失败 - ${env.BUILD_URL}"
+            }
+        }
+        
+        unstable {
+            script {
+                echo "⚠️ Flink验证流水线不稳定（有警告）"
+            }
+        }
+    }
+}

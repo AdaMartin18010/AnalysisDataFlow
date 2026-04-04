@@ -1,0 +1,754 @@
+# =============================================================================
+# Flink 生产环境 Kubernetes 部署配置
+# 用途: 大规模生产集群、高可用、自动扩展
+# 版本: Flink 1.18+, Kubernetes 1.25+
+# 特性: 高可用、资源限制、监控、安全、自动扩展
+# =============================================================================
+
+# ---------------------------------------------
+# 1. Namespace 定义
+# ---------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flink-production
+  labels:
+    environment: production
+    app.kubernetes.io/name: flink
+    app.kubernetes.io/component: streaming-platform
+    cost-center: data-engineering
+
+---
+# ---------------------------------------------
+# 2. ConfigMap - Flink 配置
+# ---------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  namespace: flink-production
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |
+    # ==========================================
+    # 基础配置
+    # ==========================================
+    jobmanager.memory.process.size: 4096m
+    taskmanager.memory.process.size: 16384m
+    taskmanager.numberOfTaskSlots: 16
+    parallelism.default: 16
+    
+    # ==========================================
+    # 高可用配置
+    # ==========================================
+    high-availability: zookeeper
+    high-availability.zookeeper.quorum: zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181
+    high-availability.zookeeper.path.root: /flink-production
+    high-availability.cluster-id: production-cluster
+    high-availability.storageDir: /opt/flink/ha
+    
+    # ==========================================
+    # Checkpoint 配置
+    # ==========================================
+    state.backend: rocksdb
+    state.checkpoint-storage: filesystem
+    state.checkpoints.dir: s3p://flink-production/checkpoints
+    state.savepoints.dir: s3p://flink-production/savepoints
+    execution.checkpointing.interval: 60000
+    execution.checkpointing.min-pause-between-checkpoints: 30000
+    execution.checkpointing.timeout: 600000
+    state.backend.incremental: true
+    state.backend.local-recovery: true
+    
+    # ==========================================
+    # 重启策略
+    # ==========================================
+    restart-strategy: exponential-delay
+    restart-strategy.exponential-delay.initial-backoff: 10s
+    restart-strategy.exponential-delay.max-backoff: 300s
+    
+    # ==========================================
+    # Metrics 配置
+    # ==========================================
+    metrics.reporters: prom,influxdb
+    metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+    metrics.reporter.prom.port: 9249
+    metrics.reporter.influxdb.class: org.apache.flink.metrics.influxdb.InfluxdbReporter
+    metrics.reporter.influxdb.host: influxdb.monitoring
+    metrics.reporter.influxdb.port: 8086
+    metrics.reporter.influxdb.db: flink_production
+    
+    # ==========================================
+    # Web UI 配置
+    # ==========================================
+    rest.port: 8081
+    rest.bind-address: 0.0.0.0
+    web.submit.enable: false
+    web.cancel.enable: false
+    
+    # ==========================================
+    # JVM 配置
+    # ==========================================
+    env.java.opts.jobmanager: -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+CrashOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError
+    env.java.opts.taskmanager: -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+CrashOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport
+
+  log4j-console.properties: |
+    rootLogger.level = WARN
+    rootLogger.appenderRef.console.ref = ConsoleAppender
+    appender.console.name = ConsoleAppender
+    appender.console.type = CONSOLE
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+    
+    logger.flink.name = org.apache.flink
+    logger.flink.level = INFO
+    logger.akka.name = akka
+    logger.akka.level = WARN
+    
+    logger.hadoop.name = org.apache.hadoop
+    logger.hadoop.level = WARN
+    logger.zookeeper.name = org.apache.zookeeper
+    logger.zookeeper.level = WARN
+
+---
+# ---------------------------------------------
+# 3. Secret - 敏感配置
+# ---------------------------------------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flink-secrets
+  namespace: flink-production
+  labels:
+    app: flink
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+  AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+  INFLUXDB_USER: "${INFLUXDB_USER}"
+  INFLUXDB_PASSWORD: "${INFLUXDB_PASSWORD}"
+
+---
+# ---------------------------------------------
+# 4. PersistentVolumeClaim - 本地存储
+# ---------------------------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: flink-ha-pvc
+  namespace: flink-production
+  labels:
+    app: flink
+    component: ha-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast-ssd  # 使用高性能存储
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+# ---------------------------------------------
+# 5. Service - JobManager (ClusterIP)
+# ---------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager
+  namespace: flink-production
+  labels:
+    app: flink
+    component: jobmanager
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9249"
+spec:
+  type: ClusterIP
+  selector:
+    app: flink
+    component: jobmanager
+  ports:
+    - name: rpc
+      port: 6123
+      targetPort: 6123
+    - name: blob
+      port: 6124
+      targetPort: 6124
+    - name: query
+      port: 6125
+      targetPort: 6125
+    - name: ui
+      port: 8081
+      targetPort: 8081
+    - name: prom
+      port: 9249
+      targetPort: 9249
+
+---
+# ---------------------------------------------
+# 6. Service - JobManager (Headless for HA)
+# ---------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager-headless
+  namespace: flink-production
+  labels:
+    app: flink
+    component: jobmanager
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: flink
+    component: jobmanager
+  ports:
+    - name: rpc
+      port: 6123
+
+---
+# ---------------------------------------------
+# 7. StatefulSet - JobManager (HA 模式)
+# ---------------------------------------------
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: flink-jobmanager
+  namespace: flink-production
+  labels:
+    app: flink
+    component: jobmanager
+spec:
+  serviceName: flink-jobmanager-headless
+  replicas: 3  # 生产环境 3 个 JM 实例
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: jobmanager
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9249"
+    spec:
+      serviceAccountName: flink-service-account
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: flink
+                  component: jobmanager
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: jobmanager
+          image: flink:1.18-scala_2.12-java11
+          imagePullPolicy: Always
+          args: ["jobmanager"]
+          ports:
+            - containerPort: 6123
+              name: rpc
+            - containerPort: 6124
+              name: blob
+            - containerPort: 6125
+              name: query
+            - containerPort: 8081
+              name: ui
+            - containerPort: 9249
+              name: prom
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              value: flink-jobmanager
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: FLINK_PROPERTIES
+              value: |
+                jobmanager.rpc.address: $(POD_NAME).flink-jobmanager-headless
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+            - name: ha-volume
+              mountPath: /opt/flink/ha
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2"
+            limits:
+              memory: "4Gi"
+              cpu: "4"
+          livenessProbe:
+            tcpSocket:
+              port: 6123
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 9999
+            runAsGroup: 9999
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+        - name: ha-volume
+          persistentVolumeClaim:
+            claimName: flink-ha-pvc
+
+---
+# ---------------------------------------------
+# 8. Deployment - TaskManager
+# ---------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+  namespace: flink-production
+  labels:
+    app: flink
+    component: taskmanager
+spec:
+  replicas: 4  # 基础 4 个 TaskManager
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: taskmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9249"
+    spec:
+      serviceAccountName: flink-service-account
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: flink
+                    component: taskmanager
+                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-type
+                    operator: In
+                    values:
+                      - compute
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "flink"
+          effect: "NoSchedule"
+      containers:
+        - name: taskmanager
+          image: flink:1.18-scala_2.12-java11
+          imagePullPolicy: Always
+          args: ["taskmanager"]
+          ports:
+            - containerPort: 6121
+              name: data
+            - containerPort: 6122
+              name: rpc
+            - containerPort: 9249
+              name: prom
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              value: flink-jobmanager
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: flink-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: FLINK_PROPERTIES
+              value: |
+                jobmanager.rpc.address: flink-jobmanager
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+            - name: tmp-volume
+              mountPath: /tmp
+          resources:
+            requests:
+              memory: "16Gi"
+              cpu: "8"
+            limits:
+              memory: "16Gi"
+              cpu: "16"
+          livenessProbe:
+            tcpSocket:
+              port: 6122
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 6122
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            runAsUser: 9999
+            runAsGroup: 9999
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+
+---
+# ---------------------------------------------
+# 9. HorizontalPodAutoscaler - TaskManager
+# ---------------------------------------------
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: flink-taskmanager-hpa
+  namespace: flink-production
+  labels:
+    app: flink
+    component: taskmanager
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: flink-taskmanager
+  minReplicas: 4
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+
+---
+# ---------------------------------------------
+# 10. PodDisruptionBudget
+# ---------------------------------------------
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: flink-jobmanager-pdb
+  namespace: flink-production
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: flink-taskmanager-pdb
+  namespace: flink-production
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: flink
+      component: taskmanager
+
+---
+# ---------------------------------------------
+# 11. Ingress - Web UI (HTTPS)
+# ---------------------------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flink-ingress
+  namespace: flink-production
+  labels:
+    app: flink
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - flink.example.com
+      secretName: flink-tls-secret
+  rules:
+    - host: flink.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: flink-jobmanager
+                port:
+                  number: 8081
+
+---
+# ---------------------------------------------
+# 12. NetworkPolicy - 严格网络安全
+# ---------------------------------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flink-network-policy
+  namespace: flink-production
+spec:
+  podSelector:
+    matchLabels:
+      app: flink
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # 允许 Flink 组件间通信
+    - from:
+        - podSelector:
+            matchLabels:
+              app: flink
+      ports:
+        - protocol: TCP
+          port: 6121
+        - protocol: TCP
+          port: 6122
+        - protocol: TCP
+          port: 6123
+        - protocol: TCP
+          port: 6124
+        - protocol: TCP
+          port: 6125
+    # 允许监控访问
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 9249
+    # 允许 Ingress 访问 Web UI
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8081
+  egress:
+    # 允许 DNS
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    # 允许 Flink 组件间通信
+    - to:
+        - podSelector:
+            matchLabels:
+              app: flink
+    # 允许外部存储访问 (S3)
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+    # 允许 ZooKeeper 访问
+    - to:
+        - podSelector:
+            matchLabels:
+              app: zookeeper
+      ports:
+        - protocol: TCP
+          port: 2181
+    # 允许 Kafka 访问
+    - to:
+        - podSelector:
+            matchLabels:
+              app: kafka
+      ports:
+        - protocol: TCP
+          port: 9092
+
+---
+# ---------------------------------------------
+# 13. ServiceAccount & RBAC
+# ---------------------------------------------
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flink-service-account
+  namespace: flink-production
+  labels:
+    app: flink
+automountServiceAccountToken: true
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: flink-role
+  namespace: flink-production
+  labels:
+    app: flink
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps", "persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "update", "patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: flink-role-binding
+  namespace: flink-production
+  labels:
+    app: flink
+subjects:
+  - kind: ServiceAccount
+    name: flink-service-account
+    namespace: flink-production
+roleRef:
+  kind: Role
+  name: flink-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# ---------------------------------------------
+# 14. ResourceQuota
+# ---------------------------------------------
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: flink-quota
+  namespace: flink-production
+spec:
+  hard:
+    requests.cpu: "100"
+    requests.memory: 400Gi
+    limits.cpu: "200"
+    limits.memory: 800Gi
+    pods: "50"
+    persistentvolumeclaims: "10"
+
+# =============================================================================
+# 部署说明:
+# -----------------------------------------------------------------------------
+# 1. 前置条件:
+#    - Kubernetes 集群 (1.25+)
+#    - ZooKeeper 集群 (3 节点)
+#    - S3 兼容对象存储
+#    - Ingress Controller
+#    - cert-manager (用于 TLS)
+#    - Prometheus/Grafana (监控)
+#
+# 2. 环境变量设置:
+#    export AWS_ACCESS_KEY_ID=xxx
+#    export AWS_SECRET_ACCESS_KEY=xxx
+#    export INFLUXDB_USER=xxx
+#    export INFLUXDB_PASSWORD=xxx
+#
+# 3. 部署命令:
+#    envsubst < k8s-flink-production.yaml | kubectl apply -f -
+#
+# 4. 验证部署:
+#    kubectl get pods -n flink-production
+#    kubectl logs -n flink-production -l component=jobmanager
+#
+# 5. 访问 Web UI:
+#    https://flink.example.com
+#
+# 6. 紧急扩容:
+#    kubectl scale deployment flink-taskmanager -n flink-production --replicas=10
+#
+# 7. 生成 Heap Dump:
+#    kubectl exec -it flink-taskmanager-xxx -n flink-production -- jmap -dump:format=b,file=/tmp/heap.hprof 1
+#    kubectl cp flink-production/flink-taskmanager-xxx:/tmp/heap.hprof ./heap.hprof
+#
+# 8. 清理资源:
+#    kubectl delete -f k8s-flink-production.yaml
+# -----------------------------------------------------------------------------
+# =============================================================================

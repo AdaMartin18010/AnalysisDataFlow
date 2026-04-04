@@ -1,0 +1,315 @@
+# =============================================================================
+# Flink 测试环境配置文件
+# 环境: Kubernetes / Docker Swarm / 多节点测试集群
+# 版本: Flink 1.18+
+# 说明: 模拟生产环境配置，用于集成测试和性能测试
+# =============================================================================
+
+# ============================================
+# 1. 基础集群配置 (Test Environment)
+# ============================================
+
+# JobManager 内存配置 (测试环境中等规模)
+jobmanager.memory.process.size: 2048m
+jobmanager.memory.heap.size: 1024m
+jobmanager.memory.off-heap.size: 256m
+jobmanager.memory.jvm-metaspace.size: 512m
+
+# TaskManager 内存配置
+taskmanager.memory.process.size: 4096m
+taskmanager.memory.flink.size: 3072m
+taskmanager.memory.managed.size: 1024m
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 256m
+taskmanager.memory.network.max: 512m
+
+# TaskManager Slot 配置
+taskmanager.numberOfTaskSlots: 8
+
+# 并行度默认配置
+parallelism.default: 4
+
+# ============================================
+# 2. 高可用配置 (HA - 测试环境启用)
+# ============================================
+
+# 高可用模式
+high-availability: zookeeper
+high-availability.zookeeper.quorum: ${ZOOKEEPER_QUORUM:-zookeeper:2181}
+high-availability.zookeeper.path.root: /flink-test
+high-availability.cluster-id: test-cluster
+high-availability.storageDir: ${HA_STORAGE_DIR:-file:///tmp/flink-ha}
+
+# JobManager 高可用
+high-availability.jobmanager.port: 6123
+
+# ZooKeeper 客户端配置
+high-availability.zookeeper.client.session-timeout: 60000
+high-availability.zookeeper.client.connection-timeout: 15000
+high-availability.zookeeper.client.retry-wait: 5000
+high-availability.zookeeper.client.max-retry-attempts: 3
+
+# ============================================
+# 3. Checkpoint 配置 (测试环境 - 较频繁)
+# ============================================
+
+# Checkpoint 基础配置
+execution.checkpointing.interval: 10s
+execution.checkpointing.min-pause-between-checkpoints: 5s
+execution.checkpointing.timeout: 5m
+execution.checkpointing.max-concurrent-checkpoints: 1
+execution.checkpointing.unaligned.enabled: true
+execution.checkpointing.unaligned.max-aligned-checkpoint-size: 1mb
+
+# Checkpoint 存储 (测试环境使用兼容 S3 的对象存储)
+state.backend: rocksdb
+state.checkpoint-storage: filesystem
+state.checkpoints.dir: ${CHECKPOINT_DIR:-s3p://flink-test/checkpoints}
+state.savepoints.dir: ${SAVEPOINT_DIR:-s3p://flink-test/savepoints}
+
+# RocksDB 状态后端配置
+state.backend.rocksdb.memory.managed: true
+state.backend.rocksdb.memory.fixed-per-slot: 512mb
+state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
+state.backend.rocksdb.threads.threads-number: 4
+state.backend.incremental: true
+state.backend.local-recovery: true
+
+# Checkpoint 压缩
+state.backend.rocksdb.compression: PER_LEVEL
+state.backend.rocksdb.compaction.style: LEVEL
+
+# ============================================
+# 4. State 配置
+# ============================================
+
+# 状态 TTL 配置 (测试环境较短的 TTL 用于验证)
+state.backend.rocksdb.compaction.style: LEVEL
+state.backend.rocksdb.compaction.level.target-file-size-base: 64mb
+
+# 状态大小限制
+state.backend.rocksdb.memory.managed: true
+state.backend.rocksdb.memory.fixed-per-slot: 512mb
+
+# ============================================
+# 5. Web UI 配置 (测试环境)
+# ============================================
+
+rest.port: 8081
+rest.bind-address: 0.0.0.0
+rest.address: 0.0.0.0
+
+# Web 提交配置
+web.submit.enable: true
+web.cancel.enable: true
+
+# 历史服务器配置
+jobmanager.archive.fs.dir: ${HISTORY_DIR:-s3p://flink-test/history}
+historyserver.web.address: 0.0.0.0
+historyserver.web.port: 8082
+historyserver.archive.fs.dir: ${HISTORY_DIR:-s3p://flink-test/history}
+historyserver.archive.fs.refresh-interval: 10000
+
+# ============================================
+# 6. 资源配置与调度
+# ============================================
+
+# 默认任务资源
+jobmanager.memory.process.size: 2048m
+taskmanager.memory.process.size: 4096m
+
+# 网络内存配置
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 256m
+taskmanager.memory.network.max: 512m
+
+# 调度策略
+scheduler-mode: reactive
+cluster.evenly-spread-out-slots: true
+
+# ============================================
+# 7. 容错与重试配置
+# ============================================
+
+# 重启策略
+restart-strategy: exponential-delay
+restart-strategy.exponential-delay.initial-backoff: 5s
+restart-strategy.exponential-delay.max-backoff: 60s
+restart-strategy.exponential-delay.backoff-multiplier: 2.0
+restart-strategy.exponential-delay.reset-backoff-threshold: 300s
+restart-strategy.exponential-delay.jitter-fraction: 0.1
+
+# 失败率重启策略 (备选)
+restart-strategy.failure-rate.max-failures-per-interval: 10
+restart-strategy.failure-rate.failure-rate-interval: 5min
+restart-strategy.failure-rate.delay: 10s
+
+# 任务失败重试
+taskmanager.numberOfTaskSlots: 8
+execution.retry-strategy.fixed-delay.delay: 10s
+execution.retry-strategy.fixed-delay.max-attempts: 3
+
+# ============================================
+# 8. 网络与连接配置
+# ============================================
+
+# RPC 配置
+akka.ask.timeout: 60s
+akka.lookup.timeout: 60s
+akka.client.timeout: 120s
+akka.tcp.timeout: 60s
+
+# 网络配置
+taskmanager.data.bind-port: 0
+taskmanager.data.port: 6122
+
+# Blob 服务器配置
+blob.server.port: 6124
+blob.service.cleanup.interval: 3600
+
+# ============================================
+# 9. Metrics 与监控
+# ============================================
+
+# Metrics 报告器
+metrics.reporters: prom,jmx
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249-9259
+metrics.reporter.jmx.class: org.apache.flink.metrics.jmx.JMXReporter
+metrics.reporter.jmx.port: 8789-8799
+
+# Metrics 范围配置
+metrics.scope.jm: test.jobmanager
+metrics.scope.jm.job: test.jobmanager.job.<job_name>
+metrics.scope.tm: test.taskmanager.<tm_id>
+metrics.scope.tm.job: test.taskmanager.<tm_id>.job.<job_name>
+metrics.scope.task: test.taskmanager.<tm_id>.job.<job_name>.task.<task_name>
+metrics.scope.operator: test.taskmanager.<tm_id>.job.<job_name>.task.<task_name>.<operator_name>
+
+# 系统资源监控
+metrics.system-resource: true
+metrics.system-resource-probing-interval: 5000
+
+# Latency 指标
+latency-tracking.interval: 100
+latency-tracking.sample-number: 100
+
+# ============================================
+# 10. 安全配置 (测试环境基础安全)
+# ============================================
+
+# SSL 配置 (可选)
+security.ssl.internal.enabled: false
+security.ssl.rest.enabled: false
+
+# Kerberos 配置 (如需要)
+# security.kerberos.login.use-ticket-cache: true
+# security.kerberos.login.keytab: /path/to/keytab
+# security.kerberos.login.principal: flink@EXAMPLE.COM
+
+# 委托令牌
+security.delegation.tokens.enabled: true
+security.delegation.token.provider.hadoop.enabled: true
+
+# ============================================
+# 11. JVM 配置 (测试环境)
+# ============================================
+
+# JobManager JVM 参数
+env.java.opts.jobmanager: >
+  -XX:+UseG1GC
+  -XX:MaxMetaspaceSize=512m
+  -XX:+PrintGCDetails
+  -XX:+PrintGCDateStamps
+  -Xloggc:${FLINK_LOG_DIR}/gc.log
+  -XX:+UseGCLogFileRotation
+  -XX:NumberOfGCLogFiles=5
+  -XX:GCLogFileSize=10M
+  -XX:+HeapDumpOnOutOfMemoryError
+  -XX:HeapDumpPath=${FLINK_LOG_DIR}/heap_dump.hprof
+
+# TaskManager JVM 参数
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxMetaspaceSize=512m
+  -XX:+PrintGCDetails
+  -XX:+PrintGCDateStamps
+  -Xloggc:${FLINK_LOG_DIR}/gc.log
+  -XX:+UseGCLogFileRotation
+  -XX:NumberOfGCLogFiles=5
+  -XX:GCLogFileSize=10M
+  -XX:+HeapDumpOnOutOfMemoryError
+  -XX:HeapDumpPath=${FLINK_LOG_DIR}/heap_dump.hprof
+  -XX:+UnlockExperimentalVMOptions
+  -XX:+UseContainerSupport
+
+# ============================================
+# 12. Blob 服务器配置
+# ============================================
+
+blob.server.port: 6124
+blob.service.cleanup.interval: 3600
+blob.fetch.retries: 3
+blob.fetch.num-concurrent: 50
+blob.fetch.backlog: 1000
+
+# ============================================
+# 13. 心跳与超时配置
+# ============================================
+
+# 心跳间隔
+heartbeat.interval: 10000
+heartbeat.timeout: 50000
+
+# 任务管理器超时
+taskmanager.timeout: 60000
+
+# 资源管理器超时
+resourcemanager.taskmanager-timeout: 30000
+resourcemanager.jobmanager-timeout: 60000
+
+# ============================================
+# 14. 扩展配置
+# ============================================
+
+# 类加载
+classloader.resolve-order: parent-first
+classloader.check-leaked-classloader: true
+
+# 管道配置
+pipeline.object-reuse: false
+pipeline.compression: LZ4
+
+# 文件系统
+fs.default-scheme: ${DEFAULT_FS:-file:///}
+fs.s3a.access.key: ${AWS_ACCESS_KEY_ID:-}
+fs.s3a.secret.key: ${AWS_SECRET_ACCESS_KEY:-}
+fs.s3a.endpoint: ${S3_ENDPOINT:-}
+
+# ============================================
+# 15. 环境变量模板
+# ============================================
+
+# 必需环境变量:
+# - ZOOKEEPER_QUORUM: ZooKeeper 连接字符串
+# - CHECKPOINT_DIR: Checkpoint 存储路径 (S3/HDFS)
+# - SAVEPOINT_DIR: Savepoint 存储路径
+# - HA_STORAGE_DIR: 高可用元数据存储路径
+# - HISTORY_DIR: 历史记录存储路径
+
+# 可选环境变量:
+# - AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY: S3 认证
+# - DEFAULT_FS: 默认文件系统方案
+
+# =============================================================================
+# 关键参数说明:
+# -----------------------------------------------------------------------------
+# | 参数 | 测试环境建议值 | 说明 |
+# |------|----------------|------|
+# | state.backend | rocksdb | 测试大状态场景 |
+# | execution.checkpointing.interval | 10s | 较频繁便于验证容错 |
+# | high-availability | zookeeper | 启用 HA 测试 |
+# | restart-strategy | exponential-delay | 自适应重试策略 |
+# | taskmanager.numberOfTaskSlots | 8 | 中等并发度 |
+# -----------------------------------------------------------------------------
+# =============================================================================

@@ -1,0 +1,195 @@
+# =============================================================================
+# Flink 高吞吐场景配置
+# 用途: 日志处理、ETL、大数据分析等高数据量场景
+# 目标: 吞吐量 > 1M events/sec
+# =============================================================================
+
+# ============================================
+# 1. 吞吐量核心优化
+# ============================================
+
+# 启用对象重用减少 GC
+pipeline.object-reuse: true
+
+# 使用高效压缩
+pipeline.compression: LZ4
+
+# 增大缓冲区超时，增加批处理
+execution.buffer-timeout: 100ms
+
+# 增大网络缓冲区
+taskmanager.memory.network.fraction: 0.2
+taskmanager.memory.network.min: 2g
+taskmanager.memory.network.max: 8g
+
+# 批处理模式优化
+execution.batch-state-backend: rocksdb
+execution.sort-shuffle-min-parallelism: 10
+
+# ============================================
+# 2. Checkpoint 优化 (吞吐优先)
+# ============================================
+
+# 减少 Checkpoint 频率
+execution.checkpointing.interval: 60s
+execution.checkpointing.min-pause-between-checkpoints: 30s
+execution.checkpointing.timeout: 10m
+
+# 禁用 Unaligned Checkpoint (高吞吐下开销大)
+execution.checkpointing.unaligned.enabled: false
+
+# 增量 Checkpoint
+state.backend.incremental: true
+state.backend.local-recovery: true
+
+# Checkpoint 并发度
+execution.checkpointing.max-concurrent-checkpoints: 1
+
+# ============================================
+# 3. 状态后端优化 (大状态高吞吐)
+# ============================================
+
+state.backend: rocksdb
+
+# 大内存配置
+state.backend.rocksdb.memory.managed: true
+state.backend.rocksdb.memory.fixed-per-slot: 4096mb
+state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
+
+# 压缩配置 (吞吐优先使用轻量压缩)
+state.backend.rocksdb.compression: LZ4
+state.backend.rocksdb.compaction.style: LEVEL
+state.backend.rocksdb.compaction.level.target-file-size-base: 256mb
+state.backend.rocksdb.compaction.level.max-size-level-base: 2gb
+
+# 写优化
+state.backend.rocksdb.writebuffer.size: 256mb
+state.backend.rocksdb.writebuffer.count: 4
+state.backend.rocksdb.writebuffer.number-to-merge: 2
+
+# 后台线程
+state.backend.rocksdb.threads.threads-number: 8
+state.backend.rocksdb.max-background-jobs: 8
+
+# 文件描述符
+state.backend.rocksdb.max-open-files: -1
+
+# ============================================
+# 4. 内存配置 (大内存模式)
+# ============================================
+
+# TaskManager 大内存配置
+taskmanager.memory.process.size: 32768m  # 32GB
+taskmanager.memory.flink.size: 24576m    # 24GB
+taskmanager.memory.managed.size: 8192m   # 8GB 给 RocksDB
+
+# 网络内存
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 2g
+taskmanager.memory.network.max: 6g
+
+# JVM 优化 (吞吐优先)
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=100
+  -XX:G1HeapRegionSize=32m
+  -XX:InitiatingHeapOccupancyPercent=35
+  -XX:+ParallelRefProcEnabled
+  -XX:+AlwaysPreTouch
+  -XX:+DisableExplicitGC
+  -XX:+UseStringDeduplication
+
+# ============================================
+# 5. 并行度与资源调度
+# ============================================
+
+# 高并行度
+taskmanager.numberOfTaskSlots: 16
+parallelism.default: 64
+
+# 动态资源分配
+scheduler-mode: reactive
+cluster.evenly-spread-out-slots: true
+
+# 批处理优化
+execution.runtime-mode: BATCH
+
+# ============================================
+# 6. 网络与连接优化
+# ============================================
+
+# 增大 RPC 超时 (大数据量传输)
+akka.ask.timeout: 300s
+akka.lookup.timeout: 300s
+akka.tcp.timeout: 300s
+
+# 增大网络帧大小
+akka.framesize: 268435456b  # 256MB
+
+# Blob 服务器优化
+blob.fetch.num-concurrent: 100
+blob.fetch.backlog: 2000
+
+# ============================================
+# 7. 序列化优化
+# ============================================
+
+# 类型注册加速
+pipeline.auto-type-registration: true
+
+# 使用高效的序列化器
+# 推荐使用 Avro、Protobuf 或 Kryo
+
+# ============================================
+# 8. 容错配置
+# ============================================
+
+# 指数退避重启
+restart-strategy: exponential-delay
+restart-strategy.exponential-delay.initial-backoff: 10s
+restart-strategy.exponential-delay.max-backoff: 300s
+restart-strategy.exponential-delay.backoff-multiplier: 2.0
+
+# 失败率策略
+restart-strategy.failure-rate.max-failures-per-interval: 10
+restart-strategy.failure-rate.failure-rate-interval: 10min
+
+# ============================================
+# 9. 文件系统优化
+# ============================================
+
+# S3 优化配置 (如使用)
+fs.s3a.connection.maximum: 200
+fs.s3a.multipart.size: 128mb
+fs.s3a.threads.max: 100
+fs.s3a.fast.upload: true
+fs.s3a.fast.upload.buffer: disk
+
+# HDFS 优化
+fs.hdfs.dfs.replication: 3
+fs.hdfs.dfs.blocksize: 256mb
+
+# ============================================
+# 10. Metrics 配置
+# ============================================
+
+# 吞吐监控
+metrics.reporters: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+
+# 批处理指标
+metrics.scope.operator: throughput.operator.<operator_name>
+
+# =============================================================================
+# 关键吞吐量指标监控:
+# -----------------------------------------------------------------------------
+# | 指标 | 目标值 | 说明 |
+# |------|--------|------|
+# | 每秒处理记录数 | > 1M | 整体吞吐量 |
+# | 每秒处理字节数 | > 500MB | 数据量 |
+# | 反压比例 | < 5% | 健康度 |
+# | CPU 利用率 | 60-80% | 资源利用 |
+# | 内存利用率 | < 85% | 避免 OOM |
+# -----------------------------------------------------------------------------
+# =============================================================================

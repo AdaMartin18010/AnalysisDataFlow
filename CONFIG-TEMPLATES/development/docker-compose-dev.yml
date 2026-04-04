@@ -1,0 +1,298 @@
+# =============================================================================
+# Flink 开发环境 Docker Compose 配置
+# 用途: 本地开发、快速启动、集成测试
+# 版本: Flink 1.18+
+# 包含: JobManager + TaskManager + ZooKeeper + Kafka (可选)
+# =============================================================================
+
+version: "3.8"
+
+services:
+  # ==========================================================================
+  # ZooKeeper (用于高可用模式测试)
+  # ==========================================================================
+  zookeeper:
+    image: zookeeper:3.8
+    container_name: flink-dev-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper:2888:3888
+    volumes:
+      - zookeeper_data:/data
+      - zookeeper_datalog:/datalog
+    networks:
+      - flink-dev-network
+    healthcheck:
+      test: ["CMD", "zkServer.sh", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # JobManager - 任务管理中心
+  # ==========================================================================
+  jobmanager:
+    image: flink:1.18-scala_2.12-java11
+    container_name: flink-dev-jobmanager
+    hostname: jobmanager
+    command: jobmanager
+    ports:
+      - "8081:8081"      # Web UI
+      - "5005:5005"      # 远程调试端口
+      - "9249:9249"      # Prometheus 指标
+    environment:
+      # 基础配置
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          jobmanager.memory.process.size: 1024m
+          rest.port: 8081
+          rest.address: 0.0.0.0
+          
+          # Checkpoint 配置
+          execution.checkpointing.interval: 30s
+          state.backend: hashmap
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+          
+          # 调试配置
+          env.java.opts.jobmanager: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+          
+          # Metrics
+          metrics.reporters: prom
+          metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+          metrics.reporter.prom.port: 9249
+    volumes:
+      - flink_checkpoints:/tmp/flink-checkpoints
+      - flink_savepoints:/tmp/flink-savepoints
+      - ./jobs:/opt/flink/jobs           # 挂载作业 JAR 目录
+      - ./conf:/opt/flink/conf-local     # 挂载本地配置
+    networks:
+      - flink-dev-network
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    # 资源限制 (开发环境)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '1'
+          memory: 512M
+
+  # ==========================================================================
+  # TaskManager - 任务执行节点
+  # ==========================================================================
+  taskmanager:
+    image: flink:1.18-scala_2.12-java11
+    container_name: flink-dev-taskmanager
+    hostname: taskmanager
+    command: taskmanager
+    ports:
+      - "5006:5006"      # 远程调试端口
+      - "9250:9250"      # Prometheus 指标
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.host: taskmanager
+          taskmanager.memory.process.size: 2048m
+          taskmanager.numberOfTaskSlots: 4
+          
+          # 网络配置
+          taskmanager.memory.network.fraction: 0.15
+          taskmanager.memory.network.min: 128m
+          taskmanager.memory.network.max: 512m
+          
+          # 调试配置
+          env.java.opts.taskmanager: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
+          
+          # Metrics
+          metrics.reporters: prom
+          metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+          metrics.reporter.prom.port: 9250
+    volumes:
+      - flink_checkpoints:/tmp/flink-checkpoints
+      - flink_savepoints:/tmp/flink-savepoints
+      - ./jobs:/opt/flink/jobs
+    networks:
+      - flink-dev-network
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 2G
+        reservations:
+          cpus: '2'
+          memory: 1G
+    # 可以水平扩展 TaskManager
+    # scale: 2
+
+  # ==========================================================================
+  # Kafka (可选 - 用于流处理开发测试)
+  # ==========================================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: flink-dev-kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+      - "9101:9101"      # JMX 端口
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:29092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - flink-dev-network
+    depends_on:
+      - zookeeper
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================================================
+  # Kafka UI (可选 - 用于查看 Kafka 主题和消息)
+  # ==========================================================================
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: flink-dev-kafka-ui
+    ports:
+      - "8082:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    networks:
+      - flink-dev-network
+    depends_on:
+      - kafka
+
+  # ==========================================================================
+  # Prometheus (可选 - 指标收集)
+  # ==========================================================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: flink-dev-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    networks:
+      - flink-dev-network
+
+  # ==========================================================================
+  # Grafana (可选 - 可视化监控)
+  # ==========================================================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: flink-dev-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - flink-dev-network
+    depends_on:
+      - prometheus
+
+# ==========================================================================
+# 数据卷定义
+# ==========================================================================
+volumes:
+  zookeeper_data:
+  zookeeper_datalog:
+  flink_checkpoints:
+  flink_savepoints:
+  kafka_data:
+  prometheus_data:
+  grafana_data:
+
+# ==========================================================================
+# 网络定义
+# ==========================================================================
+networks:
+  flink-dev-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+# =============================================================================
+# 使用说明:
+# -----------------------------------------------------------------------------
+# 1. 启动所有服务:
+#    docker-compose -f docker-compose-dev.yml up -d
+#
+# 2. 仅启动 Flink (不含 Kafka):
+#    docker-compose -f docker-compose-dev.yml up -d jobmanager taskmanager
+#
+# 3. 扩展 TaskManager 数量:
+#    docker-compose -f docker-compose-dev.yml up -d --scale taskmanager=3
+#
+# 4. 查看日志:
+#    docker-compose -f docker-compose-dev.yml logs -f jobmanager
+#
+# 5. 停止服务:
+#    docker-compose -f docker-compose-dev.yml down
+#
+# 6. 完全清理 (包含数据卷):
+#    docker-compose -f docker-compose-dev.yml down -v
+# -----------------------------------------------------------------------------
+#
+# 访问地址:
+# -----------------------------------------------------------------------------
+# | 服务 | 地址 | 说明 |
+# |------|------|------|
+# | Flink Web UI | http://localhost:8081 | 任务管理界面 |
+# | Kafka UI | http://localhost:8082 | Kafka 管理界面 |
+# | Prometheus | http://localhost:9090 | 指标查询 |
+# | Grafana | http://localhost:3000 | 监控仪表盘 (admin/admin) |
+# -----------------------------------------------------------------------------
+#
+# 调试配置:
+# -----------------------------------------------------------------------------
+# - JobManager 调试端口: 5005
+# - TaskManager 调试端口: 5006
+# 
+# 在 IntelliJ IDEA 中配置远程调试:
+# 1. Run -> Edit Configurations
+# 2. 点击 + -> Remote JVM Debug
+# 3. 设置 Host: localhost, Port: 5005 (JobManager) 或 5006 (TaskManager)
+# 4. 启动调试会话
+# =============================================================================

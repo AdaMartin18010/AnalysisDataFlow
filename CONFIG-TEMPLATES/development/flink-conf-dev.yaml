@@ -1,0 +1,173 @@
+# =============================================================================
+# Flink 开发环境配置文件
+# 环境: Local / Docker Desktop / 单机开发
+# 版本: Flink 1.18+
+# 说明: 针对开发调试优化，启用详细日志和 Web UI
+# =============================================================================
+
+# ============================================
+# 1. 基础集群配置 (Basic Cluster Configuration)
+# ============================================
+
+# JobManager 内存配置 (开发环境最小配置)
+jobmanager.memory.process.size: 1024m
+jobmanager.memory.heap.size: 512m
+jobmanager.memory.off-heap.size: 128m
+jobmanager.memory.jvm-metaspace.size: 256m
+
+# TaskManager 内存配置 (单机开发模式)
+taskmanager.memory.process.size: 2048m
+taskmanager.memory.flink.size: 1536m
+taskmanager.memory.managed.size: 512m
+taskmanager.memory.network.fraction: 0.1
+taskmanager.memory.network.min: 64m
+taskmanager.memory.network.max: 256m
+
+# TaskManager Slot 数量 (开发环境通常较少)
+taskmanager.numberOfTaskSlots: 4
+
+# 并行度默认配置 (开发环境使用较低并行度)
+parallelism.default: 2
+
+# ============================================
+# 2. Checkpoint 配置 (开发环境)
+# ============================================
+
+# 启用 Checkpoint
+execution.checkpointing.interval: 30s
+execution.checkpointing.min-pause-between-checkpoints: 10s
+execution.checkpointing.timeout: 10m
+execution.checkpointing.max-concurrent-checkpoints: 1
+execution.checkpointing.unaligned.enabled: false
+
+# Checkpoint 存储 (开发环境使用本地文件系统)
+state.backend: hashmap
+state.checkpoint-storage: filesystem
+state.checkpoints.dir: file:///tmp/flink-checkpoints
+state.savepoints.dir: file:///tmp/flink-savepoints
+
+# 状态后端配置
+state.backend.incremental: false
+state.backend.local-recovery: false
+
+# ============================================
+# 3. Web UI 配置 (开发环境启用完整功能)
+# ============================================
+
+# Web UI 端口
+rest.port: 8081
+rest.bind-address: 0.0.0.0
+
+# 启用 Web 提交
+web.submit.enable: true
+web.cancel.enable: true
+
+# 历史服务器配置 (可选)
+jobmanager.archive.fs.dir: file:///tmp/flink-job-history
+historyserver.web.address: 0.0.0.0
+historyserver.web.port: 8082
+historyserver.archive.fs.dir: file:///tmp/flink-job-history
+historyserver.archive.fs.refresh-interval: 10000
+
+# ============================================
+# 4. 日志配置 (开发环境详细日志)
+# ============================================
+
+# 日志级别
+log4j.rootLogger: INFO, console
+log4j.logger.org.apache.flink: DEBUG
+log4j.logger.org.apache.flink.streaming: DEBUG
+log4j.logger.org.apache.flink.runtime.checkpoint: DEBUG
+
+# 日志文件配置
+log4j.appender.file.file: ${sys:log.file}
+log4j.appender.file.maxBackupIndex: 10
+log4j.appender.file.maxFileSize: 50MB
+
+# ============================================
+# 5. 网络配置 (开发环境)
+# ============================================
+
+# Akka 配置
+akka.ask.timeout: 60s
+akka.lookup.timeout: 60s
+akka.client.timeout: 120s
+
+# 网络缓冲区
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 128m
+taskmanager.memory.network.max: 512m
+
+# ============================================
+# 6. 序列化与内存 (开发环境)
+# ============================================
+
+# 序列化配置
+pipeline.object-reuse: false
+pipeline.compression: LZ4
+pipeline.auto-type-registration: true
+
+# JVM 参数 (开发环境启用调试)
+env.java.opts.jobmanager: "-XX:+UseG1GC -XX:MaxMetaspaceSize=256m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxMetaspaceSize=256m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
+
+# ============================================
+# 7. Metrics 配置 (开发环境基础监控)
+# ============================================
+
+metrics.reporters: prom,slf4j
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249-9250
+metrics.reporter.slf4j.class: org.apache.flink.metrics.slf4j.Slf4jReporter
+metrics.reporter.slf4j.interval: 60 SECONDS
+
+# ============================================
+# 8. 类加载配置 (开发环境支持热加载)
+# ============================================
+
+classloader.resolve-order: parent-first
+classloader.check-leaked-classloader: true
+classloader.parent-first-patterns.additional: org.apache.flink.
+
+# ============================================
+# 9. 环境变量模板
+# ============================================
+
+# 以下环境变量可在启动时通过 -D 参数或环境变量设置:
+# FLINK_HOME          - Flink 安装目录
+# FLINK_CONF_DIR      - 配置文件目录
+# FLINK_LOG_DIR       - 日志目录
+# FLINK_PID_DIR       - PID 文件目录
+# FLINK_ENV_JAVA_OPTS - 额外 JVM 参数
+
+# ============================================
+# 10. 开发环境特殊配置
+# ============================================
+
+# 启用详细异常信息
+web.exception-history-size: 50
+
+# 任务失败重试 (开发环境快速失败)
+restart-strategy: fixed-delay
+restart-strategy.fixed-delay.attempts: 3
+restart-strategy.fixed-delay.delay: 10s
+
+# 取消任务时立即释放资源
+task.cancellation.timeout: 0
+
+# 开发环境禁用某些安全检查
+security.delegation.tokens.enabled: false
+
+# =============================================================================
+# 关键参数说明:
+# -----------------------------------------------------------------------------
+# | 参数 | 建议值 | 说明 |
+# |------|--------|------|
+# | jobmanager.memory.process.size | 1024m | 开发环境最小 1GB |
+# | taskmanager.memory.process.size | 2048m | 开发环境建议 2GB+ |
+# | taskmanager.numberOfTaskSlots | 4 | 根据 CPU 核心调整 |
+# | execution.checkpointing.interval | 30s | 开发环境可适当增大 |
+# | state.backend | hashmap | 开发环境使用内存状态 |
+# | rest.port | 8081 | Web UI 默认端口 |
+# -----------------------------------------------------------------------------
+# =============================================================================

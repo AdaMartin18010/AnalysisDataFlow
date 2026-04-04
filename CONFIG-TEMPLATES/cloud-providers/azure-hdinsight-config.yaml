@@ -1,0 +1,262 @@
+# =============================================================================
+# Azure HDInsight Flink 配置
+# 服务: Azure HDInsight / Azure Managed Flink (Preview)
+# 版本: Flink 1.17+
+# 特性: 与 Azure 生态集成 (ADLS, Event Hubs, SQL Database)
+# =============================================================================
+
+# ============================================
+# 1. HDInsight 集群基础配置
+# ============================================
+
+# Azure CLI 创建集群
+# az hdinsight create \
+#   --name flink-cluster \
+#   --resource-group myResourceGroup \
+#   --type flink \
+#   --component-version Flink=1.17 \
+#   --http-user admin \
+#   --http-password 'YourPassword' \
+#   --ssh-user sshuser \
+#   --ssh-password 'YourPassword' \
+#   --size 4 \
+#   --version 5.1 \
+#   --storage-account mystorageaccount \
+#   --storage-container mycontainer
+
+# ============================================
+# 2. Azure Storage (ADLS Gen2 / Blob) 配置
+# ============================================
+
+# Flink 配置文件
+flink-conf.yaml: |
+  # 基础配置
+  jobmanager.memory.process.size: 4096m
+  taskmanager.memory.process.size: 16384m
+  taskmanager.numberOfTaskSlots: 8
+  
+  # Checkpoint 存储 - ADLS Gen2
+  state.backend: rocksdb
+  state.checkpoint-storage: filesystem
+  state.checkpoints.dir: abfs://flink-checkpoints@myaccount.dfs.core.windows.net/checkpoints
+  state.savepoints.dir: abfs://flink-checkpoints@myaccount.dfs.core.windows.net/savepoints
+  
+  # ADLS Gen2 优化
+  fs.azure.account.key.myaccount.dfs.core.windows.net: ${AZURE_STORAGE_KEY}
+  fs.azure.account.oauth2.client.id: ${AZURE_CLIENT_ID}
+  fs.azure.account.oauth2.client.secret: ${AZURE_CLIENT_SECRET}
+  fs.azure.account.oauth2.client.endpoint: https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/token
+
+# Hadoop Core-Site 配置 (core-site.xml)
+core-site.xml: |
+  <configuration>
+    <property>
+      <name>fs.abfs.impl</name>
+      <value>org.apache.hadoop.fs.azurebfs.AzureBlobFileSystem</value>
+    </property>
+    <property>
+      <name>fs.azure.account.auth.type</name>
+      <value>OAuth</value>
+    </property>
+    <property>
+      <name>fs.azure.account.oauth.provider.type</name>
+      <value>org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider</value>
+    </property>
+    <property>
+      <name>fs.azure.account.oauth2.client.id</name>
+      <value>${AZURE_CLIENT_ID}</value>
+    </property>
+    <property>
+      <name>fs.azure.account.oauth2.client.secret</name>
+      <value>${AZURE_CLIENT_SECRET}</value>
+    </property>
+    <property>
+      <name>fs.azure.account.oauth2.client.endpoint</name>
+      <value>https://login.microsoftonline.com/${AZURE_TENANT_ID}/oauth2/token</value>
+    </property>
+    <!-- 性能优化 -->
+    <property>
+      <name>fs.azure.io.retry.max.retries</name>
+      <value>30</value>
+    </property>
+    <property>
+      <name>fs.azure.block.size</name>
+      <value>268435456</value> <!-- 256MB -->
+    </property>
+    <property>
+      <name>fs.azure.write.max.concurrent.requests</name>
+      <value>16</value>
+    </property>
+  </configuration>
+
+# ============================================
+# 3. Event Hubs 集成 (Kafka 协议)
+# ============================================
+
+# Event Hubs 作为 Kafka 源/汇
+# 连接器配置
+bootstrap.servers: myeventhub.servicebus.windows.net:9093
+security.protocol: SASL_SSL
+sasl.mechanism: PLAIN
+sasl.jaas.config: >
+  org.apache.kafka.common.security.plain.PlainLoginModule required
+  username="$ConnectionString"
+  password="Endpoint=sb://myeventhub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=XXXXXXXXXXXXXXXX";
+
+# 消费者组配置
+group.id: flink-consumer-group
+auto.offset.reset: earliest
+enable.auto.commit: false
+
+# Event Hubs 特定优化
+request.timeout.ms: 60000
+metadata.max.age.ms: 180000
+connections.max.idle.ms: 180000
+
+# ============================================
+# 4. Azure SQL Database / Synapse 集成
+# ============================================
+
+# JDBC 连接器配置
+url: jdbc:sqlserver://myserver.database.windows.net:1433;database=mydb;encrypt=true;trustServerCertificate=false
+user: flinkuser
+password: ${SQL_PASSWORD}
+driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+# 连接池配置
+connection.max-retry-timeout: 60
+connection.check-timeout.seconds: 60
+
+# ============================================
+# 5. Azure Monitor / Application Insights 集成
+# ============================================
+
+# Metrics 发送到 Azure Monitor
+metrics.reporters: azuremonitor
+metrics.reporter.azuremonitor.class: com.microsoft.azure.flink.metrics.AzureMonitorReporter
+metrics.reporter.azuremonitor.instrumentation-key: ${APPINSIGHTS_KEY}
+metrics.reporter.azuremonitor.interval: 60 SECONDS
+
+# 日志集成
+log4j.appender.azure=com.microsoft.applicationinsights.log4j.v2.ApplicationInsightsAppender
+log4j.appender.azure.instrumentationKey=${APPINSIGHTS_KEY}
+
+# ============================================
+# 6. Azure Key Vault 集成
+# ============================================
+
+# 使用 Key Vault 存储敏感配置
+# 在 Ambari/HDInsight 中配置 Key Vault 引用
+
+# 示例: 从 Key Vault 读取密码
+# 在 ARM 模板中配置:
+"secrets": [
+  {
+    "sourceVault": {
+      "id": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.KeyVault/vaults/myvault"
+    },
+    "vaultCertificates": [],
+    "vaultSecrets": [
+      {
+        "secretName": "FlinkStorageKey",
+        "secretVersion": ""
+      }
+    ]
+  }
+]
+
+# ============================================
+# 7. HDInsight 身份验证 (Azure AD)
+# ============================================
+
+# 启用 Azure AD 域服务集成
+# 在集群创建时指定域设置
+
+# Flink 安全配置
+security.kerberos.login.use-ticket-cache: false
+security.kerberos.login.keytab: /etc/security/keytabs/flink.service.keytab
+security.kerberos.login.principal: flink@MYDOMAIN.COM
+
+# ============================================
+# 8. 虚拟网络集成
+# ============================================
+
+# VNet 配置确保与 Azure 服务的私有连接
+# 在集群创建时指定 VNet 和子网
+
+# 示例 ARM 模板配置:
+"virtualNetworkProfile": {
+  "id": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/myvnet",
+  "subnet": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/myvnet/subnets/flink-subnet"
+}
+
+# 服务终结点配置
+# - Microsoft.Sql (Azure SQL)
+# - Microsoft.EventHub
+# - Microsoft.Storage
+
+# ============================================
+# 9. Azure Managed Flink (预览版)
+# ============================================
+
+# 完全托管的 Flink 服务
+# az managed-flink create \
+#   --resource-group myResourceGroup \
+#   --name my-flink-instance \
+#   --location eastus \
+#   --storage-account myaccount \
+#   --storage-container flink \
+#   --sku Standard
+
+# Managed Flink 自动配置:
+# - 自动扩缩容
+# - 托管 Checkpoint 存储
+# - 集成 Azure Monitor
+# - 自动安全补丁
+
+# ============================================
+# 10. 成本优化策略
+# ============================================
+
+# 1. 使用低优先级 VM (类似 AWS Spot)
+# az hdinsight create \
+#   --workernode-data-disks-per-node 2 \
+#   --workernode-size Standard_D4_v2 \
+#   --zookeepernode-size Standard_A2_v2 \
+#   --headnode-size Standard_D4_v2
+
+# 2. 自动缩放配置
+# 在 Azure Portal 中配置基于负载的自动缩放
+
+# 3. 存储分层
+# 热数据: ADLS Gen2 Hot 层
+# 冷数据: ADLS Gen2 Cool 层
+# 归档: Archive 层
+
+# =============================================================================
+# Azure 部署最佳实践:
+# -----------------------------------------------------------------------------
+# 1. 使用托管标识 (Managed Identity) 代替服务主体密钥
+# 2. 配置 VNet 服务终结点减少公网流量
+# 3. 使用 Private Link 连接 Azure SQL / Cosmos DB
+# 4. 启用诊断日志发送到 Log Analytics
+# 5. 配置 Azure AD 条件访问策略
+# -----------------------------------------------------------------------------
+#
+# 网络架构:
+# -----------------------------------------------------------------------------
+# ┌─────────────────────────────────────────────┐
+# │              HDInsight / AKS                │
+# │  ┌─────────────────────────────────────┐   │
+# │  │         Flink Cluster               │   │
+# │  └─────────────────────────────────────┘   │
+# └───────────────────┬─────────────────────────┘
+#                     │ Private Endpoint
+#     ┌───────────────┼───────────────┐
+#     ▼               ▼               ▼
+# ┌─────────┐  ┌──────────┐  ┌──────────────┐
+# │ ADLS    │  │ Event    │  │ Azure SQL    │
+# │ Gen2    │  │ Hubs     │  │ / Synapse    │
+# └─────────┘  └──────────┘  └──────────────┘
+# -----------------------------------------------------------------------------
+# =============================================================================

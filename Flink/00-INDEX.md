@@ -1,6 +1,8 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04-v2.5 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 78+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04-v2.8 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 130+ 核心文档 | **形式化等级**: L3-L5
+>
+> **🔍 搜索标签**: #Flink #Checkpoint #Exactly-Once #Watermark #StateBackend #SQL #TableAPI #AI-ML #Lakehouse #Kubernetes #Serverless #Streaming #Real-time
 
 ---
 
@@ -477,6 +479,8 @@ flowchart TD
 | [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) | 实时特征工程 | [online-learning-algorithms.md](12-ai-ml/online-learning-algorithms.md) |
 | [flink-realtime-ml-inference.md](12-ai-ml/flink-realtime-ml-inference.md) | 实时ML推理 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
 | [flink-llm-integration.md](12-ai-ml/flink-llm-integration.md) | Flink与LLM集成 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
+| [flink-ai-agents-flip-531.md](12-ai-ml/flink-ai-agents-flip-531.md) | **Flink AI Agents FLIP-531** 🆕 v2.8 | [flink-llm-integration.md](12-ai-ml/flink-llm-integration.md) |
+| [flink-ai-ml-integration-complete-guide.md](12-ai-ml/flink-ai-ml-integration-complete-guide.md) | **AI/ML集成完整指南** 🆕 v2.8 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
 
 ### 6.13 13-security/ 安全与可信计算层
 
@@ -484,6 +488,8 @@ flowchart TD
 |------|------|----------|
 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) | GPU机密计算 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) |
 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) | TEE可信执行 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
+| [flink-security-complete-guide.md](13-security/flink-security-complete-guide.md) | **安全完整指南** 🆕 v2.8 | [streaming-security-best-practices.md](13-security/streaming-security-best-practices.md) |
+| [streaming-security-best-practices.md](13-security/streaming-security-best-practices.md) | 流处理安全最佳实践 🆕 v2.8 | [flink-security-complete-guide.md](13-security/flink-security-complete-guide.md) |
 
 ### 6.14 14-lakehouse/ 湖仓集成层
 
@@ -491,6 +497,8 @@ flowchart TD
 |------|------|----------|
 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | Paimon集成 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) |
 | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | Iceberg集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+| [streaming-lakehouse-deep-dive-2026.md](14-lakehouse/streaming-lakehouse-deep-dive-2026.md) | **2026湖仓深度解析** 🆕 v2.8 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [streaming-lakehouse-architecture.md](14-lakehouse/streaming-lakehouse-architecture.md) | 流式湖仓架构 🆕 v2.8 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) |
 
 ### 6.13 13-wasm/ WASM与WebAssembly层
 
@@ -656,6 +664,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-03 (新增8篇文档：Flink Kubernetes Operator深度指南、Clickstream用户行为分析案例、Flink 2.0 ForSt状态后端、Flink 2.0异步执行模型、SQL窗口函数深度指南、State TTL最佳实践、Flink CDC 3.0数据集成、流处理测试策略)*
+*更新时间: 2026-04-04 (v2.8 新增10篇核心文档：Flink AI Agents FLIP-531、AI/ML集成完整指南、LLM集成、安全完整指南、状态管理完整指南、部署运维完整指南、2026湖仓深度解析、图流处理、Serverless架构、Flink 2.3/2.4路线图)*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 70+ 核心文档 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.2+*
+*文档统计: 130+ 核心文档 | 107定理 | 222定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.4+*

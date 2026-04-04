@@ -1,0 +1,146 @@
+# =============================================================================
+# AnalysisDataFlow 交叉引用验证配置
+# =============================================================================
+# 描述: 定义文档间交叉引用验证的规则
+# 用途: 确保文档间引用的完整性和有效性
+# =============================================================================
+
+# 引用类型定义
+reference_types:
+  # 文档引用
+  document_reference:
+    pattern: '\[([^\]]+)\]\(([^)]+\.md)\)'
+    description: "Markdown文档链接"
+    required: true
+    
+  # 定理引用
+  theorem_reference:
+    pattern: '`?(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2})`?'
+    description: "定理/定义编号引用"
+    required: false
+    
+  # 章节引用
+  section_reference:
+    pattern: '\[([^\]]+)\]\(#[^)]+\)'
+    description: "章节锚点链接"
+    required: false
+    
+  # 外部链接
+  external_link:
+    pattern: '\[([^\]]+)\]\((https?://[^)]+)\)'
+    description: "外部HTTP/HTTPS链接"
+    required: false
+    check_validity: false  # 不强制验证外部链接（在链接检查中处理）
+
+# 链接验证规则
+link_validation:
+  # 内部链接验证
+  internal_links:
+    check_existence: true
+    check_file_type: true
+    allowed_extensions:
+      - .md
+      - .png
+      - .jpg
+      - .jpeg
+      - .gif
+      - .svg
+      - .pdf
+      
+  # 路径解析规则
+  path_resolution:
+    # 相对路径
+    relative: true
+    # 绝对路径（相对于仓库根）
+    absolute: true
+    # 自动添加.md后缀
+    auto_append_md: true
+    # 目录索引文件
+    index_file: index.md
+
+# 定理引用验证
+theorem_validation:
+  # 检查定理编号是否存在
+  check_existence: true
+  
+  # 允许的定理类型
+  allowed_types:
+    - Thm      # 定理
+    - Lemma    # 引理
+    - Def      # 定义
+    - Prop     # 命题
+    - Cor      # 推论
+    
+  # 允许的阶段
+  allowed_stages:
+    - S  # Struct
+    - K  # Knowledge
+    - F  # Flink
+    
+  # 编号格式
+  number_format: '\d{2}-\d{2}'  # 文档号-顺序号
+
+# 循环引用检测
+circular_reference:
+  enabled: true
+  max_depth: 10  # 最大引用深度
+  
+# 孤立文档检测
+orphan_detection:
+  enabled: true
+  # 不被引用但可接受的文档
+  allowed_orphans:
+    - README.md
+    - index.md
+    - CHANGELOG.md
+    - LICENSE
+    - PROJECT-TRACKING.md
+    - AGENTS.md
+
+# 引用完整性规则
+integrity_rules:
+  # 每个文档至少被引用的次数（排除孤立文档）
+  min_incoming_links: 0
+  
+  # 每个文档至少引用其他文档的次数
+  min_outgoing_links: 0
+  
+  # 推荐：每个文档至少引用一个相关文档
+  recommended_incoming: 1
+  recommended_outgoing: 1
+
+# 检查配置
+check_config:
+  # 错误级别
+  errors:
+    - broken_internal_links
+    - invalid_theorem_references
+    - circular_references
+    
+  # 警告级别
+  warnings:
+    - orphan_documents
+    - few_incoming_links
+    - few_outgoing_links
+    
+  # 信息级别
+  info:
+    - external_links_found
+    - theorem_references_count
+
+# 报告配置
+reporting:
+  # 生成详细报告
+  detailed_report: true
+  
+  # 包含修复建议
+  include_suggestions: true
+  
+  # 统计信息
+  include_statistics: true
+  
+  # 输出格式
+  formats:
+    - text
+    - json
+    - html

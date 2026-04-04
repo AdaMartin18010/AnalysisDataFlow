@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow 知识图谱可视化</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #374151;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+        
+        #app {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        #sidebar {
+            width: 320px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        #sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        #sidebar-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        #sidebar-header p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Controls */
+        #controls {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            max-height: 40%;
+            overflow-y: auto;
+        }
+        
+        .control-section {
+            margin-bottom: 16px;
+        }
+        
+        .control-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            border-color: var(--accent-primary);
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            cursor: pointer;
+        }
+        
+        .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        /* Legend */
+        #legend {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            max-height: 30%;
+            overflow-y: auto;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .legend-symbol {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-line {
+            width: 20px;
+            height: 2px;
+        }
+        
+        /* Node Details */
+        #node-details {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        .detail-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 40px 20px;
+        }
+        
+        .detail-card {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .detail-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .detail-label {
+            color: var(--text-secondary);
+        }
+        
+        .detail-value {
+            color: var(--text-primary);
+            text-align: right;
+            max-width: 60%;
+        }
+        
+        .detail-description {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        
+        .related-nodes {
+            margin-top: 12px;
+        }
+        
+        .related-node {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            font-size: 11px;
+            margin: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .related-node:hover {
+            background: var(--accent-primary);
+        }
+        
+        /* Graph Container */
+        #graph-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #graph {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Toolbar */
+        #toolbar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .toolbar-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        
+        /* Stats */
+        #stats-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 340px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 24px;
+            z-index: 100;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        
+        /* Tooltip */
+        #tooltip {
+            position: absolute;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            max-width: 250px;
+        }
+        
+        #tooltip.visible {
+            opacity: 1;
+        }
+        
+        /* SVG Styles */
+        .node {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .node:hover {
+            filter: brightness(1.2);
+        }
+        
+        .node.selected circle {
+            stroke: var(--accent-primary);
+            stroke-width: 3px;
+        }
+        
+        .node.dimmed {
+            opacity: 0.2;
+        }
+        
+        .node.highlighted {
+            opacity: 1;
+        }
+        
+        .link {
+            stroke-opacity: 0.6;
+            transition: all 0.3s;
+        }
+        
+        .link.dimmed {
+            opacity: 0.1;
+        }
+        
+        .link.highlighted {
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+        
+        .node-label {
+            font-size: 10px;
+            fill: var(--text-primary);
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        /* Loading */
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Search Results */
+        #search-results {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            width: 280px;
+            max-height: 300px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+        
+        #search-results.visible {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .search-result-type {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Export Panel */
+        #export-panel {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            z-index: 100;
+            display: none;
+            min-width: 200px;
+        }
+
+        #export-panel.visible {
+            display: block;
+        }
+
+        .export-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .export-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .export-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="sidebar">
+            <div id="sidebar-header">
+                <h1>🔮 知识图谱</h1>
+                <p>AnalysisDataFlow 项目知识可视化</p>
+            </div>
+            
+            <div id="controls">
+                <div class="control-section">
+                    <div class="control-label">选择图谱</div>
+                    <select id="graph-selector">
+                        <option value="streaming-theory">流计算理论图谱</option>
+                        <option value="flink-technology">Flink技术图谱</option>
+                        <option value="design-patterns">设计模式图谱</option>
+                        <option value="concept-dependency">概念依赖关系图</option>
+                        <option value="tech-decision">技术选型决策图</option>
+                        <option value="learning-path">学习路径图</option>
+                    </select>
+                </div>
+                
+                <div class="control-section">
+                    <div class="control-label">布局模式</div>
+                    <select id="layout-selector">
+                        <option value="force">力导向布局</option>
+                        <option value="hierarchical">层次布局</option>
+                        <option value="circular">环形布局</option>
+                        <option value="grid">网格布局</option>
+                    </select>
+                </div>
+                
+                <div class="control-section">
+                    <div class="control-label">搜索节点</div>
+                    <input type="text" id="search-input" placeholder="输入关键词搜索...">
+                </div>
+                
+                <div class="control-section">
+                    <div class="control-label">显示类型</div>
+                    <div class="checkbox-grid" id="type-filters">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="legend">
+                <div class="control-label">图例</div>
+                <div id="legend-content">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+            
+            <div id="node-details">
+                <div class="detail-empty">
+                    点击节点查看详情
+                </div>
+            </div>
+        </div>
+        
+        <div id="graph-container">
+            <div id="toolbar">
+                <button class="toolbar-btn" id="btn-zoom-in" title="放大">+</button>
+                <button class="toolbar-btn" id="btn-zoom-out" title="缩小">−</button>
+                <button class="toolbar-btn" id="btn-fit" title="适应窗口">⊡</button>
+                <button class="toolbar-btn" id="btn-reset" title="重置">↺</button>
+                <button class="toolbar-btn" id="btn-export" title="导出">⬇</button>
+            </div>
+            
+            <div id="search-results"></div>
+            <div id="export-panel">
+                <button class="export-btn" data-format="json">导出 JSON</button>
+                <button class="export-btn" data-format="graphml">导出 GraphML</button>
+                <button class="export-btn" data-format="cypher">导出 Cypher</button>
+                <button class="export-btn" data-format="png">导出 PNG</button>
+            </div>
+            
+            <div id="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-nodes">0</span>
+                    <span class="stat-label">节点</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-edges">0</span>
+                    <span class="stat-label">边</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-categories">0</span>
+                    <span class="stat-label">类别</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-selected">-</span>
+                    <span class="stat-label">已选</span>
+                </div>
+            </div>
+            
+            <div id="loading">
+                <div class="spinner"></div>
+                <div>加载知识图谱...</div>
+            </div>
+            
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+        </div>
+    </div>
+
+    <script src="graph-visualizer.js"></script>
+</body>
+</html>

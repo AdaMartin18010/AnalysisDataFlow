@@ -1,0 +1,130 @@
+# =============================================================================
+# AnalysisDataFlow 文档完整性检查配置
+# =============================================================================
+# 描述: 定义文档完整性检查的规则和标准
+# 用途: CI/CD流水线质量门禁
+# =============================================================================
+
+# 文档结构检查规则
+structure_rules:
+  # 必需的文件和目录
+  required_files:
+    - README.md
+    - PROJECT-TRACKING.md
+    - AGENTS.md
+    - ARCHITECTURE.md
+    - LICENSE
+    
+  required_directories:
+    - Struct
+    - Knowledge
+    - Flink
+    
+  # 各目录必需的文件
+  directory_required_files:
+    Struct:
+      - README.md
+    Knowledge:
+      - README.md
+    Flink:
+      - README.md
+
+# 文档内容检查规则
+content_rules:
+  # 必需章节（六段式模板）
+  required_sections:
+    - 概念定义
+    - 属性推导
+    - 关系建立
+    - 实例验证
+    - 引用参考
+    
+  # 最小内容要求
+  minimum_content:
+    min_words: 100          # 最少字数
+    min_headings: 3         # 最少标题数
+    min_code_blocks: 0      # 最少代码块数（可选）
+    
+  # 必需元素
+  required_elements:
+    - theorem_or_definition: true   # 至少一个定理或定义
+    - reference_section: true       # 必须有引用章节
+    - mermaid_diagram: false        # Mermaid图表（可选但推荐）
+
+# 文档元数据检查
+metadata_rules:
+  # 文件头检查
+  header_required:
+    - title
+    - description
+    
+  # 形式化等级标记
+  formalization_level_required: false
+  formalization_levels:
+    - L1  # 概念介绍
+    - L2  # 非形式化描述
+    - L3  # 半形式化
+    - L4  # 形式化定义
+    - L5  # 形式化证明
+    - L6  # 机器验证
+
+# 命名规范检查
+naming_rules:
+  # 文件名格式
+  filename_pattern: '^\d{2}-[a-z0-9-]+\.md$'
+  
+  # 不允许的字符
+  forbidden_chars:
+    - ' '      # 空格
+    - '_'      # 下划线（使用连字符）
+    - '—'      # 长破折号
+    
+  # 大小写规范
+  case_style: lowercase  # lowercase, uppercase, camelCase
+
+# 文件大小限制
+size_limits:
+  max_file_size_kb: 500      # 单个文件最大500KB
+  max_lines: 2000            # 单个文件最大2000行
+  
+  # 大文件警告阈值
+  warning_threshold_kb: 300
+  warning_threshold_lines: 1500
+
+# 编码和格式检查
+format_rules:
+  encoding: utf-8
+  line_ending: lf            # lf, crlf, auto
+  max_line_length: 200       # 最大行长度
+  
+  # Markdown格式检查
+  markdown_rules:
+    no_trailing_spaces: true
+    no_multiple_blank_lines: true
+    proper_heading_levels: true
+    code_blocks_closed: true
+
+# 检查执行配置
+execution:
+  # 错误级别
+  error_on:
+    - missing_required_files
+    - missing_required_directories
+    - invalid_filename_format
+    - file_too_large
+    - broken_internal_links
+    
+  # 警告级别
+  warning_on:
+    - missing_optional_sections
+    - content_too_short
+    - no_mermaid_diagrams
+    - file_size_warning
+    
+  # 忽略的模式
+  ignore_patterns:
+    - '**/*.tmp'
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '**/venv/**'
+    - '**/__pycache__/**'

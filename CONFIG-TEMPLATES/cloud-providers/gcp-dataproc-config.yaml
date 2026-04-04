@@ -1,0 +1,289 @@
+# =============================================================================
+# GCP Dataproc Flink 配置
+# 服务: Google Cloud Dataproc
+# 版本: Dataproc 2.1+ (Flink 1.17+)
+# 特性: 与 GCP 生态集成 (GCS, BigQuery, Pub/Sub, Bigtable)
+# =============================================================================
+
+# ============================================
+# 1. Dataproc 集群基础配置
+# ============================================
+
+# gcloud dataproc clusters create flink-cluster \
+#   --region us-central1 \
+#   --zone us-central1-a \
+#   --master-machine-type n2-standard-4 \
+#   --master-boot-disk-size 100 \
+#   --num-workers 4 \
+#   --worker-machine-type n2-standard-8 \
+#   --worker-boot-disk-size 200 \
+#   --image-version 2.1-debian11 \
+#   --optional-components FLINK \
+#   --enable-component-gateway \
+#   --bucket gs://flink-bucket
+
+# 初始化脚本安装最新 Flink
+gsutil cp init-flink.sh gs://flink-bucket/scripts/
+
+# init-flink.sh 内容:
+#!/bin/bash
+FLINK_VERSION=1.18.0
+cd /opt
+curl -L https://archive.apache.org/dist/flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-scala_2.12.tgz | tar xz
+ln -s flink-${FLINK_VERSION} flink
+
+# ============================================
+# 2. GCS (Google Cloud Storage) 配置
+# ============================================
+
+# Flink 配置文件
+flink-conf.yaml: |
+  # 基础配置
+  jobmanager.memory.process.size: 4096m
+  taskmanager.memory.process.size: 16384m
+  taskmanager.numberOfTaskSlots: 8
+  
+  # Checkpoint 存储 - GCS
+  state.backend: rocksdb
+  state.checkpoint-storage: filesystem
+  state.checkpoints.dir: gs://flink-bucket/checkpoints
+  state.savepoints.dir: gs://flink-bucket/savepoints
+  
+  # GCS 配置
+  fs.gs.impl: com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem
+  fs.gs.project.id: ${GCP_PROJECT_ID}
+  fs.gs.auth.service.account.enable: true
+  fs.gs.auth.service.account.email: flink@project-id.iam.gserviceaccount.com
+  fs.gs.auth.service.account.keyfile: /etc/gcp/key.json
+  
+  # GCS 性能优化
+  fs.gs.inputstream.support.gzip.encoding.enable: true
+  fs.gs.outputstream.type: FLUSHABLE_COMPOSITE
+  fs.gs.outputstream.sync.min.interval.ms: 1000
+  fs.gs.http.max.retry: 20
+  fs.gs.http.connect-timeout: 20000
+  fs.gs.http.read-timeout: 20000
+
+# Hadoop Core-Site 配置
+core-site.xml: |
+  <configuration>
+    <property>
+      <name>fs.gs.impl</name>
+      <value>com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem</value>
+    </property>
+    <property>
+      <name>fs.AbstractFileSystem.gs.impl</name>
+      <value>com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS</value>
+    </property>
+    <property>
+      <name>google.cloud.auth.service.account.enable</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>google.cloud.auth.service.account.json.keyfile</name>
+      <value>/etc/gcp/key.json</value>
+    </property>
+    <property>
+      <name>fs.gs.project.id</name>
+      <value>${GCP_PROJECT_ID}</value>
+    </property>
+    <!-- 性能优化 -->
+    <property>
+      <name>fs.gs.outputstream.upload.chunk.size</name>
+      <value>268435456</value> <!-- 256MB -->
+    </property>
+    <property>
+      <name>fs.gs.inputstream.support.gzip.encoding.enable</name>
+      <value>true</value>
+    </property>
+  </configuration>
+
+# ============================================
+# 3. Pub/Sub 集成
+# ============================================
+
+# Flink Pub/Sub 连接器配置 (使用 Kafka 兼容 API)
+# 或直接使用 Google Cloud Pub/Sub Flink 连接器
+
+# Kafka 兼容模式配置
+bootstrap.servers: pubsub.googleapis.com:443
+security.protocol: SASL_SSL
+sasl.mechanism: PLAIN
+sasl.jaas.config: >
+  org.apache.kafka.common.security.plain.PlainLoginModule required
+  username="ignored"
+  password="${GCP_ACCESS_TOKEN}";
+
+# 原生 Pub/Sub 连接器配置
+# 在代码中使用 flink-connector-pubsub
+pubsub.project.id: ${GCP_PROJECT_ID}
+pubsub.subscription.name: my-subscription
+pubsub.topic.name: my-topic
+pubsub.credentials.file: /etc/gcp/key.json
+
+# ============================================
+# 4. BigQuery 集成
+# ============================================
+
+# BigQuery 连接器配置
+bigquery.project.id: ${GCP_PROJECT_ID}
+bigquery.dataset: my_dataset
+bigquery.table: my_table
+bigquery.credentials.file: /etc/gcp/key.json
+
+# 写入模式
+bigquery.write.method: STORAGE_WRITE_API  # 或 STREAMING_INSERTS
+bigquery.write.trigger.frequency: 1s
+
+# ============================================
+# 5. Bigtable 集成
+# ============================================
+
+# Bigtable 连接器配置
+bigtable.project.id: ${GCP_PROJECT_ID}
+bigtable.instance.id: my-instance
+bigtable.table.id: my-table
+bigtable.credentials.file: /etc/gcp/key.json
+
+# 性能调优
+bigtable.async.mutator.count: 8
+bigtable.buffered.mutator.max.memory: 64MB
+bigtable.buffered.mutator.max.latency: 100ms
+
+# ============================================
+# 6. Cloud Monitoring (Stackdriver) 集成
+# ============================================
+
+# Metrics 发送到 Cloud Monitoring
+metrics.reporters: stackdriver
+metrics.reporter.stackdriver.class: org.apache.flink.metrics.stackdriver.StackdriverReporter
+metrics.reporter.stackdriver.project.id: ${GCP_PROJECT_ID}
+metrics.reporter.stackdriver.credentials.file: /etc/gcp/key.json
+metrics.reporter.stackdriver.interval: 60 SECONDS
+
+# 日志集成
+log4j.appender.stackdriver=com.google.cloud.logging.logback.LoggingAppender
+log4j.appender.stackdriver.log=flink-logs
+log4j.appender.stackdriver.resource.type=k8s_container
+log4j.appender.stackdriver.credentials.file=/etc/gcp/key.json
+
+# ============================================
+# 7. Workload Identity (推荐)
+# ============================================
+
+# 使用 Workload Identity 代替服务账号密钥
+# gcloud iam service-accounts add-iam-policy-binding \
+#   flink-sa@project-id.iam.gserviceaccount.com \
+#   --role roles/iam.workloadIdentityUser \
+#   --member "serviceAccount:project-id.svc.id.goog[flink/flink-sa]"
+
+# 在 Dataproc 中启用 Workload Identity
+gcloud dataproc clusters create flink-cluster \
+  --workload-identity-config cluster-wide \
+  --service-account flink-sa@project-id.iam.gserviceaccount.com
+
+# ============================================
+# 8. VPC Service Controls
+# ============================================
+
+# 配置 VPC Service Controls 保护数据
+# 在代码中使用 Private Google Access
+
+# Private Google Access 配置
+# - 确保 Dataproc 在包含 Private Google Access 的子网中
+# - 配置 DNS 解析 *.googleapis.com
+
+# ============================================
+# 9. Dataproc Serverless 配置
+# ============================================
+
+# 无服务器批处理作业
+gcloud dataproc batches submit flink \
+  --batch my-flink-job \
+  --region us-central1 \
+  --deps-bucket gs://flink-bucket/deps \
+  --jars gs://flink-bucket/jobs/my-job.jar \
+  --main-class com.example.FlinkJob \
+  --args --input,gs://input-bucket/data,--output,gs://output-bucket/results
+
+# Dataproc Serverless 自动配置:
+# - 自动扩缩容
+# - 托管 Checkpoint 存储
+# - 集成 Cloud Monitoring
+# - 按秒计费
+
+# ============================================
+# 10. 成本优化策略
+# ============================================
+
+# 1. 使用 Spot/Preemptible 实例
+gcloud dataproc clusters create flink-cluster \
+  --preemptible-worker-boot-disk-size 100 \
+  --num-preemptible-workers 4 \
+  --preemptible-worker-machine-type n2-standard-8
+
+# 2. 自动缩放策略
+# 在 Dataproc 中配置 Autoscaling Policy
+
+cat <<EOF > autoscaling-policy.yaml
+workerConfig:
+  minInstances: 2
+  maxInstances: 20
+  weight: 1
+secondaryWorkerConfig:
+  minInstances: 0
+  maxInstances: 50
+  weight: 1
+basicAlgorithm:
+  cooldownPeriod: 2m
+  yarnConfig:
+    scaleUpFactor: 0.05
+    scaleDownFactor: 1.0
+    scaleUpMinWorkerFraction: 0.0
+    scaleDownMinWorkerFraction: 0.0
+    gracefulDecommissionTimeout: 1h
+EOF
+
+gcloud dataproc autoscaling-policies import my-policy \
+  --source autoscaling-policy.yaml \
+  --region us-central1
+
+# 3. 存储生命周期策略
+# gsutil lifecycle set lifecycle.json gs://flink-bucket
+
+# lifecycle.json:
+{
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {"type": "Delete"},
+        "condition": {
+          "age": 30,
+          "matchesPrefix": ["checkpoints/"]
+        }
+      }
+    ]
+  }
+}
+
+# =============================================================================
+# GCP 部署最佳实践:
+# -----------------------------------------------------------------------------
+# 1. 使用 Workload Identity 代替服务账号密钥
+# 2. 配置 VPC Service Controls 保护敏感数据
+# 3. 使用 Spot 实例降低计算成本
+# 4. 启用 Cloud Profiler 进行性能分析
+# 5. 使用 BigQuery Storage Write API 提高写入效率
+# -----------------------------------------------------------------------------
+#
+# 服务账号权限清单:
+# -----------------------------------------------------------------------------
+# | 服务 | 所需权限 |
+# |------|----------|
+# | GCS | roles/storage.objectAdmin |
+# | Pub/Sub | roles/pubsub.publisher, roles/pubsub.subscriber |
+# | BigQuery | roles/bigquery.dataEditor, roles/bigquery.jobUser |
+# | Bigtable | roles/bigtable.user |
+# | Cloud Monitoring | roles/monitoring.metricWriter |
+# -----------------------------------------------------------------------------
+# =============================================================================

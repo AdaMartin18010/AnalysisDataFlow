@@ -1,0 +1,198 @@
+# =============================================================================
+# Flink 多租户场景配置
+# 用途: SaaS 平台、多团队共享集群、资源隔离
+# 目标: 租户隔离、资源配额、安全控制
+# =============================================================================
+
+# ============================================
+# 1. 资源调度与隔离
+# ============================================
+
+# 使用 SchedulerNG 支持资源组
+scheduler-mode: reactive
+
+# 启用细粒度资源管理
+cluster.fine-grained-resource-management.enabled: true
+
+# Slot 共享组配置
+# 在代码中指定: .slotSharingGroup("tenant-a")
+
+# 资源均衡分配
+cluster.evenly-spread-out-slots: true
+
+# ============================================
+# 2. 资源限制配置
+# ============================================
+
+# 默认 TaskManager 资源 (可根据租户调整)
+taskmanager.memory.process.size: 8192m
+taskmanager.numberOfTaskSlots: 8
+
+# 每个 Slot 的资源限制 (细粒度资源管理)
+taskmanager.slot.timeout: 60000
+
+# ============================================
+# 3. Checkpoint 配置 (租户隔离)
+# ============================================
+
+# 基础 Checkpoint 配置
+execution.checkpointing.interval: 60s
+execution.checkpointing.min-pause-between-checkpoints: 30s
+execution.checkpointing.timeout: 10m
+
+# 状态后端 (建议租户使用相同的后端)
+state.backend: rocksdb
+state.checkpoint-storage: filesystem
+
+# 租户 Checkpoint 目录在代码中指定:
+# env.setCheckpointDir("s3://tenant-a/checkpoints/")
+
+# 增量 Checkpoint
+state.backend.incremental: true
+
+# ============================================
+# 4. 类加载隔离
+# ============================================
+
+# 子优先类加载 (租户依赖隔离)
+classloader.resolve-order: child-first
+
+# 检查类加载器泄漏
+classloader.check-leaked-classloader: true
+
+# 父类优先模式 (用于共享库)
+classloader.parent-first-patterns.additional: org.apache.flink.,javax.,java.,scala.
+
+# ============================================
+# 5. 安全配置
+# ============================================
+
+# 禁用 Web 提交 (通过 API 控制)
+web.submit.enable: false
+web.cancel.enable: false
+
+# REST API 认证
+rest.authorization.enabled: true
+
+# SSL 配置 (推荐启用)
+security.ssl.internal.enabled: true
+security.ssl.rest.enabled: true
+
+# ============================================
+# 6. 日志隔离
+# ============================================
+
+# 日志级别配置
+# 使用 log4j2 的 RoutingAppender 实现租户日志分离
+
+# 在 log4j2.properties 中配置:
+# appender.routing.type = Routing
+# appender.routing.name = TenantRouting
+# appender.routing.routes.type = Routes
+# appender.routing.routes.pattern = $${ctx:tenantId}
+# appender.routing.routes.route1.type = Route
+# appender.routing.routes.route1.key = $${ctx:tenantId}
+# appender.routing.routes.route1.appender.type = File
+# appender.routing.routes.route1.appender.name = TenantFile
+# appender.routing.routes.route1.appender.fileName = /var/log/flink/${ctx:tenantId}/app.log
+
+# ============================================
+# 7. Metrics 标签隔离
+# ============================================
+
+# Metrics 配置 (包含租户标签)
+metrics.reporters: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+
+# 在代码中添加租户标签:
+# env.getConfig().setGlobalJobParameters(
+#     new Configuration() {{ setString("tenant.id", "tenant-a"); }}
+# );
+
+# ============================================
+# 8. 重启策略配置
+# ============================================
+
+# 全局默认策略
+restart-strategy: exponential-delay
+restart-strategy.exponential-delay.initial-backoff: 10s
+restart-strategy.exponential-delay.max-backoff: 300s
+
+# ============================================
+# 9. 网络与连接
+# ============================================
+
+# 网络配置
+akka.ask.timeout: 60s
+akka.tcp.timeout: 60s
+
+# 增大 Blob 服务配置以支持多租户并发
+blob.fetch.num-concurrent: 100
+blob.fetch.backlog: 2000
+
+# ============================================
+# 10. 文件系统配额
+# ============================================
+
+# 默认文件系统配置
+fs.default-scheme: s3p://
+
+# 租户目录权限在外部控制 (IAM/S3 Bucket Policy)
+
+# ============================================
+# 11. 配置模板说明
+# ============================================
+
+# 此配置文件作为基础模板，实际部署时需要:
+# 1. 为每个租户创建独立的 ConfigMap
+# 2. 在代码中指定租户特定的配置:
+#    - Checkpoint 目录
+#    - Savepoint 目录
+#    - 资源配额
+#    - Slot 共享组
+
+# =============================================================================
+# 多租户部署示例 (Kubernetes):
+# -----------------------------------------------------------------------------
+#
+# 1. 创建租户命名空间
+#    kubectl create namespace flink-tenant-a
+#    kubectl create namespace flink-tenant-b
+#
+# 2. 创建租户 ConfigMap
+#    kubectl create configmap flink-config-tenant-a \
+#      --from-file=flink-conf-tenant-a.yaml -n flink-tenant-a
+#
+# 3. 创建资源配额
+#    kubectl apply -f - <<EOF
+#    apiVersion: v1
+#    kind: ResourceQuota
+#    metadata:
+#      name: tenant-a-quota
+#      namespace: flink-tenant-a
+#    spec:
+#      hard:
+#        requests.cpu: "20"
+#        requests.memory: 80Gi
+#        limits.cpu: "40"
+#        limits.memory: 160Gi
+#    EOF
+#
+# 4. 部署租户专属 Flink Session
+#    helm install flink-tenant-a flink \
+#      --namespace flink-tenant-a \
+#      --values values-tenant-a.yaml
+#
+# -----------------------------------------------------------------------------
+#
+# 多租户最佳实践:
+# -----------------------------------------------------------------------------
+# 1. 命名空间隔离: 每个租户独立命名空间
+# 2. 资源配额: 为每个租户设置 CPU/内存上限
+# 3. 存储隔离: 租户使用独立的 Bucket/目录
+# 4. 网络策略: 限制租户间通信
+# 5. 监控隔离: 租户只能看到自己的 Metrics
+# 6. 日志隔离: 日志按租户分离存储
+# -----------------------------------------------------------------------------
+# =============================================================================

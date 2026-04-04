@@ -1,0 +1,164 @@
+# =============================================================================
+# Flink 低延迟场景配置
+# 用途: 金融交易、实时监控、在线推荐等对延迟敏感的应用
+# 目标: 端到端延迟 < 100ms (P99)
+# =============================================================================
+
+# ============================================
+# 1. 核心延迟优化参数
+# ============================================
+
+# 禁用对象重用以避免序列化延迟
+pipeline.object-reuse: true
+
+# 使用最快的压缩算法
+pipeline.compression: NONE  # 低延迟场景禁用压缩
+
+# 减少缓冲区超时
+execution.buffer-timeout: 0ms  # 立即发送
+
+# 启用 Unaligned Checkpoint
+execution.checkpointing.unaligned.enabled: true
+execution.checkpointing.unaligned.max-aligned-checkpoint-size: 1mb
+execution.checkpointing.max-aligned-checkpoint-size-enabled: true
+
+# 减少 Checkpoint 间隔 (更频繁的增量 Checkpoint)
+execution.checkpointing.interval: 5s
+execution.checkpointing.min-pause-between-checkpoints: 1s
+
+# 使用增量 Checkpoint
+state.backend.incremental: true
+
+# ============================================
+# 2. 网络优化
+# ============================================
+
+# 增大网络缓冲区减少等待
+taskmanager.memory.network.fraction: 0.2
+taskmanager.memory.network.min: 1g
+taskmanager.memory.network.max: 4g
+
+# 启用信用-based 流控制 (Credit-based Flow Control)
+taskmanager.memory.network.memory.min: 1g
+taskmanager.memory.network.memory.max: 4g
+taskmanager.memory.network.memory.fraction: 0.15
+
+# 数据交换批处理大小
+taskmanager.memory.framework.off-heap.batch-allocations: true
+
+# ============================================
+# 3. 状态后端优化 (RocksDB)
+# ============================================
+
+state.backend: rocksdb
+
+# RocksDB 调优 - 低延迟优先
+state.backend.rocksdb.memory.managed: false
+state.backend.rocksdb.memory.fixed-per-slot: 2048mb
+state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+
+# 禁用压缩以减少 CPU 开销
+state.backend.rocksdb.compression: NO_COMPRESSION
+
+# 调优写缓冲区
+state.backend.rocksdb.writebuffer.number-to-merge: 2
+state.backend.rocksdb.writebuffer.size: 128mb
+
+# 禁用后台压缩
+state.backend.rocksdb.compaction.style: UNIVERSAL
+state.backend.rocksdb.compaction.nivel.target-file-size-base: 64mb
+
+# 线程调优
+state.backend.rocksdb.threads.threads-number: 2
+
+# ============================================
+# 4. 内存配置优化
+# ============================================
+
+# 预留更多内存给网络
+jobmanager.memory.process.size: 2048m
+taskmanager.memory.process.size: 8192m
+taskmanager.memory.flink.size: 6144m
+taskmanager.memory.managed.size: 1024m
+
+# JVM 堆外内存优化
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=20
+  -XX:+UnlockExperimentalVMOptions
+  -XX:+UseLargePages
+  -XX:+AlwaysPreTouch
+  -XX:+DisableExplicitGC
+
+# ============================================
+# 5. 时间语义优化
+# ============================================
+
+# 使用 Processing Time (如果业务允许)
+# 避免 Watermark 引入的延迟
+# 如果必须使用 Event Time:
+# execution.time-characteristic: EventTime
+# 使用允许延迟控制
+# execution.lateness: 0ms
+
+# Watermark 生成间隔
+pipeline.auto-watermark-interval: 0ms  # 禁用周期性 Watermark
+
+# ============================================
+# 6. 序列化优化
+# ============================================
+
+# 使用高效的序列化框架
+pipeline.serialization: org.apache.flink.api.common.serialization.SimpleStringSchema
+
+# 预注册类型
+pipeline.type-registration: true
+
+# ============================================
+# 7. 并行度与资源
+# ============================================
+
+# 高并行度提高吞吐量
+taskmanager.numberOfTaskSlots: 8
+parallelism.default: 16
+
+# 禁用动态资源分配 (避免延迟)
+scheduler-mode: static
+
+# ============================================
+# 8. 容错配置 (低延迟妥协)
+# ============================================
+
+# 快速失败重启
+restart-strategy: fixed-delay
+restart-strategy.fixed-delay.delay: 1s
+restart-strategy.fixed-delay.attempts: 10
+
+# 本地恢复优先
+state.backend.local-recovery: true
+
+# ============================================
+# 9. 监控配置
+# ============================================
+
+# 启用延迟追踪
+latency-tracking.interval: 10
+latency-tracking.sample-number: 1000
+
+# 高频 Metrics 报告
+metrics.reporters: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+metrics.reporter.prom.interval: 1 SECONDS
+
+# =============================================================================
+# 关键延迟指标监控:
+# -----------------------------------------------------------------------------
+# | 指标 | 目标值 | 告警阈值 |
+# |------|--------|----------|
+# | 端到端延迟 (P99) | < 100ms | > 200ms |
+# | Checkpoint 耗时 | < 1s | > 5s |
+# | GC 停顿 | < 50ms | > 100ms |
+# | 反压时间比例 | < 1% | > 5% |
+# -----------------------------------------------------------------------------
+# =============================================================================

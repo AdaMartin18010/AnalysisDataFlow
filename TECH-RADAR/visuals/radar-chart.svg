@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" width="900" height="900">
+  <defs>
+    <!-- Gradients -->
+    <radialGradient id="bg-gradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f8f9fa"/>
+      <stop offset="100%" stop-color="#e9ecef"/>
+    </radialGradient>
+    <linearGradient id="ring-adopt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#28a745" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#20c997" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="ring-trial" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007bff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#6f42c1" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="ring-assess" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffc107" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#fd7e14" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="ring-hold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dc3545" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#e83e8c" stop-opacity="0.2"/>
+    </linearGradient>
+    <!-- Category gradients -->
+    <linearGradient id="cat-lang" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a90d9"/>
+      <stop offset="100%" stop-color="#2c5aa0"/>
+    </linearGradient>
+    <linearGradient id="cat-storage" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5cb85c"/>
+      <stop offset="100%" stop-color="#449d44"/>
+    </linearGradient>
+    <linearGradient id="cat-infra" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0ad4e"/>
+      <stop offset="100%" stop-color="#ec971f"/>
+    </linearGradient>
+    <linearGradient id="cat-tools" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d9534f"/>
+      <stop offset="100%" stop-color="#c9302c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="900" fill="url(#bg-gradient)"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    流计算技术雷达 Streaming Technology Radar
+  </text>
+  <text x="450" y="65" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#6c757d">
+    AnalysisDataFlow Project | v2026.2 | 2026 Q2
+  </text>
+
+  <!-- Main radar circles centered at (450, 480) -->
+  <g transform="translate(450, 480)">
+    <!-- Grid rings -->
+    <circle cx="0" cy="0" r="320" fill="none" stroke="#dee2e6" stroke-width="2"/>
+    <circle cx="0" cy="0" r="240" fill="none" stroke="#dee2e6" stroke-width="2"/>
+    <circle cx="0" cy="0" r="160" fill="none" stroke="#dee2e6" stroke-width="2"/>
+    <circle cx="0" cy="0" r="80" fill="none" stroke="#dee2e6" stroke-width="2"/>
+
+    <!-- Ring backgrounds -->
+    <circle cx="0" cy="0" r="80" fill="url(#ring-adopt)" opacity="0.8"/>
+    <circle cx="0" cy="0" r="160" fill="none" stroke="url(#ring-trial)" stroke-width="80" opacity="0.6"/>
+    <circle cx="0" cy="0" r="240" fill="none" stroke="url(#ring-assess)" stroke-width="80" opacity="0.5"/>
+    <circle cx="0" cy="0" r="320" fill="none" stroke="url(#ring-hold)" stroke-width="160" opacity="0.3"/>
+
+    <!-- Ring labels -->
+    <text x="0" y="-60" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#28a745">ADOPT</text>
+    <text x="0" y="-55" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#28a745">采用</text>
+    
+    <text x="0" y="-140" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#007bff">TRIAL</text>
+    <text x="0" y="-135" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#007bff">试用</text>
+    
+    <text x="0" y="-220" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#ffc107">ASSESS</text>
+    <text x="0" y="-215" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#ffc107">评估</text>
+    
+    <text x="0" y="-300" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#dc3545">HOLD</text>
+    <text x="0" y="-295" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#dc3545">暂缓</text>
+
+    <!-- Quadrant dividers -->
+    <line x1="-320" y1="0" x2="320" y2="0" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="0" y1="-320" x2="0" y2="320" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+
+    <!-- === ADOPT (Inner Ring) - r=40 === -->
+    <!-- Languages & Frameworks (Upper Right) -->
+    <circle cx="28" cy="-28" r="8" fill="url(#cat-lang)"/>
+    <text x="28" y="-32" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" fill="#fff" font-weight="bold">Flink</text>
+
+    <circle cx="45" cy="-15" r="6" fill="url(#cat-lang)"/>
+    <text x="45" y="-18" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">SQL</text>
+
+    <circle cx="50" cy="5" r="6" fill="url(#cat-lang)"/>
+    <text x="50" y="2" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Java</text>
+
+    <circle cx="35" cy="20" r="6" fill="url(#cat-lang)"/>
+    <text x="35" y="17" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Scala</text>
+
+    <!-- Storage & Data (Upper Left) -->
+    <circle cx="-30" cy="-25" r="8" fill="url(#cat-storage)"/>
+    <text x="-30" y="-28" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" fill="#fff" font-weight="bold">Kafka</text>
+
+    <circle cx="-50" cy="-5" r="6" fill="url(#cat-storage)"/>
+    <text x="-50" y="-8" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Paimon</text>
+
+    <circle cx="-45" cy="18" r="6" fill="url(#cat-storage)"/>
+    <text x="-45" y="15" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Iceberg</text>
+
+    <circle cx="-20" cy="35" r="6" fill="url(#cat-storage)"/>
+    <text x="-20" y="32" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">RocksDB</text>
+
+    <!-- Infrastructure (Lower Left) -->
+    <circle cx="-25" cy="55" r="7" fill="url(#cat-infra)"/>
+    <text x="-25" y="52" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">K8s</text>
+
+    <circle cx="-50" cy="50" r="6" fill="url(#cat-infra)"/>
+    <text x="-50" y="47" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Prometheus</text>
+
+    <circle cx="-15" cy="75" r="6" fill="url(#cat-infra)"/>
+    <text x="-15" y="72" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Operator</text>
+
+    <!-- Tools & Platforms (Lower Right) -->
+    <circle cx="30" cy="55" r="7" fill="url(#cat-tools)"/>
+    <text x="30" y="52" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Debezium</text>
+
+    <circle cx="55" cy="45" r="6" fill="url(#cat-tools)"/>
+    <text x="55" y="42" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">dbt</text>
+
+    <circle cx="45" cy="70" r="6" fill="url(#cat-tools)"/>
+    <text x="45" y="67" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Airflow</text>
+
+    <!-- === TRIAL (Second Ring) - r=120 === -->
+    <!-- Languages & Frameworks -->
+    <circle cx="85" cy="-85" r="8" fill="url(#cat-lang)" opacity="0.9"/>
+    <text x="85" y="-88" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" fill="#fff" font-weight="bold">RisingWave</text>
+
+    <circle cx="110" cy="-50" r="7" fill="url(#cat-lang)" opacity="0.9"/>
+    <text x="110" y="-53" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">PyFlink</text>
+
+    <circle cx="115" cy="-15" r="6" fill="url(#cat-lang)" opacity="0.9"/>
+    <text x="115" y="-18" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Rust</text>
+
+    <circle cx="100" cy="25" r="6" fill="url(#cat-lang)" opacity="0.9"/>
+    <text x="100" y="22" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">CDC</text>
+
+    <!-- Storage & Data -->
+    <circle cx="-90" cy="-80" r="7" fill="url(#cat-storage)" opacity="0.9"/>
+    <text x="-90" y="-83" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Delta Lake</text>
+
+    <circle cx="-120" cy="-40" r="6" fill="url(#cat-storage)" opacity="0.9"/>
+    <text x="-120" y="-43" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Hudi</text>
+
+    <circle cx="-110" cy="10" r="6" fill="url(#cat-storage)" opacity="0.9"/>
+    <text x="-110" y="7" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">ForSt</text>
+
+    <circle cx="-95" cy="50" r="6" fill="url(#cat-storage)" opacity="0.9"/>
+    <text x="-95" y="47" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Fluss</text>
+
+    <!-- Infrastructure -->
+    <circle cx="-80" cy="100" r="7" fill="url(#cat-infra)" opacity="0.9"/>
+    <text x="-80" y="97" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Serverless</text>
+
+    <circle cx="-110" cy="85" r="6" fill="url(#cat-infra)" opacity="0.9"/>
+    <text x="-110" y="82" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">eBPF</text>
+
+    <circle cx="-60" cy="125" r="6" fill="url(#cat-infra)" opacity="0.9"/>
+    <text x="-60" y="122" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">GPU</text>
+
+    <!-- Tools -->
+    <circle cx="90" cy="95" r="7" fill="url(#cat-tools)" opacity="0.9"/>
+    <text x="90" y="92" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">Temporal</text>
+
+    <circle cx="120" cy="70" r="6" fill="url(#cat-tools)" opacity="0.9"/>
+    <text x="120" y="67" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">SQL GW</text>
+
+    <circle cx="100" cy="125" r="6" fill="url(#cat-tools)" opacity="0.9"/>
+    <text x="100" y="122" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Great Exp</text>
+
+    <!-- === ASSESS (Third Ring) - r=200 === -->
+    <!-- Languages -->
+    <circle cx="140" cy="-140" r="7" fill="url(#cat-lang)" opacity="0.8"/>
+    <text x="140" y="-143" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" fill="#fff">AI Agent</text>
+
+    <circle cx="180" cy="-80" r="6" fill="url(#cat-lang)" opacity="0.8"/>
+    <text x="180" y="-83" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Wasm</text>
+
+    <circle cx="190" cy="-30" r="6" fill="url(#cat-lang)" opacity="0.8"/>
+    <text x="190" y="-33" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Gleam</text>
+
+    <!-- Storage -->
+    <circle cx="-150" cy="-130" r="6" fill="url(#cat-storage)" opacity="0.8"/>
+    <text x="-150" y="-133" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Ozone</text>
+
+    <circle cx="-190" cy="-60" r="6" fill="url(#cat-storage)" opacity="0.8"/>
+    <text x="-190" y="-63" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Tiered</text>
+
+    <circle cx="-180" cy="20" r="6" fill="url(#cat-storage)" opacity="0.8"/>
+    <text x="-180" y="17" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">VectorDB</text>
+
+    <!-- Infrastructure -->
+    <circle cx="-140" cy="150" r="6" fill="url(#cat-infra)" opacity="0.8"/>
+    <text x="-140" y="147" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Wasm RT</text>
+
+    <circle cx="-180" cy="100" r="6" fill="url(#cat-infra)" opacity="0.8"/>
+    <text x="-180" y="97" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Unikernel</text>
+
+    <!-- Tools -->
+    <circle cx="150" cy="140" r="6" fill="url(#cat-tools)" opacity="0.8"/>
+    <text x="150" y="137" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">MCP</text>
+
+    <circle cx="190" cy="90" r="6" fill="url(#cat-tools)" opacity="0.8"/>
+    <text x="190" y="87" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">A2A</text>
+
+    <circle cx="180" cy="140" r="6" fill="url(#cat-tools)" opacity="0.8"/>
+    <text x="180" y="137" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">DuckDB</text>
+
+    <!-- === HOLD (Outer Ring) - r=280 === -->
+    <!-- Languages -->
+    <circle cx="200" cy="-200" r="6" fill="url(#cat-lang)" opacity="0.6"/>
+    <text x="200" y="-203" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Storm</text>
+
+    <circle cx="250" cy="-120" r="5" fill="url(#cat-lang)" opacity="0.6"/>
+    <text x="250" y="-123" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="4" fill="#fff">Samza</text>
+
+    <!-- Storage -->
+    <circle cx="-210" cy="-190" r="6" fill="url(#cat-storage)" opacity="0.6"/>
+    <text x="-210" y="-193" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">HDFS</text>
+
+    <circle cx="-260" cy="-100" r="5" fill="url(#cat-storage)" opacity="0.6"/>
+    <text x="-260" y="-103" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="4" fill="#fff">ES7</text>
+
+    <!-- Infrastructure -->
+    <circle cx="-200" cy="200" r="6" fill="url(#cat-infra)" opacity="0.6"/>
+    <text x="-200" y="197" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">YARN</text>
+
+    <circle cx="-250" cy="120" r="5" fill="url(#cat-infra)" opacity="0.6"/>
+    <text x="-250" y="117" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="4" fill="#fff">Mesos</text>
+
+    <!-- Tools -->
+    <circle cx="220" cy="190" r="6" fill="url(#cat-tools)" opacity="0.6"/>
+    <text x="220" y="187" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="5" fill="#fff">Nifi</text>
+
+    <circle cx="270" cy="90" r="5" fill="url(#cat-tools)" opacity="0.6"/>
+    <text x="270" y="87" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="4" fill="#fff">Logstash</text>
+
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50, 780)">
+    <rect x="0" y="0" width="800" height="100" fill="#fff" stroke="#dee2e6" stroke-width="1" rx="8"/>
+    
+    <text x="400" y="25" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">图例 Legend</text>
+    
+    <!-- Category colors -->
+    <circle cx="80" cy="55" r="8" fill="url(#cat-lang)"/>
+    <text x="80" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#495057">语言框架</text>
+    
+    <circle cx="200" cy="55" r="8" fill="url(#cat-storage)"/>
+    <text x="200" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#495057">存储数据</text>
+    
+    <circle cx="320" cy="55" r="8" fill="url(#cat-infra)"/>
+    <text x="320" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#495057">基础设施</text>
+    
+    <circle cx="440" cy="55" r="8" fill="url(#cat-tools)"/>
+    <text x="440" y="75" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#495057">工具平台</text>
+    
+    <!-- Ring indicators -->
+    <circle cx="580" cy="55" r="15" fill="none" stroke="#28a745" stroke-width="2"/>
+    <text x="580" y="78" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#28a745">Adopt</text>
+    
+    <circle cx="650" cy="55" r="15" fill="none" stroke="#007bff" stroke-width="2"/>
+    <text x="650" y="78" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#007bff">Trial</text>
+    
+    <circle cx="720" cy="55" r="15" fill="none" stroke="#ffc107" stroke-width="2"/>
+    <text x="720" y="78" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" fill="#ffc107">Assess</text>
+  </g>
+
+  <!-- Quadrant Labels -->
+  <text x="600" y="150" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#4a90d9">语言与框架</text>
+  <text x="600" y="165" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#6c757d">Languages & Frameworks</text>
+
+  <text x="300" y="150" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#5cb85c">存储与数据</text>
+  <text x="300" y="165" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#6c757d">Storage & Data</text>
+
+  <text x="300" y="750" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#f0ad4e">基础设施</text>
+  <text x="300" y="765" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#6c757d">Infrastructure</text>
+
+  <text x="600" y="750" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#d9534f">工具与平台</text>
+  <text x="600" y="765" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#6c757d">Tools & Platforms</text>
+
+</svg>
