@@ -1,210 +1,401 @@
-# 国际化 (i18n) 架构设计文档
+# AnalysisDataFlow 国际化(i18n)架构设计
 
-> 所属阶段: Infrastructure | 前置依赖: [项目规范](../AGENTS.md) | 形式化等级: L3
+> **版本**: v1.0 | **日期**: 2026-04-04 | **状态**: 设计完成
 
-## 1. 概述
+---
 
-本文档定义 AnalysisDataFlow 项目的国际化架构，支持多语言内容管理和同步机制。
+## 1. 架构概述
 
-## 2. 目录结构
+### 1.1 设计目标
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    i18n 架构设计目标                              │
+├─────────────────────────────────────────────────────────────────┤
+│  ✅ 支持多语言内容并行维护                                         │
+│  ✅ 保持源文档与翻译版本的同步追踪                                  │
+│  ✅ 提供术语一致性保证                                            │
+│  ✅ 支持自动化翻译工作流                                          │
+│  ✅ 最小化对现有文档结构的侵入                                     │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 1.2 核心原则
+
+| 原则 | 说明 |
+|------|------|
+| **平行结构** | 翻译文档保持与源文档相同的目录结构 |
+| **版本追踪** | 每个翻译文档记录源文档版本哈希 |
+| **术语统一** | 中央术语表确保翻译一致性 |
+| **渐进式** | 优先核心文档，逐步扩展 |
+| **自动化** | 翻译状态检测、过期提醒自动化 |
+
+---
+
+## 2. 目录结构设计
 
 ```
 i18n/
-├── README.md                    # i18n 使用指南
-├── i18n-architecture.md         # 本文档 - 架构设计
-├── terminology-glossary.csv     # 术语翻译对照表
-├── translation-guide.md         # 翻译规范指南
-├── sync-workflow.md             # 同步工作流
-│
-├── en/                          # 英文内容
-│   ├── 00-INDEX.md
-│   ├── README.md
-│   └── struct/                  # Struct 核心理论文档
-│       ├── 01-unified-streaming-theory.md
-│       ├── 02-process-calculus-primer.md
-│       └── ...
-│
-├── zh/                          # 中文内容 (源语言)
-│   └── (链接到根目录文档)
-│
-└── config/
-    ├── i18n-config.json         # 国际化配置
-    └── locale-meta.json         # 语言元数据
+├── README.md                    # i18n 系统说明
+├── I18N-ARCHITECTURE.md         # 本架构文档
+├── config/
+│   ├── i18n.json               # 主配置文件
+│   ├── languages.json          # 支持语言列表
+│   └── mapping.json            # 文档映射关系
+├── en/                         # 英语内容 (目标语言)
+│   ├── docs/                   # 翻译文档
+│   │   ├── README.md
+│   │   ├── QUICK-START.md
+│   │   └── ...
+│   └── glossary/
+│       └── GLOSSARY-EN.md      # 英文术语表
+├── zh/                         # 中文内容 (源语言)
+│   └── (指向根目录的符号链接)
+├── workflows/
+│   ├── translation-pipeline.yml    # 翻译工作流
+│   └── sync-check.yml             # 同步检查工作流
+└── scripts/
+    └── (与 .scripts/translate_workflow.py 关联)
 ```
 
-## 3. 翻译策略
-
-### 3.1 首批翻译文档 (15篇Struct核心理论 + README)
-
-| 序号 | 文档路径 | 优先级 | 状态 |
-|------|----------|--------|------|
-| 1 | README.md | P0 | 🔄 进行中 |
-| 2 | Struct/00-INDEX.md | P0 | ⏳ 待翻译 |
-| 3 | Struct/01-foundation/01.01-unified-streaming-theory.md | P0 | ⏳ 待翻译 |
-| 4 | Struct/01-foundation/01.02-process-calculus-primer.md | P0 | ⏳ 待翻译 |
-| 5 | Struct/01-foundation/01.03-actor-model-formalization.md | P0 | ⏳ 待翻译 |
-| 6 | Struct/01-foundation/01.04-dataflow-model-formalization.md | P0 | ⏳ 待翻译 |
-| 7 | Struct/02-properties/02.01-determinism-in-streaming.md | P1 | ⏳ 待翻译 |
-| 8 | Struct/02-properties/02.02-consistency-hierarchy.md | P1 | ⏳ 待翻译 |
-| 9 | Struct/02-properties/02.03-watermark-monotonicity.md | P1 | ⏳ 待翻译 |
-| 10 | Struct/03-relationships/03.01-actor-to-csp-encoding.md | P1 | ⏳ 待翻译 |
-| 11 | Struct/04-proofs/04.01-flink-checkpoint-correctness.md | P1 | ⏳ 待翻译 |
-| 12 | Struct/04-proofs/04.02-flink-exactly-once-correctness.md | P1 | ⏳ 待翻译 |
-| 13 | Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md | P2 | ⏳ 待翻译 |
-| 14 | Struct/07-tools/smart-casual-verification.md | P2 | ⏳ 待翻译 |
-| 15 | Struct/07-tools/tla-for-flink.md | P2 | ⏳ 待翻译 |
-| 16 | QUICK-START.md | P1 | ⏳ 待翻译 |
-
-### 3.2 翻译优先级定义
-
-- **P0**: 核心基础，必须首先翻译
-- **P1**: 重要内容，建议早期翻译
-- **P2**: 扩展内容，可后期补充
-- **P3**: 参考内容，按需翻译
-
-## 4. 多语言版本同步机制
-
-### 4.1 同步工作流
+### 2.1 与主项目的关系
 
 ```mermaid
-graph LR
-    A[中文源文档更新] --> B{变更检测}
-    B -->|新增| C[标记待翻译]
-    B -->|修改| D[标记需更新]
-    B -->|删除| E[标记删除]
-    C --> F[翻译队列]
-    D --> F
-    E --> G[归档处理]
-    F --> H[人工/AI翻译]
-    H --> I[质量审核]
-    I --> J[发布更新]
+graph TB
+    subgraph "主项目"
+        Root[项目根目录]
+        R1[README.md]
+        R2[QUICK-START.md]
+        R3[GLOSSARY.md]
+        S[Struct/]
+        K[Knowledge/]
+        F[Flink/]
+    end
+
+    subgraph "国际化目录 i18n/"
+        I[i18n/]
+        E1[en/docs/]
+        E2[en/glossary/]
+        Conf[config/]
+        Wf[workflows/]
+    end
+
+    Root --> I
+    R1 -->|翻译| E1
+    R2 -->|翻译| E1
+    R3 -->|翻译| E2
+    S -->|未来扩展| E1
+    K -->|未来扩展| E1
+    F -->|未来扩展| E1
 ```
 
-### 4.2 版本标记系统
-
-每篇翻译文档必须包含元数据头：
-
-```markdown
 ---
-source: ../Struct/01-foundation/01.01-unified-streaming-theory.md
-source_version: v2.8
-source_hash: a1b2c3d4
-translated_at: 2026-04-04
-translator: ai-assisted
-status: draft|review|published
-language: en
+
+## 3. 配置系统
+
+### 3.1 主配置文件 (config/i18n.json)
+
+```json
+{
+  "project": {
+    "name": "AnalysisDataFlow",
+    "version": "3.3.0",
+    "source_language": "zh",
+    "default_language": "zh"
+  },
+  "languages": {
+    "zh": {
+      "name": "中文",
+      "native_name": "简体中文",
+      "code": "zh-CN",
+      "rtl": false,
+      "completeness": 100
+    },
+    "en": {
+      "name": "English",
+      "native_name": "English",
+      "code": "en-US",
+      "rtl": false,
+      "completeness": 15
+    }
+  },
+  "translation": {
+    "priority_docs": [
+      "README.md",
+      "QUICK-START.md",
+      "GLOSSARY.md",
+      "CONTRIBUTING.md"
+    ],
+    "excluded_patterns": [
+      "*.draft.md",
+      "*.archived.md",
+      "reports/*",
+      "*.log"
+    ],
+    "term_consistency": {
+      "enabled": true,
+      "strict_mode": false,
+      "glossary_file": "glossary/core-terms.json"
+    }
+  },
+  "sync": {
+    "check_interval": "daily",
+    "auto_notify": true,
+    "outdated_threshold_days": 7
+  }
+}
+```
+
+### 3.2 文档映射配置 (config/mapping.json)
+
+```json
+{
+  "mappings": [
+    {
+      "source": "README.md",
+      "translations": {
+        "en": "i18n/en/docs/README.md"
+      },
+      "version_hash": "a1b2c3d4",
+      "last_sync": "2026-04-04T10:00:00Z"
+    },
+    {
+      "source": "QUICK-START.md",
+      "translations": {
+        "en": "i18n/en/docs/QUICK-START.md"
+      },
+      "version_hash": "e5f6g7h8",
+      "last_sync": "2026-04-04T10:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## 4. 翻译文档格式规范
+
+### 4.1 头部元数据
+
+每个翻译文档必须包含 YAML frontmatter：
+
+```yaml
+---
+title: "AnalysisDataFlow - Unified Stream Computing Knowledge Base"
+source_file: "README.md"
+source_version: "a1b2c3d4e5f6g7h8"
+translation_status: "completed"
+completion_percentage: 100
+language: "en"
+last_sync: "2026-04-04T10:00:00Z"
+translator: "AI-Assisted"
+reviewer: ""
 ---
 ```
 
-### 4.3 变更检测规则
+### 4.2 状态定义
 
-| 检测方式 | 说明 | 触发条件 |
-|----------|------|----------|
-| 哈希比对 | 源文件内容哈希 | 内容变化 |
-| 版本标签 | Git标签或文档版本 | 显式版本更新 |
-| 时间戳 | 文件修改时间 | 定期扫描 |
+| 状态 | 值 | 说明 |
+|------|-----|------|
+| 未开始 | `not_started` | 翻译尚未开始 |
+| 进行中 | `in_progress` | 翻译正在进行 |
+| 待审核 | `pending_review` | 翻译完成，等待审核 |
+| 已完成 | `completed` | 翻译并审核完成 |
+| 已过期 | `outdated` | 源文档已更新，翻译需要同步 |
+
+---
 
 ## 5. 术语管理
 
-### 5.1 术语表格式
+### 5.1 术语表结构
 
-见 `terminology-glossary.csv`：
-
-```csv
-term_en,term_zh,category,definition,context,notes
-Unified Streaming Theory,统一流理论,Concept,形式化流计算理论框架,Struct/01-foundation,
-Watermark,水位线,Mechanism,时间进度标记,Timestamp management,
+```json
+{
+  "version": "1.0",
+  "last_updated": "2026-04-04",
+  "terms": [
+    {
+      "id": "term-001",
+      "chinese": "流计算",
+      "english": "Stream Computing",
+      "abbreviation": "",
+      "definition": "Processing of continuous, unbounded data streams",
+      "domain": "core",
+      "variants": ["Stream Processing"]
+    },
+    {
+      "id": "term-002",
+      "chinese": "检查点",
+      "english": "Checkpoint",
+      "abbreviation": "CP",
+      "definition": "Global consistent snapshot for fault recovery",
+      "domain": "flink",
+      "variants": []
+    }
+  ]
+}
 ```
 
-### 5.2 术语翻译原则
+### 5.2 术语一致性检查
 
-1. **优先直译**: 技术术语优先使用直译
-2. **保留原文**: 首次出现保留英文原文，如 "Checkpoint (检查点)"
-3. **一致性**: 全文术语翻译保持一致
-4. **文化适配**: 必要时进行文化适配，但保持技术准确性
+```python
+# 伪代码示例
+def check_term_consistency(doc_content, target_lang):
+    issues = []
+    for term in glossary.terms:
+        if term.chinese in doc_content:
+            expected = term.english if target_lang == 'en' else term.chinese
+            # 检查是否正确翻译
+            if not check_translation_presence(doc_content, term, target_lang):
+                issues.append(TermIssue(term, expected))
+    return issues
+```
 
-## 6. AI辅助翻译流程
+---
+
+## 6. 自动化工作流
 
 ### 6.1 翻译流水线
 
 ```mermaid
-flowchart TD
-    A[输入中文文档] --> B[术语预处理]
-    B --> C[分段翻译]
-    C --> D[术语一致性检查]
-    D --> E[语法校验]
-    E --> F[人工审核]
-    F --> G[发布]
+flowchart LR
+    A[源文档更新] --> B{检测变更}
+    B -->|有变更| C[计算版本哈希]
+    C --> D[标记翻译为过期]
+    D --> E[触发翻译任务]
+    E --> F[生成翻译包]
+    F --> G[翻译执行]
+    G --> H[质量检查]
+    H -->|通过| I[更新映射]
+    H -->|失败| J[返回修正]
 ```
 
-### 6.2 质量门禁
+### 6.2 同步检查流程
 
-- **术语检查**: 自动验证术语使用一致性
-- **链接检查**: 验证跨语言链接有效性
-- **格式检查**: 确保符合项目六段式模板
+```yaml
+# workflows/sync-check.yml 概要
+name: i18n Sync Check
+on:
+  push:
+    paths:
+      - '*.md'
+      - 'Struct/**/*.md'
+      - 'Knowledge/**/*.md'
+      - 'Flink/**/*.md'
+  schedule:
+    - cron: '0 0 * * *'  # 每日检查
 
-## 7. 工具集成
+jobs:
+  check:
+    steps:
+      - 检测源文档变更
+      - 对比翻译版本
+      - 生成过期报告
+      - 创建同步任务
+```
 
-### 7.1 翻译工具
+---
 
-| 工具 | 用途 | 集成方式 |
-|------|------|----------|
-| GitHub Copilot | AI辅助翻译 | VS Code插件 |
-| OpenAI API | 批量翻译 | Python脚本 |
-| DeepL API | 专业翻译 | API调用 |
+## 7. 实施路线图
 
-### 7.2 自动化脚本
+### 7.1 阶段划分
+
+| 阶段 | 时间 | 目标 | 交付物 |
+|------|------|------|--------|
+| P3-1 | Week 1 | 架构搭建 | i18n/目录结构、配置文件 |
+| P3-2 | Week 2 | 术语表 | GLOSSARY-EN.md |
+| P3-3 | Week 3-4 | 核心文档 | README-EN.md, QUICK-START-EN.md |
+| P3-4 | Week 5-6 | 自动化 | translate_workflow.py |
+| v3.4 | Q3 2026 | 扩展 | Struct/, Knowledge/, Flink/ 关键文档 |
+| v4.0 | Q1 2027 | 完整版 | 全文档双语支持 |
+
+### 7.2 优先级文档列表
+
+```
+P0 (立即):
+├── README.md
+├── QUICK-START.md
+└── GLOSSARY.md
+
+P1 (近期):
+├── CONTRIBUTING.md
+├── AGENTS.md
+└── LEARNING-PATH-GUIDE.md
+
+P2 (中期):
+├── Struct/00-INDEX.md
+├── Knowledge/00-INDEX.md
+└── Flink/00-INDEX.md
+
+P3 (长期):
+├── 全部文档按目录逐步翻译
+└── tutorials/ 系列
+```
+
+---
+
+## 8. 工具集成
+
+### 8.1 与现有脚本集成
+
+| 脚本 | 集成方式 | 功能 |
+|------|----------|------|
+| i18n-manager.py | 扩展 | 管理翻译状态和进度 |
+| translate_workflow.py | 新建 | 自动化翻译流程 |
+| build_search_index.py | 新建 | 多语言搜索索引 |
+| quality-gates | 扩展 | 翻译质量门禁 |
+
+### 8.2 CLI 命令
 
 ```bash
-# 检测需要更新的翻译
-python scripts/i18n/check-translation-status.py
+# 查看翻译统计
+python .scripts/i18n-manager.py stats
 
-# 批量翻译
-python scripts/i18n/batch-translate.py --source Struct/01-foundation/ --target en/
+# 提取待翻译内容
+python .scripts/i18n-manager.py extract --lang en
 
-# 验证翻译完整性
-python scripts/i18n/validate-translations.py
+# 检查术语一致性
+python .scripts/i18n-manager.py check-terms --lang en
+
+# 触发翻译工作流
+python .scripts/translate_workflow.py --target en --priority-docs
 ```
 
-## 8. 发布与部署
+---
 
-### 8.1 多语言站点结构
+## 9. 质量保证
 
+### 9.1 检查项
+
+- [ ] 所有翻译文档包含正确的 YAML frontmatter
+- [ ] 术语使用符合 GLOSSARY-EN.md 规范
+- [ ] 链接在翻译版本中正确指向
+- [ ] Mermaid 图表语法保持正确
+- [ ] 代码示例保持原样（不翻译代码）
+
+### 9.2 自动化检查
+
+```yaml
+quality_gates:
+  translation:
+    - frontmatter_validation
+    - term_consistency_check
+    - link_validation
+    - mermaid_syntax_check
+  thresholds:
+    min_completion: 95
+    max_term_violations: 0
 ```
-https://docs.analysisdataflow.io/
-├── /              # 默认语言 (中文)
-├── /en/           # 英文版
-├── /zh/           # 中文版
-└── /api/i18n/     # i18n API端点
-```
 
-### 8.2 语言切换机制
-
-- URL路径前缀: `/en/docs/...`
-- Cookie/LocalStorage 存储语言偏好
-- 自动检测浏览器语言
-
-## 9. 维护与治理
-
-### 9.1 翻译贡献流程
-
-1. Fork 项目
-2. 创建翻译分支: `i18n/en-{document-name}`
-3. 遵循翻译规范
-4. 提交 PR，标注 `i18n` 标签
-5. 通过质量审核后合并
-
-### 9.2 翻译质量指标
-
-| 指标 | 目标值 | 测量方式 |
-|------|--------|----------|
-| 术语一致性 | ≥95% | 自动检查 |
-| 翻译覆盖率 | 100% (P0/P1) | 文档统计 |
-| 审核通过率 | ≥90% | PR统计 |
-| 更新延迟 | ≤7天 | 时间追踪 |
+---
 
 ## 10. 参考
 
-- [W3C i18n指南](https://www.w3.org/standards/webdesign/i18n)
-- [GitHub i18n最佳实践](https://docs.github.com/en/get-started/writing-on-github)
-- [Apache项目i18n规范](https://www.apache.org/dev/i18n.html)
+- [i18n-manager.py](../.scripts/i18n-manager.py) - 国际化管理工具
+- [translate_workflow.py](../.scripts/translate_workflow.py) - 翻译工作流
+- [GLOSSARY-EN.md](en/glossary/GLOSSARY-EN.md) - 英文术语表
+- [README-EN.md](en/docs/README-EN.md) - 英文版项目说明
+
+---
+
+*本文档遵循 AnalysisDataFlow 六段式模板规范*

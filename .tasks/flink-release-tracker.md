@@ -308,17 +308,20 @@ AgentCoordinator coordinator = new AgentCoordinator(env);
 ## 快速链接
 
 ### 系统文档
+
 - [系统架构完整说明](FLINK-RELEASE-TRACKING-SYSTEM.md)
-- [文档更新工作流程](.scripts/flink-version-tracking/doc-update-workflow.md)
+- [文档更新工作流程](../.scripts/flink-version-tracking/doc-update-workflow.md)
 - [版本对比矩阵](../Flink/08-roadmap/flink-version-comparison-matrix.md)
 
 ### 自动化脚本
+
 - [主监控脚本](../.scripts/flink-release-monitor.py)
 - [版本跟踪脚本目录](../.scripts/flink-version-tracking/)
 
 ### GitHub Actions
+
 - [工作流配置](../.github/workflows/flink-release-tracker.yml)
-- [Actions运行历史](../../actions/workflows/flink-release-tracker.yml)
+- [Actions运行历史](https://github.com/your-org/AnalysisDataFlow/actions/workflows/flink-release-tracker.yml)
 
 ---
 

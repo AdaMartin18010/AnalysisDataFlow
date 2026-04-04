@@ -24,7 +24,7 @@
 
 ### 提交反馈
 
-1. 访问 [Issues 页面](../../issues/new/choose)
+1. 访问 [Issues 页面](https://github.com/your-org/AnalysisDataFlow/issues/new/choose)
 2. 选择合适的模板：
    - 📚 文档改进请求
    - 🐛 错误报告
@@ -50,23 +50,27 @@
 ## 🏷️ 标签系统
 
 ### 类型标签
+
 - `bug` - 错误报告
 - `enhancement` - 功能建议
 - `documentation` - 文档改进
 - `new-topic` - 新主题请求
 
 ### 优先级标签
+
 - `P0` - 关键，必须立即处理
 - `P1` - 重要，应在近期处理
 - `P2` - 一般，按计划处理
 - `P3` - 建议性，时间允许时处理
 
 ### 领域标签
+
 - `Struct` - 形式理论与分析
 - `Knowledge` - 工程知识与设计模式
 - `Flink` - Flink 专项技术
 
 ### 状态标签
+
 - `triage` - 待分类评估
 - `in-progress` - 处理中
 - `needs-info` - 需要更多信息
@@ -96,6 +100,7 @@ python .scripts/feedback-aggregator.py --extract-p0-p1
 ### GitHub Actions 自动报告
 
 项目配置了定时任务，每月自动生成反馈报告：
+
 - 报告位置: `reports/feedback/monthly-report-YYYY-MM.md`
 - 贡献者更新: `CONTRIBUTORS.md`
 
@@ -140,9 +145,9 @@ python .scripts/feedback-aggregator.py --dashboard
 
 ## 📞 联系方式
 
-- 💬 讨论区: [GitHub Discussions](../../discussions)
-- 📧 邮件联系: [项目维护者](../../graphs/contributors)
-- 🐛 Issue 模板问题: 提交 [Meta Issue](../../issues/new?labels=meta)
+- 💬 讨论区: [GitHub Discussions](https://github.com/your-org/AnalysisDataFlow/discussions)
+- 📧 邮件联系: [项目维护者](https://github.com/your-org/AnalysisDataFlow/graphs/contributors)
+- 🐛 Issue 模板问题: 提交 [Meta Issue](https://github.com/your-org/AnalysisDataFlow/issues/new?labels=meta)
 
 ---
 

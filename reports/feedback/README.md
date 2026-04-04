@@ -98,7 +98,7 @@ python .scripts/feedback-dashboard.py --serve --port 3000
 
 - [贡献指南](../../CONTRIBUTING.md)
 - [反馈模板](../../.github/feedback-templates/)
-- [Issue 列表](../../issues)
+- [Issue 列表](https://github.com/your-org/AnalysisDataFlow/issues)
 - [贡献者列表](../../CONTRIBUTORS.md)
 
 ---

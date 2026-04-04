@@ -1,6 +1,6 @@
 # WASI 0.2 与 Component Model：流计算的模块化未来
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [WASM流处理](./flink-25-wasm-udf-ga.md), [Rust原生API](./03-rust-native.md) | **形式化等级**: L3-L4 | **版本**: WASI 0.2 / Component Model 1.0
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [WASM流处理](./flink-25-wasm-udf-ga.md), [Rust原生API](./flink-rust-native-api-guide.md) | **形式化等级**: L3-L4 | **版本**: WASI 0.2 / Component Model 1.0
 
 ---
 

@@ -10,7 +10,7 @@
 
 - [设计模式: 事件时间处理 (Pattern: Event Time Processing)](#设计模式-事件时间处理-pattern-event-time-processing)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem--context)
+  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem-context)
     - [1.1 分布式流处理的时序挑战](#11-分布式流处理的时序挑战)
     - [1.2 时间语义的选择困境](#12-时间语义的选择困境)
     - [1.3 业务场景中的具体表现](#13-业务场景中的具体表现)

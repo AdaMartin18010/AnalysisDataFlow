@@ -1,6 +1,6 @@
 # SPIFFE/SPIRE 安全标准集成指南
 
-> **所属阶段**: Flink/Security | **前置依赖**: [Flink 安全特性完整指南](./flink-security-complete-guide.md), [Flink 安全架构概述](./flink-security-architecture.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/Security | **前置依赖**: [Flink 安全特性完整指南](./flink-security-complete-guide.md), [Flink 安全特性](../13-security/flink-security-complete-guide.md) | **形式化等级**: L4-L5
 
 ---
 

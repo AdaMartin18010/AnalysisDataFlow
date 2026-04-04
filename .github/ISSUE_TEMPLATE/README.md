@@ -13,7 +13,7 @@
 
 ## 🚀 使用方法
 
-1. 访问项目的 [Issues 页面](../../issues/new/choose)
+1. 访问项目的 [Issues 页面](https://github.com/your-org/AnalysisDataFlow/issues/new/choose)
 2. 点击 "Get started" 选择合适的模板
 3. 填写表单中的所有必填项
 4. 提交 Issue
