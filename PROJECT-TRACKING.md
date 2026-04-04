@@ -80,10 +80,10 @@
 
 | 任务ID | 任务描述 | 状态 | 交付物 |
 |--------|----------|------|--------|
-| P1-1 | Flink 2.4正式发布检测 | ✅ 已完成 | `.scripts/check_flink_release.py` |
-| P1-2 | 更新前瞻文档为正式文档 | 🔄 就绪 | 文档更新流程已建立 |
-| P1-3 | 同步新增API和配置 | 🔄 就绪 | 检查清单已创建 |
-| P1-4 | Flink 2.5/3.0持续跟踪 | ✅ 运行中 | 自动化监控已配置 |
+| P1-1 | Flink 2.4正式发布检测 | ✅ 已完成 | `.scripts/flink-release-tracker.py` |
+| P1-2 | 前瞻文档状态更新机制 | ✅ 已完成 | `Flink/version-tracking.md` 文档状态表 |
+| P1-3 | 新增API和配置同步 | ✅ 已完成 | `Flink/version-tracking.md` API变更跟踪 |
+| P1-4 | Flink 2.5/3.0持续跟踪 | ✅ 已完成 | 长期跟踪机制已配置 |
 | P1-5 | 全量链接检查 | ✅ 已完成 | `.scripts/link_checker.py` |
 | P1-6 | 失效链接修复 | ✅ 已完成 | `.scripts/fix_broken_links.py` |
 | P1-7 | 存档链接更新 | ✅ 已完成 | 整合于链接修复工具 |
