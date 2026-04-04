@@ -1,6 +1,6 @@
 # 模型推理服务化 - 流式ML模型部署
 
-> 所属阶段: Flink | 前置依赖: [Flink/11-feature-engineering/feature-engineering-patterns.md](../11-feature-engineering/feature-engineering-patterns.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [Flink/11-feature-engineering/feature-engineering-patterns.md](./realtime-feature-engineering-feature-store.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

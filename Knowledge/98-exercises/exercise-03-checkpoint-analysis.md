@@ -1,6 +1,6 @@
 # 练习 03: Checkpoint 分析
 
-> 所属阶段: Knowledge | 前置依赖: [Flink/03-fault-tolerance.md](../Flink/03-fault-tolerance.md), [exercise-02](./exercise-02-flink-basics.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [Checkpoint机制](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [exercise-02](./exercise-02-flink-basics.md) | 形式化等级: L4
 
 ---
 
@@ -263,14 +263,14 @@ flink run -s <checkpointPath> <jarFile>
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 3.1 | [answers/03-checkpoint.md](./answers/03-checkpoint.md#31) | 含流程图 |
-| 3.2 | [answers/03-checkpoint.md](./answers/03-checkpoint.md#32) | 端到端一致性详解 |
-| 3.3 | [answers/03-checkpoint.md](./answers/03-checkpoint.md#33) | 诊断决策树 |
-| 3.4 | [answers/03-checkpoint.md](./answers/03-checkpoint.md#34) | 后端对比表 |
-| 3.5 | [answers/03-code/CheckpointConfig.java](./answers/03-code/CheckpointConfig.java) | 配置示例 |
-| 3.6 | [answers/03-code/CheckpointMetricsAnalysis.md](./answers/03-code/CheckpointMetricsAnalysis.md) | 分析模板 |
-| 3.7 | [answers/03-code/FaultRecoveryTest.md](./answers/03-code/FaultRecoveryTest.md) | 测试步骤 |
-| 3.8 | [answers/03-code/UnalignedCheckpoint.java](./answers/03-code/UnalignedCheckpoint.java) | 配置代码 |
+| 3.1 | **answers/03-checkpoint.md**（答案待添加） | 含流程图 |
+| 3.2 | **answers/03-checkpoint.md**（答案待添加） | 端到端一致性详解 |
+| 3.3 | **answers/03-checkpoint.md**（答案待添加） | 诊断决策树 |
+| 3.4 | **answers/03-checkpoint.md**（答案待添加） | 后端对比表 |
+| 3.5 | **answers/03-code/CheckpointConfig.java**（代码示例待添加） | 配置示例 |
+| 3.6 | **answers/03-code/CheckpointMetricsAnalysis.md**（答案待添加） | 分析模板 |
+| 3.7 | **answers/03-code/FaultRecoveryTest.md**（答案待添加） | 测试步骤 |
+| 3.8 | **answers/03-code/UnalignedCheckpoint.java**（代码示例待添加） | 配置代码 |
 
 ---
 

@@ -86,4 +86,4 @@ python .scripts/i18n-manager.py report --output i18n-report.json
 
 - [国际化架构设计](ARCHITECTURE.md)
 - [术语表](glossary/core-terms.json)
-- [工具帮助](.scripts/i18n-manager.py --help)
+- **工具帮助**（运行 `.scripts/i18n-manager.py --help`）

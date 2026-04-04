@@ -393,7 +393,7 @@ graph LR
 | Struct/ Document | Flink/09 Document | Relationship |
 |------------------|-------------------|--------------|
 | [类型系统形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | DOT calculus → Scala 3 type system |
-| [Struct/01-foundation/01.03-type-safety-boundaries.md](../../Struct/01-foundation/01.03-type-safety-boundaries.md) | [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Type boundaries → TypeInformation |
+| [类型安全边界](../../Struct/01-foundation/01.03-type-safety-boundaries.md) | [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Type boundaries → TypeInformation |
 | [Actor模型形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | [03-rust-native.md](03-rust-native.md) | Actor semantics → Rust async |
 
 ### 5.2 Links to Knowledge/ Patterns

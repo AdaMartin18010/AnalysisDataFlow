@@ -1,6 +1,6 @@
 # 流处理安全最佳实践指南
 
-> **所属阶段**: Flink | **前置依赖**: [11-security-authorization](../11-security/flink-security-authorization.md), [12-security-network-isolation](../12-security/flink-security-network-isolation.md) | **形式化等级**: L3
+> **所属阶段**: Flink | **前置依赖**: [11-security-authorization](./flink-security-authorization.md), [12-security-network-isolation](./flink-security-network-isolation.md) | **形式化等级**: L3
 
 ---
 

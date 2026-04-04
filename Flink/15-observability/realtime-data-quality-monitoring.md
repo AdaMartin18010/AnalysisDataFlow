@@ -1,6 +1,6 @@
 # 实时数据质量监控与验证
 
-> 所属阶段: Flink | 前置依赖: [metrics-and-monitoring.md](./metrics-and-monitoring.md), [14-security/streaming-data-governance.md](../14-security/streaming-data-governance.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [metrics-and-monitoring.md](./metrics-and-monitoring.md), [14-security/streaming-data-governance.md](../../Knowledge/08-standards/streaming-data-governance.md) | 形式化等级: L4
 
 ## 目录
 

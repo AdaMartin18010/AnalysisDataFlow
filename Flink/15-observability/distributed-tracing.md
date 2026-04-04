@@ -1,6 +1,6 @@
 # Flink分布式链路追踪 - OpenTelemetry/Jaeger/Zipkin
 
-> 所属阶段: Flink/ | 前置依赖: [Flink状态容错机制](../08-state/checkpoint-mechanism.md), [Flink反压监控](./backpressure-monitoring.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink状态容错机制](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [Flink反压监控](./flink-backpressure-monitoring.md) | 形式化等级: L3
 
 ---
 

@@ -1,6 +1,6 @@
 # Flink Gelly - 大规模图计算
 
-> 所属阶段: Flink | 前置依赖: [Flink DataSet API](../06-dataset/flink-dataset-api.md), [迭代机制](../12-iteration/flink-iteration.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [Flink DataSet API](../01-architecture/flink-batch-streaming-unified.md), [迭代机制](./flink-gelly-streaming-graph-processing.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

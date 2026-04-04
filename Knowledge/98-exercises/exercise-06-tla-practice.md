@@ -1,6 +1,6 @@
 # 练习 06: TLA+ 实践
 
-> 所属阶段: Knowledge | 前置依赖: [Struct/02-consistency-models.md](../Struct/02-consistency-models.md), [exercise-04](./exercise-04-consistency-models.md) | 形式化等级: L5
+> 所属阶段: Knowledge | 前置依赖: [一致性层次](../../Struct/02-properties/02.02-consistency-hierarchy.md), [exercise-04](./exercise-04-consistency-models.md) | 形式化等级: L5
 
 ---
 
@@ -362,14 +362,14 @@ Spec == Init /\ [][Next]_vars
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 6.1 | [answers/06-tla/TrafficLight.tla](./answers/06-tla/TrafficLight.tla) | 完整规范 |
-| 6.2 | [answers/06-tla/MutualExclusion.tla](./answers/06-tla/MutualExclusion.tla) | 含Liveness |
-| 6.3 | [answers/06-tla/TwoPhaseCommit.tla](./answers/06-tla/TwoPhaseCommit.tla) | 2PC完整实现 |
-| 6.4 | [answers/06-tla/FlinkCheckpoint.tla](./answers/06-tla/FlinkCheckpoint.tla) | Checkpoint建模 |
-| 6.5 | [answers/06-tla/Watermark.tla](./answers/06-tla/Watermark.tla) | Watermark机制 |
-| 6.6 | [answers/06-tla/ExactlyOnce.tla](./answers/06-tla/ExactlyOnce.tla) | EOS验证 |
-| 6.7 | [answers/06-tla/DiningPhilosophers.tla](./answers/06-tla/DiningPhilosophers.tla) | 死锁检测 |
-| 6.8 | [answers/06-tla/ModelCheckingReport.md](./answers/06-tla/ModelCheckingReport.md) | 报告模板 |
+| 6.1 | **answers/06-tla/TrafficLight.tla**（代码示例待添加） | 完整规范 |
+| 6.2 | **answers/06-tla/MutualExclusion.tla**（代码示例待添加） | 含Liveness |
+| 6.3 | **answers/06-tla/TwoPhaseCommit.tla**（代码示例待添加） | 2PC完整实现 |
+| 6.4 | **answers/06-tla/FlinkCheckpoint.tla**（代码示例待添加） | Checkpoint建模 |
+| 6.5 | **answers/06-tla/Watermark.tla**（代码示例待添加） | Watermark机制 |
+| 6.6 | **answers/06-tla/ExactlyOnce.tla**（代码示例待添加） | EOS验证 |
+| 6.7 | **answers/06-tla/DiningPhilosophers.tla**（代码示例待添加） | 死锁检测 |
+| 6.8 | **answers/06-tla/ModelCheckingReport.md**（答案待添加） | 报告模板 |
 
 ---
 

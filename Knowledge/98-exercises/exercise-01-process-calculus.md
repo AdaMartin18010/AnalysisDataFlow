@@ -1,6 +1,6 @@
 # 练习 01: 进程演算基础
 
-> 所属阶段: Knowledge | 前置依赖: [Struct/01-foundations.md](../Struct/01-foundations.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [统一流式理论](../../Struct/01-foundation/01.01-unified-streaming-theory.md) | 形式化等级: L4
 
 ---
 
@@ -218,12 +218,12 @@ func main() {
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 1.1 | [answers/01-process-calculus.md](./answers/01-process-calculus.md#11) | 包含完整LTS图示 |
-| 1.2 | [answers/01-process-calculus.md](./answers/01-process-calculus.md#12) | 含多种建模方案对比 |
-| 1.3 | [answers/01-process-calculus.md](./answers/01-process-calculus.md#13) | π-calculus 归约详解 |
-| 1.4 | [answers/01-process-calculus.md](./answers/01-process-calculus.md#14) | CSP语义对比表 |
-| 1.5 | [answers/01-code/actor-simulation.go](./answers/01-code/actor-simulation.go) | 完整Go实现 |
-| 1.6 | [answers/01-code/dining-philosophers.mcrl2](./answers/01-code/dining-philosophers.mcrl2) | mCRL2规范 |
+| 1.1 | **answers/01-process-calculus.md**（答案待添加） | 包含完整LTS图示 |
+| 1.2 | **answers/01-process-calculus.md**（答案待添加） | 含多种建模方案对比 |
+| 1.3 | **answers/01-process-calculus.md**（答案待添加） | π-calculus 归约详解 |
+| 1.4 | **answers/01-process-calculus.md**（答案待添加） | CSP语义对比表 |
+| 1.5 | **answers/01-code/actor-simulation.go**（代码示例待添加） | 完整Go实现 |
+| 1.6 | **answers/01-code/dining-philosophers.mcrl2**（代码示例待添加） | mCRL2规范 |
 
 ---
 

@@ -1,6 +1,6 @@
 # Elasticsearch Connector 完整指南
 
-> 所属阶段: Flink/Connectors | 前置依赖: [Flink DataStream API](../02-api/02.01-datastream-api-basics.md), [Flink Checkpoint机制](../03-core/03.02-checkpoint-mechanism.md) | 形式化等级: L3
+> 所属阶段: Flink/Connectors | 前置依赖: [Flink DataStream API](../09-language-foundations/flink-datastream-api-complete-guide.md), [Flink Checkpoint机制](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ---
 

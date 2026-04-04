@@ -1,6 +1,6 @@
 # 一致性级别选择决策树
 
-> 所属阶段: Knowledge/Visuals | 前置依赖: [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md), [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../Flink/02-core-mechanisms/exactly-once-end-to-end.md) | 形式化等级: L3
+> 所属阶段: Knowledge/Visuals | 前置依赖: [一致性层次](../Struct/02-properties/02.02-consistency-hierarchy.md), [端到端Exactly-Once](../Flink/02-core-mechanisms/exactly-once-end-to-end.md) | 形式化等级: L3
 
 ---
 

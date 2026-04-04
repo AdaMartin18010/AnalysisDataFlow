@@ -1,6 +1,6 @@
 # Pulsar Functions 集成指南
 
-> 所属阶段: Flink/Connectors | 前置依赖: [Flink-01-04 连接器基础](01-connector-basics.md), [Flink-03-01 状态管理](03-01-state-management.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/Connectors | 前置依赖: [Flink-01-04 连接器基础](flink-connectors-ecosystem-complete-guide.md), [Flink-03-01 状态管理](../02-core-mechanisms/flink-state-management-complete-guide.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

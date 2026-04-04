@@ -1,6 +1,6 @@
 # Flink监控指标体系 - 从系统到业务
 
-> 所属阶段: Flink | 前置依赖: [12-fault-tolerance/checkpoint-mechanism.md](../12-fault-tolerance/checkpoint-mechanism.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [12-fault-tolerance/checkpoint-mechanism.md](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

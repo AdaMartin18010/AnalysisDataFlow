@@ -1,6 +1,6 @@
 # Flink 流处理可观测性与 OpenTelemetry 集成
 
-> 所属阶段: Flink/ | 前置依赖: [13-checkpoint/flink-exactly-once-semantics.md](../13-checkpoint/flink-exactly-once-semantics.md), [10-architecture/flink-state-management.md](../10-architecture/flink-state-management.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [13-checkpoint/flink-exactly-once-semantics.md](../02-core-mechanisms/exactly-once-semantics.md), [10-architecture/flink-state-management.md](../02-core-mechanisms/flink-state-management-complete-guide.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

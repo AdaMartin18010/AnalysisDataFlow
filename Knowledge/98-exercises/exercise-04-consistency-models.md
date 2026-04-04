@@ -1,6 +1,6 @@
 # 练习 04: 一致性模型对比
 
-> 所属阶段: Knowledge | 前置依赖: [Struct/02-consistency-models.md](../Struct/02-consistency-models.md), [exercise-01](./exercise-01-process-calculus.md) | 形式化等级: L5
+> 所属阶段: Knowledge | 前置依赖: [一致性层次](../../Struct/02-properties/02.02-consistency-hierarchy.md), [exercise-01](./exercise-01-process-calculus.md) | 形式化等级: L5
 
 ---
 
@@ -231,13 +231,13 @@ CreateOrder(o, p) ==
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 4.1 | [answers/04-consistency.md](./answers/04-consistency.md#41) | 形式化定义 + 图示 |
-| 4.2 | [answers/04-consistency.md](./answers/04-consistency.md#42) | 一致性映射表 |
-| 4.3 | [answers/04-consistency.md](./answers/04-consistency.md#43) | happens-before 分析 |
-| 4.4 | [answers/04-consistency.md](./answers/04-consistency.md#44) | 协议对比完整表 |
-| 4.5 | [answers/04-code/OrderSystem.tla](./answers/04-code/OrderSystem.tla) | TLA+ 规范 |
-| 4.6 | [answers/04-code/GeoReplication.md](./answers/04-code/GeoReplication.md) | 设计方案 |
-| 4.7 | [answers/04-code/DecisionTree.md](./answers/04-code/DecisionTree.md) | 决策树 |
+| 4.1 | **answers/04-consistency.md**（答案待添加） | 形式化定义 + 图示 |
+| 4.2 | **answers/04-consistency.md**（答案待添加） | 一致性映射表 |
+| 4.3 | **answers/04-consistency.md**（答案待添加） | happens-before 分析 |
+| 4.4 | **answers/04-consistency.md**（答案待添加） | 协议对比完整表 |
+| 4.5 | **answers/04-code/OrderSystem.tla**（代码示例待添加） | TLA+ 规范 |
+| 4.6 | **answers/04-code/GeoReplication.md**（答案待添加） | 设计方案 |
+| 4.7 | **answers/04-code/DecisionTree.md**（答案待添加） | 决策树 |
 
 ---
 

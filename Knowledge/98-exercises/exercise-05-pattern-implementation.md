@@ -229,14 +229,14 @@ Pattern<LoginEvent, ?> pattern = Pattern
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 5.1 | [answers/05-patterns.md](./answers/05-patterns.md#51) | 窗口模式详解 |
-| 5.2 | [answers/05-patterns.md](./answers/05-patterns.md#52) | 连接策略对比表 |
-| 5.3 | [answers/05-patterns.md](./answers/05-patterns.md#53) | 反压机制分析 |
-| 5.4 | [answers/05-code/TopN.java](./answers/05-code/TopN.java) | Top-N实现 |
-| 5.5 | [answers/05-code/OrderTimeout.java](./answers/05-code/OrderTimeout.java) | 两种方案对比 |
-| 5.6 | [answers/05-code/IntervalJoin.java](./answers/05-code/IntervalJoin.java) | Interval Join |
-| 5.7 | [answers/05-code/AsyncLookup.java](./answers/05-code/AsyncLookup.java) | 异步查询 |
-| 5.8 | [answers/05-code/DynamicWindow.java](./answers/05-code/DynamicWindow.java) | 自定义窗口 |
+| 5.1 | **answers/05-patterns.md**（答案待添加） | 窗口模式详解 |
+| 5.2 | **answers/05-patterns.md**（答案待添加） | 连接策略对比表 |
+| 5.3 | **answers/05-patterns.md**（答案待添加） | 反压机制分析 |
+| 5.4 | **answers/05-code/TopN.java**（代码示例待添加） | Top-N实现 |
+| 5.5 | **answers/05-code/OrderTimeout.java**（代码示例待添加） | 两种方案对比 |
+| 5.6 | **answers/05-code/IntervalJoin.java**（代码示例待添加） | Interval Join |
+| 5.7 | **answers/05-code/AsyncLookup.java**（代码示例待添加） | 异步查询 |
+| 5.8 | **answers/05-code/DynamicWindow.java**（代码示例待添加） | 自定义窗口 |
 
 ---
 

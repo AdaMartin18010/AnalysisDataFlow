@@ -68,7 +68,7 @@
 
 - [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
 - [Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md](../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md)
-- [Flink/02-core-mechanisms/state-backend-selection.md](../Flink/02-core-mechanisms/state-backend-selection.md)
+- [状态后端选择](../Flink/02-core-mechanisms/state-backends-deep-comparison.md)
 - [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md)
 - [Struct/02-properties/02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md)
 

@@ -1,6 +1,6 @@
 # Flink 生产环境检查清单
 
-> **所属阶段**: Flink/05-operations | **前置依赖**: [Flink部署指南](../10-deployment/flink-deployment-guide.md), [监控配置指南](../15-observability/monitoring-setup.md) | **形式化等级**: L3
+> **所属阶段**: Flink/05-operations | **前置依赖**: [Flink部署指南](../10-deployment/kubernetes-deployment.md), [监控配置指南](../15-observability/flink-opentelemetry-observability.md) | **形式化等级**: L3
 
 ## 1. 概念定义 (Definitions)
 

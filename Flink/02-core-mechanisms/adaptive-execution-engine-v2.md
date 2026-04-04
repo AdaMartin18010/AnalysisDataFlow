@@ -1,13 +1,23 @@
+<!-- 版本状态标记: status=preview, since=2.4, feature=adaptive-execution-v2 -->
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
-> 最后更新: 2026-04-04
+> 
+> | 属性 | 值 |
+> |------|-----|
+> | **特性** | 自适应执行引擎 v2 |
+> | **目标版本** | Flink 2.4.0 |
+> | **文档状态** | 🔍 前瞻 (Preview) |
+> | **预计发布时间** | 2026 Q3-Q4 |
+> | **最后更新** | 2026-04-04 |
+> | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
 
 ---
 
 # Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../06-engineering/performance-tuning-guide.md) | **形式化等级**: L4-L5 | **状态**: preview
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../06-engineering/performance-tuning-guide.md) | **形式化等级**: L4-L5
+> **版本**: since 2.4-preview | **状态**: 🔍 前瞻
 
 ---
 

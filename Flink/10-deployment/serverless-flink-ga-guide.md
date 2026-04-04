@@ -1,13 +1,23 @@
+<!-- 版本状态标记: status=preview, since=2.4, feature=serverless-ga -->
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
-> 最后更新: 2026-04-04
+> 
+> | 属性 | 值 |
+> |------|-----|
+> | **特性** | Serverless Flink GA |
+> | **目标版本** | Flink 2.4.0 |
+> | **文档状态** | 🔍 前瞻 (Preview) |
+> | **预计发布时间** | 2026 Q3-Q4 |
+> | **最后更新** | 2026-04-04 |
+> | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
 
 ---
 
 # Serverless Flink GA (Generally Available) 完整指南
 
-> 所属阶段: Flink/10-deployment | 前置依赖: [Flink Serverless架构](flink-serverless-architecture.md), [Flink Kubernetes Autoscaler](flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L4 | 状态: preview
+> 所属阶段: Flink/10-deployment | 前置依赖: [Flink Serverless架构](flink-serverless-architecture.md), [Flink Kubernetes Autoscaler](flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L4
+> **版本**: since 2.4-preview | **状态**: 🔍 前瞻
 
 ---
 

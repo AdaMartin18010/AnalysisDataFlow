@@ -23,7 +23,7 @@
     - [3.2 模式关系图](#32-模式关系图)
     - [3.3 模式选型矩阵](#33-模式选型矩阵)
   - [4. 业务场景矩阵 (Business Scenario Matrix)](#4-业务场景矩阵-business-scenario-matrix)
-    - [4.1 领域 × 模式映射](#41-领域--模式映射)
+    - [4.1 领域 × 模式映射](#41-领域--)
     - [4.2 场景深度分析](#42-场景深度分析)
       - [场景 1: IoT 物联网数据处理](#场景-1-iot-物联网数据处理)
       - [场景 2: 金融实时风控](#场景-2-金融实时风控)
@@ -57,8 +57,8 @@
     - [10.4 云边协同与Serverless](#104-云边协同与serverless)
     - [10.5 流式湖仓与访问控制](#105-流式湖仓与访问控制)
     - [10.6 向量搜索与流处理融合](#106-向量搜索与流处理融合)
-    - [10.7 Web3与区块链流处理 ⭐ NEW](#107-web3与区块链流处理--new)
-    - [10.8 Data Mesh与实时数据产品 🆕 v2.3](#108-data-mesh与实时数据产品--v23)
+    - [10.7 Web3与区块链流处理 ⭐ NEW](#107-web3与区块链流处理)
+    - [10.8 Data Mesh与实时数据产品 🆕 v2.3](#108-data-mesh与实时数据产品)
   - [11. 国际顶尖课程映射](#11-国际顶尖课程映射)
     - [11.1 MIT 6.824 Distributed Systems](#111-mit-6824-distributed-systems)
     - [11.2 Stanford CS240](#112-stanford-cs240)
@@ -819,6 +819,8 @@ Knowledge/
 │   └── serverless-streaming-architecture.md       [Serverless流处理架构 🆕 v2.3] ✅
 ├── 08-standards/
 │   └── streaming-data-governance.md               [流数据治理 🆕] ✅
+├── 09-engineering/
+│   └── 3.10-flink-production-checklist.md         [Flink生产检查清单 🆕 v2.9] ✅
 └── 98-exercises/
     ├── README.md                                  [练习说明] ✅
     ├── exercise-01-process-calculus.md            [练习1: 进程演算] ✅
@@ -842,7 +844,8 @@ Knowledge/
 | 98-exercises | 7 | 0 | 7 | L3-L4 |
 | 08-standards | 1 | 0 | 1 | L4 |
 | 09-anti-patterns | 1 | 0 | 1 | L4 |
-| **总计** | **56** | **0** | **56** | L3-L5 |
+| 09-engineering | 1 | 0 | 1 | L3-L4 |
+| **总计** | **57** | **0** | **57** | L3-L5 |
 
 ### 9.3 核心定义索引
 

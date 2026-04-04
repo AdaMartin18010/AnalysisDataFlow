@@ -1,46 +1,35 @@
 {
-  "timestamp": "2026-04-04T16:46:02.225524",
+  "timestamp": "2026-04-04T17:56:55.978426",
   "summary": {
-    "total_files": 575,
-    "total_links": 10634,
-    "total_errors": 398,
-    "file_errors": 128,
-    "anchor_errors": 270,
-    "fixable": 21,
-    "files_with_errors": 187
+    "total_files": 605,
+    "total_links": 10610,
+    "total_errors": 254,
+    "file_errors": 35,
+    "anchor_errors": 219,
+    "fixable": 10,
+    "files_with_errors": 144
   },
   "errors_by_category": {
     "file_not_found": [
       {
         "type": "file_not_found",
-        "source": "LEARNING-PATHS/data-engineer-path.md",
-        "url": "../Flink/02-core-mechanisms/state-backend-selection.md",
-        "text": "Flink/02-core-mechanisms/state-backend-selection.md",
-        "line": 71,
-        "resolved": "Flink/02-core-mechanisms/state-backend-selection.md",
+        "source": ".tasks/flink-release-tracker.md",
+        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
+        "text": "文档更新工作流程",
+        "line": 312,
+        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
+        "suggestion": [
+          ".scripts/flink-version-tracking/doc-update-workflow.md"
+        ]
+      },
+      {
+        "type": "file_not_found",
+        "source": ".tasks/flink-release-tracker.md",
+        "url": "../../actions/workflows/flink-release-tracker.yml",
+        "text": "Actions运行历史",
+        "line": 321,
+        "resolved": ".tasks/../../actions/workflows/flink-release-tracker.yml",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Struct/02-properties/02.02-consistency-hierarchy.md",
-        "text": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "line": 3,
-        "resolved": "visuals/../../Struct/02-properties/02.02-consistency-hierarchy.md",
-        "suggestion": [
-          "Struct/02-properties/02.02-consistency-hierarchy.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "text": "Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "line": 3,
-        "resolved": "visuals/../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-end-to-end.md"
-        ]
       },
       {
         "type": "file_not_found",
@@ -89,709 +78,11 @@
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "../../Flink/01-architecture/flink-24-performance-improvements.md",
-        "text": "Flink 2.0 Architecture",
-        "line": 1067,
-        "resolved": "Flink/01-architecture/flink-24-performance-improvements.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-migrations/kafka-streams-to-flink-guide.md",
-        "url": "../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
-        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "line": 3,
-        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
-        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "line": 1283,
-        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/08-standards/streaming-security-compliance.md",
-        "url": "../../Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "text": "Flink安全架构",
-        "line": 3,
-        "resolved": "Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "suggestion": [
-          "SECURITY-AUDIT.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "../Struct/01-foundations.md",
-        "text": "Struct/01-foundations.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/01-foundations.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#11",
-        "text": "answers/01-process-calculus.md",
-        "line": 221,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#12",
-        "text": "answers/01-process-calculus.md",
-        "line": 222,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#13",
-        "text": "answers/01-process-calculus.md",
-        "line": 223,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#14",
-        "text": "answers/01-process-calculus.md",
-        "line": 224,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-code/actor-simulation.go",
-        "text": "answers/01-code/actor-simulation.go",
-        "line": 225,
-        "resolved": "Knowledge/98-exercises/answers/01-code/actor-simulation.go",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-code/dining-philosophers.mcrl2",
-        "text": "answers/01-code/dining-philosophers.mcrl2",
-        "line": 226,
-        "resolved": "Knowledge/98-exercises/answers/01-code/dining-philosophers.mcrl2",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "../Flink/01-architecture-overview.md",
-        "text": "Flink/01-architecture-overview.md",
-        "line": 3,
-        "resolved": "Knowledge/Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#21",
-        "text": "answers/02-flink-basics.md",
-        "line": 260,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#22",
-        "text": "answers/02-flink-basics.md",
-        "line": 261,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#23",
-        "text": "answers/02-flink-basics.md",
-        "line": 262,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/WordCount.java",
-        "text": "answers/02-code/WordCount.java",
-        "line": 263,
-        "resolved": "Knowledge/98-exercises/answers/02-code/WordCount.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/UserBehaviorAnalysis.java",
-        "text": "answers/02-code/UserBehaviorAnalysis.java",
-        "line": 264,
-        "resolved": "Knowledge/98-exercises/answers/02-code/UserBehaviorAnalysis.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/TemperatureMonitor.java",
-        "text": "answers/02-code/TemperatureMonitor.java",
-        "line": 265,
-        "resolved": "Knowledge/98-exercises/answers/02-code/TemperatureMonitor.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/SkewOptimization.java",
-        "text": "answers/02-code/SkewOptimization.java",
-        "line": 266,
-        "resolved": "Knowledge/98-exercises/answers/02-code/SkewOptimization.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "../Flink/03-fault-tolerance.md",
-        "text": "Flink/03-fault-tolerance.md",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-fault-tolerance.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#31",
-        "text": "answers/03-checkpoint.md",
-        "line": 266,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#32",
-        "text": "answers/03-checkpoint.md",
-        "line": 267,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#33",
-        "text": "answers/03-checkpoint.md",
-        "line": 268,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#34",
-        "text": "answers/03-checkpoint.md",
-        "line": 269,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/CheckpointConfig.java",
-        "text": "answers/03-code/CheckpointConfig.java",
-        "line": 270,
-        "resolved": "Knowledge/98-exercises/answers/03-code/CheckpointConfig.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/CheckpointMetricsAnalysis.md",
-        "text": "answers/03-code/CheckpointMetricsAnalysis.md",
-        "line": 271,
-        "resolved": "Knowledge/98-exercises/answers/03-code/CheckpointMetricsAnalysis.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/FaultRecoveryTest.md",
-        "text": "answers/03-code/FaultRecoveryTest.md",
-        "line": 272,
-        "resolved": "Knowledge/98-exercises/answers/03-code/FaultRecoveryTest.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/UnalignedCheckpoint.java",
-        "text": "answers/03-code/UnalignedCheckpoint.java",
-        "line": 273,
-        "resolved": "Knowledge/98-exercises/answers/03-code/UnalignedCheckpoint.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "../Struct/02-consistency-models.md",
-        "text": "Struct/02-consistency-models.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/02-consistency-models.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#41",
-        "text": "answers/04-consistency.md",
-        "line": 234,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#42",
-        "text": "answers/04-consistency.md",
-        "line": 235,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#43",
-        "text": "answers/04-consistency.md",
-        "line": 236,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#44",
-        "text": "answers/04-consistency.md",
-        "line": 237,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/OrderSystem.tla",
-        "text": "answers/04-code/OrderSystem.tla",
-        "line": 238,
-        "resolved": "Knowledge/98-exercises/answers/04-code/OrderSystem.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/GeoReplication.md",
-        "text": "answers/04-code/GeoReplication.md",
-        "line": 239,
-        "resolved": "Knowledge/98-exercises/answers/04-code/GeoReplication.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/DecisionTree.md",
-        "text": "answers/04-code/DecisionTree.md",
-        "line": 240,
-        "resolved": "Knowledge/98-exercises/answers/04-code/DecisionTree.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#51",
-        "text": "answers/05-patterns.md",
-        "line": 232,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#52",
-        "text": "answers/05-patterns.md",
-        "line": 233,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#53",
-        "text": "answers/05-patterns.md",
-        "line": 234,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/TopN.java",
-        "text": "answers/05-code/TopN.java",
-        "line": 235,
-        "resolved": "Knowledge/98-exercises/answers/05-code/TopN.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/OrderTimeout.java",
-        "text": "answers/05-code/OrderTimeout.java",
-        "line": 236,
-        "resolved": "Knowledge/98-exercises/answers/05-code/OrderTimeout.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/IntervalJoin.java",
-        "text": "answers/05-code/IntervalJoin.java",
-        "line": 237,
-        "resolved": "Knowledge/98-exercises/answers/05-code/IntervalJoin.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/AsyncLookup.java",
-        "text": "answers/05-code/AsyncLookup.java",
-        "line": 238,
-        "resolved": "Knowledge/98-exercises/answers/05-code/AsyncLookup.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/DynamicWindow.java",
-        "text": "answers/05-code/DynamicWindow.java",
-        "line": 239,
-        "resolved": "Knowledge/98-exercises/answers/05-code/DynamicWindow.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "../Struct/02-consistency-models.md",
-        "text": "Struct/02-consistency-models.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/02-consistency-models.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/TrafficLight.tla",
-        "text": "answers/06-tla/TrafficLight.tla",
-        "line": 365,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/TrafficLight.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/MutualExclusion.tla",
-        "text": "answers/06-tla/MutualExclusion.tla",
-        "line": 366,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/MutualExclusion.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/TwoPhaseCommit.tla",
-        "text": "answers/06-tla/TwoPhaseCommit.tla",
-        "line": 367,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/TwoPhaseCommit.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/FlinkCheckpoint.tla",
-        "text": "answers/06-tla/FlinkCheckpoint.tla",
-        "line": 368,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/FlinkCheckpoint.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/Watermark.tla",
-        "text": "answers/06-tla/Watermark.tla",
-        "line": 369,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/Watermark.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/ExactlyOnce.tla",
-        "text": "answers/06-tla/ExactlyOnce.tla",
-        "line": 370,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/ExactlyOnce.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/DiningPhilosophers.tla",
-        "text": "answers/06-tla/DiningPhilosophers.tla",
-        "line": 371,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/DiningPhilosophers.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/ModelCheckingReport.md",
-        "text": "answers/06-tla/ModelCheckingReport.md",
-        "line": 372,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/ModelCheckingReport.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Struct/",
-        "text": "Struct/ 理论基础",
-        "line": 3,
-        "resolved": "Knowledge/Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Flink/",
-        "text": "Flink/ 实践指南",
-        "line": 3,
-        "resolved": "Knowledge/Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Struct/",
-        "text": "Struct/ 理论文档",
-        "line": 123,
-        "resolved": "Knowledge/Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Flink/",
-        "text": "Flink/ 实践指南",
-        "line": 124,
-        "resolved": "Knowledge/Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.1-flink-production-deployment.md",
-        "text": "10.2.1 Flink生产环境部署指南",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.1-flink-production-deployment.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.2-realtime-warehouse-practice.md",
-        "text": "10.2.2 实时数仓建设实践",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.2-realtime-warehouse-practice.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md",
-        "url": "../../05-flink-advanced/flink-2.4-wasm-udf.md",
-        "text": "../../05-flink-advanced/flink-2.4-wasm-udf.md",
-        "line": 3,
-        "resolved": "Knowledge/05-flink-advanced/flink-2.4-wasm-udf.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
-        "url": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "text": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "line": 3,
-        "resolved": "Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "suggestion": [
-          "AGENTS.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
-        "url": "../../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md",
-        "url": "../../Flink/03-api-layer/connectors/kafka-connector.md",
-        "text": "Flink Kafka Connector",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/connectors/kafka-connector.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md",
-        "url": "../../Flink/02-core-mechanisms/jobgraph-execution-model.md",
-        "text": "Flink JobGraph",
-        "line": 3,
-        "resolved": "Knowledge/Flink/02-core-mechanisms/jobgraph-execution-model.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
-        "url": "../../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
-        "url": "../../Flink/02-core-mechanisms/time-semantics.md",
-        "text": "Time Semantics",
-        "line": 3,
-        "resolved": "Knowledge/Flink/02-core-mechanisms/time-semantics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/03-sql-table-api/built-in-functions-complete-list.md",
-        "url": "../01-overview/flink-sql-overview.md",
-        "text": "Flink SQL 概述",
-        "line": 3,
-        "resolved": "Flink/01-overview/flink-sql-overview.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/03-sql-table-api/data-types-complete-reference.md",
-        "url": "./01-architecture-overview.md",
-        "text": "01-基础架构概述",
-        "line": 3,
-        "resolved": "Flink/03-sql-table-api/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/elasticsearch-connector-complete-guide.md",
-        "url": "../02-api/02.01-datastream-api-basics.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Flink/02-api/02.01-datastream-api-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/elasticsearch-connector-complete-guide.md",
-        "url": "../03-core/03.02-checkpoint-mechanism.md",
-        "text": "Flink Checkpoint机制",
-        "line": 3,
-        "resolved": "Flink/03-core/03.02-checkpoint-mechanism.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/pulsar-integration-guide.md",
-        "url": "01-connector-basics.md",
-        "text": "Flink-01-04 连接器基础",
-        "line": 3,
-        "resolved": "Flink/04-connectors/01-connector-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/pulsar-integration-guide.md",
-        "url": "03-01-state-management.md",
-        "text": "Flink-03-01 状态管理",
-        "line": 3,
-        "resolved": "Flink/04-connectors/03-01-state-management.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
         "source": "Flink/05-operations/production-checklist.md",
-        "url": "../10-deployment/flink-deployment-guide.md",
-        "text": "Flink部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-deployment-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/05-operations/production-checklist.md",
-        "url": "../15-observability/monitoring-setup.md",
+        "url": "../11-monitoring-observability/flink-monitoring-setup-guide.md",
         "text": "监控配置指南",
         "line": 3,
-        "resolved": "Flink/15-observability/monitoring-setup.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-case-studies/case-clickstream-user-behavior-analytics.md",
-        "url": "../05-ecosystem/",
-        "text": "Flink/05-ecosystem/",
-        "line": 3,
-        "resolved": "Flink/05-ecosystem",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-case-studies/case-ecommerce-realtime-recommendation.md",
-        "url": "../06-ml/",
-        "text": "Flink/06-ml/",
-        "line": 3,
-        "resolved": "Flink/06-ml",
+        "resolved": "Flink/11-monitoring-observability/flink-monitoring-setup-guide.md",
         "suggestion": null
       },
       {
@@ -819,240 +110,26 @@
       {
         "type": "file_not_found",
         "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "../../13-wasm/wasm-streaming.md",
-        "text": "Flink/13-wasm/wasm-streaming.md",
-        "line": 3,
-        "resolved": "13-wasm/wasm-streaming.md",
-        "suggestion": [
-          "Flink/13-wasm/wasm-streaming.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "../03-rust-native.md",
+        "url": "./flink-rust-native-api-guide.md",
         "text": "Flink/09-language-foundations/03-rust-native.md",
         "line": 3,
-        "resolved": "Flink/03-rust-native.md",
+        "resolved": "Flink/09-language-foundations/flink-rust-native-api-guide.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "./flink-kubernetes-deployment.md",
+        "url": "./flink-kubernetes-deployment-complete-guide.md",
         "text": "Flink Kubernetes部署指南",
         "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment.md",
+        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-complete-guide.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
-        "text": "Flink 集群架构",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/11-benchmarking/performance-benchmarking-guide.md",
-        "url": "../04-mechanisms/",
-        "text": "Flink 核心机制",
-        "line": 3,
-        "resolved": "Flink/04-mechanisms",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/11-benchmarking/streaming-benchmarks.md",
-        "url": "../04-internals/README.md",
-        "text": "Flink核心机制",
-        "line": 3,
-        "resolved": "Flink/04-internals/README.md",
-        "suggestion": [
-          "README.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "flink-llm-integration-guide.md",
-        "text": "Flink LLM集成",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/flink-llm-integration-guide.md",
-        "suggestion": [
-          "Flink/12-ai-ml/flink-llm-integration.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "mcp-protocol-agent-streaming.md",
-        "text": "MCP协议",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/mcp-protocol-agent-streaming.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "../05-sql/flink-sql-advanced.md",
-        "text": "Flink SQL 高级特性",
-        "line": 3,
-        "resolved": "Flink/05-sql/flink-sql-advanced.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "./flink-ml-foundation.md",
-        "text": "Flink ML 基础",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/flink-ml-foundation.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ml-architecture.md",
-        "url": "../01-core/flink-datastream-api.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Flink/01-core/flink-datastream-api.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../04-streaming-foundations/flink-async-io.md",
-        "text": "Flink异步I/O机制",
-        "line": 3,
-        "resolved": "Flink/04-streaming-foundations/flink-async-io.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../05-state-management/flink-state-management.md",
-        "text": "Flink状态管理",
-        "line": 3,
-        "resolved": "Flink/05-state-management/flink-state-management.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/model-serving-streaming.md",
-        "url": "../11-feature-engineering/feature-engineering-patterns.md",
-        "text": "Flink/11-feature-engineering/feature-engineering-patterns.md",
-        "line": 3,
-        "resolved": "Flink/11-feature-engineering/feature-engineering-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/rag-streaming-architecture.md",
-        "url": "../../03-sql-table-api/vector-search.md",
-        "text": "vector-search.md",
-        "line": 3,
-        "resolved": "03-sql-table-api/vector-search.md",
-        "suggestion": [
-          "Flink/03-sql-table-api/vector-search.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/dual-stream-join.md",
-        "text": "Flink双流Join机制",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/dual-stream-join.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/state-management.md",
-        "text": "Flink状态管理",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/state-management.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "./11.4-flink-ml-inference.md",
-        "text": "11.4-flink-ml-inference.md",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/11.4-flink-ml-inference.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "../04-connectors/04.1-jdbc-connector.md",
-        "text": "04.1-jdbc-connector.md",
-        "line": 3,
-        "resolved": "Flink/04-connectors/04.1-jdbc-connector.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "../11-security/flink-security-authorization.md",
-        "text": "11-security-authorization",
-        "line": 3,
-        "resolved": "Flink/11-security/flink-security-authorization.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "../12-security/flink-security-network-isolation.md",
-        "text": "12-security-network-isolation",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-network-isolation.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
         "url": "../01-architecture/flink-architecture-overview.md",
-        "text": "Flink架构概览",
+        "text": "Flink 集群架构",
         "line": 3,
         "resolved": "Flink/01-architecture/flink-architecture-overview.md",
         "suggestion": [
@@ -1061,95 +138,159 @@
       },
       {
         "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../05-udf/flink-udf-extension.md",
-        "text": "Flink UDF扩展",
+        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
+        "url": "../06-frontier/mcp-protocol-agent-streaming.md",
+        "text": "MCP协议",
         "line": 3,
-        "resolved": "Flink/05-udf/flink-udf-extension.md",
+        "resolved": "Flink/06-frontier/mcp-protocol-agent-streaming.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../06-dataset/flink-dataset-api.md",
-        "text": "Flink DataSet API",
+        "source": "Flink/12-ai-ml/flink-llm-integration.md",
+        "url": "../03-sql-table-api/flink-sql-advanced-features.md",
+        "text": "Flink SQL 高级特性",
         "line": 3,
-        "resolved": "Flink/06-dataset/flink-dataset-api.md",
+        "resolved": "Flink/03-sql-table-api/flink-sql-advanced-features.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../12-iteration/flink-iteration.md",
-        "text": "迭代机制",
+        "source": "Flink/12-ai-ml/flink-ml-architecture.md",
+        "url": "../02-core-mechanisms/flink-datastream-api-guide.md",
+        "text": "Flink DataStream API",
         "line": 3,
-        "resolved": "Flink/12-iteration/flink-iteration.md",
+        "resolved": "Flink/02-core-mechanisms/flink-datastream-api-guide.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "../08-state/checkpoint-mechanism.md",
-        "text": "Flink状态容错机制",
+        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
+        "url": "../02-core-mechanisms/async-io-mechanism.md",
+        "text": "Flink异步I/O机制",
         "line": 3,
-        "resolved": "Flink/08-state/checkpoint-mechanism.md",
+        "resolved": "Flink/02-core-mechanisms/async-io-mechanism.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "./backpressure-monitoring.md",
-        "text": "Flink反压监控",
+        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
+        "url": "../02-core-mechanisms/stream-join-mechanisms.md",
+        "text": "Flink双流Join机制",
         "line": 3,
-        "resolved": "Flink/15-observability/backpressure-monitoring.md",
+        "resolved": "Flink/02-core-mechanisms/stream-join-mechanisms.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../13-checkpoint/flink-exactly-once-semantics.md",
-        "text": "13-checkpoint/flink-exactly-once-semantics.md",
+        "source": "Flink/12-ai-ml/vector-database-integration.md",
+        "url": "../04-connectors/jdbc-connector-guide.md",
+        "text": "04.1-jdbc-connector.md",
         "line": 3,
-        "resolved": "Flink/13-checkpoint/flink-exactly-once-semantics.md",
+        "resolved": "Flink/04-connectors/jdbc-connector-guide.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../10-architecture/flink-state-management.md",
-        "text": "10-architecture/flink-state-management.md",
+        "source": "Flink/13-security/flink-security-complete-guide.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/10-architecture/flink-state-management.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/metrics-and-monitoring.md",
-        "url": "../12-fault-tolerance/checkpoint-mechanism.md",
-        "text": "12-fault-tolerance/checkpoint-mechanism.md",
+        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/12-fault-tolerance/checkpoint-mechanism.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/13-security/streaming-security-best-practices.md",
+        "url": "./flink-security-authorization.md",
+        "text": "11-security-authorization",
+        "line": 3,
+        "resolved": "Flink/13-security/flink-security-authorization.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/realtime-data-quality-monitoring.md",
-        "url": "../14-security/streaming-data-governance.md",
-        "text": "14-security/streaming-data-governance.md",
+        "source": "Flink/13-security/streaming-security-best-practices.md",
+        "url": "./flink-security-network-isolation.md",
+        "text": "12-security-network-isolation",
         "line": 3,
-        "resolved": "Flink/14-security/streaming-data-governance.md",
+        "resolved": "Flink/13-security/flink-security-network-isolation.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "docs/i18n/README.md",
-        "url": ".scripts/i18n-manager.py --help",
-        "text": "工具帮助",
-        "line": 89,
-        "resolved": "docs/i18n/.scripts/i18n-manager.py --help",
+        "source": "Flink/13-security/trusted-execution-flink.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
+        "line": 3,
+        "resolved": "Flink/13-security/flink-security-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/13-wasm/wasm-streaming.md",
+        "url": "../01-architecture/flink-cluster-architecture.md",
+        "text": "Flink架构概览",
+        "line": 3,
+        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/13-wasm/wasm-streaming.md",
+        "url": "../09-language-foundations/flink-udf-development-guide.md",
+        "text": "Flink UDF扩展",
+        "line": 3,
+        "resolved": "Flink/09-language-foundations/flink-udf-development-guide.md",
         "suggestion": null
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/14-graph/flink-gelly.md",
+        "url": "../01-architecture/flink-batch-streaming-unified.md",
+        "text": "Flink DataSet API",
+        "line": 3,
+        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/15-observability/distributed-tracing.md",
+        "url": "./flink-backpressure-monitoring.md",
+        "text": "Flink反压监控",
+        "line": 3,
+        "resolved": "Flink/15-observability/flink-backpressure-monitoring.md",
+        "suggestion": null
+      },
+      {
+        "type": "file_not_found",
+        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
+        "url": "../02-core-mechanisms/exactly-once-semantics.md",
+        "text": "13-checkpoint/flink-exactly-once-semantics.md",
+        "line": 3,
+        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
+        "suggestion": [
+          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
+        ]
       },
       {
         "type": "file_not_found",
@@ -1212,161 +353,21 @@
       {
         "type": "anchor_not_found",
         "source": "BENCHMARK-REPORT.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "url": "#5-形式证明--工程论证",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#2-定理注册表-thm-s-xx-xx--thm-k-xx-xx--thm-f-xx-xx",
-        "text": "2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX / Thm-F-XX-XX)",
-        "line": 17,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "2-定理注册表-thm-s-xx-xx--thm-k-xx-xx--thm-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx",
-        "text": "3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)",
-        "line": 40,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx",
-        "text": "4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)",
-        "line": 58,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx",
-        "text": "5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)",
-        "line": 76,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx",
-        "text": "5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)",
-        "line": 77,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx",
+        "anchor": "5-形式证明--工程论证",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#关系-1-问题症状--根因映射",
-        "text": "关系 1: 问题症状 → 根因映射",
-        "line": 19,
-        "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "关系-1-问题症状--根因映射",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#关系-2-排查流程--故障恢复",
-        "text": "关系 2: 排查流程 ⟹ 故障恢复",
-        "line": 20,
-        "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "关系-2-排查流程--故障恢复",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "url": "#5-形式证明--工程论证",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/00-INDEX.md",
-        "url": "#7-跨引用索引flink--struct",
-        "text": "7. 跨引用索引：Flink ↔ Struct",
-        "line": 47,
-        "file": "Flink/00-INDEX.md",
-        "anchor": "7-跨引用索引flink--struct",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#41-领域--模式映射",
-        "text": "4.1 领域 × 模式映射",
-        "line": 26,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "41-领域--模式映射",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#107-web3与区块链流处理--new",
-        "text": "10.7 Web3与区块链流处理 ⭐ NEW",
-        "line": 60,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "107-web3与区块链流处理--new",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#108-data-mesh与实时数据产品--v23",
-        "text": "10.8 Data Mesh与实时数据产品 🆕 v2.3",
-        "line": 61,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "108-data-mesh与实时数据产品--v23",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/knowledge-pattern-relations.md",
-        "url": "#31-领域--模式矩阵",
-        "text": "3.1 领域 × 模式矩阵",
-        "line": 18,
-        "file": "visuals/knowledge-pattern-relations.md",
-        "anchor": "31-领域--模式矩阵",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/matrix-patterns.md",
-        "url": "#21-核心业务需求--设计模式矩阵",
-        "text": "2.1 核心业务需求 × 设计模式矩阵",
-        "line": 15,
-        "file": "visuals/matrix-patterns.md",
-        "anchor": "21-核心业务需求--设计模式矩阵",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/matrix-scenarios.md",
-        "url": "#完整业务场景--技术要素矩阵",
-        "text": "完整业务场景 × 技术要素矩阵",
-        "line": 18,
-        "file": "visuals/matrix-scenarios.md",
-        "anchor": "完整业务场景--技术要素矩阵",
+        "anchor": "5-形式证明--工程论证",
         "suggestion": null
       },
       {
@@ -2931,36 +1932,6 @@
       },
       {
         "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-1-datastream-v1--datastream-v2",
-        "text": "关系 1: DataStream V1 `↦` DataStream V2",
-        "line": 24,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-1-datastream-v1--datastream-v2",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-2-datastream-v2--dataflow-模型",
-        "text": "关系 2: DataStream V2 `≈` Dataflow 模型",
-        "line": 25,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-2-datastream-v2--dataflow-模型",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-3-async-state-access--分离状态存储架构",
-        "text": "关系 3: Async State Access `↔` 分离状态存储架构",
-        "line": 26,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-3-async-state-access--分离状态存储架构",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
         "source": "Flink/01-architecture/deployment-architectures.md",
         "url": "#3-关系对比-relations--comparisons",
         "text": "3. 关系/对比 (Relations \\& Comparisons)",
@@ -2994,108 +1965,8 @@
         "source": "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
+        "line": 49,
         "file": "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-1-flink-cbfc--tcp-flow-control",
-        "text": "关系 1: Flink CBFC `⊃` TCP Flow Control",
-        "line": 26,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-1-flink-cbfc--tcp-flow-control",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-2-本地背压--端到端背压",
-        "text": "关系 2: 本地背压 `→` 端到端背压",
-        "line": 27,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-2-本地背压--端到端背压",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-3-backpressure--checkpoint-可靠性",
-        "text": "关系 3: Backpressure `↔` Checkpoint 可靠性",
-        "line": 28,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-3-backpressure--checkpoint-可靠性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 33,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#定理-51-cbfc-安全性--safety",
-        "text": "定理 5.1 (CBFC 安全性 / Safety)",
-        "line": 34,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "定理-51-cbfc-安全性--safety",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#工程论证-53-buffer-debloating--unaligned-checkpoint-联合选型",
-        "text": "工程论证 5.3 (Buffer Debloating + Unaligned Checkpoint 联合选型)",
-        "line": 36,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "工程论证-53-buffer-debloating--unaligned-checkpoint-联合选型",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-1-flink-checkpoint--chandy-lamport-分布式快照",
-        "text": "关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照",
-        "line": 25,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-1-flink-checkpoint--chandy-lamport-分布式快照",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-2-checkpoint-机制--exactly-once-语义",
-        "text": "关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义",
-        "line": 26,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-2-checkpoint-机制--exactly-once-语义",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-3-state-backend-类型--应用场景",
-        "text": "关系 3: State Backend 类型 ↔ 应用场景",
-        "line": 27,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-3-state-backend-类型--应用场景",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
@@ -3106,46 +1977,6 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 13,
         "file": "Flink/02-core-mechanisms/flink-state-management-complete-guide.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-1-智能检查点--传统检查点",
-        "text": "关系 1: 智能检查点 ⊃ 传统检查点",
-        "line": 34,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-1-智能检查点--传统检查点",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-2-负载感知--自适应间隔",
-        "text": "关系 2: 负载感知 ⟹ 自适应间隔",
-        "line": 35,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-2-负载感知--自适应间隔",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-3-增量检查点--存储层优化",
-        "text": "关系 3: 增量检查点 ↔ 存储层优化",
-        "line": 36,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-3-增量检查点--存储层优化",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 61,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
@@ -3197,16 +2028,6 @@
         "line": 21,
         "file": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
         "anchor": "关系-2-sql-计划空间--datastream-计划空间",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
       {
@@ -3351,16 +2172,6 @@
       },
       {
         "type": "anchor_not_found",
-        "source": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
         "source": "Flink/06-engineering/06.02-performance-optimization-complete.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
@@ -3421,46 +2232,6 @@
       },
       {
         "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-1-案例架构--dataflow-理论模型",
-        "text": "关系 1: 案例架构 ↦ Dataflow 理论模型",
-        "line": 32,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-1-案例架构--dataflow-理论模型",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-2-多层窗口--时间语义形式化",
-        "text": "关系 2: 多层窗口 ↦ 时间语义形式化",
-        "line": 33,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-2-多层窗口--时间语义形式化",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-3-容错设计--checkpoint-正确性",
-        "text": "关系 3: 容错设计 ↦ Checkpoint 正确性",
-        "line": 34,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-3-容错设计--checkpoint-正确性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#8-形式证明--工程论证-proof--engineering-argument",
-        "text": "8. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "8-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
         "source": "Flink/08-roadmap/2026-q2-flink-tasks.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
@@ -3494,59 +2265,9 @@
         "source": "Flink/08-roadmap/flink-30-architecture-redesign.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argumentation",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)",
-        "line": 40,
+        "line": 52,
         "file": "Flink/08-roadmap/flink-30-architecture-redesign.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argumentation",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 50,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-1-1x--20-迁移",
-        "text": "检查清单 1: 1.x → 2.0 迁移",
-        "line": 61,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-1-1x--20-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-2-20--21-迁移",
-        "text": "检查清单 2: 2.0 → 2.1 迁移",
-        "line": 62,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-2-20--21-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-3-21--22-迁移",
-        "text": "检查清单 3: 2.1 → 2.2 迁移",
-        "line": 63,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-3-21--22-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-4-22--23-迁移",
-        "text": "检查清单 4: 2.2 → 2.3 迁移",
-        "line": 64,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-4-22--23-迁移",
         "suggestion": null
       },
       {
@@ -3576,16 +2297,6 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 31,
         "file": "Flink/09-language-foundations/01.02-typeinformation-derivation.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 30,
-        "file": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
@@ -3621,82 +2332,12 @@
       },
       {
         "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#flink-scala-项目迁移完全指南-1x--20",
-        "text": "Flink Scala 项目迁移完全指南 (1.x → 2.0)",
-        "line": 9,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "flink-scala-项目迁移完全指南-1x--20",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#step-3-api-变更-dataset--datastream",
-        "text": "Step 3: API 变更 (DataSet → DataStream)",
-        "line": 35,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "step-3-api-变更-dataset--datastream",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#savepoint-恢复配置-path-a--c",
-        "text": "Savepoint 恢复配置 (Path A \\& C)",
-        "line": 44,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "savepoint-恢复配置-path-a--c",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "#66-migration-example-v1--v2-side-by-side",
-        "text": "6.6 Migration Example (V1 → V2 Side-by-Side)",
-        "line": 38,
-        "file": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "anchor": "66-migration-example-v1--v2-side-by-side",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
         "source": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
         "url": "#444-与-flink-vectorsearch-对比规划中",
         "text": "4.4.4 与 Flink VECTOR_SEARCH 对比",
         "line": 38,
         "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
         "anchor": "444-与-flink-vectorsearch-对比规划中",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 40,
-        "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "url": "#63-混合架构flink--risingwave-协同",
-        "text": "6.3 混合架构：Flink + RisingWave 协同",
-        "line": 47,
-        "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "anchor": "63-混合架构flink--risingwave-协同",
         "suggestion": null
       },
       {
@@ -3766,16 +2407,6 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 35,
         "file": "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 38,
-        "file": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
@@ -3916,63 +2547,11 @@
       {
         "type": "anchor_not_found",
         "source": "BENCHMARK-REPORT.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "url": "#5-形式证明--工程论证",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "THEOREM-REGISTRY.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#2-定理注册表-thm-s-xx-xx--thm-k-xx-xx--thm-f-xx-xx",
-        "text": "2. 定理注册表 (Thm-S-XX-XX / Thm-K-XX-XX / Thm-F-XX-XX)",
-        "line": 17,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "2-定理注册表-thm-s-xx-xx--thm-k-xx-xx--thm-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx",
-        "text": "3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)",
-        "line": 40,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx",
-        "text": "4. 引理注册表 (Lemma-S-XX-XX / Lemma-K-XX-XX / Lemma-F-XX-XX)",
-        "line": 58,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "4-引理注册表-lemma-s-xx-xx--lemma-k-xx-xx--lemma-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx",
-        "text": "5.1 命题 (Prop-S-XX-XX / Prop-K-XX-XX / Prop-F-XX-XX)",
-        "line": 76,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "51-命题-prop-s-xx-xx--prop-k-xx-xx--prop-f-xx-xx",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "THEOREM-REGISTRY.md",
-        "url": "#52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx",
-        "text": "5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)",
-        "line": 77,
-        "file": "THEOREM-REGISTRY.md",
-        "anchor": "52-推论-cor-s-xx-xx--cor-k-xx-xx--cor-f-xx-xx",
+        "anchor": "5-形式证明--工程论证",
         "suggestion": null
       }
     ],
@@ -3980,147 +2559,34 @@
       {
         "type": "anchor_not_found",
         "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#关系-1-问题症状--根因映射",
-        "text": "关系 1: 问题症状 → 根因映射",
-        "line": 19,
-        "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "关系-1-问题症状--根因映射",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#关系-2-排查流程--故障恢复",
-        "text": "关系 2: 排查流程 ⟹ 故障恢复",
-        "line": 20,
-        "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "关系-2-排查流程--故障恢复",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "url": "#5-形式证明--工程论证",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "5-形式证明--工程论证",
         "suggestion": null
       }
     ],
-    "Flink/00-INDEX.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/00-INDEX.md",
-        "url": "#7-跨引用索引flink--struct",
-        "text": "7. 跨引用索引：Flink ↔ Struct",
-        "line": 47,
-        "file": "Flink/00-INDEX.md",
-        "anchor": "7-跨引用索引flink--struct",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/00-INDEX.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#41-领域--模式映射",
-        "text": "4.1 领域 × 模式映射",
-        "line": 26,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "41-领域--模式映射",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#107-web3与区块链流处理--new",
-        "text": "10.7 Web3与区块链流处理 ⭐ NEW",
-        "line": 60,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "107-web3与区块链流处理--new",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/00-INDEX.md",
-        "url": "#108-data-mesh与实时数据产品--v23",
-        "text": "10.8 Data Mesh与实时数据产品 🆕 v2.3",
-        "line": 61,
-        "file": "Knowledge/00-INDEX.md",
-        "anchor": "108-data-mesh与实时数据产品--v23",
-        "suggestion": null
-      }
-    ],
-    "LEARNING-PATHS/data-engineer-path.md": [
+    ".tasks/flink-release-tracker.md": [
       {
         "type": "file_not_found",
-        "source": "LEARNING-PATHS/data-engineer-path.md",
-        "url": "../Flink/02-core-mechanisms/state-backend-selection.md",
-        "text": "Flink/02-core-mechanisms/state-backend-selection.md",
-        "line": 71,
-        "resolved": "Flink/02-core-mechanisms/state-backend-selection.md",
-        "suggestion": null
-      }
-    ],
-    "visuals/knowledge-pattern-relations.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/knowledge-pattern-relations.md",
-        "url": "#31-领域--模式矩阵",
-        "text": "3.1 领域 × 模式矩阵",
-        "line": 18,
-        "file": "visuals/knowledge-pattern-relations.md",
-        "anchor": "31-领域--模式矩阵",
-        "suggestion": null
-      }
-    ],
-    "visuals/matrix-patterns.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/matrix-patterns.md",
-        "url": "#21-核心业务需求--设计模式矩阵",
-        "text": "2.1 核心业务需求 × 设计模式矩阵",
-        "line": 15,
-        "file": "visuals/matrix-patterns.md",
-        "anchor": "21-核心业务需求--设计模式矩阵",
-        "suggestion": null
-      }
-    ],
-    "visuals/matrix-scenarios.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "visuals/matrix-scenarios.md",
-        "url": "#完整业务场景--技术要素矩阵",
-        "text": "完整业务场景 × 技术要素矩阵",
-        "line": 18,
-        "file": "visuals/matrix-scenarios.md",
-        "anchor": "完整业务场景--技术要素矩阵",
-        "suggestion": null
-      }
-    ],
-    "visuals/selection-tree-consistency.md": [
-      {
-        "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Struct/02-properties/02.02-consistency-hierarchy.md",
-        "text": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "line": 3,
-        "resolved": "visuals/../../Struct/02-properties/02.02-consistency-hierarchy.md",
+        "source": ".tasks/flink-release-tracker.md",
+        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
+        "text": "文档更新工作流程",
+        "line": 312,
+        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
         "suggestion": [
-          "Struct/02-properties/02.02-consistency-hierarchy.md"
+          ".scripts/flink-version-tracking/doc-update-workflow.md"
         ]
       },
       {
         "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "text": "Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "line": 3,
-        "resolved": "visuals/../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-end-to-end.md"
-        ]
+        "source": ".tasks/flink-release-tracker.md",
+        "url": "../../actions/workflows/flink-release-tracker.yml",
+        "text": "Actions运行历史",
+        "line": 321,
+        "resolved": ".tasks/../../actions/workflows/flink-release-tracker.yml",
+        "suggestion": null
       }
     ],
     "Struct/01-foundation/01.03-actor-model-formalization.md": [
@@ -5224,17 +3690,6 @@
         "file": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "../../Flink/01-architecture/flink-24-performance-improvements.md",
-        "text": "Flink 2.0 Architecture",
-        "line": 1067,
-        "resolved": "Flink/01-architecture/flink-24-performance-improvements.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
       }
     ],
     "Knowledge/03-business-patterns/fintech-realtime-risk-control.md": [
@@ -5493,17 +3948,6 @@
         "suggestion": null
       }
     ],
-    "Knowledge/05-migrations/kafka-streams-to-flink-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-migrations/kafka-streams-to-flink-guide.md",
-        "url": "../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      }
-    ],
     "Knowledge/06-frontier/edge-llm-realtime-inference.md": [
       {
         "type": "anchor_not_found",
@@ -5540,15 +3984,6 @@
     ],
     "Knowledge/06-frontier/materialize-comparison-guide.md": [
       {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
-        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "line": 3,
-        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
-        "suggestion": null
-      },
-      {
         "type": "anchor_not_found",
         "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
@@ -5566,15 +4001,6 @@
         "line": 36,
         "file": "Knowledge/06-frontier/materialize-comparison-guide.md",
         "anchor": "64-混合架构flink--materialize",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
-        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
-        "line": 1283,
-        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
         "suggestion": null
       }
     ],
@@ -5760,19 +4186,6 @@
         "suggestion": null
       }
     ],
-    "Knowledge/08-standards/streaming-security-compliance.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/08-standards/streaming-security-compliance.md",
-        "url": "../../Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "text": "Flink安全架构",
-        "line": 3,
-        "resolved": "Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "suggestion": [
-          "SECURITY-AUDIT.md"
-        ]
-      }
-    ],
     "Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md": [
       {
         "type": "anchor_not_found",
@@ -5797,499 +4210,6 @@
         "suggestion": null
       }
     ],
-    "Knowledge/98-exercises/exercise-01-process-calculus.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "../Struct/01-foundations.md",
-        "text": "Struct/01-foundations.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/01-foundations.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#11",
-        "text": "answers/01-process-calculus.md",
-        "line": 221,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#12",
-        "text": "answers/01-process-calculus.md",
-        "line": 222,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#13",
-        "text": "answers/01-process-calculus.md",
-        "line": 223,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-process-calculus.md#14",
-        "text": "answers/01-process-calculus.md",
-        "line": 224,
-        "resolved": "Knowledge/98-exercises/answers/01-process-calculus.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-code/actor-simulation.go",
-        "text": "answers/01-code/actor-simulation.go",
-        "line": 225,
-        "resolved": "Knowledge/98-exercises/answers/01-code/actor-simulation.go",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-01-process-calculus.md",
-        "url": "./answers/01-code/dining-philosophers.mcrl2",
-        "text": "answers/01-code/dining-philosophers.mcrl2",
-        "line": 226,
-        "resolved": "Knowledge/98-exercises/answers/01-code/dining-philosophers.mcrl2",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/exercise-02-flink-basics.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "../Flink/01-architecture-overview.md",
-        "text": "Flink/01-architecture-overview.md",
-        "line": 3,
-        "resolved": "Knowledge/Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#21",
-        "text": "answers/02-flink-basics.md",
-        "line": 260,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#22",
-        "text": "answers/02-flink-basics.md",
-        "line": 261,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-flink-basics.md#23",
-        "text": "answers/02-flink-basics.md",
-        "line": 262,
-        "resolved": "Knowledge/98-exercises/answers/02-flink-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/WordCount.java",
-        "text": "answers/02-code/WordCount.java",
-        "line": 263,
-        "resolved": "Knowledge/98-exercises/answers/02-code/WordCount.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/UserBehaviorAnalysis.java",
-        "text": "answers/02-code/UserBehaviorAnalysis.java",
-        "line": 264,
-        "resolved": "Knowledge/98-exercises/answers/02-code/UserBehaviorAnalysis.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/TemperatureMonitor.java",
-        "text": "answers/02-code/TemperatureMonitor.java",
-        "line": 265,
-        "resolved": "Knowledge/98-exercises/answers/02-code/TemperatureMonitor.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "./answers/02-code/SkewOptimization.java",
-        "text": "answers/02-code/SkewOptimization.java",
-        "line": 266,
-        "resolved": "Knowledge/98-exercises/answers/02-code/SkewOptimization.java",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "../Flink/03-fault-tolerance.md",
-        "text": "Flink/03-fault-tolerance.md",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-fault-tolerance.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#31",
-        "text": "answers/03-checkpoint.md",
-        "line": 266,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#32",
-        "text": "answers/03-checkpoint.md",
-        "line": 267,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#33",
-        "text": "answers/03-checkpoint.md",
-        "line": 268,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-checkpoint.md#34",
-        "text": "answers/03-checkpoint.md",
-        "line": 269,
-        "resolved": "Knowledge/98-exercises/answers/03-checkpoint.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/CheckpointConfig.java",
-        "text": "answers/03-code/CheckpointConfig.java",
-        "line": 270,
-        "resolved": "Knowledge/98-exercises/answers/03-code/CheckpointConfig.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/CheckpointMetricsAnalysis.md",
-        "text": "answers/03-code/CheckpointMetricsAnalysis.md",
-        "line": 271,
-        "resolved": "Knowledge/98-exercises/answers/03-code/CheckpointMetricsAnalysis.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/FaultRecoveryTest.md",
-        "text": "answers/03-code/FaultRecoveryTest.md",
-        "line": 272,
-        "resolved": "Knowledge/98-exercises/answers/03-code/FaultRecoveryTest.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
-        "url": "./answers/03-code/UnalignedCheckpoint.java",
-        "text": "answers/03-code/UnalignedCheckpoint.java",
-        "line": 273,
-        "resolved": "Knowledge/98-exercises/answers/03-code/UnalignedCheckpoint.java",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/exercise-04-consistency-models.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "../Struct/02-consistency-models.md",
-        "text": "Struct/02-consistency-models.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/02-consistency-models.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#41",
-        "text": "answers/04-consistency.md",
-        "line": 234,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#42",
-        "text": "answers/04-consistency.md",
-        "line": 235,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#43",
-        "text": "answers/04-consistency.md",
-        "line": 236,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-consistency.md#44",
-        "text": "answers/04-consistency.md",
-        "line": 237,
-        "resolved": "Knowledge/98-exercises/answers/04-consistency.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/OrderSystem.tla",
-        "text": "answers/04-code/OrderSystem.tla",
-        "line": 238,
-        "resolved": "Knowledge/98-exercises/answers/04-code/OrderSystem.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/GeoReplication.md",
-        "text": "answers/04-code/GeoReplication.md",
-        "line": 239,
-        "resolved": "Knowledge/98-exercises/answers/04-code/GeoReplication.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-04-consistency-models.md",
-        "url": "./answers/04-code/DecisionTree.md",
-        "text": "answers/04-code/DecisionTree.md",
-        "line": 240,
-        "resolved": "Knowledge/98-exercises/answers/04-code/DecisionTree.md",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/exercise-05-pattern-implementation.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#51",
-        "text": "answers/05-patterns.md",
-        "line": 232,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#52",
-        "text": "answers/05-patterns.md",
-        "line": 233,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-patterns.md#53",
-        "text": "answers/05-patterns.md",
-        "line": 234,
-        "resolved": "Knowledge/98-exercises/answers/05-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/TopN.java",
-        "text": "answers/05-code/TopN.java",
-        "line": 235,
-        "resolved": "Knowledge/98-exercises/answers/05-code/TopN.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/OrderTimeout.java",
-        "text": "answers/05-code/OrderTimeout.java",
-        "line": 236,
-        "resolved": "Knowledge/98-exercises/answers/05-code/OrderTimeout.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/IntervalJoin.java",
-        "text": "answers/05-code/IntervalJoin.java",
-        "line": 237,
-        "resolved": "Knowledge/98-exercises/answers/05-code/IntervalJoin.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/AsyncLookup.java",
-        "text": "answers/05-code/AsyncLookup.java",
-        "line": 238,
-        "resolved": "Knowledge/98-exercises/answers/05-code/AsyncLookup.java",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
-        "url": "./answers/05-code/DynamicWindow.java",
-        "text": "answers/05-code/DynamicWindow.java",
-        "line": 239,
-        "resolved": "Knowledge/98-exercises/answers/05-code/DynamicWindow.java",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/exercise-06-tla-practice.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "../Struct/02-consistency-models.md",
-        "text": "Struct/02-consistency-models.md",
-        "line": 3,
-        "resolved": "Knowledge/Struct/02-consistency-models.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/TrafficLight.tla",
-        "text": "answers/06-tla/TrafficLight.tla",
-        "line": 365,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/TrafficLight.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/MutualExclusion.tla",
-        "text": "answers/06-tla/MutualExclusion.tla",
-        "line": 366,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/MutualExclusion.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/TwoPhaseCommit.tla",
-        "text": "answers/06-tla/TwoPhaseCommit.tla",
-        "line": 367,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/TwoPhaseCommit.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/FlinkCheckpoint.tla",
-        "text": "answers/06-tla/FlinkCheckpoint.tla",
-        "line": 368,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/FlinkCheckpoint.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/Watermark.tla",
-        "text": "answers/06-tla/Watermark.tla",
-        "line": 369,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/Watermark.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/ExactlyOnce.tla",
-        "text": "answers/06-tla/ExactlyOnce.tla",
-        "line": 370,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/ExactlyOnce.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/DiningPhilosophers.tla",
-        "text": "answers/06-tla/DiningPhilosophers.tla",
-        "line": 371,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/DiningPhilosophers.tla",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-06-tla-practice.md",
-        "url": "./answers/06-tla/ModelCheckingReport.md",
-        "text": "answers/06-tla/ModelCheckingReport.md",
-        "line": 372,
-        "resolved": "Knowledge/98-exercises/answers/06-tla/ModelCheckingReport.md",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/98-exercises/README.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Struct/",
-        "text": "Struct/ 理论基础",
-        "line": 3,
-        "resolved": "Knowledge/Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Flink/",
-        "text": "Flink/ 实践指南",
-        "line": 3,
-        "resolved": "Knowledge/Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Struct/",
-        "text": "Struct/ 理论文档",
-        "line": 123,
-        "resolved": "Knowledge/Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/README.md",
-        "url": "../Flink/",
-        "text": "Flink/ 实践指南",
-        "line": 124,
-        "resolved": "Knowledge/Flink",
-        "suggestion": null
-      }
-    ],
     "Knowledge/10-case-studies/ecommerce/10.2.1-realtime-recommendation.md": [
       {
         "type": "anchor_not_found",
@@ -6300,30 +4220,6 @@
         "file": "Knowledge/10-case-studies/ecommerce/10.2.1-realtime-recommendation.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      }
-    ],
-    "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.1-flink-production-deployment.md",
-        "text": "10.2.1 Flink生产环境部署指南",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.1-flink-production-deployment.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.2-realtime-warehouse-practice.md",
-        "text": "10.2.2 实时数仓建设实践",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.2-realtime-warehouse-practice.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
       }
     ],
     "Knowledge/10-case-studies/finance/10.1.1-realtime-anti-fraud-system.md": [
@@ -6398,15 +4294,6 @@
     ],
     "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md": [
       {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md",
-        "url": "../../05-flink-advanced/flink-2.4-wasm-udf.md",
-        "text": "../../05-flink-advanced/flink-2.4-wasm-udf.md",
-        "line": 3,
-        "resolved": "Knowledge/05-flink-advanced/flink-2.4-wasm-udf.md",
-        "suggestion": null
-      },
-      {
         "type": "anchor_not_found",
         "source": "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
@@ -6455,17 +4342,6 @@
     ],
     "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md": [
       {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
-        "url": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "text": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "line": 3,
-        "resolved": "Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "suggestion": [
-          "AGENTS.md"
-        ]
-      },
-      {
         "type": "anchor_not_found",
         "source": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
@@ -6473,91 +4349,6 @@
         "line": 25,
         "file": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
-        "url": "../../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md",
-        "url": "../../Flink/03-api-layer/connectors/kafka-connector.md",
-        "text": "Flink Kafka Connector",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/connectors/kafka-connector.md",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md",
-        "url": "../../Flink/02-core-mechanisms/jobgraph-execution-model.md",
-        "text": "Flink JobGraph",
-        "line": 3,
-        "resolved": "Knowledge/Flink/02-core-mechanisms/jobgraph-execution-model.md",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
-        "url": "../../Flink/03-api-layer/ds-core-abstraction.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
-        "url": "../../Flink/02-core-mechanisms/time-semantics.md",
-        "text": "Time Semantics",
-        "line": 3,
-        "resolved": "Knowledge/Flink/02-core-mechanisms/time-semantics.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/01-architecture/datastream-v2-semantics.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-1-datastream-v1--datastream-v2",
-        "text": "关系 1: DataStream V1 `↦` DataStream V2",
-        "line": 24,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-1-datastream-v1--datastream-v2",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-2-datastream-v2--dataflow-模型",
-        "text": "关系 2: DataStream V2 `≈` Dataflow 模型",
-        "line": 25,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-2-datastream-v2--dataflow-模型",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#关系-3-async-state-access--分离状态存储架构",
-        "text": "关系 3: Async State Access `↔` 分离状态存储架构",
-        "line": 26,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "关系-3-async-state-access--分离状态存储架构",
         "suggestion": null
       }
     ],
@@ -6599,112 +4390,8 @@
         "source": "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
+        "line": 49,
         "file": "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/02-core-mechanisms/backpressure-and-flow-control.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-1-flink-cbfc--tcp-flow-control",
-        "text": "关系 1: Flink CBFC `⊃` TCP Flow Control",
-        "line": 26,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-1-flink-cbfc--tcp-flow-control",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-2-本地背压--端到端背压",
-        "text": "关系 2: 本地背压 `→` 端到端背压",
-        "line": 27,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-2-本地背压--端到端背压",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#关系-3-backpressure--checkpoint-可靠性",
-        "text": "关系 3: Backpressure `↔` Checkpoint 可靠性",
-        "line": 28,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "关系-3-backpressure--checkpoint-可靠性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 33,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#定理-51-cbfc-安全性--safety",
-        "text": "定理 5.1 (CBFC 安全性 / Safety)",
-        "line": 34,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "定理-51-cbfc-安全性--safety",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "url": "#工程论证-53-buffer-debloating--unaligned-checkpoint-联合选型",
-        "text": "工程论证 5.3 (Buffer Debloating + Unaligned Checkpoint 联合选型)",
-        "line": 36,
-        "file": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
-        "anchor": "工程论证-53-buffer-debloating--unaligned-checkpoint-联合选型",
-        "suggestion": null
-      }
-    ],
-    "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-1-flink-checkpoint--chandy-lamport-分布式快照",
-        "text": "关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照",
-        "line": 25,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-1-flink-checkpoint--chandy-lamport-分布式快照",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-2-checkpoint-机制--exactly-once-语义",
-        "text": "关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义",
-        "line": 26,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-2-checkpoint-机制--exactly-once-语义",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#关系-3-state-backend-类型--应用场景",
-        "text": "关系 3: State Backend 类型 ↔ 应用场景",
-        "line": 27,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "anchor": "关系-3-state-backend-类型--应用场景",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
-        "file": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
@@ -6717,48 +4404,6 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 13,
         "file": "Flink/02-core-mechanisms/flink-state-management-complete-guide.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/02-core-mechanisms/smart-checkpointing-strategies.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-1-智能检查点--传统检查点",
-        "text": "关系 1: 智能检查点 ⊃ 传统检查点",
-        "line": 34,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-1-智能检查点--传统检查点",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-2-负载感知--自适应间隔",
-        "text": "关系 2: 负载感知 ⟹ 自适应间隔",
-        "line": 35,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-2-负载感知--自适应间隔",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#关系-3-增量检查点--存储层优化",
-        "text": "关系 3: 增量检查点 ↔ 存储层优化",
-        "line": 36,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "anchor": "关系-3-增量检查点--存储层优化",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 61,
-        "file": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
@@ -6785,30 +4430,6 @@
         "file": "Flink/02-core-mechanisms/time-semantics-and-watermark.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      }
-    ],
-    "Flink/03-sql-table-api/built-in-functions-complete-list.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/03-sql-table-api/built-in-functions-complete-list.md",
-        "url": "../01-overview/flink-sql-overview.md",
-        "text": "Flink SQL 概述",
-        "line": 3,
-        "resolved": "Flink/01-overview/flink-sql-overview.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/03-sql-table-api/data-types-complete-reference.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/03-sql-table-api/data-types-complete-reference.md",
-        "url": "./01-architecture-overview.md",
-        "text": "01-基础架构概述",
-        "line": 3,
-        "resolved": "Flink/03-sql-table-api/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
       }
     ],
     "Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md": [
@@ -6843,16 +4464,6 @@
         "file": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
         "anchor": "关系-2-sql-计划空间--datastream-计划空间",
         "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
       }
     ],
     "Flink/04-connectors/04.04-cdc-debezium-integration.md": [
@@ -6876,26 +4487,6 @@
         "line": 29,
         "file": "Flink/04-connectors/cloudevents-integration-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/04-connectors/elasticsearch-connector-complete-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/elasticsearch-connector-complete-guide.md",
-        "url": "../02-api/02.01-datastream-api-basics.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Flink/02-api/02.01-datastream-api-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/elasticsearch-connector-complete-guide.md",
-        "url": "../03-core/03.02-checkpoint-mechanism.md",
-        "text": "Flink Checkpoint机制",
-        "line": 3,
-        "resolved": "Flink/03-core/03.02-checkpoint-mechanism.md",
         "suggestion": null
       }
     ],
@@ -6991,43 +4582,14 @@
         "suggestion": null
       }
     ],
-    "Flink/04-connectors/pulsar-integration-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/pulsar-integration-guide.md",
-        "url": "01-connector-basics.md",
-        "text": "Flink-01-04 连接器基础",
-        "line": 3,
-        "resolved": "Flink/04-connectors/01-connector-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/04-connectors/pulsar-integration-guide.md",
-        "url": "03-01-state-management.md",
-        "text": "Flink-03-01 状态管理",
-        "line": 3,
-        "resolved": "Flink/04-connectors/03-01-state-management.md",
-        "suggestion": null
-      }
-    ],
     "Flink/05-operations/production-checklist.md": [
       {
         "type": "file_not_found",
         "source": "Flink/05-operations/production-checklist.md",
-        "url": "../10-deployment/flink-deployment-guide.md",
-        "text": "Flink部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-deployment-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/05-operations/production-checklist.md",
-        "url": "../15-observability/monitoring-setup.md",
+        "url": "../11-monitoring-observability/flink-monitoring-setup-guide.md",
         "text": "监控配置指南",
         "line": 3,
-        "resolved": "Flink/15-observability/monitoring-setup.md",
+        "resolved": "Flink/11-monitoring-observability/flink-monitoring-setup-guide.md",
         "suggestion": null
       }
     ],
@@ -7072,16 +4634,6 @@
         "line": 20,
         "file": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
         "anchor": "关系-2-spark-dstream--spark-structured-streaming--flink",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
     ],
@@ -7143,28 +4695,6 @@
         "suggestion": null
       }
     ],
-    "Flink/07-case-studies/case-clickstream-user-behavior-analytics.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-case-studies/case-clickstream-user-behavior-analytics.md",
-        "url": "../05-ecosystem/",
-        "text": "Flink/05-ecosystem/",
-        "line": 3,
-        "resolved": "Flink/05-ecosystem",
-        "suggestion": null
-      }
-    ],
-    "Flink/07-case-studies/case-ecommerce-realtime-recommendation.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-case-studies/case-ecommerce-realtime-recommendation.md",
-        "url": "../06-ml/",
-        "text": "Flink/06-ml/",
-        "line": 3,
-        "resolved": "Flink/06-ml",
-        "suggestion": null
-      }
-    ],
     "Flink/07-case-studies/case-logistics-realtime-tracking.md": [
       {
         "type": "anchor_not_found",
@@ -7174,48 +4704,6 @@
         "line": 24,
         "file": "Flink/07-case-studies/case-logistics-realtime-tracking.md",
         "anchor": "5-工程论证--工程实践-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/07-case-studies/case-realtime-analytics.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-1-案例架构--dataflow-理论模型",
-        "text": "关系 1: 案例架构 ↦ Dataflow 理论模型",
-        "line": 32,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-1-案例架构--dataflow-理论模型",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-2-多层窗口--时间语义形式化",
-        "text": "关系 2: 多层窗口 ↦ 时间语义形式化",
-        "line": 33,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-2-多层窗口--时间语义形式化",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#关系-3-容错设计--checkpoint-正确性",
-        "text": "关系 3: 容错设计 ↦ Checkpoint 正确性",
-        "line": 34,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "关系-3-容错设计--checkpoint-正确性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/07-case-studies/case-realtime-analytics.md",
-        "url": "#8-形式证明--工程论证-proof--engineering-argument",
-        "text": "8. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 39,
-        "file": "Flink/07-case-studies/case-realtime-analytics.md",
-        "anchor": "8-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
     ],
@@ -7259,61 +4747,9 @@
         "source": "Flink/08-roadmap/flink-30-architecture-redesign.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argumentation",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)",
-        "line": 40,
+        "line": 52,
         "file": "Flink/08-roadmap/flink-30-architecture-redesign.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argumentation",
-        "suggestion": null
-      }
-    ],
-    "Flink/08-roadmap/flink-version-evolution-complete-guide.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 50,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-1-1x--20-迁移",
-        "text": "检查清单 1: 1.x → 2.0 迁移",
-        "line": 61,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-1-1x--20-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-2-20--21-迁移",
-        "text": "检查清单 2: 2.0 → 2.1 迁移",
-        "line": 62,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-2-20--21-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-3-21--22-迁移",
-        "text": "检查清单 3: 2.1 → 2.2 迁移",
-        "line": 63,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-3-21--22-迁移",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "url": "#检查清单-4-22--23-迁移",
-        "text": "检查清单 4: 2.2 → 2.3 迁移",
-        "line": 64,
-        "file": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
-        "anchor": "检查清单-4-22--23-迁移",
         "suggestion": null
       }
     ],
@@ -7375,18 +4811,6 @@
         "suggestion": null
       }
     ],
-    "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 30,
-        "file": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
     "Flink/09-language-foundations/02.02-flink-scala-api-community.md": [
       {
         "type": "anchor_not_found",
@@ -7421,60 +4845,6 @@
         "suggestion": null
       }
     ],
-    "Flink/09-language-foundations/03.01-migration-guide.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#flink-scala-项目迁移完全指南-1x--20",
-        "text": "Flink Scala 项目迁移完全指南 (1.x → 2.0)",
-        "line": 9,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "flink-scala-项目迁移完全指南-1x--20",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#step-3-api-变更-dataset--datastream",
-        "text": "Step 3: API 变更 (DataSet → DataStream)",
-        "line": 35,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "step-3-api-变更-dataset--datastream",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "#savepoint-恢复配置-path-a--c",
-        "text": "Savepoint 恢复配置 (Path A \\& C)",
-        "line": 44,
-        "file": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "anchor": "savepoint-恢复配置-path-a--c",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/05-datastream-v2-api.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "#66-migration-example-v1--v2-side-by-side",
-        "text": "6.6 Migration Example (V1 → V2 Side-by-Side)",
-        "line": 38,
-        "file": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "anchor": "66-migration-example-v1--v2-side-by-side",
-        "suggestion": null
-      }
-    ],
     "Flink/09-language-foundations/06-risingwave-deep-dive.md": [
       {
         "type": "anchor_not_found",
@@ -7484,26 +4854,6 @@
         "line": 38,
         "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
         "anchor": "444-与-flink-vectorsearch-对比规划中",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 40,
-        "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "url": "#63-混合架构flink--risingwave-协同",
-        "text": "6.3 混合架构：Flink + RisingWave 协同",
-        "line": 47,
-        "file": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
-        "anchor": "63-混合架构flink--risingwave-协同",
         "suggestion": null
       }
     ],
@@ -7547,21 +4897,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "../../13-wasm/wasm-streaming.md",
-        "text": "Flink/13-wasm/wasm-streaming.md",
-        "line": 3,
-        "resolved": "13-wasm/wasm-streaming.md",
-        "suggestion": [
-          "Flink/13-wasm/wasm-streaming.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "../03-rust-native.md",
+        "url": "./flink-rust-native-api-guide.md",
         "text": "Flink/09-language-foundations/03-rust-native.md",
         "line": 3,
-        "resolved": "Flink/03-rust-native.md",
+        "resolved": "Flink/09-language-foundations/flink-rust-native-api-guide.md",
         "suggestion": null
       },
       {
@@ -7603,18 +4942,6 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 35,
         "file": "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/flink-datastream-api-complete-guide.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 38,
-        "file": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
@@ -7671,19 +4998,19 @@
       {
         "type": "file_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "./flink-kubernetes-deployment.md",
+        "url": "./flink-kubernetes-deployment-complete-guide.md",
         "text": "Flink Kubernetes部署指南",
         "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment.md",
+        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-complete-guide.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
+        "url": "../01-architecture/flink-architecture-overview.md",
         "text": "Flink 集群架构",
         "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
+        "resolved": "Flink/01-architecture/flink-architecture-overview.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
@@ -7699,49 +5026,14 @@
         "suggestion": null
       }
     ],
-    "Flink/11-benchmarking/performance-benchmarking-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/11-benchmarking/performance-benchmarking-guide.md",
-        "url": "../04-mechanisms/",
-        "text": "Flink 核心机制",
-        "line": 3,
-        "resolved": "Flink/04-mechanisms",
-        "suggestion": null
-      }
-    ],
-    "Flink/11-benchmarking/streaming-benchmarks.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/11-benchmarking/streaming-benchmarks.md",
-        "url": "../04-internals/README.md",
-        "text": "Flink核心机制",
-        "line": 3,
-        "resolved": "Flink/04-internals/README.md",
-        "suggestion": [
-          "README.md"
-        ]
-      }
-    ],
     "Flink/12-ai-ml/flink-ai-agents-flip-531.md": [
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "flink-llm-integration-guide.md",
-        "text": "Flink LLM集成",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/flink-llm-integration-guide.md",
-        "suggestion": [
-          "Flink/12-ai-ml/flink-llm-integration.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "mcp-protocol-agent-streaming.md",
+        "url": "../06-frontier/mcp-protocol-agent-streaming.md",
         "text": "MCP协议",
         "line": 3,
-        "resolved": "Flink/12-ai-ml/mcp-protocol-agent-streaming.md",
+        "resolved": "Flink/06-frontier/mcp-protocol-agent-streaming.md",
         "suggestion": null
       }
     ],
@@ -7749,19 +5041,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "../05-sql/flink-sql-advanced.md",
+        "url": "../03-sql-table-api/flink-sql-advanced-features.md",
         "text": "Flink SQL 高级特性",
         "line": 3,
-        "resolved": "Flink/05-sql/flink-sql-advanced.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "./flink-ml-foundation.md",
-        "text": "Flink ML 基础",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/flink-ml-foundation.md",
+        "resolved": "Flink/03-sql-table-api/flink-sql-advanced-features.md",
         "suggestion": null
       }
     ],
@@ -7769,10 +5052,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/flink-ml-architecture.md",
-        "url": "../01-core/flink-datastream-api.md",
+        "url": "../02-core-mechanisms/flink-datastream-api-guide.md",
         "text": "Flink DataStream API",
         "line": 3,
-        "resolved": "Flink/01-core/flink-datastream-api.md",
+        "resolved": "Flink/02-core-mechanisms/flink-datastream-api-guide.md",
         "suggestion": null
       }
     ],
@@ -7780,30 +5063,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../04-streaming-foundations/flink-async-io.md",
+        "url": "../02-core-mechanisms/async-io-mechanism.md",
         "text": "Flink异步I/O机制",
         "line": 3,
-        "resolved": "Flink/04-streaming-foundations/flink-async-io.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../05-state-management/flink-state-management.md",
-        "text": "Flink状态管理",
-        "line": 3,
-        "resolved": "Flink/05-state-management/flink-state-management.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/model-serving-streaming.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/model-serving-streaming.md",
-        "url": "../11-feature-engineering/feature-engineering-patterns.md",
-        "text": "Flink/11-feature-engineering/feature-engineering-patterns.md",
-        "line": 3,
-        "resolved": "Flink/11-feature-engineering/feature-engineering-patterns.md",
+        "resolved": "Flink/02-core-mechanisms/async-io-mechanism.md",
         "suggestion": null
       }
     ],
@@ -7849,36 +5112,14 @@
         "suggestion": null
       }
     ],
-    "Flink/12-ai-ml/rag-streaming-architecture.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/rag-streaming-architecture.md",
-        "url": "../../03-sql-table-api/vector-search.md",
-        "text": "vector-search.md",
-        "line": 3,
-        "resolved": "03-sql-table-api/vector-search.md",
-        "suggestion": [
-          "Flink/03-sql-table-api/vector-search.md"
-        ]
-      }
-    ],
     "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md": [
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/dual-stream-join.md",
+        "url": "../02-core-mechanisms/stream-join-mechanisms.md",
         "text": "Flink双流Join机制",
         "line": 3,
-        "resolved": "Flink/02-core-mechanisms/dual-stream-join.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/state-management.md",
-        "text": "Flink状态管理",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/state-management.md",
+        "resolved": "Flink/02-core-mechanisms/stream-join-mechanisms.md",
         "suggestion": null
       }
     ],
@@ -7886,19 +5127,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "./11.4-flink-ml-inference.md",
-        "text": "11.4-flink-ml-inference.md",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/11.4-flink-ml-inference.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "../04-connectors/04.1-jdbc-connector.md",
+        "url": "../04-connectors/jdbc-connector-guide.md",
         "text": "04.1-jdbc-connector.md",
         "line": 3,
-        "resolved": "Flink/04-connectors/04.1-jdbc-connector.md",
+        "resolved": "Flink/04-connectors/jdbc-connector-guide.md",
         "suggestion": null
       }
     ],
@@ -7906,10 +5138,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
+        "url": "./flink-security-architecture.md",
         "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
@@ -7919,10 +5151,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
+        "url": "./flink-security-architecture.md",
         "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
@@ -7932,19 +5164,19 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "../11-security/flink-security-authorization.md",
+        "url": "./flink-security-authorization.md",
         "text": "11-security-authorization",
         "line": 3,
-        "resolved": "Flink/11-security/flink-security-authorization.md",
+        "resolved": "Flink/13-security/flink-security-authorization.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
         "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "../12-security/flink-security-network-isolation.md",
+        "url": "./flink-security-network-isolation.md",
         "text": "12-security-network-isolation",
         "line": 3,
-        "resolved": "Flink/12-security/flink-security-network-isolation.md",
+        "resolved": "Flink/13-security/flink-security-network-isolation.md",
         "suggestion": null
       }
     ],
@@ -7952,10 +5184,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "../12-security/flink-security-architecture.md",
+        "url": "./flink-security-architecture.md",
         "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
@@ -7987,10 +5219,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../01-architecture/flink-architecture-overview.md",
+        "url": "../01-architecture/flink-cluster-architecture.md",
         "text": "Flink架构概览",
         "line": 3,
-        "resolved": "Flink/01-architecture/flink-architecture-overview.md",
+        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
@@ -7998,10 +5230,10 @@
       {
         "type": "file_not_found",
         "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../05-udf/flink-udf-extension.md",
+        "url": "../09-language-foundations/flink-udf-development-guide.md",
         "text": "Flink UDF扩展",
         "line": 3,
-        "resolved": "Flink/05-udf/flink-udf-extension.md",
+        "resolved": "Flink/09-language-foundations/flink-udf-development-guide.md",
         "suggestion": null
       }
     ],
@@ -8009,39 +5241,23 @@
       {
         "type": "file_not_found",
         "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../06-dataset/flink-dataset-api.md",
+        "url": "../01-architecture/flink-batch-streaming-unified.md",
         "text": "Flink DataSet API",
         "line": 3,
-        "resolved": "Flink/06-dataset/flink-dataset-api.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../12-iteration/flink-iteration.md",
-        "text": "迭代机制",
-        "line": 3,
-        "resolved": "Flink/12-iteration/flink-iteration.md",
-        "suggestion": null
+        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
       }
     ],
     "Flink/15-observability/distributed-tracing.md": [
       {
         "type": "file_not_found",
         "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "../08-state/checkpoint-mechanism.md",
-        "text": "Flink状态容错机制",
-        "line": 3,
-        "resolved": "Flink/08-state/checkpoint-mechanism.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "./backpressure-monitoring.md",
+        "url": "./flink-backpressure-monitoring.md",
         "text": "Flink反压监控",
         "line": 3,
-        "resolved": "Flink/15-observability/backpressure-monitoring.md",
+        "resolved": "Flink/15-observability/flink-backpressure-monitoring.md",
         "suggestion": null
       }
     ],
@@ -8049,45 +5265,16 @@
       {
         "type": "file_not_found",
         "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../13-checkpoint/flink-exactly-once-semantics.md",
+        "url": "../02-core-mechanisms/exactly-once-semantics.md",
         "text": "13-checkpoint/flink-exactly-once-semantics.md",
         "line": 3,
-        "resolved": "Flink/13-checkpoint/flink-exactly-once-semantics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../10-architecture/flink-state-management.md",
-        "text": "10-architecture/flink-state-management.md",
-        "line": 3,
-        "resolved": "Flink/10-architecture/flink-state-management.md",
+        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
         "suggestion": [
-          "ARCHITECTURE.md"
+          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
         ]
       }
     ],
-    "Flink/15-observability/metrics-and-monitoring.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/metrics-and-monitoring.md",
-        "url": "../12-fault-tolerance/checkpoint-mechanism.md",
-        "text": "12-fault-tolerance/checkpoint-mechanism.md",
-        "line": 3,
-        "resolved": "Flink/12-fault-tolerance/checkpoint-mechanism.md",
-        "suggestion": null
-      }
-    ],
     "Flink/15-observability/realtime-data-quality-monitoring.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/realtime-data-quality-monitoring.md",
-        "url": "../14-security/streaming-data-governance.md",
-        "text": "14-security/streaming-data-governance.md",
-        "line": 3,
-        "resolved": "Flink/14-security/streaming-data-governance.md",
-        "suggestion": null
-      },
       {
         "type": "anchor_not_found",
         "source": "Flink/15-observability/realtime-data-quality-monitoring.md",
@@ -8106,17 +5293,6 @@
         "line": 42,
         "file": "Flink/15-observability/realtime-data-quality-monitoring.md",
         "anchor": "61-flink--great-expectations-集成实现",
-        "suggestion": null
-      }
-    ],
-    "docs/i18n/README.md": [
-      {
-        "type": "file_not_found",
-        "source": "docs/i18n/README.md",
-        "url": ".scripts/i18n-manager.py --help",
-        "text": "工具帮助",
-        "line": 89,
-        "resolved": "docs/i18n/.scripts/i18n-manager.py --help",
         "suggestion": null
       }
     ],
@@ -8188,136 +5364,16 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Struct/02-properties/02.02-consistency-hierarchy.md",
-        "text": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "line": 3,
-        "resolved": "visuals/../../Struct/02-properties/02.02-consistency-hierarchy.md",
+        "source": ".tasks/flink-release-tracker.md",
+        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
+        "text": "文档更新工作流程",
+        "line": 312,
+        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
         "suggestion": [
-          "Struct/02-properties/02.02-consistency-hierarchy.md"
+          ".scripts/flink-version-tracking/doc-update-workflow.md"
         ]
       },
-      "fix": "Struct/02-properties/02.02-consistency-hierarchy.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "visuals/selection-tree-consistency.md",
-        "url": "../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "text": "Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "line": 3,
-        "resolved": "visuals/../../Flink/02-core-mechanisms/exactly-once-end-to-end.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-end-to-end.md"
-        ]
-      },
-      "fix": "Flink/02-core-mechanisms/exactly-once-end-to-end.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "../../Flink/01-architecture/flink-24-performance-improvements.md",
-        "text": "Flink 2.0 Architecture",
-        "line": 1067,
-        "resolved": "Flink/01-architecture/flink-24-performance-improvements.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/08-standards/streaming-security-compliance.md",
-        "url": "../../Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "text": "Flink安全架构",
-        "line": 3,
-        "resolved": "Flink/11-monitoring-observability/flink-security-audit-logging.md",
-        "suggestion": [
-          "SECURITY-AUDIT.md"
-        ]
-      },
-      "fix": "SECURITY-AUDIT.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/exercise-02-flink-basics.md",
-        "url": "../Flink/01-architecture-overview.md",
-        "text": "Flink/01-architecture-overview.md",
-        "line": 3,
-        "resolved": "Knowledge/Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.1-flink-production-deployment.md",
-        "text": "10.2.1 Flink生产环境部署指南",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.1-flink-production-deployment.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      "fix": "CASE-STUDIES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
-        "url": "../10.2.2-realtime-warehouse-practice.md",
-        "text": "10.2.2 实时数仓建设实践",
-        "line": 3,
-        "resolved": "Knowledge/10-case-studies/10.2.2-realtime-warehouse-practice.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      "fix": "CASE-STUDIES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
-        "url": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "text": "../../../Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "line": 3,
-        "resolved": "Flink/07-ai-integration/07.1-flink-ai-agents.md",
-        "suggestion": [
-          "AGENTS.md"
-        ]
-      },
-      "fix": "AGENTS.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/03-sql-table-api/data-types-complete-reference.md",
-        "url": "./01-architecture-overview.md",
-        "text": "01-基础架构概述",
-        "line": 3,
-        "resolved": "Flink/03-sql-table-api/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
+      "fix": ".scripts/flink-version-tracking/doc-update-workflow.md"
     },
     {
       "type": "case_mismatch",
@@ -8340,129 +5396,9 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "../../13-wasm/wasm-streaming.md",
-        "text": "Flink/13-wasm/wasm-streaming.md",
-        "line": 3,
-        "resolved": "13-wasm/wasm-streaming.md",
-        "suggestion": [
-          "Flink/13-wasm/wasm-streaming.md"
-        ]
-      },
-      "fix": "Flink/13-wasm/wasm-streaming.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
-        "text": "Flink 集群架构",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/11-benchmarking/streaming-benchmarks.md",
-        "url": "../04-internals/README.md",
-        "text": "Flink核心机制",
-        "line": 3,
-        "resolved": "Flink/04-internals/README.md",
-        "suggestion": [
-          "README.md"
-        ]
-      },
-      "fix": "README.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "flink-llm-integration-guide.md",
-        "text": "Flink LLM集成",
-        "line": 3,
-        "resolved": "Flink/12-ai-ml/flink-llm-integration-guide.md",
-        "suggestion": [
-          "Flink/12-ai-ml/flink-llm-integration.md"
-        ]
-      },
-      "fix": "Flink/12-ai-ml/flink-llm-integration.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/rag-streaming-architecture.md",
-        "url": "../../03-sql-table-api/vector-search.md",
-        "text": "vector-search.md",
-        "line": 3,
-        "resolved": "03-sql-table-api/vector-search.md",
-        "suggestion": [
-          "Flink/03-sql-table-api/vector-search.md"
-        ]
-      },
-      "fix": "Flink/03-sql-table-api/vector-search.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "../12-security/flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/12-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
         "url": "../01-architecture/flink-architecture-overview.md",
-        "text": "Flink架构概览",
+        "text": "Flink 集群架构",
         "line": 3,
         "resolved": "Flink/01-architecture/flink-architecture-overview.md",
         "suggestion": [
@@ -8475,16 +5411,91 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../10-architecture/flink-state-management.md",
-        "text": "10-architecture/flink-state-management.md",
+        "source": "Flink/13-security/flink-security-complete-guide.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
         "line": 3,
-        "resolved": "Flink/10-architecture/flink-state-management.md",
+        "resolved": "Flink/13-security/flink-security-architecture.md",
         "suggestion": [
           "ARCHITECTURE.md"
         ]
       },
       "fix": "ARCHITECTURE.md"
+    },
+    {
+      "type": "case_mismatch",
+      "error": {
+        "type": "file_not_found",
+        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
+        "line": 3,
+        "resolved": "Flink/13-security/flink-security-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      "fix": "ARCHITECTURE.md"
+    },
+    {
+      "type": "case_mismatch",
+      "error": {
+        "type": "file_not_found",
+        "source": "Flink/13-security/trusted-execution-flink.md",
+        "url": "./flink-security-architecture.md",
+        "text": "Flink 安全架构概述",
+        "line": 3,
+        "resolved": "Flink/13-security/flink-security-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      "fix": "ARCHITECTURE.md"
+    },
+    {
+      "type": "case_mismatch",
+      "error": {
+        "type": "file_not_found",
+        "source": "Flink/13-wasm/wasm-streaming.md",
+        "url": "../01-architecture/flink-cluster-architecture.md",
+        "text": "Flink架构概览",
+        "line": 3,
+        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      "fix": "ARCHITECTURE.md"
+    },
+    {
+      "type": "case_mismatch",
+      "error": {
+        "type": "file_not_found",
+        "source": "Flink/14-graph/flink-gelly.md",
+        "url": "../01-architecture/flink-batch-streaming-unified.md",
+        "text": "Flink DataSet API",
+        "line": 3,
+        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
+        "suggestion": [
+          "ARCHITECTURE.md"
+        ]
+      },
+      "fix": "ARCHITECTURE.md"
+    },
+    {
+      "type": "case_mismatch",
+      "error": {
+        "type": "file_not_found",
+        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
+        "url": "../02-core-mechanisms/exactly-once-semantics.md",
+        "text": "13-checkpoint/flink-exactly-once-semantics.md",
+        "line": 3,
+        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
+        "suggestion": [
+          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
+        ]
+      },
+      "fix": "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
     },
     {
       "type": "case_mismatch",
@@ -8511,6 +5522,7 @@
     ".scripts/README.md",
     ".scripts/flink-version-tracking/README.md",
     ".scripts/flink-version-tracking/cron-schedule.md",
+    ".scripts/flink-version-tracking/doc-update-workflow.md",
     ".scripts/link-checker/ANCHOR_FIX_REPORT.md",
     ".scripts/link-checker/README.md",
     ".scripts/link-checker/github-action-integration.md",
@@ -8524,8 +5536,10 @@
     ".stats/README.md",
     ".stats/STATISTICS-REPORT-GENERATED.md",
     ".tasks/FLINK-24-25-30-MASTER-TASK.md",
+    ".tasks/FLINK-RELEASE-TRACKING-SYSTEM.md",
     ".tasks/P2-10-completion-report.md",
     ".tasks/flink-features/TASK-MASTER-LIST.md",
+    ".tasks/flink-release-tracker.md",
     ".vscode/README.md",
     ".vscode/VALIDATION-README.md",
     ".vscode/learning-path-template.md",
@@ -8757,6 +5771,29 @@
     "Flink/15-observability/realtime-data-quality-monitoring.md",
     "Flink/15-observability/split-level-watermark-metrics.md",
     "Flink/15-observability/streaming-metrics-monitoring-slo.md",
+    "Flink/3.9-state-backends-deep-comparison.md",
+    "Flink/roadmap/flink-24-adaptive-execution-v2.md",
+    "Flink/roadmap/flink-24-ansi-sql-2023.md",
+    "Flink/roadmap/flink-24-deployment.md",
+    "Flink/roadmap/flink-24-flip-531-ai-agents.md",
+    "Flink/roadmap/flink-24-new-connectors.md",
+    "Flink/roadmap/flink-24-observability.md",
+    "Flink/roadmap/flink-24-performance.md",
+    "Flink/roadmap/flink-24-security.md",
+    "Flink/roadmap/flink-24-serverless-ga.md",
+    "Flink/roadmap/flink-24-smart-checkpoint.md",
+    "Flink/roadmap/flink-25-ai-ml-production.md",
+    "Flink/roadmap/flink-25-deployment.md",
+    "Flink/roadmap/flink-25-gpu-acceleration.md",
+    "Flink/roadmap/flink-25-new-connectors.md",
+    "Flink/roadmap/flink-25-observability.md",
+    "Flink/roadmap/flink-25-performance.md",
+    "Flink/roadmap/flink-25-serverless-v2.md",
+    "Flink/roadmap/flink-25-storage-backends.md",
+    "Flink/roadmap/flink-25-stream-batch-unified.md",
+    "Flink/roadmap/flink-25-wasm-udf-ga.md",
+    "Flink/roadmap/flink-30-api-redesign.md",
+    "Flink/roadmap/flink-30-architecture-changes.md",
     "GLOSSARY-QUICK-INDEX.md",
     "GLOSSARY.md",
     "HISTORY.md",
@@ -8890,6 +5927,7 @@
     "Knowledge/10-case-studies/iot/10.3.3-predictive-maintenance-manufacturing.md",
     "Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md",
     "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
+    "Knowledge/3.10-flink-production-checklist.md",
     "Knowledge/98-exercises/README.md",
     "Knowledge/98-exercises/exercise-01-process-calculus.md",
     "Knowledge/98-exercises/exercise-02-flink-basics.md",
@@ -9027,6 +6065,9 @@
     "docs/i18n/ARCHITECTURE.md",
     "docs/i18n/README.md",
     "docs/i18n/templates/translation-template.md",
+    "i18n/README.md",
+    "i18n/i18n-architecture.md",
+    "i18n/translation-guide.md",
     "reports/feedback/README.md",
     "reports/weekly/weekly-report-W14-20260404.md",
     "reports/weekly/weekly-report-latest.md",
@@ -9130,6 +6171,7 @@
     "Flink/14-graph",
     "Flink/14-lakehouse",
     "Flink/15-observability",
+    "Flink/roadmap",
     "KNOWLEDGE-GRAPH",
     "KNOWLEDGE-GRAPH/data",
     "KNOWLEDGE-GRAPH/scripts",
@@ -9166,6 +6208,7 @@
     "Struct/08-standards",
     "TECH-RADAR",
     "TECH-RADAR/visuals",
+    "ai-features",
     "docker",
     "docs",
     "docs/ai-features",
@@ -9183,9 +6226,14 @@
     "docs/i18n/i18n-content/zh/Struct",
     "docs/i18n/templates",
     "docs/i18n/workflows",
+    "i18n",
+    "i18n/config",
+    "i18n/en",
     "reports",
     "reports/feedback",
     "reports/weekly",
+    "scripts",
+    "scripts/ai-features",
     "tutorials",
     "tutorials/interactive",
     "tutorials/interactive/coding-challenges",

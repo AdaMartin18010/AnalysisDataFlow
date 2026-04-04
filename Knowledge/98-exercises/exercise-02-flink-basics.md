@@ -1,6 +1,6 @@
 # 练习 02: Flink 基础编程
 
-> 所属阶段: Knowledge | 前置依赖: [Flink/01-architecture-overview.md](../Flink/01-architecture-overview.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [部署架构](../../Flink/01-architecture/deployment-architectures.md) | 形式化等级: L3
 
 ---
 
@@ -257,13 +257,13 @@ dataStream
 
 | 题目 | 答案位置 | 补充说明 |
 |------|----------|----------|
-| 2.1 | [answers/02-flink-basics.md](./answers/02-flink-basics.md#21) | 含图示说明 |
-| 2.2 | [answers/02-flink-basics.md](./answers/02-flink-basics.md#22) | 场景分析表 |
-| 2.3 | [answers/02-flink-basics.md](./answers/02-flink-basics.md#23) | 状态类型对比 |
-| 2.4 | [answers/02-code/WordCount.java](./answers/02-code/WordCount.java) | 完整实现 |
-| 2.5 | [answers/02-code/UserBehaviorAnalysis.java](./answers/02-code/UserBehaviorAnalysis.java) | 含Kafka配置 |
-| 2.6 | [answers/02-code/TemperatureMonitor.java](./answers/02-code/TemperatureMonitor.java) | 含测试数据生成 |
-| 2.7 | [answers/02-code/SkewOptimization.java](./answers/02-code/SkewOptimization.java) | 两阶段聚合示例 |
+| 2.1 | **answers/02-flink-basics.md**（答案待添加） | 含图示说明 |
+| 2.2 | **answers/02-flink-basics.md**（答案待添加） | 场景分析表 |
+| 2.3 | **answers/02-flink-basics.md**（答案待添加） | 状态类型对比 |
+| 2.4 | **answers/02-code/WordCount.java**（代码示例待添加） | 完整实现 |
+| 2.5 | **answers/02-code/UserBehaviorAnalysis.java**（代码示例待添加） | 含Kafka配置 |
+| 2.6 | **answers/02-code/TemperatureMonitor.java**（代码示例待添加） | 含测试数据生成 |
+| 2.7 | **answers/02-code/SkewOptimization.java**（代码示例待添加） | 两阶段聚合示例 |
 
 ---
 

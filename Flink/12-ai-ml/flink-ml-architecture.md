@@ -1,6 +1,6 @@
 # Flink ML - 流式机器学习架构
 
-> 所属阶段: Flink/ | 前置依赖: [Flink DataStream API](../01-core/flink-datastream-api.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink DataStream API](../02-core-mechanisms/flink-datastream-api-guide.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

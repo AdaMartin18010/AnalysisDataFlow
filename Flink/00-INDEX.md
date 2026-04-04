@@ -44,7 +44,7 @@
     - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层)
     - [6.13 13-wasm/ WASM与WebAssembly层](#613-13-wasm-wasm与webassembly层)
     - [6.15 15-observability/ 可观测性层](#615-15-observability-可观测性层)
-  - [7. 跨引用索引：Flink ↔ Struct](#7-跨引用索引flink--struct)
+  - [7. 跨引用索引：Flink ↔ Struct](#7-跨引用索引)
     - [7.1 核心概念对应关系](#71-核心概念对应关系)
     - [7.2 形式化证明与工程实现对照](#72-形式化证明与工程实现对照)
   - [8. 故障排查索引 (Troubleshooting Index)](#8-故障排查索引-troubleshooting-index)
@@ -393,6 +393,7 @@ flowchart TD
 | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 | [multi-way-join-optimization.md](02-core-mechanisms/multi-way-join-optimization.md) | 多路Join优化 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
 | [flink-state-ttl-best-practices.md](02-core-mechanisms/flink-state-ttl-best-practices.md) | State TTL最佳实践 | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| [3.9-state-backends-deep-comparison.md](3.9-state-backends-deep-comparison.md) | **State Backends深度对比** 🆕 v2.9 | 状态后端选型、性能基准、调优指南 |
 | [exactly-once-semantics-deep-dive.md](02-core-mechanisms/exactly-once-semantics-deep-dive.md) | Exactly-Once语义深度解析 | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) |
 
 ### 6.3 03-sql-table-api/ SQL与表API层

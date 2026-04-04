@@ -131,4 +131,35 @@
 
 ---
 
-[返回主页](README.md) | [查看维护仪表板](PROJECT-MAINTENANCE-DASHBOARD.md)
+## 附录: 版本发布跟踪系统 (新增)
+
+### 系统组件
+
+| 组件 | 路径 | 说明 |
+|------|------|------|
+| 主跟踪文档 | `.tasks/flink-release-tracker.md` | 版本状态、文档清单、历史记录 |
+| 系统架构文档 | `.tasks/FLINK-RELEASE-TRACKING-SYSTEM.md` | 完整系统说明 |
+| GitHub Actions | `.github/workflows/flink-release-tracker.yml` | 自动检测工作流 |
+| 批量更新脚本 | `.scripts/flink-version-tracking/update-docs-on-release.py` | 版本发布后文档更新 |
+| 更新流程指南 | `.scripts/flink-version-tracking/doc-update-workflow.md` | 3天更新流程 |
+
+### 跟踪版本状态
+
+| 版本 | 预计发布时间 | 文档状态 | 自动化状态 |
+|------|-------------|----------|-----------|
+| Flink 2.4 | 2026 Q3-Q4 | 📝 前瞻文档完成 | ✅ 监控已部署 |
+| Flink 2.5 | 2027 Q1-Q2 | 📝 前瞻文档完成 | ✅ 监控已部署 |
+| Flink 3.0 | 2027 Q1-Q2 | 📝 概念文档完成 | ✅ 监控已部署 |
+
+### 自动化功能
+
+- ✅ 每6小时自动检测 GitHub Releases
+- ✅ 每6小时自动检测 Maven Central
+- ✅ 新版本自动创建 GitHub Issue
+- ✅ 新版本自动发送 Slack 通知
+- ✅ 批量文档更新脚本
+- ✅ 3天文档更新流程规范
+
+---
+
+[返回主页](README.md) | [查看维护仪表板](PROJECT-MAINTENANCE-DASHBOARD.md) | [版本跟踪系统](.tasks/flink-release-tracker.md)
