@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-04T16:40:27.063189",
+  "timestamp": "2026-04-04T16:46:02.225524",
   "summary": {
     "total_files": 575,
     "total_links": 10634,
-    "total_errors": 399,
+    "total_errors": 398,
     "file_errors": 128,
-    "anchor_errors": 271,
+    "anchor_errors": 270,
     "fixable": 21,
     "files_with_errors": 187
   },
@@ -811,9 +811,9 @@
         "line": 248,
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
         ]
       },
       {
@@ -2957,16 +2957,6 @@
         "line": 26,
         "file": "Flink/01-architecture/datastream-v2-semantics.md",
         "anchor": "关系-3-async-state-access--分离状态存储架构",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 32,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
       {
@@ -6569,16 +6559,6 @@
         "file": "Flink/01-architecture/datastream-v2-semantics.md",
         "anchor": "关系-3-async-state-access--分离状态存储架构",
         "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 32,
-        "file": "Flink/01-architecture/datastream-v2-semantics.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
       }
     ],
     "Flink/01-architecture/deployment-architectures.md": [
@@ -7377,9 +7357,9 @@
         "line": 248,
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
         ]
       }
     ],
@@ -8349,12 +8329,12 @@
         "line": 248,
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
         ]
       },
-      "fix": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md"
+      "fix": "Flink/09-language-foundations/flink-language-support-complete-guide.md"
     },
     {
       "type": "case_mismatch",
