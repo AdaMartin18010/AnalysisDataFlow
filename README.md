@@ -45,10 +45,12 @@
 ### 最新更新 (2026-04-04 v4.0 持续演进版)
 
 - **v4.0 持续演进版**: 项目扩展至501篇文档，全面覆盖Flink 2.x/3.0生态
+- **✅ E1-E4错误修复完成**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - 术语统一、链接修复、文档对齐完成
+- **📚 新增tutorials目录入口**: 快速上手指南 [5分钟入门](tutorials/00-5-MINUTE-QUICK-START.md) | [环境搭建](tutorials/01-environment-setup.md) | [第一个作业](tutorials/02-first-flink-job.md)
+- **📖 新增速查表**: [DataStream API速查表](Flink/09-language-foundations/datastream-api-cheatsheet.md) | [SQL函数速查表](Flink/03-sql-table-api/sql-functions-cheatsheet.md)
 - **Flink 2.4/2.5/3.0路线**: [Flink 2.4/2.5/3.0 三年路线图](Flink/08-roadmap/flink-version-evolution-complete-guide.md) - 存算分离GA、云原生调度、AI原生架构
 - **AI Agents GA亮点**: [Flink AI Agents生产级发布](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM集成、智能决策流、AutoML流水线
 - **Serverless Flink亮点**: [无服务器Flink完全指南](Flink/10-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless、Azure Stream Analytics、GCP Dataflow无服务器模式
-- **新增tutorials目录**: 15篇实践教程，从快速上手到生产部署
 - **Flink 2.3路线图**: [Flink 2.3新特性预览](Flink/08-roadmap/flink-2.3-2.4-roadmap.md)
 - **实时图流处理TGN**: [时序图神经网络集成](Flink/14-graph/flink-gelly-streaming-graph-processing.md)
 - **多模态流处理**: [文本/图像/视频统一流处理](Knowledge/06-frontier/multimodal-streaming-architecture.md)

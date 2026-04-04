@@ -1,6 +1,6 @@
 # AnalysisDataFlow — 综合导航索引
 
-> **一站式导航中心** | 254篇技术文档 | 870+形式化元素 | 580+Mermaid图表
+> **一站式导航中心** | 260篇技术文档 | 870+形式化元素 | 580+Mermaid图表
 
 ---
 
@@ -30,7 +30,9 @@
 | **研究员** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | 统一流理论、形式化基础 |
 | | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 正确性证明、形式化验证 |
 | | [Struct/07-tools/smart-casual-verification.md](Struct/07-tools/smart-casual-verification.md) | 前沿验证方法 |
-| **学生/初学者** | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 流计算入门、概念对比 |
+| **学生/初学者** | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 5分钟快速上手 |
+| | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | 第一个Flink作业 |
+| | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 流计算入门、概念对比 |
 | | [Knowledge/98-exercises/exercise-01-process-calculus.md](Knowledge/98-exercises/exercise-01-process-calculus.md) | 渐进式练习 |
 | | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 概念图谱 |
 | **运维工程师** | [Flink/10-deployment/kubernetes-deployment-production-guide.md](Flink/10-deployment/kubernetes-deployment-production-guide.md) | K8s部署、生产运维 |
@@ -352,6 +354,9 @@
 
 | 难度 | 指南 | 预计时间 |
 |------|------|----------|
+| 🟢 入门级 | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 5分钟 |
+| 🟢 入门级 | [tutorials/01-environment-setup.md](tutorials/01-environment-setup.md) | 30分钟 |
+| 🟢 入门级 | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | 1小时 |
 | 🟢 入门级 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 1小时 |
 | 🟢 入门级 | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 30分钟 |
 | 🟡 中级 | [Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) | 2小时 |
@@ -364,11 +369,14 @@
 #### 初学者路径 (2-3周)
 
 ```
-Week 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
+Week 1: tutorials/00-5-MINUTE-QUICK-START.md (5分钟快速体验)
+        → tutorials/01-environment-setup.md (环境搭建)
+        → tutorials/02-first-flink-job.md (第一个Flink作业)
+Week 2: Flink/05-vs-competitors/flink-vs-spark-streaming.md
         → Knowledge/01-concept-atlas/streaming-models-mindmap.md
-Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
         → Knowledge/02-design-patterns/pattern-event-time-processing.md
-Week 3: Knowledge/02-design-patterns/ (全模式深入)
+Week 4: Knowledge/02-design-patterns/ (全模式深入)
         → Knowledge/98-exercises/exercise-02-flink-basics.md
 ```
 
@@ -397,6 +405,11 @@ Struct/01-foundation/ (理论基础)
 
 | 参考卡 | 路径 | 内容概要 |
 |--------|------|----------|
+| **5分钟快速入门** | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 最简Flink作业创建与运行 |
+| **环境搭建指南** | [tutorials/01-environment-setup.md](tutorials/01-environment-setup.md) | JDK/Maven/Flink安装配置 |
+| **第一个Flink作业** | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | WordCount完整开发流程 |
+| **DataStream API速查** | [Flink/09-language-foundations/datastream-api-cheatsheet.md](Flink/09-language-foundations/datastream-api-cheatsheet.md) | Source/Transformation/Sink速查 |
+| **SQL函数速查** | [Flink/03-sql-table-api/sql-functions-cheatsheet.md](Flink/03-sql-table-api/sql-functions-cheatsheet.md) | Flink SQL内置函数参考 |
 | **Checkpoint调优速查** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 参数配置、超时处理 |
 | **Flink vs RisingWave速查** | [Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md](Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md) | 选型对比 |
 | **Temporal+Flink速查** | [Knowledge/98-exercises/quick-ref-temporal-flink.md](Knowledge/98-exercises/quick-ref-temporal-flink.md) | 集成要点 |
@@ -451,7 +464,7 @@ Struct/01-foundation/ (理论基础)
 
 | 版本 | 日期 | 主要更新 |
 |------|------|----------|
-| **v2.9** | 2026-04-03 | A2A协议、Smart Casual Verification、Flink vs RisingWave对比 |
+| **v2.9** | 2026-04-04 | E1-E4错误修复完成、tutorials目录完善、DataStream/SQL速查表新增、A2A协议、Smart Casual Verification |
 | **v2.8** | 2026-04-02 | Flink AI Agents、图流处理TGN、多模态流处理、Flink 2.3路线图 |
 | **v2.7** | 2026-03-15 | Temporal+Flink分层架构、Serverless成本优化 |
 | **v2.6** | 2026-03-01 | 流处理反模式专题(10个)、安全合规指南 |
@@ -464,10 +477,11 @@ Struct/01-foundation/ (理论基础)
 ### A. 项目统计
 
 ```
-总文档数: 254篇
+总文档数: 260篇
 ├── Struct/: 43篇 (形式化理论)
 ├── Knowledge/: 102篇 (工程实践)
-└── Flink/: 116篇 (Flink专项)
+├── Flink/: 118篇 (Flink专项)
+└── tutorials/: 9篇 (实践教程)
 
 形式化元素: 870+
 ├── 定理 (Thm): 188个

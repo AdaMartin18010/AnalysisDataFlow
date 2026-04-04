@@ -409,6 +409,7 @@ flowchart TD
 | [flink-sql-window-functions-deep-dive.md](03-sql-table-api/flink-sql-window-functions-deep-dive.md) | SQL窗口函数深度指南 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
 | [flink-materialized-table-deep-dive.md](03-sql-table-api/flink-materialized-table-deep-dive.md) | Flink 2.2物化表深度指南 🆕 v2.5 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [ansi-sql-2023-compliance-guide.md](03-sql-table-api/ansi-sql-2023-compliance-guide.md) | **ANSI SQL 2023合规指南** 🆕 v2.4 | SQL标准兼容、查询优化 |
+| [sql-functions-cheatsheet.md](03-sql-table-api/sql-functions-cheatsheet.md) | **SQL函数速查表** 🆕 v2.9 | 数学/字符串/日期/聚合函数快速参考 |
 
 ### 6.4 04-connectors/ 连接器层
 
@@ -477,6 +478,7 @@ flowchart TD
 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) | 流式湖仓 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | [06-risingwave-deep-dive.md](09-language-foundations/06-risingwave-deep-dive.md) | RisingWave深度分析 | [07-rust-streaming-landscape.md](09-language-foundations/07-rust-streaming-landscape.md) |
 | [07.01-timely-dataflow-optimization.md](09-language-foundations/07.01-timely-dataflow-optimization.md) | Timely Dataflow优化 | [06-risingwave-deep-dive.md](09-language-foundations/06-risingwave-deep-dive.md) |
+| [datastream-api-cheatsheet.md](09-language-foundations/datastream-api-cheatsheet.md) | **DataStream API速查表** 🆕 v2.9 | Source/Transformation/Sink快速参考 |
 | [00-INDEX.md](09-language-foundations/00-INDEX.md) | 子索引 | - |
 
 ### 6.10 10-deployment/ 部署层
@@ -691,6 +693,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-04 (v2.9 新增13个文档：FLIP-531 AI Agents GA、Serverless Flink GA、智能Checkpoint策略、ANSI SQL 2023合规、Flink 2.4连接器指南、性能改进、部署改进、安全增强、Flink 2.5流批统一、GPU加速、WASM UDF GA、Flink 3.0架构重构)*
-*文档统计: 143+ 核心文档 | 107+定理 | 222+定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 3.0+*
+*更新时间: 2026-04-04 (v2.9 新增15个文档：E1-E4错误修复完成、tutorials目录完善、DataStream API速查表、SQL函数速查表、FLIP-531 AI Agents GA、Serverless Flink GA、智能Checkpoint策略、ANSI SQL 2023合规、Flink 2.4连接器指南、性能改进、部署改进、安全增强、Flink 2.5流批统一、GPU加速、WASM UDF GA、Flink 3.0架构重构)*
+*文档统计: 145+ 核心文档 | 107+定理 | 222+定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 3.0+*
 *适用项目: AnalysisDataFlow/Flink*
