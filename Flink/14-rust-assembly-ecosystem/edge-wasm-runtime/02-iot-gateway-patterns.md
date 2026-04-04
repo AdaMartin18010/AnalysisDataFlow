@@ -9,16 +9,16 @@
 - [IoT 网关模式 (IoT Gateway Patterns)](#iot-网关模式-iot-gateway-patterns)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-EDGE-02-01: IoT 网关 (IoT Gateway)](#def-edge-02-01-iot-网关-iot-gateway)
-    - [Def-EDGE-02-02: 设备接入协议 (Device Access Protocol)](#def-edge-02-02-设备接入协议-device-access-protocol)
-    - [Def-EDGE-02-03: 本地预处理 (Local Preprocessing)](#def-edge-02-03-本地预处理-local-preprocessing)
-    - [Def-EDGE-02-04: 离线-在线切换 (Offline-Online Switching)](#def-edge-02-04-离线-在线切换-offline-online-switching)
-    - [Def-EDGE-02-05: 协议转换桥 (Protocol Translation Bridge)](#def-edge-02-05-协议转换桥-protocol-translation-bridge)
+    - [Def-EDGE-06: IoT 网关 (IoT Gateway)](#def-edge-06-iot-网关-iot-gateway)
+    - [Def-EDGE-07: 设备接入协议 (Device Access Protocol)](#def-edge-07-设备接入协议-device-access-protocol)
+    - [Def-EDGE-08: 本地预处理 (Local Preprocessing)](#def-edge-08-本地预处理-local-preprocessing)
+    - [Def-EDGE-09: 离线-在线切换 (Offline-Online Switching)](#def-edge-09-离线-在线切换-offline-online-switching)
+    - [Def-EDGE-10: 协议转换桥 (Protocol Translation Bridge)](#def-edge-10-协议转换桥-protocol-translation-bridge)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-EDGE-02-01: 协议转换保真性](#prop-edge-02-01-协议转换保真性)
-    - [Prop-EDGE-02-02: 离线缓存完备性](#prop-edge-02-02-离线缓存完备性)
-    - [Prop-EDGE-02-03: 本地预处理有效性](#prop-edge-02-03-本地预处理有效性)
-    - [Prop-EDGE-02-04: 网关可扩展性](#prop-edge-02-04-网关可扩展性)
+    - [Prop-EDGE-05: 协议转换保真性](#prop-edge-05-协议转换保真性)
+    - [Prop-EDGE-06: 离线缓存完备性](#prop-edge-06-离线缓存完备性)
+    - [Prop-EDGE-07: 本地预处理有效性](#prop-edge-07-本地预处理有效性)
+    - [Prop-EDGE-08: 网关可扩展性](#prop-edge-08-网关可扩展性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 协议分层映射](#31-协议分层映射)
     - [3.2 数据流转换关系](#32-数据流转换关系)
@@ -47,7 +47,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-EDGE-02-01: IoT 网关 (IoT Gateway)
+### Def-EDGE-06: IoT 网关 (IoT Gateway)
 
 **IoT 网关**是部署在边缘网络与云端之间的中间件设备，负责设备接入、协议转换、数据预处理和边缘计算。
 
@@ -82,7 +82,7 @@ IoT Gateway Types
     └── 车载、无人机等移动场景
 ```
 
-### Def-EDGE-02-02: 设备接入协议 (Device Access Protocol)
+### Def-EDGE-07: 设备接入协议 (Device Access Protocol)
 
 **设备接入协议**定义了 IoT 设备与网关之间的通信规范，包括连接管理、消息格式、QoS 级别等。
 
@@ -114,7 +114,7 @@ $$
 | 工业实时控制 | Modbus/OPC-UA | 确定性延迟 |
 | 高吞吐场景 | MQTT v5.0 | 共享订阅、流量控制 |
 
-### Def-EDGE-02-03: 本地预处理 (Local Preprocessing)
+### Def-EDGE-08: 本地预处理 (Local Preprocessing)
 
 **本地预处理**指在网关上对原始设备数据进行过滤、转换、聚合等操作，减少上传云端的数据量。
 
@@ -162,7 +162,7 @@ $$
 | downsampling | 降采样 10:1 | 100% → 10% | < 10ms |
 | compress_lz4 | LZ4 压缩 | 体积 -60% | < 5ms |
 
-### Def-EDGE-02-04: 离线-在线切换 (Offline-Online Switching)
+### Def-EDGE-09: 离线-在线切换 (Offline-Online Switching)
 
 **离线-在线切换**是网关在检测到与云端连接中断时，自动切换到离线自治模式，并在连接恢复后同步数据的能力。
 
@@ -206,7 +206,7 @@ $$
 | Reconnecting | 继续写入本地 | 从本地读取 | 支持 | 尝试重连 |
 | Syncing | 暂停新写入 | 只读 | 暂停 | 批量上传 |
 
-### Def-EDGE-02-05: 协议转换桥 (Protocol Translation Bridge)
+### Def-EDGE-10: 协议转换桥 (Protocol Translation Bridge)
 
 **协议转换桥**是网关内部组件，负责将设备协议消息转换为云端协议消息，保持语义一致性。
 
@@ -245,7 +245,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-EDGE-02-01: 协议转换保真性
+### Prop-EDGE-05: 协议转换保真性
 
 **命题**: 协议转换保持消息语义当且仅当存在双射映射：
 
@@ -264,7 +264,7 @@ $$
 
 **反例**: MQTT QoS 2 转换为 Kafka acks=all 时，需要额外实现去重机制才能保证语义等价。
 
-### Prop-EDGE-02-02: 离线缓存完备性
+### Prop-EDGE-06: 离线缓存完备性
 
 **命题**: 离线缓存系统能够在连接恢复后完整同步所有数据：
 
@@ -291,7 +291,7 @@ $$
 | 压缩存储 | LZ4/Snappy | 增加 3-5x 容量 |
 | 分级存储 | RAM → SSD → S3 | 海量离线数据支持 |
 
-### Prop-EDGE-02-03: 本地预处理有效性
+### Prop-EDGE-07: 本地预处理有效性
 
 **命题**: 本地预处理有效减少带宽消耗当且仅当：
 
@@ -320,7 +320,7 @@ $$
 净收益 = $3.00/天 = $90/月
 ```
 
-### Prop-EDGE-02-04: 网关可扩展性
+### Prop-EDGE-08: 网关可扩展性
 
 **命题**: 网关水平扩展能力与协议无状态程度正相关：
 

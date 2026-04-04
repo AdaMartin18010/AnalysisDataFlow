@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-EH-01: WebAssembly Exception 类型系统
+### Def-WASM-14: WebAssembly Exception 类型系统
 
 WebAssembly 3.0 Exception Handling 引入了异常类型 (`exnref`) 和标签 (`tag`) 机制，允许模块定义、抛出和捕获结构化异常。
 
@@ -29,7 +29,7 @@ $$\text{tagtype} = \text{func}(\text{param}: \text{ValType}^*, \text{result}: \e
 (tag $io_error (param i32))   ;; I/O 错误码
 ```
 
-### Def-EH-02: exnref 引用语义
+### Def-WASM-15: exnref 引用语义
 
 `exnref` 是 WebAssembly 3.0 引入的新引用类型，用于表示对异常对象的引用。它与 `externref` 和 `funcref` 同属引用类型家族。
 
@@ -51,7 +51,7 @@ $$\text{exnref} = \text{ref}(E) \mid \text{null}$$
 | `rethrow` | exnref 在 catch 块中 | 重新抛出 | 传播异常 |
 | `drop` | exnref 在栈顶 | - | 丢弃异常引用 |
 
-### Def-EH-03: 异常控制流模型
+### Def-WASM-16: 异常控制流模型
 
 WebAssembly 3.0 使用 `try_table` 指令结构替代了早期提案中的 `try` 块，提供更灵活的异常处理控制流。
 
@@ -72,7 +72,7 @@ $$\text{try_table} \langle \text{blocktype} \rangle \langle \text{catch_clauses}
 
 $$\frac{\text{throw } t \text{ in } try\_table \{ \dots catch\ t \to L \dots \}}{\text{control transfers to } L \text{ with exnref}}$$
 
-### Def-EH-04: 与宿主环境异常互操作
+### Def-WASM-17: 与宿主环境异常互操作
 
 WebAssembly 异常需要与宿主 JavaScript 环境进行互操作，实现跨边界异常传播。
 
@@ -109,7 +109,7 @@ try {
 
 ## 2. 属性推导 (Properties)
 
-### Prop-EH-01: 跨浏览器异常处理完备性
+### Prop-WASM-13: 跨浏览器异常处理完备性
 
 **命题**: WebAssembly 3.0 Exception Handling (exnref) 已在 Chrome、Firefox 和 Safari 18.4+ 中实现完整支持。
 
@@ -131,7 +131,7 @@ try {
 
 **向后兼容性**: 原始异常处理提案 (legacy) 仍支持，但建议使用 exnref 新版本。
 
-### Prop-EH-02: 异常处理运行时开销
+### Prop-WASM-14: 异常处理运行时开销
 
 **命题**: WebAssembly 异常处理在无异常抛出场景下具有零开销特性，异常抛出时有可控的开销增长。
 
@@ -160,7 +160,7 @@ $$\frac{T_{wrapped}}{T_{normal}} \approx 1.0$$
 
 **结论**: 异常处理遵循 "快速路径无开销，慢速路径可接受" 的设计原则。
 
-### Prop-EH-03: Flink Exactly-Once 语义兼容性
+### Prop-WASM-15: Flink Exactly-Once 语义兼容性
 
 **命题**: 使用 WebAssembly 3.0 异常处理的 UDF 可以与 Flink 的 Exactly-Once 语义兼容，前提是遵循特定的异常处理模式。
 
@@ -337,7 +337,7 @@ $unknown_error           ──▶   RuntimeException
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### 定理 EH-01: WebAssembly UDF 异常处理的 Exactly-Once 一致性
+### 定理 WASM-14: WebAssembly UDF 异常处理的 Exactly-Once 一致性
 
 **定理**: 使用 WebAssembly 3.0 Exception Handling 的 Flink UDF 在满足以下条件时保证 Exactly-Once 处理语义：
 

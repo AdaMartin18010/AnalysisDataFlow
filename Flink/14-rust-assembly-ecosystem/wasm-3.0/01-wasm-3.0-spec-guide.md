@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-WASM-3.0-01: WebAssembly 3.0 规范里程碑
+### Def-WASM-01: WebAssembly 3.0 规范里程碑
 
 WebAssembly 3.0 是 WebAssembly 技术栈的第三个主要规范里程碑，于 2026 年 1 月正式发布。该版本将 2022 年 WebAssembly 2.0 以来的所有已标准化特性统一纳入核心规范，为 "现代 Wasm 支持" 提供了清晰的能力基线。
 
@@ -23,7 +23,7 @@ $$W_{3.0} = W_{2.0} \cup \{GC, EH, M64, RSIMD, TC, TREF, MM, JSSTR\}$$
 - \(MM\): Multiple Memories
 - \(JSSTR\): JavaScript String Builtins
 
-### Def-WASM-3.0-02: Exception Handling (exnref) 模型
+### Def-WASM-02: Exception Handling (exnref) 模型
 
 Exception Handling with exnref 是 WebAssembly 3.0 中标准化的异常处理机制，引入了新的值类型 `exnref` 用于表示异常引用。该模型解决了原始异常处理提案中 JavaScript API 难以处理抛出异常身份 (identity) 的问题。
 
@@ -43,7 +43,7 @@ $$E = \langle \text{tag}, \text{payload}, \text{stack_trace} \rangle$$
 - `try-catch`: 捕获并处理异常
 - `rethrow`: 重新抛出当前异常
 
-### Def-WASM-3.0-03: Memory64 寻址模型
+### Def-WASM-03: Memory64 寻址模型
 
 Memory64 扩展了 WebAssembly 的线性内存寻址能力，允许使用 64 位索引替代传统的 32 位索引，从而突破 4GB 内存限制。
 
@@ -63,7 +63,7 @@ $$\text{Memory64} = \langle \text{min}: \mathbb{N}_{64}, \text{max}: \mathbb{N}_
 - `i64.store`: 64 位索引存储
 - `memory.grow`: 返回 `i64` 类型页数
 
-### Def-WASM-3.0-04: Relaxed SIMD 语义模型
+### Def-WASM-04: Relaxed SIMD 语义模型
 
 Relaxed SIMD (Single Instruction, Multiple Data) 扩展了 WebAssembly 的 SIMD 能力，允许使用平台特定的指令实现以获得更高性能，同时放宽了对结果确定性的要求。
 
@@ -81,7 +81,7 @@ $$S_{relaxed} = \{ \text{指令} \to \mathcal{P}(\text{可能结果}) \}$$
 - 放宽 `relaxed_madd` (乘加) 的精度要求
 - 在支持的硬件上可获得 2-4 倍性能提升
 
-### Def-WASM-3.0-05: JavaScript String Builtins 接口
+### Def-WASM-05: JavaScript String Builtins 接口
 
 JavaScript String Builtins 允许 WebAssembly 模块直接访问 JavaScript 的 String 原型方法，无需编写额外的 JavaScript "胶水代码" (glue code)。
 
@@ -99,7 +99,7 @@ $$\text{StringBuiltins} = \{ \text{compare}, \text{concat}, \text{fromCharCode},
 
 ## 2. 属性推导 (Properties)
 
-### Prop-WASM-3.0-01: 浏览器支持完备性
+### Prop-WASM-01: 浏览器支持完备性
 
 **命题**: WebAssembly 3.0 核心特性已在主流浏览器中实现跨浏览器支持。
 
@@ -118,7 +118,7 @@ $$\text{StringBuiltins} = \{ \text{compare}, \text{concat}, \text{fromCharCode},
 
 **结论**: 除 Safari 的 Memory64、Relaxed SIMD、Multiple Memories 仍在 flag 后外，其余特性均已实现跨浏览器支持。Safari 18.4 的 exnref 支持标志着异常处理特性的完整标准化。
 
-### Prop-WASM-3.0-02: Memory64 性能权衡
+### Prop-WASM-02: Memory64 性能权衡
 
 **命题**: Memory64 特性存在显著的性能权衡，仅在需要超过 4GB 内存时推荐使用。
 
@@ -136,7 +136,7 @@ $$\text{StringBuiltins} = \{ \text{compare}, \text{concat}, \text{fromCharCode},
 
 **结论**: 根据工程权衡分析，仅当应用需要 \(\text{memory} > 4GB\) 时，才应启用 Memory64。
 
-### Prop-WASM-3.0-03: Relaxed SIMD 非确定性边界
+### Prop-WASM-03: Relaxed SIMD 非确定性边界
 
 **命题**: Relaxed SIMD 的非确定性语义在流处理场景下是可接受的，且能提供可预测的性能增益。
 
@@ -242,7 +242,7 @@ graph TB
    WebAssembly 3.0 包含了所有 Phase 5（标准化完成）的特性，意味着这些 API 和行为具有向后兼容性保证。对于需要长期维护的 Flink UDF，这是关键的生产环境要求。
 
 2. **跨浏览器可移植性**:
-   根据 Prop-WASM-3.0-01，WebAssembly 3.0 核心特性已实现 Chrome、Firefox、Safari 的跨浏览器支持。这确保了 Flink Web UI 中的 UDF 调试工具在各种用户环境下的一致性。
+   根据 Prop-WASM-01，WebAssembly 3.0 核心特性已实现 Chrome、Firefox、Safari 的跨浏览器支持。这确保了 Flink Web UI 中的 UDF 调试工具在各种用户环境下的一致性。
 
 3. **性能与功能平衡**:
    - Memory64 突破 4GB 限制，满足 ML 模型 UDF 需求
@@ -281,7 +281,7 @@ graph TB
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### 定理 WASM-3.0-01: WebAssembly 3.0 UDF 与 Flink Exactly-Once 语义的兼容性
+### 定理 WASM-01: WebAssembly 3.0 UDF 与 Flink Exactly-Once 语义的兼容性
 
 **定理**: 使用 WebAssembly 3.0 Exception Handling (exnref) 的 UDF 可以实现与 Flink Exactly-Once 语义的兼容。
 

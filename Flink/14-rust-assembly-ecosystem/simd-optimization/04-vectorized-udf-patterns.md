@@ -9,7 +9,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-UDF-01: 向量化 UDF 模型
+### Def-SIMD-10: 向量化 UDF 模型
 
 **定义 1.1 (批处理向量化 UDF)**
 
@@ -36,7 +36,7 @@ $$\text{ScalarUDF}: D \rightarrow R$$
 形式化：
 $$\text{Columnar}(R) = \Pi_{attr}(R) = \{col_1, col_2, ..., col_m\}$$
 
-### Def-UDF-02: UDF 类型分类
+### Def-SIMD-11: UDF 类型分类
 
 **定义 2.1 (UDF 分类体系)**
 
@@ -60,7 +60,7 @@ x_1 \oplus x_2 & n = 2 \\
 \text{Reduce}(x_1, ..., x_{n/2}) \oplus \text{Reduce}(x_{n/2+1}, ..., x_n) & n > 2
 \end{cases}$$
 
-### Def-UDF-03: Arrow 格式集成
+### Def-SIMD-12: Arrow 格式集成
 
 **定义 3.1 (Arrow Columnar Format)**
 
@@ -81,7 +81,7 @@ $$\text{ArrowFFI}: \text{ArrowArray}_{Rust} \xrightarrow{\text{zero-copy}} \text
 
 ## 2. 属性推导 (Properties)
 
-### Prop-UDF-01: 批大小最优性
+### Prop-SIMD-07: 批大小最优性
 
 **命题 1.1 (缓存最优批大小)**
 
@@ -104,7 +104,7 @@ $$\eta(n) = \eta_{max} \cdot (1 - e^{-n/n_0})$$
 
 其中 $n_0$ 为特征批大小（通常为向量宽度的 4-8 倍）。
 
-### Prop-UDF-02: 空值处理向量化
+### Prop-SIMD-08: 空值处理向量化
 
 **命题 2.1 (位图掩码压缩率)**
 

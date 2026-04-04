@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-UNI-01: 跨硬件抽象层 (Cross-Hardware Abstraction Layer, CHAL)
+### Def-HET-13: 跨硬件抽象层 (Cross-Hardware Abstraction Layer, CHAL)
 
 **定义**: CHAL 是位于应用代码与底层硬件加速库之间的中间层，提供统一的编程接口，隐藏不同硬件平台（CPU/GPU/FPGA）的实现差异。
 
@@ -30,7 +30,7 @@ $$Application \xrightarrow{CHAL_{API}} Runtime \xrightarrow{CHAL_{Runtime}} Back
 
 **直观解释**: CHAL 让开发者写一套代码，自动在 CPU、NVIDIA GPU、AMD GPU、FPGA 上运行，无需关心底层差异。就像 Java 虚拟机，但针对异构计算优化。
 
-### Def-UNI-02: 自动硬件选择 (Automatic Hardware Selection)
+### Def-HET-14: 自动硬件选择 (Automatic Hardware Selection)
 
 **定义**: 根据工作负载特性和系统状态，动态选择最优执行硬件的决策机制。
 
@@ -63,7 +63,7 @@ $$Workload_{char} = (Data_{size}, Parallelism, Compute_{intensity}, Latency_{req
 
 **直观解释**: 系统自动分析任务特点（数据量、并行度、延迟要求），结合各硬件的实时状态（负载、温度），选择最佳执行设备。小批量、低延迟任务去 FPGA，大批量并行计算去 GPU。
 
-### Def-UNI-03: 性能可移植性 (Performance Portability)
+### Def-HET-15: 性能可移植性 (Performance Portability)
 
 **定义**: 同一套代码在不同硬件平台上达到接近最优性能的相对度量。
 
@@ -93,7 +93,7 @@ $$PP \geq 0.8 \quad \forall hw \in \{CPU, NVIDIA\ GPU, AMD\ GPU, FPGA\}$$
 
 **直观解释**: 性能可移植性确保用统一 API 写的代码，在每种硬件上都能跑得快。不是指所有硬件跑一样快，而是都达到该硬件潜力的 80% 以上。
 
-### Def-UNI-04: 统一内存模型 (Unified Memory Model)
+### Def-HET-16: 统一内存模型 (Unified Memory Model)
 
 **定义**: 跨硬件的单一地址空间抽象，支持数据在不同设备间透明迁移。
 
@@ -121,7 +121,7 @@ $$Migrate: Data_{location} \times Access_{pattern} \rightarrow Data_{new\_locati
 
 ## 2. 属性推导 (Properties)
 
-### Prop-UNI-01: 自动选择最优性 (Automatic Selection Optimality)
+### Prop-HET-10: 自动选择最优性 (Automatic Selection Optimality)
 
 **命题**: 在已知工作负载特征和硬件状态的条件下，自动硬件选择算法能达到最优选择的 $(1 - 1/e)$ 近似比。
 
@@ -157,7 +157,7 @@ $$\lim_{n \to \infty} \frac{R_n}{n} = 0$$
 - 支持在线学习和模型更新
 - 冷启动问题可通过启发式规则缓解
 
-### Prop-UNI-02: 抽象层开销有界 (Abstraction Overhead Bounded)
+### Prop-HET-11: 抽象层开销有界 (Abstraction Overhead Bounded)
 
 **命题**: 良好设计的 CHAL 引入的运行时开销上界为 5%。
 
@@ -180,7 +180,7 @@ $$Overhead < \frac{11\mu s}{100\mu s} = 11\%$$
 
 通过 **Kernel Fusion** 和 **Batching** 降低相对开销。
 
-### Prop-UNI-03: 可扩展性保证 (Extensibility Guarantee)
+### Prop-HET-12: 可扩展性保证 (Extensibility Guarantee)
 
 **命题**: CHAL 架构支持新硬件后端的增量添加，不破坏现有代码。
 

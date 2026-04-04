@@ -9,16 +9,16 @@
 - [离线同步策略 (Offline Synchronization Strategies)](#离线同步策略-offline-synchronization-strategies)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-EDGE-04-01: 断网续传机制 (Resilient Transmission Mechanism)](#def-edge-04-01-断网续传机制-resilient-transmission-mechanism)
-    - [Def-EDGE-04-02: 冲突解决策略 (Conflict Resolution Strategy)](#def-edge-04-02-冲突解决策略-conflict-resolution-strategy)
-    - [Def-EDGE-04-03: 状态一致性保证 (State Consistency Guarantee)](#def-edge-04-03-状态一致性保证-state-consistency-guarantee)
-    - [Def-EDGE-04-04: 边缘缓存模型 (Edge Caching Model)](#def-edge-04-04-边缘缓存模型-edge-caching-model)
-    - [Def-EDGE-04-05: 同步协议 (Synchronization Protocol)](#def-edge-04-05-同步协议-synchronization-protocol)
+    - [Def-EDGE-16: 断网续传机制 (Resilient Transmission Mechanism)](#def-edge-16-断网续传机制-resilient-transmission-mechanism)
+    - [Def-EDGE-17: 冲突解决策略 (Conflict Resolution Strategy)](#def-edge-17-冲突解决策略-conflict-resolution-strategy)
+    - [Def-EDGE-18: 状态一致性保证 (State Consistency Guarantee)](#def-edge-18-状态一致性保证-state-consistency-guarantee)
+    - [Def-EDGE-19: 边缘缓存模型 (Edge Caching Model)](#def-edge-19-边缘缓存模型-edge-caching-model)
+    - [Def-EDGE-20: 同步协议 (Synchronization Protocol)](#def-edge-20-同步协议-synchronization-protocol)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-EDGE-04-01: 断网续传完整性](#prop-edge-04-01-断网续传完整性)
-    - [Prop-EDGE-04-02: 冲突解决收敛性](#prop-edge-04-02-冲突解决收敛性)
-    - [Prop-EDGE-04-03: 最终一致性保证](#prop-edge-04-03-最终一致性保证)
-    - [Prop-EDGE-04-04: 存储容量边界](#prop-edge-04-04-存储容量边界)
+    - [Prop-EDGE-13: 断网续传完整性](#prop-edge-13-断网续传完整性)
+    - [Prop-EDGE-14: 冲突解决收敛性](#prop-edge-14-冲突解决收敛性)
+    - [Prop-EDGE-15: 最终一致性保证](#prop-edge-15-最终一致性保证)
+    - [Prop-EDGE-16: 存储容量边界](#prop-edge-16-存储容量边界)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 离线-在线状态转换关系](#31-离线-在线状态转换关系)
     - [3.2 同步策略与一致性模型映射](#32-同步策略与一致性模型映射)
@@ -47,7 +47,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-EDGE-04-01: 断网续传机制 (Resilient Transmission Mechanism)
+### Def-EDGE-16: 断网续传机制 (Resilient Transmission Mechanism)
 
 **断网续传机制**是在边缘节点与云端连接中断时，将数据暂存于本地存储，并在连接恢复后自动恢复传输的机制。
 
@@ -92,7 +92,7 @@ $$
                             确认成功后清理缓存
 ```
 
-### Def-EDGE-04-02: 冲突解决策略 (Conflict Resolution Strategy)
+### Def-EDGE-17: 冲突解决策略 (Conflict Resolution Strategy)
 
 **冲突解决策略**定义了当边缘节点与云端数据发生冲突时（如同一记录被双方修改），如何确定最终值的规则。
 
@@ -112,7 +112,7 @@ $$
 | **Custom** | 业务逻辑决定 | 复杂业务规则 |
 | **Reject** | 拒绝冲突，人工介入 | 关键业务数据 |
 
-### Def-EDGE-04-03: 状态一致性保证 (State Consistency Guarantee)
+### Def-EDGE-18: 状态一致性保证 (State Consistency Guarantee)
 
 **状态一致性保证**定义了边缘节点与云端状态同步的语义级别，从弱一致性到强一致性的光谱。
 
@@ -131,7 +131,7 @@ $$
 | **Causal** | 因果相关的操作有序 | 中 | 中高 | 协作编辑 |
 | **Eventual** | 最终所有副本一致 | 低 | 高 | 日志、遥测 |
 
-### Def-EDGE-04-04: 边缘缓存模型 (Edge Caching Model)
+### Def-EDGE-19: 边缘缓存模型 (Edge Caching Model)
 
 **边缘缓存模型**定义了数据在边缘节点的存储结构、淘汰策略和容量管理。
 
@@ -164,7 +164,7 @@ Edge Cache Types
         └── Write-Around (绕写)
 ```
 
-### Def-EDGE-04-05: 同步协议 (Synchronization Protocol)
+### Def-EDGE-20: 同步协议 (Synchronization Protocol)
 
 **同步协议**定义了边缘节点与云端之间数据交换的消息格式、时序和确认机制。
 
@@ -187,7 +187,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-EDGE-04-01: 断网续传完整性
+### Prop-EDGE-13: 断网续传完整性
 
 **命题**: 断网续传机制保证所有数据最终到达云端：
 
@@ -203,7 +203,7 @@ $$
 4. $RetryPolicy$ 保证无限重试直至成功
 5. 云端确认后从 $Buffer$ 移除
 
-### Prop-EDGE-04-02: 冲突解决收敛性
+### Prop-EDGE-14: 冲突解决收敛性
 
 **命题**: 使用 CRDT (Conflict-free Replicated Data Type) 的冲突解决保证收敛：
 
@@ -221,7 +221,7 @@ $$
 | OR-Set | 添加/删除 | 观测删除 | 购物车 |
 | LWW-Register | 写入 | 时间戳最大 | 配置项 |
 
-### Prop-EDGE-04-03: 最终一致性保证
+### Prop-EDGE-15: 最终一致性保证
 
 **命题**: 在无新写入和网络分区恢复后，所有副本最终一致：
 
@@ -235,7 +235,7 @@ $$
 - 冲突解决策略是确定性的
 - 网络分区最终会恢复
 
-### Prop-EDGE-04-04: 存储容量边界
+### Prop-EDGE-16: 存储容量边界
 
 **命题**: 边缘缓存容量决定了最大可持续离线时长：
 

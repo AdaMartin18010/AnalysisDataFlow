@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-RSIMD-01: SIMD 执行模型
+### Def-WASM-10: SIMD 执行模型
 
 SIMD (Single Instruction, Multiple Data) 是一种并行计算范式，允许单条指令同时作用于多个数据元素。WebAssembly SIMD 基于 128 位固定宽度向量寄存器。
 
@@ -27,7 +27,7 @@ $$v \in \mathbb{B}^{128}, \quad v = \langle e_0, e_1, ..., e_{n-1} \rangle$$
 
 $$v_1 \odot_{SIMD} v_2 = \langle e_{1,0} \odot e_{2,0}, e_{1,1} \odot e_{2,1}, ..., e_{1,n-1} \odot e_{2,n-1} \rangle$$
 
-### Def-RSIMD-02: 标准 128-bit SIMD 确定性语义
+### Def-WASM-11: 标准 128-bit SIMD 确定性语义
 
 标准 WebAssembly SIMD 提案 (Phase 5) 要求所有操作具有完全确定的跨平台行为。
 
@@ -53,7 +53,7 @@ $$\forall op \in S_{std}: \quad op: \text{Input} \to \text{Output}, \quad \text{
 | 转换 | `f32x4.convert_i32x4_s` | 一个向量 |
 | 规约 | `i32x4.bitmask` | 一个向量 |
 
-### Def-RSIMD-03: Relaxed SIMD 非确定性语义
+### Def-WASM-12: Relaxed SIMD 非确定性语义
 
 Relaxed SIMD 提案引入允许平台特定优化的指令，放宽对结果确定性的要求以换取更高性能。
 
@@ -74,7 +74,7 @@ $$op: \text{Input} \to \mathcal{P}(\text{Output}), \quad |\text{Output}| \geq 1$
 | `i8x16.relaxed_laneselect` | 选择位处理 | 实现特定优化 |
 | `i32x4.relaxed_trunc_f64x2_s_zero` | 双精度转单精度溢出 | 截断或饱和 |
 
-### Def-RSIMD-04: 乘加融合 (FMA) 非确定性分析
+### Def-WASM-13: 乘加融合 (FMA) 非确定性分析
 
 `f32x4.relaxed_madd` 是最常用的 Relaxed SIMD 指令，执行 \(a \times b + c\) 操作。
 
@@ -101,7 +101,7 @@ $$|\text{madd}_{rel} - \text{madd}_{std}| \leq \epsilon \times |a \times b|$$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-RSIMD-01: 128-bit SIMD vs Relaxed SIMD 性能边界
+### Prop-WASM-10: 128-bit SIMD vs Relaxed SIMD 性能边界
 
 **命题**: Relaxed SIMD 在支持 FMA 指令的硬件上可提供高达 2 倍的性能提升。
 
@@ -127,7 +127,7 @@ $$|\text{madd}_{rel} - \text{madd}_{std}| \leq \epsilon \times |a \times b|$$
 
 **结论**: Relaxed SIMD 在计算密集型任务上可提供 1.8-2.0 倍的性能提升。
 
-### Prop-RSIMD-02: 浏览器支持完备性演进
+### Prop-WASM-11: 浏览器支持完备性演进
 
 **命题**: 截至 2026 年，Relaxed SIMD 在 Chrome 和 Firefox 中已完全支持，Safari 仍需要 flag。
 
@@ -150,7 +150,7 @@ $$|\text{madd}_{rel} - \text{madd}_{std}| \leq \epsilon \times |a \times b|$$
 - Safari TP 204+: 已实现，需 `--enable-relaxed-simd`
 - Safari 18.4+: 预计 2026 Q1 默认启用
 
-### Prop-RSIMD-03: 流处理场景的数值鲁棒性
+### Prop-WASM-12: 流处理场景的数值鲁棒性
 
 **命题**: 在 Flink 流处理场景中，Relaxed SIMD 的非确定性对最终结果的统计性质影响可忽略。
 
@@ -340,7 +340,7 @@ async function selectSimdImplementation() {
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### 定理 RSIMD-01: Relaxed SIMD 在 Flink 聚合 UDF 中的数值稳定性
+### 定理 WASM-10: Relaxed SIMD 在 Flink 聚合 UDF 中的数值稳定性
 
 **定理**: 使用 Relaxed SIMD 的 Flink 聚合 UDF 产生的数值误差在统计容忍范围内，不影响业务决策。
 

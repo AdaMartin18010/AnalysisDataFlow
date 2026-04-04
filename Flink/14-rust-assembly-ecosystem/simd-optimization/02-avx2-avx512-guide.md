@@ -9,7 +9,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-AVX-01: AVX2 指令集架构
+### Def-SIMD-04: AVX2 指令集架构
 
 **定义 1.1 (AVX2 寄存器模型)**
 
@@ -32,7 +32,7 @@ FMA (Fused Multiply-Add) 操作执行单指令 $d = a \times b + c$，具有：
 形式化表示：
 $$\text{FMA}(\vec{a}, \vec{b}, \vec{c}) = \vec{a} \odot \vec{b} \oplus \vec{c}$$
 
-### Def-AVX-02: AVX-512 扩展
+### Def-SIMD-05: AVX-512 扩展
 
 **定义 2.1 (AVX-512 寄存器与掩码)**
 
@@ -60,7 +60,7 @@ AVX-512 采用模块化扩展设计：
 | AVX-512VBMI | 字节级位移 | 解析/解码 |
 | AVX-512VNNI | 神经网络指令 | AI 推理 |
 
-### Def-AVX-03: 流处理算子向量化
+### Def-SIMD-06: 流处理算子向量化
 
 **定义 3.1 (算子融合向量化)**
 
@@ -87,7 +87,7 @@ $$\eta_{op} = \frac{T_{interpreted}}{T_{vectorized}} = \frac{N_{inst} \times CPI
 
 ## 2. 属性推导 (Properties)
 
-### Prop-AVX-01: 掩码操作完备性
+### Prop-SIMD-03: 掩码操作完备性
 
 **命题 1.1 (AVX-512 掩码完备性)**
 
@@ -106,7 +106,7 @@ AVX-512 掩码机制可完整表达流处理中的所有条件逻辑：
 
 $$T_{compress} = O(n) \quad vs \quad T_{gather} = O(n \cdot s \cdot L_{cache})$$
 
-### Prop-AVX-02: 内存访问模式优化
+### Prop-SIMD-04: 内存访问模式优化
 
 **命题 2.1 ( gather/scatter 边界条件)**
 

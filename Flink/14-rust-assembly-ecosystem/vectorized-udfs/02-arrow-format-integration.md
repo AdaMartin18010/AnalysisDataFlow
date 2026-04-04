@@ -8,7 +8,7 @@
 
 ### 1.1 Arrow 列式格式基础
 
-**Def-VEC-02-01** (Arrow 列式格式): Apache Arrow 是一种跨平台的列式内存格式，形式化定义为六元组：
+**Def-VEC-05** (Arrow 列式格式): Apache Arrow 是一种跨平台的列式内存格式，形式化定义为六元组：
 
 $$
 \mathcal{A}_{arrow} = (S, L, B, D, N, V)
@@ -23,7 +23,7 @@ $$
 - $N$: 空值表示（Null Bitmap）
 - $V$: 版本兼容性（Format Version）
 
-**Def-VEC-02-02** (列式内存布局): 设 $R = \{r_1, r_2, ..., r_n\}$ 为包含 $m$ 个字段的记录集，列式布局 $L_{col}$ 与行式布局 $L_{row}$ 的存储差异定义为：
+**Def-VEC-06** (列式内存布局): 设 $R = \{r_1, r_2, ..., r_n\}$ 为包含 $m$ 个字段的记录集，列式布局 $L_{col}$ 与行式布局 $L_{row}$ 的存储差异定义为：
 
 $$
 L_{col} = \{(c_1, c_2, ..., c_m) \mid c_j = [v_{1j}, v_{2j}, ..., v_{nj}]\}
@@ -35,7 +35,7 @@ $$
 
 其中 $v_{ij}$ 表示第 $i$ 条记录的第 $j$ 个字段值。
 
-**Def-VEC-02-03** (Arrow Buffer): Arrow Buffer 是 Arrow 的最小存储单元，定义为三元组：
+**Def-VEC-07** (Arrow Buffer): Arrow Buffer 是 Arrow 的最小存储单元，定义为三元组：
 
 $$
 \mathcal{B}_{arrow} = (addr, len, cap)
@@ -49,7 +49,7 @@ $$
 
 ### 1.2 Arrow Flight 协议
 
-**Def-VEC-02-04** (Arrow Flight Protocol): Arrow Flight 是基于 gRPC 的高性能数据传输协议，定义为：
+**Def-VEC-08** (Arrow Flight Protocol): Arrow Flight 是基于 gRPC 的高性能数据传输协议，定义为：
 
 $$
 \mathcal{F}_{flight} = (RPC, Stream, Schema, Location, Ticket, Descriptor)
@@ -139,7 +139,7 @@ classDiagram
 
 ### 2.1 零拷贝共享定理
 
-**Prop-VEC-02-01** (零拷贝共享): 设 $D$ 为数据集，$P_1$ 和 $P_2$ 为两个进程，Arrow 列式格式支持零拷贝共享的条件为：
+**Prop-VEC-04** (零拷贝共享): 设 $D$ 为数据集，$P_1$ 和 $P_2$ 为两个进程，Arrow 列式格式支持零拷贝共享的条件为：
 
 $$
 \text{ZeroCopy}(D, P_1, P_2) \iff \begin{cases}
@@ -153,7 +153,7 @@ $$
 
 ### 2.2 缓存局部性定理
 
-**Prop-VEC-02-02** (列式缓存效率): 对于分析型查询（通常访问少数列），列式布局的缓存命中率 $H_{col}$ 与行式布局的 $H_{row}$ 满足：
+**Prop-VEC-05** (列式缓存效率): 对于分析型查询（通常访问少数列），列式布局的缓存命中率 $H_{col}$ 与行式布局的 $H_{row}$ 满足：
 
 $$
 \frac{H_{col}}{H_{row}} = \frac{N_{proj}}{N_{total}} \cdot \frac{C_{line}}{W_{field}}
@@ -338,7 +338,7 @@ sequenceDiagram
 
 ### 4.1 Arrow 选型论证
 
-**Prop-VEC-02-03** (Arrow 选型准则): 对于数据交换场景 $S$，选择 Arrow 作为中间格式的充分条件：
+**Prop-VEC-06** (Arrow 选型准则): 对于数据交换场景 $S$，选择 Arrow 作为中间格式的充分条件：
 
 $$
 S \in ArrowSuitable \iff \begin{cases}
@@ -375,7 +375,7 @@ $$
 
 ### 5.1 Arrow 内存布局效率定理
 
-**Thm-VEC-02-01** (Arrow 内存效率): 对于包含 $n$ 条记录、$m$ 个字段的数据集，设每个字段平均宽度为 $w$ 字节，Arrow 列式布局的内存占用 $M_{arrow}$ 满足：
+**Thm-VEC-02** (Arrow 内存效率): 对于包含 $n$ 条记录、$m$ 个字段的数据集，设每个字段平均宽度为 $w$ 字节，Arrow 列式布局的内存占用 $M_{arrow}$ 满足：
 
 $$
 M_{arrow} = n \cdot m \cdot w + \frac{n}{8} \cdot m + O(m \cdot \log n)
@@ -413,7 +413,7 @@ $$
 
 ### 5.2 Arrow Flight 吞吐定理
 
-**Thm-VEC-02-02** (Arrow Flight 吞吐上界): 在理想网络条件下（零丢包、充足带宽），Arrow Flight 的数据传输吞吐率 $Throughput$ 满足：
+**Thm-VEC-03** (Arrow Flight 吞吐上界): 在理想网络条件下（零丢包、充足带宽），Arrow Flight 的数据传输吞吐率 $Throughput$ 满足：
 
 $$
 Throughput = \min\left(B_{network}, \frac{N_{batch}}{T_{serialize} + T_{network} + T_{deserialize}}\right)

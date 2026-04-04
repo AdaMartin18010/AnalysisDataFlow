@@ -9,16 +9,16 @@
 - [边缘计算 Wasm 运行时架构设计 (Edge Computing Wasm Runtime Architecture)](#边缘计算-wasm-运行时架构设计-edge-computing-wasm-runtime-architecture)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-EDGE-01-01: 边缘-云协同模型 (Edge-Cloud Collaborative Model)](#def-edge-01-01-边缘-云协同模型-edge-cloud-collaborative-model)
-    - [Def-EDGE-01-02: 分层数据处理架构 (Layered Data Processing Architecture)](#def-edge-01-02-分层数据处理架构-layered-data-processing-architecture)
-    - [Def-EDGE-01-03: 延迟-带宽权衡空间 (Latency-Bandwidth Trade-off Space)](#def-edge-01-03-延迟-带宽权衡空间-latency-bandwidth-trade-off-space)
-    - [Def-EDGE-01-04: Wasm 边缘运行时 (Wasm Edge Runtime)](#def-edge-01-04-wasm-边缘运行时-wasm-edge-runtime)
-    - [Def-EDGE-01-05: 资源受限执行环境 (Resource-Constrained Execution Environment)](#def-edge-01-05-资源受限执行环境-resource-constrained-execution-environment)
+    - [Def-EDGE-01: 边缘-云协同模型 (Edge-Cloud Collaborative Model)](#def-edge-01-边缘-云协同模型-edge-cloud-collaborative-model)
+    - [Def-EDGE-02: 分层数据处理架构 (Layered Data Processing Architecture)](#def-edge-02-分层数据处理架构-layered-data-processing-architecture)
+    - [Def-EDGE-03: 延迟-带宽权衡空间 (Latency-Bandwidth Trade-off Space)](#def-edge-03-延迟-带宽权衡空间-latency-bandwidth-trade-off-space)
+    - [Def-EDGE-04: Wasm 边缘运行时 (Wasm Edge Runtime)](#def-edge-04-wasm-边缘运行时-wasm-edge-runtime)
+    - [Def-EDGE-05: 资源受限执行环境 (Resource-Constrained Execution Environment)](#def-edge-05-资源受限执行环境-resource-constrained-execution-environment)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-EDGE-01-01: 边缘处理最优性命题](#prop-edge-01-01-边缘处理最优性命题)
-    - [Prop-EDGE-01-02: 分层架构可扩展性命题](#prop-edge-01-02-分层架构可扩展性命题)
-    - [Prop-EDGE-01-03: Wasm 沙箱隔离安全性](#prop-edge-01-03-wasm-沙箱隔离安全性)
-    - [Prop-EDGE-01-04: 网络分区容错性](#prop-edge-01-04-网络分区容错性)
+    - [Prop-EDGE-01: 边缘处理最优性命题](#prop-edge-01-边缘处理最优性命题)
+    - [Prop-EDGE-02: 分层架构可扩展性命题](#prop-edge-02-分层架构可扩展性命题)
+    - [Prop-EDGE-03: Wasm 沙箱隔离安全性](#prop-edge-03-wasm-沙箱隔离安全性)
+    - [Prop-EDGE-04: 网络分区容错性](#prop-edge-04-网络分区容错性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 边缘-云架构映射关系](#31-边缘-云架构映射关系)
     - [3.2 IoT/5G/CDN 场景覆盖矩阵](#32-iot5gcdn-场景覆盖矩阵)
@@ -47,7 +47,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-EDGE-01-01: 边缘-云协同模型 (Edge-Cloud Collaborative Model)
+### Def-EDGE-01: 边缘-云协同模型 (Edge-Cloud Collaborative Model)
 
 **边缘-云协同模型**是一种分布式计算架构，通过在物理位置靠近数据源的边缘节点执行计算，同时与云端进行协同，实现低延迟、高带宽效率的数据处理。
 
@@ -83,7 +83,7 @@ $$
     └── 动态决策，边缘/云根据负载切换
 ```
 
-### Def-EDGE-01-02: 分层数据处理架构 (Layered Data Processing Architecture)
+### Def-EDGE-02: 分层数据处理架构 (Layered Data Processing Architecture)
 
 **分层数据处理架构**将数据处理任务按延迟、计算复杂度、状态需求划分为多个层次，每层在最适合的执行环境中运行。
 
@@ -112,7 +112,7 @@ $$
 | $l_3$ | 聚合层 | $< 500\text{ms}$ | 窗口聚合、本地分析 | 边缘服务器 |
 | $l_4$ | 分析层 | $< 5\text{s}$ | CEP、ML推理、全局聚合 | 云端 |
 
-### Def-EDGE-01-03: 延迟-带宽权衡空间 (Latency-Bandwidth Trade-off Space)
+### Def-EDGE-03: 延迟-带宽权衡空间 (Latency-Bandwidth Trade-off Space)
 
 **延迟-带宽权衡空间**描述了在边缘计算环境中，数据处理位置选择对端到端延迟和网络带宽消耗的影响关系。
 
@@ -140,7 +140,7 @@ $$
 | 边缘预处理+云聚合 | 中等 | $B_{upload}$ 减少 60-90% | 时序分析、趋势监控 |
 | 纯云端处理 | $L_{trans}$ 最大 | $B_{upload}$ 最大 | 复杂分析、全局聚合 |
 
-### Def-EDGE-01-04: Wasm 边缘运行时 (Wasm Edge Runtime)
+### Def-EDGE-04: Wasm 边缘运行时 (Wasm Edge Runtime)
 
 **Wasm 边缘运行时**是针对资源受限边缘环境优化的 WebAssembly 执行引擎，支持轻量级、安全隔离的用户代码执行。
 
@@ -169,7 +169,7 @@ $$
 | **Wasmer** | $< 30\text{ms}$ | $\sim 25\text{MB}$ | ✅ | ⭐⭐ |
 | **V8-Lite** | $< 50\text{ms}$ | $\sim 40\text{MB}$ | ❌ | ⭐ |
 
-### Def-EDGE-01-05: 资源受限执行环境 (Resource-Constrained Execution Environment)
+### Def-EDGE-05: 资源受限执行环境 (Resource-Constrained Execution Environment)
 
 **资源受限执行环境**指边缘节点在 CPU、内存、存储、能源等方面存在严格约束的计算环境。
 
@@ -193,7 +193,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-EDGE-01-01: 边缘处理最优性命题
+### Prop-EDGE-01: 边缘处理最优性命题
 
 **命题**: 对于延迟敏感型任务，边缘处理优于云端处理当且仅当满足以下条件：
 
@@ -227,7 +227,7 @@ $$
 
 **工程推论**: 对于 $D_{in}/D_{out} > 10$ 且 $L_{trans}^{up} > 100\text{ms}$ 的场景，边缘处理延迟优势显著。
 
-### Prop-EDGE-01-02: 分层架构可扩展性命题
+### Prop-EDGE-02: 分层架构可扩展性命题
 
 **命题**: 分层数据处理架构的可扩展性与层级解耦度正相关：
 
@@ -249,7 +249,7 @@ $$
 2. **故障隔离**: 某层故障不会级联到其他层
 3. **弹性伸缩**: 根据负载动态调整每层资源
 
-### Prop-EDGE-01-03: Wasm 沙箱隔离安全性
+### Prop-EDGE-03: Wasm 沙箱隔离安全性
 
 **命题**: Wasm 模块的内存安全隔离性优于传统进程级隔离：
 
@@ -266,7 +266,7 @@ Wasm 安全模型基于以下机制：
 3. **确定性执行**: Wasm 指令集无未定义行为，执行结果可预测
 4. **无隐式系统调用**: 必须通过 WASI 接口进行系统调用，可审计、可限制
 
-### Prop-EDGE-01-04: 网络分区容错性
+### Prop-EDGE-04: 网络分区容错性
 
 **命题**: 边缘-云协同架构在网络分区时，边缘节点可降级为自治模式继续服务：
 

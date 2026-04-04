@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-FPGA-01: FPGA 编程模型 (FPGA Programming Model)
+### Def-HET-09: FPGA 编程模型 (FPGA Programming Model)
 
 **定义**: FPGA (Field-Programmable Gate Array) 是一种可编程逻辑器件，其编程模型基于 **空间计算范式** (Spatial Computing Paradigm)，与 CPU/GPU 的时间计算范式有本质区别。
 
@@ -39,7 +39,7 @@ $$Exec_{FPGA}: Data_{in} \xrightarrow{Pipeline_{custom}} Data_{out}$$
 
 **直观解释**: FPGA 不像 CPU 那样按指令执行程序，而是在芯片上物理实现一个专用电路。数据流经这个定制电路，每个时钟周期都能产生结果。这带来了极低的延迟和确定性的执行时间。
 
-### Def-FPGA-02: 高层次综合 (High-Level Synthesis, HLS)
+### Def-HET-10: 高层次综合 (High-Level Synthesis, HLS)
 
 **定义**: HLS 是将算法级描述（C/C++/OpenCL）自动转换为 RTL (Register Transfer Level) 设计的技术。
 
@@ -76,7 +76,7 @@ $$HLS: \mathcal{P}_{algorithm} \times \mathcal{C}_{constraints} \rightarrow RTL_
 
 **直观解释**: HLS 让软件开发者用 C/C++ 编写 FPGA 程序，工具自动将其转为硬件电路。通过添加 pragma 指令，可以控制生成的硬件结构，如流水线深度、并行度等。
 
-### Def-FPGA-03: 流处理任务的 FPGA 化 (Streaming FPGA Acceleration)
+### Def-HET-11: 流处理任务的 FPGA 化 (Streaming FPGA Acceleration)
 
 **定义**: 将 Flink 流处理算子映射到 FPGA 硬件执行的过程，核心是构建 **确定性数据流水线**。
 
@@ -110,7 +110,7 @@ $$System = SW_{host} \oplus HW_{fpga}$$
 
 **直观解释**: FPGA 特别适合流计算中的低延迟、确定性处理场景。例如金融交易中的风控检查、IoT 边缘设备的实时分析等。CPU 负责整体协调，FPGA 负责高速数据处理。
 
-### Def-FPGA-04: 硬件/软件接口 (Hardware-Software Interface)
+### Def-HET-12: 硬件/软件接口 (Hardware-Software Interface)
 
 **定义**: CPU (Host) 与 FPGA (Device) 之间的通信接口和数据传输机制。
 
@@ -143,7 +143,7 @@ $$ZeroCopy: Data_{network} \rightarrow FPGA_{direct} \rightarrow Data_{network}$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-FPGA-01: FPGA 延迟最优性 (FPGA Latency Optimality)
+### Prop-HET-07: FPGA 延迟最优性 (FPGA Latency Optimality)
 
 **命题**: 对于流水线化 FPGA 设计，端到端延迟满足：
 
@@ -178,7 +178,7 @@ $$L_{FPGA} \approx 10-100ns \ll L_{CPU} \approx 1-10\mu s$$
 - 流水线深度应最小化以降低延迟
 - 避免片外内存访问
 
-### Prop-FPGA-02: 流水线吞吐量最大化 (Pipeline Throughput Maximization)
+### Prop-HET-08: 流水线吞吐量最大化 (Pipeline Throughput Maximization)
 
 **命题**: 最优流水线设计的吞吐量为：
 
@@ -209,7 +209,7 @@ $$II_{min} = \max(II_{resource}, II_{dependency}, II_{memory})$$
 - 数组分割可提高访存带宽
 - 数据流架构可解耦任务依赖
 
-### Prop-FPGA-03: 功耗效率优势 (Power Efficiency Advantage)
+### Prop-HET-09: 功耗效率优势 (Power Efficiency Advantage)
 
 **命题**: FPGA 在处理特定计算任务时，每瓦性能比 CPU/GPU 高一个数量级：
 

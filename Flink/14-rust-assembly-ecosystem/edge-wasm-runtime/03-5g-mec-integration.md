@@ -9,16 +9,16 @@
 - [5G MEC 集成指南 (5G MEC Integration Guide)](#5g-mec-集成指南-5g-mec-integration-guide)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-EDGE-03-01: 5G MEC 架构 (5G MEC Architecture)](#def-edge-03-01-5g-mec-架构-5g-mec-architecture)
-    - [Def-EDGE-03-02: 本地分流策略 (Local Breakout Strategy)](#def-edge-03-02-本地分流策略-local-breakout-strategy)
-    - [Def-EDGE-03-03: 移动性管理 (Mobility Management)](#def-edge-03-03-移动性管理-mobility-management)
-    - [Def-EDGE-03-04: MEC 应用生命周期 (MEC Application Lifecycle)](#def-edge-03-04-mec-应用生命周期-mec-application-lifecycle)
-    - [Def-EDGE-03-05: 网络切片与 MEC (Network Slicing and MEC)](#def-edge-03-05-网络切片与-mec-network-slicing-and-mec)
+    - [Def-EDGE-11: 5G MEC 架构 (5G MEC Architecture)](#def-edge-11-5g-mec-架构-5g-mec-architecture)
+    - [Def-EDGE-12: 本地分流策略 (Local Breakout Strategy)](#def-edge-12-本地分流策略-local-breakout-strategy)
+    - [Def-EDGE-13: 移动性管理 (Mobility Management)](#def-edge-13-移动性管理-mobility-management)
+    - [Def-EDGE-14: MEC 应用生命周期 (MEC Application Lifecycle)](#def-edge-14-mec-应用生命周期-mec-application-lifecycle)
+    - [Def-EDGE-15: 网络切片与 MEC (Network Slicing and MEC)](#def-edge-15-网络切片与-mec-network-slicing-and-mec)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-EDGE-03-01: 本地分流延迟边界](#prop-edge-03-01-本地分流延迟边界)
-    - [Prop-EDGE-03-02: 移动性切换连续性](#prop-edge-03-02-移动性切换连续性)
-    - [Prop-EDGE-03-03: 切片资源隔离性](#prop-edge-03-03-切片资源隔离性)
-    - [Prop-EDGE-03-04: MEC 扩展性](#prop-edge-03-04-mec-扩展性)
+    - [Prop-EDGE-09: 本地分流延迟边界](#prop-edge-09-本地分流延迟边界)
+    - [Prop-EDGE-10: 移动性切换连续性](#prop-edge-10-移动性切换连续性)
+    - [Prop-EDGE-11: 切片资源隔离性](#prop-edge-11-切片资源隔离性)
+    - [Prop-EDGE-12: MEC 扩展性](#prop-edge-12-mec-扩展性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 5G 核心网与 MEC 关系](#31-5g-核心网与-mec-关系)
     - [3.2 MEC 与 Flink 边缘部署映射](#32-mec-与-flink-边缘部署映射)
@@ -47,7 +47,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-EDGE-03-01: 5G MEC 架构 (5G MEC Architecture)
+### Def-EDGE-11: 5G MEC 架构 (5G MEC Architecture)
 
 **5G 多接入边缘计算 (MEC)** 是一种在 5G 网络边缘提供计算、存储和网络能力的架构，使应用能够部署在靠近用户和数据源的位置，实现超低延迟和高带宽。
 
@@ -107,7 +107,7 @@ $$
                     └─────────────┘
 ```
 
-### Def-EDGE-03-02: 本地分流策略 (Local Breakout Strategy)
+### Def-EDGE-12: 本地分流策略 (Local Breakout Strategy)
 
 **本地分流** (Local Breakout / UL CL - Uplink Classifier) 是 5G MEC 的核心能力，允许用户面数据在边缘 UPF 直接分流到 MEC 应用，无需绕行核心网。
 
@@ -136,7 +136,7 @@ $$
 | **S-NSSAI** | 切片标识 | 切片级分流 |
 | **位置基** | 用户位置区域 | 区域服务 |
 
-### Def-EDGE-03-03: 移动性管理 (Mobility Management)
+### Def-EDGE-13: 移动性管理 (Mobility Management)
 
 **移动性管理**确保用户设备在移动过程中，MEC 应用会话的连续性和服务质量的稳定性。
 
@@ -159,7 +159,7 @@ $$
 | **SSC Mode 2** | 先断后建 (Break-Before-Make) | 短暂中断 | 可容忍中断 |
 | **SSC Mode 3** | 先建后断 (Make-Before-Break) | 无缝 | AR/VR、游戏 |
 
-### Def-EDGE-03-04: MEC 应用生命周期 (MEC Application Lifecycle)
+### Def-EDGE-14: MEC 应用生命周期 (MEC Application Lifecycle)
 
 **MEC 应用生命周期**定义了应用在 MEC 平台上的部署、运行、扩缩容和终止的完整流程。
 
@@ -195,7 +195,7 @@ Instantiated
 | Scale | 负载阈值触发 | 水平/垂直扩展实例 |
 | Update | 版本更新 | 滚动更新、蓝绿部署 |
 
-### Def-EDGE-03-05: 网络切片与 MEC (Network Slicing and MEC)
+### Def-EDGE-15: 网络切片与 MEC (Network Slicing and MEC)
 
 **网络切片**与 MEC 结合，为不同行业应用提供隔离的端到端网络资源和边缘计算环境。
 
@@ -218,7 +218,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-EDGE-03-01: 本地分流延迟边界
+### Prop-EDGE-09: 本地分流延迟边界
 
 **命题**: 本地分流路径的端到端延迟显著低于中心核心网路径：
 
@@ -236,7 +236,7 @@ $$
 
 **工程推论**: 对于延迟敏感应用 (AR/VR、游戏、工业控制)，本地分流是必要条件。
 
-### Prop-EDGE-03-02: 移动性切换连续性
+### Prop-EDGE-10: 移动性切换连续性
 
 **命题**: SSC Mode 3 (Make-Before-Break) 保证会话零中断：
 
@@ -253,7 +253,7 @@ $$
 3. 旧数据流完成后，释放源 UPF 连接
 4. 切换期间无数据丢失
 
-### Prop-EDGE-03-03: 切片资源隔离性
+### Prop-EDGE-11: 切片资源隔离性
 
 **命题**: 不同网络切片在 MEC 上的资源是强隔离的：
 
@@ -270,7 +270,7 @@ $$
 | 存储 | Volume 隔离 | 独立挂载 |
 | Wasm | 模块沙箱 | 线性内存隔离 |
 
-### Prop-EDGE-03-04: MEC 扩展性
+### Prop-EDGE-12: MEC 扩展性
 
 **命题**: MEC 平台支持应用的水平扩展，扩展延迟与实例数对数相关：
 

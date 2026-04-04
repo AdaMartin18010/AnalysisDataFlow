@@ -9,7 +9,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-ARM-01: ARM NEON 架构
+### Def-SIMD-13: ARM NEON 架构
 
 **定义 1.1 (NEON 寄存器模型)**
 
@@ -42,7 +42,7 @@ type: 数据类型 (s8, u16, f32, etc.)
 - vld1q_u8:  向量加载, 16x uint8
 ```
 
-### Def-ARM-02: ARM SVE (Scalable Vector Extension)
+### Def-SIMD-14: ARM SVE (Scalable Vector Extension)
 
 **定义 2.1 (SVE 可变向量长度)**
 
@@ -64,7 +64,7 @@ a_i & \text{if } p_i = 0 \text{ (合并)} \\
 
 对比 AVX-512 的 K-mask，SVE 谓词更灵活（支持合并/归零两种模式）。
 
-### Def-ARM-03: 云原生场景
+### Def-SIMD-15: 云原生场景
 
 **定义 3.1 (AWS Graviton 系列)**
 
@@ -87,7 +87,7 @@ $$\text{Value}_{ARM} = \frac{\text{Performance}_{ARM}}{\text{Cost}_{ARM}} \div \
 
 ## 2. 属性推导 (Properties)
 
-### Prop-ARM-01: 向量宽度可移植性
+### Prop-SIMD-09: 向量宽度可移植性
 
 **命题 1.1 (SVE 代码可移植性)**
 
@@ -123,7 +123,7 @@ $$S_{SVE/NEON} = \frac{VL_{SVE}}{VL_{NEON}} = \frac{256}{128} = 2$$
 
 实际加速受限于内存带宽和指令发射率，通常为 1.5-1.8x。
 
-### Prop-ARM-02: 分支消除效率
+### Prop-SIMD-10: 分支消除效率
 
 **命题 2.1 (SVE 谓词分支消除)**
 

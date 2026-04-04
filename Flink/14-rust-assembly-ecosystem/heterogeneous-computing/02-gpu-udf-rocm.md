@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-GPU-05: ROCm 编程模型 (ROCm Programming Model)
+### Def-HET-05: ROCm 编程模型 (ROCm Programming Model)
 
 **定义**: ROCm (Radeon Open Compute) 是 AMD 推出的开源 GPU 计算平台，提供与 CUDA 类似的异构计算能力。其核心编程模型基于 **HIP (Heterogeneous-compute Interface for Portability)**，支持 CUDA 代码的跨平台移植。
 
@@ -30,7 +30,7 @@ $$\text{ExecutionGranularity}_{AMD} = 64 > \text{ExecutionGranularity}_{NVIDIA} 
 
 **直观解释**: ROCm/HIP 提供 CUDA 类似的编程体验，但在 AMD GPU 上执行。关键差异是 AMD 使用 64 线程的 Wavefront 而非 32 线程的 Warp，这影响内存合并和分支发散的优化策略。
 
-### Def-GPU-06: HIP 可移植层 (HIP Portability Layer)
+### Def-HET-06: HIP 可移植层 (HIP Portability Layer)
 
 **定义**: HIP 是一个 C++ 运行时 API 和内核语言，允许开发者编写可在 AMD 和 NVIDIA GPU 上运行的单一源代码。
 
@@ -58,7 +58,7 @@ $$HIP_{kernel} = \Phi(CUDA_{kernel}) \circ \delta_{warpSize}$$
 
 **直观解释**: HIP 让 CUDA 代码可以移植到 AMD GPU。大部分语法相同，只需更换头文件和 API 前缀（cuda → hip）。但需要注意 Wavefront 大小差异（64 vs 32）对算法的影响。
 
-### Def-GPU-07: ROCm 内存一致性模型 (ROCm Memory Consistency)
+### Def-HET-07: ROCm 内存一致性模型 (ROCm Memory Consistency)
 
 **定义**: ROCm 基于 HSA 标准实现内存一致性，支持 **统一内存架构** (Unified Memory Architecture) 和 **细粒度系统内存** (Fine-Grained System Memory)。
 
@@ -82,7 +82,7 @@ $$\text{atomic}_{fine}(addr, op, val): M_{fine} \times Op \times Value \rightarr
 
 **直观解释**: ROCm 的细粒度内存允许 CPU 和 GPU 共享同一内存页，无需显式拷贝。这在处理小数据量或需要细粒度同步的场景非常有用，但可能有性能开销。
 
-### Def-GPU-08: CUDA 到 ROCm 兼容性层 (Compatibility Layer)
+### Def-HET-08: CUDA 到 ROCm 兼容性层 (Compatibility Layer)
 
 **定义**: ROCm 提供 **hipify** 工具链，实现 CUDA 到 HIP 的自动/半自动代码转换。
 
@@ -111,7 +111,7 @@ O(n^2) & \text{if } manual_{adaptation} \text{ required}
 
 ## 2. 属性推导 (Properties)
 
-### Prop-GPU-04: Wavefront 大小对算法的影响 (Wavefront Size Impact)
+### Prop-HET-04: Wavefront 大小对算法的影响 (Wavefront Size Impact)
 
 **命题**: 在 AMD GPU 上，Wavefront 大小为 64 (vs NVIDIA Warp=32)，这影响最优线程块大小和归约算法的效率。
 
@@ -147,7 +147,7 @@ AMD 的更大 Wavefront 意味着更严重的分支发散惩罚。
 - 归约算法需适配 64 线程 Wavefront
 - 避免细粒度条件分支
 
-### Prop-GPU-05: ROCm 细粒度内存的原子操作优势
+### Prop-HET-05: ROCm 细粒度内存的原子操作优势
 
 **命题**: ROCm 的细粒度内存支持 CPU-GPU 原子操作同步，在小数据量共享场景下延迟低于显式拷贝。
 
@@ -172,7 +172,7 @@ $$L_{sync}^{fine} < L_{sync} \iff Data_{size} < \frac{B_{pcie} \times L_{overhea
 - 小数据聚合（如全局计数器）适合细粒度内存
 - 大数据传输仍推荐使用粗粒度显式拷贝
 
-### Prop-GPU-06: HIP 代码可移植性边界
+### Prop-HET-06: HIP 代码可移植性边界
 
 **命题**: 通过 HIP 编写的代码在 AMD 和 NVIDIA GPU 上的性能差异因子有界：
 

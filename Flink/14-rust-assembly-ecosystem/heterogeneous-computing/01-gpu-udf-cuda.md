@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-GPU-01: CUDA 编程模型 (CUDA Programming Model)
+### Def-HET-01: CUDA 编程模型 (CUDA Programming Model)
 
 **定义**: CUDA (Compute Unified Device Architecture) 是 NVIDIA 提出的并行计算平台和编程模型，其核心抽象为 **SIMT (Single Instruction, Multiple Threads)** 执行模型。
 
@@ -26,7 +26,7 @@ $$Grid = \bigcup_{i=0}^{n-1} Block_i, \quad Block_i = \bigcup_{j=0}^{m-1} Thread
 
 **直观解释**: CUDA 将大规模并行计算组织为层次结构。一个 GPU Kernel 启动一个 Grid，Grid 包含多个 Block，每个 Block 包含多个 Thread。同 Block 内的 Thread 可以通过共享内存协作，并通过同步原语协调执行。
 
-### Def-GPU-02: Host/Device 内存模型 (Host-Device Memory Model)
+### Def-HET-02: Host/Device 内存模型 (Host-Device Memory Model)
 
 **定义**: CUDA 采用 **分离式内存架构** (Discrete Memory Architecture)，Host (CPU) 和 Device (GPU) 拥有独立的物理内存空间，数据通过 PCIe/NVLink 总线显式传输。
 
@@ -46,7 +46,7 @@ $$M_{unified} = M_{host} \cup M_{device}, \quad \text{with automatic page migrat
 
 **直观解释**: CPU 和 GPU 有各自的内存空间。使用 CUDA 时需要显式管理数据传输（`cudaMemcpy`），或者使用统一内存让系统自动处理。PCIe 带宽（~32 GB/s）远低于 GPU 显存带宽（~1000+ GB/s），这是主要瓶颈。
 
-### Def-GPU-03: Flink GPU UDF 执行语义 (Flink GPU UDF Execution Semantics)
+### Def-HET-03: Flink GPU UDF 执行语义 (Flink GPU UDF Execution Semantics)
 
 **定义**: Flink GPU UDF 是将 Flink 的算子语义映射到 GPU 执行的扩展机制，定义为状态转换函数：
 
@@ -74,7 +74,7 @@ $$\text{Speedup} = \frac{1}{(1 - f_{parallel}) + \frac{f_{parallel}}{S_{gpu}} + 
 
 **直观解释**: Flink GPU UDF 将数据处理卸载到 GPU。需要考虑数据准备、传输、计算、回传全流程。只有当计算密集度足够高时，GPU 加速才有收益。
 
-### Def-GPU-04: CUDA 内存带宽瓶颈 (CUDA Memory Bandwidth Bottleneck)
+### Def-HET-04: CUDA 内存带宽瓶颈 (CUDA Memory Bandwidth Bottleneck)
 
 **定义**: GPU 计算受限于内存带宽时，实际性能与理论峰值的比率定义为 **Roofline 模型** 中的内存受限区域：
 
@@ -98,7 +98,7 @@ $$I_{ridge} = \frac{Perf_{peak}}{B_{mem}}$$
 
 ## 2. 属性推导 (Properties)
 
-### Prop-GPU-01: GPU UDF 适用性边界 (GPU UDF Applicability Bounds)
+### Prop-HET-01: GPU UDF 适用性边界 (GPU UDF Applicability Bounds)
 
 **命题**: 设批处理大小为 $N$，每个元素计算复杂度为 $O(f(N))$，则 GPU UDF 相比 CPU UDF 有性能收益当且仅当：
 
@@ -126,7 +126,7 @@ $$N > \frac{L_{transfer}}{t_{cpu}(S - 1)} = T_{threshold}$$
 - 计算复杂度需达到 $O(N)$ 或更高
 - 数据重用可减少有效传输量
 
-### Prop-GPU-02: 内存合并访问最优性 (Coalesced Memory Access Optimality)
+### Prop-HET-02: 内存合并访问最优性 (Coalesced Memory Access Optimality)
 
 **命题**: 在 CUDA 中，当 Warp 内线程（32 线程）访问连续内存地址且对齐时，访问延迟最小：
 
@@ -156,7 +156,7 @@ GPU 全局内存通过 **事务** (Transaction) 服务，一个事务可传输 3
 - 线程 ID 应映射到连续内存索引：`idx = blockIdx.x * blockDim.x + threadIdx.x`
 - 使用 `__shared__` 内存缓存不规则访问模式
 
-### Prop-GPU-03: Stream 并行掩盖传输延迟 (Stream Parallelism Hiding)
+### Prop-HET-03: Stream 并行掩盖传输延迟 (Stream Parallelism Hiding)
 
 **命题**: 使用 $k$ 个 CUDA Stream 进行流水线计算，当满足以下条件时可完全掩盖 H2D 传输延迟：
 

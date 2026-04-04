@@ -8,7 +8,7 @@
 
 ### 1.1 向量化执行基础
 
-**Def-VEC-01-01** (向量化 UDF): 设 $\mathcal{D}$ 为流处理执行环境，$\mathcal{U}_{vec}$ 为向量化 UDF，其形式化定义为五元组：
+**Def-VEC-01** (向量化 UDF): 设 $\mathcal{D}$ 为流处理执行环境，$\mathcal{U}_{vec}$ 为向量化 UDF，其形式化定义为五元组：
 
 $$
 \mathcal{U}_{vec} = (F_{batch}, B, \mathcal{A}, \Pi_{vector}, \Theta)
@@ -22,7 +22,7 @@ $$
 - $\Pi_{vector}$ 为 SIMD（Single Instruction Multiple Data）并行执行单元
 - $\Theta$ 为 CPU 缓存优化配置参数集
 
-**Def-VEC-01-02** (标量 UDF 与向量化 UDF): 设 $f_{scalar}$ 为标量 UDF，$f_{vector}$ 为向量化 UDF，两者的计算模型差异定义为：
+**Def-VEC-02** (标量 UDF 与向量化 UDF): 设 $f_{scalar}$ 为标量 UDF，$f_{vector}$ 为向量化 UDF，两者的计算模型差异定义为：
 
 $$
 \Delta_{exec}(f_{scalar}, f_{vector}) = \begin{cases}
@@ -33,7 +33,7 @@ $$
 
 其中 $R$ 为输入记录集，$B$ 为批大小。
 
-**Def-VEC-01-03** (SIMD 执行模型): 设 $\mathcal{P}_{simd}$ 为 SIMD 处理单元，其处理能力定义为：
+**Def-VEC-03** (SIMD 执行模型): 设 $\mathcal{P}_{simd}$ 为 SIMD 处理单元，其处理能力定义为：
 
 $$
 \mathcal{P}_{simd} = \{(w, l, n) \mid w \in \{128, 256, 512\}, l \in \{\text{AVX}, \text{AVX2}, \text{AVX-512}\}, n = w / \text{sizeof}(\text{type})\}
@@ -47,7 +47,7 @@ $$
 
 ### 1.2 批处理优势度量
 
-**Def-VEC-01-04** (批处理增益系数): 设 $T_{scalar}(n)$ 为处理 $n$ 条记录的标量执行时间，$T_{vector}(n, B)$ 为批大小为 $B$ 的向量化执行时间，则批处理增益系数定义为：
+**Def-VEC-04** (批处理增益系数): 设 $T_{scalar}(n)$ 为处理 $n$ 条记录的标量执行时间，$T_{vector}(n, B)$ 为批大小为 $B$ 的向量化执行时间，则批处理增益系数定义为：
 
 $$
 \gamma(B) = \frac{T_{scalar}(n)}{T_{vector}(n, B)} = \frac{n \cdot t_{row}}{\frac{n}{B} \cdot t_{batch} + n \cdot t_{compute}}
@@ -108,7 +108,7 @@ graph TB
 
 ### 2.1 向量化性能上界定理
 
-**Prop-VEC-01-01** (向量化加速上界): 设 $\gamma_{max}$ 为理论最大加速比，$n_{simd}$ 为 SIMD 并行度，$\alpha$ 为向量化开销系数，则：
+**Prop-VEC-01** (向量化加速上界): 设 $\gamma_{max}$ 为理论最大加速比，$n_{simd}$ 为 SIMD 并行度，$\alpha$ 为向量化开销系数，则：
 
 $$
 \gamma_{max} = \min\left(\frac{t_{call} + t_{compute}}{t_{compute} / n_{simd} + \alpha \cdot t_{setup}}, \frac{B_{opt} \cdot t_{call}}{t_{batch}}\right)
@@ -132,7 +132,7 @@ $$T_{vector} = \frac{n}{B} \cdot t_{batch} + n \cdot \left(\frac{t_{compute}}{n_
 
 ### 2.2 缓存局部性定理
 
-**Prop-VEC-01-02** (列式缓存效率): 设 $H_{col}$ 为列式访问缓存命中率，$H_{row}$ 为行式访问缓存命中率，$C$ 为缓存行大小，$W$ 为字段平均宽度，则列式布局优势度为：
+**Prop-VEC-02** (列式缓存效率): 设 $H_{col}$ 为列式访问缓存命中率，$H_{row}$ 为行式访问缓存命中率，$C$ 为缓存行大小，$W$ 为字段平均宽度，则列式布局优势度为：
 
 $$
 \eta = \frac{H_{col}}{H_{row}} = \frac{\min(1, \frac{C}{W})}{\min(1, \frac{C}{N \cdot W})} = \min\left(1, \frac{N \cdot W}{C}\right) \quad \text{当 } N \cdot W > C
@@ -246,7 +246,7 @@ graph TB
 
 ### 4.1 向量化适用场景论证
 
-**Prop-VEC-01-03** (向量化选型准则): 对于计算任务 $Task$，选择向量化执行的充分条件为：
+**Prop-VEC-03** (向量化选型准则): 对于计算任务 $Task$，选择向量化执行的充分条件为：
 
 $$
 Task \in VectorizedUDF \iff \begin{cases}
@@ -290,7 +290,7 @@ $$
 
 ### 5.1 向量化收益定理
 
-**Thm-VEC-01-01** (向量化收益定理): 对于给定向量化 UDF，若满足以下条件：
+**Thm-VEC-01** (向量化收益定理): 对于给定向量化 UDF，若满足以下条件：
 
 1. 批大小 $B \geq B_{min} = \frac{t_{overhead}}{t_{compute}}$
 2. SIMD 可用且并行度 $n_{simd} \geq 4$

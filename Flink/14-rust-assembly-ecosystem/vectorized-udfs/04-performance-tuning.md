@@ -8,7 +8,7 @@
 
 ### 1.1 批大小优化模型
 
-**Def-VEC-04-01** (最优批大小): 设 $T_{total}(B)$ 为批大小为 $B$ 时的总处理时间，最优批大小 $B_{opt}$ 定义为：
+**Def-VEC-14** (最优批大小): 设 $T_{total}(B)$ 为批大小为 $B$ 时的总处理时间，最优批大小 $B_{opt}$ 定义为：
 
 $$
 B_{opt} = \arg\min_{B} T_{total}(B) = \arg\min_{B} \left( \frac{N}{B} \cdot T_{overhead} + N \cdot T_{per\_row}(B) \right)
@@ -20,7 +20,7 @@ $$
 - $T_{overhead}$: 每批次固定开销（调度、函数调用、Arrow 转换）
 - $T_{per\_row}(B)$: 单条记录处理时间，随批大小变化
 
-**Def-VEC-04-02** (批大小收益曲线): 批大小收益函数 $\gamma(B)$ 定义为加速比相对于最小批大小：
+**Def-VEC-15** (批大小收益曲线): 批大小收益函数 $\gamma(B)$ 定义为加速比相对于最小批大小：
 
 $$
 \gamma(B) = \frac{T_{total}(1)}{T_{total}(B)} = \frac{N \cdot T_{row}}{\frac{N}{B} \cdot T_{overhead} + N \cdot T_{batch}(B)}
@@ -30,7 +30,7 @@ $$
 
 ### 1.2 内存管理优化
 
-**Def-VEC-04-03** (内存池分配器): Arrow 内存池分配器 $\mathcal{A}_{pool}$ 定义为：
+**Def-VEC-16** (内存池分配器): Arrow 内存池分配器 $\mathcal{A}_{pool}$ 定义为：
 
 $$
 \mathcal{A}_{pool} = (P, S_{chunk}, S_{max}, \Phi)
@@ -43,7 +43,7 @@ $$
 - $S_{max}$: 最大可分配内存
 - $\Phi$: 分配策略（First-Fit / Best-Fit / Buddy System）
 
-**Def-VEC-04-04** (内存碎片度量): 设 $M_{total}$ 为总分配内存，$M_{used}$ 为实际使用内存，内存碎片率 $F$ 定义为：
+**Def-VEC-17** (内存碎片度量): 设 $M_{total}$ 为总分配内存，$M_{used}$ 为实际使用内存，内存碎片率 $F$ 定义为：
 
 $$
 F = 1 - \frac{M_{used}}{M_{total}} = \frac{\sum_{i} (size_i - requested_i)}{M_{total}}
@@ -68,7 +68,7 @@ $$
 
 ### 2.1 批大小与缓存关系
 
-**Prop-VEC-04-01** (缓存感知批大小): 为使工作集完全驻留 L1 缓存，批大小应满足：
+**Prop-VEC-10** (缓存感知批大小): 为使工作集完全驻留 L1 缓存，批大小应满足：
 
 $$
 B_{L1} \leq \frac{C_{L1} - C_{overhead}}{\sum_{j=1}^{p} w_j}
@@ -89,7 +89,7 @@ $$
 
 ### 2.2 内存分配延迟定理
 
-**Prop-VEC-04-02** (预分配收益): 设 $T_{malloc}$ 为动态分配时间，$T_{pool}$ 为内存池分配时间，预分配收益比为：
+**Prop-VEC-11** (预分配收益): 设 $T_{malloc}$ 为动态分配时间，$T_{pool}$ 为内存池分配时间，预分配收益比为：
 
 $$
 \frac{T_{malloc}}{T_{pool}} = \frac{O(\log M) + O(n)}{O(1)}
@@ -226,7 +226,7 @@ flowchart TD
 
 ### 4.1 批大小调优论证
 
-**Prop-VEC-04-03** (批大小调优准则): 对于给定的延迟约束 $L_{max}$ 和吞吐目标 $R_{min}$，批大小选择满足：
+**Prop-VEC-12** (批大小调优准则): 对于给定的延迟约束 $L_{max}$ 和吞吐目标 $R_{min}$，批大小选择满足：
 
 $$
 B_{opt} = \max\left( B_{latency}(L_{max}), B_{throughput}(R_{min}) \right)
@@ -266,7 +266,7 @@ $$
 
 ### 5.1 最优批大小定理
 
-**Thm-VEC-04-01** (最优批大小): 设总处理时间函数：
+**Thm-VEC-06** (最优批大小): 设总处理时间函数：
 
 $$
 T_{total}(B) = \frac{N}{B} \cdot (T_{setup} + T_{teardown}) + N \cdot T_{proc} + \frac{N \cdot B \cdot S_{row}}{BW_{mem}}
@@ -294,7 +294,7 @@ $$
 
 ### 5.2 内存池性能定理
 
-**Thm-VEC-04-02** (内存池吞吐提升): 设 $T_{alloc}$ 为系统分配时间，$T_{pool}$ 为内存池分配时间，$T_{work}$ 为实际工作时间，使用内存池的吞吐提升为：
+**Thm-VEC-07** (内存池吞吐提升): 设 $T_{alloc}$ 为系统分配时间，$T_{pool}$ 为内存池分配时间，$T_{work}$ 为实际工作时间，使用内存池的吞吐提升为：
 
 $$
 \gamma_{pool} = \frac{\frac{1}{T_{alloc} + T_{work}}}{\frac{1}{T_{pool} + T_{work}}} = \frac{T_{pool} + T_{work}}{T_{alloc} + T_{work}}

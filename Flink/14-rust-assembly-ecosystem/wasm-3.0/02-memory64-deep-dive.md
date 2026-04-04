@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-M64-01: Memory64 线性内存模型
+### Def-WASM-06: Memory64 线性内存模型
 
 Memory64 是 WebAssembly 3.0 引入的线性内存扩展，允许使用 64 位无符号整数作为内存索引，突破传统 32 位寻址的 4GB 限制。
 
@@ -33,7 +33,7 @@ $$\text{limits}_{64} = \{\text{min}: \mathbb{N}_{64}, \text{max}: \mathbb{N}_{64
 | 页面大小 | 64KB | 64KB |
 | 浏览器限制 | 4GB | 16GB (当前) |
 
-### Def-M64-02: 64位加载/存储指令语义
+### Def-WASM-07: 64位加载/存储指令语义
 
 Memory64 扩展了 WebAssembly 的内存访问指令集，所有加载和存储操作使用 `i64` 类型的地址操作数。
 
@@ -62,7 +62,7 @@ $$\frac{M_{64}[a:a+8] = b_0b_1...b_7}{i64.load(a) = \sum_{i=0}^{7} b_i \times 25
 | `f32.store` | `i64` (addr), `f32` (val) | - | 4 |
 | `f64.store` | `i64` (addr), `f64` (val) | - | 8 |
 
-### Def-M64-03: 内存增长操作语义
+### Def-WASM-08: 内存增长操作语义
 
 Memory64 的 `memory.grow` 指令接受 `i64` 类型的增量参数，返回 `i64` 类型的先前页数。
 
@@ -80,7 +80,7 @@ n & \text{if } n + \delta \leq \text{max} \land \text{allocation succeeds} \\
 - 返回值为 `i64` 类型的有符号解释：\(\{-1\} \cup \mathbb{N}_{64}\)
 - 失败时返回 \(-1\) (作为 `i64`)
 
-### Def-M64-04: 混合内存模型 (32/64位共存)
+### Def-WASM-09: 混合内存模型 (32/64位共存)
 
 WebAssembly 3.0 允许模块同时声明 32 位和 64 位内存，实现渐进式迁移。
 
@@ -100,7 +100,7 @@ $$(i64.load \text{ } 0) \text{ } (i64.const \text{ } 1024) \Rightarrow \text{从
 
 ## 2. 属性推导 (Properties)
 
-### Prop-M64-01: Memory64 性能惩罚边界
+### Prop-WASM-04: Memory64 性能惩罚边界
 
 **命题**: Memory64 在 64 位主机平台上存在可量化的性能惩罚，范围在 1.2x 到 2.5x 之间。
 
@@ -130,7 +130,7 @@ $$(i64.load \text{ } 0) \text{ } (i64.const \text{ } 1024) \Rightarrow \text{从
 
 **结论**: 性能惩罚因子 \(\rho \in [1.2, 2.5]\)，与访问模式相关。
 
-### Prop-M64-02: 大内存应用的成本效益阈值
+### Prop-WASM-05: 大内存应用的成本效益阈值
 
 **命题**: 存在明确的阈值 \(T\)，当应用内存需求超过 \(T\) 时，使用 Memory64 的净效益为正。
 
@@ -161,7 +161,7 @@ $$\text{Benefit}_{64} = C_{32}(M) - C_{64}(M) = M \times \tau_{32} (1 - \rho) < 
 
 **结论**: 阈值 \(T = 4\text{GB}\)，这是由 32 位寻址极限决定的自然边界。
 
-### Prop-M64-03: Flink 大状态 UDF 内存对齐要求
+### Prop-WASM-06: Flink 大状态 UDF 内存对齐要求
 
 **命题**: Flink 使用 Memory64 的大状态 UDF 需要满足特定的内存对齐要求以确保 Checkpoint 效率。
 
@@ -341,7 +341,7 @@ flowchart TB
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### 定理 M64-01: Memory64 在 Flink 大状态 UDF 中的正确性
+### 定理 WASM-06: Memory64 在 Flink 大状态 UDF 中的正确性
 
 **定理**: 使用 Memory64 的 Flink WebAssembly UDF 能够正确处理超过 4GB 的状态数据，并在故障时通过 Checkpoint 机制恢复一致性。
 

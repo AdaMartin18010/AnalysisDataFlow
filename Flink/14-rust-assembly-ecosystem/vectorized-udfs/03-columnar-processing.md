@@ -8,7 +8,7 @@
 
 ### 1.1 列式数据布局
 
-**Def-VEC-03-01** (列式存储布局): 设 $T$ 为包含 $n$ 条记录、$m$ 个字段的表，列式布局 $L_{columnar}$ 定义为：
+**Def-VEC-09** (列式存储布局): 设 $T$ 为包含 $n$ 条记录、$m$ 个字段的表，列式布局 $L_{columnar}$ 定义为：
 
 $$
 L_{columnar}(T) = \{C_1, C_2, ..., C_m\} \quad \text{其中} \quad C_j = [v_{1j}, v_{2j}, ..., v_{nj}]
@@ -20,7 +20,7 @@ $$
 - **同质性**: $\forall k, \text{Type}(v_{kj}) = \tau_j$（列内类型一致）
 - **对齐性**: $\text{Addr}(C_j) \equiv 0 \pmod{64}$（64字节对齐）
 
-**Def-VEC-03-02** (数据局部性): 设 $P$ 为访问模式，$M$ 为内存层次结构（$L_1 \subset L_2 \subset L_3 \subset RAM$），数据局部性定义为：
+**Def-VEC-10** (数据局部性): 设 $P$ 为访问模式，$M$ 为内存层次结构（$L_1 \subset L_2 \subset L_3 \subset RAM$），数据局部性定义为：
 
 $$
 \mathcal{L}(P, M) = \sum_{i=1}^{|P|} \mathbb{1}_{[\text{CacheHit}(P_i, M)]}
@@ -34,7 +34,7 @@ $$
 
 ### 1.2 缓存行与伪共享
 
-**Def-VEC-03-03** (缓存行结构): 现代 CPU 缓存行 $CL$ 定义为：
+**Def-VEC-11** (缓存行结构): 现代 CPU 缓存行 $CL$ 定义为：
 
 $$
 CL = (tag, data[0..63], state) \quad \text{其中} \quad state \in \{M, E, S, I\}
@@ -44,7 +44,7 @@ $$
 - $data$: 64 字节数据块
 - $state$: MESI 协议状态（Modified/Exclusive/Shared/Invalid）
 
-**Def-VEC-03-04** (伪共享): 当两个线程访问不同变量但位于同一缓存行时发生伪共享 $FS$：
+**Def-VEC-12** (伪共享): 当两个线程访问不同变量但位于同一缓存行时发生伪共享 $FS$：
 
 $$
 FS(x, y) = \begin{cases}
@@ -57,7 +57,7 @@ $$
 
 ### 1.3 谓词下推优化
 
-**Def-VEC-03-05** (谓词下推): 设 $Q$ 为查询计划树，$P$ 为选择谓词，谓词下推变换 $\mathcal{T}_{pushdown}$ 定义为：
+**Def-VEC-13** (谓词下推): 设 $Q$ 为查询计划树，$P$ 为选择谓词，谓词下推变换 $\mathcal{T}_{pushdown}$ 定义为：
 
 $$
 \mathcal{T}_{pushdown}(Q, P) = \begin{cases}
@@ -74,7 +74,7 @@ $$
 
 ### 2.1 列式扫描性能定理
 
-**Prop-VEC-03-01** (列式扫描效率): 对于分析查询仅访问 $k$ 列中的 $p$ 列（$p \ll k$），列式扫描的数据传输量 $D_{col}$ 与行式扫描 $D_{row}$ 之比为：
+**Prop-VEC-07** (列式扫描效率): 对于分析查询仅访问 $k$ 列中的 $p$ 列（$p \ll k$），列式扫描的数据传输量 $D_{col}$ 与行式扫描 $D_{row}$ 之比为：
 
 $$
 \frac{D_{col}}{D_{row}} = \frac{p \cdot w_{avg}}{\sum_{i=1}^{k} w_i} \approx \frac{p}{k} \quad \text{当列宽均匀时}
@@ -84,7 +84,7 @@ $$
 
 ### 2.2 缓存命中率定理
 
-**Prop-VEC-03-02** (列式缓存优势): 设 $C$ 为缓存容量，$W$ 为工作集大小，列式访问模式的缓存命中率 $H_{col}$ 满足：
+**Prop-VEC-08** (列式缓存优势): 设 $C$ 为缓存容量，$W$ 为工作集大小，列式访问模式的缓存命中率 $H_{col}$ 满足：
 
 $$
 H_{col} = \min\left(1, \frac{C}{W_{col}}\right) = \min\left(1, \frac{C}{n \cdot p \cdot w}\right)
@@ -225,7 +225,7 @@ graph TB
 
 ### 4.1 列式布局选型论证
 
-**Prop-VEC-03-03** (列式布局选型准则): 对于工作负载 $W$，选择列式布局的充分条件：
+**Prop-VEC-09** (列式布局选型准则): 对于工作负载 $W$，选择列式布局的充分条件：
 
 $$
 W \in ColumnarWorkload \iff \begin{cases}
@@ -260,7 +260,7 @@ $$
 
 ### 5.1 缓存效率定理
 
-**Thm-VEC-03-01** (列式缓存效率): 对于扫描查询访问 $p$ 列，每批处理 $B$ 条记录，L1 缓存完全容纳的条件为：
+**Thm-VEC-04** (列式缓存效率): 对于扫描查询访问 $p$ 列，每批处理 $B$ 条记录，L1 缓存完全容纳的条件为：
 
 $$
 B \cdot \sum_{j=1}^{p} w_j \leq C_{L1} \cdot \alpha
@@ -288,7 +288,7 @@ $$
 
 ### 5.2 谓词下推优化定理
 
-**Thm-VEC-03-02** (谓词下推收益): 对于选择率（Selectivity）为 $s$ 的谓词 $P$，下推后的数据处理量减少为原来的 $s$ 倍：
+**Thm-VEC-05** (谓词下推收益): 对于选择率（Selectivity）为 $s$ 的谓词 $P$，下推后的数据处理量减少为原来的 $s$ 倍：
 
 $$
 D_{after} = s \cdot D_{before}, \quad \text{加速比} \quad \gamma = \frac{1}{s}

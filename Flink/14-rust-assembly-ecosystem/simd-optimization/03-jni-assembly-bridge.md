@@ -9,7 +9,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-JNI-01: JNI (Java Native Interface)
+### Def-SIMD-07: JNI (Java Native Interface)
 
 **定义 1.1 (JNI 调用约定)**
 
@@ -31,7 +31,7 @@ $$\text{Efficiency}(n) = \frac{n \cdot C + n \cdot T(1)}{C + T(n)}$$
 
 当 $n \to \infty$ 时，效率趋近于 $T(1) / (T(n)/n)$，即向量化加速比。
 
-### Def-JNI-02: JVM SIMD 支持路径
+### Def-SIMD-08: JVM SIMD 支持路径
 
 **定义 2.1 (Vector API - JEP 338/414/417)**
 
@@ -58,7 +58,7 @@ Panama 项目提供现代替代 JNI 的互操作方案：
 | 调用开销 | 高 (~100ns) | 低 (~10ns) |
 | SIMD 友好度 | 需手动对齐 | 原生对齐支持 |
 
-### Def-JNI-03: 安全边界
+### Def-SIMD-09: 安全边界
 
 **定义 3.1 (JNI 安全契约)**
 
@@ -85,7 +85,7 @@ O(n) & \text{if array copy required}
 
 ## 2. 属性推导 (Properties)
 
-### Prop-JNI-01: 批量调用收益
+### Prop-SIMD-05: 批量调用收益
 
 **命题 1.1 (最优批大小)**
 
@@ -111,7 +111,7 @@ $$F_{max} = \frac{R}{n^*} = \frac{R \cdot t \cdot (w-1)}{C \cdot w}$$
 当 $R = 10^7$ elements/sec 时：
 $$F_{max} \approx \frac{10^7 \cdot 1 \cdot 7}{100 \cdot 8} \approx 87,500 \text{ calls/sec}$$
 
-### Prop-JNI-02: 内存布局兼容性
+### Prop-SIMD-06: 内存布局兼容性
 
 **命题 2.1 (列式内存 SIMD 友好性)**
 
