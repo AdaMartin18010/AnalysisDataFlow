@@ -91,6 +91,17 @@ help: ## 显示所有可用命令
 	@echo "  $(YELLOW)make update-index$(RESET)        更新所有索引(搜索索引+知识图谱)"
 	@echo "  $(YELLOW)make check-links$(RESET)         检查文档中的死链"
 	@echo "  $(YELLOW)make fix-numbers$(RESET)         修复定理/定义编号"
+	@echo "  $(YELLOW)make update-progress$(RESET)     自动更新PROJECT-TRACKING.md进度"
+	@echo "  $(YELLOW)make fix-links$(RESET)           修复文档链接问题"
+	@echo ""
+	@echo "$(GREEN)自动化工具集命令:$(RESET)"
+	@echo "  $(YELLOW)make validate-theorems$(RESET)   验证定理编号连续性和唯一性"
+	@echo "  $(YELLOW)make validate-mermaid$(RESET)    验证Mermaid图表语法(增强版)"
+	@echo "  $(YELLOW)make health-check$(RESET)        运行项目健康检查仪表盘"
+	@echo "  $(YELLOW)make check-consistency$(RESET)   检查文档一致性(术语/格式)"
+	@echo "  $(YELLOW)make update-stats$(RESET)        更新STATISTICS-REPORT.md"
+	@echo "  $(YELLOW)make all-checks$(RESET)          运行所有检查(完整套件)"
+	@echo "  $(YELLOW)make automation-help$(RESET)     显示自动化工具集详细帮助"
 	@echo ""
 	@echo "$(GREEN)环境命令:$(RESET)"
 	@echo "  $(YELLOW)make install-deps$(RESET)        安装Python依赖"
@@ -594,3 +605,146 @@ version: ## 显示Makefile版本信息
 	@echo "操作系统: $(DETECTED_OS)"
 	@echo "Python: $(PYTHON)"
 	@echo "输出目录: $(OUTPUT_DIR)"
+
+# =============================================================================
+# 自动化工具集命令 (Automation Toolkit) - v1.0
+# =============================================================================
+
+# 脚本路径
+SCRIPTS_DIR := .scripts
+VALIDATE_THEOREMS_SCRIPT := $(SCRIPTS_DIR)/validate_theorem_numbers.py
+VALIDATE_MERMAID_SCRIPT := $(SCRIPTS_DIR)/validate_mermaid.py
+GENERATE_STATS_SCRIPT := $(SCRIPTS_DIR)/generate_stats_report.py
+HEALTH_CHECK_SCRIPT := $(SCRIPTS_DIR)/health_check_dashboard.py
+CHECK_CONSISTENCY_SCRIPT := $(SCRIPTS_DIR)/check_consistency.py
+UPDATE_PROGRESS_SCRIPT := $(SCRIPTS_DIR)/update_progress.py
+
+.PHONY: validate-theorems
+validate-theorems: ## 验证定理编号连续性和唯一性
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  验证定理编号...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@$(PYTHON) $(VALIDATE_THEOREMS_SCRIPT) --verbose || { \
+		echo "$(RED)❌ 定理编号验证失败$(RESET)"; \
+		exit 1; \
+	}
+	@echo "$(GREEN)✅ 定理编号验证通过$(RESET)"
+
+.PHONY: validate-mermaid
+validate-mermaid: ## 验证Mermaid图表语法
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  验证Mermaid图表语法...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@$(PYTHON) $(VALIDATE_MERMAID_SCRIPT) || { \
+		echo "$(RED)❌ Mermaid验证失败$(RESET)"; \
+		exit 1; \
+	}
+	@echo "$(GREEN)✅ Mermaid验证通过$(RESET)"
+
+.PHONY: stats
+current-stats: ## 生成并显示项目统计报告
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  生成项目统计报告...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@$(PYTHON) $(GENERATE_STATS_SCRIPT)
+
+.PHONY: update-stats
+update-stats: ## 更新STATISTICS-REPORT.md
+	@echo "$(BLUE)▶ 更新统计报告文件...$(RESET)"
+	@$(PYTHON) $(GENERATE_STATS_SCRIPT) --update
+	@echo "$(GREEN)✅ STATISTICS-REPORT.md 已更新$(RESET)"
+
+.PHONY: health-check
+health-check: ## 运行项目健康检查仪表盘
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  运行项目健康检查...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@$(PYTHON) $(HEALTH_CHECK_SCRIPT) --save || { \
+		echo "$(YELLOW)⚠️  健康检查发现问题$(RESET)"; \
+	}
+
+.PHONY: health-check-json
+health-check-json: ## 输出健康检查JSON报告
+	@$(PYTHON) $(HEALTH_CHECK_SCRIPT) --json
+
+.PHONY: check-consistency
+check-consistency: ## 检查文档一致性（术语、格式等）
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  检查文档一致性...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@$(PYTHON) $(CHECK_CONSISTENCY_SCRIPT) || { \
+		echo "$(YELLOW)⚠️  一致性检查发现问题$(RESET)"; \
+	}
+
+.PHONY: fix-links
+fix-links: ## 修复文档链接问题
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@echo "$(BLUE)  修复文档链接...$(RESET)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(RESET)"
+	@if [ -f "$(SCRIPTS_DIR)/fix_all_cross_refs.py" ]; then \
+		$(PYTHON) $(SCRIPTS_DIR)/fix_all_cross_refs.py; \
+	else \
+		$(PYTHON) $(SCRIPTS_DIR)/fix_cross_refs.py 2>/dev/null || \
+		echo "$(YELLOW)提示: 链接修复脚本不存在$(RESET)"; \
+	fi
+
+.PHONY: update-progress
+update-progress: ## 自动更新PROJECT-TRACKING.md进度
+	@echo "$(BLUE)▶ 更新项目进度...$(RESET)"
+	@$(PYTHON) $(UPDATE_PROGRESS_SCRIPT) --auto --update-file
+	@echo "$(GREEN)✅ 进度已更新$(RESET)"
+
+.PHONY: all-checks
+all-checks: ## 运行所有检查（验证+健康检查+一致性）
+	@echo "$(BLUE)╔══════════════════════════════════════════════════════════════════╗$(RESET)"
+	@echo "$(BLUE)║           运行完整项目检查套件                                  ║$(RESET)"
+	@echo "$(BLUE)╚══════════════════════════════════════════════════════════════════╝$(RESET)"
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 1/6: 验证定理编号$(RESET)"
+	@$(MAKE) validate-theorems || true
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 2/6: 验证Mermaid语法$(RESET)"
+	@$(MAKE) validate-mermaid || true
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 3/6: 验证交叉引用$(RESET)"
+	@$(MAKE) validate-crossrefs || true
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 4/6: 项目健康检查$(RESET)"
+	@$(MAKE) health-check || true
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 5/6: 文档一致性检查$(RESET)"
+	@$(MAKE) check-consistency || true
+	@echo ""
+	@echo "$(MAGENTA)▶ 步骤 6/6: 生成统计报告$(RESET)"
+	@$(MAKE) current-stats || true
+	@echo ""
+	@echo "$(GREEN)╔══════════════════════════════════════════════════════════════════╗$(RESET)"
+	@echo "$(GREEN)║           所有检查完成!                                         ║$(RESET)"
+	@echo "$(GREEN)╚══════════════════════════════════════════════════════════════════╝$(RESET)"
+
+.PHONY: automation-help
+automation-help: ## 显示自动化工具集帮助
+	@echo "$(BLUE)╔══════════════════════════════════════════════════════════════════╗$(RESET)"
+	@echo "$(BLUE)║        AnalysisDataFlow 自动化工具集 - 可用命令                  ║$(RESET)"
+	@echo "$(BLUE)╚══════════════════════════════════════════════════════════════════╝$(RESET)"
+	@echo ""
+	@echo "$(GREEN)验证命令:$(RESET)"
+	@echo "  $(YELLOW)make validate-theorems$(RESET)     验证定理编号连续性和唯一性"
+	@echo "  $(YELLOW)make validate-mermaid$(RESET)      验证Mermaid图表语法"
+	@echo "  $(YELLOW)make validate-crossrefs$(RESET)    验证交叉引用链接"
+	@echo "  $(YELLOW)make check-consistency$(RESET)     检查文档一致性"
+	@echo ""
+	@echo "$(GREEN)统计与报告:$(RESET)"
+	@echo "  $(YELLOW)make current-stats$(RESET)         显示项目统计摘要"
+	@echo "  $(YELLOW)make update-stats$(RESET)          更新STATISTICS-REPORT.md"
+	@echo "  $(YELLOW)make health-check$(RESET)          运行项目健康检查仪表盘"
+	@echo "  $(YELLOW)make health-check-json$(RESET)     输出JSON格式健康报告"
+	@echo ""
+	@echo "$(GREEN)维护命令:$(RESET)"
+	@echo "  $(YELLOW)make update-progress$(RESET)       自动更新PROJECT-TRACKING.md进度"
+	@echo "  $(YELLOW)make fix-links$(RESET)             修复文档链接问题"
+	@echo ""
+	@echo "$(GREEN)综合命令:$(RESET)"
+	@echo "  $(YELLOW)make all-checks$(RESET)            运行所有检查（完整套件）"
+	@echo "  $(YELLOW)make automation-help$(RESET)       显示本帮助信息"
+	@echo ""

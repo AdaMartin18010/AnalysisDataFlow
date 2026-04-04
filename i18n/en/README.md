@@ -28,30 +28,30 @@ This project provides a comprehensive梳理 and systematic construction of **the
 
 ### Navigate by Topic
 
-- **Theoretical Foundation**: [Struct/ Unified Streaming Theory](../Struct/00-INDEX.md)
-- **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](../Knowledge/02-design-patterns/)
-- **Flink Core**: [Flink/ Checkpoint Mechanism](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
-- **Cutting-Edge Tech**: [Knowledge/06-frontier/ AI-Native Databases](../Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **Anti-Patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-Patterns](../Knowledge/09-anti-patterns/)
+- **Theoretical Foundation**: [Struct/ Unified Streaming Theory](../../Struct/00-INDEX.md)
+- **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](../../Knowledge/02-design-patterns/)
+- **Flink Core**: [Flink/ Checkpoint Mechanism](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+- **Cutting-Edge Tech**: [Knowledge/06-frontier/ AI-Native Databases](../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **Anti-Patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-Patterns](../../Knowledge/09-anti-patterns/)
 
 ### Visualization Quick Access
 
-- **Decision Trees**: [visuals/ Technology Selection Trees](../visuals/selection-tree-streaming.md)
-- **Comparison Matrices**: [visuals/ Engine Comparison Matrices](../visuals/matrix-engines.md)
-- **Mind Maps**: [visuals/ Knowledge Mind Maps](../visuals/mindmap-complete.md)
-- **Knowledge Graph**: [visuals/ Concept Relationship Graph](../knowledge-graph.html)
-- **Architecture Diagrams**: [visuals/ System Architecture Diagrams](../visuals/struct-model-relations.md)
+- **Decision Trees**: [visuals/ Technology Selection Trees](../../visuals/selection-tree-streaming.md)
+- **Comparison Matrices**: [visuals/ Engine Comparison Matrices](../../visuals/matrix-engines.md)
+- **Mind Maps**: [visuals/ Knowledge Mind Maps](../../visuals/mindmap-complete.md)
+- **Knowledge Graph**: [visuals/ Concept Relationship Graph](../../knowledge-graph.html)
+- **Architecture Diagrams**: [visuals/ System Architecture Diagrams](../../visuals/struct-model-relations.md)
 
 ### Latest Updates (2026-04-04 v3.3 Roadmap Released)
 
-- **🗺️ v3.3 Roadmap Released**: [ROADMAP-v3.3-and-beyond.md](../ROADMAP-v3.3-and-beyond.md) - P0-P3 priority tasks, cross-reference fixes, Flink release tracking, quality gate enhancements
+- **🗺️ v3.3 Roadmap Released**: [ROADMAP-v3.3-and-beyond.md](../../ROADMAP-v3.3-and-beyond.md) - P0-P3 priority tasks, cross-reference fixes, Flink release tracking, quality gate enhancements
 - **v3.2 Full Progress**: E1-E4 error fixes + B3/B5 foundation + O1-O4 optimization + D2-D4 ecosystem | 12 new documents | 62 document modifications | 650KB new content
-- **✅ E1-E4 Error Fixes Complete**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](../E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - Terminology unification, link fixes, document alignment completed
-- **📚 New tutorials Directory Entry**: Quick Start Guide [5-Minute Quick Start](../tutorials/00-5-MINUTE-QUICK-START.md) | [Environment Setup](../tutorials/01-environment-setup.md) | [First Flink Job](../tutorials/02-first-flink-job.md)
-- **📖 New Cheatsheets**: [DataStream API Cheatsheet](../Flink/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheatsheet](../Flink/03-sql-table-api/sql-functions-cheatsheet.md)
-- **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../Flink/08-roadmap/flink-version-evolution-complete-guide.md) - Storage-compute separation GA, cloud-native scheduling, AI-native architecture
-- **AI Agents GA Highlights**: [Flink AI Agents Production Release](../Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
-- **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../Flink/10-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow serverless modes
+- **✅ E1-E4 Error Fixes Complete**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](../../E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - Terminology unification, link fixes, document alignment completed
+- **📚 New tutorials Directory Entry**: Quick Start Guide [5-Minute Quick Start](../../tutorials/00-5-MINUTE-QUICK-START.md) | [Environment Setup](../../tutorials/01-environment-setup.md) | [First Flink Job](../../tutorials/02-first-flink-job.md)
+- **📖 New Cheatsheets**: [DataStream API Cheatsheet](../../Flink/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheatsheet](../../Flink/03-sql-table-api/sql-functions-cheatsheet.md)
+- **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../../Flink/08-roadmap/flink-version-evolution-complete-guide.md) - Storage-compute separation GA, cloud-native scheduling, AI-native architecture
+- **AI Agents GA Highlights**: [Flink AI Agents Production Release](../../Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
+- **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../../Flink/10-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow serverless modes
 
 ## Project Structure
 
@@ -164,7 +164,7 @@ Struct/ Formal Definitions ──→ Knowledge/ Design Patterns ──→ Flink/
 - **1,600+ Mermaid diagrams**: Flowcharts, sequence diagrams, architecture diagrams, state diagrams
 - **20+ visualization documents**: Decision trees, comparison matrices, mind maps, knowledge graphs
 - **Interactive navigation**: Quickly locate knowledge through visuals directory
-- **Knowledge Graph HTML**: [knowledge-graph.html](../knowledge-graph.html) - Interactive concept relationship graph
+- **Knowledge Graph HTML**: [knowledge-graph.html](../../knowledge-graph.html) - Interactive concept relationship graph
 
 ## Learning Paths
 
@@ -203,15 +203,15 @@ This project provides AI-assisted features to enhance the learning and research 
 | ❓ Q&A Bot | Auto-generated FAQ and intelligent Q&A | `python scripts/ai-features/qa-bot-knowledge-base.py --ask "What is Checkpoint?"` |
 | 🎯 Learning Path | Personalized learning path generation | `python scripts/ai-features/learning-path-personalizer.py --goal "Flink Expert"` |
 
-See [ai-features/demo.html](demo.html) for an interactive demonstration.
+See [ai-features/demo.html](../../knowledge-graph.html) for an interactive demonstration.
 
 ## Project Status
 
 **Total Documents**: 420 | **Theorem Registry Version**: v2.9 | **Last Updated**: 2026-04-04 | **Status**: Continuous Evolution 🚀 | **Size**: 12.98 MB
 
-> 📊 **Version Tracking**: See [PROJECT-VERSION-TRACKING.md](../PROJECT-VERSION-TRACKING.md) for complete version history and evolution roadmap
+> 📊 **Version Tracking**: See [PROJECT-VERSION-TRACKING.md](../../PROJECT-VERSION-TRACKING.md) for complete version history and evolution roadmap
 >
-> 🗺️ **Future Roadmap**: See [ROADMAP-v3.3-and-beyond.md](../ROADMAP-v3.3-and-beyond.md) for v3.3 planning
+> 🗺️ **Future Roadmap**: See [ROADMAP-v3.3-and-beyond.md](../../ROADMAP-v3.3-and-beyond.md) for v3.3 planning
 
 ### Formal Elements Statistics
 
@@ -292,15 +292,15 @@ This project supports internationalization:
 - **Source Language**: Chinese (zh)
 - **Target Languages**: English (en) - In Progress
 - **Translation Progress**: ~5%
-- **Translation Guide**: See [i18n/README.md](../i18n/README.md)
+- **Translation Guide**: See [i18n/README.md](../../i18n/README.md)
 
 ## License
 
-This project is licensed under the [Apache License 2.0](../LICENSE).
+This project is licensed under the [Apache License 2.0](../../LICENSE).
 
-- [LICENSE](../LICENSE) - Full license text
-- [LICENSE-NOTICE.md](../LICENSE-NOTICE.md) - License description and usage guide
-- [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md) - Third-party declarations and acknowledgments
+- [LICENSE](../../LICENSE) - Full license text
+- [LICENSE-NOTICE.md](../../LICENSE-NOTICE.md) - License description and usage guide
+- [THIRD-PARTY-NOTICES.md](../../THIRD-PARTY-NOTICES.md) - Third-party declarations and acknowledgments
 
 ---
 

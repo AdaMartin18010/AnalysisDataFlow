@@ -1,0 +1,303 @@
+# =============================================================================
+# AnalysisDataFlow 锚点引用检查工作流
+# =============================================================================
+# 描述: 检查Markdown文件中的锚点引用有效性
+# 触发条件: PR到main分支时，每周日凌晨运行
+# 对应任务: P0-2 修复锚点引用
+# =============================================================================
+
+name: Anchor Check
+
+on:
+  # PR到main分支时检查
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+  
+  # 每周日凌晨运行
+  schedule:
+    - cron: '0 0 * * 0'
+  
+  # 手动触发
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ===========================================================================
+  # Job 1: 检查锚点引用
+  # ===========================================================================
+  check-anchors:
+    name: 检查锚点引用
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check anchor references
+        run: |
+          echo "::group::检查锚点引用"
+          
+          cat > check_anchors.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """检查Markdown文件中的锚点引用"""
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_headings(content):
+              """提取所有标题锚点"""
+              anchors = set()
+              
+              # Markdown标题
+              header_pattern = r'^#{1,6}\s+(.+)$'
+              for match in re.finditer(header_pattern, content, re.MULTILINE):
+                  text = match.group(1).strip()
+                  # 生成GitHub风格的锚点
+                  anchor = re.sub(r'[^\w\s-]', '', text).lower()
+                  anchor = re.sub(r'\s+', '-', anchor)
+                  anchor = anchor.strip('-')
+                  if anchor:
+                      anchors.add(anchor)
+              
+              # HTML锚点
+              html_anchor_pattern = r'<a\s+name=["\']([^"\']+)["\']'
+              for match in re.finditer(html_anchor_pattern, content):
+                  anchors.add(match.group(1))
+              
+              # 标题ID属性
+              heading_id_pattern = r'^#{1,6}\s+.+\{[^}]*#([^}\s]+)'
+              for match in re.finditer(heading_id_pattern, content, re.MULTILINE):
+                  anchors.add(match.group(1))
+              
+              return anchors
+          
+          def extract_anchor_links(content):
+              """提取所有锚点链接"""
+              links = []
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  url = match.group(2)
+                  
+                  # 检查是否包含锚点
+                  if '#' in url:
+                      parts = url.split('#')
+                      file_part = parts[0]
+                      anchor = parts[1]
+                      links.append({
+                          'text': text,
+                          'file_ref': file_part,
+                          'anchor': anchor,
+                          'full_url': url
+                      })
+              
+              return links
+          
+          def validate_anchor_in_file(file_path, anchor, all_files):
+              """验证锚点是否存在于文件中"""
+              # 找到目标文件
+              target_file = None
+              
+              if not file_path:
+                  # 当前文件的锚点
+                  return None, "需要在上下文中检查"
+              
+              # 尝试不同路径
+              candidates = [
+                  Path(file_path),
+                  Path(file_path + '.md'),
+                  Path(file_path) / 'index.md',
+              ]
+              
+              for candidate in candidates:
+                  if candidate.exists():
+                      target_file = candidate
+                      break
+              
+              if not target_file:
+                  return False, f"目标文件不存在: {file_path}"
+              
+              try:
+                  with open(target_file, 'r', encoding='utf-8') as f:
+                      content = f.read()
+              except Exception as e:
+                  return False, f"无法读取文件: {e}"
+              
+              anchors = extract_headings(content)
+              
+              # 检查锚点是否存在
+              if anchor in anchors:
+                  return True, None
+              
+              # 尝试URL解码
+              from urllib.parse import unquote
+              decoded_anchor = unquote(anchor)
+              if decoded_anchor in anchors:
+                  return True, None
+              
+              # 检查相似锚点（可能是大小写差异）
+              for a in anchors:
+                  if a.lower() == anchor.lower():
+                      return False, f"锚点大小写不匹配: 存在 '{a}' 但引用 '{anchor}'"
+              
+              # 列出可用的锚点
+              available = ', '.join(sorted(anchors)[:10])
+              if len(anchors) > 10:
+                  available += f'... (还有 {len(anchors)-10} 个)'
+              
+              return False, f"锚点不存在。可用锚点: {available}"
+          
+          def main():
+              print("=" * 70)
+              print("AnalysisDataFlow 锚点引用检查")
+              print("=" * 70)
+              
+              md_files = find_all_markdown_files()
+              print(f"\n扫描 {len(md_files)} 个Markdown文件...")
+              
+              # 建立文件锚点索引
+              file_anchors = {}
+              for md_file in md_files:
+                  try:
+                      with open(md_file, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                      file_anchors[str(md_file)] = extract_headings(content)
+                  except Exception as e:
+                      print(f"⚠️  无法读取 {md_file}: {e}")
+              
+              print(f"建立了 {len(file_anchors)} 个文件的锚点索引")
+              
+              # 检查所有锚点链接
+              broken_anchors = []
+              stats = {'total': 0, 'valid': 0, 'broken': 0}
+              
+              for md_file in md_files:
+                  try:
+                      with open(md_file, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception:
+                      continue
+                  
+                  links = extract_anchor_links(content)
+                  
+                  for link in links:
+                      stats['total'] += 1
+                      
+                      file_ref = link['file_ref']
+                      anchor = link['anchor']
+                      
+                      # 确定目标文件
+                      if not file_ref:
+                          # 当前文件内的锚点
+                          target_file = str(md_file)
+                          is_valid = anchor in file_anchors.get(target_file, set())
+                          error = None if is_valid else f"锚点 '{anchor}' 不存在于当前文件"
+                      else:
+                          # 跨文件锚点
+                          if file_ref.startswith('/'):
+                              target_file = file_ref.lstrip('/')
+                          else:
+                              target_file = str(md_file.parent / file_ref)
+                          
+                          is_valid, error = validate_anchor_in_file(
+                              target_file, anchor, md_files
+                          )
+                      
+                      if is_valid:
+                          stats['valid'] += 1
+                      else:
+                          stats['broken'] += 1
+                          broken_anchors.append({
+                              'source_file': str(md_file),
+                              'target_file': file_ref or str(md_file),
+                              'anchor': anchor,
+                              'link_text': link['text'],
+                              'error': error
+                          })
+              
+              # 打印统计
+              print(f"\n📊 统计:")
+              print(f"  总锚点链接: {stats['total']}")
+              print(f"  有效: {stats['valid']}")
+              print(f"  无效: {stats['broken']}")
+              
+              if broken_anchors:
+                  print(f"\n❌ 发现 {len(broken_anchors)} 个无效锚点引用:")
+                  print("-" * 70)
+                  
+                  # 按源文件分组
+                  by_source = defaultdict(list)
+                  for ba in broken_anchors:
+                      by_source[ba['source_file']].append(ba)
+                  
+                  for source, anchors in sorted(by_source.items()):
+                      print(f"\n  📄 {source}")
+                      for ba in anchors:
+                          print(f"    - [{ba['link_text']}](#{ba['anchor']})")
+                          print(f"      错误: {ba['error']}")
+                  
+                  print("-" * 70)
+                  
+                  # 生成报告
+                  with open('broken-anchors.md', 'w') as f:
+                      f.write("# 无效锚点引用报告\n\n")
+                      for source, anchors in sorted(by_source.items()):
+                          f.write(f"## {source}\n\n")
+                          for ba in anchors:
+                              f.write(f"- [{ba['link_text']}](#{ba['anchor']})\n")
+                              f.write(f"  - 错误: {ba['error']}\n\n")
+                  
+                  print("\n📄 报告已保存到: broken-anchors.md")
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有锚点引用有效!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python check_anchors.py
+          echo "::endgroup::"
+      
+      - name: Upload broken anchors report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-anchors-report
+          path: broken-anchors.md
+          retention-days: 30
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 🔗 锚点引用检查结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ 所有锚点引用有效" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ 发现无效锚点引用" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "请下载Artifacts查看详细报告" >> $GITHUB_STEP_SUMMARY
+          fi

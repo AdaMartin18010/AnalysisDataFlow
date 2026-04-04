@@ -15,6 +15,7 @@ $$
 $$
 
 其中：
+
 - $C$: 数据库连接配置 $\langle url, user, pass, driver \rangle$
 - $Q$: 查询语句 $\langle SELECT \dots FROM \dots WHERE \dots \rangle$
 - $S$: 分片策略 $\{PKRange, PartitionColumn, None\}$
@@ -38,6 +39,7 @@ $$
 $$
 
 其中：
+
 - $C$: 数据库连接配置
 - $T$: 目标表
 - $W$: 写入模式 $\{INSERT, REPLACE, UPDATE, UPSERT\}$
@@ -62,6 +64,7 @@ $$
 $$
 
 其中：
+
 - $N_{min}$: 最小连接数
 - $N_{max}$: 最大连接数
 - $T_{idle}$: 连接空闲超时
@@ -81,6 +84,7 @@ T_{max} = \min\left( \frac{B_{size}}{B_{interval}}, \frac{C_{pool} \times R_{db}
 $$
 
 其中：
+
 - $B_{size}$: 批量大小
 - $B_{interval}$: 批量间隔
 - $C_{pool}$: 连接池大小
@@ -92,6 +96,7 @@ $$
 **引理**: 当 $N_{max} \geq P_{parallelism}$ 时，连接池不会发生死锁。
 
 **证明**：
+
 1. 每个并行子任务最多需要一个连接
 2. 最大并发需求 = 并行度 $P$
 3. 若 $N_{max} \geq P$，则总有可用连接
@@ -172,6 +177,7 @@ graph LR
 **定理**: 在启用 XA 事务且数据库支持 XA 的条件下，JDBC Sink 提供 Exactly-Once 语义。
 
 **证明概要**：
+
 1. **预提交**: Checkpoint 时，Sink 执行 XA prepare
 2. **协调**: JobManager 收集所有算子的 prepare 确认
 3. **提交**: Checkpoint 完成时，协调提交所有 XA 事务
@@ -182,6 +188,7 @@ graph LR
 **定理**: 单个批量内的写入操作要么全部成功，要么全部失败。
 
 **证明**：
+
 - 批量操作封装在单个数据库事务中
 - 数据库事务满足 ACID 原子性
 - 因此批量操作具有原子性
@@ -272,7 +279,7 @@ CREATE TABLE products (
 
 -- 从 Kafka 读取并写入 JDBC
 INSERT INTO products
-SELECT 
+SELECT
     id,
     name,
     price,
@@ -319,20 +326,20 @@ graph TB
         A[DataStream] --> B[JDBC Sink Function]
         B --> C{批量缓冲}
     end
-    
+
     subgraph 连接池
         C -->|获取连接| D[Connection Pool]
         D --> E[Connection 1]
         D --> F[Connection 2]
         D --> G[Connection N]
     end
-    
+
     subgraph 数据库
         E --> H[MySQL/PostgreSQL]
         F --> H
         G --> H
     end
-    
+
     style B fill:#e1f5fe
     style D fill:#fff3e0
     style H fill:#e8f5e9
@@ -346,23 +353,23 @@ sequenceDiagram
     participant B as Buffer
     participant C as Connection
     participant DB as Database
-    
+
     F->>B: add(record)
-    
+
     alt 缓冲区满
         B->>C: executeBatch()
         C->>DB: INSERT/UPSERT
         DB-->>C: success/failure
         C-->>B: clear()
     end
-    
+
     alt 定时触发
         B->>B: check interval
         B->>C: executeBatch()
         C->>DB: INSERT/UPSERT
         DB-->>C: success/failure
     end
-    
+
     alt Checkpoint
         B->>C: flush()
         C->>DB: commit
@@ -381,7 +388,7 @@ graph LR
         A5[BOOLEAN]
         A6[BYTES]
     end
-    
+
     subgraph JDBC Types
         B1[VARCHAR]
         B2[INTEGER/BIGINT]
@@ -390,7 +397,7 @@ graph LR
         B5[BOOLEAN/BIT]
         B6[BLOB/VARBINARY]
     end
-    
+
     A1 --> B1
     A2 --> B2
     A3 --> B3
@@ -402,13 +409,3 @@ graph LR
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink JDBC Connector Documentation, https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/
-
-[^2]: JDBC 4.3 Specification, "Java Database Connectivity"
-
-[^3]: XA Specification, "Distributed Transaction Processing: The XA Specification"
-
-[^4]: MySQL Connector/J Documentation, https://dev.mysql.com/doc/connector-j/en/
-
-[^5]: PostgreSQL JDBC Driver Documentation, https://jdbc.postgresql.org/documentation/

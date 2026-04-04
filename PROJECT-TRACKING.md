@@ -84,12 +84,12 @@
 | P1-2 | 更新前瞻文档为正式文档 | 🔄 就绪 | 文档更新流程已建立 |
 | P1-3 | 同步新增API和配置 | 🔄 就绪 | 检查清单已创建 |
 | P1-4 | Flink 2.5/3.0持续跟踪 | ✅ 运行中 | 自动化监控已配置 |
-| P1-5 | 全量链接检查 | ⏳ 待执行 | 链接健康报告 |
-| P1-6 | 失效链接修复 | ⏳ 待执行 | 链接修复记录 |
-| P1-7 | 存档链接更新 | ⏳ 待执行 | 链接更新记录 |
-| P1-8 | CI/CD添加前瞻性内容检测 | ⏳ 待执行 | 质量门禁增强 |
-| P1-9 | 自动检查虚构API参数 | ⏳ 待执行 | 自动化脚本 |
-| P1-10 | PR合并前强制链接检查 | ⏳ 待执行 | CI工作流更新 |
+| P1-5 | 全量链接检查 | ✅ 已完成 | `.scripts/link_checker.py` |
+| P1-6 | 失效链接修复 | ✅ 已完成 | `.scripts/fix_broken_links.py` |
+| P1-7 | 存档链接更新 | ✅ 已完成 | 整合于链接修复工具 |
+| P1-8 | CI/CD添加前瞻性内容检测 | ✅ 已完成 | `.scripts/check_prospective_content.py` |
+| P1-9 | 自动检查虚构API参数 | ✅ 已完成 | `.scripts/validate_api_params.py` |
+| P1-10 | PR合并前强制链接检查 | ✅ 已完成 | `.github/workflows/link-check-pr.yml` |
 
 ### 🟡 P2 - 中期计划（3-6个月）
 
@@ -104,10 +104,10 @@
 | P2-7 | Production Checklist | ⏳ 待执行 | 生产检查清单 |
 | P2-8 | PyFlink深度指南 | ⏳ 待执行 | PyFlink文档 |
 | P2-9 | State Backends深度对比 | ⏳ 待执行 | 状态后端对比 |
-| P2-10 | 交互式图谱生成 | ⏳ 待执行 | 知识图谱2.0 |
-| P2-11 | 文档关系自动映射 | ⏳ 待执行 | 关系映射工具 |
-| P2-12 | 学习路径动态推荐 | ⏳ 待执行 | 推荐系统 |
-| P2-13 | 概念依赖图自动生成 | ⏳ 待执行 | 依赖图工具 |
+| P2-10 | 交互式图谱生成 | ✅ 已完成 | knowledge-graph-v2.html |
+| P2-11 | 文档关系自动映射 | ✅ 已完成 | build_relationship_map.py |
+| P2-12 | 学习路径动态推荐 | ✅ 已完成 | learning_path_recommender.py |
+| P2-13 | 概念依赖图自动生成 | ✅ 已完成 | generate_dependency_graph.py |
 
 ### 🟢 P3 - 长期愿景（6-12个月）
 

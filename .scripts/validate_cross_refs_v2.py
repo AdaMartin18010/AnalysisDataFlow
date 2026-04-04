@@ -123,6 +123,14 @@ class CrossRefValidator:
             if any(rs <= start and end <= re for rs, re in ranges):
                 continue
             ranges.append((start, end))
+        # 处理 LaTeX 数学块 ($$...$$)
+        latex_block_pattern = r'\$\$[\s\S]*?\$\$'
+        for match in re.finditer(latex_block_pattern, content):
+            ranges.append((match.start(), match.end()))
+        # 处理行内 LaTeX ($...$) - 但要注意排除货币符号
+        inline_latex_pattern = r'(?<!\$)\$[^$\n]+?\$(?!\$)'
+        for match in re.finditer(inline_latex_pattern, content):
+            ranges.append((match.start(), match.end()))
         return ranges
 
     def extract_links(self, content, file_path):

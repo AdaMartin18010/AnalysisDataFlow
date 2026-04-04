@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 测试环境标准化论证](#41-测试环境标准化论证)
     - [4.2 数据集设计原理](#42-数据集设计原理)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument-proof--engineering-argument)
     - [Thm-BR-01 (性能基准有效性定理)](#thm-br-01-性能基准有效性定理)
     - [工程推论: 成本优化边界](#工程推论-成本优化边界)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

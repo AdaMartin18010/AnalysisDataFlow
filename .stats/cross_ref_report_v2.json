@@ -1,1383 +1,615 @@
 {
-  "timestamp": "2026-04-04T17:56:55.978426",
+  "timestamp": "2026-04-04T18:59:25.188200",
   "summary": {
-    "total_files": 605,
-    "total_links": 10610,
-    "total_errors": 254,
-    "file_errors": 35,
-    "anchor_errors": 219,
-    "fixable": 10,
-    "files_with_errors": 144
+    "total_files": 714,
+    "total_links": 10893,
+    "total_errors": 176,
+    "file_errors": 0,
+    "anchor_errors": 176,
+    "fixable": 0,
+    "files_with_errors": 103
   },
   "errors_by_category": {
-    "file_not_found": [
-      {
-        "type": "file_not_found",
-        "source": ".tasks/flink-release-tracker.md",
-        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
-        "text": "文档更新工作流程",
-        "line": 312,
-        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
-        "suggestion": [
-          ".scripts/flink-version-tracking/doc-update-workflow.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": ".tasks/flink-release-tracker.md",
-        "url": "../../actions/workflows/flink-release-tracker.yml",
-        "text": "Actions运行历史",
-        "line": 321,
-        "resolved": ".tasks/../../actions/workflows/flink-release-tracker.yml",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\bar{e}",
-        "text": "\\bar{\\sigma}",
-        "line": 120,
-        "resolved": "/bar{e}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\theta(\\bar{e}",
-        "text": "\\theta(\\bar{\\sigma})",
-        "line": 120,
-        "resolved": "/theta(/bar{e}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "v_1, ...",
-        "text": "\\bar{\\sigma}",
-        "line": 172,
-        "resolved": "Struct/04-proofs/v_1, ...",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\bar{e}",
-        "text": "\\bar{\\sigma}",
-        "line": 352,
-        "resolved": "/bar{e}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "reports/feedback/README.md",
-        "url": "../../issues",
-        "text": "Issue 列表",
-        "line": 101,
-        "resolved": "issues",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/05-operations/production-checklist.md",
-        "url": "../11-monitoring-observability/flink-monitoring-setup-guide.md",
-        "text": "监控配置指南",
-        "line": 3,
-        "resolved": "Flink/11-monitoring-observability/flink-monitoring-setup-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "text": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "line": 396,
-        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
-        "url": "f",
-        "text": "C_1, C_2",
-        "line": 248,
-        "resolved": "Flink/09-language-foundations/f",
-        "suggestion": [
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "./flink-rust-native-api-guide.md",
-        "text": "Flink/09-language-foundations/03-rust-native.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/flink-rust-native-api-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "./flink-kubernetes-deployment-complete-guide.md",
-        "text": "Flink Kubernetes部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-complete-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-architecture-overview.md",
-        "text": "Flink 集群架构",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "../06-frontier/mcp-protocol-agent-streaming.md",
-        "text": "MCP协议",
-        "line": 3,
-        "resolved": "Flink/06-frontier/mcp-protocol-agent-streaming.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "../03-sql-table-api/flink-sql-advanced-features.md",
-        "text": "Flink SQL 高级特性",
-        "line": 3,
-        "resolved": "Flink/03-sql-table-api/flink-sql-advanced-features.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ml-architecture.md",
-        "url": "../02-core-mechanisms/flink-datastream-api-guide.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/flink-datastream-api-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../02-core-mechanisms/async-io-mechanism.md",
-        "text": "Flink异步I/O机制",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/async-io-mechanism.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/stream-join-mechanisms.md",
-        "text": "Flink双流Join机制",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/stream-join-mechanisms.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "../04-connectors/jdbc-connector-guide.md",
-        "text": "04.1-jdbc-connector.md",
-        "line": 3,
-        "resolved": "Flink/04-connectors/jdbc-connector-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "./flink-security-authorization.md",
-        "text": "11-security-authorization",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-authorization.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "./flink-security-network-isolation.md",
-        "text": "12-security-network-isolation",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-network-isolation.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
-        "text": "Flink架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../09-language-foundations/flink-udf-development-guide.md",
-        "text": "Flink UDF扩展",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/flink-udf-development-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../01-architecture/flink-batch-streaming-unified.md",
-        "text": "Flink DataSet API",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "./flink-backpressure-monitoring.md",
-        "text": "Flink反压监控",
-        "line": 3,
-        "resolved": "Flink/15-observability/flink-backpressure-monitoring.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../02-core-mechanisms/exactly-once-semantics.md",
-        "text": "13-checkpoint/flink-exactly-once-semantics.md",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/classification.md",
-        "url": "link",
-        "text": "Discussion",
-        "line": 254,
-        "resolved": ".github/feedback-templates/link",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../issues/new/choose",
-        "text": "Issues 页面",
-        "line": 27,
-        "resolved": "issues/new/choose",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../discussions",
-        "text": "GitHub Discussions",
-        "line": 143,
-        "resolved": "discussions",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../graphs/contributors",
-        "text": "项目维护者",
-        "line": 144,
-        "resolved": "graphs/contributors",
-        "suggestion": [
-          "CONTRIBUTORS.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../issues/new?labels=meta",
-        "text": "Meta Issue",
-        "line": 145,
-        "resolved": "issues/new?labels=meta",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/ISSUE_TEMPLATE/README.md",
-        "url": "../../issues/new/choose",
-        "text": "Issues 页面",
-        "line": 16,
-        "resolved": "issues/new/choose",
-        "suggestion": null
-      }
-    ],
+    "file_not_found": [],
     "anchor_not_found": [
       {
         "type": "anchor_not_found",
         "source": "BENCHMARK-REPORT.md",
-        "url": "#5-形式证明--工程论证",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "GLOSSARY-EN.md",
+        "url": "#j",
+        "text": "J",
+        "line": 13,
+        "file": "GLOSSARY-EN.md",
+        "anchor": "j",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#5-形式证明--工程论证",
+        "url": "#关系-1-问题症状--根因映射",
+        "text": "关系 1: 问题症状 → 根因映射",
+        "line": 19,
+        "file": "TROUBLESHOOTING-COMPLETE.md",
+        "anchor": "关系-1-问题症状--根因映射",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "TROUBLESHOOTING-COMPLETE.md",
+        "url": "#关系-2-排查流程--故障恢复",
+        "text": "关系 2: 排查流程 ⟹ 故障恢复",
+        "line": 20,
+        "file": "TROUBLESHOOTING-COMPLETE.md",
+        "anchor": "关系-2-排查流程--故障恢复",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "TROUBLESHOOTING-COMPLETE.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-1classic-actor--erlang-actor",
+        "url": "#关系-1classic-actor-⊂-erlang-actor",
         "text": "关系 1：Classic Actor `⊂` Erlang Actor",
         "line": 22,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-1classic-actor--erlang-actor",
+        "anchor": "关系-1classic-actor-⊂-erlang-actor",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-2actor-模型--异步-π-演算",
+        "url": "#关系-2actor-模型-⊂-异步-π-演算",
         "text": "关系 2：Actor 模型 `⊂` 异步 π-演算",
         "line": 23,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-2actor-模型--异步-π-演算",
+        "anchor": "关系-2actor-模型-⊂-异步-π-演算",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-3erlangotp--akka-actor核心语义双模拟等价",
+        "url": "#关系-3erlangotp-≈-akka-actor核心语义双模拟等价",
         "text": "关系 3：Erlang/OTP `≈` Akka Actor（核心语义双模拟等价）",
         "line": 24,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-3erlangotp--akka-actor核心语义双模拟等价",
+        "anchor": "关系-3erlangotp-≈-akka-actor核心语义双模拟等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-4actor-模型--dataflow-模型图灵完备等价",
+        "url": "#关系-4actor-模型-↔-dataflow-模型图灵完备等价",
         "text": "关系 4：Actor 模型 `↔` Dataflow 模型（图灵完备等价）",
         "line": 25,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-4actor-模型--dataflow-模型图灵完备等价",
+        "anchor": "关系-4actor-模型-↔-dataflow-模型图灵完备等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-1-dataflow-model--kahn-进程网络-kpn",
+        "url": "#关系-1-dataflow-model-⊃-kahn-进程网络-kpn",
         "text": "关系 1: Dataflow Model `⊃` Kahn 进程网络 (KPN)",
         "line": 22,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-1-dataflow-model--kahn-进程网络-kpn",
+        "anchor": "关系-1-dataflow-model-⊃-kahn-进程网络-kpn",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model",
+        "url": "#关系-2-同步数据流-sdf-⊂-动态数据流-ddf-≈-dataflow-model",
         "text": "关系 2: 同步数据流 (SDF) `⊂` 动态数据流 (DDF) `≈` Dataflow Model",
         "line": 23,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model",
+        "anchor": "关系-2-同步数据流-sdf-⊂-动态数据流-ddf-≈-dataflow-model",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-3-dataflow-理论模型--flink-runtime-实现",
+        "url": "#关系-3-dataflow-理论模型-↦-flink-runtime-实现",
         "text": "关系 3: Dataflow 理论模型 `↦` Flink Runtime 实现",
         "line": 24,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-3-dataflow-理论模型--flink-runtime-实现",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.05-csp-formalization.md",
-        "url": "#基础情形-q--0",
-        "text": "基础情形 ($Q = 0$)",
-        "line": 38,
-        "file": "Struct/01-foundation/01.05-csp-formalization.md",
-        "anchor": "基础情形-q--0",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.05-csp-formalization.md",
-        "url": "#6-实例验证-examples--verification",
-        "text": "6. 实例验证 (Examples \\& Verification)",
-        "line": 41,
-        "file": "Struct/01-foundation/01.05-csp-formalization.md",
-        "anchor": "6-实例验证-examples--verification",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.06-petri-net-formalization.md",
-        "url": "#6-实例验证-examples--verification",
-        "text": "6. 实例验证 (Examples \\& Verification)",
-        "line": 37,
-        "file": "Struct/01-foundation/01.06-petri-net-formalization.md",
-        "anchor": "6-实例验证-examples--verification",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.07-session-types.md",
-        "url": "#5-形式证明--工程论证-proof",
-        "text": "5. 形式证明 / 工程论证 (Proof)",
-        "line": 28,
-        "file": "Struct/01-foundation/01.07-session-types.md",
-        "anchor": "5-形式证明--工程论证-proof",
+        "anchor": "关系-3-dataflow-理论模型-↦-flink-runtime-实现",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-1-确定性流处理--kahn-网络确定性",
+        "url": "#关系-1-确定性流处理-≃-kahn-网络确定性",
         "text": "关系 1: 确定性流处理 `≃` Kahn 网络确定性",
         "line": 22,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-1-确定性流处理--kahn-网络确定性",
+        "anchor": "关系-1-确定性流处理-≃-kahn-网络确定性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-2-汇合归约--dataflow-确定性",
+        "url": "#关系-2-汇合归约-⇒-dataflow-确定性",
         "text": "关系 2: 汇合归约 `⇒` Dataflow 确定性",
         "line": 23,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-2-汇合归约--dataflow-确定性",
+        "anchor": "关系-2-汇合归约-⇒-dataflow-确定性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-3-可观测确定性--语义确定性",
+        "url": "#关系-3-可观测确定性-⊂-语义确定性",
         "text": "关系 3: 可观测确定性 `⊂` 语义确定性",
         "line": 24,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-3-可观测确定性--语义确定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "关系-3-可观测确定性-⊂-语义确定性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "url": "#关系-2-内部一致性--chandy-lamport-分布式快照",
+        "url": "#关系-2-内部一致性-≈-chandy-lamport-分布式快照",
         "text": "关系 2: 内部一致性 `≈` Chandy-Lamport 分布式快照",
         "line": 30,
         "file": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "anchor": "关系-2-内部一致性--chandy-lamport-分布式快照",
+        "anchor": "关系-2-内部一致性-≈-chandy-lamport-分布式快照",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "url": "#反例-41-内部一致--端到端一致",
+        "url": "#反例-41-内部一致-≠-端到端一致",
         "text": "反例 4.1 (内部一致 ≠ 端到端一致)",
         "line": 35,
         "file": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "anchor": "反例-41-内部一致--端到端一致",
+        "anchor": "反例-41-内部一致-≠-端到端一致",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#步骤-1基例--source-算子的-watermark-单调性",
+        "url": "#步骤-1基例-—-source-算子的-watermark-单调性",
         "text": "步骤 1：基例 — Source 算子的 Watermark 单调性",
         "line": 28,
         "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "步骤-1基例--source-算子的-watermark-单调性",
+        "anchor": "步骤-1基例-—-source-算子的-watermark-单调性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#步骤-3归纳步骤--第-k-个算子的单调性保持",
+        "url": "#步骤-3归纳步骤-—-第-k-个算子的单调性保持",
         "text": "步骤 3：归纳步骤 — 第 $k$ 个算子的单调性保持",
         "line": 30,
         "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "步骤-3归纳步骤--第-k-个算子的单调性保持",
+        "anchor": "步骤-3归纳步骤-—-第-k-个算子的单调性保持",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-1-安全性--闭集-borel拓扑",
+        "url": "#关系-1-安全性-⊂-闭集-borel拓扑",
         "text": "关系 1: 安全性 `⊂` 闭集 (Borel拓扑)",
         "line": 22,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-1-安全性--闭集-borel拓扑",
+        "anchor": "关系-1-安全性-⊂-闭集-borel拓扑",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-2-活性--稠密集",
+        "url": "#关系-2-活性-≈-稠密集",
         "text": "关系 2: 活性 `≈` 稠密集",
         "line": 23,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-2-活性--稠密集",
+        "anchor": "关系-2-活性-≈-稠密集",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-3-actor模型--活性验证需公平性",
+        "url": "#关系-3-actor模型-⊆-活性验证需公平性",
         "text": "关系 3: Actor模型 `⊆` 活性验证需公平性",
         "line": 24,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-3-actor模型--活性验证需公平性",
+        "anchor": "关系-3-actor模型-⊆-活性验证需公平性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-4-safety--运行时监控-liveness--模型检测",
+        "url": "#关系-4-safety-↦-运行时监控-liveness-↦-模型检测",
         "text": "关系 4: Safety `↦` 运行时监控, Liveness `↦` 模型检测",
         "line": 25,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-4-safety--运行时监控-liveness--模型检测",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 32,
-        "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.05-type-safety-derivation.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 37,
-        "file": "Struct/02-properties/02.05-type-safety-derivation.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 27,
-        "file": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
+        "anchor": "关系-4-safety-↦-运行时监控-liveness-↦-模型检测",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-1-flink-dataflow-图--π-演算进程网络",
+        "url": "#关系-1-flink-dataflow-图-↦-π-演算进程网络",
         "text": "关系 1: Flink Dataflow 图 `↦` π-演算进程网络",
         "line": 21,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-1-flink-dataflow-图--π-演算进程网络",
+        "anchor": "关系-1-flink-dataflow-图-↦-π-演算进程网络",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法",
+        "url": "#关系-2-checkpoint-屏障协议-≈-chandy-lamport-快照算法",
         "text": "关系 2: Checkpoint 屏障协议 `≈` Chandy-Lamport 快照算法",
         "line": 22,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-2-checkpoint-屏障协议--chandy-lamport-快照算法",
+        "anchor": "关系-2-checkpoint-屏障协议-≈-chandy-lamport-快照算法",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-3-flink-exactly-once--π-演算幂等进程组合",
+        "url": "#关系-3-flink-exactly-once-↦-π-演算幂等进程组合",
         "text": "关系 3: Flink Exactly-Once `↦` π-演算幂等进程组合",
         "line": 23,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-3-flink-exactly-once--π-演算幂等进程组合",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-1-l3-to-l4-分离移动通道",
-        "text": "示例 1: $L\\_3 \\\\to L\\_4$ 分离——移动通道",
-        "line": 34,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-1-l3-to-l4-分离移动通道",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-2-l4-to-l5-分离进程传递",
-        "text": "示例 2: $L\\_4 \\\\to L\\_5$ 分离——进程传递",
-        "line": 35,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-2-l4-to-l5-分离进程传递",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-3-良类型-session-进程l4-子集",
-        "text": "示例 3: 良类型 Session 进程（$L\\_4$ 子集）",
-        "line": 36,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-3-良类型-session-进程l4-子集",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
-        "url": "#def-s-15-02-弱互模拟与分支互模拟-weak--branching-bisimulation",
-        "text": "Def-S-15-02. 弱互模拟与分支互模拟 (Weak \\& Branching Bisimulation)",
-        "line": 14,
-        "file": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
-        "anchor": "def-s-15-02-弱互模拟与分支互模拟-weak--branching-bisimulation",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#31-理论层-mathcalltexttheory-与语言层-mathcalltextlanguage-的关系",
-        "text": "3.1 理论层 $\\\\mathcal{L}_{\\\\text{theory}}$ 与语言层 $\\\\mathcal{L}_{\\\\text{language}}$ 的关系",
-        "line": 24,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "31-理论层-mathcalltexttheory-与语言层-mathcalltextlanguage-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#32-语言层-mathcalltextlanguage-与系统层-mathcalltextsystem-的关系",
-        "text": "3.2 语言层 $\\\\mathcal{L}_{\\\\text{language}}$ 与系统层 $\\\\mathcal{L}_{\\\\text{system}}$ 的关系",
-        "line": 25,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "32-语言层-mathcalltextlanguage-与系统层-mathcalltextsystem-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#33-系统层-mathcalltextsystem-与领域层-mathcalltextdomain-的关系",
-        "text": "3.3 系统层 $\\\\mathcal{L}_{\\\\text{system}}$ 与领域层 $\\\\mathcal{L}_{\\\\text{domain}}$ 的关系",
-        "line": 26,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "33-系统层-mathcalltextsystem-与领域层-mathcalltextdomain-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 32,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "关系-3-flink-exactly-once-↦-π-演算幂等进程组合",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-1-flink-checkpoint--chandy-lamport-分布式快照",
+        "url": "#关系-1-flink-checkpoint-↦-chandy-lamport-分布式快照",
         "text": "关系 1: Flink Checkpoint `↦` Chandy-Lamport 分布式快照",
         "line": 23,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-1-flink-checkpoint--chandy-lamport-分布式快照",
+        "anchor": "关系-1-flink-checkpoint-↦-chandy-lamport-分布式快照",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-2-checkpoint-对齐--consistent-cut",
+        "url": "#关系-2-checkpoint-对齐-⟹-consistent-cut",
         "text": "关系 2: Checkpoint 对齐 `⟹` Consistent Cut",
         "line": 24,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-2-checkpoint-对齐--consistent-cut",
+        "anchor": "关系-2-checkpoint-对齐-⟹-consistent-cut",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-3-异步快照--同步快照语义等价",
+        "url": "#关系-3-异步快照-≈-同步快照语义等价",
         "text": "关系 3: 异步快照 `≈` 同步快照（语义等价）",
         "line": 25,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-3-异步快照--同步快照语义等价",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
-        "url": "#8-实例与反例-examples--counter-examples",
-        "text": "8. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 44,
-        "file": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
-        "anchor": "8-实例与反例-examples--counter-examples",
+        "anchor": "关系-3-异步快照-≈-同步快照语义等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#def-s-19-02-一致割集--consistent-cut",
-        "text": "Def-S-19-02 (一致割集 / Consistent Cut)",
-        "line": 13,
-        "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "def-s-19-02-一致割集--consistent-cut",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#lemma-s-19-02-一致割集引理--consistent-cut-lemma",
-        "text": "Lemma-S-19-02 (一致割集引理 / Consistent Cut Lemma)",
-        "line": 19,
-        "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "lemma-s-19-02-一致割集引理--consistent-cut-lemma",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-1-marker-接收--状态记录触发",
+        "url": "#关系-1-marker-接收-↦-状态记录触发",
         "text": "关系 1: Marker 接收 `↦` 状态记录触发",
         "line": 23,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-1-marker-接收--状态记录触发",
+        "anchor": "关系-1-marker-接收-↦-状态记录触发",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-2-通道记录规则--无消息丢失或重复",
+        "url": "#关系-2-通道记录规则-⟹-无消息丢失或重复",
         "text": "关系 2: 通道记录规则 `⟹` 无消息丢失或重复",
         "line": 24,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-2-通道记录规则--无消息丢失或重复",
+        "anchor": "关系-2-通道记录规则-⟹-无消息丢失或重复",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-3-chandy-lamport--flink-checkpoint-语义等价",
+        "url": "#关系-3-chandy-lamport-≈-flink-checkpoint-语义等价",
         "text": "关系 3: Chandy-Lamport `≈` Flink Checkpoint (语义等价)",
         "line": 25,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-3-chandy-lamport--flink-checkpoint-语义等价",
+        "anchor": "关系-3-chandy-lamport-≈-flink-checkpoint-语义等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-01--结合律",
+        "url": "#lemma-s-20-01-⊔-结合律",
         "text": "Lemma-S-20-01 (⊔ 结合律)",
         "line": 18,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-01--结合律",
+        "anchor": "lemma-s-20-01-⊔-结合律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-02--交换律",
+        "url": "#lemma-s-20-02-⊔-交换律",
         "text": "Lemma-S-20-02 (⊔ 交换律)",
         "line": 19,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-02--交换律",
+        "anchor": "lemma-s-20-02-⊔-交换律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-03--幂等律",
+        "url": "#lemma-s-20-03-⊔-幂等律",
         "text": "Lemma-S-20-03 (⊔ 幂等律)",
         "line": 20,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-03--幂等律",
+        "anchor": "lemma-s-20-03-⊔-幂等律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-04--吸收律与单位元",
+        "url": "#lemma-s-20-04-⊔-吸收律与单位元",
         "text": "Lemma-S-20-04 (⊔ 吸收律与单位元)",
         "line": 21,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-04--吸收律与单位元",
+        "anchor": "lemma-s-20-04-⊔-吸收律与单位元",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-1-watermark-格--完备格理论",
+        "url": "#关系-1-watermark-格-↦-完备格理论",
         "text": "关系 1: Watermark 格 `↦` 完备格理论",
         "line": 24,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-1-watermark-格--完备格理论",
+        "anchor": "关系-1-watermark-格-↦-完备格理论",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-2-watermark-合并--单调性保持",
+        "url": "#关系-2-watermark-合并-⟹-单调性保持",
         "text": "关系 2: Watermark 合并 `⟹` 单调性保持",
         "line": 25,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-2-watermark-合并--单调性保持",
+        "anchor": "关系-2-watermark-合并-⟹-单调性保持",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-3-watermark-传播--最小上界计算",
+        "url": "#关系-3-watermark-传播-≈-最小上界计算",
         "text": "关系 3: Watermark 传播 `≈` 最小上界计算",
         "line": 26,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-3-watermark-传播--最小上界计算",
+        "anchor": "关系-3-watermark-传播-≈-最小上界计算",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#反例-42-缺失--元素的格不完备性",
+        "url": "#反例-42-缺失-⊥-元素的格不完备性",
         "text": "反例 4.2 (缺失 ⊥ 元素的格不完备性)",
         "line": 31,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "反例-42-缺失--元素的格不完备性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 33,
-        "file": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
+        "anchor": "反例-42-缺失-⊥-元素的格不完备性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-1-global-types--session-types",
+        "url": "#关系-1-global-types-↔-session-types",
         "text": "关系 1: Global Types `↔` Session Types",
         "line": 25,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-1-global-types--session-types",
+        "anchor": "关系-1-global-types-↔-session-types",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-2-epp--bisimulation-互模拟等价",
+        "url": "#关系-2-epp-≈-bisimulation-互模拟等价",
         "text": "关系 2: EPP `≈` Bisimulation (互模拟等价)",
         "line": 26,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-2-epp--bisimulation-互模拟等价",
+        "anchor": "关系-2-epp-≈-bisimulation-互模拟等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-3-choreography--process-calculus",
+        "url": "#关系-3-choreography-↦-process-calculus",
         "text": "关系 3: Choreography `↦` Process Calculus",
         "line": 27,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-3-choreography--process-calculus",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 34,
-        "file": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
+        "anchor": "关系-3-choreography-↦-process-calculus",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#prop-s-25-02-rice定理在l4-l6层的应用",
-        "text": "Prop-S-25-02. Rice定理在$L\\_4$-$L\\_6$层的应用",
-        "line": 24,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "prop-s-25-02-rice定理在l4-l6层的应用",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-1-l3-csp死锁检测的可判定性",
-        "text": "示例 1: $L\\_3$ CSP死锁检测的可判定性",
-        "line": 41,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-1-l3-csp死锁检测的可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-2-l4-π-演算互模拟的不可判定性",
-        "text": "示例 2: $L\\_4$ π-演算互模拟的不可判定性",
-        "line": 42,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-2-l4-π-演算互模拟的不可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-3-l5-hoπ类型推断的不可判定性",
-        "text": "示例 3: $L\\_5$ HOπ类型推断的不可判定性",
-        "line": 43,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-3-l5-hoπ类型推断的不可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#表-71-模型--性质--可判定性矩阵",
+        "url": "#表-71-模型-×-性质-×-可判定性矩阵",
         "text": "表 7.1: 模型 × 性质 × 可判定性矩阵",
         "line": 46,
         "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "表-71-模型--性质--可判定性矩阵",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "表-71-模型-×-性质-×-可判定性矩阵",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-1-choreographic--传统数据流",
+        "url": "#关系-1-choreographic-⊃-传统数据流",
         "text": "关系 1: Choreographic ⊃ 传统数据流",
         "line": 27,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-1-choreographic--传统数据流",
+        "anchor": "关系-1-choreographic-⊃-传统数据流",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-2-mpst--session-types",
+        "url": "#关系-2-mpst-↔-session-types",
         "text": "关系 2: MPST ↔ Session Types",
         "line": 28,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-2-mpst--session-types",
+        "anchor": "关系-2-mpst-↔-session-types",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-3-全局类型--死锁自由",
+        "url": "#关系-3-全局类型-⟹-死锁自由",
         "text": "关系 3: 全局类型 ⟹ 死锁自由",
         "line": 29,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-3-全局类型--死锁自由",
+        "anchor": "关系-3-全局类型-⟹-死锁自由",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-1-mast--传统-mpst",
+        "url": "#关系-1-mast-↔-传统-mpst",
         "text": "关系 1: MAST ↔ 传统 MPST",
         "line": 27,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-1-mast--传统-mpst",
+        "anchor": "关系-1-mast-↔-传统-mpst",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-2-llm-agent-protocol--choreography",
+        "url": "#关系-2-llm-agent-protocol-↦-choreography",
         "text": "关系 2: LLM-Agent Protocol ↦ Choreography",
         "line": 28,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-2-llm-agent-protocol--choreography",
+        "anchor": "关系-2-llm-agent-protocol-↦-choreography",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-3-type-safe-agent-communication--deadlock-freedom",
+        "url": "#关系-3-type-safe-agent-communication-↦-deadlock-freedom",
         "text": "关系 3: Type-safe Agent Communication ↦ Deadlock Freedom",
         "line": 29,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-3-type-safe-agent-communication--deadlock-freedom",
+        "anchor": "关系-3-type-safe-agent-communication-↦-deadlock-freedom",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-1-dot--pdot-表达能力严格扩展",
+        "url": "#关系-1-dot-⊂-pdot-表达能力严格扩展",
         "text": "关系 1: DOT `⊂` pDOT (表达能力严格扩展)",
         "line": 21,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-1-dot--pdot-表达能力严格扩展",
+        "anchor": "关系-1-dot-⊂-pdot-表达能力严格扩展",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-2-pdot--scala-3-类型系统",
+        "url": "#关系-2-pdot-↦-scala-3-类型系统",
         "text": "关系 2: pDOT `↦` Scala 3 类型系统",
         "line": 22,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-2-pdot--scala-3-类型系统",
+        "anchor": "关系-2-pdot-↦-scala-3-类型系统",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-3-路径依赖类型--dataflow-状态追踪",
+        "url": "#关系-3-路径依赖类型-↔-dataflow-状态追踪",
         "text": "关系 3: 路径依赖类型 `↔` Dataflow 状态追踪",
         "line": 23,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-3-路径依赖类型--dataflow-状态追踪",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 28,
-        "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "url": "#趋势二-diskless-kafka--apache-iceberg",
-        "text": "趋势二: Diskless Kafka + Apache Iceberg",
-        "line": 37,
-        "file": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "anchor": "趋势二-diskless-kafka--apache-iceberg",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 48,
-        "file": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "关系-3-路径依赖类型-↔-dataflow-状态追踪",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-1-dataflow--actor图灵完备等价",
+        "url": "#关系-1-dataflow-≈-actor图灵完备等价",
         "text": "关系 1: Dataflow `≈` Actor（图灵完备等价）",
         "line": 26,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-1-dataflow--actor图灵完备等价",
+        "anchor": "关系-1-dataflow-≈-actor图灵完备等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-2-dataflow--csp异步-vs-同步的连续统",
+        "url": "#关系-2-dataflow-↦-csp异步-vs-同步的连续统",
         "text": "关系 2: Dataflow `↦` CSP（异步 vs 同步的连续统）",
         "line": 27,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-2-dataflow--csp异步-vs-同步的连续统",
+        "anchor": "关系-2-dataflow-↦-csp异步-vs-同步的连续统",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-3-pubsub--actor解耦是地址匿名化的特例",
+        "url": "#关系-3-pubsub-⊂-actor解耦是地址匿名化的特例",
         "text": "关系 3: Pub/Sub `⊂` Actor（解耦是地址匿名化的特例）",
         "line": 28,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-3-pubsub--actor解耦是地址匿名化的特例",
+        "anchor": "关系-3-pubsub-⊂-actor解耦是地址匿名化的特例",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-4-cep--dataflow模式匹配是有状态算子的语法糖",
+        "url": "#关系-4-cep-⊂-dataflow模式匹配是有状态算子的语法糖",
         "text": "关系 4: CEP `⊂` Dataflow（模式匹配是有状态算子的语法糖）",
         "line": 29,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-4-cep--dataflow模式匹配是有状态算子的语法糖",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 35,
-        "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#示例-64-cep--pubsub-混合实例金融风控实时告警",
-        "text": "示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警",
-        "line": 43,
-        "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "示例-64-cep--pubsub-混合实例金融风控实时告警",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 34,
-        "file": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
-        "anchor": "1-问题与背景-problem--context",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "#设计模式-checkpoint-与故障恢复-pattern-07-checkpoint--recovery",
-        "text": "设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \\& Recovery)",
-        "line": 11,
-        "file": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "anchor": "设计模式-checkpoint-与故障恢复-pattern-07-checkpoint--recovery",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 35,
-        "file": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "anchor": "1-问题与背景-problem--context",
+        "anchor": "关系-4-cep-⊂-dataflow模式匹配是有状态算子的语法糖",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#关系-log-analysis--windowed-aggregation",
+        "url": "#关系-log-analysis-↦-windowed-aggregation",
         "text": "关系: Log Analysis `↦` Windowed Aggregation",
         "line": 21,
         "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "关系-log-analysis--windowed-aggregation",
+        "anchor": "关系-log-analysis-↦-windowed-aggregation",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#关系-log-analysis--cep-pattern",
+        "url": "#关系-log-analysis-↦-cep-pattern",
         "text": "关系: Log Analysis `↦` CEP Pattern",
         "line": 22,
         "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "关系-log-analysis--cep-pattern",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 27,
-        "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 36,
-        "file": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "关系-log-analysis-↦-cep-pattern",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "url": "#关系-windowed-aggregation--def-s-04-05",
+        "url": "#关系-windowed-aggregation-↦-def-s-04-05",
         "text": "关系: Windowed Aggregation `↦` Def-S-04-05",
         "line": 23,
         "file": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "anchor": "关系-windowed-aggregation--def-s-04-05",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 29,
-        "file": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 27,
-        "file": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 30,
-        "file": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "anchor": "1-问题与背景-problem--context",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "#21-cep--flink-架构概览",
-        "text": "2.1 CEP + Flink 架构概览",
-        "line": 19,
-        "file": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "anchor": "21-cep--flink-架构概览",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "#33-actor--dataflow-双层架构关系",
-        "text": "3.3 Actor + Dataflow 双层架构关系",
-        "line": 28,
-        "file": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "anchor": "33-actor--dataflow-双层架构关系",
+        "anchor": "关系-windowed-aggregation-↦-def-s-04-05",
         "suggestion": null
       },
       {
@@ -2547,11 +1779,23 @@
       {
         "type": "anchor_not_found",
         "source": "BENCHMARK-REPORT.md",
-        "url": "#5-形式证明--工程论证",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument-proof--engineering-argument",
+        "suggestion": null
+      }
+    ],
+    "GLOSSARY-EN.md": [
+      {
+        "type": "anchor_not_found",
+        "source": "GLOSSARY-EN.md",
+        "url": "#j",
+        "text": "J",
+        "line": 13,
+        "file": "GLOSSARY-EN.md",
+        "anchor": "j",
         "suggestion": null
       }
     ],
@@ -2559,33 +1803,31 @@
       {
         "type": "anchor_not_found",
         "source": "TROUBLESHOOTING-COMPLETE.md",
-        "url": "#5-形式证明--工程论证",
+        "url": "#关系-1-问题症状--根因映射",
+        "text": "关系 1: 问题症状 → 根因映射",
+        "line": 19,
+        "file": "TROUBLESHOOTING-COMPLETE.md",
+        "anchor": "关系-1-问题症状--根因映射",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "TROUBLESHOOTING-COMPLETE.md",
+        "url": "#关系-2-排查流程--故障恢复",
+        "text": "关系 2: 排查流程 ⟹ 故障恢复",
+        "line": 20,
+        "file": "TROUBLESHOOTING-COMPLETE.md",
+        "anchor": "关系-2-排查流程--故障恢复",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "TROUBLESHOOTING-COMPLETE.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 25,
         "file": "TROUBLESHOOTING-COMPLETE.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      }
-    ],
-    ".tasks/flink-release-tracker.md": [
-      {
-        "type": "file_not_found",
-        "source": ".tasks/flink-release-tracker.md",
-        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
-        "text": "文档更新工作流程",
-        "line": 312,
-        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
-        "suggestion": [
-          ".scripts/flink-version-tracking/doc-update-workflow.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": ".tasks/flink-release-tracker.md",
-        "url": "../../actions/workflows/flink-release-tracker.yml",
-        "text": "Actions运行历史",
-        "line": 321,
-        "resolved": ".tasks/../../actions/workflows/flink-release-tracker.yml",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
     ],
@@ -2593,41 +1835,41 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-1classic-actor--erlang-actor",
+        "url": "#关系-1classic-actor-⊂-erlang-actor",
         "text": "关系 1：Classic Actor `⊂` Erlang Actor",
         "line": 22,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-1classic-actor--erlang-actor",
+        "anchor": "关系-1classic-actor-⊂-erlang-actor",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-2actor-模型--异步-π-演算",
+        "url": "#关系-2actor-模型-⊂-异步-π-演算",
         "text": "关系 2：Actor 模型 `⊂` 异步 π-演算",
         "line": 23,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-2actor-模型--异步-π-演算",
+        "anchor": "关系-2actor-模型-⊂-异步-π-演算",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-3erlangotp--akka-actor核心语义双模拟等价",
+        "url": "#关系-3erlangotp-≈-akka-actor核心语义双模拟等价",
         "text": "关系 3：Erlang/OTP `≈` Akka Actor（核心语义双模拟等价）",
         "line": 24,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-3erlangotp--akka-actor核心语义双模拟等价",
+        "anchor": "关系-3erlangotp-≈-akka-actor核心语义双模拟等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "url": "#关系-4actor-模型--dataflow-模型图灵完备等价",
+        "url": "#关系-4actor-模型-↔-dataflow-模型图灵完备等价",
         "text": "关系 4：Actor 模型 `↔` Dataflow 模型（图灵完备等价）",
         "line": 25,
         "file": "Struct/01-foundation/01.03-actor-model-formalization.md",
-        "anchor": "关系-4actor-模型--dataflow-模型图灵完备等价",
+        "anchor": "关系-4actor-模型-↔-dataflow-模型图灵完备等价",
         "suggestion": null
       }
     ],
@@ -2635,87 +1877,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-1-dataflow-model--kahn-进程网络-kpn",
+        "url": "#关系-1-dataflow-model-⊃-kahn-进程网络-kpn",
         "text": "关系 1: Dataflow Model `⊃` Kahn 进程网络 (KPN)",
         "line": 22,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-1-dataflow-model--kahn-进程网络-kpn",
+        "anchor": "关系-1-dataflow-model-⊃-kahn-进程网络-kpn",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model",
+        "url": "#关系-2-同步数据流-sdf-⊂-动态数据流-ddf-≈-dataflow-model",
         "text": "关系 2: 同步数据流 (SDF) `⊂` 动态数据流 (DDF) `≈` Dataflow Model",
         "line": 23,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model",
+        "anchor": "关系-2-同步数据流-sdf-⊂-动态数据流-ddf-≈-dataflow-model",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#关系-3-dataflow-理论模型--flink-runtime-实现",
+        "url": "#关系-3-dataflow-理论模型-↦-flink-runtime-实现",
         "text": "关系 3: Dataflow 理论模型 `↦` Flink Runtime 实现",
         "line": 24,
         "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "关系-3-dataflow-理论模型--flink-runtime-实现",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Struct/01-foundation/01.05-csp-formalization.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.05-csp-formalization.md",
-        "url": "#基础情形-q--0",
-        "text": "基础情形 ($Q = 0$)",
-        "line": 38,
-        "file": "Struct/01-foundation/01.05-csp-formalization.md",
-        "anchor": "基础情形-q--0",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.05-csp-formalization.md",
-        "url": "#6-实例验证-examples--verification",
-        "text": "6. 实例验证 (Examples \\& Verification)",
-        "line": 41,
-        "file": "Struct/01-foundation/01.05-csp-formalization.md",
-        "anchor": "6-实例验证-examples--verification",
-        "suggestion": null
-      }
-    ],
-    "Struct/01-foundation/01.06-petri-net-formalization.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.06-petri-net-formalization.md",
-        "url": "#6-实例验证-examples--verification",
-        "text": "6. 实例验证 (Examples \\& Verification)",
-        "line": 37,
-        "file": "Struct/01-foundation/01.06-petri-net-formalization.md",
-        "anchor": "6-实例验证-examples--verification",
-        "suggestion": null
-      }
-    ],
-    "Struct/01-foundation/01.07-session-types.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/01-foundation/01.07-session-types.md",
-        "url": "#5-形式证明--工程论证-proof",
-        "text": "5. 形式证明 / 工程论证 (Proof)",
-        "line": 28,
-        "file": "Struct/01-foundation/01.07-session-types.md",
-        "anchor": "5-形式证明--工程论证-proof",
+        "anchor": "关系-3-dataflow-理论模型-↦-flink-runtime-实现",
         "suggestion": null
       }
     ],
@@ -2723,41 +1909,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-1-确定性流处理--kahn-网络确定性",
+        "url": "#关系-1-确定性流处理-≃-kahn-网络确定性",
         "text": "关系 1: 确定性流处理 `≃` Kahn 网络确定性",
         "line": 22,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-1-确定性流处理--kahn-网络确定性",
+        "anchor": "关系-1-确定性流处理-≃-kahn-网络确定性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-2-汇合归约--dataflow-确定性",
+        "url": "#关系-2-汇合归约-⇒-dataflow-确定性",
         "text": "关系 2: 汇合归约 `⇒` Dataflow 确定性",
         "line": 23,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-2-汇合归约--dataflow-确定性",
+        "anchor": "关系-2-汇合归约-⇒-dataflow-确定性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#关系-3-可观测确定性--语义确定性",
+        "url": "#关系-3-可观测确定性-⊂-语义确定性",
         "text": "关系 3: 可观测确定性 `⊂` 语义确定性",
         "line": 24,
         "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "关系-3-可观测确定性--语义确定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/02-properties/02.01-determinism-in-streaming.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "关系-3-可观测确定性-⊂-语义确定性",
         "suggestion": null
       }
     ],
@@ -2765,21 +1941,21 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "url": "#关系-2-内部一致性--chandy-lamport-分布式快照",
+        "url": "#关系-2-内部一致性-≈-chandy-lamport-分布式快照",
         "text": "关系 2: 内部一致性 `≈` Chandy-Lamport 分布式快照",
         "line": 30,
         "file": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "anchor": "关系-2-内部一致性--chandy-lamport-分布式快照",
+        "anchor": "关系-2-内部一致性-≈-chandy-lamport-分布式快照",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "url": "#反例-41-内部一致--端到端一致",
+        "url": "#反例-41-内部一致-≠-端到端一致",
         "text": "反例 4.1 (内部一致 ≠ 端到端一致)",
         "line": 35,
         "file": "Struct/02-properties/02.02-consistency-hierarchy.md",
-        "anchor": "反例-41-内部一致--端到端一致",
+        "anchor": "反例-41-内部一致-≠-端到端一致",
         "suggestion": null
       }
     ],
@@ -2787,31 +1963,21 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 26,
-        "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#步骤-1基例--source-算子的-watermark-单调性",
+        "url": "#步骤-1基例-—-source-算子的-watermark-单调性",
         "text": "步骤 1：基例 — Source 算子的 Watermark 单调性",
         "line": 28,
         "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "步骤-1基例--source-算子的-watermark-单调性",
+        "anchor": "步骤-1基例-—-source-算子的-watermark-单调性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "url": "#步骤-3归纳步骤--第-k-个算子的单调性保持",
+        "url": "#步骤-3归纳步骤-—-第-k-个算子的单调性保持",
         "text": "步骤 3：归纳步骤 — 第 $k$ 个算子的单调性保持",
         "line": 30,
         "file": "Struct/02-properties/02.03-watermark-monotonicity.md",
-        "anchor": "步骤-3归纳步骤--第-k-个算子的单调性保持",
+        "anchor": "步骤-3归纳步骤-—-第-k-个算子的单调性保持",
         "suggestion": null
       }
     ],
@@ -2819,75 +1985,41 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-1-安全性--闭集-borel拓扑",
+        "url": "#关系-1-安全性-⊂-闭集-borel拓扑",
         "text": "关系 1: 安全性 `⊂` 闭集 (Borel拓扑)",
         "line": 22,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-1-安全性--闭集-borel拓扑",
+        "anchor": "关系-1-安全性-⊂-闭集-borel拓扑",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-2-活性--稠密集",
+        "url": "#关系-2-活性-≈-稠密集",
         "text": "关系 2: 活性 `≈` 稠密集",
         "line": 23,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-2-活性--稠密集",
+        "anchor": "关系-2-活性-≈-稠密集",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-3-actor模型--活性验证需公平性",
+        "url": "#关系-3-actor模型-⊆-活性验证需公平性",
         "text": "关系 3: Actor模型 `⊆` 活性验证需公平性",
         "line": 24,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-3-actor模型--活性验证需公平性",
+        "anchor": "关系-3-actor模型-⊆-活性验证需公平性",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#关系-4-safety--运行时监控-liveness--模型检测",
+        "url": "#关系-4-safety-↦-运行时监控-liveness-↦-模型检测",
         "text": "关系 4: Safety `↦` 运行时监控, Liveness `↦` 模型检测",
         "line": 25,
         "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "关系-4-safety--运行时监控-liveness--模型检测",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 32,
-        "file": "Struct/02-properties/02.04-liveness-and-safety.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
-        "suggestion": null
-      }
-    ],
-    "Struct/02-properties/02.05-type-safety-derivation.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/02-properties/02.05-type-safety-derivation.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 37,
-        "file": "Struct/02-properties/02.05-type-safety-derivation.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
-        "suggestion": null
-      }
-    ],
-    "Struct/03-relationships/03.01-actor-to-csp-encoding.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 27,
-        "file": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
+        "anchor": "关系-4-safety-↦-运行时监控-liveness-↦-模型检测",
         "suggestion": null
       }
     ],
@@ -2895,117 +2027,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-1-flink-dataflow-图--π-演算进程网络",
+        "url": "#关系-1-flink-dataflow-图-↦-π-演算进程网络",
         "text": "关系 1: Flink Dataflow 图 `↦` π-演算进程网络",
         "line": 21,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-1-flink-dataflow-图--π-演算进程网络",
+        "anchor": "关系-1-flink-dataflow-图-↦-π-演算进程网络",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法",
+        "url": "#关系-2-checkpoint-屏障协议-≈-chandy-lamport-快照算法",
         "text": "关系 2: Checkpoint 屏障协议 `≈` Chandy-Lamport 快照算法",
         "line": 22,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-2-checkpoint-屏障协议--chandy-lamport-快照算法",
+        "anchor": "关系-2-checkpoint-屏障协议-≈-chandy-lamport-快照算法",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "url": "#关系-3-flink-exactly-once--π-演算幂等进程组合",
+        "url": "#关系-3-flink-exactly-once-↦-π-演算幂等进程组合",
         "text": "关系 3: Flink Exactly-Once `↦` π-演算幂等进程组合",
         "line": 23,
         "file": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
-        "anchor": "关系-3-flink-exactly-once--π-演算幂等进程组合",
-        "suggestion": null
-      }
-    ],
-    "Struct/03-relationships/03.03-expressiveness-hierarchy.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-1-l3-to-l4-分离移动通道",
-        "text": "示例 1: $L\\_3 \\\\to L\\_4$ 分离——移动通道",
-        "line": 34,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-1-l3-to-l4-分离移动通道",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-2-l4-to-l5-分离进程传递",
-        "text": "示例 2: $L\\_4 \\\\to L\\_5$ 分离——进程传递",
-        "line": 35,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-2-l4-to-l5-分离进程传递",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "url": "#示例-3-良类型-session-进程l4-子集",
-        "text": "示例 3: 良类型 Session 进程（$L\\_4$ 子集）",
-        "line": 36,
-        "file": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
-        "anchor": "示例-3-良类型-session-进程l4-子集",
-        "suggestion": null
-      }
-    ],
-    "Struct/03-relationships/03.04-bisimulation-equivalences.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
-        "url": "#def-s-15-02-弱互模拟与分支互模拟-weak--branching-bisimulation",
-        "text": "Def-S-15-02. 弱互模拟与分支互模拟 (Weak \\& Branching Bisimulation)",
-        "line": 14,
-        "file": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
-        "anchor": "def-s-15-02-弱互模拟与分支互模拟-weak--branching-bisimulation",
-        "suggestion": null
-      }
-    ],
-    "Struct/03-relationships/03.05-cross-model-mappings.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#31-理论层-mathcalltexttheory-与语言层-mathcalltextlanguage-的关系",
-        "text": "3.1 理论层 $\\\\mathcal{L}_{\\\\text{theory}}$ 与语言层 $\\\\mathcal{L}_{\\\\text{language}}$ 的关系",
-        "line": 24,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "31-理论层-mathcalltexttheory-与语言层-mathcalltextlanguage-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#32-语言层-mathcalltextlanguage-与系统层-mathcalltextsystem-的关系",
-        "text": "3.2 语言层 $\\\\mathcal{L}_{\\\\text{language}}$ 与系统层 $\\\\mathcal{L}_{\\\\text{system}}$ 的关系",
-        "line": 25,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "32-语言层-mathcalltextlanguage-与系统层-mathcalltextsystem-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#33-系统层-mathcalltextsystem-与领域层-mathcalltextdomain-的关系",
-        "text": "3.3 系统层 $\\\\mathcal{L}_{\\\\text{system}}$ 与领域层 $\\\\mathcal{L}_{\\\\text{domain}}$ 的关系",
-        "line": 26,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "33-系统层-mathcalltextsystem-与领域层-mathcalltextdomain-的关系",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 32,
-        "file": "Struct/03-relationships/03.05-cross-model-mappings.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "关系-3-flink-exactly-once-↦-π-演算幂等进程组合",
         "suggestion": null
       }
     ],
@@ -3013,43 +2059,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-1-flink-checkpoint--chandy-lamport-分布式快照",
+        "url": "#关系-1-flink-checkpoint-↦-chandy-lamport-分布式快照",
         "text": "关系 1: Flink Checkpoint `↦` Chandy-Lamport 分布式快照",
         "line": 23,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-1-flink-checkpoint--chandy-lamport-分布式快照",
+        "anchor": "关系-1-flink-checkpoint-↦-chandy-lamport-分布式快照",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-2-checkpoint-对齐--consistent-cut",
+        "url": "#关系-2-checkpoint-对齐-⟹-consistent-cut",
         "text": "关系 2: Checkpoint 对齐 `⟹` Consistent Cut",
         "line": 24,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-2-checkpoint-对齐--consistent-cut",
+        "anchor": "关系-2-checkpoint-对齐-⟹-consistent-cut",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "url": "#关系-3-异步快照--同步快照语义等价",
+        "url": "#关系-3-异步快照-≈-同步快照语义等价",
         "text": "关系 3: 异步快照 `≈` 同步快照（语义等价）",
         "line": 25,
         "file": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
-        "anchor": "关系-3-异步快照--同步快照语义等价",
-        "suggestion": null
-      }
-    ],
-    "Struct/04-proofs/04.02-flink-exactly-once-correctness.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
-        "url": "#8-实例与反例-examples--counter-examples",
-        "text": "8. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 44,
-        "file": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
-        "anchor": "8-实例与反例-examples--counter-examples",
+        "anchor": "关系-3-异步快照-≈-同步快照语义等价",
         "suggestion": null
       }
     ],
@@ -3057,51 +2091,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#def-s-19-02-一致割集--consistent-cut",
-        "text": "Def-S-19-02 (一致割集 / Consistent Cut)",
-        "line": 13,
-        "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "def-s-19-02-一致割集--consistent-cut",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#lemma-s-19-02-一致割集引理--consistent-cut-lemma",
-        "text": "Lemma-S-19-02 (一致割集引理 / Consistent Cut Lemma)",
-        "line": 19,
-        "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "lemma-s-19-02-一致割集引理--consistent-cut-lemma",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-1-marker-接收--状态记录触发",
+        "url": "#关系-1-marker-接收-↦-状态记录触发",
         "text": "关系 1: Marker 接收 `↦` 状态记录触发",
         "line": 23,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-1-marker-接收--状态记录触发",
+        "anchor": "关系-1-marker-接收-↦-状态记录触发",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-2-通道记录规则--无消息丢失或重复",
+        "url": "#关系-2-通道记录规则-⟹-无消息丢失或重复",
         "text": "关系 2: 通道记录规则 `⟹` 无消息丢失或重复",
         "line": 24,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-2-通道记录规则--无消息丢失或重复",
+        "anchor": "关系-2-通道记录规则-⟹-无消息丢失或重复",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "url": "#关系-3-chandy-lamport--flink-checkpoint-语义等价",
+        "url": "#关系-3-chandy-lamport-≈-flink-checkpoint-语义等价",
         "text": "关系 3: Chandy-Lamport `≈` Flink Checkpoint (语义等价)",
         "line": 25,
         "file": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
-        "anchor": "关系-3-chandy-lamport--flink-checkpoint-语义等价",
+        "anchor": "关系-3-chandy-lamport-≈-flink-checkpoint-语义等价",
         "suggestion": null
       }
     ],
@@ -3109,129 +2123,81 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-01--结合律",
+        "url": "#lemma-s-20-01-⊔-结合律",
         "text": "Lemma-S-20-01 (⊔ 结合律)",
         "line": 18,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-01--结合律",
+        "anchor": "lemma-s-20-01-⊔-结合律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-02--交换律",
+        "url": "#lemma-s-20-02-⊔-交换律",
         "text": "Lemma-S-20-02 (⊔ 交换律)",
         "line": 19,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-02--交换律",
+        "anchor": "lemma-s-20-02-⊔-交换律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-03--幂等律",
+        "url": "#lemma-s-20-03-⊔-幂等律",
         "text": "Lemma-S-20-03 (⊔ 幂等律)",
         "line": 20,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-03--幂等律",
+        "anchor": "lemma-s-20-03-⊔-幂等律",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#lemma-s-20-04--吸收律与单位元",
+        "url": "#lemma-s-20-04-⊔-吸收律与单位元",
         "text": "Lemma-S-20-04 (⊔ 吸收律与单位元)",
         "line": 21,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "lemma-s-20-04--吸收律与单位元",
+        "anchor": "lemma-s-20-04-⊔-吸收律与单位元",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-1-watermark-格--完备格理论",
+        "url": "#关系-1-watermark-格-↦-完备格理论",
         "text": "关系 1: Watermark 格 `↦` 完备格理论",
         "line": 24,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-1-watermark-格--完备格理论",
+        "anchor": "关系-1-watermark-格-↦-完备格理论",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-2-watermark-合并--单调性保持",
+        "url": "#关系-2-watermark-合并-⟹-单调性保持",
         "text": "关系 2: Watermark 合并 `⟹` 单调性保持",
         "line": 25,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-2-watermark-合并--单调性保持",
+        "anchor": "关系-2-watermark-合并-⟹-单调性保持",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#关系-3-watermark-传播--最小上界计算",
+        "url": "#关系-3-watermark-传播-≈-最小上界计算",
         "text": "关系 3: Watermark 传播 `≈` 最小上界计算",
         "line": 26,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "关系-3-watermark-传播--最小上界计算",
+        "anchor": "关系-3-watermark-传播-≈-最小上界计算",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "url": "#反例-42-缺失--元素的格不完备性",
+        "url": "#反例-42-缺失-⊥-元素的格不完备性",
         "text": "反例 4.2 (缺失 ⊥ 元素的格不完备性)",
         "line": 31,
         "file": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
-        "anchor": "反例-42-缺失--元素的格不完备性",
-        "suggestion": null
-      }
-    ],
-    "Struct/04-proofs/04.05-type-safety-fg-fgg.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 33,
-        "file": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\bar{e}",
-        "text": "\\bar{\\sigma}",
-        "line": 120,
-        "resolved": "/bar{e}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\theta(\\bar{e}",
-        "text": "\\theta(\\bar{\\sigma})",
-        "line": 120,
-        "resolved": "/theta(/bar{e}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "v_1, ...",
-        "text": "\\bar{\\sigma}",
-        "line": 172,
-        "resolved": "Struct/04-proofs/v_1, ...",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
-        "url": "\\bar{e}",
-        "text": "\\bar{\\sigma}",
-        "line": 352,
-        "resolved": "/bar{e}",
+        "anchor": "反例-42-缺失-⊥-元素的格不完备性",
         "suggestion": null
       }
     ],
@@ -3239,43 +2205,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-1-global-types--session-types",
+        "url": "#关系-1-global-types-↔-session-types",
         "text": "关系 1: Global Types `↔` Session Types",
         "line": 25,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-1-global-types--session-types",
+        "anchor": "关系-1-global-types-↔-session-types",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-2-epp--bisimulation-互模拟等价",
+        "url": "#关系-2-epp-≈-bisimulation-互模拟等价",
         "text": "关系 2: EPP `≈` Bisimulation (互模拟等价)",
         "line": 26,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-2-epp--bisimulation-互模拟等价",
+        "anchor": "关系-2-epp-≈-bisimulation-互模拟等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "url": "#关系-3-choreography--process-calculus",
+        "url": "#关系-3-choreography-↦-process-calculus",
         "text": "关系 3: Choreography `↦` Process Calculus",
         "line": 27,
         "file": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
-        "anchor": "关系-3-choreography--process-calculus",
-        "suggestion": null
-      }
-    ],
-    "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "#6-实例与反例-examples--counter-examples",
-        "text": "6. 实例与反例 (Examples \\& Counter-examples)",
-        "line": 34,
-        "file": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "anchor": "6-实例与反例-examples--counter-examples",
+        "anchor": "关系-3-choreography-↦-process-calculus",
         "suggestion": null
       }
     ],
@@ -3283,63 +2237,11 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#prop-s-25-02-rice定理在l4-l6层的应用",
-        "text": "Prop-S-25-02. Rice定理在$L\\_4$-$L\\_6$层的应用",
-        "line": 24,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "prop-s-25-02-rice定理在l4-l6层的应用",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-1-l3-csp死锁检测的可判定性",
-        "text": "示例 1: $L\\_3$ CSP死锁检测的可判定性",
-        "line": 41,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-1-l3-csp死锁检测的可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-2-l4-π-演算互模拟的不可判定性",
-        "text": "示例 2: $L\\_4$ π-演算互模拟的不可判定性",
-        "line": 42,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-2-l4-π-演算互模拟的不可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#示例-3-l5-hoπ类型推断的不可判定性",
-        "text": "示例 3: $L\\_5$ HOπ类型推断的不可判定性",
-        "line": 43,
-        "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "示例-3-l5-hoπ类型推断的不可判定性",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "url": "#表-71-模型--性质--可判定性矩阵",
+        "url": "#表-71-模型-×-性质-×-可判定性矩阵",
         "text": "表 7.1: 模型 × 性质 × 可判定性矩阵",
         "line": 46,
         "file": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-        "anchor": "表-71-模型--性质--可判定性矩阵",
-        "suggestion": null
-      }
-    ],
-    "Struct/06-frontier/06.01-open-problems-streaming-verification.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 29,
-        "file": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "anchor": "表-71-模型-×-性质-×-可判定性矩阵",
         "suggestion": null
       }
     ],
@@ -3347,31 +2249,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-1-choreographic--传统数据流",
+        "url": "#关系-1-choreographic-⊃-传统数据流",
         "text": "关系 1: Choreographic ⊃ 传统数据流",
         "line": 27,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-1-choreographic--传统数据流",
+        "anchor": "关系-1-choreographic-⊃-传统数据流",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-2-mpst--session-types",
+        "url": "#关系-2-mpst-↔-session-types",
         "text": "关系 2: MPST ↔ Session Types",
         "line": 28,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-2-mpst--session-types",
+        "anchor": "关系-2-mpst-↔-session-types",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "url": "#关系-3-全局类型--死锁自由",
+        "url": "#关系-3-全局类型-⟹-死锁自由",
         "text": "关系 3: 全局类型 ⟹ 死锁自由",
         "line": 29,
         "file": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
-        "anchor": "关系-3-全局类型--死锁自由",
+        "anchor": "关系-3-全局类型-⟹-死锁自由",
         "suggestion": null
       }
     ],
@@ -3379,31 +2281,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-1-mast--传统-mpst",
+        "url": "#关系-1-mast-↔-传统-mpst",
         "text": "关系 1: MAST ↔ 传统 MPST",
         "line": 27,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-1-mast--传统-mpst",
+        "anchor": "关系-1-mast-↔-传统-mpst",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-2-llm-agent-protocol--choreography",
+        "url": "#关系-2-llm-agent-protocol-↦-choreography",
         "text": "关系 2: LLM-Agent Protocol ↦ Choreography",
         "line": 28,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-2-llm-agent-protocol--choreography",
+        "anchor": "关系-2-llm-agent-protocol-↦-choreography",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "url": "#关系-3-type-safe-agent-communication--deadlock-freedom",
+        "url": "#关系-3-type-safe-agent-communication-↦-deadlock-freedom",
         "text": "关系 3: Type-safe Agent Communication ↦ Deadlock Freedom",
         "line": 29,
         "file": "Struct/06-frontier/06.03-ai-agent-session-types.md",
-        "anchor": "关系-3-type-safe-agent-communication--deadlock-freedom",
+        "anchor": "关系-3-type-safe-agent-communication-↦-deadlock-freedom",
         "suggestion": null
       }
     ],
@@ -3411,74 +2313,31 @@
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-1-dot--pdot-表达能力严格扩展",
+        "url": "#关系-1-dot-⊂-pdot-表达能力严格扩展",
         "text": "关系 1: DOT `⊂` pDOT (表达能力严格扩展)",
         "line": 21,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-1-dot--pdot-表达能力严格扩展",
+        "anchor": "关系-1-dot-⊂-pdot-表达能力严格扩展",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-2-pdot--scala-3-类型系统",
+        "url": "#关系-2-pdot-↦-scala-3-类型系统",
         "text": "关系 2: pDOT `↦` Scala 3 类型系统",
         "line": 22,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-2-pdot--scala-3-类型系统",
+        "anchor": "关系-2-pdot-↦-scala-3-类型系统",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#关系-3-路径依赖类型--dataflow-状态追踪",
+        "url": "#关系-3-路径依赖类型-↔-dataflow-状态追踪",
         "text": "关系 3: 路径依赖类型 `↔` Dataflow 状态追踪",
         "line": 23,
         "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "关系-3-路径依赖类型--dataflow-状态追踪",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 28,
-        "file": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "reports/feedback/README.md": [
-      {
-        "type": "file_not_found",
-        "source": "reports/feedback/README.md",
-        "url": "../../issues",
-        "text": "Issue 列表",
-        "line": 101,
-        "resolved": "issues",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "url": "#趋势二-diskless-kafka--apache-iceberg",
-        "text": "趋势二: Diskless Kafka + Apache Iceberg",
-        "line": 37,
-        "file": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "anchor": "趋势二-diskless-kafka--apache-iceberg",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 48,
-        "file": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "关系-3-路径依赖类型-↔-dataflow-状态追踪",
         "suggestion": null
       }
     ],
@@ -3486,119 +2345,41 @@
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-1-dataflow--actor图灵完备等价",
+        "url": "#关系-1-dataflow-≈-actor图灵完备等价",
         "text": "关系 1: Dataflow `≈` Actor（图灵完备等价）",
         "line": 26,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-1-dataflow--actor图灵完备等价",
+        "anchor": "关系-1-dataflow-≈-actor图灵完备等价",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-2-dataflow--csp异步-vs-同步的连续统",
+        "url": "#关系-2-dataflow-↦-csp异步-vs-同步的连续统",
         "text": "关系 2: Dataflow `↦` CSP（异步 vs 同步的连续统）",
         "line": 27,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-2-dataflow--csp异步-vs-同步的连续统",
+        "anchor": "关系-2-dataflow-↦-csp异步-vs-同步的连续统",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-3-pubsub--actor解耦是地址匿名化的特例",
+        "url": "#关系-3-pubsub-⊂-actor解耦是地址匿名化的特例",
         "text": "关系 3: Pub/Sub `⊂` Actor（解耦是地址匿名化的特例）",
         "line": 28,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-3-pubsub--actor解耦是地址匿名化的特例",
+        "anchor": "关系-3-pubsub-⊂-actor解耦是地址匿名化的特例",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#关系-4-cep--dataflow模式匹配是有状态算子的语法糖",
+        "url": "#关系-4-cep-⊂-dataflow模式匹配是有状态算子的语法糖",
         "text": "关系 4: CEP `⊂` Dataflow（模式匹配是有状态算子的语法糖）",
         "line": 29,
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "关系-4-cep--dataflow模式匹配是有状态算子的语法糖",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 35,
-        "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "#示例-64-cep--pubsub-混合实例金融风控实时告警",
-        "text": "示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警",
-        "line": 43,
-        "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "anchor": "示例-64-cep--pubsub-混合实例金融风控实时告警",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/02-design-patterns/pattern-async-io-enrichment.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 34,
-        "file": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/02-design-patterns/pattern-cep-complex-event.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
-        "anchor": "1-问题与背景-problem--context",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "#设计模式-checkpoint-与故障恢复-pattern-07-checkpoint--recovery",
-        "text": "设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \\& Recovery)",
-        "line": 11,
-        "file": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "anchor": "设计模式-checkpoint-与故障恢复-pattern-07-checkpoint--recovery",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 35,
-        "file": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/02-design-patterns/pattern-event-time-processing.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "anchor": "1-问题与背景-problem--context",
+        "anchor": "关系-4-cep-⊂-dataflow模式匹配是有状态算子的语法糖",
         "suggestion": null
       }
     ],
@@ -3606,43 +2387,21 @@
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#关系-log-analysis--windowed-aggregation",
+        "url": "#关系-log-analysis-↦-windowed-aggregation",
         "text": "关系: Log Analysis `↦` Windowed Aggregation",
         "line": 21,
         "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "关系-log-analysis--windowed-aggregation",
+        "anchor": "关系-log-analysis-↦-windowed-aggregation",
         "suggestion": null
       },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#关系-log-analysis--cep-pattern",
+        "url": "#关系-log-analysis-↦-cep-pattern",
         "text": "关系: Log Analysis `↦` CEP Pattern",
         "line": 22,
         "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "关系-log-analysis--cep-pattern",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 27,
-        "file": "Knowledge/02-design-patterns/pattern-log-analysis.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/02-design-patterns/pattern-side-output.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 36,
-        "file": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "anchor": "5-形式证明--工程论证",
+        "anchor": "关系-log-analysis-↦-cep-pattern",
         "suggestion": null
       }
     ],
@@ -3650,81 +2409,15 @@
       {
         "type": "anchor_not_found",
         "source": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "url": "#关系-windowed-aggregation--def-s-04-05",
+        "url": "#关系-windowed-aggregation-↦-def-s-04-05",
         "text": "关系: Windowed Aggregation `↦` Def-S-04-05",
         "line": 23,
         "file": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "anchor": "关系-windowed-aggregation--def-s-04-05",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "url": "#5-形式证明--工程论证",
-        "text": "5. 形式证明 / 工程论证",
-        "line": 29,
-        "file": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
-        "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 27,
-        "file": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/03-business-patterns/alibaba-double11-flink.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 30,
-        "file": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/03-business-patterns/fintech-realtime-risk-control.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "#1-问题与背景-problem--context",
-        "text": "1. 问题与背景 (Problem / Context)",
-        "line": 13,
-        "file": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "anchor": "1-问题与背景-problem--context",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "#21-cep--flink-架构概览",
-        "text": "2.1 CEP + Flink 架构概览",
-        "line": 19,
-        "file": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "anchor": "21-cep--flink-架构概览",
+        "anchor": "关系-windowed-aggregation-↦-def-s-04-05",
         "suggestion": null
       }
     ],
     "Knowledge/03-business-patterns/iot-stream-processing.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "#33-actor--dataflow-双层架构关系",
-        "text": "3.3 Actor + Dataflow 双层架构关系",
-        "line": 28,
-        "file": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "anchor": "33-actor--dataflow-双层架构关系",
-        "suggestion": null
-      },
       {
         "type": "anchor_not_found",
         "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
@@ -4582,17 +3275,6 @@
         "suggestion": null
       }
     ],
-    "Flink/05-operations/production-checklist.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/05-operations/production-checklist.md",
-        "url": "../11-monitoring-observability/flink-monitoring-setup-guide.md",
-        "text": "监控配置指南",
-        "line": 3,
-        "resolved": "Flink/11-monitoring-observability/flink-monitoring-setup-guide.md",
-        "suggestion": null
-      }
-    ],
     "Flink/05-vs-competitors/flink-vs-kafka-streams.md": [
       {
         "type": "anchor_not_found",
@@ -4753,17 +3435,6 @@
         "suggestion": null
       }
     ],
-    "Flink/09-language-foundations/00-INDEX.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "text": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "line": 396,
-        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "suggestion": null
-      }
-    ],
     "Flink/09-language-foundations/01.01-scala-types-for-streaming.md": [
       {
         "type": "anchor_not_found",
@@ -4784,19 +3455,6 @@
         "file": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
         "anchor": "61-官方-java-api-方式java-pojo--scala-调用",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
-        "url": "f",
-        "text": "C_1, C_2",
-        "line": 248,
-        "resolved": "Flink/09-language-foundations/f",
-        "suggestion": [
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
-        ]
       }
     ],
     "Flink/09-language-foundations/01.02-typeinformation-derivation.md": [
@@ -4895,15 +3553,6 @@
     ],
     "Flink/09-language-foundations/10-wasi-component-model.md": [
       {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/10-wasi-component-model.md",
-        "url": "./flink-rust-native-api-guide.md",
-        "text": "Flink/09-language-foundations/03-rust-native.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/flink-rust-native-api-guide.md",
-        "suggestion": null
-      },
-      {
         "type": "anchor_not_found",
         "source": "Flink/09-language-foundations/10-wasi-component-model.md",
         "url": "#41-为何选择-wasi-02--component-model",
@@ -4996,26 +3645,6 @@
     ],
     "Flink/10-deployment/multi-cloud-deployment-templates.md": [
       {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "./flink-kubernetes-deployment-complete-guide.md",
-        "text": "Flink Kubernetes部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-complete-guide.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-architecture-overview.md",
-        "text": "Flink 集群架构",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
         "type": "anchor_not_found",
         "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
@@ -5023,50 +3652,6 @@
         "line": 27,
         "file": "Flink/10-deployment/multi-cloud-deployment-templates.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/flink-ai-agents-flip-531.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
-        "url": "../06-frontier/mcp-protocol-agent-streaming.md",
-        "text": "MCP协议",
-        "line": 3,
-        "resolved": "Flink/06-frontier/mcp-protocol-agent-streaming.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/flink-llm-integration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-llm-integration.md",
-        "url": "../03-sql-table-api/flink-sql-advanced-features.md",
-        "text": "Flink SQL 高级特性",
-        "line": 3,
-        "resolved": "Flink/03-sql-table-api/flink-sql-advanced-features.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/flink-ml-architecture.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-ml-architecture.md",
-        "url": "../02-core-mechanisms/flink-datastream-api-guide.md",
-        "text": "Flink DataStream API",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/flink-datastream-api-guide.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/flink-realtime-ml-inference.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
-        "url": "../02-core-mechanisms/async-io-mechanism.md",
-        "text": "Flink异步I/O机制",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/async-io-mechanism.md",
         "suggestion": null
       }
     ],
@@ -5112,87 +3697,6 @@
         "suggestion": null
       }
     ],
-    "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
-        "url": "../02-core-mechanisms/stream-join-mechanisms.md",
-        "text": "Flink双流Join机制",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/stream-join-mechanisms.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/12-ai-ml/vector-database-integration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/12-ai-ml/vector-database-integration.md",
-        "url": "../04-connectors/jdbc-connector-guide.md",
-        "text": "04.1-jdbc-connector.md",
-        "line": 3,
-        "resolved": "Flink/04-connectors/jdbc-connector-guide.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/13-security/flink-security-complete-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      }
-    ],
-    "Flink/13-security/spiffe-spire-integration-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      }
-    ],
-    "Flink/13-security/streaming-security-best-practices.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "./flink-security-authorization.md",
-        "text": "11-security-authorization",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-authorization.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/streaming-security-best-practices.md",
-        "url": "./flink-security-network-isolation.md",
-        "text": "12-security-network-isolation",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-network-isolation.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/13-security/trusted-execution-flink.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      }
-    ],
     "Flink/13-wasm/wasi-0.3-async-preview.md": [
       {
         "type": "anchor_not_found",
@@ -5213,65 +3717,6 @@
         "file": "Flink/13-wasm/wasi-0.3-async-preview.md",
         "anchor": "74-flink--wasi-03-集成架构",
         "suggestion": null
-      }
-    ],
-    "Flink/13-wasm/wasm-streaming.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
-        "text": "Flink架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../09-language-foundations/flink-udf-development-guide.md",
-        "text": "Flink UDF扩展",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/flink-udf-development-guide.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/14-graph/flink-gelly.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../01-architecture/flink-batch-streaming-unified.md",
-        "text": "Flink DataSet API",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      }
-    ],
-    "Flink/15-observability/distributed-tracing.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/distributed-tracing.md",
-        "url": "./flink-backpressure-monitoring.md",
-        "text": "Flink反压监控",
-        "line": 3,
-        "resolved": "Flink/15-observability/flink-backpressure-monitoring.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/15-observability/flink-opentelemetry-observability.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../02-core-mechanisms/exactly-once-semantics.md",
-        "text": "13-checkpoint/flink-exactly-once-semantics.md",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
-        ]
       }
     ],
     "Flink/15-observability/realtime-data-quality-monitoring.md": [
@@ -5295,229 +3740,17 @@
         "anchor": "61-flink--great-expectations-集成实现",
         "suggestion": null
       }
-    ],
-    ".github/feedback-templates/classification.md": [
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/classification.md",
-        "url": "link",
-        "text": "Discussion",
-        "line": 254,
-        "resolved": ".github/feedback-templates/link",
-        "suggestion": null
-      }
-    ],
-    ".github/feedback-templates/README.md": [
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../issues/new/choose",
-        "text": "Issues 页面",
-        "line": 27,
-        "resolved": "issues/new/choose",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../discussions",
-        "text": "GitHub Discussions",
-        "line": 143,
-        "resolved": "discussions",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../graphs/contributors",
-        "text": "项目维护者",
-        "line": 144,
-        "resolved": "graphs/contributors",
-        "suggestion": [
-          "CONTRIBUTORS.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../issues/new?labels=meta",
-        "text": "Meta Issue",
-        "line": 145,
-        "resolved": "issues/new?labels=meta",
-        "suggestion": null
-      }
-    ],
-    ".github/ISSUE_TEMPLATE/README.md": [
-      {
-        "type": "file_not_found",
-        "source": ".github/ISSUE_TEMPLATE/README.md",
-        "url": "../../issues/new/choose",
-        "text": "Issues 页面",
-        "line": 16,
-        "resolved": "issues/new/choose",
-        "suggestion": null
-      }
     ]
   },
-  "suggested_fixes": [
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": ".tasks/flink-release-tracker.md",
-        "url": ".scripts/flink-version-tracking/doc-update-workflow.md",
-        "text": "文档更新工作流程",
-        "line": 312,
-        "resolved": ".tasks/.scripts/flink-version-tracking/doc-update-workflow.md",
-        "suggestion": [
-          ".scripts/flink-version-tracking/doc-update-workflow.md"
-        ]
-      },
-      "fix": ".scripts/flink-version-tracking/doc-update-workflow.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
-        "url": "f",
-        "text": "C_1, C_2",
-        "line": 248,
-        "resolved": "Flink/09-language-foundations/f",
-        "suggestion": [
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
-        ]
-      },
-      "fix": "Flink/09-language-foundations/flink-language-support-complete-guide.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/multi-cloud-deployment-templates.md",
-        "url": "../01-architecture/flink-architecture-overview.md",
-        "text": "Flink 集群架构",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/flink-security-complete-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/spiffe-spire-integration-guide.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-security/trusted-execution-flink.md",
-        "url": "./flink-security-architecture.md",
-        "text": "Flink 安全架构概述",
-        "line": 3,
-        "resolved": "Flink/13-security/flink-security-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/13-wasm/wasm-streaming.md",
-        "url": "../01-architecture/flink-cluster-architecture.md",
-        "text": "Flink架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-cluster-architecture.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/14-graph/flink-gelly.md",
-        "url": "../01-architecture/flink-batch-streaming-unified.md",
-        "text": "Flink DataSet API",
-        "line": 3,
-        "resolved": "Flink/01-architecture/flink-batch-streaming-unified.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-opentelemetry-observability.md",
-        "url": "../02-core-mechanisms/exactly-once-semantics.md",
-        "text": "13-checkpoint/flink-exactly-once-semantics.md",
-        "line": 3,
-        "resolved": "Flink/02-core-mechanisms/exactly-once-semantics.md",
-        "suggestion": [
-          "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
-        ]
-      },
-      "fix": "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": ".github/feedback-templates/README.md",
-        "url": "../../graphs/contributors",
-        "text": "项目维护者",
-        "line": 144,
-        "resolved": "graphs/contributors",
-        "suggestion": [
-          "CONTRIBUTORS.md"
-        ]
-      },
-      "fix": "CONTRIBUTORS.md"
-    }
-  ],
+  "suggested_fixes": [],
   "all_files": [
+    ".cache/test-qa/FAQ-AI-GENERATED.md",
     ".github/ISSUE_TEMPLATE/README.md",
     ".github/feedback-templates/README.md",
     ".github/feedback-templates/classification.md",
     ".github/feedback-templates/thank-you.md",
+    ".scripts/.stats/flink-tracking/flink-release-check-20260404-185303.md",
+    ".scripts/.stats/flink-tracking/flink-release-latest.md",
     ".scripts/README-STATS.md",
     ".scripts/README.md",
     ".scripts/flink-version-tracking/README.md",
@@ -5535,6 +3768,8 @@
     ".scripts/version-comparison/README.md",
     ".stats/README.md",
     ".stats/STATISTICS-REPORT-GENERATED.md",
+    ".stats/flink-tracking/flink-release-check-20260404-185352.md",
+    ".stats/flink-tracking/flink-release-latest.md",
     ".tasks/FLINK-24-25-30-MASTER-TASK.md",
     ".tasks/FLINK-RELEASE-TRACKING-SYSTEM.md",
     ".tasks/P2-10-completion-report.md",
@@ -5591,6 +3826,7 @@
     "FINAL-SIGNED-CERTIFICATE.md",
     "FINAL-VALIDATION-REPORT.md",
     "FINISHED.md",
+    "FLINK-24-25-30-COMPLETION-REPORT.md",
     "FLINK-24-25-30-TRACKING-COMPLETION.md",
     "FLINK-DOCUMENTATION-GAP-ANALYSIS.md",
     "FLINK-DOCUMENTATION-GAP-CHECKLIST.md",
@@ -5717,6 +3953,7 @@
     "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
     "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
     "Flink/09-language-foundations/flink-language-support-complete-guide.md",
+    "Flink/09-language-foundations/flink-rust-native-api-guide.md",
     "Flink/09-language-foundations/pyflink-complete-guide.md",
     "Flink/10-deployment/cost-optimization-calculator.md",
     "Flink/10-deployment/flink-24-deployment-improvements.md",
@@ -5772,6 +4009,13 @@
     "Flink/15-observability/split-level-watermark-metrics.md",
     "Flink/15-observability/streaming-metrics-monitoring-slo.md",
     "Flink/3.9-state-backends-deep-comparison.md",
+    "Flink/built-in-functions-reference.md",
+    "Flink/data-types-complete-reference.md",
+    "Flink/elasticsearch-connector-guide.md",
+    "Flink/flink-24/flink-24-ai-agents-ga.md",
+    "Flink/jdbc-connector-guide.md",
+    "Flink/mongodb-connector-guide.md",
+    "Flink/pyflink-deep-guide.md",
     "Flink/roadmap/flink-24-adaptive-execution-v2.md",
     "Flink/roadmap/flink-24-ansi-sql-2023.md",
     "Flink/roadmap/flink-24-deployment.md",
@@ -5792,13 +4036,93 @@
     "Flink/roadmap/flink-25-storage-backends.md",
     "Flink/roadmap/flink-25-stream-batch-unified.md",
     "Flink/roadmap/flink-25-wasm-udf-ga.md",
+    "Flink/roadmap/flink-30-ai-native.md",
     "Flink/roadmap/flink-30-api-redesign.md",
     "Flink/roadmap/flink-30-architecture-changes.md",
+    "Flink/roadmap/flink-30-cloud-native.md",
+    "Flink/roadmap/flink-30-connectors.md",
+    "Flink/roadmap/flink-30-observability.md",
+    "Flink/roadmap/flink-30-performance.md",
+    "Flink/roadmap/flink-30-security.md",
+    "Flink/roadmap/flink-30-sql-standard.md",
+    "Flink/roadmap/flink-30-state-management.md",
+    "Flink/roadmap/flink-evolution-a2a-protocol.md",
+    "Flink/roadmap/flink-evolution-agg.md",
+    "Flink/roadmap/flink-evolution-ai-agent-24.md",
+    "Flink/roadmap/flink-evolution-ai-agent-25.md",
+    "Flink/roadmap/flink-evolution-ai-agent-30.md",
+    "Flink/roadmap/flink-evolution-alerting.md",
+    "Flink/roadmap/flink-evolution-async-api.md",
+    "Flink/roadmap/flink-evolution-audit.md",
+    "Flink/roadmap/flink-evolution-auth.md",
+    "Flink/roadmap/flink-evolution-authorization.md",
+    "Flink/roadmap/flink-evolution-autoscaling.md",
+    "Flink/roadmap/flink-evolution-broadcast-api.md",
+    "Flink/roadmap/flink-evolution-cdc-connector.md",
+    "Flink/roadmap/flink-evolution-cep.md",
+    "Flink/roadmap/flink-evolution-cloud-connector.md",
+    "Flink/roadmap/flink-evolution-cloud-deploy.md",
+    "Flink/roadmap/flink-evolution-compliance.md",
+    "Flink/roadmap/flink-evolution-config-management.md",
+    "Flink/roadmap/flink-evolution-connector-framework.md",
+    "Flink/roadmap/flink-evolution-data-governance.md",
+    "Flink/roadmap/flink-evolution-data-quality.md",
+    "Flink/roadmap/flink-evolution-datastream-24.md",
+    "Flink/roadmap/flink-evolution-datastream-25.md",
+    "Flink/roadmap/flink-evolution-datastream-30.md",
+    "Flink/roadmap/flink-evolution-debugging.md",
+    "Flink/roadmap/flink-evolution-encryption.md",
+    "Flink/roadmap/flink-evolution-feature-store.md",
+    "Flink/roadmap/flink-evolution-file-connector.md",
+    "Flink/roadmap/flink-evolution-ha.md",
+    "Flink/roadmap/flink-evolution-hints.md",
+    "Flink/roadmap/flink-evolution-jdbc-connector.md",
+    "Flink/roadmap/flink-evolution-join.md",
+    "Flink/roadmap/flink-evolution-k8s-deploy.md",
+    "Flink/roadmap/flink-evolution-kafka-connector.md",
+    "Flink/roadmap/flink-evolution-key-management.md",
+    "Flink/roadmap/flink-evolution-lakehouse-connector.md",
+    "Flink/roadmap/flink-evolution-lineage.md",
+    "Flink/roadmap/flink-evolution-llm-integration.md",
+    "Flink/roadmap/flink-evolution-logging.md",
+    "Flink/roadmap/flink-evolution-materialized-view.md",
+    "Flink/roadmap/flink-evolution-mcp-protocol.md",
+    "Flink/roadmap/flink-evolution-metrics.md",
+    "Flink/roadmap/flink-evolution-ml-inference.md",
+    "Flink/roadmap/flink-evolution-model-serving.md",
+    "Flink/roadmap/flink-evolution-mq-connector.md",
+    "Flink/roadmap/flink-evolution-nosql-connector.md",
+    "Flink/roadmap/flink-evolution-obs-integration.md",
+    "Flink/roadmap/flink-evolution-pattern.md",
+    "Flink/roadmap/flink-evolution-process-api.md",
+    "Flink/roadmap/flink-evolution-profiling.md",
+    "Flink/roadmap/flink-evolution-query-api.md",
+    "Flink/roadmap/flink-evolution-scheduling.md",
+    "Flink/roadmap/flink-evolution-schema-registry.md",
+    "Flink/roadmap/flink-evolution-security-policy.md",
+    "Flink/roadmap/flink-evolution-serverless-deploy.md",
+    "Flink/roadmap/flink-evolution-slo.md",
+    "Flink/roadmap/flink-evolution-sql-24.md",
+    "Flink/roadmap/flink-evolution-sql-25.md",
+    "Flink/roadmap/flink-evolution-sql-30.md",
+    "Flink/roadmap/flink-evolution-standalone-deploy.md",
+    "Flink/roadmap/flink-evolution-state-api.md",
+    "Flink/roadmap/flink-evolution-tee.md",
+    "Flink/roadmap/flink-evolution-testing.md",
+    "Flink/roadmap/flink-evolution-tracing.md",
+    "Flink/roadmap/flink-evolution-udf.md",
+    "Flink/roadmap/flink-evolution-upgrade-strategy.md",
+    "Flink/roadmap/flink-evolution-vector-search.md",
+    "Flink/roadmap/flink-evolution-webui.md",
+    "Flink/roadmap/flink-evolution-window-api.md",
+    "Flink/roadmap/flink-evolution-yarn-deploy.md",
+    "GLOSSARY-EN.md",
     "GLOSSARY-QUICK-INDEX.md",
     "GLOSSARY.md",
     "HISTORY.md",
     "IMPACT-REPORT.md",
     "INDUSTRY-STANDARD-GAP-ANALYSIS.md",
+    "KNOWLEDGE-GRAPH-2.0-REPORT.md",
     "KNOWLEDGE-GRAPH-GUIDE.md",
     "KNOWLEDGE-GRAPH/ENTITY-LIST.md",
     "KNOWLEDGE-GRAPH/README.md",
@@ -5940,6 +4264,8 @@
     "Knowledge/98-exercises/quick-ref-security-compliance.md",
     "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
     "Knowledge/98-exercises/quick-ref-temporal-flink.md",
+    "Knowledge/cep-complete-tutorial.md",
+    "Knowledge/production-checklist.md",
     "LEARNING-PATH-GUIDE.md",
     "LEARNING-PATHS-DYNAMIC.md",
     "LEARNING-PATHS/00-INDEX.md",
@@ -5967,12 +4293,18 @@
     "LEARNING-PATHS/test-output.md",
     "LICENSE-HEADER-TEMPLATE.md",
     "LICENSE-NOTICE.md",
+    "LINK-HEALTH-AUTOMATION.md",
+    "LINK-HEALTH-CHECK-COMPLETION-REPORT.md",
     "MAINTENANCE-GUIDE.md",
     "MAINTENANCE-NOTICE.md",
     "NAVIGATION-INDEX.md",
     "OBSERVABILITY-GUIDE.md",
     "P0-2-CROSS-REF-FIX-REPORT-BATCH-B.md",
+    "P0-CROSS-REF-FIX-REPORT.md",
+    "P1-AUTOMATION-REPORT.md",
+    "P1-FLINK-TRACKING-REPORT.md",
     "P2-12-COMMUNITY-FEEDBACK-SYSTEM.md",
+    "P2-KNOWLEDGE-GRAPH-V2-REPORT.md",
     "PARALLEL-TASKS-COMPLETION-REPORT.md",
     "PDF-EXPORT-GUIDE.md",
     "PHASE-1-COMPLETION-REPORT.md",
@@ -5991,7 +4323,9 @@
     "PROJECT-STATUS-FINAL.md",
     "PROJECT-TRACKING.md",
     "PROJECT-VERSION-TRACKING.md",
+    "QUICK-START-EN.md",
     "QUICK-START.md",
+    "README-EN.md",
     "README.md",
     "REFERENCES.md",
     "RELEASE-NOTES-v3.0.md",
@@ -6061,16 +4395,21 @@
     "VERSION-TRACKING-COMPLETION-REPORT.md",
     "VISUALIZATION-PLAN-v1.0.md",
     "docker/USAGE.md",
+    "docs/RAG-ARCHITECTURE.md",
     "docs/ai-features/AI-SEARCH-DESIGN.md",
     "docs/i18n/ARCHITECTURE.md",
     "docs/i18n/README.md",
     "docs/i18n/templates/translation-template.md",
+    "i18n/I18N-AI-FEATURES-COMPLETION-REPORT.md",
     "i18n/README.md",
+    "i18n/en/README.md",
     "i18n/i18n-architecture.md",
     "i18n/translation-guide.md",
     "reports/feedback/README.md",
+    "reports/link-health-report.md",
     "reports/weekly/weekly-report-W14-20260404.md",
     "reports/weekly/weekly-report-latest.md",
+    "scripts/ai-features/README.md",
     "tutorials/00-5-MINUTE-QUICK-START.md",
     "tutorials/01-environment-setup.md",
     "tutorials/01-introduction-script.md",
@@ -6121,21 +4460,30 @@
     "visuals/theorem-dependencies.md"
   ],
   "all_dirs": [
+    ".cache",
+    ".cache/summaries",
+    ".cache/test-index",
+    ".cache/test-qa",
     ".github",
     ".github/ISSUE_TEMPLATE",
     ".github/feedback-templates",
     ".github/workflows",
     ".link-checker-cache",
     ".scripts",
+    ".scripts/.link-checker-cache",
+    ".scripts/.stats",
+    ".scripts/.stats/flink-tracking",
     ".scripts/__pycache__",
     ".scripts/flink-version-tracking",
     ".scripts/link-checker",
+    ".scripts/link-checker/.link-checker-cache",
     ".scripts/link-checker/__pycache__",
     ".scripts/notifications",
     ".scripts/quality-gates",
     ".scripts/stats-updater",
     ".scripts/version-comparison",
     ".stats",
+    ".stats/flink-tracking",
     ".tasks",
     ".tasks/flink-features",
     ".vscode",
@@ -6171,7 +4519,22 @@
     "Flink/14-graph",
     "Flink/14-lakehouse",
     "Flink/15-observability",
+    "Flink/ai-ml",
+    "Flink/ai-ml/evolution",
+    "Flink/api-evolution",
+    "Flink/connectors",
+    "Flink/connectors/evolution",
+    "Flink/deployment",
+    "Flink/deployment/evolution",
+    "Flink/ecosystem",
+    "Flink/flink-24",
+    "Flink/flink-25",
+    "Flink/flink-30",
+    "Flink/observability",
+    "Flink/observability/evolution",
     "Flink/roadmap",
+    "Flink/security",
+    "Flink/security/evolution",
     "KNOWLEDGE-GRAPH",
     "KNOWLEDGE-GRAPH/data",
     "KNOWLEDGE-GRAPH/scripts",
@@ -6214,6 +4577,7 @@
     "docs/ai-features",
     "docs/i18n",
     "docs/i18n/config",
+    "docs/i18n/en",
     "docs/i18n/glossary",
     "docs/i18n/i18n-content",
     "docs/i18n/i18n-content/en",
@@ -6229,10 +4593,14 @@
     "i18n",
     "i18n/config",
     "i18n/en",
+    "i18n/en/docs",
+    "i18n/en/glossary",
+    "i18n/workflows",
     "reports",
     "reports/feedback",
     "reports/weekly",
     "scripts",
+    "scripts/__pycache__",
     "scripts/ai-features",
     "tutorials",
     "tutorials/interactive",

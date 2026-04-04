@@ -598,6 +598,12 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ---
 
+## J
+
+*No entries starting with J*
+
+---
+
 ## K
 
 ### Kafka

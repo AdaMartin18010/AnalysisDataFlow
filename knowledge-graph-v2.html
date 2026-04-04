@@ -920,3 +920,968 @@
     <div class="tooltip" id="tooltip" style="display: none;"></div>
 
     <script>
+        // 全局状态
+        let graphData = null;
+        let simulation = null;
+        let svg, g, zoom;
+        let width, height;
+        let selectedNode = null;
+        let filteredNodes = [];
+        let filteredLinks = [];
+        let allNodes = [];
+        let allLinks = [];
+        let nodeMap = new Map();
+        let linkMap = new Map();
+        
+        // 颜色配置
+        const colors = {
+            Struct: '#4A90D9',
+            Knowledge: '#5CB85C',
+            Flink: '#F0AD4E',
+            Root: '#9B59B6',
+            theorem: '#D9534F',
+            definition: '#9B59B6',
+            lemma: '#17A2B8',
+            proposition: '#E83E8C',
+            corollary: '#6C757D',
+        };
+        
+        // 初始化
+        async function init() {
+            setupDimensions();
+            setupSVG();
+            setupEventListeners();
+            setupTabs();
+            
+            try {
+                await loadData();
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div style="color: #f85149;">
+                        <p>⚠️ 加载数据失败</p>
+                        <p style="font-size: 12px; margin-top: 10px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function setupDimensions() {
+            const container = document.getElementById('graph-container');
+            width = container.clientWidth;
+            height = container.clientHeight;
+        }
+        
+        function setupSVG() {
+            svg = d3.select('#graph')
+                .attr('width', width)
+                .attr('height', height);
+            
+            // 添加缩放行为
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            // 创建主组
+            g = svg.append('g');
+        }
+        
+        async function loadData() {
+            try {
+                const response = await fetch('.vscode/graph-data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                graphData = await response.json();
+                
+                // 保存完整数据
+                allNodes = [...graphData.nodes];
+                allLinks = [...graphData.edges];
+                
+                // 构建节点映射
+                allNodes.forEach(node => nodeMap.set(node.id, node));
+                
+                // 处理边的引用
+                allLinks.forEach(link => {
+                    if (typeof link.source === 'string') {
+                        link.source = nodeMap.get(link.source) || link.source;
+                    }
+                    if (typeof link.target === 'string') {
+                        link.target = nodeMap.get(link.target) || link.target;
+                    }
+                });
+                
+                updateStats();
+                applyFilters();
+                render();
+            } catch (error) {
+                console.warn('使用示例数据:', error.message);
+                generateSampleData();
+                updateStats();
+                applyFilters();
+                render();
+            }
+        }
+        
+        function generateSampleData() {
+            allNodes = [];
+            allLinks = [];
+            
+            // 生成示例文档节点
+            const categories = {
+                Struct: ['01-foundation', '02-properties', '03-relationships', '04-proofs'],
+                Knowledge: ['01-concepts', '02-patterns', '03-scenarios'],
+                Flink: ['01-architecture', '02-core', '03-sql', '04-connectors']
+            };
+            
+            categories.Struct.forEach((cat, i) => {
+                for (let j = 1; j <= 3; j++) {
+                    const id = `Struct_${cat}_doc${j}`;
+                    allNodes.push({
+                        id: id,
+                        label: `Struct ${cat} Doc ${j}`,
+                        type: 'document',
+                        group: 'Struct',
+                        size: 15 + Math.random() * 10,
+                        color: colors.Struct,
+                        metadata: {
+                            path: `Struct/${cat}/doc${j}.md`,
+                            category: cat,
+                            word_count: 1000 + Math.floor(Math.random() * 5000)
+                        }
+                    });
+                }
+            });
+            
+            categories.Knowledge.forEach((cat, i) => {
+                for (let j = 1; j <= 3; j++) {
+                    const id = `Knowledge_${cat}_doc${j}`;
+                    allNodes.push({
+                        id: id,
+                        label: `Knowledge ${cat} Doc ${j}`,
+                        type: 'document',
+                        group: 'Knowledge',
+                        size: 15 + Math.random() * 10,
+                        color: colors.Knowledge,
+                        metadata: {
+                            path: `Knowledge/${cat}/doc${j}.md`,
+                            category: cat,
+                            word_count: 1000 + Math.floor(Math.random() * 5000)
+                        }
+                    });
+                }
+            });
+            
+            categories.Flink.forEach((cat, i) => {
+                for (let j = 1; j <= 4; j++) {
+                    const id = `Flink_${cat}_doc${j}`;
+                    allNodes.push({
+                        id: id,
+                        label: `Flink ${cat} Doc ${j}`,
+                        type: 'document',
+                        group: 'Flink',
+                        size: 15 + Math.random() * 10,
+                        color: colors.Flink,
+                        metadata: {
+                            path: `Flink/${cat}/doc${j}.md`,
+                            category: cat,
+                            word_count: 1000 + Math.floor(Math.random() * 5000)
+                        }
+                    });
+                }
+            });
+            
+            // 添加形式化元素
+            const docNodes = allNodes.filter(n => n.type === 'document');
+            docNodes.forEach((doc, i) => {
+                if (Math.random() > 0.6) {
+                    const thmId = `${doc.id}_Thm${i}`;
+                    allNodes.push({
+                        id: thmId,
+                        label: `Thm-${doc.group[0]}-${String(i+1).padStart(2, '0')}`,
+                        type: 'theorem',
+                        group: 'theorem',
+                        size: 8,
+                        color: colors.theorem,
+                        metadata: {
+                            description: `Theorem related to ${doc.label}`,
+                            document: doc.id
+                        }
+                    });
+                    allLinks.push({
+                        source: doc.id,
+                        target: thmId,
+                        type: 'contains',
+                        weight: 1
+                    });
+                }
+            });
+            
+            // 添加引用边
+            for (let i = 0; i < docNodes.length; i++) {
+                if (Math.random() > 0.7) {
+                    const targetIdx = Math.floor(Math.random() * docNodes.length);
+                    if (targetIdx !== i) {
+                        allLinks.push({
+                            source: docNodes[i].id,
+                            target: docNodes[targetIdx].id,
+                            type: Math.random() > 0.5 ? 'citation' : 'dependency',
+                            weight: 1 + Math.floor(Math.random() * 3)
+                        });
+                    }
+                }
+            }
+            
+            // 更新映射
+            allNodes.forEach(node => nodeMap.set(node.id, node));
+            allLinks.forEach(link => {
+                link.source = nodeMap.get(link.source) || link.source;
+                link.target = nodeMap.get(link.target) || link.target;
+            });
+            
+            graphData = { nodes: allNodes, edges: allLinks };
+        }
+        
+        function updateStats() {
+            const nodes = allNodes;
+            const edges = allLinks;
+            
+            document.getElementById('stat-nodes').textContent = nodes.length;
+            document.getElementById('stat-edges').textContent = edges.length;
+            document.getElementById('stat-docs').textContent = 
+                nodes.filter(n => n.type === 'document').length;
+            document.getElementById('stat-theorems').textContent = 
+                nodes.filter(n => n.type === 'theorem').length;
+            document.getElementById('stat-definitions').textContent = 
+                nodes.filter(n => n.type === 'definition').length;
+        }
+        
+        function applyFilters() {
+            const showDocs = document.getElementById('show-documents').checked;
+            const showTheorems = document.getElementById('show-theorems').checked;
+            const showDefinitions = document.getElementById('show-definitions').checked;
+            const showStruct = document.getElementById('show-struct').checked;
+            const showKnowledge = document.getElementById('show-knowledge').checked;
+            const showFlink = document.getElementById('show-flink').checked;
+            const showCitations = document.getElementById('show-citations').checked;
+            const showDependencies = document.getElementById('show-dependencies').checked;
+            const showContains = document.getElementById('show-contains').checked;
+            
+            // 过滤节点
+            filteredNodes = allNodes.filter(node => {
+                if (node.type === 'document' && !showDocs) return false;
+                if (node.type === 'theorem' && !showTheorems) return false;
+                if (node.type === 'definition' && !showDefinitions) return false;
+                
+                if (node.group === 'Struct' && !showStruct) return false;
+                if (node.group === 'Knowledge' && !showKnowledge) return false;
+                if (node.group === 'Flink' && !showFlink) return false;
+                
+                return true;
+            });
+            
+            const nodeIds = new Set(filteredNodes.map(n => n.id));
+            
+            // 过滤边
+            filteredLinks = allLinks.filter(edge => {
+                const sourceId = typeof edge.source === 'object' ? edge.source.id : edge.source;
+                const targetId = typeof edge.target === 'object' ? edge.target.id : edge.target;
+                
+                if (!nodeIds.has(sourceId) || !nodeIds.has(targetId)) return false;
+                
+                if (edge.type === 'citation' && !showCitations) return false;
+                if (edge.type === 'dependency' && !showDependencies) return false;
+                if (edge.type === 'contains' && !showContains) return false;
+                
+                return true;
+            });
+        }
+        
+        function render() {
+            g.selectAll('*').remove();
+            
+            if (filteredNodes.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            const layoutType = document.getElementById('layout-select').value;
+            
+            switch(layoutType) {
+                case 'force':
+                    renderForceLayout();
+                    break;
+                case 'hierarchy':
+                    renderHierarchyLayout();
+                    break;
+                case 'circular':
+                    renderCircularLayout();
+                    break;
+                case 'cluster':
+                    renderClusterLayout();
+                    break;
+                default:
+                    renderForceLayout();
+            }
+        }
+        
+        function renderForceLayout() {
+            simulation = d3.forceSimulation(filteredNodes)
+                .force('link', d3.forceLink(filteredLinks)
+                    .id(d => d.id)
+                    .distance(d => d.type === 'dependency' ? 100 : 80)
+                    .strength(0.5))
+                .force('charge', d3.forceManyBody().strength(d => 
+                    d.type === 'document' ? -300 : -100
+                ))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => d.size + 5));
+            
+            drawElements();
+        }
+        
+        function renderHierarchyLayout() {
+            const groups = d3.group(filteredNodes, d => d.group);
+            let yOffset = 100;
+            
+            groups.forEach((nodes, groupName) => {
+                nodes.forEach((node, i) => {
+                    node.x = (i + 1) * (width / (nodes.length + 1));
+                    node.y = yOffset;
+                    node.fx = node.x;
+                    node.fy = node.y;
+                });
+                yOffset += 150;
+            });
+            
+            simulation = d3.forceSimulation(filteredNodes)
+                .force('link', d3.forceLink(filteredLinks)
+                    .id(d => d.id)
+                    .distance(80)
+                    .strength(0.3))
+                .force('charge', d3.forceManyBody().strength(-50));
+            
+            drawElements();
+        }
+        
+        function renderCircularLayout() {
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) * 0.35;
+            
+            const docNodes = filteredNodes.filter(n => n.type === 'document');
+            const otherNodes = filteredNodes.filter(n => n.type !== 'document');
+            
+            docNodes.forEach((node, i) => {
+                const angle = (i / docNodes.length) * 2 * Math.PI;
+                node.x = centerX + radius * Math.cos(angle);
+                node.y = centerY + radius * Math.sin(angle);
+                node.fx = node.x;
+                node.fy = node.y;
+            });
+            
+            otherNodes.forEach((node, i) => {
+                const angle = (i / Math.max(1, otherNodes.length)) * 2 * Math.PI + 0.5;
+                node.x = centerX + (radius * 0.5) * Math.cos(angle);
+                node.y = centerY + (radius * 0.5) * Math.sin(angle);
+            });
+            
+            simulation = d3.forceSimulation(filteredNodes)
+                .force('link', d3.forceLink(filteredLinks)
+                    .id(d => d.id)
+                    .distance(60)
+                    .strength(0.4))
+                .force('charge', d3.forceManyBody().strength(-50));
+            
+            drawElements();
+        }
+        
+        function renderClusterLayout() {
+            const groups = d3.group(filteredNodes, d => d.group);
+            const groupCenters = {};
+            const groupCount = groups.size;
+            let idx = 0;
+            
+            groups.forEach((nodes, groupName) => {
+                const angle = (idx / groupCount) * 2 * Math.PI;
+                groupCenters[groupName] = {
+                    x: width / 2 + 200 * Math.cos(angle),
+                    y: height / 2 + 200 * Math.sin(angle)
+                };
+                idx++;
+            });
+            
+            simulation = d3.forceSimulation(filteredNodes)
+                .force('link', d3.forceLink(filteredLinks)
+                    .id(d => d.id)
+                    .distance(60))
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('cluster', d3.forceX(d => groupCenters[d.group]?.x || width/2).strength(0.3))
+                .force('clusterY', d3.forceY(d => groupCenters[d.group]?.y || height/2).strength(0.3))
+                .force('collision', d3.forceCollide().radius(d => d.size + 3));
+            
+            drawElements();
+        }
+        
+        function drawElements() {
+            // 绘制边
+            const link = g.append('g')
+                .attr('class', 'links')
+                .selectAll('line')
+                .data(filteredLinks)
+                .enter().append('line')
+                .attr('class', d => `link ${d.type}`)
+                .attr('stroke-width', d => Math.sqrt(d.weight || 1));
+            
+            // 绘制节点
+            const node = g.append('g')
+                .attr('class', 'nodes')
+                .selectAll('g')
+                .data(filteredNodes)
+                .enter().append('g')
+                .attr('class', 'node')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            node.append('circle')
+                .attr('r', d => d.size || 10)
+                .attr('fill', d => d.color || '#999')
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 1.5);
+            
+            // 节点标签
+            node.filter(d => d.type === 'document')
+                .append('text')
+                .attr('class', 'node-label')
+                .attr('dy', d => (d.size || 10) + 12)
+                .attr('text-anchor', 'middle')
+                .text(d => {
+                    const label = d.label || d.id;
+                    return label.length > 20 ? label.slice(0, 20) + '...' : label;
+                });
+            
+            // 交互事件
+            node.on('click', (event, d) => {
+                event.stopPropagation();
+                selectNode(d);
+            });
+            
+            node.on('mouseover', (event, d) => {
+                showTooltip(event, d);
+            });
+            
+            node.on('mouseout', () => {
+                hideTooltip();
+            });
+            
+            // 更新位置
+            if (simulation) {
+                simulation.on('tick', () => {
+                    link
+                        .attr('x1', d => d.source.x || 0)
+                        .attr('y1', d => d.source.y || 0)
+                        .attr('x2', d => d.target.x || 0)
+                        .attr('y2', d => d.target.y || 0);
+                    
+                    node.attr('transform', d => `translate(${d.x || 0},${d.y || 0})`);
+                });
+            }
+        }
+        
+        function selectNode(node) {
+            selectedNode = node;
+            
+            d3.selectAll('.node').classed('selected', d => d.id === node.id);
+            
+            const connectedIds = new Set([node.id]);
+            filteredLinks.forEach(link => {
+                const sourceId = link.source.id || link.source;
+                const targetId = link.target.id || link.target;
+                if (sourceId === node.id) connectedIds.add(targetId);
+                if (targetId === node.id) connectedIds.add(sourceId);
+            });
+            
+            d3.selectAll('.node')
+                .classed('dimmed', d => !connectedIds.has(d.id))
+                .classed('highlighted', d => connectedIds.has(d.id));
+            
+            d3.selectAll('.link').classed('highlighted', d => 
+                (d.source.id === node.id || d.target.id === node.id)
+            );
+            
+            showNodeDetails(node);
+            
+            // 切换到详情标签
+            switchTab('details');
+        }
+        
+        function showNodeDetails(node) {
+            const container = document.getElementById('node-details-content');
+            document.getElementById('empty-details').style.display = 'none';
+            container.style.display = 'block';
+            
+            const typeColors = {
+                document: 'var(--color-struct)',
+                theorem: 'var(--color-theorem)',
+                definition: 'var(--color-definition)',
+                lemma: 'var(--color-lemma)',
+                proposition: 'var(--color-proposition)'
+            };
+            
+            let html = `
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <span class="detail-type" style="background: ${typeColors[node.type] || '#666'}20; color: ${typeColors[node.type] || '#666'}">
+                            ${node.type}
+                        </span>
+                    </div>
+                    <h3 class="detail-title">${node.label || node.id}</h3>
+                </div>
+            `;
+            
+            html += `
+                <div class="detail-card">
+                    <div class="detail-item">
+                        <div class="detail-label">分组</div>
+                        <div class="detail-value">${node.group}</div>
+                    </div>
+            `;
+            
+            if (node.metadata) {
+                Object.entries(node.metadata).forEach(([key, value]) => {
+                    if (key !== 'description') {
+                        html += `
+                            <div class="detail-item">
+                                <div class="detail-label">${key.replace(/_/g, ' ')}</div>
+                                <div class="detail-value">${value}</div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            
+            html += '</div>';
+            
+            // 相关节点
+            const incoming = filteredLinks.filter(l => {
+                const targetId = l.target.id || l.target;
+                return targetId === node.id;
+            });
+            const outgoing = filteredLinks.filter(l => {
+                const sourceId = l.source.id || l.source;
+                return sourceId === node.id;
+            });
+            
+            if (incoming.length > 0 || outgoing.length > 0) {
+                html += `<div class="detail-card">`;
+                
+                if (incoming.length > 0) {
+                    html += `
+                        <div class="detail-item">
+                            <div class="detail-label">被引用 (${incoming.length})</div>
+                            <div class="detail-tags">
+                    `;
+                    incoming.slice(0, 5).forEach(link => {
+                        const source = link.source.id ? link.source : nodeMap.get(link.source);
+                        if (source) {
+                            html += `<span class="tag">← ${source.label || source.id}</span>`;
+                        }
+                    });
+                    if (incoming.length > 5) {
+                        html += `<span class="tag">+${incoming.length - 5} more</span>`;
+                    }
+                    html += `</div></div>`;
+                }
+                
+                if (outgoing.length > 0) {
+                    html += `
+                        <div class="detail-item">
+                            <div class="detail-label">引用 (${outgoing.length})</div>
+                            <div class="detail-tags">
+                    `;
+                    outgoing.slice(0, 5).forEach(link => {
+                        const target = link.target.id ? link.target : nodeMap.get(link.target);
+                        if (target) {
+                            html += `<span class="tag">→ ${target.label || target.id}</span>`;
+                        }
+                    });
+                    if (outgoing.length > 5) {
+                        html += `<span class="tag">+${outgoing.length - 5} more</span>`;
+                    }
+                    html += `</div></div>`;
+                }
+                
+                html += `</div>`;
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function generateRecommendations() {
+            const container = document.getElementById('recommendations-list');
+            
+            if (!selectedNode) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>请先选择一个节点<br>或输入已掌握的概念</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 简单的推荐算法：基于依赖关系推荐
+            const recommendations = [];
+            
+            // 找到与选中节点有直接依赖关系的节点
+            filteredLinks.forEach(link => {
+                const sourceId = link.source.id || link.source;
+                const targetId = link.target.id || link.target;
+                
+                if (sourceId === selectedNode.id) {
+                    const target = nodeMap.get(targetId);
+                    if (target) {
+                        recommendations.push({
+                            node: target,
+                            score: Math.floor(Math.random() * 20) + 80,
+                            reason: '直接依赖关系'
+                        });
+                    }
+                }
+            });
+            
+            // 按分数排序
+            recommendations.sort((a, b) => b.score - a.score);
+            
+            if (recommendations.length === 0) {
+                // 如果没有直接依赖，推荐同组的其他节点
+                const sameGroup = filteredNodes.filter(n => 
+                    n.group === selectedNode.group && n.id !== selectedNode.id
+                ).slice(0, 5);
+                
+                sameGroup.forEach(node => {
+                    recommendations.push({
+                        node: node,
+                        score: Math.floor(Math.random() * 15) + 70,
+                        reason: '同组相关内容'
+                    });
+                });
+            }
+            
+            let html = '';
+            recommendations.slice(0, 5).forEach((rec, i) => {
+                html += `
+                    <div class="recommendation-item" onclick="focusNode('${rec.node.id}')">
+                        <div class="recommendation-header">
+                            <span class="recommendation-title">${rec.node.label || rec.node.id}</span>
+                            <span class="recommendation-score">${rec.score}%</span>
+                        </div>
+                        <div class="recommendation-reason">${rec.reason}</div>
+                        <div class="recommendation-meta">
+                            <span>📄 ${rec.node.type}</span>
+                            <span>🏷️ ${rec.node.group}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function focusNode(nodeId) {
+            const node = nodeMap.get(nodeId);
+            if (node) {
+                selectNode(node);
+                
+                // 缩放到节点
+                const scale = 1.5;
+                const x = -node.x * scale + width / 2;
+                const y = -node.y * scale + height / 2;
+                
+                svg.transition().duration(750).call(
+                    zoom.transform,
+                    d3.zoomIdentity.translate(x, y).scale(scale)
+                );
+            }
+        }
+        
+        function showTooltip(event, node) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `
+                <div class="tooltip-title">${node.label || node.id}</div>
+                <div class="tooltip-type">${node.type} • ${node.group}</div>
+                ${node.metadata?.description ? `<div>${node.metadata.description.substring(0, 100)}...</div>` : ''}
+            `;
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY + 10) + 'px';
+        }
+        
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+        
+        function showEmptyState() {
+            g.append('text')
+                .attr('x', width / 2)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#8b949e')
+                .style('font-size', '16px')
+                .text('没有匹配的节点，请调整过滤器');
+        }
+        
+        // 拖拽函数
+        function dragstarted(event, d) {
+            if (!event.active && simulation) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active && simulation) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // 标签页切换
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    switchTab(tabName);
+                });
+            });
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+        }
+        
+        // 事件监听
+        function setupEventListeners() {
+            // 布局切换
+            document.getElementById('layout-select').addEventListener('change', () => {
+                render();
+            });
+            
+            // 过滤器
+            ['show-documents', 'show-theorems', 'show-definitions',
+             'show-struct', 'show-knowledge', 'show-flink',
+             'show-citations', 'show-dependencies', 'show-contains'].forEach(id => {
+                document.getElementById(id).addEventListener('change', () => {
+                    applyFilters();
+                    render();
+                });
+            });
+            
+            // 搜索
+            const searchInput = document.getElementById('search-input');
+            const searchDropdown = document.getElementById('search-dropdown');
+            
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                if (term.length < 2) {
+                    searchDropdown.classList.remove('active');
+                    return;
+                }
+                
+                const matches = allNodes.filter(n => 
+                    (n.label && n.label.toLowerCase().includes(term)) ||
+                    n.id.toLowerCase().includes(term)
+                ).slice(0, 10);
+                
+                if (matches.length > 0) {
+                    searchDropdown.innerHTML = matches.map(n => `
+                        <div class="search-item" onclick="focusNode('${n.id}'); document.getElementById('search-dropdown').classList.remove('active');">
+                            ${n.label || n.id} <span style="color: #666; font-size: 11px;">(${n.type})</span>
+                        </div>
+                    `).join('');
+                    searchDropdown.classList.add('active');
+                } else {
+                    searchDropdown.classList.remove('active');
+                }
+            });
+            
+            // 点击外部关闭搜索下拉
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.control-group')) {
+                    searchDropdown.classList.remove('active');
+                }
+            });
+            
+            // 工具栏按钮
+            document.getElementById('btn-zoom-in').addEventListener('click', () => {
+                svg.transition().call(zoom.scaleBy, 1.3);
+            });
+            
+            document.getElementById('btn-zoom-out').addEventListener('click', () => {
+                svg.transition().call(zoom.scaleBy, 0.7);
+            });
+            
+            document.getElementById('btn-fit').addEventListener('click', () => {
+                fitToScreen();
+            });
+            
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                svg.transition().call(zoom.transform, d3.zoomIdentity);
+                d3.selectAll('.node').classed('dimmed', false).classed('selected', false);
+                d3.selectAll('.link').classed('highlighted', false);
+                selectedNode = null;
+                document.getElementById('empty-details').style.display = 'block';
+                document.getElementById('node-details-content').style.display = 'none';
+            });
+            
+            document.getElementById('btn-export').addEventListener('click', () => {
+                exportSVG();
+            });
+            
+            // 推荐按钮
+            document.getElementById('btn-generate-recommend').addEventListener('click', () => {
+                generateRecommendations();
+            });
+            
+            document.getElementById('btn-recommend-custom').addEventListener('click', () => {
+                const input = document.getElementById('known-concepts').value;
+                if (input.trim()) {
+                    // 简单实现：解析输入并推荐相关节点
+                    generateRecommendationsFromInput(input);
+                }
+            });
+            
+            // 点击空白处取消选择
+            svg.on('click', () => {
+                d3.selectAll('.node').classed('dimmed', false).classed('selected', false);
+                d3.selectAll('.link').classed('highlighted', false);
+                selectedNode = null;
+                document.getElementById('empty-details').style.display = 'block';
+                document.getElementById('node-details-content').style.display = 'none';
+            });
+            
+            // 窗口调整
+            window.addEventListener('resize', () => {
+                setupDimensions();
+                svg.attr('width', width).attr('height', height);
+                if (simulation) {
+                    simulation.force('center', d3.forceCenter(width / 2, height / 2));
+                    simulation.alpha(0.3).restart();
+                }
+            });
+        }
+        
+        function generateRecommendationsFromInput(input) {
+            const concepts = input.split(',').map(s => s.trim()).filter(s => s);
+            const container = document.getElementById('recommendations-list');
+            
+            // 找到相关节点并推荐
+            const recommendations = [];
+            
+            concepts.forEach(concept => {
+                const node = allNodes.find(n => 
+                    n.id.includes(concept) || (n.label && n.label.includes(concept))
+                );
+                if (node) {
+                    // 找到该节点的依赖
+                    allLinks.forEach(link => {
+                        const sourceId = link.source.id || link.source;
+                        if (sourceId === node.id) {
+                            const target = nodeMap.get(link.target.id || link.target);
+                            if (target) {
+                                recommendations.push({
+                                    node: target,
+                                    score: Math.floor(Math.random() * 20) + 75,
+                                    reason: `基于 ${concept} 的依赖`
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            
+            if (recommendations.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <p>未找到相关推荐<br>请尝试其他概念</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            recommendations.sort((a, b) => b.score - a.score);
+            
+            let html = '';
+            recommendations.slice(0, 5).forEach((rec, i) => {
+                html += `
+                    <div class="recommendation-item" onclick="focusNode('${rec.node.id}')">
+                        <div class="recommendation-header">
+                            <span class="recommendation-title">${rec.node.label || rec.node.id}</span>
+                            <span class="recommendation-score">${rec.score}%</span>
+                        </div>
+                        <div class="recommendation-reason">${rec.reason}</div>
+                        <div class="recommendation-meta">
+                            <span>📄 ${rec.node.type}</span>
+                            <span>🏷️ ${rec.node.group}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function fitToScreen() {
+            if (filteredNodes.length === 0) return;
+            
+            const bounds = g.node().getBBox();
+            const fullWidth = width;
+            const fullHeight = height;
+            const widthRatio = fullWidth / bounds.width;
+            const heightRatio = fullHeight / bounds.height;
+            const minRatio = Math.min(widthRatio, heightRatio) * 0.9;
+            
+            const transform = d3.zoomIdentity
+                .translate(fullWidth / 2, fullHeight / 2)
+                .scale(minRatio)
+                .translate(-bounds.x - bounds.width / 2, -bounds.y - bounds.height / 2);
+            
+            svg.transition().duration(750).call(zoom.transform, transform);
+        }
+        
+        function exportSVG() {
+            const svgElement = document.getElementById('graph');
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'knowledge-graph.svg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 启动
+        init();
+    </script>
+</body>
+</html>

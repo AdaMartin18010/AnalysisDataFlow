@@ -1,0 +1,855 @@
+# =============================================================================
+# AnalysisDataFlow PR 质量门禁工作流
+# =============================================================================
+# 描述: PR合并前的强制质量检查，确保文档质量
+# 触发条件: PR到main分支时强制执行
+# =============================================================================
+
+name: PR Quality Gate
+
+on:
+  # PR到main分支时强制执行
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - '.scripts/**'
+      - '.github/workflows/**'
+  
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      fail_on_warnings:
+        description: '警告也导致失败'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+env:
+  PYTHON_VERSION: '3.11'
+  FAIL_ON_WARNINGS: ${{ github.event.inputs.fail_on_warnings || 'false' }}
+
+# 权限设置
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  # ===========================================================================
+  # Job 1: 交叉引用检查 (P1-10)
+  # ===========================================================================
+  cross-reference-check:
+    name: 交叉引用检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check cross references
+        id: cross_ref_check
+        run: |
+          echo "::group::执行交叉引用检查"
+          
+          cat > pr_cross_ref_check.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          PR交叉引用检查 - 确保所有内部链接有效
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_internal_links(content, file_path):
+              """提取内部链接 [text](path)"""
+              links = []
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  link_path = match.group(2)
+                  # 忽略外部链接和锚点
+                  if link_path.startswith('http://') or link_path.startswith('https://'):
+                      continue
+                  if link_path.startswith('#'):
+                      continue
+                  links.append((text, link_path, match.start()))
+              return links
+          
+          def validate_link(link_path, source_file, all_files_set):
+              """验证单个链接是否有效"""
+              source_dir = source_file.parent
+              
+              # 解析路径
+              if link_path.startswith('/'):
+                  target = Path('.') / link_path.lstrip('/')
+              else:
+                  target = source_dir / link_path
+              
+              target = target.resolve()
+              
+              # 检查文件是否存在
+              if not target.exists():
+                  # 尝试添加.md后缀
+                  target_with_md = Path(str(target) + '.md')
+                  if target_with_md.exists():
+                      return True, None
+                  
+                  # 尝试作为目录/index.md
+                  target_index = target / 'index.md'
+                  if target_index.exists():
+                      return True, None
+                  
+                  return False, f"文件不存在: {target.relative_to(Path('.').resolve())}"
+              
+              return True, None
+          
+          def get_changed_files():
+              """获取PR中变更的文件列表"""
+              import os
+              changed = os.environ.get('CHANGED_FILES', '')
+              if changed:
+                  return [f.strip() for f in changed.split('\n') if f.strip().endswith('.md')]
+              return []
+          
+          def main():
+              print("=" * 70)
+              print("PR 交叉引用质量检查")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              all_files_set = set(str(f.resolve()) for f in all_files)
+              print(f"\n📁 项目中共有 {len(all_files)} 个Markdown文件")
+              
+              # 检查所有文件的交叉引用
+              broken_links = []
+              total_links = 0
+              
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      print(f"⚠️  无法读取 {file_path}: {e}")
+                      continue
+                  
+                  links = extract_internal_links(content, file_path)
+                  total_links += len(links)
+                  
+                  for text, link_path, _ in links:
+                      is_valid, error = validate_link(link_path, file_path, all_files_set)
+                      if not is_valid:
+                          broken_links.append({
+                              'source': str(file_path),
+                              'target': link_path,
+                              'text': text,
+                              'error': error
+                          })
+              
+              print(f"\n📊 检查结果:")
+              print(f"   总链接数: {total_links}")
+              print(f"   无效链接: {len(broken_links)}")
+              
+              if broken_links:
+                  print(f"\n❌ 发现 {len(broken_links)} 个无效交叉引用:")
+                  print("-" * 70)
+                  
+                  by_source = defaultdict(list)
+                  for link in broken_links:
+                      by_source[link['source']].append(link)
+                  
+                  for source, links in sorted(by_source.items()):
+                      print(f"\n  📄 {source}")
+                      for link in links:
+                          print(f"    - [{link['text']}]({link['target']})")
+                          print(f"      错误: {link['error']}")
+                  
+                  print("-" * 70)
+                  print("\n💡 修复建议:")
+                  print("   1. 检查链接路径是否正确")
+                  print("   2. 确认目标文件是否存在")
+                  print("   3. 使用相对路径或绝对路径（以/开头）")
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有交叉引用有效!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python pr_cross_ref_check.py
+          echo "::endgroup::"
+      
+      - name: Comment PR on failure
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **交叉引用检查失败**\n\n请修复无效的文档链接后再提交。详细错误请查看 Actions 日志。'
+            })
+
+  # ===========================================================================
+  # Job 2: 链接健康检查 (P1-10)
+  # ===========================================================================
+  link-health-check:
+    name: 链接健康检查
+    runs-on: ubuntu-latest
+    needs: cross-reference-check
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check link health
+        run: |
+          echo "::group::执行链接健康检查"
+          
+          cat > pr_link_health.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          PR链接健康检查 - 检查所有内部链接的有效性
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          def find_all_markdown_files():
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_all_links(content):
+              """提取所有链接"""
+              links = []
+              pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+              for match in re.finditer(pattern, content):
+                  text = match.group(1)
+                  url = match.group(2)
+                  links.append((text, url))
+              return links
+          
+          def classify_link(url):
+              if url.startswith('http://') or url.startswith('https://'):
+                  return 'external'
+              if url.startswith('#'):
+                  return 'anchor'
+              if url.startswith('mailto:'):
+                  return 'email'
+              return 'internal'
+          
+          def validate_internal_link(url, source_file):
+              source_dir = source_file.parent
+              url_without_anchor = url.split('#')[0]
+              
+              if not url_without_anchor:
+                  return True, None
+              
+              if url_without_anchor.startswith('/'):
+                  target = Path('.') / url_without_anchor.lstrip('/')
+              else:
+                  target = source_dir / url_without_anchor
+              
+              target = target.resolve()
+              
+              if not target.exists():
+                  target_with_md = Path(str(target) + '.md')
+                  if target_with_md.exists():
+                      return True, None
+                  
+                  target_index = target / 'index.md'
+                  if target_index.exists():
+                      return True, None
+                  
+                  return False, f"文件不存在"
+              
+              return True, None
+          
+          def main():
+              print("=" * 70)
+              print("PR 链接健康检查")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n📁 扫描 {len(all_files)} 个Markdown文件...")
+              
+              stats = defaultdict(int)
+              broken_links = []
+              
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      continue
+                  
+                  links = extract_all_links(content)
+                  
+                  for text, url in links:
+                      link_type = classify_link(url)
+                      stats[link_type] += 1
+                      
+                      if link_type == 'internal':
+                          is_valid, error = validate_internal_link(url, file_path)
+                          if not is_valid:
+                              broken_links.append({
+                                  'source': str(file_path),
+                                  'text': text,
+                                  'url': url,
+                                  'error': error
+                              })
+              
+              print(f"\n📊 链接统计:")
+              print(f"   内部链接: {stats['internal']}")
+              print(f"   外部链接: {stats['external']}")
+              print(f"   锚点链接: {stats['anchor']}")
+              
+              if broken_links:
+                  print(f"\n❌ 发现 {len(broken_links)} 个无效内部链接")
+                  
+                  by_source = defaultdict(list)
+                  for link in broken_links:
+                      by_source[link['source']].append(link)
+                  
+                  print("\n错误详情:")
+                  print("-" * 70)
+                  for source, links in sorted(by_source.items())[:10]:  # 只显示前10个文件
+                      print(f"\n📄 {source}")
+                      for link in links[:5]:  # 每个文件最多显示5个
+                          print(f"  - [{link['text']}]({link['url']})")
+                  
+                  if len(by_source) > 10:
+                      print(f"\n... 还有 {len(by_source) - 10} 个文件")
+                  
+                  print("-" * 70)
+                  sys.exit(1)
+              else:
+                  print("\n✅ 所有内部链接健康!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python pr_link_health.py
+          echo "::endgroup::"
+
+  # ===========================================================================
+  # Job 3: 前瞻性内容检测 (P1-8)
+  # ===========================================================================
+  prospective-content-check:
+    name: 前瞻性内容检测
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check prospective content
+        id: prospective_check
+        run: |
+          echo "::group::执行前瞻性内容检测"
+          
+          cat > pr_prospective_check.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          PR前瞻性内容检测 - 检查文档中的前瞻/预览标记
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          # 前瞻性内容标记
+          PROSPECTIVE_MARKERS = [
+              '前瞻', '预览', '即将发布', '计划中', '路线图',
+              '未来版本', '实验性', 'beta', 'alpha', 'preview',
+              'incubating', 'upcoming', 'planned', 'roadmap',
+          ]
+          
+          def find_all_markdown_files():
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def detect_prospective_content(file_path):
+              """检测文件中的前瞻性内容"""
+              findings = []
+              
+              try:
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                      lines = content.split('\n')
+              except Exception as e:
+                  return findings
+              
+              for i, line in enumerate(lines, 1):
+                  line_lower = line.lower()
+                  for marker in PROSPECTIVE_MARKERS:
+                      if marker.lower() in line_lower:
+                          # 排除代码块中的内容
+                          if line.strip().startswith('```'):
+                              continue
+                          findings.append({
+                              'line': i,
+                              'content': line.strip(),
+                              'marker': marker
+                          })
+                          break
+              
+              return findings
+          
+          def main():
+              print("=" * 70)
+              print("PR 前瞻性内容检测")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n📁 扫描 {len(all_files)} 个Markdown文件...")
+              
+              all_findings = []
+              high_priority_files = []
+              
+              for file_path in all_files:
+                  findings = detect_prospective_content(file_path)
+                  if findings:
+                      all_findings.append({
+                          'file': str(file_path),
+                          'findings': findings
+                      })
+                      # 检查是否有高优先级的前瞻内容（如标题中的前瞻标记）
+                      for f in findings:
+                          if f['content'].startswith('#'):
+                              high_priority_files.append(str(file_path))
+              
+              print(f"\n📊 检测结果:")
+              print(f"   包含前瞻内容的文件: {len(all_findings)}")
+              print(f"   高优先级标记: {len(high_priority_files)}")
+              
+              if all_findings:
+                  print(f"\n⚠️  发现前瞻性内容标记:")
+                  print("-" * 70)
+                  
+                  for item in all_findings[:20]:  # 只显示前20个文件
+                      print(f"\n📄 {item['file']}")
+                      for finding in item['findings'][:3]:  # 每个文件最多显示3个
+                          print(f"   第{finding['line']}行: [{finding['marker']}] {finding['content'][:80]}...")
+                  
+                  if len(all_findings) > 20:
+                      print(f"\n... 还有 {len(all_findings) - 20} 个文件")
+                  
+                  print("-" * 70)
+                  print("\n💡 提示:")
+                  print("   前瞻性内容标记是正常的文档特性")
+                  print("   此检查仅用于提醒，不会阻塞PR合并")
+                  
+                  # 输出到GitHub Actions摘要
+                  with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as f:
+                      f.write(f"\n### ⚠️ 前瞻性内容检测\n")
+                      f.write(f"发现 {len(all_findings)} 个文件包含前瞻内容标记\n")
+              
+              # 前瞻性内容检查不会导致失败，仅作提醒
+              print("\n✅ 前瞻性内容检测完成（仅作提醒，不阻塞PR）")
+              sys.exit(0)
+          
+          if __name__ == '__main__':
+              import os
+              main()
+          SCRIPT
+          
+          python pr_prospective_check.py
+          echo "::endgroup::"
+
+  # ===========================================================================
+  # Job 4: 虚构API参数检查 (P1-9)
+  # ===========================================================================
+  fictional-api-check:
+    name: 虚构API参数检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check fictional API params
+        run: |
+          echo "::group::执行虚构API参数检查"
+          
+          cat > pr_fictional_check.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          PR虚构API参数检查 - 检测可能的占位符和虚构参数
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          # 可疑模式
+          SUSPICIOUS_PATTERNS = {
+              'TODO': re.compile(r'TODO|FIXME|XXX', re.IGNORECASE),
+              'PLACEHOLDER': re.compile(r'placeholder|your-\w+|my-\w+|example-\w+', re.IGNORECASE),
+              'INCOMPLETE': re.compile(r'\.\.+|<.*>|\$\{\w+\}'),
+              'TYPOS': re.compile(r'paralell|chekpoint|wartermark|checkpiont', re.IGNORECASE),
+          }
+          
+          def find_all_markdown_files():
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def check_suspicious_params(file_path):
+              """检查可疑的API参数"""
+              findings = []
+              
+              try:
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                      lines = content.split('\n')
+              except Exception as e:
+                  return findings
+              
+              in_code_block = False
+              
+              for i, line in enumerate(lines, 1):
+                  # 检测代码块
+                  if line.strip().startswith('```'):
+                      in_code_block = not in_code_block
+                      continue
+                  
+                  # 只检查代码块和表格中的内容
+                  if not in_code_block and not line.strip().startswith('|'):
+                      continue
+                  
+                  for pattern_name, pattern in SUSPICIOUS_PATTERNS.items():
+                      if pattern.search(line):
+                          findings.append({
+                              'line': i,
+                              'content': line.strip(),
+                              'pattern': pattern_name
+                          })
+                          break
+              
+              return findings
+          
+          def main():
+              print("=" * 70)
+              print("PR 虚构API参数检查")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n📁 扫描 {len(all_files)} 个Markdown文件...")
+              
+              all_findings = []
+              critical_count = 0
+              
+              for file_path in all_files:
+                  findings = check_suspicious_params(file_path)
+                  if findings:
+                      all_findings.append({
+                          'file': str(file_path),
+                          'findings': findings
+                      })
+                      # 统计关键问题
+                      for f in findings:
+                          if f['pattern'] in ['TODO', 'PLACEHOLDER']:
+                              critical_count += 1
+              
+              print(f"\n📊 检查结果:")
+              print(f"   可疑参数出现: {len(all_findings)} 个文件")
+              print(f"   关键问题数: {critical_count}")
+              
+              if all_findings:
+                  print(f"\n⚠️  发现可疑API参数:")
+                  print("-" * 70)
+                  
+                  for item in all_findings[:15]:
+                      print(f"\n📄 {item['file']}")
+                      for finding in item['findings'][:3]:
+                          marker = "❌" if finding['pattern'] in ['TODO', 'PLACEHOLDER'] else "⚠️"
+                          print(f"   {marker} 第{finding['line']}行 [{finding['pattern']}]: {finding['content'][:80]}")
+                  
+                  if len(all_findings) > 15:
+                      print(f"\n... 还有 {len(all_findings) - 15} 个文件")
+                  
+                  print("-" * 70)
+                  
+                  if critical_count > 0:
+                      print("\n❌ 发现关键问题（TODO/FIXME/占位符）")
+                      print("请修复后再提交PR")
+                      sys.exit(1)
+              
+              print("\n✅ API参数检查通过!")
+              sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python pr_fictional_check.py
+          echo "::endgroup::"
+      
+      - name: Comment PR on failure
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **虚构API参数检查失败**\n\n发现 TODO/FIXME/占位符等未完成标记，请修复后再提交。'
+            })
+
+  # ===========================================================================
+  # Job 5: 定理编号检查 (P1-10)
+  # ===========================================================================
+  theorem-number-check:
+    name: 定理编号检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check theorem numbers
+        run: |
+          echo "::group::执行定理编号检查"
+          
+          cat > pr_theorem_check.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          PR定理编号检查 - 验证定理编号的唯一性和格式
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          # 定理编号模式
+          THEOREM_PATTERN = re.compile(r'(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2,3})')
+          
+          def find_all_markdown_files():
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_theorem_ids(content):
+              """提取定理编号"""
+              return THEOREM_PATTERN.findall(content)
+          
+          def main():
+              print("=" * 70)
+              print("PR 定理编号检查")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n📁 扫描 {len(all_files)} 个Markdown文件...")
+              
+              all_theorems = defaultdict(list)
+              format_errors = []
+              
+              for file_path in all_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except Exception as e:
+                      continue
+                  
+                  theorem_ids = extract_theorem_ids(content)
+                  
+                  for theorem_type, stage, doc_num, seq_num in theorem_ids:
+                      theorem_id = f"{theorem_type}-{stage}-{doc_num}-{seq_num}"
+                      all_theorems[theorem_id].append(str(file_path))
+              
+              # 检查重复
+              duplicates = {k: v for k, v in all_theorems.items() if len(v) > 1}
+              
+              print(f"\n📊 检查结果:")
+              print(f"   唯一定理编号: {len(all_theorems)}")
+              print(f"   重复编号: {len(duplicates)}")
+              
+              if duplicates:
+                  print(f"\n❌ 发现重复的定理编号:")
+                  print("-" * 70)
+                  
+                  for theorem_id, files in sorted(duplicates.items()):
+                      print(f"\n  {theorem_id} 出现在 {len(files)} 个文件中:")
+                      for f in files:
+                          print(f"    - {f}")
+                  
+                  print("-" * 70)
+                  print("\n💡 修复建议:")
+                  print("   1. 确保每个定理编号全局唯一")
+                  print("   2. 参考 THEOREM-REGISTRY.md 分配新编号")
+                  sys.exit(1)
+              
+              # 打印统计
+              types = defaultdict(int)
+              stages = defaultdict(int)
+              for theorem_id in all_theorems:
+                  parts = theorem_id.split('-')
+                  if len(parts) >= 2:
+                      types[parts[0]] += 1
+                      if len(parts) >= 3:
+                          stages[parts[1]] += 1
+              
+              print("\n📊 定理类型统计:")
+              for t, count in sorted(types.items()):
+                  print(f"   - {t}: {count}")
+              
+              print("\n📊 阶段分布:")
+              stage_names = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+              for s, count in sorted(stages.items()):
+                  print(f"   - {stage_names.get(s, s)}: {count}")
+              
+              print("\n✅ 所有定理编号唯一，检查通过!")
+              sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python pr_theorem_check.py
+          echo "::endgroup::"
+      
+      - name: Comment PR on failure
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **定理编号检查失败**\n\n发现重复的定理编号，请确保所有定理编号全局唯一。'
+            })
+
+  # ===========================================================================
+  # Job 6: 质量门禁总结
+  # ===========================================================================
+  quality-gate-summary:
+    name: 质量门禁总结
+    runs-on: ubuntu-latest
+    needs: [cross-reference-check, link-health-check, prospective-content-check, fictional-api-check, theorem-number-check]
+    if: always()
+    
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 🚪 PR 质量门禁检查结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 检查项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          
+          # 交叉引用检查
+          if [ "${{ needs.cross-reference-check.result }}" == "success" ]; then
+            echo "| 交叉引用检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 交叉引用检查 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 链接健康检查
+          if [ "${{ needs.link-health-check.result }}" == "success" ]; then
+            echo "| 链接健康检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 链接健康检查 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 前瞻性内容检测（仅提醒，不阻塞）
+          if [ "${{ needs.prospective-content-check.result }}" == "success" ]; then
+            echo "| 前瞻性内容检测 | ⚠️ 提醒 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 前瞻性内容检测 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 虚构API参数检查
+          if [ "${{ needs.fictional-api-check.result }}" == "success" ]; then
+            echo "| 虚构API参数检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 虚构API参数检查 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 定理编号检查
+          if [ "${{ needs.theorem-number-check.result }}" == "success" ]; then
+            echo "| 定理编号检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 定理编号检查 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "所有检查通过后，PR才能合并到main分支" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Check overall result
+        run: |
+          # 检查所有必需检查的结果
+          CROSS_REF="${{ needs.cross-reference-check.result }}"
+          LINK_HEALTH="${{ needs.link-health-check.result }}"
+          FICTIONAL="${{ needs.fictional-api-check.result }}"
+          THEOREM="${{ needs.theorem-number-check.result }}"
+          
+          if [ "$CROSS_REF" == "success" ] && [ "$LINK_HEALTH" == "success" ] && [ "$FICTIONAL" == "success" ] && [ "$THEOREM" == "success" ]; then
+            echo "✅ 所有质量门禁检查通过!"
+            exit 0
+          else
+            echo "❌ 质量门禁检查未通过"
+            exit 1
+          fi

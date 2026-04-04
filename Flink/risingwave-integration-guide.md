@@ -1,0 +1,265 @@
+# RisingWave 与 Flink 深度集成指南
+
+> **所属阶段**: Flink/ | **前置依赖**: [Flink vs RisingWave 对比](../Knowledge/04-technology-selection/flink-vs-risingwave.md) | **形式化等级**: L5
+
+---
+
+## 1. 概念定义 (Definitions)
+
+### Def-F-RW-01: RisingWave
+
+**定义**: RisingWave 是一个分布式 SQL 流处理数据库，专为实时分析而设计，提供物化视图和即席查询能力。
+
+**形式化定义**:
+
+```
+RisingWave = ⟨Stream, MV, Query, Storage⟩
+```
+
+其中 Stream 为流数据源，MV 为物化视图，Query 为 SQL 查询接口，Storage 为分层存储系统。
+
+### Def-F-RW-02: 流处理互操作
+
+**定义**: 两个流处理系统之间的数据传输和状态同步能力。
+
+**形式化定义**:
+
+```
+Interop(S₁, S₂) = ⟨Protocol, Schema, Semantics, Ordering⟩
+```
+
+---
+
+## 2. 属性推导 (Properties)
+
+### Lemma-F-RW-01: 端到端延迟上界
+
+**引理**: RisingWave + Flink 集成系统的端到端延迟满足：
+
+```
+Latency_total ≤ Latency_Flink + Latency_RisingWave + Latency_network + Latency_sync
+```
+
+**证明概要**: 延迟是各组件延迟的串联累加，网络传输和同步开销为额外变量。
+
+### Lemma-F-RW-02: 一致性传递
+
+**引理**: 若 Flink 提供 Exactly-Once 保证，且 RisingWave 提供 At-Least-Once 摄入，则集成系统提供 At-Least-Once 保证。
+
+---
+
+## 3. 关系建立 (Relations)
+
+### RisingWave 与 Flink 架构对比
+
+```mermaid
+graph TB
+    subgraph "Flink Architecture"
+        F1[Source] --> F2[Transformation]
+        F2 --> F3[Sink]
+        F4[State Backend] -.-> F2
+    end
+    
+    subgraph "RisingWave Architecture"
+        R1[Source Connector] --> R2[Stream Engine]
+        R2 --> R3[Materialized View]
+        R4[Storage Layer] -.-> R2
+        R5[Query Engine] -.-> R3
+    end
+    
+    F3 -.->|Kafka/Debezium| R1
+    R3 -.->|JDBC/Arrow Flight| F1
+```
+
+### 集成模式矩阵
+
+| 模式 | 方向 | 协议 | 延迟 | 适用场景 |
+|------|------|------|------|----------|
+| Kafka 桥接 | Flink → RW | Kafka | 亚秒级 | 实时ETL |
+| CDC 同步 | RW → Flink | Debezium | 毫秒级 | 实时分析反馈 |
+| JDBC 查询 | Flink → RW | JDBC | 10-100ms | 维表关联 |
+| Arrow Flight | 双向 | Arrow | 毫秒级 | 高性能传输 |
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+### 场景分析：实时数仓分层
+
+**场景**: 使用 Flink 进行数据清洗和转换，RisingWave 进行实时聚合和即席查询。
+
+```
+原始数据 → Flink (清洗/转换) → Kafka → RisingWave (聚合) → 应用查询
+```
+
+**论证**:
+
+1. **职责分离**: Flink 擅长复杂转换，RisingWave 擅长实时聚合
+2. **存储优化**: RisingWave 的物化视图避免重复计算
+3. **查询灵活性**: RisingWave 支持标准 SQL 即席查询
+4. **运维简化**: 各系统专注擅长领域
+
+---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+### 工程论证：延迟优化
+
+**目标**: 证明集成方案满足 < 5s 端到端延迟要求。
+
+**论证步骤**:
+
+| 组件 | 典型延迟 | 优化策略 |
+|------|----------|----------|
+| Flink Processing | 100-500ms | 优化 checkpoint 间隔 |
+| Kafka Transfer | 10-100ms | 批量发送优化 |
+| RisingWave Ingest | 50-200ms | 并行摄入 |
+| RW Query | 10-500ms | 物化视图预聚合 |
+| **Total** | **170-1300ms** | **< 5s 目标达成** |
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 示例 1: Flink → RisingWave Kafka 集成
+
+```java
+// Flink Kafka Producer 配置
+FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<>(
+    "processed-events",
+    new JsonSerializer(),
+    kafkaProperties,
+    FlinkKafkaProducer.Semantic.EXACTLY_ONCE
+);
+
+stream.addSink(kafkaProducer);
+```
+
+```sql
+-- RisingWave 消费 Kafka
+CREATE SOURCE processed_events (
+    user_id VARCHAR,
+    event_type VARCHAR,
+    amount DECIMAL,
+    event_time TIMESTAMP
+) WITH (
+    connector = 'kafka',
+    topic = 'processed-events',
+    properties.bootstrap.server = 'kafka:9092'
+);
+
+-- 创建物化视图
+CREATE MATERIALIZED VIEW hourly_stats AS
+SELECT 
+    window_start,
+    event_type,
+    COUNT(*) as event_count,
+    SUM(amount) as total_amount
+FROM TUMBLE(processed_events, event_time, INTERVAL '1 HOUR')
+GROUP BY window_start, event_type;
+```
+
+### 示例 2: RisingWave → Flink CDC 集成
+
+```sql
+-- RisingWave 创建 CDC Source
+CREATE SOURCE user_changes (
+    user_id INT PRIMARY KEY,
+    user_name VARCHAR,
+    updated_at TIMESTAMP
+) WITH (
+    connector = 'postgres-cdc',
+    hostname = 'postgres',
+    port = '5432',
+    username = 'user',
+    password = 'password',
+    database.name = 'mydb',
+    schema.name = 'public',
+    table.name = 'users'
+);
+```
+
+```java
+// Flink CDC 消费 RisingWave (通过 Debezium)
+DebeziumSourceFunction<String> source = DebeziumSourceFunction.<String>builder()
+    .setBootstrapServers("kafka:9092")
+    .setGroupId("flink-rw-cdc")
+    .setTopicList("rw.user_changes")
+    .build();
+```
+
+### 示例 3: Flink 查询 RisingWave 维表
+
+```java
+// Flink JDBC Lookup Join
+Table result = tableEnv.sqlQuery(
+    "SELECT " +
+    "  o.order_id, " +
+    "  o.user_id, " +
+    "  u.user_name, " +
+    "  o.amount " +
+    "FROM orders AS o " +
+    "LEFT JOIN rw_users FOR SYSTEM_TIME AS OF o.proc_time AS u " +
+    "ON o.user_id = u.user_id"
+);
+```
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 集成架构图
+
+```mermaid
+flowchart TB
+    subgraph "Data Sources"
+        A1[MySQL]
+        A2[Kafka]
+        A3[API]
+    end
+    
+    subgraph "Flink Processing Layer"
+        B1[Data Cleansing]
+        B2[Complex Transformations]
+        B3[Window Aggregations]
+    end
+    
+    subgraph "Message Bus"
+        C1[(Kafka)]
+    end
+    
+    subgraph "RisingWave Analytics Layer"
+        D1[Materialized Views]
+        D2[Real-time Aggregations]
+        D3[Ad-hoc Queries]
+    end
+    
+    subgraph "Applications"
+        E1[Dashboards]
+        E2[Alerts]
+        E3[ML Pipeline]
+    end
+    
+    A1 --> B1
+    A2 --> B2
+    A3 --> B2
+    B1 --> C1
+    B2 --> C1
+    B3 --> C1
+    C1 --> D1
+    D1 --> E1
+    D1 --> E2
+    D2 --> E3
+```
+
+---
+
+## 8. 引用参考 (References)
+
+[^1]: RisingWave Documentation, "Architecture Overview", 2025. https://docs.risingwave.com/docs/current/architecture/
+[^2]: RisingWave Team, "RisingWave: A Cloud-Native Stream Processing System", SIGMOD, 2024.
+[^3]: Flink Documentation, "Kafka Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
+
+---
+
+*本文档遵循 AnalysisDataFlow 六段式模板规范*

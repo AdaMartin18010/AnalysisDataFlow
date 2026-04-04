@@ -393,8 +393,8 @@ quality_gates:
 
 - [i18n-manager.py](../.scripts/i18n-manager.py) - 国际化管理工具
 - [translate_workflow.py](../.scripts/translate_workflow.py) - 翻译工作流
-- [GLOSSARY-EN.md](en/glossary/GLOSSARY-EN.md) - 英文术语表
-- [README-EN.md](en/docs/README-EN.md) - 英文版项目说明
+- [GLOSSARY.md](../GLOSSARY.md) - 英文术语表
+- [README.md](../README.md) - 英文版项目说明
 
 ---
 
