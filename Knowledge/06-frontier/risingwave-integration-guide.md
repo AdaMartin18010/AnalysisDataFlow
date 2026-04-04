@@ -299,7 +299,7 @@ graph TB
 
 ## 4. 论证过程 (Argumentation)
 
-### 4.1 为什么需要 RisingWave + Flink 混合架构
+### 4.1 为什么需要 RisingWave + Flink 混合架构 {#41-为什么需要-risingwave--flink-混合架构}
 
 **单一系统的局限性**：
 

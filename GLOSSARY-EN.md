@@ -1,71 +1,76 @@
 # AnalysisDataFlow Glossary (English)
 
-> **Version**: v1.0 | **Last Updated**: 2026-04-04 | **Scope**: Project-wide
+> **Version**: v1.0 | **Last Updated**: 2026-04-04 | **Scope**: Full Project
 >
-> This document serves as the authoritative terminology reference for the AnalysisDataFlow project, organized alphabetically and covering stream computing theory, Flink engineering practices, and frontier technologies.
+> **Version Annotations**: Terms marked with [2.0], [2.4], [2.5], [3.0] indicate introduction or core feature in corresponding Flink versions
+>
+> This document serves as the authoritative terminology reference for the AnalysisDataFlow project, organized alphabetically, covering stream computing theory, Flink engineering practices, and cutting-edge technologies.
 
 ---
 
 ## Table of Contents
 
-- [Navigation](#navigation)
-- [Category Index](#category-index)
-- [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w)
+- [Glossary Navigation](#glossary-navigation)
+- [Term Category Index](#term-category-index)
+- [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Y](#y) · [Z](#z)
 
 ---
 
-## Navigation
+## Glossary Navigation
 
-| Category | Term Count | Main Domains |
-|----------|------------|--------------|
-| [Core Terms](#1-core-terms) | 35+ | Stream Computing, Batch Processing, Real-time Processing |
+| Category | Term Count | Primary Domain |
+|----------|------------|----------------|
+| [Basic Terms](#1-basic-terms) | 35+ | Stream Computing, Batch Processing, Real-time Processing |
 | [Theoretical Terms](#2-theoretical-terms) | 40+ | Process Calculus, Formal Verification, Type Theory |
-| [Flink Terms](#3-flink-terms) | 50+ | Core Concepts, APIs, Configuration |
+| [Flink Terms](#3-flink-terms) | 50+ | Core Concepts, APIs, Configuration Parameters |
 | [Engineering Terms](#4-engineering-terms) | 30+ | Design Patterns, Architecture, Operations |
-| [Frontier Terms](#5-frontier-terms) | 35+ | AI Agents, Stream Databases, Cloud-Native |
+| [Frontier Terms](#5-frontier-terms) | 35+ | AI Agent, Streaming Databases, Cloud Native |
 
 ---
 
-## Category Index
+## Term Category Index
 
-### 1. Core Terms
+### 1. Basic Terms
 
-- **Stream Computing**: Dataflow, Event Time, Processing Time, Watermark, Window
-- **Batch Processing**: Batch Processing, Bounded Stream, Checkpoint
-- **Real-time Processing**: Real-time Processing, Latency, Throughput
+- [Stream Computing](#1-basic-terms): Dataflow, Event Time, Processing Time, Watermark, Window
+- [Batch Processing](#1-basic-terms): Batch Processing, Bounded Stream, Checkpoint
+- [Real-time Processing](#1-basic-terms): Real-time Processing, Latency, Throughput
 
 ### 2. Theoretical Terms
 
-- **Process Calculus**: CCS, CSP, π-Calculus, Actor Model, Session Types
-- **Formal Verification**: Bisimulation, Model Checking, TLA+, Iris
-- **Type Theory**: FG/FGG, DOT, Path-Dependent Types
+- [Process Calculus Terms](#2-theoretical-terms): CCS, CSP, π-Calculus, Actor Model, Session Types
+- [Formal Verification Terms](#2-theoretical-terms): Bisimulation, Model Checking, TLA+, Iris
+- [Type Theory Terms](#2-theoretical-terms): FG/FGG, DOT, Path-Dependent Types
 
 ### 3. Flink Terms
 
-- **Core Concepts**: JobManager, TaskManager, Operator, State Backend
-- **APIs**: DataStream API, Table API, SQL
-- **Configuration**: Parallelism, Checkpoint Interval, Watermark Strategy
+- [Core Concepts](#3-flink-terms): JobManager, TaskManager, Operator, State Backend
+- [API Related](#a): DataStream API, Table API, SQL
+- [Configuration Parameters](#3-flink-terms): Parallelism, Checkpoint Interval, Watermark Strategy
 
 ### 4. Engineering Terms
 
-- **Design Patterns**: Windowed Aggregation, Async I/O, Side Output
-- **Architecture**: Microservices, Event-Driven Architecture, Data Mesh
-- **Operations**: Backpressure, Monitoring, Autoscaling
+- [Design Pattern Terms](#4-engineering-terms): Windowed Aggregation, Async I/O, Side Output
+- [Architecture Terms](#4-engineering-terms): Microservices, Event-Driven Architecture, Data Mesh
+- [Operations Terms](#4-engineering-terms): Backpressure, Monitoring, Autoscaling
 
 ### 5. Frontier Terms
 
-- **AI Agents**: AI Agent, ReAct, MCP, A2A, Agentic Workflow, FLIP-531
-- **Serverless**: Serverless Flink, Scale-to-Zero, FaaS
-- **Optimization**: Adaptive Execution Engine, Smart Checkpointing, GPU Acceleration
-- **Stream-Batch**: Stream-Batch Unification, Unified Execution Engine
+- [AI Agent Terms](#a): AI Agent, ReAct, MCP, A2A, Agentic Workflow, FLIP-531, Tool Calling
+- [Serverless Terms](#e): Serverless Flink, Scale-to-Zero, FaaS
+- [Performance Optimization Terms](#5-frontier-terms): Adaptive Execution Engine, Smart Checkpointing, GPU Acceleration
+- [Stream-Batch Unification Terms](#5-frontier-terms): Stream-Batch Unification, Unified Execution Engine
+- [WASM Terms](#a): WebAssembly UDF, WASI, WASM
+- [Streaming Database Terms](#5-frontier-terms): Materialized View, Continuous Query, Incremental Update
+- [Cloud Native Terms](#5-frontier-terms): Kubernetes, Serverless, WASM, Lakehouse
 
 ---
 
 ## A
 
-### Adaptive Execution Engine (AEE) [Flink 1.17+]
+### Adaptive Execution Engine [Flink 1.17+]
 
-**Definition**: An intelligent execution optimization framework introduced in Flink that dynamically adjusts execution plans, resource allocation, and parallelism based on runtime statistics.
+**Definition**: Flink's intelligent execution optimization framework that dynamically adjusts execution plans, resource allocation, and parallelism based on runtime statistics.
 
 **Formal Definition**:
 
@@ -75,11 +80,11 @@ AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 
 Where 𝒫 is the physical execution plan, ℳ is runtime metrics, 𝒜 is adaptive actions, 𝒞 is constraints, ℛ is the re-optimizer, δ is the decision function, and π is the performance prediction model.
 
-**Core Capabilities**: Automatic skew handling, dynamic parallelism adjustment, adaptive resource allocation
+**Core Capabilities**: Automatic data skew handling, dynamic parallelism adjustment, adaptive resource allocation
 
-**Related**: [Smart Checkpointing](#s), [Backpressure](#b), [Parallelism](#p)
+**Related Concepts**: Smart Checkpointing, Backpressure, Parallelism
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
 
@@ -95,30 +100,30 @@ Where 𝒫 is the physical execution plan, ℳ is runtime metrics, 𝒜 is adapt
 Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 ```
 
-**Related**: [CSP](#c), [π-Calculus](#p), [Message Passing](#m)
+**Related Concepts**: CSP, π-Calculus, Message Passing
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/01-foundation/01.03-actor-model-formalization.md` (Def-S-03-01)
 - `Struct/03-relationships/03.01-actor-to-csp-encoding.md`
 
 ---
 
-### AI Agent
+### AI Agent [General Term]
 
-**Definition**: An intelligent system capable of autonomously perceiving, reasoning, acting, and learning in an environment, formally defined as a sextuple:
+**Definition**: An intelligent system capable of autonomously perceiving, reasoning, acting, and learning in an environment, formalized as a six-tuple:
 
 ```
 𝒜_agent ≜ ⟨𝒮, 𝒫, 𝒟, 𝒜, ℳ, 𝒢⟩
 ```
 
-Where 𝒮 is the state space, 𝒫 is perception, 𝒟 is decision-making, 𝒜 is actions, ℳ is memory, and 𝒢 is goals.
+Where 𝒮 is the state space, 𝒫 is perception, 𝒟 is decision-making, 𝒜 is action, ℳ is memory, and 𝒢 is goal.
 
-**Flink Integration**: [Flink Agent](#f) is an AI Agent implementation based on the stream computing framework.
+**Flink Integration**: Flink Agent is an AI Agent implementation based on the stream computing framework
 
-**Related**: [ReAct](#r), [MCP](#m), [A2A](#a), [Multi-Agent](#m), [FLIP-531](#f)
+**Related Concepts**: ReAct, MCP, A2A, Multi-Agent, FLIP-531
 
-**Reference**:
+**Reference Documents**:
 
 - `Knowledge/06-frontier/ai-agent-streaming-architecture.md` (Def-K-06-110)
 - `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-30)
@@ -127,7 +132,7 @@ Where 𝒮 is the state space, 𝒫 is perception, 𝒟 is decision-making, 𝒜
 
 ### A2A Protocol (Agent-to-Agent Protocol) [Google 2025]
 
-**Definition**: An open Agent interoperability standard proposed by Google, supporting task delegation, state synchronization, and result return between Agents.
+**Definition**: Google's open Agent interoperability standard supporting task delegation, state synchronization, and result return between Agents.
 
 **Formal Definition**:
 
@@ -135,13 +140,13 @@ Where 𝒮 is the state space, 𝒫 is perception, 𝒟 is decision-making, 𝒜
 A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 ```
 
-Where 𝒫 is the set of participating Agents, ℳ is message types, 𝒮 is the session state machine, and 𝒜 is the authentication and authorization mechanism.
+Where 𝒫 is the set of participating Agents, ℳ is message types, 𝒮 is the session state machine, and 𝒜 is the authentication/authorization mechanism.
 
-**Task State Flow**: `pending → working → input-required → completed/failed`
+**Task State Transition**: `pending → working → input-required → completed/failed`
 
-**Related**: [AI Agent](#a), [MCP](#m), [Orchestration](#o), [FLIP-531](#f)
+**Related Concepts**: AI Agent, MCP, Orchestration, FLIP-531
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-33)
 - `Knowledge/06-frontier/a2a-protocol-agent-communication.md`
@@ -150,7 +155,7 @@ Where 𝒫 is the set of participating Agents, ℳ is message types, 𝒮 is the
 
 ### Aligned Checkpoint
 
-**Definition**: A mechanism in Flink where an operator triggers a state snapshot only after receiving barriers from **all** input channels.
+**Definition**: In Flink, a mechanism where operators trigger state snapshots only after receiving Barrier from **all** input channels.
 
 **Formal Definition**:
 
@@ -158,9 +163,9 @@ Where 𝒫 is the set of participating Agents, ℳ is message types, 𝒮 is the
 AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 ```
 
-**Related**: [Unaligned Checkpoint](#u), [Barrier](#b), [Exactly-Once](#e)
+**Related Concepts**: Unaligned Checkpoint, Barrier, Exactly-Once
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
@@ -169,7 +174,7 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 
 ### Async I/O
 
-**Definition**: A pattern that allows stream processing operators to execute external system calls concurrently, avoiding blocking of the data stream processing.
+**Definition**: A pattern allowing stream processing operators to execute external system calls concurrently, avoiding blocking data flow processing.
 
 **Formal Definition**:
 
@@ -177,11 +182,11 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 AsyncFunction: I × C → Future[O]
 ```
 
-Where C is the concurrency parameter controlling the number of simultaneous asynchronous requests.
+Where C is the concurrency parameter, controlling the number of simultaneous async requests.
 
-**Related**: [Backpressure](#b), [Enrichment](#e), [Concurrency](#c)
+**Related Concepts**: Backpressure, Enrichment, Concurrency
 
-**Reference**:
+**Reference Documents**:
 
 - `Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
 - `Flink/02-core-mechanisms/async-execution-model.md`
@@ -190,7 +195,7 @@ Where C is the concurrency parameter controlling the number of simultaneous asyn
 
 ### At-Least-Once
 
-**Definition**: A delivery semantics where the stream computing system guarantees that the effect of each input record on the external world occurs **at least once**.
+**Definition**: A stream computing system guarantee that each input record affects the external world **at least once**.
 
 **Formal Definition**:
 
@@ -198,11 +203,11 @@ Where C is the concurrency parameter controlling the number of simultaneous asyn
 ∀r ∈ I. c(r, 𝒯) ≥ 1
 ```
 
-Where c(r, 𝒯) is the causal effect count.
+Where c(r, 𝒯) is the causal impact count.
 
-**Related**: [At-Most-Once](#a), [Exactly-Once](#e), [Delivery Guarantee](#d)
+**Related Concepts**: At-Most-Once, Exactly-Once, Delivery Guarantee
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-03)
 
@@ -210,7 +215,7 @@ Where c(r, 𝒯) is the causal effect count.
 
 ### At-Most-Once
 
-**Definition**: A delivery semantics where the stream computing system guarantees that the effect of each input record on the external world occurs **at most once**, allowing data loss.
+**Definition**: A stream computing system guarantee that each input record affects the external world **at most once**, allowing data loss.
 
 **Formal Definition**:
 
@@ -218,9 +223,9 @@ Where c(r, 𝒯) is the causal effect count.
 ∀r ∈ I. c(r, 𝒯) ≤ 1
 ```
 
-**Related**: [At-Least-Once](#a), [Exactly-Once](#e), [Best-Effort](#b)
+**Related Concepts**: At-Least-Once, Exactly-Once, Best-Effort
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-02)
 
@@ -230,13 +235,13 @@ Where c(r, 𝒯) is the causal effect count.
 
 ### Backpressure
 
-**Definition**: A flow control signal mechanism in stream processing systems that propagates upstream when downstream processing speed is lower than upstream.
+**Definition**: A flow control signal mechanism in stream processing systems where downstream processing speed falls below upstream, propagating back to slow down the flow.
 
-**Principle**: Credit-based flow control that pauses sending when the receive buffer is full.
+**Principle**: Credit-based flow control where sending pauses when receive buffers are full.
 
-**Related**: [Flow Control](#f), [Buffer](#b), [Credit-Based](#c)
+**Related Concepts**: Flow Control, Buffer, Credit-Based
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/02-core-mechanisms/backpressure-and-flow-control.md`
 - `Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md`
@@ -245,7 +250,7 @@ Where c(r, 𝒯) is the causal effect count.
 
 ### Barrier (Checkpoint Barrier)
 
-**Definition**: A special control event injected into the data stream in Flink, used to separate data boundaries between different checkpoints.
+**Definition**: A special control event injected into the data stream in Flink to separate data boundaries between different Checkpoints.
 
 **Formal Definition**:
 
@@ -253,9 +258,9 @@ Where c(r, 𝒯) is the causal effect count.
 Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 ```
 
-**Related**: [Checkpoint](#c), [Aligned Checkpoint](#a), [Unaligned Checkpoint](#u)
+**Related Concepts**: Checkpoint, Aligned Checkpoint, Unaligned Checkpoint
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-02)
 
@@ -263,17 +268,17 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 
 ### Batch Processing
 
-**Definition**: A computing pattern that processes finite, bounded datasets where all data is fully available before computation begins.
+**Definition**: A computing pattern processing finite, bounded datasets where data is fully available before computation begins.
 
 **Characteristics**:
 
 - Input data is bounded
-- Full dataset is accessible
-- Latency-insensitive, throughput-oriented
+- Can access complete dataset
+- Latency-insensitive, pursuit of high throughput
 
-**Related**: [Stream Processing](#s), [Bounded Stream](#b), [Lambda Architecture](#l)
+**Related Concepts**: Stream Processing, Bounded Stream, Lambda Architecture
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/01-foundation/01.04-dataflow-model-formalization.md`
 
@@ -281,25 +286,25 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 
 ### Best-Effort
 
-**Definition**: A delivery semantics that provides no consistency guarantees—the system attempts to process data but does not guarantee no loss or no duplication.
+**Definition**: A delivery semantics providing no consistency guarantees; the system processes data as best effort without guaranteeing no loss or duplication.
 
-**Related**: [At-Most-Once](#a), [Delivery Guarantee](#d)
+**Related Concepts**: At-Most-Once, Delivery Guarantee
 
 ---
 
 ### Bisimulation
 
-**Definition**: A relation in process algebra for determining behavioral equivalence between two processes, requiring that both processes can simulate each other on all possible actions.
+**Definition**: A relation in process algebra for determining behavioral equivalence between two processes, requiring both processes to simulate each other on all possible actions.
 
 **Formal Definition**:
 
 ```
-R is a bisimulation ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P',Q')∈R
+R is bisimulation ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P',Q')∈R
 ```
 
-**Related**: [Process Calculus](#p), [Trace Equivalence](#t), [CCS](#c)
+**Related Concepts**: Process Calculus, Trace Equivalence, CCS
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/03-relationships/03.04-bisimulation-equivalences.md` (Thm-S-15-01)
 
@@ -307,7 +312,7 @@ R is a bisimulation ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P
 
 ### Bounded Stream
 
-**Definition**: A data stream with a finite amount of data, the data abstraction for batch processing.
+**Definition**: A data stream with finite data volume; the data abstraction for batch processing.
 
 **Formal Definition**:
 
@@ -315,15 +320,15 @@ R is a bisimulation ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P
 Bounded(S) ⟺ |S| < ∞
 ```
 
-**Related**: [Unbounded Stream](#u), [Batch Processing](#b)
+**Related Concepts**: Unbounded Stream, Batch Processing
 
 ---
 
 ### Buffer
 
-**Definition**: A memory area in stream processing used for temporarily storing data between producers and consumers.
+**Definition**: A memory area in stream processing for temporarily storing data, located between producers and consumers.
 
-**Related**: [Backpressure](#b), [Queue](#q), [Network Buffer](#n)
+**Related Concepts**: Backpressure, Queue, Network Buffer
 
 ---
 
@@ -331,7 +336,7 @@ Bounded(S) ⟺ |S| < ∞
 
 ### CALM Theorem
 
-**Definition**: Consistency As Logical Monotonicity—a logically monotonic program can guarantee consistency without coordination.
+**Definition**: Consistency As Logical Monotonicity — logically monotonic programs can guarantee consistency without coordination.
 
 **Formal Statement**:
 
@@ -339,9 +344,9 @@ Bounded(S) ⟺ |S| < ∞
 Program P requires no coordination ⟺ P is logically monotonic
 ```
 
-**Related**: [Eventual Consistency](#e), [Coordination](#c)
+**Related Concepts**: Eventual Consistency, Coordination
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/02-properties/02.06-calm-theorem.md` (Thm-S-02-08)
 
@@ -349,7 +354,7 @@ Program P requires no coordination ⟺ P is logically monotonic
 
 ### Causal Consistency
 
-**Definition**: A consistency model in distributed systems that preserves the ordering of causally dependent operations.
+**Definition**: A consistency model in distributed systems preserving the order of causally dependent operations.
 
 **Formal Definition**:
 
@@ -357,9 +362,9 @@ Program P requires no coordination ⟺ P is logically monotonic
 ∀op_i, op_j. op_i ≺hb op_j ⇒ op_i ≺obs op_j
 ```
 
-**Related**: [Strong Consistency](#s), [Eventual Consistency](#e), [Happens-Before](#h)
+**Related Concepts**: Strong Consistency, Eventual Consistency, Happens-Before
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-08)
 
@@ -367,7 +372,7 @@ Program P requires no coordination ⟺ P is logically monotonic
 
 ### CEP (Complex Event Processing)
 
-**Definition**: A technology for detecting complex patterns from event streams and generating composite events.
+**Definition**: A technique for detecting complex patterns from event streams and generating composite events.
 
 **Formal Definition**:
 
@@ -375,9 +380,9 @@ Program P requires no coordination ⟺ P is logically monotonic
 CEP: Stream × Pattern → DetectedEvents
 ```
 
-**Related**: [Pattern Matching](#p), [Event Pattern](#e), [Window](#w)
+**Related Concepts**: Pattern Matching, Event Pattern, Window
 
-**Reference**:
+**Reference Documents**:
 
 - `Knowledge/02-design-patterns/pattern-cep-complex-event.md`
 
@@ -393,9 +398,9 @@ CEP: Stream × Pattern → DetectedEvents
 P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 ```
 
-**Related**: [CSP](#c), [π-Calculus](#p), [Process Algebra](#p)
+**Related Concepts**: CSP, π-Calculus, Process Algebra
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/01-foundation/01.02-process-calculus-primer.md` (Def-S-02-01)
 
@@ -405,9 +410,9 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 
 **Definition**: A technology for capturing database change events (inserts, updates, deletes) and propagating them to downstream systems in real-time.
 
-**Related**: [Debezium](#d), [Streaming ETL](#s), [Log Mining](#l)
+**Related Concepts**: Debezium, Streaming ETL, Log Mining
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/04-connectors/flink-cdc-3.0-data-integration.md`
 - `Flink/04-connectors/04.04-cdc-debezium-integration.md`
@@ -416,7 +421,7 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 
 ### Checkpoint
 
-**Definition**: A globally consistent snapshot of a distributed stream processing job at a specific moment, used for fault recovery.
+**Definition**: A globally consistent state snapshot of a distributed stream processing job at a specific moment, used for fault recovery.
 
 **Formal Definition**:
 
@@ -424,9 +429,9 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 ```
 
-**Related**: [Savepoint](#s), [State Backend](#s), [Recovery](#r)
+**Related Concepts**: Savepoint, State Backend, Recovery
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-01)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
@@ -435,11 +440,11 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Chandy-Lamport Algorithm
 
-**Definition**: A classical algorithm for capturing globally consistent snapshots in distributed systems, the theoretical foundation of Flink Checkpoint.
+**Definition**: A classic algorithm in distributed systems for capturing globally consistent snapshots; the theoretical foundation of Flink Checkpoint.
 
-**Related**: [Global Snapshot](#g), [Consistent Cut](#c), [Checkpoint](#c)
+**Related Concepts**: Global Snapshot, Consistent Cut, Checkpoint
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/04-proofs/04.03-chandy-lamport-consistency.md` (Thm-S-19-01)
 
@@ -447,11 +452,11 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Choreographic Programming
 
-**Definition**: A distributed programming paradigm that describes multi-party interaction protocols from a global perspective, then projects them to individual participants.
+**Definition**: A distributed programming paradigm describing multi-party interaction protocols from a global perspective, then projecting to each participant.
 
-**Related**: [Session Types](#s), [Endpoint Projection](#e), [Deadlock Freedom](#d)
+**Related Concepts**: Session Types, Endpoint Projection, Deadlock Freedom
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/06-frontier/06.02-choreographic-streaming-programming.md`
 - `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md` (Thm-S-23-01)
@@ -460,11 +465,11 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Cloud-Native
 
-**Definition**: A methodology for building and running applications that exploits the advantages of cloud computing, emphasizing containerization, microservices, continuous delivery, and DevOps.
+**Definition**: A methodology for building and running applications that leverage cloud computing advantages, emphasizing containerization, microservices, continuous delivery, and DevOps.
 
-**Related**: [Kubernetes](#k), [Containerization](#c), [Microservices](#m)
+**Related Concepts**: Kubernetes, Containerization, Microservices
 
-**Reference**:
+**Reference Documents**:
 
 - `Flink/10-deployment/flink-kubernetes-operator-deep-dive.md`
 - `Knowledge/06-frontier/serverless-stream-processing-architecture.md`
@@ -473,51 +478,317 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Concurrency
 
-**Definition**: The ability of multiple computational tasks to execute during overlapping time periods, distinct from parallelism.
+**Definition**: The ability of multiple computational tasks to execute during overlapping time periods, distinct from Parallelism.
 
-**Related**: [Parallelism](#p), [Race Condition](#r), [Synchronization](#s)
+**Related Concepts**: Parallelism, Race Condition, Synchronization
 
 ---
 
 ### Consistency Model
 
-**Definition**: A set of rules defining the visibility and ordering of data operations in distributed systems.
+**Definition**: A set of rules defining data operation visibility and ordering in distributed systems.
 
 **Hierarchy**: Strong Consistency → Causal Consistency → Eventual Consistency
 
-**Related**: [Linearizability](#l), [Serializability](#s), [CAP Theorem](#c)
+**Related Concepts**: Linearizability, Serializability, CAP Theorem
 
-**Reference**:
+**Reference Documents**:
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Thm-S-08-03)
 
 ---
 
+### Continuous Query
+
+**Definition**: A query that runs continuously in stream databases, automatically updating results as data arrives.
+
+**Formal Definition**:
+
+```
+q: S → 𝒱, where q is a time-varying function
+```
+
+**Related Concepts**: Materialized View, Streaming Database
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/streaming-databases.md` (Def-K-06-14)
+
+---
+
+### Coordination
+
+**Definition**: Communication and synchronization among nodes in distributed systems to achieve consistent behavior.
+
+**Related Concepts**: CALM Theorem, Consensus, Distributed Transaction
+
+---
+
+### Credit-Based Flow Control
+
+**Definition**: A flow control mechanism where the receiver informs the sender of the amount of data it can receive by sending credit values.
+
+**Related Concepts**: Backpressure, Flow Control
+
+---
+
+### CSP (Communicating Sequential Processes)
+
+**Definition**: A process algebra based on synchronous communication and static event names proposed by Hoare in 1985.
+
+**Syntax**:
+
+```
+P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
+```
+
+**Related Concepts**: CCS, π-Calculus, Go Channels
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.05-csp-formalization.md` (Def-S-02-02)
+- `Struct/03-relationships/03.01-actor-to-csp-encoding.md` (Thm-S-12-01)
+
+---
+
 ## D
+
+### Data Enrichment
+
+**Definition**: The process of associating raw data streams with external data sources to supplement contextual information.
+
+**Related Concepts**: Async I/O, Lookup Join, Dimension Table
+
+**Reference Documents**:
+
+- `Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
+
+---
+
+### Data Mesh
+
+**Definition**: A decentralized data architecture paradigm treating data as a product, autonomously managed by domain teams.
+
+**Related Concepts**: Data Product, Domain-Driven Design, Self-Serve Platform
+
+**Reference Documents**:
+
+- `Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md`
+- `Knowledge/06-frontier/streaming-data-mesh-architecture.md`
+
+---
+
+### Data Product
+
+**Definition**: An autonomous data unit in Data Mesh that can be independently discovered, addressed, and consumed.
+
+**Related Concepts**: Data Mesh, Data as a Product
+
+---
 
 ### Dataflow Model
 
-**Definition**: A computational model for processing continuous data streams, where data flows through a directed graph of processing elements.
+**Definition**: A graph model representing computation as data flowing between operators; the core theoretical foundation of stream computing.
 
-**Related**: [Stream Processing](#s), [Pipeline](#p), [DAG](#d)
+**Formal Definition**:
+
+```
+𝒢 = (V, E, P, Σ, 𝕋)
+```
+
+Where V is the vertex set, E is the edge set, P is processing functions, Σ is state, and 𝕋 is the time model.
+
+**Related Concepts**: DAG, Operator, Stream Graph
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.04-dataflow-model-formalization.md` (Def-S-04-01)
+- `Struct/02-properties/02.01-determinism-in-streaming.md` (Thm-S-04-01)
+
+---
+
+### DAG (Directed Acyclic Graph)
+
+**Definition**: A graph structure representing data flow processing topology, with nodes as operators and edges as data flows, without cycles.
+
+**Related Concepts**: Dataflow Model, Job Graph, Execution Graph
+
+---
+
+### Deadlock Freedom
+
+**Definition**: A property guaranteeing that no process in the system is permanently blocked waiting for an event that will never occur.
+
+**Related Concepts**: Liveness, Choreographic Programming, Session Types
+
+**Reference Documents**:
+
+- `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md` (Thm-S-23-01)
 
 ---
 
 ### Delivery Guarantee
 
-**Definition**: The set of promises a stream processing system makes about message processing semantics.
+**Definition**: A stream processing system's promise of message delivery reliability, categorized as At-Most-Once, At-Least-Once, Exactly-Once.
 
-**Levels**: Best-Effort → At-Most-Once → At-Least-Once → Exactly-Once
+**Related Concepts**: At-Most-Once, At-Least-Once, Exactly-Once
 
-**Related**: [Exactly-Once](#e), [Fault Tolerance](#f)
+**Reference Documents**:
+
+- `Struct/02-properties/02.02-consistency-hierarchy.md`
+
+---
+
+### Determinism
+
+**Definition**: A property where a system always produces the same output given the same input.
+
+**Formal Definition**:
+
+```
+Deterministic(P) ⟺ ∀x. P(x) = P(x)
+```
+
+**Related Concepts**: Reproducibility, Consistency
+
+**Reference Documents**:
+
+- `Struct/02-properties/02.01-determinism-in-streaming.md` (Thm-S-07-01)
+
+---
+
+### Differential Dataflow
+
+**Definition**: A stream processing model supporting incremental computation and recursion, based on differential update propagation.
+
+**Related Concepts**: Incremental Computation, Materialize
+
+---
+
+### Distributed Snapshot
+
+**Definition**: A consistent snapshot capturing the global state of a distributed system at a specific moment.
+
+**Related Concepts**: Chandy-Lamport Algorithm, Checkpoint, Consistent Cut
+
+---
+
+### DOT (Dependent Object Types)
+
+**Definition**: An advanced type system supporting path-dependent types and family polymorphism; the theoretical foundation of Scala.
+
+**Related Concepts**: Path-Dependent Types, FGG, Subtyping
+
+**Reference Documents**:
+
+- `Struct/04-proofs/04.06-dot-subtyping-completeness.md` (Thm-S-22-01)
 
 ---
 
 ## E
 
+### Edge Computing
+
+**Definition**: A computing paradigm processing data near the data source (network edge), reducing latency and bandwidth consumption.
+
+**Related Concepts**: Cloud-Edge Continuum, IoT, Latency
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/edge-streaming-architecture.md`
+
+---
+
+### End-to-End Consistency
+
+**Definition**: Consistency guarantee across the entire pipeline from external data source to external data sink.
+
+**Formal Definition**:
+
+```
+End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOutput(Snk)
+```
+
+**Related Concepts**: Internal Consistency, Exactly-Once, Source, Sink
+
+**Reference Documents**:
+
+- `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-05)
+
+---
+
+### Event-Driven Architecture
+
+**Definition**: A software architecture pattern organizing component interaction around event production, detection, and consumption.
+
+**Related Concepts**: Event Streaming, Pub/Sub, CQRS
+
+---
+
+### Event Pattern
+
+**Definition**: Templates in CEP for matching event sequences, supporting sequence, choice, repetition, and other operators.
+
+**Related Concepts**: CEP, Pattern Matching
+
+---
+
+### Event Sourcing
+
+**Definition**: A persistence pattern using event sequences as the source of truth for system state.
+
+**Related Concepts**: CQRS, Event Store, Audit Log
+
+---
+
+### Event Streaming
+
+**Definition**: A computing pattern for continuously capturing, processing, and responding to event streams.
+
+**Related Concepts**: Stream Processing, Event-Driven Architecture
+
+---
+
+### Event Time
+
+**Definition**: The timestamp assigned by the data source when a data record is generated.
+
+**Formal Definition**:
+
+```
+t_e: Record → Timestamp
+```
+
+**Related Concepts**: Processing Time, Ingestion Time, Watermark
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.01-unified-streaming-theory.md` (Def-S-01-05)
+- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+
+---
+
+### Eventual Consistency
+
+**Definition**: A consistency model guaranteeing that eventually all replicas will converge to the same value if no new updates occur.
+
+**Formal Definition**:
+
+```
+◇□(replicas converge)
+```
+
+**Related Concepts**: Strong Consistency, Causal Consistency, CALM Theorem
+
+**Reference Documents**:
+
+- `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-09)
+
+---
+
 ### Exactly-Once
 
-**Definition**: A delivery semantics where the stream computing system guarantees that the effect of each input record on the external world occurs **exactly once**.
+**Definition**: A stream computing system guarantee that each input record affects the external world **exactly once**.
 
 **Formal Definition**:
 
@@ -525,56 +796,200 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 ∀r ∈ I. c(r, 𝒯) = 1
 ```
 
-**Related**: [At-Least-Once](#a), [At-Most-Once](#a), [Idempotency](#i)
+**Related Concepts**: At-Least-Once, At-Most-Once, Idempotency
 
-**Reference**:
+**Reference Documents**:
 
-- `Flink/02-core-mechanisms/exactly-once-end-to-end.md`
+- `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-04)
 - `Struct/04-proofs/04.02-flink-exactly-once-correctness.md` (Thm-S-18-01)
+- `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md`
 
 ---
 
-### Event Time
+### Execution Graph
 
-**Definition**: The time at which an event actually occurred, typically recorded as a timestamp in the event data itself.
+**Definition**: The graph structure in Flink that converts logical JobGraph to physical execution plans, containing specific parallel instances.
 
-**Related**: [Processing Time](#p), [Watermark](#w), [Timestamp](#t)
+**Related Concepts**: Job Graph, Task, Parallelism
 
 ---
 
-### Event-Driven Architecture
+### Explicit State
 
-**Definition**: An architectural pattern where system behavior is determined by events—significant changes in state.
+**Definition**: Stream processing state explicitly declared and managed by user code, supported by Flink API.
 
-**Related**: [Microservices](#m), [Message Queue](#m), [Pub/Sub](#p)
+**Related Concepts**: Implicit State, Keyed State, Operator State
 
 ---
 
 ## F
 
-### Fault Tolerance
+### FG (Featherweight Generic)
 
-**Definition**: The ability of a system to continue operating properly in the event of failures of some of its components.
+**Definition**: A lightweight formal model of Java generics used for type safety proofs.
 
-**Related**: [Checkpoint](#c), [Recovery](#r), [High Availability](#h)
+**Related Concepts**: FGG, Type Safety, Java Generics
+
+**Reference Documents**:
+
+- `Struct/04-proofs/04.05-type-safety-fg-fgg.md` (Thm-S-21-01)
 
 ---
 
-### Flink
+### FGG (Featherweight Generic Go)
 
-**Definition**: An open-source stream processing framework for distributed, high-performing, always-available, and accurate data streaming applications.
+**Definition**: A lightweight formal model of Go generics.
 
-**Related**: [DataStream API](#d), [Table API](#t), [SQL](#s)
+**Related Concepts**: FG, Go, Parametric Polymorphism
+
+**Reference Documents**:
+
+- `Struct/04-proofs/04.05-type-safety-fg-fgg.md` (Thm-S-21-01)
+
+---
+
+### Flink Agent [Flink 2.0+, FLIP-531]
+
+**Definition**: An autonomous agent built on the Flink stream computing framework, supporting continuous perception, decision-making, and action.
+
+**Formal Definition**:
+
+```
+𝒜_Flink = ⟨𝒮_state, 𝒫_perception, 𝒟_decision, 𝒜_action, ℳ_memory, 𝒢_goal⟩
+```
+
+**Core Features**: State persistence, Replayability, distributed execution, Exactly-Once semantics
+
+**Related Concepts**: AI Agent, FLIP-531, MCP, A2A, Stateful Stream Processing
+
+**Reference Documents**:
+
+- `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-30)
+- `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md`
+
+---
+
+### FLIP-531 (Flink AI Agents Proposal) [Flink 2.0+]
+
+**Definition**: Apache Flink official feature proposal introducing AI Agent native runtime support, achieving deep integration of stream computing and AI agents.
+
+**Core Components**:
+
+- **Flink Agent Runtime**: Agent execution environment
+- **MCP Integration**: Model Context Protocol support
+- **A2A Protocol**: Inter-Agent interoperability
+- **Agentic Workflow**: Agent workflow orchestration
+
+**Formal Definition**:
+
+```
+FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
+```
+
+**Related Concepts**: Flink Agent, MCP, A2A, Agentic Workflow
+
+**Reference Documents**:
+
+- `Flink/12-ai-ml/flink-agents-flip-531.md`
+- `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md`
+
+---
+
+### Flow Control
+
+**Definition**: A mechanism regulating data transfer rates between data producers and consumers.
+
+**Related Concepts**: Backpressure, Credit-Based, Buffer
+
+---
+
+### ForSt State Backend
+
+**Definition**: The next-generation state backend introduced in Flink 2.0, based on RocksDB improvements, supporting the async execution model.
+
+**Related Concepts**: State Backend, RocksDB, Incremental Checkpoint
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/forst-state-backend.md` (Thm-F-02-45)
+- `Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md`
+
+---
+
+### Function as a Service (FaaS)
+
+**Definition**: A serverless computing model where users write function code and the platform manages infrastructure and auto-scaling.
+
+**Related Concepts**: Serverless, Lambda, Cloud-Native
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/faas-dataflow.md`
+- `Knowledge/06-frontier/serverless-stream-processing-architecture.md`
 
 ---
 
 ## G
 
+### GPU Acceleration [Flink 2.5+]
+
+**Definition**: Utilizing GPU's massive parallel computing capabilities to execute stream processing operators, offloading compute-intensive operations from CPU to GPU via CUDA/OpenCL.
+
+**Formal Definition**:
+
+```
+𝒪_GPU(D) = GPUKernel(Transfer(D_CPU→GPU))
+```
+
+**Speedup Ratio**: S_GPU = T_CPU / (T_transfer + T_kernel + T_sync)
+
+**Applicable Conditions**: Batch size n > n_threshold and compute/transfer ratio > γ
+
+**Accelerated Operator Types**: GPU aggregation, GPU Join, GPU UDF, vector search
+
+**Related Concepts**: CUDA, Vector Search, Flink-CUDA Runtime
+
+**Reference Documents**:
+
+- `Flink/12-ai-ml/flink-25-gpu-acceleration.md` (Def-F-12-50)
+
+---
+
 ### Global Snapshot
 
-**Definition**: A consistent snapshot of the entire distributed system state at a particular point in logical time.
+**Definition**: A collection of all process states in a distributed system at a specific moment, used for fault recovery and consistency checking.
 
-**Related**: [Checkpoint](#c), [Chandy-Lamport Algorithm](#c), [Consistent Cut](#c)
+**Related Concepts**: Distributed Snapshot, Chandy-Lamport Algorithm, Checkpoint
+
+---
+
+### Global Window
+
+**Definition**: A single window containing all records, typically used with custom triggers.
+
+**Formal Definition**:
+
+```
+Global: wid_global = (-∞, +∞)
+```
+
+**Related Concepts**: Tumbling Window, Sliding Window, Session Window
+
+**Reference Documents**:
+
+- `Knowledge/02-design-patterns/pattern-windowed-aggregation.md` (Def-K-02-02)
+
+---
+
+### Go Channels
+
+**Definition**: Synchronous communication primitives in Go language based on the CSP model.
+
+**Related Concepts**: CSP, Channel, Goroutine
+
+**Reference Documents**:
+
+- `Struct/05-comparative/05.01-go-vs-scala-expressiveness.md` (Thm-S-24-01)
 
 ---
 
@@ -582,9 +997,39 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Happens-Before
 
-**Definition**: A relation between events in a distributed system indicating that one event causally affects another.
+**Definition**: A relation defining causal partial order between events; the foundation of distributed consistency.
 
-**Related**: [Causal Consistency](#c), [Vector Clock](#v)
+**Formal Definition**:
+
+```
+∀e₁, e₂. e₁ ≺hb e₂ ⟺ e₁ causally affects e₂
+```
+
+**Related Concepts**: Causal Consistency, Lamport Clock, Vector Clock
+
+---
+
+### HashMapStateBackend
+
+**Definition**: A heap-memory-based state backend in Flink, suitable for small state, low-latency scenarios.
+
+**Related Concepts**: State Backend, RocksDBStateBackend, ForSt
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+
+---
+
+### Hot Key
+
+**Definition**: A key in data distribution with frequency much higher than other keys, leading to data skew and performance bottlenecks.
+
+**Related Concepts**: Data Skew, Key Group, Rebalancing
+
+**Reference Documents**:
+
+- `Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md`
 
 ---
 
@@ -592,25 +1037,206 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Idempotency
 
-**Definition**: The property of an operation where applying it multiple times has the same effect as applying it once.
+**Definition**: A property where an operation produces the same result whether executed once or multiple times; key to achieving Exactly-Once.
 
-**Related**: [Exactly-Once](#e), [Fault Tolerance](#f)
+**Formal Definition**:
+
+```
+f is idempotent ⟺ ∀x. f(f(x)) = f(x)
+```
+
+**Related Concepts**: Exactly-Once, Idempotent Sink, Dedup
+
+---
+
+### Idempotent Sink
+
+**Definition**: An external system receiver capable of safely handling duplicate writes, typically based on primary key deduplication.
+
+**Related Concepts**: Sink, Idempotency, Exactly-Once
+
+---
+
+### Incremental Checkpoint
+
+**Definition**: Capturing only the portion of state that has changed since the last Checkpoint.
+
+**Formal Definition**:
+
+```
+ΔS_n = S_{t_n} \ S_{t_{n-1}}, CP_n^inc = ⟨Base, {ΔS_i}_{i=1}^n⟩
+```
+
+**Related Concepts**: Checkpoint, State Backend, RocksDB
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-05, Thm-F-02-02)
+
+---
+
+### Incremental Computation
+
+**Definition**: A computing pattern that calculates output changes based on input changes, avoiding full recomputation.
+
+**Formal Definition**:
+
+```
+δv = ℱ_q(δD, D), v_new = v ⊕ δv
+```
+
+**Related Concepts**: Materialized View, Differential Dataflow
+
+---
+
+### Ingestion Time
+
+**Definition**: The timestamp when a data record enters the stream processing system.
+
+**Formal Definition**:
+
+```
+t_i: Record → Timestamp_system
+```
+
+**Related Concepts**: Event Time, Processing Time
+
+---
+
+### Internal Consistency
+
+**Definition**: Consistency of a stream processing engine's internal operator state with global snapshots after fault recovery.
+
+**Formal Definition**:
+
+```
+Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧ Reachable(𝒢_k)
+```
+
+**Related Concepts**: End-to-End Consistency, Checkpoint
+
+**Reference Documents**:
+
+- `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-06)
+
+---
+
+### IoT (Internet of Things)
+
+**Definition**: A network of physical devices and sensors producing massive stream data.
+
+**Related Concepts**: Edge Computing, Sensor Data, Stream Processing
+
+**Reference Documents**:
+
+- `Knowledge/03-business-patterns/iot-stream-processing.md`
+- `Flink/07-case-studies/case-iot-stream-processing.md`
+
+---
+
+### Iris
+
+**Definition**: A higher-order separation logic-based concurrent program verification framework.
+
+**Related Concepts**: Separation Logic, Formal Verification, Model Checking
+
+**Reference Documents**:
+
+- `Struct/07-tools/iris-separation-logic.md`
 
 ---
 
 ## J
 
-*No entries starting with J*
+### Job Graph
+
+**Definition**: The logical execution graph in Flink after user program compilation, representing data flow relationships between operators.
+
+**Related Concepts**: Execution Graph, DAG, Operator
+
+---
+
+### JobManager
+
+**Definition**: The master process in a Flink cluster responsible for task scheduling, coordination, and fault recovery.
+
+**Related Concepts**: TaskManager, ResourceManager, Dispatcher
+
+**Reference Documents**:
+
+- `Flink/01-architecture/deployment-architectures.md`
+
+---
+
+### Join
+
+**Definition**: An operation merging two data streams according to join conditions.
+
+**Types**:
+
+- **Interval Join**: Stream join based on time intervals
+- **Temporal Join**: Temporal table join
+- **Lookup Join**: Dimension table join
+- **Delta Join**: Incremental join
+
+**Related Concepts**: Stream Join, Window Join
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/delta-join.md`
 
 ---
 
 ## K
 
-### Kafka
+### Key Group
 
-**Definition**: A distributed event streaming platform used for high-performance data pipelines, streaming analytics, and data integration.
+**Definition**: The partitioning unit for Keyed State in Flink, determining state distribution among parallel instances.
 
-**Related**: [CDC](#c), [Event Streaming](#e), [Connector](#c)
+**Related Concepts**: Keyed State, Parallelism, State Partitioning
+
+---
+
+### Keyed State
+
+**Definition**: State stored by Key partition, where each Key has independent state space.
+
+**Formal Definition**:
+
+```
+KeyedState: (K, State[K]) → State[K]
+```
+
+**Related Concepts**: Operator State, State Backend, Key Group
+
+---
+
+### KeyedProcessFunction
+
+**Definition**: A low-level processing function in Flink DataStream API providing access to Keyed State and timers.
+
+**Related Concepts**: ProcessFunction, Keyed State, Timer
+
+---
+
+### KeyedStream
+
+**Definition**: A data stream partitioned by Key in Flink, supporting Keyed State operations.
+
+**Related Concepts**: DataStream, Keyed State, Partitioning
+
+---
+
+### Kubernetes
+
+**Definition**: An open-source container orchestration platform; Flink's primary deployment target.
+
+**Related Concepts**: Container, Operator Pattern, Cloud-Native
+
+**Reference Documents**:
+
+- `Flink/10-deployment/flink-kubernetes-operator-deep-dive.md`
+- `Flink/10-deployment/kubernetes-deployment-production-guide.md`
 
 ---
 
@@ -618,17 +1244,44 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Lakehouse
 
-**Definition**: An architectural pattern that combines the best aspects of data lakes and data warehouses.
+**Definition**: An architectural paradigm combining the advantages of data lakes (low-cost storage) and data warehouses (high-performance analytics).
 
-**Related**: [Streaming Lakehouse](#s), [Delta Lake](#d), [Iceberg](#i)
+**Related Concepts**: Delta Lake, Iceberg, Paimon
+
+**Reference Documents**:
+
+- `Flink/14-lakehouse/streaming-lakehouse-architecture.md`
+- `Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md`
+
+---
+
+### Lambda Architecture
+
+**Definition**: A batch-stream separation architecture proposed by Nathan Marz, maintaining separate batch and speed layers.
+
+**Related Concepts**: Kappa Architecture, Batch Processing, Stream Processing
 
 ---
 
 ### Latency
 
-**Definition**: The time delay between the occurrence of an event and the system response to that event.
+**Definition**: The time interval from event occurrence to result processing/visibility.
 
-**Related**: [Throughput](#t), [SLA](#s), [Real-time](#r)
+**Types**:
+
+- **Processing Latency**: Processing delay
+- **End-to-End Latency**: End-to-end delay
+- **Watermark Latency**: Watermark delay
+
+**Related Concepts**: Throughput, SLA, Real-time
+
+---
+
+### LSM-Tree (Log-Structured Merge Tree)
+
+**Definition**: A write-optimized disk data structure; the foundation of RocksDB.
+
+**Related Concepts**: RocksDB, State Backend, Compaction
 
 ---
 
@@ -636,17 +1289,165 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Materialized View
 
-**Definition**: A database object that contains the results of a query, physically stored and updated incrementally.
+**Definition**: Precomputed and physically stored query results, automatically incrementally maintained in stream databases.
 
-**Related**: [Streaming Database](#s), [Continuous Query](#c), [Incremental Update](#i)
+**Formal Definition**:
+
+```
+v = q(D), when δD occurs: v_new = v ⊕ ℱ_q(δD, D)
+```
+
+**Related Concepts**: View Maintenance, Incremental Computation, Continuous Query
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/streaming-databases.md` (Def-K-06-13)
+- `Flink/03-sql-table-api/materialized-tables.md`
+
+---
+
+### MCP (Model Context Protocol) [Anthropic 2024, Flink 2.0+]
+
+**Definition**: An open protocol proposed by Anthropic for standardizing LLM interaction with external tools.
+
+**Formal Definition**:
+
+```
+MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
+```
+
+Where 𝒯 is the tool set, ℛ is the tool selection function, 𝒞 is the call construction function, and ℋ is the memory mapping.
+
+**Core Capabilities**: Tool discovery, call construction, result observation, memory update
+
+**Related Concepts**: AI Agent, Tool Calling, A2A, FLIP-531
+
+**Reference Documents**:
+
+- `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-32)
+- `Knowledge/06-frontier/mcp-protocol-agent-streaming.md`
+
+---
+
+### Message Passing
+
+**Definition**: A communication model between concurrent entities through sending and receiving messages.
+
+**Related Concepts**: Actor Model, CSP, Shared Memory
 
 ---
 
 ### Microservices
 
-**Definition**: An architectural style that structures an application as a collection of loosely coupled services.
+**Definition**: An architectural style breaking applications into small, autonomous services communicating via APIs.
 
-**Related**: [Event-Driven Architecture](#e), [Containerization](#c), [Cloud-Native](#c)
+**Related Concepts**: Service Mesh, Domain-Driven Design, Cloud-Native
+
+---
+
+### Model Checking
+
+**Definition**: An automated formal method for verifying whether finite state systems satisfy specifications.
+
+**Related Concepts**: Formal Verification, TLA+, State Space
+
+**Reference Documents**:
+
+- `Struct/07-tools/model-checking-practice.md`
+- `Struct/07-tools/tla-for-flink.md`
+
+---
+
+### Multi-Agent
+
+**Definition**: A system architecture where multiple AI Agents collaborate to complete complex tasks.
+
+**Architecture Patterns**:
+
+- **Orchestrator-Worker**: Central coordinator assigns tasks
+- **Supervisor + Workers**: Supervisor monitors Worker status
+- **Decentralized**: Direct decentralized communication
+
+**Related Concepts**: AI Agent, A2A, Coordination
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/ai-agent-streaming-architecture.md` (Def-K-06-114)
+
+---
+
+## N
+
+### Network Buffer
+
+**Definition**: Memory buffers in Flink for network data transmission.
+
+**Related Concepts**: Buffer, Backpressure, Credit-Based
+
+---
+
+## O
+
+### Observability
+
+**Definition**: The ability to understand internal system state through system outputs (metrics, logs, traces).
+
+**Three Pillars**:
+
+- **Metrics**: Indicators
+- **Logs**: Log records
+- **Traces**: Distributed tracing
+
+**Related Concepts**: Monitoring, OpenTelemetry, SLA
+
+**Reference Documents**:
+
+- `Flink/15-observability/opentelemetry-streaming-observability.md`
+- `Flink/15-observability/flink-opentelemetry-observability.md`
+
+---
+
+### OpenTelemetry
+
+**Definition**: An open-source observability framework providing unified standards for metrics, logs, and traces.
+
+**Related Concepts**: Observability, Metrics, Tracing
+
+---
+
+### Operator
+
+**Definition**: The basic computational unit in Flink performing data transformations.
+
+**Categories**:
+
+- **Source**: Data source
+- **Transformation**: Transformation
+- **Sink**: Data sink
+
+**Formal Definition**:
+
+```
+Operator: Input × State → Output × State
+```
+
+**Related Concepts**: Dataflow Model, Task, UDF
+
+---
+
+### Operator State
+
+**Definition**: State bound to operator instances, not partitioned by Key.
+
+**Related Concepts**: Keyed State, Broadcast State, State Backend
+
+---
+
+### Orchestration
+
+**Definition**: A pattern coordinating multiple services or components to complete business processes.
+
+**Related Concepts**: Multi-Agent, Workflow, Choreography
 
 ---
 
@@ -654,45 +1455,236 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Parallelism
 
-**Definition**: The degree to which a stream processing job can be executed concurrently across multiple computing resources.
+**Definition**: The number of parallel execution instances of an operator or task.
 
-**Related**: [Concurrency](#c), [Scaling](#s), [Throughput](#t)
+**Formal Definition**:
+
+```
+Parallelism(op) = |{instance_i(op)}|
+```
+
+**Related Concepts**: Slot, Task, Key Group
 
 ---
 
-### Process Calculus
+### Path-Dependent Types
 
-**Definition**: A family of formalisms for modeling concurrent systems and their interactions.
+**Definition**: Types that depend on values, such as `x.type` depending on the value of `x`.
 
-**Related**: [CCS](#c), [CSP](#c), [π-Calculus](#p), [Actor Model](#a)
+**Related Concepts**: DOT, Scala, Dependent Types
+
+**Reference Documents**:
+
+- `Struct/06-frontier/06.04-pdot-path-dependent-types.md`
+
+---
+
+### Pattern Matching
+
+**Definition**: A mechanism for conditional branching based on data structure patterns.
+
+**Related Concepts**: CEP, Event Pattern
+
+---
+
+### Petri Net
+
+**Definition**: A graphical mathematical model for modeling concurrent systems, composed of places and transitions.
+
+**Related Concepts**: Process Calculus, Concurrency, Workflow
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.06-petri-net-formalization.md` (Thm-S-06-01)
+
+---
+
+### π-Calculus
+
+**Definition**: A process algebra supporting name passing (mobility) proposed by Milner et al. in 1992.
+
+**Syntax**:
+
+```
+P, Q ::= 0 | a(x).P | ā⟨b⟩.P | τ.P | P + Q | P | Q | (νa)P | !P
+```
+
+**Related Concepts**: CCS, CSP, Mobile Processes, Session Types
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.02-process-calculus-primer.md` (Def-S-02-03, Thm-S-02-01)
 
 ---
 
 ### Processing Time
 
-**Definition**: The time at which an event is processed by the system, typically the current wall-clock time.
+**Definition**: The machine time when a data record is processed by an operator.
 
-**Related**: [Event Time](#e), [Watermark](#w), [Ingestion Time](#i)
+**Formal Definition**:
+
+```
+t_p: () → Timestamp_wall
+```
+
+**Related Concepts**: Event Time, Ingestion Time
+
+---
+
+### Process Calculus
+
+**Definition**: A family of algebraic frameworks for describing concurrent system formal semantics.
+
+**Major Members**: CCS, CSP, π-Calculus, Actor Calculus
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.02-process-calculus-primer.md`
+
+---
+
+### ProcessFunction
+
+**Definition**: A low-level processing function in Flink DataStream API providing fine-grained control over time and state.
+
+**Related Concepts**: KeyedProcessFunction, Timer, State
+
+---
+
+### Progress
+
+**Definition**: A type safety property ensuring well-typed programs don't get stuck (in a state that is neither terminating nor erroneous).
+
+**Related Concepts**: Preservation, Type Safety, Deadlock Freedom
+
+---
+
+### Pub/Sub (Publish-Subscribe)
+
+**Definition**: A message passing pattern where publishers send messages to topics and subscribers receive messages from topics of interest.
+
+**Related Concepts**: Message Passing, Kafka, Event Streaming
 
 ---
 
 ## Q
 
-### Queryable State
+### Query Optimization
 
-**Definition**: A feature allowing external systems to query the internal state of a running Flink application.
+**Definition**: The process of automatically selecting query execution plans to minimize resource consumption.
 
-**Related**: [State Backend](#s), [Monitoring](#m)
+**Related Concepts**: Calcite, Cost-Based Optimization, Rule-Based Optimization
+
+**Reference Documents**:
+
+- `Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md`
 
 ---
 
 ## R
 
+### RAG (Retrieval-Augmented Generation)
+
+**Definition**: An AI architecture combining retrieval systems and generation models, enhancing LLM output by retrieving external knowledge.
+
+**Formal Definition**:
+
+```
+RAG(q) = Generate(q, Retrieve(q, KnowledgeBase))
+```
+
+**Related Concepts**: Vector Search, LLM, Knowledge Base
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/real-time-rag-architecture.md`
+- `Flink/12-ai-ml/rag-streaming-architecture.md`
+
+---
+
+### Real-Time
+
+**Definition**: A system characteristic producing results within strict time constraints.
+
+**Categories**:
+
+- **Hard Real-Time**: Missing deadlines causes system failure
+- **Soft Real-Time**: Missing deadlines degrades service quality
+- **Near Real-Time**: Second-level latency acceptable
+
+**Related Concepts**: Latency, SLA
+
+---
+
+### ReAct (Reasoning + Acting)
+
+**Definition**: An AI Agent architecture pattern interleaving reasoning (Thought) and action (Action) loops to solve complex problems.
+
+**Formal Definition**:
+
+```
+ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{t+1}
+```
+
+**Related Concepts**: AI Agent, Chain-of-Thought
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/ai-agent-streaming-architecture.md` (Def-K-06-111)
+
+---
+
 ### Recovery
 
-**Definition**: The process of restoring a system to a correct state after a failure has occurred.
+**Definition**: The process of reconstructing system state from Checkpoint or Savepoint after failure.
 
-**Related**: [Checkpoint](#c), [Fault Tolerance](#f), [Savepoint](#s)
+**Related Concepts**: Checkpoint, Savepoint, Failover
+
+---
+
+### Replayability
+
+**Definition**: The ability to fully replay execution history from Checkpoint; a core feature of Flink Agent.
+
+**Formal Definition**:
+
+```
+ℛ_replay = ⟨𝒞, ℒ, ℋ⟩
+```
+
+**Related Concepts**: Checkpoint, Audit, Debugging
+
+**Reference Documents**:
+
+- `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-35)
+
+---
+
+### ResourceManager
+
+**Definition**: A component in Flink responsible for cluster resource allocation and management.
+
+**Related Concepts**: JobManager, TaskManager, Slot
+
+---
+
+### RocksDB
+
+**Definition**: An embedded key-value store developed by Facebook, based on LSM-Tree.
+
+**Related Concepts**: LSM-Tree, State Backend, EmbeddedRocksDBStateBackend
+
+---
+
+### RocksDBStateBackend
+
+**Definition**: A RocksDB-based state backend in Flink, supporting large state and incremental Checkpoint.
+
+**Related Concepts**: State Backend, RocksDB, Incremental Checkpoint
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 
 ---
 
@@ -700,35 +1692,352 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Savepoint
 
-**Definition**: A manually triggered, consistent snapshot of a Flink application state, used for planned upgrades and migrations.
+**Definition**: A user-triggered globally consistent snapshot for application upgrades, migrations, and backups; same semantics as Checkpoint but different lifecycle management.
 
-**Related**: [Checkpoint](#c), [Recovery](#r), [State Backend](#s)
+**Related Concepts**: Checkpoint, Recovery, Upgrading
+
+---
+
+### Scala
+
+**Definition**: A JVM language fusing object-oriented and functional programming; one of Flink's native API languages.
+
+**Related Concepts**: Type System, Akka, JVM
+
+**Reference Documents**:
+
+- `Flink/09-language-foundations/01.01-scala-types-for-streaming.md`
+- `Flink/09-language-foundations/01.03-scala3-type-system-formalization.md`
+
+---
+
+### Scale-Up / Scale-Out
+
+**Definition**:
+
+- **Scale-Up**: Enhancing single-node computing power
+- **Scale-Out**: Increasing node count to expand processing capacity
+
+**Related Concepts**: Elasticity, Autoscaling, Parallelism
+
+---
+
+### Semantic Matching
+
+**Definition**: Data matching technology based on semantic similarity rather than exact value matching, commonly used in RAG and vector search.
+
+**Related Concepts**: Vector Search, Embedding, Similarity Search
+
+---
+
+### Separation Logic
+
+**Definition**: A logical framework for reasoning about mutable data structures, supporting local reasoning.
+
+**Related Concepts**: Iris, Formal Verification, Concurrent Separation Logic
+
+**Reference Documents**:
+
+- `Struct/07-tools/iris-separation-logic.md`
+
+---
+
+### Serverless
+
+**Definition**: A cloud computing execution model where cloud providers dynamically manage machine resource allocation.
+
+**Related Concepts**: Serverless Flink, FaaS, Cloud-Native, Autoscaling
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/serverless-stream-processing-architecture.md`
+- `Flink/10-deployment/flink-serverless-architecture.md`
+
+---
+
+### Serverless Flink [Flink 2.0+ GA]
+
+**Definition**: Apache Flink's production-grade serverless implementation on Kubernetes, supporting Scale-to-Zero and pay-per-use billing.
+
+**Formal Definition**:
+
+```
+ServerlessFlink_GA = ⟨𝒦, 𝒜, 𝒮, 𝒞, ℬ⟩
+```
+
+Where 𝒦 is Kubernetes Native, 𝒜 is Autoscaler, 𝒮 is disaggregated state storage, 𝒞 is incremental async checkpoint, and ℬ is GB-second precise billing.
+
+**Core Features**:
+
+- **Scale-to-Zero**: Scaling resources to zero when no load
+- **Cold start optimization**: <10s snapshot recovery (traditional 110-420s)
+- **Precise billing**: Second-level billing granularity
+- **SLA guarantee**: 99.9% availability
+
+**Related Concepts**: Serverless, Scale-to-Zero, ForSt, Kubernetes
+
+**Reference Documents**:
+
+- `Flink/10-deployment/serverless-flink-ga-guide.md` (Def-F-10-50)
+- `Flink/10-deployment/flink-serverless-architecture.md`
+
+---
+
+### Session Types
+
+**Definition**: A type system describing communication protocol structures, guaranteeing communication safety and deadlock freedom.
+
+**Formal Definition**:
+
+```
+S ::= !T.S | ?T.S | ⊕{l_i: S_i} | &{l_i: S_i} | end
+```
+
+**Related Concepts**: Type Safety, Deadlock Freedom, Protocol Compliance
+
+**Reference Documents**:
+
+- `Struct/01-foundation/01.07-session-types.md` (Thm-S-01-03, Thm-S-01-04)
 
 ---
 
 ### Session Window
 
-**Definition**: A window that groups events into sessions based on periods of activity separated by gaps of inactivity.
+**Definition**: Windows dynamically divided based on activity gaps, closing after inactivity exceeds the gap.
 
-**Related**: [Window](#w), [Event Time](#e), [CEP](#c)
+**Formal Definition**:
+
+```
+Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
+```
+
+**Related Concepts**: Tumbling Window, Sliding Window, Window
+
+**Reference Documents**:
+
+- `Knowledge/02-design-patterns/pattern-windowed-aggregation.md` (Def-K-02-02)
+
+---
+
+### Shared Memory
+
+**Definition**: A communication model where multiple concurrent entities access the same memory region; distinct from message passing.
+
+**Related Concepts**: Message Passing, Race Condition, Synchronization
+
+---
+
+### Side Output
+
+**Definition**: A mechanism separating specific data from the main stream to a side stream, used for handling late data or anomalies.
+
+**Related Concepts**: Late Data, Data Splitting, Main Stream
+
+**Reference Documents**:
+
+- `Knowledge/02-design-patterns/pattern-side-output.md`
+
+---
+
+### Smart Checkpointing [Flink 2.0+]
+
+**Definition**: An adaptive distributed state snapshot mechanism capable of dynamically adjusting checkpoint strategies based on runtime load.
+
+**Core Strategies**:
+
+- **Adaptive checkpoint interval**: Dynamic adjustment based on load
+- **Incremental checkpoint optimization**: Capturing only changed state
+- **Partial checkpoint**: Fault-domain isolated snapshots
+- **Checkpoint parallelism optimization**: Dynamic parallelism adjustment
+
+**Formal Definition**:
+
+```
+SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
+```
+
+**Related Concepts**: Checkpoint, Incremental Checkpoint, Adaptive Execution Engine, ForSt
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
+
+---
+
+### Sink
+
+**Definition**: A component in stream processing that writes data to external systems.
+
+**Related Concepts**: Source, Connector, Exactly-Once
+
+---
+
+### Sliding Window
+
+**Definition**: Fixed-size windows sliding by fixed steps, with possible overlap between windows.
+
+**Formal Definition**:
+
+```
+Sliding(δ, s): wid_n = [n·s, n·s + δ)
+```
+
+**Related Concepts**: Tumbling Window, Session Window, Window
+
+---
+
+### Slot
+
+**Definition**: The basic unit of resource allocation in Flink TaskManager; one Task Slot can execute one task chain.
+
+**Related Concepts**: TaskManager, Task, Resource
+
+---
+
+### Source
+
+**Definition**: A component in stream processing that reads data from external systems.
+
+**Related Concepts**: Sink, Connector, Offset
+
+---
+
+### Source Split
+
+**Definition**: A parallel readable unit of data sources, such as Kafka partitions.
+
+**Related Concepts**: Source, Parallelism, Partition
+
+---
+
+### Split-Level Watermark
+
+**Definition**: A mechanism for generating Watermarks at the Source Split level, supporting finer-grained flow control.
+
+**Related Concepts**: Watermark, Source Split
+
+**Reference Documents**:
+
+- `Flink/15-observability/split-level-watermark-metrics.md`
+
+---
+
+### SQL/Table API
+
+**Definition**: A declarative API provided by Flink supporting standard SQL and Table DSL.
+
+**Related Concepts**: DataStream API, Query Optimization, Calcite
+
+**Reference Documents**:
+
+- `Flink/03-sql-table-api/sql-vs-datastream-comparison.md`
+
+---
+
+### State
+
+**Definition**: Data maintained across records in stream processing; the foundation of stateful computation.
+
+**Categories**:
+
+- **Keyed State**: Keyed state
+- **Operator State**: Operator state
+- **Broadcast State**: Broadcast state
+
+**Related Concepts**: Stateful Processing, State Backend
 
 ---
 
 ### State Backend
 
-**Definition**: The mechanism and storage system used by Flink to maintain and checkpoint operator state.
+**Definition**: A runtime component responsible for state storage, access, and snapshot persistence.
 
-**Types**: MemoryStateBackend, FsStateBackend, RocksDBStateBackend
+**Implementation Types**:
 
-**Related**: [Checkpoint](#c), [Queryable State](#q), [Recovery](#r)
+- **HashMapStateBackend**: Memory storage
+- **EmbeddedRocksDBStateBackend**: Disk storage
+- **ForStStateBackend**: Flink 2.0 next-generation backend
+
+**Related Concepts**: State, Checkpoint, Recovery
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/06-engineering/state-backend-selection.md`
+
+---
+
+### Stateful Stream Processing
+
+**Definition**: A stream computing pattern maintaining and using state across records.
+
+**Formal Definition**:
+
+```
+F: (K, V) × State[K] → State[K] × O
+```
+
+**Related Concepts**: Stateless Processing, State, Keyed State
+
+---
+
+### State Partitioning
+
+**Definition**: A strategy for distributing Keyed State to multiple parallel instances.
+
+**Related Concepts**: Key Group, Parallelism, Keyed State
+
+---
+
+### State TTL
+
+**Definition**: Setting expiration times for state, automatically cleaning expired data.
+
+**Related Concepts**: State, Cleanup, Expiration
 
 ---
 
 ### Stream Processing
 
-**Definition**: A computing paradigm for processing continuous, potentially unbounded data streams in real-time.
+**Definition**: A computing pattern processing infinite, unbounded data streams in real-time or near-real-time.
 
-**Related**: [Batch Processing](#b), [Event Time](#e), [Dataflow](#d)
+**Characteristics**:
+
+- Input data is unbounded
+- Sequential processing, record-by-record
+- Latency-sensitive, pursuit of low latency
+
+**Related Concepts**: Batch Processing, Unbounded Stream, Real-time Processing
+
+---
+
+### Streaming Database
+
+**Definition**: A database system natively supporting continuous queries and automatic incremental view maintenance.
+
+**Representative Systems**: RisingWave, Materialize, Timeplus
+
+**Related Concepts**: Materialized View, Continuous Query, Stream Processing
+
+**Reference Documents**:
+
+- `Knowledge/06-frontier/streaming-databases.md`
+
+---
+
+### Strong Consistency
+
+**Definition**: The strongest consistency model requiring all operations to appear as if executed atomically at a single point in time.
+
+**Related Concepts**: Linearizability, Serializability, Causal Consistency
+
+---
+
+### Synchronization
+
+**Definition**: Coordination mechanisms between concurrent entities to control execution order and access to shared resources.
+
+**Related Concepts**: Concurrency, Race Condition, Mutex
 
 ---
 
@@ -736,96 +2045,298 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 ### Table API
 
-**Definition**: A declarative, unified API for batch and stream processing in Flink, based on relational concepts.
+**Definition**: A relational API provided by Flink using Table abstraction and embedded DSL.
 
-**Related**: [SQL](#s), [DataStream API](#d), [Flink](#f)
+**Related Concepts**: SQL, DataStream API, Relational Algebra
+
+---
+
+### Task
+
+**Definition**: The basic unit of execution in Flink, representing an instance of an operator or operator chain.
+
+**Related Concepts**: Operator, TaskManager, Slot
+
+---
+
+### TaskManager
+
+**Definition**: A worker process in Flink cluster responsible for executing tasks and maintaining local state.
+
+**Related Concepts**: JobManager, ResourceManager, Slot
+
+---
+
+### TLA+
+
+**Definition**: A formal specification language for describing and verifying concurrent and distributed systems.
+
+**Related Concepts**: Model Checking, Formal Verification, Temporal Logic
+
+**Reference Documents**:
+
+- `Struct/07-tools/tla-for-flink.md`
 
 ---
 
 ### Throughput
 
-**Definition**: The rate at which a system can process data, typically measured in records or bytes per second.
+**Definition**: The number of records or data volume processed per unit time.
 
-**Related**: [Latency](#l), [Backpressure](#b), [Parallelism](#p)
+**Related Concepts**: Latency, Performance, Scalability
+
+---
+
+### Timer
+
+**Definition**: A mechanism for triggering callbacks at specific time points in Flink.
+
+**Types**: Processing Time Timer, Event Time Timer
+
+**Related Concepts**: ProcessFunction, Event Time, Window
 
 ---
 
 ### Time Window
 
-**Definition**: A window that groups events based on time boundaries.
+**Definition**: A window defined by time boundaries.
 
 **Types**: Tumbling Window, Sliding Window, Session Window
 
-**Related**: [Window](#w), [Event Time](#e), [Watermark](#w)
+**Related Concepts**: Window, Event Time, Processing Time
+
+---
+
+### Transaction
+
+**Definition**: A logical unit of work with ACID properties (Atomicity, Consistency, Isolation, Durability).
+
+**Related Concepts**: Exactly-Once, 2PC, Distributed Transaction
+
+---
+
+### Trigger
+
+**Definition**: A mechanism determining when window results are calculated and emitted.
+
+**Related Concepts**: Window, Emit, Pane
+
+---
+
+### Tumbling Window
+
+**Definition**: Fixed-size, non-overlapping windows.
+
+**Formal Definition**:
+
+```
+Tumbling(δ): wid_n = [n·δ, (n+1)·δ)
+```
+
+**Related Concepts**: Sliding Window, Session Window, Window
+
+---
+
+### Type Safety
+
+**Definition**: A property where well-typed programs do not exhibit type errors at runtime.
+
+**Formal Definition**:
+
+```
+⊢ P: T ∧ P →* P' ⇒ ⊢ P': T
+```
+
+**Related Concepts**: Type System, Type Checking, Preservation
 
 ---
 
 ## U
 
+### UDF (User-Defined Function)
+
+**Definition**: Custom functions provided by users extending Flink's built-in capabilities.
+
+**Types**: Scalar Function, Table Function, Aggregate Function
+
+**Related Concepts**: Operator, SQL, Table API
+
+---
+
 ### Unaligned Checkpoint
 
-**Definition**: A checkpoint mechanism where operators can snapshot state without waiting for barriers from all inputs, reducing latency impact.
+**Definition**: In Flink, a Checkpoint mechanism that buffers in-flight data without requiring operator alignment.
 
-**Related**: [Aligned Checkpoint](#a), [Barrier](#b), [Checkpoint](#c)
+**Related Concepts**: Aligned Checkpoint, Barrier, Buffer
+
+**Reference Documents**:
+
+- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`
 
 ---
 
 ### Unbounded Stream
 
-**Definition**: A data stream with no predefined end, potentially infinite.
+**Definition**: A data stream with infinite data volume; the data abstraction for stream processing.
 
-**Related**: [Bounded Stream](#b), [Stream Processing](#s)
+**Formal Definition**:
+
+```
+Unbounded(S) ⟺ |S| = ∞
+```
+
+**Related Concepts**: Bounded Stream, Stream Processing
+
+---
+
+## V
+
+### Vector Clock
+
+**Definition**: A logical clock mechanism capturing causal relationships between events in distributed systems.
+
+**Related Concepts**: Lamport Clock, Happens-Before, Causal Consistency
+
+---
+
+### Vector Search
+
+**Definition**: A search technology based on vector similarity calculation, used in semantic search and RAG.
+
+**Related Concepts**: Embedding, RAG, Semantic Matching, Vector Database
+
+---
+
+### Version Control
+
+**Definition**: A system for tracking and managing changes to documents and code.
+
+**Related Concepts**: Git, State Versioning, Checkpoint
 
 ---
 
 ## W
 
+### WAL (Write-Ahead Log)
+
+**Definition**: A durability technique where changes are first written to a log before being applied to the database.
+
+**Related Concepts**: Durability, Checkpoint, Recovery
+
+---
+
 ### Watermark
 
-**Definition**: A metadata record in stream processing that indicates the progress of event time and helps determine when windows can be closed.
+**Definition**: A timestamp marker in Flink indicating the progress of event time.
 
 **Formal Definition**:
 
 ```
-Watermark(t) ⟺ ∀e ∈ Stream: timestamp(e) ≤ t ⟹ e has arrived
+WM(t): t_event ≤ t is considered complete
 ```
 
-**Related**: [Event Time](#e), [Window](#w), [Late Data](#l)
+**Related Concepts**: Event Time, Lateness, Window
 
-**Reference**:
+**Reference Documents**:
 
+- `Struct/01-foundation/01.01-unified-streaming-theory.md` (Def-S-01-06)
 - `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
-- `Struct/02-properties/02.03-watermark-monotonicity.md` (Lemma-S-04-02)
+
+---
+
+### WebAssembly (WASM)
+
+**Definition**: A portable binary instruction format enabling high-performance execution in web browsers and other environments.
+
+**Flink Applications**: WASM UDF, cross-language portability
+
+**Related Concepts**: UDF, Portable, Polyglot
 
 ---
 
 ### Window
 
-**Definition**: A logical grouping of events based on time or other criteria for aggregation and analysis.
+**Definition**: A mechanism dividing unbounded streams into bounded collections for processing.
 
-**Types**: Tumbling, Sliding, Session, Global
+**Types**: Tumbling Window, Sliding Window, Session Window, Global Window
 
-**Related**: [Windowed Aggregation](#w), [Event Time](#e), [Watermark](#w)
-
----
-
-## Appendix: Abbreviations
-
-| Abbreviation | Full Form |
-|--------------|-----------|
-| AEE | Adaptive Execution Engine |
-| AL | At-Least-Once |
-| AM | At-Most-Once |
-| CEP | Complex Event Processing |
-| CDC | Change Data Capture |
-| CCS | Calculus of Communicating Systems |
-| CSP | Communicating Sequential Processes |
-| EO | Exactly-Once |
-| FLIP | Flink Improvement Proposal |
-| MCP | Model Context Protocol |
-| SLA | Service Level Agreement |
-| SQL | Structured Query Language |
+**Related Concepts**: Event Time, Processing Time, Trigger
 
 ---
 
-*This glossary follows the AnalysisDataFlow six-section documentation template*
+### Windowed Aggregation
+
+**Definition**: Aggregation operations performed within window boundaries.
+
+**Related Concepts**: Window, Aggregation, Group By
+
+---
+
+## X
+
+(No entries)
+
+---
+
+## Y
+
+(No entries)
+
+---
+
+## Z
+
+(No entries)
+
+---
+
+## Appendix A: Chinese-English Terminology Mapping
+
+| Chinese | English | Abbreviation |
+|---------|---------|--------------|
+| 流处理 | Stream Processing | SP |
+| 批处理 | Batch Processing | BP |
+| 检查点 | Checkpoint | CP |
+| 水印 | Watermark | WM |
+| 窗口 | Window | - |
+| 恰好一次 | Exactly-Once | EO |
+| 至少一次 | At-Least-Once | ALO |
+| 最多一次 | At-Most-Once | AMO |
+| 背压 | Backpressure | BP |
+| 状态管理 | State Management | - |
+| 事件时间 | Event Time | - |
+| 处理时间 | Processing Time | - |
+| Actor 模型 | Actor Model | - |
+| 通信顺序进程 | Communicating Sequential Processes | CSP |
+| 消息传递 | Message Passing | - |
+| 进程演算 | Process Calculus | - |
+| 双模拟 | Bisimulation | - |
+| 类型系统 | Type System | - |
+| 物化视图 | Materialized View | MV |
+| 持续查询 | Continuous Query | CQ |
+
+---
+
+## Appendix B: Flink Version Annotations
+
+| Annotation | Meaning |
+|------------|---------|
+| [Flink 1.x] | Features introduced in Flink 1.x versions |
+| [Flink 2.0+] | Features introduced in Flink 2.0 and later |
+| [Flink 2.4] | Features planned/introduced in Flink 2.4 |
+| [Flink 2.5+] | Features planned/introduced in Flink 2.5 and later |
+| [Flink 3.0] | Features planned for Flink 3.0 |
+| [GA] | General Availability - production ready |
+| [Preview] | Preview feature - early access |
+
+---
+
+**Document Version History**:
+
+| Version | Date | Changes |
+|---------|------|---------|
+| v1.0 | 2026-04-04 | Initial English version translated from GLOSSARY.md |
+
+---
+
+*This document is the English version of the AnalysisDataFlow project glossary. For the Chinese source version, please refer to [GLOSSARY.md](./GLOSSARY.md)*

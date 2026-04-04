@@ -274,7 +274,7 @@ $$
 
 ## 3. 关系建立 (Relations)
 
-### 关系: Windowed Aggregation `↦` Def-S-04-05
+### 关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}
 
 **编码存在性** [^4]：
 

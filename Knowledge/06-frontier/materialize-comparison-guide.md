@@ -772,7 +772,7 @@ COPY (SUBSCRIBE TO current_inventory) TO STDOUT;
             Materialize (特征分析, 离线验证)
 ```
 
-### 6.4 混合架构：Flink + Materialize
+### 6.4 混合架构：Flink + Materialize {#64-混合架构flink--materialize}
 
 **场景描述**：大型电商平台需要同时满足：
 

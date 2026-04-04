@@ -1,0 +1,539 @@
+# =============================================================================
+# AnalysisDataFlow 外部链接健康检查自动化工作流
+# =============================================================================
+# 任务: P1-5~7 - 外部链接健康检查自动化
+#
+# 功能:
+# - P1-5: 每月自动执行全量外部链接健康检查
+# - P1-6: 自动修复可修复的链接（http→https、重定向等）
+# - P1-7: 为失效链接查找Wayback Machine存档版本
+#
+# 触发条件: 每月1日 UTC 02:00 自动执行，或手动触发
+# =============================================================================
+
+name: External Link Health Check Automation
+
+on:
+  # 定期运行: 每月1日 UTC 02:00
+  schedule:
+    - cron: '0 2 1 * *'
+  
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      auto_fix:
+        description: '自动修复可修复的链接'
+        required: false
+        default: true
+        type: boolean
+      wayback:
+        description: '查找Wayback Machine存档'
+        required: false
+        default: true
+        type: boolean
+      dry_run:
+        description: '试运行模式（不实际修改）'
+        required: false
+        default: false
+        type: boolean
+      timeout:
+        description: '请求超时时间（秒）'
+        required: false
+        default: '30'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.11'
+  AUTO_FIX: ${{ github.event.inputs.auto_fix || 'true' }}
+  WAYBACK: ${{ github.event.inputs.wayback || 'true' }}
+  DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+  TIMEOUT: ${{ github.event.inputs.timeout || '30' }}
+
+jobs:
+  # ===========================================================================
+  # Job 1: 执行外部链接健康检查 (P1-5)
+  # ===========================================================================
+  health-check:
+    name: 全量链接健康检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aiohttp
+      
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            link-checker-cache-${{ runner.os }}-
+      
+      - name: Run external link health check
+        id: health_check
+        run: |
+          echo "::group::执行全量链接健康检查"
+          python .scripts/link-health-checker.py \
+            --path . \
+            --output reports/link-health-report.md \
+            --json reports/link-health-results.json \
+            --timeout ${{ env.TIMEOUT }} \
+            --retries 3 \
+            --concurrent 30
+          echo "::endgroup::"
+        continue-on-error: true
+      
+      - name: Upload health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-health-report
+          path: |
+            reports/link-health-report.md
+            reports/link-health-results.json
+          retention-days: 90
+      
+      - name: Parse check results
+        id: parse_results
+        run: |
+          if [ -f reports/link-health-results.json ]; then
+            BROKEN=$(python3 -c "import json; data=json.load(open('reports/link-health-results.json')); print(data['summary']['broken_external'])")
+            REDIRECT=$(python3 -c "import json; data=json.load(open('reports/link-health-results.json')); print(data['summary']['redirect_links'])")
+            TIMEOUT=$(python3 -c "import json; data=json.load(open('reports/link-health-results.json')); print(data['summary']['timeout_links'])")
+            TOTAL=$(python3 -c "import json; data=json.load(open('reports/link-health-results.json')); print(data['summary']['total_links'])")
+            
+            echo "broken_links=$BROKEN" >> $GITHUB_OUTPUT
+            echo "redirect_links=$REDIRECT" >> $GITHUB_OUTPUT
+            echo "timeout_links=$TIMEOUT" >> $GITHUB_OUTPUT
+            echo "total_links=$TOTAL" >> $GITHUB_OUTPUT
+            
+            echo "检查结果:"
+            echo "  - 总链接数: $TOTAL"
+            echo "  - 失效链接: $BROKEN"
+            echo "  - 重定向链接: $REDIRECT"
+            echo "  - 超时链接: $TIMEOUT"
+          else
+            echo "broken_links=0" >> $GITHUB_OUTPUT
+            echo "redirect_links=0" >> $GITHUB_OUTPUT
+            echo "timeout_links=0" >> $GITHUB_OUTPUT
+            echo "total_links=0" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Set job outputs
+        id: set_outputs
+        run: |
+          echo "health_check_exit_code=${{ steps.health_check.outcome == 'failure' && '1' || '0' }}" >> $GITHUB_OUTPUT
+
+    outputs:
+      broken_links: ${{ steps.parse_results.outputs.broken_links }}
+      redirect_links: ${{ steps.parse_results.outputs.redirect_links }}
+      timeout_links: ${{ steps.parse_results.outputs.timeout_links }}
+      total_links: ${{ steps.parse_results.outputs.total_links }}
+      health_check_exit_code: ${{ steps.set_outputs.outputs.health_check_exit_code }}
+
+  # ===========================================================================
+  # Job 2: 自动修复链接 (P1-6)
+  # ===========================================================================
+  auto-fix:
+    name: 自动修复可修复链接
+    runs-on: ubuntu-latest
+    needs: health-check
+    if: |
+      needs.health-check.outputs.redirect_links > 0 && 
+      github.event.inputs.auto_fix != 'false'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aiohttp
+      
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            link-checker-cache-${{ runner.os }}-
+      
+      - name: Auto-fix redirect links
+        run: |
+          echo "::group::自动修复重定向链接 (P1-6)"
+          if [ "${{ env.DRY_RUN }}" == "true" ]; then
+            python .scripts/link-health-checker.py \
+              --auto-fix \
+              --dry-run \
+              --timeout ${{ env.TIMEOUT }}
+          else
+            python .scripts/link-health-checker.py \
+              --auto-fix \
+              --timeout ${{ env.TIMEOUT }}
+          fi
+          echo "::endgroup::"
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "没有需要提交的更改"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "检测到文件更改"
+            git diff --stat
+          fi
+      
+      - name: Commit changes
+        if: steps.check_changes.outputs.has_changes == 'true' && env.DRY_RUN != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "🤖 自动修复重定向链接 (P1-6)
+
+          - 修复了 ${{ needs.health-check.outputs.redirect_links }} 个重定向链接
+          - 自动更新为目标URL
+          - 执行时间: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          git push
+
+  # ===========================================================================
+  # Job 3: Wayback Machine 存档查找 (P1-7)
+  # ===========================================================================
+  wayback-archive:
+    name: 查找Wayback存档链接
+    runs-on: ubuntu-latest
+    needs: health-check
+    if: |
+      needs.health-check.outputs.broken_links > 0 && 
+      github.event.inputs.wayback != 'false'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aiohttp
+      
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            link-checker-cache-${{ runner.os }}-
+      
+      - name: Query Wayback Machine
+        id: wayback_query
+        run: |
+          echo "::group::查询Wayback Machine存档 (P1-7)"
+          python .scripts/link-health-checker.py \
+            --wayback \
+            --timeout ${{ env.TIMEOUT }} \
+            --output reports/wayback-suggestions.md \
+            --json reports/wayback-results.json
+          echo "::endgroup::"
+        continue-on-error: true
+      
+      - name: Upload Wayback report
+        uses: actions/upload-artifact@v4
+        with:
+          name: wayback-archive-suggestions
+          path: |
+            reports/wayback-suggestions.md
+            reports/wayback-results.json
+          retention-days: 90
+      
+      - name: Parse Wayback results
+        id: parse_wayback
+        run: |
+          if [ -f reports/wayback-results.json ]; then
+            FOUND=$(python3 -c "import json; data=json.load(open('reports/wayback-results.json')); print(len([u for u in data.get('wayback_updates', {}).get('skipped', []) if 'archive_url' in u]))")
+            echo "archives_found=$FOUND" >> $GITHUB_OUTPUT
+            echo "找到 $FOUND 个Wayback存档链接"
+          else
+            echo "archives_found=0" >> $GITHUB_OUTPUT
+          fi
+
+    outputs:
+      archives_found: ${{ steps.parse_wayback.outputs.archives_found }}
+
+  # ===========================================================================
+  # Job 4: 创建Issue跟踪失效链接
+  # ===========================================================================
+  create-tracking-issue:
+    name: 创建跟踪Issue
+    runs-on: ubuntu-latest
+    needs: [health-check, auto-fix, wayback-archive]
+    if: needs.health-check.outputs.broken_links > 0
+    
+    permissions:
+      issues: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Download health check results
+        uses: actions/download-artifact@v4
+        with:
+          name: link-health-report
+          path: reports
+      
+      - name: Download Wayback results
+        uses: actions/download-artifact@v4
+        with:
+          name: wayback-archive-suggestions
+          path: reports
+        continue-on-error: true
+      
+      - name: Create tracking issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // 读取报告
+            const reportPath = 'reports/link-health-report.md';
+            let reportContent = '';
+            if (fs.existsSync(reportPath)) {
+              reportContent = fs.readFileSync(reportPath, 'utf8');
+            }
+            
+            // 提取失效链接部分
+            const brokenMatch = reportContent.match(/## ❌ 失效链接[\s\S]*?(?=## |$)/);
+            const brokenSection = brokenMatch ? brokenMatch[0] : '详细信息请查看完整报告';
+            
+            // 提取Wayback建议
+            let waybackSection = '';
+            const waybackPath = 'reports/wayback-suggestions.md';
+            if (fs.existsSync(waybackPath)) {
+              const waybackContent = fs.readFileSync(waybackPath, 'utf8');
+              const waybackMatch = waybackContent.match(/## 📦 Wayback Machine[\s\S]*?(?=## |$)/);
+              waybackSection = waybackMatch ? waybackMatch[0] : '';
+            }
+            
+            const issueTitle = `🔗 外部链接健康检查报告 - ${new Date().toISOString().split('T')[0]}`;
+            const issueBody = `## 链接健康检查自动化报告
+
+**检查时间:** ${new Date().toISOString()}
+**执行工作流:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+
+### 检查结果摘要
+
+| 指标 | 数值 |
+|------|------|
+| 检查的外部链接总数 | ${{ needs.health-check.outputs.total_links }} |
+| ❌ 失效链接 | ${{ needs.health-check.outputs.broken_links }} |
+| 🔄 重定向链接 | ${{ needs.health-check.outputs.redirect_links }} |
+| ⏱️ 超时链接 | ${{ needs.health-check.outputs.timeout_links }} |
+| 📦 Wayback存档 | ${{ needs.wayback-archive.outputs.archives_found || 0 }} |
+
+### 失效链接详情
+
+${brokenSection.substring(0, 2000)}${brokenSection.length > 2000 ? '\n\n... (截断，请查看完整报告)' : ''}
+
+${waybackSection ? '### Wayback Machine 存档建议\n\n' + waybackSection.substring(0, 1000) : ''}
+
+### 建议操作
+
+1. **高优先级**: 修复上述失效链接
+   - 使用Wayback Machine存档链接替换失效链接
+   - 查找替代URL
+   - 移除不可用的链接
+
+2. **自动修复**: 重定向链接已自动修复
+   - 查看提交历史了解更改详情
+
+3. **手动修复命令**:
+   \`\`\`bash
+   # 查看所有失效链接
+   python .scripts/link-health-checker.py --output reports/check.md
+   
+   # 查找Wayback存档
+   python .scripts/link-health-checker.py --wayback --output reports/wayback.md
+   
+   # 应用自动修复（试运行）
+   python .scripts/link-health-checker.py --auto-fix --dry-run
+   \`\`\`
+
+### 完整报告
+
+请查看工作流 Artifact 中的完整报告:
+- \`reports/link-health-report.md\`
+- \`reports/link-health-results.json\`
+- \`reports/wayback-suggestions.md\` (Wayback存档建议)
+
+---
+*本Issue由链接健康检查自动化系统创建 (P1-5~7)*
+*下次检查: 下个月1日*`
+            .replace(/            /g, '');
+            
+            // 查找是否存在同类型未关闭的Issue
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'link-health,automated'
+            });
+            
+            const existingIssue = issues.find(i => i.title.includes('🔗 外部链接健康检查报告'));
+            
+            if (existingIssue) {
+              // 更新现有Issue
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: issueBody
+              });
+              console.log(`Updated existing issue #${existingIssue.number}`);
+            } else {
+              // 创建新Issue
+              const { data: newIssue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ['link-health', 'automated', 'maintenance', 'P1-5', 'P1-6', 'P1-7']
+              });
+              console.log(`Created new issue #${newIssue.number}`);
+            }
+
+  # ===========================================================================
+  # Job 5: 发送通知摘要
+  # ===========================================================================
+  notification:
+    name: 发送通知
+    runs-on: ubuntu-latest
+    needs: [health-check, auto-fix, wayback-archive]
+    if: always()
+    
+    steps:
+      - name: Generate notification summary
+        run: |
+          echo "## 🔗 外部链接健康检查完成" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 检查结果 (P1-5)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 指标 | 数值 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 检查的外部链接总数 | ${{ needs.health-check.outputs.total_links }} | - |" >> $GITHUB_STEP_SUMMARY
+          
+          BROKEN="${{ needs.health-check.outputs.broken_links }}"
+          if [ "$BROKEN" -eq 0 ]; then
+            echo "| ❌ 失效链接 | $BROKEN | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$BROKEN" -lt 5 ]; then
+            echo "| ❌ 失效链接 | $BROKEN | ⚠️ 需要关注 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| ❌ 失效链接 | $BROKEN | ❌ 超过阈值 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          REDIRECT="${{ needs.health-check.outputs.redirect_links }}"
+          if [ "$REDIRECT" -eq 0 ]; then
+            echo "| 🔄 重定向链接 | $REDIRECT | ✅ 无需修复 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔄 重定向链接 | $REDIRECT | ✅ 已自动修复 (P1-6) |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "| ⏱️ 超时链接 | ${{ needs.health-check.outputs.timeout_links }} | - |" >> $GITHUB_STEP_SUMMARY
+          
+          ARCHIVES="${{ needs.wayback-archive.outputs.archives_found || 0 }}"
+          if [ "$ARCHIVES" -gt 0 ]; then
+            echo "| 📦 Wayback存档 | $ARCHIVES | ✅ 已找到 (P1-7) |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 添加操作指引
+          if [ "$BROKEN" -gt 0 ]; then
+            echo "### 需要人工处理" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "发现 $BROKEN 个失效链接需要手动修复:" >> $GITHUB_STEP_SUMMARY
+            echo "1. 查看详细报告 (Artifacts)" >> $GITHUB_STEP_SUMMARY
+            echo "2. 或使用以下命令:" >> $GITHUB_STEP_SUMMARY
+            echo "   \`python .scripts/link-health-checker.py --wayback\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "### 报告下载" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📄 [查看完整报告](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+  # ===========================================================================
+  # Job 6: 更新状态徽章
+  # ===========================================================================
+  update-badge:
+    name: 更新状态徽章
+    runs-on: ubuntu-latest
+    needs: health-check
+    if: github.event_name == 'schedule' && !cancelled()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Update badge status file
+        run: |
+          BROKEN="${{ needs.health-check.outputs.broken_links }}"
+          TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          
+          mkdir -p .stats
+          cat > .stats/link-health-status.json << EOF
+          {
+            "schemaVersion": 1,
+            "label": "external links",
+            "message": "$BROKEN broken",
+            "color": "$([ "$BROKEN" -eq 0 ] && echo "brightgreen" || [ "$BROKEN" -lt 5 ] && echo "yellow" || echo "red")",
+            "cached": "$TIMESTAMP"
+          }
+          EOF
+          
+          echo "Status badge data updated"
+      
+      - name: Commit status file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .stats/link-health-status.json
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📊 更新链接健康状态徽章
+            
+            - 失效链接数: ${{ needs.health-check.outputs.broken_links }}
+            - 检查时间: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi

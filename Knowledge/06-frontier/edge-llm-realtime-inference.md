@@ -210,7 +210,7 @@ $$\tau_i = \tau_{i-1} + \Delta t_{gen}, \quad \Delta t_{gen} \approx \frac{1}{TP
 
 ---
 
-### Def-K-06-64: 模型量化与压缩 (Model Quantization & Compression)
+### Def-K-06-64: 模型量化与压缩 (Model Quantization & Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}
 
 **模型量化**是将高精度浮点权重转换为低精度整数表示的技术，在保持可接受精度的前提下大幅降低计算和存储开销。
 

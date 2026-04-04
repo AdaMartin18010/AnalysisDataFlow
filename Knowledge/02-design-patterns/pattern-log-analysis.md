@@ -208,7 +208,7 @@ $$
 
 ## 3. 关系建立 (Relations)
 
-### 关系: Log Analysis `↦` Windowed Aggregation
+### 关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}
 
 **依赖关系** [^1][^8]：
 
@@ -232,7 +232,7 @@ $$
 
 ---
 
-### 关系: Log Analysis `↦` CEP Pattern
+### 关系: Log Analysis `↦` CEP Pattern {#关系-log-analysis--cep-pattern}
 
 **互补关系** [^7][^9]：
 
