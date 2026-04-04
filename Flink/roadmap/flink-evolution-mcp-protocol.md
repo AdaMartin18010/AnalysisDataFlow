@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-MCP-01: Model Context Protocol
+
 模型上下文协议：
 $$
 \text{MCP} : \text{Agent} \leftrightarrow \text{Tool}
 $$
 
 ### Def-F-MCP-02: Tool Definition
+
 工具定义：
 $$
 \text{Tool} = (\text{Name}, \text{Description}, \text{Parameters}, \text{Returns})
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-MCP-01: Tool Discovery
+
 工具发现：
 $$
 \text{Agent} \xrightarrow{\text{discover}} \{\text{Tool}_i\}_{i=1}^n
@@ -56,14 +59,14 @@ graph TB
 // MCP工具调用
 public class MCPToolCall extends ProcessFunction<Event, Result> {
     private transient MCPClient mcp;
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) {
         ToolCall call = ToolCall.builder()
             .tool("query_database")
             .parameter("sql", event.getQuery())
             .build();
-        
+
         ToolResult result = mcp.call(call);
         out.collect(new Result(result));
     }

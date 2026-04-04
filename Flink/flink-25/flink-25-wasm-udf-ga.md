@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-13: WebAssembly UDF
+
 WebAssembly UDF是用WASM字节码实现的自定义函数：
 $$
 \text{WASM-UDF} : \text{Input}^n \xrightarrow{\text{WASM}} \text{Output}^m
 $$
 
 ### Def-F-25-14: WASM Runtime
+
 WASM运行时执行WASM模块：
 $$
 \text{Runtime} = \langle \text{Engine}, \text{Store}, \text{Module}, \text{Instance} \rangle
 $$
 
 ### Def-F-25-15: Sandboxed Execution
+
 沙箱执行保证UDF隔离性：
 $$
 \forall \text{UDF} : \text{Isolated}(\text{UDF}) \land \text{ResourceConstrained}(\text{UDF})
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-09: Execution Isolation
+
 UDF执行隔离性：
 $$
 \text{UDF}_i \perp \text{UDF}_j \implies \text{NoSharedState}(\text{UDF}_i, \text{UDF}_j)
 $$
 
 ### Prop-F-25-10: Startup Latency
+
 WASM启动延迟：
 $$
 T_{\text{startup}} < 10\text{ms}
@@ -78,43 +83,43 @@ $$
 
 ```java
 public class WasmScalarFunction extends ScalarFunction {
-    
+
     private final String wasmModulePath;
     private transient Instance wasmInstance;
-    
+
     @Override
     public void open(FunctionContext context) {
         // 加载WASM模块
         Engine engine = new Engine();
         Store store = new Store(engine);
         Module module = Module.fromFile(engine, wasmModulePath);
-        
+
         // 创建WASI环境
         WasiOptions wasiOpts = new WasiOptions.Builder()
             .withStdout(System.out)
             .withStderr(System.err)
             .build();
-        
+
         Wasi wasi = new Wasi(store, wasiOpts);
-        
+
         // 实例化模块
         wasmInstance = new Instance(store, module, wasi.toImportObject());
     }
-    
+
     public String eval(String input) {
         // 调用WASM函数
         Memory memory = wasmInstance.exports.getMemory("memory");
         Func processFunc = wasmInstance.exports.getFunction("process");
-        
+
         // 写入输入到WASM内存
         int ptr = allocate(memory, input.getBytes(StandardCharsets.UTF_8));
-        
+
         // 调用函数
         int resultPtr = (int) processFunc.apply(ptr, input.length());
-        
+
         // 读取结果
         String result = readString(memory, resultPtr);
-        
+
         return result;
     }
 }
@@ -131,10 +136,10 @@ pub extern "C" fn process(ptr: i32, len: i32) -> i32 {
         let slice = std::slice::from_raw_parts(ptr as *const u8, len as usize);
         std::str::from_utf8_unchecked(slice)
     };
-    
+
     // 执行处理
     let output = input.to_uppercase();
-    
+
     // 写入结果到WASM内存
     allocate_and_write(&output)
 }
@@ -196,17 +201,17 @@ graph TB
         B[C++]
         C[Go]
     end
-    
+
     subgraph "编译"
         D[wasm32-wasi]
         E[Emscripten]
         F[TinyGo]
     end
-    
+
     subgraph "运行时"
         G[WASM模块]
     end
-    
+
     A --> D
     B --> E
     C --> F
@@ -217,7 +222,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: WebAssembly Specification, https://webassembly.github.io/spec/
+[^1]: WebAssembly Specification, <https://webassembly.github.io/spec/>
 
 ---
 

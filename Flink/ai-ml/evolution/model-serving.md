@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Serving-01: Model Serving
+
 模型服务：
 $$
 \text{Serving} : \text{Model} \times \text{Version} \to \text{Endpoint}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Serving-01: A/B Testing
+
 A/B测试：
 $$
 \text{Traffic} = \alpha \cdot \text{Model}_A + (1-\alpha) \cdot \text{Model}_B

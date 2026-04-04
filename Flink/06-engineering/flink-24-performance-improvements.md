@@ -52,6 +52,7 @@ Flink 2.4 网络信用值流控系统定义为五元组：
 $$\mathcal{C}_{credit} = \langle B_{buf}, C_{avail}, T_{threshold}, R_{refill}, P_{priority} \rangle$$
 
 其中：
+
 - $B_{buf}$: 缓冲区总容量（默认32MB per channel）
 - $C_{avail}$: 可用信用值（动态计算）
 - $T_{threshold}$: 流控阈值（默认70%）
@@ -105,6 +106,7 @@ ForSt（Flink优化版RocksDB）异步状态访问模型：
 $$\mathcal{A}_{forst} = \langle Q_{async}, T_{pool}, C_{cache}, I_{index} \rangle$$
 
 其中：
+
 - $Q_{async}$: 异步IO请求队列
 - $T_{pool}$: 专用IO线程池（默认CPU核心数）
 - $C_{cache}$: 分层缓存系统（BlockCache + PageCache）
@@ -176,7 +178,7 @@ graph TB
         C -->|影响| G[启动时间优化]
         G -->|前置| A
     end
-    
+
     style A fill:#e1f5fe
     style B fill:#e1f5fe
     style C fill:#e1f5fe
@@ -205,17 +207,17 @@ flowchart TD
     B -->|POJO| C[启用POJO序列化]
     B -->|Avro| D[启用Avro优化]
     B -->|Row| E[行式序列化]
-    
+
     A --> F{状态大小?}
     F -->|< 100MB| G[HashMapStateBackend]
     F -->|100MB-10GB| H[RocksDBStateBackend]
     F -->|> 10GB| I[ForStStateBackend]
-    
+
     A --> J{查询类型?}
     J -->|流处理| K[启用增量Checkpoint]
     J -->|批处理| L[启用动态分区裁剪]
     J -->|混合| M[自适应调度]
-    
+
     style C fill:#c8e6c9
     style D fill:#c8e6c9
     style E fill:#c8e6c9
@@ -419,7 +421,7 @@ public class AdaptiveJoinSelector {
         long leftSize = stats.getSize(spec.getLeft());
         long rightSize = stats.getSize(spec.getRight());
         long memAvailable = stats.getAvailableMemory();
-        
+
         if (canBroadcast(rightSize, memAvailable)) {
             return BroadcastJoin.create(spec);
         } else if (isAlreadySorted(spec)) {
@@ -473,7 +475,7 @@ public class UserEvent {
     public String eventType;
     public long timestamp;
     public double value;
-    
+
     // 必须提供无参构造器
     public UserEvent() {}
 }
@@ -599,7 +601,7 @@ SET table.exec.vectorized.batch-size = 2048;
 
 ```sql
 -- 测试查询：聚合Join操作
-SELECT 
+SELECT
     TUMBLE_START(rowtime, INTERVAL '1' MINUTE) as window_start,
     u.user_id,
     COUNT(*) as event_count,
@@ -641,13 +643,13 @@ tableEnv.executeSql("""
 
 // 启用动态分区裁剪
 tableEnv.getConfig().set(
-    OptimizerConfigOptions.TABLE_OPTIMIZER_DYNAMIC_PARTITION_PRUNING_ENABLED, 
+    OptimizerConfigOptions.TABLE_OPTIMIZER_DYNAMIC_PARTITION_PRUNING_ENABLED,
     true
 );
 
 // 查询将自动应用分区裁剪
 Table result = tableEnv.sqlQuery("""
-    SELECT * FROM user_events 
+    SELECT * FROM user_events
     WHERE event_date = '2026-04-01'
       AND event_hour BETWEEN '08' AND '12'
 """);
@@ -701,57 +703,57 @@ cluster.evenly-spread-out-slots: true
 graph TB
     subgraph "Flink 2.4 性能优化架构"
         direction TB
-        
+
         subgraph "网络层优化"
             N1[信用值流控]
             N2[零拷贝传输]
             N3[缓冲区压缩]
         end
-        
+
         subgraph "序列化优化"
             S1[POJO专用序列化器]
             S2[Avro优化]
             S3[行式格式]
         end
-        
+
         subgraph "内存管理"
             M1[分代内存池]
             M2[G1 GC调优]
             M3[托管内存优化]
         end
-        
+
         subgraph "状态访问"
             T1[ForSt异步IO]
             T2[增量Checkpoint]
             T3[分层缓存]
         end
-        
+
         subgraph "SQL执行"
             Q1[自适应Join]
             Q2[向量化执行]
             Q3[Mini-Batch聚合]
         end
-        
+
         subgraph "批处理"
             B1[动态分区裁剪]
             B2[排序优化]
             B3[自适应调度]
         end
-        
+
         subgraph "启动优化"
             L1[并行类加载]
             L2[DAG剪枝]
             L3[增量部署]
         end
     end
-    
+
     N1 --> M3
     S1 --> T1
     M1 --> T3
     T2 --> Q2
     Q1 --> B3
     L2 --> N1
-    
+
     style N1 fill:#bbdefb
     style S1 fill:#c8e6c9
     style M1 fill:#fff9c4
@@ -777,7 +779,7 @@ graph TB
                   /               |
                  /                |
     批处理优化  +-----------------+
-      90%       
+      90%
                 状态访问优化
                    65%
 ```
@@ -788,23 +790,23 @@ graph TB
 gantt
     title Flink 性能优化演进路线图
     dateFormat YYYY-MM
-    
+
     section 网络层
     信用值流控 v1    :done, 2022-01, 2022-06
     信用值流控 v2    :done, 2022-06, 2023-03
     零拷贝传输      :done, 2023-03, 2024-03
     网络压缩优化      :active, 2024-03, 2025-06
-    
+
     section 内存管理
     分代内存池 v1   :done, 2022-06, 2023-03
     G1 GC调优       :done, 2023-03, 2024-03
     内存自适应      :active, 2024-03, 2025-06
-    
+
     section 状态后端
     RocksDB优化     :done, 2022-01, 2023-12
     ForSt发布       :done, 2024-03, 2024-06
     ForSt增强       :active, 2024-06, 2025-06
-    
+
     section SQL引擎
     向量化 v1       :done, 2022-06, 2023-06
     自适应Join      :done, 2023-06, 2024-03
@@ -956,7 +958,7 @@ xychart-beta
 **从2.3到2.4的迁移脚本**：
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # flink-migrate-23-to-24.sh
 
 echo "开始迁移 Flink 2.3 -> 2.4 配置..."
@@ -1060,7 +1062,7 @@ $$\forall p \in \mathcal{P}_{2.4}: \Phi_{2.4}(p) \succ \Phi_{2.3}(p)$$
 
 ---
 
-*文档版本*: v1.0  
-*最后更新*: 2026-04-04  
-*作者*: AnalysisDataFlow Project  
+*文档版本*: v1.0
+*最后更新*: 2026-04-04
+*作者*: AnalysisDataFlow Project
 *审核状态*: ✅ 已完成

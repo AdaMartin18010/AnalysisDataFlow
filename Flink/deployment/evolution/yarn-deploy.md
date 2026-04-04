@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Deploy-YARN-01: YARN Session
+
 YARN会话：
 $$
 \text{YARNSession} = \text{SharedCluster} + \text{DynamicResource}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Deploy-YARN-01: Resource Elasticity
+
 资源弹性：
 $$
 \text{Resources} = f(\text{Load})

@@ -1,8 +1,8 @@
 # DataStream API 快速参考速查表
 
-> 所属阶段: Flink/09-language-foundations  
-> 前置依赖: [DataStream API完整指南](flink-datastream-api-complete-guide.md)  
-> 形式化等级: L4 (API参考)  
+> 所属阶段: Flink/09-language-foundations
+> 前置依赖: [DataStream API完整指南](flink-datastream-api-complete-guide.md)
+> 形式化等级: L4 (API参考)
 > 适用版本: Flink 1.17 - 2.0
 
 ---
@@ -56,7 +56,7 @@ DataStream<String> fileStream = env
 // Scala: fromElements
 val numbers: DataStream[Int] = env.fromElements(1, 2, 3, 4, 5)
 
-// Scala: fromCollection  
+// Scala: fromCollection
 val stream: DataStream[String] = env.fromCollection(List("a", "b", "c"))
 
 // Scala: socketTextStream
@@ -88,8 +88,8 @@ KafkaSource<String> source = KafkaSource.<String>builder()
     .build();
 
 DataStream<String> stream = env.fromSource(
-    source, 
-    WatermarkStrategy.noWatermarks(), 
+    source,
+    WatermarkStrategy.noWatermarks(),
     "Kafka Source"
 );
 ```
@@ -240,18 +240,18 @@ DataStream<Result> intervalJoined = keyedStream1
 ```java
 // Java: KeyedProcessFunction示例
 class CountWithTimeout extends KeyedProcessFunction<String, Event, Result> {
-    
+
     private ValueState<CountState> state;
-    
+
     @Override
     public void open(Configuration parameters) {
         state = getRuntimeContext().getState(
             new ValueStateDescriptor<>("count", CountState.class)
         );
     }
-    
+
     @Override
-    public void processElement(Event event, Context ctx, Collector<Result> out) 
+    public void processElement(Event event, Context ctx, Collector<Result> out)
             throws Exception {
         CountState current = state.value();
         if (current == null) {
@@ -260,15 +260,15 @@ class CountWithTimeout extends KeyedProcessFunction<String, Event, Result> {
         }
         current.count++;
         state.update(current);
-        
+
         // 注册Timer
         ctx.timerService().registerEventTimeTimer(
             ctx.timestamp() + Time.minutes(5).toMilliseconds()
         );
     }
-    
+
     @Override
-    public void onTimer(long timestamp, OnTimerContext ctx, Collector<Result> out) 
+    public void onTimer(long timestamp, OnTimerContext ctx, Collector<Result> out)
             throws Exception {
         out.collect(new Result(state.value()));
         state.clear();
@@ -378,7 +378,7 @@ stream.sinkTo(fileSink);
 
 ```java
 // Java: 时间语义配置 (Flink 1.12+ 默认Event Time)
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 显式设置Event Time (Flink 1.12前需要)
@@ -412,12 +412,12 @@ WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
 WatermarkStrategy.<Event>forGenerator(ctx -> new WatermarkGenerator<Event>() {
     private long maxTimestamp = Long.MIN_VALUE;
     private final long outOfOrdernessMillis = 5000;
-    
+
     @Override
     public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
         maxTimestamp = Math.max(maxTimestamp, eventTimestamp);
     }
-    
+
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
         output.emitWatermark(new Watermark(maxTimestamp - outOfOrdernessMillis - 1));
@@ -450,7 +450,7 @@ DataStream<Event> withTimestamps = stream
 // 滚动窗口 - 按Event Time
 .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 
-// 滚动窗口 - 按Processing Time  
+// 滚动窗口 - 按Processing Time
 .window(TumblingProcessingTimeWindows.of(Time.minutes(5)))
 
 // 滑动窗口
@@ -504,68 +504,68 @@ stream
 ```java
 // Java: 状态声明
 public class StatefulFunction extends KeyedProcessFunction<String, Event, Result> {
-    
+
     // ValueState - 单值
     private ValueState<Long> countState;
-    
+
     // ListState - 列表
     private ListState<Event> eventListState;
-    
+
     // MapState - Map结构
     private MapState<String, Integer> keyCountState;
-    
+
     // ReducingState - 增量Reduce
     private ReducingState<Long> sumState;
-    
+
     // AggregatingState - 增量Aggregate
     private AggregatingState<Event, AverageResult> avgState;
-    
+
     @Override
     public void open(Configuration parameters) {
         // ValueState描述符
-        ValueStateDescriptor<Long> countDescriptor = 
+        ValueStateDescriptor<Long> countDescriptor =
             new ValueStateDescriptor<>("count", Types.LONG);
         countState = getRuntimeContext().getState(countDescriptor);
-        
+
         // ListState描述符
-        ListStateDescriptor<Event> listDescriptor = 
+        ListStateDescriptor<Event> listDescriptor =
             new ListStateDescriptor<>("events", Event.class);
         eventListState = getRuntimeContext().getListState(listDescriptor);
-        
+
         // MapState描述符
-        MapStateDescriptor<String, Integer> mapDescriptor = 
+        MapStateDescriptor<String, Integer> mapDescriptor =
             new MapStateDescriptor<>("keyCounts", Types.STRING, Types.INT);
         keyCountState = getRuntimeContext().getMapState(mapDescriptor);
-        
+
         // ReducingState描述符
-        ReducingStateDescriptor<Long> reducingDescriptor = 
+        ReducingStateDescriptor<Long> reducingDescriptor =
             new ReducingStateDescriptor<>("sum", Long::sum, Types.LONG);
         sumState = getRuntimeContext().getReducingState(reducingDescriptor);
-        
+
         // AggregatingState描述符
         AggregatingStateDescriptor<Event, Accumulator, AverageResult> aggDescriptor =
             new AggregatingStateDescriptor<>("avg", new AverageAgg(), Accumulator.class);
         avgState = getRuntimeContext().getAggregatingState(aggDescriptor);
     }
-    
+
     @Override
-    public void processElement(Event event, Context ctx, Collector<Result> out) 
+    public void processElement(Event event, Context ctx, Collector<Result> out)
             throws Exception {
         // ValueState使用
         Long current = countState.value();
         if (current == null) current = 0L;
         countState.update(current + 1);
-        
+
         // ListState使用
         eventListState.add(event);
-        
+
         // MapState使用
-        keyCountState.put(event.getType(), 
+        keyCountState.put(event.getType(),
             keyCountState.getOrDefault(event.getType(), 0) + 1);
-        
+
         // ReducingState使用
         sumState.add(event.getValue());
-        
+
         // AggregatingState使用
         avgState.add(event);
     }
@@ -593,7 +593,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
     // .cleanupInRocksdbCompactFilter(1000)           // RocksDB专用
     .build();
 
-ValueStateDescriptor<MyState> descriptor = 
+ValueStateDescriptor<MyState> descriptor =
     new ValueStateDescriptor<>("myState", MyState.class);
 descriptor.enableTimeToLive(ttlConfig);
 ```
@@ -602,7 +602,7 @@ descriptor.enableTimeToLive(ttlConfig);
 
 ```java
 // Java: 广播状态模式
-MapStateDescriptor<String, Rule> ruleStateDescriptor = 
+MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>("rules", Types.STRING, Types.POJO(Rule.class));
 
 BroadcastStream<Rule> broadcastRules = ruleStream.broadcast(ruleStateDescriptor);
@@ -610,7 +610,7 @@ BroadcastStream<Rule> broadcastRules = ruleStream.broadcast(ruleStateDescriptor)
 DataStream<Alert> alerts = eventStream
     .connect(broadcastRules)
     .process(new KeyedBroadcastProcessFunction<String, Event, Rule, Alert>() {
-        
+
         @Override
         public void processElement(Event event, ReadOnlyContext ctx, Collector<Alert> out) {
             ReadOnlyBroadcastState<String, Rule> rules = ctx.getBroadcastState(ruleStateDescriptor);
@@ -619,7 +619,7 @@ DataStream<Alert> alerts = eventStream
                 out.collect(new Alert(event, rule));
             }
         }
-        
+
         @Override
         public void processBroadcastElement(Rule rule, Context ctx, Collector<Alert> out) {
             BroadcastState<String, Rule> rules = ctx.getBroadcastState(ruleStateDescriptor);
@@ -721,28 +721,28 @@ env.getCheckpointConfig().setCheckpointStorage("file:///checkpoint/dir");
 ```java
 // Java: 标准开发模板
 public class FlinkJob {
-    
+
     public static void main(String[] args) throws Exception {
         // 1. 创建环境
-        final StreamExecutionEnvironment env = 
+        final StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 2. 基础配置
         env.setParallelism(4);
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        
+
         // 3. Checkpoint配置
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
         );
-        
+
         // 4. 重启策略
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, 10000));
-        
+
         // 5. 状态后端 (生产环境推荐RocksDB)
         // env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
-        
+
         // 6. 构建DataStream
         DataStream<Event> stream = env
             .fromSource(
@@ -751,16 +751,16 @@ public class FlinkJob {
                 "Kafka Source"
             )
             .setParallelism(4);
-        
+
         // 7. 处理逻辑
         DataStream<Result> result = stream
             .keyBy(Event::getKey)
             .window(TumblingEventTimeWindows.of(Time.minutes(5)))
             .aggregate(new MyAggregate());
-        
+
         // 8. 输出
         result.sinkTo(createKafkaSink());
-        
+
         // 9. 执行
         env.execute("Flink Job");
     }
@@ -810,11 +810,11 @@ pandoc datastream-api-cheatsheet.md \
 
 | 主题 | 链接 |
 |------|------|
-| DataStream API官方文档 | https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/ |
-| 时间语义详解 | https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/event-time/ |
-| 状态管理指南 | https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/ |
-| Kafka连接器 | https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/ |
-| Checkpoint配置 | https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/ |
+| DataStream API官方文档 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/> |
+| 时间语义详解 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/event-time/> |
+| 状态管理指南 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/> |
+| Kafka连接器 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/> |
+| Checkpoint配置 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/> |
 
 ### 8.2 版本发布说明
 
@@ -841,7 +841,7 @@ graph TB
         S4[KafkaSource]
         S5[FileSource]
     end
-    
+
     subgraph "Transformation层"
         T1[map/filter/flatMap]
         T2[keyBy]
@@ -849,7 +849,7 @@ graph TB
         T4[process]
         T5[join/coGroup]
     end
-    
+
     subgraph "Sink层"
         K1[print]
         K2[KafkaSink]
@@ -857,18 +857,18 @@ graph TB
         K4[FileSink]
         K5[自定义Sink]
     end
-    
+
     S1 --> T1
     S2 --> T1
     S3 --> T1
     S4 --> T1
     S5 --> T1
-    
+
     T1 --> T2
     T2 --> T3
     T3 --> T4
     T4 --> T5
-    
+
     T1 --> K1
     T2 --> K2
     T3 --> K3
@@ -885,11 +885,11 @@ flowchart TD
     B -->|否| D{乱序是否有限?}
     D -->|是| E[forBoundedOutOfOrderness]
     D -->|否| F[自定义Generator]
-    
+
     C --> G[应用WatermarkStrategy]
     E --> G
     F --> G
-    
+
     G --> H{是否需要处理空闲?}
     H -->|是| I[withIdleness]
     H -->|否| J[完成配置]
@@ -905,7 +905,7 @@ flowchart LR
     B -->|列表| D[ListState]
     B -->|Key-Value| E[MapState]
     B -->|聚合| F{聚合模式?}
-    
+
     F -->|可交换结合| G[ReducingState]
     F -->|复杂聚合| H[AggregatingState]
 ```
@@ -934,16 +934,16 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import java.time.Duration;
 
 public class QuickStartJob {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置
         env.setParallelism(4);
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
         env.enableCheckpointing(60000);
-        
+
         // Source
         KafkaSource<String> source = KafkaSource.<String>builder()
             .setBootstrapServers("localhost:9092")
@@ -952,13 +952,13 @@ public class QuickStartJob {
             .setStartingOffsets(OffsetsInitializer.latest())
             .setValueOnlyDeserializer(new SimpleStringSchema())
             .build();
-        
+
         DataStream<String> stream = env.fromSource(
             source,
             WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
             "Kafka Source"
         );
-        
+
         // Transform
         DataStream<Metric> metrics = stream
             .map(QuickStartJob::parse)
@@ -966,7 +966,7 @@ public class QuickStartJob {
             .keyBy(Metric::getKey)
             .window(TumblingEventTimeWindows.of(Time.minutes(1)))
             .aggregate(new AverageAggregate());
-        
+
         // Sink
         KafkaSink<Metric> sink = KafkaSink.<Metric>builder()
             .setBootstrapServers("localhost:9092")
@@ -976,30 +976,30 @@ public class QuickStartJob {
                 .build())
             .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
             .build();
-        
+
         metrics.sinkTo(sink);
-        
+
         env.execute("QuickStartJob");
     }
-    
+
     static Metric parse(String line) { /* ... */ return null; }
-    
+
     static class AverageAggregate implements AggregateFunction<Metric, AverageAccumulator, Metric> {
         @Override
         public AverageAccumulator createAccumulator() { return new AverageAccumulator(); }
-        
+
         @Override
         public AverageAccumulator add(Metric value, AverageAccumulator accumulator) {
             accumulator.sum += value.getValue();
             accumulator.count++;
             return accumulator;
         }
-        
+
         @Override
         public Metric getResult(AverageAccumulator accumulator) {
             return new Metric("avg", accumulator.sum / accumulator.count);
         }
-        
+
         @Override
         public AverageAccumulator merge(AverageAccumulator a, AverageAccumulator b) {
             a.sum += b.sum;
@@ -1007,7 +1007,7 @@ public class QuickStartJob {
             return a;
         }
     }
-    
+
     static class AverageAccumulator {
         double sum;
         int count;
@@ -1018,8 +1018,3 @@ public class QuickStartJob {
 ---
 
 *本文档遵循AGENTS.md规范创建，适用于Flink 1.17-2.0版本*
-
-[^1]: Apache Flink Documentation, "DataStream API", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/
-[^2]: Apache Flink Documentation, "Kafka Connector", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
-[^3]: Apache Flink Documentation, "State Management", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/
-[^4]: Apache Flink Documentation, "Event Time and Watermarks", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/event-time/

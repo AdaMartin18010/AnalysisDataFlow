@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Pat-01: Pattern Recognition
+
 模式识别：
 $$
 \text{Pattern} : \text{Sequence} \to \{\text{Match}, \text{NoMatch}\}
 $$
 
 ### Def-F-Pat-02: Pattern Variable
+
 模式变量：
 $$
 \text{Var} = \langle \text{Name}, \text{Condition} \rangle
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Pat-01: Pattern Completeness
+
 模式完整性：
 $$
 \text{Pattern}(S) = \text{True} \iff S \models \text{Pattern}
@@ -83,7 +86,7 @@ MATCH_RECOGNIZE (
     PATTERN (A B)
     DEFINE
         A AS A.amount > 10000,
-        B AS B.amount > A.amount AND 
+        B AS B.amount > A.amount AND
              B.location <> A.location
 );
 ```
@@ -95,7 +98,7 @@ sequenceDiagram
     participant A as 事件A
     participant B as 事件B+
     participant C as 事件C
-    
+
     A->>B: 匹配
     B->>B: 重复
     B->>C: 匹配完成

@@ -23,7 +23,7 @@
     - [4.1 八维度详细对比表](#41-八维度详细对比表)
     - [4.2 性能特征对比](#42-性能特征对比)
     - [4.3 使用场景决策矩阵](#43-使用场景决策矩阵)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-03-01 (API 选择性能影响可量化)](#thm-f-03-01-api-选择性能影响可量化)
     - [工程论证：API 选型决策框架](#工程论证api-选型决策框架)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

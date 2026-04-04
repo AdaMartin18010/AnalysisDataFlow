@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-Cloud-01: Cloud Storage
+
 云存储：
 $$
 \text{CloudStorage} \in \{\text{S3}, \text{GCS}, \text{Azure Blob}\}
 $$
 
 ### Def-F-Conn-Cloud-02: Cloud MQ
+
 云消息队列：
 $$
 \text{CloudMQ} \in \{\text{Kinesis}, \text{Pub/Sub}, \text{Event Hubs}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-Cloud-01: Native Integration
+
 原生集成：
 $$
 \text{CloudConnector} \xrightarrow{\text{native SDK}} \text{CloudService}

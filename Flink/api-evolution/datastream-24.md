@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-DS24-01: Record-Oriented Processing
+
 面向记录处理：
 $$
 \text{Process} : \text{Record} \to \text{Record}'
 $$
 
 ### Def-F-DS24-02: Async I/O Pattern
+
 异步I/O模式：
 $$
 \text{AsyncOp} : \text{Input} \xrightarrow{\text{async}} \text{Future}<\text{Output}>
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-DS24-01: Async Ordering
+
 异步结果排序保证：
 $$
 \text{OutputOrder} \in \{\text{ORDERED}, \text{UNORDERED}\}

@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-NoSQL-01: Key-Value Store
+
 键值存储：
 $$
 \text{KVStore} : \text{Key} \to \text{Value}
 $$
 
 ### Def-F-Conn-NoSQL-02: Document Store
+
 文档存储：
 $$
 \text{DocStore} : \text{ID} \to \text{Document}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-NoSQL-01: Lookup Join
+
 Lookup Join：
 $$
 \text{Stream} \bowtie_{\text{key}} \text{NoSQL} \to \text{Enriched}

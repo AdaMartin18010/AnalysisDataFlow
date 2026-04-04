@@ -439,7 +439,7 @@ CREATE TABLE mysql_sink (
      start = min_val + i * chunk_size
      end = (i == P-1) ? max_val : start + chunk_size
      Sᵢ = "WHERE PK BETWEEN start AND end"
-   
+
 4. 处理数据倾斜:
    if count(Sᵢ) > avg_count * 1.5:
      递归拆分 Sᵢ
@@ -614,28 +614,28 @@ Checkpoint 触发:
         <artifactId>flink-connector-jdbc</artifactId>
         <version>3.1.2-1.18</version>
     </dependency>
-    
+
     <!-- MySQL Connector/J -->
     <dependency>
         <groupId>com.mysql</groupId>
         <artifactId>mysql-connector-j</artifactId>
         <version>8.0.33</version>
     </dependency>
-    
+
     <!-- PostgreSQL JDBC Driver -->
     <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>42.6.0</version>
     </dependency>
-    
+
     <!-- Oracle JDBC Driver (需手动安装到本地仓库) -->
     <dependency>
         <groupId>com.oracle.database.jdbc</groupId>
         <artifactId>ojdbc11</artifactId>
         <version>23.3.0.23.09</version>
     </dependency>
-    
+
     <!-- SQL Server JDBC Driver -->
     <dependency>
         <groupId>com.microsoft.sqlserver</groupId>
@@ -1214,19 +1214,19 @@ graph TB
             CP[Checkpoint<br/>协调器]
         end
     end
-    
+
     subgraph "连接池层"
         CP1[HikariCP<br/>连接池]
         XA[XA 事务<br/>管理器]
     end
-    
+
     subgraph "数据库层"
         MYSQL[(MySQL)]
         PG[(PostgreSQL)]
         ORA[(Oracle)]
         MSSQL[(SQL Server)]
     end
-    
+
     SRC -->|JDBC 连接| CP1
     SNK -->|JDBC 连接| CP1
     CP -.->|XA 协调| XA
@@ -1234,7 +1234,7 @@ graph TB
     CP1 -->|XA/普通连接| PG
     CP1 -->|XA/普通连接| ORA
     CP1 -->|XA/普通连接| MSSQL
-    
+
     style JM fill:#e1f5ff
     style SRC fill:#e1ffe1
     style SNK fill:#ffe1e1
@@ -1250,18 +1250,18 @@ sequenceDiagram
     participant JM as JobManager<br/>(TM)
     participant SNK as JdbcSink<br/>(RM)
     participant DB as Database<br/>(RM)
-    
+
     Note over JM,DB: Checkpoint 触发
     JM->>SNK: Trigger Checkpoint
     SNK->>SNK: Flush Buffer
     SNK->>DB: executeBatch()
-    
+
     Note over JM,DB: Phase 1: Prepare
     SNK->>DB: prepare(xid)
     DB->>DB: 记录 Prepared 事务
     DB-->>SNK: OK
     SNK-->>JM: Ack
-    
+
     Note over JM,DB: Phase 2: Commit
     JM->>JM: 等待所有算子
     JM->>SNK: Commit
@@ -1269,7 +1269,7 @@ sequenceDiagram
     DB->>DB: 提交事务
     DB-->>SNK: OK
     SNK-->>JM: Ack
-    
+
     Note over JM,DB: 故障恢复场景
     alt JM 故障恢复
         JM->>DB: recover()
@@ -1287,26 +1287,26 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> Idle: 创建连接
-    
+
     Idle --> Active: 获取连接
     Active --> Idle: 释放连接
-    
+
     Idle --> Closed: 空闲超时
     Idle --> Closed: 最大生命周期
     Active --> Closed: 连接异常
-    
+
     Closed --> [*]: 销毁连接
-    
+
     note right of Idle
         等待获取
         idleTimeout 检查
     end note
-    
+
     note right of Active
         正在使用
         执行业务操作
     end note
-    
+
     note right of Closed
         不可再用
         资源释放
@@ -1317,25 +1317,15 @@ stateDiagram-v2
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "JDBC Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/
 
-[^2]: Apache Flink Documentation, "JDBC Source", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/jdbc/
 
-[^3]: MySQL Connector/J Documentation, "Configuration Properties", 2024. https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html
 
-[^4]: PostgreSQL JDBC Driver Documentation, "Connecting to the Database", 2024. https://jdbc.postgresql.org/documentation/use/
 
-[^5]: Oracle JDBC Developer Guide, "Oracle Database JDBC Developer's Guide", 2024. https://docs.oracle.com/en/database/oracle/oracle-database/23/jjdbc/
 
-[^6]: Microsoft JDBC Driver for SQL Server Documentation, 2024. https://docs.microsoft.com/en-us/sql/connect/jdbc/
 
-[^7]: HikariCP Wiki, "MySQL Configuration", 2024. https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration
 
-[^8]: X/Open CAE Specification, "Distributed Transaction Processing: The XA Specification", 1991.
 
-[^9]: Jim Gray, "The Transaction Concept: Virtues and Limitations", VLDB 1981.
 
-[^10]: Martin Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
 
 ---
 

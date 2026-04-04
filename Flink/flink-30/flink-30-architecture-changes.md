@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-01: Next-Gen Architecture
+
 下一代架构根本性重构：
 $$
 \text{Flink 3.0} = \text{Flink 2.x} \times \text{EvolutionFactor} >> \text{Flink 2.x}
 $$
 
 ### Def-F-30-02: Modular Core
+
 模块化核心将功能拆分为独立模块：
 $$
 \text{Core} = \sum_{i} \text{Module}_i \text{ with interfaces}
 $$
 
 ### Def-F-30-03: Pluggable Scheduler
+
 可插拔调度器支持多种调度策略：
 $$
 \text{Scheduler} \in \{\text{Streaming}, \text{Batch}, \text{Adaptive}, \text{Custom}\}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-01: Backward Compatibility Limit
+
 向后兼容性限制：
 $$
 \exists \text{API}_{2.x} : \text{API}_{2.x} \not\subseteq \text{API}_{3.0}
 $$
 
 ### Prop-F-30-02: Performance Scaling
+
 性能扩展性提升：
 $$
 \text{Perf}_{3.0} \geq 2 \times \text{Perf}_{2.x}
@@ -86,25 +91,25 @@ $$
 
 ```java
 public class ModularFlinkLoader {
-    
+
     private final ModuleManager moduleManager;
-    
+
     public FlinkRuntime load(Configuration config) {
         // 加载核心模块
         CoreModule core = moduleManager.load("flink-core", config);
-        
+
         // 加载调度器模块
         SchedulerModule scheduler = moduleManager.load(
-            config.getString("scheduler.type", "adaptive"), 
+            config.getString("scheduler.type", "adaptive"),
             config
         );
-        
+
         // 加载状态模块
         StateModule state = moduleManager.load(
             config.getString("state.backend", "rocksdb"),
             config
         );
-        
+
         // 组装运行时
         return FlinkRuntime.builder()
             .withCore(core)
@@ -148,13 +153,13 @@ graph LR
         A1[单体JM]
         B1[固定TM]
     end
-    
+
     subgraph "3.0"
         A2[微服务JM]
         B2[动态TM]
         C2[可插拔模块]
     end
-    
+
     A1 --> A2
     B1 --> B2
     B2 --> C2

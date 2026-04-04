@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Metrics-01: Metric Types
+
 指标类型：
 $$
 \text{Metrics} = \{\text{Counter}, \text{Gauge}, \text{Histogram}, \text{Meter}\}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Metrics-01: Cardinality Bound
+
 基数限制：
 $$
 |\text{TimeSeries}| < 10000

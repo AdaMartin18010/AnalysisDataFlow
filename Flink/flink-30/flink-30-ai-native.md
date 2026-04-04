@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-28: AI-Native
+
 AI原生设计：
 $$
 \text{AINative} = \text{FirstClassAI} \land \text{MLPipeline} \land \text{ModelServing}
 $$
 
 ### Def-F-30-29: LLM Integration
+
 大语言模型集成：
 $$
 \text{LLM} : \text{Prompt} \xrightarrow{\text{Stream}} \text{Tokens}
 $$
 
 ### Def-F-30-30: Agentic Workflow
+
 智能体工作流：
 $$
 \text{Agentic} = \langle \text{Agent}, \text{Tool}, \text{Memory}, \text{Reasoning} \rangle
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-17: Inference Throughput
+
 推理吞吐量：
 $$
 \text{Throughput} \geq 1000 \text{ tokens/s per GPU}
 $$
 
 ### Prop-F-30-18: Model Latency
+
 模型延迟：
 $$
 P_{99}(\text{Latency}) \leq 100ms
@@ -66,9 +71,9 @@ $$
 
 ```java
 public class StreamingLLMOperator extends ProcessFunction<String, String> {
-    
+
     private transient LLMClient llmClient;
-    
+
     @Override
     public void open(Configuration parameters) {
         llmClient = LLMClient.builder()
@@ -76,7 +81,7 @@ public class StreamingLLMOperator extends ProcessFunction<String, String> {
             .streaming(true)
             .build();
     }
-    
+
     @Override
     public void processElement(String prompt, Context ctx, Collector<String> out) {
         // 流式获取tokens

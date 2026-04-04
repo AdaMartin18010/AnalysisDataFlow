@@ -2,7 +2,7 @@
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
-> 
+>
 > | 属性 | 值 |
 > |------|-----|
 > | **特性** | Serverless Flink GA |
@@ -60,6 +60,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{L}(t)$: 时刻 $t$ 的负载指标
 - $\mathcal{R}(t)$: 时刻 $t$ 的资源分配
 - $\Delta t$: 空闲检测窗口 (默认 5min)
@@ -110,6 +111,7 @@ $$
 $$
 
 其中：
+
 - $c_{compute}$: vCPU-秒单价 ($0.000014)
 - $c_{memory}$: GB-秒单价 ($0.0000035)
 - $c_{storage}$: 状态存储单价 ($0.10/GB/月)
@@ -133,6 +135,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{J}$: 作业逻辑
 - $\Sigma_{external}$: 外部化状态存储 (S3/OSS)
 - $\mathcal{CP}$: 检查点元数据
@@ -163,6 +166,7 @@ $$
 $$
 
 其中：
+
 - $\lambda(t)$: 输入事件率
 - $B(t)$: 积压队列长度
 - $U(t)$: 资源利用率
@@ -185,7 +189,7 @@ $$
 
 **引理**: 对于间歇性负载，Scale-to-Zero至少节省 $(1 - \frac{T_{active}}{T_{total}}) \times 100\%$ 的计算成本。
 
-**证明**: 
+**证明**:
 
 设总时间 $T_{total}$，活跃时间 $T_{active}$，空闲时间 $T_{idle} = T_{total} - T_{active}$
 
@@ -250,6 +254,7 @@ e(t) = \frac{L(t) - L_{target}}{L_{target}} + \frac{U(t) - U_{target}}{U_{target
 $$
 
 扩展规则：
+
 - 若 $e(t) > 0.2$: $P(t+1) = P(t) \times 1.5$
 - 若 $e(t) < -0.2$: $P(t+1) = P(t) \times 0.8$
 - 否则: $P(t+1) = P(t)$
@@ -269,45 +274,45 @@ graph TB
         OP[Flink Operator]
         KEDA[KEDA Scaler]
     end
-    
+
     subgraph "数据平面"
         JM[JobManager]
         TM1[TaskManager]
         TM2[TaskManager]
         TM0[TaskManager<br/>Scale-to-Zero]
     end
-    
+
     subgraph "状态平面"
         ForSt[ForSt Local]
         S3[S3/OSS Remote]
         CP[Checkpoint Store]
     end
-    
+
     subgraph "事件源"
         Kafka[Kafka]
         PubSub[Pub/Sub]
         Events[Cloud Events]
     end
-    
+
     K8S --> OP
     OP --> JM
     OP --> KEDA
     KEDA -->|Scale 0→N| TM1
     KEDA -->|Scale 0→N| TM2
-    
+
     JM --> TM1
     JM --> TM2
     JM -.->|Schedule| TM0
-    
+
     TM1 --> ForSt
     TM2 --> ForSt
     ForSt -->|Async| S3
     ForSt -->|Sync| CP
-    
+
     Kafka -->|Trigger| KEDA
     PubSub -->|Trigger| KEDA
     Events -->|Trigger| KEDA
-    
+
     style TM0 fill:#ffebee,stroke:#c62828
     style KEDA fill:#e8f5e9,stroke:#2e7d32
 ```
@@ -392,7 +397,7 @@ GA方案: 分离式状态存储
   ├─ 活跃时: 本地ForSt + 异步增量CP
   ├─ 缩容时: 强制同步CP确保一致性
   └─ 零实例: 仅保留S3上的检查点
-  
+
 成本对比: 本地磁盘 ($0.10/GB/月) vs S3 ($0.023/GB/月)
 ```
 
@@ -490,6 +495,7 @@ checkpoints.dir: s3://bucket/checkpoints
 **证明**:
 
 设：
+
 - 平均负载: $\mu$
 - 峰值负载: $P_{max}$
 - 负载波动系数: $\sigma = \frac{P_{max} - \mu}{\mu}$
@@ -527,11 +533,12 @@ $$
    - 屏障对齐保证一致性割集
    - 异步快照不阻塞数据流
 
-2. **持久化保证**: 
+2. **持久化保证**:
    - S3提供强一致性 (read-after-write)
    - 检查点元数据原子写入
 
 3. **恢复协议**:
+
    ```
    恢复步骤:
    a. 读取最新检查点元数据
@@ -587,44 +594,44 @@ metadata:
 spec:
   image: flink:2.0-scala_2.12-java11
   flinkVersion: v2.0
-  
+
   jobManager:
     resource:
       memory: "2Gi"
       cpu: 1
     replicas: 1
-  
+
   taskManager:
     resource:
       memory: "4Gi"
       cpu: 2
     replicas: 0  # 初始为0，由KEDA触发
-  
+
   job:
     jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
     parallelism: 4
     upgradeMode: stateful
     state: running
-  
+
   flinkConfiguration:
     # Serverless核心配置
     state.backend: forst
     state.backend.incremental: true
     state.backend.remote.directory: s3://flink-states/etl-job
-    
+
     # 检查点配置
     execution.checkpointing.interval: 30s
     execution.checkpointing.min-pause: 10s
     execution.checkpointing.timeout: 10min
     execution.checkpointing.max-concurrent-checkpoints: 1
-    
+
     # Scale-to-Zero配置
     kubernetes.operator.job.autoscaler.enabled: "true"
     kubernetes.operator.job.autoscaler.target.utilization: "0.7"
     kubernetes.operator.job.autoscaler.scale-down.grace-period: "5m"
     kubernetes.operator.job.autoscaler.limits.min-parallelism: "0"  # 允许缩到0
     kubernetes.operator.job.autoscaler.limits.max-parallelism: "32"
-    
+
     # 快照启动
     kubernetes.operator.job.snapshot-start.enabled: "true"
     kubernetes.operator.job.snapshot-start.path: s3://flink-states/etl-job/latest
@@ -662,9 +669,9 @@ import json
 
 def create_serverless_flink_application():
     """创建AWS Serverless Flink应用"""
-    
+
     kinesisanalyticsv2 = boto3.client('kinesisanalyticsv2')
-    
+
     response = kinesisanalyticsv2.create_application(
         ApplicationName='serverless-etl-app',
         ApplicationDescription='Serverless ETL with Flink',
@@ -708,14 +715,14 @@ def create_serverless_flink_application():
             }
         ]
     )
-    
+
     return response['ApplicationDetail']['ApplicationARN']
 
 def configure_auto_scaling(application_name):
     """配置自动扩缩容"""
-    
+
     kinesisanalyticsv2 = boto3.client('kinesisanalyticsv2')
-    
+
     # 配置基于输入速率的扩展
     kinesisanalyticsv2.update_application(
         ApplicationName=application_name,
@@ -732,17 +739,17 @@ def configure_auto_scaling(application_name):
 
 def calculate_serverless_cost(kpu_hours, processing_hours):
     """计算Serverless Flink成本"""
-    
+
     # AWS Managed Flink定价 (us-east-1)
     KPU_HOUR_PRICE = 0.11  # $/KPU-hour
     STORAGE_GB_PRICE = 0.10  # $/GB-month
-    
+
     # 假设每个KPU需要50GB存储
     storage_gb = kpu_hours * 50 / 730  # 平均存储
-    
+
     compute_cost = kpu_hours * KPU_HOUR_PRICE
     storage_cost = storage_gb * STORAGE_GB_PRICE * (processing_hours / 730)
-    
+
     return {
         'compute_cost': round(compute_cost, 2),
         'storage_cost': round(storage_cost, 2),
@@ -754,7 +761,7 @@ if __name__ == '__main__':
     # 创建应用
     app_arn = create_serverless_flink_application()
     print(f"Created application: {app_arn}")
-    
+
     # 计算成本 (4 KPU, 每天运行8小时)
     cost = calculate_serverless_cost(kpu_hours=4*8*30, processing_hours=8*30)
     print(f"Monthly cost: ${cost['total_cost']}")
@@ -772,7 +779,7 @@ spec:
   descriptor:
     type: "Flink Serverless on Azure"
     version: "v1.0"
-  
+
   componentKinds:
     - group: apps
       kind: Deployment
@@ -845,7 +852,7 @@ spec:
         consumerGroup: flink-consumer
         checkpointStrategy: blobMetadata
         lagThreshold: "1000"
-    
+
     # 基于CPU使用率
     - type: cpu
       metadata:
@@ -959,7 +966,7 @@ class CostMetrics:
 
 class ServerlessCostOptimizer:
     """Serverless Flink成本优化器"""
-    
+
     # 云厂商定价 (us-east-1, 2026)
     PRICING = {
         'aws': {
@@ -978,19 +985,19 @@ class ServerlessCostOptimizer:
             'storage_gb_month': 0.020,
         }
     }
-    
+
     def __init__(self, cloud_provider: str = 'aws'):
         self.provider = cloud_provider
         self.pricing = self.PRICING[cloud_provider]
         self.cloudwatch = boto3.client('cloudwatch') if cloud_provider == 'aws' else None
-    
+
     def analyze_workload_pattern(self, hours: int = 168) -> Dict:
         """分析工作负载模式，推荐最优配置"""
-        
+
         # 获取历史指标
         end_time = datetime.utcnow()
         start_time = end_time - timedelta(hours=hours)
-        
+
         metrics = self.cloudwatch.get_metric_statistics(
             Namespace='AWS/KinesisAnalytics',
             MetricName='InputProcessing.KPUs',
@@ -999,20 +1006,20 @@ class ServerlessCostOptimizer:
             Period=3600,
             Statistics=['Average', 'Maximum']
         )
-        
+
         datapoints = sorted(metrics['Datapoints'], key=lambda x: x['Timestamp'])
-        
+
         avg_kpus = [dp['Average'] for dp in datapoints]
         max_kpus = [dp['Maximum'] for dp in datapoints]
-        
+
         # 计算统计指标
         avg_usage = sum(avg_kpus) / len(avg_kpus)
         peak_usage = max(max_kpus)
         utilization_rate = avg_usage / peak_usage if peak_usage > 0 else 0
-        
+
         # 识别空闲时段
         idle_hours = sum(1 for kpu in avg_kpus if kpu < 0.5)
-        
+
         return {
             'avg_kpus': round(avg_usage, 2),
             'peak_kpus': peak_usage,
@@ -1020,25 +1027,25 @@ class ServerlessCostOptimizer:
             'idle_hours': idle_hours,
             'idle_percentage': round(idle_hours / len(avg_kpus) * 100, 1)
         }
-    
+
     def calculate_serverless_savings(self, metrics: Dict) -> Dict:
         """计算Serverless vs 预留实例的成本对比"""
-        
+
         hours = 730  # 月均小时数
         peak_kpus = metrics['peak_kpus']
         avg_kpus = metrics['avg_kpus']
         idle_percentage = metrics['idle_percentage'] / 100
-        
+
         # 预留实例成本 (按峰值预留)
         reserved_cost = peak_kpus * hours * self.pricing['kpu_hour']
-        
+
         # Serverless成本 (按实际使用)
         serverless_cost = avg_kpus * hours * self.pricing['kpu_hour'] * 1.2
-        
+
         # 考虑空闲时段Scale-to-Zero
         effective_hours = hours * (1 - idle_percentage)
         serverless_with_stz = avg_kpus * effective_hours * self.pricing['kpu_hour'] * 1.2
-        
+
         return {
             'reserved_cost': round(reserved_cost, 2),
             'serverless_cost': round(serverless_cost, 2),
@@ -1047,53 +1054,53 @@ class ServerlessCostOptimizer:
             'savings_with_stz': round((reserved_cost - serverless_with_stz) / reserved_cost * 100, 1),
             'recommendation': 'serverless' if serverless_with_stz < reserved_cost else 'reserved'
         }
-    
+
     def optimize_memory_allocation(self, job_name: str) -> Dict:
         """优化内存配置"""
-        
+
         # 不同内存配置下的性能基准
         memory_configs = [1, 2, 4, 8, 16]  # GB
-        
+
         results = []
         for memory_gb in memory_configs:
             # 模拟获取该配置下的平均处理时间
             # 实际应从CloudWatch获取
             processing_time = self._estimate_processing_time(memory_gb)
-            
+
             # 计算成本
             cost_per_million = (
-                memory_gb * processing_time * 
+                memory_gb * processing_time *
                 self.pricing.get('memory_gb_second', 0.0000035) * 1000000
             )
-            
+
             results.append({
                 'memory_gb': memory_gb,
                 'processing_time_ms': processing_time * 1000,
                 'cost_per_million_events': round(cost_per_million, 2)
             })
-        
+
         # 找到最优配置
         optimal = min(results, key=lambda x: x['cost_per_million_events'])
-        
+
         return {
             'optimal_memory_gb': optimal['memory_gb'],
             'optimal_cost': optimal['cost_per_million_events'],
             'all_configs': results
         }
-    
+
     def _estimate_processing_time(self, memory_gb: int) -> float:
         """估算不同内存下的处理时间 (模拟)"""
         # 假设处理时间与内存成反比 (简化模型)
         base_time = 0.1  # 100ms
         return base_time * (4 / memory_gb) ** 0.5
-    
+
     def generate_cost_report(self, application_name: str) -> str:
         """生成成本分析报告"""
-        
+
         workload = self.analyze_workload_pattern()
         savings = self.calculate_serverless_savings(workload)
         optimization = self.optimize_memory_allocation(application_name)
-        
+
         report = f"""
 ╔══════════════════════════════════════════════════════════════╗
 ║         Serverless Flink 成本优化分析报告                     ║
@@ -1113,7 +1120,7 @@ class ServerlessCostOptimizer:
 │  预留实例成本: ${savings['reserved_cost']}/月
 │  Serverless成本: ${savings['serverless_cost']}/月
 │  Serverless+Scale-to-Zero: ${savings['serverless_with_stz_cost']}/月
-│  
+│
 │  节省比例 (vs 预留): {savings['savings_vs_reserved']}%
 │  节省比例 (with STZ): {savings['savings_with_stz']}%
 │  推荐方案: {savings['recommendation'].upper()}
@@ -1122,14 +1129,14 @@ class ServerlessCostOptimizer:
 ┌─ 优化建议 ──────────────────────────────────────────────────┐
 │  最优内存配置: {optimization['optimal_memory_gb']}GB
 │  预估每百万事件成本: ${optimization['optimal_cost']}
-│  
+│
 │  配置建议:
 │  1. 启用Scale-to-Zero (节省{workload['idle_percentage']}%计算成本)
 │  2. 使用增量检查点 (减少存储成本)
 │  3. 优化内存配置至 {optimization['optimal_memory_gb']}GB
 └─────────────────────────────────────────────────────────────┘
         """
-        
+
         return report
 
 # 使用示例
@@ -1153,7 +1160,7 @@ from typing import Optional
 
 class ServerlessMigrationTool:
     """Flink作业Serverless迁移工具"""
-    
+
     MIGRATION_CHECKLIST = [
         "确认状态后端为 ForSt/RocksDB (非HashMap)",
         "配置外部状态存储 (S3/Azure Blob/GCS)",
@@ -1162,97 +1169,97 @@ class ServerlessMigrationTool:
         "配置KEDA/事件驱动扩缩容",
         "设置成本告警阈值",
     ]
-    
+
     def __init__(self):
         self.s3 = boto3.client('s3')
-    
+
     def preflight_check(self, job_config: dict) -> dict:
         """迁移前检查"""
-        
+
         checks = {
             'state_backend': self._check_state_backend(job_config),
             'checkpoint_storage': self._check_checkpoint_storage(job_config),
             'serializers': self._check_serializers(job_config),
             'external_deps': self._check_external_dependencies(job_config),
         }
-        
+
         all_passed = all(checks.values())
-        
+
         return {
             'ready': all_passed,
             'checks': checks,
             'recommendations': self._generate_recommendations(checks)
         }
-    
+
     def _check_state_backend(self, config: dict) -> bool:
         """检查状态后端配置"""
         backend = config.get('state.backend', '').lower()
         return backend in ['rocksdb', 'forst']
-    
+
     def _check_checkpoint_storage(self, config: dict) -> bool:
         """检查检查点存储配置"""
         storage = config.get('state.checkpoint-storage', '').lower()
         return storage in ['filesystem', 's3filesystem', 'gsfilesystem']
-    
+
     def _check_serializers(self, config: dict) -> bool:
         """检查序列化器兼容性"""
         # 确保使用稳定的序列化器
         return True
-    
+
     def _check_external_dependencies(self, config: dict) -> bool:
         """检查外部依赖可用性"""
         return True
-    
+
     def _generate_recommendations(self, checks: dict) -> list:
         """生成迁移建议"""
         recommendations = []
-        
+
         if not checks['state_backend']:
             recommendations.append({
                 'priority': 'HIGH',
                 'action': '修改状态后端为 ForSt',
                 'config': 'state.backend: forst'
             })
-        
+
         if not checks['checkpoint_storage']:
             recommendations.append({
                 'priority': 'HIGH',
                 'action': '配置外部检查点存储',
                 'config': 'state.checkpoint-storage: filesystem\ncheckpoints.dir: s3://bucket/checkpoints'
             })
-        
+
         return recommendations
-    
+
     def generate_serverless_config(self, original_config: dict) -> dict:
         """生成Serverless配置"""
-        
+
         serverless_config = {
             # 继承原有配置
             **original_config,
-            
+
             # Serverless特定配置
             'state.backend': 'forst',
             'state.backend.incremental': 'true',
             'state.backend.remote.directory': original_config.get('checkpoints.dir', ''),
-            
+
             # Autoscaler配置
             'kubernetes.operator.job.autoscaler.enabled': 'true',
             'kubernetes.operator.job.autoscaler.target.utilization': '0.7',
             'kubernetes.operator.job.autoscaler.limits.min-parallelism': '0',
             'kubernetes.operator.job.autoscaler.scale-down.grace-period': '5m',
-            
+
             # 快照启动
             'kubernetes.operator.job.snapshot-start.enabled': 'true',
         }
-        
+
         return serverless_config
-    
+
     def create_migration_plan(self, job_name: str, current_config: dict) -> dict:
         """创建迁移计划"""
-        
+
         preflight = self.preflight_check(current_config)
         new_config = self.generate_serverless_config(current_config)
-        
+
         plan = {
             'job_name': job_name,
             'preflight_status': preflight,
@@ -1306,7 +1313,7 @@ class ServerlessMigrationTool:
                 ]
             }
         }
-        
+
         return plan
 
 # CLI入口
@@ -1315,25 +1322,25 @@ def main():
     parser.add_argument('--job-name', required=True, help='作业名称')
     parser.add_argument('--config', required=True, help='当前配置文件路径')
     parser.add_argument('--dry-run', action='store_true', help='仅检查，不执行')
-    
+
     args = parser.parse_args()
-    
+
     # 读取配置
     import yaml
     with open(args.config, 'r') as f:
         current_config = yaml.safe_load(f)
-    
+
     tool = ServerlessMigrationTool()
     plan = tool.create_migration_plan(args.job_name, current_config)
-    
+
     print(f"\n迁移计划: {args.job_name}")
     print(f"预检查状态: {'通过 ✓' if plan['preflight_status']['ready'] else '需要修复 ✗'}")
-    
+
     if not plan['preflight_status']['ready']:
         print("\n需要修复的问题:")
         for rec in plan['preflight_status']['recommendations']:
             print(f"  [{rec['priority']}] {rec['action']}")
-    
+
     print(f"\n迁移阶段:")
     for phase in plan['phases']:
         print(f"\n  阶段 {phase['phase']}: {phase['name']} (预计{phase['duration_estimate']})")
@@ -1358,13 +1365,13 @@ graph TB
         PS[Pub/Sub]
         S3[S3 Events]
     end
-    
+
     subgraph "Serverless控制层"
         KEDA[KEDA Scaler]
         HPA[K8s HPA]
         FA[Flink Autoscaler]
     end
-    
+
     subgraph "Flink运行时"
         JM[JobManager]
         subgraph "动态TaskManager池"
@@ -1374,43 +1381,43 @@ graph TB
             TM0[TM-0<br/>Scale-to-Zero]
         end
     end
-    
+
     subgraph "状态存储层"
         FS[ForSt Local]
         S3State[S3/OSS Remote]
         CP[Checkpoint Store]
     end
-    
+
     subgraph "数据目标"
         DW[Data Warehouse]
         DL[Data Lake]
         DB[Database]
     end
-    
+
     K -->|lag-based| KEDA
     EH -->|lag-based| KEDA
     PS -->|push-based| KEDA
     S3 -->|event-based| KEDA
-    
+
     KEDA -->|Scale 0→N| JM
     HPA -->|CPU/Mem| TM1
     FA -->|Backpressure| TM2
-    
+
     JM --> TM1
     JM --> TM2
     JM --> TMN
     JM -.->|Schedule| TM0
-    
+
     TM1 --> FS
     TM2 --> FS
     TMN --> FS
     FS -->|Async| S3State
     FS -->|Sync| CP
-    
+
     TM1 --> DW
     TM2 --> DL
     TMN --> DB
-    
+
     style KEDA fill:#e8f5e9,stroke:#2e7d32
     style TM0 fill:#ffebee,stroke:#c62828
     style S3State fill:#e3f2fd,stroke:#1565c0
@@ -1421,32 +1428,32 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Initializing: Deploy
-    
+
     Initializing --> Active: Job Running
-    
+
     Active --> ScalingDown: No events > 5min
     ScalingDown --> Checkpointing: Trigger savepoint
     Checkpointing --> Zero: CP completed
-    
+
     Zero --> ColdStart: Event arrives
     ColdStart --> Restoring: Fetch checkpoint
     Restoring --> WarmingUp: State referenced
     WarmingUp --> Active: Ready
-    
+
     Active --> ScalingUp: High load
     ScalingUp --> Active: Resources added
-    
+
     ScalingDown --> Active: New events
-    
+
     Zero --> [*]: Timeout cleanup
-    
+
     note right of ColdStart
         冷启动优化:
         - 快照启动 <10s
         - 延迟状态加载
         - JVM CDS预热
     end note
-    
+
     note left of Active
         活跃状态监控:
         - 背压检测
@@ -1460,29 +1467,29 @@ stateDiagram-v2
 ```mermaid
 flowchart TD
     A[开始评估] --> B{负载模式}
-    
+
     B -->|持续稳定| C[预留实例]
     B -->|可预测波动| D[托管K8s + HPA]
     B -->|间歇性/突发| E{状态大小?}
-    
+
     E -->|<10GB| F[Serverless Flink]
     E -->|10-100GB| G{延迟要求?}
     E -->|>100GB| H[分离状态 + 预留计算]
-    
+
     G -->|<1s| I[Serverless + 预置并发]
     G -->|1-10s| F
     G -->|>10s| J[按需实例]
-    
+
     F --> K{利用率?}
-    
+
     K -->|<30%| L[启用Scale-to-Zero]
     K -->|30-70%| M[混合架构]
     K -->|>70%| N[考虑预留容量]
-    
+
     L --> O[按秒计费]
     M --> P[基线预留 + 突发Serverless]
     N --> C
-    
+
     style F fill:#e8f5e9,stroke:#2e7d32
     style L fill:#bbdefb,stroke:#1565c0
     style C fill:#fff3e0,stroke:#ef6c00
@@ -1497,25 +1504,25 @@ graph LR
         A3[S3] --> A4[State Store]
         A2 --> A5[Kinesis Data Firehose]
     end
-    
+
     subgraph "Azure"
         B1[Event Hubs] --> B2[Container Apps]
         B3[Blob Storage] --> B4[State Store]
         B2 --> B5[Data Lake]
     end
-    
+
     subgraph "GCP"
         C1[Pub/Sub] --> C2[Cloud Run Jobs]
         C3[GCS] --> C4[State Store]
         C2 --> C5[BigQuery]
     end
-    
+
     subgraph "统一抽象"
         D1[KEDA] --> D2[Flink Operator]
         D3[ForSt] --> D2
         D2 --> D4[S3/OSS/GCS]
     end
-    
+
     style A2 fill:#ffebee,stroke:#c62828
     style B2 fill:#e3f2fd,stroke:#1565c0
     style C2 fill:#e8f5e9,stroke:#2e7d32
@@ -1531,28 +1538,28 @@ sequenceDiagram
     participant JM as JobManager
     participant S3 as S3 State Store
     participant TM as TaskManager
-    
+
     E->>K: 新消息到达
     K->>K: 检测Scale-to-Zero
     K->>JM: 触发Pod创建
-    
+
     JM->>S3: 获取最新检查点元数据
     S3-->>JM: 返回检查点句柄
-    
+
     JM->>JM: 恢复JobGraph
     JM->>TM: 启动TaskManager
-    
+
     TM->>S3: 引用状态句柄<br/>(非下载)
     S3-->>TM: 确认状态可用
-    
+
     TM->>E: 恢复消费位点
     E-->>TM: 开始数据流
-    
+
     Note over TM,S3: 运行时懒加载<br/>按需从S3获取状态
-    
+
     TM->>S3: 访问KeyGroup数据
     S3-->>TM: 返回状态数据
-    
+
     TM->>TM: 本地缓存热点状态
 ```
 
@@ -1560,25 +1567,15 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "FLIP-158: Snapshot Startup", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-158
 
-[^2]: AWS Documentation, "Amazon Managed Service for Apache Flink", 2026. https://docs.aws.amazon.com/managed-flink/
 
-[^3]: Microsoft Azure Documentation, "Azure Managed Flink", 2026. https://learn.microsoft.com/azure/managed-flink/
 
-[^4]: KEDA Documentation, "Event-driven Autoscaling for Kubernetes", 2026. https://keda.sh/
 
-[^5]: Chandy, K.M., Lamport, L., "Distributed Snapshots: Determining Global States of Distributed Systems", ACM Transactions on Computer Systems, 3(1), 1985.
 
-[^6]: Apache Flink Blog, "Introducing ForSt: A Cloud-Native State Backend for Flink", 2025. https://flink.apache.org/2025/01/15/forst-state-backend/
 
-[^7]: Google Cloud Documentation, "Cloud Run Jobs", 2026. https://cloud.google.com/run/docs/create-jobs
 
-[^8]: CNCF, "Serverless Workflow Specification", 2026. https://github.com/serverlessworkflow/specification
 
-[^9]: Flink Kubernetes Operator Documentation, "Autoscaler", 2026. https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/custom-resource/autoscaler/
 
-[^10]: AWS Lambda Documentation, "SnapStart for Java", 2026. https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
 
 ---
 
@@ -1689,13 +1686,13 @@ spec:
         lagThreshold: "1000"
         activationLagThreshold: "10"
         offsetResetPolicy: latest
-    
+
     # CPU触发器
     - type: cpu
       metadata:
         type: Utilization
         value: "70"
-    
+
     # 内存触发器
     - type: memory
       metadata:
@@ -1718,7 +1715,7 @@ spec:
         - alert: FlinkHighCost
           expr: >
             (
-              sum(flink_taskmanager_Status_JVM_Memory_Heap_Used) 
+              sum(flink_taskmanager_Status_JVM_Memory_Heap_Used)
               * 0.0000035 * 3600 * 24 * 30
             ) > 1000
           for: 1h
@@ -1727,7 +1724,7 @@ spec:
           annotations:
             summary: "Flink月度成本预估超过$1000"
             description: "当前资源使用率预估月度成本: ${{ $value }}"
-        
+
         - alert: FlinkLowUtilization
           expr: >
             avg_over_time(

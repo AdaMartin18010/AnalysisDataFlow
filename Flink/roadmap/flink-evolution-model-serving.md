@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-MS-01: Model Versioning
+
 模型版本：
 $$
 \text{Model} = (\text{Artifacts}, \text{Version}, \text{Metadata})
 $$
 
 ### Def-F-MS-02: A/B Testing
+
 A/B测试：
 $$
 \text{Traffic} \to \{\text{Model}_A, \text{Model}_B\} \text{ by } \text{Ratio}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-MS-01: Model Consistency
+
 模型一致性：
 $$
 \forall r \in \text{Requests} : \text{ModelVersion}(r) \text{ is consistent}
@@ -55,7 +58,7 @@ graph TB
 ```java
 public class ModelRouter extends ProcessFunction<Features, Prediction> {
     private Map<String, Model> models;
-    
+
     @Override
     public void processElement(Features features, Context ctx, Collector<Prediction> out) {
         String variant = selectVariant(features.getUserId());

@@ -31,10 +31,10 @@
     - [Prop-F-02-50: 检查点频率与恢复时间权衡](#prop-f-02-50-检查点频率与恢复时间权衡)
     - [Prop-F-02-51: 并行度与吞吐量的最优关系](#prop-f-02-51-并行度与吞吐量的最优关系)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: 智能检查点 ⊃ 传统检查点](#关系-1-智能检查点-传统检查点)
-    - [关系 2: 负载感知 ⟹ 自适应间隔](#关系-2-负载感知-自适应间隔)
-    - [关系 3: 增量检查点 ↔ 存储层优化](#关系-3-增量检查点-存储层优化)
-    - [关系 4: 局部检查点 ∝ 故障域隔离](#关系-4-局部检查点-故障域隔离)
+    - [关系 1: 智能检查点 ⊃ 传统检查点](#关系-1-智能检查点--传统检查点)
+    - [关系 2: 负载感知 ⟹ 自适应间隔](#关系-2-负载感知--自适应间隔)
+    - [关系 3: 增量检查点 ↔ 存储层优化](#关系-3-增量检查点--存储层优化)
+    - [关系 4: 局部检查点 ∝ 故障域隔离](#关系-4-局部检查点--故障域隔离)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 智能检查点架构设计](#41-智能检查点架构设计)
       - [架构层次](#架构层次)
@@ -58,7 +58,7 @@
       - [分层存储架构](#分层存储架构)
       - [异步上传优化](#异步上传优化)
       - [存储格式优化](#存储格式优化)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-02-60: 智能检查点最优性定理](#thm-f-02-60-智能检查点最优性定理)
     - [Thm-F-02-61: 自适应间隔稳定性定理](#thm-f-02-61-自适应间隔稳定性定理)
     - [Thm-F-02-62: 增量检查点完备性定理](#thm-f-02-62-增量检查点完备性定理)
@@ -619,10 +619,10 @@ $$
 public interface AdaptivePolicyEngine {
     // 基于负载动态调整检查点策略
     CheckpointPolicy computePolicy(SystemMetrics metrics);
-    
+
     // 预测最优检查点时机
     Optional<Instant> predictNextCheckpoint();
-    
+
     // 评估策略效果并学习
     void feedback(CheckpointResult result);
 }
@@ -639,7 +639,7 @@ public class SmartCheckpointScheduler {
                      + load.getBackpressureRatio() * BP_WEIGHT;
         return score < TRIGGER_THRESHOLD;
     }
-    
+
     // 动态计算最优并行度
     public int computeParallelism(StateSize stateSize, ResourceCapacity capacity) {
         return (int) Math.min(
@@ -662,7 +662,7 @@ public class IncrementalOptimizer {
             .compactionChanges(trackCompaction(current, previous))
             .build();
     }
-    
+
     // 压缩增量数据
     public CompressedData compressDelta(StateDelta delta) {
         return zstdCompressor.compress(delta, COMPRESSION_LEVEL);
@@ -717,30 +717,30 @@ public class AdaptiveIntervalAlgorithm {
     private static final double KP = 0.5;
     private static final double KI = 0.1;
     private static final double KD = 0.05;
-    
+
     private double integral = 0;
     private double prevError = 0;
-    
+
     public Duration computeNextInterval(SystemMetrics metrics, Duration currentInterval) {
         // 计算归一化负载 (0-1)
         double load = normalizeLoad(metrics);
         double targetLoad = 0.7; // 目标负载 70%
-        
+
         // PID 计算
         double error = targetLoad - load;
         integral += error;
         double derivative = error - prevError;
         prevError = error;
-        
+
         double adjustment = KP * error + KI * integral + KD * derivative;
-        
+
         // 应用调整并限制范围
         long newMillis = (long) (currentInterval.toMillis() * (1 + adjustment));
         newMillis = Math.max(MIN_INTERVAL_MS, Math.min(MAX_INTERVAL_MS, newMillis));
-        
+
         return Duration.ofMillis(newMillis);
     }
-    
+
     private double normalizeLoad(SystemMetrics metrics) {
         return metrics.getCpuUsage() * 0.4
              + metrics.getMemoryPressure() * 0.3
@@ -781,13 +781,13 @@ RocksDB 的 MANIFEST 文件记录 SST 文件的元数据变更。通过追踪 MA
 public class DirtyPageTracker {
     private final BitSet dirtyPages;
     private final int pageSize;
-    
+
     public void markDirty(int offset, int length) {
         int startPage = offset / pageSize;
         int endPage = (offset + length) / pageSize;
         dirtyPages.set(startPage, endPage + 1);
     }
-    
+
     public List<PageRange> getDirtyRanges() {
         return dirtyPages.stream()
             .mapToObj(i -> new PageRange(i * pageSize, (i + 1) * pageSize))
@@ -815,7 +815,7 @@ public class DeltaCompression {
         ZstdCompressor compressor = new ZstdCompressor(DELTA_LEVEL);
         return compressor.compress(data, dictionary);
     }
-    
+
     // 块级去重
     public List<BlockRef> deduplicateBlocks(List<byte[]> blocks) {
         Map<Hash, BlockRef> uniqueBlocks = new HashMap<>();
@@ -910,22 +910,22 @@ public class DynamicParallelismOptimizer {
     public int optimizeParallelism(CheckpointContext ctx) {
         // 基于历史性能数据预测最优并行度
         HistoricalData history = loadHistory(ctx.getJobId());
-        
+
         // 考虑当前资源可用性
         ResourceSnapshot resources = getAvailableResources();
-        
+
         // 计算最优值
         double optimal = Math.sqrt(
             ctx.getStateSize() / COORDINATION_COST
         );
-        
+
         // 限制在可行范围内
         return (int) Math.max(1, Math.min(
             resources.getMaxParallelism(),
             optimal
         ));
     }
-    
+
     // 运行时动态调整
     public void adjustRuntime(CheckpointExecution exec) {
         if (exec.getProgress() < 0.3 && exec.getThroughput() < TARGET) {
@@ -990,17 +990,17 @@ minimize: max(finish_time) - start_time
 public class PipelinedUpload {
     private final ExecutorService uploadExecutor;
     private final BlockingQueue<UploadTask> queue;
-    
+
     public void asyncUpload(StateSnapshot snapshot) {
         // 分块上传
         List<StateChunk> chunks = snapshot.split(CHUNK_SIZE);
-        
+
         // 并行上传各块
         List<CompletableFuture<UploadResult>> futures = chunks.stream()
             .map(chunk -> CompletableFuture.supplyAsync(
                 () -> uploadChunk(chunk), uploadExecutor))
             .collect(Collectors.toList());
-        
+
         // 聚合结果
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
             .thenApply(v -> aggregateResults(futures));
@@ -1031,6 +1031,7 @@ public class PipelinedUpload {
 **形式化表述**:
 
 设：
+
 - $C_{cp}(\pi, \delta, \gamma)$: 策略 $\pi$、间隔 $\delta$、并行度 $\gamma$ 下的检查点成本
 - $T_{rec}(\pi, \delta)$: 对应配置下的期望恢复时间
 - $\mathcal{R}$: 资源约束集合
@@ -1104,9 +1105,9 @@ $$
 |f(x) - f(y)| \leq L \cdot |x - y| \leq L \cdot \Delta_{max}
 $$
 
-3. **收敛性**: PID 控制器的稳定性已被证明，在适当参数选择下收敛。
+1. **收敛性**: PID 控制器的稳定性已被证明，在适当参数选择下收敛。
 
-4. **鲁棒性**: 即使负载持续波动，由于积分项的存在，系统会围绕稳态值小范围振荡而非发散。
+2. **鲁棒性**: 即使负载持续波动，由于积分项的存在，系统会围绕稳态值小范围振荡而非发散。
 
 因此算法稳定。∎
 
@@ -1119,6 +1120,7 @@ $$
 **形式化表述**:
 
 设：
+
 - $CP_0$: 初始全量检查点
 - $\{\Delta CP_1, \Delta CP_2, ..., \Delta CP_n\}$: 后续增量检查点序列
 
@@ -1142,9 +1144,9 @@ $$
 S_{k-1} \oplus \Delta CP_k = S_{k-1} \cup (S_k \setminus S_{k-1}) = S_k
 $$
 
-4. **完备性**: 由归纳法，对于所有 $k \in [0, n]$，状态可被完整恢复。
+1. **完备性**: 由归纳法，对于所有 $k \in [0, n]$，状态可被完整恢复。
 
-5. **一致性**: 增量合并操作 $\oplus$ 是确定性的，恢复结果唯一。
+2. **一致性**: 增量合并操作 $\oplus$ 是确定性的，恢复结果唯一。
 
 因此增量检查点具有完备性。∎
 
@@ -1157,6 +1159,7 @@ $$
 **形式化表述**:
 
 设：
+
 - $\{F_1, F_2, ..., F_m\}$: 故障域划分
 - $\{CP(F_1, t_1), CP(F_2, t_2), ..., CP(F_m, t_m)\}$: 各域检查点
 - $E_{cross} = \{(u, v) \mid u \in F_i, v \in F_j, i \neq j\}$: 跨域边集合
@@ -1336,7 +1339,7 @@ StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironm
 // 定义故障域
 FailureDomainConfig domainConfig = FailureDomainConfig.builder()
     .setPartitionStrategy(PartitionStrategy.BY_PIPELINE)
-    .addDomain("source-domain", 
+    .addDomain("source-domain",
         Arrays.asList("kafka-source", "parser"))
     .addDomain("processing-domain",
         Arrays.asList("enricher", "aggregator", "window-operator"))
@@ -1412,57 +1415,57 @@ env.getCheckpointConfig().setParallelismConfig(parallelismConfig);
 ```java
 // 完整配置示例
 public class LargeStateJobConfig {
-    
+
     public static void configure(StreamExecutionEnvironment env) {
         // 1. 状态后端配置
-        EmbeddedRocksDBStateBackend rocksDbBackend = 
+        EmbeddedRocksDBStateBackend rocksDbBackend =
             new EmbeddedRocksDBStateBackend(true);
-        
+
         // 预定义选项
-        DefaultConfigurableOptionsFactory optionsFactory = 
+        DefaultConfigurableOptionsFactory optionsFactory =
             new DefaultConfigurableOptionsFactory();
         optionsFactory.setRocksDBOptions("max_background_jobs", "8");
         optionsFactory.setRocksDBOptions("write_buffer_size", "128MB");
         optionsFactory.setRocksDBOptions("target_file_size_base", "128MB");
         rocksDbBackend.setRocksDBOptions(optionsFactory);
         env.setStateBackend(rocksDbBackend);
-        
+
         // 2. 智能检查点配置
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
-        
+
         // 自适应间隔
         checkpointConfig.enableSmartCheckpointing(
             Duration.ofMinutes(10),    // 基础间隔
             Duration.ofMinutes(5),     // 最小间隔
             Duration.ofMinutes(30)     // 最大间隔
         );
-        
+
         // 增量检查点
         checkpointConfig.enableIncrementalCheckpointing(
             IncrementalCheckpointMode.AGGRESSIVE
         );
-        
+
         // 并行度优化
         checkpointConfig.setMaxConcurrentCheckpoints(1);
         checkpointConfig.setCheckpointParallelism(16);
-        
+
         // 3. 存储层优化
         checkpointConfig.setCheckpointStorage(
             new FileSystemCheckpointStorage(
                 "hdfs://namenode:8020/flink/checkpoints"
             )
         );
-        
+
         // 异步上传
         checkpointConfig.setAsyncUploadEnabled(true);
         checkpointConfig.setAsyncUploadBufferSize(16 * 1024 * 1024); // 16MB
-        
+
         // 4. 超时与对齐
         checkpointConfig.setCheckpointTimeout(Duration.ofMinutes(30));
         checkpointConfig.setAlignmentTimeout(Duration.ofMinutes(5));
         checkpointConfig.enableUnalignedCheckpoints();
         checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(30));
-        
+
         // 5. 外部化检查点
         checkpointConfig.enableExternalizedCheckpoints(
             ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
@@ -1490,22 +1493,22 @@ public class LargeStateJobConfig {
 ```java
 // 低延迟作业配置
 public class LowLatencyJobConfig {
-    
+
     public static void configure(StreamExecutionEnvironment env) {
         // 1. 使用 HashMapStateBackend 获得最低延迟
         HashMapStateBackend hashMapBackend = new HashMapStateBackend();
         env.setStateBackend(hashMapBackend);
-        
+
         // 2. 检查点配置
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
-        
+
         // 较短的基础间隔，快速恢复
         checkpointConfig.setCheckpointInterval(Duration.ofSeconds(10));
-        
+
         // 启用非对齐检查点，减少对齐等待
         checkpointConfig.enableUnalignedCheckpoints();
         checkpointConfig.setAlignmentTimeout(Duration.ZERO);
-        
+
         // 启用局部检查点，减少单次影响范围
         checkpointConfig.enablePartialCheckpointing(
             PartialCheckpointConfig.builder()
@@ -1513,20 +1516,20 @@ public class LowLatencyJobConfig {
                 .setMaxAffectedOperators(3)
                 .build()
         );
-        
+
         // 3. 缓冲区消胀，减少 Barrier 传播延迟
         env.getConfig().setBufferDebloatingEnabled(true);
         env.getConfig().setBufferDebloatTarget(Duration.ofMillis(500));
-        
+
         // 4. 异步快照优化
         checkpointConfig.setAsyncSnapshotEnabled(true);
         checkpointConfig.setAsyncSnapshotThreadPoolSize(4);
-        
+
         // 5. 检查点超时严格设置
         checkpointConfig.setCheckpointTimeout(Duration.ofSeconds(30));
         checkpointConfig.setMinPauseBetweenCheckpoints(Duration.ofSeconds(5));
         checkpointConfig.setMaxConcurrentCheckpoints(1);
-        
+
         // 6. 网络缓冲优化
         Configuration config = new Configuration();
         config.setString("taskmanager.network.memory.buffer-debloat.enabled", "true");
@@ -1558,28 +1561,28 @@ graph TB
         A[Adaptive Policy Engine] --> B[Cost-Benefit Analyzer]
         A --> C[Prediction Model]
     end
-    
+
     subgraph "Coordination Layer"
         D[Checkpoint Scheduler] --> E[Barrier Manager]
         D --> F[State Backend Coordinator]
     end
-    
+
     subgraph "Execution Layer"
         G[Snapshot Executor] --> H[Async Upload Manager]
         G --> I[Incremental Merger]
     end
-    
+
     subgraph "Storage Layer"
         J[Local State Store] --> K[Tiered Storage Manager]
         K --> L[Hot Tier SSD]
         K --> M[Warm Tier DFS]
         K --> N[Cold Tier Object]
     end
-    
+
     A --> D
     D --> G
     H --> K
-    
+
     style A fill:#e1f5ff
     style D fill:#e8f5e9
     style G fill:#fff3e0
@@ -1596,26 +1599,26 @@ graph TB
 flowchart TD
     A[开始] --> B[采集系统指标]
     B --> C{负载评估}
-    
+
     C -->|高负载| D[增大间隔]
     C -->|低负载| E[减小间隔]
     C -->|正常负载| F[保持当前]
-    
+
     D --> G[应用 PID 调节]
     E --> G
     F --> H[维持现状]
-    
+
     G --> I[计算新间隔]
     H --> J[等待下一周期]
     I --> J
-    
+
     J --> K{间隔变化>阈值?}
     K -->|是| L[应用新间隔]
     K -->|否| J
-    
+
     L --> M[记录调整日志]
     M --> J
-    
+
     style A fill:#e8f5e9
     style L fill:#fff3e0
 ```
@@ -1632,12 +1635,12 @@ graph LR
         A1[State Change] --> B1[Dirty Page Tracker]
         B1 --> C1[Delta Computer]
     end
-    
+
     subgraph "Task 2"
         A2[State Change] --> B2[Dirty Page Tracker]
         B2 --> C2[Delta Computer]
     end
-    
+
     subgraph "Storage"
         C1 --> D[Incremental Merger]
         C2 --> D
@@ -1645,7 +1648,7 @@ graph LR
         E --> F[Upload Queue]
         F --> G[(Checkpoint Storage)]
     end
-    
+
     style C1 fill:#e1f5ff
     style C2 fill:#e1f5ff
     style D fill:#fff3e0
@@ -1661,29 +1664,29 @@ graph LR
 ```mermaid
 flowchart TD
     A[选择检查点策略] --> B{状态大小?}
-    
+
     B -->|< 1GB| C[HashMapStateBackend]
     B -->|1-100GB| D{RocksDB 配置}
     B -->|> 100GB| E[ForStStateBackend]
-    
+
     C --> F{延迟要求?}
     D --> G{变更频率?}
     E --> H[分层存储]
-    
+
     F -->|< 100ms| I[非对齐检查点]
     F -->|> 100ms| J[对齐检查点]
-    
+
     G -->|高| K[激进增量]
     G -->|低| L[保守增量]
-    
+
     H --> M[局部检查点]
-    
+
     I --> N[启用 Buffer Debloating]
     J --> O[标准配置]
     K --> P[快速合并策略]
     L --> Q[延迟合并策略]
     M --> R[故障域隔离]
-    
+
     style A fill:#e1f5ff
     style N fill:#fff3e0
     style R fill:#e8f5e9
@@ -1700,27 +1703,27 @@ graph TB
     subgraph "Application"
         A[State Access]
     end
-    
+
     subgraph "Cache Layer"
         B[L1 Cache<br/>In-Memory] --> C[L2 Cache<br/>Local SSD]
     end
-    
+
     subgraph "Distributed Storage"
         D[HDFS / S3] --> E[Replication]
     end
-    
+
     subgraph "Archive"
         F[Object Storage<br/>Glacier]
     end
-    
+
     A --> B
     C --> D
     D -->|Lifecycle Policy| F
-    
+
     G[Access Frequency Monitor] --> H[Eviction Policy]
     H --> B
     H --> C
-    
+
     style B fill:#ffebee
     style C fill:#fff3e0
     style D fill:#e8f5e9
@@ -2011,11 +2014,12 @@ execution.checkpointing.storage.async-upload.threads: 16
 **问题 1: 检查点频繁超时**
 
 - **症状**: Checkpoint 持续时间超过 timeout
-- **诊断**: 
+- **诊断**:
   1. 检查 `checkpointAlignmentTime`，若高则启用非对齐检查点
   2. 检查 `checkpointSize`，若大则启用增量检查点
   3. 检查网络带宽是否饱和
 - **解决**:
+
   ```yaml
   execution.checkpointing.unaligned.enabled: true
   state.backend.incremental: true
@@ -2030,6 +2034,7 @@ execution.checkpointing.storage.async-upload.threads: 16
   2. Compaction 导致 SST 文件重组
   3. 垃圾回收不及时
 - **解决**:
+
   ```yaml
   state.backend.rocksdb.compaction.style: UNIVERSAL
   execution.checkpointing.incremental.gc.retention: 12h
@@ -2043,6 +2048,7 @@ execution.checkpointing.storage.async-upload.threads: 16
   2. 分析状态大小和分布
   3. 检查存储层延迟
 - **解决**:
+
   ```yaml
   execution.checkpointing.storage.tiered.enabled: true
   execution.checkpointing.storage.read-ahead.enabled: true
@@ -2056,6 +2062,7 @@ execution.checkpointing.storage.async-upload.threads: 16
   2. 负载波动过大
   3. 平滑系数过小
 - **解决**:
+
   ```yaml
   execution.checkpointing.adaptive.kp: 0.3
   execution.checkpointing.adaptive.ki: 0.05
@@ -2099,9 +2106,9 @@ execution.checkpointing.storage.async-upload.threads: 16
 
 ## 11. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Checkpointing", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
+[^1]: Apache Flink Documentation, "Checkpointing", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
-[^2]: Apache Flink Documentation, "State Backends", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+[^2]: Apache Flink Documentation, "State Backends", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
 [^3]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
@@ -2109,13 +2116,13 @@ execution.checkpointing.storage.async-upload.threads: 16
 
 [^5]: M. Zaharia et al., "Discretized Streams: Fault-Tolerant Streaming Computation at Scale", SOSP, 2013.
 
-[^6]: RocksDB Team, "RocksDB Tuning Guide", Meta, 2024. https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide
+[^6]: RocksDB Team, "RocksDB Tuning Guide", Meta, 2024. <https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide>
 
 [^7]: D. Logothetis et al., "Stateful Bulk Processing for Incremental Analytics", OSDI, 2010.
 
 [^8]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
 
-[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. https://flink.apache.org/news/2021/01/11/incremental-checkpointing.html
+[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. <https://flink.apache.org/news/2021/01/11/incremental-checkpointing.html>
 
 [^10]: F. McSherry et al., "Differential Dataflow", CIDR, 2013.
 

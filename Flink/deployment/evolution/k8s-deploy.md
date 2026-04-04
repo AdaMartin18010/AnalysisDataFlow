@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Deploy-K8s-01: K8s Native
+
 K8s原生部署：
 $$
 \text{K8sNative} = \text{CRD} + \text{Operator} + \text{NativeAPI}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Deploy-K8s-01: Self-Healing
+
 自愈能力：
 $$
 \text{Failure} \to \text{AutoRestart}

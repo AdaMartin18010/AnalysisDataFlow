@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-OBS-INT-01: Observability Platform
+
 可观测性平台：
 $$
 \text{Platform} = \text{Metrics} \times \text{Logs} \times \text{Traces} \times \text{Events}
 $$
 
 ### Def-F-OBS-INT-02: Unified Telemetry
+
 统一遥测：
 $$
 \text{OTLP} : \text{Data} \to \text{AllSignals}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-OBS-INT-01: Correlation
+
 关联性：
 $$
 \forall m, l, t : \text{Correlated}(m, l, t) \Rightarrow \text{SameContext}

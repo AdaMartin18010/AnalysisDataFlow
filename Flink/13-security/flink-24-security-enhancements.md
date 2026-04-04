@@ -122,14 +122,14 @@ flowchart TD
     B -->|x86_64 with AES-NI| C[TLS_AES_256_GCM_SHA384]
     B -->|ARM/Mobile| D[TLS_CHACHA20_POLY1305_SHA256]
     B -->|遗留兼容| E[TLS_AES_128_GCM_SHA256]
-    
+
     C --> F{性能需求}
     D --> F
     E --> F
-    
+
     F -->|极致性能| G[启用 0-RTT]
     F -->|安全优先| H[禁用 0-RTT]
-    
+
     G --> I[部署配置]
     H --> I
 ```
@@ -204,12 +204,14 @@ $$\text{OIDC}_{Flink} = (A_{auth}, I_{identity}, S_{session}, C_{claims}, L_{log
 **Flink 2.4 OIDC 增强功能**:
 
 1. **动态客户端注册** (RFC 7591):
+
 ```yaml
 security.oidc.dynamic.registration.enabled: true
 security.oidc.registration.endpoint: https://auth.example.com/connect/register
 ```
 
-2. **声明映射与转换**:
+1. **声明映射与转换**:
+
 ```yaml
 # 用户属性映射
 security.oidc.claims.mapping: |
@@ -227,7 +229,8 @@ security.oidc.roles.prefix: flink-
 security.oidc.roles.transform: uppercase
 ```
 
-3. **会话管理** (RFC 7009, RFC 7662):
+1. **会话管理** (RFC 7009, RFC 7662):
+
 ```yaml
 # 令牌撤销
 security.oidc.revocation.enabled: true
@@ -240,7 +243,8 @@ security.oidc.frontchannel.logout.enabled: true
 security.oidc.backchannel.logout.enabled: true
 ```
 
-4. **多租户支持**:
+1. **多租户支持**:
+
 ```yaml
 security.oidc.multitenant.enabled: true
 security.oidc.issuer.resolution: domain  # 或 header, path
@@ -278,22 +282,22 @@ audit.events.categories:
     - LOGOUT
     - SESSION_EXPIRED
     - MFA_COMPLETED
-    
+
   AUTHORIZATION:     # 授权事件
     - PERMISSION_DENIED
     - ROLE_ASSIGNED
     - POLICY_VIOLATION
-    
+
   DATA_ACCESS:       # 数据访问
     - SENSITIVE_READ
     - BULK_EXPORT
     - SCHEMA_ACCESS
-    
+
   CONFIGURATION:     # 配置变更
     - SECURITY_POLICY_CHANGE
     - SSL_CONFIG_UPDATE
     - AUTH_PROVIDER_CHANGE
-    
+
   ADMINISTRATIVE:    # 管理操作
     - JOB_DEPLOYED
     - CHECKPOINT_TRIGGERED
@@ -356,7 +360,7 @@ $$\mathcal{M}: D \times P_{policy} \times C_{context} \rightarrow \hat{D}$$
 ```sql
 -- 创建脱敏策略
 CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() = 'admin' THEN email
     WHEN CURRENT_ROLE() = 'analyst' THEN REGEXP_REPLACE(email, '.+@', '***@')
     ELSE '***@masked.com'
@@ -367,12 +371,12 @@ ALTER TABLE users ALTER COLUMN email SET MASKING POLICY email_mask;
 
 -- 动态脱敏视图
 CREATE MASKED VIEW users_anonymized AS
-SELECT 
+SELECT
   id,
   MD5(CONCAT(name, '${SALT}')) as name_hash,
   REGEXP_REPLACE(phone, '(\d{3})\d{4}(\d{4})', '$1****$2') as phone_masked,
   SUBSTRING(address, 1, 6) || '******' as address_partial,
-  CASE 
+  CASE
     WHEN credit_score > 750 THEN 'excellent'
     WHEN credit_score > 650 THEN 'good'
     ELSE 'average'
@@ -386,7 +390,7 @@ FROM users;
 // 创建脱敏配置
 DataMaskingConfig maskingConfig = DataMaskingConfig.builder()  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
     .withPolicy("PII_MASKING", policy -> policy
-        .withRule("email", MaskingStrategy.PARTIAL_MASK, 
+        .withRule("email", MaskingStrategy.PARTIAL_MASK,
             PartialMaskConfig.builder()
                 .visiblePrefix(2)
                 .visibleSuffix(4)
@@ -449,13 +453,13 @@ field.encryption.columns:
     column: ssn
     algorithm: AES-256-GCM-DETERMINISTIC
     key.id: ssn-encryption-key
-    
+
   - table: transactions
     column: card_number
     algorithm: AES-256-GCM
     key.id: payment-key
     tokenize: true
-    
+
   - table: healthcare
     column: diagnosis
     algorithm: AES-256-GCM-RANDOM
@@ -524,7 +528,7 @@ security.policies:
         actions:
           - auto_encrypt
           - audit_access
-          
+
       - classification: PCI
         patterns:
           - regex: '\b4[0-9]{12}(?:[0-9]{3})?\b'  # Visa
@@ -532,7 +536,7 @@ security.policies:
         actions:
           - tokenize
           - restrict_export
-          
+
       - classification: PHI
         keywords:
           - diagnosis
@@ -550,7 +554,7 @@ security.policies:
         permissions:
           - resource: "*"
             actions: ["*"]
-            
+
       - name: data-engineer
         permissions:
           - resource: "jobs/*"
@@ -561,7 +565,7 @@ security.policies:
             actions: ["read"]
             conditions:
               - masked: true
-              
+
       - name: data-analyst
         permissions:
           - resource: "tables/*"
@@ -581,14 +585,14 @@ security.policies:
         destination:
           services: ["jobmanager", "taskmanager"]
         action: allow
-        
+
       - name: tls-required
         tls:
           min_version: "1.3"
           cipher_suites: ["TLS_AES_256_GCM_SHA384"]
         services: ["*"]
         action: enforce
-        
+
       - name: ui-restriction
         source:
           not_cidr: ["10.0.0.0/8"]
@@ -603,11 +607,11 @@ security.policies:
       - events: ["LOGIN_FAILURE", "PERMISSION_DENIED"]
         severity: WARNING
         immediate_alert: true
-        
+
       - events: ["SENSITIVE_READ", "BULK_EXPORT"]
         severity: INFO
         log_level: detailed
-        
+
       - events: ["SECURITY_POLICY_CHANGE", "AUTH_PROVIDER_CHANGE"]
         severity: CRITICAL
         require_approval: true
@@ -670,7 +674,7 @@ $$P_{detect} = 1 - \frac{1}{2^{|hash|}}$$
 
 $$P_{detect} = 1 - \frac{1}{2^{256}} \approx 1 - 8.6 \times 10^{-78}$$
 
-**推导**: 
+**推导**:
 
 - 攻击者需找到哈希碰撞才能无痕篡改
 - SHA-256 抗碰撞强度为 $2^{128}$
@@ -683,6 +687,7 @@ $$P_{detect} = 1 - \frac{1}{2^{256}} \approx 1 - 8.6 \times 10^{-78}$$
 $$\Delta L_{mask} \leq \alpha \cdot |schema| \cdot L_{eval}$$
 
 其中：
+
 - $\alpha$: 脱敏列比例
 - $|schema|$: 记录字段数
 - $L_{eval}$: 单次策略评估延迟 (~0.1ms)
@@ -709,66 +714,66 @@ graph TB
         MTLS[mTLS 双向认证]
         KER[Kerberos/SPNEGO]
     end
-    
+
     subgraph "传输层 (Transport)"
         TLS13[TLS 1.3]
         CIPHER[现代密码套件]
         ZERO[0-RTT 会话恢复]
     end
-    
+
     subgraph "数据保护层 (Data Protection)"
         FLE[字段级加密]
         MASK[动态脱敏]
         TOKEN[令牌化]
         HASH[一致性哈希]
     end
-    
+
     subgraph "策略层 (Policy)"
         POLICY[声明式策略引擎]
         RBAC[RBAC]
         ABAC[ABAC]
         CLASS[数据分类]
     end
-    
+
     subgraph "审计层 (Audit)"
         AUDIT[结构化审计日志]
         SIGN[数字签名]
         EXPORT[实时导出]
         SIEM[SIEM 集成]
     end
-    
+
     subgraph "合规层 (Compliance)"
         GDPR[GDPR]
         HIPAA[HIPAA]
         PCI[PCI-DSS]
         SOC2[SOC2]
     end
-    
+
     OAUTH --> TLS13
     OIDC --> TLS13
     MTLS --> TLS13
     KER --> TLS13
-    
+
     TLS13 --> CIPHER
     CIPHER --> ZERO
-    
+
     ZERO --> POLICY
     POLICY --> RBAC
     RBAC --> FLE
     RBAC --> MASK
-    
+
     ABAC --> CLASS
     CLASS --> FLE
     CLASS --> TOKEN
-    
+
     FLE --> AUDIT
     MASK --> AUDIT
     TOKEN --> AUDIT
-    
+
     AUDIT --> SIGN
     SIGN --> EXPORT
     EXPORT --> SIEM
-    
+
     FLE --> GDPR
     MASK --> HIPAA
     TOKEN --> PCI
@@ -859,12 +864,12 @@ TLS 1.2 握手: 2-RTT
                      <- ServerHello, Certificate, ServerHelloDone
   ClientKeyExchange, ChangeCipherSpec, Finished ->
                      <- ChangeCipherSpec, Finished
-                      
+
 TLS 1.3 握手: 1-RTT (减少50%)
   ClientHello + KeyShare ->
                          <- ServerHello, EncryptedExtensions, Certificate, Finished
   Finished ->
-  
+
 TLS 1.3 0-RTT: 0-RTT (减少100%)
   EarlyData + ClientHello + KeyShare ->
                                      <- ServerHello, ..., Finished
@@ -881,7 +886,7 @@ TLS 1.3 0-RTT: 0-RTT (减少100%)
   1. 攻击者拦截授权码
   2. 攻击者用授权码换取令牌
   3. 攻击者获得合法访问权限
-  
+
 有 PKCE:
   1. 攻击者拦截授权码
   2. 攻击者无法获取 code_verifier (仅客户端知道)
@@ -897,7 +902,7 @@ TLS 1.3 0-RTT: 0-RTT (减少100%)
 宽松匹配 (example.com/callback*):
   攻击者注册: example.com/callback.evil.com
   受害者被重定向到恶意站点
-  
+
 严格匹配 (example.com/callback):
   仅精确匹配通过
   子域名、路径注入均被拒绝
@@ -922,11 +927,11 @@ TLS 1.3 0-RTT: 0-RTT (减少100%)
   存储: 随机加密 (最高安全)
   查询: 令牌化令牌 (等值查找)
   显示: 掩码 (**** **** **** 1234)
-  
+
 对于年龄:
   存储: 保序加密 (支持范围查询)
   统计: 明文存储 (假设非敏感)
-  
+
 对于诊断代码:
   存储: 确定性加密 (支持分组统计)
   分析: 一致性哈希 (去标识化)
@@ -941,11 +946,11 @@ TLS 1.3 0-RTT: 0-RTT (减少100%)
   [年龄: 25, 邮编: 10001, 诊断: 流感]
   [年龄: 25, 邮编: 10001, 诊断: 感冒]
   [年龄: 26, 邮编: 10001, 诊断: 流感]
-  
+
 准标识符泛化后:
   [年龄: 20-30, 邮编: 100**, 诊断: 流感] - 2条
   [年龄: 20-30, 邮编: 100**, 诊断: 感冒] - 1条
-  
+
 k=1 不满足匿名要求
 需进一步泛化或抑制
 ```
@@ -1250,7 +1255,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.security.encryption.*;
 
 public class FieldLevelEncryptionExample {
-    
+
     public static void main(String[] args) {
         // ============================================
         // 1. 创建加密配置
@@ -1262,41 +1267,41 @@ public class FieldLevelEncryptionExample {
                 .withRegion("us-east-1")
                 .withCredentialProvider(CredentialProviderType.IAM_ROLE)
             )
-            
+
             // 列级加密配置
-            .withColumnEncryption("patients", "ssn", 
+            .withColumnEncryption("patients", "ssn",
                 ColumnEncryptionConfig.builder()
                     .algorithm(EncryptionAlgorithm.AES_256_SIV)  // 确定性
                     .keyId("arn:aws:kms:us-east-1:123456789:key/ssn-key")
                     .searchable(true)  // 支持等值查询
                     .build())
-            
+
             .withColumnEncryption("patients", "diagnosis",
                 ColumnEncryptionConfig.builder()
                     .algorithm(EncryptionAlgorithm.AES_256_GCM)  // 随机
                     .keyId("arn:aws:kms:us-east-1:123456789:key/phi-key")
                     .searchable(false)
                     .build())
-            
+
             .withColumnEncryption("patients", "age",
                 ColumnEncryptionConfig.builder()
                     .algorithm(EncryptionAlgorithm.OPE)  // 保序
                     .keyId("arn:aws:kms:us-east-1:123456789:key/ope-key")
                     .searchable(true)  // 支持范围查询
                     .build())
-            
+
             // 密钥轮换
             .withKeyRotation(KeyRotationConfig.builder()
                 .enabled(true)
                 .rotationPeriod(Duration.ofDays(90))
                 .gracePeriod(Duration.ofDays(7))
                 .build())
-            
+
             // 审计
             .withAuditLogging(true)
-            
+
             .build();
-        
+
         // ============================================
         // 2. SQL DDL 方式
         // ============================================
@@ -1336,27 +1341,27 @@ public class FieldLevelEncryptionExample {
                 'table-name' = 'patients'
             )
             """;
-        
+
         // ============================================
         // 3. DataStream API 方式
         // ============================================
         DataStream<PatientRecord> encryptedStream = patientStream
             .map(new FieldEncryptionMapper(encryptionConfig))
             .name("Field-Level Encryption");
-        
+
         // ============================================
         // 4. 密文查询示例 (确定性加密支持等值)
         // ============================================
         String queryDeterministic = """
-            SELECT * FROM patients 
+            SELECT * FROM patients
             WHERE ssn = '123-45-6789'  -- 自动使用密文查询
             """;
-        
+
         // ============================================
         // 5. 密文范围查询 (保序加密支持)
         // ============================================
         String queryRange = """
-            SELECT * FROM patients 
+            SELECT * FROM patients
             WHERE age BETWEEN 18 AND 65  -- 使用保序加密范围查询
             """;
     }
@@ -1374,9 +1379,9 @@ public class FieldLevelEncryptionExample {
 
 -- 策略 1: 邮箱脱敏
 CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('admin', 'privacy_officer') THEN email
-    WHEN CURRENT_ROLE() = 'customer_service' THEN 
+    WHEN CURRENT_ROLE() = 'customer_service' THEN
       REGEXP_REPLACE(email, '(.{2}).*@(.*)', '$1***@$2')
     ELSE '***@masked.com'
   END;
@@ -1408,7 +1413,7 @@ CREATE MASKING POLICY name_k_anonymity AS
 -- 2. 应用脱敏策略到表
 -- ============================================
 
-ALTER TABLE customers 
+ALTER TABLE customers
   ALTER COLUMN email SET MASKING POLICY email_mask,
   ALTER COLUMN phone SET MASKING POLICY phone_mask,
   ALTER COLUMN card_number SET MASKING POLICY card_mask,
@@ -1420,11 +1425,11 @@ ALTER TABLE customers
 
 -- 分析师视图 (高度脱敏)
 CREATE VIEW customers_analyst_view AS
-SELECT 
+SELECT
   MD5(CONCAT(customer_id, '${SALT}')) as anonymized_id,
   CONCAT(LEFT(full_name, 1), '***') as masked_name,
   SUBSTRING(address, 1, 6) || '******' as partial_address,
-  CASE 
+  CASE
     WHEN age < 18 THEN 'minor'
     WHEN age < 35 THEN 'young'
     WHEN age < 55 THEN 'middle'
@@ -1435,7 +1440,7 @@ FROM customers;
 
 -- 客服视图 (部分脱敏)
 CREATE VIEW customers_service_view AS
-SELECT 
+SELECT
   customer_id,
   CONCAT(first_name, ' ', LEFT(last_name, 1), '.') as partial_name,
   REGEXP_REPLACE(email, '(.{2}).*@(.*)', '$1***@$2') as masked_email,
@@ -1455,12 +1460,12 @@ CREATE MASKING POLICY context_aware_mask AS
     WHEN CURRENT_TIME() BETWEEN '09:00:00' AND '18:00:00'
          AND SUBSTRING(CURRENT_CLIENT_IP(), 1, 8) = '10.0.0.'
     THEN sensitive_data
-    
+
     -- 非工作时间需要额外授权
-    WHEN HAS_ROLE('emergency_access') 
+    WHEN HAS_ROLE('emergency_access')
          AND SESSION_CONTEXT('emergency_authorized') = 'true'
     THEN sensitive_data
-    
+
     -- 默认脱敏
     ELSE SHA256(sensitive_data)
   END;
@@ -1509,17 +1514,17 @@ audit.logging.events.include:
   - AUTHENTICATION.LOGOUT
   - AUTHENTICATION.MFA_COMPLETED
   - AUTHENTICATION.SESSION_EXPIRED
-  
+
   # 授权事件
   - AUTHORIZATION.PERMISSION_DENIED
   - AUTHORIZATION.ROLE_ASSIGNED
   - AUTHORIZATION.POLICY_VIOLATION
-  
+
   # 数据访问
   - DATA_ACCESS.SENSITIVE_READ
   - DATA_ACCESS.BULK_EXPORT
   - DATA_ACCESS.UNAUTHORIZED_ACCESS_ATTEMPT
-  
+
   # 管理操作
   - ADMINISTRATIVE.JOB_DEPLOYED
   - ADMINISTRATIVE.CHECKPOINT_FAILED
@@ -1538,20 +1543,20 @@ audit.logging.include:
   request.path: true
   request.query_params: true
   request.body: false  # 不记录请求体 (可能含敏感数据)
-  
+
   response.status: true
   response.duration_ms: true
-  
+
   user.id: true
   user.roles: true
   user.session_id: true
-  
+
   client.ip: true
   client.user_agent: true
-  
+
   resource.id: true
   resource.type: true
-  
+
   context.trace_id: true
   context.span_id: true
 
@@ -1574,7 +1579,7 @@ audit.logging.retention:
   hot.storage.days: 30
   warm.storage.days: 90
   cold.storage.days: 2555  # 7年 (合规要求)
-  
+
 audit.logging.archival:
   enabled: true
   schedule: "0 2 * * *"  # 每天凌晨 2 点
@@ -1650,75 +1655,75 @@ graph TB
         ADMIN[管理员]
         ANALYST[分析师]
     end
-    
+
     subgraph "接入层"
         LB[负载均衡 / TLS 1.3 终结]
         WAF[Web 应用防火墙]
     end
-    
+
     subgraph "认证层"
         OAUTH[OAuth 2.1 / OIDC]
         PKCE[PKCE 验证]
         MFA[MFA 服务]
     end
-    
+
     subgraph "Flink 集群"
         JM[JobManager]
         TM1[TaskManager 1]
         TM2[TaskManager 2]
         TM3[TaskManager 3]
     end
-    
+
     subgraph "数据保护层"
         FLE[字段级加密]
         MASK[动态脱敏]
         TOKEN[令牌化]
     end
-    
+
     subgraph "存储层"
         CK[Checkpoint 存储]
         SB[State Backend]
         EXT[外部系统]
     end
-    
+
     subgraph "审计层"
         AUDIT[审计日志收集]
         SIEM[SIEM 分析]
         ALERT[告警系统]
     end
-    
+
     USER -->|HTTPS/TLS 1.3| LB
     ADMIN -->|HTTPS/TLS 1.3| LB
     ANALYST -->|HTTPS/TLS 1.3| LB
-    
+
     LB --> WAF
     WAF --> OAUTH
-    
+
     OAUTH --> PKCE
     PKCE --> MFA
-    
+
     MFA -->|mTLS| JM
-    
+
     JM <-->|mTLS| TM1
     JM <-->|mTLS| TM2
     JM <-->|mTLS| TM3
-    
+
     TM1 --> FLE
     TM2 --> FLE
     TM3 --> FLE
-    
+
     FLE --> MASK
     MASK --> TOKEN
-    
+
     TOKEN --> CK
     TOKEN --> SB
     TOKEN --> EXT
-    
+
     JM --> AUDIT
     TM1 --> AUDIT
     TM2 --> AUDIT
     TM3 --> AUDIT
-    
+
     AUDIT --> SIEM
     SIEM --> ALERT
 ```
@@ -1728,27 +1733,27 @@ graph TB
 ```mermaid
 flowchart LR
     A[原始数据] --> B{数据分类}
-    
+
     B -->|PII| C[字段级加密]
     B -->|PCI| D[令牌化]
     B -->|PHI| E[强加密 + 审计]
     B -->|Public| F[明文存储]
-    
+
     C --> G{访问角色}
     D --> G
     E --> G
     F --> G
-    
+
     G -->|Admin| H[明文访问]
     G -->|Analyst| I[动态脱敏]
     G -->|Service| J[令牌映射]
     G -->|External| K[完全脱敏]
-    
+
     H --> L[审计日志]
     I --> L
     J --> L
     K --> L
-    
+
     L --> M[SIEM]
     L --> N[合规报告]
 ```
@@ -1761,26 +1766,26 @@ sequenceDiagram
     participant App as Flink Web UI
     participant AS as 授权服务器
     participant API as Flink API
-    
+
     U->>App: 1. 访问 Flink UI
     App->>App: 2. 生成 code_verifier
     App->>App: 3. code_challenge = SHA256(verifier)
-    
+
     App->>U: 4. 重定向到授权服务器
     Note over App,U: 携带 client_id, code_challenge, state
-    
+
     U->>AS: 5. 登录 + 授权
     AS->>AS: 6. 验证用户身份
     AS->>U: 7. 重定向回 Flink
     Note over AS,U: 携带 authorization_code
-    
+
     U->>App: 8. 携带 code 回调
     App->>AS: 9. 交换令牌
     Note over App,AS: 携带 code + code_verifier
-    
+
     AS->>AS: 10. 验证 code_verifier
     AS->>App: 11. 返回 access_token + id_token
-    
+
     App->>API: 12. API 请求 (Bearer Token)
     API->>API: 13. 验证 JWT
     API->>App: 14. 返回数据
@@ -1791,22 +1796,22 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[配置变更] --> B{合规检查}
-    
+
     B -->|TLS < 1.3| C[阻止部署]
     B -->|弱密码算法| D[自动升级]
     B -->|敏感数据未加密| E[建议 FLE]
     B -->|审计关闭| F[强制启用]
     B -->|通过| G[允许部署]
-    
+
     C --> H[告警通知]
     D --> I[审计记录]
     E --> I
     F --> I
     G --> I
-    
+
     I --> J[合规评分更新]
     J --> K[生成报告]
-    
+
     K -->|评分 < 80| L[改进建议]
     K -->|评分 >= 80| M[合规认证]
 ```
@@ -2009,39 +2014,24 @@ security.masking.default.policy: pci_dss_compliant
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Security Overview", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/security/
 
-[^2]: RFC 8446, "The Transport Layer Security (TLS) Protocol Version 1.3", IETF, 2018.
 
-[^3]: RFC 6749, "The OAuth 2.0 Authorization Framework", IETF, 2012.
 
-[^4]: OAuth 2.1 Draft, "OAuth 2.1 Authorization Framework", IETF, 2024.
 
-[^5]: RFC 7636, "Proof Key for Code Exchange by OAuth Public Clients (PKCE)", IETF, 2015.
 
-[^6]: OpenID Connect Core 1.0, "OpenID Foundation", 2014.
 
-[^7]: NIST SP 800-53 Rev. 5, "Security and Privacy Controls for Information Systems and Organizations", 2020.
 
-[^8]: PCI Security Standards Council, "PCI DSS v4.0", 2022.
 
-[^9]: U.S. Department of Health & Human Services, "HIPAA Security Rule", 2003.
 
-[^10]: European Union, "General Data Protection Regulation (GDPR)", 2016.
 
-[^11]: AICPA, "Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy", 2017.
 
-[^12]: RFC 9325, "Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)", IETF, 2021.
 
-[^13]: Apache Flink FLIP-531, "Building and Running AI Agents in Flink", 2025.
 
-[^14]: OWASP, "Transport Layer Protection Cheat Sheet", 2023.
 
-[^15]: Cloud Native Computing Foundation, "Zero Trust Architecture", 2022.
 
 ---
 
-*文档版本*: v1.0  
-*最后更新*: 2026-04-04  
-*适用版本*: Apache Flink 2.4+  
+*文档版本*: v1.0
+*最后更新*: 2026-04-04
+*适用版本*: Apache Flink 2.4+
 *维护者*: Flink Security SIG

@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-22: Observability 2.0
+
 可观测性2.0是AI驱动的统一平台：
 $$
 \text{Obsv2} = \text{Metrics} \times \text{Logs} \times \text{Traces} \times \text{AI}
 $$
 
 ### Def-F-30-23: Predictive Monitoring
+
 预测性监控预见问题：
 $$
 \text{Prediction} : \text{History} \to \text{FutureAnomaly}
 $$
 
 ### Def-F-30-24: Auto-Remediation
+
 自动修复自愈系统：
 $$
 \text{Remediation} : \text{Anomaly} \to \text{Action} \to \text{Resolution}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-13: Detection Time
+
 检测时间：
 $$
 T_{\text{detect}} \leq 1s
 $$
 
 ### Prop-F-30-14: MTTR
+
 平均修复时间：
 $$
 \text{MTTR} \leq 5m \text{ (for known issues)}
@@ -67,23 +72,23 @@ $$
 
 ```java
 public class PredictiveMonitor {
-    
+
     private final LSTMModel model;
-    
+
     public List<Prediction> predict(List<Metric> history) {
         // 准备序列数据
         Tensor input = prepareSequence(history);
-        
+
         // LSTM预测
         Tensor output = model.predict(input, HORIZON);
-        
+
         // 检测异常
         return detectAnomalies(output);
     }
-    
+
     private List<Prediction> detectAnomalies(Tensor predictions) {
         List<Prediction> anomalies = new ArrayList<>();
-        
+
         for (int i = 0; i < predictions.length(); i++) {
             if (predictions.get(i) > THRESHOLD) {
                 anomalies.add(new Prediction(
@@ -93,7 +98,7 @@ public class PredictiveMonitor {
                 ));
             }
         }
-        
+
         return anomalies;
     }
 }

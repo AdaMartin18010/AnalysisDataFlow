@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Async-01: Async Operation
+
 异步操作：
 $$
 \text{Async} : \text{Input} \to \text{Future}<\text{Output}>
 $$
 
 ### Def-F-Async-02: Ordering Guarantee
+
 排序保证：
 $$
 \text{Order} \in \{\text{Ordered}, \text{Unordered}, \text{AllowedLateness}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Async-01: Throughput Gain
+
 吞吐量提升：
 $$
 \text{Throughput}_{\text{async}} \gg \text{Throughput}_{\text{sync}}
@@ -68,7 +71,7 @@ AsyncDataStream.unorderedWait(
 ### 6.1 异步数据库查询
 
 ```java
-AsyncFunction<Event, EnrichedEvent> enrich = 
+AsyncFunction<Event, EnrichedEvent> enrich =
     new AsyncFunction<>() {
         @Override
         public void asyncInvoke(Event event, ResultFuture<EnrichedEvent> resultFuture) {

@@ -11,6 +11,7 @@
 **Def-F-05-02**: **检查项(Check Item)** — 包含检查内容、检查方法、预期结果、不通过处理四个要素的验证单元。
 
 **Def-F-05-03**: **P0/P1/P2分级** — 按重要性划分的检查项等级：
+
 - P0: 阻塞性问题，不通过则禁止上线
 - P1: 重要问题，不通过需经风险评估后决策
 - P2: 优化建议，不通过应记录并规划改进
@@ -446,6 +447,7 @@ graph TB
 **Prop-F-05-01**: 生产环境检查清单的完备性
 
 **论证**: 本检查清单覆盖Flink生产环境上线所需的8个关键维度：
+
 1. **部署前检查** — 确保资源配置、Checkpoint、状态后端等基础配置正确
 2. **安全配置** — 确保认证、加密、访问控制、审计等安全机制到位
 3. **监控配置** — 确保指标采集、告警、仪表板、日志等可观测性完备
@@ -474,6 +476,7 @@ state.backend.rocksdb.memory.managed: true
 ```
 
 **检查方法**:
+
 ```bash
 # 1. 查看Flink配置
 cat flink-conf.yaml | grep taskmanager.memory
@@ -486,11 +489,13 @@ tail -f gc.log | grep "Pause"
 ```
 
 **预期结果**:
+
 - 托管内存 = 8192m × 0.4 ≈ 3277m
 - GC暂停时间 < 200ms
 - 内存使用率峰值 < 80%
 
 **不通过处理**:
+
 - 如果GC频繁，增加堆内存或减少RocksDB缓存
 - 如果内存不足，扩容TM或调整并行度
 
@@ -507,6 +512,7 @@ state.checkpoints.dir: s3p://flink-checkpoints/prod/
 ```
 
 **检查方法**:
+
 ```bash
 # 1. 查看Checkpoint历史
 curl http://flink-jm:8081/jobs/<job-id>/checkpoints
@@ -519,6 +525,7 @@ aws s3 ls s3://flink-checkpoints/prod/
 ```
 
 **预期结果**:
+
 - Checkpoint完成时间 < 60秒（间隔的50%）
 - Checkpoint大小增长趋势稳定
 - 连续失败次数 = 0
@@ -526,19 +533,3 @@ aws s3 ls s3://flink-checkpoints/prod/
 ---
 
 ## 13. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "Deployment & Operations", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/
-
-[^2]: Apache Flink Documentation, "Checkpointing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
-
-[^3]: Apache Flink Documentation, "SSL Setup", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/security/security-ssl/
-
-[^4]: Apache Flink Documentation, "Metrics & Monitoring", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/
-
-[^5]: Apache Flink Documentation, "High Availability (HA)", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/ha/overview/
-
-[^6]: Apache Flink Documentation, "Production Readiness Checklist", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/production_ready/
-
-[^7]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
-
-[^8]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.

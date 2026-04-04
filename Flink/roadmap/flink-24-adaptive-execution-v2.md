@@ -5,25 +5,30 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-24-05: Adaptive Execution
+
 自适应执行是指在运行时根据实际数据特征动态调整执行计划的能力：
 $$
 \text{Plan}_{t+1} = \text{Adapt}(\text{Plan}_t, \text{Metrics}_t, \text{Constraints})
 $$
 
 ### Def-F-24-06: Runtime Re-optimization
+
 运行时重新优化是指在不重启作业的情况下修改执行计划：
+
 - 局部重优化：调整算子参数（并行度、缓存大小）
 - 全局重优化：修改算子拓扑结构
 
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-24-05: Adaptation Safety
+
 自适应调整保持语义等价性：
 $$
 \forall \text{Plan}_1, \text{Plan}_2 : \text{Adapt}(\text{Plan}_1) = \text{Plan}_2 \Rightarrow \text{Output}(\text{Plan}_1) \equiv \text{Output}(\text{Plan}_2)
 $$
 
 ### Prop-F-24-06: Convergence
+
 自适应过程在有限步内收敛：
 $$
 \exists N : \forall n > N, \text{Plan}_{n+1} = \text{Plan}_n
@@ -62,12 +67,12 @@ flowchart TD
     B -->|资源不足| D[Resource Rebalance]
     B -->|算子瓶颈| E[Operator Fusion]
     B -->|网络拥塞| F[Partitioning Adapt]
-    
+
     C --> G[重新分区]
     D --> H[动态资源分配]
     E --> I[算子链重组]
     F --> J[路由策略调整]
-    
+
     G --> K[渐进式部署]
     H --> K
     I --> K
@@ -81,6 +86,7 @@ flowchart TD
 **定理 (Thm-F-24-03)**: 渐进式计划迁移保持Exactly-Once语义。
 
 **证明概要**:
+
 1. 设旧计划为 $P_1$，新计划为 $P_2$
 2. 在barrier处同步状态
 3. 状态从 $P_1$ 格式转换为 $P_2$ 格式
@@ -98,18 +104,18 @@ public class AdaptiveExecutor {
     public void reoptimize(ExecutionPlan currentPlan, RuntimeMetrics metrics) {
         // 1. 识别性能瓶颈
         List<Bottleneck> bottlenecks = analyzeBottlenecks(metrics);
-        
+
         // 2. 生成候选计划
-        List<ExecutionPlan> candidates = 
+        List<ExecutionPlan> candidates =
             optimizer.generateAlternatives(currentPlan, bottlenecks);
-        
+
         // 3. 评估候选计划
         ExecutionPlan bestPlan = selectBestPlan(candidates, metrics);
-        
+
         // 4. 渐进式迁移
         migrateGradually(currentPlan, bestPlan);
     }
-    
+
     private void migrateGradually(ExecutionPlan from, ExecutionPlan to) {
         // 使用两阶段提交协议
         Phase1: prepareMigration(from, to);
@@ -169,8 +175,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-160: "Adaptive Execution", 2023. https://cwiki.apache.org/confluence/display/FLINK/FLIP-160
-[^2]: "Runtime Query Optimization in Flink", VLDB 2024.
+[^1]: Apache Flink FLIP-160: "Adaptive Execution", 2023. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-160>
 
 ---
 

@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-CDC-01: Change Data Capture
+
 变更数据捕获：
 $$
 \text{CDC} : \text{DB Changes} \to \text{Stream}<\text{ChangeEvent}>
 $$
 
 ### Def-F-Conn-CDC-02: Change Event
+
 变更事件：
 $$
 \text{ChangeEvent} = \langle \text{Op}, \text{Before}, \text{After}, \text{Source} \rangle
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-CDC-01: Consistency Guarantee
+
 一致性保证：
 $$
 \text{CDC} \implies \text{ExactlyOnce} \land \text{Ordering}
@@ -73,7 +76,7 @@ stream.process(new ProcessFunction<String, Row>() {
     public void processElement(String event, Context ctx, Collector<Row> out) {
         JsonObject json = JsonParser.parseString(event).getAsJsonObject();
         String op = json.get("op").getAsString();
-        
+
         switch (op) {
             case "c": // CREATE
             case "r": // READ (snapshot)

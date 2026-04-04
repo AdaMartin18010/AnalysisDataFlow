@@ -563,8 +563,8 @@ CREATE TABLE users (
 );
 
 -- 查询数据
-SELECT name, email, age 
-FROM users 
+SELECT name, email, age
+FROM users
 WHERE age >= 18;
 ```
 
@@ -617,8 +617,8 @@ public class MongoDBCDCExample {
             String operation = event.getOperationType().getValue();
             Document fullDoc = event.getFullDocument();
             BsonDocument key = event.getDocumentKey();
-            
-            System.out.printf("Operation: %s, Key: %s, Doc: %s%n", 
+
+            System.out.printf("Operation: %s, Key: %s, Doc: %s%n",
                 operation, key, fullDoc);
             return event;
         });
@@ -632,30 +632,30 @@ public class MongoDBCDCExample {
 
 ```java
 // 将 Change Stream 事件转换为标准格式
-public class ChangeStreamProcessor 
+public class ChangeStreamProcessor
     implements MapFunction<ChangeStreamDocument<Document>, Row> {
-    
+
     @Override
     public Row map(ChangeStreamDocument<Document> event) {
         Row row = new Row(5);
-        
+
         // 操作类型: INSERT/UPDATE/DELETE
         row.setField(0, event.getOperationType().getValue());
-        
+
         // 文档主键
         row.setField(1, event.getDocumentKey().getObjectId("_id").toString());
-        
+
         // 变更时间戳
         row.setField(2, event.getClusterTime());
-        
+
         // 完整文档 (UPDATE_LOOKUP 模式)
         Document fullDoc = event.getFullDocument();
         row.setField(3, fullDoc != null ? fullDoc.toJson() : null);
-        
+
         // 更新描述 (仅 UPDATE 操作)
         UpdateDescription updateDesc = event.getUpdateDescription();
         row.setField(4, updateDesc != null ? updateDesc.toString() : null);
-        
+
         return row;
     }
 }
@@ -759,7 +759,7 @@ CREATE TABLE transactions_sink (
 
 -- 插入数据
 INSERT INTO transactions_sink
-SELECT 
+SELECT
     CAST(user_id AS STRING) as _id,
     user_id,
     amount,
@@ -781,7 +781,7 @@ public class MongoDBCDCtoSinkExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(60000);
-        
+
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
         // ========== 1. 配置 CDC Source ==========
@@ -831,19 +831,19 @@ public class MongoDBCDCtoSinkExample {
 }
 
 // CDC 事件转换器
-class CDCEventTransformer 
+class CDCEventTransformer
     implements MapFunction<ChangeStreamDocument<Document>, Document> {
-    
+
     @Override
     public Document map(ChangeStreamDocument<Document> event) {
         OperationType opType = event.getOperationType();
-        
+
         switch (opType) {
             case INSERT:
             case REPLACE:
                 // 直接写入完整文档
                 return event.getFullDocument();
-                
+
             case UPDATE:
                 // 合并更新到完整文档
                 Document fullDoc = event.getFullDocument();
@@ -853,7 +853,7 @@ class CDCEventTransformer
                     return fullDoc;
                 }
                 return null;
-                
+
             case DELETE:
                 // 发送删除标记或执行删除
                 BsonDocument key = event.getDocumentKey();
@@ -861,7 +861,7 @@ class CDCEventTransformer
                     .append("_id", key.getObjectId("_id").getValue())
                     .append("_deleted", true)
                     .append("_deleted_at", new Date());
-                    
+
             default:
                 return null;
         }
@@ -882,34 +882,34 @@ graph TB
         RS2["Secondary"]
         RS3["Secondary"]
         Collection[(Collection)]
-        
+
         RS1 -->|"replicate"| RS2
         RS1 -->|"replicate"| RS3
         RS1 -->|"read/write"| Collection
     end
-    
+
     subgraph Flink_Cluster["Flink Cluster"]
         subgraph Source_Operators["Source Operators"]
             S1["MongoSource<br/>Parallelism=2"]
             S2["ChangeStreamSource<br/>Parallelism=1"]
         end
-        
+
         subgraph Processing["Processing"]
             P1["Map/Filter"]
             P2["Window/Aggregate"]
         end
-        
+
         subgraph Sink_Operators["Sink Operators"]
             SK1["MongoSink<br/>Replace Mode"]
             SK2["MongoSink<br/>Update Mode"]
         end
     end
-    
+
     subgraph State_Backend["State Backend"]
         Checkpoint[(Checkpoint)]
         ResumeToken["Resume Token"]
     end
-    
+
     Collection -->|"Batch Query"| S1
     RS1 -->|"Change Stream"| S2
     S1 --> P1
@@ -930,7 +930,7 @@ sequenceDiagram
     participant MC as MongoDB Client
     participant MP as MongoDB Primary
     participant OP as Oplog
-    
+
     App->>FS: Create Change Stream
     FS->>MC: watch(collection)
     MC->>MP: Establish cursor
@@ -939,13 +939,13 @@ sequenceDiagram
     MC-->>FS: ChangeStreamDocument
     FS->>FS: Deserialize to Row
     FS->>App: Emit record
-    
+
     Note over FS,Checkpoint: Checkpoint Triggered
     FS->>FS: snapshotState()
     FS->>Checkpoint: Save Resume Token
     Checkpoint-->>FS: Confirm
     FS->>App: notifyCheckpointComplete()
-    
+
     Note over App,MP: Failure & Recovery
     MP--xFS: Connection lost
     App->>FS: Restore from checkpoint
@@ -992,7 +992,7 @@ graph LR
         B10[Document]
         B11[Null]
     end
-    
+
     subgraph Flink["Flink SQL Types"]
         F1[STRING]
         F2[STRING]
@@ -1006,7 +1006,7 @@ graph LR
         F10[ROW]
         F11[NULL]
     end
-    
+
     B1 -->|"toHexString"| F1
     B2 -->|"direct"| F2
     B3 -->|"intValue"| F3

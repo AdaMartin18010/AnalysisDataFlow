@@ -2,7 +2,7 @@
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
-> 
+>
 > | 属性 | 值 |
 > |------|-----|
 > | **特性** | 自适应执行引擎 v2 |
@@ -243,16 +243,16 @@ $$
 ```java
 // Def-F-02-90: 热点 Key 检测算法
 public class HotKeyDetector {
-    
+
     private final Map<Key, Long> keyFrequency = new HashMap<>();
     private final double HOT_KEY_THRESHOLD = 0.05; // 占总流量5%以上为热点
-    
+
     public Set<Key> detectHotKeys(Stream<Key> keyStream, long totalRecords) {
         // 统计 Key 频率
-        keyStream.forEach(key -> 
+        keyStream.forEach(key ->
             keyFrequency.merge(key, 1L, Long::sum)
         );
-        
+
         // 识别热点 Key
         return keyFrequency.entrySet().stream()
             .filter(e -> (double) e.getValue() / totalRecords > HOT_KEY_THRESHOLD)
@@ -296,7 +296,7 @@ $$
 ```java
 // Def-F-02-92: Adaptive Scheduler 集成接口定义
 public interface AdaptiveSchedulerIntegration {
-    
+
     /**
      * 请求资源调整
      */
@@ -304,7 +304,7 @@ public interface AdaptiveSchedulerIntegration {
         ResourceRequirements requirements,
         AdjustmentPriority priority
     );
-    
+
     /**
      * 执行并行度变更
      */
@@ -313,12 +313,12 @@ public interface AdaptiveSchedulerIntegration {
         int newParallelism,
         RescalingStrategy strategy
     );
-    
+
     /**
      * 获取运行时指标
      */
     RuntimeMetrics getRuntimeMetrics(JobVertexID vertexId);
-    
+
     /**
      * 注册自适应监听器
      */
@@ -381,6 +381,7 @@ $$T \leq \frac{V(0)}{\eta} < \infty$$
 **证明**:
 
 **假设**:
+
 - 观察窗口长度为 $W$
 - 检测阈值为 $\theta$
 - 真实负载分布为 $L = [l_1, l_2, ..., l_n]$
@@ -672,14 +673,14 @@ flowchart TB
 ```java
 // 两阶段聚合处理数据倾斜
 public class SkewResistantAggregate {
-    
+
     /**
      * 阶段 1: 本地预聚合（在 Map 端）
      */
     public static class LocalAggregate extends RichMapFunction<Event, PartialResult> {
         private MapState<Key, Accumulator> localBuffer;
         private static final long BUFFER_TIMEOUT_MS = 100;
-        
+
         @Override
         public PartialResult map(Event event) {
             Accumulator acc = localBuffer.get(event.getKey());
@@ -688,7 +689,7 @@ public class SkewResistantAggregate {
             }
             acc.add(event);
             localBuffer.put(event.getKey(), acc);
-            
+
             // 超时或缓冲区满时发射
             if (shouldEmit()) {
                 return emitPartialResult();
@@ -696,7 +697,7 @@ public class SkewResistantAggregate {
             return null;
         }
     }
-    
+
     /**
      * 阶段 2: 全局聚合（在 Reduce 端）
      * 负载已均衡
@@ -746,14 +747,14 @@ dataStream
 ```java
 // Def-F-02-93: 基于 PID 的资源自适应控制器
 public class PIDResourceController {
-    
+
     private double kp = 0.6;  // 比例系数
     private double ki = 0.2;  // 积分系数
     private double kd = 0.1;  // 微分系数
-    
+
     private double integral = 0;
     private double prevError = 0;
-    
+
     /**
      * 计算资源调整量
      * @param setpoint 目标利用率 (如 0.75)
@@ -765,17 +766,17 @@ public class PIDResourceController {
         integral += error;
         double derivative = error - prevError;
         prevError = error;
-        
+
         // PID 计算
         double output = kp * error + ki * integral + kd * derivative;
-        
+
         // 转换为资源调整量
         int adjustment = (int) Math.round(output * currentResources);
-        
+
         // 限制调整幅度
         int maxAdjustment = (int) (currentResources * 0.2); // 最大调整 20%
         adjustment = Math.max(-maxAdjustment, Math.min(maxAdjustment, adjustment));
-        
+
         return currentResources + adjustment;
     }
 }
@@ -812,29 +813,29 @@ public class PIDResourceController {
 ```java
 // 带冷却期的自适应调整器
 public class HysteresisAdaptiveController {
-    
+
     private static final long COOLDOWN_MS = 60000;
     private static final double THRESHOLD = 0.2;
-    
+
     private long lastAdjustmentTime = 0;
     private int currentParallelism;
-    
+
     public boolean shouldAdjust(double target, double actual) {
         // 检查冷却期
         if (System.currentTimeMillis() - lastAdjustmentTime < COOLDOWN_MS) {
             return false;
         }
-        
+
         // 检查阈值
         double deviation = Math.abs(target - actual) / target;
         return deviation > THRESHOLD;
     }
-    
+
     public int calculateNewParallelism(int current, double ratio) {
         // 限制调整幅度
         double adjustedRatio = Math.max(0.8, Math.min(1.2, ratio));
         int newParallelism = (int) (current * adjustedRatio);
-        
+
         // 确保最小/最大边界
         return Math.max(1, Math.min(100, newParallelism));
     }
@@ -893,6 +894,7 @@ $$
 **步骤 4: 输出等价性**
 
 由步骤 1-3，两种执行模式产生相同的：
+
 - 中间状态序列
 - Watermark 推进序列
 - 输出记录序列
@@ -1054,6 +1056,7 @@ adaptive.adjustment.mode: GRACEFUL
 ### 示例 6.2: 性能提升数据实测
 
 **测试环境**:
+
 - Flink 版本: 1.18.0
 - 集群: 10 × AWS EC2 c5.2xlarge
 - 数据源: Kafka (100 partitions)
@@ -1086,7 +1089,7 @@ adaptive.adjustment.mode: GRACEFUL
 ```
 流量模式: 低峰 10K r/s → 高峰 100K r/s → 低峰 10K r/s
 
-时间线: 
+时间线:
 
 Throughput
    │
@@ -1133,7 +1136,7 @@ Throughput
 
 ```java
 // 电商场景：流量波动大，存在热点商品
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用 AEE V2
@@ -1252,7 +1255,7 @@ execution-plan-optimization.strategies: BATCH_SIZE
 诊断步骤:
 1. 检查倾斜检测是否启用
    $ grep skew-detection.enabled flink-conf.yaml
-   
+
 2. 检查阈值设置
    $ grep coefficient.threshold flink-conf.yaml
    → 如果 > 2.0，设置过高
@@ -1361,24 +1364,24 @@ graph TB
     KAFKA --> MM
     MM --> SD
     MM --> BP
-    
+
     SD --> DE
     BP --> DE
     MM --> DE
-    
+
     DE --> IEPO
     DE --> RAA
-    
+
     IEPO --> AS
     RAA --> AS
-    
+
     AS --> TM1
     AS --> TM2
-    
+
     TM1 --> CP
     TM2 --> CP
     CP --> SB
-    
+
     TM1 --> SINK
     TM2 --> SINK
 
@@ -1396,54 +1399,54 @@ graph TB
 ```mermaid
 flowchart TD
     START([开始]) --> COLLECT[收集运行时指标]
-    
+
     COLLECT --> ANALYZE{分析指标}
-    
+
     ANALYZE -->|吞吐量异常| TPUT_CHECK{与目标比较}
     ANALYZE -->|存在背压| BP_CHECK{背压等级}
     ANALYZE -->|资源告警| RES_CHECK{资源利用率}
     ANALYZE -->|正常| COLLECT
-    
+
     TPUT_CHECK -->|低于目标| TPUT_LOW[分析根因]
     TPUT_CHECK -->|高于目标| TPUT_HIGH[考虑缩容]
-    
+
     BP_CHECK -->|低等级| BP_LOW[缓冲区调整]
     BP_CHECK -->|高等级| BP_HIGH[扩容或优化]
-    
+
     RES_CHECK -->|CPU高| CPU_HIGH[增加Slot/优化]
     RES_CHECK -->|内存高| MEM_HIGH[增加内存/GC优化]
-    
+
     TPUT_LOW --> SKEW_CHECK{数据倾斜?}
     TPUT_HIGH --> SCALE_IN_ACTION[减少并行度]
     BP_LOW --> BUFFER_ADJ[调整缓冲区大小]
     BP_HIGH --> SCALE_OUT_ACTION[增加并行度]
     CPU_HIGH --> SCALE_OUT_ACTION
     MEM_HIGH --> RESOURCE_ADJ[调整资源配置]
-    
+
     SKEW_CHECK -->|是| SKEW_ACTION[倾斜处理]
     SKEW_CHECK -->|否| SCALE_OUT_ACTION
-    
+
     SKEW_ACTION --> WAIT_CHECKPOINT{等待Checkpoint?}
     SCALE_OUT_ACTION --> WAIT_CHECKPOINT
     SCALE_IN_ACTION --> WAIT_CHECKPOINT
     BUFFER_ADJ --> EXECUTE[执行调整]
     RESOURCE_ADJ --> EXECUTE
-    
+
     WAIT_CHECKPOINT -->|是| CHECKPOINT_WAIT[等待Checkpoint完成]
     WAIT_CHECKPOINT -->|否| EXECUTE
-    
+
     CHECKPOINT_WAIT --> EXECUTE
-    
+
     EXECUTE --> VALIDATE{验证效果}
-    
+
     VALIDATE -->|成功| UPDATE_CONFIG[更新配置]
     VALIDATE -->|失败| ROLLBACK[回滚调整]
-    
+
     UPDATE_CONFIG --> COOLDOWN[进入冷却期]
     ROLLBACK --> COOLDOWN
-    
+
     COOLDOWN --> COLLECT
-    
+
     style START fill:#e3f2fd,stroke:#1976d2
     style COLLECT fill:#e8f5e9,stroke:#388e3c
     style EXECUTE fill:#fff9c4,stroke:#f57f17
@@ -1489,27 +1492,27 @@ flowchart LR
     CALC --> CHECK
     CHECK -->|否| INPUT
     CHECK -->|是| DIAGNOSE
-    
+
     DIAGNOSE --> TYPE_KEY
     DIAGNOSE --> TYPE_PARTITION
     DIAGNOSE --> TYPE_TIME
-    
+
     TYPE_KEY -->|是| S1
     TYPE_KEY -->|否| TYPE_PARTITION
     TYPE_PARTITION -->|是| S3
     TYPE_PARTITION -->|否| TYPE_TIME
     TYPE_TIME -->|是| S4
     TYPE_TIME -->|否| S2
-    
+
     S1 --> EXECUTE
     S2 --> EXECUTE
     S3 --> EXECUTE
     S4 --> EXECUTE
-    
+
     EXECUTE --> VALIDATE
     VALIDATE -->|达标| DONE
     VALIDATE -->|未达标| DIAGNOSE
-    
+
     style INPUT fill:#e3f2fd,stroke:#1976d2
     style DONE fill:#c8e6c9,stroke:#2e7d32
     style S1 fill:#fff9c4,stroke:#f57f17
@@ -1573,25 +1576,15 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Adaptive Scheduler", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/elastic_scaling/
 
-[^2]: Apache Flink FLIP-160: "Adaptive Scheduler", 2021. https://cwiki.apache.org/confluence/display/FLINK/FLIP-160%3A+Adaptive+Scheduler
 
-[^3]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^4]: M. Zaharia et al., "Discretized Streams: Fault-Tolerant Streaming Computation at Scale", SOSP, 2013.
 
-[^5]: Apache Flink FLIP-27: "Refactor Source Interface", 2019. https://cwiki.apache.org/confluence/display/FLINK/FLIP-27%3A+Refactor+Source+Interface
 
-[^6]: F. McSherry et al., "Differential Dataflow", CIDR, 2013.
 
-[^7]: Apache Flink Documentation, "State Backends", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
 
-[^8]: J. Kreps et al., "Kafka: A Distributed Messaging System for Log Processing", NetDB, 2011.
 
-[^9]: Apache Flink FLIP-140: "Declarative Resource Management", 2021. https://cwiki.apache.org/confluence/display/FLINK/FLIP-140%3A+Declarative+Resource+management
 
-[^10]: B. Lohrmann et al., "Elastic Stream Processing with Latency Guarantees", ICDCS, 2015.
 
 ---
 

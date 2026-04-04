@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-METRICS-01: Metric Types
+
 指标类型：
 $$
 \text{Metric} \in \{\text{Counter}, \text{Gauge}, \text{Histogram}, \text{Meter}\}
 $$
 
 ### Def-F-METRICS-02: Cardinality
+
 基数：
 $$
 \text{Cardinality} = |\{\text{TimeSeries}\}|
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-METRICS-01: Cardinality Bound
+
 基数限制：
 $$
 \text{Cardinality} \leq C_{\text{max}}
@@ -67,14 +70,14 @@ metrics.reporter.otlp.interval: 60s
 ```java
 public class MyFunction extends RichMapFunction<String, String> {
     private transient Counter counter;
-    
+
     @Override
     public void open(Configuration parameters) {
         counter = getRuntimeContext()
             .getMetricGroup()
             .counter("recordsProcessed");
     }
-    
+
     @Override
     public String map(String value) {
         counter.inc();

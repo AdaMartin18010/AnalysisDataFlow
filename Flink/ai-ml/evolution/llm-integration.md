@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-LLM-01: LLM Inference
+
 LLM推理：
 $$
 \text{LLM} : \text{Prompt} \to \text{Completion}
 $$
 
 ### Def-F-LLM-02: Streaming Tokens
+
 流式Token：
 $$
 \text{Stream} : \text{Token}_1, \text{Token}_2, ...
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-LLM-01: Token Throughput
+
 Token吞吐量：
 $$
 \text{Tokens/sec} > 1000

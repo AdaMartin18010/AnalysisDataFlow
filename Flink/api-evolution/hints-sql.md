@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Hint-01: SQL Hint
+
 SQL提示：
 $$
 \text{Hint} : \text{Query} \to \text{Optimizer} \to \text{Override}
 $$
 
 ### Def-F-Hint-02: Hint Scope
+
 提示作用域：
 $$
 \text{Scope} \in \{\text{Query}, \text{Table}, \text{Join}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Hint-01: Hint Precedence
+
 提示优先级：
 $$
 \text{Hint} > \text{Statistics} > \text{Default}

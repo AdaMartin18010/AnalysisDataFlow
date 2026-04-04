@@ -23,7 +23,7 @@
     - [4.1 Spark DStream vs Spark Structured Streaming vs Flink](#41-spark-dstream-vs-spark-structured-streaming-vs-flink)
     - [4.2 反例分析: Spark Continuous Processing 的局限](#42-反例分析-spark-continuous-processing-的局限)
     - [4.3 边界讨论: 什么情况下 Spark 延迟可以接近 Flink？](#43-边界讨论-什么情况下-spark-延迟可以接近-flink)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-05-01 (流处理引擎选择定理)](#thm-f-05-01-流处理引擎选择定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [示例 6.1: 实时风控场景选型](#示例-61-实时风控场景选型)

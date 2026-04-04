@@ -199,6 +199,7 @@ $$
 **命题**: 在事件时间语义下，Flink `MATCH_RECOGNIZE` 算子满足**恰好一次语义** (Exactly-Once Semantics)。
 
 **条件**:
+
 - 输入流具有单调递增的水印
 - 模式匹配使用 `AFTER MATCH SKIP` 策略明确指定匹配后行为
 - 输出模式为 `ONE ROW PER MATCH`
@@ -221,7 +222,7 @@ graph TB
         A5[SQL/PGQ Graph]
         A6[Temporal Tables]
     end
-    
+
     subgraph Flink["Flink SQL Implementation"]
         F1[Core SQL Support]
         F2[JSON Functions]
@@ -230,14 +231,14 @@ graph TB
         F5[Temporal Tables]
         F6[Streaming Extensions]
     end
-    
+
     A1 -->|90%+ coverage| F1
     A2 -->|Full Support| F2
     A3 -->|Partial Support| F3
     A4 -->|Full Support| F4
     A5 -->|Not Supported| F5
     A6 -->|Extended Support| F5
-    
+
     F6 -.->|Flink Specific| F1
     F6 -.->|Flink Specific| F3
     F6 -.->|Flink Specific| F4
@@ -366,14 +367,15 @@ $$
 设 `JSON_VALUE(json, path RETURNING type)` 为 SQL:2023 函数，Flink 实现为：
 
 ```sql
-JSON_VALUE(json_field, '$.path' 
-    RETURNING VARCHAR 
-    ON ERROR NULL 
+JSON_VALUE(json_field, '$.path'
+    RETURNING VARCHAR
+    ON ERROR NULL
     ON EMPTY NULL
 )
 ```
 
 参数对应关系：
+
 - `json` ↔ `json_field`: JSON 数据源
 - `path` ↔ `'$.path'`: JSON Path 表达式
 - `RETURNING type` ↔ `RETURNING VARCHAR`: 返回类型声明
@@ -384,6 +386,7 @@ JSON_VALUE(json_field, '$.path'
 **归纳步骤** - 表函数 `JSON_TABLE`:
 
 SQL:2023 语法：
+
 ```sql
 JSON_TABLE(
     json_data,
@@ -407,7 +410,7 @@ Flink 语法与之结构完全一致，列路径解析遵循相同的 SQL/JSON P
 
 **构造性证明** - 展示 Flink 支持 SQL:2023 定义的所有核心模式匹配能力：
 
-1. **模式语法**: 
+1. **模式语法**:
    - 连接: `A B` ✅
    - 选择: `A | B` ✅
    - 量词: `A*`, `A+`, `A?`, `A{n,m}` ✅
@@ -492,6 +495,7 @@ GROUP BY o.order_id, o.customer_name;
 ```
 
 **Flink 验证**:
+
 ```sql
 -- Flink 完全兼容上述语法
 CREATE TABLE orders (
@@ -510,7 +514,7 @@ CREATE TABLE orders (
 
 ```sql
 -- SQL:2023 标准语法 - 将 JSON 展开为关系表
-SELECT 
+SELECT
     jt.order_id,
     jt.customer_name,
     jt.product_name,
@@ -539,17 +543,17 @@ JSON_TABLE(
 
 ```sql
 -- SQL:2023 JSON_VALUE 和 JSON_QUERY
-SELECT 
+SELECT
     order_id,
-    JSON_VALUE(event_data, '$.customer.name' 
+    JSON_VALUE(event_data, '$.customer.name'
         RETURNING VARCHAR(100)
         ON ERROR NULL
     ) AS customer_name,
-    JSON_QUERY(event_data, '$.items[*]' 
+    JSON_QUERY(event_data, '$.items[*]'
         WITH WRAPPER
         ON ERROR EMPTY ARRAY
     ) AS items_array,
-    JSON_EXISTS(event_data, '$.shipping.tracking' 
+    JSON_EXISTS(event_data, '$.shipping.tracking'
         FALSE ON ERROR
     ) AS has_tracking
 FROM order_events;
@@ -561,7 +565,7 @@ FROM order_events;
 
 ```sql
 -- SQL:2023 RANGE 框架 - 计算过去1小时的移动平均
-SELECT 
+SELECT
     order_id,
     order_time,
     amount,
@@ -571,7 +575,7 @@ SELECT
     ) AS hour_moving_avg,
     SUM(amount) OVER (
         ORDER BY order_time
-        RANGE BETWEEN INTERVAL '30' MINUTE PRECEDING 
+        RANGE BETWEEN INTERVAL '30' MINUTE PRECEDING
                   AND CURRENT ROW
     ) AS half_hour_sum
 FROM orders;
@@ -581,7 +585,7 @@ FROM orders;
 
 ```sql
 -- SQL:2023 窗口链 - 复用窗口定义
-SELECT 
+SELECT
     department,
     employee,
     salary,
@@ -589,7 +593,7 @@ SELECT
     RANK() OVER w_dept_salary AS salary_rank,
     salary - AVG(salary) OVER w_dept AS diff_from_avg
 FROM employees
-WINDOW 
+WINDOW
     w_dept AS (PARTITION BY department),
     w_dept_salary AS (w_dept ORDER BY salary DESC);
 ```
@@ -598,7 +602,7 @@ WINDOW
 
 ```sql
 -- Flink 特有的窗口 TVF 语法（SQL:2023 扩展）
-SELECT 
+SELECT
     window_start,
     window_end,
     product_id,
@@ -625,7 +629,7 @@ GROUP BY window_start, window_end, product_id;
 
 ```sql
 -- SQL:2023 MATCH_RECOGNIZE - 识别 V 型反弹模式
-SELECT 
+SELECT
     symbol,
     pattern_start_time,
     bottom_price,
@@ -635,7 +639,7 @@ FROM stock_prices
 MATCH_RECOGNIZE (
     PARTITION BY symbol
     ORDER BY event_time
-    MEASURES 
+    MEASURES
         A.event_time AS pattern_start_time,
         B.price AS bottom_price,
         C.price AS recovery_price,
@@ -655,7 +659,7 @@ MATCH_RECOGNIZE (
 
 ```sql
 -- SQL:2023 MATCH_RECOGNIZE - 检测可疑交易序列
-SELECT 
+SELECT
     account_id,
     pattern_start,
     pattern_end,
@@ -666,7 +670,7 @@ FROM transactions
 MATCH_RECOGNIZE (
     PARTITION BY account_id
     ORDER BY transaction_time
-    MEASURES 
+    MEASURES
         FIRST(A.transaction_time) AS pattern_start,
         LAST(C.transaction_time) AS pattern_end,
         SUM(B.amount) AS total_amount,
@@ -677,7 +681,7 @@ MATCH_RECOGNIZE (
         -- A: 大额交易启动（超过10000）
         A AS A.amount > 10000,
         -- B: 短时间内多笔小额交易（3笔以上，每笔<1000，不同地点）
-        B AS B.amount < 1000 
+        B AS B.amount < 1000
            AND B.transaction_time < FIRST(A.transaction_time) + INTERVAL '10' MINUTE,
         -- C: 再次大额交易或账户状态变化
         C AS C.amount > 5000 OR C.type = 'STATUS_CHANGE'
@@ -689,7 +693,7 @@ MATCH_RECOGNIZE (
 
 ```sql
 -- 检测用户会话中的超时事件
-SELECT 
+SELECT
     user_id,
     session_start,
     last_activity,
@@ -699,7 +703,7 @@ FROM user_events
 MATCH_RECOGNIZE (
     PARTITION BY user_id
     ORDER BY event_time
-    MEASURES 
+    MEASURES
         FIRST(event_time) AS session_start,
         LAST(event_time) AS last_activity,
         COUNT(*) AS page_count,
@@ -712,7 +716,7 @@ MATCH_RECOGNIZE (
         B AS B.event_type IN ('PAGE_VIEW', 'CLICK')
            AND B.event_time < PREV(B.event_time) + INTERVAL '30' MINUTE,
         -- C: 会话结束（登出或超时）
-        C AS C.event_type = 'LOGOUT' 
+        C AS C.event_type = 'LOGOUT'
            OR C.event_time > PREV(C.event_time, 1) + INTERVAL '30' MINUTE
     AFTER MATCH SKIP PAST LAST ROW
 ) AS sessions;
@@ -722,7 +726,7 @@ MATCH_RECOGNIZE (
 
 ```sql
 -- SQL:2023 时间函数增强
-SELECT 
+SELECT
     event_time,
     -- 时区转换
     CONVERT_TZ(event_time, 'UTC', 'Asia/Shanghai') AS local_time,
@@ -755,7 +759,7 @@ graph TB
         C4[Subqueries]
         C5[Set Operations]
     end
-    
+
     subgraph Advanced["Advanced Features"]
         A1[Window Functions]
         A2[JSON Support]
@@ -763,19 +767,19 @@ graph TB
         A4[Recursive Queries]
         A5[Temporal Tables]
     end
-    
+
     subgraph Support["Flink Support Level"]
         S1[✅ Full Support]
         S2[⚠️ Partial]
         S3[❌ Not Supported]
     end
-    
+
     C1 --> S1
     C2 --> S1
     C3 --> S1
     C4 --> S1
     C5 --> S1
-    
+
     A1 --> S1
     A2 --> S1
     A3 --> S1
@@ -790,18 +794,18 @@ flowchart TD
     A[SQL Feature] --> B{Standard or Extension?}
     B -->|Standard| C[ANSI SQL:2023]
     B -->|Extension| D[Flink Specific]
-    
+
     C --> E{Feature Category}
     E -->|Core SQL| F[99% Compatible]
     E -->|JSON| G[95% Compatible]
     E -->|Window| H[90% Compatible]
     E -->|Pattern| I[100% Compatible]
-    
+
     D --> J{Streaming Context}
     J -->|Time Semantics| K[Watermark/Window]
     J -->|Changelog| L[+I/-D/+U/-U]
     J -->|Materialized Table| M[Materialization]
-    
+
     F --> N[Direct Migration]
     G --> N
     H --> O[Syntax Adaptation]
@@ -818,39 +822,39 @@ classDiagram
     class JSONFunctions {
         <<SQL:2023 Part 4>>
     }
-    
+
     class Constructors {
         +JSON_OBJECT()
         +JSON_ARRAY()
     }
-    
+
     class QueryFunctions {
         +JSON_VALUE()
         +JSON_QUERY()
         +JSON_EXISTS()
     }
-    
+
     class TableFunctions {
         +JSON_TABLE()
     }
-    
+
     class AggregateFunctions {
         +JSON_ARRAYAGG()
         +JSON_OBJECTAGG()
     }
-    
+
     JSONFunctions <|-- Constructors
     JSONFunctions <|-- QueryFunctions
     JSONFunctions <|-- TableFunctions
     JSONFunctions <|-- AggregateFunctions
-    
+
     class FlinkSupport {
         +✅ Full
         +✅ Full
         +✅ Full
         +✅ Full
     }
-    
+
     Constructors --> FlinkSupport
     QueryFunctions --> FlinkSupport
     TableFunctions --> FlinkSupport
@@ -866,11 +870,11 @@ sequenceDiagram
     participant Sort as Order/Buffer
     participant NFA as NFA Engine
     participant Output as Output
-    
+
     Source->>Partition: Raw Events
     Partition->>Partition: PARTITION BY key
     Partition->>Sort: Partitioned Stream
-    
+
     loop Event Processing
         Sort->>Sort: ORDER BY time
         Sort->>NFA: Ordered Events
@@ -890,25 +894,15 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: ISO/IEC 9075:2023, "Information technology — Database languages — SQL — Part 1: Framework (SQL/Framework)", 2023. https://www.iso.org/standard/76584.html
 
-[^2]: ISO/IEC 9075-4:2023, "Information technology — Database languages SQL — Part 4: Persistent stored modules (SQL/PSM)", 2023.
 
-[^3]: Apache Flink Documentation, "JSON Functions", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/systemfunctions/#json-functions
 
-[^4]: Apache Flink Documentation, "MATCH_RECOGNIZE", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/match_recognize/
 
-[^5]: Apache Flink Documentation, "Window TVF", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/window-tvf/
 
-[^6]: FLIP-176: "SQL JSON Functions Support", Apache Flink, 2022. https://cwiki.apache.org/confluence/display/FLINK/FLIP-176%3A+SQL+JSON+Functions
 
-[^7]: FLIP-145: "Pattern Recognition with MATCH_RECOGNIZE", Apache Flink, 2020. https://cwiki.apache.org/confluence/display/FLINK/FLIP-145%3A+Pattern+recognition+with+MATCH_RECOGNIZE
 
-[^8]: Oracle Database SQL Language Reference, "SQL:2023 Features", 2024. https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/SQL-2023-Features.html
 
-[^9]: PostgreSQL Documentation, "JSON Types and Functions", 2024. https://www.postgresql.org/docs/current/functions-json.html
 
-[^10]: SQL:2023 Technical Corrigendum 1, ISO/IEC 9075:2023/Cor 1:2024, 2024.
 
 ---
 
@@ -1075,7 +1069,7 @@ CREATE TABLE window_test (
 );
 
 -- 测试 RANGE 窗口
-SELECT 
+SELECT
     user_id,
     ts,
     amount,
@@ -1102,7 +1096,7 @@ FROM event_test
 MATCH_RECOGNIZE (
     PARTITION BY user_id
     ORDER BY event_time
-    MEASURES 
+    MEASURES
         A.event_time AS start_time,
         B.event_time AS end_time
     PATTERN (A B)

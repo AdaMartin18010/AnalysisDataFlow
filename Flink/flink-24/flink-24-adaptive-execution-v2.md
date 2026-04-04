@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-24-07: Adaptive Execution
+
 自适应执行是Flink根据运行时统计信息动态调整执行计划的能力：
 $$
 \text{Plan}_{t+1} = \text{Adapt}(\text{Plan}_t, \text{Stats}_t)
 $$
 
 ### Def-F-24-08: Runtime Statistics
+
 运行时统计信息包含：
 $$
 \text{Stats} = \langle \text{Cardinality}, \text{Selectivity}, \text{Distribution}, \text{Skew} \rangle
 $$
 
 ### Def-F-24-09: Dynamic Optimization
+
 动态优化器根据运行时反馈调整执行策略：
 $$
 \text{Optimizer} : \langle \text{Plan}, \text{Stats} \rangle \to \text{Plan}'
@@ -25,18 +28,21 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-24-07: Adaptation Correctness
+
 自适应调整保持语义等价：
 $$
 \forall \text{Plan}, \text{Plan}' : \text{Adapt}(\text{Plan}) = \text{Plan}' \implies \text{Output}(\text{Plan}) = \text{Output}(\text{Plan}')
 $$
 
 ### Prop-F-24-08: Adaptation Latency
+
 自适应调整延迟有上界：
 $$
 T_{\text{adapt}} \leq T_{\text{collect}} + T_{\text{analyze}} + T_{\text{reconfigure}}
 $$
 
 ### Prop-F-24-09: Performance Improvement
+
 自适应执行性能优于静态计划：
 $$
 \mathbb{E}[\text{Perf}_{\text{adaptive}}] \geq \mathbb{E}[\text{Perf}_{\text{static}}]
@@ -117,13 +123,13 @@ $$
 
 ```java
 public class AdaptiveExecutionManager {
-    
+
     public void onStatisticsUpdate(ExecutionStatistics stats) {
         // 检测是否需要调整
         if (shouldReoptimize(stats)) {
             // 生成优化后的计划
             OptimizedPlan newPlan = optimizer.reoptimize(currentPlan, stats);
-            
+
             // 验证语义等价
             if (semanticChecker.isEquivalent(currentPlan, newPlan)) {
                 // 执行重配置
@@ -131,18 +137,18 @@ public class AdaptiveExecutionManager {
             }
         }
     }
-    
+
     private boolean shouldReoptimize(ExecutionStatistics stats) {
         // 检测数据倾斜
         double skew = stats.getMaxCardinality() / stats.getAvgCardinality();
         if (skew > SKEW_THRESHOLD) return true;
-        
+
         // 检测 cardinality 变化
         double ratio = stats.getCurrentCardinality() / stats.getEstimatedCardinality();
         if (ratio > CARDINALITY_THRESHOLD || ratio < 1/CARDINALITY_THRESHOLD) {
             return true;
         }
-        
+
         return false;
     }
 }
@@ -166,26 +172,26 @@ execution.adaptive.min-collect-duration: 30000
 ```java
 // 根据运行时统计动态选择Join策略
 public class AdaptiveJoinOperator extends AbstractStreamOperator<Row> {
-    
+
     @Override
     public void processElement(StreamRecord<Row> record) {
         // 收集统计信息
         statisticsCollector.update(record);
-        
+
         // 检查是否需要切换策略
         if (shouldSwitchStrategy()) {
             JoinStrategy newStrategy = selectOptimalStrategy();
             switchToStrategy(newStrategy);
         }
-        
+
         // 使用当前策略处理
         currentStrategy.process(record);
     }
-    
+
     private JoinStrategy selectOptimalStrategy() {
         long leftCardinality = statistics.getLeftCardinality();
         long rightCardinality = statistics.getRightCardinality();
-        
+
         if (leftCardinality < BROADCAST_THRESHOLD) {
             return new BroadcastHashJoin();
         } else if (rightCardinality < BROADCAST_THRESHOLD) {
@@ -225,13 +231,13 @@ graph LR
         A2[分区2: 100条]
         A3[分区3: 100条]
     end
-    
+
     subgraph "After: Rebalanced"
         B1[分区1: 400条]
         B2[分区2: 400条]
         B3[分区3: 400条]
     end
-    
+
     A1 --> B1
     A1 --> B2
     A1 --> B3
@@ -258,10 +264,7 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-160: "Adaptive Execution", 2023. https://cwiki.apache.org/confluence/display/FLINK/FLIP-160
-[^2]: "Adaptive Query Processing in Database Systems", VLDB 2024.
-[^3]: "Dynamic Query Re-optimization", SIGMOD 2023.
-[^4]: "Learning-based Query Optimization", CIDR 2024.
+[^1]: Apache Flink FLIP-160: "Adaptive Execution", 2023. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-160>
 
 ---
 

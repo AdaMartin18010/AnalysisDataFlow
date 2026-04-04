@@ -20,6 +20,7 @@ GPU加速流处理是指利用GPU的大规模并行计算能力执行流处理�
 $$\mathcal{O}_{GPU}(D) = \text{GPUKernel}(\text{Transfer}(D_{CPU \rightarrow GPU}))$$
 
 其中：
+
 - $\text{Transfer}$: CPU-GPU数据传输操作
 - $\text{GPUKernel}$: GPU设备上执行的核函数
 - $D_{CPU \rightarrow GPU}$: 从主机内存传输到设备内存的数据批次
@@ -48,17 +49,17 @@ Flink-CUDA Runtime:
     - GPU设备发现与枚举
     - 流多处理器(SM)分配
     - 计算流(Stream)管理
-  
+
   内存管理层:
     - 统一虚拟内存(UVA)
     - 页锁定内存(Pinned Memory)
     - 显存池(GPU Memory Pool)
-  
+
   执行层:
     - CUDA Kernel启动器
     - 异步执行队列
     - 事件同步机制
-  
+
   算子层:
     - GPU聚合算子
     - GPU Join算子
@@ -117,6 +118,7 @@ $$\text{Inference}_{GPU}(X, M) = \text{ONNXRuntime}_{CUDA}(X, M_{trt})$$
 $$\text{Scheduler}: \mathcal{T} \times \mathcal{R}_{CPU} \times \mathcal{R}_{GPU} \rightarrow \text{Placement}$$
 
 其中：
+
 - $\mathcal{T}$: 任务集合
 - $\mathcal{R}_{CPU}$: CPU资源池
 - $\mathcal{R}_{GPU}$: GPU资源池
@@ -156,7 +158,7 @@ GPU内存管理模型定义Flink中GPU显存的分配、回收和数据生命周
 
 **内存分配策略：**
 
-$$\text{Allocate}(size) = \begin{cases} 
+$$\text{Allocate}(size) = \begin{cases}
 \text{PoolAlloc}(size) & \text{if } size \leq B_{pool} \\
 \text{DirectAlloc}(size) & \text{otherwise}
 \end{cases}$$
@@ -333,7 +335,7 @@ graph TB
     CU --> GPU0
     CU --> GPU1
     CU --> GPU2
-    
+
     AGG --> KS
     JOIN --> KS
     VS --> FAISS
@@ -396,17 +398,17 @@ flowchart TD
     A[数据到达] --> B{数据量 > 阈值?}
     B -->|是| C{计算复杂度?}
     B -->|否| D[CPU处理]
-    
+
     C -->|低| D
     C -->|中| E{延迟要求?}
     C -->|高| F[GPU处理]
-    
+
     E -->|宽松| F
     E -->|严格| G{预批处理?}
-    
+
     G -->|可行| H[Batch+GPU]
     G -->|不可行| D
-    
+
     F --> I[GPU Kernel执行]
     H --> I
     D --> J[输出结果]
@@ -481,7 +483,7 @@ public void testGPUSumAccuracy() {
     float[] data = generateRandomData(10_000_000);
     float cpuSum = sequentialSum(data);
     float gpuSum = gpuSumOperator.apply(data);
-    
+
     float relativeError = Math.abs(cpuSum - gpuSum) / Math.abs(cpuSum);
     assertTrue(relativeError < 1e-6);
 }
@@ -516,15 +518,15 @@ def heterogeneous_schedule(tasks, cpu_cap, gpu_cap):
     """基于列表调度的异构任务分配"""
     schedule = []
     cpu_time, gpu_time = 0, 0
-    
+
     # 按优先级排序（工作量降序）
     sorted_tasks = sorted(tasks, key=lambda t: t.workload, reverse=True)
-    
+
     for task in sorted_tasks:
         # 计算在各资源上的完成时间
         cpu_finish = cpu_time + task.cpu_time
         gpu_finish = gpu_time + task.gpu_time
-        
+
         # 分配到更早完成的资源
         if cpu_finish <= gpu_finish:
             schedule.append((task, 'CPU'))
@@ -532,7 +534,7 @@ def heterogeneous_schedule(tasks, cpu_cap, gpu_cap):
         else:
             schedule.append((task, 'GPU'))
             gpu_time = gpu_finish
-    
+
     return schedule
 ```
 
@@ -561,24 +563,24 @@ $$\text{Recover}(c_k) \Rightarrow S' = S_k \land \forall j > k: \text{replay}(e_
 
 ```java
 // GPU算子检查点实现
-public class GPUOperator extends AbstractStreamOperator<Output> 
+public class GPUOperator extends AbstractStreamOperator<Output>
     implements CheckpointedFunction {
-    
+
     private transient Pointer gpuState;  // 设备内存指针
     private byte[] cpuStateBuffer;        // 主机备份
-    
+
     @Override
     public void snapshotState(FunctionSnapshotContext context) {
         // 同步所有CUDA流
         cudaStreamSynchronize(0);
-        
+
         // 拷贝GPU状态到CPU
         cudaMemcpy(cpuStateBuffer, gpuState, size, cudaMemcpyDeviceToHost);
-        
+
         // 状态加入检查点
         state.update(cpuStateBuffer);
     }
-    
+
     @Override
     public void initializeState(FunctionInitializationContext context) {
         // 恢复时拷贝回GPU
@@ -600,26 +602,26 @@ public class GPUOperator extends AbstractStreamOperator<Output>
 
 ```cuda
 // gpu_aggregate.cu
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
+# include <cuda_runtime.h>
+# include <device_launch_parameters.h>
 
 // 线程块大小
-#define BLOCK_SIZE 256
+# define BLOCK_SIZE 256
 
 // 树形归约内核 - SUM聚合
 __global__ void reduceSumKernel(float* input, float* output, int n) {
     __shared__ float shared[BLOCK_SIZE];
-    
+
     int tid = threadIdx.x;
     int gid = blockIdx.x * blockDim.x * 2 + threadIdx.x;
-    
+
     // 加载数据到共享内存
     shared[tid] = (gid < n) ? input[gid] : 0.0f;
     if (gid + blockDim.x < n) {
         shared[tid] += input[gid + blockDim.x];
     }
     __syncthreads();
-    
+
     // 树形归约
     for (int s = blockDim.x / 2; s > 0; s >>= 1) {
         if (tid < s) {
@@ -627,7 +629,7 @@ __global__ void reduceSumKernel(float* input, float* output, int n) {
         }
         __syncthreads();
     }
-    
+
     // 写回结果
     if (tid == 0) {
         output[blockIdx.x] = shared[0];
@@ -640,11 +642,11 @@ __global__ void groupBySumKernel(
     float* aggTable, int tableSize
 ) {
     int gid = blockIdx.x * blockDim.x + threadIdx.x;
-    
+
     if (gid < n) {
         int key = keys[gid];
         int hash = key % tableSize;
-        
+
         // 原子操作更新哈希表
         atomicAdd(&aggTable[hash], values[gid]);
     }
@@ -658,25 +660,25 @@ Java_org_apache_flink_gpu_GPUAggregator_sumNative(
 ) {
     float* d_input, * d_output;
     int blocks = (n + BLOCK_SIZE * 2 - 1) / (BLOCK_SIZE * 2);
-    
+
     // 分配设备内存
     cudaMalloc(&d_input, n * sizeof(float));
     cudaMalloc(&d_output, blocks * sizeof(float));
-    
+
     // 拷贝输入数据
     float* h_input = env->GetFloatArrayElements(input, NULL);
     cudaMemcpy(d_input, h_input, n * sizeof(float), cudaMemcpyHostToDevice);
-    
+
     // 启动内核
     reduceSumKernel<<<blocks, BLOCK_SIZE>>>(d_input, d_output, n);
-    
+
     // 二次归约（如果blocks > 1）
     // ...
-    
+
     // 拷贝结果回主机
     float* h_output = env->GetFloatArrayElements(output, NULL);
     cudaMemcpy(h_output, d_output, sizeof(float), cudaMemcpyDeviceToHost);
-    
+
     // 清理
     cudaFree(d_input);
     cudaFree(d_output);
@@ -695,73 +697,73 @@ import org.apache.flink.streaming.api.operators.AbstractStreamOperator;
 import org.apache.flink.streaming.api.operators.OneInputStreamOperator;
 import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 
-public class GPUAggregationOperator<IN, OUT> 
+public class GPUAggregationOperator<IN, OUT>
     extends AbstractStreamOperator<OUT>
     implements OneInputStreamOperator<IN, OUT> {
-    
+
     private final GPUMemoryPool gpuMemoryPool;
     private final CUDAStreamManager streamManager;
     private final AggregationType aggType;
-    
+
     private transient Pointer deviceInputBuffer;
     private transient Pointer deviceOutputBuffer;
     private transient HostPointer hostPinnedBuffer;
-    
+
     private final int batchSize;
     private List<IN> buffer;
-    
+
     @Override
     public void open() throws Exception {
         super.open();
-        
+
         // 初始化GPU资源
-        int gpuId = getRuntimeContext().getIndexOfThisSubtask() % 
+        int gpuId = getRuntimeContext().getIndexOfThisSubtask() %
                    GPUtils.getNumGPUs();
         gpuMemoryPool.initialize(gpuId);
         streamManager.createStream(gpuId);
-        
+
         // 分配缓冲区
         deviceInputBuffer = gpuMemoryPool.allocate(batchSize * elementSize);
         deviceOutputBuffer = gpuMemoryPool.allocate(batchSize * elementSize);
         hostPinnedBuffer = GPUMemory.allocatePinned(batchSize * elementSize);
-        
+
         buffer = new ArrayList<>(batchSize);
     }
-    
+
     @Override
     public void processElement(StreamRecord<IN> element) throws Exception {
         buffer.add(element.getValue());
-        
+
         if (buffer.size() >= batchSize) {
             processBatch();
         }
     }
-    
+
     private void processBatch() throws Exception {
         // 1. 数据序列化到pinned内存
         serializeToPinned(buffer, hostPinnedBuffer);
-        
+
         // 2. 异步H2D传输
         CUDAStream stream = streamManager.getCurrentStream();
-        stream.memcpyAsync(deviceInputBuffer, hostPinnedBuffer, 
-                          buffer.size() * elementSize, 
+        stream.memcpyAsync(deviceInputBuffer, hostPinnedBuffer,
+                          buffer.size() * elementSize,
                           cudaMemcpyHostToDevice);
-        
+
         // 3. 启动CUDA内核
-        launchAggregationKernel(deviceInputBuffer, deviceOutputBuffer, 
+        launchAggregationKernel(deviceInputBuffer, deviceOutputBuffer,
                                buffer.size(), aggType, stream);
-        
+
         // 4. 异步D2H传输
         stream.memcpyAsync(hostPinnedBuffer, deviceOutputBuffer,
                           resultSize, cudaMemcpyDeviceToHost);
-        
+
         // 5. 同步并输出
         stream.synchronize();
         outputResults(hostPinnedBuffer);
-        
+
         buffer.clear();
     }
-    
+
     @Override
     public void close() throws Exception {
         gpuMemoryPool.free(deviceInputBuffer);
@@ -785,69 +787,69 @@ package org.apache.flink.gpu.ml;
 import org.apache.flink.streaming.api.functions.async.AsyncFunction;
 import org.apache.flink.streaming.api.functions.async.ResultFuture;
 
-public class GPUVectorSearchFunction 
+public class GPUVectorSearchFunction
     implements AsyncFunction<QueryVector, SearchResult> {
-    
+
     private transient FaissGpuIndex gpuIndex;
     private transient Pointer deviceQueryBuffer;
     private final int topK;
     private final int batchSize;
-    
+
     @Override
     public void open(Configuration parameters) throws Exception {
         // 加载FAISS GPU索引
         int gpuId = getRuntimeContext().getIndexOfThisSubtask() % 8;
         GpuResources resources = new GpuResources();
         resources.initializeForDevice(gpuId);
-        
+
         // 从S3加载索引到GPU显存
         String indexPath = parameters.getString("index.path");
         Index flatIndex = Index.load(indexPath);
-        
+
         // 转移到GPU
         gpuIndex = new FaissGpuIndex(flatIndex, gpuId, resources);
         gpuIndex.setSearchParams(128);  // nprobe for IVF
-        
+
         // 预分配查询缓冲区
         deviceQueryBuffer = GPUMemory.allocateFloats(batchSize * dimension);
     }
-    
+
     @Override
     public void asyncInvoke(QueryVector query, ResultFuture<SearchResult> resultFuture) {
         // 批处理优化
         batchBuffer.add(query);
         pendingFutures.add(resultFuture);
-        
+
         if (batchBuffer.size() >= batchSize) {
             executeBatchSearch();
         }
     }
-    
+
     private void executeBatchSearch() {
         int n = batchBuffer.size();
         float[][] queries = new float[n][];
         for (int i = 0; i < n; i++) {
             queries[i] = batchBuffer.get(i).getVector();
         }
-        
+
         // 拷贝查询向量到GPU
         FloatPointer queryPtr = new FloatPointer(queries);
-        cudaMemcpy(deviceQueryBuffer, queryPtr, n * dimension * 4, 
+        cudaMemcpy(deviceQueryBuffer, queryPtr, n * dimension * 4,
                   cudaMemcpyHostToDevice);
-        
+
         // 执行批量搜索
         LongPointer indicesPtr = new LongPointer(n * topK);
         FloatPointer distancesPtr = new FloatPointer(n * topK);
-        
-        gpuIndex.search(n, deviceQueryBuffer, topK, 
+
+        gpuIndex.search(n, deviceQueryBuffer, topK,
                        distancesPtr, indicesPtr);
-        
+
         // 拷贝结果回主机
         long[] indices = new long[n * topK];
         float[] distances = new float[n * topK];
         indicesPtr.get(indices);
         distancesPtr.get(distances);
-        
+
         // 完成futures
         for (int i = 0; i < n; i++) {
             SearchResult result = new SearchResult(
@@ -856,7 +858,7 @@ public class GPUVectorSearchFunction
             );
             pendingFutures.get(i).complete(Collections.singletonList(result));
         }
-        
+
         batchBuffer.clear();
         pendingFutures.clear();
     }
@@ -864,12 +866,12 @@ public class GPUVectorSearchFunction
 
 // SQL注册使用
 /*
-CREATE FUNCTION vector_search_gpu AS 
+CREATE FUNCTION vector_search_gpu AS
 'org.apache.flink.gpu.ml.GPUVectorSearchFunction'
 -- 注: GPU模块（实验性），尚未正式发布
 -- USING JAR 'flink-gpu-ml.jar';
 
-SELECT 
+SELECT
     query_id,
     vector_search_gpu(query_vector, 100) AS similar_items
 FROM query_stream;
@@ -890,94 +892,94 @@ import org.tensorrt.InferRuntime;
 import org.tensorrt.ICudaEngine;
 import org.tensorrt.IExecutionContext;
 
-public class TensorRTInferenceOperator 
+public class TensorRTInferenceOperator
     extends ProcessFunction<Features, Prediction> {
-    
+
     private transient InferRuntime trtRuntime;
     private transient ICudaEngine engine;
     private transient IExecutionContext context;
-    
+
     // GPU缓冲区
     private transient Pointer inputBuffer;
     private transient Pointer outputBuffer;
     private transient List<Pointer> bindings;
-    
+
     private final String modelPath;
     private final int maxBatchSize;
-    
+
     @Override
     public void open(Configuration parameters) throws Exception {
         // 初始化TensorRT
         trtRuntime = InferRuntime.getInstance();
-        
+
         // 从ONNX加载并构建CUDA引擎
         IBuilder builder = trtRuntime.createBuilder();
         INetworkDefinition network = builder.createNetwork();
-        
+
         // 解析ONNX模型
         IParser parser = trtRuntime.createParser(network);
         parser.parseFromFile(modelPath);
-        
+
         // 配置构建选项
         IBuilderConfig config = builder.createBuilderConfig();
         config.setMaxWorkspaceSize(1L << 30);  // 1GB工作空间
         config.setFlag(BuilderFlag.FP16);      // FP16精度
-        
+
         // 构建引擎
         engine = builder.buildEngine(network, config);
         context = engine.createExecutionContext();
-        
+
         // 分配GPU内存
         int inputSize = maxBatchSize * inputDims * 4;
         int outputSize = maxBatchSize * outputDims * 4;
-        
+
         inputBuffer = GPUMemory.allocate(inputSize);
         outputBuffer = GPUMemory.allocate(outputSize);
-        
+
         bindings = Arrays.asList(inputBuffer, outputBuffer);
     }
-    
+
     @Override
-    public void processElement(Features features, Context ctx, 
+    public void processElement(Features features, Context ctx,
                               Collector<Prediction> out) throws Exception {
-        
+
         // 累积批量
         batchFeatures.add(features);
-        
-        if (batchFeatures.size() >= maxBatchSize || 
+
+        if (batchFeatures.size() >= maxBatchSize ||
             batchTimeoutExpired(ctx.timestamp())) {
-            
+
             // 准备输入数据
             float[] inputData = flattenFeatures(batchFeatures);
-            cudaMemcpy(inputBuffer, inputData, inputData.length * 4, 
+            cudaMemcpy(inputBuffer, inputData, inputData.length * 4,
                       cudaMemcpyHostToDevice);
-            
+
             // 设置动态batch大小
-            context.setBindingDimensions(0, new Dims4(batchFeatures.size(), 
+            context.setBindingDimensions(0, new Dims4(batchFeatures.size(),
                                                        inputDims, 1, 1));
-            
+
             // 执行推理
             context.executeV2(bindings);
-            
+
             // 获取结果
             float[] outputData = new float[batchFeatures.size() * outputDims];
-            cudaMemcpy(outputData, outputBuffer, outputData.length * 4, 
+            cudaMemcpy(outputData, outputBuffer, outputData.length * 4,
                       cudaMemcpyDeviceToHost);
-            
+
             // 输出预测
             for (int i = 0; i < batchFeatures.size(); i++) {
                 Prediction pred = new Prediction(
                     batchFeatures.get(i).getId(),
-                    Arrays.copyOfRange(outputData, i * outputDims, 
+                    Arrays.copyOfRange(outputData, i * outputDims,
                                       (i + 1) * outputDims)
                 );
                 out.collect(pred);
             }
-            
+
             batchFeatures.clear();
         }
     }
-    
+
     @Override
     public void close() throws Exception {
         GPUMemory.free(inputBuffer);
@@ -1044,17 +1046,17 @@ metadata:
 spec:
   image: flink:2.5-gpu-cuda12  <!-- 前瞻性镜像: Flink 2.5规划中 -->
   flinkVersion: v2.5
-  
+
   jobManager:
     resource:
       memory: "4Gi"
       cpu: 2
-  
+
   taskManager:
     resource:
       memory: "16Gi"
       cpu: 8
-    
+
     # GPU资源请求
     podTemplate:
       spec:
@@ -1099,11 +1101,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.gpu.operators.GPUAggregationOperator;  // 前瞻性API: Flink 2.5规划中
 
 public class GPUBenchmark {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 生成测试数据
         DataStream<Event> source = env
             .fromSequence(0, 100_000_000)
@@ -1111,14 +1113,14 @@ public class GPUBenchmark {
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<Event>forMonotonousTimestamps()
             );
-        
+
         // 分支1: CPU聚合
         DataStream<Double> cpuResult = source
             .keyBy(Event::getCategory)
             .window(TumblingEventTimeWindows.of(Time.seconds(10)))
             .aggregate(new CPUAvgAggregate())
             .name("CPU-Aggregation");
-        
+
         // 分支2: GPU聚合
         DataStream<Double> gpuResult = source
             .transform(
@@ -1130,11 +1132,11 @@ public class GPUBenchmark {
                     GPUMemoryPool.of(4L * 1024 * 1024 * 1024)  // 前瞻性API: Flink 2.5规划中  // 4GB
                 )
             );
-        
+
         // 输出到性能监控
         cpuResult.addSink(new LatencyTrackingSink("cpu"));
         gpuResult.addSink(new LatencyTrackingSink("gpu"));
-        
+
         env.execute("Flink GPU Benchmark");
     }
 }
@@ -1144,7 +1146,7 @@ class LatencyTrackingSink implements SinkFunction<Double> {
     private final String mode;
     private transient Histogram latencyHistogram;
     private transient Counter throughputCounter;
-    
+
     @Override
     public void open(Configuration parameters) {
         latencyHistogram = getRuntimeContext()
@@ -1154,12 +1156,12 @@ class LatencyTrackingSink implements SinkFunction<Double> {
                     new SlidingWindowReservoir(500)
                 )
             ));
-        
+
         throughputCounter = getRuntimeContext()
             .getMetricGroup()
             .counter("aggregation.throughput." + mode);
     }
-    
+
     @Override
     public void invoke(Double value, Context context) {
         long latency = System.currentTimeMillis() - context.timestamp();
@@ -1185,20 +1187,20 @@ graph TB
 
     subgraph "TaskManager with GPU"
         TM[TaskManager]
-        
+
         subgraph "CPU执行层"
             CPU_OP1[CPU Operators]
             CPU_OP2[Data Serialization]
             CPU_OP3[Result Processing]
         end
-        
+
         subgraph "Flink-CUDA Runtime"
             RT[Runtime Manager]
             MP[Memory Pool Manager]
             SM[Stream Manager]
             KM[Kernel Manager]
         end
-        
+
         subgraph "GPU执行层"
             GPU_OP1[Aggregation Kernels]
             GPU_OP2[Vector Search]
@@ -1210,7 +1212,7 @@ graph TB
         DEV[Device 0]
         MEM[(Global Memory)]
         SM_HW[Streaming Multiprocessors]
-        
+
         DEV --> MEM
         DEV --> SM_HW
     end
@@ -1240,24 +1242,24 @@ sequenceDiagram
     participant OUT as Output
 
     Note over CPU,OUT: CUDA Stream Pipeline
-    
+
     CPU->>PIN: Serialize Batch (Batch 1)
     PIN->>H2D: Async Copy (Stream 1)
     H2D->>GPU: Kernel Launch (Stream 1)
-    
+
     CPU->>PIN: Serialize Batch (Batch 2)
     PIN->>H2D: Async Copy (Stream 2)
-    
+
     GPU->>D2H: Async Copy Result (Stream 1)
     H2D->>GPU: Kernel Launch (Stream 2)
-    
+
     D2H->>OUT: Output Result (Stream 1)
     CPU->>PIN: Serialize Batch (Batch 3)
     PIN->>H2D: Async Copy (Stream 3)
-    
+
     GPU->>D2H: Async Copy Result (Stream 2)
     H2D->>GPU: Kernel Launch (Stream 3)
-    
+
     Note right of OUT: Overlapped Execution<br/>Maximize Throughput
 ```
 
@@ -1278,13 +1280,13 @@ graph TB
 
     subgraph "GPU设备内存"
         GLOBAL[Global Memory<br/>HBM/GDDR6X]
-        
+
         subgraph "内存池"
             POOL1[Pool Chunk 1<br/>Operator State]
             POOL2[Pool Chunk 2<br/>Batch Buffer]
             POOL3[Pool Chunk 3<br/>Temp Storage]
         end
-        
+
         SHARED[Shared Memory<br/>L1 Cache/SMEM]
         REG[Registers<br/>Per-Thread]
     end
@@ -1294,7 +1296,7 @@ graph TB
     PAGE -->|Sync Copy| H2D
     H2D --> GLOBAL
     UVM -.->|Transparent| GLOBAL
-    
+
     GLOBAL --> POOL1
     GLOBAL --> POOL2
     GLOBAL --> POOL3
@@ -1310,34 +1312,34 @@ flowchart TD
     B --> C[计算复杂度评估]
     B --> D[数据规模评估]
     B --> E[延迟要求评估]
-    
+
     C --> F{高计算复杂度?}
     D --> G{大数据规模?}
     E --> H{宽松延迟?}
-    
+
     F -->|是| I[GPU候选]
     F -->|否| J[CPU候选]
     G -->|是| I
     G -->|否| J
-    
+
     H -->|是| K{成本优化?}
     H -->|否| L{批处理可能?}
-    
+
     K -->|是| M[成本模型评估]
     K -->|否| I
-    
+
     L -->|是| I
     L -->|否| J
-    
+
     M -->|GPU更便宜| I
     M -->|CPU更便宜| J
-    
+
     I --> N[分配GPU资源]
     J --> O[分配CPU资源]
-    
+
     N --> P[执行任务]
     O --> P
-    
+
     P --> Q{性能监控}
     Q -->|偏离预期| R[调整调度策略]
     R --> B

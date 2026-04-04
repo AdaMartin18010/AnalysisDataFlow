@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-MV-01: Materialized View
+
 物化视图：
 $$
 \text{MV} = \text{Query}_{\text{def}} + \text{Result}_{\text{materialized}} + \text{Refresh}_{\text{policy}}
 $$
 
 ### Def-F-MV-02: Incremental Refresh
+
 增量刷新：
 $$
 \Delta \text{MV} = \text{Query}(\Delta \text{BaseTable})
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-MV-01: Consistency Guarantee
+
 一致性保证：
 $$
 \text{MV} = \text{Query}(\text{BaseTable}) \pm \text{Lag}
@@ -50,7 +53,7 @@ $$
 
 ```sql
 CREATE MATERIALIZED VIEW mv_daily_sales AS
-SELECT 
+SELECT
     DATE(order_time) AS order_date,
     SUM(amount) AS total_sales
 FROM orders

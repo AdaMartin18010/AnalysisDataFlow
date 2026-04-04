@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-SQL24-01: SQL Statement
+
 SQL语句：
 $$
 \text{SQL} : \text{Table} \to \text{Table}'
 $$
 
 ### Def-F-SQL24-02: Table Function
+
 表函数：
 $$
 \text{TableFunc} : \text{Row} \to \text{Table}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-SQL24-01: SQL Equivalence
+
 SQL等价性：
 $$
 \text{FlinkSQL} \subseteq \text{ANSI SQL:2023}
@@ -61,7 +64,7 @@ MATCH_RECOGNIZE (
 ### 5.1 JSON函数
 
 ```sql
-SELECT 
+SELECT
     JSON_VALUE(data, '$.user.name') AS user_name,
     JSON_QUERY(data, '$.items[*]') AS items,
     JSON_OBJECT('id' VALUE id, 'name' VALUE name) AS json_output

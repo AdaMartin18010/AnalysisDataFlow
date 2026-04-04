@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-23: GitOps Deployment
+
 GitOps通过Git仓库管理配置：
 $$
 \text{GitOps} = \text{Git} + \text{Operator} + \text{Automation}
 $$
 
 ### Def-F-25-24: Multi-Region
+
 多区域部署跨地理分布：
 $$
 \text{MultiRegion} = \{ \text{Region}_1, \text{Region}_2, ..., \text{Region}_n \}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-15: Deployment Consistency
+
 部署一致性：
 $$
 \text{Config}_{\text{git}} = \text{Config}_{\text{runtime}}
@@ -51,16 +54,16 @@ Git Repo → Webhook → Operator → Apply → Verify
 
 ```java
 public class GitOpsController {
-    
+
     @Scheduled(fixedRate = 30000)
     public void reconcile() {
         // 拉取最新配置
         GitCommit latest = gitRepo.pull();
-        
+
         // 比较当前状态
         FlinkDeployment current = k8sClient.getDeployment();
         FlinkDeployment desired = yamlParser.parse(latest);
-        
+
         // 应用变更
         if (!current.equals(desired)) {
             k8sClient.apply(desired);

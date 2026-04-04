@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-Frame-01: Unified Connector API
+
 统一连接器API：
 $$
 \text{UnifiedAPI} = \text{SourceAPI} \cup \text{SinkAPI} \cup \text{TableAPI}
 $$
 
 ### Def-F-Conn-Frame-02: Dynamic Table
+
 动态表：
 $$
 \text{DynamicTable} = \text{Changelog} + \text{Schema}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-Frame-01: API Consistency
+
 API一致性：
 $$
 \forall \text{Connector} : \text{SameAPIInterface}
@@ -57,7 +60,7 @@ $$
 
 ```java
 public class MyConnectorFactory implements DynamicTableSourceFactory {
-    
+
     @Override
     public DynamicTableSource createDynamicTableSource(Context context) {
         final ReadableConfig config = context.getConfiguration();

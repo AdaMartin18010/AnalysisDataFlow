@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Agg-01: Aggregate Function
+
 聚合函数：
 $$
 \text{AggFunc} : \text{Multiset}<T> \to R
 $$
 
 ### Def-F-Agg-02: Distinct Aggregation
+
 去重聚合：
 $$
 \text{Distinct} : \text{AggFunc}(\text{SET}(x)) \neq \text{AggFunc}(\text{MULTISET}(x))
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Agg-01: Incremental Computation
+
 增量计算：
 $$
 \text{Agg}(S \cup \{x\}) = \text{Update}(\text{Agg}(S), x)
@@ -50,7 +53,7 @@ $$
 ### 5.1 JSON聚合
 
 ```sql
-SELECT 
+SELECT
     department,
     JSON_OBJECTAGG(name, salary) AS salaries,
     JSON_ARRAYAGG(name ORDER BY salary DESC) AS employees
@@ -63,7 +66,7 @@ GROUP BY department;
 ### 6.1 近似去重
 
 ```sql
-SELECT 
+SELECT
     date,
     APPROX_COUNT_DISTINCT(user_id) AS unique_users
 FROM events

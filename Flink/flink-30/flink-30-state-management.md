@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-07: State Service
+
 状态服务是独立的状态管理微服务：
 $$
 \text{StateService} = \langle \text{Storage}, \text{API}, \text{Replication} \rangle
 $$
 
 ### Def-F-30-08: Disaggregated State
+
 分离状态将计算与存储分离：
 $$
 \text{Disaggregated} = \text{Compute} \perp \text{Storage}
 $$
 
 ### Def-F-30-09: Global State View
+
 全局状态视图跨算子可见：
 $$
 \text{GlobalView} = \bigcup_{i} \text{State}_i
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-05: State Access Latency
+
 状态访问延迟：
 $$
 T_{\text{access}} \leq \begin{cases} 1\mu s & \text{local} \\ 10\mu s & \text{remote cache} \\ 1ms & \text{storage} \end{cases}
 $$
 
 ### Prop-F-30-06: Recovery Time
+
 恢复时间目标：
 $$
 T_{\text{recover}} \leq 10s \text{ (for any state size)}
@@ -88,26 +93,26 @@ $$
 
 ```java
 public class StateServiceClient {
-    
+
     private final StateServiceGrpc.StateServiceBlockingStub stub;
     private final LocalCache cache;
-    
+
     public <T> T getValue(StateKey key) {
         // L1: 本地缓存
         T cached = cache.get(key);
         if (cached != null) return cached;
-        
+
         // L2: 状态服务
         GetRequest request = GetRequest.newBuilder()
             .setKey(key.toProto())
             .build();
         GetResponse response = stub.get(request);
-        
+
         T value = deserialize(response.getValue());
         cache.put(key, value);
         return value;
     }
-    
+
     public <T> void putValue(StateKey key, T value) {
         // 写入状态服务
         PutRequest request = PutRequest.newBuilder()
@@ -115,7 +120,7 @@ public class StateServiceClient {
             .setValue(serialize(value))
             .build();
         stub.put(request);
-        
+
         // 更新本地缓存
         cache.put(key, value);
     }
@@ -151,15 +156,15 @@ graph TB
         A[Task 1]
         B[Task 2]
     end
-    
+
     subgraph "状态服务层"
         C[State Service]
     end
-    
+
     subgraph "存储层"
         D[S3]
     end
-    
+
     A --> C
     B --> C
     C --> D

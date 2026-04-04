@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Proc-01: ProcessFunction
+
 处理函数：
 $$
 \text{ProcessFunction} : \langle \text{Input}, \text{Context}, \text{State} \rangle \to \text{Output}
 $$
 
 ### Def-F-Proc-02: Timer
+
 计时器：
 $$
 \text{Timer} : \text{Timestamp} \times \text{Callback} \to \text{Scheduled}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Proc-01: Timer Accuracy
+
 计时器精度：
 $$
 |\text{FireTime} - \text{ScheduledTime}| \leq \epsilon
@@ -52,19 +55,19 @@ $$
 
 ```java
 class MyProcessFunction extends KeyedProcessFunction<String, Event, Result> {
-    
+
     private ValueState<CountState> state;
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) {
         CountState current = state.value();
         current.count++;
         state.update(current);
-        
+
         // 注册计时器
         ctx.timerService().registerEventTimeTimer(ctx.timestamp() + 60000);
     }
-    
+
     @Override
     public void onTimer(long timestamp, OnTimerContext ctx, Collector<Result> out) {
         out.collect(new Result(state.value()));
@@ -79,19 +82,19 @@ class MyProcessFunction extends KeyedProcessFunction<String, Event, Result> {
 
 ```java
 class TimeoutFunction extends KeyedProcessFunction<String, Event, Alert> {
-    
+
     private ValueState<Long> lastActivity;
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Alert> out) {
         lastActivity.update(ctx.timestamp());
-        
+
         // 设置超时计时器
         ctx.timerService().registerEventTimeTimer(
             ctx.timestamp() + TimeUnit.MINUTES.toMillis(5)
         );
     }
-    
+
     @Override
     public void onTimer(long timestamp, OnTimerContext ctx, Collector<Alert> out) {
         if (timestamp - lastActivity.value() > TimeUnit.MINUTES.toMillis(5)) {
@@ -109,7 +112,7 @@ sequenceDiagram
     participant P as Process
     participant T as Timer
     participant S as State
-    
+
     E->>P: processElement
     P->>S: 更新状态
     P->>T: 注册计时器

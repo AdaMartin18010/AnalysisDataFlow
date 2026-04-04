@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-13: Connector Ecosystem
+
 连接器生态是完整的连接器集合：
 $$
 \text{Ecosystem} = \sum_{i} \text{Connector}_i \times \text{Quality}_i
 $$
 
 ### Def-F-30-14: Unified Connector API
+
 统一连接器API：
 $$
 \text{UnifiedAPI} = \text{SourceAPI} \cup \text{SinkAPI} \cup \text{LookupAPI}
 $$
 
 ### Def-F-30-15: Auto-Configuration
+
 自动配置智能推断参数：
 $$
 \text{AutoConfig} : \text{Environment} \to \text{OptimalConfig}
@@ -25,6 +28,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-08: Connector Portability
+
 连接器可移植性：
 $$
 \text{Connector}_{\text{written}} \to \text{Connector}_{\text{any-runtime}}
@@ -64,33 +68,33 @@ $$
 
 ```java
 public interface UnifiedConnector<T> extends Source<T>, Sink<T>, LookupTableSource {
-    
+
     // 统一配置接口
     ConnectorConfig configure(Environment env);
-    
+
     // 自动健康检查
     HealthStatus checkHealth();
-    
+
     // 动态发现
     List<TablePath> discoverTables();
 }
 
 public class AutoConfiguredKafkaConnector implements UnifiedConnector<Row> {
-    
+
     @Override
     public ConnectorConfig configure(Environment env) {
         // 根据环境自动推断配置
         KafkaConfig config = new KafkaConfig();
-        
+
         // 检测Kafka版本
         config.setVersion(detectKafkaVersion());
-        
+
         // 自动分区发现
         config.setPartitions(autoDiscoverPartitions());
-        
+
         // 性能调优
         config.setBufferMemory(optimalBufferSize(env));
-        
+
         return config;
     }
 }
@@ -124,19 +128,19 @@ graph TB
         B[Pulsar]
         C[CDC]
     end
-    
+
     subgraph "统一API"
         D[Source]
         E[Sink]
         F[Lookup]
     end
-    
+
     subgraph "目标连接器"
         G[JDBC]
         H[Elasticsearch]
         I[Lakehouse]
     end
-    
+
     A --> D
     B --> D
     C --> D

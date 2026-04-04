@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-Custom-01: Connector Framework
+
 连接器框架：
 $$
 \text{Framework} = \langle \text{SourceAPI}, \text{SinkAPI}, \text{TableAPI} \rangle
 $$
 
 ### Def-F-Conn-Custom-02: SplitEnumerator
+
 分片枚举器：
 $$
 \text{Enumerator} : \text{Discovery} \to \{\text{Split}_i\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-Custom-01: Extensibility
+
 可扩展性：
 $$
 \forall \text{Source} : \text{Implements}(\text{Source}, \text{SourceInterface})
@@ -52,13 +55,13 @@ $$
 
 ```java
 public class MySource implements Source<String, MySplit, MyCheckpoint> {
-    
+
     @Override
     public SplitEnumerator<MySplit, MyCheckpoint> createEnumerator(
             SplitEnumeratorContext<MySplit> enumContext) {
         return new MySplitEnumerator(enumContext);
     }
-    
+
     @Override
     public SourceReader<String, MySplit> createReader(
             SourceReaderContext readerContext) {
@@ -76,7 +79,7 @@ public class MySplit implements SourceSplit {
     private final String splitId;
     private final long startOffset;
     private final long endOffset;
-    
+
     @Override
     public String splitId() {
         return splitId;

@@ -13,6 +13,7 @@ This guide covers integrating Apache Flink with Apache Pulsar Functions for unif
 ### 1.1 What is Pulsar Functions
 
 Pulsar Functions are lightweight compute processes that:
+
 - Consume messages from Pulsar topics
 - Apply user-defined processing logic
 - Publish results to output topics
@@ -37,7 +38,7 @@ graph TB
         PF1[Pulsar Function:<br/>Data Cleaning]
         PF2[Pulsar Function:<br/>Basic Filtering]
     end
-    
+
     subgraph "Aggregation Layer"
         Central[Central Pulsar]
         Flink[Apache Flink]
@@ -45,12 +46,12 @@ graph TB
         F2[ML Inference]
         F3[Complex Joins]
     end
-    
+
     subgraph "Serving Layer"
         DB[(Database)]
         Dashboard[Dashboard]
     end
-    
+
     IoT --> Edge
     Edge --> PF1
     PF1 --> PF2
@@ -85,7 +86,7 @@ PulsarSource<String> source = PulsarSource.builder()
     .build();
 
 DataStream<String> stream = env.fromSource(
-    source, 
+    source,
     WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
     "Pulsar Source"
 );
@@ -112,14 +113,14 @@ stream.sinkTo(sink);
 ```java
 public class EnrichmentFunction implements Function<String, String> {
     private transient FlinkRpcClient flinkClient;
-    
+
     @Override
     public void open(Map<String, Object> config) {
         flinkClient = new FlinkRpcClient(
             (String) config.get("flink.jobmanager.url")
         );
     }
-    
+
     @Override
     public String process(String input, Context context) {
         // Enrich with Flink-computed features
@@ -137,14 +138,14 @@ public class EnrichmentFunction implements Function<String, String> {
 // Access Pulsar Function state from Flink
 public class PulsarStateLookup extends RichAsyncFunction<String, EnrichedRecord> {
     private transient PulsarAdmin admin;
-    
+
     @Override
     public void open(Configuration parameters) {
         admin = PulsarAdmin.builder()
             .serviceHttpUrl("http://localhost:8080")
             .build();
     }
-    
+
     @Override
     public void asyncInvoke(String key, ResultFuture<EnrichedRecord> resultFuture) {
         // Query Pulsar Function's state store
@@ -173,17 +174,17 @@ graph TB
         BK[BookKeeper]
         ZK[ZooKeeper]
     end
-    
+
     subgraph "Compute Layer"
         PF[Pulsar Functions<br/>Runtime]
         Flink[Apache Flink<br/>Cluster]
     end
-    
+
     B1 --> PF
     B2 --> PF
     B1 --> Flink
     B2 --> Flink
-    
+
     PF --> BK
     Flink --> BK
 ```
@@ -197,11 +198,11 @@ replication:
     - edge-us-west
     - edge-us-east
     - central
-  
+
   topics:
     - pattern: "persistent://tenant/app/.*"
       replication: [edge-us-west, central]
-      
+
 # Flink reads from central cluster
 flink:
   source:
@@ -228,6 +229,7 @@ Examples:
 ### 4.2 Message Schema Management
 
 **Pulsar Schema**:
+
 ```java
 // Define schema in Pulsar
 Schema<OrderEvent> schema = Schema.AVRO(OrderEvent.class);
@@ -238,6 +240,7 @@ Producer<OrderEvent> producer = client.newProducer(schema)
 ```
 
 **Flink Schema**:
+
 ```java
 // Use same schema in Flink
 PulsarSource<OrderEvent> source = PulsarSource.builder()
@@ -254,6 +257,7 @@ PulsarSource<OrderEvent> source = PulsarSource.builder()
 ### 4.3 Exactly-Once Processing
 
 **Flink Configuration**:
+
 ```java
 env.enableCheckpointing(5000);
 env.getCheckpointConfig().setCheckpointingMode(
@@ -295,17 +299,17 @@ graph LR
         PF1[Pulsar Function:<br/>Unit Conversion]
         PF2[Pulsar Function:<br/>Basic Alerting]
     end
-    
+
     subgraph "Regional"
         RegionPulsar[Regional Pulsar]
         Flink1[Flink:<br/>Window Aggregation]
     end
-    
+
     subgraph "Global"
         GlobalPulsar[Global Pulsar]
         Flink2[Flink:<br/>Cross-Region Analysis]
     end
-    
+
     Sensor --> EdgePulsar
     EdgePulsar --> PF1 --> PF2
     PF2 --> RegionPulsar
@@ -318,26 +322,26 @@ graph LR
 ```java
 // Tenant isolation with Pulsar + Flink
 public class TenantAwareProcessor {
-    
+
     public static void main(String[] args) {
         // Read from multiple tenant topics
         Map<String, DataStream<Event>> tenantStreams = new HashMap<>();
-        
+
         for (String tenant : getTenants()) {
             String topic = String.format(
                 "persistent://%s/events/raw", tenant);
-            
+
             DataStream<Event> stream = env.fromSource(
                 createPulsarSource(topic),
                 WatermarkStrategy.forMonotonousTimestamps(),
                 tenant
             );
-            
+
             // Process with tenant-specific logic
             DataStream<Result> processed = stream
                 .keyBy(Event::getUserId)
                 .process(new TenantAwareFunction(tenant));
-            
+
             // Sink to tenant-specific output
             processed.sinkTo(createPulsarSink(
                 String.format("persistent://%s/events/processed", tenant)));
@@ -368,11 +372,11 @@ scrape_configs:
     static_configs:
       - targets: ['pulsar-broker:8080']
     metrics_path: /metrics
-    
+
   - job_name: 'flink-jobmanager'
     static_configs:
       - targets: ['flink-jobmanager:9249']
-      
+
   - job_name: 'flink-taskmanager'
     static_configs:
       - targets: ['flink-taskmanager:9249']

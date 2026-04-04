@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-21: Adaptive Optimization
+
 自适应优化根据运行时调整策略：
 $$
 \text{Opt}_{t+1} = f(\text{Opt}_t, \text{Metrics}_t)
 $$
 
 ### Def-F-25-22: Vectorized Execution
+
 向量化执行批量处理数据：
 $$
 \text{Vectorized} : \text{Batch}_n \to \text{Output}_n
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-14: Throughput Scaling
+
 吞吐量扩展性：
 $$
 \text{Throughput} = O(n) \text{ (理想情况下)}
@@ -53,14 +56,14 @@ $$
 
 ```java
 public class VectorizedFilter extends OneInputStreamOperator<ColumnBatch, ColumnBatch> {
-    
+
     @Override
     public void processElement(StreamRecord<ColumnBatch> record) {
         ColumnBatch input = record.getValue();
-        
+
         // SIMD过滤
         BitSet selectionVector = new BitSet(input.getRowCount());
-        
+
         // 使用AVX-512进行批量比较
         for (int i = 0; i < input.getRowCount(); i += 512) {
             __m512i values = _mm512_loadu_si512(input.getValues(i));
@@ -68,7 +71,7 @@ public class VectorizedFilter extends OneInputStreamOperator<ColumnBatch, Column
             __mmask16 mask = _mm512_cmpgt_epi32_mask(values, threshold);
             selectionVector.set(i, mask);
         }
-        
+
         // 输出过滤后的batch
         ColumnBatch output = input.filter(selectionVector);
         output.collect(outputTag);
@@ -97,7 +100,7 @@ graph LR
         A2[Row 2] --> B2[Process]
         A3[Row 3] --> B3[Process]
     end
-    
+
     subgraph "向量化"
         C[Batch] --> D[Vectorized Process]
     end

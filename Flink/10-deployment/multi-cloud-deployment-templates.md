@@ -36,6 +36,16 @@
       - [6.2.2 AKS (Azure Kubernetes Service) 部署](#622-aks-azure-kubernetes-service-部署)
     - [6.3 GCP 部署](#63-gcp-部署)
       - [6.3.1 Dataproc Flink 部署](#631-dataproc-flink-部署)
+    - [6.4 阿里云部署](#64-阿里云部署)
+      - [6.4.1 实时计算 Flink 版 (Ververica Platform)](#641-实时计算-flink-版-ververica-platform)
+    - [6.5 混合云策略](#65-混合云策略)
+      - [6.5.1 跨云数据同步架构](#651-跨云数据同步架构)
+      - [6.5.2 灾备架构](#652-灾备架构)
+      - [6.5.3 成本对比分析](#653-成本对比分析)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 多云部署决策树](#71-多云部署决策树)
+    - [7.2 多云数据流架构图](#72-多云数据流架构图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -3006,7 +3016,7 @@ graph TB
                 TM[TaskManager<br/>StatefulSet]
                 AP[Application<br/>Manager]
             end
-            
+
             subgraph "Data Services"
                 DH[DataHub]
                 RocketMQ[RocketMQ]
@@ -3015,12 +3025,12 @@ graph TB
                 MaxCompute[MaxCompute]
             end
         end
-        
+
         Monitor[云监控]
         SLS[日志服务 SLS]
         KMS[KMS]
     end
-    
+
     Users[Users/Clients] --> DH
     OSS -->|参考数据| TM
     DH --> TM
@@ -3033,7 +3043,7 @@ graph TB
     JM --> Monitor
     TM --> SLS
     KMS -.->|加密| OSS
-    
+
     style JM fill:#ff9800,stroke:#e65100
     style TM fill:#4caf50,stroke:#2e7d32
     style AP fill:#2196f3,stroke:#0d47a1
@@ -3050,21 +3060,21 @@ Parameters:
   VpcId:
     Type: String
     Description: VPC ID
-  
+
   VSwitchId:
     Type: String
     Description: VSwitch ID in the VPC
-  
+
   ZoneId:
     Type: String
     Description: Availability Zone
     Default: cn-hangzhou-b
-  
+
   ClusterName:
     Type: String
     Description: Flink Cluster Name
     Default: flink-ververica-cluster
-  
+
   FlinkVersion:
     Type: String
     Description: Flink Version
@@ -3073,14 +3083,14 @@ Parameters:
       - vvr-8.0.6-flink-1.17
       - vvr-8.0.6-flink-1.18
       - vvr-8.0.6-flink-1.19
-  
+
   CuSize:
     Type: Number
     Description: Computing Unit (CU) Size
     Default: 4
     MinValue: 2
     MaxValue: 100
-  
+
   EngineType:
     Type: String
     Description: Flink Engine Type
@@ -3088,11 +3098,11 @@ Parameters:
     AllowedValues:
       - Blink
       - Flink
-  
+
   OssBucketName:
     Type: String
     Description: OSS Bucket for Checkpoints
-  
+
   LogStoreProject:
     Type: String
     Description: SLS Project Name
@@ -3425,22 +3435,22 @@ Outputs:
     Description: Ververica Cluster ID
     Value:
       Ref: VervericaDeployment
-  
+
   OssBucket:
     Description: OSS Bucket for Checkpoints
     Value:
       Ref: OssBucketName
-  
+
   SlsProject:
     Description: SLS Project
     Value:
       Ref: LogStoreProject
-  
+
   DataHubProject:
     Description: DataHub Project
     Value:
       Ref: DataHubProject
-  
+
   SecurityGroupId:
     Description: Security Group ID
     Value:
@@ -3817,54 +3827,54 @@ graph TB
             AWS_S3[S3]
             AWS_KDA[Kinesis Data Analytics]
         end
-        
+
         subgraph "Azure Region"
             Azure_EH[Event Hubs]
             Azure_Blob[Blob Storage]
             Azure_Flink[HDInsight Flink]
         end
-        
+
         subgraph "GCP Region"
             GCP_PS[Pub/Sub]
             GCP_GCS[Cloud Storage]
             GCP_Flink[Dataproc Flink]
         end
-        
+
         subgraph "Alibaba Cloud Region"
             Ali_DH[DataHub]
             Ali_OSS[OSS]
             Ali_Flink[Ververica]
         end
-        
+
         subgraph "Data Sync Layer"
             MirrorMaker[MirrorMaker 2<br/>Kafka Connect]
             CloudCanal[CloudCanal<br/>Data Integration]
             Airbyte[Airbyte<br/>ELT Pipeline]
         end
     end
-    
+
     SourceData[(Source Data)]
-    
+
     SourceData --> AWS_Kinesis
     SourceData --> Azure_EH
     SourceData --> GCP_PS
     SourceData --> Ali_DH
-    
+
     AWS_Kinesis <--> MirrorMaker
     Azure_EH <--> MirrorMaker
     GCP_PS <--> CloudCanal
     Ali_DH <--> CloudCanal
-    
+
     MirrorMaker --> AWS_S3
     MirrorMaker --> Azure_Blob
     CloudCanal --> GCP_GCS
     CloudCanal --> Ali_OSS
-    
+
     AWS_KDA --> AWS_S3
     Azure_Flink --> Azure_Blob
     GCP_Flink --> GCP_GCS
     Ali_Flink --> Ali_OSS
-    
+
     AWS_S3 -.->|Cross-Region<br/>Replication| GCP_GCS
     Azure_Blob -.->|AzCopy/<br/>Data Factory| Ali_OSS
 ```
@@ -3882,37 +3892,37 @@ graph TB
             P_Storage[(Primary<br/>Storage)]
             P_Checkpoints[(Primary<br/>Checkpoints)]
         end
-        
+
         subgraph "Secondary Region<br/>Standby"
             S_VPC[Secondary VPC]
             S_Flink[Standby Flink<br/>Cluster]
             S_Storage[(Secondary<br/>Storage)]
             S_Checkpoints[(Replicated<br/>Checkpoints)]
         end
-        
+
         subgraph "Global Services"
             DNS[Global DNS<br/>Route 53/Traffic Manager]
             LB[Global Load<br/>Balancer]
             HealthCheck[Health Check<br/>Service]
         end
     end
-    
+
     Users[Users] --> DNS
     DNS -->|Primary Healthy| LB
     LB --> P_Flink
     P_Flink --> P_Storage
     P_Flink --> P_Checkpoints
-    
+
     P_Checkpoints -.->|Async Replication| S_Checkpoints
     P_Storage -.->|Cross-Region<br/>Replication| S_Storage
-    
+
     HealthCheck -.->|Monitor| P_Flink
     HealthCheck -.->|Monitor| S_Flink
-    
+
     DNS -.->|Failover Trigger| S_Flink
     S_Flink -.->|Restore from<br/>Checkpoints| S_Checkpoints
     S_Flink -.->|Read/Write| S_Storage
-    
+
     style P_Flink fill:#4caf50,stroke:#2e7d32
     style S_Flink fill:#ff9800,stroke:#e65100
 ```
@@ -3968,7 +3978,7 @@ monitoring:
       service_key: "YOUR_PD_KEY"
     - type: slack
       webhook_url: "YOUR_SLACK_WEBHOOK"
-  
+
   dr_metrics:
     - replication_lag_seconds
     - checkpoint_upload_duration
@@ -4025,49 +4035,49 @@ monitoring:
 ```mermaid
 flowchart TD
     Start([开始选择云平台]) --> Q1{已有云基础设施?}
-    
+
     Q1 -->|是| Q2{当前使用哪家云?}
     Q1 -->|否| Q3{主要需求?}
-    
+
     Q2 -->|AWS| AWS_C[AWS 方案]
     Q2 -->|Azure| Azure_C[Azure 方案]
     Q2 -->|GCP| GCP_C[GCP 方案]
     Q2 -->|阿里云| Ali_C[阿里云方案]
     Q2 -->|多云| Multi_C[混合云方案]
-    
+
     Q3 -->|Serverless 优先| Q4{预算敏感度?}
     Q3 -->|成本敏感| Q5{数据处理规模?}
     Q3 -->|性能优先| Q6{延迟要求?}
-    
+
     Q4 -->|低| AWS_KDA[AWS Kinesis<br/>Data Analytics]
     Q4 -->|中| Ali_VVP[阿里云<br/>Ververica]
     Q4 -->|高| GCP_Dataproc[GCP<br/>Dataproc]
-    
+
     Q5 -->|小| GCP_Dataproc
     Q5 -->|中| Azure_AKS[Azure AKS<br/>+ Flink Operator]
     Q5 -->|大| AWS_EMR[AWS EMR<br/>on EKS]
-    
+
     Q6 -->|超低延迟| AWS_EMR
     Q6 -->|标准| Ali_VVP
     Q6 -->|可接受较高延迟| GCP_Dataproc
-    
+
     AWS_C --> AWS_O{部署模式?}
     AWS_O -->|托管| AWS_KDA
     AWS_O -->|半托管| AWS_EMR
     AWS_O -->|K8s| AWS_EKS[AWS EKS<br/>+ Flink]
-    
+
     Azure_C --> Azure_O{部署模式?}
     Azure_O -->|托管| Azure_HD[Azure<br/>HDInsight]
     Azure_O -->|K8s| Azure_AKS
-    
+
     GCP_C --> GCP_O{部署模式?}
     GCP_O -->|半托管| GCP_Dataproc
     GCP_O -->|K8s| GCP_GKE[GCP GKE<br/>+ Flink]
-    
+
     Ali_C --> Ali_O{部署模式?}
     Ali_O -->|全托管| Ali_VVP
     Ali_O -->|K8s| Ali_ACK[阿里云 ACK<br/>+ Flink]
-    
+
     Multi_C --> Multi_O{使用场景?}
     Multi_O -->|灾备| DR[主动-被动<br/>灾备架构]
     Multi_O -->|数据同步| Sync[跨云数据<br/>同步架构]
@@ -4080,66 +4090,66 @@ flowchart TD
 graph TB
     subgraph "Multi-Cloud Data Flow"
         DataSource[(Data Source)]
-        
+
         subgraph "Message Queue Layer"
             Kinesis[AWS Kinesis]
             EventHub[Azure Event Hubs]
             PubSub[GCP Pub/Sub]
             DataHub[Alibaba DataHub]
         end
-        
+
         subgraph "Processing Layer"
             Flink_AWS[AWS Flink<br/>KDA/EMR]
             Flink_AZ[Azure Flink<br/>HDInsight/AKS]
             Flink_GCP[GCP Flink<br/>Dataproc/GKE]
             Flink_ALI[Alibaba Flink<br/>Ververica/ACK]
         end
-        
+
         subgraph "Storage Layer"
             S3[AWS S3]
             Blob[Azure Blob]
             GCS[GCS]
             OSS[Alibaba OSS]
         end
-        
+
         subgraph "Analytics Layer"
             Redshift[AWS Redshift]
             Synapse[Azure Synapse]
             BigQuery[BigQuery]
             MaxCompute[MaxCompute]
         end
-        
+
         subgraph "Cross-Cloud Sync"
             Replication[(Cross-Region<br/>Replication)]
             Mirror[(Kafka<br/>MirrorMaker)]
         end
     end
-    
+
     DataSource --> Kinesis
     DataSource --> EventHub
     DataSource --> PubSub
     DataSource --> DataHub
-    
+
     Kinesis --> Flink_AWS
     EventHub --> Flink_AZ
     PubSub --> Flink_GCP
     DataHub --> Flink_ALI
-    
+
     Flink_AWS --> S3
     Flink_AZ --> Blob
     Flink_GCP --> GCS
     Flink_ALI --> OSS
-    
+
     S3 --> Redshift
     Blob --> Synapse
     GCS --> BigQuery
     OSS --> MaxCompute
-    
+
     S3 <--> Replication
     Blob <--> Replication
     GCS <--> Replication
     OSS <--> Replication
-    
+
     Kinesis <--> Mirror
     EventHub <--> Mirror
 ```
@@ -4148,31 +4158,18 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Deployment", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/
 
-[^2]: AWS Documentation, "Amazon EMR on EKS", 2025. https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/emr-eks.html
 
-[^3]: AWS Documentation, "Amazon Kinesis Data Analytics", 2025. https://docs.aws.amazon.com/kinesisanalytics/latest/java/what-is.html
 
-[^4]: Azure Documentation, "HDInsight Flink", 2025. https://learn.microsoft.com/en-us/azure/hdinsight/flink/
 
-[^5]: Azure Documentation, "Azure Kubernetes Service (AKS)", 2025. https://learn.microsoft.com/en-us/azure/aks/
 
-[^6]: Google Cloud Documentation, "Dataproc Flink", 2025. https://cloud.google.com/dataproc/docs/concepts/components/flink
 
-[^7]: Google Cloud Documentation, "Google Kubernetes Engine", 2025. https://cloud.google.com/kubernetes-engine
 
-[^8]: Alibaba Cloud Documentation, "Realtime Compute for Apache Flink", 2025. https://www.alibabacloud.com/help/en/realtime-compute-for-apache-flink/
 
-[^9]: Ververica Platform Documentation, "Deployment", 2025. https://docs.ververica.com/
 
-[^10]: Terraform Documentation, "Provider Registry", 2025. https://registry.terraform.io/
 
-[^11]: Bicep Documentation, "Microsoft Learn", 2025. https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/
 
-[^12]: Google Cloud Documentation, "Deployment Manager", 2025. https://cloud.google.com/deployment-manager/docs
 
-[^13]: Alibaba Cloud Documentation, "Resource Orchestration Service (ROS)", 2025. https://www.alibabacloud.com/help/en/ros/
 
 ---
 

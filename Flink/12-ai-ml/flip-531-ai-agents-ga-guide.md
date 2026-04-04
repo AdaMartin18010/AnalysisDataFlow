@@ -565,6 +565,7 @@ t_1 \to t_2 \to ... \to t_n \to t_1
 $$
 
 根据A2A协议设计：
+
 1. 任务依赖图在提交时验证无环
 2. 全局超时机制确保任务不会无限等待
 
@@ -609,9 +610,9 @@ public class ProductionSalesAgent {
 
     public static void main(String[] args) throws Exception {
         // 创建执行环境
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // GA配置：启用检查点和 Exactly-Once 语义
         env.enableCheckpointing(30000);
         env.getCheckpointConfig().setCheckpointingMode(
@@ -714,7 +715,7 @@ public class ProductionSalesAgent {
                     .put("enum", Arrays.asList("sum", "avg", "count"))
                     .put("default", "sum")))
             .setSqlTemplate("""
-                SELECT 
+                SELECT
                     ${aggregation}(amount) as value,
                     COUNT(*) as count,
                     DATE_TRUNC('day', event_time) as date
@@ -775,7 +776,7 @@ public class ProductionSalesAgent {
  * Agent处理函数 - GA版本完整实现
  */
 class AgentProcessFunction extends KeyedProcessFunction<String, AgentRequest, AgentResponse> {
-    
+
     private final Agent agent;
     private transient ValueState<AgentSessionState> sessionState;
     private transient ListState<AgentEvent> eventHistory;
@@ -795,11 +796,11 @@ class AgentProcessFunction extends KeyedProcessFunction<String, AgentRequest, Ag
 
         sessionState = getRuntimeContext().getState(
             new ValueStateDescriptor<>("session_state", AgentSessionState.class));
-        
+
         eventHistory = getRuntimeContext().getListState(
             new ListStateDescriptor<>("event_history", AgentEvent.class));
-        
-        ValueStateDescriptor<ToolCacheEntry> cacheDescriptor = 
+
+        ValueStateDescriptor<ToolCacheEntry> cacheDescriptor =
             new ValueStateDescriptor<>("tool_cache", ToolCacheEntry.class);
         cacheDescriptor.enableTimeToLive(ttlConfig);
         toolCache = getRuntimeContext().getMapState(
@@ -807,12 +808,12 @@ class AgentProcessFunction extends KeyedProcessFunction<String, AgentRequest, Ag
     }
 
     @Override
-    public void processElement(AgentRequest request, Context ctx, 
+    public void processElement(AgentRequest request, Context ctx,
                                Collector<AgentResponse> out) throws Exception {
-        
+
         String sessionId = ctx.getCurrentKey();
         AgentSessionState state = sessionState.value();
-        
+
         if (state == null) {
             state = new AgentSessionState(sessionId);
         }
@@ -839,13 +840,13 @@ class AgentProcessFunction extends KeyedProcessFunction<String, AgentRequest, Ag
         AgentResponse response;
         try {
             switch (request.getType()) {
-                case USER_MESSAGE -> 
+                case USER_MESSAGE ->
                     response = handleUserMessage(request, agentContext);
-                case TOOL_RESULT -> 
+                case TOOL_RESULT ->
                     response = handleToolResult(request, agentContext);
-                case A2A_MESSAGE -> 
+                case A2A_MESSAGE ->
                     response = handleA2AMessage(request, agentContext);
-                default -> 
+                default ->
                     response = createErrorResponse("Unknown request type");
             }
         } catch (Exception e) {
@@ -887,7 +888,7 @@ class AgentProcessFunction extends KeyedProcessFunction<String, AgentRequest, Ag
 
     private AgentResponse executeToolCalls(LLMResponse llmResponse, AgentContext ctx) {
         List<ToolCall> toolCalls = llmResponse.getToolCalls();
-        
+
         // 并行执行工具调用
         List<Observation> observations = toolCalls.parallelStream()
             .map(call -> {
@@ -927,7 +928,7 @@ from pyflink.agent import (
 )
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.connectors.kafka import (
-    KafkaSource, KafkaSink, 
+    KafkaSource, KafkaSink,
     KafkaOffsetsInitializer,
     KafkaRecordSerializationSchema
 )
@@ -955,7 +956,7 @@ class SalesAnalysisOutput:
 
 def create_production_agent() -> Agent:
     """创建生产级销售分析Agent"""
-    
+
     # Agent配置
     config = AgentConfiguration.builder() \
         .set_agent_id("sales-analytics-py-v2") \
@@ -1003,13 +1004,13 @@ def create_production_agent() -> Agent:
         .set_llm_router(llm_router) \
         .set_system_prompt("""
             你是一个专业的销售数据分析助手。
-            
+
             可用工具：
             1. query_sales_data - 查询销售数据
             2. analyze_trend - 分析销售趋势
             3. forecast_sales - 预测未来销售
             4. send_alert - 发送告警
-            
+
             工作原则：
             - 基于数据回答，不猜测
             - 复杂分析使用analyze_trend工具
@@ -1019,7 +1020,7 @@ def create_production_agent() -> Agent:
 
     # 注册工具
     _register_tools(agent)
-    
+
     # 注册A2A能力
     _register_a2a_capabilities(agent)
 
@@ -1028,7 +1029,7 @@ def create_production_agent() -> Agent:
 
 def _register_tools(agent: Agent) -> None:
     """注册MCP工具"""
-    
+
     # 工具1: SQL查询
     @agent.tool(
         name="query_sales_data",
@@ -1061,13 +1062,13 @@ def _register_tools(agent: Agent) -> None:
     ) -> Dict[str, Any]:
         """SQL实现的销售数据查询"""
         from pyflink.table import StreamTableEnvironment
-        
+
         t_env = StreamTableEnvironment.create(env)
-        
+
         category_filter = f"AND category = '{product_category}'" if product_category else ""
-        
+
         sql = f"""
-            SELECT 
+            SELECT
                 {aggregation}(amount) as value,
                 COUNT(*) as count,
                 DATE_TRUNC('day', event_time) as date
@@ -1077,10 +1078,10 @@ def _register_tools(agent: Agent) -> None:
             GROUP BY DATE_TRUNC('day', event_time)
             ORDER BY date DESC
         """
-        
+
         result = t_env.execute_sql(sql)
         rows = result.collect()
-        
+
         return {
             "data": [
                 {
@@ -1103,19 +1104,19 @@ def _register_tools(agent: Agent) -> None:
         """Python实现的趋势分析"""
         import numpy as np
         from scipy import stats
-        
+
         values = [d["value"] for d in data]
         dates = list(range(len(values)))
-        
+
         # 线性回归
         slope, intercept, r_value, p_value, std_err = stats.linregress(dates, values)
-        
+
         # 计算增长率
         if len(values) >= 2 and values[0] != 0:
             growth_rate = (values[-1] - values[0]) / values[0]
         else:
             growth_rate = 0
-        
+
         # 趋势判断
         if slope > 0:
             trend = "上升趋势"
@@ -1123,7 +1124,7 @@ def _register_tools(agent: Agent) -> None:
             trend = "下降趋势"
         else:
             trend = "平稳"
-        
+
         return {
             "trend": trend,
             "slope": float(slope),
@@ -1144,17 +1145,17 @@ def _register_tools(agent: Agent) -> None:
         """销售预测"""
         import pickle
         import numpy as np
-        
+
         # 加载预训练模型（实际生产中使用MLflow管理）
         with open("/models/sales_forecaster.pkl", "rb") as f:
             model = pickle.load(f)
-        
+
         values = np.array([d["value"] for d in historical_data]).reshape(-1, 1)
-        
+
         # 生成预测
         predictions = []
         current = values[-1]
-        
+
         for i in range(horizon_days):
             pred = model.predict([[current[0]]])[0]
             predictions.append({
@@ -1163,7 +1164,7 @@ def _register_tools(agent: Agent) -> None:
                 "confidence_interval": [float(pred * 0.9), float(pred * 1.1)]
             })
             current = [pred]
-        
+
         return {
             "predictions": predictions,
             "horizon_days": horizon_days,
@@ -1182,17 +1183,17 @@ def _register_tools(agent: Agent) -> None:
     ) -> Dict[str, Any]:
         """发送告警"""
         import aiohttp
-        
+
         if channels is None:
             channels = ["slack"]
-        
+
         alert_payload = {
             "message": message,
             "severity": severity,
             "source": "sales-analytics-agent",
             "timestamp": datetime.now().isoformat()
         }
-        
+
         results = []
         async with aiohttp.ClientSession() as session:
             for channel in channels:
@@ -1210,13 +1211,13 @@ def _register_tools(agent: Agent) -> None:
                         "status": "error",
                         "error": str(e)
                     })
-        
+
         return {"delivered": results}
 
 
 def _register_a2a_capabilities(agent: Agent) -> None:
     """注册A2A能力卡片"""
-    
+
     @agent.a2a_capability(
         name="sales_analysis",
         description="销售数据分析和报告生成",
@@ -1228,21 +1229,21 @@ def _register_a2a_capabilities(agent: Agent) -> None:
         context: AgentContext
     ) -> SalesAnalysisOutput:
         """处理来自其他Agent的分析请求"""
-        
+
         # 查询数据
         sales_data = await query_sales_data(
             time_range=input_data.time_range,
             product_category=input_data.product_category
         )
-        
+
         # 分析趋势
         trend_analysis = await analyze_trend(sales_data["data"])
-        
+
         # 预测（如果需要）
         forecast = None
         if input_data.include_forecast:
             forecast = await forecast_sales(sales_data["data"])
-        
+
         # 生成报告
         report = f"""
 销售分析报告
@@ -1257,13 +1258,13 @@ def _register_a2a_capabilities(agent: Agent) -> None:
 
 {f"预测结果: {len(forecast['predictions'])}天" if forecast else ""}
 """
-        
+
         recommendations = []
         if trend_analysis["slope"] < 0:
             recommendations.append("销售呈下降趋势，建议检查市场活动效果")
         if trend_analysis["confidence"] == "low":
             recommendations.append("数据波动较大，建议增加样本量")
-        
+
         return SalesAnalysisOutput(
             report=report,
             charts=[
@@ -1278,15 +1279,15 @@ def main():
     """主入口"""
     from pyflink.datastream import StreamExecutionEnvironment
     from pyflink.table import StreamTableEnvironment
-    
+
     # 创建环境
     env = StreamExecutionEnvironment.get_execution_environment()
     env.enable_checkpointing(30000)
     env.get_checkpoint_config().set_checkpointing_mode("EXACTLY_ONCE")
-    
+
     # 创建Agent
     agent = create_production_agent()
-    
+
     # Kafka源
     source = KafkaSource.builder() \
         .set_bootstrap_servers("kafka.cluster.svc:9092") \
@@ -1294,18 +1295,18 @@ def main():
         .set_group_id("sales-agent-py-group") \
         .set_starting_offsets(KafkaOffsetsInitializer.earliest()) \
         .build()
-    
+
     input_stream = env.from_source(
-        source, 
+        source,
         watermark_strategy=WatermarkStrategy.for_bounded_out_of_orderness(Duration.of_seconds(5)),
         source_name="kafka-source"
     )
-    
+
     # Agent处理
     output_stream = input_stream \
         .key_by(lambda x: x.session_id) \
         .process(agent.create_process_function())
-    
+
     # Kafka输出
     sink = KafkaSink.builder() \
         .set_bootstrap_servers("kafka.cluster.svc:9092") \
@@ -1317,9 +1318,9 @@ def main():
         ) \
         .set_delivery_guarantee("EXACTLY_ONCE") \
         .build()
-    
+
     output_stream.sink_to(sink)
-    
+
     # 执行
     env.execute("Production Sales Analytics Agent (Python)")
 
@@ -1345,7 +1346,7 @@ WITH (
     'agent.name' = 'Sales Analytics Agent',
     'agent.version' = '2.0.0',
     'agent.description' = '专业的销售数据分析助手，支持查询、分析、预测',
-    
+
     -- LLM配置
     'llm.provider' = 'openai',
     'llm.model' = 'gpt-4-turbo',
@@ -1353,26 +1354,26 @@ WITH (
     'llm.max_tokens' = '2000',
     'llm.top_p' = '0.9',
     'llm.timeout' = '30s',
-    
+
     -- 路由配置（GA版本支持多模型）
     'llm.router.enabled' = 'true',
     'llm.router.strategy' = 'round_robin',
     'llm.router.fallback.enabled' = 'true',
     'llm.router.fallback.model' = 'claude-3-opus',
-    
+
     -- 状态后端配置
     'state.backend' = 'rocksdb',
     'state.backend.incremental' = 'true',
     'state.backend.rocksdb.memory.managed' = 'true',
     'state.backend.rocksdb.memory.fixed-per-slot' = '256mb',
-    
+
     -- 检查点配置
     'execution.checkpointing.interval' = '30s',
     'execution.checkpointing.mode' = 'EXACTLY_ONCE',
     'execution.checkpointing.timeout' = '10min',
     'execution.checkpointing.min-pause-between-checkpoints' = '10s',
     'execution.checkpointing.max-concurrent-checkpoints' = '1',
-    
+
     -- 记忆管理配置
     'memory.working.size' = '10',
     'memory.long_term.ttl' = '30d',
@@ -1381,14 +1382,14 @@ WITH (
     'memory.episodic.vector_store.host' = 'milvus.cluster.svc',
     'memory.episodic.vector_store.port' = '19530',
     'memory.episodic.vector_store.collection' = 'agent_memory',
-    
+
     -- 系统提示词
     'system.prompt' = '
 你是一个专业的销售数据分析助手。
 
 可用工具：
 1. query_sales_data - 查询销售数据
-2. analyze_trend - 分析销售趋势  
+2. analyze_trend - 分析销售趋势
 3. forecast_sales - 预测未来销售
 4. send_alert - 发送告警通知
 
@@ -1404,7 +1405,7 @@ WITH (
 CREATE TOOL query_sales_data
 FOR AGENT sales_analytics_agent
 AS $$
-    SELECT 
+    SELECT
         DATE_TRUNC('day', event_time) as date,
         SUM(amount) as total_sales,
         COUNT(*) as order_count,
@@ -1422,11 +1423,11 @@ $$ WITH (
     'tool.cache.ttl' = '60s',
     'tool.retry.max_attempts' = '3',
     'tool.retry.backoff' = 'exponential',
-    
+
     'parameter.time_range.type' = 'string',
     'parameter.time_range.enum' = '1h,24h,7d,30d',
     'parameter.time_range.required' = 'true',
-    
+
     'parameter.product_category.type' = 'string',
     'parameter.product_category.required' = 'false'
 );
@@ -1443,13 +1444,13 @@ from scipy import stats
 def analyze(data):
     values = [d['total_sales'] for d in data]
     dates = list(range(len(values)))
-    
+
     # 线性回归
     slope, intercept, r_value, p_value, std_err = stats.linregress(dates, values)
-    
+
     # 增长率
     growth_rate = (values[-1] - values[0]) / values[0] if values[0] != 0 else 0
-    
+
     # 趋势判断
     if slope > 0:
         trend = "上升趋势"
@@ -1457,7 +1458,7 @@ def analyze(data):
         trend = "下降趋势"
     else:
         trend = "平稳"
-    
+
     return {
         "trend": trend,
         "slope": float(slope),
@@ -1486,10 +1487,10 @@ WITH (
     'http.headers.Authorization' = 'Bearer ${ALERT_TOKEN}',
     'http.timeout' = '5s',
     'http.retry.max_attempts' = '3',
-    
+
     'parameter.message.type' = 'string',
     'parameter.message.required' = 'true',
-    
+
     'parameter.severity.type' = 'string',
     'parameter.severity.enum' = 'info,warning,critical',
     'parameter.severity.default' = 'info',
@@ -1503,17 +1504,17 @@ WITH (
     'capability.name' = 'sales_analysis',
     'capability.description' = '销售数据分析和报告生成',
     'capability.version' = '2.0.0',
-    
+
     'input.time_range.type' = 'string',
     'input.time_range.enum' = '1h,24h,7d,30d',
     'input.time_range.required' = 'true',
-    
+
     'input.product_category.type' = 'string',
     'input.product_category.required' = 'false',
-    
+
     'input.include_forecast.type' = 'boolean',
     'input.include_forecast.default' = 'false',
-    
+
     'output.report.type' = 'string',
     'output.charts.type' = 'array',
     'output.recommendations.type' = 'array',
@@ -1584,7 +1585,7 @@ WITH RULES (
         input => content,
         metadata => metadata
     ),
-    
+
     -- 规则2: 处理工具结果
     RULE handle_tool_result
     WHEN message_type = 'tool_result'
@@ -1592,7 +1593,7 @@ WITH RULES (
         tool_result => content,
         session_id => session_id
     ),
-    
+
     -- 规则3: 每小时自动生成报告
     RULE hourly_report
     EVERY INTERVAL '1' HOUR
@@ -1600,7 +1601,7 @@ WITH RULES (
         prompt => '生成过去1小时的销售总结报告',
         auto_trigger => true
     ),
-    
+
     -- 规则4: 异常检测告警
     RULE anomaly_alert
     WHEN (
@@ -1613,7 +1614,7 @@ WITH RULES (
         (
             SELECT SUM(amount) as total_sales
             FROM sales_events
-            WHERE event_time >= NOW() - INTERVAL '2' HOUR 
+            WHERE event_time >= NOW() - INTERVAL '2' HOUR
             AND event_time < NOW() - INTERVAL '1' HOUR
         ) previous
     ) < -0.15
@@ -1637,7 +1638,7 @@ SELECT * FROM AGENT_RUN(
 
 -- 11. 同时写入审计日志
 INSERT INTO agent_event_log
-SELECT 
+SELECT
     UUID() as event_id,
     session_id,
     'sales_analytics_agent' as agent_id,
@@ -1649,7 +1650,7 @@ FROM agent_requests;
 
 -- 12. 创建监控视图
 CREATE VIEW agent_metrics AS
-SELECT 
+SELECT
     TUMBLE_START(ts, INTERVAL '1' MINUTE) as window_start,
     TUMBLE_END(ts, INTERVAL '1' MINUTE) as window_end,
     COUNT(*) as request_count,
@@ -1673,18 +1674,18 @@ public class MultiAgentCoordination {
      * 模式1: Pipeline模式 - 文档处理流水线
      */
     public static class DocumentProcessingPipeline {
-        
+
         public void buildPipeline(StreamExecutionEnvironment env) {
             // 创建Agent
             Agent extractionAgent = createExtractionAgent();
             Agent analysisAgent = createAnalysisAgent();
             Agent summaryAgent = createSummaryAgent();
-            
+
             // 输入流
             DataStream<Document> documents = env
                 .addSource(new DocumentSource())
                 .keyBy(Document::getDocId);
-            
+
             // Pipeline: 提取 -> 分析 -> 总结
             DataStream<ProcessedDocument> result = documents
                 // Stage 1: 信息提取
@@ -1693,7 +1694,7 @@ public class MultiAgentCoordination {
                 .map(extracted -> analysisAgent.process(extracted))
                 // Stage 3: 生成摘要
                 .map(analyzed -> summaryAgent.process(analyzed));
-            
+
             result.addSink(new DocumentSink());
         }
     }
@@ -1702,31 +1703,31 @@ public class MultiAgentCoordination {
      * 模式2: Parallel模式 - 并行分析
      */
     public static class ParallelAnalysis {
-        
+
         public void buildParallelWorkflow(StreamExecutionEnvironment env) {
             Agent salesAgent = createSalesAgent();
             Agent inventoryAgent = createInventoryAgent();
             Agent customerAgent = createCustomerAgent();
-            
+
             DataStream<Query> queries = env.addSource(new QuerySource())
                 .keyBy(Query::getSessionId);
-            
+
             // 广播到多个Agent并行处理
             DataStream<Query> broadcasted = queries.broadcast();
-            
+
             // 并行子流
             DataStream<PartialResult> salesResult = broadcasted
                 .process(new AgentProcessFunction(salesAgent))
                 .map(r -> new PartialResult("sales", r));
-            
+
             DataStream<PartialResult> inventoryResult = broadcasted
                 .process(new AgentProcessFunction(inventoryAgent))
                 .map(r -> new PartialResult("inventory", r));
-            
+
             DataStream<PartialResult> customerResult = broadcasted
                 .process(new AgentProcessFunction(customerAgent))
                 .map(r -> new PartialResult("customer", r));
-            
+
             // 合并结果
             DataStream<AggregatedResult> aggregated = salesResult
                 .union(inventoryResult, customerResult)
@@ -1740,10 +1741,10 @@ public class MultiAgentCoordination {
      * 模式3: Hierarchical模式 - 主从结构
      */
     public static class HierarchicalOrchestration {
-        
+
         private Agent orchestratorAgent;
         private Map<String, Agent> specializedAgents;
-        
+
         public void buildHierarchy(StreamExecutionEnvironment env) {
             // 主Agent
             orchestratorAgent = Agent.builder()
@@ -1751,43 +1752,43 @@ public class MultiAgentCoordination {
                 .systemPrompt("你是一个任务协调Agent。分析用户请求，分解为子任务，" +
                     "并委托给专门的Agent处理。最后整合各Agent的结果。")
                 .build();
-            
+
             // 专业Agent
             specializedAgents = Map.of(
                 "data_query", createDataQueryAgent(),
                 "code_generation", createCodeGenAgent(),
                 "validation", createValidationAgent()
             );
-            
+
             // 注册委托能力
             orchestratorAgent.registerTool(MCPTool.a2a()
                 .setName("delegate_task")
                 .setDescription("委托任务给专业Agent")
                 .setHandler(this::delegateTask)
                 .build());
-            
+
             DataStream<ComplexTask> tasks = env.addSource(new TaskSource())
                 .keyBy(ComplexTask::getTaskId);
-            
+
             tasks.process(new KeyedProcessFunction<String, ComplexTask, TaskResult>() {
                 @Override
-                public void processElement(ComplexTask task, Context ctx, 
+                public void processElement(ComplexTask task, Context ctx,
                                           Collector<TaskResult> out) {
                     // 主Agent分析任务
                     TaskPlan plan = orchestratorAgent.plan(task);
-                    
+
                     // 并行委托子任务
                     List<SubTaskResult> subResults = plan.getSubTasks().parallelStream()
                         .map(sub -> delegateToSpecialist(sub))
                         .collect(Collectors.toList());
-                    
+
                     // 整合结果
                     TaskResult result = orchestratorAgent.synthesize(subResults);
                     out.collect(result);
                 }
             });
         }
-        
+
         private SubTaskResult delegateToSpecialist(SubTask subTask) {
             Agent specialist = specializedAgents.get(subTask.getType());
             return specialist.execute(subTask);
@@ -1798,7 +1799,7 @@ public class MultiAgentCoordination {
      * 模式4: Competitive模式 - 多Agent投票
      */
     public static class CompetitiveVoting {
-        
+
         public void buildVotingSystem(StreamExecutionEnvironment env) {
             // 多个同等能力的Agent
             List<Agent> candidateAgents = List.of(
@@ -1806,10 +1807,10 @@ public class MultiAgentCoordination {
                 createAgentWithModel("claude-3"),
                 createAgentWithModel("gemini-pro")
             );
-            
+
             DataStream<Question> questions = env.addSource(new QuestionSource())
                 .keyBy(Question::getId);
-            
+
             // 并行询问所有Agent
             DataStream<Vote> votes = questions
                 .flatMap(new FlatMapFunction<Question, Vote>() {
@@ -1821,7 +1822,7 @@ public class MultiAgentCoordination {
                         });
                     }
                 });
-            
+
             // 按问题聚合投票
             DataStream<ConsensusResult> consensus = votes
                 .keyBy(Vote::getQuestionId)
@@ -1835,7 +1836,7 @@ public class MultiAgentCoordination {
  * A2A完整协作示例
  */
 public class A2ACollaborationExample {
-    
+
     public void demonstrateA2A() {
         // 创建A2A总线
         A2ABus bus = A2ABus.create(A2AConfiguration.builder()
@@ -1843,20 +1844,20 @@ public class A2ACollaborationExample {
             .setKafkaBootstrapServers("kafka.cluster.svc:9092")
             .setTopicPrefix("a2a")
             .build());
-        
+
         // 创建并注册Agent
         Agent orderAgent = createOrderAgent();
         Agent inventoryAgent = createInventoryAgent();
         Agent paymentAgent = createPaymentAgent();
-        
+
         bus.register(orderAgent);
         bus.register(inventoryAgent);
         bus.register(paymentAgent);
-        
+
         // 场景: 订单Agent协调库存和支付Agent完成订单处理
         orderAgent.onUserRequest(request -> {
             String orderId = request.getOrderId();
-            
+
             // 1. 查询库存（A2A请求-响应）
             A2AMessage inventoryQuery = A2AMessage.builder()
                 .from(orderAgent.getId())
@@ -1869,13 +1870,13 @@ public class A2ACollaborationExample {
                 .correlationId(orderId)
                 .timeout(Duration.ofSeconds(5))
                 .build();
-            
+
             A2AMessage inventoryResponse = bus.sendAndReceive(inventoryQuery);
-            
+
             if (!inventoryResponse.isSuccess()) {
                 return OrderResult.failed("库存不足");
             }
-            
+
             // 2. 预留库存
             A2AMessage reserveRequest = A2AMessage.builder()
                 .from(orderAgent.getId())
@@ -1887,9 +1888,9 @@ public class A2ACollaborationExample {
                     "order_id", orderId
                 )))
                 .build();
-            
+
             bus.send(reserveRequest);
-            
+
             // 3. 发起支付（异步）
             A2AMessage paymentRequest = A2AMessage.builder()
                 .from(orderAgent.getId())
@@ -1901,17 +1902,17 @@ public class A2ACollaborationExample {
                     "callback", orderAgent.getCallbackEndpoint()
                 )))
                 .build();
-            
+
             bus.send(paymentRequest);
-            
+
             // 4. 等待支付回调
             return OrderResult.pending(orderId);
         });
-        
+
         // 处理支付回调
         orderAgent.onA2AMessage(MessageType.STATUS_UPDATE, message -> {
             PaymentStatus status = message.getContentAs(PaymentStatus.class);
-            
+
             if (status.isSuccess()) {
                 // 确认库存扣减
                 bus.send(A2AMessage.builder()
@@ -1922,7 +1923,7 @@ public class A2ACollaborationExample {
                         "order_id", status.getOrderId()
                     )))
                     .build());
-                
+
                 return OrderResult.completed(status.getOrderId());
             } else {
                 // 释放库存预留
@@ -1934,7 +1935,7 @@ public class A2ACollaborationExample {
                         "order_id", status.getOrderId()
                     )))
                     .build());
-                
+
                 return OrderResult.failed("支付失败");
             }
         });
@@ -2240,21 +2241,17 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531
+[^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
 
-[^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. https://modelcontextprotocol.io/spec
+[^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/spec>
 
-[^3]: Google, "Agent-to-Agent (A2A) Protocol Specification", 2025. https://developers.google.com/agent-to-agent
+[^3]: Google, "Agent-to-Agent (A2A) Protocol Specification", 2025. <https://developers.google.com/agent-to-agent>
 
-[^4]: Apache Flink Documentation, "Exactly-Once Processing Guarantees", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/fault_tolerance/
+[^4]: Apache Flink Documentation, "Exactly-Once Processing Guarantees", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/fault_tolerance/>
 
-[^5]: Milvus Documentation, "Vector Search Performance Tuning", 2025. https://milvus.io/docs/performance_faq.md
 
-[^6]: OpenAI API Documentation, "Best Practices for Production", 2025. https://platform.openai.com/docs/guides/production-best-practices
 
-[^7]: Kubernetes Documentation, "Stateful Applications", 2025. https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
 
-[^8]: Prometheus Documentation, "Flink Monitoring", 2025. https://prometheus.io/docs/instrumenting/exporters/
 
 
 ---
@@ -2401,7 +2398,7 @@ data:
     agent.async.timeout: 60s
     agent.async.capacity: 1000
     agent.async.concurrency: 100
-    
+
     # Agent重试配置
     agent.retry.max-attempts: 3
     agent.retry.backoff.initial: 100ms
@@ -2414,7 +2411,7 @@ data:
     llm.connection.keep-alive: 30s
     llm.request.timeout: 30s
     llm.request.max-retries: 3
-    
+
     # LLM断路器配置
     llm.circuit-breaker.enabled: true
     llm.circuit-breaker.failure-rate-threshold: 50
@@ -2462,7 +2459,7 @@ data:
         timeout: 30s
         rate_limit: 1000
         priority: 1
-      
+
       - name: anthropic-fallback
         provider: anthropic
         model: claude-3-opus
@@ -2470,7 +2467,7 @@ data:
         timeout: 30s
         rate_limit: 500
         priority: 2
-    
+
     routing_strategy: round_robin
     fallback:
       enabled: true
@@ -2481,12 +2478,12 @@ data:
       backend: hashmap
       max_messages: 10
       ttl_seconds: 3600
-    
+
     long_term_memory:
       backend: rocksdb
       ttl_days: 30
       compression: lz4
-    
+
     episodic_memory:
       enabled: true
       vector_store:
@@ -2778,19 +2775,19 @@ public class StateManagementBestPractices {
      * 实践1: 分层记忆实现
      */
     public static class HierarchicalMemoryManager {
-        
+
         // 工作记忆 - ValueState (最快)
         private ValueState<WorkingMemory> workingMemoryState;
-        
+
         // 长期记忆 - MapState (持久化)
         private MapState<String, Fact> longTermMemoryState;
-        
+
         // 工具缓存 - MapState with TTL
         private MapState<String, ToolCacheEntry> toolCacheState;
-        
+
         // 外部向量存储客户端
         private transient VectorStoreClient vectorStore;
-        
+
         public void open(Configuration parameters) {
             // 配置TTL
             StateTtlConfig ttlConfig = StateTtlConfig
@@ -2801,12 +2798,12 @@ public class StateManagementBestPractices {
                 .build();
 
             // 工作记忆 - 无TTL，会话级
-            ValueStateDescriptor<WorkingMemory> workingDescriptor = 
+            ValueStateDescriptor<WorkingMemory> workingDescriptor =
                 new ValueStateDescriptor<>("working_memory", WorkingMemory.class);
             workingMemoryState = getRuntimeContext().getState(workingDescriptor);
 
             // 长期记忆 - 30天TTL
-            MapStateDescriptor<String, Fact> longTermDescriptor = 
+            MapStateDescriptor<String, Fact> longTermDescriptor =
                 new MapStateDescriptor<>("long_term_memory", String.class, Fact.class);
             longTermDescriptor.enableTimeToLive(ttlConfig);
             longTermMemoryState = getRuntimeContext().getMapState(longTermDescriptor);
@@ -2816,7 +2813,7 @@ public class StateManagementBestPractices {
                 .newBuilder(Time.minutes(5))
                 .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
                 .build();
-            MapStateDescriptor<String, ToolCacheEntry> cacheDescriptor = 
+            MapStateDescriptor<String, ToolCacheEntry> cacheDescriptor =
                 new MapStateDescriptor<>("tool_cache", String.class, ToolCacheEntry.class);
             cacheDescriptor.enableTimeToLive(cacheTtl);
             toolCacheState = getRuntimeContext().getMapState(cacheDescriptor);
@@ -2842,7 +2839,7 @@ public class StateManagementBestPractices {
             // 2. 上下文窗口管理
             if (workingMemory.size() > MAX_WORKING_MEMORY_SIZE) {
                 Message removed = workingMemory.removeOldest();
-                
+
                 // 3. 重要性评估 -> 可能转移到长期记忆
                 if (isImportant(removed)) {
                     Fact fact = extractFact(removed);
@@ -2896,7 +2893,7 @@ public class StateManagementBestPractices {
         public Optional<ToolResult> getCachedResult(ToolCall call) throws Exception {
             String cacheKey = computeCacheKey(call);
             ToolCacheEntry entry = toolCacheState.get(cacheKey);
-            
+
             if (entry != null && !entry.isExpired()) {
                 return Optional.of(entry.getResult());
             }
@@ -2913,14 +2910,14 @@ public class StateManagementBestPractices {
      * 实践2: 状态压缩
      */
     public static class StateCompression {
-        
+
         /**
          * 使用Snappy压缩大状态
          */
         public static class CompressedStateSerializer<T> implements TypeSerializer<T> {
-            
+
             private final TypeSerializer<T> innerSerializer;
-            
+
             @Override
             public void serialize(T record, DataOutputView target) throws IOException {
                 // 先序列化为字节
@@ -2928,10 +2925,10 @@ public class StateManagementBestPractices {
                 DataOutputViewStreamWrapper wrapper = new DataOutputViewStreamWrapper(baos);
                 innerSerializer.serialize(record, wrapper);
                 byte[] uncompressed = baos.toByteArray();
-                
+
                 // Snappy压缩
                 byte[] compressed = Snappy.compress(uncompressed);
-                
+
                 // 写入长度 + 压缩数据
                 target.writeInt(compressed.length);
                 target.write(compressed);
@@ -2942,15 +2939,15 @@ public class StateManagementBestPractices {
                 int length = source.readInt();
                 byte[] compressed = new byte[length];
                 source.readFully(compressed);
-                
+
                 // Snappy解压
                 byte[] uncompressed = Snappy.uncompress(compressed);
-                
+
                 // 反序列化
                 ByteArrayInputStream bais = new ByteArrayInputStream(uncompressed);
                 return innerSerializer.deserialize(new DataInputViewStreamWrapper(bais));
             }
-            
+
             // ... 其他方法
         }
 
@@ -2958,31 +2955,31 @@ public class StateManagementBestPractices {
          * 增量状态更新
          */
         public static class IncrementalStateUpdate {
-            
+
             private ValueState<DeltaState> deltaState;
             private ListState<StateDelta> deltaLog;
-            
+
             public void updatePartialState(StateDelta delta) throws Exception {
                 // 记录增量
                 deltaLog.add(delta);
-                
+
                 // 定期合并
                 if (shouldCompact()) {
                     compactDeltas();
                 }
             }
-            
+
             private void compactDeltas() throws Exception {
                 DeltaState current = deltaState.value();
                 if (current == null) {
                     current = new DeltaState();
                 }
-                
+
                 // 应用所有增量
                 for (StateDelta delta : deltaLog.get()) {
                     current.apply(delta);
                 }
-                
+
                 // 更新状态和清空日志
                 deltaState.update(current);
                 deltaLog.clear();
@@ -2994,22 +2991,22 @@ public class StateManagementBestPractices {
      * 实践3: 状态监控和告警
      */
     public static class StateMonitoring {
-        
+
         private transient MetricGroup stateMetrics;
         private Counter stateUpdateCounter;
         private Histogram stateSizeHistogram;
         private Gauge<Long> stateSizeGauge;
-        
+
         public void open(Configuration parameters) {
             stateMetrics = getRuntimeContext().getMetricGroup()
                 .addGroup("agent")
                 .addGroup("state");
-            
+
             stateUpdateCounter = stateMetrics.counter("updates");
             stateSizeHistogram = stateMetrics.histogram("size_bytes", new DropwizardHistogramWrapper(
                 new com.codahale.metrics.Histogram(new SlidingWindowReservoir(500))
             ));
-            
+
             stateSizeGauge = stateMetrics.gauge("estimated_size_bytes", () -> {
                 try {
                     return estimateStateSize();
@@ -3018,14 +3015,14 @@ public class StateManagementBestPractices {
                 }
             });
         }
-        
+
         private long estimateStateSize() throws Exception {
             // 估算状态大小
             return RocksDBStateUtils.estimateStateSize(
                 (RocksDBKeyedStateBackend<?>) getKeyedStateBackend()
             );
         }
-        
+
         public void monitorStateAccess() {
             stateUpdateCounter.inc();
         }
@@ -3048,7 +3045,7 @@ groups:
       # Agent请求延迟
       - record: flink_agent_request_latency_p99
         expr: histogram_quantile(0.99, rate(flink_agent_request_duration_seconds_bucket[5m]))
-      
+
       - alert: AgentHighLatency
         expr: flink_agent_request_latency_p99 > 0.5
         for: 5m
@@ -3061,7 +3058,7 @@ groups:
       # Agent错误率
       - record: flink_agent_error_rate
         expr: rate(flink_agent_errors_total[5m]) / rate(flink_agent_requests_total[5m])
-      
+
       - alert: AgentHighErrorRate
         expr: flink_agent_error_rate > 0.05
         for: 2m
@@ -3156,14 +3153,16 @@ kubectl get flinkdeployment -n flink-agents
 kubectl logs -n flink-agents deployment/sales-analytics-agent-jobmanager
 ```
 
-2. 检查Checkpoint状态
+1. 检查Checkpoint状态
+
 ```bash
 # 查看Checkpoint历史
 kubectl exec -n flink-agents deployment/sales-analytics-agent-jobmanager -- \
   curl -s http://localhost:8081/jobs/<job-id>/checkpoints
 ```
 
-3. 检查背压
+1. 检查背压
+
 ```bash
 # 在Flink UI中查看背压指标
 # 或查询Prometheus
@@ -3186,17 +3185,20 @@ sum(rate(flink_taskmanager_backPressuredTimeMsPerSecond[1m])) by (task_id)
 **排查步骤**:
 
 1. 检查LLM配置
+
 ```bash
 # 验证API密钥
 kubectl get secret agent-secrets -n flink-agents -o jsonpath='{.data.OPENAI_API_KEY}' | base64 -d
 ```
 
-2. 查看LLM调用日志
+1. 查看LLM调用日志
+
 ```bash
 kubectl logs -n flink-agents -l app=flink-agent --tail=1000 | grep "LLM_ERROR"
 ```
 
-3. 检查限流状态
+1. 检查限流状态
+
 ```bash
 # 查询Prometheus
 flink_agent_llm_rate_limit_hits_total
@@ -3216,17 +3218,20 @@ flink_agent_llm_circuit_breaker_state
 **排查步骤**:
 
 1. 验证Checkpoint完整性
+
 ```bash
 hdfs dfs -ls /flink/checkpoints/agents/
 ```
 
-2. 检查RocksDB日志
+1. 检查RocksDB日志
+
 ```bash
 kubectl exec -n flink-agents <taskmanager-pod> -- \
   cat /opt/flink/rocksdb/*.LOG
 ```
 
-3. 检查增量Checkpoint配置
+1. 检查增量Checkpoint配置
+
 ```yaml
 state.backend.incremental: true
 ```
@@ -3238,18 +3243,21 @@ state.backend.incremental: true
 **排查步骤**:
 
 1. 检查Kafka连接
+
 ```bash
 kubectl exec -n flink-agents <pod> -- \
   kafka-broker-api-versions.sh --bootstrap-server kafka:9092
 ```
 
-2. 查看A2A消息堆积
+1. 查看A2A消息堆积
+
 ```bash
 kafka-consumer-groups.sh --bootstrap-server kafka:9092 --describe \
   --group a2a-agent-group
 ```
 
-3. 检查消息格式
+1. 检查消息格式
+
 ```bash
 kafka-console-consumer.sh --bootstrap-server kafka:9092 \
   --topic a2a-messages --from-beginning --max-messages 10
@@ -3262,18 +3270,21 @@ kafka-console-consumer.sh --bootstrap-server kafka:9092 \
 **排查步骤**:
 
 1. 查看内存使用
+
 ```bash
 kubectl top pod -n flink-agents -l app=flink-agent
 ```
 
-2. 分析Heap Dump
+1. 分析Heap Dump
+
 ```bash
 # 启用Heap Dump on OOM
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=/opt/flink/heap-dumps/
 ```
 
-3. 检查状态大小
+1. 检查状态大小
+
 ```bash
 # 在Prometheus中查询
 flink_agent_state_estimated_size_bytes
@@ -3284,6 +3295,7 @@ flink_agent_state_estimated_size_bytes
 - 启用状态TTL自动清理
 - 使用增量Checkpoint
 - 限制工作记忆大小
+
 ```
 
 #### 6.8.3 日志和追踪
@@ -3293,58 +3305,58 @@ flink_agent_state_estimated_size_bytes
  * 分布式追踪集成 - OpenTelemetry
  */
 public class AgentTracing {
-    
+
     private final Tracer tracer;
-    
+
     public AgentResponse processWithTracing(AgentRequest request) {
         Span span = tracer.spanBuilder("agent.process")
             .setAttribute("agent.id", agentId)
             .setAttribute("session.id", request.getSessionId())
             .setAttribute("request.type", request.getType())
             .startSpan();
-        
+
         try (Scope scope = span.makeCurrent()) {
             // 1. 记录输入
             span.addEvent("input.received", Attributes.builder()
                 .put("content.length", request.getContent().length())
                 .build());
-            
+
             // 2. 检索记忆
             Span memorySpan = tracer.spanBuilder("memory.retrieve").startSpan();
             RetrievedContext context = retrieveMemory(request);
             memorySpan.setAttribute("retrieved.count", context.getSize());
             memorySpan.end();
-            
+
             // 3. LLM决策
             Span llmSpan = tracer.spanBuilder("llm.decide").startSpan();
             llmSpan.setAttribute("llm.model", llmRouter.getCurrentModel());
             long llmStart = System.currentTimeMillis();
-            
+
             LLMResponse llmResponse = llmRouter.route(buildPrompt(request, context));
-            
+
             llmSpan.setAttribute("duration.ms", System.currentTimeMillis() - llmStart);
             llmSpan.setAttribute("tokens.input", llmResponse.getInputTokens());
             llmSpan.setAttribute("tokens.output", llmResponse.getOutputTokens());
             llmSpan.end();
-            
+
             // 4. 工具调用
             if (llmResponse.hasToolCalls()) {
                 Span toolSpan = tracer.spanBuilder("tools.execute").startSpan();
                 toolSpan.setAttribute("tool.count", llmResponse.getToolCalls().size());
-                
+
                 List<ToolResult> results = executeTools(llmResponse.getToolCalls());
-                toolSpan.setAttribute("success.count", 
+                toolSpan.setAttribute("success.count",
                     results.stream().filter(ToolResult::isSuccess).count());
                 toolSpan.end();
             }
-            
+
             // 5. 生成响应
             AgentResponse response = generateResponse(llmResponse);
             span.setAttribute("response.length", response.getContent().length());
             span.setStatus(StatusCode.OK);
-            
+
             return response;
-            
+
         } catch (Exception e) {
             span.recordException(e);
             span.setStatus(StatusCode.ERROR, e.getMessage());
@@ -3364,10 +3376,10 @@ public class AgentTracing {
  */
 @RestController
 public class HealthCheckController {
-    
+
     @Autowired
     private AgentHealthIndicator healthIndicator;
-    
+
     @GetMapping("/health")
     public ResponseEntity<HealthStatus> health() {
         HealthStatus status = HealthStatus.builder()
@@ -3380,11 +3392,11 @@ public class HealthCheckController {
                 "a2a", checkA2A()
             ))
             .build();
-        
+
         HttpStatus httpStatus = status.isHealthy() ? HttpStatus.OK : HttpStatus.SERVICE_UNAVAILABLE;
         return ResponseEntity.status(httpStatus).body(status);
     }
-    
+
     @GetMapping("/ready")
     public ResponseEntity<String> ready() {
         // 检查是否可以接受流量
@@ -3393,13 +3405,13 @@ public class HealthCheckController {
         }
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("NOT_READY");
     }
-    
+
     @GetMapping("/metrics")
     public String metrics() {
         // Prometheus格式指标
         return PrometheusExporter.export();
     }
-    
+
     private HealthCheck checkLLM() {
         try {
             llmRouter.healthCheck();
@@ -3408,7 +3420,7 @@ public class HealthCheckController {
             return HealthCheck.failed(e.getMessage());
         }
     }
-    
+
     private HealthCheck checkStateBackend() {
         try {
             stateBackend.performSanityCheck();
@@ -3431,26 +3443,26 @@ flowchart TD
     A[Agent异常] --> B{作业状态}
     B -->|FAILED| C[查看JobManager日志]
     B -->|RUNNING| D{响应延迟}
-    
+
     C --> E{错误类型}
     E -->|OOM| F[增加TM内存]
     E -->|Checkpoint失败| G[检查存储]
     E -->|状态损坏| H[从Savepoint恢复]
-    
+
     D -->|高延迟| I{检查指标}
     D -->|无响应| J{检查背压}
-    
+
     I --> K{LLM延迟?}
     K -->|是| L[启用异步调用]
     K -->|否| M{状态访问慢?}
-    
+
     M -->|是| N[优化RocksDB]
     M -->|否| O[检查GC]
-    
+
     J --> P{Kafka堆积?}
     P -->|是| Q[增加Consumer]
     P -->|否| R{TM负载高?}
-    
+
     R -->|是| S[水平扩展]
     R -->|否| T[检查死锁]
 ```
@@ -3504,23 +3516,3 @@ graph TB
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531
-
-[^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. https://modelcontextprotocol.io/spec
-
-[^3]: Google, "Agent-to-Agent (A2A) Protocol Specification", 2025. https://developers.google.com/agent-to-agent
-
-[^4]: Apache Flink Documentation, "Exactly-Once Processing Guarantees", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/fault_tolerance/
-
-[^5]: Milvus Documentation, "Vector Search Performance Tuning", 2025. https://milvus.io/docs/performance_faq.md
-
-[^6]: OpenAI API Documentation, "Best Practices for Production", 2025. https://platform.openai.com/docs/guides/production-best-practices
-
-[^7]: Kubernetes Documentation, "Stateful Applications", 2025. https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
-
-[^8]: Prometheus Documentation, "Flink Monitoring", 2025. https://prometheus.io/docs/instrumenting/exporters/
-
-[^9]: RocksDB Documentation, "Tuning Guide", 2025. https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide
-
-[^10]: Apache Kafka Documentation, "Kafka Streams", 2025. https://kafka.apache.org/documentation/streams/

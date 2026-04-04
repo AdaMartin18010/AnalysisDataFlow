@@ -185,7 +185,7 @@ $$
 \text{Latency}_{\text{HashMap}} < \text{Latency}_{\text{RocksDB}}^{\text{cache-hit}} < \text{Latency}_{\text{ForSt}}^{\text{L1-hit}} < \text{Latency}_{\text{RocksDB}}^{\text{cache-miss}} < \text{Latency}_{\text{ForSt}}^{\text{cache-miss}}
 $$
 
-**证明**: 
+**证明**:
 
 | 层级 | 延迟范围 | 原因 |
 |------|---------|------|
@@ -306,34 +306,34 @@ ForStStateBackend ────────────────────�
 ```mermaid
 flowchart TD
     START([开始选择]) --> Q1{状态大小?}
-    
+
     Q1 -->|< 100MB| Q2{延迟要求?}
     Q1 -->|100MB - 100GB| Q3{需要增量 Checkpoint?}
     Q1 -->|> 100GB| Q4{部署环境?}
-    
+
     Q2 -->|< 1ms| HASHMAP[HashMapStateBackend]
     Q2 -->|> 1ms| Q5{成本敏感?}
-    
+
     Q3 -->|是| ROCKSDB[RocksDBStateBackend]
     Q3 -->|否| Q2
-    
+
     Q4 -->|云原生/K8s| FORST[ForStStateBackend]
     Q4 -->|本地/VM| Q6{网络带宽?}
-    
+
     Q5 -->|是| HASHMAP
     Q5 -->|否| ROCKSDB
-    
+
     Q6 -->|> 10Gbps| FORST
     Q6 -->|< 10Gbps| ROCKSDB
-    
+
     HASHMAP --> TUNE1[配置: 堆内存限制]
     ROCKSDB --> TUNE2[配置: Block Cache + 增量]
     FORST --> TUNE3[配置: 本地缓存 + UFS]
-    
+
     TUNE1 --> END([完成])
     TUNE2 --> END
     TUNE3 --> END
-    
+
     style START fill:#e3f2fd
     style END fill:#c8e6c9
     style HASHMAP fill:#bbdefb
@@ -365,7 +365,8 @@ flowchart TD
 
 **计算**: 每 TM 分摊 2GB + 开销 ≈ 3GB（占 75% 堆内存）
 
-**结果**: 
+**结果**:
+
 - 频繁 Full GC（> 10% CPU）
 - OOM 风险，作业不稳定
 - **解决方案**: 迁移至 RocksDBStateBackend
@@ -374,7 +375,8 @@ flowchart TD
 
 **场景**: 100K TPS 随机 key 查询，Cache 命中率 < 50%
 
-**问题**: 
+**问题**:
+
 - 磁盘 I/O 成为瓶颈
 - Write Stall 导致反压
 - **解决方案**: 增大 Block Cache 或迁移至 HashMap（若状态允许）
@@ -384,6 +386,7 @@ flowchart TD
 **场景**: 边缘节点，网络带宽 100Mbps，状态 1TB
 
 **问题**:
+
 - Cache Miss 时延迟极高（> 1s）
 - 网络拥塞影响其他服务
 - **解决方案**: 使用 RocksDB + 本地 SSD
@@ -488,7 +491,7 @@ $$
 ### 6.1 MemoryStateBackend / HashMapStateBackend 配置
 
 ```java
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // ========== HashMapStateBackend 配置 ==========
@@ -523,7 +526,7 @@ taskmanager.memory.managed.size: 256mb
 ```java
 // ========== RocksDBStateBackend 生产配置 ==========
 // 启用增量 Checkpoint
-EmbeddedRocksDBStateBackend rocksDbBackend = 
+EmbeddedRocksDBStateBackend rocksDbBackend =
     new EmbeddedRocksDBStateBackend(true);
 env.setStateBackend(rocksDbBackend);
 
@@ -534,7 +537,7 @@ env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
 env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
 // RocksDB 精细化配置
-DefaultConfigurableOptionsFactory optionsFactory = 
+DefaultConfigurableOptionsFactory optionsFactory =
     new DefaultConfigurableOptionsFactory();
 
 // 内存配置
@@ -646,10 +649,10 @@ flink run -s hdfs:///savepoints/migration/savepoint-xxxxx \
 ```java
 // 自定义状态访问延迟监控
 public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, Result> {
-    
+
     private transient Histogram stateAccessLatency;
     private transient Counter stateAccessCount;
-    
+
     @Override
     public void open(Configuration parameters) {
         stateAccessLatency = getRuntimeContext()
@@ -661,7 +664,7 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
             .getMetricGroup()
             .counter("stateAccessCount");
     }
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) {
         long start = System.nanoTime();
@@ -801,6 +804,7 @@ flowchart TB
 ```
 
 **颜色说明**:
+
 - 🟥 红色: 耗时操作
 - 🟨 黄色: 中等耗时
 - 🟩 绿色: 轻量操作
@@ -834,7 +838,7 @@ sequenceDiagram
         JM->>TM: 3. Deploy with Metadata
         TM->>TM: 4. Start Processing
         Note over TM: Time = O(1)
-        
+
         alt Cache Miss
             TM->>Storage: 5. Async Fetch on Demand
             Storage-->>TM: 6. State Data
@@ -849,30 +853,30 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[选择 State Backend] --> B{状态大小?}
-    
+
     B -->|< 100 MB| C{延迟要求?}
     B -->|100 MB - 10 GB| D{是否需要<br/>增量 Checkpoint?}
     B -->|> 10 GB| E{部署环境?}
-    
+
     C -->|< 1 ms| F[✅ HashMapStateBackend<br/>低延迟内存访问]
     C -->|> 1 ms| G{状态变更频率?}
-    
+
     D -->|是| H[✅ RocksDBStateBackend<br/>增量 Checkpoint]
     D -->|否| C
-    
+
     E -->|本地/VM| H
     E -->|K8s/云原生| I{网络带宽?}
-    
+
     G -->|高| H
     G -->|低| F
-    
+
     I -->|> 10 Gbps| J[✅ ForStStateBackend<br/>云原生优化]
     I -->|< 10 Gbps| H
-    
+
     F --> K[配置要点:<br/>- 限制堆内存使用<br/>- 配置 TTL]
     H --> L[配置要点:<br/>- Block Cache 调优<br/>- 增量 Checkpoint<br/>- SST 文件大小]
     J --> M[配置要点:<br/>- 本地缓存大小<br/>- UFS 连接配置<br/>- LazyRestore]
-    
+
     style A fill:#e3f2fd
     style F fill:#c8e6c9
     style H fill:#fff9c4
@@ -883,19 +887,12 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "State Backends", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
-[^2]: Apache Flink Documentation, "HashMapStateBackend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/#the-hashmapstatebackend>
 
-[^3]: Apache Flink Documentation, "RocksDBStateBackend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/#the-embeddedrocksdbstatebackend>
 
-[^4]: Apache Flink Documentation, "Incremental Checkpoints", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/incremental-checkpoints/>
 
-[^5]: RocksDB Wiki, "RocksDB Basics", Meta Open Source, 2025. <https://github.com/facebook/rocksdb/wiki/RocksDB-Basics>
 
-[^6]: J. Zhang et al., "ForSt: A Disaggregated State Backend for Stream Processing Systems", Proceedings of the VLDB Endowment, Vol. 18, No. 4, 2025.
 
-[^7]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12):1792-1803, 2015.
 
 ---
 

@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-04: Unified API
+
 统一API融合流批处理：
 $$
 \text{UnifiedAPI} = \text{StreamAPI} \cap \text{BatchAPI}
 $$
 
 ### Def-F-30-05: Type-Safe Builder
+
 类型安全构建器编译时检查：
 $$
 \text{Builder} : \text{Config} \xrightarrow{\text{type-safe}} \text{Pipeline}
 $$
 
 ### Def-F-30-06: Declarative Processing
+
 声明式处理描述目标而非步骤：
 $$
 \text{Declarative} = \text{What} \gg \text{How}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-03: API Completeness
+
 API完整性：
 $$
 \text{API}_{3.0} \supseteq \text{API}_{2.x}^{\text{common}}
 $$
 
 ### Prop-F-30-04: Migration Cost
+
 迁移成本约束：
 $$
 \text{Effort}_{\text{migration}} \leq 20\% \times \text{Codebase}
@@ -96,21 +101,21 @@ ExecutionResult result = pipeline.execute();
 
 ```java
 public class TypedPipelineBuilder<I, O> {
-    
+
     public <O2> TypedPipelineBuilder<I, O2> map(
             SerializableFunction<O, O2> mapper) {
         return new TypedPipelineBuilder<>(
             this.steps + new MapStep<>(mapper)
         );
     }
-    
+
     public <K> TypedPipelineBuilder<I, KeyedStream<O, K>> keyBy(
             KeySelector<O, K> keySelector) {
         return new TypedPipelineBuilder<>(
             this.steps + new KeyByStep<>(keySelector)
         );
     }
-    
+
     // 编译时保证类型安全
     public Pipeline<I, O> build() {
         return new CompiledPipeline<>(steps);
@@ -126,7 +131,7 @@ public class TypedPipelineBuilder<I, O> {
 -- 3.0扩展SQL
 CREATE PIPELINE orders_pipeline AS
 SOURCE kafka_orders
-TRANSFORM 
+TRANSFORM
     SELECT user_id, SUM(amount) as total
     FROM kafka_orders
     WINDOW TUMBLING (SIZE 5 MINUTES)
@@ -142,19 +147,19 @@ EXECUTE PIPELINE orders_pipeline;
 // 声明式定义
 @Pipeline(name = "order-processing")
 public class OrderPipeline {
-    
+
     @Source
     public KafkaSource<Order> orders() {
         return KafkaSource.<Order>builder()
             .setTopics("orders")
             .build();
     }
-    
+
     @Transform
     public ProcessedOrder process(@Input Order order) {
         return new ProcessedOrder(order);
     }
-    
+
     @Sink
     public JdbcSink<ProcessedOrder> results() {
         return JdbcSink.sink("processed_orders");
@@ -173,11 +178,11 @@ graph LR
         B[DataSet]
         C[Table API]
     end
-    
+
     subgraph "3.0"
         D[统一API]
     end
-    
+
     A --> D
     B --> D
     C --> D

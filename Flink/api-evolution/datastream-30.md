@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-DS30-01: Unified Pipeline
+
 统一管道API：
 $$
 \text{Pipeline} = \text{Stream} \cup \text{Batch}
 $$
 
 ### Def-F-DS30-02: Declarative DSL
+
 声明式DSL：
 $$
 \text{DSL} : \text{Description} \to \text{Execution}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-DS30-01: Mode Transparency
+
 执行模式透明：
 $$
 \forall \text{Pipeline} : \text{SameCode}_{\text{stream}} = \text{SameCode}_{\text{batch}}
@@ -57,13 +60,13 @@ pipeline.execute();
 
 ```java
 public class UnifiedPipeline<T> {
-    
+
     public <R> UnifiedPipeline<R> transform(Transform<T, R> transform) {
         return new UnifiedPipeline<>(
             steps.add(new TransformStep<>(transform))
         );
     }
-    
+
     public ExecutionResult execute() {
         ExecutionMode mode = detectMode(steps);
         return compiler.compile(steps, mode).execute();
@@ -78,12 +81,12 @@ public class UnifiedPipeline<T> {
 ```java
 @Pipeline(name = "order-processing")
 public class OrderPipeline {
-    
+
     @Source
     public Source<Order> orders() {
         return Source.kafka("orders");
     }
-    
+
     @Transform
     public Result process(Order order) {
         return new Result(order);
@@ -99,11 +102,11 @@ graph LR
         A[DataStream]
         B[DataSet]
     end
-    
+
     subgraph "3.0"
         C[统一Pipeline]
     end
-    
+
     A --> C
     B --> C
 ```

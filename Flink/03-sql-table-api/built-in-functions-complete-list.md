@@ -13,6 +13,7 @@ Flink SQL 内置函数体系是一个**分层组织的函数集合**，定义为
 $$\mathcal{F}_{builtin} = \langle \mathcal{C}, \mathcal{F}, \Sigma, \mathcal{V} \rangle$$
 
 其中：
+
 - $\mathcal{C}$: 函数类别集合 (数学、字符串、日期时间等)
 - $\mathcal{F}$: 函数实例集合，每个函数 $f: \text{Dom}^n \to \text{Cod}$
 - $\Sigma$: 函数签名映射 $\sigma: f \mapsto (\text{param\_types}, \text{return\_type})$
@@ -104,12 +105,14 @@ graph TB
 ### 4.1 函数设计决策
 
 **决策1**: 为什么需要 `TRY_CAST`？
+
 - **问题**: `CAST` 在转换失败时抛出异常，中断查询
 - **方案**: `TRY_CAST` 返回 NULL 而非异常
 - **权衡**: 性能略低（需要异常捕获），但提升容错性
 
 **决策2**: 窗口函数 vs 分组聚合
-- **区别**: 
+
+- **区别**:
   - 分组聚合：输出行数 ≤ 输入行数
   - 窗口函数：输出行数 = 输入行数（每行附加聚合值）
 
@@ -129,11 +132,13 @@ graph TB
 ### 5.1 性能考量
 
 **标量函数优化**:
+
 - **Codegen**: 高频函数生成JVM字节码，避免反射开销
 - **向量化**: 批量处理减少函数调用次数
 - **常量折叠**: 编译期预计算常量表达式
 
 **聚合函数优化**:
+
 - **增量计算**: `SUM`, `COUNT` 等支持增量更新
 - **部分聚合**: 先本地聚合再全局聚合，减少数据传输
 
@@ -692,19 +697,19 @@ graph TD
     A[Flink Built-in Functions<br/>总计: 228+] --> B[标量函数<br/>Scalar]
     A --> C[聚合函数<br/>Aggregate]
     A --> D[窗口函数<br/>Window]
-    
+
     B --> B1[数学函数<br/>35个]
     B --> B2[字符串函数<br/>45个]
     B --> B3[日期时间函数<br/>40个]
     B --> B4[条件函数<br/>12个]
     B --> B5[类型转换<br/>18个]
     B --> B6[JSON函数<br/>15个]
-    
+
     C --> C1[基础聚合<br/>COUNT/SUM/AVG]
     C --> C2[统计函数<br/>STDDEV/VARIANCE]
     C --> C3[集合函数<br/>COLLECT/LISTAGG]
     C --> C4[百分位函数<br/>PERCENTILE_*]
-    
+
     D --> D1[时间窗口<br/>TUMBLE/HOP/SESSION]
     D --> D2[分析函数<br/>ROW_NUMBER/RANK]
     D --> D3[取值函数<br/>LEAD/LAG/FIRST_VALUE]
@@ -739,16 +744,16 @@ gantt
     dateFormat YYYY-MM
     section 基础函数
     数学/字符串/日期函数    :done, 2021-01, 2024-12
-    
+
     section JSON支持
     JSON函数(v1.14)         :done, 2022-04, 2024-12
-    
+
     section 窗口增强
     累积窗口CUMULATE(v1.13) :done, 2021-04, 2024-12
-    
+
     section 类型系统
     TRY_CAST增强            :done, 2023-01, 2024-12
-    
+
     section 未来
     新函数扩展               :active, 2024-12, 2025-12
 ```
@@ -757,15 +762,10 @@ gantt
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Built-in Functions", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/systemfunctions/
 
-[^2]: Apache Flink Documentation, "SQL", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/
 
-[^3]: Apache Calcite SQL Reference, "Built-in SQL Operators and Functions". https://calcite.apache.org/docs/reference.html
 
-[^4]: ANSI SQL:2016 Standard, ISO/IEC 9075-2:2016.
 
-[^5]: J. Melton and A. R. Simon, "SQL:1999 - Understanding Relational Language Components", Morgan Kaufmann, 2001.
 
 ---
 

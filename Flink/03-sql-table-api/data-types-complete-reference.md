@@ -13,6 +13,7 @@
 $$\text{DataType} = (L, P, D, O, C)$$
 
 其中：
+
 - $L$: 逻辑类型 (Logical Type) - 语义层面的类型定义
 - $P$: 物理类型 (Physical Type) - 运行时的具体表示
 - $D$: 域 (Domain) - 该类型所有可能取值的集合
@@ -67,6 +68,7 @@ Flink Type System
 Flink SQL类型系统满足**类型完备性**：对于任意原子数据值 $v$，存在唯一的逻辑类型 $T$ 使得 $v \in \text{Domain}(T)$。
 
 **证明：**
+
 1. 字符串值 $\rightarrow$ STRING/VARCHAR/CHAR
 2. 整数值 $\rightarrow$ 根据范围选择 TINYINT/SMALLINT/INT/BIGINT
 3. 小数值 $\rightarrow$ DECIMAL/FLOAT/DOUBLE
@@ -76,6 +78,7 @@ Flink SQL类型系统满足**类型完备性**：对于任意原子数据值 $v$
 ### Lemma-F-03-02: 类型可比较性
 
 对于任意两个类型 $T_1, T_2$，以下关系恰好满足其一：
+
 - $T_1 \equiv T_2$ (类型等价)
 - $T_1 \prec T_2$ 或 $T_2 \prec T_1$ (可隐式转换)
 - $T_1 \perp T_2$ (不兼容，需显式转换)
@@ -611,29 +614,29 @@ CREATE TABLE user_events (
     -- 主键
     user_id BIGINT NOT NULL,
     event_id STRING NOT NULL,
-    
+
     -- 字符串类型
     user_name VARCHAR(100),
     country_code CHAR(2),
     description STRING,
-    
+
     -- 数值类型
     age INT,
     score DECIMAL(10, 2),
     temperature FLOAT,
-    
+
     -- 布尔类型
     is_active BOOLEAN,
-    
+
     -- 二进制类型
     avatar_bytes BYTES,
-    
+
     -- 时间类型
     birth_date DATE,
     event_time TIMESTAMP(3),
     process_time TIMESTAMP_LTZ(3),
     duration INTERVAL DAY TO SECOND,
-    
+
     -- 复合类型
     tags ARRAY<STRING>,
     attributes MAP<STRING, STRING>,
@@ -643,7 +646,7 @@ CREATE TABLE user_events (
         zipcode STRING,
         coordinates ROW<lat DOUBLE, lon DOUBLE>
     >,
-    
+
     -- 水位线和主键
     WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND,
     PRIMARY KEY (user_id, event_id) NOT ENFORCED
@@ -658,20 +661,20 @@ CREATE TABLE user_events (
 
 ```sql
 -- 隐式转换（自动发生）
-SELECT 
+SELECT
     1 + 2.5 AS result,           -- INT + DOUBLE → DOUBLE
     CONCAT('ID:', 123) AS id     -- 123隐式转为STRING
 FROM my_table;
 
 -- 显式CAST转换
-SELECT 
+SELECT
     CAST('2024-01-15' AS DATE) AS date_val,
     CAST(123.456 AS DECIMAL(10, 2)) AS decimal_val,
     CAST(true AS STRING) AS bool_str
 FROM my_table;
 
 -- 复杂类型转换
-SELECT 
+SELECT
     CAST(ARRAY['1', '2', '3'] AS ARRAY<INT>) AS int_array,
     CAST(ROW(1, 'test') AS ROW<id INT, name STRING>) AS typed_row
 FROM my_table;
@@ -711,49 +714,49 @@ Table result = tEnv.from("typed_table")
 ```mermaid
 graph TB
     Root[Flink SQL Type System]
-    
+
     Root --> Atomic[Atomic Types<br/>原子类型]
     Root --> Composite[Composite Types<br/>复合类型]
     Root --> Time[Time Types<br/>时间类型]
     Root --> Special[Special Types<br/>特殊类型]
-    
+
     Atomic --> String[String Types]
     Atomic --> Numeric[Numeric Types]
     Atomic --> Boolean[BOOLEAN]
     Atomic --> Binary[Binary Types]
-    
+
     String --> CHAR[CHAR(n)<br/>固定长度]
     String --> VARCHAR[VARCHAR(n)<br/>可变长度]
     String --> STRING[STRING<br/>无限制]
-    
+
     Numeric --> Integer[Integers]
     Numeric --> Decimal[DECIMAL(p,s)<br/>精确小数]
     Numeric --> Float[FLOAT<br/>单精度浮点]
     Numeric --> Double[DOUBLE<br/>双精度浮点]
-    
+
     Integer --> TINYINT[TINYINT<br/>1字节]
     Integer --> SMALLINT[SMALLINT<br/>2字节]
     Integer --> INT[INT<br/>4字节]
     Integer --> BIGINT[BIGINT<br/>8字节]
-    
+
     Binary --> BINARY[BINARY(n)]
     Binary --> VARBINARY[VARBINARY(n)]
     Binary --> BYTES[BYTES]
-    
+
     Composite --> ARRAY[ARRAY&lt;T&gt;<br/>数组]
     Composite --> MAP[MAP&lt;K,V&gt;<br/>映射]
     Composite --> ROW[ROW&lt;...&gt;<br/>行类型]
-    
+
     Time --> DATE[DATE<br/>日期]
     Time --> TIME[TIME(p)<br/>时间]
     Time --> TIMESTAMP[TIMESTAMP(p)<br/>无时区时间戳]
     Time --> TIMESTAMP_LTZ[TIMESTAMP_LTZ(p)<br/>带本地时区时间戳]
     Time --> INTERVAL[INTERVAL<br/>时间间隔]
-    
+
     Special --> NULL[NULL]
     Special --> ANY[ANY&lt;T&gt;]
     Special --> SYMBOL[SYMBOL]
-    
+
     style Root fill:#e1f5ff,stroke:#01579b,stroke-width:3px
     style Atomic fill:#f3e5f5,stroke:#4a148c
     style Composite fill:#e8f5e9,stroke:#1b5e20
@@ -765,24 +768,24 @@ graph TB
 ```mermaid
 flowchart TD
     Start([开始类型转换]) --> CheckSame{源类型 =<br/>目标类型?}
-    
+
     CheckSame -->|是| Same([无需转换<br/>直接使用])
     CheckSame -->|否| CheckImplicit{支持<br/>隐式转换?}
-    
+
     CheckImplicit -->|是| Implicit([自动隐式转换<br/>无精度损失])
     CheckImplicit -->|否| CheckExplicit{支持<br/>显式CAST?}
-    
+
     CheckExplicit -->|是| CheckLoss{可能<br/>精度损失?}
     CheckExplicit -->|否| Error([类型不兼容<br/>编译错误])
-    
+
     CheckLoss -->|是| Warning([执行CAST<br/>发出警告])
     CheckLoss -->|否| Explicit([执行CAST<br/>安全转换])
-    
+
     Warning --> Final([转换完成])
     Explicit --> Final
     Implicit --> Final
     Same --> Final
-    
+
     style Start fill:#e3f2fd,stroke:#1565c0
     style Final fill:#e8f5e9,stroke:#2e7d32
     style Error fill:#ffebee,stroke:#c62828
@@ -800,7 +803,7 @@ graph LR
     DECIMAL[DECIMAL(p,s)<br/>p:1-38<br/>可变精度] --> FLOAT
     FLOAT[FLOAT<br/>~7位精度<br/>4字节] --> DOUBLE
     DOUBLE[DOUBLE<br/>~15位精度<br/>8字节]
-    
+
     style TINYINT fill:#e3f2fd
     style SMALLINT fill:#bbdefb
     style INT fill:#90caf9
@@ -816,27 +819,27 @@ graph LR
 graph TB
     DateOnly[DATE<br/>日期] --> DateTime[TIMESTAMP<br/>日期+时间+无时区]
     TimeOnly[TIME<br/>时间] --> DateTime
-    
+
     DateTime --> WithZone[TIMESTAMP_LTZ<br/>日期+时间+本地时区]
-    
+
     DateOnly --> IntervalYM[INTERVAL YEAR TO MONTH<br/>年月间隔]
     DateTime --> IntervalDS[INTERVAL DAY TO SECOND<br/>日期间隔]
-    
+
     subgraph 无时区类型
         DateOnly
         TimeOnly
         DateTime
     end
-    
+
     subgraph 带时区类型
         WithZone
     end
-    
+
     subgraph 间隔类型
         IntervalYM
         IntervalDS
     end
-    
+
     style DateOnly fill:#fff3e0
     style TimeOnly fill:#fff3e0
     style DateTime fill:#ffe0b2

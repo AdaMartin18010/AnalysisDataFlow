@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-19: Connector Evolution
+
 连接器演进是功能迭代过程：
 $$
 \text{Connector}_{v2} = \text{Connector}_{v1} + \Delta\text{Features}
 $$
 
 ### Def-F-25-20: Multi-Version Support
+
 多版本支持允许同时运行不同版本：
 $$
 \text{MultiVersion} = \{ \text{Connector}_1, \text{Connector}_2, ... \}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-13: Backward Compatibility
+
 向后兼容性：
 $$
 \text{Config}_{v1} \subseteq \text{Config}_{v2}
@@ -53,15 +56,15 @@ $$
 
 ```java
 public class SnowflakeSink implements TwoPhaseCommitSinkFunction<Row, SnowflakeTransaction, Void> {
-    
+
     private transient SnowflakeConnection connection;
-    
+
     @Override
     protected void invoke(SnowflakeTransaction transaction, Row value, Context context) {
         // 批量写入到stage
         transaction.writeToStage(value);
     }
-    
+
     @Override
     protected void commit(SnowflakeTransaction transaction) {
         // COPY INTO从stage到table
@@ -100,13 +103,13 @@ graph TB
     A[Flink] --> B[Stream Connectors]
     A --> C[Batch Connectors]
     A --> D[Lakehouse]
-    
+
     B --> E[Kafka]
     B --> F[Pulsar]
-    
+
     C --> G[JDBC]
     C --> H[HBase]
-    
+
     D --> I[Iceberg]
     D --> J[Paimon]
     D --> K[Hudi]

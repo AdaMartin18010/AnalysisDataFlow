@@ -224,12 +224,12 @@ spec:
     # L1级：即时生效
     web.timeout: "60000"
     log4j.logger.org.apache.flink: "INFO"
-    
+
     # L2级：协调生效
     parallelism.default: "8"
     taskmanager.memory.process.size: "8g"
     taskmanager.numberOfTaskSlots: "4"
-    
+
     # L3级：仅记录，下次重启生效
     state.backend: rocksdb
     state.checkpoint-storage: filesystem
@@ -399,7 +399,7 @@ spec:
               max: 3
             interval: 30s
         - setWeight: 100
-      
+
       # 自动回滚条件
       autoRollback:
         enabled: true
@@ -425,7 +425,7 @@ MultiTenancy: Tenants × Resources × Policies → IsolatedClusters
 
 ```
 L1命名空间隔离: Namespace boundary
-L2资源配额隔离: ResourceQuota per tenant  
+L2资源配额隔离: ResourceQuota per tenant
 L3网络隔离: NetworkPolicy enforcement
 L4存储隔离: StorageClass + PV isolation
 L5安全隔离: RBAC + PodSecurityPolicy
@@ -526,7 +526,7 @@ spec:
     limits:
       memory: "6g"
       cpu: 4
-  
+
   taskManager:
     resource:
       memory: "8g"
@@ -535,7 +535,7 @@ spec:
     limits:
       memory: "12g"
       cpu: 8
-  
+
   # 自动扩缩容配额
   autoScaling:
     enabled: true
@@ -548,7 +548,7 @@ spec:
           target:
             type: Utilization
             averageUtilization: 70
-  
+
   # 突发配额配置
   burstQuota:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     enabled: true
@@ -588,7 +588,7 @@ metadata:
 spec:
   image: flink:2.4.0
   imagePullPolicy: IfNotPresent
-  
+
   podTemplate:
     spec:
       # 安全上下文
@@ -650,7 +650,7 @@ spec:
     # 配置变更自动触发热更新
     pipeline.object-reuse: "true"
     taskmanager.memory.network.fraction: "0.15"
-    
+
 status:
   configStatus:
     currentVersion: "sha256:abc123..."
@@ -679,8 +679,8 @@ status:
 给定配置更新操作 ΔC 作用于集群 C，热更新保证：
 
 ```
-∀ t, C_t --ΔC--> C_{t+1} : 
-  (Applied(C_{t+1}) ∧ Consistent(C_{t+1})) ∨ 
+∀ t, C_t --ΔC--> C_{t+1} :
+  (Applied(C_{t+1}) ∧ Consistent(C_{t+1})) ∨
   (Reverted(C_t) ∧ Unchanged(C_t))
 ```
 
@@ -901,6 +901,7 @@ else:
 **传统方式问题**：
 
 1. **命令式更新的风险**：
+
    ```bash
    # 危险：直接修改Pod
    kubectl exec -it flink-taskmanager-xyz -- /bin/sh
@@ -909,6 +910,7 @@ else:
    ```
 
 2. **配置漂移**：
+
    ```
    Expected: taskmanager.memory.process.size=8g
    Actual:   taskmanager.memory.process.size=4g (Pod重启后恢复)
@@ -981,18 +983,18 @@ flowchart TD
     A[开始部署] --> B{配置变更?}
     B -->|是| C{热更新支持?}
     B -->|否| D[代码变更]
-    
+
     C -->|L1/L2级| E[热更新]
     C -->|L3级| D
-    
+
     D --> F{变更风险?}
     F -->|低风险| G[滚动升级]
     F -->|中风险| H{需要零停机?}
     F -->|高风险| I[金丝雀发布]
-    
+
     H -->|是| J[蓝绿部署]
     H -->|否| G
-    
+
     E --> K[部署完成]
     G --> K
     I --> L{金丝雀健康?}
@@ -1000,7 +1002,7 @@ flowchart TD
     L -->|否| N[自动回滚]
     M --> K
     N --> O[回滚完成]
-    
+
     J --> P{绿环境健康?}
     P -->|是| Q[流量切换]
     P -->|否| N
@@ -1018,6 +1020,7 @@ flowchart TD
 **证明**:
 
 **前提假设**:
+
 ```
 A1: 外部存储系统（S3/HDFS）可用且持久
 A2: DNS/负载均衡器支持快速切换
@@ -1094,7 +1097,7 @@ Given:
   - Canary流量比例: α ∈ (0, 1)
   - 故障检测时间: t_detect
   - 回滚执行时间: t_rollback
-  
+
 Impact ≤ α × T × (t_detect + t_rollback)
 
 当 α = 10%, t_detect = 1min, t_rollback = 30s:
@@ -1151,8 +1154,8 @@ spec:
 **一致性条件**:
 
 ```
-EventuallyConsistent = 
-  ∀ component ∈ C: 
+EventuallyConsistent =
+  ∀ component ∈ C:
     Eventually(Version(component.config) = GlobalVersion)
 ```
 
@@ -1211,39 +1214,39 @@ operatorConfiguration:
   kubernetes:
     # 并行协调配置
     parallelism: 10
-    
+
   flink:
     # 热更新配置
     hotUpdate:
       enabled: true
       pollInterval: 30s
-      
+
     # 部署策略工作流
     workflow:
       enabled: true
       workers: 5
-      
+
     # 增强健康检查
     health:
       enabled: true
       initialDelaySeconds: 30
       periodSeconds: 10
-      
+
   metrics:
     enabled: true
     port: 9999
-    
+
 # Webhook配置（准入控制）
 webhook:
   enabled: true
   cert:
     create: true
-    
+
 # RBAC配置
 rbac:
   create: true
   scope: Cluster  # 或 Namespaced
-  
+
 # 多租户支持
 tenantIsolation:
   enabled: true
@@ -1262,12 +1265,12 @@ tenantIsolation:
 global:
   flinkVersion: "2.4.0"
   imageRegistry: "registry.internal/flink"
-  
+
 # Flink Operator配置
 operator:
   enabled: true
   version: "1.12.0"
-  
+
   resources:
     limits:
       cpu: 2000m
@@ -1280,14 +1283,14 @@ operator:
 flinkCluster:
   name: production-pipeline
   namespace: flink-production
-  
+
   # 高可用JobManager
   jobManager:
     replicas: 3
     resource:
       memory: "4g"
       cpu: 2
-    
+
   # TaskManager配置
   taskManager:
     replicas: 10
@@ -1295,26 +1298,26 @@ flinkCluster:
       memory: "8g"
       cpu: 4
     slots: 4
-    
+
   # 检查点配置
   checkpointing:
     enabled: true
     interval: 60000
     mode: EXACTLY_ONCE
     storage: s3p://flink-checkpoints/production/
-    
+
   # 状态后端
   stateBackend:
     type: rocksdb
     incremental: true
-    
+
   # 自动扩缩容
   autoScaling:
     enabled: true
     minReplicas: 5
     maxReplicas: 50
     targetCpuUtilization: 70
-    
+
   # 部署策略
   deploymentStrategy:
     type: BlueGreen
@@ -1359,41 +1362,41 @@ metadata:
 spec:
   image: flink:2.4.0
   flinkVersion: v2.4
-  
+
   jobManager:
     resource:
       memory: "4g"
       cpu: 2
-      
+
   taskManager:
     resource:
       memory: "8g"
       cpu: 4
     replicas: 6  # 从4增加到6（热更新支持）
-    
+
   flinkConfiguration:
     # L1级：即时生效
     web.timeout: "60000"
     web.checkpoints.history: "20"
-    
+
     # L2级：协调生效（需要TM配合）
     parallelism.default: "8"
     taskmanager.memory.network.fraction: "0.15"
     taskmanager.memory.network.min: "128mb"
     taskmanager.memory.network.max: "512mb"
-    
+
     # L3级：仅记录，下次重启生效
     state.backend: rocksdb
     state.backend.incremental: "true"
     state.checkpoint-storage: filesystem
-    
+
     # 可热更新的检查点配置
     execution.checkpointing.interval: "30s"
     execution.checkpointing.timeout: "10min"
     execution.checkpointing.min-pause: "5s"
     execution.checkpointing.max-concurrent-checkpoints: "1"
     execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
-    
+
   # 热更新特定配置
   hotUpdate:
     enabled: true
@@ -1452,25 +1455,25 @@ metadata:
 spec:
   image: flink:2.4.0
   flinkVersion: v2.4
-  
+
   # 共享存储配置
   flinkConfiguration:
     state.checkpoint-storage: filesystem
     state.checkpoints.dir: s3://flink-bluegreen/payment-processor/checkpoints/
     state.savepoints.dir: s3://flink-bluegreen/payment-processor/savepoints/
     execution.checkpointing.interval: "60s"
-    
+
   jobManager:
     resource:
       memory: "4g"
       cpu: 2
-      
+
   taskManager:
     resource:
       memory: "8g"
       cpu: 4
     replicas: 6
-    
+
   job:
     jarURI: local:///opt/flink/payment-processor-2.3.jar
     parallelism: 24
@@ -1592,7 +1595,7 @@ metadata:
 spec:
   image: flink:2.4.0
   flinkVersion: v2.4
-  
+
   # 金丝雀发布策略配置
   deploymentStrategy:
     type: Canary
@@ -1608,7 +1611,7 @@ spec:
               min: 0
               max: 5  # 错误率<5%
             successfulRunHistoryLimit: 5
-            
+
         # 步骤2: 50%流量，观察15分钟
         - setWeight: 50
           pause: {duration: 15m}
@@ -1618,15 +1621,15 @@ spec:
               min: 0
               max: 3  # 更严格的错误率<3%
             successfulRunHistoryLimit: 10
-            
+
         # 步骤3: 100%流量
         - setWeight: 100
-      
+
       # 回滚策略
       autoRollback:
         enabled: true
         rollbackWindow: 10m
-        
+
       # 指标模板
       analysisTemplates:
         - templateName: error-rate
@@ -1642,7 +1645,7 @@ spec:
                       sum(rate(flink_jobmanager_job_failed_checkpoints_total[1m]))
                       /
                       sum(rate(flink_jobmanager_job_completed_checkpoints_total[1m])) * 100
-                      
+
         - templateName: latency-p99
           spec:
             metrics:
@@ -1653,21 +1656,21 @@ spec:
                   prometheus:
                     address: http://prometheus:9090
                     query: |
-                      histogram_quantile(0.99, 
+                      histogram_quantile(0.99,
                         sum(rate(flink_taskmanager_job_task_operator_latency[1m])) by (le)
                       )
-                      
+
   jobManager:
     resource:
       memory: "4g"
       cpu: 2
-      
+
   taskManager:
     resource:
       memory: "8g"
       cpu: 4
     replicas: 10
-    
+
   job:
     jarURI: local:///opt/flink/recommendation-engine-2.4.jar
     parallelism: 40
@@ -1763,18 +1766,18 @@ spec:
     requests.memory: 256Gi
     limits.cpu: "128"
     limits.memory: 512Gi
-    
+
     # Pod数量
     pods: "100"
-    
+
     # Flink特定资源
     flinkdeployments.flink.apache.org: "10"
     flinksessionjobs.flink.apache.org: "20"
-    
+
     # 存储
     requests.storage: 10Ti
     persistentvolumeclaims: "50"
-    
+
     # 服务
     services.loadbalancers: "5"
     services.nodeports: "10"
@@ -1911,22 +1914,22 @@ metadata:
   namespace: flink-tenant-alpha
 spec:
   serviceAccount: flink-alpha-sa
-  
+
   image: flink:2.4.0
   flinkVersion: v2.4
-  
+
   # 受ResourceQuota限制的资源
   jobManager:
     resource:
       memory: "4g"
       cpu: 2
-      
+
   taskManager:
     resource:
       memory: "8g"
       cpu: 4
     replicas: 4  # 受pods配额限制
-    
+
   flinkConfiguration:
     # 租户隔离的检查点存储
     state.checkpoints.dir: s3://flink-tenant-alpha/checkpoints/
@@ -2015,7 +2018,7 @@ spec:
     limits:
       memory: "6g"
       cpu: 4
-      
+
   taskManager:
     resource:
       memory: "8g"
@@ -2024,7 +2027,7 @@ spec:
     limits:
       memory: "12g"
       cpu: 8
-      
+
   # 自动扩缩容（受配额限制）
   podTemplate:
     spec:
@@ -2119,7 +2122,7 @@ echo "[1/8] 镜像安全扫描..."
 scan_image() {
     local image="$1"
     echo "扫描镜像: ${image}"
-    
+
     # 使用Trivy进行漏洞扫描
     if command -v trivy &> /dev/null; then
         trivy image --severity ${SEVERITY_THRESHOLD},CRITICAL --exit-code 1 ${image} 2>/dev/null || {
@@ -2127,14 +2130,14 @@ scan_image() {
             return 1
         }
     fi
-    
+
     # 检查镜像签名
     if command -v cosign &> /dev/null; then
         cosign verify ${image} 2>/dev/null || {
             echo "⚠️ 镜像 ${image} 未签名或签名验证失败"
         }
     fi
-    
+
     echo "✅ 镜像安全检查通过"
 }
 
@@ -2150,33 +2153,33 @@ echo "[2/8] 配置安全检查..."
 
 check_security_context() {
     local deployment="$1"
-    
+
     # 检查是否以root运行
     RUN_AS_ROOT=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.podTemplate.spec.containers[].securityContext.runAsUser // "root"')
-    
+
     if [ "${RUN_AS_ROOT}" == "0" ] || [ "${RUN_AS_ROOT}" == "root" ]; then
         echo "❌ 部署 ${deployment} 以root用户运行"
         return 1
     fi
-    
+
     # 检查特权模式
     PRIVILEGED=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.podTemplate.spec.containers[].securityContext.privileged // false')
-    
+
     if [ "${PRIVILEGED}" == "true" ]; then
         echo "❌ 部署 ${deployment} 启用特权模式"
         return 1
     fi
-    
+
     # 检查只读根文件系统
     READ_ONLY_FS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.podTemplate.spec.containers[].securityContext.readOnlyRootFilesystem // false')
-    
+
     if [ "${READ_ONLY_FS}" != "true" ]; then
         echo "⚠️ 部署 ${deployment} 未启用只读根文件系统"
     fi
-    
+
     echo "✅ 配置安全检查通过"
 }
 
@@ -2190,20 +2193,20 @@ echo "[3/8] 敏感信息检测..."
 
 check_secrets() {
     local deployment="$1"
-    
+
     # 检查环境变量中的敏感信息
     ENVS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.podTemplate.spec.containers[].env[]?.value // empty')
-    
+
     # 检测密码、密钥模式
     if echo "${ENVS}" | grep -qiE '(password|secret|key|token|credential)'; then
         echo "⚠️ 部署 ${deployment} 环境变量中可能存在硬编码敏感信息"
     fi
-    
+
     # 检查是否使用Secret引用
     SECRET_REFS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.podTemplate.spec.containers[].env[]?.valueFrom.secretKeyRef.name // empty')
-    
+
     if [ -z "${SECRET_REFS}" ]; then
         echo "⚠️ 部署 ${deployment} 未使用Secret引用敏感信息"
     else
@@ -2221,9 +2224,9 @@ echo "[4/8] 网络安全检查..."
 
 check_network_policy() {
     local namespace="$1"
-    
+
     POLICY_COUNT=$(kubectl get networkpolicy -n ${namespace} --no-headers 2>/dev/null | wc -l)
-    
+
     if [ ${POLICY_COUNT} -eq 0 ]; then
         echo "⚠️ 命名空间 ${namespace} 未配置NetworkPolicy"
     else
@@ -2239,24 +2242,24 @@ echo "[5/8] 资源限制检查..."
 
 check_resource_limits() {
     local deployment="$1"
-    
+
     # 检查是否设置资源限制
     LIMITS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.jobManager.resource.memory // empty')
-    
+
     if [ -z "${LIMITS}" ]; then
         echo "❌ 部署 ${deployment} 未设置JobManager资源限制"
         return 1
     fi
-    
+
     TM_LIMITS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.taskManager.resource.memory // empty')
-    
+
     if [ -z "${TM_LIMITS}" ]; then
         echo "❌ 部署 ${deployment} 未设置TaskManager资源限制"
         return 1
     fi
-    
+
     echo "✅ 资源限制检查通过"
 }
 
@@ -2270,11 +2273,11 @@ echo "[6/8] 存储安全检查..."
 
 check_storage() {
     local deployment="$1"
-    
+
     # 检查检查点存储加密
     CHECKPOINT_DIR=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} -o json | \
         jq -r '.spec.flinkConfiguration."state.checkpoints.dir" // empty')
-    
+
     if [[ ${CHECKPOINT_DIR} == s3://* ]]; then
         echo "✅ 使用S3存储检查点，请确保启用服务端加密"
     elif [[ ${CHECKPOINT_DIR} == gs://* ]]; then
@@ -2296,15 +2299,15 @@ echo "[7/8] RBAC权限检查..."
 
 check_rbac() {
     local namespace="$1"
-    
+
     # 检查ServiceAccount权限
     SA_LIST=$(kubectl get serviceaccount -n ${namespace} -o name 2>/dev/null)
-    
+
     for sa in ${SA_LIST}; do
         SA_NAME=$(echo ${sa} | cut -d/ -f2)
         BINDINGS=$(kubectl get rolebinding,clusterrolebinding -n ${namespace} --all-namespaces \
             -o json | jq -r ".items[] | select(.subjects[]?.name == \"${SA_NAME}\") | .roleRef.name")
-        
+
         if [ -n "${BINDINGS}" ]; then
             echo "ServiceAccount ${SA_NAME} 绑定角色: ${BINDINGS}"
         fi
@@ -2319,7 +2322,7 @@ echo "[8/8] 合规性检查..."
 
 check_compliance() {
     local deployment="$1"
-    
+
     # 检查标签合规性
     REQUIRED_LABELS=("app" "version" "tenant" "cost-center")
     for label in "${REQUIRED_LABELS[@]}"; do
@@ -2329,14 +2332,14 @@ check_compliance() {
             echo "⚠️ 缺少必需标签: ${label}"
         fi
     done
-    
+
     # 检查注解合规性
     ANNOTATIONS=$(kubectl get flinkdeployment ${deployment} -n ${NAMESPACE} \
         -o jsonpath='{.metadata.annotations}' 2>/dev/null)
     if [ -z "${ANNOTATIONS}" ]; then
         echo "⚠️ 未设置部署注解"
     fi
-    
+
     echo "✅ 合规性检查完成"
 }
 
@@ -2386,62 +2389,62 @@ graph TB
         B[Helm Controller]
         C[GitOps - Flux/ArgoCD]
     end
-    
+
     subgraph "Configuration Layer"
         D[ConfigMap - L1 Global]
         E[Helm Values - L2 Template]
         F[FlinkDeployment - L3 Runtime]
         G[Dynamic Config - L4 Hot Reload]
     end
-    
+
     subgraph "Deployment Strategies"
         H[Rolling Upgrade]
         I[Blue-Green]
         J[Canary Release]
     end
-    
+
     subgraph "Execution Layer"
         K[JobManager HA]
         L[TaskManager Pool]
         M[Checkpoint Storage]
     end
-    
+
     subgraph "Security & Isolation"
         N[RBAC]
         O[NetworkPolicy]
         P[ResourceQuota]
         Q[PodSecurityPolicy]
     end
-    
+
     subgraph "Monitoring"
         R[Prometheus]
         S[Grafana]
         T[Jaeger Tracing]
     end
-    
+
     A --> F
     B --> E
     C --> B
     D --> F
     E --> F
     F --> G
-    
+
     F --> H
     F --> I
     F --> J
-    
+
     H --> K
     I --> K
     J --> K
-    
+
     K --> L
     L --> M
-    
+
     N --> F
     O --> L
     P --> L
     Q --> L
-    
+
     K --> R
     L --> R
     R --> S
@@ -2464,29 +2467,29 @@ sequenceDiagram
 
     User->>K8sAPI: Apply FlinkDeployment Update
     K8sAPI->>Operator: Watch Event: Config Changed
-    
+
     Operator->>ConfigStore: Calculate Config Diff
     ConfigStore-->>Operator: ΔConfig {L1, L2, L3}
-    
+
     alt L1 Level Config (Instant)
         Operator->>JM: Update Web UI Config
         Operator->>JM: Update Log Level
         JM-->>Operator: Ack
     end
-    
+
     alt L2 Level Config (Coordinated)
         Operator->>JM: Request Config Update
         JM->>TM: Broadcast New Config
         TM-->>JM: Ack with Version
         JM-->>Operator: All TMs Updated
     end
-    
+
     alt L3 Level Config (Restart Required)
         Operator->>ConfigStore: Queue for Next Restart
         ConfigStore-->>Operator: Queued
         Operator->>User: Notify: Restart Required
     end
-    
+
     Operator->>K8sAPI: Update Status: Applied
     K8sAPI-->>User: Deployment Updated
 ```
@@ -2498,30 +2501,30 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> BlueActive: Deploy Blue
-    
+
     BlueActive --> GreenDeploying: Deploy Green
     GreenDeploying --> GreenWarming: Health Check Pass
     GreenDeploying --> BlueActive: Health Check Fail
-    
+
     GreenWarming --> GreenActive: Pre-warm Complete
-    
+
     GreenActive --> Switching: Start Switch
     Switching --> GreenActive: Switch Success
     Switching --> BlueActive: Switch Fail / Rollback
-    
+
     BlueActive --> GreenActive: Manual Switch
-    
+
     GreenActive --> BlueRetired: Retention Expired
     BlueActive --> GreenRetired: Retention Expired
-    
+
     BlueRetired --> [*]: Cleanup
     GreenRetired --> [*]: Cleanup
-    
+
     note right of GreenDeploying
         Green environment created
         from Blue's latest savepoint
     end note
-    
+
     note right of Switching
         DNS/Service switch
         traffic routing change
@@ -2539,62 +2542,62 @@ flowchart LR
         B[API Calls]
         C[Internal Jobs]
     end
-    
+
     subgraph LoadBalancer["负载均衡层"]
         D[Istio Ingress / ALB]
     end
-    
+
     subgraph TrafficSplit["流量切分"]
         E{"权重分配\nCanary 10%"}
     end
-    
+
     subgraph Stable["稳定版本 (Blue)"]
         F[JobManager v2.3]
         G[TaskManagers x9]
     end
-    
+
     subgraph Canary["金丝雀版本 (Green)"]
         H[JobManager v2.4]
         I[TaskManagers x1]
     end
-    
+
     subgraph Metrics["指标监控"]
         J[Error Rate < 5%]
         K[Latency P99 < 500ms]
         L[Throughput Baseline]
     end
-    
+
     subgraph AutoDecision["自动决策"]
         M{"指标健康?"}
         N[继续推进]
         O[自动回滚]
     end
-    
+
     A --> D
     B --> D
     C --> D
     D --> E
-    
+
     E -->|90%| F
     E -->|10%| H
-    
+
     F --> G
     H --> I
-    
+
     G --> J
     G --> K
     G --> L
     I --> J
     I --> K
     I --> L
-    
+
     J --> M
     K --> M
     L --> M
-    
+
     M -->|Yes| N
     M -->|No| O
-    
+
     N -->|权重提升至50%| E
     O -->|流量切回0%| E
 ```
@@ -2613,14 +2616,14 @@ graph TB
             A4[NetworkPolicy: Deny Cross-Tenant]
             A5[ServiceAccount: alpha-sa]
         end
-        
+
         subgraph "Tenant Beta Namespace"
             B1[FlinkDeployment B1]
             B2[ResourceQuota: 32CPU/128GB]
             B3[NetworkPolicy: Deny Cross-Tenant]
             B4[ServiceAccount: beta-sa]
         end
-        
+
         subgraph "Tenant Gamma Namespace"
             C1[FlinkDeployment C1]
             C2[FlinkDeployment C2]
@@ -2628,20 +2631,20 @@ graph TB
             C4[ResourceQuota: 128CPU/512GB]
             C5[NetworkPolicy: Deny Cross-Tenant]
         end
-        
+
         subgraph "Shared Infrastructure"
             D[Flink Kubernetes Operator]
             E[Prometheus]
             F[Shared Storage Class]
         end
-        
+
         subgraph "Cluster Policies"
             G[PodSecurityPolicy: Restricted]
             H[RBAC: Tenant Isolation]
             I[NetworkPolicy: Default Deny]
         end
     end
-    
+
     D --> A1
     D --> A2
     D --> B1
@@ -2649,7 +2652,7 @@ graph TB
     D --> C1
     D --> C2
     D --> C3
-    
+
     A3 -.-> A1
     A3 -.-> A2
     B3 -.-> B1
@@ -2657,7 +2660,7 @@ graph TB
     C4 -.-> C1
     C4 -.-> C2
     C4 -.-> C3
-    
+
     A4 -.-> A1
     A4 -.-> A2
     B3 -.-> B1
@@ -2665,18 +2668,18 @@ graph TB
     C5 -.-> C1
     C5 -.-> C2
     C5 -.-> C3
-    
+
     G -.-> A1
     G -.-> B1
     G -.-> C1
-    
+
     H -.-> A5
     H -.-> B4
-    
+
     A1 --> E
     B1 --> E
     C1 --> E
-    
+
     style A4 fill:#ffcccc
     style B3 fill:#ffcccc
     style C5 fill:#ffcccc
@@ -2698,30 +2701,30 @@ deployment_pre_checklist:
     - [ ] Flink Kubernetes Operator已安装 >= 1.12
     - [ ] 存储类（StorageClass）可用
     - [ ] 网络插件（CNI）正常运行
-    
+
   资源配置检查:
     - [ ] ResourceQuota已配置且充足
     - [ ] LimitRange已配置
     - [ ] 命名空间已创建
     - [ ] ServiceAccount已创建
-    
+
   安全检查:
     - [ ] 镜像已通过安全扫描
     - [ ] 配置中无硬编码密钥
     - [ ] RBAC权限已配置
     - [ ] NetworkPolicy已配置
     - [ ] PodSecurityPolicy/PSA已配置
-    
+
   存储检查:
     - [ ] 检查点存储路径可访问
     - [ ] 存储后端加密已启用
     - [ ] 存储配额充足
-    
+
   网络检查:
     - [ ] Service端口配置正确
     - [ ] Ingress配置正确（如使用）
     - [ ] 外部依赖可访问
-    
+
   监控检查:
     - [ ] Prometheus可访问
     - [ ] Grafana Dashboard已配置
@@ -2741,21 +2744,21 @@ rolling_upgrade_checklist:
     - [ ] 记录当前版本和配置
     - [ ] 通知相关人员
     - [ ] 确认升级窗口
-    
+
   升级中:
     - [ ] 监控检查点状态
     - [ ] 监控作业延迟
     - [ ] 监控资源使用率
     - [ ] 观察TaskManager重启进度
     - [ ] 检查日志异常
-    
+
   升级后:
     - [ ] 验证作业状态为RUNNING
     - [ ] 验证数据处理正常
     - [ ] 检查指标是否正常
     - [ ] 验证配置已应用
     - [ ] 更新文档和配置库
-    
+
   回滚准备:
     - [ ] 保留上一版本Savepoint
     - [ ] 保留回滚脚本
@@ -2774,27 +2777,27 @@ blue_green_deployment_checklist:
     - [ ] 创建Blue环境最新Savepoint
     - [ ] 验证Savepoint可恢复
     - [ ] 准备Green环境配置
-    
+
   Green部署:
     - [ ] 使用Blue的Savepoint部署Green
     - [ ] 等待Green环境就绪
     - [ ] 验证Green健康检查通过
     - [ ] 预热Green环境（可选）
     - [ ] 在Green运行验证测试
-    
+
   流量切换:
     - [ ] 准备回滚计划
     - [ ] 执行DNS/Service切换
     - [ ] 监控切换过程
     - [ ] 验证流量正常
     - [ ] 监控错误率和延迟
-    
+
   切换后:
     - [ ] 保留Blue环境（保留期）
     - [ ] 更新监控目标
     - [ ] 通知相关人员
     - [ ] 更新文档
-    
+
   清理阶段:
     - [ ] 确认Green稳定运行
     - [ ] 备份Blue Savepoint
@@ -2814,7 +2817,7 @@ canary_release_checklist:
     - [ ] 准备监控Dashboard
     - [ ] 通知相关人员
     - [ ] 确认回滚流程
-    
+
   步骤1 - 10%流量:
     - [ ] 部署Canary版本（10%）
     - [ ] 监控错误率 < 5%
@@ -2822,7 +2825,7 @@ canary_release_checklist:
     - [ ] 监控吞吐量正常
     - [ ] 观察至少10分钟
     - [ ] 确认无异常后推进
-    
+
   步骤2 - 50%流量:
     - [ ] 提升流量至50%
     - [ ] 监控错误率 < 3%
@@ -2830,20 +2833,20 @@ canary_release_checklist:
     - [ ] 观察至少15分钟
     - [ ] 对比Blue/Green指标
     - [ ] 确认无异常后推进
-    
+
   步骤3 - 100%流量:
     - [ ] 提升流量至100%
     - [ ] 监控所有关键指标
     - [ ] 观察至少30分钟
     - [ ] 验证所有流量在新版本
-    
+
   回滚场景:
     - [ ] 触发自动回滚条件
     - [ ] 监控回滚进度
     - [ ] 验证流量切回旧版本
     - [ ] 分析失败原因
     - [ ] 更新发布计划
-    
+
   发布完成:
     - [ ] 清理Canary配置
     - [ ] 更新版本文档
@@ -2866,7 +2869,7 @@ flink-conf-global.yaml: |
   state.backend.incremental: true
   execution.checkpointing.mode: EXACTLY_ONCE
   execution.checkpointing.interval: 60s
-  
+
 # 2. 环境特定配置（ConfigMap）
 apiVersion: v1
 kind: ConfigMap
@@ -2875,7 +2878,7 @@ metadata:
 data:
   ENV: "production"
   LOG_LEVEL: "INFO"
-  
+
 # 3. 作业特定配置（FlinkDeployment）
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
@@ -2914,7 +2917,7 @@ upgrade_strategy_selection:
     threshold:
       max_unavailable: 1
       max_surge: 1
-      
+
   blue_green:
     when:
       - "大版本升级（minor/major）"
@@ -2925,7 +2928,7 @@ upgrade_strategy_selection:
       - "2x资源容量"
       - "共享状态存储"
       - "负载均衡支持"
-      
+
   canary:
     when:
       - "高风险功能发布"
@@ -2962,7 +2965,7 @@ multi_tenant_allocation:
     guarantee:
       availability_sla: "99.99%"
       support_response: "15min"
-      
+
   tier_standard:
     resource_quota:
       cpu: 64
@@ -2971,7 +2974,7 @@ multi_tenant_allocation:
     guarantee:
       availability_sla: "99.9%"
       support_response: "1hour"
-      
+
   tier_basic:
     resource_quota:
       cpu: 16
@@ -3026,12 +3029,12 @@ spec:
         sysctls:
           - name: net.ipv4.ip_unprivileged_port_start
             value: "0"
-            
+
       containers:
         - name: flink-main-container
           image: flink:2.4.0
           imagePullPolicy: Always
-          
+
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -3040,7 +3043,7 @@ spec:
                 - ALL
             seccompProfile:
               type: RuntimeDefault
-              
+
           # 资源限制（防止DoS）
           resources:
             limits:
@@ -3051,7 +3054,7 @@ spec:
               memory: "4Gi"
               cpu: "2000m"
               ephemeral-storage: "50Gi"
-              
+
           # 只读挂载
           volumeMounts:
             - name: flink-config
@@ -3061,7 +3064,7 @@ spec:
               mountPath: /tmp
             - name: flink-data
               mountPath: /opt/flink/data
-              
+
       volumes:
         - name: flink-config
           configMap:
@@ -3072,7 +3075,7 @@ spec:
         - name: flink-data
           persistentVolumeClaim:
             claimName: flink-data-pvc
-            
+
       # 服务账户
       serviceAccountName: flink-job-sa
       automountServiceAccountToken: false
@@ -3109,33 +3112,3 @@ spec:
 ---
 
 ## 10. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "Flink Kubernetes Operator", 2026. https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/
-
-[^2]: Apache Flink, "FLIP-228: Support Kubernetes Operator", 2023. https://cwiki.apache.org/confluence/display/FLINK/FLIP-228
-
-[^3]: Kubernetes Documentation, "Operators", 2026. https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
-
-[^4]: Kubernetes Documentation, "Custom Resources", 2026. https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
-
-[^5]: Helm Documentation, "Charts", 2026. https://helm.sh/docs/topics/charts/
-
-[^6]: Argo Rollouts Documentation, "Canary Deployment Strategy", 2026. https://argoproj.github.io/argo-rollouts/features/canary/
-
-[^7]: Istio Documentation, "Traffic Management", 2026. https://istio.io/latest/docs/concepts/traffic-management/
-
-[^8]: Kubernetes Documentation, "Resource Quotas", 2026. https://kubernetes.io/docs/concepts/policy/resource-quotas/
-
-[^9]: Kubernetes Documentation, "Network Policies", 2026. https://kubernetes.io/docs/concepts/services-networking/network-policies/
-
-[^10]: Open Policy Agent (OPA) Documentation, "Policy-based Control for Cloud Native Environments", 2026. https://www.openpolicyagent.org/
-
-[^11]: Prometheus Documentation, "Monitoring Flink", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/
-
-[^12]: J. Humble and D. Farley, "Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation", Addison-Wesley, 2010.
-
-[^13]: B. Farley, "Blue-Green Deployment", Martin Fowler Blog, 2010. https://martinfowler.com/bliki/BlueGreenDeployment.html
-
-[^14]: N. Forgeant, "Canary Release", Martin Fowler Blog, 2014. https://martinfowler.com/bliki/CanaryRelease.html
-
-[^15]: CNCF, "Cloud Native Security Best Practices", 2026. https://github.com/cncf/tag-security/blob/main/security-whitepaper/CNCF_cloud-native-security-whitepaper.md

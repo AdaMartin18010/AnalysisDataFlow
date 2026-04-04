@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Logging-01: Structured Logging
+
 结构化日志：
 $$
 \text{Log} = \{ \text{timestamp}, \text{level}, \text{message}, \text{context} \}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Logging-01: Log Level Control
+
 日志级别控制：
 $$
 \text{Level}_{\text{runtime}} \neq \text{Level}_{\text{startup}}
@@ -51,7 +53,7 @@ $$
 ### 6.1 结构化日志
 
 ```java
-LOG.info("Processing event", 
+LOG.info("Processing event",
     keyValue("eventId", event.getId()),
     keyValue("timestamp", event.getTime()));
 ```

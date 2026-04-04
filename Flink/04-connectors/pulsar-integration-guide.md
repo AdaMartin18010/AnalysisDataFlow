@@ -8,6 +8,7 @@
 
 **Def-F-04-01 (Pulsar 集群拓扑)**
 Apache Pulsar 采用**分层架构**，由三层组成：
+
 - **Broker 层**: 无状态计算层，处理客户端连接和消息路由
 - **BookKeeper 层**: 有状态存储层，通过 Apache BookKeeper 实现持久化日志存储
 - **ZooKeeper 层**: 元数据管理层，协调集群状态和配置
@@ -18,6 +19,7 @@ $$
 
 **Def-F-04-02 (命名空间与主题)**
 Pulsar 的主题层级组织为：
+
 - **Tenant (租户)**: 最高隔离级别，对应组织或业务线
 - **Namespace (命名空间)**: 租户下的逻辑分组
 - **Topic (主题)**: 实际的消息流
@@ -28,6 +30,7 @@ $$
 
 **Def-F-04-03 (统一消息模型)**
 Pulsar 同时支持：
+
 - **队列语义**: 传统消息队列 (JMS)，支持单条消息确认
 - **流语义**: Kafka 风格的流处理，支持分区消费
 
@@ -55,6 +58,7 @@ $$
 
 **Prop-F-04-01 (计算存储分离)**
 Pulsar 的分层架构使得：
+
 - 计算层 (Broker) 可独立水平扩展
 - 存储层 (BookKeeper) 按需扩展
 - Broker 故障不影响数据持久性
@@ -97,7 +101,7 @@ graph TB
         FT[Flink Transformations]
         FSK[Flink Sink<br/>Pulsar Sink]
     end
-    
+
     subgraph "Apache Pulsar"
         PB[Broker Layer]
         PZ[ZooKeeper<br/>Metadata]
@@ -107,11 +111,11 @@ graph TB
             BK3[Bookie 3]
         end
     end
-    
+
     subgraph "Schema Registry"
         SR[Avro/JSON/Protobuf<br/>Schema Management]
     end
-    
+
     FS -->|Consume| PB
     PB -->|Read| BK1
     PB -->|Read| BK2
@@ -181,12 +185,14 @@ $$
 **Thm-F-04-02 (Exactly-once Source 保证)**
 Flink Pulsar Source 在启用 Checkpoint 时提供 Exactly-once 语义。
 
-**证明**: 
+**证明**:
+
 1. Pulsar 支持游标 (Cursor) 持久化消费位置
 2. Flink Checkpoint 将 Pulsar Offset 作为算子状态保存
 3. 故障恢复时，从 Checkpoint 恢复 Offset 重新消费
 4. Pulsar 的消息确认是幂等的
 5. 因此：
+
 $$
 \forall m \in \text{messages}: \text{count}_{\text{process}}(m) = 1 \lor \text{count}_{\text{process}}(m) = 0
 $$
@@ -195,6 +201,7 @@ $$
 ### 5.2 性能优化工程论证
 
 **批量消费优化**:
+
 ```java
 // 配置批量拉取
 PulsarSource<String> source = PulsarSource.builder()
@@ -206,11 +213,13 @@ PulsarSource<String> source = PulsarSource.builder()
 ```
 
 **优化原理**:
+
 - 减少网络往返次数
 - 摊平确认开销
 - 提高吞吐但可能增加延迟
 
 **压缩配置**:
+
 ```java
 // Producer 压缩配置
 PulsarSink<String> sink = PulsarSink.builder()
@@ -233,17 +242,17 @@ import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
 import org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema;
 
 public class PulsarSourceExample {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 启用 Checkpoint 保证 Exactly-once
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
         );
-        
+
         // 配置 Pulsar Source
         PulsarSource<Event> source = PulsarSource.builder()
             .setServiceUrl("pulsar://localhost:6650")
@@ -258,20 +267,20 @@ public class PulsarSourceExample {
                 )
             )
             .build();
-        
+
         DataStream<Event> stream = env.fromSource(
-            source, 
+            source,
             WatermarkStrategy.forBoundedOutOfOrderness(
                 Duration.ofSeconds(5)
             ),
             "Pulsar Source"
         );
-        
+
         // 处理逻辑
         stream.filter(e -> e.getSeverity().equals("ERROR"))
               .map(e -> new Alert(e.getTimestamp(), e.getMessage()))
               .addSink(alertSink);
-        
+
         env.execute("Pulsar Log Processing");
     }
 }
@@ -284,20 +293,20 @@ import org.apache.flink.connector.pulsar.sink.PulsarSink;
 import org.apache.flink.connector.pulsar.sink.writer.delayer.MessageDelayer;
 
 public class DelayedMessageExample {
-    
+
     public static void main(String[] args) {
-        
+
         // 延迟消息路由 - 基于事件时间延迟投递
-        MessageDelayer<Notification> delayer = 
+        MessageDelayer<Notification> delayer =
             MessageDelayer.fixed(Duration.ofMinutes(30));
-        
+
         // 或基于消息内容的动态延迟
-        MessageDelayer<Notification> dynamicDelayer = 
+        MessageDelayer<Notification> dynamicDelayer =
             (element, currentTimestamp) -> {
                 // 在指定时间投递
                 return element.getScheduledTime().toEpochMilli();
             };
-        
+
         PulsarSink<Notification> sink = PulsarSink.builder()
             .setServiceUrl("pulsar://localhost:6650")
             .setAdminUrl("http://localhost:8080")
@@ -319,9 +328,9 @@ public class DelayedMessageExample {
 ```java
 // Pulsar Function 定义 (运行在 Pulsar 内部)
 public class EnrichmentFunction implements Function<String, String> {
-    
+
     private transient UserService userService;
-    
+
     @Override
     public String process(String input, Context context) {
         // 轻量级转换：添加用户元数据
@@ -341,7 +350,7 @@ graph LR
     B -->|Enriched Events| C[Pulsar Topic<br/>Enriched]
     C -->|Flink Source| D[Complex Processing]
     D -->|Aggregations| E[Pulsar Topic<br/>Results]
-    
+
     style A fill:#e1f5fe
     style B fill:#fff3e0
     style C fill:#e1f5fe
@@ -352,11 +361,11 @@ graph LR
 ```java
 // Flink 消费 Functions 预处理后的数据
 public class EnrichedStreamProcessing {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 消费经过 Pulsar Functions 预处理的数据
         PulsarSource<EnrichedEvent> source = PulsarSource.builder()
             .setTopics("persistent://public/default/enriched-events")
@@ -364,15 +373,15 @@ public class EnrichedStreamProcessing {
             .setSubscriptionType(SubscriptionType.Shared)
             .setDeserializationSchema(...)
             .build();
-        
+
         DataStream<EnrichedEvent> stream = env.fromSource(...);
-        
+
         // 复杂聚合：5分钟滚动窗口
         stream.keyBy(EnrichedEvent::getUserTier)
               .window(TumblingEventTimeWindows.of(Time.minutes(5)))
               .aggregate(new TierMetricsAggregate())
               .addSink(metricsSink);
-        
+
         env.execute();
     }
 }
@@ -421,9 +430,9 @@ PulsarSink<String> optimizedSink = PulsarSink.builder()
 ```java
 // 处理 Schema 演进
 public class SchemaEvolutionExample {
-    
+
     public static void main(String[] args) {
-        
+
         // 配置 Schema 自动发现
         PulsarSource<GenericRecord> source = PulsarSource.builder()
             .setTopics("persistent://public/default/events")
@@ -437,7 +446,7 @@ public class SchemaEvolutionExample {
                 "schemaCompatibilityStrategy", "FORWARD"
             ))
             .build();
-        
+
         // 处理不同版本的 Schema
         DataStream<EventV2> stream = env.fromSource(source, ...)
             .map(record -> {
@@ -464,18 +473,18 @@ graph TB
         C2[Consumer]
         C3[Pulsar Function]
     end
-    
+
     subgraph "Broker Layer<br/>(Stateless)"
         B1[Broker 1]
         B2[Broker 2]
         B3[Broker 3]
         LB[Load Balancer]
     end
-    
+
     subgraph "Metadata Layer"
         ZK[ZooKeeper<br/>Cluster]
     end
-    
+
     subgraph "Storage Layer<br/>(Apache BookKeeper)"
         subgraph "Ensemble"
             BK1[Bookie 1]
@@ -487,7 +496,7 @@ graph TB
             L2[Ledger B]
         end
     end
-    
+
     C1 -->|Produce| LB
     C2 -->|Consume| LB
     C3 -->|Process| LB
@@ -503,7 +512,7 @@ graph TB
     BK1 --> L1
     BK2 --> L1
     BK3 --> L1
-    
+
     style B1 fill:#bbdefb
     style B2 fill:#bbdefb
     style B3 fill:#bbdefb
@@ -518,24 +527,24 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Running: Deploy Function
-    
+
     Running --> Processing: Message Arrives
     Processing --> Ack: Success
     Processing --> Nack: Failure
-    
+
     Ack --> Running: Continue
     Nack --> Retry: Retry Policy
-    
+
     Retry --> Processing: Retry
     Retry --> DLQ: Max Retries
-    
+
     DLQ --> Running: Log Failure
-    
+
     Running --> Paused: Pause
     Paused --> Running: Resume
-    
+
     Running --> [*]: Delete Function
-    
+
     note right of Processing
         Runtime: Thread/Process/K8s
         State: Local RocksDB
@@ -550,26 +559,26 @@ graph TB
         APP[Application Servers]
         AGENT[Filebeat/Fluentd]
     end
-    
+
     subgraph "Pulsar 层"
         T1["Topic: raw-logs<br/>分区: 12"]
         PF[Pulsar Function<br/>结构化+过滤]
         T2["Topic: processed-logs<br/>分区: 12"]
     end
-    
+
     subgraph "Flink 处理层"
         FS[Flink Source]
         KW[KeyBy Window<br/>5分钟聚合]
         AL[异常检测 CEP]
         SK[Flink Sink]
     end
-    
+
     subgraph "输出层"
         ES[Elasticsearch<br/>日志检索]
         DB[(ClickHouse<br/>指标存储)]
         ALERT[AlertManager<br/>告警通知]
     end
-    
+
     APP -->|日志| AGENT
     AGENT -->|推送| T1
     T1 -->|消费| PF
@@ -581,7 +590,7 @@ graph TB
     SK --> ES
     SK --> DB
     AL -->|触发| ALERT
-    
+
     style PF fill:#fff3e0
     style KW fill:#e3f2fd
     style AL fill:#fce4ec
@@ -590,23 +599,3 @@ graph TB
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Pulsar Documentation, "Pulsar Functions Overview", 2025. https://pulsar.apache.org/docs/functions-overview/
-
-[^2]: Apache Pulsar Documentation, "Pulsar Flink Connector", 2025. https://pulsar.apache.org/docs/io-flink/
-
-[^3]: S. Das et al., "Apache Pulsar: A Cloud-Native, Distributed Messaging and Streaming Platform", ACM SIGMOD, 2023.
-
-[^4]: J. Kreps et al., "Kafka: A Distributed Messaging System for Log Processing", NetDB, 2011.
-
-[^5]: Apache Flink Documentation, "Pulsar Source Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/pulsar/
-
-[^6]: Apache Flink Documentation, "Pulsar Sink Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/pulsar/
-
-[^7]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
-
-[^8]: Apache BookKeeper Documentation, "BookKeeper Architecture", 2025. https://bookkeeper.apache.org/docs/getting-started/concepts/
-
-[^9]: Pulsar Functions Patterns, "When to Use Pulsar Functions vs External Systems", Pulsar Community Blog, 2024.
-
-[^10]: Apache Pulsar Schema Documentation, "Schema Evolution", 2025. https://pulsar.apache.org/docs/schema-evolution/

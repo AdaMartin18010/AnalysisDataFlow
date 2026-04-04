@@ -5,12 +5,15 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-MQ-01: Message Queue Semantics
+
 消息队列语义：
+
 - **At-Most-Once**: 最多一次投递
 - **At-Least-Once**: 至少一次投递
 - **Exactly-Once**: 精确一次投递
 
 ### Def-F-MQ-02: Message Ordering
+
 消息排序：
 $$
 \text{Ordering} \in \{\text{PartitionOrder}, \text{GlobalOrder}, \text{Unordered}\}
@@ -19,6 +22,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-MQ-01: Delivery Guarantee
+
 投递保证：
 $$
 \text{ExactlyOnce} \Rightarrow \text{Checkpoint} \land \text{Transaction}

@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-07: Production-Ready AI
+
 生产就绪AI满足企业级要求：
 $$
 \text{ProductionReady} = \text{Scalability} \land \text{Reliability} \land \text{Observability} \land \text{Governance}
 $$
 
 ### Def-F-25-08: ML Inference Pipeline
+
 ML推理流水线包含模型加载、预测、输出：
 $$
 \text{Pipeline} = \text{ModelLoad} \circ \text{Preprocess} \circ \text{Inference} \circ \text{Postprocess}
 $$
 
 ### Def-F-25-09: Model Versioning
+
 模型版本管理：
 $$
 \text{Model} = \langle \text{Name}, \text{Version}, \text{Artifact}, \text{Metadata} \rangle
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-05: Inference Latency SLO
+
 推理延迟满足服务等级目标：
 $$
 P(\text{Latency} \leq T_{\text{SLO}}) \geq 0.99
 $$
 
 ### Prop-F-25-06: Model A/B Testing
+
 A/B测试保证模型效果对比：
 $$
 \text{TrafficSplit} = \alpha \cdot \text{Model}_A + (1-\alpha) \cdot \text{Model}_B
@@ -80,36 +85,36 @@ $$
 
 ```java
 public class MLInferenceOperator extends ProcessFunction<Features, Prediction> {
-    
+
     private transient Model model;
     private transient FeatureStoreClient featureStore;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 加载模型
         ModelVersion version = modelRegistry.getLatest("fraud-detection");
         model = modelLoader.load(version);
-        
+
         // 连接特征存储
         featureStore = FeatureStoreClient.create(config);
     }
-    
+
     @Override
     public void processElement(Features features, Context ctx, Collector<Prediction> out) {
         // 获取实时特征
         FeatureVector vector = featureStore.getOnlineFeatures(
-            features.getEntityId(), 
+            features.getEntityId(),
             features.getFeatureNames()
         );
-        
+
         // 执行推理
         long startTime = System.nanoTime();
         Prediction prediction = model.predict(vector);
         long latency = System.nanoTime() - startTime;
-        
+
         // 记录指标
         metrics.histogram("inference.latency", latency);
-        
+
         // 输出结果
         out.collect(prediction);
     }
@@ -140,21 +145,21 @@ ml:
 ```java
 // A/B测试路由
 public class ABTestRouter extends ProcessFunction<Event, Event> {
-    
+
     private final double splitRatio = 0.5;
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Event> out) {
         String variant = hash(event.getUserId()) < splitRatio ? "A" : "B";
         event.setVariant(variant);
-        
+
         // 路由到不同模型
         if ("A".equals(variant)) {
             modelA.process(event);
         } else {
             modelB.process(event);
         }
-        
+
         out.collect(event);
     }
 }
@@ -170,17 +175,17 @@ graph TB
         A[实时特征]
         B[离线特征]
     end
-    
+
     subgraph "推理层"
         C[模型A]
         D[模型B]
     end
-    
+
     subgraph "监控层"
         E[延迟监控]
         F[漂移检测]
     end
-    
+
     A --> C
     A --> D
     B --> C

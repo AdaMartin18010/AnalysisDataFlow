@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Bcast-01: Broadcast Stream
+
 广播流：
 $$
 \text{Broadcast} : \text{Stream}<T> \to \forall \text{Subtask}
 $$
 
 ### Def-F-Bcast-02: Broadcast State
+
 广播状态：
 $$
 \text{BState} = \{ (k, v) \mid \forall \text{subtask} : \text{State}(k, v) \}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Bcast-01: State Consistency
+
 状态一致性：
 $$
 \forall s_1, s_2 \in \text{Subtasks} : \text{BState}_{s_1} = \text{BState}_{s_2}
@@ -50,7 +53,7 @@ $$
 ### 5.1 广播处理
 
 ```java
-MapStateDescriptor<String, Rule> ruleStateDescriptor = 
+MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>("rules", String.class, Rule.class);
 
 BroadcastStream<Rule> broadcastStream = ruleStream
@@ -62,7 +65,7 @@ stream.connect(broadcastStream)
         public void processBroadcastElement(Rule rule, Context ctx, Collector<Result> out) {
             ctx.getBroadcastState(ruleStateDescriptor).put(rule.getId(), rule);
         }
-        
+
         @Override
         public void processElement(Event event, ReadOnlyContext ctx, Collector<Result> out) {
             Rule rule = ctx.getBroadcastState(ruleStateDescriptor).get(event.getRuleId());

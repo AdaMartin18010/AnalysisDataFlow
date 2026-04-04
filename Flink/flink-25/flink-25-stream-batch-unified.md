@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-01: Unified Execution
+
 统一执行模型融合流处理和批处理语义：
 $$
 \text{Unified} = \text{Stream} \cup \text{Batch} : \text{SameAPI} \land \text{SameRuntime}
 $$
 
 ### Def-F-25-02: Bounded Stream
+
 有界流是批处理的流式抽象：
 $$
 \text{BoundedStream} = \langle \text{Source}, \text{Finite} \rangle
 $$
 
 ### Def-F-25-03: Adaptive Mode
+
 自适应模式自动选择执行策略：
 $$
 \text{Mode} = \begin{cases} \text{Streaming} & \text{if } \text{Unbounded} \\ \text{Batch} & \text{if } \text{Bounded} \land \text{Efficient} \\ \text{Hybrid} & \text{otherwise} \end{cases}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-01: Semantic Equivalence
+
 流批语义等价：
 $$
 \forall Q : \text{Result}_{\text{stream}}(Q) = \text{Result}_{\text{batch}}(Q)
 $$
 
 ### Prop-F-25-02: Performance Optimization
+
 批处理优化性能上界：
 $$
 \text{Perf}_{\text{batch}} \geq \text{Perf}_{\text{stream}} \text{ (for bounded input)}
@@ -101,14 +106,14 @@ $$
 
 ```java
 public class UnifiedJobCompiler {
-    
+
     public CompiledJob compile(JobGraph graph) {
         // 分析输入边界
         Map<Vertex, Boundedness> boundedness = analyzeBoundedness(graph);
-        
+
         // 确定执行模式
         ExecutionMode mode = determineExecutionMode(boundedness);
-        
+
         switch (mode) {
             case STREAMING:
                 return compileStreaming(graph);
@@ -118,11 +123,11 @@ public class UnifiedJobCompiler {
                 return compileHybrid(graph, boundedness);
         }
     }
-    
+
     private ExecutionMode determineExecutionMode(Map<Vertex, Boundedness> boundedness) {
         boolean hasUnbounded = boundedness.values().contains(Boundedness.UNBOUNDED);
         boolean allBounded = boundedness.values().stream().allMatch(Boundedness.BOUNDED::equals);
-        
+
         if (allBounded) return ExecutionMode.BATCH;
         if (hasUnbounded) return ExecutionMode.HYBRID;
         return ExecutionMode.STREAMING;
@@ -177,16 +182,16 @@ graph TB
         A[DataStream API]
         B[Table API]
     end
-    
+
     subgraph "优化层"
         C[统一优化器]
     end
-    
+
     subgraph "执行层"
         D[流执行引擎]
         E[批执行引擎]
     end
-    
+
     A --> C
     B --> C
     C --> D
@@ -211,7 +216,7 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Unified Batch/Streaming Documentation, https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/overview/
+[^1]: Apache Flink Unified Batch/Streaming Documentation, <https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/overview/>
 
 ---
 

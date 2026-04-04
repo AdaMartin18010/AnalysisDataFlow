@@ -14,6 +14,7 @@
 ```
 
 **关键改进领域**：
+
 1. **AI/ML原生支持** (FLIP-531): Agent运行时
 2. **安全增强**: TLS密码套件更新、SSL配置
 3. **连接器生态**: Kafka 2PC改进、新Source/Sink
@@ -41,6 +42,7 @@ API支持:
 ```
 
 **路线图里程碑**：
+
 | 阶段 | 时间 | 里程碑 |
 |------|------|--------|
 | MVP Design | Q2 2025 | 设计文档、API原型 |
@@ -60,6 +62,7 @@ API支持:
 ```
 
 **兼容性**：
+
 - 旧JDK: 自动降级兼容
 - 新JDK: 强制前向安全
 
@@ -178,11 +181,13 @@ Flink 2.x (2024+)
 ### 4.1 为什么Flink需要原生Agent支持？
 
 **现有方案局限**：
+
 1. **LangChain**: 单进程，无分布式状态
 2. **Ray Serve**: 与Flink生态割裂
 3. **自定义服务**: 需自建容错、扩展
 
 **Flink Agent优势**：
+
 1. **分布式状态**: RocksDB/ForSt持久化记忆
 2. **事件驱动**: 毫秒级响应延迟
 3. **水平扩展**: 自动负载均衡
@@ -192,15 +197,16 @@ Flink 2.x (2024+)
 ### 4.2 迁移到Flink 2.3的考虑
 
 **升级检查清单**：
+
 ```yaml
 兼容性检查:
   - JDK版本: 确保 >= 11.0.30 或 < 11.0.30 有自定义SSL配置
   - Kafka版本: 如用2PC需 Kafka >= 3.0 (KIP-939)
-  
+
 新特性采用:
   - AI Agents: 需要模型API密钥、MCP Server配置
   - SQL Hints: 可选，用于性能调优
-  
+
 废弃功能检查:
   - DataSet API: 2.x已移除，需迁移到DataStream
   - Queryable State: 2.x已移除，使用远程状态查询
@@ -217,6 +223,7 @@ $$
 $$
 
 **保证**：
+
 - Checkpoint包含完整状态
 - 输入事件可重放 (Kafka偏移量)
 - LLM响应可Mock
@@ -314,7 +321,7 @@ ai.agent.enabled=true
           ai.agent.model.provider=openai
           ai.agent.model.api.key=${OPENAI_API_KEY}
     command: jobmanager
-    
+
   taskmanager:
     image: flink:2.3.0-scala_2.12-java11
     depends_on:
@@ -327,7 +334,7 @@ ai.agent.enabled=true
     command: taskmanager
     volumes:
       - ./rocksdb-state:/opt/flink/state
-      
+
   # MCP Server示例
   mcp-database:
     image: mcp/postgres-server:latest
@@ -344,26 +351,26 @@ ai.agent.enabled=true
 ```mermaid
 timeline
     title Flink 2.x Roadmap
-    
+
     section 2024
         2.0 : 分离状态后端
             : DataSet移除
             : Java 17默认
-            
+
     section 2025 H1
         2.1 : Materialized Table
             : Delta Join V1
-            
+
     section 规划中（以官方为准）
         2.2 : VECTOR_SEARCH（规划中）
             : Model DDL（实验性）
             : PyFlink Async
-            
+
     section 规划中（以官方为准）
         2.3 : AI Agents (FLIP-531)（规划中）
             : 安全增强
             : Kafka 2PC
-            
+
     section 规划中（以官方为准）
         2.4 : Agent GA（规划中）
             : Serverless Flink（规划中）
@@ -379,54 +386,38 @@ graph TB
         MCP[MCP Servers]
         A2A[Other Agents]
     end
-    
+
     subgraph Flink["Flink 2.3+"]
         subgraph Runtime["Agent Runtime"]
             AR[Agent Registry]
             AE[Agent Execution]
             SM[State Management]
         end
-        
+
         subgraph Protocols["协议层"]
             MC[MCP Client]
             A2[Agent Bus]
         end
     end
-    
+
     subgraph Apps["Agent应用"]
         A1[Sales Agent]
         A2[Support Agent]
         A3[Analytics Agent]
     end
-    
+
     LLM --> AR
     MCP --> MC
     A2A --> A2
-    
+
     AR --> AE
     AE --> SM
     MC --> AE
     A2 --> AE
-    
+
     AE --> A1
     AE --> A2
     AE --> A3
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink 2.3 Release Notes, 2026. https://nightlies.apache.org/flink/flink-docs-master/release-notes/flink-2.3/
-
-[^2]: Apache Flink FLIP-531, "Building and Running AI Agents in Flink", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531
-
-[^3]: Apache Flink 2.3 Release Planning, 2026. https://cwiki.apache.org/confluence/display/FLINK/2.3+Release
-
-[^4]: Kai Waehner, "The Future of Data Streaming with Apache Flink for Agentic AI", 2025. https://www.kai-waehner.de/blog/2025/08/18/the-future-of-data-streaming-with-apache-flink-for-agentic-ai/
-
-[^5]: Kafka KIP-939, "Two-Phase Commit Support", 2024. https://cwiki.apache.org/confluence/display/KAFKA/KIP-939
-
-[^6]: RFC 9325, "Deprecating Obsolete Key Exchange Methods in TLS", IETF, 2024.
-
-[^7]: Apache Flink Roadmap, 2025. https://flink.apache.org/roadmap/
-
-[^8]: Decodable, "Apache Flink 2023 Retrospective", 2024. https://www.decodable.co/blog/apache-flink-2023-retrospective

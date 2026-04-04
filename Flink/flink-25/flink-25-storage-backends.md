@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-16: State Backend
+
 状态后端是Flink状态持久化机制：
 $$
 \text{Backend} = \langle \text{Storage}, \text{Serializer}, \text{Checkpoint} \rangle
 $$
 
 ### Def-F-25-17: Tiered Storage
+
 分层存储利用多级存储介质：
 $$
 \text{Tiered} = \langle \text{Memory}, \text{SSD}, \text{ObjectStorage} \rangle
 $$
 
 ### Def-F-25-18: Remote State
+
 远程状态将状态外置存储：
 $$
 \text{Remote} = \text{State}_{\text{local}} \xrightarrow{\text{Async}} \text{State}_{\text{remote}}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-11: Access Latency Hierarchy
+
 存储层级访问延迟：
 $$
 T_{\text{memory}} < T_{\text{ssd}} < T_{\text{network}} < T_{\text{object}}
 $$
 
 ### Prop-F-25-12: Cost Efficiency
+
 存储成本效率：
 $$
 \text{Cost}_{\text{tiered}} = \sum_{i} c_i \cdot s_i \quad \text{where } \sum s_i = S_{\text{total}}
@@ -79,33 +84,33 @@ $$
 
 ```java
 public class TieredStateBackend implements StateBackend {
-    
+
     private final StateBackend l1Cache;    // Memory
     private final StateBackend l2Storage;  // Local SSD
     private final StateBackend l3Remote;   // Object Storage
-    
+
     @Override
     public <K> ValueState<K> getValueState(ValueStateDescriptor<K> descriptor) {
         return new TieredValueState<>(descriptor, l1Cache, l2Storage, l3Remote);
     }
-    
+
     private class TieredValueState<K> implements ValueState<K> {
-        
+
         private volatile K cachedValue;  // L1 cache
-        
+
         @Override
         public K value() {
             if (cachedValue != null) {
                 return cachedValue;  // L1 hit
             }
-            
+
             // Try L2
             K value = l2Storage.get(key);
             if (value != null) {
                 cachedValue = value;  // Promote to L1
                 return value;
             }
-            
+
             // L3
             value = l3Remote.get(key);
             if (value != null) {
@@ -114,7 +119,7 @@ public class TieredStateBackend implements StateBackend {
             }
             return value;
         }
-        
+
         @Override
         public void update(K value) {
             cachedValue = value;
@@ -164,15 +169,15 @@ graph TB
     subgraph "L1: 内存"
         A[热数据缓存]
     end
-    
+
     subgraph "L2: 本地SSD"
         B[温数据]
     end
-    
+
     subgraph "L3: 远程存储"
         C[S3/OSS]
     end
-    
+
     A -->|未命中| B
     B -->|未命中| C
     C -->|提升| B
@@ -196,7 +201,7 @@ flowchart LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink State Backend Documentation, https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+[^1]: Apache Flink State Backend Documentation, <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
 ---
 

@@ -5,7 +5,7 @@
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 3.0的长期愿景和架构探索内容。Flink 3.0处于早期规划阶段，
 > 所有内容均为概念设计，不代表官方路线图。具体以Apache Flink社区为准。
-> 
+>
 > | 属性 | 值 |
 > |------|-----|
 > | **文档状态** | 🔭 愿景 (Vision) |
@@ -86,7 +86,7 @@ Flink 3.0 Architecture Goals:
     - Cloud-Native Architecture 2.0 (云原生架构2.0)
     - Unified API Layer (统一API层)
     - Performance Architecture Optimization (性能架构优化)
-  
+
   设计原则:
     - Simplicity: 简化架构层次，降低认知负担
     - Elasticity: 真正的弹性计算，按需扩缩容
@@ -125,6 +125,7 @@ $$
 $$
 
 其中：
+
 - $E_{unified}$: 统一执行引擎，支持流、批、交互式模式
 - $S_{adaptive}$: 自适应调度器，根据数据特征动态选择执行策略
 - $R_{elastic}$: 弹性资源管理器，支持0到N的自动扩缩容
@@ -141,7 +142,7 @@ enum ExecutionMode {
 }
 
 ExecutionMode selectMode(DataStream<?> stream, QueryHint hints) {
-    if (stream.isUnbounded() && hints.latency < 100ms) 
+    if (stream.isUnbounded() && hints.latency < 100ms)
         return STREAMING;
     if (stream.isBounded() && hints.throughput > 1M/s)
         return BATCH;
@@ -185,8 +186,8 @@ IntelligentCachePolicy:
   - HotData: L1 + L2 (90%+命中率)
   - WarmData: L2 + L3 (按需加载)
   - ColdData: L3 + L4 (延迟加载)
-  
-  EvictionPolicy: 
+
+  EvictionPolicy:
     - LRU (Least Recently Used)
     - LFU (Least Frequently Used)
     - Predictive (基于访问模式预测)
@@ -203,18 +204,18 @@ CloudNativeArchitectureV2:
     - AutoScalingV2: 智能预测扩缩容
     - MultiCloudNative: 多云原生支持
     - FinOpsIntegration: 成本优化集成
-    
+
   架构层次:
     ControlPlane:
       - GlobalJobManager: 全局作业管理
       - ResourceOrchestrator: 资源编排器
       - CostOptimizer: 成本优化器
-      
+
     ComputePlane:
       - EphemeralTaskManager: 临时任务管理器
       - ServerlessExecutor: Serverless执行器
       - SpotInstanceSupport: Spot实例支持
-      
+
     StoragePlane:
       - ObjectStorageNative: 原生对象存储
       - CrossRegionReplication: 跨区域复制
@@ -278,15 +279,15 @@ CompatibilityLevels:
   FullCompatible:
     - TableAPI/SQL: 完全兼容，无需修改
     - Configuration: 配置参数自动迁移
-    
+
   SourceCompatible:
     - DataStreamAPI: 源码兼容，重新编译即可
     - Connectors: 连接器API兼容
-    
+
   MigrationRequired:
     - CustomOperators: 自定义算子需适配新API
     - StateBackends: 状态后端配置需更新
-    
+
   BreakingChanges:
     - DeprecatedAPIs: 移除已弃用API
     - InternalAPIs: 内部API不保证兼容
@@ -415,9 +416,9 @@ graph LR
     C[云原生趋势] --> B
     D[AI/ML集成] --> B
     E[成本优化] --> B
-    
+
     B --> F[Flink 3.0]
-    
+
     F --> G[统一执行层]
     F --> H[下一代状态管理]
     F --> I[云原生2.0]
@@ -531,7 +532,7 @@ Flink 3.0 方案:
 ```java
 ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req) {
     // 基于数据特征和查询需求选择最优执行模式
-    
+
     if (data.isUnbounded()) {
         // 无限数据流
         if (req.latencyRequirement < 100ms) {
@@ -548,7 +549,7 @@ ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req)
             return BATCH_OPTIMIZED;
         }
     }
-    
+
     return ADAPTIVE; // 运行时自适应
 }
 ```
@@ -661,7 +662,7 @@ $$
   - 检测延迟: <5s
   - 扩容决策: <1s
   - 资源申请: <10s (预热池) / <60s (冷启动)
-  
+
 缩容保证:
   - 状态迁移: Checkpoint + 引用切换
   - 资源释放: <5s
@@ -689,12 +690,12 @@ $$
     - SQL/Table: 100%兼容
     - DataStream: 源码级兼容
     - 配置: 自动迁移
-    
+
   数据兼容:
     - Savepoint: 自动升级
     - Checkpoint: 新格式，支持从Savepoint恢复
     - 状态: 自动转换
-    
+
   运维兼容:
     - REST API: 向后兼容
     - Metrics: 增强但不破坏
@@ -770,19 +771,19 @@ state.backend.tiered-storage:
     enabled: true
     capacity: 2gb
     eviction-policy: PREDICTIVE  # LRU, LFU, PREDICTIVE
-    
+
   # L2: 本地SSD
   l2-local:
     enabled: true
     path: /mnt/ssd/flink-state
     capacity: 500gb
-    
+
   # L3: 远程高性能存储
   l3-remote:
     enabled: true
     storage-type: ROCKSDB_CLOUD  # ROCKSDB_CLOUD, DISTRIBUTED_KV
     endpoint: rocksdb-cloud://cluster-1.region.aws
-    
+
   # L4: 对象存储
   l4-archive:
     enabled: true
@@ -804,9 +805,9 @@ state.cache:
 ```java
 // 状态管理API示例
 public class NextGenStateExample extends KeyedProcessFunction<String, Event, Result> {
-    
+
     private ValueState<CountState> state;
-    
+
     @Override
     public void open(OpenContext context) {
         StateTtlConfig ttlConfig = StateTtlConfig
@@ -815,14 +816,14 @@ public class NextGenStateExample extends KeyedProcessFunction<String, Event, Res
             .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
             .cleanupIncrementally(10, true)
             .build();
-            
+
         ValueStateDescriptor<CountState> descriptor = new ValueStateDescriptor<>("count", CountState.class);
         descriptor.enableTimeToLive(ttlConfig);
-        
+
         // 自动利用分层存储
         state = getRuntimeContext().getState(descriptor);
     }
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) throws Exception {
         // 异步状态访问（自动优化）
@@ -849,13 +850,13 @@ metadata:
 spec:
   image: flink:3.0.0-scala_2.12-java17
   flinkVersion: v3.0
-  
+
   jobManager:
     resource:
       memory: 2Gi
       cpu: 1
     replicas: 1
-    
+
   taskManager:
     resource:
       memory: 4Gi
@@ -877,7 +878,7 @@ spec:
         target-cpu-utilization: 70
         scale-up-delay: 30s
         scale-down-delay: 5m
-        
+
   # 成本优化配置
   costOptimization:
     spotInstances:
@@ -886,7 +887,7 @@ spec:
       fallbackToOnDemand: true
     reservedCapacity:
       baseline: 20%
-      
+
   # 多云配置
   multiCloud:
     primary: aws
@@ -926,7 +927,7 @@ public class UnifiedAPIExample {
     public static void main(String[] args) {
         // 统一环境
         UnifiedEnvironment env = UnifiedEnvironment.getExecutionEnvironment();
-        
+
         // 方式1: SQL
         TableResult result = env.sqlQuery("""
             SELECT user_id, COUNT(*) as cnt
@@ -934,18 +935,18 @@ public class UnifiedAPIExample {
             WHERE event_time > NOW() - INTERVAL '1' HOUR
             GROUP BY user_id
             """);
-            
+
         // 方式2: Table API
         Table table = env.from("user_events")
             .select($("user_id"), $("event_type"))
             .where($("event_time").greaterThan(Expression.currentTimestamp().minus(1, TimeUnit.HOURS)))
             .groupBy($("user_id"))
             .select($("user_id"), $("event_type").count());
-            
+
         // 方式3: DataStream API (与Table API无缝转换)
         DataStream<Row> stream = env.from("user_events")
             .toDataStream();
-            
+
         // 方式4: 统一DSL (Flink 3.0新特性)
         DataStream<Result> result = env.dsl()
             .source("kafka", SourceConfig.builder().topic("events").build())
@@ -953,7 +954,7 @@ public class UnifiedAPIExample {
             .window(WindowConfig.tumbling(Duration.ofMinutes(1)))
             .aggregate(Aggregation.count())
             .sink("jdbc", SinkConfig.builder().url("jdbc:mysql://...").build());
-            
+
         env.execute("Unified API Example");
     }
 }
@@ -966,19 +967,19 @@ import org.apache.flink.ml.api.*;
 public class MLInferenceExample {
     public static void main(String[] args) {
         UnifiedEnvironment env = UnifiedEnvironment.getExecutionEnvironment();
-        
+
         // 加载预训练模型
         Model model = env.ml()
             .loadModel("s3://models/recommendation/v1")
             .withFramework(Framework.ONNX)
             .optimizeFor(InferenceDevice.GPU);
-            
+
         // 实时推理
         DataStream<Prediction> predictions = env.fromSource(userBehaviorSource)
             .keyBy(UserBehavior::getUserId)
             .process(new ModelInferenceFunction(model))
             .setParallelism(10);
-            
+
         // 在线学习更新
         env.ml()
             .onlineLearning()
@@ -1041,19 +1042,19 @@ flink run \
 // ===== Flink 2.x 代码 =====
 public class OldJob {
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-            
+
         env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
         env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
-        
+
         DataStream<Event> stream = env.addSource(new FlinkKafkaConsumer<>("topic", schema, props));
-        
+
         stream
             .keyBy(Event::getKey)
             .process(new OldProcessFunction())
             .addSink(new FlinkKafkaProducer<>("output", serializer, producerProps));
-            
+
         env.execute();
     }
 }
@@ -1063,11 +1064,11 @@ public class MigratedJob {
     public static void main(String[] args) {
         // 统一环境（向后兼容）
         UnifiedEnvironment env = UnifiedEnvironment.getExecutionEnvironment();
-        
+
         // 配置自动迁移（旧配置仍有效）
         env.setStateBackend(new TieredStorageStateBackend());  // 新后端
         env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
-        
+
         // Source API保持不变
         DataStream<Event> stream = env.fromSource(
             KafkaSource.<Event>builder()
@@ -1078,7 +1079,7 @@ public class MigratedJob {
             WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
             "Kafka Source"
         );
-        
+
         // 处理逻辑保持不变
         stream
             .keyBy(Event::getKey)
@@ -1089,7 +1090,7 @@ public class MigratedJob {
                     .setRecordSerializer(new ResultSerializer())
                     .build()
             );
-            
+
         env.execute();
     }
 }
@@ -1104,7 +1105,7 @@ public class MigratedJob {
 ```mermaid
 graph TB
     subgraph "Flink 3.0 Architecture"
-        
+
         subgraph "Unified API Layer"
             SQL["SQL Interface"]
             Table["Table API"]
@@ -1113,28 +1114,28 @@ graph TB
             Agent["Agent API"]
             DSL["Unified DSL"]
         end
-        
+
         subgraph "Unified Execution Layer"
             UE["Unified Execution Engine"]
             AS["Adaptive Scheduler"]
             RE["Resource Elasticity"]
             GO["Global Optimizer"]
         end
-        
+
         subgraph "Next-Gen State Management"
             TS["Tiered Storage"]
             IC["Intelligent Cache"]
             DI["Distributed Index"]
             SS["State Server"]
         end
-        
+
         subgraph "Cloud-Native Architecture 2.0"
             K8s["Kubernetes Operator"]
             SS2["Serverless Execution"]
             MC["Multi-Cloud Support"]
             FO["FinOps Integration"]
         end
-        
+
         subgraph "Storage Layer"
             L1["L1: Memory"]
             L2["L2: Local SSD"]
@@ -1142,33 +1143,33 @@ graph TB
             L4["L4: Object Store"]
         end
     end
-    
+
     SQL --> DSL
     Table --> DSL
     DS --> DSL
     ML --> DSL
     Agent --> DSL
-    
+
     DSL --> UE
     UE --> AS
     UE --> RE
     UE --> GO
-    
+
     UE --> TS
     TS --> IC
     TS --> DI
     TS --> SS
-    
+
     AS --> K8s
     RE --> SS2
     SS2 --> MC
     MC --> FO
-    
+
     TS --> L1
     TS --> L2
     TS --> L3
     TS --> L4
-    
+
     style UE fill:#e3f2fd,stroke:#1976d2
     style TS fill:#e8f5e9,stroke:#388e3c
     style SS2 fill:#f3e5f5,stroke:#7b1fa2
@@ -1181,63 +1182,63 @@ graph TB
 graph TB
     subgraph "Flink 2.x Architecture"
         direction TB
-        
+
         subgraph "2.x API Layer"
             SQL2["SQL/Table"]
             DS2["DataStream"]
             DS2B["DataSet (Deprecated)"]
         end
-        
+
         subgraph "2.x Execution Layer"
             StreamExec["Stream Execution"]
             BatchExec["Batch Execution"]
         end
-        
+
         subgraph "2.x State Management"
             DS_2x["Disaggregated Storage"]
         end
-        
+
         subgraph "2.x Resource Management"
             StaticRM["Static/Adaptive"]
         end
     end
-    
+
     Evolution["Architecture Evolution"]
-    
+
     subgraph "Flink 3.0 Architecture"
         direction TB
-        
+
         subgraph "3.0 API Layer"
             UnifiedAPI["Unified API Layer"]
         end
-        
+
         subgraph "3.0 Execution Layer"
             UnifiedExec["Unified Execution Layer"]
         end
-        
+
         subgraph "3.0 State Management"
             NGS["Next-Gen State Mgmt"]
         end
-        
+
         subgraph "3.0 Cloud-Native"
             Serverless["Serverless Execution"]
         end
     end
-    
+
     SQL2 --> UnifiedAPI
     DS2 --> UnifiedAPI
     DS2B -.->|Removed| UnifiedAPI
-    
+
     StreamExec --> UnifiedExec
     BatchExec --> UnifiedExec
-    
+
     DS_2x --> NGS
-    
+
     StaticRM --> Serverless
-    
+
     Flink 2.x Architecture -.-> Evolution
     Evolution -.-> Flink 3.0 Architecture
-    
+
     style UnifiedAPI fill:#c8e6c9,stroke:#2e7d32
     style UnifiedExec fill:#c8e6c9,stroke:#2e7d32
     style NGS fill:#c8e6c9,stroke:#2e7d32
@@ -1250,41 +1251,41 @@ graph TB
 ```mermaid
 graph TB
     subgraph "Unified Execution Layer"
-        
+
         subgraph "Query Input"
             Q1["SQL Query"]
             Q2["Table API"]
             Q3["DataStream API"]
         end
-        
+
         subgraph "Unified DSL"
             Parser["Parser"]
             Analyzer["Semantic Analyzer"]
             Optimizer["Logical Optimizer"]
         end
-        
+
         subgraph "Execution Plan"
             LP["Logical Plan"]
             PP["Physical Plan"]
             CodeGen["Code Generation"]
         end
-        
+
         subgraph "Runtime"
             Scheduler["Adaptive Scheduler"]
             Executor["Unified Executor"]
         end
-        
+
         subgraph "Execution Modes"
             Stream["Streaming Mode"]
             Batch["Batch Mode"]
             Interactive["Interactive Mode"]
         end
     end
-    
+
     Q1 --> Parser
     Q2 --> Parser
     Q3 --> Parser
-    
+
     Parser --> Analyzer
     Analyzer --> Optimizer
     Optimizer --> LP
@@ -1292,11 +1293,11 @@ graph TB
     PP --> CodeGen
     CodeGen --> Scheduler
     Scheduler --> Executor
-    
+
     Executor --> Stream
     Executor --> Batch
     Executor --> Interactive
-    
+
     style Executor fill:#e3f2fd,stroke:#1976d2
 ```
 
@@ -1305,38 +1306,38 @@ graph TB
 ```mermaid
 graph LR
     subgraph "State Management Evolution"
-        
+
         subgraph "Flink 1.x"
             Local["Local Storage<br/>Memory/RocksDB"]
         end
-        
+
         subgraph "Flink 2.x"
             Disagg["Disaggregated Storage<br/>Local + Remote"]
         end
-        
+
         subgraph "Flink 3.0"
             Tiered["Tiered Storage<br/>L1→L2→L3→L4"]
         end
-        
+
         Local -->|2019| Disagg
         Disagg -->|2027| Tiered
     end
-    
+
     subgraph "Performance Characteristics"
         direction TB
         Latency["Access Latency"]
         Capacity["Capacity"]
         Cost["Cost per GB"]
     end
-    
+
     Local -.->|~1μs| Latency
     Disagg -.->|~10ms| Latency
     Tiered -.->|~1μs-100ms| Latency
-    
+
     Local -.->|GB| Capacity
     Disagg -.->|TB| Capacity
     Tiered -.->|EB| Capacity
-    
+
     style Tiered fill:#c8e6c9,stroke:#2e7d32
 ```
 
@@ -1367,29 +1368,29 @@ gantt
 ```mermaid
 timeline
     title Flink Version Evolution Timeline
-    
+
     section 2015-2024
         Flink 1.x : Local State Storage
                   : Synchronous Execution
                   : Stream & Batch Separation
-                  
+
     section 2024-2027
         Flink 2.0 : Disaggregated State
                   : Async Execution Model
                   : Stream-Batch Unification
-                  
+
         Flink 2.1 : Materialized Tables
                   : Delta Join
-                  
+
         Flink 2.2 : Vector Search
                   : Python Async API
-                  
+
         Flink 2.3 : AI Agents (FLIP-531)
                   : Security Enhancements
-                  
+
         Flink 2.4 : Agent GA
                   : Serverless Preview
-                  
+
     section 2027+
         Flink 3.0 : Unified Execution Layer
                   : Next-Gen State Management
@@ -1402,45 +1403,25 @@ timeline
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Roadmap, "Flink 3.0 Architecture Vision", 2026. https://flink.apache.org/roadmap/
 
-[^2]: Apache Flink FLIP-XXX, "Unified Execution Layer for Flink 3.0", 2026 (Design Phase).
 
-[^3]: Apache Flink FLIP-YYY, "Next-Generation State Management", 2026 (Design Phase).
 
-[^4]: Apache Flink FLIP-ZZZ, "Cloud-Native Architecture 2.0", 2026 (Design Phase).
 
-[^5]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", *IEEE Data Engineering Bulletin*, 2015.
 
-[^6]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", *PVLDB*, 8(12), 2015.
 
-[^7]: M. Zaharia et al., "Apache Spark: A Unified Engine for Big Data Processing", *CACM*, 59(11), 2016.
 
-[^8]: AWS, "AWS Lambda Serverless Computing", 2025. https://aws.amazon.com/lambda/
 
-[^9]: Google Cloud, "Cloud Run Serverless Platform", 2025. https://cloud.google.com/run
 
-[^10]: Azure, "Azure Container Apps Serverless", 2025. https://azure.microsoft.com/services/container-apps/
 
-[^11]: Kubernetes, "Kubernetes Operator Pattern", 2025. https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
 
-[^12]: Cloud Native Computing Foundation, "Serverless Workflow Specification", 2025. https://serverlessworkflow.io/
 
-[^13]: S. Hendrickson et al., "Serverless Computing with OpenLambda", *USENIX ;login:*, 2016.
 
-[^14]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
 
-[^15]: RocksDB Cloud, "RocksDB Cloud Documentation", 2025. https://github.com/rockset/rocksdb-cloud
 
-[^16]: AWS, "Amazon S3 Express One Zone", 2025. https://aws.amazon.com/s3/storage-classes/express-one-zone/
 
-[^17]: Google Cloud, "Cloud Storage FUSE", 2025. https://cloud.google.com/storage/docs/cloud-storage-fuse
 
-[^18]: Apache Flink Documentation, "Exactly-Once Semantics", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/stateful-stream-processing/
 
-[^19]: K.M. Chandy and L. Lamport, "Distributed Snapshots: Determining Global States of Distributed Systems", *ACM Transactions on Computer Systems*, 3(1), 1985.
 
-[^20]: Apache Flink 2.3 Release Notes, 2026. https://nightlies.apache.org/flink/flink-docs-master/release-notes/flink-2.3/
 
 ---
 

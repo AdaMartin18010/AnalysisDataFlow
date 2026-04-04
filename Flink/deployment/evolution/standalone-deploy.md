@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Deploy-Standalone-01: Standalone Cluster
+
 独立集群：
 $$
 \text{Standalone} = \text{FixedResources} + \text{ManualManagement}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Deploy-Standalone-01: Startup Speed
+
 启动速度：
 $$
 T_{\text{startup}} < 30s

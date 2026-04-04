@@ -147,6 +147,7 @@ Throughput_max = min(
 ```
 
 **证明概要**:
+
 1. 每个 Task 在同一时刻最多持有一个连接（同步写入）
 2. 连接池大小 ≥ Task 并行度
 3. 因此总有一个连接可用，满足资源分配图无环条件
@@ -158,7 +159,7 @@ Throughput_max = min(
 **命题**: 使用 XA 事务时，JDBC Sink 提供端到端的 Exactly-Once 语义：
 
 ```
-∀ checkpoint: 
+∀ checkpoint:
     records_before_checkpoint ⊆ DB_committed_records
     ∧ no_duplicate_records
     ∧ recovery_replays_from_checkpoint
@@ -220,9 +221,10 @@ Flink Checkpoint
 ### 4.1 分区读取策略分析
 
 **主键范围分片**:
+
 ```sql
 -- 自动生成分片查询
-SELECT * FROM table 
+SELECT * FROM table
 WHERE id BETWEEN ? AND ?
 -- 分片1: 1-10000
 -- 分片2: 10001-20000
@@ -232,9 +234,10 @@ WHERE id BETWEEN ? AND ?
 **适用条件**: 主键连续、数据分布均匀
 
 **不均匀数据处理**:
+
 ```sql
 -- 使用动态分片
-SELECT * FROM table 
+SELECT * FROM table
 WHERE MOD(HASH(id), ${parallelism}) = ${task_index}
 ```
 
@@ -279,6 +282,7 @@ Phase 2 (Commit):
 **证明**:
 
 **前提**:
+
 1. XA 事务支持原子性 prepare/commit
 2. Checkpoint 机制保证 Flink 状态一致性
 3. 恢复时从最后一个成功 checkpoint 重启
@@ -303,6 +307,7 @@ Phase 2 (Commit):
 **证明**:
 
 设:
+
 - $N$ = 批次大小
 - $L$ = 网络往返延迟
 - $T_{db}$ = 数据库处理时间
@@ -419,15 +424,15 @@ String createTableSQL = """
         'username' = 'user',
         'password' = 'pass',
         'driver' = 'com.mysql.cj.jdbc.Driver',
-        
+
         -- 连接池配置
         'connection.max-retry-timeout' = '60s',
-        
+
         -- 批量写入配置
         'sink.buffer-flush.max-rows' = '1000',
         'sink.buffer-flush.interval' = '1s',
         'sink.max-retries' = '3',
-        
+
         -- 语义配置
         'sink.semantic' = 'at-least-once'
     )
@@ -447,7 +452,7 @@ tableEnv.executeSql("""
         'table-name' = 'order_stats',
         'username' = 'user',
         'password' = 'pass',
-        
+
         -- 启用 UPSERT
         'sink.semantic' = 'upsert'
     )
@@ -461,13 +466,13 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class CustomJdbcSink {
-    
+
     public static DataSource createDataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
         config.setUsername("user");
         config.setPassword("pass");
-        
+
         // 连接池优化
         config.setMaximumPoolSize(20);
         config.setMinimumIdle(10);
@@ -475,7 +480,7 @@ public class CustomJdbcSink {
         config.setIdleTimeout(600000);
         config.setMaxLifetime(1800000);
         config.setLeakDetectionThreshold(60000);
-        
+
         // 性能优化
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
@@ -487,7 +492,7 @@ public class CustomJdbcSink {
         config.addDataSourceProperty("cacheServerConfiguration", "true");
         config.addDataSourceProperty("elideSetAutoCommits", "true");
         config.addDataSourceProperty("maintainTimeStats", "false");
-        
+
         return new HikariDataSource(config);
     }
 }
@@ -530,19 +535,19 @@ graph TB
         P --> J2[JDBC Sink Task 2]
         P --> J3[JDBC Sink Task N]
     end
-    
+
     subgraph "Connection Pool"
         CP1[HikariCP Pool 1]
         CP2[HikariCP Pool 2]
         CP3[HikariCP Pool N]
     end
-    
+
     subgraph "Database Cluster"
         DB1[(Primary)]
         DB2[(Replica 1)]
         DB3[(Replica 2)]
     end
-    
+
     J1 --> CP1
     J2 --> CP2
     J3 --> CP3
@@ -551,7 +556,7 @@ graph TB
     CP3 --> DB1
     DB1 -.-> DB2
     DB1 -.-> DB3
-    
+
     style DB1 fill:#ff9999
     style CP1 fill:#99ccff
     style J1 fill:#99ff99
@@ -565,7 +570,7 @@ sequenceDiagram
     participant S as JDBC Sink
     participant X as XA Resource
     participant D as Database
-    
+
     F->>S: triggerCheckpoint()
     S->>S: flush pending batches
     S->>X: XA start
@@ -573,9 +578,9 @@ sequenceDiagram
     D-->>X: prepared
     X-->>S: XA end
     S-->>F: checkpoint complete
-    
+
     F->>F: save checkpoint
-    
+
     F->>S: notifyCheckpointComplete()
     S->>X: XA commit
     X->>D: commit transaction
@@ -588,32 +593,32 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[开始: JDBC Sink 性能调优] --> B{一致性要求?}
-    
+
     B -->|Exactly-Once| C[启用 XA 事务]
     B -->|At-Least-Once| D{是否幂等?}
     B -->|允许重复| E[APPEND 模式]
-    
+
     D -->|是| F[UPSERT 模式]
     D -->|否| G[REPLACE 模式]
-    
+
     C --> H[调整 batch size]
     E --> H
     F --> H
     G --> H
-    
+
     H --> I{batch size < 1000?}
     I -->|是| J[增加 batch size]
     I -->|否| K[调整 flush interval]
-    
+
     J --> L{吞吐是否满足?}
     K --> L
     L -->|否| M[增加 Sink 并行度]
     L -->|是| N[监控连接池]
-    
+
     M --> O{连接池是否耗尽?}
     O -->|是| P[增加 maxPoolSize]
     O -->|否| Q[检查 DB 性能]
-    
+
     P --> N
     Q --> N
     N --> R[结束: 达到目标吞吐]
@@ -628,17 +633,20 @@ flowchart TD
 #### 问题 1: Connection Pool Exhausted (连接池耗尽)
 
 **现象**:
+
 ```
 java.sql.SQLException: Connection pool is exhausted
     at com.zaxxer.hikari.pool.HikariPool.getConnection
 ```
 
 **原因分析**:
+
 1. Sink 并行度过高，超过连接池容量
 2. 长时间运行的事务未释放连接
 3. 连接泄漏（未正确关闭）
 
 **解决方案**:
+
 ```java
 // 1. 确保连接池大小 ≥ Sink 并行度
 config.setMaximumPoolSize(sinkParallelism + 5);
@@ -656,8 +664,9 @@ config.setMaxLifetime(1800000);
 #### 问题 2: Deadlock on Upsert (UPSERT 死锁)
 
 **现象**:
+
 ```
-com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException: 
+com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException:
     Deadlock found when trying to get lock; try restarting transaction
 ```
 
@@ -665,12 +674,13 @@ com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException:
 多个并行 Task 同时写入相同记录，导致数据库行锁冲突。
 
 **解决方案**:
+
 ```java
 // 1. 使用分区策略避免热点
 // 按主键分区，确保相同 _id 的数据进入同一 Task
 DataStream<Order> partitioned = orders
     .partitionCustom(
-        new HashPartitioner(), 
+        new HashPartitioner(),
         Order::getId  // 使用主键分区
     );
 
@@ -690,16 +700,19 @@ SET GLOBAL innodb_deadlock_detect = ON;
 #### 问题 3: XA Transaction Timeout (XA 事务超时)
 
 **现象**:
+
 ```
-javax.transaction.xa.XAException: XAER_RMFAIL: 
+javax.transaction.xa.XAException: XAER_RMFAIL:
     The command cannot be completed when the global transaction is in the IDLE state
 ```
 
 **原因分析**:
+
 1. Checkpoint 间隔过长，XA 事务超时
 2. 数据库 XA 事务超时设置过短
 
 **解决方案**:
+
 ```java
 // 1. 缩短 Checkpoint 间隔
 env.enableCheckpointing(30000); // 30秒
@@ -718,11 +731,13 @@ SET max_prepared_transactions = 100;
 #### 问题 4: 数据类型不匹配
 
 **现象**:
+
 ```
 java.sql.SQLException: Data truncation: Out of range value for column 'amount'
 ```
 
 **解决方案**:
+
 ```java
 // 1. 显式类型映射
 public class OrderRowConverter implements JdbcRowConverter<Order> {
@@ -734,7 +749,7 @@ public class OrderRowConverter implements JdbcRowConverter<Order> {
             rs.getTimestamp("create_time").toLocalDateTime()
         );
     }
-    
+
     @Override
     public void setValues(PreparedStatement ps, Order order) throws SQLException {
         ps.setLong(1, order.getId());
@@ -751,14 +766,14 @@ public class OrderRowConverter implements JdbcRowConverter<Order> {
 ```sql
 -- MySQL: 查看当前连接
 SHOW PROCESSLIST;
-SELECT * FROM information_schema.PROCESSLIST 
+SELECT * FROM information_schema.PROCESSLIST
 WHERE USER = 'flink_user';
 
 -- 查看 XA 事务
 XA RECOVER;
 
 -- PostgreSQL: 查看连接
-SELECT * FROM pg_stat_activity 
+SELECT * FROM pg_stat_activity
 WHERE usename = 'flink_user';
 
 -- 查看锁
@@ -783,6 +798,7 @@ SELECT * FROM pg_locks WHERE NOT granted;
 ### 9.2 数据库优化建议
 
 **MySQL**:
+
 ```sql
 -- 启用二进制日志（CDC 必需）
 SET GLOBAL binlog_format = 'ROW';
@@ -795,6 +811,7 @@ SET GLOBAL innodb_flush_log_at_trx_commit = 2;
 ```
 
 **PostgreSQL**:
+
 ```sql
 -- 优化写入性能
 SET synchronous_commit = off;
@@ -813,7 +830,7 @@ public class MetricsJdbcSink extends RichSinkFunction<Order> {
     private transient Counter recordsOut;
     private transient Histogram batchSize;
     private transient Meter throughput;
-    
+
     @Override
     public void open(Configuration parameters) {
         recordsOut = getRuntimeContext()
@@ -826,7 +843,7 @@ public class MetricsJdbcSink extends RichSinkFunction<Order> {
                     new SlidingWindowReservoir(500)
                 )));
     }
-    
+
     @Override
     public void invoke(Order value, Context context) {
         // 写入逻辑
@@ -838,16 +855,3 @@ public class MetricsJdbcSink extends RichSinkFunction<Order> {
 ---
 
 ## 10. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "JDBC Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/
-
-[^2]: HikariCP GitHub, "HikariCP Configuration", https://github.com/brettwooldridge/HikariCP
-
-[^3]: MySQL Documentation, "Connector/J Configuration", https://dev.mysql.com/doc/connector-j/en/
-
-[^4]: PostgreSQL Documentation, "JDBC Driver", https://jdbc.postgresql.org/documentation/
-
-[^5]: X/Open CAE Specification, "Distributed Transaction Processing: The XA Specification", 1991.
-
-[^6]: Kleppmann, M., "Designing Data-Intensive Applications", O'Reilly Media, 2017.
-

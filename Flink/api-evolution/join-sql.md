@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Join-01: Join Types
+
 JOIN类型：
 $$
 \text{Joins} = \{\text{INNER}, \text{LEFT}, \text{RIGHT}, \text{FULL}, \text{CROSS}\}
 $$
 
 ### Def-F-Join-02: Interval Join
+
 区间JOIN：
 $$
 \text{IntervalJoin} : \text{Table}_1 \times \text{Table}_2 \times \text{Interval} \to \text{Result}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Join-01: Join Completeness
+
 JOIN完整性：
 $$
 \forall r \in \text{Left} : \exists j \in \text{Join} \iff \text{Match}(r)
@@ -55,7 +58,7 @@ SELECT o.order_id, s.shipment_id
 FROM orders o
 JOIN shipments s
 ON o.order_id = s.order_id
-AND o.order_time BETWEEN s.ship_time - INTERVAL '1' HOUR 
+AND o.order_time BETWEEN s.ship_time - INTERVAL '1' HOUR
                      AND s.ship_time + INTERVAL '1' HOUR;
 ```
 
@@ -64,7 +67,7 @@ AND o.order_time BETWEEN s.ship_time - INTERVAL '1' HOUR
 ### 6.1 时态JOIN
 
 ```sql
-SELECT 
+SELECT
     o.order_id,
     o.amount * c.rate AS amount_usd
 FROM orders o

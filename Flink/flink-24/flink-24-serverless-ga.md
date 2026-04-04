@@ -5,13 +5,16 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-24-04: Serverless Flink
+
 Serverless Flink是一种无需管理集群基础设施的Flink部署模式，用户只需提交作业，系统自动：
+
 - 预配计算资源（自动扩缩容）
 - 管理状态后端（自动选择最优）
 - 处理故障恢复（自动checkpoint）
 - 优化资源配置（基于负载自动调优）
 
 ### Def-F-24-05: Serverless Autoscaling
+
 自动扩缩容策略定义为：
 $$
 \text{Parallelism}(t) = f(\text{InputRate}(t), \text{ProcessingRate}(t), \text{Backpressure}(t))
@@ -20,6 +23,7 @@ $$
 其中 $f$ 为自适应控制函数，目标是最小化成本同时满足延迟SLA。
 
 ### Def-F-24-06: Resource Profile
+
 资源画像定义：
 $$
 \text{Profile} = \langle \text{CPU}, \text{Memory}, \text{Network}, \text{Disk} \rangle
@@ -28,18 +32,21 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-24-04: Resource Efficiency
+
 Serverless模式下资源利用率满足：
 $$
 \eta = \frac{\sum_{i} \text{ActualProcessingTime}_i}{\sum_{j} \text{AllocatedTime}_j} \geq 0.7
 $$
 
 ### Prop-F-24-05: Cold Start Latency
+
 Serverless作业冷启动时间上界：
 $$
 T_{\text{cold}} \leq T_{\text{image\_pull}} + T_{\text{jm\_start}} + T_{\text{tm\_scale}} + T_{\text{restore}}
 $$
 
 ### Prop-F-24-06: Cost Optimization
+
 成本优化目标函数：
 $$
 \min C = \int_{0}^{T} c(t) \cdot r(t) \, dt \quad \text{s.t.} \quad \text{Latency}(t) \leq \text{SLA}
@@ -124,14 +131,14 @@ public class CostAwareScheduler {
     public ResourcePlan optimize(JobGraph graph, SLAMetrics sla) {
         // 预测不同配置下的性能
         PerformanceModel model = predictPerformance(graph);
-        
+
         // 在满足SLA的前提下选择成本最低的配置
         return model.configurations()
             .filter(c -> c.latency() <= sla.maxLatency())
             .min(Comparator.comparing(c -> c.cost()))
             .orElseThrow();
     }
-    
+
     private PerformanceModel predictPerformance(JobGraph graph) {
         // 基于历史数据和作业特征预测性能
         return new MLPerformanceModel(graph);
@@ -213,13 +220,13 @@ graph TB
         C --> D[Autoscaler]
         D --> E[Cost Optimizer]
     end
-    
+
     subgraph "Data Plane"
         F[Task Manager Pool] --> G[Dynamic Workers]
         G --> H[State Backend]
         H --> I[Object Storage]
     end
-    
+
     B --> F
 ```
 
@@ -255,10 +262,7 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-318: "Serverless Flink", 2024. https://cwiki.apache.org/confluence/display/FLINK/FLIP-318
-[^2]: "Auto-scaling Streaming Applications on Kubernetes", Flink Forward 2024.
-[^3]: AWS Lambda Scaling Documentation, https://docs.aws.amazon.com/lambda/latest/dg/invocation-scaling.html
-[^4]: "Resource Management in Serverless Computing", ACM Computing Surveys, 2023.
+[^1]: Apache Flink FLIP-318: "Serverless Flink", 2024. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-318>
 
 ---
 

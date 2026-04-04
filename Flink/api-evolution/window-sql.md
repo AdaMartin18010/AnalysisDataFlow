@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-WinSQL-01: Window Specification
+
 窗口规范：
 $$
 \text{WindowSpec} = \langle \text{Partition}, \text{Order}, \text{Frame} \rangle
 $$
 
 ### Def-F-WinSQL-02: Window Frame
+
 窗口帧：
 $$
 \text{Frame} = \{\text{ROWS}, \text{RANGE}\} \times \text{Bound}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-WinSQL-01: Frame Completeness
+
 帧完整性：
 $$
 \text{Frame} \subseteq \text{Window}
@@ -49,7 +52,7 @@ $$
 ### 5.1 窗口查询
 
 ```sql
-SELECT 
+SELECT
     user_id,
     order_time,
     amount,
@@ -66,12 +69,12 @@ FROM orders;
 ### 6.1 流式窗口
 
 ```sql
-SELECT 
+SELECT
     user_id,
     TUMBLE_START(order_time, INTERVAL '5' MINUTE) AS window_start,
     COUNT(*) AS order_count
 FROM orders
-GROUP BY 
+GROUP BY
     user_id,
     TUMBLE(order_time, INTERVAL '5' MINUTE);
 ```

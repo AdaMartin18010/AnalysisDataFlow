@@ -27,16 +27,16 @@ This guide provides a comprehensive roadmap for migrating applications from Kafk
 graph LR
     A[Kafka Streams App] --> B[Assessment]
     B --> C{Complexity}
-    
+
     C -->|Simple| D[Direct Migration]
     C -->|Complex| E[Strangler Fig Pattern]
-    
+
     D --> F[Implement in Flink]
     E --> G[Gradual Cutover]
-    
+
     F --> H[Dual Run]
     G --> H
-    
+
     H --> I{Validation Pass?}
     I -->|No| J[Debug & Fix]
     J --> H
@@ -65,14 +65,16 @@ graph LR
 #### Stream Creation
 
 **Kafka Streams**:
+
 ```java
 StreamsBuilder builder = new StreamsBuilder();
 KStream<String, String> stream = builder.stream("input-topic");
 ```
 
 **Flink DataStream**:
+
 ```java
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 KafkaSource<String> source = KafkaSource.<String>builder()
@@ -84,13 +86,14 @@ KafkaSource<String> source = KafkaSource.<String>builder()
     .build();
 
 DataStream<String> stream = env.fromSource(
-    source, 
-    WatermarkStrategy.noWatermarks(), 
+    source,
+    WatermarkStrategy.noWatermarks(),
     "Kafka Source"
 );
 ```
 
 **Flink Table API**:
+
 ```java
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
@@ -112,6 +115,7 @@ tableEnv.executeSql("""
 #### Transformations
 
 **Kafka Streams**:
+
 ```java
 KStream<String, Integer> transformed = stream
     .filter((key, value) -> value != null)
@@ -121,6 +125,7 @@ KStream<String, Integer> transformed = stream
 ```
 
 **Flink DataStream**:
+
 ```java
 DataStream<Tuple2<String, Integer>> transformed = stream
     .filter(value -> value != null)
@@ -130,6 +135,7 @@ DataStream<Tuple2<String, Integer>> transformed = stream
 ```
 
 **Flink Table API**:
+
 ```java
 Table transformed = tableEnv.from("input_table")
     .where($("value").isNotNull())
@@ -145,6 +151,7 @@ Table transformed = tableEnv.from("input_table")
 #### Aggregation
 
 **Kafka Streams**:
+
 ```java
 KTable<String, Long> counts = stream
     .groupByKey()
@@ -152,6 +159,7 @@ KTable<String, Long> counts = stream
 ```
 
 **Flink DataStream**:
+
 ```java
 DataStream<Tuple2<String, Long>> counts = stream
     .keyBy(value -> value.f0)
@@ -163,16 +171,16 @@ DataStream<Tuple2<String, Long>> keyedCounts = stream
     .keyBy(value -> value.f0)
     .process(new KeyedProcessFunction<String, String, Tuple2<String, Long>>() {
         private ValueState<Long> countState;
-        
+
         @Override
         public void open(Configuration parameters) {
             countState = getRuntimeContext().getState(
                 new ValueStateDescriptor<>("count", Types.LONG)
             );
         }
-        
+
         @Override
-        public void processElement(String value, Context ctx, 
+        public void processElement(String value, Context ctx,
                 Collector<Tuple2<String, Long>> out) throws Exception {
             Long current = countState.value();
             if (current == null) current = 0L;
@@ -186,6 +194,7 @@ DataStream<Tuple2<String, Long>> keyedCounts = stream
 #### Join
 
 **Kafka Streams**:
+
 ```java
 KStream<String, String> joined = stream1.join(
     stream2,
@@ -196,6 +205,7 @@ KStream<String, String> joined = stream1.join(
 ```
 
 **Flink DataStream**:
+
 ```java
 DataStream<String> joined = stream1
     .join(stream2)
@@ -206,6 +216,7 @@ DataStream<String> joined = stream1
 ```
 
 **Flink Table API**:
+
 ```java
 Table joined = table1
     .join(table2)
@@ -231,17 +242,17 @@ Table joined = table1
 graph TB
     subgraph "Migration Approach"
         A[Kafka Streams State] --> B{Stateful?}
-        
+
         B -->|Yes| C[Export State]
         B -->|No| D[Start Fresh]
-        
+
         C --> E[Transform Format]
         E --> F[Import to Flink]
-        
+
         D --> G[Rebuild from Source]
         F --> H[Dual Run Validation]
         G --> H
-        
+
         H --> I{Consistent?}
         I -->|No| J[Investigate]
         J --> H
@@ -252,6 +263,7 @@ graph TB
 ### 3.3 State Schema Transformation
 
 **Kafka Streams State**:
+
 ```java
 // KeyValueStore<String, UserStats>
 public class UserStats {
@@ -262,14 +274,15 @@ public class UserStats {
 ```
 
 **Flink State**:
+
 ```java
 public class UserStatsState {
     public long count = 0;
     public double sum = 0.0;
     public long lastTimestamp = 0L;
-    
+
     // State descriptor
-    public static final ValueStateDescriptor<UserStatsState> DESCRIPTOR = 
+    public static final ValueStateDescriptor<UserStatsState> DESCRIPTOR =
         new ValueStateDescriptor<>("user-stats", UserStatsState.class);
 }
 ```
@@ -291,11 +304,13 @@ public class UserStatsState {
 ### 4.2 Parallelism Configuration
 
 **Kafka Streams**:
+
 ```java
 properties.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 4);
 ```
 
 **Flink**:
+
 ```java
 env.setParallelism(4);
 
@@ -306,13 +321,15 @@ stream.map(...).setParallelism(2);
 ### 4.3 Fault Tolerance
 
 **Kafka Streams**:
+
 ```java
-properties.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, 
+properties.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
     StreamsConfig.EXACTLY_ONCE_V2);
 properties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
 ```
 
 **Flink**:
+
 ```java
 env.enableCheckpointing(100);  // 100ms
 env.getCheckpointConfig().setCheckpointingMode(
@@ -331,35 +348,37 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(
 ### 5.1 Unit Testing
 
 **Kafka Streams Test**:
+
 ```java
 @Test
 public void testTopology() {
     TopologyTestDriver testDriver = new TopologyTestDriver(topology, props);
-    
+
     TestInputTopic<String, String> inputTopic = testDriver
         .createInputTopic("input", Serdes.String().serializer(), ...);
-    
+
     TestOutputTopic<String, Long> outputTopic = testDriver
         .createOutputTopic("output", Serdes.String().deserializer(), ...);
-    
+
     inputTopic.pipeInput("key", "value");
     assertEquals(1L, outputTopic.readValue());
 }
 ```
 
 **Flink Test**:
+
 ```java
 @Test
 public void testPipeline() throws Exception {
-    StreamExecutionEnvironment env = 
+    StreamExecutionEnvironment env =
         StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
-    
+
     DataStream<String> input = env.fromElements("a", "b", "c");
     DataStream<Long> result = input
         .map(String::length)
         .returns(Types.LONG);
-    
+
     // Collect results
     List<Long> results = result.executeAndCollect(100);
     assertEquals(Arrays.asList(1L, 1L, 1L), results);
@@ -369,13 +388,14 @@ public void testPipeline() throws Exception {
 ### 5.2 Integration Testing
 
 **Dual Run Validation**:
+
 ```java
 @Test
 public void testMigrationParity() {
     // Run both implementations
     List<Output> kafkaStreamsResults = runKafkaStreams(input);
     List<Output> flinkResults = runFlink(input);
-    
+
     // Compare outputs (allowing for ordering differences)
     assertEquals(
         kafkaStreamsResults.stream().sorted().collect(Collectors.toList()),
@@ -394,25 +414,25 @@ public void testMigrationParity() {
 graph TB
     subgraph "Migration Phase"
         K[Kafka]
-        
+
         subgraph "Dual Run"
             KS[Kafka Streams App]
             Flink[Apache Flink]
         end
-        
+
         K -->|Consumer Group 1| KS
         K -->|Consumer Group 2| Flink
-        
+
         KS -->|Output| Validator
         Flink -->|Output| Validator
-        
+
         Validator -->|Compare| Result{Match?}
     end
-    
+
     subgraph "Cutover Phase"
         K2[Kafka]
         Flink2[Flink Only]
-        
+
         K2 --> Flink2
     end
 ```

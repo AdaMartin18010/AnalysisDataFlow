@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-04: Serverless V2
+
 Serverless V2是在V1基础上的重大架构升级：
 $$
 \text{V2} = \text{V1} + \text{ColdStartOptimization} + \text{CostIntelligence} + \text{PredictiveScaling}
 $$
 
 ### Def-F-25-05: Predictive Scaling
+
 预测性扩缩容基于负载预测：
 $$
 \text{Parallelism}(t+\Delta t) = \text{Predict}(\text{Load}(t), \text{Pattern}(t))
 $$
 
 ### Def-F-25-06: Cost Intelligence
+
 成本智能优化资源成本：
 $$
 \min \text{Cost} = \int_{0}^{T} \text{Price}(t) \cdot \text{Resources}(t) \, dt
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-03: Cold Start Reduction
+
 冷启动时间减少：
 $$
 T_{\text{cold}}^{\text{V2}} \leq 0.5 \times T_{\text{cold}}^{\text{V1}}
 $$
 
 ### Prop-F-25-04: Cost Efficiency
+
 成本效率提升：
 $$
 \frac{\text{Cost}_{\text{V1}} - \text{Cost}_{\text{V2}}}{\text{Cost}_{\text{V1}}} \geq 0.3
@@ -85,7 +90,7 @@ V2: 预置池 + 预测需求 → 提前准备 → 秒级启动
 
 模型: h_t = LSTM(x_t, h_{t-1})
       y_t = Dense(h_t)
-      
+
 决策: P(t+Δt) = argmin_p |μ·p - L_{t+Δt}|
 ```
 
@@ -93,26 +98,26 @@ V2: 预置池 + 预测需求 → 提前准备 → 秒级启动
 
 ```java
 public class PredictiveAutoscaler {
-    
+
     private final LoadPredictionModel model;
     private final ResourcePool pool;
-    
+
     @Scheduled(fixedRate = 60000)
     public void predictAndScale() {
         // 获取历史负载
         List<LoadMetric> history = metricsService.getHistory(Duration.ofHours(24));
-        
+
         // 预测未来负载
         LoadPrediction prediction = model.predict(history, Duration.ofMinutes(10));
-        
+
         // 预计算资源需求
         int requiredParallelism = calculateRequiredParallelism(prediction);
-        
+
         // 提前预热
         if (requiredParallelism > currentParallelism) {
             pool.preWarm(requiredParallelism - currentParallelism);
         }
-        
+
         // 执行扩缩容
         if (Math.abs(requiredParallelism - currentParallelism) > THRESHOLD) {
             scaler.scaleTo(requiredParallelism);
@@ -154,13 +159,13 @@ graph TB
         B[预热池管理]
         C[成本优化器]
     end
-    
+
     subgraph "资源池"
         D[预热池]
         E[按需实例]
         F[Spot实例]
     end
-    
+
     A --> B
     B --> D
     C --> E

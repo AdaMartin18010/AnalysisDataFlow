@@ -5,6 +5,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-AI-30-01: Native AI Support
+
 原生AI支持：
 $$
 \text{NativeAI} = \text{FirstClassAgent} + \text{LLMRuntime} + \text{VectorStore}
@@ -13,6 +14,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-AI-30-01: Low Latency Inference
+
 低延迟推理：
 $$
 \text{Latency} < 100ms

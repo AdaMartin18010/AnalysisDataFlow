@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-SQL25-01: Adaptive SQL
+
 自适应SQL：
 $$
 \text{AdaptiveSQL} : \text{Query} \times \text{Stats} \to \text{OptimalPlan}
 $$
 
 ### Def-F-SQL25-02: Materialized View
+
 物化视图：
 $$
 \text{MatView} = \text{Query}_{\text{definition}} + \text{Result}_{\text{materialized}}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-SQL25-01: View Freshness
+
 视图新鲜度：
 $$
 \text{Freshness} = t_{\text{now}} - t_{\text{last_update}}
@@ -41,14 +44,14 @@ $$
 
 ```sql
 CREATE MATERIALIZED VIEW daily_sales AS
-SELECT 
+SELECT
     DATE(order_time) AS order_date,
     SUM(amount) AS total_sales
 FROM orders
 GROUP BY DATE(order_time);
 
 -- 自动增量刷新
-ALTER MATERIALIZED VIEW daily_sales 
+ALTER MATERIALIZED VIEW daily_sales
 REFRESH WITH WATERMARK;
 ```
 

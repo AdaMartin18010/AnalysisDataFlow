@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-MQ-01: Message Queue
+
 消息队列：
 $$
 \text{MQ} : \text{Producer} \to \text{Queue} \to \text{Consumer}
 $$
 
 ### Def-F-Conn-MQ-02: Pub/Sub
+
 发布订阅：
 $$
 \text{PubSub} : \text{Publisher} \to \{\text{Subscriber}_i\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-MQ-01: Ordering Guarantee
+
 顺序保证：
 $$
 \text{Partition} \implies \text{Ordering}

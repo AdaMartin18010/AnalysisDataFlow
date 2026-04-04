@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Query-01: Queryable State
+
 可查询状态：
 $$
 \text{Queryable} : \text{State} \times \text{Query} \to \text{Result}
 $$
 
 ### Def-F-Query-02: State Query Client
+
 状态查询客户端：
 $$
 \text{Client} : \text{JobID} \times \text{Key} \to \text{StateValue}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Query-01: Query Consistency
+
 查询一致性：
 $$
 \text{Query}(\text{State}_t) = \text{Value}_t \pm \Delta
@@ -85,7 +88,7 @@ sequenceDiagram
     participant C as Client
     participant P as Proxy
     participant TM as TaskManager
-    
+
     C->>P: 查询请求
     P->>TM: 路由到对应TM
     TM-->>P: 返回状态值

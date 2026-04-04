@@ -147,7 +147,7 @@ ConnectorClassification = ⟨维护主体, 版本策略, 质量保证, 支持等
 **Kafka 3.x Source 形式化定义**:
 
 ```java
-Kafka3Source<T> = ⟨BootstrapServers, TopicPattern, ConsumerProtocol, 
+Kafka3Source<T> = ⟨BootstrapServers, TopicPattern, ConsumerProtocol,
                    OffsetReset, IsolationLevel, PartitionDiscovery⟩
 
 ConsumerProtocol ∈ {CLASSIC, CONSUMER}
@@ -164,7 +164,7 @@ OffsetReset ∈ {EARLIEST, LATEST, TIMESTAMP}
 **Paimon 1.0 增强功能**:
 
 ```
-Paimon1.0Enhancement = ⟨DynamicBucket, IncrementalCompaction, 
+Paimon1.0Enhancement = ⟨DynamicBucket, IncrementalCompaction,
                         FederationQuery, MaterializedView⟩
 
 DynamicBucket:
@@ -235,7 +235,7 @@ Iceberg V2:
 **Fluss 架构形式化定义**:
 
 ```
-FlussConnector = ⟨TabletServer, Coordinator, TieredStorage, 
+FlussConnector = ⟨TabletServer, Coordinator, TieredStorage,
                   KafkaProtocol, FlinkNativeAPI⟩
 
 TabletServer:
@@ -500,7 +500,7 @@ ResourceAdjustment:
 connector:
   type: kinesis
   stream: input-stream
-  
+
   # 自动伸缩配置
   autoscaling:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     enabled: true
@@ -509,7 +509,7 @@ connector:
     target-utilization: 0.7
     scale-up-delay: 60s
     scale-down-delay: 300s
-    
+
   # 指标触发器
   triggers:
     - metric: records-lag
@@ -563,7 +563,7 @@ Q_S(StreamingScan, [t1, t2]) ≡ Q_B(BatchScan, snap(t2))
 graph TB
     subgraph "Flink 2.4 Connector Ecosystem"
         direction TB
-        
+
         subgraph "Messaging Layer"
             K30[Kafka 3.x<br/>Native KRaft]
             P50[Pulsar 5.0]
@@ -572,14 +572,14 @@ graph TB
             KIN[Kinesis 4.x]
             PUBSUB[Pub/Sub 2.0]
         end
-        
+
         subgraph "Lakehouse Layer"
             ICE18[Iceberg 1.8<br/>V2 Format]
             PAI10[Paimon 1.0<br/>Dynamic Bucket]
             HUD11[Hudi 1.1]
             DEL[Delta Lake 3.2]
         end
-        
+
         subgraph "Database Layer"
             JDBC40[JDBC 4.0<br/>Connection Pool]
             MONGO[MongoDB 5.0]
@@ -588,7 +588,7 @@ graph TB
             CK[ClickHouse]
             TIDB[TiDB]
         end
-        
+
         subgraph "CDC Layer"
             CDC34[CDC 3.4<br/>Pipeline Mode]
             MYSQL[MySQL CDC]
@@ -596,7 +596,7 @@ graph TB
             ORA[Oracle CDC]
             MONGO_CDC[MongoDB CDC]
         end
-        
+
         subgraph "Cloud Layer"
             S3[S3 Connector]
             GCS[GCS Connector]
@@ -605,14 +605,14 @@ graph TB
             BQ[BigQuery]
         end
     end
-    
+
     K30 --> CDC34
     FLUSS --> PAI10
     ICE18 --> PAI10
     JDBC40 --> MYSQL
     MYSQL --> PAI10
     PG --> ICE18
-    
+
     style K30 fill:#4CAF50
     style FLUSS fill:#4CAF50
     style PAI10 fill:#4CAF50
@@ -699,7 +699,7 @@ xychart-beta
     title "Connector Latency vs Throughput"
     x-axis "Throughput (10k records/s)" [0, 50, 100, 150, 200, 250]
     y-axis "Latency (ms)" [0, 50, 100, 500, 1000, 5000]
-    
+
     line "Kafka 3.x" [[0, 5], [200, 10], [250, 15]]
     line "Fluss" [[0, 10], [150, 20], [200, 30]]
     line "Paimon" [[0, 500], [80, 1000], [120, 2000]]
@@ -718,30 +718,30 @@ xychart-beta
 ```mermaid
 flowchart TD
     A[数据集成场景] --> B{实时性要求?}
-    
+
     B -->|毫秒级<br/>实时分析| C[选择 Fluss]
     B -->|秒级<br/>流式数仓| D[选择 Paimon]
     B -->|分钟级<br/>离线分析| E[选择 Iceberg]
-    
+
     C --> C1{是否需要 CDC?}
     C1 -->|是| C2[Flink CDC + Fluss]
     C1 -->|否| C3[Fluss Native Source]
-    
+
     D --> D1{数据源类型?}
     D1 -->|消息队列| D2[Kafka/Pulsar → Paimon]
     D1 -->|数据库 CDC| D3[CDC 3.0 → Paimon]
     D1 -->|文件系统| D4[Files → Paimon]
-    
+
     E --> E1{查询引擎?}
     E1 -->|多引擎共享| E2[Iceberg + REST Catalog]
     E1 -->|Spark 为主| E3[Delta Lake]
     E1 -->|Flink 为主| E4[Paimon]
-    
+
     B -->|消息总线| F{吞吐量要求?}
     F -->|极高吞吐<br/>百万级/s| G[Kafka 3.x KRaft]
     F -->|高吞吐<br/>十万级/s| H[Fluss / Pulsar]
     F -->|中等吞吐<br/>万级/s| I[RabbitMQ / Kinesis]
-    
+
     style C fill:#4CAF50
     style D fill:#2196F3
     style G fill:#FF9800
@@ -855,6 +855,7 @@ CDC 3.4 (Flink 2.4)
 **证明**:
 
 **前提假设**:
+
 - P1: 企业数据存储需求可分为消息队列、文件系统、数据库、Lakehouse、CDC 五类
 - P2: 每类需求有行业主流技术方案
 - P3: Flink 2.4 为每类主流方案提供生产级连接器
@@ -1205,24 +1206,24 @@ CREATE TABLE user_events (
 ) WITH (
     'connector' = 'paimon',
     'path' = 'oss://bucket/paimon/user_events',
-    
+
     -- 动态桶配置 (Paimon 1.0 新特性)
     'bucket' = '-1',  -- -1 表示自动动态桶
     'dynamic-bucket.target-row-num' = '1000000',  -- 每桶目标数据量
     'dynamic-bucket.initial-buckets' = '16',  -- 初始桶数
     'dynamic-bucket.max-buckets' = '256',  -- 最大桶数
-    
+
     -- 文件格式
     'file.format' = 'parquet',
     'file.compression' = 'zstd',
-    
+
     -- 增量 Compaction
     'compaction.optimization' = 'incremental',
     'compaction.resource-adaptive' = 'true',
-    
+
     -- Changelog 生成
     'changelog-producer' = 'input',
-    
+
     -- 物化视图支持
     'materialized-view.enabled' = 'true'
 );
@@ -1246,13 +1247,13 @@ CREATE CATALOG iceberg_catalog WITH (
 );
 
 -- 联邦查询: 关联 Paimon 和 Iceberg 数据
-SELECT 
+SELECT
     p.user_id,
     p.event_time,
     i.user_profile,
     p.amount
 FROM paimon_catalog.db.transactions p
-JOIN iceberg_catalog.db.users i 
+JOIN iceberg_catalog.db.users i
     ON p.user_id = i.user_id;
 ```
 
@@ -1276,26 +1277,26 @@ CREATE TABLE iceberg_v2_table (
     'catalog-type' = 'hive',
     'uri' = 'thrift://hive-metastore:9083',
     'warehouse' = 'oss://bucket/iceberg-warehouse',
-    
+
     -- Iceberg V2 格式
     'format-version' = '2',
-    
+
     -- 写入模式
     'write.delete.mode' = 'merge-on-read',
     'write.update.mode' = 'merge-on-read',
     'write.merge.mode' = 'merge-on-read',
-    
+
     -- 删除向量 (V2 新特性)
     'write.delete-vector.enabled' = 'true',
-    
+
     -- 文件格式
     'write.format.default' = 'parquet',
     'write.parquet.compression-codec' = 'zstd',
-    
+
     -- 优化配置
     'write.target-file-size-bytes' = '134217728',  -- 128MB
     'write.metadata.compression-codec' = 'gzip',
-    
+
     -- 读取优化
     'read.parquet.vectorization.enabled' = 'true',
     'read.parquet.vectorization.batch-size' = '5000'
@@ -1305,7 +1306,7 @@ CREATE TABLE iceberg_v2_table (
 MERGE INTO iceberg_v2_table t
 USING (SELECT * FROM staging_table) s
 ON t.id = s.id
-WHEN MATCHED THEN UPDATE SET 
+WHEN MATCHED THEN UPDATE SET
     t.name = s.name,
     t.amount = s.amount,
     t.event_time = s.event_time
@@ -1358,17 +1359,17 @@ CREATE TABLE realtime_events (
     -- 分区配置
     'partitions' = '12',
     'replication.factor' = '3',
-    
+
     -- 分层存储策略
     'tiered.storage.enable' = 'true',
     'tiered.storage.hot.duration' = 'P1D',  -- 热层 1天
     'tiered.storage.warm.duration' = 'P7D',  -- 温层 7天
     'tiered.storage.cold.remote' = 'oss://bucket/fluss-cold',
-    
+
     -- 列存优化 (分析查询)
     'columnar.storage.enable' = 'true',
     'columnar.storage.format' = 'parquet',
-    
+
     -- 物化视图
     'materialized.views.enable' = 'true'
 );
@@ -1393,7 +1394,7 @@ CREATE TABLE user_dim (
 
 -- Delta Join: 实时事件关联 Fluss 维度
 CREATE TABLE enriched_events AS
-SELECT 
+SELECT
     e.event_id,
     e.user_id,
     u.user_name,
@@ -1425,7 +1426,7 @@ CREATE TABLE mysql_source (
     'table-name' = 'users',
     'username' = '${MYSQL_USER}',
     'password' = '${MYSQL_PASSWORD}',
-    
+
     -- JDBC 4.0 连接池配置
     'connection.pool.enabled' = 'true',
     'connection.pool.type' = 'hikari',
@@ -1434,12 +1435,12 @@ CREATE TABLE mysql_source (
     'connection.pool.max-lifetime' = '30min',
     'connection.pool.idle-timeout' = '10min',
     'connection.pool.connection-timeout' = '30s',
-    
+
     -- 批量读取优化
     'scan.partition.column' = 'id',
     'scan.partition.num' = '10',
     'scan.fetch-size' = '10000',
-    
+
     -- 增量读取 (CDC 替代方案)
     'scan.incremental.column' = 'updated_at',
     'scan.incremental.start' = '2024-01-01 00:00:00'
@@ -1458,17 +1459,17 @@ CREATE TABLE mysql_sink (
     'table-name' = 'events',
     'username' = '${MYSQL_USER}',
     'password' = '${MYSQL_PASSWORD}',
-    
+
     -- JDBC 4.0 写入优化
     'sink.buffer-flush.max-rows' = '5000',
     'sink.buffer-flush.interval' = '2s',
     'sink.max-retries' = '5',
     'sink.retry.interval' = '1s',
-    
+
     -- 连接池
     'connection.pool.enabled' = 'true',
     'connection.pool.max-size' = '10',
-    
+
     -- 写入模式
     'sink.operator' = 'upsert',  -- 或 'append'
     'sink.parallelism' = '4'
@@ -1535,17 +1536,17 @@ CREATE TABLE oss_sink (
     'connector' = 'filesystem',
     'path' = 'oss://bucket/flink-output/',
     'format' = 'parquet',
-    
+
     -- OSS 特定配置
     'fs.oss.endpoint' = 'oss-cn-beijing.aliyuncs.com',
     'fs.oss.accessKeyId' = '${OSS_ACCESS_KEY}',
     'fs.oss.accessKeySecret' = '${OSS_SECRET_KEY}',
-    
+
     -- 分区提交
     'sink.partition-commit.trigger' = 'process-time',
     'sink.partition-commit.delay' = '1min',
     'sink.partition-commit.policy.kind' = 'success-file',
-    
+
     -- 文件滚动策略
     'rolling-policy.file-size' = '128MB',
     'rolling-policy.rollover-interval' = '10min',
@@ -1569,11 +1570,11 @@ CREATE TABLE bigquery_sink (
     'table' = 'events',
     'create-disposition' = 'CREATE_IF_NEEDED',
     'write-disposition' = 'WRITE_APPEND',
-    
+
     -- 批量写入配置
     'sink.batch-size' = '5000',
     'sink.batch-interval' = '5s',
-    
+
     -- 容错配置
     'sink.max-retries' = '3',
     'sink.retry-interval' = '5s'
@@ -1591,7 +1592,7 @@ CREATE TABLE bigquery_sink (
 pipeline:
   name: MySQL to Paimon Sync
   parallelism: 4
-  
+
   source:
     type: mysql
     name: MySQL Source
@@ -1601,54 +1602,54 @@ pipeline:
       username: ${MYSQL_USER}
       password: ${MYSQL_PASSWORD}
       server-time-zone: Asia/Shanghai
-      
+
       # 数据库和表配置
       database-name: production
       table-name: "users|orders|products"
-      
+
       # 增量快照配置
       scan.incremental.snapshot.enabled: true
       scan.incremental.snapshot.chunk.size: 8096
       scan.startup.mode: initial
-      
+
       # Schema 变更处理
       schema-change.enabled: true
       schema-change.include: ["CREATE TABLE", "ADD COLUMN", "MODIFY COLUMN"]
-  
+
   sink:
     type: paimon
     name: Paimon Sink
     config:
       warehouse: oss://bucket/paimon-warehouse
       database: ods
-      
+
       # 表配置模板
       table-config:
         bucket: 16
         changelog-producer: input
         file.format: parquet
         file.compression: zstd
-      
+
       # 动态表创建
       table.create-mode: CREATE_IF_NOT_EXISTS
-      
+
       # Compaction 配置
       compaction.async: true
       compaction.tasks: 4
-  
+
   route:
     - source-table: production.users
       sink-table: ods.ods_users
       description: "用户表同步"
-    
+
     - source-table: production.orders
       sink-table: ods.ods_orders
       description: "订单表同步"
-    
+
     - source-table: production.products
       sink-table: ods.ods_products
       description: "产品表同步"
-  
+
   transform:
     - source-table: production.users
 n      projection: id, name, email, created_at, updated_at
@@ -1661,27 +1662,27 @@ n      projection: id, name, email, created_at, updated_at
 # multi-sink-pipeline.yaml
 pipeline:
   name: CDC Multi-Sink Pipeline
-  
+
   source:
     type: mysql
     config:
       hostname: mysql.internal
       # ... 其他配置
-  
+
   # 路由到多个 Sink
   route:
     # 全量数据到 Paimon
     - source-table: production.orders
       sink-table: lakehouse.ods_orders
-      
+
     # 聚合数据到 Doris
     - source-table: production.orders
       sink-table: doris.orders_realtime
-      
+
     # 原始事件到 Kafka
     - source-table: production.orders
       sink-table: kafka.orders_topic
-  
+
   transform:
     # Doris 路由: 添加计算列
     - source-table: production.orders
@@ -1709,59 +1710,59 @@ graph TB
         TM2[TaskManager 2]
         TMN[TaskManager N]
     end
-    
+
     subgraph "Connector Layer"
         direction TB
-        
+
         subgraph "Messaging"
             K30[Kafka 3.x]
             P50[Pulsar 5.0]
             FLUSS[Fluss 1.0]
         end
-        
+
         subgraph "Lakehouse"
             ICE18[Iceberg 1.8]
             PAI10[Paimon 1.0]
             HUD11[Hudi 1.1]
         end
-        
+
         subgraph "Database"
             JDBC40[JDBC 4.0]
             MONGO[MongoDB 5.0]
             CK[ClickHouse]
         end
-        
+
         subgraph "CDC"
             CDC34[CDC 3.4]
             MS[Mysql CDC]
             PG[PostgreSQL CDC]
         end
     end
-    
+
     subgraph "External Systems"
         KAFKA[Kafka Cluster]
         S3[Object Storage]
         MYSQL[MySQL]
         ICECAT[Iceberg Catalog]
     end
-    
+
     JM --> TM1
     JM --> TM2
     JM --> TMN
-    
+
     TM1 --> K30
     TM1 --> ICE18
     TM2 --> PAI10
     TM2 --> JDBC40
     TMN --> CDC34
-    
+
     K30 --> KAFKA
     ICE18 --> S3
     ICE18 --> ICECAT
     PAI10 --> S3
     JDBC40 --> MYSQL
     CDC34 --> MYSQL
-    
+
     style JM fill:#e3f2fd
     style PAI10 fill:#c8e6c9
     style CDC34 fill:#fff3e0
@@ -1775,26 +1776,26 @@ graph TB
 ```mermaid
 flowchart TD
     A[数据集成需求] --> B{数据类型?}
-    
+
     B -->|事件流| C{延迟要求?}
     B -->|结构化数据| D{查询模式?}
     B -->|变更数据| E[CDC 3.0]
-    
+
     C -->|< 100ms| F[Fluss]
     C -->|< 1s| G[Kafka 3.x]
     C -->|> 1s| H[Pulsar 5.0]
-    
+
     D -->|实时分析| I{存储成本?}
     D -->|离线分析| J[Iceberg V2]
-    
+
     I -->|敏感| K[Paimon 1.0]
     I -->|不敏感| L[Hudi 1.1]
-    
+
     E --> M{目标存储?}
     M -->|Lakehouse| N[CDC → Paimon]
     M -->|OLAP| O[CDC → Doris]
     M -->|消息队列| P[CDC → Kafka]
-    
+
     style F fill:#4CAF50
     style K fill:#2196F3
     style N fill:#FF9800
@@ -1834,7 +1835,7 @@ graph LR
         ORA[(Oracle)]
         MONGO[(MongoDB)]
     end
-    
+
     subgraph "Flink CDC 3.4"
         CDC[CDC Pipeline
             Source]
@@ -1843,7 +1844,7 @@ graph LR
         SINK[Multi-Table
              Sink]
     end
-    
+
     subgraph "Target Systems"
         PAIMON[(Paimon
                 Lakehouse)]
@@ -1853,20 +1854,20 @@ graph LR
                  Topic]
         ES[Elasticsearch]
     end
-    
+
     MYSQL --> CDC
     PG --> CDC
     ORA --> CDC
     MONGO --> CDC
-    
+
     CDC --> ROUTE
     ROUTE --> SINK
-    
+
     SINK --> PAIMON
     SINK --> DORIS
     SINK --> KAFKA_NEW
     SINK --> ES
-    
+
     style CDC fill:#fff3e0
     style ROUTE fill:#e3f2fd
     style SINK fill:#c8e6c9
@@ -1876,25 +1877,15 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Kafka Connector", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
 
-[^2]: Apache Kafka Documentation, "KRaft Overview", 2026. https://kafka.apache.org/documentation/#kraft
 
-[^3]: Apache Paimon Documentation, "Flink Quick Start", 2026. https://paimon.apache.org/docs/master/flink/quick-start/
 
-[^4]: Apache Iceberg Documentation, "Flink Integration", 2026. https://iceberg.apache.org/docs/latest/flink/
 
-[^5]: Apache Flink CDC Documentation, "Pipeline API", 2026. https://nightlies.apache.org/flink/flink-cdc-docs-stable/docs/connectors/pipeline-connectors/overview/
 
-[^6]: Apache Fluss (Incubating) Proposal, "Stream Analytics Storage", 2026. https://cwiki.apache.org/confluence/display/FLUSS
 
-[^7]: AWS Documentation, "Kinesis Data Streams", 2026. https://docs.aws.amazon.com/kinesis/latest/dev/introduction.html
 
-[^8]: Alibaba Cloud Documentation, "OSS Connector for Flink", 2026. https://www.alibabacloud.com/help/en/oss/developer-reference/oss-connector-for-flink
 
-[^9]: Google Cloud Documentation, "BigQuery Connector", 2026. https://cloud.google.com/bigquery/docs/reference/standard-sql/federated-queries
 
-[^10]: Apache Hudi Documentation, "Flink Integration", 2026. https://hudi.apache.org/docs/flink_quick_start_guide/
 
 ---
 

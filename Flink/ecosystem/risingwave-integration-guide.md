@@ -13,6 +13,7 @@ This guide covers integrating Apache Flink with RisingWave for unified stream pr
 ### 1.1 What is RisingWave
 
 RisingWave is a distributed SQL streaming database that enables:
+
 - **Materialized Views**: Automatically maintained, incrementally updated views
 - **Stream Processing**: Native stream processing with SQL
 - **Unified Batch-Stream**: Single query language for both batch and streaming
@@ -36,33 +37,33 @@ graph LR
         DB[(Databases)]
         IoT[IoT Sensors]
     end
-    
+
     subgraph "Stream Processing Layer"
         Flink[Apache Flink]
         Flink -->|Complex Processing| F1[Enrichment]
         Flink -->|Complex Processing| F2[Aggregation]
         Flink -->|Complex Processing| F3[ML Inference]
     end
-    
+
     subgraph "Serving Layer"
         RW[RisingWave]
         RW -->|Materialized Views| MV1[Real-time Metrics]
         RW -->|Materialized Views| MV2[Feature Vectors]
         RW -->|Materialized Views| MV3[Business KPIs]
     end
-    
+
     subgraph "Consumers"
         BI[BI Tools]
         App[Applications]
         ML[ML Platform]
     end
-    
+
     K --> Flink
     DB --> Flink
     IoT --> Flink
-    
+
     Flink -->|Stream Sink| RW
-    
+
     MV1 --> BI
     MV2 --> ML
     MV3 --> App
@@ -156,13 +157,13 @@ CREATE SOURCE processed_events (
 
 -- Create materialized view
 CREATE MATERIALIZED VIEW user_event_stats AS
-SELECT 
+SELECT
     user_id,
     event_type,
     COUNT(*) as event_count,
     TUMBLE_START(event_time, INTERVAL '1 minute') as window_start
 FROM processed_events
-GROUP BY 
+GROUP BY
     user_id,
     event_type,
     TUMBLE(event_time, INTERVAL '1 minute');
@@ -204,20 +205,20 @@ CREATE TABLE risingwave_cdc (
 CREATE TABLE flink_sink_events (
     -- Primary key for upserts
     event_id VARCHAR PRIMARY KEY,
-    
+
     -- Business dimensions
     user_id VARCHAR,
     product_id VARCHAR,
-    
+
     -- Event data
     event_type VARCHAR,
     event_value DECIMAL(18, 2),
     event_properties JSONB,
-    
+
     -- Time handling
     event_time TIMESTAMP,
     processed_time TIMESTAMP DEFAULT NOW(),
-    
+
     -- Indexes for query patterns
     INDEX idx_user_time (user_id, event_time),
     INDEX idx_product (product_id)
@@ -239,7 +240,7 @@ CREATE TABLE flink_sink_events_partitioned (
 
 ```java
 // Two-phase commit for exactly-once
-TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void> exactlyOnceSink = 
+TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void> exactlyOnceSink =
     new TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void>(
         TypeInformation.of(Event.class).createSerializer(new ExecutionConfig())
     ) {
@@ -247,22 +248,22 @@ TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void> exactlyOnceSink =
         protected void invoke(JdbcConnection connection, Event value, Context context) {
             connection.prepareStatement(value);
         }
-        
+
         @Override
         protected JdbcConnection beginTransaction() {
             return dataSource.getConnection();
         }
-        
+
         @Override
         protected void preCommit(JdbcConnection transaction) {
             transaction.flush();
         }
-        
+
         @Override
         protected void commit(JdbcConnection transaction) {
             transaction.commit();
         }
-        
+
         @Override
         protected void abort(JdbcConnection transaction) {
             transaction.rollback();
@@ -304,31 +305,31 @@ graph LR
         Flink -->|Session Analysis| F2[Session Features]
         Flink -->|Pattern Detection| F3[Sequence Features]
     end
-    
+
     subgraph "Feature Serving"
         RW[RisingWave]
         MV1[User Feature MV]
         MV2[Item Feature MV]
         MV3[Context Feature MV]
     end
-    
+
     subgraph "ML Platform"
         Pred[Online Prediction]
         Train[Training Pipeline]
     end
-    
+
     F1 --> RW
     F2 --> RW
     F3 --> RW
-    
+
     RW --> MV1
     RW --> MV2
     RW --> MV3
-    
+
     MV1 --> Pred
     MV2 --> Pred
     MV3 --> Pred
-    
+
     MV1 -.->|Snapshot| Train
 ```
 
@@ -336,12 +337,12 @@ graph LR
 
 ```sql
 CREATE MATERIALIZED VIEW user_realtime_features AS
-SELECT 
+SELECT
     user_id,
     -- Real-time aggregations
-    COUNT(*) OVER (PARTITION BY user_id ORDER BY event_time 
+    COUNT(*) OVER (PARTITION BY user_id ORDER BY event_time
                    RANGE BETWEEN INTERVAL '1 hour' PRECEDING AND CURRENT ROW) as events_1h,
-    SUM(event_value) OVER (PARTITION BY user_id ORDER BY event_time 
+    SUM(event_value) OVER (PARTITION BY user_id ORDER BY event_time
                            RANGE BETWEEN INTERVAL '24 hours' PRECEDING AND CURRENT ROW) as value_24h,
     -- Derived features
     events_1h / NULLIF(value_24h, 0) as event_density,
@@ -412,10 +413,10 @@ processed.executeInsert("risingwave_sink");
 queries:
   throughput: |
     rate(flink_taskmanager_job_task_operator_numRecordsIn[1m])
-  
+
   latency: |
     flink_taskmanager_job_task_operator_latency
-  
+
   error_rate: |
     rate(flink_taskmanager_job_task_operator_numRecordsFailed[5m])
 ```

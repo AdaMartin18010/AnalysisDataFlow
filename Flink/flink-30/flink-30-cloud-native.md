@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-16: Cloud Native
+
 云原生设计充分利用云平台特性：
 $$
 \text{CloudNative} = \text{Containerized} \land \text{Dynamic} \land \text{Managed}
 $$
 
 ### Def-F-30-17: Serverless Native
+
 无服务器原生设计：
 $$
 \text{ServerlessNative} = \text{ScaleToZero} \land \text{PayPerUse} \land \text{EventDriven}
 $$
 
 ### Def-F-30-18: Multi-Cloud
+
 多云部署跨云平台：
 $$
 \text{MultiCloud} = \{ \text{AWS}, \text{Azure}, \text{GCP}, ... \}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-09: Scale to Zero
+
 缩容到零：
 $$
 \text{Resources}(\text{no load}) = 0
 $$
 
 ### Prop-F-30-10: Cold Start SLA
+
 冷启动SLA：
 $$
 T_{\text{cold start}} \leq 5s
@@ -70,11 +75,11 @@ $$
 
 ```java
 public class CloudNativeController {
-    
+
     public void reconcile(CloudJobSpec spec) {
         // 检查负载
         LoadMetrics metrics = loadMonitor.getMetrics(spec.getJobId());
-        
+
         // 自动扩缩容
         if (metrics.getLoad() < SCALE_DOWN_THRESHOLD) {
             if (metrics.getDuration() > SCALE_DOWN_DELAY) {
@@ -83,11 +88,11 @@ public class CloudNativeController {
         } else if (metrics.getLoad() > SCALE_UP_THRESHOLD) {
             scaler.scaleFromZero(spec.getJobId());
         }
-        
+
         // 成本优化
         costOptimizer.optimize(spec);
     }
-    
+
     @Scheduled(fixedDelay = 60000)
     public void multiRegionSync() {
         // 跨区域状态同步
@@ -127,15 +132,15 @@ graph TB
     subgraph "AWS"
         A[Flink Cluster]
     end
-    
+
     subgraph "Azure"
         B[Flink Cluster]
     end
-    
+
     subgraph "GCP"
         C[Flink Cluster]
     end
-    
+
     A <-->|状态同步| B
     B <-->|状态同步| C
     C <-->|状态同步| A

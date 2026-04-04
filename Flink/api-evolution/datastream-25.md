@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-DS25-01: Unified Transformation
+
 统一转换抽象：
 $$
 \text{Transform} : \text{Stream}<T> \to \text{Stream}<R>
 $$
 
 ### Def-F-DS25-02: Typed Connectors
+
 类型安全连接器：
 $$
 \text{Connector}<T> : \text{Type}<T> \to \text{Source}<T> | \text{Sink}<T>
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-DS25-01: Type Safety
+
 类型安全保证：
 $$
 \forall \text{op} \in \text{Pipeline} : \text{TypeCheck}(\text{op}) = \text{OK}
@@ -53,7 +56,7 @@ DataStream<Order> orders = env
 
 ```java
 public class TypedDataStream<T> {
-    
+
     public <R> TypedDataStream<R> map(SerializableFunction<T, R> mapper) {
         TypeInformation<R> returnType = TypeExtractor
             .getMapReturnTypes(mapper, this.typeInfo);

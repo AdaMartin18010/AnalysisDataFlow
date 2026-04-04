@@ -46,13 +46,13 @@ graph TB
         OP["Python Operator"]
         ARROW["Arrow Buffer Manager"]
     end
-    
+
     subgraph PythonProcess["Python Worker Process"]
         PYUDF["Python UDF Executor"]
         PYENV["Virtual Environment"]
         PIP["Dependency Manager"]
     end
-    
+
     SQL -->|"Call UDF"| OP
     OP -->|"Arrow Format"| ARROW
     ARROW -->|"Zero-Copy IPC"| PYUDF
@@ -76,6 +76,7 @@ $$
 其中 $O_{ipc}$ 包含数据序列化、跨进程通信、GIL竞争等开销。
 
 **Proof Sketch**: Python UDF执行路径包含：
+
 1. 数据序列化为Arrow格式：$t_s$
 2. IPC传输到Python进程：$t_{ipc}$
 3. Python函数执行（含GIL）：$t_{exec}$
@@ -127,13 +128,13 @@ graph LR
         TABLE_UDF["Table API UDF<br/>(@udf decorator)"]
         DATASTREAM_UDF["DataStream UDF<br/>(ProcessFunction)"]
     end
-    
+
     subgraph Runtime["Runtime Layer"]
         BEAM["Apache Beam Fn API"]
         ARROW["Apache Arrow"]
         GRPC["gRPC IPC"]
     end
-    
+
     SQL_UDF --> BEAM
     TABLE_UDF --> BEAM
     DATASTREAM_UDF --> BEAM
@@ -159,13 +160,13 @@ graph TB
         UDF_REGISTRY["UDF Registry"]
         CONNECTION["Connection API"]
     end
-    
+
     subgraph External["External Resources"]
         REST_API["REST API"]
         ML_MODEL["ML Model Service"]
         SECRETS["Secrets Manager"]
     end
-    
+
     KSQL -->|"CREATE FUNCTION"| UDF_REGISTRY
     UDF_REGISTRY -->|"Load UDF"| PYTHON["Python UDF Runtime"]
     PYTHON -->|"connection()"| CONNECTION
@@ -192,6 +193,7 @@ Task \in PythonUDF \iff \begin{cases}
 $$
 
 其中：
+
 - $\mathcal{C}_{ml}$: 任务是否需要ML框架（PyTorch/TensorFlow/scikit-learn）
 - $\mathcal{C}_{prototyping}$: 是否需要快速迭代
 - $L_{latency}$: 任务延迟要求
@@ -225,7 +227,7 @@ $$
 3. **资源隔离**: 配置 `python.fn-execution.bundle.size` 平衡延迟与吞吐
 4. **缓存优化**: 对重复计算结果启用本地缓存
 
-**Proof**: 
+**Proof**:
 
 设原始逐行处理时间为：
 $$T_{row} = n \times (t_{ipc} + t_{exec} + t_{overhead})$$
@@ -279,15 +281,15 @@ from pyflink.table.udf import udf
 import hashlib
 
 # 定义标量函数：计算字符串的SHA256哈希
-@udf(result_type=DataTypes.STRING(), 
+@udf(result_type=DataTypes.STRING(),
      func_type='general')  # 'general' 或 'pandas'
 def sha256_hash(input_str: str) -> str:
     """
     计算输入字符串的SHA256哈希值
-    
+
     Args:
         input_str: 输入字符串
-        
+
     Returns:
         SHA256哈希值的十六进制表示
     """
@@ -298,12 +300,12 @@ def sha256_hash(input_str: str) -> str:
 # 向量化版本（性能更优）
 import pandas as pd
 
-@udf(result_type=DataTypes.STRING(), 
+@udf(result_type=DataTypes.STRING(),
      func_type='pandas')
 def sha256_hash_vectorized(input_series: pd.Series) -> pd.Series:
     """向量化版本的SHA256哈希函数"""
     return input_series.apply(
-        lambda x: hashlib.sha256(x.encode('utf-8')).hexdigest() 
+        lambda x: hashlib.sha256(x.encode('utf-8')).hexdigest()
         if x is not None else None
     )
 ```
@@ -319,19 +321,19 @@ from pyflink.table.types import Row
 class ParseJsonArray(TableFunction):
     """
     表值函数：将JSON数组字符串展开为多行
-    
+
     示例输入: '["a", "b", "c"]'
     示例输出: 三行，分别为 "a", "b", "c"
     """
-    
+
     def __init__(self):
         import json
         self.json = json
-    
+
     def eval(self, json_array_str: str):
         if json_array_str is None:
             return
-        
+
         try:
             array = self.json.loads(json_array_str)
             if isinstance(array, list):
@@ -342,7 +344,7 @@ class ParseJsonArray(TableFunction):
             pass
 
 # 注册使用
-# parse_json = udtf(ParseJsonArray(), 
+# parse_json = udtf(ParseJsonArray(),
 #                   result_types=[DataTypes.STRING()])
 ```
 
@@ -356,14 +358,14 @@ from pyflink.table.udf import udaf, AggregateFunction
 class WeightedAverage(AggregateFunction):
     """
     自定义聚合函数：计算加权平均值
-    
+
     累加器结构: (sum_value * weight, sum_weight)
     """
-    
+
     def create_accumulator(self):
         # 初始化累加器: (weighted_sum, total_weight)
         return (0.0, 0.0)
-    
+
     def accumulate(self, accumulator, value, weight):
         if value is not None and weight is not None:
             weighted_sum, total_weight = accumulator
@@ -371,7 +373,7 @@ class WeightedAverage(AggregateFunction):
             total_weight += weight
             return (weighted_sum, total_weight)
         return accumulator
-    
+
     def retract(self, accumulator, value, weight):
         # 用于Retract流处理
         if value is not None and weight is not None:
@@ -380,7 +382,7 @@ class WeightedAverage(AggregateFunction):
             total_weight -= weight
             return (weighted_sum, total_weight)
         return accumulator
-    
+
     def merge(self, accumulator, accumulators):
         # 合并多个累加器
         final_weighted_sum, final_total_weight = accumulator
@@ -389,16 +391,16 @@ class WeightedAverage(AggregateFunction):
             final_weighted_sum += weighted_sum
             final_total_weight += total_weight
         return (final_weighted_sum, final_total_weight)
-    
+
     def get_value(self, accumulator):
         weighted_sum, total_weight = accumulator
         if total_weight == 0:
             return None
         return weighted_sum / total_weight
-    
+
     def get_result_type(self):
         return DataTypes.DOUBLE()
-    
+
     def get_accumulator_type(self):
         return DataTypes.ROW([
             DataTypes.FIELD("weighted_sum", DataTypes.DOUBLE()),
@@ -427,24 +429,24 @@ import asyncio
 async def sentiment_analysis(text: str, context) -> dict:
     """
     异步调用外部情感分析API
-    
+
     Args:
         text: 待分析文本
         context: UDF执行上下文，包含connection对象
-        
+
     Returns:
         包含sentiment和confidence的Row
     """
     if not text:
         return {"sentiment": None, "confidence": 0.0}
-    
+
     # 从Confluent Cloud Connection获取配置
     # connection = context.get_connection("sentiment-api")
     # api_url = connection.get_property("endpoint")
     # api_key = connection.get_secret("api_key")
-    
+
     api_url = "https://api.example.com/sentiment"
-    
+
     async with aiohttp.ClientSession() as session:
         try:
             async with session.post(
@@ -472,13 +474,13 @@ async def sentiment_analysis(text: str, context) -> dict:
 -- 注册Python UDF (Flink SQL)
 
 -- 1. 使用CREATE FUNCTION语法
-CREATE FUNCTION sha256_hash 
-AS 'scalar_udf_example.sha256_hash' 
+CREATE FUNCTION sha256_hash
+AS 'scalar_udf_example.sha256_hash'
 LANGUAGE PYTHON;
 
 -- 2. 带依赖的UDF注册
-CREATE FUNCTION ml_predict 
-AS 'ml_udf.predict' 
+CREATE FUNCTION ml_predict
+AS 'ml_udf.predict'
 LANGUAGE PYTHON
 WITH (
     'python.archives' = 'hdfs:///libs/ml_env.zip',
@@ -487,7 +489,7 @@ WITH (
 );
 
 -- 3. 使用UDF进行查询
-SELECT 
+SELECT
     user_id,
     sha256_hash(email) as email_hash,
     ml_predict(features) as prediction
@@ -495,14 +497,14 @@ FROM user_events
 WHERE event_time > TIMESTAMP '2025-01-01';
 
 -- 4. 表值函数使用（需配合LATERAL TABLE）
-SELECT 
+SELECT
     order_id,
     item
 FROM orders,
 LATERAL TABLE(parse_json_array(items_json)) AS T(item);
 
 -- 5. 聚合函数使用
-SELECT 
+SELECT
     category,
     weighted_average(price, quantity) as avg_price
 FROM sales
@@ -571,15 +573,15 @@ graph TB
         SRC1[Kafka Source]
         SRC2[File Source]
     end
-    
+
     subgraph FlinkRuntime["Flink Runtime (JVM)"]
         SQL_PARSER["SQL Parser & Planner"]
         OPT["Optimizer"]
-        
+
         subgraph TaskManager["TaskManager"]
             OP1[Java Operator]
             PYTHON_OP["Python Operator<br/>(AbstractPythonFunctionOperator)"]
-            
+
             subgraph ArrowLayer["Apache Arrow Layer"]
                 ARROW_WRITER["ArrowWriter"]
                 ARROW_READER["ArrowReader"]
@@ -587,53 +589,53 @@ graph TB
             end
         end
     end
-    
+
     subgraph PythonWorker["Python Worker Process"]
         BEAM_RUNNER["Beam Fn API Runner"]
-        
+
         subgraph UDFContainer["UDF Execution"]
             SCALAR["Scalar UDF"]
             TABLE["Table UDF"]
             AGG["Aggregate UDF"]
             ASYNC["Async UDF"]
         end
-        
+
         VENV["Virtual Environment"]
         DEPS[(Dependencies)]
     end
-    
+
     subgraph Sink["Sink Operators"]
         SNK1[Kafka Sink]
         SNK2[JDBC Sink]
     end
-    
+
     SRC1 --> SQL_PARSER
     SRC2 --> SQL_PARSER
     SQL_PARSER --> OPT
     OPT --> OP1
     OPT --> PYTHON_OP
-    
+
     OP1 --> PYTHON_OP
     PYTHON_OP --> ARROW_WRITER
     ARROW_WRITER --> BUFFER
     BUFFER -->|"gRPC/Unix Domain Socket"| BEAM_RUNNER
-    
+
     BEAM_RUNNER --> SCALAR
     BEAM_RUNNER --> TABLE
     BEAM_RUNNER --> AGG
     BEAM_RUNNER --> ASYNC
-    
+
     VENV --> SCALAR
     VENV --> TABLE
     VENV --> AGG
     VENV --> ASYNC
     DEPS --> VENV
-    
+
     SCALAR -->|"Result"| BEAM_RUNNER
     TABLE -->|"Result"| BEAM_RUNNER
     AGG -->|"Result"| BEAM_RUNNER
     ASYNC -->|"Result"| BEAM_RUNNER
-    
+
     BEAM_RUNNER -->|"gRPC"| ARROW_READER
     ARROW_READER --> BUFFER
     PYTHON_OP --> SNK1
@@ -648,11 +650,11 @@ sequenceDiagram
     participant JVM as JVM Operator
     participant Arrow as Arrow Buffer
     participant Py as Python UDF
-    
+
     SQL->>JVM: 生成执行计划
     JVM->>JVM: 初始化Python Operator
     JVM->>Py: 启动Python Worker
-    
+
     loop 数据处理
         JVM->>JVM: 收集输入Batch
         JVM->>Arrow: 序列化为Arrow格式
@@ -664,7 +666,7 @@ sequenceDiagram
         Arrow->>JVM: Zero-copy接收
         JVM->>JVM: Arrow → RowData
     end
-    
+
     JVM->>SQL: 返回结果集
 ```
 
@@ -676,19 +678,19 @@ graph LR
         CODE["UDF Code"]
         CONN_CALL["connection('api-name')"]
     end
-    
+
     subgraph CC_Platform["Confluent Cloud Platform"]
         REGISTRY["UDF Registry"]
         CONN_MGR["Connection Manager"]
         SECRETS["Secrets Store"]
     end
-    
+
     subgraph External["External Services"]
         API1["REST API"]
         API2["ML Service"]
         DB[(Database)]
     end
-    
+
     CODE --> CONN_CALL
     CONN_CALL --> CONN_MGR
     CONN_MGR -->|"API Key"| SECRETS
@@ -738,7 +740,7 @@ def robust_external_call(input_data: str) -> str:
     带重试机制的外部调用UDF
     """
     import requests
-    
+
     response = requests.post(
         "https://api.example.com/process",
         json={"data": input_data},
@@ -783,13 +785,13 @@ class SecureUDF:
     """
     安全UDF最佳实践示例
     """
-    
+
     def __init__(self):
         # 从环境变量或密钥管理服务获取敏感信息
         self.api_key = os.environ.get('EXTERNAL_API_KEY')
         if not self.api_key:
             raise ValueError("API key not configured")
-    
+
     def validate_input(self, data):
         """输入验证"""
         if not isinstance(data, str):
@@ -797,7 +799,7 @@ class SecureUDF:
         if len(data) > 10000:  # 限制输入大小
             raise ValueError("Input too large")
         return data
-    
+
     def sanitize_output(self, result):
         """输出清理"""
         if result is None:
@@ -809,10 +811,10 @@ class SecureUDF:
 def secure_process(input_data: str) -> str:
     processor = SecureUDF()
     validated = processor.validate_input(input_data)
-    
+
     # 处理逻辑...
     result = validated.upper()  # 示例处理
-    
+
     return processor.sanitize_output(result)
 ```
 
@@ -820,21 +822,13 @@ def secure_process(input_data: str) -> str:
 
 ## 9. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Python User-Defined Functions", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/
 
-[^2]: Apache Beam Documentation, "Fn API", 2025. https://beam.apache.org/documentation/runtime/sdk-harness-config/
 
-[^3]: Apache Arrow Documentation, "Columnar Format", 2025. https://arrow.apache.org/docs/format/Columnar.html
 
-[^4]: Confluent Documentation, "Python UDFs in Confluent Cloud for Apache Flink", Early Access, 2026. https://docs.confluent.io/cloud/current/flink/reference/functions/python-udf.html
 
-[^5]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^6]: S. K. et al., "PyFlink: The Integration of Flink and Python", Apache Flink Blog, 2020.
 
-[^7]: Confluent Cloud Documentation, "Manage Flink Connections", 2026. https://docs.confluent.io/cloud/current/flink/operate-and-deploy/connections.html
 
-[^8]: Python Software Foundation, "Global Interpreter Lock", Python Documentation. https://docs.python.org/3/glossary.html#term-global-interpreter-lock
 
 ---
 

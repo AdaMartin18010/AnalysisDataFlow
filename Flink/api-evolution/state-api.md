@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-State-01: State Types
+
 状态类型集合：
 $$
 \text{StateTypes} = \{\text{Value}, \text{List}, \text{Map}, \text{Reducing}, \text{Aggregating}\}
 $$
 
 ### Def-F-State-02: State TTL
+
 状态生存时间：
 $$
 \text{TTL} : \text{State} \times \text{Duration} \to \text{Expired} | \text{Valid}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-State-01: State Consistency
+
 状态一致性：
 $$
 \text{Checkpoint} \implies \text{ExactlyOnce}(\text{State})
@@ -55,7 +58,7 @@ $$
 
 ```java
 public class AsyncStateAccess {
-    
+
     public CompletableFuture<ValueState<T>> getStateAsync(StateDescriptor<T> descriptor) {
         return stateBackend.getStateAsync(descriptor);
     }

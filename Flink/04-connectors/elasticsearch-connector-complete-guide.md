@@ -28,6 +28,7 @@ ES Sink: DataStream<T> → Elasticsearch Cluster
 | Field | 字段 | 文档的属性，对应关系型数据库的列 |
 
 **形式化表示**:
+
 ```
 Index = {Doc₁, Doc₂, ..., Docₙ}
 Doc = {_id: String, _source: JSON, _version: Long, ...metadata}
@@ -44,6 +45,7 @@ BulkRequest = [IndexRequest | UpdateRequest | DeleteRequest]⁺
 ```
 
 **核心参数**:
+
 - `bulk.flush.max.actions`: 单个 bulk 请求的最大操作数（默认 1000）
 - `bulk.flush.max.size`: 单个 bulk 请求的最大字节数（默认 5MB）
 - `bulk.flush.interval`: 批量刷新间隔（默认 null）
@@ -150,6 +152,7 @@ ES Sink 作为 Stateful Sink:
 ### 4.2 架构决策：同步 vs 异步写入
 
 **同步写入**:
+
 ```
 优点: 简单、异常立即感知
 缺点: 吞吐低、网络等待浪费时间
@@ -157,6 +160,7 @@ ES Sink 作为 Stateful Sink:
 ```
 
 **异步写入** (ES Sink 采用):
+
 ```
 优点: 高吞吐、批量优化、网络复用
 缺点: 需处理背压、异常延迟感知
@@ -220,6 +224,7 @@ builder.setBulkFlushMaxActions(1000); // 批量刷新
 ```
 
 **工程实现**:
+
 ```java
 // 启用 checkpoint 同步
 builder.setFlushOnCheckpoint(true);
@@ -288,22 +293,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ElasticsearchSinkExample {
-    
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 示例数据流
         DataStream<UserAction> stream = env.fromElements(
             new UserAction("user1", "click", "product_A", System.currentTimeMillis()),
             new UserAction("user2", "view", "product_B", System.currentTimeMillis()),
             new UserAction("user3", "purchase", "product_C", System.currentTimeMillis())
         );
-        
+
         // 配置 ES 集群地址
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
         httpHosts.add(new HttpHost("127.0.0.1", 9201, "http"));
-        
+
         // 构建 ES Sink
         ElasticsearchSink.Builder<UserAction> builder = new ElasticsearchSink.Builder<>(
             httpHosts,
@@ -313,28 +318,28 @@ public class ElasticsearchSinkExample {
                     // 构建 IndexRequest
                     String json = String.format(
                         "{\"user_id\":\"%s\",\"action\":\"%s\",\"target\":\"%s\",\"timestamp\":%d}",
-                        element.getUserId(), element.getAction(), 
+                        element.getUserId(), element.getAction(),
                         element.getTarget(), element.getTimestamp()
                     );
-                    
+
                     IndexRequest request = Requests.indexRequest()
                         .index("user-actions")
                         .id(element.getUserId() + "_" + element.getTimestamp()) // 确定性ID
                         .source(json, XContentType.JSON);
-                    
+
                     indexer.add(request);
                 }
             }
         );
-        
+
         // 批量写入配置
         builder.setBulkFlushMaxActions(1000);
         builder.setBulkFlushMaxSizeMb(5);
         builder.setBulkFlushInterval(5000); // 5秒刷新
-        
+
         // 启用 checkpoint 同步
         builder.setFlushOnCheckpoint(true);
-        
+
         stream.addSink(builder.build());
         env.execute("Elasticsearch Sink Example");
     }
@@ -346,14 +351,14 @@ class UserAction {
     private String action;
     private String target;
     private long timestamp;
-    
+
     public UserAction(String userId, String action, String target, long timestamp) {
         this.userId = userId;
         this.action = action;
         this.target = target;
         this.timestamp = timestamp;
     }
-    
+
     // Getters
     public String getUserId() { return userId; }
     public String getAction() { return action; }
@@ -381,7 +386,7 @@ builder.setRestClientFactory(
             AuthScope.ANY,
             new UsernamePasswordCredentials("elastic", "your-password")
         );
-        
+
         restClientBuilder.setHttpClientConfigCallback(
             httpClientBuilder -> httpClientBuilder
                 .setDefaultCredentialsProvider(credentialsProvider)
@@ -389,7 +394,7 @@ builder.setRestClientFactory(
                 .setSSLContext(sslContext) // 预配置的 SSLContext
                 .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
         );
-        
+
         // 连接配置
         restClientBuilder.setRequestConfigCallback(
             requestConfigBuilder -> requestConfigBuilder
@@ -407,20 +412,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DynamicIndexExample {
-    
-    private static final DateTimeFormatter FORMATTER = 
+
+    private static final DateTimeFormatter FORMATTER =
         DateTimeFormatter.ofPattern("yyyy.MM.dd");
-    
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         DataStream<LogEvent> logStream = env.addSource(new LogSource());
-        
+
         List<HttpHost> httpHosts = List.of(
             new HttpHost("es-node1", 9200),
             new HttpHost("es-node2", 9200)
         );
-        
+
         ElasticsearchSink.Builder<LogEvent> builder = new ElasticsearchSink.Builder<>(
             httpHosts,
             new ElasticsearchSinkFunction<LogEvent>() {
@@ -432,24 +437,24 @@ public class DynamicIndexExample {
                         java.time.ZoneId.systemDefault()
                     );
                     String indexName = "application-logs-" + eventTime.format(FORMATTER);
-                    
+
                     // 构建请求
                     IndexRequest request = Requests.indexRequest()
                         .index(indexName)
                         .id(element.getLogId())
                         .source(element.toJson(), XContentType.JSON);
-                    
+
                     indexer.add(request);
                 }
             }
         );
-        
+
         // 性能优化配置
         builder.setBulkFlushMaxActions(2000);
         builder.setBulkFlushMaxSizeMb(10);
         builder.setBulkFlushInterval(10000);
         builder.setFlushOnCheckpoint(true);
-        
+
         logStream.addSink(builder.build());
         env.execute("Dynamic Index ES Sink");
     }
@@ -463,12 +468,12 @@ class LogEvent {
     private String service;
     private long timestamp;
     private Map<String, String> tags;
-    
+
     public String toJson() {
         // 使用 Jackson 或 Gson 序列化
         return "{\"logId\":\"" + logId + "\",\"level\":\"" + level + "\",...}";
     }
-    
+
     // Getters
     public String getLogId() { return logId; }
     public long getTimestamp() { return timestamp; }
@@ -486,16 +491,16 @@ import org.elasticsearch.index.mapper.MapperParsingException;
 import org.apache.flink.util.ExceptionUtils;
 
 public class RobustElasticsearchSink {
-    
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(60000); // 1分钟 checkpoint
-        
+
         DataStream<Event> stream = env.addSource(new EventSource());
-        
+
         // 死信队列流（侧输出）
         OutputTag<Event> deadLetterTag = new OutputTag<Event>("dead-letters") {};
-        
+
         SingleOutputStreamOperator<Event> mainStream = stream
             .process(new ProcessFunction<Event, Event>() {
                 @Override
@@ -503,11 +508,11 @@ public class RobustElasticsearchSink {
                     out.collect(value);
                 }
             });
-        
+
         List<HttpHost> httpHosts = List.of(
             new HttpHost("es-cluster", 9200)
         );
-        
+
         ElasticsearchSink.Builder<Event> builder = new ElasticsearchSink.Builder<>(
             httpHosts,
             new ElasticsearchSinkFunction<Event>() {
@@ -518,60 +523,60 @@ public class RobustElasticsearchSink {
                         .id(element.getId())
                         .source(element.toJson(), XContentType.JSON)
                         .routing(element.getRoutingKey()); // 路由配置
-                    
+
                     // 版本控制（乐观锁）
                     if (element.getVersion() != null) {
                         request.version(element.getVersion());
                         request.versionType(VersionType.EXTERNAL);
                     }
-                    
+
                     indexer.add(request);
                 }
             }
         );
-        
+
         // 批量配置
         builder.setBulkFlushMaxActions(1000);
         builder.setBulkFlushMaxSizeMb(5);
         builder.setBulkFlushInterval(5000);
-        
+
         // 重试配置
         builder.setBulkFlushBackoff(true);
         builder.setBulkFlushBackoffType(ElasticsearchSink.FlushBackoffType.EXPONENTIAL);
         builder.setBulkFlushBackoffDelay(100); // 初始延迟 100ms
         builder.setBulkFlushBackoffRetries(8); // 最大重试 8 次
-        
+
         // 自定义失败处理器
         builder.setFailureHandler(new ActionRequestFailureHandler() {
             @Override
-            public void onFailure(ActionRequest action, Throwable failure, 
+            public void onFailure(ActionRequest action, Throwable failure,
                                   int restStatusCode, RequestIndexer indexer) throws Throwable {
-                
+
                 // 可重试错误：加入重试队列
                 if (ExceptionUtils.findThrowable(failure, EsRejectedExecutionException.class).isPresent()
                     || restStatusCode == 429 // Too Many Requests
                     || restStatusCode >= 500) { // 服务器错误
-                    
+
                     indexer.add(action);
                     return;
                 }
-                
+
                 // 不可恢复错误：跳过或发送到死信队列
                 if (ExceptionUtils.findThrowable(failure, MapperParsingException.class).isPresent()
                     || restStatusCode == 400) { // Bad Request
-                    
+
                     // 记录错误，丢弃请求
                     System.err.println("Dropping invalid request: " + action);
                     return;
                 }
-                
+
                 // 其他错误：抛出异常终止任务
                 throw failure;
             }
         });
-        
+
         builder.setFlushOnCheckpoint(true);
-        
+
         mainStream.addSink(builder.build());
         env.execute("Robust ES Sink");
     }
@@ -644,7 +649,7 @@ CREATE TABLE es_logs (
 # 数据转换并写入 ES
 table_env.execute_sql("""
 INSERT INTO es_logs
-SELECT 
+SELECT
     log_id,
     timestamp as log_time,
     level,
@@ -670,7 +675,7 @@ CREATE TABLE es_secure_logs (
     'index' = 'secure-logs',
     'username' = 'elastic',
     'password' = '${ES_PASSWORD}',
-    
+
     -- SSL 配置
     'security.ssl.enabled' = 'true',
     'security.ssl.verification-mode' = 'certificate',
@@ -678,19 +683,19 @@ CREATE TABLE es_secure_logs (
     'security.ssl.keystore.password' = '${KEYSTORE_PASSWORD}',
     'security.ssl.truststore.path' = '/path/to/truststore.jks',
     'security.ssl.truststore.password' = '${TRUSTSTORE_PASSWORD}',
-    
+
     -- 批量与性能
     'bulk-flush.max-actions' = '2000',
     'bulk-flush.max-size' = '10mb',
     'bulk-flush.interval' = '5000ms',
     'bulk-flush.backoff.strategy' = 'EXPONENTIAL',
     'bulk-flush.backoff.max-retries' = '10',
-    
+
     -- 连接配置
     'connection.path-prefix' = '',
     'connection.request-timeout' = '60000',
     'connection.timeout' = '5000',
-    
+
     -- 失败处理
     'sink.failure-handler' = 'retry-rejected',
     'sink.flush-on-checkpoint' = 'true'
@@ -714,7 +719,7 @@ graph TB
         E -->|No| G[Wait/Interval]
         G --> D
     end
-    
+
     subgraph "Elasticsearch Cluster"
         F --> H[ES Node 1]
         F --> I[ES Node 2]
@@ -726,13 +731,13 @@ graph TB
         L --> O[(Replica Shard)]
         M --> P[(Replica Shard)]
     end
-    
+
     subgraph "Failure Handling"
         Q[Retry Queue]
         R[Dead Letter Queue]
         S[Exponential Backoff]
     end
-    
+
     F -->|Failed| Q
     Q --> S
     S -->|Max Retries| R
@@ -747,17 +752,17 @@ sequenceDiagram
     participant B as Bulk Buffer
     participant E as ES Client
     participant N as ES Node
-    
+
     loop Record Processing
         F->>B: add(record)
         B->>B: check threshold
     end
-    
+
     alt Batch Full or Interval Trigger
         B->>E: sendBulkRequest()
         E->>N: HTTP POST /_bulk
         N-->>E: BulkResponse
-        
+
         alt Success
             E-->>B: ack all
             B->>B: clear buffer
@@ -769,7 +774,7 @@ sequenceDiagram
             B->>B: handle failure
         end
     end
-    
+
     Note over F,N: Checkpoint Barrier Arrives
     F->>B: flush()
     B->>E: wait for pending
@@ -787,20 +792,20 @@ flowchart TD
     B -->|Time-based| C[logs-YYYY.MM.dd]
     B -->|Tenant-based| D[logs-tenant-{id}]
     B -->|Service-based| E[logs-{service}]
-    
+
     C --> F[Check Index Exists]
     D --> F
     E --> F
-    
+
     F -->|No| G[Create Index with Template]
     F -->|Yes| H[Index Document]
     G --> H
-    
+
     H --> I{Write Result}
     I -->|Success| J[Next Record]
     I -->|Conflict| K[Handle Conflict]
     I -->|Error| L[Retry/Dead Letter]
-    
+
     K --> M{Conflict Type}
     M -->|Version| N[Ignore/Update]
     M -->|Mapping| O[Reject to DLQ]
@@ -811,22 +816,22 @@ flowchart TD
 ```mermaid
 graph LR
     subgraph "Throughput优化"
-        A1[bulk.flush.max.actions<br/>↑ 1000→5000] 
+        A1[bulk.flush.max.actions<br/>↑ 1000→5000]
         A2[bulk.flush.max.size<br/>↑ 5MB→20MB]
         A3[并行度<br/>↑ 匹配ES分片数]
     end
-    
+
     subgraph "延迟优化"
         B1[bulk.flush.interval<br/>↓ 5000→1000ms]
         B2[减少网络跳数<br/>同可用区部署]
     end
-    
+
     subgraph "可靠性优化"
         C1[flush-on-checkpoint<br/>true]
         C2[document-id<br/>确定性ID]
         C3[version-control<br/>乐观锁]
     end
-    
+
     subgraph "容错优化"
         D1[backoff.strategy<br/>EXPONENTIAL]
         D2[max-retries<br/>↑ 3→10]
@@ -838,25 +843,15 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Elasticsearch Connector", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/elasticsearch/
 
-[^2]: Elasticsearch Documentation, "Bulk API", 2024. https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
 
-[^3]: Elasticsearch Documentation, "Index API", 2024. https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html
 
-[^4]: Elasticsearch Documentation, "Mapping", 2024. https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
 
-[^5]: Jay Kreps, "Questioning the Lambda Architecture", O'Reilly Radar, 2014.
 
-[^6]: Patrick McFadin, "Using Apache Flink with Elasticsearch", DataStax Blog, 2023.
 
-[^7]: Flink-ES Connector GitHub Repository, https://github.com/apache/flink-connector-elasticsearch
 
-[^8]: Elasticsearch, "Tune for indexing speed", https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-indexing-speed.html
 
-[^9]: Apache Flink, "Fault Tolerance in Data Sources and Sinks", https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/sources/
 
-[^10]: Elastic, "Elasticsearch: The Definitive Guide", O'Reilly Media, 2015.
 
 ---
 

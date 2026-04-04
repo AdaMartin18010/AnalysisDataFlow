@@ -285,6 +285,7 @@ Week 5 (周一): 发布后验证完成
 | P6 | 版本号更新 | pom.xml版本号更新为X.Y.0 | BE | 0.5d | ☐ |
 
 **详细说明**:
+
 ```bash
 # 检查未关闭的FLIP
 ./tools/check_unclosed_flips.sh --target-branch release-X.Y
@@ -308,6 +309,7 @@ mvn japicmp:cmp -pl flink-core
 | T6 | 连接器测试 | 官方连接器兼容性测试 | QA | 3d | ☐ |
 
 **测试执行命令**:
+
 ```bash
 # 核心单元测试
 mvn test -pl flink-core,flink-runtime,flink-streaming-java
@@ -344,6 +346,7 @@ mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
 | R5 | 启动时间 | 上一版本基准 | <= +10% | QA | ☐ |
 
 **性能测试基准**:
+
 ```bash
 # 运行Nexmark基准测试
 ./flink-benchmarks/run-nexmark.sh --version X.Y.0 --baseline X.(Y-1).0
@@ -366,7 +369,7 @@ mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
 | F1 | 创建release分支 | git checkout -b release-X.Y | RM | 1h | ☐ |
 | F2 | 分支保护 | 启用分支保护规则 | RM | 1h | ☐ |
 | F3 | 更新CI配置 | 添加release分支到CI触发 | BE | 2h | ☐ |
-| F4 | 通知社区 | dev@flink.apache.org邮件 | CL | 1h | ☐ |
+| F4 | 通知社区 | <dev@flink.apache.org>邮件 | CL | 1h | ☐ |
 | F5 | 冻结确认 | 仅允许Blocker/Critical修复 | RM | 持续 | ☐ |
 
 #### 7.2.2 RC构建流程
@@ -381,6 +384,7 @@ mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
 | B6 | 校验和生成 | sha512校验和所有文件 | BE | 15m | ☐ |
 
 **RC构建脚本模板**:
+
 ```bash
 #!/bin/bash
 # build-rc.sh - Flink RC构建脚本
@@ -419,18 +423,19 @@ echo "=== Build completed: ${FULL_VERSION} ==="
 | # | 检查项 | 操作 | 责任人 | 时间 | 状态 |
 |---|--------|------|--------|------|------|
 | V1 | 起草投票邮件 | 包含SHA校验和、测试说明 | RM | 2h | ☐ |
-| V2 | 发送投票邮件 | dev@flink.apache.org | CL | 1h | ☐ |
+| V2 | 发送投票邮件 | <dev@flink.apache.org> | CL | 1h | ☐ |
 | V3 | 投票监控 | 追踪投票响应 (至少3+1) | CL | 72h | ☐ |
 | V4 | 投票结果统计 | 整理投票结果 | CL | 2h | ☐ |
 | V5 | 结果宣布 | 宣布投票结果 | RM | 1h | ☐ |
 
 **投票邮件模板**:
+
 ```
 Subject: [VOTE] Release Apache Flink X.Y.0-RC1
 
 Hi Flink Community,
 
-I am happy to announce that I have uploaded a release candidate for 
+I am happy to announce that I have uploaded a release candidate for
 Apache Flink X.Y.0. The artifacts are available at:
 
 https://dist.apache.org/repos/dist/dev/flink/flink-X.Y.0-RC1/
@@ -495,6 +500,7 @@ Thanks,
 | N7 | 弃用通知 | 下一版本计划移除的功能 | Docs | 2h | ☐ |
 
 **发布说明结构模板**:
+
 ```markdown
 # Apache Flink X.Y.0 发布说明
 
@@ -574,16 +580,17 @@ Apache Flink X.Y.0 是 X.Y 系列的第一个版本，主要包含...
 | A6 | 中文社区 | Flink中文社区公众号 | CL | 2h | ☐ |
 
 **公告邮件模板**:
+
 ```
 Subject: [ANNOUNCE] Apache Flink X.Y.0 Released
 
 Hi all,
 
-The Apache Flink community is pleased to announce the release of 
+The Apache Flink community is pleased to announce the release of
 Apache Flink X.Y.0!
 
-Apache Flink is an open-source stream processing framework for 
-distributed, high-performing, always-available, and accurate 
+Apache Flink is an open-source stream processing framework for
+distributed, high-performing, always-available, and accurate
 data streaming applications.
 
 This release includes ... (one paragraph highlight)
@@ -592,7 +599,7 @@ Release Notes: https://nightlies.apache.org/flink/flink-docs-release-X.Y/release
 Download: https://flink.apache.org/downloads.html
 Documentation: https://nightlies.apache.org/flink/flink-docs-release-X.Y/
 
-We would like to thank all the contributors who made this release 
+We would like to thank all the contributors who made this release
 possible!
 
 Best,
@@ -613,6 +620,7 @@ Best,
 | D4 | 不同镜像站 | 验证Apache镜像站同步 | QA | ☐ |
 
 **下载验证脚本**:
+
 ```bash
 #!/bin/bash
 # verify-download.sh
@@ -648,6 +656,7 @@ echo "=== Download verification completed ==="
 | K5 | 镜像扫描 | 安全漏洞扫描 | QA | ☐ |
 
 **Docker验证命令**:
+
 ```bash
 # 拉取并验证
 VERSION="X.Y.0"
@@ -675,6 +684,7 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 | M5 | 元数据 | maven-metadata.xml正确 | QA | ☐ |
 
 **Maven验证脚本**:
+
 ```bash
 #!/bin/bash
 # verify-maven.sh
@@ -688,11 +698,11 @@ echo "=== Verifying Maven Artifacts for ${VERSION} ==="
 for artifact in "${ARTIFACTS[@]}"; do
     URL="https://repo1.maven.org/maven2/org/apache/flink/${artifact}/${VERSION}/"
     echo "Checking ${artifact}..."
-    
+
     # 检查POM存在
     curl -sI "${URL}/${artifact}-${VERSION}.pom" | grep -q "200 OK" && \
         echo "  ✓ POM exists" || echo "  ✗ POM missing"
-    
+
     # 检查签名存在
     curl -sI "${URL}/${artifact}-${VERSION}.pom.asc" | grep -q "200 OK" && \
         echo "  ✓ Signature exists" || echo "  ✗ Signature missing"
@@ -708,10 +718,11 @@ echo "=== Maven verification completed ==="
 | Q1 | 本地模式 | ./bin/start-cluster.sh | QA | ☐ |
 | Q2 | WordCount示例 | 运行官方WordCount | QA | ☐ |
 | Q3 | SQL Client | ./bin/sql-client.sh | QA | ☐ |
-| Q4 | REST API | curl http://localhost:8081/overview | QA | ☐ |
+| Q4 | REST API | curl <http://localhost:8081/overview> | QA | ☐ |
 | Q5 | Web UI | 浏览器访问验证 | QA | ☐ |
 
 **快速开始验证脚本**:
+
 ```bash
 #!/bin/bash
 # verify-quickstart.sh
@@ -760,15 +771,15 @@ flowchart TD
     B -->|P0: 致命| C[立即启动回滚]
     B -->|P1: 严重| D[24小时内评估]
     B -->|P2: 一般| E[下补丁版本修复]
-    
+
     C --> F[通知社区]
     C --> G[暂停下载]
     C --> H[启动紧急修复]
-    
+
     D --> I{24小时内修复?}
     I -->|是| J[紧急补丁]
     I -->|否| C
-    
+
     E --> K[创建JIRA问题]
     E --> L[计划X.Y.1]
 ```
@@ -796,15 +807,16 @@ flowchart TD
 | R6 | 问题说明 | 发布详细问题说明和规避方案 | Docs |
 
 **回滚公告模板**:
+
 ```
 Subject: [IMPORTANT] Flink X.Y.0 Release Suspended
 
 Hi Flink Community,
 
-We have identified a critical issue in Apache Flink X.Y.0 that affects 
-[问题描述]. 
+We have identified a critical issue in Apache Flink X.Y.0 that affects
+[问题描述].
 
-We have temporarily suspended the download of this version while we work 
+We have temporarily suspended the download of this version while we work
 on a fix.
 
 Impact:
@@ -837,7 +849,7 @@ gantt
     测试覆盖率检查     :a2, after a1, 7d
     文档完整性检查     :a3, after a1, 5d
     性能回归测试       :a4, 2024-01-01, 14d
-    
+
     section RC发布
     代码冻结           :b1, after a4, 1d
     RC1构建            :b2, after b1, 1d
@@ -845,13 +857,13 @@ gantt
     问题修复(如需要)    :b4, after b3, 3d
     RC2构建(如需要)     :b5, after b4, 1d
     RC2投票(如需要)     :b6, after b5, 3d
-    
+
     section GA发布
     最终构建           :c1, after b3, 1d
     发布说明编写        :c2, after c1, 1d
     网站更新           :c3, after c2, 1d
     社区公告           :c4, after c3, 1d
-    
+
     section 发布后
     验证检查           :d1, after c4, 2d
 ```
@@ -865,36 +877,36 @@ graph LR
         RM2[时间线管理]
         RM3[决策制定]
     end
-    
+
     subgraph BuildEngineer [Build Engineer]
         BE1[构建执行]
         BE2[制品签名]
         BE3[仓库管理]
     end
-    
+
     subgraph QALead [QA Lead]
         QA1[测试执行]
         QA2[质量门禁]
         QA3[回归验证]
     end
-    
+
     subgraph DocsLead [Docs Lead]
         DL1[文档审查]
         DL2[网站更新]
         DL3[发布说明]
     end
-    
+
     subgraph CommunityLiaison [Community Liaison]
         CL1[投票监督]
         CL2[公告发布]
         CL3[社区沟通]
     end
-    
+
     RM1 --> BE1
     RM1 --> QA1
     RM1 --> DL1
     RM1 --> CL1
-    
+
     BE1 --> BE2
     BE2 --> BE3
     QA1 --> QA2
@@ -913,23 +925,23 @@ flowchart TD
     B -->|3+1通过| C[准备GA构建]
     B -->|未通过| D{问题类型}
     B -->|延期| E[延长投票24-48h]
-    
+
     D -->|Blocker| F[修复 -> RCn+1]
     D -->|Critical| G{是否可规避}
     D -->|Major/Minor| H[记录为已知问题]
-    
+
     G -->|是| I[文档化规避方案]
     G -->|否| F
-    
+
     I --> J[重新投票]
     H --> J
-    
+
     F --> K[重新构建RC]
     K --> L[新一轮投票]
-    
+
     E -->|投票通过| C
     E -->|仍未通过| D
-    
+
     C --> M[GA版本发布]
     J -->|通过| C
     J -->|不通过| D
@@ -994,10 +1006,10 @@ docker run --rm -it flink:X.Y.0 flink --version
 
 | 角色 | 联系邮箱 | 备用联系人 |
 |------|----------|-----------|
-| PMC Chair | private@flink.apache.org | 见PMC列表 |
-| Build通知 | builds@flink.apache.org | dev@flink.apache.org |
-| 安全漏洞 | security@flink.apache.org | PMC Chair |
-| 基础设施 | infra@apache.org | - |
+| PMC Chair | <private@flink.apache.org> | 见PMC列表 |
+| Build通知 | <builds@flink.apache.org> | <dev@flink.apache.org> |
+| 安全漏洞 | <security@flink.apache.org> | PMC Chair |
+| 基础设施 | <infra@apache.org> | - |
 
 ### 9.5 参考资源
 
@@ -1026,26 +1038,18 @@ docker run --rm -it flink:X.Y.0 flink --version
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Software Foundation, "Apache Release Policy", 2024. https://www.apache.org/legal/release-policy.html
 
-[^2]: Apache Flink PMC, "Creating a Flink Release", Confluence Wiki, 2024. https://cwiki.apache.org/confluence/display/FLINK/Creating+a+Flink+Release
 
-[^3]: Maven Project, "Maven Release Plugin Documentation", 2024. https://maven.apache.org/maven-release/maven-release-plugin/
 
-[^4]: Apache Software Foundation, "OpenPGP Key Management", 2024. https://www.apache.org/dev/openpgp.html
 
-[^5]: Flink Community, "Apache Flink Release Process", GitHub, 2023. https://github.com/apache/flink/blob/master/docs/content/docs/try-flink/_index.md
 
-[^6]: Apache Flink, "How to Release", Developer Documentation, 2024. https://cwiki.apache.org/confluence/display/FLINK/How+to+Release
 
-[^7]: J. Schebler et al., "Practical Flink Development and Operations", O'Reilly Media, 2023.
 
-[^8]: Apache Flink PMC, "Flink Release Announcement Archive", 2020-2025. https://flink.apache.org/news/
 
 ---
 
-*文档版本: v1.0*  
-*最后更新: 2026-04-04*  
+*文档版本: v1.0*
+*最后更新: 2026-04-04*
 *维护者: Flink Documentation Team*
 
 ---

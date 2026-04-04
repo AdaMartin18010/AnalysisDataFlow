@@ -31,20 +31,20 @@
     - [4.1 为什么 RisingWave 选择计算-存储分离](#41-为什么-risingwave-选择计算-存储分离)
     - [4.2 物化视图与 Flink Table 的本质区别](#42-物化视图与-flink-table-的本质区别)
     - [4.3 边界讨论：RisingWave 的性能边界](#43-边界讨论risingwave-的性能边界)
-  - [4.4 向量搜索架构](#44-向量搜索架构)
-    - [4.4.1 RisingWave v2.6+ 向量搜索特性](#441-risingwave-v26-向量搜索特性)
-    - [4.4.2 实时 RAG 架构与案例研究](#442-实时-rag-架构与案例研究)
-    - [4.4.3 统一数据库架构优势](#443-统一数据库架构优势)
-    - [4.4.4 与 Flink VECTOR_SEARCH 对比](#444-与-flink-vectorsearch-对比规划中)
-    - [4.4.5 技术实现细节](#445-技术实现细节)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+    - [4.4 向量搜索架构](#44-向量搜索架构)
+      - [4.4.1 RisingWave v2.6+ 向量搜索特性](#441-risingwave-v26-向量搜索特性)
+      - [4.4.2 实时 RAG 架构与案例研究](#442-实时-rag-架构与案例研究)
+      - [4.4.3 统一数据库架构优势](#443-统一数据库架构优势)
+      - [4.4.4 与 Flink VECTOR\_SEARCH 对比（规划中）](#444-与-flink-vector_search-对比规划中)
+      - [4.4.5 技术实现细节](#445-技术实现细节)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-13: Hummock LSM-Tree 性能边界定理](#thm-f-09-13-hummock-lsm-tree-性能边界定理)
     - [Thm-F-09-14: 流处理引擎选择决策定理](#thm-f-09-14-流处理引擎选择决策定理)
     - [Thm-F-09-15: 向量搜索性能定理](#thm-f-09-15-向量搜索性能定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时仪表板：RisingWave vs Flink 实现对比](#61-实时仪表板risingwave-vs-flink-实现对比)
     - [6.2 CDC 数据同步管道](#62-cdc-数据同步管道)
-    - [6.3 混合架构：Flink + RisingWave 协同](#63-混合架构flink-risingwave-协同)
+    - [6.3 混合架构：Flink + RisingWave 协同](#63-混合架构flink--risingwave-协同)
     - [6.4 实时 RAG 案例：智能客服系统](#64-实时-rag-案例智能客服系统)
     - [6.5 向量+流+分析混合查询](#65-向量流分析混合查询)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
@@ -316,12 +316,12 @@ $$
 
 ```sql
 -- IVF 索引（适合百万级以上向量）
-CREATE INDEX idx_embedding_ivf ON documents 
-USING ivf(embedding) 
+CREATE INDEX idx_embedding_ivf ON documents
+USING ivf(embedding)
 WITH (lists = 100, distance = 'cosine');
 
 -- HNSW 索引（适合高召回率场景）
-CREATE INDEX idx_embedding_hnsw ON documents 
+CREATE INDEX idx_embedding_hnsw ON documents
 USING hnsw(embedding)
 WITH (m = 16, ef_construction = 64, ef_search = 32, distance = 'euclidean');
 ```
@@ -706,7 +706,7 @@ SELECT
 FROM news_stream;
 
 -- 3. 创建向量索引
-CREATE INDEX idx_news_hnsw ON news_embeddings 
+CREATE INDEX idx_news_hnsw ON news_embeddings
 USING hnsw(embedding)
 WITH (m = 16, ef_construction = 100, distance = 'cosine');
 
@@ -727,6 +727,7 @@ LIMIT 10;
 [Kaito AI](https://risingwave.com/blog/building-real-time-ai-with-risingwave-a-case-study-of-kaito/) 使用 RisingWave 构建实时加密市场情报平台：
 
 **业务场景**：
+
 - 实时摄取数百万条社交媒体帖子、新闻文章
 - 流式生成 Embedding 向量
 - 毫秒级语义检索支持交易决策
@@ -805,7 +806,7 @@ CREATE SOURCE inventory_stream (
 
 -- 4. 实时库存物化视图（流处理）
 CREATE MATERIALIZED VIEW realtime_inventory AS
-SELECT 
+SELECT
     p.product_id,
     p.name,
     p.category,
@@ -817,7 +818,7 @@ LEFT JOIN inventory_stream i ON p.product_id = i.product_id
 GROUP BY p.product_id, p.name, p.category, p.price, p.store_id, p.stock_quantity;
 
 -- 5. 图片相似度搜索 + 库存查询（统一查询）
-SELECT 
+SELECT
     p.product_id,
     p.name,
     p.price,
@@ -1386,7 +1387,7 @@ LATERAL UNNEST(text_chunks(d.content, 512, 50)) AS chunk(content, chunk_num)
 WHERE d.source_type IN ('manual', 'knowledge_base');
 
 -- 4. 创建 HNSW 向量索引
-CREATE INDEX idx_doc_hnsw ON embedded_documents 
+CREATE INDEX idx_doc_hnsw ON embedded_documents
 USING hnsw(chunk_vector)
 WITH (
     m = 16,
@@ -1524,7 +1525,7 @@ FROM user_realtime_profile up
 CROSS JOIN product_embeddings pe
 WHERE pe.stock_quantity > 10
   AND pe.product_id NOT IN (
-      SELECT product_id FROM user_behavior 
+      SELECT product_id FROM user_behavior
       WHERE user_id = up.user_id AND event_time > NOW() - INTERVAL '1' DAY
   )
 ORDER BY pe.embedding <=> up.avg_embedding
@@ -1722,19 +1723,19 @@ graph TB
 
     subgraph "RisingWave 统一平台"
         direction TB
-        
+
         subgraph "流处理层"
             MV_RAW[原始数据 MV]
             MV_CLEAN[清洗转换 MV]
             MV_EMBED[向量化 MV<br/>ai_embedding()]
         end
-        
+
         subgraph "存储层"
             TBL_STRUCT[(结构化数据<br/>表/索引)]
             IDX_VECTOR[(向量索引<br/>HNSW/IVF)]
             TBL_META[(元数据<br/>文档信息)]
         end
-        
+
         subgraph "查询层"
             SQL_VECTOR[向量相似度查询<br/>ORDER BY embedding <=> query]
             SQL_HYBRID[混合查询<br/>结构化+向量过滤]
@@ -1757,22 +1758,22 @@ graph TB
     KAFKA -->|流数据| MV_RAW
     API -->|实时事件| MV_RAW
     BATCH -->|历史数据| MV_RAW
-    
+
     MV_RAW --> MV_CLEAN
     MV_CLEAN -->|调用外部模型| MV_EMBED
-    
+
     MV_CLEAN --> TBL_STRUCT
     MV_EMBED --> IDX_VECTOR
     MV_EMBED --> TBL_META
-    
+
     IDX_VECTOR --> SQL_VECTOR
     TBL_STRUCT --> SQL_HYBRID
     TBL_META --> SQL_HYBRID
-    
+
     SQL_VECTOR -->|Top-K 结果| LLM
     SQL_HYBRID -->|混合结果| DASHBOARD
     SQL_STREAM -->|聚合结果| API_SVC
-    
+
     LLM -.->|Embedding 请求| OPENAI
     MV_EMBED -.->|或内部部署| LOCAL
 
@@ -2040,17 +2041,11 @@ GROUP BY user_id;
 
 [^2]: RisingWave Blog, "The Preview of Stream Processing Performance Report," 2023. <https://risingwave.com/blog/the-preview-of-stream-processing-performance-report-apache-flink-and-risingwave-comparison/>
 
-[^3]: RisingWave Documentation, "Vector Data Types and Indexes," 2025. <https://docs.risingwave.com/sql/data-types/vector>
 
-[^4]: RisingWave Blog, "Building Real-Time AI with RisingWave: A Case Study of Kaito," 2024. <https://risingwave.com/blog/building-real-time-ai-with-risingwave-a-case-study-of-kaito/>
 
-[^5]: RisingWave Documentation, "Similarity Operators for Vector Search," 2025. <https://docs.risingwave.com/sql/functions/vector-functions>
 
-[^6]: Malkov, Y. A., & Yashunin, D. A., "Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs," IEEE TPAMI, 42(4), 824-836, 2018.
 
-[^7]: Jégou, H., Douze, M., & Schmid, C., "Product Quantization for Nearest Neighbor Search," IEEE TPAMI, 33(1), 117-128, 2011.
 
-[^8]: Apache Flink Documentation, "VECTOR_SEARCH Function," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/vector-search/>
 
 ---
 

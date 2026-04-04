@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-19: Performance Revolution
+
 性能革命是根本性提升：
 $$
 \text{Perf}_{3.0} \geq 2 \times \text{Perf}_{2.x}
 $$
 
 ### Def-F-30-20: Native Execution
+
 原生执行绕过JVM：
 $$
 \text{NativeExec} : \text{Plan} \xrightarrow{\text{AOT}} \text{MachineCode}
 $$
 
 ### Def-F-30-21: Adaptive Optimization
+
 自适应优化持续改进：
 $$
 \text{Plan}_{t+1} = \text{ML}\text{-}\text{Optimizer}(\text{Plan}_t, \text{Metrics}_t)
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-11: Throughput Target
+
 吞吐量目标：
 $$
 \text{Throughput} \geq 10M \text{ records/s per core}
 $$
 
 ### Prop-F-30-12: Latency Target
+
 延迟目标：
 $$
 P_{99}(\text{Latency}) \leq 10ms
@@ -67,20 +72,20 @@ $$
 
 ```java
 public class AOTCompiler {
-    
+
     public NativeCode compile(JobGraph graph) {
         // 生成LLVM IR
         LLVMModuleRef module = generateLLVMIR(graph);
-        
+
         // 优化
         LLVMPassManagerRef pm = LLVMCreatePassManager();
         LLVMAddOptimizationPasses(pm);
         LLVMRunPassManager(pm, module);
-        
+
         // 编译为机器码
         LLVMExecutionEngineRef engine;
         LLVMCreateJITCompilerForModule(&engine, module, 3, &error);
-        
+
         return new NativeCode(engine);
     }
 }

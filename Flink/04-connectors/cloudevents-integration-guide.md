@@ -39,6 +39,17 @@
     - [6.7 Azure Event Grid 集成](#67-azure-event-grid-集成)
     - [6.8 Google Eventarc 集成](#68-google-eventarc-集成)
     - [6.9 事件溯源实现示例](#69-事件溯源实现示例)
+    - [6.10 Saga 模式实现示例](#610-saga-模式实现示例)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 CloudEvents 与 Flink 集成架构图](#71-cloudevents-与-flink-集成架构图)
+    - [7.2 CloudEvents 序列化流程图](#72-cloudevents-序列化流程图)
+    - [7.3 事件网格集成架构图](#73-事件网格集成架构图)
+    - [7.4 事件溯源模式状态机](#74-事件溯源模式状态机)
+  - [8. 最佳实践 (Best Practices)](#8-最佳实践-best-practices)
+    - [8.1 事件溯源模式最佳实践](#81-事件溯源模式最佳实践)
+    - [8.2 Saga 模式最佳实践](#82-saga-模式最佳实践)
+    - [8.3 性能优化建议](#83-性能优化建议)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
@@ -1751,7 +1762,7 @@ import org.apache.flink.cep.pattern.conditions.SimpleCondition;
  * Saga 编排模式实现
  */
 public class SagaOrchestrationExample {
-  
+
   /**
    * Saga 定义
    */
@@ -1761,7 +1772,7 @@ public class SagaOrchestrationExample {
     private List<SagaStep> steps;
     private long timeoutMs;
   }
-  
+
   @Data
   public static class SagaStep {
     private String stepName;
@@ -1770,7 +1781,7 @@ public class SagaOrchestrationExample {
     private String failureEventType;
     private String compensationCommandType;
   }
-  
+
   /**
    * Saga 实例状态
    */
@@ -1783,7 +1794,7 @@ public class SagaOrchestrationExample {
     COMPLETED,        // Saga 完成
     FAILED            // Saga 失败（补偿完成）
   }
-  
+
   @Data
   public static class SagaInstance {
     private String sagaId;
@@ -1795,7 +1806,7 @@ public class SagaOrchestrationExample {
     private Instant startedAt;
     private Instant completedAt;
   }
-  
+
   /**
    * 订单处理 Saga 定义
    */
@@ -1803,9 +1814,9 @@ public class SagaOrchestrationExample {
     SagaDefinition saga = new SagaDefinition();
     saga.setSagaType("OrderProcessing");
     saga.setTimeoutMs(300000); // 5分钟超时
-    
+
     List<SagaStep> steps = new ArrayList<>();
-    
+
     // 步骤 1: 预留库存
     steps.add(SagaStep.builder()
       .stepName("reserveInventory")
@@ -1814,7 +1825,7 @@ public class SagaOrchestrationExample {
       .failureEventType("Inventory.Event.StockReservationFailed")
       .compensationCommandType("Inventory.Command.ReleaseStock")
       .build());
-    
+
     // 步骤 2: 处理支付
     steps.add(SagaStep.builder()
       .stepName("processPayment")
@@ -1823,7 +1834,7 @@ public class SagaOrchestrationExample {
       .failureEventType("Payment.Event.PaymentFailed")
       .compensationCommandType("Payment.Command.Refund")
       .build());
-    
+
     // 步骤 3: 创建发货
     steps.add(SagaStep.builder()
       .stepName("createShipment")
@@ -1832,25 +1843,25 @@ public class SagaOrchestrationExample {
       .failureEventType("Shipping.Event.ShipmentCreationFailed")
       .compensationCommandType("Shipping.Command.CancelShipment")
       .build());
-    
+
     saga.setSteps(steps);
     return saga;
   }
-  
+
   /**
    * Saga 协调器：使用 KeyedProcessFunction 实现状态机
    */
-  public static class SagaOrchestrator 
+  public static class SagaOrchestrator
       extends KeyedProcessFunction<String, CloudEvent, CloudEvent> {
-    
+
     private final SagaDefinition sagaDefinition;
     private ValueState<SagaInstance> sagaState;
     private MapState<String, CloudEvent> pendingCommands;
-    
+
     public SagaOrchestrator(SagaDefinition sagaDefinition) {
       this.sagaDefinition = sagaDefinition;
     }
-    
+
     @Override
     public void open(Configuration parameters) {
       sagaState = getRuntimeContext().getState(
@@ -1858,27 +1869,27 @@ public class SagaOrchestrationExample {
       pendingCommands = getRuntimeContext().getMapState(
         new MapStateDescriptor<>("pending", String.class, CloudEvent.class));
     }
-    
+
     @Override
-    public void processElement(CloudEvent event, Context ctx, 
+    public void processElement(CloudEvent event, Context ctx,
                               Collector<CloudEvent> out) throws Exception {
-      
+
       String eventType = event.getType();
       String sagaId = event.getExtension("sagaid").toString();
-      
+
       SagaInstance saga = sagaState.value();
-      
+
       // 处理 Saga 启动命令
       if (eventType.equals(sagaDefinition.getSagaType() + ".Command.Start")) {
         startSaga(sagaId, ctx, out);
         return;
       }
-      
+
       if (saga == null) {
         // 未知的 Saga 实例，忽略或记录错误
         return;
       }
-      
+
       // 根据当前状态处理事件
       switch (saga.getStatus()) {
         case STEP_EXECUTING:
@@ -1891,10 +1902,10 @@ public class SagaOrchestrationExample {
           // 忽略意外事件
       }
     }
-    
-    private void startSaga(String sagaId, Context ctx, Collector<CloudEvent> out) 
+
+    private void startSaga(String sagaId, Context ctx, Collector<CloudEvent> out)
         throws Exception {
-      
+
       SagaInstance saga = new SagaInstance();
       saga.setSagaId(sagaId);
       saga.setSagaType(sagaDefinition.getSagaType());
@@ -1903,29 +1914,29 @@ public class SagaOrchestrationExample {
       saga.setCompletedSteps(new ArrayList<>());
       saga.setCompensatedSteps(new ArrayList<>());
       saga.setStartedAt(Instant.now());
-      
+
       sagaState.update(saga);
-      
+
       // 执行第一个步骤
       executeNextStep(saga, ctx, out);
-      
+
       // 注册超时定时器
       ctx.timerService().registerEventTimeTimer(
         ctx.timestamp() + sagaDefinition.getTimeoutMs());
     }
-    
-    private void executeNextStep(SagaInstance saga, Context ctx, 
+
+    private void executeNextStep(SagaInstance saga, Context ctx,
                                  Collector<CloudEvent> out) throws Exception {
-      
+
       if (saga.getCurrentStep() >= sagaDefinition.getSteps().size()) {
         // 所有步骤完成
         completeSaga(saga, ctx, out);
         return;
       }
-      
+
       SagaStep step = sagaDefinition.getSteps().get(saga.getCurrentStep());
       saga.setStatus(SagaStatus.STEP_EXECUTING);
-      
+
       // 发送命令事件
       CloudEvent command = CloudEventBuilder.v1()
         .withId(UUID.randomUUID().toString())
@@ -1936,41 +1947,41 @@ public class SagaOrchestrationExample {
         .withExtension("correlationid", saga.getSagaId())
         .withTime(OffsetDateTime.now())
         .build();
-      
+
       pendingCommands.put(step.getStepName(), command);
       out.collect(command);
-      
+
       sagaState.update(saga);
     }
-    
-    private void handleStepResponse(SagaInstance saga, CloudEvent event, 
-                                   Context ctx, Collector<CloudEvent> out) 
+
+    private void handleStepResponse(SagaInstance saga, CloudEvent event,
+                                   Context ctx, Collector<CloudEvent> out)
         throws Exception {
-      
+
       int currentStepIndex = saga.getCurrentStep();
       SagaStep step = sagaDefinition.getSteps().get(currentStepIndex);
       String eventType = event.getType();
-      
+
       if (eventType.equals(step.getSuccessEventType())) {
         // 步骤成功
         saga.getCompletedSteps().add(step.getStepName());
         saga.setCurrentStep(currentStepIndex + 1);
-        
+
         // 执行下一步
         executeNextStep(saga, ctx, out);
-        
+
       } else if (eventType.equals(step.getFailureEventType())) {
         // 步骤失败，开始补偿
         saga.setStatus(SagaStatus.COMPENSATING);
         executeCompensation(saga, ctx, out);
       }
     }
-    
-    private void executeCompensation(SagaInstance saga, Context ctx, 
+
+    private void executeCompensation(SagaInstance saga, Context ctx,
                                     Collector<CloudEvent> out) throws Exception {
-      
+
       List<String> completedSteps = saga.getCompletedSteps();
-      
+
       // 逆序执行补偿
       for (int i = completedSteps.size() - 1; i >= 0; i--) {
         String stepName = completedSteps.get(i);
@@ -1978,7 +1989,7 @@ public class SagaOrchestrationExample {
           .filter(s -> s.getStepName().equals(stepName))
           .findFirst()
           .orElse(null);
-        
+
         if (step != null && step.getCompensationCommandType() != null) {
           CloudEvent compensationCommand = CloudEventBuilder.v1()
             .withId(UUID.randomUUID().toString())
@@ -1989,31 +2000,31 @@ public class SagaOrchestrationExample {
             .withExtension("correlationid", saga.getSagaId())
             .withTime(OffsetDateTime.now())
             .build();
-          
+
           out.collect(compensationCommand);
         }
       }
     }
-    
-    private void handleCompensationResponse(SagaInstance saga, CloudEvent event, 
+
+    private void handleCompensationResponse(SagaInstance saga, CloudEvent event,
                                            Context ctx, Collector<CloudEvent> out) {
-      
+
       String stepName = event.getExtension("stepid").toString();
       saga.getCompensatedSteps().add(stepName);
-      
+
       // 检查是否所有补偿都完成
       if (saga.getCompensatedSteps().size() >= saga.getCompletedSteps().size()) {
         failSaga(saga, ctx, out);
       }
     }
-    
-    private void completeSaga(SagaInstance saga, Context ctx, 
+
+    private void completeSaga(SagaInstance saga, Context ctx,
                              Collector<CloudEvent> out) throws Exception {
-      
+
       saga.setStatus(SagaStatus.COMPLETED);
       saga.setCompletedAt(Instant.now());
       sagaState.update(saga);
-      
+
       // 发送 Saga 完成事件
       CloudEvent completedEvent = CloudEventBuilder.v1()
         .withId(UUID.randomUUID().toString())
@@ -2022,17 +2033,17 @@ public class SagaOrchestrationExample {
         .withExtension("sagaid", saga.getSagaId())
         .withTime(OffsetDateTime.now())
         .build();
-      
+
       out.collect(completedEvent);
     }
-    
-    private void failSaga(SagaInstance saga, Context ctx, 
+
+    private void failSaga(SagaInstance saga, Context ctx,
                          Collector<CloudEvent> out) throws Exception {
-      
+
       saga.setStatus(SagaStatus.FAILED);
       saga.setCompletedAt(Instant.now());
       sagaState.update(saga);
-      
+
       // 发送 Saga 失败事件
       CloudEvent failedEvent = CloudEventBuilder.v1()
         .withId(UUID.randomUUID().toString())
@@ -2041,16 +2052,16 @@ public class SagaOrchestrationExample {
         .withExtension("sagaid", saga.getSagaId())
         .withTime(OffsetDateTime.now())
         .build();
-      
+
       out.collect(failedEvent);
     }
-    
+
     @Override
-    public void onTimer(long timestamp, OnTimerContext ctx, 
+    public void onTimer(long timestamp, OnTimerContext ctx,
                        Collector<CloudEvent> out) throws Exception {
-      
+
       SagaInstance saga = sagaState.value();
-      if (saga != null && saga.getStatus() != SagaStatus.COMPLETED 
+      if (saga != null && saga.getStatus() != SagaStatus.COMPLETED
           && saga.getStatus() != SagaStatus.FAILED) {
         // Saga 超时，开始补偿
         saga.setStatus(SagaStatus.COMPENSATING);
@@ -2058,33 +2069,33 @@ public class SagaOrchestrationExample {
       }
     }
   }
-  
+
   /**
    * 完整的 Saga 编排作业
    */
   public static void main(String[] args) throws Exception {
-    StreamExecutionEnvironment env = 
+    StreamExecutionEnvironment env =
       StreamExecutionEnvironment.getExecutionEnvironment();
     env.enableCheckpointing(60000);
-    
+
     // 创建 Saga 定义
     SagaDefinition orderSaga = createOrderProcessingSaga();
-    
+
     // 从 Kafka 读取事件
     DataStream<CloudEvent> events = env.fromSource(
       createKafkaSource(),
       WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
       "Saga Events"
     );
-    
+
     // 按 sagaId 分组并执行协调器
     DataStream<CloudEvent> commands = events
       .keyBy(event -> event.getExtension("sagaid").toString())
       .process(new SagaOrchestrator(orderSaga));
-    
+
     // 发送命令到 Kafka
     commands.sinkTo(createKafkaSink());
-    
+
     env.execute("Saga Orchestrator");
   }
 }
@@ -2107,7 +2118,7 @@ graph TB
         E2[Azure Event Grid]
         E3[Google Eventarc]
     end
-    
+
     subgraph Flink["Apache Flink 处理引擎"]
         D[CloudEvents<br/>Deserializer]
         P1[事件处理<br/>ProcessFunction]
@@ -2115,38 +2126,38 @@ graph TB
         P3[CEP 模式匹配<br/>Pattern Matching]
         S[CloudEvents<br/>Serializer]
     end
-    
+
     subgraph Sinks["CloudEvents Sinks"]
         SK[Kafka Sink]
         SH[HTTP Sink]
         SE[事件网格 Sink]
     end
-    
+
     subgraph Storage["状态存储"]
         RocksDB[RocksDB State Backend]
         Checkpoint[Checkpoint to S3/HDFS]
     end
-    
+
     K --> D
     H --> D
     E1 --> D
     E2 --> D
     E3 --> D
-    
+
     D --> P1
     P1 --> P2
     P2 --> P3
     P3 --> S
-    
+
     S --> SK
     S --> SH
     S --> SE
-    
+
     P1 -.-> RocksDB
     P2 -.-> RocksDB
     P3 -.-> RocksDB
     RocksDB -.-> Checkpoint
-    
+
     style Sources fill:#e1f5fe
     style Flink fill:#fff3e0
     style Sinks fill:#e8f5e9
@@ -2164,48 +2175,48 @@ flowchart TD
     subgraph Input["输入 CloudEvent"]
         CE["CloudEvent 对象<br/>specversion, type, source, id, data..."]
     end
-    
+
     subgraph Serialization["序列化过程"]
         direction TB
         Mode{选择模式}
-        
+
         subgraph Structured["结构化模式"]
             SJ["JSON Encoder"]
             JSON["完整 JSON 对象<br/>包含所有属性和 data"]
         end
-        
+
         subgraph Binary["二进制模式"]
             H["HTTP Headers /<br/>Kafka Headers"]
             B["Body: data 字段"]
         end
     end
-    
+
     subgraph Transport["传输协议"]
         T1["HTTP POST"]
         T2["Kafka Record"]
         T3["MQTT Message"]
     end
-    
+
     subgraph Deserialization["反序列化过程"]
         direction TB
         Detect{检测模式}
-        
+
         subgraph DStructured["结构化解析"]
             PJ["JSON Parser"]
             RCE["重建 CloudEvent"]
         end
-        
+
         subgraph DBinary["二进制解析"]
             GH["提取 Headers"]
             GB["提取 Body"]
             MR["合并重建"]
         end
     end
-    
+
     subgraph Output["输出 CloudEvent"]
         OCE["CloudEvent 对象"]
     end
-    
+
     CE --> Mode
     Mode -->|结构化| SJ
     Mode -->|二进制| H
@@ -2224,7 +2235,7 @@ flowchart TD
     GB --> MR
     RCE --> OCE
     MR --> OCE
-    
+
     style Structured fill:#e8f5e9
     style Binary fill:#fff3e0
     style DStructured fill:#e8f5e9
@@ -2248,32 +2259,32 @@ graph TB
         PUBSUB[Pub/Sub]
         FIRESTORE[Firestore]
     end
-    
+
     subgraph EventGrids["云事件网格服务"]
         EB[AWS EventBridge<br/>Event Bus]
         EG[Azure Event Grid<br/>Topics]
         EA[Google Eventarc<br/>Triggers]
     end
-    
+
     subgraph AdapterLayer["CloudEvents 适配层"]
         A1[EventBridge<br/>Adapter]
         A2[Event Grid<br/>Adapter]
         A3[Eventarc<br/>Adapter]
     end
-    
+
     subgraph Flink["Flink 处理集群"]
         Source[CloudEvents<br/>Source]
         Process[流处理作业]
         Sink[CloudEvents<br/>Sink]
     end
-    
+
     subgraph Targets["目标系统"]
         Lambda[AWS Lambda]
         AF[Azure Functions]
         CF[Cloud Functions]
         Webhook[HTTP Webhook]
     end
-    
+
     S3 -->|Object Created| EB
     DDB -->|Table Update| EB
     EC2 -->|State Change| EB
@@ -2281,27 +2292,27 @@ graph TB
     BLOB -->|Blob Created| EG
     PUBSUB -->|Message Published| EA
     FIRESTORE -->|Document Update| EA
-    
+
     EB --> A1
     EG --> A2
     EA --> A3
-    
+
     A1 -->|CloudEvents| Source
     A2 -->|CloudEvents| Source
     A3 -->|CloudEvents| Source
-    
+
     Source --> Process
     Process --> Sink
-    
+
     Sink -->|通过适配器| EB
     Sink -->|通过适配器| EG
     Sink -->|通过适配器| EA
-    
+
     EB --> Lambda
     EG --> AF
     EA --> CF
     Sink --> Webhook
-    
+
     style ExternalSystems fill:#e3f2fd
     style EventGrids fill:#fff3e0
     style AdapterLayer fill:#e8f5e9
@@ -2317,33 +2328,33 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Created: OrderCreated
-    
+
     Created --> Confirmed: OrderConfirmed
     Created --> Cancelled: OrderCancelled
-    
+
     Confirmed --> Paid: PaymentReceived
     Confirmed --> Cancelled: OrderCancelled
-    
+
     Paid --> Shipped: ShipmentCreated
     Paid --> Refunding: PaymentFailed
-    
+
     Shipped --> Delivered: OrderDelivered
     Shipped --> Lost: ShipmentLost
-    
+
     Refunding --> Cancelled: RefundCompleted
-    
+
     Lost --> Refunding: CompensationInitiated
-    
+
     Cancelled --> [*]
     Delivered --> [*]
-    
+
     note right of Created
         CloudEvents 属性:
         type: Order.Aggregate.OrderCreated
         subject: {orderId}
         data: 订单详情
     end note
-    
+
     note right of Shipped
         每个状态转换都生成
         一个 CloudEvent 并
@@ -2513,29 +2524,22 @@ env.setParallelism(8);
 
 ## 9. 引用参考 (References)
 
-[^1]: CloudEvents Specification v1.0.2, Cloud Native Computing Foundation, 2023. https://cloudevents.io/
+[^1]: CloudEvents Specification v1.0.2, Cloud Native Computing Foundation, 2023. <https://cloudevents.io/>
 
-[^2]: CloudEvents Core Specification, "Attributes", CNCF Working Group. https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md
+[^2]: CloudEvents Core Specification, "Attributes", CNCF Working Group. <https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md>
 
-[^3]: CloudEvents Kafka Protocol Binding, "CloudEvents Kafka Protocol Binding v1.0.2", CNCF. https://github.com/cloudevents/spec/blob/main/cloudevents/bindings/kafka-protocol-binding.md
+[^3]: CloudEvents Kafka Protocol Binding, "CloudEvents Kafka Protocol Binding v1.0.2", CNCF. <https://github.com/cloudevents/spec/blob/main/cloudevents/bindings/kafka-protocol-binding.md>
 
-[^4]: AWS EventBridge Documentation, "Amazon EventBridge events", AWS. https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events.html
+[^4]: AWS EventBridge Documentation, "Amazon EventBridge events", AWS. <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events.html>
 
-[^5]: Azure Event Grid Documentation, "CloudEvents schema", Microsoft. https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema
+[^5]: Azure Event Grid Documentation, "CloudEvents schema", Microsoft. <https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema>
 
-[^6]: Google Eventarc Documentation, "Eventarc overview", Google Cloud. https://cloud.google.com/eventarc/docs/overview
 
-[^7]: Apache Flink Documentation, "Kafka Connector", Apache Software Foundation. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
 
-[^8]: io.cloudevents Java SDK, "CloudEvents Java SDK", GitHub. https://github.com/cloudevents/sdk-java
 
-[^9]: Chris Richardson, "Pattern: Saga", Microservices.io, 2018. https://microservices.io/patterns/data/saga.html
 
-[^10]: Martin Fowler, "Event Sourcing", martinfowler.com, 2005. https://martinfowler.com/eaaDev/EventSourcing.html
 
-[^11]: W3C Trace Context, "Trace Context", W3C Recommendation, 2021. https://www.w3.org/TR/trace-context/
 
-[^12]: Gregor Hohpe, "Enterprise Integration Patterns", Addison-Wesley, 2003.
 
 ---
 

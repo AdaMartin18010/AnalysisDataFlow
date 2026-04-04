@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-ML-01: Model Serving
+
 模型服务：
 $$
 \text{Serve}(M, x) = y \text{ where } M \text{ is trained model}
 $$
 
 ### Def-F-ML-02: Inference Latency
+
 推理延迟：
 $$
 T_{\text{inference}} = T_{\text{preprocess}} + T_{\text{forward}} + T_{\text{postprocess}}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-ML-01: Batch Inference Efficiency
+
 批量推理效率：
 $$
 T_{\text{batch}}(n) < n \cdot T_{\text{single}}
@@ -45,7 +48,7 @@ graph TB
     B --> C[模型推理]
     C --> D[后处理]
     D --> E[结果]
-    
+
     F[模型仓库] --> C
 ```
 
@@ -57,7 +60,7 @@ graph TB
 // TensorFlow Serving调用
 public class TFServingFunction extends AsyncFunction<Features, Prediction> {
     private transient TFServingClient client;
-    
+
     @Override
     public void asyncInvoke(Features input, ResultFuture<Prediction> resultFuture) {
         client.predictAsync(input, resultFuture::complete);
@@ -73,7 +76,7 @@ public class TFServingFunction extends AsyncFunction<Features, Prediction> {
 @udf(resultType=DataTypes.FLOAT())
 public class ModelInference extends ScalarFunction {
     private transient Model model;
-    
+
     public float eval(String features) {
         return model.predict(features);
     }

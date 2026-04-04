@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Vector-01: Vector Embedding
+
 向量嵌入：
 $$
 \text{Embedding} : \text{Text} \to \mathbb{R}^n
 $$
 
 ### Def-F-Vector-02: Similarity Search
+
 相似性搜索：
 $$
 \text{Search} : \text{Query} \times \text{Corpus} \to \text{TopK}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Vector-01: Search Latency
+
 搜索延迟：
 $$
 T_{\text{search}} < 10ms

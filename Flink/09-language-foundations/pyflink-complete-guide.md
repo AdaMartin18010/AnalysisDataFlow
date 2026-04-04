@@ -82,22 +82,22 @@ def verify_pyflink_installation():
     """验证 PyFlink 安装完整性"""
     import pyflink
     from pyflink.version import __version__
-    
+
     print(f"PyFlink 版本: {__version__}")
-    
+
     # 检查核心模块
     try:
         from pyflink.table import EnvironmentSettings, TableEnvironment
         print("✓ Table API 可用")
     except ImportError as e:
         print(f"✗ Table API 不可用: {e}")
-    
+
     try:
         from pyflink.datastream import StreamExecutionEnvironment
         print("✓ DataStream API 可用")
     except ImportError as e:
         print(f"✗ DataStream API 不可用: {e}")
-    
+
     # 检查 Java 桥接
     try:
         from pyflink.java_gateway import get_gateway
@@ -258,15 +258,15 @@ def create_streaming_environment():
     settings = EnvironmentSettings.new_instance() \
         .in_streaming_mode() \
         .build()
-    
+
     t_env = TableEnvironment.create(settings)
-    
+
     # 配置并行度
     t_env.get_config().set("parallelism.default", "4")
-    
+
     # 配置检查点
     t_env.get_config().set("execution.checkpointing.interval", "10s")
-    
+
     return t_env
 
 # 批处理模式
@@ -275,7 +275,7 @@ def create_batch_environment():
     settings = EnvironmentSettings.new_instance() \
         .in_batch_mode() \
         .build()
-    
+
     return TableEnvironment.create(settings)
 
 # 使用 (Blink Planner 为默认)
@@ -294,35 +294,35 @@ def create_custom_environment():
         .with_configuration({
             # 并行度配置
             "parallelism.default": "4",
-            
+
             # 时间语义
             "table.local-time-zone": "Asia/Shanghai",
-            
+
             # 状态后端
             "state.backend": "rocksdb",
             "state.backend.incremental": "true",
-            
+
             # 检查点配置
             "execution.checkpointing.interval": "10s",
             "execution.checkpointing.timeout": "5min",
             "execution.checkpointing.max-concurrent-checkpoints": "1",
-            
+
             # 重启策略
             "restart-strategy": "fixed-delay",
             "restart-strategy.fixed-delay.attempts": "3",
             "restart-strategy.fixed-delay.delay": "10s",
-            
+
             # 网络缓冲区
             "taskmanager.memory.network.fraction": "0.15",
             "taskmanager.memory.network.max": "256mb",
-            
+
             # Python UDF 配置
             "python.fn-execution.bundle.size": "1000",
             "python.fn-execution.bundle.time": "1000",
             "python.fn-execution.memory.managed": "true",
         }) \
         .build()
-    
+
     return TableEnvironment.create(settings)
 ```
 
@@ -485,27 +485,27 @@ def basic_queries(t_env):
     """基础查询操作示例"""
     # 假设已有 source 表
     source = t_env.from_path("kafka_source")
-    
+
     # 1. 简单选择
     result1 = source.select(col("user_id"), col("event_type"), col("event_time"))
-    
+
     # 2. 条件过滤
     result2 = source.filter(col("event_type") == "purchase") \
                     .select(col("user_id"), col("event_data"))
-    
+
     # 3. 多条件过滤
     result3 = source.filter(
-        (col("event_type").is_in("purchase", "refund")) & 
+        (col("event_type").is_in("purchase", "refund")) &
         (col("event_time") > lit("2024-01-01").to_date)
     )
-    
+
     # 4. 列重命名与计算
     result4 = source.select(
         col("user_id").alias("uid"),
         (col("event_data").json_value("$.amount", DataTypes.DOUBLE())).alias("amount"),
         col("event_time")
     )
-    
+
     return result1, result2, result3, result4
 ```
 
@@ -518,14 +518,14 @@ from pyflink.table.window import Tumble
 def aggregation_queries(t_env):
     """聚合查询操作"""
     source = t_env.from_path("kafka_source")
-    
+
     # 1. 简单分组聚合
     agg1 = source.group_by(col("event_type")) \
                  .select(
                      col("event_type"),
                      count.col("*").alias("event_count")
                  )
-    
+
     # 2. 多度量聚合
     agg2 = source.group_by(col("user_id")) \
                  .select(
@@ -535,7 +535,7 @@ def aggregation_queries(t_env):
                      avg.col("amount").alias("avg_amount"),
                      max.col("event_time").alias("last_event_time")
                  )
-    
+
     # 3. 窗口聚合 (滚动窗口)
     agg3 = source.window(Tumble.over(lit(5).minutes).on(col("event_time")).alias("w")) \
                  .group_by(col("w"), col("event_type")) \
@@ -545,10 +545,10 @@ def aggregation_queries(t_env):
                      col("w").end.alias("window_end"),
                      count.col("*").alias("event_count")
                  )
-    
+
     # 4. 多维聚合 (GROUPING SETS)
     agg4_sql = t_env.execute_sql("""
-        SELECT 
+        SELECT
             event_type,
             user_id,
             COUNT(*) as cnt
@@ -560,7 +560,7 @@ def aggregation_queries(t_env):
             ()
         )
     """)
-    
+
     return agg1, agg2, agg3
 ```
 
@@ -572,7 +572,7 @@ from pyflink.table.window import Tumble, Slide, Session, Over
 def window_operations(t_env):
     """窗口操作完整示例"""
     source = t_env.from_path("kafka_source")
-    
+
     # 1. 滚动窗口 (Tumbling Window)
     tumble_result = source \
         .window(Tumble.over(lit(10).minutes).on(col("event_time")).alias("w")) \
@@ -584,7 +584,7 @@ def window_operations(t_env):
             count.col("*").alias("event_count"),
             sum.col("amount").alias("total_amount")
         )
-    
+
     # 2. 滑动窗口 (Sliding Window)
     slide_result = source \
         .window(Slide.over(lit(10).minutes).every(lit(2).minutes).on(col("event_time")).alias("w")) \
@@ -594,7 +594,7 @@ def window_operations(t_env):
             col("w").start.alias("window_start"),
             count.col("*").alias("event_count")
         )
-    
+
     # 3. 会话窗口 (Session Window)
     session_result = source \
         .window(Session.with_gap(lit(5).minutes).on(col("event_time")).alias("w")) \
@@ -606,7 +606,7 @@ def window_operations(t_env):
             col("w").rowtime.alias("session_time"),
             count.col("*").alias("event_count")
         )
-    
+
     # 4. OVER 窗口 (分析函数)
     over_result = source \
         .window(Over.partition_by(col("user_id"))
@@ -621,7 +621,7 @@ def window_operations(t_env):
             col("amount").sum.over(col("w")).alias("running_sum"),
             col("amount").avg.over(col("w")).alias("moving_avg")
         )
-    
+
     return tumble_result, slide_result, session_result, over_result
 ```
 
@@ -633,7 +633,7 @@ def join_operations(t_env):
     orders = t_env.from_path("orders")
     customers = t_env.from_path("customers")
     products = t_env.from_path("products")
-    
+
     # 1. 内连接
     inner_join = orders \
         .join(customers, col("orders.customer_id") == col("customers.id")) \
@@ -642,28 +642,28 @@ def join_operations(t_env):
             col("customers.name").alias("customer_name"),
             col("orders.total_amount")
         )
-    
+
     # 2. 左外连接
     left_join = orders \
         .left_outer_join(customers, col("orders.customer_id") == col("customers.id")) \
         .select(col("orders.*"), col("customers.name"))
-    
+
     # 3. 间隔 Join (Interval Join) - 流处理特有
     interval_join = t_env.execute_sql("""
-        SELECT 
+        SELECT
             o.order_id,
             o.order_time,
             s.shipment_id,
             s.shipment_time
         FROM orders o
         JOIN shipments s ON o.order_id = s.order_id
-        AND o.order_time BETWEEN s.shipment_time - INTERVAL '1' HOUR 
+        AND o.order_time BETWEEN s.shipment_time - INTERVAL '1' HOUR
                              AND s.shipment_time + INTERVAL '1' HOUR
     """)
-    
+
     # 4. 时态 Join (Temporal Join) - 维度表关联
     temporal_join = t_env.execute_sql("""
-        SELECT 
+        SELECT
             o.order_id,
             o.currency,
             r.rate,
@@ -672,7 +672,7 @@ def join_operations(t_env):
         LEFT JOIN currency_rates FOR SYSTEM_TIME AS OF o.order_time r
         ON o.currency = r.currency
     """)
-    
+
     return inner_join, left_join
 ```
 
@@ -689,7 +689,7 @@ def table_to_datastream():
     # 创建环境
     env = StreamExecutionEnvironment.get_execution_environment()
     t_env = StreamTableEnvironment.create(env)
-    
+
     # 创建表
     t_env.execute_sql("""
         CREATE TABLE sensor_data (
@@ -704,24 +704,24 @@ def table_to_datastream():
             'format' = 'json'
         )
     """)
-    
+
     # Table 转 DataStream
     table = t_env.from_path("sensor_data")
-    
+
     # 转换为 RetractStream (带增删标记)
     ds_retract = t_env.to_retract_stream(table, Types.ROW([
         Types.STRING(),
         Types.DOUBLE(),
         Types.SQL_TIMESTAMP()
     ]))
-    
+
     # 转换为 AppendStream (仅追加)
     ds_append = t_env.to_append_stream(table, Types.ROW([
         Types.STRING(),
         Types.DOUBLE(),
         Types.SQL_TIMESTAMP()
     ]))
-    
+
     # 在 DataStream 上处理
     def process_sensor(value):
         sensor_id, temp, timestamp = value
@@ -730,9 +730,9 @@ def table_to_datastream():
         elif temp < 10:
             return (sensor_id, temp, "LOW", timestamp)
         return (sensor_id, temp, "NORMAL", timestamp)
-    
+
     processed_ds = ds_append.map(process_sensor)
-    
+
     # DataStream 转回 Table
     result_table = t_env.from_data_stream(
         processed_ds,
@@ -741,7 +741,7 @@ def table_to_datastream():
         col("alert_level"),
         col("event_time")
     )
-    
+
     return result_table
 ```
 
@@ -756,7 +756,7 @@ def datastream_to_table():
     """DataStream 转 Table 完整示例"""
     env = StreamExecutionEnvironment.get_execution_environment()
     t_env = StreamTableEnvironment.create(env)
-    
+
     # 从 DataStream 源创建
     ds = env.from_collection([
         ("sensor_1", 25.5, 1704067200000),
@@ -767,10 +767,10 @@ def datastream_to_table():
         Types.DOUBLE(),
         Types.LONG()
     ]))
-    
+
     # 方式1: 自动推断 schema
     table1 = t_env.from_data_stream(ds)
-    
+
     # 方式2: 指定列名和类型
     from pyflink.table.expressions import col
     table2 = t_env.from_data_stream(
@@ -779,12 +779,12 @@ def datastream_to_table():
         col("temperature"),
         col("timestamp").cast(DataTypes.TIMESTAMP_LTZ(3))
     )
-    
+
     # 方式3: 使用 Row 类型和自定义字段
     from pyflink.common import Row
-    
+
     ds_rows = ds.map(lambda x: Row(sensor_id=x[0], temp=x[1], ts=x[2]))
-    
+
     table3 = t_env.from_data_stream(
         ds_rows,
         DataTypes.ROW([
@@ -793,20 +793,20 @@ def datastream_to_table():
             DataTypes.FIELD("event_time", DataTypes.TIMESTAMP_LTZ(3))
         ])
     )
-    
+
     # 注册为临时视图
     t_env.create_temporary_view("sensor_view", table3)
-    
+
     # 使用 SQL 查询
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             device_id,
             AVG(value) as avg_temp,
             COUNT(*) as reading_count
         FROM sensor_view
         GROUP BY device_id
     """)
-    
+
     return result
 ```
 
@@ -835,7 +835,7 @@ from pyflink.table.udf import udf
 
 class ParseJsonFunction(ScalarFunction):
     """解析 JSON 字段的标量函数"""
-    
+
     def eval(self, json_str: str, field: str) -> str:
         """从 JSON 字符串中提取指定字段"""
         import json
@@ -864,9 +864,9 @@ def use_scalar_functions(t_env):
     """使用标量函数"""
     t_env.create_temporary_function("parse_json", parse_json)
     t_env.create_temporary_function("calc_discount", calculate_discount)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             user_id,
             parse_json(metadata, 'category') as category,
             calc_discount(price, 0.15) as discounted_price
@@ -883,22 +883,22 @@ from pyflink.table.udf import udf
 
 class RateLimiterFunction(ScalarFunction):
     """带状态的速率限制函数"""
-    
+
     def __init__(self, max_requests: int = 100):
         self.max_requests = max_requests
         # 注意：实际状态管理需要使用 State API
         self.request_count = {}
-    
+
     def eval(self, user_id: str) -> bool:
         """检查用户是否超过速率限制"""
         import time
         current_minute = int(time.time()) // 60
         key = f"{user_id}:{current_minute}"
-        
+
         count = self.request_count.get(key, 0)
         if count >= self.max_requests:
             return False
-        
+
         self.request_count[key] = count + 1
         return True
 
@@ -938,7 +938,7 @@ def batch_categorize(scores: pd.Series) -> pd.Series:
         elif score >= 60:
             return "D"
         return "F"
-    
+
     return scores.apply(categorize)
 ```
 
@@ -953,7 +953,7 @@ from pyflink.table.types import Row
 
 class SplitFunction(TableFunction):
     """字符串分割表函数"""
-    
+
     def eval(self, text: str, delimiter: str = ","):
         """分割字符串，每行返回一个结果"""
         if text is None:
@@ -983,10 +983,10 @@ def use_table_functions(t_env):
     """使用表函数"""
     t_env.create_temporary_function("split_words", split_words)
     t_env.create_temporary_function("parse_props", parse_key_value_pairs)
-    
+
     # 使用 LATERAL TABLE
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             user_id,
             word,
             word_len
@@ -994,17 +994,17 @@ def use_table_functions(t_env):
         LATERAL TABLE(split_words(tags, ',')) AS T(word, word_len)
         WHERE word_len > 3
     """)
-    
+
     # 使用 CROSS JOIN
     result2 = t_env.execute_sql("""
-        SELECT 
+        SELECT
             c.customer_id,
             p.key,
             p.value
         FROM customers c
         CROSS JOIN LATERAL TABLE(parse_props(c.properties)) AS p(key, value)
     """)
-    
+
     return result
 ```
 
@@ -1018,7 +1018,7 @@ from pyflink.table.types import Row
 
 class ExplodeJsonArrayFunction(TableFunction):
     """展开 JSON 数组"""
-    
+
     def eval(self, json_array: str):
         """将 JSON 数组展开为多行"""
         try:
@@ -1031,7 +1031,7 @@ class ExplodeJsonArrayFunction(TableFunction):
 
 class ExplodeNestedObjectFunction(TableFunction):
     """展开嵌套对象"""
-    
+
     def eval(self, json_object: str, prefix: str = ""):
         """将嵌套 JSON 对象扁平化为键值对"""
         def flatten(obj, parent_key=""):
@@ -1047,7 +1047,7 @@ class ExplodeNestedObjectFunction(TableFunction):
                     else:
                         items.append((new_key, str(v)))
             return items
-        
+
         try:
             data = json.loads(json_object)
             for key, value in flatten(data, prefix):
@@ -1076,29 +1076,29 @@ from pyflink.table.udf import udaf
 
 class WeightedAverageFunction(AggregateFunction):
     """加权平均值聚合函数"""
-    
+
     def create_accumulator(self):
         """创建累加器 (sum, count)"""
         return [0.0, 0]  # [weighted_sum, total_weight]
-    
+
     def accumulate(self, accumulator, value, weight):
         """累积值"""
         if value is not None and weight is not None:
             accumulator[0] += value * weight
             accumulator[1] += weight
-    
+
     def retract(self, accumulator, value, weight):
         """撤销值 (用于流处理中的回撤)"""
         if value is not None and weight is not None:
             accumulator[0] -= value * weight
             accumulator[1] -= weight
-    
+
     def merge(self, accumulator, accumulators):
         """合并多个累加器"""
         for acc in accumulators:
             accumulator[0] += acc[0]
             accumulator[1] += acc[1]
-    
+
     def get_value(self, accumulator):
         """获取最终结果"""
         if accumulator[1] == 0:
@@ -1116,9 +1116,9 @@ weighted_avg = udaf(
 def use_aggregate_functions(t_env):
     """使用聚合函数"""
     t_env.create_temporary_function("weighted_avg", weighted_avg)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             category,
             weighted_avg(price, quantity) as weighted_avg_price,
             AVG(price) as simple_avg_price
@@ -1136,28 +1136,28 @@ from pyflink.table.udf import udaf
 
 class PercentileFunction(AggregateFunction):
     """计算百分位数 (使用 T-Digest 近似算法)"""
-    
+
     def __init__(self, percentile: float = 0.5):
         if not 0 <= percentile <= 1:
             raise ValueError("Percentile must be between 0 and 1")
         self.percentile = percentile
-    
+
     def create_accumulator(self):
         """创建累加器：存储所有值用于精确计算"""
         return []
-    
+
     def accumulate(self, accumulator, value):
         if value is not None:
             accumulator.append(value)
-    
+
     def retract(self, accumulator, value):
         if value is not None and value in accumulator:
             accumulator.remove(value)
-    
+
     def merge(self, accumulator, accumulators):
         for acc in accumulators:
             accumulator.extend(acc)
-    
+
     def get_value(self, accumulator):
         if not accumulator:
             return None
@@ -1216,26 +1216,26 @@ from pyflink.table.types import Row
 
 class TopNFunction(TableAggregateFunction):
     """计算 Top N 值的表值聚合函数"""
-    
+
     def __init__(self, n: int = 3):
         self.n = n
-    
+
     def create_accumulator(self):
         return []  # 存储 (value, other_data) 元组列表
-    
+
     def accumulate(self, accumulator, value, *other_fields):
         if value is not None:
             accumulator.append((value, other_fields))
-    
+
     def merge(self, accumulator, accumulators):
         for acc in accumulators:
             accumulator.extend(acc)
-    
+
     def emit_value(self, accumulator):
         """输出 Top N 结果"""
         # 按值排序，取 Top N
         sorted_items = sorted(accumulator, key=lambda x: x[0], reverse=True)[:self.n]
-        
+
         for rank, (value, others) in enumerate(sorted_items, 1):
             yield Row(rank, value, *others)
 
@@ -1249,9 +1249,9 @@ top3 = udtaf(
 def use_table_aggregate_functions(t_env):
     """使用表值聚合函数"""
     t_env.create_temporary_function("top3", top3)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             category,
             rank,
             amount,
@@ -1298,31 +1298,31 @@ def table_to_pandas_examples(t_env):
             'rows-per-second' = '10'
         )
     """)
-    
+
     table = t_env.from_path("sales")
-    
+
     # 方式1: 直接转换 (适合小数据量)
     df = table.to_pandas()
     print(f"转换为 DataFrame，行数: {len(df)}")
     print(df.head())
-    
+
     # 方式2: 先执行 SQL 再转换
     result_table = t_env.execute_sql("""
-        SELECT 
+        SELECT
             product_id,
             SUM(quantity) as total_quantity,
             AVG(price) as avg_price
         FROM sales
         GROUP BY product_id
     """)
-    
+
     df_aggregated = result_table.to_pandas()
-    
+
     # 使用 Pandas 进行进一步分析
     df_aggregated["revenue_estimate"] = (
         df_aggregated["total_quantity"] * df_aggregated["avg_price"]
     )
-    
+
     return df_aggregated
 ```
 
@@ -1338,13 +1338,13 @@ def pandas_to_table_examples(t_env):
         "city": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen"],
         "score": [85.5, 92.0, 78.5, 88.0]
     })
-    
+
     # 方式1: 直接从 DataFrame 创建 Table
     table1 = t_env.from_pandas(df)
-    
+
     # 方式2: 指定列名和类型
     from pyflink.table import DataTypes
-    
+
     table2 = t_env.from_pandas(
         df,
         schema=DataTypes.ROW([
@@ -1354,20 +1354,20 @@ def pandas_to_table_examples(t_env):
             DataTypes.FIELD("score", DataTypes.DOUBLE())
         ])
     )
-    
+
     # 方式3: 使用现有 DataFrame 创建临时视图
     t_env.create_temporary_view("user_data", df)
-    
+
     # 在 SQL 中使用
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             city,
             AVG(score) as avg_score,
             COUNT(*) as user_count
         FROM user_data
         GROUP BY city
     """)
-    
+
     return result
 ```
 
@@ -1377,7 +1377,7 @@ def pandas_to_table_examples(t_env):
 def batch_data_exchange(t_env):
     """批量数据交换模式"""
     from pyflink.table import DataTypes
-    
+
     # 从 Flink 读取批量数据到 Pandas
     def extract_batch(table, batch_size=10000):
         """分批次提取数据"""
@@ -1390,31 +1390,31 @@ def batch_data_exchange(t_env):
                 LIMIT {batch_size} OFFSET {offset}
             """)
             batch_df = batch_table.to_pandas()
-            
+
             if len(batch_df) == 0:
                 break
-                
+
             all_data.append(batch_df)
             offset += batch_size
-            
+
             if len(batch_df) < batch_size:
                 break
-        
+
         return pd.concat(all_data, ignore_index=True) if all_data else pd.DataFrame()
-    
+
     # 使用 Pandas 处理后写回 Flink
     def process_and_load(df: pd.DataFrame, target_table: str):
         """处理 Pandas DataFrame 并加载到 Flink"""
         # Pandas 处理
         df["processed"] = True
         df["processed_at"] = pd.Timestamp.now()
-        
+
         # 转换回 Flink Table
         result_table = t_env.from_pandas(df)
-        
+
         # 写入目标表
         result_table.execute_insert(target_table)
-    
+
     return extract_batch, process_and_load
 ```
 
@@ -1448,7 +1448,7 @@ def pandas_categorize_risk(scores: pd.Series) -> pd.Series:
         elif score >= 50:
             return "MEDIUM"
         return "LOW"
-    
+
     return scores.apply(get_risk_level)
 
 # 在 Flink SQL 中使用
@@ -1457,9 +1457,9 @@ def use_pandas_udfs(t_env):
     t_env.create_temporary_function("normalize_name", pandas_normalize_name)
     t_env.create_temporary_function("calc_bmi", pandas_calculate_bmi)
     t_env.create_temporary_function("risk_level", pandas_categorize_risk)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             normalize_name(full_name) as clean_name,
             calc_bmi(weight_kg, height_cm) as bmi,
             risk_level(credit_score) as risk_category
@@ -1504,12 +1504,12 @@ def pandas_correlation(x: pd.Series, y: pd.Series) -> float:
 逐行执行 (常规 UDF):
   每行调用一次 Python 函数
   函数调用开销: O(n) * function_call_overhead
-  
+
 向量化执行 (Pandas UDF):
   一批次调用一次 Python 函数 (默认 batch size: 1000)
   函数调用开销: O(n/batch_size) * function_call_overhead
   NumPy/Pandas 内部使用 C 优化循环
-  
+
 性能提升: 通常 10x - 100x
 """
 
@@ -1517,20 +1517,20 @@ def pandas_correlation(x: pd.Series, y: pd.Series) -> float:
 def configure_vectorized_execution(t_env):
     """配置向量化执行参数"""
     configuration = t_env.get_config()
-    
+
     # Pandas UDF 批处理大小
     configuration.set("python.fn-execution.bundle.size", "1000")
-    
+
     # 批处理超时 (毫秒)
     configuration.set("python.fn-execution.bundle.time", "1000")
-    
+
     # 启用 Arrow 格式数据传输 (更高效)
     configuration.set("python.fn-execution.arrow.batch.size", "10000")
-    
+
     # 内存配置
     configuration.set("python.fn-execution.memory.managed", "true")
     configuration.set("python.fn-execution.memory.managed.fraction", "0.3")
-    
+
     return t_env
 ```
 
@@ -1547,10 +1547,10 @@ def arrow_process_batch(data: pd.Series) -> pd.Series:
     """使用 Arrow 后端进行批量处理"""
     # PyArrow 加速数据处理
     arrow_array = pa.array(data)
-    
+
     # 使用 Arrow 计算
     result = pc.multiply(arrow_array, 2)  # 示例：乘以 2
-    
+
     return pd.Series(result.to_pylist())
 ```
 
@@ -1581,68 +1581,68 @@ def sklearn_integration_batch(t_env):
     from sklearn.preprocessing import StandardScaler
     import pickle
     import base64
-    
+
     # 1. 从 Flink 加载训练数据
     train_table = t_env.execute_sql("""
-        SELECT 
+        SELECT
             feature1, feature2, feature3, feature4,
             label
         FROM ml_training_data
     """)
-    
+
     train_df = train_table.to_pandas()
-    
+
     # 2. 训练模型
     X = train_df[["feature1", "feature2", "feature3", "feature4"]]
     y = train_df["label"]
-    
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
-    
+
     # 特征缩放
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
-    
+
     # 训练模型
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train_scaled, y_train)
-    
+
     # 3. 序列化模型
     model_bytes = pickle.dumps({"model": model, "scaler": scaler})
     model_base64 = base64.b64encode(model_bytes).decode("utf-8")
-    
+
     # 4. 广播模型用于预测
     from pyflink.table.udf import udf
-    
+
     @udf(result_type=DataTypes.DOUBLE())
     def predict_with_model(f1, f2, f3, f4):
         """使用训练好的模型进行预测"""
         if any(v is None for v in [f1, f2, f3, f4]):
             return None
-        
+
         # 反序列化模型 (实际应用中应缓存)
         model_data = pickle.loads(base64.b64decode(model_base64))
         model = model_data["model"]
         scaler = model_data["scaler"]
-        
+
         # 预测
         features = scaler.transform([[f1, f2, f3, f4]])
         prediction = model.predict_proba(features)[0][1]  # 正类概率
-        
+
         return float(prediction)
-    
+
     # 5. 在流数据上应用预测
     t_env.create_temporary_function("predict", predict_with_model)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             user_id,
             feature1, feature2, feature3, feature4,
             predict(feature1, feature2, feature3, feature4) as fraud_probability
         FROM real_time_transactions
     """)
-    
+
     return result
 ```
 
@@ -1654,21 +1654,21 @@ from pyflink.table.udf import udf
 import numpy as np
 
 @udf(result_type=DataTypes.ARRAY(DataTypes.DOUBLE()), udf_type="pandas")
-def extract_features_pandas(amounts: pd.Series, 
+def extract_features_pandas(amounts: pd.Series,
                             timestamps: pd.Series) -> pd.Series:
     """批量提取交易特征"""
     features_list = []
-    
+
     for amount, ts in zip(amounts, timestamps):
         # 金额特征
         amount_log = np.log1p(abs(amount))
         amount_sign = 1 if amount > 0 else -1
-        
+
         # 时间特征
         hour = ts.hour
         is_weekend = ts.weekday() >= 5
         is_night = hour < 6 or hour > 22
-        
+
         features_list.append([
             amount_log,
             amount_sign,
@@ -1676,7 +1676,7 @@ def extract_features_pandas(amounts: pd.Series,
             float(is_weekend),
             float(is_night)
         ])
-    
+
     return pd.Series(features_list)
 ```
 
@@ -1692,18 +1692,18 @@ import base64
 
 class OnlineLearnerFunction(ScalarFunction):
     """在线学习函数 - 增量更新模型"""
-    
+
     def __init__(self, model_path: str = None):
         self.model_path = model_path
         self.model = None
         self.partial_fit_count = 0
         self.partial_fit_threshold = 100  # 每 100 条更新一次
-        
+
         # 加载初始模型
         if model_path:
             with open(model_path, 'rb') as f:
                 self.model = pickle.load(f)
-    
+
     def eval(self, features_str: str, label: int, update: bool = False):
         """
         参数:
@@ -1713,11 +1713,11 @@ class OnlineLearnerFunction(ScalarFunction):
         """
         import json
         from sklearn.linear_model import SGDClassifier
-        
+
         features = json.loads(features_str)
         X = [features]
         y = [label]
-        
+
         if self.model is None:
             # 初始化模型
             self.model = SGDClassifier(
@@ -1727,24 +1727,24 @@ class OnlineLearnerFunction(ScalarFunction):
             )
             # 首次拟合需要至少两个类别
             return 0.5
-        
+
         # 预测
         try:
             prob = self.model.predict_proba(X)[0][1]
         except:
             prob = 0.5
-        
+
         # 增量更新
         if update:
             self.model.partial_fit(X, y, classes=[0, 1])
             self.partial_fit_count += 1
-            
+
             # 定期保存模型
             if self.partial_fit_count % self.partial_fit_threshold == 0:
                 self._save_model()
-        
+
         return float(prob)
-    
+
     def _save_model(self):
         """保存模型到存储"""
         if self.model_path:
@@ -1764,7 +1764,7 @@ online_predictor = udf(
 def flink_ml_integration(t_env):
     """使用 Flink ML 库进行机器学习"""
     # Flink ML 提供标准的机器学习算子
-    
+
     # 1. 特征标准化
     t_env.execute_sql("""
         CREATE TABLE feature_input (
@@ -1773,23 +1773,23 @@ def flink_ml_integration(t_env):
             label INT
         ) WITH (...)
     """)
-    
+
     # 2. 使用 Flink ML 的在线算法
     # 注意：Flink ML 目前主要支持 Java/Scala
     # Python 集成通过 SQL 或 UDF 方式
-    
+
     # 方式：使用 SQL 进行特征工程
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             id,
             feature_vec,
             label,
             -- 使用 SQL 进行特征变换
-            (feature_vec[1] - AVG(feature_vec[1]) OVER ()) / 
+            (feature_vec[1] - AVG(feature_vec[1]) OVER ()) /
             STDDEV(feature_vec[1]) OVER () as normalized_f1
         FROM feature_input
     """)
-    
+
     return result
 ```
 
@@ -1805,12 +1805,12 @@ from pyflink.table.udf import udf
 
 class ModelServingFunction(ScalarFunction):
     """模型服务化函数 - 支持多模型切换"""
-    
+
     def __init__(self, model_version: str = "v1"):
         self.model_version = model_version
         self.models = {}
         self.load_model(model_version)
-    
+
     def load_model(self, version: str):
         """加载指定版本模型"""
         if version not in self.models:
@@ -1818,22 +1818,22 @@ class ModelServingFunction(ScalarFunction):
             model_path = f"/models/{version}/model.pkl"
             with open(model_path, 'rb') as f:
                 self.models[version] = pickle.load(f)
-    
+
     def eval(self, features_str: str, requested_version: str = None) -> dict:
         """执行预测"""
         import json
-        
+
         version = requested_version or self.model_version
         if version not in self.models:
             self.load_model(version)
-        
+
         model = self.models[version]
         features = json.loads(features_str)
-        
+
         # 预测
         prediction = model.predict([features])[0]
         probability = model.predict_proba([features])[0].tolist()
-        
+
         return {
             "prediction": int(prediction),
             "probability": probability,
@@ -1850,9 +1850,9 @@ model_server = udf(
 def use_model_serving(t_env):
     """使用模型服务进行预测"""
     t_env.create_temporary_function("model_predict", model_server)
-    
+
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             user_id,
             model_predict(
                 TO_JSON_STRING(features),
@@ -1886,18 +1886,18 @@ PyFlink 部署模式定义为 $\mathcal{D}_{py} = (M_{local}, M_{standalone}, M_
 def local_mode_execution():
     """本地模式执行 - 开发调试"""
     from pyflink.table import EnvironmentSettings, TableEnvironment
-    
+
     # 创建本地环境
     settings = EnvironmentSettings.new_instance() \
         .in_streaming_mode() \
         .build()
-    
+
     t_env = TableEnvironment.create(settings)
-    
+
     # 配置本地执行参数
     t_env.get_config().set("parallelism.default", "2")
     t_env.get_config().set("taskmanager.memory.process.size", "2g")
-    
+
     # 创建测试数据
     t_env.execute_sql("""
         CREATE TABLE test_source (
@@ -1909,7 +1909,7 @@ def local_mode_execution():
             'rows-per-second' = '10'
         )
     """)
-    
+
     t_env.execute_sql("""
         CREATE TABLE print_sink (
             id INT,
@@ -1919,7 +1919,7 @@ def local_mode_execution():
             'connector' = 'print'
         )
     """)
-    
+
     # 执行作业
     t_env.execute_sql("""
         INSERT INTO print_sink
@@ -1932,48 +1932,48 @@ def local_mode_execution():
 ```python
 def local_debugging_techniques():
     """本地调试技巧"""
-    
+
     # 1. 使用 Collect Sink 收集结果
     def use_collect_sink(t_env):
         """使用 Collect Sink 获取结果"""
         table = t_env.from_path("source_table")
-        
+
         # 执行并收集结果
         result_table = table.select(col("*")).limit(100)
-        
+
         # 转换为 DataStream 收集
         from pyflink.datastream import StreamExecutionEnvironment
         env = StreamExecutionEnvironment.get_execution_environment()
-        
+
         ds = t_env.to_append_stream(result_table, Types.ROW([
             Types.INT(), Types.STRING(), Types.DOUBLE()
         ]))
-        
+
         collected = ds.execute_and_collect()
         results = list(collected)
-        
+
         print(f"Collected {len(results)} records")
         for r in results[:10]:
             print(r)
-        
+
         return results
-    
+
     # 2. 使用 MiniCluster
     def use_minicluster():
         """使用 MiniCluster 进行单元测试"""
         from pyflink.table import EnvironmentSettings, TableEnvironment
-        
+
         settings = EnvironmentSettings.new_instance() \
             .in_streaming_mode() \
             .build()
-        
+
         t_env = TableEnvironment.create(settings)
-        
+
         # MiniCluster 自动管理资源
         # 适合单元测试和 CI/CD
-        
+
         return t_env
-    
+
     return use_collect_sink, use_minicluster
 ```
 
@@ -2186,20 +2186,20 @@ spec:
 def configure_batch_processing(t_env):
     """配置批处理参数以优化性能"""
     config = t_env.get_config()
-    
+
     # Bundle 处理大小 - 影响吞吐量和延迟的权衡
     # 较大的值提高吞吐量，但增加延迟
     config.set("python.fn-execution.bundle.size", "1000")
-    
+
     # Bundle 超时 - 控制最大等待时间
     config.set("python.fn-execution.bundle.time", "1000")  # 毫秒
-    
+
     # Arrow 批处理大小 - 用于 Arrow 格式数据传输
     config.set("python.fn-execution.arrow.batch.size", "10000")
-    
+
     # 启用 Arrow 优化 (如果可用)
     config.set("python.fn-execution.arrow.enabled", "true")
-    
+
     return t_env
 
 # 不同场景的推荐配置
@@ -2294,11 +2294,11 @@ def batch_logistic_transform(double[:] input_array):
     cdef double[:] result = np.empty(n, dtype=np.float64)
     cdef int i
     cdef double x
-    
+
     for i in range(n):
         x = input_array[i]
         result[i] = 1.0 / (1.0 + exp(-x))
-    
+
     return np.array(result)
 
 def batch_distance_matrix(double[:, :] points):
@@ -2307,7 +2307,7 @@ def batch_distance_matrix(double[:, :] points):
     cdef double[:, :] distances = np.zeros((n, n), dtype=np.float64)
     cdef int i, j, k
     cdef double dist
-    
+
     for i in range(n):
         for j in range(i + 1, n):
             dist = 0.0
@@ -2316,7 +2316,7 @@ def batch_distance_matrix(double[:, :] points):
             dist = sqrt(dist)
             distances[i, j] = dist
             distances[j, i] = dist
-    
+
     return np.array(distances)
 ```
 
@@ -2355,24 +2355,24 @@ def fast_batch_transform(values: pd.Series) -> pd.Series:
 def configure_memory(t_env):
     """配置内存参数"""
     config = t_env.get_config()
-    
+
     # Python UDF 内存配置
     config.set("python.fn-execution.memory.managed", "true")
     config.set("python.fn-execution.memory.managed.fraction", "0.3")
-    
+
     # TaskManager 内存配置
     config.set("taskmanager.memory.process.size", "4096m")
     config.set("taskmanager.memory.flink.size", "2560m")
     config.set("taskmanager.memory.managed.size", "1024m")
-    
+
     # 网络内存
     config.set("taskmanager.memory.network.fraction", "0.15")
     config.set("taskmanager.memory.network.max", "256mb")
-    
+
     # JVM 堆内存 (PyFlink 依赖 Java 运行时)
     config.set("taskmanager.memory.framework.heap.size", "128mb")
     config.set("taskmanager.memory.task.heap.size", "512mb")
-    
+
     return t_env
 ```
 
@@ -2405,38 +2405,38 @@ from pyflink.table import ScalarFunction
 
 class ResourceManagedFunction(ScalarFunction):
     """资源管理优化的 UDF"""
-    
+
     def __init__(self):
         self._model = None
         self._cache = {}
         self._max_cache_size = 1000
-    
+
     def open(self, runtime_context):
         """初始化资源"""
         # 加载模型 (每个 Task 只执行一次)
         self._model = self._load_model()
-    
+
     def eval(self, input_data):
         """评估函数"""
         # 使用缓存避免重复计算
         cache_key = hash(input_data)
         if cache_key in self._cache:
             return self._cache[cache_key]
-        
+
         result = self._model.predict(input_data)
-        
+
         # 管理缓存大小
         if len(self._cache) < self._max_cache_size:
             self._cache[cache_key] = result
-        
+
         return result
-    
+
     def close(self):
         """清理资源"""
         if self._model:
             self._model.release()
         self._cache.clear()
-    
+
     def _load_model(self):
         """加载模型"""
         # 实际模型加载逻辑
@@ -2456,36 +2456,36 @@ def diagnose_dependency_issues():
     """诊断依赖问题"""
     import sys
     import subprocess
-    
+
     # 1. 检查 PyFlink 版本
     import pyflink
     print(f"PyFlink version: {pyflink.__version__}")
-    
+
     # 2. 检查 Java 版本
     result = subprocess.run(["java", "-version"], capture_output=True, text=True)
     print(f"Java version: {result.stderr}")
-    
+
     # 3. 检查 Py4J
     try:
         import py4j
         print(f"Py4J version: {py4j.__version__}")
     except ImportError:
         print("Py4J not found!")
-    
+
     # 4. 检查 Arrow
     try:
         import pyarrow as pa
         print(f"PyArrow version: {pa.__version__}")
     except ImportError:
         print("PyArrow not found!")
-    
+
     # 5. 检查 Pandas
     try:
         import pandas as pd
         print(f"Pandas version: {pd.__version__}")
     except ImportError:
         print("Pandas not found!")
-    
+
     # 6. 检查 Python 路径
     print(f"Python executable: {sys.executable}")
     print(f"Python path: {sys.path}")
@@ -2528,14 +2528,14 @@ py4j==0.10.9.7
 def setup_monitoring(t_env):
     """设置监控和指标收集"""
     config = t_env.get_config()
-    
+
     # 启用指标报告
     config.set("metrics.reporters", "prometheus")
     config.set("metrics.reporter.prometheus.port", "9249")
-    
+
     # 启用背压监控
     config.set("web.backpressure.refresh-interval", "60000")
-    
+
     return t_env
 
 # 自定义指标
@@ -2544,21 +2544,21 @@ from pyflink.metrics import Counter, Histogram
 
 class MonitoredFunction(ScalarFunction):
     """带监控的 UDF"""
-    
+
     def open(self, runtime_context):
         self.process_counter = runtime_context.get_metric_group().counter("records_processed")
         self.process_time = runtime_context.get_metric_group().histogram("process_time_ms")
-    
+
     def eval(self, value):
         import time
         start = time.time()
-        
+
         result = self._process(value)
-        
+
         elapsed_ms = (time.time() - start) * 1000
         self.process_counter.inc()
         self.process_time.update(int(elapsed_ms))
-        
+
         return result
 ```
 
@@ -2570,27 +2570,27 @@ def profile_udf_performance():
     import cProfile
     import pstats
     from io import StringIO
-    
+
     def udf_to_profile(input_data):
         # 待分析的 UDF 逻辑
         return sum(x ** 2 for x in input_data)
-    
+
     # 性能分析
     profiler = cProfile.Profile()
     profiler.enable()
-    
+
     # 执行多次
     for _ in range(1000):
         udf_to_profile([1, 2, 3, 4, 5])
-    
+
     profiler.disable()
-    
+
     # 输出结果
     s = StringIO()
     stats = pstats.Stats(profiler, stream=s)
     stats.sort_stats("cumulative")
     stats.print_stats(20)
-    
+
     print(s.getvalue())
 ```
 
@@ -2659,18 +2659,18 @@ from pyflink.table.expressions import col, lit
 
 def create_realtime_etl():
     """创建实时 ETL 作业"""
-    
+
     # 创建环境
     settings = EnvironmentSettings.new_instance() \
         .in_streaming_mode() \
         .build()
-    
+
     t_env = TableEnvironment.create(settings)
-    
+
     # 配置
     t_env.get_config().set("parallelism.default", "4")
     t_env.get_config().set("execution.checkpointing.interval", "60s")
-    
+
     # 1. 创建源表 (Kafka)
     t_env.execute_sql("""
         CREATE TABLE raw_events (
@@ -2691,7 +2691,7 @@ def create_realtime_etl():
             'json.ignore-parse-errors' = 'true'
         )
     """)
-    
+
     # 2. 创建目标表 (S3/MinIO 上的 Parquet)
     t_env.execute_sql("""
         CREATE TABLE cleaned_events (
@@ -2714,11 +2714,11 @@ def create_realtime_etl():
             'sink.partition-commit.policy.kind' = 'success-file'
         )
     """)
-    
+
     # 3. 创建临时视图进行转换
     t_env.execute_sql("""
         CREATE TEMPORARY VIEW transformed_events AS
-        SELECT 
+        SELECT
             event_id,
             user_id,
             event_type,
@@ -2732,23 +2732,23 @@ def create_realtime_etl():
           AND user_id IS NOT NULL
           AND event_type IS NOT NULL
     """)
-    
+
     # 4. 执行 ETL
     statement_set = t_env.create_statement_set()
-    
+
     # 写入清洗后的数据
     statement_set.add_insert_sql("""
         INSERT INTO cleaned_events
         SELECT * FROM transformed_events
     """)
-    
+
     # 可以添加多个 sink (数据分发)
     # statement_set.add_insert_sql("INSERT INTO another_sink SELECT ...")
-    
+
     # 执行
     job_client = statement_set.execute()
     print(f"ETL Job started: {job_client.get_job_id()}")
-    
+
     return job_client
 
 if __name__ == "__main__":
@@ -2774,17 +2774,17 @@ import json
 
 class RealtimeRecommendationEngine:
     """实时推荐引擎"""
-    
+
     def __init__(self):
         settings = EnvironmentSettings.new_instance() \
             .in_streaming_mode() \
             .build()
         self.t_env = TableEnvironment.create(settings)
-        
+
         # 配置
         self.t_env.get_config().set("parallelism.default", "8")
         self.t_env.get_config().set("table.exec.state.ttl", "24h")
-    
+
     def setup_sources(self):
         """设置数据源"""
         # 用户行为流
@@ -2803,7 +2803,7 @@ class RealtimeRecommendationEngine:
                 'format' = 'json'
             )
         """)
-        
+
         # 物品信息表 (时态表)
         self.t_env.execute_sql("""
             CREATE TABLE item_info (
@@ -2821,7 +2821,7 @@ class RealtimeRecommendationEngine:
                 'value.format' = 'json'
             )
         """)
-    
+
     def setup_sinks(self):
         """设置数据输出"""
         # 推荐结果输出
@@ -2839,12 +2839,12 @@ class RealtimeRecommendationEngine:
                 'format' = 'json'
             )
         """)
-    
+
     def create_recommendation_udf(self):
         """创建推荐算法 UDF"""
-        
+
         @udf(result_type=DataTypes.STRING())
-        def collaborative_filter(user_id: str, 
+        def collaborative_filter(user_id: str,
                                  recent_items: str,
                                  user_history: str) -> str:
             """
@@ -2852,23 +2852,23 @@ class RealtimeRecommendationEngine:
             简化示例：基于最近浏览推荐相似物品
             """
             import json
-            
+
             if not recent_items:
                 return json.dumps([])
-            
+
             recent = json.loads(recent_items)
             history = json.loads(user_history) if user_history else []
-            
+
             # 简化的推荐逻辑
             # 实际应用中应使用预训练的嵌入向量
             recommended = []
-            
+
             # 基于共现推荐
             for item in recent[-5:]:  # 最近 5 个物品
                 # 查找共同出现的物品 (模拟)
                 similar_items = get_similar_items(item)
                 recommended.extend(similar_items)
-            
+
             # 去重和排序
             seen = set()
             unique_recommended = []
@@ -2876,18 +2876,18 @@ class RealtimeRecommendationEngine:
                 if item not in seen and item not in history:
                     seen.add(item)
                     unique_recommended.append(item)
-            
+
             return json.dumps(unique_recommended[:10])  # Top 10
-        
+
         self.t_env.create_temporary_function("cf_recommend", collaborative_filter)
-    
+
     def build_pipeline(self):
         """构建推荐管道"""
-        
+
         # 1. 聚合用户最近行为
         recent_behaviors = self.t_env.execute_sql("""
             CREATE TEMPORARY VIEW user_recent_items AS
-            SELECT 
+            SELECT
                 user_id,
                 COLLECT_LIST(item_id) as recent_items,
                 COLLECT_LIST(behavior_type) as recent_behaviors
@@ -2898,11 +2898,11 @@ class RealtimeRecommendationEngine:
             )
             GROUP BY user_id
         """)
-        
+
         # 2. 生成推荐
         recommendations = self.t_env.execute_sql("""
             INSERT INTO recommendations
-            SELECT 
+            SELECT
                 u.user_id,
                 STRING_TO_ARRAY(
                     JSON_QUERY(
@@ -2921,9 +2921,9 @@ class RealtimeRecommendationEngine:
             FROM user_recent_items u
             WHERE CARDINALITY(u.recent_items) >= 3
         """)
-        
+
         return recommendations
-    
+
     def run(self):
         """运行推荐引擎"""
         self.setup_sources()
@@ -2966,16 +2966,16 @@ import numpy as np
 
 class AnomalyDetectionSystem:
     """实时异常检测系统"""
-    
+
     def __init__(self):
         settings = EnvironmentSettings.new_instance() \
             .in_streaming_mode() \
             .build()
         self.t_env = TableEnvironment.create(settings)
-        
+
         self.t_env.get_config().set("parallelism.default", "4")
         self.t_env.get_config().set("execution.checkpointing.interval", "30s")
-    
+
     def setup_metrics_source(self):
         """设置指标数据源"""
         self.t_env.execute_sql("""
@@ -2993,7 +2993,7 @@ class AnomalyDetectionSystem:
                 'format' = 'json'
             )
         """)
-    
+
     def setup_anomaly_sink(self):
         """设置异常告警输出"""
         self.t_env.execute_sql("""
@@ -3013,10 +3013,10 @@ class AnomalyDetectionSystem:
                 'format' = 'json'
             )
         """)
-    
+
     def create_statistical_udfs(self):
         """创建统计异常检测 UDF"""
-        
+
         @udaf(result_type=DataTypes.ROW([
             DataTypes.FIELD("mean", DataTypes.DOUBLE()),
             DataTypes.FIELD("std", DataTypes.DOUBLE()),
@@ -3024,107 +3024,107 @@ class AnomalyDetectionSystem:
         ]))
         class StatsAggregate(AggregateFunction):
             """统计聚合函数"""
-            
+
             def create_accumulator(self):
                 return {"sum": 0.0, "sum_sq": 0.0, "count": 0}
-            
+
             def accumulate(self, accumulator, value):
                 if value is not None:
                     accumulator["sum"] += value
                     accumulator["sum_sq"] += value * value
                     accumulator["count"] += 1
-            
+
             def retract(self, accumulator, value):
                 if value is not None:
                     accumulator["sum"] -= value
                     accumulator["sum_sq"] -= value * value
                     accumulator["count"] -= 1
-            
+
             def merge(self, accumulator, accumulators):
                 for acc in accumulators:
                     accumulator["sum"] += acc["sum"]
                     accumulator["sum_sq"] += acc["sum_sq"]
                     accumulator["count"] += acc["count"]
-            
+
             def get_value(self, accumulator):
                 count = accumulator["count"]
                 if count == 0:
                     return {"mean": 0.0, "std": 0.0, "count": 0}
-                
+
                 mean = accumulator["sum"] / count
                 variance = (accumulator["sum_sq"] / count) - (mean * mean)
                 std = np.sqrt(max(0, variance))
-                
+
                 return {"mean": mean, "std": std, "count": count}
-        
+
         self.t_env.create_temporary_function("rolling_stats", StatsAggregate())
-    
+
     def create_ml_udf(self):
         """创建机器学习异常检测 UDF"""
-        
+
         @udf(result_type=DataTypes.ROW([
             DataTypes.FIELD("is_anomaly", DataTypes.BOOLEAN()),
             DataTypes.FIELD("anomaly_score", DataTypes.DOUBLE()),
             DataTypes.FIELD("threshold", DataTypes.DOUBLE())
         ]), udf_type="pandas")
-        def isolation_forest_detect(values: pd.Series, 
+        def isolation_forest_detect(values: pd.Series,
                                      timestamps: pd.Series) -> pd.Series:
             """
             使用隔离森林检测异常
             简化版本：使用统计方法模拟
             """
             from sklearn.ensemble import IsolationForest
-            
+
             # 准备特征
             features = pd.DataFrame({
                 'value': values,
                 'hour': pd.to_datetime(timestamps).dt.hour,
                 'minute': pd.to_datetime(timestamps).dt.minute,
             })
-            
+
             # 训练隔离森林 (简化的在线版本)
             clf = IsolationForest(
                 contamination=0.05,  # 假设 5% 异常率
                 random_state=42
             )
-            
+
             predictions = clf.fit_predict(features)
             scores = -clf.score_samples(features)  # 异常分数
-            
+
             result = pd.Series([
-                {"is_anomaly": pred == -1, 
+                {"is_anomaly": pred == -1,
                  "anomaly_score": float(score),
                  "threshold": 0.0}
                 for pred, score in zip(predictions, scores)
             ])
-            
+
             return result
-        
+
         self.t_env.create_temporary_function("ml_detect", isolation_forest_detect)
-    
+
     def build_detection_pipeline(self):
         """构建异常检测管道"""
-        
+
         # 1. 滚动窗口统计
         stats_view = self.t_env.execute_sql("""
             CREATE TEMPORARY VIEW metric_stats AS
-            SELECT 
+            SELECT
                 host,
                 metric_name,
                 rolling_stats(metric_value) as stats,
                 TUMBLE_START(event_time, INTERVAL '5' MINUTE) as window_start,
                 TUMBLE_END(event_time, INTERVAL '5' MINUTE) as window_end
             FROM system_metrics
-            GROUP BY 
+            GROUP BY
                 host,
                 metric_name,
                 TUMBLE(event_time, INTERVAL '5' MINUTE)
         """)
-        
+
         # 2. 3-sigma 异常检测
         anomaly_detection = self.t_env.execute_sql("""
             INSERT INTO anomaly_alerts
-            SELECT 
+            SELECT
                 m.host,
                 m.metric_name,
                 m.metric_value,
@@ -3138,21 +3138,21 @@ class AnomalyDetectionSystem:
                     ']'
                 ) as expected_range,
                 m.event_time as alert_time,
-                CASE 
+                CASE
                     WHEN ABS(m.metric_value - s.stats.mean) > 3 * s.stats.std THEN 'HIGH'
                     WHEN ABS(m.metric_value - s.stats.mean) > 2 * s.stats.std THEN 'MEDIUM'
                     ELSE 'LOW'
                 END as severity
             FROM system_metrics m
             JOIN metric_stats s
-                ON m.host = s.host 
+                ON m.host = s.host
                 AND m.metric_name = s.metric_name
                 AND m.event_time BETWEEN s.window_start AND s.window_end
             WHERE ABS(m.metric_value - s.stats.mean) > 2 * s.stats.std
         """)
-        
+
         return anomaly_detection
-    
+
     def run(self):
         """运行异常检测系统"""
         self.setup_metrics_source()
@@ -3180,33 +3180,33 @@ graph TB
             PYUDF[Python UDF]
             PANDAS[Pandas UDF<br/>向量化执行]
         end
-        
+
         subgraph "桥接层"
             BEAM[Apache Beam<br/>Portability Framework]
             GRPC[gRPC 通信]
             ARROW[Apache Arrow<br/>数据传输]
         end
-        
+
         subgraph "JVM 层"
             FLINK[Apache Flink<br/>Java Runtime]
             TM[TaskManager]
             JM[JobManager]
         end
-        
+
         subgraph "存储层"
             KAFKA[Kafka]
             S3[对象存储]
             JDBC[(数据库)]
         end
     end
-    
+
     USER --> PYUDF --> PANDAS
     PANDAS --> BEAM
     BEAM --> GRPC --> ARROW --> FLINK
     FLINK --> TM --> KAFKA
     FLINK --> S3
     TM --> JDBC
-    
+
     style PANDAS fill:#c8e6c9,stroke:#2e7d32
     style ARROW fill:#fff9c4,stroke:#f57f17
 ```
@@ -3217,18 +3217,18 @@ graph TB
 graph LR
     subgraph "部署模式选择"
         START{部署环境?}
-        
+
         START -->|开发测试| LOCAL[Local 模式<br/>单进程调试]
         START -->|生产集群| CLUSTER{资源管理?}
-        
+
         CLUSTER -->|YARN| YARN[YARN 模式<br/>Application/Per-Job]
         CLUSTER -->|Kubernetes| K8S[K8s Native<br/>Application/Session]
         CLUSTER -->|Standalone| STAND[Standalone<br/>固定集群]
-        
+
         K8S --> DOCKER[Docker 镜像<br/>打包 Python 环境]
         YARN --> ARCHIVE[归档文件<br/>venv.tar.gz]
     end
-    
+
     style LOCAL fill:#bbdefb,stroke:#1565c0
     style K8S fill:#c8e6c9,stroke:#2e7d32
 ```
@@ -3237,21 +3237,13 @@ graph LR
 
 ## 8. 引用参考
 
-[^1]: Apache Flink Documentation, "PyFlink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/overview/
 
-[^2]: Apache Flink, "Python Table API", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table_api_tutorial/
 
-[^3]: Apache Flink, "Python DataStream API", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/datastream_tutorial/
 
-[^4]: Apache Flink, "User-Defined Functions", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/python_udfs/
 
-[^5]: Apache Flink, "Pandas Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/vectorized_python_udfs/
 
-[^6]: Apache Beam, "Portability Framework", 2025. https://beam.apache.org/documentation/runtime/python/
 
-[^7]: Apache Arrow, "Cross-language Development Platform", 2025. https://arrow.apache.org/
 
-[^8]: S. Schelter, et al., "On the Challenges of Deploying Machine Learning Pipelines in Production", IEEE Big Data, 2020.
 
 ---
 

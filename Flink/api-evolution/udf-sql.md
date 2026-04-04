@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-UDF-01: UDF Types
+
 UDF类型：
 $$
 \text{UDFs} = \{\text{Scalar}, \text{Table}, \text{Aggregate}, \text{Async}\}
 $$
 
 ### Def-F-UDF-02: WASM UDF
+
 WASM UDF：
 $$
 \text{WASM-UDF} : \text{Input} \xrightarrow{\text{WASM}} \text{Output}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-UDF-01: Execution Isolation
+
 执行隔离：
 $$
 \text{UDF}_i \perp \text{UDF}_j

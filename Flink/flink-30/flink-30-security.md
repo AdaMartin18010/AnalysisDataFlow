@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-30-25: Zero Trust
+
 零信任安全模型：
 $$
 \text{ZeroTrust} = \forall x : \text{Verify}(x) \land \text{LeastPrivilege}(x)
 $$
 
 ### Def-F-30-26: Confidential Computing
+
 机密计算保护使用中数据：
 $$
 \text{Confidential} = \text{Encrypted} \land \text{TEE}\text{-}\text{Protected}
 $$
 
 ### Def-F-30-27: Policy as Code
+
 策略即代码：
 $$
 \text{Policy} \in \text{Code} \xrightarrow{\text{CI/CD}} \text{Runtime}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-30-15: Encryption Coverage
+
 加密覆盖：
 $$
 \forall \text{Data} : \text{Encrypted}_{\text{at rest}} \land \text{Encrypted}_{\text{in transit}} \land \text{Encrypted}_{\text{in use}}
 $$
 
 ### Prop-F-30-16: Compliance Automation
+
 合规自动化：
 $$
 \text{Compliance} = \text{ContinuouslyVerified}
@@ -66,20 +71,20 @@ $$
 
 ```java
 public class ConfidentialTaskManager {
-    
+
     private final TEEContext teeContext;
-    
+
     public void executeInTEE(Task task) {
         // 加载到TEE
         Enclave enclave = teeContext.createEnclave();
-        
+
         // 加密数据传入
         byte[] encryptedData = encryptForTEE(task.getData());
         enclave.loadData(encryptedData);
-        
+
         // 执行
         byte[] result = enclave.execute(task.getCode());
-        
+
         // 解密结果
         return decryptFromTEE(result);
     }

@@ -212,10 +212,10 @@ package flink:udf@0.1.0;
 interface scalar-function {
     /// 计算函数 - 所有标量 UDF 必须实现
     eval: func(input: list<value>) -> result<value, error>;
-    
+
     /// 生命周期：初始化
     open: func(context: function-context) -> result<_, error>;
-    
+
     /// 生命周期：关闭
     close: func() -> result<_, error>;
 }
@@ -224,10 +224,10 @@ interface scalar-function {
 interface table-function {
     /// 打开新的行迭代器
     open: func(input: list<value>) -> result<row-iterator, error>;
-    
+
     /// 获取下一行
     next: func(iterator: row-iterator) -> option<list<value>>;
-    
+
     /// 关闭迭代器
     close: func(iterator: row-iterator);
 }
@@ -236,13 +236,13 @@ interface table-function {
 interface aggregate-function {
     /// 创建累加器
     create-accumulator: func() -> accumulator;
-    
+
     /// 累加值
     accumulate: func(acc: accumulator, value: list<value>) -> result<accumulator, error>;
-    
+
     /// 合并累加器
     merge: func(acc1: accumulator, acc2: accumulator) -> result<accumulator, error>;
-    
+
     /// 获取结果
     get-result: func(acc: accumulator) -> result<value, error>;
 }
@@ -281,7 +281,7 @@ world udf-world {
     import flink:state/keyed-store@0.1.0;
     import flink:metrics/reporter@0.1.0;
     import flink:runtime/context@0.1.0;
-    
+
     // 导出 UDF 实现（三选一）
     export scalar-function;
     export table-function;
@@ -382,12 +382,12 @@ world secure-udf {
     // 默认无权限，显式授予
     import wasi:io/stdout@0.2.0;      // 仅标准输出
     import wasi:clocks/wall-clock@0.2.0;  // 时间获取
-    
+
     // 敏感能力默认禁用
     // import wasi:filesystem/types@0.2.0;  // ❌ 文件系统
     // import wasi:sockets/tcp@0.2.0;       // ❌ 网络访问
     // import wasi:random/secure@0.2.0;     // ❌ 安全随机数
-    
+
     // Flink 受控能力
     import flink:state/keyed-store@0.1.0;  // ✅ 受限状态访问
     import flink:metrics/reporter@0.1.0;   // ✅ 指标上报
@@ -507,27 +507,27 @@ graph TB
         UDF Registry]
         TM[TaskManager
         WASM Runtime]
-        
+
         subgraph Runtime["WASM Runtime Layer"]
             WASMTIME[Wasmtime 15.0+
             Default Runtime]
             WASMEDGE[WasmEdge 0.14+
             High Performance]
-            
+
             subgraph Optimizer["Optimizer"]
                 AOT[AOT Compiler]
                 POOL[Instance Pool]
                 CACHE[Module Cache]
             end
         end
-        
+
         subgraph Security["Security Layer"]
             CAP[Capability Control]
             MEM[Memory Isolation]
             RES[Resource Limiter]
         end
     end
-    
+
     subgraph Languages["Multi-Language SDK"]
         RUST[Rust SDK
         cargo-flink]
@@ -538,7 +538,7 @@ graph TB
         ZIG[Zig SDK
         flink-zig-sdk]
     end
-    
+
     subgraph Registry["Registry & Distribution"]
         WARG[Warg Registry
         Standard]
@@ -547,22 +547,22 @@ graph TB
         OCI[OCI Registry
         Container]
     end
-    
+
     JM -->|UDF Metadata| TM
     TM --> WASMTIME
     TM --> WASMEDGE
     WASMTIME --> Optimizer
     WASMEDGE --> Optimizer
     Runtime --> Security
-    
+
     RUST -->|Compile| WASM[.wasm Module]
     GO -->|Compile| WASM
     CPP -->|Compile| WASM
     ZIG -->|Compile| WASM
-    
+
     WASM --> Registry
     Registry -->|Download| TM
-    
+
     style Flink25 fill:#e3f2fd,stroke:#1976d2
     style Runtime fill:#c8e6c9,stroke:#2e7d32
     style Security fill:#ffebee,stroke:#c62828
@@ -586,12 +586,12 @@ graph LR
         AS["AssemblyScript
         asc compiler"]
     end
-    
+
     subgraph WIT["WIT Interface"]
         IDL["Interface Definition
         flink:udf@0.1.0"]
     end
-    
+
     subgraph Bindings["Language Bindings"]
         WB_RUST[wit-bindgen
         cargo-component]
@@ -599,31 +599,31 @@ graph LR
         WB_CPP[wit-bindgen]
         WB_ZIG[wit-bindgen-zig]
     end
-    
+
     subgraph Component["Wasm Component"]
         COMP[".wasm Component
         Component Model 1.0"]
     end
-    
+
     subgraph Runtime["Flink Runtime"]
         FLINK["Flink 2.5
         TaskManager"]
     end
-    
+
     RUST --> WB_RUST
     GO --> WB_GO
     CPP --> WB_CPP
     ZIG --> WB_ZIG
     AS --> WB_RUST
-    
+
     WB_RUST --> IDL
     WB_GO --> IDL
     WB_CPP --> IDL
     WB_ZIG --> IDL
-    
+
     IDL --> COMP
     COMP --> FLINK
-    
+
     style WIT fill:#e3f2fd,stroke:#1976d2
     style Component fill:#c8e6c9,stroke:#2e7d32
 ```
@@ -640,14 +640,14 @@ flowchart LR
         SER[Serialization]
         STATE[State Access]
     end
-    
+
     subgraph Metrics["性能指标"]
         LAT[Latency]
         THR[Throughput]
         START[Startup Time]
         MEM[Memory Usage]
     end
-    
+
     LANG -->|Rust > Go > C++| THR
     COMP -->|AOT > JIT > Interpreter| LAT
     COMP -->|AOT >> JIT| START
@@ -655,7 +655,7 @@ flowchart LR
     SER -->|Complex Types| LAT
     STATE -->|Local > Remote| LAT
     STATE -->|State Size| MEM
-    
+
     style Factors fill:#e3f2fd,stroke:#1976d2
     style Metrics fill:#c8e6c9,stroke:#2e7d32
 ```
@@ -705,15 +705,15 @@ flowchart LR
 ```mermaid
 flowchart TD
     START([选择 UDF 开发语言])
-    
+
     START --> Q1{性能优先级?}
-    
+
     Q1 -->|极致性能| Q2{是否需要系统编程?}
     Q1 -->|平衡| Q3{团队熟悉度?}
     Q1 -->|快速开发| GO_CHOICE[Go
     开发效率高
     运行时较大]
-    
+
     Q2 -->|是| RUST_CHOICE[Rust
     最佳性能
     内存安全
@@ -721,7 +721,7 @@ flowchart TD
     Q2 -->|否| SIMD_CHOICE[C++
     SIMD优化
     手动内存管理]
-    
+
     Q3 -->|Rust| RUST_CHOICE
     Q3 -->|Go| GO_CHOICE
     Q3 -->|C++| CPP_CHOICE[C++
@@ -730,13 +730,13 @@ flowchart TD
     Q3 -->|其他| ZIG_CHOICE[Zig
     轻量级
     新兴语言]
-    
+
     RUST_CHOICE --> DECISION([最终选择])
     GO_CHOICE --> DECISION
     CPP_CHOICE --> DECISION
     SIMD_CHOICE --> DECISION
     ZIG_CHOICE --> DECISION
-    
+
     style START fill:#e3f2fd,stroke:#1976d2
     style DECISION fill:#c8e6c9,stroke:#2e7d32
     style RUST_CHOICE fill:#fff3e0,stroke:#f57f17
@@ -782,7 +782,7 @@ optimization:
     module_cache:
       memory_size: 256MB
       disk_path: /tmp/wasm-cache
-  
+
   # 开发环境推荐
   development:
     aot: false             # 快速迭代
@@ -964,10 +964,10 @@ package flink:udf-example@0.1.0;
 interface math-ops {
     /// 计算哈希值
     hash-string: func(input: string) -> u64;
-    
+
     /// 计算移动平均
     moving-average: func(values: list<f64>, window: u32) -> list<f64>;
-    
+
     /// 数据脱敏
     mask-sensitive: func(input: string, mask-char: char) -> string;
 }
@@ -997,45 +997,45 @@ impl Guest for MathUdf {
     fn hash_string(input: String) -> u64 {
         // 报告指标
         reporter::increment_counter("udf.hash.called", 1);
-        
+
         // 使用 SHA-256 计算哈希
         let mut hasher = Sha256::new();
         hasher.update(input.as_bytes());
         let result = hasher.finalize();
-        
+
         // 取前 8 字节作为 u64
         u64::from_be_bytes([
             result[0], result[1], result[2], result[3],
             result[4], result[5], result[6], result[7]
         ])
     }
-    
+
     fn moving_average(values: Vec<f64>, window: u32) -> Vec<f64> {
         if values.is_empty() || window == 0 {
             return Vec::new();
         }
-        
+
         let window = window as usize;
         let mut result = Vec::with_capacity(values.len());
         let mut window_sum = 0.0;
         let mut window_vals = VecDeque::with_capacity(window);
-        
+
         for (i, &val) in values.iter().enumerate() {
             window_vals.push_back(val);
             window_sum += val;
-            
+
             if window_vals.len() > window {
                 window_sum -= window_vals.pop_front().unwrap();
             }
-            
+
             let avg = window_sum / window_vals.len() as f64;
             result.push(avg);
         }
-        
+
         reporter::record_histogram("udf.moving_avg.latency_ms", 0.5);
         result
     }
-    
+
     fn mask_sensitive(input: String, mask_char: char) -> String {
         // 简单的邮箱脱敏：a***@example.com
         if let Some(at_pos) = input.find('@') {
@@ -1046,12 +1046,12 @@ impl Guest for MathUdf {
                 return format!("{}{}{}", first_char, masked, domain);
             }
         }
-        
+
         // 手机号脱敏：138****8888
         if input.len() == 11 && input.chars().all(|c| c.is_ascii_digit()) {
             return format!("{}****{}", &input[0..3], &input[7..11]);
         }
-        
+
         input
     }
 }
@@ -1137,80 +1137,80 @@ go mod init github.com/example/flink-go-udf
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/binary"
-	"strings"
-	"unicode/utf8"
+ "crypto/sha256"
+ "encoding/binary"
+ "strings"
+ "unicode/utf8"
 
-	"github.com/extism/go-pdk"
+ "github.com/extism/go-pdk"
 )
 
 //export hash_string
 func hash_string() int32 {
-	input := pdk.InputString()
-	
-	// 计算 SHA-256 哈希
-	hasher := sha256.New()
-	hasher.Write([]byte(input))
-	hash := hasher.Sum(nil)
-	
-	// 取前 8 字节作为 u64
-	result := binary.BigEndian.Uint64(hash[:8])
-	
-	// 输出结果
-	output := make([]byte, 8)
-	binary.BigEndian.PutUint64(output, result)
-	pdk.Output(output)
-	
-	return 0
+ input := pdk.InputString()
+
+ // 计算 SHA-256 哈希
+ hasher := sha256.New()
+ hasher.Write([]byte(input))
+ hash := hasher.Sum(nil)
+
+ // 取前 8 字节作为 u64
+ result := binary.BigEndian.Uint64(hash[:8])
+
+ // 输出结果
+ output := make([]byte, 8)
+ binary.BigEndian.PutUint64(output, result)
+ pdk.Output(output)
+
+ return 0
 }
 
 //export mask_sensitive
 func mask_sensitive() int32 {
-	input := pdk.InputString()
-	
-	// 简单的邮箱脱敏
-	if atIdx := strings.Index(input, "@"); atIdx > 1 {
-		firstChar := input[:1]
-		domain := input[atIdx:]
-		masked := strings.Repeat("*", atIdx-1)
-		pdk.OutputString(firstChar + masked + domain)
-		return 0
-	}
-	
-	// 手机号脱敏
-	if len(input) == 11 && isAllDigits(input) {
-		pdk.OutputString(input[:3] + "****" + input[7:])
-		return 0
-	}
-	
-	pdk.OutputString(input)
-	return 0
+ input := pdk.InputString()
+
+ // 简单的邮箱脱敏
+ if atIdx := strings.Index(input, "@"); atIdx > 1 {
+  firstChar := input[:1]
+  domain := input[atIdx:]
+  masked := strings.Repeat("*", atIdx-1)
+  pdk.OutputString(firstChar + masked + domain)
+  return 0
+ }
+
+ // 手机号脱敏
+ if len(input) == 11 && isAllDigits(input) {
+  pdk.OutputString(input[:3] + "****" + input[7:])
+  return 0
+ }
+
+ pdk.OutputString(input)
+ return 0
 }
 
 //export count_words
 func count_words() int32 {
-	input := pdk.InputString()
-	
-	// 统计单词数
-	words := strings.Fields(input)
-	count := int32(len(words))
-	
-	// 输出结果（4 字节 int32）
-	output := make([]byte, 4)
-	binary.BigEndian.PutUint32(output, uint32(count))
-	pdk.Output(output)
-	
-	return 0
+ input := pdk.InputString()
+
+ // 统计单词数
+ words := strings.Fields(input)
+ count := int32(len(words))
+
+ // 输出结果（4 字节 int32）
+ output := make([]byte, 4)
+ binary.BigEndian.PutUint32(output, uint32(count))
+ pdk.Output(output)
+
+ return 0
 }
 
 func isAllDigits(s string) bool {
-	for _, r := range s {
-		if r < '0' || r > '9' {
-			return false
-		}
-	}
-	return true
+ for _, r := range s {
+  if r < '0' || r > '9' {
+   return false
+  }
+ }
+ return true
 }
 
 func main() {}
@@ -1269,7 +1269,7 @@ __attribute__((export_name("fibonacci")))
 int32_t fibonacci(int32_t n) {
     if (n <= 0) return 0;
     if (n == 1) return 1;
-    
+
     int32_t a = 0, b = 1;
     for (int32_t i = 2; i <= n; ++i) {
         int32_t temp = a + b;
@@ -1286,29 +1286,29 @@ void std_dev(const double* values, size_t len, double* result) {
         *result = 0.0;
         return;
     }
-    
+
     double sum = std::accumulate(values, values + len, 0.0);
     double mean = sum / len;
-    
+
     double sq_sum = 0.0;
     for (size_t i = 0; i < len; ++i) {
         double diff = values[i] - mean;
         sq_sum += diff * diff;
     }
-    
+
     *result = std::sqrt(sq_sum / len);
 }
 
 // 导出函数：URL 编码
 __attribute__((export_name("url_encode")))
-int32_t url_encode(const char* input, size_t input_len, 
+int32_t url_encode(const char* input, size_t input_len,
                    char* output, size_t output_cap) {
     static const char* hex = "0123456789ABCDEF";
     size_t j = 0;
-    
+
     for (size_t i = 0; i < input_len && j + 3 <= output_cap; ++i) {
         unsigned char c = static_cast<unsigned char>(input[i]);
-        
+
         if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
             output[j++] = c;
         } else if (c == ' ') {
@@ -1319,7 +1319,7 @@ int32_t url_encode(const char* input, size_t input_len,
             output[j++] = hex[c & 0xF];
         }
     }
-    
+
     return static_cast<int32_t>(j);
 }
 
@@ -1453,7 +1453,7 @@ WITH (
 -- ============================================
 
 -- 示例 1: 使用 Rust UDF 计算哈希
-SELECT 
+SELECT
     user_id,
     email,
     rust_hash(email) as email_hash,
@@ -1461,32 +1461,32 @@ SELECT
 FROM users;
 
 -- 示例 2: 使用 C++ UDF 计算斐波那契
-SELECT 
+SELECT
     n,
     cpp_fib(n) as fib_value
 FROM generate_series(1, 20) as t(n);
 
 -- 示例 3: 使用 Go UDF 脱敏数据
-SELECT 
+SELECT
     customer_id,
     go_mask(phone_number) as masked_phone,
     go_mask(email) as masked_email
 FROM customers;
 
 -- 示例 4: 使用 Rust 聚合函数计算移动平均
-SELECT 
+SELECT
     sensor_id,
     event_time,
     temperature,
     rust_moving_avg(temperature, 5) OVER (
-        PARTITION BY sensor_id 
-        ORDER BY event_time 
+        PARTITION BY sensor_id
+        ORDER BY event_time
         ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
     ) as temp_ma5
 FROM sensor_readings;
 
 -- 示例 5: 组合多个 WASM UDF
-SELECT 
+SELECT
     order_id,
     customer_email,
     go_mask(customer_email) as masked_email,
@@ -1506,9 +1506,9 @@ import org.apache.flink.wasm.config.WasmFunctionConfig;  // 前瞻性API: Flink 
 
 public class WasmDataStreamExample {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置 WASM UDF
         WasmFunctionConfig config = WasmFunctionConfig.builder()
             .setModulePath("/opt/wasm/udf_example.wasm")
@@ -1518,25 +1518,25 @@ public class WasmDataStreamExample {
             .setMemoryLimitMB(32)
             .setInstancePoolSize(10)
             .build();
-        
-        WasmScalarFunction<String, Long> hashFunction = 
+
+        WasmScalarFunction<String, Long> hashFunction =
             new WasmScalarFunction<>(config, Types.STRING, Types.LONG);
-        
+
         // 创建数据流
         DataStream<String> emails = env.fromElements(
             "alice@example.com",
             "bob@example.com",
             "charlie@example.com"
         );
-        
+
         // 应用 WASM UDF
         DataStream<Long> hashedEmails = emails
             .map(hashFunction)
             .name("wasm-hash")
             .uid("wasm-hash-001");
-        
+
         hashedEmails.print();
-        
+
         env.execute("WASM UDF Example");
     }
 }
@@ -1556,7 +1556,7 @@ graph TB
         SDK[Flink WASM SDK
         cargo-flink/go-flink/...]
     end
-    
+
     subgraph Build["Build Pipeline"]
         COMPILER[Language Compiler]
         WIT[WIT Bindings
@@ -1568,13 +1568,13 @@ graph TB
         REG[(Registry
         Warg/OCI)]
     end
-    
+
     subgraph Flink["Flink 2.5 Cluster"]
         JM[JobManager
         UDF Registry]
         TM[TaskManager
         WASM Runtime]
-        
+
         subgraph Runtime["WASM Runtime"]
             ENGINE[Wasm Engine
             Wasmtime/WasmEdge]
@@ -1583,21 +1583,21 @@ graph TB
             OPT[Optimizer
             AOT/SIMD]
         end
-        
+
         subgraph Security["Security"]
             CAP[Capability Control]
             MEM[Memory Isolation]
             LIMIT[Resource Limiter]
         end
     end
-    
+
     subgraph Monitor["Observability"]
         METRICS[Metrics
         latency/throughput]
         LOGS[Logs]
         TRACE[Tracing]
     end
-    
+
     CODE --> SDK
     SDK --> COMPILER
     COMPILER --> WIT
@@ -1612,7 +1612,7 @@ graph TB
     ENGINE --> OPT
     ENGINE --> Security
     TM --> Monitor
-    
+
     style User fill:#e3f2fd,stroke:#1976d2
     style Build fill:#fff3e0,stroke:#f57f17
     style Flink fill:#c8e6c9,stroke:#2e7d32
@@ -1632,49 +1632,49 @@ sequenceDiagram
     participant RT as WASM Runtime
     participant POOL as Instance Pool
     participant UDF as WASM UDF
-    
+
     SQL->>JM: CREATE FUNCTION ...
     JM->>JM: Register UDF Metadata
     JM-->>SQL: OK
-    
+
     SQL->>JM: SELECT udf(col) FROM ...
     JM->>JM: Generate Execution Plan
     JM->>TM: Deploy Task
-    
+
     TM->>RT: Initialize Runtime
     RT->>RT: Load Module
     RT->>RT: AOT Compile (if enabled)
-    
+
     alt Instance Pool Enabled
         RT->>POOL: Pre-create Instances
         POOL-->>RT: Instances Ready
     end
-    
+
     loop Per Record
         TM->>RT: Call UDF(record)
-        
+
         alt Pool Available
             RT->>POOL: Acquire Instance
             POOL-->>RT: Instance
         else New Instance
             RT->>RT: Create Instance
         end
-        
+
         RT->>UDF: Serialize Input
         RT->>UDF: Call Function
         UDF->>UDF: Execute Logic
         UDF-->>RT: Return Result
         RT->>RT: Deserialize Output
-        
+
         alt Pool Enabled
             RT->>POOL: Return Instance
         else
             RT->>RT: Destroy Instance
         end
-        
+
         RT-->>TM: Result
     end
-    
+
     TM-->>JM: Task Complete
 ```
 
@@ -1686,7 +1686,7 @@ sequenceDiagram
 graph TB
     subgraph Optimization["Cold Start Optimization Stack"]
         direction TB
-        
+
         subgraph L1["Layer 1: Module Cache"]
             DISK[(Disk Cache
             /tmp/wasm-cache)]
@@ -1694,7 +1694,7 @@ graph TB
             LRU Eviction)]
             DISK --> MEM
         end
-        
+
         subgraph L2["Layer 2: AOT Compilation"]
             WASM[.wasm Module]
             AOT[AOT Compiler]
@@ -1702,7 +1702,7 @@ graph TB
             .cwasm/.so]
             WASM --> AOT --> NATIVE
         end
-        
+
         subgraph L3["Layer 3: Instance Pool"]
             POOL[Instance Pool
             min: 5, max: 50]
@@ -1710,7 +1710,7 @@ graph TB
             Instances]
             POOL --> WARM
         end
-        
+
         subgraph L4["Layer 4: Wizer Snapshot"]
             INIT[Initialization]
             SNAP[Snapshot
@@ -1719,29 +1719,29 @@ graph TB
             INIT --> SNAP --> RESTORE
         end
     end
-    
+
     subgraph Request["UDF Request"]
         REQ[Incoming Request]
     end
-    
+
     subgraph Result["Response"]
         FAST[Fast Response<br/>~1ms]
         SLOW[Slow Response<br/>~50ms]
     end
-    
+
     REQ -->|Cache Hit| MEM
     REQ -->|Cache Miss| DISK
     REQ -->|AOT Available| NATIVE
     REQ -->|Pool Available| WARM
     REQ -->|Snapshot Available| RESTORE
-    
+
     MEM --> FAST
     NATIVE --> FAST
     WARM --> FAST
     RESTORE --> FAST
     DISK --> SLOW
     WASM --> SLOW
-    
+
     style L3 fill:#c8e6c9,stroke:#2e7d32
     style FAST fill:#c8e6c9,stroke:#2e7d32
     style SLOW fill:#ffebee,stroke:#c62828
@@ -1755,7 +1755,7 @@ graph TB
 graph TB
     subgraph Sandbox["Flink 2.5 WASM Sandbox"]
         direction TB
-        
+
         subgraph L1["L1: Memory Isolation"]
             LINEAR[Linear Memory
             0 - max 4GB]
@@ -1763,10 +1763,10 @@ graph TB
             Every Access]
             HW[Hardware Page Protection
             WasmEdge]
-            
+
             LINEAR --> BOUNDS --> HW
         end
-        
+
         subgraph L2["L2: Capability Control"]
             WIT[WIT Interface
             Explicit Imports]
@@ -1774,10 +1774,10 @@ graph TB
             Minimal Privilege]
             HOST[Host Functions
             Whitelist]
-            
+
             WIT --> WASI --> HOST
         end
-        
+
         subgraph L3["L3: Resource Limits"]
             FUEL[Fuel Limit
             Instruction Counter]
@@ -1785,10 +1785,10 @@ graph TB
             Per Instance]
             TIME[Execution Timeout
             Wall Clock]
-            
+
             FUEL --> MEMLIM --> TIME
         end
-        
+
         subgraph L4["L4: Code Verification"]
             VALIDATE[Module Validation
             Type Safety]
@@ -1796,17 +1796,17 @@ graph TB
     Trusted Registry]
             AUDIT[Audit Log
             Call Tracing]
-            
+
             VALIDATE --> SIGN --> AUDIT
         end
     end
-    
+
     ATTACK[Potential Attack] --> L1
     L1 -->|Blocked| L2
     L2 -->|Blocked| L3
     L3 -->|Blocked| L4
     L4 --> SECURE[Secure Execution]
-    
+
     style Sandbox fill:#e3f2fd,stroke:#1976d2
     style SECURE fill:#c8e6c9,stroke:#2e7d32
     style ATTACK fill:#ffebee,stroke:#c62828
@@ -1822,7 +1822,7 @@ graph TB
         subgraph FlinkCluster["Flink 2.5 Cluster"]
             JM[JobManager
             HA: 3 nodes]
-            
+
             subgraph TMs["TaskManagers"]
                 TM1[TM-1
                 WASM Runtime]
@@ -1831,7 +1831,7 @@ graph TB
                 TM3[TM-3
                 WASM Runtime]
             end
-            
+
             subgraph Registry["UDF Registry"]
                 WARG[Warg Registry
         Private]
@@ -1839,7 +1839,7 @@ graph TB
         Harbor]
             end
         end
-        
+
         subgraph Storage["Storage"]
             S3[(S3/HDFS
             Module Cache)]
@@ -1847,7 +1847,7 @@ graph TB
             State Backend)]
         end
     end
-    
+
     subgraph Edge["Edge Locations"]
         EDGE1[Edge Node 1
         Flink Mini]
@@ -1856,27 +1856,27 @@ graph TB
         EDGE3[Edge Node 3
         Flink Mini]
     end
-    
+
     JM --> TM1
     JM --> TM2
     JM --> TM3
-    
+
     TM1 --> Registry
     TM2 --> Registry
     TM3 --> Registry
-    
+
     TM1 --> S3
     TM2 --> S3
     TM3 --> S3
-    
+
     TM1 --> STATE
     TM2 --> STATE
     TM3 --> STATE
-    
+
     Cloud -.->|Sync| EDGE1
     Cloud -.->|Sync| EDGE2
     Cloud -.->|Sync| EDGE3
-    
+
     style FlinkCluster fill:#c8e6c9,stroke:#2e7d32
     style Registry fill:#fff3e0,stroke:#f57f17
     style Edge fill:#e3f2fd,stroke:#1976d2
@@ -1897,32 +1897,32 @@ graph TB
 wasm:
   # 运行时选择
   runtime: wasmtime  # 前瞻性配置: Flink 2.5规划中
-  
+
   # AOT 编译配置
   aot:
     enabled: true
     optimization: O3
-    
+
   # 模块缓存
   module-cache:
     enabled: true
     memory-size: 512MB
     disk-path: /var/lib/flink/wasm-cache
     ttl: 24h
-    
+
   # 实例池配置
   instance-pool:
     enabled: true
     min-size: 10
     max-size: 100
     idle-timeout: 5m
-    
+
   # 资源限制
   resource-limits:
     max-memory-per-instance: 64MB
     max-fuel-per-call: 10000000
     max-execution-time: 1000ms
-    
+
   # 安全配置
   security:
     capability-model: strict
@@ -1945,21 +1945,21 @@ wasm:
 
 wasm:
   runtime: wasmedge  # 更轻量的运行时
-  
+
   aot:
     enabled: true
     optimization: O2  # 平衡性能和编译时间
-    
+
   module-cache:
     enabled: true
     memory-size: 64MB  # 边缘内存受限
     disk-path: /tmp/flink-wasm-cache
-    
+
   instance-pool:
     enabled: true
     min-size: 2
     max-size: 20
-    
+
   resource-limits:
     max-memory-per-instance: 16MB
     max-fuel-per-call: 5000000
@@ -1979,7 +1979,7 @@ wasm:
     instance-pool:
       enabled: true
       max-size: 100
-      
+
   # 边缘配置
   edge:
     runtime: wasmedge
@@ -1988,7 +1988,7 @@ wasm:
     instance-pool:
       enabled: true
       max-size: 20
-      
+
   # 同步配置
   sync:
     enabled: true
@@ -2017,7 +2017,7 @@ wasm:
 # 任务槽与 WASM 实例映射
 taskmanager:
   numberOfTaskSlots: 4
-  
+
 wasm:
   # 每个 Task Slot 的 WASM 资源
   resources-per-slot:
@@ -2056,32 +2056,32 @@ metrics:
     - name: wasm.execution.latency
       type: histogram
       labels: [function_name, language]
-      
+
     - name: wasm.execution.throughput
       type: counter
       labels: [function_name]
-      
+
     - name: wasm.instance.pool.size
       type: gauge
       labels: [function_name]
-      
+
     - name: wasm.instance.pool.hit_rate
       type: gauge
-      
+
     # 资源指标
     - name: wasm.memory.usage
       type: gauge
       labels: [instance_id]
-      
+
     - name: wasm.fuel.consumed
       type: counter
       labels: [function_name]
-      
+
     # 错误指标
     - name: wasm.errors
       type: counter
       labels: [error_type, function_name]
-      
+
     - name: wasm.timeouts
       type: counter
       labels: [function_name]
@@ -2096,17 +2096,17 @@ alerts:
     condition: wasm.execution.latency.p99 > 100ms
     duration: 5m
     severity: warning
-    
+
   - name: WASMHighErrorRate
     condition: rate(wasm.errors[5m]) > 0.01
     duration: 2m
     severity: critical
-    
+
   - name: WASMInstancePoolExhausted
     condition: wasm.instance.pool.size == wasm.instance.pool.max
     duration: 1m
     severity: warning
-    
+
   - name: WASMMemoryPressure
     condition: wasm.memory.usage / wasm.memory.limit > 0.9
     duration: 5m
@@ -2159,23 +2159,23 @@ WasmFunctionConfig optimalConfig = WasmFunctionConfig.builder()
     // 使用 AOT 编译
     .enableAOT(true)
     .setAOTOptimizationLevel(OptimizationLevel.O3)
-    
+
     // 配置实例池
     .enableInstancePool(true)
     .setInstancePoolMinSize(20)
     .setInstancePoolMaxSize(100)
     .setInstancePoolIdleTimeout(Duration.ofMinutes(10))
-    
+
     // 配置模块缓存
     .enableModuleCache(true)
     .setModuleCacheSizeMB(512)
     .setModuleCachePath("/var/cache/flink/wasm")
-    
+
     // 设置资源限制
     .setMemoryLimitMB(32)
     .setMaxFuel(10_000_000)
     .setExecutionTimeout(Duration.ofMillis(100))
-    
+
     .build();
 ```
 
@@ -2225,7 +2225,7 @@ wasm:
     trusted-publishers:
       - Apache Flink
       - Company Internal
-      
+
     # 能力控制
     capability-model: strict
     allowed-wasi-interfaces:
@@ -2233,13 +2233,13 @@ wasm:
       - wasi:io/stdout
       - wasi:io/stderr
       - wasi:random/random
-      
+
     # 明确禁止的接口
     denied-wasi-interfaces:
       - wasi:filesystem/types
       - wasi:sockets/tcp
       - wasi:sockets/udp
-      
+
     # 审计日志
     audit-log:
       enabled: true
@@ -2293,7 +2293,7 @@ logger:
         target: SYSTEM_OUT
       - type: File
         file: /var/log/flink/wasm-debug.log
-        
+
   wasm.tracing:
     level: TRACE
     # 记录每个函数调用
@@ -2306,33 +2306,19 @@ logger:
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "WebAssembly UDF", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/udf/wasm/
 
-[^2]: WebAssembly System Interface (WASI) 0.2 Specification, Bytecode Alliance, 2024. https://github.com/WebAssembly/WASI/blob/main/preview2/
 
-[^3]: WebAssembly Component Model Specification, Version 1.0, W3C WebAssembly Community Group, 2024. https://component-model.bytecodealliance.org/
 
-[^4]: Wasmtime Documentation, "AOT Compilation and Pre-initialization", 2025. https://docs.wasmtime.dev/cli-options.html#options-1
 
-[^5]: WasmEdge Documentation, "WasmEdge AOT Compiler", 2025. https://wasmedge.org/docs/start/build-and-run/aot/
 
-[^6]: Fastly Compute@Edge Documentation, "WebAssembly on Fastly", 2025. https://developer.fastly.com/learning/compute/
 
-[^7]: Cloudflare Workers Documentation, "WebAssembly on Workers", 2025. https://developers.cloudflare.com/workers/runtime-apis/webassembly/
 
-[^8]: Fermyon Spin Documentation, "Building WebAssembly Components", 2025. https://developer.fermyon.com/spin/v2/build
 
-[^9]: WIT (Wasm Interface Types) Documentation, 2025. https://component-model.bytecodealliance.org/design/wit.html
 
-[^10]: wit-bindgen Documentation, "Guest Bindings for Rust", 2025. https://github.com/bytecodealliance/wit-bindgen
 
-[^11]: Warg Registry Specification, WebAssembly Package Registry, 2025. https://github.com/bytecodealliance/registry
 
-[^12]: Rust and WebAssembly Book, "Optimizing Rust and WebAssembly", 2025. https://rustwasm.github.io/book/reference/opt-size.html
 
-[^13]: TinyGo Documentation, "Compiling Go to WebAssembly", 2025. https://tinygo.org/docs/guides/webassembly/
 
-[^14]: WASI SDK Documentation, "Compiling C/C++ to WebAssembly", 2025. https://github.com/WebAssembly/wasi-sdk
 
 ---
 

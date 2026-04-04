@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-25: Unified Observability
+
 统一可观测性整合Metrics/Logs/Traces：
 $$
 \text{Unified} = \text{Metrics} \times \text{Logs} \times \text{Traces}
 $$
 
 ### Def-F-25-26: Real-time Analytics
+
 实时分析即时处理可观测性数据：
 $$
 \text{Analytics} : \text{ObsData} \xrightarrow{\text{stream}} \text{Insights}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-16: Correlation Accuracy
+
 关联准确性：
 $$
 P(\text{CorrectCorrelation}) \geq 0.95
@@ -61,19 +64,19 @@ $$
 
 ```java
 public class RootCauseAnalyzer {
-    
+
     public RootCause analyze(AnomalyEvent event) {
         // 构建依赖图
         DependencyGraph graph = buildDependencyGraph(event.getJob());
-        
+
         // 收集相关指标
         List<Metric> metrics = correlationEngine.findRelated(event, graph);
-        
+
         // 异常检测
         List<Anomaly> anomalies = metrics.stream()
             .filter(m -> anomalyDetector.isAnomalous(m))
             .collect(Collectors.toList());
-        
+
         // 排序找到根因
         return rankByImpact(anomalies);
     }

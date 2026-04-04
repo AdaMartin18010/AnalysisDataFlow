@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-JDBC-01: JDBC Source
+
 JDBC Source：
 $$
 \text{JDBCSource} : \text{SQL} \to \text{Stream}
 $$
 
 ### Def-F-Conn-JDBC-02: JDBC Sink
+
 JDBC Sink：
 $$
 \text{JDBCSink} : \text{Stream} \xrightarrow{\text{batch}} \text{Database}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-JDBC-01: Batch Optimization
+
 批量优化：
 $$
 \text{Throughput} \propto \text{BatchSize}

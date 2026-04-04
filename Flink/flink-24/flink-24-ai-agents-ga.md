@@ -5,20 +5,25 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-24-01: AI Agent in Flink
+
 AI Agent是Flink中能够自主感知流数据、做出决策并执行动作的软件实体，具备以下核心能力：
+
 - 感知（Perception）：从数据流中提取特征
 - 推理（Reasoning）：基于LLM或规则引擎进行决策
 - 行动（Action）：输出控制信号或调用外部API
 - 学习（Learning）：根据反馈优化行为策略
 
 ### Def-F-24-02: Agent Runtime
+
 Agent Runtime是Flink中支持AI Agent执行的环境，提供：
+
 - 状态管理（对话状态、知识库状态）
 - 上下文传递（跨算子保持Agent上下文）
 - 工具调用接口（MCP协议支持）
 - 生命周期管理（启动、暂停、恢复、终止）
 
 ### Def-F-24-03: MCP Integration
+
 Model Context Protocol (MCP) 是Flink AI Agent与外部工具集成的标准协议：
 $$
 \text{MCP} : \langle \text{Tool}, \text{Input}, \text{Output} \rangle \to \text{Result}
@@ -27,18 +32,21 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-24-01: Agent State Consistency
+
 在Checkpoint机制下，AI Agent的状态满足：
 $$
 \forall t, \exists \text{checkpoint}_t : \text{AgentState}_t \subseteq \text{checkpoint}_t
 $$
 
 ### Prop-F-24-02: Agent Latency Bound
+
 FLIP-531保证Agent推理延迟有上界：
 $$
 \text{Latency}_{\text{agent}} \leq T_{\text{inference}} + T_{\text{context\_switch}} + T_{\text{network}}
 $$
 
 ### Prop-F-24-03: Tool Call Idempotency
+
 在Exactly-Once语义下，Agent工具调用满足幂等性：
 $$
 \forall \text{tool} \in \text{Tools}, \text{tool}(x) = \text{tool}(\text{tool}(x))
@@ -103,6 +111,7 @@ FLIP-531引入三层架构：
 **定理 (Thm-F-24-01)**: 在Flink的Exactly-Once语义下，AI Agent的工具调用满足幂等性。
 
 **证明概要**:
+
 1. 设Agent在checkpoint $t$ 时状态为 $S_t$
 2. 恢复后从 $S_t$ 继续执行
 3. 工具调用使用idempotency key确保幂等
@@ -115,32 +124,32 @@ FLIP-531引入三层架构：
 public class AIAgentFunction extends ProcessFunction<Event, Action> {
     private ValueState<AgentContext> agentState;
     private transient LLMClient llmClient;
-    
+
     @Override
     public void open(Configuration parameters) {
         StateTtlConfig ttlConfig = StateTtlConfig
             .newBuilder(Time.hours(1))
             .setUpdateType(OnCreateAndWrite)
             .build();
-        
-        ValueStateDescriptor<AgentContext> descriptor = 
+
+        ValueStateDescriptor<AgentContext> descriptor =
             new ValueStateDescriptor<>("agent-context", AgentContext.class);
         descriptor.enableTimeToLive(ttlConfig);
         agentState = getRuntimeContext().getState(descriptor);
-        
+
         llmClient = new LLMClient(getRuntimeContext());
     }
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Action> out) {
         AgentContext context = agentState.value();
         if (context == null) {
             context = new AgentContext();
         }
-        
+
         // 更新上下文
         context.addObservation(event);
-        
+
         // 异步LLM推理
         llmClient.inferAsync(context, result -> {
             if (result.requiresAction()) {
@@ -237,7 +246,7 @@ sequenceDiagram
     participant F as Flink Agent
     participant M as MCP Server
     participant L as LLM Provider
-    
+
     F->>L: 发送上下文+提示
     L-->>F: 返回决策(需工具调用)
     F->>M: 调用工具 (idempotency-key)
@@ -256,12 +265,12 @@ graph TB
         C[工具调用记录]
         D[决策上下文]
     end
-    
+
     subgraph "Checkpoint"
         E[增量Checkpoint]
         F[状态后端]
     end
-    
+
     A --> E
     B --> E
     C --> E
@@ -271,10 +280,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-531: "AI Agents Support in Flink", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531
-[^2]: Model Context Protocol Specification, Anthropic, 2024. https://modelcontextprotocol.io/
-[^3]: ReAct: Synergizing Reasoning and Acting in Language Models, Yao et al., 2022.
-[^4]: Building LLM Powered Applications, O'Reilly, 2024.
+[^1]: Apache Flink FLIP-531: "AI Agents Support in Flink", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
 
 ---
 

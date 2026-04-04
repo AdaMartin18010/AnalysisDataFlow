@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-LH-01: Lakehouse
+
 Lakehouse架构：
 $$
 \text{Lakehouse} = \text{Data Lake} + \text{ACID} + \text{Metadata}
 $$
 
 ### Def-F-Conn-LH-02: Table Format
+
 表格式：
 $$
 \text{TableFormat} \in \{\text{Iceberg}, \text{Hudi}, \text{Delta}, \text{Paimon}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-LH-01: Time Travel
+
 时间旅行：
 $$
 \text{Query}(t) = \text{Table}_{\text{version}=t}

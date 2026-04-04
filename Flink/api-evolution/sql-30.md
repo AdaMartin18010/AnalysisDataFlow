@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-SQL30-01: Unified SQL
+
 统一SQL：
 $$
 \text{UnifiedSQL} : \text{SameSyntax}_{\text{stream}} = \text{SameSyntax}_{\text{batch}}
 $$
 
 ### Def-F-SQL30-02: Streaming SQL Extension
+
 流式SQL扩展：
 $$
 \text{StreamingExt} = \{\text{EMIT}, \text{WATERMARK}, \text{INCLUDE}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-SQL30-01: Semantic Compatibility
+
 语义兼容性：
 $$
 \text{SQL}_{3.0} \supseteq \text{SQL}_{2.x}
@@ -59,16 +62,16 @@ GROUP BY user_id;  -- 批处理执行
 ```java
 // 3.0统一编译器
 public class UnifiedSQLCompiler {
-    
+
     public ExecutionPlan compile(String sql, TableEnvironment env) {
         SqlNode ast = parser.parse(sql);
-        
+
         // 检测输入边界
         Boundedness boundedness = analyzeBoundedness(ast, env);
-        
+
         // 统一优化
         RelNode logicalPlan = optimizer.optimize(ast);
-        
+
         // 根据边界选择物理计划
         if (boundedness == Boundedness.BOUNDED) {
             return batchPlanner.convert(logicalPlan);
@@ -85,7 +88,7 @@ public class UnifiedSQLCompiler {
 
 ```sql
 -- AI预测查询
-SELECT 
+SELECT
     user_id,
     amount,
     AI_PREDICT('fraud-model', features) AS fraud_score
@@ -101,11 +104,11 @@ graph LR
         A[Stream SQL]
         B[Batch SQL]
     end
-    
+
     subgraph "3.0"
         C[统一SQL]
     end
-    
+
     A --> C
     B --> C
 ```

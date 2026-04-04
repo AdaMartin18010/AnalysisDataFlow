@@ -5,18 +5,21 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-25-10: GPU Acceleration
+
 GPU加速利用GPU并行计算能力：
 $$
 \text{Speedup} = \frac{T_{\text{CPU}}}{T_{\text{GPU}}} = \frac{\text{Parallelism}_{\text{GPU}}}{\text{Parallelism}_{\text{CPU}}}
 $$
 
 ### Def-F-25-11: CUDA Kernel
+
 CUDA内核是GPU上执行的函数：
 $$
 \text{Kernel} : \langle \text{Grid}, \text{Block}, \text{Thread} \rangle \to \text{Computation}
 $$
 
 ### Def-F-25-12: GPU Operator
+
 GPU算子是Flink中利用GPU的算子：
 $$
 \text{GPUOp} = \text{FlinkOp} + \text{GPUKernel} + \text{DataTransfer}
@@ -25,12 +28,14 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-25-07: GPU Speedup
+
 GPU加速比下界：
 $$
 \text{Speedup} \geq \frac{n}{\log n} \text{ (for parallelizable workload)}
 $$
 
 ### Prop-F-25-08: Memory Transfer Overhead
+
 数据传输开销约束：
 $$
 T_{\text{transfer}} < 0.2 \times T_{\text{compute}}
@@ -82,10 +87,10 @@ $$
 
 ```java
 public class GPUMatrixMultiply extends RichMapFunction<Matrix, Matrix> {
-    
+
     private transient cublasHandle handle;
     private transient CUDAStream stream;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 初始化CUDA
@@ -94,37 +99,37 @@ public class GPUMatrixMultiply extends RichMapFunction<Matrix, Matrix> {
         cublasCreate(handle);
         stream = new CUDAStream();
     }
-    
+
     @Override
     public Matrix map(Matrix input) {
         // 分配GPU内存
         CUdeviceptr d_input = new CUdeviceptr();
         CUdeviceptr d_output = new CUdeviceptr();
-        
+
         CUDA.cudaMalloc(d_input, input.size() * Sizeof.FLOAT);
         CUDA.cudaMalloc(d_output, outputSize * Sizeof.FLOAT);
-        
+
         // 数据传输 H2D
-        CUDA.cudaMemcpyAsync(d_input, input.data(), 
-            input.size() * Sizeof.FLOAT, 
+        CUDA.cudaMemcpyAsync(d_input, input.data(),
+            input.size() * Sizeof.FLOAT,
             cudaMemcpyHostToDevice, stream);
-        
+
         // 执行GPU内核
         launchKernel(d_input, d_output, input.rows(), input.cols());
-        
+
         // 数据传输 D2H
         float[] output = new float[outputSize];
-        CUDA.cudaMemcpyAsync(output, d_output, 
+        CUDA.cudaMemcpyAsync(output, d_output,
             outputSize * Sizeof.FLOAT,
             cudaMemcpyDeviceToHost, stream);
-        
+
         // 同步
         stream.synchronize();
-        
+
         // 释放资源
         CUDA.cudaFree(d_input);
         CUDA.cudaFree(d_output);
-        
+
         return new Matrix(output);
     }
 }
@@ -168,12 +173,12 @@ graph TB
         A[Flink Task]
         B[数据预处理]
     end
-    
+
     subgraph "GPU"
         C[显存]
         D[CUDA内核]
     end
-    
+
     A --> B
     B -->|PCIe| C
     C --> D
@@ -184,7 +189,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: NVIDIA CUDA Documentation, https://docs.nvidia.com/cuda/
+[^1]: NVIDIA CUDA Documentation, <https://docs.nvidia.com/cuda/>
 
 ---
 

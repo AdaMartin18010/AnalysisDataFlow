@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Win-01: Window Types
+
 窗口类型：
 $$
 \text{Windows} = \{\text{Tumbling}, \text{Sliding}, \text{Session}, \text{Global}, \text{Custom}\}
 $$
 
 ### Def-F-Win-02: Window Trigger
+
 窗口触发器：
 $$
 \text{Trigger} : \text{Event} \to \{\text{FIRE}, \text{CONTINUE}, \text{PURGE}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Win-01: Window Completeness
+
 窗口完整性：
 $$
 \forall w \in \text{Windows} : \text{Watermark} > \text{End}(w) \implies \text{Fired}(w)
@@ -82,12 +85,12 @@ gantt
     title 窗口类型时间线
     dateFormat X
     axisFormat %s
-    
+
     section Tumbling
     Window1 : 0, 5
     Window2 : 5, 10
     Window3 : 10, 15
-    
+
     section Sliding
     Window1 : 0, 5
     Window2 : 2, 7

@@ -30,22 +30,22 @@ graph TB
         F1[JobManager] --> F2[TaskManager 1]
         F1 --> F3[TaskManager 2]
         F1 --> F4[TaskManager N]
-        
+
         F2 --> F5[Operator Chain]
         F3 --> F6[Operator Chain]
-        
+
         F7[(State Backend<br/>RocksDB/HashMap)]
         F2 -.-> F7
         F3 -.-> F7
     end
-    
+
     subgraph "Materialize"
         M1[Global Coordinator] --> M2[Cluster 1]
         M1 --> M3[Cluster 2]
-        
+
         M2 --> M4[Computed Views]
         M2 --> M5[Storage]
-        
+
         M6[(Persisted Logs<br/>S3/Azure/GCS)]
         M5 -.-> M6
     end
@@ -63,6 +63,7 @@ graph TB
 ### 2.3 Differential Dataflow vs Flink's Model
 
 **Materialize Differential Dataflow**:
+
 ```
 Input: Stream of (data, time, diff) triples
   - data: The record
@@ -75,6 +76,7 @@ Computation: Incremental view maintenance
 ```
 
 **Flink's DataStream Model**:
+
 ```
 Input: Stream of events
   - Event time processing
@@ -104,6 +106,7 @@ Computation: Operator chains
 ### 3.2 Programming Model
 
 **Flink**:
+
 ```java
 // DataStream API - Maximum flexibility
 DataStream<Event> stream = env.addSource(kafkaSource);
@@ -118,10 +121,11 @@ result.addSink(jdbcSink);
 ```
 
 **Materialize**:
+
 ```sql
 -- Pure SQL - Maximum simplicity
 CREATE MATERIALIZED VIEW user_stats AS
-SELECT 
+SELECT
     user_id,
     COUNT(*) as event_count,
     SUM(value) as total_value
@@ -162,7 +166,7 @@ graph LR
         F1[Scale Out] -->|Add TaskManagers| F2[More Parallelism]
         F3[Scale Up] -->|Larger VMs| F4[More Slots]
     end
-    
+
     subgraph "Materialize Scaling"
         M1[Scale] -->|Resize Cluster| M2[More Computed Views]
         M1 -->|Storage| M3[Auto-scaling]
@@ -170,11 +174,13 @@ graph LR
 ```
 
 **Flink**:
+
 - Linear scale-out with partitions
 - Manual cluster sizing
 - State redistribution on rescale
 
 **Materialize**:
+
 - Vertical scaling primarily
 - Automatic view optimization
 - Storage-compute separation
@@ -196,12 +202,14 @@ graph LR
 ### 5.2 Pricing Models
 
 **Flink**:
+
 - Open Source: Free (infrastructure costs)
 - Confluent Cloud: $0.11/hour per CFU
 - Ververica: Custom enterprise pricing
 - AWS Kinesis Analytics: $0.11/hour per KPU
 
 **Materialize**:
+
 - Compute: ~$3.50/hour per CC (compute credit)
 - Storage: ~$0.25/GB/month
 - No upfront costs, pay-as-you-go
@@ -209,6 +217,7 @@ graph LR
 ### 5.3 Cost Optimization
 
 **Flink**:
+
 ```yaml
 # Cost optimization strategies
 optimization:
@@ -219,6 +228,7 @@ optimization:
 ```
 
 **Materialize**:
+
 ```yaml
 # Cost optimization strategies
 optimization:
@@ -232,7 +242,7 @@ optimization:
 
 ## 6. Use Case Suitability
 
-### 6.1 Choose Flink When:
+### 6.1 Choose Flink When
 
 | Use Case | Rationale |
 |----------|-----------|
@@ -243,7 +253,7 @@ optimization:
 | **Low-level Control** | Fine-tuned performance optimization |
 | **Hybrid Batch/Stream** | Unified processing model |
 
-### 6.2 Choose Materialize When:
+### 6.2 Choose Materialize When
 
 | Use Case | Rationale |
 |----------|-----------|
@@ -260,23 +270,23 @@ optimization:
 graph TB
     subgraph "Data Pipeline"
         Source[Kafka/Database]
-        
+
         subgraph "Complex Processing"
             Flink[Apache Flink]
             F1[Enrichment]
             F2[ML Inference]
             F3[Pattern Detection]
         end
-        
+
         subgraph "Serving Layer"
             Materialize[Materialize]
             MV1[Materialized Views]
             MV2[Real-time Analytics]
         end
-        
+
         Source --> Flink
         Flink -->|Clean Events| Materialize
-        
+
         Materialize --> BI[BI Tools]
         Materialize --> Apps[Applications]
     end
@@ -289,6 +299,7 @@ graph TB
 ### 7.1 Flink to Materialize
 
 **Migration Path**:
+
 1. **Identify SQL-compatible operations**
 2. **Migrate stateful operations to materialized views**
 3. **Replace custom UDFs with SQL functions**
@@ -307,7 +318,7 @@ DataStream<Result> result = stream
 ```sql
 -- Materialize equivalent
 CREATE MATERIALIZED VIEW event_counts AS
-SELECT 
+SELECT
     user_id,
     COUNT(*) as event_count,
     date_trunc('minute', event_time) as window_start
@@ -318,6 +329,7 @@ GROUP BY user_id, date_trunc('minute', event_time);
 ### 7.2 Materialize to Flink
 
 **When to Migrate**:
+
 - Need complex event processing
 - Require custom algorithms
 - Hitting scaling limits
@@ -330,22 +342,22 @@ GROUP BY user_id, date_trunc('minute', event_time);
 ```mermaid
 flowchart TD
     Start[Select Stream Processing Platform] --> Q1{SQL-Only Team?}
-    
+
     Q1 -->|Yes| Q2{Complex SQL?}
     Q1 -->|No| Q3{Custom Logic Required?}
-    
+
     Q2 -->|Yes| Materialize[Choose Materialize]
     Q2 -->|No| Q4{Real-time Dashboards?}
-    
+
     Q4 -->|Yes| Materialize
     Q4 -->|No| Flink[Choose Flink]
-    
+
     Q3 -->|Yes| Flink
     Q3 -->|No| Q5{ML Integration?}
-    
+
     Q5 -->|Yes| Flink
     Q5 -->|No| Q6{Operational Complexity?}
-    
+
     Q6 -->|Low tolerance| Materialize
     Q6 -->|High tolerance| Flink
 ```

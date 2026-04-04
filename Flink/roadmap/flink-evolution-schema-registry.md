@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-SR-01: Schema Evolution
+
 Schema演进：
 $$
 \text{Schema}_{v2} = \text{Schema}_{v1} + \Delta, \text{ backward compatible}
 $$
 
 ### Def-F-SR-02: Schema Compatibility
+
 Schema兼容性：
 $$
 \text{Compatibility} \in \{\text{BACKWARD}, \text{FORWARD}, \text{FULL}, \text{NONE}\}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-SR-01: Version Resolution
+
 版本解析：
 $$
 \text{Deserialize}(d, s_v) = o, \text{ where } v = \text{schema-version}(d)

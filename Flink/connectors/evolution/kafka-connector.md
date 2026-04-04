@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-Kafka-01: Source Connector
+
 Kafka Source：
 $$
 \text{KafkaSource} : \text{Topic} \times \text{Partition} \to \text{Stream}
 $$
 
 ### Def-F-Conn-Kafka-02: Sink Connector
+
 Kafka Sink：
 $$
 \text{KafkaSink} : \text{Stream} \to \text{Topic}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-Kafka-01: Exactly-Once
+
 Exactly-Once语义：
 $$
 \text{KafkaSink} + \text{Transactions} \implies \text{Exactly-Once}

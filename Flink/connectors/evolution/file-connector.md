@@ -5,12 +5,14 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-Conn-File-01: File Source
+
 文件源：
 $$
 \text{FileSource} : \text{Path} \to \text{Stream}
 $$
 
 ### Def-F-Conn-File-02: File Sink
+
 文件Sink：
 $$
 \text{FileSink} : \text{Stream} \xrightarrow{\text{batch}} \text{File}
@@ -19,6 +21,7 @@ $$
 ## 2. 属性推导 (Properties)
 
 ### Prop-F-Conn-File-01: Exactly-Once
+
 Exactly-Once文件写入：
 $$
 \text{TwoPhaseCommit} + \text{Staging} \implies \text{Exactly-Once}

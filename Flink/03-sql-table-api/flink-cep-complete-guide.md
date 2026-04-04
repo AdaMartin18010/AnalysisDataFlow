@@ -170,18 +170,18 @@ graph TB
         A[流处理] --> B[简单窗口聚合]
         A --> C[CEP复杂事件处理]
         A --> D[ML推理]
-        
+
         B --> B1[Tumbling/Sliding Window]
         B --> B2[Session Window]
-        
+
         C --> C1[Pattern Matching]
         C --> C2[Sequence Detection]
         C --> C3[Correlation Analysis]
-        
+
         D --> D1[实时特征工程]
         D --> D2[异常检测]
     end
-    
+
     style C fill:#e1f5fe
 ```
 
@@ -229,7 +229,7 @@ flowchart TD
     F -->|简单顺序| G[简单CEP]
     F -->|复杂模式| H[高级CEP]
     F -->|时间窗口关键| I[时间驱动CEP]
-    
+
     G --> J[Pattern API]
     H --> J
     I --> J
@@ -324,7 +324,7 @@ public class LoginEvent {
     public String ip;
     public String eventType;  // "success" or "fail"
     public long timestamp;
-    
+
     // constructor, getters...
 }
 
@@ -448,7 +448,7 @@ Pattern.<LoginEvent>begin("first").where(evt -> evt.status.equals("FAIL"))
                 // 获取之前匹配的事件
                 for (LoginEvent first : ctx.getEventsForPattern("first")) {
                     // 相同用户，不同IP
-                    if (first.userId.equals(event.userId) && 
+                    if (first.userId.equals(event.userId) &&
                         !first.ip.equals(event.ip)) {
                         return true;
                     }
@@ -571,12 +571,12 @@ import org.apache.flink.cep.pattern.conditions.IterativeCondition;
  * 模式: 大额交易后短时间内多笔小额交易 (洗钱特征)
  */
 public class FraudDetectionCEP {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-        
+
         // 交易事件流
         DataStream<Transaction> transactions = env
             .addSource(new TransactionSource())
@@ -585,7 +585,7 @@ public class FraudDetectionCEP {
                     Duration.ofSeconds(5)
                 ).withIdleness(Duration.ofMinutes(1))
             );
-        
+
         // 定义欺诈模式
         Pattern<Transaction, ?> fraudPattern = Pattern
             .<Transaction>begin("large-tx")
@@ -605,13 +605,13 @@ public class FraudDetectionCEP {
             })
             .timesOrMore(3)  // 至少3笔
             .within(Time.minutes(10));  // 10分钟内
-        
+
         // 应用模式
         PatternStream<Transaction> patternStream = CEP.pattern(
             transactions.keyBy(Transaction::getAccountId),
             fraudPattern
         );
-        
+
         // 处理匹配结果
         DataStream<FraudAlert> alerts = patternStream.select(
             new PatternSelectFunction<Transaction, FraudAlert>() {
@@ -619,11 +619,11 @@ public class FraudDetectionCEP {
                 public FraudAlert select(Map<String, List<Transaction>> pattern) {
                     Transaction largeTx = pattern.get("large-tx").get(0);
                     List<Transaction> smallTxs = pattern.get("small-txs");
-                    
+
                     double totalSmall = smallTxs.stream()
                         .mapToDouble(t -> t.amount)
                         .sum();
-                    
+
                     return new FraudAlert(
                         largeTx.accountId,
                         String.format(
@@ -638,10 +638,10 @@ public class FraudDetectionCEP {
                 }
             }
         );
-        
+
         // 输出告警
         alerts.addSink(new AlertSink());
-        
+
         env.execute("Fraud Detection with CEP");
     }
 }
@@ -652,15 +652,15 @@ public class Transaction {
     public double amount;
     public String merchant;
     public long timestamp;
-    
-    public Transaction(String accountId, double amount, 
+
+    public Transaction(String accountId, double amount,
                        String merchant, long timestamp) {
         this.accountId = accountId;
         this.amount = amount;
         this.merchant = merchant;
         this.timestamp = timestamp;
     }
-    
+
     public String getAccountId() { return accountId; }
 }
 
@@ -670,8 +670,8 @@ public class FraudAlert {
     public String message;
     public long patternStart;
     public long patternEnd;
-    
-    public FraudAlert(String accountId, String message, 
+
+    public FraudAlert(String accountId, String message,
                       long patternStart, long patternEnd) {
         this.accountId = accountId;
         this.message = message;
@@ -690,15 +690,15 @@ public class FraudAlert {
  * 模式2: 价格连续下跌后突然上涨 (可能的底部信号)
  */
 public class PriceSurgeDetection {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         DataStream<StockPrice> prices = env
             .addSource(new StockPriceSource())
             .keyBy(StockPrice::getSymbol);
-        
+
         // 模式1: 连续上涨后下跌
         Pattern<StockPrice, ?> surgePattern = Pattern
             .<StockPrice>begin("rising")
@@ -718,10 +718,10 @@ public class PriceSurgeDetection {
                 }
             })
             .within(Time.minutes(5));
-        
+
         // 应用模式
         PatternStream<StockPrice> patternStream = CEP.pattern(prices, surgePattern);
-        
+
         // 处理结果
         DataStream<TradingSignal> signals = patternStream.process(
             new PatternProcessFunction<StockPrice, TradingSignal>() {
@@ -730,14 +730,14 @@ public class PriceSurgeDetection {
                         Map<String, List<StockPrice>> match,
                         Context ctx,
                         Collector<TradingSignal> out) {
-                    
+
                     List<StockPrice> rising = match.get("rising");
                     StockPrice drop = match.get("drop").get(0);
-                    
+
                     double totalRise = rising.stream()
                         .mapToDouble(p -> p.changePercent)
                         .sum();
-                    
+
                     // 生成交易信号
                     out.collect(new TradingSignal(
                         drop.symbol,
@@ -752,7 +752,7 @@ public class PriceSurgeDetection {
                 }
             }
         );
-        
+
         signals.print();
         env.execute();
     }
@@ -767,20 +767,20 @@ public class PriceSurgeDetection {
  * 模式: 温度升高 → 振动异常 → (可选)噪音增加 → 故障
  */
 public class DeviceFailurePrediction {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         DataStream<SensorReading> sensors = env
             .addSource(new SensorSource())
             .keyBy(SensorReading::getDeviceId);
-        
+
         Pattern<SensorReading, ?> failurePattern = Pattern
             .<SensorReading>begin("temp-rise")
             .where(new IterativeCondition<SensorReading>() {
                 @Override
-                public boolean filter(SensorReading reading, 
+                public boolean filter(SensorReading reading,
                                       Context<SensorReading> ctx) {
                     return reading.temperature > 80;
                 }
@@ -809,18 +809,18 @@ public class DeviceFailurePrediction {
                 }
             })
             .within(Time.seconds(30));
-        
+
         PatternStream<SensorReading> patternStream = CEP.pattern(sensors, failurePattern);
-        
+
         DataStream<MaintenanceAlert> alerts = patternStream.select(
             new PatternSelectFunction<SensorReading, MaintenanceAlert>() {
                 @Override
                 public MaintenanceAlert select(
                         Map<String, List<SensorReading>> pattern) {
-                    
+
                     SensorReading temp = pattern.get("temp-rise").get(0);
                     SensorReading failure = pattern.get("failure").get(0);
-                    
+
                     return new MaintenanceAlert(
                         temp.deviceId,
                         "PREDICTIVE_FAILURE",
@@ -831,7 +831,7 @@ public class DeviceFailurePrediction {
                 }
             }
         );
-        
+
         alerts.addSink(new MaintenanceNotificationSink());
         env.execute();
     }
@@ -846,15 +846,15 @@ public class DeviceFailurePrediction {
  * 模式: 浏览商品 → 加入购物车 → (可选)查看详情 → 结算
  */
 public class PurchaseIntentAnalysis {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         DataStream<UserAction> actions = env
             .addSource(new UserActionSource())
             .keyBy(UserAction::getUserId);
-        
+
         // 高意向购买模式
         Pattern<UserAction, ?> highIntentPattern = Pattern
             .<UserAction>begin("view")
@@ -888,7 +888,7 @@ public class PurchaseIntentAnalysis {
                 }
             })
             .within(Time.minutes(30));
-        
+
         // 放弃购物车模式
         Pattern<UserAction, ?> cartAbandonPattern = Pattern
             .<UserAction>begin("cart")
@@ -906,11 +906,11 @@ public class PurchaseIntentAnalysis {
                 }
             })
             .within(Time.hours(24));
-        
+
         // 应用两个模式
         PatternStream<UserAction> highIntentStream = CEP.pattern(actions, highIntentPattern);
         PatternStream<UserAction> abandonStream = CEP.pattern(actions, cartAbandonPattern);
-        
+
         // 处理高意向
         DataStream<MarketingEvent> highIntentEvents = highIntentStream.select(
             new PatternSelectFunction<UserAction, MarketingEvent>() {
@@ -918,7 +918,7 @@ public class PurchaseIntentAnalysis {
                 public MarketingEvent select(Map<String, List<UserAction>> pattern) {
                     UserAction view = pattern.get("view").get(0);
                     UserAction checkout = pattern.get("checkout").get(0);
-                    
+
                     return new MarketingEvent(
                         view.userId,
                         "HIGH_INTENT",
@@ -928,14 +928,14 @@ public class PurchaseIntentAnalysis {
                 }
             }
         );
-        
+
         // 处理购物车放弃
         DataStream<MarketingEvent> abandonEvents = abandonStream.select(
             new PatternSelectFunction<UserAction, MarketingEvent>() {
                 @Override
                 public MarketingEvent select(Map<String, List<UserAction>> pattern) {
                     UserAction cart = pattern.get("cart").get(0);
-                    
+
                     return new MarketingEvent(
                         cart.userId,
                         "CART_ABANDON",
@@ -945,11 +945,11 @@ public class PurchaseIntentAnalysis {
                 }
             }
         );
-        
+
         // 合并两个流
         highIntentEvents.union(abandonEvents)
             .addSink(new MarketingSink());
-        
+
         env.execute();
     }
 }
@@ -1007,7 +1007,7 @@ stream.assignTimestampsAndWatermarks(
 ```java
 // 1. 使用高效的序列化器
 env.getConfig().registerTypeWithKryoSerializer(
-    MyEvent.class, 
+    MyEvent.class,
     new MyEventSerializer()
 );
 
@@ -1262,12 +1262,12 @@ graph TB
         G -->|否| I[等待下一事件]
         I --> C
         H --> J[结果流]
-        
+
         K[时间检查] --> L{超时?}
         L -->|是| M[超时处理]
         L -->|否| I
     end
-    
+
     style C fill:#e3f2fd
     style H fill:#e8f5e9
 ```
@@ -1304,18 +1304,18 @@ mindmap
 graph LR
     subgraph "输入: [A, X, B, B, C]"
         direction TB
-        
+
         subgraph "next策略"
-            N1[A] --> N2[X] 
+            N1[A] --> N2[X]
             N2 -.->|不匹配| N3[无结果]
         end
-        
+
         subgraph "followedBy策略"
             F1[A] --> F2[X] --> F3[B]
             F1 -.-> F3
             F4[结果: A->B]
         end
-        
+
         subgraph "followedByAny策略"
             FA1[A] --> FA2[X] --> FA3[B]
             FA1 -.-> FA3
@@ -1334,19 +1334,19 @@ flowchart TB
         A[金融风控] --> A1[欺诈检测]
         A --> A2[异常交易]
         A --> A3[洗钱识别]
-        
+
         B[IoT监控] --> B1[设备故障预测]
         B --> B2[异常告警]
         B --> B3[能耗分析]
-        
+
         C[网络安全] --> C1[入侵检测]
         C --> C2[DDoS识别]
         C --> C3[异常登录]
-        
+
         D[电商运营] --> D1[购买意向分析]
         D --> D2[购物车放弃]
         D --> D3[用户路径分析]
-        
+
         E[系统运维] --> E1[故障诊断]
         E --> E2[性能告警]
         E --> E3[日志异常]
@@ -1356,23 +1356,3 @@ flowchart TB
 ---
 
 ## 10. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "FlinkCEP - Complex event processing for Flink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/cep/
-
-[^2]: Apache Flink Documentation, "MATCH_RECOGNIZE", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/match_recognize/
-
-[^3]: G. Cugola and A. Margara, "Complex Event Processing: A Survey", Technical Report, Politecnico di Milano, 2010.
-
-[^4]: D. Luckham, "The Power of Events: An Introduction to Complex Event Processing in Distributed Enterprise Systems", Addison-Wesley, 2002.
-
-[^5]: A. Demers et al., "Cayuga: A General Purpose Event Monitoring System", CIDR 2007.
-
-[^6]: E. Wu, Y. Diao, and S. Rizvi, "High-Performance Complex Event Processing over Streams", SIGMOD 2006.
-
-[^7]: Apache Flink CEP Source Code, https://github.com/apache/flink/tree/master/flink-libraries/flink-cep
-
-[^8]: "Streaming Systems", T. Akidau et al., O'Reilly Media, 2018.
-
-[^9]: SQL:2016 Standard, "Row Pattern Recognition", ISO/IEC 9075-2:2016.
-
-[^10]: Oracle Documentation, "Pattern Recognition in SQL", https://docs.oracle.com/en/database/
