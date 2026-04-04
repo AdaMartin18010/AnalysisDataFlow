@@ -1,6 +1,6 @@
 # Flink 兼容性矩阵
 
-> 所属阶段: Knowledge | 前置依赖: [Flink生态体系](Knowledge/) | 形式化等级: L2
+> 所属阶段: Knowledge | 前置依赖: [Flink生态体系](Knowledge/00-INDEX.md) | 形式化等级: L2
 
 本文档提供 Apache Flink 全生态系统的兼容性矩阵，涵盖版本升级、连接器、语言绑定、云平台及生态组件的完整兼容性信息。
 

@@ -1,6 +1,8 @@
 # AnalysisDataFlow 术语表 (Glossary)
 
-> **版本**: v1.0 | **更新日期**: 2026-04-03 | **范围**: 全项目
+> **版本**: v1.1 | **更新日期**: 2026-04-04 | **范围**: 全项目
+>
+> **版本标注说明**: 术语后标注 [2.0]、[2.4]、[2.5]、[3.0] 等表示该术语在 Flink 对应版本中引入或成为核心特性
 >
 > 本文档是 AnalysisDataFlow 项目的权威术语参考，按字母顺序排列，涵盖流计算理论、Flink 工程实践及前沿技术领域。
 
@@ -54,13 +56,39 @@
 
 ### 5. 前沿术语
 
-- [AI Agent术语](#ai-agent术语): ReAct, MCP, A2A, Agentic Workflow
+- [AI Agent术语](#ai-agent-术语): AI Agent, ReAct, MCP, A2A, Agentic Workflow, FLIP-531, Tool Calling
+- [Serverless术语](#serverless-术语): Serverless Flink, Scale-to-Zero, FaaS
+- [性能优化术语](#性能优化-术语): Adaptive Execution Engine, Smart Checkpointing, GPU Acceleration
+- [流批一体术语](#流批一体-术语): Stream-Batch Unification, Unified Execution Engine
+- [WASM术语](#wasm-术语): WebAssembly UDF, WASI, WASM
 - [流数据库术语](#流数据库术语): Materialized View, Continuous Query, Incremental Update
 - [云原生术语](#云原生术语): Kubernetes, Serverless, WASM, Lakehouse
 
 ---
 
 ## A
+
+### Adaptive Execution Engine (自适应执行引擎) [Flink 1.17+]
+
+**定义**: Flink 引入的智能执行优化框架，能够根据运行时统计信息动态调整执行计划、资源分配和并行度。
+
+**形式化定义**:
+
+```
+AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
+```
+
+其中 𝒫 为物理执行计划，ℳ 为运行时指标，𝒜 为自适应动作，𝒞 为约束条件，ℛ 为重优化器，δ 为决策函数，π 为性能预测模型。
+
+**核心能力**: 数据倾斜自动处理、并行度动态调整、资源自适应分配
+
+**相关概念**: [Smart Checkpointing](#smart-checkpointing-智能检查点), [Backpressure](#backpressure-反压), [Parallelism](#parallelism-并行度)
+
+**参考文档**:
+
+- `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
+
+---
 
 ### Actor Model (Actor 模型)
 
@@ -81,17 +109,19 @@ Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 
 ---
 
-### AI Agent (人工智能代理)
+### AI Agent (人工智能代理) [通用术语]
 
-**定义**: 能够在环境中自主感知、推理、行动和学习的智能系统，形式化为五元组：
+**定义**: 能够在环境中自主感知、推理、行动和学习的智能系统，形式化为六元组：
 
 ```
-𝒜_agent ≜ ⟨𝒫, ℛ, 𝒜, ℳ, 𝒢⟩
+𝒜_agent ≜ ⟨𝒮, 𝒫, 𝒟, 𝒜, ℳ, 𝒢⟩
 ```
 
-其中 𝒫 为感知，ℛ 为推理，𝒜 为行动，ℳ 为记忆，𝒢 为目标。
+其中 𝒮 为状态空间，𝒫 为感知，𝒟 为决策，𝒜 为行动，ℳ 为记忆，𝒢 为目标。
 
-**相关概念**: [ReAct](#react), [MCP](#mcp-model-context-protocol), [Multi-Agent](#multi-agent)
+**Flink 集成**: [Flink Agent](#flink-agent) 是基于流计算框架的 AI Agent 实现
+
+**相关概念**: [ReAct](#react), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Multi-Agent](#multi-agent), [FLIP-531](#flip-531)
 
 **参考文档**:
 
@@ -100,7 +130,7 @@ Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 
 ---
 
-### A2A Protocol (Agent-to-Agent Protocol)
+### A2A Protocol (Agent-to-Agent Protocol) [Google 2025]
 
 **定义**: Google 提出的开放 Agent 互操作标准，支持 Agent 间的任务委托、状态同步和结果返回。
 
@@ -110,7 +140,11 @@ Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 ```
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [MCP](#mcp-model-context-protocol), [Orchestration](#orchestration)
+其中 𝒫 为参与 Agent 集合，ℳ 为消息类型，𝒮 为会话状态机，𝒜 为认证授权机制。
+
+**任务状态流转**: `pending → working → input-required → completed/failed`
+
+**相关概念**: [AI Agent](#ai-agent-人工智能代理), [MCP](#mcp-model-context-protocol), [Orchestration](#orchestration), [FLIP-531](#flip-531)
 
 **参考文档**:
 
@@ -814,21 +848,50 @@ t_e: Record → Timestamp
 
 ---
 
-### Flink Agent
+### Flink Agent [Flink 2.0+, FLIP-531]
 
 **定义**: 基于 Flink 流计算框架构建的自主智能体，支持持续感知、决策和行动。
 
 **形式化定义**:
 
 ```
-𝒜_Flink = ⟨S_state, P_perception, D_decision, A_action, M_memory, G_goal⟩
+𝒜_Flink = ⟨𝒮_state, 𝒫_perception, 𝒟_decision, 𝒜_action, ℳ_memory, 𝒢_goal⟩
 ```
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [Stateful Stream Processing](#stateful-stream-processing)
+**核心特性**: 状态持久化、[Replayability](#replayability-可重放性)、分布式执行、Exactly-Once 语义
+
+**相关概念**: [AI Agent](#ai-agent-人工智能代理), [FLIP-531](#flip-531), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Stateful Stream Processing](#stateful-stream-processing)
 
 **参考文档**:
 
 - `Flink/12-ai-ml/flink-agents-flip-531.md` (Def-F-12-30)
+- `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md`
+
+---
+
+### FLIP-531 (Flink AI Agents 提案) [Flink 2.0+]
+
+**定义**: Apache Flink 官方功能提案，引入 AI Agent 原生运行时支持，实现流计算与 AI 智能体的深度融合。
+
+**核心组件**:
+
+- **Flink Agent Runtime**: Agent 执行环境
+- **MCP 集成**: Model Context Protocol 支持
+- **A2A 协议**: Agent 间互操作
+- **Agentic Workflow**: 智能体工作流编排
+
+**形式化定义**:
+
+```
+FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
+```
+
+**相关概念**: [Flink Agent](#flink-agent), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Agentic Workflow](#agentic-workflow)
+
+**参考文档**:
+
+- `Flink/12-ai-ml/flink-agents-flip-531.md`
+- `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md`
 
 ---
 
@@ -867,6 +930,30 @@ t_e: Record → Timestamp
 ---
 
 ## G
+
+### GPU Acceleration (GPU 加速) [Flink 2.5+]
+
+**定义**: 利用 GPU 的大规模并行计算能力执行流处理算子，通过 CUDA/OpenCL 将计算密集型操作从 CPU 卸载到 GPU。
+
+**形式化定义**:
+
+```
+𝒪_GPU(D) = GPUKernel(Transfer(D_CPU→GPU))
+```
+
+**加速比**: S_GPU = T_CPU / (T_transfer + T_kernel + T_sync)
+
+**适用条件**: 批次大小 n > n_threshold 且计算/传输比 > γ
+
+**加速算子类型**: GPU 聚合、GPU Join、GPU UDF、向量搜索
+
+**相关概念**: [CUDA](#cuda), [Vector Search](#vector-search), [Flink-CUDA Runtime](#flink-cuda-runtime)
+
+**参考文档**:
+
+- `Flink/12-ai-ml/flink-25-gpu-acceleration.md` (Def-F-12-50)
+
+---
 
 ### Global Snapshot (全局快照)
 
@@ -1219,7 +1306,7 @@ v = q(D), 当 δD 发生时: v_new = v ⊕ ℱ_q(δD, D)
 
 ---
 
-### MCP (Model Context Protocol)
+### MCP (Model Context Protocol) [Anthropic 2024, Flink 2.0+]
 
 **定义**: Anthropic 提出的开放协议，用于标准化 LLM 与外部工具的交互。
 
@@ -1229,7 +1316,11 @@ v = q(D), 当 δD 发生时: v_new = v ⊕ ℱ_q(δD, D)
 MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 ```
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [Tool Calling](#tool-calling), [A2A](#a2a-protocol)
+其中 𝒯 为工具集合，ℛ 为工具选择函数，𝒞 为调用构造函数，ℋ 为记忆映射。
+
+**核心能力**: 工具发现、调用构造、结果观察、记忆更新
+
+**相关概念**: [AI Agent](#ai-agent-人工智能代理), [Tool Calling](#tool-calling), [A2A](#a2a-protocol-agent-to-agent-protocol), [FLIP-531](#flip-531)
 
 **参考文档**:
 
@@ -1277,7 +1368,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 - **Supervisor + Workers**: 监督者监控 Worker 状态
 - **Decentralized**: 去中心化直接通信
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [A2A](#a2a-protocol), [Coordination](#coordination)
+**相关概念**: [AI Agent](#ai-agent-人工智能代理), [A2A](#a2a-protocol-agent-to-agent-protocol), [Coordination](#coordination)
 
 **参考文档**:
 
@@ -1655,11 +1746,39 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 云计算执行模型，云提供商动态管理机器资源的分配。
 
-**相关概念**: [FaaS](#function-as-a-service), [Cloud-Native](#cloud-native), [Autoscaling](#autoscaling)
+**相关概念**: [Serverless Flink](#serverless-flink), [FaaS](#function-as-a-service), [Cloud-Native](#cloud-native), [Autoscaling](#autoscaling)
 
 **参考文档**:
 
 - `Knowledge/06-frontier/serverless-stream-processing-architecture.md`
+- `Flink/10-deployment/flink-serverless-architecture.md`
+
+---
+
+### Serverless Flink [Flink 2.0+ GA]
+
+**定义**: Apache Flink 在 Kubernetes 上的生产级无服务器实现，支持 Scale-to-Zero 和按需计费。
+
+**形式化定义**:
+
+```
+ServerlessFlink_GA = ⟨𝒦, 𝒜, 𝒮, 𝒞, ℬ⟩
+```
+
+其中 𝒦 为 Kubernetes Native，𝒜 为 Autoscaler，𝒮 为分离式状态存储，𝒞 为增量异步检查点，ℬ 为 GB-秒精确计费。
+
+**核心特性**:
+
+- **Scale-to-Zero**: 无负载时缩减资源至零
+- **冷启动优化**: <10s 快照恢复（传统 110-420s）
+- **精确计费**: 秒级计费粒度
+- **SLA 保证**: 99.9% 可用性
+
+**相关概念**: [Serverless](#serverless), [Scale-to-Zero](#scale-to-zero), [ForSt](#forst-state-backend), [Kubernetes](#kubernetes)
+
+**参考文档**:
+
+- `Flink/10-deployment/serverless-flink-ga-guide.md` (Def-F-10-50)
 - `Flink/10-deployment/flink-serverless-architecture.md`
 
 ---
@@ -1717,6 +1836,31 @@ Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
 **参考文档**:
 
 - `Knowledge/02-design-patterns/pattern-side-output.md`
+
+---
+
+### Smart Checkpointing (智能检查点) [Flink 2.0+]
+
+**定义**: 自适应的分布式状态快照机制，能够根据运行时负载动态调整检查点策略。
+
+**核心策略**:
+
+- **自适应检查点间隔**: 基于负载动态调整
+- **增量检查点优化**: 仅捕获变更状态
+- **局部检查点**: 故障域隔离的快照
+- **检查点并行度优化**: 动态并行度调整
+
+**形式化定义**:
+
+```
+SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
+```
+
+**相关概念**: [Checkpoint](#checkpoint), [Incremental Checkpoint](#incremental-checkpoint), [Adaptive Execution Engine](#adaptive-execution-engine-自适应执行引擎), [ForSt](#forst-state-backend)
+
+**参考文档**:
+
+- `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
 
 ---
 
@@ -1884,6 +2028,32 @@ F: I → O (纯函数)
 **定义**: 将两个流按关联条件合并的操作，需处理无界性挑战。
 
 **相关概念**: [Join](#join), [Window Join](#window-join), [Interval Join](#interval-join)
+
+---
+
+### Stream-Batch Unification (流批一体) [Flink 2.5+]
+
+**定义**: Flink 2.5 的核心演进目标，从架构层面彻底消除流处理与批处理的边界。
+
+**架构演进**:
+
+- **Flink 1.x**: DataStream API (流) + DataSet API (批) - 双 API 分离
+- **Flink 2.0**: DataStream API 统一 - 执行层部分统一
+- **Flink 2.5**: 完全统一架构 - 执行引擎、存储层、API 全面统一
+
+**形式化定义**:
+
+```
+UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
+```
+
+**核心特性**: 统一执行引擎、统一存储层、统一 API 层、自适应执行模式选择
+
+**相关概念**: [DataStream API](#datastream-api), [Batch Processing](#batch-processing), [Adaptive Execution Engine](#adaptive-execution-engine-自适应执行引擎), [Unified Planner](#unified-planner)
+
+**参考文档**:
+
+- `Flink/08-roadmap/flink-25-stream-batch-unification.md` (Def-F-08-56)
 
 ---
 
@@ -2201,11 +2371,18 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 
 ## W
 
-### WASM (WebAssembly)
+### WASM (WebAssembly) [Flink 2.0+]
 
-**定义**: 面向 Web 的二进制指令格式，也可用于服务器端计算。
+**定义**: 面向 Web 的二进制指令格式，也可用于服务器端计算。Flink 2.0+ 支持 WebAssembly UDF。
 
-**相关概念**: [WASI](#wasi), [Serverless](#serverless), [UDF](#user-defined-function)
+**WASM UDF 特性**:
+
+- 多语言支持 (Rust, C++, Go)
+- 沙箱安全执行
+- 接近原生的性能
+- 冷启动优化
+
+**相关概念**: [WASI](#wasi), [WebAssembly UDF](#webassembly-udf), [Serverless](#serverless), [UDF](#user-defined-function)
 
 **参考文档**:
 
@@ -2218,12 +2395,38 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 
 **定义**: WebAssembly System Interface，提供 WASM 模块与系统资源交互的标准接口。
 
-**相关概念**: [WASM](#wasm), [Component Model](#component-model)
+**相关概念**: [WASM](#wasm-webassembly), [WebAssembly UDF](#webassembly-udf), [Component Model](#component-model)
 
 **参考文档**:
 
 - `Flink/13-wasm/wasi-0.3-async-preview.md`
 - `Flink/09-language-foundations/10-wasi-component-model.md`
+
+---
+
+### WebAssembly UDF (WASM UDF) [Flink 2.0+]
+
+**定义**: 使用 WebAssembly 技术实现的用户定义函数，支持多语言编写并在沙箱环境中安全执行。
+
+**核心优势**:
+
+- **语言无关**: 支持 Rust, C/C++, Go, AssemblyScript
+- **性能**: 接近原生代码的执行效率
+- **安全**: 沙箱隔离，细粒度权限控制
+- **可移植**: Write Once, Run Anywhere
+
+**形式化定义**:
+
+```
+WASM_UDF = ⟨ℳ_wasm, ℐ_interface, 𝒮_sandbox, 𝒫_perf⟩
+```
+
+**相关概念**: [WASM](#wasm-webassembly), [WASI](#wasi), [UDF](#user-defined-function)
+
+**参考文档**:
+
+- `Flink/09-language-foundations/09-wasm-udf-frameworks.md`
+- `Flink/13-wasm/wasm-streaming.md`
 
 ---
 
@@ -2339,6 +2542,7 @@ Assigner: 𝒟 × 𝕋 → 𝒫(WindowID)
 
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
+| v1.1 | 2026-04-04 | 新增 Flink 2.4/2.5/3.0 术语: AI Agent、Serverless Flink、Adaptive Execution Engine、Smart Checkpointing、GPU Acceleration、WebAssembly UDF、Stream-Batch Unification、FLIP-531、MCP Protocol、A2A Protocol；添加版本标注 |
 | v1.0 | 2026-04-03 | 初始版本，包含 190+ 术语 |
 
 ---

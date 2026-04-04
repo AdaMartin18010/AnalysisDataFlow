@@ -130,7 +130,7 @@ graph TB
 |------|------|------|----------|
 | **Apache Ozone** | - | 分布式对象存储 | |
 | **Ceph** | - | 统一存储系统 | |
-| **Tiered Storage** | - | 分层存储架构 | [分层存储](../Flink/02-core-mechanisms/disaggregated-state-analysis.md) |
+| **Tiered Storage** | - | 分层存储架构 | [分层存储](../Flink/01-architecture/disaggregated-state-analysis.md) |
 | **Vector DB (PGVector)** | - | AI 向量存储 | [向量搜索](../Flink/12-ai-ml/vector-database-integration.md) |
 
 #### Hold (暂缓)
@@ -158,7 +158,7 @@ graph TB
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Serverless Flink** | - | 无服务器流处理 | [Serverless](../Flink/06-frontier/serverless-stream-processing-architecture.md) |
+| **Serverless Flink** | - | 无服务器流处理 | [Serverless](../Knowledge/06-frontier/serverless-stream-processing-architecture.md) |
 | **eBPF** | - | 内核级可观测性 | |
 | **Cilium** | - | eBPF 网络与安全 | |
 | **GPUs for Inference** | - | 流式ML推理 | [ML推理](../Flink/12-ai-ml/flink-realtime-ml-inference.md) |

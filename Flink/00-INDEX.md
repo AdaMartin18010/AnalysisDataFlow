@@ -1,8 +1,8 @@
 # Flink/ 专项文档索引 (Flink Documentation Index)
 
-> **版本**: 2026.04-v2.8 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 130+ 核心文档 | **形式化等级**: L3-L5
+> **版本**: 2026.04-v2.9 | **范围**: Apache Flink 工程实践与核心技术深度解析 | **文档总数**: 143+ 核心文档 | **形式化等级**: L3-L5
 >
-> **🔍 搜索标签**: #Flink #Checkpoint #Exactly-Once #Watermark #StateBackend #SQL #TableAPI #AI-ML #Lakehouse #Kubernetes #Serverless #Streaming #Real-time
+> **🔍 搜索标签**: #Flink #Checkpoint #Exactly-Once #Watermark #StateBackend #SQL #TableAPI #AI-ML #Lakehouse #Kubernetes #Serverless #Streaming #Real-time #Flink-2.4 #Flink-2.5 #Flink-3.0 #AI-Agents #GPU #WASM
 
 ---
 
@@ -43,7 +43,6 @@
     - [6.13 13-security/ 安全与可信计算层](#613-13-security-安全与可信计算层)
     - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层)
     - [6.13 13-wasm/ WASM与WebAssembly层](#613-13-wasm-wasm与webassembly层)
-    - [6.14 14-lakehouse/ 湖仓集成层](#614-14-lakehouse-湖仓集成层-1)
     - [6.15 15-observability/ 可观测性层](#615-15-observability-可观测性层)
   - [7. 跨引用索引：Flink ↔ Struct](#7-跨引用索引flink--struct)
     - [7.1 核心概念对应关系](#71-核心概念对应关系)
@@ -116,6 +115,7 @@ graph LR
 |------|----------|------|----------|
 | **架构演进** | [flink-1.x-vs-2.0-comparison.md](01-architecture/flink-1.x-vs-2.0-comparison.md) | L4 | 45 min |
 | **架构演进** | [disaggregated-state-analysis.md](01-architecture/disaggregated-state-analysis.md) | L4 | 40 min |
+| **架构演进** | [flink-24-performance-improvements.md](06-engineering/flink-24-performance-improvements.md) | L4 | 40 min |
 | **核心机制** | [checkpoint-mechanism-deep-dive.md](02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | L4 | 60 min |
 | **核心机制** | [exactly-once-end-to-end.md](02-core-mechanisms/exactly-once-end-to-end.md) | L4 | 50 min |
 | **核心机制** | [time-semantics-and-watermark.md](02-core-mechanisms/time-semantics-and-watermark.md) | L4 | 45 min |
@@ -152,7 +152,12 @@ graph LR
 | **AI/ML** | RAG 流式架构如何设计？ | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
 | **AI/ML** | 向量数据库如何集成？ | [vector-database-integration.md](12-ai-ml/vector-database-integration.md) |
 | **前沿特性** | Flink 2.2 新特性有哪些？ | [flink-2.2-frontier-features.md](02-core-mechanisms/flink-2.2-frontier-features.md) |
+| **前沿特性** | Flink 2.4/2.5/3.0 新特性有哪些？ | [PROJECT-VERSION-TRACKING.md](../PROJECT-VERSION-TRACKING.md) |
 | **SQL/Table API** | Delta Join 如何使用？ | [delta-join.md](02-core-mechanisms/delta-join.md) |
+| **Serverless** | Serverless Flink 如何使用？ | [serverless-flink-ga-guide.md](10-deployment/serverless-flink-ga-guide.md) |
+| **AI Agents** | Flink AI Agents 如何构建？ | [flip-531-ai-agents-ga-guide.md](12-ai-ml/flip-531-ai-agents-ga-guide.md) |
+| **GPU** | Flink GPU加速如何配置？ | [flink-25-gpu-acceleration.md](12-ai-ml/flink-25-gpu-acceleration.md) |
+| **WASM** | WebAssembly UDF 如何使用？ | [flink-25-wasm-udf-ga.md](09-language-foundations/flink-25-wasm-udf-ga.md) |
 | **Lakehouse** | 流批统一存储选哪个？ | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | **Lakehouse** | Delta Lake 如何集成？ | [flink-delta-lake-integration.md](04-connectors/flink-delta-lake-integration.md) |
 | **AI/ML** | 实时特征工程如何实现？ | [realtime-feature-engineering-feature-store.md](12-ai-ml/realtime-feature-engineering-feature-store.md) |
@@ -257,11 +262,22 @@ timeline
         下一代架构 : Disaggregated State
                    : Async Execution
                    : Materialized Tables
-    section 2.2+
+    section 2.2-2.3
         智能优化 : Delta Join V2
                  : VECTOR_SEARCH
                  : Python Async API
                  : Balanced Scheduling
+    section 2.4
+        生产就绪 : Serverless GA
+                 : 智能Checkpoint策略
+                 : ANSI SQL 2023兼容
+    section 2.5
+        AI原生 : AI Agents GA (FLIP-531)
+               : GPU加速支持
+               : WASM UDF GA
+    section 3.0
+        下一代架构 : 架构全面重构
+                   : 流批一体统一
 ```
 
 ### 4.3 各版本关键特性速查
@@ -273,7 +289,10 @@ timeline
 | **1.18** | 云原生检查点、动态扩展 | ★★★★★ |
 | **2.0** | 分离状态存储、异步执行 | ★★★★★ |
 | **2.1** | Delta Join、ML_PREDICT | ★★★★★ |
-| **2.2** | VECTOR_SEARCH、Python Async API、Balanced Scheduling | ★★★★★ (预览) |
+| **2.2** | VECTOR_SEARCH、Python Async API、Balanced Scheduling | ★★★★★ |
+| **2.4** | Serverless GA、智能Checkpoint、ANSI SQL 2023 | ★★★★★ |
+| **2.5** | AI Agents GA、GPU加速、WASM UDF GA | ★★★★★ (推荐) |
+| **3.0** | 架构全面重构、流批统一 | ★★★★☆ (预览) |
 
 ---
 
@@ -354,6 +373,7 @@ flowchart TD
 | [disaggregated-state-analysis.md](01-architecture/disaggregated-state-analysis.md) | 分离状态 | [Struct/03.02-flink-to-process-calculus.md](../Struct/03-relationships/03.02-flink-to-process-calculus.md) |
 | [deployment-architectures.md](01-architecture/deployment-architectures.md) | 部署架构 | [performance-tuning-guide.md](06-engineering/performance-tuning-guide.md) |
 | [datastream-v2-semantics.md](01-architecture/datastream-v2-semantics.md) | API 语义 | [Struct/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md) |
+| [flink-24-performance-improvements.md](06-engineering/flink-24-performance-improvements.md) | **Flink 2.4性能改进** 🆕 v2.4 | [adaptive-execution-engine-v2.md](02-core-mechanisms/adaptive-execution-engine-v2.md) |
 
 ### 6.2 02-core-mechanisms/ 核心机制层
 
@@ -367,7 +387,8 @@ flowchart TD
 | [delta-join.md](02-core-mechanisms/delta-join.md) | Delta Join 机制 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [async-execution-model.md](02-core-mechanisms/async-execution-model.md) | 异步执行模型 | - |
 | [flink-2.0-async-execution-model.md](02-core-mechanisms/flink-2.0-async-execution-model.md) | Flink 2.0 异步执行模型 | [flink-1.x-vs-2.0-comparison.md](01-architecture/flink-1.x-vs-2.0-comparison.md) |
-| [adaptive-execution-engine-v2.md](02-core-mechanisms/adaptive-execution-engine-v2.md) | **自适应执行引擎v2** 🆕 | 性能调优、自适应调度 |
+| [adaptive-execution-engine-v2.md](02-core-mechanisms/adaptive-execution-engine-v2.md) | **自适应执行引擎v2** 🆕 v2.4 | 性能调优、自适应调度 |
+| [smart-checkpointing-strategies.md](02-core-mechanisms/smart-checkpointing-strategies.md) | **智能Checkpoint策略** 🆕 v2.4 | 自适应执行、容错优化 |
 | [flink-2.0-forst-state-backend.md](02-core-mechanisms/flink-2.0-forst-state-backend.md) | Flink 2.0 ForSt 状态后端 | [state-backend-selection.md](06-engineering/state-backend-selection.md) |
 | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 | [multi-way-join-optimization.md](02-core-mechanisms/multi-way-join-optimization.md) | 多路Join优化 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
@@ -387,6 +408,7 @@ flowchart TD
 | [flink-process-table-functions.md](03-sql-table-api/flink-process-table-functions.md) | Process Table Functions | [flink-python-udf.md](03-sql-table-api/flink-python-udf.md) |
 | [flink-sql-window-functions-deep-dive.md](03-sql-table-api/flink-sql-window-functions-deep-dive.md) | SQL窗口函数深度指南 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
 | [flink-materialized-table-deep-dive.md](03-sql-table-api/flink-materialized-table-deep-dive.md) | Flink 2.2物化表深度指南 🆕 v2.5 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+| [ansi-sql-2023-compliance-guide.md](03-sql-table-api/ansi-sql-2023-compliance-guide.md) | **ANSI SQL 2023合规指南** 🆕 v2.4 | SQL标准兼容、查询优化 |
 
 ### 6.4 04-connectors/ 连接器层
 
@@ -399,6 +421,7 @@ flowchart TD
 | [flink-iceberg-integration.md](04-connectors/flink-iceberg-integration.md) | Iceberg集成 | [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) |
 | [flink-paimon-integration.md](04-connectors/flink-paimon-integration.md) | Paimon集成 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
 | [flink-cdc-3.0-data-integration.md](04-connectors/flink-cdc-3.0-data-integration.md) | CDC 3.0数据集成 | [04.04-cdc-debezium-integration.md](04-connectors/04.04-cdc-debezium-integration.md) |
+| [flink-24-connectors-guide.md](04-connectors/flink-24-connectors-guide.md) | **Flink 2.4连接器完整指南** 🆕 v2.4 | CDC、湖仓、消息队列集成 |
 
 ### 6.5 05-vs-competitors/ 竞品对比层
 
@@ -434,7 +457,11 @@ flowchart TD
 | 文档 | 主题 | 关联文档 |
 |------|------|----------|
 | [flink-2.1-frontier-tracking.md](08-roadmap/flink-2.1-frontier-tracking.md) | 2.1前沿 | [disaggregated-state-analysis.md](01-architecture/disaggregated-state-analysis.md) |
+| [flink-25-stream-batch-unification.md](08-roadmap/flink-25-stream-batch-unification.md) | **Flink 2.5流批一体统一** 🆕 v2.5 | [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) |
+| [flink-30-architecture-redesign.md](08-roadmap/flink-30-architecture-redesign.md) | **Flink 3.0架构全面重构** 🆕 v3.0预览 | [disaggregated-state-analysis.md](01-architecture/disaggregated-state-analysis.md) |
 | [2026-q2-flink-tasks.md](08-roadmap/2026-q2-flink-tasks.md) | Q2任务 | - |
+
+> 📋 **版本跟踪**: 详细的版本特性和路线图请参考 [PROJECT-VERSION-TRACKING.md](../PROJECT-VERSION-TRACKING.md) | [FLINK-SCALA-RUST-COMPLETION-REPORT.md](../FLINK-SCALA-RUST-COMPLETION-REPORT.md)
 
 ### 6.9 09-language-foundations/ 语言基础层
 
@@ -459,6 +486,8 @@ flowchart TD
 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) | K8s部署 | [deployment-architectures.md](01-architecture/deployment-architectures.md) |
 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) | Flink Kubernetes Operator深度指南 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) |
 | [flink-kubernetes-autoscaler-deep-dive.md](10-deployment/flink-kubernetes-autoscaler-deep-dive.md) | Flink K8s自动扩缩容深度指南 🆕 v2.5 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) |
+| [serverless-flink-ga-guide.md](10-deployment/serverless-flink-ga-guide.md) | **Serverless Flink GA指南** 🆕 v2.4 | 无服务器部署、自动扩缩容、成本优化 |
+| [flink-24-deployment-improvements.md](10-deployment/flink-24-deployment-improvements.md) | **Flink 2.4部署改进** 🆕 v2.4 | K8s Operator增强、部署流程优化 |
 | [flink-deployment-ops-complete-guide.md](10-deployment/flink-deployment-ops-complete-guide.md) | **Flink部署与运维完整特性指南** 🆕 v1.0 | 覆盖所有部署模式、资源调度、HA、作业管理、配置管理 |
 
 ### 6.11 11-benchmarking/ 基准测试层
@@ -481,6 +510,8 @@ flowchart TD
 | [flink-realtime-ml-inference.md](12-ai-ml/flink-realtime-ml-inference.md) | 实时ML推理 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
 | [flink-llm-integration.md](12-ai-ml/flink-llm-integration.md) | Flink与LLM集成 | [rag-streaming-architecture.md](12-ai-ml/rag-streaming-architecture.md) |
 | [flink-ai-agents-flip-531.md](12-ai-ml/flink-ai-agents-flip-531.md) | **Flink AI Agents FLIP-531** 🆕 v2.8 | [flink-llm-integration.md](12-ai-ml/flink-llm-integration.md) |
+| [flip-531-ai-agents-ga-guide.md](12-ai-ml/flip-531-ai-agents-ga-guide.md) | **FLIP-531 AI Agents GA完整指南** 🆕 v2.5 | AI Agent工作流、LLM集成、智能决策 |
+| [flink-25-gpu-acceleration.md](12-ai-ml/flink-25-gpu-acceleration.md) | **Flink 2.5 GPU加速支持** 🆕 v2.5 | ML推理加速、CUDA集成、异构计算 |
 | [flink-ai-ml-integration-complete-guide.md](12-ai-ml/flink-ai-ml-integration-complete-guide.md) | **AI/ML集成完整指南** 🆕 v2.8 | [flink-ml-architecture.md](12-ai-ml/flink-ml-architecture.md) |
 
 ### 6.13 13-security/ 安全与可信计算层
@@ -491,6 +522,7 @@ flowchart TD
 | [trusted-execution-flink.md](13-security/trusted-execution-flink.md) | TEE可信执行 | [gpu-confidential-computing.md](13-security/gpu-confidential-computing.md) |
 | [flink-security-complete-guide.md](13-security/flink-security-complete-guide.md) | **安全完整指南** 🆕 v2.8 | [streaming-security-best-practices.md](13-security/streaming-security-best-practices.md) |
 | [streaming-security-best-practices.md](13-security/streaming-security-best-practices.md) | 流处理安全最佳实践 🆕 v2.8 | [flink-security-complete-guide.md](13-security/flink-security-complete-guide.md) |
+| [flink-24-security-enhancements.md](13-security/flink-24-security-enhancements.md) | **Flink 2.4安全增强** 🆕 v2.4 | 认证授权、数据加密、安全合规 |
 
 ### 6.14 14-lakehouse/ 湖仓集成层
 
@@ -507,13 +539,7 @@ flowchart TD
 |------|------|----------|
 | [wasi-0.3-async-preview.md](13-wasm/wasi-0.3-async-preview.md) | WASI 0.3异步预览 | [10-wasi-component-model.md](09-language-foundations/10-wasi-component-model.md) |
 | [wasm-streaming.md](13-wasm/wasm-streaming.md) | WASM流处理 | [09-wasm-udf-frameworks.md](09-language-foundations/09-wasm-udf-frameworks.md) |
-
-### 6.14 14-lakehouse/ 湖仓集成层
-
-| 文档 | 主题 | 关联文档 |
-|------|------|----------|
-| [flink-paimon-integration.md](14-lakehouse/flink-paimon-integration.md) | Paimon集成 | [04-streaming-lakehouse.md](09-language-foundations/04-streaming-lakehouse.md) |
-| [flink-iceberg-integration.md](14-lakehouse/flink-iceberg-integration.md) | Iceberg集成 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
+| [flink-25-wasm-udf-ga.md](09-language-foundations/flink-25-wasm-udf-ga.md) | **Flink 2.5 WASM UDF GA** 🆕 v2.5 | WebAssembly UDF、多语言支持、沙箱安全 |
 
 ### 6.15 15-observability/ 可观测性层
 
@@ -665,7 +691,6 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-04 (v2.9 新增自适应执行引擎v2完整文档，覆盖架构、智能优化、数据倾斜处理、资源自适应分配、与Adaptive Scheduler集成、性能对比、配置详解、最佳实践、故障排查)*
-*文档统计: 131+ 核心文档 | 107+定理 | 222+定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.4+*
+*更新时间: 2026-04-04 (v2.9 新增13个文档：FLIP-531 AI Agents GA、Serverless Flink GA、智能Checkpoint策略、ANSI SQL 2023合规、Flink 2.4连接器指南、性能改进、部署改进、安全增强、Flink 2.5流批统一、GPU加速、WASM UDF GA、Flink 3.0架构重构)*
+*文档统计: 143+ 核心文档 | 107+定理 | 222+定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 3.0+*
 *适用项目: AnalysisDataFlow/Flink*
-*文档统计: 130+ 核心文档 | 107定理 | 222定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.4+*

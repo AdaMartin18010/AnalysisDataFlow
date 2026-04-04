@@ -112,9 +112,9 @@ curl http://localhost:8081/overview
 
 ### 文档
 
-- [Struct/](../../../Struct/) - 理论形式化
-- [Knowledge/](../../../Knowledge/) - 知识体系
-- [Flink/](../../../Flink/) - Flink 专项
+- [Struct索引](../../Struct/00-INDEX.md) - 理论形式化
+- [Knowledge索引](../../Knowledge/00-INDEX.md) - 知识体系
+- [Flink索引](../../Flink/00-INDEX.md) - Flink 专项
 
 ### 外部资源
 
@@ -157,8 +157,8 @@ curl http://localhost:8081/overview
 
 ## 获取帮助
 
-- 查阅 [AGENTS.md](../../../AGENTS.md) 项目规范
-- 参考 [PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md) 进度
+- 查阅 [AGENTS.md](../../AGENTS.md) 项目规范
+- 参考 [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md) 进度
 - 查看各目录 README 详细说明
 
 ---

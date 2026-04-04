@@ -117,7 +117,7 @@ graph TB
 | **AI-Native流计算** | Flink AI Agents, 向量搜索融合 | [Flink/12-ai-ml/](../Flink/12-ai-ml/) |
 | **流数据库** | RisingWave, Materialize, Timeplus | [Knowledge/06-frontier/streaming-databases.md](../Knowledge/06-frontier/streaming-databases.md) |
 | **实时RAG** | LLM+流处理架构 | [Knowledge/06-frontier/real-time-rag-architecture.md](../Knowledge/06-frontier/real-time-rag-architecture.md) |
-| **图流处理** | TGN实时图神经网络 | [Knowledge/06-frontier/streaming-graph-tgn.md](../Knowledge/06-frontier/streaming-graph-tgn.md) |
+| **图流处理** | TGN实时图神经网络 | [Knowledge/06-frontier/streaming-graph-processing-tgn.md](../Knowledge/06-frontier/streaming-graph-processing-tgn.md) |
 | **边缘流处理** | 云边协同、断网续传 | [Knowledge/06-frontier/edge-streaming-patterns.md](../Knowledge/06-frontier/edge-streaming-patterns.md) |
 | **Serverless流** | FaaS数据流、有状态无服务器 | [Knowledge/06-frontier/serverless-streaming-architecture.md](../Knowledge/06-frontier/serverless-streaming-architecture.md) |
 

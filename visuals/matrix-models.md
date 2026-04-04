@@ -439,8 +439,8 @@ flowchart TD
 
 ### 下游应用
 
-- [../Flink/](../../Flink/) —— Flink 专项文档
-- [../Knowledge/](../../Knowledge/) —— 知识结构文档
+- [Flink索引](../Flink/00-INDEX.md) —— Flink 专项文档
+- [Knowledge索引](../Knowledge/00-INDEX.md) —— 知识结构文档
 
 ---
 

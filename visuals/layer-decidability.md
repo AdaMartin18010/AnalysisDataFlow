@@ -77,9 +77,9 @@ $$
 | 判定性层级 | 对应文档/内容 | 判定性策略 |
 |-----------|--------------|-----------|
 | $D_3$ 准可判定层 | [06-frontier/stateful-serverless.md](../Knowledge/06-frontier/stateful-serverless.md) - Saga补偿、Durable Execution | 事件溯源、补偿事务 |
-| $D_3$ 准可判定层 | [05-patterns/saga-pattern.md](../Knowledge/05-patterns/saga-pattern.md) - Saga模式 | 有限补偿步骤、确定性编排 |
-| $D_2$ 半可判定层 | [04-engineering/streaming-systems-design.md](../Knowledge/04-engineering/streaming-systems-design.md) - 流系统设计 | 水印机制、窗口边界 |
-| $D_1$ 不可判定层 | [06-frontier/llm-agent-architecture.md](../Knowledge/06-frontier/llm-agent-architecture.md) - Agent涌现行为 | 接受不可判定、事后审计 |
+| $D_3$ 准可判定层 | [05-patterns/saga-pattern.md](../Knowledge/02-design-patterns/pattern-async-io-enrichment.md) - Saga模式 | 有限补偿步骤、确定性编排 |
+| $D_2$ 半可判定层 | [04-engineering/streaming-systems-design.md](../Knowledge/04-technology-selection/engine-selection-guide.md) - 流系统设计 | 水印机制、窗口边界 |
+| $D_1$ 不可判定层 | [06-frontier/llm-agent-architecture.md](../Knowledge/06-frontier/ai-agent-streaming-architecture.md) - Agent涌现行为 | 接受不可判定、事后审计 |
 
 **Knowledge/ 判定性定位**: 工程实践层，在**准可判定性**（$D_3$）区域构建确定性幻觉，通过工程手段驯服不确定性。
 
@@ -87,10 +87,10 @@ $$
 
 | 判定性层级 | 对应文档/内容 | 判定性策略 |
 |-----------|--------------|-----------|
-| $D_2$ 半可判定层 | [01-core/checkpoint-mechanism.md](../Flink/01-core/checkpoint-mechanism.md) - Checkpoint机制 | Barrier对齐、快照一致性 |
-| $D_2$ 半可判定层 | [01-core/watermark-mechanism.md](../Flink/01-core/watermark-mechanism.md) - Watermark机制 | 时间假设、窗口触发 |
-| $D_2$ 半可判定层 | [02-features/cep-complex-event-processing.md](../Flink/02-features/cep-complex-event-processing.md) - CEP | 模式匹配、流识别 |
-| $D_3$ 准可判定层 | [03-integrations/stateful-functions.md](../Flink/03-integrations/stateful-functions.md) - Stateful Functions | 状态持久化、恰好一次语义 |
+| $D_2$ 半可判定层 | [01-core/checkpoint-mechanism.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) - Checkpoint机制 | Barrier对齐、快照一致性 |
+| $D_2$ 半可判定层 | [01-core/watermark-mechanism.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md) - Watermark机制 | 时间假设、窗口触发 |
+| $D_2$ 半可判定层 | [02-features/cep-complex-event-processing.md](../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md) - CEP | 模式匹配、流识别 |
+| $D_3$ 准可判定层 | [03-integrations/stateful-functions.md](../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md) - Stateful Functions | 状态持久化、恰好一次语义 |
 
 **Flink/ 判定性定位**: 流计算实现层，在**半可判定性**（$D_2$）与**准可判定性**（$D_3$）边界上通过时间边界和检查点创造局部可判定性。
 

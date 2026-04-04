@@ -310,7 +310,7 @@ from pathlib import Path
 
 def extract_references(content: str) -> list:
     """提取文档中的所有内部链接引用"""
-    # 匹配 [text](./path/to/file.md) 或 [text](path/to/file.md)
+    # 匹配 [text](./Flink/00-INDEX.md) 或 [text](Flink/00-INDEX.md)
     pattern = re.compile(r'\[([^\]]+)\]\((?!http)([^)]+\.md)\)')
     return pattern.findall(content)
 

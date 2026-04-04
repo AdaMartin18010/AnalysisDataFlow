@@ -213,7 +213,7 @@ flowchart TD
 
 ### 9.1 交互式决策助手
 
-访问 [decision-helper.html](./visuals/decision-helper.html) 使用交互式决策工具。
+访问 [selection-tree-streaming.md](../visuals/selection-tree-streaming.md) 使用交互式决策工具。
 
 ### 9.2 快速决策参考卡
 

@@ -29,7 +29,7 @@
 | | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 性能调优、问题诊断 |
 | **研究员** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | 统一流理论、形式化基础 |
 | | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 正确性证明、形式化验证 |
-| | [Struct/06-frontier/smart-casual-verification.md](Struct/06-frontier/smart-casual-verification.md) | 前沿验证方法 |
+| | [Struct/07-tools/smart-casual-verification.md](Struct/07-tools/smart-casual-verification.md) | 前沿验证方法 |
 | **学生/初学者** | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 流计算入门、概念对比 |
 | | [Knowledge/98-exercises/exercise-01-process-calculus.md](Knowledge/98-exercises/exercise-01-process-calculus.md) | 渐进式练习 |
 | | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 概念图谱 |
@@ -397,7 +397,7 @@ Struct/01-foundation/ (理论基础)
 
 | 参考卡 | 路径 | 内容概要 |
 |--------|------|----------|
-| **Checkpoint调优速查** | [Knowledge/98-exercises/quick-ref-checkpoint-tuning.md](Knowledge/98-exercises/quick-ref-checkpoint-tuning.md) | 参数配置、超时处理 |
+| **Checkpoint调优速查** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 参数配置、超时处理 |
 | **Flink vs RisingWave速查** | [Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md](Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md) | 选型对比 |
 | **Temporal+Flink速查** | [Knowledge/98-exercises/quick-ref-temporal-flink.md](Knowledge/98-exercises/quick-ref-temporal-flink.md) | 集成要点 |
 | **安全合规速查** | [Knowledge/98-exercises/quick-ref-security-compliance.md](Knowledge/98-exercises/quick-ref-security-compliance.md) | GDPR/CCPA |

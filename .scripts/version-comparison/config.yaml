@@ -1,0 +1,513 @@
+# Flink 版本对比工具配置文件
+# 配置说明：
+# - versions: 支持的Flink版本列表及其元数据
+# - document_paths: 各版本对应的文档路径映射
+# - features: 特性分类定义
+# - output_formats: 输出格式配置
+
+# =============================================================================
+# 版本配置
+# =============================================================================
+versions:
+  # Flink 2.4 版本配置
+  "2.4":
+    release_date: "2026-H2"
+    status: "预览/开发"  # 🔥活跃开发 / ✅稳定维护 / ⚠️维护模式 / ❌终止支持 / 🚧预览
+    lifecycle: "Preview"
+    description: "AI Agent GA与云原生Serverless版本"
+    highlights:
+      - "FLIP-531 GA: AI Agents正式版"
+      - "Serverless Flink: 按需扩缩容到零"
+      - "自适应执行引擎v2: ML驱动优化"
+      - "ANSI SQL 2023完全兼容"
+    # 版本间相对特性状态 (added/enhanced/unchanged/deprecated/removed)
+    changes_from_2_3:
+      added:
+        - "FLIP-531 GA (AI Agent正式版)"
+        - "Serverless Framework"
+        - "Adaptive Execution Engine v2"
+        - "Intelligent Checkpointing"
+        - "Multi-Agent Coordination"
+        - "Iceberg CDC Source"
+        - "Delta Lake 3.0 Support"
+        - "NATS Connector"
+      enhanced:
+        - "MCP协议支持 (从实验性到GA)"
+        - "SQL JSON函数 (完整SQL/JSON标准)"
+      unchanged:
+        - "DataStream API核心"
+        - "Checkpoint机制"
+    
+  # Flink 2.5 版本配置
+  "2.5":
+    release_date: "2027+"
+    status: "预览/开发"
+    lifecycle: "Planning"
+    description: "LTS长期支持版本，企业级成熟"
+    highlights:
+      - "流批一体架构完成"
+      - "Serverless Flink GA"
+      - "AI/ML生产就绪"
+      - "硬件加速支持 (GPU/WebAssembly)"
+    changes_from_2_4:
+      added:
+        - "Unified Stream-Batch Execution"
+        - "GPU Acceleration Support"
+        - "WebAssembly UDF GA"
+        - "Cloud-Native Storage Backend"
+        - "Diskless Architecture"
+        - "Speculative Decoding for LLM"
+        - "KV-Cache Sharing"
+      enhanced:
+        - "Serverless (Beta→GA)"
+        - "AI Agent (GA→Production Ready)"
+        - "Paimon (Preview→GA)"
+      deprecated: []
+    
+  # Flink 3.0 版本配置
+  "3.0":
+    release_date: "2027 Q1-Q2"
+    status: "预览/开发"
+    lifecycle: "Design"
+    description: "下一代流处理引擎重大架构重构"
+    highlights:
+      - "Unified Execution Layer (统一执行层)"
+      - "Next-Gen State Management (下一代状态管理)"
+      - "Cloud-Native Architecture 2.0"
+      - "Unified API Layer (统一API层)"
+    changes_from_2_5:
+      added:
+        - "Unified Execution Layer"
+        - "TieredStorage (L1-L4分层存储)"
+        - "StateServer (独立状态服务)"
+        - "ServerlessExecution (Scale-to-Zero)"
+        - "Interactive Execution Mode"
+        - "CoreDSL (统一DSL层)"
+        - "FinOps Integration"
+      enhanced:
+        - "状态管理 (分离存储→分层存储)"
+        - "资源调度 (半动态→完全弹性)"
+        - "云原生 (K8s原生→多云原生)"
+      breaking_changes:
+        - "部分内部API变更"
+        - "状态后端配置格式更新"
+
+# =============================================================================
+# 文档路径映射
+# =============================================================================
+document_paths:
+  # 版本演进文档
+  evolution_guide: "Flink/08-roadmap/flink-version-evolution-complete-guide.md"
+  comparison_matrix: "Flink/08-roadmap/flink-version-comparison-matrix.md"
+  
+  # 各版本跟踪文档
+  tracking:
+    "2.4": "Flink/08-roadmap/flink-2.4-tracking.md"
+    "2.5": "Flink/08-roadmap/flink-2.5-preview.md"
+    "3.0": "Flink/08-roadmap/flink-30-architecture-redesign.md"
+  
+  # 核心机制文档 (用于特性提取)
+  core_mechanisms:
+    checkpoint: "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md"
+    state_backend: "Flink/02-core-mechanisms/flink-state-management-complete-guide.md"
+    async_execution: "Flink/02-core-mechanisms/flink-2.0-async-execution-model.md"
+    adaptive_engine: "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md"
+  
+  # SQL/Table API文档
+  sql_api:
+    complete_guide: "Flink/03-sql-table-api/flink-table-sql-complete-guide.md"
+    vector_search: "Flink/03-sql-table-api/vector-search.md"
+    materialized_table: "Flink/03-sql-table-api/materialized-tables.md"
+    model_ddl: "Flink/03-sql-table-api/model-ddl-and-ml-predict.md"
+  
+  # AI/ML相关文档
+  ai_ml:
+    flink_agents: "Flink/12-ai-ml/flink-ai-agents-flip-531.md"
+    llm_integration: "Flink/12-ai-ml/flink-llm-integration.md"
+    model_serving: "Flink/12-ai-ml/model-serving-streaming.md"
+  
+  # 部署相关文档
+  deployment:
+    serverless: "Flink/10-deployment/flink-serverless-architecture.md"
+    kubernetes: "Flink/10-deployment/kubernetes-deployment-production-guide.md"
+
+# =============================================================================
+# 特性分类定义
+# =============================================================================
+feature_categories:
+  - name: "核心API"
+    id: "core_api"
+    features:
+      - id: "datastream_api"
+        name: "DataStream API"
+        description: "流处理核心API"
+      - id: "table_api"
+        name: "Table API"
+        description: "统一Table API"
+      - id: "sql_api"
+        name: "SQL API"
+        description: "标准SQL支持"
+      - id: "unified_api"
+        name: "统一API层"
+        description: "Unified API Layer (3.0+)"
+
+  - name: "状态管理"
+    id: "state_management"
+    features:
+      - id: "rocksdb_backend"
+        name: "RocksDB State Backend"
+        description: "基于RocksDB的状态后端"
+      - id: "forst_backend"
+        name: "ForStDB State Backend"
+        description: "云原生状态后端"
+      - id: "disaggregated_state"
+        name: "Disaggregated State"
+        description: "分离状态存储"
+      - id: "tiered_storage"
+        name: "Tiered Storage (L1-L4)"
+        description: "分层存储 (3.0+)"
+
+  - name: "执行引擎"
+    id: "execution_engine"
+    features:
+      - id: "streaming_execution"
+        name: "流执行模式"
+        description: "STREAMING模式"
+      - id: "batch_execution"
+        name: "批执行模式"
+        description: "BATCH模式"
+      - id: "adaptive_execution"
+        name: "自适应执行"
+        description: "Adaptive Execution"
+      - id: "unified_execution"
+        name: "统一执行层"
+        description: "Unified Execution Layer (3.0+)"
+
+  - name: "容错机制"
+    id: "fault_tolerance"
+    features:
+      - id: "checkpoint"
+        name: "Checkpoint"
+        description: "检查点机制"
+      - id: "incremental_checkpoint"
+        name: "增量Checkpoint"
+        description: "增量检查点"
+      - id: "intelligent_checkpoint"
+        name: "智能Checkpoint"
+        description: "Intelligent Checkpointing (2.4+)"
+      - id: "exactly_once"
+        name: "Exactly-Once"
+        description: "精确一次语义"
+
+  - name: "AI/ML支持"
+    id: "ai_ml"
+    features:
+      - id: "vector_search"
+        name: "向量搜索"
+        description: "VECTOR_SEARCH SQL函数"
+      - id: "model_ddl"
+        name: "Model DDL"
+        description: "模型定义DDL"
+      - id: "ai_agent"
+        name: "AI Agent"
+        description: "Flink AI Agents (FLIP-531)"
+      - id: "mcp_protocol"
+        name: "MCP协议"
+        description: "Model Context Protocol"
+
+  - name: "云原生"
+    id: "cloud_native"
+    features:
+      - id: "kubernetes_operator"
+        name: "Kubernetes Operator"
+        description: "K8s原生支持"
+      - id: "serverless"
+        name: "Serverless Flink"
+        description: "无服务器架构"
+      - id: "auto_scaling"
+        name: "自动扩缩容"
+        description: "Auto Scaling"
+      - id: "scale_to_zero"
+        name: "Scale-to-Zero"
+        description: "缩容到零 (2.4+)"
+
+  - name: "连接器"
+    id: "connectors"
+    features:
+      - id: "kafka_connector"
+        name: "Kafka Connector"
+        description: "Kafka连接器"
+      - id: "iceberg_connector"
+        name: "Iceberg集成"
+        description: "Apache Iceberg"
+      - id: "delta_connector"
+        name: "Delta Lake集成"
+        description: "Delta Lake"
+      - id: "paimon_connector"
+        name: "Paimon集成"
+        description: "Apache Paimon"
+
+  - name: "语言支持"
+    id: "language_support"
+    features:
+      - id: "java_api"
+        name: "Java API"
+        description: "Java开发支持"
+      - id: "python_api"
+        name: "PyFlink"
+        description: "Python开发支持"
+      - id: "wasm_udf"
+        name: "WebAssembly UDF"
+        description: "WASM UDF支持"
+      - id: "gpu_acceleration"
+        name: "GPU加速"
+        description: "GPU Acceleration (2.5+)"
+
+# =============================================================================
+# 输出格式配置
+# =============================================================================
+output_formats:
+  markdown:
+    enabled: true
+    file_extension: ".md"
+    template: "default"
+    options:
+      include_toc: true
+      include_mermaid: true
+      table_style: "github"
+  
+  html:
+    enabled: true
+    file_extension: ".html"
+    template: "default"
+    options:
+      include_css: true
+      include_js: true
+      responsive: true
+  
+  json:
+    enabled: true
+    file_extension: ".json"
+    options:
+      pretty_print: true
+      include_metadata: true
+  
+  csv:
+    enabled: true
+    file_extension: ".csv"
+    options:
+      delimiter: ","
+      include_headers: true
+
+# =============================================================================
+# 特性支持矩阵配置
+# =============================================================================
+feature_matrix:
+  # 支持状态定义
+  support_status:
+    - symbol: "✅"
+      value: "supported"
+      label: "完全支持"
+    - symbol: "🚧"
+      value: "preview"
+      label: "预览版"
+    - symbol: "⚠️"
+      value: "deprecated"
+      label: "已弃用"
+    - symbol: "❌"
+      value: "not_supported"
+      label: "不支持"
+    - symbol: "🔜"
+      value: "planned"
+      label: "规划中"
+
+  # 各版本特性支持状态 (用于生成矩阵)
+  version_features:
+    "2.4":
+      datastream_api: "supported"
+      table_api: "supported"
+      sql_api: "supported"
+      unified_api: "not_supported"
+      rocksdb_backend: "supported"
+      forst_backend: "supported"
+      disaggregated_state: "supported"
+      tiered_storage: "not_supported"
+      streaming_execution: "supported"
+      batch_execution: "supported"
+      adaptive_execution: "preview"
+      unified_execution: "not_supported"
+      checkpoint: "supported"
+      incremental_checkpoint: "supported"
+      intelligent_checkpoint: "supported"
+      exactly_once: "supported"
+      vector_search: "supported"
+      model_ddl: "supported"
+      ai_agent: "supported"
+      mcp_protocol: "supported"
+      kubernetes_operator: "supported"
+      serverless: "preview"
+      auto_scaling: "supported"
+      scale_to_zero: "supported"
+      kafka_connector: "supported"
+      iceberg_connector: "supported"
+      delta_connector: "supported"
+      paimon_connector: "supported"
+      java_api: "supported"
+      python_api: "supported"
+      wasm_udf: "preview"
+      gpu_acceleration: "not_supported"
+    
+    "2.5":
+      datastream_api: "supported"
+      table_api: "supported"
+      sql_api: "supported"
+      unified_api: "not_supported"
+      rocksdb_backend: "supported"
+      forst_backend: "supported"
+      disaggregated_state: "supported"
+      tiered_storage: "not_supported"
+      streaming_execution: "supported"
+      batch_execution: "supported"
+      adaptive_execution: "supported"
+      unified_execution: "not_supported"
+      checkpoint: "supported"
+      incremental_checkpoint: "supported"
+      intelligent_checkpoint: "supported"
+      exactly_once: "supported"
+      vector_search: "supported"
+      model_ddl: "supported"
+      ai_agent: "supported"
+      mcp_protocol: "supported"
+      kubernetes_operator: "supported"
+      serverless: "supported"
+      auto_scaling: "supported"
+      scale_to_zero: "supported"
+      kafka_connector: "supported"
+      iceberg_connector: "supported"
+      delta_connector: "supported"
+      paimon_connector: "supported"
+      java_api: "supported"
+      python_api: "supported"
+      wasm_udf: "supported"
+      gpu_acceleration: "supported"
+    
+    "3.0":
+      datastream_api: "supported"
+      table_api: "supported"
+      sql_api: "supported"
+      unified_api: "supported"
+      rocksdb_backend: "deprecated"
+      forst_backend: "supported"
+      disaggregated_state: "supported"
+      tiered_storage: "supported"
+      streaming_execution: "supported"
+      batch_execution: "supported"
+      adaptive_execution: "supported"
+      unified_execution: "supported"
+      checkpoint: "supported"
+      incremental_checkpoint: "supported"
+      intelligent_checkpoint: "supported"
+      exactly_once: "supported"
+      vector_search: "supported"
+      model_ddl: "supported"
+      ai_agent: "supported"
+      mcp_protocol: "supported"
+      kubernetes_operator: "supported"
+      serverless: "supported"
+      auto_scaling: "supported"
+      scale_to_zero: "supported"
+      kafka_connector: "supported"
+      iceberg_connector: "supported"
+      delta_connector: "supported"
+      paimon_connector: "supported"
+      java_api: "supported"
+      python_api: "supported"
+      wasm_udf: "supported"
+      gpu_acceleration: "supported"
+
+# =============================================================================
+# 差异报告配置
+# =============================================================================
+diff_report:
+  # 高亮样式配置
+  highlight_styles:
+    added:
+      markdown: "**{text}** ✨"
+      html: '<span class="diff-added">{text} ✨</span>'
+      css: "background-color: #d4edda; color: #155724;"
+    removed:
+      markdown: "~~{text}~~ ❌"
+      html: '<span class="diff-removed">{text} ❌</span>'
+      css: "background-color: #f8d7da; color: #721c24; text-decoration: line-through;"
+    modified:
+      markdown: "*{text}* 📝"
+      html: '<span class="diff-modified">{text} 📝</span>'
+      css: "background-color: #fff3cd; color: #856404;"
+    deprecated:
+      markdown: "_{text}_ ⚠️"
+      html: '<span class="diff-deprecated">{text} ⚠️</span>'
+      css: "background-color: #ffeaa7; color: #6c5ce7;"
+  
+  # 报告包含章节
+  sections:
+    - "summary"          # 变更摘要
+    - "breaking_changes" # 破坏性变更
+    - "new_features"     # 新增特性
+    - "enhancements"     # 功能增强
+    - "deprecations"     # 弃用功能
+    - "migration_guide"  # 迁移指南
+
+# =============================================================================
+# 版本对比配置
+# =============================================================================
+version_comparison:
+  # 默认比较的版本
+  default_versions: ["2.4", "2.5", "3.0"]
+  
+  # 对比维度
+  dimensions:
+    - id: "release_info"
+      name: "发布信息"
+      weight: 0.1
+    - id: "features"
+      name: "功能特性"
+      weight: 0.3
+    - id: "performance"
+      name: "性能优化"
+      weight: 0.2
+    - id: "compatibility"
+      name: "兼容性"
+      weight: 0.2
+    - id: "ecosystem"
+      name: "生态系统"
+      weight: 0.2
+  
+  # 评分标准 (1-5分)
+  scoring:
+    stability:
+      "2.4": 4
+      "2.5": 5
+      "3.0": 3  # 新架构稳定性待验证
+    new_features:
+      "2.4": 4
+      "2.5": 5
+      "3.0": 5
+    performance:
+      "2.4": 4
+      "2.5": 5
+      "3.0": 5
+    migration_ease:
+      "2.4": 4  # 2.3→2.4较容易
+      "2.5": 5  # 2.4→2.5容易
+      "3.0": 2  # 2.x→3.0需要较多改动
+
+# =============================================================================
+# 输出路径配置
+# =============================================================================
+output_paths:
+  base_dir: "Flink/08-roadmap/version-comparison-output"
+  reports:
+    comparison: "{base_dir}/comparison-reports"
+    diff: "{base_dir}/diff-reports"
+    matrix: "{base_dir}/feature-matrix"
+  logs: ".scripts/version-comparison/logs"

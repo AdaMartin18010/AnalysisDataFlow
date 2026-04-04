@@ -248,12 +248,12 @@ flowchart LR
 
 | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 |------|------|------|----------|----------|----------|
-| FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/7.1-flink-ai-agents.md](Flink/7.1-flink-ai-agents.md) | 2026-04-03 |
-| FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/6.2-adaptive-scheduling-v2.md](Flink/6.2-adaptive-scheduling-v2.md) | 2026-04-02 |
-| FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/2.0-disaggregated-state.md](Flink/2.0-disaggregated-state.md) | 2026-04-01 |
-| FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/2.2-materialized-table.md](Flink/2.2-materialized-table.md) | 2026-04-01 |
-| FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/2.2-model-ddl.md](Flink/2.2-model-ddl.md) | 2026-04-01 |
-| FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/2.2-vector-search.md](Flink/2.2-vector-search.md) | 2026-04-01 |
+| FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+| FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+| FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+| FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 2026-04-01 |
+| FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
+| FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-sql-table-api/vector-search.md) | 2026-04-01 |
 
 ### 4.3 项目发布时间表
 

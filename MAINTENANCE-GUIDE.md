@@ -74,6 +74,7 @@
 ### 1.2 文件命名规范
 
 **基本规则**:
+
 - 全部小写
 - 使用连字符 `-` 分隔单词
 - 前缀必须体现所属层级和序号
@@ -123,9 +124,10 @@
 ```
 
 **章节完整性检查清单**:
+
 - [ ] 文档头部包含所属阶段、前置依赖、形式化等级声明
 - [ ] 包含至少一个形式化定义（Def-*）
-- [ ] 包含至少一个引理或命题（Lemma-* 或 Prop-*）
+- [ ] 包含至少一个引理或命题（Lemma-*或 Prop-*）
 - [ ] 包含至少一个 Mermaid 可视化图表
 - [ ] 引用使用 `[^n]` 上标格式并在文末列出
 
@@ -169,12 +171,14 @@
 ### 2.4 编号分配规则
 
 **新建文档时**:
+
 1. 根据所属目录确定阶段标识（S/K/F）
 2. 查看 `THEOREM-REGISTRY.md` 中该目录的最新文档序号
 3. 分配下一个可用序号（如已有 01-05，则新文档为 06）
 4. 文档内定义从 `-01` 开始顺序编号
 
 **编号示例**:
+
 ```markdown
 ## 1. 概念定义
 
@@ -196,32 +200,38 @@
 ### 3.1 添加新文档
 
 **步骤 1: 规划**
+
 - 确定文档所属目录和层级
 - 查看 `THEOREM-REGISTRY.md` 获取最新文档序号
 - 确定前置依赖文档
 
 **步骤 2: 创建文档**
+
 ```bash
 # 示例: 在 Flink/02-core-mechanisms/ 添加新文档
 touch Flink/02-core-mechanisms/new-feature-guide.md
 ```
 
 **步骤 3: 填写六段式内容**
+
 - 按模板填写 8 个章节
 - 添加形式化定义和定理编号
 - 插入 Mermaid 图表
 
 **步骤 4: 注册定理/定义**
 在 `THEOREM-REGISTRY.md` 的相应章节添加：
+
 ```markdown
 | Thm-F-02-XX | 新定理名称 | Flink/02-core-mechanisms/new-feature-guide.md | L4 | ✅ |
 ```
 
 **步骤 5: 更新索引**
+
 - 更新所在目录的 `00-INDEX.md`
 - 在 `README.md` 中更新文档统计
 
 **步骤 6: 验证**
+
 ```bash
 python .vscode/validate-project.py
 python .vscode/validate-cross-refs.py
@@ -233,11 +243,13 @@ python .vscode/validate-cross-refs.py
 ### 3.2 更新现有文档
 
 **小修改** (错别字、链接修复):
+
 1. 直接修改文档
 2. 运行验证脚本确认无误
 3. 提交变更
 
 **内容更新** (添加定理、修改定义):
+
 1. 修改文档内容
 2. 如新增定理/定义，更新 `THEOREM-REGISTRY.md`
 3. 如修改编号，检查所有引用并更新
@@ -245,6 +257,7 @@ python .vscode/validate-cross-refs.py
 5. 在 `PROJECT-VERSION-TRACKING.md` 记录变更
 
 **结构性修改** (重命名文件、移动位置):
+
 1. 使用 `git mv` 移动文件
 2. 更新所有引用该文件的链接
 3. 更新目录索引文件
@@ -254,20 +267,23 @@ python .vscode/validate-cross-refs.py
 ### 3.3 更新索引和注册表
 
 **更新目录索引** (`00-INDEX.md`):
+
 ```markdown
 ## 文档清单
 
 | 文档 | 定理数 | 定义数 | 状态 |
 |------|--------|--------|------|
-| [new-feature-guide.md](./02-core-mechanisms/new-feature-guide.md) | 2 | 5 | ✅ |
+| [new-feature-guide.md](./Flink/02-core-mechanisms/flink-2.2-frontier-features.md) | 2 | 5 | ✅ |
 ```
 
 **更新定理注册表** (`THEOREM-REGISTRY.md`):
+
 1. 在相应章节添加定理/定义条目
 2. 保持表格格式一致
 3. 更新统计信息（文档底部）
 
 **更新项目跟踪** (`PROJECT-TRACKING.md`):
+
 ```markdown
 | 任务 | 状态 | 完成内容 | 所属目录 |
 |------|------|----------|----------|
@@ -281,6 +297,7 @@ python .vscode/validate-cross-refs.py
 ### 4.1 发布前必须检查的项目
 
 **文档质量检查**:
+
 - [ ] 文档遵循六段式模板结构
 - [ ] 包含文档头部元数据（所属阶段、前置依赖、形式化等级）
 - [ ] 包含至少一个形式化定义（Def-*）
@@ -290,12 +307,14 @@ python .vscode/validate-cross-refs.py
 - [ ] 无错别字和格式错误
 
 **编号规范检查**:
+
 - [ ] 定理/定义编号符合 `{Type}-{Stage}-{Doc}-{Seq}` 格式
 - [ ] 编号在文档内连续
 - [ ] 无重复编号
 - [ ] 所有编号已在 `THEOREM-REGISTRY.md` 注册
 
 **技术准确性检查**:
+
 - [ ] 代码示例可运行
 - [ ] 配置示例有效
 - [ ] 技术术语使用准确
@@ -304,6 +323,7 @@ python .vscode/validate-cross-refs.py
 ### 4.2 使用验证脚本的方法
 
 **项目级验证**:
+
 ```bash
 # 完整项目验证
 python .vscode/validate-project.py
@@ -313,6 +333,7 @@ python .vscode/validate-project.py --json > validation-report.json
 ```
 
 **交叉引用验证**:
+
 ```bash
 # 检查链接和引用
 python .vscode/validate-cross-refs.py
@@ -322,6 +343,7 @@ python .vscode/validate-cross-refs.py --json
 ```
 
 **Mermaid 图表验证**:
+
 ```bash
 # 基本语法检查
 python .vscode/validate-mermaid.py
@@ -335,6 +357,7 @@ python .vscode/validate-mermaid.py
 ```
 
 **一键完整验证**:
+
 ```bash
 # 运行所有验证脚本
 echo "=== 项目验证 ===" && python .vscode/validate-project.py && \
@@ -345,37 +368,49 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 4.3 常见问题修复
 
 **问题 1: 重复编号**
+
 ```
 错误: 重复编号: Thm-S-01-05 出现在 2 个位置
 ```
+
 修复步骤:
+
 1. 搜索 `Thm-S-01-05` 找出重复位置
 2. 将其中一个改为新的可用编号
 3. 更新 `THEOREM-REGISTRY.md`
 
 **问题 2: 无效链接**
+
 ```
 错误: 链接指向的文件不存在: ../missing-file.md
 ```
+
 修复步骤:
+
 1. 检查链接路径是否正确
 2. 如目标文件已移动，更新链接路径
 3. 如目标文件已删除，移除链接或替换为正确引用
 
 **问题 3: Mermaid 语法错误**
+
 ```
 错误: syntax_error - graph TB 语法错误
 ```
+
 修复步骤:
+
 1. 检查 Mermaid 图表语法
 2. 确保节点定义正确（避免特殊字符）
 3. 检查括号匹配
 
 **问题 4: 未注册定理**
+
 ```
 警告: Thm-K-06-12 未在 THEOREM-REGISTRY.md 中注册
 ```
+
 修复步骤:
+
 1. 在 `THEOREM-REGISTRY.md` 中找到对应章节
 2. 添加定理注册条目
 
@@ -398,6 +433,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 5.2 变更记录维护
 
 **PROJECT-VERSION-TRACKING.md 格式**:
+
 ```markdown
 ## v2.9.0 (2026-04-03)
 
@@ -419,6 +455,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ```
 
 **提交信息规范**:
+
 ```
 [Struct] 新增: Smart Casual Verification 文档
 [Knowledge] 更新: 流数据库对比分析
@@ -429,16 +466,19 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 5.3 向后兼容性考虑
 
 **链接稳定性**:
+
 - 文件重命名时使用 `git mv` 保持历史
 - 保留旧路径的 redirects（如需要）
 - 避免修改已发布文档的核心定理编号
 
 **API 稳定性**:
+
 - 定理/定义编号一旦发布不应修改
 - 如需修改，保留旧编号并添加新编号
 - 在文档中注明版本变更历史
 
 **文档历史记录**:
+
 ```markdown
 > **版本历史**:
 > - v1.0 (2026-01-01): 初始版本
@@ -453,6 +493,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 6.1 提交修改建议
 
 **方式 1: 直接提交（维护人员）**
+
 1. 创建功能分支: `git checkout -b feature/new-content`
 2. 按规范添加/修改内容
 3. 运行验证脚本
@@ -460,8 +501,10 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 5. 创建 Pull Request 进行 Code Review
 
 **方式 2: Issue 提交（外部贡献者）**
+
 1. 创建 Issue，描述建议内容
 2. 使用模板:
+
    ```markdown
    ## 建议类型
    - [ ] 新增文档
@@ -479,6 +522,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 6.2 审核流程
 
 **审核检查清单**:
+
 - [ ] 内容符合六段式模板
 - [ ] 定理/定义编号规范
 - [ ] 无重复编号
@@ -488,6 +532,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 - [ ] 无拼写和语法错误
 
 **审核流程图**:
+
 ```
 提交 PR → 自动化验证 → 人工审核 → 修改意见 → 修改完成 → 合并
               ↓              ↓
@@ -497,12 +542,14 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 ### 6.3 合并规范
 
 **合并前必须完成**:
+
 1. 所有自动化验证通过
 2. 至少一名维护人员审核批准
 3. 冲突已解决
 4. 提交信息符合规范
 
 **合并后操作**:
+
 1. 更新 `PROJECT-TRACKING.md`
 2. 更新 `PROJECT-VERSION-TRACKING.md`
 3. 如有新增定理，更新 `THEOREM-REGISTRY.md`
@@ -517,6 +564,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 #### validate-project.py
 
 **功能**: 全面项目验证
+
 - 扫描所有 Markdown 文件
 - 检查定理/定义编号格式
 - 检测重复编号
@@ -524,6 +572,7 @@ echo "=== Mermaid 验证 ===" && python .vscode/validate-mermaid.py
 - 验证链接有效性
 
 **使用示例**:
+
 ```bash
 # 基础验证
 python .vscode/validate-project.py
@@ -536,16 +585,17 @@ python .vscode/validate-project.py --verbose
 ```
 
 **输出解读**:
+
 ```
 📊 统计信息:
    扫描文件数: 254
    形式化元素总数: 870
-   
+
    按类型分布:
       Def: 410
       Thm: 188
       Lemma: 158
-      
+
 🔍 问题汇总:
    错误: 0
    警告: 3
@@ -556,17 +606,20 @@ python .vscode/validate-project.py --verbose
 #### validate-cross-refs.py
 
 **功能**: 交叉引用验证
+
 - 检查相对路径链接
 - 验证前置依赖声明
 - 检测循环依赖
 - 验证定理引用
 
 **使用示例**:
+
 ```bash
 python .vscode/validate-cross-refs.py
 ```
 
 **常见问题**:
+
 ```
 错误: 链接指向的文件不存在: ../missing.md
 建议: 请检查链接路径是否正确，确保目标文件存在
@@ -575,11 +628,13 @@ python .vscode/validate-cross-refs.py
 #### validate-mermaid.py
 
 **功能**: Mermaid 图表验证
+
 - 提取所有 Mermaid 代码块
 - 验证图表语法
 - 支持本地/在线验证
 
 **使用示例**:
+
 ```bash
 # 基本检查（无需额外依赖）
 python .vscode/validate-mermaid.py
@@ -595,6 +650,7 @@ python .vscode/validate-mermaid.py
 ### 7.2 CI/CD 集成建议
 
 **GitHub Actions 示例** (`.github/workflows/validate.yml`):
+
 ```yaml
 name: Project Validation
 
@@ -609,23 +665,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
+
       - name: Run Project Validation
         run: python .vscode/validate-project.py
-      
+
       - name: Run Cross-Ref Validation
         run: python .vscode/validate-cross-refs.py
-      
+
       - name: Run Mermaid Validation
         run: python .vscode/validate-mermaid.py
 ```
 
 **预提交钩子** (`.git/hooks/pre-commit`):
+
 ```bash
 #!/bin/bash
 # 预提交验证
@@ -653,25 +710,30 @@ exit 0
 ### 7.3 定期维护任务
 
 **每日维护**:
+
 - 检查外部链接有效性
 - 监控上游技术更新
 
 **每周维护**:
+
 - 运行完整验证脚本
 - 检查 `THEOREM-REGISTRY.md` 完整性
 - 更新进度跟踪文档
 
 **每月维护**:
+
 - 审查和更新过时内容
 - 检查上游技术版本更新
 - 更新 `PROJECT-VERSION-TRACKING.md`
 
 **每季度维护**:
+
 - 大规模质量审查
 - 更新架构决策记录
 - 版本号升级评估
 
 **维护任务清单**:
+
 ```markdown
 ## 周维护任务清单
 
@@ -690,14 +752,17 @@ exit 0
 ### A. 快速参考卡片
 
 **新文档创建速查**:
+
 1. 确定目录和序号 → 2. 创建文件 → 3. 填写六段式 → 4. 注册定理 → 5. 验证
 
 **编号分配速查**:
+
 - 阶段: S=Struct, K=Knowledge, F=Flink
 - 格式: `{Type}-{Stage}-{Doc}-{Seq}`
 - 检查: 搜索 `THEOREM-REGISTRY.md` 避免冲突
 
 **验证命令速查**:
+
 ```bash
 # 全部验证
 python .vscode/validate-project.py && \

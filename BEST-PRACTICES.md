@@ -1,6 +1,6 @@
 # 流计算最佳实践汇总
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [Knowledge/07-best-practices/](Knowledge/07-best-practices/), [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) | **形式化等级**: L3-L4
+> **所属阶段**: Knowledge/ | **前置依赖**: [Knowledge/07-best-practices/07.01-flink-production-checklist.md](Knowledge/07-best-practices/07.01-flink-production-checklist.md), [Knowledge/09-anti-patterns/README.md](Knowledge/09-anti-patterns/README.md) | **形式化等级**: L3-L4
 >
 > 本文档系统汇总流计算系统的设计、开发、部署、运维、安全、成本优化六大领域的最佳实践，覆盖 Apache Flink 及其他主流流处理引擎。
 

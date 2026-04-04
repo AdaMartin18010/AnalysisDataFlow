@@ -404,7 +404,7 @@ classDiagram
 
 | 引用类型 | 格式示例 | 说明 |
 |----------|----------|------|
-| **内部文档** | `[文本](Struct/01-foundation/01.01-ustm.md)` | 相对路径链接 |
+| **内部文档** | `[文本](Struct/01-foundation/01.01-unified-streaming-theory.md)` | 相对路径链接 |
 | **定理引用** | `Thm-S-01-01` | 全局定理编号 |
 | **定义引用** | `Def-K-02-05` | 全局定义编号 |
 | **外部论文** | `[^n]: 作者, "标题", 期刊, 年份` | 文末引用列表 |
@@ -825,8 +825,8 @@ flowchart LR
 
 ### 相关文档
 
-- [相关文档1](path/to/doc1.md)
-- [相关文档2](path/to/doc2.md)
+- [相关文档1](Struct/00-INDEX.md)
+- [相关文档2](Flink/00-INDEX.md)
 
 ## 更新日志
 
