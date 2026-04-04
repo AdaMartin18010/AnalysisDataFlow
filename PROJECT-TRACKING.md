@@ -95,15 +95,15 @@
 
 | 任务ID | 任务描述 | 状态 | 交付物 |
 |--------|----------|------|--------|
-| P2-1 | Data Types完整参考 | ⏳ 待执行 | 数据类型文档 |
-| P2-2 | Built-in Functions完整列表 | ⏳ 待执行 | 函数参考文档 |
-| P2-3 | JDBC Connector详细指南 | ⏳ 待执行 | JDBC指南 |
-| P2-4 | Elasticsearch Connector指南 | ⏳ 待执行 | ES连接器文档 |
-| P2-5 | MongoDB Connector指南 | ⏳ 待执行 | MongoDB连接器文档 |
-| P2-6 | CEP库完整教程 | ⏳ 待执行 | CEP教程 |
-| P2-7 | Production Checklist | ⏳ 待执行 | 生产检查清单 |
-| P2-8 | PyFlink深度指南 | ⏳ 待执行 | PyFlink文档 |
-| P2-9 | State Backends深度对比 | ⏳ 待执行 | 状态后端对比 |
+| P2-1 | Data Types完整参考 | ✅ 已完成 | [Flink/data-types-complete-reference.md](./Flink/data-types-complete-reference.md) |
+| P2-2 | Built-in Functions完整列表 | ✅ 已完成 | [Flink/built-in-functions-reference.md](./Flink/built-in-functions-reference.md) |
+| P2-3 | JDBC Connector详细指南 | ✅ 已完成 | [Flink/jdbc-connector-guide.md](./Flink/jdbc-connector-guide.md) |
+| P2-4 | Elasticsearch Connector指南 | ✅ 已完成 | [Flink/elasticsearch-connector-guide.md](./Flink/elasticsearch-connector-guide.md) |
+| P2-5 | MongoDB Connector指南 | ✅ 已完成 | [Flink/mongodb-connector-guide.md](./Flink/mongodb-connector-guide.md) |
+| P2-6 | CEP库完整教程 | ✅ 已完成 | [Knowledge/cep-complete-tutorial.md](./Knowledge/cep-complete-tutorial.md) |
+| P2-7 | Production Checklist | ✅ 已完成 | [Knowledge/production-checklist.md](./Knowledge/production-checklist.md) |
+| P2-8 | PyFlink深度指南 | ✅ 已完成 | [Flink/pyflink-deep-guide.md](./Flink/pyflink-deep-guide.md) |
+| P2-9 | State Backends深度对比 | ✅ 已完成 | [Flink/state-backends-comparison.md](./Flink/state-backends-comparison.md) |
 | P2-10 | 交互式图谱生成 | ✅ 已完成 | knowledge-graph-v2.html |
 | P2-11 | 文档关系自动映射 | ✅ 已完成 | build_relationship_map.py |
 | P2-12 | 学习路径动态推荐 | ✅ 已完成 | learning_path_recommender.py |
