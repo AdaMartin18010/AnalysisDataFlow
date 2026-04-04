@@ -258,6 +258,10 @@
 - ✅ metaverse-analytics.md
 - ✅ web3-event-processing.md
 
+#### 生产案例研究 (1篇)
+
+- ✅ 10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md 🆕 - 电商大促实时数据大屏生产案例 (Flink 2.4 + Serverless + 100万QPS)
+
 #### 反模式 (10篇)
 
 - ✅ anti-pattern-01-global-state.md
