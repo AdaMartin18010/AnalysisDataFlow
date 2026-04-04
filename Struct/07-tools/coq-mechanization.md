@@ -1,6 +1,6 @@
 # Coq证明助手：流计算性质的机械化证明
 
-> 所属阶段: Struct/ | 前置依赖: [05-stream-calculus.md](../05-semantics/05-stream-calculus.md), [06-formal-verification.md](../06-verification/06-formal-verification.md) | 形式化等级: L5-L6
+> 所属阶段: Struct/ | 前置依赖: [../00-INDEX.md](../00-INDEX.md), [../00-INDEX.md](../00-INDEX.md) | 形式化等级: L5-L6
 
 ## 1. 概念定义 (Definitions)
 

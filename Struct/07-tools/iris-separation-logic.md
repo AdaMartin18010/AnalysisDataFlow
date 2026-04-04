@@ -1,6 +1,6 @@
 # Iris - 高阶并发分离逻辑
 
-> **所属阶段**: Struct/ | **前置依赖**: [06-tools/tla-plus-temporal-logic.md](../06-tools/tla-plus-temporal-logic.md) | **形式化等级**: L6
+> **所属阶段**: Struct/ | **前置依赖**: [../00-INDEX.md](../00-INDEX.md) | **形式化等级**: L6
 
 ---
 

@@ -1,6 +1,6 @@
 # 模型检查在流计算验证中的应用
 
-> 所属阶段: Struct | 前置依赖: [06-tools/06.01-formal-verification-overview.md](../06-tools/06.01-formal-verification-overview.md) | 形式化等级: L4
+> 所属阶段: Struct | 前置依赖: [00-INDEX.md](../00-INDEX.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

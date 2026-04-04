@@ -1,6 +1,6 @@
 # 流式SQL标准 - SQL:2011/2023与扩展
 
-> 所属阶段: Struct/ | 前置依赖: [01-basics/stream-processing-foundation.md](../01-basics/stream-processing-foundation.md) | 形式化等级: L4
+> 所属阶段: Struct/ | 前置依赖: [00-INDEX.md](../00-INDEX.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

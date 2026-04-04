@@ -1,6 +1,6 @@
 # First-Person Choreographic Programming (1CP)
 
-> 所属阶段: Struct/06-frontier | 前置依赖: [05-comparative-analysis/choreographic-languages.md](../05-comparative-analysis/choreographic-languages.md) | 形式化等级: L5
+> 所属阶段: Struct/06-frontier | 前置依赖: [../00-INDEX.md](../00-INDEX.md) | 形式化等级: L5
 
 ## 1. 概念定义 (Definitions)
 

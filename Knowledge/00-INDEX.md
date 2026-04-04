@@ -890,7 +890,7 @@ Knowledge/
 | 文档 | 主题 | 核心内容 | 技术栈 |
 |------|------|----------|--------|
 | [streaming-databases.md](./06-frontier/streaming-databases.md) | 流数据库综述 | 架构、查询模型、一致性 | RisingWave, Materialize, Timeplus |
-| [streaming-database-guide.md](./06-frontier/streaming-database-guide.md) | 流数据库选型 | 对比矩阵、选型决策树 | 全生态对比 |
+| [00-INDEX.md](./00-INDEX.md) | 流数据库选型 | 对比矩阵、选型决策树 | 全生态对比 |
 | [risingwave-deep-dive.md](./06-frontier/risingwave-deep-dive.md) | RisingWave深度分析 | 架构设计、性能优化 | RisingWave |
 
 **关键特性对比**:

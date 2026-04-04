@@ -1,7 +1,7 @@
 # 并发范式多维对比矩阵 (Concurrency Paradigms Comparison Matrix)
 
 > **文档定位**: 并发计算核心范式的系统性对比与选型指南
-> **形式化等级**: L3-L6 | **前置依赖**: [../Struct/01-foundation/](../Struct/01-foundation/)
+> **形式化等级**: L3-L6 | **前置依赖**: [../../Struct/01-foundation/](../../Struct/01-foundation/)
 > **版本**: 2026.04 | **文档规模**: ~20KB
 
 ---
@@ -107,7 +107,7 @@ graph TB
 
 #### Def-K-01-01. CSP (Communicating Sequential Processes)
 
-**形式化定义**（参见 [../Struct/01-foundation/01.05-csp-formalization.md](../Struct/01-foundation/01.05-csp-formalization.md)）：
+**形式化定义**（参见 [../../Struct/01-foundation/01.05-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)）：
 
 $$
 \text{CSP} ::= \text{STOP} \mid \text{SKIP} \mid a \to P \mid P \mathbin{\square} Q \mid P \mathbin{\sqcap} Q \mid P \mathbin{|||} Q \mid P \mathbin{\parallel_A} Q
@@ -126,7 +126,7 @@ $$
 
 #### Def-K-01-02. Actor Model
 
-**形式化定义**（参见 [../Struct/01-foundation/01.03-actor-model-formalization.md](../Struct/01-foundation/01.03-actor-model-formalization.md)）：
+**形式化定义**（参见 [../../Struct/01-foundation/01.03-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md)）：
 
 $$
 \mathcal{A} = (\alpha, b, m, \sigma)
@@ -147,7 +147,7 @@ $$
 
 #### Def-K-01-03. Dataflow Model
 
-**形式化定义**（参见 [../Struct/01-foundation/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
+**形式化定义**（参见 [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
 
 $$
 \mathcal{G} = (V, E, P, \Sigma, \mathbb{T})
@@ -210,7 +210,7 @@ $$
 
 ### 1.3 范式表达能力层次
 
-根据 [../Struct/01-foundation/01.01-unified-streaming-theory.md](../Struct/01-foundation/01.01-unified-streaming-theory.md) 的六层表达能力层次：
+根据 [../../Struct/01-foundation/01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md) 的六层表达能力层次：
 
 | 层次 | 范式 | 表达能力 | 可判定性 |
 |------|------|----------|----------|
@@ -286,7 +286,7 @@ $$
 
 1. 共享内存需要显式锁管理（死锁预防、粒度选择、优先级处理）
 2. 消息传递通过所有权转移消除数据竞争，但引入消息协议复杂性
-3. 根据 [../Struct/01-foundation/01.02-process-calculus-primer.md](../Struct/01-foundation/01.02-process-calculus-primer.md) 的 π-演算分析，动态拓扑增加表达能力但降低可判定性
+3. 根据 [../../Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md) 的 π-演算分析，动态拓扑增加表达能力但降低可判定性
 4. 工程实践表明，消息传递的故障隔离性更好，但延迟通常更高
 
 #### Prop-K-01-02. 同步通信的确定性优势
@@ -296,7 +296,7 @@ $$
 **推导**：
 
 1. 同步通信消除了缓冲区溢出的不确定性
-2. 根据 [../Struct/01-foundation/01.05-csp-formalization.md](../Struct/01-foundation/01.05-csp-formalization.md)，CSP 有限状态子集是 PSPACE-可判定的
+2. 根据 [../../Struct/01-foundation/01.05-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)，CSP 有限状态子集是 PSPACE-可判定的
 3. 异步通信引入消息队列状态，状态空间爆炸更快
 4. 但异步通信提供更好的吞吐量和解耦性
 
@@ -345,7 +345,7 @@ graph LR
 
 #### 关系 1: CSP $\subset$ Actor (表达能力弱于)
 
-**论证**（基于 [../Struct/01-foundation/01.02-process-calculus-primer.md](../Struct/01-foundation/01.02-process-calculus-primer.md) Thm-S-02-01）：
+**论证**（基于 [../../Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md) Thm-S-02-01）：
 
 - **编码存在性**：CSP 可编码为 Actor 子集——将 Channel 建模为单消息缓冲 Actor，同步通信通过请求-应答协议模拟
 - **分离结果**：Actor 支持动态创建地址和传递地址（移动性），CSP 的静态通道命名无法直接表达运行时拓扑变化
@@ -353,7 +353,7 @@ graph LR
 
 #### 关系 2: Actor $\approx$ Dataflow (图灵完备等价)
 
-**论证**（基于 [../Struct/01-foundation/01.01-unified-streaming-theory.md](../Struct/01-foundation/01.01-unified-streaming-theory.md)）：
+**论证**（基于 [../../Struct/01-foundation/01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md)）：
 
 - **Actor → Dataflow**：Actor 映射为 KeyedProcessor，Mailbox 映射为 Channel，动态创建映射为动态算子实例
 - **Dataflow → Actor**：算子映射为 Actor，数据边映射为异步消息传递
@@ -371,7 +371,7 @@ graph LR
 
 #### 关系 4: Dataflow $\supset$ Kahn Process Network
 
-**论证**（基于 [../Struct/01-foundation/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
+**论证**（基于 [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
 
 - Dataflow 模型在 KPN 基础上增加了显式并行度、分区策略、时间语义
 - Dataflow 支持有状态窗口聚合，KPN 假设纯函数转换
@@ -527,7 +527,7 @@ flowchart TD
 
 1. **时间语义需求**：业务逻辑依赖事件发生时间而非处理时间。Dataflow 模型的事件时间语义（Def-S-04-04）和 Watermark 机制提供了乱序数据的正确处理能力。
 
-2. **状态一致性**：Exactly-Once 语义（参见 [../Struct/01-foundation/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md)）通过 Checkpoint 机制保证，满足数据分析的准确性要求。
+2. **状态一致性**：Exactly-Once 语义（参见 [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）通过 Checkpoint 机制保证，满足数据分析的准确性要求。
 
 3. **水平扩展**：Dataflow 的并行度函数 $P: V \to \mathbb{N}^+$（Def-S-04-01）支持根据数据量动态调整并行度，实现弹性扩展。
 
@@ -547,7 +547,7 @@ flowchart TD
 
 1. **资源效率**：Go goroutine 约 2KB 初始栈，Actor 进程约 300B + JVM 开销（Go 对比分析），CSP 在资源受限环境更轻量。
 
-2. **同步语义**：系统编程需要精确的同步控制。CSP 的同步通道提供了天然的 happens-before 关系（参见 [../Struct/01-foundation/01.05-csp-formalization.md](../Struct/01-foundation/01.05-csp-formalization.md)），简化并发推理。
+2. **同步语义**：系统编程需要精确的同步控制。CSP 的同步通道提供了天然的 happens-before 关系（参见 [../../Struct/01-foundation/01.05-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)），简化并发推理。
 
 3. **select 多路复用**：Go 的 `select` 语句提供原生多路选择能力，在实现超时、取消、优先级控制时极为高效。
 
@@ -830,15 +830,15 @@ quadrantChart
 
 ### 上游依赖
 
-- [../Struct/01-foundation/01.01-unified-streaming-theory.md](../Struct/01-foundation/01.01-unified-streaming-theory.md) — 统一流计算理论与六层表达能力层次
-- [../Struct/01-foundation/01.02-process-calculus-primer.md](../Struct/01-foundation/01.02-process-calculus-primer.md) — 进程演算基础（CCS、CSP、π-calculus）
+- [../../Struct/01-foundation/01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md) — 统一流计算理论与六层表达能力层次
+- [../../Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md) — 进程演算基础（CCS、CSP、π-calculus）
 
 ### 同层关联
 
-- [../Struct/01-foundation/01.03-actor-model-formalization.md](../Struct/01-foundation/01.03-actor-model-formalization.md) — Actor 模型严格形式化
-- [../Struct/01-foundation/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md) — Dataflow 模型严格形式化
-- [../Struct/01-foundation/01.05-csp-formalization.md](../Struct/01-foundation/01.05-csp-formalization.md) — CSP 严格形式化
-- [../Struct/01-foundation/01.06-petri-net-formalization.md](../Struct/01-foundation/01.06-petri-net-formalization.md) — Petri 网形式化（可作为 Shared Memory 形式化参考）
+- [../../Struct/01-foundation/01.03-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md) — Actor 模型严格形式化
+- [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) — Dataflow 模型严格形式化
+- [../../Struct/01-foundation/01.05-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md) — CSP 严格形式化
+- [../../Struct/01-foundation/01.06-petri-net-formalization.md](../../Struct/01-foundation/01.06-petri-net-formalization.md) — Petri 网形式化（可作为 Shared Memory 形式化参考）
 
 ### 下游应用
 
