@@ -1,115 +1,16 @@
 {
-  "timestamp": "2026-04-04T15:58:56.330645",
+  "timestamp": "2026-04-04T16:40:27.063189",
   "summary": {
-    "total_files": 545,
-    "total_links": 10553,
-    "total_errors": 584,
-    "file_errors": 298,
-    "anchor_errors": 286,
-    "fixable": 44,
-    "files_with_errors": 201
+    "total_files": 575,
+    "total_links": 10634,
+    "total_errors": 399,
+    "file_errors": 128,
+    "anchor_errors": 271,
+    "fixable": 21,
+    "files_with_errors": 187
   },
   "errors_by_category": {
     "file_not_found": [
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "Struct/01-foundation/01.01-ustm.md",
-        "text": "文本",
-        "line": 42,
-        "resolved": "Struct/01-foundation/01.01-ustm.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "path/to/doc1.md",
-        "text": "相关文档1",
-        "line": 114,
-        "resolved": "path/to/doc1.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "path/to/doc2.md",
-        "text": "相关文档2",
-        "line": 115,
-        "resolved": "path/to/doc2.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../path",
-        "text": "",
-        "line": 119,
-        "resolved": "../path",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "./path/to/file.md",
-        "text": "text",
-        "line": 123,
-        "resolved": "path/to/file.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Struct/",
-        "text": "Struct/",
-        "line": 157,
-        "resolved": "../../../Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Knowledge/",
-        "text": "Knowledge/",
-        "line": 158,
-        "resolved": "../../../Knowledge",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Flink/",
-        "text": "Flink/",
-        "line": 159,
-        "resolved": "../../../Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../Flink/",
-        "text": "../Flink/",
-        "line": 170,
-        "resolved": "../../Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../Knowledge/",
-        "text": "../Knowledge/",
-        "line": 171,
-        "resolved": "../../Knowledge",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "STANDARD-GAP-SUPPLEMENT.md",
-        "url": "链接",
-        "text": "PDF",
-        "line": 283,
-        "resolved": "链接",
-        "suggestion": null
-      },
       {
         "type": "file_not_found",
         "source": "LEARNING-PATHS/data-engineer-path.md",
@@ -179,224 +80,11 @@
       },
       {
         "type": "file_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "fa: F[A]",
-        "text": "A, B",
-        "line": 501,
-        "resolved": "Struct/05-comparative-analysis/fa: F[A]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "list: List[T]",
-        "text": "T",
-        "line": 522,
-        "resolved": "Struct/05-comparative-analysis/list: List[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "cp_requested -> <>cp_completed",
-        "text": "",
-        "line": 217,
-        "resolved": "Struct/07-tools/cp_requested -> <>cp_completed",
-        "suggestion": [
-          "COMPLETED.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "text": "",
-        "line": 507,
-        "resolved": "Struct/07-tools/<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "suggestion": [
-          "DONE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "\"first\"",
-        "text": "Transaction",
-        "line": 545,
-        "resolved": "Knowledge/01-concept-atlas/\"first\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 754,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 770,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 786,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\"async-timeout\"",
-        "text": "IN",
-        "line": 792,
-        "resolved": "Knowledge/02-design-patterns/\"async-timeout\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "text": "IN, OUT",
-        "line": 808,
-        "resolved": "Knowledge/02-design-patterns/\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "\n    \"user-state\",\n    Types.CASE_CLASS[UserStateV2]\n  ",
-        "text": "UserStateV2",
-        "line": 740,
-        "resolved": "Knowledge/02-design-patterns/\n    \"user-state\",\n    Types.CASE_CLASS[UserStateV2]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorReading",
-        "line": 419,
-        "resolved": "Knowledge/02-design-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"int-output\"",
-        "text": "Int",
-        "line": 343,
-        "resolved": "Knowledge/02-design-patterns/\"int-output\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"string-output\"",
-        "text": "String",
-        "line": 344,
-        "resolved": "Knowledge/02-design-patterns/\"string-output\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"high-temperature\"",
-        "text": "SensorReading",
-        "line": 523,
-        "resolved": "Knowledge/02-design-patterns/\"high-temperature\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"invalid-data\"",
-        "text": "String",
-        "line": 524,
-        "resolved": "Knowledge/02-design-patterns/\"invalid-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"late-data\"",
-        "text": "SensorReading",
-        "line": 599,
-        "resolved": "Knowledge/02-design-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"schema-error\"",
-        "text": "String",
-        "line": 654,
-        "resolved": "Knowledge/02-design-patterns/\"schema-error\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"business-error\"",
-        "text": "String",
-        "line": 655,
-        "resolved": "Knowledge/02-design-patterns/\"business-error\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"threshold-alert\"",
-        "text": "AlertEvent",
-        "line": 656,
-        "resolved": "Knowledge/02-design-patterns/\"threshold-alert\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"retry-queue\"",
-        "text": "Event",
-        "line": 657,
-        "resolved": "Knowledge/02-design-patterns/\"retry-queue\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"quality-metrics\"",
-        "text": "QualityEvent",
-        "line": 765,
-        "resolved": "Knowledge/02-design-patterns/\"quality-metrics\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "\"txn1\"",
-        "text": "Transaction",
-        "line": 639,
-        "resolved": "Knowledge/03-business-patterns/\"txn1\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "\"login\"",
-        "text": "Transaction",
-        "line": 649,
-        "resolved": "Knowledge/03-business-patterns/\"login\"",
+        "source": "reports/feedback/README.md",
+        "url": "../../issues",
+        "text": "Issue 列表",
+        "line": 101,
+        "resolved": "issues",
         "suggestion": null
       },
       {
@@ -412,231 +100,30 @@
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"first\"",
-        "text": "EnrichedTransaction",
-        "line": 522,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
+        "source": "Knowledge/05-migrations/kafka-streams-to-flink-guide.md",
+        "url": "../Flink/03-api-layer/ds-core-abstraction.md",
+        "text": "Flink DataStream API",
+        "line": 3,
+        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"first\"",
-        "text": "EnrichedTransaction",
-        "line": 804,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "line": 3,
+        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"txn1\"",
-        "text": "EnrichedTransaction",
-        "line": 816,
-        "resolved": "Knowledge/03-business-patterns/\"txn1\"",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "line": 1283,
+        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"first\"",
-        "text": "MoveEvent",
-        "line": 692,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"high-confidence\"",
-        "text": "CheatAlert",
-        "line": 751,
-        "resolved": "Knowledge/03-business-patterns/\"high-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"low-confidence\"",
-        "text": "CheatAlert",
-        "line": 752,
-        "resolved": "Knowledge/03-business-patterns/\"low-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"move1\"",
-        "text": "MoveEvent",
-        "line": 897,
-        "resolved": "Knowledge/03-business-patterns/\"move1\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"high-confidence\"",
-        "text": "CheatAlert",
-        "line": 912,
-        "resolved": "Knowledge/03-business-patterns/\"high-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"low-confidence\"",
-        "text": "CheatAlert",
-        "line": 913,
-        "resolved": "Knowledge/03-business-patterns/\"low-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 660,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 694,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 855,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\n      maxOutOfOrderness: Duration\n  ",
-        "text": "T: TimestampAssigner",
-        "line": 437,
-        "resolved": "Knowledge/05-mapping-guides/\n      maxOutOfOrderness: Duration\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\"counter\", createTypeInformation[Long]",
-        "text": "Long",
-        "line": 644,
-        "resolved": "Knowledge/05-mapping-guides/\"counter\", createTypeInformation[Long]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\n    createTypeInformation[Event].createSerializer(new ExecutionConfig",
-        "text": "Event, TransactionState, Void",
-        "line": 852,
-        "resolved": "Knowledge/05-mapping-guides/\n    createTypeInformation[Event].createSerializer(new ExecutionConfig",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/edge-streaming-patterns.md",
-        "url": "operation: => T, fallback: => T",
-        "text": "T",
-        "line": 648,
-        "resolved": "Knowledge/06-frontier/operation: => T, fallback: => T",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
-        "url": "\"security-video-topic\"",
-        "text": "\n    VideoFrame\n",
-        "line": 350,
-        "resolved": "Knowledge/06-frontier/\"security-video-topic\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
-        "url": "\"security-audio-topic\"",
-        "text": "\n    AudioChunk\n",
-        "line": 354,
-        "resolved": "Knowledge/06-frontier/\"security-audio-topic\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "text": "T <: Serializable",
-        "line": 563,
-        "resolved": "Knowledge/07-best-practices/\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "text": "T",
-        "line": 572,
-        "resolved": "Knowledge/07-best-practices/state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "text": "T",
-        "line": 576,
-        "resolved": "Knowledge/07-best-practices/\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "12",
-        "text": "Byte",
-        "line": 520,
-        "resolved": "Knowledge/07-best-practices/12",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "text": "T",
-        "line": 559,
-        "resolved": "Knowledge/07-best-practices/\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
-        "url": "\n      \"input-topic\",\n      new EventDeserializer(",
-        "text": "Event",
-        "line": 442,
-        "resolved": "Knowledge/07-best-practices/\n      \"input-topic\",\n      new EventDeserializer(",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
       },
       {
         "type": "file_not_found",
@@ -648,42 +135,6 @@
         "suggestion": [
           "SECURITY-AUDIT.md"
         ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 384,
-        "resolved": "Knowledge/09-anti-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"late\"",
-        "text": "Event",
-        "line": 500,
-        "resolved": "Knowledge/09-anti-patterns/\"late\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"suspicious-late\"",
-        "text": "Transaction",
-        "line": 552,
-        "resolved": "Knowledge/09-anti-patterns/\"suspicious-late\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/streaming-anti-patterns.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 787,
-        "resolved": "Knowledge/09-anti-patterns/\"late-data\"",
-        "suggestion": null
       },
       {
         "type": "file_not_found",
@@ -1130,15 +581,6 @@
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 200,
-        "resolved": "Knowledge/98-exercises/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
         "source": "Knowledge/98-exercises/README.md",
         "url": "../Struct/",
         "text": "Struct/ 理论基础",
@@ -1226,15 +668,6 @@
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
-        "url": "updateFunction",
-        "text": "Int",
-        "line": 279,
-        "resolved": "Knowledge/05-mapping-guides/migration-guides/updateFunction",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
         "source": "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md",
         "url": "../../Flink/03-api-layer/connectors/kafka-connector.md",
         "text": "Flink Kafka Connector",
@@ -1271,58 +704,12 @@
       },
       {
         "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 115,
-        "resolved": "Flink/01-architecture/decl: StateDeclarationV2[S]",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 262,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 263,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "K,V",
-        "line": 264,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 309,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
+        "source": "Flink/03-sql-table-api/built-in-functions-complete-list.md",
+        "url": "../01-overview/flink-sql-overview.md",
+        "text": "Flink SQL 概述",
+        "line": 3,
+        "resolved": "Flink/01-overview/flink-sql-overview.md",
+        "suggestion": null
       },
       {
         "type": "file_not_found",
@@ -1409,125 +796,11 @@
       },
       {
         "type": "file_not_found",
-        "source": "Flink/07-operations/rest-api-complete-reference.md",
-        "url": "../04-runtime/4.1-flink-architecture-overview.md",
-        "text": "04-runtime/4.1-flink-architecture-overview.md",
-        "line": 3,
-        "resolved": "Flink/04-runtime/4.1-flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-operations/rest-api-complete-reference.md",
-        "url": "../05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "text": "05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "line": 3,
-        "resolved": "Flink/05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/flink-2.3-2.4-roadmap.md",
-        "url": "flink-2.2-new-features.md",
-        "text": "Flink 2.2新特性",
-        "line": 3,
-        "resolved": "Flink/08-roadmap/flink-2.2-new-features.md",
-        "suggestion": [
-          "ROADMAP.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/flink-30-architecture-redesign.md",
-        "url": "../02-core-mechanisms/disaggregated-state-analysis.md",
-        "text": "../02-core-mechanisms/disaggregated-state-analysis.md",
-        "line": 1441,
-        "resolved": "Flink/02-core-mechanisms/disaggregated-state-analysis.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/release-checklist-template.md",
-        "url": "../05-ecosystem/flink-development-workflow.md",
-        "text": "Flink 开发流程与分支策略",
-        "line": 4,
-        "resolved": "Flink/05-ecosystem/flink-development-workflow.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 3,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 394,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
         "source": "Flink/09-language-foundations/00-INDEX.md",
         "url": "../../Struct/01-foundation/01.03-type-safety-boundaries.md",
         "text": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "line": 395,
-        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/02-concurrency/02.01-actor-model-semantics.md",
-        "text": "Struct/02-concurrency/02.01-actor-model-semantics.md",
         "line": 396,
-        "resolved": "Struct/02-concurrency/02.01-actor-model-semantics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/03-patterns/stream-processing-patterns.md",
-        "text": "Knowledge/03-patterns/stream-processing-patterns.md",
-        "line": 402,
-        "resolved": "Knowledge/03-patterns/stream-processing-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/04-business/real-time-analytics.md",
-        "text": "Knowledge/04-business/real-time-analytics.md",
-        "line": 403,
-        "resolved": "Knowledge/04-business/real-time-analytics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/05-case-studies/financial-risk.md",
-        "text": "Knowledge/05-case-studies/financial-risk.md",
-        "line": 404,
-        "resolved": "Knowledge/05-case-studies/financial-risk.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../02-mechanisms/checkpointing.md",
-        "text": "Flink/02-mechanisms/checkpointing.md",
-        "line": 411,
-        "resolved": "Flink/02-mechanisms/checkpointing.md",
+        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
         "suggestion": null
       },
       {
@@ -1539,737 +812,9 @@
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
         ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
-        "url": "\n  original: T,\n  processedAt: Long,\n  partitionKey: String\n",
-        "text": "T <: Event",
-        "line": 400,
-        "resolved": "Flink/09-language-foundations/\n  original: T,\n  processedAt: Long,\n  partitionKey: String\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.02-typeinformation-derivation.md",
-        "url": "./01.01-scala-api-type-system.md",
-        "text": "01.01-scala-api-type-system.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01.01-scala-api-type-system.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "using inline ti: TypeInformation[T]",
-        "text": "T",
-        "line": 180,
-        "resolved": "Flink/09-language-foundations/using inline ti: TypeInformation[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "extractFn: T => EventTime",
-        "text": "T",
-        "line": 727,
-        "resolved": "Flink/09-language-foundations/extractFn: T => EventTime",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "_.eventTime",
-        "text": "SensorReading",
-        "line": 745,
-        "resolved": "Flink/09-language-foundations/_.eventTime",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "using\n    m: Mirror.ProductOf[P]\n  ",
-        "text": "P <: Product",
-        "line": 829,
-        "resolved": "Flink/09-language-foundations/using\n    m: Mirror.ProductOf[P]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n    value: P,\n    serializers: Tuple,\n    target: DataOutputView\n  ",
-        "text": "P <: Product",
-        "line": 858,
-        "resolved": "Flink/09-language-foundations/\n    value: P,\n    serializers: Tuple,\n    target: DataOutputView\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n    val name: String,\n    val keySerializer: TypeSerializer[K],\n    val valueSerializer: TypeSerializer[V]\n  ",
-        "text": "K, V",
-        "line": 971,
-        "resolved": "Flink/09-language-foundations/\n    val name: String,\n    val keySerializer: TypeSerializer[K],\n    val valueSerializer: TypeSerializer[V]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n      \"count\",\n      implicitly[TypeSerializer[K]],\n      LongSerializer\n    ",
-        "text": "K, Long",
-        "line": 992,
-        "resolved": "Flink/09-language-foundations/\n      \"count\",\n      implicitly[TypeSerializer[K]],\n      LongSerializer\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n      \"lastValue\",\n      implicitly[TypeSerializer[K]],\n      implicitly[TypeSerializer[I]]\n    ",
-        "text": "K, I",
-        "line": 998,
-        "resolved": "Flink/09-language-foundations/\n      \"lastValue\",\n      implicitly[TypeSerializer[K]],\n      implicitly[TypeSerializer[I]]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "v: K",
-        "text": "K",
-        "line": 1041,
-        "resolved": "v: K",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "key: StreamKey[K]",
-        "text": "K",
-        "line": 1050,
-        "resolved": "Flink/09-language-foundations/key: StreamKey[K]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\"count\", ..., ...",
-        "text": "String, Long",
-        "line": 1063,
-        "resolved": "Flink/09-language-foundations/\"count\", ..., ...",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\"avg\", ..., ...",
-        "text": "Int, Double",
-        "line": 1064,
-        "resolved": "Flink/09-language-foundations/\"avg\", ..., ...",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02-python-api.md",
-        "url": "./01-java-api.md",
-        "text": "09.01-java-api.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01-java-api.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "./02.00-flink-scala-api-overview.md",
-        "text": "02.00-flink-scala-api-overview.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/02.00-flink-scala-api-overview.md",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "_.length",
-        "text": "Integer",
-        "line": 108,
-        "resolved": "Flink/09-language-foundations/_.length",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 324,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "fun: T => R",
-        "text": "R",
-        "line": 325,
-        "resolved": "Flink/09-language-foundations/fun: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 418,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "_.take(3",
-        "text": "String",
-        "line": 436,
-        "resolved": "Flink/09-language-foundations/_.take(3",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "100",
-        "text": "TimeWindow",
-        "line": 570,
-        "resolved": "Flink/09-language-foundations/100",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "1000",
-        "text": "TimeWindow",
-        "line": 571,
-        "resolved": "Flink/09-language-foundations/1000",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "\"late-data\"",
-        "text": "(String, Long, Double)",
-        "line": 578,
-        "resolved": "Flink/09-language-foundations/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 603,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T <: java.io.Serializable : ClassTag",
-        "line": 648,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.02-flink-scala-api-community.md",
-        "url": "\n      \"user-session\",\n      deriveTypeInformation[UserSession]\n    ",
-        "text": "UserSession",
-        "line": 453,
-        "resolved": "Flink/09-language-foundations/\n      \"user-session\",\n      deriveTypeInformation[UserSession]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03-rust-native.md",
-        "url": "01-udf-basics.md",
-        "text": "Flink UDF基础",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01-udf-basics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"UTF-8\"",
-        "text": "String",
-        "line": 571,
-        "resolved": "Flink/09-language-foundations/\"UTF-8\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"user-state\",\n      createTypeInformation[UserState]  // 旧版隐式推导\n    ",
-        "text": "UserState",
-        "line": 593,
-        "resolved": "Flink/09-language-foundations/\n      \"user-state\",\n      createTypeInformation[UserState]  / 旧版隐式推导\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"user-state\",\n      userStateInfo\n    ",
-        "text": "UserState",
-        "line": 632,
-        "resolved": "Flink/09-language-foundations/\n      \"user-state\",\n      userStateInfo\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n  \"input-topic\",\n  new EventDeserializationSchema,\n  kafkaProps\n",
-        "text": "Event",
-        "line": 780,
-        "resolved": "Flink/09-language-foundations/\n  \"input-topic\",\n  new EventDeserializationSchema,\n  kafkaProps\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n  \"output-topic\",\n  new OutputSerializer,\n  kafkaProps\n",
-        "text": "Output",
-        "line": 788,
-        "resolved": "Flink/09-language-foundations/\n  \"output-topic\",\n  new OutputSerializer,\n  kafkaProps\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"count\", createTypeInformation[Long]\n    ",
-        "text": "Long",
-        "line": 835,
-        "resolved": "Flink/09-language-foundations/\n      \"count\", createTypeInformation[Long]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"timer\", createTypeInformation[Long]\n    ",
-        "text": "Long",
-        "line": 838,
-        "resolved": "Flink/09-language-foundations/\n      \"timer\", createTypeInformation[Long]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"timer\", Types.LONG.asInstanceOf[TypeInformation[Long]]\n    ",
-        "text": "Long",
-        "line": 870,
-        "resolved": "Flink/09-language-foundations/\n      \"timer\", Types.LONG.asInstanceOf[TypeInformation[Long]]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"count\", longInfo",
-        "text": "Long",
-        "line": 903,
-        "resolved": "Flink/09-language-foundations/\"count\", longInfo",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"timer\", longInfo",
-        "text": "Long",
-        "line": 904,
-        "resolved": "Flink/09-language-foundations/\"timer\", longInfo",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "oldDescriptor: ValueStateDescriptor[T],\n    newDescriptor: ValueStateDescriptor[T]\n  ",
-        "text": "\n    T: TypeInformation\n  ",
-        "line": 1192,
-        "resolved": "Flink/09-language-foundations/oldDescriptor: ValueStateDescriptor[T],\n    newDescriptor: ValueStateDescriptor[T]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"start\"",
-        "text": "Transaction",
-        "line": 1594,
-        "resolved": "Flink/09-language-foundations/\"start\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"start\"",
-        "text": "Transaction",
-        "line": 1604,
-        "resolved": "Flink/09-language-foundations/\"start\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 75,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "f: T => R",
-        "text": "R",
-        "line": 91,
-        "resolved": "f: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 171,
-        "resolved": "Flink/09-language-foundations/decl: StateDeclarationV2[S]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 172,
-        "resolved": "Flink/09-language-foundations/decl: StateDeclarationV2[S]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "value: R",
-        "text": "R",
-        "line": 180,
-        "resolved": "Flink/09-language-foundations/value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "values: List[R]",
-        "text": "R",
-        "line": 181,
-        "resolved": "Flink/09-language-foundations/values: List[R]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "tag: OutputTag[R], value: R",
-        "text": "R",
-        "line": 183,
-        "resolved": "Flink/09-language-foundations/tag: OutputTag[R], value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "future: Future[Output[R]]",
-        "text": "R",
-        "line": 184,
-        "resolved": "Flink/09-language-foundations/future: Future[Output[R]]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "value: R",
-        "text": "R",
-        "line": 187,
-        "resolved": "Flink/09-language-foundations/value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V: TypeInformation",
-        "line": 257,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "V",
-        "line": 258,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V: TypeInformation",
-        "line": 260,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "V",
-        "line": 261,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "K: TypeInformation, V: TypeInformation",
-        "line": 263,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "K, V",
-        "line": 264,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V",
-        "line": 266,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n  input: RecordV2[In],\n  output: Out,\n  op: Operator[In, Out]\n",
-        "text": "In, Out",
-        "line": 343,
-        "resolved": "Flink/09-language-foundations/\n  input: RecordV2[In],\n  output: Out,\n  op: Operator[In, Out]\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n    savepointPath: String,\n    stateMappers: Map[String, StateMapper[OldState, NewState]]\n  ",
-        "text": "\n    OldState: TypeInformation,\n    NewState: TypeInformation\n  ",
-        "line": 508,
-        "resolved": "Flink/09-language-foundations/\n    savepointPath: String,\n    stateMappers: Map[String, StateMapper[OldState, NewState]]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "T",
-        "line": 546,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"count\", Types.LONG",
-        "text": "Long",
-        "line": 566,
-        "resolved": "Flink/09-language-foundations/\"count\", Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"count\"",
-        "text": "Long",
-        "line": 585,
-        "resolved": "Flink/09-language-foundations/\"count\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\", Types.LONG",
-        "text": "Long",
-        "line": 623,
-        "resolved": "Flink/09-language-foundations/\"counter\", Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 627,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"events\", Types.STRING",
-        "text": "String",
-        "line": 638,
-        "resolved": "Flink/09-language-foundations/\"events\", Types.STRING",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"events\"",
-        "text": "String",
-        "line": 642,
-        "resolved": "Flink/09-language-foundations/\"events\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counts\", Types.STRING, Types.LONG",
-        "text": "String, Long",
-        "line": 649,
-        "resolved": "Flink/09-language-foundations/\"counts\", Types.STRING, Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counts\"",
-        "text": "String, Long",
-        "line": 653,
-        "resolved": "Flink/09-language-foundations/\"counts\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 898,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"UTF-8\"",
-        "text": "(String, Long)",
-        "line": 1254,
-        "resolved": "Flink/09-language-foundations/\"UTF-8\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"wordCount\"",
-        "text": "Long",
-        "line": 1268,
-        "resolved": "Flink/09-language-foundations/\"wordCount\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"lastReading\"",
-        "text": "SensorReading",
-        "line": 1335,
-        "resolved": "Flink/09-language-foundations/\"lastReading\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"recentReadings\"",
-        "text": "SensorReading",
-        "line": 1340,
-        "resolved": "Flink/09-language-foundations/\"recentReadings\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"windowStats\"",
-        "text": "String, WindowStatistics",
-        "line": 1346,
-        "resolved": "Flink/09-language-foundations/\"windowStats\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"deviceMetadataCache\"",
-        "text": "String, DeviceMetadata",
-        "line": 1649,
-        "resolved": "Flink/09-language-foundations/\"deviceMetadataCache\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"enrichment-errors\"",
-        "text": "EnrichmentError",
-        "line": 1715,
-        "resolved": "Flink/09-language-foundations/\"enrichment-errors\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n      \"wordCount\",\n      Types.LONG  // 类型信息在运行时\n    ",
-        "text": "Long",
-        "line": 1776,
-        "resolved": "Flink/09-language-foundations/\n      \"wordCount\",\n      Types.LONG  / 类型信息在运行时\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"wordCount\"",
-        "text": "Long",
-        "line": 1833,
-        "resolved": "Flink/09-language-foundations/\"wordCount\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/07.01-timely-dataflow-optimization.md",
-        "url": "./07.00-scala-in-flink-foundations.md",
-        "text": "07.00-scala-in-flink-foundations.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/07.00-scala-in-flink-foundations.md",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/09-wasm-udf-frameworks.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 3,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
       },
       {
         "type": "file_not_found",
@@ -2289,137 +834,6 @@
         "text": "Flink/09-language-foundations/03-rust-native.md",
         "line": 3,
         "resolved": "Flink/03-rust-native.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "../../Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "text": "../../Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "line": 3,
-        "resolved": "Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "selector: T => K",
-        "text": "K: TypeInformation",
-        "line": 112,
-        "resolved": "Flink/09-language-foundations/selector: T => K",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "f: T => R",
-        "text": "R: TypeInformation",
-        "line": 113,
-        "resolved": "f: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\n    function: KeyedProcessFunction[K, T, R]\n  ",
-        "text": "R: TypeInformation",
-        "line": 119,
-        "resolved": "Flink/09-language-foundations/\n    function: KeyedProcessFunction[K, T, R]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\"myState\"",
-        "text": "CountWithTimestamp",
-        "line": 472,
-        "resolved": "Flink/09-language-foundations/\"myState\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\"session\"",
-        "text": "SessionAccumulator",
-        "line": 900,
-        "resolved": "Flink/09-language-foundations/\"session\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "../01-architecture-overview.md",
-        "text": "Flink 架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "\n        \"transactions\",\n        new SimpleStringSchema(",
-        "text": "String",
-        "line": 548,
-        "resolved": "Flink/09-language-foundations/\n        \"transactions\",\n        new SimpleStringSchema(",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 621,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "f: T => U",
-        "text": "U",
-        "line": 622,
-        "resolved": "f: T => U",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/cost-optimization-calculator.md",
-        "url": "./flink-deployment-architectures.md",
-        "text": "Flink 部署架构",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-deployment-architectures.md",
-        "suggestion": [
-          "DEPLOYMENT-ARCHITECTURES.md",
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/cost-optimization-calculator.md",
-        "url": "./flink-performance-tuning.md",
-        "text": "Flink 性能调优",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-performance-tuning.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md",
-        "url": "./flink-kubernetes-operator-deployment.md",
-        "text": "Flink Kubernetes Operator 部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-operator-deployment.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/flink-serverless-architecture.md",
-        "url": "flink-kubernetes-deployment-guide.md",
-        "text": "Flink Kubernetes部署",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-guide.md",
         "suggestion": null
       },
       {
@@ -2692,33 +1106,6 @@
       },
       {
         "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .GrafanaURL }}",
-        "text": "Grafana 仪表盘",
-        "line": 1974,
-        "resolved": "Flink/15-observability/{{ .GrafanaURL }}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .Annotations.RunbookURL }}",
-        "text": "运行手册",
-        "line": 1975,
-        "resolved": "Flink/15-observability/{{ .Annotations.RunbookURL }}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .LogsURL }}",
-        "text": "作业日志",
-        "line": 1976,
-        "resolved": "Flink/15-observability/{{ .LogsURL }}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
         "source": "Flink/15-observability/flink-opentelemetry-observability.md",
         "url": "../13-checkpoint/flink-exactly-once-semantics.md",
         "text": "13-checkpoint/flink-exactly-once-semantics.md",
@@ -2757,32 +1144,68 @@
       },
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{deploy_url}",
-        "text": "查看部署",
-        "line": 343,
-        "resolved": ".scripts/notifications/{deploy_url}",
+        "source": "docs/i18n/README.md",
+        "url": ".scripts/i18n-manager.py --help",
+        "text": "工具帮助",
+        "line": 89,
+        "resolved": "docs/i18n/.scripts/i18n-manager.py --help",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{log_url}",
-        "text": "查看日志",
-        "line": 344,
-        "resolved": ".scripts/notifications/{log_url}",
+        "source": ".github/feedback-templates/classification.md",
+        "url": "link",
+        "text": "Discussion",
+        "line": 254,
+        "resolved": ".github/feedback-templates/link",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{dashboard_url}",
-        "text": "监控仪表板",
-        "line": 345,
-        "resolved": ".scripts/notifications/{dashboard_url}",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../issues/new/choose",
+        "text": "Issues 页面",
+        "line": 27,
+        "resolved": "issues/new/choose",
+        "suggestion": null
+      },
+      {
+        "type": "file_not_found",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../discussions",
+        "text": "GitHub Discussions",
+        "line": 143,
+        "resolved": "discussions",
+        "suggestion": null
+      },
+      {
+        "type": "file_not_found",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../graphs/contributors",
+        "text": "项目维护者",
+        "line": 144,
+        "resolved": "graphs/contributors",
         "suggestion": [
-          "DASHBOARD.md"
+          "CONTRIBUTORS.md"
         ]
+      },
+      {
+        "type": "file_not_found",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../issues/new?labels=meta",
+        "text": "Meta Issue",
+        "line": 145,
+        "resolved": "issues/new?labels=meta",
+        "suggestion": null
+      },
+      {
+        "type": "file_not_found",
+        "source": ".github/ISSUE_TEMPLATE/README.md",
+        "url": "../../issues/new/choose",
+        "text": "Issues 页面",
+        "line": 16,
+        "resolved": "issues/new/choose",
+        "suggestion": null
       }
     ],
     "anchor_not_found": [
@@ -2794,206 +1217,6 @@
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "BEST-PRACTICES.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 15,
-        "file": "BEST-PRACTICES.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#h",
-        "text": "H",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "h",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#j",
-        "text": "J",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "j",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#v",
-        "text": "V",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "v",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#z",
-        "text": "Z",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "z",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流计算相关",
-        "text": "流计算相关",
-        "line": 35,
-        "file": "GLOSSARY.md",
-        "anchor": "流计算相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#批处理相关",
-        "text": "批处理相关",
-        "line": 36,
-        "file": "GLOSSARY.md",
-        "anchor": "批处理相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#实时处理相关",
-        "text": "实时处理相关",
-        "line": 37,
-        "file": "GLOSSARY.md",
-        "anchor": "实时处理相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#进程演算术语",
-        "text": "进程演算术语",
-        "line": 41,
-        "file": "GLOSSARY.md",
-        "anchor": "进程演算术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#形式化验证术语",
-        "text": "形式化验证术语",
-        "line": 42,
-        "file": "GLOSSARY.md",
-        "anchor": "形式化验证术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#类型理论术语",
-        "text": "类型理论术语",
-        "line": 43,
-        "file": "GLOSSARY.md",
-        "anchor": "类型理论术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#核心概念",
-        "text": "核心概念",
-        "line": 47,
-        "file": "GLOSSARY.md",
-        "anchor": "核心概念",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#配置参数",
-        "text": "配置参数",
-        "line": 49,
-        "file": "GLOSSARY.md",
-        "anchor": "配置参数",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#设计模式术语",
-        "text": "设计模式术语",
-        "line": 53,
-        "file": "GLOSSARY.md",
-        "anchor": "设计模式术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#架构术语",
-        "text": "架构术语",
-        "line": 54,
-        "file": "GLOSSARY.md",
-        "anchor": "架构术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#运维术语",
-        "text": "运维术语",
-        "line": 55,
-        "file": "GLOSSARY.md",
-        "anchor": "运维术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#性能优化-术语",
-        "text": "性能优化术语",
-        "line": 61,
-        "file": "GLOSSARY.md",
-        "anchor": "性能优化-术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流批一体-术语",
-        "text": "流批一体术语",
-        "line": 62,
-        "file": "GLOSSARY.md",
-        "anchor": "流批一体-术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流数据库术语",
-        "text": "流数据库术语",
-        "line": 64,
-        "file": "GLOSSARY.md",
-        "anchor": "流数据库术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#云原生术语",
-        "text": "云原生术语",
-        "line": 65,
-        "file": "GLOSSARY.md",
-        "anchor": "云原生术语",
         "suggestion": null
       },
       {
@@ -4388,6 +2611,46 @@
       },
       {
         "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 30,
+        "file": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "#64-混合架构flink--materialize",
+        "text": "6.4 混合架构：Flink + Materialize",
+        "line": 36,
+        "file": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "anchor": "64-混合架构flink--materialize",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "url": "#41-为什么需要-risingwave--flink-混合架构",
+        "text": "4.1 为什么需要 RisingWave + Flink 混合架构",
+        "line": 26,
+        "file": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "anchor": "41-为什么需要-risingwave--flink-混合架构",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 29,
+        "file": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
         "source": "Knowledge/06-frontier/serverless-streaming-cost-optimization.md",
         "url": "#aws-lambda--msk-serverless",
         "text": "AWS Lambda + MSK Serverless",
@@ -4469,11 +2732,11 @@
       {
         "type": "anchor_not_found",
         "source": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
-        "url": "#webassembly-数据流模式浏览器-边缘-云统一执行模型",
+        "url": "#webassembly-数据流模式-浏览器-边缘-云统一执行模型",
         "text": "WebAssembly 数据流模式：浏览器-边缘-云统一执行模型",
         "line": 7,
         "file": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
-        "anchor": "webassembly-数据流模式浏览器-边缘-云统一执行模型",
+        "anchor": "webassembly-数据流模式-浏览器-边缘-云统一执行模型",
         "suggestion": null
       },
       {
@@ -5028,11 +3291,31 @@
       },
       {
         "type": "anchor_not_found",
+        "source": "Flink/04-connectors/jdbc-connector-complete-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 28,
+        "file": "Flink/04-connectors/jdbc-connector-complete-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
         "source": "Flink/04-connectors/kafka-integration-patterns.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 30,
         "file": "Flink/04-connectors/kafka-integration-patterns.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Flink/04-connectors/mongodb-connector-complete-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 30,
+        "file": "Flink/04-connectors/mongodb-connector-complete-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       },
@@ -5635,16 +3918,6 @@
         "file": "Flink/15-observability/realtime-data-quality-monitoring.md",
         "anchor": "61-flink--great-expectations-集成实现",
         "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": ".scripts/flink-version-tracking/cron-schedule.md",
-        "url": "#linux-cron-配置",
-        "text": "Linux Cron 配置",
-        "line": 11,
-        "file": ".scripts/flink-version-tracking/cron-schedule.md",
-        "anchor": "linux-cron-配置",
-        "suggestion": null
       }
     ]
   },
@@ -5658,315 +3931,6 @@
         "line": 25,
         "file": "BENCHMARK-REPORT.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "BEST-PRACTICES.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "BEST-PRACTICES.md",
-        "url": "#5-形式证明--工程论证-proof--engineering-argument",
-        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
-        "line": 15,
-        "file": "BEST-PRACTICES.md",
-        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "CROSS-REF-VALIDATION-REPORT-v2.md": [
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "Struct/01-foundation/01.01-ustm.md",
-        "text": "文本",
-        "line": 42,
-        "resolved": "Struct/01-foundation/01.01-ustm.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "path/to/doc1.md",
-        "text": "相关文档1",
-        "line": 114,
-        "resolved": "path/to/doc1.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "path/to/doc2.md",
-        "text": "相关文档2",
-        "line": 115,
-        "resolved": "path/to/doc2.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../path",
-        "text": "",
-        "line": 119,
-        "resolved": "../path",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "./path/to/file.md",
-        "text": "text",
-        "line": 123,
-        "resolved": "path/to/file.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Struct/",
-        "text": "Struct/",
-        "line": 157,
-        "resolved": "../../../Struct",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Knowledge/",
-        "text": "Knowledge/",
-        "line": 158,
-        "resolved": "../../../Knowledge",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../../Flink/",
-        "text": "Flink/",
-        "line": 159,
-        "resolved": "../../../Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../Flink/",
-        "text": "../Flink/",
-        "line": 170,
-        "resolved": "../../Flink",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "CROSS-REF-VALIDATION-REPORT-v2.md",
-        "url": "../../Knowledge/",
-        "text": "../Knowledge/",
-        "line": 171,
-        "resolved": "../../Knowledge",
-        "suggestion": null
-      }
-    ],
-    "GLOSSARY-QUICK-INDEX.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#h",
-        "text": "H",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "h",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#j",
-        "text": "J",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "j",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#v",
-        "text": "V",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "v",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY-QUICK-INDEX.md",
-        "url": "#z",
-        "text": "Z",
-        "line": 11,
-        "file": "GLOSSARY-QUICK-INDEX.md",
-        "anchor": "z",
-        "suggestion": null
-      }
-    ],
-    "GLOSSARY.md": [
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流计算相关",
-        "text": "流计算相关",
-        "line": 35,
-        "file": "GLOSSARY.md",
-        "anchor": "流计算相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#批处理相关",
-        "text": "批处理相关",
-        "line": 36,
-        "file": "GLOSSARY.md",
-        "anchor": "批处理相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#实时处理相关",
-        "text": "实时处理相关",
-        "line": 37,
-        "file": "GLOSSARY.md",
-        "anchor": "实时处理相关",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#进程演算术语",
-        "text": "进程演算术语",
-        "line": 41,
-        "file": "GLOSSARY.md",
-        "anchor": "进程演算术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#形式化验证术语",
-        "text": "形式化验证术语",
-        "line": 42,
-        "file": "GLOSSARY.md",
-        "anchor": "形式化验证术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#类型理论术语",
-        "text": "类型理论术语",
-        "line": 43,
-        "file": "GLOSSARY.md",
-        "anchor": "类型理论术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#核心概念",
-        "text": "核心概念",
-        "line": 47,
-        "file": "GLOSSARY.md",
-        "anchor": "核心概念",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#配置参数",
-        "text": "配置参数",
-        "line": 49,
-        "file": "GLOSSARY.md",
-        "anchor": "配置参数",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#设计模式术语",
-        "text": "设计模式术语",
-        "line": 53,
-        "file": "GLOSSARY.md",
-        "anchor": "设计模式术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#架构术语",
-        "text": "架构术语",
-        "line": 54,
-        "file": "GLOSSARY.md",
-        "anchor": "架构术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#运维术语",
-        "text": "运维术语",
-        "line": 55,
-        "file": "GLOSSARY.md",
-        "anchor": "运维术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#性能优化-术语",
-        "text": "性能优化术语",
-        "line": 61,
-        "file": "GLOSSARY.md",
-        "anchor": "性能优化-术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流批一体-术语",
-        "text": "流批一体术语",
-        "line": 62,
-        "file": "GLOSSARY.md",
-        "anchor": "流批一体-术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#流数据库术语",
-        "text": "流数据库术语",
-        "line": 64,
-        "file": "GLOSSARY.md",
-        "anchor": "流数据库术语",
-        "suggestion": null
-      },
-      {
-        "type": "anchor_not_found",
-        "source": "GLOSSARY.md",
-        "url": "#云原生术语",
-        "text": "云原生术语",
-        "line": 65,
-        "file": "GLOSSARY.md",
-        "anchor": "云原生术语",
-        "suggestion": null
-      }
-    ],
-    "STANDARD-GAP-SUPPLEMENT.md": [
-      {
-        "type": "file_not_found",
-        "source": "STANDARD-GAP-SUPPLEMENT.md",
-        "url": "链接",
-        "text": "PDF",
-        "line": 283,
-        "resolved": "链接",
         "suggestion": null
       }
     ],
@@ -6857,24 +4821,6 @@
         "file": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
         "anchor": "6-实例与反例-examples--counter-examples",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "fa: F[A]",
-        "text": "A, B",
-        "line": 501,
-        "resolved": "Struct/05-comparative-analysis/fa: F[A]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
-        "url": "list: List[T]",
-        "text": "T",
-        "line": 522,
-        "resolved": "Struct/05-comparative-analysis/list: List[T]",
-        "suggestion": null
       }
     ],
     "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md": [
@@ -7047,28 +4993,15 @@
         "suggestion": null
       }
     ],
-    "Struct/07-tools/model-checking-practice.md": [
+    "reports/feedback/README.md": [
       {
         "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "cp_requested -> <>cp_completed",
-        "text": "",
-        "line": 217,
-        "resolved": "Struct/07-tools/cp_requested -> <>cp_completed",
-        "suggestion": [
-          "COMPLETED.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "text": "",
-        "line": 507,
-        "resolved": "Struct/07-tools/<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "suggestion": [
-          "DONE.md"
-        ]
+        "source": "reports/feedback/README.md",
+        "url": "../../issues",
+        "text": "Issue 列表",
+        "line": 101,
+        "resolved": "issues",
+        "suggestion": null
       }
     ],
     "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md": [
@@ -7153,15 +5086,6 @@
         "file": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
         "anchor": "示例-64-cep--pubsub-混合实例金融风控实时告警",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
-        "url": "\"first\"",
-        "text": "Transaction",
-        "line": 545,
-        "resolved": "Knowledge/01-concept-atlas/\"first\"",
-        "suggestion": null
       }
     ],
     "Knowledge/02-design-patterns/pattern-async-io-enrichment.md": [
@@ -7174,53 +5098,6 @@
         "file": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 754,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 770,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "text": "IN, OUT",
-        "line": 786,
-        "resolved": "Knowledge/02-design-patterns/\n    input: DataStream[IN],\n    asyncFunc: AsyncFunction[IN, OUT]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\"async-timeout\"",
-        "text": "IN",
-        "line": 792,
-        "resolved": "Knowledge/02-design-patterns/\"async-timeout\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "text": "IN, OUT",
-        "line": 808,
-        "resolved": "Knowledge/02-design-patterns/\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "suggestion": [
-          "00.md"
-        ]
       }
     ],
     "Knowledge/02-design-patterns/pattern-cep-complex-event.md": [
@@ -7255,15 +5132,6 @@
         "file": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
         "anchor": "5-形式证明--工程论证",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
-        "url": "\n    \"user-state\",\n    Types.CASE_CLASS[UserStateV2]\n  ",
-        "text": "UserStateV2",
-        "line": 740,
-        "resolved": "Knowledge/02-design-patterns/\n    \"user-state\",\n    Types.CASE_CLASS[UserStateV2]\n  ",
-        "suggestion": null
       }
     ],
     "Knowledge/02-design-patterns/pattern-event-time-processing.md": [
@@ -7275,15 +5143,6 @@
         "line": 13,
         "file": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
         "anchor": "1-问题与背景-problem--context",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorReading",
-        "line": 419,
-        "resolved": "Knowledge/02-design-patterns/\"late-data\"",
         "suggestion": null
       }
     ],
@@ -7328,96 +5187,6 @@
         "line": 36,
         "file": "Knowledge/02-design-patterns/pattern-side-output.md",
         "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"int-output\"",
-        "text": "Int",
-        "line": 343,
-        "resolved": "Knowledge/02-design-patterns/\"int-output\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"string-output\"",
-        "text": "String",
-        "line": 344,
-        "resolved": "Knowledge/02-design-patterns/\"string-output\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"high-temperature\"",
-        "text": "SensorReading",
-        "line": 523,
-        "resolved": "Knowledge/02-design-patterns/\"high-temperature\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"invalid-data\"",
-        "text": "String",
-        "line": 524,
-        "resolved": "Knowledge/02-design-patterns/\"invalid-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"late-data\"",
-        "text": "SensorReading",
-        "line": 599,
-        "resolved": "Knowledge/02-design-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"schema-error\"",
-        "text": "String",
-        "line": 654,
-        "resolved": "Knowledge/02-design-patterns/\"schema-error\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"business-error\"",
-        "text": "String",
-        "line": 655,
-        "resolved": "Knowledge/02-design-patterns/\"business-error\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"threshold-alert\"",
-        "text": "AlertEvent",
-        "line": 656,
-        "resolved": "Knowledge/02-design-patterns/\"threshold-alert\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"retry-queue\"",
-        "text": "Event",
-        "line": 657,
-        "resolved": "Knowledge/02-design-patterns/\"retry-queue\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-side-output.md",
-        "url": "\"quality-metrics\"",
-        "text": "QualityEvent",
-        "line": 765,
-        "resolved": "Knowledge/02-design-patterns/\"quality-metrics\"",
         "suggestion": null
       }
     ],
@@ -7469,24 +5238,6 @@
       {
         "type": "file_not_found",
         "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "\"txn1\"",
-        "text": "Transaction",
-        "line": 639,
-        "resolved": "Knowledge/03-business-patterns/\"txn1\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
-        "url": "\"login\"",
-        "text": "Transaction",
-        "line": 649,
-        "resolved": "Knowledge/03-business-patterns/\"login\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
         "url": "../../Flink/01-architecture/flink-24-performance-improvements.md",
         "text": "Flink 2.0 Architecture",
         "line": 1067,
@@ -7516,89 +5267,6 @@
         "file": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
         "anchor": "21-cep--flink-架构概览",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"first\"",
-        "text": "EnrichedTransaction",
-        "line": 522,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"first\"",
-        "text": "EnrichedTransaction",
-        "line": 804,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
-        "url": "\"txn1\"",
-        "text": "EnrichedTransaction",
-        "line": 816,
-        "resolved": "Knowledge/03-business-patterns/\"txn1\"",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/03-business-patterns/gaming-analytics.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"first\"",
-        "text": "MoveEvent",
-        "line": 692,
-        "resolved": "Knowledge/03-business-patterns/\"first\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"high-confidence\"",
-        "text": "CheatAlert",
-        "line": 751,
-        "resolved": "Knowledge/03-business-patterns/\"high-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"low-confidence\"",
-        "text": "CheatAlert",
-        "line": 752,
-        "resolved": "Knowledge/03-business-patterns/\"low-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"move1\"",
-        "text": "MoveEvent",
-        "line": 897,
-        "resolved": "Knowledge/03-business-patterns/\"move1\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"high-confidence\"",
-        "text": "CheatAlert",
-        "line": 912,
-        "resolved": "Knowledge/03-business-patterns/\"high-confidence\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/gaming-analytics.md",
-        "url": "\"low-confidence\"",
-        "text": "CheatAlert",
-        "line": 913,
-        "resolved": "Knowledge/03-business-patterns/\"low-confidence\"",
-        "suggestion": null
       }
     ],
     "Knowledge/03-business-patterns/iot-stream-processing.md": [
@@ -7620,33 +5288,6 @@
         "line": 47,
         "file": "Knowledge/03-business-patterns/iot-stream-processing.md",
         "anchor": "72-actor--dataflow-双层架构",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 660,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 694,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/03-business-patterns/iot-stream-processing.md",
-        "url": "\"late-data\"",
-        "text": "SensorEvent",
-        "line": 855,
-        "resolved": "Knowledge/03-business-patterns/\"late-data\"",
         "suggestion": null
       }
     ],
@@ -7860,32 +5501,16 @@
         "file": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
         "anchor": "5-形式证明--工程论证",
         "suggestion": null
-      },
+      }
+    ],
+    "Knowledge/05-migrations/kafka-streams-to-flink-guide.md": [
       {
         "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\n      maxOutOfOrderness: Duration\n  ",
-        "text": "T: TimestampAssigner",
-        "line": 437,
-        "resolved": "Knowledge/05-mapping-guides/\n      maxOutOfOrderness: Duration\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\"counter\", createTypeInformation[Long]",
-        "text": "Long",
-        "line": 644,
-        "resolved": "Knowledge/05-mapping-guides/\"counter\", createTypeInformation[Long]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
-        "url": "\n    createTypeInformation[Event].createSerializer(new ExecutionConfig",
-        "text": "Event, TransactionState, Void",
-        "line": 852,
-        "resolved": "Knowledge/05-mapping-guides/\n    createTypeInformation[Event].createSerializer(new ExecutionConfig",
+        "source": "Knowledge/05-migrations/kafka-streams-to-flink-guide.md",
+        "url": "../Flink/03-api-layer/ds-core-abstraction.md",
+        "text": "Flink DataStream API",
+        "line": 3,
+        "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
         "suggestion": null
       }
     ],
@@ -7921,34 +5546,67 @@
         "file": "Knowledge/06-frontier/edge-streaming-patterns.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
+      }
+    ],
+    "Knowledge/06-frontier/materialize-comparison-guide.md": [
+      {
+        "type": "file_not_found",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "line": 3,
+        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 30,
+        "file": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      },
+      {
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "#64-混合架构flink--materialize",
+        "text": "6.4 混合架构：Flink + Materialize",
+        "line": 36,
+        "file": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "anchor": "64-混合架构flink--materialize",
+        "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": "Knowledge/06-frontier/edge-streaming-patterns.md",
-        "url": "operation: => T, fallback: => T",
-        "text": "T",
-        "line": 648,
-        "resolved": "Knowledge/06-frontier/operation: => T, fallback: => T",
+        "source": "Knowledge/06-frontier/materialize-comparison-guide.md",
+        "url": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "text": "../../Struct/03-stateful/stateful-computing-foundations.md",
+        "line": 1283,
+        "resolved": "Struct/03-stateful/stateful-computing-foundations.md",
         "suggestion": null
       }
     ],
-    "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md": [
+    "Knowledge/06-frontier/risingwave-integration-guide.md": [
       {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
-        "url": "\"security-video-topic\"",
-        "text": "\n    VideoFrame\n",
-        "line": 350,
-        "resolved": "Knowledge/06-frontier/\"security-video-topic\"",
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "url": "#41-为什么需要-risingwave--flink-混合架构",
+        "text": "4.1 为什么需要 RisingWave + Flink 混合架构",
+        "line": 26,
+        "file": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "anchor": "41-为什么需要-risingwave--flink-混合架构",
         "suggestion": null
       },
       {
-        "type": "file_not_found",
-        "source": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
-        "url": "\"security-audio-topic\"",
-        "text": "\n    AudioChunk\n",
-        "line": 354,
-        "resolved": "Knowledge/06-frontier/\"security-audio-topic\"",
+        "type": "anchor_not_found",
+        "source": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 29,
+        "file": "Knowledge/06-frontier/risingwave-integration-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
     ],
@@ -8044,11 +5702,11 @@
       {
         "type": "anchor_not_found",
         "source": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
-        "url": "#webassembly-数据流模式浏览器-边缘-云统一执行模型",
+        "url": "#webassembly-数据流模式-浏览器-边缘-云统一执行模型",
         "text": "WebAssembly 数据流模式：浏览器-边缘-云统一执行模型",
         "line": 7,
         "file": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
-        "anchor": "webassembly-数据流模式浏览器-边缘-云统一执行模型",
+        "anchor": "webassembly-数据流模式-浏览器-边缘-云统一执行模型",
         "suggestion": null
       }
     ],
@@ -8086,39 +5744,6 @@
         "file": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "text": "T <: Serializable",
-        "line": 563,
-        "resolved": "Knowledge/07-best-practices/\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "text": "T",
-        "line": 572,
-        "resolved": "Knowledge/07-best-practices/state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "text": "T",
-        "line": 576,
-        "resolved": "Knowledge/07-best-practices/\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
       }
     ],
     "Knowledge/07-best-practices/07.05-security-hardening-guide.md": [
@@ -8131,28 +5756,6 @@
         "file": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "12",
-        "text": "Byte",
-        "line": 520,
-        "resolved": "Knowledge/07-best-practices/12",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "text": "T",
-        "line": 559,
-        "resolved": "Knowledge/07-best-practices/\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
       }
     ],
     "Knowledge/07-best-practices/07.06-high-availability-patterns.md": [
@@ -8165,17 +5768,6 @@
         "file": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
-        "url": "\n      \"input-topic\",\n      new EventDeserializer(",
-        "text": "Event",
-        "line": 442,
-        "resolved": "Knowledge/07-best-practices/\n      \"input-topic\",\n      new EventDeserializer(",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
       }
     ],
     "Knowledge/08-standards/streaming-security-compliance.md": [
@@ -8189,35 +5781,6 @@
         "suggestion": [
           "SECURITY-AUDIT.md"
         ]
-      }
-    ],
-    "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 384,
-        "resolved": "Knowledge/09-anti-patterns/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"late\"",
-        "text": "Event",
-        "line": 500,
-        "resolved": "Knowledge/09-anti-patterns/\"late\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
-        "url": "\"suspicious-late\"",
-        "text": "Transaction",
-        "line": 552,
-        "resolved": "Knowledge/09-anti-patterns/\"suspicious-late\"",
-        "suggestion": null
       }
     ],
     "Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md": [
@@ -8241,17 +5804,6 @@
         "line": 19,
         "file": "Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md",
         "anchor": "42-结合使用-aggregate--processwindow",
-        "suggestion": null
-      }
-    ],
-    "Knowledge/09-anti-patterns/streaming-anti-patterns.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/09-anti-patterns/streaming-anti-patterns.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 787,
-        "resolved": "Knowledge/09-anti-patterns/\"late-data\"",
         "suggestion": null
       }
     ],
@@ -8710,17 +6262,6 @@
         "suggestion": null
       }
     ],
-    "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md": [
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
-        "url": "\"late-data\"",
-        "text": "Event",
-        "line": 200,
-        "resolved": "Knowledge/98-exercises/\"late-data\"",
-        "suggestion": null
-      }
-    ],
     "Knowledge/98-exercises/README.md": [
       {
         "type": "file_not_found",
@@ -8954,15 +6495,6 @@
         "line": 3,
         "resolved": "Knowledge/Flink/03-api-layer/ds-core-abstraction.md",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
-        "url": "updateFunction",
-        "text": "Int",
-        "line": 279,
-        "resolved": "Knowledge/05-mapping-guides/migration-guides/updateFunction",
-        "suggestion": null
       }
     ],
     "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md": [
@@ -9047,61 +6579,6 @@
         "file": "Flink/01-architecture/datastream-v2-semantics.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 115,
-        "resolved": "Flink/01-architecture/decl: StateDeclarationV2[S]",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 262,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 263,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "K,V",
-        "line": 264,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 309,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
       }
     ],
     "Flink/01-architecture/deployment-architectures.md": [
@@ -9330,6 +6807,17 @@
         "suggestion": null
       }
     ],
+    "Flink/03-sql-table-api/built-in-functions-complete-list.md": [
+      {
+        "type": "file_not_found",
+        "source": "Flink/03-sql-table-api/built-in-functions-complete-list.md",
+        "url": "../01-overview/flink-sql-overview.md",
+        "text": "Flink SQL 概述",
+        "line": 3,
+        "resolved": "Flink/01-overview/flink-sql-overview.md",
+        "suggestion": null
+      }
+    ],
     "Flink/03-sql-table-api/data-types-complete-reference.md": [
       {
         "type": "file_not_found",
@@ -9487,6 +6975,18 @@
         "suggestion": null
       }
     ],
+    "Flink/04-connectors/jdbc-connector-complete-guide.md": [
+      {
+        "type": "anchor_not_found",
+        "source": "Flink/04-connectors/jdbc-connector-complete-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 28,
+        "file": "Flink/04-connectors/jdbc-connector-complete-guide.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      }
+    ],
     "Flink/04-connectors/kafka-integration-patterns.md": [
       {
         "type": "anchor_not_found",
@@ -9495,6 +6995,18 @@
         "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
         "line": 30,
         "file": "Flink/04-connectors/kafka-integration-patterns.md",
+        "anchor": "5-形式证明--工程论证-proof--engineering-argument",
+        "suggestion": null
+      }
+    ],
+    "Flink/04-connectors/mongodb-connector-complete-guide.md": [
+      {
+        "type": "anchor_not_found",
+        "source": "Flink/04-connectors/mongodb-connector-complete-guide.md",
+        "url": "#5-形式证明--工程论证-proof--engineering-argument",
+        "text": "5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+        "line": 30,
+        "file": "Flink/04-connectors/mongodb-connector-complete-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
       }
@@ -9727,28 +7239,6 @@
         "suggestion": null
       }
     ],
-    "Flink/07-operations/rest-api-complete-reference.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-operations/rest-api-complete-reference.md",
-        "url": "../04-runtime/4.1-flink-architecture-overview.md",
-        "text": "04-runtime/4.1-flink-architecture-overview.md",
-        "line": 3,
-        "resolved": "Flink/04-runtime/4.1-flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/07-operations/rest-api-complete-reference.md",
-        "url": "../05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "text": "05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "line": 3,
-        "resolved": "Flink/05-fault-tolerance/5.1-checkpoint-mechanism.md",
-        "suggestion": null
-      }
-    ],
     "Flink/08-roadmap/2026-q2-flink-tasks.md": [
       {
         "type": "anchor_not_found",
@@ -9783,19 +7273,6 @@
         "suggestion": null
       }
     ],
-    "Flink/08-roadmap/flink-2.3-2.4-roadmap.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/flink-2.3-2.4-roadmap.md",
-        "url": "flink-2.2-new-features.md",
-        "text": "Flink 2.2新特性",
-        "line": 3,
-        "resolved": "Flink/08-roadmap/flink-2.2-new-features.md",
-        "suggestion": [
-          "ROADMAP.md"
-        ]
-      }
-    ],
     "Flink/08-roadmap/flink-30-architecture-redesign.md": [
       {
         "type": "anchor_not_found",
@@ -9805,15 +7282,6 @@
         "line": 40,
         "file": "Flink/08-roadmap/flink-30-architecture-redesign.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argumentation",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/flink-30-architecture-redesign.md",
-        "url": "../02-core-mechanisms/disaggregated-state-analysis.md",
-        "text": "../02-core-mechanisms/disaggregated-state-analysis.md",
-        "line": 1441,
-        "resolved": "Flink/02-core-mechanisms/disaggregated-state-analysis.md",
         "suggestion": null
       }
     ],
@@ -9869,90 +7337,14 @@
         "suggestion": null
       }
     ],
-    "Flink/08-roadmap/release-checklist-template.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/release-checklist-template.md",
-        "url": "../05-ecosystem/flink-development-workflow.md",
-        "text": "Flink 开发流程与分支策略",
-        "line": 4,
-        "resolved": "Flink/05-ecosystem/flink-development-workflow.md",
-        "suggestion": null
-      }
-    ],
     "Flink/09-language-foundations/00-INDEX.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 3,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 394,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
-      },
       {
         "type": "file_not_found",
         "source": "Flink/09-language-foundations/00-INDEX.md",
         "url": "../../Struct/01-foundation/01.03-type-safety-boundaries.md",
         "text": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "line": 395,
-        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Struct/02-concurrency/02.01-actor-model-semantics.md",
-        "text": "Struct/02-concurrency/02.01-actor-model-semantics.md",
         "line": 396,
-        "resolved": "Struct/02-concurrency/02.01-actor-model-semantics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/03-patterns/stream-processing-patterns.md",
-        "text": "Knowledge/03-patterns/stream-processing-patterns.md",
-        "line": 402,
-        "resolved": "Knowledge/03-patterns/stream-processing-patterns.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/04-business/real-time-analytics.md",
-        "text": "Knowledge/04-business/real-time-analytics.md",
-        "line": 403,
-        "resolved": "Knowledge/04-business/real-time-analytics.md",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/05-case-studies/financial-risk.md",
-        "text": "Knowledge/05-case-studies/financial-risk.md",
-        "line": 404,
-        "resolved": "Knowledge/05-case-studies/financial-risk.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../02-mechanisms/checkpointing.md",
-        "text": "Flink/02-mechanisms/checkpointing.md",
-        "line": 411,
-        "resolved": "Flink/02-mechanisms/checkpointing.md",
+        "resolved": "Struct/01-foundation/01.03-type-safety-boundaries.md",
         "suggestion": null
       }
     ],
@@ -9986,30 +7378,12 @@
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
         ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
-        "url": "\n  original: T,\n  processedAt: Long,\n  partitionKey: String\n",
-        "text": "T <: Event",
-        "line": 400,
-        "resolved": "Flink/09-language-foundations/\n  original: T,\n  processedAt: Long,\n  partitionKey: String\n",
-        "suggestion": null
       }
     ],
     "Flink/09-language-foundations/01.02-typeinformation-derivation.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.02-typeinformation-derivation.md",
-        "url": "./01.01-scala-api-type-system.md",
-        "text": "01.01-scala-api-type-system.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01.01-scala-api-type-system.md",
-        "suggestion": null
-      },
       {
         "type": "anchor_not_found",
         "source": "Flink/09-language-foundations/01.02-typeinformation-derivation.md",
@@ -10031,232 +7405,6 @@
         "file": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "using inline ti: TypeInformation[T]",
-        "text": "T",
-        "line": 180,
-        "resolved": "Flink/09-language-foundations/using inline ti: TypeInformation[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "extractFn: T => EventTime",
-        "text": "T",
-        "line": 727,
-        "resolved": "Flink/09-language-foundations/extractFn: T => EventTime",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "_.eventTime",
-        "text": "SensorReading",
-        "line": 745,
-        "resolved": "Flink/09-language-foundations/_.eventTime",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "using\n    m: Mirror.ProductOf[P]\n  ",
-        "text": "P <: Product",
-        "line": 829,
-        "resolved": "Flink/09-language-foundations/using\n    m: Mirror.ProductOf[P]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n    value: P,\n    serializers: Tuple,\n    target: DataOutputView\n  ",
-        "text": "P <: Product",
-        "line": 858,
-        "resolved": "Flink/09-language-foundations/\n    value: P,\n    serializers: Tuple,\n    target: DataOutputView\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n    val name: String,\n    val keySerializer: TypeSerializer[K],\n    val valueSerializer: TypeSerializer[V]\n  ",
-        "text": "K, V",
-        "line": 971,
-        "resolved": "Flink/09-language-foundations/\n    val name: String,\n    val keySerializer: TypeSerializer[K],\n    val valueSerializer: TypeSerializer[V]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n      \"count\",\n      implicitly[TypeSerializer[K]],\n      LongSerializer\n    ",
-        "text": "K, Long",
-        "line": 992,
-        "resolved": "Flink/09-language-foundations/\n      \"count\",\n      implicitly[TypeSerializer[K]],\n      LongSerializer\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\n      \"lastValue\",\n      implicitly[TypeSerializer[K]],\n      implicitly[TypeSerializer[I]]\n    ",
-        "text": "K, I",
-        "line": 998,
-        "resolved": "Flink/09-language-foundations/\n      \"lastValue\",\n      implicitly[TypeSerializer[K]],\n      implicitly[TypeSerializer[I]]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "v: K",
-        "text": "K",
-        "line": 1041,
-        "resolved": "v: K",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "key: StreamKey[K]",
-        "text": "K",
-        "line": 1050,
-        "resolved": "Flink/09-language-foundations/key: StreamKey[K]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\"count\", ..., ...",
-        "text": "String, Long",
-        "line": 1063,
-        "resolved": "Flink/09-language-foundations/\"count\", ..., ...",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
-        "url": "\"avg\", ..., ...",
-        "text": "Int, Double",
-        "line": 1064,
-        "resolved": "Flink/09-language-foundations/\"avg\", ..., ...",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/02-python-api.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02-python-api.md",
-        "url": "./01-java-api.md",
-        "text": "09.01-java-api.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01-java-api.md",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/02.01-java-api-from-scala.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "./02.00-flink-scala-api-overview.md",
-        "text": "02.00-flink-scala-api-overview.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/02.00-flink-scala-api-overview.md",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "_.length",
-        "text": "Integer",
-        "line": 108,
-        "resolved": "Flink/09-language-foundations/_.length",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 324,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "fun: T => R",
-        "text": "R",
-        "line": 325,
-        "resolved": "Flink/09-language-foundations/fun: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 418,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "_.take(3",
-        "text": "String",
-        "line": 436,
-        "resolved": "Flink/09-language-foundations/_.take(3",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "100",
-        "text": "TimeWindow",
-        "line": 570,
-        "resolved": "Flink/09-language-foundations/100",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "1000",
-        "text": "TimeWindow",
-        "line": 571,
-        "resolved": "Flink/09-language-foundations/1000",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "\"late-data\"",
-        "text": "(String, Long, Double)",
-        "line": 578,
-        "resolved": "Flink/09-language-foundations/\"late-data\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 603,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "stream: DataStream[T]",
-        "text": "T <: java.io.Serializable : ClassTag",
-        "line": 648,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
       }
     ],
     "Flink/09-language-foundations/02.02-flink-scala-api-community.md": [
@@ -10268,15 +7416,6 @@
         "line": 13,
         "file": "Flink/09-language-foundations/02.02-flink-scala-api-community.md",
         "anchor": "5-形式证明--工程论证",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.02-flink-scala-api-community.md",
-        "url": "\n      \"user-session\",\n      deriveTypeInformation[UserSession]\n    ",
-        "text": "UserSession",
-        "line": 453,
-        "resolved": "Flink/09-language-foundations/\n      \"user-session\",\n      deriveTypeInformation[UserSession]\n    ",
         "suggestion": null
       }
     ],
@@ -10299,17 +7438,6 @@
         "line": 41,
         "file": "Flink/09-language-foundations/02.03-python-async-api.md",
         "anchor": "66-混合-table-api--async-datastream-api",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/03-rust-native.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03-rust-native.md",
-        "url": "01-udf-basics.md",
-        "text": "Flink UDF基础",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/01-udf-basics.md",
         "suggestion": null
       }
     ],
@@ -10343,123 +7471,6 @@
         "file": "Flink/09-language-foundations/03.01-migration-guide.md",
         "anchor": "savepoint-恢复配置-path-a--c",
         "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"UTF-8\"",
-        "text": "String",
-        "line": 571,
-        "resolved": "Flink/09-language-foundations/\"UTF-8\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"user-state\",\n      createTypeInformation[UserState]  // 旧版隐式推导\n    ",
-        "text": "UserState",
-        "line": 593,
-        "resolved": "Flink/09-language-foundations/\n      \"user-state\",\n      createTypeInformation[UserState]  / 旧版隐式推导\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"user-state\",\n      userStateInfo\n    ",
-        "text": "UserState",
-        "line": 632,
-        "resolved": "Flink/09-language-foundations/\n      \"user-state\",\n      userStateInfo\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n  \"input-topic\",\n  new EventDeserializationSchema,\n  kafkaProps\n",
-        "text": "Event",
-        "line": 780,
-        "resolved": "Flink/09-language-foundations/\n  \"input-topic\",\n  new EventDeserializationSchema,\n  kafkaProps\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n  \"output-topic\",\n  new OutputSerializer,\n  kafkaProps\n",
-        "text": "Output",
-        "line": 788,
-        "resolved": "Flink/09-language-foundations/\n  \"output-topic\",\n  new OutputSerializer,\n  kafkaProps\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"count\", createTypeInformation[Long]\n    ",
-        "text": "Long",
-        "line": 835,
-        "resolved": "Flink/09-language-foundations/\n      \"count\", createTypeInformation[Long]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"timer\", createTypeInformation[Long]\n    ",
-        "text": "Long",
-        "line": 838,
-        "resolved": "Flink/09-language-foundations/\n      \"timer\", createTypeInformation[Long]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\n      \"timer\", Types.LONG.asInstanceOf[TypeInformation[Long]]\n    ",
-        "text": "Long",
-        "line": 870,
-        "resolved": "Flink/09-language-foundations/\n      \"timer\", Types.LONG.asInstanceOf[TypeInformation[Long]]\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"count\", longInfo",
-        "text": "Long",
-        "line": 903,
-        "resolved": "Flink/09-language-foundations/\"count\", longInfo",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"timer\", longInfo",
-        "text": "Long",
-        "line": 904,
-        "resolved": "Flink/09-language-foundations/\"timer\", longInfo",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "oldDescriptor: ValueStateDescriptor[T],\n    newDescriptor: ValueStateDescriptor[T]\n  ",
-        "text": "\n    T: TypeInformation\n  ",
-        "line": 1192,
-        "resolved": "Flink/09-language-foundations/oldDescriptor: ValueStateDescriptor[T],\n    newDescriptor: ValueStateDescriptor[T]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"start\"",
-        "text": "Transaction",
-        "line": 1594,
-        "resolved": "Flink/09-language-foundations/\"start\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/03.01-migration-guide.md",
-        "url": "\"start\"",
-        "text": "Transaction",
-        "line": 1604,
-        "resolved": "Flink/09-language-foundations/\"start\"",
-        "suggestion": null
       }
     ],
     "Flink/09-language-foundations/05-datastream-v2-api.md": [
@@ -10481,339 +7492,6 @@
         "line": 38,
         "file": "Flink/09-language-foundations/05-datastream-v2-api.md",
         "anchor": "66-migration-example-v1--v2-side-by-side",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 75,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "f: T => R",
-        "text": "R",
-        "line": 91,
-        "resolved": "f: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 171,
-        "resolved": "Flink/09-language-foundations/decl: StateDeclarationV2[S]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 172,
-        "resolved": "Flink/09-language-foundations/decl: StateDeclarationV2[S]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "value: R",
-        "text": "R",
-        "line": 180,
-        "resolved": "Flink/09-language-foundations/value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "values: List[R]",
-        "text": "R",
-        "line": 181,
-        "resolved": "Flink/09-language-foundations/values: List[R]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "tag: OutputTag[R], value: R",
-        "text": "R",
-        "line": 183,
-        "resolved": "Flink/09-language-foundations/tag: OutputTag[R], value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "future: Future[Output[R]]",
-        "text": "R",
-        "line": 184,
-        "resolved": "Flink/09-language-foundations/future: Future[Output[R]]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "value: R",
-        "text": "R",
-        "line": 187,
-        "resolved": "Flink/09-language-foundations/value: R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V: TypeInformation",
-        "line": 257,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "V",
-        "line": 258,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V: TypeInformation",
-        "line": 260,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "V",
-        "line": 261,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "K: TypeInformation, V: TypeInformation",
-        "line": 263,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "K, V",
-        "line": 264,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name: String",
-        "text": "V",
-        "line": 266,
-        "resolved": "Flink/09-language-foundations/name: String",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n  input: RecordV2[In],\n  output: Out,\n  op: Operator[In, Out]\n",
-        "text": "In, Out",
-        "line": 343,
-        "resolved": "Flink/09-language-foundations/\n  input: RecordV2[In],\n  output: Out,\n  op: Operator[In, Out]\n",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n    savepointPath: String,\n    stateMappers: Map[String, StateMapper[OldState, NewState]]\n  ",
-        "text": "\n    OldState: TypeInformation,\n    NewState: TypeInformation\n  ",
-        "line": 508,
-        "resolved": "Flink/09-language-foundations/\n    savepointPath: String,\n    stateMappers: Map[String, StateMapper[OldState, NewState]]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "name",
-        "text": "T",
-        "line": 546,
-        "resolved": "Flink/09-language-foundations/name",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"count\", Types.LONG",
-        "text": "Long",
-        "line": 566,
-        "resolved": "Flink/09-language-foundations/\"count\", Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"count\"",
-        "text": "Long",
-        "line": 585,
-        "resolved": "Flink/09-language-foundations/\"count\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\", Types.LONG",
-        "text": "Long",
-        "line": 623,
-        "resolved": "Flink/09-language-foundations/\"counter\", Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 627,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"events\", Types.STRING",
-        "text": "String",
-        "line": 638,
-        "resolved": "Flink/09-language-foundations/\"events\", Types.STRING",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"events\"",
-        "text": "String",
-        "line": 642,
-        "resolved": "Flink/09-language-foundations/\"events\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counts\", Types.STRING, Types.LONG",
-        "text": "String, Long",
-        "line": 649,
-        "resolved": "Flink/09-language-foundations/\"counts\", Types.STRING, Types.LONG",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counts\"",
-        "text": "String, Long",
-        "line": 653,
-        "resolved": "Flink/09-language-foundations/\"counts\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"counter\"",
-        "text": "Long",
-        "line": 898,
-        "resolved": "Flink/09-language-foundations/\"counter\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"UTF-8\"",
-        "text": "(String, Long)",
-        "line": 1254,
-        "resolved": "Flink/09-language-foundations/\"UTF-8\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"wordCount\"",
-        "text": "Long",
-        "line": 1268,
-        "resolved": "Flink/09-language-foundations/\"wordCount\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"lastReading\"",
-        "text": "SensorReading",
-        "line": 1335,
-        "resolved": "Flink/09-language-foundations/\"lastReading\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"recentReadings\"",
-        "text": "SensorReading",
-        "line": 1340,
-        "resolved": "Flink/09-language-foundations/\"recentReadings\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"windowStats\"",
-        "text": "String, WindowStatistics",
-        "line": 1346,
-        "resolved": "Flink/09-language-foundations/\"windowStats\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"deviceMetadataCache\"",
-        "text": "String, DeviceMetadata",
-        "line": 1649,
-        "resolved": "Flink/09-language-foundations/\"deviceMetadataCache\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"enrichment-errors\"",
-        "text": "EnrichmentError",
-        "line": 1715,
-        "resolved": "Flink/09-language-foundations/\"enrichment-errors\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\n      \"wordCount\",\n      Types.LONG  // 类型信息在运行时\n    ",
-        "text": "Long",
-        "line": 1776,
-        "resolved": "Flink/09-language-foundations/\n      \"wordCount\",\n      Types.LONG  / 类型信息在运行时\n    ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/05-datastream-v2-api.md",
-        "url": "\"wordCount\"",
-        "text": "Long",
-        "line": 1833,
-        "resolved": "Flink/09-language-foundations/\"wordCount\"",
         "suggestion": null
       }
     ],
@@ -10861,19 +7539,6 @@
         "suggestion": null
       }
     ],
-    "Flink/09-language-foundations/07.01-timely-dataflow-optimization.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/07.01-timely-dataflow-optimization.md",
-        "url": "./07.00-scala-in-flink-foundations.md",
-        "text": "07.00-scala-in-flink-foundations.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/07.00-scala-in-flink-foundations.md",
-        "suggestion": [
-          "00.md"
-        ]
-      }
-    ],
     "Flink/09-language-foundations/08-flink-rust-connector-dev.md": [
       {
         "type": "anchor_not_found",
@@ -10887,15 +7552,6 @@
       }
     ],
     "Flink/09-language-foundations/09-wasm-udf-frameworks.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/09-wasm-udf-frameworks.md",
-        "url": "../../Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "text": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "line": 3,
-        "resolved": "Struct/01-foundation/01.02-type-system-hierarchy.md",
-        "suggestion": null
-      },
       {
         "type": "anchor_not_found",
         "source": "Flink/09-language-foundations/09-wasm-udf-frameworks.md",
@@ -10973,15 +7629,6 @@
     ],
     "Flink/09-language-foundations/flink-datastream-api-complete-guide.md": [
       {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "../../Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "text": "../../Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "line": 3,
-        "resolved": "Struct/02-concurrency/02.03-stream-processing-theory.md",
-        "suggestion": null
-      },
-      {
         "type": "anchor_not_found",
         "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
         "url": "#5-形式证明--工程论证-proof--engineering-argument",
@@ -10989,114 +7636,6 @@
         "line": 38,
         "file": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "selector: T => K",
-        "text": "K: TypeInformation",
-        "line": 112,
-        "resolved": "Flink/09-language-foundations/selector: T => K",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "f: T => R",
-        "text": "R: TypeInformation",
-        "line": 113,
-        "resolved": "f: T => R",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\n    function: KeyedProcessFunction[K, T, R]\n  ",
-        "text": "R: TypeInformation",
-        "line": 119,
-        "resolved": "Flink/09-language-foundations/\n    function: KeyedProcessFunction[K, T, R]\n  ",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\"myState\"",
-        "text": "CountWithTimestamp",
-        "line": 472,
-        "resolved": "Flink/09-language-foundations/\"myState\"",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-        "url": "\"session\"",
-        "text": "SessionAccumulator",
-        "line": 900,
-        "resolved": "Flink/09-language-foundations/\"session\"",
-        "suggestion": null
-      }
-    ],
-    "Flink/09-language-foundations/flink-language-support-complete-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "../01-architecture-overview.md",
-        "text": "Flink 架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "\n        \"transactions\",\n        new SimpleStringSchema(",
-        "text": "String",
-        "line": 548,
-        "resolved": "Flink/09-language-foundations/\n        \"transactions\",\n        new SimpleStringSchema(",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "stream: DataStream[T]",
-        "text": "T",
-        "line": 621,
-        "resolved": "Flink/09-language-foundations/stream: DataStream[T]",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "f: T => U",
-        "text": "U",
-        "line": 622,
-        "resolved": "f: T => U",
-        "suggestion": null
-      }
-    ],
-    "Flink/10-deployment/cost-optimization-calculator.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/cost-optimization-calculator.md",
-        "url": "./flink-deployment-architectures.md",
-        "text": "Flink 部署架构",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-deployment-architectures.md",
-        "suggestion": [
-          "DEPLOYMENT-ARCHITECTURES.md",
-          "ARCHITECTURE.md"
-        ]
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/cost-optimization-calculator.md",
-        "url": "./flink-performance-tuning.md",
-        "text": "Flink 性能调优",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-performance-tuning.md",
         "suggestion": null
       }
     ],
@@ -11124,17 +7663,6 @@
         "suggestion": null
       }
     ],
-    "Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md",
-        "url": "./flink-kubernetes-operator-deployment.md",
-        "text": "Flink Kubernetes Operator 部署指南",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-operator-deployment.md",
-        "suggestion": null
-      }
-    ],
     "Flink/10-deployment/flink-kubernetes-operator-deep-dive.md": [
       {
         "type": "anchor_not_found",
@@ -11144,17 +7672,6 @@
         "line": 32,
         "file": "Flink/10-deployment/flink-kubernetes-operator-deep-dive.md",
         "anchor": "5-形式证明--工程论证-proof--engineering-argument",
-        "suggestion": null
-      }
-    ],
-    "Flink/10-deployment/flink-serverless-architecture.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/flink-serverless-architecture.md",
-        "url": "flink-kubernetes-deployment-guide.md",
-        "text": "Flink Kubernetes部署",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-kubernetes-deployment-guide.md",
         "suggestion": null
       }
     ],
@@ -11548,35 +8065,6 @@
         "suggestion": null
       }
     ],
-    "Flink/15-observability/flink-observability-complete-guide.md": [
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .GrafanaURL }}",
-        "text": "Grafana 仪表盘",
-        "line": 1974,
-        "resolved": "Flink/15-observability/{{ .GrafanaURL }}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .Annotations.RunbookURL }}",
-        "text": "运行手册",
-        "line": 1975,
-        "resolved": "Flink/15-observability/{{ .Annotations.RunbookURL }}",
-        "suggestion": null
-      },
-      {
-        "type": "file_not_found",
-        "source": "Flink/15-observability/flink-observability-complete-guide.md",
-        "url": "{{ .LogsURL }}",
-        "text": "作业日志",
-        "line": 1976,
-        "resolved": "Flink/15-observability/{{ .LogsURL }}",
-        "suggestion": null
-      }
-    ],
     "Flink/15-observability/flink-opentelemetry-observability.md": [
       {
         "type": "file_not_found",
@@ -11641,47 +8129,77 @@
         "suggestion": null
       }
     ],
-    ".scripts/flink-version-tracking/cron-schedule.md": [
+    "docs/i18n/README.md": [
       {
-        "type": "anchor_not_found",
-        "source": ".scripts/flink-version-tracking/cron-schedule.md",
-        "url": "#linux-cron-配置",
-        "text": "Linux Cron 配置",
-        "line": 11,
-        "file": ".scripts/flink-version-tracking/cron-schedule.md",
-        "anchor": "linux-cron-配置",
+        "type": "file_not_found",
+        "source": "docs/i18n/README.md",
+        "url": ".scripts/i18n-manager.py --help",
+        "text": "工具帮助",
+        "line": 89,
+        "resolved": "docs/i18n/.scripts/i18n-manager.py --help",
         "suggestion": null
       }
     ],
-    ".scripts/notifications/notification-rules.md": [
+    ".github/feedback-templates/classification.md": [
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{deploy_url}",
-        "text": "查看部署",
-        "line": 343,
-        "resolved": ".scripts/notifications/{deploy_url}",
+        "source": ".github/feedback-templates/classification.md",
+        "url": "link",
+        "text": "Discussion",
+        "line": 254,
+        "resolved": ".github/feedback-templates/link",
+        "suggestion": null
+      }
+    ],
+    ".github/feedback-templates/README.md": [
+      {
+        "type": "file_not_found",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../issues/new/choose",
+        "text": "Issues 页面",
+        "line": 27,
+        "resolved": "issues/new/choose",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{log_url}",
-        "text": "查看日志",
-        "line": 344,
-        "resolved": ".scripts/notifications/{log_url}",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../discussions",
+        "text": "GitHub Discussions",
+        "line": 143,
+        "resolved": "discussions",
         "suggestion": null
       },
       {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{dashboard_url}",
-        "text": "监控仪表板",
-        "line": 345,
-        "resolved": ".scripts/notifications/{dashboard_url}",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../graphs/contributors",
+        "text": "项目维护者",
+        "line": 144,
+        "resolved": "graphs/contributors",
         "suggestion": [
-          "DASHBOARD.md"
+          "CONTRIBUTORS.md"
         ]
+      },
+      {
+        "type": "file_not_found",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../issues/new?labels=meta",
+        "text": "Meta Issue",
+        "line": 145,
+        "resolved": "issues/new?labels=meta",
+        "suggestion": null
+      }
+    ],
+    ".github/ISSUE_TEMPLATE/README.md": [
+      {
+        "type": "file_not_found",
+        "source": ".github/ISSUE_TEMPLATE/README.md",
+        "url": "../../issues/new/choose",
+        "text": "Issues 页面",
+        "line": 16,
+        "resolved": "issues/new/choose",
+        "suggestion": null
       }
     ]
   },
@@ -11720,51 +8238,6 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "cp_requested -> <>cp_completed",
-        "text": "",
-        "line": 217,
-        "resolved": "Struct/07-tools/cp_requested -> <>cp_completed",
-        "suggestion": [
-          "COMPLETED.md"
-        ]
-      },
-      "fix": "COMPLETED.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Struct/07-tools/model-checking-practice.md",
-        "url": "<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "text": "",
-        "line": 507,
-        "resolved": "Struct/07-tools/<>(state[0] != DONE || state[1] != DONE || state[2] != DONE",
-        "suggestion": [
-          "DONE.md"
-        ]
-      },
-      "fix": "DONE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
-        "url": "\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "text": "IN, OUT",
-        "line": 808,
-        "resolved": "Knowledge/02-design-patterns/\n  maxRetries: Int = 3,\n  retryDelayMs: Long = 100\n",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      "fix": "00.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
         "source": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
         "url": "../../Flink/01-architecture/flink-24-performance-improvements.md",
         "text": "Flink 2.0 Architecture",
@@ -11775,96 +8248,6 @@
         ]
       },
       "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "text": "T <: Serializable",
-        "line": 563,
-        "resolved": "Knowledge/07-best-practices/\n  name: String,\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "text": "T",
-        "line": 572,
-        "resolved": "Knowledge/07-best-practices/state.asInstanceOf[ValueState[Array[Byte]]], serializer",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
-        "url": "\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "text": "T",
-        "line": 576,
-        "resolved": "Knowledge/07-best-practices/\n  backend: ValueState[Array[Byte]],\n  serializer: TypeSerializer[T]\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "12",
-        "text": "Byte",
-        "line": 520,
-        "resolved": "Knowledge/07-best-practices/12",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
-        "url": "\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "text": "T",
-        "line": 559,
-        "resolved": "Knowledge/07-best-practices/\n  inner: RichFunction,\n  auditLogger: AuditLogger\n",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
-        "url": "\n      \"input-topic\",\n      new EventDeserializer(",
-        "text": "Event",
-        "line": 442,
-        "resolved": "Knowledge/07-best-practices/\n      \"input-topic\",\n      new EventDeserializer(",
-        "suggestion": [
-          "BEST-PRACTICES.md"
-        ]
-      },
-      "fix": "BEST-PRACTICES.md"
     },
     {
       "type": "case_mismatch",
@@ -11945,81 +8328,6 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "decl: StateDeclarationV2[S]",
-        "text": "S",
-        "line": 115,
-        "resolved": "Flink/01-architecture/decl: StateDeclarationV2[S]",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 262,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 263,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "K,V",
-        "line": 264,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/01-architecture/datastream-v2-semantics.md",
-        "url": "name",
-        "text": "T",
-        "line": 309,
-        "resolved": "Flink/01-architecture/name",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
         "source": "Flink/03-sql-table-api/data-types-complete-reference.md",
         "url": "./01-architecture-overview.md",
         "text": "01-基础架构概述",
@@ -12035,51 +8343,6 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": "Flink/07-operations/rest-api-complete-reference.md",
-        "url": "../04-runtime/4.1-flink-architecture-overview.md",
-        "text": "04-runtime/4.1-flink-architecture-overview.md",
-        "line": 3,
-        "resolved": "Flink/04-runtime/4.1-flink-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/08-roadmap/flink-2.3-2.4-roadmap.md",
-        "url": "flink-2.2-new-features.md",
-        "text": "Flink 2.2新特性",
-        "line": 3,
-        "resolved": "Flink/08-roadmap/flink-2.2-new-features.md",
-        "suggestion": [
-          "ROADMAP.md"
-        ]
-      },
-      "fix": "ROADMAP.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/00-INDEX.md",
-        "url": "../../Knowledge/05-case-studies/financial-risk.md",
-        "text": "Knowledge/05-case-studies/financial-risk.md",
-        "line": 404,
-        "resolved": "Knowledge/05-case-studies/financial-risk.md",
-        "suggestion": [
-          "CASE-STUDIES.md"
-        ]
-      },
-      "fix": "CASE-STUDIES.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
         "source": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
         "url": "f",
         "text": "C_1, C_2",
@@ -12087,71 +8350,11 @@
         "resolved": "Flink/09-language-foundations/f",
         "suggestion": [
           "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
-          "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md"
+          "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
+          "Flink/09-language-foundations/flink-language-support-complete-guide.md"
         ]
       },
       "fix": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "./02.00-flink-scala-api-overview.md",
-        "text": "02.00-flink-scala-api-overview.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/02.00-flink-scala-api-overview.md",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      "fix": "00.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "100",
-        "text": "TimeWindow",
-        "line": 570,
-        "resolved": "Flink/09-language-foundations/100",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      "fix": "00.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
-        "url": "1000",
-        "text": "TimeWindow",
-        "line": 571,
-        "resolved": "Flink/09-language-foundations/1000",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      "fix": "00.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/07.01-timely-dataflow-optimization.md",
-        "url": "./07.00-scala-in-flink-foundations.md",
-        "text": "07.00-scala-in-flink-foundations.md",
-        "line": 3,
-        "resolved": "Flink/09-language-foundations/07.00-scala-in-flink-foundations.md",
-        "suggestion": [
-          "00.md"
-        ]
-      },
-      "fix": "00.md"
     },
     {
       "type": "case_mismatch",
@@ -12167,37 +8370,6 @@
         ]
       },
       "fix": "Flink/13-wasm/wasm-streaming.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
-        "url": "../01-architecture-overview.md",
-        "text": "Flink 架构概览",
-        "line": 3,
-        "resolved": "Flink/01-architecture-overview.md",
-        "suggestion": [
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "ARCHITECTURE.md"
-    },
-    {
-      "type": "case_mismatch",
-      "error": {
-        "type": "file_not_found",
-        "source": "Flink/10-deployment/cost-optimization-calculator.md",
-        "url": "./flink-deployment-architectures.md",
-        "text": "Flink 部署架构",
-        "line": 3,
-        "resolved": "Flink/10-deployment/flink-deployment-architectures.md",
-        "suggestion": [
-          "DEPLOYMENT-ARCHITECTURES.md",
-          "ARCHITECTURE.md"
-        ]
-      },
-      "fix": "DEPLOYMENT-ARCHITECTURES.md"
     },
     {
       "type": "case_mismatch",
@@ -12338,29 +8510,41 @@
       "type": "case_mismatch",
       "error": {
         "type": "file_not_found",
-        "source": ".scripts/notifications/notification-rules.md",
-        "url": "{dashboard_url}",
-        "text": "监控仪表板",
-        "line": 345,
-        "resolved": ".scripts/notifications/{dashboard_url}",
+        "source": ".github/feedback-templates/README.md",
+        "url": "../../graphs/contributors",
+        "text": "项目维护者",
+        "line": 144,
+        "resolved": "graphs/contributors",
         "suggestion": [
-          "DASHBOARD.md"
+          "CONTRIBUTORS.md"
         ]
       },
-      "fix": "DASHBOARD.md"
+      "fix": "CONTRIBUTORS.md"
     }
   ],
   "all_files": [
+    ".github/ISSUE_TEMPLATE/README.md",
+    ".github/feedback-templates/README.md",
+    ".github/feedback-templates/classification.md",
+    ".github/feedback-templates/thank-you.md",
+    ".scripts/README-STATS.md",
+    ".scripts/README.md",
     ".scripts/flink-version-tracking/README.md",
     ".scripts/flink-version-tracking/cron-schedule.md",
+    ".scripts/link-checker/ANCHOR_FIX_REPORT.md",
     ".scripts/link-checker/README.md",
     ".scripts/link-checker/github-action-integration.md",
     ".scripts/notifications/notification-rules.md",
+    ".scripts/quality-gates/README.md",
     ".scripts/quality-gates/pre-commit-hook.md",
+    ".scripts/quality-gates/registry-patch.md",
     ".scripts/quality-gates/theorem-check-report.md",
     ".scripts/stats-updater/README.md",
     ".scripts/version-comparison/README.md",
+    ".stats/README.md",
+    ".stats/STATISTICS-REPORT-GENERATED.md",
     ".tasks/FLINK-24-25-30-MASTER-TASK.md",
+    ".tasks/P2-10-completion-report.md",
     ".tasks/flink-features/TASK-MASTER-LIST.md",
     ".vscode/README.md",
     ".vscode/VALIDATION-README.md",
@@ -12368,6 +8552,7 @@
     "00.md",
     "100-COMPLETE-FINAL.md",
     "100-PERCENT-COMPLETE.md",
+    "30-AGENTS-FULL-COMPLETION-REPORT.md",
     "ABSOLUTE-100-PERCENT-COMPLETION.md",
     "ACKNOWLEDGMENTS.md",
     "AGENTS.md",
@@ -12391,6 +8576,7 @@
     "CONFIG-TEMPLATES/scenarios/scenario-comparison.md",
     "CONTINUOUS-EXPANSION-REPORT.md",
     "CONTRIBUTING.md",
+    "CONTRIBUTORS.md",
     "CRITICAL-EVALUATION-REPORT-v1.0.md",
     "CROSS-REF-VALIDATION-REPORT-v2.md",
     "CROSS-REF-VALIDATION-REPORT.md",
@@ -12443,7 +8629,9 @@
     "Flink/02-core-mechanisms/streaming-etl-best-practices.md",
     "Flink/02-core-mechanisms/time-semantics-and-watermark.md",
     "Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md",
+    "Flink/03-sql-table-api/built-in-functions-complete-list.md",
     "Flink/03-sql-table-api/data-types-complete-reference.md",
+    "Flink/03-sql-table-api/flink-cep-complete-guide.md",
     "Flink/03-sql-table-api/flink-materialized-table-deep-dive.md",
     "Flink/03-sql-table-api/flink-process-table-functions.md",
     "Flink/03-sql-table-api/flink-python-udf.md",
@@ -12469,7 +8657,9 @@
     "Flink/04-connectors/flink-iceberg-integration.md",
     "Flink/04-connectors/flink-paimon-integration.md",
     "Flink/04-connectors/fluss-integration.md",
+    "Flink/04-connectors/jdbc-connector-complete-guide.md",
     "Flink/04-connectors/kafka-integration-patterns.md",
+    "Flink/04-connectors/mongodb-connector-complete-guide.md",
     "Flink/04-connectors/pulsar-integration-guide.md",
     "Flink/05-operations/production-checklist.md",
     "Flink/05-vs-competitors/flink-vs-kafka-streams.md",
@@ -12533,6 +8723,7 @@
     "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
     "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
     "Flink/09-language-foundations/flink-language-support-complete-guide.md",
+    "Flink/09-language-foundations/pyflink-complete-guide.md",
     "Flink/10-deployment/cost-optimization-calculator.md",
     "Flink/10-deployment/flink-24-deployment-improvements.md",
     "Flink/10-deployment/flink-deployment-ops-complete-guide.md",
@@ -12635,6 +8826,7 @@
     "Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md",
     "Knowledge/05-mapping-guides/struct-to-flink-mapping.md",
     "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
+    "Knowledge/05-migrations/kafka-streams-to-flink-guide.md",
     "Knowledge/06-frontier/a2a-protocol-agent-communication.md",
     "Knowledge/06-frontier/ai-agent-a2a-protocol.md",
     "Knowledge/06-frontier/ai-agent-database-workloads.md",
@@ -12645,6 +8837,7 @@
     "Knowledge/06-frontier/edge-streaming-architecture.md",
     "Knowledge/06-frontier/edge-streaming-patterns.md",
     "Knowledge/06-frontier/faas-dataflow.md",
+    "Knowledge/06-frontier/materialize-comparison-guide.md",
     "Knowledge/06-frontier/mcp-protocol-agent-streaming.md",
     "Knowledge/06-frontier/multi-cloud-streaming-architecture.md",
     "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
@@ -12658,6 +8851,7 @@
     "Knowledge/06-frontier/realtime-feature-store-architecture.md",
     "Knowledge/06-frontier/realtime-graph-streaming-tgnn.md",
     "Knowledge/06-frontier/risingwave-deep-dive.md",
+    "Knowledge/06-frontier/risingwave-integration-guide.md",
     "Knowledge/06-frontier/rust-streaming-comparison.md",
     "Knowledge/06-frontier/rust-streaming-ecosystem.md",
     "Knowledge/06-frontier/serverless-stream-processing-architecture.md",
@@ -12729,6 +8923,7 @@
     "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
     "Knowledge/98-exercises/quick-ref-temporal-flink.md",
     "LEARNING-PATH-GUIDE.md",
+    "LEARNING-PATHS-DYNAMIC.md",
     "LEARNING-PATHS/00-INDEX.md",
     "LEARNING-PATHS/architect-path.md",
     "LEARNING-PATHS/backend-developer-path.md",
@@ -12751,12 +8946,15 @@
     "LEARNING-PATHS/interview-prep-path.md",
     "LEARNING-PATHS/researcher-path.md",
     "LEARNING-PATHS/student-path.md",
+    "LEARNING-PATHS/test-output.md",
     "LICENSE-HEADER-TEMPLATE.md",
     "LICENSE-NOTICE.md",
     "MAINTENANCE-GUIDE.md",
     "MAINTENANCE-NOTICE.md",
     "NAVIGATION-INDEX.md",
     "OBSERVABILITY-GUIDE.md",
+    "P0-2-CROSS-REF-FIX-REPORT-BATCH-B.md",
+    "P2-12-COMMUNITY-FEEDBACK-SYSTEM.md",
     "PARALLEL-TASKS-COMPLETION-REPORT.md",
     "PDF-EXPORT-GUIDE.md",
     "PHASE-1-COMPLETION-REPORT.md",
@@ -12766,6 +8964,7 @@
     "PROJECT-COMPLETION-FINAL-REPORT.md",
     "PROJECT-COMPLETION-REPORT.md",
     "PROJECT-CRITICAL-REVIEW-AND-ROADMAP.md",
+    "PROJECT-FINAL-STATUS-REPORT.md",
     "PROJECT-FINALLY-COMPLETE.md",
     "PROJECT-MAINTENANCE-DASHBOARD.md",
     "PROJECT-MAP.md",
@@ -12846,6 +9045,9 @@
     "docker/USAGE.md",
     "docs/ai-features/AI-SEARCH-DESIGN.md",
     "docs/i18n/ARCHITECTURE.md",
+    "docs/i18n/README.md",
+    "docs/i18n/templates/translation-template.md",
+    "reports/feedback/README.md",
     "reports/weekly/weekly-report-W14-20260404.md",
     "reports/weekly/weekly-report-latest.md",
     "tutorials/00-5-MINUTE-QUICK-START.md",
@@ -12898,6 +9100,11 @@
     "visuals/theorem-dependencies.md"
   ],
   "all_dirs": [
+    ".github",
+    ".github/ISSUE_TEMPLATE",
+    ".github/feedback-templates",
+    ".github/workflows",
+    ".link-checker-cache",
     ".scripts",
     ".scripts/__pycache__",
     ".scripts/flink-version-tracking",
@@ -12983,6 +9190,7 @@
     "docs",
     "docs/ai-features",
     "docs/i18n",
+    "docs/i18n/config",
     "docs/i18n/glossary",
     "docs/i18n/i18n-content",
     "docs/i18n/i18n-content/en",
@@ -12996,6 +9204,7 @@
     "docs/i18n/templates",
     "docs/i18n/workflows",
     "reports",
+    "reports/feedback",
     "reports/weekly",
     "tutorials",
     "tutorials/interactive",

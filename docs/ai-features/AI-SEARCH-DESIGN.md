@@ -38,11 +38,13 @@
 ```
 
 **核心能力**:
+
 - 基于语义理解的文档匹配（而非仅关键词匹配）
 - 支持自然语言查询（如"Flink的checkpoint机制如何实现容错"）
 - 相似概念关联（如"Dataflow"可匹配"流计算模型"）
 
 **技术参数**:
+
 | 参数 | 值 | 说明 |
 |------|-----|------|
 | 向量维度 | 768/1024/1536 | 根据Embedding模型选择 |
@@ -53,6 +55,7 @@
 ### 2.2 关键词+语义混合搜索
 
 **混合评分公式**:
+
 ```
 Final_Score = α × Semantic_Score + β × BM25_Score + γ × Metadata_Score
 
@@ -63,6 +66,7 @@ Final_Score = α × Semantic_Score + β × BM25_Score + γ × Metadata_Score
 ```
 
 **实现策略**:
+
 1. **并行查询**: 同时执行向量搜索和BM25搜索
 2. **结果融合**: 使用RRF (Reciprocal Rank Fusion)算法合并结果
 3. **动态权重**: 根据查询类型自动调整权重
@@ -71,13 +75,13 @@ Final_Score = α × Semantic_Score + β × BM25_Score + γ × Metadata_Score
 # RRF融合算法
 def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
     scores = {}
-    
+
     for rank, doc in enumerate(vector_results):
         scores[doc.id] = scores.get(doc.id, 0) + 1/(k + rank + 1)
-    
+
     for rank, doc in enumerate(keyword_results):
         scores[doc.id] = scores.get(doc.id, 0) + 1/(k + rank + 1)
-    
+
     return sorted(scores.items(), key=lambda x: x[1], reverse=True)
 ```
 
@@ -109,6 +113,7 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 ### 3.1 自动提取关键信息
 
 **关键信息类型**:
+
 - 核心概念定义
 - 重要配置参数
 - 代码示例
@@ -116,6 +121,7 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 - 常见陷阱/注意事项
 
 **提取技术**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                   关键信息提取流水线                          │
@@ -133,11 +139,13 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 ### 3.2 TL;DR摘要生成
 
 **生成策略**:
+
 - **抽取式**: 从原文提取关键句子（适合技术文档）
 - **生成式**: 使用LLM生成流畅摘要（适合概念性文档）
 - **混合式**: 先抽取关键内容，再生成连贯摘要
 
 **TL;DR模板**:
+
 ```markdown
 ## TL;DR
 
@@ -214,21 +222,23 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 ### 4.2 上下文理解
 
 **上下文管理**:
+
 - **文档上下文**: 当前查询相关的文档内容
 - **对话上下文**: 多轮对话历史
 - **用户上下文**: 用户角色、权限、偏好
 
 **上下文窗口策略**:
+
 ```python
 # 上下文优先级排序
 def build_context_window(query, retrieved_docs, chat_history, max_tokens=4000):
     contexts = []
     used_tokens = 0
-    
+
     # 1. 系统提示 (固定)
     system_tokens = 500
     used_tokens += system_tokens
-    
+
     # 2. 对话历史 (最近3轮)
     for msg in chat_history[-3:]:
         msg_tokens = estimate_tokens(msg)
@@ -236,7 +246,7 @@ def build_context_window(query, retrieved_docs, chat_history, max_tokens=4000):
             break
         contexts.append(msg)
         used_tokens += msg_tokens
-    
+
     # 3. 检索文档 (按相关性排序)
     for doc in sorted(retrieved_docs, key=lambda x: x.score, reverse=True):
         doc_tokens = estimate_tokens(doc.content)
@@ -244,13 +254,14 @@ def build_context_window(query, retrieved_docs, chat_history, max_tokens=4000):
             break
         contexts.append(doc)
         used_tokens += doc_tokens
-    
+
     return contexts
 ```
 
 ### 4.3 多轮对话支持
 
 **对话状态管理**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     对话状态机                               │
@@ -268,6 +279,7 @@ def build_context_window(query, retrieved_docs, chat_history, max_tokens=4000):
 ```
 
 **指代消解示例**:
+
 ```
 用户: "Flink的Checkpoint机制是什么？"
 AI: "Checkpoint是Flink的容错机制，通过..."
@@ -278,6 +290,7 @@ AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
 ### 4.4 引用来源标注
 
 **引用格式**:
+
 ```markdown
 根据[^1]和[^2]的描述，Flink的Checkpoint机制...
 
@@ -286,6 +299,7 @@ AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
 ```
 
 **实现方式**:
+
 1. 检索时保留文档元数据（标题、路径、章节）
 2. LLM Prompt中明确要求标注引用
 3. 后处理验证引用准确性
@@ -310,6 +324,7 @@ AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
 **推荐方案**: **Milvus** (开源、高性能、中文社区活跃)
 
 **Milvus架构选择**:
+
 ```yaml
 # docker-compose.yml 单机版
 version: '3.5'
@@ -335,7 +350,8 @@ services:
 | **BAAI/bge-base-zh** | 768 | 中文优化 | ⭐⭐⭐⭐ | 性价比 |
 | **sentence-transformers/all-MiniLM-L6-v2** | 384 | 英文 | ⭐⭐⭐ | 快速原型 |
 
-**推荐方案**: 
+**推荐方案**:
+
 - **生产环境**: `BAAI/bge-large-zh` (中文技术文档优化)
 - **备选**: `text-embedding-3-small` (OpenAI API，快速上线)
 
@@ -351,6 +367,7 @@ services:
 | Llama 2 13B | 4K | 自托管 | 一般 | 私有化部署 |
 
 **推荐方案**:
+
 - **MVP阶段**: GPT-3.5-Turbo (快速验证)
 - **生产环境**: 通义千问 / 文心一言 (国内合规+成本)
 - **私有化**: Llama 2 + 微调 (数据敏感场景)
@@ -358,6 +375,7 @@ services:
 ### 5.4 索引更新策略
 
 **增量更新流程**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     文档变更检测                                 │
@@ -386,6 +404,7 @@ services:
 ```
 
 **更新策略**:
+
 | 策略 | 触发条件 | 延迟 | 适用场景 |
 |------|----------|------|----------|
 | 实时更新 | Webhook | <1分钟 | 关键文档 |
@@ -406,13 +425,13 @@ flowchart LR
     D --> E[语义分块]
     E --> F[质量检查]
     F --> G[(结构化存储)]
-    
+
     subgraph "预处理"
         B
         C
         D
     end
-    
+
     subgraph "分块处理"
         E
         F
@@ -429,12 +448,13 @@ flowchart LR
 | 语义分块 | 动态 | - | 高质量需求 |
 
 **Markdown分块示例**:
+
 ```python
 def split_markdown(content):
     """按标题层级分块"""
     chunks = []
     current_chunk = {"level": 0, "title": "", "content": ""}
-    
+
     for line in content.split('\n'):
         if line.startswith('#'):
             # 保存当前块
@@ -449,7 +469,7 @@ def split_markdown(content):
             }
         else:
             current_chunk["content"] += line + '\n'
-    
+
     return chunks
 ```
 
@@ -463,7 +483,7 @@ flowchart TD
     C --> E[向量]
     E --> F[元数据关联]
     F --> G[(向量数据库)]
-    
+
     subgraph "缓存层"
         H[(Redis)]
         B -.-> H
@@ -471,6 +491,7 @@ flowchart TD
 ```
 
 **批处理优化**:
+
 - 批量编码: 每次32-64个文本块
 - 异步处理: 使用消息队列
 - 缓存策略: Redis缓存已编码内容
@@ -486,10 +507,10 @@ sequenceDiagram
     participant V as 向量数据库
     participant L as LLM服务
     participant C as 缓存
-    
+
     U->>API: 查询请求
     API->>Q: 转发请求
-    
+
     Q->>C: 检查缓存
     alt 缓存命中
         C-->>Q: 返回缓存结果
@@ -504,7 +525,7 @@ sequenceDiagram
         L-->>Q: 返回回答
         Q->>C: 写入缓存
     end
-    
+
     Q-->>API: 返回结果
     API-->>U: 响应
 ```
@@ -516,21 +537,25 @@ sequenceDiagram
 ### 7.1 MVP功能 (4周)
 
 **第1周: 基础设施搭建**
+
 - [ ] 部署Milvus向量数据库
 - [ ] 搭建Embedding服务 (BGE模型)
 - [ ] 实现文档解析和分块
 
 **第2周: 核心搜索**
+
 - [ ] 实现语义搜索API
 - [ ] 实现关键词搜索API
 - [ ] 基础排序算法
 
 **第3周: RAG问答**
+
 - [ ] 集成LLM (GPT-3.5)
 - [ ] 实现基础RAG流程
 - [ ] 引用标注功能
 
 **第4周: 集成测试**
+
 - [ ] 端到端测试
 - [ ] 性能基准测试
 - [ ] 文档和部署
@@ -538,21 +563,25 @@ sequenceDiagram
 ### 7.2 完整功能 (8周)
 
 **第5-6周: 功能增强**
+
 - [ ] 混合搜索优化
 - [ ] 多轮对话支持
 - [ ] 文档摘要生成
 
 **第7-8周: 系统集成**
+
 - [ ] 前端UI开发
 - [ ] 用户反馈收集
 - [ ] 监控和日志
 
 **第9-10周: 性能优化**
+
 - [ ] 查询缓存优化
 - [ ] 索引构建优化
 - [ ] 响应速度优化
 
 **第11-12周: 企业特性**
+
 - [ ] 用户权限管理
 - [ ] 使用统计面板
 - [ ] API限流和计费
@@ -665,7 +694,7 @@ sequenceDiagram
 async def semantic_search(query: SearchQuery):
     # 1. 生成查询向量
     query_vector = embedding_model.encode(query.text)
-    
+
     # 2. 向量检索
     vector_results = milvus_client.search(
         collection_name="docs",
@@ -673,18 +702,18 @@ async def semantic_search(query: SearchQuery):
         limit=20,
         output_fields=["id", "content", "metadata"]
     )
-    
+
     # 3. 关键词检索
     keyword_results = es_client.search(
         index="docs",
         body={"query": {"match": {"content": query.text}}}
     )
-    
+
     # 4. 结果融合
     fused_results = reciprocal_rank_fusion(
         vector_results, keyword_results
     )
-    
+
     return {"results": fused_results[:10]}
 ```
 
@@ -713,6 +742,7 @@ async def semantic_search(query: SearchQuery):
 ---
 
 **文档版本历史**:
+
 | 版本 | 日期 | 修改内容 | 作者 |
 |------|------|----------|------|
 | v1.0 | 2026-04-04 | 初始版本 | AI Assistant |

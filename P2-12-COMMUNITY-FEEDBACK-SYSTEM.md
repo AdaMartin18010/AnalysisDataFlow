@@ -279,7 +279,7 @@ python .scripts/feedback-dashboard.py --serve --port 3000
 
 - [GitHub Issue Forms 文档](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)
 - [项目贡献指南](./CONTRIBUTING.md)
-- [反馈模板目录](./.github/feedback-templates/)
+- [反馈模板目录](./.github/feedback-templates/README.md)
 - [反馈脚本目录](./.scripts/)
 
 ---

@@ -29,7 +29,7 @@ class CrossRefValidator:
     def collect_files(self):
         """收集所有文件"""
         for item in self.base_dir.rglob('*'):
-            if '.git' in str(item):
+            if '.git' in item.parts:
                 continue
             if item.is_file():
                 rel_path = item.relative_to(self.base_dir)
@@ -101,14 +101,43 @@ class CrossRefValidator:
                 theorem_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
                 self.theorems[file_path].add(theorem_id)
     
+    def _get_code_ranges(self, content):
+        """返回代码块和行内代码的 (start, end) 范围列表"""
+        ranges = []
+        # 处理 fenced code blocks (```)
+        fence_pattern = r'^```.*?$'
+        in_code = False
+        code_start = 0
+        for match in re.finditer(fence_pattern, content, re.MULTILINE):
+            if not in_code:
+                code_start = match.start()
+                in_code = True
+            else:
+                ranges.append((code_start, match.end()))
+                in_code = False
+        # 处理行内代码 (`...`)
+        inline_pattern = r'`[^`]*`'
+        for match in re.finditer(inline_pattern, content):
+            start, end = match.start(), match.end()
+            # 检查是否在 fenced code block 内
+            if any(rs <= start and end <= re for rs, re in ranges):
+                continue
+            ranges.append((start, end))
+        return ranges
+
     def extract_links(self, content, file_path):
         """提取文件中的所有链接"""
         # Markdown链接: [text](url) - 改进匹配以处理多行
         link_pattern = r'\[([^\]]*?)\]\(([^)]+)\)'
+        code_ranges = self._get_code_ranges(content)
         for match in re.finditer(link_pattern, content):
+            # 跳过代码块/行内代码中的链接
+            if any(rs <= match.start() and match.end() <= re for rs, re in code_ranges):
+                continue
+
             link_text = match.group(1)
             link_url = match.group(2)
-            
+
             # 过滤掉代码片段中的伪链接
             if '\n' in link_text and 'classOf' in link_url:
                 continue
