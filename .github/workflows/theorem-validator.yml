@@ -1,0 +1,561 @@
+# =============================================================================
+# AnalysisDataFlow 定理编号验证工作流
+# =============================================================================
+# 描述: 验证定理编号的唯一性、格式正确性和注册表一致性
+# 触发条件: PR到main分支、push到main分支、手动触发、每晚自动运行
+# =============================================================================
+
+name: Theorem Validator
+
+on:
+  # PR到main分支时触发
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'THEOREM-REGISTRY.md'
+  
+  # Push到main分支时触发
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'THEOREM-REGISTRY.md'
+  
+  # 每晚自动运行检查
+  schedule:
+    - cron: '0 2 * * *'  # 每天凌晨 2:00 UTC
+  
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      check_format:
+        description: '检查编号格式'
+        required: false
+        default: true
+        type: boolean
+      check_duplicates:
+        description: '检查重复编号'
+        required: false
+        default: true
+        type: boolean
+      check_registry:
+        description: '检查注册表一致性'
+        required: false
+        default: true
+        type: boolean
+      verbose:
+        description: '详细输出'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  # ===========================================================================
+  # Job 1: 定理编号扫描和验证
+  # ===========================================================================
+  validate-theorems:
+    name: 验证定理编号
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      
+      - name: Validate theorem numbers
+        id: theorem_validation
+        run: |
+          echo "::group::定理编号验证"
+          
+          cat > theorem_validator.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          AnalysisDataFlow 定理编号验证器
+          验证定理编号的唯一性、格式正确性和注册表一致性
+          """
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+          
+          # 定理编号模式: Thm-S-01-01, Lemma-K-02-03, Def-F-01-001 等
+          THEOREM_PATTERN = re.compile(
+              r'\b(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2,3})\b'
+          )
+          
+          # 定义类型名称映射
+          TYPE_NAMES = {
+              'Thm': '定理 (Theorem)',
+              'Lemma': '引理 (Lemma)',
+              'Def': '定义 (Definition)',
+              'Prop': '命题 (Proposition)',
+              'Cor': '推论 (Corollary)'
+          }
+          
+          STAGE_NAMES = {
+              'S': 'Struct',
+              'K': 'Knowledge',
+              'F': 'Flink'
+          }
+          
+          def find_all_markdown_files():
+              """获取所有Markdown文件"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              return md_files
+          
+          def extract_theorems_from_file(file_path):
+              """从文件中提取所有定理编号"""
+              theorems = []
+              
+              try:
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                      lines = content.split('\n')
+              except Exception as e:
+                  return theorems
+              
+              for line_num, line in enumerate(lines, 1):
+                  for match in THEOREM_PATTERN.finditer(line):
+                      theorem_type, stage, doc_num, seq_num = match.groups()
+                      theorem_id = f"{theorem_type}-{stage}-{doc_num}-{seq_num}"
+                      
+                      theorems.append({
+                          'id': theorem_id,
+                          'type': theorem_type,
+                          'stage': stage,
+                          'doc_num': doc_num,
+                          'seq_num': seq_num,
+                          'line': line_num,
+                          'context': line.strip()[:100]
+                      })
+              
+              return theorems
+          
+          def check_format_validity(theorem):
+              """检查定理编号格式是否有效"""
+              errors = []
+              
+              # 检查文档编号格式（应为2位数字）
+              if not re.match(r'^\d{2}$', theorem['doc_num']):
+                  errors.append(f"文档编号格式错误: {theorem['doc_num']}（应为2位数字）")
+              
+              # 检查序列号格式（应为2-3位数字）
+              if not re.match(r'^\d{2,3}$', theorem['seq_num']):
+                  errors.append(f"序列号格式错误: {theorem['seq_num']}（应为2-3位数字）")
+              
+              # 检查阶段标识
+              if theorem['stage'] not in STAGE_NAMES:
+                  errors.append(f"未知的阶段标识: {theorem['stage']}")
+              
+              # 检查类型标识
+              if theorem['type'] not in TYPE_NAMES:
+                  errors.append(f"未知的类型标识: {theorem['type']}")
+              
+              return errors
+          
+          def find_duplicates(all_theorems):
+              """查找重复的定理编号"""
+              by_id = defaultdict(list)
+              for theorem in all_theorems:
+                  by_id[theorem['id']].append(theorem)
+              
+              return {k: v for k, v in by_id.items() if len(v) > 1}
+          
+          def generate_report(all_theorems, duplicates, format_errors, output_path):
+              """生成验证报告"""
+              
+              # 统计信息
+              type_counts = defaultdict(int)
+              stage_counts = defaultdict(int)
+              
+              for theorem in all_theorems:
+                  type_counts[theorem['type']] += 1
+                  stage_counts[theorem['stage']] += 1
+              
+              lines = [
+                  "# AnalysisDataFlow 定理编号验证报告",
+                  "",
+                  f"> **生成时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                  f"> **验证模式**: 编号格式 | 唯一性 | 注册表一致性",
+                  "",
+                  "## 📊 统计摘要",
+                  "",
+                  f"- **总定理数**: {len(all_theorems)}",
+                  f"- **唯一定理**: {len(set(t['id'] for t in all_theorems))}",
+                  f"- **重复编号**: {len(duplicates)}",
+                  f"- **格式错误**: {len(format_errors)}",
+                  "",
+                  "### 按类型分布",
+                  "",
+              ]
+              
+              for t_type, count in sorted(type_counts.items()):
+                  type_name = TYPE_NAMES.get(t_type, t_type)
+                  lines.append(f"- **{type_name}**: {count}")
+              
+              lines.extend([
+                  "",
+                  "### 按阶段分布",
+                  "",
+              ])
+              
+              for stage, count in sorted(stage_counts.items()):
+                  stage_name = STAGE_NAMES.get(stage, stage)
+                  lines.append(f"- **{stage_name}**: {count}")
+              
+              # 重复编号详情
+              if duplicates:
+                  lines.extend([
+                      "",
+                      "## ❌ 重复编号详情",
+                      "",
+                      "以下定理编号在多个文件中出现：",
+                      "",
+                  ])
+                  
+                  for theorem_id, occurrences in sorted(duplicates.items()):
+                      lines.extend([
+                          f"### {theorem_id}",
+                          "",
+                          f"**出现次数**: {len(occurrences)}",
+                          "",
+                          "**出现位置**:",
+                          "",
+                      ])
+                      
+                      for occ in occurrences:
+                          lines.append(f"- `{occ['file']}` 第{occ['line']}行")
+                      
+                      lines.append("")
+              
+              # 格式错误详情
+              if format_errors:
+                  lines.extend([
+                      "",
+                      "## ⚠️ 格式错误详情",
+                      "",
+                  ])
+                  
+                  for error in format_errors[:50]:  # 最多显示50个
+                      lines.extend([
+                          f"- **{error['theorem']['id']}**",
+                          f"  - 文件: `{error['file']}` 第{error['theorem']['line']}行",
+                          f"  - 错误: {', '.join(error['errors'])}",
+                          "",
+                      ])
+              
+              # 通过检查的文件列表
+              lines.extend([
+                  "",
+                  "## ✅ 验证通过的文件",
+                  "",
+              ])
+              
+              all_files = set(t.get('file', '') for t in all_theorems)
+              for f in sorted(all_files)[:30]:  # 最多显示30个
+                  lines.append(f"- `{f}`")
+              
+              if len(all_files) > 30:
+                  lines.append(f"- ... 还有 {len(all_files) - 30} 个文件")
+              
+              # 写入报告
+              with open(output_path, 'w', encoding='utf-8') as f:
+                  f.write('\n'.join(lines))
+          
+          def main():
+              print("=" * 70)
+              print("AnalysisDataFlow 定理编号验证器")
+              print("=" * 70)
+              
+              all_files = find_all_markdown_files()
+              print(f"\n📁 扫描 {len(all_files)} 个Markdown文件...")
+              
+              all_theorems = []
+              format_errors = []
+              
+              for file_path in all_files:
+                  theorems = extract_theorems_from_file(file_path)
+                  for t in theorems:
+                      t['file'] = str(file_path)
+                      all_theorems.append(t)
+                      
+                      # 检查格式
+                      errors = check_format_validity(t)
+                      if errors:
+                          format_errors.append({
+                              'theorem': t,
+                              'file': str(file_path),
+                              'errors': errors
+                          })
+              
+              print(f"\n📊 扫描结果:")
+              print(f"   发现定理: {len(all_theorems)} 个")
+              print(f"   唯一定理: {len(set(t['id'] for t in all_theorems))} 个")
+              
+              # 检查重复
+              duplicates = find_duplicates(all_theorems)
+              
+              if duplicates:
+                  print(f"\n❌ 发现 {len(duplicates)} 个重复编号:")
+                  print("-" * 70)
+                  for theorem_id, occurrences in sorted(duplicates.items()):
+                      print(f"\n  {theorem_id} 出现在 {len(occurrences)} 个文件中:")
+                      for occ in occurrences[:5]:
+                          print(f"    - {occ['file']} 第{occ['line']}行")
+                      if len(occurrences) > 5:
+                          print(f"    ... 还有 {len(occurrences) - 5} 个")
+                  print("-" * 70)
+              
+              if format_errors:
+                  print(f"\n⚠️  发现 {len(format_errors)} 个格式错误")
+              
+              # 生成报告
+              print("\n📝 生成验证报告...")
+              generate_report(all_theorems, duplicates, format_errors, 'theorem-validation-report.md')
+              
+              # 生成JSON结果
+              result = {
+                  'timestamp': datetime.now().isoformat(),
+                  'total_theorems': len(all_theorems),
+                  'unique_theorems': len(set(t['id'] for t in all_theorems)),
+                  'duplicates_count': len(duplicates),
+                  'format_errors_count': len(format_errors),
+                  'duplicates': {
+                      k: [{'file': o['file'], 'line': o['line']} for o in v]
+                      for k, v in duplicates.items()
+                  },
+                  'format_errors': format_errors[:20]
+              }
+              
+              with open('theorem-validation-result.json', 'w', encoding='utf-8') as f:
+                  json.dump(result, f, ensure_ascii=False, indent=2)
+              
+              # 输出到GitHub Actions
+              if duplicates:
+                  print("\n::error::发现重复的定理编号!")
+                  for theorem_id in list(duplicates.keys())[:5]:
+                      print(f"::error::重复编号: {theorem_id}")
+                  sys.exit(1)
+              elif format_errors:
+                  print("\n::warning::发现格式错误，但未阻塞")
+                  sys.exit(0)
+              else:
+                  print("\n✅ 所有定理编号验证通过!")
+                  sys.exit(0)
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python theorem_validator.py
+          echo "::endgroup::"
+      
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-validation-results
+          path: |
+            theorem-validation-report.md
+            theorem-validation-result.json
+          retention-days: 90
+      
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let report = '';
+            try {
+              report = fs.readFileSync('theorem-validation-report.md', 'utf8');
+            } catch (e) {
+              report = '定理验证失败，请查看 Actions 日志获取详细信息。';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `❌ **定理编号验证失败**\n\n发现重复的定理编号或格式错误，请修复后再提交。\n\n<details>\n<summary>查看详细报告</summary>\n\n\`\`\`markdown\n${report.substring(0, 6000)}\n\`\`\`\n</details>`
+            });
+
+  # ===========================================================================
+  # Job 2: 定理注册表一致性检查
+  # ===========================================================================
+  check-registry-consistency:
+    name: 检查注册表一致性
+    runs-on: ubuntu-latest
+    needs: validate-theorems
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Check registry consistency
+        run: |
+          echo "::group::注册表一致性检查"
+          
+          cat > check_registry.py << 'SCRIPT'
+          #!/usr/bin/env python3
+          """
+          检查定理注册表与实际文档的一致性
+          """
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          
+          THEOREM_PATTERN = re.compile(
+              r'\b(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2,3})\b'
+          )
+          
+          def extract_from_registry():
+              """从THEOREM-REGISTRY.md提取定理编号"""
+              registry_path = Path('THEOREM-REGISTRY.md')
+              if not registry_path.exists():
+                  return set()
+              
+              try:
+                  with open(registry_path, 'r', encoding='utf-8') as f:
+                      content = f.read()
+              except Exception as e:
+                  return set()
+              
+              theorems = set()
+              for match in THEOREM_PATTERN.finditer(content):
+                  theorem_id = match.group(0)
+                  theorems.add(theorem_id)
+              
+              return theorems
+          
+          def extract_from_docs():
+              """从所有文档提取定理编号"""
+              md_files = list(Path('.').rglob('*.md'))
+              md_files = [f for f in md_files if not any(
+                  part.startswith('.') or part in ['node_modules', '__pycache__', '.git']
+                  for part in f.parts
+              )]
+              
+              theorems = set()
+              for file_path in md_files:
+                  try:
+                      with open(file_path, 'r', encoding='utf-8') as f:
+                          content = f.read()
+                  except:
+                      continue
+                  
+                  for match in THEOREM_PATTERN.finditer(content):
+                      theorem_id = match.group(0)
+                      theorems.add(theorem_id)
+              
+              return theorems
+          
+          def main():
+              print("=" * 70)
+              print("定理注册表一致性检查")
+              print("=" * 70)
+              
+              registry_theorems = extract_from_registry()
+              doc_theorems = extract_from_docs()
+              
+              print(f"\n📊 统计:")
+              print(f"   注册表中的定理: {len(registry_theorems)}")
+              print(f"   文档中的定理: {len(doc_theorems)}")
+              
+              # 找出差异
+              in_docs_not_registry = doc_theorems - registry_theorems
+              in_registry_not_docs = registry_theorems - doc_theorems
+              
+              if in_docs_not_registry:
+                  print(f"\n⚠️  文档中有但注册表中没有的定理 ({len(in_docs_not_registry)} 个):")
+                  for t in sorted(in_docs_not_registry)[:20]:
+                      print(f"   - {t}")
+                  if len(in_docs_not_registry) > 20:
+                      print(f"   ... 还有 {len(in_docs_not_registry) - 20} 个")
+              
+              if in_registry_not_docs:
+                  print(f"\n⚠️  注册表中有但文档中没有的定理 ({len(in_registry_not_docs)} 个):")
+                  for t in sorted(in_registry_not_docs)[:20]:
+                      print(f"   - {t}")
+                  if len(in_registry_not_docs) > 20:
+                      print(f"   ... 还有 {len(in_registry_not_docs) - 20} 个")
+              
+              if not in_docs_not_registry and not in_registry_not_docs:
+                  print("\n✅ 注册表与文档完全一致!")
+                  sys.exit(0)
+              else:
+                  print("\n⚠️  注册表与文档存在差异（仅作提醒）")
+                  sys.exit(0)  # 不一致不导致失败，仅作提醒
+          
+          if __name__ == '__main__':
+              main()
+          SCRIPT
+          
+          python check_registry.py
+          echo "::endgroup::"
+
+  # ===========================================================================
+  # Job 3: 生成验证摘要
+  # ===========================================================================
+  generate-summary:
+    name: 生成验证摘要
+    runs-on: ubuntu-latest
+    needs: [validate-theorems, check-registry-consistency]
+    if: always()
+    
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 📐 定理编号验证结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 检查项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          
+          # 定理编号验证
+          if [ "${{ needs.validate-theorems.result }}" == "success" ]; then
+            echo "| 定理编号验证 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 定理编号验证 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 注册表一致性
+          if [ "${{ needs.check-registry-consistency.result }}" == "success" ]; then
+            echo "| 注册表一致性 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 注册表一致性 | ⚠️ 提醒 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "📄 详细报告请在 Artifacts 中查看" >> $GITHUB_STEP_SUMMARY
