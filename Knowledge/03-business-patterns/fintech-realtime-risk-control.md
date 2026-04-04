@@ -978,9 +978,9 @@ graph TB
 | 模式 | 关系 | 说明 |
 |------|------|------|
 | **[Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md)** | 强依赖 | 金融风控必须基于事件时间保证交易时序正确性，防止乱序导致的误判 [^9] |
-| **[Pattern 03: Complex Event Processing (CEP)](../02-design-patterns/pattern-complex-event-processing.md)** | 强依赖 | CEP 是本模式的核心技术，用于识别复杂欺诈模式 [^8] |
+| **[Pattern 03: Complex Event Processing (CEP)](../02-design-patterns/pattern-cep-complex-event.md)** | 强依赖 | CEP 是本模式的核心技术，用于识别复杂欺诈模式 [^8] |
 | **[Pattern 04: Async I/O Enrichment](../02-design-patterns/pattern-async-io-enrichment.md)** | 强依赖 | 异步查询用户画像、设备指纹等外部特征，不阻塞流处理 |
-| **[Pattern 05: State Management](../02-design-patterns/pattern-state-management.md)** | 强依赖 | 用户级风控状态维护依赖 Keyed State 和 TTL 管理 [^12] |
+| **[Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md)** | 强依赖 | 用户级风控状态维护依赖 Keyed State 和 TTL 管理 [^12] |
 | **[Pattern 07: Checkpoint & Recovery](../02-design-patterns/pattern-checkpoint-recovery.md)** | 强依赖 | Exactly-Once 保证风控决策不重复、不丢失 [^13] |
 | **Flink: [Time Semantics and Watermark](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md)** | 实现基础 | Flink 事件时间语义的具体实现 [^9] |
 | **Flink: [Checkpoint Mechanism](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)** | 实现基础 | Checkpoint 配置与调优指南 [^13] |
@@ -1022,7 +1022,7 @@ graph TB
 
 [^2]: A. C. Bahnsen et al., "Feature Engineering Strategies for Credit Card Fraud Detection," *Expert Systems with Applications*, 51, 2016. <https://doi.org/10.1016/j.eswa.2015.12.030>
 
-[^3]: 实时风控形式化语义，参见 [Struct/04-proofs/04.05-risk-scoring-formal-semantics.md](../../Struct/04-proofs/04.05-risk-scoring-formal-semantics.md)
+[^3]: 实时风控形式化语义，参见 [Struct/04-proofs/04.05-risk-scoring-formal-semantics.md](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)
 
 [^4]: G. Cugola and A. Margara, "Complex Event Processing with T-REX," *Journal of Systems and Software*, 85(8), 2012. <https://doi.org/10.1016/j.jss.2012.03.056>
 
@@ -1047,4 +1047,4 @@ graph TB
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-*关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 03: CEP](../02-design-patterns/pattern-complex-event-processing.md) | [Knowledge 索引](../00-INDEX.md)*
+*关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) | [Knowledge 索引](../00-INDEX.md)*

@@ -1,6 +1,6 @@
 # 流计算 SLO/SLI 定义与可靠性工程
 
-> 所属阶段: Knowledge | 前置依赖: [05-ecosystem/streaming-quality-assurance.md](../05-ecosystem/streaming-quality-assurance.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [05-ecosystem/streaming-quality-assurance.md](../07-best-practices/07.01-flink-production-checklist.md) | 形式化等级: L3
 
 ---
 

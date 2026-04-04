@@ -1,6 +1,6 @@
 # 流处理Data Mesh架构与实时数据产品
 
-> 所属阶段: Knowledge | 前置依赖: [Knowledge/05-dataflow/05.01-dataflow-model.md](../05-dataflow/05.01-dataflow-model.md), [Knowledge/03-design-patterns/stream-processing-patterns.md](../03-design-patterns/stream-processing-patterns.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [Knowledge/05-dataflow/05.01-dataflow-model.md](../01-concept-atlas/streaming-models-mindmap.md), [Knowledge/03-design-patterns/stream-processing-patterns.md](../02-design-patterns/pattern-event-time-processing.md) | 形式化等级: L4
 
 ---
 

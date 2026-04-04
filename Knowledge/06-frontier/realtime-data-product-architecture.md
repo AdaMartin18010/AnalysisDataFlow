@@ -1,6 +1,6 @@
 # 实时数据产品架构：Data Mesh + Streaming
 
-> 所属阶段: Knowledge | 前置依赖: [Data Mesh架构](../04-data-mesh/data-mesh-architecture.md), [流计算系统设计](../03-streaming-systems/streaming-system-design.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [Data Mesh架构](./streaming-data-mesh-architecture.md), [流计算系统设计](../01-concept-atlas/streaming-models-mindmap.md) | 形式化等级: L4
 
 ---
 

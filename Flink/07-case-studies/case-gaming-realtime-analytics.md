@@ -1,6 +1,6 @@
 # 案例研究：游戏行业实时分析与反作弊系统
 
-> 所属阶段: Flink/ | 前置依赖: [Flink CEP 复杂事件处理](../04-advanced/03-flink-cep-complex-event-processing.md), [Flink 与机器学习集成](../05-ecosystem/04-flink-ml-integration.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [Flink SQL窗口函数](../03-sql-table-api/flink-sql-window-functions-deep-dive.md), [Flink ML架构](../12-ai-ml/flink-ml-architecture.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

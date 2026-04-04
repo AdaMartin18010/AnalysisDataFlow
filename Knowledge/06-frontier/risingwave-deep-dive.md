@@ -1,6 +1,6 @@
 # RisingWave 深度解析：云原生流数据库的架构与一致性模型
 
-> 所属阶段: Knowledge | 前置依赖: [Struct/03-stateful/stateful-computing-foundations.md](../../Struct/03-stateful/stateful-computing-foundations.md), [Knowledge/05-advanced/streaming-databases-comparison.md](../05-advanced/streaming-databases-comparison.md) | 形式化等级: L4-L5
+> 所属阶段: Knowledge | 前置依赖: [Struct/03-stateful/stateful-computing-foundations.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Knowledge/05-advanced/streaming-databases-comparison.md](./streaming-database-ecosystem-comparison.md) | 形式化等级: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

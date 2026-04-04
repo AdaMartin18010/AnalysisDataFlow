@@ -1,6 +1,6 @@
 # Flink Process Table Functions (PTF) - 有状态SQL扩展
 
-> **所属阶段**: Flink | **前置依赖**: [Flink SQL基础](./01-flink-sql-fundamentals.md), [Table API架构](./02-table-api-architecture.md) | **形式化等级**: L4
+> **所属阶段**: Flink | **前置依赖**: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md) | **形式化等级**: L4
 
 ---
 

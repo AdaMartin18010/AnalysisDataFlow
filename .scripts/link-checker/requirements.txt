@@ -1,15 +1,12 @@
 # 链接检查器依赖
-# version: 1.0.0
+# version: 2.0.0
+# Python >= 3.8
 
-# 异步HTTP客户端
+# 异步HTTP客户端 (必需)
 aiohttp>=3.9.0
-aiohttp-socks>=0.8.0
 
-# YAML解析
+# YAML解析 (必需)
 PyYAML>=6.0
-
-# 同步HTTP请求 (备用)
-requests>=2.31.0
 
 # 可选: 更好的终端输出
 rich>=13.0.0

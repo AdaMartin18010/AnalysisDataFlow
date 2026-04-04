@@ -1,6 +1,6 @@
 # Flink 2.0 异步执行模型 (Asynchronous Execution Model)
 
-> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [flink-checkpointing-internals.md](./flink-checkpointing-internals.md), [flink-state-backend-comparison.md](./flink-state-backend-comparison.md) | 形式化等级: L4
+> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-2.0-forst-state-backend.md](./flink-2.0-forst-state-backend.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

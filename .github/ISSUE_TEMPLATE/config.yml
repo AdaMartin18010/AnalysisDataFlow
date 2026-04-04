@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 项目文档
+    url: https://github.com/AnalysisDataFlow/AnalysisDataFlow/blob/main/README.md
+    about: 查看项目 README 和使用指南
+
+  - name: 🤔 提问与讨论
+    url: https://github.com/AnalysisDataFlow/AnalysisDataFlow/discussions
+    about: 对于一般性问题或讨论，请使用 Discussions
+
+  - name: 📋 贡献指南
+    url: https://github.com/AnalysisDataFlow/AnalysisDataFlow/blob/main/CONTRIBUTING.md
+    about: 了解如何为项目做出贡献
+
+  - name: 📊 项目看板
+    url: https://github.com/AnalysisDataFlow/AnalysisDataFlow/blob/main/PROJECT-TRACKING.md
+    about: 查看项目当前进度和计划

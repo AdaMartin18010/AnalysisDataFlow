@@ -1,0 +1,3662 @@
+{
+  "name": "AnalysisDataFlow",
+  "children": [
+    {
+      "name": "Struct",
+      "children": [
+        {
+          "name": "00-INDEX.md",
+          "children": [
+            {
+              "name": "Struct/ 形式化理论文档索引",
+              "id": "Struct_00-INDEX",
+              "path": "Struct/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "Struct/ 形式化理论文档索引",
+              "id": "Struct_00-INDEX",
+              "path": "Struct/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "Struct/ 形式化理论文档索引",
+              "id": "Struct_00-INDEX",
+              "path": "Struct/00-INDEX.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "01-foundation",
+          "children": [
+            {
+              "name": "统一流计算理论",
+              "id": "Struct_01-foundation_01.01-unified-streaming-theory",
+              "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+              "level": ""
+            },
+            {
+              "name": "进程演算基础",
+              "id": "Struct_01-foundation_01.02-process-calculus-primer",
+              "path": "Struct/01-foundation/01.02-process-calculus-primer.md",
+              "level": ""
+            },
+            {
+              "name": "Actor 模型形式化",
+              "id": "Struct_01-foundation_01.03-actor-model-formalization",
+              "path": "Struct/01-foundation/01.03-actor-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Dataflow 模型形式化",
+              "id": "Struct_01-foundation_01.04-dataflow-model-formalization",
+              "path": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "CSP 形式化",
+              "id": "Struct_01-foundation_01.05-csp-formalization",
+              "path": "Struct/01-foundation/01.05-csp-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Petri 网形式化",
+              "id": "Struct_01-foundation_01.06-petri-net-formalization",
+              "path": "Struct/01-foundation/01.06-petri-net-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "1.7 会话类型",
+              "id": "Struct_01-foundation_01.07-session-types",
+              "path": "Struct/01-foundation/01.07-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "流处理语义学形式化理论",
+              "id": "Struct_01-foundation_stream-processing-semantics-formalization",
+              "path": "Struct/01-foundation/stream-processing-semantics-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "统一流计算理论",
+              "id": "Struct_01-foundation_01.01-unified-streaming-theory",
+              "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+              "level": ""
+            },
+            {
+              "name": "进程演算基础",
+              "id": "Struct_01-foundation_01.02-process-calculus-primer",
+              "path": "Struct/01-foundation/01.02-process-calculus-primer.md",
+              "level": ""
+            },
+            {
+              "name": "Actor 模型形式化",
+              "id": "Struct_01-foundation_01.03-actor-model-formalization",
+              "path": "Struct/01-foundation/01.03-actor-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Dataflow 模型形式化",
+              "id": "Struct_01-foundation_01.04-dataflow-model-formalization",
+              "path": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "CSP 形式化",
+              "id": "Struct_01-foundation_01.05-csp-formalization",
+              "path": "Struct/01-foundation/01.05-csp-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Petri 网形式化",
+              "id": "Struct_01-foundation_01.06-petri-net-formalization",
+              "path": "Struct/01-foundation/01.06-petri-net-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "1.7 会话类型",
+              "id": "Struct_01-foundation_01.07-session-types",
+              "path": "Struct/01-foundation/01.07-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "流处理语义学形式化理论",
+              "id": "Struct_01-foundation_stream-processing-semantics-formalization",
+              "path": "Struct/01-foundation/stream-processing-semantics-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "统一流计算理论",
+              "id": "Struct_01-foundation_01.01-unified-streaming-theory",
+              "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+              "level": ""
+            },
+            {
+              "name": "进程演算基础",
+              "id": "Struct_01-foundation_01.02-process-calculus-primer",
+              "path": "Struct/01-foundation/01.02-process-calculus-primer.md",
+              "level": ""
+            },
+            {
+              "name": "Actor 模型形式化",
+              "id": "Struct_01-foundation_01.03-actor-model-formalization",
+              "path": "Struct/01-foundation/01.03-actor-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Dataflow 模型形式化",
+              "id": "Struct_01-foundation_01.04-dataflow-model-formalization",
+              "path": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "CSP 形式化",
+              "id": "Struct_01-foundation_01.05-csp-formalization",
+              "path": "Struct/01-foundation/01.05-csp-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "Petri 网形式化",
+              "id": "Struct_01-foundation_01.06-petri-net-formalization",
+              "path": "Struct/01-foundation/01.06-petri-net-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "1.7 会话类型",
+              "id": "Struct_01-foundation_01.07-session-types",
+              "path": "Struct/01-foundation/01.07-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "流处理语义学形式化理论",
+              "id": "Struct_01-foundation_stream-processing-semantics-formalization",
+              "path": "Struct/01-foundation/stream-processing-semantics-formalization.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "02-properties",
+          "children": [
+            {
+              "name": "流计算确定性定理",
+              "id": "Struct_02-properties_02.01-determinism-in-streaming",
+              "path": "Struct/02-properties/02.01-determinism-in-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "流计算一致性层级",
+              "id": "Struct_02-properties_02.02-consistency-hierarchy",
+              "path": "Struct/02-properties/02.02-consistency-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 单调性定理",
+              "id": "Struct_02-properties_02.03-watermark-monotonicity",
+              "path": "Struct/02-properties/02.03-watermark-monotonicity.md",
+              "level": ""
+            },
+            {
+              "name": "活性与安全性形式化",
+              "id": "Struct_02-properties_02.04-liveness-and-safety",
+              "path": "Struct/02-properties/02.04-liveness-and-safety.md",
+              "level": ""
+            },
+            {
+              "name": "类型安全性推导",
+              "id": "Struct_02-properties_02.05-type-safety-derivation",
+              "path": "Struct/02-properties/02.05-type-safety-derivation.md",
+              "level": ""
+            },
+            {
+              "name": "CALM定理：一致性即逻辑单调性",
+              "id": "Struct_02-properties_02.06-calm-theorem",
+              "path": "Struct/02-properties/02.06-calm-theorem.md",
+              "level": ""
+            },
+            {
+              "name": "加密流处理 - 同态加密与安全计算",
+              "id": "Struct_02-properties_02.07-encrypted-stream-processing",
+              "path": "Struct/02-properties/02.07-encrypted-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "流式差分隐私 - 实时数据隐私保护",
+              "id": "Struct_02-properties_02.08-differential-privacy-streaming",
+              "path": "Struct/02-properties/02.08-differential-privacy-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "流计算确定性定理",
+              "id": "Struct_02-properties_02.01-determinism-in-streaming",
+              "path": "Struct/02-properties/02.01-determinism-in-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "流计算一致性层级",
+              "id": "Struct_02-properties_02.02-consistency-hierarchy",
+              "path": "Struct/02-properties/02.02-consistency-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 单调性定理",
+              "id": "Struct_02-properties_02.03-watermark-monotonicity",
+              "path": "Struct/02-properties/02.03-watermark-monotonicity.md",
+              "level": ""
+            },
+            {
+              "name": "活性与安全性形式化",
+              "id": "Struct_02-properties_02.04-liveness-and-safety",
+              "path": "Struct/02-properties/02.04-liveness-and-safety.md",
+              "level": ""
+            },
+            {
+              "name": "类型安全性推导",
+              "id": "Struct_02-properties_02.05-type-safety-derivation",
+              "path": "Struct/02-properties/02.05-type-safety-derivation.md",
+              "level": ""
+            },
+            {
+              "name": "CALM定理：一致性即逻辑单调性",
+              "id": "Struct_02-properties_02.06-calm-theorem",
+              "path": "Struct/02-properties/02.06-calm-theorem.md",
+              "level": ""
+            },
+            {
+              "name": "加密流处理 - 同态加密与安全计算",
+              "id": "Struct_02-properties_02.07-encrypted-stream-processing",
+              "path": "Struct/02-properties/02.07-encrypted-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "流式差分隐私 - 实时数据隐私保护",
+              "id": "Struct_02-properties_02.08-differential-privacy-streaming",
+              "path": "Struct/02-properties/02.08-differential-privacy-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "流计算确定性定理",
+              "id": "Struct_02-properties_02.01-determinism-in-streaming",
+              "path": "Struct/02-properties/02.01-determinism-in-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "流计算一致性层级",
+              "id": "Struct_02-properties_02.02-consistency-hierarchy",
+              "path": "Struct/02-properties/02.02-consistency-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 单调性定理",
+              "id": "Struct_02-properties_02.03-watermark-monotonicity",
+              "path": "Struct/02-properties/02.03-watermark-monotonicity.md",
+              "level": ""
+            },
+            {
+              "name": "活性与安全性形式化",
+              "id": "Struct_02-properties_02.04-liveness-and-safety",
+              "path": "Struct/02-properties/02.04-liveness-and-safety.md",
+              "level": ""
+            },
+            {
+              "name": "类型安全性推导",
+              "id": "Struct_02-properties_02.05-type-safety-derivation",
+              "path": "Struct/02-properties/02.05-type-safety-derivation.md",
+              "level": ""
+            },
+            {
+              "name": "CALM定理：一致性即逻辑单调性",
+              "id": "Struct_02-properties_02.06-calm-theorem",
+              "path": "Struct/02-properties/02.06-calm-theorem.md",
+              "level": ""
+            },
+            {
+              "name": "加密流处理 - 同态加密与安全计算",
+              "id": "Struct_02-properties_02.07-encrypted-stream-processing",
+              "path": "Struct/02-properties/02.07-encrypted-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "流式差分隐私 - 实时数据隐私保护",
+              "id": "Struct_02-properties_02.08-differential-privacy-streaming",
+              "path": "Struct/02-properties/02.08-differential-privacy-streaming.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "03-relationships",
+          "children": [
+            {
+              "name": "Actor 到 CSP 编码",
+              "id": "Struct_03-relationships_03.01-actor-to-csp-encoding",
+              "path": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 到进程演算编码",
+              "id": "Struct_03-relationships_03.02-flink-to-process-calculus",
+              "path": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力层次定理",
+              "id": "Struct_03-relationships_03.03-expressiveness-hierarchy",
+              "path": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "互模拟等价关系",
+              "id": "Struct_03-relationships_03.04-bisimulation-equivalences",
+              "path": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
+              "level": ""
+            },
+            {
+              "name": "跨模型统一映射框架",
+              "id": "Struct_03-relationships_03.05-cross-model-mappings",
+              "path": "Struct/03-relationships/03.05-cross-model-mappings.md",
+              "level": ""
+            },
+            {
+              "name": "Actor 到 CSP 编码",
+              "id": "Struct_03-relationships_03.01-actor-to-csp-encoding",
+              "path": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 到进程演算编码",
+              "id": "Struct_03-relationships_03.02-flink-to-process-calculus",
+              "path": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力层次定理",
+              "id": "Struct_03-relationships_03.03-expressiveness-hierarchy",
+              "path": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "互模拟等价关系",
+              "id": "Struct_03-relationships_03.04-bisimulation-equivalences",
+              "path": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
+              "level": ""
+            },
+            {
+              "name": "跨模型统一映射框架",
+              "id": "Struct_03-relationships_03.05-cross-model-mappings",
+              "path": "Struct/03-relationships/03.05-cross-model-mappings.md",
+              "level": ""
+            },
+            {
+              "name": "Actor 到 CSP 编码",
+              "id": "Struct_03-relationships_03.01-actor-to-csp-encoding",
+              "path": "Struct/03-relationships/03.01-actor-to-csp-encoding.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 到进程演算编码",
+              "id": "Struct_03-relationships_03.02-flink-to-process-calculus",
+              "path": "Struct/03-relationships/03.02-flink-to-process-calculus.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力层次定理",
+              "id": "Struct_03-relationships_03.03-expressiveness-hierarchy",
+              "path": "Struct/03-relationships/03.03-expressiveness-hierarchy.md",
+              "level": ""
+            },
+            {
+              "name": "互模拟等价关系",
+              "id": "Struct_03-relationships_03.04-bisimulation-equivalences",
+              "path": "Struct/03-relationships/03.04-bisimulation-equivalences.md",
+              "level": ""
+            },
+            {
+              "name": "跨模型统一映射框架",
+              "id": "Struct_03-relationships_03.05-cross-model-mappings",
+              "path": "Struct/03-relationships/03.05-cross-model-mappings.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "04-proofs",
+          "children": [
+            {
+              "name": "Flink Checkpoint 正确性证明",
+              "id": "Struct_04-proofs_04.01-flink-checkpoint-correctness",
+              "path": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Exactly-Once 正确性证明",
+              "id": "Struct_04-proofs_04.02-flink-exactly-once-correctness",
+              "path": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Chandy-Lamport 快照一致性证明",
+              "id": "Struct_04-proofs_04.03-chandy-lamport-consistency",
+              "path": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 代数形式证明",
+              "id": "Struct_04-proofs_04.04-watermark-algebra-formal-proof",
+              "path": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
+              "level": ""
+            },
+            {
+              "name": "FG/FGG 类型安全证明",
+              "id": "Struct_04-proofs_04.05-type-safety-fg-fgg",
+              "path": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
+              "level": ""
+            },
+            {
+              "name": "DOT 子类型完备性证明",
+              "id": "Struct_04-proofs_04.06-dot-subtyping-completeness",
+              "path": "Struct/04-proofs/04.06-dot-subtyping-completeness.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 死锁自由证明",
+              "id": "Struct_04-proofs_04.07-deadlock-freedom-choreographic",
+              "path": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Checkpoint 正确性证明",
+              "id": "Struct_04-proofs_04.01-flink-checkpoint-correctness",
+              "path": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Exactly-Once 正确性证明",
+              "id": "Struct_04-proofs_04.02-flink-exactly-once-correctness",
+              "path": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Chandy-Lamport 快照一致性证明",
+              "id": "Struct_04-proofs_04.03-chandy-lamport-consistency",
+              "path": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 代数形式证明",
+              "id": "Struct_04-proofs_04.04-watermark-algebra-formal-proof",
+              "path": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
+              "level": ""
+            },
+            {
+              "name": "FG/FGG 类型安全证明",
+              "id": "Struct_04-proofs_04.05-type-safety-fg-fgg",
+              "path": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
+              "level": ""
+            },
+            {
+              "name": "DOT 子类型完备性证明",
+              "id": "Struct_04-proofs_04.06-dot-subtyping-completeness",
+              "path": "Struct/04-proofs/04.06-dot-subtyping-completeness.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 死锁自由证明",
+              "id": "Struct_04-proofs_04.07-deadlock-freedom-choreographic",
+              "path": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Checkpoint 正确性证明",
+              "id": "Struct_04-proofs_04.01-flink-checkpoint-correctness",
+              "path": "Struct/04-proofs/04.01-flink-checkpoint-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Exactly-Once 正确性证明",
+              "id": "Struct_04-proofs_04.02-flink-exactly-once-correctness",
+              "path": "Struct/04-proofs/04.02-flink-exactly-once-correctness.md",
+              "level": ""
+            },
+            {
+              "name": "Chandy-Lamport 快照一致性证明",
+              "id": "Struct_04-proofs_04.03-chandy-lamport-consistency",
+              "path": "Struct/04-proofs/04.03-chandy-lamport-consistency.md",
+              "level": ""
+            },
+            {
+              "name": "Watermark 代数形式证明",
+              "id": "Struct_04-proofs_04.04-watermark-algebra-formal-proof",
+              "path": "Struct/04-proofs/04.04-watermark-algebra-formal-proof.md",
+              "level": ""
+            },
+            {
+              "name": "FG/FGG 类型安全证明",
+              "id": "Struct_04-proofs_04.05-type-safety-fg-fgg",
+              "path": "Struct/04-proofs/04.05-type-safety-fg-fgg.md",
+              "level": ""
+            },
+            {
+              "name": "DOT 子类型完备性证明",
+              "id": "Struct_04-proofs_04.06-dot-subtyping-completeness",
+              "path": "Struct/04-proofs/04.06-dot-subtyping-completeness.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 死锁自由证明",
+              "id": "Struct_04-proofs_04.07-deadlock-freedom-choreographic",
+              "path": "Struct/04-proofs/04.07-deadlock-freedom-choreographic.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "05-comparative-analysis",
+          "children": [
+            {
+              "name": "Go vs Scala 表达能力对比",
+              "id": "Struct_05-comparative-analysis_05.01-go-vs-scala-expressiveness",
+              "path": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力与可判定性权衡",
+              "id": "Struct_05-comparative-analysis_05.02-expressiveness-vs-decidability",
+              "path": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
+              "level": ""
+            },
+            {
+              "name": "编码完备性分析",
+              "id": "Struct_05-comparative-analysis_05.03-encoding-completeness-analysis",
+              "path": "Struct/05-comparative-analysis/05.03-encoding-completeness-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "Go vs Scala 表达能力对比",
+              "id": "Struct_05-comparative-analysis_05.01-go-vs-scala-expressiveness",
+              "path": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力与可判定性权衡",
+              "id": "Struct_05-comparative-analysis_05.02-expressiveness-vs-decidability",
+              "path": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
+              "level": ""
+            },
+            {
+              "name": "编码完备性分析",
+              "id": "Struct_05-comparative-analysis_05.03-encoding-completeness-analysis",
+              "path": "Struct/05-comparative-analysis/05.03-encoding-completeness-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "Go vs Scala 表达能力对比",
+              "id": "Struct_05-comparative-analysis_05.01-go-vs-scala-expressiveness",
+              "path": "Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md",
+              "level": ""
+            },
+            {
+              "name": "表达能力与可判定性权衡",
+              "id": "Struct_05-comparative-analysis_05.02-expressiveness-vs-decidability",
+              "path": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
+              "level": ""
+            },
+            {
+              "name": "编码完备性分析",
+              "id": "Struct_05-comparative-analysis_05.03-encoding-completeness-analysis",
+              "path": "Struct/05-comparative-analysis/05.03-encoding-completeness-analysis.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "06-frontier",
+          "children": [
+            {
+              "name": "流计算验证开放问题",
+              "id": "Struct_06-frontier_06.01-open-problems-streaming-verification",
+              "path": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 流编程前沿",
+              "id": "Struct_06-frontier_06.02-choreographic-streaming-programming",
+              "path": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent 与会话类型",
+              "id": "Struct_06-frontier_06.03-ai-agent-session-types",
+              "path": "Struct/06-frontier/06.03-ai-agent-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "pDOT - 完全路径依赖类型（DOT演算扩展）",
+              "id": "Struct_06-frontier_06.04-pdot-path-dependent-types",
+              "path": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
+              "level": ""
+            },
+            {
+              "name": "First-Person Choreographic Programming",
+              "id": "Struct_06-frontier_first-person-choreographies",
+              "path": "Struct/06-frontier/first-person-choreographies.md",
+              "level": ""
+            },
+            {
+              "name": "流计算验证开放问题",
+              "id": "Struct_06-frontier_06.01-open-problems-streaming-verification",
+              "path": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 流编程前沿",
+              "id": "Struct_06-frontier_06.02-choreographic-streaming-programming",
+              "path": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent 与会话类型",
+              "id": "Struct_06-frontier_06.03-ai-agent-session-types",
+              "path": "Struct/06-frontier/06.03-ai-agent-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "pDOT - 完全路径依赖类型（DOT演算扩展）",
+              "id": "Struct_06-frontier_06.04-pdot-path-dependent-types",
+              "path": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
+              "level": ""
+            },
+            {
+              "name": "First-Person Choreographic Programming",
+              "id": "Struct_06-frontier_first-person-choreographies",
+              "path": "Struct/06-frontier/first-person-choreographies.md",
+              "level": ""
+            },
+            {
+              "name": "流计算验证开放问题",
+              "id": "Struct_06-frontier_06.01-open-problems-streaming-verification",
+              "path": "Struct/06-frontier/06.01-open-problems-streaming-verification.md",
+              "level": ""
+            },
+            {
+              "name": "Choreographic 流编程前沿",
+              "id": "Struct_06-frontier_06.02-choreographic-streaming-programming",
+              "path": "Struct/06-frontier/06.02-choreographic-streaming-programming.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent 与会话类型",
+              "id": "Struct_06-frontier_06.03-ai-agent-session-types",
+              "path": "Struct/06-frontier/06.03-ai-agent-session-types.md",
+              "level": ""
+            },
+            {
+              "name": "pDOT - 完全路径依赖类型（DOT演算扩展）",
+              "id": "Struct_06-frontier_06.04-pdot-path-dependent-types",
+              "path": "Struct/06-frontier/06.04-pdot-path-dependent-types.md",
+              "level": ""
+            },
+            {
+              "name": "First-Person Choreographic Programming",
+              "id": "Struct_06-frontier_first-person-choreographies",
+              "path": "Struct/06-frontier/first-person-choreographies.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "07-tools",
+          "children": [
+            {
+              "name": "Coq证明助手：流计算性质的机械化证明",
+              "id": "Struct_07-tools_coq-mechanization",
+              "path": "Struct/07-tools/coq-mechanization.md",
+              "level": ""
+            },
+            {
+              "name": "Iris - 高阶并发分离逻辑",
+              "id": "Struct_07-tools_iris-separation-logic",
+              "path": "Struct/07-tools/iris-separation-logic.md",
+              "level": ""
+            },
+            {
+              "name": "模型检查在流计算验证中的应用",
+              "id": "Struct_07-tools_model-checking-practice",
+              "path": "Struct/07-tools/model-checking-practice.md",
+              "level": ""
+            },
+            {
+              "name": "Smart Casual Verification（智能轻量验证）",
+              "id": "Struct_07-tools_smart-casual-verification",
+              "path": "Struct/07-tools/smart-casual-verification.md",
+              "level": ""
+            },
+            {
+              "name": "TLA+形式化验证在Flink中的应用",
+              "id": "Struct_07-tools_tla-for-flink",
+              "path": "Struct/07-tools/tla-for-flink.md",
+              "level": ""
+            },
+            {
+              "name": "Coq证明助手：流计算性质的机械化证明",
+              "id": "Struct_07-tools_coq-mechanization",
+              "path": "Struct/07-tools/coq-mechanization.md",
+              "level": ""
+            },
+            {
+              "name": "Iris - 高阶并发分离逻辑",
+              "id": "Struct_07-tools_iris-separation-logic",
+              "path": "Struct/07-tools/iris-separation-logic.md",
+              "level": ""
+            },
+            {
+              "name": "模型检查在流计算验证中的应用",
+              "id": "Struct_07-tools_model-checking-practice",
+              "path": "Struct/07-tools/model-checking-practice.md",
+              "level": ""
+            },
+            {
+              "name": "Smart Casual Verification（智能轻量验证）",
+              "id": "Struct_07-tools_smart-casual-verification",
+              "path": "Struct/07-tools/smart-casual-verification.md",
+              "level": ""
+            },
+            {
+              "name": "TLA+形式化验证在Flink中的应用",
+              "id": "Struct_07-tools_tla-for-flink",
+              "path": "Struct/07-tools/tla-for-flink.md",
+              "level": ""
+            },
+            {
+              "name": "Coq证明助手：流计算性质的机械化证明",
+              "id": "Struct_07-tools_coq-mechanization",
+              "path": "Struct/07-tools/coq-mechanization.md",
+              "level": ""
+            },
+            {
+              "name": "Iris - 高阶并发分离逻辑",
+              "id": "Struct_07-tools_iris-separation-logic",
+              "path": "Struct/07-tools/iris-separation-logic.md",
+              "level": ""
+            },
+            {
+              "name": "模型检查在流计算验证中的应用",
+              "id": "Struct_07-tools_model-checking-practice",
+              "path": "Struct/07-tools/model-checking-practice.md",
+              "level": ""
+            },
+            {
+              "name": "Smart Casual Verification（智能轻量验证）",
+              "id": "Struct_07-tools_smart-casual-verification",
+              "path": "Struct/07-tools/smart-casual-verification.md",
+              "level": ""
+            },
+            {
+              "name": "TLA+形式化验证在Flink中的应用",
+              "id": "Struct_07-tools_tla-for-flink",
+              "path": "Struct/07-tools/tla-for-flink.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "08-standards",
+          "children": [
+            {
+              "name": "流式SQL标准 - SQL:2011/2023与扩展",
+              "id": "Struct_08-standards_streaming-sql-standard",
+              "path": "Struct/08-standards/streaming-sql-standard.md",
+              "level": ""
+            },
+            {
+              "name": "流式SQL标准 - SQL:2011/2023与扩展",
+              "id": "Struct_08-standards_streaming-sql-standard",
+              "path": "Struct/08-standards/streaming-sql-standard.md",
+              "level": ""
+            },
+            {
+              "name": "流式SQL标准 - SQL:2011/2023与扩展",
+              "id": "Struct_08-standards_streaming-sql-standard",
+              "path": "Struct/08-standards/streaming-sql-standard.md",
+              "level": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Knowledge",
+      "children": [
+        {
+          "name": "00-INDEX.md",
+          "children": [
+            {
+              "name": "Knowledge/ 知识结构索引",
+              "id": "Knowledge_00-INDEX",
+              "path": "Knowledge/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "Knowledge/ 知识结构索引",
+              "id": "Knowledge_00-INDEX",
+              "path": "Knowledge/00-INDEX.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "01-concept-atlas",
+          "children": [
+            {
+              "name": "并发范式多维对比矩阵",
+              "id": "Knowledge_01-concept-atlas_concurrency-paradigms-matrix",
+              "path": "Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md",
+              "level": ""
+            },
+            {
+              "name": "2026年数据流景观全景分析",
+              "id": "Knowledge_01-concept-atlas_data-streaming-landscape-2026-complete",
+              "path": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
+              "level": ""
+            },
+            {
+              "name": "流计算模型概念图谱",
+              "id": "Knowledge_01-concept-atlas_streaming-models-mindmap",
+              "path": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
+              "level": ""
+            },
+            {
+              "name": "并发范式多维对比矩阵",
+              "id": "Knowledge_01-concept-atlas_concurrency-paradigms-matrix",
+              "path": "Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md",
+              "level": ""
+            },
+            {
+              "name": "2026年数据流景观全景分析",
+              "id": "Knowledge_01-concept-atlas_data-streaming-landscape-2026-complete",
+              "path": "Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md",
+              "level": ""
+            },
+            {
+              "name": "流计算模型概念图谱",
+              "id": "Knowledge_01-concept-atlas_streaming-models-mindmap",
+              "path": "Knowledge/01-concept-atlas/streaming-models-mindmap.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "02-design-patterns",
+          "children": [
+            {
+              "name": "设计模式: 异步 I/O 富化",
+              "id": "Knowledge_02-design-patterns_pattern-async-io-enrichment",
+              "path": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 复杂事件处理",
+              "id": "Knowledge_02-design-patterns_pattern-cep-complex-event",
+              "path": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: Checkpoint 与故障恢复",
+              "id": "Knowledge_02-design-patterns_pattern-checkpoint-recovery",
+              "path": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 事件时间处理",
+              "id": "Knowledge_02-design-patterns_pattern-event-time-processing",
+              "path": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 实时日志分析",
+              "id": "Knowledge_02-design-patterns_pattern-log-analysis",
+              "path": "Knowledge/02-design-patterns/pattern-log-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式：实时特征工程",
+              "id": "Knowledge_02-design-patterns_pattern-realtime-feature-engineering",
+              "path": "Knowledge/02-design-patterns/pattern-realtime-feature-engineering.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 侧输出",
+              "id": "Knowledge_02-design-patterns_pattern-side-output",
+              "path": "Knowledge/02-design-patterns/pattern-side-output.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 有状态计算",
+              "id": "Knowledge_02-design-patterns_pattern-stateful-computation",
+              "path": "Knowledge/02-design-patterns/pattern-stateful-computation.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 窗口聚合",
+              "id": "Knowledge_02-design-patterns_pattern-windowed-aggregation",
+              "path": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 异步 I/O 富化",
+              "id": "Knowledge_02-design-patterns_pattern-async-io-enrichment",
+              "path": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 复杂事件处理",
+              "id": "Knowledge_02-design-patterns_pattern-cep-complex-event",
+              "path": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: Checkpoint 与故障恢复",
+              "id": "Knowledge_02-design-patterns_pattern-checkpoint-recovery",
+              "path": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 事件时间处理",
+              "id": "Knowledge_02-design-patterns_pattern-event-time-processing",
+              "path": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 实时日志分析",
+              "id": "Knowledge_02-design-patterns_pattern-log-analysis",
+              "path": "Knowledge/02-design-patterns/pattern-log-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式：实时特征工程",
+              "id": "Knowledge_02-design-patterns_pattern-realtime-feature-engineering",
+              "path": "Knowledge/02-design-patterns/pattern-realtime-feature-engineering.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 侧输出",
+              "id": "Knowledge_02-design-patterns_pattern-side-output",
+              "path": "Knowledge/02-design-patterns/pattern-side-output.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 有状态计算",
+              "id": "Knowledge_02-design-patterns_pattern-stateful-computation",
+              "path": "Knowledge/02-design-patterns/pattern-stateful-computation.md",
+              "level": ""
+            },
+            {
+              "name": "设计模式: 窗口聚合",
+              "id": "Knowledge_02-design-patterns_pattern-windowed-aggregation",
+              "path": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "03-business-patterns",
+          "children": [
+            {
+              "name": "Airbnb市场动态定价 - 双边市场流计算架构",
+              "id": "Knowledge_03-business-patterns_airbnb-marketplace-dynamics",
+              "path": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
+              "level": ""
+            },
+            {
+              "name": "阿里巴巴双11实时计算 - 全球最大规模流计算实践",
+              "id": "Knowledge_03-business-patterns_alibaba-double11-flink",
+              "path": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
+              "level": ""
+            },
+            {
+              "name": "Data Mesh 与流处理深度融合：2026架构实践指南",
+              "id": "Knowledge_03-business-patterns_data-mesh-streaming-architecture-2026",
+              "path": "Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 金融实时风控",
+              "id": "Knowledge_03-business-patterns_fintech-realtime-risk-control",
+              "path": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 游戏实时分析",
+              "id": "Knowledge_03-business-patterns_gaming-analytics",
+              "path": "Knowledge/03-business-patterns/gaming-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: IoT 物联网流处理",
+              "id": "Knowledge_03-business-patterns_iot-stream-processing",
+              "path": "Knowledge/03-business-patterns/iot-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 日志分析与监控",
+              "id": "Knowledge_03-business-patterns_log-monitoring",
+              "path": "Knowledge/03-business-patterns/log-monitoring.md",
+              "level": ""
+            },
+            {
+              "name": "Netflix流处理架构 - 从Keystone到Flink",
+              "id": "Knowledge_03-business-patterns_netflix-streaming-pipeline",
+              "path": "Knowledge/03-business-patterns/netflix-streaming-pipeline.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 实时推荐系统",
+              "id": "Knowledge_03-business-patterns_real-time-recommendation",
+              "path": "Knowledge/03-business-patterns/real-time-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "Spotify音乐推荐系统 - 实时个性化流处理架构",
+              "id": "Knowledge_03-business-patterns_spotify-music-recommendation",
+              "path": "Knowledge/03-business-patterns/spotify-music-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "流数据产品经济学与货币化策略",
+              "id": "Knowledge_03-business-patterns_streaming-data-product-economics",
+              "path": "Knowledge/03-business-patterns/streaming-data-product-economics.md",
+              "level": ""
+            },
+            {
+              "name": "Stripe实时支付处理 - 金融级流计算架构",
+              "id": "Knowledge_03-business-patterns_stripe-payment-processing",
+              "path": "Knowledge/03-business-patterns/stripe-payment-processing.md",
+              "level": ""
+            },
+            {
+              "name": "Uber实时分析平台 - Apache Flink大规模实践",
+              "id": "Knowledge_03-business-patterns_uber-realtime-platform",
+              "path": "Knowledge/03-business-patterns/uber-realtime-platform.md",
+              "level": ""
+            },
+            {
+              "name": "Airbnb市场动态定价 - 双边市场流计算架构",
+              "id": "Knowledge_03-business-patterns_airbnb-marketplace-dynamics",
+              "path": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
+              "level": ""
+            },
+            {
+              "name": "阿里巴巴双11实时计算 - 全球最大规模流计算实践",
+              "id": "Knowledge_03-business-patterns_alibaba-double11-flink",
+              "path": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
+              "level": ""
+            },
+            {
+              "name": "Data Mesh 与流处理深度融合：2026架构实践指南",
+              "id": "Knowledge_03-business-patterns_data-mesh-streaming-architecture-2026",
+              "path": "Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 金融实时风控",
+              "id": "Knowledge_03-business-patterns_fintech-realtime-risk-control",
+              "path": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 游戏实时分析",
+              "id": "Knowledge_03-business-patterns_gaming-analytics",
+              "path": "Knowledge/03-business-patterns/gaming-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: IoT 物联网流处理",
+              "id": "Knowledge_03-business-patterns_iot-stream-processing",
+              "path": "Knowledge/03-business-patterns/iot-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 日志分析与监控",
+              "id": "Knowledge_03-business-patterns_log-monitoring",
+              "path": "Knowledge/03-business-patterns/log-monitoring.md",
+              "level": ""
+            },
+            {
+              "name": "Netflix流处理架构 - 从Keystone到Flink",
+              "id": "Knowledge_03-business-patterns_netflix-streaming-pipeline",
+              "path": "Knowledge/03-business-patterns/netflix-streaming-pipeline.md",
+              "level": ""
+            },
+            {
+              "name": "业务模式: 实时推荐系统",
+              "id": "Knowledge_03-business-patterns_real-time-recommendation",
+              "path": "Knowledge/03-business-patterns/real-time-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "Spotify音乐推荐系统 - 实时个性化流处理架构",
+              "id": "Knowledge_03-business-patterns_spotify-music-recommendation",
+              "path": "Knowledge/03-business-patterns/spotify-music-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "流数据产品经济学与货币化策略",
+              "id": "Knowledge_03-business-patterns_streaming-data-product-economics",
+              "path": "Knowledge/03-business-patterns/streaming-data-product-economics.md",
+              "level": ""
+            },
+            {
+              "name": "Stripe实时支付处理 - 金融级流计算架构",
+              "id": "Knowledge_03-business-patterns_stripe-payment-processing",
+              "path": "Knowledge/03-business-patterns/stripe-payment-processing.md",
+              "level": ""
+            },
+            {
+              "name": "Uber实时分析平台 - Apache Flink大规模实践",
+              "id": "Knowledge_03-business-patterns_uber-realtime-platform",
+              "path": "Knowledge/03-business-patterns/uber-realtime-platform.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "04-technology-selection",
+          "children": [
+            {
+              "name": "流处理引擎选型决策指南",
+              "id": "Knowledge_04-technology-selection_engine-selection-guide",
+              "path": "Knowledge/04-technology-selection/engine-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave 深度对比分析",
+              "id": "Knowledge_04-technology-selection_flink-vs-risingwave",
+              "path": "Knowledge/04-technology-selection/flink-vs-risingwave.md",
+              "level": ""
+            },
+            {
+              "name": "并发范式选型指南",
+              "id": "Knowledge_04-technology-selection_paradigm-selection-guide",
+              "path": "Knowledge/04-technology-selection/paradigm-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "存储系统选型指南",
+              "id": "Knowledge_04-technology-selection_storage-selection-guide",
+              "path": "Knowledge/04-technology-selection/storage-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库选型决策指南",
+              "id": "Knowledge_04-technology-selection_streaming-database-guide",
+              "path": "Knowledge/04-technology-selection/streaming-database-guide.md",
+              "level": ""
+            },
+            {
+              "name": "流处理引擎选型决策指南",
+              "id": "Knowledge_04-technology-selection_engine-selection-guide",
+              "path": "Knowledge/04-technology-selection/engine-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave 深度对比分析",
+              "id": "Knowledge_04-technology-selection_flink-vs-risingwave",
+              "path": "Knowledge/04-technology-selection/flink-vs-risingwave.md",
+              "level": ""
+            },
+            {
+              "name": "并发范式选型指南",
+              "id": "Knowledge_04-technology-selection_paradigm-selection-guide",
+              "path": "Knowledge/04-technology-selection/paradigm-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "存储系统选型指南",
+              "id": "Knowledge_04-technology-selection_storage-selection-guide",
+              "path": "Knowledge/04-technology-selection/storage-selection-guide.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库选型决策指南",
+              "id": "Knowledge_04-technology-selection_streaming-database-guide",
+              "path": "Knowledge/04-technology-selection/streaming-database-guide.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "05-mapping-guides",
+          "children": [
+            {
+              "name": "2026年多Agent编排框架深度对比：LangGraph、CrewAI、AutoGen",
+              "id": "Knowledge_05-mapping-guides_multi-agent-frameworks-2026-comparison",
+              "path": "Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "2026 Streaming ETL工具全景对比",
+              "id": "Knowledge_05-mapping-guides_streaming-etl-tools-landscape-2026",
+              "path": "Knowledge/05-mapping-guides/streaming-etl-tools-landscape-2026.md",
+              "level": ""
+            },
+            {
+              "name": "2026年三大Streaming SQL引擎深度对比: RisingWave vs ksqlDB vs Flink SQL",
+              "id": "Knowledge_05-mapping-guides_streaming-sql-engines-2026-comparison",
+              "path": "Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Struct 到 Flink 形式化映射指南",
+              "id": "Knowledge_05-mapping-guides_struct-to-flink-mapping",
+              "path": "Knowledge/05-mapping-guides/struct-to-flink-mapping.md",
+              "level": ""
+            },
+            {
+              "name": "5.1 理论到代码的模式语言",
+              "id": "Knowledge_05-mapping-guides_theory-to-code-patterns",
+              "path": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Spark Streaming 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.1-spark-streaming-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Kafka Streams 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.2-kafka-streams-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Apache Storm 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.3-storm-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 1.x 到 2.x 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.4-flink-1x-to-2x-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.4-flink-1x-to-2x-migration.md",
+              "level": ""
+            },
+            {
+              "name": "批处理到流处理迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.5-batch-to-streaming-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
+              "level": ""
+            },
+            {
+              "name": "2026年多Agent编排框架深度对比：LangGraph、CrewAI、AutoGen",
+              "id": "Knowledge_05-mapping-guides_multi-agent-frameworks-2026-comparison",
+              "path": "Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "2026 Streaming ETL工具全景对比",
+              "id": "Knowledge_05-mapping-guides_streaming-etl-tools-landscape-2026",
+              "path": "Knowledge/05-mapping-guides/streaming-etl-tools-landscape-2026.md",
+              "level": ""
+            },
+            {
+              "name": "2026年三大Streaming SQL引擎深度对比: RisingWave vs ksqlDB vs Flink SQL",
+              "id": "Knowledge_05-mapping-guides_streaming-sql-engines-2026-comparison",
+              "path": "Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Struct 到 Flink 形式化映射指南",
+              "id": "Knowledge_05-mapping-guides_struct-to-flink-mapping",
+              "path": "Knowledge/05-mapping-guides/struct-to-flink-mapping.md",
+              "level": ""
+            },
+            {
+              "name": "5.1 理论到代码的模式语言",
+              "id": "Knowledge_05-mapping-guides_theory-to-code-patterns",
+              "path": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Spark Streaming 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.1-spark-streaming-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Kafka Streams 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.2-kafka-streams-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Apache Storm 到 Flink 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.3-storm-to-flink-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 1.x 到 2.x 迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.4-flink-1x-to-2x-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.4-flink-1x-to-2x-migration.md",
+              "level": ""
+            },
+            {
+              "name": "批处理到流处理迁移指南",
+              "id": "Knowledge_05-mapping-guides_migration-guides_05.5-batch-to-streaming-migration",
+              "path": "Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "06-frontier",
+          "children": [
+            {
+              "name": "Google A2A (Agent-to-Agent) 协议技术分析",
+              "id": "Knowledge_06-frontier_a2a-protocol-agent-communication",
+              "path": "Knowledge/06-frontier/a2a-protocol-agent-communication.md",
+              "level": ""
+            },
+            {
+              "name": "Google A2A (Agent-to-Agent) 协议深度解析",
+              "id": "Knowledge_06-frontier_ai-agent-a2a-protocol",
+              "path": "Knowledge/06-frontier/ai-agent-a2a-protocol.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent 数据库工作负载：前沿架构分析",
+              "id": "Knowledge_06-frontier_ai-agent-database-workloads",
+              "path": "Knowledge/06-frontier/ai-agent-database-workloads.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent流式处理架构：实时推理与行动系统",
+              "id": "Knowledge_06-frontier_ai-agent-streaming-architecture",
+              "path": "Knowledge/06-frontier/ai-agent-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "云边端连续体 - 分布式流计算的地理扩展",
+              "id": "Knowledge_06-frontier_cloud-edge-continuum",
+              "path": "Knowledge/06-frontier/cloud-edge-continuum.md",
+              "level": ""
+            },
+            {
+              "name": "数据流平台全景对比 2025 —— Kafka vs Pulsar vs Flink",
+              "id": "Knowledge_06-frontier_data-streaming-landscape-2025",
+              "path": "Knowledge/06-frontier/data-streaming-landscape-2025.md",
+              "level": ""
+            },
+            {
+              "name": "边缘LLM实时推理架构",
+              "id": "Knowledge_06-frontier_edge-llm-realtime-inference",
+              "path": "Knowledge/06-frontier/edge-llm-realtime-inference.md",
+              "level": ""
+            },
+            {
+              "name": "边缘流处理架构与IoT实时分析",
+              "id": "Knowledge_06-frontier_edge-streaming-architecture",
+              "path": "Knowledge/06-frontier/edge-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "边缘流处理模式",
+              "id": "Knowledge_06-frontier_edge-streaming-patterns",
+              "path": "Knowledge/06-frontier/edge-streaming-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "FaaS Dataflow: Serverless与数据流的融合",
+              "id": "Knowledge_06-frontier_faas-dataflow",
+              "path": "Knowledge/06-frontier/faas-dataflow.md",
+              "level": ""
+            },
+            {
+              "name": "MCP协议与流处理集成架构",
+              "id": "Knowledge_06-frontier_mcp-protocol-agent-streaming",
+              "path": "Knowledge/06-frontier/mcp-protocol-agent-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "多云流处理架构与跨区域复制",
+              "id": "Knowledge_06-frontier_multi-cloud-streaming-architecture",
+              "path": "Knowledge/06-frontier/multi-cloud-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "多模态AI实时流处理架构",
+              "id": "Knowledge_06-frontier_multimodal-ai-streaming-architecture",
+              "path": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "多模态流处理架构",
+              "id": "Knowledge_06-frontier_multimodal-streaming-architecture",
+              "path": "Knowledge/06-frontier/multimodal-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时RAG架构",
+              "id": "Knowledge_06-frontier_real-time-rag-architecture",
+              "path": "Knowledge/06-frontier/real-time-rag-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "2026年实时AI流处理架构：Streaming AI的技术拐点",
+              "id": "Knowledge_06-frontier_realtime-ai-streaming-2026",
+              "path": "Knowledge/06-frontier/realtime-ai-streaming-2026.md",
+              "level": ""
+            },
+            {
+              "name": "实时数据网格 (Data Mesh) 架构实践",
+              "id": "Knowledge_06-frontier_realtime-data-mesh-practice",
+              "path": "Knowledge/06-frontier/realtime-data-mesh-practice.md",
+              "level": ""
+            },
+            {
+              "name": "实时数据产品架构：Data Mesh + Streaming",
+              "id": "Knowledge_06-frontier_realtime-data-product-architecture",
+              "path": "Knowledge/06-frontier/realtime-data-product-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时流处理数据质量与验证",
+              "id": "Knowledge_06-frontier_realtime-data-quality-validation",
+              "path": "Knowledge/06-frontier/realtime-data-quality-validation.md",
+              "level": ""
+            },
+            {
+              "name": "实时数字孪生与流处理集成架构",
+              "id": "Knowledge_06-frontier_realtime-digital-twin-streaming",
+              "path": "Knowledge/06-frontier/realtime-digital-twin-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "实时特征平台架构实践",
+              "id": "Knowledge_06-frontier_realtime-feature-store-architecture",
+              "path": "Knowledge/06-frontier/realtime-feature-store-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时图流处理与Temporal GNN",
+              "id": "Knowledge_06-frontier_realtime-graph-streaming-tgnn",
+              "path": "Knowledge/06-frontier/realtime-graph-streaming-tgnn.md",
+              "level": ""
+            },
+            {
+              "name": "RisingWave 深度解析：云原生流数据库的架构与一致性模型",
+              "id": "Knowledge_06-frontier_risingwave-deep-dive",
+              "path": "Knowledge/06-frontier/risingwave-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "RisingWave 深度集成指南：与 Flink 协同的流处理架构",
+              "id": "Knowledge_06-frontier_risingwave-integration-guide",
+              "path": "Knowledge/06-frontier/risingwave-integration-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave vs Materialize — 流处理系统深度对比",
+              "id": "Knowledge_06-frontier_rust-streaming-comparison",
+              "path": "Knowledge/06-frontier/rust-streaming-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Rust 流计算生态 — Differential Dataflow、RisingWave 与 Materialize",
+              "id": "Knowledge_06-frontier_rust-streaming-ecosystem",
+              "path": "Knowledge/06-frontier/rust-streaming-ecosystem.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理架构",
+              "id": "Knowledge_06-frontier_serverless-stream-processing-architecture",
+              "path": "Knowledge/06-frontier/serverless-stream-processing-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理架构与云原生实践",
+              "id": "Knowledge_06-frontier_serverless-streaming-architecture",
+              "path": "Knowledge/06-frontier/serverless-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理云成本优化指南",
+              "id": "Knowledge_06-frontier_serverless-streaming-cost-optimization",
+              "path": "Knowledge/06-frontier/serverless-streaming-cost-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "Stateful Serverless - 有状态函数即服务",
+              "id": "Knowledge_06-frontier_stateful-serverless",
+              "path": "Knowledge/06-frontier/stateful-serverless.md",
+              "level": ""
+            },
+            {
+              "name": "流数据访问控制模型 - RBAC/ABAC/ReBAC",
+              "id": "Knowledge_06-frontier_streaming-access-control",
+              "path": "Knowledge/06-frontier/streaming-access-control.md",
+              "level": ""
+            },
+            {
+              "name": "流处理Data Mesh架构与实时数据产品",
+              "id": "Knowledge_06-frontier_streaming-data-mesh-architecture",
+              "path": "Knowledge/06-frontier/streaming-data-mesh-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库生态全面对比 - RisingWave vs Materialize vs Flink",
+              "id": "Knowledge_06-frontier_streaming-database-ecosystem-comparison",
+              "path": "Knowledge/06-frontier/streaming-database-ecosystem-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库 - Materialize/RisingWave/Timeplus",
+              "id": "Knowledge_06-frontier_streaming-databases",
+              "path": "Knowledge/06-frontier/streaming-databases.md",
+              "level": ""
+            },
+            {
+              "name": "实时图流处理与Temporal Graph Neural Networks",
+              "id": "Knowledge_06-frontier_streaming-graph-processing-tgn",
+              "path": "Knowledge/06-frontier/streaming-graph-processing-tgn.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming-first Lakehouse: Iceberg/Delta Lake 集成",
+              "id": "Knowledge_06-frontier_streaming-lakehouse-iceberg-delta",
+              "path": "Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md",
+              "level": ""
+            },
+            {
+              "name": "流式物化视图架构与实时分析",
+              "id": "Knowledge_06-frontier_streaming-materialized-view-architecture",
+              "path": "Knowledge/06-frontier/streaming-materialized-view-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "流处理安全架构与合规实践",
+              "id": "Knowledge_06-frontier_streaming-security-compliance",
+              "path": "Knowledge/06-frontier/streaming-security-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "流计算 SLO/SLI 定义与可靠性工程",
+              "id": "Knowledge_06-frontier_streaming-slo-definition",
+              "path": "Knowledge/06-frontier/streaming-slo-definition.md",
+              "level": ""
+            },
+            {
+              "name": "Temporal与Flink分层架构整合指南",
+              "id": "Knowledge_06-frontier_temporal-flink-layered-architecture",
+              "path": "Knowledge/06-frontier/temporal-flink-layered-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "向量搜索与流处理的融合：AI-Native数据库演进",
+              "id": "Knowledge_06-frontier_vector-search-streaming-convergence",
+              "path": "Knowledge/06-frontier/vector-search-streaming-convergence.md",
+              "level": ""
+            },
+            {
+              "name": "[wasmedge_bindgen]",
+              "id": "Knowledge_06-frontier_wasm-dataflow-patterns",
+              "path": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Web3 与区块链流处理架构",
+              "id": "Knowledge_06-frontier_web3-blockchain-streaming-architecture",
+              "path": "Knowledge/06-frontier/web3-blockchain-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Web3流数据分析与DeFi实时分析",
+              "id": "Knowledge_06-frontier_web3-streaming-analytics-defi",
+              "path": "Knowledge/06-frontier/web3-streaming-analytics-defi.md",
+              "level": ""
+            },
+            {
+              "name": "Google A2A (Agent-to-Agent) 协议技术分析",
+              "id": "Knowledge_06-frontier_a2a-protocol-agent-communication",
+              "path": "Knowledge/06-frontier/a2a-protocol-agent-communication.md",
+              "level": ""
+            },
+            {
+              "name": "Google A2A (Agent-to-Agent) 协议深度解析",
+              "id": "Knowledge_06-frontier_ai-agent-a2a-protocol",
+              "path": "Knowledge/06-frontier/ai-agent-a2a-protocol.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent 数据库工作负载：前沿架构分析",
+              "id": "Knowledge_06-frontier_ai-agent-database-workloads",
+              "path": "Knowledge/06-frontier/ai-agent-database-workloads.md",
+              "level": ""
+            },
+            {
+              "name": "AI Agent流式处理架构：实时推理与行动系统",
+              "id": "Knowledge_06-frontier_ai-agent-streaming-architecture",
+              "path": "Knowledge/06-frontier/ai-agent-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "云边端连续体 - 分布式流计算的地理扩展",
+              "id": "Knowledge_06-frontier_cloud-edge-continuum",
+              "path": "Knowledge/06-frontier/cloud-edge-continuum.md",
+              "level": ""
+            },
+            {
+              "name": "数据流平台全景对比 2025 —— Kafka vs Pulsar vs Flink",
+              "id": "Knowledge_06-frontier_data-streaming-landscape-2025",
+              "path": "Knowledge/06-frontier/data-streaming-landscape-2025.md",
+              "level": ""
+            },
+            {
+              "name": "边缘LLM实时推理架构",
+              "id": "Knowledge_06-frontier_edge-llm-realtime-inference",
+              "path": "Knowledge/06-frontier/edge-llm-realtime-inference.md",
+              "level": ""
+            },
+            {
+              "name": "边缘流处理架构与IoT实时分析",
+              "id": "Knowledge_06-frontier_edge-streaming-architecture",
+              "path": "Knowledge/06-frontier/edge-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "边缘流处理模式",
+              "id": "Knowledge_06-frontier_edge-streaming-patterns",
+              "path": "Knowledge/06-frontier/edge-streaming-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "FaaS Dataflow: Serverless与数据流的融合",
+              "id": "Knowledge_06-frontier_faas-dataflow",
+              "path": "Knowledge/06-frontier/faas-dataflow.md",
+              "level": ""
+            },
+            {
+              "name": "MCP协议与流处理集成架构",
+              "id": "Knowledge_06-frontier_mcp-protocol-agent-streaming",
+              "path": "Knowledge/06-frontier/mcp-protocol-agent-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "多云流处理架构与跨区域复制",
+              "id": "Knowledge_06-frontier_multi-cloud-streaming-architecture",
+              "path": "Knowledge/06-frontier/multi-cloud-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "多模态AI实时流处理架构",
+              "id": "Knowledge_06-frontier_multimodal-ai-streaming-architecture",
+              "path": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "多模态流处理架构",
+              "id": "Knowledge_06-frontier_multimodal-streaming-architecture",
+              "path": "Knowledge/06-frontier/multimodal-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时RAG架构",
+              "id": "Knowledge_06-frontier_real-time-rag-architecture",
+              "path": "Knowledge/06-frontier/real-time-rag-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "2026年实时AI流处理架构：Streaming AI的技术拐点",
+              "id": "Knowledge_06-frontier_realtime-ai-streaming-2026",
+              "path": "Knowledge/06-frontier/realtime-ai-streaming-2026.md",
+              "level": ""
+            },
+            {
+              "name": "实时数据网格 (Data Mesh) 架构实践",
+              "id": "Knowledge_06-frontier_realtime-data-mesh-practice",
+              "path": "Knowledge/06-frontier/realtime-data-mesh-practice.md",
+              "level": ""
+            },
+            {
+              "name": "实时数据产品架构：Data Mesh + Streaming",
+              "id": "Knowledge_06-frontier_realtime-data-product-architecture",
+              "path": "Knowledge/06-frontier/realtime-data-product-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时流处理数据质量与验证",
+              "id": "Knowledge_06-frontier_realtime-data-quality-validation",
+              "path": "Knowledge/06-frontier/realtime-data-quality-validation.md",
+              "level": ""
+            },
+            {
+              "name": "实时数字孪生与流处理集成架构",
+              "id": "Knowledge_06-frontier_realtime-digital-twin-streaming",
+              "path": "Knowledge/06-frontier/realtime-digital-twin-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "实时特征平台架构实践",
+              "id": "Knowledge_06-frontier_realtime-feature-store-architecture",
+              "path": "Knowledge/06-frontier/realtime-feature-store-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时图流处理与Temporal GNN",
+              "id": "Knowledge_06-frontier_realtime-graph-streaming-tgnn",
+              "path": "Knowledge/06-frontier/realtime-graph-streaming-tgnn.md",
+              "level": ""
+            },
+            {
+              "name": "RisingWave 深度解析：云原生流数据库的架构与一致性模型",
+              "id": "Knowledge_06-frontier_risingwave-deep-dive",
+              "path": "Knowledge/06-frontier/risingwave-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "RisingWave 深度集成指南：与 Flink 协同的流处理架构",
+              "id": "Knowledge_06-frontier_risingwave-integration-guide",
+              "path": "Knowledge/06-frontier/risingwave-integration-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave vs Materialize — 流处理系统深度对比",
+              "id": "Knowledge_06-frontier_rust-streaming-comparison",
+              "path": "Knowledge/06-frontier/rust-streaming-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Rust 流计算生态 — Differential Dataflow、RisingWave 与 Materialize",
+              "id": "Knowledge_06-frontier_rust-streaming-ecosystem",
+              "path": "Knowledge/06-frontier/rust-streaming-ecosystem.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理架构",
+              "id": "Knowledge_06-frontier_serverless-stream-processing-architecture",
+              "path": "Knowledge/06-frontier/serverless-stream-processing-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理架构与云原生实践",
+              "id": "Knowledge_06-frontier_serverless-streaming-architecture",
+              "path": "Knowledge/06-frontier/serverless-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless流处理云成本优化指南",
+              "id": "Knowledge_06-frontier_serverless-streaming-cost-optimization",
+              "path": "Knowledge/06-frontier/serverless-streaming-cost-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "Stateful Serverless - 有状态函数即服务",
+              "id": "Knowledge_06-frontier_stateful-serverless",
+              "path": "Knowledge/06-frontier/stateful-serverless.md",
+              "level": ""
+            },
+            {
+              "name": "流数据访问控制模型 - RBAC/ABAC/ReBAC",
+              "id": "Knowledge_06-frontier_streaming-access-control",
+              "path": "Knowledge/06-frontier/streaming-access-control.md",
+              "level": ""
+            },
+            {
+              "name": "流处理Data Mesh架构与实时数据产品",
+              "id": "Knowledge_06-frontier_streaming-data-mesh-architecture",
+              "path": "Knowledge/06-frontier/streaming-data-mesh-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库生态全面对比 - RisingWave vs Materialize vs Flink",
+              "id": "Knowledge_06-frontier_streaming-database-ecosystem-comparison",
+              "path": "Knowledge/06-frontier/streaming-database-ecosystem-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "流数据库 - Materialize/RisingWave/Timeplus",
+              "id": "Knowledge_06-frontier_streaming-databases",
+              "path": "Knowledge/06-frontier/streaming-databases.md",
+              "level": ""
+            },
+            {
+              "name": "实时图流处理与Temporal Graph Neural Networks",
+              "id": "Knowledge_06-frontier_streaming-graph-processing-tgn",
+              "path": "Knowledge/06-frontier/streaming-graph-processing-tgn.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming-first Lakehouse: Iceberg/Delta Lake 集成",
+              "id": "Knowledge_06-frontier_streaming-lakehouse-iceberg-delta",
+              "path": "Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md",
+              "level": ""
+            },
+            {
+              "name": "流式物化视图架构与实时分析",
+              "id": "Knowledge_06-frontier_streaming-materialized-view-architecture",
+              "path": "Knowledge/06-frontier/streaming-materialized-view-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "流处理安全架构与合规实践",
+              "id": "Knowledge_06-frontier_streaming-security-compliance",
+              "path": "Knowledge/06-frontier/streaming-security-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "流计算 SLO/SLI 定义与可靠性工程",
+              "id": "Knowledge_06-frontier_streaming-slo-definition",
+              "path": "Knowledge/06-frontier/streaming-slo-definition.md",
+              "level": ""
+            },
+            {
+              "name": "Temporal与Flink分层架构整合指南",
+              "id": "Knowledge_06-frontier_temporal-flink-layered-architecture",
+              "path": "Knowledge/06-frontier/temporal-flink-layered-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "向量搜索与流处理的融合：AI-Native数据库演进",
+              "id": "Knowledge_06-frontier_vector-search-streaming-convergence",
+              "path": "Knowledge/06-frontier/vector-search-streaming-convergence.md",
+              "level": ""
+            },
+            {
+              "name": "[wasmedge_bindgen]",
+              "id": "Knowledge_06-frontier_wasm-dataflow-patterns",
+              "path": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Web3 与区块链流处理架构",
+              "id": "Knowledge_06-frontier_web3-blockchain-streaming-architecture",
+              "path": "Knowledge/06-frontier/web3-blockchain-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Web3流数据分析与DeFi实时分析",
+              "id": "Knowledge_06-frontier_web3-streaming-analytics-defi",
+              "path": "Knowledge/06-frontier/web3-streaming-analytics-defi.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "07-best-practices",
+          "children": [
+            {
+              "name": "Flink 生产环境上线检查清单",
+              "id": "Knowledge_07-best-practices_07.01-flink-production-checklist",
+              "path": "Knowledge/07-best-practices/07.01-flink-production-checklist.md",
+              "level": ""
+            },
+            {
+              "name": "性能调优模式",
+              "id": "Knowledge_07-best-practices_07.02-performance-tuning-patterns",
+              "path": "Knowledge/07-best-practices/07.02-performance-tuning-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "问题诊断与故障排查指南",
+              "id": "Knowledge_07-best-practices_07.03-troubleshooting-guide",
+              "path": "Knowledge/07-best-practices/07.03-troubleshooting-guide.md",
+              "level": ""
+            },
+            {
+              "name": "云成本优化模式",
+              "id": "Knowledge_07-best-practices_07.04-cost-optimization-patterns",
+              "path": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "安全加固指南",
+              "id": "Knowledge_07-best-practices_07.05-security-hardening-guide",
+              "path": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
+              "level": ""
+            },
+            {
+              "name": "高可用模式",
+              "id": "Knowledge_07-best-practices_07.06-high-availability-patterns",
+              "path": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 测试策略完整指南",
+              "id": "Knowledge_07-best-practices_07.07-testing-strategies-complete",
+              "path": "Knowledge/07-best-practices/07.07-testing-strategies-complete.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 生产环境上线检查清单",
+              "id": "Knowledge_07-best-practices_07.01-flink-production-checklist",
+              "path": "Knowledge/07-best-practices/07.01-flink-production-checklist.md",
+              "level": ""
+            },
+            {
+              "name": "性能调优模式",
+              "id": "Knowledge_07-best-practices_07.02-performance-tuning-patterns",
+              "path": "Knowledge/07-best-practices/07.02-performance-tuning-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "问题诊断与故障排查指南",
+              "id": "Knowledge_07-best-practices_07.03-troubleshooting-guide",
+              "path": "Knowledge/07-best-practices/07.03-troubleshooting-guide.md",
+              "level": ""
+            },
+            {
+              "name": "云成本优化模式",
+              "id": "Knowledge_07-best-practices_07.04-cost-optimization-patterns",
+              "path": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "安全加固指南",
+              "id": "Knowledge_07-best-practices_07.05-security-hardening-guide",
+              "path": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
+              "level": ""
+            },
+            {
+              "name": "高可用模式",
+              "id": "Knowledge_07-best-practices_07.06-high-availability-patterns",
+              "path": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 测试策略完整指南",
+              "id": "Knowledge_07-best-practices_07.07-testing-strategies-complete",
+              "path": "Knowledge/07-best-practices/07.07-testing-strategies-complete.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "08-standards",
+          "children": [
+            {
+              "name": "流数据治理与实时数据质量管理",
+              "id": "Knowledge_08-standards_streaming-data-governance-quality",
+              "path": "Knowledge/08-standards/streaming-data-governance-quality.md",
+              "level": ""
+            },
+            {
+              "name": "流数据治理",
+              "id": "Knowledge_08-standards_streaming-data-governance",
+              "path": "Knowledge/08-standards/streaming-data-governance.md",
+              "level": ""
+            },
+            {
+              "name": "流数据安全与合规",
+              "id": "Knowledge_08-standards_streaming-security-compliance",
+              "path": "Knowledge/08-standards/streaming-security-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "流数据治理与实时数据质量管理",
+              "id": "Knowledge_08-standards_streaming-data-governance-quality",
+              "path": "Knowledge/08-standards/streaming-data-governance-quality.md",
+              "level": ""
+            },
+            {
+              "name": "流数据治理",
+              "id": "Knowledge_08-standards_streaming-data-governance",
+              "path": "Knowledge/08-standards/streaming-data-governance.md",
+              "level": ""
+            },
+            {
+              "name": "流数据安全与合规",
+              "id": "Knowledge_08-standards_streaming-security-compliance",
+              "path": "Knowledge/08-standards/streaming-security-compliance.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "09-anti-patterns",
+          "children": [
+            {
+              "name": "反模式 AP-01: 全局状态滥用",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-01-global-state-abuse",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-02: Watermark 设置不当",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-02-watermark-misconfiguration",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-03: Checkpoint 间隔设置不合理",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-03-checkpoint-interval-misconfig",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-04: 热点 Key 未处理",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-04-hot-key-skew",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-05: ProcessFunction 中阻塞 I/O",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-05-blocking-io-processfunction",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-06: 序列化开销忽视",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-06-serialization-overhead",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-06-serialization-overhead.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-07: 窗口函数状态爆炸",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-07-window-state-explosion",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-08: 忽略背压信号",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-08-ignoring-backpressure",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-09: 多流 Join 时间未对齐",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-09-multi-stream-join-misalignment",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-10: 资源估算不足导致 OOM",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-10-resource-estimation-oom",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式检测清单",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-checklist",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-checklist.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式目录",
+              "id": "Knowledge_09-anti-patterns_README",
+              "path": "Knowledge/09-anti-patterns/README.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式专题",
+              "id": "Knowledge_09-anti-patterns_streaming-anti-patterns",
+              "path": "Knowledge/09-anti-patterns/streaming-anti-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-01: 全局状态滥用",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-01-global-state-abuse",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-02: Watermark 设置不当",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-02-watermark-misconfiguration",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-03: Checkpoint 间隔设置不合理",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-03-checkpoint-interval-misconfig",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-04: 热点 Key 未处理",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-04-hot-key-skew",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-05: ProcessFunction 中阻塞 I/O",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-05-blocking-io-processfunction",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-06: 序列化开销忽视",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-06-serialization-overhead",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-06-serialization-overhead.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-07: 窗口函数状态爆炸",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-07-window-state-explosion",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-08: 忽略背压信号",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-08-ignoring-backpressure",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-09: 多流 Join 时间未对齐",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-09-multi-stream-join-misalignment",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md",
+              "level": ""
+            },
+            {
+              "name": "反模式 AP-10: 资源估算不足导致 OOM",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-10-resource-estimation-oom",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式检测清单",
+              "id": "Knowledge_09-anti-patterns_anti-pattern-checklist",
+              "path": "Knowledge/09-anti-patterns/anti-pattern-checklist.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式目录",
+              "id": "Knowledge_09-anti-patterns_README",
+              "path": "Knowledge/09-anti-patterns/README.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式专题",
+              "id": "Knowledge_09-anti-patterns_streaming-anti-patterns",
+              "path": "Knowledge/09-anti-patterns/streaming-anti-patterns.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "10-case-studies",
+          "children": [
+            {
+              "name": "案例研究集索引",
+              "id": "Knowledge_10-case-studies_00-INDEX",
+              "path": "Knowledge/10-case-studies/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "电商行业案例: 实时推荐系统",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.1-realtime-recommendation",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.1-realtime-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "电商行业案例: 库存实时同步系统",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.2-inventory-sync",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.2-inventory-sync.md",
+              "level": ""
+            },
+            {
+              "name": "10.2.3 电商大促实时数据大屏生产案例",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.3-big-promotion-realtime-dashboard",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 实时反欺诈系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.1-realtime-anti-fraud-system",
+              "path": "Knowledge/10-case-studies/finance/10.1.1-realtime-anti-fraud-system.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 交易监控与合规系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.2-transaction-monitoring-compliance",
+              "path": "Knowledge/10-case-studies/finance/10.1.2-transaction-monitoring-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 实时风控决策系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.3-realtime-risk-decision",
+              "path": "Knowledge/10-case-studies/finance/10.1.3-realtime-risk-decision.md",
+              "level": ""
+            },
+            {
+              "name": "金融支付实时风控系统生产案例",
+              "id": "Knowledge_10-case-studies_finance_10.1.4-realtime-payment-risk-control",
+              "path": "Knowledge/10-case-studies/finance/10.1.4-realtime-payment-risk-control.md",
+              "level": ""
+            },
+            {
+              "name": "游戏行业案例: 实时对战数据处理系统",
+              "id": "Knowledge_10-case-studies_gaming_10.5.1-realtime-battle-analytics",
+              "path": "Knowledge/10-case-studies/gaming/10.5.1-realtime-battle-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "游戏行业案例: 大型多人在线游戏反作弊系统",
+              "id": "Knowledge_10-case-studies_gaming_10.5.2-anti-cheat-system",
+              "path": "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 智能制造监控系统",
+              "id": "Knowledge_10-case-studies_iot_10.3.1-smart-manufacturing",
+              "path": "Knowledge/10-case-studies/iot/10.3.1-smart-manufacturing.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 车联网数据处理系统",
+              "id": "Knowledge_10-case-studies_iot_10.3.2-connected-vehicles",
+              "path": "Knowledge/10-case-studies/iot/10.3.2-connected-vehicles.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 智能工厂设备预测性维护",
+              "id": "Knowledge_10-case-studies_iot_10.3.3-predictive-maintenance-manufacturing",
+              "path": "Knowledge/10-case-studies/iot/10.3.3-predictive-maintenance-manufacturing.md",
+              "level": ""
+            },
+            {
+              "name": "社交媒体案例: 实时内容推荐系统",
+              "id": "Knowledge_10-case-studies_social-media_10.4.1-content-recommendation",
+              "path": "Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "内容平台实时推荐系统生产案例",
+              "id": "Knowledge_10-case-studies_social-media_10.4.2-realtime-recommendation-content",
+              "path": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究集索引",
+              "id": "Knowledge_10-case-studies_00-INDEX",
+              "path": "Knowledge/10-case-studies/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "电商行业案例: 实时推荐系统",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.1-realtime-recommendation",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.1-realtime-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "电商行业案例: 库存实时同步系统",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.2-inventory-sync",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.2-inventory-sync.md",
+              "level": ""
+            },
+            {
+              "name": "10.2.3 电商大促实时数据大屏生产案例",
+              "id": "Knowledge_10-case-studies_ecommerce_10.2.3-big-promotion-realtime-dashboard",
+              "path": "Knowledge/10-case-studies/ecommerce/10.2.3-big-promotion-realtime-dashboard.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 实时反欺诈系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.1-realtime-anti-fraud-system",
+              "path": "Knowledge/10-case-studies/finance/10.1.1-realtime-anti-fraud-system.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 交易监控与合规系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.2-transaction-monitoring-compliance",
+              "path": "Knowledge/10-case-studies/finance/10.1.2-transaction-monitoring-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "金融行业案例: 实时风控决策系统",
+              "id": "Knowledge_10-case-studies_finance_10.1.3-realtime-risk-decision",
+              "path": "Knowledge/10-case-studies/finance/10.1.3-realtime-risk-decision.md",
+              "level": ""
+            },
+            {
+              "name": "金融支付实时风控系统生产案例",
+              "id": "Knowledge_10-case-studies_finance_10.1.4-realtime-payment-risk-control",
+              "path": "Knowledge/10-case-studies/finance/10.1.4-realtime-payment-risk-control.md",
+              "level": ""
+            },
+            {
+              "name": "游戏行业案例: 实时对战数据处理系统",
+              "id": "Knowledge_10-case-studies_gaming_10.5.1-realtime-battle-analytics",
+              "path": "Knowledge/10-case-studies/gaming/10.5.1-realtime-battle-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "游戏行业案例: 大型多人在线游戏反作弊系统",
+              "id": "Knowledge_10-case-studies_gaming_10.5.2-anti-cheat-system",
+              "path": "Knowledge/10-case-studies/gaming/10.5.2-anti-cheat-system.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 智能制造监控系统",
+              "id": "Knowledge_10-case-studies_iot_10.3.1-smart-manufacturing",
+              "path": "Knowledge/10-case-studies/iot/10.3.1-smart-manufacturing.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 车联网数据处理系统",
+              "id": "Knowledge_10-case-studies_iot_10.3.2-connected-vehicles",
+              "path": "Knowledge/10-case-studies/iot/10.3.2-connected-vehicles.md",
+              "level": ""
+            },
+            {
+              "name": "物联网案例: 智能工厂设备预测性维护",
+              "id": "Knowledge_10-case-studies_iot_10.3.3-predictive-maintenance-manufacturing",
+              "path": "Knowledge/10-case-studies/iot/10.3.3-predictive-maintenance-manufacturing.md",
+              "level": ""
+            },
+            {
+              "name": "社交媒体案例: 实时内容推荐系统",
+              "id": "Knowledge_10-case-studies_social-media_10.4.1-content-recommendation",
+              "path": "Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "内容平台实时推荐系统生产案例",
+              "id": "Knowledge_10-case-studies_social-media_10.4.2-realtime-recommendation-content",
+              "path": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "98-exercises",
+          "children": [
+            {
+              "name": "练习 01: 进程演算基础",
+              "id": "Knowledge_98-exercises_exercise-01-process-calculus",
+              "path": "Knowledge/98-exercises/exercise-01-process-calculus.md",
+              "level": ""
+            },
+            {
+              "name": "练习 02: Flink 基础编程",
+              "id": "Knowledge_98-exercises_exercise-02-flink-basics",
+              "path": "Knowledge/98-exercises/exercise-02-flink-basics.md",
+              "level": ""
+            },
+            {
+              "name": "练习 03: Checkpoint 分析",
+              "id": "Knowledge_98-exercises_exercise-03-checkpoint-analysis",
+              "path": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "练习 04: 一致性模型对比",
+              "id": "Knowledge_98-exercises_exercise-04-consistency-models",
+              "path": "Knowledge/98-exercises/exercise-04-consistency-models.md",
+              "level": ""
+            },
+            {
+              "name": "练习 05: 设计模式实现",
+              "id": "Knowledge_98-exercises_exercise-05-pattern-implementation",
+              "path": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
+              "level": ""
+            },
+            {
+              "name": "练习 06: TLA+ 实践",
+              "id": "Knowledge_98-exercises_exercise-06-tla-practice",
+              "path": "Knowledge/98-exercises/exercise-06-tla-practice.md",
+              "level": ""
+            },
+            {
+              "name": "A2A协议快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-a2a-protocol",
+              "path": "Knowledge/98-exercises/quick-ref-a2a-protocol.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave 快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-flink-vs-risingwave",
+              "path": "Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md",
+              "level": ""
+            },
+            {
+              "name": "流数据安全与合规快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-security-compliance",
+              "path": "Knowledge/98-exercises/quick-ref-security-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-streaming-anti-patterns",
+              "path": "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Temporal + Flink 分层架构快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-temporal-flink",
+              "path": "Knowledge/98-exercises/quick-ref-temporal-flink.md",
+              "level": ""
+            },
+            {
+              "name": "流计算练习集",
+              "id": "Knowledge_98-exercises_README",
+              "path": "Knowledge/98-exercises/README.md",
+              "level": ""
+            },
+            {
+              "name": "练习 01: 进程演算基础",
+              "id": "Knowledge_98-exercises_exercise-01-process-calculus",
+              "path": "Knowledge/98-exercises/exercise-01-process-calculus.md",
+              "level": ""
+            },
+            {
+              "name": "练习 02: Flink 基础编程",
+              "id": "Knowledge_98-exercises_exercise-02-flink-basics",
+              "path": "Knowledge/98-exercises/exercise-02-flink-basics.md",
+              "level": ""
+            },
+            {
+              "name": "练习 03: Checkpoint 分析",
+              "id": "Knowledge_98-exercises_exercise-03-checkpoint-analysis",
+              "path": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "练习 04: 一致性模型对比",
+              "id": "Knowledge_98-exercises_exercise-04-consistency-models",
+              "path": "Knowledge/98-exercises/exercise-04-consistency-models.md",
+              "level": ""
+            },
+            {
+              "name": "练习 05: 设计模式实现",
+              "id": "Knowledge_98-exercises_exercise-05-pattern-implementation",
+              "path": "Knowledge/98-exercises/exercise-05-pattern-implementation.md",
+              "level": ""
+            },
+            {
+              "name": "练习 06: TLA+ 实践",
+              "id": "Knowledge_98-exercises_exercise-06-tla-practice",
+              "path": "Knowledge/98-exercises/exercise-06-tla-practice.md",
+              "level": ""
+            },
+            {
+              "name": "A2A协议快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-a2a-protocol",
+              "path": "Knowledge/98-exercises/quick-ref-a2a-protocol.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs RisingWave 快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-flink-vs-risingwave",
+              "path": "Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md",
+              "level": ""
+            },
+            {
+              "name": "流数据安全与合规快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-security-compliance",
+              "path": "Knowledge/98-exercises/quick-ref-security-compliance.md",
+              "level": ""
+            },
+            {
+              "name": "流处理反模式快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-streaming-anti-patterns",
+              "path": "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "Temporal + Flink 分层架构快速参考卡片",
+              "id": "Knowledge_98-exercises_quick-ref-temporal-flink",
+              "path": "Knowledge/98-exercises/quick-ref-temporal-flink.md",
+              "level": ""
+            },
+            {
+              "name": "流计算练习集",
+              "id": "Knowledge_98-exercises_README",
+              "path": "Knowledge/98-exercises/README.md",
+              "level": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Flink",
+      "children": [
+        {
+          "name": "00-INDEX.md",
+          "children": [
+            {
+              "name": "Flink/ 专项文档索引",
+              "id": "Flink_00-INDEX",
+              "path": "Flink/00-INDEX.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "00-QUICK-START.md",
+          "children": [
+            {
+              "name": "Flink 2.4/2.5 快速开始指南",
+              "id": "Flink_00-QUICK-START",
+              "path": "Flink/00-QUICK-START.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "01-architecture",
+          "children": [
+            {
+              "name": "DataStream V2 API 语义分析",
+              "id": "Flink_01-architecture_datastream-v2-semantics",
+              "path": "Flink/01-architecture/datastream-v2-semantics.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 部署架构模式",
+              "id": "Flink_01-architecture_deployment-architectures",
+              "path": "Flink/01-architecture/deployment-architectures.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 分离状态存储分析",
+              "id": "Flink_01-architecture_disaggregated-state-analysis",
+              "path": "Flink/01-architecture/disaggregated-state-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 1.x vs 2.0 架构对比",
+              "id": "Flink_01-architecture_flink-1.x-vs-2.0-comparison",
+              "path": "Flink/01-architecture/flink-1.x-vs-2.0-comparison.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "02-core-mechanisms",
+          "children": [
+            {
+              "name": "Flink 自适应执行引擎 v2",
+              "id": "Flink_02-core-mechanisms_adaptive-execution-engine-v2",
+              "path": "Flink/02-core-mechanisms/adaptive-execution-engine-v2.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.0 异步执行模型与 AEC",
+              "id": "Flink_02-core-mechanisms_async-execution-model",
+              "path": "Flink/02-core-mechanisms/async-execution-model.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 背压与流控机制",
+              "id": "Flink_02-core-mechanisms_backpressure-and-flow-control",
+              "path": "Flink/02-core-mechanisms/backpressure-and-flow-control.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Checkpoint 机制深度剖析",
+              "id": "Flink_02-core-mechanisms_checkpoint-mechanism-deep-dive",
+              "path": "Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Delta Join V2 生产实践指南",
+              "id": "Flink_02-core-mechanisms_delta-join-production-guide",
+              "path": "Flink/02-core-mechanisms/delta-join-production-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Delta Join：大状态流Join优化",
+              "id": "Flink_02-core-mechanisms_delta-join",
+              "path": "Flink/02-core-mechanisms/delta-join.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 端到端 Exactly-Once 保障",
+              "id": "Flink_02-core-mechanisms_exactly-once-end-to-end",
+              "path": "Flink/02-core-mechanisms/exactly-once-end-to-end.md",
+              "level": ""
+            },
+            {
+              "name": "Exactly-Once语义深度解析",
+              "id": "Flink_02-core-mechanisms_exactly-once-semantics-deep-dive",
+              "path": "Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.0 异步执行模型",
+              "id": "Flink_02-core-mechanisms_flink-2.0-async-execution-model",
+              "path": "Flink/02-core-mechanisms/flink-2.0-async-execution-model.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.0 ForSt 状态后端 - VLDB 2025 深度解析",
+              "id": "Flink_02-core-mechanisms_flink-2.0-forst-state-backend",
+              "path": "Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md",
+              "level": ""
+            },
+            {
+              "name": "Apache Flink 2.2 前沿特性全面解析",
+              "id": "Flink_02-core-mechanisms_flink-2.2-frontier-features",
+              "path": "Flink/02-core-mechanisms/flink-2.2-frontier-features.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 状态管理完整特性指南",
+              "id": "Flink_02-core-mechanisms_flink-state-management-complete-guide",
+              "path": "Flink/02-core-mechanisms/flink-state-management-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink State TTL 最佳实践",
+              "id": "Flink_02-core-mechanisms_flink-state-ttl-best-practices",
+              "path": "Flink/02-core-mechanisms/flink-state-ttl-best-practices.md",
+              "level": ""
+            },
+            {
+              "name": "flink-conf.yaml",
+              "id": "Flink_02-core-mechanisms_forst-state-backend",
+              "path": "Flink/02-core-mechanisms/forst-state-backend.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 多路Join优化",
+              "id": "Flink_02-core-mechanisms_multi-way-join-optimization",
+              "path": "Flink/02-core-mechanisms/multi-way-join-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 智能检查点策略",
+              "id": "Flink_02-core-mechanisms_smart-checkpointing-strategies",
+              "path": "Flink/02-core-mechanisms/smart-checkpointing-strategies.md",
+              "level": ""
+            },
+            {
+              "name": "Flink State Backends 深度对比分析",
+              "id": "Flink_02-core-mechanisms_state-backends-deep-comparison",
+              "path": "Flink/02-core-mechanisms/state-backends-deep-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming ETL 最佳实践与设计模式",
+              "id": "Flink_02-core-mechanisms_streaming-etl-best-practices",
+              "path": "Flink/02-core-mechanisms/streaming-etl-best-practices.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 时间语义与 Watermark",
+              "id": "Flink_02-core-mechanisms_time-semantics-and-watermark",
+              "path": "Flink/02-core-mechanisms/time-semantics-and-watermark.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "03-sql-table-api",
+          "children": [
+            {
+              "name": "ANSI SQL 2023 兼容性完整指南",
+              "id": "Flink_03-sql-table-api_ansi-sql-2023-compliance-guide",
+              "path": "Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Built-in Functions 完整列表",
+              "id": "Flink_03-sql-table-api_built-in-functions-complete-list",
+              "path": "Flink/03-sql-table-api/built-in-functions-complete-list.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Data Types 完整参考",
+              "id": "Flink_03-sql-table-api_data-types-complete-reference",
+              "path": "Flink/03-sql-table-api/data-types-complete-reference.md",
+              "level": ""
+            },
+            {
+              "name": "Flink CEP (Complex Event Processing) 完整教程",
+              "id": "Flink_03-sql-table-api_flink-cep-complete-guide",
+              "path": "Flink/03-sql-table-api/flink-cep-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.2 Materialized Table 物化表深度指南",
+              "id": "Flink_03-sql-table-api_flink-materialized-table-deep-dive",
+              "path": "Flink/03-sql-table-api/flink-materialized-table-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Process Table Functions (PTF) - 有状态SQL扩展",
+              "id": "Flink_03-sql-table-api_flink-process-table-functions",
+              "path": "Flink/03-sql-table-api/flink-process-table-functions.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Python User-Defined Functions",
+              "id": "Flink_03-sql-table-api_flink-python-udf",
+              "path": "Flink/03-sql-table-api/flink-python-udf.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL基于Apache Calcite的查询优化器深度解析",
+              "id": "Flink_03-sql-table-api_flink-sql-calcite-optimizer-deep-dive",
+              "path": "Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL Hints 查询优化与执行计划调优",
+              "id": "Flink_03-sql-table-api_flink-sql-hints-optimization",
+              "path": "Flink/03-sql-table-api/flink-sql-hints-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL 窗口函数深度指南",
+              "id": "Flink_03-sql-table-api_flink-sql-window-functions-deep-dive",
+              "path": "Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Table API & SQL 完整特性指南",
+              "id": "Flink_03-sql-table-api_flink-table-sql-complete-guide",
+              "path": "Flink/03-sql-table-api/flink-table-sql-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink VECTOR_SEARCH 向量搜索与 RAG 实现（规划中）",
+              "id": "Flink_03-sql-table-api_flink-vector-search-rag",
+              "path": "Flink/03-sql-table-api/flink-vector-search-rag.md",
+              "level": ""
+            },
+            {
+              "name": "Materialized Tables - Flink 2.0+ 的统一批流开发体验",
+              "id": "Flink_03-sql-table-api_materialized-tables",
+              "path": "Flink/03-sql-table-api/materialized-tables.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.1 Model DDL 与实时 AI 推理",
+              "id": "Flink_03-sql-table-api_model-ddl-and-ml-predict",
+              "path": "Flink/03-sql-table-api/model-ddl-and-ml-predict.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL 查询优化分析",
+              "id": "Flink_03-sql-table-api_query-optimization-analysis",
+              "path": "Flink/03-sql-table-api/query-optimization-analysis.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL 函数快速参考",
+              "id": "Flink_03-sql-table-api_sql-functions-cheatsheet",
+              "path": "Flink/03-sql-table-api/sql-functions-cheatsheet.md",
+              "level": ""
+            },
+            {
+              "name": "Flink SQL vs DataStream API 对比",
+              "id": "Flink_03-sql-table-api_sql-vs-datastream-comparison",
+              "path": "Flink/03-sql-table-api/sql-vs-datastream-comparison.md",
+              "level": ""
+            },
+            {
+              "name": "Flink VECTOR_SEARCH - 流式向量相似度搜索（规划中）",
+              "id": "Flink_03-sql-table-api_vector-search",
+              "path": "Flink/03-sql-table-api/vector-search.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "04-connectors",
+          "children": [
+            {
+              "name": "Flink CDC与Debezium集成深度解析",
+              "id": "Flink_04-connectors_04.04-cdc-debezium-integration",
+              "path": "Flink/04-connectors/04.04-cdc-debezium-integration.md",
+              "level": ""
+            },
+            {
+              "name": "CloudEvents 标准集成指南",
+              "id": "Flink_04-connectors_cloudevents-integration-guide",
+              "path": "Flink/04-connectors/cloudevents-integration-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Diskless Kafka: 云原生流存储架构演进与Flink集成",
+              "id": "Flink_04-connectors_diskless-kafka-cloud-native",
+              "path": "Flink/04-connectors/diskless-kafka-cloud-native.md",
+              "level": ""
+            },
+            {
+              "name": "Elasticsearch Connector 完整指南",
+              "id": "Flink_04-connectors_elasticsearch-connector-complete-guide",
+              "path": "Flink/04-connectors/elasticsearch-connector-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.4 连接器生态完整指南",
+              "id": "Flink_04-connectors_flink-24-connectors-guide",
+              "path": "Flink/04-connectors/flink-24-connectors-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink CDC 3.0 数据集成框架",
+              "id": "Flink_04-connectors_flink-cdc-3.0-data-integration",
+              "path": "Flink/04-connectors/flink-cdc-3.0-data-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 连接器生态完整指南",
+              "id": "Flink_04-connectors_flink-connectors-ecosystem-complete-guide",
+              "path": "Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink + Delta Lake 深度集成：流批统一的 Lakehouse 存储",
+              "id": "Flink_04-connectors_flink-delta-lake-integration",
+              "path": "Flink/04-connectors/flink-delta-lake-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink + Apache Iceberg 深度集成：开放 Lakehouse 表格式",
+              "id": "Flink_04-connectors_flink-iceberg-integration",
+              "path": "Flink/04-connectors/flink-iceberg-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 与 Apache Paimon 深度集成 - 流式 Lakehouse 存储连接器",
+              "id": "Flink_04-connectors_flink-paimon-integration",
+              "path": "Flink/04-connectors/flink-paimon-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Apache Fluss (Incubating) - 为流分析而生的分布式存储",
+              "id": "Flink_04-connectors_fluss-integration",
+              "path": "Flink/04-connectors/fluss-integration.md",
+              "level": ""
+            },
+            {
+              "name": "JDBC Connector 详细指南",
+              "id": "Flink_04-connectors_jdbc-connector-complete-guide",
+              "path": "Flink/04-connectors/jdbc-connector-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Kafka 集成模式",
+              "id": "Flink_04-connectors_kafka-integration-patterns",
+              "path": "Flink/04-connectors/kafka-integration-patterns.md",
+              "level": ""
+            },
+            {
+              "name": "MongoDB Connector 详细指南",
+              "id": "Flink_04-connectors_mongodb-connector-complete-guide",
+              "path": "Flink/04-connectors/mongodb-connector-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Pulsar Functions 集成指南",
+              "id": "Flink_04-connectors_pulsar-integration-guide",
+              "path": "Flink/04-connectors/pulsar-integration-guide.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "05-operations",
+          "children": [
+            {
+              "name": "Flink 生产环境检查清单",
+              "id": "Flink_05-operations_production-checklist",
+              "path": "Flink/05-operations/production-checklist.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "05-vs-competitors",
+          "children": [
+            {
+              "name": "Flink vs Kafka Streams 对比",
+              "id": "Flink_05-vs-competitors_flink-vs-kafka-streams",
+              "path": "Flink/05-vs-competitors/flink-vs-kafka-streams.md",
+              "level": ""
+            },
+            {
+              "name": "Flink vs Spark Streaming 对比",
+              "id": "Flink_05-vs-competitors_flink-vs-spark-streaming",
+              "path": "Flink/05-vs-competitors/flink-vs-spark-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "LinkedIn Samza 深度分析",
+              "id": "Flink_05-vs-competitors_linkedin-samza-deep-dive",
+              "path": "Flink/05-vs-competitors/linkedin-samza-deep-dive.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "06-engineering",
+          "children": [
+            {
+              "name": "Flink 性能优化完全指南",
+              "id": "Flink_06-engineering_06.02-performance-optimization-complete",
+              "path": "Flink/06-engineering/06.02-performance-optimization-complete.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.4 性能优化完整指南",
+              "id": "Flink_06-engineering_flink-24-performance-improvements",
+              "path": "Flink/06-engineering/flink-24-performance-improvements.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 与 dbt 集成: 流式数据转换的工程实践",
+              "id": "Flink_06-engineering_flink-dbt-integration",
+              "path": "Flink/06-engineering/flink-dbt-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 总体拥有成本(TCO)与成本优化策略指南",
+              "id": "Flink_06-engineering_flink-tco-cost-optimization-guide",
+              "path": "Flink/06-engineering/flink-tco-cost-optimization-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 性能调优指南",
+              "id": "Flink_06-engineering_performance-tuning-guide",
+              "path": "Flink/06-engineering/performance-tuning-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 状态后端选型指南",
+              "id": "Flink_06-engineering_state-backend-selection",
+              "path": "Flink/06-engineering/state-backend-selection.md",
+              "level": ""
+            },
+            {
+              "name": "流处理云成本优化与FinOps实践",
+              "id": "Flink_06-engineering_stream-processing-cost-optimization",
+              "path": "Flink/06-engineering/stream-processing-cost-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "流处理测试策略与最佳实践",
+              "id": "Flink_06-engineering_stream-processing-testing-strategies",
+              "path": "Flink/06-engineering/stream-processing-testing-strategies.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "07-case-studies",
+          "children": [
+            {
+              "name": "案例研究：Clickstream实时用户行为分析系统",
+              "id": "Flink_07-case-studies_case-clickstream-user-behavior-analytics",
+              "path": "Flink/07-case-studies/case-clickstream-user-behavior-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：国际电商平台实时推荐系统重构",
+              "id": "Flink_07-case-studies_case-ecommerce-realtime-recommendation",
+              "path": "Flink/07-case-studies/case-ecommerce-realtime-recommendation.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：智能电网能源优化与负载预测平台",
+              "id": "Flink_07-case-studies_case-energy-grid-optimization",
+              "path": "Flink/07-case-studies/case-energy-grid-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "金融实时风控系统案例研究",
+              "id": "Flink_07-case-studies_case-financial-realtime-risk-control",
+              "path": "Flink/07-case-studies/case-financial-realtime-risk-control.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：高级欺诈检测与风险防控平台",
+              "id": "Flink_07-case-studies_case-fraud-detection-advanced",
+              "path": "Flink/07-case-studies/case-fraud-detection-advanced.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：游戏行业实时分析与反作弊系统",
+              "id": "Flink_07-case-studies_case-gaming-realtime-analytics",
+              "path": "Flink/07-case-studies/case-gaming-realtime-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：医疗患者实时监控与异常检测平台",
+              "id": "Flink_07-case-studies_case-healthcare-monitoring",
+              "path": "Flink/07-case-studies/case-healthcare-monitoring.md",
+              "level": ""
+            },
+            {
+              "name": "案例: IoT 流处理平台",
+              "id": "Flink_07-case-studies_case-iot-stream-processing",
+              "path": "Flink/07-case-studies/case-iot-stream-processing.md",
+              "level": ""
+            },
+            {
+              "name": "物流行业实时追踪与供应链优化：全球物流巨头案例研究",
+              "id": "Flink_07-case-studies_case-logistics-realtime-tracking",
+              "path": "Flink/07-case-studies/case-logistics-realtime-tracking.md",
+              "level": ""
+            },
+            {
+              "name": "案例: 实时分析平台",
+              "id": "Flink_07-case-studies_case-realtime-analytics",
+              "path": "Flink/07-case-studies/case-realtime-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：智慧城市IoT多源数据融合与实时决策平台",
+              "id": "Flink_07-case-studies_case-smart-city-iot",
+              "path": "Flink/07-case-studies/case-smart-city-iot.md",
+              "level": ""
+            },
+            {
+              "name": "智能电网实时能源管理与优化案例研究",
+              "id": "Flink_07-case-studies_case-smart-grid-energy-management",
+              "path": "Flink/07-case-studies/case-smart-grid-energy-management.md",
+              "level": ""
+            },
+            {
+              "name": "智能制造IoT实时流处理案例研究",
+              "id": "Flink_07-case-studies_case-smart-manufacturing-iot",
+              "path": "Flink/07-case-studies/case-smart-manufacturing-iot.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：社交媒体实时分析与情感计算平台",
+              "id": "Flink_07-case-studies_case-social-media-analytics",
+              "path": "Flink/07-case-studies/case-social-media-analytics.md",
+              "level": ""
+            },
+            {
+              "name": "案例研究：供应链实时优化与智能追踪平台",
+              "id": "Flink_07-case-studies_case-supply-chain-optimization",
+              "path": "Flink/07-case-studies/case-supply-chain-optimization.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "07-operations",
+          "children": [
+            {
+              "name": "Flink REST API 完整参考",
+              "id": "Flink_07-operations_rest-api-complete-reference",
+              "path": "Flink/07-operations/rest-api-complete-reference.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "08-roadmap",
+          "children": [
+            {
+              "name": "2026 Q2 Flink 推进任务",
+              "id": "Flink_08-roadmap_2026-q2-flink-tasks",
+              "path": "Flink/08-roadmap/2026-q2-flink-tasks.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 社区动态跟踪",
+              "id": "Flink_08-roadmap_community-dynamics-tracking",
+              "path": "Flink/08-roadmap/community-dynamics-tracking.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.1 前沿追踪",
+              "id": "Flink_08-roadmap_flink-2.1-frontier-tracking",
+              "path": "Flink/08-roadmap/flink-2.1-frontier-tracking.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.3/2.4 路线图与新特性全解",
+              "id": "Flink_08-roadmap_flink-2.3-2.4-roadmap",
+              "path": "Flink/08-roadmap/flink-2.3-2.4-roadmap.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.4 版本完整跟踪文档",
+              "id": "Flink_08-roadmap_flink-2.4-tracking",
+              "path": "Flink/08-roadmap/flink-2.4-tracking.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.5 版本预览与路线图",
+              "id": "Flink_08-roadmap_flink-2.5-preview",
+              "path": "Flink/08-roadmap/flink-2.5-preview.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.5 流批一体深化完整指南",
+              "id": "Flink_08-roadmap_flink-25-stream-batch-unification",
+              "path": "Flink/08-roadmap/flink-25-stream-batch-unification.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 3.0 架构重大变更完整文档",
+              "id": "Flink_08-roadmap_flink-30-architecture-redesign",
+              "path": "Flink/08-roadmap/flink-30-architecture-redesign.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 版本对比矩阵",
+              "id": "Flink_08-roadmap_flink-version-comparison-matrix",
+              "path": "Flink/08-roadmap/flink-version-comparison-matrix.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 版本演进与路线图完整指南",
+              "id": "Flink_08-roadmap_flink-version-evolution-complete-guide",
+              "path": "Flink/08-roadmap/flink-version-evolution-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "FLIP 状态跟踪系统",
+              "id": "Flink_08-roadmap_FLIP-TRACKING-SYSTEM",
+              "path": "Flink/08-roadmap/FLIP-TRACKING-SYSTEM.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 版本发布完整检查清单",
+              "id": "Flink_08-roadmap_release-checklist-template",
+              "path": "Flink/08-roadmap/release-checklist-template.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "09-language-foundations",
+          "children": [
+            {
+              "name": "Flink 多语言编程基础模块索引",
+              "id": "Flink_09-language-foundations_00-INDEX",
+              "path": "Flink/09-language-foundations/00-INDEX.md",
+              "level": ""
+            },
+            {
+              "name": "Scala 类型系统 for Flink 流计算",
+              "id": "Flink_09-language-foundations_01.01-scala-types-for-streaming",
+              "path": "Flink/09-language-foundations/01.01-scala-types-for-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "TypeInformation 派生机制 - 三种方案对比",
+              "id": "Flink_09-language-foundations_01.02-typeinformation-derivation",
+              "path": "Flink/09-language-foundations/01.02-typeinformation-derivation.md",
+              "level": ""
+            },
+            {
+              "name": "Scala 3 Type System Formalization for Stream Processing",
+              "id": "Flink_09-language-foundations_01.03-scala3-type-system-formalization",
+              "path": "Flink/09-language-foundations/01.03-scala3-type-system-formalization.md",
+              "level": ""
+            },
+            {
+              "name": "PyFlink深度 - Python DataStream API",
+              "id": "Flink_09-language-foundations_02-python-api",
+              "path": "Flink/09-language-foundations/02-python-api.md",
+              "level": ""
+            },
+            {
+              "name": "从Scala调用Flink Java DataStream API",
+              "id": "Flink_09-language-foundations_02.01-java-api-from-scala",
+              "path": "Flink/09-language-foundations/02.01-java-api-from-scala.md",
+              "level": ""
+            },
+            {
+              "name": "flink-scala-api 社区版完整指南",
+              "id": "Flink_09-language-foundations_02.02-flink-scala-api-community",
+              "path": "Flink/09-language-foundations/02.02-flink-scala-api-community.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.2 Python Async DataStream API 技术指南",
+              "id": "Flink_09-language-foundations_02.03-python-async-api",
+              "path": "Flink/09-language-foundations/02.03-python-async-api.md",
+              "level": ""
+            },
+            {
+              "name": "Flink与Rust：高性能原生UDF",
+              "id": "Flink_09-language-foundations_03-rust-native",
+              "path": "Flink/09-language-foundations/03-rust-native.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Scala 项目迁移完全指南",
+              "id": "Flink_09-language-foundations_03.01-migration-guide",
+              "path": "Flink/09-language-foundations/03.01-migration-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming Lakehouse - 流批统一的Lakehouse架构",
+              "id": "Flink_09-language-foundations_04-streaming-lakehouse",
+              "path": "Flink/09-language-foundations/04-streaming-lakehouse.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.0 DataStream V2 API",
+              "id": "Flink_09-language-foundations_05-datastream-v2-api",
+              "path": "Flink/09-language-foundations/05-datastream-v2-api.md",
+              "level": ""
+            },
+            {
+              "name": "RisingWave 深度解析：Rust 原生流数据库与 Flink 对比分析",
+              "id": "Flink_09-language-foundations_06-risingwave-deep-dive",
+              "path": "Flink/09-language-foundations/06-risingwave-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Rust 原生流处理系统全景：从 Differential Dataflow 到 RisingWave",
+              "id": "Flink_09-language-foundations_07-rust-streaming-landscape",
+              "path": "Flink/09-language-foundations/07-rust-streaming-landscape.md",
+              "level": ""
+            },
+            {
+              "name": "Materialize 对 Timely Dataflow 的 100 倍性能优化深度分析",
+              "id": "Flink_09-language-foundations_07.01-timely-dataflow-optimization",
+              "path": "Flink/09-language-foundations/07.01-timely-dataflow-optimization.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Rust Connector 开发指南",
+              "id": "Flink_09-language-foundations_08-flink-rust-connector-dev",
+              "path": "Flink/09-language-foundations/08-flink-rust-connector-dev.md",
+              "level": ""
+            },
+            {
+              "name": "WASM UDF Frameworks Comparison for Flink",
+              "id": "Flink_09-language-foundations_09-wasm-udf-frameworks",
+              "path": "Flink/09-language-foundations/09-wasm-udf-frameworks.md",
+              "level": ""
+            },
+            {
+              "name": "WASI 0.2 与 Component Model：流计算的模块化未来",
+              "id": "Flink_09-language-foundations_10-wasi-component-model",
+              "path": "Flink/09-language-foundations/10-wasi-component-model.md",
+              "level": ""
+            },
+            {
+              "name": "DataStream API 快速参考速查表",
+              "id": "Flink_09-language-foundations_datastream-api-cheatsheet",
+              "path": "Flink/09-language-foundations/datastream-api-cheatsheet.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.5 WebAssembly UDF GA - 生产级多语言函数引擎",
+              "id": "Flink_09-language-foundations_flink-25-wasm-udf-ga",
+              "path": "Flink/09-language-foundations/flink-25-wasm-udf-ga.md",
+              "level": ""
+            },
+            {
+              "name": "Flink DataStream API 完整特性指南",
+              "id": "Flink_09-language-foundations_flink-datastream-api-complete-guide",
+              "path": "Flink/09-language-foundations/flink-datastream-api-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 语言支持完整特性指南",
+              "id": "Flink_09-language-foundations_flink-language-support-complete-guide",
+              "path": "Flink/09-language-foundations/flink-language-support-complete-guide.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "10-deployment",
+          "children": [
+            {
+              "name": "Flink 成本优化计算器指南",
+              "id": "Flink_10-deployment_cost-optimization-calculator",
+              "path": "Flink/10-deployment/cost-optimization-calculator.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.4 部署改进完整指南",
+              "id": "Flink_10-deployment_flink-24-deployment-improvements",
+              "path": "Flink/10-deployment/flink-24-deployment-improvements.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 部署与运维完整特性指南",
+              "id": "Flink_10-deployment_flink-deployment-ops-complete-guide",
+              "path": "Flink/10-deployment/flink-deployment-ops-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Kubernetes Operator 自动扩缩容深度指南",
+              "id": "Flink_10-deployment_flink-kubernetes-autoscaler-deep-dive",
+              "path": "Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Kubernetes Operator 深度指南",
+              "id": "Flink_10-deployment_flink-kubernetes-operator-deep-dive",
+              "path": "Flink/10-deployment/flink-kubernetes-operator-deep-dive.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless Flink 云原生无服务器架构",
+              "id": "Flink_10-deployment_flink-serverless-architecture",
+              "path": "Flink/10-deployment/flink-serverless-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Flink on Kubernetes 生产级部署深度指南",
+              "id": "Flink_10-deployment_kubernetes-deployment-production-guide",
+              "path": "Flink/10-deployment/kubernetes-deployment-production-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink on Kubernetes - 云原生部署完整指南",
+              "id": "Flink_10-deployment_kubernetes-deployment",
+              "path": "Flink/10-deployment/kubernetes-deployment.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 多云部署模板",
+              "id": "Flink_10-deployment_multi-cloud-deployment-templates",
+              "path": "Flink/10-deployment/multi-cloud-deployment-templates.md",
+              "level": ""
+            },
+            {
+              "name": "Serverless Flink GA (Generally Available) 完整指南",
+              "id": "Flink_10-deployment_serverless-flink-ga-guide",
+              "path": "Flink/10-deployment/serverless-flink-ga-guide.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "11-benchmarking",
+          "children": [
+            {
+              "name": "Flink 2.4/2.5 性能基准测试报告",
+              "id": "Flink_11-benchmarking_flink-24-25-benchmark-results",
+              "path": "Flink/11-benchmarking/flink-24-25-benchmark-results.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 性能基准测试套件 - 完整指南",
+              "id": "Flink_11-benchmarking_performance-benchmark-suite",
+              "path": "Flink/11-benchmarking/performance-benchmark-suite.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 性能基准测试完整指南",
+              "id": "Flink_11-benchmarking_performance-benchmarking-guide",
+              "path": "Flink/11-benchmarking/performance-benchmarking-guide.md",
+              "level": ""
+            },
+            {
+              "name": "流处理Benchmark体系 - 性能评估方法论",
+              "id": "Flink_11-benchmarking_streaming-benchmarks",
+              "path": "Flink/11-benchmarking/streaming-benchmarks.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "12-ai-ml",
+          "children": [
+            {
+              "name": "Flink 2.5 GPU加速算子完整指南",
+              "id": "Flink_12-ai-ml_flink-25-gpu-acceleration",
+              "path": "Flink/12-ai-ml/flink-25-gpu-acceleration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Agents (FLIP-531) - AI Agent原生运行时支持",
+              "id": "Flink_12-ai-ml_flink-agents-flip-531",
+              "path": "Flink/12-ai-ml/flink-agents-flip-531.md",
+              "level": ""
+            },
+            {
+              "name": "Flink AI Agents (FLIP-531) 原生Agent支持",
+              "id": "Flink_12-ai-ml_flink-ai-agents-flip-531",
+              "path": "Flink/12-ai-ml/flink-ai-agents-flip-531.md",
+              "level": ""
+            },
+            {
+              "name": "Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理",
+              "id": "Flink_12-ai-ml_flink-ai-ml-integration-complete-guide",
+              "path": "Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 与 LLM 集成：实时生成式 AI 应用",
+              "id": "Flink_12-ai-ml_flink-llm-integration",
+              "path": "Flink/12-ai-ml/flink-llm-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink ML - 流式机器学习架构",
+              "id": "Flink_12-ai-ml_flink-ml-architecture",
+              "path": "Flink/12-ai-ml/flink-ml-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Flink实时机器学习推理与模型服务",
+              "id": "Flink_12-ai-ml_flink-realtime-ml-inference",
+              "path": "Flink/12-ai-ml/flink-realtime-ml-inference.md",
+              "level": ""
+            },
+            {
+              "name": "FLIP-531 AI Agents GA 完整实现指南",
+              "id": "Flink_12-ai-ml_flip-531-ai-agents-ga-guide",
+              "path": "Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md",
+              "level": ""
+            },
+            {
+              "name": "模型推理服务化 - 流式ML模型部署",
+              "id": "Flink_12-ai-ml_model-serving-streaming",
+              "path": "Flink/12-ai-ml/model-serving-streaming.md",
+              "level": ""
+            },
+            {
+              "name": "在线学习算法 - 流式机器学习核心",
+              "id": "Flink_12-ai-ml_online-learning-algorithms",
+              "path": "Flink/12-ai-ml/online-learning-algorithms.md",
+              "level": ""
+            },
+            {
+              "name": "在线学习生产实践 - 流式ML系统构建指南",
+              "id": "Flink_12-ai-ml_online-learning-production",
+              "path": "Flink/12-ai-ml/online-learning-production.md",
+              "level": ""
+            },
+            {
+              "name": "Real-time RAG (Retrieval-Augmented Generation) with Streaming",
+              "id": "Flink_12-ai-ml_rag-streaming-architecture",
+              "path": "Flink/12-ai-ml/rag-streaming-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "实时特征工程与 Feature Store 架构",
+              "id": "Flink_12-ai-ml_realtime-feature-engineering-feature-store",
+              "path": "Flink/12-ai-ml/realtime-feature-engineering-feature-store.md",
+              "level": ""
+            },
+            {
+              "name": "Flink与向量数据库集成 - Milvus/PgVector/Pinecone",
+              "id": "Flink_12-ai-ml_vector-database-integration",
+              "path": "Flink/12-ai-ml/vector-database-integration.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "13-security",
+          "children": [
+            {
+              "name": "Flink 2.4 安全增强完整指南",
+              "id": "Flink_13-security_flink-24-security-enhancements",
+              "path": "Flink/13-security/flink-24-security-enhancements.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 安全特性完整指南",
+              "id": "Flink_13-security_flink-security-complete-guide",
+              "path": "Flink/13-security/flink-security-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "GPU 机密计算 — Flink 安全流处理架构",
+              "id": "Flink_13-security_gpu-confidential-computing",
+              "path": "Flink/13-security/gpu-confidential-computing.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 安全加固完整指南",
+              "id": "Flink_13-security_security-hardening-guide",
+              "path": "Flink/13-security/security-hardening-guide.md",
+              "level": ""
+            },
+            {
+              "name": "SPIFFE/SPIRE 安全标准集成指南",
+              "id": "Flink_13-security_spiffe-spire-integration-guide",
+              "path": "Flink/13-security/spiffe-spire-integration-guide.md",
+              "level": ""
+            },
+            {
+              "name": "流处理安全最佳实践指南",
+              "id": "Flink_13-security_streaming-security-best-practices",
+              "path": "Flink/13-security/streaming-security-best-practices.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 可信执行环境 — Intel SGX/AMD SEV/ARM TrustZone",
+              "id": "Flink_13-security_trusted-execution-flink",
+              "path": "Flink/13-security/trusted-execution-flink.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "13-wasm",
+          "children": [
+            {
+              "name": "WASI 0.3 (Preview 3) 原生异步支持前瞻",
+              "id": "Flink_13-wasm_wasi-0.3-async-preview",
+              "path": "Flink/13-wasm/wasi-0.3-async-preview.md",
+              "level": ""
+            },
+            {
+              "name": "WebAssembly与流计算 - 轻量级边缘计算",
+              "id": "Flink_13-wasm_wasm-streaming",
+              "path": "Flink/13-wasm/wasm-streaming.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "14-graph",
+          "children": [
+            {
+              "name": "Flink Gelly Streaming - 图流处理",
+              "id": "Flink_14-graph_flink-gelly-streaming-graph-processing",
+              "path": "Flink/14-graph/flink-gelly-streaming-graph-processing.md",
+              "level": ""
+            },
+            {
+              "name": "Flink Gelly - 大规模图计算",
+              "id": "Flink_14-graph_flink-gelly",
+              "path": "Flink/14-graph/flink-gelly.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "14-lakehouse",
+          "children": [
+            {
+              "name": "Flink + Apache Iceberg 集成：流批统一的 Lakehouse 存储",
+              "id": "Flink_14-lakehouse_flink-iceberg-integration",
+              "path": "Flink/14-lakehouse/flink-iceberg-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Apache Paimon 与 Flink 深度集成 - 流批统一的湖仓存储",
+              "id": "Flink_14-lakehouse_flink-paimon-integration",
+              "path": "Flink/14-lakehouse/flink-paimon-integration.md",
+              "level": ""
+            },
+            {
+              "name": "Flink/14-lakehouse - 流式湖仓",
+              "id": "Flink_14-lakehouse_README",
+              "path": "Flink/14-lakehouse/README.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming Lakehouse Architecture - 流式湖仓架构设计与实践",
+              "id": "Flink_14-lakehouse_streaming-lakehouse-architecture",
+              "path": "Flink/14-lakehouse/streaming-lakehouse-architecture.md",
+              "level": ""
+            },
+            {
+              "name": "Streaming Lakehouse 深度技术解析：2026年融合趋势与工程实践",
+              "id": "Flink_14-lakehouse_streaming-lakehouse-deep-dive-2026",
+              "path": "Flink/14-lakehouse/streaming-lakehouse-deep-dive-2026.md",
+              "level": ""
+            }
+          ]
+        },
+        {
+          "name": "15-observability",
+          "children": [
+            {
+              "name": "Flink分布式链路追踪 - OpenTelemetry/Jaeger/Zipkin",
+              "id": "Flink_15-observability_distributed-tracing",
+              "path": "Flink/15-observability/distributed-tracing.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.2 Event Reporting - 自定义事件报告",
+              "id": "Flink_15-observability_event-reporting",
+              "path": "Flink/15-observability/event-reporting.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 监控与可观测性完整指南",
+              "id": "Flink_15-observability_flink-observability-complete-guide",
+              "path": "Flink/15-observability/flink-observability-complete-guide.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 流处理可观测性与 OpenTelemetry 集成",
+              "id": "Flink_15-observability_flink-opentelemetry-observability",
+              "path": "Flink/15-observability/flink-opentelemetry-observability.md",
+              "level": ""
+            },
+            {
+              "name": "Flink监控指标体系 - 从系统到业务",
+              "id": "Flink_15-observability_metrics-and-monitoring",
+              "path": "Flink/15-observability/metrics-and-monitoring.md",
+              "level": ""
+            },
+            {
+              "name": "OpenTelemetry与流处理可观测性 - 2026前沿实践",
+              "id": "Flink_15-observability_opentelemetry-streaming-observability",
+              "path": "Flink/15-observability/opentelemetry-streaming-observability.md",
+              "level": ""
+            },
+            {
+              "name": "实时数据质量监控与验证",
+              "id": "Flink_15-observability_realtime-data-quality-monitoring",
+              "path": "Flink/15-observability/realtime-data-quality-monitoring.md",
+              "level": ""
+            },
+            {
+              "name": "Flink 2.1 Split-level Watermark指标 - 细粒度可观测性",
+              "id": "Flink_15-observability_split-level-watermark-metrics",
+              "path": "Flink/15-observability/split-level-watermark-metrics.md",
+              "level": ""
+            },
+            {
+              "name": "流处理指标监控与 SLO 定义最佳实践",
+              "id": "Flink_15-observability_streaming-metrics-monitoring-slo",
+              "path": "Flink/15-observability/streaming-metrics-monitoring-slo.md",
+              "level": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

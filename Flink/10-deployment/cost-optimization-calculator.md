@@ -1,6 +1,6 @@
 # Flink 成本优化计算器指南
 
-> 所属阶段: Flink/10-deployment | 前置依赖: [Flink 部署架构](./flink-deployment-architectures.md), [Flink 性能调优](./flink-performance-tuning.md) | 形式化等级: L3
+> 所属阶段: Flink/10-deployment | 前置依赖: [Flink部署运维完整指南](./flink-deployment-ops-complete-guide.md), [性能调优指南](../06-engineering/performance-tuning-guide.md) | 形式化等级: L3
 
 ---
 

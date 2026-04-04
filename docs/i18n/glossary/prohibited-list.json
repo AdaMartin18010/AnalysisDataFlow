@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "description": "禁止翻译列表 - 保持原文的术语和名称",
+  "last_updated": "2026-04-04",
+  "prohibited_terms": {
+    "products": [
+      "Apache Flink",
+      "Apache Kafka",
+      "Apache Spark",
+      "Apache Pulsar",
+      "Apache Beam",
+      "Akka",
+      "Pekko",
+      "Temporal",
+      "Kubernetes",
+      "Docker",
+      "Prometheus",
+      "Grafana",
+      "Elasticsearch",
+      "Redis"
+    ],
+    "programming_languages": [
+      "Java",
+      "Scala",
+      "Python",
+      "Go",
+      "Rust",
+      "JavaScript",
+      "TypeScript",
+      "Kotlin",
+      "C++",
+      "C#",
+      "Ruby",
+      "PHP"
+    ],
+    "api_methods": [
+      "map",
+      "flatMap",
+      "filter",
+      "reduce",
+      "keyBy",
+      "window",
+      "trigger",
+      "evictor",
+      "allowedLateness",
+      "sideOutput",
+      "connect",
+      "union",
+      "coGroup",
+      "join"
+    ],
+    "configuration_keys": [
+      "execution.checkpointing.interval",
+      "execution.checkpointing.timeout",
+      "execution.checkpointing.min-pause",
+      "execution.checkpointing.max-concurrent-checkpoints",
+      "parallelism.default",
+      "state.backend",
+      "state.checkpoints.dir",
+      "state.savepoints.dir",
+      "restart-strategy",
+      "pipeline.auto-generate-uids"
+    ],
+    "conference_names": [
+      "VLDB",
+      "SIGMOD",
+      "OSDI",
+      "SOSP",
+      "CACM",
+      "POPL",
+      "PLDI",
+      "ICDE",
+      "KDD",
+      "EDBT",
+      "CIDR"
+    ],
+    "academic_journals": [
+      "PVLDB",
+      "ACM TODS",
+      "IEEE TKDE",
+      "DAPD",
+      "JDM"
+    ],
+    "specifications": [
+      "FLIP",
+      "RFC",
+      "W3C",
+      "ISO",
+      "IEEE"
+    ],
+    "file_formats": [
+      "JSON",
+      "YAML",
+      "XML",
+      "CSV",
+      "Parquet",
+      "Avro",
+      "Protobuf",
+      "ORC"
+    ],
+    "protocols": [
+      "HTTP",
+      "HTTPS",
+      "TCP",
+      "UDP",
+      "WebSocket",
+      "gRPC",
+      "REST"
+    ]
+  },
+  "prohibited_in_context": {
+    "code_blocks": "所有代码块内的标识符、关键字、字符串",
+    "inline_code": "行内代码（`code`）的所有内容",
+    "file_paths": "文件路径和扩展名",
+    "environment_variables": "环境变量名",
+    "cli_commands": "命令行命令和参数",
+    "urls": "URL 和链接地址",
+    "version_numbers": "版本号",
+    "copyright_notices": "版权声明"
+  }
+}

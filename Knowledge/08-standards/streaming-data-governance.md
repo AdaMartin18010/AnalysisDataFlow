@@ -1,6 +1,6 @@
 # 流数据治理 (Streaming Data Governance)
 
-> **所属阶段**: Knowledge | **前置依赖**: [07-security/streaming-security-model.md](../07-security/streaming-security-model.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge | **前置依赖**: [07-security/streaming-security-model.md](./streaming-security-compliance.md) | **形式化等级**: L4
 
 ---
 

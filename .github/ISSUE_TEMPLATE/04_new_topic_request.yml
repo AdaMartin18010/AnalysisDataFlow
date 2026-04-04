@@ -1,0 +1,191 @@
+name: 🆕 新主题请求
+about: 建议添加全新的知识主题或模块
+title: "[NEW TOPIC] "
+labels: ["new-topic", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🆕 新主题请求
+        感谢您建议扩展知识库！新主题请求需要更全面的评估，请尽可能详细地提供信息。
+
+  - type: input
+    id: topic_title
+    attributes:
+      label: 主题标题
+      description: 建议的新主题名称
+      placeholder: "例如：流计算中的机器学习集成"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target_directory
+    attributes:
+      label: 建议所属目录
+      description: 建议将此主题放置在哪个目录
+      options:
+        - Struct/ - 形式理论与数学分析
+        - Knowledge/ - 工程知识与设计模式
+        - Flink/ - Flink 专项技术
+        - 需要新建顶级目录
+        - 尚不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: topic_summary
+    attributes:
+      label: 主题概述
+      description: 简要描述新主题的核心内容和范围
+      placeholder: |
+        用2-3段话描述：
+        - 这个主题是什么？
+        - 涵盖哪些核心内容？
+        - 与现有主题的关系是什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: relevance
+    attributes:
+      label: 与项目的相关性
+      description: 说明为什么这个主题适合加入本项目
+      placeholder: |
+        解释此主题的重要性：
+        - 与流计算核心知识的关联
+        - 对目标读者的价值
+        - 是否填补现有知识空白
+        - 与现有文档的互补性
+    validations:
+      required: true
+
+  - type: textarea
+    id: content_outline
+    attributes:
+      label: 建议的内容大纲
+      description: 提供详细的章节结构建议
+      placeholder: |
+        ```markdown
+        ## 建议的文档结构
+
+        ### 1. 基础概念
+        - 子主题1
+        - 子主题2
+
+        ### 2. 核心理论/技术
+        - 核心点1
+        - 核心点2
+
+        ### 3. 工程实践
+        - 实现模式
+        - 最佳实践
+
+        ### 4. 案例分析
+        - 案例1
+        - 案例2
+
+        ### 5. 与其他主题的关系
+        - 与主题X的关联
+        - 与主题Y的对比
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: 前置知识要求
+      description: 读者需要哪些前置知识才能理解此主题
+      placeholder: |
+        - 必需的数学基础（如：线性代数、概率论）
+        - 必需的系统知识（如：Flink基础、分布式系统）
+        - 建议的先读文档
+
+  - type: textarea
+    id: key_references
+    attributes:
+      label: 关键参考资料
+      description: 提供支撑此主题的核心参考资料
+      placeholder: |
+        ### 学术论文
+        - [论文标题，作者，会议/期刊，年份](DOI链接)
+
+        ### 官方文档
+        - [文档名称](链接)
+
+        ### 书籍章节
+        - 书名，章节，页码
+
+        ### 其他资源
+        - 技术博客、教程、视频等
+    validations:
+      required: true
+
+  - type: dropdown
+    id: formality_level
+    attributes:
+      label: 建议的形式化等级
+      description: 根据 AGENTS.md 的形式化等级（L1-L6）
+      options:
+        - L1 - 概念性介绍（科普级）
+        - L2 - 技术概览（工程师级）
+        - L3 - 深入技术细节（高级工程师级）
+        - L4 - 形式化定义（研究级）
+        - L5 - 严格证明（学术级）
+        - L6 - 元理论分析（专家级）
+      default: 2
+
+  - type: dropdown
+    id: estimated_documents
+    attributes:
+      label: 估计文档数量
+      description: 完成此主题预计需要多少篇文档
+      options:
+        - 1-2 篇（单个概念或技术点）
+        - 3-5 篇（小型主题模块）
+        - 6-10 篇（中型主题模块）
+        - 10+ 篇（大型主题领域）
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级建议
+      description: 您认为此主题的优先级如何？
+      options:
+        - P0 - 核心知识领域，急需覆盖
+        - P1 - 重要主题，应该在近期开始
+        - P2 - 有价值，可按计划进行
+        - P3 - 建议性主题，时间允许时考虑
+      default: 2
+
+  - type: textarea
+    id: related_topics
+    attributes:
+      label: 相关现有主题
+      description: 列出与建议主题相关的现有文档
+      placeholder: |
+        - 相关文档1：关系说明
+        - 相关文档2：关系说明
+
+  - type: checkboxes
+    id: willing_to_contribute
+    attributes:
+      label: 贡献意愿
+      description: 您是否愿意为开发此主题做出贡献？
+      options:
+        - label: 我愿意主导此主题的完整开发
+        - label: 我可以撰写核心文档内容
+        - label: 我可以提供研究资料和参考资源
+        - label: 我可以协助审查和反馈
+        - label: 希望由核心团队评估和规划
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: 补充说明
+      description: 任何其他相关信息
+      placeholder: |
+        - 是否有类似的竞争项目或资源？
+        - 此主题的行业应用情况？
+        - 特殊的格式或工具需求？

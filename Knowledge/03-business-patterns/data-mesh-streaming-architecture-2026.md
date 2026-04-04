@@ -1,6 +1,6 @@
 # Data Mesh 与流处理深度融合：2026架构实践指南
 
-> 所属阶段: Knowledge | 前置依赖: [流数据产品设计模式](../02-data-patterns/streaming-data-product-design.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [流数据产品设计模式](./streaming-data-product-economics.md) | 形式化等级: L4
 
 ---
 

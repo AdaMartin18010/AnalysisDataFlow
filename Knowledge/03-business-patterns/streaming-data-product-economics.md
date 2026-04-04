@@ -1,6 +1,6 @@
 # 流数据产品经济学与货币化策略
 
-> 所属阶段: Knowledge/03-business-patterns | 前置依赖: [实时数据网格](realtime-data-mesh-practice.md), [数据治理](../08-standards/streaming-data-governance-quality.md) | 形式化等级: L2-L3
+> 所属阶段: Knowledge/03-business-patterns | 前置依赖: [实时数据网格](./data-mesh-streaming-architecture-2026.md), [数据治理](../08-standards/streaming-data-governance-quality.md) | 形式化等级: L2-L3
 
 ## 1. 概念定义 (Definitions)
 

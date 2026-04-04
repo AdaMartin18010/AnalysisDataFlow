@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow 知识图谱</title>
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-dagre@2.5.0/cytoscape-dagre.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-left: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .control-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #5a6fd6;
+            transform: translateY(-2px);
+        }
+        
+        .control-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .search-box {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 200px;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding-top: 70px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+        
+        .legend {
+            margin-bottom: 25px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 2px solid;
+        }
+        
+        .legend-struct { background: #e3f2fd; border-color: #1976d2; }
+        .legend-knowledge { background: #e8f5e9; border-color: #388e3c; }
+        .legend-flink { background: #fff3e0; border-color: #f57c00; }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .node-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .node-info h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .node-info p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        
+        .node-info .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        
+        .node-info a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .node-info a:hover {
+            text-decoration: underline;
+        }
+        
+        #cy {
+            flex: 1;
+            background: #fafafa;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+            display: none;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            z-index: 2000;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-section h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .filter-checkbox input {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>📚 AnalysisDataFlow 知识图谱</h1>
+            <span class="subtitle">流计算理论与工程实践知识库可视化</span>
+        </div>
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="搜索文档...">
+            <select class="control-select" id="layoutSelect">
+                <option value="dagre">层次布局</option>
+                <option value="cose">有机布局</option>
+                <option value="circle">环形布局</option>
+                <option value="grid">网格布局</option>
+            </select>
+            <button class="control-btn" onclick="resetZoom()">重置视图</button>
+            <button class="control-btn" onclick="exportGraph()">导出图片</button>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="stats">
+                <h3>📊 统计信息</h3>
+                <div class="stat-item">
+                    <span>文档总数</span>
+                    <span class="stat-value" id="nodeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>引用关系</span>
+                    <span class="stat-value" id="edgeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Struct文档</span>
+                    <span class="stat-value" id="structCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Knowledge文档</span>
+                    <span class="stat-value" id="knowledgeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Flink文档</span>
+                    <span class="stat-value" id="flinkCount">0</span>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <h3>📌 图例说明</h3>
+                <div class="legend-item">
+                    <div class="legend-color legend-struct"></div>
+                    <span>Struct - 形式理论</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-knowledge"></div>
+                    <span>Knowledge - 工程知识</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-flink"></div>
+                    <span>Flink - 技术专项</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h4>🔍 筛选显示</h4>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="showStruct" checked onchange="applyFilters()">
+                    <span>显示 Struct 文档</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="showKnowledge" checked onchange="applyFilters()">
+                    <span>显示 Knowledge 文档</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="showFlink" checked onchange="applyFilters()">
+                    <span>显示 Flink 文档</span>
+                </label>
+            </div>
+            
+            <div class="node-info" id="nodeInfo">
+                <h4>ℹ️ 节点信息</h4>
+                <p>点击图谱中的节点查看详细信息</p>
+            </div>
+        </div>
+        
+        <div id="cy"></div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+    
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>正在加载知识图谱...</p>
+    </div>
+
+    <script>
+        let cy = null;
+        let allElements = [];
+        
+        // 初始化图谱
+        async function initGraph() {
+            try {
+                // 加载数据
+                const response = await fetch('knowledge-graph-cytoscape.json');
+                allElements = await response.json();
+                
+                // 统计
+                const nodes = allElements.filter(e => e.data.id && !e.data.source);
+                const edges = allElements.filter(e => e.data.source);
+                
+                document.getElementById('nodeCount').textContent = nodes.length;
+                document.getElementById('edgeCount').textContent = edges.length;
+                document.getElementById('structCount').textContent = 
+                    nodes.filter(n => n.data.category === 'Struct').length;
+                document.getElementById('knowledgeCount').textContent = 
+                    nodes.filter(n => n.data.category === 'Knowledge').length;
+                document.getElementById('flinkCount').textContent = 
+                    nodes.filter(n => n.data.category === 'Flink').length;
+                
+                // 初始化 Cytoscape
+                cy = cytoscape({
+                    container: document.getElementById('cy'),
+                    elements: allElements,
+                    style: [
+                        {
+                            selector: 'node',
+                            style: {
+                                'background-color': 'data(color)',
+                                'border-color': 'data(borderColor)',
+                                'border-width': 2,
+                                'label': 'data(label)',
+                                'width': 40,
+                                'height': 40,
+                                'font-size': '12px',
+                                'font-family': 'Microsoft YaHei',
+                                'text-valign': 'bottom',
+                                'text-halign': 'center',
+                                'text-margin-y': 5,
+                                'text-background-color': 'rgba(255,255,255,0.8)',
+                                'text-background-opacity': 0.8,
+                                'text-background-padding': '2px 4px',
+                                'text-background-shape': 'roundrectangle'
+                            }
+                        },
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 1,
+                                'line-color': '#999',
+                                'target-arrow-color': '#999',
+                                'target-arrow-shape': 'triangle',
+                                'curve-style': 'bezier',
+                                'label': 'data(label)',
+                                'font-size': '10px',
+                                'font-family': 'Microsoft YaHei'
+                            }
+                        },
+                        {
+                            selector: ':selected',
+                            style: {
+                                'border-width': 4,
+                                'border-color': '#ff5722',
+                                'shadow-blur': 10,
+                                'shadow-color': '#ff5722'
+                            }
+                        }
+                    ],
+                    layout: {
+                        name: 'dagre',
+                        rankDir: 'TB',
+                        nodeSep: 50,
+                        edgeSep: 20,
+                        rankSep: 80,
+                        padding: 20
+                    }
+                });
+                
+                // 事件绑定
+                cy.on('tap', 'node', function(evt) {
+                    showNodeInfo(evt.target);
+                });
+                
+                cy.on('mouseover', 'node', function(evt) {
+                    const node = evt.target;
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.innerHTML = `<strong>${node.data('label')}</strong><br>${node.data('category')}`;
+                    tooltip.style.display = 'block';
+                });
+                
+                cy.on('mousemove', 'node', function(evt) {
+                    const tooltip = document.getElementById('tooltip');
+                    tooltip.style.left = evt.originalEvent.pageX + 10 + 'px';
+                    tooltip.style.top = evt.originalEvent.pageY + 10 + 'px';
+                });
+                
+                cy.on('mouseout', 'node', function() {
+                    document.getElementById('tooltip').style.display = 'none';
+                });
+                
+                // 布局切换
+                document.getElementById('layoutSelect').addEventListener('change', function(e) {
+                    applyLayout(e.target.value);
+                });
+                
+                // 搜索
+                document.getElementById('searchBox').addEventListener('input', function(e) {
+                    searchNodes(e.target.value);
+                });
+                
+                // 隐藏加载
+                document.getElementById('loading').style.display = 'none';
+                
+            } catch (error) {
+                console.error('加载图谱失败:', error);
+                document.getElementById('loading').innerHTML = 
+                    `<p style="color:red">加载失败: ${error.message}</p>`;
+            }
+        }
+        
+        // 显示节点信息
+        function showNodeInfo(node) {
+            const data = node.data();
+            const tags = data.tags ? data.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
+            const level = data.level ? `<p><strong>形式化等级:</strong> ${data.level}</p>` : '';
+            
+            document.getElementById('nodeInfo').innerHTML = `
+                <h4>${data.label}</h4>
+                <p><strong>类别:</strong> ${data.category}</p>
+                ${level}
+                <p><strong>路径:</strong> ${data.path}</p>
+                <p>${data.description || ''}</p>
+                <div>${tags}</div>
+                <p style="margin-top:10px">
+                    <a href="../${data.path}" target="_blank">📄 查看文档</a>
+                </p>
+            `;
+        }
+        
+        // 应用布局
+        function applyLayout(layoutName) {
+            let layout;
+            switch(layoutName) {
+                case 'dagre':
+                    layout = cy.layout({
+                        name: 'dagre',
+                        rankDir: 'TB',
+                        nodeSep: 50,
+                        edgeSep: 20,
+                        rankSep: 80,
+                        padding: 20
+                    });
+                    break;
+                case 'cose':
+                    layout = cy.layout({
+                        name: 'cose',
+                        padding: 20,
+                        nodeRepulsion: 8000,
+                        edgeElasticity: 100,
+                        nestingFactor: 5
+                    });
+                    break;
+                case 'circle':
+                    layout = cy.layout({
+                        name: 'circle',
+                        padding: 20
+                    });
+                    break;
+                case 'grid':
+                    layout = cy.layout({
+                        name: 'grid',
+                        padding: 20
+                    });
+                    break;
+            }
+            if (layout) layout.run();
+        }
+        
+        // 搜索节点
+        function searchNodes(query) {
+            if (!query) {
+                cy.elements().show();
+                return;
+            }
+            
+            const matched = cy.nodes().filter(n => {
+                const data = n.data();
+                return data.label.toLowerCase().includes(query.toLowerCase()) ||
+                       data.path.toLowerCase().includes(query.toLowerCase());
+            });
+            
+            cy.elements().hide();
+            matched.show();
+            matched.connectedEdges().show();
+            matched.neighborhood().show();
+        }
+        
+        // 应用筛选
+        function applyFilters() {
+            const showStruct = document.getElementById('showStruct').checked;
+            const showKnowledge = document.getElementById('showKnowledge').checked;
+            const showFlink = document.getElementById('showFlink').checked;
+            
+            cy.nodes().forEach(node => {
+                const category = node.data('category');
+                let shouldShow = false;
+                if (category === 'Struct' && showStruct) shouldShow = true;
+                if (category === 'Knowledge' && showKnowledge) shouldShow = true;
+                if (category === 'Flink' && showFlink) shouldShow = true;
+                
+                if (shouldShow) {
+                    node.show();
+                } else {
+                    node.hide();
+                }
+            });
+            
+            // 隐藏孤立的边
+            cy.edges().forEach(edge => {
+                if (edge.source().visible() && edge.target().visible()) {
+                    edge.show();
+                } else {
+                    edge.hide();
+                }
+            });
+        }
+        
+        // 重置缩放
+        function resetZoom() {
+            cy.fit();
+            cy.center();
+        }
+        
+        // 导出图片
+        function exportGraph() {
+            const png = cy.png({
+                bg: 'white',
+                full: true,
+                maxWidth: 4000,
+                maxHeight: 4000
+            });
+            const link = document.createElement('a');
+            link.download = 'knowledge-graph.png';
+            link.href = png;
+            link.click();
+        }
+        
+        // 启动
+        document.addEventListener('DOMContentLoaded', initGraph);
+    </script>
+</body>
+</html>

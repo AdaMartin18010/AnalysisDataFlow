@@ -893,8 +893,8 @@ quadrantChart
 
 ### 下游应用
 
-- [../05-case-studies/](../05-case-studies/) —— 实际案例分析（待创建）
-- [../06-roadmap/](../06-roadmap/) —— 技术演进路线图（待创建）
+- [../10-case-studies/00-INDEX.md](../10-case-studies/00-INDEX.md) —— 实际案例分析（待创建）
+- [../../ROADMAP.md](../../ROADMAP.md) —— 技术演进路线图（待创建）
 
 ---
 

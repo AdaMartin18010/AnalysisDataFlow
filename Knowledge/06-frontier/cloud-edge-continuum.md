@@ -1,6 +1,6 @@
 # 云边端连续体 - 分布式流计算的地理扩展
 
-> **所属阶段**: Knowledge | **前置依赖**: [05-ecosystem/streaming-ecosystem-comparison.md](../05-ecosystem/streaming-ecosystem-comparison.md) | **形式化等级**: L3 (结构化论证 + 半形式化模型)
+> **所属阶段**: Knowledge | **前置依赖**: [05-ecosystem/streaming-ecosystem-comparison.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3 (结构化论证 + 半形式化模型)
 
 ## 目录
 

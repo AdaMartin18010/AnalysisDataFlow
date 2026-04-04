@@ -1,6 +1,6 @@
 # 多云流处理架构与跨区域复制
 
-> 所属阶段: Knowledge/06-Frontier | 前置依赖: [Flink跨云部署指南](../05-practice/flink-multi-cloud-deployment.md), [Kafka地理复制模式](../05-practice/kafka-geo-replication-patterns.md) | 形式化等级: L3
+> 所属阶段: Knowledge/06-Frontier | 前置依赖: [Flink跨云部署指南](../../Flink/10-deployment/multi-cloud-deployment-templates.md), [Kafka地理复制模式](../03-business-patterns/uber-realtime-platform.md) | 形式化等级: L3
 
 ---
 

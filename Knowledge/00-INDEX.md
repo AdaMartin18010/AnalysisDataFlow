@@ -213,11 +213,11 @@ graph TB
 |------|------|----------|----------|
 | **概念图谱** | `01-concept-atlas/` | 并发范式对比、流计算模型 | [并发范式矩阵](./01-concept-atlas/concurrency-paradigms-matrix.md) · [流模型心智图](./01-concept-atlas/streaming-models-mindmap.md) |
 | **设计模式** | `02-design-patterns/` | 7大核心流处理模式 | [Pattern 01: Event Time](./02-design-patterns/pattern-event-time-processing.md) |
-| **业务场景** | `03-business-patterns/` | 5大领域场景分析 | [IoT场景](./03-business-patterns/) · [金融场景](./03-business-patterns/) |
-| **技术选型** | `04-technology-selection/` | 引擎/存储/范式/流数据库选型 | [决策树](./04-technology-selection/) · [流数据库指南](./04-technology-selection/streaming-database-guide.md) |
+| **业务场景** | `03-business-patterns/` | 5大领域场景分析 | [IoT场景](./03-business-patterns/iot-stream-processing.md) · [金融场景](./03-business-patterns/fintech-realtime-risk-control.md) |
+| **技术选型** | `04-technology-selection/` | 引擎/存储/范式/流数据库选型 | [决策树](./04-technology-selection/engine-selection-guide.md) · [流数据库指南](./06-frontier/streaming-databases.md) |
 | **映射指南** | `05-mapping-guides/` | 理论到代码映射 | [Struct→Flink](./05-mapping-guides/) |
 | **前沿技术** | `06-frontier/` | 流数据库/Rust/边缘计算 | [流数据库](./06-frontier/streaming-databases.md) · [Rust生态](./06-frontier/rust-streaming-ecosystem.md) |
-| **实践练习** | `98-exercises/` | 配套练习与实验 | [练习目录](./98-exercises/) |
+| **实践练习** | `98-exercises/` | 配套练习与实验 | [练习目录](./98-exercises/README.md) |
 
 ### 2.2 按场景导航
 
@@ -226,8 +226,8 @@ graph TB
 | **实时风控** | Pattern 01, 03 | Flink + CEP | 低延迟 + 准确性 | [Event Time](./02-design-patterns/pattern-event-time-processing.md) |
 | **IoT数据处理** | Pattern 01, 05, 07 | Flink + Kafka | 乱序 + 海量连接 | [并发范式矩阵](./01-concept-atlas/concurrency-paradigms-matrix.md) |
 | **实时推荐** | Pattern 02, 04 | Flink + Redis | 特征新鲜度 | [流模型心智图](./01-concept-atlas/streaming-models-mindmap.md) |
-| **日志分析** | Pattern 02, 06 | Flink + ES | 高吞吐 + 聚合 | [Pattern 02](./02-design-patterns/) |
-| **实时数仓** | Pattern 01, 05, 07 | Flink + Hive/Iceberg | Exactly-Once | [Checkpoint](./02-design-patterns/) |
+| **日志分析** | Pattern 02, 06 | Flink + ES | 高吞吐 + 聚合 | [Pattern 02](./02-design-patterns/pattern-windowed-aggregation.md) |
+| **实时数仓** | Pattern 01, 05, 07 | Flink + Hive/Iceberg | Exactly-Once | [Checkpoint](./02-design-patterns/pattern-checkpoint-recovery.md) |
 
 ### 2.3 按技术栈导航
 

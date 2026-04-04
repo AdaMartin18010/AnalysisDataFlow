@@ -1438,5 +1438,5 @@ timeline
 
 - [flink-2.3-2.4-roadmap.md](./flink-2.3-2.4-roadmap.md) - Flink 2.3/2.4路线图
 - [../01-architecture/flink-1.x-vs-2.0-comparison.md](../01-architecture/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比
-- [../02-core-mechanisms/disaggregated-state-analysis.md](../02-core-mechanisms/disaggregated-state-analysis.md) - 分离状态存储分析
+- [../01-architecture/disaggregated-state-analysis.md](../01-architecture/disaggregated-state-analysis.md) - 分离状态存储分析
 - [../10-deployment/kubernetes-deployment.md](../10-deployment/kubernetes-deployment.md) - Kubernetes部署指南

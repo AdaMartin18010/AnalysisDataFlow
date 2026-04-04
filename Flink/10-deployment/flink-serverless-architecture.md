@@ -1,6 +1,6 @@
 # Serverless Flink 云原生无服务器架构
 
-> 所属阶段: Flink/10-deployment | 前置依赖: [Flink Kubernetes部署](flink-kubernetes-deployment-guide.md), [Flink Autoscaler](flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L3
+> 所属阶段: Flink/10-deployment | 前置依赖: [Kubernetes部署](./kubernetes-deployment.md), [Flink Autoscaler](./flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

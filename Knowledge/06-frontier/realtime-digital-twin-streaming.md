@@ -1,6 +1,6 @@
 # 实时数字孪生与流处理集成架构
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [边缘流处理](edge-streaming-architecture.md), [IoT实时分析](../Flink/07-case-studies/) | 形式化等级: L3-L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [边缘流处理](edge-streaming-architecture.md), [IoT实时分析](../../Flink/07-case-studies/case-iot-stream-processing.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

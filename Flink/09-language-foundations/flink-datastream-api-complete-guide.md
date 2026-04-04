@@ -1,6 +1,6 @@
 # Flink DataStream API 完整特性指南
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [05-datastream-v2-api.md](05-datastream-v2-api.md), [../../Struct/02-concurrency/02.03-stream-processing-theory.md](../../Struct/02-concurrency/02.03-stream-processing-theory.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [DataStream V2 API](./05-datastream-v2-api.md), [流处理语义形式化](../../Struct/01-foundation/stream-processing-semantics-formalization.md) | **形式化等级**: L3-L4
 > **版本**: Flink 1.17+ / 2.0+ | **语言**: Java 11+ / Scala 2.12+ / Scala 3.3+
 
 ---

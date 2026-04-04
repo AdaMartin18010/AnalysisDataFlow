@@ -1,0 +1,115 @@
+name: 📚 文档改进请求
+about: 建议改进现有文档的内容、结构或表述
+title: "[DOC] "
+labels: ["documentation", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📚 文档改进请求
+        感谢您帮助我们改进文档质量！请填写以下信息以便我们更好地处理您的建议。
+
+  - type: dropdown
+    id: improvement_type
+    attributes:
+      label: 改进类型
+      description: 请选择文档改进的类型
+      options:
+        - 内容错误（概念/公式/代码错误）
+        - 表述不清（需要更清晰的解释）
+        - 缺少示例（需要补充示例代码）
+        - 结构优化（章节重组或导航改进）
+        - 链接问题（内部/外部链接失效）
+        - 翻译改进（中英文混排或多语言支持）
+        - 可视化增强（添加或改进图表）
+        - 其他改进
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 所属领域
+      description: 请选择文档所属的知识领域
+      options:
+        - Struct/ 形式理论与分析
+        - Knowledge/ 工程知识与设计模式
+        - Flink/ Flink 专项技术
+        - 全局/跨领域
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: file_path
+    attributes:
+      label: 文件路径
+      description: 请提供需要改进的文档路径
+      placeholder: "例如: Struct/1.1-streaming-foundation.md"
+    validations:
+      required: true
+
+  - type: input
+    id: element_id
+    attributes:
+      label: 定理/定义编号（如适用）
+      description: 如果涉及特定定理或定义，请提供编号
+      placeholder: "例如: Def-S-01-03, Thm-K-05-02"
+
+  - type: textarea
+    id: current_content
+    attributes:
+      label: 当前内容
+      description: 请描述或粘贴当前存在问题的内容
+      placeholder: "描述当前内容的不足之处..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_improvement
+    attributes:
+      label: 建议改进
+      description: 请描述您期望的改进方式
+      placeholder: "详细描述您建议的改进内容..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考依据
+      description: 提供支持您建议的权威来源（论文、文档、书籍等）
+      placeholder: |
+        - [论文标题](链接)
+        - [官方文档](链接)
+        - 书籍章节引用
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级建议
+      description: 您认为此改进的优先级如何？
+      options:
+        - P0 - 关键错误，必须立即修复
+        - P1 - 重要问题，应在近期修复
+        - P2 - 一般改进，可按计划进行
+        - P3 - 建议性改进，时间允许时处理
+      default: 2
+
+  - type: checkboxes
+    id: willing_to_contribute
+    attributes:
+      label: 贡献意愿
+      description: 您是否愿意为此改进做出贡献？
+      options:
+        - label: 我愿意提交 PR 修复此问题
+        - label: 我可以协助验证修复结果
+        - label: 我需要更多指导才能完成贡献
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 补充信息
+      description: 任何其他相关信息
+      placeholder: "截图、相关 Issue、备注等..."

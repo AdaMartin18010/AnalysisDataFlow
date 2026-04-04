@@ -1,6 +1,6 @@
 # Exactly-Once语义深度解析
 
-> 所属阶段: Flink Stage 2 | 前置依赖: [checkpoint-mechanism.md](checkpoint-mechanism.md), [state-management.md](state-management.md) | 形式化等级: L5
+> 所属阶段: Flink Stage 2 | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | 形式化等级: L5
 
 ## 1. 概念定义 (Definitions)
 

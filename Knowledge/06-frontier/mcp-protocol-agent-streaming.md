@@ -1,6 +1,6 @@
 # MCP协议与流处理集成架构
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink LLM集成](flink-llm-integration-guide.md), [RAG架构](streaming-rag-architecture.md) | 形式化等级: L3-L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink LLM集成](./real-time-rag-architecture.md), [RAG架构](./real-time-rag-architecture.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

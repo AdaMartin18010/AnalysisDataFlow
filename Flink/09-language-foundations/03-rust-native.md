@@ -1,6 +1,6 @@
 # Flink与Rust：高性能原生UDF
 
-> 所属阶段: Flink/ | 前置依赖: [Flink UDF基础](01-udf-basics.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Python UDF](../03-sql-table-api/flink-python-udf.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

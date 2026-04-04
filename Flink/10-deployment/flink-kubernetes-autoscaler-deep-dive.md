@@ -1,6 +1,6 @@
 # Flink Kubernetes Operator 自动扩缩容深度指南
 
-> 所属阶段: Flink | 前置依赖: [Flink Kubernetes Operator 部署指南](./flink-kubernetes-operator-deployment.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink Kubernetes Operator深度指南](./flink-kubernetes-operator-deep-dive.md) | 形式化等级: L4
 
 ---
 

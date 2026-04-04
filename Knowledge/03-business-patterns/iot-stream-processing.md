@@ -2,7 +2,7 @@
 
 > **业务领域**: 物联网 (IoT) | **复杂度等级**: ★★★★☆ | **延迟要求**: < 2s | **形式化等级**: L4-L5
 >
-> **所属阶段**: Knowledge/03-business-patterns | **前置依赖**: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md), [Pattern 05: State Management](../02-design-patterns/pattern-state-management.md), [Pattern 07: Checkpoint](../02-design-patterns/pattern-checkpoint-recovery.md)
+> **所属阶段**: Knowledge/03-business-patterns | **前置依赖**: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md), [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md), [Pattern 07: Checkpoint](../02-design-patterns/pattern-checkpoint-recovery.md)
 >
 > 本模式解决物联网场景下**百万级设备接入**、**乱序数据处理**、**设备状态维护**与**会话窗口管理**的核心需求，提供基于 Actor + Dataflow 双层架构的完整解决方案。
 
@@ -207,7 +207,7 @@ $$
 | 模式 | 关系类型 | 说明 |
 |------|----------|------|
 | **[Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md)** | **强依赖** | IoT 场景必须使用 Event Time 处理边缘网关批量上报导致的乱序 [^5] |
-| **[Pattern 05: State Management](../02-design-patterns/pattern-state-management.md)** | **强依赖** | 设备状态维护依赖 Keyed State 和 TTL 管理 [^3] |
+| **[Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md)** | **强依赖** | 设备状态维护依赖 Keyed State 和 TTL 管理 [^3] |
 | **[Pattern 07: Checkpoint Recovery](../02-design-patterns/pattern-checkpoint-recovery.md)** | **强依赖** | 设备状态持久化依赖 Checkpoint 机制保证容错 [^4] |
 | **[Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md)** | 配合 | 会话窗口用于设备活跃期分析 |
 | **[Pattern 06: Side Output](../02-design-patterns/pattern-side-output.md)** | 配合 | 迟到数据通过侧输出进行离线补录 |
@@ -1185,4 +1185,4 @@ stateDiagram-v2
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-*关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 05: State Management](../02-design-patterns/pattern-state-management.md) | [Knowledge 索引](../00-INDEX.md)*
+*关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) | [Knowledge 索引](../00-INDEX.md)*

@@ -1,6 +1,6 @@
 # 2026年多Agent编排框架深度对比：LangGraph、CrewAI、AutoGen
 
-> **所属阶段**: Knowledge/05-mapping-guides | **前置依赖**: [04-technology-selection](../../04-technology-selection/) | **形式化等级**: L4 (工程分析+量化对比) | **更新日期**: 2026-04-02
+> **所属阶段**: Knowledge/05-mapping-guides | **前置依赖**: [04-technology-selection](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L4 (工程分析+量化对比) | **更新日期**: 2026-04-02
 
 ---
 

@@ -2034,7 +2034,7 @@ graph TB
 - [engine-selection-guide.md](./engine-selection-guide.md) —— 流处理引擎选型基础
 - [../06-frontier/streaming-databases.md](../06-frontier/streaming-databases.md) —— 流数据库技术前沿
 - [../06-frontier/risingwave-deep-dive.md](../06-frontier/risingwave-deep-dive.md) —— RisingWave 深度解析
-- [../../Flink/03-internals/flink-sql-overview.md](../../Flink/03-internals/flink-sql-overview.md) —— Flink SQL 内部实现
+- [../../Flink/03-sql-table-api/flink-table-sql-complete-guide.md](../../Flink/03-sql-table-api/flink-table-sql-complete-guide.md) —— Flink SQL 内部实现
 
 ### 同层关联
 

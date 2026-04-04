@@ -1,6 +1,6 @@
 # 多模态流处理架构 (Multimodal Streaming Architecture)
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink AI/ML](flink-ai-ml-integration.md), [实时RAG](streaming-rag-architecture.md) | 形式化等级: L3-L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink AI/ML](./real-time-rag-architecture.md), [实时RAG](./real-time-rag-architecture.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

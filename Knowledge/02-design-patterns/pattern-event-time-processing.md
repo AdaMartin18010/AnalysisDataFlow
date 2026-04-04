@@ -697,7 +697,7 @@ Flink 的 Event Time 处理机制是对 Google Dataflow 模型的工程实现：
 
 [^7]: 实时 ETL 深度解析，详见 [Flink/07-case-studies/case-realtime-analytics.md](../../Flink/07-case-studies/case-realtime-analytics.md)
 
-[^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api-patterns/flink-cep-deep-dive.md)
+[^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md)
 
 
 

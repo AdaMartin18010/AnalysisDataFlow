@@ -1,0 +1,210 @@
+{
+  "version": "1.0.0",
+  "description": "AnalysisDataFlow 核心术语表（中英对照）",
+  "last_updated": "2026-04-04",
+  "terms": [
+    {
+      "chinese": "流处理",
+      "english": "Stream Processing",
+      "abbreviation": "SP",
+      "definition": "对无界数据流进行实时计算的模式",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "批处理",
+      "english": "Batch Processing",
+      "abbreviation": "BP",
+      "definition": "对有界数据集进行离线计算的模式",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "检查点",
+      "english": "Checkpoint",
+      "abbreviation": "CP",
+      "definition": "分布式系统的全局一致性快照",
+      "domain": "容错机制"
+    },
+    {
+      "chinese": "水印",
+      "english": "Watermark",
+      "abbreviation": "WM",
+      "definition": "表示事件时间进展的时间戳标记",
+      "domain": "时间语义"
+    },
+    {
+      "chinese": "窗口",
+      "english": "Window",
+      "abbreviation": "",
+      "definition": "将流数据切分为有界集合的逻辑边界",
+      "domain": "时间语义"
+    },
+    {
+      "chinese": "恰好一次",
+      "english": "Exactly-Once",
+      "abbreviation": "EO",
+      "definition": "每条记录被处理且仅被处理一次的语义",
+      "domain": "一致性语义"
+    },
+    {
+      "chinese": "至少一次",
+      "english": "At-Least-Once",
+      "abbreviation": "ALO",
+      "definition": "每条记录至少被处理一次的语义",
+      "domain": "一致性语义"
+    },
+    {
+      "chinese": "最多一次",
+      "english": "At-Most-Once",
+      "abbreviation": "AMO",
+      "definition": "每条记录最多被处理一次的语义",
+      "domain": "一致性语义"
+    },
+    {
+      "chinese": "背压",
+      "english": "Backpressure",
+      "abbreviation": "",
+      "definition": "消费者向生产者反馈处理能力的机制",
+      "domain": "流量控制"
+    },
+    {
+      "chinese": "状态管理",
+      "english": "State Management",
+      "abbreviation": "",
+      "definition": "流计算中有状态算子的状态维护",
+      "domain": "状态处理"
+    },
+    {
+      "chinese": "事件时间",
+      "english": "Event Time",
+      "abbreviation": "",
+      "definition": "数据产生的时间戳",
+      "domain": "时间语义"
+    },
+    {
+      "chinese": "处理时间",
+      "english": "Processing Time",
+      "abbreviation": "",
+      "definition": "数据被处理的时间戳",
+      "domain": "时间语义"
+    },
+    {
+      "chinese": "摄取时间",
+      "english": "Ingestion Time",
+      "abbreviation": "",
+      "definition": "数据进入系统的时间戳",
+      "domain": "时间语义"
+    },
+    {
+      "chinese": "Actor 模型",
+      "english": "Actor Model",
+      "abbreviation": "",
+      "definition": "基于消息传递的并发计算模型",
+      "domain": "并发模型"
+    },
+    {
+      "chinese": "通信顺序进程",
+      "english": "Communicating Sequential Processes",
+      "abbreviation": "CSP",
+      "definition": "Hoare 提出的并发形式化语言",
+      "domain": "并发模型"
+    },
+    {
+      "chinese": "消息传递",
+      "english": "Message Passing",
+      "abbreviation": "",
+      "definition": "进程间通过发送/接收消息通信的方式",
+      "domain": "并发模型"
+    },
+    {
+      "chinese": "共享内存",
+      "english": "Shared Memory",
+      "abbreviation": "",
+      "definition": "进程通过共享内存区域通信的方式",
+      "domain": "并发模型"
+    },
+    {
+      "chinese": "信道",
+      "english": "Channel",
+      "abbreviation": "",
+      "definition": "CSP 中进程间通信的管道",
+      "domain": "并发模型"
+    },
+    {
+      "chinese": "进程演算",
+      "english": "Process Calculus",
+      "abbreviation": "",
+      "definition": "描述并发进程行为的形式化语言",
+      "domain": "形式化方法"
+    },
+    {
+      "chinese": "双模拟",
+      "english": "Bisimulation",
+      "abbreviation": "",
+      "definition": "验证进程等价关系的方法",
+      "domain": "形式化方法"
+    },
+    {
+      "chinese": "迹等价",
+      "english": "Trace Equivalence",
+      "abbreviation": "",
+      "definition": "基于可观测行为的等价关系",
+      "domain": "形式化方法"
+    },
+    {
+      "chinese": "类型系统",
+      "english": "Type System",
+      "abbreviation": "",
+      "definition": "为程序赋予类型以确保正确性的规则集",
+      "domain": "形式化方法"
+    },
+    {
+      "chinese": "会话类型",
+      "english": "Session Types",
+      "abbreviation": "",
+      "definition": "描述通信协议的类型系统",
+      "domain": "形式化方法"
+    },
+    {
+      "chinese": "数据流模型",
+      "english": "Dataflow Model",
+      "abbreviation": "",
+      "definition": "描述数据流动和转换的抽象模型",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "算子",
+      "english": "Operator",
+      "abbreviation": "",
+      "definition": "流计算中的基本处理单元",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "Source",
+      "english": "Source",
+      "abbreviation": "",
+      "definition": "数据流的输入端",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "Sink",
+      "english": "Sink",
+      "abbreviation": "",
+      "definition": "数据流的输出端",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "有界数据",
+      "english": "Bounded Data",
+      "abbreviation": "",
+      "definition": "具有明确开始和结束的数据集",
+      "domain": "基础概念"
+    },
+    {
+      "chinese": "无界数据",
+      "english": "Unbounded Data",
+      "abbreviation": "",
+      "definition": "持续产生、没有明确结束的数据流",
+      "domain": "基础概念"
+    }
+  ]
+}

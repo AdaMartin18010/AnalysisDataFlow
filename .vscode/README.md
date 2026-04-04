@@ -7,7 +7,7 @@
   - [目录](#目录)
   - [自动 Markdown 格式化配置](#自动-markdown-格式化配置)
   - [📦 需要安装的扩展](#-需要安装的扩展)
-  - [⚙️ 配置文件说明](#️-配置文件说明)
+  - [⚙️ 配置文件说明](#配置文件说明)
     - [`settings.json`](#settingsjson)
     - [`.markdownlint.json`](#markdownlintjson)
   - [🚀 使用方法](#-使用方法)

@@ -1,6 +1,6 @@
 # 流处理安全架构与合规实践
 
-> **所属阶段**: Knowledge | **前置依赖**: [Knowledge/04-patterns/stream-processing-patterns.md](../04-patterns/stream-processing-patterns.md) | **形式化等级**: L3 (工程实践)
+> **所属阶段**: Knowledge | **前置依赖**: [Knowledge/04-patterns/stream-processing-patterns.md](../02-design-patterns/pattern-event-time-processing.md) | **形式化等级**: L3 (工程实践)
 
 ---
 

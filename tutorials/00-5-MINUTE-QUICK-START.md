@@ -9,7 +9,7 @@
 - [🎯 5分钟极简入门](#-5分钟极简入门) - Docker 一键体验
 - [📚 15分钟完整体验](#-15分钟完整体验) - 本地安装实践
 - [🔧 常见错误速查](#-常见错误速查) - 问题快速解决
-- [🛤️ 下一步指引](#️-下一步指引) - 继续学习路径
+- [🛤️ 下一步指引](#下一步指引) - 继续学习路径
 
 ---
 
@@ -157,11 +157,9 @@ EXIT;
 http://localhost:8081
 ```
 
-**截图占位符：**
+**Web UI 预期显示：**
 
-> 📸 **[截图：Flink Web UI 概览]**
-> 
-> ![Flink Web UI Overview](../visuals/screenshots/quickstart-webui-overview.png)
+> 📸 **Flink Web UI 概览**
 > 
 > 你应该看到：
 > - 🟢 绿色的 JobManager 状态
@@ -181,9 +179,7 @@ http://localhost:8081
 
 点击左侧菜单 **Jobs → Completed Jobs**，你应该看到刚才运行的 SQL 查询作业。
 
-> 📸 **[截图：已完成作业列表]**
-> 
-> ![Completed Jobs](../visuals/screenshots/quickstart-completed-jobs.png)
+> 📸 **已完成作业列表预览**
 
 ### 🧹 清理资源
 
@@ -282,9 +278,12 @@ jps
 http://localhost:8081
 ```
 
-> 📸 **[截图：本地集群运行状态]**
+> 📸 **本地集群运行状态**
 > 
-> ![Local Cluster Running](../visuals/screenshots/quickstart-local-cluster.png)
+> 你应该看到：
+> - 🟢 绿色的 JobManager 和 TaskManager 状态
+> - 📊 Available Task Slots 显示可用资源
+> - 📈 集群负载和内存使用情况
 
 ### 步骤 3：运行 WordCount 示例（5分钟）📝
 
@@ -345,9 +344,12 @@ world 1
 
 点击 Job ID 查看详细执行信息：
 
-> 📸 **[截图：WordCount 作业详情]**
+> 📸 **WordCount 作业详情**
 > 
-> ![WordCount Job Detail](../visuals/screenshots/quickstart-wordcount-job.png)
+> 在 Job Detail 页面你应该看到：
+> - 📋 作业基本信息（Job ID、状态、启动时间）
+> - 📊 作业执行图（Execution Graph）
+> - 📈 各算子的执行统计（记录数、字节数）
 
 ### 步骤 4：理解基本概念（5分钟）💡
 

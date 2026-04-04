@@ -1,6 +1,6 @@
 # Flink 2.1 Model DDL 与实时 AI 推理
 
-> 所属阶段: Flink/ | 前置依赖: [02-execution-and-extension.md](./02-execution-and-extension.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/ | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

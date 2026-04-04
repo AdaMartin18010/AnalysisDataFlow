@@ -1,6 +1,6 @@
 # Flink Python User-Defined Functions (UDF)
 
-> 所属阶段: Flink/03-sql-table-api | 前置依赖: [Flink SQL架构](flink-sql-architecture.md), [PyFlink概述](pyflink-overview.md) | 形式化等级: L4
+> 所属阶段: Flink/03-sql-table-api | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md), [Python API](../09-language-foundations/02-python-api.md) | 形式化等级: L4
 
 ---
 

@@ -1,7 +1,7 @@
 # Flink 版本发布完整检查清单
 
 > **所属阶段**: Flink/08-roadmap
-> **前置依赖**: [Flink 开发流程与分支策略](../05-ecosystem/flink-development-workflow.md)
+> **前置依赖**: [FLIP跟踪系统](./FLIP-TRACKING-SYSTEM.md)
 > **形式化等级**: L3 (工程实践指南)
 > **适用范围**: Apache Flink 版本发布管理 (x.y.0 及补丁版本)
 

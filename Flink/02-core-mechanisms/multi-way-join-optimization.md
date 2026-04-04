@@ -1,6 +1,6 @@
 # Flink 多路Join优化 (Multi-Way Join Optimization)
 
-> 所属阶段: Flink Core Mechanisms | 前置依赖: [Flink Join机制](../01-foundations/join-mechanisms.md), [Flink状态管理](../01-foundations/state-management.md) | 形式化等级: L4
+> 所属阶段: Flink Core Mechanisms | 前置依赖: [Flink Join机制](./delta-join.md), [Flink状态管理](./flink-state-management-complete-guide.md) | 形式化等级: L4
 
 ---
 

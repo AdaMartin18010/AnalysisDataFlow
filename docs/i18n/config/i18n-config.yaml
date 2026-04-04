@@ -1,0 +1,131 @@
+# AnalysisDataFlow 国际化配置文件
+# 版本: 1.0.0
+
+i18n:
+  # 源语言（原文语言）
+  source_language: "zh"
+  
+  # 目标语言列表
+  target_languages:
+    - "en"      # 英文
+    # - "ja"    # 日文（未来扩展）
+    # - "ko"    # 韩文（未来扩展）
+
+  # 路径配置
+  paths:
+    content_root: "docs/i18n/i18n-content"
+    glossary_dir: "docs/i18n/glossary"
+    workflow_dir: "docs/i18n/workflows"
+    templates_dir: "docs/i18n/templates"
+
+  # 源内容目录
+  source_dirs:
+    - "Struct"
+    - "Knowledge"
+    - "Flink"
+
+  # 提取配置
+  extraction:
+    # 跳过的文件模式
+    skip_patterns:
+      - "*.draft.md"
+      - "*.archived.md"
+      - "*.bak.md"
+    
+    # 包含 frontmatter
+    include_frontmatter: true
+    
+    # 保留 Mermaid 图表
+    preserve_mermaid: true
+    
+    # 摘录长度
+    excerpt_length: 500
+
+  # 质量检查配置
+  quality:
+    # 启用术语检查
+    term_check: true
+    
+    # 启用格式检查
+    format_check: true
+    
+    # 启用链接检查
+    link_check: true
+    
+    # 最小完成度阈值（百分比）
+    min_completion_threshold: 95
+    
+    # 术语检查严格度
+    term_check_strictness: "medium"  # strict | medium | loose
+
+  # 锁定机制配置
+  locking:
+    # 开始翻译时自动锁定
+    auto_lock_on_translate: true
+    
+    # 锁定范围: file | section
+    lock_scope: "file"
+    
+    # 允许关键修复
+    allow_critical_fixes: true
+    
+    # 关键修复类别
+    critical_fix_categories:
+      - "factual_error"      # 事实错误
+      - "broken_link"        # 失效链接
+      - "code_error"         # 代码错误
+      - "security_issue"     # 安全问题
+    
+    # 最长锁定时间（天）
+    lock_duration_max: 30
+
+  # 审核流程配置
+  review:
+    # 启用多级审核
+    multi_level_review: true
+    
+    # 审核级别
+    review_levels:
+      - "term"               # 术语审核
+      - "language"           # 语言审核
+      - "technical"          # 技术审核
+    
+    # 自动通过阈值
+    auto_pass_threshold: 98
+
+  # 通知配置
+  notifications:
+    on_translation_complete: true
+    on_review_required: true
+    on_version_conflict: true
+    
+    channels:
+      - "console"
+      - "file"
+      # - "email"
+      # - "slack"
+
+  # 静态站点生成器配置
+  site_generators:
+    mkdocs:
+      enabled: true
+      plugin: "i18n"
+      fallback_to_default: true
+    
+    docusaurus:
+      enabled: false
+      route_base_path: "docs"
+
+# 语言配置
+languages:
+  zh:
+    name: "中文"
+    native_name: "中文"
+    rtl: false
+    font_family: "system-ui, -apple-system, sans-serif"
+    
+  en:
+    name: "English"
+    native_name: "English"
+    rtl: false
+    font_family: "system-ui, -apple-system, sans-serif"

@@ -1,6 +1,6 @@
 # Serverless流处理架构
 
-> 所属阶段: Knowledge/Frontier | 前置依赖: [Flink流处理基础](../../Flink/)、[Lambda架构演进](../05-patterns/lambda-kappa-architecture.md) | 形式化等级: L4
+> 所属阶段: Knowledge/Frontier | 前置依赖: [Flink流处理基础](../../Flink/)、[Lambda架构演进](../01-concept-atlas/streaming-models-mindmap.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

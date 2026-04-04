@@ -1,6 +1,6 @@
 # AnalysisDataFlow — 综合导航索引
 
-> **一站式导航中心** | 260篇技术文档 | 870+形式化元素 | 580+Mermaid图表
+> **一站式导航中心** | 389篇技术文档 | 9,164+形式化元素 | 1,600+Mermaid图表
 
 ---
 
@@ -49,14 +49,17 @@
 | **工程实践** | [Knowledge/02-design-patterns/](Knowledge/02-design-patterns/) | 8大设计模式 |
 | | [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) | 10大反模式 |
 | | [Knowledge/03-business-patterns/](Knowledge/03-business-patterns/) | 业务场景实践 |
+| | [Knowledge/07-best-practices/](Knowledge/07-best-practices/) | 最佳实践 |
 | **Flink专项** | [Flink/02-core-mechanisms/](Flink/02-core-mechanisms/) | 核心机制 |
 | | [Flink/03-sql-table-api/](Flink/03-sql-table-api/) | SQL与Table API |
 | | [Flink/04-connectors/](Flink/04-connectors/) | 连接器生态 |
+| | [Flink/12-ai-ml/](Flink/12-ai-ml/) | AI/ML集成 |
 | **前沿技术** | [Knowledge/06-frontier/realtime-ai-streaming-2026.md](Knowledge/06-frontier/realtime-ai-streaming-2026.md) | 实时AI流处理 |
 | | [Knowledge/06-frontier/vector-search-streaming-convergence.md](Knowledge/06-frontier/vector-search-streaming-convergence.md) | 向量搜索集成 |
 | | [Flink/12-ai-ml/flink-agents-flip-531.md](Flink/12-ai-ml/flink-agents-flip-531.md) | Flink AI Agents |
 | | [Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md](Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md) | Streaming Lakehouse |
 | | [Knowledge/06-frontier/mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | MCP协议 |
+| | [Knowledge/06-frontier/a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | A2A协议 |
 
 ### 1.3 按问题入口
 
@@ -178,6 +181,16 @@
 | [FG/FGG类型安全](Struct/04-proofs/04.05-type-safety-fg-fgg.md) | S-21 | Thm-S-21-01 |
 | [DOT子类型完备性](Struct/04-proofs/04.06-dot-subtyping-completeness.md) | S-22 | Thm-S-22-01 |
 
+#### 验证工具 (07-tools/)
+
+| 文档 | 编号 | 核心内容 |
+|------|------|----------|
+| [Smart Casual Verification](Struct/07-tools/smart-casual-verification.md) | S-24 | 轻量级形式化验证 |
+| [TLA+ for Flink](Struct/07-tools/tla-for-flink.md) | S-25 | TLA+规范 |
+| [Coq Mechanization](Struct/07-tools/coq-mechanization.md) | S-26 | Coq形式化 |
+| [Iris Separation Logic](Struct/07-tools/iris-separation-logic.md) | S-27 | Iris分离逻辑 |
+| [Model Checking Practice](Struct/07-tools/model-checking-practice.md) | S-28 | 模型检测实践 |
+
 ### 3.2 工程实践文档索引 (Knowledge/)
 
 #### 设计模式 (02-design-patterns/)
@@ -208,6 +221,7 @@
 | Stripe支付处理 | [stripe-payment-processing.md](Knowledge/03-business-patterns/stripe-payment-processing.md) | 金融级一致性 |
 | Spotify推荐 | [spotify-music-recommendation.md](Knowledge/03-business-patterns/spotify-music-recommendation.md) | 实时音乐推荐 |
 | Airbnb市场 | [airbnb-marketplace-dynamics.md](Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md) | 市场动态定价 |
+| 数据网格 | [data-mesh-streaming-architecture-2026.md](Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) | 数据产品架构 |
 
 #### 反模式 (09-anti-patterns/)
 
@@ -237,6 +251,7 @@
 | Delta Join | [delta-join.md](Flink/02-core-mechanisms/delta-join.md) | 大状态Join优化 |
 | Async执行模型 | [async-execution-model.md](Flink/02-core-mechanisms/async-execution-model.md) | Flink 2.0新特性 |
 | ForState Backend | [forst-state-backend.md](Flink/02-core-mechanisms/forst-state-backend.md) | 云原生状态存储 |
+| 智能Checkpoint | [smart-checkpointing-strategies.md](Flink/02-core-mechanisms/smart-checkpointing-strategies.md) | 自适应策略 |
 
 #### SQL与Table API (03-sql-table-api/)
 
@@ -248,6 +263,7 @@
 | Model DDL | [model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | AI推理集成 |
 | 向量搜索 | [flink-vector-search-rag.md](Flink/03-sql-table-api/flink-vector-search-rag.md) | VECTOR_SEARCH函数 |
 | 物化表 | [materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | FRESHNESS语义 |
+| SQL速查表 | [sql-functions-cheatsheet.md](Flink/03-sql-table-api/sql-functions-cheatsheet.md) | 150+函数速查 |
 
 #### 连接器生态 (04-connectors/)
 
@@ -260,6 +276,7 @@
 | Paimon | [flink-paimon-integration.md](Flink/04-connectors/flink-paimon-integration.md) | 流式数据湖 |
 | Delta Lake | [flink-delta-lake-integration.md](Flink/04-connectors/flink-delta-lake-integration.md) | Delta格式支持 |
 | Apache Fluss | [fluss-integration.md](Flink/04-connectors/fluss-integration.md) | 流分析存储 |
+| CloudEvents | [cloudevents-integration-guide.md](Flink/04-connectors/cloudevents-integration-guide.md) | CNCF标准集成 |
 
 #### 部署与运维 (10-deployment/)
 
@@ -268,6 +285,9 @@
 | K8s生产部署 | [kubernetes-deployment-production-guide.md](Flink/10-deployment/kubernetes-deployment-production-guide.md) | Operator、HA配置 |
 | K8s Autoscaler | [flink-kubernetes-autoscaler-deep-dive.md](Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md) | 自动扩缩容 |
 | Serverless架构 | [flink-serverless-architecture.md](Flink/10-deployment/flink-serverless-architecture.md) | 无服务器部署 |
+| Serverless GA | [serverless-flink-ga-guide.md](Flink/10-deployment/serverless-flink-ga-guide.md) | 完全指南 |
+| 多云部署模板 | [multi-cloud-deployment-templates.md](Flink/10-deployment/multi-cloud-deployment-templates.md) | 5大云平台模板 |
+| 成本优化计算器 | [cost-optimization-calculator.md](Flink/10-deployment/cost-optimization-calculator.md) | Python成本工具 |
 
 #### AI/ML集成 (12-ai-ml/)
 
@@ -280,6 +300,7 @@
 | 向量数据库 | [vector-database-integration.md](Flink/12-ai-ml/vector-database-integration.md) | Milvus/Pinecone |
 | RAG架构 | [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) | 检索增强生成 |
 | 在线学习 | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | 增量学习 |
+| AI Agents GA | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 生产级发布 |
 
 ### 3.4 前沿技术文档索引 (Knowledge/06-frontier/ & Flink/前沿/)
 
@@ -306,37 +327,49 @@
 | **WebAssembly数据流** | [wasm-dataflow-patterns.md](Knowledge/06-frontier/wasm-dataflow-patterns.md) | 🔶 新兴 |
 | **Rust流处理生态** | [rust-streaming-ecosystem.md](Knowledge/06-frontier/rust-streaming-ecosystem.md) | 🔷 成熟 |
 | **GPU可信执行** | [Flink/13-security/gpu-confidential-computing.md](Flink/13-security/gpu-confidential-computing.md) | 🔶 新兴 |
+| **Temporal+Flink** | [temporal-flink-layered-architecture.md](Knowledge/06-frontier/temporal-flink-layered-architecture.md) | 🔶 新兴 |
 
 ---
 
 ## 4. 工具与资源导航
 
-### 4.1 验证脚本入口
+### 4.1 自动化脚本工具 (.scripts/)
 
-| 脚本类型 | 路径 | 用途 |
-|----------|------|------|
-| **项目验证脚本** | `.github/workflows/validate.yml` | 文档结构、引用完整性 |
-| **链接检查** | `.github/workflows/check-links.yml` | 死链检测 |
-| **统计更新** | `.github/workflows/update-stats.yml` | 文档数量、定理统计 |
+| 脚本类型 | 路径 | 功能 | 状态 |
+|----------|------|------|------|
+| **Flink版本跟踪** | `.scripts/flink-version-tracking/` | 监控Flink官方发布，自动更新版本文档 | ✅ 运行中 |
+| **链接检查器** | `.scripts/link-checker/` | 检测失效链接，生成修复建议 | ✅ 运行中 |
+| **质量门禁** | `.scripts/quality-gates/` | 文档格式检查、前瞻内容检测 | ✅ 运行中 |
+| **统计更新** | `.scripts/stats-updater/` | 自动更新项目统计和进度 | ✅ 运行中 |
+| **通知服务** | `.scripts/notifications/` | 变更通知(Slack/邮件/Webhook) | ✅ 运行中 |
+| **版本对比** | `.scripts/version-comparison/` | 生成版本差异报告 | ✅ 运行中 |
 
-### 4.2 Docker环境入口
+### 4.2 CI/CD 工作流 (.github/workflows/)
+
+| 工作流 | 文件 | 触发条件 | 功能 |
+|--------|------|----------|------|
+| **项目验证** | `validate.yml` | PR/Push | 文档结构、引用完整性 |
+| **链接检查** | `check-links.yml` | 定时/手动 | 死链检测 |
+| **统计更新** | `update-stats.yml` | 定时 | 文档数量、定理统计 |
+
+### 4.3 Docker环境入口
 
 | 环境 | 文档 | 用途 |
 |------|------|------|
 | Flink本地开发 | [Flink/10-deployment/kubernetes-deployment.md](Flink/10-deployment/kubernetes-deployment.md) | 本地K8s部署 |
-| 流处理实验环境 | [Knowledge/98-exercises/README.md](Knowledge/98-exercises/README.md) | 练习环境 |
+| 流处理实验环境 | [tutorials/interactive/README.md](tutorials/interactive/README.md) | 练习环境 |
 
-### 4.3 搜索工具入口
+### 4.4 搜索工具入口
 
 | 搜索方式 | 方法 | 示例 |
 |----------|------|------|
 | **全文搜索** | GitHub搜索 | `repo:luyanfeng/AnalysisDataFlow checkpoint` |
 | **定理编号搜索** | THEOREM-REGISTRY.md | 查找 `Thm-S-17-01` |
-| **目录索引** | 00-INDEX.md | Struct/00-INDEX.md |
-| | | Knowledge/00-INDEX.md |
-| | | Flink/00-INDEX.md |
+| **目录索引** | 00-INDEX.md | [Struct/00-INDEX.md](Struct/00-INDEX.md) |
+| | | [Knowledge/00-INDEX.md](Knowledge/00-INDEX.md) |
+| | | [Flink/00-INDEX.md](Flink/00-INDEX.md) |
 
-### 4.4 PDF导出入口
+### 4.5 PDF导出入口
 
 > 目前项目以Markdown为主，PDF导出可通过以下方式：
 
@@ -417,7 +450,16 @@ Struct/01-foundation/ (理论基础)
 | **反模式速查** | [Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md](Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md) | 10大反模式 |
 | **A2A协议速查** | [Knowledge/98-exercises/quick-ref-a2a-protocol.md](Knowledge/98-exercises/quick-ref-a2a-protocol.md) | Agent互操作 |
 
-### 5.4 演示文稿大纲
+### 5.4 交互式学习资源
+
+| 资源 | 路径 | 类型 |
+|------|------|------|
+| **编程挑战** | [tutorials/interactive/coding-challenges/](tutorials/interactive/coding-challenges/) | 5个实战挑战 |
+| **动手实验室** | [tutorials/interactive/hands-on-labs/](tutorials/interactive/hands-on-labs/) | 6个实验课程 |
+| **综合测试** | [tutorials/interactive/quizzes/](tutorials/interactive/quizzes/) | 4套测验 |
+| **Flink Playground** | [tutorials/interactive/flink-playground/](tutorials/interactive/flink-playground/) | 在线环境 |
+
+### 5.5 演示文稿大纲
 
 | 主题 | 推荐文档组合 | 时长 |
 |------|--------------|------|
@@ -437,6 +479,7 @@ Struct/01-foundation/ (理论基础)
 |------|------|------|
 | **项目跟踪** | [PROJECT-TRACKING.md](PROJECT-TRACKING.md) | 进度看板、完成状态 |
 | **版本跟踪** | [PROJECT-VERSION-TRACKING.md](PROJECT-VERSION-TRACKING.md) | 版本历史、变更记录 |
+| **v3.3路线图** | [ROADMAP-v3.3-and-beyond.md](ROADMAP-v3.3-and-beyond.md) | 未来规划、P0-P3任务 |
 | **定理注册表** | [THEOREM-REGISTRY.md](THEOREM-REGISTRY.md) | 所有定理/定义索引 |
 | **Agent工作规范** | [AGENTS.md](AGENTS.md) | 文档编写规范 |
 
@@ -448,22 +491,24 @@ Struct/01-foundation/ (理论基础)
 | **编号规范** | [AGENTS.md](AGENTS.md) | Thm/Def/Lemma编号 |
 | **引用规范** | [AGENTS.md](AGENTS.md) | [^n]格式 |
 | **Mermaid规范** | [AGENTS.md](AGENTS.md) | 图表类型选择 |
+| **贡献流程** | [CONTRIBUTING.md](CONTRIBUTING.md) | PR流程、代码审查 |
 
 ### 6.3 验证报告
 
 | 报告 | 路径 | 内容 |
 |------|------|------|
 | **最终验证报告** | [FINAL-VALIDATION-REPORT.md](FINAL-VALIDATION-REPORT.md) | 全面验证结果 |
+| **v3.2完成报告** | [FULL-COMPLETION-REPORT-v3.2.md](FULL-COMPLETION-REPORT-v3.2.md) | v3.2全面推进总结 |
 | **完成报告v5.0** | [FINAL-COMPLETION-REPORT-v5.0.md](FINAL-COMPLETION-REPORT-v5.0.md) | v5.0交付总结 |
-| **完成报告v4.1** | [FINAL-COMPLETION-REPORT-v4.1.md](FINAL-COMPLETION-REPORT-v4.1.md) | v4.1交付总结 |
+| **E1-E4修复报告** | [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) | 准确性修复 |
 | **Flink-Scala-Rust报告** | [FLINK-SCALA-RUST-COMPLETION-REPORT.md](FLINK-SCALA-RUST-COMPLETION-REPORT.md) | 多语言专项 |
 | **持续扩展报告** | [CONTINUOUS-EXPANSION-REPORT.md](CONTINUOUS-EXPANSION-REPORT.md) | 扩展记录 |
-| **项目完成报告** | [PROJECT-COMPLETION-FINAL-REPORT.md](PROJECT-COMPLETION-FINAL-REPORT.md) | 最终报告 |
 
 ### 6.4 更新日志
 
 | 版本 | 日期 | 主要更新 |
 |------|------|----------|
+| **v3.3路线图** | 2026-04-04 | v3.3规划发布，P0-P3优先级任务 |
 | **v2.9** | 2026-04-04 | E1-E4错误修复完成、tutorials目录完善、DataStream/SQL速查表新增、A2A协议、Smart Casual Verification |
 | **v2.8** | 2026-04-02 | Flink AI Agents、图流处理TGN、多模态流处理、Flink 2.3路线图 |
 | **v2.7** | 2026-03-15 | Temporal+Flink分层架构、Serverless成本优化 |
@@ -474,24 +519,28 @@ Struct/01-foundation/ (理论基础)
 
 ## 附录
 
-### A. 项目统计
+### A. 项目统计 (v3.3 最新)
 
 ```
-总文档数: 260篇
+总文档数: 389篇
 ├── Struct/: 43篇 (形式化理论)
-├── Knowledge/: 102篇 (工程实践)
-├── Flink/: 118篇 (Flink专项)
-└── tutorials/: 9篇 (实践教程)
+├── Knowledge/: 134篇 (工程实践)
+├── Flink/: 164篇 (Flink专项)
+├── tutorials/: 27篇 (实践教程)
+└── visuals/: 21篇 (可视化文档)
 
-形式化元素: 870+
-├── 定理 (Thm): 188个
-├── 定义 (Def): 410个
-├── 引理 (Lemma): 158个
-├── 命题 (Prop): 121个
-└── 推论 (Cor): 6个
+形式化元素: 9,164+
+├── 定理 (Thm): 1,880个
+├── 定义 (Def): 4,499个
+├── 引理 (Lemma): 1,538个
+├── 命题 (Prop): 1,176个
+└── 推论 (Cor): 71个
 
-Mermaid图表: 580+
-代码示例: 1850+
+Mermaid图表: 1,600+
+代码示例: 4,500+
+代码行数: 29,920+
+Markdown行数: 338,716+
+项目大小: 20+ MB
 ```
 
 ### B. 目录索引快速入口
@@ -499,6 +548,8 @@ Mermaid图表: 580+
 - [Struct/00-INDEX.md](Struct/00-INDEX.md) — 形式化理论完整索引
 - [Knowledge/00-INDEX.md](Knowledge/00-INDEX.md) — 工程实践完整索引
 - [Flink/00-INDEX.md](Flink/00-INDEX.md) — Flink专项完整索引
+- [tutorials/interactive/README.md](tutorials/interactive/README.md) — 交互式学习资源
+- [.scripts/README.md](.scripts/) — 自动化脚本工具
 
 ### C. 外部资源链接
 
@@ -509,6 +560,16 @@ Mermaid图表: 580+
 | Dataflow模型论文 | <https://www.vldb.org/pvldb/vol8/p1792-Akidau.pdf> |
 | MIT 6.824分布式系统 | <https://pdos.csail.mit.edu/6.824/> |
 
+### D. v3.3路线图关键里程碑
+
+| 版本 | 日期 | 目标 | 关键交付 |
+|------|------|------|----------|
+| v3.2.1 | 2026-04-11 | 交叉引用修复 | 错误数=0 |
+| v3.2.2 | 2026-04-30 | 质量门禁上线 | CI自动化完成 |
+| v3.3 | 2026-06-30 | P0/P1内容补齐 | 400+文档 |
+| v3.4 | 2026-09-30 | 知识图谱2.0 | 交互式图谱 |
+| v4.0 | 2027-Q1 | 国际化发布 | 中英双语 |
+
 ---
 
-> **最后更新**: 2026-04-03 | **版本**: v2.9 | **状态**: 生产就绪 ✅
+> **最后更新**: 2026-04-04 | **版本**: v2.9 | **状态**: 生产就绪 ✅ | **v3.3路线图**: 已发布 🗺️

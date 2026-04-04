@@ -1,6 +1,6 @@
 # Flink vs RisingWave vs Materialize — 流处理系统深度对比
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md), [streaming-databases.md](../04-patterns/streaming-databases.md) | **形式化等级**: L3-L4
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md), [streaming-databases.md](./streaming-databases.md) | **形式化等级**: L3-L4
 > **版本**: v1.0 | **文档规模**: ~35KB
 
 ---
@@ -1141,8 +1141,8 @@ Nexmark 吞吐量对比 (K events/sec)
 ### 上游依赖
 
 - [rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md) — Rust 流计算生态概览
-- [streaming-databases.md](../04-patterns/streaming-databases.md) — 流数据库通用概念
-- [../../Flink/02-internals/flink-architecture.md](../../Flink/02-internals/flink-architecture.md) — Flink 架构详解
+- [streaming-databases.md](./streaming-databases.md) — 流数据库通用概念
+- [../../Flink/01-architecture/deployment-architectures.md](../../Flink/01-architecture/deployment-architectures.md) — Flink 架构详解
 
 ### 同层关联
 

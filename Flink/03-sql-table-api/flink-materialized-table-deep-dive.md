@@ -1,6 +1,6 @@
 # Flink 2.2 Materialized Table 物化表深度指南
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink SQL 基础](flink-sql-basics.md), [Flink Table API 高级特性](flink-table-api-advanced.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/ | **前置依赖**: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md) | **形式化等级**: L3-L4
 >
 > **版本**: Flink 2.2+ | **状态**: 生产就绪 (Production-Ready) | **最后更新**: 2026-04-03
 

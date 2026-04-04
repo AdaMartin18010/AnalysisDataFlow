@@ -155,6 +155,7 @@ Flink/:    [████████████████████] 100% (
 
 最新扩展: Flink AI Agents (FLIP-531) | 实时图流处理TGN | 多模态流处理 | Flink 2.3路线图
           | Google A2A协议 | Temporal+Flink分层架构 | Smart Casual验证
+          | 动态学习路径推荐系统 (P2-11)
 ```
 
 ---

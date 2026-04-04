@@ -1,6 +1,6 @@
 # Flink vs Kafka Streams 对比 (Flink vs Kafka Streams Comparison)
 
-> 所属阶段: Flink/05-vs-competitors | 前置依赖: [Dataflow模型形式化](../../Struct/01-foundation/dataflow-model-formalization.md), [Flink架构详解](../01-architecture/deployment-architectures.md) | 形式化等级: L4
+> 所属阶段: Flink/05-vs-competitors | 前置依赖: [Dataflow模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Flink架构详解](../01-architecture/deployment-architectures.md) | 形式化等级: L4
 
 ---
 

@@ -1,6 +1,6 @@
 # 流计算模型概念图谱 (Streaming Models MindMap)
 
-> 所属阶段: Knowledge/01-concept-atlas | 前置依赖: [../../Struct/01-foundation/01.01-process-calculi-overview.md](../../Struct/01-foundation/01.01-process-calculi-overview.md), [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | 形式化等级: L3 (工程概念层)
+> 所属阶段: Knowledge/01-concept-atlas | 前置依赖: [../../Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md), [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | 形式化等级: L3 (工程概念层)
 
 ---
 
@@ -78,7 +78,7 @@
 
 **定义**：Actor 模型将计算抽象为一组独立的、通过**异步消息传递**进行交互的自治实体（Actor）。每个 Actor 封装了私有状态、邮箱（Mailbox）和行为函数，其生命周期内遵循"接收一条消息 → 更新状态 → 发送零条或多条消息"的串行处理模式[^3]。
 
-**形式化对应**：在 Aπ (Actor π-Calculus) 中，Actor 配置可表示为 $\langle \alpha, \mu, P \rangle$，其中 $\alpha$ 是唯一地址，$\mu$ 是消息队列，$P$ 是行为进程。详见 [Struct/01-foundation/01.02-actor-model-formalization.md](../../Struct/01-foundation/01.02-actor-model-formalization.md)。
+**形式化对应**：在 Aπ (Actor π-Calculus) 中，Actor 配置可表示为 $\langle \alpha, \mu, P \rangle$，其中 $\alpha$ 是唯一地址，$\mu$ 是消息队列，$P$ 是行为进程。详见 [Struct/01-foundation/01.02-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md)。
 
 **工程直觉**：Actor 像是一群通过邮件往来的独立办公室职员。每个职员有自己的办公桌（状态）和收件箱（mailbox），处理邮件时不会被打扰（单线程语义），也可以给任意已知地址的同事发新邮件（动态拓扑）。
 
@@ -90,7 +90,7 @@
 
 **工程直觉**：CSP 的同步通信像是一次电话通话——双方必须同时拿起话筒才能交谈。如果一方未就绪，另一方会阻塞等待。这种" rendezvous "机制天然提供了背压（backpressure）和同步点。
 
-**形式化锚点**：CSP 语法核心包括 $P \mathbin{\Box} Q$（外部选择）、$P \parallel_A Q$（同步并行）和 $P \setminus A$（隐藏）。详见 [Struct/01-foundation/01.03-csp-formalization.md](../../Struct/01-foundation/01.03-csp-formalization.md)。
+**形式化锚点**：CSP 语法核心包括 $P \mathbin{\Box} Q$（外部选择）、$P \parallel_A Q$（同步并行）和 $P \setminus A$（隐藏）。详见 [Struct/01-foundation/01.03-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)。
 
 ---
 
@@ -126,7 +126,7 @@
 
 **工程意义**：这意味着我们可以在不改变结果正确性的前提下，自由调整算子的调度策略、并行度分配或执行位置（本地/远程/容器）。这是 Flink 能够进行透明扩缩容和故障恢复的理论基础。
 
-**来源**：该性质直接来自 Kahn Process Network 的不动点语义，详见 [Struct/02-properties/02.01-kahn-determinism.md](../../Struct/02-properties/02.01-kahn-determinism.md)。
+**来源**：该性质直接来自 Kahn Process Network 的不动点语义，详见 [Struct/02-properties/02.01-kahn-determinism.md](../../Struct/02-properties/02.01-determinism-in-streaming.md)。
 
 ---
 
@@ -300,7 +300,7 @@ graph TB
 
 **工程论证**：
 
-1. **前提分析**：Dataflow SDF 的生产-消费率是编译期常数，拓扑矩阵 $\Gamma$ 可以完全构造。CSP 的通道集合也是语法层静态的（见 [Struct/01-foundation/01.03-csp-formalization.md](../../Struct/01-foundation/01.03-csp-formalization.md)）。
+1. **前提分析**：Dataflow SDF 的生产-消费率是编译期常数，拓扑矩阵 $\Gamma$ 可以完全构造。CSP 的通道集合也是语法层静态的（见 [Struct/01-foundation/01.03-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)）。
 2. **推导**：对于 SDF，求解 $\Gamma \cdot r = 0$ 可得到周期调度向量 $r$，进而计算关键路径和最大吞吐量。对于 CSP，FDR 等模型检测工具可以对有限状态子集进行穷尽验证。
 3. **结论**：静态拓扑模型适合对延迟、吞吐或正确性有严格要求的领域（如 DSP、航空航天控制）。
 
@@ -312,7 +312,7 @@ graph TB
 
 **工程论证**：
 
-1. **前提分析**：Actor 的 `spawn` 操作可以创建具有独立 mailbox 和状态的新实例（见 [Struct/01-foundation/01.02-actor-model-formalization.md](../../Struct/01-foundation/01.02-actor-model-formalization.md)）。
+1. **前提分析**：Actor 的 `spawn` 操作可以创建具有独立 mailbox 和状态的新实例（见 [Struct/01-foundation/01.02-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md)）。
 2. **推导**：在 Akka Cluster 中，Actor 可以根据消息队列长度自动启动新实例（通过 Router/Pool 机制），或将 Actor 迁移到负载较低的节点。
 3. **结论**：动态拓扑模型更适合负载波动大、需要弹性伸缩的互联网服务场景。
 
@@ -418,7 +418,7 @@ flowchart TD
 
 ### 引理 5.2 (混合模型的组合边界)
 
-**陈述**：在实际工程中，单一的流计算模型往往不足以覆盖整个系统。不同模型可以在系统边界处组合，但需要满足类型兼容、顺序保持和背压协调三个条件（参见 [Struct/03-relationships/03.02-hybrid-system-composition.md](../../Struct/03-relationships/03.02-hybrid-system-composition.md)）。
+**陈述**：在实际工程中，单一的流计算模型往往不足以覆盖整个系统。不同模型可以在系统边界处组合，但需要满足类型兼容、顺序保持和背压协调三个条件（参见 [Struct/03-relationships/03.02-hybrid-system-composition.md](../../Struct/03-relationships/03.02-flink-to-process-calculus.md)）。
 
 **工程建议**：
 
@@ -636,9 +636,9 @@ graph LR
 
 **关联文档**：
 
-- [../../Struct/01-foundation/01.01-process-calculi-overview.md](../../Struct/01-foundation/01.01-process-calculi-overview.md)
-- [../../Struct/01-foundation/01.02-actor-model-formalization.md](../../Struct/01-foundation/01.02-actor-model-formalization.md)
-- [../../Struct/01-foundation/01.03-csp-formalization.md](../../Struct/01-foundation/01.03-csp-formalization.md)
+- [../../Struct/01-foundation/01.02-process-calculus-primer.md](../../Struct/01-foundation/01.02-process-calculus-primer.md)
+- [../../Struct/01-foundation/01.03-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md)
+- [../../Struct/01-foundation/01.05-csp-formalization.md](../../Struct/01-foundation/01.05-csp-formalization.md)
 - [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)
-- [../../Struct/02-properties/02.01-kahn-determinism.md](../../Struct/02-properties/02.01-kahn-determinism.md)
-- [../../Struct/03-relationships/03.02-hybrid-system-composition.md](../../Struct/03-relationships/03.02-hybrid-system-composition.md)
+- [../../Struct/02-properties/02.01-determinism-in-streaming.md](../../Struct/02-properties/02.01-determinism-in-streaming.md)
+- [../../Struct/03-relationships/03.02-flink-to-process-calculus.md](../../Struct/03-relationships/03.02-flink-to-process-calculus.md)

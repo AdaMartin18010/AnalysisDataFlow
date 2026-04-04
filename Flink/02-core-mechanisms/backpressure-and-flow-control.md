@@ -1,6 +1,6 @@
 # Flink 背压与流控机制 (Backpressure and Flow Control)
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 运行时架构](../01-architecture/runtime-overview.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/ | 前置依赖: [Flink 部署架构](../01-architecture/deployment-architectures.md) | 形式化等级: L3-L4
 
 ---
 

@@ -1,6 +1,6 @@
 # Flink REST API 完整参考
 
-> **所属阶段**: Flink/ | **前置依赖**: [04-runtime/4.1-flink-architecture-overview.md](../04-runtime/4.1-flink-architecture-overview.md), [05-fault-tolerance/5.1-checkpoint-mechanism.md](../05-fault-tolerance/5.1-checkpoint-mechanism.md) | **形式化等级**: L3
+> **所属阶段**: Flink/ | **前置依赖**: [Flink部署架构](../01-architecture/deployment-architectures.md), [Checkpoint机制深度解析](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3
 
 ---
 

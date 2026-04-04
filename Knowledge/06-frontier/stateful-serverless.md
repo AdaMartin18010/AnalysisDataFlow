@@ -1,6 +1,6 @@
 # Stateful Serverless - 有状态函数即服务
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [../04-engineering/streaming-systems-design.md](../04-engineering/streaming-systems-design.md), [../03-mechanisms/distributed-snapshot.md](../03-mechanisms/distributed-snapshot.md) | 形式化等级: L3-L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [../01-concept-atlas/streaming-models-mindmap.md](../01-concept-atlas/streaming-models-mindmap.md), [../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3-L4
 
 ## 目录
 

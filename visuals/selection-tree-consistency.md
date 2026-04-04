@@ -426,9 +426,9 @@ restart-strategy.fixed-delay.delay: 10s
 
 | 一致性级别 | Source 配置 | Sink 配置 | 代码示例 |
 |-----------|------------|----------|---------|
-| **At-Most-Once** | 立即提交偏移量 | 直接写入 | [示例](#at-most-once) |
-| **At-Least-Once** | Checkpoint 提交偏移量 | 非事务写入 | [示例](#at-least-once) |
-| **Exactly-Once** | Checkpoint 提交偏移量 | 2PC 事务 | [示例](#exactly-once) |
+| **At-Most-Once** | 立即提交偏移量 | 直接写入 | [示例](#41-at-most-once-至多一次) |
+| **At-Least-Once** | Checkpoint 提交偏移量 | 非事务写入 | [示例](#42-at-least-once-至少一次) |
+| **Exactly-Once** | Checkpoint 提交偏移量 | 2PC 事务 | [示例](#43-exactly-once-恰好一次) |
 
 #### At-Most-Once 代码示例
 

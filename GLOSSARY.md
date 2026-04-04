@@ -12,7 +12,7 @@
 
 - [术语表导航](#术语表导航)
 - [术语分类索引](#术语分类索引)
-- [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Y](#y) · [Z](#z)
+- [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#adaptive-execution-engine-自适应执行引擎-flink-117) · [Y](#analysisdataflow-术语表-glossary) · [Z](#materialized-view-物化视图)
 
 ---
 
@@ -32,37 +32,37 @@
 
 ### 1. 基础术语
 
-- [流计算相关](#流计算相关): Dataflow, Event Time, Processing Time, Watermark, Window
-- [批处理相关](#批处理相关): Batch Processing, Bounded Stream, Checkpoint
-- [实时处理相关](#实时处理相关): Real-time Processing, Latency, Throughput
+- [流计算相关](#1-基础术语): Dataflow, Event Time, Processing Time, Watermark, Window
+- [批处理相关](#1-基础术语): Batch Processing, Bounded Stream, Checkpoint
+- [实时处理相关](#1-基础术语): Real-time Processing, Latency, Throughput
 
 ### 2. 理论术语
 
-- [进程演算术语](#进程演算术语): CCS, CSP, π-Calculus, Actor Model, Session Types
-- [形式化验证术语](#形式化验证术语): Bisimulation, Model Checking, TLA+, Iris
-- [类型理论术语](#类型理论术语): FG/FGG, DOT, Path-Dependent Types
+- [进程演算术语](#2-理论术语): CCS, CSP, π-Calculus, Actor Model, Session Types
+- [形式化验证术语](#2-理论术语): Bisimulation, Model Checking, TLA+, Iris
+- [类型理论术语](#2-理论术语): FG/FGG, DOT, Path-Dependent Types
 
 ### 3. Flink术语
 
-- [核心概念](#核心概念): JobManager, TaskManager, Operator, State Backend
-- [API相关](#api相关): DataStream API, Table API, SQL
-- [配置参数](#配置参数): Parallelism, Checkpoint Interval, Watermark Strategy
+- [核心概念](#3-flink术语): JobManager, TaskManager, Operator, State Backend
+- [API相关](#a): DataStream API, Table API, SQL
+- [配置参数](#3-flink术语): Parallelism, Checkpoint Interval, Watermark Strategy
 
 ### 4. 工程术语
 
-- [设计模式术语](#设计模式术语): Windowed Aggregation, Async I/O, Side Output
-- [架构术语](#架构术语): Microservices, Event-Driven Architecture, Data Mesh
-- [运维术语](#运维术语): Backpressure, Monitoring, Autoscaling
+- [设计模式术语](#4-工程术语): Windowed Aggregation, Async I/O, Side Output
+- [架构术语](#4-工程术语): Microservices, Event-Driven Architecture, Data Mesh
+- [运维术语](#4-工程术语): Backpressure, Monitoring, Autoscaling
 
 ### 5. 前沿术语
 
-- [AI Agent术语](#ai-agent-术语): AI Agent, ReAct, MCP, A2A, Agentic Workflow, FLIP-531, Tool Calling
-- [Serverless术语](#serverless-术语): Serverless Flink, Scale-to-Zero, FaaS
-- [性能优化术语](#性能优化-术语): Adaptive Execution Engine, Smart Checkpointing, GPU Acceleration
-- [流批一体术语](#流批一体-术语): Stream-Batch Unification, Unified Execution Engine
-- [WASM术语](#wasm-术语): WebAssembly UDF, WASI, WASM
-- [流数据库术语](#流数据库术语): Materialized View, Continuous Query, Incremental Update
-- [云原生术语](#云原生术语): Kubernetes, Serverless, WASM, Lakehouse
+- [AI Agent术语](#a): AI Agent, ReAct, MCP, A2A, Agentic Workflow, FLIP-531, Tool Calling
+- [Serverless术语](#e): Serverless Flink, Scale-to-Zero, FaaS
+- [性能优化术语](#5-前沿术语): Adaptive Execution Engine, Smart Checkpointing, GPU Acceleration
+- [流批一体术语](#5-前沿术语): Stream-Batch Unification, Unified Execution Engine
+- [WASM术语](#a): WebAssembly UDF, WASI, WASM
+- [流数据库术语](#5-前沿术语): Materialized View, Continuous Query, Incremental Update
+- [云原生术语](#5-前沿术语): Kubernetes, Serverless, WASM, Lakehouse
 
 ---
 
@@ -82,7 +82,7 @@ AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 
 **核心能力**: 数据倾斜自动处理、并行度动态调整、资源自适应分配
 
-**相关概念**: [Smart Checkpointing](#smart-checkpointing-智能检查点), [Backpressure](#backpressure-反压), [Parallelism](#parallelism-并行度)
+**相关概念**: [Smart Checkpointing](#a), [Backpressure](#backpressure-反压), [Parallelism](#parallelism-并行度)
 
 **参考文档**:
 
@@ -100,7 +100,7 @@ AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 ```
 
-**相关概念**: [CSP](#csp-communicating-sequential-processes), [π-Calculus](#π-calculus), [消息传递](#message-passing)
+**相关概念**: [CSP](#csp-communicating-sequential-processes), [π-Calculus](#a), [消息传递](#a)
 
 **参考文档**:
 
@@ -119,9 +119,9 @@ Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 
 其中 𝒮 为状态空间，𝒫 为感知，𝒟 为决策，𝒜 为行动，ℳ 为记忆，𝒢 为目标。
 
-**Flink 集成**: [Flink Agent](#flink-agent) 是基于流计算框架的 AI Agent 实现
+**Flink 集成**: [Flink Agent](#a) 是基于流计算框架的 AI Agent 实现
 
-**相关概念**: [ReAct](#react), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Multi-Agent](#multi-agent), [FLIP-531](#flip-531)
+**相关概念**: [ReAct](#a), [MCP](#c), [A2A](#a), [Multi-Agent](#a), [FLIP-531](#f)
 
 **参考文档**:
 
@@ -144,7 +144,7 @@ A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 
 **任务状态流转**: `pending → working → input-required → completed/failed`
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [MCP](#mcp-model-context-protocol), [Orchestration](#orchestration), [FLIP-531](#flip-531)
+**相关概念**: [AI Agent](#a), [MCP](#c), [Orchestration](#a), [FLIP-531](#f)
 
 **参考文档**:
 
@@ -163,7 +163,7 @@ A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 ```
 
-**相关概念**: [Unaligned Checkpoint](#unaligned-checkpoint), [Barrier](#barrier), [Exactly-Once](#exactly-once)
+**相关概念**: [Unaligned Checkpoint](#a), [Barrier](#a), [Exactly-Once](#a)
 
 **参考文档**:
 
@@ -184,7 +184,7 @@ AsyncFunction: I × C → Future[O]
 
 其中 C 为并发度参数，控制同时进行的异步请求数量。
 
-**相关概念**: [Backpressure](#backpressure), [Enrichment](#data-enrichment), [Concurrency](#concurrency)
+**相关概念**: [Backpressure](#a), [Enrichment](#a), [Concurrency](#c)
 
 **参考文档**:
 
@@ -205,7 +205,7 @@ AsyncFunction: I × C → Future[O]
 
 其中 c(r, 𝒯) 为因果影响计数。
 
-**相关概念**: [At-Most-Once](#at-most-once), [Exactly-Once](#exactly-once), [Delivery Guarantee](#delivery-guarantee)
+**相关概念**: [At-Most-Once](#a), [Exactly-Once](#a), [Delivery Guarantee](#a)
 
 **参考文档**:
 
@@ -223,7 +223,7 @@ AsyncFunction: I × C → Future[O]
 ∀r ∈ I. c(r, 𝒯) ≤ 1
 ```
 
-**相关概念**: [At-Least-Once](#at-least-once), [Exactly-Once](#exactly-once), [Best-Effort](#best-effort)
+**相关概念**: [At-Least-Once](#a), [Exactly-Once](#a), [Best-Effort](#b)
 
 **参考文档**:
 
@@ -239,7 +239,7 @@ AsyncFunction: I × C → Future[O]
 
 **原理**: 基于信用值(credit-based)的流量控制，当接收缓冲区满时暂停发送。
 
-**相关概念**: [Flow Control](#flow-control), [Buffer](#buffer), [Credit-Based](#credit-based)
+**相关概念**: [Flow Control](#c), [Buffer](#b), [Credit-Based](#a)
 
 **参考文档**:
 
@@ -258,7 +258,7 @@ AsyncFunction: I × C → Future[O]
 Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 ```
 
-**相关概念**: [Checkpoint](#checkpoint), [Aligned Checkpoint](#aligned-checkpoint), [Unaligned Checkpoint](#unaligned-checkpoint)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Aligned Checkpoint](#a), [Unaligned Checkpoint](#a)
 
 **参考文档**:
 
@@ -276,7 +276,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 - 可访问完整数据集
 - 延迟不敏感，追求高吞吐
 
-**相关概念**: [Stream Processing](#stream-processing), [Bounded Stream](#bounded-stream), [Lambda Architecture](#lambda-architecture)
+**相关概念**: [Stream Processing](#a), [Bounded Stream](#a), [Lambda Architecture](#a)
 
 **参考文档**:
 
@@ -288,7 +288,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 
 **定义**: 不提供任何一致性保证的交付语义，系统尽力处理数据但不保证不丢失、不重复。
 
-**相关概念**: [At-Most-Once](#at-most-once), [Delivery Guarantee](#delivery-guarantee)
+**相关概念**: [At-Most-Once](#a), [Delivery Guarantee](#a)
 
 ---
 
@@ -302,7 +302,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 R 是互模拟 ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P',Q')∈R
 ```
 
-**相关概念**: [Process Calculus](#process-calculus), [Trace Equivalence](#trace-equivalence), [CCS](#ccs)
+**相关概念**: [Process Calculus](#a), [Trace Equivalence](#a), [CCS](#c)
 
 **参考文档**:
 
@@ -320,7 +320,7 @@ R 是互模拟 ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P',Q')
 Bounded(S) ⟺ |S| < ∞
 ```
 
-**相关概念**: [Unbounded Stream](#unbounded-stream), [Batch Processing](#batch-processing)
+**相关概念**: [Unbounded Stream](#a), [Batch Processing](#a)
 
 ---
 
@@ -328,7 +328,7 @@ Bounded(S) ⟺ |S| < ∞
 
 **定义**: 流处理中用于临时存储数据的内存区域，位于生产者和消费者之间。
 
-**相关概念**: [Backpressure](#backpressure), [Queue](#queue), [Network Buffer](#network-buffer)
+**相关概念**: [Backpressure](#a), [Queue](#e), [Network Buffer](#b)
 
 ---
 
@@ -344,7 +344,7 @@ Bounded(S) ⟺ |S| < ∞
 程序 P 无需协调 ⟺ P 是逻辑单调的
 ```
 
-**相关概念**: [Eventual Consistency](#eventual-consistency), [Coordination](#coordination)
+**相关概念**: [Eventual Consistency](#a), [Coordination](#a)
 
 **参考文档**:
 
@@ -362,7 +362,7 @@ Bounded(S) ⟺ |S| < ∞
 ∀op_i, op_j. op_i ≺hb op_j ⇒ op_i ≺obs op_j
 ```
 
-**相关概念**: [Strong Consistency](#strong-consistency), [Eventual Consistency](#eventual-consistency), [Happens-Before](#happens-before)
+**相关概念**: [Strong Consistency](#c), [Eventual Consistency](#a), [Happens-Before](#a)
 
 **参考文档**:
 
@@ -380,7 +380,7 @@ Bounded(S) ⟺ |S| < ∞
 CEP: Stream × Pattern → DetectedEvents
 ```
 
-**相关概念**: [Pattern Matching](#pattern-matching), [Event Pattern](#event-pattern), [Window](#window)
+**相关概念**: [Pattern Matching](#a), [Event Pattern](#a), [Window](#d)
 
 **参考文档**:
 
@@ -398,7 +398,7 @@ CEP: Stream × Pattern → DetectedEvents
 P, Q ::= 0 | α.P | P + Q | P | Q | P \\ L | P[f]
 ```
 
-**相关概念**: [CSP](#csp), [π-Calculus](#π-calculus), [Process Algebra](#process-algebra)
+**相关概念**: [CSP](#c), [π-Calculus](#a), [Process Algebra](#a)
 
 **参考文档**:
 
@@ -410,7 +410,7 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \\ L | P[f]
 
 **定义**: 捕获数据库变更事件（插入、更新、删除）并实时传播到下游系统的技术。
 
-**相关概念**: [Debezium](#debezium), [Streaming ETL](#streaming-etl), [Log Mining](#log-mining)
+**相关概念**: [Debezium](#b), [Streaming ETL](#a), [Log Mining](#g)
 
 **参考文档**:
 
@@ -429,7 +429,7 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \\ L | P[f]
 CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 ```
 
-**相关概念**: [Savepoint](#savepoint), [State Backend](#state-backend), [Recovery](#recovery)
+**相关概念**: [Savepoint](#a), [State Backend](#a), [Recovery](#c)
 
 **参考文档**:
 
@@ -442,7 +442,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **定义**: 分布式系统中用于捕获全局一致快照的经典算法，Flink Checkpoint 的理论基础。
 
-**相关概念**: [Global Snapshot](#global-snapshot), [Consistent Cut](#consistent-cut), [Checkpoint](#checkpoint)
+**相关概念**: [Global Snapshot](#a), [Consistent Cut](#c), [Checkpoint](#aligned-checkpoint-对齐-checkpoint)
 
 **参考文档**:
 
@@ -454,7 +454,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **定义**: 一种分布式编程范式，从全局视角描述多方交互协议，然后投影到各参与方。
 
-**相关概念**: [Session Types](#session-types), [Endpoint Projection](#endpoint-projection), [Deadlock Freedom](#deadlock-freedom)
+**相关概念**: [Session Types](#e), [Endpoint Projection](#c), [Deadlock Freedom](#a)
 
 **参考文档**:
 
@@ -467,7 +467,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **定义**: 利用云计算优势构建和运行应用程序的方法论，强调容器化、微服务、持续交付和 DevOps。
 
-**相关概念**: [Kubernetes](#kubernetes), [Containerization](#containerization), [Microservices](#microservices)
+**相关概念**: [Kubernetes](#kubernetes), [Containerization](#a), [Microservices](#c)
 
 **参考文档**:
 
@@ -480,7 +480,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **定义**: 多个计算任务在重叠时间段内执行的能力，区别于并行(Parallelism)。
 
-**相关概念**: [Parallelism](#parallelism), [Race Condition](#race-condition), [Synchronization](#synchronization)
+**相关概念**: [Parallelism](#a), [Race Condition](#a), [Synchronization](#a)
 
 ---
 
@@ -490,7 +490,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **层次结构**: Strong Consistency → Causal Consistency → Eventual Consistency
 
-**相关概念**: [Linearizability](#linearizability), [Serializability](#serializability), [CAP Theorem](#cap-theorem)
+**相关概念**: [Linearizability](#a), [Serializability](#a), [CAP Theorem](#a)
 
 **参考文档**:
 
@@ -508,7 +508,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 q: S → 𝒱, 其中 q 是时变函数
 ```
 
-**相关概念**: [Materialized View](#materialized-view), [Streaming Database](#streaming-database)
+**相关概念**: [Materialized View](#a), [Streaming Database](#a)
 
 **参考文档**:
 
@@ -520,7 +520,7 @@ q: S → 𝒱, 其中 q 是时变函数
 
 **定义**: 分布式系统中各节点之间为实现一致行为而进行的通信和同步。
 
-**相关概念**: [CALM Theorem](#calm-theorem), [Consensus](#consensus), [Distributed Transaction](#distributed-transaction)
+**相关概念**: [CALM Theorem](#a), [Consensus](#c), [Distributed Transaction](#a)
 
 ---
 
@@ -528,7 +528,7 @@ q: S → 𝒱, 其中 q 是时变函数
 
 **定义**: 接收方通过发送信用值(credit)告知发送方可接收的数据量，实现流量控制。
 
-**相关概念**: [Backpressure](#backpressure), [Flow Control](#flow-control)
+**相关概念**: [Backpressure](#a), [Flow Control](#c)
 
 ---
 
@@ -542,7 +542,7 @@ q: S → 𝒱, 其中 q 是时变函数
 P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 ```
 
-**相关概念**: [CCS](#ccs), [π-Calculus](#π-calculus), [Go Channels](#go-channels)
+**相关概念**: [CCS](#c), [π-Calculus](#a), [Go Channels](#go-channels)
 
 **参考文档**:
 
@@ -557,7 +557,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 将原始数据流与外部数据源关联，补充上下文信息的过程。
 
-**相关概念**: [Async I/O](#async-io), [Lookup Join](#lookup-join), [Dimension Table](#dimension-table)
+**相关概念**: [Async I/O](#a), [Lookup Join](#i), [Dimension Table](#a)
 
 **参考文档**:
 
@@ -569,7 +569,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 一种去中心化的数据架构范式，将数据视为产品，由领域团队自治管理。
 
-**相关概念**: [Data Product](#data-product), [Domain-Driven Design](#domain-driven-design), [Self-Serve Platform](#self-serve-platform)
+**相关概念**: [Data Product](#a), [Domain-Driven Design](#a), [Self-Serve Platform](#a)
 
 **参考文档**:
 
@@ -582,7 +582,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 数据网格中可独立发现、寻址和消费的自治数据单元。
 
-**相关概念**: [Data Mesh](#data-mesh), [Data as a Product](#data-as-a-product)
+**相关概念**: [Data Mesh](#a), [Data as a Product](#a)
 
 ---
 
@@ -598,7 +598,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 其中 V 为顶点集，E 为边集，P 为处理函数，Σ 为状态，𝕋 为时间模型。
 
-**相关概念**: [DAG](#dag-directed-acyclic-graph), [Operator](#operator), [Stream Graph](#stream-graph)
+**相关概念**: [DAG](#a), [Operator](#a), [Stream Graph](#a)
 
 **参考文档**:
 
@@ -611,7 +611,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 表示数据流处理拓扑的图结构，节点为算子，边为数据流，无循环。
 
-**相关概念**: [Dataflow Model](#dataflow-model), [Job Graph](#job-graph), [Execution Graph](#execution-graph)
+**相关概念**: [Dataflow Model](#a), [Job Graph](#a), [Execution Graph](#a)
 
 ---
 
@@ -619,7 +619,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 系统保证不存在任何进程因等待永远不会发生的事件而永久阻塞的性质。
 
-**相关概念**: [Liveness](#liveness), [Choreographic Programming](#choreographic-programming), [Session Types](#session-types)
+**相关概念**: [Liveness](#e), [Choreographic Programming](#a), [Session Types](#e)
 
 **参考文档**:
 
@@ -631,7 +631,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 
 **定义**: 流处理系统对消息传递可靠性的承诺，分为 At-Most-Once、At-Least-Once、Exactly-Once。
 
-**相关概念**: [At-Most-Once](#at-most-once), [At-Least-Once](#at-least-once), [Exactly-Once](#exactly-once)
+**相关概念**: [At-Most-Once](#a), [At-Least-Once](#a), [Exactly-Once](#a)
 
 **参考文档**:
 
@@ -649,7 +649,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 Deterministic(P) ⟺ ∀x. P(x) = P(x)
 ```
 
-**相关概念**: [Reproducibility](#reproducibility), [Consistency](#consistency-model)
+**相关概念**: [Reproducibility](#b), [Consistency](#c)
 
 **参考文档**:
 
@@ -661,7 +661,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 
 **定义**: 支持增量计算和递归的流处理模型，基于差分更新传播变化。
 
-**相关概念**: [Incremental Computation](#incremental-computation), [Materialize](#materialize)
+**相关概念**: [Incremental Computation](#a), [Materialize](#a)
 
 ---
 
@@ -669,7 +669,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 
 **定义**: 捕获分布式系统某一时刻全局状态的一致性快照。
 
-**相关概念**: [Chandy-Lamport Algorithm](#chandy-lamport-algorithm), [Checkpoint](#checkpoint), [Consistent Cut](#consistent-cut)
+**相关概念**: [Chandy-Lamport Algorithm](#chandy-lamport-algorithm), [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Consistent Cut](#c)
 
 ---
 
@@ -677,7 +677,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 
 **定义**: 支持路径依赖类型和家族多态的高级类型系统，Scala 的理论基础。
 
-**相关概念**: [Path-Dependent Types](#path-dependent-types), [FGG](#fgg), [Subtyping](#subtyping)
+**相关概念**: [Path-Dependent Types](#a), [FGG](#f), [Subtyping](#b)
 
 **参考文档**:
 
@@ -691,7 +691,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 
 **定义**: 在数据源附近（网络边缘）进行数据处理的计算范式，降低延迟和带宽消耗。
 
-**相关概念**: [Cloud-Edge Continuum](#cloud-edge-continuum), [IoT](#internet-of-things), [Latency](#latency)
+**相关概念**: [Cloud-Edge Continuum](#c), [IoT](#e), [Latency](#a)
 
 **参考文档**:
 
@@ -709,7 +709,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOutput(Snk)
 ```
 
-**相关概念**: [Internal Consistency](#internal-consistency), [Exactly-Once](#exactly-once), [Source](#source), [Sink](#sink)
+**相关概念**: [Internal Consistency](#a), [Exactly-Once](#a), [Source](#c), [Sink](#i)
 
 **参考文档**:
 
@@ -721,7 +721,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 
 **定义**: 以事件产生、检测和消费为核心组织组件交互的软件架构模式。
 
-**相关概念**: [Event Streaming](#event-streaming), [Pub/Sub](#publish-subscribe), [CQRS](#cqrs)
+**相关概念**: [Event Streaming](#a), [Pub/Sub](#b), [CQRS](#c)
 
 ---
 
@@ -729,7 +729,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 
 **定义**: CEP 中用于匹配事件序列的模板，支持顺序、选择、重复等运算符。
 
-**相关概念**: [CEP](#cep-complex-event-processing), [Pattern Matching](#pattern-matching)
+**相关概念**: [CEP](#c), [Pattern Matching](#a)
 
 ---
 
@@ -737,7 +737,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 
 **定义**: 以事件序列作为系统状态真相来源的持久化模式。
 
-**相关概念**: [CQRS](#cqrs), [Event Store](#event-store), [Audit Log](#audit-log)
+**相关概念**: [CQRS](#c), [Event Store](#e), [Audit Log](#a)
 
 ---
 
@@ -745,7 +745,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 
 **定义**: 持续捕获、处理和响应事件流的计算模式。
 
-**相关概念**: [Stream Processing](#stream-processing), [Event-Driven Architecture](#event-driven-architecture)
+**相关概念**: [Stream Processing](#a), [Event-Driven Architecture](#a)
 
 ---
 
@@ -759,7 +759,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 t_e: Record → Timestamp
 ```
 
-**相关概念**: [Processing Time](#processing-time), [Ingestion Time](#ingestion-time), [Watermark](#watermark)
+**相关概念**: [Processing Time](#c), [Ingestion Time](#e), [Watermark](#a)
 
 **参考文档**:
 
@@ -778,7 +778,7 @@ t_e: Record → Timestamp
 ◇□(replicas converge)
 ```
 
-**相关概念**: [Strong Consistency](#strong-consistency), [Causal Consistency](#causal-consistency), [CALM Theorem](#calm-theorem)
+**相关概念**: [Strong Consistency](#c), [Causal Consistency](#a), [CALM Theorem](#a)
 
 **参考文档**:
 
@@ -796,7 +796,7 @@ t_e: Record → Timestamp
 ∀r ∈ I. c(r, 𝒯) = 1
 ```
 
-**相关概念**: [At-Least-Once](#at-least-once), [At-Most-Once](#at-most-once), [Idempotency](#idempotency)
+**相关概念**: [At-Least-Once](#a), [At-Most-Once](#a), [Idempotency](#c)
 
 **参考文档**:
 
@@ -810,7 +810,7 @@ t_e: Record → Timestamp
 
 **定义**: Flink 中将逻辑 JobGraph 转换为物理执行计划的图结构，包含具体的并行实例。
 
-**相关概念**: [Job Graph](#job-graph), [Task](#task), [Parallelism](#parallelism)
+**相关概念**: [Job Graph](#a), [Task](#a), [Parallelism](#a)
 
 ---
 
@@ -818,7 +818,7 @@ t_e: Record → Timestamp
 
 **定义**: 由用户代码显式声明和管理的流处理状态，Flink 提供 API 支持。
 
-**相关概念**: [Implicit State](#implicit-state), [Keyed State](#keyed-state), [Operator State](#operator-state)
+**相关概念**: [Implicit State](#a), [Keyed State](#a), [Operator State](#a)
 
 ---
 
@@ -828,7 +828,7 @@ t_e: Record → Timestamp
 
 **定义**: Java 泛型的轻量级形式化模型，用于类型安全证明。
 
-**相关概念**: [FGG](#fgg), [Type Safety](#type-safety), [Java Generics](#java-generics)
+**相关概念**: [FGG](#f), [Type Safety](#a), [Java Generics](#a)
 
 **参考文档**:
 
@@ -840,7 +840,7 @@ t_e: Record → Timestamp
 
 **定义**: Go 泛型的轻量级形式化模型。
 
-**相关概念**: [FG](#fg), [Go](#go-language), [Parametric Polymorphism](#parametric-polymorphism)
+**相关概念**: [FG](#f), [Go](#a), [Parametric Polymorphism](#a)
 
 **参考文档**:
 
@@ -860,7 +860,7 @@ t_e: Record → Timestamp
 
 **核心特性**: 状态持久化、[Replayability](#replayability-可重放性)、分布式执行、Exactly-Once 语义
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [FLIP-531](#flip-531), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Stateful Stream Processing](#stateful-stream-processing)
+**相关概念**: [AI Agent](#a), [FLIP-531](#f), [MCP](#c), [A2A](#a), [Stateful Stream Processing](#a)
 
 **参考文档**:
 
@@ -886,7 +886,7 @@ t_e: Record → Timestamp
 FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 ```
 
-**相关概念**: [Flink Agent](#flink-agent), [MCP](#mcp-model-context-protocol), [A2A](#a2a-protocol-agent-to-agent-protocol), [Agentic Workflow](#agentic-workflow)
+**相关概念**: [Flink Agent](#a), [MCP](#c), [A2A](#a), [Agentic Workflow](#a)
 
 **参考文档**:
 
@@ -899,7 +899,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **定义**: 调节数据生产者和消费者之间数据传输速率的机制。
 
-**相关概念**: [Backpressure](#backpressure), [Credit-Based](#credit-based-flow-control), [Buffer](#buffer)
+**相关概念**: [Backpressure](#a), [Credit-Based](#a), [Buffer](#b)
 
 ---
 
@@ -907,7 +907,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **定义**: Flink 2.0 引入的新一代状态后端，基于 RocksDB 改进，支持异步执行模型。
 
-**相关概念**: [State Backend](#state-backend), [RocksDB](#rocksdb), [Incremental Checkpoint](#incremental-checkpoint)
+**相关概念**: [State Backend](#a), [RocksDB](#rocksdb), [Incremental Checkpoint](#a)
 
 **参考文档**:
 
@@ -920,7 +920,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **定义**: 无服务器计算模式，用户编写函数代码，由平台管理基础设施和自动扩缩容。
 
-**相关概念**: [Serverless](#serverless), [Lambda](#lambda-architecture), [Cloud-Native](#cloud-native)
+**相关概念**: [Serverless](#e), [Lambda](#a), [Cloud-Native](#a)
 
 **参考文档**:
 
@@ -947,7 +947,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **加速算子类型**: GPU 聚合、GPU Join、GPU UDF、向量搜索
 
-**相关概念**: [CUDA](#cuda), [Vector Search](#vector-search), [Flink-CUDA Runtime](#flink-cuda-runtime)
+**相关概念**: [CUDA](#a), [Vector Search](#a), [Flink-CUDA Runtime](#a)
 
 **参考文档**:
 
@@ -959,7 +959,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **定义**: 分布式系统某一时刻所有进程状态的集合，用于故障恢复和一致性检查。
 
-**相关概念**: [Distributed Snapshot](#distributed-snapshot), [Chandy-Lamport Algorithm](#chandy-lamport-algorithm), [Checkpoint](#checkpoint)
+**相关概念**: [Distributed Snapshot](#a), [Chandy-Lamport Algorithm](#chandy-lamport-algorithm), [Checkpoint](#aligned-checkpoint-对齐-checkpoint)
 
 ---
 
@@ -973,7 +973,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 Global: wid_global = (-∞, +∞)
 ```
 
-**相关概念**: [Tumbling Window](#tumbling-window), [Sliding Window](#sliding-window), [Session Window](#session-window)
+**相关概念**: [Tumbling Window](#b), [Sliding Window](#d), [Session Window](#d)
 
 **参考文档**:
 
@@ -985,7 +985,7 @@ Global: wid_global = (-∞, +∞)
 
 **定义**: Go 语言中基于 CSP 模型的同步通信原语。
 
-**相关概念**: [CSP](#csp), [Channel](#channel), [Goroutine](#goroutine)
+**相关概念**: [CSP](#c), [Channel](#a), [Goroutine](#e)
 
 **参考文档**:
 
@@ -1005,7 +1005,7 @@ Global: wid_global = (-∞, +∞)
 ∀e₁, e₂. e₁ ≺hb e₂ ⟺ e₁ 因果影响 e₂
 ```
 
-**相关概念**: [Causal Consistency](#causal-consistency), [Lamport Clock](#lamport-clock), [Vector Clock](#vector-clock)
+**相关概念**: [Causal Consistency](#a), [Lamport Clock](#a), [Vector Clock](#c)
 
 ---
 
@@ -1013,7 +1013,7 @@ Global: wid_global = (-∞, +∞)
 
 **定义**: Flink 中基于堆内存的状态后端，适用于小状态、低延迟场景。
 
-**相关概念**: [State Backend](#state-backend), [RocksDBStateBackend](#rocksdbstatebackend), [ForSt](#forst-state-backend)
+**相关概念**: [State Backend](#a), [RocksDBStateBackend](#rocksdbstatebackend), [ForSt](#forst-state-backend)
 
 **参考文档**:
 
@@ -1025,7 +1025,7 @@ Global: wid_global = (-∞, +∞)
 
 **定义**: 数据分布中频率远高于其他键的键，导致数据倾斜和性能瓶颈。
 
-**相关概念**: [Data Skew](#data-skew), [Key Group](#key-group), [Rebalancing](#rebalancing)
+**相关概念**: [Data Skew](#a), [Key Group](#e), [Rebalancing](#a)
 
 **参考文档**:
 
@@ -1045,7 +1045,7 @@ Global: wid_global = (-∞, +∞)
 f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 ```
 
-**相关概念**: [Exactly-Once](#exactly-once), [Idempotent Sink](#idempotent-sink), [Dedup](#deduplication)
+**相关概念**: [Exactly-Once](#a), [Idempotent Sink](#d), [Dedup](#a)
 
 ---
 
@@ -1053,7 +1053,7 @@ f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 
 **定义**: 能够安全处理重复写入的外部系统接收端，通常基于主键去重。
 
-**相关概念**: [Sink](#sink), [Idempotency](#idempotency), [Exactly-Once](#exactly-once)
+**相关概念**: [Sink](#i), [Idempotency](#c), [Exactly-Once](#a)
 
 ---
 
@@ -1067,7 +1067,7 @@ f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 ΔS_n = S_{t_n} \\ S_{t_{n-1}}, CP_n^inc = ⟨Base, {ΔS_i}_{i=1}^n⟩
 ```
 
-**相关概念**: [Checkpoint](#checkpoint), [State Backend](#state-backend), [RocksDB](#rocksdb)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [State Backend](#a), [RocksDB](#rocksdb)
 
 **参考文档**:
 
@@ -1085,7 +1085,7 @@ f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 δv = ℱ_q(δD, D), v_new = v ⊕ δv
 ```
 
-**相关概念**: [Materialized View](#materialized-view), [Differential Dataflow](#differential-dataflow)
+**相关概念**: [Materialized View](#a), [Differential Dataflow](#differential-dataflow)
 
 ---
 
@@ -1099,7 +1099,7 @@ f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 t_i: Record → Timestamp_system
 ```
 
-**相关概念**: [Event Time](#event-time), [Processing Time](#processing-time)
+**相关概念**: [Event Time](#e), [Processing Time](#c)
 
 ---
 
@@ -1113,7 +1113,7 @@ t_i: Record → Timestamp_system
 Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧ Reachable(𝒢_k)
 ```
 
-**相关概念**: [End-to-End Consistency](#end-to-end-consistency), [Checkpoint](#checkpoint)
+**相关概念**: [End-to-End Consistency](#c), [Checkpoint](#aligned-checkpoint-对齐-checkpoint)
 
 **参考文档**:
 
@@ -1125,7 +1125,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **定义**: 由物理设备、传感器等组成的网络，产生大规模流数据。
 
-**相关概念**: [Edge Computing](#edge-computing), [Sensor Data](#sensor-data), [Stream Processing](#stream-processing)
+**相关概念**: [Edge Computing](#c), [Sensor Data](#a), [Stream Processing](#a)
 
 **参考文档**:
 
@@ -1138,7 +1138,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **定义**: 基于高阶分离逻辑的并发程序验证框架。
 
-**相关概念**: [Separation Logic](#separation-logic), [Formal Verification](#formal-verification), [Model Checking](#model-checking)
+**相关概念**: [Separation Logic](#a), [Formal Verification](#a), [Model Checking](#c)
 
 **参考文档**:
 
@@ -1152,7 +1152,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **定义**: Flink 中用户程序编译后的逻辑执行图，表示算子间的数据流关系。
 
-**相关概念**: [Execution Graph](#execution-graph), [DAG](#dag-directed-acyclic-graph), [Operator](#operator)
+**相关概念**: [Execution Graph](#a), [DAG](#a), [Operator](#a)
 
 ---
 
@@ -1160,7 +1160,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **定义**: Flink 集群中的主控进程，负责任务调度、协调和故障恢复。
 
-**相关概念**: [TaskManager](#taskmanager), [ResourceManager](#resourcemanager), [Dispatcher](#dispatcher)
+**相关概念**: [TaskManager](#taskmanager), [ResourceManager](#resourcemanager), [Dispatcher](#a)
 
 **参考文档**:
 
@@ -1179,7 +1179,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 - **Lookup Join**: 维表 Join
 - **Delta Join**: 增量 Join
 
-**相关概念**: [Stream Join](#stream-join), [Window Join](#window-join)
+**相关概念**: [Stream Join](#a), [Window Join](#d)
 
 **参考文档**:
 
@@ -1193,7 +1193,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **定义**: Flink 中 Keyed State 的分区单位，决定状态在并行实例间的分布。
 
-**相关概念**: [Keyed State](#keyed-state), [Parallelism](#parallelism), [State Partitioning](#state-partitioning)
+**相关概念**: [Keyed State](#a), [Parallelism](#a), [State Partitioning](#a)
 
 ---
 
@@ -1207,7 +1207,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 KeyedState: (K, State[K]) → State[K]
 ```
 
-**相关概念**: [Operator State](#operator-state), [State Backend](#state-backend), [Key Group](#key-group)
+**相关概念**: [Operator State](#a), [State Backend](#a), [Key Group](#e)
 
 ---
 
@@ -1215,7 +1215,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**: Flink DataStream API 中访问 Keyed State 和定时器的低级处理函数。
 
-**相关概念**: [ProcessFunction](#processfunction), [Keyed State](#keyed-state), [Timer](#timer)
+**相关概念**: [ProcessFunction](#processfunction), [Keyed State](#a), [Timer](#e)
 
 ---
 
@@ -1223,7 +1223,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**: Flink 中按 Key 分区的数据流，支持 Keyed State 操作。
 
-**相关概念**: [DataStream](#datastream), [Keyed State](#keyed-state), [Partitioning](#partitioning)
+**相关概念**: [DataStream](#a), [Keyed State](#a), [Partitioning](#a)
 
 ---
 
@@ -1231,7 +1231,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**: 开源容器编排平台，Flink 的主要部署目标。
 
-**相关概念**: [Container](#container), [Operator Pattern](#operator-pattern), [Cloud-Native](#cloud-native)
+**相关概念**: [Container](#a), [Operator Pattern](#a), [Cloud-Native](#a)
 
 **参考文档**:
 
@@ -1246,7 +1246,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**: 结合数据湖（低成本存储）和数据仓库（高性能分析）优点的架构范式。
 
-**相关概念**: [Delta Lake](#delta-lake), [Iceberg](#apache-iceberg), [Paimon](#apache-paimon)
+**相关概念**: [Delta Lake](#a), [Iceberg](#a), [Paimon](#a)
 
 **参考文档**:
 
@@ -1259,7 +1259,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**:  Nathan Marz 提出的批流分离架构，维护批处理层和速度层两套系统。
 
-**相关概念**: [Kappa Architecture](#kappa-architecture), [Batch Processing](#batch-processing), [Stream Processing](#stream-processing)
+**相关概念**: [Kappa Architecture](#a), [Batch Processing](#a), [Stream Processing](#a)
 
 ---
 
@@ -1273,7 +1273,7 @@ KeyedState: (K, State[K]) → State[K]
 - **End-to-End Latency**: 端到端延迟
 - **Watermark Latency**: Watermark 延迟
 
-**相关概念**: [Throughput](#throughput), [SLA](#sla-service-level-agreement), [Real-time](#real-time)
+**相关概念**: [Throughput](#g), [SLA](#a), [Real-time](#a)
 
 ---
 
@@ -1281,7 +1281,7 @@ KeyedState: (K, State[K]) → State[K]
 
 **定义**: 写优化的磁盘数据结构，RocksDB 的基础。
 
-**相关概念**: [RocksDB](#rocksdb), [State Backend](#state-backend), [Compaction](#compaction)
+**相关概念**: [RocksDB](#rocksdb), [State Backend](#a), [Compaction](#a)
 
 ---
 
@@ -1297,7 +1297,7 @@ KeyedState: (K, State[K]) → State[K]
 v = q(D), 当 δD 发生时: v_new = v ⊕ ℱ_q(δD, D)
 ```
 
-**相关概念**: [View Maintenance](#view-maintenance), [Incremental Computation](#incremental-computation), [Continuous Query](#continuous-query)
+**相关概念**: [View Maintenance](#a), [Incremental Computation](#a), [Continuous Query](#c)
 
 **参考文档**:
 
@@ -1320,7 +1320,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **核心能力**: 工具发现、调用构造、结果观察、记忆更新
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [Tool Calling](#tool-calling), [A2A](#a2a-protocol-agent-to-agent-protocol), [FLIP-531](#flip-531)
+**相关概念**: [AI Agent](#a), [Tool Calling](#a), [A2A](#a), [FLIP-531](#f)
 
 **参考文档**:
 
@@ -1333,7 +1333,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **定义**: 并发实体间通过发送和接收消息进行通信的模型。
 
-**相关概念**: [Actor Model](#actor-model), [CSP](#csp), [Shared Memory](#shared-memory)
+**相关概念**: [Actor Model](#a), [CSP](#c), [Shared Memory](#a)
 
 ---
 
@@ -1341,7 +1341,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **定义**: 将应用拆分为小型、自治服务的架构风格，服务间通过 API 通信。
 
-**相关概念**: [Service Mesh](#service-mesh), [Domain-Driven Design](#domain-driven-design), [Cloud-Native](#cloud-native)
+**相关概念**: [Service Mesh](#c), [Domain-Driven Design](#a), [Cloud-Native](#a)
 
 ---
 
@@ -1349,7 +1349,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **定义**: 自动验证有限状态系统是否满足规约的形式化方法。
 
-**相关概念**: [Formal Verification](#formal-verification), [TLA+](#tla), [State Space](#state-space)
+**相关概念**: [Formal Verification](#a), [TLA+](#tla), [State Space](#a)
 
 **参考文档**:
 
@@ -1368,7 +1368,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 - **Supervisor + Workers**: 监督者监控 Worker 状态
 - **Decentralized**: 去中心化直接通信
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [A2A](#a2a-protocol-agent-to-agent-protocol), [Coordination](#coordination)
+**相关概念**: [AI Agent](#a), [A2A](#a), [Coordination](#a)
 
 **参考文档**:
 
@@ -1382,7 +1382,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **定义**: Flink 中用于网络数据传输的内存缓冲区。
 
-**相关概念**: [Buffer](#buffer), [Backpressure](#backpressure), [Credit-Based](#credit-based-flow-control)
+**相关概念**: [Buffer](#b), [Backpressure](#a), [Credit-Based](#a)
 
 ---
 
@@ -1398,7 +1398,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 - **Logs**: 日志
 - **Traces**: 分布式追踪
 
-**相关概念**: [Monitoring](#monitoring), [OpenTelemetry](#opentelemetry), [SLA](#sla-service-level-agreement)
+**相关概念**: [Monitoring](#g), [OpenTelemetry](#opentelemetry), [SLA](#a)
 
 **参考文档**:
 
@@ -1411,7 +1411,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 
 **定义**: 开源可观测性框架，提供统一的指标、日志和追踪标准。
 
-**相关概念**: [Observability](#observability), [Metrics](#metrics), [Tracing](#tracing)
+**相关概念**: [Observability](#a), [Metrics](#c), [Tracing](#a)
 
 ---
 
@@ -1431,7 +1431,7 @@ MCP_Flink = ⟨𝒯, ℛ, 𝒞, ℋ⟩
 Operator: Input × State → Output × State
 ```
 
-**相关概念**: [Dataflow Model](#dataflow-model), [Task](#task), [UDF](#user-defined-function)
+**相关概念**: [Dataflow Model](#a), [Task](#a), [UDF](#c)
 
 ---
 
@@ -1439,7 +1439,7 @@ Operator: Input × State → Output × State
 
 **定义**: 与算子实例绑定的状态，不按 Key 分区。
 
-**相关概念**: [Keyed State](#keyed-state), [Broadcast State](#broadcast-state), [State Backend](#state-backend)
+**相关概念**: [Keyed State](#a), [Broadcast State](#a), [State Backend](#a)
 
 ---
 
@@ -1447,7 +1447,7 @@ Operator: Input × State → Output × State
 
 **定义**: 协调多个服务或组件完成业务流程的模式。
 
-**相关概念**: [Multi-Agent](#multi-agent), [Workflow](#workflow), [Choreography](#choreography)
+**相关概念**: [Multi-Agent](#a), [Workflow](#f), [Choreography](#a)
 
 ---
 
@@ -1463,7 +1463,7 @@ Operator: Input × State → Output × State
 Parallelism(op) = |{instance_i(op)}|
 ```
 
-**相关概念**: [Slot](#slot), [Task](#task), [Key Group](#key-group)
+**相关概念**: [Slot](#slot), [Task](#a), [Key Group](#e)
 
 ---
 
@@ -1471,7 +1471,7 @@ Parallelism(op) = |{instance_i(op)}|
 
 **定义**: 依赖于值的类型的类型，如 `x.type` 依赖于 `x` 的值。
 
-**相关概念**: [DOT](#dot-dependent-object-types), [Scala](#scala), [Dependent Types](#dependent-types)
+**相关概念**: [DOT](#dot-dependent-object-types), [Scala](#scala), [Dependent Types](#d)
 
 **参考文档**:
 
@@ -1483,7 +1483,7 @@ Parallelism(op) = |{instance_i(op)}|
 
 **定义**: 根据数据结构模式进行条件分支的机制。
 
-**相关概念**: [CEP](#cep-complex-event-processing), [Event Pattern](#event-pattern)
+**相关概念**: [CEP](#c), [Event Pattern](#a)
 
 ---
 
@@ -1491,7 +1491,7 @@ Parallelism(op) = |{instance_i(op)}|
 
 **定义**: 用于建模并发系统的图形化数学模型，由库所(place)和变迁(transition)组成。
 
-**相关概念**: [Process Calculus](#process-calculus), [Concurrency](#concurrency), [Workflow](#workflow)
+**相关概念**: [Process Calculus](#a), [Concurrency](#c), [Workflow](#f)
 
 **参考文档**:
 
@@ -1509,7 +1509,7 @@ Parallelism(op) = |{instance_i(op)}|
 P, Q ::= 0 | a(x).P | ā⟨b⟩.P | τ.P | P + Q | P | Q | (νa)P | !P
 ```
 
-**相关概念**: [CCS](#ccs), [CSP](#csp), [Mobile Processes](#mobile-processes), [Session Types](#session-types)
+**相关概念**: [CCS](#c), [CSP](#c), [Mobile Processes](#b), [Session Types](#e)
 
 **参考文档**:
 
@@ -1527,7 +1527,7 @@ P, Q ::= 0 | a(x).P | ā⟨b⟩.P | τ.P | P + Q | P | Q | (νa)P | !P
 t_p: () → Timestamp_wall
 ```
 
-**相关概念**: [Event Time](#event-time), [Ingestion Time](#ingestion-time)
+**相关概念**: [Event Time](#e), [Ingestion Time](#e)
 
 ---
 
@@ -1535,7 +1535,7 @@ t_p: () → Timestamp_wall
 
 **定义**: 用于描述并发系统形式化语义的代数框架家族。
 
-**主要成员**: [CCS](#ccs), [CSP](#csp), [π-Calculus](#π-calculus), [Actor Calculus](#actor-model)
+**主要成员**: [CCS](#c), [CSP](#c), [π-Calculus](#a), [Actor Calculus](#a)
 
 **参考文档**:
 
@@ -1547,7 +1547,7 @@ t_p: () → Timestamp_wall
 
 **定义**: Flink DataStream API 中提供对时间和状态细粒度控制的底层处理函数。
 
-**相关概念**: [KeyedProcessFunction](#keyedprocessfunction), [Timer](#timer), [State](#state)
+**相关概念**: [KeyedProcessFunction](#keyedprocessfunction), [Timer](#e), [State](#a)
 
 ---
 
@@ -1555,7 +1555,7 @@ t_p: () → Timestamp_wall
 
 **定义**: 类型安全性质之一，保证良类型程序不会 stuck（陷入非终止也非错误的状态）。
 
-**相关概念**: [Preservation](#preservation), [Type Safety](#type-safety), [Deadlock Freedom](#deadlock-freedom)
+**相关概念**: [Preservation](#a), [Type Safety](#a), [Deadlock Freedom](#a)
 
 ---
 
@@ -1563,7 +1563,7 @@ t_p: () → Timestamp_wall
 
 **定义**: 消息传递模式，发布者发送消息到主题，订阅者接收感兴趣的主题消息。
 
-**相关概念**: [Message Passing](#message-passing), [Kafka](#apache-kafka), [Event Streaming](#event-streaming)
+**相关概念**: [Message Passing](#a), [Kafka](#a), [Event Streaming](#a)
 
 ---
 
@@ -1573,7 +1573,7 @@ t_p: () → Timestamp_wall
 
 **定义**: 自动选择查询执行计划以最小化资源消耗的过程。
 
-**相关概念**: [Calcite](#apache-calcite), [Cost-Based Optimization](#cost-based-optimization), [Rule-Based Optimization](#rule-based-optimization)
+**相关概念**: [Calcite](#a), [Cost-Based Optimization](#a), [Rule-Based Optimization](#a)
 
 **参考文档**:
 
@@ -1593,7 +1593,7 @@ t_p: () → Timestamp_wall
 RAG(q) = Generate(q, Retrieve(q, KnowledgeBase))
 ```
 
-**相关概念**: [Vector Search](#vector-search), [LLM](#llm), [Knowledge Base](#knowledge-base)
+**相关概念**: [Vector Search](#a), [LLM](#l), [Knowledge Base](#a)
 
 **参考文档**:
 
@@ -1612,7 +1612,7 @@ RAG(q) = Generate(q, Retrieve(q, KnowledgeBase))
 - **Soft Real-Time**: 软实时，错过截止期限降低服务质量
 - **Near Real-Time**: 近实时，秒级延迟可接受
 
-**相关概念**: [Latency](#latency), [SLA](#sla-service-level-agreement)
+**相关概念**: [Latency](#a), [SLA](#a)
 
 ---
 
@@ -1626,7 +1626,7 @@ RAG(q) = Generate(q, Retrieve(q, KnowledgeBase))
 ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{t+1}
 ```
 
-**相关概念**: [AI Agent](#ai-agent-人工智能代理), [Chain-of-Thought](#chain-of-thought)
+**相关概念**: [AI Agent](#a), [Chain-of-Thought](#a)
 
 **参考文档**:
 
@@ -1638,7 +1638,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 故障后从 Checkpoint 或 Savepoint 重建系统状态的过程。
 
-**相关概念**: [Checkpoint](#checkpoint), [Savepoint](#savepoint), [Failover](#failover)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Savepoint](#a), [Failover](#a)
 
 ---
 
@@ -1652,7 +1652,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 ℛ_replay = ⟨𝒞, ℒ, ℋ⟩
 ```
 
-**相关概念**: [Checkpoint](#checkpoint), [Audit](#audit-log), [Debugging](#debugging)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Audit](#a), [Debugging](#b)
 
 **参考文档**:
 
@@ -1672,7 +1672,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: Facebook 开发的嵌入式键值存储，基于 LSM-Tree。
 
-**相关概念**: [LSM-Tree](#lsm-tree), [State Backend](#state-backend), [EmbeddedRocksDBStateBackend](#rocksdbstatebackend)
+**相关概念**: [LSM-Tree](#e), [State Backend](#a), [EmbeddedRocksDBStateBackend](#rocksdbstatebackend)
 
 ---
 
@@ -1680,7 +1680,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: Flink 中基于 RocksDB 的状态后端，支持大状态、增量 Checkpoint。
 
-**相关概念**: [State Backend](#state-backend), [RocksDB](#rocksdb), [Incremental Checkpoint](#incremental-checkpoint)
+**相关概念**: [State Backend](#a), [RocksDB](#rocksdb), [Incremental Checkpoint](#a)
 
 **参考文档**:
 
@@ -1694,7 +1694,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 用户触发的全局一致快照，用于应用升级、迁移和备份，与 Checkpoint 语义相同但生命周期管理不同。
 
-**相关概念**: [Checkpoint](#checkpoint), [Recovery](#recovery), [Upgrading](#upgrading)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Recovery](#c), [Upgrading](#a)
 
 ---
 
@@ -1702,7 +1702,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 融合面向对象和函数式编程的 JVM 语言，Flink 的原生 API 语言之一。
 
-**相关概念**: [Type System](#type-system), [Akka](#akka), [JVM](#jvm)
+**相关概念**: [Type System](#e), [Akka](#a), [JVM](#j)
 
 **参考文档**:
 
@@ -1718,7 +1718,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 - **Scale-Up**: 增强单个节点的计算能力
 - **Scale-Out**: 增加节点数量扩展处理能力
 
-**相关概念**: [Elasticity](#elasticity), [Autoscaling](#autoscaling), [Parallelism](#parallelism)
+**相关概念**: [Elasticity](#a), [Autoscaling](#a), [Parallelism](#a)
 
 ---
 
@@ -1726,7 +1726,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 基于语义相似度而非精确值匹配数据的技术，常用于 RAG 和向量搜索。
 
-**相关概念**: [Vector Search](#vector-search), [Embedding](#embedding), [Similarity Search](#similarity-search)
+**相关概念**: [Vector Search](#a), [Embedding](#b), [Similarity Search](#a)
 
 ---
 
@@ -1734,7 +1734,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 用于推理可变数据结构的逻辑框架，支持局部推理。
 
-**相关概念**: [Iris](#iris), [Formal Verification](#formal-verification), [Concurrent Separation Logic](#concurrent-separation-logic)
+**相关概念**: [Iris](#iris), [Formal Verification](#a), [Concurrent Separation Logic](#a)
 
 **参考文档**:
 
@@ -1746,7 +1746,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **定义**: 云计算执行模型，云提供商动态管理机器资源的分配。
 
-**相关概念**: [Serverless Flink](#serverless-flink), [FaaS](#function-as-a-service), [Cloud-Native](#cloud-native), [Autoscaling](#autoscaling)
+**相关概念**: [Serverless Flink](#e), [FaaS](#a), [Cloud-Native](#a), [Autoscaling](#a)
 
 **参考文档**:
 
@@ -1774,7 +1774,7 @@ ServerlessFlink_GA = ⟨𝒦, 𝒜, 𝒮, 𝒞, ℬ⟩
 - **精确计费**: 秒级计费粒度
 - **SLA 保证**: 99.9% 可用性
 
-**相关概念**: [Serverless](#serverless), [Scale-to-Zero](#scale-to-zero), [ForSt](#forst-state-backend), [Kubernetes](#kubernetes)
+**相关概念**: [Serverless](#e), [Scale-to-Zero](#a), [ForSt](#forst-state-backend), [Kubernetes](#kubernetes)
 
 **参考文档**:
 
@@ -1793,7 +1793,7 @@ ServerlessFlink_GA = ⟨𝒦, 𝒜, 𝒮, 𝒞, ℬ⟩
 S ::= !T.S | ?T.S | ⊕{l_i: S_i} | &{l_i: S_i} | end
 ```
 
-**相关概念**: [Type Safety](#type-safety), [Deadlock Freedom](#deadlock-freedom), [Protocol Compliance](#protocol-compliance)
+**相关概念**: [Type Safety](#a), [Deadlock Freedom](#a), [Protocol Compliance](#a)
 
 **参考文档**:
 
@@ -1811,7 +1811,7 @@ S ::= !T.S | ?T.S | ⊕{l_i: S_i} | &{l_i: S_i} | end
 Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
 ```
 
-**相关概念**: [Tumbling Window](#tumbling-window), [Sliding Window](#sliding-window), [Window](#window)
+**相关概念**: [Tumbling Window](#b), [Sliding Window](#d), [Window](#d)
 
 **参考文档**:
 
@@ -1823,7 +1823,7 @@ Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
 
 **定义**: 多个并发实体访问同一内存区域的通信模型，区别于消息传递。
 
-**相关概念**: [Message Passing](#message-passing), [Race Condition](#race-condition), [Synchronization](#synchronization)
+**相关概念**: [Message Passing](#a), [Race Condition](#a), [Synchronization](#a)
 
 ---
 
@@ -1831,7 +1831,7 @@ Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
 
 **定义**: 从主流分离特定数据到旁路流的机制，用于处理迟到数据或异常。
 
-**相关概念**: [Late Data](#late-data), [Data Splitting](#data-splitting), [Main Stream](#main-stream)
+**相关概念**: [Late Data](#a), [Data Splitting](#a), [Main Stream](#a)
 
 **参考文档**:
 
@@ -1856,7 +1856,7 @@ Session(g, r₁, r₂, ...): wid = [t_first, t_last + g)
 SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
 ```
 
-**相关概念**: [Checkpoint](#checkpoint), [Incremental Checkpoint](#incremental-checkpoint), [Adaptive Execution Engine](#adaptive-execution-engine-自适应执行引擎), [ForSt](#forst-state-backend)
+**相关概念**: [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Incremental Checkpoint](#a), [Adaptive Execution Engine](#a), [ForSt](#forst-state-backend)
 
 **参考文档**:
 
@@ -1868,7 +1868,7 @@ SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
 
 **定义**: 流处理中将数据写入外部系统的组件。
 
-**相关概念**: [Source](#source), [Connector](#connector), [Exactly-Once](#exactly-once)
+**相关概念**: [Source](#c), [Connector](#c), [Exactly-Once](#a)
 
 ---
 
@@ -1882,7 +1882,7 @@ SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
 Sliding(δ, s): wid_n = [n·s, n·s + δ)
 ```
 
-**相关概念**: [Tumbling Window](#tumbling-window), [Session Window](#session-window), [Window](#window)
+**相关概念**: [Tumbling Window](#b), [Session Window](#d), [Window](#d)
 
 ---
 
@@ -1890,7 +1890,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **定义**: Flink TaskManager 中资源分配的基本单位，一个 Task Slot 可执行一个任务链。
 
-**相关概念**: [TaskManager](#taskmanager), [Task](#task), [Resource](#resource)
+**相关概念**: [TaskManager](#taskmanager), [Task](#a), [Resource](#c)
 
 ---
 
@@ -1898,7 +1898,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **定义**: 流处理中从外部系统读取数据的组件。
 
-**相关概念**: [Sink](#sink), [Connector](#connector), [Offset](#offset)
+**相关概念**: [Sink](#i), [Connector](#c), [Offset](#e)
 
 ---
 
@@ -1906,7 +1906,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **定义**: 数据源的可并行读取单元，如 Kafka 的 partition。
 
-**相关概念**: [Source](#source), [Parallelism](#parallelism), [Partition](#partition)
+**相关概念**: [Source](#c), [Parallelism](#a), [Partition](#a)
 
 ---
 
@@ -1914,7 +1914,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **定义**: 在 Source Split 级别生成 Watermark 的机制，支持更精细的流控制。
 
-**相关概念**: [Watermark](#watermark), [Source Split](#source-split)
+**相关概念**: [Watermark](#a), [Source Split](#c)
 
 **参考文档**:
 
@@ -1926,7 +1926,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **定义**: Flink 提供的声明式 API，支持标准 SQL 和 Table DSL。
 
-**相关概念**: [DataStream API](#datastream-api), [Query Optimization](#query-optimization), [Calcite](#apache-calcite)
+**相关概念**: [DataStream API](#a), [Query Optimization](#a), [Calcite](#a)
 
 **参考文档**:
 
@@ -1944,7 +1944,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 - **Operator State**: 算子状态
 - **Broadcast State**: 广播状态
 
-**相关概念**: [Stateful Processing](#stateful-stream-processing), [State Backend](#state-backend)
+**相关概念**: [Stateful Processing](#a), [State Backend](#a)
 
 ---
 
@@ -1958,7 +1958,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 - **EmbeddedRocksDBStateBackend**: 磁盘存储
 - **ForStStateBackend**: Flink 2.0 新一代后端
 
-**相关概念**: [State](#state), [Checkpoint](#checkpoint), [Recovery](#recovery)
+**相关概念**: [State](#a), [Checkpoint](#aligned-checkpoint-对齐-checkpoint), [Recovery](#c)
 
 **参考文档**:
 
@@ -1977,7 +1977,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 F: (K, V) × State[K] → State[K] × O
 ```
 
-**相关概念**: [Stateless Processing](#stateless-processing), [State](#state), [Keyed State](#keyed-state)
+**相关概念**: [Stateless Processing](#a), [State](#a), [Keyed State](#a)
 
 ---
 
@@ -1985,7 +1985,7 @@ F: (K, V) × State[K] → State[K] × O
 
 **定义**: 将 Keyed State 分布到多个并行实例的策略。
 
-**相关概念**: [Key Group](#key-group), [Parallelism](#parallelism), [Keyed State](#keyed-state)
+**相关概念**: [Key Group](#e), [Parallelism](#a), [Keyed State](#a)
 
 ---
 
@@ -1993,7 +1993,7 @@ F: (K, V) × State[K] → State[K] × O
 
 **定义**: 为状态设置过期时间，自动清理过期数据。
 
-**相关概念**: [State](#state), [Cleanup](#cleanup), [Expiration](#expiration)
+**相关概念**: [State](#a), [Cleanup](#a), [Expiration](#a)
 
 **参考文档**:
 
@@ -2011,7 +2011,7 @@ F: (K, V) × State[K] → State[K] × O
 F: I → O (纯函数)
 ```
 
-**相关概念**: [Stateful Processing](#stateful-stream-processing), [Pure Function](#pure-function)
+**相关概念**: [Stateful Processing](#a), [Pure Function](#c)
 
 ---
 
@@ -2019,7 +2019,7 @@ F: I → O (纯函数)
 
 **定义**: Flink 程序最初生成的逻辑执行图，表示用户定义的数据流转换。
 
-**相关概念**: [Job Graph](#job-graph), [Execution Graph](#execution-graph), [Dataflow](#dataflow-model)
+**相关概念**: [Job Graph](#a), [Execution Graph](#a), [Dataflow](#a)
 
 ---
 
@@ -2027,7 +2027,7 @@ F: I → O (纯函数)
 
 **定义**: 将两个流按关联条件合并的操作，需处理无界性挑战。
 
-**相关概念**: [Join](#join), [Window Join](#window-join), [Interval Join](#interval-join)
+**相关概念**: [Join](#join), [Window Join](#d), [Interval Join](#a)
 
 ---
 
@@ -2049,7 +2049,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 
 **核心特性**: 统一执行引擎、统一存储层、统一 API 层、自适应执行模式选择
 
-**相关概念**: [DataStream API](#datastream-api), [Batch Processing](#batch-processing), [Adaptive Execution Engine](#adaptive-execution-engine-自适应执行引擎), [Unified Planner](#unified-planner)
+**相关概念**: [DataStream API](#a), [Batch Processing](#a), [Adaptive Execution Engine](#a), [Unified Planner](#a)
 
 **参考文档**:
 
@@ -2067,7 +2067,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 - 持续计算
 - 低延迟要求
 
-**相关概念**: [Batch Processing](#batch-processing), [Event Stream](#event-streaming), [Real-Time](#real-time)
+**相关概念**: [Batch Processing](#a), [Event Stream](#a), [Real-Time](#a)
 
 ---
 
@@ -2081,7 +2081,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 𝒮𝒟 = (S, 𝒬, 𝒱, Δ, τ)
 ```
 
-**相关概念**: [Materialized View](#materialized-view), [Continuous Query](#continuous-query), [RisingWave](#risingwave)
+**相关概念**: [Materialized View](#a), [Continuous Query](#c), [RisingWave](#a)
 
 **参考文档**:
 
@@ -2094,7 +2094,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 
 **定义**: 以流方式持续执行抽取(Extract)、转换(Transform)、加载(Load)的数据集成模式。
 
-**相关概念**: [CDC](#cdc-change-data-capture), [Data Pipeline](#data-pipeline), [Real-Time Analytics](#real-time-analytics)
+**相关概念**: [CDC](#a), [Data Pipeline](#a), [Real-Time Analytics](#a)
 
 **参考文档**:
 
@@ -2112,7 +2112,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 ∀op_i, op_j. t_real(op_i) ≺ t_real(op_j) ⟹ op_i ≺_S op_j
 ```
 
-**相关概念**: [Linearizability](#linearizability), [Causal Consistency](#causal-consistency), [Eventual Consistency](#eventual-consistency)
+**相关概念**: [Linearizability](#a), [Causal Consistency](#a), [Eventual Consistency](#a)
 
 **参考文档**:
 
@@ -2130,7 +2130,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 S <: T ⟺ ∀v: S. v: T
 ```
 
-**相关概念**: [Type System](#type-system), [Variance](#variance), [DOT](#dot-dependent-object-types)
+**相关概念**: [Type System](#e), [Variance](#a), [DOT](#dot-dependent-object-types)
 
 ---
 
@@ -2140,7 +2140,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: Flink 提供的基于 Table 的声明式 API，类型安全的 SQL 替代。
 
-**相关概念**: [SQL](#sql), [DataStream API](#datastream-api), [Calcite](#apache-calcite)
+**相关概念**: [SQL](#l), [DataStream API](#a), [Calcite](#a)
 
 ---
 
@@ -2148,7 +2148,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: Flink 执行图中的基本执行单元，对应算子的一个并行实例。
 
-**相关概念**: [Operator](#operator), [Subtask](#subtask), [TaskManager](#taskmanager)
+**相关概念**: [Operator](#a), [Subtask](#a), [TaskManager](#taskmanager)
 
 ---
 
@@ -2156,7 +2156,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: Flink 集群中的工作进程，负责执行具体的数据处理任务。
 
-**相关概念**: [JobManager](#jobmanager), [Slot](#slot), [Task](#task)
+**相关概念**: [JobManager](#jobmanager), [Slot](#slot), [Task](#a)
 
 ---
 
@@ -2164,7 +2164,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: 处理器中的安全区域，保证代码和数据的机密性和完整性。
 
-**相关概念**: [Confidential Computing](#confidential-computing), [Security](#security), [Privacy](#privacy)
+**相关概念**: [Confidential Computing](#a), [Security](#c), [Privacy](#a)
 
 **参考文档**:
 
@@ -2177,7 +2177,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: Leslie Lamport 开发的形式化规约语言，用于描述和验证并发和分布式系统。
 
-**相关概念**: [Model Checking](#model-checking), [Formal Verification](#formal-verification), [Temporal Logic](#temporal-logic)
+**相关概念**: [Model Checking](#c), [Formal Verification](#a), [Temporal Logic](#a)
 
 **参考文档**:
 
@@ -2194,7 +2194,7 @@ S <: T ⟺ ∀v: S. v: T
 - **Event Time Timer**: 基于事件时间
 - **Processing Time Timer**: 基于处理时间
 
-**相关概念**: [ProcessFunction](#processfunction), [Event Time](#event-time), [Window](#window)
+**相关概念**: [ProcessFunction](#processfunction), [Event Time](#e), [Window](#d)
 
 ---
 
@@ -2202,7 +2202,7 @@ S <: T ⟺ ∀v: S. v: T
 
 **定义**: LLM 调用外部 API 或函数的能力，AI Agent 的核心能力。
 
-**相关概念**: [MCP](#mcp-model-context-protocol), [Function Calling](#function-calling), [AI Agent](#ai-agent-人工智能代理)
+**相关概念**: [MCP](#c), [Function Calling](#a), [AI Agent](#a)
 
 ---
 
@@ -2216,7 +2216,7 @@ S <: T ⟺ ∀v: S. v: T
 P ≈_T Q ⟺ traces(P) = traces(Q)
 ```
 
-**相关概念**: [Bisimulation](#bisimulation), [Process Calculus](#process-calculus), [CCS](#ccs)
+**相关概念**: [Bisimulation](#a), [Process Calculus](#a), [CCS](#c)
 
 ---
 
@@ -2230,7 +2230,7 @@ P ≈_T Q ⟺ traces(P) = traces(Q)
 Trigger: WindowID × 𝕋_watermark × State → {FIRE, CONTINUE, PURGE}
 ```
 
-**相关概念**: [Window](#window), [Evictor](#evictor), [Watermark](#watermark)
+**相关概念**: [Window](#d), [Evictor](#c), [Watermark](#a)
 
 **参考文档**:
 
@@ -2248,7 +2248,7 @@ Trigger: WindowID × 𝕋_watermark × State → {FIRE, CONTINUE, PURGE}
 Tumbling(δ): wid_n = [nδ, (n+1)δ)
 ```
 
-**相关概念**: [Sliding Window](#sliding-window), [Session Window](#session-window), [Window](#window)
+**相关概念**: [Sliding Window](#d), [Session Window](#d), [Window](#d)
 
 **参考文档**:
 
@@ -2266,7 +2266,7 @@ Tumbling(δ): wid_n = [nδ, (n+1)δ)
 Type Safety = Progress ∧ Preservation
 ```
 
-**相关概念**: [Progress](#progress), [Preservation](#preservation), [Type System](#type-system)
+**相关概念**: [Progress](#e), [Preservation](#a), [Type System](#e)
 
 **参考文档**:
 
@@ -2278,7 +2278,7 @@ Type Safety = Progress ∧ Preservation
 
 **定义**: 编程语言中用于分类表达式、避免运行时错误的逻辑系统。
 
-**相关概念**: [Type Safety](#type-safety), [Subtyping](#subtyping), [Polymorphism](#polymorphism)
+**相关概念**: [Type Safety](#a), [Subtyping](#b), [Polymorphism](#h)
 
 ---
 
@@ -2294,7 +2294,7 @@ Type Safety = Progress ∧ Preservation
 USTM ::= (ℒ, ℳ, 𝒫, 𝒞, 𝒮, 𝒯, Σ, Φ)
 ```
 
-**相关概念**: [Dataflow Model](#dataflow-model), [Actor Model](#actor-model), [CSP](#csp)
+**相关概念**: [Dataflow Model](#a), [Actor Model](#a), [CSP](#c)
 
 **参考文档**:
 
@@ -2312,7 +2312,7 @@ USTM ::= (ℒ, ℳ, 𝒫, 𝒞, 𝒮, 𝒯, Σ, Φ)
 UnalignedSnapshot(t, n) ⟺ ∃c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 ```
 
-**相关概念**: [Aligned Checkpoint](#aligned-checkpoint), [Barrier](#barrier), [In-Flight Data](#in-flight-data)
+**相关概念**: [Aligned Checkpoint](#a), [Barrier](#a), [In-Flight Data](#a)
 
 **参考文档**:
 
@@ -2330,7 +2330,7 @@ UnalignedSnapshot(t, n) ⟺ ∃c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 Unbounded(S) ⟺ |S| = ∞
 ```
 
-**相关概念**: [Bounded Stream](#bounded-stream), [Stream Processing](#stream-processing)
+**相关概念**: [Bounded Stream](#a), [Stream Processing](#a)
 
 ---
 
@@ -2346,7 +2346,7 @@ Unbounded(S) ⟺ |S| = ∞
 Search(q, V, k) = TopK(Embed(q), V, k)
 ```
 
-**相关概念**: [RAG](#rag-retrieval-augmented-generation), [Embedding](#embedding), [Similarity Search](#similarity-search)
+**相关概念**: [RAG](#rag-retrieval-augmented-generation), [Embedding](#b), [Similarity Search](#a)
 
 **参考文档**:
 
@@ -2365,7 +2365,7 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 - **Deferred**: 延迟维护
 - **On-demand**: 按需维护
 
-**相关概念**: [Materialized View](#materialized-view), [Incremental Computation](#incremental-computation)
+**相关概念**: [Materialized View](#a), [Incremental Computation](#a)
 
 ---
 
@@ -2382,7 +2382,7 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 - 接近原生的性能
 - 冷启动优化
 
-**相关概念**: [WASI](#wasi), [WebAssembly UDF](#webassembly-udf), [Serverless](#serverless), [UDF](#user-defined-function)
+**相关概念**: [WASI](#wasi), [WebAssembly UDF](#a), [Serverless](#e), [UDF](#c)
 
 **参考文档**:
 
@@ -2395,7 +2395,7 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 
 **定义**: WebAssembly System Interface，提供 WASM 模块与系统资源交互的标准接口。
 
-**相关概念**: [WASM](#wasm-webassembly), [WebAssembly UDF](#webassembly-udf), [Component Model](#component-model)
+**相关概念**: [WASM](#a), [WebAssembly UDF](#a), [Component Model](#c)
 
 **参考文档**:
 
@@ -2421,7 +2421,7 @@ Search(q, V, k) = TopK(Embed(q), V, k)
 WASM_UDF = ⟨ℳ_wasm, ℐ_interface, 𝒮_sandbox, 𝒫_perf⟩
 ```
 
-**相关概念**: [WASM](#wasm-webassembly), [WASI](#wasi), [UDF](#user-defined-function)
+**相关概念**: [WASM](#a), [WASI](#wasi), [UDF](#c)
 
 **参考文档**:
 
@@ -2440,7 +2440,7 @@ WASM_UDF = ⟨ℳ_wasm, ℐ_interface, 𝒮_sandbox, 𝒫_perf⟩
 Watermark(t_w) ::= ∀e ∈ Stream. t_e(e) ≤ t_w ∨ late(e)
 ```
 
-**相关概念**: [Event Time](#event-time), [Window](#window), [Late Data](#late-data)
+**相关概念**: [Event Time](#e), [Window](#d), [Late Data](#a)
 
 **参考文档**:
 
@@ -2456,10 +2456,10 @@ Watermark(t_w) ::= ∀e ∈ Stream. t_e(e) ≤ t_w ∨ late(e)
 
 **类型**:
 
-- [Tumbling Window](#tumbling-window)
-- [Sliding Window](#sliding-window)
-- [Session Window](#session-window)
-- [Global Window](#global-window)
+- [Tumbling Window](#b)
+- [Sliding Window](#d)
+- [Session Window](#d)
+- [Global Window](#a)
 
 **形式化定义**:
 
@@ -2467,7 +2467,7 @@ Watermark(t_w) ::= ∀e ∈ Stream. t_e(e) ≤ t_w ∨ late(e)
 Window(S, ω) = {S_w : w ∈ ω}, S_w = {e ∈ S | e.time ∈ w}
 ```
 
-**相关概念**: [Window Assigner](#window-assigner), [Trigger](#trigger), [Evictor](#evictor)
+**相关概念**: [Window Assigner](#a), [Trigger](#e), [Evictor](#c)
 
 **参考文档**:
 
@@ -2485,7 +2485,7 @@ Window(S, ω) = {S_w : w ∈ ω}, S_w = {e ∈ S | e.time ∈ w}
 Assigner: 𝒟 × 𝕋 → 𝒫(WindowID)
 ```
 
-**相关概念**: [Window](#window), [Trigger](#trigger), [Event Time](#event-time)
+**相关概念**: [Window](#d), [Trigger](#e), [Event Time](#e)
 
 ---
 
@@ -2493,7 +2493,7 @@ Assigner: 𝒟 × 𝕋 → 𝒫(WindowID)
 
 **定义**: 将无界数据流切分为有限窗口进行聚合计算的设计模式。
 
-**相关概念**: [Window](#window), [Aggregation](#aggregation), [Trigger](#trigger)
+**相关概念**: [Window](#d), [Aggregation](#a), [Trigger](#e)
 
 **参考文档**:
 

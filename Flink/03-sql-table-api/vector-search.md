@@ -1,6 +1,6 @@
 # Flink VECTOR_SEARCH - 流式向量相似度搜索（规划中）
 
-> 所属阶段: Flink | 前置依赖: [ML_PREDICT 函数](./ml-predict.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [MODEL DDL与ML_PREDICT](./model-ddl-and-ml-predict.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

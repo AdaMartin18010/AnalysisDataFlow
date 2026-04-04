@@ -1,7 +1,7 @@
 # 5.1 理论到代码的模式语言
 
 > **所属阶段**: Knowledge/05-mapping-guides/
-> **前置依赖**: [Struct/07-deterministic-semantics.md](../../Struct/07-deterministic-semantics.md), [Struct/09-watermark-theory.md](../../Struct/09-watermark-theory.md), [Struct/17-checkpoint-mechanism.md](../../Struct/17-checkpoint-mechanism.md), [Struct/18-exactly-once-semantics.md](../../Struct/18-exactly-once-semantics.md)
+> **前置依赖**: [Struct/07-deterministic-semantics.md](../../Struct/02-properties/02.01-determinism-in-streaming.md), [Struct/09-watermark-theory.md](../../Struct/02-properties/02.03-watermark-monotonicity.md), [Struct/17-checkpoint-mechanism.md](../../Struct/02-properties/02.04-liveness-and-safety.md), [Struct/18-exactly-once-semantics.md](../../Struct/02-properties/02.05-type-safety-derivation.md)
 > **形式化等级**: L4-L5
 
 ---
@@ -33,17 +33,17 @@
       - [Scala 实现模板](#scala-实现模板)
       - [Python 实现模板](#python-实现模板)
     - [6.2 Watermark 生成器模式 (Watermark Generator Pattern)](#62-watermark-生成器模式-watermark-generator-pattern)
-      - [Java 实现模板](#java-实现模板-1)
-      - [Scala 实现模板](#scala-实现模板-1)
-      - [Python 实现模板](#python-实现模板-1)
+      - [Java 实现模板](#java-实现模板)
+      - [Scala 实现模板](#scala-实现模板)
+      - [Python 实现模板](#python-实现模板)
     - [6.3 状态快照模式 (Checkpointed State Pattern)](#63-状态快照模式-checkpointed-state-pattern)
-      - [Java 实现模板](#java-实现模板-2)
-      - [Scala 实现模板](#scala-实现模板-2)
-      - [Python 实现模板](#python-实现模板-2)
+      - [Java 实现模板](#java-实现模板)
+      - [Scala 实现模板](#scala-实现模板)
+      - [Python 实现模板](#python-实现模板)
     - [6.4 两阶段提交 Sink 模式 (Two-Phase Commit Sink Pattern)](#64-两阶段提交-sink-模式-two-phase-commit-sink-pattern)
-      - [Java 实现模板](#java-实现模板-3)
-      - [Scala 实现模板](#scala-实现模板-3)
-      - [Python 实现模板](#python-实现模板-3)
+      - [Java 实现模板](#java-实现模板)
+      - [Scala 实现模板](#scala-实现模板)
+      - [Python 实现模板](#python-实现模板)
     - [6.5 模式组合示例](#65-模式组合示例)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 模式层次关系图](#71-模式层次关系图)

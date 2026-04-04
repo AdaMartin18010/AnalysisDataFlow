@@ -35,7 +35,7 @@
     - [4.4.1 RisingWave v2.6+ 向量搜索特性](#441-risingwave-v26-向量搜索特性)
     - [4.4.2 实时 RAG 架构与案例研究](#442-实时-rag-架构与案例研究)
     - [4.4.3 统一数据库架构优势](#443-统一数据库架构优势)
-    - [4.4.4 与 Flink VECTOR_SEARCH 对比](#444-与-flink-vector_search-对比)
+    - [4.4.4 与 Flink VECTOR_SEARCH 对比](#444-与-flink-vectorsearch-对比规划中)
     - [4.4.5 技术实现细节](#445-技术实现细节)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-13: Hummock LSM-Tree 性能边界定理](#thm-f-09-13-hummock-lsm-tree-性能边界定理)

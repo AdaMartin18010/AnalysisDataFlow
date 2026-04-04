@@ -1,7 +1,7 @@
 # 2026年三大Streaming SQL引擎深度对比: RisingWave vs ksqlDB vs Flink SQL
 
 > **所属阶段**: Knowledge/05-mapping-guides
-> **前置依赖**: [Flink/00-INDEX.md](../Flink/00-INDEX.md), [Knowledge/04-technology-selection/streaming-platform-selection-framework.md](../04-technology-selection/streaming-platform-selection-framework.md)
+> **前置依赖**: [Flink/00-INDEX.md](../../Flink/00-INDEX.md), [Knowledge/04-technology-selection/streaming-platform-selection-framework.md](../04-technology-selection/engine-selection-guide.md)
 > **形式化等级**: L4 (工程论证)
 > **最后更新**: 2026年4月
 > **文档状态**: Production-Ready

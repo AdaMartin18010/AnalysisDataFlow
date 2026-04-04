@@ -8,7 +8,7 @@
 
 ## 快速字母导航
 
-[A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Y](#y) · [Z](#z)
+[A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#术语快速查找索引-glossary-quick-index) · [H](GLOSSARY.md#h) · [I](#术语快速查找索引-glossary-quick-index) · [J](GLOSSARY.md#j) · [K](#术语快速查找索引-glossary-quick-index) · [L](#术语快速查找索引-glossary-quick-index) · [M](#m) · [N](#术语快速查找索引-glossary-quick-index) · [O](#o) · [P](#p) · [Q](#术语快速查找索引-glossary-quick-index) · [R](#r) · [S](#s) · [T](#核心流计算术语-top-20) · [U](#术语快速查找索引-glossary-quick-index) · [V](GLOSSARY.md#v) · [W](#t-w) · [X](#术语快速查找索引-glossary-quick-index) · [Y](#术语快速查找索引-glossary-quick-index) · [Z](GLOSSARY.md#z)
 
 ---
 
@@ -19,23 +19,23 @@
 | 术语 | 英文 | 分类 | 快速链接 |
 |------|------|------|----------|
 | Checkpoint | Checkpoint | 容错 | [详细定义](GLOSSARY.md#checkpoint-检查点) |
-| Watermark | Watermark | 时间语义 | [详细定义](GLOSSARY.md#watermark) |
+| Watermark | Watermark | 时间语义 | [详细定义](GLOSSARY.md#watermark-水印) |
 | Barrier | Barrier | Checkpoint | [详细定义](GLOSSARY.md#barrier-checkpoint-barrier) |
 | 背压 | Backpressure | 流控 | [详细定义](GLOSSARY.md#backpressure-反压) |
-| Exactly-Once | Exactly-Once | 一致性 | [详细定义](GLOSSARY.md#exactly-once-恰好一次) |
-| 状态后端 | State Backend | 状态存储 | [详细定义](GLOSSARY.md#state-backend) |
+| Exactly-Once | Exactly-Once | 一致性 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
+| 状态后端 | State Backend | 状态存储 | [详细定义](GLOSSARY.md#state-backend-状态后端) |
 | 事件时间 | Event Time | 时间语义 | [详细定义](GLOSSARY.md#event-time-事件时间) |
 | 处理时间 | Processing Time | 时间语义 | [详细定义](GLOSSARY.md#processing-time-处理时间) |
 | 有界流 | Bounded Stream | 数据类型 | [详细定义](GLOSSARY.md#bounded-stream-有界流) |
 | 无界流 | Unbounded Stream | 数据类型 | [详细定义](GLOSSARY.md#unbounded-stream-无界流) |
 | 并行度 | Parallelism | 执行模型 | [详细定义](GLOSSARY.md#parallelism-并行度) |
-| 任务槽 | Task Slot | 资源调度 | [详细定义](GLOSSARY.md#task-slot) |
+| 任务槽 | Task Slot | 资源调度 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | 算子 | Operator | API | [详细定义](GLOSSARY.md#operator-算子) |
 | 窗口 | Window | 计算模型 | [详细定义](GLOSSARY.md#window-窗口) |
 | 触发器 | Trigger | 窗口 | [详细定义](GLOSSARY.md#trigger-触发器) |
-| 允许延迟 | Allowed Lateness | 窗口 | [详细定义](GLOSSARY.md#allowed-lateness-允许延迟) |
+| 允许延迟 | Allowed Lateness | 窗口 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | 侧输出 | Side Output | 模式 | [详细定义](GLOSSARY.md#side-output-侧输出) |
-| 异步I/O | Async I/O | 模式 | [详细定义](GLOSSARY.md#async-io-异步-io) |
+| 异步I/O | Async I/O | 模式 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | CEP | CEP | 复杂事件 | [详细定义](GLOSSARY.md#cep-complex-event-processing-复杂事件处理) |
 | CDC | CDC | 数据集成 | [详细定义](GLOSSARY.md#cdc-change-data-capture-变更数据捕获) |
 
@@ -43,28 +43,28 @@
 
 | 术语 | 英文 | 分类 | 快速链接 |
 |------|------|------|----------|
-| AI Agent | AI Agent | AI架构 | [详细定义](GLOSSARY.md#ai-agent-人工智能代理) |
-| MCP | Model Context Protocol | AI协议 | [详细定义](GLOSSARY.md#mcp-model-context-protocol) |
-| A2A | Agent-to-Agent Protocol | AI协议 | [详细定义](GLOSSARY.md#a2a-protocol-agent-to-agent-protocol) |
+| AI Agent | AI Agent | AI架构 | [详细定义](GLOSSARY.md#ai-agent-人工智能代理-通用术语) |
+| MCP | Model Context Protocol | AI协议 | [详细定义](GLOSSARY.md#mcp-model-context-protocol-anthropic-2024-flink-20) |
+| A2A | Agent-to-Agent Protocol | AI协议 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | RAG | RAG | AI架构 | [详细定义](GLOSSARY.md#rag-retrieval-augmented-generation) |
-| 向量数据库 | Vector Database | 存储 | [详细定义](GLOSSARY.md#vector-database-向量数据库) |
+| 向量数据库 | Vector Database | 存储 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | 向量搜索 | Vector Search | 检索 | [详细定义](GLOSSARY.md#vector-search-向量搜索) |
-| 在线学习 | Online Learning | ML | [详细定义](GLOSSARY.md#online-learning-在线学习) |
-| 特征工程 | Feature Engineering | ML | [详细定义](GLOSSARY.md#feature-engineering-特征工程) |
-| 特征存储 | Feature Store | ML架构 | [详细定义](GLOSSARY.md#feature-store-特征存储) |
-| 模型服务 | Model Serving | MLOps | [详细定义](GLOSSARY.md#model-serving-模型服务) |
+| 在线学习 | Online Learning | ML | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
+| 特征工程 | Feature Engineering | ML | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
+| 特征存储 | Feature Store | ML架构 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
+| 模型服务 | Model Serving | MLOps | [详细定义](GLOSSARY.md#actor-model-actor-模型) |
 
 ### 🏗️ 架构与部署术语
 
 | 术语 | 英文 | 分类 | 快速链接 |
 |------|------|------|----------|
-| 分离状态 | Disaggregated State | 架构 | [详细定义](GLOSSARY.md#disaggregated-state-分离状态) |
+| 分离状态 | Disaggregated State | 架构 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | 云原生 | Cloud-Native | 架构 | [详细定义](GLOSSARY.md#cloud-native-云原生) |
 | Serverless | Serverless | 部署 | [详细定义](GLOSSARY.md#serverless-无服务器) |
 | Lakehouse | Lakehouse | 存储 | [详细定义](GLOSSARY.md#lakehouse-湖仓一体) |
 | 物化视图 | Materialized View | 查询 | [详细定义](GLOSSARY.md#materialized-view-物化视图) |
-| 物化表 | Materialized Table | Flink特性 | [详细定义](GLOSSARY.md#materialized-table-物化表) |
-| K8s Operator | K8s Operator | 部署 | [详细定义](GLOSSARY.md#kubernetes-operator) |
+| 物化表 | Materialized Table | Flink特性 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
+| K8s Operator | K8s Operator | 部署 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 
 ### 📐 形式化理论术语
 
@@ -72,7 +72,7 @@
 |------|------|------|----------|
 | Actor模型 | Actor Model | 并发模型 | [详细定义](GLOSSARY.md#actor-model-actor-模型) |
 | CSP | CSP | 进程代数 | [详细定义](GLOSSARY.md#csp-communicating-sequential-processes) |
-| π演算 | π-Calculus | 进程代数 | [详细定义](GLOSSARY.md#π-calculus-pi-演算) |
+| π演算 | π-Calculus | 进程代数 | [详细定义](GLOSSARY.md#exactly-once-精确一次语义) |
 | CCS | CCS | 进程代数 | [详细定义](GLOSSARY.md#ccs-calculus-of-communicating-systems) |
 | 互模拟 | Bisimulation | 等价关系 | [详细定义](GLOSSARY.md#bisimulation-互模拟) |
 | 会话类型 | Session Types | 类型理论 | [详细定义](GLOSSARY.md#session-types-会话类型) |
@@ -90,10 +90,10 @@
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
 | Actor Model | 基于消息传递的并发计算模型 | [GLOSSARY.md](GLOSSARY.md#actor-model-actor-模型) |
-| AI Agent | 自主感知、推理、行动的智能系统 | [GLOSSARY.md](GLOSSARY.md#ai-agent-人工智能代理) |
-| A2A Protocol | Google提出的Agent互操作协议 | [GLOSSARY.md](GLOSSARY.md#a2a-protocol-agent-to-agent-protocol) |
+| AI Agent | 自主感知、推理、行动的智能系统 | [GLOSSARY.md](GLOSSARY.md#ai-agent-人工智能代理-通用术语) |
+| A2A Protocol | Google提出的Agent互操作协议 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 | Aligned Checkpoint | 收到所有Barrier后才快照的机制 | [GLOSSARY.md](GLOSSARY.md#aligned-checkpoint-对齐-checkpoint) |
-| Async I/O | 允许并发外部调用的模式 | [GLOSSARY.md](GLOSSARY.md#async-io-异步-io) |
+| Async I/O | 允许并发外部调用的模式 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 | At-Least-Once | 至少一次交付语义 | [GLOSSARY.md](GLOSSARY.md#at-least-once-至少一次语义) |
 | At-Most-Once | 至多一次交付语义 | [GLOSSARY.md](GLOSSARY.md#at-most-once-至多一次语义) |
 
@@ -127,25 +127,25 @@
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
-| Dataflow Model | 数据流计算模型 | [GLOSSARY.md](GLOSSARY.md#dataflow-model-数据流模型) |
-| DataStream API | Flink的核心流处理API | [GLOSSARY.md](GLOSSARY.md#datastream-api) |
-| Delta Join | 增量Join算法 | [GLOSSARY.md](GLOSSARY.md#delta-join) |
-| Disaggregated State | 计算与存储分离的架构 | [GLOSSARY.md](GLOSSARY.md#disaggregated-state-分离状态) |
+| Dataflow Model | 数据流计算模型 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
+| DataStream API | Flink的核心流处理API | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
+| Delta Join | 增量Join算法 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
+| Disaggregated State | 计算与存储分离的架构 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 
 ### E
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
 | Event Time | 事件实际发生的时间 | [GLOSSARY.md](GLOSSARY.md#event-time-事件时间) |
-| Exactly-Once | 恰好一次交付语义 | [GLOSSARY.md](GLOSSARY.md#exactly-once-恰好一次) |
+| Exactly-Once | 恰好一次交付语义 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 | Eventual Consistency | 最终一致性模型 | [GLOSSARY.md](GLOSSARY.md#eventual-consistency-最终一致性) |
 
 ### F
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
-| Feature Store | 存储和管理ML特征的系统 | [GLOSSARY.md](GLOSSARY.md#feature-store-特征存储) |
-| Flink ML | Flink机器学习库 | [GLOSSARY.md](GLOSSARY.md#flink-ml) |
+| Feature Store | 存储和管理ML特征的系统 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
+| Flink ML | Flink机器学习库 | [GLOSSARY.md](GLOSSARY.md#3-flink术语) |
 | Flow Control | 流量控制机制 | [GLOSSARY.md](GLOSSARY.md#flow-control-流量控制) |
 
 ### G-L
@@ -161,16 +161,16 @@
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
-| Materialized Table | Flink 2.x物化表特性 | [GLOSSARY.md](GLOSSARY.md#materialized-table-物化表) |
+| Materialized Table | Flink 2.x物化表特性 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 | Materialized View | 物化视图 | [GLOSSARY.md](GLOSSARY.md#materialized-view-物化视图) |
-| MCP | Model Context Protocol | [GLOSSARY.md](GLOSSARY.md#mcp-model-context-protocol) |
-| Model Serving | 模型服务 | [GLOSSARY.md](GLOSSARY.md#model-serving-模型服务) |
+| MCP | Model Context Protocol | [GLOSSARY.md](GLOSSARY.md#mcp-model-context-protocol-anthropic-2024-flink-20) |
+| Model Serving | 模型服务 | [GLOSSARY.md](GLOSSARY.md#actor-model-actor-模型) |
 
 ### O
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
-| Online Learning | 在线学习 | [GLOSSARY.md](GLOSSARY.md#online-learning-在线学习) |
+| Online Learning | 在线学习 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
 | Operator | Flink算子 | [GLOSSARY.md](GLOSSARY.md#operator-算子) |
 
 ### P
@@ -179,7 +179,7 @@
 |------|----------|----------|
 | Parallelism | 并行度 | [GLOSSARY.md](GLOSSARY.md#parallelism-并行度) |
 | Processing Time | 处理时间 | [GLOSSARY.md](GLOSSARY.md#processing-time-处理时间) |
-| Process Function | 底层处理函数 | [GLOSSARY.md](GLOSSARY.md#process-function) |
+| Process Function | 底层处理函数 | [GLOSSARY.md](GLOSSARY.md#processfunction) |
 
 ### R
 
@@ -192,10 +192,10 @@
 
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
-| Savepoint | 手动触发的全局一致性快照 | [GLOSSARY.md](GLOSSARY.md#savepoint) |
+| Savepoint | 手动触发的全局一致性快照 | [GLOSSARY.md](GLOSSARY.md#savepoint-保存点) |
 | Session Types | 会话类型 | [GLOSSARY.md](GLOSSARY.md#session-types-会话类型) |
 | Side Output | 侧输出 | [GLOSSARY.md](GLOSSARY.md#side-output-侧输出) |
-| State Backend | 状态后端 | [GLOSSARY.md](GLOSSARY.md#state-backend) |
+| State Backend | 状态后端 | [GLOSSARY.md](GLOSSARY.md#state-backend-状态后端) |
 | Stream Processing | 流处理 | [GLOSSARY.md](GLOSSARY.md#stream-processing-流处理) |
 
 ### T-W
@@ -203,12 +203,12 @@
 | 术语 | 定义概要 | 文档链接 |
 |------|----------|----------|
 | TaskManager | Flink任务管理器 | [GLOSSARY.md](GLOSSARY.md#taskmanager) |
-| Task Slot | 任务槽 | [GLOSSARY.md](GLOSSARY.md#task-slot) |
-| Throughput | 吞吐量 | [GLOSSARY.md](GLOSSARY.md#throughput-吞吐量) |
+| Task Slot | 任务槽 | [GLOSSARY.md](GLOSSARY.md#exactly-once-精确一次语义) |
+| Throughput | 吞吐量 | [GLOSSARY.md](GLOSSARY.md#adaptive-execution-engine-自适应执行引擎-flink-117) |
 | Unaligned Checkpoint | 非对齐Checkpoint | [GLOSSARY.md](GLOSSARY.md#unaligned-checkpoint-非对齐-checkpoint) |
 | Unbounded Stream | 无界流 | [GLOSSARY.md](GLOSSARY.md#unbounded-stream-无界流) |
 | Vector Search | 向量搜索 | [GLOSSARY.md](GLOSSARY.md#vector-search-向量搜索) |
-| Watermark | Watermark机制 | [GLOSSARY.md](GLOSSARY.md#watermark) |
+| Watermark | Watermark机制 | [GLOSSARY.md](GLOSSARY.md#watermark-水印) |
 | Window | 窗口 | [GLOSSARY.md](GLOSSARY.md#window-窗口) |
 
 ---

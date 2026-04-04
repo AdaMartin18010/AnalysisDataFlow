@@ -1,6 +1,6 @@
 # PyFlink深度 - Python DataStream API
 
-> 所属阶段: Flink | 前置依赖: [09.01-java-api.md](./01-java-api.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [Java API](./02.01-java-api-from-scala.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

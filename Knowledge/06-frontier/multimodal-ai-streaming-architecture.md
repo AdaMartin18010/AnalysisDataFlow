@@ -1,6 +1,6 @@
 # 多模态AI实时流处理架构
 
-> 所属阶段: Knowledge | 前置依赖: [05-advanced/stateful-event-processing.md](../05-advanced/stateful-event-processing.md), [Flink/04-ai-integration/flink-ml-integration.md](../../Flink/04-ai-integration/flink-ml-integration.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [05-advanced/stateful-event-processing.md](../02-design-patterns/pattern-stateful-computation.md), [Flink/04-ai-integration/flink-ml-integration.md](../../Flink/07-case-studies/case-iot-stream-processing.md) | 形式化等级: L4
 
 ---
 

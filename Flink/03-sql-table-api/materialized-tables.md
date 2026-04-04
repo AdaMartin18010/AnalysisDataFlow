@@ -1,6 +1,6 @@
 # Materialized Tables - Flink 2.0+ 的统一批流开发体验
 
-> **所属阶段**: Flink | **前置依赖**: [Flink SQL 基础](./01-flink-sql-fundamentals.md), [Table API 架构](./02-table-api-architecture.md) | **形式化等级**: L3
+> **所属阶段**: Flink | **前置依赖**: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md) | **形式化等级**: L3
 
 ## 1. 概念定义 (Definitions)
 

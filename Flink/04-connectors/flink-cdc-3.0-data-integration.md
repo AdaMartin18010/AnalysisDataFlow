@@ -1,6 +1,6 @@
 # Flink CDC 3.0 数据集成框架
 
-> 所属阶段: Flink | 前置依赖: [Flink CDC基础](04.04-cdc-debezium-integration.md), [Flink SQL](04.01-flink-sql-architecture.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink CDC基础](./04.04-cdc-debezium-integration.md), [Flink SQL 完整指南](../03-sql-table-api/flink-table-sql-complete-guide.md) | 形式化等级: L4
 
 ---
 

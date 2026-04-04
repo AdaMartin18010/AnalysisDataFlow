@@ -1,6 +1,6 @@
 # FaaS Dataflow: Serverless与数据流的融合
 
-> 所属阶段: Knowledge | 前置依赖: [05-mapping-guides/serverless-flink-comparison.md](../05-mapping-guides/serverless-flink-comparison.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [05-mapping-guides/serverless-flink-comparison.md](../04-technology-selection/engine-selection-guide.md) | 形式化等级: L3
 
 ## 目录
 

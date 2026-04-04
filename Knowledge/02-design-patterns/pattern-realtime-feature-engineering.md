@@ -1,6 +1,6 @@
 # 设计模式：实时特征工程 (Real-time Feature Engineering)
 
-> 所属阶段: Knowledge/02-design-patterns | 前置依赖: [01-foundations/knowledge-streaming-semantics.md](../01-foundations/knowledge-streaming-semantics.md) | 形式化等级: L4
+> 所属阶段: Knowledge/02-design-patterns | 前置依赖: [01-foundations/knowledge-streaming-semantics.md](../01-concept-atlas/streaming-models-mindmap.md) | 形式化等级: L4
 
 ---
 

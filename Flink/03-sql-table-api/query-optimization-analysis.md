@@ -2,7 +2,7 @@
 
 > **文档定位**: 本文档系统分析 Flink SQL/Table API 查询优化器的核心机制，涵盖架构设计、优化策略、Join 算法选择与流计算增量优化。
 >
-> **前置知识**: [Flink 数据流模型](../01-Model/Dataflow-Model.md)、[Apache Calcite 优化框架](https://calcite.apache.org/docs/)
+> **前置知识**: [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)、[Apache Calcite 优化框架](https://calcite.apache.org/docs/)
 
 ---
 

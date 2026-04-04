@@ -1319,4 +1319,4 @@ graph TB
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-*关联文档: [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 04: Async I/O Enrichment](../02-design-patterns/pattern-async-io-enrichment.md) | [Pattern 05: State Management](../02-design-patterns/pattern-state-management.md) | [Knowledge 索引](../00-INDEX.md)*
+*关联文档: [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 04: Async I/O Enrichment](../02-design-patterns/pattern-async-io-enrichment.md) | [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) | [Knowledge 索引](../00-INDEX.md)*

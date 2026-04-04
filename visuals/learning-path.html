@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow 学习路径</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+        }
+        
+        .path-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .path-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .path-title.struct { border-color: #1976d2; }
+        .path-title.knowledge { border-color: #388e3c; }
+        .path-title.flink { border-color: #f57c00; }
+        
+        .path-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .step-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .step-link {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .step-link:hover {
+            background: #5a6fd6;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+        
+        .back-link a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        
+        .level-L1 { background: #e8f5e9; color: #2e7d32; }
+        .level-L2 { background: #e3f2fd; color: #1565c0; }
+        .level-L3 { background: #fff3e0; color: #ef6c00; }
+        .level-L4 { background: #fce4ec; color: #c2185b; }
+        .level-L5 { background: #f3e5f5; color: #7b1fa2; }
+        .level-L6 { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 AnalysisDataFlow 学习路径</h1>
+        <p class="subtitle">从理论到实践，系统化掌握流计算知识体系</p>
+        
+        <div class="path-container">
+            <h2 class="path-title struct">🔬 Struct 理论路径</h2>
+            <div class="path-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">统一流计算理论 <span class="level-badge level-L6">L6</span></div>
+                        <div class="step-desc">USTM元模型、六层表达能力层次、统一并发模型表示</div>
+                    </div>
+                    <a href="../Struct/01-foundation/01.01-unified-streaming-theory.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">进程演算基础 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">CCS、CSP、π-calculus基础概念与语法</div>
+                    </div>
+                    <a href="../Struct/01-foundation/01.02-process-calculus-primer.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Actor模型形式化 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">Actor模型语义、消息传递、监督策略</div>
+                    </div>
+                    <a href="../Struct/01-foundation/01.03-actor-model-formalization.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">流计算正确性证明 <span class="level-badge level-L6">L6</span></div>
+                        <div class="step-desc">Checkpoint一致性、Exactly-Once正确性证明</div>
+                    </div>
+                    <a href="../Struct/04-proofs/04.01-flink-checkpoint-correctness.md" class="step-link">开始学习</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="path-container">
+            <h2 class="path-title knowledge">🛠️ Knowledge 工程路径</h2>
+            <div class="path-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">并发范式对比矩阵 <span class="level-badge level-L3">L3</span></div>
+                        <div class="step-desc">Actor、CSP、Dataflow等并发模型对比</div>
+                    </div>
+                    <a href="../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">设计模式: Checkpoint与故障恢复 <span class="level-badge level-L5">L5</span></div>
+                        <div class="step-desc">分布式快照、Barrier对齐、状态后端选择</div>
+                    </div>
+                    <a href="../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">电商实时推荐案例 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">实时特征工程、推荐系统架构实践</div>
+                    </div>
+                    <a href="../Knowledge/03-business-patterns/real-time-recommendation.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">反模式识别 <span class="level-badge level-L3">L3</span></div>
+                        <div class="step-desc">常见流处理错误模式与解决方案</div>
+                    </div>
+                    <a href="../Knowledge/09-anti-patterns/anti-pattern-checklist.md" class="step-link">开始学习</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="path-container">
+            <h2 class="path-title flink">⚡ Flink 技术路径</h2>
+            <div class="path-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Flink架构概览 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">Runtime架构、部署模式、DataStream API</div>
+                    </div>
+                    <a href="../Flink/01-architecture/deployment-architectures.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Checkpoint机制深度剖析 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">Barrier传播、对齐/非对齐Checkpoint、增量快照</div>
+                    </div>
+                    <a href="../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">SQL与Table API <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">Flink SQL、窗口函数、物化表</div>
+                    </div>
+                    <a href="../Flink/03-sql-table-api/flink-table-sql-complete-guide.md" class="step-link">开始学习</a>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">性能调优指南 <span class="level-badge level-L4">L4</span></div>
+                        <div class="step-desc">State后端选择、内存调优、反压处理</div>
+                    </div>
+                    <a href="../Flink/06-engineering/performance-tuning-guide.md" class="step-link">开始学习</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="knowledge-graph.html">🔙 返回知识图谱</a>
+        </div>
+    </div>
+</body>
+</html>

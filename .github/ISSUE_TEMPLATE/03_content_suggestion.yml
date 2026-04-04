@@ -1,0 +1,148 @@
+name: 💡 内容建议
+about: 建议添加新内容、扩展现有主题或改进呈现方式
+title: "[SUGGESTION] "
+labels: ["enhancement", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 💡 内容建议
+        感谢您的创意！请详细描述您的建议，帮助我们更好地理解和评估。
+
+  - type: dropdown
+    id: suggestion_type
+    attributes:
+      label: 建议类型
+      description: 请选择建议的类型
+      options:
+        - 扩展现有文档（添加新章节或深入内容）
+        - 添加新案例研究
+        - 改进代码示例
+        - 添加新的可视化图表
+        - 补充数学证明或推导
+        - 添加工程实践指导
+        - 优化文档结构或导航
+        - 添加 FAQ 或故障排除指南
+        - 其他建议
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 目标领域
+      description: 建议内容所属的知识领域
+      options:
+        - Struct/ 形式理论与分析
+        - Knowledge/ 工程知识与设计模式
+        - Flink/ Flink 专项技术
+        - 跨领域内容
+        - 项目基础设施
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: target_document
+    attributes:
+      label: 目标文档（如适用）
+      description: 如果建议针对特定文档，请提供路径
+      placeholder: "例如: Knowledge/3.2-stream-processing-patterns.md"
+
+  - type: textarea
+    id: suggestion_description
+    attributes:
+      label: 建议详细描述
+      description: 请详细描述您的建议内容
+      placeholder: |
+        详细说明您建议添加或改进的内容：
+        - 建议的核心内容是什么？
+        - 为什么这个内容对项目有价值？
+        - 建议如何组织和呈现？
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机与背景
+      description: 说明为什么这个建议对项目和社区有益
+      placeholder: |
+        解释这个建议的重要性：
+        - 解决了什么问题？
+        - 填补了哪些知识空白？
+        - 对哪些读者群体最有帮助？
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_content
+    attributes:
+      label: 建议内容大纲
+      description: 提供一个初步的内容大纲或结构
+      placeholder: |
+        ```markdown
+        ## 建议的章节结构
+
+        ### 1. 概述
+        ...
+
+        ### 2. 核心概念
+        ...
+
+        ### 3. 示例与实现
+        ...
+        ```
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考资源
+      description: 提供支持此建议的参考资源
+      placeholder: |
+        - 相关论文或文章
+        - 官方文档链接
+        - 类似的现有文档（作为参考）
+        - 代码仓库或示例项目
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 建议优先级
+      description: 您认为此建议的优先级如何？
+      options:
+        - P0 - 核心知识缺口，急需补充
+        - P1 - 重要内容，应该在近期添加
+        - P2 - 有价值的内容，可按计划进行
+        - P3 - 建议性内容，时间允许时处理
+      default: 2
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: 内容复杂度
+      description: 评估实现此建议的工作量
+      options:
+        - 简单 - 可在数小时内完成
+        - 中等 - 需要数天工作
+        - 复杂 - 需要数周工作
+        - 重大 - 需要长期规划和协作
+
+  - type: checkboxes
+    id: willing_to_contribute
+    attributes:
+      label: 贡献意愿
+      description: 您是否愿意为实施此建议做出贡献？
+      options:
+        - label: 我愿意撰写完整的文档内容
+        - label: 我可以提供内容大纲和参考资料
+        - label: 我可以协助审查和验证内容
+        - label: 我希望由核心团队主导实施
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: 补充说明
+      description: 任何其他相关信息
+      placeholder: "相关讨论、依赖关系、注意事项等..."

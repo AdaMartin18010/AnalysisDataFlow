@@ -976,7 +976,7 @@ $$
 
 [^2]: A. Adi and O. Etzion, "Amit - The Situation Manager," *The VLDB Journal*, 13(2), 2004. <https://doi.org/10.1007/s00778-004-0128-y>
 
-[^3]: 复杂事件处理形式化语义，详见 [Struct/03-relations/03.02-cep-formal-semantics.md](../../Struct/03-relations/03.02-cep-formal-semantics.md)
+[^3]: 复杂事件处理形式化语义，详见 [Struct/03-relations/03.02-cep-formal-semantics.md](../../Struct/03-relationships/03.02-flink-to-process-calculus.md)
 
 [^4]: Apache Flink Documentation, "FlinkCEP - Complex Event Processing for Flink," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/cep/>
 
@@ -986,7 +986,7 @@ $$
 
 [^7]: G. Cugola and A. Margara, "Complex Event Processing: A Survey," *Technical Report*, Politecnico di Milano, 2010.
 
-[^8]: Apache Flink CEP 库设计与实现，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api-patterns/flink-cep-deep-dive.md)
+[^8]: Apache Flink CEP 库设计与实现，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/07-case-studies/case-financial-realtime-risk-control.md)
 
 [^9]: Flink 状态后端与 CEP 优化，详见 [Flink/06-engineering/state-backend-selection.md](../../Flink/06-engineering/state-backend-selection.md)
 
