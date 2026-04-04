@@ -1,7 +1,7 @@
 # Nexmark 基准测试深度分析
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine  
-> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [02-falcon-vector-layer.md](./02-falcon-vector-layer.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
+> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [02-falcon-vector-layer.md](./02-falcon-vector-layer.md)
 > **形式化等级**: L4（定量分析 + 性能拆解）
 
 ---
@@ -13,6 +13,7 @@
 **定义**: Nexmark 是一个面向连续数据流查询的基准测试套件，模拟在线拍卖场景，包含代表性查询和数据生成器，用于评估流处理系统的性能。
 
 **形式化描述**:
+
 ```
 Nexmark := ⟨DataModel, QuerySet, Metrics, Workload⟩
 
@@ -42,6 +43,7 @@ Workload:
 **定义**: 性能提升来源分解是将整体加速比拆解为各个技术贡献因子的方法，用于理解优化效果的具体来源。
 
 **形式化描述**:
+
 ```
 总加速比分解:
 Speedup_Total = Speedup_SIMD × Speedup_Runtime × Speedup_Storage × Speedup_Network
@@ -60,6 +62,7 @@ Contribution(X) = log(S_X) / log(Speedup_Total) × 100%
 **定义**: TPC-DS（Transaction Processing Performance Council - Decision Support）是一个面向决策支持系统的标准化基准测试，包含复杂 SQL 查询和大数据集。
 
 **形式化描述**:
+
 ```
 TPC-DS := ⟨Schema, QuerySet, DataScale, PerformanceMetric⟩
 
@@ -80,6 +83,7 @@ Flash 测试配置:
 **定义**: 资源效率指标衡量单位资源投入所能处理的计算量，是成本效益分析的基础。
 
 **形式化描述**:
+
 ```
 核心指标:
 1. Throughput per Core = TotalEvents / (Cores × Time)
@@ -100,6 +104,7 @@ CostReduction = (Cost_Before - Cost_After) / Cost_Before × 100%
 **命题**: Flash 引擎在不同 Nexmark 查询上的加速比存在显著差异，与查询的计算密度正相关。
 
 **形式化表述**:
+
 ```
 ∀q ∈ NexmarkQueries: Speedup(q) ∝ ComputationalDensity(q)
 
@@ -126,6 +131,7 @@ ComputationalDensity = CPU_Cycles / IO_Operations
 **命题**: 当数据规模增大时，Flash 与 Flink 的性能比呈亚线性增长，原因在于大状态场景下存储层瓶颈显现。
 
 **形式化表述**:
+
 ```
 设数据规模为 N:
 Speedup(N) = Speedup₀ × (1 - α × log(N/N₀))
@@ -148,6 +154,7 @@ Speedup(N) = Speedup₀ × (1 - α × log(N/N₀))
 **命题**: Flash 引擎在流处理和批处理场景下均能提供一致的性能优势，验证了其架构的通用性。
 
 **形式化表述**:
+
 ```
 StreamBenchmark := Nexmark
 BatchBenchmark := TPC-DS
@@ -173,7 +180,7 @@ Nexmark 作为合成基准与真实负载的映射关系:
 Nexmark 场景              │ 阿里巴巴生产对应场景
 ──────────────────────────┼────────────────────────
 Person 注册流             │ 用户行为日志
-Auction 创建流            │ 商品上架事件  
+Auction 创建流            │ 商品上架事件
 Bid 出价流                │ 订单/交易事件
 ──────────────────────────┼────────────────────────
 q0 PassThrough            │ 数据管道 ETL
@@ -227,6 +234,7 @@ q9-q11 Join               │ 流流关联（订单-物流）
 ### 4.1 5-10倍性能提升来源详细拆解
 
 **总体加速比分解**:
+
 ```
 Nexmark 平均加速比: 5-10x
 
@@ -249,6 +257,7 @@ Nexmark 平均加速比: 5-10x
 **各因素详细分析**:
 
 1. **SIMD 向量化计算 (40%)**
+
 ```
 贡献场景:
 - 字符串处理函数 (q3, q4): 10-20x
@@ -262,7 +271,8 @@ Nexmark 平均加速比: 5-10x
 - 向量化哈希表
 ```
 
-2. **C++ 运行时效率 (25%)**
+1. **C++ 运行时效率 (25%)**
+
 ```
 贡献来源:
 - 无 JVM GC 停顿
@@ -276,7 +286,8 @@ Nexmark 平均加速比: 5-10x
 - 编译优化: ~10% 性能提升
 ```
 
-3. **列式内存布局 (15%)**
+1. **列式内存布局 (15%)**
+
 ```
 贡献来源:
 - 缓存命中率提升
@@ -288,7 +299,8 @@ Nexmark 平均加速比: 5-10x
 - 实际性能提升: 1.15-1.5x（考虑其他瓶颈）
 ```
 
-4. **向量化状态存储 (10%)**
+1. **向量化状态存储 (10%)**
+
 ```
 贡献来源:
 - ForStDB 列式状态
@@ -301,7 +313,8 @@ Nexmark 平均加速比: 5-10x
 - 整体贡献: ~10%
 ```
 
-5. **零拷贝网络传输 (10%)**
+1. **零拷贝网络传输 (10%)**
+
 ```
 贡献来源:
 - Arrow 格式直通
@@ -317,6 +330,7 @@ Nexmark 平均加速比: 5-10x
 ### 4.2 测试环境与方法论证
 
 **测试环境配置**:
+
 ```
 硬件配置:
 - 实例: 阿里云 ECS ecs.g7.8xlarge
@@ -333,6 +347,7 @@ Nexmark 平均加速比: 5-10x
 ```
 
 **测试方法论**:
+
 ```
 公平性保证:
 1. CU 等价: Flash 和 Flink 使用相同计算单元数
@@ -355,10 +370,11 @@ Nexmark 平均加速比: 5-10x
 ### 4.3 TPC-DS 10TB 结果分析
 
 **测试配置**:
+
 ```
 数据规模: TPC-DS 10TB
 查询数量: 99 个 SQL 查询
-对比引擎: 
+对比引擎:
 - Apache Flink 1.19
 - Apache Spark 3.4
 - Flash 1.0
@@ -367,6 +383,7 @@ Nexmark 平均加速比: 5-10x
 ```
 
 **结果汇总**:
+
 ```
 整体性能对比:
 ┌─────────────────┬──────────────┬─────────────┐
@@ -389,6 +406,7 @@ Nexmark 平均加速比: 5-10x
 ```
 
 **结果解读**:
+
 ```
 1. Flash 在聚合查询上表现最优（4x）
    - 向量化聚合算法高效
@@ -415,15 +433,17 @@ Nexmark 平均加速比: 5-10x
 **证明**:
 
 **步骤 1**: 定义基础性能
+
 ```
 设基础系统（Flink）处理 n 个元素的总时间为:
 T_base = T_compute + T_memory + T_storage + T_network
 ```
 
 **步骤 2**: 应用各项优化
+
 ```
 设各优化技术的加速比为:
-- SIMD: s₁ = T_compute / T_compute' 
+- SIMD: s₁ = T_compute / T_compute'
 - C++ Runtime: s₂（减少 GC/JNI 开销）
 - Columnar: s₃（减少内存访问时间）
 - ForStDB: s₄（减少存储访问时间）
@@ -431,6 +451,7 @@ T_base = T_compute + T_memory + T_storage + T_network
 ```
 
 **步骤 3**: 计算优化后时间
+
 ```
 T_optimized = T_compute/s₁ + T_memory/s₃ + T_storage/s₄ + T_network/s₅
             + T_runtime_optimizations
@@ -444,6 +465,7 @@ Speedup_total = T_base / T_optimized
 ```
 
 **步骤 4**: 数值验证
+
 ```
 代入实测值:
 s₁ = 2.5 (SIMD)
@@ -465,6 +487,7 @@ Speedup_total = 2.5 × 1.5 × 1.3 × 1.2 × 1.2
 **证明**:
 
 **步骤 1**: 成本模型
+
 ```
 总成本 = 计算成本 + 存储成本 + 运维成本
 
@@ -474,6 +497,7 @@ Speedup_total = 2.5 × 1.5 × 1.3 × 1.2 × 1.2
 ```
 
 **步骤 2**: 成本变化分析
+
 ```
 设 Flash 与 Flink 的吞吐比为 α，资源效率比为 β:
 
@@ -489,6 +513,7 @@ Cost_Reduction = 80% - 90%
 ```
 
 **步骤 3**: 阿里巴巴生产数据验证
+
 ```
 实测数据:
 - 平均性能提升: 5-10x → α = 7.5（中位数）
@@ -511,6 +536,7 @@ Cost_Reduction = 80% - 90%
 ### 6.1 Nexmark 详细测试结果
 
 **100M 记录测试结果**:
+
 ```
 查询 │ Flink(s) │ Flash(s) │ 加速比 │ 主要优化点
 ─────┼──────────┼──────────┼────────┼─────────────────
@@ -530,11 +556,12 @@ q11  │ 720.0    │ 180.0    │ 4.0x   │ Join 优化
 ```
 
 **200M 记录测试结果**:
+
 ```
 查询 │ Flink(s) │ Flash(s) │ 加速比 │ 备注
 ─────┼──────────┼──────────┼────────┼─────────────────
 q0   │ 212.6    │ 35.4     │ 6.0x   │ 状态规模影响
-q1   │ 230.4    │ 38.4     │ 6.0x   │ 
+q1   │ 230.4    │ 38.4     │ 6.0x   │
 q7   │ 900.0    │ 180.0    │ 5.0x   │ ForStDB Pro 生效
 q9   │ 1360.0   │ 340.0    │ 4.0x   │ Join 状态大
 平均 │ -        │ -        │ 5.2x   │ 整体略降
@@ -552,16 +579,16 @@ Q1 (扫描过滤):
   Flash:   30s (3.7x)
 
 Q55 (聚合):
-  SELECT ss_store_sk, sum(ss_sales_price) 
-  FROM store_sales 
+  SELECT ss_store_sk, sum(ss_sales_price)
+  FROM store_sales
   GROUP BY ss_store_sk
   Spark:  300s
   Flink:  280s
   Flash:   70s (4.0x)
 
 Q95 (复杂 Join):
-  SELECT ... FROM web_sales 
-  JOIN web_returns ON ... 
+  SELECT ... FROM web_sales
+  JOIN web_returns ON ...
   JOIN date_dim ON ...
   Spark:  600s
   Flink:  650s
@@ -571,6 +598,7 @@ Q95 (复杂 Join):
 ### 6.3 阿里巴巴生产环境验证
 
 **业务场景覆盖**:
+
 ```
 ┌─────────────┬─────────────────────────┬──────────┬──────────┐
 │ 业务部门    │ 场景                    │ 数据量   │ 加速比   │
@@ -651,16 +679,16 @@ graph TB
         A[工作负载] --> B{Flash 加速比}
         B -->|5-10x| C[所需 CU 减少 50-80%]
         B -->|性能提升| D[延迟降低 60-90%]
-        
+
         C --> E[计算成本降低]
         D --> F[用户体验提升]
         D --> G[SLA 达标率提升]
-        
+
         E --> H[总体成本降低 50%]
         F --> H
         G --> H
     end
-    
+
     style H fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
@@ -670,26 +698,26 @@ graph TB
 graph LR
     subgraph "Nexmark 测试环境"
         A[Nexmark Data Generator] -->|Kafka| B[Source]
-        
+
         subgraph "Flash 集群"
             F1[JobManager] --> F2[TaskManager]
             F2 --> F3[Falcon Runtime]
             F3 --> F4[ForStDB Storage]
         end
-        
+
         subgraph "Flink 集群"
             K1[JobManager] --> K2[TaskManager]
             K2 --> K3[Java Runtime]
             K3 --> K4[RocksDB State]
         end
-        
+
         B -->|相同数据| F2
         B -->|相同数据| K2
-        
+
         F2 -->|Metrics| M[监控系统]
         K2 -->|Metrics| M
     end
-    
+
     style F3 fill:#9f9,stroke:#333
     style K3 fill:#ff9,stroke:#333
 ```
@@ -698,25 +726,15 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Nexmark Benchmark, "Nexmark: A Benchmark for Queries Over Continuous Data Streams", GitHub. https://github.com/nexmark/nexmark
 
-[^2]: "NexMark — A Benchmark for Queries over Data Streams", Tucker et al., 2008.
 
-[^3]: Alibaba Cloud, "Flash: A Next-gen Vectorized Stream Processing Engine Compatible with Apache Flink", 2024. https://www.alibabacloud.com/blog/flash-a-next-gen-vectorized-stream-processing-engine-compatible-with-apache-flink_602088
 
-[^4]: TPC-DS Specification, "TPC Benchmark DS — Standard Specification Version 3.2", Transaction Processing Performance Council, 2022.
 
-[^5]: Apache Flink, "Apache Flink 1.19 Documentation", https://nightlies.apache.org/flink/flink-docs-release-1.19/
 
-[^6]: Apache Spark, "Apache Spark 3.4 Documentation", https://spark.apache.org/docs/3.4.0/
 
-[^7]: "Volcano-An Extensible and Parallel Query Evaluation System", Graefe et al., IEEE TKDE 1994.
 
-[^8]: "Efficiently Compiling Efficient Query Plans for Modern Hardware", Leis et al., PVLDB 2014.
 
-[^9]: "MonetDB/X100: Hyper-Pipelining Query Execution", Boncz et al., CIDR 2005.
 
-[^10]: ARM Learning Path, "Benchmark the performance of Flink on Arm servers", https://learn.arm.com/learning-paths/servers-and-cloud-computing/flink/
 
 ---
 

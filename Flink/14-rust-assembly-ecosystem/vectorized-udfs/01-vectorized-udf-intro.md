@@ -15,6 +15,7 @@ $$
 $$
 
 其中：
+
 - $F_{batch}: \mathbb{V}^n \rightarrow \mathbb{V}^m$ 为批处理函数，输入输出均为向量/数组
 - $B \in \mathbb{Z}^+$ 为批大小（Batch Size），决定每次处理的记录数
 - $\mathcal{A}$ 为 Arrow 列式格式表示的内存布局
@@ -39,6 +40,7 @@ $$
 $$
 
 其中：
+
 - $w$: SIMD 寄存器位宽
 - $l$: SIMD 指令集级别
 - $n$: 单次指令可处理的数据元素个数
@@ -52,6 +54,7 @@ $$
 $$
 
 其中：
+
 - $t_{row}$: 单条记录处理时间（含函数调用开销）
 - $t_{batch}$: 批次调度开销
 - $t_{compute}$: 单条记录实际计算时间
@@ -63,10 +66,10 @@ graph TB
     subgraph FlinkRuntime["Flink Runtime"]
         SQL["SQL Planner"]
         OPT["Vectorization Optimizer"]
-        
+
         subgraph TaskManager["TaskManager"]
             OP["Vectorized Operator"]
-            
+
             subgraph ArrowLayer["Apache Arrow Layer"]
                 ARR_COL["Columnar Buffers"]
                 DICT["Dictionary Encoding"]
@@ -74,28 +77,28 @@ graph TB
             end
         end
     end
-    
+
     subgraph NativeEngine["Native Execution Engine"]
         subgraph SIMDProcessor["SIMD Processor"]
             AVX["AVX2/AVX-512 Units"]
             REG["Vector Registers<br/>256/512-bit"]
         end
-        
+
         UDF_IMPL["Vectorized UDF<br/>(Rust/C++/Assembly)"]
         CACHE["L1/L2/L3 Cache"]
     end
-    
+
     SQL --> OPT
     OPT --> OP
     OP --> ARR_COL
     ARR_COL -->|"Zero-Copy View"| UDF_IMPL
     DICT --> ARR_COL
     VALIDITY --> ARR_COL
-    
+
     UDF_IMPL --> AVX
     AVX --> REG
     REG --> CACHE
-    
+
     UDF_IMPL -->|"Results"| ARR_COL
 ```
 
@@ -112,12 +115,13 @@ $$
 $$
 
 其中：
+
 - $t_{call}$: 标量函数调用开销（边界检查、栈帧管理）
 - $t_{compute}$: 实际计算时间
 - $B_{opt}$: 最优批大小
 - $t_{setup}$: SIMD 寄存器准备开销
 
-**Proof Sketch**: 
+**Proof Sketch**:
 
 标量执行总时间：$T_{scalar} = n \cdot (t_{call} + t_{compute})$
 
@@ -159,19 +163,19 @@ graph LR
         VECTOR["Vectorized UDF<br/>Batch处理"]
         BATCH["Batch UDF<br/>全量处理"]
     end
-    
+
     subgraph Engines["执行引擎"]
         JVM["Flink JVM<br/>Interpreted"]
         CODEGEN["Flink CodeGen<br/>Janino"]
         NATIVE["Native Engine<br/>Velox/Gluten"]
         CUSTOM["Custom SIMD<br/>Rust/Assembly"]
     end
-    
+
     subgraph Formats["内存格式"]
         ROW["Row-based<br/>BinaryRow"]
         ARROW["Columnar<br/>Apache Arrow"]
     end
-    
+
     SCALAR --> JVM
     SCALAR --> ROW
     VECTOR --> CODEGEN
@@ -179,7 +183,7 @@ graph LR
     BATCH --> NATIVE
     BATCH --> ARROW
     CUSTOM --> ARROW
-    
+
     JVM -.->|"进化"| CODEGEN
     CODEGEN -.->|"进化"| NATIVE
     NATIVE -.->|"优化"| CUSTOM
@@ -208,29 +212,29 @@ graph TB
         CSV["CSV/JSON"]
         KAFKA["Kafka Streams"]
     end
-    
+
     subgraph ArrowEcosystem["Apache Arrow 生态"]
         ARROW["Arrow Columnar Format"]
         FLIGHT["Arrow Flight<br/>RPC Protocol"]
         DATAFUSION["DataFusion<br/>Query Engine"]
         BALLISTA["Ballista<br/>Distributed"]
     end
-    
+
     subgraph FlinkIntegration["Flink 集成层"]
         FLINK_ARROW["Flink-Arrow Bridge"]
         VEC_UDF["Vectorized UDF Runtime"]
         GLUTEN["Gluten + Velox"]
     end
-    
+
     PARQUET --> ARROW
     ORC --> ARROW
     CSV --> ARROW
     KAFKA --> ARROW
-    
+
     ARROW --> FLIGHT
     ARROW --> DATAFUSION
     DATAFUSION --> BALLISTA
-    
+
     ARROW --> FLINK_ARROW
     FLINK_ARROW --> VEC_UDF
     FLINK_ARROW --> GLUTEN
@@ -254,6 +258,7 @@ Task \in VectorizedUDF \iff \begin{cases}
 $$
 
 其中：
+
 - $\mathcal{C}_{compute}$: 任务计算复杂度评估
 - $\mathcal{C}_{batch}$: 任务是否天然适合批处理（如聚合、排序）
 - $|Task|$: 数据量大小
@@ -302,6 +307,7 @@ $$
 设标量执行时间为：$T_{scalar} = n \cdot (t_{call} + t_{compute})$
 
 向量化执行包含三部分：
+
 1. 批次调度：$T_{sched} = \frac{n}{B} \cdot t_{overhead}$
 2. SIMD 计算：$T_{simd} = n \cdot \frac{t_{compute}}{n_{simd}}$
 3. 收尾处理（非 SIMD 部分）：$T_{tail} = n \cdot \alpha \cdot t_{compute}$
@@ -337,15 +343,15 @@ flowchart TD
     G -->|低| I{数据量?}
     I -->|大| H
     I -->|小| E
-    
+
     H --> J[选择批大小]
     J -->|实时| K[100-1K]
     J -->|分析| L[10K-100K]
-    
+
     K --> M[配置 Arrow]
     L --> M
     M --> N[实现 SIMD Kernel]
-    
+
     E --> O[标准 Python/Java UDF]
     F --> P[Flink MiniBatch]
 ```
@@ -377,13 +383,13 @@ import numpy as np
 # 示例 1: 向量化数学运算 UDF
 # ============================================
 
-@udf(result_type=DataTypes.DOUBLE(), 
+@udf(result_type=DataTypes.DOUBLE(),
      func_type='pandas',  # 关键：启用向量化模式
      udf_type='scalar')
 def vec_math_op(x: pd.Series) -> pd.Series:
     """
     向量化数学运算：计算 (x^2 + 2x + 1) / log(x+2)
-    
+
     相比标量版本，性能提升 10-50x
     """
     return (x ** 2 + 2 * x + 1) / np.log(x + 2)
@@ -398,7 +404,7 @@ def vec_math_op(x: pd.Series) -> pd.Series:
 def vec_string_normalize(texts: pd.Series) -> pd.Series:
     """
     向量化字符串规范化
-    
+
     使用 Pandas 的 str 访问器进行批量处理
     """
     # 转为小写、去除首尾空格、替换多空格为单空格
@@ -417,7 +423,7 @@ def vec_string_normalize(texts: pd.Series) -> pd.Series:
 def vec_risk_grade(scores: pd.Series) -> pd.Series:
     """
     向量化风险等级评定
-    
+
     使用 Pandas where/select 实现批量条件判断
     """
     conditions = [
@@ -427,7 +433,7 @@ def vec_risk_grade(scores: pd.Series) -> pd.Series:
         scores >= 30
     ]
     choices = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
-    
+
     return pd.Series(np.select(conditions, choices, default='SAFE'))
 
 
@@ -438,12 +444,12 @@ def vec_risk_grade(scores: pd.Series) -> pd.Series:
 @udf(result_type=DataTypes.DOUBLE(),
      func_type='pandas')
 def vec_weighted_score(
-    scores: pd.Series, 
+    scores: pd.Series,
     weights: pd.Series
 ) -> pd.Series:
     """
     向量化加权分数计算
-    
+
     同时处理多个列的批量数据
     """
     # 归一化权重
@@ -460,20 +466,20 @@ def main():
     # 创建 Table Environment
     env_settings = EnvironmentSettings.in_streaming_mode()
     t_env = TableEnvironment.create(env_settings)
-    
+
     # 配置向量化执行参数
     config = t_env.get_config()
     config.set('python.fn-execution.bundle.size', '10000')
     config.set('python.fn-execution.bundle.time', '1000')
     config.set('python.fn-execution.arrow.batch.size', '10000')
     config.set('python.fn-execution.memory.managed', 'true')
-    
+
     # 注册 UDF
     t_env.create_temporary_function('vec_math_op', vec_math_op)
     t_env.create_temporary_function('vec_string_normalize', vec_string_normalize)
     t_env.create_temporary_function('vec_risk_grade', vec_risk_grade)
     t_env.create_temporary_function('vec_weighted_score', vec_weighted_score)
-    
+
     # 创建示例表
     t_env.execute_sql("""
         CREATE TABLE sensor_data (
@@ -490,10 +496,10 @@ def main():
             'format' = 'json'
         )
     """)
-    
+
     # 使用向量化 UDF 进行查询
     result = t_env.execute_sql("""
-        SELECT 
+        SELECT
             sensor_id,
             vec_math_op(reading) AS normalized_reading,
             vec_risk_grade(reading) AS risk_level,
@@ -502,7 +508,7 @@ def main():
         FROM sensor_data
         WHERE event_time > TIMESTAMP '2026-01-01'
     """)
-    
+
     result.print()
 
 
@@ -524,43 +530,43 @@ use arrow::compute::kernels::comparison::*;
 use std::sync::Arc;
 
 /// 向量化数学运算 UDF - Rust 实现
-/// 
+///
 /// 计算: (x^2 + 2x + 1) / ln(x + 2)
 pub fn vec_math_op_rust(input: &Float64Array) -> Result<Float64Array, ArrowError> {
     // x^2
     let x_squared = multiply(input, input)?;
-    
+
     // 2x
     let two_x = multiply_scalar(input, 2.0)?;
-    
+
     // x^2 + 2x + 1
-    let numerator = add(&add(&x_squared, &two_x)?, 
+    let numerator = add(&add(&x_squared, &two_x)?,
                         &Float64Array::from(vec![1.0; input.len()]))?;
-    
+
     // ln(x + 2)
     let x_plus_2 = add_scalar(input, 2.0)?;
     let denominator = arrow::compute::kernels::numeric::ln(&x_plus_2)?;
-    
+
     // 最终结果
     divide(&numerator, &denominator)
 }
 
 /// 向量化风险等级评定 - Rust 实现
-/// 
+///
 /// 使用 Arrow 的比较内核实现批量条件判断
 pub fn vec_risk_grade_rust(scores: &Float64Array) -> Result<StringArray, ArrowError> {
     let len = scores.len();
     let mut grades: Vec<Option<String>> = Vec::with_capacity(len);
-    
+
     // SIMD 友好的批量比较
     let mask_critical = gt_eq_scalar(scores, 90.0)?;
-    let mask_high = and(&lt_scalar(scores, 90.0)?, 
+    let mask_high = and(&lt_scalar(scores, 90.0)?,
                          &gt_eq_scalar(scores, 70.0)?)?;
-    let mask_medium = and(&lt_scalar(scores, 70.0)?, 
+    let mask_medium = and(&lt_scalar(scores, 70.0)?,
                            &gt_eq_scalar(scores, 50.0)?)?;
-    let mask_low = and(&lt_scalar(scores, 50.0)?, 
+    let mask_low = and(&lt_scalar(scores, 50.0)?,
                         &gt_eq_scalar(scores, 30.0)?)?;
-    
+
     for i in 0..len {
         if scores.is_null(i) {
             grades.push(None);
@@ -576,40 +582,40 @@ pub fn vec_risk_grade_rust(scores: &Float64Array) -> Result<StringArray, ArrowEr
             grades.push(Some("SAFE".to_string()));
         }
     }
-    
+
     Ok(StringArray::from(grades))
 }
 
 /// SIMD 优化的向量点积计算
-/// 
+///
 /// 使用 AVX2/AVX-512 指令集加速
 #[cfg(target_arch = "x86_64")]
 pub fn simd_dot_product(a: &[f64], b: &[f64]) -> f64 {
     use std::arch::x86_64::*;
-    
+
     assert_eq!(a.len(), b.len());
-    
+
     let len = a.len();
     let mut sum = 0.0;
-    
+
     // AVX-512: 512-bit = 8 x f64
     // AVX2: 256-bit = 4 x f64
-    
+
     unsafe {
         if is_x86_feature_detected!("avx512f") {
             // AVX-512 实现
             let mut acc = _mm512_setzero_pd();
             let mut i = 0;
-            
+
             while i + 8 <= len {
                 let va = _mm512_loadu_pd(a.as_ptr().add(i));
                 let vb = _mm512_loadu_pd(b.as_ptr().add(i));
                 acc = _mm512_fmadd_pd(va, vb, acc);
                 i += 8;
             }
-            
+
             sum += _mm512_reduce_add_pd(acc);
-            
+
             // 处理剩余元素
             for j in i..len {
                 sum += a[j] * b[j];
@@ -618,21 +624,21 @@ pub fn simd_dot_product(a: &[f64], b: &[f64]) -> f64 {
             // AVX2 实现
             let mut acc = _mm256_setzero_pd();
             let mut i = 0;
-            
+
             while i + 4 <= len {
                 let va = _mm256_loadu_pd(a.as_ptr().add(i));
                 let vb = _mm256_loadu_pd(b.as_ptr().add(i));
                 acc = _mm256_fmadd_pd(va, vb, acc);
                 i += 4;
             }
-            
+
             // 水平求和
             let hi = _mm256_extractf128_pd(acc, 1);
             let lo = _mm256_extractf128_pd(acc, 0);
             let sum128 = _mm_add_pd(hi, lo);
             let sum64 = _mm_add_sd(sum128, _mm_unpackhi_pd(sum128, sum128));
             sum += _mm_cvtsd_f64(sum64);
-            
+
             // 处理剩余元素
             for j in i..len {
                 sum += a[j] * b[j];
@@ -644,7 +650,7 @@ pub fn simd_dot_product(a: &[f64], b: &[f64]) -> f64 {
             }
         }
     }
-    
+
     sum
 }
 
@@ -656,33 +662,33 @@ pub fn simd_dot_product(a: &[f64], b: &[f64]) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_vec_math_op() {
         let input = Float64Array::from(vec![1.0, 2.0, 3.0, 4.0]);
         let result = vec_math_op_rust(&input).unwrap();
-        
+
         // 验证: (1^2 + 2*1 + 1) / ln(3) = 4 / 1.0986 ≈ 3.64
         assert!((result.value(0) - 3.64).abs() < 0.01);
     }
-    
+
     #[test]
     fn test_vec_risk_grade() {
         let scores = Float64Array::from(vec![95.0, 75.0, 55.0, 35.0, 15.0]);
         let result = vec_risk_grade_rust(&scores).unwrap();
-        
+
         assert_eq!(result.value(0), "CRITICAL");
         assert_eq!(result.value(1), "HIGH");
         assert_eq!(result.value(2), "MEDIUM");
         assert_eq!(result.value(3), "LOW");
         assert_eq!(result.value(4), "SAFE");
     }
-    
+
     #[test]
     fn test_simd_dot_product() {
         let a = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
         let b = vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
-        
+
         let result = simd_dot_product(&a, &b);
         assert_eq!(result, 36.0); // 1+2+3+4+5+6+7+8 = 36
     }
@@ -708,11 +714,11 @@ import matplotlib.pyplot as plt
 
 class VectorizedUDFBenchmark:
     """向量化 UDF 性能测试套件"""
-    
+
     def __init__(self, data_sizes: List[int] = None):
         self.data_sizes = data_sizes or [100, 1000, 10000, 100000, 1000000]
         self.results = {}
-        
+
     def generate_data(self, size: int) -> pd.DataFrame:
         """生成测试数据"""
         np.random.seed(42)
@@ -722,46 +728,46 @@ class VectorizedUDFBenchmark:
             'weight': np.random.uniform(0.1, 2.0, size),
             'category': np.random.choice(['A', 'B', 'C', 'D'], size)
         })
-    
+
     # ============================================
     # 测试用例 1: 数学运算
     # ============================================
-    
+
     @staticmethod
     def scalar_math_op(x: float) -> float:
         """标量版本：复杂数学运算"""
         import math
         return (x ** 2 + 2 * x + 1) / math.log(x + 2) if x > -2 else 0
-    
+
     @staticmethod
     def vectorized_math_op(x: pd.Series) -> pd.Series:
         """向量化版本：复杂数学运算"""
         return (x ** 2 + 2 * x + 1) / np.log(x + 2)
-    
+
     def benchmark_math_op(self, df: pd.DataFrame, iterations: int = 5):
         """测试数学运算性能"""
         # 标量版本
         def scalar_test():
             return [self.scalar_math_op(x) for x in df['value']]
-        
+
         scalar_time = timeit.timeit(scalar_test, number=iterations) / iterations
-        
+
         # 向量化版本
         def vectorized_test():
             return self.vectorized_math_op(df['value'])
-        
+
         vectorized_time = timeit.timeit(vectorized_test, number=iterations) / iterations
-        
+
         return {
             'scalar_ms': scalar_time * 1000,
             'vectorized_ms': vectorized_time * 1000,
             'speedup': scalar_time / vectorized_time
         }
-    
+
     # ============================================
     # 测试用例 2: 条件判断
     # ============================================
-    
+
     @staticmethod
     def scalar_risk_grade(score: float) -> str:
         """标量版本：风险等级评定"""
@@ -775,7 +781,7 @@ class VectorizedUDFBenchmark:
             return 'LOW'
         else:
             return 'SAFE'
-    
+
     @staticmethod
     def vectorized_risk_grade(scores: pd.Series) -> pd.Series:
         """向量化版本：风险等级评定"""
@@ -787,76 +793,76 @@ class VectorizedUDFBenchmark:
         ]
         choices = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
         return pd.Series(np.select(conditions, choices, default='SAFE'))
-    
+
     def benchmark_risk_grade(self, df: pd.DataFrame, iterations: int = 5):
         """测试条件判断性能"""
         # 标量版本
         def scalar_test():
             return [self.scalar_risk_grade(s) for s in df['value']]
-        
+
         scalar_time = timeit.timeit(scalar_test, number=iterations) / iterations
-        
+
         # 向量化版本
         def vectorized_test():
             return self.vectorized_risk_grade(df['value'])
-        
+
         vectorized_time = timeit.timeit(vectorized_test, number=iterations) / iterations
-        
+
         return {
             'scalar_ms': scalar_time * 1000,
             'vectorized_ms': vectorized_time * 1000,
             'speedup': scalar_time / vectorized_time
         }
-    
+
     # ============================================
     # 测试用例 3: 字符串处理
     # ============================================
-    
+
     @staticmethod
     def scalar_string_ops(s: str) -> str:
         """标量版本：字符串处理"""
         return ' '.join(s.lower().strip().split())
-    
+
     @staticmethod
     def vectorized_string_ops(s: pd.Series) -> pd.Series:
         """向量化版本：字符串处理"""
         return s.str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
-    
+
     def benchmark_string_ops(self, df: pd.DataFrame, iterations: int = 5):
         """测试字符串处理性能"""
         # 生成随机字符串
         strings = pd.Series(['  Hello  World  '] * len(df))
-        
+
         # 标量版本
         def scalar_test():
             return [self.scalar_string_ops(s) for s in strings]
-        
+
         scalar_time = timeit.timeit(scalar_test, number=iterations) / iterations
-        
+
         # 向量化版本
         def vectorized_test():
             return self.vectorized_string_ops(strings)
-        
+
         vectorized_time = timeit.timeit(vectorized_test, number=iterations) / iterations
-        
+
         return {
             'scalar_ms': scalar_time * 1000,
             'vectorized_ms': vectorized_time * 1000,
             'speedup': scalar_time / vectorized_time
         }
-    
+
     # ============================================
     # 运行完整基准测试
     # ============================================
-    
+
     def run_full_benchmark(self) -> pd.DataFrame:
         """运行完整性能基准测试"""
         results = []
-        
+
         for size in self.data_sizes:
             print(f"\n测试数据量: {size:,} 条记录")
             df = self.generate_data(size)
-            
+
             # 数学运算测试
             math_result = self.benchmark_math_op(df)
             results.append({
@@ -865,7 +871,7 @@ class VectorizedUDFBenchmark:
                 **math_result
             })
             print(f"  数学运算 - 加速比: {math_result['speedup']:.2f}x")
-            
+
             # 条件判断测试
             risk_result = self.benchmark_risk_grade(df)
             results.append({
@@ -874,7 +880,7 @@ class VectorizedUDFBenchmark:
                 **risk_result
             })
             print(f"  风险评级 - 加速比: {risk_result['speedup']:.2f}x")
-            
+
             # 字符串处理测试
             string_result = self.benchmark_string_ops(df)
             results.append({
@@ -883,20 +889,20 @@ class VectorizedUDFBenchmark:
                 **string_result
             })
             print(f"  字符串处理 - 加速比: {string_result['speedup']:.2f}x")
-        
+
         return pd.DataFrame(results)
-    
+
     def plot_results(self, df: pd.DataFrame):
         """绘制性能对比图"""
         fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-        
+
         # 1. 执行时间对比 (对数坐标)
         ax1 = axes[0, 0]
         for op in df['operation'].unique():
             op_data = df[df['operation'] == op]
-            ax1.plot(op_data['data_size'], op_data['scalar_ms'], 
+            ax1.plot(op_data['data_size'], op_data['scalar_ms'],
                     'o-', label=f'{op} (scalar)')
-            ax1.plot(op_data['data_size'], op_data['vectorized_ms'], 
+            ax1.plot(op_data['data_size'], op_data['vectorized_ms'],
                     's--', label=f'{op} (vectorized)')
         ax1.set_xscale('log')
         ax1.set_yscale('log')
@@ -905,12 +911,12 @@ class VectorizedUDFBenchmark:
         ax1.set_title('Execution Time Comparison')
         ax1.legend()
         ax1.grid(True)
-        
+
         # 2. 加速比
         ax2 = axes[0, 1]
         for op in df['operation'].unique():
             op_data = df[df['operation'] == op]
-            ax2.plot(op_data['data_size'], op_data['speedup'], 
+            ax2.plot(op_data['data_size'], op_data['speedup'],
                     'o-', label=op, linewidth=2)
         ax2.set_xscale('log')
         ax2.set_xlabel('Data Size')
@@ -919,7 +925,7 @@ class VectorizedUDFBenchmark:
         ax2.legend()
         ax2.grid(True)
         ax2.axhline(y=1, color='r', linestyle='--', alpha=0.5)
-        
+
         # 3. 各操作类型加速比对比
         ax3 = axes[1, 0]
         pivot_df = df.pivot(index='data_size', columns='operation', values='speedup')
@@ -929,16 +935,16 @@ class VectorizedUDFBenchmark:
         ax3.set_title('Speedup by Operation Type')
         ax3.legend(title='Operation')
         ax3.grid(True)
-        
+
         # 4. 吞吐量对比
         ax4 = axes[1, 1]
         for op in df['operation'].unique():
             op_data = df[df['operation'] == op]
             scalar_throughput = op_data['data_size'] / (op_data['scalar_ms'] / 1000)
             vectorized_throughput = op_data['data_size'] / (op_data['vectorized_ms'] / 1000)
-            ax4.plot(op_data['data_size'], scalar_throughput / 1000, 
+            ax4.plot(op_data['data_size'], scalar_throughput / 1000,
                     'o-', label=f'{op} (scalar)')
-            ax4.plot(op_data['data_size'], vectorized_throughput / 1000, 
+            ax4.plot(op_data['data_size'], vectorized_throughput / 1000,
                     's--', label=f'{op} (vectorized)')
         ax4.set_xscale('log')
         ax4.set_xlabel('Data Size')
@@ -946,7 +952,7 @@ class VectorizedUDFBenchmark:
         ax4.set_title('Throughput Comparison')
         ax4.legend()
         ax4.grid(True)
-        
+
         plt.tight_layout()
         plt.savefig('vectorized_udf_benchmark.png', dpi=150)
         plt.show()
@@ -958,15 +964,15 @@ if __name__ == '__main__':
         data_sizes=[1000, 10000, 100000, 500000]
     )
     results_df = benchmark.run_full_benchmark()
-    
+
     print("\n" + "="*60)
     print("基准测试汇总")
     print("="*60)
     print(results_df.to_string(index=False))
-    
+
     # 保存结果
     results_df.to_csv('vectorized_udf_benchmark_results.csv', index=False)
-    
+
     # 绘制图表
     try:
         benchmark.plot_results(results_df)
@@ -1006,20 +1012,20 @@ CREATE TABLE user_events (
 );
 
 -- 3. 注册向量化 UDF（Python）
-CREATE FUNCTION vec_normalize 
-AS 'my_udfs.vectorized_normalize' 
+CREATE FUNCTION vec_normalize
+AS 'my_udfs.vectorized_normalize'
 LANGUAGE PYTHON
 WITH (
     'python.archives' = 'hdfs:///flink/udfs/my_udf_env.zip',
     'python.requirements' = 'hdfs:///flink/udfs/requirements.txt'
 );
 
-CREATE FUNCTION vec_risk_score 
-AS 'my_udfs.vectorized_risk_score' 
+CREATE FUNCTION vec_risk_score
+AS 'my_udfs.vectorized_risk_score'
 LANGUAGE PYTHON;
 
-CREATE FUNCTION vec_parse_json 
-AS 'my_udfs.vectorized_json_parser' 
+CREATE FUNCTION vec_parse_json
+AS 'my_udfs.vectorized_json_parser'
 LANGUAGE PYTHON;
 
 -- 4. 创建目标表（Iceberg）
@@ -1039,7 +1045,7 @@ CREATE TABLE processed_events (
 
 -- 5. 使用向量化 UDF 的复杂查询
 INSERT INTO processed_events
-SELECT 
+SELECT
     user_id,
     vec_normalize(value) AS normalized_value,
     vec_risk_score(value, event_type) AS risk_level,
@@ -1064,14 +1070,14 @@ CREATE TABLE risk_summary (
 );
 
 INSERT INTO risk_summary
-SELECT 
+SELECT
     TUMBLE_START(event_time, INTERVAL '1' HOUR) AS window_start,
     TUMBLE_END(event_time, INTERVAL '1' HOUR) AS window_end,
     vec_risk_score(value, event_type) AS risk_level,
     COUNT(DISTINCT user_id) AS user_count,
     AVG(vec_normalize(value)) AS avg_value
 FROM user_events
-GROUP BY 
+GROUP BY
     TUMBLE(event_time, INTERVAL '1' HOUR),
     vec_risk_score(value, event_type);
 ```
@@ -1091,46 +1097,46 @@ graph TB
         DOTS["..."]
         ROWn["Row N: {id:N, val:xx.x}"]
     end
-    
+
     subgraph Buffer["Batch Buffer<br/>Size = B"]
         BATCH["Batch Data"]
     end
-    
+
     subgraph Arrow["Apache Arrow Conversion"]
         COL1["Column: id<br/>[1, 2, 3, ..., N]"]
         COL2["Column: val<br/>[10.5, 20.3, 15.7, ...]"]
         VALIDITY["Validity Bitmap<br/>[1, 1, 1, ..., 1]"]
     end
-    
+
     subgraph SIMD["SIMD Processing"]
         REG1["AVX-512 Register 1<br/>val[0:7]"]
         REG2["AVX-512 Register 2<br/>val[8:15]"]
         REGn["..."]
         OP["FMA Operation<br/>(a*b+c)"]
     end
-    
+
     subgraph Output["Output"]
         OUT["Result Column<br/>[f(10.5), f(20.3), ...]"]
     end
-    
+
     ROW1 --> BATCH
     ROW2 --> BATCH
     ROW3 --> BATCH
     ROWn --> BATCH
-    
+
     BATCH --> COL1
     BATCH --> COL2
     COL1 --> VALIDITY
     COL2 --> VALIDITY
-    
+
     COL2 --> REG1
     COL2 --> REG2
     COL2 --> REGn
-    
+
     REG1 --> OP
     REG2 --> OP
     REGn --> OP
-    
+
     OP --> OUT
 ```
 
@@ -1151,30 +1157,30 @@ xychart-beta
 ```mermaid
 flowchart TD
     START([开始优化]) --> BATCH{批大小优化?}
-    
+
     BATCH -->|是| BS[选择合适批大小<br/>1000-10000]
     BS --> ARROW{Arrow配置?}
-    
+
     BATCH -->|否| ARROW
-    
+
     ARROW -->|是| AC[启用Arrow格式<br/>优化内存布局]
     AC --> SIMD{SIMD可用?}
-    
+
     ARROW -->|否| SIMD
-    
+
     SIMD -->|是| SK[编写SIMD Kernel<br/>Rust/Assembly]
     SK --> CACHE{缓存优化?}
-    
+
     SIMD -->|否| CACHE
-    
+
     CACHE -->|是| CO[列式存储<br/>预取优化]
     CO --> PROF{性能分析?}
-    
+
     CACHE -->|否| PROF
-    
+
     PROF -->|是| PA[使用perf/VTune<br/>分析热点]
     PA --> DONE([优化完成])
-    
+
     PROF -->|否| DONE
 ```
 
@@ -1186,60 +1192,60 @@ graph TB
         SQL["SQL/Table API"]
         PY["PyFlink"]
     end
-    
+
     subgraph Planner["Flink Planner"]
         PARSER["SQL Parser"]
         OPTIMIZER["Vectorization Optimizer"]
         CODEGEN["Code Generator"]
     end
-    
+
     subgraph Runtime["Flink Runtime"]
         TM["TaskManager"]
-        
+
         subgraph Operators["Operators"]
             VEC_OP["Vectorized Operator"]
             SCAN["Vectorized Scan"]
             FILTER["Vectorized Filter"]
             PROJECT["Vectorized Project"]
         end
-        
+
         subgraph Memory["Memory Management"]
             ARROW_BUF["Arrow Buffers"]
             OFF_HEAP["Off-Heap Memory"]
             POOL["Buffer Pool"]
         end
     end
-    
+
     subgraph Native["Native Layer"]
         GLUTEN["Gluten"]
         VELOX["Velox Engine"]
         ARROW_COMPUTE["Arrow Compute"]
-        
+
         subgraph SIMD_Engines["SIMD Engines"]
             RUST["Rust SIMD"]
             CPP["C++ AVX-512"]
             ASM["Assembly Optimized"]
         end
     end
-    
+
     SQL --> PARSER
     PY --> PARSER
     PARSER --> OPTIMIZER
     OPTIMIZER --> CODEGEN
     CODEGEN --> VEC_OP
-    
+
     VEC_OP --> ARROW_BUF
     SCAN --> ARROW_BUF
     FILTER --> ARROW_BUF
     PROJECT --> ARROW_BUF
-    
+
     ARROW_BUF --> OFF_HEAP
     OFF_HEAP --> POOL
-    
+
     ARROW_BUF --> GLUTEN
     GLUTEN --> VELOX
     VELOX --> ARROW_COMPUTE
-    
+
     ARROW_COMPUTE --> RUST
     ARROW_COMPUTE --> CPP
     ARROW_COMPUTE --> ASM
@@ -1249,29 +1255,17 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Arrow Documentation, "Columnar Format Specification", 2025. https://arrow.apache.org/docs/format/Columnar.html
 
-[^2]: Apache Flink Documentation, "Python Vectorized UDFs", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/vectorized_python_udfs/
 
-[^3]: Wes McKinney, "Apache Arrow and the Future of Data Frames", 2024. https://wesmckinney.com/blog/arrow-future/
 
-[^4]: Meta Engineering, "Velox: Meta's Unified Execution Engine", 2024. https://engineering.fb.com/2023/08/21/open-source/velox/
 
-[^5]: Gluten Project Documentation, "Gluten: A Middle Layer for Offloading JVM-based SQL Engines", 2025. https://github.com/apache/incubator-gluten
 
-[^6]: Intel Corporation, "Intel Intrinsics Guide", 2025. https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html
 
-[^7]: Rust SIMD Working Group, "Portable SIMD in Rust", 2025. https://doc.rust-lang.org/std/simd/index.html
 
-[^8]: Daniel J. Abadi et al., "The Seattle Report on Database Research", SIGMOD Record, 2024.
 
-[^9]: T. Neumann, "Efficiently Compiling Efficient Query Plans for Modern Hardware", PVLDB, 2011.
 
-[^10]: Apache Arrow Rust Documentation, "arrow-rs: Rust Implementation of Apache Arrow", 2025. https://docs.rs/arrow/
 
-[^11]: Peter Boncz et al., "MonetDB/X100: Hyper-Pipelining Query Execution", CIDR, 2005.
 
-[^12]: Y. Li et al., "Mainlining Databases: Supporting Fast Transactional Workloads on Universal Columnar Data File Formats", SIGMOD, 2020.
 
 ---
 

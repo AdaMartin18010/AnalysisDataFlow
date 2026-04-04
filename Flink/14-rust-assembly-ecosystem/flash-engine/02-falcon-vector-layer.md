@@ -1,7 +1,7 @@
 # Falcon 向量化算子层深度分析
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine  
-> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [SIMD 优化原理](../simd-optimization/)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
+> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [SIMD 优化原理](../simd-optimization/)
 > **形式化等级**: L5（详细工程实现 + 性能分析）
 
 ---
@@ -13,6 +13,7 @@
 **定义**: Falcon 是 Flash 引擎的核心计算层，使用 C++ 实现向量化算子，通过 SIMD 指令集和列式内存布局实现高性能批量数据处理。
 
 **形式化描述**:
+
 ```
 Falcon_Layer := ⟨OpRegistry, VecExecutor, SIMDKernels, MemoryManager⟩
 
@@ -22,6 +23,7 @@ SIMDKernels := {kernel_AVX2, kernel_AVX512, kernel_NEON, ...}
 ```
 
 **算子分类**:
+
 ```
 Falcon_Operators = Stateless_Operators ∪ Stateful_Operators
 
@@ -45,6 +47,7 @@ Stateful_Operators:
 **定义**: SIMD（Single Instruction Multiple Data）内核是针对特定 CPU 指令集优化的计算例程，能够同时处理多个数据元素。
 
 **形式化描述**:
+
 ```
 SIMD_Kernel := ⟨ISA, VectorWidth, Operation, DataType⟩
 
@@ -70,6 +73,7 @@ where N = VectorWidth / DataTypeWidth
 **定义**: 列式批处理格式是一种数据组织方式，将同列数据连续存储，便于 SIMD 加载和缓存高效访问。
 
 **形式化描述**:
+
 ```
 ColumnarBatch := ⟨Schema, [Column₁, Column₂, ..., Columnₙ], Metadata⟩
 
@@ -91,6 +95,7 @@ Column := ⟨DataBuffer, NullBitmap, TypeInfo⟩
 **定义**: 算子融合是将多个连续算子合并为单一内核执行的技术，减少中间数据物化和内存访问。
 
 **形式化描述**:
+
 ```
 Fusion: [op₁, op₂, ..., opₙ] → FusedKernel
 
@@ -112,8 +117,9 @@ MemoryAccessReduction = 1 - (1 / n) where n = fused operators count
 **命题**: SIMD 优化的效果取决于数据类型、操作类型和指令集支持。
 
 **形式化表述**:
+
 ```
-SIMD_Effectiveness(op, dtype, ISA) = 
+SIMD_Effectiveness(op, dtype, ISA) =
     VectorWidth(ISA) / SizeOf(dtype) × ParallelEfficiency(op)
 
 其中 ParallelEfficiency(op) 取值:
@@ -124,6 +130,7 @@ SIMD_Effectiveness(op, dtype, ISA) =
 ```
 
 **实测加速比**（相对于 Java 实现）:
+
 ```
 操作类型      │ AVX2 加速 │ AVX-512 加速 │ 理论上限
 ──────────────┼───────────┼──────────────┼─────────
@@ -141,6 +148,7 @@ SIMD_Effectiveness(op, dtype, ISA) =
 **命题**: 存在最优批大小使得吞吐量最大化，该值受缓存容量和算子复杂度影响。
 
 **形式化表述**:
+
 ```
 Optimal_Batch_Size = f(L1_cache, L2_cache, op_complexity)
 
@@ -164,6 +172,7 @@ d(Throughput)/dB = T_fixed / (T_fixed + T_per_element × B / SIMD_width)² > 0
 **命题**: 列式内存布局在分析型工作负载中的缓存命中率显著高于行式布局。
 
 **形式化表述**:
+
 ```
 Cache_Efficiency = Useful_Data / Cache_Line_Size
 
@@ -246,6 +255,7 @@ Falcon 层采用 Apache Arrow 作为底层列式格式：
 字符串处理是 Flash 引擎优化的重点，典型实现包括：
 
 **案例 1: `LENGTH` 函数向量化**
+
 ```cpp
 // Java 实现 (逐字符)
 int length(String s) {
@@ -266,6 +276,7 @@ void vec_length(__m256i* input, int* output, int n) {
 ```
 
 **案例 2: `SUBSTRING` 函数优化**
+
 ```cpp
 // Java 实现
 String substring(String s, int start, int end) {
@@ -288,6 +299,7 @@ void vec_substring(Column* input, int start, int end, Column* output) {
 时间处理在流计算中极为常见，Flash 提供了极致优化：
 
 **案例: `EXTRACT(YEAR FROM timestamp)`**
+
 ```cpp
 // Java 实现 (Joda-Time / Java 8 Time)
 int extractYear(long epochMillis) {
@@ -317,20 +329,21 @@ class VectorizedHashTable {
 public:
     // 批量查找：返回所有 key 的 value 位置
     void batch_lookup(__m256i* keys, int* results, int n);
-    
+
     // 批量插入：处理冲突的 SIMD 优化
     void batch_insert(__m256i* keys, __m256i* values, int n);
-    
+
 private:
     // 使用 SIMD 计算批量哈希值
     __m256i batch_hash(__m256i* keys, int n);
-    
+
     // 使用 SIMD 比较批量 key
     __m256i batch_compare(__m256i* keys1, __m256i* keys2, int n);
 };
 ```
 
 **性能提升**:
+
 - 批量哈希计算: 6-8x
 - 批量键比较: 8-12x
 - 整体 Join 性能: 3-5x
@@ -346,11 +359,13 @@ private:
 **证明**:
 
 **步骤 1**: 定义参数
+
 - $W$: SIMD 寄存器位宽（AVX2: 256, AVX-512: 512）
 - $w$: 单个数据元素位宽（int32: 32, int64: 64）
 - $N = W/w$: 每个寄存器可容纳的元素数量
 
 **步骤 2**: 比较标量与向量执行
+
 ```
 标量执行 n 个元素:
 T_scalar = n × (t_load + t_compute + t_store)
@@ -365,6 +380,7 @@ T_vector = (n/N) × (t_load + t_compute + t_store + t_overhead)
 ```
 
 **步骤 3**: 计算加速比
+
 ```
 Speedup = T_scalar / T_vector
         = N × (t_load + t_compute + t_store) / (t_load + t_compute + t_store + t_overhead)
@@ -377,6 +393,7 @@ Speedup_actual = 0.6 × N ~ 0.8 × N
 ```
 
 **验证**:
+
 ```
 AVX-512 + int32:
 N = 512/32 = 16
@@ -394,6 +411,7 @@ Speedup_actual ∈ [2.4x, 3.2x] （与实测一致）
 **证明**:
 
 **步骤 1**: 行式存储分析
+
 ```
 假设:
 - 表有 m 列，每列平均宽度 w bytes
@@ -411,6 +429,7 @@ Data_loaded_row = C × (k / (C/R)) = k × R = k × m × w
 ```
 
 **步骤 2**: 列式存储分析
+
 ```
 列式存储每列连续存储
 
@@ -422,6 +441,7 @@ Data_loaded_col ≈ k × w × n （n 为行数，按需求加载）
 ```
 
 **步骤 3**: 效率比
+
 ```
 η_col / η_row = 1 / (1/m) = m
 
@@ -436,6 +456,7 @@ Data_loaded_col ≈ k × w × n （n 为行数，按需求加载）
 ### 6.1 典型算子实现代码示例
 
 **Filter 算子向量化实现**:
+
 ```cpp
 // Falcon Filter 算子
 class VecFilterOperator : public VectorizedOperator {
@@ -444,23 +465,23 @@ public:
         // 1. 向量化谓词求值
         SelectionVector selected;
         eval_predicate_simd(input, predicate_, &selected);
-        
+
         // 2. 压缩选择：保留满足条件的行
         ColumnarBatch filtered;
         compress_selection(input, selected, &filtered);
-        
+
         *output = std::move(filtered);
         return Status::OK();
     }
 
 private:
     // SIMD 谓词求值
-    void eval_predicate_simd(const ColumnarBatch& batch, 
+    void eval_predicate_simd(const ColumnarBatch& batch,
                              const Expr& pred,
                              SelectionVector* selected) {
         const int n = batch.num_rows();
         selected->resize(n);
-        
+
         // 使用 AVX2 批量比较
         for (int i = 0; i < n; i += 8) {
             __m256i vals = batch.column(0)->load_int32x8(i);
@@ -473,6 +494,7 @@ private:
 ```
 
 **Aggregate 算子向量化实现**:
+
 ```cpp
 // 分组聚合的 SIMD 优化
 class VecAggregateOperator : public VectorizedOperator {
@@ -481,17 +503,17 @@ public:
         // 1. 批量计算哈希值
         Column hash_values;
         batch_hash(input.group_by_columns(), &hash_values);
-        
+
         // 2. 向量化哈希表查找/插入
         VectorizedHashTable ht;
         std::vector<int> group_ids;
         ht.batch_lookup_or_insert(hash_values, &group_ids);
-        
+
         // 3. SIMD 聚合更新
         for (auto& agg : aggregates_) {
             simd_update_accumulators(agg, input, group_ids);
         }
-        
+
         // 4. 输出结果
         ht.to_batch(output);
         return Status::OK();
@@ -544,25 +566,25 @@ GC 开销           │ 128 MB     │ 0          │ -100%
 ```mermaid
 flowchart TD
     A[输入批次<br/>ColumnarBatch] --> B{算子类型}
-    
+
     B -->|Stateless| C[Filter/Project/Calc]
     B -->|Stateful| D[Aggregate/Join/Window]
-    
+
     C --> C1[谓词求值<br/>SIMD Compare]
     C --> C2[列选择<br/>Zero Copy]
     C --> C3[表达式计算<br/>SIMD Arithmetic]
-    
+
     D --> D1[哈希计算<br/>SIMD Hash]
     D --> D2[状态查找<br/>Vectorized HT]
     D --> D3[累加更新<br/>SIMD Accumulate]
-    
+
     C1 --> E[输出批次<br/>ColumnarBatch]
     C2 --> E
     C3 --> E
     D1 --> E
     D2 --> E
     D3 --> E
-    
+
     style C fill:#9f9,stroke:#333
     style D fill:#ff9,stroke:#333
     style E fill:#99f,stroke:#333
@@ -579,14 +601,14 @@ graph LR
         S6 --> S7[ADD] --> S8[Store C[1]]
         S8 --> S9[...]
     end
-    
+
     subgraph "SIMD 执行 AVX2"
         V1[Load A[0:7]] --> V2[Load B[0:7]]
         V2 --> V3[VADD] --> V4[Store C[0:7]]
         V4 --> V5[Load A[8:15]] --> V6[Load B[8:15]]
         V6 --> V7[VADD] --> V8[Store C[8:15]]
     end
-    
+
     style V3 fill:#f99,stroke:#333,stroke-width:2px
     style V7 fill:#f99,stroke:#333,stroke-width:2px
 ```
@@ -600,17 +622,17 @@ graph TB
         R2[Row2: id=2, name='Bob', ts=123457, ...]
         R3[Row3: id=3, name='Charlie', ts=123458, ...]
     end
-    
+
     subgraph "列式存储 Column-based"
         C1[id列: 1, 2, 3, ...]
         C2[name列: 'Alice', 'Bob', 'Charlie', ...]
         C3[ts列: 123456, 123457, 123458, ...]
     end
-    
+
     subgraph "SIMD 加载"
         S1[__m256i: 1, 2, 3, 4, 5, 6, 7, 8]
     end
-    
+
     C1 -.->|AVX2 Load| S1
 ```
 
@@ -620,7 +642,7 @@ graph TB
 graph TD
     subgraph "Falcon 算子覆盖度 v1.0"
         direction LR
-        
+
         subgraph "Stateless 95%"
             ST1[Filter ✓]
             ST2[Project ✓]
@@ -628,7 +650,7 @@ graph TD
             ST4[Union ✓]
             ST5[Values ✓]
         end
-        
+
         subgraph "Stateful 70%"
             SF1[HashAggregate ✓]
             SF2[SortAggregate ~]
@@ -638,7 +660,7 @@ graph TD
             SF6[HopWindow ✓]
             SF7[SessionWindow ~]
         end
-        
+
         subgraph "复杂算子 30%"
             CP1[OverAggregate ~]
             CP2[TemporalJoin ✗]
@@ -646,7 +668,7 @@ graph TD
             CP4[LookupJoin ~]
         end
     end
-    
+
     style ST1 fill:#9f9
     style ST2 fill:#9f9
     style ST3 fill:#9f9
@@ -663,11 +685,11 @@ graph TD
     style CP2 fill:#f99
     style CP3 fill:#f99
     style CP4 fill:#ff9
-    
+
     legend1[✓ 完全支持]:::green
     legend2[~ 部分支持]:::yellow
     legend3[✗ 暂不支持]:::red
-    
+
     classDef green fill:#9f9
     classDef yellow fill:#ff9
     classDef red fill:#f99
@@ -677,25 +699,15 @@ graph TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Intel, "Intel 64 and IA-32 Architectures Optimization Reference Manual", 2024.
 
-[^2]: Intel Intrinsics Guide, "SIMD Intrinsics Reference", https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html
 
-[^3]: Apache Arrow, "Columnar In-Memory Format Specification", https://arrow.apache.org/docs/format/Columnar.html
 
-[^4]: Alibaba Cloud, "Flash 引擎技术白皮书", Apsara Conference 2024.
 
-[^5]: "Efficiently Compiling Efficient Query Plans for Modern Hardware", Leis et al., PVLDB 2014.
 
-[^6]: "MonetDB/X100: Hyper-Pipelining Query Execution", Boncz et al., CIDR 2005.
 
-[^7]: "Vectorization vs. Compilation in Query Execution", Kersten et al., PVLDB 2011.
 
-[^8]: "Everything You Always Wanted to Know About Compiled and Vectorized Queries But Were Afraid to Ask", Kersten et al., CIDR 2018.
 
-[^9]: ARM, "Arm NEON Programmer's Guide", https://developer.arm.com/documentation/den0018/latest/
 
-[^10]: "RapidJSON: SIMD-Optimized JSON Parser", https://github.com/Tencent/rapidjson
 
 ---
 

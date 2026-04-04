@@ -13,6 +13,7 @@
 $$\mathcal{M}_{FPGA} = (CLB, DSP, BRAM, IO, Interconnect, Bitstream)$$
 
 其中：
+
 - $CLB$: Configurable Logic Block - 可配置逻辑块，实现组合/时序逻辑
 - $DSP$: Digital Signal Processing slice - 专用乘法/累加单元
 - $BRAM$: Block RAM - 片上存储资源
@@ -47,6 +48,7 @@ $$Exec_{FPGA}: Data_{in} \xrightarrow{Pipeline_{custom}} Data_{out}$$
 $$HLS: \mathcal{P}_{algorithm} \times \mathcal{C}_{constraints} \rightarrow RTL_{circuit}$$
 
 其中约束 $\mathcal{C}_{constraints}$ 包括：
+
 - 时序约束：目标时钟频率 $f_{clk}$
 - 资源约束：可用 $CLB$, $DSP$, $BRAM$ 数量
 - 吞吐约束：目标 II (Initiation Interval)
@@ -102,6 +104,7 @@ $$Accel_{FPGA} = Parse \circ Decode \circ Process_{kernel} \circ Encode \circ Se
 $$System = SW_{host} \oplus HW_{fpga}$$
 
 分工原则：
+
 - $SW_{host}$: 控制流、复杂决策、网络通信
 - $HW_{fpga}$: 数据路径、固定计算、并行处理
 
@@ -155,12 +158,14 @@ $$L_{FPGA} \ll L_{CPU} \approx 100\times T_{clk} \times N_{instructions}$$
 **证明**:
 
 CPU 执行延迟：
+
 - 指令获取/解码: 5-10 cycles
 - 执行: 1-20 cycles
 - 内存访问: 50-200 cycles (缓存未命中)
 - 系统调用/OS 调度: 1000+ cycles
 
 FPGA 执行延迟：
+
 - 数据到达即可处理: 1 cycle/stage
 - 确定性内存访问: BRAM 访问 = 1-2 cycles
 
@@ -168,6 +173,7 @@ FPGA 执行延迟：
 $$L_{FPGA} \approx 10-100ns \ll L_{CPU} \approx 1-10\mu s$$
 
 **工程推论**:
+
 - FPGA 适合微秒级延迟要求的场景
 - 流水线深度应最小化以降低延迟
 - 避免片外内存访问
@@ -183,6 +189,7 @@ $$Throughput_{max} = \frac{f_{clk}}{II_{min}} \times W_{data}$$
 **证明**:
 
 HLS 约束分析：
+
 - 资源约束：$\sum_{i} Resource_i \leq Resource_{available}$
 - 依赖约束：数据依赖导致 $II \geq Latency_{loop}$
 
@@ -191,11 +198,13 @@ HLS 约束分析：
 $$II_{min} = \max(II_{resource}, II_{dependency}, II_{memory})$$
 
 其中：
+
 - $II_{resource} = \lceil \frac{Operations}{Resource_{available}} \rceil$
 - $II_{dependency} = Latency_{feedback}$
 - $II_{memory} = \lceil \frac{AccessRate}{MemoryBandwidth} \rceil$
 
 **工程推论**:
+
 - 循环展开可增加并行度，但增加资源消耗
 - 数组分割可提高访存带宽
 - 数据流架构可解耦任务依赖
@@ -209,10 +218,12 @@ $$\frac{Perf/Watt_{FPGA}}{Perf/Watt_{GPU}} \in [5, 50]$$
 **证明**:
 
 功耗构成：
+
 - $P_{static}$: 静态功耗（漏电流）
 - $P_{dynamic} = \alpha \times C \times V^2 \times f$: 动态功耗
 
 FPGA 优势来源：
+
 1. **无指令获取/解码开销**: 节省 ~30% 功耗
 2. **定制数据宽度**: 只使用需要的位宽
 3. **低时钟频率**: 通常 100-300 MHz vs GPU 1-2 GHz
@@ -262,43 +273,43 @@ graph TB
         Window["Window Operator"]
         Sink["Sink"]
     end
-    
+
     subgraph HostCPU["Host CPU"]
         TM["TaskManager"]
         JNI["JNI Bridge"]
         DMA["DMA Controller"]
     end
-    
+
     subgraph FPGA["FPGA Accelerator Card"]
         subgraph Interface["Interface Layer"]
             PCIe["PCIe Gen4 x16"]
             DDR["DDR4 Memory"]
         end
-        
+
         subgraph KernelRegion["Kernel Region"]
             subgraph Parser["Parser Kernel"]
                 P1["JSON<br/>Parser"]
                 P2["Avro<br/>Decoder"]
             end
-            
+
             subgraph Compute["Compute Kernel"]
                 C1["Filter<br/>Engine"]
                 C2["Aggregation<br/>Unit"]
                 C3["Pattern<br/>Matcher"]
             end
-            
+
             subgraph Output["Output Kernel"]
                 O1["Result<br/>Encoder"]
                 O2["Serializer"]
             end
         end
-        
+
         subgraph Control["Control Logic"]
             Scheduler["Kernel<br/>Scheduler"]
             DMAEng["DMA<br/>Engine"]
         end
     end
-    
+
     Source --> TM
     TM -->|Batch Data| JNI
     JNI -->|Setup DMA| DMA
@@ -342,6 +353,7 @@ graph TB
 $$Speedup_{overall} = \frac{1}{(1 - f_{fpga}) + \frac{f_{fpga}}{Speedup_{fpga}} + Overhead_{comm}}$$
 
 其中：
+
 - $f_{fpga}$: 可 FPGA 加速的比例
 - $Speedup_{fpga}$: FPGA 部分加速比
 - $Overhead_{comm}$: 通信开销
@@ -414,6 +426,7 @@ $$\quad DSP(config) \leq DSP_{available}$$
 $$\quad BRAM(config) \leq BRAM_{available}$$
 
 典型权衡：
+
 - **并行度 vs 频率**: 高并行度可能降低 achievable frequency
 - **流水线深度 vs 延迟**: 深流水线提高吞吐但增加延迟
 - **精度 vs 资源**: 定点数替代浮点数可节省 10x 资源
@@ -516,21 +529,21 @@ void risk_score_kernel(
     #pragma HLS INTERFACE mode=bram port=merchant_risk
     #pragma HLS INTERFACE mode=axis port=in_stream
     #pragma HLS INTERFACE mode=axis port=out_stream
-    
+
     // 流水线：每时钟周期处理一个交易
     #pragma HLS PIPELINE II=1
-    
+
     // 内部缓存（双缓冲）
     #pragma HLS ARRAY_PARTITION variable=rules complete dim=0
     #pragma HLS ARRAY_PARTITION variable=merchant_risk cyclic factor=4
-    
+
     Transaction txn;
     if (!in_stream.empty()) {
         txn = in_stream.read();
-        
+
         // 计算风险分数
         ap_uint<16> risk_score = 0;
-        
+
         // 规则 1: 大额交易检查
         for (int i = 0; i < 10; i++) {
             #pragma HLS UNROLL
@@ -538,15 +551,15 @@ void risk_score_kernel(
                 risk_score += rules[i].risk_weight;
             }
         }
-        
+
         // 规则 2: 商户风险等级
         ap_uint<8> merchant_risk_level = merchant_risk[txn.merchant_id];
         risk_score += merchant_risk_level;
-        
+
         // 规则 3: 时间异常（简化示例）
         ap_uint<1> is_odd_hour = txn.timestamp(3, 0) < 6 || txn.timestamp(3, 0) > 22;
         risk_score += is_odd_hour ? 10 : 0;
-        
+
         // 输出高风险交易 ID
         if (risk_score > 80) {
             out_stream.write(txn.id);
@@ -567,18 +580,18 @@ void risk_score_batch_kernel(
     #pragma HLS INTERFACE mode=m_axi port=out_high_risk offset=slave depth=1024
     #pragma HLS INTERFACE mode=bram port=rules
     #pragma HLS INTERFACE mode=bram port=merchant_risk
-    
+
     // 数据流架构
     #pragma HLS DATAFLOW
-    
+
     hls::stream<Transaction> parse_stream("parse");
     hls::stream<ap_uint<16>> score_stream("score");
     hls::stream<transaction_id_t> result_stream("result");
-    
+
     #pragma HLS STREAM variable=parse_stream depth=16
     #pragma HLS STREAM variable=score_stream depth=16
     #pragma HLS STREAM variable=result_stream depth=16
-    
+
     // 并行处理任务
     parse_batch(in_batch, parse_stream, batch_size);
     score_transactions(parse_stream, score_stream, rules, merchant_risk, batch_size);
@@ -607,29 +620,29 @@ void score_transactions(
     int batch_size
 ) {
     #pragma HLS ARRAY_PARTITION variable=rules complete dim=0
-    
+
     for (int i = 0; i < batch_size; i++) {
         #pragma HLS PIPELINE II=1
         Transaction txn = in_stream.read();
-        
+
         ap_uint<16> score = 0;
-        
+
         // 并行评估多条规则（展开）
         ap_uint<8> rule_scores[10];
         #pragma HLS ARRAY_PARTITION variable=rule_scores complete
-        
+
         for (int r = 0; r < 10; r++) {
             #pragma HLS UNROLL
-            rule_scores[r] = (rules[r].enabled && txn.amount > rules[r].threshold) 
+            rule_scores[r] = (rules[r].enabled && txn.amount > rules[r].threshold)
                             ? rules[r].risk_weight : 0;
         }
-        
+
         // 累加规则分数（树形归约）
         for (int r = 0; r < 10; r++) {
             #pragma HLS UNROLL
             score += rule_scores[r];
         }
-        
+
         score += merchant_risk[txn.merchant_id];
         out_stream.write(score);
     }
@@ -644,17 +657,17 @@ void filter_high_risk(
     int batch_size
 ) {
     ap_uint<16> count = 0;
-    
+
     for (int i = 0; i < batch_size; i++) {
         #pragma HLS PIPELINE II=1
         ap_uint<16> score = score_stream.read();
-        
+
         if (score > 80) {
             out_buffer[count] = i;  // 存储索引
             count++;
         }
     }
-    
+
     out_count = count;
 }
 ```
@@ -720,10 +733,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FpgaRiskFilter extends ScalarFunction {
-    
+
     private static final String XCLBIN_PATH = "/opt/fpga/risk_filter.xclbin";
     private static final String KERNEL_NAME = "risk_score_kernel";
-    
+
     // XRT 运行时对象
     private Device device;
     private Kernel kernel;
@@ -731,57 +744,57 @@ public class FpgaRiskFilter extends ScalarFunction {
     private XclBuffer outBuffer;
     private XclBuffer ruleBuffer;
     private XclBuffer merchantBuffer;
-    
+
     // 批处理大小
     private static final int BATCH_SIZE = 1024;
-    
+
     // 本地缓冲区
     private List<Transaction> batchBuffer = new ArrayList<>();
-    
+
     public void open() {
         try {
             // 初始化 XRT
             device = Device.getDevice(0);
             Xclbin xclbin = device.loadXclbin(XCLBIN_PATH);
             kernel = device.createKernel(xclbin, KERNEL_NAME);
-            
+
             // 分配设备内存
             long inSize = BATCH_SIZE * Transaction.SIZE;
             long outSize = BATCH_SIZE * 8;  // 8 bytes per ID
             long ruleSize = 256 * RiskRule.SIZE;
             long merchantSize = 1024;
-            
+
             inBuffer = device.alloc(inSize, XclBuffer.Flags.HOST_ONLY);
             outBuffer = device.alloc(outSize, XclBuffer.Flags.HOST_ONLY);
             ruleBuffer = device.alloc(ruleSize, XclBuffer.Flags.HOST_ONLY);
             merchantBuffer = device.alloc(merchantSize, XclBuffer.Flags.HOST_ONLY);
-            
+
             // 加载风控规则
             loadRiskRules();
             loadMerchantRisk();
-            
+
         } catch (Exception e) {
             throw new RuntimeException("FPGA initialization failed", e);
         }
     }
-    
+
     public boolean eval(long transactionId, double amount, int merchantId) {
         // 积累批次
         batchBuffer.add(new Transaction(transactionId, amount, merchantId));
-        
+
         if (batchBuffer.size() >= BATCH_SIZE) {
             return processBatch();
         }
-        
+
         // 延迟响应（简化示例）
         return false;
     }
-    
+
     private boolean processBatch() {
         // 准备输入数据
         ByteBuffer inData = inBuffer.asByteBuffer();
         inData.clear();
-        
+
         for (Transaction txn : batchBuffer) {
             inData.putLong(txn.id);
             inData.putDouble(txn.amount);
@@ -789,27 +802,27 @@ public class FpgaRiskFilter extends ScalarFunction {
             inData.putInt(txn.timestamp);
             inData.putShort(txn.userId);
         }
-        
+
         // 同步到设备
         inBuffer.sync(XclBuffer.Direction.HOST_TO_DEVICE);
-        
+
         // 设置 Kernel 参数
         kernel.setArg(0, inBuffer);
         kernel.setArg(1, outBuffer);
         kernel.setArg(2, ruleBuffer);
         kernel.setArg(3, merchantBuffer);
-        
+
         // 启动 Kernel
         Run run = kernel.start();
         run.waitForCompletion();
-        
+
         // 回传结果
         outBuffer.sync(XclBuffer.Direction.DEVICE_TO_HOST);
-        
+
         // 处理输出
         ByteBuffer outData = outBuffer.asByteBuffer();
         outData.clear();
-        
+
         // 解析高风险交易 ID
         List<Long> highRiskIds = new ArrayList<>();
         while (outData.hasRemaining()) {
@@ -818,19 +831,19 @@ public class FpgaRiskFilter extends ScalarFunction {
                 highRiskIds.add(id);
             }
         }
-        
+
         // 清空批次
         batchBuffer.clear();
-        
+
         return !highRiskIds.isEmpty();
     }
-    
+
     public void close() {
         // 处理剩余数据
         if (!batchBuffer.isEmpty()) {
             processBatch();
         }
-        
+
         // 释放资源
         inBuffer.close();
         outBuffer.close();
@@ -839,21 +852,21 @@ public class FpgaRiskFilter extends ScalarFunction {
         kernel.close();
         device.close();
     }
-    
+
     private void loadRiskRules() {
         ByteBuffer rules = ruleBuffer.asByteBuffer();
         rules.clear();
         // 填充风控规则...
         ruleBuffer.sync(XclBuffer.Direction.HOST_TO_DEVICE);
     }
-    
+
     private void loadMerchantRisk() {
         ByteBuffer merchants = merchantBuffer.asByteBuffer();
         merchants.clear();
         // 填充商户风险等级...
         merchantBuffer.sync(XclBuffer.Direction.HOST_TO_DEVICE);
     }
-    
+
     // 内部数据结构
     private static class Transaction {
         static final int SIZE = 8 + 8 + 4 + 4 + 2;  // 26 bytes
@@ -862,7 +875,7 @@ public class FpgaRiskFilter extends ScalarFunction {
         int merchantId;
         int timestamp;
         short userId;
-        
+
         Transaction(long id, double amount, int merchantId) {
             this.id = id;
             this.amount = amount;
@@ -891,15 +904,15 @@ __kernel void risk_score_opencl(
     int num_transactions
 ) {
     int gid = get_global_id(0);
-    
+
     if (gid >= num_transactions) return;
-    
+
     float amount = amounts[gid];
     ushort merchant_id = merchant_ids[gid];
-    
+
     // 计算风险分数
     uchar score = 0;
-    
+
     // 检查阈值规则
     #pragma unroll
     for (int i = 0; i < 10; i++) {
@@ -907,10 +920,10 @@ __kernel void risk_score_opencl(
             score += 5;
         }
     }
-    
+
     // 添加商户风险
     score += merchant_risk[merchant_id];
-    
+
     // 高风险检查
     if (score > 80) {
         int idx = atomic_inc(high_risk_count);
@@ -932,20 +945,20 @@ graph LR
         B["DMA 引擎"]
         C["输入 FIFO"]
     end
-    
+
     subgraph Processing["处理阶段"]
         D["解析 Kernel"]
         E["计算 Kernel 1"]
         F["计算 Kernel 2"]
         G["聚合 Kernel"]
     end
-    
+
     subgraph Output["输出阶段"]
         H["输出 FIFO"]
         I["DMA 回传"]
         J["主机内存"]
     end
-    
+
     subgraph Timing["时序 (时钟周期)"]
         T0["T"]
         T1["T+1"]
@@ -953,9 +966,9 @@ graph LR
         T3["T+3"]
         T4["T+4"]
     end
-    
+
     A --> B --> C --> D --> E --> F --> G --> H --> I --> J
-    
+
     T0 -.-> D
     T1 -.-> E
     T2 -.-> F
@@ -971,26 +984,26 @@ flowchart TB
         Cpp["C/C++ Algorithm"]
         Pragma["Optimization Pragmas"]
     end
-    
+
     subgraph HLS["HLS 综合"]
         Scheduling["Scheduling<br/>资源分配"]
         Binding["Binding<br/>操作符映射"]
         RTLGen["RTL Generation"]
     end
-    
+
     subgraph Verification["验证"]
         Csim["C Simulation"]
         Cosim["Co-simulation<br/>C/RTL"]
         Export["Export IP"]
     end
-    
+
     subgraph Implementation["实现"]
         Synth["Logic Synthesis"]
         Place["Placement"]
         Route["Routing"]
         Bitgen["Bitstream<br/>Generation"]
     end
-    
+
     Cpp --> Scheduling
     Pragma --> Scheduling
     Scheduling --> Binding
@@ -1011,35 +1024,35 @@ flowchart TB
 ```mermaid
 flowchart TD
     Start(["任务需要加速?"])
-    
+
     Q1{"延迟要求<br/>< 10μs?"}
     Q2{"确定性<br/>要求高?"}
     Q3{"吞吐量<br/>> 10GB/s?"}
     Q4{"功耗受限<br/>边缘部署?"}
     Q5{"算法固定<br/>不常变更?"}
-    
+
     FPGA["✅ FPGA 加速"]
     GPU["⚠️ 考虑 GPU"]
     CPU["❌ CPU 即可"]
     ASIC["考虑 ASIC<br/>超大规模部署"]
-    
+
     Start --> Q1
-    
+
     Q1 -->|是| FPGA
     Q1 -->|否| Q2
-    
+
     Q2 -->|是| FPGA
     Q2 -->|否| Q3
-    
+
     Q3 -->|是| Q4
     Q3 -->|否| Q5
-    
+
     Q4 -->|是| FPGA
     Q4 -->|否| GPU
-    
+
     Q5 -->|是| ASIC
     Q5 -->|否| CPU
-    
+
     style FPGA fill:#90EE90
     style GPU fill:#FFE4B5
     style CPU fill:#FFB6C1
@@ -1050,29 +1063,17 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Xilinx, "Vitis High-Level Synthesis User Guide", UG1399, 2023. https://docs.xilinx.com/r/en-US/ug1399-vitis-hls
 
-[^2]: Xilinx, "Vitis Unified Software Platform Documentation", 2024. https://docs.xilinx.com/v/u/en-US/ug1416-vitis-documentation
 
-[^3]: Intel, "Intel High Level Synthesis Compiler Pro Edition", 2023. https://www.intel.com/content/www/us/en/docs/hls-compiler/
 
-[^4]: S. Sarkar et al., "High Level Synthesis: An Introduction to Chip and System Design", Springer, 2022. ISBN: 978-303-103-633-6
 
-[^5]: J. H. Ko et al., "From FPGA to ASIC: A Case Study of FPGA-to-ASIC Conversion for Deep Learning Accelerators", IEEE Micro, 2022. https://doi.org/10.1109/MM.2022.3170666
 
-[^6]: B. Daher et al., "FPGA-Based Acceleration for Apache Flink", IEEE Big Data, 2019. https://doi.org/10.1109/BigData47090.2019.9006483
 
-[^7]: J. Fowers et al., "A Configurable Cloud-Scale DNN Processor for Real-Time AI", ACM/IEEE ISCA, 2018. https://doi.org/10.1109/ISCA.2018.00012
 
-[^8]: S. Zhou et al., "Rosetta: A Realistic High-Level Synthesis Benchmark Suite for Software-Programmable FPGAs", ACM TRETS, 2020. https://doi.org/10.1145/3381157
 
-[^9]: C. Zhang et al., "Caffeine: Towards Uniformed Representation and Acceleration for Deep Convolutional Neural Networks", IEEE ICCAD, 2016. https://doi.org/10.1145/2966986.2967011
 
-[^10]: R. Prabhakar et al., "Plasticine: A Reconfigurable Architecture For Parallel Patterns", ACM/IEEE ISCA, 2017. https://doi.org/10.1145/3079856.3080256
 
-[^11]: Apache Flink, "Stateful Functions", 2024. https://nightlies.apache.org/flink/flink-statefun-docs-stable/
 
-[^12]: OpenCL Working Group, "OpenCL Specification 3.0", Khronos Group, 2020. https://www.khronos.org/registry/OpenCL/
 
 ---
 

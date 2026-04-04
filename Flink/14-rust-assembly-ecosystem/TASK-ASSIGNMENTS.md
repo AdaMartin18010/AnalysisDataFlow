@@ -139,10 +139,10 @@
 
 | 序号 | 文档名 | 描述 | 优先级 | 依赖 |
 |------|--------|------|--------|------|
-| F1 | 01-vectorized-udf-intro.md | 向量化 UDF 入门 | 🔴 P0 | 无 |
-| F2 | 02-arrow-format-integration.md | Apache Arrow 格式集成 | 🔴 P0 | F1 |
-| F3 | 03-columnar-processing.md | 列式处理最佳实践 | 🟠 P1 | F2 |
-| F4 | 04-performance-tuning.md | 性能调优指南 | 🟠 P1 | F1,F2,F3 |
+| F1 | 01-vectorized-udf-intro.md | 向量化 UDF 入门 | ✅ **完成** | 无 |
+| F2 | 02-arrow-format-integration.md | Apache Arrow 格式集成 | ✅ **完成** | F1 |
+| F3 | 03-columnar-processing.md | 列式处理最佳实践 | ✅ **完成** | F2 |
+| F4 | 04-performance-tuning.md | 性能调优指南 | ✅ **完成** | F1,F2,F3 |
 
 ### 关键输入资料
 

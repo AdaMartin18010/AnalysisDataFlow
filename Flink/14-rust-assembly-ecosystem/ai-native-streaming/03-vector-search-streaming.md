@@ -9,6 +9,7 @@
 向量嵌入是指将高维离散数据（文本、图像、音频等）映射到**低维连续向量空间**的数学表示方法，使得语义相似的数据在向量空间中距离相近。
 
 形式化定义：
+
 ```
 嵌入函数: f: X → ℝᵈ
 
@@ -40,6 +41,7 @@ cosine_similarity(u, v) = (u·v) / (||u|| · ||v||) ∈ [-1, 1]
 近似最近邻搜索是指在向量空间中**以可接受的精度损失为代价**，快速找到与查询向量最相似的 k 个向量的算法。
 
 形式化定义：
+
 ```
 给定：
 - 向量集合 V = {v₁, v₂, ..., vₙ} ⊂ ℝᵈ
@@ -74,19 +76,19 @@ cosine_similarity(u, v) = (u·v) / (||u|| · ||v||) ∈ [-1, 1]
 trait RealtimeVectorIndex {
     /// 插入向量，返回内部 ID
     fn insert(&mut self, id: String, vector: &[f32], metadata: Metadata) -> Result<IndexId>;
-    
+
     /// 删除向量
     fn delete(&mut self, id: &str) -> Result<()>;
-    
+
     /// 更新向量（删除+插入原子操作）
     fn update(&mut self, id: &str, vector: &[f32]) -> Result<()>;
-    
+
     /// 近似最近邻搜索
     fn search(&self, query: &[f32], k: usize, filter: Option<Filter>) -> Result<Vec<SearchResult>>;
-    
+
     /// 批量插入（优化写入吞吐）
     fn insert_batch(&mut self, items: Vec<(String, Vec<f32>, Metadata)>) -> Result<Vec<IndexId>>;
-    
+
     /// 获取索引统计
     fn stats(&self) -> IndexStats;
 }
@@ -145,6 +147,7 @@ struct LatencySla {
 **命题**：在固定计算资源下，ANN 查询的**召回率 (Recall)** 与**查询延迟**存在单调递增关系，可通过索引参数进行调节。
 
 **形式化表述**：
+
 ```
 设：
 - ef: HNSW 算法的搜索深度参数
@@ -176,6 +179,7 @@ Recall ↑ → Latency ↑
 **命题**：在流式向量索引更新场景下，**最终一致性模型**可在保证查询可用性的同时，实现高吞吐的增量更新。
 
 **形式化分析**：
+
 ```
 系统模型：
 - 写操作流: W = {w₁, w₂, w₃, ...}
@@ -359,6 +363,7 @@ Recall ↑ → Latency ↑
 **证明概要**：
 
 **构建复杂度**：
+
 ```
 平均出度: M (每层最大连接数)
 层数: L = O(log n)
@@ -367,6 +372,7 @@ Recall ↑ → Latency ↑
 ```
 
 **查询复杂度**：
+
 ```
 贪婪搜索每层最多访问 O(log n) 个节点
 总层数: O(log n)
@@ -374,6 +380,7 @@ Recall ↑ → Latency ↑
 ```
 
 **存储复杂度**：
+
 ```
 向量存储: O(n · d · sizeof(float)) = O(nd)
 图结构: O(n · M · L) = O(n log n)
@@ -410,7 +417,7 @@ impl HnswConfig {
             ..Default::default()
         }
     }
-    
+
     fn for_low_latency() -> Self {
         Self {
             ef_search: 32,
@@ -429,13 +436,13 @@ impl HnswConfig {
 struct StreamingVectorIndex {
     // 主索引（内存）
     primary_index: Arc<RwLock<HnswIndex>>,
-    
+
     // 写前日志 (WAL)
     wal: Arc<dyn WriteAheadLog>,
-    
+
     // 后台合并线程
     merge_thread: JoinHandle<()>,
-    
+
     // 统计信息
     stats: Arc<IndexStats>,
 }
@@ -449,17 +456,17 @@ impl StreamingVectorIndex {
             vector: vector.clone(),
             timestamp: now(),
         }).await?;
-        
+
         // 2. 更新内存索引
         let mut index = self.primary_index.write().await;
         index.add(&id, &vector)?;
-        
+
         // 3. 更新统计
         self.stats.increment_count();
-        
+
         Ok(())
     }
-    
+
     /// 搜索（可能读取到稍旧的数据）
     async fn search(&self, query: &[f32], k: usize) -> Result<Vec<SearchResult>> {
         let index = self.primary_index.read().await;
@@ -534,10 +541,10 @@ impl MilvusVectorStore {
             ],
             "",
         );
-        
+
         // 创建集合
         self.client.create_collection(schema.clone(), None).await?;
-        
+
         // 创建 HNSW 索引
         let index_params = IndexParams::new(
             self.config.index_type.clone(),
@@ -547,23 +554,23 @@ impl MilvusVectorStore {
                 "efConstruction": 128,
             }),
         );
-        
+
         let collection = self.client.collection(&self.config.collection_name);
         collection.create_index("embedding", index_params).await?;
-        
+
         // 加载集合到内存
         collection.load(LoadOptions::default()).await?;
-        
+
         Ok(())
     }
-    
+
     /// 插入向量（支持批量）
     pub async fn insert_vectors(
         &self,
         documents: Vec<DocumentVector>,
     ) -> Result<InsertResult> {
         let collection = self.client.collection(&self.config.collection_name);
-        
+
         // 准备数据列
         let ids: Vec<i64> = documents.iter().map(|d| d.id).collect();
         let doc_ids: Vec<&str> = documents.iter().map(|d| d.doc_id.as_str()).collect();
@@ -572,7 +579,7 @@ impl MilvusVectorStore {
         let metadata: Vec<String> = documents.iter()
             .map(|d| serde_json::to_string(&d.metadata).unwrap())
             .collect();
-        
+
         let columns: Vec<FieldColumn> = vec![
             FieldColumn::new(schema.get_field("id").unwrap(), ids)?,
             FieldColumn::new(schema.get_field("doc_id").unwrap(), doc_ids)?,
@@ -580,17 +587,17 @@ impl MilvusVectorStore {
             FieldColumn::new(schema.get_field("embedding").unwrap(), embeddings)?,
             FieldColumn::new(schema.get_field("metadata").unwrap(), metadata)?,
         ];
-        
+
         let result = collection.insert(columns, None).await?;
-        
+
         // 刷新使数据可搜索
         collection.flush().await?;
-        
+
         Ok(InsertResult {
             inserted_count: result.insert_cnt,
         })
     }
-    
+
     /// 向量相似度搜索
     pub async fn search(
         &self,
@@ -599,11 +606,11 @@ impl MilvusVectorStore {
         filter: Option<&str>,
     ) -> Result<Vec<SearchResult>> {
         let collection = self.client.collection(&self.config.collection_name);
-        
+
         let mut search_params = json!({
             "ef": 128,  // HNSW 搜索深度
         });
-        
+
         let results = collection.search(
             vec![query_vector.to_vec()],  // 查询向量
             "embedding",                  // 向量字段
@@ -612,7 +619,7 @@ impl MilvusVectorStore {
             vec!["doc_id", "content", "metadata"], // 输出字段
             search_params,
         ).await?;
-        
+
         results.into_iter()
             .map(|r| Ok(SearchResult {
                 doc_id: r.field::<String>("doc_id")?,
@@ -682,14 +689,14 @@ impl AsyncFunction<DocumentEvent, EmbeddedDocument> for DocumentEmbeddingOperato
         // 文本预处理
         let text = format!("{}\n{}", event.title, event.content);
         let cleaned = preprocess_text(&text);
-        
+
         // 批量嵌入优化
         let embedding = self.embedding_client.encode(&cleaned).await.unwrap();
-        
+
         let mut metadata = HashMap::new();
         metadata.insert("source".to_string(), event.source);
         metadata.insert("timestamp".to_string(), event.timestamp.to_string());
-        
+
         ctx.collect(EmbeddedDocument {
             doc_id: event.doc_id,
             content: event.content,
@@ -709,13 +716,13 @@ struct MilvusSinkFunction {
 impl SinkFunction<EmbeddedDocument> for MilvusSinkFunction {
     fn invoke(&mut self, value: EmbeddedDocument, ctx: Context) {
         self.buffer.push(value);
-        
+
         // 批量写入优化
         if self.buffer.len() >= self.batch_size {
             self.flush();
         }
     }
-    
+
     fn close(&mut self) {
         self.flush();
     }
@@ -726,7 +733,7 @@ impl MilvusSinkFunction {
         if self.buffer.is_empty() {
             return;
         }
-        
+
         let documents: Vec<DocumentVector> = self.buffer.drain(..)
             .enumerate()
             .map(|(idx, doc)| DocumentVector {
@@ -739,7 +746,7 @@ impl MilvusSinkFunction {
                     .collect(),
             })
             .collect();
-        
+
         // 异步批量插入
         let milvus = self.milvus.clone();
         tokio::spawn(async move {
@@ -774,10 +781,10 @@ struct SearchResultEvent {
 impl AsyncFunction<SearchQuery, SearchResultEvent> for VectorSearchAsyncFunction {
     async fn async_invoke(&self, query: SearchQuery, ctx: &mut Context) {
         let start = Instant::now();
-        
+
         // 1. 生成查询嵌入
         let query_embedding = generate_query_embedding(&query.query_text).await;
-        
+
         // 2. 执行向量搜索
         match self.milvus.search(
             &query_embedding,
@@ -812,7 +819,7 @@ fn build_vector_search_pipeline(env: &mut StreamExecutionEnvironment) {
         .assign_timestamps_and_watermarks(
             WatermarkStrategy::for_bounded_out_of_orderness(Duration::from_secs(5))
         );
-    
+
     // 2. 文档嵌入 (并发度 10)
     let embedded_stream = AsyncDataStream::unordered_wait(
         doc_stream,
@@ -820,7 +827,7 @@ fn build_vector_search_pipeline(env: &mut StreamExecutionEnvironment) {
         Duration::from_secs(30),
         100,
     ).set_parallelism(10);
-    
+
     // 3. 写入 Milvus
     embedded_stream
         .add_sink(MilvusSinkFunction::new(
@@ -828,11 +835,11 @@ fn build_vector_search_pipeline(env: &mut StreamExecutionEnvironment) {
             100,  // 批大小
         ))
         .name("Milvus Index Sink");
-    
+
     // 4. 查询流处理 (RAG 场景)
     let query_stream: DataStream<SearchQuery> = env
         .add_source(KafkaSource::new("search-queries"));
-    
+
     let search_results = AsyncDataStream::unordered_wait(
         query_stream,
         VectorSearchAsyncFunction::new(
@@ -842,7 +849,7 @@ fn build_vector_search_pipeline(env: &mut StreamExecutionEnvironment) {
         Duration::from_millis(500),
         50,
     ).name("Vector Search");
-    
+
     // 5. 结果输出
     search_results
         .add_sink(KafkaSink::new("search-results"))
@@ -893,18 +900,18 @@ impl HybridSearchOperator {
             self.vector_search(query),
             self.keyword_search(query)
         );
-        
+
         let vector_results = vector_results?;
         let keyword_results = keyword_results?;
-        
+
         // 融合结果 (Reciprocal Rank Fusion)
         self.fuse_results(vector_results, keyword_results)
     }
-    
+
     async fn vector_search(&self, query: &SearchQuery) -> Result<Vec<ScoredDoc>> {
         let embedding = generate_query_embedding(&query.query_text).await;
         let results = self.milvus.search(&embedding, self.top_k * 2, None).await?;
-        
+
         Ok(results.into_iter()
             .map(|r| ScoredDoc {
                 doc_id: r.doc_id,
@@ -913,7 +920,7 @@ impl HybridSearchOperator {
             })
             .collect())
     }
-    
+
     async fn keyword_search(&self, query: &SearchQuery) -> Result<Vec<ScoredDoc>> {
         let search_response = self.elasticsearch
             .search(SearchParts::Index(&["documents"]))
@@ -929,10 +936,10 @@ impl HybridSearchOperator {
             }))
             .send()
             .await?;
-        
+
         // 解析结果...
     }
-    
+
     /// Reciprocal Rank Fusion (RRF)
     fn fuse_results(
         &self,
@@ -941,25 +948,25 @@ impl HybridSearchOperator {
     ) -> Result<Vec<HybridSearchResult>> {
         let k = 60.0;  // RRF 常数
         let mut score_map: HashMap<String, f64> = HashMap::new();
-        
+
         // 向量搜索结果评分
         for (rank, doc) in vector_results.iter().enumerate() {
             let rrf_score = 1.0 / (k + rank as f64);
-            *score_map.entry(doc.doc_id.clone()).or_insert(0.0) += 
+            *score_map.entry(doc.doc_id.clone()).or_insert(0.0) +=
                 rrf_score * self.vector_weight as f64;
         }
-        
+
         // 关键词搜索结果评分
         for (rank, doc) in keyword_results.iter().enumerate() {
             let rrf_score = 1.0 / (k + rank as f64);
-            *score_map.entry(doc.doc_id.clone()).or_insert(0.0) += 
+            *score_map.entry(doc.doc_id.clone()).or_insert(0.0) +=
                 rrf_score * self.keyword_weight as f64;
         }
-        
+
         // 排序并返回 Top-K
         let mut fused: Vec<_> = score_map.into_iter().collect();
         fused.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-        
+
         fused.into_iter()
             .take(self.top_k)
             .map(|(doc_id, score)| self.fetch_doc_details(&doc_id, score as f32))
@@ -988,12 +995,12 @@ impl VectorSearchMetrics {
         self.query_count.fetch_add(1, Ordering::Relaxed);
         self.query_latency.record(latency_ms);
     }
-    
+
     /// 估算召回率 (通过 Ground Truth 对比)
     fn estimate_recall(&self, ann_results: &[SearchResult], exact_results: &[SearchResult]) -> f64 {
         let ann_set: HashSet<_> = ann_results.iter().map(|r| &r.doc_id).collect();
         let exact_set: HashSet<_> = exact_results.iter().map(|r| &r.doc_id).collect();
-        
+
         let intersection: HashSet<_> = ann_set.intersection(&exact_set).collect();
         intersection.len() as f64 / exact_set.len() as f64
     }
@@ -1009,9 +1016,9 @@ impl AdaptiveIndexOptimizer {
     async fn optimize(&self) {
         let p99_latency = self.metrics.query_latency.p99();
         let recall = self.metrics.recall_estimate.load(Ordering::Relaxed);
-        
+
         let mut config = self.config.write().await;
-        
+
         if p99_latency > 100.0 && recall > 0.95 {
             // 延迟过高且召回率有余量，降低搜索深度
             config.ef_search = (config.ef_search * 0.8).max(32) as usize;
@@ -1036,11 +1043,11 @@ import numpy as np
 
 class PineconeVectorStore:
     """Pinecone 托管向量存储封装"""
-    
+
     def __init__(self, api_key: str, environment: str, index_name: str):
         pinecone.init(api_key=api_key, environment=environment)
         self.index = pinecone.Index(index_name)
-        
+
     def upsert_vectors(
         self,
         vectors: List[tuple],  # [(id, vector, metadata)]
@@ -1051,7 +1058,7 @@ class PineconeVectorStore:
         for i in range(0, len(vectors), batch_size):
             batch = vectors[i:i + batch_size]
             self.index.upsert(vectors=batch, namespace=namespace)
-            
+
     def query(
         self,
         vector: List[float],
@@ -1067,7 +1074,7 @@ class PineconeVectorStore:
             namespace=namespace,
             include_metadata=True
         )
-        
+
         return [
             {
                 "id": match.id,
@@ -1076,7 +1083,7 @@ class PineconeVectorStore:
             }
             for match in results.matches
         ]
-        
+
     def hybrid_search(
         self,
         vector: List[float],
@@ -1100,14 +1107,14 @@ if __name__ == "__main__":
         environment="us-west1-gcp",
         index_name="documents"
     )
-    
+
     # 插入文档
     vectors = [
         ("doc1", np.random.randn(1536).tolist(), {"source": "web", "category": "tech"}),
         ("doc2", np.random.randn(1536).tolist(), {"source": "pdf", "category": "research"}),
     ]
     store.upsert_vectors(vectors)
-    
+
     # 搜索
     query_vector = np.random.randn(1536).tolist()
     results = store.query(
@@ -1131,53 +1138,53 @@ graph TB
         A3[图片数据] --> A4[图像编码]
         A5[多模态数据] --> A6[统一嵌入]
     end
-    
+
     subgraph "嵌入生成层"
         B1[OpenAI Embedding]
         B2[CLIP]
         B3[自定义模型]
     end
-    
+
     subgraph "向量索引层"
         C1[HNSW Index]
         C2[IVF Index]
         C3[Flat Index]
     end
-    
+
     subgraph "存储层"
         D1[Milvus]
         D2[Pinecone]
         D3[Weaviate]
     end
-    
+
     subgraph "查询层"
         E1[向量搜索]
         E2[关键词搜索]
         E3[混合搜索]
     end
-    
+
     subgraph "应用层"
         F1[RAG 系统]
         F2[推荐系统]
         F3[相似度检测]
     end
-    
+
     A2 --> B1
     A4 --> B2
     A6 --> B3
-    
+
     B1 --> C1
     B2 --> C2
     B3 --> C3
-    
+
     C1 --> D1
     C2 --> D2
     C3 --> D3
-    
+
     D1 --> E1
     D2 --> E2
     D3 --> E3
-    
+
     E1 --> F1
     E2 --> F2
     E3 --> F3
@@ -1192,17 +1199,17 @@ sequenceDiagram
     participant Embed as 嵌入服务
     participant Index as 向量索引
     participant Query as 查询服务
-    
+
     Source->>Flink: 文档事件
     Flink->>Flink: 文本预处理
     Flink->>Embed: 批量嵌入请求
     Embed-->>Flink: 返回向量
     Flink->>Index: 插入向量
     Index-->>Flink: 确认写入
-    
+
     Query->>Index: 相似度查询
     Index-->>Query: 返回Top-K
-    
+
     Note over Flink,Index: 实时同步<br/>延迟 < 1秒
 ```
 
@@ -1226,17 +1233,17 @@ flowchart TD
     B -->|< 100K| C[Chroma<br/>嵌入式]
     B -->|100K-10M| D{运维能力?}
     B -->|> 10M| E{预算?}
-    
+
     D -->|有运维团队| F[Milvus<br/>功能全面]
     D -->|无运维团队| G[Pinecone<br/>全托管]
-    
+
     E -->|高预算| G
     E -->|有限预算| F
-    
+
     C --> H[快速原型]
     F --> I[企业生产]
     G --> J[无运维负担]
-    
+
     A --> K{特殊需求?}
     K -->|多模态| L[Weaviate]
     K -->|Rust生态| M[Qdrant]
@@ -1247,35 +1254,20 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Milvus Documentation, "Vector Index", 2024. https://milvus.io/docs/index.md
 
-[^2]: Pinecone Documentation, "Indexes", 2024. https://docs.pinecone.io/docs/indexes
 
-[^3]: Y. A. Malkov and D. A. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs", IEEE TPAMI, 2018.
 
-[^4]: J. Johnson et al., "Billion-scale similarity search with GPUs", IEEE TPAMI, 2019.
 
-[^5]: H. Jegou et al., "Product Quantization for Nearest Neighbor Search", IEEE TPAMI, 2011.
 
-[^6]: Weaviate Documentation, "Vector Indexing", 2024. https://weaviate.io/developers/weaviate/concepts/vector-index
 
-[^7]: OpenAI API Documentation, "Embeddings", 2024. https://platform.openai.com/docs/guides/embeddings
 
-[^8]: Sentence Transformers Documentation, "Pretrained Models", 2024. https://www.sbert.net/docs/pretrained_models.html
 
-[^9]: M. Muennighoff et al., "MTEB: Massive Text Embedding Benchmark", EACL 2023.
 
-[^10]: Faiss Documentation, "Index Factory", 2024. https://github.com/facebookresearch/faiss/wiki/The-index-factory
 
-[^11]: Qdrant Documentation, "HNSW Configuration", 2024. https://qdrant.tech/documentation/concepts/indexing/
 
-[^12]: V. Karpukhin et al., "Dense Passage Retrieval for Open-Domain Question Answering", EMNLP 2020.
 
-[^13]: Chroma Documentation, "Getting Started", 2024. https://docs.trychroma.com/
 
-[^14]: Zilliz Cloud Documentation, "Managed Milvus", 2024. https://zilliz.com/doc/
 
-[^15]: Apache Flink Documentation, "Async I/O", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/
 
 ---
 

@@ -588,7 +588,7 @@ $$
         │    重发            │    重试
         ▼                    ▼
    可能导致重复          可能导致重复
-   
+
 云端去重: Flink 按 (device_id, sequence_no) 去重
 ```
 
@@ -597,7 +597,7 @@ $$
 ```
 设备 ──MQTT QoS 2──▶ 网关 ──Kafka idempotent──▶ 云端 Flink
        (四次握手)          (幂等生产者)           ( Checkpoint )
-        
+
 保证: 设备-网关: 精确一次 (MQTT QoS 2)
      网关-Kafka: 精确一次 (幂等 + 事务)
      Kafka-Flink: 精确一次 (Checkpoint 两阶段提交)
@@ -628,17 +628,17 @@ impl MqttKafkaGateway {
         for mqtt_topic in self.topic_mapping.keys() {
             self.mqtt_client.subscribe(mqtt_topic, QoS::AtLeastOnce).unwrap();
         }
-        
+
         // 处理消息循环
         loop {
             match self.mqtt_client.recv().await {
                 Ok(msg) => {
                     let mqtt_topic = msg.topic();
                     let kafka_topic = self.topic_mapping.get(mqtt_topic).unwrap();
-                    
+
                     // 转换消息格式
                     let kafka_msg = transform(msg);
-                    
+
                     // 发送到 Kafka
                     self.kafka_producer.send(
                         FutureRecord::to(kafka_topic)
@@ -719,20 +719,20 @@ struct SensorReading {
 
 #[no_mangle]
 pub extern "C" fn parse_modbus(input_ptr: i32, input_len: i32) -> i32 {
-    let input = unsafe { 
-        std::slice::from_raw_parts(input_ptr as *const u8, input_len as usize) 
+    let input = unsafe {
+        std::slice::from_raw_parts(input_ptr as *const u8, input_len as usize)
     };
-    
+
     // 解析 Modbus RTU 帧
     let frame = parse_rtu_frame(input);
-    
+
     // 转换为标准传感器读数
     let reading = match frame.function_code {
         0x03 => parse_holding_registers(&frame),
         0x04 => parse_input_registers(&frame),
         _ => return -1,
     };
-    
+
     // 序列化为 JSON 输出
     host::write_output(&serde_json::to_vec(&reading).unwrap())
 }
@@ -766,42 +766,42 @@ impl OfflineCache {
         let mut opts = Options::default();
         opts.create_if_missing(true);
         opts.set_compression_type(rocksdb::DBCompressionType::Lz4);
-        
+
         OfflineCache {
             db: DB::open(&opts, path).unwrap(),
             max_size: max_size_gb * 1024 * 1024 * 1024,
             current_size: AtomicUsize::new(0),
         }
     }
-    
+
     fn store(&self, key: &str, data: &[u8], timestamp: u64) -> Result<(), CacheError> {
         // 检查容量
         if self.current_size.load(Ordering::Relaxed) + data.len() > self.max_size {
             // 触发清理策略
             self.evict_oldest()?;
         }
-        
+
         // 写入数据
         let mut batch = WriteBatch::default();
         batch.put(format!("data:{}", key), data);
         batch.put(format!("meta:{}", key), timestamp.to_be_bytes());
         self.db.write(batch)?;
-        
+
         self.current_size.fetch_add(data.len(), Ordering::Relaxed);
         Ok(())
     }
-    
+
     async fn sync_to_cloud(&self, producer: &FutureProducer) -> Result<usize, CacheError> {
         let mut synced = 0;
-        
+
         // 按时间顺序读取待同步数据
         let iter = self.db.iterator(rocksdb::IteratorMode::Start);
-        
+
         for (key, value) in iter.filter(|(k, _)| k.starts_with(b"data:")) {
             let record = FutureRecord::to("sync-topic")
                 .payload(&value)
                 .key(&key[5..]); // 去掉 "data:" 前缀
-            
+
             match producer.send(record, Duration::from_secs(5)).await {
                 Ok(_) => {
                     // 删除已同步数据
@@ -814,7 +814,7 @@ impl OfflineCache {
                 }
             }
         }
-        
+
         Ok(synced)
     }
 }
@@ -847,24 +847,24 @@ impl UnifiedGateway {
         let handles: Vec<_> = self.handlers.iter()
             .map(|h| self.run_handler(h))
             .collect();
-        
+
         // 并行运行
         futures::future::join_all(handles).await;
     }
-    
+
     async fn run_handler(&self, handler: &ProtocolHandler) {
         let mut stream = handler.subscribe();
-        
+
         while let Some(msg) = stream.next().await {
             // 1. 协议特定解析
             let parsed = handler.parse(msg);
-            
+
             // 2. 统一格式转换 (Wasm)
             let unified = self.transformer.transform(parsed).await;
-            
+
             // 3. 本地预处理 (Wasm)
             let processed = self.transformer.preprocess(unified).await;
-            
+
             // 4. 检查云端连接
             if self.sink.is_connected() {
                 // 在线模式: 直接发送
@@ -875,7 +875,7 @@ impl UnifiedGateway {
             } else {
                 // 离线模式: 写入缓存
                 self.cache.store(&processed).await;
-                
+
                 // 触发后台同步任务
                 tokio::spawn(self.sync_cache());
             }
@@ -906,20 +906,20 @@ graph TB
             H3[Modbus Parser]
             H4[OPC-UA Client]
         end
-        
+
         subgraph "Wasm Transformation"
             W1[Parse.wasm]
             W2[Filter.wasm]
             W3[Enrich.wasm]
             W4[Aggregate.wasm]
         end
-        
+
         subgraph "Data Flow"
             F1[Router]
             F2[Buffer]
             F3[Compressor]
         end
-        
+
         subgraph "Storage"
             S1[RocksDB<br/>Offline Cache]
             S2[Redis<br/>Hot Data]
@@ -936,16 +936,16 @@ graph TB
     D2 --> H2 --> W1
     D3 --> H3 --> W1
     D4 --> H4 --> W1
-    
+
     W1 --> W2 --> W3 --> W4
     W4 --> F1 --> F2
-    
+
     F2 -->|Online| F3 --> C1
     F2 -->|Offline| S1
     S1 -.->|Sync| C1
-    
+
     F2 --> S2
-    
+
     C1 --> C2 --> C3
 
     style W1 fill:#ffcc80,stroke:#ef6c00
@@ -960,31 +960,31 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Online: 启动
-    
+
     Online --> Offline: 连接断开
     Online --> Online: 正常传输
-    
+
     Offline --> Reconnecting: 定时重试
     Offline --> Offline: 写入本地缓存
-    
+
     Reconnecting --> Online: 连接成功
     Reconnecting --> Offline: 重试失败
-    
+
     Online --> Syncing: 检测到缓存数据
-    
+
     Syncing --> Online: 同步完成
     Syncing --> Offline: 同步中断
-    
+
     note right of Online
         行为: 实时传输到云端
         缓存: 可选写本地
     end note
-    
+
     note right of Offline
         行为: 写入 RocksDB
         监控: 连接状态
     end note
-    
+
     note right of Syncing
         行为: 批量读取缓存
         策略: 按时间顺序
@@ -1000,26 +1000,26 @@ flowchart LR
         M2[QoS: 1]
         M3[Payload: JSON]
     end
-    
+
     subgraph "Protocol Bridge"
         B1[Parser<br/>JSON decode]
         B2[Mapper<br/>Schema transform]
         B3[Enrich<br/>Add metadata]
         B4[Serializer<br/>Avro encode]
     end
-    
+
     subgraph "Kafka Output"
         K1[Topic: iot.temperature]
         K2[Partition: hash]
         K3[Acks: all]
     end
-    
+
     M1 --> B1
     M2 --> B2
     M3 --> B1
-    
+
     B1 --> B2 --> B3 --> B4
-    
+
     B4 --> K1
     B2 --> K2
     B2 --> K3
@@ -1037,12 +1037,12 @@ quadrantChart
     title IoT 网关模式选型矩阵
     x-axis 低复杂度 --> 高复杂度
     y-axis 低吞吐量 --> 高吞吐量
-    
+
     quadrant-1 复杂/高吞吐: 统一网关
     quadrant-2 复杂/低吞吐: 协议专用网关
     quadrant-3 简单/低吞吐: 轻量网关
     quadrant-4 简单/高吞吐: 高性能网关
-    
+
     "MQTT单协议网关": [0.2, 0.5]
     "多协议统一网关": [0.8, 0.6]
     "边缘计算网关": [0.7, 0.3]
@@ -1055,29 +1055,17 @@ quadrantChart
 
 ## 8. 引用参考 (References)
 
-[^1]: MQTT Specification, "MQTT Version 5.0", OASIS Standard, 2019. https://docs.oasis-open.org/mqtt/
 
-[^2]: IETF, "Constrained Application Protocol (CoAP)", RFC 7252, 2014.
 
-[^3]: OMA SpecWorks, "Lightweight M2M v1.1", 2020. https://omaspecworks.org/what-is-oma-specworks/iot/lightweight-m2m-lwm2m/
 
-[^4]: OPC Foundation, "OPC Unified Architecture", 2021. https://opcfoundation.org/about/opc-technologies/opc-ua/
 
-[^5]: Modbus Organization, "Modbus Application Protocol v1.1b3", 2012.
 
-[^6]: EMQ, "MQTT Broker Architecture for IoT", 2025. https://www.emqx.io/
 
-[^7]: HiveMQ, "MQTT Essentials", 2025. https://www.hivemq.com/mqtt-essentials/
 
-[^8]: Eclipse Foundation, "Eclipse Mosquitto Documentation", 2025. https://mosquitto.org/documentation/
 
-[^9]: Apache Kafka Documentation, "Kafka Connect", 2025. https://kafka.apache.org/documentation/#connect
 
-[^10]: RisingWave Labs, "IoT Streaming Architecture", 2024.
 
-[^11]: WasmEdge, "WasmEdge for IoT Gateway", 2025. https://wasmedge.org/
 
-[^12]: Cloudflare, "Cloudflare IoT Platform", 2025. https://www.cloudflare.com/iot/
 
 ---
 

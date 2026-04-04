@@ -1,7 +1,7 @@
 # Flash 与开源 Flink 兼容性分析
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine  
-> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [04-nexmark-benchmark-analysis.md](./04-nexmark-benchmark-analysis.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
+> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [04-nexmark-benchmark-analysis.md](./04-nexmark-benchmark-analysis.md)
 > **形式化等级**: L4（工程兼容性 + 生态分析）
 
 ---
@@ -13,10 +13,11 @@
 **定义**: API 兼容性是指 Flash 引擎对用户代码的接口保证，包括 SQL API、Table API 和 DataStream API 的完全兼容。
 
 **形式化描述**:
+
 ```
 API_Compatibility := SQL_Compatible ∧ TableAPI_Compatible ∧ DataStream_Compatible
 
-SQL_Compatible := 
+SQL_Compatible :=
     ∀query ∈ ValidFlinkSQL: Parseable_Flash(query) ∧ Semantics_Equivalent(query)
 
 TableAPI_Compatible :=
@@ -27,6 +28,7 @@ DataStream_Compatible :=
 ```
 
 **兼容性层次**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ 兼容性层次模型                                              │
@@ -48,6 +50,7 @@ Flash 承诺: L1-L3 100% 兼容，L4-L5 尽力兼容
 **定义**: 迁移风险评估是量化从 Flink 迁移到 Flash 过程中潜在问题的系统方法，包括技术风险、性能风险和运维风险。
 
 **形式化描述**:
+
 ```
 MigrationRisk := ⟨TechnicalRisk, PerformanceRisk, OperationalRisk⟩
 
@@ -70,17 +73,18 @@ RiskLevel := {Low, Medium, High, Critical}
 **定义**: 回退机制是当 Flash 原生算子不支持时，自动切换到 Flink Java 运行时执行的容错策略。
 
 **形式化描述**:
+
 ```
 FallbackMechanism := ⟨Detection, Decision, Execution, Monitoring⟩
 
 Detection(op) := op ∉ SupportedNativeOps → TriggerFallback
 
-Decision := 
+Decision :=
     if FullFallback then SwitchToJavaRuntime
     if PartialFallback then HybridExecution
-    
-Execution := 
-    DataConversion(ArrowFormat → RowFormat) ∘ 
+
+Execution :=
+    DataConversion(ArrowFormat → RowFormat) ∘
     JavaOperatorExecution ∘
     DataConversion(RowFormat → ArrowFormat)
 
@@ -94,6 +98,7 @@ Monitoring := LogFallbackEvent ∧ MetricsCollection
 **定义**: 开源社区影响是指 Flash 引擎对 Apache Flink 生态系统的反哺效应，包括技术贡献、生态扩展和竞争促进。
 
 **形式化描述**:
+
 ```
 CommunityImpact := ⟨TechContribution, EcosystemGrowth, CompetitionEffect⟩
 
@@ -111,9 +116,10 @@ CompetitionEffect := InnovationRate × PerformanceImprovement
 **命题**: Flash 的 100% API 兼容性保证依赖于完备的回退机制——任何不支持的原生算子必须能通过 Java 运行时执行。
 
 **形式化表述**:
+
 ```
-CompleteCompatibility(Flash) ↔ 
-    ∀op ∈ Flink_Operators: 
+CompleteCompatibility(Flash) ↔
+    ∀op ∈ Flink_Operators:
         NativeSupported(op) ∨ FallbackSupported(op)
 
 当前支持状态（v1.0）:
@@ -135,6 +141,7 @@ CompleteCompatibility(Flash) ↔
 **命题**: 无代码迁移的成本与 Flash 原生算子覆盖度呈反比关系，覆盖度每提高 10%，迁移成功率提升约 15%。
 
 **形式化表述**:
+
 ```
 MigrationSuccessRate = f(CoverageRatio, Complexity)
 
@@ -159,6 +166,7 @@ SuccessRate = 1 - exp(-λ × CoverageRatio)
 **命题**: Flash 引擎与开源 Flink 之间存在双向技术促进关系，Flash 的创新会回流到 Flink 社区。
 
 **形式化表述**:
+
 ```
 InnovationFlow:
 Flink ──ideas──► Flash ──enhancements──► Flink
@@ -209,23 +217,23 @@ Flink ──ideas──► Flash ──enhancements──► Flink
 ```mermaid
 graph LR
     Start[现有 Flink 作业] --> Assessment{兼容性评估}
-    
+
     Assessment -->|100% 兼容| Direct[直接迁移]
     Assessment -->|部分兼容| Hybrid[混合执行]
     Assessment -->|不兼容| Modify[修改后迁移]
-    
+
     Direct --> Flash1[Flash 全原生执行]
     Hybrid --> Flash2[Flash 原生 + 回退]
     Modify --> Flash3[修改代码后执行]
-    
+
     Flash1 --> Monitor[监控验证]
     Flash2 --> Monitor
     Flash3 --> Monitor
-    
+
     Monitor -->|性能达标| Production[生产部署]
     Monitor -->|性能不达标| Optimize[调优优化]
     Optimize --> Monitor
-    
+
     Production --> Gradual[灰度放量]
     Gradual --> Full[全量切换]
 ```
@@ -249,6 +257,7 @@ graph LR
 ### 4.1 API 兼容性详细分析
 
 **SQL API 兼容性**:
+
 ```
 兼容层级:
 ├── DDL (100%)
@@ -273,6 +282,7 @@ graph LR
 ```
 
 **Table API 兼容性**:
+
 ```
 核心操作:
 ├── from() / to() ✓
@@ -289,6 +299,7 @@ graph LR
 ```
 
 **DataStream API 兼容性**:
+
 ```
 兼容性说明:
 DataStream API 兼容性较 SQL/Table API 弱，原因在于:
@@ -304,6 +315,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ### 4.2 迁移风险评估框架
 
 **风险评估矩阵**:
+
 ```
 ┌────────────────────┬────────┬────────────────────────────────┐
 │ 风险因素            │ 等级   │ 缓解措施                       │
@@ -328,6 +340,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ### 4.3 对 Flink 社区的启示
 
 **技术启示**:
+
 ```
 1. 向量化执行的价值验证
    - Flash 证明了向量化在流计算中的 5-10x 提升
@@ -343,6 +356,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ```
 
 **生态启示**:
+
 ```
 1. 云服务与开源的协同
    - Flash 是阿里云对 Flink 生态的贡献
@@ -368,13 +382,15 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 **工程论证**:
 
 **步骤 1**: 定义完备性条件
+
 ```
 完备性条件:
-∀program ∈ ValidFlinkPrograms: 
+∀program ∈ ValidFlinkPrograms:
     Executable(Flash, program) ∧ Output_Equivalent(program, Flink)
 ```
 
 **步骤 2**: 分类讨论
+
 ```
 情况 A: 所有算子都有原生实现
     - 执行路径: Falcon Runtime (C++)
@@ -393,6 +409,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ```
 
 **步骤 3**: 边界情况处理
+
 ```
 边界 1: UDF 兼容性
     - Java UDF → Java 运行时执行
@@ -414,6 +431,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 **工程论证**:
 
 **步骤 1**: 定义成本模型
+
 ```
 迁移总成本 = 评估成本 + 迁移成本 + 验证成本 + 风险成本
 
@@ -424,6 +442,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ```
 
 **步骤 2**: 定义收益模型
+
 ```
 迁移收益 = 计算成本节省 + 运维成本节省 + 性能价值
 
@@ -433,6 +452,7 @@ DataStream API 兼容性较 SQL/Table API 弱，原因在于:
 ```
 
 **步骤 3**: ROI 计算示例
+
 ```
 场景: 100 CU 的 Flink 作业迁移到 Flash
 
@@ -461,6 +481,7 @@ ROI = (58,800 - 4,480) / 4,480 = 1,212%
 ### 6.1 典型迁移案例
 
 **案例 1: 简单 SQL 作业迁移**
+
 ```sql
 -- 原始 Flink SQL（100% 兼容）
 CREATE TABLE user_behavior (
@@ -485,7 +506,7 @@ CREATE TABLE output (
 );
 
 INSERT INTO output
-SELECT 
+SELECT
     item_id,
     COUNT(*) as pv,
     COUNT(DISTINCT user_id) as uv
@@ -502,16 +523,17 @@ GROUP BY item_id;
 ```
 
 **案例 2: 复杂窗口作业迁移**
+
 ```sql
 -- 包含 Hop Window 的复杂作业
 INSERT INTO session_stats
-SELECT 
+SELECT
     user_id,
     SESSION_START(ts, INTERVAL '10' MINUTE) as session_start,
     COUNT(*) as event_count,
     SUM(amount) as total_amount
 FROM user_events
-GROUP BY 
+GROUP BY
     user_id,
     SESSION(ts, INTERVAL '10' MINUTE);
 
@@ -523,6 +545,7 @@ GROUP BY
 ```
 
 **案例 3: DataStream 作业迁移**
+
 ```java
 // DataStream 作业（有限兼容）
 DataStream<Event> stream = env
@@ -576,17 +599,17 @@ DataStream<Event> stream = env
 test_job:
   name: "user_behavior_analysis"
   type: "SQL"
-  
+
 compatibility:
   syntax: "PASS"           # SQL 解析通过
   semantics: "PASS"        # 执行结果等价
   performance: "IMPROVED"  # 性能提升 7x
-  
+
 operator_coverage:
   total_operators: 8
   native_supported: 7      # 87.5%
   fallback_used: 1         # 12.5%
-  
+
 performance_metrics:
   throughput:
     flink: "50K events/s"
@@ -600,7 +623,7 @@ performance_metrics:
     flink_cu: "100"
     flash_cu: "15"         # 等效 CU 数
     savings: "85%"
-    
+
 risk_assessment:
   level: "LOW"
   issues: []
@@ -624,13 +647,13 @@ graph TB
         L4[L4: 性能兼容<br/>~ 尽力] --> L5
         L5[L5: 生态兼容<br/>~ 尽力]
     end
-    
+
     L1 -.->|SQL解析| S1[Flink Parser]
     L2 -.->|结果等价| S2[执行验证]
     L3 -.->|Checkpoint| S3[状态管理]
     L4 -.->|性能对比| S4[基准测试]
     L5 -.->|Connector| S5[生态集成]
-    
+
     style L1 fill:#9f9,stroke:#333
     style L2 fill:#9f9,stroke:#333
     style L3 fill:#9f9,stroke:#333
@@ -643,30 +666,30 @@ graph TB
 ```mermaid
 flowchart TD
     Start[开始迁移评估] --> Q1{作业类型?}
-    
+
     Q1 -->|纯 SQL| SQL1[算子兼容性检查]
     Q1 -->|Table API| TA1[检查 UDF 使用]
     Q1 -->|DataStream| DS1[评估重构可能性]
-    
+
     SQL1 --> SQL2{兼容度 > 90%?}
     SQL2 -->|是| SQL3[直接迁移<br/>预期 5-10x 提升]
     SQL2 -->|否| SQL4[混合执行<br/>预期 2-5x 提升]
-    
+
     TA1 --> TA2{UDF 复杂?}
     TA2 -->|否| TA3[直接迁移]
     TA2 -->|是| TA4[UDF 回退执行]
-    
+
     DS1 --> DS2{可重构为 SQL?}
     DS2 -->|是| DS3[重构后迁移<br/>推荐方案]
     DS2 -->|否| DS4[回退执行<br/>提升有限]
-    
+
     SQL3 --> E[生产部署]
     SQL4 --> E
     TA3 --> E
     TA4 --> E
     DS3 --> E
     DS4 --> E
-    
+
     style SQL3 fill:#9f9,stroke:#333
     style DS3 fill:#9f9,stroke:#333
     style DS4 fill:#ff9,stroke:#333
@@ -678,7 +701,7 @@ flowchart TD
 graph TD
     subgraph "算子覆盖度 v1.0"
         direction LR
-        
+
         subgraph "原生支持"
             N1[Filter ✓]
             N2[Project ✓]
@@ -687,25 +710,25 @@ graph TD
             N5[TumbleWindow ✓]
             N6[HopWindow ✓]
         end
-        
+
         subgraph "部分支持"
             P1[SessionWindow ~]
             P2[SortAggregate ~]
             P3[HashJoin ~]
             P4[OverAggregate ~]
         end
-        
+
         subgraph "回退支持"
             F1[MatchRecognize ✗]
             F2[Custom UDF ✗]
             F3[Complex CEP ✗]
         end
     end
-    
+
     N1 & N2 & N3 & N4 & N5 & N6 --> E1[预期 5-10x 提升]
     P1 & P2 & P3 & P4 --> E2[预期 2-5x 提升]
     F1 & F2 & F3 --> E3[回退执行<br/>性能持平]
-    
+
     style N1 fill:#9f9
     style N2 fill:#9f9
     style N3 fill:#9f9
@@ -732,20 +755,20 @@ graph TB
         F[Apache Flink<br/>开源社区]
         FL[Flash 引擎<br/>阿里云]
         V[VERA-X<br/>Ververica]
-        
+
         F <-->|技术共享| FL
         F <-->|技术共享| V
         FL <-->|竞争| V
-        
+
         F --> C1[向量化讨论<br/>+200% 活跃度]
         FL --> C2[开源 PR<br/>50+ 贡献]
         FL --> C3[FLIP 借鉴<br/>3+ 提案]
-        
+
         C1 --> D[Flink 生态进化]
         C2 --> D
         C3 --> D
     end
-    
+
     style F fill:#99f,stroke:#333
     style FL fill:#9f9,stroke:#333
     style V fill:#ff9,stroke:#333
@@ -759,17 +782,17 @@ graph LR
         A[当前 Flink CU] --> B[Flash 等效 CU]
         C[年运行时间] --> D[年计算成本节省]
         E[迁移人工成本] --> F[总成本]
-        
+
         B --> D
         D --> G[年收益]
         F --> H[ROI计算]
         G --> H
-        
+
         H --> I{ROI > 100%?}
         I -->|是| J[推荐迁移]
         I -->|否| K[评估风险后决策]
     end
-    
+
     style J fill:#9f9,stroke:#333
     style K fill:#ff9,stroke:#333
 ```
@@ -778,25 +801,15 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink, "Apache Flink Documentation - Compatibility and Migration", https://nightlies.apache.org/flink/flink-docs-stable/
 
-[^2]: Alibaba Cloud, "Flash Migration Guide", 2024.
 
-[^3]: "Apache Flink: Stream and Batch Processing in a Single Engine", Carbone et al., IEEE Data Eng. Bull. 2015.
 
-[^4]: Ververica, "VERA-X Documentation", https://docs.ververica.com/
 
-[^5]: Apache Gluten, "Gluten: A Middle Layer for Offloading JVM Workloads", https://gluten.apache.org/
 
-[^6]: "The End of Slow Metaphors: Enhancing Apache Flink with a C++ Native Runtime", Wang Feng, Apsara Conference 2024.
 
-[^7]: "Towards Seamless Migration: Compatibility Challenges in Stream Processing Systems", 2023.
 
-[^8]: "Best Practices for Migrating Production Streaming Jobs", Flink Forward 2023.
 
-[^9]: Apache Flink FLIP-200+ Series, "Future Improvements to Flink's Execution Engine", https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals
 
-[^10]: "Comparing Stream Processing Frameworks: A Migration Perspective", IEEE BigData 2022.
 
 ---
 

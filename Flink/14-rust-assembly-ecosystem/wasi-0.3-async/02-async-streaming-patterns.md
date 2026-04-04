@@ -1,7 +1,7 @@
 # 异步流处理设计模式
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/  
-> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/
+> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md)
 > **形式化等级**: L3 (工程实践 + 模式系统)
 
 ---
@@ -138,11 +138,13 @@ $$
 ### 4.2 流式 I/O 与批处理 I/O 的权衡
 
 **批处理优势**:
+
 - 更高的吞吐（摊销 overhead）
 - 更好的压缩效率
 - 简化的错误处理
 
 **流式优势**:
+
 - 更低的延迟
 - 更平滑的内存使用
 - 更好的背压响应
@@ -175,11 +177,13 @@ N = \lambda \cdot W
 $$
 
 其中：
+
 - $N$: 并发数
 - $\lambda$: 请求到达率
 - $W$: 平均处理时间
 
 对于异步 UDF：
+
 - $W \approx L$（因为 $C \ll L$）
 - 目标 CPU 利用率 $U \approx 100\%$
 
@@ -197,6 +201,7 @@ $$
 **证明概要**:
 
 定义系统状态 $S(t) = (Q(t), P(t))$，其中：
+
 - $Q(t)$: 队列长度
 - $P(t)$: 生产速率
 
@@ -251,7 +256,7 @@ impl AsyncEnrichmentUDF {
             max_retries: 3,
         }
     }
-    
+
     /// 核心处理函数：异步流处理模式
     pub async fn process_stream(
         &self,
@@ -266,7 +271,7 @@ impl AsyncEnrichmentUDF {
             // 展平批处理结果
             .flat_map(|result| stream::iter(result.unwrap_or_default()))
     }
-    
+
     /// 批量处理：内部并发
     async fn process_batch(
         &self,
@@ -276,19 +281,19 @@ impl AsyncEnrichmentUDF {
             .into_iter()
             .map(|record| self.enrich_with_retry(record))
             .collect();
-        
+
         // 并发执行，使用 join_all
         let results = futures::future::join_all(futures).await;
         Ok(results)
     }
-    
+
     /// 带重试的丰富化
     async fn enrich_with_retry(
         &self,
         record: InputRecord,
     ) -> Result<EnrichedRecord, EnrichmentError> {
         let mut last_error = None;
-        
+
         for attempt in 0..self.max_retries {
             match self.enrich(record.clone()).await {
                 Ok(enriched) => return Ok(enriched),
@@ -301,30 +306,30 @@ impl AsyncEnrichmentUDF {
                 Err(e) => return Err(e),
             }
         }
-        
+
         Err(last_error.unwrap_or(EnrichmentError::MaxRetriesExceeded))
     }
-    
+
     /// 单次丰富化操作
     async fn enrich(&self, record: InputRecord) -> Result<EnrichedRecord, EnrichmentError> {
         let url = format!("https://api.example.com/enrich/{}", record.id);
-        
+
         let response = timeout(
             self.timeout,
             self.client.get(&url).send()
         ).await
             .map_err(|_| EnrichmentError::Timeout)?
             .map_err(EnrichmentError::Http)?;
-        
+
         if !response.status().is_success() {
             return Err(EnrichmentError::ApiError(response.status().as_u16()));
         }
-        
+
         let enrichment_data: EnrichmentData = response
             .json()
             .await
             .map_err(EnrichmentError::Parse)?;
-        
+
         Ok(EnrichedRecord {
             id: record.id,
             original_data: record.data,
@@ -341,10 +346,10 @@ pub async fn process_with_cancellation(
     mut cancel_rx: tokio::sync::mpsc::Receiver<()>,
 ) -> Vec<EnrichedRecord> {
     use tokio::select;
-    
+
     let mut results = Vec::new();
     let mut input_stream = Box::pin(input);
-    
+
     loop {
         select! {
             // 处理下一条记录
@@ -354,18 +359,18 @@ pub async fn process_with_cancellation(
                     Err(e) => log::warn!("Enrichment failed: {:?}", e),
                 }
             }
-            
+
             // 取消信号
             _ = cancel_rx.recv() => {
                 log::info!("Cancellation received, stopping enrichment. Processed {} records", results.len());
                 break;
             }
-            
+
             // 输入流结束
             else => break,
         }
     }
-    
+
     results
 }
 
@@ -379,7 +384,7 @@ pub async fn process_with_backpressure<S>(
     S: Stream<Item = InputRecord>,
 {
     use futures::sink::SinkExt;
-    
+
     input
         .map(|record| udf.enrich(record))
         .buffered(max_in_flight)  // 限制在途请求数（背压）
@@ -455,7 +460,7 @@ pub struct StreamingProcessor {
 
 impl StreamingProcessor {
     /// 创建流式转换管道
-    /// 
+    ///
     /// 模式：Source -> Transform -> Sink
     /// 特点：增量处理，背压感知
     pub fn create_pipeline<S, Si>(
@@ -468,7 +473,7 @@ impl StreamingProcessor {
         Si: Sink<ProcessedChunk, Error = SinkError>,
     {
         let buffer_size = self.buffer_size;
-        
+
         source
             // 错误处理
             .filter_map(|result| async move {
@@ -489,23 +494,23 @@ impl StreamingProcessor {
             .map(|result| Ok(result?))
             .forward(sink)
     }
-    
+
     /// 分块转换
     async fn transform_chunk(&self, chunks: Vec<Bytes>) -> Result<ProcessedChunk, TransformError> {
         let total_len: usize = chunks.iter().map(|c| c.len()).sum();
         let mut buffer = Vec::with_capacity(total_len);
-        
+
         for chunk in chunks {
             // 增量处理逻辑
             self.process_bytes(&chunk, &mut buffer).await?;
         }
-        
+
         Ok(ProcessedChunk {
             data: buffer.into(),
             processed_at: Instant::now(),
         })
     }
-    
+
     /// 字节处理（异步 I/O 可能在此处）
     async fn process_bytes(
         &self,
@@ -541,11 +546,11 @@ impl BackpressureSink {
             current_in_flight: Arc::new(AtomicUsize::new(0)),
         }
     }
-    
+
     /// 检查背压状态
     pub fn backpressure_status(&self) -> BackpressureStatus {
         let in_flight = self.current_in_flight.load(Ordering::Relaxed);
-        
+
         if in_flight >= self.high_watermark {
             BackpressureStatus::Apply
         } else if in_flight <= self.low_watermark {
@@ -558,7 +563,7 @@ impl BackpressureSink {
 
 impl Sink<ProcessedChunk> for BackpressureSink {
     type Error = SinkError;
-    
+
     fn poll_ready(
         self: Pin<&mut Self>,
         cx: &mut Context<'_>,
@@ -576,7 +581,7 @@ impl Sink<ProcessedChunk> for BackpressureSink {
             }
         }
     }
-    
+
     fn start_send(
         self: Pin<&mut Self>,
         item: ProcessedChunk,
@@ -586,14 +591,14 @@ impl Sink<ProcessedChunk> for BackpressureSink {
             .try_send(item)
             .map_err(|_| SinkError::ChannelClosed)
     }
-    
+
     fn poll_flush(
         self: Pin<&mut Self>,
         _cx: &mut Context<'_>,
     ) -> Poll<Result<(), Self::Error>> {
         Poll::Ready(Ok(()))
     }
-    
+
     fn poll_close(
         self: Pin<&mut Self>,
         _cx: &mut Context<'_>,
@@ -658,18 +663,18 @@ pub enum BackpressureStrategy {
         high_watermark: f64,  // 0.0 - 1.0
         low_watermark: f64,   // 0.0 - 1.0
     },
-    
+
     /// 基于速率的令牌桶策略
     RateBased {
         max_rate: usize,      // 每秒最大请求数
         burst_size: usize,    // 突发容量
     },
-    
+
     /// 基于并发度的信号量策略
     ConcurrencyBased {
         max_concurrent: usize,
     },
-    
+
     /// 自适应策略（结合上述多种）
     Adaptive {
         target_latency_ms: u64,
@@ -684,7 +689,7 @@ impl BackpressureController {
             metrics: Arc::new(BackpressureMetrics::default()),
         }
     }
-    
+
     /// 创建带背压控制的 channel
     pub fn create_channel<T>(&self) -> (BackpressureSender<T>, BackpressureReceiver<T>) {
         match &self.strategy {
@@ -702,7 +707,7 @@ impl BackpressureController {
                     }),
                 )
             }
-            
+
             BackpressureStrategy::ConcurrencyBased { max_concurrent } => {
                 let (tx, rx) = mpsc::channel(1024);
                 let semaphore = Arc::new(Semaphore::new(*max_concurrent));
@@ -719,7 +724,7 @@ impl BackpressureController {
                     }),
                 )
             }
-            
+
             BackpressureStrategy::RateBased { max_rate, burst_size } => {
                 let (tx, rx) = mpsc::channel(*burst_size);
                 (
@@ -734,7 +739,7 @@ impl BackpressureController {
                     }),
                 )
             }
-            
+
             BackpressureStrategy::Adaptive { .. } => {
                 // 自适应策略实现
                 todo!("Adaptive backpressure strategy")
@@ -752,24 +757,24 @@ pub struct BufferBasedSender<T> {
 
 impl<T> BufferBasedSender<T> {
     pub async fn send(&self, item: T) -> Result<(), BackpressureError> {
-        let current_size = self.inner.capacity() - self.inner.max_capacity() 
+        let current_size = self.inner.capacity() - self.inner.max_capacity()
             + self.inner.len();
         let ratio = current_size as f64 / self.max_size as f64;
-        
+
         self.metrics.buffer_ratio.store(
             (ratio * 100.0) as usize,
             Ordering::Relaxed
         );
-        
+
         // 如果缓冲区接近满，应用背压
         if ratio > 0.9 {
             self.metrics.backpressure_events.fetch_add(1, Ordering::Relaxed);
             log::warn!("High backpressure: buffer at {:.1}%", ratio * 100.0);
         }
-        
+
         self.inner.send(item).await.map_err(|_| BackpressureError::ChannelClosed)
     }
-    
+
     pub fn try_send(&self, item: T) -> Result<(), BackpressureError> {
         self.inner.try_send(item).map_err(|e| match e {
             mpsc::error::TrySendError::Full(_) => BackpressureError::BufferFull,
@@ -797,14 +802,14 @@ impl<T> ConcurrencyBasedSender<T> {
             .acquire()
             .await
             .map_err(|_| BackpressureError::SemaphoreClosed)?;
-        
+
         self.metrics.active_tasks.fetch_add(1, Ordering::Relaxed);
-        
+
         let result = f().await;
-        
+
         self.metrics.active_tasks.fetch_sub(1, Ordering::Relaxed);
         self.metrics.completed_tasks.fetch_add(1, Ordering::Relaxed);
-        
+
         Ok(result)
     }
 }
@@ -820,7 +825,7 @@ impl RateLimiter {
     pub fn new(max_rate: usize, burst_size: usize) -> Self {
         let tokens = Arc::new(AtomicUsize::new(burst_size));
         let tokens_clone = tokens.clone();
-        
+
         // 后台任务：补充令牌
         tokio::spawn(async move {
             let mut interval = interval(Duration::from_secs(1));
@@ -832,14 +837,14 @@ impl RateLimiter {
                 }
             }
         });
-        
+
         Self {
             tokens,
             max_rate,
             burst_size,
         }
     }
-    
+
     pub async fn acquire(&self) -> bool {
         loop {
             let current = self.tokens.load(Ordering::Relaxed);
@@ -847,7 +852,7 @@ impl RateLimiter {
                 tokio::time::sleep(Duration::from_millis(10)).await;
                 continue;
             }
-            
+
             if self
                 .tokens
                 .compare_exchange(current, current - 1, Ordering::Relaxed, Ordering::Relaxed)
@@ -895,36 +900,36 @@ pub enum BackpressureError {
 ```mermaid
 flowchart TD
     A[开始: 需要异步 UDF?] --> B{I/O 类型?}
-    
+
     B -->|CPU 密集型| C[使用同步 UDF]
     B -->|I/O 密集型| D{延迟要求?}
-    
+
     D -->|低延迟| E[Stream 模式]
     D -->|高吞吐| F[Batch 模式]
     D -->|平衡| G[Hybrid 模式]
-    
+
     E --> H{外部服务?}
     F --> H
     G --> H
-    
+
     H -->|HTTP API| I[使用 HTTP Client 池]
     H -->|Database| J[使用连接池]
     H -->|Message Queue| K[使用 Stream 消费]
-    
+
     I --> L{错误处理?}
     J --> L
     K --> L
-    
+
     L -->|可重试错误| M[Exponential Backoff]
     L -->|不可重试| N[Dead Letter Queue]
     L -->|超时| O[Circuit Breaker]
-    
+
     M --> P[实现 Cancel Token]
     N --> P
     O --> P
-    
+
     P --> Q[完成: WASI 0.3 Async UDF]
-    
+
     style C fill:#ffcccc
     style Q fill:#ccffcc
 ```
@@ -937,20 +942,20 @@ sequenceDiagram
     participant Buffer as 输入缓冲区
     participant Processor as 流处理器
     participant Output as 输出 Sink
-    
+
     Source->>Buffer: 发送 chunk (1)
     Source->>Buffer: 发送 chunk (2)
-    
+
     Buffer->>Processor: 累积到 batch_size
-    
+
     par 并行处理
         Processor->>Processor: 转换 batch 1
         Processor->>Processor: 转换 batch 2
     end
-    
+
     Processor->>Output: 发送结果 (1)
     Processor->>Output: 发送结果 (2)
-    
+
     Note over Buffer,Output: 背压：当 Output 慢时，Buffer 累积，Source 减速
 ```
 
@@ -963,37 +968,37 @@ graph LR
         P2[Producer 2]
         P3[Producer 3]
     end
-    
+
     subgraph "缓冲区层"
         B1[Buffer 1<br/>capacity: 1000]
         B2[Buffer 2<br/>capacity: 500]
     end
-    
+
     subgraph "处理层"
         H1[Handler 1]
         H2[Handler 2]
     end
-    
+
     subgraph "消费者端"
         C1[Consumer 1]
         C2[Consumer 2]
     end
-    
+
     P1 --> B1
     P2 --> B1
     P3 --> B2
-    
+
     B1 --> H1
     B2 --> H2
-    
+
     H1 --> C1
     H2 --> C2
-    
+
     C1 -.->|backpressure| H1
     H1 -.->|backpressure| B1
     B1 -.->|backpressure| P1
     B1 -.->|backpressure| P2
-    
+
     style B1 fill:#ffcccc
     style C1 fill:#ccffcc
 ```
@@ -1005,34 +1010,34 @@ graph TB
     subgraph "固定并发 (Fixed)"
         F1[Task 1] --- F2[Task 2] --- F3[Task 3]
         F3 --- F4[...] --- F5[Task N]
-        
+
         style F1 fill:#e1f5ff
         style F2 fill:#e1f5ff
         style F3 fill:#e1f5ff
         style F5 fill:#e1f5ff
     end
-    
+
     subgraph "自适应并发 (Adaptive)"
         A1[Task 1]
         A2[Task 2]
         AM[Task M<br/>M varies based on load]
-        
+
         A1 --- A2
         A2 -.->|负载高| A2
         A2 -.->|负载低| AM
-        
+
         style AM fill:#ccffcc
     end
-    
+
     subgraph "令牌桶 (Token Bucket)"
         T1[Bucket<br/>tokens: 100/100]
-        T2[Consumer 1] 
+        T2[Consumer 1]
         T3[Consumer 2]
-        
+
         T1 -->|acquire| T2
         T1 -->|acquire| T3
         T3 -.->|refill 10/sec| T1
-        
+
         style T1 fill:#fff4e1
     end
 ```
@@ -1041,19 +1046,12 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Bytecode Alliance, "Component Model Async and Streaming Design", 2025. https://github.com/WebAssembly/component-model/blob/main/design/mvp/Async.md
 
-[^2]: Apache Flink, "Async I/O for External Data Access", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/
 
-[^3]: Tokio Documentation, "Backpressure and Buffering", 2025. https://tokio.rs/tokio/tutorial/shared-state
 
-[^4]: Reactive Streams Specification, "Publisher-Subscriber Model", 2025. https://www.reactive-streams.org/
 
-[^5]: Martin Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017. Chapter 11: Stream Processing.
 
-[^6]: Rust Async Book, "Patterns and Best Practices", 2025. https://rust-lang.github.io/async-book/
 
-[^7]: WASI 0.3 Preview Documentation, "Stream Types and Backpressure", 2025. https://github.com/WebAssembly/WASI
 
 ---
 

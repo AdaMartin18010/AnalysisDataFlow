@@ -15,6 +15,7 @@ $$
 $$
 
 其中：
+
 - $S$: Schema 定义（字段名、数据类型、可空性）
 - $L$: 逻辑类型系统（Logical Types）
 - $B$: 物理内存布局（Buffers）
@@ -41,6 +42,7 @@ $$
 $$
 
 其中：
+
 - $addr$: 内存起始地址（64-bit 对齐）
 - $len$: 有效数据长度（字节）
 - $cap$: 容量（字节），满足 $cap \geq len$ 且 $cap = 2^k$（2的幂次对齐）
@@ -54,6 +56,7 @@ $$
 $$
 
 其中：
+
 - $RPC$: gRPC 服务定义（`DoGet`, `DoPut`, `DoExchange`, `GetSchema`, `ListFlights`, `GetFlightInfo`）
 - $Stream$: 记录批次流（RecordBatch Stream）
 - $Schema$: 航班信息（FlightInfo）与数据模式
@@ -72,58 +75,58 @@ classDiagram
         +bit_width int
         +is_primitive() bool
     }
-    
+
     class PrimitiveType {
         <<abstract>>
     }
-    
+
     class NumericType {
         <<abstract>>
     }
-    
+
     class IntegerType {
         +signed bool
     }
-    
+
     class FloatingPointType {
         +precision Precision
     }
-    
+
     class FixedWidthType {
         <<abstract>>
         +byte_width int
     }
-    
+
     class VariableWidthType {
         <<abstract>>
     }
-    
+
     class NestedType {
         <<abstract>>
         +fields Field[]
     }
-    
+
     ArrowType <|-- PrimitiveType
     ArrowType <|-- NestedType
     ArrowType <|-- DictionaryType
-    
+
     PrimitiveType <|-- NumericType
     PrimitiveType <|-- BooleanType
     PrimitiveType <|-- FixedSizeBinary
     PrimitiveType <|-- Decimal128
     PrimitiveType <|-- Decimal256
     PrimitiveType <|-- TemporalType
-    
+
     NumericType <|-- IntegerType
     NumericType <|-- FloatingPointType
-    
+
     NestedType <|-- ListType
     NestedType <|-- LargeListType
     NestedType <|-- FixedSizeListType
     NestedType <|-- StructType
     NestedType <|-- MapType
     NestedType <|-- UnionType
-    
+
     VariableWidthType <|-- StringType
     VariableWidthType <|-- LargeStringType
     VariableWidthType <|-- BinaryType
@@ -157,6 +160,7 @@ $$
 $$
 
 其中：
+
 - $N_{proj}$: 查询投影的列数
 - $N_{total}$: 总列数
 - $C_{line}$: 缓存行大小（通常为 64 bytes）
@@ -199,7 +203,7 @@ graph TB
         FLIGHT["Arrow Flight"]
         DATAFUSION["DataFusion"]
     end
-    
+
     subgraph Languages["Language Bindings"]
         CPP["C++"]
         RUST["Rust"]
@@ -207,45 +211,45 @@ graph TB
         PYTHON["Python"]
         GO["Go"]
     end
-    
+
     subgraph Storage["Storage Integration"]
         PARQUET["Parquet"]
         ORC["ORC"]
         CSV["CSV"]
         JSON["JSON"]
     end
-    
+
     subgraph Engines["Query Engines"]
         SPARK["Apache Spark"]
         FLINK["Apache Flink"]
         DRILL["Apache Drill"]
         INFINIDB["InfiniDB"]
     end
-    
+
     subgraph DL["Deep Learning"]
         PYTORCH["PyTorch"]
         TENSORFLOW["TensorFlow"]
         Jax["JAX"]
         MLX["Apple MLX"]
     end
-    
+
     FORMAT --> IPC
     FORMAT --> FLIGHT
     IPC --> CPP
     IPC --> RUST
     IPC --> JAVA
     IPC --> PYTHON
-    
+
     FLIGHT --> CPP
     FLIGHT --> RUST
-    
+
     FORMAT --> PARQUET
     FORMAT --> ORC
-    
+
     CPP --> SPARK
     JAVA --> FLINK
     RUST --> DATAFUSION
-    
+
     PYTHON --> PYTORCH
     PYTHON --> TENSORFLOW
 ```
@@ -258,40 +262,40 @@ graph TB
         SQL["Flink SQL"]
         TABLE["Table API"]
         DS["DataStream API"]
-        
+
         subgraph Bridge["Arrow Bridge Layer"]
             CONVERTER["RowData <-> Arrow"]
             SCHEMA["Schema Converter"]
             ALLOCATOR["Arrow Buffer Allocator"]
         end
     end
-    
+
     subgraph ArrowFormat["Arrow Format"]
         RB["RecordBatch"]
         SCHEMA_ARROW["Arrow Schema"]
         ARRAY["Arrow Arrays"]
         BUFFER["Arrow Buffers"]
     end
-    
+
     subgraph External["External Systems"]
         PYUDF["Python UDF"]
         RUST_UDF["Rust UDF"]
         DATAFUSION_EXT["DataFusion"]
         PARQUET_FILE["Parquet Files"]
     end
-    
+
     SQL --> TABLE
     TABLE --> CONVERTER
     DS --> CONVERTER
-    
+
     CONVERTER --> SCHEMA
     SCHEMA --> SCHEMA_ARROW
     CONVERTER --> ALLOCATOR
     ALLOCATOR --> BUFFER
-    
+
     BUFFER --> ARRAY
     ARRAY --> RB
-    
+
     RB -->|"Zero-Copy"| PYUDF
     RB -->|"Zero-Copy"| RUST_UDF
     RB --> DATAFUSION_EXT
@@ -306,25 +310,25 @@ sequenceDiagram
     participant FlightClient as Arrow Flight Client
     participant FlightServer as Arrow Flight Server
     participant DataStore as Data Store
-    
+
     Client->>FlightClient: GetFlightInfo(Descriptor)
     FlightClient->>FlightServer: GetFlightInfo gRPC
     FlightServer->>DataStore: Query Metadata
     DataStore-->>FlightServer: Schema & Partitions
     FlightServer-->>FlightClient: FlightInfo (Schema + Endpoints)
     FlightClient-->>Client: Available Datasets
-    
+
     Client->>FlightClient: DoGet(Ticket)
     FlightClient->>FlightServer: DoGet gRPC Stream
     FlightServer->>DataStore: Fetch Data
-    
+
     loop RecordBatch Stream
         DataStore-->>FlightServer: Raw Data
         FlightServer->>FlightServer: Convert to Arrow
         FlightServer-->>FlightClient: RecordBatch
         FlightClient->>FlightClient: Deserialize
     end
-    
+
     FlightClient-->>Client: Arrow RecordBatches
 ```
 
@@ -348,6 +352,7 @@ $$
 ### 4.2 反例分析
 
 **Counter-Example 4.1** (纯 OLTP 场景): 对于点查为主的 OLTP 负载，行式存储（如 MySQL 的 InnoDB）比 Arrow 列式格式性能更优，因为：
+
 1. 单行访问需要组装分散的列数据
 2. 写操作需要维护多个列文件
 3. 事务隔离在列式存储上实现复杂
@@ -377,13 +382,14 @@ M_{arrow} = n \cdot m \cdot w + \frac{n}{8} \cdot m + O(m \cdot \log n)
 $$
 
 其中：
+
 - $n \cdot m \cdot w$: 实际数据大小
 - $\frac{n}{8} \cdot m$: 空值位图（每个字段每行 1 bit）
 - $O(m \cdot \log n)$: 变长类型偏移数组
 
 相比行式布局的 $M_{row} = n \cdot (m \cdot w + \text{padding})$，Arrow 通过消除行内填充（padding）和紧凑的位图编码，节省空间约 10%-30%。
 
-**Proof**: 
+**Proof**:
 
 行式布局通常按 CPU 字长对齐（8 bytes），对于 $w < 8$ 的字段造成填充浪费：
 
@@ -460,7 +466,7 @@ import numpy as np
 
 class ArrowFormatDemo:
     """Arrow 列式格式演示"""
-    
+
     @staticmethod
     def create_primitive_arrays():
         """创建基本类型数组"""
@@ -468,25 +474,25 @@ class ArrowFormatDemo:
         int_array = pa.array([1, 2, 3, 4, 5], type=pa.int64())
         print(f"Int64 Array: {int_array}")
         print(f"  Buffer addresses: {[hex(b.address) for b in int_array.buffers() if b]}")
-        
+
         # Float64 数组
         float_array = pa.array([1.1, 2.2, 3.3, 4.4, 5.5], type=pa.float64())
         print(f"\nFloat64 Array: {float_array}")
-        
+
         # 带空值的数组
         nullable_array = pa.array([1, None, 3, None, 5], type=pa.int64())
         print(f"\nNullable Array: {nullable_array}")
         print(f"  Null bitmap: {nullable_array.null_bitmap}")
         print(f"  Null count: {nullable_array.null_count}")
-        
+
         # 字符串数组（变长类型）
         string_array = pa.array(["hello", "world", "arrow", "flight"])
         print(f"\nString Array: {string_array}")
         print(f"  Value offsets: {string_array.offsets}")
         print(f"  Value data: {string_array.value_data}")
-        
+
         return int_array, float_array, nullable_array, string_array
-    
+
     @staticmethod
     def create_nested_arrays():
         """创建嵌套类型数组"""
@@ -500,7 +506,7 @@ class ArrowFormatDemo:
         print(f"\nList Array: {list_array}")
         print(f"  Value offsets: {list_array.offsets}")
         print(f"  Values: {list_array.values}")
-        
+
         # Struct 数组
         struct_type = pa.struct([
             pa.field('name', pa.string()),
@@ -515,9 +521,9 @@ class ArrowFormatDemo:
         ], type=struct_type)
         print(f"\nStruct Array: {struct_array}")
         print(f"  Fields: {struct_array.flatten()}")
-        
+
         return list_array, struct_array
-    
+
     @staticmethod
     def create_record_batch():
         """创建 RecordBatch"""
@@ -527,82 +533,82 @@ class ArrowFormatDemo:
             pa.field('value', pa.float64()),
             pa.field('tags', pa.list_(pa.string()))
         ])
-        
+
         batch = pa.RecordBatch.from_arrays([
             pa.array([1, 2, 3, 4, 5]),
             pa.array(['a', 'b', 'c', 'd', 'e']),
             pa.array([1.1, 2.2, 3.3, 4.4, 5.5]),
             pa.array([['x'], ['y', 'z'], [], ['x', 'y'], ['z']])
         ], schema=schema.names)
-        
+
         print(f"\nRecordBatch:")
         print(f"  Schema: {batch.schema}")
         print(f"  Num rows: {batch.num_rows}")
         print(f"  Num columns: {batch.num_columns}")
         print(f"  Column names: {batch.schema.names}")
-        
+
         # 列访问
         id_column = batch.column('id')
         print(f"  'id' column: {id_column}")
-        
+
         return batch
-    
+
     @staticmethod
     def demonstrate_zero_copy():
         """演示零拷贝共享"""
         import numpy as np
-        
+
         # 从 NumPy 数组创建 Arrow 数组（零拷贝）
         numpy_array = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         arrow_array = pa.array(numpy_array)
-        
+
         print(f"\nZero-Copy Demonstration:")
         print(f"  NumPy array base: {numpy_array.ctypes.data:#x}")
-        
+
         # 检查 Arrow 数组是否共享内存
         arrow_buffers = arrow_array.buffers()
         if arrow_buffers[1]:  # 数据缓冲区
             print(f"  Arrow buffer address: {arrow_buffers[1].address:#x}")
             print(f"  Memory shared: {numpy_array.ctypes.data == arrow_buffers[1].address}")
-        
+
         # 从 Arrow 数组获取 NumPy 视图（零拷贝）
         numpy_view = arrow_array.to_numpy(zero_copy_only=True)
         print(f"  NumPy view base: {numpy_view.ctypes.data:#x}")
         print(f"  Views share memory: {numpy_array.ctypes.data == numpy_view.ctypes.data}")
-        
+
         # 切片操作（零拷贝）
         sliced = arrow_array.slice(1, 3)
         print(f"\n  Sliced array: {sliced}")
         print(f"  Sliced buffer address: {sliced.buffers()[1].address:#x}")
         print(f"  Slice is zero-copy: {sliced.buffers()[1].address == arrow_buffers[1].address + 8}")
-    
+
     @staticmethod
     def compute_operations():
         """Arrow 计算操作"""
         a = pa.array([1, 2, 3, 4, 5])
         b = pa.array([10, 20, 30, 40, 50])
-        
+
         print(f"\nCompute Operations:")
         print(f"  a = {a}")
         print(f"  b = {b}")
-        
+
         # 算术运算
         sum_result = pc.add(a, b)
         print(f"  a + b = {sum_result}")
-        
+
         mul_result = pc.multiply(a, b)
         print(f"  a * b = {mul_result}")
-        
+
         # 比较运算
         gt_result = pc.greater(a, pa.scalar(3))
         print(f"  a > 3 = {gt_result}")
-        
+
         # 聚合运算
         sum_agg = pc.sum(a)
         mean_agg = pc.mean(b)
         print(f"  sum(a) = {sum_agg.as_py()}")
         print(f"  mean(b) = {mean_agg.as_py()}")
-        
+
         # 筛选
         filtered = pc.filter(b, pc.greater(a, 2))
         print(f"  b where a > 2 = {filtered}")
@@ -610,11 +616,11 @@ class ArrowFormatDemo:
 
 def main():
     demo = ArrowFormatDemo()
-    
+
     print("=" * 60)
     print("Apache Arrow 格式基础操作示例")
     print("=" * 60)
-    
+
     demo.create_primitive_arrays()
     demo.create_nested_arrays()
     demo.create_record_batch()
@@ -651,27 +657,27 @@ import java.util.*;
  * 展示 RowData 与 Arrow 格式的相互转换
  */
 public class FlinkArrowIntegration {
-    
+
     private final BufferAllocator allocator;
     private final ArrowWriter<RowData> arrowWriter;
     private final ArrowReader<RowData> arrowReader;
-    
+
     public FlinkArrowIntegration(LogicalType[] fieldTypes, String[] fieldNames) {
         // 创建 Arrow 内存分配器
         this.allocator = new RootAllocator(Long.MAX_VALUE);
-        
+
         // 创建 Arrow Schema
         Field[] fields = new Field[fieldTypes.length];
         for (int i = 0; i < fieldTypes.length; i++) {
             fields[i] = ArrowUtils.toArrowField(fieldNames[i], fieldTypes[i]);
         }
         Schema schema = new Schema(Arrays.asList(fields));
-        
+
         // 创建 Arrow 写入器和读取器
         this.arrowWriter = ArrowUtils.createRowDataArrowWriter(schema, fieldTypes);
         this.arrowReader = ArrowUtils.createRowDataArrowReader(schema, fieldTypes);
     }
-    
+
     /**
      * 将 Flink RowData 转换为 Arrow RecordBatch
      */
@@ -679,30 +685,30 @@ public class FlinkArrowIntegration {
         // 创建 VectorSchemaRoot
         VectorSchemaRoot root = VectorSchemaRoot.create(
             arrowWriter.getSchema(), allocator);
-        
+
         // 写入数据
         for (RowData row : rowDataList) {
             arrowWriter.write(row, root);
         }
-        
+
         return root;
     }
-    
+
     /**
      * 将 Arrow RecordBatch 转换为 Flink RowData
      */
     public List<RowData> convertFromArrow(VectorSchemaRoot root) {
         List<RowData> result = new ArrayList<>();
-        
+
         int rowCount = root.getRowCount();
         for (int i = 0; i < rowCount; i++) {
             RowData row = arrowReader.read(i, root);
             result.add(row);
         }
-        
+
         return result;
     }
-    
+
     /**
      * 序列化 Arrow RecordBatch 到字节流
      */
@@ -716,7 +722,7 @@ public class FlinkArrowIntegration {
         }
         return baos.toByteArray();
     }
-    
+
     /**
      * 从字节流反序列化 Arrow RecordBatch
      */
@@ -727,7 +733,7 @@ public class FlinkArrowIntegration {
         reader.loadNextBatch();
         return reader.getVectorSchemaRoot();
     }
-    
+
     /**
      * 使用示例
      */
@@ -740,11 +746,11 @@ public class FlinkArrowIntegration {
             new TimestampType(3)
         };
         String[] fieldNames = new String[] {"id", "name", "value", "ts"};
-        
+
         // 创建集成实例
         FlinkArrowIntegration integration = new FlinkArrowIntegration(
             fieldTypes, fieldNames);
-        
+
         // 创建示例 RowData
         List<RowData> rows = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
@@ -755,42 +761,42 @@ public class FlinkArrowIntegration {
             row.setField(3, TimestampData.fromEpochMillis(System.currentTimeMillis()));
             rows.add(row);
         }
-        
+
         // 转换为 Arrow
         long start = System.currentTimeMillis();
         VectorSchemaRoot arrowBatch = integration.convertToArrow(rows);
         long conversionTime = System.currentTimeMillis() - start;
-        
+
         System.out.println("Converted " + rows.size() + " rows to Arrow");
         System.out.println("Conversion time: " + conversionTime + " ms");
         System.out.println("Arrow batch schema: " + arrowBatch.getSchema());
         System.out.println("Arrow batch rows: " + arrowBatch.getRowCount());
-        
+
         // 序列化
         start = System.currentTimeMillis();
         byte[] serialized = integration.serializeArrow(arrowBatch);
         long serializeTime = System.currentTimeMillis() - start;
-        
+
         System.out.println("\nSerialized to " + serialized.length + " bytes");
         System.out.println("Serialization time: " + serializeTime + " ms");
         System.out.println("Throughput: " + (serialized.length / 1024.0 / 1024.0 / serializeTime * 1000) + " MB/s");
-        
+
         // 反序列化
         start = System.currentTimeMillis();
         VectorSchemaRoot deserialized = integration.deserializeArrow(serialized);
         long deserializeTime = System.currentTimeMillis() - start;
-        
+
         System.out.println("\nDeserialized Arrow batch");
         System.out.println("Deserialization time: " + deserializeTime + " ms");
-        
+
         // 转换回 RowData
         start = System.currentTimeMillis();
         List<RowData> recoveredRows = integration.convertFromArrow(deserialized);
         long backConversionTime = System.currentTimeMillis() - start;
-        
+
         System.out.println("\nConverted back to " + recoveredRows.size() + " RowData objects");
         System.out.println("Back conversion time: " + backConversionTime + " ms");
-        
+
         // 验证数据完整性
         System.out.println("\nData integrity check:");
         System.out.println("Original rows: " + rows.size());
@@ -823,13 +829,13 @@ impl ArrowProcessor {
     pub fn new(schema: Schema) -> Self {
         Self { schema }
     }
-    
+
     /// 创建示例 RecordBatch
     pub fn create_sample_batch(&self, num_rows: usize) -> Result<RecordBatch, ArrowError> {
         let id_array: ArrayRef = Arc::new(
             Int64Array::from((0..num_rows as i64).collect::<Vec<_>>())
         );
-        
+
         let value_array: ArrayRef = Arc::new(
             Float64Array::from(
                 (0..num_rows)
@@ -837,7 +843,7 @@ impl ArrowProcessor {
                     .collect::<Vec<_>>()
             )
         );
-        
+
         let name_array: ArrayRef = Arc::new(
             StringArray::from(
                 (0..num_rows)
@@ -845,13 +851,13 @@ impl ArrowProcessor {
                     .collect::<Vec<_>>()
             )
         );
-        
+
         RecordBatch::try_new(
             Arc::new(self.schema.clone()),
             vec![id_array, value_array, name_array],
         )
     }
-    
+
     /// SIMD 优化的批量数学运算
     pub fn simd_math_operation(&self, batch: &RecordBatch) -> Result<Float64Array, ArrowError> {
         let values = batch
@@ -860,19 +866,19 @@ impl ArrowProcessor {
             .as_any()
             .downcast_ref::<Float64Array>()
             .ok_or_else(|| ArrowError::InvalidArgumentError("Not Float64Array".to_string()))?;
-        
+
         // SIMD 优化: (x^2 + 2x + 1) / ln(x + 2)
         let x_squared = multiply(values, values)?;
         let two_x = multiply_scalar(values, 2.0)?;
-        let numerator = add(&add(&x_squared, &two_x)?, 
+        let numerator = add(&add(&x_squared, &two_x)?,
                             &Float64Array::from(vec![1.0; values.len()]))?;
         let denominator = arrow::compute::kernels::numeric::ln(
             &add_scalar(values, 2.0)?
         )?;
-        
+
         divide(&numerator, &denominator)
     }
-    
+
     /// 批量聚合计算
     pub fn compute_aggregates(&self, batch: &RecordBatch) -> Result<AggregateResult, ArrowError> {
         let values = batch
@@ -881,7 +887,7 @@ impl ArrowProcessor {
             .as_any()
             .downcast_ref::<Float64Array>()
             .ok_or_else(|| ArrowError::InvalidArgumentError("Not Float64Array".to_string()))?;
-        
+
         Ok(AggregateResult {
             sum: sum(values).unwrap_or(0.0),
             min: min(values),
@@ -890,9 +896,9 @@ impl ArrowProcessor {
             count: values.len() - values.null_count(),
         })
     }
-    
+
     /// 向量化过滤
-    pub fn vectorized_filter(&self, batch: &RecordBatch, threshold: f64) 
+    pub fn vectorized_filter(&self, batch: &RecordBatch, threshold: f64)
         -> Result<RecordBatch, ArrowError> {
         let values = batch
             .column_by_name("value")
@@ -900,17 +906,17 @@ impl ArrowProcessor {
             .as_any()
             .downcast_ref::<Float64Array>()
             .ok_or_else(|| ArrowError::InvalidArgumentError("Not Float64Array".to_string()))?;
-        
+
         // 创建过滤掩码
         let mask = gt_scalar(values, threshold)?;
-        
+
         // 应用过滤到所有列
         let filtered_columns: Vec<ArrayRef> = batch
             .columns()
             .iter()
             .map(|col| filter(col.as_ref(), &mask))
             .collect::<Result<Vec<_>, _>>()?;
-        
+
         RecordBatch::try_new(
             batch.schema(),
             filtered_columns,
@@ -932,11 +938,11 @@ pub struct AggregateResult {
 pub mod flight {
     use arrow_flight::*;
     use tonic::{Request, Response, Status};
-    
+
     pub struct ArrowFlightService {
         // 数据源
     }
-    
+
     #[tonic::async_trait]
     impl FlightService for ArrowFlightService {
         async fn get_schema(
@@ -946,7 +952,7 @@ pub mod flight {
             // 返回数据集 Schema
             todo!()
         }
-        
+
         async fn do_get(
             &self,
             request: Request<Ticket>,
@@ -954,7 +960,7 @@ pub mod flight {
             // 流式返回 Arrow 数据
             todo!()
         }
-        
+
         async fn do_put(
             &self,
             request: Request<Streaming<FlightData>>,
@@ -968,7 +974,7 @@ pub mod flight {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     fn create_test_schema() -> Schema {
         Schema::new(vec![
             Field::new("id", DataType::Int64, false),
@@ -976,59 +982,59 @@ mod tests {
             Field::new("name", DataType::Utf8, false),
         ])
     }
-    
+
     #[test]
     fn test_create_batch() {
         let processor = ArrowProcessor::new(create_test_schema());
         let batch = processor.create_sample_batch(1000).unwrap();
-        
+
         assert_eq!(batch.num_rows(), 1000);
         assert_eq!(batch.num_columns(), 3);
     }
-    
+
     #[test]
     fn test_simd_math_operation() {
         let processor = ArrowProcessor::new(create_test_schema());
         let batch = processor.create_sample_batch(100).unwrap();
-        
+
         let result = processor.simd_math_operation(&batch).unwrap();
-        
+
         assert_eq!(result.len(), 100);
         // 验证计算正确性
         let first_value = 10.0;
-        let expected = (first_value.powi(2) + 2.0 * first_value + 1.0) 
+        let expected = (first_value.powi(2) + 2.0 * first_value + 1.0)
                       / (first_value + 2.0).ln();
         assert!((result.value(0) - expected).abs() < 0.0001);
     }
-    
+
     #[test]
     fn test_compute_aggregates() {
         let processor = ArrowProcessor::new(create_test_schema());
         let batch = processor.create_sample_batch(1000).unwrap();
-        
+
         let agg = processor.compute_aggregates(&batch).unwrap();
-        
+
         assert!(agg.count == 1000);
         assert!(agg.sum > 0.0);
         assert!(agg.mean > 0.0);
         assert!(agg.min.is_some());
         assert!(agg.max.is_some());
     }
-    
+
     #[test]
     fn test_vectorized_filter() {
         let processor = ArrowProcessor::new(create_test_schema());
         let batch = processor.create_sample_batch(1000).unwrap();
-        
+
         let filtered = processor.vectorized_filter(&batch, 100.0).unwrap();
-        
+
         // 所有 value > 100 的行
         let values = filtered.column_by_name("value")
             .unwrap()
             .as_any()
             .downcast_ref::<Float64Array>()
             .unwrap();
-        
+
         for i in 0..values.len() {
             assert!(values.value(i) > 100.0);
         }
@@ -1054,15 +1060,15 @@ import time
 
 class ArrowFlightServer(flight.FlightServerBase):
     """Arrow Flight 服务端示例"""
-    
+
     def __init__(self, location="grpc://0.0.0.0:8815", **kwargs):
         super().__init__(location, **kwargs)
         self.datasets = {}
-        
+
     def add_dataset(self, name: str, table: pa.Table):
         """添加数据集"""
         self.datasets[name] = table
-        
+
     def list_flights(self, context, criteria):
         """列出可用的 flights"""
         for name, table in self.datasets.items():
@@ -1071,7 +1077,7 @@ class ArrowFlightServer(flight.FlightServerBase):
                 name,
                 [flight.Location.for_grpc_tcp("localhost", 8815)]
             )]
-            
+
             yield flight.FlightInfo(
                 table.schema,
                 descriptor,
@@ -1079,20 +1085,20 @@ class ArrowFlightServer(flight.FlightServerBase):
                 num_records=table.num_rows,
                 total_bytes=table.nbytes
             )
-    
+
     def get_flight_info(self, context, descriptor):
         """获取特定 flight 的信息"""
         name = descriptor.path[0].decode()
         table = self.datasets.get(name)
-        
+
         if table is None:
             raise flight.FlightUnavailableError(f"Dataset {name} not found")
-        
+
         endpoints = [flight.FlightEndpoint(
             name,
             [flight.Location.for_grpc_tcp("localhost", 8815)]
         )]
-        
+
         return flight.FlightInfo(
             table.schema,
             descriptor,
@@ -1100,47 +1106,47 @@ class ArrowFlightServer(flight.FlightServerBase):
             num_records=table.num_rows,
             total_bytes=table.nbytes
         )
-    
+
     def do_get(self, context, ticket):
         """处理数据获取请求"""
         name = ticket.ticket.decode()
         table = self.datasets.get(name)
-        
+
         if table is None:
             raise flight.FlightUnavailableError(f"Dataset {name} not found")
-        
+
         # 将 Table 转为 RecordBatch 流
         return flight.GeneratorStream(
             table.schema,
             table.to_batches(max_chunksize=10000)
         )
-    
+
     def do_put(self, context, descriptor, reader, writer):
         """处理数据上传请求"""
         name = descriptor.path[0].decode()
-        
+
         # 读取所有 batches
         batches = []
         schema = None
-        
+
         for chunk in reader:
             if schema is None:
                 schema = chunk.data.schema
             batches.append(chunk.data)
-        
+
         # 合并为 Table
         table = pa.Table.from_batches(batches)
         self.datasets[name] = table
-        
+
         print(f"Received dataset '{name}': {table.num_rows} rows, {table.nbytes} bytes")
 
 
 class ArrowFlightClient:
     """Arrow Flight 客户端"""
-    
+
     def __init__(self, location="grpc://localhost:8815"):
         self.client = flight.connect(location)
-    
+
     def list_datasets(self):
         """列出可用数据集"""
         flights = list(self.client.list_flights())
@@ -1150,65 +1156,65 @@ class ArrowFlightClient:
             print(f"  Rows: {info.total_records}")
             print(f"  Bytes: {info.total_bytes}")
             print(f"  Schema: {info.schema.names}")
-    
+
     def download_dataset(self, name: str) -> pa.Table:
         """下载数据集"""
         descriptor = flight.FlightDescriptor.for_path(name.encode())
         info = self.client.get_flight_info(descriptor)
-        
+
         endpoint = info.endpoints[0]
         ticket = endpoint.ticket
-        
+
         # 获取数据流
         reader = self.client.do_get(ticket)
-        
+
         # 读取所有 batches
         batches = []
         for batch in reader:
             batches.append(batch.data)
-        
+
         return pa.Table.from_batches(batches, schema=info.schema)
-    
+
     def upload_dataset(self, name: str, table: pa.Table):
         """上传数据集"""
         descriptor = flight.FlightDescriptor.for_path(name.encode())
-        
+
         # 准备数据流
         batches = table.to_batches(max_chunksize=10000)
-        
+
         # 上传
         writer, _ = self.client.do_put(descriptor, table.schema)
-        
+
         for batch in batches:
             writer.write_batch(batch)
-        
+
         writer.close()
-    
+
     def benchmark_transfer(self, name: str, table: pa.Table):
         """基准测试数据传输性能"""
         print(f"\n{'='*60}")
         print(f"Arrow Flight Transfer Benchmark")
         print(f"{'='*60}")
         print(f"Data size: {table.num_rows:,} rows, {table.nbytes / 1024 / 1024:.2f} MB")
-        
+
         # 上传测试
         start = time.time()
         self.upload_dataset(name, table)
         upload_time = time.time() - start
         upload_throughput = table.nbytes / 1024 / 1024 / upload_time
-        
+
         print(f"Upload time: {upload_time:.3f}s")
         print(f"Upload throughput: {upload_throughput:.2f} MB/s")
-        
+
         # 下载测试
         start = time.time()
         downloaded = self.download_dataset(name)
         download_time = time.time() - start
         download_throughput = downloaded.nbytes / 1024 / 1024 / download_time
-        
+
         print(f"Download time: {download_time:.3f}s")
         print(f"Download throughput: {download_throughput:.2f} MB/s")
-        
+
         # 验证数据完整性
         assert downloaded.num_rows == table.num_rows
         print(f"Data integrity: Verified ✓")
@@ -1224,34 +1230,34 @@ def main():
         'category': [f"cat_{i % 100}" for i in range(num_rows)],
         'timestamp': [i * 1000 for i in range(num_rows)]
     })
-    
+
     # 启动服务端
     server = ArrowFlightServer()
     server.add_dataset("sample_data", data.slice(0, 1000))
-    
+
     server_thread = threading.Thread(
         target=server.serve,
         daemon=True
     )
     server_thread.start()
     time.sleep(1)  # 等待服务端启动
-    
+
     try:
         # 创建客户端
         client = ArrowFlightClient()
-        
+
         # 列出数据集
         print("Available datasets:")
         client.list_datasets()
-        
+
         # 运行基准测试
         client.benchmark_transfer("benchmark_data", data)
-        
+
         # 下载验证
         print(f"\nDownloading and verifying...")
         downloaded = client.download_dataset("benchmark_data")
         print(f"Downloaded: {downloaded.num_rows:,} rows")
-        
+
     finally:
         server.shutdown()
 
@@ -1272,25 +1278,25 @@ graph TB
         subgraph ID["id: Int64Array"]
             ID_BUF["Buffer: [1, 2, 3, 4, 5]<br/>40 bytes"]
         end
-        
+
         subgraph NAME["name: StringArray"]
             NAME_OFF["Offsets: [0, 5, 10, 15, 20]<br/>20 bytes"]
             NAME_DATA["Data: 'AliceBobCharlieDaveEve'<br/>22 bytes"]
             NAME_BIT["Null Bitmap<br/>1 byte"]
         end
-        
+
         subgraph SCORE["score: Float64Array"]
             SCORE_BUF["Buffer: [95.5, 87.2, 92.8, 78.5, 88.0]<br/>40 bytes"]
         end
     end
-    
+
     subgraph Memory["Memory Layout (64-byte aligned)"]
         ADDR1["0x1000: ID Buffer"]
         ADDR2["0x1040: Name Offsets"]
         ADDR3["0x1080: Name Data"]
         ADDR4["0x10C0: Score Buffer"]
     end
-    
+
     ID_BUF --> ADDR1
     NAME_OFF --> ADDR2
     NAME_DATA --> ADDR3
@@ -1305,17 +1311,17 @@ sequenceDiagram
     participant Flight as Arrow Flight
     participant Server as Data Server
     participant Store as Data Store
-    
+
     Client->>Flight: GetFlightInfo(descriptor)
     Flight->>Server: gRPC: GetFlightInfo
     Server->>Store: Query metadata
     Store-->>Server: Schema, partitions
     Server-->>Flight: FlightInfo
     Flight-->>Client: Schema + Endpoints
-    
+
     Client->>Flight: DoGet(ticket)
     Flight->>Server: gRPC streaming: DoGet
-    
+
     loop Streaming Batches
         Server->>Store: Fetch chunk
         Store-->>Server: Raw data
@@ -1324,7 +1330,7 @@ sequenceDiagram
         Flight->>Flight: Deserialize
         Flight-->>Client: Arrow Array
     end
-    
+
     Client->>Client: Process data
 ```
 
@@ -1336,13 +1342,13 @@ graph TB
         QUERY["SELECT * FROM events"]
         UDF["Vectorized UDF"]
     end
-    
+
     subgraph Planner["Flink Planner"]
         PARSE["SQL Parser"]
         OPT["Optimizer<br/>Vectorization Rules"]
         PHYSICAL["Physical Plan"]
     end
-    
+
     subgraph Runtime["Flink Runtime"]
         subgraph Operator["Vectorized Operator"]
             SCAN["Vectorized Scan"]
@@ -1350,7 +1356,7 @@ graph TB
             PROJECT["Vectorized Project"]
             AGG["Vectorized Aggregate"]
         end
-        
+
         subgraph ArrowLayer["Arrow Integration"]
             SCHEMA_CONV["Schema Converter"]
             ROW_TO_ARROW["RowData → Arrow"]
@@ -1358,32 +1364,32 @@ graph TB
             ALLOC["Arrow Buffer Allocator"]
         end
     end
-    
+
     subgraph External["External Systems"]
         PARQUET["Parquet Files"]
         KAFKA["Kafka"]
         PYTHON["Python UDF"]
         RUST["Rust UDF"]
     end
-    
+
     QUERY --> PARSE
     UDF --> PARSE
     PARSE --> OPT
     OPT --> PHYSICAL
-    
+
     PHYSICAL --> SCAN
     PHYSICAL --> FILTER
     PHYSICAL --> PROJECT
     PHYSICAL --> AGG
-    
+
     SCAN --> ROW_TO_ARROW
     FILTER --> ARROW_TO_ROW
     PROJECT --> ROW_TO_ARROW
     AGG --> ARROW_TO_ROW
-    
+
     ROW_TO_ARROW --> ALLOC
     ARROW_TO_ROW --> ALLOC
-    
+
     ALLOC --> PARQUET
     ALLOC --> KAFKA
     ALLOC --> PYTHON
@@ -1394,29 +1400,17 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Arrow Documentation, "Columnar Format Specification", 2025. https://arrow.apache.org/docs/format/Columnar.html
 
-[^2]: Apache Arrow Flight Documentation, "Arrow Flight RPC", 2025. https://arrow.apache.org/docs/format/Flight.html
 
-[^3]: Wes McKinney, "Apache Arrow and the "10 Things I Hate About pandas"", 2017. https://wesmckinney.com/blog/apache-arrow-pandas-internals/
 
-[^4]: Apache Arrow Rust Documentation, "arrow-rs: Rust Implementation of Apache Arrow", 2025. https://docs.rs/arrow/
 
-[^5]: Apache Arrow Java Documentation, "Arrow Java", 2025. https://arrow.apache.org/docs/java/
 
-[^6]: Apache Arrow Flight SQL, "Flight SQL: A Universal JDBC/ODBC Alternative", 2025. https://arrow.apache.org/docs/format/FlightSql.html
 
-[^7]: Dremio Engineering, "Arrow Flight: A High-Performance Alternative to JDBC/ODBC", 2024. https://www.dremio.com/blog/arrow-flight-a-high-performance-alternative-to-jdbc-odbc/
 
-[^8]: Andy Grove, "DataFusion: A Rust-native query engine powered by Apache Arrow", 2024. https://datafusion.apache.org/
 
-[^9]: Apache Flink Documentation, "PyFlink Arrow Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/intro_to_arrow_python/
 
-[^10]: Bryan Cutler et al., "Efficient Data Transfer Between Apache Spark and MPI using Apache Arrow", IEEE Big Data, 2020.
 
-[^11]: Apache Parquet Documentation, "Parquet Format", 2025. https://parquet.apache.org/docs/
 
-[^12]: Peter Boncz et al., "MonetDB/X100: Hyper-Pipelining Query Execution", CIDR, 2005.
 
 ---
 

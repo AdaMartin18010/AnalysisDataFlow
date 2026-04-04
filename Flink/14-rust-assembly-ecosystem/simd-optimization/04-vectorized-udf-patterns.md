@@ -18,8 +18,9 @@
 $$\text{VecUDF}: D^n \rightarrow R^n$$
 
 其中：
+
 - $D$ 为输入数据域
-- $R$ 为输出数据域  
+- $R$ 为输出数据域
 - $n$ 为批次大小（通常为 1024-65536）
 
 对比标量 UDF：
@@ -135,30 +136,30 @@ graph TB
         AGG[AggregateFunction]
         TABLE[TableFunction]
     end
-    
+
     subgraph "向量化抽象层"
         VSF[VectorizedScalarFunction]
         VAF[VectorizedAggregateFunction]
         CODEGEN[CodeGenerator]
     end
-    
+
     subgraph "运行时实现层"
         ARROW[Arrow Format]
         BATCH[Batch Evaluation]
         SIMD[SIMD Kernel]
     end
-    
+
     SCALAR --> VSF
     AGG --> VAF
     TABLE --> CODEGEN
-    
+
     VSF --> BATCH
     VAF --> BATCH
     CODEGEN --> SIMD
-    
+
     BATCH --> ARROW
     SIMD --> ARROW
-    
+
     style SIMD fill:#99ff99
     style ARROW fill:#ffcc99
 ```
@@ -182,21 +183,21 @@ flowchart LR
         GLUTEN[Gluten]
         ARROW[Arrow Compute]
     end
-    
+
     subgraph "共享组件"
         AF[Arrow Format]
         SIMD[SIMD Kernels]
         LLVM[LLVM Vectorizer]
     end
-    
+
     FLINK --> AF
     VELOX --> AF
     GLUTEN --> AF
     ARROW --> AF
-    
+
     AF --> SIMD
     SIMD --> LLVM
-    
+
     style FLINK fill:#99ff99
 ```
 
@@ -224,7 +225,7 @@ flowchart LR
 ```
 UDF 复杂度评估
     │
-    ├── 简单算术/比较? 
+    ├── 简单算术/比较?
     │       ├── 是 → 代码生成 (最佳 ROI)
     │       └── 否 → 继续
     │
@@ -305,48 +306,48 @@ import org.apache.flink.table.functions.ScalarFunction;
  * 实现: y = sqrt(x^2 + 1) (数学函数示例)
  */
 public class VectorizedMathUDF extends ScalarFunction {
-    
+
     private transient BufferAllocator allocator;
     private static final int BATCH_SIZE = 4096;
-    
+
     @Override
     public void open(FunctionContext context) {
         // 初始化 Arrow 内存分配器
         this.allocator = new RootAllocator(Long.MAX_VALUE);
     }
-    
+
     /**
      * 向量化求值入口
      * 实际 Flink 集成使用专门的 VectorizedScalarFunction 接口
      */
     public void evalBatch(Float4Vector input, Float4Vector output) {
         int count = input.getValueCount();
-        
+
         // 获取底层内存地址 (通过 Netty Buffer)
         long inputAddr = input.getDataBuffer().memoryAddress();
         long outputAddr = output.getDataBuffer().memoryAddress();
-        
+
         // 调用原生 SIMD 实现
         nativeProcessBatch(inputAddr, outputAddr, count);
-        
+
         // 处理空值位图传播
         propagateNulls(input, output);
     }
-    
+
     private native void nativeProcessBatch(long inputAddr, long outputAddr, int count);
-    
+
     private void propagateNulls(Float4Vector input, Float4Vector output) {
         // Arrow 空值位图格式: 1 bit per value, LSB first
         // 直接内存拷贝或 SIMD 处理
         int validityBufferSize = (input.getValueCount() + 7) / 8;
         long srcAddr = input.getValidityBuffer().memoryAddress();
         long dstAddr = output.getValidityBuffer().memoryAddress();
-        
+
         unsafeCopyMemory(srcAddr, dstAddr, validityBufferSize);
     }
-    
+
     private static native void unsafeCopyMemory(long src, long dst, long size);
-    
+
     @Override
     public void close() {
         if (allocator != null) {
@@ -363,9 +364,9 @@ public class VectorizedMathUDF extends ScalarFunction {
 // 编译: g++ -O3 -shared -fPIC -mavx2 -I/path/to/arrow/include \
 //       -o libvectorized_udf.so vectorized_math_udf.cpp
 
-#include <immintrin.h>
-#include <cmath>
-#include <cstdint>
+# include <immintrin.h>
+# include <cmath>
+# include <cstdint>
 
 // Arrow C Data Interface 结构 (简化)
 struct ArrowArray {
@@ -392,30 +393,30 @@ extern "C" void simd_math_func_avx2(
 ) {
     const int SIMD_WIDTH = 8;  // 256-bit / 32-bit float
     int64_t i = 0;
-    
+
     // 主 SIMD 循环
     for (; i + SIMD_WIDTH <= n; i += SIMD_WIDTH) {
         // 加载 8 个 float
         __m256 x = _mm256_loadu_ps(&input[i]);
-        
+
         // x^2
         __m256 x2 = _mm256_mul_ps(x, x);
-        
+
         // x^2 + 1
         __m256 x2_plus_1 = _mm256_add_ps(x2, _mm256_set1_ps(1.0f));
-        
+
         // sqrt(x^2 + 1) - 使用硬件 sqrt 指令
         __m256 result = _mm256_sqrt_ps(x2_plus_1);
-        
+
         // 存储结果
         _mm256_storeu_ps(&output[i], result);
     }
-    
+
     // 尾部标量处理
     for (; i < n; i++) {
         output[i] = std::sqrt(input[i] * input[i] + 1.0f);
     }
-    
+
     // 处理空值 (如果需要清除无效输出)
     if (validity_bitmap != nullptr) {
         for (i = 0; i < n; i++) {
@@ -440,11 +441,11 @@ extern "C" void arrow_math_udf(
     float* output = static_cast<float*>(output_array->buffers[1]);
     const uint8_t* validity = static_cast<const uint8_t*>(input_array->buffers[0]);
     int64_t n = input_array->length;
-    
+
     // 检测 CPU 特性并选择实现
     // 简化: 直接调用 AVX2 版本
     simd_math_func_avx2(input, output, n, validity);
-    
+
     // 设置输出元数据
     output_array->length = n;
     output_array->null_count = input_array->null_count;
@@ -468,15 +469,15 @@ pub fn vectorized_math_udf(input: &Float32Array) -> Float32Array {
     let squared = multiply(input, input).unwrap();
     let added = add_scalar(&sliced, &1.0f32).unwrap();
     let result = sqrt(&added).unwrap();
-    
+
     result
 }
 
 /// 方法2: 手写 SIMD 实现
-#[cfg(target_arch = "x86_64")]
+# [cfg(target_arch = "x86_64")]
 pub fn vectorized_math_udf_simd(input: &Float32Array) -> Float32Array {
     use std::arch::x86_64::*;
-    
+
     let values: Vec<f32> = input.values().iter().map(|&x| {
         unsafe {
             let x_vec = _mm_set1_ps(x);
@@ -486,7 +487,7 @@ pub fn vectorized_math_udf_simd(input: &Float32Array) -> Float32Array {
             std::mem::transmute::<__m128, [f32; 4]>(result)[0]
         }
     }).collect();
-    
+
     Float32Array::from(values)
 }
 
@@ -498,43 +499,43 @@ pub fn vectorized_sum(array: &Float32Array) -> f32 {
         const LANES: usize = 8;
         let chunks = array.len() / LANES;
         let mut sum_vec = f32x8::splat(0.0);
-        
+
         let values = array.values();
         for i in 0..chunks {
             let offset = i * LANES;
             let chunk = f32x8::from_slice(&values[offset..offset + LANES]);
             sum_vec += chunk;
         }
-        
+
         let mut sum = sum_vec.reduce_sum();
-        
+
         // 尾部处理
         for i in (array.len() - array.len() % LANES)..array.len() {
             sum += values[i];
         }
-        
+
         sum
     }
-    
+
     #[cfg(not(feature = "simd"))]
     {
         array.values().iter().sum()
     }
 }
 
-#[cfg(test)]
+# [cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_vectorized_math() {
         let input = Float32Array::from(vec![1.0, 2.0, 3.0, 4.0]);
         let result = vectorized_math_udf(&input);
-        
+
         assert!((result.value(0) - 1.4142).abs() < 0.001); // sqrt(2)
         assert!((result.value(1) - 2.2361).abs() < 0.001); // sqrt(5)
     }
-    
+
     #[test]
     fn test_vectorized_sum() {
         let input = Float32Array::from(vec![1.0, 2.0, 3.0, 4.0, 5.0]);
@@ -599,19 +600,19 @@ graph TB
             V1[Validity Bitmap<br/>ceil(N/8) bytes]
             D1[Values<br/>N * 4 bytes]
         end
-        
+
         subgraph "Column 2 (Float64)"
             V2[Validity Bitmap<br/>ceil(N/8) bytes]
             D2[Values<br/>N * 8 bytes]
         end
-        
+
         subgraph "Column 3 (String)"
             V3[Validity Bitmap]
             O3[Offsets<br/>(N+1) * 4 bytes]
             D3[Data<br/>variable]
         end
     end
-    
+
     style V1 fill:#ffcc99
     style V2 fill:#ffcc99
     style V3 fill:#ffcc99

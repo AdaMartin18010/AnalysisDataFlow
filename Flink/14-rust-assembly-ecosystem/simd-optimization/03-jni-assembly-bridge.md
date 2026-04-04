@@ -18,6 +18,7 @@ JNI 是 JVM 与原生代码（C/C++/Assembly）互操作的标准接口。调用
 $$T_{jni\_call} = T_{transition} + T_{native\_exec} + T_{return}$$
 
 其中 $T_{transition}$ 包含：
+
 - 栈帧切换 (~50-100 ns)
 - JNI 本地引用管理 (~20-50 ns)
 - 参数封送 (~10-30 ns 每参数)
@@ -146,26 +147,26 @@ graph TB
         JAVA[Java/Kotlin/Scala]
         FLINK[Flink DataStream API]
     end
-    
+
     subgraph "JVM 运行时层"
         JIT[C2 JIT Compiler]
         VECTOR[Vector API JIT]
         JNI[JNI Interface]
         PANAMA[Panama FFM API]
     end
-    
+
     subgraph "原生层"
         C[C Wrapper]
         RUST[Rust FFI]
         ASM[Inline Assembly]
         SIMD[SIMD Kernel]
     end
-    
+
     FLINK --> JAVA
     JAVA --> VECTOR
     JAVA --> JNI
     JAVA --> PANAMA
-    
+
     VECTOR --> SIMD
     JNI --> C
     JNI --> RUST
@@ -173,7 +174,7 @@ graph TB
     C --> ASM
     C --> SIMD
     RUST --> SIMD
-    
+
     style VECTOR fill:#99ff99
     style PANAMA fill:#ffcc99
 ```
@@ -187,19 +188,19 @@ flowchart LR
         INPUT[输入数据]
         OUTPUT[输出数据]
     end
-    
+
     subgraph "JNI 层"
         BATCH[批处理缓冲]
         MARSHAL[参数封送]
         CALL[Native Call]
     end
-    
+
     subgraph "原生实现"
         RUST[Rust UDF]
         SIMD[SIMD 执行]
         ARROW[Arrow 格式]
     end
-    
+
     INPUT --> BATCH
     BATCH --> MARSHAL
     MARSHAL --> CALL
@@ -313,108 +314,108 @@ import java.nio.ByteOrder;
  * Flink 向量化 UDF - JNI + SIMD 实现
  */
 public class FlinkSimdUDF {
-    
+
     static {
         // 加载原生库
         System.loadLibrary("flink_simd_native");
     }
-    
+
     // 原生方法声明
     private native long nativeCreateProcessor(int vectorWidth);
     private native void nativeProcessBatch(
-        long handle, 
-        ByteBuffer input, 
+        long handle,
+        ByteBuffer input,
         ByteBuffer output,
         int numElements
     );
     private native void nativeDestroyProcessor(long handle);
-    
+
     private final long nativeHandle;
     private final ByteBuffer inputBuffer;
     private final ByteBuffer outputBuffer;
     private static final int BATCH_SIZE = 10000;
     private static final int FLOAT_SIZE = 4;
-    
+
     public FlinkSimdUDF() {
         // 检测 CPU 特性选择合适的向量宽度
         int vectorWidth = hasAVX512() ? 16 : (hasAVX2() ? 8 : 4);
         this.nativeHandle = nativeCreateProcessor(vectorWidth);
-        
+
         // 分配直接缓冲区 (堆外内存)
         this.inputBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * FLOAT_SIZE)
             .order(ByteOrder.nativeOrder());
         this.outputBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * FLOAT_SIZE)
             .order(ByteOrder.nativeOrder());
     }
-    
+
     /**
      * 向量化批处理 - 模拟 Flink AggregateFunction
      */
     public float[] processBatch(float[] input) {
         float[] result = new float[input.length];
         int processed = 0;
-        
+
         while (processed < input.length) {
             int batchSize = Math.min(BATCH_SIZE, input.length - processed);
-            
+
             // 填充输入缓冲区
             inputBuffer.clear();
             inputBuffer.asFloatBuffer().put(input, processed, batchSize);
-            
+
             // 调用原生 SIMD 实现
             outputBuffer.clear();
             nativeProcessBatch(nativeHandle, inputBuffer, outputBuffer, batchSize);
-            
+
             // 读取结果
             outputBuffer.clear();
             outputBuffer.asFloatBuffer().get(result, processed, batchSize);
-            
+
             processed += batchSize;
         }
-        
+
         return result;
     }
-    
+
     public void close() {
         nativeDestroyProcessor(nativeHandle);
     }
-    
+
     // CPU 特性检测
     private static boolean hasAVX2() {
         // 实际实现使用 CPUID
         return System.getProperty("os.arch").contains("amd64");
     }
-    
+
     private static boolean hasAVX512() {
         // 实际实现使用 CPUID
         return false; // 保守默认
     }
-    
+
     // 测试
     public static void main(String[] args) {
         FlinkSimdUDF udf = new FlinkSimdUDF();
-        
+
         float[] data = new float[100000];
         for (int i = 0; i < data.length; i++) {
             data[i] = i * 1.0f;
         }
-        
+
         // 预热
         for (int i = 0; i < 10; i++) {
             udf.processBatch(data);
         }
-        
+
         // 基准测试
         long start = System.nanoTime();
         float[] result = udf.processBatch(data);
         long duration = System.nanoTime() - start;
-        
+
         System.out.printf("Processed %d elements in %.3f ms (%.2fM ops/sec)%n",
             data.length,
             duration / 1_000_000.0,
             data.length / (duration / 1_000_000_000.0) / 1_000_000.0
         );
-        
+
         udf.close();
     }
 }
@@ -424,11 +425,11 @@ public class FlinkSimdUDF {
 // flink_simd_native.c
 // 编译: gcc -O3 -shared -fPIC -mavx2 -o libflink_simd_native.so flink_simd_native.c
 
-#include <jni.h>
-#include <immintrin.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+# include <jni.h>
+# include <immintrin.h>
+# include <stdint.h>
+# include <stdlib.h>
+# include <string.h>
 
 // 处理器状态结构
 typedef struct {
@@ -439,17 +440,17 @@ typedef struct {
 // AVX2 实现 (256-bit)
 static void process_avx2(const float* input, float* output, int n) {
     int i = 0;
-    
+
     // 主循环: 每次处理 8 个 float
     for (; i + 8 <= n; i += 8) {
         __m256 vec = _mm256_loadu_ps(&input[i]);
-        
+
         // 示例处理: 乘以 2 (模拟 UDF 逻辑)
         __m256 result = _mm256_mul_ps(vec, _mm256_set1_ps(2.0f));
-        
+
         _mm256_storeu_ps(&output[i], result);
     }
-    
+
     // 尾部标量处理
     for (; i < n; i++) {
         output[i] = input[i] * 2.0f;
@@ -473,20 +474,20 @@ static void process_sse(const float* input, float* output, int n) {
 
 JNIEXPORT jlong JNICALL
 Java_com_flink_simd_FlinkSimdUDF_nativeCreateProcessor(
-    JNIEnv* env, 
-    jobject obj, 
+    JNIEnv* env,
+    jobject obj,
     jint vectorWidth
 ) {
     ProcessorState* state = malloc(sizeof(ProcessorState));
     state->vector_width = vectorWidth;
-    
+
     // 根据向量宽度选择实现
     if (vectorWidth >= 8) {
         state->process_func = process_avx2;
     } else {
         state->process_func = process_sse;
     }
-    
+
     return (jlong)state;
 }
 
@@ -500,18 +501,18 @@ Java_com_flink_simd_FlinkSimdUDF_nativeProcessBatch(
     jint numElements
 ) {
     ProcessorState* state = (ProcessorState*)handle;
-    
+
     // 获取直接缓冲区地址
     float* input = (float*)(*env)->GetDirectBufferAddress(env, inputBuffer);
     float* output = (float*)(*env)->GetDirectBufferAddress(env, outputBuffer);
-    
+
     if (input == NULL || output == NULL) {
         // 处理非直接缓冲区错误
         jclass ex = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
         (*env)->ThrowNew(env, ex, "Buffers must be direct");
         return;
     }
-    
+
     // 调用 SIMD 实现
     state->process_func(input, output, numElements);
 }
@@ -540,39 +541,39 @@ import static java.lang.foreign.ValueLayout.*;
  * 使用 Panama FFM API 的向量化处理
  */
 public class PanamaSimdExample {
-    
+
     // 链接原生库
     private static final SymbolLookup lookup = SymbolLookup.loaderLookup();
     private static final Linker linker = Linker.nativeLinker();
-    
+
     // 函数签名: void process_simd(float* input, float* output, int n)
     private static final FunctionDescriptor PROCESS_DESC = FunctionDescriptor.ofVoid(
         ADDRESS,   // input pointer
         ADDRESS,   // output pointer
         JAVA_INT   // count
     );
-    
+
     public static void main(String[] args) throws Throwable {
         // 查找原生函数
         MethodHandle processSimd = linker.downcallHandle(
             lookup.find("process_simd").orElseThrow(),
             PROCESS_DESC
         );
-        
+
         // 分配内存段 (自动对齐)
         int n = 10000;
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment input = arena.allocate(JAVA_FLOAT, n);
             MemorySegment output = arena.allocate(JAVA_FLOAT, n);
-            
+
             // 填充输入数据
             for (int i = 0; i < n; i++) {
                 input.setAtIndex(JAVA_FLOAT, i, i * 1.0f);
             }
-            
+
             // 调用原生 SIMD 函数
             processSimd.invoke(input, output, n);
-            
+
             // 读取结果
             float sum = 0;
             for (int i = 0; i < n; i++) {
@@ -596,7 +597,7 @@ use jni::sys::{jfloatArray, jint, jlong};
 use jni::JNIEnv;
 
 /// JNI 导出函数: 创建处理器
-#[no_mangle]
+# [no_mangle]
 pub extern "system" fn Java_com_flink_simd_FlinkSimdUDF_nativeCreateProcessor(
     _env: JNIEnv,
     _class: JClass,
@@ -613,20 +614,20 @@ struct ProcessorState {
 }
 
 /// 使用 std::simd 的处理函数
-#[cfg(feature = "nightly")]
+# [cfg(feature = "nightly")]
 pub fn process_batch_simd(input: &[f32], output: &mut [f32]) {
     use std::simd::*;
-    
+
     const LANES: usize = 8;
     let chunks = input.len() / LANES;
-    
+
     for i in 0..chunks {
         let offset = i * LANES;
         let a = f32x8::from_slice(&input[offset..offset + LANES]);
         let b = a * f32x8::splat(2.0); // 乘以 2
         output[offset..offset + LANES].copy_from_slice(b.as_array());
     }
-    
+
     // 尾部处理
     let remainder = input.len() % LANES;
     let start = input.len() - remainder;
@@ -636,7 +637,7 @@ pub fn process_batch_simd(input: &[f32], output: &mut [f32]) {
 }
 
 /// JNI 导出函数: 处理批次
-#[no_mangle]
+# [no_mangle]
 pub extern "system" fn Java_com_flink_simd_FlinkSimdUDF_nativeProcessBatch(
     mut env: JNIEnv,
     _class: JClass,
@@ -646,7 +647,7 @@ pub extern "system" fn Java_com_flink_simd_FlinkSimdUDF_nativeProcessBatch(
     num_elements: jint,
 ) {
     let _state = unsafe { &*(handle as *const ProcessorState) };
-    
+
     // 将 jlong 地址转换为切片
     let input = unsafe {
         std::slice::from_raw_parts(input_buffer as *const f32, num_elements as usize)
@@ -654,11 +655,11 @@ pub extern "system" fn Java_com_flink_simd_FlinkSimdUDF_nativeProcessBatch(
     let output = unsafe {
         std::slice::from_raw_parts_mut(output_buffer as *mut f32, num_elements as usize)
     };
-    
+
     // 执行 SIMD 处理
     #[cfg(feature = "nightly")]
     process_batch_simd(input, output);
-    
+
     #[cfg(not(feature = "nightly"))]
     {
         // 标量回退
@@ -692,32 +693,32 @@ flowchart TB
         J1[Java float[]]
         J2[DirectByteBuffer]
     end
-    
+
     subgraph "JNI Boundary"
         CP1[Array Copy?]
         CP2[Zero Copy]
     end
-    
+
     subgraph "Native Memory"
         N1[Unaligned Buffer]
         N2[Aligned Buffer<br/>32/64-byte]
     end
-    
+
     subgraph "SIMD Execution"
         S1[SSE 128-bit]
         S2[AVX2 256-bit]
         S3[AVX-512 512-bit]
     end
-    
+
     J1 -->|GetFloatArrayElements| CP1
     CP1 --> N1
     J2 -->|GetDirectBufferAddress| CP2
     CP2 --> N2
-    
+
     N1 --> S1
     N2 --> S2
     N2 --> S3
-    
+
     style CP2 fill:#99ff99
     style N2 fill:#99ff99
     style S3 fill:#ff9999
@@ -729,19 +730,19 @@ flowchart TB
 flowchart TD
     A[需要 SIMD 加速?] -->|No| B[纯 Java 实现]
     A -->|Yes| C{性能要求?}
-    
+
     C -->|极致性能| D{复用现有库?}
     C -->|平衡| E[Vector API]
-    
+
     D -->|C/C++ 库| F[JNI + 原生库]
     D -->|Rust 库| G[Panama FFM]
     D -->|新开发| H[JNI + 手写 SIMD]
-    
+
     E --> I[JIT 优化<br/>低延迟]
     F --> J[成熟生态<br/>调试便利]
     G --> K[类型安全<br/>低开销]
     H --> L[完全控制<br/>最高性能]
-    
+
     style E fill:#99ff99
     style G fill:#ffcc99
     style H fill:#ff9999

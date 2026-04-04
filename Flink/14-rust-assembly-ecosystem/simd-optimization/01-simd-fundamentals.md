@@ -20,6 +20,7 @@ SIMD (Single Instruction, Multiple Data) 是一种并行计算范式，其中单
 $$\text{SIMD}: I \times D^n \rightarrow R^n$$
 
 其中：
+
 - $I$ 为指令空间
 - $n$ 为向量宽度 (lane 数量)
 - $D^n$ 为 $n$ 元数据向量
@@ -54,6 +55,7 @@ $$S_{theory} = \frac{n \cdot T_s}{T_v}$$
 $$\eta = \frac{S_{actual}}{S_{theory}} = \frac{T_{scalar}}{n \cdot T_{vectorized}}$$
 
 其中典型影响因素包括：
+
 - 数据对齐 ($\alpha$): 未对齐访问惩罚因子
 - 分支发散 ($\beta$): 条件执行导致的 lane 浪费
 - 内存带宽 ($\gamma$): 数据搬运与计算比例
@@ -146,29 +148,29 @@ graph TB
         SQL[SQL/Table API]
         UDF[用户自定义函数]
     end
-    
+
     subgraph "向量化执行层"
         VB[Vectorized Batch]
         CP[Columnar Processing]
         OP[向量化算子]
     end
-    
+
     subgraph "SIMD 硬件层"
         AVX2[AVX2 256-bit]
         AVX512[AVX-512 512-bit]
         NEON[ARM NEON 128-bit]
         SVE[ARM SVE 可变长]
     end
-    
+
     DS --> VB
     SQL --> CP
     UDF --> OP
-    
+
     VB --> AVX2
     CP --> AVX512
     OP --> NEON
     OP --> SVE
-    
+
     style AVX512 fill:#ff9999
     style AVX2 fill:#ffcc99
     style NEON fill:#99ff99
@@ -249,6 +251,7 @@ AVX-512 的已知问题[^2]：
 - **256-bit 操作**在现代处理器（Ice Lake+）降频影响减小
 
 **缓解策略**:
+
 1. 使用 AVX-512 的 256-bit 模式 (`ZMM` 寄存器低半部分)
 2. 混合使用 AVX2 和 AVX-512 指令
 3. 根据工作负载动态选择指令集
@@ -368,36 +371,36 @@ int main() {
     float *b = aligned_alloc(N);
     float *c_scalar = aligned_alloc(N);
     float *c_simd = aligned_alloc(N);
-    
+
     if (!a || !b || !c_scalar || !c_simd) {
         fprintf(stderr, "内存分配失败\n");
         return 1;
     }
-    
+
     // 初始化数据
     for (size_t i = 0; i < N; i++) {
         a[i] = (float)i;
         b[i] = (float)(N - i);
     }
-    
+
     // 预热缓存
     scalar_add(a, b, c_scalar, N);
     avx2_add(a, b, c_simd, N);
-    
+
     // 标量基准测试
     clock_t start = clock();
     for (int iter = 0; iter < 10; iter++) {
         scalar_add(a, b, c_scalar, N);
     }
     clock_t scalar_time = clock() - start;
-    
+
     // SIMD 基准测试
     start = clock();
     for (int iter = 0; iter < 10; iter++) {
         avx2_add(a, b, c_simd, N);
     }
     clock_t simd_time = clock() - start;
-    
+
     // 验证结果
     int correct = 1;
     for (size_t i = 0; i < N && correct; i++) {
@@ -406,14 +409,14 @@ int main() {
             printf("结果不匹配 at %zu: scalar=%f, simd=%f\n", i, c_scalar[i], c_simd[i]);
         }
     }
-    
+
     printf("=== AVX2 向量加法性能测试 ===\n");
     printf("数据量: %d 元素\n", N);
     printf("标量时间: %.3f ms\n", scalar_time * 1000.0 / CLOCKS_PER_SEC);
     printf("SIMD时间: %.3f ms\n", simd_time * 1000.0 / CLOCKS_PER_SEC);
     printf("加速比: %.2fx\n", (double)scalar_time / simd_time);
     printf("结果验证: %s\n", correct ? "通过 ✓" : "失败 ✗");
-    
+
     free(a); free(b); free(c_scalar); free(c_simd);
     return 0;
 }
@@ -434,21 +437,21 @@ use std::simd::*;
 fn simd_filter(values: &[f32], threshold: f32) -> Vec<f32> {
     let n = values.len();
     let mut result = Vec::with_capacity(n);
-    
+
     // 使用 8-lane f32x8 (AVX2 256-bit)
     let lanes = 8;
     let simd_threshold = f32x8::splat(threshold);
-    
+
     let chunks = n / lanes;
     let remainder = n % lanes;
-    
+
     for i in 0..chunks {
         let offset = i * lanes;
         // 加载 8 个元素
         let chunk = f32x8::from_slice(&values[offset..offset + lanes]);
         // 比较生成掩码
         let mask = chunk.simd_gt(simd_threshold);
-        
+
         // 提取满足条件的元素 (简化版，实际使用 compress 指令)
         for j in 0..lanes {
             if mask.test(j) {
@@ -456,14 +459,14 @@ fn simd_filter(values: &[f32], threshold: f32) -> Vec<f32> {
             }
         }
     }
-    
+
     // 处理尾部
     for i in (n - remainder)..n {
         if values[i] > threshold {
             result.push(values[i]);
         }
     }
-    
+
     result
 }
 
@@ -472,40 +475,40 @@ fn simd_sum(values: &[f32]) -> f32 {
     let lanes = 8;
     let chunks = values.len() / lanes;
     let remainder = values.len() % lanes;
-    
+
     // 向量累加器
     let mut acc = f32x8::splat(0.0);
-    
+
     for i in 0..chunks {
         let offset = i * lanes;
         let chunk = f32x8::from_slice(&values[offset..offset + lanes]);
         acc += chunk;
     }
-    
+
     // 水平归约
     let sum8: f32 = acc.reduce_sum();
-    
+
     // 处理尾部
     let mut sum_tail = 0.0;
     let start = values.len() - remainder;
     for i in start..values.len() {
         sum_tail += values[i];
     }
-    
+
     sum8 + sum_tail
 }
 
 fn main() {
     let data: Vec<f32> = (0..1000000).map(|i| i as f32).collect();
-    
+
     // 测试过滤
     let filtered = simd_filter(&data, 500000.0);
     println!("原始数据量: {}, 过滤后: {}", data.len(), filtered.len());
-    
+
     // 测试聚合
     let sum = simd_sum(&data);
     println!("向量化 SUM: {}", sum);
-    
+
     // 验证
     let expected: f32 = data.iter().sum();
     println!("标量 SUM:   {}", expected);
@@ -567,7 +570,7 @@ sequenceDiagram
 ```mermaid
 timeline
     title CPU 向量寄存器演进史
-    
+
     section x86/x64
         1999 : SSE
              : 128-bit XMM
@@ -582,7 +585,7 @@ timeline
              : 512-bit ZMM
              : 16x float
              : 掩码寄存器
-    
+
     section ARM
         2005 : NEON
              : 128-bit V reg
@@ -603,19 +606,19 @@ flowchart TB
         C --> D[Aggregate]
         D --> E[Sink]
     end
-    
+
     subgraph "向量化运行时"
         B -->|批处理| VB1[VectorizedBatch 8x]
         C -->|掩码过滤| VB2[MaskedSelect]
         D -->|树归约| VB3[TreeReduction]
     end
-    
+
     subgraph "SIMD 后端"
         VB1 --> S1[SSE/AVX2/AVX-512]
         VB2 --> S2[AVX-512 Mask Ops]
         VB3 --> S3[Horizontal Add]
     end
-    
+
     style S1 fill:#ffcc99
     style S2 fill:#ff9999
     style S3 fill:#99ff99
@@ -625,21 +628,15 @@ flowchart TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Alibaba Cloud, "Flash: A Next-Gen Vectorized Stream Processing Engine Compatible with Apache Flink", 2025. https://www.alibabacloud.com/blog/flash-a-next-gen-vectorized-stream-processing-engine-compatible-with-apache-flink_602088
+[^1]: Alibaba Cloud, "Flash: A Next-Gen Vectorized Stream Processing Engine Compatible with Apache Flink", 2025. <https://www.alibabacloud.com/blog/flash-a-next-gen-vectorized-stream-processing-engine-compatible-with-apache-flink_602088>
 
-[^2]: DataPelago, "Tech Deep Dive: CPU Acceleration for Stream Processing", 2025. https://www.datapelago.ai/resources/TechDeepDive-CPU-Acceleration
+[^2]: DataPelago, "Tech Deep Dive: CPU Acceleration for Stream Processing", 2025. <https://www.datapelago.ai/resources/TechDeepDive-CPU-Acceleration>
 
-[^3]: Intel, "Intel 64 and IA-32 Architectures Optimization Reference Manual", 2024. https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
 
-[^4]: ARM, "ARM Architecture Reference Manual for A-profile", 2024. https://developer.arm.com/documentation/ddi0487/latest/
 
-[^5]: Apache Flink, "Vectorized Execution in Flink Table API", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/udfs/vectorized/
 
-[^6]: Rust Project, "Portable SIMD in Rust", 2025. https://doc.rust-lang.org/std/simd/index.html
 
-[^7]: Jimenez et al., "Vectorization in Stream Processing: Opportunities and Challenges", SIGMOD 2024.
 
-[^8]: Apache Arrow, "Columnar Format Specification", 2025. https://arrow.apache.org/docs/format/Columnar.html
 
 ---
 

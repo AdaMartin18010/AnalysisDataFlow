@@ -15,6 +15,7 @@ L_{columnar}(T) = \{C_1, C_2, ..., C_m\} \quad \text{其中} \quad C_j = [v_{1j}
 $$
 
 其中 $C_j$ 为第 $j$ 列的数据数组，满足：
+
 - **连续性**: $\forall j, \text{Addr}(C_j[k+1]) = \text{Addr}(C_j[k]) + \text{sizeof}(type_j)$
 - **同质性**: $\forall k, \text{Type}(v_{kj}) = \tau_j$（列内类型一致）
 - **对齐性**: $\text{Addr}(C_j) \equiv 0 \pmod{64}$（64字节对齐）
@@ -46,7 +47,7 @@ $$
 **Def-VEC-03-04** (伪共享): 当两个线程访问不同变量但位于同一缓存行时发生伪共享 $FS$：
 
 $$
-FS(x, y) = \begin{cases} 
+FS(x, y) = \begin{cases}
 \text{True} & \text{if } \lfloor \frac{\text{Addr}(x)}{64} \rfloor = \lfloor \frac{\text{Addr}(y)}{64} \rfloor \land \text{Thread}(x) \neq \text{Thread}(y) \\
 \text{False} & \text{otherwise}
 \end{cases}
@@ -127,14 +128,14 @@ graph TB
         RAM["Main Memory"]
         SIMD["SIMD Units<br/>AVX-512"]
     end
-    
+
     subgraph Software["软件层"]
         ARROW["Apache Arrow"]
         ORC["ORC File"]
         PARQUET["Parquet"]
         VELOX["Velox Engine"]
     end
-    
+
     subgraph Optimizations["优化技术"]
         PREFETCH["Prefetching"]
         ALIGN["64-byte Alignment"]
@@ -142,26 +143,26 @@ graph TB
         DICT["Dictionary Encoding"]
         RLE["Run-Length Encoding"]
     end
-    
+
     subgraph Applications["应用场景"]
         OLAP["OLAP Analytics"]
         ML["ML Training"]
         ETL["ETL Processing"]
         STREAM["Stream Processing"]
     end
-    
+
     CPU --> L1
     L1 --> L2
     L2 --> L3
     L3 --> RAM
     CPU --> SIMD
-    
+
     ARROW --> PREFETCH
     ARROW --> ALIGN
     ARROW --> PADDING
     PARQUET --> DICT
     ORC --> RLE
-    
+
     SIMD --> OLAP
     SIMD --> ML
     ARROW --> ETL
@@ -188,7 +189,7 @@ graph TB
         OPTIMIZED["Optimized Plan"]
         PHYSICAL["Physical Plan"]
     end
-    
+
     subgraph Pushdown["下推优化"]
         PRED["Predicate Analysis"]
         STORAGE["Storage Engine"]
@@ -196,14 +197,14 @@ graph TB
         PRUNE["Partition Pruning"]
         SKIP["Page Skipping"]
     end
-    
+
     subgraph Vectorized["向量化执行"]
         BATCH["Batch Processing"]
         SIMD["SIMD Evaluation"]
         BRANCHLESS["Branchless Code"]
         RESULT["Result Set"]
     end
-    
+
     SQL --> PARSE
     PARSE --> LOGICAL
     LOGICAL --> PRED
@@ -231,7 +232,7 @@ W \in ColumnarWorkload \iff \begin{cases}
 \frac{\text{avg}(|Q_{cols}|)}{|T_{cols}|} < 0.3 & \text{(投影稀疏性)} \\
 \lor \quad \mathcal{C}_{aggregation}(W) > 0.5 & \text{(聚合密集)} \\
 \lor \quad \text{CompressionRatio}_{col} > 2.0 & \text{(可压缩性)} \\
-\land \quad \text{WriteRatio}(W) < 0.2 & 	ext{(写少读多)}
+\land \quad \text{WriteRatio}(W) < 0.2 &  ext{(写少读多)}
 \end{cases}
 $$
 
@@ -273,7 +274,7 @@ $$
 
 其中 $CL = 64$ bytes 为缓存行大小。
 
-**Proof**: 
+**Proof**:
 
 列式访问顺序访问同列数据，每条缓存行包含 $\frac{CL}{w}$ 个值。对于连续访问，首次未命中后，同缓存行内 $k = \frac{CL}{w} - 1$ 次访问命中。
 
@@ -304,24 +305,24 @@ $$
 ```mermaid
 flowchart TD
     START([检测伪共享]) --> PROFILE{使用 perf c2c?}
-    
+
     PROFILE -->|是| ANALYZE[分析缓存行竞争]
     PROFILE -->|否| GUESS[基于代码审查识别]
-    
+
     ANALYZE --> PADDING{添加 Padding?}
     GUESS --> PADDING
-    
+
     PADDING -->|是| ADD[对齐到 64-byte<br/>或 Cache Line 对齐]
     PADDING -->|否| LOCAL{线程本地存储?}
-    
+
     ADD --> VERIFY[验证性能提升]
-    
+
     LOCAL -->|是| TLS[使用 thread_local]
     LOCAL -->|否| REDUCE[减少共享变量]
-    
+
     TLS --> VERIFY
     REDUCE --> VERIFY
-    
+
     VERIFY --> IMPROVED{性能提升?}
     IMPROVED -->|是| DONE([优化完成])
     IMPROVED -->|否| REPEAT[重新分析]
@@ -374,22 +375,22 @@ pub struct AlignedBuffer {
 impl AlignedBuffer {
     /// 对齐要求：64字节（缓存行大小）
     const ALIGNMENT: usize = 64;
-    
+
     pub fn new(size: usize) -> Self {
         let layout = Layout::from_size_align(size, Self::ALIGNMENT)
             .expect("Invalid layout");
-        
+
         let ptr = unsafe { alloc(layout) };
         let ptr = NonNull::new(ptr)
             .expect("Allocation failed");
-        
+
         Self {
             ptr,
             len: 0,
             capacity: size,
         }
     }
-    
+
     /// 获取指定类型的切片视图
     pub fn as_slice<T>(&self, offset: usize, len: usize) -> &[T] {
         assert!(offset + len * std::mem::size_of::<T>() <= self.len);
@@ -400,7 +401,7 @@ impl AlignedBuffer {
             )
         }
     }
-    
+
     /// 获取可变切片视图
     pub fn as_slice_mut<T>(&mut self, offset: usize, len: usize) -> &mut [T] {
         assert!(offset + len * std::mem::size_of::<T>() <= self.len);
@@ -437,14 +438,14 @@ impl BitMap {
             num_bits,
         }
     }
-    
+
     pub fn is_null(&self, index: usize) -> bool {
         assert!(index < self.num_bits);
         let byte_idx = index / 8;
         let bit_idx = index % 8;
         (self.bits[byte_idx] >> bit_idx) & 1 == 0
     }
-    
+
     pub fn set_valid(&mut self, index: usize) {
         assert!(index < self.num_bits);
         let byte_idx = index / 8;
@@ -484,19 +485,19 @@ impl ColumnarTable {
     #[cfg(target_arch = "x86_64")]
     pub fn vectorized_filter(&self, column_idx: usize, threshold: f64) -> Vec<usize> {
         use std::arch::x86_64::*;
-        
+
         let column = &self.columns[column_idx];
         let values = column.buffer.as_slice::<f64>(0, self.num_rows);
         let mut result = Vec::with_capacity(self.num_rows / 2);
-        
+
         let threshold_vec = unsafe { _mm512_set1_pd(threshold) };
         let batch_size = 8; // AVX-512 可处理 8 个 f64
-        
+
         unsafe {
             for chunk_start in (0..self.num_rows).step_by(batch_size) {
                 let chunk_end = (chunk_start + batch_size).min(self.num_rows);
                 let remaining = chunk_end - chunk_start;
-                
+
                 // 加载数据到 AVX-512 寄存器
                 let data_vec = if remaining == batch_size {
                     _mm512_loadu_pd(values.as_ptr().add(chunk_start))
@@ -505,10 +506,10 @@ impl ColumnarTable {
                     let mask = (1 << remaining) - 1;
                     _mm512_maskz_loadu_pd(mask, values.as_ptr().add(chunk_start))
                 };
-                
+
                 // 比较操作: data > threshold
                 let cmp_result = _mm512_cmp_pd_mask(data_vec, threshold_vec, _CMP_GT_OQ);
-                
+
                 // 提取匹配结果的索引
                 if remaining == batch_size {
                     // 完整的 8 元素块
@@ -531,22 +532,22 @@ impl ColumnarTable {
                 }
             }
         }
-        
+
         result
     }
-    
+
     /// 向量化聚合（SIMD 优化）
     #[cfg(target_arch = "x86_64")]
     pub fn vectorized_sum(&self, column_idx: usize) -> f64 {
         use std::arch::x86_64::*;
-        
+
         let column = &self.columns[column_idx];
         let values = column.buffer.as_slice::<f64>(0, self.num_rows);
-        
+
         unsafe {
             let mut sum_vec = _mm512_setzero_pd();
             let batch_size = 8;
-            
+
             // 主循环：每次处理 8 个元素
             let mut i = 0;
             while i + batch_size <= self.num_rows {
@@ -554,30 +555,30 @@ impl ColumnarTable {
                 sum_vec = _mm512_add_pd(sum_vec, data_vec);
                 i += batch_size;
             }
-            
+
             // 水平求和
             let mut sum = _mm512_reduce_add_pd(sum_vec);
-            
+
             // 处理剩余元素
             for j in i..self.num_rows {
                 sum += values[j];
             }
-            
+
             sum
         }
     }
-    
+
     /// 缓存友好的批量处理
     pub fn cache_friendly_scan<F>(&self, column_indices: &[usize], mut f: F)
     where
         F: FnMut(&[ColumnSlice]),
     {
         let batch_size = 4096; // 适合 L1 缓存的批大小
-        
+
         for batch_start in (0..self.num_rows).step_by(batch_size) {
             let batch_end = (batch_start + batch_size).min(self.num_rows);
             let batch_len = batch_end - batch_start;
-            
+
             // 收集本批次的列切片
             let slices: Vec<ColumnSlice> = column_indices
                 .iter()
@@ -592,7 +593,7 @@ impl ColumnarTable {
                     }
                 })
                 .collect();
-            
+
             // 处理批次
             f(&slices);
         }
@@ -622,7 +623,7 @@ impl PaddedCounter {
             _padding: [0; 56],
         }
     }
-    
+
     pub fn increment(&mut self) {
         self.value += 1;
     }
@@ -642,26 +643,26 @@ impl ParallelColumnProcessor {
                 .collect(),
         }
     }
-    
+
     pub fn process_parallel<F>(&self, num_rows: usize, f: F)
     where
         F: Fn(usize, usize) + Send + Sync,
     {
         use rayon::prelude::*;
-        
+
         let num_threads = self.thread_counters.len();
         let rows_per_thread = (num_rows + num_threads - 1) / num_threads;
-        
+
         (0..num_threads).into_par_iter().for_each(|tid| {
             let start = tid * rows_per_thread;
             let end = ((tid + 1) * rows_per_thread).min(num_rows);
-            
+
             for row in start..end {
                 f(tid, row);
             }
         });
     }
-    
+
     pub fn total_count(&self) -> u64 {
         self.thread_counters.iter().map(|c| c.value).sum()
     }
@@ -670,26 +671,26 @@ impl ParallelColumnProcessor {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_aligned_buffer() {
         let buf = AlignedBuffer::new(1024);
         assert_eq!(buf.capacity, 1024);
         assert!(buf.ptr.as_ptr() as usize % 64 == 0);
     }
-    
+
     #[test]
     fn test_bitmap() {
         let mut bitmap = BitMap::new(100);
         bitmap.set_valid(5);
         bitmap.set_valid(10);
-        
+
         assert!(!bitmap.is_null(5));
         assert!(!bitmap.is_null(10));
         assert!(bitmap.is_null(0));
         assert!(bitmap.is_null(99));
     }
-    
+
     #[test]
     fn test_padded_counter_alignment() {
         let counter = PaddedCounter::new();
@@ -720,7 +721,7 @@ import java.util.*;
  * 演示如何将 Filter 条件下推到数据源
  */
 public class PredicatePushdownOptimizer {
-    
+
     /**
      * 可下推的谓词类型
      */
@@ -732,7 +733,7 @@ public class PredicatePushdownOptimizer {
         STRING_LIKE,    // LIKE (部分支持下推)
         COMPOSITE_AND   // AND 组合的谓词
     }
-    
+
     /**
      * 谓词下推能力接口
      */
@@ -743,18 +744,18 @@ public class PredicatePushdownOptimizer {
          * @return 未能下推的谓词（需要在引擎层执行）
          */
         List<ResolvedExpression> applyPredicates(List<ResolvedExpression> predicates);
-        
+
         /**
          * 支持下推的谓词类型
          */
         Set<PushablePredicateType> supportedPredicateTypes();
     }
-    
+
     /**
      * 谓词分析器 - 识别可下推谓词
      */
     public static class PredicateAnalyzer {
-        
+
         /**
          * 分析谓词是否可下推
          */
@@ -762,66 +763,66 @@ public class PredicatePushdownOptimizer {
                 ResolvedExpression predicate,
                 List<String> partitionColumns,
                 Set<String> supportedFilters) {
-            
+
             return analyzeInternal(predicate, partitionColumns, supportedFilters);
         }
-        
+
         private PredicateAnalysis analyzeInternal(
                 ResolvedExpression expr,
                 List<String> partitionColumns,
                 Set<String> supportedFilters) {
-            
+
             if (expr instanceof CallExpression) {
                 CallExpression call = (CallExpression) expr;
                 FunctionDefinition func = call.getFunctionDefinition();
-                
+
                 // AND 谓词 - 递归分析子谓词
                 if (func.equals(BuiltInFunctionDefinitions.AND)) {
                     List<PredicateAnalysis> subAnalyses = new ArrayList<>();
                     for (ResolvedExpression child : call.getChildren()) {
                         subAnalyses.add(analyzeInternal(child, partitionColumns, supportedFilters));
                     }
-                    
+
                     // 合并结果
                     List<ResolvedExpression> pushable = new ArrayList<>();
                     List<ResolvedExpression> remaining = new ArrayList<>();
-                    
+
                     for (PredicateAnalysis sub : subAnalyses) {
                         pushable.addAll(sub.pushablePredicates);
                         remaining.addAll(sub.remainingPredicates);
                     }
-                    
+
                     return new PredicateAnalysis(pushable, remaining);
                 }
-                
+
                 // OR 谓词 - 通常难以完整下推
                 if (func.equals(BuiltInFunctionDefinitions.OR)) {
                     // 检查是否所有子谓词都支持下推
                     boolean allPushable = call.getChildren().stream()
                         .allMatch(child -> isSimplePushable(child, supportedFilters));
-                    
+
                     if (allPushable) {
                         return new PredicateAnalysis(Collections.singletonList(expr), Collections.emptyList());
                     } else {
                         return new PredicateAnalysis(Collections.emptyList(), Collections.singletonList(expr));
                     }
                 }
-                
+
                 // 比较谓词
                 if (isComparisonFunction(func)) {
                     return analyzeComparison(call, partitionColumns, supportedFilters);
                 }
-                
+
                 // IN 谓词
                 if (func.equals(BuiltInFunctionDefinitions.IN)) {
                     return analyzeInPredicate(call, partitionColumns, supportedFilters);
                 }
             }
-            
+
             // 默认不下推
             return new PredicateAnalysis(Collections.emptyList(), Collections.singletonList(expr));
         }
-        
+
         private boolean isComparisonFunction(FunctionDefinition func) {
             return func.equals(BuiltInFunctionDefinitions.EQUALS) ||
                    func.equals(BuiltInFunctionDefinitions.GREATER_THAN) ||
@@ -829,44 +830,44 @@ public class PredicatePushdownOptimizer {
                    func.equals(BuiltInFunctionDefinitions.LESS_THAN) ||
                    func.equals(BuiltInFunctionDefinitions.LESS_THAN_OR_EQUAL);
         }
-        
+
         private PredicateAnalysis analyzeComparison(
                 CallExpression call,
                 List<String> partitionColumns,
                 Set<String> supportedFilters) {
-            
+
             List<ResolvedExpression> args = call.getChildren();
             if (args.size() != 2) {
                 return new PredicateAnalysis(Collections.emptyList(), Collections.singletonList(call));
             }
-            
+
             // 检查是否为 列 比较 常量 的形式
             String columnName = extractColumnName(args.get(0));
             Object constantValue = extractConstant(args.get(1));
-            
+
             if (columnName != null && constantValue != null) {
                 // 检查列是否支持下推过滤
                 if (supportedFilters.contains(columnName)) {
                     return new PredicateAnalysis(Collections.singletonList(call), Collections.emptyList());
                 }
-                
+
                 // 检查是否为分区列（可用于分区裁剪）
                 if (partitionColumns.contains(columnName)) {
                     return new PredicateAnalysis(Collections.singletonList(call), Collections.emptyList());
                 }
             }
-            
+
             return new PredicateAnalysis(Collections.emptyList(), Collections.singletonList(call));
         }
-        
+
         private PredicateAnalysis analyzeInPredicate(
                 CallExpression call,
                 List<String> partitionColumns,
                 Set<String> supportedFilters) {
-            
+
             ResolvedExpression column = call.getChildren().get(0);
             String columnName = extractColumnName(column);
-            
+
             if (columnName != null && supportedFilters.contains(columnName)) {
                 // 检查 IN 列表大小是否合理
                 int inListSize = call.getChildren().size() - 1;
@@ -874,70 +875,70 @@ public class PredicatePushdownOptimizer {
                     return new PredicateAnalysis(Collections.singletonList(call), Collections.emptyList());
                 }
             }
-            
+
             return new PredicateAnalysis(Collections.emptyList(), Collections.singletonList(call));
         }
-        
+
         private String extractColumnName(ResolvedExpression expr) {
             if (expr instanceof FieldReferenceExpression) {
                 return ((FieldReferenceExpression) expr).getName();
             }
             return null;
         }
-        
+
         private Object extractConstant(ResolvedExpression expr) {
             if (expr instanceof ValueLiteralExpression) {
                 return ((ValueLiteralExpression) expr).getValueAs(Object.class).orElse(null);
             }
             return null;
         }
-        
+
         private boolean isSimplePushable(ResolvedExpression expr, Set<String> supportedFilters) {
             // 简化检查：是否为简单列比较
             return true; // 实际实现需要更复杂的逻辑
         }
     }
-    
+
     /**
      * 谓词分析结果
      */
     public static class PredicateAnalysis {
         public final List<ResolvedExpression> pushablePredicates;
         public final List<ResolvedExpression> remainingPredicates;
-        
+
         public PredicateAnalysis(
                 List<ResolvedExpression> pushable,
                 List<ResolvedExpression> remaining) {
             this.pushablePredicates = pushable;
             this.remainingPredicates = remaining;
         }
-        
+
         public boolean hasPushablePredicates() {
             return !pushablePredicates.isEmpty();
         }
-        
+
         public boolean hasRemainingPredicates() {
             return !remainingPredicates.isEmpty();
         }
     }
-    
+
     /**
      * 文件格式特定的下推实现（Parquet 示例）
      */
     public static class ParquetPredicatePushdown implements PredicatePushdownCapable {
-        
+
         private final List<String> columnNames;
         private final Map<String, ColumnStatistics> statistics;
-        
+
         public ParquetPredicatePushdown(List<String> columnNames) {
             this.columnNames = columnNames;
             this.statistics = new HashMap<>();
         }
-        
+
         @Override
         public List<ResolvedExpression> applyPredicates(List<ResolvedExpression> predicates) {
             List<ResolvedExpression> remaining = new ArrayList<>();
-            
+
             for (ResolvedExpression predicate : predicates) {
                 if (!canPushdownToParquet(predicate)) {
                     remaining.add(predicate);
@@ -947,10 +948,10 @@ public class PredicatePushdownOptimizer {
                     System.out.println("Pushed down filter: " + parquetFilter);
                 }
             }
-            
+
             return remaining;
         }
-        
+
         @Override
         public Set<PushablePredicateType> supportedPredicateTypes() {
             return EnumSet.of(
@@ -961,79 +962,79 @@ public class PredicatePushdownOptimizer {
                 PushablePredicateType.COMPOSITE_AND
             );
         }
-        
+
         private boolean canPushdownToParquet(ResolvedExpression predicate) {
             // 检查列统计信息是否可以过滤整个 Row Group
             // 例如：如果 max(value) < threshold，可以跳过整个 Row Group
             return true;
         }
-        
+
         private String convertToParquetFilter(ResolvedExpression predicate) {
             // 转换为 Parquet 的 FilterPredicate 格式
             return predicate.toString();
         }
-        
+
         /**
          * 使用统计信息过滤 Row Groups
          */
         public List<Integer> filterRowGroups(
                 List<RowGroupStatistics> rowGroups,
                 List<ResolvedExpression> predicates) {
-            
+
             List<Integer> selectedRowGroups = new ArrayList<>();
-            
+
             for (int i = 0; i < rowGroups.size(); i++) {
                 RowGroupStatistics stats = rowGroups.get(i);
                 if (!canSkipRowGroup(stats, predicates)) {
                     selectedRowGroups.add(i);
                 }
             }
-            
+
             return selectedRowGroups;
         }
-        
+
         private boolean canSkipRowGroup(
                 RowGroupStatistics stats,
                 List<ResolvedExpression> predicates) {
-            
+
             // 基于 min/max 统计信息判断是否可以跳过
             for (ResolvedExpression pred : predicates) {
                 // 简化示例：检查范围谓词
                 if (isRangePredicate(pred)) {
                     String column = extractColumnName(pred);
                     ColumnStatistics colStats = stats.getColumnStats(column);
-                    
+
                     if (colStats != null && colStats.hasMinMax()) {
                         // 如果 column_max < predicate_min 或 column_min > predicate_max
                         // 可以跳过该 Row Group
                     }
                 }
             }
-            
+
             return false;
         }
-        
+
         private boolean isRangePredicate(ResolvedExpression pred) {
             // 实现省略
             return false;
         }
     }
-    
+
     /**
      * Row Group 统计信息
      */
     public static class RowGroupStatistics {
         private final Map<String, ColumnStatistics> columnStats;
-        
+
         public RowGroupStatistics() {
             this.columnStats = new HashMap<>();
         }
-        
+
         public ColumnStatistics getColumnStats(String column) {
             return columnStats.get(column);
         }
     }
-    
+
     /**
      * 列统计信息
      */
@@ -1042,18 +1043,18 @@ public class PredicatePushdownOptimizer {
         private final Object max;
         private final long nullCount;
         private final long distinctCount;
-        
+
         public ColumnStatistics(Object min, Object max, long nullCount, long distinctCount) {
             this.min = min;
             this.max = max;
             this.nullCount = nullCount;
             this.distinctCount = distinctCount;
         }
-        
+
         public boolean hasMinMax() {
             return min != null && max != null;
         }
-        
+
         // Getters...
     }
 }
@@ -1097,19 +1098,19 @@ class CheckItem:
 
 class ColumnarPerformanceChecker:
     """列式处理性能检查器"""
-    
+
     def __init__(self):
         self.checks: List[CheckItem] = []
         self.config: Dict = {}
-    
+
     def load_config(self, config: Dict):
         """加载当前配置"""
         self.config = config
-    
+
     def run_all_checks(self) -> List[CheckItem]:
         """运行所有检查"""
         self.checks = []
-        
+
         self._check_batch_size()
         self._check_memory_alignment()
         self._check_cache_optimization()
@@ -1120,13 +1121,13 @@ class ColumnarPerformanceChecker:
         self._check_parallelism()
         self._check_null_handling()
         self._check_dictionary_encoding()
-        
+
         return self.checks
-    
+
     def _check_batch_size(self):
         """检查批大小配置"""
         batch_size = self.config.get('batch_size', 4096)
-        
+
         if batch_size < 1024:
             self.checks.append(CheckItem(
                 category="Batch Processing",
@@ -1159,11 +1160,11 @@ class ColumnarPerformanceChecker:
                 current_value=str(batch_size),
                 is_passed=True
             ))
-    
+
     def _check_memory_alignment(self):
         """检查内存对齐"""
         alignment = self.config.get('memory_alignment', 64)
-        
+
         if alignment < 64:
             self.checks.append(CheckItem(
                 category="Memory Layout",
@@ -1185,12 +1186,12 @@ class ColumnarPerformanceChecker:
                 current_value=f"{alignment} bytes",
                 is_passed=True
             ))
-    
+
     def _check_cache_optimization(self):
         """检查缓存优化"""
         prefetch = self.config.get('enable_prefetch', False)
         cache_line_aware = self.config.get('cache_line_aware', False)
-        
+
         if not prefetch:
             self.checks.append(CheckItem(
                 category="Cache Optimization",
@@ -1202,7 +1203,7 @@ class ColumnarPerformanceChecker:
                 recommended_value="enabled",
                 is_passed=False
             ))
-        
+
         if not cache_line_aware:
             self.checks.append(CheckItem(
                 category="Cache Optimization",
@@ -1214,7 +1215,7 @@ class ColumnarPerformanceChecker:
                 recommended_value="enabled",
                 is_passed=False
             ))
-        
+
         if prefetch and cache_line_aware:
             self.checks.append(CheckItem(
                 category="Cache Optimization",
@@ -1224,12 +1225,12 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def _check_predicate_pushdown(self):
         """检查谓词下推"""
         pushdown_enabled = self.config.get('predicate_pushdown', True)
         partition_pruning = self.config.get('partition_pruning', True)
-        
+
         if not pushdown_enabled:
             self.checks.append(CheckItem(
                 category="Query Optimization",
@@ -1241,7 +1242,7 @@ class ColumnarPerformanceChecker:
                 recommended_value="enabled",
                 is_passed=False
             ))
-        
+
         if not partition_pruning:
             self.checks.append(CheckItem(
                 category="Query Optimization",
@@ -1253,7 +1254,7 @@ class ColumnarPerformanceChecker:
                 recommended_value="enabled",
                 is_passed=False
             ))
-        
+
         if pushdown_enabled and partition_pruning:
             self.checks.append(CheckItem(
                 category="Query Optimization",
@@ -1263,14 +1264,14 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def _check_compression(self):
         """检查压缩配置"""
         compression = self.config.get('compression', 'snappy')
         compression_level = self.config.get('compression_level', None)
-        
+
         valid_compressions = ['none', 'snappy', 'gzip', 'lz4', 'zstd']
-        
+
         if compression not in valid_compressions:
             self.checks.append(CheckItem(
                 category="Compression",
@@ -1303,11 +1304,11 @@ class ColumnarPerformanceChecker:
                 current_value=compression,
                 is_passed=True
             ))
-    
+
     def _check_partitioning(self):
         """检查分区策略"""
         partition_cols = self.config.get('partition_columns', [])
-        
+
         if len(partition_cols) == 0:
             self.checks.append(CheckItem(
                 category="Data Layout",
@@ -1339,11 +1340,11 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def _check_encoding(self):
         """检查编码配置"""
         encoding = self.config.get('encoding', 'auto')
-        
+
         if encoding == 'plain':
             self.checks.append(CheckItem(
                 category="Encoding",
@@ -1364,11 +1365,11 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def _check_parallelism(self):
         """检查并行度配置"""
         parallelism = self.config.get('parallelism', 1)
-        
+
         if parallelism == 1:
             self.checks.append(CheckItem(
                 category="Parallelism",
@@ -1390,11 +1391,11 @@ class ColumnarPerformanceChecker:
                 current_value=str(parallelism),
                 is_passed=True
             ))
-    
+
     def _check_null_handling(self):
         """检查空值处理"""
         bitmap_enabled = self.config.get('null_bitmap', True)
-        
+
         if not bitmap_enabled:
             self.checks.append(CheckItem(
                 category="Null Handling",
@@ -1415,12 +1416,12 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def _check_dictionary_encoding(self):
         """检查字典编码"""
         dict_enabled = self.config.get('dictionary_encoding', True)
         dict_threshold = self.config.get('dictionary_threshold', 0.1)
-        
+
         if not dict_enabled:
             self.checks.append(CheckItem(
                 category="Dictionary Encoding",
@@ -1452,7 +1453,7 @@ class ColumnarPerformanceChecker:
                 severity=Severity.INFO,
                 is_passed=True
             ))
-    
+
     def generate_report(self) -> str:
         """生成检查报告"""
         report = []
@@ -1460,33 +1461,33 @@ class ColumnarPerformanceChecker:
         report.append("Columnar Processing Performance Checklist Report")
         report.append("=" * 80)
         report.append("")
-        
+
         # 统计
         passed = sum(1 for c in self.checks if c.is_passed)
         failed = len(self.checks) - passed
         critical = sum(1 for c in self.checks if not c.is_passed and c.severity == Severity.CRITICAL)
         high = sum(1 for c in self.checks if not c.is_passed and c.severity == Severity.HIGH)
-        
+
         report.append(f"Total Checks: {len(self.checks)}")
         report.append(f"Passed: {passed}")
         report.append(f"Failed: {failed}")
         report.append(f"Critical Issues: {critical}")
         report.append(f"High Priority: {high}")
         report.append("")
-        
+
         # 按类别分组
         categories = {}
         for check in self.checks:
             if check.category not in categories:
                 categories[check.category] = []
             categories[check.category].append(check)
-        
+
         # 输出失败的检查（按严重程度排序）
         report.append("-" * 80)
         report.append("ISSUES REQUIRING ATTENTION")
         report.append("-" * 80)
         report.append("")
-        
+
         for severity in [Severity.CRITICAL, Severity.HIGH, Severity.MEDIUM, Severity.LOW]:
             issues = [c for c in self.checks if not c.is_passed and c.severity == severity]
             if issues:
@@ -1498,23 +1499,23 @@ class ColumnarPerformanceChecker:
                     report.append(f"  Current: {issue.current_value}")
                     report.append(f"  Recommended: {issue.recommended_value}")
                     report.append(f"  Action: {issue.recommendation}")
-        
+
         # 输出通过的检查
         report.append("\n")
         report.append("-" * 80)
         report.append("PASSED CHECKS")
         report.append("-" * 80)
         report.append("")
-        
+
         for check in self.checks:
             if check.is_passed:
                 report.append(f"✓ [{check.category}] {check.item}")
-        
+
         report.append("\n")
         report.append("=" * 80)
-        
+
         return "\n".join(report)
-    
+
     def export_json(self) -> str:
         """导出 JSON 格式报告"""
         return json.dumps({
@@ -1545,13 +1546,13 @@ def main():
         'dictionary_encoding': False,
         'dictionary_threshold': 0.1,
     }
-    
+
     checker = ColumnarPerformanceChecker()
     checker.load_config(config)
     checker.run_all_checks()
-    
+
     print(checker.generate_report())
-    
+
     # 同时输出 JSON
     print("\n\nJSON Export:")
     print(checker.export_json())
@@ -1573,31 +1574,31 @@ graph TB
         REG["Registers<br/>512 bits"]
         ALU["ALU/FMA Units"]
     end
-    
+
     subgraph CacheHierarchy["Cache Hierarchy"]
         L1["L1 Cache<br/>32KB/core<br/>4 cycles"]
         L2["L2 Cache<br/>256KB/core<br/>12 cycles"]
         L3["L3 Cache<br/>32MB/shared<br/>40 cycles"]
     end
-    
+
     subgraph Memory["Memory"]
         RAM["Main Memory<br/>64GB+<br/>100+ cycles"]
         NVME["NVMe SSD<br/>GB/s bandwidth"]
     end
-    
+
     subgraph DataLayout["Columnar Data Layout"]
         COL1["Column A<br/>[1, 2, 3, 4, 5...]<br/>Sequential Access"]
         COL2["Column B<br/>[a, b, c, d, e...]<br/>Sequential Access"]
         COL3["Column C<br/>[x, y, z, w, v...]<br/>Sequential Access"]
     end
-    
+
     REG --> ALU
     ALU --> L1
     L1 --> L2
     L2 --> L3
     L3 --> RAM
     RAM --> NVME
-    
+
     COL1 -.->|"Load"| L1
     COL2 -.->|"Load"| L1
     COL3 -.->|"Load"| L1
@@ -1610,13 +1611,13 @@ flowchart TB
     subgraph Query["原始查询"]
         SQL["SELECT * FROM events<br/>WHERE date > '2026-01-01'<br/>  AND type = 'error'<br/>  AND user_id IN (1,2,3)"]
     end
-    
+
     subgraph LogicalPlan["逻辑计划"]
         PROJECT["Project[*]"]
         FILTER["Filter[date > '2026-01-01'<br/>  AND type = 'error'<br/>  AND user_id IN (1,2,3)]"]
         SCAN["TableScan[events]"]
     end
-    
+
     subgraph OptimizedPlan["优化后计划"]
         PROJECT2["Project[*]"]
         FILTER2["Filter[user_id IN (1,2,3)]"]
@@ -1625,11 +1626,11 @@ flowchart TB
         PARTITION["Partition Pruning<br/>Skip: 2025 partitions"]
         ROWGROUP["RowGroup Skip<br/>Skip: 80% row groups"]
     end
-    
+
     SQL --> PROJECT
     PROJECT --> FILTER
     FILTER --> SCAN
-    
+
     SCAN -.->|"Pushdown"| PUSHDOWN
     PUSHDOWN --> FILTER2
     FILTER2 --> PROJECT2
@@ -1656,25 +1657,15 @@ xychart-beta
 
 ## 8. 引用参考 (References)
 
-[^1]: Peter Boncz et al., "MonetDB/X100: Hyper-Pipelining Query Execution", CIDR, 2005.
 
-[^2]: Marcin Zukowski et al., "Super-Scalar RAM-CPU Cache Compression", ICDE, 2006.
 
-[^3]: Andrew Lamb et al., "The Vertica Analytic Database: C-Store 7 Years Later", PVLDB, 2012.
 
-[^4]: Velox Documentation, "Columnar Processing Best Practices", 2025. https://facebookincubator.github.io/velox/
 
-[^5]: Apache Arrow Documentation, "Memory Layout and Alignment", 2025. https://arrow.apache.org/docs/format/Columnar.html
 
-[^6]: Herb Sutter, "CPU Caches and Why You Care", CppCon, 2014.
 
-[^7]: Ulrich Drepper, "What Every Programmer Should Know About Memory", 2007.
 
-[^8]: Apache Flink Documentation, "Predicate Pushdown", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/tuning/
 
-[^9]: Parquet Documentation, "Predicate Pushdown and Projection", 2025. https://parquet.apache.org/docs/
 
-[^10]: Daniel J. Abadi et al., "Column-Stores vs. Row-Stores: How Different Are They Really?", SIGMOD, 2008.
 
 ---
 

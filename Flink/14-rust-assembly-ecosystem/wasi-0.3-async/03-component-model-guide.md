@@ -1,7 +1,7 @@
 # WebAssembly Component Model 指南
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/  
-> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/
+> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md)
 > **形式化等级**: L4 (工程形式化 + 标准化规范)
 
 ---
@@ -17,6 +17,7 @@ $$
 $$
 
 核心特性：
+
 - **接口类型 (Interface Types)**: 使用 WIT (WASM Interface Type) 定义
 - **类型提升/降低 (Lift/Lower)**: 跨边界类型转换
 - **资源类型 (Resources)**: 带有析构语义的对象封装
@@ -31,6 +32,7 @@ $$
 $$
 
 WIT 核心构造：
+
 ```
 package := 'package' package-id '{' package-item* '}'
 interface := 'interface' id '{' interface-item* '}'
@@ -179,11 +181,13 @@ $$
 ### 4.1 为什么选择 Component Model 而不是传统动态链接？
 
 **传统动态链接的问题**:
+
 1. **ABI 不稳定**: C ABI 随编译器版本变化
 2. **类型不安全**: 运行时类型检查开销
 3. **平台依赖**: 不同 OS 的动态链接格式不同
 
 **Component Model 的优势**:
+
 1. **语言无关的接口**: WIT 定义清晰的类型契约
 2. **沙箱安全**: WebAssembly 的内存隔离模型
 3. **可移植性**: 一次编译，到处运行
@@ -206,11 +210,13 @@ Java UDF → Scala UDF → Python UDF (PyFlink) → WASM UDF (Component Model)
 ### 4.3 资源类型 vs 传统指针
 
 **传统指针的问题**:
+
 - 悬垂指针 (Dangling pointers)
 - 内存泄漏
 - 双重释放
 
 **资源类型的解决方案**:
+
 - 线性类型语义（所有权转移）
 - 确定性析构（RAII）
 - 引用计数（可选）
@@ -232,10 +238,12 @@ T_{overhead} = c \cdot n
 $$
 
 实验测量（Wasmtime runtime）：
+
 - $c \approx 0.5\text{ns}$/byte（简单类型）
 - $c \approx 2\text{ns}$/byte（复杂结构体）
 
 **结论**:
+
 - 对于 100 字节的数据：开销 $< 200\text{ns}$（可忽略）
 - 对于 1MB 的数据：开销约 $2\text{ms}$（考虑零拷贝优化）
 
@@ -279,7 +287,7 @@ interface processor {
         partition: u32,
         offset: u64,
     }
-    
+
     /// 处理结果
     variant process-result {
         /// 成功处理
@@ -291,7 +299,7 @@ interface processor {
         /// 需要重试
         retry-later(u64),  // 重试延迟（毫秒）
     }
-    
+
     /// 处理上下文
     record context {
         /// 当前任务 ID
@@ -303,7 +311,7 @@ interface processor {
         /// 尝试次数
         attempt-number: u32,
     }
-    
+
     /// 指标报告
     record metrics {
         /// 处理记录数
@@ -313,16 +321,16 @@ interface processor {
         /// 错误数
         error-count: u32,
     }
-    
+
     /// 核心处理函数
     process: func(record: record, ctx: context) -> process-result;
-    
+
     /// 打开处理器（初始化）
     open: func(ctx: context) -> result<_, string>;
-    
+
     /// 关闭处理器（清理）
     close: func() -> result<_, string>;
-    
+
     /// 获取指标
     get-metrics: func() -> metrics;
 }
@@ -330,13 +338,13 @@ interface processor {
 /// 异步处理器接口
 interface async-processor {
     use processor.{record, context, metrics};
-    
+
     /// 异步处理函数
     async fn process-async(
         record: record,
         ctx: context
     ) -> result<list<u8>, string>;
-    
+
     /// 批量异步处理
     async fn process-batch(
         records: list<record>,
@@ -347,7 +355,7 @@ interface async-processor {
 /// 状态管理接口
 interface stateful-processor {
     use processor.{record, context};
-    
+
     /// 值类型
     variant value {
         integer(s64),
@@ -355,31 +363,31 @@ interface stateful-processor {
         string(string),
         bytes(list<u8>),
     }
-    
+
     /// 状态存储
     resource state-store {
         /// 获取值
         get: func(key: string) -> option<value>;
-        
+
         /// 设置值
         set: func(key: string, value: value);
-        
+
         /// 删除值
         delete: func(key: string);
-        
+
         /// 批量获取
         get-batch: func(keys: list<string>) -> list<option<value>>;
-        
+
         /// 批量设置
         set-batch: func(entries: list<tuple<string, value>>);
     }
-    
+
     /// 初始化状态存储
     init-state: func() -> result<state-store, string>;
-    
+
     /// 快照状态（用于 checkpoint）
     snapshot-state: func(store: state-store) -> result<list<u8>, string>;
-    
+
     /// 恢复状态
     restore-state: func(data: list<u8>) -> result<state-store, string>;
 }
@@ -392,13 +400,13 @@ interface checkpoint {
         timestamp: u64,
         subtask-index: u32,
     }
-    
+
     /// 通知检查点触发
     notify-checkpoint: func(metadata: checkpoint-metadata) -> result<list<u8>, string>;
-    
+
     /// 确认检查点完成
     confirm-checkpoint: func(metadata: checkpoint-metadata) -> result<_, string>;
-    
+
     /// 通知检查点中止
     abort-checkpoint: func(metadata: checkpoint-metadata);
 }
@@ -409,7 +417,7 @@ world standard-udf {
     import wasi:clocks/monotonic-clock@0.3.0;
     import wasi:io/streams@0.3.0;
     import wasi:logging/logging@0.3.0;
-    
+
     /// 导出处理器
     export processor;
 }
@@ -421,7 +429,7 @@ world async-udf {
     import wasi:io/streams@0.3.0;
     import wasi:http/client@0.3.0;
     import wasi:logging/logging@0.3.0;
-    
+
     /// 导出异步处理器
     export async-processor;
 }
@@ -430,7 +438,7 @@ world async-udf {
 world stateful-udf {
     /// 导入状态存储
     import wasi:keyvalue/store@0.3.0;
-    
+
     /// 导出处理器和状态管理
     export processor;
     export stateful-processor;
@@ -464,23 +472,23 @@ impl GuestProcessor for MyProcessor {
         // 初始化日志
         log::info!("Opening processor for task {} (subtask {}/{})",
             ctx.task_id, ctx.subtask_index, ctx.parallelism);
-        
+
         Ok(Self {
             records_processed: AtomicU64::new(0),
             processing_time_us: AtomicU64::new(0),
             error_count: AtomicU32::new(0),
         })
     }
-    
+
     fn process(&self, record: Record, ctx: Context) -> ProcessResult {
         let start = wasi::clocks::monotonic_clock::now();
-        
+
         // 处理逻辑
         let result = self.do_process(&record);
-        
+
         let elapsed = wasi::clocks::monotonic_clock::now() - start;
         self.processing_time_us.fetch_add(elapsed, Ordering::Relaxed);
-        
+
         match result {
             Ok(output) => {
                 self.records_processed.fetch_add(1, Ordering::Relaxed);
@@ -488,7 +496,7 @@ impl GuestProcessor for MyProcessor {
             }
             Err(e) => {
                 self.error_count.fetch_add(1, Ordering::Relaxed);
-                
+
                 // 根据错误类型决定处理方式
                 if e.is_transient() {
                     ProcessResult::RetryLater(1000)  // 1秒后重试
@@ -498,13 +506,13 @@ impl GuestProcessor for MyProcessor {
             }
         }
     }
-    
+
     fn close(&self) -> Result<(), String> {
         log::info!("Closing processor. Processed {} records",
             self.records_processed.load(Ordering::Relaxed));
         Ok(())
     }
-    
+
     fn get_metrics(&self) -> Metrics {
         Metrics {
             records_processed: self.records_processed.load(Ordering::Relaxed),
@@ -519,10 +527,10 @@ impl MyProcessor {
         // 解析输入
         let input: serde_json::Value = serde_json::from_slice(&record.value)
             .map_err(|e| ProcessError::Parse(e.to_string()))?;
-        
+
         // 处理逻辑
         let output = process_json(input)?;
-        
+
         // 序列化输出
         serde_json::to_vec(&output)
             .map_err(|e| ProcessError::Serialize(e.to_string()))
@@ -574,37 +582,37 @@ async fn compose_flink_app() -> Result<ComposedApp, Error> {
     let mut config = Config::new();
     config.wasm_component_model(true);
     config.async_support(true);
-    
+
     let engine = Engine::new(&config)?;
-    
+
     // 创建链接器
     let mut linker = Linker::new(&engine);
-    
+
     // 添加 WASI 接口
     wasmtime_wasi::add_to_linker(&mut linker)?;
-    
+
     // 加载组件
     let udf_component = Component::from_file(&engine, "./udf-processor.wasm")?;
     let state_component = Component::from_file(&engine, "./state-store.wasm")?;
     let runtime_component = Component::from_file(&engine, "./flink-runtime.wasm")?;
-    
+
     // 实例化状态存储组件
     let mut store = Store::new(&engine, State::default());
     let (state_store, _) = StateStore::instantiate(&mut store, &state_component, &linker).await?;
-    
+
     // 将状态存储添加到链接器
     linker.instance("flink:udf/state-store")?
         .func_wrap("get", |mut caller, (key,): (String,)| {
             // 实现 get 函数
             Ok((state_store.get(caller, key)?,))
         })?;
-    
+
     // 实例化 UDF 组件
     let (udf, _) = UdfProcessor::instantiate(&mut store, &udf_component, &linker).await?;
-    
+
     // 实例化运行时组件
     let (runtime, _) = FlinkRuntime::instantiate(&mut store, &runtime_component, &linker).await?;
-    
+
     Ok(ComposedApp {
         runtime,
         udf,
@@ -623,15 +631,15 @@ async fn process_record(
         subtask_index: 0,
         attempt_number: 0,
     };
-    
+
     // 调用 UDF 处理
     let result = app.udf.process(record, ctx).await?;
-    
+
     // 更新指标
     let metrics = app.udf.get_metrics().await?;
     log::info!("Processed {} records, errors: {}",
         metrics.records_processed, metrics.error_count);
-    
+
     Ok(result)
 }
 ```
@@ -701,29 +709,29 @@ graph TB
         A1[Core Module]
         A2[Adapter<br/>Lift/Lower]
         A3[Export Interface]
-        
+
         A1 --> A2 --> A3
     end
-    
+
     subgraph "Component B (Go)"
         B1[Core Module]
         B2[Adapter<br/>Lift/Lower]
         B3[Import Interface]
-        
+
         B3 --> B2 --> B1
     end
-    
+
     subgraph "Component C (AssemblyScript)"
         C1[Core Module]
         C2[Adapter<br/>Lift/Lower]
         C3[Export Interface]
-        
+
         C1 --> C2 --> C3
     end
-    
+
     A3 -->|WIT Interface| B3
     B1 -->|WIT Interface| C3
-    
+
     style A2 fill:#ccffcc
     style B2 fill:#ccffcc
     style C2 fill:#ccffcc
@@ -735,17 +743,17 @@ graph TB
 graph TB
     subgraph "WIT Type System"
         Root[WIT Types]
-        
+
         Root --> Primitive
         Root --> Composite
         Root --> Special
-        
+
         Primitive --> P1[bool]
         Primitive --> P2[u8/u16/u32/u64]
         Primitive --> P3[s8/s16/s32/s64]
         Primitive --> P4[f32/f64]
         Primitive --> P5[char/string]
-        
+
         Composite --> C1[record]
         Composite --> C2[variant]
         Composite --> C3[enum]
@@ -754,7 +762,7 @@ graph TB
         Composite --> C6[list]
         Composite --> C7[option]
         Composite --> C8[result]
-        
+
         Special --> S1[resource]
         Special --> S2[borrow]
         Special --> S3[own]
@@ -771,14 +779,14 @@ flowchart LR
     B --> C[Core Wasm Module]
     C --> D[WIT Bindings]
     D --> E[Component]
-    
+
     E1[Component A] --> F[Component Composer]
     E2[Component B] --> F
     E3[Component C] --> F
-    
+
     F --> G[Composed Application]
     G --> H[Runtime<br/>Wasmtime/WasmEdge]
-    
+
     style F fill:#ccffcc
     style G fill:#ccffcc
 ```
@@ -793,30 +801,30 @@ classDiagram
         +close() Result
         +get_metrics() Metrics
     }
-    
+
     class AsyncProcessor {
         +process_async(record, context) Future~Result~
         +process_batch(records, context) Future~Result~
     }
-    
+
     class StatefulProcessor {
         +init_state() Result~StateStore~
         +snapshot_state(store) Result~bytes~
         +restore_state(data) Result~StateStore~
     }
-    
+
     class Checkpoint {
         +notify_checkpoint(metadata) Result~bytes~
         +confirm_checkpoint(metadata) Result
         +abort_checkpoint(metadata)
     }
-    
+
     class StateStore {
         +get(key) Option~Value~
         +set(key, value)
         +delete(key)
     }
-    
+
     Processor <|-- AsyncProcessor
     Processor <|-- StatefulProcessor
     StatefulProcessor --> StateStore
@@ -827,25 +835,15 @@ classDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: WebAssembly Component Model Proposal, "Component Model Specification", 2025. https://github.com/WebAssembly/component-model
 
-[^2]: WebAssembly Interface Types (WIT) Specification, 2025. https://component-model.bytecodealliance.org/design/wit.html
 
-[^3]: wasm-tools Documentation, "Component Tools", 2025. https://github.com/bytecodealliance/wasm-tools
 
-[^4]: Bytecode Alliance, "Component Model Explainer", 2025. https://component-model.bytecodealliance.org/
 
-[^5]: Wasmtime Documentation, "Component Model Support", 2025. https://docs.wasmtime.dev/examples-rust-component.html
 
-[^6]: cargo-component, "Rust Component Development", 2025. https://github.com/bytecodealliance/cargo-component
 
-[^7]: Apache Flink, "User-Defined Functions", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/user_defined_functions/
 
-[^8]: TinyGo, "WebAssembly Support", 2025. https://tinygo.org/docs/guides/webassembly/
 
-[^9]: AssemblyScript, "Component Model Guide", 2025. https://www.assemblyscript.org/
 
-[^10]: Luke Wagner, "Introducing the WebAssembly Component Model", 2025. https://www.youtube.com/watch?v=phodPLY8yzo
 
 ---
 

@@ -13,6 +13,7 @@ WebAssembly 3.0 Exception Handling 引入了异常类型 (`exnref`) 和标签 (`
 $$E = \langle \text{tag}: T, \text{payload}: \text{Val}^*, \text{trace}: \text{Frame}^* \rangle$$
 
 其中：
+
 - \(\text{tag} \in T\): 异常标签，标识异常类型
 - \(\text{payload} \in \text{Val}^*\): 异常载荷，类型由标签定义
 - \(\text{trace} \in \text{Frame}^*\): 捕获点堆栈跟踪
@@ -122,6 +123,7 @@ try {
 | Edge | 115+ | ✅ 完全支持 | 继承 Chromium |
 
 **Safari 18.4 里程碑**:
+
 - 2025 年 3 月发布
 - 完成 Exception Handling with exnref 实现
 - 解决了原始提案的 identity 问题
@@ -142,6 +144,7 @@ try {
 $$\frac{T_{wrapped}}{T_{normal}} \approx 1.0$$
 
 原因：
+
 - `try_table` 仅建立静态异常处理表
 - 无运行时栈展开或状态保存
 - 现代编译器优化可完全消除无异常路径的开销
@@ -164,6 +167,7 @@ $$\frac{T_{wrapped}}{T_{normal}} \approx 1.0$$
 **证明**:
 
 **Flink Exactly-Once 要求**:
+
 1. 确定性处理：相同输入 + 状态 → 相同输出
 2. 可恢复性：异常后能从 Checkpoint 恢复
 3. 无副作用：异常不导致外部系统不一致状态
@@ -199,34 +203,34 @@ graph TB
         RETHROW["rethrow"]
         EXNREF["exnref Type"]
     end
-    
+
     subgraph JS_EH["JavaScript Exception"]
         JS_ERROR["Error Object"]
         TRY_JS["try/catch"]
         WEBASM_EXN["WebAssembly.Exception"]
     end
-    
+
     subgraph FLINK["Flink Runtime"]
         UDF["WASM UDF"]
         CK["Checkpoint"]
         TM["TaskManager"]
         EXACTLY_ONCE["Exactly-Once"]
     end
-    
+
     TAG --> THROW
     TAG --> CATCH
     THROW --> EXNREF
     TRY --> CATCH
     CATCH --> RETHROW
     EXNREF --> WEBASM_EXN
-    
+
     WEBASM_EXN --> TRY_JS
     THROW --> UDF
     CATCH --> UDF
     UDF --> TM
     TM --> EXACTLY_ONCE
     CK --> EXACTLY_ONCE
-    
+
     style EXNREF fill:#e3f2fd
     style WEBASM_EXN fill:#fff3e0
 ```
@@ -244,7 +248,7 @@ sequenceDiagram
 
     Source->>TM: Input Record
     TM->>WASM: process(record)
-    
+
     alt Normal Execution
         WASM->>WASM: Computation
         WASM-->>TM: Result
@@ -253,7 +257,7 @@ sequenceDiagram
         WASM->>WASM: throw $udf_error
         WASM->>EH: Exception Caught
         EH->>EH: Classify Error
-        
+
         alt Recoverable Error
             EH->>WASM: retry / fallback
             WASM-->>TM: Result (recovered)
@@ -344,6 +348,7 @@ $unknown_error           ──▶   RuntimeException
 **证明**:
 
 **前提条件**:
+
 - 设输入流为 \(D = \{d_1, d_2, ..., d_n\}\)
 - 设 UDF 状态为 \(S\)
 - 设 Checkpoint 序列为 \(\{C_1, C_2, ..., C_m\}\)
@@ -352,42 +357,42 @@ $unknown_error           ──▶   RuntimeException
 
 1. **确定性保证**:
    对于任意输入 \(d_i\) 和状态 \(S_j\)：
-   
+
    $$f(d_i, S_j) = \begin{cases}
    (output, S_{j+1}) & \text{正常执行} \\
    (\bot, E) & \text{异常抛出}
    \end{cases}$$
-   
+
    其中 \(E\) 是异常对象，\(\bot\) 表示无有效输出。
-   
+
    由 UDF 设计保证：
    $$\forall i, j: \quad f(d_i, S_j) \text{ 是确定性的}$$
 
 2. **异常原子性**:
    设异常发生在处理 \(d_k\) 时：
-   
+
    - 异常前：状态已更新到 \(S_{k-1}\)
    - 异常时：状态保持在 \(S_{k-1}\) (回滚)
    - 异常传播：触发 Checkpoint \(C_p\) 恢复
-   
+
    形式化：
    $$\text{throw}(E) \Rightarrow S_{current} = S_{checkpoint(C_p)}$$
 
 3. **恢复一致性**:
    设从 Checkpoint \(C_p\) 恢复：
-   
+
    $$\text{restore}(C_p) = S_p$$
-   
+
    恢复后继续处理：
    $$d_{p+1}, d_{p+2}, ...$$
-   
+
    输出结果与无故障场景一致：
    $$\text{Output}_{recovery} = \text{Output}_{normal}$$
 
 4. **无副作用保证**:
    异常不导致外部副作用：
    $$\text{side_effects}(E) = \emptyset$$
-   
+
    通过以下机制保证：
    - 所有外部 I/O 通过 Flink 托管
    - UDF 内部异常不直接操作外部系统
@@ -408,28 +413,28 @@ $unknown_error           ──▶   RuntimeException
   (tag $error (param i32))              ;; 错误码
   (tag $io_error (param i32 i32))       ;; 错误码 + 详细信息
   (tag $validation_error (param i32))   ;; 验证错误
-  
+
   ;; 导出标签供 JavaScript 使用
   (export "error" (tag $error))
   (export "io_error" (tag $io_error))
   (export "validation_error" (tag $validation_error))
-  
+
   ;; ============ 基础异常操作 ============
-  
+
   ;; 抛出简单错误
   (func $throw_simple_error (param $code i32)
     local.get $code
     throw $error
   )
   (export "throw_simple_error" (func $throw_simple_error))
-  
+
   ;; ============ try_table 示例 ============
-  
+
   ;; 受保护的除法运算
   ;; 如果除数为零，抛出错误
   (func $safe_divide (param $a i32) (param $b i32) (result i32)
     (local $result i32)
-    
+
     (block $on_error
       (try_table (result i32)
         (do
@@ -440,7 +445,7 @@ $unknown_error           ──▶   RuntimeException
             i32.const 1  ;; 错误码：除零错误
             throw $error
           end
-          
+
           ;; 执行除法
           local.get $a
           local.get $b
@@ -450,19 +455,19 @@ $unknown_error           ──▶   RuntimeException
       )
       return
     )
-    
+
     ;; 错误处理路径
     ;; 返回默认值或特殊值
     i32.const -1  ;; 表示错误
   )
   (export "safe_divide" (func $safe_divide))
-  
+
   ;; ============ 复杂异常处理 ============
-  
+
   ;; 多 catch 示例
   (func $complex_operation (param $input i32) (result i32)
     (local $result i32)
-    
+
     (block $validation_failed
       (block $io_failed
         (block $general_error
@@ -476,7 +481,7 @@ $unknown_error           ──▶   RuntimeException
                 i32.const 100  ;; 验证错误码
                 throw $validation_error
               end
-              
+
               ;; I/O 操作模拟
               local.get $input
               i32.const 999
@@ -486,7 +491,7 @@ $unknown_error           ──▶   RuntimeException
                 i32.const 0    ;; 额外信息
                 throw $io_error
               end
-              
+
               ;; 正常计算
               local.get $input
               i32.const 2
@@ -510,13 +515,13 @@ $unknown_error           ──▶   RuntimeException
     i32.const -100
   )
   (export "complex_operation" (func $complex_operation))
-  
+
   ;; ============ rethrow 示例 ============
-  
+
   ;; 日志记录并重新抛出
   (func $log_and_rethrow (param $input i32) (result i32)
     (local $exn exnref)
-    
+
     (block $catch_label (result exnref)
       (try_table (result i32)
         (do
@@ -528,15 +533,15 @@ $unknown_error           ──▶   RuntimeException
       )
       return
     )
-    
+
     ;; 捕获到异常，记录日志
     ;; (此处可添加日志记录逻辑)
-    
+
     ;; 重新抛出
     rethrow $catch_label
   )
   (export "log_and_rethrow" (func $log_and_rethrow))
-  
+
   ;; 辅助函数：可能抛出异常
   (func $may_throw (param $input i32) (result i32)
     local.get $input
@@ -615,32 +620,32 @@ impl ExceptionAwareUdf {
             current_retry: 0,
         }
     }
-    
+
     /// 安全处理输入，返回 Result 风格错误
     pub fn safe_process(&mut self, input: i32) -> Result<i32, JsValue> {
         // 重置重试计数
         self.current_retry = 0;
-        
+
         loop {
             match self.try_process(input) {
                 Ok(result) => return Ok(result),
                 Err(e) => {
                     self.error_count += 1;
-                    
+
                     // 检查是否可重试
                     if self.should_retry(&e) && self.current_retry < self.max_retries {
                         self.current_retry += 1;
                         // 延迟重试 (简化，实际应使用 setTimeout)
                         continue;
                     }
-                    
+
                     // 无法恢复，返回错误
                     return Err(JsValue::from_str(&e.to_string()));
                 }
             }
         }
     }
-    
+
     /// 尝试处理，可能失败
     fn try_process(&self, input: i32) -> Result<i32, UdfError> {
         // 验证输入
@@ -650,7 +655,7 @@ impl ExceptionAwareUdf {
                 reason: "must be non-negative".to_string(),
             });
         }
-        
+
         // 模拟计算
         if input == 999 {
             return Err(UdfError::ComputationError {
@@ -658,7 +663,7 @@ impl ExceptionAwareUdf {
                 details: "division by zero".to_string(),
             });
         }
-        
+
         // 模拟 I/O 错误
         if input == 888 {
             return Err(UdfError::IoError {
@@ -666,11 +671,11 @@ impl ExceptionAwareUdf {
                 error_code: 404,
             });
         }
-        
+
         // 正常处理
         Ok(input * 2)
     }
-    
+
     /// 判断错误是否可重试
     fn should_retry(&self, error: &UdfError) -> bool {
         match error {
@@ -679,7 +684,7 @@ impl ExceptionAwareUdf {
             _ => false,
         }
     }
-    
+
     /// 获取错误统计
     pub fn get_error_stats(&self) -> JsValue {
         let stats = js_sys::Object::new();
@@ -712,7 +717,7 @@ impl FlinkCompatibleUdf {
             inner: ExceptionAwareUdf::new(max_retries),
         }
     }
-    
+
     /// Flink 调用的主入口
     /// 返回 i32，异常时抛出 WebAssembly 异常
     pub fn process(&mut self, input: i32) -> i32 {
@@ -725,12 +730,12 @@ impl FlinkCompatibleUdf {
             }
         }
     }
-    
+
     /// 批量处理，收集所有错误
     pub fn process_batch(&mut self, inputs: &[i32]) -> ProcessBatchResult {
         let mut outputs = Vec::with_capacity(inputs.len());
         let mut errors = Vec::new();
-        
+
         for (idx, &input) in inputs.iter().enumerate() {
             match self.inner.safe_process(input) {
                 Ok(result) => outputs.push(result),
@@ -745,7 +750,7 @@ impl FlinkCompatibleUdf {
                 }
             }
         }
-        
+
         ProcessBatchResult {
             outputs,
             errors,
@@ -767,15 +772,15 @@ impl ProcessBatchResult {
     pub fn outputs(&self) -> Box<[i32]> {
         self.outputs.clone().into_boxed_slice()
     }
-    
+
     pub fn error_count(&self) -> u32 {
         self.errors.len() as u32
     }
-    
+
     pub fn success_count(&self) -> u32 {
         self.success_count
     }
-    
+
     pub fn has_errors(&self) -> bool {
         !self.errors.is_empty()
     }
@@ -811,10 +816,10 @@ class FlinkWasmExceptionHandler {
      */
     async initialize(wasmModule) {
         this.module = wasmModule;
-        
+
         // 从 WASM 导出获取异常标签
         const exports = wasmModule.instance.exports;
-        
+
         if (exports.error) {
             this.tagRegistry.set('error', exports.error);
         }
@@ -846,7 +851,7 @@ class FlinkWasmExceptionHandler {
      */
     handleWasmException(exception) {
         this.errorMetrics.total++;
-        
+
         // 检查是否是 WebAssembly.Exception
         if (!(exception instanceof WebAssembly.Exception)) {
             // 非 WASM 异常，直接传播
@@ -879,10 +884,10 @@ class FlinkWasmExceptionHandler {
      */
     classifyError(tagName, args) {
         const errorType = this.mapTagToErrorType(tagName);
-        
+
         switch (errorType) {
             case 'VALIDATION_ERROR':
-                this.errorMetrics.byType['validation'] = 
+                this.errorMetrics.byType['validation'] =
                     (this.errorMetrics.byType['validation'] || 0) + 1;
                 return {
                     success: false,
@@ -893,9 +898,9 @@ class FlinkWasmExceptionHandler {
                     shouldCheckpoint: false,  // 确定性错误，不回滚
                     skipRecord: true          // 跳过错误记录
                 };
-                
+
             case 'IO_ERROR':
-                this.errorMetrics.byType['io'] = 
+                this.errorMetrics.byType['io'] =
                     (this.errorMetrics.byType['io'] || 0) + 1;
                 return {
                     success: false,
@@ -908,9 +913,9 @@ class FlinkWasmExceptionHandler {
                     retryable: true,
                     maxRetries: 3
                 };
-                
+
             case 'COMPUTATION_ERROR':
-                this.errorMetrics.byType['computation'] = 
+                this.errorMetrics.byType['computation'] =
                     (this.errorMetrics.byType['computation'] || 0) + 1;
                 return {
                     success: false,
@@ -921,7 +926,7 @@ class FlinkWasmExceptionHandler {
                     shouldCheckpoint: true,  // 可能需要回滚
                     fatal: args >= 500       // 严重错误
                 };
-                
+
             default:
                 return {
                     success: false,
@@ -954,19 +959,19 @@ class FlinkWasmExceptionHandler {
             console.log('Triggering checkpoint rollback due to fatal error');
             return checkpointManager.rollback();
         }
-        
+
         if (errorInfo.retryable) {
             // 记录错误但继续处理
             console.log(`Retryable error, will retry ${errorInfo.maxRetries} times`);
             return { action: 'RETRY', maxRetries: errorInfo.maxRetries };
         }
-        
+
         if (errorInfo.skipRecord) {
             // 跳过错误记录
             console.log('Skipping invalid record');
             return { action: 'SKIP' };
         }
-        
+
         return { action: 'PROPAGATE' };
     }
 
@@ -1006,26 +1011,26 @@ class FlinkWasmUdfOperator {
      */
     async processElement(record) {
         const udf = this.wasmModule.instance.exports.process;
-        
+
         let attempts = 0;
         const maxAttempts = 3;
-        
+
         while (attempts < maxAttempts) {
             const result = await this.exceptionHandler.executeUdf(
                 () => udf(record.value)
             );
-            
+
             if (result.success) {
                 return { output: result.result, success: true };
             }
-            
+
             // 处理错误
             if (result.recoverable && attempts < maxAttempts - 1) {
                 attempts++;
                 await this.retryPolicy.wait(attempts);
                 continue;
             }
-            
+
             // 无法恢复的错误
             if (result.shouldCheckpoint) {
                 throw new FlinkException(
@@ -1033,7 +1038,7 @@ class FlinkWasmUdfOperator {
                     result
                 );
             }
-            
+
             // 跳过错误记录
             return { output: null, success: false, skipped: true };
         }
@@ -1086,40 +1091,40 @@ module.exports = {
 ```mermaid
 flowchart TD
     START([异常发生]) --> CLASSIFY{异常分类}
-    
+
     CLASSIFY -->|ValidationError| VAL["输入验证错误"]
     CLASSIFY -->|IoError| IO["I/O 错误"]
     CLASSIFY -->|ComputationError| COMP["计算错误"]
     CLASSIFY -->|ResourceError| RES["资源错误"]
-    
+
     VAL --> SKIP["跳过记录"]
     SKIP --> LOG1["记录警告日志"]
     LOG1 --> CONTINUE["继续处理"]
-    
+
     IO --> RETRY{重试次数 < 3?}
     RETRY -->|是| WAIT["指数退避等待"]
     WAIT --> RETRY_OP["重试操作"]
     RETRY_OP --> CLASSIFY
     RETRY -->|否| FAIL1["标记失败"]
-    
+
     COMP --> FATAL{是否致命?}
     FATAL -->|是| ROLLBACK["触发 Checkpoint<br/>回滚"]
     FATAL -->|否| DEFAULT["使用默认值"]
     DEFAULT --> LOG2["记录错误日志"]
     LOG2 --> CONTINUE
-    
+
     RES --> SCALE{"资源可扩展?"}
     SCALE -->|是| ALLOC["申请更多资源"]
     ALLOC --> RETRY_OP
     SCALE -->|否| FAIL2["任务失败"]
-    
+
     ROLLBACK --> RESTART["从 Checkpoint<br/>恢复"]
     FAIL1 --> RESTART
     FAIL2 --> RESTART
-    
+
     CONTINUE --> NEXT([处理下一条])
     RESTART --> NEXT
-    
+
     style VAL fill:#fff3e0
     style IO fill:#e3f2fd
     style COMP fill:#fce4ec
@@ -1143,12 +1148,12 @@ sequenceDiagram
     User->>WASM: process(record)
     WASM-->>TM: result
     TM->>CK: 异步 Checkpoint
-    
+
     Note over User,CK: 异常处理流程
     User->>WASM: process(bad_record)
     WASM->>WASM: throw validation_error
     WASM->>EH: Exception Caught
-    
+
     alt 可恢复错误 (I/O)
         EH->>EH: 重试逻辑
         EH->>WASM: retry
@@ -1163,7 +1168,7 @@ sequenceDiagram
         TM->>WASM: 恢复状态
         TM->>User: 从断点重播
     end
-    
+
     Note right of CK: Exactly-Once 保证：<br/>异常前已确认的记录不会重复处理
 ```
 
@@ -1171,25 +1176,15 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: WebAssembly Community Group, "Exception Handling Proposal with exnref", WebAssembly Spec, Phase 5, 2025. https://github.com/WebAssembly/exception-handling
 
-[^2]: WebAssembly Community Group, "WebAssembly JS API: Exception Handling", 2025. https://webassembly.github.io/exception-handling/js-api/
 
-[^3]: Apple Inc., "Safari 18.4 Release Notes: WebAssembly Exception Handling", 2025.
 
-[^4]: Chrome Platform Status, "WebAssembly Exception Handling", 2024. https://chromestatus.com/feature/exception-handling
 
-[^5]: Mozilla, "Firefox WebAssembly Exception Handling Implementation", Bugzilla, 2024.
 
-[^6]: Apache Flink, "Fault Tolerance and Exactly-Once Semantics", Flink Documentation, 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/stateful-stream-processing/
 
-[^7]: Apache Flink, "Error Handling in User-Defined Functions", Flink Documentation, 2025.
 
-[^8]: Carnegie Mellon University, "Exception Handling in Safe Systems Programming", 2024.
 
-[^9]: IEEE, "Standard for Exceptions in Programming Languages", 2023.
 
-[^10]: WebAssembly Feature Matrix, "Exception Handling Implementation Status", 2025. https://webassembly.org/features/
 
 ---
 

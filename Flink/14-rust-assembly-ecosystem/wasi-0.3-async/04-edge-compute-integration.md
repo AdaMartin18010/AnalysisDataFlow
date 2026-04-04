@@ -1,7 +1,7 @@
 # 边缘计算集成实践
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/  
-> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md), [03-component-model-guide.md](./03-component-model-guide.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/
+> **前置依赖**: [01-wasi-0.3-spec-guide.md](./01-wasi-0.3-spec-guide.md), [03-component-model-guide.md](./03-component-model-guide.md)
 > **形式化等级**: L3 (工程实践 + 部署架构)
 
 ---
@@ -17,6 +17,7 @@ $$
 $$
 
 其中 Constraints 包括：
+
 - **内存限制**: 通常 256MB - 2GB
 - **CPU 限制**: 低功耗 ARM/x86 处理器
 - **网络限制**: 间歇性连接或有限带宽
@@ -64,6 +65,7 @@ $$
 $$
 
 其中 $T_{startup}$ 包括：
+
 - 运行时初始化
 - 模块加载
 - 内存分配
@@ -181,6 +183,7 @@ $$
 ### 4.1 为什么选择 WasmEdge 作为边缘运行时？
 
 **边缘约束分析**:
+
 1. **启动速度**: 边缘节点可能需要频繁启停以节省电力
 2. **内存限制**: 边缘设备通常只有几百 MB 内存
 3. **网络不稳定**: 需要本地处理能力
@@ -197,11 +200,13 @@ $$
 ### 4.2 边缘-云协同 vs 纯云架构
 
 **纯云架构问题**:
+
 - 高延迟：数据往返云端
 - 带宽成本：大量原始数据传输
 - 隐私问题：敏感数据离开本地
 
 **边缘-云协同优势**:
+
 - **延迟**: 边缘预处理，响应 < 10ms
 - **带宽**: 只传输聚合数据，减少 90%+
 - **隐私**: 敏感数据本地处理
@@ -209,11 +214,13 @@ $$
 ### 4.3 WASI 0.3 对边缘场景的意义
 
 **异步 I/O 的必要性**:
+
 - 边缘设备通常连接多个传感器
 - 需要并发处理多个数据流
 - 传统线程模型资源消耗过大
 
 **WASI 0.3 解决方案**:
+
 - 单线程异步模型，处理数千并发连接
 - 原生流类型支持传感器数据流
 - 取消令牌支持资源受限时的优雅降级
@@ -229,11 +236,13 @@ $$
 **工程论证**:
 
 假设边缘节点规格：
+
 - 内存: $M = 512\text{MB}$
 - CPU: 单核 ARM Cortex-A72
 - 目标延迟: $L_{max} = 50\text{ms}$
 
 WASI 0.3 异步任务开销：
+
 - 每个任务内存: $m_t = 8\text{KB}$
 - 每个任务 CPU: 可忽略（I/O 等待）
 
@@ -254,11 +263,13 @@ $$
 **工程论证**:
 
 假设原始数据流：
+
 - 采样率: $f = 1000\text{ Hz}$
 - 记录大小: $s = 100\text{ bytes}$
 - 原始带宽: $B_{raw} = f \cdot s = 100\text{ KB/s}$
 
 边缘聚合（窗口 $T = 10\text{s}$）：
+
 - 聚合后记录: $s_{agg} = 200\text{ bytes}$
 - 聚合后带宽: $B_{agg} = \frac{s_{agg}}{T} = 20\text{ bytes/s}$
 
@@ -284,24 +295,24 @@ runtime:
   execution:
     mode: aot  # 或 jit
     compiler-optimization: O2
-    
+
   # WASI 配置
   wasi:
     version: "0.3.0"
-    
+
     # 允许的环境变量
     env:
       - FLINK_EDGE_NODE_ID
       - FLINK_CLUSTER_ENDPOINT
       - LOG_LEVEL
-    
+
     # 预打开目录
     preopen:
       - dir: /data
         alias: data
       - dir: /tmp
         alias: tmp
-    
+
     # 网络权限
     network:
       allow:
@@ -309,14 +320,14 @@ runtime:
           ports: [8081, 6123]
         - host: "*.local"
           ports: [80, 443]
-    
+
     # 资源限制
     limits:
       memory:
         max: 256Mi
       cpu:
         max-percent: 80
-      
+
   # 扩展插件
   plugins:
     # AI 推理支持
@@ -325,14 +336,14 @@ runtime:
       models:
         - name: anomaly-detection
           path: /models/anomaly.onnx
-        
+
     # 存储支持
     storage:
       enabled: true
       backends:
         - type: rocksdb
           path: /data/local.db
-        
+
     # HTTP 客户端
     http:
       enabled: true
@@ -409,44 +420,44 @@ impl GuestProcessor for EdgeSensorProcessor {
             filter_threshold: config.filter_threshold,
         }
     }
-    
+
     /// 异步处理传感器数据
     async fn process(&mut self, data: Vec<u8>) -> Result<ProcessResult, String> {
         // 解析传感器数据
         let reading: SensorReading = serde_json::from_slice(&data)
             .map_err(|e| format!("Failed to parse sensor data: {}", e))?;
-        
+
         // 实时异常检测（轻量级）
         let anomaly_score = self.detect_anomaly(&reading);
-        
+
         // 如果异常分数超过阈值，立即发送到云端
         if anomaly_score > self.filter_threshold {
             self.send_alert(&reading, anomaly_score).await?;
         }
-        
+
         // 添加到聚合缓冲区
         self.buffer.push_back(reading);
-        
+
         // 检查是否需要聚合
         let now = wasi::clocks::monotonic_clock::now_ms();
         let last = self.last_aggregate.load(Ordering::Relaxed);
-        
+
         if now - last >= self.window_ms || self.buffer.len() >= self.max_buffer_size {
             let aggregated = self.aggregate_and_flush().await?;
             self.last_aggregate.store(now, Ordering::Relaxed);
-            
+
             return Ok(ProcessResult::Aggregated(aggregated));
         }
-        
+
         Ok(ProcessResult::Buffered)
     }
-    
+
     /// 异步刷新到云端
     async fn flush(&mut self) -> Result<Vec<u8>, String> {
         if self.buffer.is_empty() {
             return Ok(vec![]);
         }
-        
+
         let aggregated = self.aggregate_and_flush().await?;
         serde_json::to_vec(&aggregated)
             .map_err(|e| format!("Serialization error: {}", e))
@@ -459,7 +470,7 @@ impl EdgeSensorProcessor {
         // 简化的基于阈值的异常检测
         // 实际场景可以使用 ML 模型
         let mut score = 0.0;
-        
+
         if reading.temperature < -20.0 || reading.temperature > 50.0 {
             score += 0.5;
         }
@@ -469,10 +480,10 @@ impl EdgeSensorProcessor {
         if reading.pressure < 950.0 || reading.pressure > 1050.0 {
             score += 0.2;
         }
-        
+
         score
     }
-    
+
     /// 发送实时告警
     async fn send_alert(
         &self,
@@ -486,7 +497,7 @@ impl EdgeSensorProcessor {
             severity: if anomaly_score > 0.8 { "HIGH" } else { "MEDIUM" },
             message: format!("Anomaly detected with score {:.2}", anomaly_score),
         };
-        
+
         // 使用 WASI 0.3 异步 HTTP 客户端
         let client = wasi::http::client::Client::new();
         let response = client
@@ -494,45 +505,45 @@ impl EdgeSensorProcessor {
             .json(&alert)
             .await
             .map_err(|e| format!("Failed to send alert: {:?}", e))?;
-        
+
         if !response.status().is_success() {
             return Err(format!("Alert API error: {}", response.status()));
         }
-        
+
         Ok(())
     }
-    
+
     /// 聚合并清空缓冲区
     async fn aggregate_and_flush(&mut self) -> Result<Vec<AggregatedReading>, String> {
         if self.buffer.is_empty() {
             return Ok(vec![]);
         }
-        
+
         // 按传感器 ID 分组
         use std::collections::HashMap;
         let mut groups: HashMap<String, Vec<SensorReading>> = HashMap::new();
-        
+
         for reading in self.buffer.drain(..) {
             groups.entry(reading.sensor_id.clone())
                 .or_default()
                 .push(reading);
         }
-        
+
         // 计算每个传感器的聚合值
         let mut results = Vec::new();
         for (sensor_id, readings) in groups {
             if readings.is_empty() {
                 continue;
             }
-            
+
             let count = readings.len() as f64;
             let avg_temp: f64 = readings.iter().map(|r| r.temperature).sum::<f64>() / count;
             let avg_hum: f64 = readings.iter().map(|r| r.humidity).sum::<f64>() / count;
             let avg_press: f64 = readings.iter().map(|r| r.pressure).sum::<f64>() / count;
-            
+
             let window_start = readings.iter().map(|r| r.timestamp).min().unwrap_or(0);
             let window_end = readings.iter().map(|r| r.timestamp).max().unwrap_or(0);
-            
+
             results.push(AggregatedReading {
                 sensor_id,
                 window_start,
@@ -544,7 +555,7 @@ impl EdgeSensorProcessor {
                 anomaly_score: self.detect_anomaly(&readings[0]),
             });
         }
-        
+
         Ok(results)
     }
 }
@@ -578,80 +589,80 @@ spec:
       memory: 4Gi
       cpu: 2
     replicas: 1
-    
+
   # 云端 TaskManager 配置
   taskManager:
     resource:
       memory: 8Gi
       cpu: 4
     replicas: 3
-    
+
   # 边缘节点配置
   edgeNodes:
     - name: edge-node-1
       location: factory-floor-1
       runtime: wasmedge
       wasiVersion: "0.3.0"
-      
+
       resource:
         memory: 512Mi
         cpu: 1
-        
+
       # 边缘 UDF 配置
       udfs:
         - name: sensor-preprocessor
           wasmPath: wasms/edge-sensor-processor.wasm
           witPath: wits/edge-sensor.wit
-          
+
           # WASI 0.3 配置
           wasi:
             allowedInterfaces:
               - "wasi:http/client"
               - "wasi:clocks/monotonic-clock"
               - "wasi:io/streams"
-              
+
             env:
               AGGREGATION_WINDOW_MS: "10000"
               FILTER_THRESHOLD: "0.7"
               MAX_BUFFER_SIZE: "1000"
-              
+
       # 边缘存储
       storage:
         type: local
         path: /data/edge-buffer
         maxSize: 1Gi
-        
+
       # 网络配置
       network:
         cloudEndpoint: "flink-cluster.example.com:8081"
         heartbeatInterval: 5000
         reconnectBackoff: 1000
-        
+
       # 检查点配置
       checkpoint:
         enabled: true
         interval: 60000
         mode: delta
-        
+
     - name: edge-node-2
       location: factory-floor-2
       runtime: wasmedge
       # ... 类似配置
-      
+
 # 作业配置
 job:
   jarURI: local:///opt/flink/examples/streaming/SensorAggregation.jar
   parallelism: 4
   upgradeMode: savepoint
   state: running
-  
+
   # 边缘-云数据流配置
   edgeCloudFlow:
     # 边缘预处理
     edgeStage:
       operator: sensor-preprocessor
       output: aggregated-sensor-data
-      
+
     # 云端聚合分析
     cloudStage:
       input: aggregated-sensor-data
@@ -660,7 +671,7 @@ job:
           class: com.example.GlobalAggregation
         - name: anomaly-detection-ml
           class: com.example.MLAnomalyDetection
-      
+
     # 同步配置
     sync:
       strategy: async
@@ -787,28 +798,28 @@ flowchart LR
         S1[Sensor 1]
         S2[Sensor 2]
         S3[Sensor 3]
-        
+
         S1 --> EP[Edge Processor<br/>WASI 0.3 Async]
         S2 --> EP
         S3 --> EP
-        
+
         EP --> LF[Local Filter]
         EP --> AD[Anomaly Detection]
-        
+
         LF --> AGG[Aggregator]
         AD --> AL[Alert Sender]
-        
+
         AGG --> CB[Cloud Buffer]
     end
-    
+
     subgraph "Cloud Layer"
         CB -.->|Async Sync| CM[Cloud Merger]
         AL -.->|Realtime| NS[Notification Service]
-        
+
         CM --> AN[Analytics Engine]
         AN --> DB[(Long-term Storage)]
     end
-    
+
     style EP fill:#ccffcc
     style CB fill:#fff4e1
 ```
@@ -819,7 +830,7 @@ flowchart LR
 bar title
     title Runtime Startup Time Comparison (ms)
     y-axis Startup Time (ms) --> 0 --> 2000
-    
+
     bar ["WasmEdge AOT", "Wasmtime AOT", "wasmer", "Docker Container"]
     10 : 50 : 30 : 1000
 ```
@@ -844,45 +855,45 @@ graph TB
             JM[Flink JobManager]
             TM1[TaskManager 1]
             TM2[TaskManager 2]
-            
+
             JM --> TM1
             JM --> TM2
         end
-        
+
         S3[(Object Storage)]
         TS[(TimeSeries DB)]
-        
+
         TM1 --> S3
         TM2 --> TS
     end
-    
+
     subgraph "Edge Locations"
         subgraph "Factory Floor 1"
             EN1[Edge Node<br/>WasmEdge]
             SN1[Sensor Network]
-            
+
             SN1 --> EN1
         end
-        
+
         subgraph "Factory Floor 2"
             EN2[Edge Node<br/>WasmEdge]
             SN2[Sensor Network]
-            
+
             SN2 --> EN2
         end
-        
+
         subgraph "Retail Store"
             EN3[Edge Node<br/>WasmEdge]
             CAM[Camera Array]
-            
+
             CAM --> EN3
         end
     end
-    
+
     EN1 -.->|Async Sync| TM1
     EN2 -.->|Async Sync| TM1
     EN3 -.->|Async Sync| TM2
-    
+
     style EN1 fill:#ccffcc
     style EN2 fill:#ccffcc
     style EN3 fill:#ccffcc
@@ -892,25 +903,15 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: WasmEdge Documentation, "Edge Computing with WebAssembly", 2025. https://wasmedge.org/docs/
 
-[^2]: Second State, "WasmEdge: A Lightweight WebAssembly Runtime", 2025. https://www.secondstate.io/articles/wasmedge/
 
-[^3]: Cloud Native Computing Foundation, "Edge Computing White Paper", 2025. https://www.cncf.io/reports/edge-computing/
 
-[^4]: LF Edge, "State of the Edge Report", 2025. https://www.lfedge.org/
 
-[^5]: Apache Flink, "Flink on Docker and Kubernetes", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/resource-providers/standalone/docker/
 
-[^6]: WebAssembly System Interface, "WASI 0.3 for Edge Devices”, 2025. https://github.com/WebAssembly/WASI
 
-[^7]: Fastly Compute@Edge, "WebAssembly at the Edge", 2025. https://www.fastly.com/products/edge-compute
 
-[^8]: Fermyon Spin, "Serverless WebAssembly", 2025. https://developer.fermyon.com/spin/index
 
-[^9]: Bytecode Alliance, "WebAssembly Micro Runtime (WAMR) for IoT", 2025. https://github.com/bytecodealliance/wasm-micro-runtime
 
-[^10]: Microsoft Azure, "Azure IoT Edge with WebAssembly", 2025. https://docs.microsoft.com/en-us/azure/iot-edge/
 
 ---
 

@@ -13,6 +13,7 @@
 $$\mathcal{M}_{CUDA} = (G, B, T, S_{SM}, M_{hierarchy})$$
 
 其中：
+
 - $G$: Grid - 由多个 Block 组成的计算网格
 - $B$: Block - 由多个 Thread 组成的协作线程数组 (CTA), $B = \{T_1, T_2, ..., T_n\}$
 - $T$: Thread - 基本执行单元，拥有私有寄存器和局部内存
@@ -52,6 +53,7 @@ $$M_{unified} = M_{host} \cup M_{device}, \quad \text{with automatic page migrat
 $$f_{gpu}: \mathcal{D}_{in} \times \Theta_{gpu} \rightarrow \mathcal{D}_{out}$$
 
 其中：
+
 - $\mathcal{D}_{in}$: 输入数据批次 (Data Batch), $|\mathcal{D}_{in}| = B_{batch}$
 - $\Theta_{gpu}$: GPU Kernel 参数，包含线程配置、共享内存大小等
 - $\mathcal{D}_{out}$: 输出数据批次
@@ -79,6 +81,7 @@ $$\text{Speedup} = \frac{1}{(1 - f_{parallel}) + \frac{f_{parallel}}{S_{gpu}} + 
 $$Perf_{actual} = \min(Perf_{peak}, I \times B_{mem})$$
 
 其中：
+
 - $Perf_{peak}$: GPU 理论计算峰值 (TFLOPS)
 - $I$: 运算强度 (Operational Intensity), $I = \frac{\text{FLOPs}}{\text{Bytes transferred}}$
 - $B_{mem}$: 内存带宽 (GB/s)
@@ -117,7 +120,8 @@ $$L_{transfer} < N(t_{cpu} - t_{gpu}) = N \times t_{cpu}(1 - \frac{C_{cpu}}{C_{g
 
 $$N > \frac{L_{transfer}}{t_{cpu}(S - 1)} = T_{threshold}$$
 
-**工程推论**: 
+**工程推论**:
+
 - 小批量数据处理不适合 GPU
 - 计算复杂度需达到 $O(N)$ 或更高
 - 数据重用可减少有效传输量
@@ -147,6 +151,7 @@ GPU 全局内存通过 **事务** (Transaction) 服务，一个事务可传输 3
 3. 利用率 $\eta = \frac{32 \times sizeof(T)}{32 \times 128B} = \frac{sizeof(T)}{128}$
 
 **工程推论**:
+
 - 数据布局应保证 SoA (Structure of Arrays) 而非 AoS
 - 线程 ID 应映射到连续内存索引：`idx = blockIdx.x * blockDim.x + threadIdx.x`
 - 使用 `__shared__` 内存缓存不规则访问模式
@@ -273,6 +278,7 @@ GPU 集群的成本构成：
 $$TCO_{gpu} = C_{hardware} + C_{energy} + C_{infrastructure} + C_{maintenance}$$
 
 其中：
+
 - $C_{hardware} = N_{gpu} \times P_{gpu} + N_{cpu} \times P_{cpu}$
 - $C_{energy} = P_{avg} \times T_{operation} \times R_{electricity}$
 
@@ -302,6 +308,7 @@ GPU 能效比约为 CPU 的 7 倍。
 #### 4.2.1 Roofline 模型分析
 
 以 NVIDIA A100 为例：
+
 - 理论 FP32 峰值: 19.5 TFLOPS
 - 显存带宽: 2039 GB/s
 - Ridge Point: $I_{ridge} = \frac{19500}{2039} \approx 9.56\ FLOPs/byte$
@@ -316,6 +323,7 @@ GPU 能效比约为 CPU 的 7 倍。
 | 聚合计算 | 5 | 8 | 0.625 | 内存受限 |
 
 **优化策略**:
+
 1. **提升运算强度**: Kernel Fusion - 合并多个 UDF 操作
 2. **减少全局内存访问**: 使用共享内存缓存数据
 3. **数据压缩**: 使用 FP16/INT8 减少传输量
@@ -328,6 +336,7 @@ PCIe 5.0 x16 理论带宽: 64 GB/s (双向)
 **数据传输占比分析**:
 
 假设处理 1GB 输入数据，输出 100MB：
+
 - H2D 传输: 1GB / 32GB/s = 31ms
 - D2H 传输: 100MB / 32GB/s = 3.1ms
 - GPU 计算: 50ms (假设)
@@ -335,6 +344,7 @@ PCIe 5.0 x16 理论带宽: 64 GB/s (双向)
 传输占比: $\frac{34.1}{84.1} \approx 40\%$ 时间花在数据传输上。
 
 **解决方案**:
+
 1. **GPUDirect RDMA**: 网络数据直接到 GPU，绕过 CPU 内存
 2. **Zero-Copy**: 使用 CUDA Unified Memory
 3. **批处理**: 增大批次摊平传输开销
@@ -342,11 +352,12 @@ PCIe 5.0 x16 理论带宽: 64 GB/s (双向)
 ### 4.3 反例分析：GPU 不适合的场景
 
 **场景 1: 小状态 Keyed ProcessFunction**
+
 ```java
 // 反模式：小状态、低计算量、高吞吐要求低
 class SmallStateProcessor extends KeyedProcessFunction<String, Event, Result> {
     ValueState<Integer> counter;
-    
+
     @Override
     public void processElement(Event e, Context ctx, Collector<Result> out) {
         int c = counter.value();
@@ -355,9 +366,11 @@ class SmallStateProcessor extends KeyedProcessFunction<String, Event, Result> {
     }
 }
 ```
+
 **问题**: 状态访问延迟、GPU 启动开销、数据传输成本远超收益。
 
 **场景 2: 复杂条件分支**
+
 ```cuda
 // 反模式：严重分支发散
 __global__ void divergentKernel(Data* data) {
@@ -369,6 +382,7 @@ __global__ void divergentKernel(Data* data) {
     } // ... 多分支
 }
 ```
+
 **问题**: Warp 内线程执行不同路径导致序列化，性能骤降。
 
 ---
@@ -382,6 +396,7 @@ __global__ void divergentKernel(Data* data) {
 **形式化表述**:
 
 设：
+
 - $f_{cpu}: A \rightarrow B$ 为参考实现
 - $f_{gpu}: A \rightarrow B$ 为 GPU 实现
 - $\delta_{float}$ 为浮点精度误差容限
@@ -396,7 +411,8 @@ $$\forall a \in A, ||f_{cpu}(a) - f_{gpu}(a)|| < \delta_{float}$$
 2. **精度**: 若使用相同精度（FP32/FP64），IEEE 754 保证逐操作精度一致
 3. **顺序无关性**: 数据并行操作满足交换律和结合律，输出顺序不影响语义
 
-**边界条件**: 
+**边界条件**:
+
 - 浮点累加顺序不同导致微小差异（可通过 Kahan 求和或精确舍入模式缓解）
 - 超出数值范围的异常值（需前置过滤）
 
@@ -407,6 +423,7 @@ $$\forall a \in A, ||f_{cpu}(a) - f_{gpu}(a)|| < \delta_{float}$$
 **论证**:
 
 设 $Perf_{arch}$ 为架构 $arch$ 上的性能，假设：
+
 - Compute Capability $CC \geq 7.0$ (Turing+)
 - 代码使用动态并行配置（根据占用率调整 Block 大小）
 
@@ -419,6 +436,7 @@ cudaOccupancyMaxPotentialBlockSize(&minGridSize, &optimalBlockSize, kernel, 0, 0
 ```
 
 自适应启动确保在不同 SM 数量的 GPU 上都能达到 >80% 占用率，性能差异主要来自：
+
 - 内存带宽差异 (A100 vs H100: ~1.5x)
 - 计算峰值差异 (A100 vs H100: ~2.5x)
 
@@ -451,16 +469,16 @@ import org.apache.flink.table.annotation.FunctionHint;
     output = @DataTypeHint("FLOAT")
 )
 public class GpuCosineSimilarity extends ScalarFunction {
-    
+
     static {
         // 加载 native 库
         System.loadLibrary("flink_gpu_bridge");
         initializeCuda();
     }
-    
+
     private static native void initializeCuda();
     private static native float cosineSimilarityGpu(float[] vecA, float[] vecB, int dim);
-    
+
     // JNI 调用 GPU 计算
     public Float eval(float[] queryVector, float[] docVector) {
         if (queryVector.length != docVector.length) {
@@ -506,20 +524,20 @@ private:
     static constexpr int NUM_STREAMS = 4;
     cudaStream_t streams[NUM_STREAMS];
     int current = 0;
-    
+
 public:
     CudaStreamPool() {
         for (int i = 0; i < NUM_STREAMS; i++) {
             CUDA_CHECK(cudaStreamCreate(&streams[i]));
         }
     }
-    
+
     ~CudaStreamPool() {
         for (int i = 0; i < NUM_STREAMS; i++) {
             cudaStreamDestroy(streams[i]);
         }
     }
-    
+
     cudaStream_t getStream() {
         return streams[current++ % NUM_STREAMS];
     }
@@ -533,7 +551,7 @@ private:
         size_t capacity;
     };
     std::vector<Buffer> buffers;
-    
+
 public:
     float* acquire(size_t size) {
         for (auto& buf : buffers) {
@@ -549,7 +567,7 @@ public:
         buffers.push_back({ptr, size});
         return ptr;
     }
-    
+
     void release(float* ptr) {
         for (auto& buf : buffers) {
             if (buf.ptr == nullptr) {  // 找到空槽位
@@ -563,18 +581,18 @@ public:
 // JNI 实现
 extern "C" {
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_com_flink_gpu_udf_GpuCosineSimilarity_initializeCuda(JNIEnv*, jclass) {
     // 设置设备
     CUDA_CHECK(cudaSetDevice(0));
-    
+
     // 预分配流池
     static CudaStreamPool streamPool;
-    
+
     // 打印设备信息
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
-    printf("CUDA Device: %s, Compute Capability: %d.%d\n", 
+    printf("CUDA Device: %s, Compute Capability: %d.%d\n",
            prop.name, prop.major, prop.minor);
 }
 
@@ -589,46 +607,46 @@ Java_com_flink_gpu_udf_GpuCosineSimilarity_cosineSimilarityGpu(
     // 获取数组指针
     float* h_vecA = env->GetFloatArrayElements(vecA, nullptr);
     float* h_vecB = env->GetFloatArrayElements(vecB, nullptr);
-    
+
     const size_t bytes = dim * sizeof(float);
-    
+
     // 设备内存分配
     float *d_vecA, *d_vecB, *d_result;
     CUDA_CHECK(cudaMalloc(&d_vecA, bytes));
     CUDA_CHECK(cudaMalloc(&d_vecB, bytes));
     CUDA_CHECK(cudaMalloc(&d_result, sizeof(float)));
-    
+
     // 获取 Stream
     static CudaStreamPool streamPool;
     cudaStream_t stream = streamPool.getStream();
-    
+
     // 异步 H2D 传输
     CUDA_CHECK(cudaMemcpyAsync(d_vecA, h_vecA, bytes, cudaMemcpyHostToDevice, stream));
     CUDA_CHECK(cudaMemcpyAsync(d_vecB, h_vecB, bytes, cudaMemcpyHostToDevice, stream));
-    
+
     // 启动 Kernel
     const int blockSize = 256;
     const int gridSize = (dim + blockSize - 1) / blockSize;
-    
+
     cosineSimilarityKernel<<<gridSize, blockSize, 0, stream>>>(
         d_vecA, d_vecB, d_result, dim
     );
-    
+
     // 异步 D2H 传输
     float h_result;
-    CUDA_CHECK(cudaMemcpyAsync(&h_result, d_result, sizeof(float), 
+    CUDA_CHECK(cudaMemcpyAsync(&h_result, d_result, sizeof(float),
                                cudaMemcpyDeviceToHost, stream));
-    
+
     // 同步等待完成
     CUDA_CHECK(cudaStreamSynchronize(stream));
-    
+
     // 释放资源
     env->ReleaseFloatArrayElements(vecA, h_vecA, JNI_ABORT);
     env->ReleaseFloatArrayElements(vecB, h_vecB, JNI_ABORT);
     CUDA_CHECK(cudaFree(d_vecA));
     CUDA_CHECK(cudaFree(d_vecB));
     CUDA_CHECK(cudaFree(d_result));
-    
+
     return h_result;
 }
 
@@ -670,28 +688,28 @@ __inline__ __device__ float warpReduceSum(float val) {
 __inline__ __device__ float blockReduceSum(float val, float* sharedMem) {
     const int warpId = threadIdx.x / WARP_SIZE;
     const int laneId = threadIdx.x % WARP_SIZE;
-    
+
     // Warp 内归约
     val = warpReduceSum(val);
-    
+
     // Warp 结果写入共享内存
     if (laneId == 0) {
         sharedMem[warpId] = val;
     }
     __syncthreads();
-    
+
     // 使用第一个 Warp 对 Warp 结果求和
     if (warpId == 0) {
         val = (laneId < blockDim.x / WARP_SIZE) ? sharedMem[laneId] : 0.0f;
         val = warpReduceSum(val);
     }
-    
+
     return val;
 }
 
 /**
  * 主 Kernel：计算余弦相似度
- * 
+ *
  * @param vecA    向量 A（设备内存）
  * @param vecB    向量 B（设备内存）
  * @param result  结果输出（设备内存）
@@ -707,28 +725,28 @@ __global__ void cosineSimilarityKernel(
     __shared__ float sharedSum[BLOCK_SIZE / WARP_SIZE];  // 用于点积
     __shared__ float sharedNormA[BLOCK_SIZE / WARP_SIZE]; // 用于 ||A||
     __shared__ float sharedNormB[BLOCK_SIZE / WARP_SIZE]; // 用于 ||B||
-    
+
     float dot = 0.0f;
     float normA = 0.0f;
     float normB = 0.0f;
-    
+
     // 网格步进循环（处理大维度）
-    for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
-         i < dim; 
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x;
+         i < dim;
          i += blockDim.x * gridDim.x) {
         float a = vecA[i];
         float b = vecB[i];
-        
+
         dot   += a * b;
         normA += a * a;
         normB += b * b;
     }
-    
+
     // 块级归约
     dot   = blockReduceSum(dot, sharedSum);
     normA = blockReduceSum(normA, sharedNormA);
     normB = blockReduceSum(normB, sharedNormB);
-    
+
     // 只有一个线程写结果
     if (threadIdx.x == 0) {
         float norm = sqrtf(normA * normB);
@@ -748,16 +766,16 @@ __global__ void batchCosineSimilarityKernel(
     int batchSize
 ) {
     __shared__ float sharedMem[BLOCK_SIZE];
-    
+
     const int pairId = blockIdx.x;  // 每个 Block 处理一对向量
-    
+
     if (pairId >= batchSize) return;
-    
+
     const float* vecA = queries + pairId * dim;
     const float* vecB = docs + pairId * dim;
-    
+
     float dot = 0.0f, normA = 0.0f, normB = 0.0f;
-    
+
     for (int i = threadIdx.x; i < dim; i += blockDim.x) {
         float a = vecA[i];
         float b = vecB[i];
@@ -765,13 +783,13 @@ __global__ void batchCosineSimilarityKernel(
         normA += a * a;
         normB += b * b;
     }
-    
+
     dot = blockReduceSum(dot, sharedMem);
     __syncthreads();
     normA = blockReduceSum(normA, sharedMem);
     __syncthreads();
     normB = blockReduceSum(normB, sharedMem);
-    
+
     if (threadIdx.x == 0) {
         float norm = sqrtf(normA * normB);
         results[pairId] = (norm > 1e-7f) ? (dot / norm) : 0.0f;
@@ -789,21 +807,21 @@ __global__ void cosineSimilarityFP16Kernel(
 ) {
     #if __CUDA_ARCH__ >= 700
     __shared__ float sharedSum[BLOCK_SIZE / WARP_SIZE];
-    
+
     float dot = 0.0f;
-    
+
     // 使用 WMMA API 进行矩阵乘法（适用于大批量）
     // 简化版本：直接计算
-    for (int i = blockIdx.x * blockDim.x + threadIdx.x; 
-         i < dim; 
+    for (int i = blockIdx.x * blockDim.x + threadIdx.x;
+         i < dim;
          i += blockDim.x * gridDim.x) {
         float a = __half2float(vecA[i]);
         float b = __half2float(vecB[i]);
         dot += a * b;
     }
-    
+
     dot = blockReduceSum(dot, sharedSum);
-    
+
     if (threadIdx.x == 0) {
         result[0] = dot;
     }
@@ -837,10 +855,10 @@ public class GpuUdfExample {
             .inStreamingMode()
             .build();
         TableEnvironment tEnv = TableEnvironment.create(settings);
-        
+
         // 注册 GPU UDF
         tEnv.createTemporarySystemFunction("gpu_cosine", GpuCosineSimilarity.class);
-        
+
         // 创建示例表（向量检索场景）
         tEnv.executeSql("""
             CREATE TABLE query_vectors (
@@ -854,7 +872,7 @@ public class GpuUdfExample {
                 'format' = 'json'
             )
         """);
-        
+
         tEnv.executeSql("""
             CREATE TABLE document_vectors (
                 doc_id STRING,
@@ -866,10 +884,10 @@ public class GpuUdfExample {
                 'table-name' = 'documents'
             )
         """);
-        
+
         // 使用 GPU UDF 进行相似度计算
         Table result = tEnv.sqlQuery("""
-            SELECT 
+            SELECT
                 q.query_id,
                 d.doc_id,
                 gpu_cosine(q.query_vec, d.doc_vec) AS similarity,
@@ -879,7 +897,7 @@ public class GpuUdfExample {
             ON q.query_id = d.doc_id  -- 简化示例
             WHERE gpu_cosine(q.query_vec, d.doc_vec) > 0.85
         """);
-        
+
         // 输出 Top-K 结果
         result.executeInsert("results_table");
     }
@@ -894,38 +912,38 @@ public class GpuUdfExample {
  * 适用于大吞吐量场景
  */
 public class BatchGpuVectorSearch extends TableFunction<Row> {
-    
+
     private static final int BATCH_SIZE = 4096;
     private static final int VECTOR_DIM = 768;  // BERT embedding dimension
-    
+
     // 批量缓冲区
     private List<float[]> queryBuffer = new ArrayList<>();
     private List<String> keyBuffer = new ArrayList<>();
-    
+
     public void eval(String key, float[] vector) {
         queryBuffer.add(vector);
         keyBuffer.add(key);
-        
+
         if (queryBuffer.size() >= BATCH_SIZE) {
             processBatch();
         }
     }
-    
+
     private void processBatch() {
         // 转换为连续内存布局
         float[] batchData = new float[queryBuffer.size() * VECTOR_DIM];
         for (int i = 0; i < queryBuffer.size(); i++) {
             System.arraycopy(queryBuffer.get(i), 0, batchData, i * VECTOR_DIM, VECTOR_DIM);
         }
-        
+
         // 单次 JNI 调用处理整个批次
         float[][] similarities = batchCosineSimilarityGpu(
-            batchData, 
+            batchData,
             documentIndex,  // 预加载到 GPU 的文档索引
             queryBuffer.size(),
             VECTOR_DIM
         );
-        
+
         // 收集结果
         for (int i = 0; i < queryBuffer.size(); i++) {
             for (int j = 0; j < TOP_K; j++) {
@@ -936,12 +954,12 @@ public class BatchGpuVectorSearch extends TableFunction<Row> {
                 ));
             }
         }
-        
+
         // 清空缓冲区
         queryBuffer.clear();
         keyBuffer.clear();
     }
-    
+
     @Override
     public void close() {
         if (!queryBuffer.isEmpty()) {
@@ -959,25 +977,25 @@ public class BatchGpuVectorSearch extends TableFunction<Row> {
  * GPU UDF 性能基准测试
  */
 public class GpuUdfBenchmark {
-    
+
     @Benchmark
     public void testCpuCosine(Blackhole blackhole) {
         float[] vecA = generateRandomVector(DIM);
         float[] vecB = generateRandomVector(DIM);
-        
+
         float result = cpuCosineSimilarity(vecA, vecB);
         blackhole.consume(result);
     }
-    
+
     @Benchmark
     public void testGpuCosine(Blackhole blackhole) {
         float[] vecA = generateRandomVector(DIM);
         float[] vecB = generateRandomVector(DIM);
-        
+
         float result = gpuCosineSimilarity(vecA, vecB);
         blackhole.consume(result);
     }
-    
+
     private static float cpuCosineSimilarity(float[] a, float[] b) {
         float dot = 0, normA = 0, normB = 0;
         for (int i = 0; i < a.length; i++) {
@@ -987,7 +1005,7 @@ public class GpuUdfBenchmark {
         }
         return dot / (float)(Math.sqrt(normA) * Math.sqrt(normB));
     }
-    
+
     // 预期结果（A100 GPU）:
     // Dimension | CPU (μs) | GPU (μs) | Speedup
     // ----------|----------|----------|----------
@@ -1016,14 +1034,14 @@ flowchart TD
         GpuUDF["GPU UDF Operator"]
         Sink["Sink"]
     end
-    
+
     subgraph TaskManager["TaskManager Process"]
         JNI["JNI Bridge<br/>flink_gpu_bridge.so"]
-        
+
         subgraph CUDARuntime["CUDA Runtime"]
             StreamPool["Stream Pool<br/>4 Streams"]
             MemPool["Memory Pool"]
-            
+
             subgraph Execution["Kernel Execution"]
                 H2D["cudaMemcpyAsync<br/>Host → Device"]
                 Kernel["Kernel Launch<br/>&lt;&lt;&lt;grid, block&gt;&gt;&gt;"]
@@ -1031,13 +1049,13 @@ flowchart TD
             end
         end
     end
-    
+
     subgraph GPUHardware["GPU Hardware"]
         CopyEngine["Copy Engine<br/>H2D/D2H"]
         SM["Streaming Multiprocessors<br/>108 SMs"]
         GlobalMem["Global Memory<br/>80GB HBM2e"]
     end
-    
+
     Source --> Map --> GpuUDF
     GpuUDF -->|JNI Call| JNI
     JNI -->|Async| StreamPool
@@ -1056,31 +1074,31 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start(["考虑 GPU UDF?"]) --> Q1{"计算复杂度足够高?<br/>O(N) 或更高"}
-    
+
     Q1 -->|否| CPU1["使用 CPU UDF"]
     Q1 -->|是| Q2{"数据并行度 > 90%?"}
-    
+
     Q2 -->|否| CPU2["使用 CPU UDF"]
     Q2 -->|是| Q3{"批大小 > 5000?"}
-    
+
     Q3 -->|否| CPU3["使用 CPU UDF"]
     Q3 -->|是| Q4{"内存访问模式连续?"}
-    
+
     Q4 -->|否| Opt["优化数据布局<br/>或使用 Shared Memory"]
     Q4 -->|是| Q5{"精度要求 FP32 足够?"}
-    
+
     Opt --> Q5
     Q5 -->|否| CPU4["使用 CPU FP64"]
     Q5 -->|是| Q6{"延迟敏感度?<br/>可接受 > 10ms?"}
-    
+
     Q6 -->|否| CPU5["使用 CPU 低延迟模式"]
     Q6 -->|是| GPU["✅ 使用 GPU UDF"]
-    
+
     GPU --> Impl{"实现策略"}
     Impl -->|简单 UDF| Direct["直接 CUDA Kernel"]
     Impl -->|复杂流水线| Batch["批量异步处理<br/>多 Stream 流水线"]
     Impl -->|库函数| Lib["cuBLAS/cuDNN/<br/>RAPIDS"]
-    
+
     style GPU fill:#90EE90
     style CPU1 fill:#FFB6C1
     style CPU2 fill:#FFB6C1
@@ -1095,15 +1113,15 @@ flowchart TD
 graph LR
     subgraph Roofline["Roofline Performance Model (A100)"]
         direction LR
-        
+
         Y["Performance<br/>(GFLOP/s)"]
         X["Operational Intensity<br/>(FLOPs/Byte)"]
-        
+
         %% 绘制 Roofline 曲线
         subgraph Plot[""]
             Peak["Peak: 19500 GFLOPS"] --- Ridge(("Ridge Point<br/>I = 9.6"))
             Ridge --- MemBW["Memory Bandwidth<br/>Slope = 2039 GB/s"]
-            
+
             %% 标记典型工作负载
             WL1["Vector Dot<br/>I=0.25"]:::memory
             WL2["Matrix Mul<br/>I=125"]:::compute
@@ -1111,7 +1129,7 @@ graph LR
             WL4["MLP Inference<br/>I=8"]:::balanced
         end
     end
-    
+
     classDef memory fill:#ff9999
     classDef compute fill:#99ff99
     classDef balanced fill:#ffff99
@@ -1126,43 +1144,43 @@ sequenceDiagram
     participant S1 as Stream 1
     participant S2 as Stream 2
     participant GPU as GPU Engine
-    
+
     Note over CPU,GPU: 批量处理 3 个数据批次
-    
+
     CPU->>S0: cudaMemcpyAsync (Batch 0)
     activate S0
     S0->>GPU: H2D Transfer
-    
+
     CPU->>S1: cudaMemcpyAsync (Batch 1)
     activate S1
     S1->>GPU: H2D Transfer
-    
+
     CPU->>S0: Launch Kernel
     S0->>GPU: Execute
     deactivate S0
-    
+
     CPU->>S2: cudaMemcpyAsync (Batch 2)
     activate S2
     S2->>GPU: H2D Transfer
-    
+
     CPU->>S1: Launch Kernel
     S1->>GPU: Execute
-    
+
     CPU->>S0: cudaMemcpyAsync (Result 0)
     S0->>GPU: D2H Transfer
     deactivate S0
-    
+
     CPU->>S2: Launch Kernel
     S2->>GPU: Execute
-    
+
     CPU->>S1: cudaMemcpyAsync (Result 1)
     S1->>GPU: D2H Transfer
     deactivate S1
-    
+
     CPU->>S2: cudaMemcpyAsync (Result 2)
     S2->>GPU: D2H Transfer
     deactivate S2
-    
+
     Note over CPU,GPU: 通过流水线重叠传输与计算
 ```
 
@@ -1170,29 +1188,17 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: NVIDIA Corporation, "CUDA C++ Programming Guide", Version 12.4, 2024. https://docs.nvidia.com/cuda/cuda-c-programming-guide/
 
-[^2]: NVIDIA Corporation, "CUDA Runtime API Reference", 2024. https://docs.nvidia.com/cuda/cuda-runtime-api/
 
-[^3]: J. Nickolls et al., "Scalable Parallel Programming with CUDA", ACM Queue, 6(2), 2008. https://doi.org/10.1145/1365490.1365500
 
-[^4]: S. Williams et al., "Roofline: An Insightful Visual Performance Model for Multicore Architectures", Communications of the ACM, 52(4), 2009. https://doi.org/10.1145/1498765.1498785
 
-[^5]: Apache Flink Documentation, "User-Defined Functions (UDF)", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/udfs/
 
-[^6]: RAPIDS.ai, "RAPIDS Accelerator for Apache Spark", 2024. https://rapids.ai/spark.html
 
-[^7]: M. Harris, "Optimizing Parallel Reduction in CUDA", NVIDIA Developer Blog, 2007. https://developer.download.nvidia.com/assets/cuda/files/reduction.pdf
 
-[^8]: V. Volkov, "Better Performance at Lower Occupancy", GPU Technology Conference, 2010. https://www.nvidia.com/content/gtc-2010/pdfs/2238_gtc2010.pdf
 
-[^9]: Apache Arrow, "Java JNI for Arrow", 2024. https://arrow.apache.org/docs/java/cdata.html
 
-[^10]: NVIDIA Corporation, "GPUDirect RDMA", 2024. https://docs.nvidia.com/cuda/gpudirect-rdma/
 
-[^11]: J. Sanders and E. Kandrot, "CUDA by Example: An Introduction to General-Purpose GPU Programming", Addison-Wesley, 2010. ISBN: 978-0131387683
 
-[^12]: D. Kirk and W. Hwu, "Programming Massively Parallel Processors: A Hands-on Approach", 4th Edition, Morgan Kaufmann, 2022. ISBN: 978-0323912310
 
 ---
 

@@ -1,7 +1,7 @@
 # RisingWave 架构深度剖析
 
 > **所属阶段**: Flink/ | **前置依赖**: [Flink 核心架构文档] | **形式化等级**: L4 (工程论证)
-> 
+>
 > **文档编号**: D1 | **版本**: v1.0 | **日期**: 2026-04-04
 
 ---
@@ -17,6 +17,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{S}$: 无界流数据源的集合，$\mathcal{S} = \{s_1, s_2, ..., s_n\}$，每个 $s_i$ 是时序数据流
 - $\mathcal{Q}$: 连续查询集合，支持 SQL 语义的标准关系代数运算
 - $\mathcal{M}$: 物化视图管理器，维护查询结果的增量更新
@@ -35,12 +36,14 @@ $$
 $$
 
 其中：
+
 - $\mathcal{C} = \{c_1, ..., c_m\}$: 计算节点集合，$c_i$ 为无状态、可水平扩展的计算单元
 - $\mathcal{P}$: 持久化存储层（通常为对象存储，如 S3）
 - $\mathcal{I}: \mathcal{C} \times \mathcal{P} \to \{0,1\}$: 计算节点与存储的访问接口函数
 - $\mathcal{R}: \mathcal{C} \times [0,1] \to \mathbb{N}$: 资源弹性函数，根据负载动态调整计算节点数量
 
 **关键约束**:
+
 1. 计算节点本地不维护持久化状态
 2. 状态Checkpoint直接写入远程存储
 3. 计算节点故障可任意迁移，无需数据重分布
@@ -82,6 +85,7 @@ L_{pg} = \langle \mathcal{M}_{msg}, \mathcal{M}_{type}, \mathcal{M}_{auth} \rang
 $$
 
 其中：
+
 - $\mathcal{M}_{msg}$: 消息格式映射，将 PG 消息（Query, Parse, Bind, Execute）映射为内部命令
 - $\mathcal{M}_{type}$: 类型系统映射，支持 PG 原生类型（INT4, INT8, VARCHAR, TIMESTAMP, JSONB 等）
 - $\mathcal{M}_{auth}$: 认证机制映射，支持 MD5、SCRAM-SHA-256 等认证方式
@@ -101,6 +105,7 @@ $$
 其中 $\Delta_{[t_1, t_2]}$ 仅为临时缓存数据，可从远程存储重建。
 
 **证明概要**:
+
 1. 所有算子状态通过 State Store API 写入远程对象存储（S3 兼容）
 2. Checkpoint 频率可配置（默认 1-10 秒），确保状态持久化
 3. 节点故障时，新节点通过读取最近 Checkpoint 恢复状态
@@ -131,6 +136,7 @@ T_{s3} \geq T_{local} + T_{network} + T_{s3\_processing}
 $$
 
 其中：
+
 - $T_{local} \approx 50\mu s$ (NVMe SSD 4KB 随机读)
 - $T_{s3} \approx 50-200ms$ (取决于区域和网络)
 
@@ -199,6 +205,7 @@ $$
 | **云原生** | 静态链接，小体积二进制 | 容器化部署友好 |
 
 **对比分析**: Flink 的 JVM 实现虽然拥有成熟生态，但受限于：
+
 1. GC 停顿影响低延迟场景
 2. JNI 调用开销限制向量化性能
 3. 内存占用较高（JVM 堆 + 堆外）
@@ -239,6 +246,7 @@ $$
 4. **事务语义**: 复用 PG 的成熟事务模型
 
 **限制**: PG 协议最初为 OLTP 设计，不完全匹配流处理的语义：
+
 - 流式结果集需要特殊的推送机制
 - 窗口操作需要扩展 SQL 语法
 
@@ -251,6 +259,7 @@ $$
 **定理 (Thm-RW-01)**: RisingWave 的计算存储分离架构在以下条件下保证 exactly-once 语义：
 
 **前提条件**:
+
 1. Checkpoint 屏障按顺序传播（Epoch 单调递增）
 2. 状态写入 S3 是原子操作（S3 PutObject 语义）
 3. 元数据服务（Meta Service）使用 Raft 保证一致性
@@ -320,19 +329,19 @@ CREATE SOURCE user_events (
 
 -- 创建物化视图（实时聚合）
 CREATE MATERIALIZED VIEW hourly_stats AS
-SELECT 
+SELECT
     TUMBLE(event_time, INTERVAL '1 HOUR') as window_start,
     event_type,
     COUNT(*) as event_count,
     SUM(amount) as total_amount,
     AVG(amount) as avg_amount
 FROM user_events
-GROUP BY 
+GROUP BY
     TUMBLE(event_time, INTERVAL '1 HOUR'),
     event_type;
 
 -- 直接查询物化视图（毫秒级响应）
-SELECT * FROM hourly_stats 
+SELECT * FROM hourly_stats
 WHERE window_start >= NOW() - INTERVAL '1 DAY';
 ```
 
@@ -406,59 +415,59 @@ graph TB
         PG[PostgreSQL CDC]
         S3[Object Storage]
     end
-    
+
     subgraph "RisingWave 集群"
         subgraph "Frontend 层"
             FE1[Frontend Node 1]
             FE2[Frontend Node 2]
             FE3[Frontend Node N]
         end
-        
+
         subgraph "Compute 层 (无状态)"
             C1[Compute Node 1]
             C2[Compute Node 2]
             C3[Compute Node N]
         end
-        
+
         subgraph "Meta 层 (Raft)"
             M1[Meta Node 1]
             M2[Meta Node 2]
             M3[Meta Node 3]
         end
-        
+
         subgraph "Compaction 层"
             COMP[Compactor Node]
         end
     end
-    
+
     subgraph "存储层 (S3)"
         S3_DATA[(Data Objects)]
         S3_META[(Metadata)]
     end
-    
+
     subgraph "客户端"
         CLI[psql CLI]
         JDBC[JDBC Driver]
         BI[BI 工具]
     end
-    
+
     K -->|Stream| FE1
     PG -->|CDC| FE2
     FE1 -->|Dispatch| C1
     FE2 -->|Dispatch| C2
     FE3 -->|Dispatch| C3
-    
+
     C1 <-->|State API| S3_DATA
     C2 <-->|State API| S3_DATA
     C3 <-->|State API| S3_DATA
-    
+
     M1 <-->|Raft| M2
     M2 <-->|Raft| M3
     M1 -.->|Metadata| C1
     M1 -.->|Metadata| C2
-    
+
     COMP -->|Compact| S3_DATA
-    
+
     CLI -->|PG Protocol| FE1
     JDBC -->|PG Protocol| FE2
     BI -->|PG Protocol| FE3
@@ -476,7 +485,7 @@ graph LR
         F_JM[JobManager] -.->|Coordination| F_TM1
         F_JM -.->|Coordination| F_TM2
     end
-    
+
     subgraph "RisingWave 架构"
         R_SRC[Source] --> R_COMP1[Compute Node 1<br/>Cache Only]
         R_SRC --> R_COMP2[Compute Node 2<br/>Cache Only]
@@ -487,7 +496,7 @@ graph LR
         R_FE[Frontend<br/>PG Protocol] --> R_COMP1
         R_FE --> R_COMP2
     end
-    
+
     style F_TM1 fill:#f9f,stroke:#333
     style F_TM2 fill:#f9f,stroke:#333
     style R_COMP1 fill:#bbf,stroke:#333
@@ -499,28 +508,28 @@ graph LR
 ```mermaid
 flowchart TD
     START[流处理需求分析] --> Q1{需要复杂<br/>事件处理?}
-    
+
     Q1 -->|是<br/>模式匹配/CEP| A1[Flink CEP<br/>更合适]
     Q1 -->|否| Q2{需要自定义<br/>Java/Python 代码?}
-    
+
     Q2 -->|是<br/>复杂 UDF/ML| A2[Flink UDF<br/>更灵活]
     Q2 -->|否| Q3{状态访问模式?}
-    
+
     Q3 -->|频繁随机读<br/>KV 查询| Q4{延迟要求?}
     Q3 -->|顺序扫描<br/>窗口聚合| Q5{数据规模?}
-    
+
     Q4 -->|< 10ms p99| A3[Flink + Local RocksDB<br/>或 Redis]
     Q4 -->|> 100ms 可接受| A4[RisingWave<br/>+ 缓存调优]
-    
+
     Q5 -->|TB 级状态| A5[RisingWave<br/>S3-backed 优势]
     Q5 -->|GB 级状态| Q6{查询模式?}
-    
+
     Q6 -->|SQL 即查即走| A6[RisingWave<br/>简单高效]
     Q6 -->|需要复杂分析<br/>JOIN/子查询| Q7{已有生态?}
-    
+
     Q7 -->|PG 生态成熟| A7[RisingWave<br/>无缝集成]
     Q7 -->|Flink 生态投资大| A8[Flink<br/>迁移成本高]
-    
+
     A1 --> END1[选择 Flink]
     A2 --> END1
     A3 --> END1
@@ -529,7 +538,7 @@ flowchart TD
     A6 --> END2
     A7 --> END2
     A8 --> END3[混合部署]
-    
+
     style START fill:#e1f5ff
     style END1 fill:#ffcccc
     style END2 fill:#ccffcc
@@ -551,13 +560,13 @@ sequenceDiagram
     FE->>Meta: Register query plan
     Meta->>Meta: Assign fragments to CN
     Meta-->>CN: Deploy execution plan
-    
+
     loop Data Ingestion
         CN->>CN: Process streaming data
         CN->>CN: Update local cache
         CN->>S3: Async checkpoint (Epoch N)
     end
-    
+
     Client->>FE: SELECT * FROM MV
     FE->>CN: Route query
     alt Cache Hit
@@ -568,7 +577,7 @@ sequenceDiagram
         CN-->>FE: Return result
     end
     FE-->>Client: Query results
-    
+
     loop Background Compaction
         Comp->>S3: Read level-0 files
         Comp->>Comp: Merge sort
@@ -581,25 +590,15 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Labs, "RisingWave Architecture Overview", 2025. https://risingwave.com/docs/current/architecture/
 
-[^2]: RisingWave Labs, "3 Leading Stream Processing Solutions for Modern Data Teams", RisingWave Blog, 2024. https://risingwave.com/blog/3-leading-stream-processing-solutions-for-modern-data Teams/
 
-[^3]: Nexmark Benchmark, "Nexmark: A Benchmark for Queries over Data Streams", 2025. https://github.com/nexmark/nexmark
 
-[^4]: RisingWave GitHub Repository, "risingwavelabs/risingwave", 2026. https://github.com/risingwavelabs/risingwave
 
-[^5]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 38(4), 2015.
 
-[^6]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^7]: Amazon Web Services, "Amazon S3 Pricing", 2026. https://aws.amazon.com/s3/pricing/
 
-[^8]: PostgreSQL Global Development Group, "PostgreSQL Frontend/Backend Protocol", PostgreSQL Documentation, 2025. https://www.postgresql.org/docs/current/protocol.html
 
-[^9]: RisingWave Labs, "RisingWave vs Flink: Performance Benchmark", RisingWave Blog, 2024. https://risingwave.com/blog/risingwave-vs-flink-performance-benchmark/
 
-[^10]: S. Tu et al., "The Hummock Storage Engine: Cloud-Native LSM-Tree for Stream Processing", RisingWave Technical Blog, 2025.
 
 ---
 

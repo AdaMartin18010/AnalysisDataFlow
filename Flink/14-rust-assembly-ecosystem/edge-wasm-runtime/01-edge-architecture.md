@@ -565,7 +565,7 @@ wasm_modules:
     path: "/opt/wasm/sensor_filter.wasm"
     function: "filter_anomaly"
     memory_limit: "128MB"
-  
+
   - name: "local_aggregate"
     path: "/opt/wasm/aggregator.wasm"
     function: "aggregate_10s"
@@ -604,18 +604,18 @@ struct FilteredReading {
 pub extern "C" fn filter_anomaly(input: i32) -> i32 {
     // 使用 host function 读取输入
     let reading: SensorReading = host::read_input(input);
-    
+
     // 简单异常检测逻辑
     let threshold = get_threshold(&reading.sensor_id);
     let is_anomaly = reading.value.abs() > threshold;
-    
+
     let result = FilteredReading {
         sensor_id: reading.sensor_id,
         timestamp: reading.timestamp,
         value: reading.value,
         is_anomaly,
     };
-    
+
     // 返回结果指针
     host::write_output(&result)
 }
@@ -698,30 +698,30 @@ fn get_threshold(sensor_id: &str) -> f64 {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    
+
     // A/B 测试逻辑
     if (url.pathname === '/api/recommendations') {
       const bucket = getABBucket(request);
-      
+
       // 调用 Rust/Wasm 推理模块
       const recommendations = await env.WASM_INFERENCE_MODULE
         .get_recommendations(bucket, request.cf.country);
-      
+
       return new Response(JSON.stringify(recommendations), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 日志采集与实时聚合
     if (url.pathname === '/api/analytics') {
       // 本地聚合
       const metrics = await aggregateMetrics(request);
       // 异步发送到 Kafka
       ctx.waitUntil(sendToKafka(metrics));
-      
+
       return new Response('OK');
     }
-    
+
     return fetch(request);
   }
 };
@@ -734,22 +734,22 @@ export default {
 ```java
 // Flink Wasm UDF 注册与使用
 public class EdgeWasmIntegration {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 注册 Wasm UDF
-        env.registerFunction("wasm_filter", 
+        env.registerFunction("wasm_filter",
             new WasmScalarFunction()
                 .withModulePath("/opt/wasm/edge_filter.wasm")
                 .withFunctionName("filter_sensor_data")
                 .withMemoryLimit(128 * 1024 * 1024) // 128MB
                 .withTimeout(100)); // 100ms
-        
+
         // 创建表环境
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-        
+
         // 定义 Kafka 源表
         tableEnv.executeSql("""
             CREATE TABLE sensor_events (
@@ -765,7 +765,7 @@ public class EdgeWasmIntegration {
                 'format' = 'json'
             )
             """);
-        
+
         // 使用 Wasm UDF 进行边缘过滤
         tableEnv.executeSql("""
             CREATE TABLE filtered_events (
@@ -780,11 +780,11 @@ public class EdgeWasmIntegration {
                 'format' = 'json'
             )
             """);
-        
+
         // 执行过滤 (Wasm UDF)
         tableEnv.executeSql("""
             INSERT INTO filtered_events
-            SELECT 
+            SELECT
                 sensor_id,
                 temperature,
                 wasm_filter(temperature, pressure) as is_anomaly,
@@ -815,7 +815,7 @@ graph TB
         E1[WasmEdge Runtime]
         E2[Local Kafka]
         E3[RocksDB Cache]
-        
+
         subgraph "WASM Modules"
             W1[Filter.wasm]
             W2[Aggregate.wasm]
@@ -845,17 +845,17 @@ graph TB
     D2 --> E1
     D3 --> E1
     D4 --> E1
-    
+
     E1 --> W1 --> W2
     W2 --> E2
     E1 --> W3 --> E3
-    
+
     E2 --> ES1
     ES1 --> ES2 --> ES3
-    
+
     ES2 -->|压缩数据| C2
     ES3 -->|告警| C1
-    
+
     C2 --> C3
     C2 --> C4
     C2 --> S1
@@ -874,30 +874,30 @@ graph TB
 ```mermaid
 flowchart TD
     A[原始传感器数据] --> B{数据量评估}
-    
+
     B -->|高频小数据| C[采集层<br/>10ms]
     B -->|中频数据| D[预处理层<br/>50ms]
     B -->|低频大数据| E[聚合层<br/>100ms]
-    
+
     C --> F[协议解析<br/>JSON解码]
     D --> G[阈值过滤<br/>异常检测]
     E --> H[窗口聚合<br/>降采样]
-    
+
     F --> I{压缩比}
     G --> I
     H --> I
-    
+
     I -->|>10:1| J[边缘处理<br/>本地消费]
     I -->|5-10:1| K[边缘+云协同<br/>批量上传]
     I -->|<5:1| L[云端处理<br/>原始上传]
-    
+
     J --> M[本地告警]
     K --> N[Kafka桥接]
     L --> O[云端Flink]
-    
+
     N --> P[云聚合分析]
     O --> P
-    
+
     P --> Q[时序存储]
     P --> R[ML训练]
     P --> S[报表生成]
@@ -917,12 +917,12 @@ quadrantChart
     title 边缘计算场景特性矩阵
     x-axis 低延迟需求 --> 高延迟容忍
     y-axis 低数据量 --> 高数据量
-    
+
     quadrant-1 5G MEC / 实时推理
     quadrant-2 CDN 边缘 / 批处理
     quadrant-3 小规模IoT / 遥测
     quadrant-4 大规模IoT / 边缘分析
-    
+
     "工业物联网": [0.15, 0.7]
     "智能电网": [0.2, 0.6]
     "车联网": [0.1, 0.5]
@@ -938,31 +938,31 @@ quadrantChart
 ```mermaid
 flowchart TD
     Start([数据到达边缘]) --> Q1{延迟要求}
-    
+
     Q1 -->|< 10ms| A[5G MEC<br/>设备端处理]
     Q1 -->|10-100ms| Q2{数据压缩比}
     Q1 -->|> 100ms| Q3{带宽约束}
-    
+
     Q2 -->|> 20:1| B[边缘网关过滤<br/>Wasm预处理]
     Q2 -->|10-20:1| C[边缘聚合<br/>批量上传]
     Q2 -->|< 10:1| D[轻量边缘分析<br/>结果上传]
-    
+
     Q3 -->|高带宽| E[云端集中处理]
     Q3 -->|低带宽| F[边缘主导<br/>云协同]
-    
+
     A --> G[本地响应]
     B --> H[Kafka桥接]
     C --> H
     D --> H
     E --> I[S3/DataLake]
     F --> J[边缘缓存<br/>断网续传]
-    
+
     H --> K[云端Flink分析]
     J --> H
-    
+
     K --> L[(时序数据库)]
     K --> M[ML Pipeline]
-    
+
     style A fill:#ffebee,stroke:#c62828
     style B fill:#fff3e0,stroke:#ef6c00
     style C fill:#fffde7,stroke:#f9a825
@@ -973,29 +973,17 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: WasmEdge Runtime Documentation, "WasmEdge for Edge Computing", 2025. https://wasmedge.org/docs/
 
-[^2]: Cloudflare Workers Documentation, "How Workers Works", 2025. https://developers.cloudflare.com/workers/
 
-[^3]: Fastly Compute@Edge Documentation, "WebAssembly on Fastly", 2025. https://developer.fastly.com/learning/compute/
 
-[^4]: Redpanda Documentation, "Data Transforms with WASM", 2025. https://docs.redpanda.com/
 
-[^5]: ETSI, "Multi-access Edge Computing (MEC) Framework and Reference Architecture", GS MEC 003, 2024.
 
-[^6]: 3GPP, "5G System Architecture for the 5G System (5GS)", TS 23.501, Release 18, 2024.
 
-[^7]: A. Gadepalli et al., "Challenges and Opportunities for Efficient Serverless Computing at the Edge", USENIX HotEdge, 2024.
 
-[^8]: M. Shahrad et al., "Serverless in the Wild: Characterizing and Optimizing the Serverless Workload at a Large Cloud Provider", USENIX ATC, 2020.
 
-[^9]: N. C. Luiz et al., "WebAssembly from the Edge to the Cloud: A Systematic Review", ACM Computing Surveys, 2024.
 
-[^10]: F. Gebert et al., "WASI-NN: Neural Network API for WebAssembly", Wasm Summit, 2023.
 
-[^11]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/
 
-[^12]: S. Bhat et al., "Edge Computing: A Survey on Architecture and Applications", IEEE Access, 2023.
 
 ---
 

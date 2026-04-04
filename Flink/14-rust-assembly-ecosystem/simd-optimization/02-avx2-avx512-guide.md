@@ -25,6 +25,7 @@ AVX2 (Advanced Vector Extensions 2) 引入 256-bit YMM 寄存器，支持以下�
 **定义 1.2 (FMA - 融合乘加)**
 
 FMA (Fused Multiply-Add) 操作执行单指令 $d = a \times b + c$，具有：
+
 - 更高精度（单舍入 vs 双舍入）
 - 更高吞吐（每周期 2x 256-bit FMA）
 
@@ -76,6 +77,7 @@ $$\text{FusedKernel} = f_n \circ f_{n-1} \circ ... \circ f_1$$
 $$\eta_{op} = \frac{T_{interpreted}}{T_{vectorized}} = \frac{N_{inst} \times CPI_{scalar}}{N_{vec\_inst} \times CPI_{vector}}$$
 
 典型 Flink 算子向量化效率：
+
 - `Filter`: 4-8x
 - `Project`: 8-16x
 - `Aggregate`: 4-12x
@@ -138,30 +140,30 @@ graph LR
         JOIN[Hash Join]
         SORT[Sorting]
     end
-    
+
     subgraph "向量化算子层"
         VE[Vectorized Expression]
         VA[Vectorized Aggregate]
         VJ[Vectorized Join]
         VP[Vectorized Partition]
     end
-    
+
     subgraph "SIMD 指令层"
         AVX2[AVX2 256-bit]
         AVX512[AVX-512 512-bit]
     end
-    
+
     SQL --> VE
     AGG --> VA
     JOIN --> VJ
     SORT --> VP
-    
+
     VE --> AVX2
     VE --> AVX512
     VA --> AVX512
     VJ --> AVX2
     VP --> AVX512
-    
+
     style AVX512 fill:#ff9999
 ```
 
@@ -185,24 +187,24 @@ flowchart TB
         SF[simd-json]
         AC[arrow-rs]
     end
-    
+
     subgraph "Flink Rust UDF"
         UDF[Native UDF]
         BR[Batch Reader]
         WR[Batch Writer]
     end
-    
+
     subgraph "底层实现"
         LLVM[LLVM Vectorizer]
         AVX[AVX2/AVX-512]
     end
-    
+
     RS --> UDF
     PA --> UDF
     SF --> UDF
     AC --> BR
     AC --> WR
-    
+
     UDF --> LLVM
     BR --> AVX
     WR --> AVX
@@ -249,7 +251,7 @@ Flink 时间函数的高效 SIMD 实现策略：
 
 // 步骤1: 提取年/月/日分量 (8 timestamps 并行)
 __m256i years  = extract_year_vec(timestamps);   // AVX2: shift + mask
-__m256i months = extract_month_vec(timestamps);  // AVX2: shift + mask  
+__m256i months = extract_month_vec(timestamps);  // AVX2: shift + mask
 __m256i days   = extract_day_vec(timestamps);    // AVX2: mask
 
 // 步骤2: 转换为 epoch days (查表 + 计算)
@@ -326,12 +328,12 @@ for i in 0 to n-1 step 8:
 // 编译: gcc -O3 -mavx2 -mavx512f -mavx512bw -o flink_string_simd flink_string_simd.c
 // 需要: x86-64 CPU with AVX2 (minimum)
 
-#include <immintrin.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
+# include <immintrin.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <string.h>
+# include <stdlib.h>
+# include <time.h>
 
 // ============ AVX2 实现 (256-bit) ============
 
@@ -341,24 +343,24 @@ for i in 0 to n-1 step 8:
  */
 void avx2_strlen_batch(const char** strings, int* lengths, int n) {
     const __m256i zero = _mm256_setzero_si256();
-    
+
     for (int i = 0; i < n; i++) {
         const char* s = strings[i];
         int len = 0;
-        
+
         // 每次检查 32 字节
         while (1) {
             __m256i chunk = _mm256_loadu_si256((__m256i*)(s + len));
             __m256i cmp = _mm256_cmpeq_epi8(chunk, zero);
             int mask = _mm256_movemask_epi8(cmp);
-            
+
             if (mask != 0) {
                 len += __builtin_ctz(mask);
                 break;
             }
             len += 32;
         }
-        
+
         lengths[i] = len;
     }
 }
@@ -367,16 +369,16 @@ void avx2_strlen_batch(const char** strings, int* lengths, int n) {
  * 向量化字符串前缀匹配
  * 模拟 Flink 的 STARTS_WITH 函数
  */
-void avx2_starts_with_batch(const char** strings, const char* prefix, 
+void avx2_starts_with_batch(const char** strings, const char* prefix,
                             int prefix_len, uint8_t* results, int n) {
     // 加载前缀到向量寄存器 (假设 prefix_len <= 32)
     __m256i prefix_vec = _mm256_loadu_si256((__m256i*)prefix);
-    
+
     for (int i = 0; i < n; i++) {
         __m256i str_vec = _mm256_loadu_si256((__m256i*)strings[i]);
         __m256i cmp = _mm256_cmpeq_epi8(str_vec, prefix_vec);
         int mask = _mm256_movemask_epi8(cmp);
-        
+
         // 检查前 prefix_len 位是否全为 1
         results[i] = ((mask & ((1 << prefix_len) - 1)) == ((1 << prefix_len) - 1));
     }
@@ -384,7 +386,7 @@ void avx2_starts_with_batch(const char** strings, const char* prefix,
 
 // ============ AVX-512 实现 (512-bit) ============
 
-#ifdef __AVX512F__
+# ifdef __AVX512F__
 
 /**
  * AVX-512 向量化字符串长度计算
@@ -392,22 +394,22 @@ void avx2_starts_with_batch(const char** strings, const char* prefix,
  */
 void avx512_strlen_batch(const char** strings, int* lengths, int n) {
     const __m512i zero = _mm512_setzero_si512();
-    
+
     for (int i = 0; i < n; i++) {
         const char* s = strings[i];
         int len = 0;
-        
+
         while (1) {
             __m512i chunk = _mm512_loadu_si512((__m512i*)(s + len));
             __mmask64 mask = _mm512_cmpeq_epi8_mask(chunk, zero);
-            
+
             if (mask != 0) {
                 len += __builtin_ctzll(mask);
                 break;
             }
             len += 64;
         }
-        
+
         lengths[i] = len;
     }
 }
@@ -419,24 +421,24 @@ void avx512_strlen_batch(const char** strings, int* lengths, int n) {
 int avx512_filter_compress(const int* input, int* output, int n, int threshold) {
     __m512i thresh = _mm512_set1_epi32(threshold);
     int out_pos = 0;
-    
+
     int i = 0;
     for (; i + 16 <= n; i += 16) {
         __m512i vec = _mm512_loadu_si512((__m512i*)(input + i));
         __mmask16 mask = _mm512_cmpgt_epi32_mask(vec, thresh);
-        
+
         // 压缩存储满足条件的元素
         _mm512_mask_compressstoreu_epi32(output + out_pos, mask, vec);
         out_pos += _mm_popcnt_u32(mask);
     }
-    
+
     // 处理尾部
     for (; i < n; i++) {
         if (input[i] > threshold) {
             output[out_pos++] = input[i];
         }
     }
-    
+
     return out_pos;
 }
 
@@ -444,20 +446,20 @@ int avx512_filter_compress(const int* input, int* output, int n, int threshold) 
  * AVX-512 VBMI 字符串查找
  * 模拟 Flink 的 POSITION/LOCATE 函数
  */
-#ifdef __AVX512VBMI__
-int avx512vbmi_find_substring(const char* text, const char* pattern, 
+# ifdef __AVX512VBMI__
+int avx512vbmi_find_substring(const char* text, const char* pattern,
                                int text_len, int pattern_len) {
     if (pattern_len > 64 || pattern_len == 0) return -1;
-    
+
     __m512i pat = _mm512_loadu_si512((__m512i*)pattern);
     __mmask64 pat_mask = (1ULL << pattern_len) - 1;
-    
+
     for (int i = 0; i <= text_len - pattern_len; i += 64) {
         __m512i txt = _mm512_loadu_si512((__m512i*)(text + i));
-        
+
         // 多位置比较 (使用 shuffle)
         __mmask64 matches = _mm512_mask_cmpeq_epi8_mask(pat_mask, txt, pat);
-        
+
         if (matches) {
             int pos = __builtin_ctzll(matches);
             if (i + pos + pattern_len <= text_len) {
@@ -467,34 +469,34 @@ int avx512vbmi_find_substring(const char* text, const char* pattern,
     }
     return -1;
 }
-#endif // __AVX512VBMI__
+# endif // __AVX512VBMI__
 
-#endif // __AVX512F__
+# endif // __AVX512F__
 
 // ============ 性能测试 ============
 
-#define TEST_SIZE 100000
-#define STRING_COUNT 10000
-#define MAX_STR_LEN 256
+# define TEST_SIZE 100000
+# define STRING_COUNT 10000
+# define MAX_STR_LEN 256
 
 int main() {
     printf("=== Flink String SIMD Functions Benchmark ===\n\n");
-    
+
     // 准备测试数据
     char** strings = malloc(STRING_COUNT * sizeof(char*));
     int* lengths = malloc(STRING_COUNT * sizeof(int));
     uint8_t* results = malloc(STRING_COUNT * sizeof(uint8_t));
-    
+
     for (int i = 0; i < STRING_COUNT; i++) {
         strings[i] = malloc(MAX_STR_LEN);
         int len = 10 + (i % 100);  // 变长字符串
         memset(strings[i], 'a', len);
         strings[i][len] = '\0';
     }
-    
+
     // 测试 1: strlen
     printf("Test 1: String Length (strlen)\n");
-    
+
     clock_t start = clock();
     for (int iter = 0; iter < 100; iter++) {
         for (int i = 0; i < STRING_COUNT; i++) {
@@ -503,17 +505,17 @@ int main() {
     }
     clock_t scalar_time = clock() - start;
     printf("  Scalar: %.3f ms\n", scalar_time * 1000.0 / CLOCKS_PER_SEC);
-    
+
     start = clock();
     for (int iter = 0; iter < 100; iter++) {
         avx2_strlen_batch((const char**)strings, lengths, STRING_COUNT);
     }
     clock_t avx2_time = clock() - start;
-    printf("  AVX2:   %.3f ms (%.2fx speedup)\n", 
+    printf("  AVX2:   %.3f ms (%.2fx speedup)\n",
            avx2_time * 1000.0 / CLOCKS_PER_SEC,
            (double)scalar_time / avx2_time);
-    
-#ifdef __AVX512F__
+
+# ifdef __AVX512F__
     start = clock();
     for (int iter = 0; iter < 100; iter++) {
         avx512_strlen_batch((const char**)strings, lengths, STRING_COUNT);
@@ -522,14 +524,14 @@ int main() {
     printf("  AVX-512: %.3f ms (%.2fx speedup)\n",
            avx512_time * 1000.0 / CLOCKS_PER_SEC,
            (double)scalar_time / avx512_time);
-#endif
-    
+# endif
+
     printf("\n");
-    
+
     // 测试 2: starts_with
     printf("Test 2: Prefix Match (starts_with)\n");
     const char* prefix = "aaaa";
-    
+
     start = clock();
     for (int iter = 0; iter < 1000; iter++) {
         for (int i = 0; i < STRING_COUNT; i++) {
@@ -538,7 +540,7 @@ int main() {
     }
     scalar_time = clock() - start;
     printf("  Scalar:  %.3f ms\n", scalar_time * 1000.0 / CLOCKS_PER_SEC);
-    
+
     start = clock();
     for (int iter = 0; iter < 1000; iter++) {
         avx2_starts_with_batch((const char**)strings, prefix, 4, results, STRING_COUNT);
@@ -547,19 +549,19 @@ int main() {
     printf("  AVX2:    %.3f ms (%.2fx speedup)\n",
            avx2_time * 1000.0 / CLOCKS_PER_SEC,
            (double)scalar_time / avx2_time);
-    
+
     printf("\n");
-    
+
     // 测试 3: filter compress (仅 AVX-512)
-#ifdef __AVX512F__
+# ifdef __AVX512F__
     printf("Test 3: Filter + Compress (WHERE clause simulation)\n");
     int* numbers = malloc(TEST_SIZE * sizeof(int));
     int* filtered = malloc(TEST_SIZE * sizeof(int));
-    
+
     for (int i = 0; i < TEST_SIZE; i++) {
         numbers[i] = rand() % 1000;
     }
-    
+
     start = clock();
     int count_scalar = 0;
     for (int iter = 0; iter < 1000; iter++) {
@@ -571,9 +573,9 @@ int main() {
         }
     }
     scalar_time = clock() - start;
-    printf("  Scalar:   %.3f ms (count=%d)\n", 
+    printf("  Scalar:   %.3f ms (count=%d)\n",
            scalar_time * 1000.0 / CLOCKS_PER_SEC, count_scalar / 1000);
-    
+
     start = clock();
     int count_simd = 0;
     for (int iter = 0; iter < 1000; iter++) {
@@ -583,11 +585,11 @@ int main() {
     printf("  AVX-512:  %.3f ms (count=%d, %.2fx speedup)\n",
            avx512_time * 1000.0 / CLOCKS_PER_SEC, count_simd,
            (double)scalar_time / avx512_time);
-    
+
     free(numbers);
     free(filtered);
-#endif
-    
+# endif
+
     // 清理
     for (int i = 0; i < STRING_COUNT; i++) {
         free(strings[i]);
@@ -595,7 +597,7 @@ int main() {
     free(strings);
     free(lengths);
     free(results);
-    
+
     return 0;
 }
 ```
@@ -606,7 +608,7 @@ int main() {
 // timestamp_simd.rs
 // 编译: rustc -C opt-level=3 -C target-cpu=native timestamp_simd.rs
 
-#![feature(portable_simd)]
+# ![feature(portable_simd)]
 use std::simd::*;
 
 /// 向量化时间戳差值计算 (epoch seconds)
@@ -617,20 +619,20 @@ pub fn simd_timestamp_diff_batch(
     results: &mut [i64],
 ) {
     const LANES: usize = 4; // 4x i64 = 256-bit (AVX2)
-    
+
     let chunks = timestamps1.len() / LANES;
     let remainder = timestamps1.len() % LANES;
-    
+
     for i in 0..chunks {
         let offset = i * LANES;
         let t1 = i64x4::from_slice(&timestamps1[offset..offset + LANES]);
         let t2 = i64x4::from_slice(&timestamps2[offset..offset + LANES]);
-        
+
         // SIMD 减法
         let diff = t1 - t2;
         results[offset..offset + LANES].copy_from_slice(diff.as_array());
     }
-    
+
     // 尾部标量处理
     let start = timestamps1.len() - remainder;
     for i in start..timestamps1.len() {
@@ -645,21 +647,21 @@ pub fn simd_extract_year_batch(epoch_days: &[i32], years: &mut [i32]) {
     // 实际实现需要更复杂的历法计算
     const DAYS_PER_YEAR: i32 = 365;
     const EPOCH_YEAR: i32 = 1970;
-    
+
     const LANES: usize = 8; // 8x i32 = 256-bit
     let chunks = epoch_days.len() / LANES;
-    
+
     let days_per_year = i32x8::splat(DAYS_PER_YEAR);
     let epoch_year = i32x8::splat(EPOCH_YEAR);
-    
+
     for i in 0..chunks {
         let offset = i * LANES;
         let days = i32x8::from_slice(&epoch_days[offset..offset + LANES]);
-        
+
         // 近似年份计算 (简化版)
         let year_approx = days / days_per_year;
         let year = epoch_year + year_approx;
-        
+
         years[offset..offset + LANES].copy_from_slice(year.as_array());
     }
 }
@@ -668,16 +670,16 @@ fn main() {
     let ts1: Vec<i64> = (0..1000000).map(|i| i * 86400).collect();
     let ts2: Vec<i64> = (0..1000000).map(|i| (i - 100) * 86400).collect();
     let mut results = vec![0i64; 1000000];
-    
+
     // 预热
     simd_timestamp_diff_batch(&ts1, &ts2, &mut results);
-    
+
     let start = std::time::Instant::now();
     for _ in 0..100 {
         simd_timestamp_diff_batch(&ts1, &ts2, &mut results);
     }
     let simd_time = start.elapsed();
-    
+
     // 标量对比
     let start = std::time::Instant::now();
     for _ in 0..100 {
@@ -686,11 +688,11 @@ fn main() {
         }
     }
     let scalar_time = start.elapsed();
-    
+
     println!("Timestamp diff benchmark:");
     println!("  Scalar: {:?}", scalar_time);
     println!("  SIMD:   {:?}", simd_time);
-    println!("  Speedup: {:.2}x", 
+    println!("  Speedup: {:.2}x",
              scalar_time.as_secs_f64() / simd_time.as_secs_f64());
 }
 ```
@@ -720,23 +722,23 @@ graph TB
         P21[Port 0: FMA]
         P22[Port 1: FMA/ALU]
         P23[Port 5: ALU]
-        
+
         A2 --> P21
         A2 --> P22
         A2 --> P23
     end
-    
+
     subgraph "AVX-512 执行模型 (512-bit)"
         A5[512-bit Vector]
         P50[Port 0: 512-bit FMA]
         P51[Port 1: 512-bit FMA]
         P52[Port 5: 512-bit ALU]
-        
+
         A5 --> P50
         A5 --> P51
         A5 --> P52
     end
-    
+
     style A5 fill:#ff9999
 ```
 
@@ -754,19 +756,19 @@ flowchart LR
         G[Row 7]
         H[Row 8]
     end
-    
+
     subgraph "列式转换"
         COL[Column Vector<br/>8 elements]
     end
-    
+
     subgraph "SIMD 执行"
         SIMD[AVX2/AVX-512<br/>Single Instruction]
     end
-    
+
     subgraph "输出"
         OUT[8 Results]
     end
-    
+
     A --> COL
     B --> COL
     C --> COL
@@ -775,7 +777,7 @@ flowchart LR
     F --> COL
     G --> COL
     H --> COL
-    
+
     COL --> SIMD
     SIMD --> OUT
 ```
@@ -785,21 +787,21 @@ flowchart LR
 ```mermaid
 flowchart TD
     A[String Function<br/>to Vectorize] --> B{Fixed Length?}
-    
+
     B -->|Yes| C[AVX2 256-bit<br/>Direct Load]
     B -->|No| D{Length Variation<br/>Small?}
-    
+
     D -->|Yes| E[Padding + Mask<br/>AVX-512]
     D -->|No| F{Pattern Known?}
-    
+
     F -->|Yes| G[Multi-Pattern<br/>SIMD Search]
     F -->|No| H[Hybrid:<br/>SIMD + Scalar]
-    
+
     C --> I[High Performance<br/>8-16x speedup]
     E --> I
     G --> J[Medium Performance<br/>4-8x speedup]
     H --> K[Low Overhead<br/>2-4x speedup]
-    
+
     style I fill:#99ff99
     style J fill:#ffcc99
     style K fill:#ff9999

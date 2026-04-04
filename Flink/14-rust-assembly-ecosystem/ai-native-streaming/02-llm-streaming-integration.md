@@ -9,6 +9,7 @@
 LLM 流式推理是指大型语言模型在生成响应时，以**增量方式**逐个输出 token，而非等待完整响应生成后再返回的计算模式。
 
 形式化定义：
+
 ```
 给定输入提示 P，LLM 生成响应 R = {t₁, t₂, ..., tₙ}
 
@@ -64,6 +65,7 @@ struct SensitiveFilter;        // 敏感词过滤
 ```
 
 **Token 处理流水线**：
+
 ```
 Raw Token Stream → [解析] → [过滤] → [转换] → [聚合] → Output Stream
                       ↓         ↓          ↓
@@ -76,6 +78,7 @@ Raw Token Stream → [解析] → [过滤] → [转换] → [聚合] → Output 
 上下文管理是指在多轮对话或长文本处理中，对**历史消息、系统提示和可用 token 预算**进行动态维护和优化的机制。
 
 形式化模型：
+
 ```
 上下文状态: C = (SystemPrompt, History, Reserved)
 
@@ -133,6 +136,7 @@ token_count(SystemPrompt) + Σ token_count(contentᵢ) + Reserved ≤ ContextWin
 ```
 
 **SSE 消息格式**：
+
 ```
 event: message
 data: {"token": "Hello", "index": 0, "finish_reason": null}
@@ -156,6 +160,7 @@ data: [DONE]
 **命题**：在标准网络条件下，LLM 流式 API 的 TTFB 延迟主要受模型首 token 生成时间 (TTFT) 主导，网络传输延迟可忽略。
 
 **形式化分析**：
+
 ```
 TTFB = TTFT + T_network + T_framework
 
@@ -163,12 +168,12 @@ TTFB = TTFT + T_network + T_framework
 - TTFT (Time To First Token): 模型处理输入到生成首个 token 的时间
   - 与输入长度成正比: TTFT ≈ α · token_count(input) + β
   - 典型值: 100-500ms (取决于模型和输入长度)
-  
+
 - T_network: 网络传输延迟
   - 同机房: < 1ms
   - 同区域: 5-20ms
   - 跨区域: 50-200ms
-  
+
 - T_framework: 框架处理开销
   - 通常 < 10ms
 
@@ -176,16 +181,18 @@ TTFB = TTFT + T_network + T_framework
 ```
 
 **工程优化策略**：
+
 1. **输入缓存**: 对重复查询缓存 KV Cache
 2. **前缀共享**: 多个请求共享相同前缀的计算
 3. **投机解码**: 使用小模型预测，大模型验证
-4. ** chunked 预填充**: 分批处理长输入
+4. **chunked 预填充**: 分批处理长输入
 
 ### Prop-AI-05: Token 流并行处理增益 (Token Stream Parallelism Gain)
 
 **命题**：通过 Flink 并行处理 token 流，可以实现**亚线性延迟增长**的吞吐量扩展。
 
 **形式化表述**：
+
 ```
 设：
 - N: 并行度 (Parallelism)
@@ -294,6 +301,7 @@ Checkpoint          对话断点恢复
 | 实时对话 | 不可接受 | 可接受 | 必需 |
 
 **技术论证**：
+
 1. **心理感知模型**: 用户更敏感于首次响应时间而非总时间
 2. **渐进式呈现**: 允许用户在生成过程中阅读和反馈
 3. **取消机制**: 用户可在不满意时提前终止，节省成本
@@ -310,6 +318,7 @@ Checkpoint          对话断点恢复
 | 分层记忆 | 多粒度存储 | 实现复杂 | 复杂 Agent |
 
 **推荐策略**：混合策略
+
 ```
 第一层: 系统提示 (固定)
 第二层: 最近 3-5 轮对话 (完整)
@@ -351,6 +360,7 @@ Checkpoint          对话断点恢复
 设流式响应为 token 序列 $T = \{t_1, t_2, ..., t_n\}$，其中 $t_n$ 为结束标记。
 
 **正确性条件**：
+
 ```
 完整性: 若 LLM 生成完整响应 R，则 Flink 输出流包含所有 token tᵢ ∈ R
 有序性: 输出的 token 顺序与 LLM 生成顺序一致
@@ -358,6 +368,7 @@ Checkpoint          对话断点恢复
 ```
 
 **Flink 保证机制**：
+
 1. **Source 端**：Kafka Consumer 的 offset 管理确保消息不丢失
 2. **处理端**：Checkpoint 机制确保算子状态一致性
 3. **Sink 端**：两阶段提交确保输出恰好一次
@@ -368,13 +379,13 @@ impl SinkFunction<Token> for ExactlyOnceTokenSink {
     fn invoke(&mut self, value: Token, context: Context) {
         // 幂等性保证：token index 作为去重键
         let dedup_key = format!("{}-{}", value.session_id, value.index);
-        
+
         if !self.seen_keys.contains(&dedup_key) {
             self.buffer.push(value);
             self.seen_keys.insert(dedup_key);
         }
     }
-    
+
     fn snapshot_state(&mut self, checkpoint_id: u64) -> Vec<Token> {
         // Checkpoint 时持久化状态
         self.state_backend.save(self.buffer.clone());
@@ -388,6 +399,7 @@ impl SinkFunction<Token> for ExactlyOnceTokenSink {
 **优化目标**：在给定上下文窗口限制下，最大化信息保留率。
 
 **数学模型**：
+
 ```
 给定：
 - 窗口容量 W
@@ -418,28 +430,28 @@ impl SmartContextManager {
         let total_tokens: usize = messages.iter()
             .map(|m| token_count(&m.content))
             .sum();
-        
+
         if total_tokens <= self.max_tokens {
             return messages.to_vec();
         }
-        
+
         // 策略 1: 优先保留最近消息
         let recent_messages = self.keep_recent(messages);
-        
+
         // 策略 2: 压缩早期消息
         let compressed = self.compress_early(messages, &recent_messages);
-        
+
         // 策略 3: 提取关键事实
         let facts = self.extract_key_facts(messages);
-        
+
         // 组合优化结果
         self.combine(recent_messages, compressed, facts)
     }
-    
+
     fn keep_recent(&self, messages: &[Message]) -> Vec<Message> {
         let mut result = Vec::new();
         let mut token_count = 0;
-        
+
         // 从后向前遍历，优先保留近期消息
         for msg in messages.iter().rev() {
             let tokens = token_count(&msg.content);
@@ -449,26 +461,26 @@ impl SmartContextManager {
             result.push(msg.clone());
             token_count += tokens;
         }
-        
+
         result.reverse();
         result
     }
-    
+
     fn compress_early(&self, all: &[Message], kept: &[Message]) -> Vec<Message> {
         let early: Vec<_> = all.iter()
             .filter(|m| !kept.contains(m))
             .collect();
-        
+
         if early.is_empty() {
             return Vec::new();
         }
-        
+
         // 生成摘要
         let summary = self.summarizer.summarize(&early.iter()
             .map(|m| m.content.clone())
             .collect::<Vec<_>>()
             .join("\n"));
-        
+
         vec![Message {
             role: "system".to_string(),
             content: format!("Previous conversation summary: {}", summary),
@@ -555,7 +567,7 @@ impl OpenAIStreamingClient {
             default_model: "gpt-4o-mini".to_string(),
         }
     }
-    
+
     /// 发送流式请求，返回 token 流
     pub async fn stream_chat_completion(
         &self,
@@ -569,7 +581,7 @@ impl OpenAIStreamingClient {
             temperature: Some(0.7),
             top_p: None,
         };
-        
+
         let response = self.client
             .post(format!("{}/chat/completions", self.base_url))
             .header("Authorization", format!("Bearer {}", self.api_key))
@@ -577,30 +589,30 @@ impl OpenAIStreamingClient {
             .json(&request)
             .send()
             .await?;
-        
+
         if !response.status().is_success() {
             let error_text = response.text().await?;
             return Err(format!("API error: {}", error_text).into());
         }
-        
+
         // 创建 channel 用于返回 token 流
         let (tx, rx) = mpsc::channel(100);
-        
+
         // 在后台任务中处理 SSE 流
         let mut byte_stream = response.bytes_stream();
         tokio::spawn(async move {
             let mut buffer = String::new();
-            
+
             while let Some(chunk) = byte_stream.next().await {
                 match chunk {
                     Ok(bytes) => {
                         buffer.push_str(&String::from_utf8_lossy(&bytes));
-                        
+
                         // 处理完整的 SSE 行
                         while let Some(pos) = buffer.find("\n\n") {
                             let event_str = buffer[..pos].to_string();
                             buffer = buffer[pos + 2..].to_string();
-                            
+
                             if let Some(token) = Self::parse_sse_event(&event_str) {
                                 if tx.send(token).await.is_err() {
                                     return; // Receiver 已关闭
@@ -615,22 +627,22 @@ impl OpenAIStreamingClient {
                 }
             }
         });
-        
+
         Ok(rx)
     }
-    
+
     /// 解析 SSE 事件
     fn parse_sse_event(event_str: &str) -> Option<StreamToken> {
         let mut data = None;
-        
+
         for line in event_str.lines() {
             if line.starts_with("data: ") {
                 data = Some(&line[6..]);
             }
         }
-        
+
         let data = data?;
-        
+
         // 检查流结束标记
         if data == "[DONE]" {
             return Some(StreamToken {
@@ -639,7 +651,7 @@ impl OpenAIStreamingClient {
                 index: 0,
             });
         }
-        
+
         // 解析 JSON 数据
         if let Ok(chunk) = serde_json::from_str::<ChatCompletionChunk>(data) {
             if let Some(choice) = chunk.choices.first() {
@@ -652,7 +664,7 @@ impl OpenAIStreamingClient {
                 }
             }
         }
-        
+
         None
     }
 }
@@ -716,20 +728,20 @@ impl FlatMapFunction<ChatRequest, ChatResponse> for LLMStreamingFunction {
     fn flat_map(&self, request: ChatRequest, ctx: &mut Context) {
         let start_time = std::time::Instant::now();
         let session_id = request.session_id.clone();
-        
+
         // 管理上下文
         let optimized_messages = self.context_manager.optimize_context(&request.history);
-        
+
         // 异步执行 LLM 调用
         let client = self.client.clone();
         let handle = self.runtime.spawn(async move {
             let mut token_index = 0;
-            
+
             match client.stream_chat_completion(optimized_messages).await {
                 Ok(mut token_stream) => {
                     while let Some(token) = token_stream.recv().await {
                         let latency = start_time.elapsed().as_millis() as u64;
-                        
+
                         yield ChatResponse {
                             session_id: session_id.clone(),
                             token: token.content,
@@ -737,7 +749,7 @@ impl FlatMapFunction<ChatRequest, ChatResponse> for LLMStreamingFunction {
                             is_complete: token.is_final,
                             latency_ms: latency,
                         };
-                        
+
                         if token.is_final {
                             break;
                         }
@@ -756,7 +768,7 @@ impl FlatMapFunction<ChatRequest, ChatResponse> for LLMStreamingFunction {
                 }
             }
         });
-        
+
         // 处理结果
         while let Some(response) = handle.block_on_next() {
             ctx.collect(response);
@@ -771,9 +783,9 @@ impl ProcessFunction<ChatResponse, ProcessedResponse> for TokenPostProcessor {
     fn process(&self, response: ChatResponse, ctx: &mut Context) {
         // Markdown 解析状态机
         static MARKDOWN_STATE: ThreadLocal<RefCell<MarkdownParser>> = ThreadLocal::new();
-        
+
         let mut parser = MARKDOWN_STATE.get_or_default().borrow_mut();
-        
+
         // 解析 token 并提取结构化内容
         if let Some(parsed) = parser.feed(&response.token) {
             ctx.collect(ProcessedResponse {
@@ -783,7 +795,7 @@ impl ProcessFunction<ChatResponse, ProcessedResponse> for TokenPostProcessor {
                 is_complete: response.is_complete,
             });
         }
-        
+
         // 完成时重置状态
         if response.is_complete {
             parser.reset();
@@ -799,7 +811,7 @@ fn build_llm_pipeline(env: &mut StreamExecutionEnvironment) {
         .assign_timestamps_and_watermarks(
             WatermarkStrategy::for_bounded_out_of_orderness(Duration::from_secs(5))
         );
-    
+
     // 2. LLM 流式推理 (并发度 10)
     let response_stream = request_stream
         .flat_map(LLMStreamingFunction::new(
@@ -808,14 +820,14 @@ fn build_llm_pipeline(env: &mut StreamExecutionEnvironment) {
         .set_parallelism(10)
         .name("LLM Streaming Inference")
         .uid("llm-inference");
-    
+
     // 3. Token 后处理
     let processed_stream = response_stream
         .process(TokenPostProcessor)
         .set_parallelism(20)
         .name("Token Post Processing")
         .uid("token-processing");
-    
+
     // 4. 按会话聚合完整响应
     let aggregated_stream = processed_stream
         .key_by(|r| r.session_id.clone())
@@ -823,13 +835,13 @@ fn build_llm_pipeline(env: &mut StreamExecutionEnvironment) {
         .aggregate(ResponseAggregator)
         .name("Response Aggregation")
         .uid("response-agg");
-    
+
     // 5. 输出到 WebSocket Sink
     aggregated_stream
         .add_sink(WebSocketSink::new("ws://gateway:8080/push"))
         .name("WebSocket Output")
         .uid("websocket-sink");
-    
+
     // 6. 同时写入日志
     processed_stream
         .add_sink(KafkaSink::new("chat-logs"))
@@ -875,14 +887,14 @@ impl ModelRouter {
         let candidates: Vec<_> = self.models.iter()
             .filter(|m| self.meets_constraints(m, query))
             .collect();
-        
+
         if candidates.is_empty() {
             // 无满足约束的模型，使用默认
             return self.models.iter()
                 .find(|m| m.name == self.default_model)
                 .unwrap();
         }
-        
+
         // 根据查询复杂度选择
         if query.complexity > 0.8 {
             // 复杂查询：优先质量
@@ -905,22 +917,22 @@ impl ModelRouter {
                 .unwrap()
         }
     }
-    
+
     fn meets_constraints(&self, model: &ModelCapability, query: &QueryFeatures) -> bool {
         // 检查 token 限制
         if query.estimated_input_tokens + query.estimated_output_tokens > model.max_tokens {
             return false;
         }
-        
+
         // 检查延迟 SLA
         if let Some(sla) = self.latency_sla_ms {
-            let estimated_latency = model.latency_profile.ttft_ms + 
+            let estimated_latency = model.latency_profile.ttft_ms +
                 (query.estimated_output_tokens as f64 / model.latency_profile.tps * 1000.0) as u64;
             if estimated_latency > sla {
                 return false;
             }
         }
-        
+
         true
     }
 }
@@ -947,17 +959,17 @@ impl CostMonitor {
     fn record_usage(&self, model: &str, input_tokens: u32, output_tokens: u32) {
         let cost = self.calculate_cost(model, input_tokens, output_tokens);
         self.current_spend.fetch_add(cost, Ordering::Relaxed);
-        
+
         *self.cost_breakdown.entry(model.to_string()).or_insert(0.0) += cost;
-        
+
         // 检查预算
         let total = self.current_spend.load(Ordering::Relaxed);
         if total > self.daily_budget * 0.8 {
-            tracing::warn!("Cost alert: {:.2}% of daily budget used", 
+            tracing::warn!("Cost alert: {:.2}% of daily budget used",
                 total / self.daily_budget * 100.0);
         }
     }
-    
+
     fn calculate_cost(&self, model: &str, input_tokens: u32, output_tokens: u32) -> f64 {
         let rates = match model {
             "gpt-4o" => (0.005, 0.015),
@@ -965,8 +977,8 @@ impl CostMonitor {
             "claude-3-sonnet" => (0.003, 0.015),
             _ => (0.001, 0.003),
         };
-        
-        input_tokens as f64 / 1000.0 * rates.0 + 
+
+        input_tokens as f64 / 1000.0 * rates.0 +
         output_tokens as f64 / 1000.0 * rates.1
     }
 }
@@ -1001,7 +1013,7 @@ impl TokenProcessor for CodeBlockExtractor {
             self.current_code.clear();
             return Ok(None);
         }
-        
+
         // 检测代码块结束 ```
         if token.contains("```") && self.in_code_block {
             self.in_code_block = false;
@@ -1011,7 +1023,7 @@ impl TokenProcessor for CodeBlockExtractor {
                 is_complete: true,
             };
             self.completed_blocks.push(block);
-            
+
             // 触发实时语法检查
             return Ok(Some(format!(
                 "[CODE_BLOCK: {}]\n{}",
@@ -1019,15 +1031,15 @@ impl TokenProcessor for CodeBlockExtractor {
                 self.current_code
             )));
         }
-        
+
         // 累积代码内容
         if self.in_code_block {
             self.current_code.push_str(token);
-            
+
             // 实时流式输出 (可选)
             return Ok(Some(token.to_string()));
         }
-        
+
         // 普通文本
         Ok(Some(token.to_string()))
     }
@@ -1039,23 +1051,23 @@ struct RealtimeLinter {
 }
 
 impl RealtimeLinter {
-    async fn lint_streaming(&self, code_stream: &mut mpsc::Receiver<String>, language: &str) 
-        -> mpsc::Receiver<Diagnostic> 
+    async fn lint_streaming(&self, code_stream: &mut mpsc::Receiver<String>, language: &str)
+        -> mpsc::Receiver<Diagnostic>
     {
         let (tx, rx) = mpsc::channel(10);
-        
+
         if let Some(ls) = self.language_servers.get(language) {
             let ls = ls.clone();
             let lang = language.to_string();
-            
+
             tokio::spawn(async move {
                 let mut buffer = String::new();
                 let mut version = 0;
-                
+
                 while let Some(chunk) = code_stream.recv().await {
                     buffer.push_str(&chunk);
                     version += 1;
-                    
+
                     // 每 10 个字符或流结束时检查
                     if chunk.len() >= 10 || buffer.len() % 50 == 0 {
                         let diagnostics = ls.diagnostics(&buffer, version).await;
@@ -1064,7 +1076,7 @@ impl RealtimeLinter {
                         }
                     }
                 }
-                
+
                 // 最终检查
                 let diagnostics = ls.diagnostics(&buffer, version + 1).await;
                 for diag in diagnostics {
@@ -1072,7 +1084,7 @@ impl RealtimeLinter {
                 }
             });
         }
-        
+
         rx
     }
 }
@@ -1091,22 +1103,22 @@ async fn code_generation_pipeline(prompt: String, session_id: String) {
             content: prompt,
         },
     ]).await.unwrap();
-    
+
     // 2. 创建处理组件
     let mut code_extractor = CodeBlockExtractor::new();
     let linter = RealtimeLinter::new();
     let mut response_buffer = String::new();
-    
+
     // 3. 流式处理
     while let Some(token) = token_stream.recv().await {
         // 提取代码块
         if let Some(processed) = code_extractor.process(&token.content).unwrap() {
             response_buffer.push_str(&processed);
-            
+
             // 实时推送到前端
             send_to_websocket(&session_id, &processed).await;
         }
-        
+
         // 检测到完整代码块时触发 lint
         if token.is_final || response_buffer.contains("[CODE_BLOCK:") {
             // 异步语法检查
@@ -1129,13 +1141,13 @@ graph TB
         A2[Token 渲染器]
         A3[Markdown 解析]
     end
-    
+
     subgraph "网关层"
         B1[WebSocket 网关]
         B2[会话管理]
         B3[负载均衡]
     end
-    
+
     subgraph "Flink 流处理"
         C1[Query Source]
         C2[上下文管理]
@@ -1144,13 +1156,13 @@ graph TB
         C5[Token 处理]
         C6[响应聚合]
     end
-    
+
     subgraph "模型服务"
         D1[OpenAI API]
         D2[Anthropic API]
         D3[本地 vLLM]
     end
-    
+
     A1 --> B1
     B1 --> C1
     C1 --> C2
@@ -1178,16 +1190,16 @@ flowchart LR
     C -->|Code| E[Code Block Extract]
     C -->|JSON| F[JSON Parse]
     C -->|Error| G[Error Handler]
-    
+
     D --> H[UI Update]
     E --> I[Syntax Highlight]
     E --> J[Realtime Lint]
     F --> K[Data Extraction]
-    
+
     I --> H
     J --> L[Warning Display]
     K --> M[State Update]
-    
+
     H --> N[User View]
     L --> N
     M --> O[下游处理]
@@ -1201,17 +1213,17 @@ stateDiagram-v2
     FullContext --> SlidingWindow: 超出窗口
     SlidingWindow --> Summarized: 继续增长
     Summarized --> KeyFacts: 摘要超限
-    
+
     FullContext --> FullContext: 添加消息
     SlidingWindow --> SlidingWindow: 滑动更新
     Summarized --> Summarized: 更新摘要
     KeyFacts --> KeyFacts: 提取关键事实
-    
+
     state FullContext {
         [*] --> WithinLimit
         WithinLimit --> AtLimit : tokens > threshold
     }
-    
+
     state SlidingWindow {
         [*] --> RecentKept
         RecentKept --> Dropped : 旧消息移除
@@ -1226,22 +1238,22 @@ flowchart TD
     B -->|> 0.8| C[高质量模型]
     B -->|0.5-0.8| D[平衡模型]
     B -->|< 0.5| E[经济模型]
-    
+
     C --> F{延迟要求}
     D --> F
     E --> F
-    
+
     F -->|< 500ms| G[GPT-4o-mini]
     F -->|500-2000ms| H[Claude 3 Haiku]
     F -->|> 2000ms| I[GPT-4o/Claude Sonnet]
-    
+
     G --> J{预算检查}
     H --> J
     I --> J
-    
+
     J -->|超限| K[降级到经济模型]
     J -->|正常| L[执行推理]
-    
+
     K --> L
 ```
 
@@ -1249,35 +1261,20 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: OpenAI API Documentation, "Streaming", 2024. https://platform.openai.com/docs/api-reference/streaming
 
-[^2]: Anthropic API Documentation, "Streaming Messages", 2024. https://docs.anthropic.com/en/api/messages-streaming
 
-[^3]: Server-Sent Events Specification, W3C, 2023. https://html.spec.whatwg.org/multipage/server-sent-events.html
 
-[^4]: V. Karpukhin et al., "Dense Passage Retrieval for Open-Domain Question Answering", EMNLP 2020.
 
-[^5]: LangChain Documentation, "Streaming", 2024. https://python.langchain.com/docs/expression_language/streaming/
 
-[^6]: vLLM Documentation, "Continuous Batching", 2024. https://docs.vllm.ai/
 
-[^7]: Hugging Face Text Generation Inference, "Streaming Tokens", 2024. https://huggingface.co/docs/text-generation-inference/
 
-[^8]: Microsoft Guidance Library, "Token Streaming Control", 2024. https://github.com/guidance-ai/guidance
 
-[^9]: N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need", arXiv:1911.02150, 2019.
 
-[^10]: Y. Leviathan et al., "Fast Inference from Transformers via Speculative Decoding", ICML 2023.
 
-[^11]: WebSocket Protocol RFC 6455, IETF, 2011.
 
-[^12]: gRPC Documentation, "Streaming RPCs", 2024. https://grpc.io/docs/what-is-grpc/core-concepts/
 
-[^13]: Tiktoken Documentation, "Fast BPE Tokenizer", 2024. https://github.com/openai/tiktoken
 
-[^14]: SentenceTransformers Documentation, "Embedding Models", 2024. https://www.sbert.net/
 
-[^15]: Apache Flink Documentation, "Async I/O", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/
 
 ---
 

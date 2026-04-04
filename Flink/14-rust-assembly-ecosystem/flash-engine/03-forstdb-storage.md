@@ -1,7 +1,7 @@
 # ForStDB 状态存储层深度分析
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine  
-> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [Flink 状态后端](../../04-state-management/)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
+> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [Flink 状态后端](../../04-state-management/)
 > **形式化等级**: L4（架构分析 + 工程实现）
 
 ---
@@ -13,6 +13,7 @@
 **定义**: ForStDB 是 Flash 引擎专用的向量化状态存储层，针对流计算场景优化，提供 Mini（内存优先）和 Pro（磁盘溢出支持）两个版本。
 
 **形式化描述**:
+
 ```
 ForStDB := ⟨StorageEngine, Serializer, CompactionManager, AsyncIO⟩
 
@@ -34,6 +35,7 @@ ForStDB_Pro := ForStDB where StorageEngine ∈ PersistentEngines
 **定义**: 列式状态存储是将算子状态按列组织而非按行组织的持久化方案，与向量化执行引擎配合使用。
 
 **形式化描述**:
+
 ```
 传统行式状态:
 StateRow := ⟨Key, ValueFields..., Metadata⟩
@@ -49,6 +51,7 @@ StorageLayout_Col := [KeyColumn][ValueCol1][ValueCol2]...[MetadataCol]
 ```
 
 **适用场景**:
+
 - 聚合状态：仅需更新累加器列，其他列不变
 - Join 状态：仅需访问特定字段进行匹配
 - 窗口状态：按时间列批量清理过期数据
@@ -60,6 +63,7 @@ StorageLayout_Col := [KeyColumn][ValueCol1][ValueCol2]...[MetadataCol]
 **定义**: 异步 Checkpoint 是一种不阻塞数据处理的快照机制，通过写时复制（COW）或增量快照实现低延迟状态持久化。
 
 **形式化描述**:
+
 ```
 AsyncCheckpoint := ⟨BarrierInjection, StateSnapshot, AsyncUpload⟩
 
@@ -82,6 +86,7 @@ T_blocking << T_async_checkpoint (典型 < 10ms)
 **定义**: ForStDB 提供两个版本以适应不同规模和成本的场景，Mini 专注于内存性能，Pro 提供完整持久化保证。
 
 **形式化描述**:
+
 ```
 Version_Mini := ⟨PureMemory, LimitedCapacity, FastestAccess⟩
 Version_Pro := ⟨HybridStorage, UnlimitedCapacity, SpillToDisk⟩
@@ -109,6 +114,7 @@ Version_Pro := ⟨HybridStorage, UnlimitedCapacity, SpillToDisk⟩
 **命题**: 对于聚合类算子，列式状态存储的空间效率显著高于行式存储。
 
 **形式化表述**:
+
 ```
 设聚合算子有 m 个累加器列，状态有 n 个分组:
 
@@ -136,6 +142,7 @@ S_col = KeySize + Σ(n × |columnᵢ| + Overhead_col)
 **命题**: 异步 Checkpoint 的阻塞延迟存在理论上界，与状态大小解耦。
 
 **形式化表述**:
+
 ```
 设状态大小为 S，网络带宽为 B，Checkpoint 间隔为 I:
 
@@ -163,6 +170,7 @@ T_async_total = T_async_block + T_serialize(S) + T_upload(S, B)
 **命题**: ForStDB 在流计算场景下的性能优于 RocksDB，主要得益于列式格式和异步 IO 优化。
 
 **形式化表述**:
+
 ```
 性能对比模型:
 Speedup(ForStDB, RocksDB) = f(AccessPattern, DataSize, IOIntensity)
@@ -249,6 +257,7 @@ Flink 状态后端生态:
 **设计目标**: 解决 RocksDB 在流计算场景的性能瓶颈
 
 **RocksDB 瓶颈分析**:
+
 ```
 1. 行式存储问题:
    - 聚合状态整行读取，实际只需累加器列
@@ -264,6 +273,7 @@ Flink 状态后端生态:
 ```
 
 **ForStDB 解决方案**:
+
 ```
 1. 列式存储:
    - 按需加载列，减少 IO
@@ -298,6 +308,7 @@ Flink 状态后端生态:
 ### 4.3 Checkpoint 性能优化原理
 
 **增量 Checkpoint 机制**:
+
 ```
 全量 Checkpoint:
 ┌─────────────────────────────────────┐
@@ -318,6 +329,7 @@ State = Base + Σ(Incremental_i)
 ```
 
 **异步上传流水线**:
+
 ```
 时间线:
 T0: Barrier 到达
@@ -340,6 +352,7 @@ T4: 上传完成
 **证明**:
 
 **步骤 1**: 定义参数
+
 ```
 设聚合状态有:
 - m 列（1 个 Key 列，m-1 个 Value 列）
@@ -348,18 +361,21 @@ T4: 上传完成
 ```
 
 **步骤 2**: 行式存储 IO 分析
+
 ```
 行式存储读取单位 = 整行 = m × c bytes
 单次更新 IO = m × c（无论访问几列）
 ```
 
 **步骤 3**: 列式存储 IO 分析
+
 ```
 列式存储读取单位 = 单列 = c bytes
 单次更新 IO = k × c（仅访问需要的列）
 ```
 
 **步骤 4**: IO 效率比
+
 ```
 IO_Efficiency = IO_row / IO_col
               = (m × c) / (k × c)
@@ -376,6 +392,7 @@ IO_Efficiency = 5/2 = 2.5x
 **证明**:
 
 **步骤 1**: 同步 Checkpoint 分析
+
 ```
 设:
 - 处理延迟要求: L_max
@@ -389,6 +406,7 @@ T_chkpt < L_max 且 I >> T_chkpt
 ```
 
 **步骤 2**: 异步 Checkpoint 分析
+
 ```
 设:
 - 阻塞时间: T_block（常数，< 1ms）
@@ -401,6 +419,7 @@ T_block < L_max（总是满足）
 ```
 
 **步骤 3**: 定量对比
+
 ```
 状态大小: 1GB → 10GB → 100GB
 
@@ -420,6 +439,7 @@ T_block: 1ms → 1ms → 1ms
 ### 6.1 ForStDB 配置示例
 
 **Mini 版本配置**:
+
 ```yaml
 # ForStDB Mini 配置
 state.backend: forstdb-mini
@@ -434,6 +454,7 @@ forstdb.mini.snapshot.interval: 30s
 ```
 
 **Pro 版本配置**:
+
 ```yaml
 # ForStDB Pro 配置
 state.backend: forstdb-pro
@@ -487,6 +508,7 @@ Checkpoint 稳定性 │ 偶发卡顿   │ 平滑
 ### 6.3 阿里巴巴生产案例
 
 **菜鸟物流实时跟踪**:
+
 ```
 场景: 订单全生命周期跟踪
 - 窗口: 72 小时会话窗口
@@ -501,6 +523,7 @@ Checkpoint 稳定性 │ 偶发卡顿   │ 平滑
 ```
 
 **天猫实时 BI**:
+
 ```
 场景: 多维度实时聚合
 - 维度: 类目 × 地区 × 时间（1000+ 分组）
@@ -524,29 +547,29 @@ Checkpoint 稳定性 │ 偶发卡顿   │ 平滑
 graph TB
     subgraph "ForStDB 存储层"
         A[State API 请求] --> B{Mini or Pro?}
-        
+
         B -->|Mini| C[ForStDB Mini]
         B -->|Pro| D[ForStDB Pro]
-        
+
         C --> C1[纯内存存储]
         C --> C2[列式缓冲区]
         C --> C3[内存快照]
-        
+
         D --> D1[内存缓冲区]
         D --> D2[WAL 日志]
         D --> D3[列式磁盘存储]
         D --> D4[异步 Spill]
-        
+
         C2 --> E[Arrow 格式]
         D1 --> E
         D3 --> E
-        
+
         E --> F[Checkpoint Manager]
         F --> F1[增量快照]
         F --> F2[异步上传]
         F --> F3[并行恢复]
     end
-    
+
     style C fill:#9f9,stroke:#333
     style D fill:#ff9,stroke:#333
     style E fill:#99f,stroke:#333
@@ -562,20 +585,20 @@ graph LR
         R1 --> R4[Col3 Val]
         R1 --> R5[Col4 Val]
         R1 --> R6[Col5 Val]
-        
+
         R7[Key2] --> R8[Col1 Val]
         R7 --> R9[Col2 Val]
         R7 --> R10[Col3 Val]
-        
+
         R11[...]
     end
-    
+
     subgraph "列式存储 ForStDB"
         C1[Key Column<br/>Key1, Key2, Key3...]
         C2[Col1<br/>Val1, Val2, Val3...]
         C3[Col2<br/>Val1, Val2, Val3...]
         C4[...]
-        
+
         C1 -.->|访问| C2
         C1 -.->|跳过| C3
         C1 -.->|跳过| C4
@@ -595,7 +618,7 @@ sequenceDiagram
     FS->>FS: 2. 创建内存快照 (COW)
     FS->>TM: 3. 快照创建完成 (阻塞 < 1ms)
     TM->>TM: 4. 恢复数据处理
-    
+
     FS->>BG: 5. 启动序列化
     BG->>BG: 6. Arrow 格式序列化
     BG->>OSS: 7. 并行分块上传
@@ -608,17 +631,17 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     Start[选择 ForStDB 版本] --> Q1{状态大小?}
-    
+
     Q1 -->|< 10GB| Q2{延迟要求?}
     Q1 -->|10-100GB| Q3{内存容量?}
     Q1 -->|> 100GB| Pro[ForStDB Pro<br/>自动 Spill<br/>无限容量]
-    
+
     Q2 -->|< 100ms| Mini1[ForStDB Mini<br/>纯内存<br/>最低延迟]
     Q2 -->|> 100ms| Mini2[ForStDB Mini<br/>或 Pro + 缓存]
-    
+
     Q3 -->|充足| Mini3[ForStDB Mini<br/>大内存配置]
     Q3 -->|紧张| Pro2[ForStDB Pro<br/>内存+磁盘混合]
-    
+
     style Mini1 fill:#9f9,stroke:#333
     style Mini2 fill:#9f9,stroke:#333
     style Mini3 fill:#9f9,stroke:#333
@@ -640,25 +663,15 @@ bar title 状态访问延迟对比（越低越好）
 
 ## 8. 引用参考 (References)
 
-[^1]: RocksDB Documentation, "RocksDB Tuning Guide", https://github.com/facebook/rocksdb/wiki
 
-[^2]: Apache Flink, "State Backends", https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
 
-[^3]: "MonetDB/X100: Hyper-Pipelining Query Execution", Boncz et al., CIDR 2005.
 
-[^4]: "The Vertica Analytic Database: C-Store 7 Years Later", Lamb et al., PVLDB 2012.
 
-[^5]: Apache Arrow, "Apache Arrow Columnar Format", https://arrow.apache.org/docs/format/Columnar.html
 
-[^6]: Alibaba Cloud, "Flash 引擎技术解析", Apsara Conference 2024.
 
-[^7]: "Differential Checkpointing for Stateful Distributed Systems", Akidau et al., 2015.
 
-[^8]: "Chandy-Lamport Distributed Snapshots", Chandy & Lamport, ACM TOCS 1985.
 
-[^9]: "Optimizing Checkpointing for Stream Processing Systems", Gu et al., ICDE 2021.
 
-[^10]: "Columnar Storage and List-based Processing for Graph Database", 2020.
 
 ---
 

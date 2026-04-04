@@ -9,6 +9,7 @@
 AI 原生流处理是指在流计算框架的**核心设计层面**深度集成机器学习与人工智能能力，使流处理系统能够原生支持模型推理、特征工程、在线学习与自适应决策的计算范式。
 
 形式化定义：
+
 ```
 AI-Native Stream Processing = (D, M, F, L, I)
 
@@ -21,6 +22,7 @@ AI-Native Stream Processing = (D, M, F, L, I)
 ```
 
 **核心特征**：
+
 | 维度 | 传统流处理 | AI 原生流处理 |
 |------|-----------|--------------|
 | 模型集成 | 外部服务调用 | 内嵌推理引擎 |
@@ -49,6 +51,7 @@ type FeatureSchema = HashMap<String, FeatureType>;
 ```
 
 **特征类型分类**：
+
 - **点特征 (Point Features)**：单事件属性提取（如用户点击类型）
 - **窗口特征 (Window Features)**：时间窗口聚合（如过去5分钟点击率）
 - **会话特征 (Session Features)**：会话级别统计（如会话时长、深度）
@@ -59,6 +62,7 @@ type FeatureSchema = HashMap<String, FeatureType>;
 模型在线学习是指模型在**生产环境中持续接收新数据流**，并实时更新模型参数而不需要完整重训练的学习范式。
 
 形式化描述：
+
 ```
 给定：
 - 初始模型参数 θ₀
@@ -93,16 +97,16 @@ type FeatureSchema = HashMap<String, FeatureType>;
 trait StreamingInference<M, I, O> {
     // 加载模型
     fn load_model(&mut self, path: &str) -> Result<M, ModelError>;
-    
+
     // 单条推理（低延迟路径）
     fn predict(&self, input: &I) -> Result<O, InferenceError>;
-    
+
     // 批量推理（高吞吐路径）
     fn predict_batch(&self, inputs: &[I]) -> Result<Vec<O>, InferenceError>;
-    
+
     // 异步流式推理
     fn predict_stream(&self, input_stream: Stream<I>) -> Stream<O>;
-    
+
     // 模型热更新
     fn hot_swap(&mut self, new_model: M) -> Result<(), ModelError>;
 }
@@ -117,6 +121,7 @@ trait StreamingInference<M, I, O> {
 **命题**：在 AI 原生流处理系统中，若特征工程流水线满足**事件时间处理**和**恰好一次语义**，则训练-推理特征一致性误差可控制在可接受范围内。
 
 **形式化表述**：
+
 ```
 设：
 - f_train(x): 训练阶段特征函数
@@ -131,11 +136,13 @@ ConsistencyError → 0 (当系统稳定运行时)
 ```
 
 **证明概要**：
+
 1. 事件时间处理确保训练和服务使用相同的时间语义
 2. 恰好一次语义消除重复计算导致的特征漂移
 3. 确定性算子保证相同输入产生相同输出
 
 **工程实现要点**：
+
 ```python
 # Flink 特征一致性保障
 from pyflink.datastream import StreamExecutionEnvironment
@@ -157,6 +164,7 @@ def extract_features(event):
 **命题**：在满足**凸损失函数**、**有界梯度**和**衰减学习率**条件下，在线学习算法的平均后悔值 (Regret) 次线性收敛。
 
 **形式化表述**：
+
 ```
 给定：
 - 凸损失函数 L(θ; x, y)
@@ -195,6 +203,7 @@ olr.fit(trainingStream);
 **命题**：在固定计算资源约束下，流式推理系统的**批处理大小 (Batch Size)** 与**端到端延迟**存在非线性权衡关系，存在最优操作点。
 
 **形式化分析**：
+
 ```
 设：
 - B: 批处理大小
@@ -228,7 +237,7 @@ struct AdaptiveBatcher<T> {
 impl<T> AdaptiveBatcher<T> {
     fn adjust_batch_size(&mut self) {
         let avg_latency = self.average_latency();
-        
+
         if avg_latency > self.max_latency_ms {
             // 延迟过高，减小批大小
             self.current_batch_size.fetch_sub(1, Ordering::Relaxed);
@@ -352,6 +361,7 @@ impl<T> AdaptiveBatcher<T> {
 ### 4.3 反例分析：何时不适合 AI 原生流处理？
 
 **不适用场景**：
+
 1. **模型复杂度极高**：大模型 (>100B 参数) 需要专用集群
 2. **特征计算极重**：需要 TB 级历史数据聚合的场景
 3. **一致性要求极高**：金融交易结算等强一致性场景
@@ -372,11 +382,13 @@ impl<T> AdaptiveBatcher<T> {
 窗口定义为 $W = [t_{start}, t_{end})$，窗口聚合函数为 $agg(\cdot)$。
 
 **正确性条件**：
+
 ```
 Correctness: ∀W, Feature(W) = agg({v_i | t_i ∈ W})
 ```
 
 **Flink 保证**：
+
 1. **Watermark 机制**：确保在 watermark 越过 $t_{end}$ 后，所有 $t_i < t_{end}$ 的事件已到达
 2. **允许延迟**：通过 `allowedLateness` 处理乱序事件
 3. **状态一致性**：Checkpoint 机制保证恰好一次语义
@@ -414,13 +426,13 @@ pub struct ModelServingCluster {
     // 主备模型实例
     primary: Arc<ModelInstance>,
     backup: Arc<ModelInstance>,
-    
+
     // 版本管理
     version_manager: VersionManager,
-    
+
     // 健康检查
     health_checker: HealthChecker,
-    
+
     // 熔断器
     circuit_breaker: CircuitBreaker,
 }
@@ -437,16 +449,16 @@ impl ModelServingCluster {
                 }
             }
         }
-        
+
         // 2. 故障转移至备份实例
         self.backup.predict(input).await
     }
-    
+
     // 热更新模型
     pub async fn hot_update(&mut self, new_model: ModelInstance) -> Result<(), Error> {
         // 灰度发布：先更新备份，验证通过后切换
         let old_backup = std::mem::replace(&mut self.backup, Arc::new(new_model));
-        
+
         // 验证新模型
         if self.validate_model(&self.backup).await {
             std::mem::swap(&mut self.primary, &mut self.backup);
@@ -554,10 +566,10 @@ impl AsyncMapFunction<UserQuery, EmbeddedQuery> for QueryEmbeddingOperator {
     async fn map(&self, query: UserQuery) -> Result<EmbeddedQuery> {
         // 文本清洗与特征提取
         let cleaned_text = preprocess_query(&query.query_text);
-        
+
         // 异步嵌入计算 (批处理优化)
         let embedding = self.embedding_model.encode(&cleaned_text).await?;
-        
+
         Ok(EmbeddedQuery {
             query_id: query.query_id,
             embedding,
@@ -595,7 +607,7 @@ impl MilvusVectorStore {
                 self.top_k,
             ))
             .await?;
-        
+
         search_result.into_iter()
             .map(|r| Ok(KnowledgeChunk {
                 content: r.get_field("content")?,
@@ -619,7 +631,7 @@ impl AsyncFunction<EmbeddedQuery, RetrievedContext> for VectorSearchAsyncFunctio
                 let scores = chunks.iter()
                     .map(|c| cosine_similarity(&query.embedding, &c.embedding))
                     .collect();
-                
+
                 ctx.collect(RetrievedContext {
                     query_id: query.query_id,
                     chunks,
@@ -656,7 +668,7 @@ impl OpenAIStreamingClient {
             context.to_prompt_text(),
             prompt
         );
-        
+
         let request = ChatCompletionRequest {
             model: self.model.clone(),
             messages: vec![Message {
@@ -667,7 +679,7 @@ impl OpenAIStreamingClient {
             max_tokens: 1024,
             temperature: 0.7,
         };
-        
+
         // SSE 流式响应处理
         self.client
             .post("https://api.openai.com/v1/chat/completions")
@@ -693,14 +705,14 @@ fn build_rag_pipeline(env: &mut StreamExecutionEnvironment) {
         .assign_timestamps_and_watermarks(
             WatermarkStrategy::for_bounded_out_of_orderness(Duration::from_secs(5))
         );
-    
+
     // 2. 查询预处理与嵌入
     let embedded_stream = query_stream
         .map(QueryEmbeddingOperator::new(
             Arc::new(BatchEmbeddingModel::new(32)) // 批大小32
         ))
         .name("Query Embedding");
-    
+
     // 3. 异步向量搜索 (最大并发100，超时5s)
     let context_stream = AsyncDataStream::unordered_wait(
         embedded_stream,
@@ -708,13 +720,13 @@ fn build_rag_pipeline(env: &mut StreamExecutionEnvironment) {
         Duration::from_secs(5),
         100,
     ).name("Vector Search");
-    
+
     // 4. Prompt 构建与 LLM 流式推理
     let response_stream = context_stream
         .flat_map(|ctx| {
             let client = OpenAIStreamingClient::new();
             let tokens = client.stream_completion(&ctx.original_text, &ctx);
-            
+
             tokens.map(|token| LLMResponse {
                 query_id: ctx.query_id.clone(),
                 tokens: vec![token],
@@ -722,7 +734,7 @@ fn build_rag_pipeline(env: &mut StreamExecutionEnvironment) {
             })
         })
         .name("LLM Streaming");
-    
+
     // 5. 结果汇聚与输出
     response_stream
         .key_by(|r| r.query_id.clone())
@@ -740,7 +752,7 @@ struct RagMetrics {
     vector_search_latency: Histogram,
     llm_ttfb: Histogram,  // Time To First Token
     total_e2e_latency: Histogram,
-    
+
     // 成本指标
     embedding_tokens: Counter,
     llm_input_tokens: Counter,
@@ -758,7 +770,7 @@ impl RagMetrics {
             _ => {}
         }
     }
-    
+
     /// 估算单次查询成本 (USD)
     fn estimate_cost(&self) -> f64 {
         let embedding_cost = self.embedding_tokens.get() as f64 * 0.0001 / 1000.0;
@@ -804,15 +816,15 @@ CREATE TABLE user_events (
 # ===== 特征 1：实时点击率 (CTR) =====
 t_env.execute_sql("""
 CREATE TABLE user_ctr_features AS
-SELECT 
+SELECT
     user_id,
     TUMBLE_START(event_time, INTERVAL '5' MINUTE) as window_start,
-    COUNT(*) FILTER (WHERE event_type = 'click') * 1.0 / 
+    COUNT(*) FILTER (WHERE event_type = 'click') * 1.0 /
         NULLIF(COUNT(*) FILTER (WHERE event_type = 'impression'), 0) as ctr_5min,
     COUNT(*) FILTER (WHERE event_type = 'click') as click_count_5min,
     COUNT(DISTINCT product_id) as unique_products_5min
 FROM user_events
-GROUP BY 
+GROUP BY
     user_id,
     TUMBLE(event_time, INTERVAL '5' MINUTE)
 """)
@@ -822,7 +834,7 @@ t_env.create_temporary_function("embedding_agg", EmbeddingAggregateFunction())
 
 t_env.execute_sql("""
 CREATE TABLE user_preference_embedding AS
-SELECT 
+SELECT
     user_id,
     embedding_agg(category, price) as preference_vector,
     COLLECT(product_id) as recent_products
@@ -834,7 +846,7 @@ GROUP BY user_id
 # ===== 特征 3：会话级特征 =====
 t_env.execute_sql("""
 CREATE TABLE session_features AS
-SELECT 
+SELECT
     user_id,
     SESSION_START(event_time, INTERVAL '30' MINUTE) as session_id,
     COUNT(*) as session_event_count,
@@ -842,7 +854,7 @@ SELECT
     (MAX(event_time) - MIN(event_time)).MINUTE as session_duration_min,
     ARRAY_AGG(DISTINCT category) as browsed_categories
 FROM user_events
-GROUP BY 
+GROUP BY
     user_id,
     SESSION(event_time, INTERVAL '30' MINUTE)
 """)
@@ -877,11 +889,11 @@ struct ElasticResourceManager {
     // 当前配置
     current_gpu_count: AtomicUsize,
     current_batch_size: AtomicUsize,
-    
+
     // 目标指标
     target_latency_ms: u64,
     max_latency_ms: u64,
-    
+
     // 成本模型
     gpu_cost_per_hour: f64,
     api_cost_per_token: f64,
@@ -890,7 +902,7 @@ struct ElasticResourceManager {
 impl ElasticResourceManager {
     async fn adjust_resources(&self, metrics: &LatencyMetrics) {
         let p99_latency = metrics.p99_latency_ms();
-        
+
         if p99_latency > self.max_latency_ms {
             // 延迟超标，扩容
             self.scale_up().await;
@@ -898,11 +910,11 @@ impl ElasticResourceManager {
             // 延迟余量大，缩容
             self.scale_down().await;
         }
-        
+
         // 批大小自适应
         self.adjust_batch_size(metrics);
     }
-    
+
     fn calculate_optimal_config(&self, load_forecast: f64) -> ResourceConfig {
         // 优化目标：min(成本) s.t. 延迟约束
         let gpu_configs = vec![
@@ -910,7 +922,7 @@ impl ElasticResourceManager {
             (2, 16),  // 2 GPU, batch=16
             (4, 32),  // 4 GPU, batch=32
         ];
-        
+
         gpu_configs.into_iter()
             .filter(|(gpu, batch)| self.estimate_latency(*gpu, *batch, load_forecast) < self.target_latency_ms)
             .min_by(|a, b| {
@@ -1012,43 +1024,43 @@ graph TB
         A2[购买事件]
         A3[浏览事件]
     end
-    
+
     subgraph "特征提取层"
         B1[点特征提取器]
         B2[窗口聚合器]
         B3[会话追踪器]
     end
-    
+
     subgraph "特征变换层"
         C1[归一化]
         C2[编码]
         C3[嵌入聚合]
     end
-    
+
     subgraph "特征存储层"
         D1[在线特征存储<br/>Redis]
         D2[离线特征存储<br/>S3/Hive]
         D3[向量特征存储<br/>Milvus]
     end
-    
+
     subgraph "消费层"
         E1[实时推理]
         E2[模型训练]
         E3[特征分析]
     end
-    
+
     A1 --> B1
     A2 --> B2
     A3 --> B3
-    
+
     B1 --> C1
     B2 --> C2
     B3 --> C3
-    
+
     C1 --> D1
     C2 --> D2
     C3 --> D3
-    
+
     D1 --> E1
     D2 --> E2
     D3 --> E3
@@ -1061,19 +1073,19 @@ flowchart TD
     A[延迟要求?] -->|< 50ms| B[本地嵌入式推理]
     A -->|50-500ms| C[本地 GPU 推理]
     A -->|> 500ms| D[远程 API 服务]
-    
+
     B --> B1[TensorRT/ONNX]
     B --> B2[量化 INT8]
     B --> B3[批大小=1]
-    
+
     C --> C1[TensorRT/Triton]
     C --> C2[动态批处理]
     C --> C3[GPU 池化]
-    
+
     D --> D1[OpenAI API]
     D --> D2[vLLM 服务]
     D --> D3[混合路由]
-    
+
     B1 --> E[成本: $/低延迟]
     C2 --> F[成本: $$/中延迟]
     D1 --> G[成本: $$$/高延迟容忍]
@@ -1083,35 +1095,20 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink ML Documentation, "Online Machine Learning", 2024. https://nightlies.apache.org/flink/flink-ml-docs-stable/
 
-[^2]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^3]: OpenAI API Documentation, "Streaming Responses", 2024. https://platform.openai.com/docs/api-reference/streaming
 
-[^4]: LangChain Documentation, "Streaming", 2024. https://python.langchain.com/docs/expression_language/streaming/
 
-[^5]: Pinecone Documentation, "Metadata Filtering and Hybrid Search", 2024. https://docs.pinecone.io/docs/metadata-filtering
 
-[^6]: Z. Milvus Documentation, "Vector Index", 2024. https://milvus.io/docs/index.md
 
-[^7]: River Python Library, "Online Machine Learning", 2024. https://riverml.xyz/latest/
 
-[^8]: NVIDIA TensorRT Documentation, "Optimizing Deep Learning Inference", 2024. https://docs.nvidia.com/deeplearning/tensorrt/
 
-[^9]: G. Hinton et al., "Distilling the Knowledge in a Neural Network", arXiv:1503.02531, 2015.
 
-[^10]: Feast Feature Store Documentation, "Real-time Feature Serving", 2024. https://docs.feast.dev/
 
-[^11]: FLIP-531: "Flink AI Agents Architecture", Apache Flink Community, 2025.
 
-[^12]: V. Gupta et al., "Chameleon: Adaptive Code Optimization for Expedited Deep Neural Network Compilation", ICLR 2020.
 
-[^13]: ONNX Runtime Documentation, "Performance Tuning", 2024. https://onnxruntime.ai/docs/performance/
 
-[^14]: J. Dean et al., "Large Scale Distributed Deep Networks", NIPS 2012.
 
-[^15]: M. Zinkevich et al., "Parallelized Stochastic Gradient Descent", NIPS 2010.
 
 ---
 

@@ -13,6 +13,7 @@
 $$\mathcal{M}_{ROCm} = (G_{grid}, B_{block}, T_{thread}, CU, M_{hierarchy}^{HSA})$$
 
 其中：
+
 - $G_{grid}$: 执行网格，由多个 Block 组成
 - $B_{block}$: 线程块，映射到 AMD Compute Unit (CU) 的 Wavefront
 - $T_{thread}$: 基本执行单元，在 AMD GPU 上每 64 线程组成一个 Wavefront
@@ -66,6 +67,7 @@ $$HIP_{kernel} = \Phi(CUDA_{kernel}) \circ \delta_{warpSize}$$
 $$M_{ROCm} = M_{coarse} \cup M_{fine} \cup M_{host-reg}$$
 
 其中：
+
 - $M_{coarse}$: 粗粒度内存 - 通过 DMA 传输的显式拷贝
 - $M_{fine}$: 细粒度内存 - CPU/GPU 共享页，支持系统范围原子操作
 - $M_{host-reg}$: 主机注册内存 - 页锁定的主机内存
@@ -226,24 +228,24 @@ graph TB
         H_CUDA[<cuda_runtime.h>]
         Kernel_CUDA["__global__ void kernel()"]
     end
-    
+
     subgraph Conversion["hipify 转换"]
         HIPFY["hipify-perl / hipify-clang"]
     end
-    
+
     subgraph Target["HIP Output"]
         HIP[*.hip files]
         H_HIP[<hip/hip_runtime.h>]
         Kernel_HIP["__global__ void kernel()"]
         Cond["条件编译:<br/>#ifdef __HIP_PLATFORM_AMD__"]
     end
-    
+
     subgraph Compilation["HIP 编译"]
         HIPCC["hipcc compiler"]
         AMD["AMD GPU Binary<br/>GCN/RDNA ISA"]
         NV["NVIDIA GPU Binary<br/>PTX/CUBIN"]
     end
-    
+
     CUDA --> HIPFY
     H_CUDA --> HIPFY
     Kernel_CUDA --> HIPFY
@@ -334,21 +336,21 @@ graph TB
 
 ```cpp
 // 使用 HIP 编写跨平台代码
-#include <hip/hip_runtime.h>
+# include <hip/hip_runtime.h>
 
 // 条件编译处理平台差异
-#ifdef __HIP_PLATFORM_AMD__
+# ifdef __HIP_PLATFORM_AMD__
     #define WARP_SIZE 64
     #include <hip/hip_cooperative_groups.h>
-#elif defined(__HIP_PLATFORM_NVIDIA__)
+# elif defined(__HIP_PLATFORM_NVIDIA__)
     #define WARP_SIZE 32
     #include <cooperative_groups.h>
-#endif
+# endif
 
 __global__ void optimizedKernel(float* data, int n) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int lane = threadIdx.x % WARP_SIZE;  // 自动适配 32/64
-    
+
     // 平台无关的算法实现
     // ...
 }
@@ -377,7 +379,7 @@ public:
 // CUDA 实现
 class CudaBackend : public GpuBackend { /* ... */ };
 
-// ROCm 实现  
+// ROCm 实现
 class RocmBackend : public GpuBackend { /* ... */ };
 
 // 运行时选择
@@ -490,18 +492,18 @@ $$0.78 \leq \frac{Perf_{AMD}}{Perf_{NVIDIA}} \leq 1.16$$
 
 ```cpp
 // vector_ops.hip
-#include <hip/hip_runtime.h>
-#include <hip/hip_fp16.h>
-#include <math.h>
+# include <hip/hip_runtime.h>
+# include <hip/hip_fp16.h>
+# include <math.h>
 
 // 平台检测宏
-#ifdef __HIP_PLATFORM_AMD__
+# ifdef __HIP_PLATFORM_AMD__
     #define WARP_SIZE 64
     #define GPU_ARCH "AMD"
-#else
+# else
     #define WARP_SIZE 32
     #define GPU_ARCH "NVIDIA"
-#endif
+# endif
 
 /**
  * Wavefront/Warp 级归约（跨平台）
@@ -528,33 +530,33 @@ __global__ void vectorDotKernel(
     int dim
 ) {
     __shared__ float sharedMem[WARP_SIZE];
-    
+
     float dot = 0.0f;
-    
+
     // 网格步进循环
     for (int i = blockIdx.x * blockDim.x + threadIdx.x;
          i < dim;
          i += blockDim.x * gridDim.x) {
         dot += vecA[i] * vecB[i];
     }
-    
+
     // Wavefront/Warp 级归约
     dot = warpReduceSum(dot);
-    
+
     // Wavefront leader 写入共享内存
     int lane = threadIdx.x % WARP_SIZE;
     int warpId = threadIdx.x / WARP_SIZE;
-    
+
     if (lane == 0) {
         sharedMem[warpId] = dot;
     }
     __syncthreads();
-    
+
     // 最终归约（仅第一个 Wavefront）
     if (warpId == 0) {
         dot = (lane < blockDim.x / WARP_SIZE) ? sharedMem[lane] : 0.0f;
         dot = warpReduceSum(dot);
-        
+
         if (threadIdx.x == 0) {
             atomicAdd(result, dot);
         }
@@ -574,15 +576,15 @@ __global__ void batchCosineSimilarityKernel(
     __shared__ float sharedDot[WARP_SIZE];
     __shared__ float sharedNormA[WARP_SIZE];
     __shared__ float sharedNormB[WARP_SIZE];
-    
+
     int pairId = blockIdx.x;
     if (pairId >= batchSize) return;
-    
+
     const float* vecA = queries + pairId * dim;
     const float* vecB = docs + pairId * dim;
-    
+
     float dot = 0.0f, normA = 0.0f, normB = 0.0f;
-    
+
     for (int i = threadIdx.x; i < dim; i += blockDim.x) {
         float a = vecA[i];
         float b = vecB[i];
@@ -590,33 +592,33 @@ __global__ void batchCosineSimilarityKernel(
         normA += a * a;
         normB += b * b;
     }
-    
+
     // 三重归约
     dot = warpReduceSum(dot);
     __syncthreads();
     normA = warpReduceSum(normA);
     __syncthreads();
     normB = warpReduceSum(normB);
-    
+
     int lane = threadIdx.x % WARP_SIZE;
     int warpId = threadIdx.x / WARP_SIZE;
-    
+
     if (lane == 0) {
         sharedDot[warpId] = dot;
         sharedNormA[warpId] = normA;
         sharedNormB[warpId] = normB;
     }
     __syncthreads();
-    
+
     if (warpId == 0) {
         dot = (lane < blockDim.x / WARP_SIZE) ? sharedDot[lane] : 0.0f;
         normA = (lane < blockDim.x / WARP_SIZE) ? sharedNormA[lane] : 0.0f;
         normB = (lane < blockDim.x / WARP_SIZE) ? sharedNormB[lane] : 0.0f;
-        
+
         dot = warpReduceSum(dot);
         normA = warpReduceSum(normA);
         normB = warpReduceSum(normB);
-        
+
         if (threadIdx.x == 0) {
             float norm = sqrtf(normA * normB);
             results[pairId] = (norm > 1e-7f) ? (dot / norm) : 0.0f;
@@ -627,8 +629,8 @@ __global__ void batchCosineSimilarityKernel(
 /**
  * 使用 rocBLAS 的矩阵乘法
  */
-#ifdef __HIP_PLATFORM_AMD__
-#include <rocblas/rocblas.h>
+# ifdef __HIP_PLATFORM_AMD__
+# include <rocblas/rocblas.h>
 
 void matmulRocBLAS(
     rocblas_handle handle,
@@ -639,7 +641,7 @@ void matmulRocBLAS(
 ) {
     const float alpha = 1.0f;
     const float beta = 0.0f;
-    
+
     rocblas_sgemm(
         handle,
         rocblas_operation_none,
@@ -652,21 +654,21 @@ void matmulRocBLAS(
         C, N
     );
 }
-#endif
+# endif
 ```
 
 #### 6.1.2 JNI Bridge (跨平台)
 
 ```cpp
 // flink_gpu_bridge_rocm.cpp
-#include <jni.h>
-#include <hip/hip_runtime.h>
-#include <rocblas/rocblas.h>
-#include <vector>
-#include <memory>
+# include <jni.h>
+# include <hip/hip_runtime.h>
+# include <rocblas/rocblas.h>
+# include <vector>
+# include <memory>
 
 // 错误检查宏
-#define HIP_CHECK(call) \
+# define HIP_CHECK(call) \
     do { \
         hipError_t err = call; \
         if (err != hipSuccess) { \
@@ -682,20 +684,20 @@ private:
     static constexpr int NUM_STREAMS = 4;
     hipStream_t streams[NUM_STREAMS];
     int current = 0;
-    
+
 public:
     HipStreamPool() {
         for (int i = 0; i < NUM_STREAMS; i++) {
             HIP_CHECK(hipStreamCreate(&streams[i]));
         }
     }
-    
+
     ~HipStreamPool() {
         for (int i = 0; i < NUM_STREAMS; i++) {
             hipStreamDestroy(streams[i]);
         }
     }
-    
+
     hipStream_t getStream() {
         return streams[current++ % NUM_STREAMS];
     }
@@ -705,16 +707,16 @@ public:
 class RocBlasHandle {
 private:
     rocblas_handle handle;
-    
+
 public:
     RocBlasHandle() {
         rocblas_create_handle(&handle);
     }
-    
+
     ~RocBlasHandle() {
         rocblas_destroy_handle(handle);
     }
-    
+
     rocblas_handle get() { return handle; }
 };
 
@@ -722,11 +724,11 @@ public:
 void printDeviceInfo() {
     int deviceCount;
     HIP_CHECK(hipGetDeviceCount(&deviceCount));
-    
+
     for (int i = 0; i < deviceCount; i++) {
         hipDeviceProp_t props;
         HIP_CHECK(hipGetDeviceProperties(&props, i));
-        
+
         printf("Device %d: %s\n", i, props.name);
         printf("  Compute Units: %d\n", props.multiProcessorCount);
         printf("  Wavefront Size: %d\n", props.warpSize);
@@ -755,55 +757,55 @@ Java_com_flink_gpu_udf_GpuCosineSimilarity_cosineSimilarityGpu(
     // 获取数组指针
     float* h_vecA = env->GetFloatArrayElements(vecA, nullptr);
     float* h_vecB = env->GetFloatArrayElements(vecB, nullptr);
-    
+
     const size_t bytes = dim * sizeof(float);
-    
+
     // 设备内存分配（使用 hipMalloc）
     float *d_vecA, *d_vecB, *d_result;
     HIP_CHECK(hipMalloc(&d_vecA, bytes));
     HIP_CHECK(hipMalloc(&d_vecB, bytes));
     HIP_CHECK(hipMalloc(&d_result, sizeof(float)));
     HIP_CHECK(hipMemset(d_result, 0, sizeof(float)));
-    
+
     // 获取 Stream
     static HipStreamPool streamPool;
     hipStream_t stream = streamPool.getStream();
-    
+
     // 异步 H2D 传输
     HIP_CHECK(hipMemcpyAsync(d_vecA, h_vecA, bytes, hipMemcpyHostToDevice, stream));
     HIP_CHECK(hipMemcpyAsync(d_vecB, h_vecB, bytes, hipMemcpyHostToDevice, stream));
-    
+
     // 启动 Kernel（使用适配的 Block 大小）
     const int blockSize = 256;  // 256 = 64 * 4 (Wavefront 倍数)
     const int gridSize = (dim + blockSize - 1) / blockSize;
-    
+
     // Kernel 声明（来自 vector_ops.hip）
     extern __global__ void vectorDotKernel(const float*, const float*, float*, int);
-    
+
     hipLaunchKernelGGL(
         vectorDotKernel,
         dim3(gridSize), dim3(blockSize), 0, stream,
         d_vecA, d_vecB, d_result, dim
     );
-    
+
     // 异步 D2H 传输
     float h_result;
     HIP_CHECK(hipMemcpyAsync(&h_result, d_result, sizeof(float),
                              hipMemcpyDeviceToHost, stream));
-    
+
     // 同步
     HIP_CHECK(hipStreamSynchronize(stream));
-    
+
     // 归一化（简化版本，实际需要计算 ||A|| 和 ||B||）
     float dot = h_result;
-    
+
     // 清理
     env->ReleaseFloatArrayElements(vecA, h_vecA, JNI_ABORT);
     env->ReleaseFloatArrayElements(vecB, h_vecB, JNI_ABORT);
     HIP_CHECK(hipFree(d_vecA));
     HIP_CHECK(hipFree(d_vecB));
     HIP_CHECK(hipFree(d_result));
-    
+
     return dot;
 }
 
@@ -820,59 +822,59 @@ Java_com_flink_gpu_udf_GpuBatchProcessor_processBatchRocm(
     // 批处理实现 - 使用 rocBLAS 加速
     static RocBlasHandle rocblas;
     static HipStreamPool streamPool;
-    
+
     hipStream_t stream = streamPool.getStream();
     rocblas_set_stream(rocblas.get(), stream);
-    
+
     // 分配设备内存
     float *d_queries, *d_docs, *d_results;
     size_t batchBytes = batchSize * dim * sizeof(float);
-    
+
     HIP_CHECK(hipMalloc(&d_queries, batchBytes));
     HIP_CHECK(hipMalloc(&d_docs, batchBytes));
     HIP_CHECK(hipMalloc(&d_results, batchSize * sizeof(float)));
-    
+
     // 收集数据并传输
     std::vector<float> h_queries(batchSize * dim);
     std::vector<float> h_docs(batchSize * dim);
-    
+
     for (int i = 0; i < batchSize; i++) {
         jfloatArray q = (jfloatArray)env->GetObjectArrayElement(queries, i);
         jfloatArray d = (jfloatArray)env->GetObjectArrayElement(docs, i);
-        
+
         jfloat* qElems = env->GetFloatArrayElements(q, nullptr);
         jfloat* dElems = env->GetFloatArrayElements(d, nullptr);
-        
+
         memcpy(&h_queries[i * dim], qElems, dim * sizeof(float));
         memcpy(&h_docs[i * dim], dElems, dim * sizeof(float));
-        
+
         env->ReleaseFloatArrayElements(q, qElems, JNI_ABORT);
         env->ReleaseFloatArrayElements(d, dElems, JNI_ABORT);
     }
-    
+
     HIP_CHECK(hipMemcpyAsync(d_queries, h_queries.data(), batchBytes,
                              hipMemcpyHostToDevice, stream));
     HIP_CHECK(hipMemcpyAsync(d_docs, h_docs.data(), batchBytes,
                              hipMemcpyHostToDevice, stream));
-    
+
     // 使用批处理 Kernel 或 rocBLAS
     extern __global__ void batchCosineSimilarityKernel(
         const float*, const float*, float*, int, int
     );
-    
+
     hipLaunchKernelGGL(
         batchCosineSimilarityKernel,
         dim3(batchSize), dim3(256), 0, stream,
         d_queries, d_docs, d_results, dim, batchSize
     );
-    
+
     // 回传结果
     jfloat* h_results = env->GetFloatArrayElements(results, nullptr);
     HIP_CHECK(hipMemcpyAsync(h_results, d_results, batchSize * sizeof(float),
                              hipMemcpyDeviceToHost, stream));
     HIP_CHECK(hipStreamSynchronize(stream));
     env->ReleaseFloatArrayElements(results, h_results, 0);
-    
+
     // 清理
     HIP_CHECK(hipFree(d_queries));
     HIP_CHECK(hipFree(d_docs));
@@ -885,7 +887,7 @@ Java_com_flink_gpu_udf_GpuBatchProcessor_processBatchRocm(
 #### 6.1.3 编译脚本
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # build_rocm_bridge.sh
 
 # 设置 ROCm 路径
@@ -925,8 +927,8 @@ echo "Build complete: libflink_gpu_rocm.so"
 
 ```cuda
 // original_cuda.cu
-#include <cuda_runtime.h>
-#include <cublas_v2.h>
+# include <cuda_runtime.h>
+# include <cublas_v2.h>
 
 __global__ void saxpy(int n, float a, float *x, float *y) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -958,8 +960,8 @@ hipify-clang original_cuda.cu \
 
 ```cpp
 // converted_hip.hip（hipify 输出）
-#include <hip/hip_runtime.h>
-#include <rocblas.h>  // 注意：cublas → rocblas
+# include <hip/hip_runtime.h>
+# include <rocblas.h>  // 注意：cublas → rocblas
 
 __global__ void saxpy(int n, float a, float *x, float *y) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -979,22 +981,22 @@ void launchSaxpy(int n, float a, float *d_x, float *d_y) {
 
 ```cpp
 // 手动优化后的跨平台版本
-#include <hip/hip_runtime.h>
+# include <hip/hip_runtime.h>
 
 // 条件编译处理差异
-#ifdef __HIP_PLATFORM_AMD__
+# ifdef __HIP_PLATFORM_AMD__
     #define WARP_SIZE 64
     #include <rocblas.h>
     #define BLAS_HANDLE rocblas_handle
     #define BLAS_CREATE rocblas_create_handle
     #define BLAS_SGEMV rocblas_sgemv
-#else
+# else
     #define WARP_SIZE 32
     #include <cublas_v2.h>
     #define BLAS_HANDLE cublasHandle_t
     #define BLAS_CREATE cublasCreate
     #define BLAS_SGEMV cublasSgemv
-#endif
+# endif
 
 __global__ void saxpy(int n, float a, float *x, float *y) {
     // 使用网格步进循环处理大规模数据
@@ -1008,16 +1010,16 @@ __global__ void saxpy(int n, float a, float *x, float *y) {
 void launchSaxpy(int n, float a, float *d_x, float *d_y) {
     // 选择适合两种架构的 Block 大小
     int threads = 256;  // 256 = 32*8 = 64*4
-    
+
     // 根据 GPU 类型调整 Grid 大小
     int device;
     hipGetDevice(&device);
     hipDeviceProp_t props;
     hipGetDeviceProperties(&props, device);
-    
+
     int sms = props.multiProcessorCount;
     int blocks = min((n + threads - 1) / threads, sms * 4);
-    
+
     hipLaunchKernelGGL(saxpy, dim3(blocks), dim3(threads), 0, 0,
                        n, a, d_x, d_y);
     hipDeviceSynchronize();
@@ -1037,7 +1039,7 @@ flowchart TD
         H[<cuda_*.h> 头文件]
         Lib[cuBLAS/cuDNN 调用]
     end
-    
+
     subgraph Analysis["分析阶段"]
         Hipify["hipify-clang 分析"]
         Check1{"基本 CUDA API?"}
@@ -1046,7 +1048,7 @@ flowchart TD
         Check4{"PTX 汇编?"}
         Check5{"Tensor Cores?"}
     end
-    
+
     subgraph Conversion["转换阶段"]
         Auto["自动转换<br/>✅ 90% 代码"]
         Manual1["手动调整<br/>API 映射"]
@@ -1054,40 +1056,40 @@ flowchart TD
         Manual3["重写汇编<br/>GCN/RDNA"]
         Manual4["使用 rocWMMA"]
     end
-    
+
     subgraph Output["HIP 输出"]
         HIP[*.hip 文件]
         Compiled["hipcc 编译"]
         AMD["AMD GPU 二进制"]
         NV["NVIDIA GPU 二进制"]
     end
-    
+
     CU --> Hipify
     H --> Hipify
     Lib --> Hipify
-    
+
     Hipify --> Check1
     Check1 -->|是| Auto
     Check1 -->|否| Check4
-    
+
     Check4 -->|是| Manual3
     Check4 -->|否| Check2
-    
+
     Check2 -->|是| Manual1
     Check2 -->|否| Check5
-    
+
     Check5 -->|是| Manual4
     Check5 -->|否| Check3
-    
+
     Check3 -->|是| Manual2
     Check3 -->|否| Auto
-    
+
     Auto --> HIP
     Manual1 --> HIP
     Manual2 --> HIP
     Manual3 --> HIP
     Manual4 --> HIP
-    
+
     HIP --> Compiled
     Compiled --> AMD
     Compiled --> NV
@@ -1101,29 +1103,29 @@ graph TB
         Host_C[Host Memory<br/>CPU 可访问]
         Device_C[Device Memory<br/>GPU 可访问]
         Unified_C["Unified Memory<br/>自动迁移"]
-        
+
         Host_C <-->|cudaMemcpy| Device_C
         Host_C -.->|cudaMallocManaged| Unified_C
         Device_C -.->|cudaMallocManaged| Unified_C
     end
-    
+
     subgraph ROCm_Memory["ROCm 内存模型"]
         Host_R[Host Memory<br/>CPU 可访问]
         Coarse_R["Coarse-Grained<br/>显式拷贝"]
         Fine_R["Fine-Grained<br/>CPU/GPU 共享"]
         HostReg_R["Host-Registered<br/>页锁定内存"]
-        
+
         Host_R <-->|hipMemcpy| Coarse_R
         Host_R -.->|hipHostMalloc| Fine_R
         Fine_R -.->|原子操作| Host_R
         Host_R -->|hipHostRegister| HostReg_R
     end
-    
+
     subgraph Comparison["关键差异"]
         Diff1["ROCm 细粒度内存<br/>支持硬件原子<br/>CPU-GPU 同步"]
         Diff2["CUDA Unified Memory<br/>软件管理页迁移"]
     end
-    
+
     Fine_R -.->|支持| Diff1
     Unified_C -.->|支持| Diff2
 ```
@@ -1136,19 +1138,19 @@ graph TB
         Job["Flink Job DAG"]
         UDF["GPU UDF Operator"]
     end
-    
+
     subgraph Bridge["Native Bridge"]
         JNI["JNI Layer"]
-        
+
         subgraph PlatformAbstraction["Platform Abstraction"]
             Interface["GpuBackend Interface"]
-            
+
             subgraph CUDA_Impl["CUDA Backend"]
                 CUDA_RT[CUDA Runtime]
                 CUBLAS[cuBLAS]
                 CUDNN[cuDNN]
             end
-            
+
             subgraph ROCm_Impl["ROCm Backend"]
                 HIP_RT[HIP Runtime]
                 ROCBLAS[rocBLAS]
@@ -1156,12 +1158,12 @@ graph TB
             end
         end
     end
-    
+
     subgraph Hardware["Hardware"]
         NV_GPU["NVIDIA GPU<br/>A100/H100"]
         AMD_GPU["AMD GPU<br/>MI210/MI250X"]
     end
-    
+
     Job --> UDF
     UDF -->|JNI Call| JNI
     JNI --> Interface
@@ -1169,7 +1171,7 @@ graph TB
     Interface -->|Detect AMD| ROCm_Impl
     CUDA_Impl --> NV_GPU
     ROCm_Impl --> AMD_GPU
-    
+
     style CUDA_Impl fill:#76b900
     style ROCm_Impl fill:#ed1c24
 ```

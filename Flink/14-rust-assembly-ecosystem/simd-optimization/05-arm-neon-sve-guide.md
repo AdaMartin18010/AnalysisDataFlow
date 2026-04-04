@@ -157,20 +157,20 @@ graph TB
         AVX2[AVX2 256-bit]
         AVX512[AVX-512 512-bit]
     end
-    
+
     subgraph "功能特性"
         PRED[谓词执行]
         VL[可变长度]
         GATHER[分散/聚集]
     end
-    
+
     NEON --> PRED
     SVE --> PRED
     SVE --> VL
     AVX512 --> PRED
     AVX512 --> GATHER
     SVE --> GATHER
-    
+
     style SVE fill:#99ff99
     style AVX512 fill:#ffcc99
 ```
@@ -190,22 +190,22 @@ flowchart LR
     subgraph "Flink 作业"
         JOB[DataStream Job]
     end
-    
+
     subgraph "运行时选择"
         DETECT[CPU 特性检测]
         DISPATCH[函数分发]
     end
-    
+
     subgraph "平台特定实现"
         X86[x86_64<br/>AVX2/AVX-512]
         ARM[ARM64<br/>NEON/SVE]
     end
-    
+
     JOB --> DETECT
     DETECT --> DISPATCH
     DISPATCH --> X86
     DISPATCH --> ARM
-    
+
     style X86 fill:#ffcc99
     style ARM fill:#99ff99
 ```
@@ -294,17 +294,17 @@ $$p_j = \begin{cases}
 使用 Rust `std::simd` + 条件编译实现：
 
 ```rust
-#[cfg(all(target_arch = "aarch64", target_feature = "sve"))]
+# [cfg(all(target_arch = "aarch64", target_feature = "sve"))]
 mod simd_impl {
     // SVE 实现
 }
 
-#[cfg(all(target_arch = "aarch64", not(target_feature = "sve")))]
+# [cfg(all(target_arch = "aarch64", not(target_feature = "sve")))]
 mod simd_impl {
     // NEON 实现
 }
 
-#[cfg(target_arch = "x86_64")]
+# [cfg(target_arch = "x86_64")]
 mod simd_impl {
     // AVX2/AVX-512 实现
 }
@@ -326,18 +326,18 @@ mod simd_impl {
 // 编译: gcc -O3 -march=armv8-a+fp+simd -o neon_vector_add neon_vector_add.c
 // 或 Apple: clang -O3 -mcpu=apple-m1 -o neon_vector_add neon_vector_add.c
 
-#include <arm_neon.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+# include <arm_neon.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <time.h>
 
-#define N 10000000
-#define ALIGN 16  // NEON 需要 16-byte 对齐
+# define N 10000000
+# define ALIGN 16  // NEON 需要 16-byte 对齐
 
 // NEON 向量化加法 (4 floats = 128-bit)
 void neon_add(const float* a, const float* b, float* c, size_t n) {
     size_t i = 0;
-    
+
     // 主循环: 每次处理 4 个 float
     for (; i + 4 <= n; i += 4) {
         float32x4_t va = vld1q_f32(&a[i]);
@@ -345,7 +345,7 @@ void neon_add(const float* a, const float* b, float* c, size_t n) {
         float32x4_t vc = vaddq_f32(va, vb);
         vst1q_f32(&c[i], vc);
     }
-    
+
     // 尾部标量处理
     for (; i < n; i++) {
         c[i] = a[i] + b[i];
@@ -366,33 +366,33 @@ int main() {
     float *b = aligned_alloc(N);
     float *c_scalar = aligned_alloc(N);
     float *c_neon = aligned_alloc(N);
-    
+
     // 初始化
     for (size_t i = 0; i < N; i++) {
         a[i] = (float)i;
         b[i] = (float)(N - i);
     }
-    
+
     // 预热
     for (int i = 0; i < 5; i++) {
         for (size_t j = 0; j < N; j++) c_scalar[j] = a[j] + b[j];
         neon_add(a, b, c_neon, N);
     }
-    
+
     // 标量基准
     clock_t start = clock();
     for (int iter = 0; iter < 10; iter++) {
         for (size_t i = 0; i < N; i++) c_scalar[i] = a[i] + b[i];
     }
     clock_t scalar_time = clock() - start;
-    
+
     // NEON 基准
     start = clock();
     for (int iter = 0; iter < 10; iter++) {
         neon_add(a, b, c_neon, N);
     }
     clock_t neon_time = clock() - start;
-    
+
     // 验证
     int correct = 1;
     for (size_t i = 0; i < N && correct; i++) {
@@ -401,14 +401,14 @@ int main() {
             printf("Mismatch at %zu\n", i);
         }
     }
-    
+
     printf("=== ARM NEON Vector Addition ===\n");
     printf("Data size: %d elements\n", N);
     printf("Scalar time: %.3f ms\n", scalar_time * 1000.0 / CLOCKS_PER_SEC);
     printf("NEON time:   %.3f ms\n", neon_time * 1000.0 / CLOCKS_PER_SEC);
     printf("Speedup:     %.2fx\n", (double)scalar_time / neon_time);
     printf("Correctness: %s\n", correct ? "PASS" : "FAIL");
-    
+
     free(a); free(b); free(c_scalar); free(c_neon);
     return 0;
 }
@@ -421,25 +421,25 @@ int main() {
 // 编译: gcc -O3 -march=armv8-a+sve -o sve_vector_ops sve_vector_ops.c
 // 需要: ARM 硬件或模拟器支持 SVE
 
-#include <arm_sve.h>
-#include <stdio.h>
-#include <stdlib.h>
+# include <arm_sve.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 /**
  * SVE 向量化加法 - 自动适应任意向量长度
  */
 void sve_add(const float* a, const float* b, float* c, size_t n) {
     size_t i = 0;
-    
+
     // 使用 WHILELT 生成谓词，自动处理尾部
     svbool_t pg = svwhilelt_b32(i, n);
-    
+
     while (svptest_any(svptrue_b32(), pg)) {
         svfloat32_t va = svld1(pg, &a[i]);
         svfloat32_t vb = svld1(pg, &b[i]);
         svfloat32_t vc = svadd_f32_x(pg, va, vb);
         svst1(pg, &c[i], vc);
-        
+
         i += svcntw();  // 获取当前 VL 下的 32-bit 元素数
         pg = svwhilelt_b32(i, n);
     }
@@ -452,19 +452,19 @@ size_t sve_filter(const float* input, float* output, size_t n, float threshold) 
     size_t in_i = 0, out_i = 0;
     svbool_t pg = svwhilelt_b32(in_i, n);
     svfloat32_t thresh_vec = svdup_f32(threshold);
-    
+
     while (svptest_any(svptrue_b32(), pg)) {
         svfloat32_t vec = svld1(pg, &input[in_i]);
         svbool_t mask = svcmpgt(pg, vec, thresh_vec);
-        
+
         // 压缩存储满足条件的元素
         svst1(mask, &output[out_i], vec);
         out_i += svcntp_b32(pg, mask);
-        
+
         in_i += svcntw();
         pg = svwhilelt_b32(in_i, n);
     }
-    
+
     return out_i;
 }
 
@@ -473,26 +473,26 @@ int main() {
     float* a = aligned_alloc(64, n * sizeof(float));
     float* b = aligned_alloc(64, n * sizeof(float));
     float* c = aligned_alloc(64, n * sizeof(float));
-    
+
     // 初始化
     for (size_t i = 0; i < n; i++) {
         a[i] = (float)i;
         b[i] = (float)(n - i);
     }
-    
+
     // 执行 SVE 加法
     sve_add(a, b, c, n);
-    
-    printf("SVE Vector Length: %lu bytes (%lu floats)\n", 
+
+    printf("SVE Vector Length: %lu bytes (%lu floats)\n",
            svcntb() * 4, svcntw());
-    printf("First 4 results: %.1f, %.1f, %.1f, %.1f\n", 
+    printf("First 4 results: %.1f, %.1f, %.1f, %.1f\n",
            c[0], c[1], c[2], c[3]);
-    
+
     // 测试过滤
     float* filtered = aligned_alloc(64, n * sizeof(float));
     size_t count = sve_filter(a, filtered, n, 5000.0f);
     printf("Filtered %zu elements > 5000\n", count);
-    
+
     free(a); free(b); free(c); free(filtered);
     return 0;
 }
@@ -504,17 +504,17 @@ int main() {
 // portable_simd_example.rs
 // 编译: rustc -C opt-level=3 -C target-cpu=native portable_simd_example.rs
 
-#![feature(portable_simd)]
+# ![feature(portable_simd)]
 use std::simd::*;
 
 /// 可移植的向量化加法 - 自动适配 NEON/SSE/AVX2/AVX-512
 pub fn portable_vector_add(a: &[f32], b: &[f32], c: &mut [f32]) {
     // 使用 8-lane f32x8 (256-bit 或 NEON 双寄存器)
     const LANES: usize = 8;
-    
+
     let chunks = a.len() / LANES;
     let remainder = a.len() % LANES;
-    
+
     for i in 0..chunks {
         let offset = i * LANES;
         let va = f32x8::from_slice(&a[offset..offset + LANES]);
@@ -522,7 +522,7 @@ pub fn portable_vector_add(a: &[f32], b: &[f32], c: &mut [f32]) {
         let vc = va + vb;
         c[offset..offset + LANES].copy_from_slice(vc.as_array());
     }
-    
+
     // 尾部处理
     let start = a.len() - remainder;
     for i in start..a.len() {
@@ -531,7 +531,7 @@ pub fn portable_vector_add(a: &[f32], b: &[f32], c: &mut [f32]) {
 }
 
 /// 运行时检测并选择最优实现
-#[cfg(target_arch = "aarch64")]
+# [cfg(target_arch = "aarch64")]
 pub fn optimized_add_aarch64(a: &[f32], b: &[f32], c: &mut [f32]) {
     // 检测 SVE 支持
     if std::arch::is_aarch64_feature_detected!("sve") {
@@ -541,7 +541,7 @@ pub fn optimized_add_aarch64(a: &[f32], b: &[f32], c: &mut [f32]) {
     }
 }
 
-#[cfg(target_arch = "aarch64")]
+# [cfg(target_arch = "aarch64")]
 fn sve_add(_a: &[f32], _b: &[f32], _c: &mut [f32]) {
     // SVE 特定实现 (需要 nightly + 内联汇编)
     // 简化: 实际使用 std::arch::aarch64::* 或 asm!
@@ -553,19 +553,19 @@ fn main() {
     let a: Vec<f32> = (0..n).map(|i| i as f32).collect();
     let b: Vec<f32> = (0..n).map(|i| (n - i) as f32).collect();
     let mut c = vec![0.0f32; n];
-    
+
     // 预热
     portable_vector_add(&a, &b, &mut c);
-    
+
     // 基准测试
     let start = std::time::Instant::now();
     for _ in 0..100 {
         portable_vector_add(&a, &b, &mut c);
     }
     let elapsed = start.elapsed();
-    
+
     println!("Portable SIMD ({} elements x 100 iterations): {:?}", n, elapsed);
-    println!("Throughput: {:.2}M ops/sec", 
+    println!("Throughput: {:.2}M ops/sec",
              (n * 100) as f64 / elapsed.as_secs_f64() / 1_000_000.0);
 }
 ```
@@ -592,7 +592,7 @@ fn main() {
 ```mermaid
 timeline
     title ARM SIMD Architecture Evolution
-    
+
     section NEON Era
         2005 : ARMv6 + NEON
              : 128-bit fixed
@@ -603,7 +603,7 @@ timeline
         2012 : ARMv8-A
              : 64-bit + NEON
              : AArch64 mode
-    
+
     section SVE Era
         2016 : ARMv8-A + SVE
              : Scalable 128-2048
@@ -626,31 +626,31 @@ flowchart TB
     subgraph "Application Layer"
         FLINK[Flink UDF]
     end
-    
+
     subgraph "Abstraction Layer"
         PORT[Portable SIMD<br/>std::simd / Highway]
     end
-    
+
     subgraph "Platform Layer"
         subgraph "ARM"
             NEON[NEON 128-bit]
             SVE[SVE 128-2048]
         end
-        
+
         subgraph "x86"
             SSE[SSE 128-bit]
             AVX2[AVX2 256-bit]
             AVX512[AVX-512 512-bit]
         end
     end
-    
+
     FLINK --> PORT
     PORT --> NEON
     PORT --> SVE
     PORT --> SSE
     PORT --> AVX2
     PORT --> AVX512
-    
+
     style PORT fill:#99ff99
     style SVE fill:#ffcc99
     style AVX512 fill:#ffcc99
@@ -661,20 +661,20 @@ flowchart TB
 ```mermaid
 flowchart TD
     A[Flink 云部署] --> B{性能敏感?}
-    
+
     B -->|Yes| C{计算密集型?}
     B -->|No| D[Graviton 2<br/>性价比首选]
-    
+
     C -->|Yes| E{SIMD 优化?}
     C -->|No| F[Graviton 3<br/>平衡选择]
-    
+
     E -->|SVE| G[Graviton 3/4<br/>最新指令集]
     E -->|NEON 即可| H[Graviton 2/3<br/>广泛兼容]
     E -->|x86 依赖| I[x86 实例<br/>兼容优先]
-    
+
     G --> J[最高性能<br/>ARM 生态]
     H --> K[良好性能<br/>成熟生态]
-    
+
     style G fill:#99ff99
     style D fill:#ffcc99
 ```

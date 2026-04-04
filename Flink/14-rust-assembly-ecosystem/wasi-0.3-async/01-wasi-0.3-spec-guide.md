@@ -1,7 +1,7 @@
 # WASI 0.3 规范完整指南
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/  
-> **前置依赖**: [WebAssembly Component Model](../12-component-model/01-component-model-basics.md), [WASI 0.2 接口规范](../../09-flink-deployment/03-cloud-native/02-wasi-integration.md)  
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/
+> **前置依赖**: [WebAssembly Component Model](../12-component-model/01-component-model-basics.md), [WASI 0.2 接口规范](../../09-flink-deployment/03-cloud-native/02-wasi-integration.md)
 > **形式化等级**: L4 (工程形式化 + 标准化规范)
 
 ---
@@ -17,6 +17,7 @@ $$
 $$
 
 其中：
+
 - **Worlds**: 接口集合的命名空间（如 `wasi:cli`, `wasi:http`, `wasi:sockets`）
 - **Interfaces**: 类型化函数集合，使用 WIT (WASM Interface Type) 定义
 - **Capabilities**: 基于能力的访问控制模型
@@ -30,6 +31,7 @@ $$
 $$
 
 核心组件：
+
 - **AsyncFn**: 返回 `future<T>` 或 `stream<T>` 的异步函数
 - **Stream\<T\>**: 异步数据流，支持背压（backpressure）
 - **Future\<T\>**: 异步计算的最终结果
@@ -183,6 +185,7 @@ $$
 ### 4.2 WASI 0.3 对边缘计算的意义
 
 **边缘计算约束**:
+
 - 资源受限（内存、CPU）
 - 高并发连接
 - 低延迟要求
@@ -192,6 +195,7 @@ $$
 ### 4.3 与 Flink 集成的可行性论证
 
 **挑战**:
+
 - Flink 基于 JVM，WASI 是原生运行时
 - 需要跨语言边界的数据传递
 - 需要一致的背压语义
@@ -209,17 +213,20 @@ $$
 **工程论证**:
 
 假设：
+
 - I/O 操作延迟: $L = 100\text{ms}$
 - UDF 计算时间: $C = 10\text{ms}$
 - 线程池大小: $N = 100$
 
 **同步模型**:
+
 ```
 吞吐量 = N / (L + C) = 100 / 0.11 ≈ 909 请求/秒
 内存占用 = N × 线程栈大小 ≈ 100 × 1MB = 100MB
 ```
 
 **WASI 0.3 Async 模型**:
+
 ```
 吞吐量 ≈ 单线程处理能力 × 并发数 / L
 假设每个异步任务内存开销: 8KB
@@ -236,15 +243,16 @@ $$
 **证明概要**:
 
 1. **接口定义** (WIT):
+
 ```wit
 interface async-processor {
     async fn process-batch(input: stream<record>) -> future<result<batch-output, error>>;
 }
 ```
 
-2. **类型检查**: WIT 编译器在组件链接时验证类型一致性
-3. **内存安全**: Component Model 的 lift/lower 操作确保跨边界数据传递的安全性
-4. **生命周期管理**: `future` 和 `stream` 的所有权语义防止 use-after-free
+1. **类型检查**: WIT 编译器在组件链接时验证类型一致性
+2. **内存安全**: Component Model 的 lift/lower 操作确保跨边界数据传递的安全性
+3. **生命周期管理**: `future` 和 `stream` 的所有权语义防止 use-after-free
 
 ---
 
@@ -276,27 +284,27 @@ impl Guest for AsyncUdfImpl {
             .map(|record| async move {
                 // 异步 I/O 操作（如外部 API 调用）
                 let enriched = enrich_record(&record).await?;
-                
+
                 // 异步数据库查询
                 let metadata = fetch_metadata(&enriched.id).await?;
-                
+
                 Ok::<_, String>(combine(enriched, metadata))
             })
             .buffer_unordered(100)  // 并发度控制
             .collect::<Vec<_>>()
             .await;
-        
+
         let results: Vec<_> = processed
             .into_iter()
             .filter_map(|r| r.ok())
             .collect();
-        
+
         Ok(BatchResult {
             processed_count: results.len() as u64,
             outputs: results,
         })
     }
-    
+
     /// 带取消令牌的异步函数
     async fn process_with_cancel(
         input: impl Stream<Item = Record>,
@@ -304,9 +312,9 @@ impl Guest for AsyncUdfImpl {
     ) -> Result<BatchResult, String> {
         let mut processed = 0u64;
         let mut outputs = Vec::new();
-        
+
         tokio::pin!(input);
-        
+
         loop {
             tokio::select! {
                 // 处理下一个记录
@@ -319,18 +327,18 @@ impl Guest for AsyncUdfImpl {
                         Err(e) => log::warn!("Processing error: {}", e),
                     }
                 }
-                
+
                 // 取消信号处理
                 _ = cancel_token.cancelled() => {
                     log::info!("Cancellation requested, stopping after {} records", processed);
                     break;
                 }
-                
+
                 // 所有记录处理完成
                 else => break,
             }
         }
-        
+
         Ok(BatchResult { processed_count: processed, outputs })
     }
 }
@@ -343,9 +351,9 @@ async fn enrich_record(record: &Record) -> Result<EnrichedRecord, String> {
         .get(&format!("https://api.example.com/enrich/{}", record.id))
         .await
         .map_err(|e| format!("HTTP error: {}", e))?;
-    
+
     let data: EnrichmentData = response.json().await?;
-    
+
     Ok(EnrichedRecord {
         id: record.id.clone(),
         data: record.data.clone(),
@@ -358,7 +366,7 @@ async fn fetch_metadata(id: &str) -> Result<Metadata, String> {
     // 异步数据库查询
     let conn = wasi::keyvalue::open("metadata-store").await?;
     let value = conn.get(id).await?;
-    
+
     match value {
         Some(bytes) => serde_json::from_slice(&bytes)
             .map_err(|e| format!("Deserialization error: {}", e)),
@@ -385,31 +393,31 @@ interface async-processor {
         data: list<u8>,
         headers: list<header>,
     }
-    
+
     record header {
         key: string,
         value: string,
     }
-    
+
     /// 批处理结果
     record batch-result {
         processed-count: u64,
         outputs: list<output-record>,
         metrics: processing-metrics,
     }
-    
+
     record output-record {
         id: string,
         result: list<u8>,
         latency-us: u64,
     }
-    
+
     record processing-metrics {
         total-latency-us: u64,
         io-wait-us: u64,
         compute-us: u64,
     }
-    
+
     /// 错误类型
     variant error {
         io(string),
@@ -417,26 +425,26 @@ interface async-processor {
         timeout,
         cancelled,
     }
-    
+
     /// 核心异步处理函数
     /// WASI 0.3 原生 async 语法
     async fn process-batch(
         input: stream<record>
     ) -> result<batch-result, error>;
-    
+
     /// 带背压感知的流处理
     async fn process-stream(
         input: stream<record>,
         output: stream<output-record>,
         config: stream-config,
     ) -> result<stream-metrics, error>;
-    
+
     /// 可取消的异步操作
     async fn process-with-cancel(
         input: stream<record>,
         cancel: cancel-token,
     ) -> result<batch-result, error>;
-    
+
     /// 流配置
     record stream-config {
         /// 最大并发数
@@ -448,7 +456,7 @@ interface async-processor {
         /// 是否启用精确一次语义
         exactly-once: bool,
     }
-    
+
     /// 流处理指标
     record stream-metrics {
         records-in: u64,
@@ -457,7 +465,7 @@ interface async-processor {
         backpressure-events: u32,
         avg-processing-latency-us: u64,
     }
-    
+
     /// 取消令牌资源
     resource cancel-token {
         /// 请求取消
@@ -471,7 +479,7 @@ interface async-processor {
 world flink-async-udf {
     /// 导出异步处理器
     export async-processor;
-    
+
     /// 导入 WASI 0.3 标准接口
     import wasi:http/client@0.3.0;
     import wasi:keyvalue/store@0.3.0;
@@ -490,21 +498,21 @@ execution:
   # 启用 WASI 0.3 运行时
   wasi-runtime: enabled
   wasi-version: "0.3.0"
-  
+
   # 异步执行配置
   async-udf:
     # 每个 TaskManager 的异步运行时实例数
     runtime-instances: 4
-    
+
     # 每个运行时的最大并发异步任务数
     max-concurrent-tasks: 10000
-    
+
     # 背压配置
     backpressure:
       enabled: true
       buffer-size: 1000
       timeout-ms: 5000
-    
+
     # 取消配置
     cancellation:
       enabled: true
@@ -517,7 +525,7 @@ udfs:
     type: wasm
     path: "wasms/flink_wasi_async_udf.wasm"
     wit: "wits/flink-async.wit"
-    
+
     # WASI 0.3 特定配置
     wasi-0.3:
       # 允许访问的接口
@@ -525,12 +533,12 @@ udfs:
         - "wasi:http/client"
         - "wasi:keyvalue/store"
         - "wasi:clocks/monotonic-clock"
-      
+
       # 资源限制
       resource-limits:
         max-memory-mb: 512
         max-file-descriptors: 1024
-        
+
       # 流处理配置
       stream-processing:
         input-buffer-size: 500
@@ -541,7 +549,7 @@ udfs:
 edge:
   runtime: wasmedge
   wasi-version: "0.3.0"
-  
+
   # 边缘-云协同
   federation:
     enabled: true
@@ -562,18 +570,18 @@ graph TB
         B2 --> C2[轮询循环]
         C2 --> D2[线程池]
         D2 --> E2[WASI 接口]
-        
+
         style A2 fill:#ffcccc
         style B2 fill:#ffcccc
         style C2 fill:#ffcccc
     end
-    
+
     subgraph "WASI 0.3 (Native Async)"
         A3[应用代码] --> B3[async/await]
         B3 --> C3[Stack Switching]
         C3 --> D3[单线程事件循环]
         D3 --> E3[WASI 接口]
-        
+
         style A3 fill:#ccffcc
         style B3 fill:#ccffcc
         style C3 fill:#ccffcc
@@ -589,36 +597,36 @@ flowchart TB
         JM[JobManager]
         TM1[TaskManager 1]
         TM2[TaskManager 2]
-        
+
         subgraph "TM with WASI 0.3"
             WRT[WASI 0.3 Runtime]
             UDF1[Rust Async UDF]
             UDF2[Assembly UDF]
         end
     end
-    
+
     subgraph "Edge Nodes"
         WE1[WasmEdge Node 1]
         WE2[WasmEdge Node 2]
-        
+
         subgraph "Edge Runtime"
             ERT[WASI 0.3 Runtime]
             EF[Edge Function]
         end
     end
-    
+
     JM --> TM1
     JM --> TM2
     TM1 --> WRT
     WRT --> UDF1
     WRT --> UDF2
-    
+
     TM1 -.->|Edge Federation| WE1
     TM2 -.->|Edge Federation| WE2
     WE1 --> ERT
     WE2 --> ERT
     ERT --> EF
-    
+
     style JM fill:#e1f5ff
     style WRT fill:#ccffcc
     style ERT fill:#ccffcc
@@ -633,16 +641,16 @@ gantt
     section 阶段 1
     核心 async 支持        :done, a1, 2025-06-01, 2025-12-01
     Component Model 集成   :done, a2, 2025-08-01, 2026-01-01
-    
+
     section 阶段 2
     WASI 0.3 发布          :milestone, m1, 2026-02-01, 0d
     Stream 优化            :active, b1, 2026-02-01, 2026-04-01
     取消令牌完善           :b2, 2026-02-15, 2026-05-01
-    
+
     section 阶段 3
     线程支持               :c1, 2026-04-01, 2026-08-01
     性能优化               :c2, 2026-05-01, 2026-09-01
-    
+
     section 阶段 4
     WASI 1.0 候选          :milestone, m2, 2026-10-01, 0d
     WASI 1.0 发布          :milestone, m3, 2026-12-01, 0d
@@ -653,26 +661,26 @@ gantt
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
-    
+
     Idle --> Processing: 接收到记录
-    
+
     Processing --> WaitingIO: 发起异步I/O
     Processing --> Producing: 计算完成
-    
+
     WaitingIO --> Processing: I/O完成
     WaitingIO --> Cancelled: 取消信号
-    
+
     Producing --> Backpressure: 输出缓冲区满
     Producing --> Idle: 批处理完成
-    
+
     Backpressure --> Producing: 缓冲区可用
     Backpressure --> Cancelled: 超时/取消
-    
+
     Cancelled --> Idle: 清理完成
-    
+
     Processing --> Error: 处理异常
     WaitingIO --> Error: I/O错误
-    
+
     Error --> Idle: 错误处理完成
 ```
 
@@ -680,25 +688,15 @@ stateDiagram-v2
 
 ## 8. 引用参考 (References)
 
-[^1]: Bytecode Alliance, "WASI 0.3 Roadmap", 2025. https://github.com/WebAssembly/WASI/blob/main/docs/roadmap.md
 
-[^2]: The State of WebAssembly 2025-2026, Uno Platform, 2026. https://platform.uno/blog/the-state-of-webassembly-2025-2026/
 
-[^3]: Wasmtime Runtime Documentation, "Experimental WASI 0.3 Support", 2025. https://docs.wasmtime.dev/
 
-[^4]: WebAssembly Component Model Proposal, "Async and Streaming”, 2025. https://github.com/WebAssembly/component-model/blob/main/design/mvp/Async.md
 
-[^5]: Stack Switching Proposal, WebAssembly CG, 2025. https://github.com/WebAssembly/stack-switching
 
-[^6]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^7]: Apache Flink Documentation, "Async I/O for External Data Access", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/
 
-[^8]: WasmEdge Documentation, "WASI 0.3 Preview Support", 2025. https://wasmedge.org/docs/
 
-[^9]: Fastly Compute, "WebAssembly on the Edge", 2025. https://www.fastly.com/products/edge-compute
 
-[^10]: Fermyon Technologies, "Spin Framework and WASI Cloud”, 2025. https://developer.fermyon.com/spin/index
 
 ---
 
@@ -735,6 +733,7 @@ stateDiagram-v2
 ### B.1 代码迁移示例
 
 **WASI 0.2 风格（回调式）**:
+
 ```rust
 // 手动管理状态和回调
 pub fn process_async(
@@ -749,6 +748,7 @@ pub fn process_async(
 ```
 
 **WASI 0.3 风格（async/await）**:
+
 ```rust
 // 原生 async/await
 pub async fn process_async(input: &[u8]) -> Result<Vec<u8>, Error> {
@@ -761,6 +761,7 @@ pub async fn process_async(input: &[u8]) -> Result<Vec<u8>, Error> {
 ### B.2 WIT 定义迁移
 
 **WASI 0.2**:
+
 ```wit
 interface processor {
     process: func(input: list<u8>) -> future<result<list<u8>>>;
@@ -768,6 +769,7 @@ interface processor {
 ```
 
 **WASI 0.3**:
+
 ```wit
 interface processor {
     // 使用原生 async 关键字

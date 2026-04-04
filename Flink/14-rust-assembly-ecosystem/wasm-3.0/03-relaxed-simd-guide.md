@@ -85,6 +85,7 @@ $$\text{madd}_{std}(a, b, c) = \text{round}(\text{round}(a \times b) + c)$$
 $$\text{madd}_{rel}(a, b, c) \in \{\text{round}(a \times b + c), \text{round}(\text{round}(a \times b) + c)\}$$
 
 关键差异：
+
 - **标准版本**: 乘法结果先舍入，再加法舍入 (两次舍入)
 - **Relaxed 版本**: 可能使用融合乘加 (FMA)，仅一次舍入
 
@@ -140,10 +141,12 @@ $$|\text{madd}_{rel} - \text{madd}_{std}| \leq \epsilon \times |a \times b|$$
 | Edge | 120+ | ✅ 完全支持 | 继承 Chromium |
 
 **Firefox 里程碑**:
+
 - Firefox 128: Relaxed SIMD 在 Nightly 中可用
 - Firefox 133: 默认启用，移除 flag 要求
 
 **Safari 路线图**:
+
 - Safari TP 204+: 已实现，需 `--enable-relaxed-simd`
 - Safari 18.4+: 预计 2026 Q1 默认启用
 
@@ -156,15 +159,15 @@ $$|\text{madd}_{rel} - \text{madd}_{std}| \leq \epsilon \times |a \times b|$$
 **流处理特性分析**:
 
 1. **聚合操作的误差抵消**: 对于求和、平均等聚合操作：
-   
+
    设标准 SIMD 结果为 \(S_{std}\)，Relaxed SIMD 结果为 \(S_{rel}\)：
-   
+
    $$S_{rel} = S_{std} + \delta, \quad |\delta| \leq n \times \epsilon_{machine} \times |S_{std}|$$
-   
+
    其中 \(n\) 为元素数量，对于流处理的滑动窗口，\(n\) 通常可控。
 
 2. **统计量的稳定性**: 对于方差、标准差等统计量：
-   
+
    相对误差传播：
    $$\frac{|\sigma_{rel} - \sigma_{std}|}{\sigma_{std}} \leq 2\epsilon_{machine}$$
 
@@ -191,7 +194,7 @@ graph TB
             S_CONV["Convert"]
             S_BIT["Bitwise"]
         end
-        
+
         subgraph REL["Relaxed SIMD (Phase 5)"]
             R_SWIZZLE["relaxed_swizzle"]
             R_TRUNC["relaxed_trunc"]
@@ -199,26 +202,26 @@ graph TB
             R_NMADD["relaxed_nmadd"]
             R_SELECT["relaxed_laneselect"]
         end
-        
+
         subgraph FUTURE["Future Extensions"]
             F_FLEX["Flexible Vectors<br/>Phase 1"]
             F_WIDE["Wide Arithmetic<br/>Phase 3"]
         end
     end
-    
+
     subgraph HARDWARE["Hardware Mapping"]
         H_X86["x86_64<br/>AVX2/AVX-512"]
         H_ARM["ARM64<br/>NEON/SVE"]
         H_RISCV["RISC-V<br/>V Extension"]
     end
-    
+
     S_ARITH --> H_X86
     S_ARITH --> H_ARM
     R_MADD --> H_X86
     R_MADD --> H_ARM
     R_SWIZZLE --> H_X86
     R_SWIZLE --> H_ARM
-    
+
     style REL fill:#fff3e0
     style R_MADD fill:#e8f5e9
 ```
@@ -232,36 +235,36 @@ flowchart TB
             BATCH["Batch Records"]
             STREAM["Stream Chunks"]
         end
-        
+
         subgraph UDF["WASM UDF"]
             SCALAR["Scalar Fallback"]
             SIMD128["128-bit SIMD"]
             RELAXED["Relaxed SIMD"]
         end
-        
+
         subgraph OUTPUT["Output"]
             RESULT["Processed Results"]
         end
     end
-    
+
     subgraph DETECT["Feature Detection"]
         CHECK1["Check SIMD Support"]
         CHECK2["Check Relaxed SIMD"]
     end
-    
+
     BATCH --> UDF
     STREAM --> UDF
-    
+
     CHECK1 -->|No SIMD| SCALAR
     CHECK1 -->|SIMD Only| SIMD128
     CHECK1 -->|Relaxed Available| CHECK2
     CHECK2 -->|Yes| RELAXED
     CHECK2 -->|No| SIMD128
-    
+
     SCALAR --> RESULT
     SIMD128 --> RESULT
     RELAXED --> RESULT
-    
+
     style RELAXED fill:#e8f5e9
     style SIMD128 fill:#e3f2fd
 ```
@@ -317,7 +320,7 @@ flowchart TB
 // 特性检测实现
 async function selectSimdImplementation() {
     const hasRelaxedSimd = await detectRelaxedSimd();
-    
+
     if (hasRelaxedSimd) {
         return loadWasmModule('./udf_relaxed_simd.wasm');
     } else {
@@ -328,6 +331,7 @@ async function selectSimdImplementation() {
 ```
 
 **Safari 特定处理**:
+
 - 在 Safari 中默认使用标准 SIMD 构建
 - 提供用户指南启用实验性特性
 - 等待 Safari 18.4+ 的正式支持
@@ -343,6 +347,7 @@ async function selectSimdImplementation() {
 **证明**:
 
 **前提条件**:
+
 - 聚合函数 \(A\) 作用于数据流 \(D = \{d_1, d_2, ..., d_n\}\)
 - 使用滑动窗口大小 \(w\)
 - 机器精度 \(\epsilon = 2^{-24}\) (f32)
@@ -351,35 +356,35 @@ async function selectSimdImplementation() {
 
 1. **单个操作误差界**:
    对于 Relaxed MADD 操作：
-   
+
    $$\text{madd}_{rel}(a, b, c) = a \times b + c + \delta_{fma}$$
-   
+
    其中 \(\delta_{fma}\) 是融合乘加与分离乘加的差异：
-   
+
    $$|\delta_{fma}| \leq \epsilon \times |a \times b|$$
 
 2. **聚合误差累积**:
    对于求和聚合 \(S = \sum_{i=1}^{n} x_i\)：
-   
+
    使用 Relaxed SIMD 累加树：
-   
+
    $$S_{rel} = \sum_{i=1}^{n} x_i + \sum_{j=1}^{\log n} \delta_j$$
-   
+
    总误差界：
-   
+
    $$|S_{rel} - S_{exact}| \leq \epsilon \times \log n \times \sum_{i=1}^{n} |x_i|$$
 
 3. **相对误差分析**:
    设数据均值 \(\mu\)，标准差 \(\sigma\)：
-   
+
    $$\frac{|S_{rel} - S_{exact}|}{|S_{exact}|} \leq \epsilon \times \log n \times \frac{\sum |x_i|}{|\sum x_i|}$$
-   
+
    对于典型流数据，\(\frac{\sum |x_i|}{|\sum x_i|} \approx 1\) 到 \(10\)：
-   
+
    $$\text{Relative Error} \leq 10 \times \epsilon \times \log n$$
-   
+
    对于 \(n = 10^6\) (典型窗口大小)：
-   
+
    $$\text{Relative Error} \leq 10 \times 2^{-24} \times 20 \approx 1.2 \times 10^{-5} = 0.0012\%$$
 
 4. **业务影响评估**:
@@ -401,12 +406,12 @@ async function selectSimdImplementation() {
   (type (;0;) (func (param v128 v128 v128) (result v128)))
   (type (;1;) (func (param v128 v128) (result v128)))
   (type (;2;) (func (param v128) (result v128)))
-  
+
   ;; 导出内存
   (memory (export "memory") 1)
-  
+
   ;; ============ Relaxed FMA 操作 ============
-  
+
   ;; f32x4.relaxed_madd: (a * b) + c
   ;; 可能使用硬件 FMA 指令
   (func (export "relaxed_madd_f32x4") (type 0) (param v128 v128 v128) (result v128)
@@ -415,7 +420,7 @@ async function selectSimdImplementation() {
     local.get 2
     f32x4.relaxed_madd
   )
-  
+
   ;; f32x4.relaxed_nmadd: -(a * b) + c = c - (a * b)
   (func (export "relaxed_nmadd_f32x4") (type 0) (param v128 v128 v128) (result v128)
     local.get 0
@@ -423,9 +428,9 @@ async function selectSimdImplementation() {
     local.get 2
     f32x4.relaxed_nmadd
   )
-  
+
   ;; ============ Relaxed Swizzle ============
-  
+
   ;; i8x16.relaxed_swizzle: 置换字节
   ;; 超出范围索引 (lane[i] > 15) 的处理是 relaxed 的
   (func (export "relaxed_swizzle") (type 1) (param v128 v128) (result v128)
@@ -433,35 +438,35 @@ async function selectSimdImplementation() {
     local.get 1
     i8x16.relaxed_swizzle
   )
-  
+
   ;; ============ Relaxed Truncation ============
-  
+
   ;; i32x4.relaxed_trunc_f32x4_s: 浮点到整数转换
   ;; 溢出时的行为是 relaxed 的
   (func (export "relaxed_trunc") (type 2) (param v128) (result v128)
     local.get 0
     i32x4.relaxed_trunc_f32x4_s
   )
-  
+
   ;; ============ 批量向量操作示例 ============
-  
+
   ;; 对内存中的 4 个 f32 向量执行批量 MADD
   ;; C[i] = A[i] * B[i] + C[i] (in-place)
-  (func (export "batch_madd_4x4") 
+  (func (export "batch_madd_4x4")
     (param $a_offset i32)
     (param $b_offset i32)
     (param $c_offset i32)
     (param $count i32)
     (local $i i32)
-    
+
     (local.set $i (i32.const 0))
-    
+
     (block $done
       (loop $loop
         ;; 检查是否完成
         (i32.ge_u (local.get $i) (local.get $count))
         (br_if $done)
-        
+
         ;; 计算当前偏移
         (local.get $a_offset)
         (local.get $i)
@@ -469,30 +474,30 @@ async function selectSimdImplementation() {
         (i32.mul)
         (i32.add)
         v128.load        ;; 加载 A[i]
-        
+
         (local.get $b_offset)
         (local.get $i)
         (i32.const 16)
         (i32.mul)
         (i32.add)
         v128.load        ;; 加载 B[i]
-        
+
         (local.get $c_offset)
         (local.get $i)
         (i32.const 16)
         (i32.mul)
         (i32.add)
         v128.load        ;; 加载 C[i]
-        
+
         f32x4.relaxed_madd  ;; (A * B) + C
-        
+
         (local.get $c_offset)
         (local.get $i)
         (i32.const 16)
         (i32.mul)
         (i32.add)
         v128.store       ;; 存回 C[i]
-        
+
         ;; 递增
         (local.set $i (i32.add (local.get $i) (i32.const 1)))
         (br $loop)
@@ -516,36 +521,36 @@ use std::arch::wasm32::*;
 #[target_feature(enable = "relaxed-simd")]
 pub unsafe fn relaxed_dot_product(a: &[f32], b: &[f32]) -> f32 {
     assert_eq!(a.len(), b.len());
-    
+
     let len = a.len();
     let mut sum = f32x4(0.0, 0.0, 0.0, 0.0);
-    
+
     // 每次处理 4 个 f32 (128-bit)
     let chunks = len / 4;
-    
+
     for i in 0..chunks {
         let offset = i * 4;
-        
+
         // 加载 4 个 f32 到 SIMD 寄存器
         let va = v128_load(a.as_ptr().add(offset) as *const v128);
         let vb = v128_load(b.as_ptr().add(offset) as *const v128);
-        
+
         // 使用 relaxed_madd: sum = va * vb + sum
         // 注意：与标准 SIMD 不同，这可能在支持的硬件上使用 FMA
         sum = f32x4_relaxed_madd(va, vb, sum);
     }
-    
+
     // 水平求和
     let arr: [f32; 4] = std::mem::transmute(sum);
     let mut total = arr[0] + arr[1] + arr[2] + arr[3];
-    
+
     // 处理剩余元素
     let remainder = len % 4;
     let remainder_start = chunks * 4;
     for i in 0..remainder {
         total += a[remainder_start + i] * b[remainder_start + i];
     }
-    
+
     total
 }
 
@@ -558,11 +563,11 @@ pub unsafe fn matmul_4x4_relaxed(a: &[f32; 16], b: &[f32; 16], c: &mut [f32; 16]
     let b_col1 = f32x4(b[1], b[5], b[9], b[13]);
     let b_col2 = f32x4(b[2], b[6], b[10], b[14]);
     let b_col3 = f32x4(b[3], b[7], b[11], b[15]);
-    
+
     // 计算 C 的每一行
     for row in 0..4 {
         let a_row = f32x4(a[row * 4], a[row * 4 + 1], a[row * 4 + 2], a[row * 4 + 3]);
-        
+
         // 使用 relaxed_madd 计算点积
         // C[row][0] = dot(A[row], B[:,0])
         let c0 = f32x4_relaxed_madd(
@@ -570,25 +575,25 @@ pub unsafe fn matmul_4x4_relaxed(a: &[f32; 16], b: &[f32; 16], c: &mut [f32; 16]
             b_col0,
             f32x4_splat(0.0)
         );
-        
+
         let c1 = f32x4_relaxed_madd(
             a_row,
             b_col1,
             f32x4_splat(0.0)
         );
-        
+
         let c2 = f32x4_relaxed_madd(
             a_row,
             b_col2,
             f32x4_splat(0.0)
         );
-        
+
         let c3 = f32x4_relaxed_madd(
             a_row,
             b_col3,
             f32x4_splat(0.0)
         );
-        
+
         // 水平求和并存储结果
         let result0 = f32x4_extract_lane::<0>(c0) + f32x4_extract_lane::<1>(c0) +
                       f32x4_extract_lane::<2>(c0) + f32x4_extract_lane::<3>(c0);
@@ -598,7 +603,7 @@ pub unsafe fn matmul_4x4_relaxed(a: &[f32; 16], b: &[f32; 16], c: &mut [f32; 16]
                       f32x4_extract_lane::<2>(c2) + f32x4_extract_lane::<3>(c2);
         let result3 = f32x4_extract_lane::<0>(c3) + f32x4_extract_lane::<1>(c3) +
                       f32x4_extract_lane::<2>(c3) + f32x4_extract_lane::<3>(c3);
-        
+
         c[row * 4] = result0;
         c[row * 4 + 1] = result1;
         c[row * 4 + 2] = result2;
@@ -628,7 +633,7 @@ impl SimdUdf {
         if a.len() != b.len() {
             panic!("Vector lengths must match");
         }
-        
+
         // 安全地调用 unsafe 函数
         unsafe {
             // 检测是否支持 Relaxed SIMD
@@ -640,18 +645,18 @@ impl SimdUdf {
             }
         }
     }
-    
+
     /// 矩阵乘法包装函数
     #[wasm_bindgen]
     pub fn matrix_multiply_4x4(a: &[f32], b: &[f32]) -> Box<[f32]> {
         if a.len() != 16 || b.len() != 16 {
             panic!("Matrices must be 4x4");
         }
-        
+
         let a_arr: [f32; 16] = a.try_into().unwrap();
         let b_arr: [f32; 16] = b.try_into().unwrap();
         let mut c_arr = [0.0f32; 16];
-        
+
         unsafe {
             if is_relaxed_simd_supported() {
                 matmul_4x4_relaxed(&a_arr, &b_arr, &mut c_arr);
@@ -668,7 +673,7 @@ impl SimdUdf {
                 }
             }
         }
-        
+
         Box::new(c_arr)
     }
 }
@@ -712,11 +717,11 @@ class RelaxedSimdRuntime {
     async detectFeatures() {
         // 检测标准 128-bit SIMD
         this.features.simd128 = await this.detectSimd128();
-        
+
         // 检测 Relaxed SIMD
-        this.features.relaxedSimd = this.features.simd128 && 
+        this.features.relaxedSimd = this.features.simd128 &&
                                      await this.detectRelaxedSimd();
-        
+
         console.log('SIMD Feature Detection:', this.features);
         return this.features;
     }
@@ -739,7 +744,7 @@ class RelaxedSimdRuntime {
                 0xfd, 0x0e, 0x00, 0x00,  // i32x4.splat (SIMD opcode)
                 0x0b                     // end
             ]);
-            
+
             return WebAssembly.validate(bytes);
         } catch (e) {
             return false;
@@ -764,7 +769,7 @@ class RelaxedSimdRuntime {
                 0xfd, 0x100, 0x01,  // f32x4.relaxed_madd (opcode)
                 0x0b
             ]);
-            
+
             return WebAssembly.validate(bytes);
         } catch (e) {
             return false;
@@ -776,10 +781,10 @@ class RelaxedSimdRuntime {
      */
     async loadBestModule(baseUrl) {
         await this.detectFeatures();
-        
+
         let moduleUrl;
         let variant;
-        
+
         if (this.features.relaxedSimd) {
             moduleUrl = `${baseUrl}/udf_relaxed_simd.wasm`;
             variant = 'relaxed-simd';
@@ -790,15 +795,15 @@ class RelaxedSimdRuntime {
             moduleUrl = `${baseUrl}/udf_scalar.wasm`;
             variant = 'scalar';
         }
-        
+
         console.log(`Loading WASM module: ${variant} (${moduleUrl})`);
-        
+
         const response = await fetch(moduleUrl);
         const bytes = await response.arrayBuffer();
-        
+
         this.module = await WebAssembly.compile(bytes);
         this.variant = variant;
-        
+
         return {
             module: this.module,
             variant: variant,
@@ -813,16 +818,16 @@ class RelaxedSimdRuntime {
         const instance = await WebAssembly.instantiate(this.module, {
             env: { memory: new WebAssembly.Memory({ initial: 10 }) }
         });
-        
+
         // 准备测试数据
         const size = 10000;
         const a = new Float32Array(size).fill(1.0);
         const b = new Float32Array(size).fill(2.0);
-        
+
         // 多次运行取平均
         const iterations = 100;
         const times = [];
-        
+
         for (let i = 0; i < iterations; i++) {
             const start = performance.now();
             instance.exports.dot_product(
@@ -832,10 +837,10 @@ class RelaxedSimdRuntime {
             );
             times.push(performance.now() - start);
         }
-        
+
         const avg = times.reduce((a, b) => a + b, 0) / times.length;
         const min = Math.min(...times);
-        
+
         return {
             variant: variant || this.variant,
             size: size,
@@ -855,12 +860,12 @@ if (typeof module !== 'undefined' && module.exports) {
 // 使用示例
 async function example() {
     const runtime = new RelaxedSimdRuntime();
-    
+
     // 加载最佳模块
     const { variant, features } = await runtime.loadBestModule('./udf');
     console.log(`Loaded variant: ${variant}`);
     console.log(`Features:`, features);
-    
+
     // 运行基准测试
     const results = await runtime.benchmark();
     console.log('Benchmark results:', results);
@@ -883,18 +888,18 @@ flowchart LR
             S_DOT["Dot Product<br/>8.2 GFLOPS"]
             S_FIR["FIR Filter<br/>6.8 GFLOPS"]
         end
-        
+
         subgraph REL["Relaxed SIMD"]
             R_MATMUL["Matrix 4x4<br/>24.1 GFLOPS<br/>↑ 93%"]
             R_DOT["Dot Product<br/>15.8 GFLOPS<br/>↑ 93%"]
             R_FIR["FIR Filter<br/>12.4 GFLOPS<br/>↑ 82%"]
         end
     end
-    
+
     S_MATMUL -.->|FMA优化| R_MATMUL
     S_DOT -.->|FMA优化| R_DOT
     S_FIR -.->|FMA优化| R_FIR
-    
+
     style REL fill:#e8f5e9
     style R_MATMUL fill:#c8e6c9
     style R_DOT fill:#c8e6c9
@@ -907,16 +912,16 @@ flowchart LR
 gantt
     title Relaxed SIMD 浏览器支持演进
     dateFormat YYYY-MM
-    
+
     section Chrome
     Implementation       :done, 2023-06, 2024-03
     Stable Release       :done, 2024-03, 2024-12
-    
+
     section Firefox
     Implementation       :done, 2024-01, 2024-09
     Nightly              :done, 2024-06, 2024-12
     Stable (No Flag)     :done, 2025-01, 2026-12
-    
+
     section Safari
     Implementation       :done, 2024-09, 2025-06
     Tech Preview         :done, 2025-03, 2025-09
@@ -928,26 +933,16 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: WebAssembly Community Group, "Relaxed SIMD Proposal", WebAssembly Spec, Phase 5, 2024. https://github.com/WebAssembly/relaxed-simd
 
-[^2]: Google, "Chrome Relaxed SIMD Implementation", Chromium Code Search, 2024.
 
-[^3]: Mozilla, "Firefox Relaxed SIMD Support", Bugzilla, 2025. https://bugzilla.mozilla.org/show_bug.cgi?id=relaxed-simd
 
-[^4]: WebAssembly Feature Matrix, "Relaxed SIMD Implementation Status", 2025. https://webassembly.org/features/
 
-[^5]: Intel, "Intel Intrinsics Guide: FMA Operations", 2025. https://www.intel.com/content/www/us/en/docs/intrinsics-guide/
 
-[^6]: ARM, "ARM NEON Programmer's Guide", ARM Developer, 2025.
 
-[^7]: Marat Dukhan, "WebAssembly SIMD Performance Analysis", 2024.
 
-[^8]: Chrome Platform Status, "WebAssembly Relaxed SIMD", 2024. https://chromestatus.com/feature/relaxed-simd
 
-[^9]: Bytecode Alliance, "Wasm SIMD Support in Wasmtime", 2025.
 
-[^10]: IEEE, "IEEE 754-2019 Standard for Floating-Point Arithmetic", 2019.
 
 ---
 
-*文档版本: 1.0 | 最后更新: 2026-04-04 | 作者: Agent-A WASM 3.0 规范更新模块*
+_文档版本: 1.0 | 最后更新: 2026-04-04 | 作者: Agent-A WASM 3.0 规范更新模块_
