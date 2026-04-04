@@ -2285,10 +2285,10 @@ graph TB
         end
 
         subgraph MLLayer["ML推理层"]
-            M1[ML_PREDICT<br/>OpenAI Provider]
-            M2[ML_PREDICT<br/>HuggingFace Provider]
-            M3[ML_PREDICT<br/>Custom Provider]
-            V1[VECTOR_SEARCH<br/>HNSW Index]
+            M1[ML_PREDICT（实验性）<br/>OpenAI Provider]
+            M2[ML_PREDICT（实验性）<br/>HuggingFace Provider]
+            M3[ML_PREDICT（实验性）<br/>Custom Provider]
+            V1[VECTOR_SEARCH（规划中）<br/>HNSW Index]
         end
 
         subgraph PipelineLayer["Flink ML Pipeline"]
@@ -2517,18 +2517,18 @@ sequenceDiagram
 ```mermaid
 flowchart TB
     subgraph Ingestion["知识入库流程"]
-        I1[文档CDC] --> I2[ML_PREDICT<br/>嵌入生成]
+        I1[文档CDC] --> I2[ML_PREDICT（实验性）<br/>嵌入生成]
         I2 --> I3[Vector Index<br/>Update]
         I3 --> I4[(Vector DB)]
     end
 
     subgraph Query["查询处理流程"]
-        Q1[用户查询] --> Q2[ML_PREDICT<br/>查询嵌入]
-        Q2 --> Q3[VECTOR_SEARCH<br/>相似检索]
+        Q1[用户查询] --> Q2[ML_PREDICT（实验性）<br/>查询嵌入]
+        Q2 --> Q3[VECTOR_SEARCH（规划中）<br/>相似检索]
         I4 --> Q3
         Q3 --> Q4[Context<br/>Assembly]
         Q4 --> Q5[Prompt<br/>Construction]
-        Q5 --> Q6[ML_PREDICT<br/>LLM生成]
+        Q5 --> Q6[ML_PREDICT（实验性）<br/>LLM生成]
         Q6 --> Q7[Response<br/>Streaming]
     end
 
@@ -2712,13 +2712,13 @@ graph TB
         end
 
         subgraph TM2["TaskManager Pool 2<br/>ML Inference"]
-            M1[ML_PREDICT<br/>Worker 1]
-            M2[ML_PREDICT<br/>Worker 2]
+            M1[ML_PREDICT（实验性）<br/>Worker 1]
+            M2[ML_PREDICT（实验性）<br/>Worker 2]
         end
 
         subgraph TM3["TaskManager Pool 3<br/>Vector Search"]
-            V1[VECTOR_SEARCH<br/>Worker 1]
-            V2[VECTOR_SEARCH<br/>Worker 2]
+            V1[VECTOR_SEARCH（规划中）<br/>Worker 1]
+            V2[VECTOR_SEARCH（规划中）<br/>Worker 2]
         end
     end
 
@@ -2774,33 +2774,33 @@ graph TB
 
 ```mermaid
 gantt
-    title Flink AI/ML 功能演进路线图 (2025-2026)
+    title Flink AI/ML 功能演进路线图（规划中，以官方为准）
     dateFormat YYYY-MM
 
-    section Flink 2.1 (已发布)
-    Model DDL                    :done, m1, 2025-01, 2025-03
-    ML_PREDICT TVF               :done, m2, 2025-01, 2025-03
-    OpenAI Provider              :done, m3, 2025-01, 2025-03
-    HuggingFace Provider         :done, m4, 2025-02, 2025-04
+    section Flink 2.1（规划中，以官方为准）
+    Model DDL                    :done, m1, 规划中, 规划中
+    ML_PREDICT TVF（实验性）     :done, m2, 规划中, 规划中
+    OpenAI Provider              :done, m3, 规划中, 规划中
+    HuggingFace Provider         :done, m4, 规划中, 规划中
 
-    section Flink 2.2 (当前)
-    VECTOR_SEARCH                :active, v1, 2025-04, 2025-07
-    Vector DB Connectors         :active, v2, 2025-04, 2025-07
-    RAG Pipeline Support         :active, v3, 2025-05, 2025-08
-    SQL ML Functions             :active, v4, 2025-05, 2025-08
+    section Flink 2.2（规划中，以官方为准）
+    VECTOR_SEARCH（规划中）      :active, v1, 规划中, 规划中
+    Vector DB Connectors         :active, v2, 规划中, 规划中
+    RAG Pipeline Support         :active, v3, 规划中, 规划中
+    SQL ML Functions             :active, v4, 规划中, 规划中
 
-    section Flink 2.3 (开发中)
-    FLIP-531 AI Agents           :f1, 2025-07, 2025-12
-    A2A Protocol                 :f2, 2025-07, 2025-10
-    MCP Native Integration       :f3, 2025-08, 2025-11
-    Agent Memory Management      :f4, 2025-09, 2025-12
+    section Flink 2.3（规划中，以官方为准）
+    FLIP-531 AI Agents           :f1, 规划中, 规划中
+    A2A Protocol                 :f2, 规划中, 规划中
+    MCP Native Integration       :f3, 规划中, 规划中
+    Agent Memory Management      :f4, 规划中, 规划中
     CREATE AGENT Syntax          :f5, 规划中, 规划中（以官方为准）
 
-    section Flink 2.4 (规划中)
-    Multi-Modal Support          :p1, 2026-01, 2026-06
-    AutoML Integration           :p2, 2026-01, 2026-06
-    Model Registry               :p3, 2026-02, 2026-07
-    LLM Fine-tuning              :p4, 2026-03, 2026-09
+    section Flink 2.4（规划中，以官方为准）
+    Multi-Modal Support          :p1, 规划中, 规划中
+    AutoML Integration           :p2, 规划中, 规划中
+    Model Registry               :p3, 规划中, 规划中
+    LLM Fine-tuning              :p4, 规划中, 规划中
 ```
 
 ---

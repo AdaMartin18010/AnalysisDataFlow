@@ -653,13 +653,13 @@ SELECT * FROM ML_PREDICT(
 
 ### 7.1 Model DDL 与 ML_PREDICT 架构图
 
-以下图表展示了 Flink 2.1 AI 集成的整体架构：
+以下图表展示了 Flink AI 集成的整体架构（实验性功能）：
 
 ```mermaid
 graph TB
     subgraph SQL_Layer["SQL Layer"]
         A1[CREATE MODEL statement]
-        A2[ML_PREDICT TVF]
+        A2[ML_PREDICT TVF（实验性）]
         A3[Regular SQL Operations]
     end
 
@@ -746,19 +746,19 @@ flowchart LR
 
 ```mermaid
 gantt
-    title Flink ML 功能演进路线图
+    title Flink ML 功能演进路线图（规划中，以官方为准）
     dateFormat YYYY-MM
-    section Flink 2.1
-    Model DDL (CREATE MODEL)    :done, a1, 2025-01, 2025-03
-    ML_PREDICT TVF              :done, a2, 2025-01, 2025-03
-    OpenAI Provider             :done, a3, 2025-01, 2025-03
-    HuggingFace Provider        :done, a4, 2025-02, 2025-04
+    section Flink 2.1（规划中，以官方为准）
+    Model DDL (CREATE MODEL)    :done, a1, 规划中, 规划中
+    ML_PREDICT TVF（实验性）    :done, a2, 规划中, 规划中
+    OpenAI Provider             :done, a3, 规划中, 规划中
+    HuggingFace Provider        :done, a4, 规划中, 规划中
 
-    section Flink 2.2
-    Table API Support           :active, b1, 2025-04, 2025-07
-    Python Table API ML         :b2, 2025-05, 2025-08
-    Enhanced AI Functions       :b3, 2025-06, 2025-09
-    Local Model Support         :b4, 2025-07, 2025-10
+    section Flink 2.2（规划中，以官方为准）
+    Table API Support           :active, b1, 规划中, 规划中
+    Python Table API ML         :b2, 规划中, 规划中
+    Enhanced AI Functions       :b3, 规划中, 规划中
+    Local Model Support         :b4, 规划中, 规划中
 ```
 
 ### 7.4 决策树：选择合适的 AI 集成方案
@@ -771,7 +771,7 @@ flowchart TD
     B -->|> 1000 TPS| D{延迟要求？}
     B -->|< 100 TPS| E[使用 REST API 直连]
 
-    D -->|< 1s| F[使用 Flink ML_PREDICT]
+    D -->|< 1s| F[使用 Flink ML_PREDICT（实验性）]
     D -->|> 5s| G[使用批处理引擎]
 
     F --> H[部署模式？]
