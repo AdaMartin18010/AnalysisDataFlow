@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-04-04T10:44:05.596705",
+  "timestamp": "2026-04-04T06:59:18.752644",
   "version": "1.0.0",
   "summary": {
-    "total_docs": 378,
-    "total_size_mb": 10.98,
-    "total_lines": 326559,
+    "total_docs": 404,
+    "total_size_mb": 11.96,
+    "total_lines": 367009,
     "formal_elements": {
-      "theorems": 1418,
-      "definitions": 3667,
-      "lemmas": 1313,
-      "propositions": 1165,
-      "corollaries": 71,
-      "total": 7634
+      "theorems": 1536,
+      "definitions": 3922,
+      "lemmas": 1400,
+      "propositions": 1268,
+      "corollaries": 75,
+      "total": 8201
     },
-    "code_examples": 2508,
-    "mermaid_charts": 1553
+    "code_examples": 2922,
+    "mermaid_charts": 1695
   },
   "directories": {
     "struct": {
-      "path": "E:\\_src\\AnalysisDataFlow\\Struct",
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/Struct",
       "file_count": 43,
-      "size_kb": 1370.5,
+      "size_kb": 1335.93,
       "lines": 35401,
       "formal_elements": {
         "theorems": 380,
@@ -34,42 +34,42 @@
       "mermaid_charts": 144
     },
     "knowledge": {
-      "path": "E:\\_src\\AnalysisDataFlow\\Knowledge",
-      "file_count": 129,
-      "size_kb": 3553.7,
-      "lines": 100084,
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/Knowledge",
+      "file_count": 134,
+      "size_kb": 3771.27,
+      "lines": 108253,
       "formal_elements": {
-        "theorems": 295,
-        "definitions": 1054,
-        "lemmas": 311,
-        "propositions": 441,
-        "corollaries": 12,
-        "total": 2113
+        "theorems": 305,
+        "definitions": 1069,
+        "lemmas": 320,
+        "propositions": 446,
+        "corollaries": 14,
+        "total": 2154
       },
-      "code_examples": 725,
-      "mermaid_charts": 514
+      "code_examples": 755,
+      "mermaid_charts": 535
     },
     "flink": {
-      "path": "E:\\_src\\AnalysisDataFlow\\Flink",
-      "file_count": 140,
-      "size_kb": 5341.02,
-      "lines": 160279,
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/Flink",
+      "file_count": 157,
+      "size_kb": 6089.63,
+      "lines": 189082,
       "formal_elements": {
-        "theorems": 573,
-        "definitions": 1608,
-        "lemmas": 460,
-        "propositions": 569,
-        "corollaries": 16,
-        "total": 3226
+        "theorems": 681,
+        "definitions": 1840,
+        "lemmas": 536,
+        "propositions": 662,
+        "corollaries": 18,
+        "total": 3737
       },
-      "code_examples": 1471,
-      "mermaid_charts": 727
+      "code_examples": 1788,
+      "mermaid_charts": 828
     },
     "visuals": {
-      "path": "E:\\_src\\AnalysisDataFlow\\visuals",
-      "file_count": 20,
-      "size_kb": 434.0,
-      "lines": 11157,
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/visuals",
+      "file_count": 21,
+      "size_kb": 426.21,
+      "lines": 11301,
       "formal_elements": {
         "theorems": 170,
         "definitions": 170,
@@ -79,28 +79,28 @@
         "total": 418
       },
       "code_examples": 19,
-      "mermaid_charts": 123
+      "mermaid_charts": 128
     },
     "tutorials": {
-      "path": "E:\\_src\\AnalysisDataFlow\\tutorials",
-      "file_count": 24,
-      "size_kb": 354.54,
-      "lines": 12512,
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/tutorials",
+      "file_count": 27,
+      "size_kb": 435.79,
+      "lines": 15846,
       "formal_elements": {
         "theorems": 0,
-        "definitions": 0,
-        "lemmas": 0,
-        "propositions": 0,
+        "definitions": 8,
+        "lemmas": 2,
+        "propositions": 5,
         "corollaries": 0,
-        "total": 0
+        "total": 15
       },
-      "code_examples": 145,
-      "mermaid_charts": 31
+      "code_examples": 212,
+      "mermaid_charts": 46
     },
     "learning_paths": {
-      "path": "E:\\_src\\AnalysisDataFlow\\LEARNING-PATHS",
+      "path": "/home/runner/work/AnalysisDataFlow/AnalysisDataFlow/LEARNING-PATHS",
       "file_count": 22,
-      "size_kb": 192.88,
+      "size_kb": 185.92,
       "lines": 7126,
       "formal_elements": {
         "theorems": 0,
