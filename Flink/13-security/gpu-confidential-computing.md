@@ -1277,8 +1277,9 @@ kubernetes.gpu.cc-mode: true
 # 提交 GPU TEE 作业
 flink run \
     -t kubernetes-application \
+    # 注: GPU TEE为实验性功能
     -Dkubernetes.cluster-id=flink-gpu-tee \
-    -Dkubernetes.container.image=flink-gpu-tee:1.18 \
+    -Dkubernetes.container.image=flink-gpu-tee:1.18 # 实验性镜像
     -Dsecurity.gpu.tee.enabled=true \
     -Dsecurity.gpu.tee.type=NVIDIA_H100_CC \
     ./secure-ml-inference.jar

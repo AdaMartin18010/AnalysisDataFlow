@@ -185,19 +185,19 @@ $$
 │                    FLIP 与版本映射关系                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Flink 2.3 (2026 Q1)                                            │
+│  Flink 2.3（预计发布时间以官方为准）                                            │
 │  ├── FLIP-531: AI Agents (Released) ◄──────────────────────┐   │
 │  ├── FLIP-319: Kafka 2PC (Released)                        │   │
 │  ├── FLIP-39022: SSL Enhancement (Released)                │   │
 │  └── ...                                                   │   │
 │                                                            │   │
-│  Flink 2.4 (2026 H2) [预期]                                   │   │
+│  Flink 2.4（预计发布时间以官方为准）                                   │   │
 │  ├── FLIP-531: AI Agents GA (依赖: 2.3基础) ────────────────┘   │
 │  ├── FLIP-325: Async Snapshot v2 (In Progress)              │   │
 │  ├── FLIP-333: Fine-grained Recovery (Accepted)             │   │
 │  └── FLIP-XXX: Serverless Flink (Draft)                     │   │
 │                                                            │   │
-│  Flink 2.5 (2027) [规划]                                       │   │
+│  Flink 2.5（预计发布时间以官方为准）                                       │   │
 │  ├── FLIP-XXX: Adaptive Execution (Draft)                   │   │
 │  └── FLIP-XXX: Unified Batch/Streaming (Draft)              │   │
 │                                                                 │

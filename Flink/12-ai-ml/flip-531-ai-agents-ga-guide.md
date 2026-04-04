@@ -1337,6 +1337,7 @@ if __name__ == "__main__":
 -- ============================================================
 
 -- 1. 创建Agent（GA版本完整语法）
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE AGENT sales_analytics_agent
 WITH (
     -- 基础配置
@@ -1399,6 +1400,7 @@ WITH (
 );
 
 -- 2. 注册SQL工具
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL query_sales_data
 FOR AGENT sales_analytics_agent
 AS $$
@@ -1430,6 +1432,7 @@ $$ WITH (
 );
 
 -- 3. 注册Python工具（GA版本支持）
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL analyze_trend
 FOR AGENT sales_analytics_agent
 TYPE 'python'
@@ -1472,6 +1475,7 @@ WITH (
 );
 
 -- 4. 注册HTTP工具
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL send_alert
 FOR AGENT sales_analytics_agent
 TYPE 'http'

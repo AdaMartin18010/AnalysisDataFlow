@@ -1,6 +1,13 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 2.4 连接器生态完整指南
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [flink-connectors-ecosystem-complete-guide.md](./flink-connectors-ecosystem-complete-guide.md), [flink-paimon-integration.md](./flink-paimon-integration.md), [flink-iceberg-integration.md](./flink-iceberg-integration.md) | **形式化等级**: L4 | **版本**: Flink 2.4.0 | **状态**: 稳定版
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [flink-connectors-ecosystem-complete-guide.md](./flink-connectors-ecosystem-complete-guide.md), [flink-paimon-integration.md](./flink-paimon-integration.md), [flink-iceberg-integration.md](./flink-iceberg-integration.md) | **形式化等级**: L4 | **版本**: Flink 2.4.0 | **状态**: preview
 
 ---
 
@@ -495,7 +502,7 @@ connector:
   stream: input-stream
   
   # 自动伸缩配置
-  autoscaling:
+  autoscaling:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     enabled: true
     min-parallelism: 2
     max-parallelism: 32
@@ -862,7 +869,7 @@ CDC 3.4 (Flink 2.4)
 │ Flink 2.4 支持:                                              │
 │   • flink-connector-kafka 3.3.x (Kafka 3.x 原生)            │
 │   • flink-connector-pulsar 5.0.x (Pulsar 3.x)               │
-│   • flink-connector-fluss 1.0.x (Apache Fluss)              │
+│   • flink-connector-fluss  <!-- [Flink 2.4 前瞻] Fluss连接器为规划特性，可能变动 --> 1.0.x (Apache Fluss)              │
 │ 完备性: ✅ 完全覆盖主流方案                                 │
 └─────────────────────────────────────────────────────────────┘
 

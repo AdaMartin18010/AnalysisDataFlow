@@ -286,7 +286,7 @@ graph TB
 
 | RAG Component | Flink Capability | Relationship Type |
 |--------------|------------------|-------------------|
-| Real-time Embedding | Async I/O + ML_PREDICT | Native Integration |
+| Real-time Embedding | Async I/O + ML_PREDICT（实验性） | Native Integration |
 | Vector Index Update | DataStream + Checkpoint | State Consistency |
 | Feature Engineering | ProcessFunction + State | Native Integration |
 | Dynamic Batching | Window + Trigger | Extended Implementation |
@@ -851,7 +851,7 @@ public class UserInterestFeaturePipeline {
 }
 ```
 
-### 6.3 SQL API Implementation (Flink SQL + VECTOR_SEARCH)
+### 6.3 SQL API Implementation (Flink SQL + VECTOR_SEARCH)（规划中）
 
 ```sql
 -- ============================================
@@ -912,7 +912,7 @@ query_embeddings AS (
         user_id,
         query_text,
         -- Call Embedding model
-        ML_PREDICT('text-embedding-3-small', query_text) AS query_vector,
+        ML_PREDICT('text-embedding-3-small', query_text) AS query_vector, -- 注: ML_PREDICT 为实验性功能
         event_time
     FROM user_queries
 ),
@@ -929,7 +929,8 @@ retrieved_contexts AS (
         STRING_AGG(d.content, '\n---\n') AS context_text,
         q.event_time
     FROM query_embeddings q,
-    LATERAL TABLE(VECTOR_SEARCH(
+    -- 注: VECTOR_SEARCH 为向量搜索功能（规划中）
+LATERAL TABLE(VECTOR_SEARCH(
         query_vector := q.query_vector,
         index_table := 'document_vectors',
         top_k := 5,
@@ -944,7 +945,7 @@ llm_outputs AS (
     SELECT
         query_id AS request_id,
         -- Call LLM to generate answer
-        ML_PREDICT('gpt-4',
+        ML_PREDICT('gpt-4', -- 注: ML_PREDICT 为实验性功能
             CONCAT(
                 'Answer the question based on the following reference documents:\n\n',
                 context_text,

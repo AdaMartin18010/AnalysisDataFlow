@@ -439,6 +439,7 @@ $$
 ```sql
 -- Def-F-12-30: Flink Agent DDL 定义
 
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE AGENT customer_support_agent
 WITH (
   'agent.id' = 'support_agent_v1',
@@ -1016,24 +1017,24 @@ graph TB
 gantt
     title FLIP-531 Flink Agents 路线图
     dateFormat YYYY-MM
-    section 2025 Q2
-    FLIP 设计           :done, design, 2025-04, 2025-06
-    社区评审            :active, review, 2025-05, 2025-06
+    section 规划中（以官方为准）
+    FLIP 设计           :done, design, 规划中, 规划中
+    社区评审            :active, review, 规划中, 规划中
 
-    section 2025 Q3
-    MVP 核心实现        :mvp, 2025-07, 2025-09
-    Table API 扩展      :table, 2025-07, 2025-08
-    MCP 集成            :mcp, 2025-07, 2025-09
-    DataStream API      :ds, 2025-08, 2025-09
+    section 规划中（以官方为准）
+    MVP 核心实现        :mvp, 规划中, 规划中
+    Table API 扩展      :table, 规划中, 规划中
+    MCP 集成            :mcp, 规划中, 规划中
+    DataStream API      :ds, 规划中, 规划中
 
-    section 2025 Q4
-    A2A 协议支持        :a2a, 2025-10, 2025-11
-    多 Agent 协作        :multi, 2025-10, 2025-12
-    SQL 支持            :sql, 2025-11, 2025-12
+    section 规划中（以官方为准）
+    A2A 协议支持        :a2a, 规划中, 规划中
+    多 Agent 协作        :multi, 规划中, 规划中
+    SQL 支持            :sql, 规划中, 规划中
 
-    section 2026
-    GA 发布             :ga, 2026-01, 2026-03
-    生态工具            :eco, after ga, 2026-06
+    section 规划中（以官方为准）
+    GA 发布             :ga, 规划中, 规划中
+    生态工具            :eco, after ga, 规划中
 ```
 
 ### 7.6 Agent 故障恢复与重放机制

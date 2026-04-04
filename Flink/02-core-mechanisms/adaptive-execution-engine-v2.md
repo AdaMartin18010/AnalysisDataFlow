@@ -1,6 +1,13 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../06-engineering/performance-tuning-guide.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../06-engineering/performance-tuning-guide.md) | **形式化等级**: L4-L5 | **状态**: preview
 
 ---
 
@@ -955,7 +962,7 @@ adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 128
 
 # 目标资源利用率（触发扩缩容的阈值）
-adaptive-scheduler.target-utilization: 0.75
+adaptive-scheduler.target-utilization: 0.75  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 调整冷却期（毫秒）
 adaptive-scheduler.scaling-interval.min: 60000
@@ -963,7 +970,7 @@ adaptive-scheduler.scaling-interval.max: 300000
 
 # ---------- 2. 数据倾斜检测配置 ----------
 # 启用倾斜检测
-skew-detection.enabled: true
+skew-detection.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 倾斜检测窗口大小（秒）
 skew-detection.window.size: 60
@@ -979,7 +986,7 @@ skew-detection.strategy: SPLIT
 
 # ---------- 3. 资源自适应配置 ----------
 # 启用资源自适应分配
-resource-adaptive.enabled: true
+resource-adaptive.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # CPU 利用率目标
 resource-adaptive.target.cpu.utilization: 0.70
@@ -995,7 +1002,7 @@ resource-adaptive.predictor.type: PID
 
 # ---------- 4. 执行计划优化配置 ----------
 # 启用运行时计划重优化
-execution-plan-optimization.enabled: true
+execution-plan-optimization.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 优化触发间隔（秒）
 execution-plan-optimization.interval: 300

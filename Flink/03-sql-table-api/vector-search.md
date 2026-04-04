@@ -1,4 +1,4 @@
-# Flink 2.2 VECTOR_SEARCH - 流式向量相似度搜索
+# Flink VECTOR_SEARCH - 流式向量相似度搜索（规划中）
 
 > 所属阶段: Flink | 前置依赖: [ML_PREDICT 函数](./ml-predict.md) | 形式化等级: L3
 
@@ -21,6 +21,7 @@
 **Def-F-03-19a: Top-K 向量搜索**
 
 $$\text{VECTOR\_SEARCH}(\mathbf{q}, S, k, \text{sim}) = \underset{T \subseteq S, |T|=k}{\arg\max} \sum_{\mathbf{v} \in T} \text{sim}(\mathbf{q}, \mathbf{v})$$
+<!-- 注: VECTOR_SEARCH 为向量搜索功能（规划中），尚未正式发布 -->
 
 **Def-F-03-19b: 流式向量搜索**
 

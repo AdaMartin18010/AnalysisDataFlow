@@ -9,7 +9,7 @@
 **Flink 2.3** 是2026年Q1-Q2发布的重要版本，聚焦：
 
 ```
-发布周期: 2026 Q1 (Feature Freeze: March 31)
+发布周期: 预计发布时间（以官方为准）
 主要主题: AI Agent支持、安全增强、性能优化
 ```
 
@@ -37,7 +37,7 @@ FLIP-531: "Building and Running AI Agents in Flink"
 API支持:
   - Java: Agent API / DataStream
   - Python: PyFlink Agent API
-  - SQL: CREATE AGENT / CREATE TOOL
+  - SQL: CREATE AGENT / CREATE TOOL（未来可能的语法，概念设计阶段）
 ```
 
 **路线图里程碑**：
@@ -246,6 +246,7 @@ security.ssl.algorithms: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WIT
 # security.ssl.algorithms: TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 
 # AI Agent配置 (可选)
+# 注: 以下为未来配置参数（概念），尚未正式实现
 ai.agent.enabled: true
 ai.agent.model.provider: openai
 ai.agent.model.endpoint: https://api.openai.com/v1
@@ -276,13 +277,15 @@ sink.kafka.transaction.timeout.ms: 900000
 <!-- AI Agent依赖 -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <artifactId>flink-ai-agent</artifactId>
+    <!-- 注: 以下为未来可能提供的模块（设计阶段），尚未正式发布 -->
+<artifactId>flink-ai-agent</artifactId>
 </dependency>
 
 <!-- MCP协议支持 -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <artifactId>flink-mcp-connector</artifactId>
+    <!-- MCP连接器（规划中） -->
+<artifactId>flink-mcp-connector</artifactId>
 </dependency>
 
 <!-- 更新Kafka连接器 -->
@@ -306,7 +309,8 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
-          ai.agent.enabled=true
+          # 注: 未来配置参数（概念）
+ai.agent.enabled=true
           ai.agent.model.provider=openai
           ai.agent.model.api.key=${OPENAI_API_KEY}
     command: jobmanager
@@ -350,19 +354,19 @@ timeline
         2.1 : Materialized Table
             : Delta Join V1
             
-    section 2025 H2
-        2.2 : VECTOR_SEARCH
-            : Model DDL
+    section 规划中（以官方为准）
+        2.2 : VECTOR_SEARCH（规划中）
+            : Model DDL（实验性）
             : PyFlink Async
             
-    section 2026 Q1-Q2
-        2.3 : AI Agents (FLIP-531)
+    section 规划中（以官方为准）
+        2.3 : AI Agents (FLIP-531)（规划中）
             : 安全增强
             : Kafka 2PC
             
-    section 2026 H2
-        2.4 : Agent GA
-            : Serverless Flink
+    section 规划中（以官方为准）
+        2.4 : Agent GA（规划中）
+            : Serverless Flink（规划中）
             : 自适应执行
 ```
 

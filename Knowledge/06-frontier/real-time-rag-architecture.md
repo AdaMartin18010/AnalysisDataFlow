@@ -149,10 +149,10 @@ $$|\mathcal{D}_t \setminus \mathcal{V}_t| \leq \lambda \cdot \Delta t$$
 │  RAG概念              │  Flink抽象                          │
 ├───────────────────────┼─────────────────────────────────────┤
 │  文档流 (D)           │  DataStream<Document>               │
-│  嵌入生成             │  AsyncFunction<ML_PREDICT>          │
+│  嵌入生成             │  AsyncFunction<ML_PREDICT>（实验性）│
 │  向量存储             │  KeyedStateStore<Vector>            │
 │  查询流               │  BroadcastStream<Query>             │
-│  检索算子             │  ProcessFunction<VECTOR_SEARCH>     │
+│  检索算子             │  ProcessFunction<VECTOR_SEARCH>（规划中）│
 │  LLM推理              │  ExternalSystemCall(OpenAI API)     │
 │  结果流               │  DataStream<Response>               │
 └───────────────────────┴─────────────────────────────────────┘

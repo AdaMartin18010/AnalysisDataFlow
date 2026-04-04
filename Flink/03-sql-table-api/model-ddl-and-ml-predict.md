@@ -43,7 +43,9 @@ CREATE MODEL <model_name>
 
 ---
 
-### Def-F-03-16: ML_PREDICT 表值函数
+### Def-F-03-16: ML_PREDICT 表值函数（实验性）
+
+<!-- 注: ML_PREDICT 为 ML预测函数（实验性），可能随版本变化 -->
 
 **ML_PREDICT** 是 Flink SQL 的内置表值函数（Table-Valued Function, TVF），用于对 Model DDL 定义的模型执行实时推理。
 

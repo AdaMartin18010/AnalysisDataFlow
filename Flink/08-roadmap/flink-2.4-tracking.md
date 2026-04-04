@@ -1,6 +1,13 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 2.4 版本完整跟踪文档
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3 | 状态: preview
 
 ---
 
@@ -28,7 +35,7 @@ Feature Freeze: 2026-08-15
 
 ```yaml
 FLIP-531: "Building and Running AI Agents in Flink"
-MVP状态: Flink 2.3 (2026 Q1) - 基础Agent支持
+MVP状态: Flink 2.3（规划中）- 基础Agent支持（以官方发布为准）
 GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪
 
 GA特性清单:
@@ -415,8 +422,9 @@ $$
 # flink-conf.yaml - Serverless 配置
 
 # Serverless Dispatcher 配置
-serverless.enabled: true
-serverless.scale-to-zero.delay: 5min
+# 注: 以下为Serverless模式配置（规划中），尚未正式实现
+serverless.enabled: true  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+serverless.scale-to-zero.delay: 5min  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
 serverless.cold-start.pool-size: 10
 serverless.state.remote.uri: s3://flink-serverless-state/
 
@@ -429,12 +437,12 @@ state.checkpoints.dir: s3://flink-serverless-state/checkpoints
 
 # 自适应执行引擎
 execution.adaptive.enabled: true
-execution.adaptive.model: ml-based
+execution.adaptive.model: ml-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
 execution.adaptive.learning-rate: 0.1
 
 # 智能检查点
-checkpointing.mode: intelligent
-checkpointing.intelligent.strategy: cost-based
+checkpointing.mode: intelligent  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+checkpointing.intelligent.strategy: cost-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
 checkpointing.intelligent.min-interval: 30s
 checkpointing.intelligent.max-interval: 10min
 ```
@@ -445,7 +453,7 @@ checkpointing.intelligent.max-interval: 10min
 // Java API: 多Agent协调框架
 
 // 定义Agent角色
-AgentCoordinator coordinator = new AgentCoordinator(env);
+AgentCoordinator coordinator = new AgentCoordinator(env);  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
 
 // 注册Sales Agent
 AgentDescriptor salesAgent = AgentDescriptor.builder()
@@ -485,7 +493,7 @@ agentSystem.enableCanaryDeployment()
 ```sql
 -- SQL API: 创建AI Agent
 
--- 注册MCP工具
+-- 注册MCP工具（未来可能的语法，概念设计阶段）
 CREATE TOOL crm_search
 WITH (
     'protocol' = 'mcp',
@@ -494,8 +502,8 @@ WITH (
     'timeout' = '10s'
 );
 
--- 创建Agent (GA版本语法)
-CREATE AGENT sales_assistant
+-- 创建Agent（未来可能的语法，概念设计阶段）
+CREATE AGENT sales_assistant  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
 WITH (
     'model.provider' = 'openai',
     'model.name' = 'gpt-4',
@@ -503,7 +511,7 @@ WITH (
     'memory.max_turns' = 20,
     -- GA新增: 版本管理
     'version' = '2.1.0',
-    'canary.enabled' = 'true',
+    'canary.enabled' = 'true',  -- [Flink 2.4 前瞻] 配置参数为规划特性，可能变动
     'canary.percentage' = '10',
     -- GA新增: 监控
     'metrics.enabled' = 'true',
@@ -513,8 +521,8 @@ INPUT (customer_query STRING, customer_id STRING)
 OUTPUT (response STRING, action STRING)
 TOOLS (crm_search, product_catalog);
 
--- 多Agent协调查询
-CREATE AGENT_TEAM customer_service_team
+-- 多Agent协调查询（未来可能的语法，概念设计阶段）
+CREATE AGENT_TEAM customer_service_team  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
 WITH (
     'coordinator' = 'hierarchical',
     'routing.strategy' = 'intent-based'
@@ -530,7 +538,7 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置自适应模式
-env.getConfig().setAdaptiveExecutionMode(AdaptiveMode.ML_BASED);
+env.getConfig().setAdaptiveExecutionMode(AdaptiveMode.ML_BASED);  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
 
 // 定义优化目标
 OptimizationGoal goal = OptimizationGoal.builder()
@@ -565,25 +573,26 @@ DataStream<Event> stream = env
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-bom</artifactId>
-            <version>2.4.0</version>
+            <version>2.4.0</version>  <!-- [Flink 2.4 前瞻] 版本号尚未发布 -->
             <type>pom</type>
             <scope>import</scope>
         </dependency>
     </dependencies>
 </dependencyManagement>
 
-<!-- AI Agent GA 依赖 -->
+<!-- AI Agent GA 依赖（未来可能提供的模块，设计阶段） -->
 <dependency>
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-ai-agent</artifactId>
-    <!-- GA版本，API稳定 -->
+    <!-- 注: 尚未正式发布 -->
 </dependency>
 
-<!-- MCP协议支持 (2.4增强) -->
+<!-- MCP协议支持 (规划中) -->
 <dependency>
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-mcp-connector</artifactId>
     <version>2.4.0</version>
+    <!-- 注: 尚未正式发布 -->
 </dependency>
 
 <!-- Serverless支持 -->

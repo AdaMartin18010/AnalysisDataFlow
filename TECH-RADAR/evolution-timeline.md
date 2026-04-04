@@ -185,10 +185,10 @@ graph TB
 
 | 技术 | 进入时间 | 初始象限 | 进入原因 |
 |------|----------|----------|----------|
-| AI Agent | 2026 Q1 | Assess | FLIP-531提出 |
-| MCP Protocol | 2026 Q1 | Assess | AI生态发展 |
-| A2A Protocol | 2026 Q1 | Assess | Agent通信标准 |
-| ForSt Backend | 2025 Q3 | Trial | Flink 2.0特性 |
+| AI Agent | 规划中（以官方为准） | Assess | FLIP-531提出 |
+| MCP Protocol | 规划中（以官方为准） | Assess | AI生态发展 |
+| A2A Protocol | 规划中（以官方为准） | Assess | Agent通信标准 |
+| ForSt Backend | 规划中（以官方为准） | Trial | Flink 2.0特性 |
 | GPU Inference | 2025 Q2 | Trial | AI需求增长 |
 
 ### 4.3 退出技术

@@ -1,8 +1,15 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # ANSI SQL 2023 兼容性完整指南
 
 > **所属阶段**: Flink Stage 3 | **前置依赖**: [Flink Table API & SQL 完整特性指南](./flink-table-sql-complete-guide.md), [Flink SQL 窗口函数深度指南](./flink-sql-window-functions-deep-dive.md) | **形式化等级**: L4-L5
 >
-> **版本**: Flink 1.18-2.2+ | **标准**: ANSI/ISO SQL:2023 | **状态**: 持续演进 | **最后更新**: 2026-04-04
+> **版本**: Flink 1.18-2.2+ | **标准**: ANSI/ISO SQL:2023 | **状态**: preview | **最后更新**: 2026-04-04
 
 ---
 
@@ -121,8 +128,8 @@ SQL:2023 窗口框架增强：
 |-----|--------------|-----------|------|
 | ROWS 框架 | `ROWS UNBOUNDED PRECEDING` | ✅ | 物理行偏移 |
 | RANGE 框架 | `RANGE INTERVAL '1' HOUR PRECEDING` | ✅ | 逻辑值偏移（时间）|
-| GROUPS 框架 | `GROUPS 1 PRECEDING` | ❌ | 对等组偏移 |
-| EXCLUDE 子句 | `EXCLUDE CURRENT ROW` | ⚠️ 部分 | 排除当前行 |
+| GROUPS 框架  <!-- [Flink 2.4 前瞻] 该特性可能尚未完全实现 --> | `GROUPS 1 PRECEDING` | ❌ | 对等组偏移 |
+| EXCLUDE 子句  <!-- [Flink 2.4 前瞻] 该特性可能尚未完全实现 --> | `EXCLUDE CURRENT ROW` | ⚠️ 部分 | 排除当前行 |
 | 窗口链 | `WINDOW w1 AS (...), w2 AS (w1 ...)` | ✅ | 窗口定义复用 |
 
 ### Def-F-03-105: 多态表函数 (Polymorphic Table Functions)

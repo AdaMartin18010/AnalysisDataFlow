@@ -56,8 +56,8 @@
 | 版本 | 发布日期 | 状态 | 项目覆盖度 | 缺失内容 |
 |------|----------|------|-----------|----------|
 | 2.0 | 2025 Q1 | ✅ 已覆盖 | 95% | - |
-| 2.1 | 2025 Q3 | ✅ 已覆盖 | 100% | Delta Join, Model DDL, Watermark Metrics |
-| 2.2 | 2025 Q4 | ✅ 已覆盖 | 100% | VECTOR_SEARCH, Event Reporting, Async Python |
+| 2.1 | 规划中 | ✅ 已覆盖 | 100% | Delta Join, Model DDL, Watermark Metrics |
+| 2.2 | 规划中 | ✅ 已覆盖 | 100% | VECTOR_SEARCH, Event Reporting, Async Python |
 
 **更新规则**: 每季度末评估是否补充「缺失内容」列。
 

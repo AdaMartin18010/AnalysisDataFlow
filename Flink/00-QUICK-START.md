@@ -322,6 +322,7 @@ docker-compose exec jobmanager ./bin/flink cancel <job-id>
 
 ```sql
 -- 步骤 1：注册 MCP 工具
+-- 注: 以下为未来可能的语法（概念设计），尚未正式实现
 CREATE TOOL search_products
 WITH (
     'protocol' = 'mcp',
@@ -330,7 +331,7 @@ WITH (
     'timeout' = '5s'
 );
 
--- 步骤 2：创建 AI Agent
+-- 步骤 2：创建 AI Agent（未来可能的语法，概念设计阶段）
 CREATE AGENT sales_assistant
 WITH (
     'model.provider' = 'openai',
@@ -404,6 +405,7 @@ agent.execute();
 
 ```yaml
 # flink-conf.yaml - AI Agent 配置
+# 注: 以下为未来配置参数（概念），尚未正式实现
 ai.agent.enabled: true
 ai.agent.state.backend: rocksdb
 ai.agent.checkpoint.interval: 30s
@@ -692,7 +694,8 @@ cuda.arch: "80;86;89"  # Ampere + Ada
 -- 注册 GPU 向量检索函数
 CREATE FUNCTION vector_search_gpu AS
     'org.apache.flink.gpu.ml.GPUVectorSearchFunction'
-USING JAR 'flink-gpu-ml.jar';
+-- 注: GPU模块（实验性），尚未正式发布
+-- USING JAR 'flink-gpu-ml.jar';
 
 -- GPU 加速向量检索
 SELECT

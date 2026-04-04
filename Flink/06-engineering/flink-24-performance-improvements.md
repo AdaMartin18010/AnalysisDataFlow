@@ -1,6 +1,13 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 2.4 性能优化完整指南
 
-> **所属阶段**: Flink/06-engineering | **前置依赖**: [Flink 2.3 性能优化](performance-tuning-guide.md), [Flink 状态后端选择](state-backend-selection.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/06-engineering | **前置依赖**: [Flink 2.3 性能优化](performance-tuning-guide.md), [Flink 状态后端选择](state-backend-selection.md) | **形式化等级**: L4-L5 | **状态**: preview
 
 ## 1. 概念定义 (Definitions)
 
@@ -538,7 +545,7 @@ env.java.opts.taskmanager: >
 
 ```java
 // 创建ForSt StateBackend
-ForStStateBackend forStBackend = new ForStStateBackend();
+ForStStateBackend forStBackend = new ForStStateBackend();  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
 
 // 配置异步IO
 forStBackend.setEnableAsyncSnapshots(true);
@@ -966,18 +973,18 @@ cat >> flink-conf.yaml << EOF
 
 # === Flink 2.4 新增优化配置 ===
 # 启用ForSt StateBackend
-taskmanager.state.backend.forst.enabled: true
-taskmanager.state.backend.forst.async-io-threads: 8
+taskmanager.state.backend.forst.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+taskmanager.state.backend.forst.async-io-threads: 8  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 启用自适应Join
-table.optimizer.adaptive-join.enabled: true
+table.optimizer.adaptive-join.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 table.optimizer.adaptive-join.broadcast-threshold: 10485760
 
 # 启用动态分区裁剪
 table.optimizer.dynamic-partition-pruning.enabled: true
 
 # 向量化执行
-table.exec.vectorized-reader.enabled: true
+table.exec.vectorized-reader.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 table.exec.vectorized.batch-size: 2048
 
 # 并行类加载优化

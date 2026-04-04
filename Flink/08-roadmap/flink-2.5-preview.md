@@ -212,17 +212,17 @@ Flink 2.x 演进路线 (2024-2027)
 │   ├── Model DDL
 │   └── PyFlink Async I/O
 │
-├── 2.3 (2026 Q1): AI Agent MVP
+├── 2.3（预计发布时间以官方为准）: AI Agent MVP
 │   ├── FLIP-531 Agent Runtime
 │   ├── MCP协议支持
 │   └── Kafka 2PC集成
 │
-├── 2.4 (2026 Q3): Agent GA + Serverless Beta
+├── 2.4（预计发布时间以官方为准）: Agent GA + Serverless Beta
 │   ├── AI Agent GA
 │   ├── Serverless Flink Beta
 │   └── 自适应执行引擎
 │
-└── 2.5 (2027 Q1-Q2): 企业级成熟 [预期]
+└── 2.5（预计发布时间以官方为准）: 企业级成熟 [预期]
     ├── 流批一体完成
     ├── Serverless GA
     ├── AI/ML生产就绪
@@ -464,7 +464,8 @@ public class GPUGPUVectorSearch extends TableFunction<Row> {
 /*
 SELECT
     user_id,
-    VECTOR_SEARCH_GPU(embedding, 100) AS similar_items
+    -- VECTOR_SEARCH_GPU（规划中，尚未正式发布）
+-- VECTOR_SEARCH_GPU(embedding, 100) AS similar_items
 FROM user_profiles;
 */
 ```

@@ -1,8 +1,15 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 2.4 部署改进完整指南
 
 > **所属阶段**: Flink Deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md), [flink-2.3-2.4-roadmap.md](../08-roadmap/flink-2.3-2.4-roadmap.md) | **形式化等级**: L5 (工程严格)
 >
-> **适用版本**: Flink 2.4+ | **Operator版本**: 1.12+ | **状态**: 2026年生产环境推荐方案
+> **适用版本**: Flink 2.4+ | **Operator版本**: 1.12+ | **状态**: preview
 
 ---
 
@@ -105,12 +112,12 @@ spec:
   flinkVersion: v2.4
   deploymentMode: native
   # 新增：热更新配置
-  hotUpdate:
+  hotUpdate:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     enabled: true
     strategy: rolling
     maxUnavailable: 1
   # 新增：部署策略
-  deploymentStrategy:
+  deploymentStrategy:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     type: Canary
     canary:
       steps:
@@ -266,9 +273,9 @@ spec:
         - name: flink-main-container
           env:
             # 启用优化特性
-            - name: FLINK_OPTIMIZED_ROLLING_UPGRADE
+            - name: FLINK_OPTIMIZED_ROLLING_UPGRADE  # [Flink 2.4 前瞻] 环境变量为规划特性，可能变动
               value: "true"
-            - name: FLINK_INCREMENTAL_STATE_TRANSFER
+            - name: FLINK_INCREMENTAL_STATE_TRANSFER  # [Flink 2.4 前瞻] 环境变量为规划特性，可能变动
               value: "true"
             - name: FLINK_PREDICTIVE_CONNECTION_POOL
               value: "true"
@@ -543,7 +550,7 @@ spec:
             averageUtilization: 70
   
   # 突发配额配置
-  burstQuota:
+  burstQuota:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
     enabled: true
     maxBurstDuration: 30m
     cooldownPeriod: 2h

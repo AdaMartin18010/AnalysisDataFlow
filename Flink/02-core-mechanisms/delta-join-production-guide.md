@@ -843,7 +843,7 @@ enriched_behavior AS (
     WHERE b.behavior_type IN ('click', 'fav', 'cart')
 ),
 
--- Step 2: 计算相似物品（简化示例，实际使用 VECTOR_SEARCH）
+-- Step 2: 计算相似物品（简化示例，实际使用 向量搜索功能（规划中））
 similar_items AS (
     SELECT 
         user_id,

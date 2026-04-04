@@ -1,6 +1,13 @@
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
+> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+---
+
 # Flink 智能检查点策略 (Smart Checkpointing Strategies)
 
-> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | 形式化等级: L4
+> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | 形式化等级: L4 | 状态: preview
 
 ---
 
@@ -1196,7 +1203,7 @@ $$
 # ============================================================
 
 # 启用自适应检查点
-execution.checkpointing.mode: SMART
+execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性，可能变动 -->
 
 # 基础检查点间隔 (10分钟)
 execution.checkpointing.interval: 10min
@@ -1936,7 +1943,7 @@ execution.checkpointing.storage.tiered.enabled: true
 - 配置重点: 自适应间隔 + 局部检查点
 
 ```yaml
-execution.checkpointing.mode: SMART
+execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性，可能变动 -->
 execution.checkpointing.adaptive.enabled: true
 execution.checkpointing.partial.enabled: true
 execution.checkpointing.partial.partition-strategy: PRIORITY

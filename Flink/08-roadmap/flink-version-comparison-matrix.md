@@ -171,7 +171,7 @@ graph TB
     end
 
     subgraph "Flink 2.2 AI/ML"
-        V22[2.2 向量搜索] --> V22_1[VECTOR_SEARCH]
+        V22[2.2 向量搜索] --> V22_1[VECTOR_SEARCH（规划中）]
         V22 --> V22_2[Model DDL]
         V22 --> V22_3[PyFlink Async]
         V21 --> V22
@@ -361,7 +361,7 @@ $$
 | Time Travel Query | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Delta Join | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **2.2+ 新特性** |
-| VECTOR_SEARCH 函数 | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
+| VECTOR_SEARCH 函数（规划中）| ❌ | ❌ | ⚠️ 规划中| ⚠️ 规划中| ⚠️ 规划中| ⚠️ 规划中|
 | Model DDL | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
 | SQL/ML AI 函数 | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
 | **2.3+ 新特性** |

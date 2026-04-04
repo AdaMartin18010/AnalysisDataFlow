@@ -364,8 +364,8 @@ $$
 **定义**: Flink 2.3+ 引入的Agent/Tools原生SQL语法：
 
 ```sql
--- Def-F-12-110a: CREATE AGENT语法
-CREATE AGENT <agent_name>
+-- Def-F-12-110a: CREATE AGENT语法（未来可能的语法，概念设计阶段）
+-- CREATE AGENT <agent_name>
 WITH (
   'model.endpoint' = '<provider>:<model>',
   'model.temperature' = '<float>',
@@ -376,8 +376,8 @@ WITH (
   'memory.type' = 'short-term|long-term|hybrid'
 );
 
--- Def-F-12-110b: CREATE TOOL语法
-CREATE TOOL <tool_name>
+-- Def-F-12-110b: CREATE TOOL语法（未来可能的语法，概念设计阶段）
+-- CREATE TOOL <tool_name>
 FOR AGENT <agent_name>
 [TYPE 'sql' | 'python' | 'webhook' | 'mcp']
 [CONFIG (
@@ -1335,6 +1335,7 @@ if __name__ == "__main__":
 -- ============================================
 
 -- 步骤1: 创建主客服Agent
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE AGENT customer_support_agent
 WITH (
   -- LLM配置
@@ -1356,6 +1357,7 @@ WITH (
 );
 
 -- 步骤2: 创建技术支持Agent
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE AGENT tech_support_agent
 WITH (
   'model.endpoint' = 'openai:gpt-4',
@@ -1364,6 +1366,7 @@ WITH (
 );
 
 -- 步骤3: 注册SQL工具 - 查询订单
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL query_order_status
 FOR AGENT customer_support_agent
 TYPE 'sql'
@@ -1387,6 +1390,7 @@ CONFIG (
 );
 
 -- 步骤4: 注册SQL工具 - 查询退货政策
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL query_return_policy
 FOR AGENT customer_support_agent
 TYPE 'sql'
@@ -1404,6 +1408,7 @@ CONFIG (
 );
 
 -- 步骤5: 注册向量检索工具
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL search_knowledge_base
 FOR AGENT customer_support_agent
 TYPE 'vector_search'
@@ -1415,6 +1420,7 @@ CONFIG (
 );
 
 -- 步骤6: 注册MCP工具 - 外部API
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL check_inventory
 FOR AGENT customer_support_agent
 TYPE 'mcp'
@@ -1425,6 +1431,7 @@ CONFIG (
 );
 
 -- 步骤7: 注册Webhook工具 - 发送告警
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL send_alert
 FOR AGENT customer_support_agent
 TYPE 'webhook'
@@ -2787,7 +2794,7 @@ gantt
     A2A Protocol                 :f2, 2025-07, 2025-10
     MCP Native Integration       :f3, 2025-08, 2025-11
     Agent Memory Management      :f4, 2025-09, 2025-12
-    CREATE AGENT Syntax          :f5, 2025-10, 2025-12
+    CREATE AGENT Syntax          :f5, 规划中, 规划中（以官方为准）
 
     section Flink 2.4 (规划中)
     Multi-Modal Support          :p1, 2026-01, 2026-06
@@ -2988,7 +2995,7 @@ public class ProductionAgentPatterns {
 | Def-F-12-107 | Flink ML Pipeline API | ML Pipeline定义 |
 | Def-F-12-108 | Agent可重放性 | 审计追踪定义 |
 | Def-F-12-109 | 向量索引类型 | ANN索引算法定义 |
-| Def-F-12-110 | SQL Agent语法 | CREATE AGENT/TOOL语法 |
+| Def-F-12-110 | SQL Agent语法（概念设计） | CREATE AGENT/TOOL语法（规划中）|
 
 ### 定理汇总
 
@@ -3010,10 +3017,11 @@ public class ProductionAgentPatterns {
 
 ```sql
 -- 创建Agent
-CREATE AGENT <name> WITH (...);
+-- 注: 以下为未来可能的语法（概念设计阶段）
+-- CREATE AGENT <name> WITH (...);
 
 -- 创建工具
-CREATE TOOL <name> FOR AGENT <agent> TYPE 'sql'|'python'|'mcp';
+-- CREATE TOOL <name> FOR AGENT <agent> TYPE 'sql'|'python'|'mcp';
 
 -- 向量搜索
 SELECT * FROM TABLE(VECTOR_SEARCH(

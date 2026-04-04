@@ -1,6 +1,11 @@
 # Flink 2.5 流批一体深化完整指南
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.5 版本预览](flink-2.5-preview.md) | 形式化等级: L4
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.5的前瞻性设计内容。Flink 2.5尚未正式发布，
+> 部分特性为早期规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.5 版本预览](flink-2.5-preview.md) | 形式化等级: L4 | status: early-preview
 
 ## 1. 概念定义 (Definitions)
 
@@ -47,7 +52,7 @@ $$
 
 ### Def-F-08-57: Unified Execution Engine (统一执行引擎)
 
-**统一执行引擎** (FLIP-XXX: Unified Execution Engine) 是Flink 2.5的核心组件：
+**统一执行引擎** (FLIP-XXX <!-- 前瞻性: FLIP编号待确定 -->: Unified Execution Engine) 是Flink 2.5的核心组件：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -595,10 +600,10 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用自适应模式选择
-env.getConfig().set("execution.runtime-mode", "ADAPTIVE");
+env.getConfig().set("execution.runtime-mode", "ADAPTIVE");  <!-- 前瞻性API: Flink 2.5规划中 -->
 
 // 配置自适应策略
-AdaptiveExecutionConfig adaptiveConfig = new AdaptiveExecutionConfig()
+AdaptiveExecutionConfig adaptiveConfig = new AdaptiveExecutionConfig()  <!-- 前瞻性API: Flink 2.5规划中 -->
     // 延迟约束 (毫秒)
     .setLatencyConstraint(1000)
     // 吞吐量目标 (记录/秒)
@@ -615,14 +620,14 @@ env.configure(adaptiveConfig);
 // SQL方式启用自适应
 TableEnvironment tEnv = TableEnvironment.create(
     EnvironmentSettings.newInstance()
-        .setAdaptiveMode(true)
+        .setAdaptiveMode(true)  <!-- 前瞻性API: Flink 2.5规划中 -->
         .build()
 );
 
 tEnv.executeSql("""
-    SET 'execution.runtime-mode' = 'ADAPTIVE';
-    SET 'execution.adaptive.latency-bound' = '1s';
-    SET 'execution.adaptive.throughput-target' = '100000';
+    SET 'execution.runtime-mode' = 'ADAPTIVE';  /* 前瞻性配置: Flink 2.5规划中 */
+    SET 'execution.adaptive.latency-bound' = '1s';  /* 前瞻性配置: Flink 2.5规划中 */
+    SET 'execution.adaptive.throughput-target' = '100000';  /* 前瞻性配置: Flink 2.5规划中 */
 """);
 ```
 
@@ -635,7 +640,7 @@ StreamExecutionEnvironment env =
 StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
 // 设置混合执行模式
-env.getConfig().set("execution.runtime-mode", "MIXED");
+env.getConfig().set("execution.runtime-mode", "MIXED");  <!-- 前瞻性API: Flink 2.5规划中 -->
 
 // === 流数据源 ===
 tEnv.executeSql("""
@@ -650,7 +655,7 @@ tEnv.executeSql("""
         'topic' = 'user-events',
         'properties.bootstrap.servers' = 'kafka:9092',
         'format' = 'json',
-        'execution.mode' = 'STREAMING'  -- 显式指定流模式
+        'execution.mode' = 'STREAMING'  /* 前瞻性配置: Flink 2.5规划中 */
     )
 """);
 
@@ -666,7 +671,7 @@ tEnv.executeSql("""
         'catalog' = 'iceberg_catalog',
         'database' = 'analytics',
         'table' = 'orders',
-        'execution.mode' = 'BATCH'  -- 显式指定批模式
+        'execution.mode' = 'BATCH'  /* 前瞻性配置: Flink 2.5规划中 */
     )
 """);
 
@@ -726,8 +731,8 @@ result.executeInsert("result_sink");
 # flink-conf.yaml - 统一容错配置
 
 # 统一容错后端
-state.backend: unified
-state.backend.unified.storage: forst
+state.backend: unified  # 前瞻性配置: Flink 2.5规划中
+state.backend.unified.storage: forst  # 前瞻性配置: Flink 2.5规划中
 
 # 流模式容错配置 (适用于流子图)
 execution.checkpointing.interval: 30s
@@ -735,14 +740,14 @@ execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.max-concurrent-checkpoints: 1
 
 # 批模式容错配置 (适用于批子图)
-execution.batch.fault-tolerance.strategy: RESTART_ALL
-execution.batch.fault-tolerance.max-attempts: 3
-execution.batch.shuffle-mode: ALL_EXCHANGES_BLOCKING
+execution.batch.fault-tolerance.strategy: RESTART_ALL  # 前瞻性配置: Flink 2.5规划中
+execution.batch.fault-tolerance.max-attempts: 3  # 前瞻性配置: Flink 2.5规划中
+execution.batch.shuffle-mode: ALL_EXCHANGES_BLOCKING  # 前瞻性配置: Flink 2.5规划中
 
 # 混合执行容错
-execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED
-execution.mixed.state-sharing: true
-execution.mixed.auto-scaling: true
+execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED  # 前瞻性配置: Flink 2.5规划中
+execution.mixed.state-sharing: true  # 前瞻性配置: Flink 2.5规划中
+execution.mixed.auto-scaling: true  # 前瞻性配置: Flink 2.5规划中
 
 # 统一存储配置
 state.backend.forst.remote.path: s3://flink-state/{job-id}
@@ -834,8 +839,8 @@ tEnv.executeSql("""
         'connector' = 'filesystem',
         'path' = '/data/input',
         'format' = 'parquet',
-        -- 新特性: 自动检测boundedness
-        'boundedness' = 'AUTO_DETECT'  
+        -- 前瞻性特性: 自动检测boundedness (Flink 2.5规划中)
+        'boundedness' = 'AUTO_DETECT'  /* 前瞻性配置: Flink 2.5规划中 */
     )
 """);
 
@@ -852,13 +857,13 @@ tEnv.executeSql("""
         -- 统一写入语义
         'sink.semantic' = 'EXACTLY_ONCE',
         -- 自动选择流/批写入策略
-        'sink.execution-mode' = 'ADAPTIVE'  
+        'sink.execution-mode' = 'ADAPTIVE'  /* 前瞻性配置: Flink 2.5规划中 */
     )
 """);
 
 // 混合DDL
 tEnv.executeSql("""
-    CREATE HYBRID JOB analytics_pipeline AS
+    CREATE HYBRID JOB analytics_pipeline AS  /* 前瞻性SQL语法: Flink 2.5规划中 */
     
     -- 流处理部分
     WITH STREAMING realtime_stats AS (
@@ -1124,11 +1129,11 @@ StreamExecutionEnvironment env =
 env.setRuntimeMode(RuntimeMode.BATCH);  // 或 STREAMING
 
 // Flink 2.5 等效代码 - 方式1: 保留显式模式
-env.getConfig().set("execution.runtime-mode", "BATCH");
+env.getConfig().set("execution.runtime-mode", "BATCH");  <!-- 前瞻性配置: Flink 2.5规划中 -->
 
 // Flink 2.5 等效代码 - 方式2: 启用自适应
 env.getConfig().set("execution.runtime-mode", "ADAPTIVE");
-env.getConfig().set("execution.adaptive.latency-bound", "10s");
+env.getConfig().set("execution.adaptive.latency-bound", "10s");  <!-- 前瞻性配置: Flink 2.5规划中 -->
 ```
 
 ### 8.2 DataSet API迁移
@@ -1151,7 +1156,7 @@ env.execute();
 // Flink 2.5等效代码 - 使用DataStream + BATCH模式
 StreamExecutionEnvironment env = 
     StreamExecutionEnvironment.getExecutionEnvironment();
-env.getConfig().set("execution.runtime-mode", "BATCH");
+env.getConfig().set("execution.runtime-mode", "BATCH");  <!-- 前瞻性配置: Flink 2.5规划中 -->
 
 DataStream<String> text = env.readTextFile("/path/to/file");
 DataStream<Tuple2<String, Integer>> counts = text
@@ -1291,7 +1296,7 @@ histogram_quantile(0.99,
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-XXX: "Unified Stream-Batch Execution Engine", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-XXX
+[^1]: Apache Flink FLIP-XXX <!-- 前瞻性: FLIP编号待确定 -->: "Unified Stream-Batch Execution Engine", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-XXX
 
 [^2]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 

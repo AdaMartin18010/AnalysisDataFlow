@@ -1,4 +1,4 @@
-# Flink 2.2 VECTOR_SEARCH 向量搜索与 RAG 实现
+# Flink VECTOR_SEARCH 向量搜索与 RAG 实现（规划中）
 
 > 所属阶段: Flink | 前置依赖: [Model DDL 与 ML_PREDICT](./model-ddl-and-ml-predict.md), [Vector Search 基础](./vector-search.md) | 形式化等级: L3-L4
 

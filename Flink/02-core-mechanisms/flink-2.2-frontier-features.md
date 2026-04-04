@@ -46,7 +46,9 @@ $$TTL_{eff}(k) = \min(TTL_{local}, TTL_{source})$$
 
 ---
 
-### Def-F-02-25: VECTOR_SEARCH 向量搜索算子
+### Def-F-02-25: VECTOR_SEARCH 向量搜索算子（规划中）
+
+<!-- 注: VECTOR_SEARCH 为向量搜索功能（规划中），尚未正式发布 -->
 
 **定义**: `VECTOR_SEARCH` 是 Flink 2.2 引入的流式向量相似度搜索 SQL 函数，用于在高维向量空间中执行实时近邻检索。
 
@@ -282,6 +284,8 @@ $$\text{HitRate} \geq 1 - \frac{1-\alpha}{1-\alpha^{C+1}} \cdot \alpha^C$$
 ---
 
 ### Prop-F-02-08: VECTOR_SEARCH 与 ML_PREDICT 的组合复杂度
+
+<!-- 注: 以下涉及 VECTOR_SEARCH 和 ML_PREDICT 的内容均为规划功能，尚未正式发布 -->
 
 **命题**: 在端到端 RAG 管道中，设嵌入模型推理延迟为 $L_{embed}$，向量搜索延迟为 $L_{search}$，则：
 

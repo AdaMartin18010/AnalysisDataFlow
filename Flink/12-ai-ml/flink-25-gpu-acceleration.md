@@ -1,6 +1,11 @@
 # Flink 2.5 GPU加速算子完整指南
 
-> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink 2.5版本预览](../08-roadmap/flink-2.5-preview.md), [Flink实时ML推理](./flink-realtime-ml-inference.md) | 形式化等级: L4
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.5的前瞻性设计内容。Flink 2.5尚未正式发布，
+> 部分特性为早期规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink 2.5版本预览](../08-roadmap/flink-2.5-preview.md), [Flink实时ML推理](./flink-realtime-ml-inference.md) | 形式化等级: L4 | status: early-preview
 
 ---
 
@@ -861,7 +866,8 @@ public class GPUVectorSearchFunction
 /*
 CREATE FUNCTION vector_search_gpu AS 
 'org.apache.flink.gpu.ml.GPUVectorSearchFunction'
-USING JAR 'flink-gpu-ml.jar';
+-- 注: GPU模块（实验性），尚未正式发布
+-- USING JAR 'flink-gpu-ml.jar';
 
 SELECT 
     query_id,
@@ -995,36 +1001,36 @@ public class TensorRTInferenceOperator
 # ========================================
 
 # 启用GPU支持
-gpu.enabled: true
+gpu.enabled: true  # 前瞻性配置: Flink 2.5规划中
 
 # 每个TaskManager可用的GPU设备
-gpu.devices.per-taskmanager: 1
+gpu.devices.per-taskmanager: 1  # 前瞻性配置: Flink 2.5规划中
 
 # GPU内存池配置
-gpu.memory.pool.size: 4gb
-gpu.memory.pool.preallocate: true
+gpu.memory.pool.size: 4gb  # 前瞻性配置: Flink 2.5规划中
+gpu.memory.pool.preallocate: true  # 前瞻性配置: Flink 2.5规划中
 
 # CUDA流配置
-gpu.cuda.streams: 4
-gpu.cuda.stream-priority: high
+gpu.cuda.streams: 4  # 前瞻性配置: Flink 2.5规划中
+gpu.cuda.stream-priority: high  # 前瞻性配置: Flink 2.5规划中
 
 # 批处理阈值
-gpu.batch.min-size: 1000
-gpu.batch.max-size: 100000
-gpu.batch.timeout-ms: 50
+gpu.batch.min-size: 1000  # 前瞻性配置: Flink 2.5规划中
+gpu.batch.max-size: 100000  # 前瞻性配置: Flink 2.5规划中
+gpu.batch.timeout-ms: 50  # 前瞻性配置: Flink 2.5规划中
 
 # 算子自动卸载策略
-gpu.offload.policy: adaptive
-gpu.offload.threshold.cpu-gpu-ratio: 5.0
+gpu.offload.policy: adaptive  # 前瞻性配置: Flink 2.5规划中
+gpu.offload.threshold.cpu-gpu-ratio: 5.0  # 前瞻性配置: Flink 2.5规划中
 
 # 数据传输优化
-gpu.memory.use-unified: true
-gpu.memory.use-pinned: true
-gpu.transfer.async: true
+gpu.memory.use-unified: true  # 前瞻性配置: Flink 2.5规划中
+gpu.memory.use-pinned: true  # 前瞻性配置: Flink 2.5规划中
+gpu.transfer.async: true  # 前瞻性配置: Flink 2.5规划中
 
 # 故障恢复
-gpu.checkpoint.sync-before: true
-gpu.recovery.reuse-context: true
+gpu.checkpoint.sync-before: true  # 前瞻性配置: Flink 2.5规划中
+gpu.recovery.reuse-context: true  # 前瞻性配置: Flink 2.5规划中
 ```
 
 **Kubernetes GPU调度配置：**
@@ -1036,7 +1042,7 @@ kind: FlinkDeployment
 metadata:
   name: flink-gpu-job
 spec:
-  image: flink:2.5-gpu-cuda12
+  image: flink:2.5-gpu-cuda12  <!-- 前瞻性镜像: Flink 2.5规划中 -->
   flinkVersion: v2.5
   
   jobManager:
@@ -1090,7 +1096,7 @@ package org.apache.flink.gpu.benchmark;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.gpu.operators.GPUAggregationOperator;
+import org.apache.flink.gpu.operators.GPUAggregationOperator;  // 前瞻性API: Flink 2.5规划中
 
 public class GPUBenchmark {
     
@@ -1118,10 +1124,10 @@ public class GPUBenchmark {
             .transform(
                 "GPU-Aggregation",
                 Types.DOUBLE,
-                new GPUAggregationOperator<>(
+                new GPUAggregationOperator<>(  // 前瞻性API: Flink 2.5规划中
                     AggregationType.AVG,
                     10000,  // batch size
-                    GPUMemoryPool.of(4L * 1024 * 1024 * 1024)  // 4GB
+                    GPUMemoryPool.of(4L * 1024 * 1024 * 1024)  // 前瞻性API: Flink 2.5规划中  // 4GB
                 )
             );
         
@@ -1379,7 +1385,7 @@ quadrantChart
 
 [^7]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^8]: Apache Flink FLIP-XXX, "GPU Acceleration for Flink Operators", Apache Flink Community, 2026.
+[^8]: Apache Flink FLIP-XXX <!-- 前瞻性: FLIP编号待确定 -->, "GPU Acceleration for Flink Operators", Apache Flink Community, 2026.
 
 [^9]: Kubernetes Documentation, "Scheduling GPUs", 2024. https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/
 

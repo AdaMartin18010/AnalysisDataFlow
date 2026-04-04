@@ -1,6 +1,11 @@
 # Flink 2.5 WebAssembly UDF GA - 生产级多语言函数引擎
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [Flink/09-language-foundations/09-wasm-udf-frameworks.md](./09-wasm-udf-frameworks.md), [Flink/09-language-foundations/10-wasi-component-model.md](./10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](../13-wasm/wasm-streaming.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.5 GA
+> ⚠️ **前瞻性声明**
+> 本文档包含Flink 2.5的前瞻性设计内容。Flink 2.5尚未正式发布，
+> 部分特性为早期规划性质。具体实现以官方最终发布为准。
+> 最后更新: 2026-04-04
+
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [Flink/09-language-foundations/09-wasm-udf-frameworks.md](./09-wasm-udf-frameworks.md), [Flink/09-language-foundations/10-wasi-component-model.md](./10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](../13-wasm/wasm-streaming.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.5 GA | status: early-preview
 
 ---
 
@@ -82,13 +87,13 @@ $$
 | 特性 | Flink 2.0 实验 | Flink 2.5 GA | 说明 |
 |------|---------------|--------------|------|
 | ScalarFunction | ✅ 基础 | ✅ 完整 | 标量计算完整支持 |
-| TableFunction | ❌ | ✅ 完整 | 多行返回支持 |
-| AggregateFunction | ❌ | ✅ 完整 | 聚合计算支持 |
-| AsyncFunction | 🔄 预览 | ✅ 稳定 | WASI 0.3 异步支持 |
+| TableFunction | ❌ | ✅ 完整 <!-- 前瞻性: Flink 2.5规划中 --> | 多行返回支持 |
+| AggregateFunction | ❌ | ✅ 完整 <!-- 前瞻性: Flink 2.5规划中 --> | 聚合计算支持 |
+| AsyncFunction | 🔄 预览 | ✅ 稳定 <!-- 前瞻性: Flink 2.5规划中 --> | WASI 0.3 异步支持 |
 | WASI 0.2 | ✅ | ✅ | 生产就绪 |
-| WASI 0.3 | ❌ | ✅ Preview | 原生异步 I/O |
-| Component Model | ❌ | ✅ | 跨语言组合 |
-| 调试工具 | ❌ | ✅ | 完整工具链 |
+| WASI 0.3 | ❌ | ✅ Preview <!-- 前瞻性: Flink 2.5规划中 --> | 原生异步 I/O |
+| Component Model | ❌ | ✅ <!-- 前瞻性: Flink 2.5规划中 --> | 跨语言组合 |
+| 调试工具 | ❌ | ✅ <!-- 前瞻性: Flink 2.5规划中 --> | 完整工具链 |
 
 ---
 
@@ -944,10 +949,10 @@ $$
 
 ```bash
 # 安装 Flink Rust SDK
-cargo install cargo-flink
+cargo install cargo-flink  # 前瞻性工具: Flink 2.5规划中
 
 # 创建新的 UDF 项目
-cargo flink new --scalar udf-example
+cargo flink new --scalar udf-example  # 前瞻性工具: Flink 2.5规划中
 cd udf-example
 ```
 
@@ -1401,7 +1406,7 @@ add_library(math_ops STATIC math_ops.cpp)
 -- ============================================
 
 -- 1. 创建 Rust UDF 函数
-CREATE FUNCTION rust_hash AS 'org.apache.flink.wasm.WasmScalarFunction'
+CREATE FUNCTION rust_hash AS 'org.apache.flink.wasm.WasmScalarFunction'  /* 前瞻性API: Flink 2.5规划中 */
 USING JAR 'file:///opt/flink/wasm/flink-wasm-bridge.jar'
 WITH (
     'wasm.module.path' = '/opt/wasm/udf_example.wasm',
@@ -1416,7 +1421,7 @@ WITH (
 );
 
 -- 2. 创建 Go UDF 函数
-CREATE FUNCTION go_mask AS 'org.apache.flink.wasm.WasmScalarFunction'
+CREATE FUNCTION go_mask AS 'org.apache.flink.wasm.WasmScalarFunction'  /* 前瞻性API: Flink 2.5规划中 */
 USING JAR 'file:///opt/flink/wasm/flink-wasm-bridge.jar'
 WITH (
     'wasm.module.path' = '/opt/wasm/udf_go_optimized.wasm',
@@ -1426,7 +1431,7 @@ WITH (
 );
 
 -- 3. 创建 C++ UDF 函数
-CREATE FUNCTION cpp_fib AS 'org.apache.flink.wasm.WasmScalarFunction'
+CREATE FUNCTION cpp_fib AS 'org.apache.flink.wasm.WasmScalarFunction'  /* 前瞻性API: Flink 2.5规划中 */
 USING JAR 'file:///opt/flink/wasm/flink-wasm-bridge.jar'
 WITH (
     'wasm.module.path' = '/opt/wasm/math_ops_optimized.wasm',
@@ -1434,7 +1439,7 @@ WITH (
 );
 
 -- 4. 创建聚合函数 (Aggregate)
-CREATE FUNCTION rust_moving_avg AS 'org.apache.flink.wasm.WasmAggregateFunction'
+CREATE FUNCTION rust_moving_avg AS 'org.apache.flink.wasm.WasmAggregateFunction'  /* 前瞻性API: Flink 2.5规划中 */
 USING JAR 'file:///opt/flink/wasm/flink-wasm-bridge.jar'
 WITH (
     'wasm.module.path' = '/opt/wasm/udf_example.wasm',
@@ -1496,8 +1501,8 @@ FROM orders;
 // Flink DataStream API WASM UDF 示例
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.wasm.api.WasmScalarFunction;
-import org.apache.flink.wasm.config.WasmFunctionConfig;
+import org.apache.flink.wasm.api.WasmScalarFunction;  // 前瞻性API: Flink 2.5规划中
+import org.apache.flink.wasm.config.WasmFunctionConfig;  // 前瞻性API: Flink 2.5规划中
 
 public class WasmDataStreamExample {
     public static void main(String[] args) throws Exception {
@@ -1891,7 +1896,7 @@ graph TB
 
 wasm:
   # 运行时选择
-  runtime: wasmtime  # 或 wasmedge
+  runtime: wasmtime  # 前瞻性配置: Flink 2.5规划中
   
   # AOT 编译配置
   aot:

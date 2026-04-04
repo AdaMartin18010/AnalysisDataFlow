@@ -770,7 +770,7 @@ A2A 协议的五大设计原则源于对企业级 Agent 系统的深度观察：
     ↓
 2025 Q2: Linux Foundation 托管，50+ 合作伙伴
     ↓
-2025 Q3-Q4: 生态扩展 (LangChain, Semantic Kernel 集成)
+规划中（以官方为准）: 生态扩展 (LangChain, Semantic Kernel 集成)
     ↓
 2026 (Expected): 协议升级，更多模态支持
 ```

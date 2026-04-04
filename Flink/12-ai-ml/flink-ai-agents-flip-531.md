@@ -500,6 +500,7 @@ sales_agent.execute()
 
 ```sql
 -- 创建Agent
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE AGENT sales_analytics_agent
 WITH (
   'model.endpoint' = 'openai:gpt-4',
@@ -510,6 +511,7 @@ WITH (
 );
 
 -- 注册SQL工具
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL query_sales_summary
 FOR AGENT sales_analytics_agent
 AS $$
@@ -523,6 +525,7 @@ AS $$
 $$;
 
 -- 注册外部工具
+-- 注: 以下为未来可能的语法（概念设计阶段）
 CREATE TOOL send_alert
 FOR AGENT sales_analytics_agent
 TYPE 'webhook'

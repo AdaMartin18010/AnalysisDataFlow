@@ -1646,7 +1646,9 @@ tableEnv.executeSql(
 );
 ```
 
-### 6.11 向量搜索 (VECTOR_SEARCH)
+### 6.11 向量搜索 (VECTOR_SEARCH)（规划中）
+
+<!-- 注: VECTOR_SEARCH 为向量搜索功能（规划中），尚未正式发布 -->
 
 **Def-F-03-21: 向量搜索语法 (Flink 2.2+)**
 
@@ -1692,7 +1694,9 @@ LATERAL TABLE(VECTOR_SEARCH(
 | `filter` | STRING | 否 | 元数据过滤条件 |
 | `ef` | INT | 否 | HNSW 搜索深度 |
 
-### 6.12 Model DDL & ML_PREDICT
+### 6.12 Model DDL & ML_PREDICT（实验性）
+
+<!-- 注: ML_PREDICT 为 ML预测函数（实验性），可能随版本变化 -->
 
 **Def-F-03-22: 模型定义与推理**
 

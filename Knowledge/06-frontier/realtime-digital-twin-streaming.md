@@ -467,7 +467,7 @@ SELECT
     line_id,
     station_id,
     'gearbox' as component,
-    -- 使用ML_PREDICT调用预训练模型
+    -- 使用ML_PREDICT调用预训练模型（实验性）
     ML_PREDICT(
         'gearbox_failure_model',
         temperature,

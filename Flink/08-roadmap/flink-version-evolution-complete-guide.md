@@ -336,12 +336,12 @@ Flink 2.2.0:
   主题: "AI/ML原生支持与向量搜索"
 
 关键FLIPs:
-  FLIP-471: "VECTOR_SEARCH Support"
+  FLIP-471: "VECTOR_SEARCH Support"（规划中）
     - 向量搜索SQL函数
     - 向量索引集成
     - ANN近似最近邻
 
-  FLIP-472: "Model DDL & ML_PREDICT"
+  FLIP-472: "Model DDL & ML_PREDICT"（实验性）
     - CREATE MODEL语句
     - ML_PREDICT函数
     - 模型管理与版本控制

@@ -322,7 +322,8 @@ Struct/01-foundation/ (理论基础)
 <!-- pom.xml 依赖 -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <artifactId>flink-ai-agents</artifactId>
+    <!-- 注: flink-ai-agents 为未来可能提供的模块（设计阶段），尚未正式发布 -->
+<artifactId>flink-ai-agents</artifactId>
     <version>2.4.0</version>
 </dependency>
 <dependency>
@@ -815,6 +816,7 @@ public class GPUDetectionFunction
 
 ```yaml
 # flink-gpu-deployment.yaml
+# 注: GPU加速配置（实验性），尚未正式发布
 apiVersion: flink.apache.org/v1
 kind: FlinkDeployment
 metadata:
@@ -1086,7 +1088,8 @@ Version: 2.3.2
 $ flink-check-config -i flink-conf.yaml --from 2.3 --to 2.4
 [INFO] Checking configuration compatibility...
 [WARN] Deprecated config: 'state.backend.incremental' moved to 'state.checkpoint-storage.incremental'
-[INFO] New configs available: 'ai.agent.enabled', 'checkpoint.smart.enabled'
+[INFO] New configs available: 'checkpoint.smart.enabled'
+# 注: 'ai.agent.enabled' 为未来配置参数（概念），尚未正式实现
 
 # 3. 检查作业兼容性
 $ flink-check-jobs -f savepoint-2.3/
@@ -1149,7 +1152,8 @@ MIGRATIONS = {
 }
 
 NEW_FEATURES = [
-    'ai.agent.enabled=false',
+    # 注: 'ai.agent.enabled' 为未来配置参数（概念），尚未正式实现
+    # 'ai.agent.enabled=false',
     'checkpoint.smart.enabled=false',
     'state.backend.rocksdb.use-bloom-filter=true',
 ]
@@ -1198,7 +1202,8 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 env.getCheckpointConfig().setCheckpointStorage("hdfs://checkpoints");
 
 // 2.4 新增: AI Agent 集成 (可选)
-env.getConfig().setBoolean("ai.agent.enabled", true);
+// 注: ai.agent.enabled 为未来配置参数（概念），尚未正式实现
+// env.getConfig().setBoolean("ai.agent.enabled", true);
 ```
 
 **回滚计划**

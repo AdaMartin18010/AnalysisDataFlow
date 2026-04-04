@@ -361,7 +361,7 @@ def analyze_sales_trend(time_range: str) -> dict:
             trend_direction,
             growth_rate,
             forecast_next_hour
-        FROM ML_PREDICT(
+        FROM ML_PREDICT(-- 注: ML_PREDICT 为实验性功能
             'sales_forecast_model',
             DESCRIPTOR(event_time)
         )
