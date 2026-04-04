@@ -456,6 +456,7 @@ flowchart TD
 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) | K8s部署 | [deployment-architectures.md](01-architecture/deployment-architectures.md) |
 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) | Flink Kubernetes Operator深度指南 | [kubernetes-deployment.md](10-deployment/kubernetes-deployment.md) |
 | [flink-kubernetes-autoscaler-deep-dive.md](10-deployment/flink-kubernetes-autoscaler-deep-dive.md) | Flink K8s自动扩缩容深度指南 🆕 v2.5 | [flink-kubernetes-operator-deep-dive.md](10-deployment/flink-kubernetes-operator-deep-dive.md) |
+| [flink-deployment-ops-complete-guide.md](10-deployment/flink-deployment-ops-complete-guide.md) | **Flink部署与运维完整特性指南** 🆕 v1.0 | 覆盖所有部署模式、资源调度、HA、作业管理、配置管理 |
 
 ### 6.11 11-benchmarking/ 基准测试层
 

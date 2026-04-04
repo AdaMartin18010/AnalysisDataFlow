@@ -67,6 +67,7 @@ flowchart LR
 | Document | Status | Description | Formality |
 |----------|--------|-------------|-----------|
 | [05-datastream-v2-api.md](05-datastream-v2-api.md) | 🆕 NEW | DataStream V2 API with Scala 3 support | L3 |
+| [flink-datastream-api-complete-guide.md](flink-datastream-api-complete-guide.md) | 🆕 NEW | DataStream API 完整特性指南 (V1 & V2) | L3-L4 |
 | Flink 2.0 Migration Overview | 🆕 NEW | High-level migration strategy and breaking changes | L2 |
 
 **Key Features of Flink 2.0:**
@@ -595,6 +596,7 @@ graph TD
 | 08 | [flink-rust-connector-dev.md](08-flink-rust-connector-dev.md) | Rust | L3 | 🆕 | 55 min |
 | 09 | [wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM | L3 | 🆕 | 35 min |
 | 10 | [wasi-component-model.md](10-wasi-component-model.md) | WASM | L3 | 🆕 | 40 min |
+| 11 | [flink-datastream-api-complete-guide.md](flink-datastream-api-complete-guide.md) | Java/Scala | L3-L4 | 🆕 | 120 min |
 
 **Legend:**
 
@@ -605,10 +607,10 @@ graph TD
 ### 8.2 Formality Level Distribution
 
 ```
-L2 (Quick Start):     ████████░░░░░░░░░░░░  4 docs (24%)
-L3 (API/Technical):   ██████████████░░░░░░  10 docs (59%)
-L4 (Formalization):   ███░░░░░░░░░░░░░░░░░  3 docs (18%)
-                      Total: 17 documents
+L2 (Quick Start):     ███████░░░░░░░░░░░░░  4 docs (22%)
+L3 (API/Technical):   ███████████████░░░░░  11 docs (58%)
+L4 (Formalization):   ████░░░░░░░░░░░░░░░░  4 docs (21%)
+                      Total: 18 documents
 ```
 
 ---
@@ -626,4 +628,4 @@ L4 (Formalization):   ███░░░░░░░░░░░░░░░░�
 
 *索引更新时间: 2026-04-02*
 *适用版本: Flink 1.18+ / 2.0+ / 2.2+ | Scala 3.x | Python 3.9+ | Rust 1.75+*
-*文档统计: 17 文档 | 4 L2 | 10 L3 | 3 L4 | 新增: Timely Dataflow优化分析、Python Async API*
+*文档统计: 18 文档 | 4 L2 | 11 L3 | 4 L4 | 新增: Flink DataStream API 完整特性指南*
