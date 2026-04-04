@@ -333,6 +333,17 @@
 | Thm-F-06-40 | 成本优化帕累托前沿定理 | Flink/06-engineering | L4 | ✅ |
 | Thm-F-06-41 | 自动扩缩容成本最优性定理 | Flink/06-engineering | L4 | ✅ |
 | Thm-F-06-42 | FinOps单位经济学一致性定理 | Flink/06-engineering | L4-L5 | ✅ |
+| **Flink 2.4 性能优化** | | | | |
+| Thm-F-06-50 | 网络层优化组合效果定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-51 | 序列化优化帕累托最优定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-52 | 分代内存管理最优性定理 | Flink/06-engineering | L4-L5 | ✅ |
+| Thm-F-06-53 | 并行类加载加速定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-54 | 信用值流控稳定性定理 | Flink/06-engineering | L5 | ✅ |
+| Thm-F-06-55 | POJO序列化正确性定理 | Flink/06-engineering | L4-L5 | ✅ |
+| Thm-F-06-56 | 分代内存管理无OOM保证定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-57 | ForSt一致性保证定理 | Flink/06-engineering | L4-L5 | ✅ |
+| Thm-F-06-58 | 自适应Join选择最优性定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-59 | 升级收益边界定理 | Flink/06-engineering | L3-L4 | ✅ |
 
 ### 2.11.1 Flink SQL/Table API扩展定理 (Flink/03-sql-table-api)
 
@@ -584,6 +595,10 @@
 | **Flink版本演进完整指南 (新增 v2.9.3)** | | | | |
 | Thm-F-08-50 | 版本迁移完备性定理 | Flink/08-roadmap | L4 | ✅ |
 | Thm-F-08-51 | 版本选择决策完备性定理 | Flink/08-roadmap | L4 | ✅ |
+| Thm-F-08-53 | 流批一体语义保持定理 | Flink/08-roadmap | L4 | ✅ |
+| Thm-F-08-54 | 自适应执行最优性定理 | Flink/08-roadmap | L4 | ✅ |
+| Thm-F-08-55 | 统一容错正确性定理 | Flink/08-roadmap | L4 | ✅ |
+| Thm-F-08-56 | 批处理性能不下降定理 | Flink/08-roadmap | L4 | ✅ |
 | **Flink语言支持完整指南 (新增 v2.9.3)** | | | | |
 | Thm-F-09-01 | 最优语言选择定理 | Flink/09-language-foundations | L4 | ✅ |
 | Thm-F-09-02 | 跨语言UDF语义等价性 | Flink/09-language-foundations | L4 | ✅ |
@@ -853,6 +868,14 @@
 | Def-F-06-41 | FinOps四阶段框架 | Flink/06-engineering | Inform→Optimize→Operate→Automate |
 | Def-F-06-42 | 单位经济学指标 | Flink/06-engineering | 每记录/每窗口/每作业成本 |
 | Def-F-06-43 | Spot实例可用性模型 | Flink/06-engineering | 中断概率与成本关系 |
+| **Flink 2.4 性能优化** | | | |
+| Def-F-06-50 | 2.4性能优化维度 | Flink/06-engineering | 八元组优化空间 |
+| Def-F-06-51 | 性能基准度量 | Flink/06-engineering | 四元组性能指标 |
+| Def-F-06-52 | 信用值流控模型 | Flink/06-engineering | 五元组流控系统 |
+| Def-F-06-53 | 零拷贝传输 | Flink/06-engineering | 绕过用户空间传输 |
+| Def-F-06-54 | 序列化效率度量 | Flink/06-engineering | 效率计算公式 |
+| Def-F-06-55 | 分代内存池 | Flink/06-engineering | 四代内存管理 |
+| Def-F-06-56 | ForSt StateBackend | Flink/06-engineering | 异步状态访问模型 |
 
 ### 3.6.1 Flink SQL/Table API扩展定义 (Flink/03-sql-table-api)
 
@@ -1556,6 +1579,12 @@
 | Lemma-F-06-01 | 单元测试可重复性引理 | Flink/06-engineering | 测试稳定性基础 |
 | Lemma-F-06-02 | 集成测试环境隔离引理 | Flink/06-engineering | Thm-F-06-31基础 |
 | Lemma-F-06-03 | 端到端测试确定性引理 | Flink/06-engineering | Thm-F-06-32基础 |
+| **Flink 2.4 性能优化** | | | | |
+| Lemma-F-06-50 | 信用值流控延迟上界 | Flink/06-engineering | 反压传播分析 |
+| Lemma-F-06-51 | 零拷贝带宽利用率 | Flink/06-engineering | 网络效率计算 |
+| Lemma-F-06-52 | POJO序列化加速比 | Flink/06-engineering | 字段数量复杂度分析 |
+| Lemma-F-06-53 | 分代GC停顿时间 | Flink/06-engineering | Young/Mix GC分析 |
+| Lemma-F-06-54 | ForSt异步IO吞吐 | Flink/06-engineering | 缓存命中率影响 |
 | **流处理云成本优化** | | | | |
 | Lemma-F-06-40 | Spot实例可用性概率引理 | Flink/06-engineering | 成本节约期望计算 |
 | Lemma-F-06-41 | 自动扩缩容响应时间边界 | Flink/06-engineering | Thm-F-06-41基础 |
@@ -1688,6 +1717,8 @@
 | **Flink版本演进完整指南 (新增 v2.9.3)** | | | |
 | Lemma-F-08-50 | 向后兼容性引理 | Flink/08-roadmap | 次要版本API兼容性≥95% |
 | Lemma-F-08-51 | 迁移复杂度边界引理 | Flink/08-roadmap | 工作量与版本跨度成正比 |
+| Lemma-F-08-52 | 混合执行数据一致性引理 | Flink/08-roadmap | 跨模式边界输出数据一致性约束 |
+| Lemma-F-08-53 | 统一存储层访问性能引理 | Flink/08-roadmap | 分层策略保证访问性能不低于专用存储 |
 | **Flink语言支持完整指南 (新增 v2.9.3)** | | | |
 | Lemma-F-09-01 | Python UDF惰性求值引理 | Flink/09-language-foundations | 无副作用/类型已知条件下保持惰性 |
 | Lemma-F-09-02 | WebAssembly沙箱隔离性 | Flink/09-language-foundations | WASM UDF副作用限制 |
@@ -1830,6 +1861,10 @@
 | Prop-F-06-40 | 成本优化帕累托前沿分析 | Flink/06-engineering | 成本-性能权衡 |
 | Prop-F-06-41 | 资源利用率与成本关系 | Flink/06-engineering | 利用率优化边界 |
 | Prop-F-06-42 | 状态后端成本效率对比 | Flink/06-engineering | HashMap/RocksDB/ForSt成本分析 |
+| **Flink 2.4 性能优化** | | | | |
+| Prop-F-06-50 | ForSt性能优势 | Flink/06-engineering | 随机读密集型工作负载分析 |
+| Prop-F-06-51 | 自适应Join优化 | Flink/06-engineering | 运行时策略切换分析 |
+| Prop-F-06-52 | 动态分区裁剪效果 | Flink/06-engineering | 分区裁剪率计算 |
 | **实时数据产品架构** | | | | |
 | Prop-K-06-73 | 数据产品实时交付边界 | Knowledge/06-frontier | 端到端延迟分析 |
 | **AI Agent流式处理架构** | | | | | |
@@ -3109,6 +3144,7 @@
 | Cor-F-06-01 | Flink/06-engineering/performance-tuning-guide.md | ✅ |
 | Cor-F-06-02 | Flink/06-engineering/performance-tuning-guide.md | ✅ |
 | Cor-F-06-03 | Flink/06-engineering/performance-tuning-guide.md | ✅ |
+| Cor-F-06-50 | Flink/06-engineering/flink-24-performance-improvements.md | ✅ |
 | Cor-S-02-04 | Struct/02-properties/02.06-calm-theorem.md | ✅ |
 | Cor-S-02-05 | Struct/02-properties/02.06-calm-theorem.md | ✅ |
 | Cor-S-02-06 | Struct/02-properties/02.06-calm-theorem.md | ✅ |
@@ -3126,12 +3162,12 @@
 
 | 类别 | 数量 |
 |------|------|
-| Thm | 115 |
-| Def | 533 |
-| Lemma | 192 |
-| Prop | 194 |
-| Cor | 16 |
-| **总计** | **1050** |
+| Thm | 124 |
+| Def | 540 |
+| Lemma | 197 |
+| Prop | 197 |
+| Cor | 17 |
+| **总计** | **1075** |
 
 ### 8.7 v2.9.2 批量补充注册 (2026-04-04)
 
@@ -3295,6 +3331,7 @@
 | Def-F-10-40 ~ Def-F-10-45 | 部署运维核心概念(6个) | Flink/10-deployment | 部署模式/Slot/细粒度资源管理/自适应调度器/HA模式/升级策略 |
 | Def-F-15-50 ~ Def-F-15-56 | 可观测性核心概念(7个) | Flink/15-observability | 体系架构/指标分类/作用域层级/日志模型/追踪语义/告警规则/SLO/SLI |
 | Def-F-08-50 ~ Def-F-08-64 | 版本演进核心概念(15个) | Flink/08-roadmap | 版本演进模型/发布火车/1.17-2.5+各版本定义/FLIP/版本映射/依赖矩阵/功能演进 |
+| Def-F-08-56 ~ Def-F-08-61 | 流批一体深化核心概念(6个) | Flink/08-roadmap | 流批一体架构/统一执行引擎/自适应模式选择/统一容错/统一存储层/混合执行 |
 | Def-F-09-01 ~ Def-F-09-05 | 语言支持核心概念(5个) | Flink/09-language-foundations | 语言绑定/类型擦除与恢复/UDF可移植性/跨语言序列化/异步UDF |
 | Def-F-13-14 ~ Def-F-13-19 | 安全核心概念(6个) | Flink/13-security | 安全模型/认证机制/授权模型/数据安全控制/TEE/密钥管理生命周期 |
 
@@ -3334,6 +3371,7 @@
 | Prop-F-10-40 ~ Prop-F-10-41 | 部署模式资源隔离性排序/HA模式故障恢复时间边界 | Flink/10-deployment | 部署运维核心性质 |
 | Prop-F-15-50 ~ Prop-F-15-53 | 可观测性核心命题(4个) | Flink/15-observability | 指标完备性/日志-指标-追踪关联性/背压传播链/Checkpoint延迟上界 |
 | Prop-F-08-50 ~ Prop-F-08-51 | 状态迁移完备性命题/性能提升累积性命题 | Flink/08-roadmap | 版本演进核心性质 |
+| Prop-F-08-52 ~ Prop-F-08-53 | 统一执行引擎语义等价性/自适应模式选择最优性 | Flink/08-roadmap | 流批一体深化核心性质 |
 | Prop-F-09-01 ~ Prop-F-09-03 | 语言支持核心命题(3个) | Flink/09-language-foundations | 语言特性完备性/类型安全传递性/SQL与DataStream等价性 |
 | Prop-F-13-07 ~ Prop-F-13-08 | 最小权限传递性/纵深防御完备性 | Flink/13-security | 安全核心性质 |
 
@@ -3355,7 +3393,7 @@
 
 *注册表创建时间: 2026-04-02*
 *最后更新时间: 2026-04-04 (v2.9.3 批量注册: 从10个新Flink特性文档补充注册142个形式化元素 - Thm 30个、Def 72个、Lemma 18个、Prop 22个)*
-*本次新增文档: Flink DataStream API完整指南、Flink Table API/SQL完整指南、Flink状态管理完整指南、Flink连接器生态完整指南、Flink AI/ML集成完整指南、Flink部署运维完整指南、Flink可观测性完整指南、Flink版本演进完整指南、Flink语言支持完整指南、Flink安全完整指南*
+*本次新增文档: Flink DataStream API完整指南、Flink Table API/SQL完整指南、Flink状态管理完整指南、Flink连接器生态完整指南、Flink AI/ML集成完整指南、Flink部署运维完整指南、Flink可观测性完整指南、Flink版本演进完整指南、Flink语言支持完整指南、Flink安全完整指南、Flink 2.5流批一体深化完整指南*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
-*当前注册表统计: 1013个形式化元素 (定理200/定义490/引理181/命题136/推论6)*
+*当前注册表统计: 1027个形式化元素 (定理204/定义496/引理183/命题138/推论6)*

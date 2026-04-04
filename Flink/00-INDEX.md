@@ -367,6 +367,7 @@ flowchart TD
 | [delta-join.md](02-core-mechanisms/delta-join.md) | Delta Join 机制 | [materialized-tables.md](03-sql-table-api/materialized-tables.md) |
 | [async-execution-model.md](02-core-mechanisms/async-execution-model.md) | 异步执行模型 | - |
 | [flink-2.0-async-execution-model.md](02-core-mechanisms/flink-2.0-async-execution-model.md) | Flink 2.0 异步执行模型 | [flink-1.x-vs-2.0-comparison.md](01-architecture/flink-1.x-vs-2.0-comparison.md) |
+| [adaptive-execution-engine-v2.md](02-core-mechanisms/adaptive-execution-engine-v2.md) | **自适应执行引擎v2** 🆕 | 性能调优、自适应调度 |
 | [flink-2.0-forst-state-backend.md](02-core-mechanisms/flink-2.0-forst-state-backend.md) | Flink 2.0 ForSt 状态后端 | [state-backend-selection.md](06-engineering/state-backend-selection.md) |
 | [streaming-etl-best-practices.md](02-core-mechanisms/streaming-etl-best-practices.md) | Streaming ETL最佳实践 | [kafka-integration-patterns.md](04-connectors/kafka-integration-patterns.md) |
 | [multi-way-join-optimization.md](02-core-mechanisms/multi-way-join-optimization.md) | 多路Join优化 | [query-optimization-analysis.md](03-sql-table-api/query-optimization-analysis.md) |
@@ -664,6 +665,7 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 ---
 
 *索引创建时间: 2026-04-02*
-*更新时间: 2026-04-04 (v2.8 新增10篇核心文档：Flink AI Agents FLIP-531、AI/ML集成完整指南、LLM集成、安全完整指南、状态管理完整指南、部署运维完整指南、2026湖仓深度解析、图流处理、Serverless架构、Flink 2.3/2.4路线图)*
+*更新时间: 2026-04-04 (v2.9 新增自适应执行引擎v2完整文档，覆盖架构、智能优化、数据倾斜处理、资源自适应分配、与Adaptive Scheduler集成、性能对比、配置详解、最佳实践、故障排查)*
+*文档统计: 131+ 核心文档 | 107+定理 | 222+定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.4+*
 *适用项目: AnalysisDataFlow/Flink*
 *文档统计: 130+ 核心文档 | 107定理 | 222定义 | L3-L5 形式化等级 | 覆盖 Flink 1.16+ 至 2.4+*

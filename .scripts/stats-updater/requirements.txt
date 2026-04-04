@@ -1,0 +1,22 @@
+# AnalysisDataFlow 项目统计自动更新系统依赖
+# Python 3.8+
+
+# 核心依赖（标准库足够，无需额外安装）
+# 以下为可选依赖，用于增强功能
+
+# 数据可视化（可选）
+# matplotlib>=3.5.0
+# plotly>=5.0.0
+
+# 数据处理（可选）
+# pandas>=1.3.0
+# numpy>=1.21.0
+
+# 定时任务（可选）
+# schedule>=1.1.0
+
+# Git操作（可选，或使用subprocess调用git命令）
+# GitPython>=3.1.0
+
+# 日志和监控（可选）
+# colorlog>=6.0.0

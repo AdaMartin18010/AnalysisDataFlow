@@ -1,0 +1,117 @@
+{
+  "timestamp": "2026-04-04T10:44:05.596705",
+  "version": "1.0.0",
+  "summary": {
+    "total_docs": 378,
+    "total_size_mb": 10.98,
+    "total_lines": 326559,
+    "formal_elements": {
+      "theorems": 1418,
+      "definitions": 3667,
+      "lemmas": 1313,
+      "propositions": 1165,
+      "corollaries": 71,
+      "total": 7634
+    },
+    "code_examples": 2508,
+    "mermaid_charts": 1553
+  },
+  "directories": {
+    "struct": {
+      "path": "E:\\_src\\AnalysisDataFlow\\Struct",
+      "file_count": 43,
+      "size_kb": 1370.5,
+      "lines": 35401,
+      "formal_elements": {
+        "theorems": 380,
+        "definitions": 835,
+        "lemmas": 470,
+        "propositions": 149,
+        "corollaries": 43,
+        "total": 1877
+      },
+      "code_examples": 89,
+      "mermaid_charts": 144
+    },
+    "knowledge": {
+      "path": "E:\\_src\\AnalysisDataFlow\\Knowledge",
+      "file_count": 129,
+      "size_kb": 3553.7,
+      "lines": 100084,
+      "formal_elements": {
+        "theorems": 295,
+        "definitions": 1054,
+        "lemmas": 311,
+        "propositions": 441,
+        "corollaries": 12,
+        "total": 2113
+      },
+      "code_examples": 725,
+      "mermaid_charts": 514
+    },
+    "flink": {
+      "path": "E:\\_src\\AnalysisDataFlow\\Flink",
+      "file_count": 140,
+      "size_kb": 5341.02,
+      "lines": 160279,
+      "formal_elements": {
+        "theorems": 573,
+        "definitions": 1608,
+        "lemmas": 460,
+        "propositions": 569,
+        "corollaries": 16,
+        "total": 3226
+      },
+      "code_examples": 1471,
+      "mermaid_charts": 727
+    },
+    "visuals": {
+      "path": "E:\\_src\\AnalysisDataFlow\\visuals",
+      "file_count": 20,
+      "size_kb": 434.0,
+      "lines": 11157,
+      "formal_elements": {
+        "theorems": 170,
+        "definitions": 170,
+        "lemmas": 72,
+        "propositions": 6,
+        "corollaries": 0,
+        "total": 418
+      },
+      "code_examples": 19,
+      "mermaid_charts": 123
+    },
+    "tutorials": {
+      "path": "E:\\_src\\AnalysisDataFlow\\tutorials",
+      "file_count": 24,
+      "size_kb": 354.54,
+      "lines": 12512,
+      "formal_elements": {
+        "theorems": 0,
+        "definitions": 0,
+        "lemmas": 0,
+        "propositions": 0,
+        "corollaries": 0,
+        "total": 0
+      },
+      "code_examples": 145,
+      "mermaid_charts": 31
+    },
+    "learning_paths": {
+      "path": "E:\\_src\\AnalysisDataFlow\\LEARNING-PATHS",
+      "file_count": 22,
+      "size_kb": 192.88,
+      "lines": 7126,
+      "formal_elements": {
+        "theorems": 0,
+        "definitions": 0,
+        "lemmas": 0,
+        "propositions": 0,
+        "corollaries": 0,
+        "total": 0
+      },
+      "code_examples": 59,
+      "mermaid_charts": 14
+    }
+  }
+}

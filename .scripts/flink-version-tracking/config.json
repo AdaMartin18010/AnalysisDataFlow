@@ -1,0 +1,62 @@
+{
+  "flink": {
+    "github_repo": "apache/flink",
+    "flip_base_url": "https://cwiki.apache.org/confluence/display/FLINK",
+    "flip_index_url": "https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals",
+    "maven_group": "org.apache.flink",
+    "maven_artifact": "flink-core"
+  },
+  "api": {
+    "github_api_base": "https://api.github.com",
+    "maven_central_base": "https://search.maven.org/solrsearch/select",
+    "request_timeout": 30,
+    "retry_attempts": 3,
+    "retry_delay": 2
+  },
+  "storage": {
+    "data_dir": "./data",
+    "flip_cache_file": "flip_cache.json",
+    "release_cache_file": "release_cache.json",
+    "changelog_file": "version_changelog.json"
+  },
+  "notification": {
+    "slack": {
+      "enabled": false,
+      "webhook_url": "",
+      "channel": "#flink-updates",
+      "username": "Flink-Version-Tracker"
+    },
+    "email": {
+      "enabled": false,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "username": "",
+      "password": "",
+      "from": "flink-tracker@example.com",
+      "to": ["admin@example.com"]
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  "tracking": {
+    "check_interval_hours": 24,
+    "flip_statuses": ["accepted", "implemented", "released", "withdrawn", "rejected"],
+    "release_track": ["1.18", "1.19", "1.20", "2.0"],
+    "auto_update_docs": true
+  },
+  "docs": {
+    "project_root": "../..",
+    "version_tracking_file": "PROJECT-VERSION-TRACKING.md",
+    "flink_dir": "Flink",
+    "update_sections": {
+      "flip_status": true,
+      "release_schedule": true,
+      "changelog": true
+    }
+  }
+}

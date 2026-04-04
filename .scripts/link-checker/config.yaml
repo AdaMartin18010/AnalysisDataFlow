@@ -1,0 +1,229 @@
+# 链接检查器配置文件
+# version: 1.0.0
+# author: AnalysisDataFlow 项目
+
+# ==================== 排除列表 ====================
+# 正则表达式列表，匹配的URL将被跳过检查
+exclude:
+  # 本地/私有地址
+  - '^https?://localhost'
+  - '^https?://127\.'
+  - '^https?://192\.168\.'
+  - '^https?://10\.'
+  - '^https?://172\.(1[6-9]|2[0-9]|3[01])\.'
+  
+  # 占位符/模板链接
+  - '^https?://example\.com'
+  - '^https?://www\.example\.com'
+  - '^https?://your-domain\.com'
+  - '^https?://your-api\.com'
+  - '^https?://api\.example\.com'
+  - '^https?://docs\.example\.com'
+  
+  # 内部系统/需要认证的链接
+  - '^https?://intranet\.'
+  - '^https?://internal\.'
+  - '^https?://jira\.'
+  - '^https?://confluence\.'
+  - '^https?://git\.(your-company|internal)'
+  
+  # 已知的不稳定或限制访问的域名
+  - '^https?://doi\.org'                    # DOI链接有时不稳定
+  - '^https?://scholar\.google\.com'       # 需要登录
+  - '^https?://patents\.google\.com'       # 反爬虫
+  - '^https?://linkedin\.com'               # 需要登录
+  - '^https?://.*\.linkedin\.com'
+  - '^https?://facebook\.com'               # 需要登录
+  - '^https?://.*\.facebook\.com'
+  - '^https?://twitter\.com'                # 需要登录
+  - '^https?://x\.com'                      # 需要登录
+  - '^https?://.*\.twitter\.com'
+  
+  # 文件下载链接 (通常检查HEAD即可)
+  - '\.pdf$'
+  - '\.zip$'
+  - '\.tar\.gz$'
+  - '\.tar\.bz2$'
+  - '\.rar$'
+  - '\.7z$'
+  - '\.exe$'
+  - '\.dmg$'
+  - '\.pkg$'
+  - '\.deb$'
+  - '\.rpm$'
+
+# ==================== 超时设置 ====================
+# 所有时间单位均为秒
+timeout:
+  # 总请求超时时间
+  total: 30
+  
+  # 连接建立超时
+  connect: 10
+  
+  # 读取数据超时
+  sock_read: 30
+  
+  # 发送数据超时
+  sock_connect: 10
+
+# ==================== 重试策略 ====================
+retry:
+  # 最大重试次数 (包括首次尝试)
+  max_retries: 3
+  
+  # 基础重试延迟 (秒)
+  delay: 1
+  
+  # 指数退避因子
+  backoff_factor: 2
+  
+  # 状态码触发重试 (空列表表示所有错误都重试)
+  status_forcelist: [500, 502, 503, 504]
+  
+  # 允许的HTTP方法重试
+  allowed_methods: ["HEAD", "GET", "OPTIONS"]
+
+# ==================== 并发控制 ====================
+# 最大并发连接数
+max_concurrent: 50
+
+# 每个主机的最大连接数
+max_per_host: 10
+
+# 文件批处理大小
+file_batch_size: 10
+
+# 请求之间的延迟 (秒，用于降低对服务器的压力)
+delay_between_requests: 0.1
+
+# ==================== 用户代理设置 ====================
+# 默认User-Agent字符串
+user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 (LinkChecker/1.0.0; +https://github.com/your-org/your-repo)"
+
+# ==================== 请求设置 ====================
+# 允许的HTTP方法
+allowed_methods: ["GET", "HEAD"]
+
+# 跟随重定向
+follow_redirects: true
+
+# 最大重定向次数
+max_redirects: 10
+
+# 验证SSL证书 (设置为false会忽略SSL错误但降低安全性)
+verify_ssl: false
+
+# ==================== 链接类型检查设置 ====================
+link_types:
+  # 是否检查外部HTTP/HTTPS链接
+  check_external: true
+  
+  # 是否检查内部相对链接
+  check_internal: true
+  
+  # 是否检查文件系统链接
+  check_file: true
+  
+  # 是否检查邮件链接 (仅格式验证)
+  check_email: true
+  
+  # 是否检查锚点
+  check_anchor: true
+
+# ==================== 报告设置 ====================
+report:
+  # 是否在报告中包含成功的链接
+  include_success: true
+  
+  # 是否在报告中包含跳过的链接
+  include_skipped: false
+  
+  # 最大错误消息长度
+  max_error_length: 500
+  
+  # 是否对结果进行排序
+  sort_by: "source_file"  # 可选: source_file, url, status, type
+  
+  # 排序方向
+  sort_order: "asc"  # asc 或 desc
+
+# ==================== 缓存设置 ====================
+cache:
+  # 启用结果缓存
+  enabled: true
+  
+  # 缓存目录
+  cache_dir: ".link-checker-cache"
+  
+  # 缓存过期时间 (小时)
+  ttl: 24
+
+# ==================== 速率限制 ====================
+rate_limit:
+  # 每个域名的请求间隔 (秒)
+  domain_delay: 0.5
+  
+  # 需要特殊速率限制的域名
+  domains:
+    github.com:
+      delay: 1.0
+      max_concurrent: 5
+    apache.org:
+      delay: 2.0
+    docs.oracle.com:
+      delay: 3.0
+    docs.python.org:
+      delay: 1.0
+    docs.microsoft.com:
+      delay: 1.5
+    wikipedia.org:
+      delay: 1.0
+    researchgate.net:
+      delay: 5.0  # 严格的反爬虫
+    academia.edu:
+      delay: 5.0
+
+# ==================== 通知设置 ====================
+# 用于CI/CD集成的通知配置
+notification:
+  # 是否启用通知
+  enabled: false
+  
+  # 失效链接阈值，超过此数量触发通知
+  broken_threshold: 1
+  
+  # 通知渠道
+  channels:
+    # GitHub Actions 注释
+    github_actions:
+      enabled: true
+      
+    # Slack Webhook
+    slack:
+      enabled: false
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      
+    # Email (SMTP)
+    email:
+      enabled: false
+      smtp_host: "smtp.gmail.com"
+      smtp_port: 587
+      smtp_user: "${SMTP_USER}"
+      smtp_password: "${SMTP_PASSWORD}"
+      from_addr: "link-checker@example.com"
+      to_addrs: ["admin@example.com"]
+
+# ==================== GitHub Actions 集成设置 ====================
+github_actions:
+  # 是否生成GitHub Actions友好的输出
+  enabled: true
+  
+  # 是否在PR中发表评论
+  pr_comment: true
+  
+  # 失败阈值
+  fail_threshold: 1
+  
+  # 警告阈值
+  warn_threshold: 5

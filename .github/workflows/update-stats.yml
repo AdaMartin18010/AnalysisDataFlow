@@ -1,475 +1,159 @@
-# =============================================================================
-# AnalysisDataFlow 自动统计更新工作流
-# =============================================================================
-# 描述: 定期自动更新项目统计信息并提交PR
-# 触发条件: 每周一凌晨2点(UTC)运行，或手动触发
-# =============================================================================
+# AnalysisDataFlow 项目统计自动更新工作流
+# 自动收集统计、生成仪表盘、更新文档
 
 name: Update Statistics
 
 on:
-  # 定期运行: 每周一凌晨 2:00 UTC (北京时间 10:00)
+  # 定时触发：每天 UTC 06:00 (北京时间 14:00)
   schedule:
-    - cron: '0 2 * * 1'
+    - cron: '0 6 * * *'
   
-  # 允许手动触发
+  # 手动触发
   workflow_dispatch:
     inputs:
-      create_pr:
-        description: '创建PR更新统计'
-        required: false
-        default: true
-        type: boolean
+      update_type:
+        description: '更新类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - collect-only
+          - dashboard-only
+          - weekly-only
 
-env:
-  PYTHON_VERSION: '3.11'
-  BRANCH_NAME: 'bot/update-stats'
+# 权限设置
+permissions:
+  contents: write
 
 jobs:
-  # ===========================================================================
-  # Job 1: 统计项目数据
-  # ===========================================================================
-  gather-stats:
-    name: 收集统计信息
+  update-stats:
+    name: 更新项目统计
     runs-on: ubuntu-latest
     
-    outputs:
-      stats_json: ${{ steps.stats.outputs.stats_json }}
-      has_changes: ${{ steps.check.outputs.has_changes }}
+    steps:
+      # 1. 检出代码
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 需要完整历史用于Git统计
+      
+      # 2. 设置Python环境
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      # 3. 安装依赖
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install schedule
+      
+      # 4. 执行统计更新
+      - name: 执行统计更新
+        id: update
+        run: |
+          cd .scripts/stats-updater
+          
+          # 根据输入选择更新类型
+          UPDATE_TYPE="${{ github.event.inputs.update_type || 'full' }}"
+          
+          case $UPDATE_TYPE in
+            "collect-only")
+              python run.py --collect-only
+              ;;
+            "dashboard-only")
+              python run.py --dashboard-only
+              ;;
+            "weekly-only")
+              python run.py --weekly-only
+              ;;
+            *)
+              python run.py --full
+              ;;
+          esac
+      
+      # 5. 检查是否有变更
+      - name: 检查变更
+        id: check_changes
+        run: |
+          # 检查是否有文件变更
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "📊 检测到统计变更"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ 无变更需要提交"
+          fi
+      
+      # 6. 提交变更
+      - name: 提交变更
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add -A
+          git commit -m "📊 自动更新项目统计 - $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ 统计更新已提交"
+      
+      # 7. 生成摘要
+      - name: 生成摘要
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          echo "## 📊 统计更新摘要" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 读取统计数据
+          if [ -f .stats/project-stats.json ]; then
+            echo "### 当前统计" >> $GITHUB_STEP_SUMMARY
+            echo "\`\``json" >> $GITHUB_STEP_SUMMARY
+            cat .stats/project-stats.json | python3 -m json.tool >> $GITHUB_STEP_SUMMARY
+            echo "\`\``" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 更新文件" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only HEAD~1 HEAD | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+
+  # 单独的任务：生成周报（每周日执行）
+  weekly-report:
+    name: 生成周报
+    runs-on: ubuntu-latest
+    
+    # 仅在周日或手动触发时执行
+    if: github.event.schedule == '0 6 * * 0' || github.event.inputs.update_type == 'weekly-only'
     
     steps:
-      - name: Checkout repository
+      - name: 检出代码
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - name: Set up Python
+      - name: 设置Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: '3.11'
       
-      - name: Install dependencies
+      - name: 生成周报
         run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml
+          cd .scripts/stats-updater
+          python weekly-report.py
       
-      - name: Gather statistics
-        id: stats
+      - name: 提交周报
         run: |
-          echo "::group::收集项目统计信息"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          cat > gather_stats.py << 'SCRIPT'
-          #!/usr/bin/env python3
-          """
-          收集项目统计信息
-          """
-          import re
-          import json
-          from pathlib import Path
-          from collections import defaultdict
+          git add reports/weekly/
           
-          def count_files_and_elements():
-              """统计文件和形式化元素数量"""
-              stats = {
-                  'Struct': {'files': 0, 'theorems': 0, 'definitions': 0, 'lemmas': 0, 'propositions': 0, 'corollaries': 0},
-                  'Knowledge': {'files': 0, 'theorems': 0, 'definitions': 0, 'patterns': 0, 'scenarios': 0},
-                  'Flink': {'files': 0, 'theorems': 0, 'definitions': 0, 'mechanisms': 0},
-                  'total': {'files': 0}
-              }
-              
-              # 定理编号模式
-              theorem_pattern = r'(Thm|Lemma|Def|Prop|Cor)-([SKF])-(\d{2})-(\d{2})'
-              
-              for dir_name in ['Struct', 'Knowledge', 'Flink']:
-                  dir_path = Path(dir_name)
-                  if not dir_path.exists():
-                      continue
-                  
-                  md_files = list(dir_path.rglob('*.md'))
-                  md_files = [f for f in md_files if not any(
-                      part.startswith('.') for part in f.parts
-                  )]
-                  
-                  stats[dir_name]['files'] = len(md_files)
-                  stats['total']['files'] += len(md_files)
-                  
-                  for file_path in md_files:
-                      try:
-                          with open(file_path, 'r', encoding='utf-8') as f:
-                              content = f.read()
-                      except:
-                          continue
-                      
-                      # 统计形式化元素
-                      for match in re.finditer(theorem_pattern, content):
-                          elem_type = match.group(1)
-                          stage = match.group(2)
-                          
-                          # 只统计对应阶段的元素
-                          if stage == 'S' and dir_name == 'Struct':
-                              if elem_type == 'Thm':
-                                  stats[dir_name]['theorems'] += 1
-                              elif elem_type == 'Def':
-                                  stats[dir_name]['definitions'] += 1
-                              elif elem_type == 'Lemma':
-                                  stats[dir_name]['lemmas'] += 1
-                              elif elem_type == 'Prop':
-                                  stats[dir_name]['propositions'] += 1
-                              elif elem_type == 'Cor':
-                                  stats[dir_name]['corollaries'] += 1
-                          elif stage == 'K' and dir_name == 'Knowledge':
-                              if elem_type == 'Thm':
-                                  stats[dir_name]['theorems'] += 1
-                              elif elem_type == 'Def':
-                                  stats[dir_name]['definitions'] += 1
-                          elif stage == 'F' and dir_name == 'Flink':
-                              if elem_type == 'Thm':
-                                  stats[dir_name]['theorems'] += 1
-                              elif elem_type == 'Def':
-                                  stats[dir_name]['definitions'] += 1
-              
-              return stats
-          
-          def main():
-              stats = count_files_and_elements()
-              
-              # 计算总定理数
-              total_theorems = 0
-              total_definitions = 0
-              for dir_name in ['Struct', 'Knowledge', 'Flink']:
-                  total_theorems += stats[dir_name].get('theorems', 0)
-                  total_definitions += stats[dir_name].get('definitions', 0)
-              
-              stats['total']['theorems'] = total_theorems
-              stats['total']['definitions'] = total_definitions
-              stats['total']['formal_elements'] = total_theorems + total_definitions
-              
-              # 输出JSON
-              print(json.dumps(stats, indent=2))
-              
-              # 保存到文件
-              with open('stats.json', 'w') as f:
-                  json.dump(stats, f, indent=2)
-              
-              # 设置输出
-              stats_json = json.dumps(stats)
-              print(f"::set-output name=stats_json::{stats_json}")
-          
-          if __name__ == '__main__':
-              main()
-          SCRIPT
-          
-          python gather_stats.py
-          
-          # 读取统计结果
-          STATS_JSON=$(cat stats.json | jq -c .)
-          echo "stats_json=$STATS_JSON" >> $GITHUB_OUTPUT
-          
-          echo "::endgroup::"
-      
-      - name: Check for changes
-        id: check
-        run: |
-          # 读取当前统计
-          STRUCT_DOCS=$(jq '.Struct.files' stats.json)
-          KNOWLEDGE_DOCS=$(jq '.Knowledge.files' stats.json)
-          FLINK_DOCS=$(jq '.Flink.files' stats.json)
-          TOTAL_THEOREMS=$(jq '.total.theorems' stats.json)
-          TOTAL_DEFS=$(jq '.total.definitions' stats.json)
-          
-          echo "当前统计:"
-          echo "  Struct: $STRUCT_DOCS 文档"
-          echo "  Knowledge: $KNOWLEDGE_DOCS 文档"
-          echo "  Flink: $FLINK_DOCS 文档"
-          echo "  定理: $TOTAL_THEOREMS"
-          echo "  定义: $TOTAL_DEFS"
-          
-          # 检查PROJECT-TRACKING.md中的当前数字
-          if [ -f PROJECT-TRACKING.md ]; then
-              CURRENT_STRUCT=$(grep -oP 'Struct/.*?:\s*\[.*?\]\s*\d+%\s*\(\d+文档' PROJECT-TRACKING.md | grep -oP '\d+(?=文档)' | head -1 || echo "0")
-              echo "PROJECT-TRACKING.md中Struct文档数: $CURRENT_STRUCT"
-              
-              if [ "$STRUCT_DOCS" != "$CURRENT_STRUCT" ]; then
-                  echo "has_changes=true" >> $GITHUB_OUTPUT
-              else
-                  echo "has_changes=false" >> $GITHUB_OUTPUT
-              fi
+          if git diff --staged --quiet; then
+            echo "ℹ️ 无新周报需要提交"
           else
-              echo "has_changes=true" >> $GITHUB_OUTPUT
+            git commit -m "📅 自动生成周报 - $(date +'%Y-%m-%d')"
+            git push
+            echo "✅ 周报已提交"
           fi
-      
-      - name: Upload stats
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-stats
-          path: stats.json
-          retention-days: 30
-
-  # ===========================================================================
-  # Job 2: 更新 PROJECT-TRACKING.md
-  # ===========================================================================
-  update-tracking:
-    name: 更新跟踪文档
-    runs-on: ubuntu-latest
-    needs: gather-stats
-    if: needs.gather-stats.outputs.has_changes == 'true' || github.event.inputs.create_pr == 'true'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Download stats
-        uses: actions/download-artifact@v4
-        with:
-          name: project-stats
-      
-      - name: Update PROJECT-TRACKING.md
-        run: |
-          echo "::group::更新 PROJECT-TRACKING.md"
-          
-          cat > update_tracking.py << 'SCRIPT'
-          #!/usr/bin/env python3
-          """
-          更新PROJECT-TRACKING.md中的统计数字
-          """
-          import re
-          import json
-          from datetime import datetime
-          from pathlib import Path
-          
-          def load_stats():
-              with open('stats.json', 'r') as f:
-                  return json.load(f)
-          
-          def update_tracking_md(stats):
-              tracking_path = Path('PROJECT-TRACKING.md')
-              if not tracking_path.exists():
-                  print("PROJECT-TRACKING.md 不存在，跳过更新")
-                  return False
-              
-              with open(tracking_path, 'r', encoding='utf-8') as f:
-                  content = f.read()
-              
-              # 更新统计数字
-              # Struct文档数
-              struct_docs = stats['Struct']['files']
-              content = re.sub(
-                  r'(Struct/.*?\[.*?\]\s*\d+%\s*\()\d+(文档)',
-                  rf'\g<1>{struct_docs}\g<2>',
-                  content
-              )
-              
-              # Knowledge文档数
-              knowledge_docs = stats['Knowledge']['files']
-              content = re.sub(
-                  r'(Knowledge/.*?\[.*?\]\s*\d+%\s*\()\d+(文档)',
-                  rf'\g<1>{knowledge_docs}\g<2>',
-                  content
-              )
-              
-              # Flink文档数
-              flink_docs = stats['Flink']['files']
-              content = re.sub(
-                  r'(Flink/.*?\[.*?\]\s*\d+%\s*\()\d+(文档)',
-                  rf'\g<1>{flink_docs}\g<2>',
-                  content
-              )
-              
-              # 更新更新时间
-              now = datetime.now().strftime('%Y-%m-%d')
-              content = re.sub(
-                  r'最后更新: \d{4}-\d{2}-\d{2}',
-                  f'最后更新: {now}',
-                  content
-              )
-              
-              with open(tracking_path, 'w', encoding='utf-8') as f:
-                  f.write(content)
-              
-              print(f"已更新 PROJECT-TRACKING.md:")
-              print(f"  - Struct: {struct_docs} 文档")
-              print(f"  - Knowledge: {knowledge_docs} 文档")
-              print(f"  - Flink: {flink_docs} 文档")
-              
-              return True
-          
-          def main():
-              stats = load_stats()
-              update_tracking_md(stats)
-          
-          if __name__ == '__main__':
-              main()
-          SCRIPT
-          
-          python update_tracking.py
-          echo "::endgroup::"
-      
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: 自动更新项目统计信息'
-          title: '📊 自动更新: 项目统计信息'
-          body: |
-            ## 📊 自动统计更新
-            
-            此PR由GitHub Actions自动生成，更新了项目统计信息。
-            
-            ### 变更内容
-            - 更新 `PROJECT-TRACKING.md` 中的文档数量统计
-            - 更新最后更新时间
-            
-            ### 统计来源
-            - 扫描时间: ${{ github.event.repository.updated_at }}
-            - 工作流: Update Statistics
-            
-            ---
-            *此PR由机器人自动创建，请审核后合并。*
-          branch: ${{ env.BRANCH_NAME }}
-          delete-branch: true
-          labels: |
-            automated
-            documentation
-          assignees: |
-            ${{ github.repository_owner }}
-
-  # ===========================================================================
-  # Job 3: 更新 README.md 统计
-  # ===========================================================================
-  update-readme:
-    name: 更新README统计
-    runs-on: ubuntu-latest
-    needs: gather-stats
-    if: needs.gather-stats.outputs.has_changes == 'true'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Download stats
-        uses: actions/download-artifact@v4
-        with:
-          name: project-stats
-      
-      - name: Update README.md
-        run: |
-          echo "::group::更新 README.md 统计"
-          
-          cat > update_readme.py << 'SCRIPT'
-          #!/usr/bin/env python3
-          """
-          更新README.md中的统计数字
-          """
-          import re
-          import json
-          from pathlib import Path
-          
-          def load_stats():
-              with open('stats.json', 'r') as f:
-                  return json.load(f)
-          
-          def update_readme(stats):
-              readme_path = Path('README.md')
-              if not readme_path.exists():
-                  print("README.md 不存在")
-                  return False
-              
-              with open(readme_path, 'r', encoding='utf-8') as f:
-                  content = f.read()
-              
-              # 更新表格中的文档数量
-              struct_docs = stats['Struct']['files']
-              knowledge_docs = stats['Knowledge']['files']
-              flink_docs = stats['Flink']['files']
-              total = stats['total']['files']
-              formal_elements = stats['total']['formal_elements']
-              
-              # 更新 Struct 行
-              content = re.sub(
-                  r'(\| \*\*Struct/\*\* \| .*? \| .*? \| )\d+文档.*?定理.*?定义 \|',
-                  rf'\g<1>{struct_docs}文档, {stats["Struct"]["theorems"]}定理, {stats["Struct"]["definitions"]}定义 |',
-                  content
-              )
-              
-              # 更新 Knowledge 行
-              content = re.sub(
-                  r'(\| \*\*Knowledge/\*\* \| .*? \| .*? \| )\d+文档.*?设计模式.*?业务场景 \|',
-                  rf'\g<1>{knowledge_docs}文档, 设计模式, 业务场景 |',
-                  content
-              )
-              
-              # 更新 Flink 行
-              content = re.sub(
-                  r'(\| \*\*Flink/\*\* \| .*? \| .*? \| )\d+文档.*?核心机制全覆盖 \|',
-                  rf'\g<1>{flink_docs}文档, 核心机制全覆盖 |',
-                  content
-              )
-              
-              # 更新总计行
-              content = re.sub(
-                  r'\*\*总计: \d+ 篇技术文档 \| \d+ 形式化元素\*\*',
-                  f'**总计: {total} 篇技术文档 | {formal_elements} 形式化元素**',
-                  content
-              )
-              
-              with open(readme_path, 'w', encoding='utf-8') as f:
-                  f.write(content)
-              
-              print(f"已更新 README.md:")
-              print(f"  - 总计: {total} 篇文档")
-              print(f"  - 形式化元素: {formal_elements}")
-              
-              return True
-          
-          def main():
-              stats = load_stats()
-              update_readme(stats)
-          
-          if __name__ == '__main__':
-              main()
-          SCRIPT
-          
-          python update_readme.py
-          echo "::endgroup::"
-      
-      - name: Commit changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add README.md
-          git diff --staged --quiet || git commit -m "docs: 更新README统计数字 [skip ci]"
-          git push || echo "无变更需要推送"
-
-  # ===========================================================================
-  # Job 4: 发送通知
-  # ===========================================================================
-  notify:
-    name: 发送通知
-    runs-on: ubuntu-latest
-    needs: [gather-stats, update-tracking, update-readme]
-    if: always() && needs.gather-stats.outputs.has_changes == 'true'
-    
-    steps:
-      - name: Summary
-        run: |
-          echo "## 📊 统计更新完成" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ "${{ needs.update-tracking.result }}" == "success" ]; then
-            echo "✅ PROJECT-TRACKING.md 已更新" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ PROJECT-TRACKING.md 更新失败" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          if [ "${{ needs.update-readme.result }}" == "success" ]; then
-            echo "✅ README.md 已更新" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ README.md 更新失败" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📈 如有变更，已自动创建PR或提交更新" >> $GITHUB_STEP_SUMMARY

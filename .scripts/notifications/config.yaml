@@ -1,0 +1,306 @@
+# 通知系统配置文件
+# Notification System Configuration
+
+# ==================== SMTP 邮件配置 ====================
+email:
+  # SMTP 服务器配置
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_user: "${EMAIL_USER}"
+  smtp_password: "${EMAIL_PASSWORD}"
+  use_tls: true
+  timeout: 30
+  
+  # 默认发件人
+  from_address: "${EMAIL_FROM:noreply@analysisdataflow.local}"
+  
+  # 邮件模板目录
+  templates_dir: "./email_templates"
+
+# ==================== Slack 配置 ====================
+slack:
+  # Incoming Webhook URL (用于发送消息)
+  webhook_url: "${SLACK_WEBHOOK_URL}"
+  
+  # Bot User OAuth Token (用于高级功能)
+  bot_token: "${SLACK_BOT_TOKEN}"
+  
+  # 默认频道
+  default_channel: "#notifications"
+  
+  # Bot 显示名称
+  username: "AnalysisDataFlow Bot"
+  
+  # Bot 图标
+  icon_emoji: ":bell:"
+  
+  # 频道映射
+  channels:
+    alerts: "#alerts"
+    deployments: "#deployments"
+    system: "#system-notifications"
+    team: "#team-updates"
+
+# ==================== Webhook 配置 ====================
+webhooks:
+  # 企业微信
+  wechat_work:
+    platform: "wechat_work"
+    url: "${WECHAT_WEBHOOK_URL}"
+    secret: "${WECHAT_SECRET}"
+    enabled: true
+    
+  # 钉钉
+  dingtalk:
+    platform: "dingtalk"
+    url: "${DINGTALK_WEBHOOK_URL}"
+    secret: "${DINGTALK_SECRET}"
+    enabled: true
+    
+  # 飞书
+  feishu:
+    platform: "feishu"
+    url: "${FEISHU_WEBHOOK_URL}"
+    secret: "${FEISHU_SECRET}"
+    enabled: true
+    
+  # 通用 Webhook
+  generic:
+    platform: "generic"
+    url: "${GENERIC_WEBHOOK_URL}"
+    auth_type: "bearer"  # bearer, basic, hmac
+    secret: "${GENERIC_WEBHOOK_SECRET}"
+    headers:
+      X-Custom-Header: "notification-system"
+    enabled: false
+
+# ==================== 通知规则配置 ====================
+rules:
+  # 优先级路由规则
+  priority_routing:
+    critical:
+      channels: ["slack", "email", "wechat_work"]
+      immediate: true
+      retry_count: 5
+    
+    high:
+      channels: ["slack", "email"]
+      retry_count: 3
+    
+    medium:
+      channels: ["slack"]
+      retry_count: 2
+    
+    low:
+      channels: ["email"]
+      batch: true
+      batch_interval: 300  # 5分钟批量发送
+    
+    info:
+      channels: []
+      log_only: true
+
+  # 消息类型规则
+  message_type_rules:
+    deployment:
+      channels: ["slack", "dingtalk"]
+      template: "deployment_success"
+    
+    alert_critical:
+      channels: ["slack", "email", "wechat_work", "dingtalk"]
+      template: "alert_critical"
+      priority: "critical"
+    
+    alert_warning:
+      channels: ["slack", "wechat_work"]
+      template: "alert_warning"
+      priority: "high"
+    
+    system_report:
+      channels: ["email"]
+      template: "system_report"
+      priority: "low"
+      schedule: "0 9 * * *"  # 每天9点
+
+  # 升级策略
+  escalation:
+    enabled: true
+    
+    # 升级时间窗口 (分钟)
+    time_windows:
+      - 15   # 15分钟后升级到 L2
+      - 60   # 60分钟后升级到 L3
+    
+    # 升级渠道
+    levels:
+      L1:
+        channels: ["slack"]
+        recipients: ["oncall-l1"]
+      
+      L2:
+        channels: ["slack", "email"]
+        recipients: ["oncall-l2", "team-lead"]
+      
+      L3:
+        channels: ["slack", "email", "wechat_work", "dingtalk"]
+        recipients: ["oncall-l3", "manager", "director"]
+
+# ==================== 接收人配置 ====================
+recipients:
+  # 团队配置
+  teams:
+    platform:
+      slack: "#platform-team"
+      email: ["platform@analysisdataflow.local"]
+    
+    data:
+      slack: "#data-team"
+      email: ["data@analysisdataflow.local"]
+    
+    frontend:
+      slack: "#frontend-team"
+      email: ["frontend@analysisdataflow.local"]
+  
+  # 个人配置
+  users:
+    admin:
+      email: "admin@analysisdataflow.local"
+      slack: "@admin"
+      wechat: "admin_wechat_id"
+    
+    oncall:
+      email: "oncall@analysisdataflow.local"
+      slack: "@oncall"
+
+# ==================== 消息模板配置 ====================
+templates:
+  # 告警模板
+  alert_critical:
+    title: "🚨 【关键告警】{service}"
+    content: |
+      **告警级别**: {priority}
+      **服务**: {service}
+      **时间**: {timestamp}
+      **详情**: 
+      ```
+      {details}
+      ```
+      
+      ⚠️ 请立即处理！
+    channels: ["slack", "email", "wechat_work"]
+  
+  alert_warning:
+    title: "⚠️ 【警告】{service}"
+    content: |
+      **级别**: {priority}
+      **服务**: {service}
+      **时间**: {timestamp}
+      **详情**: {details}
+    channels: ["slack", "email"]
+  
+  alert_info:
+    title: "ℹ️ 【信息】{service}"
+    content: |
+      **服务**: {service}
+      **时间**: {timestamp}
+      **详情**: {details}
+    channels: ["slack"]
+  
+  # 部署模板
+  deployment_success:
+    title: "✅ 部署成功 - {project}"
+    content: |
+      **项目**: {project}
+      **版本**: `{version}`
+      **环境**: {environment}
+      **部署者**: {deployer}
+      **耗时**: {duration}
+    channels: ["slack", "dingtalk"]
+  
+  deployment_failure:
+    title: "❌ 部署失败 - {project}"
+    content: |
+      **项目**: {project}
+      **版本**: `{version}`
+      **环境**: {environment}
+      **错误**: 
+      ```
+      {error}
+      ```
+      **日志**: {log_url}
+    channels: ["slack", "email", "dingtalk"]
+  
+  deployment_started:
+    title: "🚀 部署开始 - {project}"
+    content: |
+      **项目**: {project}
+      **版本**: `{version}`
+      **环境**: {environment}
+      **触发方式**: {trigger}
+    channels: ["slack"]
+  
+  # 系统报告模板
+  system_report:
+    title: "📊 系统日报 - {date}"
+    content: |
+      ## 系统状态概览
+      
+      **日期**: {date}
+      **整体状态**: {status}
+      
+      ### 关键指标
+      {metrics}
+      
+      ### 待处理事项
+      {todos}
+      
+      ---
+      详细报告请查看: {report_url}
+    channels: ["email"]
+  
+  # 性能告警模板
+  performance_alert:
+    title: "📈 性能告警 - {metric_name}"
+    content: |
+      **指标**: {metric_name}
+      **当前值**: {current_value}
+      **阈值**: {threshold}
+      **状态**: {status}
+      
+      **受影响服务**:
+      {affected_services}
+    channels: ["slack", "email"]
+
+# ==================== 系统配置 ====================
+system:
+  # 异步配置
+  async:
+    max_workers: 10
+    queue_size: 1000
+    batch_size: 50
+  
+  # 重试配置
+  retry:
+    max_retries: 3
+    backoff_factor: 2
+    max_delay: 300  # 最大延迟5分钟
+  
+  # 日志配置
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: "./logs/notification.log"
+    max_size: "10MB"
+    backup_count: 5
+  
+  # 监控配置
+  monitoring:
+    enabled: true
+    metrics_port: 9090
+    health_check_path: "/health"
+  
+  # 限流配置
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+    burst_size: 20
