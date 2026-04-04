@@ -986,7 +986,7 @@ $$
 
 [^7]: G. Cugola and A. Margara, "Complex Event Processing: A Survey," *Technical Report*, Politecnico di Milano, 2010.
 
-[^8]: Apache Flink CEP 库设计与实现，详见 [AcotorCSPWorkflow/domain-mappings/DM-CEP-Patterns.md](../../AcotorCSPWorkflow/domain-mappings/DM-CEP-Patterns.md)
+[^8]: Apache Flink CEP 库设计与实现，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api-patterns/flink-cep-deep-dive.md)
 
 [^9]: Flink 状态后端与 CEP 优化，详见 [Flink/06-engineering/state-backend-selection.md](../../Flink/06-engineering/state-backend-selection.md)
 

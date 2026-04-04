@@ -1018,7 +1018,7 @@ graph LR
 
 [^3]: Apache Flink Documentation, "Allowed Lateness & Side Outputs in Windows", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/#allowed-lateness>
 
-[^4]: 数据质量治理实践，详见 [AcotorCSPWorkflow/domain-mappings/DM-Data-Quality.md](../../AcotorCSPWorkflow/domain-mappings/DM-Data-Quality.md)
+[^4]: 数据质量治理实践，详见 Knowledge/02-design-patterns/pattern-data-quality-governance.md
 
 [^5]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015.
 

@@ -1026,7 +1026,7 @@ graph TB
 
 [^4]: G. Cugola and A. Margara, "Complex Event Processing with T-REX," *Journal of Systems and Software*, 85(8), 2012. <https://doi.org/10.1016/j.jss.2012.03.056>
 
-[^5]: 实时信用评分算法，参见 [AcotorCSPWorkflow/case-studies/CS-Financial-Risk-Control.md](../../AcotorCSPWorkflow/case-studies/CS-Financial-Risk-Control.md)
+[^5]: 实时信用评分算法，参见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/07-case-studies/case-financial-realtime-risk-control.md)
 
 [^6]: FATF (Financial Action Task Force), "International Standards on Combating Money Laundering and the Financing of Terrorism & Proliferation," 2023. <https://www.fatf-gafi.org/recommendations.html>
 
@@ -1038,7 +1038,7 @@ graph TB
 
 [^10]: Y. LeCun et al., "Deep Learning for Finance: Methods and Applications," *Journal of Financial Data Science*, 2021.
 
-[^11]: 规则引擎与模型融合最佳实践，参见 [AcotorCSPWorkflow/domain-mappings/DM-ML-Rule-Fusion.md](../../AcotorCSPWorkflow/domain-mappings/DM-ML-Rule-Fusion.md)
+[^11]: 规则引擎与模型融合最佳实践，参见 Flink/06-engineering/rule-engine-ml-fusion.md
 
 [^12]: P. Carbone et al., "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing," *PVLDB*, 10(12), 2017. <https://doi.org/10.14778/3137765.3137777>
 

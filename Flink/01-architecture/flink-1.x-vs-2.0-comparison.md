@@ -601,5 +601,5 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 **关联文档**:
 
 - [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) - Dataflow 模型形式化定义
-- [AcotorCSPWorkflow/deep/03-distributed-systems/Flink/Flink-2.0-Architecture-Formal.md](../../AcotorCSPWorkflow/deep/03-distributed-systems/Flink/Flink-2.0-Architecture-Formal.md) - Flink 2.0 形式化分析
-- [AcotorCSPWorkflow/deep/03-distributed-systems/Flink/02-Core-Architecture/Disaggregated-State.md](../../AcotorCSPWorkflow/deep/03-distributed-systems/Flink/02-Core-Architecture/Disaggregated-State.md) - 分离状态存储详细设计
+- [datastream-v2-semantics.md](./datastream-v2-semantics.md) - DataStream V2 语义分析
+- [disaggregated-state-storage.md](./disaggregated-state-storage.md) - 分离状态存储详细设计

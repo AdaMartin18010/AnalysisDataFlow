@@ -691,13 +691,13 @@ Flink 的 Event Time 处理机制是对 Google Dataflow 模型的工程实现：
 
 [^4]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
 
-[^5]: 金融风控实时欺诈检测案例，详见 [AcotorCSPWorkflow/case-studies/CS-Financial-Risk-Control.md](../../AcotorCSPWorkflow/case-studies/CS-Financial-Risk-Control.md)
+[^5]: 金融风控实时欺诈检测案例，详见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/07-case-studies/case-financial-realtime-risk-control.md)
 
-[^6]: IoT 流处理工业案例，详见 [AcotorCSPWorkflow/case-studies/CS-IoT-Stream-Processing.md](../../AcotorCSPWorkflow/case-studies/CS-IoT-Stream-Processing.md)
+[^6]: IoT 流处理工业案例，详见 [Flink/07-case-studies/case-iot-stream-processing.md](../../Flink/07-case-studies/case-iot-stream-processing.md)
 
-[^7]: 实时 ETL 深度解析，详见 [AcotorCSPWorkflow/case-studies/CS-Realtime-ETL-Deep-Dive.md](../../AcotorCSPWorkflow/case-studies/CS-Realtime-ETL-Deep-Dive.md)
+[^7]: 实时 ETL 深度解析，详见 [Flink/07-case-studies/case-realtime-analytics.md](../../Flink/07-case-studies/case-realtime-analytics.md)
 
-[^8]: CEP 复杂事件处理模式，详见 [AcotorCSPWorkflow/domain-mappings/DM-CEP-Patterns.md](../../AcotorCSPWorkflow/domain-mappings/DM-CEP-Patterns.md)
+[^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api-patterns/flink-cep-deep-dive.md)
 
 
 

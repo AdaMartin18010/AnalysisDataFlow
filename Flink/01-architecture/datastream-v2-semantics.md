@@ -1,6 +1,6 @@
 # DataStream V2 API 语义分析 (DataStream V2 API Semantics)
 
-> **所属阶段**: Flink/01-architecture | **前置依赖**: [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Flink 2.0 架构形式化](../../AcotorCSPWorkflow/deep/03-distributed-systems/Flink/Flink-2.0-Architecture-Formal.md) | **形式化等级**: L5
+> **所属阶段**: Flink/01-architecture | **前置依赖**: [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L5
 > **警告**: DataStream V2 API 是 Apache Flink 2.0 中引入的**实验性特性**，API 可能在未来版本中发生重大变化[^1][^2]。
 
 ---

@@ -1,6 +1,6 @@
 # 流处理语义学形式化理论
 
-> 所属阶段: Struct/01-foundation | 前置依赖: [stream-as-mathematical-structure.md](./stream-as-mathematical-structure.md), [01-foundation-theory-timeline.md](../01-foundation-theory-timeline.md) | 形式化等级: L5-L6
+> 所属阶段: Struct/01-foundation | 前置依赖: [00-INDEX.md](../00-INDEX.md), [00-INDEX.md](../00-INDEX.md) | 形式化等级: L5-L6
 
 ---
 

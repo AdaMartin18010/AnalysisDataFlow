@@ -621,7 +621,7 @@ timeline
 
 [^6]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Engineering Bulletin*, 38(4), 2015.
 
-[^7]: 实时 ETL 深度解析案例，详见 [AcotorCSPWorkflow/case-studies/CS-Realtime-ETL-Deep-Dive.md](../../AcotorCSPWorkflow/case-studies/CS-Realtime-ETL-Deep-Dive.md)
+[^7]: 实时 ETL 深度解析案例，详见 [Flink/07-case-studies/case-realtime-analytics.md](../../Flink/07-case-studies/case-realtime-analytics.md)
 
 ---
 

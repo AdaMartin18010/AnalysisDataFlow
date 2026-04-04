@@ -842,9 +842,8 @@ quadrantChart
 
 ### 下游应用
 
-- [../../AcotorCSPWorkflow/UNIFIED-HUB.md](../../AcotorCSPWorkflow/UNIFIED-HUB.md) — 项目超级导航中心
-- [../../AcotorCSPWorkflow/comparative/language-matrix/Concurrency-Primitives-Comparison.md](../../AcotorCSPWorkflow/comparative/language-matrix/Concurrency-Primitives-Comparison.md) — 跨语言并发原语对比
-- [../../AcotorCSPWorkflow/comparative/language-matrix/Go-vs-Scala-Expressiveness.md](../../AcotorCSPWorkflow/comparative/language-matrix/Go-vs-Scala-Expressiveness.md) — Go vs Scala 表达能力对比
+- [../../NAVIGATION-INDEX.md](../../NAVIGATION-INDEX.md) — 项目综合导航索引
+- [../Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md](../Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md) — Go vs Scala 表达能力对比
 
 ---
 

@@ -482,7 +482,7 @@ graph LR
 **验证工具配置**：
 
 ```yaml
-# TLA+ 验证配置 (AcotorCSPWorkflow/formal-proofs/)
+# TLA+ 验证配置 (Struct/04-proofs/)
 tla:
   spec: FlinkCheckpoint.tla
   model: CheckpointModel
