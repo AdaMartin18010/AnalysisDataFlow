@@ -1,8 +1,11 @@
 # AnalysisDataFlow
 
-[![Validate Project](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml)
-[![Update Statistics](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
-[![Check Links](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
+[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
+[![Scheduled Maintenance](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml)
+[![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
+[![Docs](https://img.shields.io/badge/Docs-420%2B-blue)](./)
+[![Theorems](https://img.shields.io/badge/Theorems-6000%2B-green)](./THEOREM-REGISTRY.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--05-orange)]()
 
 > **统一流计算理论模型与工程实践知识库**
 >
@@ -198,7 +201,7 @@ Struct/01-foundation/ (理论基础)
 **总文档数**: 420 | **定理注册表版本**: v2.9 | **最后更新**: 2026-04-04 | **状态**: 持续演进 🚀 | **大小**: 12.98 MB
 
 > 📊 **版本跟踪**: 详见 [PROJECT-VERSION-TRACKING.md](./PROJECT-VERSION-TRACKING.md) 了解完整版本历史与演进路线
-> 
+>
 > 🗺️ **未来路线图**: 详见 [ROADMAP-v3.3-and-beyond.md](./ROADMAP-v3.3-and-beyond.md) 了解v3.3规划
 
 ### 形式化元素统计

@@ -1,0 +1,601 @@
+# Document Update Sync - 文档更新同步
+#
+# 触发条件: push到main分支
+# 任务:
+#   1. 自动更新PROJECT-TRACKING.md统计
+#   2. 更新定理注册表
+#   3. 生成最新的导航索引
+
+name: Document Update Sync
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+
+env:
+  PYTHON_VERSION: '3.11'
+
+concurrency:
+  group: doc-update-sync
+  cancel-in-progress: false
+
+jobs:
+  # ============ 任务1: 自动更新PROJECT-TRACKING.md统计 ============
+  update-project-tracking:
+    name: Update PROJECT-TRACKING.md Statistics
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Collect statistics
+        id: stats
+        run: |
+          python << 'PYEOF'
+          import os
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          stats = {
+              'directories': {},
+              'total_docs': 0,
+              'total_size_mb': 0,
+              'theorems': defaultdict(int),
+              'definitions': defaultdict(int),
+              'mermaid_diagrams': 0,
+              'code_examples': 0,
+              'last_updated': datetime.now().strftime('%Y-%m-%d')
+          }
+
+          # 统计各目录
+          for directory in ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials']:
+              if not Path(directory).exists():
+                  continue
+              
+              md_files = list(Path(directory).rglob('*.md'))
+              doc_count = len(md_files)
+              total_size = sum(f.stat().st_size for f in md_files if f.exists())
+              
+              # 统计定理和定义
+              theorems = 0
+              definitions = 0
+              mermaid_count = 0
+              code_examples = 0
+              
+              for md_file in md_files:
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      
+                      # 统计定理
+                      theorems += len(re.findall(r'Thm-[SKF]-\d{2}-\d{2}', content))
+                      
+                      # 统计定义
+                      definitions += len(re.findall(r'Def-[SKF]-\d{2}-\d{2}', content))
+                      
+                      # 统计Mermaid图表
+                      mermaid_count += len(re.findall(r'```mermaid', content))
+                      
+                      # 统计代码示例（简化估计）
+                      code_examples += len(re.findall(r'```(java|scala|python|sql|bash|yaml|json)', content))
+                      
+                  except Exception as e:
+                      pass
+              
+              stats['directories'][directory] = {
+                  'doc_count': doc_count,
+                  'size_mb': round(total_size / 1024 / 1024, 2),
+                  'theorems': theorems,
+                  'definitions': definitions,
+                  'mermaid_diagrams': mermaid_count,
+                  'code_examples': code_examples
+              }
+              
+              stats['total_docs'] += doc_count
+              stats['total_size_mb'] += total_size / 1024 / 1024
+              stats['theorems'][directory] = theorems
+              stats['definitions'][directory] = definitions
+              stats['mermaid_diagrams'] += mermaid_count
+              stats['code_examples'] += code_examples
+
+          # 输出统计结果
+          print("\n" + "="*60)
+          print("Project Statistics Summary")
+          print("="*60)
+          print(f"Total Documents: {stats['total_docs']}")
+          print(f"Total Size: {stats['total_size_mb']:.2f} MB")
+          print(f"Total Theorems: {sum(stats['theorems'].values())}")
+          print(f"Total Definitions: {sum(stats['definitions'].values())}")
+          print(f"Mermaid Diagrams: {stats['mermaid_diagrams']}")
+          print(f"Code Examples: {stats['code_examples']}")
+          print("\nBy Directory:")
+          for dir_name, dir_stats in stats['directories'].items():
+              print(f"  {dir_name}: {dir_stats['doc_count']} docs, "
+                    f"{dir_stats['theorems']} theorems, "
+                    f"{dir_stats['mermaid_diagrams']} diagrams")
+
+          # 保存统计信息
+          Path('.stats').mkdir(exist_ok=True)
+          with open('.stats/project-stats.json', 'w') as f:
+              json.dump(stats, f, indent=2, default=str)
+
+          # 设置输出
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"total_docs={stats['total_docs']}\n")
+              f.write(f"total_size_mb={stats['total_size_mb']:.2f}\n")
+              f.write(f"total_theorems={sum(stats['theorems'].values())}\n")
+              f.write(f"total_definitions={sum(stats['definitions'].values())}\n")
+              f.write(f"mermaid_diagrams={stats['mermaid_diagrams']}\n")
+          PYEOF
+
+      - name: Update PROJECT-TRACKING.md
+        run: |
+          python << 'PYEOF'
+          import json
+          import re
+          from pathlib import Path
+          from datetime import datetime
+
+          # 读取统计信息
+          with open('.stats/project-stats.json') as f:
+              stats = json.load(f)
+
+          tracking_file = Path('PROJECT-TRACKING.md')
+          if not tracking_file.exists():
+              print("WARNING: PROJECT-TRACKING.md not found, skipping update")
+              exit(0)
+
+          content = tracking_file.read_text(encoding='utf-8')
+          today = datetime.now().strftime('%Y-%m-%d')
+
+          # 更新最后更新时间
+          content = re.sub(
+              r'> \*\*最后更新\*\*: \d{4}-\d{2}-\d{2}',
+              f'> **最后更新**: {today}',
+              content
+          )
+
+          # 更新总文档数
+          content = re.sub(
+              r'\*\*总文档数\*\*: \d+',
+              f'**总文档数**: {stats["total_docs"]}',
+              content
+          )
+
+          # 更新项目统计表格（简化版本）
+          # 这里可以添加更复杂的表格更新逻辑
+
+          # 保存更新后的文件
+          tracking_file.write_text(content, encoding='utf-8')
+          print("✅ Updated PROJECT-TRACKING.md")
+          PYEOF
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes to PROJECT-TRACKING.md"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in PROJECT-TRACKING.md"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add PROJECT-TRACKING.md
+          git commit -m "🤖 Auto-update PROJECT-TRACKING.md statistics
+
+          - Updated document counts
+          - Updated theorem/defintion statistics
+          - Updated last modified date
+          
+          Triggered by: ${{ github.sha }}"
+          git push
+
+  # ============ 任务2: 更新定理注册表 ============
+  update-theorem-registry:
+    name: Update Theorem Registry
+    runs-on: ubuntu-latest
+    needs: update-project-tracking
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Scan and update theorem registry
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          # 定理模式
+          theorem_patterns = {
+              'Thm': re.compile(r'Thm-[SKF]-\d{2}-\d{2}'),
+              'Def': re.compile(r'Def-[SKF]-\d{2}-\d{2}'),
+              'Lemma': re.compile(r'Lemma-[SKF]-\d{2}-\d{2}'),
+              'Prop': re.compile(r'Prop-[SKF]-\d{2}-\d{2}'),
+              'Cor': re.compile(r'Cor-[SKF]-\d{2}-\d{2}')
+          }
+
+          # 收集所有定理
+          all_theorems = defaultdict(lambda: defaultdict(list))
+          new_theorems = defaultdict(list)
+
+          registry_file = Path('THEOREM-REGISTRY.md')
+          existing_theorems = set()
+
+          # 读取现有定理
+          if registry_file.exists():
+              content = registry_file.read_text(encoding='utf-8')
+              for pattern in theorem_patterns.values():
+                  existing_theorems.update(pattern.findall(content))
+
+          print(f"Found {len(existing_theorems)} existing theorems in registry")
+
+          # 扫描所有文档
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file).replace('\\', '/')
+                      
+                      for thm_type, pattern in theorem_patterns.items():
+                          matches = pattern.findall(content)
+                          for match in matches:
+                              all_theorems[thm_type][match].append(rel_path)
+                              if match not in existing_theorems:
+                                  new_theorems[thm_type].append({
+                                      'id': match,
+                                      'file': rel_path
+                                  })
+                  except Exception as e:
+                      pass
+
+          # 统计
+          total_theorems = sum(len(v) for v in all_theorems.values())
+          total_new = sum(len(v) for v in new_theorems.values())
+
+          print(f"\nScanned {total_theorems} total theorems")
+          print(f"Found {total_new} new theorems not in registry")
+
+          # 输出详细信息
+          print("\nNew theorems by type:")
+          for thm_type, theorems in new_theorems.items():
+              if theorems:
+                  print(f"  {thm_type}: {len(theorems)}")
+                  for t in theorems[:5]:  # 只显示前5个
+                      print(f"    - {t['id']} in {t['file']}")
+                  if len(theorems) > 5:
+                      print(f"    ... and {len(theorems) - 5} more")
+
+          # 如果发现了新定理，生成报告
+          if total_new > 0:
+              Path('reports').mkdir(exist_ok=True)
+              report = f"""# Theorem Registry Update Report
+
+**Generated**: {datetime.now().isoformat()}
+
+## Summary
+
+- Total theorems in project: {total_theorems}
+- New theorems not in registry: {total_new}
+
+## New Theorems by Type
+
+"""
+              for thm_type, theorems in sorted(new_theorems.items()):
+                  if theorems:
+                      report += f"\n### {thm_type} ({len(theorems)})\n\n"
+                      for t in theorems:
+                          report += f"- `{t['id']}` in `{t['file']}`\n"
+
+              report += """
+## Action Required
+
+Please review these new theorems and add them to THEOREM-REGISTRY.md
+
+---
+*This report was automatically generated*
+"""
+              
+              Path('reports/theorem-update-report.md').write_text(report, encoding='utf-8')
+              print("\n✅ Generated theorem update report")
+          
+          # 输出统计信息供后续步骤使用
+          with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
+              f.write(f"total_theorems={total_theorems}\n")
+              f.write(f"new_theorems={total_new}\n")
+          PYEOF
+
+      - name: Upload theorem report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-update-report
+          path: reports/theorem-update-report.md
+          if-no-files-found: ignore
+
+  # ============ 任务3: 生成最新的导航索引 ============
+  update-navigation-index:
+    name: Update Navigation Index
+    runs-on: ubuntu-latest
+    needs: update-project-tracking
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Generate navigation index
+        run: |
+          python << 'PYEOF'
+          import os
+          import re
+          from pathlib import Path
+          from datetime import datetime
+
+          def extract_title(content):
+              """从文档内容提取标题"""
+              match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+              if match:
+                  return match.group(1).strip()
+              return "Untitled"
+
+          def extract_metadata(content):
+              """提取文档元数据"""
+              metadata = {}
+              # 查找元数据块
+              meta_match = re.search(r'^>\s*所属阶段:[^\n]+(\n>\s*[^\n]+)*', content, re.MULTILINE)
+              if meta_match:
+                  block = meta_match.group(0)
+                  for m in re.finditer(r'>\s*\*\*([^:]+)\*\*[:：]\s*([^|\n]+)', block):
+                      metadata[m.group(1).strip()] = m.group(2).strip()
+              return metadata
+
+          # 生成索引
+          index = {
+              'generated_at': datetime.now().isoformat(),
+              'total_documents': 0,
+              'categories': {}
+          }
+
+          # 定义目录结构
+          directories = {
+              'Struct': '形式理论基础',
+              'Knowledge': '工程实践知识',
+              'Flink': 'Flink专项技术',
+              'visuals': '可视化导航',
+              'tutorials': '实践教程',
+              'docs': '文档'
+          }
+
+          for directory, category_name in directories.items():
+              if not Path(directory).exists():
+                  continue
+              
+              docs = []
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      
+                      docs.append({
+                          'path': rel_path,
+                          'title': extract_title(content),
+                          'metadata': extract_metadata(content)
+                      })
+                  except Exception as e:
+                      pass
+              
+              if docs:
+                  index['categories'][directory] = {
+                      'name': category_name,
+                      'documents': sorted(docs, key=lambda x: x['path'])
+                  }
+                  index['total_documents'] += len(docs)
+
+          # 生成Markdown索引
+          md_lines = [
+              "# 📚 AnalysisDataFlow 导航索引",
+              "",
+              f"> **自动生成**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+              f"> **总文档数**: {index['total_documents']}",
+              "",
+              "## 📖 目录",
+              ""
+          ]
+
+          # 目录链接
+          for dir_key, cat_info in index['categories'].items():
+              md_lines.append(f"- [{cat_info['name']}](#{dir_key.lower()})")
+          md_lines.append("")
+
+          # 详细列表
+          for dir_key, cat_info in index['categories'].items():
+              md_lines.extend([
+                  f"## {cat_info['name']}",
+                  "",
+                  f"**文档数**: {len(cat_info['documents'])}",
+                  "",
+                  "| 文档 | 路径 |",
+                  "|------|------|"
+              ])
+              
+              for doc in cat_info['documents']:
+                  md_lines.append(f"| {doc['title']} | [{doc['path']}]({doc['path']}) |")
+              
+              md_lines.append("")
+
+          # 保存索引
+          Path('NAVIGATION-INDEX.md').write_text('\n'.join(md_lines), encoding='utf-8')
+          print("✅ Generated NAVIGATION-INDEX.md")
+          print(f"   Total documents indexed: {index['total_documents']}")
+
+          # 输出统计
+          for dir_key, cat_info in index['categories'].items():
+              print(f"   {dir_key}: {len(cat_info['documents'])} documents")
+          PYEOF
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes to NAVIGATION-INDEX.md"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in NAVIGATION-INDEX.md"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add NAVIGATION-INDEX.md
+          git commit -m "🤖 Auto-update NAVIGATION-INDEX.md
+
+          - Regenerated navigation index
+          - Updated document listings
+          
+          Triggered by: ${{ github.sha }}"
+          git push
+
+  # ============ 任务4: 更新README徽章和统计 ============
+  update-readme-badges:
+    name: Update README Badges
+    runs-on: ubuntu-latest
+    needs: [update-project-tracking, update-theorem-registry, update-navigation-index]
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update README with latest stats
+        run: |
+          python << 'PYEOF'
+          import re
+          from pathlib import Path
+          from datetime import datetime
+
+          readme_file = Path('README.md')
+          if not readme_file.exists():
+              print("README.md not found")
+              exit(0)
+
+          content = readme_file.read_text(encoding='utf-8')
+
+          # 更新最后更新时间
+          today = datetime.now().strftime('%Y-%m-%d')
+          content = re.sub(
+              r'\*\*最后更新\*\*: \d{4}-\d{2}-\d{2}',
+              f'**最后更新**: {today}',
+              content
+          )
+
+          # 保存
+          readme_file.write_text(content, encoding='utf-8')
+          print("✅ Updated README.md statistics")
+          PYEOF
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "🤖 Auto-update README statistics
+
+          - Updated last modified date
+          
+          Triggered by: ${{ github.sha }}" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+
+  # ============ 汇总报告 ============
+  sync-summary:
+    name: Document Sync Summary
+    runs-on: ubuntu-latest
+    needs: [update-project-tracking, update-theorem-registry, update-navigation-index, update-readme-badges]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 🔄 Document Update Sync Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Task | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.update-project-tracking.result }}" == "success" ]; then
+            echo "| PROJECT-TRACKING.md Update | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| PROJECT-TRACKING.md Update | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.update-theorem-registry.result }}" == "success" ]; then
+            echo "| Theorem Registry Scan | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Theorem Registry Scan | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.update-navigation-index.result }}" == "success" ]; then
+            echo "| Navigation Index Update | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Navigation Index Update | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.update-readme-badges.result }}" == "success" ]; then
+            echo "| README Statistics Update | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| README Statistics Update | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi

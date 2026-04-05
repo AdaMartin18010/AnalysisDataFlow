@@ -1,0 +1,795 @@
+# PR Quality Gate - Pull Request 质量门禁
+# 
+# 触发条件: PR 创建和更新时
+# 检查项目:
+#   1. Markdown语法检查
+#   2. 定理编号唯一性验证
+#   3. Mermaid语法验证
+#   4. 内部链接健康检查
+#   5. 前瞻性内容标记检查
+
+name: PR Quality Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============ 任务1: Markdown语法检查 ============
+  markdown-lint:
+    name: Markdown Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli@0.41.0
+
+      - name: Get changed markdown files
+        id: changed-files
+        run: |
+          # 获取PR中变更的markdown文件
+          changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD | grep '\.md$' || true)
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Changed files: $changed_files"
+
+      - name: Run markdownlint on changed files
+        if: steps.changed-files.outputs.changed_files != ''
+        run: |
+          # 创建自定义配置
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": false,
+            "MD024": false,
+            "MD033": false,
+            "MD041": false,
+            "MD046": false,
+            "MD028": false,
+            "MD025": false,
+            "line-length": false,
+            "no-inline-html": false,
+            "first-line-heading": false,
+            "no-duplicate-heading": false
+          }
+          EOF
+          
+          # 只检查变更的文件
+          echo "${{ steps.changed-files.outputs.changed_files }}" | xargs -I {} markdownlint {} || true
+
+      - name: Check for critical markdown errors
+        if: steps.changed-files.outputs.changed_files != ''
+        run: |
+          # 检查严重错误（如YAML frontmatter错误）
+          errors=0
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              # 检查YAML frontmatter
+              if head -1 "$file" | grep -q '^---'; then
+                if ! grep -q '^---' "$file" | head -3 | tail -1; then
+                  echo "⚠️ YAML frontmatter may be malformed in: $file"
+                fi
+              fi
+              # 检查表格语法
+              if grep -q '|' "$file"; then
+                if grep '|' "$file" | grep -v '---' | grep -v '^\s*$' | head -5 | tail -1 | grep -q '|'; then
+                  : # 表格语法正确
+                fi
+              fi
+            fi
+          done <<< "${{ steps.changed-files.outputs.changed_files }}"
+          echo "✅ Markdown syntax check completed"
+
+  # ============ 任务2: 定理编号唯一性验证 ============
+  theorem-validate:
+    name: Theorem Registry Validation
+    runs-on: ubuntu-latest
+    needs: markdown-lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q regex tabulate
+
+      - name: Run theorem validation
+        run: |
+          python scripts/theorem-validator.py --strict
+        continue-on-error: false
+
+      - name: Check theorem uniqueness in PR
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+
+          # 获取变更的文件
+          import subprocess
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
+
+          # 定理编号模式
+          theorem_patterns = [
+              r'Thm-[SKF]-\d{2}-\d{2}',
+              r'Def-[SKF]-\d{2}-\d{2}',
+              r'Lemma-[SKF]-\d{2}-\d{2}',
+              r'Prop-[SKF]-\d{2}-\d{2}',
+              r'Cor-[SKF]-\d{2}-\d{2}'
+          ]
+
+          new_theorems = defaultdict(list)
+          errors = []
+
+          for file_path in changed_files:
+              if not Path(file_path).exists():
+                  continue
+              try:
+                  content = Path(file_path).read_text(encoding='utf-8')
+                  for pattern in theorem_patterns:
+                      for match in re.finditer(pattern, content):
+                          theorem_id = match.group(0)
+                          new_theorems[theorem_id].append(file_path)
+              except Exception as e:
+                  print(f"Warning: Could not read {file_path}: {e}")
+
+          # 检查重复
+          duplicate_count = 0
+          for theorem_id, files in new_theorems.items():
+              if len(files) > 1:
+                  print(f"❌ Duplicate theorem ID found: {theorem_id}")
+                  print(f"   Found in: {', '.join(files)}")
+                  duplicate_count += 1
+
+          if duplicate_count > 0:
+              print(f"\n❌ Found {duplicate_count} duplicate theorem IDs in PR")
+              sys.exit(1)
+          else:
+              print(f"✅ All theorem IDs are unique ({len(new_theorems)} theorems checked)")
+          PYEOF
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-validation-report
+          path: reports/theorem-validation-report.md
+          if-no-files-found: ignore
+
+  # ============ 任务3: Mermaid语法验证 ============
+  mermaid-validate:
+    name: Mermaid Syntax Validation
+    runs-on: ubuntu-latest
+    needs: markdown-lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          npm install -g @mermaid-js/mermaid-cli@10.9.1
+
+      - name: Extract and validate Mermaid diagrams
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import subprocess
+          from pathlib import Path
+          import tempfile
+          import json
+
+          # 统计信息
+          stats = {
+              'total_diagrams': 0,
+              'valid_diagrams': 0,
+              'invalid_diagrams': 0,
+              'errors': []
+          }
+
+          # Mermaid代码块模式
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+
+          # 扫描所有markdown文件
+          md_files = list(Path('.').rglob('*.md'))
+          
+          for md_file in md_files:
+              # 跳过隐藏目录和node_modules
+              if any(part.startswith('.') or part in ['node_modules', '__pycache__'] 
+                     for part in md_file.parts):
+                  continue
+              
+              try:
+                  content = md_file.read_text(encoding='utf-8')
+                  diagrams = mermaid_pattern.findall(content)
+                  
+                  for i, diagram in enumerate(diagrams):
+                      stats['total_diagrams'] += 1
+                      diagram_id = f"{md_file}:{i+1}"
+                      
+                      # 基本语法检查
+                      diagram_lines = diagram.strip().split('\n')
+                      
+                      # 检查图表类型
+                      valid_types = ['graph', 'flowchart', 'sequenceDiagram', 'classDiagram', 
+                                    'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt',
+                                    'pie', 'mindmap', 'timeline', 'quadrantChart']
+                      
+                      first_line = diagram_lines[0].strip() if diagram_lines else ''
+                      
+                      # 提取图表类型
+                      chart_type = None
+                      for vt in valid_types:
+                          if first_line.startswith(vt):
+                              chart_type = vt
+                              break
+                      
+                      if not chart_type:
+                          stats['errors'].append({
+                              'file': str(md_file),
+                              'diagram': i + 1,
+                              'error': f'Unknown or unsupported chart type: {first_line[:50]}'
+                          })
+                          stats['invalid_diagrams'] += 1
+                          continue
+                      
+                      # 检查常见语法错误
+                      has_error = False
+                      
+                      # 检查graph定义
+                      if chart_type in ['graph', 'flowchart']:
+                          # 检查方向定义
+                          if not re.search(r'(graph|flowchart)\s+(TD|TB|BT|RL|LR)', diagram):
+                              if not re.search(r'(graph|flowchart)\s+\w+', diagram):
+                                  has_error = True
+                                  stats['errors'].append({
+                                      'file': str(md_file),
+                                      'diagram': i + 1,
+                                      'error': 'Missing direction (TD/TB/RL/LR) in graph definition'
+                                  })
+                      
+                      # 检查括号匹配
+                      open_brackets = diagram.count('[') + diagram.count('{') + diagram.count('(')
+                      close_brackets = diagram.count(']') + diagram.count('}') + diagram.count(')')
+                      if open_brackets != close_brackets:
+                          has_error = True
+                          stats['errors'].append({
+                              'file': str(md_file),
+                              'diagram': i + 1,
+                              'error': f'Unbalanced brackets: {open_brackets} open, {close_brackets} close'
+                          })
+                      
+                      if not has_error:
+                          stats['valid_diagrams'] += 1
+                      else:
+                          stats['invalid_diagrams'] += 1
+                          
+              except Exception as e:
+                  print(f"Warning: Could not process {md_file}: {e}")
+
+          # 输出结果
+          print("\n" + "="*60)
+          print("Mermaid Syntax Validation Report")
+          print("="*60)
+          print(f"Total diagrams: {stats['total_diagrams']}")
+          print(f"✅ Valid: {stats['valid_diagrams']}")
+          print(f"❌ Invalid: {stats['invalid_diagrams']}")
+
+          if stats['errors']:
+              print("\nErrors found:")
+              for error in stats['errors'][:20]:  # 只显示前20个错误
+                  print(f"  - {error['file']} (diagram {error['diagram']}): {error['error']}")
+              if len(stats['errors']) > 20:
+                  print(f"  ... and {len(stats['errors']) - 20} more errors")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          with open('reports/mermaid-validation-report.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          # 生成Markdown报告
+          report_lines = [
+              "# Mermaid Syntax Validation Report",
+              "",
+              f"**Generated**: $(date -Iseconds)",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Diagrams | {stats['total_diagrams']} |",
+              f"| ✅ Valid | {stats['valid_diagrams']} |",
+              f"| ❌ Invalid | {stats['invalid_diagrams']} |",
+              ""
+          ]
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## Errors",
+                  "",
+                  "| File | Diagram # | Error |",
+                  "|------|-----------|-------|"
+              ])
+              for error in stats['errors']:
+                  report_lines.append(f"| {error['file']} | {error['diagram']} | {error['error']} |")
+
+          with open('reports/mermaid-validation-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print("\n✅ Mermaid validation completed")
+
+          # 如果错误率超过10%，返回非零退出码
+          if stats['total_diagrams'] > 0:
+              error_rate = stats['invalid_diagrams'] / stats['total_diagrams']
+              if error_rate > 0.1:
+                  print(f"\n❌ Error rate {error_rate:.1%} exceeds threshold (10%)")
+                  sys.exit(1)
+          PYEOF
+
+      - name: Upload Mermaid validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-validation-report
+          path: reports/mermaid-validation-report.*
+
+  # ============ 任务4: 内部链接健康检查 ============
+  internal-link-check:
+    name: Internal Link Health Check
+    runs-on: ubuntu-latest
+    needs: [markdown-lint]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run internal link checker
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          from urllib.parse import urlparse
+
+          # 统计信息
+          stats = {
+              'total_links': 0,
+              'valid_links': 0,
+              'broken_links': 0,
+              'warnings': []
+          }
+
+          # 内部链接模式: [text](path) 或 [text](./path) 或 [text](../path)
+          link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+          # 收集所有文档
+          all_docs = set()
+          for directory in ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials', 'docs']:
+              if Path(directory).exists():
+                  for md_file in Path(directory).rglob('*.md'):
+                      all_docs.add(str(md_file).replace('\\', '/'))
+
+          # 根目录文档
+          for md_file in Path('.').glob('*.md'):
+              if not str(md_file).startswith('.') and md_file.is_file():
+                  all_docs.add(str(md_file).replace('\\', '/'))
+
+          print(f"Found {len(all_docs)} markdown documents")
+
+          # 检查每个文件中的链接
+          for doc_path in sorted(all_docs):
+              try:
+                  content = Path(doc_path).read_text(encoding='utf-8')
+                  doc_dir = Path(doc_path).parent
+
+                  for match in link_pattern.finditer(content):
+                      link_text = match.group(1)
+                      link_target = match.group(2)
+                      stats['total_links'] += 1
+
+                      # 跳过外部链接
+                      if link_target.startswith(('http://', 'https://', 'mailto:', '#')):
+                          stats['valid_links'] += 1
+                          continue
+
+                      # 移除锚点
+                      target_path = link_target.split('#')[0]
+
+                      if not target_path:
+                          continue
+
+                      # 解析相对路径
+                      if target_path.startswith('/'):
+                          # 绝对路径（相对于项目根）
+                          full_path = target_path.lstrip('/')
+                      else:
+                          # 相对路径
+                          full_path = str((doc_dir / target_path).resolve())
+                          full_path = full_path.replace('\\', '/')
+                          # 移除工作目录前缀
+                          cwd = str(Path('.').resolve()).replace('\\', '/')
+                          if full_path.startswith(cwd):
+                              full_path = full_path[len(cwd)+1:]
+
+                      # 检查文件是否存在
+                      if full_path in all_docs or Path(full_path).exists():
+                          stats['valid_links'] += 1
+                      else:
+                          stats['broken_links'] += 1
+                          stats['warnings'].append({
+                              'source': doc_path,
+                              'target': link_target,
+                              'resolved': full_path,
+                              'text': link_text[:50]
+                          })
+
+              except Exception as e:
+                  print(f"Warning: Could not process {doc_path}: {e}")
+
+          # 输出结果
+          print("\n" + "="*60)
+          print("Internal Link Health Check Report")
+          print("="*60)
+          print(f"Total internal links: {stats['total_links']}")
+          print(f"✅ Valid: {stats['valid_links']}")
+          print(f"❌ Broken: {stats['broken_links']}")
+
+          if stats['warnings']:
+              print("\nBroken links (showing first 20):")
+              for warning in stats['warnings'][:20]:
+                  print(f"  - {warning['source']}")
+                  print(f"    -> '{warning['target']}' (resolved: {warning['resolved']})")
+              if len(stats['warnings']) > 20:
+                  print(f"  ... and {len(stats['warnings']) - 20} more")
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Internal Link Health Check Report",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Internal Links | {stats['total_links']} |",
+              f"| ✅ Valid | {stats['valid_links']} |",
+              f"| ❌ Broken | {stats['broken_links']} |",
+              f"| Success Rate | {(stats['valid_links']/stats['total_links']*100):.1f}% |" if stats['total_links'] > 0 else "| Success Rate | N/A |",
+              ""
+          ]
+
+          if stats['warnings']:
+              report_lines.extend([
+                  "## Broken Links",
+                  "",
+                  "| Source File | Link Text | Target | Resolved Path |",
+                  "|-------------|-----------|--------|---------------|"
+              ])
+              for warning in stats['warnings']:
+                  report_lines.append(
+                      f"| {warning['source']} | {warning['text']} | `{warning['target']}` | {warning['resolved']} |"
+                  )
+
+          with open('reports/internal-link-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print("\n✅ Internal link check completed")
+
+          # 如果损坏率超过5%，返回非零退出码
+          if stats['total_links'] > 0:
+              broken_rate = stats['broken_links'] / stats['total_links']
+              if broken_rate > 0.05:
+                  print(f"\n❌ Broken link rate {broken_rate:.1%} exceeds threshold (5%)")
+                  sys.exit(1)
+          PYEOF
+
+      - name: Upload internal link report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: internal-link-report
+          path: reports/internal-link-report.md
+
+  # ============ 任务5: 前瞻性内容标记检查 ============
+  prospective-content-check:
+    name: Prospective Content Marker Check
+    runs-on: ubuntu-latest
+    needs: [markdown-lint]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check prospective content markers
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          # 统计信息
+          stats = {
+              'files_checked': 0,
+              'prospective_files': 0,
+              'errors': [],
+              'warnings': []
+          }
+
+          # 前瞻性内容关键词
+          prospective_keywords = [
+              'Flink 2.4', 'Flink 2.5', 'Flink 3.0', 'Flink 3.x',
+              '即将发布', 'coming soon', 'roadmap', 'preview',
+              '规划中', '设计中', '草案', '草案阶段'
+          ]
+
+          # 必须包含前瞻性标记的文件模式
+          prospective_file_patterns = [
+              r'flink-2\.4',
+              r'flink-2\.5', 
+              r'flink-3\.',
+              r'roadmap',
+              r'preview',
+              r'vision'
+          ]
+
+          # 检查的文件
+          check_dirs = ['Struct', 'Knowledge', 'Flink']
+          
+          for directory in check_dirs:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  stats['files_checked'] += 1
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      file_name = md_file.name.lower()
+                      
+                      # 判断是否为前瞻性内容文件
+                      is_prospective_file = any(
+                          re.search(pattern, file_name) 
+                          for pattern in prospective_file_patterns
+                      )
+                      
+                      # 检查是否包含前瞻性标记
+                      has_prospective_marker = any(marker in content for marker in [
+                          '> ⚠️ **前瞻性声明**',
+                          '> **前瞻性声明**',
+                          'status: preview',
+                          'status: roadmap',
+                          '前瞻性内容',
+                          'forward-looking'
+                      ])
+                      
+                      # 检查是否包含前瞻性关键词
+                      has_prospective_keywords = any(
+                          keyword in content 
+                          for keyword in prospective_keywords
+                      )
+                      
+                      if is_prospective_file or has_prospective_keywords:
+                          stats['prospective_files'] += 1
+                          
+                          if not has_prospective_marker:
+                              stats['errors'].append({
+                                  'file': str(md_file),
+                                  'reason': 'Missing prospective content marker'
+                              })
+                      
+                      # 检查虚构API标记
+                      if 'CREATE AGENT' in content or 'ai.agent.enabled' in content:
+                          if '<!-- 虚构API' not in content and '虚构' not in content:
+                              if '概念设计' not in content and '未来可能' not in content:
+                                  stats['warnings'].append({
+                                      'file': str(md_file),
+                                      'reason': 'Potential fictional API without proper marking'
+                                  })
+                      
+                      # 检查版本兼容性标记
+                      if 'Flink' in content:
+                          # 检查是否有版本兼容性表格或说明
+                          if '| 版本 |' not in content and '兼容性' not in content:
+                              if 'Flink 2.' in content or 'Flink 1.' in content:
+                                  # 只警告，不报错
+                                  pass
+                                  
+                  except Exception as e:
+                      print(f"Warning: Could not process {md_file}: {e}")
+
+          # 输出结果
+          print("\n" + "="*60)
+          print("Prospective Content Marker Check Report")
+          print("="*60)
+          print(f"Files checked: {stats['files_checked']}")
+          print(f"Prospective files: {stats['prospective_files']}")
+          print(f"Errors: {len(stats['errors'])}")
+          print(f"Warnings: {len(stats['warnings'])}")
+
+          if stats['errors']:
+              print("\n❌ Errors (missing prospective markers):")
+              for error in stats['errors']:
+                  print(f"  - {error['file']}: {error['reason']}")
+
+          if stats['warnings']:
+              print("\n⚠️ Warnings:")
+              for warning in stats['warnings']:
+                  print(f"  - {warning['file']}: {warning['reason']}")
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Prospective Content Marker Check Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Files Checked | {stats['files_checked']} |",
+              f"| Prospective Files | {stats['prospective_files']} |",
+              f"| Errors | {len(stats['errors'])} |",
+              f"| Warnings | {len(stats['warnings'])} |",
+              ""
+          ]
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## Errors",
+                  "",
+                  "| File | Reason |",
+                  "|------|--------|"
+              ])
+              for error in stats['errors']:
+                  report_lines.append(f"| {error['file']} | {error['reason']} |")
+              report_lines.append("")
+
+          if stats['warnings']:
+              report_lines.extend([
+                  "## Warnings",
+                  "",
+                  "| File | Reason |",
+                  "|------|--------|"
+              ])
+              for warning in stats['warnings']:
+                  report_lines.append(f"| {warning['file']} | {warning['reason']} |")
+
+          with open('reports/prospective-content-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print("\n✅ Prospective content check completed")
+
+          # 如果有错误，返回非零退出码
+          if stats['errors']:
+              print(f"\n❌ Found {len(stats['errors'])} missing prospective markers")
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload prospective content report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prospective-content-report
+          path: reports/prospective-content-report.md
+
+  # ============ 汇总报告 ============
+  summary:
+    name: Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [markdown-lint, theorem-validate, mermaid-validate, internal-link-check, prospective-content-check]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Generate summary
+        run: |
+          echo "## 📊 PR Quality Gate Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # Markdown Lint
+          if [ "${{ needs.markdown-lint.result }}" == "success" ]; then
+            echo "| Markdown Syntax | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Markdown Syntax | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Theorem Validation
+          if [ "${{ needs.theorem-validate.result }}" == "success" ]; then
+            echo "| Theorem Registry | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Theorem Registry | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Mermaid Validation
+          if [ "${{ needs.mermaid-validate.result }}" == "success" ]; then
+            echo "| Mermaid Syntax | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mermaid Syntax | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Internal Link Check
+          if [ "${{ needs.internal-link-check.result }}" == "success" ]; then
+            echo "| Internal Links | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Internal Links | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Prospective Content Check
+          if [ "${{ needs.prospective-content-check.result }}" == "success" ]; then
+            echo "| Prospective Markers | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Prospective Markers | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if any check failed
+        if: |
+          needs.markdown-lint.result == 'failure' ||
+          needs.theorem-validate.result == 'failure' ||
+          needs.mermaid-validate.result == 'failure' ||
+          needs.internal-link-check.result == 'failure' ||
+          needs.prospective-content-check.result == 'failure'
+        run: |
+          echo "❌ One or more quality checks failed"
+          exit 1

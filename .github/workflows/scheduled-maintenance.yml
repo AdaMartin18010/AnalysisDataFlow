@@ -1,0 +1,331 @@
+# Scheduled Maintenance - 定时维护任务
+#
+# 触发条件: 每周一凌晨 (UTC)
+# 任务:
+#   1. 外部链接健康检查
+#   2. 生成维护报告
+#   3. 创建Issue通知过期内容
+
+name: Scheduled Maintenance
+
+on:
+  schedule:
+    # 每周一凌晨 2:00 UTC (北京时间周一上午10:00)
+    - cron: '0 2 * * 1'
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of maintenance check'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - links-only
+          - stats-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 任务1: 外部链接健康检查 ============
+  external-link-check:
+    name: External Link Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: github.event.inputs.check_type != 'stats-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q aiohttp
+
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-cache-${{ github.run_id }}
+          restore-keys: |
+            link-checker-cache-
+
+      - name: Run external link check
+        run: |
+          python scripts/link-health-checker.py \
+            --path . \
+            --output reports/external-link-report.md \
+            --json reports/external-link-results.json \
+            --timeout 30 \
+            --retries 2 \
+            --concurrent 30
+        continue-on-error: true
+
+      - name: Upload link check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-link-check-results
+          path: |
+            reports/external-link-report.md
+            reports/external-link-results.json
+            link-health-checker.log
+          if-no-files-found: ignore
+
+      - name: Parse link check results
+        id: parse-results
+        run: |
+          if [ -f reports/external-link-results.json ]; then
+            broken=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['broken_links'])")
+            total=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['total_links'])")
+            echo "broken_links=$broken" >> $GITHUB_OUTPUT
+            echo "total_links=$total" >> $GITHUB_OUTPUT
+          else
+            echo "broken_links=0" >> $GITHUB_OUTPUT
+            echo "total_links=0" >> $GITHUB_OUTPUT
+          fi
+
+  # ============ 任务2: 生成维护报告 ============
+  generate-maintenance-report:
+    name: Generate Maintenance Report
+    runs-on: ubuntu-latest
+    needs: external-link-check
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Download link check results
+        uses: actions/download-artifact@v4
+        with:
+          name: external-link-check-results
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate comprehensive maintenance report
+        run: |
+          python3 << 'PYEOF'
+          import json
+          import re
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          Path('reports').mkdir(exist_ok=True)
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'broken_links': 0,
+              'total_links': 0,
+              'doc_count': 0,
+              'theorem_count': 0,
+              'issues': []
+          }
+
+          if Path('reports/external-link-results.json').exists():
+              with open('reports/external-link-results.json') as f:
+                  link_data = json.load(f)
+                  stats['broken_links'] = link_data['summary']['broken_links']
+                  stats['total_links'] = link_data['summary']['total_links']
+
+          for directory in ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials']:
+              if Path(directory).exists():
+                  stats['doc_count'] += len(list(Path(directory).rglob('*.md')))
+
+          theorem_file = Path('THEOREM-REGISTRY.md')
+          if theorem_file.exists():
+              content = theorem_file.read_text(encoding='utf-8')
+              stats['theorem_count'] = len(re.findall(r'\| (Thm|Def|Lemma|Prop|Cor)-[SKF]-\d{2}-\d{2} \|', content))
+
+          report_lines = [
+              "# 📋 Scheduled Maintenance Report",
+              "",
+              f"**Generated**: {stats['generated_at']}",
+              "**Report Type**: Weekly Automated Maintenance",
+              "",
+              "## 📊 Summary",
+              "",
+              "| Metric | Value | Status |",
+              "|--------|-------|--------|",
+              f"| Total Documents | {stats['doc_count']} | OK |",
+              f"| Total Links Checked | {stats['total_links']} | OK |",
+              f"| Broken Links | {stats['broken_links']} | {'WARNING' if stats['broken_links'] > 0 else 'OK'} |",
+              f"| Registered Theorems | {stats['theorem_count']} | OK |",
+              ""
+          ]
+
+          if stats['total_links'] > 0:
+              health_rate = (stats['total_links'] - stats['broken_links']) / stats['total_links'] * 100
+              report_lines.extend([
+                  "## 🔗 Link Health Status",
+                  "",
+                  f"Health Rate: {health_rate:.1f}%",
+                  ""
+              ])
+
+          if Path('reports/external-link-report.md').exists():
+              report_lines.extend([
+                  "## 📄 Detailed Link Report",
+                  "",
+                  "See external-link-report.md for detailed information.",
+                  ""
+              ])
+
+          report_lines.extend([
+              "## 🛠️ Recommended Actions",
+              ""
+          ])
+
+          if stats['broken_links'] > 0:
+              report_lines.extend([
+                  f"### High Priority",
+                  f"",
+                  f"- Fix {stats['broken_links']} broken external links",
+                  f"- Run: python scripts/link-auto-fix.py --fix-redirects",
+                  f""
+              ])
+
+          report_lines.extend([
+              "### Routine Maintenance",
+              "",
+              "- Review and update outdated content",
+              "- Check for new Flink releases",
+              "- Verify theorem registry is up to date",
+              "",
+              "---",
+              "",
+              "*This report was automatically generated by GitHub Actions*"
+          ])
+
+          with open('reports/maintenance-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print("Maintenance report generated")
+          PYEOF
+
+      - name: Upload maintenance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: maintenance-report
+          path: reports/maintenance-report.md
+
+  # ============ 任务3: 创建Issue通知过期内容 ============
+  create-maintenance-issues:
+    name: Create Maintenance Issues
+    runs-on: ubuntu-latest
+    needs: [external-link-check, generate-maintenance-report]
+    if: always() && github.event_name == 'schedule'
+    permissions:
+      issues: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Create issue for broken links
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let brokenLinks = 0;
+            let totalLinks = 0;
+            
+            try {
+              const resultPath = path.join('reports', 'external-link-check-results', 'external-link-results.json');
+              if (fs.existsSync(resultPath)) {
+                const data = JSON.parse(fs.readFileSync(resultPath, 'utf8'));
+                brokenLinks = data.summary.broken_links;
+                totalLinks = data.summary.total_links;
+              }
+            } catch (e) {
+              console.log('Could not read link results:', e.message);
+            }
+            
+            if (brokenLinks > 0) {
+              const title = `[Maintenance] ${brokenLinks} broken external links detected`;
+              const body = `## 🔗 External Link Health Check Results
+
+**Check Date**: ${new Date().toISOString()}
+**Broken Links**: ${brokenLinks}
+**Total Links Checked**: ${totalLinks}
+
+This is an automated report from the weekly scheduled maintenance check.
+
+### 🛠️ Recommended Actions
+1. Download the detailed report from the workflow artifacts
+2. Run: python scripts/link-auto-fix.py --fix-redirects
+3. Manually fix remaining broken links
+
+---
+*This issue was automatically created by the Scheduled Maintenance workflow.*`;
+
+              const issues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'maintenance,links'
+              });
+              
+              const existingIssue = issues.data.find(i => i.title.includes('broken external links'));
+              
+              if (!existingIssue) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ['maintenance', 'links', 'automated']
+                });
+                console.log('Created new maintenance issue');
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existingIssue.number,
+                  body: `**Updated**: ${brokenLinks} broken links (checked at ${new Date().toISOString()})`
+                });
+                console.log('Updated existing issue #' + existingIssue.number);
+              }
+            }
+
+  # ============ 汇总通知 ============
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [external-link-check, generate-maintenance-report, create-maintenance-issues]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## 🔧 Scheduled Maintenance Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.external-link-check.result }}" == "success" ]; then
+            echo "| External Link Check | OK |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.external-link-check.result }}" == "skipped" ]; then
+            echo "| External Link Check | Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| External Link Check | Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.generate-maintenance-report.result }}" == "success" ]; then
+            echo "| Maintenance Report | OK |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Maintenance Report | Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
