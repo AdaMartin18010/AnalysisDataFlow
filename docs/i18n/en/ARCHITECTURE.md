@@ -894,7 +894,7 @@ docs/i18n/
 3. **Version Synchronization**: Tracks source document changes and flags translations needing updates
 4. **Quality Assurance**: Multi-level review process (automated checks, terminology review, technical review)
 
-For detailed i18n architecture, see [docs/i18n/ARCHITECTURE.md](../i18n/ARCHITECTURE.md).
+For detailed i18n architecture, see [docs/i18n/ARCHITECTURE.md](../ARCHITECTURE.md).
 
 ---
 
@@ -923,10 +923,10 @@ For detailed i18n architecture, see [docs/i18n/ARCHITECTURE.md](../i18n/ARCHITEC
 
 ### C. Related Documents
 
-- [AGENTS.md](../../AGENTS.md) - Agent Work Context Specifications
-- [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md) - Project Progress Tracking
-- [THEOREM-REGISTRY.md](../../THEOREM-REGISTRY.md) - Theorem Registry
-- [README.md](../../README.md) - Project Overview
+- [AGENTS.md](../../../AGENTS.md) - Agent Work Context Specifications
+- [PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md) - Project Progress Tracking
+- [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md) - Theorem Registry
+- [README.md](../../../README.md) - Project Overview
 
 ---
 

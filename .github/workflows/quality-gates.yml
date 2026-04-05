@@ -1,0 +1,348 @@
+# =============================================================================
+# AnalysisDataFlow 质量门禁工作流
+# =============================================================================
+# 功能: 全面的质量检查，包括链接检查、交叉引用验证、格式检查
+#
+# 触发条件:
+# - Push到main/master分支
+# - PR到main/master分支
+# - 每周日定时运行
+# - 手动触发
+# =============================================================================
+
+name: Quality Gates
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - '.scripts/**'
+      - '.github/workflows/**'
+  
+  pull_request:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - '.scripts/**'
+      - '.github/workflows/**'
+  
+  schedule:
+    # 每周日 UTC 02:00 运行
+    - cron: '0 2 * * 0'
+  
+  workflow_dispatch:
+    inputs:
+      check_external:
+        description: '检查外部链接'
+        required: false
+        default: true
+        type: boolean
+      strict_mode:
+        description: '严格模式（失败阈值更低）'
+        required: false
+        default: false
+        type: boolean
+      fail_on_error:
+        description: '错误时失败'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+  CHECK_EXTERNAL: ${{ github.event.inputs.check_external || 'false' }}
+  STRICT_MODE: ${{ github.event.inputs.strict_mode || 'false' }}
+  FAIL_ON_ERROR: ${{ github.event.inputs.fail_on_error || 'true' }}
+
+# 权限设置
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  # ===========================================================================
+  # Job 1: 质量门禁统一检查
+  # ===========================================================================
+  quality-gates:
+    name: 统一质量检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aiohttp pyyaml
+      
+      - name: Run quality gates
+        id: quality_gates
+        run: |
+          echo "::group::执行统一质量检查"
+          python .scripts/quality-gates.py \
+            --check-internal \
+            --check-anchors \
+            --check-refs \
+            ${{ env.CHECK_EXTERNAL == 'true' && '--check-external' || '' }} \
+            --fail-threshold ${{ env.STRICT_MODE == 'true' && '0' || '5' }} \
+            --output reports/quality-gates-report.md \
+            --json reports/quality-gates-results.json
+          echo "::endgroup::"
+        continue-on-error: ${{ env.FAIL_ON_ERROR != 'true' }}
+      
+      - name: Upload quality report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gates-report
+          path: |
+            reports/quality-gates-report.md
+            reports/quality-gates-results.json
+          retention-days: 30
+      
+      - name: Parse results
+        id: parse_results
+        run: |
+          if [ -f reports/quality-gates-results.json ]; then
+            TOTAL=$(python3 -c "import json; d=json.load(open('reports/quality-gates-results.json')); print(d['summary']['total_checks'])")
+            PASSED=$(python3 -c "import json; d=json.load(open('reports/quality-gates-results.json')); print(d['summary']['passed'])")
+            FAILED=$(python3 -c "import json; d=json.load(open('reports/quality-gates-results.json')); print(d['summary']['failed'])")
+            BROKEN_LINKS=$(python3 -c "import json; d=json.load(open('reports/quality-gates-results.json')); print(d['summary'].get('broken_links', 0))")
+            
+            echo "total=$TOTAL" >> $GITHUB_OUTPUT
+            echo "passed=$PASSED" >> $GITHUB_OUTPUT
+            echo "failed=$FAILED" >> $GITHUB_OUTPUT
+            echo "broken_links=$BROKEN_LINKS" >> $GITHUB_OUTPUT
+            
+            echo "检查结果:"
+            echo "  - 总检查项: $TOTAL"
+            echo "  - 通过: $PASSED"
+            echo "  - 失败: $FAILED"
+            echo "  - 失效链接: $BROKEN_LINKS"
+          fi
+      
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // 尝试读取报告
+            let reportContent = '';
+            try {
+              if (fs.existsSync('reports/quality-gates-report.md')) {
+                reportContent = fs.readFileSync('reports/quality-gates-report.md', 'utf8');
+              }
+            } catch (e) {
+              console.log('无法读取报告:', e.message);
+            }
+            
+            // 提取摘要
+            const summaryMatch = reportContent.match(/## 📊 检查摘要[\s\S]*?(?=##|$)/);
+            const summary = summaryMatch ? summaryMatch[0] : '';
+            
+            const total = '${{ steps.parse_results.outputs.total }}' || 'N/A';
+            const passed = '${{ steps.parse_results.outputs.passed }}' || 'N/A';
+            const failed = '${{ steps.parse_results.outputs.failed }}' || 'N/A';
+            const brokenLinks = '${{ steps.parse_results.outputs.broken_links }}' || '0';
+            
+            const outcome = '${{ steps.quality_gates.outcome }}';
+            const statusEmoji = outcome === 'success' ? '✅' : '❌';
+            
+            const body = `${statusEmoji} **质量门禁检查完成**
+            
+            | 指标 | 数值 |
+            |------|------|
+            | 总检查项 | ${total} |
+            | 通过 | ${passed} |
+            | 失败 | ${failed} |
+            | 失效链接 | ${brokenLinks} |
+            
+            ${summary}
+            
+            [查看详细报告](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  # ===========================================================================
+  # Job 2: Markdown格式检查
+  # ===========================================================================
+  markdown-lint:
+    name: Markdown格式检查
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+      
+      - name: Create markdownlint config
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": { "line_length": 200 },
+            "MD024": { "allow_different_nesting": true },
+            "MD033": false,
+            "MD041": false,
+            "MD046": false
+          }
+          EOF
+      
+      - name: Run markdownlint
+        run: |
+          markdownlint '**/*.md' \
+            --ignore node_modules \
+            --ignore '.link-checker-cache/**' \
+            --ignore 'reports/**' || true
+
+  # ===========================================================================
+  # Job 3: Mermaid图表验证
+  # ===========================================================================
+  mermaid-check:
+    name: Mermaid图表验证
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Run Mermaid validation
+        run: |
+          echo "::group::验证Mermaid图表语法"
+          if [ -f .scripts/validate_mermaid.py ]; then
+            python .scripts/validate_mermaid.py
+          else
+            echo "Mermaid验证脚本不存在，跳过"
+          fi
+          echo "::endgroup::"
+        continue-on-error: true
+
+  # ===========================================================================
+  # Job 4: 定理编号验证
+  # ===========================================================================
+  theorem-check:
+    name: 定理编号验证
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Run theorem validation
+        run: |
+          echo "::group::验证定理编号唯一性"
+          if [ -f .scripts/validate_theorem_numbers.py ]; then
+            python .scripts/validate_theorem_numbers.py
+          else
+            echo "定理编号验证脚本不存在，跳过"
+          fi
+          echo "::endgroup::"
+
+  # ===========================================================================
+  # Job 5: 质量门禁总结
+  # ===========================================================================
+  quality-gates-summary:
+    name: 质量门禁总结
+    runs-on: ubuntu-latest
+    needs: [quality-gates, markdown-lint, mermaid-check, theorem-check]
+    if: always()
+    
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 🚪 质量门禁检查结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 检查项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          
+          # 统一质量检查
+          if [ "${{ needs.quality-gates.result }}" == "success" ]; then
+            echo "| 统一质量检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.quality-gates.result }}" == "failure" ]; then
+            echo "| 统一质量检查 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 统一质量检查 | ⏭️ 跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Markdown格式检查
+          if [ "${{ needs.markdown-lint.result }}" == "success" ]; then
+            echo "| Markdown格式检查 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.markdown-lint.result }}" == "failure" ]; then
+            echo "| Markdown格式检查 | ⚠️ 警告 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Markdown格式检查 | ⏭️ 跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Mermaid验证
+          if [ "${{ needs.mermaid-check.result }}" == "success" ]; then
+            echo "| Mermaid图表验证 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.mermaid-check.result }}" == "failure" ]; then
+            echo "| Mermaid图表验证 | ⚠️ 警告 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mermaid图表验证 | ⏭️ 跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # 定理编号验证
+          if [ "${{ needs.theorem-check.result }}" == "success" ]; then
+            echo "| 定理编号验证 | ✅ 通过 |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.theorem-check.result }}" == "failure" ]; then
+            echo "| 定理编号验证 | ❌ 失败 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 定理编号验证 | ⏭️ 跳过 |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "[查看详细报告](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Check overall result
+        run: |
+          QUALITY_GATES="${{ needs.quality-gates.result }}"
+          THEOREM="${{ needs.theorem-check.result }}"
+          
+          if [ "$QUALITY_GATES" == "success" ] && [ "$THEOREM" == "success" ]; then
+            echo "✅ 所有质量门禁检查通过!"
+            exit 0
+          else
+            echo "❌ 质量门禁检查未通过"
+            if [ "$QUALITY_GATES" != "success" ]; then
+              echo "  - 统一质量检查失败"
+            fi
+            if [ "$THEOREM" != "success" ]; then
+              echo "  - 定理编号验证失败"
+            fi
+            exit 1
+          fi

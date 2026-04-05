@@ -1,0 +1,229 @@
+name: Track External Dependencies
+
+on:
+  schedule:
+    # 每周一和周四凌晨 2:00 UTC (北京时间 10:00) 运行
+    - cron: '0 2 * * 1,4'
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      dependency:
+        description: '特定依赖检查 (iron-functions/all)'
+        required: false
+        default: 'all'
+      create_issue:
+        description: '发现更新时创建 Issue'
+        required: false
+        type: boolean
+        default: true
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # =====================================================
+  # 任务 1: 检查 Iron Functions 版本
+  # =====================================================
+  check-iron-functions:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_update: ${{ steps.check.outputs.needs_update }}
+      current_version: ${{ steps.check.outputs.current_version }}
+      latest_version: ${{ steps.check.outputs.latest_version }}
+      check_output: ${{ steps.check.outputs.result }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-iron-functions
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Check Iron Functions version
+        id: check
+        run: |
+          python .scripts/iron-functions-tracker.py --check --format json > check_result.json 2>&1 || true
+          
+          # 检查是否需要更新
+          if grep -q '"overall_status": "needs_update"' check_result.json 2>/dev/null; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            
+            # 提取版本信息
+            current=$(python -c "import json; d=json.load(open('check_result.json')); c=[x for x in d.get('components', []) if x['name']=='Iron Functions Core']; print(c[0]['current_version'] if c else 'unknown')" 2>/dev/null || echo "unknown")
+            latest=$(python -c "import json; d=json.load(open('check_result.json')); c=[x for x in d.get('components', []) if x['name']=='Iron Functions Core']; print(c[0]['latest_version'] if c else 'unknown')" 2>/dev/null || echo "unknown")
+            
+            echo "current_version=$current" >> $GITHUB_OUTPUT
+            echo "latest_version=$latest" >> $GITHUB_OUTPUT
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "current_version=unknown" >> $GITHUB_OUTPUT
+            echo "latest_version=unknown" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          cat check_result.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload check result
+        uses: actions/upload-artifact@v4
+        with:
+          name: iron-functions-check-result
+          path: check_result.json
+          retention-days: 30
+
+  # =====================================================
+  # 任务 2: 更新版本跟踪文档
+  # =====================================================
+  update-tracking-docs:
+    needs: check-iron-functions
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Update tracking file
+        run: |
+          python .scripts/iron-functions-tracker.py --update
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "没有需要提交的变更"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "检测到变更:"
+            git diff --staged --stat
+          fi
+
+      - name: Commit changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: 自动更新 Iron Functions 版本跟踪 [$(date +%Y-%m-%d)]"
+          git push
+
+  # =====================================================
+  # 任务 3: 创建更新提醒 Issue
+  # =====================================================
+  create-update-issue:
+    needs: check-iron-functions
+    runs-on: ubuntu-latest
+    # 只在检测到需要更新时创建 Issue
+    if: |
+      always() && 
+      needs.check-iron-functions.outputs.needs_update == 'true' &&
+      (github.event.inputs.create_issue == 'true' || github.event_name == 'schedule')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const current = '${{ needs.check-iron-functions.outputs.current_version }}';
+            const latest = '${{ needs.check-iron-functions.outputs.latest_version }}';
+            
+            // 检查是否已存在相同版本的 Issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'external-dependency,iron-functions',
+              state: 'open'
+            });
+            
+            const existingIssue = issues.data.find(issue => 
+              issue.title.includes(`Iron Functions ${latest}`)
+            );
+            
+            if (existingIssue) {
+              console.log(`Issue #${existingIssue.number} 已存在，跳过创建`);
+              return;
+            }
+            
+            const issueBody = `## Iron Functions 版本更新检测
+            
+检测到 Iron Functions 有新版本可用。
+
+### 版本信息
+- **当前版本**: ${current}
+- **最新版本**: ${latest}
+- **检测时间**: ${new Date().toISOString()}
+
+### 检查清单
+- [ ] 查看官方 [Changelog](https://github.com/irontools/iron-functions/releases)
+- [ ] 更新 [VERSION-TRACKING.md](../blob/main/Flink/14-rust-assembly-ecosystem/iron-functions/VERSION-TRACKING.md)
+- [ ] 更新主文档版本声明
+- [ ] 验证 [verify-examples](../blob/main/Flink/14-rust-assembly-ecosystem/iron-functions/verify-examples/) 兼容性
+- [ ] 如有破坏性变更，更新迁移指南
+
+### 自动化信息
+- 工作流: \`${context.workflow}\`
+- 运行: [${context.runId}](../actions/runs/${context.runId})
+
+---
+*此 Issue 由自动化工作流创建* 🤖`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📦 Iron Functions 版本更新: ${current} → ${latest}`,
+              body: issueBody,
+              labels: ['external-dependency', 'iron-functions', 'documentation']
+            });
+            
+            console.log('Issue 创建成功');
+
+  # =====================================================
+  # 任务 4: 通知（可选）
+  # =====================================================
+  notify:
+    needs: [check-iron-functions, create-update-issue]
+    runs-on: ubuntu-latest
+    if: |
+      always() && 
+      needs.check-iron-functions.outputs.needs_update == 'true' &&
+      github.event_name == 'schedule'
+    steps:
+      - name: Log notification
+        run: |
+          echo "Iron Functions 需要更新"
+          echo "当前版本: ${{ needs.check-iron-functions.outputs.current_version }}"
+          echo "最新版本: ${{ needs.check-iron-functions.outputs.latest_version }}"
+          echo "已创建 Issue 提醒"
+
+      # 可选：添加 Slack/邮件通知
+      # - name: Notify Slack
+      #   if: secrets.SLACK_WEBHOOK_URL
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {"text": "Iron Functions 版本更新可用"}

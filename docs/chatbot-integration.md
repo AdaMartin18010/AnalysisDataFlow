@@ -679,7 +679,7 @@ chatbot:
 >     CheckpointingMode.EXACTLY_ONCE);
 > ```
 >
-> See [Checkpoint Mechanism Deep Dive](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) for complete details.
+> See [Checkpoint Mechanism Deep Dive](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) for complete details.
 >
 > [^1]: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
 

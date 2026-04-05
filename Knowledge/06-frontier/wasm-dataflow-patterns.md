@@ -1,10 +1,10 @@
-﻿# WebAssembly 数据流模式：浏览器-边缘-云统一执行模型
+﻿# WebAssembly 数据流模式：浏览器-边缘-云统一执行模型 {#webassembly-数据流模式浏览器-边缘-云统一执行模型}
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [stateful-serverless.md](./stateful-serverless.md), [cloud-edge-continuum.md](./cloud-edge-continuum.md), [faas-dataflow.md](./faas-dataflow.md) | **形式化等级**: L4
 
 ## 目录
 
-- [WebAssembly 数据流模式：浏览器-边缘-云统一执行模型](#webassembly-数据流模式-浏览器-边缘-云统一执行模型)
+- [WebAssembly 数据流模式：浏览器-边缘-云统一执行模型](#webassembly-数据流模式浏览器-边缘-云统一执行模型)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-12: WebAssembly 数据流 (Wasm-DF)](#def-k-06-12-webassembly-数据流-wasm-df)

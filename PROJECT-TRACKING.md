@@ -553,6 +553,7 @@
 - ✅ flink-ml-architecture.md
 - ✅ flink-ai-ml-integration-complete-guide.md
 - ✅ flink-25-gpu-acceleration.md
+- ✅ flink-llm-realtime-rag-architecture.md 🆕
 
 #### 部署与运维 (10篇)
 

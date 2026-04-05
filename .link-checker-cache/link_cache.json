@@ -1896,11 +1896,209 @@
       "status_code": null,
       "redirect_url": null,
       "timestamp": "2026-04-04T19:07:14.224849"
+    },
+    "efeb27c1dc7fbd7bfe60c23a70465173": {
+      "url": "https://doc.rust-lang.org/book/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:00.771748"
+    },
+    "d1b08eb21f25c035cf68750410257b60": {
+      "url": "https://pulsar.apache.org/docs/next/concepts-replication/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:00.971341"
+    },
+    "447b3d7716d5808a25fa555c76396385": {
+      "url": "https://irontools.dev/docs/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.015254"
+    },
+    "eb70f0e8830cca3c1aaec5fec65cad06": {
+      "url": "https://github.com/irontools/iron-functions/releases",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.015453"
+    },
+    "fe8ec3dbe2c0a1814b3dac0d037e1f27": {
+      "url": "https://github.com/your-org/AnalysisDataFlow/issues",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.020496"
+    },
+    "3936e963e81cdef2001b21189ff3305b": {
+      "url": "https://pulsar.apache.org/docs/next/functions-overview/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.021727"
+    },
+    "96ba88f71f17f4d187e57747cb26d711": {
+      "url": "https://github.com/rust-lang-nursery/wg-async",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.079938"
+    },
+    "f301628ffc8319b71e00587373dc2a35": {
+      "url": "https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.093243"
+    },
+    "46c7511294d7fa3ff100ea2a5717eac5": {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.190249"
+    },
+    "6a3e9c226204ebea47e4791f35aebec9": {
+      "url": "http://sites.computer.org/debull/A15dec/p28.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.288814"
+    },
+    "67d615f451b3d47c7e8c440048f4e624": {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.476259"
+    },
+    "72b6716017e7471d0eb5aee0a006d0b3": {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/pulsar/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.483254"
+    },
+    "9ac080ec68f56935109cc4c9f39682ed": {
+      "url": "https://materialize.com/docs/",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.493439"
+    },
+    "1f50a49fcfd5b6c4f2a7e07c44f506ee": {
+      "url": "https://www.usenix.org/legacy/event/hotcloud10/tech/full_papers/Zaharia.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.543347"
+    },
+    "ce66a04bdb1f03fe095dfc72f2443c3e": {
+      "url": "https://www.cs.cmu.edu/~crary/819-f09/Hoare78.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.560600"
+    },
+    "0c20e6d77a96b0957c838ea8cc803e5a": {
+      "url": "https://www.usenix.org/system/files/conference/osdi12/osdi12-final-16.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.575539"
+    },
+    "786f97f5082a23b1921e11bf94a7073f": {
+      "url": "https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.636385"
+    },
+    "fe026a6789a70036e9367c0b75775b65": {
+      "url": "https://lamport.azurewebsites.net/pubs/tla+book.pdf",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.639818"
+    },
+    "aa7ba2d37269d765dde795f70f462898": {
+      "url": "https://lamport.azurewebsites.net/pubs/time-clocks.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.647472"
+    },
+    "4c25434b24c58b4b5f7be3114ec6142f": {
+      "url": "https://people.csail.mit.edu/matei/papers/2013/sosp_spark_streaming.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.647494"
+    },
+    "e27f422ab7d498265fead6128591b779": {
+      "url": "https://www.usenix.org/legacy/publications/library/proceedings/osdi06/tech/full_papers/chang/chang.pdf",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.668246"
+    },
+    "7e0695013e6513acd59bbc6fc48c0bd6": {
+      "url": "https://www.cs.ox.ac.uk/people/bill.roscoe/publications/68b.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.785990"
+    },
+    "9e723e1f2ff43cd2738ba0da1df9ef53": {
+      "url": "https://www.ijcai.org/Proceedings/73/Papers/027B.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.840157"
+    },
+    "6b31d686881862aa02d8dd20d1f44dd0": {
+      "url": "https://www.vldb.org/pvldb/vol8/p1792-akidau.pdf",
+      "status": "ok",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.886479"
+    },
+    "f913cee643fccb2a70b15d5749410efb": {
+      "url": "https://sites.cs.ucsb.edu/~rich/class/cs293b-cloud/papers/brewer_cap.pdf",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.951909"
+    },
+    "0b1c77dc48d0bd46eff758fcd9296138": {
+      "url": "https://users.cs.duke.edu/~badi/papers/cap.pdf",
+      "status": "broken",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:01.978231"
+    },
+    "8a45c94ea9b5d59a9afcbad4a8bb4f8b": {
+      "url": "http://cidrdb.org/cidr2007/papers/cidr07p15.pdf",
+      "status": "ok",
+      "redirect_url": "https://www.cidrdb.org/cidr2007/papers/cidr07p15.pdf",
+      "timestamp": "2026-04-05T09:41:02.319767"
+    },
+    "6e65e4eeb9ba1b8f4f20b68043140219": {
+      "url": "http://cidrdb.org/cidr2005/papers/P23.pdf",
+      "status": "ok",
+      "redirect_url": "https://www.cidrdb.org/cidr2005/papers/P23.pdf",
+      "timestamp": "2026-04-05T09:41:02.340825"
+    },
+    "7c188406826f925cc860bc1c13f248a9": {
+      "url": "http://cidrdb.org/cidr2009/Paper_133.pdf",
+      "status": "ok",
+      "redirect_url": "https://www.cidrdb.org/cidr2009/Paper_133.pdf",
+      "timestamp": "2026-04-05T09:41:02.671491"
+    },
+    "31656e5436dd405efbe7907aa3c5fedc": {
+      "url": "https://cs.brown.edu/courses/cs227/archives/2015/papers/sigmod14-toshniwal.pdf",
+      "status": "ok",
+      "redirect_url": "https://cs.brown.edu/courses/cs227/",
+      "timestamp": "2026-04-05T09:41:03.495116"
+    },
+    "38832033fd0c147c788143917843f27a": {
+      "url": "https://www.cs.ucl.ac.uk/staff/p.ohearn/seplogic/Separation_Logic_Lecture_Notes.pdf",
+      "status": "error",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:41:16.508354"
+    },
+    "4efe0ac039b34fc2bf5601c93d15e661": {
+      "url": "https://github.com/apache/flink/tree/master/flink-wasm-udf",
+      "status": "timeout",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:42:09.236308"
+    },
+    "295adde9f37798fac2d3b5a60d54406c": {
+      "url": "https://blog.twitter.com/engineering/en_us/topics/infrastructure/2015/flying-faster-with-twitter-heron",
+      "status": "timeout",
+      "redirect_url": null,
+      "timestamp": "2026-04-05T09:42:09.236327"
     }
   },
   "metadata": {
     "version": "2.0",
     "created": "2026-04-04T19:02:23.340300",
-    "updated": "2026-04-04T19:07:14.224865"
+    "updated": "2026-04-05T09:42:09.236336"
   }
 }

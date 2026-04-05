@@ -1,7 +1,7 @@
 # ForStDB 状态存储层深度分析
 
 > **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
-> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [Flink 状态后端](../../04-state-management/)
+> **前置依赖**: [01-flash-architecture.md](./01-flash-architecture.md) | [Flink 状态后端](../../../flink-state-backends-comparison.md)
 > **形式化等级**: L4（架构分析 + 工程实现）
 
 ---

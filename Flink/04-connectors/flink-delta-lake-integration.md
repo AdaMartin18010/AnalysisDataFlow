@@ -6,7 +6,7 @@
 
 ## 目录
 
-- [Flink + Delta Lake 深度集成：流批统一的 Lakehouse 存储](#flink--delta-lake-深度集成流批统一的-lakehouse-存储)
+- [Flink + Delta Lake 深度集成：流批统一的 Lakehouse 存储](#flink-delta-lake-深度集成流批统一的-lakehouse-存储)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-04-40 (Delta Lake 表格式形式化)](#def-f-04-40-delta-lake-表格式形式化)
@@ -32,7 +32,7 @@
     - [4.2 流式写入 vs 批量写入边界](#42-流式写入-vs-批量写入边界)
     - [4.3 乐观并发控制 vs 悲观并发控制](#43-乐观并发控制-vs-悲观并发控制)
     - [4.4 Liquid Clustering 优化论证](#44-liquid-clustering-优化论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-04-30 (Flink-Delta Exactly-Once 正确性)](#thm-f-04-30-flink-delta-exactly-once-正确性)
     - [Thm-F-04-31 (CDC Merge 一致性定理)](#thm-f-04-31-cdc-merge-一致性定理)
     - [Thm-F-04-32 (并发写入冲突解决定理)](#thm-f-04-32-并发写入冲突解决定理)

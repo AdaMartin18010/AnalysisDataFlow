@@ -585,7 +585,135 @@ migration_config:
       rollback_plan: enabled
 ```
 
-### 6.3 迁移决策检查清单
+### 6.3 UDF 迁移详解
+
+Flink UDF 到 RisingWave UDF 的迁移是整体迁移工作的关键部分。详细语法和最佳实践请参考 [RisingWave Rust UDF 原生语法完整指南](../risingwave-rust-udf-native-guide.md)。
+
+#### 6.3.1 UDF 类型映射
+
+| Flink UDF 类型 | RisingWave 等价 | 迁移复杂度 | 备注 |
+|---------------|----------------|-----------|------|
+| **ScalarFunction** | `CREATE FUNCTION ... LANGUAGE rust` | 🟡 低 | 直接翻译函数体 |
+| **TableFunction** | 返回 `impl Iterator` 的函数 | 🟡 低 | 模式类似 |
+| **AggregateFunction** | `#[aggregate]` 宏 | 🟠 中 | 需理解状态管理差异 |
+| **AsyncFunction** | 外部服务调用 | 🔴 高 | RW 不支持内置异步 UDF |
+
+#### 6.3.2 Java UDF → Rust UDF 转换示例
+
+**Flink Java 标量函数:**
+
+```java
+public class NormalizeUdf extends ScalarFunction {
+    public Double eval(Double value, Double min, Double max) {
+        if (max - min == 0) return 0.0;
+        return (value - min) / (max - min);
+    }
+}
+
+// 注册使用
+tableEnv.createTemporaryFunction("normalize", NormalizeUdf.class);
+```
+
+**RisingWave Rust 等效实现:**
+
+```sql
+CREATE FUNCTION normalize(value DOUBLE, min_val DOUBLE, max_val DOUBLE)
+RETURNS DOUBLE
+LANGUAGE rust
+AS $$
+    fn normalize(value: f64, min_val: f64, max_val: f64) -> f64 {
+        if (max_val - min_val).abs() < f64::EPSILON {
+            return 0.0;
+        }
+        (value - min_val) / (max_val - min_val)
+    }
+$$;
+```
+
+**Flink Java 表函数:**
+
+```java
+public class SplitUdf extends TableFunction<Row> {
+    public void eval(String str) {
+        for (String s : str.split(",")) {
+            collect(Row.of(s));
+        }
+    }
+}
+```
+
+**RisingWave Rust 等效实现:**
+
+```sql
+CREATE FUNCTION split_text(input VARCHAR, delimiter VARCHAR)
+RETURNS TABLE (part VARCHAR)
+LANGUAGE rust
+AS $$
+    fn split_text(input: &str, delimiter: &str) -> impl Iterator<Item = String> + '_ {
+        input.split(delimiter).map(|s| s.to_string())
+    }
+$$;
+```
+
+#### 6.3.3 类型系统转换
+
+| Java 类型 | Rust 类型 | SQL 声明 |
+|----------|-----------|---------|
+| `Integer` | `i32` | `INT` |
+| `Long` | `i64` | `BIGINT` |
+| `Double` | `f64` | `DOUBLE` |
+| `String` | `String` | `VARCHAR` |
+| `BigDecimal` | `rust_decimal::Decimal` | `DECIMAL` |
+| `LocalDateTime` | `chrono::NaiveDateTime` | `TIMESTAMP` |
+| `Row` | `#[derive(StructType)]` | `STRUCT<...>` |
+| `List<T>` | `Vec<T>` | `ARRAY<T>` |
+
+#### 6.3.4 迁移策略决策树
+
+```
+Flink UDF 分析
+│
+├─ 是否为纯计算逻辑（无外部 IO）?
+│  ├─ 是 → 嵌入式 Rust UDF（性能最优）
+│  └─ 否 → 继续评估
+│
+├─ 是否需要跨平台部署?
+│  ├─ 是 → WASM 模块模式
+│  └─ 否 → 嵌入式 Rust UDF
+│
+├─ 是否依赖 Java 生态库?
+│  ├─ 是 → 寻找 Rust 替代 crate
+│  │          ├─ 找到 → 重写 UDF
+│  │          └─ 找不到 → 外部服务化
+│  └─ 否 → 直接重写
+│
+└─ 是否为复杂 ML 推理?
+   ├─ 是 → 考虑 RisingWave Python UDF 或外部 ML 服务
+   └─ 否 → Rust UDF 实现
+```
+
+#### 6.3.5 UDF 迁移工作量估算
+
+| UDF 复杂度 | 示例 | 重写工时 | 测试工时 |
+|-----------|------|---------|---------|
+| 简单转换 | 数学运算、字符串处理 | 0.5-1 天 | 0.5 天 |
+| 中等逻辑 | 日期计算、聚合辅助 | 1-2 天 | 1 天 |
+| 复杂算法 | 地理计算、自定义聚合 | 3-5 天 | 2-3 天 |
+| 外部依赖 | ML 模型、HTTP 调用 | 5-10 天 | 3-5 天 |
+
+#### 6.3.6 常见迁移问题与解决方案
+
+| 问题 | 原因 | 解决方案 |
+|-----|------|---------|
+| Java 日期库差异 | `java.time` vs `chrono` | 使用 `chrono` crate 对应类型 |
+| 空值处理 | Java `null` vs Rust `Option` | Rust 参数使用 `Option<T>` |
+| 异常机制 | Java 异常 vs Rust `Result` | Rust 使用默认值或 `unwrap_or` |
+| 集合操作 | Java Stream vs Rust Iterator | 熟悉 Rust Iterator API |
+| 正则表达式 | Java Pattern vs Rust regex | 使用 `regex` crate |
+
+---
+
+### 6.4 迁移决策检查清单
 
 ```markdown
 ## 迁移前检查清单
@@ -773,10 +901,6 @@ quadrantChart
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
 
 
 

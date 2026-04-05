@@ -29,7 +29,7 @@
     - [4.1 Watermark 生成策略对比分析](#41-watermark-生成策略对比分析)
     - [4.2 迟到数据处理机制](#42-迟到数据处理机制)
     - [4.3 窗口触发时机分析](#43-窗口触发时机分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-02-01: Event Time 结果确定性定理](#thm-f-02-01-event-time-结果确定性定理)
     - [Thm-F-02-02: Allowed Lateness 不破坏 Exactly-Once 语义](#thm-f-02-02-allowed-lateness-不破坏-exactly-once-语义)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

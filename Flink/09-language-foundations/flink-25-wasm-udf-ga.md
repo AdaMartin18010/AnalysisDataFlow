@@ -32,7 +32,7 @@
     - [4.1 为何选择 WASM UDF GA？](#41-为何选择-wasm-udf-ga)
     - [4.2 多语言选型决策树](#42-多语言选型决策树)
     - [4.3 冷启动优化策略对比](#43-冷启动优化策略对比)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 沙箱安全性形式化论证](#51-沙箱安全性形式化论证)
     - [5.2 性能基准测试论证](#52-性能基准测试论证)
     - [5.3 生产就绪性论证](#53-生产就绪性论证)

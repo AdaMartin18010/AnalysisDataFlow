@@ -5,11 +5,11 @@
 ```mermaid
 radar
     title 行业标准对齐度雷达图 (满分100%)
-    
+
     axis SQL标准 "OpenTelemetry" "安全合规" "云原生" "流处理API" "事件标准" "协议标准"
-    
+
     scale 0 25 50 75 100
-    
+
     line Current "当前项目" 95 85 95 90 40 10 35
     line Target "行业标准" 100 100 100 100 100 100 100
     line Gap "差距" 5 15 5 10 60 90 65
@@ -28,14 +28,14 @@ graph TD
         A4[Kubernetes]
         A5[W3C Trace Context]
     end
-    
+
     subgraph "对齐度: 良好 (50-80%)"
         B1[Kafka Connect]
         B2[gRPC/HTTP2]
         B3[Prometheus]
         B4[Beam模型]
     end
-    
+
     subgraph "对齐度: 不足 (<50%)"
         C1[Reactive Streams]
         C2[CloudEvents]
@@ -43,18 +43,18 @@ graph TD
         C4[SPIFFE]
         C5[Service Mesh]
     end
-    
+
     style A1 fill:#4caf50,color:#fff
     style A2 fill:#4caf50,color:#fff
     style A3 fill:#4caf50,color:#fff
     style A4 fill:#4caf50,color:#fff
     style A5 fill:#4caf50,color:#fff
-    
+
     style B1 fill:#ff9800,color:#fff
     style B2 fill:#ff9800,color:#fff
     style B3 fill:#ff9800,color:#fff
     style B4 fill:#ff9800,color:#fff
-    
+
     style C1 fill:#f44336,color:#fff
     style C2 fill:#f44336,color:#fff
     style C3 fill:#f44336,color:#fff
@@ -116,11 +116,11 @@ gantt
     section 高优先级
     CloudEvents文档       :active, ce, 2026-04-04, 14d
     2024论文更新          :active, papers, 2026-04-04, 21d
-    
+
     section 中优先级
     Reactive Streams      :rs, after ce, 14d
     AsyncAPI              :async, after rs, 14d
-    
+
     section 低优先级
     SPIFFE集成            :spiffe, after async, 14d
     SLSA合规              :slsa, after spiffe, 14d

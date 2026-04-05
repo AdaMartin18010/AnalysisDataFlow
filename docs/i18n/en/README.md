@@ -165,7 +165,7 @@ Struct/ Formal Definitions ──→ Knowledge/ Design Patterns ──→ Flink/
 - **1,600+ Mermaid diagrams**: Flowcharts, sequence diagrams, architecture diagrams, state diagrams
 - **20+ visualization documents**: Decision trees, comparison matrices, mind maps, knowledge graphs
 - **Interactive navigation**: Quickly locate required knowledge through the visuals directory
-- **Knowledge Graph HTML**: [knowledge-graph.html](knowledge-graph.html) - Interactive concept relationship graph
+- **Knowledge Graph HTML**: [knowledge-graph.html](../../../knowledge-graph.html) - Interactive concept relationship graph
 
 ## Learning Paths
 
@@ -197,9 +197,9 @@ Struct/01-foundation/ (Theoretical foundation)
 
 **Total Documents**: 420 | **Theorem Registry Version**: v2.9 | **Last Updated**: 2026-04-04 | **Status**: Continuous Evolution 🚀 | **Size**: 12.98 MB
 
-> 📊 **Version Tracking**: See [PROJECT-VERSION-TRACKING.md](./PROJECT-VERSION-TRACKING.md) for complete version history and evolution roadmap
+> 📊 **Version Tracking**: See [PROJECT-VERSION-TRACKING.md](../../../PROJECT-VERSION-TRACKING.md) for complete version history and evolution roadmap
 >
-> 🗺️ **Future Roadmap**: See [ROADMAP-v3.3-and-beyond.md](./ROADMAP-v3.3-and-beyond.md) for v3.3 planning
+> 🗺️ **Future Roadmap**: See [ROADMAP-v3.3-and-beyond.md](../../../ROADMAP-v3.3-and-beyond.md) for v3.3 planning
 
 ### Formalized Elements Statistics
 
@@ -271,10 +271,10 @@ Built-in rich automation script tools:
 
 ## License
 
-This project is licensed under the [Apache License 2.0](./LICENSE).
+This project is licensed under the [Apache License 2.0](../../../LICENSE).
 
-- [LICENSE](./LICENSE) - Full license text
-- [LICENSE-NOTICE.md](./LICENSE-NOTICE.md) - License notice and usage guide
-- [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) - Third-party declarations and acknowledgments
+- [LICENSE](../../../LICENSE) - Full license text
+- [LICENSE-NOTICE.md](../../../LICENSE-NOTICE.md) - License notice and usage guide
+- [THIRD-PARTY-NOTICES.md](../../../THIRD-PARTY-NOTICES.md) - Third-party declarations and acknowledgments
 
 Copyright 2026 AdaMartin18010

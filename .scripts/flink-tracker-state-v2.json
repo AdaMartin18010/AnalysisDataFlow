@@ -1,0 +1,2801 @@
+{
+  "version": "2.0.0",
+  "last_check": "2026-04-05T09:46:36.930797",
+  "versions": {
+    "1.6.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920185",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.4/flink-1.6.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.6.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920255",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.1/flink-1.6.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.3.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920317",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.3/flink-1.3.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.6": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920376",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.6/flink-1.5.6-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.4.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920437",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.1/flink-1.4.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920495",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.2/flink-1.13.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.6": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920547",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920607",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.3/flink-1.1.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.19.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920656",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.1/flink-1.19.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.20.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920708",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.1/flink-1.20.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.17.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920758",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.0/flink-1.17.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920811",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.0/flink-1.11.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.8.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920871",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.2/flink-1.8.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.20.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920876",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.3/flink-1.20.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.2.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920945",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.2.0/flink-1.2.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.16.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.920995",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.0/flink-1.16.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.6.1": {
+      "status": "RC",
+      "release_date": null,
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.6.1/flink-0.6.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.17.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921117",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.1/flink-1.17.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921172",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.2/flink-1.11.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921226",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.2/flink-1.14.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921280",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.5": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921331",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.5/flink-1.14.5-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.17.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921382",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.2/flink-1.17.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.4.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921447",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.2/flink-1.4.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.16.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921498",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.3/flink-1.16.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.2.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921562",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.2.1/flink-1.2.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.15.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921611",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.1/flink-1.15.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921676",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.0/flink-1.1.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921737",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.3/flink-1.12.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "2.0.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921743",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.0.1/flink-2.0.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921809",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.4/flink-1.1.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.8.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921869",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.1/flink-1.8.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.921959",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.4/flink-1.11.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.18.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922007",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.18.1/flink-1.18.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.5": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922065",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.5/flink-1.5.5-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922123",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.1/flink-1.5.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922179",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.4/flink-1.12.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.5": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922232",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.5/flink-1.13.5-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.7.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922293",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.0/flink-1.7.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922351",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.1/flink-1.13.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.0.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922418",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.0/flink-1.0.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.9.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922482",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.3/flink-1.9.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.20.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922535",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.2/flink-1.20.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.0.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922601",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.3/flink-1.0.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.10.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922665",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.1/flink-0.10.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.6.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922730",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.0/flink-1.6.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.19.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922780",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.2/flink-1.19.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922833",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.3/flink-1.11.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922888",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.1/flink-1.12.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.9.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922946",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.0/flink-1.9.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "2.1.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.922951",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.1.1/flink-2.1.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.16.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923002",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.2/flink-1.16.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.7": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923054",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.7/flink-1.12.7-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "2.0.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923107",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.0.0/flink-2.0.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.9.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923165",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.2/flink-1.9.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923218",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.0/flink-1.14.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923270",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.2/flink-1.12.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.15.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923321",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.4/flink-1.15.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.10.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923381",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.2/flink-0.10.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.9.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923445",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.9.1/flink-0.9.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.6": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923496",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.6/flink-1.11.6-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.15.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923547",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.2/flink-1.15.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.19.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.923597",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.0/flink-1.19.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.5": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.924773",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.5/flink-1.12.5-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.924835",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.1/flink-1.1.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.8.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.924893",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.0/flink-1.8.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.924953",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.0/flink-1.5.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.18.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925002",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.18.0/flink-1.18.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.5": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925062",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.5/flink-1.1.5-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.7.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925122",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.2/flink-1.7.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925174",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.3/flink-1.13.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.19.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925179",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.3/flink-1.19.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925239",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.4/flink-1.5.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.4.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925301",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.0/flink-1.4.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.6.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925360",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.3/flink-1.6.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.16.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925409",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.1/flink-1.16.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.10.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925734",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.1/flink-1.10.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.3.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925799",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.0/flink-1.3.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.3.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925860",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.1/flink-1.3.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.10.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925922",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.0/flink-0.10.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.3.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.925991",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.2/flink-1.3.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.15.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926048",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.3/flink-1.15.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "2.2.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926053",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.2.0/flink-2.2.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.11.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926108",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.1/flink-1.11.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.7.0": {
+      "status": "RC",
+      "release_date": null,
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.7.0/flink-0.7.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.10.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926238",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.0/flink-1.10.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.8.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926302",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.8.0/flink-0.8.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "2.1.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926355",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.1.0/flink-2.1.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.0.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926416",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.1/flink-1.0.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.9.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926478",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.9.0/flink-0.9.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.9.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926533",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.14.4": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926584",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.4/flink-1.14.4-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.7.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926639",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.1/flink-1.7.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.1.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926701",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.2/flink-1.1.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.10.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926758",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.2/flink-1.10.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.15.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926809",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.0/flink-1.15.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926864",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.0/flink-1.13.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.12.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.926920",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.0/flink-1.12.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.6.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927413",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.2/flink-1.6.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927481",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.2/flink-1.5.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.0.2": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927588",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.2/flink-1.0.2-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "0.8.1": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927655",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.8.1/flink-0.8.1-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.5.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927720",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.3/flink-1.5.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.10.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927783",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.3/flink-1.10.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.8.3": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927845",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.3/flink-1.8.3-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.13.6": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927907",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.6/flink-1.13.6-bin-scala_2.12.tgz",
+      "release_notes": null
+    },
+    "1.20.0": {
+      "status": "GA",
+      "release_date": "2026-04-05T09:46:36.927961",
+      "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz",
+      "release_notes": null
+    }
+  },
+  "flips": {
+    "FLIP-550": {
+      "flip_id": "FLIP-550",
+      "title": "WASM UDF Enhancement",
+      "status": "FlipStatus.DESIGNING",
+      "target_version": "2.6",
+      "progress": 30,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-550",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928082"
+    },
+    "FLIP-551": {
+      "flip_id": "FLIP-551",
+      "title": "SQL JSON Functions Enhancement",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.6",
+      "progress": 20,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-551",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928088"
+    },
+    "FLIP-552": {
+      "flip_id": "FLIP-552",
+      "title": "Connector Framework Optimization",
+      "status": "FlipStatus.DESIGNING",
+      "target_version": "2.6",
+      "progress": 40,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-552",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928090"
+    },
+    "FLIP-560": {
+      "flip_id": "FLIP-560",
+      "title": "Cloud-Native Scheduler",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.7",
+      "progress": 10,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-560",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928091"
+    },
+    "FLIP-561": {
+      "flip_id": "FLIP-561",
+      "title": "AI/ML Integration Enhancement",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.7",
+      "progress": 5,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-561",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928093"
+    },
+    "FLIP-562": {
+      "flip_id": "FLIP-562",
+      "title": "Streaming-Batch Unified Execution",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.7",
+      "progress": 5,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-562",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928094"
+    },
+    "FLIP-563": {
+      "flip_id": "FLIP-563",
+      "title": "Materialized View Enhancement",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.7",
+      "progress": 5,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-563",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928096"
+    },
+    "FLIP-564": {
+      "flip_id": "FLIP-564",
+      "title": "HTTP/3 Protocol Support",
+      "status": "FlipStatus.PLANNED",
+      "target_version": "2.7",
+      "progress": 0,
+      "assignee": null,
+      "jira_link": "https://issues.apache.org/jira/browse/FLIP-564",
+      "description": null,
+      "last_updated": "2026-04-05T09:46:36.928097"
+    }
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-05T09:46:36.928107",
+      "record_type": "version",
+      "identifier": "1.6.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.6.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920185",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.4/flink-1.6.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928170",
+      "record_type": "version",
+      "identifier": "1.6.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.6.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920255",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.1/flink-1.6.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928209",
+      "record_type": "version",
+      "identifier": "1.3.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.3.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920317",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.3/flink-1.3.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928240",
+      "record_type": "version",
+      "identifier": "1.5.6",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.6",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920376",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.6/flink-1.5.6-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928269",
+      "record_type": "version",
+      "identifier": "1.4.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.4.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920437",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.1/flink-1.4.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928297",
+      "record_type": "version",
+      "identifier": "1.13.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920495",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.2/flink-1.13.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928323",
+      "record_type": "version",
+      "identifier": "1.14.6",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.6",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920547",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.6/flink-1.14.6-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928349",
+      "record_type": "version",
+      "identifier": "1.1.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920607",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.3/flink-1.1.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928374",
+      "record_type": "version",
+      "identifier": "1.19.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.19.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920656",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.1/flink-1.19.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928399",
+      "record_type": "version",
+      "identifier": "1.20.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.20.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920708",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.1/flink-1.20.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928422",
+      "record_type": "version",
+      "identifier": "1.17.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.17.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920758",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.0/flink-1.17.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928450",
+      "record_type": "version",
+      "identifier": "1.11.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920811",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.0/flink-1.11.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928474",
+      "record_type": "version",
+      "identifier": "1.8.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.8.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920871",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.2/flink-1.8.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928497",
+      "record_type": "version",
+      "identifier": "1.20.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.20.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920876",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.3/flink-1.20.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928520",
+      "record_type": "version",
+      "identifier": "1.2.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.2.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920945",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.2.0/flink-1.2.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928544",
+      "record_type": "version",
+      "identifier": "1.16.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.16.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.920995",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.0/flink-1.16.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928568",
+      "record_type": "version",
+      "identifier": "0.6.1",
+      "old_status": "未发布",
+      "new_status": "RC候选版",
+      "source": "github_releases",
+      "details": {
+        "version": "0.6.1",
+        "status": "ReleaseStatus.RC",
+        "release_date": null,
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.6.1/flink-0.6.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928590",
+      "record_type": "version",
+      "identifier": "1.17.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.17.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921117",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.1/flink-1.17.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928614",
+      "record_type": "version",
+      "identifier": "1.11.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921172",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.2/flink-1.11.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928637",
+      "record_type": "version",
+      "identifier": "1.14.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921226",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.2/flink-1.14.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928659",
+      "record_type": "version",
+      "identifier": "1.14.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921280",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928683",
+      "record_type": "version",
+      "identifier": "1.14.5",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.5",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921331",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.5/flink-1.14.5-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928706",
+      "record_type": "version",
+      "identifier": "1.17.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.17.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921382",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.17.2/flink-1.17.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928727",
+      "record_type": "version",
+      "identifier": "1.4.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.4.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921447",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.2/flink-1.4.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928748",
+      "record_type": "version",
+      "identifier": "1.16.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.16.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921498",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.3/flink-1.16.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928769",
+      "record_type": "version",
+      "identifier": "1.2.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.2.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921562",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.2.1/flink-1.2.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928792",
+      "record_type": "version",
+      "identifier": "1.15.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.15.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921611",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.1/flink-1.15.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928814",
+      "record_type": "version",
+      "identifier": "1.1.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921676",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.0/flink-1.1.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928836",
+      "record_type": "version",
+      "identifier": "1.12.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921737",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.3/flink-1.12.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928916",
+      "record_type": "version",
+      "identifier": "2.0.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "2.0.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921743",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.0.1/flink-2.0.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.928979",
+      "record_type": "version",
+      "identifier": "1.1.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921809",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.4/flink-1.1.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929006",
+      "record_type": "version",
+      "identifier": "1.8.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.8.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921869",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.1/flink-1.8.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929030",
+      "record_type": "version",
+      "identifier": "1.11.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.921959",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.4/flink-1.11.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929053",
+      "record_type": "version",
+      "identifier": "1.18.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.18.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922007",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.18.1/flink-1.18.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929075",
+      "record_type": "version",
+      "identifier": "1.5.5",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.5",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922065",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.5/flink-1.5.5-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929099",
+      "record_type": "version",
+      "identifier": "1.5.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922123",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.1/flink-1.5.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929122",
+      "record_type": "version",
+      "identifier": "1.12.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922179",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.4/flink-1.12.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929144",
+      "record_type": "version",
+      "identifier": "1.13.5",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.5",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922232",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.5/flink-1.13.5-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929167",
+      "record_type": "version",
+      "identifier": "1.7.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.7.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922293",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.0/flink-1.7.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929188",
+      "record_type": "version",
+      "identifier": "1.13.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922351",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.1/flink-1.13.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929209",
+      "record_type": "version",
+      "identifier": "1.0.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.0.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922418",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.0/flink-1.0.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929230",
+      "record_type": "version",
+      "identifier": "1.9.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.9.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922482",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.3/flink-1.9.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929252",
+      "record_type": "version",
+      "identifier": "1.20.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.20.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922535",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.2/flink-1.20.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929273",
+      "record_type": "version",
+      "identifier": "1.0.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.0.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922601",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.3/flink-1.0.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929294",
+      "record_type": "version",
+      "identifier": "0.10.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.10.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922665",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.1/flink-0.10.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929319",
+      "record_type": "version",
+      "identifier": "1.6.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.6.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922730",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.0/flink-1.6.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929341",
+      "record_type": "version",
+      "identifier": "1.19.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.19.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922780",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.2/flink-1.19.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929362",
+      "record_type": "version",
+      "identifier": "1.11.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922833",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.3/flink-1.11.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929383",
+      "record_type": "version",
+      "identifier": "1.12.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922888",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.1/flink-1.12.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929408",
+      "record_type": "version",
+      "identifier": "1.9.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.9.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922946",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.0/flink-1.9.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929435",
+      "record_type": "version",
+      "identifier": "2.1.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "2.1.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.922951",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.1.1/flink-2.1.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929457",
+      "record_type": "version",
+      "identifier": "1.16.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.16.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923002",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.2/flink-1.16.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929479",
+      "record_type": "version",
+      "identifier": "1.12.7",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.7",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923054",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.7/flink-1.12.7-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929501",
+      "record_type": "version",
+      "identifier": "2.0.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "2.0.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923107",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.0.0/flink-2.0.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929523",
+      "record_type": "version",
+      "identifier": "1.9.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.9.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923165",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.2/flink-1.9.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929545",
+      "record_type": "version",
+      "identifier": "1.14.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923218",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.0/flink-1.14.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929567",
+      "record_type": "version",
+      "identifier": "1.12.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923270",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.2/flink-1.12.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929590",
+      "record_type": "version",
+      "identifier": "1.15.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.15.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923321",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.4/flink-1.15.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929613",
+      "record_type": "version",
+      "identifier": "0.10.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.10.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923381",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.2/flink-0.10.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929634",
+      "record_type": "version",
+      "identifier": "0.9.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.9.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923445",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.9.1/flink-0.9.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929656",
+      "record_type": "version",
+      "identifier": "1.11.6",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.6",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923496",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.6/flink-1.11.6-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929677",
+      "record_type": "version",
+      "identifier": "1.15.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.15.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923547",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.2/flink-1.15.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929699",
+      "record_type": "version",
+      "identifier": "1.19.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.19.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.923597",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.0/flink-1.19.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929720",
+      "record_type": "version",
+      "identifier": "1.12.5",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.5",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.924773",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.5/flink-1.12.5-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929743",
+      "record_type": "version",
+      "identifier": "1.1.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.924835",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.1/flink-1.1.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929765",
+      "record_type": "version",
+      "identifier": "1.8.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.8.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.924893",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.0/flink-1.8.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929788",
+      "record_type": "version",
+      "identifier": "1.5.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.924953",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.0/flink-1.5.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929809",
+      "record_type": "version",
+      "identifier": "1.18.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.18.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925002",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.18.0/flink-1.18.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929830",
+      "record_type": "version",
+      "identifier": "1.1.5",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.5",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925062",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.5/flink-1.1.5-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929852",
+      "record_type": "version",
+      "identifier": "1.7.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.7.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925122",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.2/flink-1.7.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929873",
+      "record_type": "version",
+      "identifier": "1.13.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925174",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.3/flink-1.13.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929912",
+      "record_type": "version",
+      "identifier": "1.19.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.19.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925179",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.19.3/flink-1.19.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929935",
+      "record_type": "version",
+      "identifier": "1.5.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925239",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.4/flink-1.5.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929957",
+      "record_type": "version",
+      "identifier": "1.4.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.4.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925301",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.4.0/flink-1.4.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.929982",
+      "record_type": "version",
+      "identifier": "1.6.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.6.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925360",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.3/flink-1.6.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930004",
+      "record_type": "version",
+      "identifier": "1.16.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.16.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925409",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.16.1/flink-1.16.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930026",
+      "record_type": "version",
+      "identifier": "1.10.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.10.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925734",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.1/flink-1.10.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930049",
+      "record_type": "version",
+      "identifier": "1.3.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.3.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925799",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.0/flink-1.3.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930072",
+      "record_type": "version",
+      "identifier": "1.3.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.3.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925860",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.1/flink-1.3.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930094",
+      "record_type": "version",
+      "identifier": "0.10.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.10.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925922",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.10.0/flink-0.10.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930115",
+      "record_type": "version",
+      "identifier": "1.3.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.3.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.925991",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.3.2/flink-1.3.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930137",
+      "record_type": "version",
+      "identifier": "1.15.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.15.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926048",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.3/flink-1.15.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930158",
+      "record_type": "version",
+      "identifier": "2.2.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "2.2.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926053",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.2.0/flink-2.2.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930179",
+      "record_type": "version",
+      "identifier": "1.11.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.11.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926108",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.11.1/flink-1.11.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930202",
+      "record_type": "version",
+      "identifier": "0.7.0",
+      "old_status": "未发布",
+      "new_status": "RC候选版",
+      "source": "github_releases",
+      "details": {
+        "version": "0.7.0",
+        "status": "ReleaseStatus.RC",
+        "release_date": null,
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.7.0/flink-0.7.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930225",
+      "record_type": "version",
+      "identifier": "1.10.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.10.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926238",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.0/flink-1.10.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930247",
+      "record_type": "version",
+      "identifier": "0.8.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.8.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926302",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.8.0/flink-0.8.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930269",
+      "record_type": "version",
+      "identifier": "2.1.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "2.1.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926355",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-2.1.0/flink-2.1.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930291",
+      "record_type": "version",
+      "identifier": "1.0.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.0.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926416",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.1/flink-1.0.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930313",
+      "record_type": "version",
+      "identifier": "0.9.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.9.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926478",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.9.0/flink-0.9.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930334",
+      "record_type": "version",
+      "identifier": "1.9.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.9.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926533",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930355",
+      "record_type": "version",
+      "identifier": "1.14.4",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.14.4",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926584",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.14.4/flink-1.14.4-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930377",
+      "record_type": "version",
+      "identifier": "1.7.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.7.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926639",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.7.1/flink-1.7.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930399",
+      "record_type": "version",
+      "identifier": "1.1.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.1.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926701",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.1.2/flink-1.1.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930419",
+      "record_type": "version",
+      "identifier": "1.10.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.10.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926758",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.2/flink-1.10.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930483",
+      "record_type": "version",
+      "identifier": "1.15.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.15.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926809",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.15.0/flink-1.15.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930506",
+      "record_type": "version",
+      "identifier": "1.13.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926864",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.0/flink-1.13.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930529",
+      "record_type": "version",
+      "identifier": "1.12.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.12.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.926920",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.12.0/flink-1.12.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930553",
+      "record_type": "version",
+      "identifier": "1.6.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.6.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927413",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.6.2/flink-1.6.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930576",
+      "record_type": "version",
+      "identifier": "1.5.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927481",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.2/flink-1.5.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930599",
+      "record_type": "version",
+      "identifier": "1.0.2",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.0.2",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927588",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.0.2/flink-1.0.2-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930622",
+      "record_type": "version",
+      "identifier": "0.8.1",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "0.8.1",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927655",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-0.8.1/flink-0.8.1-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930645",
+      "record_type": "version",
+      "identifier": "1.5.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.5.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927720",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.5.3/flink-1.5.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930667",
+      "record_type": "version",
+      "identifier": "1.10.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.10.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927783",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.10.3/flink-1.10.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930692",
+      "record_type": "version",
+      "identifier": "1.8.3",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.8.3",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927845",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.8.3/flink-1.8.3-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930715",
+      "record_type": "version",
+      "identifier": "1.13.6",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.13.6",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927907",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.13.6/flink-1.13.6-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930737",
+      "record_type": "version",
+      "identifier": "1.20.0",
+      "old_status": "未发布",
+      "new_status": "正式发布",
+      "source": "github_releases",
+      "details": {
+        "version": "1.20.0",
+        "status": "ReleaseStatus.GA",
+        "release_date": "2026-04-05T09:46:36.927961",
+        "download_url": "https://www.apache.org/dyn/closer.lua/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz",
+        "release_notes": null,
+        "api_changes": [],
+        "breaking_changes": [],
+        "new_features": []
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930762",
+      "record_type": "flip",
+      "identifier": "FLIP-550",
+      "old_status": "计划中",
+      "new_status": "设计中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-550",
+        "title": "WASM UDF Enhancement",
+        "status": "FlipStatus.DESIGNING",
+        "target_version": "2.6",
+        "progress": 30,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-550",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928082"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930771",
+      "record_type": "flip",
+      "identifier": "FLIP-551",
+      "old_status": "计划中",
+      "new_status": "计划中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-551",
+        "title": "SQL JSON Functions Enhancement",
+        "status": "FlipStatus.PLANNED",
+        "target_version": "2.6",
+        "progress": 20,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-551",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928088"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930776",
+      "record_type": "flip",
+      "identifier": "FLIP-552",
+      "old_status": "计划中",
+      "new_status": "设计中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-552",
+        "title": "Connector Framework Optimization",
+        "status": "FlipStatus.DESIGNING",
+        "target_version": "2.6",
+        "progress": 40,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-552",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928090"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930781",
+      "record_type": "flip",
+      "identifier": "FLIP-560",
+      "old_status": "计划中",
+      "new_status": "计划中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-560",
+        "title": "Cloud-Native Scheduler",
+        "status": "FlipStatus.PLANNED",
+        "target_version": "2.7",
+        "progress": 10,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-560",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928091"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930785",
+      "record_type": "flip",
+      "identifier": "FLIP-561",
+      "old_status": "计划中",
+      "new_status": "计划中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-561",
+        "title": "AI/ML Integration Enhancement",
+        "status": "FlipStatus.PLANNED",
+        "target_version": "2.7",
+        "progress": 5,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-561",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928093"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930789",
+      "record_type": "flip",
+      "identifier": "FLIP-562",
+      "old_status": "计划中",
+      "new_status": "计划中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-562",
+        "title": "Streaming-Batch Unified Execution",
+        "status": "FlipStatus.PLANNED",
+        "target_version": "2.7",
+        "progress": 5,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-562",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928094"
+      }
+    },
+    {
+      "timestamp": "2026-04-05T09:46:36.930793",
+      "record_type": "flip",
+      "identifier": "FLIP-563",
+      "old_status": "计划中",
+      "new_status": "计划中",
+      "source": "estimated",
+      "details": {
+        "flip_id": "FLIP-563",
+        "title": "Materialized View Enhancement",
+        "status": "FlipStatus.PLANNED",
+        "target_version": "2.7",
+        "progress": 5,
+        "assignee": null,
+        "jira_link": "https://issues.apache.org/jira/browse/FLIP-563",
+        "description": null,
+        "last_updated": "2026-04-05T09:46:36.928096"
+      }
+    }
+  ],
+  "prospective_docs": {},
+  "notifications_sent": 0
+}

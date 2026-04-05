@@ -1,0 +1,84 @@
+{
+  "_comment": "Flink Release Tracker V2 配置文件",
+  "version": "2.0.0",
+  "check_interval_hours": 24,
+  "notification_channels": ["file"],
+  "target_versions": ["2.4.0", "2.5.0", "2.6.0", "2.7.0", "3.0.0"],
+  "tracked_flips": [
+    "FLIP-550",
+    "FLIP-551",
+    "FLIP-552",
+    "FLIP-560",
+    "FLIP-561",
+    "FLIP-562",
+    "FLIP-563",
+    "FLIP-564"
+  ],
+  "email": {
+    "enabled": false,
+    "smtp_server": "",
+    "smtp_port": 587,
+    "username": "",
+    "password": "",
+    "to_addresses": [],
+    "subject_prefix": "[Flink Release Tracker V2]"
+  },
+  "slack": {
+    "enabled": false,
+    "webhook_url": "",
+    "channel": "#flink-releases",
+    "username": "Flink Release Bot V2"
+  },
+  "webhook": {
+    "enabled": false,
+    "url": "",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "prospective_doc_scan": {
+    "enabled": true,
+    "directories": [
+      "Flink/roadmap",
+      "Flink/08-roadmap",
+      "Flink/version-tracking"
+    ],
+    "patterns": [
+      "前瞻",
+      "preview",
+      "Preview",
+      "planned",
+      "upcoming",
+      "status=preview"
+    ]
+  },
+  "tracking": {
+    "check_github": true,
+    "check_maven": true,
+    "check_downloads": true,
+    "track_flips": true,
+    "generate_reports": true
+  },
+  "notification_rules": {
+    "version_ga": {
+      "enabled": true,
+      "channels": ["file", "slack"],
+      "severity": "critical"
+    },
+    "version_rc": {
+      "enabled": true,
+      "channels": ["file"],
+      "severity": "info"
+    },
+    "flip_completed": {
+      "enabled": true,
+      "channels": ["file"],
+      "severity": "warning"
+    }
+  },
+  "digest": {
+    "enabled": true,
+    "frequency": "daily",
+    "send_time": "09:00"
+  }
+}

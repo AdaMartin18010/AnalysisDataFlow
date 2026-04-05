@@ -28,7 +28,7 @@
     - [4.1 映射正确性分析](#41-映射正确性分析)
     - [4.2 实现近似性与形式化间隙](#42-实现近似性与形式化间隙)
     - [4.3 映射局限性讨论](#43-映射局限性讨论)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-05-01: 核心映射语义保持性定理](#thm-k-05-01-核心映射语义保持性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [示例 6.1: WordCount 完整映射实例](#示例-61-wordcount-完整映射实例)

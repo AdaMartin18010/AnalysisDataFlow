@@ -27,7 +27,7 @@
     - [4.2 消费者组重平衡的影响分析](#42-消费者组重平衡的影响分析)
     - [4.3 事务超时与故障恢复边界](#43-事务超时与故障恢复边界)
     - [4.4 幂等性 vs 事务性的工程权衡](#44-幂等性-vs-事务性的工程权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-04-01 (Kafka Source Exactly-Once 正确性)](#thm-f-04-01-kafka-source-exactly-once-正确性)
     - [Thm-F-04-02 (Kafka Sink 事务原子性保证)](#thm-f-04-02-kafka-sink-事务原子性保证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

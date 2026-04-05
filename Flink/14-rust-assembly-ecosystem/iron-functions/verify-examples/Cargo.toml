@@ -1,0 +1,27 @@
+[package]
+name = "iron-functions-verify-examples"
+version = "0.1.0"
+edition = "2021"
+authors = ["AnalysisDataFlow Team"]
+description = "Iron Functions 验证示例 - Rust UDF"
+
+[dependencies]
+extism-pdk = "1.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# 可选：特定功能依赖
+# ethabi-decode = { version = "0.4", optional = true }
+# hex = { version = "0.4", optional = true }
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = []
+# ethereum = ["ethabi-decode", "hex"]
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true

@@ -1,6 +1,6 @@
 # WebAssembly 3.0 完整规范指南
 
-> 所属阶段: Flink/14-rust-assembly-ecosystem/wasm-3.0 | 前置依赖: [Rust WebAssembly 基础](../../02-flink-rust-core/06-wasm-udfs.md) | 形式化等级: L4
+> 所属阶段: Flink/14-rust-assembly-ecosystem/wasm-3.0 | 前置依赖: [Rust WebAssembly 基础](../../09-language-foundations/09-wasm-udf-frameworks.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

@@ -27,7 +27,7 @@
     - [4.2 分区策略与并行度匹配分析](#42-分区策略与并行度匹配分析)
     - [4.3 幂等写入与重复数据处理边界](#43-幂等写入与重复数据处理边界)
     - [4.4 连接池配置与资源管理权衡](#44-连接池配置与资源管理权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-04-03 (Change Streams Source Exactly-Once 正确性)](#thm-f-04-03-change-streams-source-exactly-once-正确性)
     - [Thm-F-04-04 (MongoDB Sink 幂等写入保证)](#thm-f-04-04-mongodb-sink-幂等写入保证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -207,11 +207,13 @@ $$\text{Atomic}(B) \iff \forall w \in B. \; \text{Success}(w) \lor \forall w \in
 
 **形式化表述**：
 
-$$\text{ExactlyOnce}(Sink) \iff \begin{cases}
+$$
+\text{ExactlyOnce}(Sink) \iff \begin{cases}
 \exists key(r). \; \forall r. \; \text{unique}(key(r)) \\
 \text{WriteMode} \in \{REPLACE, UPDATE\} \land \text{upsert} = \text{true} \\
 \text{CheckpointingEnabled} = \text{true}
-\end{cases}$$
+\end{cases}
+$$
 
 **工程论证**：
 
@@ -458,6 +460,7 @@ $$\text{Replace}(\text{Replace}(C, d), d) = \text{Replace}(C, d)$$
 $$\text{Idempotent}(Sink) \iff \exists f. \; \forall r. \; f(r)._id = \text{unique}(r)$$
 
 因此，只要保证：
+
 1. 映射函数为相同记录生成相同 _id
 2. 使用 upsert 语义
 
@@ -1102,16 +1105,12 @@ mongodb://user:pass@host1:27017,host2:27017,host3:27017/mydb?replicaSet=rs0&auth
 
 ## 9. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "MongoDB Connector", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/mongodb/
+[^1]: Apache Flink Documentation, "MongoDB Connector", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/mongodb/>
 
-[^2]: MongoDB Documentation, "MongoDB Connector for Apache Flink", 2024. https://www.mongodb.com/docs/kafka-connector/current/
+[^2]: MongoDB Documentation, "MongoDB Connector for Apache Flink", 2024. <https://www.mongodb.com/docs/kafka-connector/current/>
 
-[^3]: MongoDB Documentation, "Change Streams", 2024. https://www.mongodb.com/docs/manual/changeStreams/
+[^3]: MongoDB Documentation, "Change Streams", 2024. <https://www.mongodb.com/docs/manual/changeStreams/>
 
-[^4]: MongoDB Documentation, "Change Events", 2024. https://www.mongodb.com/docs/manual/reference/change-events/
+[^4]: MongoDB Documentation, "Change Events", 2024. <https://www.mongodb.com/docs/manual/reference/change-events/>
 
-[^5]: Apache Flink Documentation, "Exactly Once Semantics", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/
-
-[^6]: MongoDB Java Driver Documentation, "Connection Settings", 2024. https://www.mongodb.com/docs/drivers/java/sync/current/fundamentals/connection/
-
-[^7]: BSON Specification, "BSON Types", 2024. https://bsonspec.org/
+[^5]: Apache Flink Documentation, "Exactly Once Semantics", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/>

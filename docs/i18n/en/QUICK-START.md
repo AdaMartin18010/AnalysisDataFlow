@@ -308,11 +308,11 @@ Month 2: Deep Dive and Expansion
 | Index | Purpose | Path |
 |-------|---------|------|
 | **Project Overview** | Overall project structure understanding | [README.md](./README.md) |
-| **Struct Index** | Formal theory navigation | [Struct/00-INDEX.md](./Struct/00-INDEX.md) |
-| **Knowledge Index** | Engineering practice knowledge navigation | [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) |
-| **Flink Index** | Flink specialization navigation | [Flink/00-INDEX.md](./Flink/00-INDEX.md) |
-| **Theorem Registry** | Formalized elements global index | [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) |
-| **Progress Tracking** | Project progress and statistics | [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) |
+| **Struct Index** | Formal theory navigation | [Struct/00-INDEX.md](../../../Struct/00-INDEX.md) |
+| **Knowledge Index** | Engineering practice knowledge navigation | [Knowledge/00-INDEX.md](../../../Knowledge/00-INDEX.md) |
+| **Flink Index** | Flink specialization navigation | [Flink/](../../../Flink/00-INDEX.md) |
+| **Theorem Registry** | Formalized elements global index | [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md) |
+| **Progress Tracking** | Project progress and statistics | [PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md) |
 
 #### Quick Decision References
 
@@ -458,13 +458,13 @@ state.backend.incremental: true            # Optimize transfer
 
 **Method 1: Index Navigation**
 
-1. First consult [Struct/00-INDEX.md](./Struct/00-INDEX.md) for theoretical foundations
-2. Then consult [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) for design patterns
-3. Finally consult [Flink/00-INDEX.md](./Flink/00-INDEX.md) for engineering implementation
+1. First consult [Struct/00-INDEX.md](../../../Struct/00-INDEX.md) for theoretical foundations
+2. Then consult [Knowledge/00-INDEX.md](../../../Knowledge/00-INDEX.md) for design patterns
+3. Finally consult [Flink/](../../../Flink/00-INDEX.md) for engineering implementation
 
 **Method 2: Theorem Number Tracking**
 
-1. Look up theorem numbers in [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md)
+1. Look up theorem numbers in [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md)
 2. Locate documents by number (e.g., `Thm-S-17-01` → Struct/04-proofs/04.01)
 3. Cross-reference related definitions and lemmas
 
@@ -506,8 +506,8 @@ state.backend.incremental: true            # Optimize transfer
 
 **Contribution Workflow**:
 
-1. Check [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) for project status
-2. Read [AGENTS.md](./AGENTS.md) for coding standards
+1. Check [PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md) for project status
+2. Read [AGENTS.md](../../../AGENTS.md) for coding standards
 3. Create documents in corresponding directories, follow naming: `{level}.{number}-{topic}.md`
 4. Update relevant index files (00-INDEX.md)
 5. Update theorem registry (THEOREM-REGISTRY.md)
