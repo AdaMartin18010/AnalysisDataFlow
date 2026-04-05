@@ -42,7 +42,7 @@
 - [AnalysisDataFlow 案例研究集](#analysisdataflow-案例研究集)
   - [📚 案例研究导航](#-案例研究导航)
     - [🔗 详细案例集](#-详细案例集)
-    - [🆕 新增详细案例（Knowledge/10-case-studies/）](#-新增详细案例knowledge10-case-studies)
+    - [🆕 新增详细案例（Knowledge/10-case-studies/）](#新增详细案例)
   - [目录](#目录)
   - [案例总览](#案例总览)
   - [1. 金融案例](#1-金融案例)
