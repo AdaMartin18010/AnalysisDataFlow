@@ -154,11 +154,11 @@
 
 #### tutorials/interactive/README.md (5个)
 
-- `[Struct/](../../Struct/)` → `[Struct索引](../../Struct/00-INDEX.md) <!-- 文件待创建 -->`
-- `[Knowledge/](../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md) <!-- 文件待创建 -->`
-- `[Flink/](../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md) <!-- 文件待创建 -->`
-- `[AGENTS.md](../../../AGENTS.md)` → `[AGENTS.md](../../AGENTS.md)`
-- `[PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md)` → `[PROJECT-TRACKING.md](../../PROJECT-TRACKING.md)`
+- `[Struct/](../../Struct/)` → `Struct索引` (待创建索引文件)
+- `[Knowledge/](../../Knowledge/)` → `Knowledge索引` (待创建索引文件)
+- `[Flink/](../../Flink/)` → `Flink索引` (待创建索引文件)
+- `AGENTS.md` → `AGENTS.md` (修复相对路径)
+- `PROJECT-TRACKING.md` → `PROJECT-TRACKING.md` (修复相对路径)
 
 #### visuals/layer-decidability.md (2个)
 
@@ -167,8 +167,8 @@
 
 #### visuals/matrix-models.md (2个)
 
-- 修复目录链接: `[../Flink/](../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md) <!-- 文件待创建 -->`
-- 修复目录链接: `[../Knowledge/](../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md) <!-- 文件待创建 -->`
+- 修复目录链接: `../Flink/` → `Flink索引` (待创建索引文件)
+- 修复目录链接: `../Knowledge/` → `Knowledge索引` (待创建索引文件)
 
 ### 第五轮修复 (1个)
 
