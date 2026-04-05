@@ -532,7 +532,7 @@ func rateLimiter(requests <-chan Request, responses chan<- Response) {
 
 ---
 
-### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警
+### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}
 
 **场景**：银行交易流中，若同一账户在 30 秒内于两个不同国家发生 ATM 取款，则触发欺诈告警。告警信息通过 Kafka 推送到风控中心。
 
