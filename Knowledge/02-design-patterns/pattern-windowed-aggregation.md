@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [设计模式: 窗口聚合 (Pattern: Windowed Aggregation)](#设计模式-窗口聚合-pattern-windowed-aggregation)
+- [设计模式: 窗口聚合 (Pattern: Windowed Aggregation)](#设计模式-窗口聚合)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-01 (窗口分配器)](#def-k-02-01-窗口分配器)

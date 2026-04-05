@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [设计模式: 实时日志分析 (Pattern: Real-time Log Analysis)](#设计模式-实时日志分析-pattern-real-time-log-analysis)
+- [设计模式: 实时日志分析 (Pattern: Real-time Log Analysis)](#设计模式-实时日志分析)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-13 (日志流模式)](#def-k-02-13-日志流模式)
