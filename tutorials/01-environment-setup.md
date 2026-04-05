@@ -7,6 +7,7 @@
 ## 1. 概念定义 (Definitions)
 
 ### Def-T-01-01: Flink 运行环境
+
 Flink 运行环境是指支持 Apache Flink 应用程序开发、测试和部署所需的软硬件基础设施集合，包括 Java 运行时、Flink 分发包、依赖管理工具和可选的容器化平台。
 
 ### Def-T-01-02: 部署模式矩阵
@@ -18,6 +19,7 @@ Flink 运行环境是指支持 Apache Flink 应用程序开发、测试和部署
 | 云服务 | 生产 | 中 | 高 | 高 |
 
 ### Def-T-01-03: 开发环境组件栈
+
 ```
 ┌─────────────────────────────────────────┐
 │         IDE (IntelliJ/VS Code)          │
@@ -37,6 +39,7 @@ Flink 运行环境是指支持 Apache Flink 应用程序开发、测试和部署
 ## 2. 属性推导 (Properties)
 
 ### Prop-T-01-01: JDK 兼容性约束
+
 Flink 1.18+ 版本对 JDK 的支持矩阵：
 
 | Flink 版本 | 最低 JDK | 推荐 JDK | 最高 JDK |
@@ -48,11 +51,13 @@ Flink 1.18+ 版本对 JDK 的支持矩阵：
 | 1.20.x    | 11      | 21      | 21      |
 
 ### Prop-T-01-02: 资源需求基准
+
 - **开发模式**: 2 CPU, 4GB RAM, 10GB 磁盘
 - **单机模式**: 4 CPU, 8GB RAM, 50GB 磁盘
 - **集群模式**: 8+ CPU, 16+ GB RAM, 100+ GB 磁盘
 
 ### Prop-T-01-03: 网络端口分配
+
 | 组件 | 默认端口 | 用途 |
 |------|---------|------|
 | JobManager | 8081 | Web UI |
@@ -441,6 +446,7 @@ log4j.configuration: file:/opt/flink/conf/log4j-console.properties
 **安装 OpenJDK 17（推荐）**：
 
 **Ubuntu/Debian：**
+
 ```bash
 # 更新包索引
 sudo apt update
@@ -459,6 +465,7 @@ source ~/.bashrc
 ```
 
 **CentOS/RHEL/Fedora：**
+
 ```bash
 # 安装 OpenJDK 17
 sudo yum install -y java-17-openjdk-devel
@@ -475,6 +482,7 @@ source ~/.bashrc
 ```
 
 **macOS：**
+
 ```bash
 # 使用 Homebrew 安装
 brew install openjdk@17
@@ -492,9 +500,11 @@ source ~/.zshrc
 ```
 
 **Windows：**
+
 1. 下载 [OpenJDK 17](https://adoptium.net/temurin/releases/?version=17)
 2. 运行安装程序
 3. 设置环境变量：
+
    ```powershell
    # PowerShell 管理员权限
    [Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Eclipse Adoptium\jdk-17", "Machine")
@@ -589,6 +599,7 @@ stop-cluster.sh
 #### 5.3.1 IntelliJ IDEA 配置
 
 **步骤 1: 安装插件**
+
 1. 打开 **Settings** → **Plugins**
 2. 搜索并安装：
    - **Scala** (如果使用 Scala API)
@@ -596,11 +607,13 @@ stop-cluster.sh
    - **Mermaid** (查看文档图表)
 
 **步骤 2: 项目导入**
+
 1. **File** → **New** → **Project from Existing Sources**
 2. 选择 `pom.xml` (Maven) 或 `build.gradle` (Gradle)
 3. 选择 **Auto Import**
 
 **步骤 3: 代码风格配置**
+
 ```xml
 <!-- .idea/codeStyles/Project.xml -->
 <code_scheme name="Flink Style" version="173">
@@ -624,6 +637,7 @@ stop-cluster.sh
 ```
 
 **步骤 4: 调试配置**
+
 ```xml
 <!-- .idea/runConfigurations/Flink_Local_Debug.xml -->
 <component name="ProjectRunConfigurationManager">
@@ -640,14 +654,15 @@ stop-cluster.sh
 ```
 
 **步骤 5: 实时模板配置**
+
 ```java
 // 创建 Live Template: flink-main
 public class $NAME$ {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         $END$
-        
+
         env.execute("$JOB_NAME$");
     }
 }
@@ -656,6 +671,7 @@ public class $NAME$ {
 #### 5.3.2 VS Code 配置
 
 **步骤 1: 安装扩展**
+
 ```json
 // .vscode/extensions.json
 {
@@ -671,6 +687,7 @@ public class $NAME$ {
 ```
 
 **步骤 2: 工作区配置**
+
 ```json
 // .vscode/settings.json
 {
@@ -689,6 +706,7 @@ public class $NAME$ {
 ```
 
 **步骤 3: 启动配置**
+
 ```json
 // .vscode/launch.json
 {
@@ -724,7 +742,7 @@ public class $NAME$ {
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -740,11 +758,11 @@ public class $NAME$ {
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        
+
         <!-- Flink 版本 -->
         <flink.version>1.18.1</flink.version>
         <scala.binary.version>2.12</scala.binary.version>
-        
+
         <!-- 其他依赖版本 -->
         <log4j.version>2.17.1</log4j.version>
         <junit.version>5.9.2</junit.version>
@@ -754,7 +772,7 @@ public class $NAME$ {
         <!-- ============================================ -->
         <!-- Flink 核心依赖 -->
         <!-- ============================================ -->
-        
+
         <!-- DataStream API -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -762,7 +780,7 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Table API -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -770,7 +788,7 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Table Planner -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -778,7 +796,7 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Scala API (可选) -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -786,7 +804,7 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Streaming Scala -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -794,25 +812,25 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- ============================================ -->
         <!-- 连接器依赖 -->
         <!-- ============================================ -->
-        
+
         <!-- Kafka Connector -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>3.1.0-1.18</version>
         </dependency>
-        
+
         <!-- JDBC Connector -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc</artifactId>
             <version>3.1.2-1.18</version>
         </dependency>
-        
+
         <!-- Filesystem Connector -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -820,7 +838,7 @@ public class $NAME$ {
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- ============================================ -->
         <!-- 日志依赖 -->
         <!-- ============================================ -->
@@ -842,7 +860,7 @@ public class $NAME$ {
             <version>${log4j.version}</version>
             <scope>runtime</scope>
         </dependency>
-        
+
         <!-- ============================================ -->
         <!-- 测试依赖 -->
         <!-- ============================================ -->
@@ -876,7 +894,7 @@ public class $NAME$ {
                     </compilerArgs>
                 </configuration>
             </plugin>
-            
+
             <!-- Shade 插件 - 打包 Fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -910,7 +928,7 @@ public class $NAME$ {
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Scala 插件 (如果使用 Scala) -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
@@ -947,7 +965,7 @@ public class $NAME$ {
                 </dependency>
             </dependencies>
         </profile>
-        
+
         <!-- 集群部署配置 -->
         <profile>
             <id>cluster</id>
@@ -998,16 +1016,16 @@ dependencies {
     // Flink Core
     implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
     implementation "org.apache.flink:flink-table-api-java-bridge:${flinkVersion}"
-    
+
     // Connectors
     implementation 'org.apache.flink:flink-connector-kafka:3.1.0-1.18'
     implementation 'org.apache.flink:flink-connector-jdbc:3.1.2-1.18'
-    
+
     // Logging
     runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     runtimeOnly "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     runtimeOnly "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    
+
     // Testing
     testImplementation "org.apache.flink:flink-test-utils:${flinkVersion}"
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
@@ -1120,6 +1138,7 @@ resource "aws_emr_cluster" "flink" {
 #### 5.4.2 阿里云实时计算 Flink 版
 
 **使用控制台：**
+
 1. 登录 [阿里云控制台](https://www.aliyun.com/)
 2. 搜索并进入 **实时计算 Flink 版**
 3. 点击 **创建集群**
@@ -1156,6 +1175,7 @@ aliyun streamanalytics DeployJob \
 ```
 
 **阿里云 Flink 特性：**
+
 - **VVR 引擎**: 阿里优化版 Flink，性能提升 30%+
 - **Auto Scaling**: 自动扩缩容
 - **智能诊断**: 内置问题诊断工具
@@ -1307,30 +1327,30 @@ import org.apache.flink.util.Collector;
 public class WordCount {
     public static void main(String[] args) throws Exception {
         // 创建执行环境
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 设置并行度
         env.setParallelism(2);
-        
+
         // 创建数据源（从 Socket）
         DataStream<String> source = env
             .socketTextStream("localhost", 9999);
-        
+
         // 数据处理
         DataStream<Tuple2<String, Integer>> wordCounts = source
             .flatMap(new Tokenizer())
             .keyBy(value -> value.f0)
             .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
             .sum(1);
-        
+
         // 输出结果
         wordCounts.print();
-        
+
         // 启动作业
         env.execute("Socket Window WordCount");
     }
-    
+
     // 分词器
     public static class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
         @Override
@@ -1346,6 +1366,7 @@ public class WordCount {
 ```
 
 **运行步骤：**
+
 ```bash
 # 1. 启动 netcat 数据源
 nc -lk 9999
@@ -1372,10 +1393,10 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class TableWordCount {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-        
+
         // 创建临时表
         tableEnv.executeSql("""
             CREATE TABLE socket_source (
@@ -1387,7 +1408,7 @@ public class TableWordCount {
                 'format' = 'raw'
             )
             """);
-        
+
         // 创建结果表
         tableEnv.executeSql("""
             CREATE TABLE print_sink (
@@ -1397,7 +1418,7 @@ public class TableWordCount {
                 'connector' = 'print'
             )
             """);
-        
+
         // 执行 SQL
         tableEnv.executeSql("""
             INSERT INTO print_sink
@@ -1418,36 +1439,36 @@ public class TableWordCount {
 ```mermaid
 flowchart TD
     Start([开始搭建]) --> Q1{操作系统?}
-    
+
     Q1 -->|Windows| W1[推荐: Docker Desktop]
     Q1 -->|macOS| M1{Intel/Apple Silicon?}
     Q1 -->|Linux| L1[推荐: Docker 或本地安装]
-    
+
     M1 -->|Intel| W1
     M1 -->|Apple Silicon| W1
-    
+
     W1 --> Q2{使用场景?}
     L1 --> Q2
-    
+
     Q2 -->|学习/开发| Dev[本地安装]
     Q2 -->|团队协作| Team[Docker Compose]
     Q2 -->|生产部署| Prod{云服务商?}
-    
+
     Dev --> Setup1[JDK + Flink + IDE]
     Team --> Setup2[docker-compose up]
-    
+
     Prod -->|AWS| AWS[EMR]
     Prod -->|阿里云| Ali[实时计算 Flink]
     Prod -->|GCP| GCP[Dataproc]
     Prod -->|其他| K8s[Kubernetes]
-    
+
     Setup1 --> Verify[验证测试]
     Setup2 --> Verify
     AWS --> Verify
     Ali --> Verify
     GCP --> Verify
     K8s --> Verify
-    
+
     Verify --> Success([搭建完成])
 ```
 
@@ -1456,31 +1477,31 @@ flowchart TD
 ```mermaid
 graph TB
     subgraph "IDE 层"
-        A[IntelliJ IDEA] 
+        A[IntelliJ IDEA]
         B[VS Code]
     end
-    
+
     subgraph "构建层"
         C[Maven]
         D[Gradle]
     end
-    
+
     subgraph "运行时层"
         E[JDK 17]
         F[Flink 1.18]
     end
-    
+
     subgraph "容器层"
         G[Docker Engine]
         H[Docker Compose]
     end
-    
+
     subgraph "云服务层"
         I[AWS EMR]
         J[阿里云 Flink]
         K[GCP Dataproc]
     end
-    
+
     A --> C
     B --> D
     C --> E
@@ -1498,25 +1519,25 @@ graph TB
 ```mermaid
 flowchart TD
     Problem[遇到问题] --> Q1{启动失败?}
-    
+
     Q1 -->|是| Q2{Java 错误?}
     Q1 -->|否| Q3{运行异常?}
-    
+
     Q2 -->|版本不匹配| S1[检查 JDK 版本<br/>切换至 JDK 11/17]
     Q2 -->|内存不足| S2[调整 JVM 参数<br/>-Xmx2048m]
     Q2 -->|类找不到| S3[检查 CLASSPATH<br/>重新打包]
-    
+
     Q3 -->|端口冲突| S4[修改 flink-conf.yaml<br/>更换端口]
     Q3 -->|连接超时| S5[检查防火墙<br/>确认服务状态]
     Q3 -->|性能问题| S6[调整 slot 数<br/>增加内存]
-    
+
     S1 --> Check{解决?}
     S2 --> Check
     S3 --> Check
     S4 --> Check
     S5 --> Check
     S6 --> Check
-    
+
     Check -->|是| Done[问题解决]
     Check -->|否| Log[查看日志<br/>寻求帮助]
 ```
@@ -1551,6 +1572,7 @@ flowchart TD
 ### 8.3 调试技巧
 
 **启用 DEBUG 日志：**
+
 ```bash
 # log4j-debug.properties
 rootLogger.level = DEBUG
@@ -1559,6 +1581,7 @@ logger.flink.level = DEBUG
 ```
 
 **JVM 调试参数：**
+
 ```bash
 # 开启远程调试
 export JVM_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
@@ -1566,6 +1589,7 @@ flink run -m localhost:8081 my-job.jar
 ```
 
 **查看 GC 日志：**
+
 ```bash
 export JVM_ARGS="-Xlog:gc*:file=/tmp/gc.log:time,uptime:filecount=5,filesize=100m"
 ```
@@ -1574,19 +1598,12 @@ export JVM_ARGS="-Xlog:gc*:file=/tmp/gc.log:time,uptime:filecount=5,filesize=100
 
 ## 9. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Local Setup", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/try-flink/local_installation/
 
-[^2]: Apache Flink Documentation, "Docker Setup", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/resource-providers/standalone/docker/
 
-[^3]: AWS Documentation, "Apache Flink on EMR", 2024. https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-flink.html
 
-[^4]: 阿里云文档, "实时计算 Flink 版快速入门", 2024. https://help.aliyun.com/document_detail/62459.html
 
-[^5]: Google Cloud Documentation, "Dataproc Flink Component", 2024. https://cloud.google.com/dataproc/docs/concepts/components/flink
 
-[^6]: Docker Documentation, "Dockerfile reference", 2024. https://docs.docker.com/engine/reference/builder/
 
-[^7]: Maven Documentation, "Apache Maven Shade Plugin", 2024. https://maven.apache.org/plugins/maven-shade-plugin/
 
 ---
 
@@ -1631,6 +1648,7 @@ journalctl -u flink -f           # 查看系统日志
 ---
 
 > 📌 **文档信息**
+>
 > - 版本: v1.0
 > - 更新日期: 2026-04-04
 > - 适用 Flink 版本: 1.18.x - 1.20.x

@@ -27,6 +27,7 @@ docker --version
 ```
 
 **预期输出：**
+
 ```
 Docker version 24.0.0, build abc123
 ```
@@ -44,6 +45,7 @@ docker run -d \
 ```
 
 **预期输出：**
+
 ```
 Unable to find image 'apache/flink:1.18.0-scala_2.12-java11' locally
 1.18.0-scala_2.12-java11: Pulling from apache/flink
@@ -60,6 +62,7 @@ docker ps
 ```
 
 **预期输出：**
+
 ```
 CONTAINER ID   IMAGE                                     STATUS          PORTS
 abc123def456   apache/flink:1.18.0-scala_2.12-java11   Up 10 seconds   0.0.0.0:8081->8081/tcp
@@ -78,6 +81,7 @@ docker exec -it flink-quickstart /bin/bash
 ```
 
 **预期输出：**
+
 ```
                                    ▒▓██▓██▒
                                ▓████▒▒█▓▒▓███▓▒
@@ -118,6 +122,7 @@ CREATE TABLE user_events (
 ```
 
 **预期输出：**
+
 ```
 [INFO] Execute statement succeed.
 ```
@@ -132,6 +137,7 @@ GROUP BY event_type;
 ```
 
 **预期输出：**
+
 ```
 +------------+----------------------+
 | event_type |                  cnt |
@@ -160,8 +166,9 @@ http://localhost:8081
 **Web UI 预期显示：**
 
 > 📸 **Flink Web UI 概览**
-> 
+>
 > 你应该看到：
+>
 > - 🟢 绿色的 JobManager 状态
 > - 📊 Overview 面板显示集群资源
 > - 📁 已完成的 Jobs 列表
@@ -190,6 +197,7 @@ docker rm flink-quickstart
 ```
 
 **预期输出：**
+
 ```
 flink-quickstart
 flink-quickstart
@@ -235,6 +243,7 @@ cd flink-1.18.0
 ```
 
 **预期输出：**
+
 ```
 Version: 1.18.0, Commit ID: abc123
 ```
@@ -253,6 +262,7 @@ Version: 1.18.0, Commit ID: abc123
 ```
 
 **预期输出：**
+
 ```
 Starting cluster.
 Starting standalonesession daemon on host localhost.
@@ -267,6 +277,7 @@ jps
 ```
 
 **预期输出：**
+
 ```
 12345 StandaloneSessionClusterEntrypoint
 12346 TaskManagerRunner
@@ -279,8 +290,9 @@ http://localhost:8081
 ```
 
 > 📸 **本地集群运行状态**
-> 
+>
 > 你应该看到：
+>
 > - 🟢 绿色的 JobManager 和 TaskManager 状态
 > - 📊 Available Task Slots 显示可用资源
 > - 📈 集群负载和内存使用情况
@@ -314,6 +326,7 @@ EOF
 ```
 
 **预期输出：**
+
 ```
 Job has been submitted with JobID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
@@ -330,6 +343,7 @@ cat /tmp/flink-output/result.txt
 ```
 
 **预期输出：**
+
 ```
 awesome 1
 flink 3
@@ -345,8 +359,9 @@ world 1
 点击 Job ID 查看详细执行信息：
 
 > 📸 **WordCount 作业详情**
-> 
+>
 > 在 Job Detail 页面你应该看到：
+>
 > - 📋 作业基本信息（Job ID、状态、启动时间）
 > - 📊 作业执行图（Execution Graph）
 > - 📈 各算子的执行统计（记录数、字节数）
@@ -362,14 +377,14 @@ graph TB
         TM1[TaskManager 1<br/>任务执行器]
         TM2[TaskManager 2<br/>任务执行器]
     end
-    
+
     subgraph "作业组件"
         DS[DataStream<br/>数据流]
         OP1[Source<br/>数据源]
         OP2[Transformation<br/>转换操作]
         OP3[Sink<br/>数据汇]
     end
-    
+
     JM --> TM1
     JM --> TM2
     DS --> OP1 --> OP2 --> OP3
@@ -424,6 +439,7 @@ stateDiagram-v2
 ### ❌ 端口冲突
 
 **症状：**
+
 ```
 java.net.BindException: Address already in use: bind
 ```
@@ -460,6 +476,7 @@ docker run -p 8082:8081 apache/flink:1.18.0-scala_2.12-java11 jobmanager
 ### ❌ 内存不足
 
 **症状：**
+
 ```
 java.lang.OutOfMemoryError: Java heap space
 ```
@@ -498,6 +515,7 @@ set FLINK_ENV_JAVA_OPTS=-Xmx512m
 ### ❌ 依赖问题
 
 **症状：**
+
 ```
 ClassNotFoundException: org.apache.flink...
 ```
@@ -538,6 +556,7 @@ cd ..
 ### ❌ 权限问题（Linux/macOS）
 
 **症状：**
+
 ```
 bash: ./bin/start-cluster.sh: Permission denied
 ```
@@ -554,6 +573,7 @@ chmod +x bin/*.sh
 ### ❌ Docker 容器启动失败
 
 **症状：**
+
 ```
 Error: Could not find or load main class org.apache.flink...
 ```
@@ -626,27 +646,27 @@ docker run -d --name flink-quickstart -p 8081:8081 apache/flink:1.18.0-scala_2.1
 ```mermaid
 flowchart TD
     Start[开始学习 Flink] --> Q1{你的角色？}
-    
+
     Q1 -->|研究员/学生| PathA[路径 A: 理论优先]
     Q1 -->|开发工程师| PathB[路径 B: 实践优先]
     Q1 -->|运维/架构师| PathC[路径 C: 问题解决]
-    
+
     PathA --> A1[Dataflow 模型]
     PathA --> A2[流处理基础]
     PathA --> A3[一致性模型]
-    
+
     PathB --> B1[SQL 快速上手]
     PathB --> B2[设计模式]
     PathB --> B3[连接器生态]
-    
+
     PathC --> C1[故障排查]
     PathC --> C2[监控告警]
     PathC --> C3[性能调优]
-    
+
     A3 --> Advanced[高级主题]
     B3 --> Advanced
     C3 --> Advanced
-    
+
     Advanced --> End[成为 Flink 专家 🎓]
 ```
 
@@ -656,9 +676,9 @@ flowchart TD
 
 | 渠道 | 链接 | 说明 |
 |------|------|------|
-| 🌐 官网 | https://flink.apache.org | 文档、下载、博客 |
-| 📧 邮件列表 | user@flink.apache.org | 用户问题讨论 |
-| 💬 Slack | https://apache-flink.slack.com | 实时交流 |
+| 🌐 官网 | <https://flink.apache.org> | 文档、下载、博客 |
+| 📧 邮件列表 | <user@flink.apache.org> | 用户问题讨论 |
+| 💬 Slack | <https://apache-flink.slack.com> | 实时交流 |
 | 🐦 Twitter/X | @ApacheFlink | 官方动态 |
 | 🐙 GitHub | apache/flink | 源码、Issue |
 
@@ -669,20 +689,23 @@ flowchart TD
 | 🇨🇳 Flink 中文社区 | 搜索"Flink 中文社区" | 微信公众号 |
 | 📺 Bilibili | @Flink中文社区 | 视频教程 |
 | 📚 知乎 | 话题"Apache Flink" | 技术文章 |
-| 🏠 Flink Forward Asia | https://flink-forward.org.cn | 年度大会 |
+| 🏠 Flink Forward Asia | <https://flink-forward.org.cn> | 年度大会 |
 
 #### 学习资源
 
 **官方文档：**
+
 - 📖 [Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/)
 - 🎓 [Flink 训练课程](https://nightlies.apache.org/flink/flink-docs-stable/docs/try-flink/local_installation/)
 
 **推荐书籍：**
+
 - 📚 《Streaming Systems》 - Tyler Akidau
 - 📚 《Flink 基础教程》 - 崔星灿
 - 📚 《实时计算：Apache Flink 实践》
 
 **实践平台：**
+
 - 🖥️ [Flink Playground](https://github.com/apache/flink-playgrounds)
 - ☁️ [Ververica Platform](https://ververica.com/)（企业版）
 
@@ -693,13 +716,15 @@ flowchart TD
 完成本教程后，确认以下检查项：
 
 ### Docker 快速体验
+
 - [ ] Docker 已安装并能正常运行
 - [ ] Flink 容器成功启动
-- [ ] Web UI 可访问 (http://localhost:8081)
+- [ ] Web UI 可访问 (<http://localhost:8081>)
 - [ ] SQL 查询成功执行
 - [ ] 资源已清理（容器已删除）
 
 ### 本地安装体验
+
 - [ ] Flink 下载并解压成功
 - [ ] 本地集群正常启动
 - [ ] jps 命令显示 StandaloneSessionClusterEntrypoint 和 TaskManagerRunner
@@ -722,10 +747,6 @@ flowchart TD
 
 ## 📚 引用参考
 
-[^1]: Apache Flink Documentation, "Local Installation", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/try-flink/local_installation/
-[^2]: Apache Flink, "Docker Setup", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/resource-providers/standalone/docker/
-[^3]: T. Akidau et al., "Streaming Systems", O'Reilly Media, 2018.
-[^4]: Apache Flink, "SQL Getting Started", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/gettingstarted/
 
 ---
 

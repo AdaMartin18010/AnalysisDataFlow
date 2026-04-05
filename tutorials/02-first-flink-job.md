@@ -58,6 +58,7 @@ Flink支持三种时间语义用于处理乱序事件：
 **命题**: Flink默认将相邻的、没有数据重分区的算子串联在同一个线程中执行。
 
 **推导**:
+
 1. 算子之间不需要序列化/反序列化和网络传输
 2. 减少线程切换开销
 3. 可以通过 `disableChaining()` 或 `slotSharingGroup()` 手动控制
@@ -77,6 +78,7 @@ dataStream
 **命题**: `keyBy` 操作后，相同key的数据一定会被路由到同一个并行子任务。
 
 **推导**:
+
 1. Flink使用key的哈希值对并行度取模确定目标子任务
 2. 这保证了keyed state的正确性
 3. key分布不均会导致数据倾斜
@@ -162,9 +164,9 @@ import org.apache.flink.util.Collector;
 
 /**
  * Socket Window WordCount
- * 
+ *
  * 从Socket读取文本流，每5秒统计一次单词出现次数
- * 
+ *
  * 运行步骤：
  * 1. 终端执行: nc -lk 9999
  * 2. 运行本程序
@@ -174,49 +176,49 @@ public class SocketWindowWordCount {
 
     public static void main(String[] args) throws Exception {
         // ===== 步骤1: 创建执行环境 =====
-        final StreamExecutionEnvironment env = 
+        final StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 设置并行度（本地开发建议设为1便于调试）
         env.setParallelism(1);
-        
+
         // ===== 步骤2: 创建数据源 =====
         // 从localhost:9999的Socket读取数据，以换行符分隔
         DataStream<String> text = env.socketTextStream("localhost", 9999, "\n");
-        
+
         // ===== 步骤3: 数据转换处理 =====
         DataStream<Tuple2<String, Integer>> wordCounts = text
             // 3.1 flatMap: 将每行切分为单词，输出 (word, 1)
             .flatMap(new Tokenizer())
-            
+
             // 3.2 keyBy: 按单词分组，相同单词进入同一分区
             .keyBy(value -> value.f0)
-            
+
             // 3.3 window: 定义5秒滚动窗口
             .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
-            
+
             // 3.4 sum: 对每个窗口内的同key值累加
             .sum(1);
-        
+
         // ===== 步骤4: 结果输出 =====
         wordCounts.print();
-        
+
         // ===== 步骤5: 启动作业 =====
         // execute() 是阻塞调用，作业终止时才返回
         env.execute("Socket Window WordCount");
     }
-    
+
     /**
      * 自定义FlatMapFunction: 将文本行切分为单词
      */
-    public static class Tokenizer implements 
+    public static class Tokenizer implements
         FlatMapFunction<String, Tuple2<String, Integer>> {
-        
+
         @Override
         public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
             // 转小写并按非单词字符分割
             String[] words = value.toLowerCase().split("\\W+");
-            
+
             for (String word : words) {
                 if (word.length() > 0) {
                     // 收集 (word, 1) 元组
@@ -250,7 +252,7 @@ from pyflink.common.typeinfo import Types
 
 class Tokenizer(FlatMapFunction):
     """自定义FlatMap函数：切分单词"""
-    
+
     def flat_map(self, value, collector):
         # 转小写并按非单词字符分割
         words = value.lower().split()
@@ -264,16 +266,16 @@ def main():
     # ===== 步骤1: 创建执行环境 =====
     env = StreamExecutionEnvironment.get_execution_environment()
     env.set_parallelism(1)
-    
+
     # ===== 步骤2: 创建数据源 =====
     # 从Socket读取数据
     text = env.socket_text_stream("localhost", 9999)
-    
+
     # ===== 步骤3: 数据转换处理 =====
     word_counts = (
         text
         # 3.1 切分单词
-        .flat_map(Tokenizer(), 
+        .flat_map(Tokenizer(),
                   result_type=Types.TUPLE([Types.STRING(), Types.INT()]))
         # 3.2 按单词分组
         .key_by(lambda x: x[0])
@@ -282,10 +284,10 @@ def main():
         # 3.4 累加计数
         .sum(1)
     )
-    
+
     # ===== 步骤4: 结果输出 =====
     word_counts.print()
-    
+
     # ===== 步骤5: 启动作业 =====
     env.execute("Socket Window WordCount Python")
 
@@ -310,9 +312,9 @@ public class SQLWordCount {
             .newInstance()
             .inStreamingMode()
             .build();
-        
+
         TableEnvironment tableEnv = TableEnvironment.create(settings);
-        
+
         // 使用DDL创建Socket Source表
         String createSourceTable = "CREATE TABLE socket_source (\n" +
             "  line STRING\n" +
@@ -322,19 +324,19 @@ public class SQLWordCount {
             "  'port' = '9999',\n" +
             "  'format' = 'raw'\n" +
             ")";
-        
+
         tableEnv.executeSql(createSourceTable);
-        
+
         // 使用SQL进行WordCount统计
-        String wordCountSql = 
+        String wordCountSql =
             "SELECT word, COUNT(*) as cnt FROM (" +
             "  SELECT TRIM(word) as word FROM socket_source, " +
             "  LATERAL TABLE(UNNEST(SPLIT(LOWER(line), ' '))) AS T(word)" +
             ") WHERE word <> '' " +
             "GROUP BY word, TUMBLE(PROCTIME(), INTERVAL '5' SECOND)";
-        
+
         Table result = tableEnv.sqlQuery(wordCountSql);
-        
+
         // 打印结果
         result.execute().print();
     }
@@ -357,21 +359,21 @@ import org.apache.flink.streaming.api.windowing.time.Time;
  * 使用滑动窗口展示更丰富的窗口操作
  */
 public class RealTimeProcessingDemo {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-        
+
         // 从Socket读取数据
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
-        
+
         // 实时处理流水线
         stream
             // 1. 数据清洗与转换
             .filter(line -> !line.trim().isEmpty())
             .map(line -> line.toLowerCase())
-            
+
             // 2. 切分单词并标记
             .flatMap((String line, Collector<Tuple2<String, Integer>> out) -> {
                 for (String word : line.split("\\W+")) {
@@ -381,43 +383,43 @@ public class RealTimeProcessingDemo {
                 }
             })
             .returns(TypeInformation.of(new TypeHint<Tuple2<String, Integer>>() {}))
-            
+
             // 3. 按单词分组
             .keyBy(value -> value.f0)
-            
+
             // 4. 滑动窗口：每10秒计算过去30秒的统计
             .window(SlidingProcessingTimeWindows.of(Time.seconds(30), Time.seconds(10)))
-            
+
             // 5. 使用自定义聚合函数
             .aggregate(new WordCountAggregate())
-            
+
             // 6. 输出结果
             .print();
-        
+
         env.execute("Real-time Processing Demo");
     }
-    
+
     /**
      * 自定义聚合函数
      */
-    public static class WordCountAggregate implements 
+    public static class WordCountAggregate implements
         AggregateFunction<Tuple2<String, Integer>, Integer, Integer> {
-        
+
         @Override
         public Integer createAccumulator() {
             return 0;
         }
-        
+
         @Override
         public Integer add(Tuple2<String, Integer> value, Integer accumulator) {
             return accumulator + value.f1;
         }
-        
+
         @Override
         public Integer getResult(Integer accumulator) {
             return accumulator;
         }
-        
+
         @Override
         public Integer merge(Integer a, Integer b) {
             return a + b;
@@ -440,13 +442,13 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointingMode;
  * 包含Checkpoint、Watermark、监控等生产必备配置
  */
 public class ProductionKafkaWordCount {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // ===== 生产级配置 =====
-        
+
         // 1. 开启Checkpoint（精确一次语义）
         env.enableCheckpointing(60000);  // 每60秒触发一次
         env.getCheckpointConfig().setCheckpointingMode(
@@ -458,19 +460,19 @@ public class ProductionKafkaWordCount {
         env.getCheckpointConfig().enableExternalizedCheckpoints(
             ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
         );
-        
+
         // 2. 配置状态后端（生产建议使用RocksDB）
-        EmbeddedRocksDBStateBackend rocksDbBackend = 
+        EmbeddedRocksDBStateBackend rocksDbBackend =
             new EmbeddedRocksDBStateBackend(true);
         env.setStateBackend(rocksDbBackend);
         env.getCheckpointConfig().setCheckpointStorage("file:///tmp/flink-checkpoints");
-        
+
         // 3. 配置重启策略
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
             3,              // 最多重启3次
             Time.of(10, TimeUnit.SECONDS)  // 每次间隔10秒
         ));
-        
+
         // ===== Kafka Source配置 =====
         KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
             .setBootstrapServers("kafka-broker1:9092,kafka-broker2:9092")
@@ -479,7 +481,7 @@ public class ProductionKafkaWordCount {
             .setStartingOffsets(OffsetsInitializer.earliest())
             .setValueOnlyDeserializer(new SimpleStringSchema())
             .build();
-        
+
         DataStream<String> stream = env.fromSource(
             kafkaSource,
             WatermarkStrategy.forBoundedOutOfOrderness(
@@ -487,7 +489,7 @@ public class ProductionKafkaWordCount {
             ),
             "Kafka Source"
         );
-        
+
         // ===== 业务处理 =====
         SingleOutputStreamOperator<Tuple2<String, Integer>> wordCounts = stream
             .flatMap(new Tokenizer())
@@ -496,31 +498,31 @@ public class ProductionKafkaWordCount {
             .allowedLateness(Time.seconds(10))  // 允许10秒延迟
             .sideOutputLateData(lateDataTag)     // 迟到数据侧输出
             .sum(1);
-        
+
         // ===== 输出到数据库 =====
         wordCounts.addSink(new JdbcSinkFunction());
-        
+
         // 迟到数据处理
         wordCounts.getSideOutput(lateDataTag)
             .addSink(new LateDataSinkFunction());
-        
+
         env.execute("Production Kafka WordCount");
     }
-    
+
     /**
      * JDBC Sink示例：写入MySQL
      */
-    public static class JdbcSinkFunction extends 
+    public static class JdbcSinkFunction extends
         RichSinkFunction<Tuple2<String, Integer>> {
-        
+
         private Connection conn;
         private PreparedStatement stmt;
-        
+
         @Override
         public void open(Configuration parameters) throws Exception {
             super.open(parameters);
             conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/flink_db", 
+                "jdbc:mysql://localhost:3306/flink_db",
                 "user", "password"
             );
             stmt = conn.prepareStatement(
@@ -528,9 +530,9 @@ public class ProductionKafkaWordCount {
                 "VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE count = ?"
             );
         }
-        
+
         @Override
-        public void invoke(Tuple2<String, Integer> value, Context context) 
+        public void invoke(Tuple2<String, Integer> value, Context context)
             throws Exception {
             stmt.setString(1, value.f0);
             stmt.setInt(2, value.f1);
@@ -538,7 +540,7 @@ public class ProductionKafkaWordCount {
             stmt.setInt(4, value.f1);
             stmt.executeUpdate();
         }
-        
+
         @Override
         public void close() throws Exception {
             if (stmt != null) stmt.close();
@@ -557,17 +559,17 @@ graph TB
         DS[DataStream<br/>数据流]
         KS[KeyedStream<br/>分组流]
         WS[WindowedStream<br/>窗口流]
-        
+
         DS -->|keyBy| KS
         KS -->|window| WS
         WS -->|aggregate| RS[结果流]
     end
-    
+
     subgraph "时间语义"
         ET[Event Time<br/>事件时间]
         IT[Ingestion Time<br/>摄入时间]
         PT[Processing Time<br/>处理时间]
-        
+
         ET -->|Watermark| ETW[乱序处理]
         PT -->|低延迟| PTW[快速响应]
     end
@@ -608,15 +610,15 @@ hello world
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>com.example</groupId>
     <artifactId>flink-first-job</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -624,7 +626,7 @@ hello world
         <flink.version>1.18.0</flink.version>
         <scala.binary.version>2.12</scala.binary.version>
     </properties>
-    
+
     <dependencies>
         <!-- Flink Streaming Core -->
         <dependency>
@@ -633,7 +635,7 @@ hello world
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Flink Client for local execution -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -641,28 +643,28 @@ hello world
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Kafka Connector -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>3.0.2-1.18</version>
         </dependency>
-        
+
         <!-- JDBC Connector for database sink -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc</artifactId>
             <version>3.1.2-1.18</version>
         </dependency>
-        
+
         <!-- MySQL Driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
-        
+
         <!-- RocksDB State Backend -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -670,7 +672,7 @@ hello world
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -678,7 +680,7 @@ hello world
             <version>1.7.36</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- Maven Shade Plugin for uber-jar -->
@@ -717,14 +719,14 @@ hello world
 graph LR
     subgraph "WordCount作业执行图"
         direction LR
-        
+
         S[Socket Source<br/>并行度: 1] --> FM[FlatMap<br/>Tokenizer<br/>并行度: 1]
         FM --> KB[KeyBy<br/>按word哈希<br/>并行度: 1]
         KB --> W[Window<br/>5秒滚动<br/>并行度: 1]
         W --> AGG[Sum<br/>累加器<br/>并行度: 1]
         AGG --> P[Print Sink<br/>并行度: 1]
     end
-    
+
     style S fill:#c8e6c9,stroke:#2e7d32
     style KB fill:#fff9c4,stroke:#f57f17,stroke-width:2px
     style W fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
@@ -738,17 +740,17 @@ gantt
     title 滚动窗口数据切分示例（5秒窗口）
     dateFormat X
     axisFormat %s
-    
+
     section 时间线
     输入数据       :a1, 0, 1s
     输入数据       :a2, after a1, 1s
     输入数据       :a3, after a2, 3s
     输入数据       :a4, after a3, 2s
     输入数据       :a5, after a4, 4s
-    
+
     section 窗口1 [0-5s]
     统计a1,a2,a3 :crit, w1, 0, 5s
-    
+
     section 窗口2 [5-10s]
     统计a4,a5    :crit, w2, 5, 5s
 ```
@@ -759,18 +761,18 @@ gantt
 graph TB
     subgraph "生产环境架构"
         KAFKA[Kafka Cluster<br/>数据源]
-        
+
         FLINK[Flink Cluster<br/>JobManager/TaskManager]
-        
+
         DB[(MySQL<br/>结果存储)]
-        
+
         MONITOR[Prometheus/Grafana<br/>监控告警]
     end
-    
+
     KAFKA -->|Kafka Source| FLINK
     FLINK -->|JDBC Sink| DB
     FLINK -->|Metrics| MONITOR
-    
+
     style KAFKA fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
     style FLINK fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     style MONITOR fill:#fff3e0,stroke:#f57c00
@@ -785,6 +787,7 @@ graph TB
 **题目**: 修改WordCount程序，过滤常见的停用词（如 "the", "a", "is", "of"）。
 
 **提示**:
+
 ```java
 // 在flatMap中添加过滤逻辑
 Set<String> stopWords = new HashSet<>(Arrays.asList("the", "a", "is", "of"));
@@ -803,11 +806,12 @@ for (String word : words) {
 **题目**: 使用ProcessFunction实现每30秒输出出现次数最多的3个单词。
 
 **参考答案框架**:
+
 ```java
 public class TopNWordCount {
     public static void main(String[] args) throws Exception {
         // ... 环境设置 ...
-        
+
         stream
             .flatMap(new Tokenizer())
             .keyBy(value -> value.f0)
@@ -817,17 +821,17 @@ public class TopNWordCount {
             .process(new TopNFunction(3))
             .print();
     }
-    
+
     // 实现TopNFunction
     public static class TopNFunction extends ProcessAllWindowFunction<
         Tuple2<String, Integer>, String, TimeWindow> {
-        
+
         private final int n;
-        
+
         public TopNFunction(int n) {
             this.n = n;
         }
-        
+
         @Override
         public void process(Context context, Iterable<Tuple2<String, Integer>> elements,
                            Collector<String> out) {
@@ -846,6 +850,7 @@ public class TopNWordCount {
 **题目**: 统计不同长度单词的分布情况（如1-3字母、4-6字母、7+字母的词频）。
 
 **提示**:
+
 ```java
 // 使用自定义key selector按长度分组
 stream
@@ -873,6 +878,7 @@ stream
 5. **输出优化**: 排名变化时输出，未变化时静默
 
 **技术要点**:
+
 ```mermaid
 flowchart TD
     A[Kafka Source] --> B[提取单词]
@@ -886,13 +892,14 @@ flowchart TD
 ```
 
 **参考实现思路**:
+
 ```java
 // 1. 定义POJO存储单词和其计数
 public class WordCount implements Comparable<WordCount> {
     public String word;
     public long count;
     public int rank;
-    
+
     @Override
     public int compareTo(WordCount other) {
         return Long.compare(other.count, this.count); // 降序
@@ -902,13 +909,13 @@ public class WordCount implements Comparable<WordCount> {
 // 2. 使用ProcessFunction维护TopN状态
 public class RankTrackingFunction extends KeyedProcessFunction<
     String, WordCount, String> {
-    
+
     // 使用ListState保存当前TopN
     private ListState<WordCount> topNState;
-    
+
     // 使用MapState保存单词到排名的映射
     private MapState<String, Integer> rankState;
-    
+
     @Override
     public void open(Configuration parameters) {
         topNState = getRuntimeContext().getListState(
@@ -918,9 +925,9 @@ public class RankTrackingFunction extends KeyedProcessFunction<
             new MapStateDescriptor<>("ranks", String.class, Integer.class)
         );
     }
-    
+
     @Override
-    public void processElement(WordCount value, Context ctx, Collector<String> out) 
+    public void processElement(WordCount value, Context ctx, Collector<String> out)
         throws Exception {
         // 更新TopN列表
         // 对比新旧排名
@@ -945,23 +952,16 @@ public class RankTrackingFunction extends KeyedProcessFunction<
 
 ## 10. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "DataStream API", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/
 
-[^2]: Apache Flink Documentation, "Windows", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/
 
-[^3]: Apache Flink Documentation, "Checkpointing", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
 
-[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^5]: Apache Kafka Documentation, "Kafka Consumers", 2024. https://kafka.apache.org/documentation/#consumerapi
 
-[^6]: PyFlink Documentation, "Python DataStream API", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/datastream_tutorial/
 
-[^7]: Apache Flink Documentation, "Table API & SQL", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/overview/
 
 ---
 
-*教程版本: v1.0*  
-*创建日期: 2026-04-04*  
-*适用Flink版本: 1.18+ / 2.0+*  
+*教程版本: v1.0*
+*创建日期: 2026-04-04*
+*适用Flink版本: 1.18+ / 2.0+*
 *难度等级: L2-L3 (入门到进阶)*
