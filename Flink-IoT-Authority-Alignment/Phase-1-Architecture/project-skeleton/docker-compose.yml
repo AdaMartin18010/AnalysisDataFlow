@@ -1,0 +1,447 @@
+# ============================================================================
+# Flink IoT 项目骨架 - Docker Compose 配置
+# 技术栈: Flink SQL + Kafka + EMQX + InfluxDB + Grafana
+# 形式化等级: L4 (生产级配置)
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # Zookeeper (Kafka 依赖)
+  # ==========================================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: flink-iot-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Kafka (KRaft模式) - 使用KRaft模式,无需Zookeeper
+  # ==========================================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: flink-iot-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Kafka Init - 创建所需Topic
+  # ==========================================================================
+  kafka-init:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: flink-iot-kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic sensor-readings --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic device-events --partitions 2 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic alerts --partitions 2 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic processed-metrics --partitions 3 --replication-factor 1 &&
+      echo 'Topics created successfully'
+      "
+    networks:
+      - flink-iot-network
+    restart: "no"
+
+  # ==========================================================================
+  # Flink JobManager
+  # ==========================================================================
+  flink-jobmanager:
+    image: flink:1.18-scala_2.12
+    container_name: flink-iot-jobmanager
+    hostname: jobmanager
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          jobmanager.rpc.port: 6123
+          jobmanager.memory.process.size: 1600m
+          jobmanager.memory.jvm-heap.size: 1024m
+          jobmanager.memory.off-heap.size: 256m
+          jobmanager.memory.jvm-metaspace.size: 256m
+          parallelism.default: 2
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+          execution.checkpointing.interval: 10s
+          execution.checkpointing.min-pause-between-checkpoints: 5s
+          execution.checkpointing.max-concurrent-checkpoints: 1
+          metrics.reporters: prom
+          metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+          metrics.reporter.prom.port: 9249
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+      - "9249:9249"
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+      - ./flink-sql:/opt/flink/sql-scripts
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Flink TaskManager
+  # ==========================================================================
+  flink-taskmanager:
+    image: flink:1.18-scala_2.12
+    container_name: flink-iot-taskmanager
+    hostname: taskmanager
+    command: taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.rpc.port: 6122
+          taskmanager.memory.process.size: 2048m
+          taskmanager.memory.flink.size: 1536m
+          taskmanager.memory.network.min: 128m
+          taskmanager.memory.network.max: 256m
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+          metrics.reporters: prom
+          metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+          metrics.reporter.prom.port: 9249
+    ports:
+      - "6122:6122"
+      - "9250:9249"
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://jobmanager:8081/taskmanagers || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      replicas: 1
+
+  # ==========================================================================
+  # Flink SQL Client
+  # ==========================================================================
+  flink-sql-client:
+    image: flink:1.18-scala_2.12
+    container_name: flink-iot-sql-client
+    command: /opt/flink/sql-client.sh
+    depends_on:
+      - flink-jobmanager
+      - kafka
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_SQL_CLIENT_JAR=/opt/flink/lib
+    volumes:
+      - ./flink-sql:/opt/flink/sql-scripts
+      - ./docker/flink-sql-client-init.sh:/opt/flink/sql-client-init.sh
+    stdin_open: true
+    tty: true
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # EMQX - MQTT Broker
+  # ==========================================================================
+  emqx:
+    image: emqx/emqx:5.4.0
+    container_name: flink-iot-emqx
+    environment:
+      EMQX_NODE_NAME: emqx@127.0.0.1
+      EMQX_CLUSTER__DISCOVERY_STRATEGY: static
+      EMQX_CLUSTER__STATIC__SEEDS: "[emqx@127.0.0.1]"
+      EMQX_DASHBOARD__DEFAULT_USERNAME: admin
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: public
+      EMQX_LISTENERS__TCP__DEFAULT__BIND: "0.0.0.0:1883"
+      EMQX_LISTENERS__SSL__DEFAULT__BIND: "0.0.0.0:8883"
+      EMQX_LISTENERS__WS__DEFAULT__BIND: "0.0.0.0:8083"
+      EMQX_LISTENERS__WSS__DEFAULT__BIND: "0.0.0.0:8084"
+    ports:
+      - "1883:1883"     # MQTT
+      - "8883:8883"     # MQTTS
+      - "8083:8083"     # WebSocket
+      - "8084:8084"     # WebSocket Secure
+      - "18083:18083"   # Dashboard
+    volumes:
+      - emqx-data:/opt/emqx/data
+      - emqx-etc:/opt/emqx/etc
+      - emqx-log:/opt/emqx/log
+    healthcheck:
+      test: ["CMD", "emqx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # InfluxDB - 时序数据存储
+  # ==========================================================================
+  influxdb:
+    image: influxdb:2.7
+    container_name: flink-iot-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: flink-iot-2024
+      DOCKER_INFLUXDB_INIT_ORG: flink-iot
+      DOCKER_INFLUXDB_INIT_BUCKET: sensor-data
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: flink-iot-token-12345
+      INFLUXDB_HTTP_AUTH_ENABLED: "true"
+      INFLUXDB_DATA_MAX_SERIES_PER_DATABASE: 0
+      INFLUXDB_DATA_MAX_VALUES_PER_TAG: 0
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # InfluxDB Init - 创建Buckets和Tokens
+  # ==========================================================================
+  influxdb-init:
+    image: influxdb:2.7
+    container_name: flink-iot-influxdb-init
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      sleep 5 &&
+      influx bucket create --name processed-metrics --org flink-iot --token flink-iot-token-12345 --retention 7d || true &&
+      influx bucket create --name alerts --org flink-iot --token flink-iot-token-12345 --retention 30d || true &&
+      echo 'InfluxDB initialized'
+      "
+    networks:
+      - flink-iot-network
+    restart: "no"
+
+  # ==========================================================================
+  # Prometheus - 指标收集
+  # ==========================================================================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: flink-iot-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Grafana - 可视化监控
+  # ==========================================================================
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: flink-iot-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: flink-iot-grafana
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./prometheus/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      - ./prometheus/grafana-dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml:ro
+      - ./prometheus/flink-dashboard.json:/var/lib/grafana/dashboards/flink-dashboard.json:ro
+      - ./prometheus/iot-dashboard.json:/var/lib/grafana/dashboards/iot-dashboard.json:ro
+    depends_on:
+      - prometheus
+      - influxdb
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Mock Data Generator
+  # ==========================================================================
+  mock-data-generator:
+    image: python:3.11-slim
+    container_name: flink-iot-mock-generator
+    depends_on:
+      kafka:
+        condition: service_healthy
+      emqx:
+        condition: service_healthy
+    volumes:
+      - ./mock-data:/app
+      - ./mock-data/device-registry.json:/app/device-registry.json:ro
+    working_dir: /app
+    command: >
+      sh -c "
+        pip install --no-cache-dir kafka-python paho-mqtt numpy faker -q &&
+        python sensor-generator.py
+      "
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MQTT_BROKER: emqx
+      MQTT_PORT: 1883
+      DEVICE_COUNT: 100
+      MESSAGE_RATE: 10
+      OUT_OF_ORDER_PROBABILITY: 0.05
+      BATCH_MODE: "true"
+    networks:
+      - flink-iot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: unless-stopped
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  flink-iot-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ============================================================================
+# Volumes
+# ============================================================================
+volumes:
+  zookeeper-data:
+  zookeeper-logs:
+  kafka-data:
+  flink-checkpoints:
+  emqx-data:
+  emqx-etc:
+  emqx-log:
+  influxdb-data:
+  influxdb-config:
+  prometheus-data:
+  grafana-data:
