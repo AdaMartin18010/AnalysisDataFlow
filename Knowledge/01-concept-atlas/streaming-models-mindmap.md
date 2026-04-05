@@ -342,7 +342,7 @@ graph TB
 
 ---
 
-## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证}
 
 ### 定理 5.1 (流计算模型选型的充分条件)
 
