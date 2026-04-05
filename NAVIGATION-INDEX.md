@@ -22,22 +22,22 @@
 | 角色 | 推荐入口 | 核心关注点 |
 |------|----------|------------|
 | **架构师** | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 技术选型、容量规划、成本模型 |
-| | [Flink/01-architecture/deployment-architectures.md](Flink/01-architecture/deployment-architectures.md) | 部署架构、高可用设计 |
+| | [Flink/01-concepts/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) | 部署架构、高可用设计 |
 | | [Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md](Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) | 数据网格、组织治理 |
-| **开发工程师** | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | Checkpoint机制、容错实现 |
+| **开发工程师** | [Flink/02-core/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | Checkpoint机制、容错实现 |
 | | [Knowledge/02-design-patterns/](Knowledge/02-design-patterns/) | 设计模式、代码实践 |
-| | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 性能调优、问题诊断 |
+| | [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 性能调优、问题诊断 |
 | **研究员** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | 统一流理论、形式化基础 |
 | | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 正确性证明、形式化验证 |
 | | [Struct/07-tools/smart-casual-verification.md](Struct/07-tools/smart-casual-verification.md) | 前沿验证方法 |
 | **学生/初学者** | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 5分钟快速上手 |
 | | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | 第一个Flink作业 |
-| | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 流计算入门、概念对比 |
+| | [Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) | 流计算入门、概念对比 |
 | | [Knowledge/98-exercises/exercise-01-process-calculus.md](Knowledge/98-exercises/exercise-01-process-calculus.md) | 渐进式练习 |
 | | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 概念图谱 |
-| **运维工程师** | [Flink/10-deployment/kubernetes-deployment-production-guide.md](Flink/10-deployment/kubernetes-deployment-production-guide.md) | K8s部署、生产运维 |
-| | [Flink/15-observability/metrics-and-monitoring.md](Flink/15-observability/metrics-and-monitoring.md) | 监控指标、可观测性 |
-| | [Flink/02-core-mechanisms/backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md) | 背压处理、流控机制 |
+| **运维工程师** | [Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md](Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md) | K8s部署、生产运维 |
+| | [Flink/04-runtime/04.03-observability/metrics-and-monitoring.md](Flink/04-runtime/04.03-observability/metrics-and-monitoring.md) | 监控指标、可观测性 |
+| | [Flink/02-core/backpressure-and-flow-control.md](Flink/02-core/backpressure-and-flow-control.md) | 背压处理、流控机制 |
 
 ### 1.2 按主题入口
 
@@ -50,13 +50,13 @@
 | | [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) | 10大反模式 |
 | | [Knowledge/03-business-patterns/](Knowledge/03-business-patterns/) | 业务场景实践 |
 | | [Knowledge/07-best-practices/](Knowledge/07-best-practices/) | 最佳实践 |
-| **Flink专项** | [Flink/02-core-mechanisms/](Flink/02-core-mechanisms/) | 核心机制 |
-| | [Flink/03-sql-table-api/](Flink/03-sql-table-api/) | SQL与Table API |
-| | [Flink/04-connectors/](Flink/04-connectors/) | 连接器生态 |
-| | [Flink/12-ai-ml/](Flink/12-ai-ml/) | AI/ML集成 |
+| **Flink专项** | [Flink/02-core/](Flink/02-core/) | 核心机制 |
+| | [Flink/03-api/03.02-table-sql-api/](Flink/03-api/03.02-table-sql-api/) | SQL与Table API |
+| | [Flink/05-ecosystem/05.01-connectors/](Flink/05-ecosystem/05.01-connectors/) | 连接器生态 |
+| | [Flink/06-ai-ml/](Flink/06-ai-ml/) | AI/ML集成 |
 | **前沿技术** | [Knowledge/06-frontier/realtime-ai-streaming-2026.md](Knowledge/06-frontier/realtime-ai-streaming-2026.md) | 实时AI流处理 |
 | | [Knowledge/06-frontier/vector-search-streaming-convergence.md](Knowledge/06-frontier/vector-search-streaming-convergence.md) | 向量搜索集成 |
-| | [Flink/12-ai-ml/flink-agents-flip-531.md](Flink/12-ai-ml/flink-agents-flip-531.md) | Flink AI Agents |
+| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | Flink AI Agents |
 | | [Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md](Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md) | Streaming Lakehouse |
 | | [Knowledge/06-frontier/mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | MCP协议 |
 | | [Knowledge/06-frontier/a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | A2A协议 |
@@ -65,23 +65,23 @@
 
 | 问题场景 | 诊断文档 | 解决方案 |
 |----------|----------|----------|
-| **Checkpoint失败** | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 超时调优、增量配置 |
+| **Checkpoint失败** | [Flink/02-core/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 超时调优、增量配置 |
 | | [Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md](Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md) | 间隔优化 |
-| **背压问题** | [Flink/02-core-mechanisms/backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md) | 背压机制详解 |
+| **背压问题** | [Flink/02-core/backpressure-and-flow-control.md](Flink/02-core/backpressure-and-flow-control.md) | 背压机制详解 |
 | | [Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md](Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md) | 背压处理策略 |
 | **数据倾斜** | [Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md](Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md) | 热点Key处理 |
-| | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 分区优化 |
-| **Exactly-Once保证** | [Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md](Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md) | 端到端语义 |
+| | [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 分区优化 |
+| **Exactly-Once保证** | [Flink/02-core/exactly-once-semantics-deep-dive.md](Flink/02-core/exactly-once-semantics-deep-dive.md) | 端到端语义 |
 | | [Struct/04-proofs/04.02-flink-exactly-once-correctness.md](Struct/04-proofs/04.02-flink-exactly-once-correctness.md) | 正确性证明 |
-| **Watermark设置** | [Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) | 时间语义详解 |
+| **Watermark设置** | [Flink/02-core/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 时间语义详解 |
 | | [Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md](Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md) | 配置优化 |
 | **OOM问题** | [Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md](Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md) | 窗口状态管理 |
 | | [Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md](Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md) | 资源估算 |
-| **多流Join** | [Flink/02-core-mechanisms/delta-join.md](Flink/02-core-mechanisms/delta-join.md) | Delta Join优化 |
+| **多流Join** | [Flink/02-core/delta-join.md](Flink/02-core/delta-join.md) | Delta Join优化 |
 | | [Knowledge/09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md](Knowledge/09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md) | Join对齐策略 |
 | **技术选型** | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 引擎选型决策树 |
 | | [Knowledge/04-technology-selection/flink-vs-risingwave.md](Knowledge/04-technology-selection/flink-vs-risingwave.md) | Flink vs RisingWave |
-| | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | Flink vs Spark |
+| | [Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) | Flink vs Spark |
 
 ---
 
@@ -92,8 +92,8 @@
 | 决策树 | 文档路径 | 适用场景 |
 |--------|----------|----------|
 | **流处理引擎选型决策树** | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 选择Flink/Spark/Kafka Streams |
-| **状态后端选型决策树** | [Flink/06-engineering/state-backend-selection.md](Flink/06-engineering/state-backend-selection.md) | RocksDB/HashMap/Forst选择 |
-| **部署模式决策树** | [Flink/01-architecture/deployment-architectures.md](Flink/01-architecture/deployment-architectures.md) | Standalone/YARN/K8s选择 |
+| **状态后端选型决策树** | [Flink/09-practices/09.03-performance-tuning/state-backend-selection.md](Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) | RocksDB/HashMap/Forst选择 |
+| **部署模式决策树** | [Flink/01-concepts/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) | Standalone/YARN/K8s选择 |
 | **一致性级别决策树** | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | At-Most-Once/At-Least-Once/Exactly-Once选择 |
 | **技术范式决策树** | [Knowledge/04-technology-selection/paradigm-selection-guide.md](Knowledge/04-technology-selection/paradigm-selection-guide.md) | Dataflow/Actor/CSP选择 |
 | **存储选型决策树** | [Knowledge/04-technology-selection/storage-selection-guide.md](Knowledge/04-technology-selection/storage-selection-guide.md) | 状态存储选择 |
@@ -105,11 +105,11 @@
 | 对比矩阵 | 文档路径 | 对比维度 |
 |----------|----------|----------|
 | **并发范式对比矩阵** | [Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md](Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md) | Actor/CSP/Dataflow/π-calculus |
-| **Flink vs Spark Streaming** | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 架构/语义/性能/生态 |
+| **Flink vs Spark Streaming** | [Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) | 架构/语义/性能/生态 |
 | **Flink vs RisingWave** | [Knowledge/04-technology-selection/flink-vs-risingwave.md](Knowledge/04-technology-selection/flink-vs-risingwave.md) | 架构/成本/适用场景 |
 | **流数据库生态对比** | [Knowledge/06-frontier/streaming-database-ecosystem-comparison.md](Knowledge/06-frontier/streaming-database-ecosystem-comparison.md) | RisingWave/Materialize/Timeplus |
 | **Rust流处理生态对比** | [Knowledge/06-frontier/rust-streaming-ecosystem.md](Knowledge/06-frontier/rust-streaming-ecosystem.md) | Arroyo/RisingWave/Timeplus |
-| **Streaming Lakehouse格式对比** | [Flink/14-lakehouse/streaming-lakehouse-architecture.md](Flink/14-lakehouse/streaming-lakehouse-architecture.md) | Iceberg/Delta/Paimon |
+| **Streaming Lakehouse格式对比** | [Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | Iceberg/Delta/Paimon |
 | **多Agent框架对比** | [Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md](Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md) | A2A/MCP/ACP |
 | **Streaming SQL引擎对比** | [Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md](Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md) | Flink SQL/RisingWave SQL |
 
@@ -131,13 +131,13 @@
 | 可视化 | 文档路径 | 图表类型 |
 |--------|----------|----------|
 | **Chandy-Lamport算法执行树** | [Struct/04-proofs/04.03-chandy-lamport-consistency.md](Struct/04-proofs/04.03-chandy-lamport-consistency.md) | 状态图/时序图 |
-| **Checkpoint状态机** | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 状态图 |
+| **Checkpoint状态机** | [Flink/02-core/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 状态图 |
 | **Watermark传播图** | [Struct/04-proofs/04.04-watermark-algebra-formal-proof.md](Struct/04-proofs/04.04-watermark-algebra-formal-proof.md) | 代数图/时序图 |
-| **Flink 1.x vs 2.0架构对比** | [Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) | 架构图对比 |
-| **Flink 2.3路线图** | [Flink/08-roadmap/flink-2.3-2.4-roadmap.md](Flink/08-roadmap/flink-2.3-2.4-roadmap.md) | 甘特图/路线图 |
-| **Streaming Lakehouse架构** | [Flink/14-lakehouse/streaming-lakehouse-architecture.md](Flink/14-lakehouse/streaming-lakehouse-architecture.md) | 分层架构图 |
+| **Flink 1.x vs 2.0架构对比** | [Flink/01-concepts/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | 架构图对比 |
+| **Flink 2.3路线图** | [Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | 甘特图/路线图 |
+| **Streaming Lakehouse架构** | [Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | 分层架构图 |
 | **实时AI流处理架构** | [Knowledge/06-frontier/multimodal-streaming-architecture.md](Knowledge/06-frontier/multimodal-streaming-architecture.md) | 多模态架构图 |
-| **RAG流式架构** | [Flink/12-ai-ml/rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) | 系统架构图 |
+| **RAG流式架构** | [Flink/06-ai-ml/rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) | 系统架构图 |
 
 ---
 
@@ -244,77 +244,77 @@
 
 | 主题 | 文档 | 关键内容 |
 |------|------|----------|
-| Checkpoint机制 | [checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | Barrier算法、增量Checkpoint |
-| Exactly-Once语义 | [exactly-once-semantics-deep-dive.md](Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md) | 两阶段提交、事务Sink |
-| 背压与流控 | [backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md) | 信用值机制、反压传播 |
-| 时间语义 | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) | Event Time/Processing Time |
-| Delta Join | [delta-join.md](Flink/02-core-mechanisms/delta-join.md) | 大状态Join优化 |
-| Async执行模型 | [async-execution-model.md](Flink/02-core-mechanisms/async-execution-model.md) | Flink 2.0新特性 |
-| ForState Backend | [forst-state-backend.md](Flink/02-core-mechanisms/forst-state-backend.md) | 云原生状态存储 |
-| 智能Checkpoint | [smart-checkpointing-strategies.md](Flink/02-core-mechanisms/smart-checkpointing-strategies.md) | 自适应策略 |
+| Checkpoint机制 | [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | Barrier算法、增量Checkpoint |
+| Exactly-Once语义 | [exactly-once-semantics-deep-dive.md](Flink/02-core/exactly-once-semantics-deep-dive.md) | 两阶段提交、事务Sink |
+| 背压与流控 | [backpressure-and-flow-control.md](Flink/02-core/backpressure-and-flow-control.md) | 信用值机制、反压传播 |
+| 时间语义 | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | Event Time/Processing Time |
+| Delta Join | [delta-join.md](Flink/02-core/delta-join.md) | 大状态Join优化 |
+| Async执行模型 | [async-execution-model.md](Flink/02-core/async-execution-model.md) | Flink 2.0新特性 |
+| ForState Backend | [forst-state-backend.md](Flink/02-core/forst-state-backend.md) | 云原生状态存储 |
+| 智能Checkpoint | [smart-checkpointing-strategies.md](Flink/02-core/smart-checkpointing-strategies.md) | 自适应策略 |
 
 #### SQL与Table API (03-sql-table-api/)
 
 | 主题 | 文档 | 关键内容 |
 |------|------|----------|
-| 窗口函数 | [flink-sql-window-functions-deep-dive.md](Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md) | TUMBLE/HOP/SESSION |
-| 查询优化 | [flink-sql-calcite-optimizer-deep-dive.md](Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md) | Calcite优化器 |
-| SQL Hints | [flink-sql-hints-optimization.md](Flink/03-sql-table-api/flink-sql-hints-optimization.md) | 执行计划调优 |
-| Model DDL | [model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | AI推理集成 |
-| 向量搜索 | [flink-vector-search-rag.md](Flink/03-sql-table-api/flink-vector-search-rag.md) | VECTOR_SEARCH函数 |
-| 物化表 | [materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | FRESHNESS语义 |
-| SQL速查表 | [sql-functions-cheatsheet.md](Flink/03-sql-table-api/sql-functions-cheatsheet.md) | 150+函数速查 |
+| 窗口函数 | [flink-sql-window-functions-deep-dive.md](Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) | TUMBLE/HOP/SESSION |
+| 查询优化 | [flink-sql-calcite-optimizer-deep-dive.md](Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md) | Calcite优化器 |
+| SQL Hints | [flink-sql-hints-optimization.md](Flink/03-api/03.02-table-sql-api/flink-sql-hints-optimization.md) | 执行计划调优 |
+| Model DDL | [model-ddl-and-ml-predict.md](Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | AI推理集成 |
+| 向量搜索 | [flink-vector-search-rag.md](Flink/03-api/03.02-table-sql-api/flink-vector-search-rag.md) | VECTOR_SEARCH函数 |
+| 物化表 | [materialized-tables.md](Flink/03-api/03.02-table-sql-api/materialized-tables.md) | FRESHNESS语义 |
+| SQL速查表 | [sql-functions-cheatsheet.md](Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md) | 150+函数速查 |
 
 #### 连接器生态 (04-connectors/)
 
 | 连接器 | 文档 | 特性 |
 |--------|------|------|
-| Kafka集成 | [kafka-integration-patterns.md](Flink/04-connectors/kafka-integration-patterns.md) | Source/Sink、精确一次 |
-| CDC Debezium | [04.04-cdc-debezium-integration.md](Flink/04-connectors/04.04-cdc-debezium-integration.md) | 变更数据捕获 |
-| Flink CDC 3.0 | [flink-cdc-3.0-data-integration.md](Flink/04-connectors/flink-cdc-3.0-data-integration.md) | 数据集成框架 |
-| Iceberg | [flink-iceberg-integration.md](Flink/04-connectors/flink-iceberg-integration.md) | Lakehouse集成 |
-| Paimon | [flink-paimon-integration.md](Flink/04-connectors/flink-paimon-integration.md) | 流式数据湖 |
-| Delta Lake | [flink-delta-lake-integration.md](Flink/04-connectors/flink-delta-lake-integration.md) | Delta格式支持 |
-| Apache Fluss | [fluss-integration.md](Flink/04-connectors/fluss-integration.md) | 流分析存储 |
-| CloudEvents | [cloudevents-integration-guide.md](Flink/04-connectors/cloudevents-integration-guide.md) | CNCF标准集成 |
+| Kafka集成 | [kafka-integration-patterns.md](Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) | Source/Sink、精确一次 |
+| CDC Debezium | [04.04-cdc-debezium-integration.md](Flink/05-ecosystem/05.01-connectors/04.04-cdc-debezium-integration.md) | 变更数据捕获 |
+| Flink CDC 3.0 | [flink-cdc-3.0-data-integration.md](Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md) | 数据集成框架 |
+| Iceberg | [flink-iceberg-integration.md](Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md) | Lakehouse集成 |
+| Paimon | [flink-paimon-integration.md](Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md) | 流式数据湖 |
+| Delta Lake | [flink-delta-lake-integration.md](Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md) | Delta格式支持 |
+| Apache Fluss | [fluss-integration.md](Flink/05-ecosystem/05.01-connectors/fluss-integration.md) | 流分析存储 |
+| CloudEvents | [cloudevents-integration-guide.md](Flink/05-ecosystem/05.01-connectors/cloudevents-integration-guide.md) | CNCF标准集成 |
 
 #### 部署与运维 (10-deployment/)
 
 | 主题 | 文档 | 关键内容 |
 |------|------|----------|
-| K8s生产部署 | [kubernetes-deployment-production-guide.md](Flink/10-deployment/kubernetes-deployment-production-guide.md) | Operator、HA配置 |
-| K8s Autoscaler | [flink-kubernetes-autoscaler-deep-dive.md](Flink/10-deployment/flink-kubernetes-autoscaler-deep-dive.md) | 自动扩缩容 |
-| Serverless架构 | [flink-serverless-architecture.md](Flink/10-deployment/flink-serverless-architecture.md) | 无服务器部署 |
-| Serverless GA | [serverless-flink-ga-guide.md](Flink/10-deployment/serverless-flink-ga-guide.md) | 完全指南 |
-| 多云部署模板 | [multi-cloud-deployment-templates.md](Flink/10-deployment/multi-cloud-deployment-templates.md) | 5大云平台模板 |
-| 成本优化计算器 | [cost-optimization-calculator.md](Flink/10-deployment/cost-optimization-calculator.md) | Python成本工具 |
+| K8s生产部署 | [kubernetes-deployment-production-guide.md](Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md) | Operator、HA配置 |
+| K8s Autoscaler | [flink-kubernetes-autoscaler-deep-dive.md](Flink/04-runtime/04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md) | 自动扩缩容 |
+| Serverless架构 | [flink-serverless-architecture.md](Flink/04-runtime/04.01-deployment/flink-serverless-architecture.md) | 无服务器部署 |
+| Serverless GA | [serverless-flink-ga-guide.md](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) | 完全指南 |
+| 多云部署模板 | [multi-cloud-deployment-templates.md](Flink/04-runtime/04.01-deployment/multi-cloud-deployment-templates.md) | 5大云平台模板 |
+| 成本优化计算器 | [cost-optimization-calculator.md](Flink/04-runtime/04.01-deployment/cost-optimization-calculator.md) | Python成本工具 |
 
 #### AI/ML集成 (12-ai-ml/)
 
 | 主题 | 文档 | 关键内容 |
 |------|------|----------|
-| Flink AI Agents | [flink-agents-flip-531.md](Flink/12-ai-ml/flink-agents-flip-531.md) | FLIP-531原生Agent |
-| LLM集成 | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | 大模型集成 |
-| 实时推理 | [flink-realtime-ml-inference.md](Flink/12-ai-ml/flink-realtime-ml-inference.md) | 在线预测 |
-| 特征工程 | [realtime-feature-engineering-feature-store.md](Flink/12-ai-ml/realtime-feature-engineering-feature-store.md) | 特征平台 |
-| 向量数据库 | [vector-database-integration.md](Flink/12-ai-ml/vector-database-integration.md) | Milvus/Pinecone |
-| RAG架构 | [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) | 检索增强生成 |
-| 在线学习 | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | 增量学习 |
-| AI Agents GA | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 生产级发布 |
+| Flink AI Agents | [flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531原生Agent |
+| LLM集成 | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | 大模型集成 |
+| 实时推理 | [flink-realtime-ml-inference.md](Flink/06-ai-ml/flink-realtime-ml-inference.md) | 在线预测 |
+| 特征工程 | [realtime-feature-engineering-feature-store.md](Flink/06-ai-ml/realtime-feature-engineering-feature-store.md) | 特征平台 |
+| 向量数据库 | [vector-database-integration.md](Flink/06-ai-ml/vector-database-integration.md) | Milvus/Pinecone |
+| RAG架构 | [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) | 检索增强生成 |
+| 在线学习 | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | 增量学习 |
+| AI Agents GA | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 生产级发布 |
 
 ### 3.4 前沿技术文档索引 (Knowledge/06-frontier/ & Flink/前沿/)
 
 | 技术方向 | 文档 | 成熟度 |
 |----------|------|--------|
 | **AI Agent流处理** | [ai-agent-streaming-architecture.md](Knowledge/06-frontier/ai-agent-streaming-architecture.md) | 🔶 新兴 |
-| | [Flink/12-ai-ml/flink-agents-flip-531.md](Flink/12-ai-ml/flink-agents-flip-531.md) | 🔶 新兴 |
+| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | 🔶 新兴 |
 | **MCP协议** | [mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | 🔶 新兴 |
 | **A2A协议** | [a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | 🔶 新兴 |
 | **多模态流处理** | [multimodal-streaming-architecture.md](Knowledge/06-frontier/multimodal-streaming-architecture.md) | 🔶 新兴 |
 | **实时RAG** | [real-time-rag-architecture.md](Knowledge/06-frontier/real-time-rag-architecture.md) | 🔷 成熟 |
-| | [Flink/12-ai-ml/rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) | 🔷 成熟 |
+| | [Flink/06-ai-ml/rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) | 🔷 成熟 |
 | **Streaming Lakehouse** | [streaming-lakehouse-iceberg-delta.md](Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md) | 🔷 成熟 |
-| | [Flink/14-lakehouse/streaming-lakehouse-architecture.md](Flink/14-lakehouse/streaming-lakehouse-architecture.md) | 🔷 成熟 |
+| | [Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | 🔷 成熟 |
 | **流数据库** | [streaming-databases.md](Knowledge/06-frontier/streaming-databases.md) | 🔷 成熟 |
 | | [risingwave-deep-dive.md](Knowledge/06-frontier/risingwave-deep-dive.md) | 🔷 成熟 |
 | **实时特征平台** | [realtime-feature-store-architecture.md](Knowledge/06-frontier/realtime-feature-store-architecture.md) | 🔷 成熟 |
@@ -326,7 +326,7 @@
 | | [realtime-graph-streaming-tgnn.md](Knowledge/06-frontier/realtime-graph-streaming-tgnn.md) | 🔶 新兴 |
 | **WebAssembly数据流** | [wasm-dataflow-patterns.md](Knowledge/06-frontier/wasm-dataflow-patterns.md) | 🔶 新兴 |
 | **Rust流处理生态** | [rust-streaming-ecosystem.md](Knowledge/06-frontier/rust-streaming-ecosystem.md) | 🔷 成熟 |
-| **GPU可信执行** | [Flink/13-security/gpu-confidential-computing.md](Flink/13-security/gpu-confidential-computing.md) | 🔶 新兴 |
+| **GPU可信执行** | [Flink/09-practices/09.04-security/gpu-confidential-computing.md](Flink/09-practices/09.04-security/gpu-confidential-computing.md) | 🔶 新兴 |
 | **Temporal+Flink** | [temporal-flink-layered-architecture.md](Knowledge/06-frontier/temporal-flink-layered-architecture.md) | 🔶 新兴 |
 
 ---
@@ -356,7 +356,7 @@
 
 | 环境 | 文档 | 用途 |
 |------|------|------|
-| Flink本地开发 | [Flink/10-deployment/kubernetes-deployment.md](Flink/10-deployment/kubernetes-deployment.md) | 本地K8s部署 |
+| Flink本地开发 | [Flink/04-runtime/04.01-deployment/kubernetes-deployment.md](Flink/04-runtime/04.01-deployment/kubernetes-deployment.md) | 本地K8s部署 |
 | 流处理实验环境 | [tutorials/interactive/README.md](tutorials/interactive/README.md) | 练习环境 |
 
 ### 4.4 搜索工具入口
@@ -390,12 +390,12 @@
 | 🟢 入门级 | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 5分钟 |
 | 🟢 入门级 | [tutorials/01-environment-setup.md](tutorials/01-environment-setup.md) | 30分钟 |
 | 🟢 入门级 | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | 1小时 |
-| 🟢 入门级 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) | 1小时 |
+| 🟢 入门级 | [Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) | 1小时 |
 | 🟢 入门级 | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 30分钟 |
-| 🟡 中级 | [Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) | 2小时 |
+| 🟡 中级 | [Flink/02-core/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 2小时 |
 | 🟡 中级 | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | 2小时 |
 | 🔴 高级 | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 4小时 |
-| 🔴 高级 | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 4小时 |
+| 🔴 高级 | [Flink/02-core/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 4小时 |
 
 ### 5.2 学习路径引导
 
@@ -405,9 +405,9 @@
 Week 1: tutorials/00-5-MINUTE-QUICK-START.md (5分钟快速体验)
         → tutorials/01-environment-setup.md (环境搭建)
         → tutorials/02-first-flink-job.md (第一个Flink作业)
-Week 2: Flink/05-vs-competitors/flink-vs-spark-streaming.md
+Week 2: Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md
         → Knowledge/01-concept-atlas/streaming-models-mindmap.md
-Week 3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 3: Flink/02-core/time-semantics-and-watermark.md
         → Knowledge/02-design-patterns/pattern-event-time-processing.md
 Week 4: Knowledge/02-design-patterns/ (全模式深入)
         → Knowledge/98-exercises/exercise-02-flink-basics.md
@@ -416,8 +416,8 @@ Week 4: Knowledge/02-design-patterns/ (全模式深入)
 #### 进阶工程师路径 (4-6周)
 
 ```
-Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
-          → Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md
+Week 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
+          → Flink/02-core/exactly-once-semantics-deep-dive.md
 Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
           → Struct/04-proofs/04.02-flink-exactly-once-correctness.md
 Week 5-6: Knowledge/02-design-patterns/ (全模式深入)
@@ -429,7 +429,7 @@ Week 5-6: Knowledge/02-design-patterns/ (全模式深入)
 ```
 Struct/01-foundation/ (理论基础)
   → Knowledge/04-technology-selection/ (选型决策)
-    → Flink/01-architecture/ (架构实现)
+    → Flink/01-concepts/ (架构实现)
       → Knowledge/03-business-patterns/ (业务场景)
         → Struct/06-frontier/ (前沿探索)
 ```
@@ -441,9 +441,9 @@ Struct/01-foundation/ (理论基础)
 | **5分钟快速入门** | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 最简Flink作业创建与运行 |
 | **环境搭建指南** | [tutorials/01-environment-setup.md](tutorials/01-environment-setup.md) | JDK/Maven/Flink安装配置 |
 | **第一个Flink作业** | [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) | WordCount完整开发流程 |
-| **DataStream API速查** | [Flink/09-language-foundations/datastream-api-cheatsheet.md](Flink/09-language-foundations/datastream-api-cheatsheet.md) | Source/Transformation/Sink速查 |
-| **SQL函数速查** | [Flink/03-sql-table-api/sql-functions-cheatsheet.md](Flink/03-sql-table-api/sql-functions-cheatsheet.md) | Flink SQL内置函数参考 |
-| **Checkpoint调优速查** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 参数配置、超时处理 |
+| **DataStream API速查** | [Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md](Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | Source/Transformation/Sink速查 |
+| **SQL函数速查** | [Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md](Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md) | Flink SQL内置函数参考 |
+| **Checkpoint调优速查** | [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 参数配置、超时处理 |
 | **Flink vs RisingWave速查** | [Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md](Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md) | 选型对比 |
 | **Temporal+Flink速查** | [Knowledge/98-exercises/quick-ref-temporal-flink.md](Knowledge/98-exercises/quick-ref-temporal-flink.md) | 集成要点 |
 | **安全合规速查** | [Knowledge/98-exercises/quick-ref-security-compliance.md](Knowledge/98-exercises/quick-ref-security-compliance.md) | GDPR/CCPA |
