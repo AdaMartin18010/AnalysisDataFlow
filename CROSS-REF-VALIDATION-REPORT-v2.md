@@ -154,9 +154,9 @@
 
 #### tutorials/interactive/README.md (5个)
 
-- `[Struct/](../../Struct/)` → `Struct索引` (待创建索引文件)
-- `[Knowledge/](../../Knowledge/)` → `Knowledge索引` (待创建索引文件)
-- `[Flink/](../../Flink/)` → `Flink索引` (待创建索引文件)
+- `Struct/` → `Struct索引` (待创建索引文件)
+- `Knowledge/` → `Knowledge索引` (待创建索引文件)
+- `Flink/` → `Flink索引` (待创建索引文件)
 - `AGENTS.md` → `AGENTS.md` (修复相对路径)
 - `PROJECT-TRACKING.md` → `PROJECT-TRACKING.md` (修复相对路径)
 
