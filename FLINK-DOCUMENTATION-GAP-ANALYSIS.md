@@ -469,7 +469,7 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 ### 项目文档
 - [项目Flink索引](Flink/00-INDEX.md)
 - [项目快速开始](Flink/00-QUICK-START.md)
-- [项目版本跟踪](../PROJECT-VERSION-TRACKING.md)
+- [项目版本跟踪](./PROJECT-VERSION-TRACKING.md)
 
 ---
 

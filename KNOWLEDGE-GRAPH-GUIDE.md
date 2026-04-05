@@ -442,7 +442,7 @@ for edge in data['edges']:
 
 - [D3.js Documentation](https://d3js.org/)
 - [Force-Directed Graph](https://observablehq.com/@d3/force-directed-graph)
-- [AnalysisDataFlow 项目文档](../README.md)
+- [AnalysisDataFlow 项目文档](./README.md)
 
 ---
 

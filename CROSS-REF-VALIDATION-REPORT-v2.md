@@ -154,9 +154,9 @@
 
 #### tutorials/interactive/README.md (5个)
 
-- `[Struct/](../../../Struct/)` → `[Struct索引](../../Struct/00-INDEX.md)`
-- `[Knowledge/](../../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md)`
-- `[Flink/](../../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md)`
+- `[Struct/](../../Struct/)` → `[Struct索引](../../Struct/00-INDEX.md) <!-- 文件待创建 -->`
+- `[Knowledge/](../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md) <!-- 文件待创建 -->`
+- `[Flink/](../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md) <!-- 文件待创建 -->`
 - `[AGENTS.md](../../../AGENTS.md)` → `[AGENTS.md](../../AGENTS.md)`
 - `[PROJECT-TRACKING.md](../../../PROJECT-TRACKING.md)` → `[PROJECT-TRACKING.md](../../PROJECT-TRACKING.md)`
 
@@ -167,8 +167,8 @@
 
 #### visuals/matrix-models.md (2个)
 
-- 修复目录链接: `[../Flink/](../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md)`
-- 修复目录链接: `[../Knowledge/](../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md)`
+- 修复目录链接: `[../Flink/](../../Flink/)` → `[Flink索引](../../Flink/00-INDEX.md) <!-- 文件待创建 -->`
+- 修复目录链接: `[../Knowledge/](../../Knowledge/)` → `[Knowledge索引](../../Knowledge/00-INDEX.md) <!-- 文件待创建 -->`
 
 ### 第五轮修复 (1个)
 
