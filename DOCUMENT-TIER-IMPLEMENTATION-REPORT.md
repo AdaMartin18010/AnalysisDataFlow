@@ -30,18 +30,21 @@
 ### 1.2 文件功能
 
 **DOCUMENT-TIER-STANDARD.md**:
+
 - 定义三层文档分级标准（核心层/进阶层/参考层）
 - 制定 YAML frontmatter 标签规范
 - 建立审查周期和维护责任体系
 - 设计升级/降级机制
 
 **DOCUMENT-TIERS.md**:
+
 - 列出所有513篇文档的分级归属
 - 按目录分类统计
 - 包含形式化元素统计
 - 提供维护计划
 
 **scripts/manage-doc-tiers.py**:
+
 - `scan` - 扫描所有文档并分级
 - `tier` - 查看指定文档的分级信息
 - `apply-core` - 批量应用核心层标签
@@ -90,6 +93,7 @@
 ### 3.1 Struct/ - 基础理论 (16篇)
 
 **01-foundation/ 基础理论 (8篇)**:
+
 1. `01.01-unified-streaming-theory.md` - 统一流计算元模型 (L6)
 2. `01.02-process-calculus-primer.md` - 进程演算基础 (L3-L4)
 3. `01.03-actor-model-formalization.md` - Actor模型形式化 (L4-L5)
@@ -160,6 +164,7 @@
 ### 4.1 Struct/ (15篇)
 
 **03-relationships/ 关系建立 (5篇)**:
+
 - `03.01-actor-to-csp-encoding.md` - Actor到CSP编码
 - `03.02-flink-to-process-calculus.md` - Flink到进程演算编码
 - `03.03-expressiveness-hierarchy.md` - 表达能力层次定理
@@ -167,6 +172,7 @@
 - `03.05-cross-model-mappings.md` - 跨模型统一映射框架
 
 **04-proofs/ 形式证明 (7篇)**:
+
 - `04.01-flink-checkpoint-correctness.md` - Flink Checkpoint正确性证明
 - `04.02-flink-exactly-once-correctness.md` - Flink Exactly-Once正确性证明
 - `04.03-chandy-lamport-consistency.md` - Chandy-Lamport快照一致性证明
@@ -176,6 +182,7 @@
 - `04.07-deadlock-freedom-choreographic.md` - Choreographic死锁自由证明
 
 **07-tools/ 工具实践 (3篇)**:
+
 - `coq-mechanization.md` - Coq机械化证明
 - `tla-for-flink.md` - TLA+形式化验证Flink
 - `smart-casual-verification.md` - Smart Casual Verification
@@ -183,6 +190,7 @@
 ### 4.2 Knowledge/ (35篇)
 
 **03-business-patterns/ 业务场景 (13篇)**:
+
 - `fintech-realtime-risk-control.md` - 金融实时风控
 - `real-time-recommendation.md` - 实时推荐系统
 - `iot-stream-processing.md` - IoT流处理
@@ -198,6 +206,7 @@
 - `streaming-data-product-economics.md` - 流数据产品经济学
 
 **04-technology-selection/ 技术选型 (5篇)**:
+
 - `paradigm-selection-guide.md` - 并发范式选型指南
 - `engine-selection-guide.md` - 流处理引擎选型
 - `streaming-database-guide.md` - 流数据库选型
@@ -205,6 +214,7 @@
 - `flink-vs-risingwave.md` - Flink vs RisingWave深度对比
 
 **05-mapping-guides/ 映射指南 (7篇)**:
+
 - `struct-to-flink-mapping.md` - Struct到Flink映射
 - `theory-to-code-patterns.md` - 理论到代码模式
 - `migration-guides/05.1-spark-streaming-to-flink-migration.md` - Spark Streaming迁移
@@ -214,6 +224,7 @@
 - `migration-guides/05.5-batch-to-streaming-migration.md` - 批处理迁移到流处理
 
 **07-best-practices/ 最佳实践 (7篇)**:
+
 - `07.01-flink-production-checklist.md` - Flink生产检查清单
 - `07.02-performance-tuning-patterns.md` - 性能调优模式
 - `07.03-troubleshooting-guide.md` - 故障排查指南
@@ -223,6 +234,7 @@
 - `07.07-testing-strategies-complete.md` - 测试策略完整指南
 
 **09-anti-patterns/ 核心反模式 (3篇)**:
+
 - `README.md` - 反模式总览
 - `anti-pattern-checklist.md` - 反模式检查清单
 - `streaming-anti-patterns.md` - 流处理反模式综合指南
@@ -230,6 +242,7 @@
 ### 4.3 Flink/ (52篇)
 
 **03-api/ SQL与Table API (18篇)**:
+
 - `flink-table-sql-complete-guide.md` - Table API & SQL完整指南
 - `flink-sql-window-functions-deep-dive.md` - SQL窗口函数深度解析
 - `flink-sql-calcite-optimizer-deep-dive.md` - Calcite优化器深度解析
@@ -250,6 +263,7 @@
 - `built-in-functions-reference.md` (根目录)
 
 **04-runtime/ 运行时 (19篇)**:
+
 - `flink-deployment-ops-complete-guide.md` - 部署运维完整指南
 - `kubernetes-deployment.md` - Kubernetes部署
 - `kubernetes-deployment-production-guide.md` - K8s生产部署指南
@@ -271,6 +285,7 @@
 - `event-reporting.md` - 事件报告
 
 **05-ecosystem/ 连接器生态 (8篇)**:
+
 - `flink-connectors-ecosystem-complete-guide.md` - 连接器生态完整指南
 - `kafka-integration-patterns.md` - Kafka集成模式
 - `flink-cdc-3.0-data-integration.md` - CDC 3.0数据集成
@@ -281,6 +296,7 @@
 - `flink-iceberg-integration.md` - Iceberg集成
 
 **06-ai-ml/ AI/ML集成 (7篇)**:
+
 - `flink-ai-ml-integration-complete-guide.md` - AI/ML集成完整指南
 - `flink-ml-architecture.md` - ML架构设计
 - `flink-realtime-ml-inference.md` - 实时ML推理
@@ -341,6 +357,7 @@
 ### 6.1 YAML Frontmatter 模板
 
 **核心层**:
+
 ```yaml
 ---
 tier: core
@@ -356,6 +373,7 @@ tags: [theorem, checkpoint]
 ```
 
 **进阶层**:
+
 ```yaml
 ---
 tier: advanced
@@ -371,6 +389,7 @@ tags: [kubernetes, deployment]
 ```
 
 **参考层**:
+
 ```yaml
 ---
 tier: reference

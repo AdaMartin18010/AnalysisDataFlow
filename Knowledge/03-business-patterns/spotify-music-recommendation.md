@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [Spotify音乐推荐系统 - 实时个性化流处理架构](#spotify音乐推荐系统-实时个性化流处理架构)
+- [Spotify音乐推荐系统 - 实时个性化流处理架构](#spotify音乐推荐系统---实时个性化流处理架构)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-17: 音乐播放事件流](#def-k-03-17-音乐播放事件流)
@@ -24,7 +24,7 @@
     - [4.1 Spotify架构演进三阶段](#41-spotify架构演进三阶段)
     - [4.2 实时特征工程挑战](#42-实时特征工程挑战)
     - [4.3 A/B测试实时指标](#43-ab测试实时指标)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 会话窗口计算复杂度论证](#51-会话窗口计算复杂度论证)
     - [5.2 推荐准确率与延迟权衡](#52-推荐准确率与延迟权衡)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -27,7 +27,7 @@
     - [4.2 分区策略与并行度匹配分析](#42-分区策略与并行度匹配分析)
     - [4.3 幂等写入与重复数据处理边界](#43-幂等写入与重复数据处理边界)
     - [4.4 连接池配置与资源管理权衡](#44-连接池配置与资源管理权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-04-03 (Change Streams Source Exactly-Once 正确性)](#thm-f-04-03-change-streams-source-exactly-once-正确性)
     - [Thm-F-04-04 (MongoDB Sink 幂等写入保证)](#thm-f-04-04-mongodb-sink-幂等写入保证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -23,15 +23,18 @@
     - [3.2 数据流拓扑映射](#32-数据流拓扑映射)
     - [3.3 一致性模型对比](#33-一致性模型对比)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-    - [4.1 为什么需要 RisingWave + Flink 混合架构](#41-为什么需要-risingwave--flink-混合架构)
+    - [4.1 为什么需要 RisingWave + Flink 混合架构 {#41-为什么需要-risingwave--flink-混合架构}](#41-为什么需要-risingwave--flink-混合架构-41-为什么需要-risingwave--flink-混合架构)
     - [4.2 集成架构的工程权衡](#42-集成架构的工程权衡)
     - [4.3 反例分析：何时不应混合使用](#43-反例分析何时不应混合使用)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-06-02: 混合架构最优性定理](#thm-k-06-02-混合架构最优性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 RisingWave 作为 Flink Sink](#61-risingwave-作为-flink-sink)
     - [6.2 Flink 作为 RisingWave Source](#62-flink-作为-risingwave-source)
     - [6.3 CDC 集成模式](#63-cdc-集成模式)
+      - [MySQL CDC 到 RisingWave](#mysql-cdc-到-risingwave)
+      - [PostgreSQL CDC 到 RisingWave](#postgresql-cdc-到-risingwave)
+      - [RisingWave CDC 到 Flink](#risingwave-cdc-到-flink)
     - [6.4 实时仪表盘案例](#64-实时仪表盘案例)
     - [6.5 流式 JOIN 优化案例](#65-流式-join-优化案例)
     - [6.6 实时推荐系统案例](#66-实时推荐系统案例)
@@ -42,6 +45,9 @@
     - [7.4 技术选型决策树](#74-技术选型决策树)
   - [8. 迁移指南](#8-迁移指南)
     - [8.1 从 Flink 迁移到 RisingWave](#81-从-flink-迁移到-risingwave)
+      - [迁移路径选择](#迁移路径选择)
+      - [SQL 方言对照](#sql-方言对照)
+      - [迁移步骤](#迁移步骤)
     - [8.2 混合使用策略](#82-混合使用策略)
     - [8.3 数据一致性保证](#83-数据一致性保证)
   - [9. 最佳实践](#9-最佳实践)
@@ -84,6 +90,7 @@ $$
 $$
 
 其中：
+
 - $\Delta B$: 基础表变更流（Insert/Update/Delete）
 - $S_t$: 时刻 $t$ 的内部状态（聚合状态、Join 状态等）
 - $\Delta V$: 物化视图的增量更新
@@ -153,6 +160,7 @@ L_{total} = L_{flink} + L_{transit} + L_{risingwave}
 $$
 
 其中：
+
 - $L_{flink}$: Flink 处理延迟（通常 5-50ms）
 - $L_{transit}$: 数据传输延迟（Kafka: 1-10ms, JDBC: 10-100ms）
 - $L_{risingwave}$: RisingWave 处理延迟（通常 100ms-1s）
@@ -190,6 +198,7 @@ C_{total} = \alpha \cdot C_{flink}(W_{complex}) + (1-\alpha) \cdot C_{rw}(W_{sql
 $$
 
 其中：
+
 - $W_{complex}$: 需要复杂处理（CEP、自定义算子）的工作负载
 - $W_{sql}$: 可用 SQL 表达的工作负载
 - $\alpha$: 工作负载分配系数
@@ -207,37 +216,37 @@ $$
 graph TB
     subgraph "流处理技术谱系"
         direction TB
-        
+
         subgraph "复杂处理层"
             CEP[复杂事件处理<br/>CEP / MATCH_RECOGNIZE]
             CUSTOM[自定义算子<br/>DataStream API]
             ML[机器学习集成<br/>Alink / Flink ML]
         end
-        
+
         subgraph "SQL处理层"
             SQL_STD[标准SQL处理<br/>窗口、聚合、Join]
             MV[物化视图<br/>增量维护]
             ADHOC[即席查询<br/>Ad-hoc Query]
         end
-        
+
         subgraph "存储服务层"
             SINK[外部Sink<br/>MySQL/Redis/ES]
             QUERY[查询服务<br/>PostgreSQL协议]
             CDC_OUT[CDC输出<br/>数据订阅]
         end
     end
-    
+
     Flink --> CEP
     Flink --> CUSTOM
     Flink --> ML
     Flink --> SQL_STD
-    
+
     RisingWave --> SQL_STD
     RisingWave --> MV
     RisingWave --> ADHOC
     RisingWave --> QUERY
     RisingWave --> CDC_OUT
-    
+
     style Flink fill:#e3f2fd,stroke:#1976d2
     style RisingWave fill:#e8f5e9,stroke:#2e7d32
     style CEP fill:#fff3e0,stroke:#ef6c00
@@ -388,6 +397,7 @@ W = \begin{pmatrix} L_{req} & C_{req} & S_{req} & Q_{req} \end{pmatrix}
 $$
 
 其中：
+
 - $L_{req}$: 延迟要求（毫秒）
 - $C_{req}$: 复杂度需求（SQL可表达 = 0，需自定义 = 1）
 - $S_{req}$: 状态规模（GB）
@@ -453,6 +463,7 @@ Cost_{hybrid} < \min(Cost_{flink}, Cost_{rw})
 $$
 
 即：
+
 - 延迟要求不极端（≥50ms）
 - 部分工作负载可用 SQL 表达
 - 需要即席查询能力
@@ -517,7 +528,7 @@ CREATE TABLE enriched_events (
 
 -- 创建物化视图供业务查询
 CREATE MATERIALIZED VIEW user_activity_summary AS
-SELECT 
+SELECT
     user_id,
     event_type,
     COUNT(*) as event_count,
@@ -559,7 +570,7 @@ CREATE TABLE mysql_orders (
 
 -- 2. 创建物化视图进行实时聚合
 CREATE MATERIALIZED VIEW order_stats AS
-SELECT 
+SELECT
     user_id,
     COUNT(*) as order_count,
     SUM(amount) as total_amount,
@@ -640,7 +651,7 @@ CREATE SOURCE mysql_users (
 
 -- 实时同步到物化视图
 CREATE MATERIALIZED VIEW user_analytics AS
-SELECT 
+SELECT
     DATE_TRUNC('hour', created_at) as hour,
     COUNT(*) as new_users,
     COUNT(DISTINCT email_domain(email)) as unique_domains
@@ -672,7 +683,7 @@ CREATE SOURCE pg_transactions (
 
 -- 实时风控统计
 CREATE MATERIALIZED VIEW risk_metrics AS
-SELECT 
+SELECT
     account_id,
     COUNT(*) as tx_count_1h,
     SUM(CASE WHEN tx_type = 'withdrawal' THEN amount ELSE 0 END) as withdrawal_sum,
@@ -726,7 +737,7 @@ CREATE SOURCE orders (
 
 -- 2. 实时销售额（秒级更新）
 CREATE MATERIALIZED VIEW realtime_revenue AS
-SELECT 
+SELECT
     DATE_TRUNC('second', created_at) as second,
     COUNT(*) as order_count,
     SUM(amount) as revenue,
@@ -736,7 +747,7 @@ GROUP BY DATE_TRUNC('second', created_at);
 
 -- 3. 地域销售分布
 CREATE MATERIALIZED VIEW regional_sales AS
-SELECT 
+SELECT
     region,
     DATE_TRUNC('minute', created_at) as minute,
     COUNT(*) as orders,
@@ -746,7 +757,7 @@ GROUP BY region, DATE_TRUNC('minute', created_at);
 
 -- 4. 热销商品 Top 10
 CREATE MATERIALIZED VIEW hot_products AS
-SELECT 
+SELECT
     product_id,
     COUNT(*) as sales_count,
     SUM(amount) as total_revenue,
@@ -773,8 +784,8 @@ const pool = new Pool({
 // 实时销售额
 async function getRealtimeRevenue() {
     const result = await pool.query(`
-        SELECT * FROM realtime_revenue 
-        ORDER BY second DESC 
+        SELECT * FROM realtime_revenue
+        ORDER BY second DESC
         LIMIT 60
     `);
     return result.rows;
@@ -836,7 +847,7 @@ CREATE SOURCE order_stream (
 
 -- 3. 流式 JOIN（RisingWave 自动优化）
 CREATE MATERIALIZED VIEW enriched_orders AS
-SELECT 
+SELECT
     o.order_id,
     o.user_id,
     o.amount,
@@ -849,7 +860,7 @@ LEFT JOIN user_profiles p ON o.user_id = p.user_id;
 
 -- 4. 分层聚合（利用 RisingWave 级联 MV）
 CREATE MATERIALIZED VIEW sales_by_segment AS
-SELECT 
+SELECT
     age_group,
     membership_level,
     COUNT(*) as order_count,
@@ -905,17 +916,17 @@ GROUP BY age_group, membership_level;
 ```sql
 -- 用户实时特征（物化视图自动更新）
 CREATE MATERIALIZED VIEW user_features AS
-SELECT 
+SELECT
     user_id,
     -- 统计特征
     COUNT(*) as total_clicks_24h,
     COUNT(DISTINCT category) as unique_categories,
     SUM(CASE WHEN event_type = 'purchase' THEN 1 ELSE 0 END) as purchase_count,
-    
+
     -- 时序特征
     MAX(event_time) as last_activity,
     MIN(event_time) as first_activity_today,
-    
+
     -- 行为序列（最近 5 个）
     array_agg(category ORDER BY event_time DESC LIMIT 5) as recent_categories
 FROM user_behavior_stream
@@ -924,7 +935,7 @@ GROUP BY user_id;
 
 -- 物品实时特征
 CREATE MATERIALIZED VIEW item_features AS
-SELECT 
+SELECT
     item_id,
     COUNT(*) as view_count_1h,
     AVG(rating) as avg_rating,
@@ -947,18 +958,18 @@ DataStream<Recommendation> recommendations = events
         public void processElement(UserEvent event, Context ctx, Collector<Recommendation> out) {
             // 1. 从 RisingWave 查询用户特征
             UserFeatures userFeatures = queryRisingWave(
-                "SELECT * FROM user_features WHERE user_id = ?", 
+                "SELECT * FROM user_features WHERE user_id = ?",
                 event.getUserId()
             );
-            
+
             // 2. 从 RisingWave 查询候选物品特征
             List<ItemFeatures> candidates = queryRisingWave(
                 "SELECT * FROM item_features WHERE view_count_1h < 1000 LIMIT 100"
             );
-            
+
             // 3. 模型推理
             List<ScoredItem> scored = model.predict(userFeatures, candidates);
-            
+
             // 4. 输出推荐结果
             out.collect(new Recommendation(event.getUserId(), scored));
         }
@@ -1007,16 +1018,16 @@ graph TB
     CLIENT1 --> FE1
     CLIENT2 --> FE1
     CLIENT3 --> FE2
-    
+
     FE1 --> CN1
     FE1 --> CN2
-    
+
     CN1 --> HUMMOCK
     CN2 --> HUMMOCK
-    
+
     HUMMOCK --> CACHE
     HUMMOCK --> S3
-    
+
     META --> CN1
     META --> CN2
     META --> COMPACT
@@ -1045,7 +1056,7 @@ graph TB
             RW2[RisingWave<br/>物化视图]
             RW3[RisingWave<br/>即席查询]
         end
-        
+
         subgraph "Flink 集群"
             FL1[Flink<br/>复杂ETL]
             FL2[Flink<br/>CEP风控]
@@ -1069,17 +1080,17 @@ graph TB
     KAFKA1 -->|Source| FL1
     KAFKA1 -->|Source| FL3
     IOT -->|MQTT| FL2
-    
+
     RW1 --> RW2
     RW2 -->|Sink| ICEBERG
     RW2 -->|JDBC| ANALYSIS
     RW2 -->|Kafka| FL2
-    
+
     FL1 -->|JDBC| RW3
     FL2 --> ALERT
     FL2 --> REDIS
     FL3 --> API
-    
+
     RW2 --> DASHBOARD
 
     style RW1 fill:#e8f5e9,stroke:#2e7d32
@@ -1096,16 +1107,16 @@ sequenceDiagram
     participant RW as RisingWave
     participant Kafka as Kafka
     participant Flink as Flink
-    
+
     Note over MySQL,Flink: MySQL CDC → RisingWave
-    
+
     MySQL->>MySQL: Binlog Write
     MySQL->>RW: Logical Replication
     RW->>RW: Parse Binlog Event
     RW->>RW: Apply to Materialized View
-    
+
     Note over RW,Flink: RisingWave → Kafka → Flink
-    
+
     RW->>Kafka: CDC Change Event
     Kafka->>Flink: Consume Events
     Flink->>Flink: CEP Pattern Match
@@ -1117,38 +1128,38 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     START([开始架构设计]) --> Q1{延迟要求<br/>< 50ms?}
-    
+
     Q1 -->|是| Q2{需要 CEP<br/>或自定义算子?}
     Q1 -->|否| Q3{需要即席查询?}
-    
+
     Q2 -->|是| FLINK_PURE[纯 Flink 架构]
     Q2 -->|否| Q4{状态规模<br/>> 1TB?}
-    
+
     Q4 -->|是| Q5{SQL 可表达?}
     Q4 -->|否| FLINK_SQL[Flink SQL]
-    
+
     Q5 -->|是| HYBRID_RW[混合架构<br/>RisingWave 为主]
     Q5 -->|否| FLINK_SCALE[Flink + 调优]
-    
+
     Q3 -->|是| Q6{复杂处理需求?}
     Q3 -->|否| Q7{状态规模?}
-    
+
     Q6 -->|高| HYBRID_MIX[混合架构<br/>Flink + RisingWave]
     Q6 -->|低| RW_PURE[纯 RisingWave]
-    
+
     Q7 -->|大| RW_SCALE[RisingWave]
     Q7 -->|小| EITHER[两者皆可]
-    
+
     FLINK_PURE --> END1([端到端延迟<br/>优先方案])
     FLINK_SQL --> END1
     FLINK_SCALE --> END1
-    
+
     HYBRID_RW --> END2([成本优化<br/>混合方案])
     HYBRID_MIX --> END2
-    
+
     RW_PURE --> END3([简化运维<br/>SQL优先方案])
     RW_SCALE --> END3
-    
+
     style START fill:#fff9c4,stroke:#f57f17
     style END1 fill:#e3f2fd,stroke:#1976d2
     style END2 fill:#e8f5e9,stroke:#2e7d32
@@ -1248,14 +1259,14 @@ flowchart TD
 ```sql
 -- RisingWave 中创建校验视图
 CREATE MATERIALIZED VIEW consistency_check AS
-SELECT 
+SELECT
     'orders' as table_name,
     COUNT(*) as row_count,
     MAX(updated_at) as last_update,
     MD5_AGG(order_id::text) as checksum
 FROM orders
 UNION ALL
-SELECT 
+SELECT
     'order_items' as table_name,
     COUNT(*),
     MAX(updated_at),
@@ -1392,25 +1403,15 @@ Flink:
 
 ## 参考文献 (References)
 
-[^1]: RisingWave Documentation, "Architecture Overview", 2025. https://docs.risingwave.com/docs/current/architecture/
 
-[^2]: RisingWave Labs, "RisingWave vs Flink: A Technical Comparison", 2024. https://risingwave.com/blog/risingwave-vs-flink-a-technical-comparison/
 
-[^3]: Apache Flink Documentation, "DataStream API", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/
 
-[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^5]: RisingWave Labs, "Kaito AI Case Study: Building Real-Time AI with RisingWave", 2024. https://risingwave.com/blog/building-real-time-ai-with-risingwave-a-case-study-of-kaito/
 
-[^6]: Debezium Documentation, "Connectors", 2025. https://debezium.io/documentation/reference/stable/connectors/
 
-[^7]: RisingWave Documentation, "CDC Sources", 2025. https://docs.risingwave.com/docs/current/ingest-from-mysql-cdc/
 
-[^8]: Apache Flink Documentation, "CEP - Complex Event Processing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/cep/
 
-[^9]: RisingWave Labs, "Nexmark Benchmark Results", 2024. https://risingwave.com/blog/nexmark-benchmark/
 
-[^10]: S. Tu et al., "Hummock: A Cloud-Native Storage Engine for Stream Processing", RisingWave Labs Technical Report, 2023.
 
 ---
 

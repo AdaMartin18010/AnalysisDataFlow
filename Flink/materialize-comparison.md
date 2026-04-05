@@ -11,6 +11,7 @@
 **定义**: Materialize 是一个基于 SQL 的流处理引擎，从 Kafka 等源实时维护物化视图，支持严格一致性保证。
 
 **核心特性**:
+
 - **Correctness**: 基于 Differential Dataflow 提供正确性保证
 - **SQL-First**: 纯 SQL 接口，无需编程
 - **Strong Consistency**: 串行化一致性保证
@@ -51,7 +52,7 @@ graph TB
         F3 --> F4[State Backend]
         F5[Checkpointing] -.-> F3
     end
-    
+
     subgraph "Materialize"
         M1[SQL Interface] --> M2[Differential Dataflow]
         M2 --> M3[Timely Dataflow]
@@ -84,22 +85,26 @@ flowchart TD
 #### 场景 1: 实时 ETL Pipeline
 
 **Flink 优势**:
+
 - 丰富的 Source/Sink 连接器
 - 复杂转换逻辑支持
 - 精确的资源控制
 
 **Materialize 限制**:
+
 - 主要支持 Kafka/PostgreSQL
 - SQL 表达能力限制
 
 #### 场景 2: 实时物化视图
 
 **Materialize 优势**:
+
 - 声明式物化视图
 - 自动增量更新
 - 严格一致性
 
 **Flink 实现**:
+
 - 需要显式管理物化表
 - 状态后端调优复杂
 
@@ -139,7 +144,7 @@ Flink (At-Least-Once): Eventual Consistency
 ```sql
 -- Materialize
 CREATE MATERIALIZED VIEW user_stats AS
-SELECT 
+SELECT
     user_id,
     COUNT(*) as event_count,
     SUM(amount) as total_amount
@@ -159,7 +164,7 @@ CREATE TABLE user_stats (
 );
 
 INSERT INTO user_stats
-SELECT 
+SELECT
     user_id,
     COUNT(*) as event_count,
     SUM(amount) as total_amount
@@ -202,9 +207,6 @@ GROUP BY user_id;
 
 ## 8. 引用参考 (References)
 
-[^1]: Materialize Documentation, "What is Materialize?", 2025. https://materialize.com/docs/
-[^2]: McSherry et al., "Differential Dataflow", CIDR, 2013.
-[^3]: Flink Documentation, "Comparison to Materialize", 2025.
 
 ---
 

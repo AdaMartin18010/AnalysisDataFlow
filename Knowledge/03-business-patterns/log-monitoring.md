@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [业务模式: 日志分析与监控 (Business Pattern: Log Analysis \& Monitoring)](#业务模式-日志分析与监控-business-pattern-log-analysis-monitoring)
+- [业务模式: 日志分析与监控 (Business Pattern: Log Analysis \& Monitoring)](#业务模式-日志分析与监控-business-pattern-log-analysis--monitoring)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-04: 日志监控场景 (Log Monitoring Scenario)](#def-k-03-04-日志监控场景-log-monitoring-scenario)
@@ -23,7 +23,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 日志解析的多层策略](#41-日志解析的多层策略)
     - [4.2 告警风暴的形成机制与抑制策略](#42-告警风暴的形成机制与抑制策略)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [5.1 日志聚合的单调性保证](#51-日志聚合的单调性保证)
     - [5.2 端到端 Exactly-Once 论证](#52-端到端-exactly-once-论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -13,6 +13,7 @@ This document describes the design and implementation of a personalized learning
 ### Def-K-PLE-01: Personalized Learning Engine
 
 A **Personalized Learning Engine (PLE)** is a recommendation system that generates adaptive learning paths based on:
+
 - Learner's background knowledge
 - Learning objectives
 - Time constraints
@@ -26,6 +27,7 @@ PLE = ⟨𝒰, 𝒟, 𝒪, 𝒫, ℛ, ℳ, 𝒜⟩
 ```
 
 Where:
+
 - 𝒰 = Set of users/learners
 - 𝒟 = Set of documents (learning materials)
 - 𝒪 = Set of learning objectives
@@ -60,7 +62,8 @@ LP = ⟨(d₁, t₁), (d₂, t₂), ..., (dₙ, tₙ)⟩, where tᵢ ≤ tᵢ₊
 
 For any valid learning objective o ∈ 𝒪, there exists at least one learning path LP that achieves o.
 
-**Proof Sketch**: 
+**Proof Sketch**:
+
 - The knowledge graph is connected (by construction)
 - Each document covers specific concepts
 - Breadth-first search from prerequisites to objective yields a valid path ∎
@@ -90,12 +93,12 @@ lim_{t→∞} distance(KS_t, KS_target) = 0
 ```mermaid
 graph TB
     PLE[Personalized Learning Engine]
-    
+
     PLE --> KR[Knowledge Representation<br/>Struct/Formal Theory]
     PLE --> TM[Tracking Mechanism<br/>PROJECT-TRACKING.md]
     PLE --> SE[Search Engine<br/>docs/ai-features/]
     PLE --> CH[Chatbot<br/>docs/chatbot-integration.md]
-    
+
     KR -->|Concept Dependencies| PLE
     TM -->|Progress Data| PLE
     SE -->|Content Retrieval| PLE
@@ -153,31 +156,31 @@ graph TB
         UI[Web Interface]
         API[API Gateway]
     end
-    
+
     subgraph "Recommendation Engine"
         PM[Profile Manager]
         KG[Knowledge Graph]
         RE[Recommendation Engine]
         PA[Path Assembler]
     end
-    
+
     subgraph "Data Layer"
         UDB[(User DB)]
         CDB[(Content DB)]
         GDB[(Graph DB)]
         Cache[(Redis Cache)]
     end
-    
+
     UI --> API
     API --> PM
     API --> RE
-    
+
     PM --> UDB
     PM --> Cache
-    
+
     RE --> KG
     RE --> PA
-    
+
     KG --> GDB
     PA --> CDB
 ```
@@ -192,19 +195,19 @@ graph LR
         CN --- Time[Est. Time: 2h]
         CN --- Type[Type: Theoretical]
     end
-    
+
     subgraph "Document Node"
         DN[Document]
         DN --- Path[File Path]
         DN --- Level[Formal Level: L4]
     end
-    
+
     subgraph "Relationship Types"
         PR[PREREQUISITE]
         RE[RELATED]
         BU[BUILDS_UPON]
     end
-    
+
     CN --> PR --> CN2[Advanced Concept]
     DN --> BU --> DN2[Advanced Doc]
     CN --> RE --> CN3[Related Concept]
@@ -217,26 +220,26 @@ graph LR
 user_profile:
   id: string
   created_at: timestamp
-  
+
   # Background assessment
   background:
     role: enum[student, engineer, researcher, architect]
     experience_level: enum[beginner, intermediate, advanced, expert]
     domains: list[string]  # Known domains
     languages: list[string]  # Programming languages
-    
+
   # Learning preferences
   preferences:
     content_types: list[enum[theory, practice, video, interactive]]
     session_length: integer  # Preferred minutes per session
     difficulty_preference: enum[basic, challenging, mixed]
-    
+
   # Current state
   knowledge_state:
     concept_mastery: map[concept_id, float]  # 0-1 mastery level
     completed_documents: list[document_id]
     quiz_scores: map[document_id, float]
-    
+
   # Learning history
   history:
     sessions: list[session_record]
@@ -249,7 +252,7 @@ user_profile:
 ```python
 class PersonalizedLearningEngine:
     """Core recommendation engine."""
-    
+
     def recommend_path(
         self,
         user_id: str,
@@ -258,7 +261,7 @@ class PersonalizedLearningEngine:
     ) -> LearningPath:
         """
         Generate personalized learning path.
-        
+
         Algorithm:
         1. Retrieve user profile and knowledge state
         2. Identify target concepts from objective
@@ -267,26 +270,26 @@ class PersonalizedLearningEngine:
         5. Optimize path using scoring function
         6. Assemble final learning path
         """
-        
+
         # Step 1: User context
         user = self.get_user_profile(user_id)
         knowledge_state = self.get_knowledge_state(user_id)
-        
+
         # Step 2: Target concepts
         target_concepts = self.identify_concepts(objective)
-        
+
         # Step 3: Prerequisite analysis
         required_concepts = self.prerequisite_closure(target_concepts)
-        
+
         # Filter already mastered concepts
         to_learn = [
             c for c in required_concepts
             if knowledge_state.get_mastery(c) < 0.7
         ]
-        
+
         # Step 4: Document mapping
         candidate_docs = self.map_concepts_to_documents(to_learn)
-        
+
         # Step 5: Path optimization
         path = self.optimize_path(
             candidate_docs,
@@ -294,9 +297,9 @@ class PersonalizedLearningEngine:
             constraints,
             user.preferences
         )
-        
+
         return path
-    
+
     def score_document(
         self,
         document: Document,
@@ -305,7 +308,7 @@ class PersonalizedLearningEngine:
     ) -> float:
         """
         Score document relevance for user.
-        
+
         Scoring components:
         - Concept coverage (40%)
         - Difficulty match (20%)
@@ -313,7 +316,7 @@ class PersonalizedLearningEngine:
         - Collaborative score (15%)
         - Recency/diversity (10%)
         """
-        
+
         scores = {
             'concept_coverage': self._concept_coverage_score(document, user),
             'difficulty_match': self._difficulty_match_score(document, knowledge_state),
@@ -321,7 +324,7 @@ class PersonalizedLearningEngine:
             'collaborative': self._collaborative_score(document, user),
             'diversity': self._diversity_score(document, user),
         }
-        
+
         weights = {
             'concept_coverage': 0.40,
             'difficulty_match': 0.20,
@@ -329,7 +332,7 @@ class PersonalizedLearningEngine:
             'collaborative': 0.15,
             'diversity': 0.10,
         }
-        
+
         return sum(scores[k] * weights[k] for k in scores)
 ```
 
@@ -345,51 +348,51 @@ def optimize_path(
 ) -> LearningPath:
     """
     Optimize learning path using modified topological sort.
-    
+
     Constraints:
     - Prerequisite ordering
     - Time budget
     - Difficulty progression
     - Content diversity
     """
-    
+
     # Build dependency graph
     graph = self._build_dependency_graph(documents)
-    
+
     # Initialize path
     path = []
     remaining = set(documents)
     current_time = 0
-    
+
     while remaining:
         # Find candidates (all prerequisites met)
         candidates = [
             d for d in remaining
             if self._prerequisites_met(d, path, knowledge_state)
         ]
-        
+
         if not candidates:
             break  # Should not happen with valid input
-        
+
         # Score candidates
         scored = [
             (d, self.score_document(d, knowledge_state))
             for d in candidates
         ]
-        
+
         # Select best candidate
         best_doc, score = max(scored, key=lambda x: x[1])
-        
+
         # Check constraints
         doc_time = best_doc.estimated_time
         if current_time + doc_time > constraints.max_total_time:
             break
-        
+
         # Add to path
         path.append(best_doc)
         remaining.remove(best_doc)
         current_time += doc_time
-    
+
     return LearningPath(documents=path, total_time=current_time)
 ```
 
@@ -463,7 +466,7 @@ paths:
       responses:
         200:
           description: User profile and knowledge state
-          
+
     post:
       summary: Create or update profile
       requestBody:
@@ -471,7 +474,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserProfile'
-              
+
   /api/recommend:
     post:
       summary: Get personalized learning path
@@ -495,7 +498,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LearningPath'
-                
+
   /api/progress:
     post:
       summary: Update learning progress
@@ -514,7 +517,7 @@ paths:
       responses:
         200:
           description: Progress updated
-          
+
   /api/adapt:
     post:
       summary: Adapt current path based on feedback
@@ -546,24 +549,24 @@ learning_engine:
     content_preference: 0.15
     collaborative: 0.15
     diversity: 0.10
-  
+
   # Difficulty progression
   difficulty:
     max_jump: 0.3  # Maximum difficulty increase between consecutive items
     min_mastery: 0.7  # Consider concept mastered above this threshold
-  
+
   # Time estimation
   time_estimation:
     reading_speed_wpm: 200
     code_review_multiplier: 2.0
     exercise_time_minutes: 30
-  
+
   # Adaptation triggers
   adaptation:
     quiz_threshold_low: 0.5
     quiz_threshold_high: 0.9
     time_variance_threshold: 0.3
-  
+
   # Cache settings
   cache:
     path_ttl: 3600  # 1 hour
@@ -581,7 +584,7 @@ sequenceDiagram
     participant U as User
     participant E as Engine
     participant DB as Database
-    
+
     U->>E: Start assessment
     E->>U: Background questions
     U->>E: Provide answers
@@ -593,6 +596,7 @@ sequenceDiagram
 ### 7.2 Goal-Directed Path Generation
 
 **Input**:
+
 - User: Mid-level engineer
 - Goal: "Implement Flink Checkpoint for production"
 - Time: 2 weeks (part-time)
@@ -622,7 +626,7 @@ if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
     # Insert prerequisite content
     prerequisites = find_prerequisites(current_doc)
     insert_before_next(prerequisites)
-    
+
     # Suggest alternative resources
     alternatives = find_easier_alternatives(current_doc)
     suggest_supplementary(alternatives)
@@ -647,18 +651,18 @@ if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
 ```python
 class ABTestFramework:
     """A/B testing for recommendation algorithms."""
-    
+
     def __init__(self):
         self.variants = {
             'control': BaselineRecommender(),
             'treatment': NewRecommender(),
         }
-    
+
     def assign_variant(self, user_id: str) -> str:
         """Assign user to test variant."""
         hash_val = hash(user_id) % 100
         return 'treatment' if hash_val < 50 else 'control'
-    
+
     def track_metrics(self, user_id: str, variant: str, outcome: dict):
         """Track experiment metrics."""
         # Log to analytics
@@ -691,13 +695,13 @@ flowchart TD
     B -->|No| C[Onboarding Quiz]
     B -->|Yes| D[Generate Path]
     C --> D
-    
+
     D --> E[Knowledge Graph Query]
     E --> F[Prerequisite Analysis]
     F --> G[Constraint Satisfaction]
     G --> H[Path Optimization]
     H --> I[Personalized Path]
-    
+
     I --> J[User Studies]
     J --> K{Feedback?}
     K -->|Adjust| L[Adapt Path]
@@ -711,19 +715,19 @@ flowchart TD
 ```mermaid
 radarChart
     title Knowledge State Profile
-    
+
     area Formal_Theory
     area Flink_Core
     area Design_Patterns
     area Production_Ops
     area AI_ML
-    
+
     axis "Formal Theory"
     axis "Flink Core"
     axis "Design Patterns"
     axis "Production Ops"
     axis "AI/ML"
-    
+
     point User_A, 0.3, 0.5, 0.7, 0.4, 0.2
     point Target, 0.8, 0.9, 0.8, 0.7, 0.6
 ```

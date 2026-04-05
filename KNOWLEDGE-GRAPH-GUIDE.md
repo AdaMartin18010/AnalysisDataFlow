@@ -242,9 +242,11 @@ python scripts/knowledge-graph-generator.py [选项]
 
 1. 切换到 **💡 推荐** 标签页
 2. 在文本框中输入已掌握的概念ID（用逗号分隔）
+
    ```
    Thm-S-01-01, Def-K-02-01, Lemma-F-03-02
    ```
+
 3. 点击 **🎯 生成学习推荐** 按钮
 4. 查看推荐结果
 

@@ -11,6 +11,7 @@ This document describes the integration of a Retrieval-Augmented Generation (RAG
 ### 1.1 Purpose
 
 The chatbot integration enables users to:
+
 - Ask natural language questions about stream computing concepts
 - Get accurate answers grounded in the knowledge base
 - Receive citations to source documents for verification
@@ -24,37 +25,37 @@ graph TB
         UI[Web Chat Interface]
         API[API Endpoint]
     end
-    
+
     subgraph "Query Processing Layer"
         QP[Query Processor]
         QE[Query Embedder]
         QR[Query Rewriter]
     end
-    
+
     subgraph "Retrieval Layer"
         VS[Vector Search<br/>Milvus]
         KS[Keyword Search<br/>BM25]
         FR[Fusion & Ranking]
     end
-    
+
     subgraph "Context Assembly Layer"
         CA[Context Assembler]
         CH[Chat History Manager]
         CM[Context Merger]
     end
-    
+
     subgraph "Generation Layer"
         PG[Prompt Generator]
         LLM[LLM Service]
         PC[Post-processor]
     end
-    
+
     subgraph "Knowledge Base"
         KB[(AnalysisDataFlow<br/>Documents)]
         EMB[(Vector<br/>Embeddings)]
         IDX[(Search<br/>Index)]
     end
-    
+
     UI --> API
     API --> QP
     QP --> QE
@@ -70,7 +71,7 @@ graph TB
     PG --> LLM
     LLM --> PC
     PC --> API
-    
+
     KB --> EMB
     KB --> IDX
     EMB --> VS
@@ -127,11 +128,11 @@ vector_search:
   embedding_model: BAAI/bge-large-zh
   vector_dimension: 1024
   distance_metric: COSINE
-  
+
   index_params:
     index_type: IVF_FLAT
     nlist: 128
-  
+
   search_params:
     nprobe: 16
     top_k: 20
@@ -146,7 +147,7 @@ keyword_search:
   parameters:
     k1: 1.5
     b: 0.75
-  
+
   fields:
     - title^3.0      # Boost title matches
     - headings^2.0   # Boost heading matches
@@ -160,31 +161,31 @@ keyword_search:
 def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
     """
     Fuse results from vector and keyword search.
-    
+
     score = Σ 1/(k + rank)
     """
     scores = {}
-    
+
     # Add vector search scores
     for rank, doc in enumerate(vector_results):
         doc_id = doc.id
         scores[doc_id] = scores.get(doc_id, 0) + 1.0 / (k + rank + 1)
         scores[doc_id + "_vector_rank"] = rank
-    
+
     # Add keyword search scores
     for rank, doc in enumerate(keyword_results):
         doc_id = doc.id
         scores[doc_id] = scores.get(doc_id, 0) + 1.0 / (k + rank + 1)
         scores[doc_id + "_keyword_rank"] = rank
-    
+
     # Sort by fused score
     fused_results = sorted(
-        [(doc_id, score) for doc_id, score in scores.items() 
+        [(doc_id, score) for doc_id, score in scores.items()
          if not doc_id.endswith("_rank")],
         key=lambda x: x[1],
         reverse=True
     )
-    
+
     return fused_results[:10]  # Return top 10
 ```
 
@@ -195,15 +196,15 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 ```mermaid
 graph LR
     A[Full Document] --> B{Chunk Type}
-    
+
     B -->|By Headings| C[Section Chunks]
     B -->|Fixed Size| D[Overlapping Chunks]
     B -->|Semantic| E[Semantic Chunks]
-    
+
     C --> F[Context Pool]
     D --> F
     E --> F
-    
+
     F --> G[Relevance Filter]
     G --> H[Top-K Selection]
     H --> I[Context Window]
@@ -215,7 +216,7 @@ graph LR
 def build_context_window(query, retrieved_chunks, chat_history, max_tokens=4000):
     """
     Build context window within token limits.
-    
+
     Priority:
     1. System prompt (fixed)
     2. Recent chat history (last 3 turns)
@@ -223,13 +224,13 @@ def build_context_window(query, retrieved_chunks, chat_history, max_tokens=4000)
     """
     context_parts = []
     used_tokens = 0
-    
+
     # System prompt
     system_prompt = get_system_prompt()
     system_tokens = estimate_tokens(system_prompt)
     used_tokens += system_tokens
     context_parts.append({"type": "system", "content": system_prompt})
-    
+
     # Chat history (recent 3 turns)
     for msg in chat_history[-3:]:
         msg_tokens = estimate_tokens(msg.content)
@@ -237,16 +238,16 @@ def build_context_window(query, retrieved_chunks, chat_history, max_tokens=4000)
             break
         context_parts.append({"type": "history", "content": msg.content})
         used_tokens += msg_tokens
-    
+
     # Retrieved documents (remaining budget)
     for chunk in sorted(retrieved_chunks, key=lambda x: x.score, reverse=True):
         chunk_tokens = estimate_tokens(chunk.content)
         if used_tokens + chunk_tokens > max_tokens:
             break
-        context_parts.append({"type": "document", "content": chunk.content, 
+        context_parts.append({"type": "document", "content": chunk.content,
                             "metadata": chunk.metadata})
         used_tokens += chunk_tokens
-    
+
     return context_parts
 ```
 
@@ -259,7 +260,7 @@ def build_context_window(query, retrieved_chunks, chat_history, max_tokens=4000)
 ```markdown
 # System Prompt: AnalysisDataFlow Assistant
 
-You are a knowledgeable assistant specialized in stream computing and Apache Flink. 
+You are a knowledgeable assistant specialized in stream computing and Apache Flink.
 Your answers are based on the AnalysisDataFlow knowledge base.
 
 ## Guidelines:
@@ -352,44 +353,44 @@ Be specific about error messages and configuration parameters.
 ```python
 class ResponsePostProcessor:
     """Post-process LLM responses."""
-    
+
     def process(self, response: str, retrieved_docs: List[Document]) -> str:
         """Process and validate the LLM response."""
         # 1. Validate citations
         response = self._validate_citations(response, retrieved_docs)
-        
+
         # 2. Add source links
         response = self._add_source_links(response, retrieved_docs)
-        
+
         # 3. Format formal elements
         response = self._format_formal_elements(response)
-        
+
         # 4. Add related topics
         response = self._add_related_topics(response)
-        
+
         return response
-    
+
     def _validate_citations(self, response: str, docs: List[Document]) -> str:
         """Ensure all citations reference valid documents."""
         # Extract citations
         citations = re.findall(r'\[\^(\d+)\]', response)
-        
+
         # Validate and fix
         for i, citation in enumerate(citations):
             if int(citation) > len(docs):
                 # Remove invalid citation
                 response = response.replace(f'[^{citation}]', '')
-        
+
         return response
-    
+
     def _add_source_links(self, response: str, docs: List[Document]) -> str:
         """Add clickable links to source documents."""
         sources_section = "\n\n## Sources\n\n"
-        
+
         for i, doc in enumerate(docs[:5], 1):
             doc_url = f"/docs/{doc.path}"
             sources_section += f"[^i]: [{doc.title}]({doc_url})\n"
-        
+
         return response + sources_section
 ```
 
@@ -398,10 +399,10 @@ class ResponsePostProcessor:
 ```python
 class ConversationManager:
     """Manage multi-turn conversation state."""
-    
+
     def __init__(self):
         self.sessions = {}
-    
+
     def create_session(self, session_id: str):
         """Create a new conversation session."""
         self.sessions[session_id] = {
@@ -409,14 +410,14 @@ class ConversationManager:
             "context_entities": set(),
             "retrieved_docs_history": [],
         }
-    
-    def add_turn(self, session_id: str, query: str, response: str, 
+
+    def add_turn(self, session_id: str, query: str, response: str,
                  retrieved_docs: List[Document]):
         """Add a conversation turn."""
         session = self.sessions.get(session_id)
         if not session:
             return
-        
+
         # Add to history
         session["history"].append({
             "role": "user",
@@ -426,27 +427,27 @@ class ConversationManager:
             "role": "assistant",
             "content": response,
         })
-        
+
         # Track entities
         entities = self._extract_entities(query + " " + response)
         session["context_entities"].update(entities)
-        
+
         # Track retrieved docs
         session["retrieved_docs_history"].extend(retrieved_docs)
-    
+
     def resolve_references(self, session_id: str, query: str) -> str:
         """Resolve pronoun references using conversation context."""
         # Replace pronouns with last mentioned entity
         pronouns = ["it", "this", "that", "they"]
-        
+
         session = self.sessions.get(session_id)
         if session and session["context_entities"]:
             main_entity = list(session["context_entities"])[-1]
-            
+
             for pronoun in pronouns:
                 if f" {pronoun} " in f" {query} ":
                     query = query.replace(f" {pronoun} ", f" {main_entity} ")
-        
+
         return query
 ```
 
@@ -538,31 +539,31 @@ graph TB
         subgraph "Chatbot Namespace"
             API[API Gateway<br/>FastAPI]
             WS[WebSocket<br/>Handler]
-            
+
             subgraph "Retrieval Workers"
                 R1[Retrieval Worker 1]
                 R2[Retrieval Worker 2]
                 R3[Retrieval Worker 3]
             end
-            
+
             subgraph "LLM Workers"
                 L1[LLM Worker 1]
                 L2[LLM Worker 2]
             end
         end
-        
+
         subgraph "Data Services"
             M[(Milvus<br/>Vector DB)]
             P[(PostgreSQL<br/>Metadata)]
             C[(Redis<br/>Cache)]
         end
     end
-    
+
     subgraph "External Services"
         LLM_API[LLM API<br/>OpenAI/Claude]
         EMB_API[Embedding API]
     end
-    
+
     Client --> API
     API --> WS
     API --> R1
@@ -572,11 +573,11 @@ graph TB
     R2 --> M
     R3 --> M
     R1 --> P
-    
+
     L1 --> LLM_API
     L2 --> LLM_API
     API --> EMB_API
-    
+
     API --> C
     L1 --> C
 ```
@@ -588,39 +589,39 @@ graph TB
 chatbot:
   name: "AnalysisDataFlow Assistant"
   version: "1.0.0"
-  
+
   retrieval:
     vector_search:
       enabled: true
       top_k: 20
       min_score: 0.7
-    
+
     keyword_search:
       enabled: true
       top_k: 20
-    
+
     fusion:
       method: "rrf"
       k: 60
       final_top_k: 10
-  
+
   context:
     max_tokens: 4000
     history_turns: 3
     chunk_size: 500
     chunk_overlap: 50
-  
+
   llm:
     provider: "openai"  # or "anthropic", "azure"
     model: "gpt-3.5-turbo"
     temperature: 0.3
     max_tokens: 1000
-    
+
   response:
     format_markdown: true
     include_sources: true
     include_suggestions: true
-  
+
   caching:
     enabled: true
     ttl: 3600  # 1 hour
@@ -668,11 +669,13 @@ chatbot:
 > **Checkpoint** is Flink's fault tolerance mechanism that creates globally consistent snapshots of distributed streaming data flow[^1].
 >
 > **Key Concepts**:
+>
 > - **Checkpoint Barrier**: Special markers inserted into data streams to trigger state snapshots
 > - **State Backend**: Component responsible for state storage (HashMap, RocksDB, ForSt)
 > - **Exactly-Once Guarantee**: Checkpoint ensures state consistency even with failures
 >
 > **Implementation**:
+>
 > ```java
 > env.enableCheckpointing(60000);  // 60 second interval
 > env.getCheckpointConfig().setCheckpointingMode(

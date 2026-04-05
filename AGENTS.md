@@ -153,7 +153,7 @@ Knowledge/:[████████████████████] 100% (
 Flink/:    [████████████████████] 100% (131文档, 109定理, 224定义)
 定理注册表: v2.9 | 总计: 880形式化元素 (190定理+402定义+160引理+123命题+6推论)
 
-最新扩展: State Backends深度对比 | Flink生产检查清单 | Flink AI Agents (FLIP-531) 
+最新扩展: State Backends深度对比 | Flink生产检查清单 | Flink AI Agents (FLIP-531)
           | 实时图流处理TGN | 多模态流处理 | Flink 2.3路线图
           | Google A2A协议 | Temporal+Flink分层架构 | Smart Casual验证
           | 动态学习路径推荐系统 (P2-11)

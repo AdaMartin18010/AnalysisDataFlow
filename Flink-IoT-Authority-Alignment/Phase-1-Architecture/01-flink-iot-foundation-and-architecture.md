@@ -405,58 +405,58 @@ graph TB
         DEV1[IoT设备<br/>传感器/执行器]
         GW[IoT Greengrass<br/>边缘网关]
     end
-    
+
     subgraph AWSCloud["AWS 云"]
         subgraph Connectivity["连接层"]
             IOT[AWS IoT Core<br/>MQTT Broker]
             RULE[IoT Rule Engine]
         end
-        
+
         subgraph Streaming["流处理层"]
             MSK[Amazon MSK<br/>Kafka集群]
             FLINK[Managed Service for Apache Flink]
             KDA[Kinesis Data Analytics]
         end
-        
+
         subgraph Storage["数据存储层"]
             TS[Timestream<br/>时序数据库]
             S3[(S3 Data Lake)]
             DDB[DynamoDB<br/>元数据]
         end
-        
+
         subgraph Analytics["分析应用层"]
             GRAFANA[Amazon Managed Grafana]
             QS[QuickSight]
             LAMBDA[Lambda<br/>告警触发]
         end
     end
-    
+
     subgraph Consumers["数据消费者"]
         APP[移动/Web应用]
         BI[BI报表系统]
         ML[SageMaker<br/>ML推理]
     end
-    
+
     DEV1 -->|MQTT| IOT
     GW -->|MQTT| IOT
-    
+
     IOT -->|规则路由| RULE
     RULE -->|IoT MQTT| MSK
     RULE -->|直接写入| TS
-    
+
     MSK -->|Kafka Source| FLINK
     FLINK -->|实时聚合| TS
     FLINK -->|异常事件| LAMBDA
     FLINK -->|原始数据| S3
-    
+
     TS -->|可视化| GRAFANA
     TS -->|分析| QS
     S3 -->|训练数据| ML
-    
+
     GRAFANA --> APP
     QS --> BI
     LAMBDA -->|SNS通知| APP
-    
+
     style Edge fill:#e8f5e9,stroke:#2e7d32
     style Connectivity fill:#fff3e0,stroke:#ef6c00
     style Streaming fill:#e3f2fd,stroke:#1565c0
@@ -481,12 +481,14 @@ graph TB
 ### 6.3 网络与安全架构
 
 **VPC网络设计**:
+
 - IoT Core：公共服务端点（无需VPC）
 - MSK：部署在私有子网（多AZ）
 - Flink：VPC内托管（与MSK同VPC）
 - Timestream：公共服务端点（VPC Endpoint可选）
 
 **安全组件**:
+
 - **设备认证**: X.509证书、JITP/JITR
 - **网络隔离**: VPC + Security Group
 - **数据加密**: TLS 1.3（传输）、KMS（静态）
@@ -509,16 +511,16 @@ CREATE TABLE sensor_raw (
     device_id STRING,
     sensor_type STRING,
     event_time TIMESTAMP(3),
-    
+
     -- 传感器读数
     temperature DOUBLE,
     humidity DOUBLE,
     pressure DOUBLE,
-    
+
     -- 元数据
     qos INT METADATA FROM 'value.qos',
     topic STRING METADATA FROM 'topic',
-    
+
     -- 水印定义：允许5秒乱序
     WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND
 ) WITH (
@@ -526,15 +528,15 @@ CREATE TABLE sensor_raw (
     'topic' = 'iot.raw.sensors',
     'properties.bootstrap.servers' = 'msk-bootstrap:9092',
     'properties.group.id' = 'flink-iot-processor',
-    
+
     -- 格式定义：使用JSON
     'format' = 'json',
     'json.ignore-parse-errors' = 'true',
     'json.timestamp-format.standard' = 'ISO-8601',
-    
+
     -- 起始偏移：从最新开始（生产环境建议earliest）
     'scan.startup.mode' = 'latest-offset',
-    
+
     -- 安全认证（MSK IAM）
     'properties.security.protocol' = 'SASL_SSL',
     'properties.sasl.mechanism' = 'AWS_MSK_IAM',
@@ -551,13 +553,13 @@ CREATE TABLE sensor_aggregated (
     device_id STRING,
     sensor_type STRING,
     location STRING,
-    
+
     -- 字段（Field）：时序数据值
     avg_temperature DOUBLE,
     max_temperature DOUBLE,
     min_temperature DOUBLE,
     reading_count BIGINT,
-    
+
     -- 时间戳
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),
@@ -567,11 +569,11 @@ CREATE TABLE sensor_aggregated (
     'url' = 'http://influxdb:8086',
     'database' = 'iot_metrics',
     'measurement' = 'sensor_5min_stats',
-    
+
     -- 认证
     'username' = '${INFLUX_USER}',
     'password' = '${INFLUX_PASS}',
-    
+
     -- 写入模式
     'write.mode' = 'ASYNC',
     'sink.batch.size' = '1000',
@@ -590,11 +592,11 @@ CREATE TABLE sensor_alerts (
     severity STRING,
     message STRING,
     event_time TIMESTAMP(3),
-    
+
     -- 原始读数
     current_value DOUBLE,
     threshold_value DOUBLE,
-    
+
     -- 处理时间
     proc_time AS PROCTIME()
 ) WITH (
@@ -603,7 +605,7 @@ CREATE TABLE sensor_alerts (
     'table-name' = 'sensor_alerts',
     'username' = '${DB_USER}',
     'password' = '${DB_PASS}',
-    
+
     -- 写入语义
     'sink.buffer-flush.max-rows' = '100',
     'sink.buffer-flush.interval' = '1s',
@@ -616,18 +618,18 @@ CREATE TABLE sensor_alerts (
 ```sql
 -- 5分钟滚动窗口聚合：按设备和传感器类型
 INSERT INTO sensor_aggregated
-SELECT 
+SELECT
     device_id,
     sensor_type,
     -- 从设备元数据表获取位置
     T.location,
-    
+
     -- 温度统计
     AVG(temperature) as avg_temperature,
     MAX(temperature) as max_temperature,
     MIN(temperature) as min_temperature,
     COUNT(*) as reading_count,
-    
+
     -- 窗口边界
     TUMBLE_START(event_time, INTERVAL '5' MINUTE) as window_start,
     TUMBLE_END(event_time, INTERVAL '5' MINUTE) as window_end
@@ -635,11 +637,11 @@ FROM sensor_raw
 -- 关联设备元数据
 LEFT JOIN device_metadata FOR SYSTEM_TIME AS OF sensor_raw.proc_time AS T
   ON sensor_raw.device_id = T.device_id
-WHERE 
+WHERE
     -- 数据质量过滤
     temperature BETWEEN -40.0 AND 80.0
     AND humidity BETWEEN 0.0 AND 100.0
-GROUP BY 
+GROUP BY
     device_id,
     sensor_type,
     T.location,
@@ -651,12 +653,12 @@ GROUP BY
 ```sql
 -- 温度异常检测：连续3次超过阈值
 INSERT INTO sensor_alerts
-SELECT 
+SELECT
     CONCAT('ALERT-', UUID()) as alert_id,
     device_id,
     'HIGH_TEMPERATURE' as alert_type,
     'CRITICAL' as severity,
-    CONCAT('Device ', device_id, ' temperature exceeded threshold: ', 
+    CONCAT('Device ', device_id, ' temperature exceeded threshold: ',
            CAST(temperature AS STRING), '°C') as message,
     event_time,
     temperature as current_value,
@@ -747,7 +749,7 @@ services:
     image: confluentinc/cp-kafka:7.6.0
     depends_on:
       - kafka
-    entrypoint: 
+    entrypoint:
       - /bin/sh
       - -c
       - |
@@ -904,7 +906,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 class IoTSensorSimulator:
     """IoT传感器数据模拟器"""
-    
+
     # 传感器配置模板
     SENSOR_PROFILES = {
         'temperature': {
@@ -926,10 +928,10 @@ class IoTSensorSimulator:
             'anomaly_prob': 0.005
         }
     }
-    
+
     # 设备位置分布
     LOCATIONS = ['warehouse-a', 'warehouse-b', 'factory-1', 'factory-2', 'outdoor']
-    
+
     def __init__(self, broker: str, port: int, device_count: int = 50):
         self.broker = broker
         self.port = port
@@ -937,12 +939,12 @@ class IoTSensorSimulator:
         self.devices: List[Dict] = []
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self._init_devices()
-        
+
     def _init_devices(self):
         """初始化虚拟设备池"""
         for i in range(self.device_count):
             sensor_types = random.sample(
-                list(self.SENSOR_PROFILES.keys()), 
+                list(self.SENSOR_PROFILES.keys()),
                 k=random.randint(1, 3)
             )
             device = {
@@ -953,36 +955,36 @@ class IoTSensorSimulator:
                 'publish_interval': random.uniform(1.0, 5.0)  # 1-5秒间隔
             }
             self.devices.append(device)
-            
+
     def _generate_reading(self, device: Dict) -> Dict:
         """生成传感器读数"""
         readings = {}
-        
+
         for sensor_type in device['sensor_types']:
             profile = self.SENSOR_PROFILES[sensor_type]
-            
+
             # 正常读数
             base_value = random.uniform(profile['min'], profile['max'])
-            
+
             # 引入异常（测试异常检测）
             if random.random() < profile['anomaly_prob']:
                 base_value += random.uniform(10.0, 20.0)
-            
+
             # 添加噪声
             noise = random.gauss(0, (profile['max'] - profile['min']) * 0.02)
             value = round(base_value + noise, 2)
-            
+
             readings[sensor_type] = {
                 'value': value,
                 'unit': profile['unit']
             }
-            
+
         return readings
-        
+
     def _create_payload(self, device: Dict) -> Dict:
         """创建MQTT消息负载"""
         readings = self._generate_reading(device)
-        
+
         # 构建符合AWS IoT Core Shadow格式的消息
         payload = {
             'device_id': device['device_id'],
@@ -991,51 +993,51 @@ class IoTSensorSimulator:
             'sensor_type': ','.join(device['sensor_types']),
             'qos': device['qos']
         }
-        
+
         # 添加具体读数
         for sensor_type, data in readings.items():
             payload[sensor_type] = data['value']
-            
+
         return payload
-        
+
     def _publish_device_data(self, device: Dict):
         """发布单个设备的数据"""
         topic = f"iot/sensors/{device['location']}/{device['device_id']}"
-        
+
         while True:
             try:
                 payload = self._create_payload(device)
                 message = json.dumps(payload)
-                
+
                 result = self.client.publish(
-                    topic, 
-                    message, 
+                    topic,
+                    message,
                     qos=device['qos']
                 )
-                
+
                 if result.rc == mqtt.MQTT_ERR_SUCCESS:
                     print(f"[{device['device_id']}] Published to {topic}")
                 else:
                     print(f"[{device['device_id']}] Publish failed: {result.rc}")
-                    
+
             except Exception as e:
                 print(f"[{device['device_id']}] Error: {e}")
-                
+
             time.sleep(device['publish_interval'])
-            
+
     def start(self):
         """启动模拟器"""
         # 连接MQTT Broker
         self.client.connect(self.broker, self.port, keepalive=60)
         self.client.loop_start()
-        
+
         print(f"Connected to MQTT broker at {self.broker}:{self.port}")
         print(f"Starting simulation with {self.device_count} devices...")
-        
+
         # 使用线程池并行发布
         with ThreadPoolExecutor(max_workers=10) as executor:
             executor.map(self._publish_device_data, self.devices)
-            
+
     def stop(self):
         """停止模拟器"""
         self.client.loop_stop()
@@ -1048,9 +1050,9 @@ def main():
     broker = os.getenv('MQTT_BROKER', 'localhost')
     port = int(os.getenv('MQTT_PORT', '1883'))
     device_count = int(os.getenv('DEVICE_COUNT', '50'))
-    
+
     simulator = IoTSensorSimulator(broker, port, device_count)
-    
+
     try:
         simulator.start()
     except KeyboardInterrupt:
@@ -1076,7 +1078,7 @@ Parameters:
     Type: String
     Default: 'flink-iot-prod'
     Description: '环境名称'
-  
+
   VpcCIDR:
     Type: String
     Default: '10.0.0.0/16'
@@ -1331,7 +1333,7 @@ Resources:
             Action:
               - iot:Publish
               - iot:Receive
-            Resource: 
+            Resource:
               - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/iot/sensors/*'
           - Effect: Allow
             Action:
@@ -1394,38 +1396,38 @@ Outputs:
 ```mermaid
 flowchart TD
     START([IoT场景技术选型]) --> Q1{数据规模?}
-    
+
     Q1 -->|设备< 1万| SMALL[轻量级方案]
     Q1 -->|设备1-100万| MEDIUM[标准方案]
     Q1 -->|设备> 100万| LARGE[企业方案]
-    
+
     SMALL --> S1{部署环境?}
     S1 -->|本地/边缘| S1A[Mosquitto + SQLite]
     S1 -->|云| S1B[AWS IoT Core + Lambda]
-    
+
     MEDIUM --> M1{延迟要求?}
     M1 -->|秒级| M1A[EMQX + Kafka + Flink]
     M1 -->|毫秒级| M1B[EMQX + Pulsar + Flink]
-    
+
     LARGE --> L1{多云需求?}
     L1 -->|单一云| L1A[AWS IoT Core + MSK + Managed Flink]
     L1 -->|多云| L1B[EMQX + Kafka + Flink on K8s]
-    
+
     S1A --> S2{存储需求?}
     S1B --> S2
     M1A --> S2
     M1B --> S2
     L1A --> S2
     L1B --> S2
-    
+
     S2 -->|实时分析| ST1[InfluxDB/Timestream]
     S2 -->|数据湖| ST2[S3 + Athena]
     S2 -->|混合| ST3[Hot: Timestream<br/>Cold: S3]
-    
+
     ST1 --> END1([实施])
     ST2 --> END1
     ST3 --> END1
-    
+
     style START fill:#e1f5fe
     style END1 fill:#c8e6c9
     style Q1 fill:#fff3e0
@@ -1455,7 +1457,7 @@ sequenceDiagram
         Note over Device,MQTT: 感知层
         Device->>+MQTT: CONNECT (TLS)
         MQTT-->>-Device: CONNACK
-        
+
         loop 传感器采集周期
             Device->>Device: 读取传感器
             Device->>+MQTT: PUBLISH (topic: iot/sensors/+/+)
@@ -1474,7 +1476,7 @@ sequenceDiagram
         Note over Kafka,Flink: 处理层
         Flink->>+Kafka: Poll Records
         Kafka-->>-Flink: ConsumerRecords
-        
+
         Flink->>Flink: 反序列化(JSON)
         Flink->>Flink: 分配Watermark
         Flink->>Flink: 5分钟窗口聚合
@@ -1485,7 +1487,7 @@ sequenceDiagram
         Note over Flink,Grafana: 存储与可视化层
         Flink->>+TS: Write Records
         TS-->>-Flink: WriteAck
-        
+
         Grafana->>+TS: Query (InfluxQL)
         TS-->>-Grafana: ResultSet
         Grafana->>Grafana: 渲染仪表盘
@@ -1498,29 +1500,21 @@ sequenceDiagram
 
 ## 9. 引用参考 (References)
 
-[^1]: Streamkap, "IoT Data Streaming Architecture: The Complete Guide", 2024. https://streamkap.com/blog/iot-data-streaming-architecture
+[^1]: Streamkap, "IoT Data Streaming Architecture: The Complete Guide", 2024. <https://streamkap.com/blog/iot-data-streaming-architecture>
 
-[^2]: Conduktor, "Building Real-Time IoT Platforms with Apache Kafka", 2024. https://www.conduktor.io/guides/iot-platform-kafka/
+[^2]: Conduktor, "Building Real-Time IoT Platforms with Apache Kafka", 2024. <https://www.conduktor.io/guides/iot-platform-kafka/>
 
-[^3]: AWS, "IoT Reference Architecture", AWS Documentation, 2025. https://docs.aws.amazon.com/whitepapers/latest/aws-overview/internet-of-things.html
+[^3]: AWS, "IoT Reference Architecture", AWS Documentation, 2025. <https://docs.aws.amazon.com/whitepapers/latest/aws-overview/internet-of-things.html>
 
-[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", Proceedings of the VLDB Endowment, Vol. 8, No. 12, 2015. https://doi.org/10.14778/2824032.2824076
+[^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", Proceedings of the VLDB Endowment, Vol. 8, No. 12, 2015. <https://doi.org/10.14778/2824032.2824076>
 
-[^5]: Apache Flink Documentation, "Stream Processing with Apache Flink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/overview/
 
-[^6]: EMQ Technologies, "EMQX Enterprise Documentation", 2025. https://docs.emqx.com/en/enterprise/latest/
 
-[^7]: AWS, "Amazon Timestream Developer Guide", AWS Documentation, 2025. https://docs.aws.amazon.com/timestream/
 
-[^8]: Apache Kafka Documentation, "Kafka Connect for IoT Integration", 2025. https://kafka.apache.org/documentation/
 
-[^9]: OASIS Standard, "MQTT Version 5.0 Specification", 2019. https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html
 
-[^10]: AWS, "Amazon Managed Streaming for Apache Kafka (MSK) Developer Guide", 2025. https://docs.aws.amazon.com/msk/latest/developerguide/
 
-[^11]: InfluxData, "InfluxDB 2.0 Documentation", 2025. https://docs.influxdata.com/influxdb/v2.0/
 
-[^12]: AWS, "AWS IoT Core Developer Guide", AWS Documentation, 2025. https://docs.aws.amazon.com/iot/latest/developerguide/
 
 ---
 
@@ -1550,8 +1544,8 @@ sequenceDiagram
 
 ---
 
-*文档版本: 1.0.0*  
-*最后更新: 2026-04-05*  
+*文档版本: 1.0.0*
+*最后更新: 2026-04-05*
 *维护者: AnalysisDataFlow 项目*
 
 
@@ -1599,20 +1593,20 @@ IoT数据质量问题常见且影响重大，Flink SQL可实现实时数据清�
 ```sql
 -- 数据质量校验与过滤
 CREATE VIEW sensor_cleaned AS
-SELECT 
+SELECT
     device_id,
     event_time,
     temperature,
     humidity,
     -- 数据质量标记
-    CASE 
+    CASE
         WHEN temperature IS NULL THEN 'NULL_VALUE'
         WHEN temperature < -50 OR temperature > 100 THEN 'OUT_OF_RANGE'
         WHEN event_time < NOW() - INTERVAL '7' DAY THEN 'STALE_DATA'
         ELSE 'VALID'
     END as quality_flag
 FROM sensor_raw
-WHERE 
+WHERE
     -- 过滤明显无效数据
     device_id IS NOT NULL
     AND event_time IS NOT NULL
@@ -1627,12 +1621,12 @@ CREATE TABLE data_quality_metrics (
 ) WITH (...);
 
 INSERT INTO data_quality_metrics
-SELECT 
+SELECT
     TUMBLE_END(event_time, INTERVAL '1' HOUR),
     quality_flag,
     COUNT(*) as record_count
 FROM sensor_cleaned
-GROUP BY 
+GROUP BY
     TUMBLE(event_time, INTERVAL '1' HOUR),
     quality_flag;
 ```
@@ -1745,16 +1739,19 @@ MQTT指标:
 ### 10.5 扩展阅读与资源
 
 **官方文档**:
+
 - [Apache Flink 1.18 文档](https://nightlies.apache.org/flink/flink-docs-release-1.18/)
 - [AWS IoT Core 开发者指南](https://docs.aws.amazon.com/iot/latest/developerguide/)
 - [EMQX 5.x 文档](https://docs.emqx.com/en/emqx/v5.0/)
 
 **推荐论文**:
+
 1. Akidau et al., "The Dataflow Model", VLDB 2015
 2. Zaharia et al., "Discretized Streams", SOSP 2013
 3. Carbone et al., "Apache Flink: Stream and Batch Processing", IEEE Data Eng. Bull. 2015
 
 **开源项目**:
+
 - [Flink IoT Examples](https://github.com/apache/flink/tree/master/flink-examples)
 - [AWS IoT SDK Samples](https://github.com/aws/aws-iot-device-sdk-python-v2)
 - [EMQX Benchmark](https://github.com/emqx/emqtt-bench)
@@ -1829,7 +1826,6 @@ IoT流处理架构正在经历以下演进方向：
 
 ---
 
-*本文档遵循AGENTS.md定义的六段式模板规范*  
-*形式化元素统计: 定义×5 | 引理×1 | 命题×2 | 总计×8*  
+*本文档遵循AGENTS.md定义的六段式模板规范*
+*形式化元素统计: 定义×5 | 引理×1 | 命题×2 | 总计×8*
 *文档总字数: 约5200字 | 代码示例: 8个 | Mermaid图: 5个 | 表格: 13个*
-

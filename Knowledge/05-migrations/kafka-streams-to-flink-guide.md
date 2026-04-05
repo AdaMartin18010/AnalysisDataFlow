@@ -334,10 +334,10 @@ public class KafkaStreamsWordCount {
         props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, "exactly_once_v2");
 
         StreamsBuilder builder = new StreamsBuilder();
-        
+
         // 创建输入流
         KStream<String, String> source = builder.stream("input-topic");
-        
+
         // WordCount 处理逻辑
         KTable<String, Long> wordCounts = source
             // 将每行文本拆分为单词
@@ -351,14 +351,14 @@ public class KafkaStreamsWordCount {
             // 计数聚合
             .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts-store")
                 .withValueSerde(Serdes.Long()));
-        
+
         // 输出结果到topic
-        wordCounts.toStream().to("output-topic", 
+        wordCounts.toStream().to("output-topic",
             Produced.with(Serdes.String(), Serdes.Long()));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         streams.start();
-        
+
         // 优雅关闭
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
@@ -370,15 +370,15 @@ public class KafkaStreamsWordCount {
 ```java
 public class FlinkWordCount {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置Checkpoint实现Exactly-Once
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE);
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
-        
+
         // Kafka Source配置
         KafkaSource<String> source = KafkaSource.<String>builder()
             .setBootstrapServers("kafka:9092")
@@ -393,7 +393,7 @@ public class FlinkWordCount {
             WatermarkStrategy.noWatermarks(),
             "Kafka Source"
         );
-        
+
         // WordCount 处理逻辑
         DataStream<Tuple2<String, Long>> wordCounts = stream
             // 将每行文本拆分为单词
@@ -424,7 +424,7 @@ public class FlinkWordCount {
         wordCounts.sinkTo(sink);
         env.execute("Flink WordCount");
     }
-    
+
     // 自定义FlatMapFunction：分词
     public static class Tokenizer implements FlatMapFunction<String, String> {
         @Override
@@ -434,21 +434,21 @@ public class FlinkWordCount {
             }
         }
     }
-    
+
     // 自定义聚合函数：计数
-    public static class CountAggregate implements 
+    public static class CountAggregate implements
             AggregateFunction<Tuple2<String, Long>, Long, Long> {
         @Override
         public Long createAccumulator() { return 0L; }
-        
+
         @Override
         public Long add(Tuple2<String, Long> value, Long accumulator) {
             return accumulator + value.f1;
         }
-        
+
         @Override
         public Long getResult(Long accumulator) { return accumulator; }
-        
+
         @Override
         public Long merge(Long a, Long b) { return a + b; }
     }
@@ -508,7 +508,7 @@ DataStream<EnrichedOrder> enrichedOrders = orders
     .between(Time.minutes(-5), Time.minutes(5))
     .process(new ProcessJoinFunction<Order, Payment, EnrichedOrder>() {
         @Override
-        public void processElement(Order order, Payment payment, 
+        public void processElement(Order order, Payment payment,
                 Context ctx, Collector<EnrichedOrder> out) {
             out.collect(new EnrichedOrder(order, payment));
         }
@@ -555,16 +555,16 @@ DataStream<EnrichedOrder> enriched = orderStream
     .connect(broadcastCustomers)
     .process(new BroadcastProcessFunction<Order, Customer, EnrichedOrder>() {
         @Override
-        public void processElement(Order order, ReadOnlyContext ctx, 
+        public void processElement(Order order, ReadOnlyContext ctx,
                 Collector<EnrichedOrder> out) throws Exception {
-            ReadOnlyBroadcastState<String, Customer> state = 
+            ReadOnlyBroadcastState<String, Customer> state =
                 ctx.getBroadcastState(customerStateDescriptor);
             Customer customer = state.get(order.getCustomerId());
             out.collect(new EnrichedOrder(order, customer));
         }
 
         @Override
-        public void processBroadcastElement(Customer customer, Context ctx, 
+        public void processBroadcastElement(Customer customer, Context ctx,
                 Collector<EnrichedOrder> out) throws Exception {
             ctx.getBroadcastState(customerStateDescriptor).put(customer.getId(), customer);
         }
@@ -640,20 +640,20 @@ DataStream<Tuple2<String, Long>> sessionCounts = clicks
 public class KafkaStreamsStatefulProcessor {
     public static void main(String[] args) {
         StreamsBuilder builder = new StreamsBuilder();
-        
+
         KStream<String, Event> events = builder.stream("events");
-        
+
         events.process(() -> new Processor<String, Event, String, Result>() {
             private KeyValueStore<String, AggregatedState> stateStore;
             private ProcessorContext context;
-            
+
             @Override
             public void init(ProcessorContext context) {
                 this.context = context;
-                this.stateStore = (KeyValueStore<String, AggregatedState>) 
+                this.stateStore = (KeyValueStore<String, AggregatedState>)
                     context.getStateStore("aggregated-state");
             }
-            
+
             @Override
             public void process(String key, Event event) {
                 AggregatedState current = stateStore.get(key);
@@ -665,7 +665,7 @@ public class KafkaStreamsStatefulProcessor {
                 context.forward(key, current.toResult());
             }
         }, "aggregated-state");
-        
+
         // 配置状态存储
         builder.addStateStore(
             Stores.keyValueStoreBuilder(
@@ -683,7 +683,7 @@ public class KafkaStreamsStatefulProcessor {
 ```java
 public class FlinkStatefulFunction extends KeyedProcessFunction<String, Event, Result> {
     private transient ValueState<AggregatedState> state;
-    
+
     @Override
     public void open(Configuration parameters) {
         StateTtlConfig ttlConfig = StateTtlConfig
@@ -691,15 +691,15 @@ public class FlinkStatefulFunction extends KeyedProcessFunction<String, Event, R
             .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
             .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
             .build();
-            
-        ValueStateDescriptor<AggregatedState> descriptor = 
+
+        ValueStateDescriptor<AggregatedState> descriptor =
             new ValueStateDescriptor<>("aggregated-state", AggregatedState.class);
         descriptor.enableTimeToLive(ttlConfig);
         state = getRuntimeContext().getState(descriptor);
     }
-    
+
     @Override
-    public void processElement(Event event, Context ctx, Collector<Result> out) 
+    public void processElement(Event event, Context ctx, Collector<Result> out)
             throws Exception {
         AggregatedState current = state.value();
         if (current == null) {
@@ -723,12 +723,14 @@ public class FlinkStatefulFunction extends KeyedProcessFunction<String, Event, R
 | `group.id` | `KafkaSource.groupId` | 消费者组ID |
 
 **Kafka Streams**:
+
 ```java
 props.put(StreamsConfig.APPLICATION_ID_CONFIG, "my-streams-app");
 props.put(StreamsConfig.CLIENT_ID_CONFIG, "my-client");
 ```
 
 **Flink**:
+
 ```java
 env.execute("my-streams-app");  // 作业名称
 
@@ -748,6 +750,7 @@ createKafkaSource()
 | `enable.auto.commit` | 禁用（由Checkpoint管理） | 自动提交 |
 
 **Kafka Streams**:
+
 ```java
 props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -755,6 +758,7 @@ props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 500);
 ```
 
 **Flink**:
+
 ```java
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")
@@ -774,15 +778,17 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 | `state.cleanup.delay.ms` | `state.backend.rocksdb.predefined-options` | 状态清理 |
 
 **Kafka Streams**:
+
 ```java
 props.put(StreamsConfig.STATE_DIR_CONFIG, "/var/lib/kafka-streams");
 props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 60000);
 ```
 
 **Flink**:
+
 ```java
 // 配置RocksDB状态后端
-EmbeddedRocksDBStateBackend rocksDbBackend = 
+EmbeddedRocksDBStateBackend rocksDbBackend =
     new EmbeddedRocksDBStateBackend(true);  // 增量Checkpoint
 env.setStateBackend(rocksDbBackend);
 
@@ -793,6 +799,7 @@ env.getCheckpointConfig().setCheckpointStorage("file:///var/lib/flink/checkpoint
 ### 7.4 Exactly-Once配置
 
 **Kafka Streams**:
+
 ```java
 // 启用Exactly-Once语义
 props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, "exactly_once_v2");
@@ -802,6 +809,7 @@ props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 ```
 
 **Flink**:
+
 ```java
 // 启用Checkpoint实现Exactly-Once
 env.enableCheckpointing(60000);
@@ -829,7 +837,7 @@ streams.start();
 // 通过REST API提供状态查询服务
 ReadOnlyKeyValueStore<String, Long> store = streams.store(
     StoreQueryParameters.fromNameAndType(
-        "counts-store", 
+        "counts-store",
         QueryableStoreTypes.keyValueStore()
     )
 );
@@ -842,19 +850,19 @@ Long count = store.get("word");
 public class StateSyncFunction extends KeyedProcessFunction<String, Event, Result> {
     private transient ValueState<AggregatedState> state;
     private transient RedisAsyncCommands<String, String> redisCommands;
-    
+
     @Override
     public void open(Configuration parameters) {
         state = getRuntimeContext().getState(
             new ValueStateDescriptor<>("state", AggregatedState.class));
-        
+
         // 连接Redis
         RedisClient client = RedisClient.create("redis://localhost:6379");
         redisCommands = client.connect().async();
     }
-    
+
     @Override
-    public void processElement(Event event, Context ctx, Collector<Result> out) 
+    public void processElement(Event event, Context ctx, Collector<Result> out)
             throws Exception {
         AggregatedState current = state.value();
         if (current == null) {
@@ -862,10 +870,10 @@ public class StateSyncFunction extends KeyedProcessFunction<String, Event, Resul
         }
         current.update(event);
         state.update(current);
-        
+
         // 同步到Redis供外部查询
         redisCommands.set(ctx.getCurrentKey(), serialize(current));
-        
+
         out.collect(current.toResult());
     }
 }
@@ -875,16 +883,16 @@ public class StateSyncFunction extends KeyedProcessFunction<String, Event, Resul
 
 ```java
 // 通过AsyncFunction实现异步状态查询
-public class AsyncStateQueryFunction 
+public class AsyncStateQueryFunction
     extends AsyncFunction<String, QueryResult> {
-    
+
     private transient StateQueryClient queryClient;
-    
+
     @Override
     public void open(Configuration parameters) {
         queryClient = new StateQueryClient("http://query-service:8080");
     }
-    
+
     @Override
     public void asyncInvoke(String key, ResultFuture<QueryResult> resultFuture) {
         queryClient.queryAsync(key)
@@ -917,25 +925,25 @@ props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 ```java
 public class FlinkExactlyOnceJob {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 1. 启用Checkpoint
         env.enableCheckpointing(60000);  // 每60秒触发一次Checkpoint
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE);
-        
+
         // 2. Checkpoint配置
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
         env.getCheckpointConfig().setCheckpointTimeout(600000);
         env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
         env.getCheckpointConfig().enableExternalizedCheckpoints(
             ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-        
+
         // 3. 配置状态后端
         env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
         env.getCheckpointConfig().setCheckpointStorage("hdfs://namenode:8020/flink/checkpoints");
-        
+
         // 4. Kafka Source配置
         KafkaSource<String> source = KafkaSource.<String>builder()
             .setBootstrapServers("kafka:9092")
@@ -943,7 +951,7 @@ public class FlinkExactlyOnceJob {
             .setGroupId("flink-consumer-group")
             .setStartingOffsets(OffsetsInitializer.earliest())
             .build();
-        
+
         // 5. Kafka Sink配置Exactly-Once
         KafkaSink<String> sink = KafkaSink.<String>builder()
             .setBootstrapServers("kafka:9092")
@@ -954,11 +962,11 @@ public class FlinkExactlyOnceJob {
             .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
             .setTransactionalIdPrefix("flink-exactly-once")
             .build();
-        
+
         env.fromSource(source, WatermarkStrategy.noWatermarks(), "Source")
            .map(new ProcessingFunction())
            .sinkTo(sink);
-           
+
         env.execute("Flink Exactly-Once Job");
     }
 }
@@ -1021,26 +1029,26 @@ DataStream<Event> rescaled = events.rescale();
 ```mermaid
 flowchart TD
     A[Kafka Streams 应用] --> B{应用复杂度}
-    
+
     B -->|简单DSL应用| C[直接迁移]
     B -->|复杂Processor API| D[分阶段迁移]
     B -->|依赖Interactive Queries| E[架构重构]
-    
+
     C --> F[1. 对等API映射]
     C --> G[2. 配置转换]
     C --> H[3. 测试验证]
     C --> I[4. 生产切换]
-    
+
     D --> J[1. 识别核心逻辑]
     D --> K[2. 抽象状态操作]
     D --> L[3. 逐步替换组件]
     D --> M[4. 集成测试]
-    
+
     E --> N[1. 设计外部查询层]
     E --> O[2. 状态同步机制]
     E --> P[3. 双写验证]
     E --> Q[4. 查询服务迁移]
-    
+
     F --> R[完成]
     G --> R
     H --> R
@@ -1062,11 +1070,11 @@ flowchart TD
  * 双写验证模式：同时写入两套系统，对比输出一致性
  */
 public class DualWriteValidation {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 源数据
         DataStream<Event> source = env.fromSource(
             KafkaSource.<Event>builder()
@@ -1075,31 +1083,31 @@ public class DualWriteValidation {
             WatermarkStrategy.noWatermarks(),
             "Source"
         );
-        
+
         // Flink处理结果
         DataStream<Result> flinkResult = source
             .keyBy(Event::getKey)
             .process(new FlinkProcessingFunction());
-        
+
         // 旁路输出：同时发送到验证Topic
         OutputTag<Result> validationTag = new OutputTag<Result>("validation"){};
-        
+
         SingleOutputStreamOperator<Result> mainStream = flinkResult
             .process(new ProcessFunction<Result, Result>() {
                 @Override
-                public void processElement(Result result, Context ctx, 
+                public void processElement(Result result, Context ctx,
                         Collector<Result> out) {
                     out.collect(result);
                     ctx.output(validationTag, result);
                 }
             });
-        
+
         // 主输出到生产Topic
         mainStream.sinkTo(KafkaSink.<Result>builder()
             .setBootstrapServers("kafka:9092")
             .setRecordSerializer(...)
             .build());
-        
+
         // 验证输出到专门Topic
         mainStream.getSideOutput(validationTag)
             .sinkTo(KafkaSink.<Result>builder()
@@ -1110,7 +1118,7 @@ public class DualWriteValidation {
                         .build()
                 )
                 .build());
-        
+
         env.execute();
     }
 }
@@ -1163,9 +1171,9 @@ flowchart LR
         C --> E[Kafka输出Topic]
         D --> E
     end
-    
+
     subgraph 回滚策略
-        F[1. 保留原集群运行] 
+        F[1. 保留原集群运行]
         G[2. 快速切换开关]
         H[3. 状态恢复机制]
         I[4. 数据补偿逻辑]
@@ -1361,9 +1369,9 @@ public class CustomProcessor extends Processor<String, String> {
     @Override
     public void init(ProcessorContext context) {
         this.context = context;
-        this.store = (KeyValueStore<String, String>) 
+        this.store = (KeyValueStore<String, String>)
             context.getStateStore("my-store");
-        this.context.schedule(Duration.ofSeconds(10), 
+        this.context.schedule(Duration.ofSeconds(10),
             PunctuationType.WALL_CLOCK_TIME, this::punctuate);
     }
 }
@@ -1427,19 +1435,3 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 ```
 
 ## 13. 引用参考 (References)
-
-[^1]: Apache Kafka Documentation, "Kafka Streams", 2024. https://kafka.apache.org/documentation/streams/
-
-[^2]: Apache Flink Documentation, "DataStream API", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/
-
-[^3]: Apache Flink Documentation, "Kafka Connector", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
-
-[^4]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
-
-[^5]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
-
-[^6]: Apache Flink Documentation, "State Backends", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
-
-[^7]: Apache Flink Documentation, "Checkpointing", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
-
-[^8]: Confluent Documentation, "Kafka Streams Interactive Queries", 2024. https://docs.confluent.io/platform/current/streams/developer-guide/interactive-queries.html

@@ -26,7 +26,7 @@
     - [4.1 优化器设计决策论证](#41-优化器设计决策论证)
     - [4.2 Blink Planner vs Old Planner](#42-blink-planner-vs-old-planner)
     - [4.3 批流统一优化论证](#43-批流统一优化论证)
-  - [5. 工程论证 / 性能调优方法论 (Engineering Argument)](#5-工程论证-性能调优方法论-engineering-argument)
+  - [5. 工程论证 / 性能调优方法论 (Engineering Argument)](#5-工程论证--性能调优方法论-engineering-argument)
     - [5.1 核心优化技术详解](#51-核心优化技术详解)
       - [5.1.1 谓词下推 (Predicate Pushdown)](#511-谓词下推-predicate-pushdown)
       - [5.1.2 投影下推 (Project Pushdown)](#512-投影下推-project-pushdown)

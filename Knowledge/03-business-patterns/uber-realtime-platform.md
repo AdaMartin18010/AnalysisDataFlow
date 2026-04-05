@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [Uber实时分析平台 - Apache Flink大规模实践](#uber实时分析平台-apache-flink大规模实践)
+- [Uber实时分析平台 - Apache Flink大规模实践](#uber实时分析平台---apache-flink大规模实践)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-05: Uber流计算平台架构](#def-k-03-05-uber流计算平台架构)
@@ -24,7 +24,7 @@
     - [4.1 Uber架构演进三阶段](#41-uber架构演进三阶段)
     - [4.2 延迟与一致性权衡分析](#42-延迟与一致性权衡分析)
     - [4.3 双活数据中心设计论证](#43-双活数据中心设计论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 百万QPS扩展性论证](#51-百万qps扩展性论证)
     - [5.2 地理分区策略正确性](#52-地理分区策略正确性)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

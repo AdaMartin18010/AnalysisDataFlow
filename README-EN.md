@@ -35,6 +35,7 @@ AnalysisDataFlow is a comprehensive knowledge system for the stream computing do
 ```
 
 **Core Values**:
+
 - 🔬 **Theory Support**: Formal theorems guarantee correctness of engineering decisions
 - 🛠️ **Practice Guidance**: Complete mapping path from theorems to code
 - 🔍 **Problem Diagnosis**: Rapid solution positioning by symptoms

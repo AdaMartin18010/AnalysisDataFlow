@@ -15,6 +15,7 @@ $$
 $$
 
 其中：
+
 - $D$: 数据资产集合 (Data Assets)
 - $S$: Schema 管理 (Schema Registry)
 - $P$: 血缘追踪 (Provenance/Lineage)
@@ -75,6 +76,7 @@ T_{compliance} \leq T_{retention} + T_{propagation} + T_{checkpoint}
 $$
 
 其中：
+
 - $T_{retention}$: 数据保留期
 - $T_{propagation}$: 删除指令传播延迟
 - $T_{checkpoint}$: 检查点周期
@@ -133,14 +135,14 @@ Data Fabric 提供**统一元数据层**，流数据治理作为其**实时执�
 
 **论证**:
 
-1. **Schema漂移风险**: 
+1. **Schema漂移风险**:
    - 生产者 Schema 变更 $\rightarrow$ 消费者解析失败
    - 历史数据与新 Schema 不兼容
-   
+
 2. **血缘断裂风险**:
    - 无法追溯数据质量问题根源
    - 变更影响范围不可评估
-   
+
 3. **合规失效风险**:
    - PII 数据无标记 $\rightarrow$ 审计失败
    - 删除权无法落实 $\rightarrow$ 法律风险
@@ -265,7 +267,7 @@ client.emit(
 ```sql
 -- Marquez / DataHub 字段级血缘
 CREATE VIEW enriched_orders AS
-SELECT 
+SELECT
     o.order_id,                    -- ← orders-topic.order_id
     o.amount,                      -- ← orders-topic.amount
     u.user_segment,                -- ← user-cache.segment
@@ -351,7 +353,7 @@ public class MaskPII extends ScalarFunction {
 }
 
 // SQL 应用
-SELECT 
+SELECT
     user_id,
     MaskPII(email, 'EMAIL') as email_masked,
     MaskPII(phone, 'PHONE') as phone_masked
@@ -376,7 +378,7 @@ order_expectations = ExpectationSuite(
         ExpectColumnValuesToNotBeNull(column="order_id"),
         ExpectColumnValuesToBeBetween(column="amount", min_value=0),
         ExpectColumnValuesToMatchRegex(
-            column="email", 
+            column="email",
             regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         )
     ]
@@ -534,18 +536,18 @@ graph TB
         P2[Microservice B]
         P3[IoT Devices]
     end
-    
+
     subgraph "Schema Governance"
         SR[Schema Registry<br/>Confluent/AWS Glue]
         SC[Compatibility Check]
         SE[Schema Evolution]
     end
-    
+
     subgraph "Stream Platform"
         K[Kafka Cluster]
         F[Flink Jobs]
     end
-    
+
     subgraph "Data Governance Layer"
         DC[DataHub Catalog]
         OL[OpenLineage]
@@ -553,36 +555,36 @@ graph TB
         QM[Quality Monitor<br/>Great Expectations]
         CP[Compliance Engine<br/>PII Detection]
     end
-    
+
     subgraph "Data Consumers"
         C1[Analytics]
         C2[ML Platform]
         C3[Data Lake]
     end
-    
+
     P1 -->|Schema v1| SR
     P2 -->|Schema v2| SR
     SR --> SC
     SC -->|Valid| K
-    
+
     K --> F
     F -->|Lineage Events| OL
     OL --> DC
-    
+
     K --> AC
     F --> AC
-    
+
     F --> QM
     QM -->|Invalid| DLQ[Dead Letter Queue]
     QM -->|Valid| C1
-    
+
     K --> CP
     CP -->|PII Tagged| DC
-    
+
     AC --> C1
     AC --> C2
     AC --> C3
-    
+
     DC -.->|Metadata| C1
     DC -.->|Metadata| C2
 ```
@@ -595,36 +597,36 @@ graph LR
         T1[kafka.raw.orders]
         T2[kafka.raw.inventory]
     end
-    
+
     subgraph "Processing Layer"
         J1[Flink: OrderEnrichment]
         J2[Flink: InventoryJoin]
     end
-    
+
     subgraph "Serving Layer"
         T3[kafka.enriched.orders]
         T4[Elasticsearch]
         T5[Iceberg Table]
     end
-    
+
     subgraph "Consumption Layer"
         D1[Dashboard]
         D2[ML Training]
         D3[Reporting]
     end
-    
+
     T1 -->|order_id, amount, user_id| J1
     T2 -->|sku, stock_level| J2
     J1 --> J2
     J2 --> T3
     J2 --> T4
     J2 --> T5
-    
+
     T3 --> D1
     T4 --> D1
     T5 --> D2
     T5 --> D3
-    
+
     style T1 fill:#e1f5fe
     style T3 fill:#c8e6c9
     style J1 fill:#fff3e0
@@ -638,23 +640,23 @@ flowchart TD
     A[Access Request] --> B{Authentication}
     B -->|Failed| C[Reject 401]
     B -->|Success| D{RBAC Check}
-    
+
     D -->|No Role| E[Reject 403]
     D -->|Has Role| F{Resource ACL}
-    
+
     F -->|Denied| G[Reject 403]
     F -->|Allowed| H{PII Check}
-    
+
     H -->|PII Field| I{User Clearance}
     I -->|Insufficient| J[Mask Data]
     I -->|Sufficient| K[Return Full]
-    
+
     H -->|Non-PII| K
-    
+
     J --> L[Log Access]
     K --> L
     L --> M[Audit Trail]
-    
+
     style C fill:#ffcdd2
     style E fill:#ffcdd2
     style G fill:#ffcdd2
@@ -669,7 +671,7 @@ stateDiagram-v2
     [*] --> Ingestion: PII Detection
     Ingestion --> Active: Tag & Catalog
     Active --> Archived: Retention Period
-    
+
     state Active {
         [*] --> Processing
         Processing --> Analytics
@@ -677,12 +679,12 @@ stateDiagram-v2
         Analytics --> [*]
         ML --> [*]
     }
-    
+
     Archived --> Purged: GDPR Request / Expiry
     Archived --> Restored: Legal Hold
     Purged --> [*]
     Restored --> Active
-    
+
     Active --> Deleted: Right to Erasure
     Deleted --> [*]
 ```
@@ -690,27 +692,3 @@ stateDiagram-v2
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Confluent Inc., "Schema Registry Overview", 2024. https://docs.confluent.io/platform/current/schema-registry/index.html
-
-[^2]: AWS Documentation, "AWS Glue Schema Registry", 2024. https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html
-
-[^3]: OpenLineage Project, "OpenLineage Documentation", 2024. https://openlineage.io/docs/
-
-[^4]: LinkedIn DataHub, "DataHub Architecture", 2024. https://datahubproject.io/docs/architecture/architecture/
-
-[^5]: Amundsen Project, "Amundsen Documentation", 2024. https://www.amundsen.io/amundsen/
-
-[^6]: Apache Kafka Documentation, "Kafka Authorization (ACLs)", 2024. https://kafka.apache.org/documentation/#security_authz
-
-[^7]: Great Expectations, "Expectations Reference", 2024. https://docs.greatexpectations.io/docs/reference/expectations/
-
-[^8]: Zhamak Dehghani, "Data Mesh: Delivering Data-Driven Value at Scale", O'Reilly Media, 2022.
-
-[^9]: European Union, "General Data Protection Regulation (GDPR)", 2018. https://gdpr-info.eu/
-
-[^10]: Apache Flink Documentation, "SQL Security", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/security/
-
-[^11]: Marquez Project, "Lineage API", 2024. https://marquezproject.github.io/marquez/
-
-[^12]: Montana S. et al., "Data Quality in Stream Processing", IEEE BigData, 2023.

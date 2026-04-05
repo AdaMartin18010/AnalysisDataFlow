@@ -16,7 +16,7 @@
     - [3.1 内存影响](#31-内存影响)
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 使用 AggregateFunction](#41-使用-aggregatefunction)
-    - [4.2 结合使用 Aggregate + ProcessWindow](#42-结合使用-aggregate-processwindow)
+    - [4.2 结合使用 Aggregate + ProcessWindow](#42-结合使用-aggregate--processwindow)
     - [4.3 使用 Evictor 限制状态](#43-使用-evictor-限制状态)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)
     - [5.1 错误示例](#51-错误示例)

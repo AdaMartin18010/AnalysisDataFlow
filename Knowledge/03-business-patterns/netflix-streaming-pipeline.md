@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [Netflix流处理架构 - 从Keystone到Flink](#netflix流处理架构-从keystone到flink)
+- [Netflix流处理架构 - 从Keystone到Flink](#netflix流处理架构---从keystone到flink)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-08: Netflix数据管道 (Netflix Data Pipeline)](#def-k-03-08-netflix数据管道-netflix-data-pipeline)
@@ -20,7 +20,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [为什么从Chukwa迁移到Flink？](#为什么从chukwa迁移到flink)
     - [全球化部署挑战](#全球化部署挑战)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [定理: Keystone平台满足Netflix流处理SLA](#定理-keystone平台满足netflix流处理sla)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例一: 观看体验实时优化](#案例一-观看体验实时优化)

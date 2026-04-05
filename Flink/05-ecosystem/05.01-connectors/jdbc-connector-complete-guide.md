@@ -25,7 +25,7 @@
     - [4.1 分区读取策略分析](#41-分区读取策略分析)
     - [4.2 XA 事务实现机制](#42-xa-事务实现机制)
     - [4.3 反压与背压处理](#43-反压与背压处理)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-04-200 (JDBC Exactly-Once 正确性定理)](#thm-f-04-200-jdbc-exactly-once-正确性定理)
     - [Thm-F-04-201 (连接池无死锁定理)](#thm-f-04-201-连接池无死锁定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

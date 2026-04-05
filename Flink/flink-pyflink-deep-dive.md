@@ -213,6 +213,7 @@ Throughput_{PythonUDF} \approx 0.3 \times Throughput_{JavaUDF}
 $$
 
 **例外情况** (Python UDF 可能更快):
+
 1. 涉及复杂数学运算且使用 NumPy/Pandas 向量化
 2. 调用原生 Python ML 库 (scikit-learn, PyTorch)
 3. 需要与 Python 生态深度集成
@@ -230,30 +231,30 @@ graph TB
         Table[Table API<br/>声明式/混合]
         DS[DataStream API<br/>命令式]
     end
-    
+
     subgraph "Python 实现"
         PySQL[pyflink.table<br/>TableEnvironment.sql_query]
         PyTable[pyflink.table<br/>Table API]
         PyDS[pyflink.datastream<br/>StreamExecutionEnvironment]
     end
-    
+
     subgraph "底层执行"
         Opt[Calcite 优化器]
         Plan[执行计划]
         Exec[Flink Runtime]
     end
-    
+
     SQL --> PySQL
     Table --> PyTable
     DS --> PyDS
-    
+
     PySQL --> Opt
     PyTable --> Opt
     PyDS --> Plan
-    
+
     Opt --> Plan
     Plan --> Exec
-    
+
     style SQL fill:#e3f2fd
     style Table fill:#e3f2fd
     style DS fill:#fff3e0
@@ -516,7 +517,7 @@ from pyflink.common.typeinfo import Types
 class CountWithTimeout(KeyedProcessFunction):
     def __init__(self):
         self.state = None
-        
+
     def open(self, runtime_context):
         # 定义 ValueState
         state_descriptor = ValueStateDescriptor(
@@ -524,12 +525,12 @@ class CountWithTimeout(KeyedProcessFunction):
             Types.TUPLE([Types.STRING(), Types.LONG(), Types.LONG()])
         )
         self.state = runtime_context.get_state(state_descriptor)
-        
+
     def process_element(self, value, ctx):
         import time
         current = self.state.value()
         current_count = 0
-        
+
         if current is None:
             # 首次访问
             current_count = 1
@@ -539,11 +540,11 @@ class CountWithTimeout(KeyedProcessFunction):
             )
         else:
             current_count = current[1] + 1
-            
+
         self.state.update((value['user_id'], current_count, ctx.timestamp()))
-        
+
         return [(value['user_id'], current_count)]
-        
+
     def on_timer(self, timestamp, ctx):
         # 定时器触发逻辑
         result = self.state.value()
@@ -571,7 +572,7 @@ def hash_user_id(user_id: str) -> str:
 table_env.create_temporary_function("hash_user_id", hash_user_id)
 
 result = table_env.sql_query("""
-    SELECT 
+    SELECT
         hash_user_id(user_id) as short_id,
         event_type,
         event_time
@@ -596,7 +597,7 @@ import pandas as pd
 
 # 使用 pandas_udf 装饰器启用向量化执行
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
-def calculate_discount(prices: pd.Series, 
+def calculate_discount(prices: pd.Series,
                        categories: pd.Series,
                        user_types: pd.Series) -> pd.Series:
     """
@@ -604,11 +605,11 @@ def calculate_discount(prices: pd.Series,
     利用 Pandas 批量处理能力，比逐行处理快 10-100x
     """
     discounts = pd.Series(0.0, index=prices.index)
-    
+
     # VIP 用户额外折扣
     vip_mask = user_types == 'VIP'
     discounts[vip_mask] += 0.1
-    
+
     # 品类折扣
     category_discounts = {
         'electronics': 0.05,
@@ -618,14 +619,14 @@ def calculate_discount(prices: pd.Series,
     for cat, disc in category_discounts.items():
         cat_mask = categories == cat
         discounts[cat_mask] += disc
-        
+
     # 满减折扣
     price_mask = prices > 1000
     discounts[price_mask] += 0.05
-    
+
     # 折扣上限 30%
     discounts = discounts.clip(upper=0.3)
-    
+
     return prices * (1 - discounts)
 
 # 使用 Pandas UDF
@@ -649,23 +650,23 @@ from pyflink.table import DataTypes
 
 class WeightedAverage(AggregateFunction):
     """自定义加权平均聚合函数"""
-    
+
     def create_accumulator(self):
         # 返回 (sum, count) 元组
         return (0.0, 0)
-        
+
     def accumulate(self, accumulator, value, weight):
         if value is not None and weight is not None:
-            return (accumulator[0] + value * weight, 
+            return (accumulator[0] + value * weight,
                    accumulator[1] + weight)
         return accumulator
-        
+
     def retract(self, accumulator, value, weight):
         if value is not None and weight is not None:
             return (accumulator[0] - value * weight,
                    accumulator[1] - weight)
         return accumulator
-        
+
     def merge(self, accumulator, accumulators):
         sum_val = accumulator[0]
         sum_weight = accumulator[1]
@@ -673,15 +674,15 @@ class WeightedAverage(AggregateFunction):
             sum_val += acc[0]
             sum_weight += acc[1]
         return (sum_val, sum_weight)
-        
+
     def get_value(self, accumulator):
         if accumulator[1] == 0:
             return 0.0
         return accumulator[0] / accumulator[1]
-        
+
     def get_result_type(self):
         return DataTypes.DOUBLE()
-        
+
     def get_accumulator_type(self):
         return DataTypes.ROW([
             DataTypes.FIELD("sum", DataTypes.DOUBLE()),
@@ -694,7 +695,7 @@ table_env.create_temporary_function("weighted_avg", weighted_avg)
 
 # SQL 中使用
 result = table_env.sql_query("""
-    SELECT 
+    SELECT
         category,
         weighted_avg(price, quantity) as weighted_avg_price
     FROM orders
@@ -720,7 +721,7 @@ class RecommendationModel(nn.Module):
         self.fc1 = nn.Linear(input_dim, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, output_dim)
         self.relu = nn.ReLU()
-        
+
     def forward(self, x):
         x = self.relu(self.fc1(x))
         return self.fc2(x)
@@ -734,30 +735,30 @@ model.eval()
 def predict_scores(features: pd.Series) -> pd.Series:
     """
     使用 PyTorch 模型进行批量推理
-    
+
     Args:
         features: JSON 字符串数组，每个元素是特征向量
-    
+
     Returns:
         每个样本对所有商品的预测分数
     """
     import json
     import numpy as np
-    
+
     # 解析特征
     feature_list = [json.loads(f) for f in features]
     feature_tensor = torch.tensor(feature_list, dtype=torch.float32)
-    
+
     # 批量推理
     with torch.no_grad():
         predictions = model(feature_tensor)
-    
+
     # 转换为 Python 列表
     return pd.Series(predictions.numpy().tolist())
 
 # 使用模型推理
 result = table_env.sql_query("""
-    SELECT 
+    SELECT
         user_id,
         product_id,
         predict_scores(user_features) as scores
@@ -782,22 +783,22 @@ def fraud_probability(features: pd.Series) -> pd.Series:
     """
     import json
     import numpy as np
-    
+
     # 解析输入特征
     X = np.array([json.loads(f) for f in features])
-    
+
     # 模型推理
     predictions = model.predict(X, verbose=0)
-    
+
     return pd.Series(predictions.flatten())
 
 # 在流处理中使用
 result = table_env.sql_query("""
-    SELECT 
+    SELECT
         transaction_id,
         amount,
         fraud_probability(feature_vector) as fraud_score,
-        CASE 
+        CASE
             WHEN fraud_probability(feature_vector) > 0.8 THEN 'HIGH_RISK'
             WHEN fraud_probability(feature_vector) > 0.5 THEN 'MEDIUM_RISK'
             ELSE 'LOW_RISK'
@@ -827,15 +828,15 @@ def classify_with_confidence(features: pd.Series) -> pd.DataFrame:
     使用 scikit-learn 进行分类，返回类别和置信度
     """
     import json
-    
+
     # 解析特征
     X = np.array([json.loads(f) for f in features])
-    
+
     # 预测
     predictions = clf.predict(X)
     probabilities = clf.predict_proba(X)
     confidences = np.max(probabilities, axis=1)
-    
+
     return pd.DataFrame({
         'predicted_class': predictions,
         'confidence': confidences
@@ -969,7 +970,7 @@ logger = logging.getLogger('pyflink.udf')
 def debug_transform(value):
     """带日志的 UDF，便于排查问题"""
     logger.info(f"Processing value: {value}")
-    
+
     try:
         result = complex_transformation(value)
         logger.info(f"Success: {value} -> {result}")
@@ -986,12 +987,12 @@ class MonitoredMap(MapFunction):
     def __init__(self):
         self.processed_count = None
         self.error_count = None
-        
+
     def open(self, runtime_context):
         # 获取或创建 metrics
         self.processed_count = runtime_context.get_metrics_group().counter("processed")
         self.error_count = runtime_context.get_metrics_group().counter("errors")
-        
+
     def map(self, value):
         self.processed_count.inc()
         try:
@@ -1042,14 +1043,14 @@ def bad_udf(value):
 class GoodUdf(ScalarFunction):
     def __init__(self):
         self.conn = None
-        
+
     def open(self, runtime_context):
         # 在每个 Python Worker 进程中初始化一次
         self.conn = create_database_connection()
-        
+
     def eval(self, value):
         return self.conn.query(value)
-        
+
     def close(self):
         if self.conn:
             self.conn.close()
@@ -1080,31 +1081,31 @@ graph TB
     subgraph "User Application"
         APP[Python Application]
     end
-    
+
     subgraph "PyFlink Layer"
         PT[pyflink.table]
         PD[pyflink.datastream]
         PM[pyflink.ml]
     end
-    
+
     subgraph "Beam Portability"
         FN[Fn API]
         ST[State API]
         MT[Metrics API]
     end
-    
+
     subgraph "Communication"
         GRPC[gRPC Channel]
         ARROW[Apache Arrow]
     end
-    
+
     subgraph "Flink Runtime"
         JM[JobManager]
         TM[TaskManager]
         SB[State Backend]
         CP[Checkpointing]
     end
-    
+
     APP --> PT & PD & PM
     PT & PD & PM --> FN & ST & MT
     FN & ST & MT --> GRPC
@@ -1113,7 +1114,7 @@ graph TB
     TM --> JM
     TM --> SB
     SB --> CP
-    
+
     style APP fill:#e3f2fd
     style PT fill:#c8e6c9
     style PD fill:#c8e6c9
@@ -1129,10 +1130,10 @@ sequenceDiagram
     participant J as Java TaskManager
     participant G as gRPC Channel
     participant P as Python Worker
-    
+
     J->>G: Start Bundle
     G->>P: Initialize Context
-    
+
     loop Batch Processing
         J->>G: Arrow RecordBatch
         G->>P: Deserialize
@@ -1140,7 +1141,7 @@ sequenceDiagram
         P->>G: Serialize Results
         G->>J: Arrow RecordBatch
     end
-    
+
     J->>G: Finish Bundle
     G->>P: Flush State
     P->>G: State Checkpoint
@@ -1152,24 +1153,24 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[需要优化 PyFlink 性能?] --> B{性能瓶颈类型?}
-    
+
     B -->|序列化开销| C[启用 Arrow 优化]
     B -->|UDF 执行慢| D{UDF 类型?}
     B -->|吞吐不足| E[调整 Bundle Size]
-    
+
     C --> C1[配置 arrow.batch.size]
     C --> C2[使用 pandas_udf]
-    
+
     D -->|Scalar| F[使用 pandas_udf]
     D -->|Aggregation| G[实现高效 accumulator]
     D -->|Table| H[考虑 Table Function 优化]
-    
+
     E --> E1[增大 bundle.size]
     E --> E2[减小 bundle.time]
-    
+
     F --> F1[使用 NumPy 向量化]
     F --> F2[避免 Python 循环]
-    
+
     C1 --> I[验证性能提升]
     C2 --> I
     F1 --> I
@@ -1178,11 +1179,11 @@ flowchart TD
     H --> I
     E1 --> I
     E2 --> I
-    
+
     I --> J{达到目标?}
     J -->|否| B
     J -->|是| K[优化完成]
-    
+
     style A fill:#e3f2fd
     style K fill:#c8e6c9
 ```
@@ -1190,19 +1191,3 @@ flowchart TD
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "PyFlink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/overview/
-
-[^2]: Apache Beam Documentation, "Portability Framework", 2025. https://beam.apache.org/documentation/programming-guide/#portability
-
-[^3]: Apache Arrow Documentation, "Python Bindings", 2025. https://arrow.apache.org/docs/python/
-
-[^4]: S. K. et al., "Bridging the Gap: Python for Production-Grade Stream Processing", VLDB 2023.
-
-[^5]: H. Li et al., "PyFlink: The Integration of Python and Apache Flink", ApacheCon 2020.
-
-[^6]: gRPC Documentation, "Core Concepts", 2025. https://grpc.io/docs/what-is-grpc/core-concepts/
-
-[^7]: Cloudpickle Documentation, "Python Object Serialization", 2025. https://github.com/cloudpipe/cloudpickle
-
-[^8]: PyFlink ML Documentation, "Machine Learning with PyFlink", 2025. https://nightlies.apache.org/flink/flink-ml-docs-stable/docs/try-flink-ml/python/quick-start/

@@ -216,7 +216,7 @@ graph TB
         F4[MAP]
         F5[ROW]
     end
-    
+
     subgraph "Avro 类型"
         A1[Fixed / Bytes]
         A2[Long + LogicalType]
@@ -224,7 +224,7 @@ graph TB
         A4[Map]
         A5[Record]
     end
-    
+
     subgraph "Parquet 类型"
         P1[Fixed Len Byte Array]
         P2[INT96 / INT64]
@@ -232,7 +232,7 @@ graph TB
         P4[Repeated Group]
         P5[Group]
     end
-    
+
     subgraph "ORC 类型"
         O1[Decimal]
         O2[Timestamp]
@@ -240,7 +240,7 @@ graph TB
         O4[Map]
         O5[Struct]
     end
-    
+
     F1 --> A1 --> P1 --> O1
     F2 --> A2 --> P2 --> O2
     F3 --> A3 --> P3 --> O3
@@ -329,21 +329,21 @@ CREATE TABLE user_events (
     username VARCHAR(128) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     user_type CHAR(1) DEFAULT 'R',  -- R: Regular, V: VIP
-    
+
     -- 数值类型 - 业务指标
     score DECIMAL(10, 4),           -- 精确分数
     temperature FLOAT,              -- 传感器读数（近似）
-    
+
     -- 二进制类型
     avatar_hash VARBINARY(64),
     raw_payload BYTES,
-    
+
     -- 时间类型 - 流计算核心
     birth_date DATE,
     preferred_time TIME(3),
     event_ts TIMESTAMP(3),          -- 事件时间（本地）
     event_ts_utc TIMESTAMP_LTZ(3),  -- 事件时间（UTC）
-    
+
     -- 复合类型 - 结构化数据
     tags ARRAY<VARCHAR(50)>,
     properties MAP<STRING, STRING>,
@@ -356,10 +356,10 @@ CREATE TABLE user_events (
             lon DOUBLE
         >
     >,
-    
+
     -- 元数据列
     proc_time AS PROCTIME(),
-    
+
     -- 水位线定义
     WATERMARK FOR event_ts AS event_ts - INTERVAL '5' SECOND
 ) WITH (
@@ -405,7 +405,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableDescriptor;
 
 public class DataTypeExample {
-    
+
     // 编程方式定义 Schema
     public Schema createUserSchema() {
         return Schema.newBuilder()
@@ -415,7 +415,7 @@ public class DataTypeExample {
             .column("score", DataTypes.DECIMAL(10, 4))
             .column("tags", DataTypes.ARRAY(DataTypes.VARCHAR(50)))
             .column("properties", DataTypes.MAP(
-                DataTypes.STRING(), 
+                DataTypes.STRING(),
                 DataTypes.STRING()
             ))
             .column("address", DataTypes.ROW(
@@ -428,7 +428,7 @@ public class DataTypeExample {
             .watermark("event_ts", "SOURCE_WATERMARK()")
             .build();
     }
-    
+
     // 使用 TableDescriptor 定义
     public TableDescriptor createKafkaDescriptor() {
         return TableDescriptor.forConnector("kafka")
@@ -511,28 +511,28 @@ graph TB
 ```mermaid
 flowchart TD
     A[需要类型转换?] --> B{目标类型?}
-    
+
     B -->|数值| C{精度要求?}
     C -->|精确计算| D[DECIMAL]
     C -->|科学计算| E[FLOAT/DOUBLE]
     C -->|整数范围?| F{小范围?}
     F -->|是| G[TINYINT/SMALLINT]
     F -->|否| H[INT/BIGINT]
-    
+
     B -->|时间| I{带时区?}
     I -->|是| J[TIMESTAMP_LTZ]
     I -->|否| K[TIMESTAMP]
-    
+
     B -->|字符串| L{长度固定?}
     L -->|是| M[CHAR]
     L -->|否| N[VARCHAR/STRING]
-    
+
     B -->|结构化| O{键值对?}
     O -->|是| P[MAP]
     O -->|否| Q{有序列表?}
     Q -->|是| R[ARRAY]
     Q -->|否| S[ROW]
-    
+
     style A fill:#e3f2fd,stroke:#1565c0
     style D fill:#e8f5e9,stroke:#2e7d32
     style J fill:#fff3e0,stroke:#e65100
@@ -547,11 +547,11 @@ sequenceDiagram
     participant Planner as Flink Planner
     participant Catalog as Catalog
     participant Exec as Execution Engine
-    
+
     SQL->>Planner: CREATE TABLE (type definitions)
     Planner->>Planner: Parse & Validate Types
     Planner->>Catalog: Store Table Schema
-    
+
     Exec->>Catalog: Read Schema
     Catalog->>Exec: Return Logical Types
     Exec->>Exec: Resolve Serializers
@@ -561,17 +561,3 @@ sequenceDiagram
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink Documentation, "Data Types", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/types/
-
-[^2]: ANSI/ISO/IEC 9075-1:2016, "Information technology — Database languages — SQL — Part 1: Framework"
-
-[^3]: Apache Calcite SQL Reference, "Data Types", https://calcite.apache.org/docs/reference.html#data-types
-
-[^4]: Julian Hyde et al., "Apache Calcite: A Foundational Framework for Optimized Query Processing", SIGMOD, 2018.
-
-[^5]: IEEE 754-2008, "IEEE Standard for Floating-Point Arithmetic"
-
-[^6]: Java SE Documentation, "The Java Tutorials - Primitive Data Types", https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
-
-[^7]: "Streaming SQL: The Next Frontier", Materialize Blog, 2023.

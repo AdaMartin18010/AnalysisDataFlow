@@ -15,6 +15,7 @@ $$
 $$
 
 其中：
+
 - $\text{Storage}$: 状态物理存储层
 - $\text{Access}$: 状态访问接口
 - $\text{Snapshot}$: 快照生成策略
@@ -29,6 +30,7 @@ $$
 $$
 
 **核心特征**：
+
 - 存储位置: TaskManager JVM 堆内存
 - 数据结构: `HashMap<K, State>`
 - 快照机制: 异步复制到文件系统
@@ -66,6 +68,7 @@ $$
 $$
 
 **关键创新**：
+
 - **存算分离**: 状态存储独立于计算节点
 - **共享状态**: 多 TM 共享远程状态存储
 - **异步 Checkpoint**: 无需阻塞本地执行
@@ -141,18 +144,18 @@ graph TB
         B[RocksDBStateBackend]
         C[ForStStateBackend]
     end
-    
+
     subgraph Checkpoint
         D[Full Checkpoint]
         E[Incremental Checkpoint]
         F[Disaggregated Checkpoint]
     end
-    
+
     A -->|支持| D
     B -->|支持| D
     B -->|支持| E
     C -->|支持| F
-    
+
     style E fill:#e8f5e9
     style F fill:#e1f5fe
 ```
@@ -163,7 +166,7 @@ graph TB
 graph LR
     A[纯内存<br/>HashMap] -->|溢出| B[内存+本地磁盘<br/>RocksDB]
     B -->|存算分离| C[内存+远程存储<br/>ForSt]
-    
+
     A -->|延迟最低| D[ns级]
     B -->|平衡| E[μs-ms级]
     C -->|扩展性最好| F[ms级]
@@ -209,6 +212,7 @@ graph LR
 **定理**: RocksDB 增量 Checkpoint 只传输变更的 SST 文件，恢复时状态完整。
 
 **证明概要**：
+
 1. SST 文件一旦生成即不可变（LSM-Tree 特性）
 2. 新数据写入新的 SST 文件
 3. Checkpoint 只上传新增的 SST 文件
@@ -219,6 +223,7 @@ graph LR
 **定理**: HashMapStateBackend 的最大安全状态量为 TaskManager 堆内存的 30%。
 
 **工程论证**：
+
 - JVM 堆需要空间存储：
   - Flink 运行时对象
   - 网络缓冲区
@@ -251,7 +256,7 @@ env.setStateBackend(rocksDbBackend);
 env.getCheckpointConfig().setCheckpointStorage("hdfs://namenode:8020/flink/checkpoints");
 
 // RocksDB 高级配置
-DefaultConfigurableStateBackend configurableBackend = 
+DefaultConfigurableStateBackend configurableBackend =
     new EmbeddedRocksDBStateBackend(true);
 configurableBackend.setPredefinedOptions(PredefinedOptions.FLASH_SSD_OPTIMIZED);
 env.setStateBackend(configurableBackend);
@@ -296,20 +301,20 @@ state.backend.forst.local.dir: /tmp/flink-forst
 public void monitorStateBackend(RuntimeContext ctx) {
     // 状态大小
     long stateSize = ctx.getStateSize();
-    
+
     // 对于 RocksDB，获取详细指标
     if (stateBackend instanceof RocksDBStateBackend) {
         // SST 文件数量
-        int sstFileCount = getMetric("rocksdb.num-files-at-level0") 
+        int sstFileCount = getMetric("rocksdb.num-files-at-level0")
                          + getMetric("rocksdb.num-files-at-level1")
                          + getMetric("rocksdb.num-files-at-level2");
-        
+
         // Block Cache 命中率
         double cacheHitRate = getMetric("rocksdb.block.cache.hit.rate");
-        
+
         // 写入放大
         double writeAmplification = getMetric("rocksdb.write.amplification");
-        
+
         // 输出日志
         LOG.info("RocksDB Metrics - SST Files: {}, Cache Hit: {:.2f}%, Write Amp: {:.2f}",
             sstFileCount, cacheHitRate * 100, writeAmplification);
@@ -327,7 +332,7 @@ import json
 
 def analyze_state_usage(checkpoint_path):
     """分析 Checkpoint 状态大小，推荐状态后端"""
-    
+
     # 模拟读取 Checkpoint 元数据
     checkpoint_meta = {
         "state_size_bytes": 536870912,  # 512 MB
@@ -335,15 +340,15 @@ def analyze_state_usage(checkpoint_path):
         "max_key_state_size": 10485760,  # 10 MB
         "checkpoint_duration_ms": 30000
     }
-    
+
     size_mb = checkpoint_meta["state_size_bytes"] / (1024 * 1024)
-    
+
     recommendation = {
         "current_size_mb": size_mb,
         "recommendation": None,
         "reasoning": []
     }
-    
+
     if size_mb < 100:
         recommendation["recommendation"] = "HashMapStateBackend"
         recommendation["reasoning"].append("状态小于 100MB，适合内存存储")
@@ -358,13 +363,13 @@ def analyze_state_usage(checkpoint_path):
         recommendation["reasoning"].append("状态超过 5GB，考虑存算分离")
         recommendation["reasoning"].append("避免本地磁盘瓶颈")
         recommendation["reasoning"].append("支持超大规模状态")
-    
+
     # 额外建议
     if checkpoint_meta["checkpoint_duration_ms"] > 60000:
         recommendation["reasoning"].append(
             "⚠️ Checkpoint 时间过长，考虑启用增量 Checkpoint 或优化状态访问模式"
         )
-    
+
     return recommendation
 
 if __name__ == "__main__":
@@ -384,21 +389,21 @@ graph TB
         A1[Keyed State] --> A2[JVM Heap HashMap]
         A2 --> A3[Async Snapshot to DFS]
     end
-    
+
     subgraph RocksDBStateBackend
         B1[Keyed State] --> B2[MemTable]
         B2 --> B3[SST Files]
         B3 --> B4[Local Disk]
         B3 --> B5[Incremental Snapshot]
     end
-    
+
     subgraph ForStStateBackend
         C1[Keyed State] --> C2[Local Cache]
         C2 --> C3[Remote Storage]
         C3 --> C4[S3/OSS/HDFS]
         C2 -.->|Miss| C3
     end
-    
+
     style A2 fill:#e8f5e9
     style B3 fill:#fff3e0
     style C3 fill:#e1f5fe
@@ -416,7 +421,7 @@ graph LR
         D4[状态规模]
         D5[恢复速度]
     end
-    
+
     subgraph HashMap
         H1[优秀]
         H2[优秀]
@@ -424,7 +429,7 @@ graph LR
         H4[差]
         H5[优秀]
     end
-    
+
     subgraph RocksDB
         R1[良好]
         R2[良好]
@@ -432,7 +437,7 @@ graph LR
         R4[优秀]
         R5[良好]
     end
-    
+
     subgraph ForSt
         F1[一般]
         F2[良好]
@@ -449,21 +454,21 @@ sequenceDiagram
     participant TM as TaskManager
     participant State as State Backend
     participant Storage as Checkpoint Storage
-    
+
     rect rgb(240, 255, 240)
         Note over TM,Storage: HashMapStateBackend
         TM->>State: 触发 Snapshot
         State->>State: Copy-on-Write 复制
         State->>Storage: 异步上传全量状态
     end
-    
+
     rect rgb(255, 248, 225)
         Note over TM,Storage: RocksDB (Full)
         TM->>State: 触发 Snapshot
         State->>State: Flush MemTable
         State->>Storage: 上传所有 SST 文件
     end
-    
+
     rect rgb(225, 245, 254)
         Note over TM,Storage: RocksDB (Incremental)
         TM->>State: 触发 Snapshot
@@ -475,13 +480,3 @@ sequenceDiagram
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink State Backends, https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
-
-[^2]: RocksDB Documentation, https://rocksdb.org/docs/
-
-[^3]: Flink Disaggregated State (FLIP-249), https://cwiki.apache.org/confluence/display/FLINK/FLIP-249
-
-[^4]: Flink ForSt State Backend (Flink 2.0), https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/forst/
-
-[^5]: LSM-Tree 论文, "The Log-Structured Merge-Tree", O'Neil et al.

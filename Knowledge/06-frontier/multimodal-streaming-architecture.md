@@ -13,6 +13,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{S}^T$: 文本流 (Text)
 - $\mathcal{S}^I$: 图像流 (Image)
 - $\mathcal{S}^A$: 音频流 (Audio)
@@ -34,6 +35,7 @@ f_{multimodal}: \mathcal{X}^{T} \times \mathcal{X}^{I} \times \mathcal{X}^{A} \t
 $$
 
 **代表模型 (2025-2026)**：
+
 | 模型 | 提供商 | 模态 | 上下文窗口 | 特点 |
 |------|--------|------|-----------|------|
 | Gemini 3.1 Flash Live | Google | T/I/A/V | 128K | 实时流式，WebSocket API |
@@ -55,6 +57,7 @@ Sync: Timestamp-based alignment, tolerance ±50ms
 ```
 
 **Gemini Flash Live API 规范**：
+
 ```typescript
 interface MultimodalStream {
   // 音频输入
@@ -63,20 +66,20 @@ interface MultimodalStream {
     sample_rate: 16000,
     channels: 1
   };
-  
+
   // 视频输入
   video_input: {
     format: "jpeg" | "png",
     fps: 1,
     max_resolution: "1080p"
   };
-  
+
   // 输出
   audio_output: {
     format: "pcm_16bit",
     sample_rate: 24000
   };
-  
+
   // 控制
   barge_in: boolean;  // 用户打断支持
   thinking_level: "minimal" | "medium" | "high";
@@ -92,6 +95,7 @@ $$
 $$
 
 **融合层次**：
+
 1. **Early Fusion**: 原始数据层融合
 2. **Mid Fusion**: 特征层融合
 3. **Late Fusion**: 决策层融合
@@ -101,11 +105,13 @@ $$
 **延迟栈压缩** 是通过原生多模态处理消除传统流水线延迟：
 
 **传统栈 (高延迟)**：
+
 ```
 VAD → STT → LLM → TTS = 500ms - 2s
 ```
 
 **原生多模态栈 (低延迟)**：
+
 ```
 Native Audio Model = 100-300ms
 ```
@@ -121,6 +127,7 @@ $$
 $$
 
 **Token计算 (Gemini)**：
+
 - 文本: 1 token ≈ 4 characters
 - 图像: 1 frame = 256-1024 tokens (取决于分辨率)
 - 音频: 1s = 32 tokens (16kHz)
@@ -139,6 +146,7 @@ $$
 其中 $f_{min}$ 是最低采样率模态的频率。
 
 **实际约束**:
+
 - 音频 (16kHz): ±31μs
 - 视频 (1 FPS): ±500ms
 - 推荐对齐: 以视频帧为基准 (1s)
@@ -162,6 +170,7 @@ L_{response} \leq L_{detect} + L_{process} + L_{generate}
 $$
 
 Gemini 3.1 Flash Live典型值：
+
 - 语音活动检测: 50-100ms
 - 处理生成: 100-200ms
 - **总延迟: 150-300ms** (接近人类对话节奏)
@@ -265,6 +274,7 @@ $$
 ### 4.1 为什么需要原生多模态流处理？
 
 **传统级联式问题**：
+
 ```
 ┌─────┐   ┌─────┐   ┌─────┐   ┌─────┐
 │ VAD │ → │ STT │ → │ LLM │ → │ TTS │
@@ -278,6 +288,7 @@ $$
 - **模态信息丢失**: 语调、情感无法通过文本传递
 
 **原生多模态优势**：
+
 ```
 ┌─────────────────────────────────┐
 │     Native Multimodal Model     │
@@ -293,6 +304,7 @@ $$
 ### 4.2 反模式
 
 **反模式1: 忽视模态同步**
+
 ```python
 # ❌ 错误：独立处理各模态
 audio_result = process_audio(audio_stream)
@@ -305,6 +317,7 @@ result = process_multimodal(aligned)
 ```
 
 **反模式2: 过高的视频帧率**
+
 ```python
 # ❌ 错误：30 FPS视频流
 video_stream = capture_video(fps=30)  # 冗余！
@@ -314,6 +327,7 @@ video_stream = capture_video(fps=1)   # 满足LLM需求
 ```
 
 **反模式3: 忽视带宽成本**
+
 ```python
 # ❌ 错误：原始音频流
 audio = pcm_16bit_48khz_stereo()  # 1.5 Mbps
@@ -333,6 +347,7 @@ $$
 $$
 
 **证明**：
+
 1. Watermark $W(t) = \min_{m}(t_m^{max}) - \delta$
 2. 所有事件时间 ≤ W(t) 的事件已到达
 3. 窗口触发时，满足 $|t_m - t_{ref}| \leq \delta$
@@ -347,6 +362,7 @@ $$
 $$
 
 **实测数据** (Gemini 3.1 Flash Live):
+
 | 场景 | 级联式 | 原生多模态 | 加速比 |
 |------|--------|-----------|--------|
 | 语音助手 | 1200ms | 200ms | 6× |
@@ -362,6 +378,7 @@ L_{response} < L_{human\_perception} = 300ms
 $$
 
 **工程实现要点**：
+
 1. 双缓冲音频输出
 2. 实时VAD检测
 3. 快速模型预热
@@ -385,11 +402,11 @@ class GeminiLiveClient:
         self.ws = None
         self.audio_buffer = []
         self.video_buffer = []
-        
+
     async def connect(self):
         uri = f"wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService/BidiGenerateContent?key={self.api_key}"
         self.ws = await websockets.connect(uri)
-        
+
         # 发送配置
         config = {
             "setup": {
@@ -402,7 +419,7 @@ class GeminiLiveClient:
             }
         }
         await self.ws.send(json.dumps(config))
-        
+
     async def send_audio(self, pcm_data: bytes):
         """发送PCM音频数据"""
         message = {
@@ -414,7 +431,7 @@ class GeminiLiveClient:
             }
         }
         await self.ws.send(json.dumps(message))
-        
+
     async def send_video_frame(self, jpeg_frame: bytes):
         """发送视频帧"""
         message = {
@@ -426,12 +443,12 @@ class GeminiLiveClient:
             }
         }
         await self.ws.send(json.dumps(message))
-        
+
     async def receive_response(self):
         """接收模型响应"""
         async for message in self.ws:
             data = json.loads(message)
-            
+
             # 文本响应
             if "server_content" in data:
                 content = data["server_content"]
@@ -444,7 +461,7 @@ class GeminiLiveClient:
                             # 音频响应
                             audio_data = base64.b64decode(part["inline_data"]["data"])
                             yield {"type": "audio", "data": audio_data}
-                            
+
             # 打断信号
             if "server_content" in data and "interrupted" in data["server_content"]:
                 yield {"type": "interrupted"}
@@ -454,28 +471,28 @@ class MultimodalProcess(AsyncFunction):
     def __init__(self, gemini_api_key):
         self.api_key = gemini_api_key
         self.client = None
-        
+
     async def async_invoke(self, stream_element, result_future):
         if self.client is None:
             self.client = GeminiLiveClient(self.api_key)
             await self.client.connect()
-            
+
         modality = stream_element["modality"]
         data = stream_element["data"]
         timestamp = stream_element["timestamp"]
-        
+
         if modality == "audio":
             await self.client.send_audio(data)
         elif modality == "video":
             await self.client.send_video_frame(data)
-            
+
         # 收集响应
         responses = []
         async for response in self.client.receive_response():
             responses.append(response)
             if response["type"] == "audio":
                 break  # 音频响应完成
-                
+
         result_future.complete(responses)
 
 # Flink作业
@@ -516,9 +533,9 @@ env.execute("Multimodal Streaming with Gemini")
 ```java
 public class VideoAnalyticsAgent {
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-            
+
         // 视频流输入 (1 FPS JPEG frames)
         DataStream<VideoFrame> videoStream = env
             .addSource(new RTSPVideoSource("rtsp://camera/feed"))
@@ -527,7 +544,7 @@ public class VideoAnalyticsAgent {
                     .<VideoFrame>forBoundedOutOfOrderness(Duration.ofMillis(500))
                     .withTimestampAssigner((frame, ts) -> frame.getTimestamp())
             );
-            
+
         // 音频流输入 (16kHz PCM)
         DataStream<AudioChunk> audioStream = env
             .addSource(new AudioCaptureSource(16000, 16))
@@ -535,37 +552,37 @@ public class VideoAnalyticsAgent {
                 WatermarkStrategy
                     .<AudioChunk>forBoundedOutOfOrderness(Duration.ofMillis(100))
             );
-            
+
         // 合并多模态流
         DataStream<MultimodalFrame> multimodal = videoStream
             .connect(audioStream)
             .keyBy(VideoFrame::getCameraId, AudioChunk::getSourceId)
             .process(new MultimodalSyncFunction(Duration.ofMillis(100)));
-            
+
         // Gemini多模态推理
         DataStream<AnalyticsResult> results = multimodal
             .map(frame -> {
                 GeminiClient client = new GeminiClient(API_KEY);
-                
+
                 // 构建多模态请求
                 MultimodalRequest request = MultimodalRequest.builder()
                     .addImage(frame.getJpegData())
                     .addAudio(frame.getPcmData())
                     .prompt("分析这个场景，描述：1)画面内容 2)声音类型 3)异常检测")
                     .build();
-                    
+
                 return client.generate(request);
             })
             .returns(AnalyticsResult.class);
-            
+
         // 异常告警
         results
             .filter(r -> r.getAnomalyScore() > 0.8)
             .addSink(new AlertSink());
-            
+
         // 存储分析结果
         results.addSink(new ElasticsearchSink<>());
-        
+
         env.execute("Real-time Video Analytics");
     }
 }
@@ -580,10 +597,10 @@ class RealtimeTranslator:
         self.gemini = GeminiLiveClient(api_key)
         self.source_lang = source_lang
         self.target_lang = target_lang
-        
+
     async def translate_stream(self, input_stream):
         await self.gemini.connect()
-        
+
         # 配置翻译模式
         await self.gemini.send_setup({
             "system_instruction": f"""
@@ -594,13 +611,13 @@ class RealtimeTranslator:
             """,
             "voice": "target_language_voice"
         })
-        
+
         async for chunk in input_stream:
             if chunk["type"] == "audio":
                 await self.gemini.send_audio(chunk["data"])
             elif chunk["type"] == "text":
                 await self.gemini.send_text(chunk["content"])
-                
+
             # 接收翻译结果
             async for response in self.gemini.receive():
                 if response["type"] == "audio":
@@ -648,22 +665,22 @@ class MultimodalCustomerServiceAgent:
     """
     支持语音、视频、屏幕共享的智能客服Agent
     """
-    
+
     def __init__(self):
         self.gemini = GeminiLiveClient()
         self.knowledge_base = RAGSystem()
         self.session_memory = {}
-        
+
     async def handle_session(self, session_id):
         await self.gemini.connect()
-        
+
         # 会话状态
         self.session_memory[session_id] = {
             "history": [],
             "screen_context": None,
             "user_emotion": "neutral"
         }
-        
+
         async for input_data in self.receive_multimodal_input(session_id):
             # 构建上下文
             context = {
@@ -671,15 +688,15 @@ class MultimodalCustomerServiceAgent:
                 "screen": self.session_memory[session_id]["screen_context"],
                 "emotion": self.session_memory[session_id]["user_emotion"]
             }
-            
+
             # RAG检索相关知识
             if input_data.get("text"):
                 relevant_docs = self.knowledge_base.retrieve(
-                    input_data["text"], 
+                    input_data["text"],
                     top_k=3
                 )
                 context["knowledge"] = relevant_docs
-                
+
             # 多模态推理
             response = await self.gemini.generate(
                 audio=input_data.get("audio"),
@@ -688,30 +705,30 @@ class MultimodalCustomerServiceAgent:
                 text=input_data.get("text"),
                 context=context
             )
-            
+
             # 更新会话记忆
             self.session_memory[session_id]["history"].append({
                 "user": input_data,
                 "agent": response
             })
-            
+
             # 检测用户情绪
             self.session_memory[session_id]["user_emotion"] = \
                 response.get("detected_emotion", "neutral")
-                
+
             # 发送响应
             await self.send_response(session_id, response)
-            
+
     async def receive_multimodal_input(self, session_id):
         """接收多模态输入流"""
         while True:
             data = await websocket.receive()
-            
+
             parsed = {
                 "timestamp": data["timestamp"],
                 "session_id": session_id
             }
-            
+
             if "audio" in data:
                 parsed["audio"] = base64.b64decode(data["audio"])
             if "video" in data:
@@ -720,7 +737,7 @@ class MultimodalCustomerServiceAgent:
                 parsed["screen"] = base64.b64decode(data["screen"])
             if "text" in data:
                 parsed["text"] = data["text"]
-                
+
             yield parsed
 ```
 
@@ -736,34 +753,34 @@ graph TB
         S[屏幕捕获]
         T[文本输入]
     end
-    
+
     subgraph Processing["Flink处理层"]
         F1[音频预处理]
         F2[视频预处理]
         F3[同步对齐]
         F4[多模态融合]
     end
-    
+
     subgraph Model["模型层"]
         M[Gemini Flash Live]
     end
-    
+
     subgraph Output["输出层"]
         OA[音频输出 24kHz]
         OT[文本输出]
         AC[动作执行]
     end
-    
+
     A --> F1
     V --> F2
     S --> F2
     T --> F3
-    
+
     F1 --> F3
     F2 --> F3
     F3 --> F4
     F4 --> M
-    
+
     M --> OA
     M --> OT
     M --> AC
@@ -779,11 +796,11 @@ graph LR
         T3 --> T4[TTS 200ms]
         T4 --> T5[总计: 950ms+]
     end
-    
+
     subgraph Native["原生多模态 ✅"]
         N1[Native Model] --> N2[总计: 200ms]
     end
-    
+
     T5 -.->|优化| N2
 ```
 
@@ -794,21 +811,21 @@ sequenceDiagram
     participant C as 客户端
     participant W as WebSocket Server
     participant G as Gemini API
-    
+
     C->>W: 连接请求
     W->>G: 建立WSS连接
     G-->>W: 连接成功
-    
+
     loop 实时会话
         C->>W: 音频/视频帧
         W->>G: 转发数据
-        
+
         G->>G: 模型推理
-        
+
         G-->>W: 响应(文本/音频)
         W-->>C: 转发响应
     end
-    
+
     C->>C: Barge-in (打断)
     C->>W: 新输入
     W->>G: 中断当前生成
@@ -826,22 +843,22 @@ graph TB
         T500 --> T750[750ms]
         T750 --> T1000[1000ms]
     end
-    
+
     subgraph Audio["音频 (16kHz)"]
         A1[4000 samples]
         A2[4000 samples]
         A3[4000 samples]
         A4[4000 samples]
     end
-    
+
     subgraph Video["视频 (1 FPS)"]
         V1[Frame 1]
     end
-    
+
     subgraph Text["文本"]
         TX1["Hello"]
     end
-    
+
     T0 -.-> A1
     T250 -.-> A2
     T500 -.-> A3
@@ -851,23 +868,3 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: Google, "Gemini 3.1 Flash Live Documentation", 2026. https://ai.google.dev/gemini-api/docs/live
-
-[^2]: MarkTechPost, "Google Releases Gemini 3.1 Flash Live", 2026. https://www.marktechpost.com/2026/03/26/google-releases-gemini-3-1-flash-live/
-
-[^3]: AionX, "Gemini Video Understanding: Complete Multimodal AI Guide 2025", 2025. https://aionx.co/gemini-advanced-reviews/gemini-video-understanding/
-
-[^4]: TrendFlash, "Multimodal AI 2025: How Text, Image, Video & Audio Models Are Converging", 2025. https://www.trendflash.net/posts/multimodal-ai-explained/
-
-[^5]: LocalAIMaster, "Multimodal AI as Standard: Designing for Text + Vision + Voice in 2025", 2025. https://localaimaster.com/blog/multimodal-ai-standard-text-vision-voice-2025/
-
-[^6]: GetStream, "The Rise of Multimodal AI Agents: Building Vision, Voice & Text", 2025. https://getstream.io/blog/multimodal-ai-agents/
-
-[^7]: FreJun AI, "Multimodal AI Agents 2025: Tools and Frameworks", 2026. https://frejun.ai/multimodal-ai-agents-2025-tools-and-frameworks/
-
-[^8]: OpenAI, "GPT-5 Multimodal Capabilities", 2025. https://openai.com/research/gpt-5
-
-[^9]: WebSocket Protocol, "RFC 6455", IETF, 2011.
-
-[^10]: WebRTC Specification, "W3C WebRTC", 2024. https://www.w3.org/TR/webrtc/

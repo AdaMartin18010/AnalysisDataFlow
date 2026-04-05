@@ -1,7 +1,7 @@
 # AnalysisDataFlow 快速上手指南
 
 > **5分钟了解项目 | 按角色定制路径 | 快速问题索引**
-> 
+>
 > 📊 **254 篇文档 | 945 形式化元素 | 100% 完成度**
 
 ---
@@ -25,6 +25,7 @@
 ```
 
 **核心价值**：
+
 - 🔬 **理论支撑**：形式化定理保证工程决策的正确性
 - 🛠️ **实践指导**：从定理到代码的完整映射路径
 - 🔍 **问题诊断**：按症状快速定位解决方案
@@ -46,7 +47,7 @@ graph LR
     S[Struct/ 形式化定义] -->|理论下沉| K[Knowledge/ 设计模式]
     K -->|实践指导| F[Flink/ 工程实现]
     F -.->|反馈验证| S
-    
+
     style S fill:#e1bee7,stroke:#6a1b9a
     style K fill:#c8e6c9,stroke:#2e7d32
     style F fill:#bbdefb,stroke:#1565c0
@@ -82,6 +83,7 @@ graph LR
 | `Thm-F-12-01` | Flink阶段, 12号文档, 第1个定理 | 在线学习参数收敛性 |
 
 **快速记忆**：
+
 - **Thm** = Theorem（定理）| **Def** = Definition（定义）| **Lemma** = 引理 | **Prop** = 命题
 - **S** = Struct（理论）| **K** = Knowledge（知识）| **F** = Flink（实现）
 
@@ -353,29 +355,29 @@ Month 2: 深入与拓展
 ```mermaid
 graph TB
     subgraph "理论层 Struct/"
-        T1[Def-S-17-01<br/>Checkpoint Barrier语义] 
+        T1[Def-S-17-01<br/>Checkpoint Barrier语义]
         T2[Def-S-17-02<br/>一致全局状态]
         T3[Thm-S-17-01<br/>Checkpoint一致性定理]
     end
-    
+
     subgraph "模式层 Knowledge/"
         P1[Pattern 07<br/>Checkpoint & Recovery]
         P2[反模式 AP-03<br/>Checkpoint间隔不当]
     end
-    
+
     subgraph "实现层 Flink/"
         F1[Checkpoint配置]
         F2[Barrier对齐代码]
         F3[故障恢复实现]
     end
-    
+
     T1 -->|Barrier定义| P1
     T2 -->|状态快照概念| P1
     T3 -->|正确性保证| P1
     P1 -->|配置指导| F1
     P1 -->|实现原理| F2
     P2 -->|避免问题| F3
-    
+
     style T1 fill:#e1bee7,stroke:#6a1b9a
     style T3 fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
     style P1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
@@ -438,6 +440,7 @@ graph TB
 ↓ 映射
 
 **Flink配置**:
+
 ```yaml
 # flink-conf.yaml
 execution.checkpointing.interval: 10s      # 根据定理计算
@@ -454,16 +457,19 @@ state.backend.incremental: true            # 优化传输
 ### 5.1 如何查找特定主题
 
 **方法一：索引导航**
+
 1. 先查阅 [Struct/00-INDEX.md](./Struct/00-INDEX.md) 了解理论基础
 2. 再查阅 [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) 了解设计模式
 3. 最后查阅 [Flink/00-INDEX.md](./Flink/00-INDEX.md) 了解工程实现
 
 **方法二：定理编号追踪**
+
 1. 在 [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) 查找定理编号
 2. 根据编号定位文档（如 `Thm-S-17-01` → Struct/04-proofs/04.01）
 3. 交叉引用相关定义和引理
 
 **方法三：问题驱动**
+
 1. 查阅第3.2节「按问题索引」
 2. 按症状匹配解决方案
 3. 深入阅读推荐文档
@@ -482,6 +488,7 @@ state.backend.incremental: true            # 优化传输
 | 顺序号 | 01-99 | 元素在文档中的顺序 |
 
 **示例解析**：
+
 - `Thm-S-17-01`: Struct阶段04-proofs目录第17号文档的第1个定理 → Checkpoint一致性定理
 - `Def-K-02-01`: Knowledge阶段02-design-patterns目录的第1个定义 → Event Time Processing模式
 - `Lemma-F-12-02`: Flink阶段12-ai-ml目录的第2个引理 → 在线学习相关引理
@@ -491,12 +498,14 @@ state.backend.incremental: true            # 优化传输
 ### 5.3 如何贡献内容
 
 **贡献原则**：
+
 1. **遵循六段式模板**：概念定义 → 属性推导 → 关系建立 → 论证过程 → 形式证明 → 实例验证
 2. **使用统一编号**：新定理/定义按规则编号，避免冲突
 3. **保持跨目录引用**：Struct定义 → Knowledge模式 → Flink实现
 4. **添加Mermaid图表**：每个文档至少一个可视化
 
 **贡献流程**：
+
 1. 检查 [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) 了解项目状态
 2. 阅读 [AGENTS.md](./AGENTS.md) 了解编码规范
 3. 在对应目录创建文档，遵循命名规范：`{层号}.{序号}-{主题}.md`
@@ -504,6 +513,7 @@ state.backend.incremental: true            # 优化传输
 5. 更新定理注册表（THEOREM-REGISTRY.md）
 
 **质量门禁**：
+
 - 引用需可验证（优先DOI或稳定URL）
 - Mermaid图语法需通过校验
 - 代码示例需可运行
@@ -545,5 +555,5 @@ L₁: Regular (P-Complete) ── FSM, Regex
 ---
 
 > 📌 **提示**：本文档为快速上手指南，详细内容请参考各目录索引和具体文档。
-> 
+>
 > 📅 **最后更新**：2026-04-03 | 📝 **版本**：v1.0

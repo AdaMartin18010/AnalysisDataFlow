@@ -59,14 +59,14 @@ graph TB
         F2 --> F3[Sink]
         F4[State Backend] -.-> F2
     end
-    
+
     subgraph "RisingWave Architecture"
         R1[Source Connector] --> R2[Stream Engine]
         R2 --> R3[Materialized View]
         R4[Storage Layer] -.-> R2
         R5[Query Engine] -.-> R3
     end
-    
+
     F3 -.->|Kafka/Debezium| R1
     R3 -.->|JDBC/Arrow Flight| F1
 ```
@@ -150,7 +150,7 @@ CREATE SOURCE processed_events (
 
 -- 创建物化视图
 CREATE MATERIALIZED VIEW hourly_stats AS
-SELECT 
+SELECT
     window_start,
     event_type,
     COUNT(*) as event_count,
@@ -217,29 +217,29 @@ flowchart TB
         A2[Kafka]
         A3[API]
     end
-    
+
     subgraph "Flink Processing Layer"
         B1[Data Cleansing]
         B2[Complex Transformations]
         B3[Window Aggregations]
     end
-    
+
     subgraph "Message Bus"
         C1[(Kafka)]
     end
-    
+
     subgraph "RisingWave Analytics Layer"
         D1[Materialized Views]
         D2[Real-time Aggregations]
         D3[Ad-hoc Queries]
     end
-    
+
     subgraph "Applications"
         E1[Dashboards]
         E2[Alerts]
         E3[ML Pipeline]
     end
-    
+
     A1 --> B1
     A2 --> B2
     A3 --> B2
@@ -256,9 +256,6 @@ flowchart TB
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Documentation, "Architecture Overview", 2025. https://docs.risingwave.com/docs/current/architecture/
-[^2]: RisingWave Team, "RisingWave: A Cloud-Native Stream Processing System", SIGMOD, 2024.
-[^3]: Flink Documentation, "Kafka Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
 
 ---
 

@@ -121,10 +121,10 @@ python .scripts/notify-flink-updates.py --check
 
 | 数据源 | URL | 检查频率 |
 |--------|-----|----------|
-| Apache JIRA | https://issues.apache.org/jira/browse/FLINK | 每日 |
-| FLIP 提案 | https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals | 每周 |
-| GitHub Releases | https://github.com/apache/flink/releases | 每日 |
-| 官方路线图 | https://flink.apache.org/roadmap/ | 每周 |
+| Apache JIRA | <https://issues.apache.org/jira/browse/FLINK> | 每日 |
+| FLIP 提案 | <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals> | 每周 |
+| GitHub Releases | <https://github.com/apache/flink/releases> | 每日 |
+| 官方路线图 | <https://flink.apache.org/roadmap/> | 每周 |
 
 ---
 

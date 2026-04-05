@@ -26,7 +26,7 @@
     - [4.2 状态管理机制深度对比](#42-状态管理机制深度对比)
     - [4.3 Nexmark基准测试分析](#43-nexmark基准测试分析)
     - [4.4 反例分析：RisingWave的局限性](#44-反例分析risingwave的局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-04-01 (流数据库vs流引擎选择定理)](#thm-k-04-01-流数据库vs流引擎选择定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓构建场景](#61-实时数仓构建场景)

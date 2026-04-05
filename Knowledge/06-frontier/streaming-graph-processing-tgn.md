@@ -13,6 +13,7 @@ $$
 $$
 
 其中：
+
 - $V$: 节点集合
 - $E_T = \{(u, v, t, e)\}$: 带时间戳的边集合
 - $u, v \in V$: 源节点和目标节点
@@ -20,6 +21,7 @@ $$
 - $e \in \mathbb{R}^{d_e}$: 边特征向量
 
 **与静态图的区别**：
+
 | 特性 | 静态图 | 时序图 |
 |------|--------|--------|
 | 边 | 固定 | 动态到达 |
@@ -57,6 +59,7 @@ $$
 ```
 
 **处理流水线**：
+
 1. **Neighbor Sampling**: 采样历史邻居
 2. **Feature Retrieval**: 获取节点/边特征
 3. **Memory Read**: 读取节点记忆
@@ -83,6 +86,7 @@ $$
 其中 $\mathcal{A}_t$ 是受影响的节点集合。
 
 **复杂度对比**：
+
 | 方法 | 时间复杂度 | 适用场景 |
 |------|-----------|----------|
 | 全量重计算 | $O(|V| \cdot d^2 \cdot K)$ | 批量训练 |
@@ -235,20 +239,24 @@ $$
 ### 4.1 为什么需要流式TGN？
 
 **金融欺诈检测场景**：
+
 - 传统方案：批处理，延迟小时级
 - 流式TGN：毫秒级检测，实时阻断
 
 **推荐系统场景**：
+
 - 静态图：无法捕捉用户实时兴趣变化
 - 时序图：基于最近交互实时更新推荐
 
 **社交网络分析**：
+
 - 批量处理：病毒传播已扩散
 - 流式处理：早期发现、快速干预
 
 ### 4.2 反模式：避免的设计陷阱
 
 **反模式1: 全量重计算**
+
 ```python
 # ❌ 错误：每条边到达都重新计算所有节点
 for edge in stream:
@@ -263,6 +271,7 @@ for edge in stream:
 ```
 
 **反模式2: 无界记忆增长**
+
 ```python
 # ❌ 错误：存储所有历史记忆
 memory[v].append(new_state)  # 无限增长！
@@ -274,6 +283,7 @@ memory[v] = compress(memory[v], new_state)
 ```
 
 **反模式3: 忽视时序因果性**
+
 ```python
 # ❌ 错误：乱序事件直接更新
 process_event(event)  # 可能使用未来信息！
@@ -297,6 +307,7 @@ h_v^{incr}(t) = h_v^{full}(t), \quad \forall v \in \mathcal{A}_t
 $$
 
 **证明概要**：
+
 1. TGN的记忆更新是马尔可夫的：$s_v(t) = f(s_v(t^-), m_v(t))$
 2. 对于未受影响节点：$s_v(t) = s_v(t^-)$
 3. 因此只需更新受影响节点即可获得等价结果
@@ -310,6 +321,7 @@ L_{StreamTGN} \leq L_{detect} + L_{sample} + L_{read} + L_{update} + L_{embed}
 $$
 
 典型值（batch size=600）：
+
 - TGN: 4.5× - 4,216× 加速比
 - TGAT: 6.8× - 1,200× 加速比
 - DySAT: 3.2× - 800× 加速比
@@ -323,6 +335,7 @@ $$
 $$
 
 **依赖条件**：
+
 - Watermark $w(t) \leq t$
 - 事件时间处理
 - 乱序缓冲区
@@ -394,25 +407,25 @@ class TGN(nn.Module):
         self.message_fn = nn.Linear(2 * memory_dim + edge_feat_dim, memory_dim)
         self.memory_updater = nn.GRUCell(memory_dim, memory_dim)
         self.embedding_fn = GraphAttentionEmbedding(memory_dim, node_feat_dim)
-        
+
     def forward(self, batch, memory):
         # Message computation
         messages = self.compute_messages(batch, memory)
-        
+
         # Memory update
         updated_memory = self.update_memory(memory, messages)
-        
+
         # Embedding generation
         embeddings = self.embedding_fn(batch, updated_memory)
-        
+
         return embeddings, updated_memory
-    
+
     def compute_messages(self, batch, memory):
         src_mem = memory[batch.src]
         dst_mem = memory[batch.dst]
         combined = torch.cat([src_mem, dst_mem, batch.edge_feat], dim=-1)
         return self.message_fn(combined)
-    
+
     def update_memory(self, memory, messages):
         return self.memory_updater(messages, memory)
 
@@ -427,19 +440,19 @@ class TGNInferenceProcess(KeyedProcessFunction):
     def __init__(self):
         self.model = TGN(memory_dim=100, node_feat_dim=50, edge_feat_dim=10)
         self.memory = ValueStateDescriptor("memory", Types.LIST(Types.FLOAT()))
-        
+
     def process_element(self, edge, ctx):
         # 更新记忆
         node_id = edge.target
         current_memory = self.memory.value() or torch.zeros(100)
-        
+
         # TGN推理
         with torch.no_grad():
             embedding, new_memory = self.model(edge, current_memory)
-            
+
         # 更新状态
         self.memory.update(new_memory)
-        
+
         # 输出嵌入
         yield NodeEmbedding(node_id, ctx.timestamp(), embedding)
 
@@ -472,28 +485,28 @@ config = {
         "size": "4GB",
         "location": "gpu",  # 或 "unified" 统一内存
     },
-    
+
     # 变更检测
     "change_detection": {
         "enabled": True,
         "threshold": 0.1,  # 嵌入变化阈值
         "strategy": "gradient",  # 或 "random_walk"
     },
-    
+
     # 重建调度
     "rebuild_scheduler": {
         "interval": 100,  # 每100批重建一次
         "adaptive": True,  # 自适应调整
         "target_gpu_util": 0.7,
     },
-    
+
     # 邻居采样
     "sampling": {
         "strategy": "recent",  # 或 "uniform", "time_weighted"
         "num_neighbors": 10,
         "max_history": 1000,
     },
-    
+
     # GPU优化
     "gpu": {
         "tensorrt": True,
@@ -519,9 +532,9 @@ stream_tgn.serve(
 ```java
 public class FraudDetectionPipeline {
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 1. 读取交易流
         DataStream<Transaction> transactions = env
             .addSource(new TransactionSource("kafka:9092", "transactions"))
@@ -532,7 +545,7 @@ public class FraudDetectionPipeline {
             );
 
         // 2. 构建动态交易图
-        TemporalGraph<AccountId, TransactionEdge> graph = 
+        TemporalGraph<AccountId, TransactionEdge> graph =
             TemporalGraph.fromTransactions(
                 transactions,
                 tx -> new TransactionEdge(
@@ -562,7 +575,7 @@ public class FraudDetectionPipeline {
             .map(prediction -> {
                 // 结合业务规则
                 double fraudScore = calculateFraudScore(prediction);
-                
+
                 if (fraudScore > 0.9) {
                     return new FraudAlert(
                         prediction.getSource(),
@@ -596,13 +609,13 @@ public class FraudDetectionPipeline {
 
         env.execute("Real-time Fraud Detection with TGN");
     }
-    
+
     private static double calculateFraudScore(LinkPrediction prediction) {
         // 结合TGN预测和业务规则
         double tgnScore = prediction.getProbability();
         double amountAnomaly = prediction.getEdgeFeatures().getAmountZScore();
         double velocityScore = prediction.getTemporalFeatures().getVelocity();
-        
+
         return 0.5 * tgnScore + 0.3 * amountAnomaly + 0.2 * velocityScore;
     }
 }
@@ -617,7 +630,7 @@ graph TB
     subgraph Input["输入层"]
         E1[(时序边流)]
     end
-    
+
     subgraph TGN["TGN模型"]
         subgraph Components["核心组件"]
             M[Memory Module]
@@ -625,7 +638,7 @@ graph TB
             MU[Memory Updater]
             EM[Embedding Module]
         end
-        
+
         subgraph Flow["数据流"]
             E1 -->|边特征| MF
             M -->|记忆读取| MF
@@ -636,7 +649,7 @@ graph TB
             EM -->|嵌入| Output
         end
     end
-    
+
     subgraph Output["输出层"]
         O1[节点嵌入]
         O2[链接预测]
@@ -653,27 +666,27 @@ sequenceDiagram
     participant G as GPU Kernel
     participant M as Memory Pool
     participant C as 变更检测
-    
+
     loop 连续边流
         S->>F: 发送边 (u, v, t, e)
         F->>F: 邻居采样
         F->>G: 批量处理请求
-        
+
         G->>M: 读取记忆
         M-->>G: 返回记忆状态
-        
+
         G->>G: 消息计算
         G->>G: 记忆更新
         G->>G: 嵌入生成
-        
+
         G->>M: 写回更新
         G-->>F: 返回嵌入
-        
+
         F->>C: 检测变化
         alt 变化显著
             C->>G: 触发重建
         end
-        
+
         F->>F: 输出结果
     end
 ```
@@ -687,14 +700,14 @@ graph LR
         F2 --> F3[O(|V|) 复杂度]
         F3 --> F4[高延迟 秒级]
     end
-    
+
     subgraph Incremental["增量计算 ✅"]
         I1[边到达] --> I2[识别受影响节点]
         I2 --> I3[仅更新 |A| 节点]
         I3 --> I4[O(|A|) 复杂度]
         I4 --> I5[低延迟 毫秒级]
     end
-    
+
     F4 -.->|优化| I5
 ```
 
@@ -707,34 +720,34 @@ graph TB
         AC[账户信息]
         BL[黑名单]
     end
-    
+
     subgraph Processing["实时处理"]
         F1[Flink窗口聚合]
         F2[特征工程]
         F3[TGN推理]
         F4[规则引擎]
     end
-    
+
     subgraph Decision["决策层"]
         D1[风险评分]
         D2[阈值判断]
     end
-    
+
     subgraph Actions["响应"]
         A1[实时阻断]
         A2[告警通知]
         A3[人工审核]
     end
-    
+
     TX --> F1
     AC --> F2
     BL --> F4
-    
+
     F1 --> F2
     F2 --> F3
     F3 --> D1
     F4 --> D1
-    
+
     D1 --> D2
     D2 -->|高风险| A1
     D2 -->|中风险| A2
@@ -742,23 +755,3 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: Rossi, E. et al., "Temporal Graph Networks for Deep Learning on Dynamic Graphs", arXiv:2006.10637, 2020.
-
-[^2]: Xu, D. et al., "Inductive Representation Learning on Temporal Graphs", ICLR, 2020.
-
-[^3]: StreamTGN Paper, "A GPU-Efficient Serving System for Streaming Temporal Graph Neural Networks", arXiv:2603.21090, 2026.
-
-[^4]: TGL: Zhou, J. et al., "TGL: A General Framework for Temporal GNN Training", ACM SIGMOD, 2022.
-
-[^5]: Kumar, S. et al., "Predicting Dynamic Embedding Trajectory in Temporal Interaction Networks", ACM SIGKDD, 2019.
-
-[^6]: Zakaria, R.M. et al., "Detecting Financial Fraud in Real-Time Transactions Using Graph Neural Networks", Journal of Finance and Accounting Science, 2025.
-
-[^7]: Zhang, Y. et al., "HGMAE: Hypergraph Masked Autoencoders", AAAI, 2023.
-
-[^8]: Apache Flink Gelly Documentation, "Graph Processing with Flink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/gelly/
-
-[^9]: PyTorch Geometric Temporal, "Temporal Graph Neural Networks", 2024. https://pytorch-geometric-temporal.readthedocs.io/
-
-[^10]: Besta, M. et al., "Higher-Order Graph Databases", arXiv:2506.19661, 2025.

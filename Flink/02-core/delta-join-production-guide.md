@@ -15,6 +15,7 @@
 $$\mathcal{D}_{prod}(s, T, \mathcal{C}) = \{(r_s, \pi(r_t)) \mid r_s \in s \land r_t \in \text{lookup}_\mathcal{C}(r_s.key, T)\}$$
 
 其中配置空间 $\mathcal{C}$ 包含：
+
 - $C_{cache}$: 缓存配置（大小、TTL、策略）
 - $C_{source}$: CDC源约束配置（`'debezium.skipped.operations' = 'd'`）
 - $C_{pushdown}$: 下推优化配置（投影、过滤）
@@ -280,27 +281,27 @@ graph TB
         DJ[Delta Join V2] --> CDC[CDC Connectors]
         DJ --> Cache[Cache Layer]
         DJ --> Metrics[Metrics System]
-        
+
         CDC --> MySQL[MySQL CDC]
         CDC --> Pg[PostgreSQL CDC]
         CDC --> Paimon[Paimon CDC]
         CDC --> Fluss[Fluss CDC]
-        
+
         Cache --> L1[TaskManager LRU]
         Cache --> L2[External Local]
         Cache --> L3[External Store]
-        
+
         Metrics --> Prometheus[Prometheus]
         Metrics --> Grafana[Grafana]
         Metrics --> OTel[OpenTelemetry]
-        
+
         DJ --> SQL[Table SQL API]
         DJ --> DS[DataStream API]
-        
+
         SQL --> Optimizer[SQL Optimizer]
         DS --> AsyncIO[Async I/O]
     end
-    
+
     style DJ fill:#90EE90
     style Cache fill:#FFD700
     style Metrics fill:#87CEEB
@@ -659,7 +660,7 @@ CREATE TABLE enriched_orders (
 
 -- 5. Delta Join V2 查询（自动启用投影/过滤下推）
 INSERT INTO enriched_orders
-SELECT 
+SELECT
     o.order_id,
     o.user_id,
     -- 用户维度（投影下推：仅查询 user_level, is_vip）
@@ -672,10 +673,10 @@ SELECT
     p.brand,
     o.amount,
     -- 计算利润（过滤下推：仅查询 price > 0 的记录）
-    CASE 
-        WHEN p.price IS NOT NULL AND p.price > 0 
-        THEN o.amount - p.cost_price * o.amount / p.price 
-        ELSE NULL 
+    CASE
+        WHEN p.price IS NOT NULL AND p.price > 0
+        THEN o.amount - p.cost_price * o.amount / p.price
+        ELSE NULL
     END AS profit,
     o.order_time
 FROM orders_cdc o
@@ -694,7 +695,7 @@ WHERE o.status IN ('PAID', 'COMPLETED');  -- 过滤下推
 // Delta Join V2 DataStream API 生产配置
 // ============================================
 
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 生产级配置
@@ -818,10 +819,10 @@ CREATE TABLE recommendation_result (
 
 -- 5. 实时推荐 pipeline
 INSERT INTO recommendation_result
-WITH 
+WITH
 -- Step 1: 富化用户画像
 enriched_behavior AS (
-    SELECT 
+    SELECT
         b.user_id,
         b.item_id AS trigger_item,
         b.behavior_type,
@@ -845,7 +846,7 @@ enriched_behavior AS (
 
 -- Step 2: 计算相似物品（简化示例，实际使用 向量搜索功能（规划中））
 similar_items AS (
-    SELECT 
+    SELECT
         user_id,
         trigger_item,
         behavior_time AS generate_time,
@@ -855,7 +856,7 @@ similar_items AS (
     FROM enriched_behavior
 )
 
-SELECT 
+SELECT
     user_id,
     trigger_item,
     recommended_items,
@@ -996,7 +997,7 @@ CREATE TABLE realtime_sales_agg (
 
 -- 5. 多维度 Join + 实时聚合
 INSERT INTO realtime_sales_agg
-SELECT 
+SELECT
     TUMBLE_START(o.create_time, INTERVAL '1' MINUTE) AS window_start,
     r.region_name,
     u.user_type,
@@ -1012,7 +1013,7 @@ INNER JOIN users FOR SYSTEM_TIME AS OF o.create_time AS u
 LEFT JOIN regions FOR SYSTEM_TIME AS OF o.create_time AS r
     ON o.region_code = r.region_code
 WHERE o.status NOT IN ('CANCELLED', 'REFUNDED')
-GROUP BY 
+GROUP BY
     TUMBLE(o.create_time, INTERVAL '1' MINUTE),
     r.region_name,
     u.user_type;
@@ -1048,25 +1049,25 @@ graph TB
         A2[Paimon CDC] --> |+I/+U| Stream
         A3[Fluss CDC] --> |+I/+U| Stream
     end
-    
+
     Stream --> DJ[Delta Join V2 Operator]
-    
+
     subgraph "Delta Join V2 Core"
         DJ --> PD[Projection Pushdown]
         DJ --> FD[Filter Pushdown]
-        
+
         PD --> Cache[Multi-Level Cache]
         FD --> Cache
-        
+
         Cache --> L1[L1: TaskManager LRU]
         Cache --> L2[L2: External Local]
-        
+
         L1 --> AsyncIO[Async I/O Pool]
         L2 --> AsyncIO
-        
+
         AsyncIO --> Retry[Retry Queue]
     end
-    
+
     subgraph "External Storage"
         Retry --> HBase[HBase]
         Retry --> Fluss[Apache Fluss]
@@ -1074,25 +1075,25 @@ graph TB
         Retry --> MySQL[MySQL/PostgreSQL]
         Retry --> Redis[Redis]
     end
-    
+
     subgraph "Monitoring & Fallback"
         DJ --> Metrics[Metrics System]
         Metrics --> Latency[Latency Histogram]
         Metrics --> HitRate[Cache Hit Rate]
         Metrics --> Errors[Error Counter]
-        
+
         Errors --> Fallback{Error Rate > Threshold?}
         Fallback -->|Yes| Regular[Fallback to Regular Join]
         Fallback -->|No| DJ
     end
-    
+
     HBase --> Output[Enriched Output]
     Fluss --> Output
     Paimon --> Output
     MySQL --> Output
     Redis --> Output
     Regular --> Output
-    
+
     style DJ fill:#90EE90
     style Cache fill:#FFD700
     style L1 fill:#FFD700
@@ -1104,35 +1105,35 @@ graph TB
 ```mermaid
 flowchart TD
     A[开始: 流Join场景分析] --> B{数据规模}
-    
+
     B -->|流数据 < 10GB<br/>维表 < 1GB| C[Broadcast Join]
     B -->|流数据 10GB-100GB<br/>维表相当| D{是否需要强一致?}
     B -->|流数据 > 100GB<br/>或维表 >> 流表| E{CDC源?}
-    
+
     D -->|是| F[Regular Join<br/>+ Checkpoint优化]
     D -->|否| G{延迟要求?}
-    
+
     E -->|是| H{包含DELETE?}
     E -->|否| I[Lookup Join]
-    
+
     H -->|是| J[转换DELETE为软删除<br/>或使用Regular Join]
     H -->|否| K[检查外部存储延迟]
-    
+
     G -->|P99 < 50ms| L[考虑Local Join优化]
     G -->|P99 < 500ms| K
     G -->|P99 > 500ms可接受| F
-    
+
     K --> M{外部存储P99延迟}
     M -->|< 100ms| N[✅ Delta Join V2]
     M -->|100-500ms| O{缓存能否覆盖热点?}
     M -->|> 500ms| P[❌ 不适合Delta Join]
-    
+
     O -->|命中率 > 90%| N
     O -->|命中率 < 90%| P
-    
+
     N --> Q[配置缓存参数]
     Q --> R[生产部署]
-    
+
     style N fill:#90EE90
     style C fill:#87CEEB
     style F fill:#87CEEB
@@ -1149,33 +1150,33 @@ flowchart LR
         RJ_Scale[扩容时间]
         RJ_Latency[P99延迟]
     end
-    
+
     subgraph "Delta Join V2"
         DJ_State[状态大小 ↓ 90%]
         DJ_CP[Checkpoint时间 ↓ 80%]
         DJ_Scale[扩容时间 ↓ 95%]
         DJ_Latency[P99延迟 ~持平]
     end
-    
+
     subgraph "典型生产指标"
         Metric1[状态: 500GB → 50GB]
         Metric2[Checkpoint: 5min → 30s]
         Metric3[扩容: 30min → 1min]
         Metric4[延迟: 20ms → 30ms]
     end
-    
+
     RJ_State -.->|对比| Metric1
     DJ_State -.->|对比| Metric1
-    
+
     RJ_CP -.->|对比| Metric2
     DJ_CP -.->|对比| Metric2
-    
+
     RJ_Scale -.->|对比| Metric3
     DJ_Scale -.->|对比| Metric3
-    
+
     RJ_Latency -.->|对比| Metric4
     DJ_Latency -.->|对比| Metric4
-    
+
     style DJ_State fill:#90EE90
     style DJ_CP fill:#90EE90
     style DJ_Scale fill:#90EE90
@@ -1206,7 +1207,7 @@ flowchart TD
         C6[✓ 监控指标配置<br/>Latency/HitRate/Errors] --> C7
         C7[✓ 容量规划<br/>内存 = CacheSize × RecordSize × 2] --> Ready[🚀 Ready for Production]
     end
-    
+
     style Ready fill:#90EE90
 ```
 
@@ -1233,25 +1234,25 @@ checklist:
       - "[ ] debezium.skipped.operations = 'd' (忽略DELETE)"
       - "[ ] 确认源表无硬删除业务需求"
       - "[ ] snapshot.mode 设置为 incremental"
-  
+
   - name: 缓存配置
     items:
       - "[ ] 缓存大小 = UniqueKeys × 0.2 (至少)"
       - "[ ] TTL 根据业务新鲜度要求设置"
       - "[ ] 内存预留 = CacheSize × RecordSize × 2"
-  
+
   - name: 异步IO配置
     items:
       - "[ ] buffer-capacity >= 吞吐量 × 平均延迟"
       - "[ ] timeout 设置为 P99延迟 × 3"
       - "[ ] max-retries = 3, retry-delay = 100ms"
-  
+
   - name: 外部存储
     items:
       - "[ ] P99延迟 < 100ms"
       - "[ ] 连接池大小 >= Flink并行度 × 2"
       - "[ ] 存储QPS容量 >= 预期峰值 × 1.5"
-  
+
   - name: 监控告警
     items:
       - "[ ] 缓存命中率告警阈值 < 80%"

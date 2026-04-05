@@ -10,7 +10,7 @@
 
 - [设计模式: 复杂事件处理 (Pattern: Complex Event Processing)](#设计模式-复杂事件处理-pattern-complex-event-processing)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem-context)
+  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem--context)
     - [1.1 原始事件与业务语义之间的鸿沟](#11-原始事件与业务语义之间的鸿沟)
     - [1.2 时序关联的复杂性](#12-时序关联的复杂性)
     - [1.3 业务场景中的典型挑战](#13-业务场景中的典型挑战)

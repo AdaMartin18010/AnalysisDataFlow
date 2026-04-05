@@ -10,6 +10,8 @@
 - [项目与竞品文档对标分析报告](#项目与竞品文档对标分析报告)
   - [目录](#目录)
   - [执行摘要](#执行摘要)
+    - [核心发现](#核心发现)
+    - [关键建议](#关键建议)
   - [1. 竞品文档全景扫描](#1-竞品文档全景扫描)
     - [1.1 主要竞品文档结构](#11-主要竞品文档结构)
     - [1.2 文档规模与覆盖度对比](#12-文档规模与覆盖度对比)
@@ -36,9 +38,18 @@
     - [5.4 云原生方向](#54-云原生方向)
   - [6. 借鉴建议清单](#6-借鉴建议清单)
     - [6.1 短期改进 (1-3个月)](#61-短期改进-1-3个月)
+      - [高优先级行动项](#高优先级行动项)
+      - [内容补充清单](#内容补充清单)
     - [6.2 中期优化 (3-6个月)](#62-中期优化-3-6个月)
+      - [体系化建设](#体系化建设)
+      - [文档重构](#文档重构)
     - [6.3 长期规划 (6-12个月)](#63-长期规划-6-12个月)
+      - [生态建设](#生态建设)
+      - [技术前沿](#技术前沿)
   - [7. 结论与行动项](#7-结论与行动项)
+    - [总体评估](#总体评估)
+    - [优先行动矩阵](#优先行动矩阵)
+    - [下一步行动](#下一步行动)
   - [引用参考 (References)](#引用参考-references)
 
 ---
@@ -172,11 +183,13 @@ mindmap
 ### 3.1 Apache Spark Streaming/Structured Streaming
 
 **官方文档亮点**:
+
 - **Spark 4.1 实时模式 (RTM)**: 首个官方支持亚秒级连续处理模式，延迟降至个位数毫秒
 - **声明式管道 (SDP)**: 新的声明式框架，自动处理执行图、依赖、并行度、Checkpoint
 - **统一批流API**: 同一套DataFrame API处理批处理和流处理
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Spark文档优势 |
 |------|----------|---------------|
 | 微批优化 | 基础 | 详细的Batch间隔调优指南 |
@@ -188,11 +201,13 @@ mindmap
 ### 3.2 Apache Kafka Streams
 
 **官方文档亮点**:
+
 - **极简编程模型**: "just a library" 理念，无需单独集群
 - **本地状态存储**: 详尽的RocksDB状态存储调优指南
 - **交互式查询**: Interactive Queries (IQ) 实现有状态服务
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Kafka Streams优势 |
 |------|----------|-------------------|
 | 嵌入式设计 | 基础 | 强调"只是库"的简单性 |
@@ -204,6 +219,7 @@ mindmap
 ### 3.3 RisingWave
 
 **官方文档亮点** (⭐⭐⭐⭐⭐ 最完善):
+
 - **系统化教程体系**: 从入门到专家的完整学习路径
   - RisingWave in 10 Minutes
   - Basics (1小时)
@@ -213,14 +229,16 @@ mindmap
 - **成本优化案例**: 详细的真实场景成本对比
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | RisingWave优势 |
 |------|----------|----------------|
-| 交互式教程 | 无 | https://tutorials.risingwave.com/ |
+| 交互式教程 | 无 | <https://tutorials.risingwave.com/> |
 | 60秒快速开始 | 快速开始 | `curl https://risingwave.com/sh \| sh` |
 | 成本计算器 | 无 | 公开的成本对比数据 |
 | 社区运营 | GitHub | Slack + Twitter + Newsletter |
 
 **借鉴价值**: ⭐⭐⭐⭐⭐ **最高优先级**
+
 - 建立交互式教程站点
 - 设计60秒快速体验流程
 - 补充详细的成本效益分析
@@ -228,11 +246,13 @@ mindmap
 ### 3.4 Materialize
 
 **官方文档亮点**:
+
 - **dbt深度集成**: 首个原生支持dbt的流数据库
 - **增量计算理论**: Timely/Differential Dataflow的详细解释
 - **SQL优先**: 强调标准SQL的完整支持
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Materialize优势 |
 |------|----------|-----------------|
 | dbt集成 | 提及 | 完整的dbt-materialize适配器 |
@@ -244,11 +264,13 @@ mindmap
 ### 3.5 Timeplus
 
 **官方文档亮点**:
+
 - **流批一体查询**: `table(stream)` 语法统一流和历史查询
 - **内置可视化**: 无需外部BI工具的基础图表
 - **ClickHouse兼容**: 复用ClickHouse生态
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Timeplus优势 |
 |------|----------|--------------|
 | 内置Dashboard | 无 | 开箱即用的可视化 |
@@ -260,11 +282,13 @@ mindmap
 ### 3.6 Ververica Platform
 
 **官方文档亮点**:
+
 - **企业级功能完整**: SQL Editor、Autopilot、K8s Operator
 - **版本管理**: 完善的Deployment版本和Savepoint管理
 - **安全合规**: SAML/SSO、RBAC、审计日志
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Ververica优势 |
 |------|----------|---------------|
 | SQL Editor | 无 | Web IDE + Query Preview |
@@ -276,11 +300,13 @@ mindmap
 ### 3.7 Confluent
 
 **官方文档亮点** (⭐⭐⭐⭐⭐ 生态最完善):
+
 - **Schema Registry**: 业界标准的数据契约管理
 - **认证体系**: Confluent Certification 专业认证
 - **数据治理**: 完整的Stream Governance方案
 
 **竞品独特内容**:
+
 | 特性 | 项目覆盖 | Confluent优势 |
 |------|----------|---------------|
 | Schema Registry | 提及 | 100+篇Schema管理文档 |
@@ -289,6 +315,7 @@ mindmap
 | 100+连接器 | 提及 | Connector Hub生态 |
 
 **借鉴价值**: ⭐⭐⭐⭐⭐ **最高优先级**
+
 - 建立Schema管理和数据治理专题
 - 考虑专业认证体系设计
 
@@ -338,32 +365,34 @@ mindmap
 **市场规模**: 全球实时数仓市场预计2025年突破 **3000亿元人民币**，年复合增长率 **25%+**
 
 **关键趋势**:
+
 ```mermaid
 flowchart LR
     subgraph 传统架构
-        A[T+1离线数仓] 
+        A[T+1离线数仓]
     end
-    
+
     subgraph 过渡架构
         B[Lambda架构<br/>批流分离]
     end
-    
+
     subgraph 现代架构
         C[实时湖仓<br/>Paimon+StarRocks]
         D[流数据库<br/>RisingWave/Materialize]
         E[统一引擎<br/>Flink 2.x]
     end
-    
+
     A --> B --> C
     B --> D
     B --> E
-    
+
     style C fill:#c8e6c9,stroke:#2e7d32
     style D fill:#c8e6c9,stroke:#2e7d32
     style E fill:#c8e6c9,stroke:#2e7d32
 ```
 
 **项目应对策略**:
+
 1. **强化流数据库对比**: 补充 RisingWave vs Materialize vs Timeplus 深度对比
 2. **湖仓一体专题**: Flink + Paimon + StarRocks 实时湖仓方案
 3. **成本效益分析**: 各架构TCO对比计算模型
@@ -371,11 +400,13 @@ flowchart LR
 ### 5.2 流批一体方向
 
 **技术演进**:
+
 - **Flink 2.x**: 存算分离架构，统一批流执行
 - **Spark 4.x**: 实时模式(RTM)与声明式管道(SDP)
 - **RisingWave**: 物化视图统一流查询和批查询
 
 **项目应对策略**:
+
 1. **更新Flink 2.x/3.0路线**: 跟踪存算分离、云原生调度进展
 2. **批流一体模式**: 补充统一执行引擎设计模式
 3. **迁移指南**: Lambda架构向流批一体架构迁移
@@ -383,11 +414,13 @@ flowchart LR
 ### 5.3 AI+流处理方向
 
 **市场趋势**:
+
 - **实时特征工程**: 流处理成为ML Pipeline核心
 - **LLM+流处理**: FLIP-531 AI Agents，实时智能决策
 - **向量搜索融合**: RisingWave v2.6+ 向量搜索能力
 
 **项目应对策略**:
+
 1. **扩展AI/ML章节**: Flink ML、实时特征平台
 2. **AI Agents专题**: 已完成FLIP-531分析，需持续更新
 3. **向量检索集成**: 流数据库与向量数据库融合趋势
@@ -395,6 +428,7 @@ flowchart LR
 ### 5.4 云原生方向
 
 **关键发展**:
+
 | 技术方向 | 代表产品 | 成熟度 | 项目覆盖 |
 |----------|----------|--------|----------|
 | Serverless Flink | AWS EMR Serverless | GA | ✅ 已覆盖 |
@@ -485,12 +519,12 @@ quadrantChart
     title 竞品借鉴优先级矩阵
     x-axis 低影响 --> 高影响
     y-axis 低紧迫性 --> 高紧迫性
-    
+
     quadrant-1 立即执行
     quadrant-2 规划实施
     quadrant-3 观察等待
     quadrant-4 快速完成
-    
+
     "交互式教程": [0.9, 0.9]
     "60秒快速开始": [0.8, 0.95]
     "Schema Registry专题": [0.85, 0.8]
@@ -514,17 +548,6 @@ quadrantChart
 
 ## 引用参考 (References)
 
-[^1]: RisingWave Documentation, https://docs.risingwave.com/docs/current/intro/
-[^2]: RisingWave Tutorials, https://tutorials.risingwave.com/
-[^3]: Materialize Documentation, https://materialize.com/docs/get-started/
-[^4]: Timeplus Documentation, https://docs.timeplus.com/
-[^5]: Ververica Platform Documentation, https://docs.ververica.com/
-[^6]: Confluent Documentation, https://docs.confluent.io/
-[^7]: Apache Spark Streaming Guide, https://spark.apache.org/docs/latest/streaming-programming-guide.html
-[^8]: Apache Kafka Streams Documentation, https://kafka.apache.org/documentation/streams/
-[^9]: Spark 4.0 Release Notes, https://www.databricks.com/blog/introducing-apache-spark-40
-[^10]: 2024年流数据路线图, https://cloud.tencent.com/developer/article/2402029
-[^11]: 2025 Lakehouse趋势全景展望, https://www.mirrorship.cn/zh-CN/blog/d/2025-lakehouse-evolution-commercial-trends
 
 ---
 

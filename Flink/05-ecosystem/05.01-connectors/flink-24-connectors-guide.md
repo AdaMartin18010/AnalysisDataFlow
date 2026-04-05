@@ -40,7 +40,7 @@
     - [4.2 Kafka 3.x vs Kafka 2.x 升级论证](#42-kafka-3x-vs-kafka-2x-升级论证)
     - [4.3 Lakehouse 连接器对比分析](#43-lakehouse-连接器对比分析)
     - [4.4 CDC 连接器演进路径](#44-cdc-连接器演进路径)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-04-200: Flink 2.4 连接器生态完备性定理](#thm-f-04-200-flink-24-连接器生态完备性定理)
     - [Thm-F-04-201: 端到端 Exactly-Once 扩展性定理](#thm-f-04-201-端到端-exactly-once-扩展性定理)
     - [Thm-F-04-202: 连接器性能优化效果量化论证](#thm-f-04-202-连接器性能优化效果量化论证)

@@ -1,6 +1,6 @@
 # Flink + Rust + Assembly 生态系统 - 全面完成
 
-> **项目状态**: ✅ **100% 完成** | **完成时间**: 2026-04-05 | **版本**: v2.0  
+> **项目状态**: ✅ **100% 完成** | **完成时间**: 2026-04-05 | **版本**: v2.0
 > **文档总数**: 45+ 篇 | **新增文档**: 6 篇（方案 B 全面覆盖）
 
 ---
@@ -81,36 +81,42 @@ Flink/14-rust-assembly-ecosystem/
 ## 🎯 核心内容覆盖
 
 ### 1. Iron Functions - 多语言 UDF ⭐
+
 - WASM UDF 生产实践
 - Rust/Go/TypeScript 支持
 - ironfun CLI 完整指南
 - Ethereum 解码实际案例
 
 ### 2. Arroyo - Cloudflare 收购 ⭐
+
 - 2025 年重大生态事件
 - Cloudflare Pipelines 集成
 - 10x 滑动窗口性能
 - 与 Flink 的对比分析
 
 ### 3. Flash 引擎 - 生产验证 ⭐
+
 - 阿里云 100K+ CUs 部署
 - 50% 成本降低实证
 - Nexmark 3-4x 性能提升
 - 六大业务线覆盖
 
 ### 4. RisingWave - Rust UDF ⭐
+
 - 原生 `LANGUAGE rust` 语法
 - SQL ↔ Rust 类型映射
 - 标量/表/聚合函数
 - 与 WASM 方案对比
 
 ### 5. 引擎对比矩阵 ⭐
+
 - 7 大系统全面对比
 - Flink vs Arroyo vs RisingWave
 - 技术/性能/生态三维度
 - 选型决策树
 
 ### 6. 2026 趋势预测 ⭐
+
 - WASM UDF 标准化
 - 向量化引擎革命
 - Rust 引擎崛起
@@ -139,6 +145,7 @@ Flink/14-rust-assembly-ecosystem/
 - **完成报告**: [`COMPLETION-REPORT-B.md`](COMPLETION-REPORT-B.md)
 
 ### 核心文档
+
 1. [Iron Functions 指南](iron-functions/01-iron-functions-complete-guide.md)
 2. [Arroyo + Cloudflare](arroyo-update/01-arroyo-cloudflare-acquisition.md)
 3. [Flash 生产验证](flash-engine/06-production-deployment-2025.md)
@@ -151,6 +158,7 @@ Flink/14-rust-assembly-ecosystem/
 ## ✅ 质量保证
 
 所有文档均通过：
+
 - ✅ 六段式模板验证
 - ✅ 形式化元素检查（≥3 个/文档）
 - ✅ Mermaid 图表验证
@@ -163,16 +171,19 @@ Flink/14-rust-assembly-ecosystem/
 ## 🎓 使用建议
 
 ### 快速上手（1-2天）
+
 1. 阅读 [`00-MASTER-INDEX.md`](00-MASTER-INDEX.md) 了解全貌
 2. [Iron Functions 指南](iron-functions/01-iron-functions-complete-guide.md) - 开始 Rust UDF
 3. [RisingWave Rust UDF](risingwave-comparison/04-risingwave-rust-udf-guide.md) - 对比方案
 
 ### 引擎选型（2-3天）
+
 1. [引擎对比矩阵](comparison/01-rust-streaming-engines-comparison.md) - 系统对比
 2. [Arroyo + Cloudflare](arroyo-update/01-arroyo-cloudflare-acquisition.md) - 最新动态
 3. [Flash 生产验证](flash-engine/06-production-deployment-2025.md) - 生产参考
 
 ### 趋势洞察（1天）
+
 1. [2026 趋势预测](trends/01-flink-rust-ecosystem-trends-2026.md) - 五大趋势
 
 ---

@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \& Recovery)](#设计模式-checkpoint-与故障恢复-pattern-07-checkpoint-recovery)
+- [设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \& Recovery)](#设计模式-checkpoint-与故障恢复-pattern-07-checkpoint--recovery)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-07-01 (Checkpoint 机制)](#def-k-02-07-01-checkpoint-机制)
@@ -32,7 +32,7 @@
     - [8.2 满足的形式化性质](#82-满足的形式化性质)
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [5.1 Checkpoint 一致性定理 (关联 Thm-S-17-01)](#51-checkpoint-一致性定理-关联-thm-s-17-01)
     - [5.2 Exactly-Once 正确性定理 (关联 Thm-S-18-01)](#52-exactly-once-正确性定理-关联-thm-s-18-01)
     - [5.3 故障恢复正确性工程论证](#53-故障恢复正确性工程论证)

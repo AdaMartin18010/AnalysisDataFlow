@@ -24,7 +24,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 云选择决策树](#41-云选择决策树)
     - [4.2 部署模式对比分析](#42-部署模式对比分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 跨云一致性保证](#51-跨云一致性保证)
     - [5.2 成本优化策略](#52-成本优化策略)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

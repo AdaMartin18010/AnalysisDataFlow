@@ -11,6 +11,7 @@
 ### 1.1 P2-12 基础功能回顾
 
 P2-12 已实现：
+
 - ✅ 用户画像收集（角色、经验、目标、时间）
 - ✅ 内容库管理（难度、主题、依赖关系）
 - ✅ 基础推荐算法（评分 + 过滤）
@@ -80,13 +81,13 @@ def calculate_user_similarity(user1: UserProfile, user2: UserProfile) -> float:
     # 基于内容的相似度
     role_sim = 1.0 if user1.role == user2.role else 0.5
     goal_sim = 1.0 if user1.goal == user2.goal else 0.3
-    
+
     # 基于行为的相似度
     behavior_sim = cosine_similarity(
         user1.content_interactions,
         user2.content_interactions
     )
-    
+
     return 0.3 * role_sim + 0.2 * goal_sim + 0.5 * behavior_sim
 ```
 
@@ -97,13 +98,13 @@ def item_based_recommend(user: UserProfile, n: int = 10) -> List[ContentItem]:
     # 找到用户已完成的相似内容
     completed = user.get_completed_items()
     candidates = []
-    
+
     for item in completed:
         similar_items = find_similar_items(item, top_k=5)
         for sim_item, similarity in similar_items:
             if sim_item not in completed:
                 candidates.append((sim_item, similarity))
-    
+
     # 按相似度排序
     candidates.sort(key=lambda x: x[1], reverse=True)
     return [item for item, _ in candidates[:n]]
@@ -135,7 +136,7 @@ def item_based_recommend(user: UserProfile, n: int = 10) -> List[ContentItem]:
 ```python
 class KnowledgeGraphNavigator:
     def find_learning_path(
-        self, 
+        self,
         start_concepts: List[str],
         target_concepts: List[str],
         user_level: str
@@ -163,7 +164,7 @@ graph TB
     C --> G[Memory Backend]
     D --> H[Exactly-Once语义]
     E --> H
-    
+
     style A fill:#e1bee7
     style H fill:#c8e6c9
 ```
@@ -194,15 +195,15 @@ def adapt_path(progress: LearningProgress) -> LearningPath:
     # 如果进度落后，简化路径
     if is_behind_schedule(progress):
         return simplify_path(progress.path, factor=0.8)
-    
+
     # 如果进度超前，增加进阶内容
     if is_ahead_of_schedule(progress):
         return enrich_path(progress.path, advanced_content=True)
-    
+
     # 如果某个主题困难，增加辅助材料
     for item in progress.struggling_items:
         add_prerequisite_material(progress.path, item)
-    
+
     return progress.path
 ```
 
@@ -229,7 +230,7 @@ class CommunityInsight:
 def get_trending_paths(time_window: str = "30d") -> List[LearningPath]:
     # 分析社区数据，找出最受欢迎的路径
     path_popularity = {}
-    
+
     for feedback in get_recent_feedback(time_window):
         path_id = feedback.path_id
         if path_id not in path_popularity:
@@ -238,12 +239,12 @@ def get_trending_paths(time_window: str = "30d") -> List[LearningPath]:
                 "ratings": [],
                 "users": set()
             }
-        
+
         if feedback.event == "completed":
             path_popularity[path_id]["completions"] += 1
         path_popularity[path_id]["ratings"].append(feedback.rating)
         path_popularity[path_id]["users"].add(feedback.user_id)
-    
+
     # 计算热度分数
     for path_id, stats in path_popularity.items():
         stats["score"] = (
@@ -251,7 +252,7 @@ def get_trending_paths(time_window: str = "30d") -> List[LearningPath]:
             np.mean(stats["ratings"]) * 10 +
             len(stats["users"])
         )
-    
+
     return sorted_paths_by_score
 ```
 
@@ -269,24 +270,24 @@ graph TB
         KGB[(知识图谱)]
         FDB[(反馈数据库)]
     end
-    
+
     subgraph "服务层"
         RS[推荐服务]
         PA[进度分析]
         KG[图谱导航]
         CF[协同过滤]
     end
-    
+
     subgraph "接口层"
         API[REST API]
         WS[WebSocket]
     end
-    
+
     subgraph "前端"
         UI[学习路径UI]
         Dash[进度仪表板]
     end
-    
+
     UDB --> RS
     CDB --> RS
     KGB --> KG
@@ -309,21 +310,21 @@ async def get_personalized_recommendations(
     context: RecommendationContext
 ) -> RecommendationResponse:
     """获取个性化推荐（增强版）"""
-    
+
     # 获取用户画像
     profile = await get_enhanced_profile(user_id)
-    
+
     # 多路召回
     content_based = content_based_recommend(profile)
     collaborative = collaborative_filter(user_id)
     graph_based = graph_navigation_recommend(profile)
-    
+
     # 融合排序
     recommendations = fusion_rank(
         content_based, collaborative, graph_based,
         weights=[0.4, 0.3, 0.3]
     )
-    
+
     return RecommendationResponse(
         items=recommendations,
         explanation=generate_explanation(recommendations),

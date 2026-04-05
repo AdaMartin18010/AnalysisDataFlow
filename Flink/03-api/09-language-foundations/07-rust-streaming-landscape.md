@@ -24,7 +24,7 @@
     - [4.1 为什么选择 Rust 实现流处理引擎](#41-为什么选择-rust-实现流处理引擎)
     - [4.2 Differential Dataflow 的创新性与局限性](#42-differential-dataflow-的创新性与局限性)
     - [4.3 流数据库 vs 流处理框架的边界](#43-流数据库-vs-流处理框架的边界)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 系统选型决策定理](#51-系统选型决策定理)
     - [5.2 Nexmark 基准测试工程分析](#52-nexmark-基准测试工程分析)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

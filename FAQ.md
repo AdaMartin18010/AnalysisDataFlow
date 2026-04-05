@@ -341,9 +341,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class AIAgentExample {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 创建 AI Agent 配置
         AIAgentConfig config = AIAgentConfig.builder()
             .setModelEndpoint("https://api.openai.com/v1/chat/completions")
@@ -352,10 +352,10 @@ public class AIAgentExample {
             .setMaxTokens(500)
             .setTemperature(0.7)
             .build();
-        
+
         // 创建流式 AI Agent
         AIAgent agent = AIAgentFactory.createStreamingAgent(config);
-        
+
         // 输入数据流
         DataStream<String> inputStream = env
             .fromElements(
@@ -363,11 +363,11 @@ public class AIAgentExample {
                 "提取关键实体信息",
                 "生成摘要"
             );
-        
+
         // 应用 AI 处理
         DataStream<AIResponse> result = agent
             .process(inputStream, new PromptTemplate("{input}"));
-        
+
         result.print();
         env.execute("Flink AI Agent Example");
     }
@@ -428,22 +428,22 @@ spec:
     targetCpuUtilization: 70
     scaleUpDelay: 30s
     scaleDownDelay: 5m
-  
+
   # 资源限制
   resources:
     maxMemoryPerTask: 4gb
     maxCpuPerTask: 2
-    
+
   # 状态配置
   state:
     backend: managed
     retention: 7d
-    
+
   # 检查点配置
   checkpoint:
     interval: 30s
     mode: incremental
-    
+
   # 代码位置
   jarURI: s3://my-bucket/jobs/etl-job.jar
   mainClass: com.example.ETLJob
@@ -453,7 +453,7 @@ spec:
 
 ```java
 // Serverless 作业提交
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getServerlessEnvironment();
 
 // 启用自动扩缩容
@@ -503,7 +503,7 @@ Serverless (按量计费):
 **配置示例**
 
 ```java
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用智能检查点
@@ -525,7 +525,7 @@ checkpointConfig.configure(SmartCheckpointOptions.builder()
     .build());
 
 // 状态后端配置 (推荐 RocksDB)
-EmbeddedRocksDBStateBackend stateBackend = 
+EmbeddedRocksDBStateBackend stateBackend =
     new EmbeddedRocksDBStateBackend(true);
 stateBackend.setPredefinedOptions(
     PredefinedOptions.FLASH_SSD_OPTIMIZED);
@@ -601,11 +601,11 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class UnifiedStreamingBatch {
     public static void main(String[] args) {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tableEnv = 
+        StreamTableEnvironment tableEnv =
             StreamTableEnvironment.create(env);
-        
+
         // ==================== 流模式 ====================
         // 创建流表 (Kafka 源)
         tableEnv.executeSql("""
@@ -621,52 +621,52 @@ public class UnifiedStreamingBatch {
                 'format' = 'json'
             )
         """);
-        
+
         // 流式聚合查询
         Table streamingResult = tableEnv.sqlQuery("""
-            SELECT 
+            SELECT
                 event_type,
                 COUNT(*) as event_count,
                 TUMBLE_START(event_time, INTERVAL '1' MINUTE) as window_start
             FROM user_events
-            GROUP BY 
+            GROUP BY
                 event_type,
                 TUMBLE(event_time, INTERVAL '1' MINUTE)
         """);
-        
+
         // ==================== 批模式 (同一表定义) ====================
         // 切换到批模式处理历史数据
         tableEnv.getConfig().setExecutionMode(ExecutionMode.BATCH);
-        
+
         // 同一查询在批模式下执行 (处理历史分区)
         Table batchResult = tableEnv.sqlQuery("""
-            SELECT 
+            SELECT
                 event_type,
                 COUNT(*) as event_count,
                 DATE_FORMAT(event_time, 'yyyy-MM-dd') as event_date
             FROM user_events
             WHERE event_time >= DATE_SUB(CURRENT_DATE, 30)
-            GROUP BY 
+            GROUP BY
                 event_type,
                 DATE_FORMAT(event_time, 'yyyy-MM-dd')
         """);
-        
+
         // ==================== 流批联合处理 ====================
         // 创建统一视图
         tableEnv.executeSql("""
             CREATE VIEW unified_metrics AS
-            SELECT 
+            SELECT
                 event_type,
                 COUNT(*) as total_count,
-                CASE 
-                    WHEN CURRENT_MODE() = 'STREAMING' 
+                CASE
+                    WHEN CURRENT_MODE() = 'STREAMING'
                     THEN 'realtime'
                     ELSE 'batch'
                 END as processing_mode
             FROM user_events
             GROUP BY event_type
         """);
-        
+
         // 输出结果
         tableEnv.executeSql("""
             CREATE TABLE output_sink (
@@ -679,7 +679,7 @@ public class UnifiedStreamingBatch {
                 'table-name' = 'event_metrics'
             )
         """);
-        
+
         tableEnv.executeSql("INSERT INTO output_sink SELECT * FROM unified_metrics");
     }
 }
@@ -691,18 +691,18 @@ public class UnifiedStreamingBatch {
 # flink-conf.yaml
 execution:
   mode: adaptive  # 自动根据数据源选择模式
-  
+
   adaptive-mode:
     # 实时数据源判定
     streaming-sources:
       - connector: kafka
       - connector: pulsar
-    
-    # 批式数据源判定  
+
+    # 批式数据源判定
     batch-sources:
       - connector: filesystem
       - connector: hive
-      
+
     # 混合处理策略
     hybrid-strategy: auto-split
 ```
@@ -711,7 +711,7 @@ execution:
 
 ```java
 // DataStream API 同样支持流批统一
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 自适应源 - 自动识别流/批模式
@@ -761,7 +761,7 @@ result.sinkTo(AdaptiveSink.builder()
 
 ```java
 // GPU 加速的 ML 推理
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置 GPU 资源
@@ -783,22 +783,22 @@ DataStream<Detection> detections = images
     .slotSharingGroup("gpu-tasks");  // GPU 专用 slot
 
 // GPU UDF 示例
-public class GPUDetectionFunction 
+public class GPUDetectionFunction
     extends RichAsyncFunction<Image, Detection> {
-    
+
     private transient GPURuntime gpuRuntime;
     private transient TensorRTModel model;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 初始化 GPU 运行时
         gpuRuntime = GPURuntime.getRuntime();
         gpuRuntime.initialize();
-        
+
         // 加载 TensorRT 模型
         model = gpuRuntime.loadModel("yolov8.trt");
     }
-    
+
     @Override
     public void asyncInvoke(Image image, ResultFuture<Detection> resultFuture) {
         // GPU 异步推理
@@ -849,31 +849,31 @@ spec:
 // GPU vs CPU 性能对比测试
 public class GPUBenchmark {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         DataStream<Tensor> input = env.addSource(new TensorSource());
-        
+
         // CPU 版本
         DataStream<Result> cpuResult = input
             .map(new CPUMatrixMultiplication())
             .name("CPU-MatMul")
             .uid("cpu-matmul");
-        
+
         // GPU 版本
         DataStream<Result> gpuResult = input
             .transform(
-                "GPU-MatMul", 
+                "GPU-MatMul",
                 TypeInformation.of(Result.class),
                 new GPUMatrixMultiplication())
             .name("GPU-MatMul")
             .uid("gpu-matmul");
-        
+
         // 性能对比: 矩阵乘法 (1024x1024)
         // CPU: ~50ms/operation
         // GPU T4: ~2ms/operation (25x 加速)
         // GPU A100: ~0.1ms/operation (500x 加速)
-        
+
         env.execute("GPU Benchmark");
     }
 }
@@ -918,19 +918,19 @@ impl CustomAvg {
     fn new() -> Self {
         CustomAvg { sum: 0.0, count: 0 }
     }
-    
+
     #[accumulate]
     fn accumulate(&mut self, value: f64) {
         self.sum += value;
         self.count += 1;
     }
-    
+
     #[merge]
     fn merge(&mut self, other: &CustomAvg) {
         self.sum += other.sum;
         self.count += other.count;
     }
-    
+
     #[get_result]
     fn get_result(&self) -> Option<f64> {
         if self.count > 0 {
@@ -995,7 +995,7 @@ tableEnv.executeSql("""
 
 // 2. SQL 中使用
 Table result = tableEnv.sqlQuery("""
-    SELECT 
+    SELECT
         user_name,
         string_len(user_name) as name_length
     FROM users
@@ -1017,7 +1017,7 @@ SHOW FUNCTIONS WHERE type = 'WASM';
 DESCRIBE FUNCTION string_len;
 
 -- 更新 WASM 模块 (热更新)
-ALTER FUNCTION string_len 
+ALTER FUNCTION string_len
 UPDATE WASM 'file:///opt/flink/udfs/string_len_v2.wasm';
 
 -- 删除 UDF
@@ -1039,7 +1039,7 @@ extern "C" {
         std::hash<std::string> hasher;
         return static_cast<int64_t>(hasher(str));
     }
-    
+
     // 处理二进制数据
     WASM_EXPORT int process_bytes(const uint8_t* data, size_t len) {
         int sum = 0;
@@ -1146,7 +1146,7 @@ MIGRATIONS = {
     # 废弃配置 -> 新配置
     'state.backend.incremental': 'state.checkpoint-storage.incremental',
     'taskmanager.memory.fraction': 'taskmanager.memory.network.fraction',
-    
+
     # 默认值变更
     'checkpointing.mode': {'old_default': 'EXACTLY_ONCE', 'new_default': 'AT_LEAST_ONCE'},
 }
@@ -1161,14 +1161,14 @@ NEW_FEATURES = [
 def migrate_config(input_file, output_file):
     with open(input_file, 'r') as f:
         lines = f.readlines()
-    
+
     migrated = []
     for line in lines:
         line = line.strip()
         if not line or line.startswith('#'):
             migrated.append(line)
             continue
-            
+
         key = line.split(':')[0].strip()
         if key in MIGRATIONS:
             if isinstance(MIGRATIONS[key], str):
@@ -1178,12 +1178,12 @@ def migrate_config(input_file, output_file):
                 migrated.append(f"# MIGRATED: {key} -> {new_key}")
             continue
         migrated.append(line)
-    
+
     # 添加新特性配置
     migrated.append("\n# === Flink 2.4 新增配置 ===")
     for feature in NEW_FEATURES:
         migrated.append(feature)
-    
+
     with open(output_file, 'w') as f:
         f.write('\n'.join(migrated))
 
@@ -1284,8 +1284,8 @@ SET execution.mode = 'streaming';
 SET execution.mode = 'adaptive';  -- 自动选择流/批
 
 -- 2.5: 新增 GPU 提示
-SELECT /*+ GPU_PARALLEL(4) */ 
-    ml_inference(model, features) 
+SELECT /*+ GPU_PARALLEL(4) */
+    ml_inference(model, features)
 FROM ml_events;
 
 -- 2.5: WASM UDF 增强
@@ -1306,13 +1306,13 @@ WITH (
 # flink-conf.yaml (2.5)
 state:
   backend: rocksdb
-  
+
   # 2.4 -> 2.5 状态迁移
   migration:
     enabled: true
     source-version: "2.4"
     mode: online  # online = 不停机迁移
-    
+
   # 兼容性设置
   compatibility:
     accept-foreign-savepoints: true
@@ -1325,32 +1325,32 @@ state:
 // 验证作业兼容性
 public class CompatibilityCheck {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 启用严格兼容性检查
         env.getConfig().setBoolean(
             "compatibility.strict-check", true);
-        
+
         // 尝试从 2.4 保存点恢复
-        SavepointRestoreSettings restoreSettings = 
+        SavepointRestoreSettings restoreSettings =
             SavepointRestoreSettings.forPath(
-                "s3://checkpoints/job-2.4", 
+                "s3://checkpoints/job-2.4",
                 true);  // allowNonRestoredState
-        
+
         env.setSettings(restoreSettings);
-        
+
         // 构建作业
         buildJob(env);
-        
+
         // 预执行验证 (不实际执行)
         JobGraph jobGraph = env.getStreamGraph().getJobGraph();
-        CompatibilityReport report = 
+        CompatibilityReport report =
             CompatibilityChecker.check(jobGraph, "2.4", "2.5");
-        
+
         if (report.hasIssues()) {
             report.getIssues().forEach(issue -> {
-                System.err.println("[" + issue.getSeverity() + "] " + 
+                System.err.println("[" + issue.getSeverity() + "] " +
                     issue.getMessage());
             });
         } else {
@@ -1390,11 +1390,11 @@ DataStream<Row> result = env
 
 // 新: Table API (3.0 主推)
 Table result = tableEnv.sqlQuery("""
-    SELECT 
+    SELECT
         field0,
         COUNT(*) as cnt
     FROM kafka_source
-    GROUP BY 
+    GROUP BY
         field0,
         TUMBLE(event_time, INTERVAL '5' MINUTE)
 """)
@@ -1422,24 +1422,24 @@ checks:
     - pattern: "DataStreamSource"
       severity: warning
       replacement: "Table API with kafka connector"
-    
+
     - pattern: "CheckpointListener"
       severity: error
       replacement: "CheckpointCallback"
-    
+
     - pattern: "StateBackend"
       severity: info
       note: "Will be unified in 3.0"
-  
+
   state_management:
     - check: "ttl_configured"
       required: true
       message: "所有状态必须配置 TTL"
-    
+
     - check: "state_size_monitoring"
       required: true
       message: "启用状态大小监控"
-  
+
   connectors:
     - check: "standard_connector"
       required: true
@@ -1460,29 +1460,29 @@ checks:
 @RunWith(FlinkCompatibilityRunner.class)
 @CompatibilityVersion(from = "2.5", to = "3.0")
 public class MigrationCompatibilityTest {
-    
+
     @Test
     public void testStateMigration() throws Exception {
         // 测试状态格式兼容性
-        StateDescriptor<ValueState<Integer>> descriptor = 
+        StateDescriptor<ValueState<Integer>> descriptor =
             new ValueStateDescriptor<>("counter", Types.INT);
-        
+
         // 验证 2.5 状态可在 3.0 读取
         CompatibilityAssert.assertStateMigratable(
-            descriptor, 
-            "2.5", 
+            descriptor,
+            "2.5",
             "3.0"
         );
     }
-    
+
     @Test
     public void testAPISurface() {
         // 验证使用的 API 在 3.0 仍可用
         Set<String> usedAPIs = APIUsageScanner.scan("com.example.job");
-        
+
         for (String api : usedAPIs) {
             CompatibilityAssert.assertAvailableIn(
-                api, 
+                api,
                 "3.0"
             );
         }
@@ -1569,18 +1569,18 @@ backend.setMemoryManaged(true);
 // 基准测试作业
 public class PerformanceBenchmark {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置 for 最大吞吐
         env.setParallelism(16);
         env.setBufferTimeout(0);  // 零缓冲延迟
-        
+
         // 测试数据生成
         DataStream<Event> source = env.addSource(
             new HighThroughputSource(1_000_000))  // 1M events/s
             .setParallelism(8);
-        
+
         // 典型处理流程
         DataStream<Result> result = source
             .map(new EnrichmentFunction())        // 数据丰富
@@ -1588,24 +1588,24 @@ public class PerformanceBenchmark {
             .window(TumblingEventTimeWindows.of(Time.seconds(10)))
             .aggregate(new CountAggregate())      // 窗口聚合
             .map(new TransformationFunction());   // 转换
-        
+
         // 丢弃输出 (只测处理性能)
         result.addSink(new DiscardingSink<>());
-        
+
         // 执行并收集指标
         JobExecutionResult executionResult = env.execute();
-        
+
         // 输出性能指标
         System.out.println("=".repeat(50));
         System.out.println("Flink " + env.getVersion() + " 性能测试结果:");
         System.out.println("-".repeat(50));
-        System.out.printf("总处理事件: %,d%n", 
+        System.out.printf("总处理事件: %,d%n",
             executionResult.getNetAccumulators().get("events"));
-        System.out.printf("平均吞吐: %,d events/s%n", 
+        System.out.printf("平均吞吐: %,d events/s%n",
             executionResult.getNetAccumulators().get("throughput"));
-        System.out.printf("平均延迟: %.2f ms%n", 
+        System.out.printf("平均延迟: %.2f ms%n",
             executionResult.getNetAccumulators().get("latency"));
-        System.out.printf("检查点平均时间: %.2f s%n", 
+        System.out.printf("检查点平均时间: %.2f s%n",
             executionResult.getNetAccumulators().get("checkpoint_time"));
         System.out.println("=".repeat(50));
     }
@@ -1633,7 +1633,7 @@ flink_2_4:
   memory_usage: 10GB per TM # 降低 16%
   checkpoint_duration: 25s  # 降低 44%
   p99_latency: 80ms         # 降低 33%
-  
+
 cost_savings:
   monthly: "$12,000"  # 约 25% 成本节省
 ```
@@ -1642,7 +1642,7 @@ cost_savings:
 
 ```java
 // 启用 2.4 所有优化
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 1. 智能检查点
@@ -1676,20 +1676,20 @@ env.getConfig().setBoolean("taskmanager.network.memory.buffer-debloat.enabled", 
 ```java
 // AI Agent 性能测试
 public class AIAgentPerformanceTest {
-    
+
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 创建 AI Agent
         AIAgentConfig config = AIAgentConfig.builder()
             .setModelEndpoint("https://api.openai.com/v1/chat/completions")
             .setModel("gpt-3.5-turbo")
             .setMaxTokens(150)
             .build();
-        
+
         AIAgent agent = AIAgentFactory.createStreamingAgent(config);
-        
+
         // 测试数据生成
         DataStream<String> testInputs = env.addSource(
             new TestDataSource(
@@ -1697,20 +1697,20 @@ public class AIAgentPerformanceTest {
                 100,            // 每秒请求数 (RPS)
                 TestDataType.SHORT_TEXT  // 短文本类型
             ));
-        
+
         // 测量指标
         DataStream<AIResponse> responses = agent
             .process(testInputs, new SimplePromptTemplate());
-        
+
         // 收集性能指标
         DataStream<Metrics> metrics = responses
             .map(new MetricsExtractor())
             .keyBy(m -> 1)
             .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
             .aggregate(new MetricsAggregate());
-        
+
         metrics.print();
-        
+
         env.execute("AI Agent Performance Test");
     }
 }
@@ -1749,21 +1749,21 @@ public class MetricsExtractor implements MapFunction<AIResponse, Metrics> {
 // 阶梯负载测试
 public class LoadTest {
     public static void main(String[] args) throws Exception {
-        
+
         int[] rpsLevels = {10, 50, 100, 200, 500, 1000};
         Duration durationPerLevel = Duration.ofMinutes(5);
-        
+
         for (int rps : rpsLevels) {
             System.out.println("开始测试负载: " + rps + " RPS");
-            
+
             LoadTestResult result = runLoadTest(rps, durationPerLevel);
-            
+
             System.out.println("结果:");
             System.out.printf("  成功率: %.2f%%%n", result.getSuccessRate() * 100);
             System.out.printf("  平均延迟: %.2f ms%n", result.getAvgLatency());
             System.out.printf("  P99延迟: %.2f ms%n", result.getP99Latency());
             System.out.printf("  吞吐量: %.2f req/s%n", result.getThroughput());
-            
+
             // 如果错误率超过5%，停止测试
             if (result.getErrorRate() > 0.05) {
                 System.err.println("错误率过高，停止测试");
@@ -1781,34 +1781,34 @@ public class LoadTest {
 benchmark:
   name: "AI Agent Performance Test"
   duration: 10m
-  
+
   load_profile:
     type: "ramp_up"
     initial_rps: 10
     target_rps: 500
     ramp_duration: 5m
-    
+
   test_data:
     - type: "short_text"      # 平均 50 tokens
       ratio: 0.4
-    - type: "medium_text"     # 平均 200 tokens  
+    - type: "medium_text"     # 平均 200 tokens
       ratio: 0.4
     - type: "long_text"       # 平均 1000 tokens
       ratio: 0.2
-      
+
   agent_config:
     model: "gpt-3.5-turbo"
     max_tokens: 150
     temperature: 0.7
     timeout: 30s
-    
+
     # 性能优化选项
     optimizations:
       semantic_cache: true
       batch_processing: true
       async_execution: true
       connection_pool_size: 20
-      
+
   assertions:
     - metric: "p99_latency"
       threshold: 2000ms

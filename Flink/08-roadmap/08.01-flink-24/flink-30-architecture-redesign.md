@@ -49,7 +49,7 @@
     - [4.3 统一执行层设计论证](#43-统一执行层设计论证)
     - [4.4 状态管理架构演进论证](#44-状态管理架构演进论证)
     - [4.5 云原生架构深化论证](#45-云原生架构深化论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)](#5-形式证明-工程论证-proof-engineering-argumentation)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)](#5-形式证明--工程论证-proof--engineering-argumentation)
     - [Thm-F-08-50: 统一执行层语义等价性定理](#thm-f-08-50-统一执行层语义等价性定理)
     - [Thm-F-08-51: 新状态管理一致性定理](#thm-f-08-51-新状态管理一致性定理)
     - [Thm-F-08-52: 云原生弹性保证定理](#thm-f-08-52-云原生弹性保证定理)

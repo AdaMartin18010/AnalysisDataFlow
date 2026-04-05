@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [Stripe实时支付处理 - 金融级流计算架构](#stripe实时支付处理-金融级流计算架构)
+- [Stripe实时支付处理 - 金融级流计算架构](#stripe实时支付处理---金融级流计算架构)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-14: Stripe支付事件流](#def-k-03-14-stripe支付事件流)
@@ -24,7 +24,7 @@
     - [4.1 Stripe架构演进三阶段](#41-stripe架构演进三阶段)
     - [4.2 风控模型实时更新机制](#42-风控模型实时更新机制)
     - [4.3 多币种实时汇率处理](#43-多币种实时汇率处理)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 端到端延迟优化论证](#51-端到端延迟优化论证)
     - [5.2 风控准确率与延迟权衡](#52-风控准确率与延迟权衡)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
