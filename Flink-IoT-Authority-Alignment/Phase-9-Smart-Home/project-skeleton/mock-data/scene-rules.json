@@ -1,0 +1,637 @@
+{
+  "schema_version": "1.0",
+  "description": "智能家居场景联动规则配置",
+  "last_updated": "2026-04-05T14:30:00Z",
+  "rule_engine_version": "2.5.0",
+  "categories": {
+    "life_scenes": "生活场景",
+    "safety_scenes": "安防场景", 
+    "energy_scenes": "能耗场景",
+    "health_scenes": "健康场景"
+  },
+  "scenes": [
+    {
+      "scene_id": "arriving_home",
+      "category": "life_scenes",
+      "scene_name": "回家模式",
+      "scene_name_en": "Arriving Home",
+      "description": "用户回家自动开启必要设备，营造舒适环境",
+      "icon": "home-return",
+      "color": "#4CAF50",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 8,
+      "execution_mode": "parallel",
+      "trigger": {
+        "type": "event",
+        "logic": "AND",
+        "conditions": [
+          {
+            "id": "cond_001",
+            "type": "device_state",
+            "device_type": "lock",
+            "state_type": "lock_state",
+            "operator": "equals",
+            "value": "unlocked",
+            "duration": 0,
+            "description": "前门门锁解锁"
+          },
+          {
+            "id": "cond_002",
+            "type": "device_state",
+            "device_type": "motion_sensor",
+            "room": "玄关",
+            "state_type": "occupancy",
+            "operator": "equals",
+            "value": "true",
+            "delay_after_previous": 10,
+            "duration": 0,
+            "description": "玄关检测到人体移动"
+          }
+        ],
+        "time_window_seconds": 300,
+        "require_all": true,
+        "precondition": {
+          "occupancy_status": "AWAY",
+          "time_restrictions": null
+        }
+      },
+      "actions": [
+        {
+          "action_id": "act_001",
+          "device_type": "light",
+          "room": "玄关",
+          "command": "on",
+          "params": {
+            "brightness": 100,
+            "color_temp": 3000,
+            "transition_time": 0.5
+          },
+          "delay_seconds": 0,
+          "retry_count": 3,
+          "description": "玄关灯全开"
+        },
+        {
+          "action_id": "act_002",
+          "device_type": "light",
+          "room": "客厅",
+          "command": "on",
+          "params": {
+            "brightness": 80,
+            "color_temp": 3000,
+            "transition_time": 1.0
+          },
+          "delay_seconds": 2,
+          "retry_count": 3,
+          "description": "客厅灯开启80%亮度"
+        },
+        {
+          "action_id": "act_003",
+          "device_type": "light",
+          "room": "走廊",
+          "command": "on",
+          "params": {
+            "brightness": 60
+          },
+          "delay_seconds": 3,
+          "retry_count": 3,
+          "description": "走廊灯开启60%亮度"
+        },
+        {
+          "action_id": "act_004",
+          "device_type": "thermostat",
+          "command": "set",
+          "params": {
+            "temperature": 22,
+            "mode": "auto",
+            "fan_mode": "auto"
+          },
+          "delay_seconds": 10,
+          "retry_count": 3,
+          "description": "空调设定22度自动模式"
+        },
+        {
+          "action_id": "act_005",
+          "device_type": "curtain",
+          "room": "客厅",
+          "command": "set_position",
+          "params": {
+            "position": 50
+          },
+          "delay_seconds": 15,
+          "retry_count": 2,
+          "description": "客厅窗帘开启50%"
+        },
+        {
+          "action_id": "act_006",
+          "type": "notification",
+          "channels": ["push"],
+          "message": "欢迎回家，已为您开启回家模式",
+          "delay_seconds": 5,
+          "description": "发送欢迎通知"
+        }
+      ],
+      "constraints": {
+        "time_range": null,
+        "occupancy_required": false,
+        "weather_dependent": false,
+        "security_disarm": false,
+        "conflict_scenes": ["away_mode", "sleep_mode"]
+      },
+      "statistics": {
+        "trigger_count": 1523,
+        "success_count": 1498,
+        "failure_count": 25,
+        "avg_execution_time_ms": 850,
+        "last_triggered": "2026-04-04T19:30:15Z"
+      }
+    },
+    {
+      "scene_id": "leaving_home",
+      "category": "life_scenes",
+      "scene_name": "离家模式",
+      "scene_name_en": "Leaving Home",
+      "description": "用户离家时自动关闭非必要设备，启动安防",
+      "icon": "home-exit",
+      "color": "#FF9800",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 9,
+      "execution_mode": "sequential",
+      "trigger": {
+        "type": "event",
+        "logic": "OR",
+        "conditions": [
+          {
+            "id": "cond_101",
+            "type": "manual_trigger",
+            "source": "mobile_app",
+            "description": "手机App手动触发"
+          },
+          {
+            "id": "cond_102",
+            "type": "device_state",
+            "device_type": "lock",
+            "state_type": "lock_state",
+            "operator": "equals",
+            "value": "locked",
+            "precondition": {
+              "occupancy_status": "HOME"
+            },
+            "description": "从室内上锁并激活离家模式"
+          }
+        ],
+        "time_window_seconds": 60,
+        "require_all": false
+      },
+      "actions": [
+        {
+          "action_id": "act_101",
+          "device_type": "light",
+          "command": "off",
+          "params": {},
+          "delay_seconds": 0,
+          "retry_count": 3,
+          "description": "关闭所有灯光"
+        },
+        {
+          "action_id": "act_102",
+          "device_type": "curtain",
+          "command": "close",
+          "params": {
+            "position": 0
+          },
+          "delay_seconds": 5,
+          "retry_count": 2,
+          "description": "关闭所有窗帘"
+        },
+        {
+          "action_id": "act_103",
+          "device_type": "thermostat",
+          "command": "set",
+          "params": {
+            "temperature": 18,
+            "mode": "eco"
+          },
+          "delay_seconds": 10,
+          "retry_count": 3,
+          "description": "空调切换节能模式"
+        },
+        {
+          "action_id": "act_104",
+          "device_type": "smart_plug",
+          "command": "off",
+          "params": {},
+          "filter": {
+            "exclude_types": ["refrigerator", "security_camera"]
+          },
+          "delay_seconds": 15,
+          "retry_count": 2,
+          "description": "关闭非必要插座"
+        },
+        {
+          "action_id": "act_105",
+          "type": "security",
+          "command": "arm_away",
+          "params": {
+            "delay_seconds": 30
+          },
+          "delay_seconds": 20,
+          "description": "30秒后启动离家安防模式"
+        },
+        {
+          "action_id": "act_106",
+          "type": "notification",
+          "channels": ["push"],
+          "message": "离家模式已启动，系统将在30秒后进入安防状态",
+          "delay_seconds": 0
+        }
+      ],
+      "constraints": {
+        "time_range": null,
+        "occupancy_required": false,
+        "confirmation_required": true,
+        "confirmation_timeout": 10
+      },
+      "statistics": {
+        "trigger_count": 1892,
+        "success_count": 1875,
+        "failure_count": 17,
+        "avg_execution_time_ms": 1200,
+        "last_triggered": "2026-04-04T08:15:30Z"
+      }
+    },
+    {
+      "scene_id": "sleep_mode",
+      "category": "life_scenes",
+      "scene_name": "睡眠模式",
+      "scene_name_en": "Sleep Mode",
+      "description": "睡前自动关闭非必要设备，调整环境",
+      "icon": "moon",
+      "color": "#3F51B5",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 7,
+      "execution_mode": "sequential",
+      "trigger": {
+        "type": "schedule",
+        "schedule_type": "daily",
+        "time": "22:30",
+        "timezone": "home_timezone",
+        "days_of_week": [1, 2, 3, 4, 5, 6, 7],
+        "description": "每天晚上10:30自动执行"
+      },
+      "actions": [
+        {
+          "action_id": "act_201",
+          "device_type": "light",
+          "room": "客厅",
+          "command": "off",
+          "params": {},
+          "delay_seconds": 0
+        },
+        {
+          "action_id": "act_202",
+          "device_type": "light",
+          "room": "厨房",
+          "command": "off",
+          "params": {},
+          "delay_seconds": 0
+        },
+        {
+          "action_id": "act_203",
+          "device_type": "light",
+          "room": "书房",
+          "command": "off",
+          "params": {},
+          "delay_seconds": 5
+        },
+        {
+          "action_id": "act_204",
+          "device_type": "curtain",
+          "room": "主卧",
+          "command": "close",
+          "params": {
+            "position": 0
+          },
+          "delay_seconds": 10
+        },
+        {
+          "action_id": "act_205",
+          "device_type": "thermostat",
+          "command": "set",
+          "params": {
+            "temperature": 20,
+            "mode": "sleep"
+          },
+          "delay_seconds": 15
+        },
+        {
+          "action_id": "act_206",
+          "type": "security",
+          "command": "arm_stay",
+          "params": {
+            "perimeter_only": true
+          },
+          "delay_seconds": 30
+        }
+      ],
+      "constraints": {
+        "override_if_occupied": {
+          "room": "客厅",
+          "action": "postpone_30min"
+        },
+        "confirmation_required": false
+      },
+      "statistics": {
+        "trigger_count": 2105,
+        "success_count": 2089,
+        "failure_count": 16,
+        "avg_execution_time_ms": 680,
+        "last_triggered": "2026-04-04T22:30:00Z"
+      }
+    },
+    {
+      "scene_id": "security_intrusion_alert",
+      "category": "safety_scenes",
+      "scene_name": "入侵检测告警",
+      "scene_name_en": "Security Intrusion Alert",
+      "description": "检测到异常入侵时触发安防告警",
+      "icon": "shield-alert",
+      "color": "#F44336",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 10,
+      "execution_mode": "parallel",
+      "trigger": {
+        "type": "event",
+        "logic": "OR",
+        "conditions": [
+          {
+            "id": "cond_301",
+            "type": "device_state",
+            "device_type": "motion_sensor",
+            "state_type": "occupancy",
+            "operator": "equals",
+            "value": "true",
+            "precondition": {
+              "occupancy_status": "AWAY",
+              "security_mode": ["ARMED_AWAY", "ARMED_STAY"]
+            },
+            "description": "离家状态下检测到运动"
+          },
+          {
+            "id": "cond_302",
+            "type": "device_state",
+            "device_type": "door_sensor",
+            "state_type": "contact",
+            "operator": "equals",
+            "value": "open",
+            "precondition": {
+              "occupancy_status": "AWAY",
+              "security_mode": ["ARMED_AWAY", "ARMED_STAY"]
+            },
+            "description": "离家状态下门窗被打开"
+          },
+          {
+            "id": "cond_303",
+            "type": "device_state",
+            "device_type": "lock",
+            "state_type": "lock_state",
+            "operator": "equals",
+            "value": "unlocked",
+            "precondition": {
+              "occupancy_status": "AWAY"
+            },
+            "description": "离家状态下门锁被解锁"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "act_301",
+          "device_type": "light",
+          "command": "on",
+          "params": {
+            "brightness": 100,
+            "color": "#FF0000",
+            "flash": true
+          },
+          "delay_seconds": 0
+        },
+        {
+          "action_id": "act_302",
+          "device_type": "camera",
+          "command": "start_recording",
+          "params": {
+            "duration": 300,
+            "upload_immediately": true
+          },
+          "delay_seconds": 0
+        },
+        {
+          "action_id": "act_303",
+          "type": "notification",
+          "channels": ["push", "sms", "email", "call"],
+          "priority": "critical",
+          "message": "⚠️ 检测到异常入侵！{trigger_device}在{trigger_location}触发告警",
+          "delay_seconds": 0
+        },
+        {
+          "action_id": "act_304",
+          "type": "siren",
+          "command": "activate",
+          "params": {
+            "duration": 120,
+            "volume": "max"
+          },
+          "delay_seconds": 5,
+          "description": "警报器响起"
+        },
+        {
+          "action_id": "act_305",
+          "type": "webhook",
+          "url": "https://security-service.example.com/alerts",
+          "method": "POST",
+          "payload": {
+            "alert_type": "intrusion",
+            "home_id": "${home_id}",
+            "timestamp": "${timestamp}",
+            "evidence": ["${camera_snapshot}"]
+          },
+          "delay_seconds": 0
+        }
+      ],
+      "constraints": {
+        "cooldown_minutes": 5,
+        "escalation": {
+          "level_1": {
+            "delay_seconds": 0,
+            "actions": ["act_301", "act_302", "act_303"]
+          },
+          "level_2": {
+            "delay_seconds": 60,
+            "condition": "not_resolved",
+            "actions": ["act_304", "act_305"]
+          }
+        }
+      },
+      "statistics": {
+        "trigger_count": 12,
+        "success_count": 12,
+        "failure_count": 0,
+        "avg_execution_time_ms": 320,
+        "last_triggered": "2026-03-15T02:45:10Z",
+        "false_positives": 2
+      }
+    },
+    {
+      "scene_id": "energy_peak_shaving",
+      "category": "energy_scenes",
+      "scene_name": "峰电负载调节",
+      "scene_name_en": "Peak Hour Load Shaving",
+      "description": "峰电时段自动调节高功耗设备以降低电费",
+      "icon": "flash",
+      "color": "#FFC107",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 6,
+      "execution_mode": "sequential",
+      "trigger": {
+        "type": "schedule",
+        "schedule_type": "rate_period",
+        "rate_period": "peak",
+        "description": "进入峰电时段时触发"
+      },
+      "actions": [
+        {
+          "action_id": "act_401",
+          "device_type": "thermostat",
+          "command": "set",
+          "params": {
+            "temperature_delta": 1,
+            "mode": "eco"
+          },
+          "delay_seconds": 0,
+          "description": "空调设定温度调整1度"
+        },
+        {
+          "action_id": "act_402",
+          "device_type": "water_heater",
+          "command": "set",
+          "params": {
+            "mode": "timer",
+            "resume_at": "off_peak_start"
+          },
+          "delay_seconds": 5,
+          "description": "热水器切换定时模式"
+        },
+        {
+          "action_id": "act_403",
+          "type": "notification",
+          "channels": ["push"],
+          "message": "已进入峰电时段，已自动优化高功耗设备运行",
+          "delay_seconds": 0
+        }
+      ],
+      "constraints": {
+        "max_comfort_deviation": 1,
+        "override_by_user": true,
+        "smart_resume": true
+      },
+      "estimated_savings": {
+        "currency": "CNY",
+        "per_month": 45.0
+      }
+    },
+    {
+      "scene_id": "air_quality_management",
+      "category": "health_scenes",
+      "scene_name": "空气质量管理",
+      "scene_name_en": "Air Quality Management",
+      "description": "根据空气质量传感器数据自动调节空气净化器",
+      "icon": "wind",
+      "color": "#00BCD4",
+      "version": "1.0",
+      "enabled": true,
+      "priority": 5,
+      "execution_mode": "continuous",
+      "trigger": {
+        "type": "state_threshold",
+        "sensor_type": "air_quality",
+        "thresholds": [
+          {
+            "metric": "pm25",
+            "warning": 35,
+            "critical": 75
+          },
+          {
+            "metric": "co2",
+            "warning": 1000,
+            "critical": 1500
+          },
+          {
+            "metric": "voc",
+            "warning": 500,
+            "critical": 1000
+          }
+        ],
+        "hysteresis": 0.1
+      },
+      "actions": [
+        {
+          "action_id": "act_501",
+          "device_type": "air_purifier",
+          "command": "set_mode",
+          "params": {
+            "mode": "auto",
+            "fan_speed": "adaptive"
+          },
+          "condition": "pm25 > 35"
+        },
+        {
+          "action_id": "act_502",
+          "device_type": "thermostat",
+          "command": "enable_fan",
+          "params": {
+            "fan_mode": "circulate"
+          },
+          "condition": "co2 > 1000"
+        },
+        {
+          "action_id": "act_503",
+          "device_type": "curtain",
+          "command": "open",
+          "params": {
+            "position": 30
+          },
+          "condition": "co2 > 1500",
+          "description": "CO2过高时微开窗换气"
+        }
+      ],
+      "constraints": {
+        "min_action_interval": 300,
+        "gradual_adjustment": true
+      }
+    }
+  ],
+  "global_settings": {
+    "default_scene_timeout": 30,
+    "max_concurrent_scenes": 5,
+    "scene_cooldown_default": 60,
+    "action_retry_attempts": 3,
+    "action_retry_delay": 5,
+    "notification_channels": ["push", "email", "sms"],
+    "emergency_contacts": {
+      "required": true,
+      "max_contacts": 3
+    }
+  },
+  "statistics": {
+    "total_scenes_configured": 15000,
+    "avg_scenes_per_home": 15,
+    "total_executions_today": 125000,
+    "success_rate": 0.994,
+    "avg_response_time_ms": 285
+  }
+}

@@ -1,0 +1,282 @@
+# =====================================================
+# docker-compose.yml - 绿野农场IoT开发环境
+# Flink-IoT-Authority-Alignment / Phase-5-Agriculture
+# =====================================================
+
+version: '3.8'
+
+services:
+  # ============================================
+  # MQTT Broker (EMQX)
+  # ============================================
+  emqx:
+    image: emqx/emqx:5.6.0
+    container_name: farm-emqx
+    ports:
+      - "1883:1883"     # MQTT协议
+      - "8083:8083"     # MQTT over WebSocket
+      - "8883:8883"     # MQTT over SSL
+      - "18083:18083"   # Dashboard管理界面
+    environment:
+      - EMQX_NODE_NAME=emqx@127.0.0.1
+      - EMQX_ALLOW_ANONYMOUS=true
+      - EMQX_DASHBOARD__DEFAULT_USERNAME=admin
+      - EMQX_DASHBOARD__DEFAULT_PASSWORD=admin
+    volumes:
+      - emqx-data:/opt/emqx/data
+      - emqx-log:/opt/emqx/log
+    healthcheck:
+      test: ["CMD", "emqx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - farm-network
+
+  # ============================================
+  # Kafka Cluster (单节点开发环境)
+  # ============================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: farm-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - farm-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: farm-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:29092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - farm-network
+
+  # Kafka Topic初始化
+  kafka-init:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: farm-kafka-init
+    depends_on:
+      - kafka
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        echo "Waiting for Kafka to be ready..."
+        cub kafka-ready -b kafka:29092 1 30
+        
+        echo "Creating Kafka Topics..."
+        
+        # 土壤传感器数据
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 6 --replication-factor 1 \
+          --topic farm.soil.readings
+        
+        # 气象数据
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 3 --replication-factor 1 \
+          --topic farm.weather.data
+        
+        # 阀门控制指令
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 3 --replication-factor 1 \
+          --topic farm.valve.commands
+        
+        # 健康告警
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 3 --replication-factor 1 \
+          --topic farm.health.alerts
+        
+        # 多光谱数据
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 3 --replication-factor 1 \
+          --topic farm.multispectral
+        
+        # 灌溉记录
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 \
+          --partitions 3 --replication-factor 1 \
+          --topic farm.irrigation.records
+        
+        echo "All topics created!"
+        echo "Topic list:"
+        kafka-topics --list --bootstrap-server kafka:29092
+    networks:
+      - farm-network
+
+  # ============================================
+  # MySQL (元数据存储)
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: farm-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: farm_db
+      MYSQL_USER: farm_user
+      MYSQL_PASSWORD: farm_pass123
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - farm-network
+
+  # ============================================
+  # InfluxDB 2.x (时序数据)
+  # ============================================
+  influxdb:
+    image: influxdb:2.7
+    container_name: farm-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=farm_admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=farmpass123
+      - DOCKER_INFLUXDB_INIT_ORG=greenfield
+      - DOCKER_INFLUXDB_INIT_BUCKET=farm_metrics
+      - DOCKER_INFLUXDB_INIT_RETENTION=30d
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=farm-token-2024
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - farm-network
+
+  # ============================================
+  # Flink JobManager
+  # ============================================
+  flink-jobmanager:
+    image: flink:1.18-scala_2.12
+    container_name: farm-flink-jobmanager
+    ports:
+      - "8081:8081"    # Flink Web UI
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.memory.process.size: 2048m
+          jobmanager.memory.jvm-heap.size: 1536m
+    volumes:
+      - ./flink-sql:/opt/flink/sql-scripts
+      - ./jar-libs:/opt/flink/lib/ext
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - farm-network
+
+  # ============================================
+  # Flink TaskManager
+  # ============================================
+  flink-taskmanager:
+    image: flink:1.18-scala_2.12
+    container_name: farm-flink-taskmanager
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - FLINK_PROPERTIES=
+          taskmanager.memory.process.size: 4096m
+          taskmanager.memory.flink.size: 3072m
+          taskmanager.numberOfTaskSlots: 4
+          taskmanager.memory.network.max: 256m
+    volumes:
+      - ./jar-libs:/opt/flink/lib/ext
+    networks:
+      - farm-network
+
+  # ============================================
+  # Grafana (可视化)
+  # ============================================
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: farm-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=farmadmin123
+      - GF_INSTALL_PLUGINS=grafana-influxdb-datasource,grafana-clock-panel,grafana-simple-json-datasource
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - influxdb
+      - mysql
+    networks:
+      - farm-network
+
+  # ============================================
+  # 传感器数据模拟器
+  # ============================================
+  sensor-simulator:
+    build:
+      context: ./sensor-simulator
+      dockerfile: Dockerfile
+    container_name: farm-sensor-simulator
+    depends_on:
+      emqx:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      - MQTT_BROKER=emqx
+      - MQTT_PORT=1883
+      - KAFKA_BROKER=kafka:29092
+      - SENSOR_COUNT=50
+      - SIMULATION_SPEED=10  # 10x speed for demo
+      - LOG_LEVEL=INFO
+    networks:
+      - farm-network
+    restart: unless-stopped
+
+volumes:
+  emqx-data:
+  emqx-log:
+  kafka-data:
+  mysql-data:
+  influxdb-data:
+  grafana-data:
+
+networks:
+  farm-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -1,0 +1,116 @@
+{
+  "soil_types": [
+    {
+      "soil_type_id": "LOAM",
+      "soil_type_name": "壤土",
+      "description": "理想的农业土壤，黏粒、粉粒、砂粒比例均衡",
+      "field_capacity": 35.0,
+      "wilting_point": 15.0,
+      "saturation": 50.0,
+      "bulk_density": 1.35,
+      "infiltration_rate": 15.0,
+      "water_holding_capacity": 20.0,
+      "typical_crops": ["玉米", "小麦", "大豆", "蔬菜"]
+    },
+    {
+      "soil_type_id": "SANDY_LOAM",
+      "soil_type_name": "砂壤土",
+      "description": "砂粒含量较高，排水性好但保水性较差",
+      "field_capacity": 22.0,
+      "wilting_point": 8.0,
+      "saturation": 40.0,
+      "bulk_density": 1.50,
+      "infiltration_rate": 50.0,
+      "water_holding_capacity": 14.0,
+      "typical_crops": ["花生", "甘薯", "果树"]
+    },
+    {
+      "soil_type_id": "CLAY_LOAM",
+      "soil_type_name": "黏壤土",
+      "description": "黏粒含量较高，保水性好但排水较慢",
+      "field_capacity": 42.0,
+      "wilting_point": 20.0,
+      "saturation": 55.0,
+      "bulk_density": 1.25,
+      "infiltration_rate": 8.0,
+      "water_holding_capacity": 22.0,
+      "typical_crops": ["水稻", "小麦", "玉米"]
+    },
+    {
+      "soil_type_id": "SILT_LOAM",
+      "soil_type_name": "粉砂壤土",
+      "description": "粉粒含量较高，肥力好，保水保肥能力强",
+      "field_capacity": 38.0,
+      "wilting_point": 16.0,
+      "saturation": 52.0,
+      "bulk_density": 1.30,
+      "infiltration_rate": 12.0,
+      "water_holding_capacity": 22.0,
+      "typical_crops": ["小麦", "玉米", "蔬菜"]
+    },
+    {
+      "soil_type_id": "SANDY_CLAY",
+      "soil_type_name": "砂黏土",
+      "description": "含砂量和黏粒都较高，需要改良",
+      "field_capacity": 30.0,
+      "wilting_point": 14.0,
+      "saturation": 48.0,
+      "bulk_density": 1.45,
+      "infiltration_rate": 10.0,
+      "water_holding_capacity": 16.0,
+      "typical_crops": ["棉花", "高粱"]
+    }
+  ],
+  "moisture_thresholds": {
+    "corn": {
+      "critical": 18.0,
+      "warning": 25.0,
+      "target": 32.0,
+      "mad_percentage": 0.50
+    },
+    "wheat": {
+      "critical": 16.0,
+      "warning": 22.0,
+      "target": 30.0,
+      "mad_percentage": 0.55
+    },
+    "tomato": {
+      "critical": 20.0,
+      "warning": 28.0,
+      "target": 35.0,
+      "mad_percentage": 0.40
+    },
+    "rice": {
+      "critical": 35.0,
+      "warning": 45.0,
+      "target": 55.0,
+      "mad_percentage": 0.30
+    },
+    "vegetable": {
+      "critical": 20.0,
+      "warning": 28.0,
+      "target": 35.0,
+      "mad_percentage": 0.35
+    }
+  },
+  "crop_coefficients": {
+    "corn": {
+      "initial": 0.30,
+      "development": [0.30, 1.15],
+      "mid": 1.15,
+      "late": 0.60
+    },
+    "wheat": {
+      "initial": 0.30,
+      "development": [0.30, 1.15],
+      "mid": 1.15,
+      "late": 0.40
+    },
+    "tomato": {
+      "initial": 0.60,
+      "development": [0.60, 1.15],
+      "mid": 1.15,
+      "late": 0.80
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "farm_config": {
+    "farm_id": "GREENFIELD_001",
+    "farm_name": "绿野智慧农业示范农场",
+    "total_area_ha": 667,
+    "zones": [
+      {
+        "zone_id": "Z01",
+        "zone_name": "玉米东区",
+        "area_ha": 133,
+        "crop_type": "corn",
+        "soil_type": "LOAM",
+        "sensors": [
+          {"sensor_id": "S0101", "lat": 38.3201, "lon": 115.4501, "depth_cm": 20},
+          {"sensor_id": "S0102", "lat": 38.3205, "lon": 115.4505, "depth_cm": 20},
+          {"sensor_id": "S0103", "lat": 38.3209, "lon": 115.4509, "depth_cm": 40},
+          {"sensor_id": "S0104", "lat": 38.3213, "lon": 115.4513, "depth_cm": 20},
+          {"sensor_id": "S0105", "lat": 38.3217, "lon": 115.4517, "depth_cm": 40}
+        ],
+        "valves": [
+          {"valve_id": "V0101", "max_flow": 120},
+          {"valve_id": "V0102", "max_flow": 120}
+        ]
+      },
+      {
+        "zone_id": "Z02",
+        "zone_name": "玉米西区",
+        "area_ha": 133,
+        "crop_type": "corn",
+        "soil_type": "LOAM",
+        "sensors": [
+          {"sensor_id": "S0201", "lat": 38.3101, "lon": 115.4401, "depth_cm": 20},
+          {"sensor_id": "S0202", "lat": 38.3105, "lon": 115.4405, "depth_cm": 20},
+          {"sensor_id": "S0203", "lat": 38.3109, "lon": 115.4409, "depth_cm": 40},
+          {"sensor_id": "S0204", "lat": 38.3113, "lon": 115.4413, "depth_cm": 20},
+          {"sensor_id": "S0205", "lat": 38.3117, "lon": 115.4417, "depth_cm": 40}
+        ],
+        "valves": [
+          {"valve_id": "V0201", "max_flow": 120},
+          {"valve_id": "V0202", "max_flow": 120}
+        ]
+      },
+      {
+        "zone_id": "Z03",
+        "zone_name": "小麦北区",
+        "area_ha": 100,
+        "crop_type": "wheat",
+        "soil_type": "SILT_LOAM",
+        "sensors": [
+          {"sensor_id": "S0301", "lat": 38.3301, "lon": 115.4301, "depth_cm": 20},
+          {"sensor_id": "S0302", "lat": 38.3305, "lon": 115.4305, "depth_cm": 20},
+          {"sensor_id": "S0303", "lat": 38.3309, "lon": 115.4309, "depth_cm": 40},
+          {"sensor_id": "S0304", "lat": 38.3313, "lon": 115.4313, "depth_cm": 20}
+        ],
+        "valves": [
+          {"valve_id": "V0301", "max_flow": 100}
+        ]
+      },
+      {
+        "zone_id": "Z04",
+        "zone_name": "小麦南区",
+        "area_ha": 100,
+        "crop_type": "wheat",
+        "soil_type": "SILT_LOAM",
+        "sensors": [
+          {"sensor_id": "S0401", "lat": 38.3001, "lon": 115.4601, "depth_cm": 20},
+          {"sensor_id": "S0402", "lat": 38.3005, "lon": 115.4605, "depth_cm": 20},
+          {"sensor_id": "S0403", "lat": 38.3009, "lon": 115.4609, "depth_cm": 40},
+          {"sensor_id": "S0404", "lat": 38.3013, "lon": 115.4613, "depth_cm": 20}
+        ],
+        "valves": [
+          {"valve_id": "V0401", "max_flow": 100}
+        ]
+      },
+      {
+        "zone_id": "Z05",
+        "zone_name": "蔬菜大棚区",
+        "area_ha": 67,
+        "crop_type": "vegetable",
+        "soil_type": "LOAM",
+        "sensors": [
+          {"sensor_id": "S0501", "lat": 38.3251, "lon": 115.4251, "depth_cm": 10},
+          {"sensor_id": "S0502", "lat": 38.3253, "lon": 115.4253, "depth_cm": 20},
+          {"sensor_id": "S0503", "lat": 38.3255, "lon": 115.4255, "depth_cm": 30},
+          {"sensor_id": "S0504", "lat": 38.3257, "lon": 115.4257, "depth_cm": 10},
+          {"sensor_id": "S0505", "lat": 38.3259, "lon": 115.4259, "depth_cm": 20},
+          {"sensor_id": "S0506", "lat": 38.3261, "lon": 115.4261, "depth_cm": 30}
+        ],
+        "valves": [
+          {"valve_id": "V0501", "max_flow": 60},
+          {"valve_id": "V0502", "max_flow": 60},
+          {"valve_id": "V0503", "max_flow": 60}
+        ]
+      }
+    ],
+    "weather_stations": [
+      {
+        "station_id": "WS_CENTER",
+        "name": "中心气象站",
+        "lat": 38.3200,
+        "lon": 115.4500,
+        "type": "standard"
+      },
+      {
+        "station_id": "WS_NORTH",
+        "name": "北区微站",
+        "lat": 38.3320,
+        "lon": 115.4320,
+        "type": "micro"
+      },
+      {
+        "station_id": "WS_SOUTH",
+        "name": "南区微站",
+        "lat": 38.2980,
+        "lon": 115.4580,
+        "type": "micro"
+      },
+      {
+        "station_id": "WS_EAST",
+        "name": "东区微站",
+        "lat": 38.3220,
+        "lon": 115.4620,
+        "type": "micro"
+      },
+      {
+        "station_id": "WS_WEST",
+        "name": "西区微站",
+        "lat": 38.3080,
+        "lon": 115.4380,
+        "type": "micro"
+      }
+    ],
+    "gateways": [
+      {"gateway_id": "GW01", "lat": 38.3200, "lon": 115.4500, "coverage_zones": ["Z01", "Z03"]},
+      {"gateway_id": "GW02", "lat": 38.3100, "lon": 115.4400, "coverage_zones": ["Z02"]},
+      {"gateway_id": "GW03", "lat": 38.3000, "lon": 115.4600, "coverage_zones": ["Z04"]},
+      {"gateway_id": "GW04", "lat": 38.3250, "lon": 115.4250, "coverage_zones": ["Z05"]},
+      {"gateway_id": "GW05", "lat": 38.3150, "lon": 115.4550, "coverage_zones": ["Z01", "Z02"]}
+    ]
+  },
+  "simulation_profiles": {
+    "normal_day": {
+      "soil_moisture_base": 28.0,
+      "soil_moisture_variation": 3.0,
+      "soil_temperature_base": 22.0,
+      "et_rate_mm_per_day": 5.0
+    },
+    "hot_day": {
+      "soil_moisture_base": 25.0,
+      "soil_moisture_variation": 4.0,
+      "soil_temperature_base": 28.0,
+      "et_rate_mm_per_day": 8.0
+    },
+    "rain_day": {
+      "soil_moisture_base": 35.0,
+      "soil_moisture_variation": 5.0,
+      "soil_temperature_base": 20.0,
+      "et_rate_mm_per_day": 2.0
+    }
+  }
+}

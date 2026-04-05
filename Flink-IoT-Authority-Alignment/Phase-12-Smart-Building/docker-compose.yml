@@ -1,0 +1,310 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # 基础设施层
+  # ============================================
+  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: smart-building-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    networks:
+      - smart-building-network
+
+  # ============================================
+  # 消息中间件层
+  # ============================================
+  
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka
+    container_name: smart-building-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 12
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - smart-building-network
+
+  kafka-init:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - kafka
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      sleep 10 &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 12 --replication-factor 1 --topic building.energy.readings &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 12 --replication-factor 1 --topic building.environmental &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 6 --replication-factor 1 --topic building.occupancy &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 6 --replication-factor 1 --topic building.equipment.status &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 --topic building.alerts.energy &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 --topic building.alerts.comfort &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 --topic building.alerts.equipment &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 6 --replication-factor 1 --topic building.control.hvac &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 6 --replication-factor 1 --topic building.control.lighting &&
+      kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 --topic building.analytics.predictions
+      "
+    networks:
+      - smart-building-network
+
+  emqx:
+    image: emqx/emqx:5.5.0
+    container_name: smart-building-emqx
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "18083:18083"
+    environment:
+      EMQX_NODE_NAME: emqx@127.0.0.1
+      EMQX_LISTENERS__TCP__DEFAULT__BIND: 0.0.0.0:1883
+      EMQX_DASHBOARD__LISTENERS__HTTP__BIND: 0.0.0.0:18083
+      EMQX_ALLOW_ANONYMOUS: "true"
+      EMQX_ACL_NOMATCH: "allow"
+    volumes:
+      - emqx-data:/opt/emqx/data
+      - emqx-logs:/opt/emqx/log
+    networks:
+      - smart-building-network
+    healthcheck:
+      test: ["CMD", "emqx", "ctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================
+  # 存储层
+  # ============================================
+  
+  postgres:
+    image: postgres:16-alpine
+    container_name: smart-building-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: flink_user
+      POSTGRES_PASSWORD: flink_password
+      POSTGRES_DB: building_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - smart-building-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flink_user -d building_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.3-alpine
+    container_name: smart-building-clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      CLICKHOUSE_DB: building_analytics
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ""
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+      - ./clickhouse-config:/etc/clickhouse-server/config.d
+    networks:
+      - smart-building-network
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: smart-building-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - smart-building-network
+
+  minio:
+    image: minio/minio:RELEASE.2024-03-03T17-50-39Z
+    container_name: smart-building-minio
+    ports:
+      - "9001:9001"
+      - "9090:9090"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    command: server /data --console-address ":9090"
+    volumes:
+      - minio-data:/data
+    networks:
+      - smart-building-network
+
+  # ============================================
+  # Flink 集群
+  # ============================================
+  
+  flink-jobmanager:
+    image: flink:1.19-scala_2.12-java11
+    container_name: smart-building-flink-jobmanager
+    hostname: flink-jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: flink-jobmanager
+          jobmanager.memory.process.size: 2048m
+          jobmanager.memory.flink.size: 1536m
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+      - ./flink-sql:/opt/flink/sql-scripts
+    networks:
+      - smart-building-network
+    depends_on:
+      - kafka
+      - postgres
+      - clickhouse
+
+  flink-taskmanager:
+    image: flink:1.19-scala_2.12-java11
+    container_name: smart-building-flink-taskmanager
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: flink-jobmanager
+          taskmanager.numberOfTaskSlots: 4
+          taskmanager.memory.process.size: 4096m
+          taskmanager.memory.flink.size: 3072m
+          taskmanager.memory.network.min: 256m
+          taskmanager.memory.network.max: 512m
+          state.backend: rocksdb
+          state.checkpoint-storage: filesystem
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - smart-building-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  # ============================================
+  # 数据生成器（模拟楼宇传感器）
+  # ============================================
+  
+  sensor-simulator:
+    image: python:3.11-alpine
+    container_name: smart-building-sensor-simulator
+    depends_on:
+      - kafka
+      - emqx
+    volumes:
+      - ./mock-data:/app/mock-data
+      - ./scripts/sensor-simulator.py:/app/sensor-simulator.py
+    command: >
+      sh -c "pip install kafka-python paho-mqtt faker && 
+             python /app/sensor-simulator.py"
+    environment:
+      KAFKA_BROKER: kafka:29092
+      MQTT_BROKER: emqx
+      MQTT_PORT: 1883
+      SIMULATION_SPEED: "1"
+      BUILDING_COUNT: "5"
+      FLOOR_PER_BUILDING: "10"
+    networks:
+      - smart-building-network
+    restart: unless-stopped
+
+  # ============================================
+  # 可视化层
+  # ============================================
+  
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: smart-building-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - smart-building-network
+    depends_on:
+      - clickhouse
+      - postgres
+
+  # ============================================
+  # 可选：Kibana用于日志分析
+  # ============================================
+  
+  elasticsearch:
+    image: elasticsearch:8.12.0
+    container_name: smart-building-elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - smart-building-network
+
+networks:
+  smart-building-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+volumes:
+  zookeeper-data:
+  zookeeper-logs:
+  kafka-data:
+  emqx-data:
+  emqx-logs:
+  postgres-data:
+  clickhouse-data:
+  redis-data:
+  minio-data:
+  flink-checkpoints:
+  grafana-data:
+  elasticsearch-data:

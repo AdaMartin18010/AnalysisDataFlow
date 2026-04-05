@@ -1,0 +1,318 @@
+# ============================================================================
+# 智慧水务平台 - Docker Compose配置
+# 适用于: 开发/测试环境
+# 规模: 模拟10万水表接入
+# 版本: v1.0
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ------------------ Zookeeper & Kafka ------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: water-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD", "zookeeper-shell", "localhost:2181", "ls", "/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: water-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:29092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka-init:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic smart-meters-raw --partitions 12 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic meter-readings-clean --partitions 12 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic water.pressure.sensors --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic water.flow.meters --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic water-quality-data --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic dma-inlet-meters --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic dma-leak-alerts --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic burst-leak-alerts --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic water.pressure.alerts --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic water.quality.alerts --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic quality-contamination-trace --partitions 2 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic pump-stations --partitions 4 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+    networks:
+      - water-network
+
+  # ------------------ PostgreSQL with PostGIS ------------------
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: water-postgres
+    environment:
+      POSTGRES_USER: water_user
+      POSTGRES_PASSWORD: water_pass
+      POSTGRES_DB: water_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U water_user -d water_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ------------------ InfluxDB ------------------
+  influxdb:
+    image: influxdb:2.7
+    container_name: water-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin123
+      DOCKER_INFLUXDB_INIT_ORG: water-org
+      DOCKER_INFLUXDB_INIT_BUCKET: water-metrics
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ------------------ Flink ------------------
+  jobmanager:
+    image: flink:1.18-scala_2.12-java11
+    container_name: water-flink-jobmanager
+    ports:
+      - "8081:8081"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+        jobmanager.memory.process.size: 2048m
+        state.backend: rocksdb
+        state.checkpoints.dir: file:///tmp/flink-checkpoints
+    command: jobmanager
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+      - ./flink-sql:/opt/flink/sql-scripts
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  taskmanager:
+    image: flink:1.18-scala_2.12-java11
+    container_name: water-flink-taskmanager
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+        taskmanager.memory.process.size: 4096m
+        taskmanager.numberOfTaskSlots: 4
+        state.backend: rocksdb
+        state.checkpoints.dir: file:///tmp/flink-checkpoints
+    command: taskmanager
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - water-network
+
+  sql-gateway:
+    image: flink:1.18-scala_2.12-java11
+    container_name: water-flink-sql-gateway
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    ports:
+      - "8083:8083"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    command: |
+      bash -c "
+        /opt/flink/bin/sql-gateway.sh start-foreground \
+        -Dsql-gateway.host=0.0.0.0 \
+        -Dsql-gateway.port=8083 \
+        -Dsql-gateway.endpoint.rest.address=http://jobmanager:8081
+      "
+    volumes:
+      - ./flink-sql:/opt/flink/sql-scripts
+    networks:
+      - water-network
+
+  # ------------------ ClickHouse ------------------
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.1
+    container_name: water-clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+      - ./init-scripts/clickhouse:/docker-entrypoint-initdb.d
+    environment:
+      CLICKHOUSE_DB: water_db
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ""
+    networks:
+      - water-network
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  # ------------------ Elasticsearch ------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    container_name: water-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ------------------ Grafana ------------------
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: water-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - influxdb
+      - postgres
+      - elasticsearch
+    networks:
+      - water-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ------------------ Data Simulator ------------------
+  data-simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: water-data-simulator
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=water_db
+      - DB_USER=water_user
+      - DB_PASSWORD=water_pass
+      - SIMULATION_SCALE=10000
+      - SIMULATION_SPEED=1
+    volumes:
+      - ./mock-data:/app/mock-data
+    networks:
+      - water-network
+    restart: unless-stopped
+
+  # ------------------ pgAdmin (可选) ------------------
+  pgadmin:
+    image: dpage/pgadmin4:8.0
+    container_name: water-pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@water.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - water-network
+
+volumes:
+  zookeeper-data:
+  kafka-data:
+  postgres-data:
+  influxdb-data:
+  grafana-data:
+  clickhouse-data:
+  elasticsearch-data:
+  flink-checkpoints:
+  pgadmin-data:
+
+networks:
+  water-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

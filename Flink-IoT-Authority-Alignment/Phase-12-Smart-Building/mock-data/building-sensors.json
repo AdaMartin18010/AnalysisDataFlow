@@ -1,0 +1,170 @@
+{
+  "building_id": "BLD-A01",
+  "building_name": "甲级写字楼A座",
+  "building_type": "office",
+  "total_floors": 40,
+  "total_area_sqm": 85000,
+  "location": {
+    "latitude": 31.2304,
+    "longitude": 121.4737,
+    "timezone": "Asia/Shanghai"
+  },
+  "sensor_config": {
+    "temperature_sensors": {
+      "count": 480,
+      "interval_seconds": 60,
+      "normal_range": {"min": 18, "max": 28},
+      "precision": 0.1,
+      "unit": "celsius"
+    },
+    "humidity_sensors": {
+      "count": 240,
+      "interval_seconds": 60,
+      "normal_range": {"min": 30, "max": 70},
+      "precision": 0.5,
+      "unit": "percent"
+    },
+    "co2_sensors": {
+      "count": 120,
+      "interval_seconds": 120,
+      "normal_range": {"min": 400, "max": 1200},
+      "precision": 1,
+      "unit": "ppm"
+    },
+    "occupancy_sensors": {
+      "count": 200,
+      "interval_seconds": 30,
+      "detection_range": {"min": 0, "max": 50},
+      "unit": "persons"
+    },
+    "electricity_meters": {
+      "count": 150,
+      "interval_seconds": 15,
+      "voltage_range": {"min": 198, "max": 242},
+      "current_range": {"min": 0, "max": 1000},
+      "unit": "kwh"
+    },
+    "water_meters": {
+      "count": 50,
+      "interval_seconds": 300,
+      "flow_range": {"min": 0, "max": 100},
+      "unit": "cubic_meter"
+    }
+  },
+  "zones": [
+    {
+      "zone_id": "BLD-A01-F01",
+      "floor": 1,
+      "zone_type": "lobby",
+      "area_sqm": 1200,
+      "occupancy_capacity": 200,
+      "operating_hours": {"start": "06:00", "end": "22:00"},
+      "sensors": {
+        "temperature": ["T-F01-001", "T-F01-002", "T-F01-003"],
+        "humidity": ["H-F01-001", "H-F01-002"],
+        "co2": ["C-F01-001"],
+        "occupancy": ["O-F01-001", "O-F01-002"],
+        "electricity": ["E-F01-MAIN", "E-F01-HVAC", "E-F01-LIGHT"]
+      }
+    },
+    {
+      "zone_id": "BLD-A01-F02",
+      "floor": 2,
+      "zone_type": "office",
+      "area_sqm": 1800,
+      "occupancy_capacity": 150,
+      "operating_hours": {"start": "08:00", "end": "18:00"},
+      "sensors": {
+        "temperature": ["T-F02-001", "T-F02-002", "T-F02-003", "T-F02-004"],
+        "humidity": ["H-F02-001", "H-F02-002", "H-F02-003"],
+        "co2": ["C-F02-001", "C-F02-002"],
+        "occupancy": ["O-F02-001", "O-F02-002", "O-F02-003"],
+        "electricity": ["E-F02-MAIN", "E-F02-HVAC", "E-F02-LIGHT", "E-F02-SOCKET"]
+      }
+    },
+    {
+      "zone_id": "BLD-A01-F03-F10",
+      "floor_range": "3-10",
+      "zone_type": "office_standard",
+      "floors": 8,
+      "area_per_floor_sqm": 1800,
+      "occupancy_per_floor": 150,
+      "operating_hours": {"start": "08:00", "end": "18:00"},
+      "sensor_pattern": "standard_office"
+    },
+    {
+      "zone_id": "BLD-A01-F11-F20",
+      "floor_range": "11-20",
+      "zone_type": "office_executive",
+      "floors": 10,
+      "area_per_floor_sqm": 1600,
+      "occupancy_per_floor": 80,
+      "operating_hours": {"start": "08:00", "end": "19:00"},
+      "sensor_pattern": "executive_office"
+    },
+    {
+      "zone_id": "BLD-A01-F21-F35",
+      "floor_range": "21-35",
+      "zone_type": "office_standard",
+      "floors": 15,
+      "area_per_floor_sqm": 1800,
+      "occupancy_per_floor": 150,
+      "operating_hours": {"start": "08:00", "end": "18:00"},
+      "sensor_pattern": "standard_office"
+    },
+    {
+      "zone_id": "BLD-A01-F36-F40",
+      "floor_range": "36-40",
+      "zone_type": "mechanical",
+      "floors": 5,
+      "area_per_floor_sqm": 1200,
+      "operating_hours": {"start": "00:00", "end": "23:59"},
+      "equipment": ["chiller", "pump", "air_handler", "cooling_tower"],
+      "sensors": {
+        "temperature": ["T-MECH-001", "T-MECH-002"],
+        "vibration": ["V-CHILLER-001", "V-PUMP-001"],
+        "electricity": ["E-CHILLER-001", "E-PUMP-001", "E-AHU-001"]
+      }
+    }
+  ],
+  "hvac_systems": [
+    {
+      "system_id": "HVAC-A01-01",
+      "system_type": "chiller",
+      "capacity_kw": 2500,
+      "efficiency_cop": 5.5,
+      "zones_served": ["BLD-A01-F01", "BLD-A01-F02", "BLD-A01-F03-F10"],
+      "control_strategy": "variable_speed"
+    },
+    {
+      "system_id": "HVAC-A01-02",
+      "system_type": "chiller",
+      "capacity_kw": 2500,
+      "efficiency_cop": 5.5,
+      "zones_served": ["BLD-A01-F11-F20", "BLD-A01-F21-F35"],
+      "control_strategy": "variable_speed"
+    },
+    {
+      "system_id": "AHU-A01-001",
+      "system_type": "air_handler",
+      "capacity_cfm": 15000,
+      "zones_served": ["BLD-A01-F01"],
+      "economizer_enabled": true
+    }
+  ],
+  "lighting_systems": {
+    "total_fixtures": 3600,
+    "fixture_types": {
+      "led_panel": {"count": 2800, "wattage": 40, "dimming": true},
+      "led_downlight": {"count": 600, "wattage": 15, "dimming": true},
+      "emergency": {"count": 200, "wattage": 10, "dimming": false}
+    },
+    "control_strategy": "daylight_harvesting"
+  },
+  "baseline_metrics": {
+    "annual_energy_kwh": 4200000,
+    "peak_demand_kw": 3200,
+    "energy_use_intensity_kwh_per_sqm": 49.4,
+    "carbon_intensity_kg_per_sqm": 28.2
+  }
+}

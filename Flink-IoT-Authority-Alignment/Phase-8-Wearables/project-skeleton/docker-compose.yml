@@ -1,0 +1,209 @@
+version: '3.8'
+
+# 可穿戴设备健康监测平台 - Docker Compose配置
+# 适用于开发/测试环境
+
+services:
+  # Zookeeper - Kafka协调服务
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_log:/var/lib/zookeeper/log
+
+  # Kafka - 消息队列
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  # Kafka UI - 可视化管理
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    depends_on:
+      - kafka
+
+  # Flink JobManager
+  jobmanager:
+    image: flink:1.18-scala_2.12-java11
+    hostname: jobmanager
+    container_name: jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          state.backend: rocksdb
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink_checkpoints:/tmp/flink-checkpoints
+      - ./flink-sql:/opt/flink/sql-scripts
+
+  # Flink TaskManager
+  taskmanager:
+    image: flink:1.18-scala_2.12-java11
+    hostname: taskmanager
+    container_name: taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - TASK_MANAGER_NUMBER_OF_TASK_SLOTS=4
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+    volumes:
+      - flink_checkpoints:/tmp/flink-checkpoints
+
+  # TimescaleDB - 时序数据库
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    hostname: timescaledb
+    container_name: timescaledb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: health_user
+      POSTGRES_PASSWORD: health_pass
+      POSTGRES_DB: health_db
+      TZ: Asia/Shanghai
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U health_user -d health_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis - 热数据缓存
+  redis:
+    image: redis:7-alpine
+    hostname: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Redis Commander - Redis可视化管理
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    ports:
+      - "8082:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+
+  # Grafana - 监控看板
+  grafana:
+    image: grafana/grafana:10.2.0
+    hostname: grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - timescaledb
+
+  # EMQX - MQTT Broker（设备接入）
+  emqx:
+    image: emqx/emqx:5.2.0
+    hostname: emqx
+    container_name: emqx
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8883:8883"
+      - "18083:18083"
+    environment:
+      - EMQX_NAME=emqx
+      - EMQX_HOST=emqx
+      - EMQX_ALLOW_ANONYMOUS=true
+      - EMQX_ZONE__EXTERNAL__MAX_PACKET_SIZE=10MB
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+
+  # PostgreSQL Adminer - 数据库管理
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - "8083:8080"
+    depends_on:
+      - timescaledb
+
+  # Prometheus - 指标收集
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+volumes:
+  zookeeper_data:
+  zookeeper_log:
+  kafka_data:
+  timescale_data:
+  redis_data:
+  grafana_data:
+  flink_checkpoints:
+  emqx_data:
+  emqx_log:
+  prometheus_data:
+
+networks:
+  default:
+    name: wearables-network

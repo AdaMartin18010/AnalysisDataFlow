@@ -1,0 +1,378 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "供水管网拓扑数据",
+    "network_name": "城市供水主干管网",
+    "coverage_area_km2": 6340.5,
+    "total_pipe_length_km": 5248.6,
+    "dma_count": 180,
+    "generated_at": "2026-04-05T08:00:00Z"
+  },
+  "schema": {
+    "nodes": {
+      "description": "管网节点(水源/泵站/储水池/连接点)",
+      "types": ["source", "pump_station", "tank", "junction", "valve", "meter"]
+    },
+    "edges": {
+      "description": "管段连接",
+      "properties": ["diameter", "material", "length", "roughness"]
+    },
+    "zones": {
+      "description": "DMA分区",
+      "properties": ["area", "customers", "pipe_length", "inlet_meters"]
+    }
+  },
+  "sources": [
+    {
+      "node_id": "SRC-001",
+      "name": "杨树浦水厂",
+      "type": "source",
+      "capacity_m3d": 1400000,
+      "location": {
+        "type": "Point",
+        "coordinates": [121.5432, 31.2634]
+      },
+      "elevation_m": 4.2,
+      "output_pressure_mpa": 0.65,
+      "status": "active"
+    },
+    {
+      "node_id": "SRC-002",
+      "name": "南市水厂",
+      "type": "source",
+      "capacity_m3d": 980000,
+      "location": {
+        "type": "Point",
+        "coordinates": [121.4892, 31.2034]
+      },
+      "elevation_m": 3.8,
+      "output_pressure_mpa": 0.62,
+      "status": "active"
+    },
+    {
+      "node_id": "SRC-003",
+      "name": "临江水厂",
+      "type": "source",
+      "capacity_m3d": 850000,
+      "location": {
+        "type": "Point",
+        "coordinates": [121.8634, 31.0823]
+      },
+      "elevation_m": 5.1,
+      "output_pressure_mpa": 0.60,
+      "status": "active"
+    }
+  ],
+  "pump_stations": [
+    {
+      "node_id": "PS-001",
+      "name": "一号加压站",
+      "type": "pump_station",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.4567, 31.2345]
+      },
+      "pump_count": 4,
+      "total_capacity_m3h": 5000,
+      "inlet_pressure_mpa": 0.25,
+      "outlet_pressure_mpa": 0.55,
+      "power_consumption_kw": 1800,
+      "status": "active"
+    },
+    {
+      "node_id": "PS-002",
+      "name": "二号加压站",
+      "type": "pump_station",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.5678, 31.1789]
+      },
+      "pump_count": 3,
+      "total_capacity_m3h": 3500,
+      "inlet_pressure_mpa": 0.22,
+      "outlet_pressure_mpa": 0.48,
+      "power_consumption_kw": 1200,
+      "status": "active"
+    }
+  ],
+  "tanks": [
+    {
+      "node_id": "TK-001",
+      "name": "高地水池A",
+      "type": "tank",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.5123, 31.2456]
+      },
+      "elevation_m": 45.0,
+      "capacity_m3": 15000,
+      "current_level_percent": 78,
+      "min_level_percent": 20,
+      "max_level_percent": 95,
+      "diameter_m": 28,
+      "height_m": 25
+    },
+    {
+      "node_id": "TK-002",
+      "name": "调节水库B",
+      "type": "tank",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.6234, 31.1567]
+      },
+      "elevation_m": 38.0,
+      "capacity_m3": 20000,
+      "current_level_percent": 65,
+      "min_level_percent": 15,
+      "max_level_percent": 90,
+      "diameter_m": 32,
+      "height_m": 28
+    }
+  ],
+  "dma_zones": [
+    {
+      "dma_id": "DMA-0001",
+      "name": "黄浦区核心商业区",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[121.47, 31.22], [121.50, 31.22], [121.50, 31.25], [121.47, 31.25], [121.47, 31.22]]]
+      },
+      "area_km2": 2.35,
+      "customer_count": 1250,
+      "pipe_length_km": 18.5,
+      "inlet_meters": ["M-DMA0001-IN"],
+      "zone_type": "commercial",
+      "baseline_nmf_m3h": 12.5,
+      "current_status": "normal"
+    },
+    {
+      "dma_id": "DMA-0032",
+      "name": "长宁区住宅区A",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[121.38, 31.19], [121.42, 31.19], [121.42, 31.22], [121.38, 31.22], [121.38, 31.19]]]
+      },
+      "area_km2": 4.82,
+      "customer_count": 2800,
+      "pipe_length_km": 32.6,
+      "inlet_meters": ["M-DMA0032-IN"],
+      "zone_type": "residential",
+      "baseline_nmf_m3h": 28.0,
+      "current_status": "normal"
+    },
+    {
+      "dma_id": "DMA-0065",
+      "name": "徐汇区混合区",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[121.42, 31.18], [121.46, 31.18], [121.46, 31.21], [121.42, 31.21], [121.42, 31.18]]]
+      },
+      "area_km2": 5.64,
+      "customer_count": 3200,
+      "pipe_length_km": 41.2,
+      "inlet_meters": ["M-DMA0065-IN01", "M-DMA0065-IN02"],
+      "zone_type": "mixed",
+      "baseline_nmf_m3h": 42.5,
+      "current_status": "warning",
+      "warning_reason": "近期夜间流量上升15%"
+    },
+    {
+      "dma_id": "DMA-0108",
+      "name": "浦东新区工业区",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [[[121.58, 31.23], [121.63, 31.23], [121.63, 31.27], [121.58, 31.27], [121.58, 31.23]]]
+      },
+      "area_km2": 8.92,
+      "customer_count": 450,
+      "pipe_length_km": 28.5,
+      "inlet_meters": ["M-DMA0108-IN"],
+      "zone_type": "industrial",
+      "baseline_nmf_m3h": 35.0,
+      "current_status": "normal"
+    }
+  ],
+  "pipes": [
+    {
+      "edge_id": "PIPE-001",
+      "from_node": "SRC-001",
+      "to_node": "PS-001",
+      "diameter_mm": 1200,
+      "material": "球墨铸铁",
+      "length_m": 3200,
+      "roughness": 0.03,
+      "install_year": 2005,
+      "status": "good",
+      "pipe_type": "transmission"
+    },
+    {
+      "edge_id": "PIPE-002",
+      "from_node": "SRC-002",
+      "to_node": "TK-001",
+      "diameter_mm": 1000,
+      "material": "钢管",
+      "length_m": 2800,
+      "roughness": 0.015,
+      "install_year": 2010,
+      "status": "good",
+      "pipe_type": "transmission"
+    },
+    {
+      "edge_id": "PIPE-003",
+      "from_node": "PS-001",
+      "to_node": "DMA-0001",
+      "diameter_mm": 600,
+      "material": "球墨铸铁",
+      "length_m": 1500,
+      "roughness": 0.03,
+      "install_year": 2008,
+      "status": "good",
+      "pipe_type": "distribution"
+    },
+    {
+      "edge_id": "PIPE-004",
+      "from_node": "TK-001",
+      "to_node": "DMA-0032",
+      "diameter_mm": 500,
+      "material": "球墨铸铁",
+      "length_m": 2100,
+      "roughness": 0.03,
+      "install_year": 2012,
+      "status": "fair",
+      "pipe_type": "distribution",
+      "notes": "建议2027年检修"
+    },
+    {
+      "edge_id": "PIPE-005",
+      "from_node": "PS-002",
+      "to_node": "DMA-0065",
+      "diameter_mm": 700,
+      "material": "PE管",
+      "length_m": 1800,
+      "roughness": 0.01,
+      "install_year": 2018,
+      "status": "excellent",
+      "pipe_type": "distribution"
+    },
+    {
+      "edge_id": "PIPE-006",
+      "from_node": "SRC-003",
+      "to_node": "TK-002",
+      "diameter_mm": 1100,
+      "material": "钢管",
+      "length_m": 4500,
+      "roughness": 0.015,
+      "install_year": 2015,
+      "status": "good",
+      "pipe_type": "transmission"
+    }
+  ],
+  "sensors": {
+    "pressure_sensors": [
+      {
+        "sensor_id": "PS-310101-001",
+        "dma_id": "DMA-0001",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.4856, 31.2356]
+        },
+        "pipe_id": "PIPE-003",
+        "baseline_pressure": 0.42,
+        "alert_threshold": {
+          "low": 0.25,
+          "high": 0.65
+        }
+      },
+      {
+        "sensor_id": "PS-310105-001",
+        "dma_id": "DMA-0032",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.3987, 31.2056]
+        },
+        "pipe_id": "PIPE-004",
+        "baseline_pressure": 0.35,
+        "alert_threshold": {
+          "low": 0.20,
+          "high": 0.55
+        }
+      }
+    ],
+    "quality_stations": [
+      {
+        "station_id": "QS-SRC001",
+        "name": "杨树浦出厂水监测站",
+        "type": "PLANT_OUTLET",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.5432, 31.2634]
+        },
+        "monitored_params": ["chlorine", "turbidity", "ph", "conductivity", "toc"],
+        "sampling_interval_min": 15
+      },
+      {
+        "station_id": "QS-DMA0032",
+        "name": "长宁区管网监测点",
+        "type": "NETWORK",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.4012, 31.1987]
+        },
+        "monitored_params": ["chlorine", "turbidity", "ph"],
+        "sampling_interval_min": 30
+      }
+    ]
+  },
+  "valves": [
+    {
+      "valve_id": "V-001",
+      "dma_id": "DMA-0001",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.4845, 31.2345]
+      },
+      "valve_type": "gate",
+      "diameter_mm": 400,
+      "is_boundary": true,
+      "remote_control": true,
+      "current_status": "open",
+      "open_percent": 100
+    },
+    {
+      "valve_id": "V-002",
+      "dma_id": "DMA-0032",
+      "location": {
+        "type": "Point",
+        "coordinates": [121.3956, 31.1967]
+      },
+      "valve_type": "pressure_reducing",
+      "diameter_mm": 300,
+      "is_boundary": true,
+      "remote_control": true,
+      "current_status": "regulating",
+      "open_percent": 65,
+      "outlet_pressure_setpoint": 0.32
+    }
+  ],
+  "network_stats": {
+    "pipe_material_distribution": {
+      "球墨铸铁": 45,
+      "钢管": 20,
+      "PE管": 25,
+      "PVC": 8,
+      "其他": 2
+    },
+    "pipe_age_distribution": {
+      "<5年": 15,
+      "5-10年": 25,
+      "10-20年": 35,
+      "20-30年": 20,
+      ">30年": 5
+    },
+    "average_pressure_zones": {
+      "高压区(>0.4MPa)": 15,
+      "中压区(0.2-0.4MPa)": 70,
+      "低压区(<0.2MPa)": 15
+    }
+  }
+}

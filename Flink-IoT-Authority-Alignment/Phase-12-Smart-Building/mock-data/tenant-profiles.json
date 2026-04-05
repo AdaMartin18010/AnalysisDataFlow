@@ -1,0 +1,322 @@
+{
+  "building_id": "BLD-A01",
+  "building_name": "甲级写字楼A座",
+  "billing_period": {
+    "start_date": "2026-01-01",
+    "end_date": "2026-01-31",
+    "billing_cycle": "monthly"
+  },
+  "electricity_tariff": {
+    "currency": "CNY",
+    "peak_hours_price": 1.0895,
+    "shoulder_hours_price": 0.7397,
+    "off_peak_hours_price": 0.3513,
+    "demand_charge_per_kw": 42.00,
+    "peak_hours": ["08:00", "11:00", "13:00", "15:00", "18:00", "21:00"],
+    "shoulder_hours": ["07:00", "08:00", "11:00", "13:00", "15:00", "18:00", "21:00", "23:00"],
+    "off_peak_hours": ["23:00", "07:00"]
+  },
+  "shared_cost_allocation": {
+    "method": "weighted_average",
+    "weights": {
+      "leased_area": 0.4,
+      "energy_consumption": 0.4,
+      "occupancy_hours": 0.2
+    },
+    "common_areas": {
+      "lobby": {"area_sqm": 1200, "monthly_cost": 15600},
+      "corridors": {"area_sqm": 2400, "monthly_cost": 12400},
+      "elevators": {"count": 8, "monthly_cost": 8800},
+      "parking": {"area_sqm": 5000, "monthly_cost": 25000}
+    }
+  },
+  "tenants": [
+    {
+      "tenant_id": "TEN-A01-001",
+      "tenant_code": "TECH001",
+      "tenant_name": "云智科技有限公司",
+      "tenant_type": "technology",
+      "industry_sector": "software",
+      "lease_start": "2024-03-01",
+      "lease_end": "2027-02-28",
+      "contact": {
+        "name": "张经理",
+        "email": "zhang@yunzhi-tech.com",
+        "phone": "+86-138-0000-0001"
+      },
+      "leased_space": {
+        "total_area_sqm": 850,
+        "zones": ["BLD-A01-F05-001", "BLD-A01-F05-002", "BLD-A01-F05-003"],
+        "floors": [5],
+        "desk_count": 120,
+        "meeting_rooms": 4,
+        "server_room": true,
+        "server_room_area_sqm": 50
+      },
+      "operating_hours": {
+        "weekdays": {"open": "08:30", "close": "20:00"},
+        "saturday": {"open": "09:00", "close": "18:00"},
+        "sunday": "closed"
+      },
+      "occupancy_profile": {
+        "average_daily_occupancy": 95,
+        "peak_occupancy": 120,
+        "occupancy_schedule": {
+          "09:00": 0.3,
+          "10:00": 0.8,
+          "12:00": 0.9,
+          "14:00": 0.85,
+          "18:00": 0.5,
+          "20:00": 0.1
+        }
+      },
+      "energy_profile": {
+        "hvac_preferences": {
+          "heating_setpoint_c": 20,
+          "cooling_setpoint_c": 24,
+          "tolerance_c": 1.0
+        },
+        "lighting_preferences": {
+          "task_area_lux": 500,
+          "ambient_lux": 300
+        },
+        "it_load_kw": 45,
+        "estimated_monthly_kwh": 28500
+      },
+      "billing": {
+        "meter_ids": ["E-F05-001", "E-F05-002", "E-F05-SVR"],
+        "previous_month_kwh": 27850,
+        "previous_month_cost": 24120.50,
+        "average_unit_price": 0.866
+      },
+      "sustainability_goals": {
+        "carbon_neutral_target": "2030",
+        "current_renewable_percent": 15,
+        "target_renewable_percent": 50
+      }
+    },
+    {
+      "tenant_id": "TEN-A01-002",
+      "tenant_code": "FIN002",
+      "tenant_name": "恒信金融服务有限公司",
+      "tenant_type": "financial",
+      "industry_sector": "banking",
+      "lease_start": "2023-06-01",
+      "lease_end": "2026-05-31",
+      "contact": {
+        "name": "李总监",
+        "email": "li@hengxin-finance.com",
+        "phone": "+86-139-0000-0002"
+      },
+      "leased_space": {
+        "total_area_sqm": 1200,
+        "zones": ["BLD-A01-F12-001", "BLD-A01-F12-002", "BLD-A01-F12-003", "BLD-A01-F12-004"],
+        "floors": [12],
+        "desk_count": 80,
+        "trading_floor": true,
+        "vip_rooms": 2,
+        "data_center": true,
+        "data_center_area_sqm": 80
+      },
+      "operating_hours": {
+        "weekdays": {"open": "07:00", "close": "19:00"},
+        "saturday": "closed",
+        "sunday": "closed"
+      },
+      "occupancy_profile": {
+        "average_daily_occupancy": 68,
+        "peak_occupancy": 85,
+        "occupancy_schedule": {
+          "08:00": 0.4,
+          "09:00": 0.9,
+          "12:00": 0.7,
+          "15:00": 0.85,
+          "18:00": 0.3
+        }
+      },
+      "energy_profile": {
+        "hvac_preferences": {
+          "heating_setpoint_c": 22,
+          "cooling_setpoint_c": 23,
+          "tolerance_c": 0.5
+        },
+        "lighting_preferences": {
+          "task_area_lux": 600,
+          "ambient_lux": 350
+        },
+        "it_load_kw": 120,
+        "trading_floor_load_kw": 35,
+        "estimated_monthly_kwh": 45200
+      },
+      "billing": {
+        "meter_ids": ["E-F12-001", "E-F12-002", "E-F12-DC"],
+        "previous_month_kwh": 46800,
+        "previous_month_cost": 42580.75,
+        "average_unit_price": 0.910
+      },
+      "sustainability_goals": {
+        "leed_certification": "Platinum",
+        "carbon_neutral_target": "2028",
+        "current_renewable_percent": 25,
+        "target_renewable_percent": 75
+      }
+    },
+    {
+      "tenant_id": "TEN-A01-003",
+      "tenant_code": "LAW003",
+      "tenant_name": "亚太律师事务所",
+      "tenant_type": "legal",
+      "industry_sector": "professional_services",
+      "lease_start": "2024-01-01",
+      "lease_end": "2026-12-31",
+      "contact": {
+        "name": "王合伙人",
+        "email": "wang@apac-law.com",
+        "phone": "+86-136-0000-0003"
+      },
+      "leased_space": {
+        "total_area_sqm": 450,
+        "zones": ["BLD-A01-F18-001", "BLD-A01-F18-002"],
+        "floors": [18],
+        "desk_count": 35,
+        "partner_offices": 6,
+        "conference_rooms": 2
+      },
+      "operating_hours": {
+        "weekdays": {"open": "09:00", "close": "18:00"},
+        "saturday": {"open": "10:00", "close": "16:00"},
+        "sunday": "closed"
+      },
+      "occupancy_profile": {
+        "average_daily_occupancy": 32,
+        "peak_occupancy": 40,
+        "occupancy_schedule": {
+          "10:00": 0.7,
+          "12:00": 0.6,
+          "15:00": 0.8,
+          "17:00": 0.5
+        }
+      },
+      "energy_profile": {
+        "hvac_preferences": {
+          "heating_setpoint_c": 21,
+          "cooling_setpoint_c": 24,
+          "tolerance_c": 1.0
+        },
+        "lighting_preferences": {
+          "task_area_lux": 550,
+          "ambient_lux": 280
+        },
+        "it_load_kw": 18,
+        "estimated_monthly_kwh": 12500
+      },
+      "billing": {
+        "meter_ids": ["E-F18-001", "E-F18-002"],
+        "previous_month_kwh": 12180,
+        "previous_month_cost": 10520.30,
+        "average_unit_price": 0.864
+      }
+    },
+    {
+      "tenant_id": "TEN-A01-004",
+      "tenant_code": "MED004",
+      "tenant_name": "康泰医疗管理有限公司",
+      "tenant_type": "healthcare",
+      "industry_sector": "medical_services",
+      "lease_start": "2024-06-01",
+      "lease_end": "2027-05-31",
+      "contact": {
+        "name": "陈主任",
+        "email": "chen@kangtai-medical.com",
+        "phone": "+86-137-0000-0004"
+      },
+      "leased_space": {
+        "total_area_sqm": 680,
+        "zones": ["BLD-A01-F03-004", "BLD-A01-F03-005"],
+        "floors": [3],
+        "clinic_rooms": 8,
+        "waiting_area_sqm": 80,
+        "medical_equipment": ["X光机", "B超", "心电图", "生化分析仪"]
+      },
+      "operating_hours": {
+        "weekdays": {"open": "08:00", "close": "17:30"},
+        "saturday": {"open": "08:30", "close": "12:00"},
+        "sunday": "closed"
+      },
+      "occupancy_profile": {
+        "average_daily_occupancy": 45,
+        "peak_occupancy": 60,
+        "patient_visits_daily": 80
+      },
+      "energy_profile": {
+        "hvac_preferences": {
+          "heating_setpoint_c": 22,
+          "cooling_setpoint_c": 24,
+          "air_changes_per_hour": 6
+        },
+        "medical_equipment_load_kw": 35,
+        "estimated_monthly_kwh": 18500
+      },
+      "billing": {
+        "meter_ids": ["E-F03-004", "E-F03-005", "E-F03-MED"],
+        "previous_month_kwh": 19200,
+        "previous_month_cost": 16850.40,
+        "average_unit_price": 0.878
+      }
+    },
+    {
+      "tenant_id": "TEN-A01-005",
+      "tenant_code": "EDU005",
+      "tenant_name": "启明教育培训中心",
+      "tenant_type": "education",
+      "industry_sector": "training",
+      "lease_start": "2023-09-01",
+      "lease_end": "2025-08-31",
+      "contact": {
+        "name": "刘老师",
+        "email": "liu@qiming-edu.com",
+        "phone": "+86-135-0000-0005"
+      },
+      "leased_space": {
+        "total_area_sqm": 320,
+        "zones": ["BLD-A01-F07-006"],
+        "floors": [7],
+        "classrooms": 4,
+        "student_capacity": 80
+      },
+      "operating_hours": {
+        "weekdays": {"open": "14:00", "close": "20:00"},
+        "saturday": {"open": "09:00", "close": "18:00"},
+        "sunday": {"open": "09:00", "close": "17:00"}
+      },
+      "occupancy_profile": {
+        "average_daily_occupancy": 55,
+        "peak_occupancy": 80
+      },
+      "energy_profile": {
+        "hvac_preferences": {
+          "heating_setpoint_c": 20,
+          "cooling_setpoint_c": 25,
+          "tolerance_c": 1.5
+        },
+        "it_load_kw": 8,
+        "estimated_monthly_kwh": 6800
+      },
+      "billing": {
+        "meter_ids": ["E-F07-006"],
+        "previous_month_kwh": 7100,
+        "previous_month_cost": 5895.20,
+        "average_unit_price": 0.830
+      }
+    }
+  ],
+  "aggregated_metrics": {
+    "total_leased_area_sqm": 3500,
+    "total_tenants": 5,
+    "occupancy_rate_percent": 78.5,
+    "total_monthly_kwh": 113200,
+    "total_monthly_energy_cost": 99967.15,
+    "average_rent_per_sqm": 185.00,
+    "average_energy_cost_per_sqm": 28.56
+  }
+}

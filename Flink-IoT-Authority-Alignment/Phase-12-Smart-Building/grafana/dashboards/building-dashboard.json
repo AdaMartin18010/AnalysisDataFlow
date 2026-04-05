@@ -1,0 +1,337 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "smart-building-overview",
+    "title": "智慧园区楼宇管理总览",
+    "tags": ["building", "energy", "iot", "flink"],
+    "timezone": "Asia/Shanghai",
+    "schemaVersion": 36,
+    "version": 1,
+    "refresh": "30s",
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "templating": {
+      "list": [
+        {
+          "name": "building",
+          "type": "query",
+          "query": "SELECT DISTINCT building_id FROM dim_device",
+          "current": {"text": "All", "value": "$__all"},
+          "includeAll": true,
+          "multi": true
+        },
+        {
+          "name": "floor",
+          "type": "query",
+          "query": "SELECT DISTINCT floor_id FROM dim_device WHERE building_id IN ($building)",
+          "current": {"text": "All", "value": "$__all"},
+          "includeAll": true
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "园区概况",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 0},
+        "targets": [
+          {
+            "query": "SELECT COUNT(DISTINCT building_id) as buildings, COUNT(DISTINCT device_id) as devices, COUNT(DISTINCT tenant_id) as tenants FROM dim_device"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [{"color": "green", "value": null}]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {"matcher": {"id": "byName", "options": "buildings"}, "properties": [{"id": "displayName", "value": "楼宇数量"}]},
+            {"matcher": {"id": "byName", "options": "devices"}, "properties": [{"id": "displayName", "value": "设备数量"}]},
+            {"matcher": {"id": "byName", "options": "tenants"}, "properties": [{"id": "displayName", "value": "租户数量"}]}
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "实时总能耗",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 4},
+        "targets": [
+          {
+            "query": "SELECT SUM(total_kwh) as value FROM energy_consumption_hourly WHERE hour_start >= now() - INTERVAL 1 HOUR"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "kwatt",
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 1000},
+                {"color": "red", "value": 2000}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "今日累计能耗",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 4},
+        "targets": [
+          {
+            "query": "SELECT SUM(total_kwh) as value FROM energy_consumption_hourly WHERE toDate(hour_start) = today()"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "kwh",
+            "min": 0
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "峰值需求",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 4},
+        "targets": [
+          {
+            "query": "SELECT MAX(peak_demand_kw) as value FROM energy_consumption_hourly WHERE hour_start >= today()"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "kwatt",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 3000},
+                {"color": "red", "value": 4000}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "预估电费",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 4},
+        "targets": [
+          {
+            "query": "SELECT SUM(energy_cost) as value FROM energy_consumption_hourly WHERE toDate(hour_start) = today()"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyCNY",
+            "min": 0
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "24小时能耗趋势",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 16, "x": 0, "y": 8},
+        "targets": [
+          {
+            "query": "SELECT hour_start, SUM(total_kwh) as energy_kwh FROM energy_consumption_hourly WHERE hour_start >= now() - INTERVAL 24 HOUR GROUP BY hour_start ORDER BY hour_start"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "kwh",
+            "custom": {"lineWidth": 2, "fillOpacity": 20}
+          }
+        },
+        "options": {
+          "legend": {"displayMode": "list", "placement": "bottom"},
+          "tooltip": {"mode": "multi"}
+        }
+      },
+      {
+        "id": 7,
+        "title": "能耗按业态分布",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 8},
+        "targets": [
+          {
+            "query": "SELECT tenant_type, SUM(total_kwh) as energy FROM energy_consumption_hourly eh JOIN dim_tenant dt ON eh.tenant_id = dt.tenant_id WHERE eh.hour_start >= today() GROUP BY tenant_type"
+          }
+        ],
+        "options": {
+          "legend": {"displayMode": "table", "placement": "right"}
+        }
+      },
+      {
+        "id": 8,
+        "title": "各楼宇能耗对比",
+        "type": "barchart",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "query": "SELECT building_id, SUM(total_kwh) as energy FROM energy_consumption_hourly WHERE hour_start >= today() GROUP BY building_id ORDER BY energy DESC"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {"unit": "kwh"}
+        }
+      },
+      {
+        "id": 9,
+        "title": "设备类型能耗占比",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "query": "SELECT device_type, SUM(total_kwh) as energy FROM energy_consumption_hourly WHERE hour_start >= today() GROUP BY device_type"
+          }
+        ],
+        "options": {
+          "pieType": "donut"
+        }
+      },
+      {
+        "id": 10,
+        "title": "室内舒适度热力图",
+        "type": "heatmap",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {
+            "query": "SELECT calculation_time, zone_id, pmv FROM comfort_metrics WHERE calculation_time >= now() - INTERVAL 6 HOUR"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "min": -2,
+            "max": 2,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "blue", "value": -2},
+                {"color": "green", "value": -0.5},
+                {"color": "yellow", "value": 0.5},
+                {"color": "red", "value": 1.5}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 11,
+        "title": "CO2浓度趋势",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+        "targets": [
+          {
+            "query": "SELECT calculation_time, AVG(co2_ppm) as avg_co2, MAX(co2_ppm) as max_co2 FROM comfort_metrics WHERE calculation_time >= now() - INTERVAL 6 HOUR GROUP BY calculation_time"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {"unit": "ppm"},
+          "overrides": [
+            {"matcher": {"id": "byName", "options": "max_co2"}, "properties": [{"id": "custom.lineStyle", "value": {"fill": "dash"}}]}
+          ]
+        }
+      },
+      {
+        "id": 12,
+        "title": "设备健康状态",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 32},
+        "targets": [
+          {
+            "query": "SELECT device_id, health_score, health_status, avg_power_kw, assessment_time FROM equipment_health WHERE assessment_time >= now() - INTERVAL 1 HOUR ORDER BY health_score ASC LIMIT 20"
+          }
+        ],
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "health_status"},
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {"options": "HEALTHY", "text": "健康", "type": "value", "color": "green"},
+                    {"options": "DEGRADED", "text": "退化", "type": "value", "color": "yellow"},
+                    {"options": "AT_RISK", "text": "风险", "type": "value", "color": "red"}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": 13,
+        "title": "实时告警",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 40},
+        "targets": [
+          {
+            "query": "SELECT alert_time, building_id, zone_id, anomaly_level, current_kwh, baseline_kwh, alert_message FROM energy_anomalies WHERE alert_time >= now() - INTERVAL 1 HOUR ORDER BY alert_time DESC LIMIT 50"
+          }
+        ],
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "anomaly_level"},
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {"options": "NORMAL", "text": "正常", "type": "value", "color": "green"},
+                    {"options": "ELEVATED", "text": "偏高", "type": "value", "color": "yellow"},
+                    {"options": "WARNING", "text": "警告", "type": "value", "color": "orange"},
+                    {"options": "CRITICAL", "text": "严重", "type": "value", "color": "red"}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "title": "碳排放趋势",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 48},
+        "targets": [
+          {
+            "query": "SELECT hour_start, SUM(carbon_kg)/1000 as carbon_tons FROM energy_consumption_hourly WHERE hour_start >= now() - INTERVAL 7 DAY GROUP BY hour_start ORDER BY hour_start"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {"unit": "tonne"}
+        }
+      },
+      {
+        "id": 15,
+        "title": "租户能耗排名",
+        "type": "barchart",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 48},
+        "targets": [
+          {
+            "query": "SELECT tenant_id, SUM(total_kwh) as energy FROM energy_consumption_hourly WHERE hour_start >= today() AND tenant_id != '' GROUP BY tenant_id ORDER BY energy DESC LIMIT 10"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {"unit": "kwh"}
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,416 @@
+# ============================================================================
+# Smart Home IoT Platform - Docker Compose Configuration
+# 技术栈: Flink + Kafka + EMQX + InfluxDB + TimescaleDB + Grafana
+# 适用场景: 10,000户智能家居部署
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # Zookeeper - Kafka依赖
+  # ==========================================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: smarthome-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # Kafka - 消息总线
+  # ==========================================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: smarthome-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_MESSAGE_MAX_BYTES: 10485760
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ==========================================================================
+  # Kafka Topics初始化
+  # ==========================================================================
+  kafka-init:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: smarthome-kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      echo 'Creating Kafka topics...' &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic matter-device-events --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic zigbee2mqtt-events --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic zwave-js-events --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic unified-device-states --partitions 12 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic user-actions --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic smart-meter-data --partitions 6 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic device-commands --partitions 12 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic security-alerts --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic system-alerts --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic scene-executions --partitions 3 --replication-factor 1 &&
+      echo 'All topics created successfully'
+      "
+    networks:
+      - smarthome-network
+    restart: "no"
+
+  # ==========================================================================
+  # EMQX - MQTT Broker (智能家居设备接入)
+  # ==========================================================================
+  emqx:
+    image: emqx/emqx:5.4.0
+    container_name: smarthome-emqx
+    environment:
+      EMQX_NODE_NAME: emqx@127.0.0.1
+      EMQX_CLUSTER__DISCOVERY_STRATEGY: static
+      EMQX_DASHBOARD__DEFAULT_USERNAME: admin
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: smarthome2024
+      EMQX_LISTENERS__TCP__DEFAULT__BIND: "0.0.0.0:1883"
+      EMQX_LISTENERS__SSL__DEFAULT__BIND: "0.0.0.0:8883"
+      EMQX_LISTENERS__WS__DEFAULT__BIND: "0.0.0.0:8083"
+      EMQX_AUTHENTICATION__1__MECHANISM: password_based
+      EMQX_AUTHENTICATION__1__BACKEND: built_in_database
+      EMQX_AUTHENTICATION__1__ENABLE: "true"
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+      - "8083:8083"
+      - "18083:18083"
+    volumes:
+      - emqx-data:/opt/emqx/data
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD", "emqx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ==========================================================================
+  # PostgreSQL - 关系型数据存储
+  # ==========================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: smarthome-postgres
+    environment:
+      POSTGRES_DB: smart_home
+      POSTGRES_USER: flink
+      POSTGRES_PASSWORD: flink-iot-2024
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flink -d smart_home"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # TimescaleDB - 时序数据存储
+  # ==========================================================================
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: smarthome-timescaledb
+    environment:
+      POSTGRES_DB: smart_home_ts
+      POSTGRES_USER: flink
+      POSTGRES_PASSWORD: flink-iot-2024
+    ports:
+      - "5433:5432"
+    volumes:
+      - timescaledb-data:/var/lib/postgresql/data
+      - ./init-scripts/timescale:/docker-entrypoint-initdb.d:ro
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flink -d smart_home_ts"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # InfluxDB - 实时指标存储
+  # ==========================================================================
+  influxdb:
+    image: influxdb:2.7
+    container_name: smarthome-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: smarthome-2024
+      DOCKER_INFLUXDB_INIT_ORG: smart-home
+      DOCKER_INFLUXDB_INIT_BUCKET: device-metrics
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: smarthome-token-xyz123
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # Flink JobManager
+  # ==========================================================================
+  flink-jobmanager:
+    image: flink:1.18-scala_2.12
+    container_name: smarthome-flink-jobmanager
+    hostname: jobmanager
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          jobmanager.rpc.port: 6123
+          jobmanager.memory.process.size: 2048m
+          jobmanager.memory.jvm-heap.size: 1536m
+          jobmanager.memory.off-heap.size: 256m
+          parallelism.default: 4
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+          execution.checkpointing.interval: 30s
+          execution.checkpointing.min-pause-between-checkpoints: 15s
+          metrics.reporters: prom
+          metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+          metrics.reporter.prom.port: 9249
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+      - "9249:9249"
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+      - ./flink-sql:/opt/flink/sql-scripts
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ==========================================================================
+  # Flink TaskManager (2 instances)
+  # ==========================================================================
+  flink-taskmanager-1:
+    image: flink:1.18-scala_2.12
+    container_name: smarthome-flink-taskmanager-1
+    hostname: taskmanager-1
+    command: taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.rpc.port: 6122
+          taskmanager.memory.process.size: 4096m
+          taskmanager.memory.flink.size: 3072m
+          taskmanager.memory.network.min: 256m
+          taskmanager.memory.network.max: 512m
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+          state.backend.incremental: true
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - smarthome-network
+
+  flink-taskmanager-2:
+    image: flink:1.18-scala_2.12
+    container_name: smarthome-flink-taskmanager-2
+    hostname: taskmanager-2
+    command: taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.rpc.port: 6122
+          taskmanager.memory.process.size: 4096m
+          taskmanager.memory.flink.size: 3072m
+          taskmanager.memory.network.min: 256m
+          taskmanager.memory.network.max: 512m
+          taskmanager.numberOfTaskSlots: 4
+          state.backend: rocksdb
+          state.backend.incremental: true
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - smarthome-network
+
+  # ==========================================================================
+  # Flink SQL Client
+  # ==========================================================================
+  flink-sql-client:
+    image: flink:1.18-scala_2.12
+    container_name: smarthome-flink-sql-client
+    command: /opt/flink/sql-client.sh
+    depends_on:
+      - flink-jobmanager
+      - kafka
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    volumes:
+      - ./flink-sql:/opt/flink/sql-scripts
+    stdin_open: true
+    tty: true
+    networks:
+      - smarthome-network
+
+  # ==========================================================================
+  # Grafana - 监控与可视化
+  # ==========================================================================
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: smarthome-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: smarthome-grafana
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - postgres
+      - influxdb
+    networks:
+      - smarthome-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # Redis - 缓存与会话存储
+  # ==========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: smarthome-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - smarthome-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================================================
+  # Mock Data Generator - 模拟设备数据
+  # ==========================================================================
+  mock-generator:
+    image: python:3.11-slim
+    container_name: smarthome-mock-generator
+    depends_on:
+      kafka:
+        condition: service_healthy
+      emqx:
+        condition: service_healthy
+    volumes:
+      - ./mock-data:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        pip install kafka-python paho-mqtt numpy faker -q &&
+        python smart-home-generator.py
+      "
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MQTT_BROKER: emqx
+      MQTT_PORT: 1883
+      HOME_COUNT: 100
+      DEVICES_PER_HOME: 50
+      MESSAGE_RATE_PER_DEVICE: 0.1
+    networks:
+      - smarthome-network
+    restart: unless-stopped
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  smarthome-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+# ============================================================================
+# Volumes
+# ============================================================================
+volumes:
+  zookeeper-data:
+  kafka-data:
+  postgres-data:
+  timescaledb-data:
+  influxdb-data:
+  flink-checkpoints:
+  emqx-data:
+  grafana-data:
+  redis-data:

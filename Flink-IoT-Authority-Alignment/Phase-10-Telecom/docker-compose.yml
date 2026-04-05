@@ -1,0 +1,442 @@
+version: '3.8'
+
+# ============================================================================
+# 5G电信网络智能运维平台 - Docker Compose配置
+# 组件: Kafka集群 | Flink集群 | TimescaleDB | Elasticsearch | Grafana
+# 规模支持: 10,000+基站 | 100+网络切片 | 百万级终端
+# ============================================================================
+
+services:
+  # ==================== Zookeeper集群 ====================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: telecom-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181", "|", "grep", "imok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==================== Kafka集群(3节点) ====================
+  kafka-1:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka-1
+    container_name: telecom-kafka-1
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-1:19092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 12
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 3000
+    volumes:
+      - kafka-1-data:/var/lib/kafka/data
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:19092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka-2:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka-2
+    container_name: telecom-kafka-2
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-2:19092,EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+    volumes:
+      - kafka-2-data:/var/lib/kafka/data
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:19092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka-3:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka-3
+    container_name: telecom-kafka-3
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-3:19092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+    volumes:
+      - kafka-3-data:/var/lib/kafka/data
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:19092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: telecom-kafka-ui
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: telecom-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - telecom-network
+
+  # ==================== Flink集群 ====================
+  flink-jobmanager:
+    image: flink:1.18-scala_2.12-java11
+    hostname: flink-jobmanager
+    container_name: telecom-flink-jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - JOB_MANAGER_RPC_PORT=6123
+      - FLINK_PROPERTIES=
+          jobmanager.memory.process.size: 4096m
+          jobmanager.memory.jvm-heap.size: 3072m
+          jobmanager.memory.off-heap.size: 1024m
+          state.backend: rocksdb
+          state.backend.incremental: true
+          state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+          state.savepoints.dir: file:///tmp/flink-savepoints
+          execution.checkpointing.interval: 60s
+          execution.checkpointing.min-pause: 30s
+          execution.checkpointing.max-concurrent-checkpoints: 1
+          execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+      - flink-savepoints:/tmp/flink-savepoints
+      - ./flink-sql:/opt/flink/sql-scripts
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  flink-taskmanager-1:
+    image: flink:1.18-scala_2.12-java11
+    hostname: flink-taskmanager-1
+    container_name: telecom-flink-taskmanager-1
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - JOB_MANAGER_RPC_PORT=6123
+      - FLINK_PROPERTIES=
+          taskmanager.memory.process.size: 8192m
+          taskmanager.memory.flink.size: 6144m
+          taskmanager.memory.managed.size: 2048m
+          taskmanager.numberOfTaskSlots: 8
+          state.backend: rocksdb
+          state.backend.incremental: true
+          state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+          state.backend.rocksdb.memory.managed: true
+          state.backend.rocksdb.threads.threads-number: 4
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - telecom-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+
+  flink-taskmanager-2:
+    image: flink:1.18-scala_2.12-java11
+    hostname: flink-taskmanager-2
+    container_name: telecom-flink-taskmanager-2
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+      - JOB_MANAGER_RPC_PORT=6123
+      - FLINK_PROPERTIES=
+          taskmanager.memory.process.size: 8192m
+          taskmanager.memory.flink.size: 6144m
+          taskmanager.memory.managed.size: 2048m
+          taskmanager.numberOfTaskSlots: 8
+          state.backend: rocksdb
+          state.backend.incremental: true
+          state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+          state.backend.rocksdb.memory.managed: true
+          state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+    networks:
+      - telecom-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+
+  flink-sql-client:
+    image: flink:1.18-scala_2.12-java11
+    container_name: telecom-flink-sql-client
+    command: sql-client
+    depends_on:
+      - flink-jobmanager
+    environment:
+      - FLINK_JOBMANAGER_HOST=flink-jobmanager
+      - FLINK_PROPERTIES=
+          sql-client.execution.result-mode: tableau
+          sql-client.execution.max-table-result.rows: 1000
+    volumes:
+      - ./flink-sql:/opt/flink/sql-scripts
+      - ./conf/sql-client-defaults.yaml:/opt/flink/conf/sql-client-defaults.yaml
+    networks:
+      - telecom-network
+    stdin_open: true
+    tty: true
+
+  # ==================== 数据存储层 ====================
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    hostname: postgres
+    container_name: telecom-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: flink
+      POSTGRES_PASSWORD: flink_secure_2025
+      POSTGRES_DB: telecom
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flink -d telecom"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      postgres
+      -c shared_preload_libraries=timescaledb
+      -c max_connections=200
+      -c shared_buffers=1GB
+      -c effective_cache_size=3GB
+      -c work_mem=16MB
+
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    hostname: elasticsearch
+    container_name: telecom-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - cluster.name=telecom-cluster
+      - node.name=telecom-es-node
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    hostname: redis
+    container_name: telecom-redis
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --maxmemory 2gb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfsync everysec
+    volumes:
+      - redis-data:/data
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ==================== 可视化层 ====================
+  grafana:
+    image: grafana/grafana:10.2.3
+    hostname: grafana
+    container_name: telecom-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: telecom2025
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: postgres:5432
+      GF_DATABASE_NAME: grafana
+      GF_DATABASE_USER: flink
+      GF_DATABASE_PASSWORD: flink_secure_2025
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/alerting:/etc/grafana/provisioning/alerting
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - telecom-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ==================== 数据模拟器 ====================
+  data-simulator:
+    build:
+      context: ./mock-data
+      dockerfile: Dockerfile
+    container_name: telecom-data-simulator
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
+      SIMULATION_BASE_STATIONS: 10000
+      SIMULATION_INTERVAL_MS: 15000
+      SIMULATION_TOPIC_KPI: telecom.bs.kpi.raw
+      SIMULATION_TOPIC_ALARMS: telecom.alarms.raw
+      SIMULATION_TOPIC_SLICE: telecom.slice.kpi
+    volumes:
+      - ./mock-data:/app/data
+    networks:
+      - telecom-network
+    restart: unless-stopped
+
+  # ==================== 可选: Kibana用于Elasticsearch可视化 ====================
+  kibana:
+    image: kibana:8.11.0
+    hostname: kibana
+    container_name: telecom-kibana
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    networks:
+      - telecom-network
+
+  # ==================== 可选: Prometheus监控 ====================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: telecom-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - telecom-network
+
+volumes:
+  zookeeper-data:
+  zookeeper-logs:
+  kafka-1-data:
+  kafka-2-data:
+  kafka-3-data:
+  flink-checkpoints:
+  flink-savepoints:
+  postgres-data:
+  elasticsearch-data:
+  redis-data:
+  grafana-data:
+  prometheus-data:
+
+networks:
+  telecom-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

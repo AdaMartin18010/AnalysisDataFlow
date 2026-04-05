@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "智能水表设备配置数据",
+    "total_count": 10000,
+    "generated_at": "2026-04-05T08:00:00Z",
+    "schema": {
+      "meter_id": "string - 水表唯一标识",
+      "meter_type": "enum - RESIDENTIAL/COMMERCIAL/INDUSTRIAL",
+      "dma_id": "string - 所属DMA分区",
+      "district_code": "string - 行政区划代码",
+      "user_info": "object - 用户信息",
+      "device_spec": "object - 设备规格",
+      "installation": "object - 安装信息",
+      "communication": "object - 通信配置",
+      "baseline": "object - 基准参数"
+    }
+  },
+  "meters": [
+    {
+      "meter_id": "WM-310101-00000001",
+      "meter_type": "RESIDENTIAL",
+      "dma_id": "DMA-0001",
+      "district_code": "310101",
+      "user_info": {
+        "user_id": "U-10000001",
+        "user_name": "张三",
+        "address": "黄浦区人民路100号1号楼101室",
+        "phone": "138****1234",
+        "user_type": "居民",
+        "account_status": "ACTIVE"
+      },
+      "device_spec": {
+        "model": "WM-15-NB",
+        "manufacturer": "威胜集团",
+        "size_mm": 15,
+        "max_flow_m3h": 3,
+        "accuracy_class": "2.0",
+        "battery_type": "ER26500",
+        "battery_life_years": 8
+      },
+      "installation": {
+        "install_date": "2023-03-15",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.487899, 31.231706]
+        },
+        "elevation_m": 5.2,
+        "pipe_diameter_mm": 20,
+        "valve_installed": true
+      },
+      "communication": {
+        "protocol": "NB-IoT",
+        "operator": "中国移动",
+        "reporting_interval_min": 60,
+        "emergency_reporting": true
+      },
+      "baseline": {
+        "daily_avg_m3": 0.25,
+        "monthly_avg_m3": 7.5,
+        "peak_hour": "19:00-21:00",
+        "baseline_pressure_mpa": 0.32
+      }
+    },
+    {
+      "meter_id": "WM-310101-00000002",
+      "meter_type": "RESIDENTIAL",
+      "dma_id": "DMA-0001",
+      "district_code": "310101",
+      "user_info": {
+        "user_id": "U-10000002",
+        "user_name": "李四",
+        "address": "黄浦区人民路100号1号楼102室",
+        "phone": "139****5678",
+        "user_type": "居民",
+        "account_status": "ACTIVE"
+      },
+      "device_spec": {
+        "model": "WM-15-NB",
+        "manufacturer": "威胜集团",
+        "size_mm": 15,
+        "max_flow_m3h": 3,
+        "accuracy_class": "2.0",
+        "battery_type": "ER26500",
+        "battery_life_years": 8
+      },
+      "installation": {
+        "install_date": "2023-03-15",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.487923, 31.231728]
+        },
+        "elevation_m": 5.2,
+        "pipe_diameter_mm": 20,
+        "valve_installed": true
+      },
+      "communication": {
+        "protocol": "NB-IoT",
+        "operator": "中国移动",
+        "reporting_interval_min": 60,
+        "emergency_reporting": true
+      },
+      "baseline": {
+        "daily_avg_m3": 0.28,
+        "monthly_avg_m3": 8.4,
+        "peak_hour": "07:00-08:00",
+        "baseline_pressure_mpa": 0.32
+      }
+    },
+    {
+      "meter_id": "WM-310104-00000003",
+      "meter_type": "COMMERCIAL",
+      "dma_id": "DMA-0065",
+      "district_code": "310104",
+      "user_info": {
+        "user_id": "U-20000001",
+        "user_name": "上海大廈有限公司",
+        "address": "徐汇区漕溪北路200号",
+        "phone": "021-6123****",
+        "user_type": "商业",
+        "account_status": "ACTIVE",
+        "business_type": "写字楼"
+      },
+      "device_spec": {
+        "model": "WM-50-NB",
+        "manufacturer": "三川智慧",
+        "size_mm": 50,
+        "max_flow_m3h": 25,
+        "accuracy_class": "2.0",
+        "power_supply": "AC220V",
+        "battery_backup": true
+      },
+      "installation": {
+        "install_date": "2022-08-20",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.437524, 31.194156]
+        },
+        "elevation_m": 8.5,
+        "pipe_diameter_mm": 63,
+        "valve_installed": true,
+        "bypass_installed": true
+      },
+      "communication": {
+        "protocol": "NB-IoT",
+        "operator": "中国电信",
+        "reporting_interval_min": 15,
+        "emergency_reporting": true
+      },
+      "baseline": {
+        "daily_avg_m3": 45.0,
+        "monthly_avg_m3": 1350.0,
+        "peak_hour": "09:00-17:00",
+        "baseline_pressure_mpa": 0.38
+      }
+    },
+    {
+      "meter_id": "WM-310115-00000004",
+      "meter_type": "INDUSTRIAL",
+      "dma_id": "DMA-0108",
+      "district_code": "310115",
+      "user_info": {
+        "user_id": "U-30000001",
+        "user_name": "浦东制造有限公司",
+        "address": "浦东新区金桥出口加工区1001号",
+        "phone": "021-5080****",
+        "user_type": "工业",
+        "account_status": "ACTIVE",
+        "industry_type": "电子制造"
+      },
+      "device_spec": {
+        "model": "WM-100-4G",
+        "manufacturer": "汇中仪表",
+        "size_mm": 100,
+        "max_flow_m3h": 120,
+        "accuracy_class": "1.0",
+        "power_supply": "AC220V",
+        "remote_valve_control": true
+      },
+      "installation": {
+        "install_date": "2021-05-10",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.601562, 31.251125]
+        },
+        "elevation_m": 4.8,
+        "pipe_diameter_mm": 110,
+        "valve_installed": true,
+        "bypass_installed": true,
+        "pressure_sensor": true
+      },
+      "communication": {
+        "protocol": "4G-LTE",
+        "operator": "中国联通",
+        "reporting_interval_min": 5,
+        "emergency_reporting": true,
+        "remote_control": true
+      },
+      "baseline": {
+        "daily_avg_m3": 280.0,
+        "monthly_avg_m3": 8400.0,
+        "peak_hour": "08:00-18:00",
+        "baseline_pressure_mpa": 0.45,
+        "min_pressure_required": 0.25
+      }
+    },
+    {
+      "meter_id": "WM-310105-00000005",
+      "meter_type": "RESIDENTIAL",
+      "dma_id": "DMA-0032",
+      "district_code": "310105",
+      "user_info": {
+        "user_id": "U-10000005",
+        "user_name": "王五",
+        "address": "长宁区虹桥路1018号2号楼1502室",
+        "phone": "136****9012",
+        "user_type": "居民",
+        "account_status": "ACTIVE"
+      },
+      "device_spec": {
+        "model": "WM-15-NB-PRO",
+        "manufacturer": "威胜集团",
+        "size_mm": 15,
+        "max_flow_m3h": 3,
+        "accuracy_class": "2.0",
+        "features": ["leak_detection", "reverse_flow_alarm"],
+        "battery_type": "ER26500",
+        "battery_life_years": 10
+      },
+      "installation": {
+        "install_date": "2024-01-08",
+        "location": {
+          "type": "Point",
+          "coordinates": [121.400845, 31.199012]
+        },
+        "elevation_m": 42.0,
+        "pipe_diameter_mm": 20,
+        "valve_installed": true,
+        "secondary_supply": true
+      },
+      "communication": {
+        "protocol": "NB-IoT",
+        "operator": "中国移动",
+        "reporting_interval_min": 60,
+        "emergency_reporting": true
+      },
+      "baseline": {
+        "daily_avg_m3": 0.22,
+        "monthly_avg_m3": 6.6,
+        "peak_hour": "20:00-22:00",
+        "baseline_pressure_mpa": 0.28,
+        "secondary_supply_pressure": 0.35
+      }
+    }
+  ],
+  "statistics": {
+    "by_type": {
+      "RESIDENTIAL": 9600,
+      "COMMERCIAL": 320,
+      "INDUSTRIAL": 80
+    },
+    "by_dma": {
+      "DMA-0001": 1250,
+      "DMA-0002": 1180,
+      "DMA-0032": 980,
+      "DMA-0065": 850,
+      "DMA-0108": 720
+    },
+    "by_protocol": {
+      "NB-IoT": 9200,
+      "4G-LTE": 600,
+      "LoRa": 200
+    }
+  }
+}

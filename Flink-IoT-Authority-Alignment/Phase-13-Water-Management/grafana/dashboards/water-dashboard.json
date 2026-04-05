@@ -1,0 +1,441 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "智慧水务综合监控大屏",
+    "tags": ["water", "iot", "flink", "smart-city"],
+    "timezone": "Asia/Shanghai",
+    "schemaVersion": 36,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "系统概览",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 0},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT last(\"total_meters\") FROM \"system_stats\" WHERE $timeFilter"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "min": 0,
+            "max": 1500000,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 1000000},
+                {"color": "red", "value": 1300000}
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "总水表数"},
+              "properties": [{"id": "displayName", "value": "接入水表"}]
+            }
+          ]
+        },
+        "options": {
+          "graphMode": "area",
+          "colorMode": "value",
+          "justifyMode": "center"
+        }
+      },
+      {
+        "id": 2,
+        "title": "实时用水量",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 4},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT sum(\"hourly_consumption_m3\") FROM \"dma_hourly_stats\" WHERE $timeFilter GROUP BY time(1h) fill(null)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "m3",
+            "decimals": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "blue", "value": null}
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "area",
+          "colorMode": "value"
+        }
+      },
+      {
+        "id": 3,
+        "title": "当前告警数",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 4},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT count(\"alert_id\") FROM \"pressure_alerts\" WHERE $timeFilter"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 10},
+                {"color": "orange", "value": 50},
+                {"color": "red", "value": 100}
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "area",
+          "colorMode": "background"
+        }
+      },
+      {
+        "id": 4,
+        "title": "漏损检测数",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 4},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT count(\"dma_id\") FROM \"dma_leak_detection\" WHERE \"alert_triggered\" = true AND $timeFilter"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "red", "value": 1}
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "area",
+          "colorMode": "background"
+        }
+      },
+      {
+        "id": 5,
+        "title": "水质合格率",
+        "type": "gauge",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 4},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT (count(\"station_id\") - sum(\"violation_count\")) / count(\"station_id\") * 100 FROM \"water_quality_summary\" WHERE $timeFilter"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 95,
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": 95},
+                {"color": "yellow", "value": 98},
+                {"color": "green", "value": 99.5}
+              ]
+            }
+          }
+        },
+        "options": {
+          "showThresholdLabels": true,
+          "showThresholdMarkers": true
+        }
+      },
+      {
+        "id": 6,
+        "title": "DMA实时压力分布",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT mean(\"avg_pressure\") FROM \"dma_hourly_stats\" WHERE $timeFilter GROUP BY \"dma_id\""
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "pressure",
+            "custom": {
+              "lineWidth": 2,
+              "fillOpacity": 10,
+              "spanNulls": false
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 0.15},
+                {"color": "green", "value": 0.25},
+                {"color": "yellow", "value": 0.50},
+                {"color": "red", "value": 0.60}
+              ]
+            }
+          }
+        },
+        "options": {
+          "legend": {"displayMode": "list", "placement": "bottom"},
+          "tooltip": {"mode": "multi"}
+        }
+      },
+      {
+        "id": 7,
+        "title": "24小时用水趋势",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT sum(\"hourly_consumption_m3\") FROM \"dma_hourly_stats\" WHERE time >= now() - 24h GROUP BY time(1h) fill(previous)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "m3",
+            "custom": {
+              "lineWidth": 3,
+              "fillOpacity": 20,
+              "gradientMode": "opacity"
+            }
+          }
+        },
+        "options": {
+          "legend": {"displayMode": "hidden"}
+        }
+      },
+      {
+        "id": 8,
+        "title": "漏损告警列表",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT dma_id, detection_time, night_flow_m3h, baseline_nmf, leak_rate_percent, confidence FROM dma_leak_detection WHERE alert_triggered = true AND detection_time >= NOW() - INTERVAL '24 hours' ORDER BY detection_time DESC LIMIT 20",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "confidence"},
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {"options": {"HIGH": {"color": "red", "text": "严重"}}, "type": "value"},
+                    {"options": {"MEDIUM": {"color": "orange", "text": "中等"}}, "type": "value"}
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {"id": "byName", "options": "leak_rate_percent"},
+              "properties": [{"id": "unit", "value": "percent"}]
+            }
+          ]
+        },
+        "options": {
+          "showHeader": true,
+          "sortBy": [{"displayName": "detection_time", "desc": true}]
+        }
+      },
+      {
+        "id": 9,
+        "title": "水质实时指标",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT station_id, dma_id, avg_chlorine, avg_turbidity, avg_ph, violation_count, wqi_score FROM water_quality_summary WHERE window_end >= NOW() - INTERVAL '1 hour' ORDER BY violation_count DESC, wqi_score ASC LIMIT 20",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "wqi_score"},
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {"color": "red", "value": null},
+                      {"color": "orange", "value": 60},
+                      {"color": "yellow", "value": 75},
+                      {"color": "green", "value": 90}
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {"id": "byName", "options": "avg_chlorine"},
+              "properties": [{"id": "unit", "value": "concentration"}]
+            }
+          ]
+        },
+        "options": {
+          "showHeader": true
+        }
+      },
+      {
+        "id": 10,
+        "title": "管网压力热力图",
+        "type": "geomap",
+        "gridPos": {"h": 10, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT sensor_id, ST_X(location::geometry) as lon, ST_Y(location::geometry) as lat, pressure_mpa FROM pressure_sensors WHERE event_time >= NOW() - INTERVAL '5 minutes'",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "dark-red", "value": null},
+                {"color": "red", "value": 0.1},
+                {"color": "yellow", "value": 0.2},
+                {"color": "green", "value": 0.3},
+                {"color": "yellow", "value": 0.5},
+                {"color": "red", "value": 0.6}
+              ]
+            }
+          }
+        },
+        "options": {
+          "view": {
+            "id": "zero",
+            "lat": 31.2304,
+            "lon": 121.4737,
+            "zoom": 10
+          },
+          "layers": [
+            {
+              "type": "heatmap",
+              "config": {
+                "weight": "pressure_mpa",
+                "radius": 20
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": 11,
+        "title": "DMA漏损率分布",
+        "type": "piechart",
+        "gridPos": {"h": 10, "w": 12, "x": 12, "y": 24},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT mean(\"leak_rate_percent\") FROM \"dma_leak_detection\" WHERE $timeFilter GROUP BY \"dma_id\""
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent"
+          }
+        },
+        "options": {
+          "pieType": "donut",
+          "legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}
+        }
+      },
+      {
+        "id": 12,
+        "title": "告警趋势(24h)",
+        "type": "timeseries",
+        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 34},
+        "targets": [
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT count(\"alert_id\") FROM \"pressure_alerts\" WHERE time >= now() - 24h GROUP BY time(1h), \"severity\" fill(0)"
+          },
+          {
+            "datasource": "InfluxDB",
+            "query": "SELECT count(\"alert_id\") FROM \"quality_alerts\" WHERE time >= now() - 24h GROUP BY time(1h) fill(0)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "stacking": {"mode": "normal", "group": "A"},
+              "fillOpacity": 50
+            }
+          }
+        },
+        "options": {
+          "legend": {"displayMode": "list", "placement": "bottom"}
+        }
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "dma_filter",
+          "type": "query",
+          "datasource": "PostgreSQL",
+          "query": "SELECT dma_id FROM dma_zones ORDER BY dma_id",
+          "multi": true,
+          "includeAll": true,
+          "current": {"text": "All", "value": "$__all"}
+        },
+        {
+          "name": "time_range",
+          "type": "interval",
+          "query": "1h,6h,12h,24h,7d,30d",
+          "current": {"text": "24h", "value": "24h"}
+        }
+      ]
+    },
+    "annotations": {
+      "list": [
+        {
+          "name": "维护事件",
+          "datasource": "PostgreSQL",
+          "expr": "SELECT event_time as time, event_type as text, description as tags FROM maintenance_events WHERE $timeFilter",
+          "iconColor": "yellow",
+          "enable": true
+        },
+        {
+          "name": "爆管事件",
+          "datasource": "InfluxDB",
+          "expr": "SELECT * FROM burst_events WHERE $timeFilter",
+          "iconColor": "red",
+          "enable": true
+        }
+      ]
+    },
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    }
+  },
+  "overwrite": true
+}

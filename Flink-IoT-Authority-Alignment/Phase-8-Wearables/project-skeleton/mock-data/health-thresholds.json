@@ -1,0 +1,387 @@
+{
+  "description": "患者健康阈值配置数据",
+  "thresholds": [
+    {
+      "patient_id": "PATIENT_001",
+      "condition": "diabetes_type_1",
+      "age": 28,
+      "gender": "female",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 180,
+        "critical_high": 250,
+        "target_range_low": 70,
+        "target_range_high": 180
+      },
+      "heart_rate": {
+        "resting_low": 50,
+        "resting_high": 100,
+        "max": 192,
+        "exercise_target_low": 128,
+        "exercise_target_high": 162
+      },
+      "blood_pressure": {
+        "systolic_high": 140,
+        "systolic_critical_high": 180,
+        "diastolic_high": 90,
+        "diastolic_critical_high": 110
+      },
+      "spo2": {
+        "low": 92,
+        "critical_low": 88
+      },
+      "activity": {
+        "daily_step_goal": 10000,
+        "daily_calorie_goal": 500,
+        "daily_active_minutes_goal": 30
+      },
+      "last_updated": "2026-03-01T10:00:00Z",
+      "configured_by": "DR_SMITH_ENDO"
+    },
+    {
+      "patient_id": "PATIENT_002",
+      "condition": "diabetes_type_2",
+      "age": 55,
+      "gender": "male",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 160,
+        "critical_high": 240,
+        "target_range_low": 80,
+        "target_range_high": 160
+      },
+      "heart_rate": {
+        "resting_low": 55,
+        "resting_high": 90,
+        "max": 165,
+        "exercise_target_low": 110,
+        "exercise_target_high": 140
+      },
+      "blood_pressure": {
+        "systolic_high": 130,
+        "systolic_critical_high": 160,
+        "diastolic_high": 85,
+        "diastolic_critical_high": 100
+      },
+      "spo2": {
+        "low": 94,
+        "critical_low": 90
+      },
+      "activity": {
+        "daily_step_goal": 8000,
+        "daily_calorie_goal": 400,
+        "daily_active_minutes_goal": 30
+      },
+      "last_updated": "2026-02-15T14:00:00Z",
+      "configured_by": "DR_JONES_PCP"
+    },
+    {
+      "patient_id": "PATIENT_003",
+      "condition": "atrial_fibrillation",
+      "age": 68,
+      "gender": "female",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 140,
+        "critical_high": 200,
+        "target_range_low": 70,
+        "target_range_high": 140
+      },
+      "heart_rate": {
+        "resting_low": 50,
+        "resting_high": 80,
+        "max": 152,
+        "afib_detection_enabled": true,
+        "irregular_rhythm_threshold": 0.6
+      },
+      "blood_pressure": {
+        "systolic_high": 130,
+        "systolic_critical_high": 160,
+        "diastolic_high": 80,
+        "diastolic_critical_high": 100
+      },
+      "spo2": {
+        "low": 95,
+        "critical_low": 90
+      },
+      "activity": {
+        "daily_step_goal": 6000,
+        "daily_calorie_goal": 300,
+        "daily_active_minutes_goal": 20
+      },
+      "last_updated": "2026-03-20T09:00:00Z",
+      "configured_by": "DR_WILLIAMS_CARDIO"
+    },
+    {
+      "patient_id": "PATIENT_004",
+      "condition": "hypertension",
+      "age": 62,
+      "gender": "male",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 140,
+        "critical_high": 200
+      },
+      "heart_rate": {
+        "resting_low": 55,
+        "resting_high": 85,
+        "max": 158
+      },
+      "blood_pressure": {
+        "systolic_high": 120,
+        "systolic_critical_high": 140,
+        "diastolic_high": 80,
+        "diastolic_critical_high": 90,
+        "measurement_frequency_hours": 4
+      },
+      "spo2": {
+        "low": 95,
+        "critical_low": 90
+      },
+      "activity": {
+        "daily_step_goal": 7000,
+        "daily_calorie_goal": 350,
+        "daily_active_minutes_goal": 25
+      },
+      "last_updated": "2026-01-10T11:00:00Z",
+      "configured_by": "DR_JONES_PCP"
+    },
+    {
+      "patient_id": "PATIENT_005",
+      "condition": "copd",
+      "age": 71,
+      "gender": "female",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 140,
+        "critical_high": 200
+      },
+      "heart_rate": {
+        "resting_low": 60,
+        "resting_high": 90,
+        "max": 149
+      },
+      "blood_pressure": {
+        "systolic_high": 140,
+        "diastolic_high": 90
+      },
+      "spo2": {
+        "low": 90,
+        "critical_low": 85,
+        "continuous_monitoring": true,
+        "desaturation_threshold": 88
+      },
+      "activity": {
+        "daily_step_goal": 5000,
+        "daily_calorie_goal": 250,
+        "daily_active_minutes_goal": 15
+      },
+      "last_updated": "2026-02-28T13:00:00Z",
+      "configured_by": "DR_BROWN_PULMO"
+    },
+    {
+      "patient_id": "PATIENT_006",
+      "condition": "heart_failure",
+      "age": 74,
+      "gender": "male",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 140,
+        "critical_high": 200
+      },
+      "heart_rate": {
+        "resting_low": 50,
+        "resting_high": 75,
+        "max": 146,
+        "fluid_retention_detection": true
+      },
+      "blood_pressure": {
+        "systolic_high": 130,
+        "diastolic_high": 80
+      },
+      "spo2": {
+        "low": 92,
+        "critical_low": 88
+      },
+      "weight": {
+        "daily_monitoring": true,
+        "gain_alert_threshold_lbs": 3
+      },
+      "activity": {
+        "daily_step_goal": 4000,
+        "daily_calorie_goal": 200,
+        "daily_active_minutes_goal": 15
+      },
+      "last_updated": "2026-03-05T10:00:00Z",
+      "configured_by": "DR_WILLIAMS_CARDIO"
+    },
+    {
+      "patient_id": "PATIENT_007",
+      "condition": "sleep_apnea",
+      "age": 45,
+      "gender": "male",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 100,
+        "critical_high": 160
+      },
+      "heart_rate": {
+        "resting_low": 50,
+        "resting_high": 90,
+        "max": 175
+      },
+      "sleep": {
+        "apnea_detection_enabled": true,
+        "oxygen_desaturation_threshold": 90,
+        "minimum_sleep_quality_score": 70
+      },
+      "spo2": {
+        "low": 95,
+        "critical_low": 88,
+        "nocturnal_monitoring": true
+      },
+      "activity": {
+        "daily_step_goal": 10000,
+        "daily_calorie_goal": 500,
+        "daily_active_minutes_goal": 30
+      },
+      "last_updated": "2026-01-25T16:00:00Z",
+      "configured_by": "DR_MILLER_SLEEP"
+    },
+    {
+      "patient_id": "PATIENT_008",
+      "condition": "gestational_diabetes",
+      "age": 32,
+      "gender": "female",
+      "pregnancy_week": 28,
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 140,
+        "critical_high": 200,
+        "target_range_low": 63,
+        "target_range_high": 140
+      },
+      "heart_rate": {
+        "resting_low": 60,
+        "resting_high": 100,
+        "max": 156
+      },
+      "blood_pressure": {
+        "systolic_high": 140,
+        "diastolic_high": 90,
+        "preeclampsia_monitoring": true
+      },
+      "spo2": {
+        "low": 95,
+        "critical_low": 90
+      },
+      "activity": {
+        "daily_step_goal": 8000,
+        "daily_calorie_goal": 400,
+        "daily_active_minutes_goal": 30,
+        "high_intensity_exercise_restricted": true
+      },
+      "last_updated": "2026-04-01T09:00:00Z",
+      "configured_by": "DR_DAVIS_OB"
+    },
+    {
+      "patient_id": "PATIENT_009",
+      "condition": "elderly_monitoring",
+      "age": 78,
+      "gender": "female",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 160,
+        "critical_high": 240
+      },
+      "heart_rate": {
+        "resting_low": 50,
+        "resting_high": 85,
+        "max": 142
+      },
+      "blood_pressure": {
+        "systolic_high": 150,
+        "diastolic_high": 90
+      },
+      "spo2": {
+        "low": 92,
+        "critical_low": 88
+      },
+      "fall_detection": {
+        "enabled": true,
+        "sensitivity": "high",
+        "auto_alert": true
+      },
+      "activity": {
+        "daily_step_goal": 5000,
+        "daily_calorie_goal": 250,
+        "daily_active_minutes_goal": 20,
+        "sedentary_alert_enabled": true,
+        "sedentary_threshold_hours": 2
+      },
+      "last_updated": "2026-02-10T11:00:00Z",
+      "configured_by": "CAREGIVER_JOHNSON"
+    },
+    {
+      "patient_id": "PATIENT_010",
+      "condition": "pediatric_type1_diabetes",
+      "age": 12,
+      "gender": "male",
+      "parent_guardian_id": "PARENT_001",
+      "glucose": {
+        "low": 70,
+        "critical_low": 54,
+        "high": 200,
+        "critical_high": 300,
+        "target_range_low": 70,
+        "target_range_high": 180,
+        "school_mode_enabled": true
+      },
+      "heart_rate": {
+        "resting_low": 60,
+        "resting_high": 100,
+        "max": 208
+      },
+      "activity": {
+        "daily_step_goal": 12000,
+        "daily_calorie_goal": 600,
+        "daily_active_minutes_goal": 60,
+        "sports_mode_enabled": true
+      },
+      "last_updated": "2026-03-15T14:00:00Z",
+      "configured_by": "DR_WILSON_PEDS_ENDO"
+    }
+  ],
+  "metadata": {
+    "total_configured": 1000000,
+    "by_condition": {
+      "diabetes_type_1": 280000,
+      "diabetes_type_2": 320000,
+      "atrial_fibrillation": 80000,
+      "hypertension": 150000,
+      "copd": 40000,
+      "heart_failure": 50000,
+      "sleep_apnea": 30000,
+      "elderly_monitoring": 50000
+    },
+    "default_thresholds": {
+      "glucose_low": 70,
+      "glucose_critical_low": 54,
+      "glucose_high": 180,
+      "glucose_critical_high": 250,
+      "hr_resting_low": 50,
+      "hr_resting_high": 100,
+      "spo2_low": 92
+    },
+    "generated_at": "2026-04-05T12:00:00Z"
+  }
+}
