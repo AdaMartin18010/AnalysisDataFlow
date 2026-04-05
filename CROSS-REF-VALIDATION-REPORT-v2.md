@@ -154,11 +154,11 @@
 
 #### tutorials/interactive/README.md (5个)
 
-- [Struct索引](../../Struct/00-INDEX.md) - 形式理论文档导航
-- [Knowledge索引](../../Knowledge/00-INDEX.md) - 知识结构文档导航
-- [Flink索引](../../Flink/00-INDEX.md) - Flink专项文档导航
-- [AGENTS.md](../../AGENTS.md) - 项目规范文档
-- [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md) - 项目进度跟踪
+- [Struct索引](./Struct/00-INDEX.md) - 形式理论文档导航
+- [Knowledge索引](./Knowledge/00-INDEX.md) - 知识结构文档导航
+- [Flink索引](./Flink/00-INDEX.md) - Flink专项文档导航
+- [AGENTS.md](./AGENTS.md) - 项目规范文档
+- [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) - 项目进度跟踪
 
 #### visuals/layer-decidability.md (2个)
 
