@@ -1,4 +1,4 @@
-# 设计模式: 实时日志分析 (Pattern: Real-time Log Analysis) {#关系-log-analysis-↦-windowed-aggregation}
+# 设计模式: 实时日志分析 (Pattern: Real-time Log Analysis) {#设计模式-实时日志分析}
 
 > **模式编号**: 06/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4 | **复杂度**: ★★★☆☆
 >
@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [设计模式: 实时日志分析 (Pattern: Real-time Log Analysis)](#设计模式-实时日志分析)
+- [设计模式: 实时日志分析 (Pattern: Real-time Log Analysis) {#设计模式-实时日志分析}](#设计模式-实时日志分析-pattern-real-time-log-analysis-设计模式-实时日志分析)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-13 (日志流模式)](#def-k-02-13-日志流模式)
@@ -18,13 +18,13 @@
     - [Prop-K-02-03 (解析完备性)](#prop-k-02-03-解析完备性)
     - [Prop-K-02-04 (关联传递性)](#prop-k-02-04-关联传递性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Log Analysis `↦` Windowed Aggregation](#关系-log-analysis-↦-windowed-aggregation)
-    - [关系: Log Analysis `↦` CEP Pattern](#关系-log-analysis--cep-pattern)
+    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation)
+    - [关系: Log Analysis `↦` CEP Pattern {#关系-log-analysis--cep-pattern}](#关系-log-analysis--cep-pattern-关系-log-analysis--cep-pattern)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 日志格式解析策略矩阵](#41-日志格式解析策略矩阵)
     - [4.2 日志关联维度分析](#42-日志关联维度分析)
     - [4.3 异常检测算法选择](#43-异常检测算法选择)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [Thm-K-02-02 (日志关联完整性条件)](#thm-k-02-02-日志关联完整性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 多格式日志解析](#61-多格式日志解析)

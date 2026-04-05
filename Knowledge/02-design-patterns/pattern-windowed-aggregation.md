@@ -1,4 +1,4 @@
-# 设计模式: 窗口聚合 (Pattern: Windowed Aggregation) {#关系-windowed-aggregation-↦-def-s-04-05}
+# 设计模式: 窗口聚合 (Pattern: Windowed Aggregation) {#设计模式-窗口聚合}
 
 > **模式编号**: 02/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4 | **复杂度**: ★★☆☆☆
 >
@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [设计模式: 窗口聚合 (Pattern: Windowed Aggregation)](#设计模式-窗口聚合)
+- [设计模式: 窗口聚合 (Pattern: Windowed Aggregation) {#设计模式-窗口聚合}](#设计模式-窗口聚合-pattern-windowed-aggregation-设计模式-窗口聚合)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-01 (窗口分配器)](#def-k-02-01-窗口分配器)
@@ -20,13 +20,13 @@
     - [Prop-K-02-01 (窗口时间覆盖完备性)](#prop-k-02-01-窗口时间覆盖完备性)
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05](#关系-windowed-aggregation-↦-def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 窗口类型选择决策矩阵](#41-窗口类型选择决策矩阵)
     - [4.2 触发器策略对比分析](#42-触发器策略对比分析)
     - [4.3 驱逐器与增量计算的权衡](#43-驱逐器与增量计算的权衡)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [Thm-K-02-01 (窗口聚合正确性条件)](#thm-k-02-01-窗口聚合正确性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink DataStream API 示例](#61-flink-datastream-api-示例)
