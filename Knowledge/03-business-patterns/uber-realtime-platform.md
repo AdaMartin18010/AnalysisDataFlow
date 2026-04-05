@@ -8,7 +8,7 @@
 
 ## 目录
 
-- [Uber实时分析平台 - Apache Flink大规模实践](#uber实时分析平台---apache-flink大规模实践)
+- [Uber实时分析平台 - Apache Flink大规模实践](#uber实时分析平台-apache-flink大规模实践)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-05: Uber流计算平台架构](#def-k-03-05-uber流计算平台架构)

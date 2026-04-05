@@ -25,7 +25,7 @@
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 与核心设计模式的关系](#31-与核心设计模式的关系)
     - [3.2 技术栈组件映射](#32-技术栈组件映射)
-    - [3.3 Actor + Dataflow 双层架构关系](#33-actor-dataflow-双层架构)
+    - [3.3 Actor + Dataflow 双层架构关系](#33-actor-dataflow-双层架构关系)
     - [3.4 数据流时序关系](#34-数据流时序关系)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 IoT 场景核心挑战分析](#41-iot-场景核心挑战分析)
@@ -1058,7 +1058,7 @@ graph TB
     style TSDB fill:#bbdefb,stroke:#1565c0,stroke-width:2px
 ```
 
-### 7.2 Actor + Dataflow 双层架构 {#72-actor--dataflow-双层架构}
+### 7.2 Actor + Dataflow 双层架构 {#72-actor--dataflow-双层架构} {#72-actor--dataflow-双层架构-72-actor--dataflow-双层架构}
 
 ```mermaid
 graph TB

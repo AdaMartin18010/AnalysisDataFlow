@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [Netflix流处理架构 - 从Keystone到Flink](#netflix流处理架构---从keystone到flink)
+- [Netflix流处理架构 - 从Keystone到Flink](#netflix流处理架构-从keystone到flink)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-08: Netflix数据管道 (Netflix Data Pipeline)](#def-k-03-08-netflix数据管道-netflix-data-pipeline)

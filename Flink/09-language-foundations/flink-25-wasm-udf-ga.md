@@ -11,7 +11,7 @@
 
 ## 目录
 
-- [Flink 2.5 WebAssembly UDF GA - 生产级多语言函数引擎](#flink-25-webassembly-udf-ga---生产级多语言函数引擎)
+- [Flink 2.5 WebAssembly UDF GA - 生产级多语言函数引擎](#flink-25-webassembly-udf-ga-生产级多语言函数引擎)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-09-50: Flink 2.5 WASM UDF GA](#def-f-09-50-flink-25-wasm-udf-ga)

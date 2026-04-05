@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [流数据库 - Materialize/RisingWave/Timeplus](#流数据库---materializerisingwavetimeplus)
+- [流数据库 - Materialize/RisingWave/Timeplus](#流数据库-materializerisingwavetimeplus)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-12: 流数据库 (Streaming Database)](#def-k-06-12-流数据库-streaming-database)
@@ -21,7 +21,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 技术选型决策树](#41-技术选型决策树)
     - [4.2 与Flink的互补性分析](#42-与flink的互补性分析)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
     - [5.1 Differential Dataflow的形式化能力](#51-differential-dataflow的形式化能力)
     - [5.2 RisingWave分层存储的工程论证](#52-risingwave分层存储的工程论证)
     - [5.3 流批统一查询的形式化语义](#53-流批统一查询的形式化语义)

@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [流数据库生态全面对比 - RisingWave vs Materialize vs Flink](#流数据库生态全面对比---risingwave-vs-materialize-vs-flink)
+- [流数据库生态全面对比 - RisingWave vs Materialize vs Flink](#流数据库生态全面对比-risingwave-vs-materialize-vs-flink)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-180: 流数据库系统 (Streaming Database System)](#def-k-06-180-流数据库系统-streaming-database-system)
@@ -25,7 +25,7 @@
     - [4.1 架构设计决策分析](#41-架构设计决策分析)
     - [4.2 一致性模型对比论证](#42-一致性模型对比论证)
     - [4.3 SQL兼容性边界分析](#43-sql兼容性边界分析)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
     - [Thm-K-06-120: 流数据库物化视图的一致性保证](#thm-k-06-120-流数据库物化视图的一致性保证)
     - [Thm-K-06-121: 计算-存储分离架构的可扩展性定理](#thm-k-06-121-计算-存储分离架构的可扩展性定理)
     - [Thm-K-06-122: 增量计算复杂度的下界](#thm-k-06-122-增量计算复杂度的下界)

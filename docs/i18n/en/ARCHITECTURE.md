@@ -13,15 +13,15 @@
   - [1. Project Overall Architecture](#1-project-overall-architecture)
     - [1.1 Four-Layer Architecture Overview](#11-four-layer-architecture-overview)
     - [1.2 Layer Responsibilities and Interfaces](#12-layer-responsibilities-and-interfaces)
-      - [Layer 1: Struct/ - Formal Theory Foundation Layer](#layer-1-struct---formal-theory-foundation-layer)
-      - [Layer 2: Knowledge/ - Knowledge Application Layer](#layer-2-knowledge---knowledge-application-layer)
-      - [Layer 3: Flink/ - Engineering Implementation Layer](#layer-3-flink---engineering-implementation-layer)
-      - [Layer 4: visuals/ - Visualization Navigation Layer](#layer-4-visuals---visualization-navigation-layer)
+      - [Layer 1: Struct/ - Formal Theory Foundation Layer](#layer-1-struct-formal-theory-foundation-layer)
+      - [Layer 2: Knowledge/ - Knowledge Application Layer](#layer-2-knowledge-knowledge-application-layer)
+      - [Layer 3: Flink/ - Engineering Implementation Layer](#layer-3-flink-engineering-implementation-layer)
+      - [Layer 4: visuals/ - Visualization Navigation Layer](#layer-4-visuals-visualization-navigation-layer)
     - [1.3 Data Flow and Dependencies](#13-data-flow-and-dependencies)
   - [2. Document Generation Architecture](#2-document-generation-architecture)
     - [2.1 Markdown Processing Flow](#21-markdown-processing-flow)
     - [2.2 Mermaid Diagram Rendering](#22-mermaid-diagram-rendering)
-    - [2.3 Cross-Reference Resolution](#23-cross-reference-resolution)
+    - [7.2 Decision Flow Diagram](#72-decision-flow-diagram)
   - [3. Validation System Architecture](#3-validation-system-architecture)
     - [3.1 Validation Script Architecture](#31-validation-script-architecture)
     - [3.2 CI/CD Flow](#32-cicd-flow)
@@ -33,7 +33,10 @@
   - [5. Extension Architecture](#5-extension-architecture)
     - [5.1 Adding New Documents](#51-adding-new-documents)
     - [5.2 Adding New Visualizations](#52-adding-new-visualizations)
-    - [5.3 Adding New Validation Rules](#53-adding-new-validation-rules)
+  - [Usage Guide](#usage-guide)
+    - [How to Read](#how-to-read)
+    - [Related Documents](#related-documents)
+  - [Changelog](#changelog)
   - [6. Internationalization (i18n) Architecture](#6-internationalization-i18n-architecture)
   - [Appendix](#appendix)
     - [A. Glossary](#a-glossary)
@@ -686,7 +689,7 @@ gantt
     section v3.x
     v3.0 Final Completion  :active, v3_0, after v2_8, 30d
     v3.x Maintenance       :milestone, v3_m, after v3_0, 90d
-    
+
     section v4.x
     v4.0 Internationalization :milestone, v4_0, after v3_m, 90d
 ```

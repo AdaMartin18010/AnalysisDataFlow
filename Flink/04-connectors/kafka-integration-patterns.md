@@ -12,7 +12,7 @@
     - [Def-F-04-01 (Kafka Source 可重放性)](#def-f-04-01-kafka-source-可重放性)
     - [Def-F-04-02 (事务性生产者语义)](#def-f-04-02-事务性生产者语义)
     - [Def-F-04-03 (幂等性生产者语义)](#def-f-04-03-幂等性生产者语义)
-    - [Def-F-04-04 (事务围栏 - Transaction Fencing)](#def-f-04-04-事务围栏---transaction-fencing)
+    - [Def-F-04-04 (事务围栏 - Transaction Fencing)](#def-f-04-04-事务围栏-transaction-fencing)
     - [Def-F-04-05 (Schema 兼容性契约)](#def-f-04-05-schema-兼容性契约)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Lemma-F-04-01 (Kafka Source 偏移量绑定保证)](#lemma-f-04-01-kafka-source-偏移量绑定保证)

@@ -6,7 +6,7 @@
 
 ## 目录
 
-- [在线学习算法 - 流式机器学习核心 (Online Learning Algorithms)](#在线学习算法---流式机器学习核心-online-learning-algorithms)
+- [在线学习算法 - 流式机器学习核心 (Online Learning Algorithms)](#在线学习算法-流式机器学习核心-online-learning-algorithms)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-12-04 (在线学习 Online Learning)](#def-f-12-04-在线学习-online-learning)
