@@ -1,0 +1,214 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-04-05T14:30:00Z",
+  "organization": "Flink-IoT-Demo",
+  "total_devices": 100,
+  "device_types": [
+    {
+      "type_id": "TEMPERATURE_SENSOR",
+      "type_name": "Temperature Sensor",
+      "manufacturer": "SensorTech Inc.",
+      "model": "ST-T100",
+      "description": "High-precision temperature sensor with ±0.1°C accuracy",
+      "default_sampling_interval": 30,
+      "measurement_range": {
+        "min": -40,
+        "max": 80
+      },
+      "alert_thresholds": {
+        "high": 50,
+        "low": -20
+      }
+    },
+    {
+      "type_id": "PRESSURE_SENSOR",
+      "type_name": "Pressure Sensor",
+      "manufacturer": "PressurePro",
+      "model": "PP-500",
+      "description": "Industrial pressure sensor for harsh environments",
+      "default_sampling_interval": 60,
+      "measurement_range": {
+        "min": 0,
+        "max": 500
+      },
+      "alert_thresholds": {
+        "high": 400,
+        "low": 50
+      }
+    },
+    {
+      "type_id": "HUMIDITY_SENSOR",
+      "type_name": "Humidity Sensor",
+      "manufacturer": "HumiSense",
+      "model": "HS-RH200",
+      "description": "Relative humidity sensor with temperature compensation",
+      "default_sampling_interval": 45,
+      "measurement_range": {
+        "min": 0,
+        "max": 100
+      },
+      "alert_thresholds": {
+        "high": 85,
+        "low": 15
+      }
+    },
+    {
+      "type_id": "MULTI_SENSOR",
+      "type_name": "Multi-Parameter Sensor",
+      "manufacturer": "EnviroMonitor",
+      "model": "EM-3000",
+      "description": "Combined temperature, pressure, and humidity sensor",
+      "default_sampling_interval": 30,
+      "measurement_range": {
+        "temperature": { "min": -40, "max": 80 },
+        "pressure": { "min": 0, "max": 500 },
+        "humidity": { "min": 0, "max": 100 }
+      },
+      "alert_thresholds": {
+        "temperature_high": 50,
+        "temperature_low": -20,
+        "pressure_high": 400,
+        "pressure_low": 50,
+        "humidity_high": 85,
+        "humidity_low": 15
+      }
+    },
+    {
+      "type_id": "SMART_METER",
+      "type_name": "Smart Energy Meter",
+      "manufacturer": "PowerGrid Solutions",
+      "model": "PGM-1000",
+      "description": "Smart meter with power quality monitoring",
+      "default_sampling_interval": 15,
+      "measurement_range": {
+        "voltage": { "min": 0, "max": 5 },
+        "current": { "min": 0, "max": 100 }
+      },
+      "alert_thresholds": {
+        "voltage_high": 4.5,
+        "voltage_low": 3.0
+      }
+    }
+  ],
+  "locations": [
+    {
+      "location_id": "BUILDING_A_FLOOR_1",
+      "building": "Building A",
+      "floor": "1",
+      "zone": "North Wing",
+      "description": "Main production floor - North section"
+    },
+    {
+      "location_id": "BUILDING_A_FLOOR_1_SOUTH",
+      "building": "Building A",
+      "floor": "1",
+      "zone": "South Wing",
+      "description": "Main production floor - South section"
+    },
+    {
+      "location_id": "BUILDING_A_FLOOR_2",
+      "building": "Building A",
+      "floor": "2",
+      "zone": "Office Area",
+      "description": "Administrative offices"
+    },
+    {
+      "location_id": "BUILDING_B_WAREHOUSE",
+      "building": "Building B",
+      "floor": "1",
+      "zone": "Warehouse",
+      "description": "Storage and logistics warehouse"
+    },
+    {
+      "location_id": "BUILDING_B_SERVER_ROOM",
+      "building": "Building B",
+      "floor": "1",
+      "zone": "Server Room",
+      "description": "Data center and server room"
+    },
+    {
+      "location_id": "OUTDOOR_YARD_NORTH",
+      "building": "Outdoor",
+      "floor": "Ground",
+      "zone": "North Yard",
+      "description": "Outdoor storage yard - North side"
+    },
+    {
+      "location_id": "OUTDOOR_YARD_SOUTH",
+      "building": "Outdoor",
+      "floor": "Ground",
+      "zone": "South Yard",
+      "description": "Outdoor storage yard - South side"
+    }
+  ],
+  "devices": [
+    {"device_id": "DEV-001", "device_name": "Temp Sensor A1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-001", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T08:00:00Z"},
+    {"device_id": "DEV-002", "device_name": "Temp Sensor A2", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-002", "calibration_offset": 0.1, "status": "ACTIVE", "registered_at": "2024-01-15T08:05:00Z"},
+    {"device_id": "DEV-003", "device_name": "Temp Sensor A3", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-003", "calibration_offset": -0.05, "status": "ACTIVE", "registered_at": "2024-01-15T08:10:00Z"},
+    {"device_id": "DEV-004", "device_name": "Pressure Monitor P1", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-001", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T09:00:00Z"},
+    {"device_id": "DEV-005", "device_name": "Pressure Monitor P2", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-002", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T09:05:00Z"},
+    {"device_id": "DEV-006", "device_name": "Humidity Sensor H1", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-001", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T10:00:00Z"},
+    {"device_id": "DEV-007", "device_name": "Humidity Sensor H2", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-002", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T10:05:00Z"},
+    {"device_id": "DEV-008", "device_name": "Multi-Sensor M1", "device_type": "MULTI_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-001", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T11:00:00Z"},
+    {"device_id": "DEV-009", "device_name": "Multi-Sensor M2", "device_type": "MULTI_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-002", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T11:05:00Z"},
+    {"device_id": "DEV-010", "device_name": "Smart Meter SM1", "device_type": "SMART_METER", "location": "BUILDING_A_FLOOR_1", "manufacturer": "PowerGrid Solutions", "model": "PGM-1000", "serial_number": "PGM1000-2024-001", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-15T12:00:00Z"},
+    {"device_id": "DEV-011", "device_name": "Temp Sensor A1-S", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-011", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-16T08:00:00Z"},
+    {"device_id": "DEV-012", "device_name": "Temp Sensor A2-S", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-012", "calibration_offset": 0.2, "status": "ACTIVE", "registered_at": "2024-01-16T08:05:00Z"},
+    {"device_id": "DEV-013", "device_name": "Temp Sensor A3-S", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-013", "calibration_offset": -0.1, "status": "ACTIVE", "registered_at": "2024-01-16T08:10:00Z"},
+    {"device_id": "DEV-014", "device_name": "Pressure Monitor P1-S", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-011", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-16T09:00:00Z"},
+    {"device_id": "DEV-015", "device_name": "Humidity Sensor H1-S", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-011", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-16T10:00:00Z"},
+    {"device_id": "DEV-016", "device_name": "Multi-Sensor M1-S", "device_type": "MULTI_SENSOR", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-011", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-16T11:00:00Z"},
+    {"device_id": "DEV-017", "device_name": "Smart Meter SM1-S", "device_type": "SMART_METER", "location": "BUILDING_A_FLOOR_1_SOUTH", "manufacturer": "PowerGrid Solutions", "model": "PGM-1000", "serial_number": "PGM1000-2024-011", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-16T12:00:00Z"},
+    {"device_id": "DEV-018", "device_name": "Temp Sensor B1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-018", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-17T08:00:00Z"},
+    {"device_id": "DEV-019", "device_name": "Temp Sensor B2", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-019", "calibration_offset": 0.15, "status": "ACTIVE", "registered_at": "2024-01-17T08:05:00Z"},
+    {"device_id": "DEV-020", "device_name": "Temp Sensor B3", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-020", "calibration_offset": -0.08, "status": "ACTIVE", "registered_at": "2024-01-17T08:10:00Z"},
+    {"device_id": "DEV-021", "device_name": "Humidity Sensor H-B1", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-021", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-17T10:00:00Z"},
+    {"device_id": "DEV-022", "device_name": "Humidity Sensor H-B2", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-022", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-17T10:05:00Z"},
+    {"device_id": "DEV-023", "device_name": "Multi-Sensor M-B1", "device_type": "MULTI_SENSOR", "location": "BUILDING_A_FLOOR_2", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-023", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-17T11:00:00Z"},
+    {"device_id": "DEV-024", "device_name": "Smart Meter SM-B1", "device_type": "SMART_METER", "location": "BUILDING_A_FLOOR_2", "manufacturer": "PowerGrid Solutions", "model": "PGM-1000", "serial_number": "PGM1000-2024-024", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-17T12:00:00Z"},
+    {"device_id": "DEV-025", "device_name": "Temp Sensor W1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-025", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T08:00:00Z"},
+    {"device_id": "DEV-026", "device_name": "Temp Sensor W2", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-026", "calibration_offset": 0.05, "status": "ACTIVE", "registered_at": "2024-01-18T08:05:00Z"},
+    {"device_id": "DEV-027", "device_name": "Temp Sensor W3", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-027", "calibration_offset": -0.05, "status": "ACTIVE", "registered_at": "2024-01-18T08:10:00Z"},
+    {"device_id": "DEV-028", "device_name": "Temp Sensor W4", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-028", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T08:15:00Z"},
+    {"device_id": "DEV-029", "device_name": "Pressure Monitor W1", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-025", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T09:00:00Z"},
+    {"device_id": "DEV-030", "device_name": "Pressure Monitor W2", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-026", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T09:05:00Z"},
+    {"device_id": "DEV-031", "device_name": "Humidity Sensor W1", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-025", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T10:00:00Z"},
+    {"device_id": "DEV-032", "device_name": "Humidity Sensor W2", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-026", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T10:05:00Z"},
+    {"device_id": "DEV-033", "device_name": "Multi-Sensor W1", "device_type": "MULTI_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-025", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T11:00:00Z"},
+    {"device_id": "DEV-034", "device_name": "Multi-Sensor W2", "device_type": "MULTI_SENSOR", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-026", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T11:05:00Z"},
+    {"device_id": "DEV-035", "device_name": "Smart Meter W1", "device_type": "SMART_METER", "location": "BUILDING_B_WAREHOUSE", "manufacturer": "PowerGrid Solutions", "model": "PGM-1000", "serial_number": "PGM1000-2024-025", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-18T12:00:00Z"},
+    {"device_id": "DEV-036", "device_name": "Temp Sensor SR1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-036", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T08:00:00Z"},
+    {"device_id": "DEV-037", "device_name": "Temp Sensor SR2", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-037", "calibration_offset": 0.1, "status": "ACTIVE", "registered_at": "2024-01-19T08:05:00Z"},
+    {"device_id": "DEV-038", "device_name": "Temp Sensor SR3", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-038", "calibration_offset": -0.1, "status": "ACTIVE", "registered_at": "2024-01-19T08:10:00Z"},
+    {"device_id": "DEV-039", "device_name": "Temp Sensor SR4", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-039", "calibration_offset": 0.05, "status": "ACTIVE", "registered_at": "2024-01-19T08:15:00Z"},
+    {"device_id": "DEV-040", "device_name": "Pressure Monitor SR1", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-036", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T09:00:00Z"},
+    {"device_id": "DEV-041", "device_name": "Humidity Sensor SR1", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-036", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T10:00:00Z"},
+    {"device_id": "DEV-042", "device_name": "Humidity Sensor SR2", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-037", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T10:05:00Z"},
+    {"device_id": "DEV-043", "device_name": "Multi-Sensor SR1", "device_type": "MULTI_SENSOR", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-036", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T11:00:00Z"},
+    {"device_id": "DEV-044", "device_name": "Smart Meter SR1", "device_type": "SMART_METER", "location": "BUILDING_B_SERVER_ROOM", "manufacturer": "PowerGrid Solutions", "model": "PGM-1000", "serial_number": "PGM1000-2024-036", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-19T12:00:00Z"},
+    {"device_id": "DEV-045", "device_name": "Temp Sensor O1", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-045", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T08:00:00Z"},
+    {"device_id": "DEV-046", "device_name": "Temp Sensor O2", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-046", "calibration_offset": 0.2, "status": "ACTIVE", "registered_at": "2024-01-20T08:05:00Z"},
+    {"device_id": "DEV-047", "device_name": "Temp Sensor O3", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-047", "calibration_offset": -0.15, "status": "ACTIVE", "registered_at": "2024-01-20T08:10:00Z"},
+    {"device_id": "DEV-048", "device_name": "Pressure Monitor O1", "device_type": "PRESSURE_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-045", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T09:00:00Z"},
+    {"device_id": "DEV-049", "device_name": "Humidity Sensor O1", "device_type": "HUMIDITY_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-045", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T10:00:00Z"},
+    {"device_id": "DEV-050", "device_name": "Multi-Sensor O1", "device_type": "MULTI_SENSOR", "location": "OUTDOOR_YARD_NORTH", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-045", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T11:00:00Z"},
+    {"device_id": "DEV-051", "device_name": "Temp Sensor O4", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-051", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T13:00:00Z"},
+    {"device_id": "DEV-052", "device_name": "Temp Sensor O5", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-052", "calibration_offset": 0.1, "status": "ACTIVE", "registered_at": "2024-01-20T13:05:00Z"},
+    {"device_id": "DEV-053", "device_name": "Temp Sensor O6", "device_type": "TEMPERATURE_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-053", "calibration_offset": -0.1, "status": "ACTIVE", "registered_at": "2024-01-20T13:10:00Z"},
+    {"device_id": "DEV-054", "device_name": "Pressure Monitor O2", "device_type": "PRESSURE_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-051", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T14:00:00Z"},
+    {"device_id": "DEV-055", "device_name": "Humidity Sensor O2", "device_type": "HUMIDITY_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-051", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T15:00:00Z"},
+    {"device_id": "DEV-056", "device_name": "Multi-Sensor O2", "device_type": "MULTI_SENSOR", "location": "OUTDOOR_YARD_SOUTH", "manufacturer": "EnviroMonitor", "model": "EM-3000", "serial_number": "EM3000-2024-051", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-20T16:00:00Z"},
+    {"device_id": "DEV-057", "device_name": "Temp Sensor A4", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-057", "calibration_offset": 0.05, "status": "ACTIVE", "registered_at": "2024-01-21T08:00:00Z"},
+    {"device_id": "DEV-058", "device_name": "Temp Sensor A5", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "SensorTech Inc.", "model": "ST-T100", "serial_number": "ST100-2024-058", "calibration_offset": -0.05, "status": "ACTIVE", "registered_at": "2024-01-21T08:05:00Z"},
+    {"device_id": "DEV-059", "device_name": "Pressure Monitor P3", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "PressurePro", "model": "PP-500", "serial_number": "PP500-2024-057", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-21T09:00:00Z"},
+    {"device_id": "DEV-060", "device_name": "Humidity Sensor H3", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_A_FLOOR_1", "manufacturer": "HumiSense", "model": "HS-RH200", "serial_number": "HS200-2024-057", "calibration_offset": 0.0, "status": "ACTIVE", "registered_at": "2024-01-21T10:00:00Z"}
+  ],
+  "maintenance_devices": [
+    {"device_id": "DEV-061", "device_name": "Temp Sensor M1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_1", "status": "MAINTENANCE", "registered_at": "2024-01-22T08:00:00Z", "maintenance_reason": "Calibration due"},
+    {"device_id": "DEV-062", "device_name": "Pressure Monitor M1", "device_type": "PRESSURE_SENSOR", "location": "BUILDING_B_WAREHOUSE", "status": "MAINTENANCE", "registered_at": "2024-01-22T09:00:00Z", "maintenance_reason": "Sensor replacement"}
+  ],
+  "inactive_devices": [
+    {"device_id": "DEV-063", "device_name": "Temp Sensor I1", "device_type": "TEMPERATURE_SENSOR", "location": "BUILDING_A_FLOOR_2", "status": "INACTIVE", "registered_at": "2024-01-23T08:00:00Z", "deactivation_reason": "End of life"},
+    {"device_id": "DEV-064", "device_name": "Humidity Sensor I1", "device_type": "HUMIDITY_SENSOR", "location": "BUILDING_B_WAREHOUSE", "status": "INACTIVE", "registered_at": "2024-01-23T09:00:00Z", "deactivation_reason": "Network issues"}
+  ]
+}
