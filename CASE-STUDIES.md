@@ -19,7 +19,7 @@
 | [Flink/07-case-studies/](./Flink/07-case-studies/case-realtime-analytics.md) | Flink专项案例 | 15个 |
 | [Knowledge/03-business-patterns/](./Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | 业务模式模式库 | 10个 |
 
-### 🆕 新增详细案例（Knowledge/10-case-studies/）
+### 🆕 新增详细案例（Knowledge/10-case-studies/） {{#新增详细案例}}
 
 | 行业 | 案例名称 | 核心亮点 |
 |------|---------|---------|
