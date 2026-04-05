@@ -20,7 +20,7 @@
     - [Prop-K-02-01 (窗口时间覆盖完备性)](#prop-k-02-01-窗口时间覆盖完备性)
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 窗口类型选择决策矩阵](#41-窗口类型选择决策矩阵)
