@@ -1,4 +1,4 @@
-# 设计模式: 实时日志分析 (Pattern: Real-time Log Analysis)
+# 设计模式: 实时日志分析 (Pattern: Real-time Log Analysis) {#关系-log-analysis-↦-windowed-aggregation}
 
 > **模式编号**: 06/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4 | **复杂度**: ★★★☆☆
 >
@@ -19,7 +19,7 @@
     - [Prop-K-02-04 (关联传递性)](#prop-k-02-04-关联传递性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [关系: Log Analysis `↦` Windowed Aggregation](#关系-log-analysis-↦-windowed-aggregation)
-    - [关系: Log Analysis `↦` CEP Pattern](#关系-log-analysis-↦-cep-pattern)
+    - [关系: Log Analysis `↦` CEP Pattern](#关系-log-analysis--cep-pattern)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 日志格式解析策略矩阵](#41-日志格式解析策略矩阵)
     - [4.2 日志关联维度分析](#42-日志关联维度分析)

@@ -1,4 +1,4 @@
-# 设计模式: 窗口聚合 (Pattern: Windowed Aggregation)
+# 设计模式: 窗口聚合 (Pattern: Windowed Aggregation) {#关系-windowed-aggregation-↦-def-s-04-05}
 
 > **模式编号**: 02/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4 | **复杂度**: ★★☆☆☆
 >

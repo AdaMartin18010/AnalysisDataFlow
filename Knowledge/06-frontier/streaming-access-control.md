@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [流数据访问控制模型 - RBAC/ABAC/ReBAC](#流数据访问控制模型---rbacabacrebac)
+- [流数据访问控制模型 - RBAC/ABAC/ReBAC](#流数据访问控制模型-rbacabacrebac)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)

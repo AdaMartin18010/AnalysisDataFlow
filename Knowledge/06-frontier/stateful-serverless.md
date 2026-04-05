@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [Stateful Serverless - 有状态函数即服务](#stateful-serverless---有状态函数即服务)
+- [Stateful Serverless - 有状态函数即服务](#stateful-serverless-有状态函数即服务)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-01: Stateful Serverless (有状态无服务器计算)](#def-k-06-01-stateful-serverless-有状态无服务器计算)

@@ -146,7 +146,7 @@ Mermaid图表: 1774
 ### 链接识别
 - 内部链接: `[text](path.md)`
 - 外部链接: `[text](http://...)`
-- 锚点引用: `[text](#anchor)`
+- 锚点引用: `[text](#2-stats-historyjson)`
 
 ## 定时执行
 

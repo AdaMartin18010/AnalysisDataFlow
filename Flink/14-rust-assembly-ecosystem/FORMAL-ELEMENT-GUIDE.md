@@ -111,7 +111,7 @@
 ### 3.2 引用格式
 
 ```markdown
-文档内引用: [Def-WASM-01](#def-wasm-01)
+文档内引用: [Def-WASM-01](#def-wasm-01-webassembly-模块-webassembly-module)
 跨文档引用: [Def-WASM-01](../wasm-3.0/01-wasm-3.0-spec-guide.md#def-wasm-01)
 ```
 

@@ -2,7 +2,7 @@
 
 > 生成时间: 2026-04-04 19:16:58
 
-## 执行摘要
+## 执行摘要 {#1-执行摘要-executive-summary}
 
 | 指标 | 数值 |
 |------|------|
@@ -284,7 +284,7 @@
 | `COMPETITIVE-BENCHMARK-ANALYSIS.md` | 527 | [https://www.mirrorship.cn/zh-CN/blog/d/2025-lakehouse-evolut...](https://www.mirrorship.cn/zh-CN/blog/d/2025-lakehouse-evolution-commercial-trends) | 404 | 页面未找到: HTTP 404 |
 | `CONTRIBUTING.md` | 11 | [#1-贡献方式](#1-贡献方式) | N/A | 锚点不存在: #1-贡献方式 |
 | `CONTRIBUTING.md` | 12 | [#11-文档改进](#11-文档改进) | N/A | 锚点不存在: #11-文档改进 |
-| `CONTRIBUTING.md` | 13 | [#12-错误报告](#12-错误报告) | N/A | 锚点不存在: #12-错误报告 |
+| `CONTRIBUTING.md` | 13 | [#12-错误报告](#错误链接-11028-个) | N/A | 锚点不存在: #12-错误报告 |
 | `CONTRIBUTING.md` | 14 | [#13-功能建议](#13-功能建议) | N/A | 锚点不存在: #13-功能建议 |
 | `CONTRIBUTING.md` | 15 | [#14-代码贡献](#14-代码贡献) | N/A | 锚点不存在: #14-代码贡献 |
 | `CONTRIBUTING.md` | 16 | [#2-文档贡献流程](#2-文档贡献流程) | N/A | 锚点不存在: #2-文档贡献流程 |
@@ -299,7 +299,7 @@
 | `CONTRIBUTING.md` | 25 | [#34-合并策略](#34-合并策略) | N/A | 锚点不存在: #34-合并策略 |
 | `CONTRIBUTING.md` | 26 | [#4-本地验证](#4-本地验证) | N/A | 锚点不存在: #4-本地验证 |
 | `CONTRIBUTING.md` | 27 | [#41-markdown语法检查](#41-markdown语法检查) | N/A | 锚点不存在: #41-markdown语法检查 |
-| `CONTRIBUTING.md` | 28 | [#42-链接检查](#42-链接检查) | N/A | 锚点不存在: #42-链接检查 |
+| `CONTRIBUTING.md` | 28 | [#42-链接检查](#错误链接-11028-个) | N/A | 锚点不存在: #42-链接检查 |
 | `CONTRIBUTING.md` | 29 | [#43-mermaid渲染测试](#43-mermaid渲染测试) | N/A | 锚点不存在: #43-mermaid渲染测试 |
 | `CONTRIBUTING.md` | 30 | [#5-风格指南](#5-风格指南) | N/A | 锚点不存在: #5-风格指南 |
 | `CONTRIBUTING.md` | 31 | [#51-写作风格](#51-写作风格) | N/A | 锚点不存在: #51-写作风格 |
@@ -353,7 +353,7 @@
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#m](#m) | N/A | 锚点不存在: #m |
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#术语快速查找索引-glossary-quick-index](#术语快速查找索引-glossary-quick-index) | N/A | 锚点不存在: #术语快速查找索引-glossary-quick-index |
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#o](#o) | N/A | 锚点不存在: #o |
-| `GLOSSARY-QUICK-INDEX.md` | 11 | [#p](#p) | N/A | 锚点不存在: #p |
+| `GLOSSARY-QUICK-INDEX.md` | 11 | [#p](#http状态码分布) | N/A | 锚点不存在: #p |
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#术语快速查找索引-glossary-quick-index](#术语快速查找索引-glossary-quick-index) | N/A | 锚点不存在: #术语快速查找索引-glossary-quick-index |
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#r](#r) | N/A | 锚点不存在: #r |
 | `GLOSSARY-QUICK-INDEX.md` | 11 | [#s](#s) | N/A | 锚点不存在: #s |
@@ -371,7 +371,7 @@
 | `GLOSSARY.md` | 15 | [#e](#e) | N/A | 锚点不存在: #e |
 | `GLOSSARY.md` | 15 | [#f](#f) | N/A | 锚点不存在: #f |
 | `GLOSSARY.md` | 15 | [#g](#g) | N/A | 锚点不存在: #g |
-| `GLOSSARY.md` | 15 | [#h](#h) | N/A | 锚点不存在: #h |
+| `GLOSSARY.md` | 15 | [#h](#http状态码分布) | N/A | 锚点不存在: #h |
 | `GLOSSARY.md` | 15 | [#i](#i) | N/A | 锚点不存在: #i |
 | `GLOSSARY.md` | 15 | [#j](#j) | N/A | 锚点不存在: #j |
 | `GLOSSARY.md` | 15 | [#k](#k) | N/A | 锚点不存在: #k |
@@ -379,11 +379,11 @@
 | `GLOSSARY.md` | 15 | [#m](#m) | N/A | 锚点不存在: #m |
 | `GLOSSARY.md` | 15 | [#n](#n) | N/A | 锚点不存在: #n |
 | `GLOSSARY.md` | 15 | [#o](#o) | N/A | 锚点不存在: #o |
-| `GLOSSARY.md` | 15 | [#p](#p) | N/A | 锚点不存在: #p |
+| `GLOSSARY.md` | 15 | [#p](#http状态码分布) | N/A | 锚点不存在: #p |
 | `GLOSSARY.md` | 15 | [#q](#q) | N/A | 锚点不存在: #q |
 | `GLOSSARY.md` | 15 | [#r](#r) | N/A | 锚点不存在: #r |
 | `GLOSSARY.md` | 15 | [#s](#s) | N/A | 锚点不存在: #s |
-| `GLOSSARY.md` | 15 | [#t](#t) | N/A | 锚点不存在: #t |
+| `GLOSSARY.md` | 15 | [#t](#http状态码分布) | N/A | 锚点不存在: #t |
 | `GLOSSARY.md` | 15 | [#u](#u) | N/A | 锚点不存在: #u |
 | `GLOSSARY.md` | 15 | [#v](#v) | N/A | 锚点不存在: #v |
 | `GLOSSARY.md` | 15 | [#w](#w) | N/A | 锚点不存在: #w |
@@ -894,7 +894,7 @@
 | `GLOSSARY.md` | 2269 | [#e](#e) | N/A | 锚点不存在: #e |
 | `GLOSSARY.md` | 2281 | [#a](#a) | N/A | 锚点不存在: #a |
 | `GLOSSARY.md` | 2281 | [#b](#b) | N/A | 锚点不存在: #b |
-| `GLOSSARY.md` | 2281 | [#h](#h) | N/A | 锚点不存在: #h |
+| `GLOSSARY.md` | 2281 | [#h](#http状态码分布) | N/A | 锚点不存在: #h |
 | `GLOSSARY.md` | 2297 | [#a](#a) | N/A | 锚点不存在: #a |
 | `GLOSSARY.md` | 2297 | [#a](#a) | N/A | 锚点不存在: #a |
 | `GLOSSARY.md` | 2297 | [#c](#c) | N/A | 锚点不存在: #c |
@@ -1420,7 +1420,7 @@
 | `Knowledge\00-INDEX.md` | 23 | [#32-模式关系图](#32-模式关系图) | N/A | 锚点不存在: #32-模式关系图 |
 | `Knowledge\00-INDEX.md` | 24 | [#33-模式选型矩阵](#33-模式选型矩阵) | N/A | 锚点不存在: #33-模式选型矩阵 |
 | `Knowledge\00-INDEX.md` | 25 | [#4-业务场景矩阵-business-scenario-matrix](#4-业务场景矩阵-business-scenario-matrix) | N/A | 锚点不存在: #4-业务场景矩阵-business-scenario-matrix |
-| `Knowledge\00-INDEX.md` | 26 | [#41-领域--](#41-领域--) | N/A | 锚点不存在: #41-领域-- |
+| `Knowledge\00-INDEX.md` | 26 | [#41-领域--](#警告链接-149-个) | N/A | 锚点不存在: #41-领域-- |
 | `Knowledge\00-INDEX.md` | 27 | [#42-场景深度分析](#42-场景深度分析) | N/A | 锚点不存在: #42-场景深度分析 |
 | `Knowledge\00-INDEX.md` | 28 | [#场景-1-iot-物联网数据处理](#场景-1-iot-物联网数据处理) | N/A | 锚点不存在: #场景-1-iot-物联网数据处理 |
 | `Knowledge\00-INDEX.md` | 29 | [#场景-2-金融实时风控](#场景-2-金融实时风控) | N/A | 锚点不存在: #场景-2-金融实时风控 |
@@ -2766,7 +2766,7 @@
 | `Struct\02-properties\02.07-encrypted-stream-processing.md` | 884 | [https://github.com/ibm/helib](https://github.com/ibm/helib) | 404 | 页面未找到: HTTP 404 |
 | `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 9 | [#actor-到-csp-编码-actor-to-csp-encoding](#actor-到-csp-编码-actor-to-csp-encoding) | N/A | 锚点不存在: #actor-到-csp-编码-actor-to-csp-encoding |
 | `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 10 | [#目录](#目录) | N/A | 锚点不存在: #目录 |
-| `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 11 | [#摘要](#摘要) | N/A | 锚点不存在: #摘要 |
+| `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 11 | [#摘要](#执行摘要) | N/A | 锚点不存在: #摘要 |
 | `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 12 | [#1-概念定义-definitions](#1-概念定义-definitions) | N/A | 锚点不存在: #1-概念定义-definitions |
 | `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 13 | [#11-actor-系统配置的形式化定义](#11-actor-系统配置的形式化定义) | N/A | 锚点不存在: #11-actor-系统配置的形式化定义 |
 | `Struct\03-relationships\03.01-actor-to-csp-encoding.md` | 14 | [#12-csp-进程语法子集](#12-csp-进程语法子集) | N/A | 锚点不存在: #12-csp-进程语法子集 |
@@ -3522,7 +3522,7 @@
 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 818 | [C.](C.) | N/A | 文件不存在: Struct\06-frontier\C. |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 11 | [#choreographic-流编程前沿-choreographic-streaming-programming-fro...](#choreographic-流编程前沿-choreographic-streaming-programming-frontier) | N/A | 锚点不存在: #choreographic-流编程前沿-choreographic-streamin... |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 12 | [#目录](#目录) | N/A | 锚点不存在: #目录 |
-| `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 13 | [#摘要](#摘要) | N/A | 锚点不存在: #摘要 |
+| `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 13 | [#摘要](#执行摘要) | N/A | 锚点不存在: #摘要 |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 14 | [#1-概念定义-definitions](#1-概念定义-definitions) | N/A | 锚点不存在: #1-概念定义-definitions |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 15 | [#def-s-20-01-choreographic-programming-核心概念](#def-s-20-01-choreographic-programming-核心概念) | N/A | 锚点不存在: #def-s-20-01-choreographic-programming-核心概念 |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 16 | [#def-s-20-02-choreographic-流程序](#def-s-20-02-choreographic-流程序) | N/A | 锚点不存在: #def-s-20-02-choreographic-流程序 |
@@ -3574,7 +3574,7 @@
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 1304 | [Choral](Choral) | N/A | 文件不存在: Struct\06-frontier\Choral |
 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 9 | [#ai-agent-与会话类型-ai-agent-and-session-types](#ai-agent-与会话类型-ai-agent-and-session-types) | N/A | 锚点不存在: #ai-agent-与会话类型-ai-agent-and-session-types |
 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 10 | [#目录](#目录) | N/A | 锚点不存在: #目录 |
-| `Struct\06-frontier\06.03-ai-agent-session-types.md` | 11 | [#摘要](#摘要) | N/A | 锚点不存在: #摘要 |
+| `Struct\06-frontier\06.03-ai-agent-session-types.md` | 11 | [#摘要](#执行摘要) | N/A | 锚点不存在: #摘要 |
 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 12 | [#1-概念定义-definitions](#1-概念定义-definitions) | N/A | 锚点不存在: #1-概念定义-definitions |
 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 13 | [#def-s-29-01-ai-agent-形式化模型](#def-s-29-01-ai-agent-形式化模型) | N/A | 锚点不存在: #def-s-29-01-ai-agent-形式化模型 |
 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 14 | [#def-s-29-02-multi-agent-会话类型-mast](#def-s-29-02-multi-agent-会话类型-mast) | N/A | 锚点不存在: #def-s-29-02-multi-agent-会话类型-mast |
@@ -5026,10 +5026,10 @@
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 13 | [#def-k-04-01-并发范式-concurrency-paradigm](#def-k-04-01-并发范式-concurrency-paradigm) | N/A | 锚点不存在: #def-k-04-01-并发范式-concurrency-paradigm |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 14 | [#def-k-04-02-选型决策空间-selection-decision-space](#def-k-04-02-选型决策空间-selection-decision-space) | N/A | 锚点不存在: #def-k-04-02-选型决策空间-selection-decision-spac... |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 15 | [#def-k-04-03-五大核心范式定义](#def-k-04-03-五大核心范式定义) | N/A | 锚点不存在: #def-k-04-03-五大核心范式定义 |
-| `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 16 | [#actor-模型](#actor-模型) | N/A | 锚点不存在: #actor-模型 |
+| `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 16 | [#actor-模型](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #actor-模型 |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 17 | [#csp-communicating-sequential-processes](#csp-communicating-sequential-processes) | N/A | 锚点不存在: #csp-communicating-sequential-processes |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 18 | [#dataflow-模型](#dataflow-模型) | N/A | 锚点不存在: #dataflow-模型 |
-| `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 19 | [#shared-memory](#shared-memory) | N/A | 锚点不存在: #shared-memory |
+| `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 19 | [#shared-memory](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #shared-memory |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 20 | [#stm-software-transactional-memory](#stm-software-transactional-memory) | N/A | 锚点不存在: #stm-software-transactional-memory |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 21 | [#def-k-04-04-范式适配度-paradigm-fitness](#def-k-04-04-范式适配度-paradigm-fitness) | N/A | 锚点不存在: #def-k-04-04-范式适配度-paradigm-fitness |
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 22 | [#2-属性推导-properties](#2-属性推导-properties) | N/A | 锚点不存在: #2-属性推导-properties |
@@ -6391,7 +6391,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 21 | [#41-使用-asyncfunction](#41-使用-asyncfunction) | N/A | 锚点不存在: #41-使用-asyncfunction |
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 22 | [#42-使用-lookup-jointable-api](#42-使用-lookup-jointable-api) | N/A | 锚点不存在: #42-使用-lookup-jointable-api |
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 23 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 24 | [#51-错误示例](#51-错误示例) | N/A | 锚点不存在: #51-错误示例 |
+| `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 24 | [#51-错误示例](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 25 | [#52-正确示例](#52-正确示例) | N/A | 锚点不存在: #52-正确示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 26 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-05-blocking-io-processfunction.md` | 27 | [#案例用户画像实时补全](#案例用户画像实时补全) | N/A | 锚点不存在: #案例用户画像实时补全 |
@@ -6410,7 +6410,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 19 | [#42-使用-pojo-类型](#42-使用-pojo-类型) | N/A | 锚点不存在: #42-使用-pojo-类型 |
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 20 | [#43-使用-avroprotobuf](#43-使用-avroprotobuf) | N/A | 锚点不存在: #43-使用-avroprotobuf |
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 21 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 22 | [#51-错误示例](#51-错误示例) | N/A | 锚点不存在: #51-错误示例 |
+| `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 22 | [#51-错误示例](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 23 | [#52-正确示例](#52-正确示例) | N/A | 锚点不存在: #52-正确示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 24 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-06-serialization-overhead.md` | 25 | [#案例大规模日志处理](#案例大规模日志处理) | N/A | 锚点不存在: #案例大规模日志处理 |
@@ -6429,7 +6429,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 19 | [#42-结合使用-aggregate--processwindow](#42-结合使用-aggregate--processwindow) | N/A | 锚点不存在: #42-结合使用-aggregate--processwindow |
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 20 | [#43-使用-evictor-限制状态](#43-使用-evictor-限制状态) | N/A | 锚点不存在: #43-使用-evictor-限制状态 |
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 21 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 22 | [#51-错误示例](#51-错误示例) | N/A | 锚点不存在: #51-错误示例 |
+| `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 22 | [#51-错误示例](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 23 | [#52-正确示例](#52-正确示例) | N/A | 锚点不存在: #52-正确示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 24 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-07-window-state-explosion.md` | 25 | [#案例实时用户行为统计](#案例实时用户行为统计) | N/A | 锚点不存在: #案例实时用户行为统计 |
@@ -6448,7 +6448,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 19 | [#42-自动扩缩容](#42-自动扩缩容) | N/A | 锚点不存在: #42-自动扩缩容 |
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 20 | [#43-限流降级](#43-限流降级) | N/A | 锚点不存在: #43-限流降级 |
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 21 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 22 | [#51-错误做法](#51-错误做法) | N/A | 锚点不存在: #51-错误做法 |
+| `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 22 | [#51-错误做法](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误做法 |
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 23 | [#52-正确做法](#52-正确做法) | N/A | 锚点不存在: #52-正确做法 |
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 24 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-08-ignoring-backpressure.md` | 25 | [#案例大促期间系统崩溃](#案例大促期间系统崩溃) | N/A | 锚点不存在: #案例大促期间系统崩溃 |
@@ -6467,7 +6467,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 19 | [#42-配置空闲源](#42-配置空闲源) | N/A | 锚点不存在: #42-配置空闲源 |
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 20 | [#43-使用-cogroup-处理不平衡流](#43-使用-cogroup-处理不平衡流) | N/A | 锚点不存在: #43-使用-cogroup-处理不平衡流 |
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 21 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 22 | [#51-错误示例](#51-错误示例) | N/A | 锚点不存在: #51-错误示例 |
+| `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 22 | [#51-错误示例](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 23 | [#52-正确示例](#52-正确示例) | N/A | 锚点不存在: #52-正确示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 24 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-09-multi-stream-join-misalignment.md` | 25 | [#案例订单支付实时匹配](#案例订单支付实时匹配) | N/A | 锚点不存在: #案例订单支付实时匹配 |
@@ -6486,7 +6486,7 @@
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 19 | [#42-配置示例](#42-配置示例) | N/A | 锚点不存在: #42-配置示例 |
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 20 | [#43-使用-rocksdb-减少堆压力](#43-使用-rocksdb-减少堆压力) | N/A | 锚点不存在: #43-使用-rocksdb-减少堆压力 |
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 21 | [#5-代码示例-code-examples](#5-代码示例-code-examples) | N/A | 锚点不存在: #5-代码示例-code-examples |
-| `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 22 | [#51-错误配置](#51-错误配置) | N/A | 锚点不存在: #51-错误配置 |
+| `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 22 | [#51-错误配置](#错误链接-11028-个) | N/A | 锚点不存在: #51-错误配置 |
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 23 | [#52-正确配置](#52-正确配置) | N/A | 锚点不存在: #52-正确配置 |
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 24 | [#6-实例验证-examples](#6-实例验证-examples) | N/A | 锚点不存在: #6-实例验证-examples |
 | `Knowledge\09-anti-patterns\anti-pattern-10-resource-estimation-oom.md` | 25 | [#案例大状态作业-oom](#案例大状态作业-oom) | N/A | 锚点不存在: #案例大状态作业-oom |
@@ -7139,7 +7139,7 @@
 | `Flink\01-architecture\datastream-v2-semantics.md` | 37 | [#示例-61-端到端-datastream-v2-作业](#示例-61-端到端-datastream-v2-作业) | N/A | 锚点不存在: #示例-61-端到端-datastream-v2-作业 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 38 | [#示例-62-record-attributes-的使用](#示例-62-record-attributes-的使用) | N/A | 锚点不存在: #示例-62-record-attributes-的使用 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 39 | [#7-可视化-visualizations](#7-可视化-visualizations) | N/A | 锚点不存在: #7-可视化-visualizations |
-| `Flink\01-architecture\datastream-v2-semantics.md` | 40 | [#datastream-v2-执行模型](#datastream-v2-执行模型) | N/A | 锚点不存在: #datastream-v2-执行模型 |
+| `Flink\01-architecture\datastream-v2-semantics.md` | 40 | [#datastream-v2-执行模型](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #datastream-v2-执行模型 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 41 | [#8-引用参考-references](#8-引用参考-references) | N/A | 锚点不存在: #8-引用参考-references |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 65 | [P.](P.) | N/A | 文件不存在: Flink\01-architecture\P. |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 94 | [Apache](Apache) | N/A | 文件不存在: Flink\01-architecture\Apache |
@@ -7425,7 +7425,7 @@
 | `Flink\02-core-mechanisms\async-execution-model.md` | 35 | [#示例-63-异步执行错误处理模式](#示例-63-异步执行错误处理模式) | N/A | 锚点不存在: #示例-63-异步执行错误处理模式 |
 | `Flink\02-core-mechanisms\async-execution-model.md` | 36 | [#示例-64-与同步模式的性能对比实测](#示例-64-与同步模式的性能对比实测) | N/A | 锚点不存在: #示例-64-与同步模式的性能对比实测 |
 | `Flink\02-core-mechanisms\async-execution-model.md` | 37 | [#7-可视化-visualizations](#7-可视化-visualizations) | N/A | 锚点不存在: #7-可视化-visualizations |
-| `Flink\02-core-mechanisms\async-execution-model.md` | 38 | [#aec-架构图](#aec-架构图) | N/A | 锚点不存在: #aec-架构图 |
+| `Flink\02-core-mechanisms\async-execution-model.md` | 38 | [#aec-架构图](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #aec-架构图 |
 | `Flink\02-core-mechanisms\async-execution-model.md` | 39 | [#同步-vs-异步执行时序图](#同步-vs-异步执行时序图) | N/A | 锚点不存在: #同步-vs-异步执行时序图 |
 | `Flink\02-core-mechanisms\async-execution-model.md` | 40 | [#按键有序性保证示意图](#按键有序性保证示意图) | N/A | 锚点不存在: #按键有序性保证示意图 |
 | `Flink\02-core-mechanisms\async-execution-model.md` | 41 | [#8-工程实践指南](#8-工程实践指南) | N/A | 锚点不存在: #8-工程实践指南 |
@@ -8684,7 +8684,7 @@
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 49 | [#91-技术选型-checklist](#91-技术选型-checklist) | N/A | 锚点不存在: #91-技术选型-checklist |
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 50 | [#92-迁移与集成建议](#92-迁移与集成建议) | N/A | 锚点不存在: #92-迁移与集成建议 |
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 51 | [#93-混合架构最佳实践](#93-混合架构最佳实践) | N/A | 锚点不存在: #93-混合架构最佳实践 |
-| `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 52 | [#10-结论](#10-结论) | N/A | 锚点不存在: #10-结论 |
+| `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 52 | [#10-结论](#错误链接-11028-个) | N/A | 锚点不存在: #10-结论 |
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 53 | [#101-核心观点总结](#101-核心观点总结) | N/A | 锚点不存在: #101-核心观点总结 |
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 54 | [#102-未来演进趋势](#102-未来演进趋势) | N/A | 锚点不存在: #102-未来演进趋势 |
 | `Flink\05-vs-competitors\flink-vs-kafka-streams.md` | 55 | [#参考文献-references](#参考文献-references) | N/A | 锚点不存在: #参考文献-references |
@@ -8723,7 +8723,7 @@
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 41 | [#91-技术选型-checklist](#91-技术选型-checklist) | N/A | 锚点不存在: #91-技术选型-checklist |
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 42 | [#92-迁移建议](#92-迁移建议) | N/A | 锚点不存在: #92-迁移建议 |
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 43 | [#93-混合架构建议](#93-混合架构建议) | N/A | 锚点不存在: #93-混合架构建议 |
-| `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 44 | [#10-结论](#10-结论) | N/A | 锚点不存在: #10-结论 |
+| `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 44 | [#10-结论](#错误链接-11028-个) | N/A | 锚点不存在: #10-结论 |
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 45 | [#101-核心观点总结](#101-核心观点总结) | N/A | 锚点不存在: #101-核心观点总结 |
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 46 | [#102-未来趋势展望](#102-未来趋势展望) | N/A | 锚点不存在: #102-未来趋势展望 |
 | `Flink\05-vs-competitors\flink-vs-spark-streaming.md` | 47 | [#参考文献-references](#参考文献-references) | N/A | 锚点不存在: #参考文献-references |
@@ -9767,7 +9767,7 @@
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 40 | [#65-错误处理和重试策略](#65-错误处理和重试策略) | N/A | 锚点不存在: #65-错误处理和重试策略 |
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 41 | [#66-混合-table-api--async-datastream-api](#66-混合-table-api--async-datastream-api) | N/A | 锚点不存在: #66-混合-table-api--async-datastream-api |
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 42 | [#7-可视化-visualizations](#7-可视化-visualizations) | N/A | 锚点不存在: #7-可视化-visualizations |
-| `Flink\09-language-foundations\02.03-python-async-api.md` | 43 | [#71-async-api-执行架构](#71-async-api-执行架构) | N/A | 锚点不存在: #71-async-api-执行架构 |
+| `Flink\09-language-foundations\02.03-python-async-api.md` | 43 | [#71-async-api-执行架构](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #71-async-api-执行架构 |
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 44 | [#72-大模型集成架构](#72-大模型集成架构) | N/A | 锚点不存在: #72-大模型集成架构 |
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 45 | [#73-配置决策树](#73-配置决策树) | N/A | 锚点不存在: #73-配置决策树 |
 | `Flink\09-language-foundations\02.03-python-async-api.md` | 46 | [#74-性能调优流程图](#74-性能调优流程图) | N/A | 锚点不存在: #74-性能调优流程图 |
@@ -10457,7 +10457,7 @@
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 37 | [#gitops配置实例](#gitops配置实例) | N/A | 锚点不存在: #gitops配置实例 |
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 38 | [#argocd配置](#argocd配置) | N/A | 锚点不存在: #argocd配置 |
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 39 | [#目录结构](#目录结构) | N/A | 锚点不存在: #目录结构 |
-| `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 40 | [#kustomize配置](#kustomize配置) | N/A | 锚点不存在: #kustomize配置 |
+| `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 40 | [#kustomize配置](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #kustomize配置 |
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 41 | [#cicd-pipeline-github-actions](#cicd-pipeline-github-actions) | N/A | 锚点不存在: #cicd-pipeline-github-actions |
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 42 | [#7-可视化-visualizations](#7-可视化-visualizations) | N/A | 锚点不存在: #7-可视化-visualizations |
 | `Flink\10-deployment\kubernetes-deployment-production-guide.md` | 43 | [#71-flink-on-k8s生产架构全景图](#71-flink-on-k8s生产架构全景图) | N/A | 锚点不存在: #71-flink-on-k8s生产架构全景图 |
@@ -10716,7 +10716,7 @@
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 50 | [#81-核心特性时间线](#81-核心特性时间线) | N/A | 锚点不存在: #81-核心特性时间线 |
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 51 | [#82-cancellation-取消令牌](#82-cancellation-取消令牌) | N/A | 锚点不存在: #82-cancellation-取消令牌 |
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 52 | [#83-specialization-优化](#83-specialization-优化) | N/A | 锚点不存在: #83-specialization-优化 |
-| `Flink\13-wasm\wasi-0.3-async-preview.md` | 53 | [#84-stream-优化](#84-stream-优化) | N/A | 锚点不存在: #84-stream-优化 |
+| `Flink\13-wasm\wasi-0.3-async-preview.md` | 53 | [#84-stream-优化](#1-执行摘要-executive-summary) | N/A | 锚点不存在: #84-stream-优化 |
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 54 | [#85-caller-supplied-buffers](#85-caller-supplied-buffers) | N/A | 锚点不存在: #85-caller-supplied-buffers |
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 55 | [#86-threads-支持](#86-threads-支持) | N/A | 锚点不存在: #86-threads-支持 |
 | `Flink\13-wasm\wasi-0.3-async-preview.md` | 56 | [#9-与-flink-集成的未来](#9-与-flink-集成的未来) | N/A | 锚点不存在: #9-与-flink-集成的未来 |
