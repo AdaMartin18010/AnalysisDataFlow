@@ -35,6 +35,9 @@ LINK_WHITELIST = {
     # 特殊协议
     'javascript:void(0)',
     '#',
+    # LaTeX 假阳性模式
+    r'\bar{e}',
+    r'\theta(',
     # 常见误报模式（代码中的泛型语法）
 }
 
@@ -154,6 +157,18 @@ def extract_links(content: str) -> List[Tuple[str, str, int, bool]]:
     for match in re.finditer(code_pattern, content):
         code_blocks.append((match.start(), match.end()))
     
+    # 找到所有行内 LaTeX 公式位置 ($...$)
+    latex_blocks = []
+    latex_pattern = r'\$[^\$]+\$'
+    for match in re.finditer(latex_pattern, content):
+        latex_blocks.append((match.start(), match.end()))
+    
+    # 找到所有 LaTeX 块位置 ($$...$$)
+    latex_display_blocks = []
+    latex_display_pattern = r'\$\$[\s\S]*?\$\$'
+    for match in re.finditer(latex_display_pattern, content):
+        latex_display_blocks.append((match.start(), match.end()))
+    
     for match in re.finditer(pattern, content):
         text = match.group(1)
         url = match.group(2).split(' ')[0]  # 移除标题属性
@@ -161,6 +176,14 @@ def extract_links(content: str) -> List[Tuple[str, str, int, bool]]:
         
         # 检查是否在代码块内
         is_in_code = any(start <= pos <= end for start, end in code_blocks)
+        
+        # 检查是否在 LaTeX 公式内
+        is_in_latex = any(start <= pos <= end for start, end in latex_blocks)
+        is_in_latex_display = any(start <= pos <= end for start, end in latex_display_blocks)
+        
+        # 如果在代码块或 LaTeX 公式内，标记为 is_in_code=True
+        if is_in_latex or is_in_latex_display:
+            is_in_code = True
         
         links.append((text, url, pos, is_in_code))
     
@@ -189,6 +212,10 @@ def validate_internal_link(url: str, source_file: Path, all_files: Set[str]) -> 
     
     if not url_without_anchor:
         # 只有锚点，验证锚点即可
+        return True, None
+    
+    # 检查是否在白名单中
+    if url_without_anchor in LINK_WHITELIST:
         return True, None
     
     # 检查是否是文件扩展名白名单
