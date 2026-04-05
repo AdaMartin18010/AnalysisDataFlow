@@ -1,0 +1,903 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "generated_at": "2026-04-05",
+    "total_documents": 451,
+    "classification_criteria": {
+      "core": "季度更新 | 99%准确率 | 六段式完整",
+      "advanced": "半年审查 | 95%准确率 | 主要章节完整",
+      "reference": "按需维护 | 90%准确率 | 基本结构完整"
+    }
+  },
+  "core": {
+    "count": 48,
+    "percentage": "10.6%",
+    "description": "核心层：理论基础、核心机制、设计模式、最佳实践",
+    "documents": [
+      {
+        "path": "Struct/01-foundation/01.01-unified-streaming-theory.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.02-process-calculus-primer.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.03-actor-model-formalization.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.04-dataflow-model-formalization.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.05-csp-formalization.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.06-petri-net-formalization.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/01.07-session-types.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/01-foundation/stream-processing-semantics-formalization.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/02-properties/02.01-determinism-in-streaming.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/02-properties/02.02-consistency-hierarchy.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/02-properties/02.03-watermark-monotonicity.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Struct/02-properties/02.04-liveness-and-safety.md",
+        "maintainer": "@theory-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/checkpoint-mechanism-deep-dive.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/exactly-once-semantics-deep-dive.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/time-semantics-and-watermark.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/flink-state-management-complete-guide.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/backpressure-and-flow-control.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/async-execution-model.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/exactly-once-end-to-end.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/flink-state-ttl-best-practices.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/state-backends-deep-comparison.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/streaming-etl-best-practices.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/smart-checkpointing-strategies.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/adaptive-execution-engine-v2.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/forst-state-backend.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/flink-2.0-async-execution-model.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/flink-2.0-forst-state-backend.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/multi-way-join-optimization.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/delta-join.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/delta-join-production-guide.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/02-core/flink-2.2-frontier-features.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/01-concepts/datastream-v2-semantics.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Flink/01-concepts/flink-1.x-vs-2.0-comparison.md",
+        "maintainer": "@core-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-stateful-computation.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-windowed-aggregation.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-event-time-processing.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-checkpoint-recovery.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-async-io-enrichment.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-cep-complex-event.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/02-design-patterns/pattern-side-output.md",
+        "maintainer": "@pattern-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.01-flink-production-checklist.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.02-performance-tuning-patterns.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.03-troubleshooting-guide.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P0",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.06-high-availability-patterns.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      },
+      {
+        "path": "Knowledge/07-best-practices/07.07-testing-strategies-complete.md",
+        "maintainer": "@practice-maintainer",
+        "priority": "P1",
+        "last_review": "2026-Q1",
+        "next_review": "2026-Q2"
+      }
+    ]
+  },
+  "advanced": {
+    "count": 92,
+    "percentage": "20.4%",
+    "description": "进阶层：API文档、业务案例、运行时指南、生态系统",
+    "documents": [
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-materialized-table-deep-dive.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/materialized-tables.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/built-in-functions-complete-list.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/data-types-complete-reference.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-sql-hints-optimization.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-process-table-functions.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-python-udf.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/query-optimization-analysis.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/vector-search.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/flink-vector-search-rag.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/09-language-foundations/flink-language-support-complete-guide.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/09-language-foundations/pyflink-complete-guide.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/03-api/09-language-foundations/sql-functions-cheatsheet.md",
+        "maintainer": "@api-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/kubernetes-deployment.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/flink-serverless-architecture.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.02-operations/production-checklist.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.02-operations/rest-api-complete-reference.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.03-observability/flink-observability-complete-guide.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.03-observability/metrics-and-monitoring.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.03-observability/distributed-tracing.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/04-runtime/04.03-observability/realtime-data-quality-monitoring.md",
+        "maintainer": "@runtime-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/jdbc-connector-complete-guide.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/elasticsearch-connector-complete-guide.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/mongodb-connector-complete-guide.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-deep-dive-2026.md",
+        "maintainer": "@eco-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/fintech-realtime-risk-control.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/iot-stream-processing.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/real-time-recommendation.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/alibaba-double11-flink.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/netflix-streaming-pipeline.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/uber-realtime-platform.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/stripe-payment-processing.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/spotify-music-recommendation.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/gaming-analytics.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/log-monitoring.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/03-business-patterns/streaming-data-product-economics.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/04-technology-selection/engine-selection-guide.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/04-technology-selection/paradigm-selection-guide.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/04-technology-selection/storage-selection-guide.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/04-technology-selection/flink-vs-risingwave.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/04-technology-selection/streaming-database-guide.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/05-mapping-guides/struct-to-flink-mapping.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/05-mapping-guides/theory-to-code-patterns.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      },
+      {
+        "path": "Knowledge/05-mapping-guides/migration-guides/05.4-flink-1x-to-2x-migration.md",
+        "maintainer": "@business-maintainer",
+        "last_review": "2025-12",
+        "next_review": "2026-06"
+      }
+    ]
+  },
+  "reference": {
+    "count": 311,
+    "percentage": "69.0%",
+    "description": "参考层：前沿探索、路线图、案例研究、工具配置等补充内容",
+    "categories": {
+      "struct_relationships_proofs": {
+        "description": "Struct关系映射与形式化证明",
+        "paths": [
+          "Struct/03-relationships/",
+          "Struct/04-proofs/",
+          "Struct/05-comparative-analysis/",
+          "Struct/06-frontier/",
+          "Struct/07-tools/",
+          "Struct/08-standards/"
+        ]
+      },
+      "flink_ai_ml": {
+        "description": "Flink AI/ML集成（快速发展领域）",
+        "paths": [
+          "Flink/06-ai-ml/"
+        ]
+      },
+      "flink_rust_experimental": {
+        "description": "Rust原生与实验性特性",
+        "paths": [
+          "Flink/07-rust-native/"
+        ]
+      },
+      "flink_roadmap": {
+        "description": "路线图与版本追踪（时效性强）",
+        "paths": [
+          "Flink/08-roadmap/",
+          "Flink/00-meta/"
+        ]
+      },
+      "flink_practices": {
+        "description": "具体实践与案例研究",
+        "paths": [
+          "Flink/09-practices/"
+        ]
+      },
+      "knowledge_frontier": {
+        "description": "前沿技术与探索",
+        "paths": [
+          "Knowledge/06-frontier/"
+        ]
+      },
+      "knowledge_case_studies": {
+        "description": "具体行业案例",
+        "paths": [
+          "Knowledge/10-case-studies/"
+        ]
+      },
+      "knowledge_anti_patterns": {
+        "description": "反模式与问题排查",
+        "paths": [
+          "Knowledge/09-anti-patterns/"
+        ]
+      },
+      "knowledge_standards": {
+        "description": "标准与规范",
+        "paths": [
+          "Knowledge/08-standards/"
+        ]
+      },
+      "knowledge_exercises": {
+        "description": "练习与快速参考",
+        "paths": [
+          "Knowledge/98-exercises/"
+        ]
+      },
+      "knowledge_misc": {
+        "description": "其他Knowledge文档",
+        "paths": [
+          "Knowledge/01-concept-atlas/",
+          "Knowledge/cep-complete-tutorial.md",
+          "Knowledge/kafka-streams-migration.md",
+          "Knowledge/learning-path-recommender.md",
+          "Knowledge/personalized-learning-engine.md",
+          "Knowledge/production-checklist.md",
+          "Knowledge/production-deployment-checklist.md",
+          "Knowledge/3.10-flink-production-checklist.md",
+          "Knowledge/05-migrations/"
+        ]
+      },
+      "flink_misc": {
+        "description": "其他Flink文档",
+        "paths": [
+          "Flink/built-in-functions-reference.md",
+          "Flink/data-types-complete-reference.md",
+          "Flink/elasticsearch-connector-guide.md",
+          "Flink/flink-built-in-functions-reference.md",
+          "Flink/flink-cep-complete-tutorial.md",
+          "Flink/flink-data-types-reference.md",
+          "Flink/flink-pyflink-deep-dive.md",
+          "Flink/flink-state-backends-comparison.md",
+          "Flink/jdbc-connector-guide.md",
+          "Flink/materialize-comparison.md",
+          "Flink/mongodb-connector-guide.md",
+          "Flink/pulsar-functions-integration.md",
+          "Flink/pyflink-deep-guide.md",
+          "Flink/risingwave-integration-guide.md",
+          "Flink/state-backends-comparison.md",
+          "Flink/3.9-state-backends-deep-comparison.md"
+        ]
+      },
+      "root_docs": {
+        "description": "根目录文档",
+        "paths": [
+          "README.md",
+          "README-EN.md",
+          "QUICK-START.md",
+          "QUICK-START-EN.md",
+          "ARCHITECTURE.md",
+          "BEST-PRACTICES.md",
+          "CASE-STUDIES.md",
+          "CHANGELOG.md",
+          "COMPETITIVE-BENCHMARK-ANALYSIS.md",
+          "COMPATIBILITY-MATRIX.md",
+          "CONTRIBUTING.md",
+          "DEPLOYMENT-ARCHITECTURES.md",
+          "DESIGN-PRINCIPLES.md",
+          "FAQ.md",
+          "GLOSSARY.md",
+          "HISTORY.md",
+          "KNOWLEDGE-GRAPH-GUIDE.md",
+          "LEARNING-PATH-GUIDE.md",
+          "MAINTENANCE-GUIDE.md",
+          "NAVIGATION-INDEX.md",
+          "OBSERVABILITY-GUIDE.md",
+          "PDF-EXPORT-GUIDE.md",
+          "PROJECT-ORGANIZATION-ANALYSIS.md",
+          "PROJECT-QUICK-REFERENCE.md",
+          "PROJECT-TRACKING.md",
+          "REFERENCES.md",
+          "ROADMAP.md",
+          "SEARCH-GUIDE.md",
+          "THEOREM-REGISTRY.md",
+          "TOOLCHAIN.md",
+          "TROUBLESHOOTING.md"
+        ]
+      }
+    },
+    "maintainer": "@community-maintainer",
+    "update_policy": "按需维护，接受社区贡献"
+  }
+}

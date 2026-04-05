@@ -61,7 +61,86 @@
 | | [Knowledge/06-frontier/mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | MCP协议 |
 | | [Knowledge/06-frontier/a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | A2A协议 |
 
-### 1.3 按问题入口
+### 1.3 用户角色导航路径
+
+针对不同用户背景，提供渐进式学习/工作路径：
+
+#### 学术研究者路径
+
+**阶段1 - 理论基础** (1-2天):
+
+| 步骤 | 文档 | 预期产出 |
+|------|------|---------|
+| 1.1 | [Struct/00-INDEX.md](Struct/00-INDEX.md) | 了解形式化等级体系 |
+| 1.2 | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | 掌握统一流理论框架 |
+| 1.3 | [Struct/01-foundation/01.02-process-calculus-primer.md](Struct/01-foundation/01.02-process-calculus-primer.md) | 理解进程演算基础 |
+
+**阶段2 - 形式证明** (2-3天):
+
+| 步骤 | 文档 | 预期产出 |
+|------|------|---------|
+| 2.1 | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | 掌握一致性层级 |
+| 2.2 | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 理解Checkpoint正确性证明 |
+
+**阶段3 - 前沿探索** (持续):
+
+- [Struct/06-frontier/](Struct/06-frontier/) - 前沿研究
+- [Struct/07-tools/smart-casual-verification.md](Struct/07-tools/smart-casual-verification.md) - 验证方法
+
+#### 工程师路径
+
+**阶段1 - 快速入门** (半天):
+
+| 步骤 | 文档 | 预期产出 |
+|------|------|---------|
+| 1.1 | [tutorials/00-5-MINUTE-QUICK-START.md](tutorials/00-5-MINUTE-QUICK-START.md) | 建立基础概念 |
+| 1.2 | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 理解概念关系 |
+
+**阶段2 - 设计模式** (1-2天):
+
+| 步骤 | 文档 | 技能 |
+|------|------|------|
+| 2.1 | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | 事件时间处理 |
+| 2.2 | [Knowledge/02-design-patterns/pattern-stateful-computation.md](Knowledge/02-design-patterns/pattern-stateful-computation.md) | 有状态计算 |
+| 2.3 | [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](Knowledge/02-design-patterns/pattern-windowed-aggregation.md) | 窗口聚合 |
+
+**阶段3 - 避坑实践** (半天):
+
+- [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) - 10大反模式
+- [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) - 性能调优
+
+**阶段4 - 项目实战** (1-2天):
+
+- [tutorials/02-first-flink-job.md](tutorials/02-first-flink-job.md) - 第一个作业
+- [CASE-STUDIES.md](CASE-STUDIES.md) - 案例研究
+
+#### 架构师路径
+
+**阶段1 - 全景认知** (半天):
+
+| 步骤 | 文档 | 目标 |
+|------|------|------|
+| 1.1 | [README.md](README.md) | 项目概览 |
+| 1.2 | [NAVIGATION-INDEX.md](NAVIGATION-INDEX.md) | 导航体系 |
+| 1.3 | [visuals/matrix-engines.md](visuals/matrix-engines.md) | 引擎对比矩阵 |
+
+**阶段2 - 技术选型** (1-2天):
+
+| 步骤 | 文档 | 决策支持 |
+|------|------|---------|
+| 2.1 | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 引擎选型决策树 |
+| 2.2 | [Knowledge/04-technology-selection/flink-vs-risingwave.md](Knowledge/04-technology-selection/flink-vs-risingwave.md) | Flink vs RisingWave |
+| 2.3 | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | 一致性选型 |
+
+**阶段3 - 架构设计** (持续):
+
+- [Flink/01-concepts/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) - 部署架构
+- [Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md](Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) - 数据网格
+- [DEPLOYMENT-ARCHITECTURES.md](DEPLOYMENT-ARCHITECTURES.md) - 架构集
+
+> **详细路径规划**: 参见 [QUICK-START-PATHS.md](QUICK-START-PATHS.md)
+
+### 1.4 按问题入口
 
 | 问题场景 | 诊断文档 | 解决方案 |
 |----------|----------|----------|

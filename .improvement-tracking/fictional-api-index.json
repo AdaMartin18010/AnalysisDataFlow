@@ -1,0 +1,419 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-05T14:30:00+08:00",
+    "scan_scope": "全项目 markdown 文件",
+    "total_files_scanned": 568,
+    "fictional_patterns": [
+      "sql-syntax",
+      "config-parameter", 
+      "maven-dependency",
+      "release-timeline"
+    ]
+  },
+  "summary": {
+    "total_fictional_items": 127,
+    "marked_items": 45,
+    "unmarked_items": 82,
+    "by_type": {
+      "sql-syntax": 58,
+      "config-parameter": 12,
+      "maven-dependency": 23,
+      "release-timeline": 8
+    }
+  },
+  "fictional_items": [
+    {
+      "file": "Flink/00-meta/00-QUICK-START.md",
+      "line": 335,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT sales_assistant",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/00-meta/00-QUICK-START.md",
+      "line": 326,
+      "type": "sql-syntax",
+      "content": "CREATE TOOL search_products",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/00-meta/00-QUICK-START.md",
+      "line": 409,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled: true",
+      "status": "unmarked",
+      "suggested_marker": "# FICTIONAL: 未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md",
+      "line": 12,
+      "type": "sql-syntax",
+      "content": "CREATE MODEL <model_name>",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段，以官方文档为准 -->"
+    },
+    {
+      "file": "Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md",
+      "line": 405,
+      "type": "sql-syntax",
+      "content": "CREATE MODEL log_classifier",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 示例语法，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md",
+      "line": 496,
+      "type": "sql-syntax",
+      "content": "CREATE MODEL sentiment_analyzer",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-agents-flip-531.md",
+      "line": 443,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT customer_support_agent",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: FLIP-531 提案阶段，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-agents-flip-531.md",
+      "line": 504,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT sales_analytics_agent",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计，以官方 FLIP-531 为准 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 367,
+      "type": "sql-syntax",
+      "content": "-- Def-F-12-110a: CREATE AGENT语法",
+      "status": "marked",
+      "existing_marker": "（未来可能的语法，概念设计阶段）"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1339,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT customer_support_agent",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1361,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT tech_support_agent",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1370,
+      "type": "sql-syntax",
+      "content": "CREATE TOOL query_order_status",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1481,
+      "type": "sql-syntax",
+      "content": "CREATE WORKFLOW customer_support_workflow",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1633,
+      "type": "sql-syntax",
+      "content": "CREATE MODEL text_embedding_model",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1667,
+      "type": "sql-syntax",
+      "content": "JOIN ML_PREDICT(...)",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 实验性功能，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "line": 1693,
+      "type": "sql-syntax",
+      "content": "LATERAL TABLE(VECTOR_SEARCH(...))",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 规划功能，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-llm-integration.md",
+      "line": 32,
+      "type": "sql-syntax",
+      "content": "CREATE MODEL <model_name>",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-llm-integration.md",
+      "line": 335,
+      "type": "sql-syntax",
+      "content": "ML_PREDICT(...)",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 实验性功能，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-llm-integration.md",
+      "line": 482,
+      "type": "sql-syntax",
+      "content": "VECTOR_SEARCH(...)",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 规划功能，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md",
+      "line": 1342,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT sales_analytics_agent",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: FLIP-531 提案阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md",
+      "line": 1405,
+      "type": "sql-syntax",
+      "content": "CREATE TOOL query_sales_data",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md",
+      "line": 1576,
+      "type": "sql-syntax",
+      "content": "CREATE WORKFLOW sales_monitoring_workflow",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 概念设计阶段 -->"
+    },
+    {
+      "file": "Flink/06-ai-ml/rag-streaming-architecture.md",
+      "line": 915,
+      "type": "sql-syntax",
+      "content": "ML_PREDICT('text-embedding-3-small', query_text)",
+      "status": "marked",
+      "existing_marker": "注: ML_PREDICT 为实验性功能"
+    },
+    {
+      "file": "Flink/06-ai-ml/rag-streaming-architecture.md",
+      "line": 933,
+      "type": "sql-syntax",
+      "content": "LATERAL TABLE(VECTOR_SEARCH(...))",
+      "status": "marked",
+      "existing_marker": "注: VECTOR_SEARCH 为向量搜索功能（规划中）"
+    },
+    {
+      "file": "Flink/02-core/flink-2.2-frontier-features.md",
+      "line": 49,
+      "type": "sql-syntax",
+      "content": "Def-F-02-25: VECTOR_SEARCH 向量搜索算子",
+      "status": "marked",
+      "existing_marker": "<!-- 注: VECTOR_SEARCH 为向量搜索功能（规划中），尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "line": 516,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT sales_assistant",
+      "status": "marked",
+      "existing_marker": "-- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "line": 535,
+      "type": "sql-syntax",
+      "content": "CREATE AGENT_TEAM customer_service_team",
+      "status": "marked",
+      "existing_marker": "-- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "line": 436,
+      "type": "config-parameter",
+      "content": "serverless.enabled: true",
+      "status": "marked",
+      "existing_marker": "<!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "line": 603,
+      "type": "maven-dependency",
+      "content": "<artifactId>flink-mcp-connector</artifactId>",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 规划中，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "line": 611,
+      "type": "maven-dependency",
+      "content": "<artifactId>flink-serverless</artifactId>",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 规划中，尚未正式发布 -->"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md",
+      "line": 257,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled: true",
+      "status": "unmarked",
+      "suggested_marker": "# FICTIONAL: 未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md",
+      "line": 295,
+      "type": "maven-dependency",
+      "content": "<artifactId>flink-mcp-connector</artifactId>",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 规划中，尚未正式发布 -->"
+    },
+    {
+      "file": "FAQ.md",
+      "line": 325,
+      "type": "maven-dependency",
+      "content": "<artifactId>flink-ai-agents</artifactId>",
+      "status": "marked",
+      "existing_marker": "<!-- 注: flink-ai-agents 为未来可能提供的模块（设计阶段），尚未正式发布 -->"
+    },
+    {
+      "file": "FAQ.md",
+      "line": 1092,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled",
+      "status": "marked",
+      "existing_marker": "# 注: 'ai.agent.enabled' 为未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "FAQ.md",
+      "line": 1155,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled",
+      "status": "marked",
+      "existing_marker": "# 注: 'ai.agent.enabled' 为未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "FAQ.md",
+      "line": 1205,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled",
+      "status": "marked",
+      "existing_marker": "// 注: ai.agent.enabled 为未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "Knowledge/10-case-studies/social-media/10.4.2-realtime-recommendation-content.md",
+      "line": 272,
+      "type": "config-parameter",
+      "content": "ai.agent.enabled",
+      "status": "marked",
+      "existing_marker": "// 注: ai.agent.enabled 为未来配置参数（概念），尚未正式实现"
+    },
+    {
+      "file": "ROADMAP.md",
+      "line": 404,
+      "type": "release-timeline",
+      "content": "Flink 2.3 | 2026 Q2",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 预计时间线，以 Apache Flink 官方发布为准 -->"
+    },
+    {
+      "file": "ROADMAP.md",
+      "line": 405,
+      "type": "release-timeline",
+      "content": "Flink 2.4 | 2026 Q4",
+      "status": "unmarked",
+      "suggested_marker": "<!-- FICTIONAL: 预计时间线，以 Apache Flink 官方发布为准 -->"
+    }
+  ],
+  "files_requiring_attention": [
+    {
+      "file": "Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md",
+      "fictional_count": 21,
+      "priority": "high"
+    },
+    {
+      "file": "Flink/06-ai-ml/flink-llm-integration.md",
+      "fictional_count": 19,
+      "priority": "high"
+    },
+    {
+      "file": "Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md",
+      "fictional_count": 5,
+      "priority": "medium"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "fictional_count": 5,
+      "priority": "medium"
+    },
+    {
+      "file": "Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md",
+      "fictional_count": 4,
+      "priority": "medium"
+    },
+    {
+      "file": "Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md",
+      "fictional_count": 8,
+      "priority": "medium"
+    },
+    {
+      "file": "FAQ.md",
+      "fictional_count": 5,
+      "priority": "high"
+    }
+  ],
+  "pattern_definitions": {
+    "sql-syntax": {
+      "description": "虚构 SQL 语法扩展",
+      "patterns": [
+        "CREATE AGENT",
+        "CREATE MODEL",
+        "CREATE TOOL",
+        "CREATE WORKFLOW",
+        "CREATE AGENT_TEAM",
+        "VECTOR_SEARCH",
+        "ML_PREDICT"
+      ],
+      "rationale": "这些 SQL 语法扩展当前并非 Apache Flink 官方实现，多属于 FLIP 提案或概念设计阶段"
+    },
+    "config-parameter": {
+      "description": "虚构配置参数",
+      "patterns": [
+        "ai.agent.enabled",
+        "serverless.enabled"
+      ],
+      "rationale": "这些配置参数在 Flink 官方文档中不存在，属于概念设计或规划中特性"
+    },
+    "maven-dependency": {
+      "description": "虚构 Maven 依赖",
+      "patterns": [
+        "flink-ai-agent",
+        "flink-ai-agents",
+        "flink-mcp-connector",
+        "flink-serverless",
+        "flink-vector-search"
+      ],
+      "rationale": "这些 Maven artifact 在 Maven Central 或 Flink 官方仓库中不存在"
+    },
+    "release-timeline": {
+      "description": "虚构发布时间线",
+      "patterns": [
+        "2026 Q1发布",
+        "2026 Q2发布",
+        "2026 Q3发布",
+        "2026 Q4发布"
+      ],
+      "rationale": "这些发布时间线为推测性质，应以 Apache Flink 官方发布为准"
+    }
+  }
+}

@@ -1,0 +1,568 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-05T14:30:23+08:00",
+    "version": "1.0",
+    "description": "前瞻性内容统一标注索引 - A2任务",
+    "scan_scope": [
+      "Flink/08-roadmap/",
+      "Flink/02-core/",
+      "Knowledge/06-frontier/"
+    ]
+  },
+  "summary": {
+    "total_files": 76,
+    "has_banner": 6,
+    "missing_banner": 70,
+    "by_directory": {
+      "Flink/08-roadmap": {
+        "total": 12,
+        "has_banner": 4,
+        "missing_banner": 8
+      },
+      "Flink/02-core": {
+        "total": 19,
+        "has_banner": 2,
+        "missing_banner": 17
+      },
+      "Knowledge/06-frontier": {
+        "total": 45,
+        "has_banner": 0,
+        "missing_banner": 45
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md",
+      "type": "version-feature",
+      "status": "has-banner",
+      "target_version": "2.4",
+      "keywords": ["Flink 2.4", "tracking", "roadmap"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md",
+      "type": "version-feature",
+      "status": "has-banner",
+      "target_version": "2.5",
+      "keywords": ["Flink 2.5", "preview", "roadmap"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-25-stream-batch-unification.md",
+      "type": "version-feature",
+      "status": "has-banner",
+      "target_version": "2.5",
+      "keywords": ["Flink 2.5", "stream-batch", "unification"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md",
+      "type": "version-feature",
+      "status": "has-banner",
+      "target_version": "3.0",
+      "keywords": ["Flink 3.0", "architecture", "vision"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md",
+      "type": "planned-api",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["2026", "tasks", "planned"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/community-dynamics-tracking.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["community", "tracking"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md",
+      "type": "version-feature",
+      "status": "missing-banner",
+      "target_version": "2.1",
+      "keywords": ["Flink 2.1", "frontier", "tracking"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md",
+      "type": "version-feature",
+      "status": "missing-banner",
+      "target_version": "2.3/2.4",
+      "keywords": ["Flink 2.3", "Flink 2.4", "roadmap"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-version-comparison-matrix.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["version", "comparison", "matrix"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["version", "evolution", "guide"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/FLIP-TRACKING-SYSTEM.md",
+      "type": "planned-api",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["FLIP", "tracking"]
+    },
+    {
+      "path": "Flink/08-roadmap/08.01-flink-24/release-checklist-template.md",
+      "type": "planned-api",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["release", "checklist", "template"]
+    },
+    {
+      "path": "Flink/02-core/smart-checkpointing-strategies.md",
+      "type": "planned-api",
+      "status": "has-banner",
+      "target_version": "2.4+",
+      "keywords": ["smart", "checkpointing", "strategies"]
+    },
+    {
+      "path": "Flink/02-core/adaptive-execution-engine-v2.md",
+      "type": "planned-api",
+      "status": "has-banner",
+      "target_version": "2.4+",
+      "keywords": ["adaptive", "execution", "engine"]
+    },
+    {
+      "path": "Flink/02-core/async-execution-model.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["async", "execution", "model"]
+    },
+    {
+      "path": "Flink/02-core/backpressure-and-flow-control.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["backpressure", "flow", "control"]
+    },
+    {
+      "path": "Flink/02-core/checkpoint-mechanism-deep-dive.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["checkpoint", "mechanism"]
+    },
+    {
+      "path": "Flink/02-core/delta-join-production-guide.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["delta", "join", "production"]
+    },
+    {
+      "path": "Flink/02-core/delta-join.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["delta", "join"]
+    },
+    {
+      "path": "Flink/02-core/exactly-once-end-to-end.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["exactly-once", "end-to-end"]
+    },
+    {
+      "path": "Flink/02-core/exactly-once-semantics-deep-dive.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["exactly-once", "semantics"]
+    },
+    {
+      "path": "Flink/02-core/flink-2.0-async-execution-model.md",
+      "type": "version-feature",
+      "status": "missing-banner",
+      "target_version": "2.0",
+      "keywords": ["Flink 2.0", "async", "execution"]
+    },
+    {
+      "path": "Flink/02-core/flink-2.0-forst-state-backend.md",
+      "type": "version-feature",
+      "status": "missing-banner",
+      "target_version": "2.0",
+      "keywords": ["Flink 2.0", "forst", "state-backend"]
+    },
+    {
+      "path": "Flink/02-core/flink-2.2-frontier-features.md",
+      "type": "version-feature",
+      "status": "missing-banner",
+      "target_version": "2.2",
+      "keywords": ["Flink 2.2", "frontier", "features"]
+    },
+    {
+      "path": "Flink/02-core/flink-state-management-complete-guide.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["state", "management", "guide"]
+    },
+    {
+      "path": "Flink/02-core/flink-state-ttl-best-practices.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["state", "TTL", "best-practices"]
+    },
+    {
+      "path": "Flink/02-core/forst-state-backend.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["forst", "state-backend"]
+    },
+    {
+      "path": "Flink/02-core/multi-way-join-optimization.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["multi-way", "join", "optimization"]
+    },
+    {
+      "path": "Flink/02-core/state-backends-deep-comparison.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["state-backends", "comparison"]
+    },
+    {
+      "path": "Flink/02-core/streaming-etl-best-practices.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["streaming", "ETL", "best-practices"]
+    },
+    {
+      "path": "Flink/02-core/time-semantics-and-watermark.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["time", "semantics", "watermark"]
+    },
+    {
+      "path": "Knowledge/06-frontier/a2a-protocol-agent-communication.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["A2A", "protocol", "agent"]
+    },
+    {
+      "path": "Knowledge/06-frontier/ai-agent-a2a-protocol.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["AI", "agent", "A2A"]
+    },
+    {
+      "path": "Knowledge/06-frontier/ai-agent-database-workloads.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["AI", "agent", "database"]
+    },
+    {
+      "path": "Knowledge/06-frontier/ai-agent-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["AI", "agent", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/cloud-edge-continuum.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["cloud", "edge", "continuum"]
+    },
+    {
+      "path": "Knowledge/06-frontier/data-streaming-landscape-2025.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["2025", "landscape", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/edge-llm-realtime-inference.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["edge", "LLM", "inference"]
+    },
+    {
+      "path": "Knowledge/06-frontier/edge-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["edge", "streaming", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/edge-streaming-patterns.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["edge", "streaming", "patterns"]
+    },
+    {
+      "path": "Knowledge/06-frontier/faas-dataflow.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["FaaS", "dataflow"]
+    },
+    {
+      "path": "Knowledge/06-frontier/materialize-comparison-guide.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["materialize", "comparison"]
+    },
+    {
+      "path": "Knowledge/06-frontier/mcp-protocol-agent-streaming.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["MCP", "protocol", "agent"]
+    },
+    {
+      "path": "Knowledge/06-frontier/multi-cloud-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["multi-cloud", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/multimodal-ai-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["multimodal", "AI", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/multimodal-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["multimodal", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/real-time-rag-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["real-time", "RAG", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-ai-streaming-2026.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["2026", "AI", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-data-mesh-practice.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["data-mesh", "practice"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-data-product-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["data-product", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-data-quality-validation.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["data-quality", "validation"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-digital-twin-streaming.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["digital-twin", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-feature-store-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["feature-store", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/realtime-graph-streaming-tgnn.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["graph", "streaming", "TGNN"]
+    },
+    {
+      "path": "Knowledge/06-frontier/risingwave-deep-dive.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["risingwave", "deep-dive"]
+    },
+    {
+      "path": "Knowledge/06-frontier/risingwave-integration-guide.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["risingwave", "integration"]
+    },
+    {
+      "path": "Knowledge/06-frontier/rust-streaming-comparison.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["rust", "streaming", "comparison"]
+    },
+    {
+      "path": "Knowledge/06-frontier/rust-streaming-ecosystem.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["rust", "streaming", "ecosystem"]
+    },
+    {
+      "path": "Knowledge/06-frontier/serverless-stream-processing-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["serverless", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/serverless-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["serverless", "streaming", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/serverless-streaming-cost-optimization.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["serverless", "cost-optimization"]
+    },
+    {
+      "path": "Knowledge/06-frontier/stateful-serverless.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["stateful", "serverless"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-access-control.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["streaming", "access-control"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-data-mesh-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["data-mesh", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-database-ecosystem-comparison.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["streaming-database", "ecosystem"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-databases.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["streaming", "databases"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-graph-processing-tgn.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["graph", "processing", "TGN"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["lakehouse", "iceberg", "delta"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-materialized-view-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["materialized-view", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-security-compliance.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["security", "compliance"]
+    },
+    {
+      "path": "Knowledge/06-frontier/streaming-slo-definition.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["SLO", "definition"]
+    },
+    {
+      "path": "Knowledge/06-frontier/temporal-flink-layered-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["temporal", "flink", "architecture"]
+    },
+    {
+      "path": "Knowledge/06-frontier/vector-search-streaming-convergence.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["vector-search", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/wasm-dataflow-patterns.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["WASM", "dataflow"]
+    },
+    {
+      "path": "Knowledge/06-frontier/web3-blockchain-streaming-architecture.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["web3", "blockchain", "streaming"]
+    },
+    {
+      "path": "Knowledge/06-frontier/web3-streaming-analytics-defi.md",
+      "type": "concept-design",
+      "status": "missing-banner",
+      "target_version": null,
+      "keywords": ["web3", "analytics", "DeFi"]
+    }
+  ]
+}
