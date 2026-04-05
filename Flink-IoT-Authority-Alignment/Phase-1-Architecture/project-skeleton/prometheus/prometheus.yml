@@ -1,0 +1,127 @@
+# ============================================================================
+# Prometheus 配置 - Flink IoT 监控
+# 文档编号: F-PROMETHEUS-06
+# 形式化等级: L4
+# 创建时间: 2026-04-05
+# ============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'flink-iot-demo'
+    replica: '{{.ExternalURL}}'
+
+# Alertmanager 配置
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+      # - alertmanager:9093
+
+# 规则文件
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# 抓取配置
+scrape_configs:
+  # --------------------------------------------------------------------------
+  # Prometheus 自身监控
+  # --------------------------------------------------------------------------
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # --------------------------------------------------------------------------
+  # Flink JobManager 指标
+  # --------------------------------------------------------------------------
+  - job_name: 'flink-jobmanager'
+    static_configs:
+      - targets: ['flink-jobmanager:9249']
+        labels:
+          component: 'jobmanager'
+          env: 'demo'
+    metrics_path: '/'
+    scrape_interval: 10s
+
+  # --------------------------------------------------------------------------
+  # Flink TaskManager 指标
+  # --------------------------------------------------------------------------
+  - job_name: 'flink-taskmanager'
+    static_configs:
+      - targets: ['flink-taskmanager:9249']
+        labels:
+          component: 'taskmanager'
+          env: 'demo'
+    metrics_path: '/'
+    scrape_interval: 10s
+
+  # --------------------------------------------------------------------------
+  # Kafka 指标 (通过 JMX Exporter)
+  # --------------------------------------------------------------------------
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka:9090']
+        labels:
+          component: 'kafka'
+          env: 'demo'
+    scrape_interval: 15s
+
+  # --------------------------------------------------------------------------
+  # Zookeeper 指标
+  # --------------------------------------------------------------------------
+  - job_name: 'zookeeper'
+    static_configs:
+      - targets: ['zookeeper:9999']
+        labels:
+          component: 'zookeeper'
+          env: 'demo'
+    scrape_interval: 15s
+
+  # --------------------------------------------------------------------------
+  # InfluxDB 指标
+  # --------------------------------------------------------------------------
+  - job_name: 'influxdb'
+    static_configs:
+      - targets: ['influxdb:8086']
+        labels:
+          component: 'influxdb'
+          env: 'demo'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # --------------------------------------------------------------------------
+  # EMQX MQTT Broker 指标
+  # --------------------------------------------------------------------------
+  - job_name: 'emqx'
+    static_configs:
+      - targets: ['emqx:18083']
+        labels:
+          component: 'emqx'
+          env: 'demo'
+    metrics_path: '/api/v5/prometheus/stats'
+    scrape_interval: 15s
+    bearer_token: 'flink-iot-token-12345'
+
+  # --------------------------------------------------------------------------
+  # Node Exporter (主机指标)
+  # --------------------------------------------------------------------------
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          component: 'node'
+          env: 'demo'
+    scrape_interval: 15s
+
+  # --------------------------------------------------------------------------
+  # cAdvisor (容器指标)
+  # --------------------------------------------------------------------------
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          component: 'container'
+          env: 'demo'
+    scrape_interval: 15s
