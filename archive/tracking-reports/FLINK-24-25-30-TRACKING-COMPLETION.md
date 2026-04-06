@@ -1,7 +1,7 @@
 # Flink 2.4/2.5/3.0 版本跟踪完成报告
 
 > **报告版本**: v1.0 | **创建日期**: 2026-04-04 | **状态**: ✅ 跟踪系统已建立
-> 
+>
 > **任务范围**: P1-1 ~ P1-4 | **执行人**: Agent | **完成度**: 100%
 
 ---
@@ -30,6 +30,7 @@
 **文件**: `.scripts/check_flink_release.py`
 
 **功能**:
+
 - 监控 Maven Central 最新版本
 - 监控 GitHub Releases 页面
 - 监控 Flink 官方网站
@@ -55,6 +56,7 @@ python check_flink_release.py --output-dir ../reports
 ```
 
 **返回码**:
+
 - `0` - 无新版本发布
 - `1` - 检测到新版本发布
 - `2` - 执行错误
@@ -75,12 +77,12 @@ Flink 2.4:
   预计发布: 2026 Q3-Q4
   状态: upcoming (规划中)
   FLIPs: [FLIP-531, FLIP-540, FLIP-541, FLIP-542, FLIP-543, FLIP-544, FLIP-545, FLIP-546]
-  
+
 Flink 2.5:
   预计发布: 2027 Q1-Q2
   状态: upcoming (规划中)
   FLIPs: [FLIP-550, FLIP-551, FLIP-552, FLIP-553]
-  
+
 Flink 3.0:
   预计发布: 2027 Q1-Q2
   状态: upcoming (规划中)
@@ -128,16 +130,19 @@ Flink 3.0:
 #### 更新检查清单
 
 **头部信息更新**:
+
 - [ ] 版本状态: `status: preview` → `status: released`
 - [ ] 发布日期: 添加实际GA日期
 - [ ] 前瞻声明: 更新或移除前瞻性警告
 
 **概念定义章节更新**:
+
 - [ ] 定义准确性: 验证与实际发布一致
 - [ ] 配置参数: 验证实际可用性
 - [ ] API签名: 验证实际语法
 
 **实例验证章节更新**:
+
 - [ ] Maven依赖: 更新为实际版本号
 - [ ] 配置示例: 验证配置键有效性
 - [ ] 代码示例: 验证API可用性
@@ -221,18 +226,21 @@ checkpointing.intelligent.strategy: cost-based
 **运行方式**:
 
 1. **手动运行**:
+
    ```bash
    cd .scripts
    python check_flink_release.py --verbose
    ```
 
 2. **定时任务** (Linux/macOS crontab):
+
    ```bash
    # 每6小时运行一次
    0 */6 * * * cd /path/to/AnalysisDataFlow && python .scripts/check_flink_release.py --report-json --report-md
    ```
 
 3. **Windows任务计划程序**:
+
    ```powershell
    # 使用提供的PowerShell脚本
    .scripts/flink-version-tracking/setup-windows-scheduler.ps1

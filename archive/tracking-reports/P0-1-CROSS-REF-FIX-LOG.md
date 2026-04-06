@@ -21,6 +21,7 @@
 ### 1. 英文翻译文档修复 (docs/i18n/en/)
 
 修复了指向根目录文件的相对路径错误：
+
 - `docs/i18n/en/QUICK-START.md` - 11个链接修复
 - `docs/i18n/en/README.md` - 7个链接修复
 - `docs/i18n/en/ARCHITECTURE.md` - 5个链接修复
@@ -28,6 +29,7 @@
 ### 2. Flink Rust 生态系统文档修复 (Flink/14-rust-assembly-ecosystem/)
 
 修复了子目录间的交叉引用：
+
 - `flink-rust-ecosystem-trends-2026.md`
 - `iron-functions-complete-guide.md`
 - `arroyo-update/01-arroyo-cloudflare-acquisition.md`
@@ -55,10 +57,12 @@
 ### 4. 锚点链接批量修复
 
 修复了154个锚点链接错误，主要修复了以下模式：
+
 - `#5-形式证明--工程论证-proof--engineering-argument` → `#5-形式证明-工程论证-proof-engineering-argument`（双连字符改为单连字符）
 - 类似的其他锚点格式问题
 
 涉及文件：
+
 - BENCHMARK-REPORT.md
 - TROUBLESHOOTING-COMPLETE.md
 - Struct/ 目录下的多个文档
@@ -94,6 +98,7 @@
 ## 验证结果
 
 运行 `.scripts/validate_cross_refs_v2.py` 验证结果：
+
 - 扫描文件数: 928
 - 总错误数: 10,830 (大部分在报告文件中)
 - 真实错误数: 11 (均为验证脚本误报)
