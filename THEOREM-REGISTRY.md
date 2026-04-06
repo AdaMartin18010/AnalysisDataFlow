@@ -1,6 +1,6 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.9.4 | **更新日期**: 2026-04-04 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.9.5 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
 
@@ -104,6 +104,12 @@
       - [新增引理 (35个)](#新增引理-35个)
       - [新增命题 (26个)](#新增命题-26个)
       - [v2.9.4 补充统计](#v294-补充统计)
+    - [8.10 v2.9.5 Flink 深度对齐补充注册 (2026-04-06)](#810-v295-flink-深度对齐补充注册-2026-04-06)
+      - [新增定理 (7个)](#新增定理-7个-1)
+      - [新增定义 (18个)](#新增定义-18个-1)
+      - [新增引理 (6个)](#新增引理-6个)
+      - [新增命题 (3个)](#新增命题-3个)
+      - [v2.9.5 补充统计](#v295-补充统计)
   - [引用参考](#引用参考)
 
 ---
@@ -3600,6 +3606,74 @@
 | Cor | 0 |
 | **总计** | **194** |
 
+### 8.10 v2.9.5 Flink 深度对齐补充注册 (2026-04-06)
+
+**背景**: P4 - 深度权威对齐任务，对齐 Apache Flink 官方文档、RisingWave、Confluent、Calcite 等权威来源
+
+#### 新增定理 (7个)
+
+| 定理编号 | 定理名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Thm-F-02-10 | Debloating加速Checkpoint Barrier传播 | backpressure-and-flow-control.md | ✅ |
+| Thm-F-03-28 | VolcanoPlanner最优性 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Thm-F-03-29 | Changelog规范化正确性 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Thm-F-09-03-01 | 配置模板覆盖完备性 | production-config-templates.md | ✅ |
+| Thm-F-09-03-02 | 场景配置最优化 | production-config-templates.md | ✅ |
+| Thm-F-09-03-03 | 故障排查完备性 | troubleshooting-handbook.md | ✅ |
+| Thm-F-09-03-04 | 诊断路径收敛性 | troubleshooting-handbook.md | ✅ |
+
+#### 新增定义 (18个)
+
+| 定义编号 | 定义名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Def-F-02-08 | Changelog State Backend | checkpoint-mechanism-deep-dive.md | ✅ |
+| Def-F-02-30 | Netty PooledByteBufAllocator | network-stack-evolution.md | ✅ |
+| Def-F-02-31 | Credit-based Flow Control 实现细节 | network-stack-evolution.md | ✅ |
+| Def-F-02-98 | State TTL 配置模型 | flink-state-management-complete-guide.md | ✅ |
+| Def-F-03-57 | VolcanoPlanner | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-58 | MEMO结构 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-59 | RelTraitDef | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-60 | CostFactory | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-61 | Flink优化规则分类 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-62 | WatermarkPushDownRule | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-63 | ChangelogNormalizeRule | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-64 | StateBackendRewriteRule | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-03-65 | Flink Join优化规则组 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Def-F-09-03-01 | 生产配置场景 | production-config-templates.md | ✅ |
+| Def-F-09-03-02 | 配置参数依赖 | production-config-templates.md | ✅ |
+| Def-F-09-03-03 | 故障分类体系 | troubleshooting-handbook.md | ✅ |
+| Def-F-09-03-04 | 诊断指标 | troubleshooting-handbook.md | ✅ |
+| Def-F-09-03-05 | 排查工具 | troubleshooting-handbook.md | ✅ |
+
+#### 新增引理 (6个)
+
+| 引理编号 | 引理名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Lemma-F-02-02 | 搜索策略对比 | flink-sql-calcite-optimizer-deep-dive.md | ✅ |
+| Lemma-F-09-03-01 | 配置参数传递性 | production-config-templates.md | ✅ |
+| Lemma-F-09-03-02 | 场景互斥性 | production-config-templates.md | ✅ |
+| Lemma-F-09-03-03 | 故障症状可观测性 | troubleshooting-handbook.md | ✅ |
+| Lemma-F-09-03-04 | 排查步骤独立性 | troubleshooting-handbook.md | ✅ |
+
+#### 新增命题 (3个)
+
+| 命题编号 | 命题名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Prop-F-02-72 | Changelog配置正确性 | flink-state-management-complete-guide.md | ✅ |
+| Prop-F-09-03-01 | 配置适用性 | production-config-templates.md | ✅ |
+| Prop-F-09-03-02 | 故障可定位性 | troubleshooting-handbook.md | ✅ |
+
+#### v2.9.5 补充统计
+
+| 类型 | 新增数量 | 累计总计 |
+|------|----------|----------|
+| 定理 (Thm) | 7 | 1,910 |
+| 定义 (Def) | 18 | 4,564 |
+| 引理 (Lemma) | 6 | 1,568 |
+| 命题 (Prop) | 3 | 1,194 |
+| 推论 (Cor) | 0 | 121 |
+| **总计** | **34** | **9,301** |
+
 ## 引用参考
 
 
@@ -3610,4 +3684,4 @@
 *本次新增文档: flip-531-ai-agents-ga-guide.md, serverless-flink-ga-guide.md, adaptive-execution-engine-v2.md, smart-checkpointing-strategies.md, ansi-sql-2023-compliance-guide.md, flink-24-connectors-guide.md, flink-24-performance-improvements.md, flink-24-deployment-improvements.md, flink-24-security-enhancements.md, flink-25-stream-batch-unification.md, flink-25-gpu-acceleration.md, flink-25-wasm-udf-ga.md, flink-30-architecture-redesign.md*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
-*当前注册表统计: 1221个形式化元素 (定理247/定义586/引理218/命题164/推论6)*
+*当前注册表统计: 9,301个形式化元素 (定理1,910/定义4,564/引理1,568/命题1,194/推论121)*

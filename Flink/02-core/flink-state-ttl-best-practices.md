@@ -310,6 +310,100 @@ $$\tau_{TTL} = \max(\tau_{business}, \tau_{compliance}, \tau_{technical})$$
 
 ---
 
+### 5.5 State TTL 生产实践
+
+#### 5.5.1 SQL 配置方式
+
+Flink SQL 支持通过 Table 配置设置 State TTL[^12]：
+
+```sql
+-- 设置全局 State TTL
+SET 'sql.state-ttl' = '1 day';
+SET 'sql.state-ttl.cleanup-strategy' = 'incremental';
+
+-- 创建表时指定 TTL
+CREATE TABLE user_events (
+    user_id STRING,
+    event_time TIMESTAMP(3),
+    event_type STRING,
+    PRIMARY KEY (user_id) NOT ENFORCED
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'user-events',
+    'properties.bootstrap.servers' = 'kafka:9092',
+    -- TTL 相关配置
+    'state.ttl' = '24h',
+    'state.cleanup-strategy' = 'incremental'
+);
+```
+
+#### 5.5.2 DataStream API 生产配置模板
+
+**模板 1: 会话状态管理 (30分钟过期)**
+
+```java
+/**
+ * Def-F-02-87: 生产级会话状态 TTL 配置
+ * 场景：用户会话跟踪，30分钟无活动视为会话结束
+ */
+public StateTtlConfig createSessionTtlConfig() {
+    return StateTtlConfig
+        .newBuilder(Time.minutes(30))
+        .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)  // 读写都更新 TTL
+        .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+        .cleanupIncrementally(10, true)  // 增量清理
+        .build();
+}
+```
+
+**模板 2: 聚合状态管理 (7天过期)**
+
+```java
+/**
+ * Def-F-02-88: 生产级聚合状态 TTL 配置
+ * 场景：日级用户行为聚合，保留 7 天
+ */
+public StateTtlConfig createAggregationTtlConfig() {
+    return StateTtlConfig
+        .newBuilder(Time.days(7))
+        .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+        .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+        .cleanupInRocksdbCompactFilter(1000)  // RocksDB 清理
+        .build();
+}
+```
+
+#### 5.5.3 重要行为说明
+
+| 行为 | 说明 | 影响 |
+|------|------|------|
+| State TTL 控制内部状态 | TTL 仅控制 Flink 内部聚合状态，不控制输出到 Kafka topic 的数据 | 输出 topic 数据保留由 Kafka 配置决定 |
+| 状态过期后的处理 | 状态过期后，下一个事件会触发新的聚合（从 0 开始） | 业务需容忍过期后的"重新开始" |
+| 不读取历史状态 | Flink 不会从 Kafka 读取历史状态进行聚合（性能考虑） | 只处理 Checkpoint 恢复后的新数据 |
+
+#### 5.5.4 生产环境配置检查清单
+
+```markdown
+□ TTL 时长验证
+  - 窗口大小 + 最大迟到时间 < TTL
+  - 合规要求的数据保留期 ≤ TTL
+
+□ 清理策略选择
+  - Heap State Backend → Incremental Cleanup
+  - RocksDB State Backend → Compaction Filter
+
+□ 状态可见性配置
+  - 强一致性要求 → NeverReturnExpired
+  - 可容忍读取过期 → ReturnExpiredIfNotCleanedUp
+
+□ 监控指标配置
+  - 状态大小监控
+  - Checkpoint 大小趋势
+  - 状态条目数趋势
+```
+
+---
+
 ## 6. 实例验证 (Examples)
 
 ### 6.1 完整 TTL 配置代码示例
@@ -850,11 +944,6 @@ env.setRocksDBStateBackend(
 
 
 
-
-
-
-
-
 ---
 
-*文档版本: v1.0 | 最后更新: 2026-04-03 | 状态: 完成*
+*文档版本: v1.1 | 最后更新: 2026-04-06 | 状态: 已完成权威对齐*

@@ -20,7 +20,8 @@ $$
 \text{Backpressure}(t) \iff \text{SocketBuf}_{occ}(t) \to \text{SocketBuf}_{cap} \land \text{AdvertisedWindow}(t) \to 0
 $$
 
-**核心问题**: 
+**核心问题**:
+
 - 连接级流控，非任务级
 - 同一 TCP 连接上的所有通道共享窗口
 - 单个慢任务阻塞整个连接
@@ -45,6 +46,7 @@ $$
 $$
 
 **核心创新**:
+
 - 任务级信用机制
 - 每个通道独立的 credit 管理
 - 单个慢任务不影响其他任务
@@ -76,8 +78,44 @@ N_{target}(v, t) = \left\lceil \frac{\lambda_v(t) \cdot T_{target}}{\text{Buffer
 $$
 
 其中:
+
 - $\lambda_v(t)$: 子任务 $v$ 的当前吞吐率
 - $T_{target}$: 目标消费时间 (默认约 1s)
+
+---
+
+### Def-F-02-30: Netty PooledByteBufAllocator
+
+**定义**: Flink 网络栈底层使用的 Netty 内存分配器，基于 jemalloc 算法实现：
+
+$$
+\text{PooledByteBufAllocator} = \langle \text{HeapArenas}, \text{DirectArenas}, \text{ChunkSize}, \text{PageSize} \rangle
+$$
+
+**核心参数**:
+
+- **heap-arenas**: 堆内存arena数量，默认与处理器核心数相同
+- **direct-arenas**: 堆外内存arena数量，默认与处理器核心数相同
+- **chunk-size**: 单次分配内存块大小，默认 16MB
+- **page-size**: 最小分配单元，默认 8KB
+
+**懒分配特性**: 内存仅在需要时分配，初始不占用全部预留内存[^9]。
+
+---
+
+### Def-F-02-31: Credit-based Flow Control 实现细节
+
+**定义**: CBFC 在 Netty 层的具体实现机制：
+
+$$
+\text{CBFC}_{impl} = \langle \text{AddCredit}, \text{InputChannel}, \text{CreditQueue}, \text{UnannouncedCredit} \rangle
+$$
+
+**关键机制**:
+
+1. **AddCredit 消息**: 通知增量 credit，而非绝对值
+2. **Unannounced Credit**: 从 0 增加时入队，触发发送流程
+3. **Channel 可写时发送**: Netty channel 可写时将 credit 发送给上游，发送后重置为 0
 
 ---
 
@@ -180,12 +218,14 @@ TCP-based Backpressure  ───→ Credit-based Flow Control ───→ + Bu
 ```
 
 **TCP 后果**:
+
 - Filter Task 2 变慢 → Socket 缓冲区满
 - TCP AdvertisedWindow = 0
 - 所有 5 个 Map Task 全部阻塞
 - 全局吞吐量下降 80%
 
 **CBFC 改善**:
+
 - 仅 Filter Task 2 对应通道 Credit = 0
 - Map Task 2 阻塞，其他 4 个 Task 正常发送
 - 全局吞吐量仅下降 20%
@@ -197,11 +237,13 @@ TCP-based Backpressure  ───→ Credit-based Flow Control ───→ + Bu
 ### 4.2 Buffer Debloating 的适用边界
 
 **适用场景**:
+
 - 背压频繁出现
 - Checkpoint 超时
 - 内存受限
 
 **不适用场景**:
+
 - 多输入或 Union 输入 (不同输入源吞吐差异大)
 - 极高并行度 (>200)
 - 启动/恢复阶段 (吞吐未稳定)
@@ -228,6 +270,7 @@ taskmanager.network.memory.buffer-debloat.samples: 20
 **不变量 $I$**: $\text{InFlight}(t) = \text{Sent}(t) - \text{Consumed}(t) \leq \text{Credit}_{total}(t)$
 
 **基例** ($t = 0$):
+
 - $\text{Sent}(0) = 0$
 - $\text{Consumed}(0) = 0$
 - $\text{Credit}_{total}(0) = |B_{free}| \leq \text{Cap}(ch)$
@@ -250,7 +293,8 @@ taskmanager.network.memory.buffer-debloat.samples: 20
 
 ### 工程论证: TCP → CBFC 性能提升
 
-**测试环境**: 
+**测试环境**:
+
 - 作业: Nexmark Q5 (Windowed Aggregation)
 - 数据: 10亿事件
 - 拓扑: 10 Map → 10 Filter (其中 1 个 Filter 人为变慢)
@@ -263,6 +307,7 @@ taskmanager.network.memory.buffer-debloat.samples: 20
 | Checkpoint 超时率 | 15% | 0% | 100%↓ |
 
 **关键改进**:
+
 1. **细粒度流控**: 慢任务隔离，不影响其他通道
 2. **快速响应**: 应用层决策，无需等待内核
 3. **可观测性**: 实时暴露背压状态
@@ -271,7 +316,62 @@ taskmanager.network.memory.buffer-debloat.samples: 20
 
 ## 6. 实例验证 (Examples)
 
-### 6.1 TCP-based Backpressure 源码 (Flink 1.4)
+### 6.1 Netty 内存分配实现
+
+```markdown
+## Netty 内存分配实现
+
+**PooledByteBufAllocator**:
+- jemalloc 变体实现
+- 内存分为 heap-arenas 和 direct-arenas
+- 每个 arena 以 16MB chunks 分配内存
+- 懒分配：仅在需要时分配 chunks
+
+**Flink 网络栈配置**:
+```yaml
+taskmanager.network.memory.fraction: 0.1
+taskmanager.network.memory.min: 64mb
+taskmanager.network.memory.max: 1gb
+```
+
+**Credit-based 实现细节**:
+
+- AddCredit 消息通知增量 credit
+- InputChannel unannounced credit 从 0 增加时入队
+- Channel 可写时发送 credit，发送后重置为 0
+
+```
+
+**Netty 配置源码**:
+```java
+/**
+ * NettyBufferPool.java - Flink 网络栈底层 Netty 配置
+ */
+public class NettyBufferPool {
+    private final PooledByteBufAllocator pooledAllocator;
+
+    public NettyBufferPool() {
+        // 使用 PooledByteBufAllocator 默认配置
+        // - heapArenas: 2 * CPU cores
+        // - directArenas: 2 * CPU cores
+        // - chunkSize: 16MB (16 * 1024 * 1024)
+        // - pageSize: 8192 bytes
+        this.pooledAllocator = PooledByteBufAllocator.DEFAULT;
+    }
+
+    /**
+     * 分配堆外缓冲区
+     */
+    public ByteBuf allocateDirectBuffer(int size) {
+        // 使用 PoolThreadCache 进行线程本地缓存
+        return pooledAllocator.directBuffer(size);
+    }
+}
+```
+
+---
+
+### 6.2 TCP-based Backpressure 源码 (Flink 1.4)
 
 ```java
 /**
@@ -279,9 +379,9 @@ taskmanager.network.memory.buffer-debloat.samples: 20
  * 基于 TCP 的流控实现
  */
 public class PartitionRequestClient {
-    
+
     private final Channel tcpChannel;
-    
+
     /**
      * 写入数据 - 依赖 TCP 流控
      */
@@ -290,7 +390,7 @@ public class PartitionRequestClient {
         // 当接收方缓冲区满时，TCP 会将 AdvertisedWindow 置 0
         // 导致写入阻塞
         tcpChannel.writeAndFlush(buffer);
-        
+
         // 问题：无法感知通道级背压
         // 同一连接上的所有通道共享 TCP 窗口
     }
@@ -301,16 +401,16 @@ public class PartitionRequestClient {
  * 结果分区实现
  */
 public class ResultPartition {
-    
+
     private final PartitionRequestClient client;
-    
+
     /**
      * 添加 Buffer 到子分区
      */
     public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
         // 直接发送，无流控逻辑
         client.writeBuffer(buffer.build(), targetChannel);
-        
+
         // 问题：当 targetChannel 对应的下游变慢时
         // 整个 TCP 连接会被阻塞
     }
@@ -319,7 +419,7 @@ public class ResultPartition {
 
 ---
 
-### 6.2 Credit-based Flow Control 源码 (Flink 1.5+)
+### 6.3 Credit-based Flow Control 源码 (Flink 1.5+)
 
 ```java
 /**
@@ -327,16 +427,16 @@ public class ResultPartition {
  * 基于 Credit 的流控实现
  */
 public class CreditBasedPartitionRequestClientHandler {
-    
+
     private final int[] credits;  // 每个通道的可用 credit
     private final Queue<BufferConsumer>[] pendingQueues;
-    
+
     /**
      * 添加 Buffer 到子分区，受 credit 控制
      */
     public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
         int availableCredit = credits[targetChannel];
-        
+
         if (availableCredit > 0) {
             // 有可用 credit，直接写入
             writeBufferToChannel(buffer, targetChannel);
@@ -344,21 +444,21 @@ public class CreditBasedPartitionRequestClientHandler {
         } else {
             // credit 耗尽，加入等待队列
             pendingQueues[targetChannel].add(buffer);
-            
+
             // 触发背压信号
             if (getBackPressureStrategy() == BackPressureStrategy.BLOCK) {
                 blockWriterThread();
             }
         }
     }
-    
+
     /**
      * 处理 Credit 回传
      */
     public void onCreditAnnouncement(int channelIndex, int credit) {
         // 增加可用 credit
         credits[channelIndex] += credit;
-        
+
         // 处理等待队列中的 buffer
         Queue<BufferConsumer> pending = pendingQueues[channelIndex];
         while (!pending.isEmpty() && credits[channelIndex] > 0) {
@@ -366,7 +466,7 @@ public class CreditBasedPartitionRequestClientHandler {
             writeBufferToChannel(buffer, channelIndex);
             credits[channelIndex]--;
         }
-        
+
         // 唤醒可能阻塞的写入线程
         if (credits[channelIndex] > 0) {
             unblockWriterThread();
@@ -379,38 +479,38 @@ public class CreditBasedPartitionRequestClientHandler {
  * 远程输入通道的 credit 管理
  */
 public class RemoteInputChannel {
-    
+
     private int numCredits;
     private final BufferPool bufferPool;
-    
+
     /**
      * 初始化时申请初始 credit
      */
     public void setup(BufferPool bufferPool) {
         this.bufferPool = bufferPool;
         this.numCredits = bufferPool.requestBuffers(initialCredit);
-        
+
         // 向发送方发送初始 credit 公告
         sendCreditAnnouncement(numCredits);
     }
-    
+
     /**
      * 接收到 Buffer 后处理
      */
     public void onBuffer(Buffer buffer, int sequenceNumber) {
         // 消费 buffer
         processBuffer(buffer);
-        
+
         // 释放 buffer，回收 credit
         buffer.recycle();
-        
+
         // 周期性回传 credit
         if (shouldSendCredit()) {
             int creditsToAnnounce = calculateAvailableCredits();
             sendCreditAnnouncement(creditsToAnnounce);
         }
     }
-    
+
     private int calculateAvailableCredits() {
         int available = bufferPool.getNumberOfAvailableMemorySegments();
         int reserved = getReservedBuffers();
@@ -421,11 +521,11 @@ public class RemoteInputChannel {
 
 ---
 
-### 6.3 Buffer Debloating 配置 (Flink 1.14+)
+### 6.4 Buffer Debloating 配置 (Flink 1.14+)
 
 ```java
 // Flink 1.14+ Buffer Debloating 配置
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // flink-conf.yaml 完整配置
@@ -459,11 +559,11 @@ gantt
     dateFormat YYYY-MM
     section Flink 1.x
     TCP Backpressure       :done, 1.0, 2016-03, 2017-08
-    
+
     section Flink 1.5+
     Credit-based Flow Control :done, 1.5, 2017-08, 2026-12
     Fine-grained Backpressure :done, 1.5, 2017-08, 2026-12
-    
+
     section Flink 1.14+
     Buffer Debloating      :active, 1.14, 2021-09, 2026-12
     Unaligned Checkpoint   :active, 1.11, 2020-07, 2026-12
@@ -481,34 +581,34 @@ graph TB
         T4[Map Task 3] --> T2
         T2 --> T5{Socket Buffer}
         T5 --> T6[Filter Task 1]
-        T5 --> T7[Filter Task 2]  
+        T5 --> T7[Filter Task 2]
         T5 --> T8[Filter Task 3 Slow]
-        
+
         T8 -.->|阻塞| T5
         T5 -.->|TCP Window=0| T2
         T2 -.->|全部阻塞| T1
         T2 -.->|全部阻塞| T3
-        
+
         style T5 fill:#ffccbc
         style T2 fill:#ffccbc
     end
-    
+
     subgraph "Credit-based Flow Control (Flink 1.5+)"
         C1[Map Task 1] --> C2[ResultSubPartition]
         C3[Map Task 2] --> C4[ResultSubPartition]
         C5[Map Task 3] --> C6[ResultSubPartition]
-        
+
         C2 -->|Credit=5| C7[Channel 1]
         C4 -->|Credit=5| C8[Channel 2]
         C6 -->|Credit=0| C9[Channel 3 Slow]
-        
+
         C7 --> C10[Filter Task 1]
         C8 --> C11[Filter Task 2]
         C9 -.->|阻塞| C6
-        
+
         C10 -->|Credit Announcement| C7
         C11 -->|Credit Announcement| C8
-        
+
         style C9 fill:#ffccbc
         style C6 fill:#fff9c4
     end
@@ -524,23 +624,23 @@ sequenceDiagram
     participant SP as Sender Task<br/>ResultSubPartition
     participant NB as NetworkBufferPool
     participant RC as Receiver Task<br/>RemoteInputChannel
-    
+
     Note over RC: 初始化时
     RC->>NB: 1. 申请初始 Credit<br/>(buffers-per-channel)
     NB-->>RC: 2. 分配 BufferPool
     RC->>SP: 3. 发送 CreditAnnouncement
-    
+
     Note over SP: 写入数据时
     SP->>SP: 4. addBufferConsumer()
     SP->>SP: 5. 检查 credit > 0?
-    
+
     alt Credit > 0
         SP->>SP: 6. writeBuffer(buffer)
         SP->>SP: 7. credit--
     else Credit = 0
         SP->>SP: 8. 阻塞写入<br/>等待 Credit
     end
-    
+
     Note over RC: 消费数据后
     RC->>RC: 9. 释放 Buffer
     RC->>SP: 10. 发送新的 Credit
@@ -569,27 +669,24 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink JIRA, "FLINK-7282: Credit-based Network Flow Control", 2017. <https://issues.apache.org/jira/browse/FLINK-7282>
 
-[^2]: Apache Flink Documentation, "Monitoring Back Pressure", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/back_pressure/>
 
-[^3]: Alibaba Cloud, "Analysis of Network Flow Control and Back Pressure: Flink Advanced Tutorials", 2020. <https://www.alibabacloud.com/blog/analysis-of-network-flow-control-and-back-pressure-flink-advanced-tutorials_596632>
 
-[^4]: Apache Flink Documentation, "Network Buffer Tuning", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/network_mem_tuning/>
 
-[^5]: Apache Flink Documentation, "Checkpointing under Backpressure", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing_under_backpressure/>
 
-[^6]: AWS Compute Blog, "Optimize Checkpointing In Your Amazon Managed Service For Apache Flink Applications With Buffer Debloating", 2023. <https://aws.amazon.com/blogs/compute/>
 
-[^7]: Apache Flink JIRA, "FLINK-36556: Allow to configure starting buffer size when using buffer debloating", 2024. <https://issues.apache.org/jira/browse/FLINK-36556>
 
-[^8]: A. Rabkin et al., "The Dataflow Model", PVLDB, 8(12), 2015.
+
+[^9]: Apache Flink Wiki, "Netty memory allocation", <https://cwiki.apache.org/confluence/display/FLINK/Netty+memory+allocation>
+
+
 
 ---
 
 *文档版本: 2026.04-001 | 形式化等级: L4 | 最后更新: 2026-04-06*
 
 **关联文档**:
+
 - [backpressure-and-flow-control.md](./backpressure-and-flow-control.md) - 背压与流控详细分析
 - [flink-architecture-evolution-1x-to-2x.md](../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析
 - [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md) - Checkpoint 机制深度分析

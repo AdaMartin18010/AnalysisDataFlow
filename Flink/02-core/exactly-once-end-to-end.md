@@ -25,6 +25,10 @@
   - [4. Sink 事务性保证](#4-sink-事务性保证)
     - [4.1 两阶段提交协议 (2PC)](#41-两阶段提交协议-2pc)
     - [4.2 Kafka 事务性 Sink](#42-kafka-事务性-sink)
+      - [4.2.1 旧版 Kafka Producer (Flink 1.14 之前)](#421-旧版-kafka-producer-flink-114-之前)
+      - [4.2.2 新版 Kafka Sink (Flink 1.15+ 推荐)](#422-新版-kafka-sink-flink-115-推荐)
+      - [4.2.3 Kafka Exactly-Once 完整配置模板](#423-kafka-exactly-once-完整配置模板)
+      - [4.2.4 Kafka Exactly-Once 关键行为说明](#424-kafka-exactly-once-关键行为说明)
     - [4.3 JDBC XA 事务 Sink](#43-jdbc-xa-事务-sink)
   - [5. 幂等性 Sink 实现](#5-幂等性-sink-实现)
     - [5.1 幂等性定义与原理](#51-幂等性定义与原理)
@@ -37,8 +41,24 @@
     - [7.3 Sink Pre-commit/Commit 失败](#73-sink-pre-commitcommit-失败)
     - [7.4 网络分区与事务悬停](#74-网络分区与事务悬停)
   - [8. 生产环境配置指南](#8-生产环境配置指南)
+    - [8.1 Flink 核心配置 (flink-conf.yaml)](#81-flink-核心配置-flink-confyaml)
+    - [8.2 Kafka Exactly-Once 完整配置示例](#82-kafka-exactly-once-完整配置示例)
+    - [8.3 端到端 Exactly-Once 作业完整示例](#83-端到端-exactly-once-作业完整示例)
   - [9. 形式化正确性说明](#9-形式化正确性说明)
   - [10. 参考文献](#10-参考文献)
+  - [11. 源码深度分析 (Source Code Analysis)](#11-源码深度分析-source-code-analysis)
+    - [11.1 TwoPhaseCommitSinkFunction 源码分析](#111-twophasecommitsinkfunction-源码分析)
+      - [11.1.1 核心类架构](#1111-核心类架构)
+      - [11.1.2 事务生命周期方法](#1112-事务生命周期方法)
+      - [11.1.3 与 Checkpoint 协调的核心逻辑](#1113-与-checkpoint-协调的核心逻辑)
+      - [11.1.4 snapshotState 方法详解](#1114-snapshotstate-方法详解)
+      - [11.1.5 notifyCheckpointComplete 方法详解](#1115-notifycheckpointcomplete-方法详解)
+    - [11.2 FlinkKafkaProducer 事务实现](#112-flinkkafkaproducer-事务实现)
+    - [11.3 CheckpointCoordinator 协调机制](#113-checkpointcoordinator-协调机制)
+    - [11.4 故障恢复时的 2PC 状态恢复](#114-故障恢复时的-2pc-状态恢复)
+      - [11.4.1 恢复时的事务处理源码](#1141-恢复时的事务处理源码)
+    - [11.5 2PC 状态机实现](#115-2pc-状态机实现)
+    - [11.6 关键配置参数](#116-关键配置参数)
 
 ---
 
@@ -279,7 +299,7 @@ sequenceDiagram
 
 ### 4.2 Kafka 事务性 Sink
 
-Kafka Sink 的 Exactly-Once 配置[^8]:
+#### 4.2.1 旧版 Kafka Producer (Flink 1.14 之前)
 
 ```java
 Properties properties = new Properties();
@@ -295,7 +315,81 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 );
 ```
 
+#### 4.2.2 新版 Kafka Sink (Flink 1.15+ 推荐)
+
+基于 Flink Connector 新架构的 Kafka Exactly-Once 配置[^8][^11]：
+
+```java
+// Source 配置 - 只读已提交事务
+KafkaSource<String> source = KafkaSource.<String>builder()
+    .setBootstrapServers("kafka:9092")
+    .setTopics("input-topic")
+    .setGroupId("flink-eo-consumer")
+    .setProperty("isolation.level", "read_committed")  // 关键：只读已提交
+    .setProperty("enable.auto.commit", "false")         // Flink 管理偏移量
+    .setStartingOffsets(OffsetsInitializer.earliest())
+    .setValueOnlyDeserializer(new SimpleStringSchema())
+    .build();
+
+// Sink 配置 - Exactly-Once 事务写入
+KafkaSink<String> sink = KafkaSink.<String>builder()
+    .setBootstrapServers("kafka:9092")
+    .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+        .setTopic("output-topic")
+        .setValueSerializationSchema(new SimpleStringSchema())
+        .build())
+    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)  // 启用 Exactly-Once
+    .setTransactionalIdPrefix("flink-processor")            // 事务 ID 前缀
+    .build();
+
+// 构建作业
+env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+    .map(new ProcessingFunction())
+    .sinkTo(sink);
+```
+
+#### 4.2.3 Kafka Exactly-Once 完整配置模板
+
+**flink-conf.yaml 关键配置**：
+
+```yaml
+# Checkpoint 配置
+execution.checkpointing.mode: EXACTLY_ONCE
+execution.checkpointing.interval: 60s
+execution.checkpointing.timeout: 10m
+execution.checkpointing.max-concurrent-checkpoints: 1
+
+# 重启策略
+restart-strategy: fixed-delay
+restart-strategy.fixed-delay.attempts: 10
+restart-strategy.fixed-delay.delay: 10s
+```
+
+**Kafka 集群配置要求**：
+
+```properties
+# broker.properties
+# 事务相关配置
+transaction.state.log.replication.factor=3
+transaction.state.log.min.isr=2
+transaction.max.timeout.ms=900000  # 匹配 Flink Checkpoint 超时
+
+# 幂等性配置
+enable.idempotence=true
+```
+
 **事务围栏 (Transaction Fencing)**: Kafka 通过 epoch 机制防止僵尸任务写入。新生产者注册后，旧 epoch 的事务自动中止。
+
+#### 4.2.4 Kafka Exactly-Once 关键行为说明
+
+| 配置项 | 作用 | 注意事项 |
+|--------|------|----------|
+| `isolation.level=read_committed` | 消费者只读取已提交事务的消息 | Source 必须配置，否则可能读到未提交数据 |
+| `transactional.id` | 生产者事务唯一标识 | 必须全局唯一，通常包含 subtaskIndex |
+| `DeliveryGuarantee.EXACTLY_ONCE` | 启用事务性写入 | 与 Checkpoint 机制绑定 |
+| `transaction.max.timeout.ms` | Kafka 事务最大超时 | 必须大于 Flink Checkpoint 超时 |
+
+**幂等性保证**：即使事务超时重试，Kafka 通过 `producer.id` + `epoch` 机制确保同一消息不会重复写入。
 
 ### 4.3 JDBC XA 事务 Sink
 
@@ -473,7 +567,7 @@ sequenceDiagram
 
 ## 8. 生产环境配置指南
 
-**Flink 配置 (flink-conf.yaml)**:
+### 8.1 Flink 核心配置 (flink-conf.yaml)
 
 ```yaml
 # Checkpoint 配置
@@ -494,6 +588,103 @@ state.checkpoints.dir: s3://my-bucket/flink-checkpoints
 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
+```
+
+### 8.2 Kafka Exactly-Once 完整配置示例
+
+**生产级 Kafka Source 配置**：
+
+```java
+KafkaSource<String> createKafkaSource(String bootstrapServers, String topic, String groupId) {
+    Properties properties = new Properties();
+    properties.setProperty("isolation.level", "read_committed");  // 关键：只读已提交
+    properties.setProperty("enable.auto.commit", "false");        // Flink 管理偏移量
+    properties.setProperty("auto.offset.reset", "earliest");      // 无偏移时从最早开始
+
+    return KafkaSource.<String>builder()
+        .setBootstrapServers(bootstrapServers)
+        .setTopics(topic)
+        .setGroupId(groupId)
+        .setProperties(properties)
+        .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+        .setValueOnlyDeserializer(new SimpleStringSchema())
+        .build();
+}
+```
+
+**生产级 Kafka Sink 配置**：
+
+```java
+KafkaSink<String> createKafkaSink(String bootstrapServers, String topic, String transactionalIdPrefix) {
+    return KafkaSink.<String>builder()
+        .setBootstrapServers(bootstrapServers)
+        .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+            .setTopic(topic)
+            .setValueSerializationSchema(new SimpleStringSchema())
+            .build())
+        .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+        .setTransactionalIdPrefix(transactionalIdPrefix)
+        .build();
+}
+```
+
+### 8.3 端到端 Exactly-Once 作业完整示例
+
+```java
+public class KafkaExactlyOnceJob {
+
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 1. 启用 Checkpoint (必需)
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+
+        // 2. 配置状态后端
+        env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+
+        // 3. 配置重启策略
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+            10, Time.seconds(10)
+        ));
+
+        // 4. Kafka Source - Exactly-Once
+        KafkaSource<String> source = KafkaSource.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setTopics("input-topic")
+            .setGroupId("flink-eo-consumer")
+            .setProperty("isolation.level", "read_committed")
+            .setProperty("enable.auto.commit", "false")
+            .setStartingOffsets(OffsetsInitializer.committedOffsets())
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
+
+        // 5. Kafka Sink - Exactly-Once
+        KafkaSink<String> sink = KafkaSink.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                .setTopic("output-topic")
+                .setValueSerializationSchema(new SimpleStringSchema())
+                .build())
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .setTransactionalIdPrefix("flink-job-" + System.currentTimeMillis())
+            .build();
+
+        // 6. 构建管道
+        env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+            .map(new JsonParser())
+            .keyBy(Event::getUserId)
+            .window(TumblingProcessingTimeWindows.of(Time.minutes(1)))
+            .aggregate(new CountAggregate())
+            .map(Object::toString)
+            .sinkTo(sink);
+
+        env.execute("Kafka Exactly-Once Job");
+    }
+}
 ```
 
 **关键配置验证**:
@@ -557,6 +748,11 @@ echo "验证完成!"
 
 [^10]: Kleppmann, M. (2016). "Designing Data-Intensive Applications". O'Reilly Media. Chapter 9: Consistency and Consensus.
 
+[^11]: Apache Flink Documentation, "Kafka Source", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/#kafka-source>
+
+
+
+
 ---
 
 ## 11. 源码深度分析 (Source Code Analysis)
@@ -571,30 +767,30 @@ echo "验证完成!"
 /**
  * 两阶段提交 Sink 的抽象基类
  * 实现了 Flink 与外部系统事务的协调
- * 
+ *
  * 类型参数：
  *   IN - 输入数据类型
  *   TXN - 事务上下文类型
  *   CONTEXT - 事务上下文持有者类型
  */
-public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT> 
-        extends RichSinkFunction<IN> 
+public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
+        extends RichSinkFunction<IN>
         implements CheckpointedFunction, CheckpointListener {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(TwoPhaseCommitSinkFunction.class);
-    
+
     // 当前正在进行的事务
     private transient TransactionHolder<TXN> currentTransaction;
-    
+
     // 待提交的事务队列（等待Checkpoint确认）
     private transient List<TransactionHolder<TXN>> pendingCommitTransactions;
-    
+
     // 事务上下文Serializer（用于Checkpoint）
     private final TypeSerializer<CONTEXT> contextSerializer;
-    
+
     // 事务Serializer
     private final TypeSerializer<TXN> transactionSerializer;
-    
+
     /**
      * 构造器
      */
@@ -616,19 +812,19 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
      * 2. 每次Checkpoint完成后（开启下一轮事务）
      */
     protected abstract TXN beginTransaction() throws Exception;
-    
+
     /**
      * 预提交阶段（Prepare Phase）
      * 将数据持久化到临时位置，但不可见
      */
     protected abstract void preCommit(TXN transaction) throws Exception;
-    
+
     /**
      * 正式提交阶段（Commit Phase）
      * 收到Checkpoint成功通知后调用
      */
     protected abstract void commit(TXN transaction) throws Exception;
-    
+
     /**
      * 中止事务
      * Checkpoint失败或作业恢复时调用
@@ -646,32 +842,32 @@ sequenceDiagram
     participant Sink as TwoPhaseCommitSink
     participant Ext as 外部系统<br/>Kafka/JDBC
     participant State as StateBackend
-    
+
     Note over Sink: Sink初始化
     Sink->>Sink: open()
     Sink->>Sink: beginTransaction()
     Sink->>Sink: currentTransaction = txn
-    
+
     Note over JM,State: Checkpoint N 触发
     JM->>TM: triggerCheckpoint(N)
     TM->>Sink: snapshotState()
-    
+
     Note right of Sink: Phase 1: Prepare
     Sink->>Sink: preCommit(currentTransaction)
     Sink->>Ext: 刷写数据到临时位置
     Ext-->>Sink: OK
-    
+
     Sink->>State: 保存事务上下文
     State-->>TM: 确认
     TM-->>JM: Checkpoint N 成功
-    
+
     Note right of Sink: Phase 2: Commit Decision
     JM->>TM: notifyCheckpointComplete(N)
     TM->>Sink: notifyCheckpointComplete(N)
     Sink->>Sink: 查找pending事务
     Sink->>Ext: commit(transaction)
     Ext-->>Sink: Committed
-    
+
     Note over Sink: 开启新事务
     Sink->>Sink: beginTransaction()
 ```
@@ -685,15 +881,15 @@ sequenceDiagram
     @Override
     public void snapshotState(FunctionSnapshotContext context) throws Exception {
         long checkpointId = context.getCheckpointId();
-        
+
         LOG.debug("Snapshotting state at checkpoint {}");
-        
+
         // 1. 预提交当前事务
         preCommit(currentTransaction.handle);
-        
+
         // 2. 将当前事务加入待提交队列
         pendingCommitTransactions.add(currentTransaction);
-        
+
         // 3. 清空并保存事务上下文到StateBackend
         state.clear();
         state.add(new State<>(
@@ -702,10 +898,10 @@ sequenceDiagram
             pendingCommitTransactions,
             userContext
         ));
-        
+
         // 4. 开启新事务（用于Checkpoint之后的写入）
         currentTransaction = beginTransactionInternal();
-        
+
         LOG.debug("Started new transaction for post-checkpoint writes");
     }
 ```
@@ -719,22 +915,22 @@ sequenceDiagram
     @Override
     public void notifyCheckpointComplete(long checkpointId) throws Exception {
         LOG.debug("Checkpoint {} completed, committing transactions", checkpointId);
-        
+
         Iterator<TransactionHolder<TXN>> iterator = pendingCommitTransactions.iterator();
-        
+
         while (iterator.hasNext()) {
             TransactionHolder<TXN> transaction = iterator.next();
-            
+
             // 只提交小于等于当前Checkpoint的事务
             if (transaction.checkpointId <= checkpointId) {
-                LOG.debug("Committing transaction from checkpoint {}", 
+                LOG.debug("Committing transaction from checkpoint {}",
                     transaction.checkpointId);
-                
+
                 try {
                     // 执行提交
                     commit(transaction.handle);
                     LOG.debug("Transaction committed successfully");
-                    
+
                     // 从待提交队列移除
                     iterator.remove();
                 } catch (Exception e) {
@@ -755,10 +951,10 @@ sequenceDiagram
 /**
  * Kafka Producer 的 Exactly-Once 实现
  */
-public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN, 
-        FlinkKafkaProducer.KafkaTransactionState, 
+public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
+        FlinkKafkaProducer.KafkaTransactionState,
         FlinkKafkaProducer.KafkaTransactionContext> {
-    
+
     /**
      * Kafka 事务状态
      */
@@ -767,45 +963,45 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
         private final String transactionalId;
         private final long producerId;
         private final short epoch;
-        
+
         public KafkaTransactionState(String transactionalId) {
             this.transactionalId = transactionalId;
             this.producerId = -1;
             this.epoch = -1;
         }
-        
+
         public KafkaTransactionState(
-                String transactionalId, 
-                long producerId, 
+                String transactionalId,
+                long producerId,
                 short epoch) {
             this.transactionalId = transactionalId;
             this.producerId = producerId;
             this.epoch = epoch;
         }
     }
-    
+
     /**
      * 开启 Kafka 事务
      */
     @Override
     protected FlinkKafkaProducer.KafkaTransactionState beginTransaction() {
         // 创建新的 Kafka Producer 实例
-        FlinkKafkaInternalProducer<byte[], byte[]> producer = 
+        FlinkKafkaInternalProducer<byte[], byte[]> producer =
             createProducer(nextTransactionalIdHint);
-        
+
         // 初始化事务
         producer.initTransactions();
-        
+
         // 开启事务
         producer.beginTransaction();
-        
+
         return new KafkaTransactionState(
             nextTransactionalIdHint,
             producer.getProducerId(),
             producer.getEpoch()
         );
     }
-    
+
     /**
      * 预提交：将数据刷写到 Kafka
      */
@@ -815,7 +1011,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
         // 确保所有消息都已发送到 Broker
         transaction.producer.flush();
     }
-    
+
     /**
      * 正式提交 Kafka 事务
      */
@@ -823,11 +1019,11 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
     protected void commit(FlinkKafkaProducer.KafkaTransactionState transaction) {
         // 提交 Kafka 事务
         transaction.producer.commitTransaction();
-        
+
         // 关闭 Producer
         transaction.producer.close();
     }
-    
+
     /**
      * 中止 Kafka 事务
      */
@@ -851,21 +1047,21 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
  * Checkpoint 协调器：协调分布式快照
  */
 public class CheckpointCoordinator {
-    
+
     private final CheckpointPlanCalculator checkpointPlanCalculator;
     private final CompletedCheckpointStore completedCheckpointStore;
     private final PendingCheckpointStats pendingCheckpointStats;
-    
+
     /**
      * 触发 Checkpoint
      */
     public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
-            long timestamp, 
+            long timestamp,
             CheckpointProperties props) {
-        
+
         // 1. 计算 Checkpoint 计划
         CheckpointPlan plan = checkpointPlanCalculator.calculateCheckpointPlan();
-        
+
         // 2. 创建 Pending Checkpoint
         PendingCheckpoint pendingCheckpoint = new PendingCheckpoint(
             checkpointId,
@@ -873,7 +1069,7 @@ public class CheckpointCoordinator {
             plan,
             props
         );
-        
+
         // 3. 向所有 Task 发送 Checkpoint 触发消息
         for (ExecutionVertex vertex : plan.getTasksToTrigger()) {
             vertex.getCurrentExecutionAttempt().triggerCheckpoint(
@@ -882,10 +1078,10 @@ public class CheckpointCoordinator {
                 checkpointOptions
             );
         }
-        
+
         return pendingCheckpoint.getCompletionFuture();
     }
-    
+
     /**
      * 处理 Task 的 Checkpoint 确认
      */
@@ -893,34 +1089,34 @@ public class CheckpointCoordinator {
             JobID jobID,
             long checkpointId,
             AcknowledgeCheckpoint acknowledgeMessage) {
-        
+
         PendingCheckpoint checkpoint = pendingCheckpoints.get(checkpointId);
-        
+
         // 记录该 Task 的确认
         checkpoint.acknowledgeTask(
             acknowledgeMessage.getTaskExecutionId(),
             acknowledgeMessage.getSubtaskState(),
             acknowledgeMessage.getCheckpointMetrics()
         );
-        
+
         // 检查是否所有 Task 都已确认
         if (checkpoint.areAllTasksAcknowledged()) {
             // 完成 Checkpoint
             completeCheckpoint(checkpoint);
         }
     }
-    
+
     /**
      * 完成 Checkpoint 并通知所有 Task
      */
     private void completeCheckpoint(PendingCheckpoint pendingCheckpoint) {
         // 1. 转换为 CompletedCheckpoint
-        CompletedCheckpoint completedCheckpoint = 
+        CompletedCheckpoint completedCheckpoint =
             pendingCheckpoint.finalizeCheckpoint();
-        
+
         // 2. 持久化到存储
         completedCheckpointStore.addCheckpoint(completedCheckpoint);
-        
+
         // 3. 通知所有 Task Checkpoint 完成
         for (ExecutionVertex vertex : pendingCheckpoint.getCheckpointPlan().getTasksToCommit()) {
             vertex.getCurrentExecutionAttempt().notifyCheckpointComplete(
@@ -941,22 +1137,22 @@ sequenceDiagram
     participant Sink as TwoPhaseCommitSink
     participant Ext as 外部系统
     participant CP as Checkpoint Storage
-    
+
     Note over JM,CP: 作业故障恢复
-    
+
     JM->>CP: 读取最新Checkpoint
     CP-->>JM: CheckpointMetadata
     JM->>TM: 恢复任务
     TM->>Sink: initializeState()
-    
+
     Note right of Sink: 恢复事务状态
     Sink->>State: 读取pendingCommitTransactions
     State-->>Sink: 待提交事务列表
-    
+
     loop 处理每个pending事务
         Sink->>Ext: 查询事务状态
         Ext-->>Sink: PREPARED / COMMITTED / UNKNOWN
-        
+
         alt 事务状态 = PREPARED
             Sink->>Ext: commit(transaction)
             Ext-->>Sink: OK
@@ -967,7 +1163,7 @@ sequenceDiagram
             Sink->>Ext: commit(transaction)
         end
     end
-    
+
     Sink->>Sink: beginTransaction()
     Note over Sink: 恢复正常处理
 ```
@@ -983,20 +1179,20 @@ sequenceDiagram
         // 恢复状态
         ListState<State<TXN, CONTEXT>> state = context.getOperatorStateStore()
             .getListState(new ListStateDescriptor<>(
-                "pending-transactions", 
+                "pending-transactions",
                 new StateSerializer<>()
             ));
-        
+
         // 读取之前保存的事务状态
         for (State<TXN, CONTEXT> s : state.get()) {
             this.userContext = s.getUserContext();
             this.pendingCommitTransactions.addAll(s.getPendingTransactions());
         }
-        
+
         // 恢复模式
         if (context.isRestored()) {
             LOG.info("Restoring state from checkpoint");
-            
+
             // 处理待提交事务
             for (TransactionHolder<TXN> transaction : pendingCommitTransactions) {
                 // 恢复时尝试提交未完成的事务
@@ -1004,11 +1200,11 @@ sequenceDiagram
             }
             pendingCommitTransactions.clear();
         }
-        
+
         // 开启新事务
         this.currentTransaction = beginTransactionInternal();
     }
-    
+
     /**
      * 恢复时提交事务（带幂等检查）
      */
@@ -1037,12 +1233,12 @@ stateDiagram-v2
     PREPARED --> COMMITTING: notifyCheckpointComplete()
     COMMITTING --> COMMITTED: commit()
     COMMITTED --> PREPARING: beginTransaction()
-    
+
     PREPARING --> ABORTING: 异常/失败
     PREPARED --> ABORTING: Checkpoint失败
     ABORTING --> ABORTED: abort()
     ABORTED --> [*]
-    
+
     COMMITTED --> [*]: 正常完成
 ```
 

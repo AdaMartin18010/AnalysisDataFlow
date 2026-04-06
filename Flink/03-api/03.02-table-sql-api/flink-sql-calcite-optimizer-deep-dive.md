@@ -27,26 +27,35 @@
     - [4.2 Blink Planner vs Old Planner](#42-blink-planner-vs-old-planner)
     - [4.3 批流统一优化论证](#43-批流统一优化论证)
   - [5. 工程论证 / 性能调优方法论 (Engineering Argument)](#5-工程论证--性能调优方法论-engineering-argument)
-    - [5.1 核心优化技术详解](#51-核心优化技术详解)
+    - [5.1 VolcanoPlanner CBO详细实现](#51-volcanoplanner-cbo详细实现)
+      - [5.1.1 核心组件](#511-核心组件)
+      - [5.1.2 优化流程](#512-优化流程)
+      - [5.1.3 Top-down vs Bottom-up](#513-top-down-vs-bottom-up)
+    - [5.2 核心优化技术详解](#52-核心优化技术详解)
       - [5.1.1 谓词下推 (Predicate Pushdown)](#511-谓词下推-predicate-pushdown)
       - [5.1.2 投影下推 (Project Pushdown)](#512-投影下推-project-pushdown)
       - [5.1.3 分区裁剪 (Partition Pruning)](#513-分区裁剪-partition-pruning)
       - [5.1.4 连接优化 (Join Reordering)](#514-连接优化-join-reordering)
       - [5.1.5 聚合优化 (Aggregate Pushdown)](#515-聚合优化-aggregate-pushdown)
-    - [5.2 流特定优化技术](#52-流特定优化技术)
-      - [5.2.1 Watermark传播优化](#521-watermark传播优化)
-      - [5.2.2 状态后端优化](#522-状态后端优化)
-      - [5.2.3 增量计算优化](#523-增量计算优化)
-      - [5.2.4 Retraction处理优化](#524-retraction处理优化)
-    - [5.3 查询重写与物化视图](#53-查询重写与物化视图)
-      - [5.3.1 视图展开](#531-视图展开)
-      - [5.3.2 子查询优化](#532-子查询优化)
-      - [5.3.3 物化视图重写](#533-物化视图重写)
-    - [5.4 性能调优实践](#54-性能调优实践)
-      - [5.4.1 EXPLAIN分析](#541-explain分析)
-      - [5.4.2 提示(Hints)使用](#542-提示hints使用)
-      - [5.4.3 统计信息收集](#543-统计信息收集)
-      - [5.4.4 常见性能陷阱](#544-常见性能陷阱)
+    - [5.3 Flink特有优化规则](#53-flink特有优化规则)
+      - [5.3.1 Watermark传播优化](#531-watermark传播优化)
+      - [5.3.2 Changelog规范化](#532-changelog规范化)
+      - [5.3.3 状态后端选择](#533-状态后端选择)
+      - [5.3.4 Join优化规则](#534-join优化规则)
+    - [5.4 流特定优化技术](#54-流特定优化技术)
+      - [5.4.1 Watermark传播优化](#541-watermark传播优化)
+      - [5.4.2 状态后端优化](#542-状态后端优化)
+      - [5.4.3 增量计算优化](#543-增量计算优化)
+      - [5.4.4 Retraction处理优化](#544-retraction处理优化)
+    - [5.5 查询重写与物化视图](#55-查询重写与物化视图)
+      - [5.5.1 视图展开](#551-视图展开)
+      - [5.5.2 子查询优化](#552-子查询优化)
+      - [5.5.3 物化视图重写](#553-物化视图重写)
+    - [5.6 性能调优实践](#56-性能调优实践)
+      - [5.6.1 EXPLAIN分析](#561-explain分析)
+      - [5.6.2 提示(Hints)使用](#562-提示hints使用)
+      - [5.6.3 统计信息收集](#563-统计信息收集)
+      - [5.6.4 常见性能陷阱](#564-常见性能陷阱)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 查询优化前后对比](#61-查询优化前后对比)
     - [6.2 EXPLAIN输出解析实战](#62-explain输出解析实战)
@@ -58,6 +67,23 @@
     - [7.4 CBO代价估计流程](#74-cbo代价估计流程)
     - [7.5 流SQL状态管理架构](#75-流sql状态管理架构)
   - [8. 引用参考 (References)](#8-引用参考-references)
+  - [9. 源码深度分析 (Source Code Analysis)](#9-源码深度分析-source-code-analysis)
+    - [9.1 Flink 自定义优化规则注册机制](#91-flink-自定义优化规则注册机制)
+      - [9.1.1 FlinkRelOptRule 基类设计](#911-flinkreloptrule-基类设计)
+      - [9.1.2 规则集合定义与注册](#912-规则集合定义与注册)
+      - [9.1.3 自定义规则实现示例](#913-自定义规则实现示例)
+    - [9.2 RelNode 到 Transformation 的转换流程](#92-relnode-到-transformation-的转换流程)
+      - [9.2.1 转换流程架构](#921-转换流程架构)
+      - [9.2.2 物理算子基类设计](#922-物理算子基类设计)
+      - [9.2.3 ExecNode 到 Transformation 转换](#923-execnode-到-transformation-转换)
+      - [9.2.4 完整转换链源码](#924-完整转换链源码)
+    - [9.3 StreamPhysicalRel vs BatchPhysicalRel 区别](#93-streamphysicalrel-vs-batchphysicalrel-区别)
+      - [9.3.1 物理算子层次结构](#931-物理算子层次结构)
+      - [9.3.2 StreamPhysicalRel 特有实现](#932-streamphysicalrel-特有实现)
+      - [9.3.3 BatchPhysicalRel 特有实现](#933-batchphysicalrel-特有实现)
+      - [9.3.4 同一逻辑算子的不同物理实现](#934-同一逻辑算子的不同物理实现)
+    - [9.4 优化器入口与执行流程](#94-优化器入口与执行流程)
+    - [9.5 关键配置参数与源码映射](#95-关键配置参数与源码映射)
 
 ---
 
@@ -533,7 +559,244 @@ LogicalSort
 
 ## 5. 工程论证 / 性能调优方法论 (Engineering Argument)
 
-### 5.1 核心优化技术详解
+### 5.1 VolcanoPlanner CBO详细实现
+
+**Def-F-03-57 (VolcanoPlanner)**: VolcanoPlanner是Apache Calcite实现的基于代价的优化器(CBO)，采用Cascades框架的Top-down搜索策略，通过动态规划和分支限界算法在关系代数表达式的搜索空间中寻找最优物理执行计划[^6]。
+
+#### 5.1.1 核心组件
+
+**Def-F-03-58 (MEMO结构)**: MEMO是VolcanoPlanner内部用于存储等价关系表达式组的数据结构，采用组(Group)和表达式(Expression)两级组织：
+
+$$
+\text{MEMO} = \{G_1, G_2, ..., G_n\}, \quad G_i = \{e_{i1}, e_{i2}, ..., e_{im}\}
+$$
+
+其中每个组 $G_i$ 包含逻辑等价的表达式集合，组内表达式共享相同的逻辑属性（输出列、类型等）。
+
+**核心组件架构**：
+
+```mermaid
+graph TB
+    subgraph "VolcanoPlanner核心组件"
+        MEMO[MEMO结构<br/>等价表达式组]
+        TRAIT[RelTraitDef<br/>物理属性定义]
+        COST[CostFactory<br/>代价计算]
+        RULE[RuleSet<br/>优化规则集]
+    end
+
+    subgraph "物理属性定义"
+        CONV[Convention<br/>执行约定]
+        COLL[Collation<br/>排序属性]
+        DIST[Distribution<br/>数据分布]
+        PART[Partitioning<br/>分区策略]
+    end
+
+    subgraph "代价维度"
+        CPU[CPU代价<br/>计算开销]
+        IO[I/O代价<br/>磁盘读写]
+        NET[Network代价<br/>Shuffle传输]
+        MEM[Memory代价<br/>内存占用]
+    end
+
+    MEMO --> TRAIT --> COST
+    RULE --> MEMO
+
+    TRAIT --> CONV
+    TRAIT --> COLL
+    TRAIT --> DIST
+    TRAIT --> PART
+
+    COST --> CPU
+    COST --> IO
+    COST --> NET
+    COST --> MEM
+```
+
+**Def-F-03-59 (RelTraitDef)**: RelTraitDef定义了物理算子所需满足的物理属性约束：
+
+| 属性类型 | 定义 | Flink实现 | 作用 |
+|---------|-----|----------|------|
+| **Convention** | 执行引擎约定 | `FlinkStreamConvention`, `FlinkBatchConvention` | 区分流/批执行模式 |
+| **Collation** | 排序属性 | `RelCollationImpl` | 利用已有排序避免重排 |
+| **Distribution** | 数据分布 | `FlinkRelDistribution` | 确定数据分区策略 |
+| **Partitioning** | 分区属性 | `RelPartitioning` | 优化数据局部性 |
+
+**Def-F-03-60 (CostFactory)**: CostFactory定义多维代价计算模型：
+
+$$
+\text{Cost} = (c_{cpu}, c_{io}, c_{row}, c_{mem}, c_{net}) \in \mathbb{R}^5
+$$
+
+**Flink Cost实现** (`RelOptCostImpl`)：
+
+| 代价维度 | 计算依据 | 权重因子 | 典型场景 |
+|---------|---------|---------|---------|
+| **CPU** | 表达式复杂度、函数调用次数 | 1.0 | 复杂UDF计算 |
+| **I/O** | 读取数据页数、磁盘寻道 | 1.5 | TableSource扫描 |
+| **Row Count** | 中间结果行数 | 0.5 | Join中间结果 |
+| **Memory** | 哈希表、排序缓冲区大小 | 2.0 | Hash Aggregate |
+| **Network** | Shuffle数据量、序列化开销 | 2.5 | Exchange算子 |
+
+#### 5.1.2 优化流程
+
+**Thm-F-03-28 (VolcanoPlanner最优性)**: 在统计信息准确的前提下，VolcanoPlanner通过动态规划枚举能够找到全局最优或近似最优的物理执行计划。
+
+*证明概要*：
+
+1. **完备性**: MEMO结构存储所有等价表达式，保证搜索空间完整覆盖
+2. **最优子结构**: 子表达式的最优解可组合为全局最优解（动态规划基础）
+3. **分支限界**: 剪枝代价上界超过当前最优解的分支，保证效率∎
+
+**优化执行流程**：
+
+```java
+// 1. 创建VolcanoPlanner实例
+VolcanoPlanner planner = new VolcanoPlanner(
+    RelOptCostImpl.FACTORY,           // 使用Flink代价工厂
+    Contexts.of(config)               // 配置上下文
+);
+
+// 2. 注册物理属性定义（必须）
+planner.addRelTraitDef(ConventionTraitDef.INSTANCE);
+planner.addRelTraitDef(RelCollationTraitDef.INSTANCE);
+planner.addRelTraitDef(RelDistributionTraitDef.INSTANCE);
+
+// 3. 注册优化规则
+planner.addRule(CoreRules.FILTER_SCAN);
+planner.addRule(CoreRules.PROJECT_FILTER_TRANSPOSE);
+planner.addRule(CoreRules.JOIN_COMMUTE);
+planner.addRule(CoreRules.JOIN_ASSOCIATE);
+
+// 4. 设置根节点
+planner.setRoot(logicalRel);
+
+// 5. 指定目标物理属性
+RelTraitSet desiredTraits = logicalRel.getTraitSet()
+    .replace(FlinkConventions.STREAM_PHYSICAL)
+    .replace(FlinkRelDistribution.hash(List.of("user_id")));
+
+// 6. 执行优化（触发CBO）
+RelNode optimized = planner.changeTraits(logicalRel, desiredTraits);
+```
+
+**优化阶段详解**：
+
+```mermaid
+flowchart TB
+    subgraph "阶段1: 准备"
+        P1[创建VolcanoPlanner]
+        P2[注册Trait定义]
+        P3[注册优化规则]
+        P4[构建初始MEMO]
+    end
+
+    subgraph "阶段2: 逻辑等价变换"
+        L1[应用逻辑规则]
+        L2[扩展等价表达式]
+        L3[填充MEMO组]
+    end
+
+    subgraph "阶段3: 物理实现枚举"
+        PH1[生成物理算子]
+        PH2[绑定物理属性]
+        PH3[计算执行代价]
+    end
+
+    subgraph "阶段4: 最优计划选择"
+        O1[动态规划求解]
+        O2[分支限界剪枝]
+        O3[输出最优计划]
+    end
+
+    P1 --> P2 --> P3 --> P4
+    P4 --> L1 --> L2 --> L3
+    L3 --> PH1 --> PH2 --> PH3
+    PH3 --> O1 --> O2 --> O3
+```
+
+#### 5.1.3 Top-down vs Bottom-up
+
+**Lemma-F-03-02 (搜索策略对比)**: VolcanoPlanner采用Top-down搜索（Cascades算法），相比传统Bottom-up方法具有以下优势：
+
+| 特性 | Top-down (Volcano) | Bottom-up (System R) |
+|-----|-------------------|---------------------|
+| **剪枝时机** | 早期剪枝（父节点驱动） | 晚期剪枝（子节点完成后） |
+| **物理属性传播** | 自然支持（父传子） | 需反向推导 |
+| **规则触发** | 需求驱动 | 生成驱动 |
+| **内存占用** | 按需展开 | 预先生成所有组合 |
+| **实现复杂度** | 较高 | 较低 |
+
+**Flink优化器演进**：
+
+```markdown
+| Flink版本 | 优化器 | 搜索策略 | CBO支持 | 备注 |
+|----------|--------|---------|---------|------|
+| 1.0-1.8 | HepPlanner | Bottom-up (启发式) | ❌ 无 | 简单规则应用 |
+| 1.9+ | VolcanoPlanner | Top-down (Cascades) | ✅ 完整 | Blink Planner引入 |
+| 1.13+ | VolcanoPlanner+ | Top-down + 自适应 | ✅ 增强 | 统计信息自动收集 |
+```
+
+**Cascades算法核心机制**：
+
+```mermaid
+graph TD
+    subgraph "Cascades Top-down优化"
+        ROOT[根节点<br/>LogicalAggregate]
+
+        subgraph "Group 1"
+            G1_E1[LogicalJoin]
+            G1_E2[HashJoin<br/>代价: 1000]
+            G1_E3[SortMergeJoin<br/>代价: 1500]
+        end
+
+        subgraph "Group 2"
+            G2_E1[LogicalFilter]
+            G2_E2[FilterPushDown<br/>代价: 100]
+        end
+
+        subgraph "Group 3"
+            G3_E1[TableScan]
+            G3_E2[PartitionedScan<br/>代价: 50]
+        end
+    end
+
+    ROOT --> G1_E1
+    G1_E1 -.->|优化| G1_E2
+    G1_E1 -.->|优化| G1_E3
+    G1_E1 --> G2_E1
+    G1_E1 --> G3_E1
+    G2_E1 -.->|优化| G2_E2
+    G2_E2 --> G3_E2
+```
+
+**分支限界剪枝策略**：
+
+```java
+// 伪代码：分支限界剪枝逻辑
+void optimizeGroup(Group group, Cost upperBound) {
+    for (Expression expr : group.getExpressions()) {
+        // 计算当前表达式代价下界
+        Cost lowerBound = estimateLowerBound(expr);
+
+        // 剪枝：若下界超过上界，跳过
+        if (lowerBound.gt(upperBound)) {
+            continue;  // 剪枝
+        }
+
+        // 递归优化子节点
+        Cost childCost = optimizeChildren(expr.getInputs(), upperBound);
+        Cost totalCost = lowerBound.plus(childCost);
+
+        // 更新当前组最优解
+        if (totalCost.lt(group.getBestCost())) {
+            group.setBestExpression(expr);
+            group.setBestCost(totalCost);
+        }
+    }
+}
+```
+
+### 5.2 核心优化技术详解
 
 #### 5.1.1 谓词下推 (Predicate Pushdown)
 
@@ -760,9 +1023,212 @@ SET table.optimizer.agg-phase-strategy = 'AUTO';
 
 
 
-### 5.2 流特定优化技术
+### 5.3 Flink特有优化规则
 
-#### 5.2.1 Watermark传播优化
+**Def-F-03-61 (Flink优化规则分类)**: Flink在Calcite基础规则之上，实现了针对流计算特性的专用优化规则，涵盖Watermark传播、Changelog处理、状态后端选择等维度[^7]。
+
+#### 5.3.1 Watermark传播优化
+
+**Def-F-03-62 (WatermarkPushDownRule)**: Watermark传播优化规则将Watermark生成算子下推至Source节点，减少中间算子的Watermark处理开销。
+
+**规则功能**：
+
+- **下推范围**: 从Project/Filter之后下推至TableSourceScan
+- **语义保持**: 确保Watermark时间戳在Source处正确生成
+- **性能收益**: 减少中间算子的Watermark广播开销
+
+```mermaid
+graph LR
+    subgraph "优化前"
+        A1[TableSourceScan] --> B1[Project]
+        B1 --> C1[WatermarkAssigner]
+        C1 --> D1[WindowAggregate]
+    end
+
+    subgraph "优化后"
+        A2[TableSourceScan<br/>+ Watermark生成] --> B2[Project]
+        B2 --> C2[Watermark直通]
+        C2 --> D2[WindowAggregate]
+    end
+
+    style A2 fill:#c8e6c9,stroke:#2e7d32
+```
+
+**规则实现** (`WatermarkPushDownRule`)：
+
+```java
+public class WatermarkPushDownRule extends RelRule<WatermarkPushDownRule.Config> {
+
+    @Override
+    public void onMatch(RelOptRuleCall call) {
+        WatermarkAssigner watermark = call.rel(0);
+        Project project = call.rel(1);
+        TableSourceScan scan = call.rel(2);
+
+        // 检查Source是否支持Watermark下推
+        if (scan.getTableSource() instanceof SupportsWatermarkPushDown) {
+            // 提取Watermark策略
+            WatermarkStrategy strategy = extractStrategy(watermark);
+
+            // 创建带Watermark的Source
+            TableSourceTable newTable = scan.getTable()
+                .applyWatermark(strategy, project.getProjects());
+
+            // 替换原计划
+            TableSourceScan newScan = new TableSourceScan(
+                scan.getCluster(), scan.getTraitSet(), newTable);
+
+            // 消除WatermarkAssigner，直接连接Project
+            call.transformTo(project.copy(project.getTraitSet(),
+                Collections.singletonList(newScan)));
+        }
+    }
+}
+```
+
+#### 5.3.2 Changelog规范化
+
+**Def-F-03-63 (ChangelogNormalizeRule)**: Changelog规范化规则优化Upsert/Retract流的转换过程，减少不必要的Retraction消息生成。
+
+**优化场景**：
+
+| 场景 | 原始行为 | 优化后 | 收益 |
+|-----|---------|-------|------|
+| **Upsert流** | 每个更新生成-D/+D对 | 直接输出+U | 减少50%消息 |
+| **Retract聚合** | 全量回撤重计算 | 增量更新 | 减少计算量 |
+| **版本表Join** | 版本变化全回撤 | 最小变更集 | 降低下游压力 |
+
+**Thm-F-03-29 (Changelog规范化正确性)**: Changelog规范化变换保持流处理结果的最终一致性。
+
+*证明概要*：
+
+1. Upsert语义保证每个Key只有最新值有效
+2. 直接输出+U替代-D/+D对，最终状态相同
+3. 中间状态差异在窗口/物化时消除∎
+
+#### 5.3.3 状态后端选择
+
+**Def-F-03-64 (StateBackendRewriteRule)**: 状态后端重写规则根据状态大小、访问模式自动选择HashMapStateBackend或RocksDBStateBackend。
+
+**选择策略**：
+
+```mermaid
+flowchart TD
+    Start([状态算子]) --> Q1{预估状态大小}
+
+    Q1 -->|< 10MB| A1[HashMapStateBackend<br/>内存状态]
+    Q1 -->|10MB-100MB| Q2{状态访问模式}
+    Q1 -->|> 100MB| A3[RocksDBStateBackend<br/>磁盘状态]
+
+    Q2 -->|读多写少| A1
+    Q2 -->|写多读少| A3
+    Q2 -->|随机访问| Q3{是否可增量化}
+
+    Q3 -->|是| A1
+    Q3 -->|否| A3
+
+    A1 --> End([生成算子配置])
+    A3 --> End
+```
+
+**状态大小估算模型**：
+
+$$
+\text{StateSize} = N_{keys} \times (S_{key} + S_{value} + O_{overhead}) \times F_{replication}
+$$
+
+其中：
+
+- $N_{keys}$: 分组键基数
+- $S_{key}, S_{value}$: 键值平均大小
+- $O_{overhead}$: 状态后端开销（RocksDB约200字节/条）
+- $F_{replication}$: 容错复制因子（默认2）
+
+#### 5.3.4 Join优化规则
+
+**Def-F-03-65 (Flink Join优化规则组)**: Flink实现针对流/批场景的Join算法选择规则[^8]：
+
+| 规则名称 | 触发条件 | 算法选择 | 适用场景 |
+|---------|---------|---------|---------|
+| **BroadcastHashJoinRule** | 右表 < `broadcast-threshold` | Broadcast Hash Join | 维表Join、小表Join |
+| **ShuffleHashJoinRule** | 等值Join、内存充足 | Shuffle Hash Join | 大表等大表Join |
+| **SortMergeJoinRule** | 内存受限、输出需有序 | Sort-Merge Join | 超大规模Join |
+| **NestedLoopJoinRule** | 非等值Join | Nested Loop Join | 范围Join、复杂条件 |
+| **IntervalJoinRule** | 时间范围Join | Interval Join | 时序数据关联 |
+| **TemporalJoinRule** | 版本表Join | Temporal Join |  slowly-changing维表 |
+
+**规则选择决策矩阵**：
+
+```mermaid
+flowchart TD
+    Start([Join优化]) --> Q1{Join类型}
+
+    Q1 -->|Inner/Left Outer| Q2{右表大小}
+    Q1 -->|Full Outer| Q3{表大小对比}
+    Q1 -->|非等值| R4[NestedLoopJoin]
+
+    Q2 -->|< broadcast阈值| R1[BroadcastHashJoin]
+    Q2 -->|较大| Q4{内存预算}
+
+    Q4 -->|充足| R2[ShuffleHashJoin]
+    Q4 -->|受限| R3[SortMergeJoin]
+
+    Q3 -->|一大一小| R1
+    Q3 -->|都大| Q4
+
+    R1 --> End([生成物理计划])
+    R2 --> End
+    R3 --> End
+    R4 --> End
+```
+
+**BroadcastHashJoinRule实现**：
+
+```java
+public class BroadcastHashJoinRule extends RelRule<BroadcastHashJoinRule.Config> {
+
+    @Override
+    public boolean matches(RelOptRuleCall call) {
+        LogicalJoin join = call.rel(0);
+        RelNode left = call.rel(1);
+        RelNode right = call.rel(2);
+
+        // 检查是否为等值Join
+        if (!isEquiJoin(join.getCondition())) return false;
+
+        // 检查右表大小是否满足广播条件
+        RelMetadataQuery mq = call.getMetadataQuery();
+        Double rightRowCount = mq.getRowCount(right);
+
+        return rightRowCount != null &&
+               rightRowCount < config.getBroadcastThreshold();
+    }
+
+    @Override
+    public void onMatch(RelOptRuleCall call) {
+        LogicalJoin join = call.rel(0);
+        RelNode left = call.rel(1);
+        RelNode right = call.rel(2);
+
+        // 创建Broadcast Hash Join物理算子
+        ExecNodeBase<?> broadcastJoin = new BatchExecBroadcastHashJoin(
+            join.getCluster(),
+            join.getTraitSet().replace(FlinkConventions.BATCH_PHYSICAL),
+            left,
+            right,
+            join.getCondition(),
+            join.getJoinType(),
+            true  // 右表作为build side
+        );
+
+        call.transformTo(broadcastJoin);
+    }
+}
+```
+
+### 5.4 流特定优化技术
+
+#### 5.4.1 Watermark传播优化
 
 **Def-F-03-47 (Watermark语义)**: Watermark $w(t)$ 是事件时间 $t$ 的单调不减下界函数，标记所有时间戳 $\leq w(t)$ 的事件已到达。
 
@@ -800,7 +1266,7 @@ graph TB
 - 单输入算子：直接传递或延迟传递，保持单调性
 - 多输入算子：取最小值，各输入单调不减保证输出单调不减∎
 
-#### 5.2.2 状态后端优化
+#### 5.4.2 状态后端优化
 
 **Def-F-03-48 (状态算子分类)**: Flink流SQL算子按状态需求分类：
 
@@ -822,7 +1288,7 @@ $$|\text{State}_{agg}| \leq |keys| \cdot (|key| + |acc| + \text{overhead})$$
 
 $$|\text{State}_{join}(t)| \leq |R(t - \delta, t)| + |S(t - \delta, t)|$$
 
-#### 5.2.3 增量计算优化
+#### 5.4.3 增量计算优化
 
 **Def-F-03-49 (Changelog语义)**: Flink流SQL使用Changelog模型处理数据变更[^4]：
 
@@ -857,7 +1323,7 @@ GROUP BY user_id;
   4. 输出: -U(user_id=100, total=50), +U(user_id=100, total=80)
 ```
 
-#### 5.2.4 Retraction处理优化
+#### 5.4.4 Retraction处理优化
 
 **Def-F-03-50 (Retraction机制)**: 当聚合键值变化时，Flink需要发送撤回消息（-U）再发送新值（+U）。
 
@@ -889,9 +1355,9 @@ GROUP BY user_id;
 
    效果：多DISTINCT拆分为子聚合，避免重复计算
 
-### 5.3 查询重写与物化视图
+### 5.5 查询重写与物化视图
 
-#### 5.3.1 视图展开
+#### 5.5.1 视图展开
 
 **Def-F-03-51 (视图展开)**: 将视图定义内联到查询中，为后续优化提供完整上下文。
 
@@ -928,7 +1394,7 @@ GROUP BY c.customer_name;
 - Join重排序
 - 投影列裁剪
 
-#### 5.3.2 子查询优化
+#### 5.5.2 子查询优化
 
 **Def-F-03-52 (子查询去关联化)**: 将关联子查询转换为非关联形式，提升并行度。
 
@@ -963,7 +1429,7 @@ JOIN (
 WHERE e.salary > avg.avg_sal;
 ```
 
-#### 5.3.3 物化视图重写
+#### 5.5.3 物化视图重写
 
 **Def-F-03-53 (物化视图匹配)**: 若物化视图 $MV$ 包含查询 $Q$ 所需数据，可将 $Q$ 重写到 $MV$。
 
@@ -980,9 +1446,9 @@ $$Q \subseteq MV \iff \forall t : t \in Q \Rightarrow t \in MV$$
 | 预过滤表 | ✅ | 谓词增强 |
 | 部分匹配 | ⚠️ | 补偿计算 |
 
-### 5.4 性能调优实践
+### 5.6 性能调优实践
 
-#### 5.4.1 EXPLAIN分析
+#### 5.6.1 EXPLAIN分析
 
 **Def-F-03-54 (EXPLAIN模式)**: Flink提供多级执行计划展示：
 
@@ -1035,7 +1501,7 @@ Stage 2:
   GroupAggregate(...) -> Calc(...)
 ```
 
-#### 5.4.2 提示(Hints)使用
+#### 5.6.2 提示(Hints)使用
 
 **Def-F-03-55 (SQL Hints)**: Flink支持通过Hints影响优化器决策[^5]：
 
@@ -1068,7 +1534,7 @@ JOIN b ON a.id = b.a_id
 JOIN c ON b.id = c.b_id;
 ```
 
-#### 5.4.3 统计信息收集
+#### 5.6.3 统计信息收集
 
 **Def-F-03-56 (统计信息类型)**: Flink CBO依赖的统计信息：
 
@@ -1109,7 +1575,7 @@ WHERE table_name = 'orders';
 | 高频写入表 | 实时 | 元数据自动更新 |
 | 分区表 | 新分区创建后 | 分区级分析 |
 
-#### 5.4.4 常见性能陷阱
+#### 5.6.4 常见性能陷阱
 
 | 问题 | 现象 | 根因 | 解决方案 |
 |-----|------|-----|---------|
@@ -1590,6 +2056,12 @@ graph TB
 
 [^5]: Apache Flink. "Query Hints." Apache Flink SQL Documentation, 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/hints/>
 
+[^6]: Apache Calcite. "Apache Calcite Documentation - Cost-Based Optimization." Apache Software Foundation, 2025. <https://calcite.apache.org/docs/>
+
+[^7]: Edmon Begoli, Jesus Camacho-Rodriguez, Julian Hyde, et al. "Building Cost-Based Query Optimizers With Apache Calcite." Percona Live Conference, 2019. <https://www.percona.com/sites/default/files/presentations/Building%20Cost-Based%20Query%20Optimizers%20With%20Apache%20Calcite.pdf>
+
+[^8]: Alibaba Cloud. "MaxCompute Query Optimization Based on Apache Calcite." Alibaba Cloud Blog, 2020. <https://www.alibabacloud.com/blog/595363>
+
 
 
 
@@ -1614,7 +2086,7 @@ graph TB
  * 继承自 Calcite 的 RelOptRule，添加 Flink 特定功能
  */
 public abstract class FlinkRelOptRule extends RelOptRule {
-    
+
     /**
      * 构造器
      * @param operand 规则匹配的操作数
@@ -1622,14 +2094,14 @@ public abstract class FlinkRelOptRule extends RelOptRule {
     protected FlinkRelOptRule(RelOptRuleOperand operand) {
         super(operand);
     }
-    
+
     /**
      * 构造器（带描述）
      */
     protected FlinkRelOptRule(RelOptRuleOperand operand, String description) {
         super(operand, description);
     }
-    
+
     /**
      * 规则匹配条件检查
      * 子类可重写以添加额外匹配条件
@@ -1638,7 +2110,7 @@ public abstract class FlinkRelOptRule extends RelOptRule {
     public boolean matches(RelOptRuleCall call) {
         return super.matches(call);
     }
-    
+
     /**
      * 规则变换实现
      * 子类必须实现具体变换逻辑
@@ -1658,53 +2130,53 @@ public abstract class FlinkRelOptRule extends RelOptRule {
  * 定义所有可用的优化规则
  */
 public class FlinkRuleSets {
-    
+
     /**
      * 逻辑优化规则（HepPlanner）
      */
     public static final RelOptRuleSet LOGICAL_OPT_RULES = RelOptRuleSets.ofList(
         // 投影下推规则
         FlinkPushProjectIntoTableSourceScan.INSTANCE,
-        
+
         // 谓词下推规则
         PushFilterIntoTableSourceScanRule.INSTANCE,
         PushFilterIntoJoinRule.INSTANCE,
-        
+
         // Join优化规则
         JoinConditionTypeCoerceRule.INSTANCE,
         JoinDeriveNullFilterRule.INSTANCE,
-        
+
         // 子查询重写规则
         SubQueryRemoveRule.FILTER,
         SubQueryRemoveRule.PROJECT,
         SubQueryRemoveRule.JOIN,
-        
+
         // 窗口优化规则
         WindowPropertiesRules.WINDOW_PROPERTIES_RULES,
-        
+
         // 常量折叠规则
         ReduceExpressionsRule.FILTER_INSTANCE,
         ReduceExpressionsRule.PROJECT_INSTANCE,
-        
+
         // 聚合优化规则
         DecomposeGroupingSetsRule.INSTANCE,
         SplitAggregateRule.INSTANCE
     );
-    
+
     /**
      * 物理优化规则（VolcanoPlanner）
      */
     public static final RelOptRuleSet PHYSICAL_OPT_RULES = RelOptRuleSets.ofList(
         // 流物理规则
         StreamExecRuleSets.STREAM_PHYSICAL_OPT_RULES,
-        
+
         // 批物理规则
         BatchExecRuleSets.BATCH_PHYSICAL_OPT_RULES,
-        
+
         // 通用物理规则
         EnumerableRules.ENUMERABLE_RULES
     );
-    
+
     /**
      * 扩展规则注册
      */
@@ -1722,10 +2194,10 @@ public class FlinkRuleSets {
  * 示例：自定义谓词下推规则
  */
 public class CustomPushDownRule extends FlinkRelOptRule {
-    
+
     // 单例模式
     public static final CustomPushDownRule INSTANCE = new CustomPushDownRule();
-    
+
     /**
      * 定义匹配模式：Filter -> TableScan
      */
@@ -1737,25 +2209,25 @@ public class CustomPushDownRule extends FlinkRelOptRule {
             "CustomPushDownRule"
         );
     }
-    
+
     @Override
     public boolean matches(RelOptRuleCall call) {
         LogicalFilter filter = call.rel(0);
         LogicalTableScan scan = call.rel(1);
-        
+
         // 检查TableSource是否支持下推
         TableSourceTable table = scan.getTable();
         return table.getTableSource() instanceof SupportsFilterPushDown;
     }
-    
+
     @Override
     public void onMatch(RelOptRuleCall call) {
         LogicalFilter filter = call.rel(0);
         LogicalTableScan scan = call.rel(1);
-        
+
         // 提取可下推谓词
         List<RexNode> predicates = RexUtil.pullFactors(filter.getCondition());
-        
+
         // 创建新的TableScan（带下推谓词）
         TableSourceTable newTable = applyPushDown(scan.getTable(), predicates);
         LogicalTableScan newScan = LogicalTableScan.create(
@@ -1763,10 +2235,10 @@ public class CustomPushDownRule extends FlinkRelOptRule {
             newTable,
             scan.getHints()
         );
-        
+
         // 保留不可下推谓词
         RexNode remainingCondition = getRemainingCondition(filter.getCondition(), predicates);
-        
+
         if (remainingCondition.isAlwaysTrue()) {
             // 全部下推
             call.transformTo(newScan);
@@ -1800,7 +2272,7 @@ graph TB
         Volcano --> Physical[FlinkPhysicalRel<br/>物理算子]
         Physical --> Transformation[Transformation<br/>→ StreamGraph]
     end
-    
+
     style Physical fill:#c8e6c9,stroke:#2e7d32
     style Transformation fill:#e3f2fd,stroke:#1565c0
 ```
@@ -1815,17 +2287,17 @@ graph TB
  * 继承自 Calcite 的 RelNode，添加执行能力
  */
 public interface FlinkPhysicalRel extends RelNode {
-    
+
     /**
      * 转换为执行节点（ExecNode）
      */
     ExecNode<?> translateToExecNode();
-    
+
     /**
      * 获取所需的输入Trait（排序、分布等）
      */
     RelTraitSet getRequiredInputTraits(int inputOrdinal);
-    
+
     /**
      * 检查是否满足所需的物理属性
      */
@@ -1841,11 +2313,11 @@ public interface FlinkPhysicalRel extends RelNode {
 /**
  * 流计算节点（Calc/Project+Filter）
  */
-public class StreamExecCalc extends ExecNodeBase<RowData> 
+public class StreamExecCalc extends ExecNodeBase<RowData>
         implements StreamExecNode<RowData> {
-    
+
     private final RexProgram calcProgram;
-    
+
     /**
      * 转换为 Flink Transformation
      */
@@ -1853,27 +2325,27 @@ public class StreamExecCalc extends ExecNodeBase<RowData>
     protected Transformation<RowData> translateToPlanInternal(
             PlannerBase planner,
             ExecNodeContext context) {
-        
+
         // 1. 获取输入Transformation
-        Transformation<RowData> inputTransform = 
+        Transformation<RowData> inputTransform =
             (Transformation<RowData>) getInputNodes().get(0)
                 .translateToPlan(planner);
-        
+
         // 2. 构建代码生成器
         CodeGeneratorContext ctx = new CodeGeneratorContext(planner.getTableConfig());
-        
+
         // 3. 生成计算函数
-        GeneratedFunction<FlatMapFunction<RowData, RowData>> calcFunction = 
+        GeneratedFunction<FlatMapFunction<RowData, RowData>> calcFunction =
             CalcCodeGenerator.generateCalcFunction(
                 ctx,
                 calcProgram,
                 getOutputType(),
                 null  // 无Filter
             );
-        
+
         // 4. 创建Transformation
         String name = context.generateUid("Calc");
-        OneInputTransformation<RowData, RowData> transform = 
+        OneInputTransformation<RowData, RowData> transform =
             new OneInputTransformation<>(
                 inputTransform,
                 name,
@@ -1881,7 +2353,7 @@ public class StreamExecCalc extends ExecNodeBase<RowData>
                 InternalTypeInfo.of(getOutputType()),
                 inputTransform.getParallelism()
             );
-        
+
         return transform;
     }
 }
@@ -1894,7 +2366,7 @@ public class StreamExecCalc extends ExecNodeBase<RowData>
  * Planner 执行入口
  */
 public class StreamPlanner extends PlannerBase {
-    
+
     /**
      * 将 SQL 转换为可执行的 Pipeline
      */
@@ -1902,21 +2374,21 @@ public class StreamPlanner extends PlannerBase {
     public Pipeline translate(List<ModifyOperation> modifyOperations) {
         // 1. 优化所有操作
         List<RelNode> optimizedRels = optimize(modifyOperations);
-        
+
         // 2. 转换为 ExecNode
         List<ExecNode<?>> execNodes = new ArrayList<>();
         for (RelNode rel : optimizedRels) {
             ExecNode<?> execNode = ((FlinkPhysicalRel) rel).translateToExecNode();
             execNodes.add(execNode);
         }
-        
+
         // 3. 转换为 Transformation
         List<Transformation<?>> transformations = new ArrayList<>();
         for (ExecNode<?> execNode : execNodes) {
             Transformation<?> transform = execNode.translateToPlan(this);
             transformations.add(transform);
         }
-        
+
         // 4. 构建 StreamGraph
         return new StreamGraphGenerator(transformations)
             .generate();
@@ -1936,41 +2408,41 @@ classDiagram
         +getRequiredInputTraits()
         +satisfiesTraits()
     }
-    
+
     class StreamPhysicalRel {
         <<interface>>
         +produceWatermark()
         +requireWatermark()
     }
-    
+
     class BatchPhysicalRel {
         <<interface>>
         +isBounded()
         +getParallelism()
     }
-    
+
     class StreamExecCalc {
         -calcProgram
         +translateToPlan()
     }
-    
+
     class StreamExecJoin {
         -joinType
         -joinCondition
         +translateToPlan()
     }
-    
+
     class BatchExecCalc {
         -calcProgram
         +translateToPlan()
     }
-    
+
     class BatchExecHashJoin {
         -buildSide
         -probeSide
         +translateToPlan()
     }
-    
+
     FlinkPhysicalRel <|-- StreamPhysicalRel
     FlinkPhysicalRel <|-- BatchPhysicalRel
     StreamPhysicalRel <|.. StreamExecCalc
@@ -1988,21 +2460,21 @@ classDiagram
  * 流物理算子标记接口
  */
 public interface StreamPhysicalRel extends FlinkPhysicalRel {
-    
+
     /**
      * 是否产生 Watermark
      */
     default boolean producesWatermark() {
         return false;
     }
-    
+
     /**
      * 是否需要输入 Watermark
      */
     default boolean requiresWatermark() {
         return false;
     }
-    
+
     /**
      * 获取 Changelog 模式
      */
@@ -2013,7 +2485,7 @@ public interface StreamPhysicalRel extends FlinkPhysicalRel {
  * 流聚合算子实现
  */
 public class StreamExecGroupAggregate extends StreamPhysicalRel {
-    
+
     @Override
     public ChangelogMode getChangelogMode() {
         // 聚合输出包含 +I, -U, +U, -D
@@ -2024,7 +2496,7 @@ public class StreamExecGroupAggregate extends StreamPhysicalRel {
             .addContainedKind(RowKind.DELETE)
             .build();
     }
-    
+
     @Override
     public boolean requiresWatermark() {
         return true;  // 窗口聚合需要 Watermark
@@ -2041,14 +2513,14 @@ public class StreamExecGroupAggregate extends StreamPhysicalRel {
  * 批物理算子标记接口
  */
 public interface BatchPhysicalRel extends FlinkPhysicalRel {
-    
+
     /**
      * 是否是有界输入
      */
     default boolean isBounded() {
         return true;
     }
-    
+
     /**
      * 获取首选并行度
      */
@@ -2059,17 +2531,17 @@ public interface BatchPhysicalRel extends FlinkPhysicalRel {
  * 批 Join 算子实现
  */
 public class BatchExecHashJoin extends BatchPhysicalRel {
-    
+
     private final JoinRelType joinType;
     private final int buildLeft;
-    
+
     @Override
     public Transformation<RowData> translateToPlanInternal(PlannerBase planner) {
         // 批 Join 可以构建哈希表
         // 选择小表作为 build side
         Transformation<RowData> leftInput = ...;
         Transformation<RowData> rightInput = ...;
-        
+
         // 构建哈希表
         HashJoinOperator operator = new HashJoinOperator(
             leftType,
@@ -2077,7 +2549,7 @@ public class BatchExecHashJoin extends BatchPhysicalRel {
             joinCondition,
             buildLeft == 0  // 是否左表作为build side
         );
-        
+
         return new TwoInputTransformation<>(
             leftInput,
             rightInput,
@@ -2097,7 +2569,7 @@ public class BatchExecHashJoin extends BatchPhysicalRel {
  * 聚合算子的不同物理实现
  */
 public class AggregatePhysicalRelFactory {
-    
+
     /**
      * 创建流聚合算子
      */
@@ -2106,7 +2578,7 @@ public class AggregatePhysicalRelFactory {
             RelTraitSet traitSet,
             RelNode input,
             AggregateCall[] aggCalls) {
-        
+
         return new StreamExecGroupAggregate(
             cluster,
             traitSet,
@@ -2115,7 +2587,7 @@ public class AggregatePhysicalRelFactory {
             true  // 需要状态
         );
     }
-    
+
     /**
      * 创建批聚合算子
      */
@@ -2124,7 +2596,7 @@ public class AggregatePhysicalRelFactory {
             RelTraitSet traitSet,
             RelNode input,
             AggregateCall[] aggCalls) {
-        
+
         return new BatchExecHashAggregate(
             cluster,
             traitSet,
@@ -2143,60 +2615,60 @@ public class AggregatePhysicalRelFactory {
  * Flink 优化器入口
  */
 public class FlinkOptimizer {
-    
+
     /**
      * 执行优化
      */
     public RelNode optimize(RelNode rootRel) {
         // 1. 逻辑优化（HepPlanner）
         RelNode logicalPlan = optimizeLogicalPlan(rootRel);
-        
+
         // 2. 转换为 Flink 逻辑算子
         RelNode flinkLogicalPlan = convertToFlinkLogical(logicalPlan);
-        
+
         // 3. 物理优化（VolcanoPlanner）
         RelNode physicalPlan = optimizePhysicalPlan(flinkLogicalPlan);
-        
+
         return physicalPlan;
     }
-    
+
     /**
      * 逻辑优化
      */
     private RelNode optimizeLogicalPlan(RelNode relNode) {
         HepProgramBuilder builder = new HepProgramBuilder();
-        
+
         // 添加优化规则组
         builder.addGroupBegin();
         builder.addRuleCollection(FlinkRuleSets.LOGICAL_OPT_RULES);
         builder.addGroupEnd();
-        
+
         HepPlanner hepPlanner = new HepPlanner(builder.build());
         hepPlanner.setRoot(relNode);
-        
+
         return hepPlanner.findBestExp();
     }
-    
+
     /**
      * 物理优化
      */
     private RelNode optimizePhysicalPlan(RelNode relNode) {
         VolcanoPlanner volcanoPlanner = new VolcanoPlanner();
-        
+
         // 添加物理规则
         for (RelOptRule rule : FlinkRuleSets.PHYSICAL_OPT_RULES) {
             volcanoPlanner.addRule(rule);
         }
-        
+
         // 设置代价模型
         volcanoPlanner.setExecutor(new FlinkCostExecutor());
-        
+
         volcanoPlanner.setRoot(relNode);
-        
+
         // 触发优化
         RelTraitSet desiredTraits = relNode.getTraitSet()
             .replace(FlinkConventions.STREAM_PHYSICAL);
-        
+
         return volcanoPlanner.changeTraits(relNode, desiredTraits);
     }
 }
@@ -2219,7 +2691,7 @@ public class FlinkOptimizer {
 | 属性 | 值 |
 |-----|---|
 | 文档编号 | Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive |
-| 定理编号范围 | Def-F-03-30 ~ Def-F-03-56, Thm-F-03-20 ~ Thm-F-03-27, Prop-F-03-01 ~ Prop-F-03-02, Lemma-F-03-01 |
+| 定理编号范围 | Def-F-03-30 ~ Def-F-03-65, Thm-F-03-20 ~ Thm-F-03-29, Prop-F-03-01 ~ Prop-F-03-02, Lemma-F-03-01 ~ Lemma-F-03-02 |
 | 形式化等级 | L4-L5 |
 | 前置依赖 | [query-optimization-analysis.md](query-optimization-analysis.md) |
 | 创建日期 | 2026-04-02 |
