@@ -806,7 +806,57 @@ public class CircuitBreakerState {
 }
 ```
 
-### 示例 6.4: 与同步模式的性能对比实测
+### 示例 6.4: DataStream 启用异步状态 (enableAsyncState)
+
+**在 DataStream API 中显式启用异步状态处理**：
+
+```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+public class AsyncStateJob {
+
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 配置 ForSt State Backend（支持异步状态）
+        ForStStateBackend forStBackend = new ForStStateBackend();
+        forStBackend.setRemoteStoragePath("s3://flink-state-bucket/checkpoints");
+        env.setStateBackend(forStBackend);
+
+        // 启用 Checkpoint
+        env.enableCheckpointing(60000);
+
+        // 创建数据流
+        DataStream<Event> source = env.addSource(new EventSource())
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<Event>forBoundedOutOfOrderness(
+                    Duration.ofSeconds(5)
+                )
+            );
+
+        // ========================================
+        // 关键：启用异步状态处理
+        // ========================================
+        DataStream<Result> result = source
+            .keyBy(Event::getKey)
+            .enableAsyncState()  // 必须显式启用
+            .process(new AsyncCounterFunction());
+
+        result.addSink(new ResultSink());
+        env.execute("Async State Job");
+    }
+}
+```
+
+**重要说明**：
+
+1. **`enableAsyncState()` 必须显式调用**：异步状态不会自动启用，需要在 `keyBy()` 后显式调用
+2. **State Backend 要求**：必须使用支持异步状态的 State Backend（如 ForSt）
+3. **算子要求**：处理函数需要实现异步状态访问模式
+
+### 示例 6.5: 与同步模式的性能对比实测
 
 **测试场景**: WordCount，状态 100GB，Key 数量 10M。
 

@@ -440,7 +440,8 @@ $$
 -- Def-F-12-30: Flink Agent DDL 定义
 
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE AGENT customer_support_agent
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE AGENT customer_support_agent~~ (未来可能的语法)
 WITH (
   'agent.id' = 'support_agent_v1',
   'llm.model' = 'gpt-4-turbo',

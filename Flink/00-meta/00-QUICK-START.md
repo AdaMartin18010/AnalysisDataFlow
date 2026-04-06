@@ -323,7 +323,8 @@ docker-compose exec jobmanager ./bin/flink cancel <job-id>
 ```sql
 -- 步骤 1：注册 MCP 工具
 -- 注: 以下为未来可能的语法（概念设计），尚未正式实现
-CREATE TOOL search_products
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE TOOL search_products~~ (未来可能的语法)
 WITH (
     'protocol' = 'mcp',
     'endpoint' = 'http://mcp-server:8080/sse',
@@ -332,7 +333,8 @@ WITH (
 );
 
 -- 步骤 2：创建 AI Agent（未来可能的语法，概念设计阶段）
-CREATE AGENT sales_assistant
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE AGENT sales_assistant~~ (未来可能的语法)
 WITH (
     'model.provider' = 'openai',
     'model.name' = 'gpt-4',
@@ -406,7 +408,8 @@ agent.execute();
 ```yaml
 # flink-conf.yaml - AI Agent 配置
 # 注: 以下为未来配置参数（概念），尚未正式实现
-ai.agent.enabled: true
+# 注意: 以下配置为预测/规划，实际版本可能不同
+# ai.agent.enabled: true  (尚未确定)
 ai.agent.state.backend: rocksdb
 ai.agent.checkpoint.interval: 30s
 

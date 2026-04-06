@@ -38,7 +38,7 @@ FLIP-531: "Building and Running AI Agents in Flink"
 API支持:
   - Java: Agent API / DataStream
   - Python: PyFlink Agent API
-  - SQL: CREATE AGENT / CREATE TOOL（未来可能的语法，概念设计阶段）
+  - SQL: ~~CREATE AGENT~~ / ~~CREATE TOOL~~（未来可能的语法，概念设计阶段，实际尚未支持）
 ```
 
 **路线图里程碑**：
@@ -254,7 +254,8 @@ security.ssl.algorithms: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WIT
 
 # AI Agent配置 (可选)
 # 注: 以下为未来配置参数（概念），尚未正式实现
-ai.agent.enabled: true
+# 注意: 以下配置为预测/规划，实际版本可能不同
+# ai.agent.enabled: true  (尚未确定)
 ai.agent.model.provider: openai
 ai.agent.model.endpoint: https://api.openai.com/v1
 ai.agent.state.backend: rocksdb
@@ -285,7 +286,8 @@ sink.kafka.transaction.timeout.ms: 900000
 <dependency>
     <groupId>org.apache.flink</groupId>
     <!-- 注: 以下为未来可能提供的模块（设计阶段），尚未正式发布 -->
-<artifactId>flink-ai-agent</artifactId>
+<!-- 注意: 以下依赖为预测/规划，实际版本可能不同 -->
+    <!-- <artifactId>flink-ai-agent</artifactId> (尚未确定) -->
 </dependency>
 
 <!-- MCP协议支持 -->
@@ -317,7 +319,8 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           # 注: 未来配置参数（概念）
-ai.agent.enabled=true
+# 注意: 以下配置为预测/规划，实际版本可能不同
+# ai.agent.enabled=true  (尚未确定)
           ai.agent.model.provider=openai
           ai.agent.model.api.key=${OPENAI_API_KEY}
     command: jobmanager

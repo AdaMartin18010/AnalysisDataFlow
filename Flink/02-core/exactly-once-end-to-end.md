@@ -559,4 +559,502 @@ echo "验证完成!"
 
 ---
 
+## 11. 源码深度分析 (Source Code Analysis)
+
+### 11.1 TwoPhaseCommitSinkFunction 源码分析
+
+#### 11.1.1 核心类架构
+
+**源码位置**: `flink-streaming-java/src/main/java/org/apache/flink/streaming/api/functions/sink/TwoPhaseCommitSinkFunction.java`
+
+```java
+/**
+ * 两阶段提交 Sink 的抽象基类
+ * 实现了 Flink 与外部系统事务的协调
+ * 
+ * 类型参数：
+ *   IN - 输入数据类型
+ *   TXN - 事务上下文类型
+ *   CONTEXT - 事务上下文持有者类型
+ */
+public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT> 
+        extends RichSinkFunction<IN> 
+        implements CheckpointedFunction, CheckpointListener {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(TwoPhaseCommitSinkFunction.class);
+    
+    // 当前正在进行的事务
+    private transient TransactionHolder<TXN> currentTransaction;
+    
+    // 待提交的事务队列（等待Checkpoint确认）
+    private transient List<TransactionHolder<TXN>> pendingCommitTransactions;
+    
+    // 事务上下文Serializer（用于Checkpoint）
+    private final TypeSerializer<CONTEXT> contextSerializer;
+    
+    // 事务Serializer
+    private final TypeSerializer<TXN> transactionSerializer;
+    
+    /**
+     * 构造器
+     */
+    public TwoPhaseCommitSinkFunction(
+            TypeSerializer<CONTEXT> contextSerializer,
+            TypeSerializer<TXN> transactionSerializer) {
+        this.contextSerializer = checkNotNull(contextSerializer);
+        this.transactionSerializer = checkNotNull(transactionSerializer);
+    }
+```
+
+#### 11.1.2 事务生命周期方法
+
+```java
+    /**
+     * 开启新事务
+     * 在以下场景调用：
+     * 1. Sink初始化时
+     * 2. 每次Checkpoint完成后（开启下一轮事务）
+     */
+    protected abstract TXN beginTransaction() throws Exception;
+    
+    /**
+     * 预提交阶段（Prepare Phase）
+     * 将数据持久化到临时位置，但不可见
+     */
+    protected abstract void preCommit(TXN transaction) throws Exception;
+    
+    /**
+     * 正式提交阶段（Commit Phase）
+     * 收到Checkpoint成功通知后调用
+     */
+    protected abstract void commit(TXN transaction) throws Exception;
+    
+    /**
+     * 中止事务
+     * Checkpoint失败或作业恢复时调用
+     */
+    protected abstract void abort(TXN transaction) throws Exception;
+```
+
+#### 11.1.3 与 Checkpoint 协调的核心逻辑
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant JM as JobManager<br/>CheckpointCoordinator
+    participant TM as TaskManager
+    participant Sink as TwoPhaseCommitSink
+    participant Ext as 外部系统<br/>Kafka/JDBC
+    participant State as StateBackend
+    
+    Note over Sink: Sink初始化
+    Sink->>Sink: open()
+    Sink->>Sink: beginTransaction()
+    Sink->>Sink: currentTransaction = txn
+    
+    Note over JM,State: Checkpoint N 触发
+    JM->>TM: triggerCheckpoint(N)
+    TM->>Sink: snapshotState()
+    
+    Note right of Sink: Phase 1: Prepare
+    Sink->>Sink: preCommit(currentTransaction)
+    Sink->>Ext: 刷写数据到临时位置
+    Ext-->>Sink: OK
+    
+    Sink->>State: 保存事务上下文
+    State-->>TM: 确认
+    TM-->>JM: Checkpoint N 成功
+    
+    Note right of Sink: Phase 2: Commit Decision
+    JM->>TM: notifyCheckpointComplete(N)
+    TM->>Sink: notifyCheckpointComplete(N)
+    Sink->>Sink: 查找pending事务
+    Sink->>Ext: commit(transaction)
+    Ext-->>Sink: Committed
+    
+    Note over Sink: 开启新事务
+    Sink->>Sink: beginTransaction()
+```
+
+#### 11.1.4 snapshotState 方法详解
+
+```java
+    /**
+     * Checkpoint 时调用（Phase 1: Prepare）
+     */
+    @Override
+    public void snapshotState(FunctionSnapshotContext context) throws Exception {
+        long checkpointId = context.getCheckpointId();
+        
+        LOG.debug("Snapshotting state at checkpoint {}");
+        
+        // 1. 预提交当前事务
+        preCommit(currentTransaction.handle);
+        
+        // 2. 将当前事务加入待提交队列
+        pendingCommitTransactions.add(currentTransaction);
+        
+        // 3. 清空并保存事务上下文到StateBackend
+        state.clear();
+        state.add(new State<>(
+            contextSerializer,
+            currentTransaction.context,
+            pendingCommitTransactions,
+            userContext
+        ));
+        
+        // 4. 开启新事务（用于Checkpoint之后的写入）
+        currentTransaction = beginTransactionInternal();
+        
+        LOG.debug("Started new transaction for post-checkpoint writes");
+    }
+```
+
+#### 11.1.5 notifyCheckpointComplete 方法详解
+
+```java
+    /**
+     * Checkpoint 成功确认后调用（Phase 2: Commit）
+     */
+    @Override
+    public void notifyCheckpointComplete(long checkpointId) throws Exception {
+        LOG.debug("Checkpoint {} completed, committing transactions", checkpointId);
+        
+        Iterator<TransactionHolder<TXN>> iterator = pendingCommitTransactions.iterator();
+        
+        while (iterator.hasNext()) {
+            TransactionHolder<TXN> transaction = iterator.next();
+            
+            // 只提交小于等于当前Checkpoint的事务
+            if (transaction.checkpointId <= checkpointId) {
+                LOG.debug("Committing transaction from checkpoint {}", 
+                    transaction.checkpointId);
+                
+                try {
+                    // 执行提交
+                    commit(transaction.handle);
+                    LOG.debug("Transaction committed successfully");
+                    
+                    // 从待提交队列移除
+                    iterator.remove();
+                } catch (Exception e) {
+                    // 提交失败，将在恢复时重试
+                    throw new FlinkRuntimeException(
+                        "Committing transaction failed", e);
+                }
+            }
+        }
+    }
+```
+
+### 11.2 FlinkKafkaProducer 事务实现
+
+**源码位置**: `flink-connector-kafka/src/main/java/org/apache/flink/streaming/connectors/kafka/FlinkKafkaProducer.java`
+
+```java
+/**
+ * Kafka Producer 的 Exactly-Once 实现
+ */
+public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN, 
+        FlinkKafkaProducer.KafkaTransactionState, 
+        FlinkKafkaProducer.KafkaTransactionContext> {
+    
+    /**
+     * Kafka 事务状态
+     */
+    public static class KafkaTransactionState {
+        private final transient FlinkKafkaInternalProducer<byte[], byte[]> producer;
+        private final String transactionalId;
+        private final long producerId;
+        private final short epoch;
+        
+        public KafkaTransactionState(String transactionalId) {
+            this.transactionalId = transactionalId;
+            this.producerId = -1;
+            this.epoch = -1;
+        }
+        
+        public KafkaTransactionState(
+                String transactionalId, 
+                long producerId, 
+                short epoch) {
+            this.transactionalId = transactionalId;
+            this.producerId = producerId;
+            this.epoch = epoch;
+        }
+    }
+    
+    /**
+     * 开启 Kafka 事务
+     */
+    @Override
+    protected FlinkKafkaProducer.KafkaTransactionState beginTransaction() {
+        // 创建新的 Kafka Producer 实例
+        FlinkKafkaInternalProducer<byte[], byte[]> producer = 
+            createProducer(nextTransactionalIdHint);
+        
+        // 初始化事务
+        producer.initTransactions();
+        
+        // 开启事务
+        producer.beginTransaction();
+        
+        return new KafkaTransactionState(
+            nextTransactionalIdHint,
+            producer.getProducerId(),
+            producer.getEpoch()
+        );
+    }
+    
+    /**
+     * 预提交：将数据刷写到 Kafka
+     */
+    @Override
+    protected void preCommit(FlinkKafkaProducer.KafkaTransactionState transaction) {
+        // Kafka Producer 的 preCommit 就是 flush
+        // 确保所有消息都已发送到 Broker
+        transaction.producer.flush();
+    }
+    
+    /**
+     * 正式提交 Kafka 事务
+     */
+    @Override
+    protected void commit(FlinkKafkaProducer.KafkaTransactionState transaction) {
+        // 提交 Kafka 事务
+        transaction.producer.commitTransaction();
+        
+        // 关闭 Producer
+        transaction.producer.close();
+    }
+    
+    /**
+     * 中止 Kafka 事务
+     */
+    @Override
+    protected void abort(FlinkKafkaProducer.KafkaTransactionState transaction) {
+        try {
+            // 中止事务
+            transaction.producer.abortTransaction();
+        } finally {
+            transaction.producer.close();
+        }
+    }
+```
+
+### 11.3 CheckpointCoordinator 协调机制
+
+**源码位置**: `flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/CheckpointCoordinator.java`
+
+```java
+/**
+ * Checkpoint 协调器：协调分布式快照
+ */
+public class CheckpointCoordinator {
+    
+    private final CheckpointPlanCalculator checkpointPlanCalculator;
+    private final CompletedCheckpointStore completedCheckpointStore;
+    private final PendingCheckpointStats pendingCheckpointStats;
+    
+    /**
+     * 触发 Checkpoint
+     */
+    public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
+            long timestamp, 
+            CheckpointProperties props) {
+        
+        // 1. 计算 Checkpoint 计划
+        CheckpointPlan plan = checkpointPlanCalculator.calculateCheckpointPlan();
+        
+        // 2. 创建 Pending Checkpoint
+        PendingCheckpoint pendingCheckpoint = new PendingCheckpoint(
+            checkpointId,
+            timestamp,
+            plan,
+            props
+        );
+        
+        // 3. 向所有 Task 发送 Checkpoint 触发消息
+        for (ExecutionVertex vertex : plan.getTasksToTrigger()) {
+            vertex.getCurrentExecutionAttempt().triggerCheckpoint(
+                pendingCheckpoint.getCheckpointId(),
+                timestamp,
+                checkpointOptions
+            );
+        }
+        
+        return pendingCheckpoint.getCompletionFuture();
+    }
+    
+    /**
+     * 处理 Task 的 Checkpoint 确认
+     */
+    public void receiveAcknowledgeMessage(
+            JobID jobID,
+            long checkpointId,
+            AcknowledgeCheckpoint acknowledgeMessage) {
+        
+        PendingCheckpoint checkpoint = pendingCheckpoints.get(checkpointId);
+        
+        // 记录该 Task 的确认
+        checkpoint.acknowledgeTask(
+            acknowledgeMessage.getTaskExecutionId(),
+            acknowledgeMessage.getSubtaskState(),
+            acknowledgeMessage.getCheckpointMetrics()
+        );
+        
+        // 检查是否所有 Task 都已确认
+        if (checkpoint.areAllTasksAcknowledged()) {
+            // 完成 Checkpoint
+            completeCheckpoint(checkpoint);
+        }
+    }
+    
+    /**
+     * 完成 Checkpoint 并通知所有 Task
+     */
+    private void completeCheckpoint(PendingCheckpoint pendingCheckpoint) {
+        // 1. 转换为 CompletedCheckpoint
+        CompletedCheckpoint completedCheckpoint = 
+            pendingCheckpoint.finalizeCheckpoint();
+        
+        // 2. 持久化到存储
+        completedCheckpointStore.addCheckpoint(completedCheckpoint);
+        
+        // 3. 通知所有 Task Checkpoint 完成
+        for (ExecutionVertex vertex : pendingCheckpoint.getCheckpointPlan().getTasksToCommit()) {
+            vertex.getCurrentExecutionAttempt().notifyCheckpointComplete(
+                pendingCheckpoint.getCheckpointId(),
+                pendingCheckpoint.getTimestamp()
+            );
+        }
+    }
+```
+
+### 11.4 故障恢复时的 2PC 状态恢复
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant JM as JobManager
+    participant TM as TaskManager
+    participant Sink as TwoPhaseCommitSink
+    participant Ext as 外部系统
+    participant CP as Checkpoint Storage
+    
+    Note over JM,CP: 作业故障恢复
+    
+    JM->>CP: 读取最新Checkpoint
+    CP-->>JM: CheckpointMetadata
+    JM->>TM: 恢复任务
+    TM->>Sink: initializeState()
+    
+    Note right of Sink: 恢复事务状态
+    Sink->>State: 读取pendingCommitTransactions
+    State-->>Sink: 待提交事务列表
+    
+    loop 处理每个pending事务
+        Sink->>Ext: 查询事务状态
+        Ext-->>Sink: PREPARED / COMMITTED / UNKNOWN
+        
+        alt 事务状态 = PREPARED
+            Sink->>Ext: commit(transaction)
+            Ext-->>Sink: OK
+        else 事务状态 = COMMITTED
+            Note over Sink: 事务已提交，跳过
+        else 事务状态 = UNKNOWN
+            Note over Sink: 尝试提交（幂等保证）
+            Sink->>Ext: commit(transaction)
+        end
+    end
+    
+    Sink->>Sink: beginTransaction()
+    Note over Sink: 恢复正常处理
+```
+
+#### 11.4.1 恢复时的事务处理源码
+
+```java
+    /**
+     * 初始化状态（故障恢复时调用）
+     */
+    @Override
+    public void initializeState(FunctionInitializationContext context) throws Exception {
+        // 恢复状态
+        ListState<State<TXN, CONTEXT>> state = context.getOperatorStateStore()
+            .getListState(new ListStateDescriptor<>(
+                "pending-transactions", 
+                new StateSerializer<>()
+            ));
+        
+        // 读取之前保存的事务状态
+        for (State<TXN, CONTEXT> s : state.get()) {
+            this.userContext = s.getUserContext();
+            this.pendingCommitTransactions.addAll(s.getPendingTransactions());
+        }
+        
+        // 恢复模式
+        if (context.isRestored()) {
+            LOG.info("Restoring state from checkpoint");
+            
+            // 处理待提交事务
+            for (TransactionHolder<TXN> transaction : pendingCommitTransactions) {
+                // 恢复时尝试提交未完成的事务
+                recoverAndCommit(transaction.handle);
+            }
+            pendingCommitTransactions.clear();
+        }
+        
+        // 开启新事务
+        this.currentTransaction = beginTransactionInternal();
+    }
+    
+    /**
+     * 恢复时提交事务（带幂等检查）
+     */
+    protected void recoverAndCommit(TXN transaction) {
+        try {
+            // 尝试提交
+            commit(transaction);
+        } catch (Exception e) {
+            // 可能事务已提交，检查外部系统状态
+            if (isTransactionCommitted(transaction)) {
+                LOG.info("Transaction was already committed");
+                return;
+            }
+            throw new FlinkRuntimeException("Failed to recover transaction", e);
+        }
+    }
+```
+
+### 11.5 2PC 状态机实现
+
+```mermaid
+stateDiagram-v2
+    [*] --> INIT: 初始化
+    INIT --> PREPARING: beginTransaction()
+    PREPARING --> PREPARED: preCommit()
+    PREPARED --> COMMITTING: notifyCheckpointComplete()
+    COMMITTING --> COMMITTED: commit()
+    COMMITTED --> PREPARING: beginTransaction()
+    
+    PREPARING --> ABORTING: 异常/失败
+    PREPARED --> ABORTING: Checkpoint失败
+    ABORTING --> ABORTED: abort()
+    ABORTED --> [*]
+    
+    COMMITTED --> [*]: 正常完成
+```
+
+### 11.6 关键配置参数
+
+| 配置参数 | 源码位置 | 默认值 | 说明 |
+|---------|---------|-------|------|
+| `execution.checkpointing.mode` | `CheckpointCoordinator` | EXACTLY_ONCE | Checkpoint模式 |
+| `transaction.timeout.ms` | `FlinkKafkaProducer` | 900000 | Kafka事务超时 |
+| `transactional.id` | `FlinkKafkaProducer` | 自动生成 | 事务ID前缀 |
+| `isolation.level` | `FlinkKafkaConsumer` | read_committed | 消费者隔离级别 |
+
+---
+
 *文档版本: 1.0 | 最后更新: 2026-04-02 | 理论深度: L4 (Advanced)*

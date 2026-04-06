@@ -2,6 +2,10 @@
 
 > 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
+> ⚠️ **前瞻性声明**
+> Flink Agents 目前为 Preview 版本 (0.2.0, 2026-02-06)，API 可能变更。
+> 最后更新: 2026-04-06
+
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-12-90: Flink AI Agent
@@ -501,7 +505,8 @@ sales_agent.execute()
 ```sql
 -- 创建Agent
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE AGENT sales_analytics_agent
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE AGENT sales_analytics_agent~~ (未来可能的语法)
 WITH (
   'model.endpoint' = 'openai:gpt-4',
   'model.temperature' = '0.7',
@@ -512,7 +517,8 @@ WITH (
 
 -- 注册SQL工具
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL query_sales_summary
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE TOOL query_sales_summary~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 AS $$
   SELECT
@@ -526,7 +532,7 @@ $$;
 
 -- 注册外部工具
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL send_alert
+~~CREATE TOOL send_alert~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 TYPE 'webhook'
 CONFIG (
@@ -535,7 +541,8 @@ CONFIG (
 );
 
 -- Agent工作流
-CREATE WORKFLOW sales_monitoring
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE WORKFLOW sales_monitoring~~ (未来可能的语法)
 AS AGENT sales_analytics_agent
 ON TABLE sales_events
 WITH RULES (

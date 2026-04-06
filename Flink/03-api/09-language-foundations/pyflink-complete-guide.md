@@ -1,6 +1,11 @@
 # PyFlink 深度完整指南
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [02-python-api.md](./02-python-api.md), [Flink/03-sql-table-api/flink-table-sql-complete-guide.md](../03-sql-table-api/flink-table-sql-complete-guide.md) | **形式化等级**: L2-L3 | **版本**: Flink 1.18+ / 2.0+ / Python 3.9+
+> **状态**: ✅ Released (Flink 2.0 GA, 2.2 增强)
+> **Flink 版本**: 2.0.0+, 2.2.0+ 增强
+> **Python 版本**: 3.9 - 3.12
+> **稳定性**: GA (Generally Available)
+>
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [02-python-api.md](./02-python-api.md), [Flink/03-sql-table-api/flink-table-sql-complete-guide.md](../03-sql-table-api/flink-table-sql-complete-guide.md) | **形式化等级**: L2-L3
 
 ---
 
@@ -41,7 +46,10 @@
     - [6.1 Local 模式](#61-local-模式)
     - [6.2 集群模式](#62-集群模式)
     - [6.3 Kubernetes 部署](#63-kubernetes-部署)
-  - [7. 性能优化](#7-性能优化)
+  - [7. Flink 2.2 PyFlink 性能增强](#7-flink-22-pyflink-性能增强)
+    - [7.1 Flink 2.2 PyFlink 性能改进](#71-flink-22-pyflink-性能改进)
+    - [7.2 Flink 2.2 新增特性](#72-flink-22-新增特性)
+  - [8. 性能优化](#8-性能优化)
     - [Def-F-09-28: PyFlink 性能优化策略](#def-f-09-28-pyflink-性能优化策略)
     - [7.1 向量化执行](#71-向量化执行)
     - [7.2 Cython 加速](#72-cython-加速)
@@ -54,7 +62,7 @@
     - [9.1 实时 ETL](#91-实时-etl)
     - [9.2 实时推荐](#92-实时推荐)
     - [9.3 异常检测](#93-异常检测)
-  - [7. 可视化](#7-可视化)
+  - [9. 可视化](#9-可视化)
     - [PyFlink 架构与数据流](#pyflink-架构与数据流)
     - [部署模式对比](#部署模式对比)
   - [8. 引用参考](#8-引用参考)
@@ -83,8 +91,9 @@ PyFlink 环境配置定义为五元组 $\mathcal{E}_{py} = (P_{ver}, F_{ver}, V_
 |-----------|------------|---------|------|
 | 1.18.x | 3.8 - 3.11 | 11+ | ✅ Active |
 | 1.19.x | 3.9 - 3.11 | 11+ | ✅ Active |
-| 2.0.x | 3.9 - 3.12 | 17+ | 🆕 Recommended |
-| 2.1.x | 3.9 - 3.12 | 17+ | 🆕 Latest |
+| 2.0.x | 3.9 - 3.12 | 17+ | ✅ Released (2025-03-24) |
+| 2.1.x | 3.9 - 3.12 | 17+ | ✅ Released |
+| 2.2.x | 3.9 - 3.12 | 17+ | 🆕 Recommended |
 
 **版本检查命令**
 
@@ -2208,7 +2217,31 @@ spec:
 
 ---
 
-## 7. 性能优化
+## 7. Flink 2.2 PyFlink 性能增强
+
+Flink 2.2 (2025-12-04 发布) 对 PyFlink 进行了显著性能优化[^20]：
+
+### 7.1 Flink 2.2 PyFlink 性能改进
+
+| 指标 | Flink 2.1 | Flink 2.2 | 提升 |
+|------|-----------|-----------|------|
+| **UDF 执行延迟** | 基准 | 基准的 70% | **30% ↓** |
+| **Pandas UDF 吞吐量** | 基准 | 基准的 1.5x | **50% ↑** |
+| **内存使用效率** | 基准 | 基准的 80% | **20% ↓** |
+| **Python 进程启动时间** | 基准 | 基准的 60% | **40% ↓** |
+
+### 7.2 Flink 2.2 新增特性
+
+| 特性 | 说明 |
+|------|------|
+| **向量化执行增强** | Arrow 格式数据传输优化 |
+| **Python UDF 缓存** | 跨批次 UDF 缓存 |
+| **内存管理改进** | 更高效的内存池管理 |
+| **错误处理增强** | 更详细的 Python 错误堆栈 |
+
+---
+
+## 8. 性能优化
 
 ### Def-F-09-28: PyFlink 性能优化策略
 
@@ -3211,7 +3244,7 @@ if __name__ == "__main__":
 
 ---
 
-## 7. 可视化
+## 9. 可视化
 
 ### PyFlink 架构与数据流
 

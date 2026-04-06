@@ -29,7 +29,8 @@ $$
 **定义**: Model DDL 是 Flink SQL 的扩展语法，用于声明式地定义外部 AI/ML 模型连接：
 
 ```sql
-CREATE MODEL <model_name>
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',
     'endpoint' = '<api_endpoint>',
@@ -288,7 +289,7 @@ $$
 -- Def-F-12-41: Model DDL 实例
 
 -- OpenAI GPT-4 模型
-CREATE MODEL gpt4_chat
+~~CREATE MODEL gpt4_chat~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'endpoint' = 'https://api.openai.com/v1',
@@ -300,7 +301,7 @@ WITH (
 );
 
 -- 文本嵌入模型
-CREATE MODEL text_embedding_3
+~~CREATE MODEL text_embedding_3~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'endpoint' = 'https://api.openai.com/v1',
@@ -311,7 +312,7 @@ WITH (
 );
 
 -- 兼容 Ollama 本地模型
-CREATE MODEL local_llama
+~~CREATE MODEL local_llama~~ (未来可能的语法)
 WITH (
   'provider' = 'ollama',
   'endpoint' = 'http://localhost:11434',
@@ -362,7 +363,7 @@ LATERAL TABLE(
 
 ```sql
 -- 实时客服消息情感分析
-CREATE MODEL sentiment_analyzer
+~~CREATE MODEL sentiment_analyzer~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'api-key' = '${OPENAI_API_KEY}',
@@ -429,7 +430,7 @@ WHERE LENGTH(d.content) > 500;
 
 ```sql
 -- 实时多语言翻译
-CREATE MODEL translator
+~~CREATE MODEL translator~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'api-key' = '${OPENAI_API_KEY}',

@@ -195,7 +195,8 @@ DOT_PRODUCT(u, v) = SUM(u[i] * v[i])
 
 ```sql
 -- 模型定义语法（Def-F-12-105a）
-CREATE MODEL <model_name>
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL <model_name>~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',      -- openai, huggingface, custom
     '<provider_key>' = '<provider_value>',
@@ -364,8 +365,9 @@ $$
 **定义**: Flink 2.3+ 引入的Agent/Tools原生SQL语法：
 
 ```sql
--- Def-F-12-110a: CREATE AGENT语法（未来可能的语法，概念设计阶段）
--- CREATE AGENT <agent_name>
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- ~~CREATE AGENT~~ (未来可能的语法)
+-- Def-F-12-110a: ~~CREATE AGENT~~ 语法（概念设计阶段）
 WITH (
   'model.endpoint' = '<provider>:<model>',
   'model.temperature' = '<float>',
@@ -394,7 +396,8 @@ FOR AGENT <agent_name>
 )];
 
 -- Def-F-12-110c: Agent工作流语法
-CREATE WORKFLOW <workflow_name>
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE WORKFLOW~~ (未来可能的语法)
 AS AGENT <agent_name>
 ON TABLE <source_table>
 WITH RULES (
@@ -1336,7 +1339,7 @@ if __name__ == "__main__":
 
 -- 步骤1: 创建主客服Agent
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE AGENT customer_support_agent
+~~CREATE AGENT customer_support_agent~~ (未来可能的语法)
 WITH (
   -- LLM配置
   'model.endpoint' = 'openai:gpt-4',
@@ -1358,7 +1361,7 @@ WITH (
 
 -- 步骤2: 创建技术支持Agent
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE AGENT tech_support_agent
+~~CREATE AGENT tech_support_agent~~ (未来可能的语法)
 WITH (
   'model.endpoint' = 'openai:gpt-4',
   'model.temperature' = '0.3',
@@ -1367,7 +1370,8 @@ WITH (
 
 -- 步骤3: 注册SQL工具 - 查询订单
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL query_order_status
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE TOOL query_order_status~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'sql'
 CONFIG (
@@ -1391,7 +1395,7 @@ CONFIG (
 
 -- 步骤4: 注册SQL工具 - 查询退货政策
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL query_return_policy
+~~CREATE TOOL query_return_policy~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'sql'
 CONFIG (
@@ -1409,7 +1413,7 @@ CONFIG (
 
 -- 步骤5: 注册向量检索工具
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL search_knowledge_base
+~~CREATE TOOL search_knowledge_base~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'vector_search'
 CONFIG (
@@ -1421,7 +1425,7 @@ CONFIG (
 
 -- 步骤6: 注册MCP工具 - 外部API
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL check_inventory
+~~CREATE TOOL check_inventory~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'mcp'
 CONFIG (
@@ -1432,7 +1436,7 @@ CONFIG (
 
 -- 步骤7: 注册Webhook工具 - 发送告警
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL send_alert
+~~CREATE TOOL send_alert~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'webhook'
 CONFIG (
@@ -1478,7 +1482,7 @@ CREATE TABLE agent_responses (
 );
 
 -- 步骤10: 定义Agent工作流
-CREATE WORKFLOW customer_support_workflow
+~~CREATE WORKFLOW customer_support_workflow~~ (未来可能的语法)
 AS AGENT customer_support_agent
 ON TABLE customer_messages
 WITH RULES (
@@ -1630,7 +1634,8 @@ CREATE TABLE user_queries (
 );
 
 -- 步骤3: 创建嵌入模型
-CREATE MODEL text_embedding_model
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL text_embedding_model~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'openai.model' = 'text-embedding-3-small',
@@ -1640,7 +1645,7 @@ INPUT (text STRING)
 OUTPUT (embedding ARRAY<FLOAT>);
 
 -- 步骤4: 创建LLM模型
-CREATE MODEL rag_generator
+~~CREATE MODEL rag_generator~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'openai.model' = 'gpt-4',
@@ -2073,7 +2078,7 @@ WHERE NOT EXISTS (
 );
 
 -- 步骤4: 创建不同成本的模型定义
-CREATE MODEL gpt35_economy
+~~CREATE MODEL gpt35_economy~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'openai.model' = 'gpt-3.5-turbo',
@@ -2081,7 +2086,7 @@ WITH (
   'openai.max_tokens' = '500'
 );
 
-CREATE MODEL gpt4_standard
+~~CREATE MODEL gpt4_standard~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
   'openai.model' = 'gpt-4',
@@ -2794,7 +2799,7 @@ gantt
     A2A Protocol                 :f2, 规划中, 规划中
     MCP Native Integration       :f3, 规划中, 规划中
     Agent Memory Management      :f4, 规划中, 规划中
-    CREATE AGENT Syntax          :f5, 规划中, 规划中（以官方为准）
+    ~~CREATE AGENT~~ Syntax      :f5, 规划中, 规划中（以官方为准）
 
     section Flink 2.4（规划中，以官方为准）
     Multi-Modal Support          :p1, 规划中, 规划中
@@ -2995,7 +3000,7 @@ public class ProductionAgentPatterns {
 | Def-F-12-107 | Flink ML Pipeline API | ML Pipeline定义 |
 | Def-F-12-108 | Agent可重放性 | 审计追踪定义 |
 | Def-F-12-109 | 向量索引类型 | ANN索引算法定义 |
-| Def-F-12-110 | SQL Agent语法（概念设计） | CREATE AGENT/TOOL语法（规划中）|
+| Def-F-12-110 | SQL Agent语法（概念设计） | ~~CREATE AGENT~~/~~CREATE TOOL~~语法（规划中，尚未支持）|
 
 ### 定理汇总
 
@@ -3018,7 +3023,8 @@ public class ProductionAgentPatterns {
 ```sql
 -- 创建Agent
 -- 注: 以下为未来可能的语法（概念设计阶段）
--- CREATE AGENT <name> WITH (...);
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- ~~CREATE AGENT <name>~~ WITH (...); (未来可能的语法)
 
 -- 创建工具
 -- CREATE TOOL <name> FOR AGENT <agent> TYPE 'sql'|'python'|'mcp';
@@ -3039,7 +3045,7 @@ SELECT * FROM ML_PREDICT(
 );
 
 -- 创建模型
-CREATE MODEL <name> WITH ('provider' = 'openai', ...);
+~~CREATE MODEL <name>~~ WITH ('provider' = 'openai', ...); (未来可能的语法)
 ```
 
 ### Java API速查

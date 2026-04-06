@@ -439,6 +439,7 @@ queries:
 - [RisingWave Documentation](https://docs.risingwave.com/)
 - [Flink JDBC Connector](https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/)
 - [Flink Kafka Connector](https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/)
+- [Flink vs RisingWave 深度架构对比](../../09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md)
 - [Knowledge: Flink vs RisingWave](../../Knowledge/04-technology-selection/flink-vs-risingwave.md)
 
 ---

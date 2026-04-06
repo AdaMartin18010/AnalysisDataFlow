@@ -493,20 +493,26 @@ CREATE FUNCTION analytics.parse_json_path
     USING JAR 'hdfs:///udfs/json-udf.jar';
 ```
 
-#### 6.1.6 CREATE MODEL - 创建 ML 模型
+#### 6.1.6 ~~CREATE MODEL~~ - 创建 ML 模型（概念设计，尚未支持）
 
 ```sql
--- Def-F-03-09: 创建 AI 模型 (Flink 2.1+)
-CREATE MODEL sentiment_analyzer
-WITH (
-    'provider' = 'openai',
-    'openai.model' = 'gpt-4o-mini',
-    'openai.api_key' = '${OPENAI_API_KEY}',
-    'openai.temperature' = '0.1',
-    'openai.timeout' = '30s'
-)
-INPUT (text STRING)
-OUTPUT (sentiment STRING, confidence DOUBLE, reasoning STRING);
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL~~ (未来可能的语法)
+
+```sql
+-- Def-F-03-09: 创建 AI 模型 (概念设计阶段，非正式语法)
+-- CREATE MODEL sentiment_analyzer
+-- WITH (
+--     'provider' = 'openai',
+--     'openai.model' = 'gpt-4o-mini',
+--     'openai.api_key' = '${OPENAI_API_KEY}',
+--     'openai.temperature' = '0.1',
+--     'openai.timeout' = '30s'
+-- )
+-- INPUT (text STRING)
+-- OUTPUT (sentiment STRING, confidence DOUBLE, reasoning STRING);
+```
+
 ```
 
 #### 6.1.7 CREATE MATERIALIZED TABLE - 创建物化表
@@ -1702,7 +1708,8 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ```sql
 -- 创建嵌入模型
-CREATE MODEL text_embedder
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL text_embedder~~ (未来可能的语法)
 WITH (
     'provider' = 'openai',
     'openai.model' = 'text-embedding-3-small',
@@ -1712,7 +1719,7 @@ INPUT (text STRING)
 OUTPUT (embedding ARRAY<FLOAT>);
 
 -- 创建分类模型
-CREATE MODEL sentiment_classifier
+~~CREATE MODEL sentiment_classifier~~ (未来可能的语法)
 WITH (
     'provider' = 'openai',
     'openai.model' = 'gpt-4o-mini',
@@ -2104,7 +2111,7 @@ SET 'table.exec.emit.allow-lateness' = '10min';
 | Lookup JOIN | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | MATCH_RECOGNIZE | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | SQL Hints | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| CREATE MODEL | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ✅ | ✅ |
+| ~~CREATE MODEL~~ | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ❌ | ❌ |  <!-- 概念设计，尚未支持 -->
 | ML_PREDICT | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ✅ | ✅ |
 | VECTOR_SEARCH | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ✅ |
 | MATERIALIZED TABLE | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ✅ |

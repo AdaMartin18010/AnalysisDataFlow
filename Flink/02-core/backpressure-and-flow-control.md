@@ -478,7 +478,389 @@ flowchart TD
 
 ---
 
-## 8. 引用参考 (References)
+## 8. 源码深度分析 (Source Code Analysis)
+
+### 8.1 Credit-based 流控源码分析
+
+#### 8.1.1 核心类与整体架构
+
+**核心类**: `ResultSubPartition`, `RemoteInputChannel`, `BufferPool`, `NetworkBufferPool`
+
+**源码位置**:
+- `flink-runtime/src/main/java/org/apache/flink/runtime/io/network/partition/ResultSubPartition.java`
+- `flink-runtime/src/main/java/org/apache/flink/runtime/io/network/partition/consumer/RemoteInputChannel.java`
+- `flink-runtime/src/main/java/org/apache/flink/runtime/io/network/buffer/BufferPool.java`
+- `flink-runtime/src/main/java/org/apache/flink/runtime/io/network/buffer/NetworkBufferPool.java`
+
+Credit-based Flow Control (CBFC) 的整体调用链如下图所示：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SP as Sender Task<br/>(ResultSubPartition)
+    participant NB as NetworkBufferPool
+    participant RC as Receiver Task<br/>(RemoteInputChannel)
+    
+    Note over RC: 初始化时
+    RC->>NB: 申请初始Credit<br/>(buffers-per-channel)
+    NB-->>RC: 分配BufferPool
+    RC->>SP: 发送CreditAnnouncement
+    
+    Note over SP: 写入数据时
+    SP->>SP: addBufferConsumer()
+    SP->>SP: 检查credit > 0?
+    
+    alt Credit > 0
+        SP->>SP: writeBuffer(buffer)
+        SP->>SP: credit--
+    else Credit = 0
+        SP->>SP: 阻塞写入<br/>等待Credit
+    end
+    
+    Note over RC: 消费数据后
+    RC->>RC: 释放Buffer
+    RC->>SP: 发送新的Credit
+    SP->>SP: credit += n
+    SP->>SP: 唤醒阻塞线程
+```
+
+#### 8.1.2 ResultSubPartition 写入控制逻辑
+
+**源码分析**: `ResultSubPartition.addBufferConsumer()`
+
+```java
+// 简化伪代码展示核心逻辑
+public class ResultSubPartition {
+    private final int[] credits;  // 每个通道的可用credit
+    private final Queue<BufferConsumer>[] pendingQueues;  // 待发送队列
+    
+    /**
+     * 添加Buffer到子分区，受credit控制
+     */
+    public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
+        // 获取目标通道的可用credit
+        int availableCredit = credits[targetChannel];
+        
+        if (availableCredit > 0) {
+            // 有可用credit，直接写入
+            writeBufferToChannel(buffer, targetChannel);
+            credits[targetChannel]--;
+        } else {
+            // credit耗尽，加入等待队列
+            pendingQueues[targetChannel].add(buffer);
+            
+            // 触发背压信号
+            if (getBackPressureStrategy() == BackPressureStrategy.BLOCK) {
+                blockWriterThread();
+            }
+        }
+    }
+    
+    /**
+     * 处理Credit回传（由RemoteInputChannel触发）
+     */
+    public void onCreditAnnouncement(int channelIndex, int credit) {
+        // 增加可用credit
+        credits[channelIndex] += credit;
+        
+        // 处理等待队列中的buffer
+        Queue<BufferConsumer> pending = pendingQueues[channelIndex];
+        while (!pending.isEmpty() && credits[channelIndex] > 0) {
+            BufferConsumer buffer = pending.poll();
+            writeBufferToChannel(buffer, channelIndex);
+            credits[channelIndex]--;
+        }
+        
+        // 唤醒可能阻塞的写入线程
+        if (credits[channelIndex] > 0) {
+            unblockWriterThread();
+        }
+    }
+}
+```
+
+**关键机制说明**:
+
+| 机制 | 实现类/方法 | 作用 |
+|------|------------|------|
+| Credit追踪 | `ResultSubPartition.credits[]` | 每个输出通道的可用缓冲区计数 |
+| 背压阻塞 | `blockWriterThread()` | 当credit=0时阻塞生产者 |
+| 队列缓冲 | `pendingQueues[]` | 临时存储等待credit的buffer |
+| 动态恢复 | `onCreditAnnouncement()` | 接收新credit后恢复发送 |
+
+#### 8.1.3 RemoteInputChannel Credit 回传机制
+
+**源码分析**: `RemoteInputChannel` 的 credit 管理
+
+```java
+public class RemoteInputChannel {
+    private int numCredits;  // 当前持有的credit数量
+    private final int initialCredit;  // 初始credit数
+    private final BufferPool bufferPool;  // 本地缓冲区池
+    
+    /**
+     * 初始化时申请初始credit
+     */
+    public void setup(BufferPool bufferPool) {
+        this.bufferPool = bufferPool;
+        // 申请初始credit（默认为buffers-per-channel配置）
+        this.numCredits = bufferPool.requestBuffers(initialCredit);
+        
+        // 向发送方发送初始credit公告
+        sendCreditAnnouncement(numCredits);
+    }
+    
+    /**
+     * 接收到Buffer后处理
+     */
+    public void onBuffer(Buffer buffer, int sequenceNumber) {
+        // 消费buffer（交给算子处理）
+        processBuffer(buffer);
+        
+        // 释放buffer，回收credit
+        buffer.recycle();
+        
+        // 周期性回传credit（批处理优化）
+        if (shouldSendCredit()) {
+            int creditsToAnnounce = calculateAvailableCredits();
+            sendCreditAnnouncement(creditsToAnnounce);
+        }
+    }
+    
+    /**
+     * 计算可回传的credit数量
+     */
+    private int calculateAvailableCredits() {
+        int available = bufferPool.getNumberOfAvailableMemorySegments();
+        // 保留一定缓冲区作为预留
+        int reserved = getReservedBuffers();
+        return Math.max(0, available - reserved);
+    }
+    
+    /**
+     * 发送Credit公告（通过Netty通道）
+     */
+    private void sendCreditAnnouncement(int credit) {
+        CreditAnnouncement announcement = new CreditAnnouncement(
+            getPartitionId(), 
+            credit,
+            getBacklogSize()  // 当前积压的buffer数量
+        );
+        
+        // 通过PartitionRequestClient发送
+        partitionRequestClient.sendCredit(announce);
+    }
+}
+```
+
+**Credit 回传时序**:
+
+```mermaid
+graph TD
+    A[Buffer被消费] --> B[Buffer.recycle]
+    B --> C[返回NetworkBufferPool]
+    C --> D{是否达到批处理阈值?}
+    D -->|是| E[发送CreditAnnouncement]
+    D -->|否| F[累积credit]
+    F --> G{定时器触发?}
+    G -->|是| E
+    G -->|否| H[继续累积]
+    E --> I[ResultSubPartition接收]
+    I --> J[更新credit计数]
+    J --> K[唤醒阻塞线程]
+```
+
+#### 8.1.4 BufferPool 内存管理策略
+
+**源码分析**: `NetworkBufferPool` 和 `LocalBufferPool`
+
+```java
+/**
+ * 全局网络缓冲区池（TaskManager级别）
+ */
+public class NetworkBufferPool {
+    private final List<MemorySegment> availableMemorySegments;
+    private final int totalNumberOfMemorySegments;
+    
+    /**
+     * 为InputGate分配LocalBufferPool
+     */
+    public LocalBufferPool createBufferPool(int numRequiredBuffers, int maxNumberOfMemorySegments) {
+        // 从全局池中分配内存段
+        List<MemorySegment> segments = new ArrayList<>(numRequiredBuffers);
+        for (int i = 0; i < numRequiredBuffers; i++) {
+            segments.add(availableMemorySegments.remove(0));
+        }
+        
+        return new LocalBufferPool(this, numRequiredBuffers, segments, maxNumberOfMemorySegments);
+    }
+    
+    /**
+     * 回收内存段到全局池
+     */
+    public void recycle(MemorySegment segment) {
+        availableMemorySegments.add(segment);
+        notifyAll();  // 唤醒等待的分配请求
+    }
+}
+
+/**
+ * 本地缓冲区池（InputGate级别）
+ */
+public class LocalBufferPool {
+    private final NetworkBufferPool networkBufferPool;
+    private final ArrayDeque<Buffer> availableBuffers;
+    private int numberOfRequestedMemorySegments;
+    private final int maxNumberOfMemorySegments;
+    
+    /**
+     * 请求Buffer（用于接收数据）
+     */
+    public Buffer requestBuffer() throws IOException {
+        synchronized (availableBuffers) {
+            if (availableBuffers.isEmpty()) {
+                // 尝试从全局池获取更多内存
+                if (numberOfRequestedMemorySegments < maxNumberOfMemorySegments) {
+                    MemorySegment segment = networkBufferPool.requestMemorySegment();
+                    if (segment != null) {
+                        numberOfRequestedMemorySegments++;
+                        return new NetworkBuffer(segment, this);
+                    }
+                }
+                return null;  // 无可用buffer
+            }
+            return availableBuffers.poll();
+        }
+    }
+    
+    /**
+     * 回收Buffer到本地池
+     */
+    public void recycle(MemorySegment segment) {
+        synchronized (availableBuffers) {
+            availableBuffers.add(new NetworkBuffer(segment, this));
+            
+            // 通知等待的请求者
+            availableBuffers.notifyAll();
+        }
+    }
+}
+```
+
+**内存层级结构**:
+
+```
+NetworkBufferPool (TaskManager级别)
+├── totalNumberOfMemorySegments: 2048 (默认)
+└── availableMemorySegments: 全局可用缓冲区
+
+    LocalBufferPool (InputGate级别)
+    ├── numRequiredBuffers: 50 (exclusive)
+    ├── maxNumberOfMemorySegments: 150 (含floating)
+    └── availableBuffers: 本地可用缓冲区
+    
+        RemoteInputChannel
+        ├── numCredits: 当前可用credit
+        └── pendingBuffers: 等待处理的buffer
+```
+
+**配置参数与源码映射**:
+
+| 配置参数 | 源码位置 | 默认值 | 说明 |
+|---------|---------|-------|------|
+| `taskmanager.memory.network.fraction` | `NetworkBufferPool` | 0.1 | 网络内存占比 |
+| `taskmanager.memory.network.min` | `NetworkBufferPool` | 64MB | 最小网络内存 |
+| `taskmanager.memory.network.max` | `NetworkBufferPool` | 1GB | 最大网络内存 |
+| `taskmanager.network.memory.buffer-debloat.enabled` | `CreditBasedFlowControl` | false | 启用Buffer消胀 |
+| `taskmanager.network.memory.buffer-debloat.target` | `BufferDebloating` | 1s | 目标消费时间 |
+| `buffers-per-channel` | `RemoteInputChannel` | 2 | 每通道初始credit |
+| `floating-buffers-per-gate` | `LocalBufferPool` | 8 | 浮动缓冲区数 |
+
+#### 8.1.5 背压传播完整调用链
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Sink as Sink Task
+    participant Filter as Filter Task
+    participant Map as Map Task
+    participant Source as Source Task
+    participant Kafka as Kafka Source
+    
+    Note over Sink: Sink处理变慢
+    
+    Sink->>Sink: InputGate Buffer满
+    Sink->>Filter: CreditAnnouncement(0)
+    Note over Filter: RemoteInputChannel<br/>credit = 0
+    
+    Filter->>Filter: ResultSubPartition阻塞
+    Filter->>Filter: 输入Buffer堆积
+    Filter->>Map: CreditAnnouncement(0)
+    Note over Map: 背压传播到Map
+    
+    Map->>Map: ResultSubPartition阻塞
+    Map->>Source: CreditAnnouncement(0)
+    Note over Source: 背压传播到Source
+    
+    Source->>Kafka: poll()频率降低
+    Note over Kafka: 外部数据源降速
+    
+    Note over Sink: Sink恢复处理
+    Sink->>Filter: CreditAnnouncement(n)
+    Filter->>Map: CreditAnnouncement(n)
+    Map->>Source: CreditAnnouncement(n)
+    Source->>Kafka: poll()恢复正常
+```
+
+### 8.2 Buffer Debloating 源码实现
+
+**源码位置**: `flink-runtime/src/main/java/org/apache/flink/runtime/io/network/buffer/BufferDebloating.java`
+
+```java
+/**
+ * Buffer消胀器：动态调整缓冲区数量
+ */
+public class BufferDebloating {
+    private long lastEstimatedTime;
+    private int currentNumberOfBuffers;
+    
+    /**
+     * 计算目标缓冲区数量
+     */
+    public int calculateTargetBufferCount(long currentThroughput, long lastBufferConsumptionTime) {
+        // 计算单个buffer消费时间
+        long timePerBuffer = lastBufferConsumptionTime / currentNumberOfBuffers;
+        
+        // 根据目标延迟计算需要的buffer数量
+        long targetBufferCount = targetTimeToConsume / timePerBuffer;
+        
+        // 应用上下界限制
+        return Math.min(
+            Math.max((int) targetBufferCount, minBuffers),
+            maxBuffers
+        );
+    }
+    
+    /**
+     * 调整credit
+     */
+    public void adjustCredits(int newBufferCount) {
+        int delta = newBufferCount - currentNumberOfBuffers;
+        if (delta > 0) {
+            // 增加credit（向上游请求更多buffer）
+            requestAdditionalCredits(delta);
+        } else if (delta < 0) {
+            // 减少credit（释放多余buffer）
+            releaseCredits(-delta);
+        }
+        currentNumberOfBuffers = newBufferCount;
+    }
+}
+```
+
+---
+
+## 9. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "Monitoring Back Pressure", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/back_pressure/>
 

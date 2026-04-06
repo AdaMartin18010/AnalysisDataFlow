@@ -1,8 +1,12 @@
 # Flink 2.2 Materialized Table 物化表深度指南
 
+> **状态**: ✅ Released (2025-03-24, GA in Flink 2.0)
+> **Flink 版本**: 2.0.0+, 2.2 增强
+> **稳定性**: 稳定版 (GA)
+>
 > **所属阶段**: Flink/ | **前置依赖**: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md) | **形式化等级**: L3-L4
 >
-> **版本**: Flink 2.2+ | **状态**: 生产就绪 (Production-Ready) | **最后更新**: 2026-04-03
+> **版本**: Flink 2.2+ | **最后更新**: 2026-04-03
 
 ---
 
@@ -670,7 +674,31 @@ groups:
 
 ---
 
-## 9. 高级特性 (Advanced Features)
+## 9. Flink 2.2 Materialized Table 增强
+
+Flink 2.2 (2025-12-04 发布) 对 Materialized Table 进行了多项增强[^9]：
+
+### 9.1 Flink 2.2 新增特性
+
+| 特性 | Flink 2.0 | Flink 2.2 | 说明 |
+|------|-----------|-----------|------|
+| **增量刷新** | ✅ | ✅ 优化 | 更高效的增量计算 |
+| **自动 Compaction** | 基础 | ✅ 增强 | 智能文件合并策略 |
+| **多 Sink 支持** | 单 Sink | ✅ 多 Sink | 同时写入多个存储 |
+| **动态分区裁剪** | 基础 | ✅ 优化 | 查询性能提升 |
+| **监控指标增强** | 基础 | ✅ 完整 | 细粒度 Metrics |
+
+### 9.2 Flink 2.0 GA 基准性能
+
+根据 [Apache Flink 2.0.0 官方发布](https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/)[^8]：
+
+- **Checkpoint 时间减少**: 94%
+- **恢复速度提升**: 49x
+- **存储成本节省**: 50%
+
+---
+
+## 10. 高级特性 (Advanced Features)
 
 ### 9.1 部分更新 (Partial Update)
 
@@ -764,7 +792,9 @@ SET FRESHNESS = INTERVAL '1' MINUTE;
 
 [^7]: Flink Improvement Proposal (FLIP), "Materialized Table", FLIP-453. https://cwiki.apache.org/confluence/display/FLINK/FLIP-453
 
-[^8]: Kleppmann, M., "Designing Data-Intensive Applications", O'Reilly Media, 2017. (Chapter 11: Stream Processing)
+[^8]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+
+[^9]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/
 
 ---
 

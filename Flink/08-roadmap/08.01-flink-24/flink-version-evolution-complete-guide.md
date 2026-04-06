@@ -230,13 +230,13 @@ Flink 1.19.0:
 
 #### Def-F-08-55: Flink 2.0 Release
 
-**发布时间**: 2024年8月
+**发布时间**: 2025年3月
 
 **版本定位**: **架构级重大重构版本**
 
 ```yaml
 Flink 2.0.0:
-  发布时间: "2024-08-01"
+  发布时间: "2025-03-24"
   状态: "重大版本, 架构级重构"
   开发周期: "约18个月"
 
@@ -326,13 +326,13 @@ GROUP BY user_id;
 
 #### Def-F-08-57: Flink 2.2 Release
 
-**发布时间**: 2025年6月
+**发布时间**: 2025年12月
 
 **核心特性**:
 
 ```yaml
 Flink 2.2.0:
-  发布时间: "2025-06-20"
+  发布时间: "2025-12-04"
   主题: "AI/ML原生支持与向量搜索"
 
 关键FLIPs:
@@ -342,7 +342,7 @@ Flink 2.2.0:
     - ANN近似最近邻
 
   FLIP-472: "Model DDL & ML_PREDICT"（实验性）
-    - CREATE MODEL语句
+    - ~~CREATE MODEL~~语句（概念设计，尚未支持）
     - ML_PREDICT函数
     - 模型管理与版本控制
 
@@ -380,7 +380,8 @@ ORDER BY similarity DESC;
 
 ```sql
 -- 注册ML模型
-CREATE MODEL sentiment_model
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL sentiment_model~~ (未来可能的语法)
 INPUT (text STRING)
 OUTPUT (sentiment STRING, confidence FLOAT)
 WITH (
@@ -1097,11 +1098,11 @@ gantt
     1.19 (LTS)     :done, 1_19, 2024-03, 2024-12
 
     section 2.x重构
-    2.0 架构重构    :done, 2_0, 2024-08, 2025-08
+    2.0 架构重构    :done, 2_0, 2025-03, 2026-03
 
     section 2.x功能增强
     2.1 Lakehouse   :done, 2_1, 2025-01, 2026-01
-    2.2 AI/ML增强   :done, 2_2, 2025-06, 2026-06
+    2.2 AI/ML增强   :done, 2_2, 2025-12, 2026-12
     2.3 AI Agents   :active, 2_3, 2026-01, 2027-01
     2.4 (预计)      :crit, 2_4, 2026-06, 2027-06
 

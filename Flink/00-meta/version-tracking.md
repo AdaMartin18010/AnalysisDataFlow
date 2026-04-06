@@ -13,9 +13,9 @@ gantt
     dateFormat  YYYY-MM-DD
 
     section 已发布
-    Flink 2.0           :done, 2024-08-01, 30d
+    Flink 2.0           :done, 2025-03-24, 30d
     Flink 2.1           :done, 2025-01-01, 30d
-    Flink 2.2           :done, 2025-06-01, 30d
+    Flink 2.2           :done, 2025-12-04, 30d
 
     section 近期版本
     Flink 2.3           :active, 2026-01-01, 90d

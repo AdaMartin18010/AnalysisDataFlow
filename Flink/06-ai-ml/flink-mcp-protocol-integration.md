@@ -151,6 +151,86 @@ $$
 \frac{h_{\tau}(args) \rightarrow result}{\text{PROCESSING} \xrightarrow{\text{execute}} \text{COMPLETED}}
 $$
 
+### Def-F-12-52: MCP v2.0 协议 (MCP Protocol v2.0)
+
+**定义**: MCP v2.0 是 2025 年 3 月发布的协议升级版本，引入 OAuth 2.1 支持、Streamable HTTP Transport 和批量操作优化。
+
+$$
+\text{MCP-v2.0} = \langle \text{MCP-v1.0}, \text{OAuth-2.1}, \text{Streamable-HTTP}, \text{Batch-Ops} \rangle
+$$
+
+**v2.0 核心新特性**:
+
+| 特性 | v1.0 | v2.0 | 影响 |
+|------|------|------|------|
+| **认证机制** | 自定义 Token | OAuth 2.1 + PKCE | 安全性提升 |
+| **传输协议** | stdio / HTTP+SSE | Streamable HTTP | 性能提升 |
+| **批量操作** | 单操作 | 原子批量 | 吞吐量提升 |
+| **会话管理** | 无状态 | 可选有状态 | 灵活性提升 |
+
+### Def-F-12-53: OAuth 2.1 安全配置 (OAuth 2.1 Security)
+
+**定义**: MCP v2.0 引入的 OAuth 2.1 认证框架，支持 PKCE (Proof Key for Code Exchange) 和设备授权流程。
+
+```yaml
+# MCP v2.0 OAuth 2.1 配置示例
+oauth2_1:
+  grant_types:
+    - authorization_code
+    - client_credentials
+    - device_code
+  pkce:
+    enabled: true
+    method: S256
+  scopes:
+    - mcp:tools:read
+    - mcp:tools:invoke
+    - mcp:resources:read
+    - mcp:resources:subscribe
+  token_format: jwt
+  token_lifetime: 3600  # seconds
+```
+
+**Flink MCP Server OAuth 2.1 配置**:
+
+```java
+// OAuth 2.1 安全配置
+public class FlinkMcpOAuthConfig {
+    private String issuerUri = "https://auth.flink-mcp.io";
+    private String clientId = "flink-mcp-server";
+    private Set<String> allowedScopes = Set.of(
+        "mcp:tools:read",
+        "mcp:tools:invoke", 
+        "mcp:resources:read"
+    );
+    
+    // PKCE 验证
+    public boolean verifyPKCE(String codeChallenge, String codeVerifier) {
+        String computed = Base64.getUrlEncoder().withoutPadding()
+            .encodeToString(sha256(codeVerifier));
+        return computed.equals(codeChallenge);
+    }
+}
+```
+
+### Def-F-12-54: Streamable HTTP Transport
+
+**定义**: MCP v2.0 引入的流式 HTTP 传输协议，替代原有的 HTTP+SSE 模式，支持双向流式通信。
+
+**协议对比**:
+
+| 传输模式 | 连接数 | 双向流 | 延迟 | 适用场景 |
+|---------|--------|--------|------|---------|
+| stdio | 1 | 有限 | 最低 | 本地进程 |
+| HTTP+SSE (v1.0) | 2 | 单向 | 中 | Web 服务 |
+| **Streamable HTTP (v2.0)** | 1 | 双向 | 低 | 实时应用 |
+
+**Streamable HTTP 特点**:
+- 单一 HTTP 连接支持全双工通信
+- 基于 HTTP/2 Server Push 或 WebSocket
+- 自动流控和背压处理
+- 更好的防火墙穿透能力
+
 ---
 
 ## 2. 属性推导 (Properties)
@@ -400,6 +480,257 @@ public class IdempotentMcpCall extends RichAsyncFunction<Event, Result> {
 ---
 
 ## 6. 实例验证 (Examples)
+
+### 6.0 MCP v2.0 集成示例
+
+#### 6.0.1 MCP v1.0 vs v2.0 对比
+
+| 功能 | MCP v1.0 实现 | MCP v2.0 实现 | 迁移建议 |
+|------|--------------|--------------|---------|
+| **服务端初始化** | `stdio` 或 `HTTP+SSE` | `Streamable HTTP` | 升级传输层 |
+| **认证** | 自定义 Header | OAuth 2.1 JWT | 引入身份提供者 |
+| **批量调用** | 多次独立请求 | 原子批量操作 | 合并请求优化 |
+| **错误处理** | 简单错误码 | 结构化错误 + i18n | 更新错误处理 |
+
+#### 6.0.2 OAuth 2.1 安全配置
+
+```java
+// MCP v2.0 OAuth 2.1 服务器配置
+@Component
+public class McpOAuth2ServerConfig {
+    
+    @Bean
+    public OAuth2AuthorizationServerConfigurer authorizationServer() {
+        return new OAuth2AuthorizationServerConfigurer()
+            // 支持授权码模式 + PKCE
+            .authorizationCodeGrant(codeGrant -> codeGrant
+                .pkce(pkce -> pkce
+                    .challengeMethod(S256)
+                    .required(true)
+                )
+            )
+            // 支持设备授权流程
+            .deviceCodeGrant(deviceGrant -> deviceGrant
+                .deviceCodeTimeToLive(Duration.ofMinutes(10))
+            )
+            // 客户端凭证模式
+            .clientCredentialsGrant()
+            // 令牌配置
+            .token(token -> token
+                .accessTokenFormat(OAuth2TokenFormat.JWT)
+                .accessTokenTimeToLive(Duration.ofHours(1))
+                .refreshTokenTimeToLive(Duration.ofDays(7))
+            );
+    }
+    
+    // MCP 作用域定义
+    public static final Set<String> MCP_SCOPES = Set.of(
+        "mcp:tools:read",      // 读取工具列表
+        "mcp:tools:invoke",    // 调用工具
+        "mcp:resources:read",  // 读取资源
+        "mcp:resources:subscribe", // 订阅资源变更
+        "mcp:prompts:read"     // 读取提示模板
+    );
+}
+```
+
+#### 6.0.3 Streamable HTTP Transport 配置
+
+```java
+// MCP v2.0 Streamable HTTP 服务器
+public class McpV2StreamableServer {
+    
+    private final HttpServer httpServer;
+    private final McpV2ProtocolHandler protocolHandler;
+    
+    public McpV2StreamableServer(int port) {
+        this.httpServer = HttpServer.create(
+            new InetSocketAddress(port), 0);
+        this.protocolHandler = new McpV2ProtocolHandler();
+        
+        // 配置 HTTP/2 支持
+        configureHttp2();
+    }
+    
+    private void configureHttp2() {
+        httpServer.createContext("/mcp/v2", exchange -> {
+            // 处理 MCP v2.0 流式请求
+            if ("POST".equals(exchange.getRequestMethod())) {
+                handleStreamableRequest(exchange);
+            }
+        });
+    }
+    
+    private void handleStreamableRequest(HttpExchange exchange) {
+        // 读取 JSON-RPC 请求流
+        try (InputStream is = exchange.getRequestBody();
+             OutputStream os = exchange.getResponseBody()) {
+            
+            // 解析批量请求
+            List<McpRequest> batchRequests = parseBatchRequests(is);
+            
+            // 原子执行批量操作
+            List<McpResponse> responses = executeBatch(batchRequests);
+            
+            // 流式返回结果
+            exchange.getResponseHeaders()
+                .set("Content-Type", "application/x-ndjson");
+            exchange.sendResponseHeaders(200, 0);
+            
+            for (McpResponse response : responses) {
+                os.write(JsonUtils.toJsonBytes(response));
+                os.write('\n'); // NDJSON 分隔符
+                os.flush();
+            }
+        }
+    }
+    
+    // 批量操作原子性保证
+    private List<McpResponse> executeBatch(List<McpRequest> requests) {
+        // 开启事务或检查点
+        Transaction tx = beginTransaction();
+        try {
+            List<McpResponse> results = new ArrayList<>();
+            for (McpRequest req : requests) {
+                McpResponse resp = executeWithAuth(req);
+                results.add(resp);
+            }
+            tx.commit();
+            return results;
+        } catch (Exception e) {
+            tx.rollback();
+            throw new BatchExecutionException(e);
+        }
+    }
+}
+```
+
+#### 6.0.4 Flink 与 MCP v2.0 集成示例
+
+```java
+// Flink MCP v2.0 客户端
+public class FlinkMcpV2Client {
+    
+    private final OAuth2Client oauth2Client;
+    private final HttpClient httpClient;
+    private String accessToken;
+    
+    public FlinkMcpV2Client(String serverUrl, OAuth2Credentials credentials) {
+        this.oauth2Client = new OAuth2Client(credentials);
+        this.httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)  // HTTP/2 支持
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
+    }
+    
+    // 带 OAuth 2.1 认证的工具调用
+    public CompletableFuture<ToolResult> invokeTool(
+            String toolName, 
+            Map<String, Object> args) {
+        
+        // 确保令牌有效
+        return ensureToken()
+            .thenCompose(token -> {
+                McpRequest request = McpRequest.builder()
+                    .method("tools/call")
+                    .params(Map.of(
+                        "name", toolName,
+                        "arguments", args
+                    ))
+                    .build();
+                
+                HttpRequest httpReq = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + "/mcp/v2"))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/x-ndjson")
+                    .POST(BodyPublishers.ofString(JsonUtils.toJson(request)))
+                    .build();
+                
+                return httpClient.sendAsync(
+                        httpReq, 
+                        BodyHandlers.ofInputStream())
+                    .thenCompose(this::parseStreamableResponse);
+            });
+    }
+    
+    // 批量工具调用（v2.0 原子操作）
+    public CompletableFuture<List<ToolResult>> invokeToolsBatch(
+            List<ToolCallRequest> batchRequests) {
+        
+        return ensureToken()
+            .thenCompose(token -> {
+                McpBatchRequest batchReq = McpBatchRequest.builder()
+                    .requests(batchRequests)
+                    .atomic(true)  // 原子执行
+                    .build();
+                
+                HttpRequest httpReq = HttpRequest.newBuilder()
+                    .uri(URI.create(serverUrl + "/mcp/v2/batch"))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(BodyPublishers.ofString(JsonUtils.toJson(batchReq)))
+                    .build();
+                
+                return httpClient.sendAsync(httpReq, BodyHandlers.ofString())
+                    .thenApply(resp -> parseBatchResponse(resp.body()));
+            });
+    }
+}
+```
+
+#### 6.0.5 MCP v2.0 与 A2A 协议关系
+
+```mermaid
+graph TB
+    subgraph "AI 协议生态"
+        direction TB
+        
+        MCP[MCP Protocol<br/>模型上下文协议]
+        A2A[A2A Protocol<br/>Agent-to-Agent]
+        
+        subgraph "MCP v2.0 扩展"
+            MCP_v2[MCP v2.0 Core]
+            OAuth[OAuth 2.1 模块]
+            Stream[Streamable HTTP]
+            Batch[批量操作]
+        end
+        
+        subgraph "A2A 能力"
+            A2A_Core[A2A Core]
+            AgentDiscovery[Agent 发现]
+            TaskMgmt[任务管理]
+        end
+        
+        MCP_v2 --> OAuth
+        MCP_v2 --> Stream
+        MCP_v2 --> Batch
+        
+        MCP -.->|v2.0 集成| A2A
+        A2A_Core --> AgentDiscovery
+        A2A_Core --> TaskMgmt
+    end
+    
+    subgraph "Flink 集成"
+        Flink[Apache Flink]
+        MCP_Client[MCP v2.0 Client]
+        A2A_Agent[Flink A2A Agent]
+        
+        Flink --> MCP_Client
+        Flink --> A2A_Agent
+        MCP_Client -.->|调用| MCP_v2
+        A2A_Agent -.->|交互| A2A_Core
+    end
+```
+
+**协议协作模式**:
+
+| 场景 | MCP v2.0 | A2A | 协作方式 |
+|------|---------|-----|---------|
+| **工具调用** | 主要协议 | - | 纯 MCP |
+| **跨 Agent 协作** | 资源暴露 | 任务委托 | MCP + A2A |
+| **分布式处理** | 状态查询 | 任务分发 | A2A 主导 |
+| **安全认证** | OAuth 2.1 | OAuth 2.1 | 共享身份 |
 
 ### 6.1 Flink MCP Server 完整实现
 
@@ -1516,4 +1847,4 @@ mcp:
 
 ---
 
-*文档版本: v1.0 | 最后更新: 2026-04-05 | 兼容 Flink 1.18+ | MCP 协议版本: 2025-03-26*
+*文档版本: v1.5 | 最后更新: 2026-04-06 | 兼容 Flink 1.18+ | MCP 协议版本: 2.0 (2025-03)*

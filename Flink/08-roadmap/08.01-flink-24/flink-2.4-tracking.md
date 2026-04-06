@@ -39,16 +39,22 @@ Feature Freeze: 2026-08-15
   5. 生态扩展: 新连接器与协议支持
 ```
 
-### Def-F-08-71: AI Agent GA (FLIP-531 Completion)
+### Def-F-08-71: AI Agent Preview (FLIP-531)
 
-**FLIP-531 GA** 标志着 Flink AI Agents 从实验性 MVP 升级到生产就绪：
+**FLIP-531 Preview** 标志着 Flink AI Agents 进入预览阶段：
+
+> ⚠️ **前瞻性声明**
+> Flink Agents 目前为 Preview 版本 (0.2.0)，API 可能变更。
+> 预计 GA 目标: Flink 2.4 (2026 H2)
+> 最后更新: 2026-04-06
 
 ```yaml
 FLIP-531: "Building and Running AI Agents in Flink"
-MVP状态: Flink 2.3（规划中）- 基础Agent支持（以官方发布为准）
-GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪
+MVP状态: Flink 2.3 - 基础Agent支持
+Preview状态: 0.2.0 (2026-02-06) - 预览版本
+GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪（规划中）
 
-GA特性清单:
+Preview/GA特性清单:
   - [x] 事件驱动Agent运行时
   - [x] MCP协议原生集成
   - [x] A2A (Agent-to-Agent) 通信
@@ -59,11 +65,11 @@ GA特性清单:
   - [ ] 生产级监控与可观测性
   - [ ] Agent市场/注册中心
 
-API完备性:
-  Java API:     Stable (v1.0)
-  Python API:   Stable (v1.0)
-  SQL API:      Stable (v1.0)
-  REST API:     Stable (v1.0)
+API状态:
+  Java API:     Preview (v0.2.0) - API可能变更
+  Python API:   Preview (v0.2.0) - API可能变更
+  SQL API:      概念设计阶段
+  REST API:     规划中
 ```
 
 ### Def-F-08-72: Serverless Flink Architecture
@@ -257,19 +263,21 @@ $$
 \min \text{TCO}_{checkpoints} \Rightarrow \text{optimal interval} \in [30s, 30min]
 $$
 
-### Lemma-F-08-71: AI Agent GA Stability
+### Lemma-F-08-71: AI Agent Preview Stability
 
-**引理**: GA 版本的 Agent 可用性达到生产级：
+**引理**: Preview 版本的 Agent 可用性目标：
 
 $$
 \text{Availability}_{Agent} = 1 - \frac{T_{downtime}}{T_{total}} \geq 99.9\%
 $$
 
-**保证条件**:
+**Preview版本目标条件**:
 
-- Checkpoint成功率 ≥ 99.99%
-- Agent状态恢复时间 < 10秒
-- 多Agent协调延迟 < 100ms
+- Checkpoint成功率 ≥ 99.9%
+- Agent状态恢复时间 < 30秒
+- 多Agent协调延迟 < 500ms
+
+> ⚠️ **注意**: Preview版本不保证生产级SLA，建议仅在非关键环境试用。
 
 ---
 
@@ -433,7 +441,8 @@ $$
 
 # Serverless Dispatcher 配置
 # 注: 以下为Serverless模式配置（规划中），尚未正式实现
-serverless.enabled: true  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+# 注意: 以下配置为预测/规划，实际版本可能不同
+# serverless.enabled: true  (尚未确定)  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
 serverless.scale-to-zero.delay: 5min  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
 serverless.cold-start.pool-size: 10
 serverless.state.remote.uri: s3://flink-serverless-state/
@@ -504,7 +513,8 @@ agentSystem.enableCanaryDeployment()
 -- SQL API: 创建AI Agent
 
 -- 注册MCP工具（未来可能的语法，概念设计阶段）
-CREATE TOOL crm_search
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE TOOL crm_search~~ (未来可能的语法)
 WITH (
     'protocol' = 'mcp',
     'endpoint' = 'http://mcp-crm:8080/sse',
@@ -513,7 +523,8 @@ WITH (
 );
 
 -- 创建Agent（未来可能的语法，概念设计阶段）
-CREATE AGENT sales_assistant  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE AGENT sales_assistant~~  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
 WITH (
     'model.provider' = 'openai',
     'model.name' = 'gpt-4',
@@ -532,7 +543,7 @@ OUTPUT (response STRING, action STRING)
 TOOLS (crm_search, product_catalog);
 
 -- 多Agent协调查询（未来可能的语法，概念设计阶段）
-CREATE AGENT_TEAM customer_service_team  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+~~CREATE AGENT_TEAM customer_service_team~~  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
 WITH (
     'coordinator' = 'hierarchical',
     'routing.strategy' = 'intent-based'
@@ -593,7 +604,8 @@ DataStream<Event> stream = env
 <!-- AI Agent GA 依赖（未来可能提供的模块，设计阶段） -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <artifactId>flink-ai-agent</artifactId>
+    <!-- 注意: 以下依赖为预测/规划，实际版本可能不同 -->
+    <!-- <artifactId>flink-ai-agent</artifactId> (尚未确定) -->
     <!-- 注: 尚未正式发布 -->
 </dependency>
 
@@ -795,7 +807,8 @@ execution.adaptive.mode: legacy    # 请使用 execution.adaptive.model
 
 # 新增配置 (2.4推荐)
 execution.adaptive.model: ml-based          # ML驱动优化
-serverless.enabled: true                     # Serverless模式
+# 注意: 以下配置为预测/规划，实际版本可能不同
+# serverless.enabled: true  (尚未确定)       # Serverless模式
 checkpointing.mode: intelligent              # 智能检查点模式
 ai.agent.version.management.enabled: true    # Agent版本管理
 ```

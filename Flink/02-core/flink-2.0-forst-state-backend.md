@@ -1,5 +1,9 @@
 # Flink 2.0 ForSt 状态后端 - VLDB 2025 深度解析
 
+> **状态**: ✅ Released (2025-03-24)
+> **Flink 版本**: 2.0.0+
+> **稳定性**: 稳定版
+>
 > **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [forst-state-backend.md](./forst-state-backend.md), [disaggregated-state-analysis.md](../01-architecture/disaggregated-state-analysis.md) | **形式化等级**: L4
 
 ---
@@ -30,6 +34,16 @@ $$
 2. **轻量级 Checkpoint**: 通过文件硬链接共享，Checkpoint 时间接近常数
 3. **弹性扩缩容**: 无需状态迁移，计算资源可独立扩展
 4. **成本优化**: 利用廉价对象存储替代本地 SSD，降低 50% 存储成本
+
+**源码实现**:
+```java
+// 主类: org.apache.flink.runtime.state.forst.ForStStateBackend
+// 配置: org.apache.flink.runtime.state.forst.ForStOptions
+// 配置构建器: org.apache.flink.runtime.state.forst.ForStStateBackendConfig
+```
+- 位于: `flink-runtime` 模块 (`flink-state-backends/flink-state-backend-forst`)
+- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+- FLIP 论文: VLDB 2025 "ForSt: A Disaggregated State Backend for Stream Processing"
 
 ### Def-F-02-62: 统一文件系统层 (UFS - Unified File System)
 

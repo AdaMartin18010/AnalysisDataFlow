@@ -1,14 +1,18 @@
-# FLIP-531 AI Agents GA 完整实现指南
+# FLIP-531 AI Agents 实现指南
 
 > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+
+> ⚠️ **前瞻性声明**
+> Flink Agents 目前为 Preview 版本，API 可能变更。
+> 最后更新: 2026-04-06
 
 ---
 
 ## 1. 概念定义 (Definitions)
 
-### Def-F-12-100: FLIP-531 GA 里程碑
+### Def-F-12-100: FLIP-531 Preview 里程碑
 
-**FLIP-531 General Availability (GA)** 标志着Flink AI Agents从MVP阶段进入生产就绪阶段，形式化定义为：
+**FLIP-531 Preview** 标志着Flink AI Agents进入预览阶段，形式化定义为：
 
 $$
 \text{GA} \triangleq \langle \mathcal{F}_{stable}, \mathcal{A}_{mature}, \mathcal{P}_{complete}, \mathcal{D}_{prod}, \mathcal{S}_{supported} \rangle
@@ -16,15 +20,22 @@ $$
 
 其中：
 
-| 组件 | MVP (v1.0) | GA (v2.0) |
-|------|-----------|-----------|
-| $\mathcal{F}_{stable}$ | 核心API预览版 | API稳定向后兼容 |
-| $\mathcal{A}_{mature}$ | 单Agent演示 | 多Agent生产编排 |
-| $\mathcal{P}_{complete}$ | 基础MCP支持 | 完整MCP 2.0 + A2A协议 |
-| $\mathcal{D}_{prod}$ | 本地运行 | K8s原生部署 |
-| $\mathcal{S}_{supported}$ | 社区支持 | 企业级SLA支持 |
+| 组件 | MVP (v1.0) | Preview (v0.2.0) |
+|------|-----------|-------------------|
+| $\mathcal{F}_{stable}$ | 核心API预览版 | API预览，可能变更 |
+| $\mathcal{A}_{mature}$ | 单Agent演示 | 多Agent演示 |
+| $\mathcal{P}_{complete}$ | 基础MCP支持 | 基础MCP 2.0 + A2A协议 |
+| $\mathcal{D}_{prod}$ | 本地运行 | K8s初步支持 |
+| $\mathcal{S}_{supported}$ | 社区支持 | 社区支持 |
 
-**GA发布标准**[^1]：
+**Preview发布标准**[^1]：
+
+- 代码覆盖率 > 70%
+- 预览环境运行超过3个月
+- 处理超过1000万Agent事件
+- 99.9%可用性目标
+
+> ⚠️ **注意**: 本文档描述的是预览版本特性，实际GA时间表以官方发布为准。
 
 - 代码覆盖率 > 85%
 - 生产环境运行超过6个月
@@ -1339,7 +1350,8 @@ if __name__ == "__main__":
 
 -- 1. 创建Agent（GA版本完整语法）
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE AGENT sales_analytics_agent
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE AGENT sales_analytics_agent~~ (未来可能的语法)
 WITH (
     -- 基础配置
     'agent.id' = 'sales-analytics-v2',
@@ -1402,7 +1414,8 @@ WITH (
 
 -- 2. 注册SQL工具
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL query_sales_data
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE TOOL query_sales_data~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 AS $$
     SELECT
@@ -1434,7 +1447,7 @@ $$ WITH (
 
 -- 3. 注册Python工具（GA版本支持）
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL analyze_trend
+~~CREATE TOOL analyze_trend~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 TYPE 'python'
 SCRIPT $$
@@ -1477,7 +1490,7 @@ WITH (
 
 -- 4. 注册HTTP工具
 -- 注: 以下为未来可能的语法（概念设计阶段）
-CREATE TOOL send_alert
+~~CREATE TOOL send_alert~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 TYPE 'http'
 WITH (
@@ -1573,7 +1586,8 @@ CREATE TABLE agent_event_log (
 );
 
 -- 9. 创建Agent工作流
-CREATE WORKFLOW sales_monitoring_workflow
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE WORKFLOW sales_monitoring_workflow~~ (未来可能的语法)
 AS AGENT sales_analytics_agent
 ON TABLE agent_requests
 KEYED BY session_id

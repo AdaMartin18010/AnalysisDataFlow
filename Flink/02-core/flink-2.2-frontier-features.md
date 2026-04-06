@@ -758,7 +758,8 @@ CREATE TABLE user_queries (
 );
 
 -- 3. 创建嵌入模型（使用 ML_PREDICT）
-CREATE MODEL text_embedding
+<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+~~CREATE MODEL text_embedding~~ (未来可能的语法)
   INPUT (text STRING)
   OUTPUT (embedding ARRAY<FLOAT>)
 WITH (

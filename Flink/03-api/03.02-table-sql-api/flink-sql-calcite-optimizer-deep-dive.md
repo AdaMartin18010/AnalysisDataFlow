@@ -1600,6 +1600,618 @@ graph TB
 
 
 
+## 9. 源码深度分析 (Source Code Analysis)
+
+### 9.1 Flink 自定义优化规则注册机制
+
+#### 9.1.1 FlinkRelOptRule 基类设计
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/rules/FlinkRelOptRule.java`
+
+```java
+/**
+ * Flink 优化规则基类
+ * 继承自 Calcite 的 RelOptRule，添加 Flink 特定功能
+ */
+public abstract class FlinkRelOptRule extends RelOptRule {
+    
+    /**
+     * 构造器
+     * @param operand 规则匹配的操作数
+     */
+    protected FlinkRelOptRule(RelOptRuleOperand operand) {
+        super(operand);
+    }
+    
+    /**
+     * 构造器（带描述）
+     */
+    protected FlinkRelOptRule(RelOptRuleOperand operand, String description) {
+        super(operand, description);
+    }
+    
+    /**
+     * 规则匹配条件检查
+     * 子类可重写以添加额外匹配条件
+     */
+    @Override
+    public boolean matches(RelOptRuleCall call) {
+        return super.matches(call);
+    }
+    
+    /**
+     * 规则变换实现
+     * 子类必须实现具体变换逻辑
+     */
+    @Override
+    public abstract void onMatch(RelOptRuleCall call);
+}
+```
+
+#### 9.1.2 规则集合定义与注册
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/rules/FlinkRuleSets.java`
+
+```java
+/**
+ * Flink SQL 优化规则集合
+ * 定义所有可用的优化规则
+ */
+public class FlinkRuleSets {
+    
+    /**
+     * 逻辑优化规则（HepPlanner）
+     */
+    public static final RelOptRuleSet LOGICAL_OPT_RULES = RelOptRuleSets.ofList(
+        // 投影下推规则
+        FlinkPushProjectIntoTableSourceScan.INSTANCE,
+        
+        // 谓词下推规则
+        PushFilterIntoTableSourceScanRule.INSTANCE,
+        PushFilterIntoJoinRule.INSTANCE,
+        
+        // Join优化规则
+        JoinConditionTypeCoerceRule.INSTANCE,
+        JoinDeriveNullFilterRule.INSTANCE,
+        
+        // 子查询重写规则
+        SubQueryRemoveRule.FILTER,
+        SubQueryRemoveRule.PROJECT,
+        SubQueryRemoveRule.JOIN,
+        
+        // 窗口优化规则
+        WindowPropertiesRules.WINDOW_PROPERTIES_RULES,
+        
+        // 常量折叠规则
+        ReduceExpressionsRule.FILTER_INSTANCE,
+        ReduceExpressionsRule.PROJECT_INSTANCE,
+        
+        // 聚合优化规则
+        DecomposeGroupingSetsRule.INSTANCE,
+        SplitAggregateRule.INSTANCE
+    );
+    
+    /**
+     * 物理优化规则（VolcanoPlanner）
+     */
+    public static final RelOptRuleSet PHYSICAL_OPT_RULES = RelOptRuleSets.ofList(
+        // 流物理规则
+        StreamExecRuleSets.STREAM_PHYSICAL_OPT_RULES,
+        
+        // 批物理规则
+        BatchExecRuleSets.BATCH_PHYSICAL_OPT_RULES,
+        
+        // 通用物理规则
+        EnumerableRules.ENUMERABLE_RULES
+    );
+    
+    /**
+     * 扩展规则注册
+     */
+    public static void registerCustomRule(RelOptRule rule) {
+        // 动态注册自定义规则
+        CUSTOM_RULES.add(rule);
+    }
+}
+```
+
+#### 9.1.3 自定义规则实现示例
+
+```java
+/**
+ * 示例：自定义谓词下推规则
+ */
+public class CustomPushDownRule extends FlinkRelOptRule {
+    
+    // 单例模式
+    public static final CustomPushDownRule INSTANCE = new CustomPushDownRule();
+    
+    /**
+     * 定义匹配模式：Filter -> TableScan
+     */
+    private CustomPushDownRule() {
+        super(
+            operand(LogicalFilter.class,
+                operand(LogicalTableScan.class, none())
+            ),
+            "CustomPushDownRule"
+        );
+    }
+    
+    @Override
+    public boolean matches(RelOptRuleCall call) {
+        LogicalFilter filter = call.rel(0);
+        LogicalTableScan scan = call.rel(1);
+        
+        // 检查TableSource是否支持下推
+        TableSourceTable table = scan.getTable();
+        return table.getTableSource() instanceof SupportsFilterPushDown;
+    }
+    
+    @Override
+    public void onMatch(RelOptRuleCall call) {
+        LogicalFilter filter = call.rel(0);
+        LogicalTableScan scan = call.rel(1);
+        
+        // 提取可下推谓词
+        List<RexNode> predicates = RexUtil.pullFactors(filter.getCondition());
+        
+        // 创建新的TableScan（带下推谓词）
+        TableSourceTable newTable = applyPushDown(scan.getTable(), predicates);
+        LogicalTableScan newScan = LogicalTableScan.create(
+            scan.getCluster(),
+            newTable,
+            scan.getHints()
+        );
+        
+        // 保留不可下推谓词
+        RexNode remainingCondition = getRemainingCondition(filter.getCondition(), predicates);
+        
+        if (remainingCondition.isAlwaysTrue()) {
+            // 全部下推
+            call.transformTo(newScan);
+        } else {
+            // 部分下推
+            LogicalFilter newFilter = LogicalFilter.create(
+                newScan,
+                remainingCondition
+            );
+            call.transformTo(newFilter);
+        }
+    }
+}
+```
+
+### 9.2 RelNode 到 Transformation 的转换流程
+
+#### 9.2.1 转换流程架构
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/exec/ExecNode.java`
+
+```mermaid
+graph TB
+    subgraph "Flink SQL优化流程"
+        SQL[SQL语句] --> Parser[SqlParser<br/>→ SqlNode]
+        Parser --> Validator[SqlValidator<br/>语义验证]
+        Validator --> Converter[SqlToRelConverter<br/>→ RelNode]
+        Converter --> Hep[HepPlanner<br/>RBO优化]
+        Hep --> Logical[FlinkLogicalRel<br/>逻辑算子]
+        Logical --> Volcano[VolcanoPlanner<br/>CBO优化]
+        Volcano --> Physical[FlinkPhysicalRel<br/>物理算子]
+        Physical --> Transformation[Transformation<br/>→ StreamGraph]
+    end
+    
+    style Physical fill:#c8e6c9,stroke:#2e7d32
+    style Transformation fill:#e3f2fd,stroke:#1565c0
+```
+
+#### 9.2.2 物理算子基类设计
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/physical/FlinkPhysicalRel.java`
+
+```java
+/**
+ * Flink 物理算子基类
+ * 继承自 Calcite 的 RelNode，添加执行能力
+ */
+public interface FlinkPhysicalRel extends RelNode {
+    
+    /**
+     * 转换为执行节点（ExecNode）
+     */
+    ExecNode<?> translateToExecNode();
+    
+    /**
+     * 获取所需的输入Trait（排序、分布等）
+     */
+    RelTraitSet getRequiredInputTraits(int inputOrdinal);
+    
+    /**
+     * 检查是否满足所需的物理属性
+     */
+    boolean satisfiesTraits(RelTraitSet traits);
+}
+```
+
+#### 9.2.3 ExecNode 到 Transformation 转换
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/exec/stream/StreamExecCalc.java`
+
+```java
+/**
+ * 流计算节点（Calc/Project+Filter）
+ */
+public class StreamExecCalc extends ExecNodeBase<RowData> 
+        implements StreamExecNode<RowData> {
+    
+    private final RexProgram calcProgram;
+    
+    /**
+     * 转换为 Flink Transformation
+     */
+    @Override
+    protected Transformation<RowData> translateToPlanInternal(
+            PlannerBase planner,
+            ExecNodeContext context) {
+        
+        // 1. 获取输入Transformation
+        Transformation<RowData> inputTransform = 
+            (Transformation<RowData>) getInputNodes().get(0)
+                .translateToPlan(planner);
+        
+        // 2. 构建代码生成器
+        CodeGeneratorContext ctx = new CodeGeneratorContext(planner.getTableConfig());
+        
+        // 3. 生成计算函数
+        GeneratedFunction<FlatMapFunction<RowData, RowData>> calcFunction = 
+            CalcCodeGenerator.generateCalcFunction(
+                ctx,
+                calcProgram,
+                getOutputType(),
+                null  // 无Filter
+            );
+        
+        // 4. 创建Transformation
+        String name = context.generateUid("Calc");
+        OneInputTransformation<RowData, RowData> transform = 
+            new OneInputTransformation<>(
+                inputTransform,
+                name,
+                calcFunction.newInstance(getClass().getClassLoader()),
+                InternalTypeInfo.of(getOutputType()),
+                inputTransform.getParallelism()
+            );
+        
+        return transform;
+    }
+}
+```
+
+#### 9.2.4 完整转换链源码
+
+```java
+/**
+ * Planner 执行入口
+ */
+public class StreamPlanner extends PlannerBase {
+    
+    /**
+     * 将 SQL 转换为可执行的 Pipeline
+     */
+    @Override
+    public Pipeline translate(List<ModifyOperation> modifyOperations) {
+        // 1. 优化所有操作
+        List<RelNode> optimizedRels = optimize(modifyOperations);
+        
+        // 2. 转换为 ExecNode
+        List<ExecNode<?>> execNodes = new ArrayList<>();
+        for (RelNode rel : optimizedRels) {
+            ExecNode<?> execNode = ((FlinkPhysicalRel) rel).translateToExecNode();
+            execNodes.add(execNode);
+        }
+        
+        // 3. 转换为 Transformation
+        List<Transformation<?>> transformations = new ArrayList<>();
+        for (ExecNode<?> execNode : execNodes) {
+            Transformation<?> transform = execNode.translateToPlan(this);
+            transformations.add(transform);
+        }
+        
+        // 4. 构建 StreamGraph
+        return new StreamGraphGenerator(transformations)
+            .generate();
+    }
+}
+```
+
+### 9.3 StreamPhysicalRel vs BatchPhysicalRel 区别
+
+#### 9.3.1 物理算子层次结构
+
+```mermaid
+classDiagram
+    class FlinkPhysicalRel {
+        <<interface>>
+        +translateToExecNode()
+        +getRequiredInputTraits()
+        +satisfiesTraits()
+    }
+    
+    class StreamPhysicalRel {
+        <<interface>>
+        +produceWatermark()
+        +requireWatermark()
+    }
+    
+    class BatchPhysicalRel {
+        <<interface>>
+        +isBounded()
+        +getParallelism()
+    }
+    
+    class StreamExecCalc {
+        -calcProgram
+        +translateToPlan()
+    }
+    
+    class StreamExecJoin {
+        -joinType
+        -joinCondition
+        +translateToPlan()
+    }
+    
+    class BatchExecCalc {
+        -calcProgram
+        +translateToPlan()
+    }
+    
+    class BatchExecHashJoin {
+        -buildSide
+        -probeSide
+        +translateToPlan()
+    }
+    
+    FlinkPhysicalRel <|-- StreamPhysicalRel
+    FlinkPhysicalRel <|-- BatchPhysicalRel
+    StreamPhysicalRel <|.. StreamExecCalc
+    StreamPhysicalRel <|.. StreamExecJoin
+    BatchPhysicalRel <|.. BatchExecCalc
+    BatchPhysicalRel <|.. BatchExecHashJoin
+```
+
+#### 9.3.2 StreamPhysicalRel 特有实现
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/physical/stream/StreamPhysicalRel.java`
+
+```java
+/**
+ * 流物理算子标记接口
+ */
+public interface StreamPhysicalRel extends FlinkPhysicalRel {
+    
+    /**
+     * 是否产生 Watermark
+     */
+    default boolean producesWatermark() {
+        return false;
+    }
+    
+    /**
+     * 是否需要输入 Watermark
+     */
+    default boolean requiresWatermark() {
+        return false;
+    }
+    
+    /**
+     * 获取 Changelog 模式
+     */
+    ChangelogMode getChangelogMode();
+}
+
+/**
+ * 流聚合算子实现
+ */
+public class StreamExecGroupAggregate extends StreamPhysicalRel {
+    
+    @Override
+    public ChangelogMode getChangelogMode() {
+        // 聚合输出包含 +I, -U, +U, -D
+        return ChangelogMode.newBuilder()
+            .addContainedKind(RowKind.INSERT)
+            .addContainedKind(RowKind.UPDATE_BEFORE)
+            .addContainedKind(RowKind.UPDATE_AFTER)
+            .addContainedKind(RowKind.DELETE)
+            .build();
+    }
+    
+    @Override
+    public boolean requiresWatermark() {
+        return true;  // 窗口聚合需要 Watermark
+    }
+}
+```
+
+#### 9.3.3 BatchPhysicalRel 特有实现
+
+**源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/physical/batch/BatchPhysicalRel.java`
+
+```java
+/**
+ * 批物理算子标记接口
+ */
+public interface BatchPhysicalRel extends FlinkPhysicalRel {
+    
+    /**
+     * 是否是有界输入
+     */
+    default boolean isBounded() {
+        return true;
+    }
+    
+    /**
+     * 获取首选并行度
+     */
+    int getParallelism();
+}
+
+/**
+ * 批 Join 算子实现
+ */
+public class BatchExecHashJoin extends BatchPhysicalRel {
+    
+    private final JoinRelType joinType;
+    private final int buildLeft;
+    
+    @Override
+    public Transformation<RowData> translateToPlanInternal(PlannerBase planner) {
+        // 批 Join 可以构建哈希表
+        // 选择小表作为 build side
+        Transformation<RowData> leftInput = ...;
+        Transformation<RowData> rightInput = ...;
+        
+        // 构建哈希表
+        HashJoinOperator operator = new HashJoinOperator(
+            leftType,
+            rightType,
+            joinCondition,
+            buildLeft == 0  // 是否左表作为build side
+        );
+        
+        return new TwoInputTransformation<>(
+            leftInput,
+            rightInput,
+            "HashJoin",
+            operator,
+            outputType,
+            getParallelism()
+        );
+    }
+}
+```
+
+#### 9.3.4 同一逻辑算子的不同物理实现
+
+```java
+/**
+ * 聚合算子的不同物理实现
+ */
+public class AggregatePhysicalRelFactory {
+    
+    /**
+     * 创建流聚合算子
+     */
+    public static StreamExecGroupAggregate createStreamAggregate(
+            RelOptCluster cluster,
+            RelTraitSet traitSet,
+            RelNode input,
+            AggregateCall[] aggCalls) {
+        
+        return new StreamExecGroupAggregate(
+            cluster,
+            traitSet,
+            input,
+            aggCalls,
+            true  // 需要状态
+        );
+    }
+    
+    /**
+     * 创建批聚合算子
+     */
+    public static BatchExecHashAggregate createBatchAggregate(
+            RelOptCluster cluster,
+            RelTraitSet traitSet,
+            RelNode input,
+            AggregateCall[] aggCalls) {
+        
+        return new BatchExecHashAggregate(
+            cluster,
+            traitSet,
+            input,
+            aggCalls,
+            false  // 不需要状态
+        );
+    }
+}
+```
+
+### 9.4 优化器入口与执行流程
+
+```java
+/**
+ * Flink 优化器入口
+ */
+public class FlinkOptimizer {
+    
+    /**
+     * 执行优化
+     */
+    public RelNode optimize(RelNode rootRel) {
+        // 1. 逻辑优化（HepPlanner）
+        RelNode logicalPlan = optimizeLogicalPlan(rootRel);
+        
+        // 2. 转换为 Flink 逻辑算子
+        RelNode flinkLogicalPlan = convertToFlinkLogical(logicalPlan);
+        
+        // 3. 物理优化（VolcanoPlanner）
+        RelNode physicalPlan = optimizePhysicalPlan(flinkLogicalPlan);
+        
+        return physicalPlan;
+    }
+    
+    /**
+     * 逻辑优化
+     */
+    private RelNode optimizeLogicalPlan(RelNode relNode) {
+        HepProgramBuilder builder = new HepProgramBuilder();
+        
+        // 添加优化规则组
+        builder.addGroupBegin();
+        builder.addRuleCollection(FlinkRuleSets.LOGICAL_OPT_RULES);
+        builder.addGroupEnd();
+        
+        HepPlanner hepPlanner = new HepPlanner(builder.build());
+        hepPlanner.setRoot(relNode);
+        
+        return hepPlanner.findBestExp();
+    }
+    
+    /**
+     * 物理优化
+     */
+    private RelNode optimizePhysicalPlan(RelNode relNode) {
+        VolcanoPlanner volcanoPlanner = new VolcanoPlanner();
+        
+        // 添加物理规则
+        for (RelOptRule rule : FlinkRuleSets.PHYSICAL_OPT_RULES) {
+            volcanoPlanner.addRule(rule);
+        }
+        
+        // 设置代价模型
+        volcanoPlanner.setExecutor(new FlinkCostExecutor());
+        
+        volcanoPlanner.setRoot(relNode);
+        
+        // 触发优化
+        RelTraitSet desiredTraits = relNode.getTraitSet()
+            .replace(FlinkConventions.STREAM_PHYSICAL);
+        
+        return volcanoPlanner.changeTraits(relNode, desiredTraits);
+    }
+}
+```
+
+### 9.5 关键配置参数与源码映射
+
+| 配置参数 | 源码位置 | 默认值 | 说明 |
+|---------|---------|-------|------|
+| `table.optimizer.join-reorder-enabled` | `FlinkRuleSets` | false | 启用Join重排序 |
+| `table.optimizer.agg-phase-strategy` | `SplitAggregateRule` | AUTO | 聚合阶段策略 |
+| `table.exec.mini-batch.enabled` | `StreamExecGroupAggregate` | false | 启用Mini-batch |
+| `table.optimizer.distinct-agg.split.enabled` | `SplitAggregateRule` | false | DISTINCT拆分优化 |
+| `pipeline.object-reuse` | `CodeGeneratorContext` | false | 对象重用模式 |
+
 ---
 
 **文档元数据**

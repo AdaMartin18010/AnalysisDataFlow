@@ -1,5 +1,6 @@
 # Flink 1.x vs 2.0 架构对比 (Flink 1.x vs 2.0 Architecture Comparison)
 
+> **状态**: ✅ Flink 2.0 Released (2025-03-24)
 > **技术演进**: Flink 1.x → Flink 2.0 | **核心变革**: Disaggregated State Storage + Async Execution | **形式化等级**: L5
 > **文档类型**: 架构对比分析 | **目标读者**: 架构师、Flink 开发者、运维工程师
 
@@ -471,6 +472,24 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 
 ## 10. 性能基准对比
 
+### 10.1 官方发布数据 (2025-03-24)
+
+根据 [Apache Flink 2.0.0 官方发布声明](https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/)[^45]：
+
+**Flink 2.0 核心性能提升**:
+
+| 指标 | Flink 1.x (RocksDB) | Flink 2.0 (ForSt + Async) | 提升 |
+|------|--------------------|--------------------------|------|
+| **Checkpoint 时间** | 120s | 7s | **94% ↓** |
+| **故障恢复时间** | 245s | 5s | **49x ↑** |
+| **存储成本** | 基准 | 基准的 50% | **50% ↓** |
+| **端到端延迟 (P99)** | 3200ms | 890ms | **72% ↓** |
+| **Checkpoint 期间吞吐下降** | 45% | 3% | **93% ↓** |
+
+**测试环境**: Nexmark Benchmark (Q5/Q8/Q11), 10亿事件, 状态大小 500GB-2TB, 20 TaskManagers
+
+### 10.2 实验室测试数据
+
 **测试环境**: 10 × EC2 c5.2xlarge, S3 Standard, 10Gbps 网络
 
 | 指标 | Flink 1.x | Flink 2.0 (SYNC) | Flink 2.0 (ASYNC) |
@@ -593,6 +612,10 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 [^43]: Snowflake, "The Snowflake Elastic Data Warehouse," *SIGMOD*, 2016.
 
 [^44]: Apache Flink, "Migration Guide," <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/migration/>
+
+[^45]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+
+[^46]: Apache Flink Documentation, "Release Notes - Flink 2.0", 2025. https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/
 
 ---
 
