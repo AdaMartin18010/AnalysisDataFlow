@@ -162,6 +162,16 @@
 
 ---
 
+## 09-unified/ 统一图谱 (1篇)
+
+全项目统一关系图谱与跨模型整合。
+
+| 文档 | 描述 | 等级 |
+|------|------|------|
+| [Unified-Model-Relationship-Graph.md](./Unified-Model-Relationship-Graph.md) | **统一模型关系图谱** — 全项目计算模型的统一关系图谱，包括表达力层级、编码关系、等价关系、决策矩阵 | L4-L5 |
+
+---
+
 ## 跨目录依赖图
 
 ```mermaid

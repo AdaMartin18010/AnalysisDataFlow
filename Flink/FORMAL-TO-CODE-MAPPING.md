@@ -230,8 +230,76 @@ flink-state-backends/       # 状态后端实现
 
 ---
 
-## 9. 引用参考 (References)
+## 9. 形式→源码依赖链 (v2 扩展)
 
+> 本节补充形式化定义到源码实现的显式依赖链映射，详细说明见 [Formal-to-Code-Mapping-v2.md](./Formal-to-Code-Mapping-v2.md)
+
+### 9.1 核心依赖链
+
+```mermaid
+graph BT
+    subgraph "理论层 Struct"
+        S1[Def-S-01-02<br/>进程演算]
+        S2[Def-S-01-04<br/>Dataflow模型]
+        S3[Thm-S-04-01<br/>确定性定理]
+    end
+
+    subgraph "抽象层 Flink"
+        F1[Def-F-02-01<br/>Checkpoint定义]
+        F2[Def-F-02-91<br/>Exactly-Once语义]
+    end
+
+    subgraph "实现层 Source"
+        I1[CheckpointCoordinator<br/>协调器实现]
+        I2[TwoPhaseCommitSinkFunction<br/>2PC实现]
+        I3[StreamGraph<br/>图构建]
+    end
+
+    S1 -->|扩展| S2
+    S2 -->|保证| S3
+    S3 -->|依赖| F1
+    S3 -->|依赖| F2
+    F1 -->|实现| I1
+    F2 -->|实现| I2
+    S2 -->|实现| I3
+
+    style S1 fill:#fff9c4,stroke:#f57f17
+    style S2 fill:#fff9c4,stroke:#f57f17
+    style S3 fill:#bbdefb,stroke:#1565c0
+    style F1 fill:#e1bee7,stroke:#6a1b9a
+    style F2 fill:#e1bee7,stroke:#6a1b9a
+    style I1 fill:#c8e6c9,stroke:#2e7d32
+    style I2 fill:#c8e6c9,stroke:#2e7d32
+    style I3 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 9.2 显式依赖链表格
+
+| 依赖链 | 形式关系 | 源码实现 | 验证状态 |
+|-------|---------|---------|---------|
+| `Def-S-01-02 → Def-S-01-04` | 进程演算扩展为 Dataflow 模型 | 理论基础 → 模型层 | ✅ |
+| `Def-S-01-04 → Def-F-02-01` | Dataflow 模型引入 Checkpoint 语义 | 模型层 → Flink 抽象 | ✅ |
+| `Def-F-02-01 → CheckpointCoordinator` | Checkpoint 定义到协调器实现 | CheckpointCoordinator:850-920 | ✅ |
+| `Thm-S-04-01 → Def-F-02-91` | 确定性定理支撑 Exactly-Once | 定理 → 语义定义 | ✅ |
+| `Def-F-02-91 → TwoPhaseCommitSinkFunction` | Exactly-Once 到 2PC 实现 | TwoPhaseCommitSinkFunction:98-127 | ✅ |
+
+### 9.3 新增映射条目
+
+| 层级 | 形式元素 | 源码类 | 包路径 | 行号范围 | 验证状态 |
+|------|---------|--------|--------|---------|---------|
+| Struct | Def-S-01-04 (Dataflow Model) | StreamGraph | flink-streaming-java/api/graph | 80-200 | ✅ |
+| Struct | Def-S-02-03 (Watermark Monotonicity) | StatusWatermarkValve | flink-streaming-java/watermark | 120-280 | ✅ |
+| Knowledge | pattern-checkpoint-recovery | CheckpointStorage | flink-runtime/checkpoint | 200-350 | ✅ |
+| Knowledge | pattern-stateful-computation | ValueState/MapState | flink-runtime/state | 45-120 | ✅ |
+| Knowledge | pattern-windowed-aggregation | WindowOperator | flink-streaming-java/windowing | 180-320 | ✅ |
+| Flink | Def-F-02-08 (Changelog State Backend) | ChangelogStateBackend | flink-state-backends | 195-230 | ✅ |
+| Flink | Def-F-02-30 (Netty PooledByteBufAllocator) | NettyBufferPool | flink-runtime/io/network | 87-102 | ✅ |
+| Flink | Def-F-02-31 (Credit-based Flow Control) | CreditBasedFlowControl | flink-runtime/io/network | 106-120 | ✅ |
+| Flink | Def-F-03-57 (VolcanoPlanner) | FlinkOptimizer | flink-table-planner | 200-300 | ✅ |
+
+---
+
+## 10. 引用参考 (References)
 
 
 
@@ -241,3 +309,4 @@ flink-state-backends/       # 状态后端实现
 ---
 
 *本文档作为 Flink 形式化体系与工程实现的桥梁，持续更新以匹配 Flink 版本演进。*
+*更新: v2.0 新增依赖链映射 (2026-04-06)*

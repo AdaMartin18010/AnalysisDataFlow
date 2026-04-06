@@ -1,8 +1,10 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.9.5 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.9.6 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
+>
+> **更新说明 (v2.9.6)**: 新增"依赖元素"列，标注关键定理/定义/引理的形式化依赖关系。详见 [Struct/Key-Theorem-Proof-Chains.md](Struct/Key-Theorem-Proof-Chains.md)
 
 ---
 
@@ -110,6 +112,11 @@
       - [新增引理 (6个)](#新增引理-6个)
       - [新增命题 (3个)](#新增命题-3个)
       - [v2.9.5 补充统计](#v295-补充统计)
+    - [8.11 v2.9.6 统一模型关系图谱 (2026-04-06)](#811-v296-统一模型关系图谱-2026-04-06)
+      - [新增定理 (1个)](#新增定理-1个)
+      - [新增定义 (5个)](#新增定义-5个)
+      - [新增命题 (3个)](#新增命题-3个-1)
+      - [v2.9.6 补充统计](#v296-补充统计)
   - [引用参考](#引用参考)
 
 ---
@@ -182,443 +189,444 @@
 
 ### 2.1 基础层定理 (01-foundation)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-01-01 | USTM组合性定理 | Struct/01.01 | L4 | ✅ |
-| Thm-S-01-02 | 表达能力层次判定 | Struct/01.01 | L4 | ✅ |
-| Thm-S-02-01 | 动态通道演算严格包含静态通道演算 | Struct/01.02 | L4 | ✅ |
-| Thm-S-03-01 | Actor邮箱串行处理下的局部确定性 | Struct/01.03 | L4 | ✅ |
-| Thm-S-03-02 | 监督树活性定理 | Struct/01.03 | L4 | ✅ |
-| Thm-S-04-01 | Dataflow确定性定理 | Struct/01.04 | L4 | ✅ |
-| Thm-S-05-01 | Go-CS-sync与CSP编码保持迹语义等价 | Struct/01.05 | L3 | ✅ |
-| Thm-S-06-01 | Petri网活性与有界性的可达图判定 | Struct/01.06 | L2 | ✅ |
-| Thm-S-01-03 | 会话类型安全性 (Type Safety) | Struct/01.07 | L4-L5 | ✅ |
-| Thm-S-01-04 | 会话类型无死锁性 (Deadlock Freedom) | Struct/01.07 | L4-L5 | ✅ |
-| Thm-S-01-05 | 协议合规性 (Protocol Compliance) | Struct/01.07 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-01-01 | USTM组合性定理 | Struct/01.01 | L4 | - | ✅ |
+| Thm-S-01-02 | 表达能力层次判定 | Struct/01.01 | L4 | - | ✅ |
+| Thm-S-02-01 | 动态通道演算严格包含静态通道演算 | Struct/01.02 | L4 | - | ✅ |
+| Thm-S-03-01 | Actor邮箱串行处理下的局部确定性 | Struct/01.03 | L4 | - | ✅ |
+| Thm-S-03-02 | 监督树活性定理 | Struct/01.03 | L4 | Def-S-03-01, Def-S-03-05, Lemma-S-03-02 | ✅ |
+| Thm-S-04-01 | Dataflow确定性定理 | Struct/01.04 | L4 | Def-S-04-01, Def-S-04-02, Lemma-S-04-01 | ✅ |
+| Thm-S-05-01 | Go-CS-sync与CSP编码保持迹语义等价 | Struct/01.05 | L3 | - | ✅ |
+| Thm-S-06-01 | Petri网活性与有界性的可达图判定 | Struct/01.06 | L2 | - | ✅ |
+| Thm-S-01-03 | 会话类型安全性 (Type Safety) | Struct/01.07 | L4-L5 | - | ✅ |
+| Thm-S-01-04 | 会话类型无死锁性 (Deadlock Freedom) | Struct/01.07 | L4-L5 | - | ✅ |
+| Thm-S-01-05 | 协议合规性 (Protocol Compliance) | Struct/01.07 | L4-L5 | - | ✅ |
 
 ### 2.2 性质层定理 (02-properties)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-07-01 | 流计算确定性定理 | Struct/02.01 | L4 | ✅ |
-| Thm-S-08-01 | Exactly-Once必要条件 | Struct/02.02 | L5 | ✅ |
-| Thm-S-08-02 | 端到端Exactly-Once正确性 | Struct/02.02 | L5 | ✅ |
-| Thm-S-08-03 | 统一一致性格 | Struct/02.02 | L4 | ✅ |
-| Thm-S-09-01 | Watermark单调性定理 | Struct/02.03 | L4 | ✅ |
-| Thm-S-10-01 | Actor安全/活性组合性 | Struct/02.04 | L4 | ✅ |
-| Thm-S-11-01 | 类型安全(Progress + Preservation) | Struct/02.05 | L3 | ✅ |
-| Thm-S-02-08 | CALM定理 (Consistency As Logical Monotonicity) | Struct/02.06 | L5 | ✅ |
-| Thm-S-02-09 | 同态计算正确性定理 | Struct/02.07 | L5 | ✅ |
-| Thm-S-02-10 | 流式差分隐私组合性 | Struct/02.08 | L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-07-01 | 流计算确定性定理 | Struct/02.01 | L4 | Def-S-07-01, Def-S-07-02, Lemma-S-07-02 | ✅ |
+| Thm-S-08-01 | Exactly-Once必要条件 | Struct/02.02 | L5 | - | ✅ |
+| Thm-S-08-02 | 端到端Exactly-Once正确性 | Struct/02.02 | L5 | Def-S-08-01, Def-S-08-02, Def-S-08-03, Def-S-08-04, Lemma-S-08-01 | ✅ |
+| Thm-S-08-03 | 统一一致性格 | Struct/02.02 | L4 | - | ✅ |
+| Thm-S-09-01 | Watermark单调性定理 | Struct/02.03 | L4 | Def-S-04-04, Def-S-09-02, Lemma-S-04-02 | ✅ |
+| Thm-S-10-01 | Actor安全/活性组合性 | Struct/02.04 | L4 | - | ✅ |
+| Thm-S-11-01 | 类型安全(Progress + Preservation) | Struct/02.05 | L3 | - | ✅ |
+| Thm-S-02-08 | CALM定理 (Consistency As Logical Monotonicity) | Struct/02.06 | L5 | - | ✅ |
+| Thm-S-02-09 | 同态计算正确性定理 | Struct/02.07 | L5 | - | ✅ |
+| Thm-S-02-10 | 流式差分隐私组合性 | Struct/02.08 | L5 | - | ✅ |
 
 ### 2.3 关系层定理 (03-relationships)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-12-01 | 受限Actor系统编码保持迹语义 | Struct/03.01 | L4 | ✅ |
-| Thm-S-13-01 | Flink Dataflow Exactly-Once保持 | Struct/03.02 | L5 | ✅ |
-| Thm-S-14-01 | 表达能力严格层次定理 | Struct/03.03 | L3-L6 | ✅ |
-| Thm-S-15-01 | 互模拟同余定理 | Struct/03.04 | L3-L4 | ✅ |
-| Thm-S-16-01 | 跨层映射组合定理 | Struct/03.05 | L5-L6 | ✅ |
-| Thm-S-06-01 | 第一人称Choreographic死锁自由 | Struct/06.01 | L5 | ✅ |
-| Thm-S-06-02 | 1CP的EPP完备性 | Struct/06.01 | L5 | ✅ |
-| Thm-S-06-03 | 1CP与Census-Polymorphic互编码 | Struct/06.01 | L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-12-01 | 受限Actor系统编码保持迹语义 | Struct/03.01 | L4 | Def-S-01-03, Def-S-05-02, Def-S-12-01, Def-S-12-03, Lemma-S-12-01 | ✅ |
+| **Thm-U-01** | **表达力层级严格性定理** | **Struct/Unified** | **L4-L5** | **✅ 新增** |
+| Thm-S-13-01 | Flink Dataflow Exactly-Once保持 | Struct/03.02 | L5 | Def-S-13-01, Def-S-13-02, Def-S-13-03, Lemma-S-13-01, Lemma-S-13-02 | ✅ |
+| Thm-S-14-01 | 表达能力严格层次定理 | Struct/03.03 | L3-L6 | - | ✅ |
+| Thm-S-15-01 | 互模拟同余定理 | Struct/03.04 | L3-L4 | Def-S-15-01, Def-S-15-02, Def-S-15-03, Def-S-15-04 | ✅ |
+| Thm-S-16-01 | 跨层映射组合定理 | Struct/03.05 | L5-L6 | Def-S-16-01, Def-S-16-02, Def-S-16-03, Def-S-16-04 | ✅ |
+| Thm-S-06-01 | 第一人称Choreographic死锁自由 | Struct/06.01 | L5 | - | ✅ |
+| Thm-S-06-02 | 1CP的EPP完备性 | Struct/06.01 | L5 | - | ✅ |
+| Thm-S-06-03 | 1CP与Census-Polymorphic互编码 | Struct/06.01 | L5 | - | ✅ |
 
 ### 2.4 证明层定理 (04-proofs)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-17-01 | Flink Checkpoint一致性定理 | Struct/04.01 | L5 | ✅ |
-| Thm-S-18-01 | Flink Exactly-Once正确性定理 | Struct/04.02 | L5 | ✅ |
-| Thm-S-18-02 | 幂等Sink等价性定理 | Struct/04.02 | L5 | ✅ |
-| Thm-S-19-01 | Chandy-Lamport一致性定理 | Struct/04.03 | L5 | ✅ |
-| Thm-S-20-01 | Watermark完全格定理 | Struct/04.04 | L5 | ✅ |
-| Thm-S-21-01 | FG/FGG类型安全定理 | Struct/04.05 | L5 | ✅ |
-| Thm-S-22-01 | DOT子类型完备性定理 | Struct/04.06 | L5-L6 | ✅ |
-| Thm-S-23-01 | Choreographic死锁自由定理 | Struct/04.07 | L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-17-01 | Flink Checkpoint一致性定理 | Struct/04.01 | L5 | Def-S-01-04, Def-S-02-03, Lemma-S-02-03-01, Thm-S-03-02 | ✅ |
+| Thm-S-18-01 | Flink Exactly-Once正确性定理 | Struct/04.02 | L5 | Def-S-08-04, Lemma-S-18-01, Lemma-S-18-02, Thm-S-12-01 | ✅ |
+| Thm-S-18-02 | 幂等Sink等价性定理 | Struct/04.02 | L5 | - | ✅ |
+| Thm-S-19-01 | Chandy-Lamport一致性定理 | Struct/04.03 | L5 | Def-S-19-01, Def-S-19-02, Def-S-19-03, Def-S-19-04, Def-S-19-05 | ✅ |
+| Thm-S-20-01 | Watermark完全格定理 | Struct/04.04 | L5 | Def-S-20-01, Lemma-S-20-01, Lemma-S-20-02, Lemma-S-20-03, Lemma-S-20-04 | ✅ |
+| Thm-S-21-01 | FG/FGG类型安全定理 | Struct/04.05 | L5 | Def-S-21-01, Def-S-21-02, Def-S-21-03, Def-S-21-04 | ✅ |
+| Thm-S-22-01 | DOT子类型完备性定理 | Struct/04.06 | L5-L6 | Def-S-22-01, Def-S-22-02, Def-S-22-03, Def-S-22-04 | ✅ |
+| Thm-S-23-01 | Choreographic死锁自由定理 | Struct/04.07 | L5 | Def-S-23-01, Def-S-23-02, Def-S-23-03, Def-S-23-04 | ✅ |
 
 ### 2.5 对比层定理 (05-comparative)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-24-01 | Go与Scala图灵完备等价 | Struct/05.01 | L6 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-24-01 | Go与Scala图灵完备等价 | Struct/05.01 | L6 | - | ✅ |
 
 ### 2.5.1 Smart Casual Verification定理 (Struct/07)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-S-07-03 | Smart Casual Verification有效性 | Struct/07 | L4-L5 | ✅ |
-| Thm-S-07-04 | CCF共识安全性质 | Struct/07 | L5 | ✅ |
-| Thm-S-07-05 | Trace验证搜索优化 | Struct/07 | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-S-07-03 | Smart Casual Verification有效性 | Struct/07 | L4-L5 | - | ✅ |
+| Thm-S-07-04 | CCF共识安全性质 | Struct/07 | L5 | - | ✅ |
+| Thm-S-07-05 | Trace验证搜索优化 | Struct/07 | L4 | - | ✅ |
 
 ### 2.6 知识层定理 (Knowledge)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-04-01 | 流数据库vs流引擎选择定理 | Knowledge/04 | L4 | ✅ |
-| Thm-K-05-01 | 核心映射语义保持性定理 | Knowledge/05 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-04-01 | 流数据库vs流引擎选择定理 | Knowledge/04 | L4 | - | ✅ |
+| Thm-K-05-01 | 核心映射语义保持性定理 | Knowledge/05 | L4-L5 | - | ✅ |
 | **迁移指南定理 (Knowledge/05-mapping-guides)** | | | | |
-| Thm-K-05-01-01 | Spark Streaming到Flink语义等价 | Knowledge/05.1 | L4 | ✅ |
-| Thm-K-05-01-02 | Checkpoint机制完备性 | Knowledge/05.1 | L4 | ✅ |
-| Thm-K-05-02-01 | Kafka Streams到Flink语义保持 | Knowledge/05.2 | L4 | ✅ |
-| Thm-K-05-02-02 | 状态迁移完备性 | Knowledge/05.2 | L4 | ✅ |
-| Thm-K-05-03-01 | Storm到Flink语义等价 | Knowledge/05.3 | L4 | ✅ |
-| Thm-K-05-04-01 | Flink 1.x到2.x语义等价 | Knowledge/05.4 | L4 | ✅ |
-| Thm-K-05-04-02 | API兼容性保证 | Knowledge/05.4 | L4 | ✅ |
-| Thm-K-05-05-01 | 批流到流迁移语义保持 | Knowledge/05.5 | L3 | ✅ |
-| Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | ✅ |
-| Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | ✅ |
-| Thm-K-02-02 | 日志关联完整性条件 | Knowledge/02 | L4 | ✅ |
+| Thm-K-05-01-01 | Spark Streaming到Flink语义等价 | Knowledge/05.1 | L4 | - | ✅ |
+| Thm-K-05-01-02 | Checkpoint机制完备性 | Knowledge/05.1 | L4 | - | ✅ |
+| Thm-K-05-02-01 | Kafka Streams到Flink语义保持 | Knowledge/05.2 | L4 | - | ✅ |
+| Thm-K-05-02-02 | 状态迁移完备性 | Knowledge/05.2 | L4 | - | ✅ |
+| Thm-K-05-03-01 | Storm到Flink语义等价 | Knowledge/05.3 | L4 | - | ✅ |
+| Thm-K-05-04-01 | Flink 1.x到2.x语义等价 | Knowledge/05.4 | L4 | - | ✅ |
+| Thm-K-05-04-02 | API兼容性保证 | Knowledge/05.4 | L4 | - | ✅ |
+| Thm-K-05-05-01 | 批流到流迁移语义保持 | Knowledge/05.5 | L3 | - | ✅ |
+| Thm-K-03-02 | Keystone平台SLA满足性 | Knowledge/03 | L4 | - | ✅ |
+| Thm-K-03-03 | 双11实时计算SLA满足性 | Knowledge/03 | L4 | - | ✅ |
+| Thm-K-02-02 | 日志关联完整性条件 | Knowledge/02 | L4 | - | ✅ |
 
 ### 2.7 Rust流系统定理 (Knowledge/06-rust-streaming)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-06-01 | Rust所有权系统内存安全定理 | Knowledge/06 | L4-L5 | ✅ |
-| Thm-K-06-02 | Rust借用检查器正确性定理 | Knowledge/06 | L4-L5 | ✅ |
-| Thm-K-06-03 | Send/Sync边界线程安全定理 | Knowledge/06 | L4 | ✅ |
-| Thm-K-06-04 | 异步流处理无数据竞争定理 | Knowledge/06 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-06-01 | Rust所有权系统内存安全定理 | Knowledge/06 | L4-L5 | - | ✅ |
+| Thm-K-06-02 | Rust借用检查器正确性定理 | Knowledge/06 | L4-L5 | - | ✅ |
+| Thm-K-06-03 | Send/Sync边界线程安全定理 | Knowledge/06 | L4 | - | ✅ |
+| Thm-K-06-04 | 异步流处理无数据竞争定理 | Knowledge/06 | L4-L5 | - | ✅ |
 
 ### 2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-07-01 | GPU TEE机密性定理 | Knowledge/07 | L4-L5 | ✅ |
-| Thm-K-07-02 | GPU TEE完整性定理 | Knowledge/07 | L4-L5 | ✅ |
-| Thm-K-07-03 | GPU TEE远程证明正确性定理 | Knowledge/07 | L4 | ✅ |
-| Thm-K-07-04 | GPU流计算安全执行定理 | Knowledge/07 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-07-01 | GPU TEE机密性定理 | Knowledge/07 | L4-L5 | - | ✅ |
+| Thm-K-07-02 | GPU TEE完整性定理 | Knowledge/07 | L4-L5 | - | ✅ |
+| Thm-K-07-03 | GPU TEE远程证明正确性定理 | Knowledge/07 | L4 | - | ✅ |
+| Thm-K-07-04 | GPU流计算安全执行定理 | Knowledge/07 | L4-L5 | - | ✅ |
 
 ### 2.9 流式Lakehouse一致性定理 (Knowledge/08-lakehouse-consistency)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-08-01 | Lakehouse时间旅行一致性定理 | Knowledge/08 | L4-L5 | ✅ |
-| Thm-K-08-02 | 流批一体ACID隔离性定理 | Knowledge/08 | L4 | ✅ |
-| Thm-K-08-03 | 元数据层一致性保证定理 | Knowledge/08 | L4 | ✅ |
-| Thm-K-08-04 | 增量处理正确性定理 | Knowledge/08 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-08-01 | Lakehouse时间旅行一致性定理 | Knowledge/08 | L4-L5 | - | ✅ |
+| Thm-K-08-02 | 流批一体ACID隔离性定理 | Knowledge/08 | L4 | - | ✅ |
+| Thm-K-08-03 | 元数据层一致性保证定理 | Knowledge/08 | L4 | - | ✅ |
+| Thm-K-08-04 | 增量处理正确性定理 | Knowledge/08 | L4-L5 | - | ✅ |
 
 ### 2.10 RAG流式正确性定理 (Knowledge/09-rag-streaming)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-09-01 | RAG检索正确性定理 | Knowledge/09 | L4 | ✅ |
-| Thm-K-09-02 | RAG流式生成一致性定理 | Knowledge/09 | L4 | ✅ |
-| Thm-K-09-03 | 向量索引实时更新一致性定理 | Knowledge/09 | L4-L5 | ✅ |
-| Thm-K-09-04 | RAG端到端正确性定理 | Knowledge/09 | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-09-01 | RAG检索正确性定理 | Knowledge/09 | L4 | - | ✅ |
+| Thm-K-09-02 | RAG流式生成一致性定理 | Knowledge/09 | L4 | - | ✅ |
+| Thm-K-09-03 | 向量索引实时更新一致性定理 | Knowledge/09 | L4-L5 | - | ✅ |
+| Thm-K-09-04 | RAG端到端正确性定理 | Knowledge/09 | L4-L5 | - | ✅ |
 
 ### 2.11 Flink扩展定理 (Flink/02-core-mechanisms)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-12 | Delta Join V2缓存有效性定理 | Flink/02-core-mechanisms | L3-L4 | ✅ |
-| Thm-F-02-13 | VECTOR_SEARCH精度-延迟权衡边界 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-14 | Balanced Scheduling最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-02-01 | ForSt Checkpoint一致性定理 | Flink/02-core-mechanisms | L4 | Def-F-02-90, Def-F-02-91, Lemma-F-02-23 | ✅ |
+| Thm-F-02-02 | LazyRestore正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-03 | 异步执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | - | ✅ |
+| Thm-F-02-12 | Delta Join V2缓存有效性定理 | Flink/02-core-mechanisms | L3-L4 | - | ✅ |
+| Thm-F-02-13 | VECTOR_SEARCH精度-延迟权衡边界 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-14 | Balanced Scheduling最优性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Streaming ETL最佳实践** | | | | |
-| Thm-F-02-35 | Streaming ETL端到端一致性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-36 | Schema演化兼容性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-37 | 乱序数据处理正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-35 | Streaming ETL端到端一致性定理 | Flink/02-core-mechanisms | L4-L5 | - | ✅ |
+| Thm-F-02-36 | Schema演化兼容性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-37 | 乱序数据处理正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **多路Join优化** | | | | |
-| Thm-F-02-40 | 多路Join最优计划选择定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-40 | 多路Join最优计划选择定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Flink 2.0 ForSt状态后端** | | | | |
-| Thm-F-02-45 | ForSt状态后端一致性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-46 | ForSt增量Checkpoint正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-45 | ForSt状态后端一致性定理 | Flink/02-core-mechanisms | L4-L5 | Def-F-02-61, Def-F-02-62, Lemma-F-02-23 | ✅ |
+| Thm-F-02-46 | ForSt增量Checkpoint正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Flink 2.0异步执行模型** | | | | |
-| Thm-F-02-50 | 异步算子执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-51 | 异步I/O并发度最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-52 | 异步执行顺序一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-53 | 异步超时容错正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-54 | 混合同步异步执行正确性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-55 | 异步资源池动态分配定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-50 | 异步算子执行语义保持性定理 | Flink/02-core-mechanisms | L4-L5 | Def-F-02-70, Def-F-02-73, Def-F-02-77, Lemma-F-02-02 | ✅ |
+| Thm-F-02-51 | 异步I/O并发度最优性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-52 | 异步执行顺序一致性定理 | Flink/02-core-mechanisms | L4 | Def-F-02-74, Def-F-02-75, Lemma-F-02-02 | ✅ |
+| Thm-F-02-53 | 异步超时容错正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-54 | 混合同步异步执行正确性定理 | Flink/02-core-mechanisms | L4-L5 | - | ✅ |
+| Thm-F-02-55 | 异步资源池动态分配定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Flink State TTL最佳实践** | | | | |
-| Thm-F-02-60 | State TTL过期一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-61 | TTL惰性清理正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-62 | TTL状态恢复完整性定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-63 | TTL堆内存优化边界定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-64 | TTL增量清理性能定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-60 | State TTL过期一致性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-61 | TTL惰性清理正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-62 | TTL状态恢复完整性定理 | Flink/02-core-mechanisms | L4-L5 | - | ✅ |
+| Thm-F-02-63 | TTL堆内存优化边界定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-64 | TTL增量清理性能定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Exactly-Once语义深度解析** | | | | |
-| Thm-F-02-71 | 端到端Exactly-Once充分条件定理 | Flink/02-core-mechanisms | L4-L5 | ✅ |
-| Thm-F-02-72 | 两阶段提交原子性保证定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-71 | 端到端Exactly-Once充分条件定理 | Flink/02-core-mechanisms | L4-L5 | - | ✅ |
+| Thm-F-02-72 | 两阶段提交原子性保证定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **流处理云成本优化** | | | | |
-| Thm-F-06-40 | 成本优化帕累托前沿定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-41 | 自动扩缩容成本最优性定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-42 | FinOps单位经济学一致性定理 | Flink/06-engineering | L4-L5 | ✅ |
+| Thm-F-06-40 | 成本优化帕累托前沿定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-41 | 自动扩缩容成本最优性定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-42 | FinOps单位经济学一致性定理 | Flink/06-engineering | L4-L5 | - | ✅ |
 | **Flink 2.4 性能优化** | | | | |
-| Thm-F-06-50 | 网络层优化组合效果定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-51 | 序列化优化帕累托最优定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-52 | 分代内存管理最优性定理 | Flink/06-engineering | L4-L5 | ✅ |
-| Thm-F-06-53 | 并行类加载加速定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-54 | 信用值流控稳定性定理 | Flink/06-engineering | L5 | ✅ |
-| Thm-F-06-55 | POJO序列化正确性定理 | Flink/06-engineering | L4-L5 | ✅ |
-| Thm-F-06-56 | 分代内存管理无OOM保证定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-57 | ForSt一致性保证定理 | Flink/06-engineering | L4-L5 | ✅ |
-| Thm-F-06-58 | 自适应Join选择最优性定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-59 | 升级收益边界定理 | Flink/06-engineering | L3-L4 | ✅ |
+| Thm-F-06-50 | 网络层优化组合效果定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-51 | 序列化优化帕累托最优定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-52 | 分代内存管理最优性定理 | Flink/06-engineering | L4-L5 | - | ✅ |
+| Thm-F-06-53 | 并行类加载加速定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-54 | 信用值流控稳定性定理 | Flink/06-engineering | L5 | - | ✅ |
+| Thm-F-06-55 | POJO序列化正确性定理 | Flink/06-engineering | L4-L5 | - | ✅ |
+| Thm-F-06-56 | 分代内存管理无OOM保证定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-57 | ForSt一致性保证定理 | Flink/06-engineering | L4-L5 | - | ✅ |
+| Thm-F-06-58 | 自适应Join选择最优性定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-59 | 升级收益边界定理 | Flink/06-engineering | L3-L4 | - | ✅ |
 
 ### 2.11.1 Flink SQL/Table API扩展定理 (Flink/03-sql-table-api)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
 | **Python UDF** | | | | |
-| Thm-F-03-15 | Python UDF执行正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
+| Thm-F-03-15 | Python UDF执行正确性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
 | **Process Table Functions** | | | | |
-| Thm-F-03-20 | PTF多态处理正确性定理 | Flink/03-sql-table-api | L4-L5 | ✅ |
+| Thm-F-03-20 | PTF多态处理正确性定理 | Flink/03-sql-table-api | L4-L5 | - | ✅ |
 | **Flink SQL窗口函数深度指南** | | | | |
 | (窗口函数指南无新增定理) | | | | |
 | **Flink 2.2物化表深度指南** | | | | |
-| Thm-F-03-50 | 物化表一致性定理 | Flink/03-sql-table-api | L4-L5 | ✅ |
-| Thm-F-03-51 | 物化表最优分桶定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-52 | 新鲜度推断完备性定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-60 | VECTOR_SEARCH类型安全性定理 | Flink/03-sql-table-api | L3 | ✅ |
-| Thm-F-03-61 | RAG延迟边界定理 | Flink/03-sql-table-api | L2 | ✅ |
-| Thm-F-03-62 | 混合搜索成本优化定理 | Flink/03-sql-table-api | L1 | ✅ |
+| Thm-F-03-50 | 物化表一致性定理 | Flink/03-sql-table-api | L4-L5 | - | ✅ |
+| Thm-F-03-51 | 物化表最优分桶定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-52 | 新鲜度推断完备性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-60 | VECTOR_SEARCH类型安全性定理 | Flink/03-sql-table-api | L3 | - | ✅ |
+| Thm-F-03-61 | RAG延迟边界定理 | Flink/03-sql-table-api | L2 | - | ✅ |
+| Thm-F-03-62 | 混合搜索成本优化定理 | Flink/03-sql-table-api | L1 | - | ✅ |
 | **Flink SQL Hints优化** | | | | |
-| Thm-F-03-70 | Broadcast Join可行性条件定理 | Flink/03-sql-table-api | L3 | ✅ |
-| Thm-F-03-71 | State TTL与结果正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-72 | JSON聚合函数内存上界定理 | Flink/03-sql-table-api | L2 | ✅ |
+| Thm-F-03-70 | Broadcast Join可行性条件定理 | Flink/03-sql-table-api | L3 | - | ✅ |
+| Thm-F-03-71 | State TTL与结果正确性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-72 | JSON聚合函数内存上界定理 | Flink/03-sql-table-api | L2 | - | ✅ |
 | **Flink AI Agents (FLIP-531)** | | | | |
-| Thm-F-12-90 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-91 | A2A消息可靠性定理 | Flink/12-ai-ml | L3 | ✅ |
-| Thm-F-12-92 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-90 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-91 | A2A消息可靠性定理 | Flink/12-ai-ml | L3 | - | ✅ |
+| Thm-F-12-92 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | - | ✅ |
 
 ### 2.11.2 Flink工程实践扩展定理 (Flink/06-engineering)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
 | **Flink与dbt集成** | | | | |
-| Thm-F-06-20 | dbt模型增量编译正确性定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-21 | Flink-dbt血缘追踪完整性定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-20 | dbt模型增量编译正确性定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-21 | Flink-dbt血缘追踪完整性定理 | Flink/06-engineering | L4 | - | ✅ |
 | **流处理测试策略** | | | | |
-| Thm-F-06-30 | 单元测试完备性定理 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-31 | 集成测试一致性定理 | Flink/06-engineering | L4-L5 | ✅ |
-| Thm-F-06-32 | 端到端测试正确性定理 | Flink/06-engineering | L4 | ✅ |
+| Thm-F-06-30 | 单元测试完备性定理 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-31 | 集成测试一致性定理 | Flink/06-engineering | L4-L5 | - | ✅ |
+| Thm-F-06-32 | 端到端测试正确性定理 | Flink/06-engineering | L4 | - | ✅ |
 
 ### 2.12 Flink扩展定理 (Flink/09-language-foundations)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
 | **DataStream V2** | | | | |
-| Thm-F-09-10 | V2 API Backward Compatibility | Flink/09 | L4 | ✅ |
-| Thm-F-09-11 | Scala 3 Type Safety in Flink | Flink/09 | L5 | ✅ |
-| Thm-F-09-12 | Compile-time Type Preservation | Flink/09 | L5 | ✅ |
+| Thm-F-09-10 | V2 API Backward Compatibility | Flink/09 | L4 | - | ✅ |
+| Thm-F-09-11 | Scala 3 Type Safety in Flink | Flink/09 | L5 | - | ✅ |
+| Thm-F-09-12 | Compile-time Type Preservation | Flink/09 | L5 | - | ✅ |
 | **RisingWave** | | | | |
-| Thm-F-09-13 | Hummock Performance Bounds | Flink/09 | L4 | ✅ |
-| Thm-F-09-14 | Materialized View Consistency | Flink/09 | L4-L5 | ✅ |
-| Thm-F-09-15 | 向量搜索性能定理 | Flink/09 | L4 | ✅ |
+| Thm-F-09-13 | Hummock Performance Bounds | Flink/09 | L4 | - | ✅ |
+| Thm-F-09-14 | Materialized View Consistency | Flink/09 | L4-L5 | - | ✅ |
+| Thm-F-09-15 | 向量搜索性能定理 | Flink/09 | L4 | - | ✅ |
 | **WASM** | | | | |
-| Thm-F-09-16 | WASM Sandbox Isolation | Flink/09 | L4-L5 | ✅ |
-| Thm-F-09-17 | Component Composability | Flink/09 | L4 | ✅ |
+| Thm-F-09-16 | WASM Sandbox Isolation | Flink/09 | L4-L5 | - | ✅ |
+| Thm-F-09-17 | Component Composability | Flink/09 | L4 | - | ✅ |
 | **Timely Dataflow优化** | | | | |
-| Thm-F-09-20 | 100x性能提升定理 | Flink/09.01 | L4-L5 | ✅ |
-| Thm-F-09-21 | REGION优化正确性定理 | Flink/09.01 | L4-L5 | ✅ |
-| Thm-F-09-22 | Differential Dataflow内部一致性定理 | Flink/09.01 | L4-L5 | ✅ |
+| Thm-F-09-20 | 100x性能提升定理 | Flink/09.01 | L4-L5 | - | ✅ |
+| Thm-F-09-21 | REGION优化正确性定理 | Flink/09.01 | L4-L5 | - | ✅ |
+| Thm-F-09-22 | Differential Dataflow内部一致性定理 | Flink/09.01 | L4-L5 | - | ✅ |
 
 ### 2.13 Flink扩展定理 (Flink/13-wasm)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-13-01 | async/sync组合正确性定理 | Flink/13-wasm | L4 | ✅ |
-| Thm-F-13-02 | Stream流水线性能保证定理 | Flink/13-wasm | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-13-01 | async/sync组合正确性定理 | Flink/13-wasm | L4 | - | ✅ |
+| Thm-F-13-02 | Stream流水线性能保证定理 | Flink/13-wasm | L4 | - | ✅ |
 
 ### 2.14 Flink AI/ML扩展定理 (Flink/12-ai-ml)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-12-15 | 实时特征一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-16 | Feature Store物化视图正确性定理 | Flink/12-ai-ml | L4-L5 | ✅ |
-| Thm-F-12-17 | 在线/离线特征一致性定理 | Flink/12-ai-ml | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-12-15 | 实时特征一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-16 | Feature Store物化视图正确性定理 | Flink/12-ai-ml | L4-L5 | - | ✅ |
+| Thm-F-12-17 | 在线/离线特征一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
 | **Flink实时ML推理** | | | | |
-| Thm-F-12-30 | 异步推理正确性定理 | Flink/12-ai-ml | L4-L5 | ✅ |
-| Thm-F-12-31 | 特征一致性约束定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-32 | 模型漂移检测统计保证定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-30 | 异步推理正确性定理 | Flink/12-ai-ml | L4-L5 | - | ✅ |
+| Thm-F-12-31 | 特征一致性约束定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-32 | 模型漂移检测统计保证定理 | Flink/12-ai-ml | L4 | - | ✅ |
 | **Flink与LLM集成** | | | | |
-| Thm-F-12-35 | LLM推理容错性保证定理 | Flink/12-ai-ml | L4-L5 | ✅ |
-| Thm-F-12-36 | RAG一致性约束定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-37 | LLM批处理吞吐量下界定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-35 | LLM推理容错性保证定理 | Flink/12-ai-ml | L4-L5 | - | ✅ |
+| Thm-F-12-36 | RAG一致性约束定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-37 | LLM批处理吞吐量下界定理 | Flink/12-ai-ml | L4 | - | ✅ |
 
 ### 2.15 Flink案例研究定理 (Flink/07-case-studies)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-07-32 | 智能制造IoT实时检测正确性定理 | Flink/07-case-studies | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-07-32 | 智能制造IoT实时检测正确性定理 | Flink/07-case-studies | L4 | - | ✅ |
 | **游戏实时分析与反作弊** | | | | |
-| Thm-F-07-61 | 游戏反作弊检测正确性定理 | Flink/07-case-studies | L4 | ✅ |
-| Thm-F-07-62 | 实时玩家匹配公平性定理 | Flink/07-case-studies | L4 | ✅ |
+| Thm-F-07-61 | 游戏反作弊检测正确性定理 | Flink/07-case-studies | L4 | - | ✅ |
+| Thm-F-07-62 | 实时玩家匹配公平性定理 | Flink/07-case-studies | L4 | - | ✅ |
 | **Clickstream用户行为分析** | | | | |
-| Thm-F-07-71 | Clickstream实时分析正确性定理 | Flink/07-case-studies | L4 | ✅ |
+| Thm-F-07-71 | Clickstream实时分析正确性定理 | Flink/07-case-studies | L4 | - | ✅ |
 
 ### 2.16 Flink观测性定理 (Flink/15-observability)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-15-10 | 实时数据质量监控一致性定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-11 | 数据质量规则验证完备性定理 | Flink/15-observability | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-15-10 | 实时数据质量监控一致性定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-11 | 数据质量规则验证完备性定理 | Flink/15-observability | L4 | - | ✅ |
 | **Flink可观测性OpenTelemetry集成** | | | | |
-| Thm-F-15-30 | OpenTelemetry集成完备性定理 | Flink/15-observability | L4-L5 | ✅ |
-| Thm-F-15-31 | 端到端延迟可追踪性定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-32 | Watermark延迟预警定理 | Flink/15-observability | L4 | ✅ |
+| Thm-F-15-30 | OpenTelemetry集成完备性定理 | Flink/15-observability | L4-L5 | - | ✅ |
+| Thm-F-15-31 | 端到端延迟可追踪性定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-32 | Watermark延迟预警定理 | Flink/15-observability | L4 | - | ✅ |
 
 ### 2.17 Flink连接器定理 (Flink/04-connectors)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-04-30 | Delta Lake写入一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-04-31 | Flink-Delta事务隔离性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-32 | 增量提交原子性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-33 | 流批一体存储正确性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-04-30 | Delta Lake写入一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-04-31 | Flink-Delta事务隔离性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-32 | 增量提交原子性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-33 | 流批一体存储正确性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
 | **Iceberg集成** | | | | |
-| Thm-F-04-40 | Iceberg快照一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-04-41 | Flink-Iceberg事务隔离性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-42 | 隐藏分区正确性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-43 | 模式演化兼容性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-40 | Iceberg快照一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-04-41 | Flink-Iceberg事务隔离性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-42 | 隐藏分区正确性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-43 | 模式演化兼容性定理 | Flink/04-connectors | L4 | - | ✅ |
 | **Paimon集成** | | | | |
-| Thm-F-04-50 | Paimon LSM-Tree一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-04-51 | Paimon流批统一正确性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-04-52 | 变更日志生成正确性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-53 | Paimon合并引擎正确性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-50 | Paimon LSM-Tree一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-04-51 | Paimon流批统一正确性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-04-52 | 变更日志生成正确性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-53 | Paimon合并引擎正确性定理 | Flink/04-connectors | L4 | - | ✅ |
 | **CDC 3.0数据集成** | | | | |
-| Thm-F-04-60 | CDC端到端一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-04-61 | Schema变更传播正确性定理 | Flink/04-connectors | L4 | ✅ |
+| Thm-F-04-60 | CDC端到端一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-04-61 | Schema变更传播正确性定理 | Flink/04-connectors | L4 | - | ✅ |
 
 ### 2.18 Flink部署定理 (Flink/10-deployment)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
 | **Flink Kubernetes Operator深度指南** | | | | |
-| Thm-F-10-20 | Flink Kubernetes Operator部署一致性定理 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-21 | Operator自动扩缩容正确性定理 | Flink/10-deployment | L4 | ✅ |
+| Thm-F-10-20 | Flink Kubernetes Operator部署一致性定理 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-21 | Operator自动扩缩容正确性定理 | Flink/10-deployment | L4 | - | ✅ |
 | **Flink K8s自动扩缩容深度指南** | | | | |
-| Thm-F-10-30 | 自动扩缩容稳定性定理 | Flink/10-deployment | L4-L5 | ✅ |
-| Thm-F-10-31 | 顶点级别扩缩容最优性定理 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-32 | 追赶容量完备性定理 | Flink/10-deployment | L4 | ✅ |
+| Thm-F-10-30 | 自动扩缩容稳定性定理 | Flink/10-deployment | L4-L5 | - | ✅ |
+| Thm-F-10-31 | 顶点级别扩缩容最优性定理 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-32 | 追赶容量完备性定理 | Flink/10-deployment | L4 | - | ✅ |
 
 ### 2.19 Knowledge前沿扩展定理 (Knowledge/06-frontier)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-K-06-50 | 区块链流处理一致性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-51 | 智能合约事件驱动执行正确性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-K-06-50 | 区块链流处理一致性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-51 | 智能合约事件驱动执行正确性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
 | **Serverless流处理架构** | | | | |
-| Thm-K-06-64 | Serverless流处理弹性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-64 | Serverless流处理弹性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **流数据治理** | | | | |
-| Thm-K-08-15 | 流数据治理策略一致性定理 | Knowledge/08-standards | L4 | ✅ |
+| Thm-K-08-15 | 流数据治理策略一致性定理 | Knowledge/08-standards | L4 | - | ✅ |
 | **AI Agent流式处理架构** | | | | |
-| Thm-K-06-80 | AI Agent流式响应实时性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-80 | AI Agent流式响应实时性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **流处理Data Mesh** | | | | |
-| Thm-K-06-90 | Data Mesh域自治与全局一致性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
+| Thm-K-06-90 | Data Mesh域自治与全局一致性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
 | **Serverless流处理架构** | | | | |
-| Thm-K-06-95 | Serverless成本优化边界定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-96 | Serverless冷启动延迟影响定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-97 | Serverless状态外置一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-95 | Serverless成本优化边界定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-96 | Serverless冷启动延迟影响定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-97 | Serverless状态外置一致性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **实时数据质量验证** | | | | |
-| Thm-K-06-100 | 分层验证完备性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
-| Thm-K-06-101 | 契约兼容性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-102 | DLQ完整性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-100 | 分层验证完备性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
+| Thm-K-06-101 | 契约兼容性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-102 | DLQ完整性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **多云流处理架构** | | | | |
-| Thm-K-06-105 | 主动-主动架构可行性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-106 | 跨区域复制一致性边界定理 | Knowledge/06-frontier | L4-L5 | ✅ |
-| Thm-K-06-107 | 跨云延迟下界定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-105 | 主动-主动架构可行性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-106 | 跨区域复制一致性边界定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
+| Thm-K-06-107 | 跨云延迟下界定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **流处理安全与合规** | | | | |
-| Thm-K-06-110 | 端到端安全协议安全性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
-| Thm-K-06-111 | 合规性验证可判定性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-112 | 密钥轮换业务连续性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-110 | 端到端安全协议安全性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
+| Thm-K-06-111 | 合规性验证可判定性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-112 | 密钥轮换业务连续性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **流式物化视图架构** | | | | |
-| Thm-K-06-115 | 视图选择NP完全性定理 | Knowledge/06-frontier | L4-L5 | ✅ |
-| Thm-K-06-116 | 流式物化视图一致性边界定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-117 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-115 | 视图选择NP完全性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
+| Thm-K-06-116 | 流式物化视图一致性边界定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-117 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **流数据库生态对比** | | | | |
-| Thm-K-06-120 | 物化视图一致性保证定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-121 | 计算-存储分离可扩展性定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-122 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-120 | 物化视图一致性保证定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-121 | 计算-存储分离可扩展性定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-122 | 增量计算复杂度下界定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **边缘流处理架构** | | | | |
-| Thm-K-06-125 | Flink边缘部署资源优化定理 | Knowledge/06-frontier | L2 | ✅ |
-| Thm-K-06-126 | 断网容错与数据一致性定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-127 | CRDT边缘数据一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-125 | Flink边缘部署资源优化定理 | Knowledge/06-frontier | L2 | - | ✅ |
+| Thm-K-06-126 | 断网容错与数据一致性定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-127 | CRDT边缘数据一致性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **实时数据网格实践** | | | | |
-| Thm-K-06-130 | 实时数据网格CAP权衡定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-131 | 数据契约验证完备性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-132 | 血缘追踪传递闭包定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-130 | 实时数据网格CAP权衡定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-131 | 数据契约验证完备性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-132 | 血缘追踪传递闭包定理 | Knowledge/06-frontier | L3 | - | ✅ |
 | **实时特征平台架构** | | | | |
-| Thm-K-06-140 | 在线-离线一致性保证定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-141 | 特征服务延迟下界定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-142 | 特征血缘变更传播定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-140 | 在线-离线一致性保证定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-141 | 特征服务延迟下界定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-142 | 特征血缘变更传播定理 | Knowledge/06-frontier | L3 | - | ✅ |
 | **MCP协议与Agent集成** | | | | |
-| Thm-K-06-145 | 流式上下文一致性定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-146 | Tool调用安全性定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-147 | 流式更新完整性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-145 | 流式上下文一致性定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-146 | Tool调用安全性定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-147 | 流式更新完整性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **实时图流处理TGN** | | | | |
-| Thm-K-06-150 | 增量计算正确性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-151 | StreamTGN延迟上界定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-152 | 时序因果一致性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-150 | 增量计算正确性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-151 | StreamTGN延迟上界定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-152 | 时序因果一致性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **多模态流处理架构** | | | | |
-| Thm-K-06-155 | 多模态同步正确性定理 | Knowledge/06-frontier | L3 | ✅ |
-| Thm-K-06-156 | 延迟栈压缩效果定理 | Knowledge/06-frontier | L2 | ✅ |
-| Thm-K-06-157 | Barge-in响应性定理 | Knowledge/06-frontier | L2 | ✅ |
+| Thm-K-06-155 | 多模态同步正确性定理 | Knowledge/06-frontier | L3 | - | ✅ |
+| Thm-K-06-156 | 延迟栈压缩效果定理 | Knowledge/06-frontier | L2 | - | ✅ |
+| Thm-K-06-157 | Barge-in响应性定理 | Knowledge/06-frontier | L2 | - | ✅ |
 | **Serverless流处理成本优化** | | | | |
-| Thm-K-06-160 | Serverless TCO最优性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-161 | 混合架构成本平衡点定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-162 | 成本优化决策完备性定理 | Knowledge/06-frontier | L3 | ✅ |
+| Thm-K-06-160 | Serverless TCO最优性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-161 | 混合架构成本平衡点定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-162 | 成本优化决策完备性定理 | Knowledge/06-frontier | L3 | - | ✅ |
 | **A2A协议与Agent通信** | | | | |
-| Thm-K-06-240 | A2A互操作性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-241 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-242 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | ✅ |
+| Thm-K-06-240 | A2A互操作性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-241 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-242 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 | **A2A协议扩展 (ai-agent-a2a-protocol)** | | | | |
-| Thm-K-06-250 | A2A互操作性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-251 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-K-06-252 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | ✅ |
-| Thm-F-03-92 | SQL Hint优化正确性 | Flink/03-sql-table-api | L3 | ✅ |
-| Thm-F-07-75 | 用户留存计算正确性 | Flink/07-case-studies | L3 | ✅ |
-| Thm-F-09-57 | ARRANGE算子索引共享定理 | Flink/09-language-foundations | L4-L5 | ✅ |
-| Thm-F-15-35 | SLO满足性监控定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-36 | 延迟异常检测定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-37 | 资源利用率优化定理 | Flink/15-observability | L4 | ✅ |
+| Thm-K-06-250 | A2A互操作性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-251 | A2A+MCP正交完备性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-06-252 | 流式Task完整性定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-F-03-92 | SQL Hint优化正确性 | Flink/03-sql-table-api | L3 | - | ✅ |
+| Thm-F-07-75 | 用户留存计算正确性 | Flink/07-case-studies | L3 | - | ✅ |
+| Thm-F-09-57 | ARRANGE算子索引共享定理 | Flink/09-language-foundations | L4-L5 | - | ✅ |
+| Thm-F-15-35 | SLO满足性监控定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-36 | 延迟异常检测定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-37 | 资源利用率优化定理 | Flink/15-observability | L4 | - | ✅ |
 | Thm-S-07-tools | 工具链完备性定理 | Struct/07-tools | L4 | ✅ |
 | **Flink DataStream API完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-09-30 | 算子链优化定理 | Flink/09-language-foundations | L4 | ✅ |
+| Thm-F-09-30 | 算子链优化定理 | Flink/09-language-foundations | L4 | - | ✅ |
 | **Flink Table API/SQL完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-03-01 | 动态表上连续查询的语义完整性 | Flink/03-sql-table-api | L4-L5 | ✅ |
-| Thm-F-03-02 | Exactly-Once语义保证 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-03 | SQL Hints的优化有效性 | Flink/03-sql-table-api | L3 | ✅ |
+| Thm-F-03-01 | 动态表上连续查询的语义完整性 | Flink/03-sql-table-api | L4-L5 | - | ✅ |
+| Thm-F-03-02 | Exactly-Once语义保证 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-03 | SQL Hints的优化有效性 | Flink/03-sql-table-api | L3 | - | ✅ |
 | **Flink状态管理完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-02-90 | State Backend选择最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-91 | Checkpoint完备性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-92 | State TTL一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
+| Thm-F-02-90 | State Backend选择最优性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-91 | Checkpoint完备性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-92 | State TTL一致性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
 | **Flink连接器生态完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-04-100 | 连接器生态完备性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-101 | 多连接器组合一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
+| Thm-F-04-100 | 连接器生态完备性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-101 | 多连接器组合一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
 | **Flink AI/ML集成完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-12-100 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-101 | A2A消息可靠性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-102 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-103 | 向量搜索类型安全性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-104 | ML_PREDICT容错性定理 | Flink/12-ai-ml | L4-L5 | ✅ |
-| Thm-F-12-105 | RAG检索-生成一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-106 | 流式LLM集成成本下界定理 | Flink/12-ai-ml | L4 | ✅ |
+| Thm-F-12-100 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-101 | A2A消息可靠性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-102 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-103 | 向量搜索类型安全性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-104 | ML_PREDICT容错性定理 | Flink/12-ai-ml | L4-L5 | - | ✅ |
+| Thm-F-12-105 | RAG检索-生成一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-106 | 流式LLM集成成本下界定理 | Flink/12-ai-ml | L4 | - | ✅ |
 | **Flink部署运维完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-10-40 | Kubernetes Native部署的容错完备性 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-41 | 细粒度资源管理的最优性 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-42 | 蓝绿部署的零停机保证 | Flink/10-deployment | L4 | ✅ |
+| Thm-F-10-40 | Kubernetes Native部署的容错完备性 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-41 | 细粒度资源管理的最优性 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-42 | 蓝绿部署的零停机保证 | Flink/10-deployment | L4 | - | ✅ |
 | **Flink可观测性完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-15-50 | 端到端可观测性完备性定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-51 | 背压根因定位定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-52 | Checkpoint超时检测完备性 | Flink/15-observability | L4 | ✅ |
+| Thm-F-15-50 | 端到端可观测性完备性定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-51 | 背压根因定位定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-52 | Checkpoint超时检测完备性 | Flink/15-observability | L4 | - | ✅ |
 | **Flink版本演进完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-08-50 | 版本迁移完备性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-51 | 版本选择决策完备性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-53 | 流批一体语义保持定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-54 | 自适应执行最优性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-55 | 统一容错正确性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-56 | 批处理性能不下降定理 | Flink/08-roadmap | L4 | ✅ |
+| Thm-F-08-50 | 版本迁移完备性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-51 | 版本选择决策完备性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-53 | 流批一体语义保持定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-54 | 自适应执行最优性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-55 | 统一容错正确性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-56 | 批处理性能不下降定理 | Flink/08-roadmap | L4 | - | ✅ |
 | **Flink语言支持完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-09-01 | 最优语言选择定理 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-02 | 跨语言UDF语义等价性 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-03 | Flink SQL优化器完备性 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-04 | Python UDF性能上界 | Flink/09-language-foundations | L4 | ✅ |
+| Thm-F-09-01 | 最优语言选择定理 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-02 | 跨语言UDF语义等价性 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-03 | Flink SQL优化器完备性 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-04 | Python UDF性能上界 | Flink/09-language-foundations | L4 | - | ✅ |
 | **Flink安全完整指南 (新增 v2.9.3)** | | | | |
-| Thm-F-13-03 | Flink安全配置完备性定理 | Flink/13-security | L4-L5 | ✅ |
-| Thm-F-13-04 | 零信任架构正确性 | Flink/13-security | L4-L5 | ✅ |
+| Thm-F-13-03 | Flink安全配置完备性定理 | Flink/13-security | L4-L5 | - | ✅ |
+| Thm-F-13-04 | 零信任架构正确性 | Flink/13-security | L4-L5 | - | ✅ |
 
 ---
 
@@ -701,6 +709,11 @@
 | Def-S-16-02 | 层间Galois连接 | Struct/03.05 | Galois Connection |
 | Def-S-16-03 | 跨层组合映射 | Struct/03.05 | Φ_compose |
 | Def-S-16-04 | 语义保持性与精化关系 | Struct/03.05 | Semantic Preservation |
+| **Def-U-01** | **表达力层级** | **Struct/Unified** | **模型表达能力偏序** | **✅ 新增** |
+| **Def-U-02** | **编码完备性** | **Struct/Unified** | **完备/部分/近似三级** | **✅ 新增** |
+| **Def-U-03** | **互模拟等价** | **Struct/Unified** | **强互模拟形式化** | **✅ 新增** |
+| **Def-U-04** | **弱互模拟** | **Struct/Unified** | **忽略τ动作的互模拟** | **✅ 新增** |
+| **Def-U-05** | **观测等价** | **Struct/Unified** | **外部行为等价** | **✅ 新增** |
 
 ### 3.4 证明层定义 (04-proofs)
 
@@ -1759,6 +1772,9 @@
 | Prop-S-16-01 | 理论-语言编码语义保持性 | Struct/03.05 | 语义保持 |
 | Prop-S-16-02 | 跨层映射的传递性 | Struct/03.05 | 传递性 |
 | Prop-S-16-03 | 精化关系的层间保持 | Struct/03.05 | 精化保持 |
+| **Prop-U-01** | **表达能力单调性** | **Struct/Unified** | **编码传递性** | **✅ 新增** |
+| **Prop-U-02** | **互模拟层次关系** | **Struct/Unified** | **严格包含关系** | **✅ 新增** |
+| **Prop-U-03** | **编码完备性的组合律** | **Struct/Unified** | **复合编码保持完备** | **✅ 新增** |
 | Prop-S-17-01 | Barrier对齐与Exactly-Once关系 | Struct/04.01 | 充分必要条件 |
 | Prop-S-18-01 | Checkpoint与2PC绑定关系 | Struct/04.02 | 成功⇔Commit |
 | Prop-S-18-02 | 观察等价性 | Struct/04.02 | 故障执行≡理想执行 |
@@ -1992,14 +2008,14 @@
 
 ### 7.1 总体统计
 
-| 类别 | Struct/ | Knowledge/ | Flink/ | 总计 |
-|------|---------|------------|--------|------|
-| **定理** | 28 | 40 | 132 | **200** |
-| **定义** | 67 | 95 | 328 | **490** |
-| **引理** | 35 | 43 | 103 | **181** |
-| **命题** | 20 | 27 | 89 | **136** |
-| **推论** | 4 | 1 | 1 | **6** |
-| **合计** | 154 | 206 | 653 | **1013** |
+| 类别 | Struct/ | Knowledge/ | Flink/ | **Unified** | 总计 |
+|------|---------|------------|--------|-------------|------|
+| **定理** | 28 | 40 | 132 | 1 | **201** |
+| **定义** | 67 | 95 | 328 | 5 | **495** |
+| **引理** | 35 | 43 | 103 | 0 | **181** |
+| **命题** | 20 | 27 | 89 | 3 | **139** |
+| **推论** | 4 | 1 | 1 | 0 | **6** |
+| **合计** | 154 | 206 | 653 | 9 | **1,022** |
 
 ### 7.2 按文档统计
 
@@ -2021,6 +2037,7 @@
 | Flink (04) Delta Lake集成 | 4 | 8 | 3 | 1 | 0 |
 | Flink (04) Iceberg集成 | 4 | 8 | 3 | 2 | 0 |
 | Flink (04) Paimon集成 | 4 | 8 | 2 | 2 | 0 |
+| **Unified (统一图谱)** | **1** | **5** | **0** | **3** | **0** |
 | Flink (15) 观测性 | 2 | 9 | 0 | 4 | 0 |
 | Flink (06) Rust集成 | 2 | 0 | 0 | 0 | 0 |
 | Flink (07) 案例研究 | 3 | 13 | 6 | 2 | 1 |
@@ -3187,14 +3204,14 @@
 
 #### 新增定理 (7个)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-03-92 | SQL Hint优化正确性 | Flink/03-sql-table-api | L3 | ✅ |
-| Thm-F-07-75 | 用户留存计算正确性 | Flink/07-case-studies | L3 | ✅ |
-| Thm-F-09-57 | ARRANGE算子索引共享定理 | Flink/09-language-foundations | L4-L5 | ✅ |
-| Thm-F-15-35 | SLO满足性监控定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-36 | 延迟异常检测定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-37 | 资源利用率优化定理 | Flink/15-observability | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-03-92 | SQL Hint优化正确性 | Flink/03-sql-table-api | L3 | - | ✅ |
+| Thm-F-07-75 | 用户留存计算正确性 | Flink/07-case-studies | L3 | - | ✅ |
+| Thm-F-09-57 | ARRANGE算子索引共享定理 | Flink/09-language-foundations | L4-L5 | - | ✅ |
+| Thm-F-15-35 | SLO满足性监控定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-36 | 延迟异常检测定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-37 | 资源利用率优化定理 | Flink/15-observability | L4 | - | ✅ |
 | Thm-S-07-tools | 工具链完备性定理 | Struct/07-tools | L4 | ✅ |
 
 #### 新增定义 (70个)
@@ -3298,38 +3315,38 @@
 
 #### 新增定理 (30个)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-09-30 | 算子链优化定理 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-03-01 | 动态表上连续查询的语义完整性 | Flink/03-sql-table-api | L4-L5 | ✅ |
-| Thm-F-03-02 | Exactly-Once语义保证 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-03 | SQL Hints的优化有效性 | Flink/03-sql-table-api | L3 | ✅ |
-| Thm-F-02-90 | State Backend选择最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-91 | Checkpoint完备性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-92 | State TTL一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-04-100 | 连接器生态完备性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-101 | 多连接器组合一致性定理 | Flink/04-connectors | L4-L5 | ✅ |
-| Thm-F-12-100 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-101 | A2A消息可靠性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-102 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-103 | 向量搜索类型安全性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-104 | ML_PREDICT容错性定理 | Flink/12-ai-ml | L4-L5 | ✅ |
-| Thm-F-12-105 | RAG检索-生成一致性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-106 | 流式LLM集成成本下界定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-10-40 | Kubernetes Native部署的容错完备性 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-41 | 细粒度资源管理的最优性 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-42 | 蓝绿部署的零停机保证 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-15-50 | 端到端可观测性完备性定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-51 | 背压根因定位定理 | Flink/15-observability | L4 | ✅ |
-| Thm-F-15-52 | Checkpoint超时检测完备性 | Flink/15-observability | L4 | ✅ |
-| Thm-F-08-50 | 版本迁移完备性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-51 | 版本选择决策完备性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-09-01 | 最优语言选择定理 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-02 | 跨语言UDF语义等价性 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-03 | Flink SQL优化器完备性 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-09-04 | Python UDF性能上界 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-13-03 | Flink安全配置完备性定理 | Flink/13-security | L4-L5 | ✅ |
-| Thm-F-13-04 | 零信任架构正确性 | Flink/13-security | L4-L5 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-09-30 | 算子链优化定理 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-03-01 | 动态表上连续查询的语义完整性 | Flink/03-sql-table-api | L4-L5 | - | ✅ |
+| Thm-F-03-02 | Exactly-Once语义保证 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-03 | SQL Hints的优化有效性 | Flink/03-sql-table-api | L3 | - | ✅ |
+| Thm-F-02-90 | State Backend选择最优性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-91 | Checkpoint完备性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-92 | State TTL一致性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-04-100 | 连接器生态完备性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-101 | 多连接器组合一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
+| Thm-F-12-100 | Agent状态一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-101 | A2A消息可靠性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-102 | Agent重放等价性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-103 | 向量搜索类型安全性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-104 | ML_PREDICT容错性定理 | Flink/12-ai-ml | L4-L5 | - | ✅ |
+| Thm-F-12-105 | RAG检索-生成一致性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-106 | 流式LLM集成成本下界定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-10-40 | Kubernetes Native部署的容错完备性 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-41 | 细粒度资源管理的最优性 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-42 | 蓝绿部署的零停机保证 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-15-50 | 端到端可观测性完备性定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-51 | 背压根因定位定理 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-15-52 | Checkpoint超时检测完备性 | Flink/15-observability | L4 | - | ✅ |
+| Thm-F-08-50 | 版本迁移完备性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-51 | 版本选择决策完备性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-09-01 | 最优语言选择定理 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-02 | 跨语言UDF语义等价性 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-03 | Flink SQL优化器完备性 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-09-04 | Python UDF性能上界 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-13-03 | Flink安全配置完备性定理 | Flink/13-security | L4-L5 | - | ✅ |
+| Thm-F-13-04 | 零信任架构正确性 | Flink/13-security | L4-L5 | - | ✅ |
 
 #### 新增定义 (72个)
 
@@ -3404,48 +3421,48 @@
 
 #### 新增定理 (43个)
 
-| 编号 | 名称 | 位置 | 形式化等级 | 状态 |
-|------|------|------|-----------|------|
-| Thm-F-12-100 | GA版本Exactly-Once保证 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-101 | 多Agent协作死锁避免 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-12-102 | 记忆检索准确率下界 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-10-50 | Serverless Flink GA成本最优性 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-51 | 状态恢复原子性定理 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-10-52 | Scale-to-Zero可用性定理 | Flink/10-deployment | L4 | ✅ |
-| Thm-F-02-56 | 自适应执行正确性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-57 | 数据倾斜处理有效性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-60 | 智能检查点最优性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-61 | 自适应间隔稳定性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-62 | 增量检查点完备性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-02-63 | 局部检查点一致性定理 | Flink/02-core-mechanisms | L4 | ✅ |
-| Thm-F-03-100 | Flink SQL JSON函数SQL:2023符合性定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-101 | MATCH_RECOGNIZE流处理完备性定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-03-102 | 窗口函数RANGE框架时序正确性定理 | Flink/03-sql-table-api | L4 | ✅ |
-| Thm-F-04-200 | Flink 2.4连接器生态完备性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-201 | 端到端Exactly-Once扩展性定理 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-04-202 | 连接器性能优化效果量化论证 | Flink/04-connectors | L4 | ✅ |
-| Thm-F-06-50 | 网络层优化组合效果 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-51 | 序列化优化边界 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-52 | 分代内存管理最优性 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-53 | 并行类加载加速 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-54 | 信用值流控稳定性 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-55 | POJO序列化正确性 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-56 | 分代内存管理无OOM保证 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-57 | ForSt一致性保证 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-58 | 自适应Join选择最优性 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-06-59 | 升级收益边界 | Flink/06-engineering | L4 | ✅ |
-| Thm-F-13-20 | Flink 2.4安全配置完备性定理 | Flink/13-security | L4-L5 | ✅ |
-| Thm-F-13-21 | 零信任架构正确性证明 | Flink/13-security | L4-L5 | ✅ |
-| Thm-F-08-53 | 流批一体语义保持定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-54 | 自适应执行最优性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-55 | 统一容错正确性定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-56 | 批处理性能不下降定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-12-50 | GPU算子正确性定理 | Flink/12-ai-ml | L4 | ✅ |
-| Thm-F-09-50 | WASM UDF安全性定理 | Flink/09-language-foundations | L4 | ✅ |
-| Thm-F-08-50 | 统一执行层语义等价性定理 | Flink/08-roadmap | L5 | ✅ |
-| Thm-F-08-51 | 新状态管理一致性定理 | Flink/08-roadmap | L5 | ✅ |
-| Thm-F-08-52 | 云原生弹性保证定理 | Flink/08-roadmap | L4 | ✅ |
-| Thm-F-08-53 | 向后兼容性保证定理 | Flink/08-roadmap | L4 | ✅ |
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| Thm-F-12-100 | GA版本Exactly-Once保证 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-101 | 多Agent协作死锁避免 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-12-102 | 记忆检索准确率下界 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-10-50 | Serverless Flink GA成本最优性 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-51 | 状态恢复原子性定理 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-10-52 | Scale-to-Zero可用性定理 | Flink/10-deployment | L4 | - | ✅ |
+| Thm-F-02-56 | 自适应执行正确性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-57 | 数据倾斜处理有效性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-60 | 智能检查点最优性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-61 | 自适应间隔稳定性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-62 | 增量检查点完备性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-02-63 | 局部检查点一致性定理 | Flink/02-core-mechanisms | L4 | - | ✅ |
+| Thm-F-03-100 | Flink SQL JSON函数SQL:2023符合性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-101 | MATCH_RECOGNIZE流处理完备性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-03-102 | 窗口函数RANGE框架时序正确性定理 | Flink/03-sql-table-api | L4 | - | ✅ |
+| Thm-F-04-200 | Flink 2.4连接器生态完备性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-201 | 端到端Exactly-Once扩展性定理 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-04-202 | 连接器性能优化效果量化论证 | Flink/04-connectors | L4 | - | ✅ |
+| Thm-F-06-50 | 网络层优化组合效果 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-51 | 序列化优化边界 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-52 | 分代内存管理最优性 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-53 | 并行类加载加速 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-54 | 信用值流控稳定性 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-55 | POJO序列化正确性 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-56 | 分代内存管理无OOM保证 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-57 | ForSt一致性保证 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-58 | 自适应Join选择最优性 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-06-59 | 升级收益边界 | Flink/06-engineering | L4 | - | ✅ |
+| Thm-F-13-20 | Flink 2.4安全配置完备性定理 | Flink/13-security | L4-L5 | - | ✅ |
+| Thm-F-13-21 | 零信任架构正确性证明 | Flink/13-security | L4-L5 | - | ✅ |
+| Thm-F-08-53 | 流批一体语义保持定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-54 | 自适应执行最优性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-55 | 统一容错正确性定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-56 | 批处理性能不下降定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-12-50 | GPU算子正确性定理 | Flink/12-ai-ml | L4 | - | ✅ |
+| Thm-F-09-50 | WASM UDF安全性定理 | Flink/09-language-foundations | L4 | - | ✅ |
+| Thm-F-08-50 | 统一执行层语义等价性定理 | Flink/08-roadmap | L5 | - | ✅ |
+| Thm-F-08-51 | 新状态管理一致性定理 | Flink/08-roadmap | L5 | - | ✅ |
+| Thm-F-08-52 | 云原生弹性保证定理 | Flink/08-roadmap | L4 | - | ✅ |
+| Thm-F-08-53 | 向后兼容性保证定理 | Flink/08-roadmap | L4 | - | ✅ |
 
 #### 新增定义 (90个)
 
@@ -3674,13 +3691,52 @@
 | 推论 (Cor) | 0 | 121 |
 | **总计** | **34** | **9,301** |
 
+#### v2.9.6 统一模型关系图谱
+
+**背景**: 任务C1 - 创建全项目统一模型关系图谱，整合表达力层级、编码关系、等价关系
+
+##### 新增定理 (1个)
+
+| 定理编号 | 定理名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Thm-U-01 | 表达力层级严格性定理 | Unified-Model-Relationship-Graph.md | ✅ |
+
+##### 新增定义 (5个)
+
+| 定义编号 | 定义名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Def-U-01 | 表达力层级 | Unified-Model-Relationship-Graph.md | ✅ |
+| Def-U-02 | 编码完备性 | Unified-Model-Relationship-Graph.md | ✅ |
+| Def-U-03 | 互模拟等价 | Unified-Model-Relationship-Graph.md | ✅ |
+| Def-U-04 | 弱互模拟 | Unified-Model-Relationship-Graph.md | ✅ |
+| Def-U-05 | 观测等价 | Unified-Model-Relationship-Graph.md | ✅ |
+
+##### 新增命题 (3个)
+
+| 命题编号 | 命题名称 | 所在文档 | 验证状态 |
+|----------|----------|----------|----------|
+| Prop-U-01 | 表达能力单调性 | Unified-Model-Relationship-Graph.md | ✅ |
+| Prop-U-02 | 互模拟层次关系 | Unified-Model-Relationship-Graph.md | ✅ |
+| Prop-U-03 | 编码完备性的组合律 | Unified-Model-Relationship-Graph.md | ✅ |
+
+##### v2.9.6 补充统计
+
+| 类型 | 新增数量 | 累计总计 |
+|------|----------|----------|
+| 定理 (Thm) | 1 | 1,911 |
+| 定义 (Def) | 5 | 4,569 |
+| 引理 (Lemma) | 0 | 1,568 |
+| 命题 (Prop) | 3 | 1,197 |
+| 推论 (Cor) | 0 | 121 |
+| **总计** | **9** | **9,310** |
+
 ## 引用参考
 
 
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-04 (v2.9.4 批量注册: 从13个新Flink特性文档补充注册194个形式化元素 - Thm 43个、Def 90个、Lemma 35个、Prop 26个)*
+*最后更新时间: 2026-04-06 (v2.9.6: 统一模型关系图谱 - 新增1定理、5定义、3命题)*
 *本次新增文档: flip-531-ai-agents-ga-guide.md, serverless-flink-ga-guide.md, adaptive-execution-engine-v2.md, smart-checkpointing-strategies.md, ansi-sql-2023-compliance-guide.md, flink-24-connectors-guide.md, flink-24-performance-improvements.md, flink-24-deployment-improvements.md, flink-24-security-enhancements.md, flink-25-stream-batch-unification.md, flink-25-gpu-acceleration.md, flink-25-wasm-udf-ga.md, flink-30-architecture-redesign.md*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*

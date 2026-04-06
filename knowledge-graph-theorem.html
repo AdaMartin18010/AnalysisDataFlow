@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow 定理依赖图谱</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+        
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* 左侧控制面板 */
+        #sidebar-left {
+            width: 280px;
+            background: #161b22;
+            border-right: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        #sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        #sidebar-header h1 {
+            font-size: 18px;
+            color: #58a6ff;
+            margin-bottom: 8px;
+        }
+        
+        #sidebar-header p {
+            font-size: 12px;
+            color: #8b949e;
+        }
+        
+        /* 搜索框 */
+        #search-section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        #search-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 13px;
+        }
+        
+        #search-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+        
+        #search-results {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        
+        .search-result-item {
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .search-result-item:hover {
+            background: #21262d;
+        }
+        
+        /* 图例 */
+        #legend {
+            padding: 15px 20px;
+            border-bottom: 1px solid #30363d;
+            flex-shrink: 0;
+        }
+        
+        .legend-title {
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .legend-item:hover {
+            background: #21262d;
+        }
+        
+        .legend-item.disabled {
+            opacity: 0.4;
+        }
+        
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+        
+        .legend-color.theorem { background: #e53e3e; border-color: #fc8181; }
+        .legend-color.definition { background: #3182ce; border-color: #63b3ed; }
+        .legend-color.lemma { background: #38a169; border-color: #68d391; }
+        .legend-color.proposition { background: #dd6b20; border-color: #f6ad55; }
+        .legend-color.corollary { background: #805ad5; border-color: #b794f4; }
+        
+        .legend-text {
+            font-size: 12px;
+            color: #c9d1d9;
+        }
+        
+        .legend-count {
+            margin-left: auto;
+            font-size: 11px;
+            color: #8b949e;
+            background: #21262d;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        /* 统计信息 */
+        #stats-section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .stat-label {
+            color: #8b949e;
+        }
+        
+        .stat-value {
+            color: #58a6ff;
+            font-weight: 600;
+        }
+        
+        /* 主图区域 */
+        #graph-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #0d1117;
+        }
+        
+        #graph-svg {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #graph-svg:active {
+            cursor: grabbing;
+        }
+        
+        /* 右侧详情面板 */
+        #sidebar-right {
+            width: 320px;
+            background: #161b22;
+            border-left: 1px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        #details-header {
+            padding: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        #details-header h2 {
+            font-size: 14px;
+            color: #58a6ff;
+        }
+        
+        #details-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .detail-empty {
+            text-align: center;
+            color: #8b949e;
+            padding: 40px 20px;
+        }
+        
+        .detail-item {
+            margin-bottom: 16px;
+        }
+        
+        .detail-label {
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .detail-value {
+            font-size: 13px;
+            color: #c9d1d9;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+        
+        .detail-value a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        .detail-value a:hover {
+            text-decoration: underline;
+        }
+        
+        .detail-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .detail-badge.theorem { background: rgba(229, 62, 62, 0.2); color: #fc8181; }
+        .detail-badge.definition { background: rgba(49, 130, 206, 0.2); color: #63b3ed; }
+        .detail-badge.lemma { background: rgba(56, 161, 105, 0.2); color: #68d391; }
+        .detail-badge.proposition { background: rgba(221, 107, 32, 0.2); color: #f6ad55; }
+        .detail-badge.corollary { background: rgba(128, 90, 213, 0.2); color: #b794f4; }
+        
+        /* 底部控制栏 */
+        #bottom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 300px;
+            right: 340px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #c9d1d9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #21262d;
+            border-color: #58a6ff;
+        }
+        
+        /* 节点样式 */
+        .node circle {
+            cursor: pointer;
+            transition: all 0.2s;
+            stroke-width: 2px;
+        }
+        
+        .node:hover circle {
+            filter: brightness(1.3);
+            stroke-width: 3px;
+        }
+        
+        .node.selected circle {
+            stroke: #fff !important;
+            stroke-width: 4px;
+            filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.8));
+        }
+        
+        .node.highlighted circle {
+            stroke: #ffd700 !important;
+            stroke-width: 4px;
+        }
+        
+        .node.dimmed {
+            opacity: 0.15;
+        }
+        
+        .node-label {
+            font-size: 10px;
+            fill: #c9d1d9;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            font-weight: 500;
+        }
+        
+        /* 边样式 */
+        .link {
+            fill: none;
+            stroke-opacity: 0.5;
+            transition: all 0.2s;
+        }
+        
+        .link.dependency {
+            stroke: #8b949e;
+        }
+        
+        .link.highlighted {
+            stroke: #ffd700;
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+        
+        .link.dimmed {
+            opacity: 0.1;
+        }
+        
+        .arrow-head {
+            fill: #8b949e;
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background: rgba(22, 27, 34, 0.98);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #c9d1d9;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 280px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+        
+        .tooltip-type {
+            font-size: 10px;
+            color: #8b949e;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        
+        /* 依赖链提示 */
+        .dependency-hint {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #c9d1d9;
+            z-index: 100;
+            display: none;
+        }
+        
+        .dependency-hint.visible {
+            display: block;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            #sidebar-right {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- 左侧控制面板 -->
+        <aside id="sidebar-left">
+            <div id="sidebar-header">
+                <h1>📐 定理依赖图谱</h1>
+                <p>AnalysisDataFlow 形式化元素可视化</p>
+            </div>
+            
+            <div id="search-section">
+                <input type="text" id="search-input" placeholder="搜索编号或名称...">
+                <div id="search-results"></div>
+            </div>
+            
+            <div id="legend">
+                <div class="legend-title">节点类型 (点击筛选)</div>
+                <div class="legend-item" data-type="theorem">
+                    <div class="legend-color theorem"></div>
+                    <span class="legend-text">定理 (Theorem)</span>
+                    <span class="legend-count" id="count-theorem">0</span>
+                </div>
+                <div class="legend-item" data-type="definition">
+                    <div class="legend-color definition"></div>
+                    <span class="legend-text">定义 (Definition)</span>
+                    <span class="legend-count" id="count-definition">0</span>
+                </div>
+                <div class="legend-item" data-type="lemma">
+                    <div class="legend-color lemma"></div>
+                    <span class="legend-text">引理 (Lemma)</span>
+                    <span class="legend-count" id="count-lemma">0</span>
+                </div>
+                <div class="legend-item" data-type="proposition">
+                    <div class="legend-color proposition"></div>
+                    <span class="legend-text">命题 (Proposition)</span>
+                    <span class="legend-count" id="count-proposition">0</span>
+                </div>
+                <div class="legend-item" data-type="corollary">
+                    <div class="legend-color corollary"></div>
+                    <span class="legend-text">推论 (Corollary)</span>
+                    <span class="legend-count" id="count-corollary">0</span>
+                </div>
+            </div>
+            
+            <div id="stats-section">
+                <div class="legend-title">图谱统计</div>
+                <div class="stat-row">
+                    <span class="stat-label">总节点数</span>
+                    <span class="stat-value" id="total-nodes">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">依赖边数</span>
+                    <span class="stat-value" id="total-edges">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">平均出度</span>
+                    <span class="stat-value" id="avg-out-degree">0</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 中央图区域 -->
+        <div id="graph-container">
+            <svg id="graph-svg"></svg>
+            <div class="dependency-hint" id="dependency-hint">
+                按住 Shift 点击节点可查看依赖链
+            </div>
+            <div id="bottom-controls">
+                <button class="control-btn" id="zoom-in" title="放大">+</button>
+                <button class="control-btn" id="zoom-out" title="缩小">−</button>
+                <button class="control-btn" id="zoom-fit" title="适应屏幕">⤢</button>
+                <button class="control-btn" id="reset-view" title="重置视图">⟲</button>
+            </div>
+        </div>
+        
+        <!-- 右侧详情面板 -->
+        <aside id="sidebar-right">
+            <div id="details-header">
+                <h2>节点详情</h2>
+            </div>
+            <div id="details-content">
+                <div class="detail-empty">
+                    <p>点击图谱中的节点查看详情</p>
+                    <p style="margin-top: 10px; font-size: 11px;">悬停查看快速预览</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <div class="tooltip" id="tooltip" style="display: none;"></div>
+
+    <script>
+        // ============================================
+        // 数据定义 - 定理、定义、引理、命题、推论
+        // ============================================
+        
+        const nodes = [
+            // Proof层定理 (04-proofs)
+            { id: "Thm-S-04-01", name: "Checkpoint Correctness", type: "theorem", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Thm-S-04-02", name: "Exactly-Once Correctness", type: "theorem", doc: "04.02-exactly-once-correctness.md", stage: "S", level: "L5" },
+            { id: "Thm-S-04-03", name: "Chandy-Lamport Consistency", type: "theorem", doc: "04.03-chandy-lamport-consistency.md", stage: "S", level: "L5" },
+            { id: "Thm-S-04-04", name: "Watermark Lattice", type: "theorem", doc: "04.04-watermark-algebra.md", stage: "S", level: "L5" },
+            { id: "Thm-S-04-05", name: "FG/FGG Type Safety", type: "theorem", doc: "04.05-fg-fgg-type-safety.md", stage: "S", level: "L5" },
+            { id: "Thm-S-04-06", name: "DOT Subtyping Completeness", type: "theorem", doc: "04.06-dot-subtyping.md", stage: "S", level: "L5-L6" },
+            { id: "Thm-S-04-07", name: "Choreographic Deadlock Freedom", type: "theorem", doc: "04.07-choreographic-deadlock.md", stage: "S", level: "L5" },
+            
+            // Foundation层定义 (01-foundation)
+            { id: "Def-S-01-01", name: "USTM Six-tuple", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-02", name: "Expressiveness Hierarchy", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-03", name: "Processor", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-04", name: "Channel", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-05", name: "Time Model", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-06", name: "Consistency Model", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Def-S-01-07", name: "UCM Unified Model", type: "definition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            
+            // Properties层定义 (02-properties)
+            { id: "Def-S-02-01", name: "Deterministic Stream System", type: "definition", doc: "02.01-stream-determinism.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-02", name: "Confluent Reduction", type: "definition", doc: "02.01-stream-determinism.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-03", name: "Exactly-Once Semantics", type: "definition", doc: "02.02-consistency-levels.md", stage: "S", level: "L5" },
+            { id: "Def-S-02-04", name: "Idempotency", type: "definition", doc: "02.02-consistency-levels.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-05", name: "Watermark Progress", type: "definition", doc: "02.03-watermark-monotonicity.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-06", name: "Safety Property", type: "definition", doc: "02.04-liveness-safety.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-07", name: "Liveness Property", type: "definition", doc: "02.04-liveness-safety.md", stage: "S", level: "L4" },
+            { id: "Def-S-02-08", name: "Featherweight Go", type: "definition", doc: "02.05-type-safety.md", stage: "S", level: "L4" },
+            
+            // Flink核心定理
+            { id: "Thm-F-02-01", name: "ForSt Checkpoint Consistency", type: "theorem", doc: "02-core-mechanisms/forst-checkpoint.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-02", name: "LazyRestore Correctness", type: "theorem", doc: "02-core-mechanisms/lazy-restore.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-03", name: "Async Execution Semantics", type: "theorem", doc: "02-core-mechanisms/async-execution.md", stage: "F", level: "L4-L5" },
+            { id: "Thm-F-02-04", name: "Exactly-Once Sufficiency", type: "theorem", doc: "02-core-mechanisms/exactly-once-deep.md", stage: "F", level: "L4-L5" },
+            { id: "Thm-F-02-05", name: "2PC Atomicity", type: "theorem", doc: "02-core-mechanisms/exactly-once-deep.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-06", name: "State TTL Consistency", type: "theorem", doc: "02-core-mechanisms/state-ttl.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-07", name: "Streaming ETL Consistency", type: "theorem", doc: "02-core-mechanisms/streaming-etl.md", stage: "F", level: "L4-L5" },
+            { id: "Thm-F-02-08", name: "Schema Evolution Compatibility", type: "theorem", doc: "02-core-mechanisms/schema-evolution.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-09", name: "Out-of-Order Processing", type: "theorem", doc: "02-core-mechanisms/out-of-order.md", stage: "F", level: "L4" },
+            { id: "Thm-F-02-10", name: "Multi-Way Join Optimality", type: "theorem", doc: "02-core-mechanisms/multiway-join.md", stage: "F", level: "L4" },
+            
+            // 引理
+            { id: "Lemma-S-01-01", name: "USTM Compositionality", type: "lemma", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Lemma-S-01-02", name: "Processor Monotonicity", type: "lemma", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Lemma-S-02-01", name: "Watermark Monotonicity", type: "lemma", doc: "02.03-watermark-monotonicity.md", stage: "S", level: "L4" },
+            { id: "Lemma-S-02-02", name: "Determinism Preservation", type: "lemma", doc: "02.01-stream-determinism.md", stage: "S", level: "L4" },
+            { id: "Lemma-S-03-01", name: "Checkpoint Barrier Ordering", type: "lemma", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Lemma-S-04-01", name: "State Snapshot Atomicity", type: "lemma", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Lemma-S-04-02", name: "Global State Consistency", type: "lemma", doc: "04.03-chandy-lamport-consistency.md", stage: "S", level: "L5" },
+            { id: "Lemma-F-02-01", name: "ForSt Incremental Checkpoint", type: "lemma", doc: "02-core-mechanisms/forst-checkpoint.md", stage: "F", level: "L4" },
+            { id: "Lemma-F-02-02", name: "Async State Recovery", type: "lemma", doc: "02-core-mechanisms/lazy-restore.md", stage: "F", level: "L4" },
+            { id: "Lemma-F-02-03", name: "TTL Expiration Safety", type: "lemma", doc: "02-core-mechanisms/state-ttl.md", stage: "F", level: "L4" },
+            
+            // 命题
+            { id: "Prop-S-01-01", name: "Stream Processing Closure", type: "proposition", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Prop-S-02-01", name: "Consistency Hierarchy", type: "proposition", doc: "02.02-consistency-levels.md", stage: "S", level: "L4" },
+            { id: "Prop-S-03-01", name: "Watermark Lower Bound", type: "proposition", doc: "02.03-watermark-monotonicity.md", stage: "S", level: "L4" },
+            { id: "Prop-S-04-01", name: "Checkpoint Progress", type: "proposition", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Prop-F-02-01", name: "State Backend Selection", type: "proposition", doc: "02-core-mechanisms/state-backends.md", stage: "F", level: "L4" },
+            { id: "Prop-F-02-02", name: "Checkpoint Interval Optimality", type: "proposition", doc: "02-core-mechanisms/checkpoint-tuning.md", stage: "F", level: "L4" },
+            
+            // 基础层定理
+            { id: "Thm-S-01-01", name: "USTM Composition Theorem", type: "theorem", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Thm-S-01-02", name: "Expressiveness Hierarchy Decision", type: "theorem", doc: "01.01-ustm-theory.md", stage: "S", level: "L4" },
+            { id: "Thm-S-03-01", name: "Actor Local Determinism", type: "theorem", doc: "01.03-actor-model.md", stage: "S", level: "L4" },
+            { id: "Thm-S-04-01-F", name: "Dataflow Determinism", type: "theorem", doc: "01.04-dataflow-model.md", stage: "S", level: "L4" },
+            
+            // 性质层定理
+            { id: "Thm-S-07-01", name: "Stream Processing Determinism", type: "theorem", doc: "02.01-stream-determinism.md", stage: "S", level: "L4" },
+            { id: "Thm-S-08-01", name: "Exactly-Once Necessity", type: "theorem", doc: "02.02-consistency-levels.md", stage: "S", level: "L5" },
+            { id: "Thm-S-08-02", name: "End-to-End Exactly-Once", type: "theorem", doc: "02.02-consistency-levels.md", stage: "S", level: "L5" },
+            { id: "Thm-S-09-01", name: "Watermark Monotonicity", type: "theorem", doc: "02.03-watermark-monotonicity.md", stage: "S", level: "L4" },
+            
+            // 关系层定理
+            { id: "Thm-S-12-01", name: "Actor to CSP Encoding", type: "theorem", doc: "03.01-actor-to-csp.md", stage: "S", level: "L4" },
+            { id: "Thm-S-13-01", name: "Flink Exactly-Once Preservation", type: "theorem", doc: "03.02-flink-to-process.md", stage: "S", level: "L5" },
+            { id: "Thm-S-14-01", name: "Strict Expressiveness Hierarchy", type: "theorem", doc: "03.03-expressiveness-hierarchy.md", stage: "S", level: "L3-L6" },
+            
+            // 额外Flink定理
+            { id: "Thm-F-03-01", name: "Dynamic Table Query Semantics", type: "theorem", doc: "03-sql-table-api/dynamic-table.md", stage: "F", level: "L4-L5" },
+            { id: "Thm-F-03-02", name: "SQL Exactly-Once Guarantee", type: "theorem", doc: "03-sql-table-api/exactly-once-sql.md", stage: "F", level: "L4" },
+            { id: "Thm-F-04-01", name: "Connector Consistency", type: "theorem", doc: "04-connectors/connector-consistency.md", stage: "F", level: "L4" },
+            { id: "Thm-F-10-01", name: "K8s Deployment Consistency", type: "theorem", doc: "10-deployment/k8s-operator.md", stage: "F", level: "L4" },
+            
+            // Knowledge层
+            { id: "Thm-K-05-01", name: "Mapping Semantic Preservation", type: "theorem", doc: "05-mapping-guides/semantic-preservation.md", stage: "K", level: "L4-L5" },
+            { id: "Thm-K-06-01", name: "Rust Ownership Safety", type: "theorem", doc: "06-rust-streaming/ownership-safety.md", stage: "K", level: "L4-L5" },
+            
+            // 额外定义
+            { id: "Def-S-03-01", name: "Actor Configuration", type: "definition", doc: "01.03-actor-model.md", stage: "S", level: "L4" },
+            { id: "Def-S-04-01-F", name: "Dataflow DAG", type: "definition", doc: "01.04-dataflow-model.md", stage: "S", level: "L4" },
+            { id: "Def-S-17-01", name: "Checkpoint Barrier", type: "definition", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Def-S-18-01", name: "End-to-End Consistency", type: "definition", doc: "04.02-exactly-once-correctness.md", stage: "S", level: "L5" },
+            
+            // 推论
+            { id: "Cor-S-04-01", name: "Checkpoint Recovery Correctness", type: "corollary", doc: "04.01-flink-checkpoint-correctness.md", stage: "S", level: "L5" },
+            { id: "Cor-S-04-02", name: "Sink Idempotence Equivalence", type: "corollary", doc: "04.02-exactly-once-correctness.md", stage: "S", level: "L5" }
+        ];
+        
+        // 依赖边定义
+        const edges = [
+            // Proof层依赖 - Checkpoint Correctness
+            { source: "Def-S-01-04", target: "Thm-S-04-01" },
+            { source: "Def-S-17-01", target: "Thm-S-04-01" },
+            { source: "Lemma-S-03-01", target: "Thm-S-04-01" },
+            { source: "Lemma-S-04-01", target: "Thm-S-04-01" },
+            { source: "Thm-S-04-01", target: "Cor-S-04-01" },
+            
+            // Exactly-Once Correctness依赖
+            { source: "Def-S-02-03", target: "Thm-S-04-02" },
+            { source: "Def-S-02-04", target: "Thm-S-04-02" },
+            { source: "Def-S-18-01", target: "Thm-S-04-02" },
+            { source: "Thm-S-04-01", target: "Thm-S-04-02" },
+            { source: "Thm-S-04-02", target: "Cor-S-04-02" },
+            
+            // Chandy-Lamport依赖
+            { source: "Lemma-S-04-02", target: "Thm-S-04-03" },
+            { source: "Thm-S-04-03", target: "Thm-S-04-01" },
+            
+            // Watermark依赖
+            { source: "Def-S-02-05", target: "Thm-S-04-04" },
+            { source: "Lemma-S-02-01", target: "Thm-S-04-04" },
+            { source: "Prop-S-03-01", target: "Thm-S-04-04" },
+            
+            // Type Safety依赖
+            { source: "Def-S-02-08", target: "Thm-S-04-05" },
+            
+            // Foundation层内部依赖
+            { source: "Def-S-01-01", target: "Def-S-01-03" },
+            { source: "Def-S-01-01", target: "Def-S-01-04" },
+            { source: "Def-S-01-03", target: "Def-S-01-05" },
+            { source: "Def-S-01-04", target: "Def-S-01-06" },
+            { source: "Def-S-01-06", target: "Def-S-01-07" },
+            
+            // Properties层内部依赖
+            { source: "Def-S-02-01", target: "Def-S-02-02" },
+            { source: "Def-S-02-03", target: "Def-S-02-04" },
+            { source: "Def-S-02-06", target: "Def-S-02-07" },
+            
+            // 跨层依赖 - Foundation到Properties
+            { source: "Def-S-01-03", target: "Def-S-02-01" },
+            { source: "Def-S-01-04", target: "Def-S-02-03" },
+            { source: "Def-S-01-05", target: "Def-S-02-05" },
+            { source: "Def-S-01-06", target: "Def-S-02-03" },
+            
+            // 跨层依赖 - Properties到Proof
+            { source: "Def-S-02-01", target: "Thm-S-04-01" },
+            { source: "Def-S-02-03", target: "Thm-S-04-02" },
+            { source: "Def-S-02-05", target: "Thm-S-04-01" },
+            
+            // 引理依赖
+            { source: "Def-S-01-01", target: "Lemma-S-01-01" },
+            { source: "Def-S-01-03", target: "Lemma-S-01-02" },
+            { source: "Def-S-02-05", target: "Lemma-S-02-01" },
+            { source: "Def-S-02-01", target: "Lemma-S-02-02" },
+            { source: "Def-S-17-01", target: "Lemma-S-03-01" },
+            { source: "Def-S-17-01", target: "Lemma-S-04-01" },
+            { source: "Lemma-S-04-02", target: "Lemma-S-04-01" },
+            
+            // 命题依赖
+            { source: "Def-S-01-01", target: "Prop-S-01-01" },
+            { source: "Def-S-02-03", target: "Prop-S-02-01" },
+            { source: "Lemma-S-02-01", target: "Prop-S-03-01" },
+            { source: "Lemma-S-04-01", target: "Prop-S-04-01" },
+            
+            // 基础层定理依赖
+            { source: "Lemma-S-01-01", target: "Thm-S-01-01" },
+            { source: "Def-S-01-02", target: "Thm-S-01-02" },
+            { source: "Def-S-03-01", target: "Thm-S-03-01" },
+            { source: "Def-S-04-01-F", target: "Thm-S-04-01-F" },
+            
+            // 性质层定理依赖
+            { source: "Def-S-02-01", target: "Thm-S-07-01" },
+            { source: "Lemma-S-02-02", target: "Thm-S-07-01" },
+            { source: "Def-S-02-03", target: "Thm-S-08-01" },
+            { source: "Prop-S-02-01", target: "Thm-S-08-01" },
+            { source: "Thm-S-08-01", target: "Thm-S-08-02" },
+            { source: "Def-S-02-05", target: "Thm-S-09-01" },
+            { source: "Lemma-S-02-01", target: "Thm-S-09-01" },
+            
+            // 关系层定理依赖
+            { source: "Thm-S-03-01", target: "Thm-S-12-01" },
+            { source: "Thm-S-04-01-F", target: "Thm-S-13-01" },
+            { source: "Thm-S-01-02", target: "Thm-S-14-01" },
+            
+            // Flink核心定理依赖
+            { source: "Thm-S-04-01", target: "Thm-F-02-01" },
+            { source: "Lemma-S-04-01", target: "Lemma-F-02-01" },
+            { source: "Lemma-F-02-01", target: "Thm-F-02-01" },
+            { source: "Thm-F-02-01", target: "Thm-F-02-02" },
+            { source: "Lemma-F-02-02", target: "Thm-F-02-02" },
+            { source: "Thm-S-04-05", target: "Thm-F-02-03" },
+            { source: "Thm-S-04-02", target: "Thm-F-02-04" },
+            { source: "Def-S-02-04", target: "Thm-F-02-05" },
+            { source: "Thm-F-02-04", target: "Thm-F-02-05" },
+            { source: "Thm-F-02-01", target: "Thm-F-02-06" },
+            { source: "Lemma-F-02-03", target: "Thm-F-02-06" },
+            { source: "Thm-S-08-02", target: "Thm-F-02-07" },
+            { source: "Thm-F-02-03", target: "Thm-F-02-08" },
+            { source: "Prop-S-03-01", target: "Thm-F-02-09" },
+            { source: "Thm-F-02-03", target: "Thm-F-02-10" },
+            
+            // Flink SQL定理依赖
+            { source: "Thm-S-04-04", target: "Thm-F-03-01" },
+            { source: "Thm-F-02-04", target: "Thm-F-03-02" },
+            
+            // Flink其他依赖
+            { source: "Thm-F-02-01", target: "Thm-F-04-01" },
+            { source: "Thm-F-02-01", target: "Thm-F-10-01" },
+            
+            // Knowledge层依赖
+            { source: "Thm-S-13-01", target: "Thm-K-05-01" },
+            { source: "Thm-S-04-05", target: "Thm-K-06-01" },
+            
+            // 额外依赖连接
+            { source: "Prop-S-01-01", target: "Def-S-02-01" },
+            { source: "Thm-S-07-01", target: "Thm-S-04-01" },
+            { source: "Thm-S-09-01", target: "Thm-S-04-04" },
+            { source: "Thm-S-13-01", target: "Thm-F-02-01" },
+            { source: "Prop-F-02-01", target: "Thm-F-02-01" },
+            { source: "Prop-F-02-02", target: "Thm-F-02-01" }
+        ];
+        
+        // ============================================
+        // 配置和状态
+        // ============================================
+        
+        const config = {
+            colors: {
+                theorem: '#e53e3e',
+                definition: '#3182ce',
+                lemma: '#38a169',
+                proposition: '#dd6b20',
+                corollary: '#805ad5',
+                highlight: '#ffd700',
+                edge: '#8b949e'
+            },
+            nodeRadius: {
+                theorem: 12,
+                definition: 10,
+                lemma: 9,
+                proposition: 10,
+                corollary: 9
+            }
+        };
+        
+        let state = {
+            selectedNode: null,
+            highlightedNode: null,
+            hiddenTypes: new Set(),
+            transform: d3.zoomIdentity,
+            searchQuery: ''
+        };
+        
+        // ============================================
+        // D3.js 可视化设置
+        // ============================================
+        
+        const svg = d3.select("#graph-svg");
+        const container = svg.append("g");
+        const width = document.getElementById('graph-container').clientWidth;
+        const height = document.getElementById('graph-container').clientHeight;
+        
+        svg.attr("viewBox", [0, 0, width, height]);
+        
+        // 箭头标记定义
+        const defs = svg.append("defs");
+        defs.append("marker")
+            .attr("id", "arrow-head")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 20)
+            .attr("refY", 0)
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", config.colors.edge);
+        
+        defs.append("marker")
+            .attr("id", "arrow-head-highlighted")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 20)
+            .attr("refY", 0)
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", config.colors.highlight);
+        
+        // 缩放行为
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                state.transform = event.transform;
+                container.attr("transform", event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // 力导向仿真
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(edges).id(d => d.id).distance(100))
+            .force("charge", d3.forceManyBody().strength(-300))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(d => config.nodeRadius[d.type] + 10));
+        
+        // ============================================
+        // 渲染元素
+        // ============================================
+        
+        // 绘制边
+        const link = container.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(edges)
+            .enter().append("line")
+            .attr("class", "link dependency")
+            .attr("marker-end", "url(#arrow-head)");
+        
+        // 绘制节点组
+        const node = container.append("g")
+            .attr("class", "nodes")
+            .selectAll("g")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+        
+        // 节点圆形
+        node.append("circle")
+            .attr("r", d => config.nodeRadius[d.type])
+            .attr("fill", d => config.colors[d.type])
+            .attr("stroke", d => d3.color(config.colors[d.type]).brighter(0.5))
+            .attr("stroke-width", 2);
+        
+        // 节点标签
+        node.append("text")
+            .attr("class", "node-label")
+            .attr("dx", d => config.nodeRadius[d.type] + 5)
+            .attr("dy", 3)
+            .text(d => d.id);
+        
+        // ============================================
+        // 事件处理
+        // ============================================
+        
+        // 悬停效果
+        node.on("mouseenter", function(event, d) {
+            state.highlightedNode = d;
+            showTooltip(event, d);
+            highlightDependencies(d);
+        })
+        .on("mouseleave", function() {
+            state.highlightedNode = null;
+            hideTooltip();
+            clearHighlight();
+        })
+        .on("click", function(event, d) {
+            selectNode(d);
+        });
+        
+        // 工具提示
+        const tooltip = d3.select("#tooltip");
+        
+        function showTooltip(event, d) {
+            const typeNames = {
+                theorem: "定理 (Theorem)",
+                definition: "定义 (Definition)",
+                lemma: "引理 (Lemma)",
+                proposition: "命题 (Proposition)",
+                corollary: "推论 (Corollary)"
+            };
+            
+            tooltip.style("display", "block")
+                .style("left", (event.pageX + 15) + "px")
+                .style("top", (event.pageY + 15) + "px")
+                .html(`
+                    <div class="tooltip-title">${d.id}</div>
+                    <div class="tooltip-type">${typeNames[d.type]}</div>
+                    <div>${d.name}</div>
+                    <div style="margin-top:6px;color:#8b949e;font-size:11px;">${d.stage}层 · ${d.level}</div>
+                `);
+        }
+        
+        function hideTooltip() {
+            tooltip.style("display", "none");
+        }
+        
+        // 高亮依赖链
+        function highlightDependencies(d) {
+            // 找到所有相关节点和边
+            const connectedNodes = new Set([d.id]);
+            const connectedEdges = new Set();
+            
+            // 向上追溯（依赖）
+            function traceUp(nodeId, visited = new Set()) {
+                if (visited.has(nodeId)) return;
+                visited.add(nodeId);
+                
+                edges.forEach((e, i) => {
+                    if (e.target.id === nodeId || e.target === nodeId) {
+                        const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                        connectedNodes.add(sourceId);
+                        connectedEdges.add(i);
+                        traceUp(sourceId, visited);
+                    }
+                });
+            }
+            
+            // 向下追溯（被依赖）
+            function traceDown(nodeId, visited = new Set()) {
+                if (visited.has(nodeId)) return;
+                visited.add(nodeId);
+                
+                edges.forEach((e, i) => {
+                    if (e.source.id === nodeId || e.source === nodeId) {
+                        const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                        connectedNodes.add(targetId);
+                        connectedEdges.add(i);
+                        traceDown(targetId, visited);
+                    }
+                });
+            }
+            
+            traceUp(d.id);
+            traceDown(d.id);
+            
+            // 应用高亮样式
+            node.classed("dimmed", n => !connectedNodes.has(n.id));
+            node.classed("highlighted", n => n.id === d.id);
+            
+            link.classed("dimmed", (e, i) => !connectedEdges.has(i));
+            link.classed("highlighted", (e, i) => connectedEdges.has(i))
+                .attr("marker-end", (e, i) => connectedEdges.has(i) ? "url(#arrow-head-highlighted)" : "url(#arrow-head)");
+        }
+        
+        function clearHighlight() {
+            if (state.selectedNode) return;
+            node.classed("dimmed", false).classed("highlighted", false);
+            link.classed("dimmed", false).classed("highlighted", false)
+                .attr("marker-end", "url(#arrow-head)");
+        }
+        
+        // 节点选择
+        function selectNode(d) {
+            state.selectedNode = d;
+            node.classed("selected", n => n.id === d.id);
+            showNodeDetails(d);
+        }
+        
+        // 显示节点详情
+        function showNodeDetails(d) {
+            const typeNames = {
+                theorem: "定理",
+                definition: "定义",
+                lemma: "引理",
+                proposition: "命题",
+                corollary: "推论"
+            };
+            
+            const stageNames = {
+                S: "Struct (形式理论)",
+                K: "Knowledge (知识结构)",
+                F: "Flink (Flink专项)"
+            };
+            
+            // 计算依赖统计
+            const depsIn = edges.filter(e => {
+                const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                return targetId === d.id;
+            }).length;
+            
+            const depsOut = edges.filter(e => {
+                const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                return sourceId === d.id;
+            }).length;
+            
+            document.getElementById('details-content').innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">类型</div>
+                    <div class="detail-value">
+                        <span class="detail-badge ${d.type}">${typeNames[d.type]}</span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">编号</div>
+                    <div class="detail-value" style="font-family:monospace;font-size:14px;color:#58a6ff;">${d.id}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">名称</div>
+                    <div class="detail-value">${d.name}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">所属阶段</div>
+                    <div class="detail-value">${stageNames[d.stage]}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">形式化等级</div>
+                    <div class="detail-value">${d.level}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">源文档</div>
+                    <div class="detail-value">
+                        <a href="#" onclick="alert('文档: ${d.doc}')">${d.doc}</a>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">依赖统计</div>
+                    <div class="detail-value">
+                        被 ${depsIn} 个元素依赖 → 依赖 ${depsOut} 个元素
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 拖拽行为
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // 仿真更新
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+            
+            node
+                .attr("transform", d => `translate(${d.x},${d.y})`);
+        });
+        
+        // ============================================
+        // UI 控制
+        // ============================================
+        
+        // 搜索功能
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            state.searchQuery = query;
+            
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                node.classed("search-match", false);
+                return;
+            }
+            
+            const matches = nodes.filter(n => 
+                n.id.toLowerCase().includes(query) || 
+                n.name.toLowerCase().includes(query)
+            );
+            
+            // 高亮匹配的节点
+            node.classed("search-match", n => matches.some(m => m.id === n.id));
+            
+            // 显示搜索结果
+            searchResults.innerHTML = matches.slice(0, 10).map(m => `
+                <div class="search-result-item" data-id="${m.id}">
+                    <strong>${m.id}</strong>: ${m.name}
+                </div>
+            `).join('');
+            
+            // 点击结果跳转
+            searchResults.querySelectorAll('.search-result-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const nodeId = item.dataset.id;
+                    const targetNode = nodes.find(n => n.id === nodeId);
+                    if (targetNode) {
+                        selectNode(targetNode);
+                        // 中心定位到节点
+                        const scale = 1.5;
+                        const x = -targetNode.x * scale + width / 2;
+                        const y = -targetNode.y * scale + height / 2;
+                        svg.transition().duration(750).call(
+                            zoom.transform,
+                            d3.zoomIdentity.translate(x, y).scale(scale)
+                        );
+                    }
+                });
+            });
+        });
+        
+        // 类型筛选
+        document.querySelectorAll('.legend-item[data-type]').forEach(item => {
+            item.addEventListener('click', () => {
+                const type = item.dataset.type;
+                
+                if (state.hiddenTypes.has(type)) {
+                    state.hiddenTypes.delete(type);
+                    item.classList.remove('disabled');
+                } else {
+                    state.hiddenTypes.add(type);
+                    item.classList.add('disabled');
+                }
+                
+                node.style("display", d => state.hiddenTypes.has(d.type) ? "none" : "block");
+                
+                // 更新边的显示（隐藏连接到不可见节点的边）
+                link.style("display", d => {
+                    const sourceHidden = state.hiddenTypes.has(d.source.type);
+                    const targetHidden = state.hiddenTypes.has(d.target.type);
+                    return (sourceHidden || targetHidden) ? "none" : "block";
+                });
+            });
+        });
+        
+        // 缩放控制
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 1.3);
+        });
+        
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 0.7);
+        });
+        
+        document.getElementById('zoom-fit').addEventListener('click', () => {
+            const bounds = container.node().getBBox();
+            const fullWidth = width;
+            const fullHeight = height;
+            const midX = bounds.x + bounds.width / 2;
+            const midY = bounds.y + bounds.height / 2;
+            const scale = Math.min(
+                fullWidth / bounds.width,
+                fullHeight / bounds.height
+            ) * 0.9;
+            const translate = [
+                fullWidth / 2 - scale * midX,
+                fullHeight / 2 - scale * midY
+            ];
+            
+            svg.transition().duration(750).call(
+                zoom.transform,
+                d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
+            );
+        });
+        
+        document.getElementById('reset-view').addEventListener('click', () => {
+            svg.transition().duration(750).call(
+                zoom.transform,
+                d3.zoomIdentity
+            );
+            state.selectedNode = null;
+            node.classed("selected", false);
+            document.getElementById('details-content').innerHTML = `
+                <div class="detail-empty">
+                    <p>点击图谱中的节点查看详情</p>
+                    <p style="margin-top: 10px; font-size: 11px;">悬停查看快速预览</p>
+                </div>
+            `;
+        });
+        
+        // ============================================
+        // 初始化统计
+        // ============================================
+        
+        function updateStats() {
+            const counts = {
+                theorem: nodes.filter(n => n.type === 'theorem').length,
+                definition: nodes.filter(n => n.type === 'definition').length,
+                lemma: nodes.filter(n => n.type === 'lemma').length,
+                proposition: nodes.filter(n => n.type === 'proposition').length,
+                corollary: nodes.filter(n => n.type === 'corollary').length
+            };
+            
+            Object.keys(counts).forEach(type => {
+                document.getElementById(`count-${type}`).textContent = counts[type];
+            });
+            
+            document.getElementById('total-nodes').textContent = nodes.length;
+            document.getElementById('total-edges').textContent = edges.length;
+            document.getElementById('avg-out-degree').textContent = 
+                (edges.length / nodes.length).toFixed(2);
+        }
+        
+        updateStats();
+        
+        // 初始适应屏幕
+        setTimeout(() => {
+            document.getElementById('zoom-fit').click();
+        }, 500);
+        
+    </script>
+</body>
+</html>
