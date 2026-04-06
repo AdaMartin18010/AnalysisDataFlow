@@ -153,6 +153,183 @@ Pattern<LoginEvent, ?> pattern = Pattern
 // 方案1: 使用 ProcessFunction + Timer
 // 方案2: 使用 CEP
 // TODO: 分别实现两种方案并对比
+
+// **参考答案**：两种订单超时检测方案实现与对比
+
+// ==================== 方案1: ProcessFunction + Timer ====================
+/*
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+import org.apache.flink.util.Collector;
+
+// 订单事件
+public class OrderEvent {
+    public String orderId;
+    public String eventType;  // "CREATE" or "PAY"
+    public long timestamp;
+}
+
+// 超时告警
+public class OrderTimeoutAlert {
+    public String orderId;
+    public long createTime;
+    public String reason;
+}
+
+public class OrderTimeoutProcessFunction extends KeyedProcessFunction<String, OrderEvent, OrderTimeoutAlert> {
+
+    // 状态：保存订单创建时间
+    private ValueState<Long> createTimeState;
+    // 状态：保存定时器时间戳
+    private ValueState<Long> timerState;
+
+    @Override
+    public void open(Configuration parameters) {
+        createTimeState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("createTime", Long.class));
+        timerState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("timer", Long.class));
+    }
+
+    @Override
+    public void processElement(OrderEvent event, Context ctx, Collector<OrderTimeoutAlert> out)
+            throws Exception {
+
+        if ("CREATE".equals(event.eventType)) {
+            // 订单创建，注册15分钟后的定时器
+            long timeoutTime = event.timestamp + 15 * 60 * 1000; // 15分钟
+            ctx.timerService().registerProcessingTimeTimer(timeoutTime);
+
+            createTimeState.update(event.timestamp);
+            timerState.update(timeoutTime);
+
+        } else if ("PAY".equals(event.eventType)) {
+            // 订单已支付，删除定时器
+            Long timer = timerState.value();
+            if (timer != null) {
+                ctx.timerService().deleteProcessingTimeTimer(timer);
+                createTimeState.clear();
+                timerState.clear();
+            }
+        }
+    }
+
+    @Override
+    public void onTimer(long timestamp, OnTimerContext ctx, Collector<OrderTimeoutAlert> out)
+            throws Exception {
+        // 定时器触发，说明订单超时
+        Long createTime = createTimeState.value();
+        String orderId = ctx.getCurrentKey();
+
+        out.collect(new OrderTimeoutAlert(orderId, createTime, "PAYMENT_TIMEOUT"));
+
+        createTimeState.clear();
+        timerState.clear();
+    }
+}
+
+// 使用方式：
+// stream.keyBy(event -> event.orderId)
+//       .process(new OrderTimeoutProcessFunction())
+//       .print("timeout-alert");
+*/
+
+// ==================== 方案2: CEP (Complex Event Processing) ====================
+/*
+import org.apache.flink.cep.CEP;
+import org.apache.flink.cep.PatternStream;
+import org.apache.flink.cep.pattern.Pattern;
+import org.apache.flink.cep.pattern.conditions.SimpleCondition;
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class OrderTimeoutCEP {
+
+    public static void detectTimeout(DataStream<OrderEvent> orderStream) {
+
+        // 定义CEP模式：创建后15分钟内未支付
+        Pattern<OrderEvent, ?> orderTimeoutPattern = Pattern
+            .<OrderEvent>begin("create", AfterMatchSkipStrategy.skipPastLastEvent())
+            .where(new SimpleCondition<OrderEvent>() {
+                @Override
+                public boolean filter(OrderEvent event) {
+                    return "CREATE".equals(event.eventType);
+                }
+            })
+            .next("pay")
+            .where(new SimpleCondition<OrderEvent>() {
+                @Override
+                public boolean filter(OrderEvent event) {
+                    return "PAY".equals(event.eventType);
+                }
+            })
+            .within(Time.minutes(15));  // 时间窗口15分钟
+
+        // 应用模式
+        PatternStream<OrderEvent> patternStream = CEP.pattern(
+            orderStream.keyBy(event -> event.orderId),
+            orderTimeoutPattern
+        );
+
+        // 处理匹配事件（正常完成支付的订单）
+        DataStream<OrderEvent> completedOrders = patternStream
+            .process(new PatternProcessFunction<OrderEvent, OrderEvent>() {
+                @Override
+                public void processMatch(Map<String, List<OrderEvent>> match, Context ctx,
+                                        Collector<OrderEvent> out) {
+                    // 匹配成功，订单正常支付
+                    out.collect(match.get("pay").get(0));
+                }
+            });
+
+        // 处理超时事件（使用侧输出流）
+        OutputTag<OrderTimeoutAlert> timeoutTag = new OutputTag<OrderTimeoutAlert>("timeout"){};
+
+        SingleOutputStreamOperator<OrderEvent> result = patternStream
+            .process(new PatternProcessFunction<OrderEvent, OrderEvent>() {
+                @Override
+                public void processMatch(Map<String, List<OrderEvent>> match, Context ctx,
+                                        Collector<OrderEvent> out) {
+                    out.collect(match.get("pay").get(0));
+                }
+
+                @Override
+                public void processTimedOutMatch(Map<String, List<OrderEvent>> match, Context ctx) {
+                    // 超时处理
+                    OrderEvent create = match.get("create").get(0);
+                    ctx.output(timeoutTag, new OrderTimeoutAlert(
+                        create.orderId, create.timestamp, "CEP_TIMEOUT"
+                    ));
+                }
+            });
+
+        // 获取超时流
+        DataStream<OrderTimeoutAlert> timeoutStream = result.getSideOutput(timeoutTag);
+        timeoutStream.print("cep-timeout");
+    }
+}
+*/
+
+// ==================== 方案对比 ====================
+/*
+| 对比维度 | ProcessFunction + Timer | CEP |
+|---------|------------------------|-----|
+| 实现复杂度 | 简单，代码直观 | 中等，需要学习CEP API |
+| 灵活性 | 高，可自定义任意逻辑 | 中等，受限于CEP表达能力 |
+| 复杂模式支持 | 需要自行实现 | 原生支持复杂事件序列 |
+| 性能 | 高，开销小 | 较高，有模式匹配开销 |
+| 状态管理 | 手动管理 | 自动管理 |
+| 时间语义 | 支持Processing/Event Time | 支持Event Time |
+| 适用场景 | 简单超时检测 | 复杂事件序列检测 |
+
+// 选择建议：
+// 1. 简单超时检测（如订单15分钟未支付）→ 使用 ProcessFunction
+// 2. 复杂事件模式（如3次登录失败后在1分钟内成功登录）→ 使用 CEP
+// 3. 需要与其他状态交互 → 使用 ProcessFunction
+// 4. 需要可视化规则配置 → 使用 CEP（规则可外部化）
+*/
 ```
 
 **任务**：

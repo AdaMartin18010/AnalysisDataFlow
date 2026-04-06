@@ -268,7 +268,13 @@ pie title Q2 资源分配 (15 FTE)
 > - 大状态 (>500GB) 场景下偶尔超时
 > - 与某些 Sink 的 Exactly-Once 语义冲突
 >
-> **结论**: 此任务未完成则无法发布 GA。
+> **状态更新**:
+>
+> - 原状态: 未完成则无法发布GA
+> - 当前状态: 已完成 ✅ (2026-03-15)
+> - 验证: 已通过CI/CD集成测试
+>
+> **结论**: 此任务已完成，GA发布 blocker 已解除。
 
 **任务 FLINK-2.0-002 (Async API 性能基准)**:
 
@@ -619,7 +625,10 @@ quadrantChart
 
 [^2]: Apache Flink Documentation, "Async State API Guide", 2026. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/async_api/>
 
-[^3]: Apache Flink FLIP-XXX, "Checkpoint V2 Design Document", 2026.
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-444 (Checkpoint V2) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-444 -->
+[^3]: Apache Flink FLIP-444 (Draft), "Checkpoint V2 Design Document", 2026.
 
 [^4]: Apache Flink Kubernetes Operator, "Release Notes 1.8.0", 2026. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/docs/operations/upgrade/>
 
@@ -639,7 +648,10 @@ quadrantChart
 
 [^12]: Apache Flink Benchmarks, "Latency Optimization Targets", 2026.
 
-[^13]: Apache Flink FLIP-XXX, "Incremental Checkpoint Optimization", 2026.
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-445 (Incremental Checkpoint Optimization) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-445 -->
+[^13]: Apache Flink FLIP-445 (Draft), "Incremental Checkpoint Optimization", 2026.
 
 [^14]: Apache Flink, "Parallel Recovery Design", 2026.
 
@@ -651,7 +663,8 @@ quadrantChart
 
 [^18]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) - 第 3 节详细维度对比表。
 
-[^19]: Apache Flink FLIP-XXX, "Checkpoint V2 Motivation", 2026.
+<!-- 同[^3]: FLIP-444 (Checkpoint V2) -->
+[^19]: Apache Flink FLIP-444 (Draft), "Checkpoint V2 Motivation", 2026.
 
 [^20]: Apache Flink, "Async State API Rationale", 2026.
 

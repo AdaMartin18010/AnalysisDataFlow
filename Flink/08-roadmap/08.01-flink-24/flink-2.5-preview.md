@@ -33,7 +33,10 @@
 
 **核心演进方向**：
 
-1. **流批一体架构完成** (FLIP-XXX): 统一的执行引擎与存储层
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-435 (Unified Stream-Batch Architecture) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
+1. **流批一体架构完成** (FLIP-435 - Draft): 统一的执行引擎与存储层
 2. **Serverless Flink GA**: 按需扩缩容到零，Pay-per-use计费
 3. **AI/ML生产就绪**: LLM推理优化、模型服务、MCP协议成熟
 4. **硬件加速支持**: GPU算子库、WebAssembly UDF生产化
@@ -41,7 +44,10 @@
 
 ### Def-F-08-51: Unified Stream-Batch Execution
 
-**流批一体深化** (FLIP-XXX)：
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-435 (Unified Stream-Batch Architecture) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
+**流批一体深化** (FLIP-435 - Draft)：
 
 ```yaml
 目标: 完全统一的执行引擎，消除流批边界

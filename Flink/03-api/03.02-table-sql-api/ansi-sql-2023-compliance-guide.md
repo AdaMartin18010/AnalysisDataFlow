@@ -655,6 +655,33 @@ MATCH_RECOGNIZE (
 ) AS pattern_matches;
 ```
 
+#### 复杂模式示例
+
+**模式: 寻找价格翻倍后回落的情况**
+
+```sql
+SELECT * FROM stock_price
+MATCH_RECOGNIZE (
+  PARTITION BY symbol
+  ORDER BY rowtime
+  MEASURES
+    A.price AS start_price,
+    B.price AS peak_price,
+    C.price AS end_price
+  PATTERN (A B+ C)
+  DEFINE
+    A AS price < 100,
+    B AS price > A.price * 2,  -- 翻倍
+    C AS price < B.price * 0.8  -- 回落20%
+)
+```
+
+**高级特性**:
+
+- 量词: `*`, `+`, `?`, `{n}`, `{n,}`, `{n,m}`
+- 排除模式: `{- pattern -}`
+- 连续模式: `PATTERN (A B C)` vs 非连续 `PATTERN (A B? C)`
+
 #### 示例 6.3.2: 复杂事件序列 - 交易欺诈检测
 
 ```sql

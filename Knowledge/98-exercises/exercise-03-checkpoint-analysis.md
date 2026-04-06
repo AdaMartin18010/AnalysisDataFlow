@@ -193,6 +193,54 @@ public class CheckpointMetricsJob {
 
         // TODO: 配置 RocksDB 和增量 Checkpoint
 
+// **参考答案**：RocksDB配置和增量Checkpoint
+/*
+import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
+import org.apache.flink.runtime.state.StateBackend;
+import org.apache.flink.streaming.api.environment.CheckpointConfig;
+
+// 配置RocksDB作为状态后端
+StateBackend rocksDbBackend = new RocksDBStateBackend(
+    "hdfs://namenode:8020/flink/checkpoints",  // Checkpoint存储路径
+    true                                        // 启用增量Checkpoint
+);
+env.setStateBackend(rocksDbBackend);
+
+// 或者使用FsStateBackend（适用于中小状态）
+// StateBackend fsBackend = new FsStateBackend("hdfs://namenode:8020/flink/checkpoints");
+// env.setStateBackend(fsBackend);
+
+// 详细配置选项（推荐用于生产环境）
+// 通过flink-conf.yaml或代码配置:
+
+// 1. RocksDB内存调优
+// state.backend.rocksdb.memory.managed: true
+// state.backend.rocksdb.memory.fixed-per-slot: 256mb
+// state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
+
+// 2. Checkpoint配置优化
+env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+env.getCheckpointConfig().setCheckpointInterval(60000);        // 1分钟间隔
+env.getCheckpointConfig().setCheckpointTimeout(600000);        // 10分钟超时
+env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000); // 最小间隔30秒
+env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);       // 最大并发1个
+
+// 3. 启用增量Checkpoint（仅RocksDB支持）
+env.getCheckpointConfig().enableIncrementalCheckpointing(true);
+
+// 4. 启用本地恢复（减少从远程存储恢复的时间）
+env.getCheckpointConfig().setPreferCheckpointForRecovery(true);
+
+// 5. 外部化Checkpoint（作业取消时保留）
+env.getCheckpointConfig().enableExternalizedCheckpoints(
+    CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
+);
+
+// 6. 非对齐Checkpoint配置（Flink 1.11+，适用于高反压场景）
+env.getCheckpointConfig().enableUnalignedCheckpoints();
+env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+*/
+
         // 模拟有状态的计算
         env.fromSource(new RateLimitedSource(10000),
                        WatermarkStrategy.noWatermarks(), "source")
@@ -255,6 +303,64 @@ flink run -s <checkpointPath> <jarFile>
 
 ```java
 // TODO: 配置非对齐 Checkpoint
+
+// **参考答案**：非对齐Checkpoint配置
+/*
+import org.apache.flink.streaming.api.environment.CheckpointConfig;
+import java.time.Duration;
+
+// 启用非对齐Checkpoint
+env.getCheckpointConfig().enableUnalignedCheckpoints();
+
+// 配置对齐超时时间
+// 当Barrier对齐时间超过此值时，自动切换到非对齐模式
+env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+
+// 非对齐Checkpoint的高级配置
+// 通过flink-conf.yaml配置:
+/*
+# 启用非对齐Checkpoint
+execution.checkpointing.unaligned.enabled: true
+
+# 对齐超时时间（默认30秒）
+execution.checkpointing.alignment-timeout: 30s
+
+# 每个Channel缓存的最大数据量（防止OOM）
+execution.checkpointing.max-aligned-checkpoint-size: 1mb
+
+# 压缩对齐数据（减少网络传输）
+execution.checkpointing.unaligned.compression.enabled: true
+*/
+
+// 完整配置示例
+public class UnalignedCheckpointConfig {
+    public static void configure(StreamExecutionEnvironment env) {
+        // 基础Checkpoint配置
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+
+        // 启用非对齐Checkpoint
+        env.getCheckpointConfig().enableUnalignedCheckpoints();
+        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(10));
+
+        // 设置RocksDB状态后端
+        try {
+            env.setStateBackend(new RocksDBStateBackend(
+                "hdfs://namenode:8020/flink/checkpoints",
+                true  // 启用增量
+            ));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set state backend", e);
+        }
+    }
+}
+
+// 使用场景建议：
+// 1. 高反压场景：非对齐Checkpoint可以避免Barrier对齐导致的超时
+// 2. 短Checkpoint间隔：对齐时间可能超过间隔，使用非对齐更稳定
+// 3. 注意：非对齐Checkpoint会增加存储和网络开销
+*/
 ```
 
 ---

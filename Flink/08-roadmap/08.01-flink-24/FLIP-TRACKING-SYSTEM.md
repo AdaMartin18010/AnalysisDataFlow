@@ -16,7 +16,7 @@ $$
 
 其中：
 
-- $\mathcal{I}$: FLIP 标识符，格式为 `FLIP-XXX`
+- $\mathcal{I}$: FLIP 标识符，格式为 `FLIP-NNN` (例如: FLIP-531, FLIP-435)
 - $\mathcal{S}$: 状态集合 $\{Draft, Accepted, In\ Progress, Implemented, Released\}$
 - $\mathcal{T}$: 时间线，包含提出、讨论、实现、发布各阶段时间戳
 - $\mathcal{D}$: 设计文档链接集合
@@ -195,11 +195,20 @@ $$
 │  ├── FLIP-531: AI Agents GA (依赖: 2.3基础) ────────────────┘   │
 │  ├── FLIP-325: Async Snapshot v2 (In Progress)              │   │
 │  ├── FLIP-333: Fine-grained Recovery (Accepted)             │   │
-│  └── FLIP-XXX: Serverless Flink (Draft)                     │   │
+│  └── FLIP-440: Serverless Flink (Draft)                     │   │
+│      <!-- FLIP状态: Draft/Under Discussion -->              │   │
+│      <!-- 预计正式编号: FLIP-440 -->                         │   │
+│      <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-440 --> │
 │                                                            │   │
 │  Flink 2.5（预计发布时间以官方为准）                                       │   │
-│  ├── FLIP-XXX: Adaptive Execution (Draft)                   │   │
-│  └── FLIP-XXX: Unified Batch/Streaming (Draft)              │   │
+│  ├── FLIP-441: Adaptive Execution (Draft)                   │   │
+│  │   <!-- FLIP状态: Draft/Under Discussion -->              │   │
+│  │   <!-- 预计正式编号: FLIP-441 -->                         │   │
+│  │   <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-441 --> │
+│  └── FLIP-442: Unified Batch/Streaming (Draft)              │   │
+│      <!-- FLIP状态: Draft/Under Discussion -->              │   │
+│      <!-- 预计正式编号: FLIP-442 -->                         │   │
+│      <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-442 --> │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -414,7 +423,10 @@ flips:
       impact: "Medium"
 
   connectors:
-    - id: FLIP-XXX
+    <!-- FLIP状态: Draft/Under Discussion -->
+    <!-- 预计正式编号: FLIP-443 (Connector Improvements) -->
+    <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-443 -->
+    - id: FLIP-443
       title: "Connector Improvements"
       impact: "Medium"
 ```

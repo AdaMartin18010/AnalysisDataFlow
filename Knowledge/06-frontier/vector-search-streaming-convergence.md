@@ -384,6 +384,25 @@ flowchart TB
 
 ---
 
+## 生态工具链
+
+### 向量数据库
+
+| 产品 | 特点 | 与Flink集成 |
+|------|------|-------------|
+| Milvus | 云原生 | Flink-Milvus Connector |
+| Pinecone | 全托管 | REST API |
+| Weaviate | 语义搜索 | Flink Weaviate Sink |
+| pgvector | PostgreSQL扩展 | JDBC Connector |
+
+### 向量化工具
+
+- **Hugging Face Transformers**: 文本向量化
+- **OpenAI Embeddings API**: 通用向量化
+- **SentenceTransformers**: 本地文本向量化
+
+---
+
 #### 模式C: 混合分层架构
 
 ```mermaid

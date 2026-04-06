@@ -949,24 +949,101 @@ pub mod flight {
             &self,
             request: Request<FlightDescriptor>,
         ) -> Result<Response<SchemaResult>, Status> {
-            // 返回数据集 Schema
-            todo!()
+            // Arrow Flight 服务: 根据请求描述符返回对应的 Schema
+            //
+            // 实现说明:
+            // 1. 解析 FlightDescriptor，提取数据集路径/标识符
+            // 2. 从 SchemaRegistry 或元数据服务查询对应的 Arrow Schema
+            // 3. 将 Schema 序列化为 SchemaResult 格式返回
+            //
+            // 示例实现:
+            // ```rust
+            // let descriptor = request.into_inner();
+            // let dataset_path = parse_descriptor(&descriptor)?;
+            // let schema = self.schema_registry.get(&dataset_path)
+            //     .await
+            //     .ok_or_else(|| Status::not_found("Schema not found"))?;
+            // let schema_result = SchemaAsIpc::new(&schema, &IpcWriteOptions::default())
+            //     .try_into_schema_result()
+            //     .map_err(|e| Status::internal(format!("Schema serialization failed: {}", e)))?;
+            // Ok(Response::new(schema_result))
+            // ```
+            todo!("Arrow Flight get_schema: 从SchemaRegistry获取并返回数据集Schema")
         }
 
         async fn do_get(
             &self,
             request: Request<Ticket>,
         ) -> Result<Response<Self::DoGetStream>, Status> {
-            // 流式返回 Arrow 数据
-            todo!()
+            // Arrow Flight 服务: 流式返回 Arrow RecordBatch 数据
+            //
+            // 实现说明:
+            // 1. 解析 Ticket 获取数据集的查询参数（如分区、过滤条件）
+            // 2. 创建数据流迭代器，读取底层存储（如Parquet、内存Buffer）
+            // 3. 将 RecordBatch 流转换为 FlightData 流返回给客户端
+            //
+            // 示例实现:
+            // ```rust
+            // let ticket = request.into_inner();
+            // let query = parse_ticket(&ticket)?;
+            // let stream = self.data_source.read_stream(query).await
+            //     .map_err(|e| Status::internal(format!("Failed to create data stream: {}", e)))?;
+            //
+            // let flight_stream = stream.map(|batch_result| {
+            //     batch_result.map(|batch| {
+            //         let (dictionary_batches, mut flight_data) =
+            //             arrow_flight::utils::batches_to_flight_data(
+            //                 &Arc::new(schema.clone()),
+            //                 vec![batch]
+            //             ).map_err(|e| Status::internal(e.to_string()))?;
+            //         Ok(flight_data.pop().unwrap())
+            //     }).map_err(|e| Status::internal(e.to_string()))
+            // });
+            //
+            // Ok(Response::new(Box::pin(flight_stream)))
+            // ```
+            todo!("Arrow Flight do_get: 流式返回Arrow RecordBatch数据")
         }
 
         async fn do_put(
             &self,
             request: Request<Streaming<FlightData>>,
         ) -> Result<Response<Self::DoPutStream>, Status> {
-            // 接收 Arrow 数据
-            todo!()
+            // Arrow Flight 服务: 接收并存储 Arrow RecordBatch 数据
+            //
+            // 实现说明:
+            // 1. 从流中提取 Schema（首个 FlightData 包含 Schema）
+            // 2. 将后续 FlightData 解析为 RecordBatch
+            // 3. 批量写入目标存储（如列式存储、消息队列、文件系统）
+            // 4. 返回写入确认（包含写入的记录数、存储位置等元数据）
+            //
+            // 示例实现:
+            // ```rust
+            // let mut stream = request.into_inner();
+            // let first_msg = stream.message().await?
+            //     .ok_or_else(|| Status::invalid_argument("Empty stream"))?;
+            // let schema = arrow_flight::utils::flight_data_to_schema(&first_msg)
+            //     .map_err(|e| Status::invalid_argument(format!("Invalid schema: {}", e)))?;
+            //
+            // let mut record_count = 0;
+            // while let Some(flight_data) = stream.message().await? {
+            //     let batch = arrow_flight::utils::flight_data_to_arrow_batch(
+            //         &flight_data,
+            //         Arc::new(schema.clone()),
+            //         &HashMap::new()
+            //     ).map_err(|e| Status::internal(format!("Batch parse error: {}", e)))?;
+            //
+            //     self.data_sink.write_batch(batch).await
+            //         .map_err(|e| Status::internal(format!("Write failed: {}", e)))?;
+            //     record_count += batch.num_rows();
+            // }
+            //
+            // let put_result = PutResult {
+            //     app_metadata: Bytes::from(format!("{{\"rows_written\": {}}}", record_count)),
+            // };
+            // Ok(Response::new(Box::pin(tokio_stream::iter(vec![Ok(put_result)]))))
+            // ```
+            todo!("Arrow Flight do_put: 接收并持久化Arrow RecordBatch数据")
         }
     }
 }

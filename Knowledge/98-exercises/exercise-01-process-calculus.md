@@ -177,6 +177,23 @@ type Message struct {
     // TODO: 补充必要字段
 }
 
+// **参考答案**：
+// type Message struct {
+//     From    string              // 发送者ID
+//     Payload interface{}         // 消息内容
+//     ReplyTo chan Message        // 用于请求-响应模式的回复通道
+//     MsgType MessageType         // 消息类型枚举（可选，用于区分消息类别）
+//     Timestamp int64             // 发送时间戳（可选，用于超时处理）
+// }
+//
+// type MessageType int
+// const (
+//     MsgTypeNormal MessageType = iota
+//     MsgTypeRequest
+//     MsgTypeResponse
+//     MsgTypeSupervisor
+// )
+
 type Actor struct {
     ID       string
     Mailbox  chan Message
@@ -187,9 +204,188 @@ type Actor struct {
 
 // TODO: 实现 Actor 系统核心功能
 
+// **参考答案**：Actor系统核心实现
+/*
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+// ActorSystem 管理所有Actor
+type ActorSystem struct {
+    actors map[string]*Actor
+    mu     sync.RWMutex
+}
+
+func NewActorSystem() *ActorSystem {
+    return &ActorSystem{
+        actors: make(map[string]*Actor),
+    }
+}
+
+func (as *ActorSystem) Register(actor *Actor) {
+    as.mu.Lock()
+    defer as.mu.Unlock()
+    as.actors[actor.ID] = actor
+}
+
+func (as *ActorSystem) Get(id string) (*Actor, bool) {
+    as.mu.RLock()
+    defer as.mu.RUnlock()
+    actor, ok := as.actors[id]
+    return actor, ok
+}
+
+// Send 发送消息到指定Actor
+func (as *ActorSystem) Send(to string, msg Message) error {
+    actor, ok := as.Get(to)
+    if !ok {
+        return fmt.Errorf("actor %s not found", to)
+    }
+    actor.Mailbox <- msg
+    return nil
+}
+
+// Spawn 创建并启动一个新Actor
+func (as *ActorSystem) Spawn(id string, behavior func(Message), parent *Actor) *Actor {
+    actor := &Actor{
+        ID:       id,
+        Mailbox:  make(chan Message, 100),
+        Behavior: behavior,
+        Children: []*Actor{},
+        Parent:   parent,
+        system:   as,
+        stopCh:   make(chan struct{}),
+    }
+
+    if parent != nil {
+        parent.Children = append(parent.Children, actor)
+    }
+
+    as.Register(actor)
+
+    // 启动Actor goroutine
+    go actor.run()
+
+    return actor
+}
+
+func (a *Actor) run() {
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Printf("Actor %s panic: %v\n", a.ID, r)
+            if a.Parent != nil {
+                // 向父Actor报告错误
+                a.Parent.Mailbox <- Message{
+                    From:    a.ID,
+                    Payload: fmt.Sprintf("child_failed: %v", r),
+                    MsgType: MsgTypeSupervisor,
+                }
+            }
+        }
+    }()
+
+    for {
+        select {
+        case msg := <-a.Mailbox:
+            a.Behavior(msg)
+        case <-a.stopCh:
+            return
+        }
+    }
+}
+
+func (a *Actor) Stop() {
+    close(a.stopCh)
+}
+
+// RequestResponse 发送请求并等待响应
+func (a *Actor) RequestResponse(target string, payload interface{}, timeout time.Duration) (Message, error) {
+    replyCh := make(chan Message, 1)
+    msg := Message{
+        From:    a.ID,
+        Payload: payload,
+        ReplyTo: replyCh,
+        MsgType: MsgTypeRequest,
+    }
+
+    if err := a.system.Send(target, msg); err != nil {
+        return Message{}, err
+    }
+
+    select {
+    case resp := <-replyCh:
+        return resp, nil
+    case <-time.After(timeout):
+        return Message{}, fmt.Errorf("request timeout")
+    }
+}
+*/
+
 func main() {
     // TODO: 演示请求-响应和监督关系
 }
+
+// **参考答案**：演示请求-响应和监督关系
+/*
+func main() {
+    system := NewActorSystem()
+
+    // 1. 创建父Actor（监督者）
+    parentBehavior := func(msg Message) {
+        switch msg.MsgType {
+        case MsgTypeSupervisor:
+            fmt.Printf("[Supervisor] Child %s reported failure: %v\n", msg.From, msg.Payload)
+        default:
+            fmt.Printf("[Parent] Received from %s: %v\n", msg.From, msg.Payload)
+        }
+    }
+    parent := system.Spawn("parent", parentBehavior, nil)
+
+    // 2. 创建子Actor（有监督关系）
+    childBehavior := func(msg Message) {
+        if msg.Payload == "panic" {
+            panic("simulated error")
+        }
+        fmt.Printf("[Child] Received: %v\n", msg.Payload)
+
+        // 请求-响应模式：回复消息
+        if msg.ReplyTo != nil {
+            msg.ReplyTo <- Message{
+                From:    "child",
+                Payload: fmt.Sprintf("response to: %v", msg.Payload),
+            }
+        }
+    }
+    child := system.Spawn("child", childBehavior, parent)
+
+    // 3. 演示消息发送
+    system.Send("child", Message{From: "main", Payload: "hello"})
+
+    // 4. 演示请求-响应
+    go func() {
+        resp, err := parent.RequestResponse("child", "request data", 5*time.Second)
+        if err != nil {
+            fmt.Printf("Request failed: %v\n", err)
+        } else {
+            fmt.Printf("Response received: %v\n", resp.Payload)
+        }
+    }()
+
+    // 5. 演示错误传播（触发panic）
+    time.Sleep(100 * time.Millisecond)
+    system.Send("child", Message{From: "main", Payload: "panic"})
+
+    // 等待观察输出
+    time.Sleep(500 * time.Millisecond)
+
+    child.Stop()
+    parent.Stop()
+}
+*/
 ```
 
 ---

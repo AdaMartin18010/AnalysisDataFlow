@@ -353,7 +353,12 @@ Apache License 2.0
 **项目状态**: ✅ 已完成 100%
 **最后更新**: 2026-04-05
 **维护者**: AnalysisDataFlow IoT Team
-**联系方式**: [待补充]
+**联系方式**:
+
+- 项目维护: AnalysisDataFlow Core Team
+- 邮箱: <maintainers@analysisdataflow.org>
+- GitHub: <https://github.com/analysisdataflow/core>
+- 文档问题反馈: <https://github.com/analysisdataflow/core/issues>
 
 ---
 

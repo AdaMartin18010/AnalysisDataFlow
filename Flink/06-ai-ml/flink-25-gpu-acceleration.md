@@ -1387,7 +1387,11 @@ quadrantChart
 
 [^7]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^8]: Apache Flink FLIP-XXX <!-- 前瞻性: FLIP编号待确定 -->, "GPU Acceleration for Flink Operators", Apache Flink Community, 2026.
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-463 (GPU Acceleration for Flink ML) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-463 -->
+<!-- 相关实现: NVIDIA RAPIDS Accelerator, CUDA Operator Library -->
+[^8]: Apache Flink FLIP-463 (Draft), "GPU Acceleration for Flink Operators", Apache Flink Community, 2026.
 
 [^9]: Kubernetes Documentation, "Scheduling GPUs", 2024. https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/
 

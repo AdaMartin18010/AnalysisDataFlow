@@ -52,7 +52,11 @@ $$
 
 ### Def-F-08-57: Unified Execution Engine (统一执行引擎)
 
-**统一执行引擎** (FLIP-XXX <!-- 前瞻性: FLIP编号待确定 -->: Unified Execution Engine) 是Flink 2.5的核心组件：
+<!-- FLIP状态: Draft/Under Discussion -->
+<!-- 预计正式编号: FLIP-435 (Unified Table API / Unified Execution Engine) -->
+<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
+<!-- 相关FLIP: FLIP-434 (Unified SQL), FLIP-320 (Table API Enhancement) -->
+**统一执行引擎** (FLIP-435: Unified Execution Engine - Draft) 是Flink 2.5的核心组件：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐

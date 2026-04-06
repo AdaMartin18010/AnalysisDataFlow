@@ -740,9 +740,80 @@ impl BackpressureController {
                 )
             }
 
-            BackpressureStrategy::Adaptive { .. } => {
-                // 自适应策略实现
-                todo!("Adaptive backpressure strategy")
+            BackpressureStrategy::Adaptive {
+                min_rate,
+                max_rate,
+                latency_threshold,
+                buffer_threshold_high,
+                buffer_threshold_low,
+            } => {
+                // 自适应背压策略实现
+                //
+                // 算法说明:
+                // 自适应策略基于多指标反馈动态调整处理速率，包括:
+                // - buffer_occupancy: 缓冲区占用率 [0.0, 1.0]
+                // - processing_latency: 端到端处理延迟
+                // - current_rate: 当前处理速率 (records/sec)
+                //
+                // 决策逻辑:
+                // 1. 高负载: buffer占用 > 阈值 且 延迟 > 阈值 → 降低速率
+                // 2. 低负载: buffer占用 < 阈值 → 提高速率
+                // 3. 正常状态: 保持当前速率
+                //
+                // 伪代码实现:
+                // ```rust
+                // fn adaptive_backpressure(
+                //     current_rate: f64,
+                //     buffer_occupancy: f64,
+                //     processing_latency: Duration,
+                //     config: &AdaptiveConfig,
+                // ) -> BackpressureAction {
+                //     // PID控制器参数
+                //     let kp = 0.5;  // 比例系数
+                //     let ki = 0.1;  // 积分系数
+                //     let kd = 0.2;  // 微分系数
+                //
+                //     // 计算误差信号 (基于buffer占用率和延迟的加权)
+                //     let buffer_error = if buffer_occupancy > config.buffer_threshold_high {
+                //         buffer_occupancy - config.buffer_threshold_high
+                //     } else if buffer_occupancy < config.buffer_threshold_low {
+                //         buffer_occupancy - config.buffer_threshold_low  // 负值表示可以增加速率
+                //     } else {
+                //         0.0
+                //     };
+                //
+                //     let latency_ratio = processing_latency.as_secs_f64()
+                //         / config.latency_threshold.as_secs_f64();
+                //     let latency_error = if latency_ratio > 1.0 {
+                //         (latency_ratio - 1.0).min(1.0)
+                //     } else {
+                //         0.0
+                //     };
+                //
+                //     // 综合误差 (buffer占用权重0.6, 延迟权重0.4)
+                //     let error = 0.6 * buffer_error + 0.4 * latency_error;
+                //
+                //     // PID控制输出
+                //     let adjustment = kp * error;  // 简化版，实际应包含积分和微分项
+                //     let new_rate = current_rate * (1.0 - adjustment)
+                //         .clamp(config.min_rate / current_rate.max(1.0),
+                //                config.max_rate / current_rate.max(1.0));
+                //
+                //     if new_rate < current_rate * 0.95 {
+                //         BackpressureAction::ReduceRate(new_rate)
+                //     } else if new_rate > current_rate * 1.05 {
+                //         BackpressureAction::IncreaseRate(new_rate.min(config.max_rate))
+                //     } else {
+                //         BackpressureAction::Maintain
+                //     }
+                // }
+                // ```
+                //
+                // 参考: Reactive Streams背压规范 (https://www.reactive-streams.org/)
+                //       Credit-based Flow Control in Apache Flink
+                //       TCP拥塞控制算法 (Reno/CUBIC) 的流式系统适配
+
+                todo!("Adaptive backpressure strategy: 基于PID控制器的多指标自适应速率调整")
             }
         }
     }

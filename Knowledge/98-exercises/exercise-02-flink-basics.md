@@ -174,6 +174,83 @@ public class WordCount {
         env.execute("Socket WordCount");
     }
 }
+
+// **参考答案**：完整WordCount实现
+/*
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.Collector;
+
+public class WordCount {
+    public static void main(String[] args) throws Exception {
+        // 创建执行环境
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1); // 本地测试设置为1，生产环境根据情况调整
+
+        // 1. 数据源：从Socket读取
+        // 启动命令: nc -lk 9999
+        DataStream<String> source = env.socketTextStream("localhost", 9999);
+
+        // 2. 数据转换：分词并转换为 (word, 1) 元组
+        DataStream<Tuple2<String, Integer>> wordStream = source
+            .flatMap(new Tokenizer())
+            .name("tokenizer");
+
+        // 3. 按键分组并开窗
+        DataStream<Tuple2<String, Integer>> windowed = wordStream
+            .keyBy(value -> value.f0)                    // 按单词分组
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(5))) // 5秒滚动窗口
+            .sum(1)                                      // 对第二个字段求和
+            .name("windowed-sum");
+
+        // 4. 输出到控制台
+        windowed.print().name("print-sink");
+
+        // 执行任务
+        env.execute("Socket WordCount");
+    }
+
+    // 自定义FlatMapFunction：分词
+    public static class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
+        @Override
+        public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+            // 将输入行按空格分割，过滤空字符串
+            for (String word : value.toLowerCase().split("\\s+")) {
+                if (word.length() > 0) {
+                    out.collect(new Tuple2<>(word, 1));
+                }
+            }
+        }
+    }
+}
+
+// Maven依赖 (pom.xml):
+/*
+<dependencies>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-streaming-java</artifactId>
+        <version>1.18.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-clients</artifactId>
+        <version>1.18.0</version>
+    </dependency>
+</dependencies>
+*/
+
+// 运行步骤：
+// 1. 打开终端运行: nc -lk 9999
+// 2. 启动WordCount程序
+// 3. 在nc终端输入文本，如: hello world hello flink
+// 4. 每5秒会在控制台看到词频统计结果
+*/
 ```
 
 ---

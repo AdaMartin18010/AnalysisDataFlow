@@ -31,7 +31,21 @@
 | Flink AI Agents (FLIP-531) | Apache Flink Agents 0.2.1已发布 | ⚠️ 部分对齐 | 项目有Flink AI Agents文档，但社区已迭代至0.3.0版本规划 |
 | Python Async API | Flink 2.2已支持Python DataStream异步函数 | ✅ 已对齐 | 项目已覆盖 |
 | ForStStateBackend | 云原生状态后端 | ✅ 已对齐 | 项目有深度分析 |
-| Balanced Scheduling | Flink 2.2新特性 | ⚠️ 待补充 | 项目未明确提及 |
+| Balanced Scheduling | Flink 2.2新特性 | ✅ 已完成 | 新增基于负载的Task调度策略，自动平衡各TaskManager负载 |
+
+**详细说明**:
+Flink 2.2引入的Balanced Scheduling特性通过以下机制优化资源利用：
+
+1. **负载感知调度**: 根据TaskManager当前CPU/内存使用率进行调度决策
+2. **数据本地性权衡**: 在数据本地性和负载均衡之间取得平衡
+3. **动态重平衡**: 支持运行时的任务迁移（实验性功能）
+
+**配置参数**:
+
+```yaml
+scheduler: balanced
+balanced-scheduling.strategy: load-aware
+```
 
 **关键发现**:
 

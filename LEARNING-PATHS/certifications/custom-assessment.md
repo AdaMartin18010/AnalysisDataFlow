@@ -100,6 +100,51 @@ public class WordCountExercise {
         env.execute("WordCount");
     }
 }
+
+// **参考答案**：WordCount完整实现
+/*
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.Collector;
+
+public class WordCountExercise {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1);
+
+        // 1. 从Socket读取数据
+        DataStream<String> source = env.socketTextStream("localhost", 9999);
+
+        // 2. 分词并转换为(word, count)格式
+        DataStream<Tuple2<String, Integer>> words = source
+            .flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
+                @Override
+                public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+                    for (String word : value.toLowerCase().split("\\s+")) {
+                        if (word.length() > 0) {
+                            out.collect(new Tuple2<>(word, 1));
+                        }
+                    }
+                }
+            });
+
+        // 3. 按单词分组，每秒统计一次
+        DataStream<Tuple2<String, Integer>> wordCounts = words
+            .keyBy(value -> value.f0)
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(1)))
+            .sum(1);
+
+        // 4. 输出结果
+        wordCounts.print();
+
+        env.execute("WordCount");
+    }
+}
+*/
 ```
 
 #### 中级编程题（L3）
@@ -121,6 +166,122 @@ public class OrderTimeoutDetection extends KeyedProcessFunction<String,
 
     // TODO: 实现代码
 }
+
+// **参考答案**：订单超时检测实现
+/*
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+import org.apache.flink.util.Collector;
+
+// 订单事件类
+class OrderEvent {
+    String orderId;
+    String eventType;  // "CREATE" 或 "PAY"
+    long timestamp;
+
+    public OrderEvent(String orderId, String eventType, long timestamp) {
+        this.orderId = orderId;
+        this.eventType = eventType;
+        this.timestamp = timestamp;
+    }
+}
+
+// 超时告警类
+class OrderTimeoutAlert {
+    String orderId;
+    long createTime;
+    String message;
+
+    public OrderTimeoutAlert(String orderId, long createTime, String message) {
+        this.orderId = orderId;
+        this.createTime = createTime;
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderTimeoutAlert{" +
+               "orderId='" + orderId + '\'' +
+               ", createTime=" + createTime +
+               ", message='" + message + '\'' +
+               '}';
+    }
+}
+
+public class OrderTimeoutDetection extends KeyedProcessFunction<String, OrderEvent, OrderTimeoutAlert> {
+
+    // 保存订单创建时间的状态
+    private ValueState<Long> createTimeState;
+    // 保存定时器时间戳的状态
+    private ValueState<Long> timerState;
+
+    @Override
+    public void open(Configuration parameters) {
+        createTimeState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("createTime", Long.class));
+        timerState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("timer", Long.class));
+    }
+
+    @Override
+    public void processElement(OrderEvent event, Context ctx, Collector<OrderTimeoutAlert> out)
+            throws Exception {
+
+        if ("CREATE".equals(event.eventType)) {
+            // 订单创建事件：设置30分钟后的定时器
+            long delay = 30 * 60 * 1000; // 30分钟（毫秒）
+            long timerTimestamp = ctx.timerService().currentProcessingTime() + delay;
+
+            ctx.timerService().registerProcessingTimeTimer(timerTimestamp);
+
+            // 保存状态
+            createTimeState.update(event.timestamp);
+            timerState.update(timerTimestamp);
+
+            System.out.println("订单 " + event.orderId + " 创建，设置超时检测定时器");
+
+        } else if ("PAY".equals(event.eventType)) {
+            // 订单支付事件：取消定时器
+            Long timer = timerState.value();
+            if (timer != null) {
+                ctx.timerService().deleteProcessingTimeTimer(timer);
+                createTimeState.clear();
+                timerState.clear();
+                System.out.println("订单 " + event.orderId + " 已支付，取消超时检测");
+            }
+        }
+    }
+
+    @Override
+    public void onTimer(long timestamp, OnTimerContext ctx, Collector<OrderTimeoutAlert> out)
+            throws Exception {
+        // 定时器触发，订单超时
+        Long createTime = createTimeState.value();
+        String orderId = ctx.getCurrentKey();
+
+        out.collect(new OrderTimeoutAlert(orderId, createTime, "订单超时未支付"));
+
+        // 清理状态
+        createTimeState.clear();
+        timerState.clear();
+    }
+}
+
+// 使用示例：
+/*
+DataStream<OrderEvent> orderStream = env.fromElements(
+    new OrderEvent("order1", "CREATE", System.currentTimeMillis()),
+    new OrderEvent("order2", "CREATE", System.currentTimeMillis()),
+    new OrderEvent("order1", "PAY", System.currentTimeMillis())
+);
+
+orderStream.keyBy(event -> event.orderId)
+    .process(new OrderTimeoutDetection())
+    .print("超时订单");
+*/
+*/
 ```
 
 #### 高级编程题（L4-L5）
@@ -139,6 +300,215 @@ public class OrderTimeoutDetection extends KeyedProcessFunction<String,
 public class DynamicRiskControlEngine {
     // TODO: 实现代码
 }
+
+// **参考答案**：动态规则风控引擎实现
+/*
+import org.apache.flink.api.common.state.*;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.datastream.BroadcastStream;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.co.KeyedBroadcastProcessFunction;
+import org.apache.flink.util.Collector;
+
+import java.util.Map;
+
+// 交易事件
+class TransactionEvent {
+    String userId;
+    double amount;
+    String region;
+    long timestamp;
+
+    public TransactionEvent(String userId, double amount, String region, long timestamp) {
+        this.userId = userId;
+        this.amount = amount;
+        this.region = region;
+        this.timestamp = timestamp;
+    }
+}
+
+// 风控规则
+class RiskRule {
+    String ruleId;
+    String ruleType;  // "AMOUNT", "FREQUENCY", "REGION"
+    double threshold;
+    long timeWindow;  // 毫秒
+    boolean enabled;
+
+    public RiskRule(String ruleId, String ruleType, double threshold, long timeWindow) {
+        this.ruleId = ruleId;
+        this.ruleType = ruleType;
+        this.threshold = threshold;
+        this.timeWindow = timeWindow;
+        this.enabled = true;
+    }
+}
+
+// 风控结果
+class RiskResult {
+    String userId;
+    String ruleId;
+    String ruleType;
+    double currentValue;
+    double threshold;
+    boolean isRisk;
+    long timestamp;
+
+    public RiskResult(String userId, String ruleId, String ruleType,
+                     double currentValue, double threshold, boolean isRisk) {
+        this.userId = userId;
+        this.ruleId = ruleId;
+        this.ruleType = ruleType;
+        this.currentValue = currentValue;
+        this.threshold = threshold;
+        this.isRisk = isRisk;
+        this.timestamp = System.currentTimeMillis();
+    }
+}
+
+public class DynamicRiskControlEngine extends KeyedBroadcastProcessFunction<
+    String, TransactionEvent, RiskRule, RiskResult> {
+
+    // Broadcast State描述器（存储动态规则）
+    private static final MapStateDescriptor<String, RiskRule> ruleStateDescriptor =
+        new MapStateDescriptor<>("rules", String.class, RiskRule.class);
+
+    // Keyed State：用户交易计数（用于频率检测）
+    private ValueState<Integer> transactionCountState;
+    // Keyed State：用户累计金额（用于金额检测）
+    private ValueState<Double> totalAmountState;
+    // Keyed State：上次交易时间（用于窗口清理）
+    private ValueState<Long> lastTimestampState;
+
+    @Override
+    public void open(Configuration parameters) {
+        transactionCountState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("count", Integer.class));
+        totalAmountState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("amount", Double.class));
+        lastTimestampState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("lastTime", Long.class));
+    }
+
+    @Override
+    public void processElement(TransactionEvent event, ReadOnlyContext ctx,
+                               Collector<RiskResult> out) throws Exception {
+
+        // 获取所有广播的规则
+        ReadOnlyBroadcastState<String, RiskRule> rules = ctx.getBroadcastState(ruleStateDescriptor);
+
+        // 检查每条启用的规则
+        for (Map.Entry<String, RiskRule> entry : rules.immutableEntries()) {
+            RiskRule rule = entry.getValue();
+            if (!rule.enabled) continue;
+
+            switch (rule.ruleType) {
+                case "AMOUNT":
+                    checkAmountRule(event, rule, out);
+                    break;
+                case "FREQUENCY":
+                    checkFrequencyRule(event, rule, out);
+                    break;
+                case "REGION":
+                    checkRegionRule(event, rule, out);
+                    break;
+            }
+        }
+
+        // 更新状态
+        updateState(event);
+    }
+
+    // 金额规则检查
+    private void checkAmountRule(TransactionEvent event, RiskRule rule,
+                                  Collector<RiskResult> out) {
+        if (event.amount > rule.threshold) {
+            out.collect(new RiskResult(
+                event.userId, rule.ruleId, "AMOUNT",
+                event.amount, rule.threshold, true));
+        }
+    }
+
+    // 频率规则检查
+    private void checkFrequencyRule(TransactionEvent event, RiskRule rule,
+                                     Collector<RiskResult> out) throws Exception {
+        Integer count = transactionCountState.value();
+        if (count == null) count = 0;
+
+        // 简单的频率检查（实际应用需要滑动窗口）
+        if (count + 1 > rule.threshold) {
+            out.collect(new RiskResult(
+                event.userId, rule.ruleId, "FREQUENCY",
+                count + 1, rule.threshold, true));
+        }
+        transactionCountState.update(count + 1);
+    }
+
+    // 地域规则检查（示例）
+    private void checkRegionRule(TransactionEvent event, RiskRule rule,
+                                  Collector<RiskResult> out) {
+        // 简化示例：高风险地域列表检查
+        String[] highRiskRegions = {"region_a", "region_b"};
+        for (String region : highRiskRegions) {
+            if (region.equals(event.region)) {
+                out.collect(new RiskResult(
+                    event.userId, rule.ruleId, "REGION",
+                    0, 0, true));
+                break;
+            }
+        }
+    }
+
+    private void updateState(TransactionEvent event) throws Exception {
+        Double total = totalAmountState.value();
+        if (total == null) total = 0.0;
+        totalAmountState.update(total + event.amount);
+        lastTimestampState.update(event.timestamp);
+    }
+
+    @Override
+    public void processBroadcastElement(RiskRule rule, Context ctx,
+                                       Collector<RiskResult> out) throws Exception {
+        // 更新规则（动态广播）
+        BroadcastState<String, RiskRule> broadcastState = ctx.getBroadcastState(ruleStateDescriptor);
+        broadcastState.put(rule.ruleId, rule);
+        System.out.println("规则更新: " + rule.ruleId + " 类型: " + rule.ruleType);
+    }
+}
+
+// 使用示例：
+/*
+StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+// 交易流
+DataStream<TransactionEvent> transactionStream = env
+    .addSource(new TransactionSource())
+    .keyBy(event -> event.userId);
+
+// 规则流（模拟动态规则更新）
+DataStream<RiskRule> ruleStream = env
+    .fromElements(
+        new RiskRule("rule1", "AMOUNT", 10000, 60000),
+        new RiskRule("rule2", "FREQUENCY", 5, 60000)
+    )
+    .broadcast(DynamicRiskControlEngine.ruleStateDescriptor);
+
+// 连接两个流
+transactionStream
+    .connect(ruleStream)
+    .process(new DynamicRiskControlEngine())
+    .print("风险告警");
+
+env.execute("Dynamic Risk Control");
+*/
+
+// 设计要点说明：
+// 1. Broadcast State：用于存储动态规则，所有并行实例共享
+// 2. Keyed State：每个用户独立的状态，用于频率/金额累计
+// 3. Exactly-Once：Flink的Checkpoint机制保证状态一致性
+// 4. 延迟优化：使用异步IO可进一步优化外部查询延迟
+*/
 ```
 
 ### 3. 架构设计考核

@@ -1,8 +1,10 @@
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.9.6 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v2.9.7 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
+>
+> **更新说明 (v2.9.7)**: P6任务完成 - 修复28处未完成内容，新增15个形式化定义
 >
 > **更新说明 (v2.9.6)**: 新增"依赖元素"列，标注关键定理/定义/引理的形式化依赖关系。详见 [Struct/Key-Theorem-Proof-Chains.md](Struct/Key-Theorem-Proof-Chains.md)
 
@@ -117,6 +119,9 @@
       - [新增定义 (5个)](#新增定义-5个)
       - [新增命题 (3个)](#新增命题-3个-1)
       - [v2.9.6 补充统计](#v296-补充统计)
+    - [8.12 v2.9.7 P6未完成内容修复 (2026-04-06)](#812-v297-p6未完成内容修复-2026-04-06)
+      - [新增定义 (15个)](#新增定义-15个)
+      - [v2.9.7 补充统计](#v297-补充统计)
   - [引用参考](#引用参考)
 
 ---
@@ -3730,13 +3735,58 @@
 | 推论 (Cor) | 0 | 121 |
 | **总计** | **9** | **9,310** |
 
+### 8.12 v2.9.7 P6未完成内容修复 (2026-04-06)
+
+**背景**: 任务P6 - 修复全项目28处未完成/未完善内容，包括空白References章节、todo!()占位符、FLIP-XXX占位符等
+
+**涉及文档**:
+
+- Struct/stream-processing-semantics-formalization.md
+- Struct/first-person-choreographies.md
+- Struct/coq-mechanization.md
+- Flink/02-arrow-format-integration.md
+- Flink/02-async-streaming-patterns.md
+- Flink/risingwave-comparison/ (3篇新建)
+- 及其他19个更新文档
+
+#### 新增定义 (15个)
+
+| 编号 | 定义名称 | 所在文档 | 状态 |
+|------|----------|----------|------|
+| Def-F-Arrow-01 | Arrow UDF处理流程 | 02-arrow-format-integration.md | ✅ |
+| Def-F-Arrow-02 | 向量化处理优化 | 02-arrow-format-integration.md | ✅ |
+| Def-F-Async-01 | 自适应反压策略 | 02-async-streaming-patterns.md | ✅ |
+| Def-F-Async-02 | 动态缓冲区调整 | 02-async-streaming-patterns.md | ✅ |
+| Def-F-RW-01 | RisingWave架构定义 | risingwave-comparison/architecture-comparison.md | ✅ |
+| Def-F-RW-02 | 物化视图一致性模型 | risingwave-comparison/architecture-comparison.md | ✅ |
+| Def-F-RW-03 | 性能基准指标 | risingwave-comparison/performance-benchmark.md | ✅ |
+| Def-F-RW-04 | 功能特性矩阵 | risingwave-comparison/feature-matrix.md | ✅ |
+| Def-S-Ref-01 | Dataflow语义引用完整性 | stream-processing-semantics-formalization.md | ✅ |
+| Def-S-Ref-02 | Choreographic编程引用集 | first-person-choreographies.md | ✅ |
+| Def-F-SQL-01 | MATCH_RECOGNIZE模式定义 | ansi-sql-2023-compliance-guide.md | ✅ |
+| Def-F-Vec-01 | 向量搜索流水线 | vector-search-streaming-convergence.md | ✅ |
+| Def-F-Mig-01 | Kafka连接器迁移映射 | 03.01-migration-guide.md | ✅ |
+| Def-F-Coq-01 | Coq证明注释规范 | coq-mechanization.md | ✅ |
+| Def-F-Flip-01 | FLIP状态追踪标记 | 多文件 | ✅ |
+
+#### v2.9.7 补充统计
+
+| 类型 | 新增数量 | 累计总计 |
+|------|----------|----------|
+| 定理 (Thm) | 0 | 1,911 |
+| 定义 (Def) | 15 | 4,584 |
+| 引理 (Lemma) | 0 | 1,568 |
+| 命题 (Prop) | 0 | 1,197 |
+| 推论 (Cor) | 0 | 121 |
+| **总计** | **15** | **9,325** |
+
 ## 引用参考
 
 
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-06 (v2.9.6: 统一模型关系图谱 - 新增1定理、5定义、3命题)*
+*最后更新时间: 2026-04-06 (v2.9.7: P6未完成内容修复 - 新增15定义)*
 *本次新增文档: flip-531-ai-agents-ga-guide.md, serverless-flink-ga-guide.md, adaptive-execution-engine-v2.md, smart-checkpointing-strategies.md, ansi-sql-2023-compliance-guide.md, flink-24-connectors-guide.md, flink-24-performance-improvements.md, flink-24-deployment-improvements.md, flink-24-security-enhancements.md, flink-25-stream-batch-unification.md, flink-25-gpu-acceleration.md, flink-25-wasm-udf-ga.md, flink-30-architecture-redesign.md*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
