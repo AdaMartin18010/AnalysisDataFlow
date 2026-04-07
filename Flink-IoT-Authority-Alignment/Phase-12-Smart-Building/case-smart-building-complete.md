@@ -187,6 +187,7 @@ $$C_i^{area} = p \cdot E_i^{private} + p \cdot E_{shared} \cdot \frac{A_i}{A_{to
 $$C_i^{usage} = p \cdot E_i^{private} + p \cdot E_{shared} \cdot \left(\alpha \cdot \frac{A_i}{A_{total}} + \beta \cdot \frac{U_i}{U_{total}} + \gamma \cdot \frac{H_i}{H_{total}}\right)$$
 
 其中：
+
 - $U_i$: 租户实际占用人数
 - $H_i$: 租户使用时长（小时/月）
 - $\alpha + \beta + \gamma = 1$（权重系数，推荐 $\alpha=0.5, \beta=0.3, \gamma=0.2$）
@@ -338,31 +339,31 @@ $$T_{response} \leq 67 + 85 + 33 + 241 = 426s \approx 7 \text{ 分钟}$$
 
 **证明**:
 
-1. **个体理性 (Individual Rationality)**: 
+1. **个体理性 (Individual Rationality)**:
 
    每个租户的分摊成本不超过其单独使用成本：
-   
+
    租户 $i$ 的分摊成本：
    $$C_i = E_i^{private} \cdot p + \frac{w_i}{\sum_j w_j} \cdot E_{shared} \cdot p$$
-   
+
    其中 $w_i = \alpha A_i + \beta U_i + \gamma H_i$
-   
+
    由于共享设施的规模效应：
    $$C_i \leq (E_i^{private} + E_i^{allocated}) \cdot p_{individual}$$
 
-2. **效率性 (Efficiency)**: 
+2. **效率性 (Efficiency)**:
 
    总成本等于总费用：
    $$\sum_i C_i = p \cdot \left(\sum_i E_i^{private} + E_{shared}\right) = p \cdot E_{total}$$
 
-3. **比例公平性**: 
+3. **比例公平性**:
 
    租户能耗增加 $\Delta E$，其成本增加 $\Delta C$ 满足：
    $$\frac{\partial C_i}{\partial A_i} = p \cdot \frac{\alpha E_{shared}}{\sum_j w_j} > 0$$
-   
+
    即面积越大，分摊越多，符合直观公平。
 
-4. **无嫉妒性近似**: 
+4. **无嫉妒性近似**:
 
    对于任意两个租户 $i$ 和 $j$，若 $w_i = w_j$ 则 $C_i = C_j$，避免相同使用强度下的不公平。
 
@@ -443,6 +444,7 @@ $$\mathcal{SBMS} \bowtie_{energy} \mathcal{EMS}$$
 **交互协议**：
 
 1. **能耗数据上报**:
+
    ```
    SBMS → EMS: EnergyReport(building_id, timestamp, consumption_by_type)
    频率: 15分钟
@@ -450,6 +452,7 @@ $$\mathcal{SBMS} \bowtie_{energy} \mathcal{EMS}$$
    ```
 
 2. **需求响应事件接收**:
+
    ```
    EMS → SBMS: DR_Event(event_id, start_time, duration, price_signal)
    响应时间: < 4秒
@@ -457,6 +460,7 @@ $$\mathcal{SBMS} \bowtie_{energy} \mathcal{EMS}$$
    ```
 
 3. **可再生能源集成**:
+
    ```
    PV系统 → SBMS: SolarGeneration(kW, forecast_24h)
    储能系统 ← SBMS: Charge/Discharge Command
@@ -548,6 +552,7 @@ graph LR
 $$x_{t+1} = A x_t + B u_t + D d_t + w_t$$
 
 其中：
+
 - $x_t \in \mathbb{R}^n$: 系统状态（各区域温度、墙体温度等）
 - $u_t \in \mathbb{R}^m$: 控制输入（HVAC功率、风阀开度等）
 - $d_t \in \mathbb{R}^p$: 扰动输入（室外温度、occupancy、太阳辐射）
@@ -558,6 +563,7 @@ $$x_{t+1} = A x_t + B u_t + D d_t + w_t$$
 $$\min_{u} \sum_{k=0}^{N-1} \left[\|x_k - x_{ref}\|_Q^2 + \|u_k\|_R^2 + \|\Delta u_k\|_S^2 + \lambda \cdot P_{grid}(k) \cdot Price(k)\right]$$
 
 约束条件：
+
 - $u_{min} \leq u_k \leq u_{max}$ （设备容量约束）
 - $T_{min} \leq x_k \leq T_{max}$ （舒适度约束）
 - $|\Delta u_k| \leq \Delta u_{max}$ （设备寿命约束）
@@ -640,7 +646,7 @@ flowchart TD
 
 **集成决策**：
 
-$$Anomaly_{final} = \begin{cases} 
+$$Anomaly_{final} = \begin{cases}
 CRITICAL & \text{if } Anomaly_{stat} \land Anomaly_{LSTM} \land Anomaly_{rule} \\
 WARNING & \text{if } \sum \mathbb{1}(Anomaly) \geq 2 \\
 NORMAL & \text{otherwise}
@@ -653,18 +659,18 @@ stateDiagram-v2
     [*] --> DataCollection: 传感器数据
     DataCollection --> FeatureExtraction: 窗口聚合
     FeatureExtraction --> MultiModelInference: 特征向量
-    
+
     MultiModelInference --> StatisticalCheck: 统计检验
     MultiModelInference --> LSTMPrediction: LSTM预测
     MultiModelInference --> RuleEngine: 规则匹配
-    
+
     StatisticalCheck --> VotingEnsemble: 异常分数
     LSTMPrediction --> VotingEnsemble: 异常分数
     RuleEngine --> VotingEnsemble: 异常分数
-    
+
     VotingEnsemble --> AlertGeneration: 综合评分>阈值
     VotingEnsemble --> NormalFlow: 综合评分<阈值
-    
+
     AlertGeneration --> AlertDispatch: 分级告警
     AlertDispatch --> [*]
     NormalFlow --> [*]
@@ -716,27 +722,27 @@ stateDiagram-v2
     NORMAL --> MONITORING: 进入监测模式
     MONITORING --> PRICE_EVENT: 接收价格事件
     MONITORING --> DR_EVENT: 接收DR事件
-    
+
     PRICE_EVENT --> OPTIMIZATION: 价格有利
     PRICE_EVENT --> NORMAL: 价格不利
-    
+
     DR_EVENT --> EVALUATION: 评估响应能力
     EVALUATION --> OPTIMIZATION: 可响应且舒适约束满足
     EVALUATION --> DECLINE: 不可响应或约束冲突
-    
+
     OPTIMIZATION --> PRECooling: 预冷策略
     OPTIMIZATION --> LOADShift: 负荷转移
     OPTIMIZATION --> SHED: 负荷削减
-    
+
     PRECooling --> EXECUTION: 执行控制
     LOADShift --> EXECUTION
     SHED --> EXECUTION
-    
+
     EXECUTION --> VERIFICATION: 验证响应
     VERIFICATION --> NORMAL: 响应完成
-    
+
     DECLINE --> NORMAL: 发送拒绝
-    
+
     note right of OPTIMIZATION
         多目标优化：
         - 最小化电费支出
@@ -944,32 +950,32 @@ flowchart TD
 CREATE TABLE building_devices (
     -- 主键
     device_id STRING COMMENT '设备唯一标识',
-    
+
     -- 设备属性
     device_type STRING COMMENT '设备类型: HVAC, LIGHTING, ELEVATOR, PUMP, FAN, METER',
     device_model STRING COMMENT '设备型号',
     manufacturer STRING COMMENT '制造商',
-    
+
     -- 位置信息
     building_id STRING COMMENT '所属楼宇ID',
     zone_id STRING COMMENT '区域ID: F01-OFFICE-01',
     floor INT COMMENT '楼层',
     room_id STRING COMMENT '房间号',
-    
+
     -- 租户信息
     tenant_id STRING COMMENT '租户ID（公共区域为NULL）',
     tenant_name STRING COMMENT '租户名称',
-    
+
     -- 技术参数
     rated_power DECIMAL(10,2) COMMENT '额定功率(kW)',
     rated_current DECIMAL(8,3) COMMENT '额定电流(A)',
     voltage_rating DECIMAL(6,2) COMMENT '额定电压(V)',
-    
+
     -- 状态
     install_date DATE COMMENT '安装日期',
     warranty_expiry DATE COMMENT '保修到期日',
     status STRING COMMENT '状态: ACTIVE, INACTIVE, MAINTENANCE',
-    
+
     PRIMARY KEY (device_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -989,23 +995,23 @@ CREATE TABLE building_info (
     building_id STRING COMMENT '楼宇ID',
     building_name STRING COMMENT '楼宇名称',
     building_type STRING COMMENT '类型: OFFICE, RETAIL, MIXED',
-    
+
     -- 物理参数
     total_area DECIMAL(10,2) COMMENT '总建筑面积(m²)',
     floor_count INT COMMENT '楼层数',
     construction_year INT COMMENT '建成年份',
-    
+
     -- 位置
     address STRING COMMENT '地址',
     city STRING COMMENT '城市',
     longitude DECIMAL(10,6) COMMENT '经度',
     latitude DECIMAL(10,6) COMMENT '纬度',
-    
+
     -- 能耗基准
     baseline_elec_kwh_per_m2 DECIMAL(8,2) COMMENT '电耗基准(kWh/m²/year)',
     baseline_water_m3_per_m2 DECIMAL(8,3) COMMENT '水耗基准(m³/m²/year)',
     leed_certification STRING COMMENT 'LEED认证: NONE, CERTIFIED, SILVER, GOLD, PLATINUM',
-    
+
     PRIMARY KEY (building_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -1024,22 +1030,22 @@ CREATE TABLE tenant_info (
     tenant_id STRING COMMENT '租户ID',
     tenant_name STRING COMMENT '租户名称',
     tenant_type STRING COMMENT '租户类型: OFFICE, RETAIL, RESTAURANT, GYM',
-    
+
     -- 租赁信息
     building_id STRING COMMENT '所在楼宇',
     floor_start INT COMMENT '起始楼层',
     floor_end INT COMMENT '结束楼层',
     leased_area DECIMAL(10,2) COMMENT '租赁面积(m²)',
-    
+
     -- 分摊参数
     headcount INT COMMENT '员工人数',
     operating_hours STRING COMMENT '营业时间: 08:00-18:00',
-    
+
     -- 合同信息
     contract_start DATE COMMENT '合同开始',
     contract_end DATE COMMENT '合同结束',
     billing_cycle STRING COMMENT '计费周期: MONTHLY, QUARTERLY',
-    
+
     PRIMARY KEY (tenant_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -1058,16 +1064,16 @@ CREATE TABLE electricity_meter_stream (
     -- 标识
     meter_id STRING COMMENT '电表ID',
     device_id STRING COMMENT '关联设备ID',
-    
+
     -- 时间戳
     reading_time TIMESTAMP(3) COMMENT '读数时间',
     proc_time AS PROCTIME(),
-    
+
     -- 电量数据
     active_power DECIMAL(10,3) COMMENT '有功功率(kW)',
     reactive_power DECIMAL(10,3) COMMENT '无功功率(kVAR)',
     apparent_power DECIMAL(10,3) COMMENT '视在功率(kVA)',
-    
+
     -- 电压电流
     voltage_l1 DECIMAL(8,2) COMMENT 'L1电压(V)',
     voltage_l2 DECIMAL(8,2) COMMENT 'L2电压(V)',
@@ -1075,17 +1081,17 @@ CREATE TABLE electricity_meter_stream (
     current_l1 DECIMAL(8,3) COMMENT 'L1电流(A)',
     current_l2 DECIMAL(8,3) COMMENT 'L2电流(A)',
     current_l3 DECIMAL(8,3) COMMENT 'L3电流(A)',
-    
+
     -- 电能质量
     power_factor DECIMAL(4,3) COMMENT '功率因数',
     frequency DECIMAL(5,2) COMMENT '频率(Hz)',
     thd_voltage DECIMAL(5,2) COMMENT '电压总谐波畸变率(%)',
     thd_current DECIMAL(5,2) COMMENT '电流总谐波畸变率(%)',
-    
+
     -- 累计电量
     total_active_energy DECIMAL(15,3) COMMENT '总有功电量(kWh)',
     total_reactive_energy DECIMAL(15,3) COMMENT '总无功电量(kVARh)',
-    
+
     -- Watermark
     WATERMARK FOR reading_time AS reading_time - INTERVAL '30' SECOND
 ) WITH (
@@ -1108,16 +1114,16 @@ CREATE TABLE water_meter_stream (
     meter_id STRING COMMENT '水表ID',
     device_id STRING COMMENT '关联设备ID',
     water_type STRING COMMENT '水类型: COLD, HOT, RECYCLED',
-    
+
     reading_time TIMESTAMP(3),
     proc_time AS PROCTIME(),
-    
+
     -- 流量数据
     flow_rate DECIMAL(8,3) COMMENT '瞬时流量(m³/h)',
     total_volume DECIMAL(12,3) COMMENT '累计流量(m³)',
     pressure DECIMAL(6,3) COMMENT '压力(MPa)',
     temperature DECIMAL(5,2) COMMENT '水温(°C)',
-    
+
     WATERMARK FOR reading_time AS reading_time - INTERVAL '1' MINUTE
 ) WITH (
     'connector' = 'kafka',
@@ -1131,16 +1137,16 @@ CREATE TABLE gas_meter_stream (
     meter_id STRING COMMENT '气表ID',
     device_id STRING COMMENT '关联设备ID',
     gas_type STRING COMMENT '气体类型: NATURAL, LPG',
-    
+
     reading_time TIMESTAMP(3),
     proc_time AS PROCTIME(),
-    
+
     -- 流量数据
     flow_rate DECIMAL(8,3) COMMENT '瞬时流量(m³/h)',
     total_volume DECIMAL(12,3) COMMENT '累计流量(m³)',
     pressure DECIMAL(6,3) COMMENT '压力(kPa)',
     temperature DECIMAL(5,2) COMMENT '温度(°C)',
-    
+
     WATERMARK FOR reading_time AS reading_time - INTERVAL '1' MINUTE
 ) WITH (
     'connector' = 'kafka',
@@ -1164,17 +1170,17 @@ SELECT
     d.tenant_id,
     TUMBLE_START(e.reading_time, INTERVAL '1' MINUTE) AS window_start,
     TUMBLE_END(e.reading_time, INTERVAL '1' MINUTE) AS window_end,
-    
+
     -- 功率统计
     COUNT(*) AS reading_count,
     AVG(e.active_power) AS avg_power_kw,
     MAX(e.active_power) AS max_power_kw,
     MIN(e.active_power) AS min_power_kw,
     STDDEV(e.active_power) AS std_power_kw,
-    
+
     -- 能耗计算（1分钟 = 1/60小时）
     SUM(e.active_power) / 60.0 AS energy_kwh,
-    
+
     -- 电能质量
     AVG(e.power_factor) AS avg_power_factor,
     AVG(e.voltage_l1) AS avg_voltage_l1,
@@ -1202,16 +1208,16 @@ SELECT
     tenant_id,
     TUMBLE_START(window_start, INTERVAL '1' HOUR) AS hour_start,
     TUMBLE_END(window_start, INTERVAL '1' HOUR) AS hour_end,
-    
+
     -- 聚合统计
     SUM(energy_kwh) AS total_energy_kwh,
     AVG(avg_power_kw) AS avg_power_kw,
     MAX(max_power_kw) AS peak_power_kw,
     MIN(min_power_kw) AS min_power_kw,
-    
+
     -- 负荷因子
     AVG(avg_power_kw) / NULLIF(MAX(max_power_kw), 0) AS load_factor,
-    
+
     -- 数据质量
     SUM(reading_count) AS total_readings
 FROM energy_aggregation_minute
@@ -1233,24 +1239,24 @@ SELECT
     device_type,
     tenant_id,
     DATE(window_start) AS date,
-    
+
     -- 日能耗统计
     SUM(total_energy_kwh) AS daily_energy_kwh,
     AVG(avg_power_kw) AS avg_power_kw,
     MAX(peak_power_kw) AS peak_demand_kw,
-    
+
     -- 峰谷平统计（假设分时电价）
-    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12 
-              OR EXTRACT(HOUR FROM hour_start) BETWEEN 14 AND 17 
+    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12
+              OR EXTRACT(HOUR FROM hour_start) BETWEEN 14 AND 17
          THEN total_energy_kwh ELSE 0 END) AS peak_energy_kwh,
-    
-    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 8 AND 22 
+
+    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 8 AND 22
          THEN total_energy_kwh ELSE 0 END) AS flat_energy_kwh,
-    
-    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) < 8 
-              OR EXTRACT(HOUR FROM hour_start) > 22 
+
+    SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) < 8
+              OR EXTRACT(HOUR FROM hour_start) > 22
          THEN total_energy_kwh ELSE 0 END) AS valley_energy_kwh,
-    
+
     -- 碳排放估算（电网因子0.5703 kg CO2/kWh）
     SUM(total_energy_kwh) * 0.5703 AS co2_emission_kg
 FROM energy_aggregation_hourly
@@ -1270,19 +1276,19 @@ SELECT
     d.daily_energy_kwh,
     d.co2_emission_kg,
     b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 AS daily_baseline_kwh,
-    
+
     -- 偏差计算
-    (d.daily_energy_kwh - b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0) 
-        / NULLIF(b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0, 0) * 100 
+    (d.daily_energy_kwh - b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0)
+        / NULLIF(b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0, 0) * 100
         AS deviation_percent,
-    
+
     -- 能效等级
     CASE
-        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 * 0.8 
+        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 * 0.8
             THEN 'EXCELLENT'
-        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 
+        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0
             THEN 'GOOD'
-        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 * 1.2 
+        WHEN d.daily_energy_kwh < b.baseline_elec_kwh_per_m2 * t.leased_area / 365.0 * 1.2
             THEN 'WARNING'
         ELSE 'CRITICAL'
     END AS energy_efficiency_grade
@@ -1331,24 +1337,24 @@ SELECT
     c.total_energy_kwh AS current_energy_kwh,
     h.hist_avg_kwh,
     h.hist_std_kwh,
-    
+
     -- Z-score异常检测
     (c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_std_kwh, 0) AS z_score,
-    
+
     -- 偏差百分比
     (c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_avg_kwh, 0) * 100 AS deviation_percent,
-    
+
     -- 异常等级
     CASE
-        WHEN ABS((c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_std_kwh, 0)) > 3 
+        WHEN ABS((c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_std_kwh, 0)) > 3
             THEN 'CRITICAL'
-        WHEN ABS((c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_std_kwh, 0)) > 2 
+        WHEN ABS((c.total_energy_kwh - h.hist_avg_kwh) / NULLIF(h.hist_std_kwh, 0)) > 2
             THEN 'WARNING'
         WHEN c.total_energy_kwh > h.p95_kwh OR c.total_energy_kwh < h.p05_kwh
             THEN 'ATTENTION'
         ELSE 'NORMAL'
     END AS anomaly_level,
-    
+
     -- 异常方向
     CASE
         WHEN c.total_energy_kwh > h.hist_avg_kwh THEN 'HIGH_CONSUMPTION'
@@ -1372,30 +1378,30 @@ CREATE TABLE energy_alerts (
     alert_id STRING COMMENT '告警ID',
     alert_type STRING COMMENT '告警类型: HIGH_CONSUMPTION, LOW_CONSUMPTION, PEAK_DEMAND',
     alert_level STRING COMMENT '等级: CRITICAL, WARNING, ATTENTION',
-    
+
     -- 位置信息
     building_id STRING COMMENT '楼宇ID',
     zone_id STRING COMMENT '区域ID',
     device_type STRING COMMENT '设备类型',
     tenant_id STRING COMMENT '租户ID',
-    
+
     -- 时间
     alert_time TIMESTAMP(3) COMMENT '告警时间',
     detection_time TIMESTAMP(3) COMMENT '检测时间',
-    
+
     -- 能耗数据
     current_value DECIMAL(12,3) COMMENT '当前值(kWh)',
     baseline_value DECIMAL(12,3) COMMENT '基准值(kWh)',
     deviation_percent DECIMAL(6,2) COMMENT '偏差百分比',
     z_score DECIMAL(6,2) COMMENT 'Z分数',
-    
+
     -- 告警信息
     alert_message STRING COMMENT '告警消息',
     suggested_action STRING COMMENT '建议措施',
-    
+
     -- 状态
     status STRING COMMENT '状态: ACTIVE, ACKNOWLEDGED, RESOLVED',
-    
+
     PRIMARY KEY (alert_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -1425,7 +1431,7 @@ SELECT
            ' - Current: ', CAST(current_energy_kwh AS STRING), ' kWh,',
            ' Baseline: ', CAST(hist_avg_kwh AS STRING), ' kWh,',
            ' Deviation: ', CAST(deviation_percent AS STRING), '%') AS alert_message,
-    CASE 
+    CASE
         WHEN anomaly_direction = 'HIGH_CONSUMPTION' THEN 'Check HVAC settings and occupancy'
         ELSE 'Verify sensor operation and check for equipment issues'
     END AS suggested_action,
@@ -1444,31 +1450,31 @@ CREATE TABLE indoor_environment_stream (
     -- 位置
     zone_id STRING COMMENT '区域ID',
     sensor_id STRING COMMENT '传感器ID',
-    
+
     -- 时间
     sensor_time TIMESTAMP(3),
     proc_time AS PROCTIME(),
-    
+
     -- 热环境参数
     air_temperature DECIMAL(5,2) COMMENT '空气温度(°C)',
     radiant_temperature DECIMAL(5,2) COMMENT '平均辐射温度(°C)',
     relative_humidity DECIMAL(5,2) COMMENT '相对湿度(%)',
     air_velocity DECIMAL(4,2) COMMENT '空气流速(m/s)',
-    
+
     -- 空气质量参数
     co2_ppm INT COMMENT 'CO2浓度(ppm)',
     pm25_ug_m3 DECIMAL(6,2) COMMENT 'PM2.5浓度(μg/m³)',
     tvoc_ug_m3 DECIMAL(6,2) COMMENT 'TVOC浓度(μg/m³)',
     formaldehyde_ug_m3 DECIMAL(6,2) COMMENT '甲醛浓度(μg/m³)',
-    
+
     -- 光照和声学
     illuminance_lux DECIMAL(8,2) COMMENT '照度(lux)',
     noise_level_dba DECIMAL(5,2) COMMENT '噪声级(dBA)',
-    
+
     -- occupancy
     occupancy_count INT COMMENT 'occupancy人数',
     occupancy_detected BOOLEAN COMMENT '是否检测到人员',
-    
+
     WATERMARK FOR sensor_time AS sensor_time - INTERVAL '1' MINUTE
 ) WITH (
     'connector' = 'kafka',
@@ -1481,31 +1487,31 @@ CREATE TABLE indoor_environment_stream (
 CREATE TABLE outdoor_weather_stream (
     station_id STRING COMMENT '气象站ID',
     report_time TIMESTAMP(3),
-    
+
     -- 温度湿度
     outdoor_temp DECIMAL(5,2) COMMENT '室外温度(°C)',
     outdoor_humidity DECIMAL(5,2) COMMENT '室外湿度(%)',
-    
+
     -- 太阳辐射
     solar_radiation_wm2 DECIMAL(8,2) COMMENT '太阳辐射(W/m²)',
     solar_radiation_direct DECIMAL(8,2) COMMENT '直射辐射(W/m²)',
     solar_radiation_diffuse DECIMAL(8,2) COMMENT '散射辐射(W/m²)',
-    
+
     -- 风速风向
     wind_speed DECIMAL(4,2) COMMENT '风速(m/s)',
     wind_direction DECIMAL(5,2) COMMENT '风向(°)',
-    
+
     -- 气压
     atmospheric_pressure DECIMAL(7,2) COMMENT '大气压(hPa)',
-    
+
     -- 天气状况
     weather_condition STRING COMMENT '天气状况: SUNNY, CLOUDY, RAINY, SNOWY',
-    
+
     -- 天气预报
     forecast_temp_1h DECIMAL(5,2) COMMENT '1小时预报温度',
     forecast_temp_2h DECIMAL(5,2) COMMENT '2小时预报温度',
     forecast_temp_24h DECIMAL(5,2) COMMENT '24小时预报温度',
-    
+
     WATERMARK FOR report_time AS report_time - INTERVAL '5' MINUTE
 ) WITH (
     'connector' = 'kafka',
@@ -1523,7 +1529,7 @@ CREATE VIEW comfort_metrics_calculation AS
 SELECT
     zone_id,
     sensor_time,
-    
+
     -- 输入参数
     air_temperature AS t_air,
     radiant_temperature AS t_rad,
@@ -1531,30 +1537,30 @@ SELECT
     air_velocity AS vel,
     co2_ppm,
     occupancy_count,
-    
+
     -- PMV简化计算（基于ISO 7730的简化公式）
     -- 假设: 服装热阻 clo=0.7 (夏季) / 1.0 (冬季), 代谢率 met=1.2 (办公室)
-    CASE 
+    CASE
         WHEN air_temperature > 20 THEN 0.7  -- 夏季
         ELSE 1.0  -- 冬季
     END AS clothing_insulation,
-    
+
     1.2 AS metabolic_rate,  -- met
-    
+
     -- PMV计算（简化公式）
     (0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-        1.2 - 0.35 * (air_temperature - 26.0) 
+        1.2 - 0.35 * (air_temperature - 26.0)
         - 0.028 * (relative_humidity - 50.0)
         + 0.1 * (26.0 - air_velocity)
         - 0.001 * (co2_ppm - 400.0)
         + 0.05 * (radiant_temperature - air_temperature)
     ) AS pmv,
-    
+
     -- PPD计算
     100 - 95 * EXP(
         -0.03353 * POWER(
             (0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-                1.2 - 0.35 * (air_temperature - 26.0) 
+                1.2 - 0.35 * (air_temperature - 26.0)
                 - 0.028 * (relative_humidity - 50.0)
                 + 0.1 * (26.0 - air_velocity)
                 - 0.001 * (co2_ppm - 400.0)
@@ -1563,7 +1569,7 @@ SELECT
         )
         - 0.2179 * POWER(
             (0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-                1.2 - 0.35 * (air_temperature - 26.0) 
+                1.2 - 0.35 * (air_temperature - 26.0)
                 - 0.028 * (relative_humidity - 50.0)
                 + 0.1 * (26.0 - air_velocity)
                 - 0.001 * (co2_ppm - 400.0)
@@ -1571,30 +1577,30 @@ SELECT
             ), 2
         )
     ) AS ppd,
-    
+
     -- IAQ指数计算
     (co2_ppm - 400.0) / 1600.0 * 0.30 +
     GREATEST(pm25_ug_m3 - 0, 0) / 35.0 * 0.25 +
     tvoc_ug_m3 / 600.0 * 0.20 +
     formaldehyde_ug_m3 / 80.0 * 0.15 +
     (co2_ppm - 400.0) / 10000.0 * 0.10 AS iaq_index,
-    
+
     -- 照度充足率
     illuminance_lux / 300.0 * 100 AS lpd_percent,
-    
+
     -- 舒适度等级
     CASE
         WHEN ABS((0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-                1.2 - 0.35 * (air_temperature - 26.0) 
+                1.2 - 0.35 * (air_temperature - 26.0)
                 - 0.028 * (relative_humidity - 50.0)
                 + 0.1 * (26.0 - air_velocity)
                 - 0.001 * (co2_ppm - 400.0)
                 + 0.05 * (radiant_temperature - air_temperature)
-            )) <= 0.5 
+            )) <= 0.5
              AND (100 - 95 * EXP(-0.03353 * POWER((0.303 * EXP(-0.036 * 1.2) + 0.028) * (1.2 - 0.35 * (air_temperature - 26.0) - 0.028 * (relative_humidity - 50.0) + 0.1 * (26.0 - air_velocity) - 0.001 * (co2_ppm - 400.0) + 0.05 * (radiant_temperature - air_temperature)), 4) - 0.2179 * POWER((0.303 * EXP(-0.036 * 1.2) + 0.028) * (1.2 - 0.35 * (air_temperature - 26.0) - 0.028 * (relative_humidity - 50.0) + 0.1 * (26.0 - air_velocity) - 0.001 * (co2_ppm - 400.0) + 0.05 * (radiant_temperature - air_temperature)), 2))) < 10
             THEN 'EXCELLENT'
         WHEN ABS((0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-                1.2 - 0.35 * (air_temperature - 26.0) 
+                1.2 - 0.35 * (air_temperature - 26.0)
                 - 0.028 * (relative_humidity - 50.0)
                 + 0.1 * (26.0 - air_velocity)
                 - 0.001 * (co2_ppm - 400.0)
@@ -1602,7 +1608,7 @@ SELECT
             )) <= 1.0
             THEN 'GOOD'
         WHEN ABS((0.303 * EXP(-0.036 * 1.2) + 0.028) * (
-                1.2 - 0.35 * (air_temperature - 26.0) 
+                1.2 - 0.35 * (air_temperature - 26.0)
                 - 0.028 * (relative_humidity - 50.0)
                 + 0.1 * (26.0 - air_velocity)
                 - 0.001 * (co2_ppm - 400.0)
@@ -1623,30 +1629,30 @@ CREATE TABLE hvac_control_decisions (
     control_id STRING COMMENT '控制ID',
     zone_id STRING COMMENT '区域ID',
     building_id STRING COMMENT '楼宇ID',
-    
+
     -- 时间
     decision_time TIMESTAMP(3) COMMENT '决策时间',
     effective_time TIMESTAMP(3) COMMENT '生效时间',
-    
+
     -- 当前状态
     current_temp DECIMAL(5,2) COMMENT '当前温度',
     current_humidity DECIMAL(5,2) COMMENT '当前湿度',
     current_pmv DECIMAL(4,2) COMMENT '当前PMV',
     current_ppd DECIMAL(5,2) COMMENT '当前PPD',
-    
+
     -- 控制输出
     control_type STRING COMMENT '控制类型: TEMP_SETPOINT, FAN_SPEED, DAMPER, MODE',
     control_value DECIMAL(8,2) COMMENT '控制值',
     control_unit STRING COMMENT '单位: C, %, RPM',
-    
+
     -- 控制策略
     strategy STRING COMMENT '策略: COMFORT_PRIORITY, ENERGY_PRIORITY, BALANCED',
     priority INT COMMENT '优先级: 1-10',
-    
+
     -- 约束
     min_temp DECIMAL(5,2) COMMENT '最低温度限制',
     max_temp DECIMAL(5,2) COMMENT '最高温度限制',
-    
+
     PRIMARY KEY (control_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -1668,10 +1674,10 @@ WITH comfort_status AS (
         iaq_index,
         comfort_level,
         occupancy_count,
-        
+
         -- 舒适度偏差
         ABS(pmv) AS pmv_abs,
-        CASE 
+        CASE
             WHEN ABS(pmv) <= 0.5 THEN 0
             WHEN ABS(pmv) <= 1.0 THEN 1
             ELSE 2
@@ -1692,11 +1698,11 @@ SELECT
     d.building_id,
     NOW() AS decision_time,
     NOW() + INTERVAL '5' MINUTE AS effective_time,
-    
+
     cs.t_air AS current_temp,
     cs.pmv AS current_pmv,
     cs.ppd AS current_ppd,
-    
+
     -- 优化设定点计算
     CASE
         WHEN cs.pmv > 0.5 THEN 'TEMP_SETPOINT'
@@ -1704,31 +1710,31 @@ SELECT
         WHEN cs.ppd > 10 THEN 'FAN_SPEED'
         ELSE 'MAINTAIN'
     END AS control_type,
-    
+
     -- 新设定点计算
     CASE
         WHEN cs.pmv > 0.5 THEN cs.t_air - 1.0  -- 过热，降温
         WHEN cs.pmv < -0.5 THEN cs.t_air + 1.0  -- 过冷，升温
         ELSE cs.t_air
     END AS recommended_setpoint,
-    
+
     -- 控制策略选择
     CASE
         WHEN cs.occupancy_count = 0 THEN 'ENERGY_PRIORITY'
         WHEN cs.comfort_priority = 2 THEN 'COMFORT_PRIORITY'
         ELSE 'BALANCED'
     END AS strategy,
-    
+
     -- 约束
     18.0 AS min_temp,
     28.0 AS max_temp,
-    
+
     -- 建议消息
-    CONCAT('PMV=', CAST(cs.pmv AS STRING), 
+    CONCAT('PMV=', CAST(cs.pmv AS STRING),
            ', PPD=', CAST(cs.ppd AS STRING), '%',
-           ', Recommended setpoint: ', 
-           CAST(CASE WHEN cs.pmv > 0.5 THEN cs.t_air - 1.0 
-                     WHEN cs.pmv < -0.5 THEN cs.t_air + 1.0 
+           ', Recommended setpoint: ',
+           CAST(CASE WHEN cs.pmv > 0.5 THEN cs.t_air - 1.0
+                     WHEN cs.pmv < -0.5 THEN cs.t_air + 1.0
                      ELSE cs.t_air END AS STRING), '°C') AS recommendation_message
 
 FROM comfort_status cs
@@ -1744,24 +1750,24 @@ WHERE d.device_type = 'HVAC'
 CREATE TABLE electricity_pricing_signal (
     region_id STRING COMMENT '区域ID',
     effective_time TIMESTAMP(3),
-    
+
     -- 电价
     price_per_kwh DECIMAL(8,4) COMMENT '电价(元/kWh)',
     price_type STRING COMMENT '价格类型: TOU, CPP, RTP',
-    
+
     -- 分时电价时段
     period_type STRING COMMENT '时段: PEAK, FLAT, VALLEY',
     peak_period BOOLEAN COMMENT '是否峰时',
-    
+
     -- DR信号
     dr_event_active BOOLEAN COMMENT 'DR事件激活',
     dr_event_id STRING COMMENT 'DR事件ID',
     dr_price_incentive DECIMAL(8,4) COMMENT 'DR激励价格',
     dr_duration_minutes INT COMMENT 'DR持续时长',
-    
+
     -- 信号强度
     signal_strength STRING COMMENT '强度: LOW, MEDIUM, HIGH, CRITICAL',
-    
+
     WATERMARK FOR effective_time AS effective_time - INTERVAL '1' MINUTE
 ) WITH (
     'connector' = 'kafka',
@@ -1789,16 +1795,16 @@ pricing_context AS (
 SELECT
     bl.building_id,
     NOW() AS decision_time,
-    
+
     pc.price_per_kwh,
     pc.period_type,
     pc.dr_event_active,
     pc.dr_price_incentive,
     pc.signal_strength,
-    
+
     bl.hourly_energy_kwh,
     bl.peak_demand_kw,
-    
+
     -- DR策略决策
     CASE
         WHEN pc.dr_event_active AND pc.signal_strength = 'CRITICAL' THEN 'EMERGENCY_SHED'
@@ -1807,16 +1813,16 @@ SELECT
         WHEN pc.period_type = 'VALLEY' THEN 'STORE_ENERGY'
         ELSE 'NORMAL_OPERATION'
     END AS dr_strategy,
-    
+
     -- 负荷削减潜力(kW)
     CASE
         WHEN pc.dr_event_active THEN bl.peak_demand_kw * 0.20  -- 20%削减
         ELSE 0
     END AS sheddable_load_kw,
-    
+
     -- 预期节省
     CASE
-        WHEN pc.dr_event_active 
+        WHEN pc.dr_event_active
         THEN bl.hourly_energy_kwh * 0.20 * pc.dr_price_incentive
         ELSE 0
     END AS expected_savings_yuan
@@ -1837,46 +1843,46 @@ SELECT
     t.tenant_name,
     d.building_id,
     b.building_name,
-    
+
     -- 时间
     DATE(e.hour_start) AS date,
     EXTRACT(HOUR FROM e.hour_start) AS hour,
-    
+
     -- 能耗分类
     d.device_type,
-    
+
     -- 能耗统计
     SUM(e.total_energy_kwh) AS energy_kwh,
     AVG(e.avg_power_kw) AS avg_power_kw,
     MAX(e.peak_power_kw) AS peak_power_kw,
-    
+
     -- 峰谷平分类
-    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12 
-              OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17 
+    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12
+              OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17
          THEN e.total_energy_kwh ELSE 0 END) AS peak_energy_kwh,
-    
-    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 8 AND 22 
+
+    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 8 AND 22
          THEN e.total_energy_kwh ELSE 0 END) AS flat_energy_kwh,
-    
-    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) < 8 
-              OR EXTRACT(HOUR FROM e.hour_start) > 22 
+
+    SUM(CASE WHEN EXTRACT(HOUR FROM e.hour_start) < 8
+              OR EXTRACT(HOUR FROM e.hour_start) > 22
          THEN e.total_energy_kwh ELSE 0 END) AS valley_energy_kwh,
-    
+
     -- 费用计算（假设分时电价）
-    SUM(e.total_energy_kwh * 
-        CASE 
-            WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12 
-                  OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17 
+    SUM(e.total_energy_kwh *
+        CASE
+            WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12
+                  OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17
             THEN 1.2  -- 峰时电价
-            WHEN EXTRACT(HOUR FROM e.hour_start) < 8 
-                  OR EXTRACT(HOUR FROM e.hour_start) > 22 
+            WHEN EXTRACT(HOUR FROM e.hour_start) < 8
+                  OR EXTRACT(HOUR FROM e.hour_start) > 22
             THEN 0.4  -- 谷时电价
             ELSE 0.7  -- 平时电价
         END
     ) AS electricity_cost_yuan
 
 FROM energy_aggregation_hourly e
-JOIN building_devices d ON e.device_type = d.device_type 
+JOIN building_devices d ON e.device_type = d.device_type
     AND e.zone_id = d.zone_id
 JOIN tenant_info t ON d.tenant_id = t.tenant_id
 JOIN building_info b ON d.building_id = b.building_id
@@ -1903,19 +1909,19 @@ WITH shared_energy AS (
         DATE(e.hour_start) AS date,
         EXTRACT(HOUR FROM e.hour_start) AS hour,
         SUM(e.total_energy_kwh) AS shared_energy_kwh,
-        SUM(e.total_energy_kwh * 
-            CASE 
-                WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12 
-                      OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17 
+        SUM(e.total_energy_kwh *
+            CASE
+                WHEN EXTRACT(HOUR FROM e.hour_start) BETWEEN 9 AND 12
+                      OR EXTRACT(HOUR FROM e.hour_start) BETWEEN 14 AND 17
                 THEN 1.2
-                WHEN EXTRACT(HOUR FROM e.hour_start) < 8 
-                      OR EXTRACT(HOUR FROM e.hour_start) > 22 
+                WHEN EXTRACT(HOUR FROM e.hour_start) < 8
+                      OR EXTRACT(HOUR FROM e.hour_start) > 22
                 THEN 0.4
                 ELSE 0.7
             END
         ) AS shared_cost_yuan
     FROM energy_aggregation_hourly e
-    JOIN building_devices d ON e.device_type = d.device_type 
+    JOIN building_devices d ON e.device_type = d.device_type
         AND e.zone_id = d.zone_id
     WHERE d.tenant_id IS NULL  -- 公共区域设备
     GROUP BY
@@ -1932,7 +1938,7 @@ tenant_weights AS (
         headcount,
         -- 使用时长（假设每天10小时，22工作日）
         10 * 22 AS monthly_hours,
-        
+
         -- 综合权重: 50%面积 + 30%人数 + 20%私有能耗比例
         leased_area AS area_weight,
         headcount AS headcount_weight
@@ -1962,22 +1968,22 @@ SELECT
     t.building_id,
     se.date,
     se.hour,
-    
+
     -- 分摊权重计算
     (0.5 * t.leased_area / NULLIF(bt.total_leased_area, 0) +
      0.3 * t.headcount / NULLIF(bt.total_headcount, 0) +
      0.2 * COALESCE(pt.total_private_energy, 0) / NULLIF(bt.total_private_energy, 0)
     ) AS allocation_weight,
-    
+
     -- 分摊能耗
-    se.shared_energy_kwh * 
+    se.shared_energy_kwh *
     (0.5 * t.leased_area / NULLIF(bt.total_leased_area, 0) +
      0.3 * t.headcount / NULLIF(bt.total_headcount, 0) +
      0.2 * COALESCE(pt.total_private_energy, 0) / NULLIF(bt.total_private_energy, 0)
     ) AS allocated_energy_kwh,
-    
+
     -- 分摊费用
-    se.shared_cost_yuan * 
+    se.shared_cost_yuan *
     (0.5 * t.leased_area / NULLIF(bt.total_leased_area, 0) +
      0.3 * t.headcount / NULLIF(bt.total_headcount, 0) +
      0.2 * COALESCE(pt.total_private_energy, 0) / NULLIF(bt.total_private_energy, 0)
@@ -2000,44 +2006,44 @@ CREATE TABLE tenant_monthly_bills (
     tenant_id STRING COMMENT '租户ID',
     tenant_name STRING COMMENT '租户名称',
     building_id STRING COMMENT '楼宇ID',
-    
+
     -- 账单周期
     bill_year INT COMMENT '年',
     bill_month INT COMMENT '月',
     bill_period_start DATE COMMENT '开始日期',
     bill_period_end DATE COMMENT '结束日期',
-    
+
     -- 私有能耗
     private_energy_kwh DECIMAL(12,3) COMMENT '私有能耗(kWh)',
     private_energy_cost DECIMAL(10,2) COMMENT '私有能耗费用(元)',
-    
+
     -- 分摊能耗
     shared_energy_kwh DECIMAL(12,3) COMMENT '分摊能耗(kWh)',
     shared_energy_cost DECIMAL(10,2) COMMENT '分摊能耗费用(元)',
-    
+
     -- 分项明细
     hvac_energy_kwh DECIMAL(12,3) COMMENT 'HVAC能耗',
     lighting_energy_kwh DECIMAL(12,3) COMMENT '照明能耗',
     equipment_energy_kwh DECIMAL(12,3) COMMENT '设备能耗',
     other_energy_kwh DECIMAL(12,3) COMMENT '其他能耗',
-    
+
     -- 费用明细
     peak_energy_cost DECIMAL(10,2) COMMENT '峰时电费',
     flat_energy_cost DECIMAL(10,2) COMMENT '平时电费',
     valley_energy_cost DECIMAL(10,2) COMMENT '谷时电费',
-    
+
     -- 总计
     total_energy_kwh DECIMAL(12,3) COMMENT '总能耗',
     total_cost DECIMAL(10,2) COMMENT '总费用',
     avg_price_per_kwh DECIMAL(6,4) COMMENT '平均电价',
-    
+
     -- 碳排放
     co2_emission_kg DECIMAL(10,2) COMMENT '碳排放(kg)',
-    
+
     -- 基准对比
     baseline_energy_kwh DECIMAL(12,3) COMMENT '基准能耗',
     energy_saving_percent DECIMAL(6,2) COMMENT '节能率(%)',
-    
+
     PRIMARY KEY (bill_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -2058,38 +2064,38 @@ SELECT
     MONTH(NOW()) AS bill_month,
     DATE_TRUNC('MONTH', NOW()) AS bill_period_start,
     LAST_DAY(NOW()) AS bill_period_end,
-    
+
     -- 私有能耗汇总
     SUM(pe.energy_kwh) AS private_energy_kwh,
     SUM(pe.electricity_cost_yuan) AS private_energy_cost,
-    
+
     -- 分摊能耗汇总
     SUM(se.allocated_energy_kwh) AS shared_energy_kwh,
     SUM(se.allocated_cost_yuan) AS shared_energy_cost,
-    
+
     -- 分项明细
     SUM(CASE WHEN pe.device_type = 'HVAC' THEN pe.energy_kwh ELSE 0 END) AS hvac_energy_kwh,
     SUM(CASE WHEN pe.device_type = 'LIGHTING' THEN pe.energy_kwh ELSE 0 END) AS lighting_energy_kwh,
     SUM(CASE WHEN pe.device_type IN ('PUMP', 'FAN') THEN pe.energy_kwh ELSE 0 END) AS equipment_energy_kwh,
     SUM(CASE WHEN pe.device_type NOT IN ('HVAC', 'LIGHTING', 'PUMP', 'FAN') THEN pe.energy_kwh ELSE 0 END) AS other_energy_kwh,
-    
+
     -- 费用明细
     SUM(pe.peak_energy_kwh * 1.2) AS peak_energy_cost,
     SUM(pe.flat_energy_kwh * 0.7) AS flat_energy_cost,
     SUM(pe.valley_energy_kwh * 0.4) AS valley_energy_cost,
-    
+
     -- 总计
     SUM(pe.energy_kwh) + SUM(se.allocated_energy_kwh) AS total_energy_kwh,
     SUM(pe.electricity_cost_yuan) + SUM(se.allocated_cost_yuan) AS total_cost,
-    (SUM(pe.electricity_cost_yuan) + SUM(se.allocated_cost_yuan)) / 
+    (SUM(pe.electricity_cost_yuan) + SUM(se.allocated_cost_yuan)) /
         NULLIF(SUM(pe.energy_kwh) + SUM(se.allocated_energy_kwh), 0) AS avg_price_per_kwh,
-    
+
     -- 碳排放
     (SUM(pe.energy_kwh) + SUM(se.allocated_energy_kwh)) * 0.5703 AS co2_emission_kg,
-    
+
     -- 基准对比
     b.baseline_elec_kwh_per_m2 * t.leased_area / 12 AS baseline_energy_kwh,
-    (b.baseline_elec_kwh_per_m2 * t.leased_area / 12 - (SUM(pe.energy_kwh) + SUM(se.allocated_energy_kwh))) / 
+    (b.baseline_elec_kwh_per_m2 * t.leased_area / 12 - (SUM(pe.energy_kwh) + SUM(se.allocated_energy_kwh))) /
         NULLIF(b.baseline_elec_kwh_per_m2 * t.leased_area / 12, 0) * 100 AS energy_saving_percent
 
 FROM tenant_info t
@@ -2117,32 +2123,32 @@ SELECT
     d.device_type,
     d.building_id,
     d.zone_id,
-    
+
     e.hour_start,
-    
+
     -- 功率特征
     AVG(e.avg_power_kw) AS avg_power_kw,
     STDDEV(e.avg_power_kw) AS std_power_kw,
     MAX(e.peak_power_kw) AS max_power_kw,
     MIN(e.min_power_kw) AS min_power_kw,
-    
+
     -- 能耗特征
     SUM(e.total_energy_kwh) AS hourly_energy_kwh,
-    
+
     -- 负荷因子
     AVG(e.load_factor) AS avg_load_factor,
-    
+
     -- 功率波动
     (MAX(e.peak_power_kw) - MIN(e.min_power_kw)) / NULLIF(AVG(e.avg_power_kw), 0) AS power_volatility,
-    
+
     -- 与额定功率比值
     AVG(e.avg_power_kw) / NULLIF(d.rated_power, 0) AS power_utilization_ratio,
-    
+
     -- 趋势特征（与前一天同期比较）
     AVG(e.avg_power_kw) - LAG(AVG(e.avg_power_kw), 24) OVER (
         PARTITION BY d.device_id ORDER BY e.hour_start
     ) AS power_trend_24h,
-    
+
     -- 运行小时数
     SUM(CASE WHEN e.avg_power_kw > d.rated_power * 0.1 THEN 1 ELSE 0 END) AS operating_hours
 
@@ -2198,51 +2204,51 @@ SELECT
     d.zone_id,
     d.status,
     d.install_date,
-    
+
     -- 健康指标计算
     bs.baseline_avg_power,
     cs.current_avg_power,
-    
+
     -- 功率偏差健康度 (100为正常)
-    100 * (1 - ABS(cs.current_avg_power - bs.baseline_avg_power) / 
+    100 * (1 - ABS(cs.current_avg_power - bs.baseline_avg_power) /
         NULLIF(bs.baseline_avg_power, 0)) AS power_health_score,
-    
+
     -- 利用率健康度
-    CASE 
+    CASE
         WHEN cs.current_utilization BETWEEN 0.4 AND 0.9 THEN 100
         WHEN cs.current_utilization BETWEEN 0.2 AND 1.0 THEN 80
         ELSE 60
     END AS utilization_health_score,
-    
+
     -- 波动性健康度
-    CASE 
+    CASE
         WHEN cs.current_volatility < 0.3 THEN 100
         WHEN cs.current_volatility < 0.5 THEN 80
         WHEN cs.current_volatility < 0.8 THEN 60
         ELSE 40
     END AS volatility_health_score,
-    
+
     -- 趋势健康度
-    CASE 
+    CASE
         WHEN ABS(cs.current_trend) < 0.1 THEN 100
         WHEN ABS(cs.current_trend) < 0.3 THEN 80
         ELSE 60
     END AS trend_health_score,
-    
+
     -- 综合健康评分（加权平均）
     (0.4 * 100 * (1 - ABS(cs.current_avg_power - bs.baseline_avg_power) / NULLIF(bs.baseline_avg_power, 0)) +
-     0.2 * CASE WHEN cs.current_utilization BETWEEN 0.4 AND 0.9 THEN 100 
+     0.2 * CASE WHEN cs.current_utilization BETWEEN 0.4 AND 0.9 THEN 100
                 WHEN cs.current_utilization BETWEEN 0.2 AND 1.0 THEN 80 ELSE 60 END +
-     0.2 * CASE WHEN cs.current_volatility < 0.3 THEN 100 
-                WHEN cs.current_volatility < 0.5 THEN 80 
+     0.2 * CASE WHEN cs.current_volatility < 0.3 THEN 100
+                WHEN cs.current_volatility < 0.5 THEN 80
                 WHEN cs.current_volatility < 0.8 THEN 60 ELSE 40 END +
-     0.2 * CASE WHEN ABS(cs.current_trend) < 0.1 THEN 100 
+     0.2 * CASE WHEN ABS(cs.current_trend) < 0.1 THEN 100
                 WHEN ABS(cs.current_trend) < 0.3 THEN 80 ELSE 60 END
     ) AS overall_health_score,
-    
+
     -- 设备年龄（年）
     DATEDIFF(YEAR, d.install_date, NOW()) AS device_age_years,
-    
+
     -- 风险等级
     CASE
         WHEN (0.4 * 100 * (1 - ABS(cs.current_avg_power - bs.baseline_avg_power) / NULLIF(bs.baseline_avg_power, 0)) +
@@ -2275,26 +2281,26 @@ CREATE TABLE equipment_failure_predictions (
     device_type STRING COMMENT '设备类型',
     building_id STRING COMMENT '楼宇ID',
     zone_id STRING COMMENT '区域ID',
-    
+
     prediction_time TIMESTAMP(3) COMMENT '预测时间',
     predicted_failure_time TIMESTAMP(3) COMMENT '预测故障时间',
-    
+
     -- 预测信息
     failure_probability DECIMAL(5,4) COMMENT '故障概率(0-1)',
     failure_type STRING COMMENT '故障类型: MECHANICAL, ELECTRICAL, THERMAL',
     confidence_level STRING COMMENT '置信度: HIGH, MEDIUM, LOW',
-    
+
     -- 触发因素
     triggering_factors STRING COMMENT '触发因素JSON',
-    
+
     -- 建议措施
     recommended_action STRING COMMENT '建议措施',
     maintenance_priority INT COMMENT '优先级: 1-5',
     estimated_downtime_hours INT COMMENT '预计停机时长',
-    
+
     -- 状态
     status STRING COMMENT '状态: ACTIVE, ACKNOWLEDGED, MAINTENANCE_SCHEDULED, RESOLVED, FALSE_ALARM',
-    
+
     PRIMARY KEY (prediction_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -2314,51 +2320,51 @@ SELECT
     zone_id,
     NOW() AS prediction_time,
     NOW() + INTERVAL '10' DAY AS predicted_failure_time,
-    
+
     -- 故障概率（基于健康评分）
-    CASE 
+    CASE
         WHEN overall_health_score < 40 THEN 0.85
         WHEN overall_health_score < 60 THEN 0.65
         WHEN overall_health_score < 75 THEN 0.40
         ELSE 0.15
     END AS failure_probability,
-    
+
     -- 故障类型推断
-    CASE 
+    CASE
         WHEN power_health_score < 50 THEN 'ELECTRICAL'
         WHEN volatility_health_score < 50 THEN 'MECHANICAL'
         WHEN utilization_health_score < 50 THEN 'THERMAL'
         ELSE 'UNKNOWN'
     END AS failure_type,
-    
+
     -- 置信度
-    CASE 
+    CASE
         WHEN device_age_years > 10 AND overall_health_score < 50 THEN 'HIGH'
         WHEN device_age_years > 5 AND overall_health_score < 60 THEN 'MEDIUM'
         ELSE 'LOW'
     END AS confidence_level,
-    
+
     -- 触发因素
     CONCAT('{"power_deviation": ', CAST(ABS(100 - power_health_score) AS STRING),
            ', "utilization_anomaly": ', CAST(ABS(100 - utilization_health_score) AS STRING),
            ', "volatility": ', CAST(ABS(100 - volatility_health_score) AS STRING), '}') AS triggering_factors,
-    
+
     -- 建议措施
-    CASE 
+    CASE
         WHEN overall_health_score < 40 THEN 'Immediate inspection and maintenance required'
         WHEN overall_health_score < 60 THEN 'Schedule preventive maintenance within 7 days'
         WHEN overall_health_score < 75 THEN 'Monitor closely and plan maintenance'
         ELSE 'Continue normal monitoring'
     END AS recommended_action,
-    
+
     -- 优先级
-    CASE 
+    CASE
         WHEN overall_health_score < 40 THEN 1
         WHEN overall_health_score < 60 THEN 2
         WHEN overall_health_score < 75 THEN 3
         ELSE 5
     END AS maintenance_priority,
-    
+
     -- 预计停机时长
     CASE device_type
         WHEN 'HVAC' THEN 4
@@ -2366,7 +2372,7 @@ SELECT
         WHEN 'PUMP' THEN 2
         ELSE 3
     END AS estimated_downtime_hours,
-    
+
     'ACTIVE' AS status
 
 FROM equipment_health_scores
@@ -2390,16 +2396,16 @@ WITH energy_with_source AS (
         peak_energy_kwh,
         flat_energy_kwh,
         valley_energy_kwh,
-        
+
         -- 假设不同时间段的电网碳因子不同
         -- 峰时：火电为主，碳因子较高
         -- 谷时：清洁能源为主，碳因子较低
         CASE
-            WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12 
-                 OR EXTRACT(HOUR FROM hour_start) BETWEEN 14 AND 17 
+            WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12
+                 OR EXTRACT(HOUR FROM hour_start) BETWEEN 14 AND 17
             THEN 0.65  -- 峰时碳因子 kg CO2/kWh
-            WHEN EXTRACT(HOUR FROM hour_start) < 8 
-                 OR EXTRACT(HOUR FROM hour_start) > 22 
+            WHEN EXTRACT(HOUR FROM hour_start) < 8
+                 OR EXTRACT(HOUR FROM hour_start) > 22
             THEN 0.35  -- 谷时碳因子
             ELSE 0.57  -- 平时碳因子
         END AS carbon_factor
@@ -2410,17 +2416,17 @@ SELECT
     device_type,
     DATE(hour_start) AS date,
     EXTRACT(HOUR FROM hour_start) AS hour,
-    
+
     total_energy_kwh,
-    
+
     -- 碳排放计算
     total_energy_kwh * carbon_factor AS co2_emission_kg,
-    
+
     -- 分项碳排放
     peak_energy_kwh * 0.65 AS peak_co2_emission_kg,
     flat_energy_kwh * 0.57 AS flat_co2_emission_kg,
     valley_energy_kwh * 0.35 AS valley_co2_emission_kg,
-    
+
     -- 累计碳排放（用于实时展示）
     SUM(total_energy_kwh * carbon_factor) OVER (
         PARTITION BY building_id, DATE(hour_start)
@@ -2437,35 +2443,35 @@ FROM energy_with_source;
 CREATE TABLE carbon_emission_reports (
     report_id STRING COMMENT '报告ID',
     building_id STRING COMMENT '楼宇ID',
-    
+
     -- 报告周期
     report_type STRING COMMENT '报告类型: DAILY, WEEKLY, MONTHLY, YEARLY',
     period_start DATE COMMENT '开始日期',
     period_end DATE COMMENT '结束日期',
-    
+
     -- 能耗数据
     total_energy_kwh DECIMAL(15,3) COMMENT '总能耗(kWh)',
     peak_energy_kwh DECIMAL(15,3) COMMENT '峰时能耗',
     flat_energy_kwh DECIMAL(15,3) COMMENT '平时能耗',
     valley_energy_kwh DECIMAL(15,3) COMMENT '谷时能耗',
-    
+
     -- 碳排放数据
     total_co2_emission_kg DECIMAL(15,3) COMMENT '总碳排放(kg)',
     total_co2_emission_ton DECIMAL(10,3) COMMENT '总碳排放(吨)',
-    
+
     -- 碳强度
     carbon_intensity_kg_per_m2 DECIMAL(8,3) COMMENT '单位面积碳排放(kg/m²)',
     carbon_intensity_kg_per_kwh DECIMAL(6,4) COMMENT '碳排放因子(kg/kWh)',
-    
+
     -- 对比数据
     baseline_co2_kg DECIMAL(15,3) COMMENT '基准碳排放',
     co2_reduction_kg DECIMAL(15,3) COMMENT '碳减排量(kg)',
     co2_reduction_percent DECIMAL(6,2) COMMENT '碳减排率(%)',
-    
+
     -- 目标达成
     carbon_target_kg DECIMAL(15,3) COMMENT '碳排放目标',
     target_achievement_percent DECIMAL(6,2) COMMENT '目标达成率(%)',
-    
+
     PRIMARY KEY (report_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -2483,27 +2489,27 @@ SELECT
     'MONTHLY' AS report_type,
     DATE_TRUNC('MONTH', NOW()) AS period_start,
     LAST_DAY(NOW()) AS period_end,
-    
+
     -- 能耗汇总
     SUM(e.total_energy_kwh) AS total_energy_kwh,
     SUM(e.peak_energy_kwh) AS peak_energy_kwh,
     SUM(e.flat_energy_kwh) AS flat_energy_kwh,
     SUM(e.valley_energy_kwh) AS valley_energy_kwh,
-    
+
     -- 碳排放
     SUM(e.co2_emission_kg) AS total_co2_emission_kg,
     SUM(e.co2_emission_kg) / 1000.0 AS total_co2_emission_ton,
-    
+
     -- 碳强度
     SUM(e.co2_emission_kg) / NULLIF(bi.total_area, 0) AS carbon_intensity_kg_per_m2,
     SUM(e.co2_emission_kg) / NULLIF(SUM(e.total_energy_kwh), 0) AS carbon_intensity_kg_per_kwh,
-    
+
     -- 基准对比
     bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 AS baseline_co2_kg,
     bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 - SUM(e.co2_emission_kg) AS co2_reduction_kg,
-    (bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 - SUM(e.co2_emission_kg)) / 
+    (bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 - SUM(e.co2_emission_kg)) /
         NULLIF(bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57, 0) * 100 AS co2_reduction_percent,
-    
+
     -- 目标（假设年度减排目标20%）
     bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 * 0.8 AS carbon_target_kg,
     SUM(e.co2_emission_kg) / NULLIF(bi.baseline_elec_kwh_per_m2 * bi.total_area / 12 * 0.57 * 0.8, 0) * 100 AS target_achievement_percent
@@ -2558,7 +2564,7 @@ graph TB
 
     subgraph "Flink实时计算层<br/>Apache Flink 1.18"
         FLINK[JobManager HA<br/>3节点]
-        
+
         subgraph "实时作业 Real-time Jobs"
             J1[能耗聚合<br/>并行度: 64]
             J2[舒适度计算<br/>并行度: 32]
@@ -2568,7 +2574,7 @@ graph TB
             J6[故障预测<br/>并行度: 8]
             J7[碳排放计算<br/>并行度: 8]
         end
-        
+
         subgraph "状态存储 State Backend"
             ROCKS[(RocksDB<br/>增量Checkpoint)]
             REDIS[(Redis<br/>热状态)]
@@ -2616,11 +2622,11 @@ graph TB
     K2 --> J2 --> J4
     J1 --> J5
     J1 --> J6
-    
+
     J1 -.-> ROCKS
     J2 -.-> ROCKS
     J4 -.-> REDIS
-    
+
     J1 --> TS
     J2 --> TS
     J3 --> TS
@@ -2628,17 +2634,17 @@ graph TB
     J5 --> PG
     J6 --> PG
     J7 --> PG
-    
+
     TS --> ML
     ML --> MPC
     MPC --> J4
-    
+
     TS --> A1
     PG --> A2
     PG --> A3
     PG --> A4
     PG --> A5
-    
+
     C1 --> F1
     C2 --> F4
 ```
@@ -2654,19 +2660,19 @@ graph TB
             R3[能效评级<br/>A+/A/B/C/D]
             R4[告警数量<br/>Critical/Warning]
         end
-        
+
         subgraph "分项能耗 Breakdown"
             B1[饼图<br/>HVAC/照明/设备/其他]
             B2[堆叠面积图<br/>24小时趋势]
             B3[对比柱状图<br/>各楼宇对比]
         end
-        
+
         subgraph "租户视图 Tenant View"
             T1[租户排名<br/>能耗TOP10]
             T2[租户趋势<br/>月度对比]
             T3[分摊明细<br/>公有/私有]
         end
-        
+
         subgraph "异常检测 Anomaly"
             A1[热力图<br/>异常时间分布]
             A2[告警列表<br/>实时滚动]
@@ -2789,19 +2795,19 @@ graph TB
             O3[减排进度<br/>vs目标]
             O4[碳中和进度<br/>%]
         end
-        
+
         subgraph "排放源分析 Sources"
             S1[电力排放<br/>Scope 2]
             S2[燃气排放<br/>Scope 1]
             S3[其他排放<br/>Scope 3]
         end
-        
+
         subgraph "趋势分析 Trends"
             T1[月度趋势<br/>12个月]
             T2[同比分析<br/>YoY]
             T3[环比分析<br/>MoM]
         end
-        
+
         subgraph "租户贡献 Tenant Contribution"
             TC1[租户碳排名]
             TC2[单位面积碳强度]
@@ -2832,14 +2838,14 @@ logger = logging.getLogger(__name__)
 class PredictiveHVACController:
     """
     模型预测控制(MPC)实现HVAC优化
-    
+
     目标：在满足舒适度约束的前提下，最小化能耗成本
     """
-    
+
     def __init__(self, config: Dict):
         """
         初始化MPC控制器
-        
+
         Args:
             config: 配置参数
                 - prediction_horizon: 预测时域(小时)
@@ -2851,108 +2857,108 @@ class PredictiveHVACController:
         self.dt = config.get('control_interval', 15) / 60  # 15分钟
         self.C = config.get('thermal_mass', 5000)  # 建筑热容
         self.Q_hvac_max = config.get('hvac_capacity', 100)  # HVAC最大输出
-        
+
         # 系统参数
         self.UA = config.get('heat_transfer_coeff', 5)  # 热传导系数
         self.eta = config.get('hvac_efficiency', 0.85)  # HVAC效率
-        
+
         # 约束
         self.T_min = config.get('temp_min', 20)  # 最低温度
         self.T_max = config.get('temp_max', 26)  # 最高温度
         self.comfort_weight = config.get('comfort_weight', 1.0)
         self.energy_weight = config.get('energy_weight', 0.5)
-        
-    def system_dynamics(self, T: float, Q_hvac: float, T_out: float, 
+
+    def system_dynamics(self, T: float, Q_hvac: float, T_out: float,
                        Q_solar: float, Q_internal: float) -> float:
         """
         建筑热动力学模型
-        
+
         dT/dt = (Q_hvac + Q_solar + Q_internal - UA*(T - T_out)) / C
-        
+
         Args:
             T: 室内温度(°C)
             Q_hvac: HVAC制冷/制热量(kW)
             T_out: 室外温度(°C)
             Q_solar: 太阳辐射得热(kW)
             Q_internal: 内部热源(kW)
-            
+
         Returns:
             dT/dt: 温度变化率(°C/h)
         """
-        dT = (Q_hvac * self.eta + Q_solar + Q_internal - 
+        dT = (Q_hvac * self.eta + Q_solar + Q_internal -
               self.UA * (T - T_out)) / self.C * 3600  # 转换为°C/h
         return dT
-    
+
     def predict_temperature(self, T_current: float, Q_hvac_sequence: np.ndarray,
                            T_out_forecast: np.ndarray, Q_solar_forecast: np.ndarray,
                            occupancy_forecast: np.ndarray) -> np.ndarray:
         """
         预测未来温度序列
-        
+
         Args:
             T_current: 当前温度
             Q_hvac_sequence: HVAC控制序列(kW)
             T_out_forecast: 室外温度预报(°C)
             Q_solar_forecast: 太阳辐射预报(kW)
             occupancy_forecast: occupancy预报(人数)
-            
+
         Returns:
             T_predicted: 预测温度序列
         """
         T = np.zeros(self.N + 1)
         T[0] = T_current
-        
+
         for k in range(self.N):
             # 内部热源 = 人员热 + 设备热
             Q_internal = occupancy_forecast[k] * 0.1 + 5  # 每人100W + 基础负荷
-            
+
             # 计算温度变化
             dT = self.system_dynamics(
-                T[k], Q_hvac_sequence[k], 
+                T[k], Q_hvac_sequence[k],
                 T_out_forecast[k], Q_solar_forecast[k], Q_internal
             )
-            
+
             T[k+1] = T[k] + dT * self.dt
-            
+
         return T[1:]  # 返回未来N个时间步的温度
-    
-    def objective_function(self, Q_hvac_sequence: np.ndarray, 
+
+    def objective_function(self, Q_hvac_sequence: np.ndarray,
                           T_current: float, T_setpoint: float,
-                          T_out_forecast: np.ndarray, 
+                          T_out_forecast: np.ndarray,
                           Q_solar_forecast: np.ndarray,
                           occupancy_forecast: np.ndarray,
                           electricity_price: np.ndarray) -> float:
         """
         目标函数：舒适度 + 能耗成本
-        
+
         J = Σ(w_comfort * (T - T_setpoint)² + w_energy * price * Q_hvac/eta)
         """
         Q_hvac_sequence = Q_hvac_sequence.reshape(self.N)
-        
+
         # 预测温度
         T_predicted = self.predict_temperature(
-            T_current, Q_hvac_sequence, T_out_forecast, 
+            T_current, Q_hvac_sequence, T_out_forecast,
             Q_solar_forecast, occupancy_forecast
         )
-        
+
         # 舒适度损失（与设定点偏差的平方和）
         comfort_cost = np.sum((T_predicted - T_setpoint) ** 2)
-        
+
         # 能耗成本（电价 * 能耗）
         energy_cost = np.sum(electricity_price * np.abs(Q_hvac_sequence) / self.eta * self.dt)
-        
+
         # 总目标
         J = self.comfort_weight * comfort_cost + self.energy_weight * energy_cost
-        
+
         return J
-    
+
     def solve_mpc(self, T_current: float, T_setpoint: float,
                  T_out_forecast: List[float], Q_solar_forecast: List[float],
                  occupancy_forecast: List[int], electricity_price: List[float],
                  current_mode: str = 'cooling') -> Dict:
         """
         求解MPC优化问题
-        
+
         Args:
             T_current: 当前室内温度(°C)
             T_setpoint: 温度设定点(°C)
@@ -2961,7 +2967,7 @@ class PredictiveHVACController:
             occupancy_forecast: occupancy预报列表(人数)
             electricity_price: 电价列表(元/kWh)
             current_mode: 当前模式('cooling'/'heating')
-            
+
         Returns:
             优化结果字典
         """
@@ -2970,16 +2976,16 @@ class PredictiveHVACController:
         Q_solar = np.array(Q_solar_forecast[:self.N])
         occupancy = np.array(occupancy_forecast[:self.N])
         price = np.array(electricity_price[:self.N])
-        
+
         # 初始猜测：维持当前温度
         Q_initial = np.ones(self.N) * 20  # 初始20kW
-        
+
         # 约束
         if current_mode == 'cooling':
             bounds = [(-self.Q_hvac_max, 0)] * self.N  # 制冷为负
         else:
             bounds = [(0, self.Q_hvac_max)] * self.N  # 制热为正
-        
+
         # 优化求解
         result = minimize(
             fun=self.objective_function,
@@ -2989,16 +2995,16 @@ class PredictiveHVACController:
             bounds=bounds,
             options={'maxiter': 100, 'ftol': 1e-6}
         )
-        
+
         if result.success:
             Q_optimal = result.x
             T_predicted = self.predict_temperature(
                 T_current, Q_optimal, T_out, Q_solar, occupancy
             )
-            
+
             # 计算PMV预测
             pmv_predicted = [self.calculate_pmv(T, 50, 0.1, 1.2) for T in T_predicted]
-            
+
             return {
                 'success': True,
                 'Q_hvac_optimal': Q_optimal.tolist(),
@@ -3015,18 +3021,18 @@ class PredictiveHVACController:
                 'error': result.message,
                 'first_step_power': 0
             }
-    
-    def calculate_pmv(self, T_air: float, RH: float, v_air: float, 
+
+    def calculate_pmv(self, T_air: float, RH: float, v_air: float,
                      M: float = 1.2) -> float:
         """
         计算PMV（预测平均投票）
-        
+
         Args:
             T_air: 空气温度(°C)
             RH: 相对湿度(%)
             v_air: 空气流速(m/s)
             M: 代谢率(met)
-            
+
         Returns:
             PMV值(-3到+3)
         """
@@ -3039,7 +3045,7 @@ class PredictiveHVACController:
 # 与Flink集成的服务接口
 class HVACOptimizationService:
     """HVAC优化服务，供Flink调用"""
-    
+
     def __init__(self):
         self.controller = PredictiveHVACController({
             'prediction_horizon': 4,
@@ -3049,11 +3055,11 @@ class HVACOptimizationService:
             'comfort_weight': 1.0,
             'energy_weight': 0.5
         })
-    
+
     def optimize(self, request: Dict) -> Dict:
         """
         接收Flink的请求，返回优化控制指令
-        
+
         Request format:
         {
             "zone_id": "B01-F03-OFFICE-01",
@@ -3075,7 +3081,7 @@ class HVACOptimizationService:
             electricity_price=request['electricity_price'],
             current_mode=request.get('mode', 'cooling')
         )
-        
+
         return {
             'zone_id': request['zone_id'],
             'control_power_kw': result.get('first_step_power', 0),
@@ -3104,17 +3110,17 @@ import joblib
 class EnergyBaselineModel:
     """
     能耗基准模型
-    
+
     用于：
     1. 建立正常能耗基线
     2. 异常检测
     3. 节能效果评估
     """
-    
+
     def __init__(self, model_type: str = 'ridge'):
         """
         初始化基准模型
-        
+
         Args:
             model_type: 'linear' 或 'ridge'
         """
@@ -3123,25 +3129,25 @@ class EnergyBaselineModel:
         self.scaler = StandardScaler()
         self.feature_names = []
         self.is_fitted = False
-        
+
         # 模型性能指标
         self.metrics = {
             'r2_score': 0,
             'mape': 0,
             'cv_rmse': 0
         }
-    
+
     def prepare_features(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         特征工程
-        
+
         Args:
             df: 原始数据DataFrame
                 - timestamp: 时间戳
                 - energy_kwh: 能耗
                 - outdoor_temp: 室外温度
                 - occupancy: occupancy人数
-                
+
         Returns:
             特征DataFrame
         """
@@ -3152,32 +3158,32 @@ class EnergyBaselineModel:
         df['month'] = df['timestamp'].dt.month
         df['is_weekend'] = (df['day_of_week'] >= 5).astype(int)
         df['is_holiday'] = self._is_holiday(df['timestamp'])
-        
+
         # 时间特征 - 正弦编码捕捉周期性
         df['hour_sin'] = np.sin(2 * np.pi * df['hour'] / 24)
         df['hour_cos'] = np.cos(2 * np.pi * df['hour'] / 24)
         df['dow_sin'] = np.sin(2 * np.pi * df['day_of_week'] / 7)
         df['dow_cos'] = np.cos(2 * np.pi * df['day_of_week'] / 7)
-        
+
         # 温度特征
         df['temp_squared'] = df['outdoor_temp'] ** 2
         df['temp_cubed'] = df['outdoor_temp'] ** 3
         df['temp_diff'] = df['outdoor_temp'] - 20  # 相对于20°C的偏差
         df['temp_abs_diff'] = np.abs(df['temp_diff'])
-        
+
         # 交互特征
         df['temp_x_occupancy'] = df['outdoor_temp'] * df['occupancy']
         df['hour_x_temp'] = df['hour'] * df['outdoor_temp']
-        
+
         # 滞后特征
         df['energy_lag_1h'] = df['energy_kwh'].shift(1)
         df['energy_lag_24h'] = df['energy_kwh'].shift(24)
         df['temp_lag_1h'] = df['outdoor_temp'].shift(1)
-        
+
         # 滚动统计
         df['energy_roll_mean_7d'] = df['energy_kwh'].rolling(24*7).mean()
         df['temp_roll_mean_7d'] = df['outdoor_temp'].rolling(24*7).mean()
-        
+
         # 选择特征列
         feature_cols = [
             'outdoor_temp', 'occupancy', 'humidity',
@@ -3188,86 +3194,86 @@ class EnergyBaselineModel:
             'energy_lag_24h', 'temp_lag_1h',
             'temp_roll_mean_7d'
         ]
-        
+
         # 仅保留存在的列
         feature_cols = [c for c in feature_cols if c in df.columns]
-        
+
         self.feature_names = feature_cols
         return df[feature_cols]
-    
+
     def fit(self, df: pd.DataFrame) -> Dict:
         """
         训练基准模型
-        
+
         Args:
             df: 训练数据
-            
+
         Returns:
             模型性能指标
         """
         # 准备特征
         X = self.prepare_features(df)
         y = df['energy_kwh'].values
-        
+
         # 删除缺失值
         mask = X.notna().all(axis=1) & pd.notna(y)
         X = X[mask]
         y = y[mask]
-        
+
         # 标准化
         X_scaled = self.scaler.fit_transform(X)
-        
+
         # 训练模型
         if self.model_type == 'ridge':
             self.model = Ridge(alpha=1.0)
         else:
             self.model = LinearRegression()
-            
+
         self.model.fit(X_scaled, y)
         self.is_fitted = True
-        
+
         # 计算性能指标
         y_pred = self.model.predict(X_scaled)
         self.metrics['r2_score'] = r2_score(y, y_pred)
         self.metrics['mape'] = mean_absolute_percentage_error(y, y_pred) * 100
         self.metrics['cv_rmse'] = np.sqrt(np.mean((y - y_pred)**2)) / np.mean(y) * 100
-        
+
         # 计算特征重要性
-        feature_importance = dict(zip(self.feature_names, 
+        feature_importance = dict(zip(self.feature_names,
                                      np.abs(self.model.coef_)))
-        
+
         return {
             'metrics': self.metrics,
             'feature_importance': feature_importance,
             'n_samples': len(y)
         }
-    
+
     def predict(self, df: pd.DataFrame) -> np.ndarray:
         """
         预测能耗基线
-        
+
         Args:
             df: 输入数据
-            
+
         Returns:
             预测值数组
         """
         if not self.is_fitted:
             raise ValueError("Model not fitted. Call fit() first.")
-        
+
         X = self.prepare_features(df)
         X_scaled = self.scaler.transform(X)
         return self.model.predict(X_scaled)
-    
-    def detect_anomaly(self, df: pd.DataFrame, 
+
+    def detect_anomaly(self, df: pd.DataFrame,
                       threshold_std: float = 3.0) -> pd.DataFrame:
         """
         基于基准模型的异常检测
-        
+
         Args:
             df: 输入数据
             threshold_std: 异常阈值（标准差倍数）
-            
+
         Returns:
             带异常标记的DataFrame
         """
@@ -3276,50 +3282,50 @@ class EnergyBaselineModel:
         df['baseline'] = self.predict(df)
         df['residual'] = df['energy_kwh'] - df['baseline']
         df['residual_pct'] = df['residual'] / df['baseline'] * 100
-        
+
         # 计算历史残差标准差
         residual_std = df['residual'].std()
-        
+
         # 异常标记
         df['is_anomaly'] = np.abs(df['residual']) > threshold_std * residual_std
         df['anomaly_level'] = 'NORMAL'
         df.loc[np.abs(df['residual']) > 2 * residual_std, 'anomaly_level'] = 'WARNING'
         df.loc[np.abs(df['residual']) > 3 * residual_std, 'anomaly_level'] = 'CRITICAL'
-        
+
         return df
-    
-    def calculate_savings(self, df_before: pd.DataFrame, 
+
+    def calculate_savings(self, df_before: pd.DataFrame,
                          df_after: pd.DataFrame) -> Dict:
         """
         计算节能效果
-        
+
         Args:
             df_before: 改造前数据
             df_after: 改造后数据
-            
+
         Returns:
             节能指标
         """
         # 确保使用相同基线模型
         if not self.is_fitted:
             self.fit(df_before)
-        
+
         # 预测改造后的"无改造场景"
         df_after['predicted_without_retrofit'] = self.predict(df_after)
-        
+
         # 计算节能
-        actual_savings_kwh = (df_after['predicted_without_retrofit'].sum() - 
+        actual_savings_kwh = (df_after['predicted_without_retrofit'].sum() -
                              df_after['energy_kwh'].sum())
-        savings_percent = (actual_savings_kwh / 
+        savings_percent = (actual_savings_kwh /
                           df_after['predicted_without_retrofit'].sum() * 100)
-        
+
         return {
             'total_savings_kwh': actual_savings_kwh,
             'savings_percent': savings_percent,
             'avoided_cost_yuan': actual_savings_kwh * 0.8,  # 假设电价0.8元/kWh
             'avoided_co2_kg': actual_savings_kwh * 0.57  # 电网因子0.57 kg CO2/kWh
         }
-    
+
     def save(self, path: str):
         """保存模型"""
         joblib.dump({
@@ -3329,7 +3335,7 @@ class EnergyBaselineModel:
             'metrics': self.metrics,
             'model_type': self.model_type
         }, path)
-    
+
     def load(self, path: str):
         """加载模型"""
         data = joblib.load(path)
@@ -3339,7 +3345,7 @@ class EnergyBaselineModel:
         self.metrics = data['metrics']
         self.model_type = data['model_type']
         self.is_fitted = True
-    
+
     def _is_holiday(self, timestamps: pd.Series) -> pd.Series:
         """判断是否为节假日（简化版）"""
         # 实际应用需要接入节假日API
@@ -3366,14 +3372,14 @@ from typing import Dict, List, Tuple
 class EnergyAnomalyDetector:
     """
     能耗异常检测器
-    
+
     结合统计方法和机器学习进行多维度异常检测
     """
-    
+
     def __init__(self, contamination: float = 0.05):
         """
         初始化检测器
-        
+
         Args:
             contamination: 预期异常比例
         """
@@ -3385,11 +3391,11 @@ class EnergyAnomalyDetector:
         )
         self.scaler = StandardScaler()
         self.baseline_stats = {}
-        
+
     def fit(self, df: pd.DataFrame):
         """
         训练检测模型
-        
+
         Args:
             df: 历史正常数据
         """
@@ -3402,111 +3408,111 @@ class EnergyAnomalyDetector:
             'hourly_mean': df.groupby(df['timestamp'].dt.hour)['energy_kwh'].mean().to_dict(),
             'hourly_std': df.groupby(df['timestamp'].dt.hour)['energy_kwh'].std().to_dict()
         }
-        
+
         # 准备ML特征
         features = self._extract_features(df)
         features_scaled = self.scaler.fit_transform(features)
-        
+
         # 训练Isolation Forest
         self.isolation_forest.fit(features_scaled)
-        
+
     def detect(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         检测异常
-        
+
         Args:
             df: 待检测数据
-            
+
         Returns:
             带异常标记的数据
         """
         df = df.copy()
-        
+
         # 1. 统计方法检测
         df['statistical_anomaly'] = self._statistical_detect(df)
-        
+
         # 2. ML方法检测
         df['ml_anomaly'] = self._ml_detect(df)
-        
+
         # 3. 规则方法检测
         df['rule_anomaly'] = self._rule_based_detect(df)
-        
+
         # 4. 集成决策
         df['anomaly_score'] = (
-            df['statistical_anomaly'].astype(int) + 
-            df['ml_anomaly'].astype(int) + 
+            df['statistical_anomaly'].astype(int) +
+            df['ml_anomaly'].astype(int) +
             df['rule_anomaly'].astype(int)
         ) / 3
-        
+
         df['is_anomaly'] = df['anomaly_score'] >= 0.5
         df['anomaly_level'] = df['anomaly_score'].apply(self._get_anomaly_level)
-        
+
         # 异常类型判定
         df['anomaly_type'] = df.apply(self._classify_anomaly_type, axis=1)
-        
+
         return df
-    
+
     def _extract_features(self, df: pd.DataFrame) -> np.ndarray:
         """提取特征"""
         features = []
-        
+
         # 基本统计特征
         features.append(df['energy_kwh'].values)
         features.append(df.get('power_kw', df['energy_kwh']).values)
-        
+
         # 时间特征
         hour = df['timestamp'].dt.hour
         features.append(np.sin(2 * np.pi * hour / 24))
         features.append(np.cos(2 * np.pi * hour / 24))
-        
+
         # 上下文特征
         if 'outdoor_temp' in df.columns:
             features.append(df['outdoor_temp'].values)
         if 'occupancy' in df.columns:
             features.append(df['occupancy'].values)
-        
+
         return np.column_stack(features)
-    
+
     def _statistical_detect(self, df: pd.DataFrame) -> pd.Series:
         """统计方法检测"""
         hour = df['timestamp'].dt.hour
-        
+
         # 获取同期历史统计
         hourly_mean = hour.map(self.baseline_stats['hourly_mean'])
         hourly_std = hour.map(self.baseline_stats['hourly_std'])
-        
+
         # Z-score检测
         z_score = (df['energy_kwh'] - hourly_mean) / hourly_std.replace(0, 1)
-        
+
         return np.abs(z_score) > 3
-    
+
     def _ml_detect(self, df: pd.DataFrame) -> pd.Series:
         """机器学习方法检测"""
         features = self._extract_features(df)
         features_scaled = self.scaler.transform(features)
-        
+
         # Isolation Forest预测
         predictions = self.isolation_forest.predict(features_scaled)
         return predictions == -1  # -1表示异常
-    
+
     def _rule_based_detect(self, df: pd.DataFrame) -> pd.Series:
         """基于规则的检测"""
         anomalies = pd.Series(False, index=df.index)
-        
+
         # 规则1: 负能耗（数据错误）
         anomalies |= df['energy_kwh'] < 0
-        
+
         # 规则2: 超过历史最大值2倍
         anomalies |= df['energy_kwh'] > self.baseline_stats['p95'] * 2
-        
+
         # 规则3: 非工作时间高能耗
         hour = df['timestamp'].dt.hour
         off_hours = (hour < 6) | (hour > 23)
         off_hours_high = off_hours & (df['energy_kwh'] > self.baseline_stats['mean'] * 0.5)
         anomalies |= off_hours_high
-        
+
         return anomalies
-    
+
     def _get_anomaly_level(self, score: float) -> str:
         """根据分数判定异常等级"""
         if score >= 0.8:
@@ -3516,15 +3522,15 @@ class EnergyAnomalyDetector:
         elif score >= 0.3:
             return 'ATTENTION'
         return 'NORMAL'
-    
+
     def _classify_anomaly_type(self, row: pd.Series) -> str:
         """分类异常类型"""
         if not row['is_anomaly']:
             return 'NONE'
-        
+
         energy = row['energy_kwh']
         baseline = self.baseline_stats['mean']
-        
+
         if energy < 0:
             return 'DATA_ERROR'
         elif energy > baseline * 2:
@@ -3648,12 +3654,12 @@ graph TB
     subgraph "数据中心 Data Center"
         subgraph "计算集群 Compute Cluster"
             K8S[Kubernetes集群<br/>10节点]
-            
+
             subgraph "Flink集群"
                 JM[JobManager ×3<br/>HA模式]
                 TM[TaskManager ×20<br/>320 vCPU / 1.2TB RAM]
             end
-            
+
             subgraph "存储集群"
                 TSDB[InfluxDB集群<br/>3节点]
                 PG[(PostgreSQL<br/>主从模式)]
@@ -3662,16 +3668,16 @@ graph TB
             end
         end
     end
-    
+
     subgraph "边缘计算 Edge Computing"
         EDGE[边缘网关<br/>每个园区1台]
         LOCAL[本地存储<br/>SQLite/时序DB]
     end
-    
+
     subgraph "现场设备 Field Devices"
         DEV[传感器/控制器<br/>BACnet/LoRaWAN]
     end
-    
+
     DEV --> EDGE --> KFK
     EDGE --> LOCAL
     KFK --> JM --> TM
@@ -3792,23 +3798,23 @@ graph TB
 CREATE TABLE elevator_stream (
     elevator_id STRING COMMENT '电梯ID',
     building_id STRING COMMENT '楼宇ID',
-    
+
     reading_time TIMESTAMP(3),
-    
+
     -- 运行状态
     status STRING COMMENT '状态: IDLE, MOVING_UP, MOVING_DOWN, DOOR_OPEN',
     current_floor INT COMMENT '当前楼层',
     direction STRING COMMENT '运行方向: UP, DOWN, STOPPED',
-    
+
     -- 能耗数据
     power_kw DECIMAL(6,2) COMMENT '实时功率(kW)',
     energy_kwh DECIMAL(10,3) COMMENT '累计电量(kWh)',
-    
+
     -- 运行统计
     trip_count INT COMMENT '当日运行次数',
     passenger_count INT COMMENT '载客人数估算',
     wait_time_seconds INT COMMENT '平均等待时间(秒)',
-    
+
     WATERMARK FOR reading_time AS reading_time - INTERVAL '10' SECOND
 ) WITH (
     'connector' = 'kafka',
@@ -3823,19 +3829,19 @@ SELECT
     elevator_id,
     building_id,
     DATE(reading_time) AS date,
-    
+
     -- 运行统计
     COUNT(CASE WHEN status != 'IDLE' THEN 1 END) AS running_minutes,
     AVG(CASE WHEN status != 'IDLE' THEN power_kw END) AS avg_running_power,
     MAX(power_kw) AS peak_power,
-    
+
     -- 能耗计算
     SUM(CASE WHEN status != 'IDLE' THEN power_kw ELSE 0 END) / 60.0 AS running_energy_kwh,
     SUM(CASE WHEN status = 'IDLE' THEN power_kw ELSE 0 END) / 60.0 AS idle_energy_kwh,
-    
+
     -- 效率指标
     SUM(passenger_count) / NULLIF(COUNT(CASE WHEN status != 'IDLE' THEN 1 END), 0) AS passengers_per_minute,
-    
+
     -- 峰时运行次数
     SUM(CASE WHEN EXTRACT(HOUR FROM reading_time) BETWEEN 8 AND 10 THEN 1 ELSE 0 END) AS morning_peak_trips,
     SUM(CASE WHEN EXTRACT(HOUR FROM reading_time) BETWEEN 17 AND 19 THEN 1 ELSE 0 END) AS evening_peak_trips
@@ -3851,21 +3857,21 @@ GROUP BY elevator_id, building_id, DATE(reading_time);
 CREATE TABLE lighting_control_stream (
     zone_id STRING COMMENT '区域ID',
     fixture_id STRING COMMENT '灯具ID',
-    
+
     event_time TIMESTAMP(3),
-    
+
     -- 控制状态
     on_off BOOLEAN COMMENT '开关状态',
     dimming_level INT COMMENT '调光级别(0-100)',
-    
+
     -- 传感器数据
     occupancy_detected BOOLEAN COMMENT '是否检测到人员',
     daylight_lux DECIMAL(8,2) COMMENT '自然光照度(lux)',
     actual_illuminance DECIMAL(8,2) COMMENT '实际照度(lux)',
-    
+
     -- 能耗
     power_watts DECIMAL(7,2) COMMENT '功率(W)',
-    
+
     WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND
 ) WITH (
     'connector' = 'kafka',
@@ -3879,27 +3885,27 @@ CREATE VIEW lighting_optimization_suggestions AS
 SELECT
     zone_id,
     TUMBLE_START(event_time, INTERVAL '1' HOUR) AS hour,
-    
+
     -- 统计
     AVG(dimming_level) AS avg_dimming,
     AVG(power_watts) AS avg_power,
     SUM(CASE WHEN on_off THEN 1 ELSE 0 END) / COUNT(*) * 100 AS duty_cycle_percent,
-    
+
     -- 优化建议
     CASE
-        WHEN AVG(daylight_lux) > 500 AND AVG(dimming_level) > 80 
+        WHEN AVG(daylight_lux) > 500 AND AVG(dimming_level) > 80
             THEN 'REDUCE_DIMMING'
-        WHEN SUM(CASE WHEN on_off THEN 1 ELSE 0 END) / COUNT(*) * 100 > 90 
+        WHEN SUM(CASE WHEN on_off THEN 1 ELSE 0 END) / COUNT(*) * 100 > 90
              AND SUM(CASE WHEN occupancy_detected THEN 1 ELSE 0 END) / COUNT(*) * 100 < 10
             THEN 'CHECK_SCHEDULE'
         WHEN AVG(actual_illuminance) > 400 AND AVG(dimming_level) > 90
             THEN 'OVER_ILLUMINATED'
         ELSE 'OPTIMAL'
     END AS optimization_suggestion,
-    
+
     -- 潜在节省
     CASE
-        WHEN AVG(daylight_lux) > 500 AND AVG(dimming_level) > 80 
+        WHEN AVG(daylight_lux) > 500 AND AVG(dimming_level) > 80
             THEN AVG(power_watts) * 0.3  -- 可节省30%
         WHEN AVG(actual_illuminance) > 400 AND AVG(dimming_level) > 90
             THEN AVG(power_watts) * 0.2  -- 可节省20%
@@ -3918,22 +3924,22 @@ CREATE TABLE iaq_alerts (
     alert_id STRING COMMENT '告警ID',
     zone_id STRING COMMENT '区域ID',
     building_id STRING COMMENT '楼宇ID',
-    
+
     alert_time TIMESTAMP(3),
     alert_type STRING COMMENT '告警类型: HIGH_CO2, HIGH_PM25, HIGH_TVOC',
     alert_level STRING COMMENT '等级: WARNING, DANGER',
-    
+
     -- 测量值
     co2_ppm INT,
     pm25_ug_m3 DECIMAL(6,2),
     tvoc_ug_m3 DECIMAL(6,2),
-    
+
     -- 阈值
     threshold_value DECIMAL(8,2),
-    
+
     -- 建议措施
     recommended_action STRING,
-    
+
     PRIMARY KEY (alert_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -3987,31 +3993,31 @@ WHERE co2_ppm > 1000 OR pm25_ug_m3 > 35 OR tvoc_ug_m3 > 600;
 CREATE TABLE campus_energy_report (
     report_date DATE COMMENT '报表日期',
     campus_id STRING COMMENT '园区ID',
-    
+
     -- 总体能耗
     total_electricity_kwh DECIMAL(15,3) COMMENT '总用电量(kWh)',
     total_water_m3 DECIMAL(12,3) COMMENT '总用水量(m³)',
     total_gas_m3 DECIMAL(12,3) COMMENT '总用气量(m³)',
-    
+
     -- 分项能耗
     hvac_electricity_kwh DECIMAL(15,3) COMMENT 'HVAC用电',
     lighting_electricity_kwh DECIMAL(15,3) COMMENT '照明用电',
     equipment_electricity_kwh DECIMAL(15,3) COMMENT '设备用电',
     elevator_electricity_kwh DECIMAL(15,3) COMMENT '电梯用电',
-    
+
     -- 费用
     total_electricity_cost DECIMAL(12,2) COMMENT '总电费(元)',
     peak_electricity_cost DECIMAL(12,2) COMMENT '峰时电费',
     valley_electricity_cost DECIMAL(12,2) COMMENT '谷时电费',
-    
+
     -- 指标
     avg_load_factor DECIMAL(4,3) COMMENT '平均负荷因子',
     peak_demand_kw DECIMAL(10,2) COMMENT '峰值负荷(kW)',
-    
+
     -- 环境指标
     avg_pmv DECIMAL(4,2) COMMENT '平均PMV',
     comfort_compliance_rate DECIMAL(5,2) COMMENT '舒适度达标率(%)',
-    
+
     PRIMARY KEY (report_date, campus_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -4026,30 +4032,30 @@ INSERT INTO campus_energy_report
 SELECT
     DATE(hour_start) AS report_date,
     'CAMPUS_01' AS campus_id,
-    
+
     SUM(total_energy_kwh) AS total_electricity_kwh,
     0 AS total_water_m3,  -- 从水表数据计算
     0 AS total_gas_m3,    -- 从气表数据计算
-    
+
     SUM(CASE WHEN device_type = 'HVAC' THEN total_energy_kwh ELSE 0 END) AS hvac_electricity_kwh,
     SUM(CASE WHEN device_type = 'LIGHTING' THEN total_energy_kwh ELSE 0 END) AS lighting_electricity_kwh,
     SUM(CASE WHEN device_type IN ('PUMP', 'FAN') THEN total_energy_kwh ELSE 0 END) AS equipment_electricity_kwh,
     SUM(CASE WHEN device_type = 'ELEVATOR' THEN total_energy_kwh ELSE 0 END) AS elevator_electricity_kwh,
-    
-    SUM(total_energy_kwh * 
-        CASE 
+
+    SUM(total_energy_kwh *
+        CASE
             WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12 THEN 1.2
             WHEN EXTRACT(HOUR FROM hour_start) < 8 OR EXTRACT(HOUR FROM hour_start) > 22 THEN 0.4
             ELSE 0.7
         END
     ) AS total_electricity_cost,
-    
+
     SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) BETWEEN 9 AND 12 THEN total_energy_kwh * 1.2 ELSE 0 END) AS peak_electricity_cost,
     SUM(CASE WHEN EXTRACT(HOUR FROM hour_start) < 8 OR EXTRACT(HOUR FROM hour_start) > 22 THEN total_energy_kwh * 0.4 ELSE 0 END) AS valley_electricity_cost,
-    
+
     AVG(avg_power_kw) / NULLIF(MAX(peak_power_kw), 0) AS avg_load_factor,
     MAX(peak_power_kw) AS peak_demand_kw,
-    
+
     0 AS avg_pmv,  -- 从舒适度数据计算
     0 AS comfort_compliance_rate
 
@@ -4067,27 +4073,27 @@ SELECT
     d.device_type,
     d.building_id,
     d.zone_id,
-    
+
     DATE(e.reading_time) AS date,
-    
+
     -- 运行时长统计
     SUM(CASE WHEN e.active_power > d.rated_power * 0.1 THEN 1 ELSE 0 END) AS running_minutes,
     COUNT(*) AS total_minutes,
-    
+
     -- 运行率
     SUM(CASE WHEN e.active_power > d.rated_power * 0.1 THEN 1 ELSE 0 END) / COUNT(*) * 100 AS runtime_percent,
-    
+
     -- 启停次数估算（功率从<10%到>50%）
-    SUM(CASE 
-        WHEN e.active_power > d.rated_power * 0.5 
+    SUM(CASE
+        WHEN e.active_power > d.rated_power * 0.5
              AND LAG(e.active_power) OVER (PARTITION BY d.device_id ORDER BY e.reading_time) < d.rated_power * 0.1
-        THEN 1 ELSE 0 
+        THEN 1 ELSE 0
     END) AS startup_count,
-    
+
     -- 负载率分布
     AVG(e.active_power / NULLIF(d.rated_power, 0)) AS avg_load_ratio,
     PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY e.active_power / NULLIF(d.rated_power, 0)) AS median_load_ratio,
-    
+
     -- 能耗
     SUM(e.active_power) / 60.0 AS energy_kwh
 
@@ -4114,24 +4120,24 @@ with_lag AS (
         building_id,
         date,
         daily_energy,
-        
+
         -- 环比（前一天）
         LAG(daily_energy, 1) OVER (PARTITION BY building_id ORDER BY date) AS prev_day_energy,
-        
+
         -- 同比（去年同一天）
         LAG(daily_energy, 365) OVER (PARTITION BY building_id ORDER BY date) AS prev_year_energy,
-        
+
         -- 7天移动平均
         AVG(daily_energy) OVER (
-            PARTITION BY building_id 
-            ORDER BY date 
+            PARTITION BY building_id
+            ORDER BY date
             ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
         ) AS ma7,
-        
+
         -- 30天移动平均
         AVG(daily_energy) OVER (
-            PARTITION BY building_id 
-            ORDER BY date 
+            PARTITION BY building_id
+            ORDER BY date
             ROWS BETWEEN 29 PRECEDING AND CURRENT ROW
         ) AS ma30
     FROM daily_energy
@@ -4140,17 +4146,17 @@ SELECT
     building_id,
     date,
     daily_energy,
-    
+
     -- 环比
     (daily_energy - prev_day_energy) / NULLIF(prev_day_energy, 0) * 100 AS mom_percent,
-    
+
     -- 同比
     (daily_energy - prev_year_energy) / NULLIF(prev_year_energy, 0) * 100 AS yoy_percent,
-    
+
     -- 与移动平均比较
     (daily_energy - ma7) / NULLIF(ma7, 0) * 100 AS vs_ma7_percent,
     (daily_energy - ma30) / NULLIF(ma30, 0) * 100 AS vs_ma30_percent,
-    
+
     -- 趋势判断
     CASE
         WHEN daily_energy > ma7 * 1.1 AND daily_energy > ma30 * 1.05 THEN 'UP_TREND'
@@ -4169,29 +4175,29 @@ CREATE VIEW weather_energy_correlation AS
 SELECT
     e.building_id,
     DATE(e.hour_start) AS date,
-    
+
     -- 能耗数据
     SUM(e.total_energy_kwh) AS total_energy,
     SUM(CASE WHEN e.device_type = 'HVAC' THEN e.total_energy_kwh ELSE 0 END) AS hvac_energy,
-    
+
     -- 天气数据（取当天平均）
     AVG(w.outdoor_temp) AS avg_outdoor_temp,
     MAX(w.outdoor_temp) AS max_outdoor_temp,
     MIN(w.outdoor_temp) AS min_outdoor_temp,
     AVG(w.solar_radiation_wm2) AS avg_solar_radiation,
-    
+
     -- 度日数计算
     SUM(CASE WHEN w.outdoor_temp > 26 THEN w.outdoor_temp - 26 ELSE 0 END) AS cooling_degree_hours,
     SUM(CASE WHEN w.outdoor_temp < 18 THEN 18 - w.outdoor_temp ELSE 0 END) AS heating_degree_hours,
-    
+
     -- 相关性指标
-    SUM(CASE WHEN e.device_type = 'HVAC' THEN e.total_energy_kwh ELSE 0 END) / 
+    SUM(CASE WHEN e.device_type = 'HVAC' THEN e.total_energy_kwh ELSE 0 END) /
         NULLIF(SUM(CASE WHEN w.outdoor_temp > 26 THEN w.outdoor_temp - 26 ELSE 0 END), 0) AS kwh_per_cdh,
-    SUM(CASE WHEN e.device_type = 'HVAC' THEN e.total_energy_kwh ELSE 0 END) / 
+    SUM(CASE WHEN e.device_type = 'HVAC' THEN e.total_energy_kwh ELSE 0 END) /
         NULLIF(SUM(CASE WHEN w.outdoor_temp < 18 THEN 18 - w.outdoor_temp ELSE 0 END), 0) AS kwh_per_hdh
 
 FROM energy_aggregation_hourly e
-LEFT JOIN outdoor_weather_stream w 
+LEFT JOIN outdoor_weather_stream w
     ON DATE(e.hour_start) = DATE(w.report_time)
     AND EXTRACT(HOUR FROM e.hour_start) = EXTRACT(HOUR FROM w.report_time)
 GROUP BY e.building_id, DATE(e.hour_start);
@@ -4205,26 +4211,26 @@ CREATE TABLE dr_participation_records (
     record_id STRING COMMENT '记录ID',
     dr_event_id STRING COMMENT 'DR事件ID',
     building_id STRING COMMENT '楼宇ID',
-    
+
     -- 事件时间
     event_start TIMESTAMP(3),
     event_end TIMESTAMP(3),
     event_duration_minutes INT,
-    
+
     -- 参与情况
     baseline_load_kw DECIMAL(10,2) COMMENT '基线负荷(kW)',
     actual_load_kw DECIMAL(10,2) COMMENT '实际负荷(kW)',
     load_reduction_kw DECIMAL(10,2) COMMENT '负荷削减(kW)',
     reduction_percent DECIMAL(5,2) COMMENT '削减比例(%)',
-    
+
     -- 激励
     incentive_price DECIMAL(6,4) COMMENT '激励价格(元/kWh)',
     incentive_amount DECIMAL(10,2) COMMENT '激励金额(元)',
-    
+
     -- 性能
     response_time_seconds INT COMMENT '响应时间(秒)',
     accuracy_percent DECIMAL(5,2) COMMENT '准确度(%)',
-    
+
     PRIMARY KEY (record_id) NOT ENFORCED
 ) WITH (
     'connector' = 'jdbc',
@@ -4243,17 +4249,17 @@ SELECT
     event_start,
     event_end,
     TIMESTAMPDIFF(MINUTE, event_start, event_end) AS event_duration_minutes,
-    
+
     baseline_load_kw,
     actual_load_kw,
     baseline_load_kw - actual_load_kw AS load_reduction_kw,
     (baseline_load_kw - actual_load_kw) / NULLIF(baseline_load_kw, 0) * 100 AS reduction_percent,
-    
+
     incentive_price,
     (baseline_load_kw - actual_load_kw) * TIMESTAMPDIFF(MINUTE, event_start, event_end) / 60.0 * incentive_amount AS incentive_amount,
-    
+
     response_time_seconds,
-    CASE 
+    CASE
         WHEN ABS((baseline_load_kw - actual_load_kw) - target_reduction_kw) / target_reduction_kw < 0.1 THEN 100
         WHEN ABS((baseline_load_kw - actual_load_kw) - target_reduction_kw) / target_reduction_kw < 0.2 THEN 90
         ELSE 80
@@ -4266,7 +4272,7 @@ FROM dr_event_details;  -- 假设有此表存储DR事件详情
 
 **补充说明**：至此已完成38个Flink SQL示例，覆盖：
 - 数据接入层：5个SQL
-- 能耗监测Pipeline：6个SQL  
+- 能耗监测Pipeline：6个SQL
 - HVAC优化控制Pipeline：6个SQL
 - 租户能耗分摊Pipeline：5个SQL
 - 设备故障预测Pipeline：4个SQL

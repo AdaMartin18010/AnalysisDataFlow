@@ -116,6 +116,7 @@
 ### SQL代码规范
 
 所有SQL示例遵循统一规范：
+
 - 完整的DDL（CREATE TABLE ... WITH ...）
 - 明确的Watermark定义
 - Kafka/InfluxDB连接器配置
@@ -138,6 +139,7 @@
 ### 2. 形式化贡献
 
 **原创定理/引理**:
+
 - Lemma-AGR-01: 土壤湿度采样频率边界
 - Lemma-VH-01: 车辆信号采样频率与数据速率关系
 - Lemma-RTL-01: RFID库存一致性最终一致性
@@ -321,6 +323,7 @@ Phase-1-Architecture/01-flink-iot-foundation-and-architecture.md
 ## 致谢
 
 本项目参考了以下权威来源：
+
 - Apache Flink 官方文档与最佳实践
 - AWS/Azure/GCP IoT解决方案
 - Rivian、Rimac等领先车企技术分享
