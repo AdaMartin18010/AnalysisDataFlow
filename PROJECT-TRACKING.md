@@ -10,6 +10,10 @@
 >
 > ✅ **Flink 2.4/2.5/3.0 特性深度跟踪**: 100个子任务全部完成 | 新增100篇文档 | [完成报告](FLINK-24-25-30-COMPLETION-REPORT.md)
 >
+> ⚠️ **重要声明**: Flink 2.4/2.5/3.0 相关内容为**前瞻性技术愿景**，基于社区讨论和趋势分析，
+> **不代表 Apache Flink 官方承诺**。FLIP-531 等特性处于早期讨论阶段，尚未成为正式 FLIP。
+> 详见 [Flink 2.4 跟踪文档](./Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) 中的状态声明。
+>
 > ✅ **v3.2全面推进**: E1-E4准确性修复 + B3/B5基础完善 + O1-O4优化 + D2-D4生态 | 新增12篇文档 | 62个文档修改 | 650KB新内容
 >
 > 🗺️ **v3.3路线图已发布**: [ROADMAP-v3.3-and-beyond.md](./ROADMAP-v3.3-and-beyond.md)

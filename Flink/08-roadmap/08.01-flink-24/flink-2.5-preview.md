@@ -1,16 +1,27 @@
-<!-- 版本状态标记: status=preview, target=2027-Q1-Q2 -->
-> ⚠️ **前瞻性声明**
-> 本文档包含Flink 2.5的前瞻性设计内容。Flink 2.5尚未正式发布，
-> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+<!-- 版本状态标记: status=highly-speculative, target=undefined -->
+> ⚠️ **前瞻性声明 - 重要提示**
 >
-> | 属性 | 值 |
-> |------|-----|
-> | **文档状态** | 🔍 前瞻 (Preview) |
-> | **目标版本** | 2.5.0 GA |
-> | **预计发布时间** | 2027 Q1-Q2 |
-> | **Feature Freeze** | 2027-02 (预估) |
-> | **最后更新** | 2026-04-04 |
-> | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+> **本文档内容为长期技术愿景，高度推测性，不代表 Apache Flink 官方承诺**
+>
+> | 属性 | 状态 |
+> |------|------|
+> | **Flink 2.5 官方状态** | 🔴 **尚未讨论** - Apache Flink 社区尚未开始 2.5 版本规划 |
+> | **本文档性质** | 长期技术愿景 / 趋势预测 / 概念设计 |
+> | **发布时间预估** | 高度不确定，最早 2027 或更晚 |
+> | **FLIP-435 等状态** | 🔴 **概念阶段** - 无正式 FLIP 编号，仅为社区讨论 |
+> | **特性确定性** | 极低 - 纯技术探索性质 |
+>
+> **说明**:
+>
+> - 本文档基于技术趋势分析和假设性场景设计
+> - 所有 FLIP 编号 (如 FLIP-435) 为占位符，非官方分配
+> - 所有特性描述均为**概念设计**，可能与实际发展完全不同
+> - 如需了解 Flink 官方路线图，请参考 [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
+> - 当前最新稳定版本请参考 [Flink 官方发布说明](https://nightlies.apache.org/flink/flink-docs-stable/release-notes/)
+>
+> | 最后更新 | 跟踪系统 |
+> |----------|----------|
+> | 2026-04-07 | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
 
 ---
 

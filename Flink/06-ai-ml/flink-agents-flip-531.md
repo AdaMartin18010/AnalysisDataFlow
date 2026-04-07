@@ -4,6 +4,27 @@
 
 ---
 
+## ⚠️ 特性状态声明
+
+| 属性 | 状态 |
+|------|------|
+| **FLIP-531 状态** | 🟡 **讨论中 (Under Discussion)** |
+| **Apache Flink 官方状态** | 尚未接受为正式 FLIP，处于社区早期讨论阶段 |
+| **本文档性质** | 概念设计 (Conceptual Design) / 前瞻性分析 |
+| **预计发布** | 未定，可能随 Flink 2.5+ 或后续版本发布 |
+| **API 稳定性** | 不稳定，可能大幅变化 |
+
+**重要提示**:
+
+- 本文档描述的 API、语法和功能均为**概念设计阶段**，不代表 Apache Flink 官方承诺
+- 实际实现可能与本文档描述有显著差异
+- 如需跟踪最新进展，请参考 [Apache Flink JIRA - FLIP-531](https://issues.apache.org/jira/browse/FLINK) (如有创建) 和 [Flink 官方路线图](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
+- 当前生产环境使用建议基于 [Flink 与 LLM 集成](./flink-llm-integration.md) 的现有能力
+
+---
+
+---
+
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-12-30: Flink Agent

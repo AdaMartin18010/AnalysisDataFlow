@@ -1,16 +1,26 @@
-<!-- 版本状态标记: status=preview, target=2026-Q3-Q4 -->
-> ⚠️ **前瞻性声明**
-> 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
-> 部分特性为预测/规划性质。具体实现以官方最终发布为准。
+<!-- 版本状态标记: status=speculative, target=undefined -->
+> ⚠️ **前瞻性声明 - 重要提示**
 >
-> | 属性 | 值 |
-> |------|-----|
-> | **文档状态** | 🔍 前瞻 (Preview) |
-> | **目标版本** | 2.4.0 GA |
-> | **预计发布时间** | 2026 Q3-Q4 |
-> | **Feature Freeze** | 2026-08-15 (预估) |
-> | **最后更新** | 2026-04-04 |
-> | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+> **本文档内容为基于社区讨论的推测性分析，不代表 Apache Flink 官方承诺**
+>
+> | 属性 | 状态 |
+> |------|------|
+> | **Flink 2.4 官方状态** | 🟡 **尚未确认** - Apache Flink 社区尚未公布 2.4 版本计划 |
+> | **本文档性质** | 技术愿景 / 社区趋势分析 / 前瞻性预测 |
+> | **发布时间预估** | 基于历史周期的推测 (2026 Q3-Q4 或更晚) |
+> | **FLIP-531 状态** | 🔴 **早期讨论** - 尚未成为正式 FLIP |
+> | **特性确定性** | 低 - 取决于社区优先级和资源 |
+>
+> **说明**:
+>
+> - 本文档基于 Flink 社区邮件列表、FLIP 提案讨论和技术趋势进行分析
+> - 所有特性描述均为**假设性设计**，实际版本可能完全不同
+> - 如需了解 Flink 官方路线图，请参考 [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
+> - 当前稳定版本请参考 [Flink 2.0 官方发布说明](https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/)
+>
+> | 最后更新 | 跟踪系统 |
+> |----------|----------|
+> | 2026-04-07 | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
 
 ---
 

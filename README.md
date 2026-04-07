@@ -87,13 +87,13 @@
 - **✅ E1-E4错误修复完成**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - 术语统一、链接修复、文档对齐完成
 - **📚 新增tutorials目录入口**: 快速上手指南 [5分钟入门](tutorials/00-5-MINUTE-QUICK-START.md) | [环境搭建](tutorials/01-environment-setup.md) | [第一个作业](tutorials/02-first-flink-job.md)
 - **📖 新增速查表**: [DataStream API速查表](Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | [SQL函数速查表](Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md)
-- **Flink 2.4/2.5/3.0路线**: [Flink 2.4/2.5/3.0 三年路线图](Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - 存算分离GA、云原生调度、AI原生架构
-- **AI Agents GA亮点**: [Flink AI Agents生产级发布](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM集成、智能决策流、AutoML流水线
-- **Serverless Flink亮点**: [无服务器Flink完全指南](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless、Azure Stream Analytics、GCP Dataflow无服务器模式
+- **Flink 2.4/2.5/3.0路线**: [Flink 2.4/2.5/3.0 三年路线图](Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - ⚠️ 前瞻性技术愿景，非官方承诺
+- **AI Agents 设计探索**: [Flink AI Agents概念设计](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - ⚠️ FLIP-531处于早期讨论，尚未正式发布
+- **Serverless Flink分析**: [无服务器Flink分析](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) - 云厂商方案对比与趋势分析
 - **Flink 2.3路线图**: [Flink 2.3新特性预览](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md)
 - **实时图流处理TGN**: [时序图神经网络集成](Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
 - **多模态流处理**: [文本/图像/视频统一流处理](Knowledge/06-frontier/multimodal-streaming-architecture.md)
-- **Flink AI Agents**: [FLIP-531 AI Agent集成](Flink/06-ai-ml/flink-ai-agents-flip-531.md)
+- **Flink AI Agents (概念设计)**: [FLIP-531 AI Agent概念设计](Flink/06-ai-ml/flink-ai-agents-flip-531.md) - ⚠️ 前瞻性内容，FLIP-531尚未正式发布
 - **A2A协议深度分析**: [A2A与Agent通信协议](Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP、Agent互操作性
 - **Smart Casual Verification**: [形式化验证新方法](Struct/07-tools/smart-casual-verification.md) - 轻量级验证、fuzzing + 证明混合方法
 - **Flink vs RisingWave对比**: [现代流处理引擎对比](Knowledge/04-technology-selection/flink-vs-risingwave.md) - 架构、性能、成本全方位对比

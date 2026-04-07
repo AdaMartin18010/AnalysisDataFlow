@@ -2,8 +2,29 @@
 
 > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
 
+---
+
+## ⚠️ 特性状态声明
+
+| 属性 | 状态 |
+|------|------|
+| **FLIP-531 状态** | 🟡 **讨论中 (Under Discussion)** - 尚未成为正式 FLIP |
+| **Apache Flink 官方状态** | 社区早期讨论阶段，无官方承诺 |
+| **本文档性质** | 概念设计 / 技术愿景 / 前瞻性分析 |
+| **预计发布** | 未定，最早可能随 Flink 2.5+ 考虑 |
+| **API 稳定性** | 高度不稳定，仅为设计探索 |
+
+**重要提示**:
+
+- 本文档内容**不代表 Apache Flink 官方路线图**
+- "Preview"、"GA" 等术语在本文档中仅作为**设计目标**讨论，非实际发布状态
+- 当前 Flink 官方**无** FLIP-531 相关实现计划的时间表
+- 如需了解 Flink AI 相关正式特性，请参考 [Flink ML](https://nightlies.apache.org/flink/flink-ml-docs-stable/) 官方文档
+
+---
+
 > ⚠️ **前瞻性声明**
-> Flink Agents 目前为 Preview 版本，API 可能变更。
+> 本文档内容为概念设计阶段的前瞻性分析，所有 API 和特性均为假设性设计。
 > 最后更新: 2026-04-06
 
 ---
