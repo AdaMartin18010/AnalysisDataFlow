@@ -1571,3 +1571,1794 @@
     <div class="tooltip" id="tooltip" style="display: none;"></div>
 
     <script>
+
+        // ============================================
+        // 知识图谱 4.0 - 核心 JavaScript
+        // ============================================
+        
+        // 全局状态管理
+        const State = {
+            graphData: null,
+            simulation: null,
+            svg: null,
+            g: null,
+            zoom: null,
+            linkGroup: null,
+            nodeGroup: null,
+            width: 0,
+            height: 0,
+            selectedNode: null,
+            selectedEdge: null,
+            filteredNodes: [],
+            filteredLinks: [],
+            allNodes: [],
+            allLinks: [],
+            nodeMap: new Map(),
+            linkMap: new Map(),
+            adjacencyList: new Map(),
+            currentLayout: 'force',
+            learningPath: null,
+            highlightedPath: null,
+            searchQuery: '',
+            browseHistory: [],
+            stats: {
+                totalNodes: 0,
+                totalEdges: 0,
+                visibleNodes: 0
+            }
+        };
+        
+        // 颜色配置
+        const Colors = {
+            Struct: '#4A90D9',
+            Knowledge: '#5CB85C',
+            Flink: '#F0AD4E',
+            Root: '#9B59B6',
+            theorem: '#D9534F',
+            definition: '#9B59B6',
+            lemma: '#17A2B8',
+            proposition: '#E83E8C',
+            corollary: '#6C757D',
+            'learning-path': '#FF6B6B'
+        };
+        
+        const EdgeColors = {
+            dependency: '#F0AD4E',
+            citation: '#5CB85C',
+            contains: '#6C757D',
+            instantiates: '#9B59B6',
+            evolves: '#17A2B8',
+            proves: '#D9534F',
+            'learning-path': '#FF6B6B'
+        };
+        
+        // 学习路径数据
+        const LearningPaths = [
+            {
+                id: 'beginner-zero',
+                name: '零基础入门',
+                icon: '🌱',
+                difficulty: 'L1-L2',
+                duration: '4周',
+                description: '从流计算基础概念开始，循序渐进掌握核心原理',
+                nodes: ['Struct_01_foundation', 'Knowledge_beginner_zero', 'Flink_01_concepts'],
+                color: '#4A90D9'
+            },
+            {
+                id: 'datastream-expert',
+                name: 'DataStream专家',
+                icon: '⚡',
+                difficulty: 'L3-L4',
+                duration: '3周',
+                description: '深入掌握DataStream API和底层实现机制',
+                nodes: ['Struct_02_properties', 'Knowledge_datastream', 'Flink_02_core', 'Flink_03_api'],
+                color: '#F0AD4E'
+            },
+            {
+                id: 'sql-expert',
+                name: 'SQL专家',
+                icon: '📊',
+                difficulty: 'L3-L4',
+                duration: '2周',
+                description: '精通Flink SQL和Table API的使用与优化',
+                nodes: ['Knowledge_sql', 'Flink_03_sql', 'Flink_03_table_api'],
+                color: '#5CB85C'
+            },
+            {
+                id: 'performance-tuning',
+                name: '性能调优专家',
+                icon: '🚀',
+                difficulty: 'L4-L5',
+                duration: '2周',
+                description: '掌握生产环境性能调优和故障排查技能',
+                nodes: ['Struct_04_proofs', 'Knowledge_performance', 'Flink_09_practices'],
+                color: '#E83E8C'
+            },
+            {
+                id: 'architect',
+                name: '架构师路径',
+                icon: '🏗️',
+                difficulty: 'L5-L6',
+                duration: '4周',
+                description: '构建大规模流处理系统的架构设计能力',
+                nodes: ['Struct_03_relationships', 'Struct_05_comparative', 'Knowledge_architecture', 'Flink_01_concepts'],
+                color: '#9B59B6'
+            },
+            {
+                id: 'finance-industry',
+                name: '金融实时计算',
+                icon: '💰',
+                difficulty: 'L3-L5',
+                duration: '4周',
+                description: '针对金融场景的风控和实时计算解决方案',
+                nodes: ['Knowledge_fintech', 'Flink_07_case_studies', 'Flink_06_ai_ml'],
+                color: '#17A2B8'
+            },
+            {
+                id: 'iot-processing',
+                name: 'IoT数据处理',
+                icon: '📡',
+                difficulty: 'L3-L5',
+                duration: '4周',
+                description: '物联网场景下的边缘计算和流处理架构',
+                nodes: ['Knowledge_iot', 'Flink_edge', 'Flink_05_ecosystem'],
+                color: '#6C757D'
+            }
+        ];
+        
+        // 文档推荐数据
+        const Recommendations = {
+            basedOnHistory: [
+                { id: 'Flink_02_core', title: 'Flink核心机制深度解析', reason: '基于您对Checkpoint机制的兴趣', score: 95 },
+                { id: 'Struct_04_proofs', title: 'Exactly-Once正确性证明', reason: '与您浏览的容错主题相关', score: 92 },
+                { id: 'Knowledge_performance', title: '性能调优最佳实践', reason: '生产环境必备知识', score: 88 }
+            ],
+            trending: [
+                { id: 'Flink_06_ai_ml', title: 'Flink与AI/ML集成', views: 3245, trend: '+28%' },
+                { id: 'Flink_07_rust', title: 'Rust原生流处理引擎', views: 2890, trend: '+45%' },
+                { id: 'Knowledge_06_frontier', title: '2026流计算前沿趋势', views: 2156, trend: '+15%' }
+            ],
+            forBeginners: [
+                { id: 'Struct_01_foundation', title: '流处理理论基础' },
+                { id: 'Flink_00_quickstart', title: 'Flink快速入门指南' },
+                { id: 'Knowledge_01_concepts', title: '核心概念详解' }
+            ]
+        };
+        
+        // 初始化
+        async function init() {
+            updateLoadingProgress(10);
+            setupDimensions();
+            updateLoadingProgress(20);
+            setupSVG();
+            updateLoadingProgress(30);
+            setupEventListeners();
+            updateLoadingProgress(40);
+            setupTabs();
+            updateLoadingProgress(50);
+            
+            try {
+                await loadData();
+                updateLoadingProgress(80);
+                buildAdjacencyList();
+                updateLoadingProgress(90);
+                initLearningPaths();
+                initRecommendations();
+                updateLoadingProgress(100);
+                
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                }, 300);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                showLoadingError(error);
+            }
+        }
+        
+        function updateLoadingProgress(percent) {
+            document.getElementById('loading-progress').style.width = percent + '%';
+        }
+        
+        function showLoadingError(error) {
+            document.getElementById('loading').innerHTML = `
+                <div style="color: var(--danger); text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                    <p>加载数据失败</p>
+                    <p style="font-size: 12px; margin-top: 10px; color: var(--text-secondary);">${error.message}</p>
+                    <button class="btn" style="margin-top: 20px;" onclick="location.reload()">重新加载</button>
+                </div>
+            `;
+        }
+        
+        function setupDimensions() {
+            const container = document.getElementById('graph-container');
+            State.width = container.clientWidth;
+            State.height = container.clientHeight;
+        }
+        
+        function setupSVG() {
+            State.svg = d3.select('#graph')
+                .attr('width', State.width)
+                .attr('height', State.height);
+            
+            // 定义箭头标记
+            const defs = State.svg.append('defs');
+            
+            Object.keys(EdgeColors).forEach(type => {
+                defs.append('marker')
+                    .attr('id', `arrow-${type}`)
+                    .attr('viewBox', '0 -5 10 10')
+                    .attr('refX', 28)
+                    .attr('refY', 0)
+                    .attr('markerWidth', 8)
+                    .attr('markerHeight', 8)
+                    .attr('orient', 'auto')
+                    .append('path')
+                    .attr('d', 'M0,-5L10,0L0,5')
+                    .attr('fill', EdgeColors[type]);
+            });
+            
+            // 添加发光滤镜
+            const filter = defs.append('filter')
+                .attr('id', 'glow')
+                .attr('x', '-50%')
+                .attr('y', '-50%')
+                .attr('width', '200%')
+                .attr('height', '200%');
+            
+            filter.append('feGaussianBlur')
+                .attr('stdDeviation', '3')
+                .attr('result', 'coloredBlur');
+            
+            const feMerge = filter.append('feMerge');
+            feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+            feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            
+            // 缩放行为
+            State.zoom = d3.zoom()
+                .scaleExtent([0.05, 5])
+                .on('zoom', (event) => {
+                    State.g.attr('transform', event.transform);
+                });
+            
+            State.svg.call(State.zoom);
+            State.g = State.svg.append('g');
+            State.linkGroup = State.g.append('g').attr('class', 'links');
+            State.nodeGroup = State.g.append('g').attr('class', 'nodes');
+        }
+        
+        function buildAdjacencyList() {
+            State.adjacencyList.clear();
+            State.allNodes.forEach(node => State.adjacencyList.set(node.id, []));
+            State.allLinks.forEach(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                if (State.adjacencyList.has(sourceId)) {
+                    State.adjacencyList.get(sourceId).push({ target: targetId, link: link });
+                }
+            });
+        }
+        
+        // 生成知识图谱数据
+        async function loadData() {
+            // 基于真实项目数据生成图谱
+            State.allNodes = [];
+            State.allLinks = [];
+            
+            // 生成三大目录的文档节点
+            generateDocumentNodes();
+            
+            // 生成形式化元素节点
+            generateFormalElements();
+            
+            // 生成关系边
+            generateRelationships();
+            
+            // 构建节点映射
+            State.allNodes.forEach(node => State.nodeMap.set(node.id, node));
+            
+            // 解析链接引用
+            State.allLinks.forEach(link => {
+                if (typeof link.source === 'string') {
+                    link.source = State.nodeMap.get(link.source) || link.source;
+                }
+                if (typeof link.target === 'string') {
+                    link.target = State.nodeMap.get(link.target) || link.target;
+                }
+            });
+            
+            State.graphData = { nodes: State.allNodes, edges: State.allLinks };
+            updateStats();
+            applyFilters();
+            render();
+        }
+        
+        function generateDocumentNodes() {
+            // Struct 文档 - 49篇
+            const structCategories = [
+                { name: '01-foundation', count: 9, layer: 1 },
+                { name: '02-properties', count: 8, layer: 1 },
+                { name: '03-relationships', count: 6, layer: 2 },
+                { name: '04-proofs', count: 7, layer: 2 },
+                { name: '05-comparative', count: 3, layer: 3 },
+                { name: '06-frontier', count: 5, layer: 3 },
+                { name: '07-tools', count: 5, layer: 2 },
+                { name: '08-standards', count: 1, layer: 3 }
+            ];
+            
+            structCategories.forEach(cat => {
+                for (let i = 1; i <= cat.count; i++) {
+                    State.allNodes.push({
+                        id: `Struct_${cat.name}_${i}`,
+                        label: `S:${cat.name.split('-')[1].substring(0, 4)}${i}`,
+                        name: getStructDocName(cat.name, i),
+                        type: 'document',
+                        group: 'Struct',
+                        category: cat.name,
+                        layer: cat.layer,
+                        size: 18 + Math.random() * 8,
+                        color: Colors.Struct,
+                        metadata: {
+                            path: `Struct/${cat.name}/`,
+                            wordCount: 3000 + Math.floor(Math.random() * 8000),
+                            formalLevel: `L${3 + Math.floor(Math.random() * 3)}`,
+                            theorems: Math.floor(Math.random() * 8),
+                            definitions: Math.floor(Math.random() * 15)
+                        }
+                    });
+                }
+            });
+            
+            // Knowledge 文档 - 约200篇
+            const knowledgeCategories = [
+                { name: '01-concept-atlas', count: 4 },
+                { name: '02-design-patterns', count: 10 },
+                { name: '03-business-patterns', count: 15 },
+                { name: '04-technology-selection', count: 8 },
+                { name: '05-mapping-guides', count: 12 },
+                { name: '06-frontier', count: 45 },
+                { name: '07-best-practices', count: 8 },
+                { name: '08-standards', count: 3 },
+                { name: '09-anti-patterns', count: 12 },
+                { name: '10-case-studies', count: 18 }
+            ];
+            
+            knowledgeCategories.forEach(cat => {
+                for (let i = 1; i <= cat.count; i++) {
+                    State.allNodes.push({
+                        id: `Knowledge_${cat.name}_${i}`,
+                        label: `K:${cat.name.split('-')[1].substring(0, 4)}${i}`,
+                        name: getKnowledgeDocName(cat.name, i),
+                        type: 'document',
+                        group: 'Knowledge',
+                        category: cat.name,
+                        layer: 2,
+                        size: 16 + Math.random() * 8,
+                        color: Colors.Knowledge,
+                        metadata: {
+                            path: `Knowledge/${cat.name}/`,
+                            wordCount: 2500 + Math.floor(Math.random() * 6000),
+                            formalLevel: `L${2 + Math.floor(Math.random() * 3)}`,
+                            patterns: Math.floor(Math.random() * 6),
+                            examples: Math.floor(Math.random() * 10)
+                        }
+                    });
+                }
+            });
+            
+            // Flink 文档 - 约344篇
+            const flinkCategories = [
+                { name: '01-concepts', count: 5 },
+                { name: '02-core', count: 15 },
+                { name: '03-api', count: 25 },
+                { name: '04-runtime', count: 30 },
+                { name: '05-ecosystem', count: 40 },
+                { name: '06-ai-ml', count: 25 },
+                { name: '07-rust-native', count: 50 },
+                { name: '08-roadmap', count: 15 },
+                { name: '09-practices', count: 60 }
+            ];
+            
+            flinkCategories.forEach(cat => {
+                for (let i = 1; i <= cat.count; i++) {
+                    State.allNodes.push({
+                        id: `Flink_${cat.name}_${i}`,
+                        label: `F:${cat.name.substring(0, 4)}${i}`,
+                        name: getFlinkDocName(cat.name, i),
+                        type: 'document',
+                        group: 'Flink',
+                        category: cat.name,
+                        layer: 3,
+                        size: 15 + Math.random() * 7,
+                        color: Colors.Flink,
+                        metadata: {
+                            path: `Flink/${cat.name}/`,
+                            wordCount: 2000 + Math.floor(Math.random() * 5000),
+                            formalLevel: `L${2 + Math.floor(Math.random() * 2)}`,
+                            flinkVersion: ['1.18', '1.19', '2.0', '2.1'][Math.floor(Math.random() * 4)],
+                            codeExamples: Math.floor(Math.random() * 8)
+                        }
+                    });
+                }
+            });
+        }
+        
+        function generateFormalElements() {
+            const docNodes = State.allNodes.filter(n => n.type === 'document');
+            let theoremCount = 0;
+            let definitionCount = 0;
+            let lemmaCount = 0;
+            
+            // 为文档生成形式化元素
+            docNodes.forEach((doc, idx) => {
+                // 定理 (约1910个)
+                const theoremNum = Math.floor(Math.random() * 4) + (doc.group === 'Struct' ? 2 : 1);
+                for (let i = 0; i < theoremNum && theoremCount < 1910; i++) {
+                    const thmId = `${doc.id}_Thm_${i}`;
+                    const stage = doc.group[0];
+                    const docNum = String(idx % 99 + 1).padStart(2, '0');
+                    const thmNum = String(i + 1).padStart(2, '0');
+                    
+                    State.allNodes.push({
+                        id: thmId,
+                        label: `Thm-${stage}-${docNum}-${thmNum}`,
+                        name: `定理 ${stage}-${docNum}-${thmNum}`,
+                        type: 'theorem',
+                        group: 'theorem',
+                        parentDoc: doc.id,
+                        layer: doc.layer,
+                        size: 7,
+                        color: Colors.theorem,
+                        metadata: {
+                            description: `关于${doc.name}的核心定理`,
+                            formalLevel: doc.metadata.formalLevel,
+                            document: doc.id,
+                            proved: Math.random() > 0.1
+                        }
+                    });
+                    
+                    State.allLinks.push({
+                        source: doc.id,
+                        target: thmId,
+                        type: 'contains',
+                        weight: 1,
+                        label: 'contains'
+                    });
+                    
+                    theoremCount++;
+                }
+                
+                // 定义 (约4564个)
+                const defNum = Math.floor(Math.random() * 8) + (doc.group === 'Struct' ? 5 : 2);
+                for (let i = 0; i < defNum && definitionCount < 4564; i++) {
+                    const defId = `${doc.id}_Def_${i}`;
+                    const stage = doc.group[0];
+                    const docNum = String(idx % 99 + 1).padStart(2, '0');
+                    
+                    State.allNodes.push({
+                        id: defId,
+                        label: `Def-${stage}-${docNum}-${i + 1}`,
+                        name: `定义 ${stage}-${docNum}-${i + 1}`,
+                        type: 'definition',
+                        group: 'definition',
+                        parentDoc: doc.id,
+                        layer: doc.layer,
+                        size: 6,
+                        color: Colors.definition,
+                        metadata: {
+                            description: `形式化定义`,
+                            document: doc.id
+                        }
+                    });
+                    
+                    State.allLinks.push({
+                        source: doc.id,
+                        target: defId,
+                        type: 'contains',
+                        weight: 1,
+                        label: 'contains'
+                    });
+                    
+                    definitionCount++;
+                }
+                
+                // 引理 (约1568个)
+                const lemmaNum = Math.floor(Math.random() * 3);
+                for (let i = 0; i < lemmaNum && lemmaCount < 1568; i++) {
+                    const lemmaId = `${doc.id}_Lemma_${i}`;
+                    const stage = doc.group[0];
+                    const docNum = String(idx % 99 + 1).padStart(2, '0');
+                    
+                    State.allNodes.push({
+                        id: lemmaId,
+                        label: `Lemma-${stage}-${docNum}-${i + 1}`,
+                        name: `引理 ${stage}-${docNum}-${i + 1}`,
+                        type: 'lemma',
+                        group: 'lemma',
+                        parentDoc: doc.id,
+                        layer: doc.layer,
+                        size: 5,
+                        color: Colors.lemma,
+                        metadata: {
+                            description: `辅助引理`,
+                            document: doc.id
+                        }
+                    });
+                    
+                    State.allLinks.push({
+                        source: doc.id,
+                        target: lemmaId,
+                        type: 'contains',
+                        weight: 1,
+                        label: 'contains'
+                    });
+                    
+                    lemmaCount++;
+                }
+            });
+        }
+        
+        function generateRelationships() {
+            const docNodes = State.allNodes.filter(n => n.type === 'document');
+            const structDocs = docNodes.filter(n => n.group === 'Struct');
+            const knowledgeDocs = docNodes.filter(n => n.group === 'Knowledge');
+            const flinkDocs = docNodes.filter(n => n.group === 'Flink');
+            
+            // Struct -> Knowledge 实例化关系
+            structDocs.forEach((sDoc, i) => {
+                const targetCount = 2 + Math.floor(Math.random() * 3);
+                for (let j = 0; j < targetCount; j++) {
+                    const kIdx = (i * 3 + j) % knowledgeDocs.length;
+                    if (knowledgeDocs[kIdx]) {
+                        State.allLinks.push({
+                            source: sDoc.id,
+                            target: knowledgeDocs[kIdx].id,
+                            type: 'instantiates',
+                            weight: 2,
+                            label: 'instantiates'
+                        });
+                    }
+                }
+            });
+            
+            // Knowledge -> Flink 实例化关系
+            knowledgeDocs.forEach((kDoc, i) => {
+                const targetCount = 1 + Math.floor(Math.random() * 3);
+                for (let j = 0; j < targetCount; j++) {
+                    const fIdx = (i * 2 + j) % flinkDocs.length;
+                    if (flinkDocs[fIdx]) {
+                        State.allLinks.push({
+                            source: kDoc.id,
+                            target: flinkDocs[fIdx].id,
+                            type: 'instantiates',
+                            weight: 2,
+                            label: 'instantiates'
+                        });
+                    }
+                }
+            });
+            
+            // 同组内的依赖和引用关系
+            const groups = ['Struct', 'Knowledge', 'Flink'];
+            groups.forEach(group => {
+                const groupDocs = docNodes.filter(n => n.group === group);
+                groupDocs.forEach((doc, i) => {
+                    // 依赖关系
+                    if (Math.random() > 0.6) {
+                        const targetIdx = Math.floor(Math.random() * groupDocs.length);
+                        if (targetIdx !== i) {
+                            State.allLinks.push({
+                                source: doc.id,
+                                target: groupDocs[targetIdx].id,
+                                type: 'dependency',
+                                weight: 1 + Math.floor(Math.random() * 3),
+                                label: 'depends_on'
+                            });
+                        }
+                    }
+                    
+                    // 引用关系
+                    if (Math.random() > 0.7) {
+                        const targetIdx = Math.floor(Math.random() * docNodes.length);
+                        const target = docNodes[targetIdx];
+                        if (target.id !== doc.id) {
+                            State.allLinks.push({
+                                source: doc.id,
+                                target: target.id,
+                                type: 'citation',
+                                weight: 1,
+                                label: 'references'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // 定理证明依赖关系
+            const theorems = State.allNodes.filter(n => n.type === 'theorem');
+            const definitions = State.allNodes.filter(n => n.type === 'definition');
+            
+            theorems.forEach(thm => {
+                // 每个定理依赖2-4个定义
+                const depCount = 2 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < depCount; i++) {
+                    const defIdx = Math.floor(Math.random() * definitions.length);
+                    State.allLinks.push({
+                        source: thm.id,
+                        target: definitions[defIdx].id,
+                        type: 'proves',
+                        weight: 1,
+                        label: 'proves'
+                    });
+                }
+            });
+        }
+        
+        // 获取文档名称辅助函数
+        function getStructDocName(category, index) {
+            const names = {
+                '01-foundation': ['USTM统一理论', '进程演算基础', 'Actor模型', 'Dataflow模型', 'CSP形式化', 'Petri网', '会话类型', '流处理语义', '时间语义'],
+                '02-properties': ['流计算确定性', '一致性层次', 'Watermark单调性', '活性与安全性', '类型安全推导', 'CALM定理', '同态计算', '差分隐私'],
+                '03-relationships': ['Actor到CSP编码', 'Flink到进程演算', '表达能力层次', '互模拟等价', '跨模型映射'],
+                '04-proofs': ['Checkpoint正确性', 'Exactly-Once正确性', 'Chandy-Lamport一致性', 'Watermark代数证明', 'FG/FGG类型安全', 'DOT子类型完备性', 'Choreographic死锁自由'],
+                '05-comparative': ['Go vs Scala', '表达能力vs可判定性', '编码完备性'],
+                '06-frontier': ['流验证开放问题', 'Choreographic流编程', 'AI Agent会话类型', '路径依赖类型', '第一人称Choreographies'],
+                '07-tools': ['Coq机械化', 'Iris分离逻辑', '模型检测实践', 'TLA+ for Flink', 'Smart Casual验证'],
+                '08-standards': ['流式SQL标准']
+            };
+            const catNames = names[category] || ['文档'];
+            return catNames[(index - 1) % catNames.length] || `文档${index}`;
+        }
+        
+        function getKnowledgeDocName(category, index) {
+            const prefixes = {
+                '01-concept-atlas': '概念',
+                '02-design-patterns': '模式',
+                '03-business-patterns': '业务',
+                '04-technology-selection': '选型',
+                '05-mapping-guides': '映射',
+                '06-frontier': '前沿',
+                '07-best-practices': '实践',
+                '08-standards': '标准',
+                '09-anti-patterns': '反模式',
+                '10-case-studies': '案例'
+            };
+            return `${prefixes[category] || '文档'}${index}`;
+        }
+        
+        function getFlinkDocName(category, index) {
+            const prefixes = {
+                '01-concepts': '概念',
+                '02-core': '核心',
+                '03-api': 'API',
+                '04-runtime': '运行时',
+                '05-ecosystem': '生态',
+                '06-ai-ml': 'AI/ML',
+                '07-rust-native': 'Rust',
+                '08-roadmap': '路线',
+                '09-practices': '实践'
+            };
+            return `${prefixes[category] || '文档'}${index}`;
+        }
+        
+        function updateStats() {
+            const docs = State.allNodes.filter(n => n.type === 'document');
+            const theorems = State.allNodes.filter(n => n.type === 'theorem');
+            
+            document.getElementById('stat-nodes').textContent = State.allNodes.length.toLocaleString();
+            document.getElementById('stat-edges').textContent = State.allLinks.length.toLocaleString();
+            document.getElementById('stat-docs').textContent = docs.length;
+            document.getElementById('stat-theorems').textContent = theorems.length;
+            document.getElementById('stat-visible').textContent = State.filteredNodes.length;
+            
+            const coverage = Math.round((State.filteredNodes.length / State.allNodes.length) * 100);
+            document.getElementById('stat-coverage').textContent = coverage + '%';
+            
+            // 更新状态对象
+            State.stats.totalNodes = State.allNodes.length;
+            State.stats.totalEdges = State.allLinks.length;
+            State.stats.visibleNodes = State.filteredNodes.length;
+        }
+        
+        function applyFilters() {
+            const showDocs = document.getElementById('show-documents').checked;
+            const showTheorems = document.getElementById('show-theorems').checked;
+            const showDefinitions = document.getElementById('show-definitions').checked;
+            const showLemmas = document.getElementById('show-lemmas').checked;
+            const showStruct = document.getElementById('show-struct').checked;
+            const showKnowledge = document.getElementById('show-knowledge').checked;
+            const showFlink = document.getElementById('show-flink').checked;
+            
+            const showDependency = document.getElementById('show-dependency').checked;
+            const showCitation = document.getElementById('show-citation').checked;
+            const showContains = document.getElementById('show-contains').checked;
+            const showInstantiates = document.getElementById('show-instantiates').checked;
+            const showProves = document.getElementById('show-proves')?.checked ?? true;
+            
+            State.filteredNodes = State.allNodes.filter(node => {
+                if (node.type === 'document' && !showDocs) return false;
+                if (node.type === 'theorem' && !showTheorems) return false;
+                if (node.type === 'definition' && !showDefinitions) return false;
+                if (node.type === 'lemma' && !showLemmas) return false;
+                if (node.group === 'Struct' && !showStruct) return false;
+                if (node.group === 'Knowledge' && !showKnowledge) return false;
+                if (node.group === 'Flink' && !showFlink) return false;
+                return true;
+            });
+            
+            const nodeIds = new Set(State.filteredNodes.map(n => n.id));
+            
+            State.filteredLinks = State.allLinks.filter(edge => {
+                const sourceId = typeof edge.source === 'object' ? edge.source.id : edge.source;
+                const targetId = typeof edge.target === 'object' ? edge.target.id : edge.target;
+                
+                if (!nodeIds.has(sourceId) || !nodeIds.has(targetId)) return false;
+                
+                if (edge.type === 'dependency' && !showDependency) return false;
+                if (edge.type === 'citation' && !showCitation) return false;
+                if (edge.type === 'contains' && !showContains) return false;
+                if (edge.type === 'instantiates' && !showInstantiates) return false;
+                if (edge.type === 'proves' && !showProves) return false;
+                
+                return true;
+            });
+            
+            document.getElementById('stat-visible').textContent = State.filteredNodes.length;
+        }
+        
+        function render() {
+            State.linkGroup.selectAll('*').remove();
+            State.nodeGroup.selectAll('*').remove();
+            
+            if (State.filteredNodes.length === 0) {
+                return;
+            }
+            
+            const layoutType = document.getElementById('layout-select').value;
+            State.currentLayout = layoutType;
+            
+            switch(layoutType) {
+                case 'force': renderForceLayout(); break;
+                case 'hierarchy': renderHierarchyLayout(); break;
+                case 'circular': renderCircularLayout(); break;
+                case 'cluster': renderClusterLayout(); break;
+                case 'layered': renderLayeredLayout(); break;
+                case 'learning-path': renderLearningPathLayout(); break;
+                default: renderForceLayout();
+            }
+        }
+        
+        function renderForceLayout() {
+            // 停止之前的模拟
+            if (State.simulation) {
+                State.simulation.stop();
+            }
+            
+            State.simulation = d3.forceSimulation(State.filteredNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(d => {
+                        if (d.type === 'instantiates') return 180;
+                        if (d.type === 'dependency') return 120;
+                        if (d.type === 'contains') return 60;
+                        return 100;
+                    })
+                    .strength(0.4))
+                .force('charge', d3.forceManyBody()
+                    .strength(d => d.type === 'document' ? -400 : -80))
+                .force('center', d3.forceCenter(State.width / 2, State.height / 2))
+                .force('collision', d3.forceCollide().radius(d => (d.size || 10) + 8))
+                .force('x', d3.forceX(State.width / 2).strength(0.05))
+                .force('y', d3.forceY(State.height / 2).strength(0.05));
+            
+            drawElements();
+        }
+        
+        function renderHierarchyLayout() {
+            if (State.simulation) State.simulation.stop();
+            
+            const groups = d3.group(State.filteredNodes, d => d.group);
+            let yOffset = 120;
+            
+            groups.forEach((nodes, groupName) => {
+                nodes.forEach((node, i) => {
+                    node.x = (i + 1) * (State.width / (nodes.length + 1));
+                    node.y = yOffset;
+                    node.fx = node.x;
+                    node.fy = node.y;
+                });
+                yOffset += 180;
+            });
+            
+            State.simulation = d3.forceSimulation(State.filteredNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(100)
+                    .strength(0.3));
+            
+            drawElements();
+        }
+        
+        function renderCircularLayout() {
+            if (State.simulation) State.simulation.stop();
+            
+            const centerX = State.width / 2;
+            const centerY = State.height / 2;
+            const radius = Math.min(State.width, State.height) * 0.38;
+            
+            const docNodes = State.filteredNodes.filter(n => n.type === 'document');
+            const otherNodes = State.filteredNodes.filter(n => n.type !== 'document');
+            
+            docNodes.forEach((node, i) => {
+                const angle = (i / docNodes.length) * 2 * Math.PI - Math.PI / 2;
+                node.x = centerX + radius * Math.cos(angle);
+                node.y = centerY + radius * Math.sin(angle);
+                node.fx = node.x;
+                node.fy = node.y;
+            });
+            
+            otherNodes.forEach((node, i) => {
+                const angle = (i / Math.max(1, otherNodes.length)) * 2 * Math.PI - Math.PI / 2 + 0.3;
+                node.x = centerX + (radius * 0.6) * Math.cos(angle);
+                node.y = centerY + (radius * 0.6) * Math.sin(angle);
+            });
+            
+            State.simulation = d3.forceSimulation(State.filteredNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(70)
+                    .strength(0.5));
+            
+            drawElements();
+        }
+        
+        function renderClusterLayout() {
+            if (State.simulation) State.simulation.stop();
+            
+            const groups = d3.group(State.filteredNodes, d => d.group);
+            const groupCenters = {};
+            const groupCount = groups.size;
+            let idx = 0;
+            
+            groups.forEach((nodes, groupName) => {
+                const angle = (idx / groupCount) * 2 * Math.PI;
+                groupCenters[groupName] = {
+                    x: State.width / 2 + 250 * Math.cos(angle),
+                    y: State.height / 2 + 250 * Math.sin(angle)
+                };
+                idx++;
+            });
+            
+            State.simulation = d3.forceSimulation(State.filteredNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(70))
+                .force('charge', d3.forceManyBody().strength(-120))
+                .force('clusterX', d3.forceX(d => groupCenters[d.group]?.x || State.width/2).strength(0.4))
+                .force('clusterY', d3.forceY(d => groupCenters[d.group]?.y || State.height/2).strength(0.4))
+                .force('collision', d3.forceCollide().radius(d => (d.size || 10) + 5));
+            
+            drawElements();
+        }
+        
+        function renderLayeredLayout() {
+            if (State.simulation) State.simulation.stop();
+            
+            // 三层架构：Struct(上) -> Knowledge(中) -> Flink(下)
+            const layers = { 
+                Struct: State.height * 0.22, 
+                Knowledge: State.height * 0.5, 
+                Flink: State.height * 0.78 
+            };
+            
+            ['Struct', 'Knowledge', 'Flink'].forEach(group => {
+                const nodes = State.filteredNodes.filter(n => n.group === group);
+                nodes.forEach((node, i) => {
+                    node.x = ((i + 1) * State.width) / (nodes.length + 1);
+                    node.y = layers[group];
+                    node.fx = node.x;
+                    node.fy = node.y;
+                });
+            });
+            
+            State.simulation = d3.forceSimulation(State.filteredNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(120)
+                    .strength(0.5));
+            
+            drawElements();
+        }
+        
+        function renderLearningPathLayout() {
+            if (State.simulation) State.simulation.stop();
+            
+            if (!State.learningPath) {
+                // 默认使用第一条路径
+                State.learningPath = LearningPaths[0];
+            }
+            
+            const path = State.learningPath;
+            const pathNodes = State.filteredNodes.filter(n => {
+                // 根据路径定义过滤相关节点
+                if (path.id === 'beginner-zero') {
+                    return n.group === 'Struct' && n.layer === 1 ||
+                           n.group === 'Knowledge' && n.category?.includes('concept');
+                }
+                if (path.id === 'datastream-expert') {
+                    return n.group === 'Struct' && n.layer >= 2 ||
+                           n.group === 'Flink' && n.category?.includes('core');
+                }
+                return n.group === 'Struct' || n.group === 'Knowledge' || n.group === 'Flink';
+            });
+            
+            // 沿路径布局
+            pathNodes.forEach((node, i) => {
+                const progress = i / Math.max(1, pathNodes.length - 1);
+                node.x = 100 + progress * (State.width - 200);
+                node.y = State.height / 2 + Math.sin(progress * Math.PI * 2) * 100;
+                node.fx = null;
+                node.fy = null;
+            });
+            
+            State.simulation = d3.forceSimulation(pathNodes)
+                .force('link', d3.forceLink(State.filteredLinks)
+                    .id(d => d.id)
+                    .distance(100))
+                .force('charge', d3.forceManyBody().strength(-200))
+                .force('y', d3.forceY(State.height / 2).strength(0.1));
+            
+            drawElements();
+        }
+        
+        function drawElements() {
+            const showDirection = document.getElementById('show-direction').checked;
+            const showEdgeLabels = document.getElementById('show-edge-labels').checked;
+            
+            // 绘制边
+            const link = State.linkGroup.selectAll('line')
+                .data(State.filteredLinks)
+                .enter().append('line')
+                .attr('class', d => `link ${d.type}`)
+                .attr('stroke-width', d => Math.sqrt(d.weight || 1) * (d.type === 'learning-path' ? 2 : 1))
+                .attr('marker-end', d => showDirection ? `url(#arrow-${d.type})` : null)
+                .on('click', (event, d) => {
+                    event.stopPropagation();
+                    selectEdge(d);
+                });
+            
+            // 边标签
+            if (showEdgeLabels) {
+                State.linkGroup.selectAll('.link-label')
+                    .data(State.filteredLinks)
+                    .enter().append('text')
+                    .attr('class', 'link-label')
+                    .text(d => d.label || d.type)
+                    .attr('dy', -5);
+            }
+            
+            // 绘制节点
+            const node = State.nodeGroup.selectAll('g')
+                .data(State.filteredNodes)
+                .enter().append('g')
+                .attr('class', d => `node ${d.highlighted ? 'highlighted' : ''} ${d.pulse ? 'node-pulse' : ''}`)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // 节点圆形
+            node.append('circle')
+                .attr('r', d => d.size || 10)
+                .attr('fill', d => d.color || '#999')
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.selected ? 3 : 1.5)
+                .style('filter', d => d.highlighted ? 'url(#glow)' : null);
+            
+            // 节点标签（仅文档）
+            node.filter(d => d.type === 'document')
+                .append('text')
+                .attr('class', 'node-label')
+                .attr('dy', d => (d.size || 10) + 14)
+                .attr('text-anchor', 'middle')
+                .text(d => {
+                    const label = d.label || d.id;
+                    return label.length > 25 ? label.slice(0, 25) + '...' : label;
+                });
+            
+            // 交互事件
+            node.on('click', (event, d) => {
+                event.stopPropagation();
+                selectNode(d);
+            });
+            
+            node.on('mouseover', (event, d) => showTooltip(event, d));
+            node.on('mouseout', hideTooltip);
+            
+            link.on('mouseover', (event, d) => showEdgeTooltip(event, d));
+            link.on('mouseout', hideTooltip);
+            
+            // 更新位置
+            if (State.simulation) {
+                State.simulation.on('tick', () => {
+                    link
+                        .attr('x1', d => d.source.x || 0)
+                        .attr('y1', d => d.source.y || 0)
+                        .attr('x2', d => d.target.x || 0)
+                        .attr('y2', d => d.target.y || 0);
+                    
+                    if (showEdgeLabels) {
+                        State.linkGroup.selectAll('.link-label')
+                            .attr('x', d => ((d.source.x || 0) + (d.target.x || 0)) / 2)
+                            .attr('y', d => ((d.source.y || 0) + (d.target.y || 0)) / 2);
+                    }
+                    
+                    node.attr('transform', d => `translate(${d.x || 0},${d.y || 0})`);
+                });
+            }
+        }
+        
+        // 拖拽行为
+        function dragstarted(event, d) {
+            if (!event.active && State.simulation) State.simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active && State.simulation) State.simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // 选择节点
+        function selectNode(node) {
+            // 清除之前的选择
+            State.nodeGroup.selectAll('.node').classed('selected', false);
+            State.nodeGroup.selectAll('.node').classed('dimmed', false);
+            State.linkGroup.selectAll('.link').classed('dimmed', false);
+            
+            // 高亮选中节点
+            State.selectedNode = node;
+            node.selected = true;
+            
+            State.nodeGroup.selectAll('.node')
+                .filter(d => d.id === node.id)
+                .classed('selected', true);
+            
+            // 高亮相关节点和边
+            const connectedIds = new Set([node.id]);
+            State.filteredLinks.forEach(link => {
+                const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+                if (sourceId === node.id) connectedIds.add(targetId);
+                if (targetId === node.id) connectedIds.add(sourceId);
+            });
+            
+            State.nodeGroup.selectAll('.node')
+                .classed('dimmed', d => !connectedIds.has(d.id));
+            
+            State.linkGroup.selectAll('.link')
+                .classed('dimmed', d => {
+                    const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+                    const targetId = typeof d.target === 'object' ? d.target.id : d.target;
+                    return sourceId !== node.id && targetId !== node.id;
+                })
+                .classed('highlighted', d => {
+                    const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+                    const targetId = typeof d.target === 'object' ? d.target.id : d.target;
+                    return sourceId === node.id || targetId === node.id;
+                });
+            
+            // 显示详情
+            showNodeDetails(node);
+            
+            // 添加到浏览历史
+            State.browseHistory.push(node);
+            if (State.browseHistory.length > 20) State.browseHistory.shift();
+            
+            // 更新推荐
+            updateRecommendations(node);
+        }
+        
+        function selectEdge(edge) {
+            State.selectedEdge = edge;
+            showEdgeDetails(edge);
+        }
+        
+        function showNodeDetails(node) {
+            const panel = document.getElementById('node-details');
+            
+            let metadataHtml = '';
+            if (node.metadata) {
+                Object.entries(node.metadata).forEach(([key, value]) => {
+                    if (key !== 'path' && value !== undefined) {
+                        metadataHtml += `
+                            <div class="detail-item">
+                                <div class="detail-label">${key}</div>
+                                <div class="detail-value">${value}</div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            
+            panel.innerHTML = `
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <span class="detail-type">${node.type}</span>
+                        <div class="detail-title">${node.name || node.label}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">📁 路径</div>
+                        <div class="detail-value">${node.metadata?.path || 'N/A'}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">🏷️ 分组</div>
+                        <div class="detail-value">
+                            <span class="tag">${node.group}</span>
+                            ${node.category ? `<span class="tag">${node.category}</span>` : ''}
+                            ${node.metadata?.formalLevel ? `<span class="tag primary">${node.metadata.formalLevel}</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    ${metadataHtml}
+                    
+                    <div class="detail-tags">
+                        <span class="tag" onclick="findRelated('${node.id}')">🔍 查看相关</span>
+                        <span class="tag" onclick="highlightNeighbors('${node.id}')">💡 高亮邻居</span>
+                        ${node.type === 'document' ? `<span class="tag" onclick="openDocument('${node.id}')">📄 打开文档</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showEdgeDetails(edge) {
+            const source = typeof edge.source === 'object' ? edge.source : State.nodeMap.get(edge.source);
+            const target = typeof edge.target === 'object' ? edge.target : State.nodeMap.get(edge.target);
+            
+            const panel = document.getElementById('node-details');
+            panel.innerHTML = `
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <span class="detail-type">${edge.type}</span>
+                        <div class="detail-title">关系详情</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">🔗 类型</div>
+                        <div class="detail-value">${edge.label || edge.type}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">📤 源节点</div>
+                        <div class="detail-value">${source?.name || source?.label || edge.source}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">📥 目标节点</div>
+                        <div class="detail-value">${target?.name || target?.label || edge.target}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">⚖️ 权重</div>
+                        <div class="detail-value">${edge.weight || 1}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 工具提示
+        function showTooltip(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            
+            let content = `
+                <div class="tooltip-title">${d.name || d.label}</div>
+                <div class="tooltip-type">${d.type} • ${d.group}</div>
+            `;
+            
+            if (d.metadata) {
+                content += `<div class="tooltip-stats">`;
+                if (d.metadata.formalLevel) {
+                    content += `<div class="tooltip-stat">等级: <span class="tooltip-stat-value">${d.metadata.formalLevel}</span></div>`;
+                }
+                if (d.metadata.wordCount) {
+                    content += `<div class="tooltip-stat">字数: <span class="tooltip-stat-value">${d.metadata.wordCount.toLocaleString()}</span></div>`;
+                }
+                content += `</div>`;
+            }
+            
+            tooltip.innerHTML = content;
+            tooltip.style.display = 'block';
+            
+            const tooltipRect = tooltip.getBoundingClientRect();
+            let left = event.pageX + 15;
+            let top = event.pageY + 15;
+            
+            if (left + tooltipRect.width > window.innerWidth) {
+                left = event.pageX - tooltipRect.width - 15;
+            }
+            if (top + tooltipRect.height > window.innerHeight) {
+                top = event.pageY - tooltipRect.height - 15;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        function showEdgeTooltip(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            const source = typeof d.source === 'object' ? d.source : State.nodeMap.get(d.source);
+            const target = typeof d.target === 'object' ? d.target : State.nodeMap.get(d.target);
+            
+            tooltip.innerHTML = `
+                <div class="tooltip-title">${d.label || d.type}</div>
+                <div class="tooltip-type">${source?.label || d.source} → ${target?.label || d.target}</div>
+            `;
+            tooltip.style.display = 'block';
+            
+            const tooltipRect = tooltip.getBoundingClientRect();
+            tooltip.style.left = (event.pageX - tooltipRect.width / 2) + 'px';
+            tooltip.style.top = (event.pageY - tooltipRect.height - 10) + 'px';
+        }
+        
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+        
+        // 学习路径
+        function initLearningPaths() {
+            const container = document.getElementById('learning-paths-list');
+            container.innerHTML = LearningPaths.map(path => `
+                <div class="learning-path-item" onclick="activateLearningPath('${path.id}')">
+                    <div class="learning-path-header">
+                        <div class="learning-path-icon">${path.icon}</div>
+                        <div class="learning-path-info">
+                            <div class="learning-path-name">${path.name}</div>
+                            <div class="learning-path-meta">${path.difficulty} • ${path.duration}</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+                        ${path.description}
+                    </div>
+                    <div class="learning-path-progress">
+                        <div class="learning-path-progress-bar" style="width: ${Math.random() * 100}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function activateLearningPath(pathId) {
+            State.learningPath = LearningPaths.find(p => p.id === pathId);
+            document.getElementById('layout-select').value = 'learning-path';
+            render();
+            
+            // 高亮路径节点
+            highlightPathNodes(State.learningPath.nodes);
+        }
+        
+        function highlightPathNodes(nodeIds) {
+            State.nodeGroup.selectAll('.node')
+                .classed('dimmed', d => !nodeIds.includes(d.id))
+                .classed('highlighted', d => nodeIds.includes(d.id));
+        }
+        
+        // 推荐系统
+        function initRecommendations() {
+            updateRecommendationsList();
+            updateTrendingList();
+        }
+        
+        function updateRecommendations(node) {
+            // 基于当前节点更新推荐
+            // 实际应用中这里会使用更复杂的算法
+        }
+        
+        function updateRecommendationsList() {
+            const container = document.getElementById('recommendations-list');
+            container.innerHTML = Recommendations.basedOnHistory.map(rec => `
+                <div class="recommendation-card" onclick="navigateToNode('${rec.id}')">
+                    <div class="recommendation-score">${rec.score}%</div>
+                    <div class="recommendation-title">${rec.title}</div>
+                    <div class="recommendation-reason">${rec.reason}</div>
+                </div>
+            `).join('');
+        }
+        
+        function updateTrendingList() {
+            const container = document.getElementById('trending-list');
+            container.innerHTML = Recommendations.trending.map(item => `
+                <div class="recommendation-card" onclick="navigateToNode('${item.id}')">
+                    <div class="recommendation-title">${item.title}</div>
+                    <div class="recommendation-reason">
+                        👁️ ${item.views.toLocaleString()} 浏览 • 
+                        <span style="color: var(--success);">${item.trend}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 事件监听
+        function setupEventListeners() {
+            // 搜索功能
+            const searchInput = document.getElementById('search-input');
+            const searchDropdown = document.getElementById('search-dropdown');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                State.searchQuery = query;
+                
+                if (query.length < 2) {
+                    searchDropdown.classList.remove('active');
+                    return;
+                }
+                
+                const matches = State.allNodes.filter(n => 
+                    (n.name && n.name.toLowerCase().includes(query)) ||
+                    (n.label && n.label.toLowerCase().includes(query)) ||
+                    n.id.toLowerCase().includes(query)
+                ).slice(0, 10);
+                
+                searchDropdown.innerHTML = matches.map(n => `
+                    <div class="search-item" onclick="navigateToNode('${n.id}')">
+                        <span class="search-item-type">${n.type}</span>
+                        <span>${n.name || n.label}</span>
+                    </div>
+                `).join('');
+                
+                searchDropdown.classList.add('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.input-with-icon')) {
+                    searchDropdown.classList.remove('active');
+                }
+            });
+            
+            // 过滤复选框
+            document.querySelectorAll('.checkbox-item input').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    checkbox.closest('.checkbox-item').classList.toggle('active', checkbox.checked);
+                    applyFilters();
+                    render();
+                    updateStats();
+                });
+            });
+            
+            // 布局选择
+            document.getElementById('layout-select').addEventListener('change', () => {
+                render();
+            });
+            
+            // 工具栏按钮
+            document.getElementById('btn-zoom-in').addEventListener('click', () => {
+                State.svg.transition().call(State.zoom.scaleBy, 1.3);
+            });
+            
+            document.getElementById('btn-zoom-out').addEventListener('click', () => {
+                State.svg.transition().call(State.zoom.scaleBy, 0.7);
+            });
+            
+            document.getElementById('btn-fit').addEventListener('click', () => {
+                fitToScreen();
+            });
+            
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                State.svg.transition().call(State.zoom.transform, d3.zoomIdentity);
+                render();
+            });
+            
+            document.getElementById('btn-center').addEventListener('click', () => {
+                State.svg.transition().call(State.zoom.transform, d3.zoomIdentity);
+            });
+            
+            // 导出菜单
+            const exportToggle = document.getElementById('btn-export-toggle');
+            const exportMenu = document.getElementById('export-menu');
+            
+            exportToggle.addEventListener('click', () => {
+                exportMenu.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#btn-export-toggle') && !e.target.closest('#export-menu')) {
+                    exportMenu.classList.remove('active');
+                }
+            });
+            
+            document.getElementById('btn-export-svg').addEventListener('click', exportSVG);
+            document.getElementById('btn-export-png').addEventListener('click', exportPNG);
+            document.getElementById('btn-export-json').addEventListener('click', exportJSON);
+            
+            // 侧边栏折叠
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                sidebarToggle.classList.toggle('collapsed');
+                sidebarToggle.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+            });
+            
+            // 路径查找
+            document.getElementById('btn-find-path').addEventListener('click', findPath);
+            document.getElementById('btn-clear-path').addEventListener('click', clearPath);
+            
+            // 窗口大小调整
+            window.addEventListener('resize', () => {
+                setupDimensions();
+                State.svg.attr('width', State.width).attr('height', State.height);
+                if (State.simulation) {
+                    State.simulation.force('center', d3.forceCenter(State.width / 2, State.height / 2));
+                    State.simulation.alpha(0.3).restart();
+                }
+            });
+            
+            // 键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT') return;
+                
+                switch(e.key) {
+                    case '+':
+                    case '=':
+                        State.svg.transition().call(State.zoom.scaleBy, 1.2);
+                        break;
+                    case '-':
+                        State.svg.transition().call(State.zoom.scaleBy, 0.8);
+                        break;
+                    case '0':
+                        State.svg.transition().call(State.zoom.transform, d3.zoomIdentity);
+                        break;
+                    case 'f':
+                    case 'F':
+                        fitToScreen();
+                        break;
+                    case 'r':
+                    case 'R':
+                        render();
+                        break;
+                    case '?':
+                        showHelp();
+                        break;
+                }
+            });
+        }
+        
+        function setupTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`panel-${tabId}`).classList.add('active');
+                });
+            });
+        }
+        
+        // 路径查找算法
+        function findPath() {
+            const sourceId = document.getElementById('path-source').value.trim();
+            const targetId = document.getElementById('path-target').value.trim();
+            
+            if (!sourceId || !targetId) {
+                alert('请输入起点和终点');
+                return;
+            }
+            
+            // Dijkstra最短路径算法
+            const path = dijkstra(sourceId, targetId);
+            
+            if (path.length === 0) {
+                document.getElementById('path-results').innerHTML = `
+                    <div class="info-tip" style="border-color: var(--warning);">
+                        <span class="info-tip-icon">⚠️</span>
+                        <div>未找到从 ${sourceId} 到 ${targetId} 的路径</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 高亮路径
+            highlightPath(path);
+            
+            // 显示路径结果
+            const pathHtml = path.map((nodeId, i) => {
+                const node = State.nodeMap.get(nodeId);
+                return `
+                    <div class="path-step">
+                        <div class="path-step-number">${i + 1}</div>
+                        <div class="path-step-content">
+                            <div class="path-step-title">${node?.name || node?.label || nodeId}</div>
+                            <div class="path-step-type">${node?.type || 'unknown'} • ${node?.group || 'unknown'}</div>
+                        </div>
+                        ${i < path.length - 1 ? '<span class="path-arrow">→</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('path-results').innerHTML = `
+                <div class="path-result">
+                    <div style="font-weight: 600; margin-bottom: 10px;">
+                        找到路径 (${path.length} 个节点)
+                    </div>
+                    ${pathHtml}
+                </div>
+            `;
+        }
+        
+        function dijkstra(sourceId, targetId) {
+            const distances = new Map();
+            const previous = new Map();
+            const unvisited = new Set();
+            
+            State.allNodes.forEach(node => {
+                distances.set(node.id, Infinity);
+                unvisited.add(node.id);
+            });
+            distances.set(sourceId, 0);
+            
+            while (unvisited.size > 0) {
+                let current = null;
+                let minDist = Infinity;
+                
+                unvisited.forEach(nodeId => {
+                    if (distances.get(nodeId) < minDist) {
+                        minDist = distances.get(nodeId);
+                        current = nodeId;
+                    }
+                });
+                
+                if (current === null || current === targetId) break;
+                unvisited.delete(current);
+                
+                const neighbors = State.adjacencyList.get(current) || [];
+                neighbors.forEach(({ target, link }) => {
+                    if (unvisited.has(target)) {
+                        const alt = distances.get(current) + (link.weight || 1);
+                        if (alt < distances.get(target)) {
+                            distances.set(target, alt);
+                            previous.set(target, current);
+                        }
+                    }
+                });
+            }
+            
+            // 重建路径
+            const path = [];
+            let current = targetId;
+            while (current !== undefined) {
+                path.unshift(current);
+                current = previous.get(current);
+            }
+            
+            return path[0] === sourceId ? path : [];
+        }
+        
+        function highlightPath(path) {
+            State.highlightedPath = path;
+            const pathSet = new Set(path);
+            
+            State.nodeGroup.selectAll('.node')
+                .classed('dimmed', d => !pathSet.has(d.id))
+                .classed('highlighted', d => pathSet.has(d.id));
+            
+            State.linkGroup.selectAll('.link')
+                .classed('dimmed', true);
+        }
+        
+        function clearPath() {
+            document.getElementById('path-source').value = '';
+            document.getElementById('path-target').value = '';
+            document.getElementById('path-results').innerHTML = '';
+            
+            State.nodeGroup.selectAll('.node')
+                .classed('dimmed', false)
+                .classed('highlighted', false);
+            
+            State.linkGroup.selectAll('.link')
+                .classed('dimmed', false)
+                .classed('highlighted', false);
+            
+            State.highlightedPath = null;
+        }
+        
+        // 导出功能
+        function exportSVG() {
+            const svgElement = document.getElementById('graph');
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `knowledge-graph-${new Date().toISOString().slice(0, 10)}.svg`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        function exportPNG() {
+            const svgElement = document.getElementById('graph');
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = () => {
+                canvas.width = State.width * 2;
+                canvas.height = State.height * 2;
+                ctx.fillStyle = '#0d1117';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                const pngUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = pngUrl;
+                link.download = `knowledge-graph-${new Date().toISOString().slice(0, 10)}.png`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+        }
+        
+        function exportJSON() {
+            const data = {
+                nodes: State.allNodes.map(n => ({
+                    id: n.id,
+                    label: n.label,
+                    name: n.name,
+                    type: n.type,
+                    group: n.group,
+                    metadata: n.metadata
+                })),
+                edges: State.allLinks.map(e => ({
+                    source: typeof e.source === 'object' ? e.source.id : e.source,
+                    target: typeof e.target === 'object' ? e.target.id : e.target,
+                    type: e.type,
+                    weight: e.weight
+                })),
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `knowledge-graph-data-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        // 辅助功能
+        function fitToScreen() {
+            if (State.filteredNodes.length === 0) return;
+            
+            const bounds = State.filteredNodes.reduce((acc, node) => {
+                acc.minX = Math.min(acc.minX, node.x || 0);
+                acc.minY = Math.min(acc.minY, node.y || 0);
+                acc.maxX = Math.max(acc.maxX, node.x || 0);
+                acc.maxY = Math.max(acc.maxY, node.y || 0);
+                return acc;
+            }, { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity });
+            
+            const width = bounds.maxX - bounds.minX;
+            const height = bounds.maxY - bounds.minY;
+            const midX = (bounds.minX + bounds.maxX) / 2;
+            const midY = (bounds.minY + bounds.maxY) / 2;
+            
+            const scale = Math.min(
+                (State.width - 100) / width,
+                (State.height - 100) / height,
+                2
+            );
+            
+            State.svg.transition().duration(750).call(
+                State.zoom.transform,
+                d3.zoomIdentity
+                    .translate(State.width / 2, State.height / 2)
+                    .scale(scale)
+                    .translate(-midX, -midY)
+            );
+        }
+        
+        function navigateToNode(nodeId) {
+            const node = State.nodeMap.get(nodeId);
+            if (node) {
+                selectNode(node);
+                
+                // 聚焦到节点
+                State.svg.transition().duration(750).call(
+                    State.zoom.transform,
+                    d3.zoomIdentity
+                        .translate(State.width / 2, State.height / 2)
+                        .scale(1.5)
+                        .translate(-(node.x || 0), -(node.y || 0))
+                );
+                
+                // 关闭搜索下拉
+                document.getElementById('search-dropdown').classList.remove('active');
+            }
+        }
+        
+        function findRelated(nodeId) {
+            const node = State.nodeMap.get(nodeId);
+            if (!node) return;
+            
+            const related = State.allLinks
+                .filter(l => {
+                    const s = typeof l.source === 'object' ? l.source.id : l.source;
+                    const t = typeof l.target === 'object' ? l.target.id : l.target;
+                    return s === nodeId || t === nodeId;
+                })
+                .map(l => {
+                    const s = typeof l.source === 'object' ? l.source.id : l.source;
+                    const t = typeof l.target === 'object' ? l.target.id : l.target;
+                    return s === nodeId ? t : s;
+                });
+            
+            alert(`找到 ${related.length} 个相关节点`);
+        }
+        
+        function highlightNeighbors(nodeId) {
+            const connectedIds = new Set([nodeId]);
+            State.allLinks.forEach(link => {
+                const s = typeof link.source === 'object' ? link.source.id : link.source;
+                const t = typeof link.target === 'object' ? link.target.id : link.target;
+                if (s === nodeId) connectedIds.add(t);
+                if (t === nodeId) connectedIds.add(s);
+            });
+            
+            State.nodeGroup.selectAll('.node')
+                .classed('dimmed', d => !connectedIds.has(d.id))
+                .classed('highlighted', d => connectedIds.has(d.id));
+        }
+        
+        function openDocument(nodeId) {
+            const node = State.nodeMap.get(nodeId);
+            if (node && node.metadata?.path) {
+                console.log(`Opening document: ${node.metadata.path}`);
+                // 实际应用中这里会打开文档
+                alert(`打开文档: ${node.name || node.label}\n路径: ${node.metadata.path}`);
+            }
+        }
+        
+        function showHelp() {
+            alert(`
+键盘快捷键:
++ / = : 放大
+- : 缩小
+0 : 重置缩放
+F : 适应屏幕
+R : 重新渲染
+? : 显示帮助
+
+鼠标操作:
+拖拽 : 移动节点
+滚轮 : 缩放
+点击 : 选择节点/边
+            `.trim());
+        }
+        
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

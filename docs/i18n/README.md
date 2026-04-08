@@ -1,89 +1,126 @@
-# AnalysisDataFlow 国际化 (i18n) 模块
+# AnalysisDataFlow Internationalization (i18n)
 
-本文档介绍 AnalysisDataFlow 项目的国际化架构和使用方法。
+> **Stream Computing Knowledge Base - Multi-language Documentation**
 
-## 目录结构
+---
+
+## 🌍 Supported Languages
+
+| Language | Code | Status | Path | Completeness |
+|----------|------|--------|------|--------------|
+| 🇨🇳 中文 (Chinese) | zh | ✅ Active | [./zh/](./zh/) | 100% (Source) |
+| 🇬🇧 English | en | ✅ Active | [./en/](./en/) | Core Docs |
+| 🇯🇵 日本語 (Japanese) | ja | 📝 Planned | - | - |
+| 🇰🇷 한국어 (Korean) | ko | 📝 Planned | - | - |
+
+---
+
+## 📖 English Documentation
+
+The English documentation includes the following core guides:
+
+| Document | Description | Path |
+|----------|-------------|------|
+| **Overview** | Project overview and introduction | [en/00-OVERVIEW.md](./en/00-OVERVIEW.md) |
+| **Struct Guide** | Formal theory documentation guide | [en/01-STRUCT-GUIDE.md](./en/01-STRUCT-GUIDE.md) |
+| **Knowledge Guide** | Engineering knowledge guide | [en/02-KNOWLEDGE-GUIDE.md](./en/02-KNOWLEDGE-GUIDE.md) |
+| **Flink Guide** | Flink-specific technology guide | [en/03-FLINK-GUIDE.md](./en/03-FLINK-GUIDE.md) |
+| **Quick Start** | Quick start guide for beginners | [en/04-QUICK-START.md](./en/04-QUICK-START.md) |
+| **Learning Path** | Learning path guide | [en/05-LEARNING-PATH.md](./en/05-LEARNING-PATH.md) |
+| **Glossary** | Terminology reference | [en/GLOSSARY.md](./en/GLOSSARY.md) |
+| **Sidebar** | Navigation sidebar | [en/_sidebar.md](./en/_sidebar.md) |
+
+---
+
+## 🎯 Translation Principles
+
+### 1. Terminology Consistency
+
+- Core terms follow the project's [Glossary](../../../GLOSSARY.md) and [GLOSSARY-EN.md](../../../GLOSSARY-EN.md)
+- Technical product names remain untranslated (Apache Flink, Apache Kafka, etc.)
+- Code examples and configuration parameters remain unchanged
+
+### 2. Document Structure Preservation
+
+- All documents maintain the six-section structure from the original
+- Mermaid diagrams and code blocks are preserved
+- Reference links are adapted for the target language where applicable
+
+### 3. Cross-Reference Maintenance
+
+- Internal links point to the corresponding language version
+- Links to external resources remain unchanged
+- Cross-directory references maintain the original structure
+
+---
+
+## 🏗️ Architecture
 
 ```
 docs/i18n/
-├── ARCHITECTURE.md           # 国际化架构设计文档
-├── README.md                 # 本文件
-├── i18n-content/             # 多语言内容
-│   ├── zh/                   # 中文（源语言）
-│   ├── en/                   # 英文
-│   └── ...
-├── glossary/                 # 术语表
-│   ├── core-terms.json       # 核心术语
-│   └── prohibited-list.json  # 禁止翻译列表
-├── workflows/                # 工作流状态
-│   ├── translation-queue.json
-│   └── version-lock.json
-├── templates/                # 模板文件
-└── config/                   # 配置
-    └── i18n-config.yaml
+├── README.md              # This file - i18n overview
+├── ARCHITECTURE.md        # i18n architecture documentation
+├── zh/                    # Chinese (source language)
+│   └── README.md          # Pointer to root Chinese docs
+├── en/                    # English
+│   ├── 00-OVERVIEW.md
+│   ├── 01-STRUCT-GUIDE.md
+│   ├── 02-KNOWLEDGE-GUIDE.md
+│   ├── 03-FLINK-GUIDE.md
+│   ├── 04-QUICK-START.md
+│   ├── 05-LEARNING-PATH.md
+│   ├── GLOSSARY.md
+│   └── _sidebar.md
+└── templates/             # Translation templates
+    └── translation-template.md
 ```
 
-## 快速开始
+---
 
-### 1. 查看翻译进度
+## 🚀 Usage
 
-```bash
-python .scripts/i18n-manager.py stats --lang en
-```
+### Switching Languages
 
-### 2. 提取待翻译内容
+Language switch badges are available at the top of:
+- Root [README.md](../../../README.md)
+- Root [README-EN.md](../../../README-EN.md)
+- Each i18n documentation page
 
-```bash
-python .scripts/i18n-manager.py extract --source Struct/ --lang en --output translation-package.json
-```
+### Navigation
 
-### 3. 检查缺失翻译
+- Use the [English Sidebar](./en/_sidebar.md) for English documentation navigation
+- Use the [Knowledge/00-INDEX.md](../../../Knowledge/00-INDEX.md) for Chinese navigation
 
-```bash
-python .scripts/i18n-manager.py check-missing --lang en
-```
+---
 
-### 4. 生成完整报告
+## 📊 Translation Progress
 
-```bash
-python .scripts/i18n-manager.py report --output i18n-report.json
-```
+### English (en)
 
-## 翻译工作流
+| Category | Total Docs | Translated | Progress |
+|----------|------------|------------|----------|
+| Core Guides | 8 | 8 | ✅ 100% |
+| Struct/ | 43 | 0 | 📋 Planned |
+| Knowledge/ | 134 | 0 | 📋 Planned |
+| Flink/ | 173 | 0 | 📋 Planned |
 
-1. **创建翻译任务**: 从待翻译队列中选择文档
-2. **锁定原文**: 防止原文在翻译期间变更
-3. **翻译文档**: 按照术语表和翻译规范进行翻译
-4. **提交审核**: 完成翻译后提交三级审核
-5. **审核通过**: 更新文档状态为 completed
-6. **解除锁定**: 原文恢复可编辑状态
+---
 
-## 术语管理
+## 🤝 Contributing
 
-- 核心术语表: `glossary/core-terms.json`
-- 禁止翻译列表: `glossary/prohibited-list.json`
+To contribute to i18n efforts:
 
-添加新术语时，请同时更新这两个文件。
+1. Follow the [ARCHITECTURE.md](./ARCHITECTURE.md) specifications
+2. Use the [translation-template.md](./templates/translation-template.md)
+3. Maintain terminology consistency with the glossary
+4. Ensure all code examples remain functional
 
-## 翻译规范
+---
 
-1. 遵循文档六段式模板结构
-2. 代码块和命令行保持原文
-3. 产品名称和技术术语参考术语表
-4. 首次出现的缩写需提供全称
+## 📄 License
 
-## 状态说明
+All i18n documentation follows the same [Apache License 2.0](../../../LICENSE) as the main project.
 
-| 状态 | 说明 |
-|------|------|
-| `not_started` | 未开始翻译 |
-| `in_progress` | 翻译中 |
-| `pending_review` | 等待审核 |
-| `completed` | 翻译完成 |
-| `outdated` | 原文已更新，需要同步 |
+---
 
-## 更多资源
-
-- [国际化架构设计](ARCHITECTURE.md)
-- [术语表](glossary/core-terms.json)
-- **工具帮助**（运行 `.scripts/i18n-manager.py --help`）
+> **Last Updated**: 2026-04-08

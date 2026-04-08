@@ -5,8 +5,9 @@
 #   1. Markdown语法检查
 #   2. 定理编号唯一性验证
 #   3. Mermaid语法验证
-#   4. 内部链接健康检查
-#   5. 前瞻性内容标记检查
+#   4. 六段式模板结构检查
+#   5. 内部链接健康检查
+#   6. 前瞻性内容标记检查
 
 name: PR Quality Gate
 
@@ -17,6 +18,7 @@ on:
       - '**.md'
       - 'scripts/**'
       - '.github/workflows/**'
+      - '.scripts/**'
 
 env:
   PYTHON_VERSION: '3.11'
@@ -195,180 +197,160 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: Run Mermaid syntax validator
         run: |
-          npm install -g @mermaid-js/mermaid-cli@10.9.1
-
-      - name: Extract and validate Mermaid diagrams
-        run: |
-          python << 'PYEOF'
-          import re
-          import sys
-          import subprocess
-          from pathlib import Path
-          import tempfile
-          import json
-
-          # 统计信息
-          stats = {
-              'total_diagrams': 0,
-              'valid_diagrams': 0,
-              'invalid_diagrams': 0,
-              'errors': []
-          }
-
-          # Mermaid代码块模式
-          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
-
-          # 扫描所有markdown文件
-          md_files = list(Path('.').rglob('*.md'))
-          
-          for md_file in md_files:
-              # 跳过隐藏目录和node_modules
-              if any(part.startswith('.') or part in ['node_modules', '__pycache__'] 
-                     for part in md_file.parts):
-                  continue
-              
-              try:
-                  content = md_file.read_text(encoding='utf-8')
-                  diagrams = mermaid_pattern.findall(content)
-                  
-                  for i, diagram in enumerate(diagrams):
-                      stats['total_diagrams'] += 1
-                      diagram_id = f"{md_file}:{i+1}"
-                      
-                      # 基本语法检查
-                      diagram_lines = diagram.strip().split('\n')
-                      
-                      # 检查图表类型
-                      valid_types = ['graph', 'flowchart', 'sequenceDiagram', 'classDiagram', 
-                                    'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt',
-                                    'pie', 'mindmap', 'timeline', 'quadrantChart']
-                      
-                      first_line = diagram_lines[0].strip() if diagram_lines else ''
-                      
-                      # 提取图表类型
-                      chart_type = None
-                      for vt in valid_types:
-                          if first_line.startswith(vt):
-                              chart_type = vt
-                              break
-                      
-                      if not chart_type:
-                          stats['errors'].append({
-                              'file': str(md_file),
-                              'diagram': i + 1,
-                              'error': f'Unknown or unsupported chart type: {first_line[:50]}'
-                          })
-                          stats['invalid_diagrams'] += 1
-                          continue
-                      
-                      # 检查常见语法错误
-                      has_error = False
-                      
-                      # 检查graph定义
-                      if chart_type in ['graph', 'flowchart']:
-                          # 检查方向定义
-                          if not re.search(r'(graph|flowchart)\s+(TD|TB|BT|RL|LR)', diagram):
-                              if not re.search(r'(graph|flowchart)\s+\w+', diagram):
-                                  has_error = True
-                                  stats['errors'].append({
-                                      'file': str(md_file),
-                                      'diagram': i + 1,
-                                      'error': 'Missing direction (TD/TB/RL/LR) in graph definition'
-                                  })
-                      
-                      # 检查括号匹配
-                      open_brackets = diagram.count('[') + diagram.count('{') + diagram.count('(')
-                      close_brackets = diagram.count(']') + diagram.count('}') + diagram.count(')')
-                      if open_brackets != close_brackets:
-                          has_error = True
-                          stats['errors'].append({
-                              'file': str(md_file),
-                              'diagram': i + 1,
-                              'error': f'Unbalanced brackets: {open_brackets} open, {close_brackets} close'
-                          })
-                      
-                      if not has_error:
-                          stats['valid_diagrams'] += 1
-                      else:
-                          stats['invalid_diagrams'] += 1
-                          
-              except Exception as e:
-                  print(f"Warning: Could not process {md_file}: {e}")
-
-          # 输出结果
-          print("\n" + "="*60)
-          print("Mermaid Syntax Validation Report")
-          print("="*60)
-          print(f"Total diagrams: {stats['total_diagrams']}")
-          print(f"✅ Valid: {stats['valid_diagrams']}")
-          print(f"❌ Invalid: {stats['invalid_diagrams']}")
-
-          if stats['errors']:
-              print("\nErrors found:")
-              for error in stats['errors'][:20]:  # 只显示前20个错误
-                  print(f"  - {error['file']} (diagram {error['diagram']}): {error['error']}")
-              if len(stats['errors']) > 20:
-                  print(f"  ... and {len(stats['errors']) - 20} more errors")
-
-          # 保存报告
-          Path('reports').mkdir(exist_ok=True)
-          with open('reports/mermaid-validation-report.json', 'w') as f:
-              json.dump(stats, f, indent=2)
-
-          # 生成Markdown报告
-          report_lines = [
-              "# Mermaid Syntax Validation Report",
-              "",
-              f"**Generated**: $(date -Iseconds)",
-              "",
-              "## Summary",
-              "",
-              f"| Metric | Count |",
-              f"|--------|-------|",
-              f"| Total Diagrams | {stats['total_diagrams']} |",
-              f"| ✅ Valid | {stats['valid_diagrams']} |",
-              f"| ❌ Invalid | {stats['invalid_diagrams']} |",
-              ""
-          ]
-
-          if stats['errors']:
-              report_lines.extend([
-                  "## Errors",
-                  "",
-                  "| File | Diagram # | Error |",
-                  "|------|-----------|-------|"
-              ])
-              for error in stats['errors']:
-                  report_lines.append(f"| {error['file']} | {error['diagram']} | {error['error']} |")
-
-          with open('reports/mermaid-validation-report.md', 'w') as f:
-              f.write('\n'.join(report_lines))
-
-          print("\n✅ Mermaid validation completed")
-
-          # 如果错误率超过10%，返回非零退出码
-          if stats['total_diagrams'] > 0:
-              error_rate = stats['invalid_diagrams'] / stats['total_diagrams']
-              if error_rate > 0.1:
-                  print(f"\n❌ Error rate {error_rate:.1%} exceeds threshold (10%)")
-                  sys.exit(1)
-          PYEOF
+          python .scripts/quality-gates/mermaid-syntax-validator.py \
+            --strict \
+            --threshold 0.1 \
+            --output reports/mermaid-validation-report.md \
+            --dirs Struct Knowledge Flink docs tutorials
+        continue-on-error: false
 
       - name: Upload Mermaid validation report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mermaid-validation-report
-          path: reports/mermaid-validation-report.*
+          path: |
+            reports/mermaid-validation-report.md
+            reports/mermaid-validation-results.json
 
-  # ============ 任务4: 内部链接健康检查 ============
+  # ============ 任务4: 六段式模板结构检查 ============
+  template-structure-check:
+    name: Six-Section Template Check
+    runs-on: ubuntu-latest
+    needs: markdown-lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run template structure checker
+        run: |
+          python .scripts/quality-gates/template-structure-checker.py \
+            --output reports/template-structure-report.md \
+            --dirs Struct Knowledge Flink
+        continue-on-error: true
+
+      - name: Check changed files structure
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          import subprocess
+
+          # 获取变更的文件
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
+
+          # 六段式必需章节
+          REQUIRED_SECTIONS = [
+              ('概念定义', 'Definitions'),
+              ('属性推导', 'Properties'),
+              ('实例验证', 'Examples'),
+              ('可视化', 'Visualizations'),
+              ('引用参考', 'References')
+          ]
+
+          errors = []
+          checked_files = 0
+
+          for file_path in changed_files:
+              # 只检查核心目录的文档
+              if not any(d in file_path for d in ['Struct/', 'Knowledge/', 'Flink/']):
+                  continue
+              
+              if not Path(file_path).exists():
+                  continue
+              
+              try:
+                  content = Path(file_path).read_text(encoding='utf-8')
+                  
+                  # 检查是否有元数据块（六段式文档标记）
+                  if not re.search(r'所属阶段[:：]', content):
+                      continue  # 不是六段式文档，跳过
+                  
+                  checked_files += 1
+                  
+                  # 检查必需章节
+                  for zh_name, en_name in REQUIRED_SECTIONS:
+                      # 支持 ## 1. 概念定义 (Definitions) 或 ## 概念定义 格式
+                      pattern = rf'^##+\s*\d*\.?\s*{re.escape(zh_name)}|##+\s*\d*\.?\s*{re.escape(en_name)}'
+                      if not re.search(pattern, content, re.MULTILINE | re.IGNORECASE):
+                          errors.append({
+                              'file': file_path,
+                              'missing_section': zh_name,
+                              'suggestion': f'Add section "## {zh_name} ({en_name})"'
+                          })
+                          
+              except Exception as e:
+                  print(f"Warning: Could not read {file_path}: {e}")
+
+          # 输出结果
+          print(f"\n{'='*60}")
+          print("Six-Section Template Check (PR Changed Files)")
+          print(f"{'='*60}")
+          print(f"Files checked: {checked_files}")
+          print(f"Errors: {len(errors)}")
+
+          if errors:
+              print("\n❌ Missing required sections:")
+              for error in errors[:10]:
+                  print(f"  - {error['file']}: {error['missing_section']}")
+              if len(errors) > 10:
+                  print(f"  ... and {len(errors) - 10} more")
+              
+              # 生成报告
+              Path('reports').mkdir(exist_ok=True)
+              report_lines = [
+                  "# Six-Section Template Check Report (PR)",
+                  "",
+                  f"Files checked: {checked_files}",
+                  f"Errors: {len(errors)}",
+                  "",
+                  "## Missing Sections",
+                  ""
+              ]
+              
+              for error in errors:
+                  report_lines.append(f"- `{error['file']}`: {error['missing_section']}")
+                  report_lines.append(f"  - Suggestion: {error['suggestion']}")
+              
+              Path('reports/pr-template-check-report.md').write_text('\n'.join(report_lines), encoding='utf-8')
+              
+              # 非阻塞，只警告
+              print("\n⚠️ Template check completed with warnings (non-blocking)")
+          else:
+              print("\n✅ All checked files comply with six-section template")
+          PYEOF
+
+      - name: Upload template check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-structure-report
+          path: |
+            reports/template-structure-report.md
+            reports/pr-template-check-report.md
+          if-no-files-found: ignore
+
+  # ============ 任务5: 内部链接健康检查 ============
   internal-link-check:
     name: Internal Link Health Check
     runs-on: ubuntu-latest
@@ -533,7 +515,7 @@ jobs:
           name: internal-link-report
           path: reports/internal-link-report.md
 
-  # ============ 任务5: 前瞻性内容标记检查 ============
+  # ============ 任务6: 前瞻性内容标记检查 ============
   prospective-content-check:
     name: Prospective Content Marker Check
     runs-on: ubuntu-latest
@@ -729,7 +711,7 @@ jobs:
   summary:
     name: Quality Gate Summary
     runs-on: ubuntu-latest
-    needs: [markdown-lint, theorem-validate, mermaid-validate, internal-link-check, prospective-content-check]
+    needs: [markdown-lint, theorem-validate, mermaid-validate, template-structure-check, internal-link-check, prospective-content-check]
     if: always()
     steps:
       - name: Download all artifacts
@@ -764,6 +746,15 @@ jobs:
             echo "| Mermaid Syntax | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Mermaid Syntax | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Template Structure Check
+          if [ "${{ needs.template-structure-check.result }}" == "success" ]; then
+            echo "| Template Structure | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.template-structure-check.result }}" == "skipped" ]; then
+            echo "| Template Structure | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Template Structure | ⚠️ Warning |" >> $GITHUB_STEP_SUMMARY
           fi
           
           # Internal Link Check

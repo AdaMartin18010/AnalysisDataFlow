@@ -10,6 +10,8 @@ last_sync: "2026-04-04T10:00:00Z"
 
 # AnalysisDataFlow
 
+[![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./README.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./README-EN.md)
+
 [![Validate Project](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml)
 [![Update Statistics](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
 [![Check Links](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
