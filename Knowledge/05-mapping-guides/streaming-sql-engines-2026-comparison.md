@@ -1046,7 +1046,7 @@ gantt
 
 [^11]: Confluent, "Confluent Platform 7.6 Release Notes", 2025. https://docs.confluent.io/platform/current/release-notes/
 
-[^12]: Apache Flink, "FLIP-320: Flink SQL 2.0 Vision", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-320
+[^12]: Apache Flink, "FLIP-320: Flink SQL 2.0 Vision", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-320.md
 
 ---
 
