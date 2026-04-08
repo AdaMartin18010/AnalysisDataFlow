@@ -790,7 +790,7 @@ SET FRESHNESS = INTERVAL '1' MINUTE;
 
 [^6]: "Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores", VLDB 2020.
 
-[^7]: Flink Improvement Proposal (FLIP), "Materialized Table", FLIP-453. https://cwiki.apache.org/confluence/display/FLINK/FLIP-453
+[^7]: Flink Improvement Proposal (FLIP), "Materialized Table", FLIP-453. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-453.md
 
 [^8]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
 
