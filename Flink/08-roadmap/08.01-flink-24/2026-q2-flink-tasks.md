@@ -627,7 +627,7 @@ quadrantChart
 
 <!-- FLIP状态: Draft/Under Discussion -->
 <!-- 预计正式编号: FLIP-444 (Checkpoint V2) -->
-<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-444 -->
+<!-- 跟踪: https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-444.md -->
 [^3]: Apache Flink FLIP-444 (Draft), "Checkpoint V2 Design Document", 2026.
 
 [^4]: Apache Flink Kubernetes Operator, "Release Notes 1.8.0", 2026. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/docs/operations/upgrade/>
@@ -650,7 +650,7 @@ quadrantChart
 
 <!-- FLIP状态: Draft/Under Discussion -->
 <!-- 预计正式编号: FLIP-445 (Incremental Checkpoint Optimization) -->
-<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-445 -->
+<!-- 跟踪: https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-445.md -->
 [^13]: Apache Flink FLIP-445 (Draft), "Incremental Checkpoint Optimization", 2026.
 
 [^14]: Apache Flink, "Parallel Recovery Design", 2026.

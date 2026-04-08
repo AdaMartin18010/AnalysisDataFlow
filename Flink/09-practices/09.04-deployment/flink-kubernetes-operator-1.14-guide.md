@@ -2025,7 +2025,7 @@ flowchart TD
 
 [^6]: Kalavri et al., "Three steps is all you need: fast, accurate, automatic scaling decisions for distributed streaming dataflows", OSDI 2022.
 
-[^7]: Apache Flink Documentation, "FLIP-138: Declarative Resource Management", 2021. https://cwiki.apache.org/confluence/display/FLINK/FLIP-138
+[^7]: Apache Flink Documentation, "FLIP-138: Declarative Resource Management", 2021. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-138.md
 
 [^8]: Kubernetes Documentation, "Operator Pattern", 2026. https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
 

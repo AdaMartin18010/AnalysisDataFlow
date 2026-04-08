@@ -1156,4 +1156,4 @@ flowchart LR
 
 [^9]: Yu, G.I., et al. "Orca: A Distributed Serving System for Transformer-Based Generative Models." OSDI 2022.
 
-[^10]: Apache Flink FLIP-393, "Add VECTOR_SEARCH Table Function", https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=255069363
+[^10]: Apache Flink FLIP-393, "Add VECTOR_SEARCH Table Function", https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-393.md

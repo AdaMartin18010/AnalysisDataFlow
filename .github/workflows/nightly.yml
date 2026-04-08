@@ -1,0 +1,723 @@
+# Nightly Workflow - 夜间维护任务 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-08 | 状态: Production
+#
+# 功能: 夜间自动维护任务
+#   1. 外部链接健康检查
+#   2. 文档统计更新
+#   3. 定理注册表完整性验证
+#   4. 生成维护报告
+#   5. 自动创建Issue通知
+#
+# 触发条件:
+#   - 每日凌晨 2:00 UTC (北京时间上午10:00)
+#   - 手动触发
+
+name: Nightly Maintenance
+
+on:
+  schedule:
+    # 每天凌晨 2:00 UTC (北京时间上午10:00)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      task_type:
+        description: '任务类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - links-only
+          - stats-only
+          - theorems-only
+          - quick
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============ 任务1: 外部链接健康检查 ============
+  external-link-check:
+    name: External Link Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    if: |
+      github.event.inputs.task_type != 'stats-only' &&
+      github.event.inputs.task_type != 'theorems-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (with cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -q aiohttp
+
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        id: link-cache
+        with:
+          path: .link-checker-cache
+          key: link-checker-nightly-${{ github.run_id }}
+          restore-keys: |
+            link-checker-nightly-
+            link-checker-
+
+      - name: Run external link checker
+        id: link_check
+        run: |
+          mkdir -p reports
+
+          if [ -f scripts/link-health-checker.py ]; then
+            python scripts/link-health-checker.py \
+              --path . \
+              --output reports/external-link-report.md \
+              --json reports/external-link-results.json \
+              --timeout 30 \
+              --retries 2 \
+              --concurrent 30 \
+              --cache-dir .link-checker-cache
+          else
+            echo "Link checker script not found, running inline check..."
+            python << 'PYEOF'
+          import re
+          import json
+          import asyncio
+          import aiohttp
+          from pathlib import Path
+          from datetime import datetime
+          from urllib.parse import urlparse
+
+          async def check_url(session, url, source_file):
+              try:
+                  async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+                      return {
+                          'url': url,
+                          'status': resp.status,
+                          'source': source_file,
+                          'ok': resp.status < 400
+                      }
+              except Exception as e:
+                  return {
+                      'url': url,
+                      'status': 0,
+                      'source': source_file,
+                      'ok': False,
+                      'error': str(e)
+                  }
+
+          async def main():
+              link_pattern = re.compile(r'\[([^\]]+)\]\((https?://[^\s\)]+)\)')
+              urls = []
+
+              for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+                  if not Path(directory).exists():
+                      continue
+                  for md_file in Path(directory).rglob('*.md'):
+                      try:
+                          content = md_file.read_text(encoding='utf-8')
+                          for match in link_pattern.finditer(content):
+                              url = match.group(2)
+                              urls.append((url, str(md_file)))
+                      except Exception:
+                          pass
+
+              # 去重
+              unique_urls = list(set(urls))
+              print(f"Found {len(unique_urls)} unique external links")
+
+              # 限制检查数量
+              if len(unique_urls) > 200:
+                  unique_urls = unique_urls[:200]
+                  print(f"Limited to first 200 URLs for nightly check")
+
+              async with aiohttp.ClientSession() as session:
+                  tasks = [check_url(session, url, src) for url, src in unique_urls]
+                  results = await asyncio.gather(*tasks)
+
+              broken = [r for r in results if not r['ok']]
+              print(f"Broken links: {len(broken)}/{len(results)}")
+
+              # 生成报告
+              Path('reports').mkdir(exist_ok=True)
+              with open('reports/external-link-results.json', 'w') as f:
+                  json.dump({
+                      'generated_at': datetime.now().isoformat(),
+                      'summary': {
+                          'total_links': len(results),
+                          'broken_links': len(broken),
+                          'health_rate': (len(results) - len(broken)) / len(results) * 100 if results else 100
+                      },
+                      'broken_links': broken
+                  }, f, indent=2)
+
+          asyncio.run(main())
+          PYEOF
+          fi
+        continue-on-error: true
+
+      - name: Parse link check results
+        id: parse-results
+        run: |
+          if [ -f reports/external-link-results.json ]; then
+            broken=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['broken_links'])")
+            total=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['total_links'])")
+            health_rate=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); total=d['summary']['total_links']; broken=d['summary']['broken_links']; print(f'{(total-broken)/total*100:.1f}' if total > 0 else '100')")
+            echo "broken_links=$broken" >> $GITHUB_OUTPUT
+            echo "total_links=$total" >> $GITHUB_OUTPUT
+            echo "health_rate=$health_rate" >> $GITHUB_OUTPUT
+          else
+            echo "broken_links=0" >> $GITHUB_OUTPUT
+            echo "total_links=0" >> $GITHUB_OUTPUT
+            echo "health_rate=100" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload link check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-link-check-results
+          path: |
+            reports/external-link-report.md
+            reports/external-link-results.json
+          if-no-files-found: ignore
+
+    outputs:
+      broken_links: ${{ steps.parse-results.outputs.broken_links }}
+      total_links: ${{ steps.parse-results.outputs.total_links }}
+      health_rate: ${{ steps.parse-results.outputs.health_rate }}
+
+  # ============ 任务2: 文档统计更新 ============
+  stats-update:
+    name: Statistics Update
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.task_type != 'links-only' &&
+      github.event.inputs.task_type != 'theorems-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Generate daily statistics
+        run: |
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'date': datetime.now().strftime('%Y-%m-%d'),
+              'directories': {},
+              'global': {
+                  'total_docs': 0,
+                  'total_theorems': 0,
+                  'total_definitions': 0,
+                  'total_lemmas': 0,
+                  'total_propositions': 0,
+                  'total_corollaries': 0,
+                  'total_mermaid_diagrams': 0,
+                  'total_code_examples': 0,
+                  'total_lines': 0
+              }
+          }
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              md_files = list(dir_path.rglob('*.md'))
+
+              dir_stats = {
+                  'doc_count': len(md_files),
+                  'theorems': 0,
+                  'definitions': 0,
+                  'lemmas': 0,
+                  'propositions': 0,
+                  'corollaries': 0,
+                  'mermaid_diagrams': 0,
+                  'code_examples': 0,
+                  'total_lines': 0,
+                  'total_size': 0
+              }
+
+              for md_file in md_files:
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      lines = content.split('\n')
+
+                      dir_stats['total_size'] += len(content)
+                      dir_stats['total_lines'] += len(lines)
+
+                      # Count theorems by type
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_type = match.group(1)
+                          if thm_type == 'Thm':
+                              dir_stats['theorems'] += 1
+                          elif thm_type == 'Def':
+                              dir_stats['definitions'] += 1
+                          elif thm_type == 'Lemma':
+                              dir_stats['lemmas'] += 1
+                          elif thm_type == 'Prop':
+                              dir_stats['propositions'] += 1
+                          elif thm_type == 'Cor':
+                              dir_stats['corollaries'] += 1
+
+                      # Count mermaid diagrams
+                      dir_stats['mermaid_diagrams'] += len(re.findall(r'```mermaid', content))
+
+                      # Count code examples
+                      dir_stats['code_examples'] += len(re.findall(r'```(java|scala|python|sql|bash|yaml|json|rust|go|js|ts)', content))
+
+                  except Exception as e:
+                      pass
+
+              stats['directories'][directory] = dir_stats
+
+              # Update global stats
+              stats['global']['total_docs'] += dir_stats['doc_count']
+              stats['global']['total_theorems'] += dir_stats['theorems']
+              stats['global']['total_definitions'] += dir_stats['definitions']
+              stats['global']['total_lemmas'] += dir_stats['lemmas']
+              stats['global']['total_propositions'] += dir_stats['propositions']
+              stats['global']['total_corollaries'] += dir_stats['corollaries']
+              stats['global']['total_mermaid_diagrams'] += dir_stats['mermaid_diagrams']
+              stats['global']['total_code_examples'] += dir_stats['code_examples']
+              stats['global']['total_lines'] += dir_stats['total_lines']
+
+          # Generate report
+          Path('reports').mkdir(exist_ok=True)
+
+          report_lines = [
+              f"# Daily Statistics Report - {stats['date']}",
+              "",
+              f"**Generated**: {stats['generated_at']}",
+              "",
+              "## Global Statistics",
+              "",
+              "| Metric | Count |",
+              "|--------|-------|",
+              f"| Total Documents | {stats['global']['total_docs']} |",
+              f"| Total Theorems | {stats['global']['total_theorems']} |",
+              f"| Total Definitions | {stats['global']['total_definitions']} |",
+              f"| Total Lemmas | {stats['global']['total_lemmas']} |",
+              f"| Total Propositions | {stats['global']['total_propositions']} |",
+              f"| Total Corollaries | {stats['global']['total_corollaries']} |",
+              f"| Total Mermaid Diagrams | {stats['global']['total_mermaid_diagrams']} |",
+              f"| Total Code Examples | {stats['global']['total_code_examples']} |",
+              f"| Total Lines | {stats['global']['total_lines']:,} |",
+              ""
+          ]
+
+          if stats['directories']:
+              report_lines.extend([
+                  "## Directory Statistics",
+                  "",
+                  "| Directory | Docs | Theorems | Definitions | Diagrams | Code Examples | Lines |",
+                  "|-----------|------|----------|-------------|----------|---------------|-------|"
+              ])
+
+              for dir_name, dir_stats in stats['directories'].items():
+                  report_lines.append(
+                      f"| {dir_name} | {dir_stats['doc_count']} | {dir_stats['theorems']} | "
+                      f"{dir_stats['definitions']} | {dir_stats['mermaid_diagrams']} | "
+                      f"{dir_stats['code_examples']} | {dir_stats['total_lines']:,} |"
+                  )
+
+              report_lines.append("")
+
+          # Save daily stats
+          history_file = Path('.stats/daily-history.json')
+          history_file.parent.mkdir(parents=True, exist_ok=True)
+
+          history = []
+          if history_file.exists():
+              with open(history_file) as f:
+                  history = json.load(f)
+
+          history.append({
+              'date': stats['date'],
+              'total_docs': stats['global']['total_docs'],
+              'total_theorems': stats['global']['total_theorems'],
+              'total_definitions': stats['global']['total_definitions']
+          })
+
+          # Keep last 30 days
+          history = history[-30:]
+
+          with open(history_file, 'w') as f:
+              json.dump(history, f, indent=2)
+
+          with open('reports/daily-stats-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/daily-stats.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          print(f"Daily Statistics:")
+          print(f"  Documents: {stats['global']['total_docs']}")
+          print(f"  Theorems: {stats['global']['total_theorems']}")
+          print(f"  Definitions: {stats['global']['total_definitions']}")
+          print(f"  Lines: {stats['global']['total_lines']:,}")
+          PYEOF
+
+      - name: Upload statistics
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-stats-report
+          path: |
+            reports/daily-stats-report.md
+            reports/daily-stats.json
+            .stats/daily-history.json
+
+  # ============ 任务3: 定理注册表完整性验证 ============
+  theorem-integrity-check:
+    name: Theorem Registry Integrity
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.task_type != 'links-only' &&
+      github.event.inputs.task_type != 'stats-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check theorem registry integrity
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          # Collect from documents
+          doc_theorems = defaultdict(list)
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          doc_theorems[thm_id].append(str(md_file.relative_to('.')))
+                  except Exception:
+                      pass
+
+          # Collect from registry
+          registry_file = Path('THEOREM-REGISTRY.md')
+          registry_theorems = defaultdict(list)
+          if registry_file.exists():
+              content = registry_file.read_text(encoding='utf-8')
+              for match in THEOREM_PATTERN.finditer(content):
+                  thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                  # 简单标记在注册表中
+                  registry_theorems[thm_id] = ['THEOREM-REGISTRY.md']
+
+          # Find discrepancies
+          only_in_docs = set(doc_theorems.keys()) - set(registry_theorems.keys())
+          duplicates = {k: v for k, v in doc_theorems.items() if len(v) > 1}
+
+          # Generate report
+          Path('reports').mkdir(exist_ok=True)
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'theorems_in_docs': len(doc_theorems),
+                  'theorems_in_registry': len(registry_theorems),
+                  'missing_from_registry': len(only_in_docs),
+                  'duplicates': len(duplicates)
+              },
+              'missing_from_registry': sorted(list(only_in_docs)),
+              'duplicates': {k: v for k, v in duplicates.items()}
+          }
+
+          with open('reports/theorem-integrity-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              "# Theorem Registry Integrity Report",
+              "",
+              f"**Generated**: {report['generated_at']}",
+              "",
+              "## Summary",
+              "",
+              "| Metric | Count |",
+              "|--------|-------|",
+              f"| Theorems in Documents | {report['summary']['theorems_in_docs']} |",
+              f"| Theorems in Registry | {report['summary']['theorems_in_registry']} |",
+              f"| Missing from Registry | {report['summary']['missing_from_registry']} |",
+              f"| Duplicate Theorems | {report['summary']['duplicates']} |",
+              ""
+          ]
+
+          if only_in_docs:
+              report_lines.extend([
+                  "## Missing from Registry",
+                  "",
+                  "The following theorems are used in documents but not registered:",
+                  ""
+              ])
+              for thm in sorted(list(only_in_docs))[:20]:
+                  report_lines.append(f"- `{thm}`")
+              if len(only_in_docs) > 20:
+                  report_lines.append(f"- ... and {len(only_in_docs) - 20} more")
+              report_lines.append("")
+
+          if duplicates:
+              report_lines.extend([
+                  "## Duplicate Theorems",
+                  "",
+                  "The following theorems appear in multiple files:",
+                  ""
+              ])
+              for thm, files in list(duplicates.items())[:10]:
+                  report_lines.append(f"- `{thm}`: {', '.join(files)}")
+              if len(duplicates) > 10:
+                  report_lines.append(f"- ... and {len(duplicates) - 10} more")
+              report_lines.append("")
+
+          with open('reports/theorem-integrity-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Theorem Integrity Check:")
+          print(f"  In docs: {report['summary']['theorems_in_docs']}")
+          print(f"  In registry: {report['summary']['theorems_in_registry']}")
+          print(f"  Missing: {report['summary']['missing_from_registry']}")
+          print(f"  Duplicates: {report['summary']['duplicates']}")
+
+          # Exit with error if there are significant issues
+          if len(only_in_docs) > 10:
+              print(f"❌ {len(only_in_docs)} theorems missing from registry")
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload theorem integrity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-integrity-report
+          path: |
+            reports/theorem-integrity-report.md
+            reports/theorem-integrity-report.json
+
+  # ============ 任务4: 生成综合维护报告 ============
+  generate-report:
+    name: Generate Maintenance Report
+    runs-on: ubuntu-latest
+    needs: [external-link-check, stats-update, theorem-integrity-check]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate nightly report
+        run: |
+          cat > reports/nightly-summary.md << 'EOF'
+          # Nightly Maintenance Report
+
+          **Date**: $(date -u +%Y-%m-%d)
+          **Run**: ${{ github.run_id }}
+
+          ## Summary
+
+          | Check | Status |
+          |-------|--------|
+          | External Link Check | ${{ needs.external-link-check.result }} |
+          | Statistics Update | ${{ needs.stats-update.result }} |
+          | Theorem Integrity | ${{ needs.theorem-integrity-check.result }} |
+
+          ## Artifacts
+
+          - Link Check Results: `nightly-link-check-results/`
+          - Statistics Report: `nightly-stats-report/`
+          - Theorem Integrity: `theorem-integrity-report/`
+
+          ---
+          *Auto-generated by Nightly Maintenance workflow*
+          EOF
+
+      - name: Upload summary report
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-maintenance-report
+          path: reports/nightly-summary.md
+
+  # ============ 任务5: 创建失效链接Issue ============
+  create-issue:
+    name: Create Issue for Issues Found
+    runs-on: ubuntu-latest
+    needs: [external-link-check, theorem-integrity-check]
+    if: |
+      always() &&
+      (needs.external-link-check.outputs.broken_links != '0' ||
+       needs.external-link-check.outputs.broken_links != '')
+    permissions:
+      issues: write
+    steps:
+      - name: Create or update issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const brokenLinks = parseInt('${{ needs.external-link-check.outputs.broken_links }}') || 0;
+            const healthRate = '${{ needs.external-link-check.outputs.health_rate }}';
+            const totalLinks = '${{ needs.external-link-check.outputs.total_links }}';
+
+            if (brokenLinks === 0) {
+              console.log('No broken links found, skipping issue creation');
+              return;
+            }
+
+            const title = `🌙 [Nightly] ${brokenLinks} broken external links detected`;
+            const body = `## 🔗 Nightly Link Health Check Results
+
+          **Check Date**: ${new Date().toISOString()}
+          **Health Rate**: ${healthRate}%
+          **Broken Links**: ${brokenLinks}
+          **Total Links Checked**: ${totalLinks}
+
+          ---
+
+          ### 🛠️ Recommended Actions
+
+          1. Download the detailed report from workflow artifacts
+          2. Run the auto-fix script:
+             \`\`\`bash
+             python scripts/link-auto-fix.py --fix-redirects
+             \`\`\`
+          3. Manually fix remaining broken links
+          4. Re-run the check to verify fixes
+
+          ---
+
+          ### 📄 Reports
+
+          - [View Workflow Run](../../actions/runs/${{ github.run_id }})
+
+          ---
+
+          *This issue was automatically created by the Nightly Maintenance workflow.*`;
+
+            // Check for existing open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'maintenance,links,nightly'
+            });
+
+            const existingIssue = issues.data.find(i => 
+              i.title.includes('[Nightly]') && i.title.includes('broken external links')
+            );
+
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['maintenance', 'links', 'nightly', 'automated']
+              });
+              console.log('Created new issue for broken links');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `**Updated**: ${brokenLinks} broken links (Health Rate: ${healthRate}%) - [View Run](../../actions/runs/${{ github.run_id }})`
+              });
+              console.log('Updated existing issue #' + existingIssue.number);
+            }
+
+  # ============ 夜间任务汇总 ============
+  nightly-summary:
+    name: Nightly Summary
+    runs-on: ubuntu-latest
+    needs: [external-link-check, stats-update, theorem-integrity-check, generate-report, create-issue]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## 🌙 Nightly Maintenance Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date**: $(date -u +%Y-%m-%d %H:%M UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Task Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Task | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.external-link-check.result }}" == "success" ]; then
+            broken="${{ needs.external-link-check.outputs.broken_links }}"
+            if [ "$broken" = "0" ] || [ -z "$broken" ]; then
+              echo "| External Link Check | ✅ All links healthy |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| External Link Check | ⚠️ $broken broken links |" >> $GITHUB_STEP_SUMMARY
+            fi
+          elif [ "${{ needs.external-link-check.result }}" == "skipped" ]; then
+            echo "| External Link Check | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| External Link Check | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.stats-update.result }}" == "success" ]; then
+            echo "| Statistics Update | ✅ Complete |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.stats-update.result }}" == "skipped" ]; then
+            echo "| Statistics Update | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Statistics Update | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.theorem-integrity-check.result }}" == "success" ]; then
+            echo "| Theorem Integrity | ✅ Verified |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.theorem-integrity-check.result }}" == "skipped" ]; then
+            echo "| Theorem Integrity | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Theorem Integrity | ❌ Issues found |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.create-issue.result }}" == "success" ]; then
+            echo "| Issue Creation | ✅ Created/Updated |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.create-issue.result }}" == "skipped" ]; then
+            echo "| Issue Creation | ⏭️ No issues to report |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Issue Creation | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Nightly maintenance completed" >> $GITHUB_STEP_SUMMARY

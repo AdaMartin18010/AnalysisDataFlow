@@ -1410,11 +1410,11 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-435, "Unified Stream-Batch Execution", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-435
-[^2]: Apache Flink FLIP-442, "Serverless Flink: Zero-to-Infinity Scaling", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-442
-[^3]: Apache Flink FLIP-500, "Unified Execution Layer", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-500
-[^4]: Apache Flink FLIP-501, "Next-Generation State Management", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-501
-[^5]: Apache Flink FLIP-502, "Cloud-Native Architecture 2.0", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-502
+[^1]: Apache Flink FLIP-435, "Unified Stream-Batch Execution", 2026. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-435.md
+[^2]: Apache Flink FLIP-442, "Serverless Flink: Zero-to-Infinity Scaling", 2026. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-442.md
+[^3]: Apache Flink FLIP-500, "Unified Execution Layer", 2026 (Draft). https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-500.md
+[^4]: Apache Flink FLIP-501, "Next-Generation State Management", 2026 (Draft). https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-501.md
+[^5]: Apache Flink FLIP-502, "Cloud-Native Architecture 2.0", 2026 (Draft). https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-502.md
 [^6]: Apache Flink Roadmap, "Flink 3.0 Vision", 2026. https://flink.apache.org/roadmap/
 [^7]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
 [^8]: L. Lamport, "Time, Clocks, and the Ordering of Events in a Distributed System", CACM, 21(7), 1978.

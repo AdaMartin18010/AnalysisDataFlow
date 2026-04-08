@@ -1720,7 +1720,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink, "FLIP-531: AI Agents for Flink", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531
+[^1]: Apache Flink, "FLIP-531: AI Agents for Flink", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-531.md
 
 [^2]: Apache Flink, "Stateful Stream Processing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/stateful-stream-processing/
 

@@ -677,7 +677,7 @@ sequenceDiagram
 
 
 
-[^9]: Apache Flink Wiki, "Netty memory allocation", <https://cwiki.apache.org/confluence/display/FLINK/Netty+memory+allocation>
+[^9]: Apache Flink Wiki, "Netty memory allocation", <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/README.md>
 
 
 

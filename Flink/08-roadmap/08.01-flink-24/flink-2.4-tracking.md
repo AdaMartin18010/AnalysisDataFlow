@@ -953,7 +953,7 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 | 2026-04-04 | v0.1 | 初始文档创建 | Agent |
 <!-- TODO: 待补充FLIP详细设计 (预计: 2026-04-15) -->
 <!-- 相关FLIP: FLIP-435 (Unified Execution), FLIP-440 (Serverless) -->
-<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/ -->
+<!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/ -->
 | 2026-04-15 | v0.2 | 补充FLIP-435/FLIP-440详细设计 | Agent |
 | 2026-05-XX | v0.5 | 开发进度同步 | - |
 | 2026-08-15 | v1.0 | Feature Freeze版本 | - |

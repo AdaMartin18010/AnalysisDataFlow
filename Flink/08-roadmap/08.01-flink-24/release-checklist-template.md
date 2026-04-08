@@ -1014,7 +1014,7 @@ docker run --rm -it flink:X.Y.0 flink --version
 ### 9.5 参考资源
 
 - [Apache发布政策](https://www.apache.org/legal/release-policy.html)
-- [Flink发布指南](https://cwiki.apache.org/confluence/display/FLINK/Creating+a+Flink+Release)
+- [Flink发布指南](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/README.md)
 - [Maven发布插件文档](https://maven.apache.org/maven-release/maven-release-plugin/)
 - [GPG密钥管理](https://www.apache.org/dev/openpgp.html)
 

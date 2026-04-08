@@ -673,7 +673,7 @@ xychart-beta
 [^2]: YCSB GitHub Repository. https://github.com/brianfrankcooper/YCSB
 [^3]: Apache Flink State Backends Documentation. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
 [^4]: RocksDB Tuning Guide. https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide
-[^5]: Flink ForSt State Backend (FLIP-292). https://cwiki.apache.org/confluence/display/FLINK/FLIP-292%3A+ForSt+State+Backend
+[^5]: Flink ForSt State Backend (FLIP-292). https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-292.md
 
 ---
 

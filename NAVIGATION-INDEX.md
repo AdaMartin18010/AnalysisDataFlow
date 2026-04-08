@@ -635,7 +635,7 @@ Markdown行数: 338,716+
 | 资源 | 链接 |
 |------|------|
 | Apache Flink官方文档 | <https://nightlies.apache.org/flink/> |
-| Flink FLIP提案 | <https://cwiki.apache.org/confluence/display/FLINK/FLIPs> |
+| Flink FLIP提案 | <https://github.com/apache/flink/tree/master/flink-docs/docs/flips> |
 | Dataflow模型论文 | <https://www.vldb.org/pvldb/vol8/p1792-Akidau.pdf> |
 | MIT 6.824分布式系统 | <https://pdos.csail.mit.edu/6.824/> |
 

@@ -1727,7 +1727,7 @@ sequenceDiagram
 
 [^4]: Helm Documentation, "Helm Upgrade", 2026. https://helm.sh/docs/helm/helm_upgrade/
 
-[^5]: Apache Flink Documentation, "FLIP-138: Declarative Resource Management", 2021. https://cwiki.apache.org/confluence/display/FLINK/FLIP-138
+[^5]: Apache Flink Documentation, "FLIP-138: Declarative Resource Management", 2021. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-138.md
 
 [^6]: Apache Flink Kubernetes Operator Documentation, "Backward Compatibility", 2026. https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-release-1.14/docs/concepts/compatibility/
 

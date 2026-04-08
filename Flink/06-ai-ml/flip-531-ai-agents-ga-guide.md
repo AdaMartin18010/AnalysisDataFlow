@@ -1263,7 +1263,7 @@ gantt
 
 ## 9. 引用参考 (References)
 
-[^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
+[^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-531.md>
 
 [^2]: Anthropic, "Model Context Protocol Specification", 2025. <https://modelcontextprotocol.io/spec>
 

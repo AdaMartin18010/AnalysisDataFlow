@@ -859,4 +859,4 @@ sequenceDiagram
 
 [^4]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
 
-[^5]: Apache Flink FLIP-158: "Generalized Incremental Checkpoints", https://cwiki.apache.org/confluence/display/FLINK/FLIP-158
+[^5]: Apache Flink FLIP-158: "Generalized Incremental Checkpoints", https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-158.md

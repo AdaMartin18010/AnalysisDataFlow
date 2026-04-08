@@ -198,17 +198,17 @@ $$
 │  └── FLIP-440: Serverless Flink (Draft)                     │   │
 │      <!-- FLIP状态: Draft/Under Discussion -->              │   │
 │      <!-- 预计正式编号: FLIP-440 -->                         │   │
-│      <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-440 --> │
+│      <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-440 --> │
 │                                                            │   │
 │  Flink 2.5（预计发布时间以官方为准）                                       │   │
 │  ├── FLIP-441: Adaptive Execution (Draft)                   │   │
 │  │   <!-- FLIP状态: Draft/Under Discussion -->              │   │
 │  │   <!-- 预计正式编号: FLIP-441 -->                         │   │
-│  │   <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-441 --> │
+│  │   <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-441 --> │
 │  └── FLIP-442: Unified Batch/Streaming (Draft)              │   │
 │      <!-- FLIP状态: Draft/Under Discussion -->              │   │
 │      <!-- 预计正式编号: FLIP-442 -->                         │   │
-│      <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-442 --> │
+│      <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-442 --> │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -425,7 +425,7 @@ flips:
   connectors: 
     <!-- FLIP状态: Draft/Under Discussion -->
     <!-- 预计正式编号: FLIP-443 (Connector Improvements) -->
-    <!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-443 -->
+    <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-443 -->
     - id: FLIP-443
       title: "Connector Improvements"
       impact: "Medium"
@@ -554,7 +554,7 @@ class FLIPTracker:
     """FLIP 状态跟踪器"""
 
     SOURCES = {
-        'wiki': 'https://cwiki.apache.org/confluence/display/FLINK/',
+        'wiki': 'https://github.com/apache/flink/tree/master/flink-docs/docs/flips/',
         'jira': 'https://issues.apache.org/jira/browse/',
         'github': 'https://api.github.com/repos/apache/flink/'
     }
@@ -738,7 +738,7 @@ if __name__ == '__main__':
   "sources": {
     "wiki": {
       "enabled": true,
-      "url": "https://cwiki.apache.org/confluence/display/FLINK/",
+      "url": "https://github.com/apache/flink/tree/master/flink-docs/docs/flips/",
       "auth": null
     },
     "jira": {

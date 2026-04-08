@@ -158,7 +158,7 @@
 | D8 | Exactly-Once Semantics | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 端到端精确一次语义实现原理 |
 | D9 | Backpressure | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/) | 背压监控和处理，流量控制机制 |
 | D10 | Flink Architecture | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/flink-architecture/) | Flink 运行时架构和组件详解 |
-| D11 | FLIP (Flink Improvement Proposals) | - | [GitHub](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | Flink 改进提案集合，了解 Flink 演进 |
+| D11 | FLIP (Flink Improvement Proposals) | - | [GitHub](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | Flink 改进提案集合，了解 Flink 演进 |
 | D12 | Flink ML | v2.3 | [文档](https://nightlies.apache.org/flink/flink-ml-docs-stable/) | Flink 机器学习库，实时 ML 推理 |
 | D13 | Stateful Functions | v3.2 | [文档](https://nightlies.apache.org/flink/flink-statefun-docs-stable/) | 状态函数库，事件驱动的有状态应用 |
 

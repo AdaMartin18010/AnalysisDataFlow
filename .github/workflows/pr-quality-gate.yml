@@ -28,6 +28,11 @@ env:
   PYTHON_VERSION: '3.11'
   NODE_VERSION: '20'
 
+# 并发控制
+concurrency:
+  group: 'pr-quality-${{ github.event.pull_request.number }}'
+  cancel-in-progress: true
+
 jobs:
   # ============ 任务1: Markdown语法检查 [阻塞合并] ============
   markdown-lint:
@@ -39,10 +44,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Setup Node.js (with cache)
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache markdownlint
+        uses: actions/cache@v4
+        id: markdownlint-cache
+        with:
+          path: ~/.npm
+          key: markdownlint-${{ runner.os }}-${{ env.NODE_VERSION }}-0.41.0
+          restore-keys: |
+            markdownlint-${{ runner.os }}-${{ env.NODE_VERSION }}-
 
       - name: Install markdownlint
         run: npm install -g markdownlint-cli@0.41.0
@@ -112,12 +127,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Cache theorem validation
+        uses: actions/cache@v4
+        with:
+          path: .theorem-cache
+          key: theorem-cache-${{ github.run_id }}
+          restore-keys: |
+            theorem-cache-
 
       - name: Run theorem uniqueness checker
+        run: |
+          mkdir -p .theorem-cache
+          python .scripts/quality-gates/theorem-uniqueness-checker.py \
+            --strict \
+            --output reports/theorem-uniqueness-report.md \
+            --dirs Struct Knowledge Flink \
+            --cache-dir .theorem-cache
         run: |
           python .scripts/quality-gates/theorem-uniqueness-checker.py \
             --strict \
@@ -192,10 +223,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Cache validation results
+        uses: actions/cache@v4
+        with:
+          path: .validation-cache
+          key: validation-cache-${{ github.run_id }}
+          restore-keys: |
+            validation-cache-
 
       - name: Run Mermaid syntax validator
         run: |
@@ -296,10 +336,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
       - name: Run template structure checker
         run: |
@@ -412,10 +453,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Cache link check results
+        uses: actions/cache@v4
+        with:
+          path: .link-check-cache
+          key: link-check-pr-${{ github.run_id }}
+          restore-keys: |
+            link-check-pr-
+            link-check-
 
       - name: Run internal link checker
         run: |
@@ -554,10 +605,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
       - name: Check prospective content markers
         run: |
@@ -713,10 +765,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
       - name: Run cross-reference validation
         run: |
@@ -869,10 +922,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Setup Python (with cache)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
       - name: Run formal element checker
         run: |

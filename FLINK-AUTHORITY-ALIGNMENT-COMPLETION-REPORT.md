@@ -139,7 +139,7 @@
 ### 4.3 Apache 项目文档
 
 - <https://calcite.apache.org/docs/>
-- <https://cwiki.apache.org/confluence/display/FLINK/Netty+memory+allocation>
+- <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/README.md>
 - <https://issues.apache.org/jira/browse/FLINK-7416>
 
 ### 4.4 技术会议与论文

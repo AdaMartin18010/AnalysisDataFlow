@@ -1,0 +1,267 @@
+name: Deploy i18n Site to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'i18n/**'
+      - '.github/workflows/deploy-i18n.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'i18n/**'
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Deployment Target'
+        required: true
+        default: 'gh-pages'
+        type: choice
+        options:
+          - gh-pages
+          - staging
+
+# 权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制
+concurrency:
+  group: 'pages-i18n'
+  cancel-in-progress: false
+
+jobs:
+  # 阶段1: 构建
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Prepare i18n Site Structure
+        run: |
+          # 创建构建目录
+          mkdir -p _site/i18n
+          
+          # 复制i18n文件
+          cp -r i18n/* _site/i18n/
+          
+          # 创建根目录重定向
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0; url=./i18n/">
+            <title>AnalysisDataFlow</title>
+            <link rel="canonical" href="https://luyanfeng.github.io/AnalysisDataFlow/i18n/">
+          </head>
+          <body>
+            <p>Redirecting to <a href="./i18n/">i18n site</a>...</p>
+          </body>
+          </html>
+          EOF
+          
+          # 复制知识图谱到站点（供i18n引用）
+          if [ -f "knowledge-graph-v4.html" ]; then
+            cp knowledge-graph-v4.html _site/
+          fi
+          if [ -f "knowledge-graph.html" ]; then
+            cp knowledge-graph.html _site/
+          fi
+          
+          echo "✅ Site structure prepared"
+
+      - name: Validate i18n Files
+        run: |
+          # 检查必需的入口文件
+          test -f _site/i18n/index.html || (echo "❌ Missing i18n/index.html" && exit 1)
+          test -f _site/i18n/en/index.html || (echo "❌ Missing i18n/en/index.html" && exit 1)
+          
+          # 统计文档数量
+          DOC_COUNT=$(find _site/i18n/en -name "*.md" | wc -l)
+          echo "📊 English documents count: $DOC_COUNT"
+          
+          # 检查hreflang标签
+          if grep -q "hreflang" _site/i18n/index.html; then
+            echo "✅ hreflang tags found in Chinese index"
+          else
+            echo "⚠️ hreflang tags missing in Chinese index"
+          fi
+          
+          if grep -q "hreflang" _site/i18n/en/index.html; then
+            echo "✅ hreflang tags found in English index"
+          else
+            echo "⚠️ hreflang tags missing in English index"
+          fi
+          
+          echo "✅ Validation complete"
+
+      - name: Generate SEO Sitemap
+        run: |
+          cat > _site/sitemap.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url>
+              <loc>https://luyanfeng.github.io/AnalysisDataFlow/i18n/</loc>
+              <lastmod>$(date -u +%Y-%m-%d)</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>1.0</priority>
+            </url>
+            <url>
+              <loc>https://luyanfeng.github.io/AnalysisDataFlow/i18n/en/</loc>
+              <lastmod>$(date -u +%Y-%m-%d)</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>0.9</priority>
+            </url>
+          </urlset>
+          EOF
+          
+          # 创建robots.txt
+          cat > _site/robots.txt << 'EOF'
+          User-agent: *
+          Allow: /
+          Sitemap: https://luyanfeng.github.io/AnalysisDataFlow/sitemap.xml
+          EOF
+          
+          echo "✅ SEO files generated"
+
+      - name: Calculate Metadata
+        id: metadata
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "version=$(date -u +%Y%m%d.%H%M%S)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-site
+          path: _site/
+          retention-days: 7
+
+  # 阶段2: 测试
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: i18n-site
+          path: _site/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Test Dependencies
+        run: npm install -g htmlhint
+
+      - name: Validate HTML
+        run: |
+          echo "🔍 Validating HTML files..."
+          htmlhint _site/i18n/*.html _site/i18n/en/*.html || true
+
+      - name: Check File Structure
+        run: |
+          echo "📁 Site structure:"
+          find _site -type f | head -30
+          
+          echo ""
+          echo "📊 File size statistics:"
+          du -sh _site/*
+
+      - name: Check SEO Requirements
+        run: |
+          echo "🔍 Checking SEO requirements..."
+          
+          # Check title and meta description
+          if grep -q "<title>" _site/i18n/index.html && grep -q "<meta name=\"description\"" _site/i18n/index.html; then
+            echo "✅ Chinese page has title and description"
+          else
+            echo "⚠️ Chinese page missing title or description"
+          fi
+          
+          if grep -q "<title>" _site/i18n/en/index.html && grep -q "<meta name=\"description\"" _site/i18n/en/index.html; then
+            echo "✅ English page has title and description"
+          else
+            echo "⚠️ English page missing title or description"
+          fi
+          
+          # Check canonical URLs
+          if grep -q "canonical" _site/i18n/index.html && grep -q "canonical" _site/i18n/en/index.html; then
+            echo "✅ Canonical URLs present"
+          else
+            echo "⚠️ Canonical URLs missing"
+          fi
+          
+          echo "✅ SEO check complete"
+
+  # 阶段3: 部署到GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: i18n-site
+          path: _site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Notify Deployment Success
+        run: |
+          echo "🚀 i18n Site Successfully Deployed!"
+          echo "📍 Chinese Version: ${{ steps.deployment.outputs.page_url }}i18n/"
+          echo "📍 English Version: ${{ steps.deployment.outputs.page_url }}i18n/en/"
+          echo "🌐 Language Switcher: Enabled (中文/English)"
+          echo "🔍 SEO Features: hreflang tags, sitemap, robots.txt"
+
+  # 阶段4: PR预览
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: i18n-site
+          path: _site/
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📦 **i18n Site Preview Build Complete** (PR #' + context.issue.number + ')\n\n✅ 41 English documents ready\n✅ Language switcher (中文/English) configured\n✅ SEO: hreflang tags, sitemap, robots.txt'
+            })

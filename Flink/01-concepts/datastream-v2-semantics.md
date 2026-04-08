@@ -554,7 +554,7 @@ graph TB
 
 [^1]: Apache Flink Documentation, "DataStream API v2 (Experimental)", 2025. <https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/>
 
-[^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-500>
+[^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-500.md>
 
 [^3]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Eng. Bull.*, 38(4), 2015.
 
@@ -566,7 +566,7 @@ graph TB
 
 [^7]: Apache Flink Documentation, "FileSink", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/filesystem/>
 
-[^8]: Apache Flink, "FLIP-143: Unified Sink API", Apache Flink Improvement Proposals, 2021. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-143>
+[^8]: Apache Flink, "FLIP-143: Unified Sink API", Apache Flink Improvement Proposals, 2021. <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-143.md>
 
 [^9]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015.
 
