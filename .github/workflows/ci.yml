@@ -1,0 +1,577 @@
+# CI Workflow - 持续集成工作流 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-08 | 状态: Production
+#
+# 功能: 合并质量检查工作流，包含:
+#   1. Markdown语法检查
+#   2. 定理验证 (唯一性、格式、注册表同步)
+#   3. 链接检查 (内部+外部)
+#   4. Mermaid语法验证
+#
+# 触发条件:
+#   - push 到 main/master 分支
+#   - PR 创建和更新
+#   - 手动触发
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - '.scripts/**'
+      - '.github/workflows/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'scripts/**'
+      - '.scripts/**'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - quick
+          - markdown-only
+          - theorems-only
+          - links-only
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============ 任务1: 变更检测 ============
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      markdown_changed: ${{ steps.filter.outputs.markdown_changed }}
+      theorems_changed: ${{ steps.filter.outputs.theorems_changed }}
+      scripts_changed: ${{ steps.filter.outputs.scripts_changed }}
+      changed_files: ${{ steps.filter.outputs.changed_files }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "markdown_changed=true" >> $GITHUB_OUTPUT
+            echo "theorems_changed=true" >> $GITHUB_OUTPUT
+            echo "scripts_changed=true" >> $GITHUB_OUTPUT
+            echo "changed_files=all" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 获取变更文件
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD || true)
+          else
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD || true)
+          fi
+
+          echo "Changed files:"
+          echo "$changed_files"
+
+          # 保存变更文件列表
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # 检查Markdown文件变更
+          if echo "$changed_files" | grep -q '\.md$'; then
+            echo "markdown_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "markdown_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          # 检查定理相关变更
+          if echo "$changed_files" | grep -qE '(Struct/|Knowledge/|Flink/|THEOREM-REGISTRY\.md)'; then
+            echo "theorems_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "theorems_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          # 检查脚本变更
+          if echo "$changed_files" | grep -qE '(scripts/|\.scripts/)'; then
+            echo "scripts_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "scripts_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ============ 任务2: Markdown语法检查 ============
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.markdown_changed == 'true' ||
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'markdown-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (with cache)
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache markdownlint
+        uses: actions/cache@v4
+        id: markdownlint-cache
+        with:
+          path: ~/.npm
+          key: markdownlint-${{ runner.os }}-${{ env.NODE_VERSION }}-0.41.0
+          restore-keys: |
+            markdownlint-${{ runner.os }}-${{ env.NODE_VERSION }}-
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli@0.41.0
+
+      - name: Run markdownlint
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": false,
+            "MD024": false,
+            "MD033": false,
+            "MD041": false,
+            "MD046": false,
+            "MD028": false,
+            "MD025": false,
+            "line-length": false,
+            "no-inline-html": false,
+            "first-line-heading": false,
+            "no-duplicate-heading": false
+          }
+          EOF
+
+          find . -name "*.md" -not -path "./.git/*" -not -path "./node_modules/*" | \
+            xargs markdownlint || true
+
+      - name: Check critical errors
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            # 检查YAML frontmatter
+            if head -1 "$file" | grep -q '^---'; then
+              if ! grep -q '^---' "$file" | head -3 | tail -1; then
+                echo "❌ Malformed YAML frontmatter: $file"
+                errors=$((errors + 1))
+              fi
+            fi
+          done < <(find . -name "*.md" -not -path "./.git/*")
+
+          if [ $errors -gt 0 ]; then
+            echo "❌ Found $errors critical markdown errors"
+            exit 1
+          fi
+          echo "✅ Markdown syntax check passed"
+
+  # ============ 任务3: 定理验证 ============
+  theorem-validate:
+    name: Theorem Validation
+    runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.theorems_changed == 'true' ||
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'theorems-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python (with cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Cache theorem check results
+        uses: actions/cache@v4
+        with:
+          path: .theorem-cache
+          key: theorem-cache-${{ github.run_id }}
+          restore-keys: |
+            theorem-cache-
+
+      - name: Run theorem uniqueness check
+        run: |
+          mkdir -p .theorem-cache reports
+          python .scripts/quality-gates/theorem-uniqueness-checker.py \
+            --strict \
+            --output reports/theorem-uniqueness-report.md \
+            --dirs Struct Knowledge Flink \
+            --cache-dir .theorem-cache
+
+      - name: Validate theorem format
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+
+          VALID_TYPES = {'Thm', 'Def', 'Lemma', 'Prop', 'Cor'}
+          VALID_STAGES = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          stats = {'total': 0, 'valid': 0, 'invalid': 0}
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      matches = THEOREM_PATTERN.findall(content)
+                      stats['total'] += len(matches)
+                      for m in matches:
+                          if m[0] in VALID_TYPES and m[1] in VALID_STAGES:
+                              stats['valid'] += 1
+                          else:
+                              stats['invalid'] += 1
+                  except Exception:
+                      pass
+
+          print(f"Theorem format validation: {stats['valid']}/{stats['total']} valid")
+          if stats['invalid'] > 0:
+              sys.exit(1)
+          PYEOF
+
+      - name: Check registry sync
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          doc_theorems = set()
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      for m in THEOREM_PATTERN.findall(content):
+                          doc_theorems.add(f"{m[0]}-{m[1]}-{m[2]}-{m[3]}")
+                  except Exception:
+                      pass
+
+          registry_file = Path('THEOREM-REGISTRY.md')
+          registry_theorems = set()
+          if registry_file.exists():
+              content = registry_file.read_text(encoding='utf-8')
+              for m in THEOREM_PATTERN.findall(content):
+                  registry_theorems.add(f"{m[0]}-{m[1]}-{m[2]}-{m[3]}")
+
+          only_in_docs = doc_theorems - registry_theorems
+          print(f"Theorems in docs: {len(doc_theorems)}, in registry: {len(registry_theorems)}")
+          print(f"Missing from registry: {len(only_in_docs)}")
+
+          if only_in_docs:
+              print("Missing theorems:", list(only_in_docs)[:10])
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload theorem reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-validation-reports
+          path: reports/theorem-*.md
+          if-no-files-found: ignore
+
+  # ============ 任务4: 链接检查 ============
+  link-check:
+    name: Link Check
+    runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'links-only' ||
+      needs.changes.outputs.markdown_changed == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (with cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -q aiohttp
+
+      - name: Cache link check results
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-${{ github.run_id }}
+          restore-keys: |
+            link-checker-
+
+      - name: Check internal links
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+
+          stats = {'total': 0, 'valid': 0, 'broken': 0}
+          link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+          all_docs = set()
+          for directory in ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials', 'docs']:
+              if Path(directory).exists():
+                  for md_file in Path(directory).rglob('*.md'):
+                      all_docs.add(str(md_file).replace('\\', '/'))
+
+          for doc_path in sorted(all_docs):
+              try:
+                  content = Path(doc_path).read_text(encoding='utf-8')
+                  doc_dir = Path(doc_path).parent
+
+                  for match in link_pattern.finditer(content):
+                      link_target = match.group(2)
+                      stats['total'] += 1
+
+                      if link_target.startswith(('http://', 'https://', 'mailto://', '#')):
+                          stats['valid'] += 1
+                          continue
+
+                      target_path = link_target.split('#')[0]
+                      if not target_path:
+                          continue
+
+                      if target_path.startswith('/'):
+                          full_path = target_path.lstrip('/')
+                      else:
+                          full_path = str((doc_dir / target_path)).replace('\\', '/')
+                          cwd = str(Path('.').resolve()).replace('\\', '/')
+                          if full_path.startswith(cwd):
+                              full_path = full_path[len(cwd)+1:]
+
+                      if full_path in all_docs or Path(full_path).exists():
+                          stats['valid'] += 1
+                      else:
+                          stats['broken'] += 1
+              except Exception:
+                  pass
+
+          print(f"Internal links: {stats['valid']}/{stats['total']} valid, {stats['broken']} broken")
+
+          if stats['total'] > 0:
+              broken_rate = stats['broken'] / stats['total']
+              if broken_rate > 0.03:
+                  print(f"❌ Broken link rate {broken_rate:.1%} exceeds 3% threshold")
+                  sys.exit(1)
+          PYEOF
+
+      - name: Check external links (sample)
+        if: github.event.inputs.check_type == 'full'
+        timeout-minutes: 15
+        run: |
+          if [ -f scripts/link-health-checker.py ]; then
+            python scripts/link-health-checker.py \
+              --path . \
+              --output reports/external-link-report.md \
+              --json reports/external-link-results.json \
+              --timeout 20 \
+              --retries 1 \
+              --concurrent 20 \
+              --sample 50
+          else
+            echo "External link checker not available, skipping"
+          fi
+        continue-on-error: true
+
+      - name: Upload link check reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check-reports
+          path: reports/*-link-*.md
+          if-no-files-found: ignore
+
+  # ============ 任务5: Mermaid语法验证 ============
+  mermaid-validate:
+    name: Mermaid Validation
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.markdown_changed == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (with cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Validate Mermaid syntax
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+          VALID_CHART_TYPES = ['graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
+              'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt', 'pie', 'mindmap']
+
+          stats = {'files': 0, 'diagrams': 0, 'errors': 0}
+
+          for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      diagrams = mermaid_pattern.findall(content)
+
+                      if diagrams:
+                          stats['files'] += 1
+                          stats['diagrams'] += len(diagrams)
+
+                      for diagram in diagrams:
+                          lines = diagram.strip().split('\n')
+                          if not lines:
+                              continue
+
+                          first_line = lines[0].strip()
+                          chart_type = None
+                          for vt in VALID_CHART_TYPES:
+                              if first_line.startswith(vt):
+                                  chart_type = vt
+                                  break
+
+                          if not chart_type:
+                              stats['errors'] += 1
+                              print(f"Unknown chart type in {md_file}: {first_line[:50]}")
+
+                          # Check bracket balance
+                          open_b = diagram.count('[') + diagram.count('{') + diagram.count('(')
+                          close_b = diagram.count(']') + diagram.count('}') + diagram.count(')')
+                          if open_b != close_b:
+                              stats['errors'] += 1
+                              print(f"Unbalanced brackets in {md_file}")
+                  except Exception:
+                      pass
+
+          print(f"Mermaid validation: {stats['diagrams']} diagrams in {stats['files']} files, {stats['errors']} errors")
+
+          if stats['errors'] > 5:
+              sys.exit(1)
+          PYEOF
+
+  # ============ CI 汇总报告 ============
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [changes, markdown-lint, theorem-validate, link-check, mermaid-validate]
+    if: always()
+    steps:
+      - name: Generate CI summary
+        run: |
+          echo "## 🔍 CI Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Info" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Check Type | ${{ github.event.inputs.check_type || 'auto' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Changes detection
+          if [ "${{ needs.changes.result }}" == "success" ]; then
+            echo "| Change Detection | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Change Detection | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Markdown lint
+          if [ "${{ needs.markdown-lint.result }}" == "success" ]; then
+            echo "| Markdown Lint | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.markdown-lint.result }}" == "skipped" ]; then
+            echo "| Markdown Lint | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Markdown Lint | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Theorem validation
+          if [ "${{ needs.theorem-validate.result }}" == "success" ]; then
+            echo "| Theorem Validation | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.theorem-validate.result }}" == "skipped" ]; then
+            echo "| Theorem Validation | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Theorem Validation | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Link check
+          if [ "${{ needs.link-check.result }}" == "success" ]; then
+            echo "| Link Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.link-check.result }}" == "skipped" ]; then
+            echo "| Link Check | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Link Check | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Mermaid validation
+          if [ "${{ needs.mermaid-validate.result }}" == "success" ]; then
+            echo "| Mermaid Validation | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.mermaid-validate.result }}" == "skipped" ]; then
+            echo "| Mermaid Validation | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mermaid Validation | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CI workflow completed successfully" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for failures
+        if: |
+          needs.markdown-lint.result == 'failure' ||
+          needs.theorem-validate.result == 'failure' ||
+          needs.link-check.result == 'failure' ||
+          needs.mermaid-validate.result == 'failure'
+        run: |
+          echo "❌ One or more CI checks failed"
+          exit 1

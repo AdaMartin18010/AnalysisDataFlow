@@ -1,0 +1,618 @@
+# GitHub Actions Workflow for PDF Export
+# 白皮书PDF自动导出工作流
+
+name: PDF Export
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'whitepapers/**.md'
+      - '.github/workflows/pdf-export.yml'
+      - 'templates/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'whitepapers/**.md'
+  workflow_dispatch:  # 支持手动触发
+    inputs:
+      paper:
+        description: '选择要导出的白皮书 (留空导出全部)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - 'streaming-technology-trends-2026'
+          - 'flink-enterprise-implementation-guide'
+          - 'realtime-ai-architecture-practice'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pdf-export"
+  cancel-in-progress: false
+
+jobs:
+  # 构建PDF
+  build-pdfs:
+    runs-on: ubuntu-latest
+    container:
+      image: pandoc/latex:3.1
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          # 安装中文字体和额外包
+          apk add --no-cache \
+            font-noto-cjk \
+            font-noto-cjk-extra \
+            font-noto-emoji \
+            curl \
+            jq
+          
+          # 安装额外LaTeX包
+          tlmgr install \
+            ctex \
+            xeCJK \
+            fancyhdr \
+            titlesec \
+            geometry \
+            graphicx \
+            xcolor \
+            booktabs \
+            longtable \
+            multirow \
+            array \
+            float \
+            caption \
+            subcaption \
+            listings \
+            minted \
+            hyperref \
+            bookmark \
+            footnote \
+            setspace \
+            microtype \
+            fontspec \
+            luaotfload \
+            amsmath \
+            amssymb \
+            mathtools \
+            tikz \
+            pgfplots \
+            mermaid \
+            fvextra \
+            tcolorbox \
+            environ \
+            tikzpagenodes \
+            blindtext
+
+      - name: Create output directory
+        run: mkdir -p pdf-output
+
+      - name: Generate cover pages
+        run: |
+          mkdir -p templates
+          cat > templates/cover-template.tex << 'EOF'
+          % 白皮书封面模板
+          \documentclass[12pt,a4paper]{article}
+          \usepackage[UTF8]{ctex}
+          \usepackage{geometry}
+          \usepackage{xcolor}
+          \usepackage{graphicx}
+          \usepackage{tikz}
+          \usepackage{fontspec}
+          
+          \geometry{margin=2cm}
+          \pagestyle{empty}
+          
+          % 定义颜色
+          \definecolor{primaryblue}{RGB}{31,78,121}
+          \definecolor{accentgold}{RGB}{197,164,100}
+          \definecolor{lightgray}{RGB}{245,245,245}
+          
+          \begin{document}
+          
+          \begin{tikzpicture}[remember picture,overlay]
+            % 背景色块
+            \fill[primaryblue] (current page.north west) rectangle ([yshift=-8cm]current page.north east);
+            \fill[lightgray] ([yshift=-8cm]current page.north west) rectangle (current page.south east);
+            
+            % 装饰线
+            \draw[accentgold, line width=3pt] ([yshift=-8cm,xshift=2cm]current page.north west) -- ([yshift=-8cm,xshift=-2cm]current page.north east);
+          \end{tikzpicture}
+          
+          \vspace*{2cm}
+          
+          \begin{center}
+            {\fontsize{12}{14}\selectfont\color{white} AnalysisDataFlow Project}
+            
+            \vspace{0.5cm}
+            
+            {\fontsize{24}{30}\selectfont\bfseries\color{white} WHITEPAPER}
+            
+            \vspace{3cm}
+            
+            {\fontsize{28}{36}\selectfont\bfseries\color{primaryblue} @TITLE@}
+            
+            \vspace{0.5cm}
+            
+            {\fontsize{16}{20}\selectfont\color{gray} @SUBTITLE@}
+            
+            \vspace{4cm}
+            
+            {\fontsize{14}{18}\selectfont\color{black} 版本: @VERSION@}
+            
+            \vspace{0.3cm}
+            
+            {\fontsize{14}{18}\selectfont\color{black} 发布日期: @DATE@}
+            
+            \vspace{3cm}
+            
+            \begin{tikzpicture}
+              \draw[accentgold, line width=1pt] (-4,0) -- (4,0);
+            \end{tikzpicture}
+            
+            \vspace{0.5cm}
+            
+            {\fontsize{12}{14}\selectfont\color{gray} @AUTHOR@}
+            
+            \vspace{0.3cm}
+            
+            {\fontsize{11}{13}\selectfont\color{gray} https://github.com/AnalysisDataFlow}
+          \end{center}
+          
+          \end{document}
+          EOF
+
+      - name: Build PDFs
+        run: |
+          # 定义白皮书配置
+          declare -A papers
+          papers["streaming-technology-trends-2026"]="流计算技术趋势白皮书 2026|Streaming Technology Trends|v1.0|CTO、架构师、技术决策者|AnalysisDataFlow Project Team"
+          papers["flink-enterprise-implementation-guide"]="Flink企业落地指南|Flink Enterprise Implementation|v1.0|技术负责人、架构师、运维工程师|AnalysisDataFlow Project Team"
+          papers["realtime-ai-architecture-practice"]="实时AI架构实践白皮书|Real-Time AI Architecture Practice|v1.0|AI工程师、架构师、技术决策者|AnalysisDataFlow Project Team"
+          
+          # 如果指定了单篇，则只构建该篇
+          if [ -n "${{ github.event.inputs.paper }}" ]; then
+            TARGET_PAPERS="${{ github.event.inputs.paper }}"
+          else
+            TARGET_PAPERS="streaming-technology-trends-2026 flink-enterprise-implementation-guide realtime-ai-architecture-practice"
+          fi
+          
+          for paper in $TARGET_PAPERS; do
+            echo "Building PDF for: $paper"
+            
+            # 解析配置
+            IFS='|' read -r title subtitle version audience author <<< "${papers[$paper]}"
+            
+            # 生成封面
+            sed -e "s/@TITLE@/$title/g" \
+                -e "s/@SUBTITLE@/$subtitle/g" \
+                -e "s/@VERSION@/$version/g" \
+                -e "s/@DATE@/$(date +%Y-%m-%d)/g" \
+                -e "s/@AUTHOR@/$author/g" \
+                templates/cover-template.tex > "pdf-output/${paper}-cover.tex"
+            
+            # 编译封面
+            cd pdf-output
+            xelatex -interaction=nonstopmode "${paper}-cover.tex" || true
+            cd ..
+            
+            # 准备markdown预处理
+            cat > "pdf-output/${paper}-preprocessed.md" << 'FRONTMATTER'
+          ---
+          title: "
+          FRONTMATTER
+            
+            echo "$title" >> "pdf-output/${paper}-preprocessed.md"
+            
+            cat >> "pdf-output/${paper}-preprocessed.md" << 'FRONTMATTER2'
+          "
+          subtitle: "
+          FRONTMATTER2
+            
+            echo "$subtitle" >> "pdf-output/${paper}-preprocessed.md"
+            
+            cat >> "pdf-output/${paper}-preprocessed.md" << 'FRONTMATTER3'
+          "
+          author: AnalysisDataFlow Project
+          date: \today
+          geometry: margin=2.5cm
+          papersize: a4
+          fontsize: 11pt
+          linestretch: 1.3
+          header-includes:
+            - \usepackage[UTF8]{ctex}
+            - \usepackage{fancyhdr}
+            - \usepackage{titlesec}
+            - \usepackage{graphicx}
+            - \usepackage{xcolor}
+            - \usepackage{booktabs}
+            - \usepackage{longtable}
+            - \usepackage{array}
+            - \usepackage{float}
+            - \usepackage{caption}
+            - \usepackage{hyperref}
+            - \usepackage{listings}
+            - \usepackage{tikz}
+            - \usepackage{setspace}
+            - \pagestyle{fancy}
+            - \fancyhf{}
+            - \fancyhead[L]{\small\leftmark}
+            - \fancyhead[R]{\small AnalysisDataFlow}
+            - \fancyfoot[C]{\thepage}
+            - \renewcommand{\headrulewidth}{0.4pt}
+            - \renewcommand{\footrulewidth}{0.4pt}
+            - \definecolor{primaryblue}{RGB}{31,78,121}
+            - \definecolor{accentgold}{RGB}{197,164,100}
+            - \titleformat{\section}{\Large\bfseries\color{primaryblue}}{\thesection}{1em}{}
+            - \titleformat{\subsection}{\large\bfseries\color{primaryblue!80}}{\thesubsection}{1em}{}
+            - \titleformat{\subsubsection}{\normalsize\bfseries\color{primaryblue!60}}{\thesubsubsection}{1em}{}
+            - \lstset{basicstyle=\small\ttfamily,frame=single,breaklines=true}
+          ---
+          
+          FRONTMATTER3
+            
+            # 追加原始内容（移除第一个H1标题）
+            tail -n +2 "whitepapers/${paper}.md" >> "pdf-output/${paper}-preprocessed.md"
+            
+            # 使用pandoc转换为PDF
+            pandoc "pdf-output/${paper}-preprocessed.md" \
+              --pdf-engine=xelatex \
+              --output="pdf-output/${paper}.pdf" \
+              --toc \
+              --toc-depth=3 \
+              --number-sections \
+              --listings \
+              --highlight-style=tango \
+              -V mainfont="Noto Serif CJK SC" \
+              -V sansfont="Noto Sans CJK SC" \
+              -V monofont="Noto Sans Mono CJK SC" \
+              -V CJKmainfont="Noto Serif CJK SC" \
+              -V CJKsansfont="Noto Sans CJK SC" \
+              -V geometry:margin=2.5cm \
+              -V colorlinks=true \
+              -V linkcolor=primaryblue \
+              -V urlcolor=primaryblue \
+              -V toccolor=primaryblue
+            
+            echo "PDF generated: pdf-output/${paper}.pdf"
+          done
+
+      - name: Generate PDF metadata
+        run: |
+          cat > pdf-output/metadata.json << 'EOF'
+          {
+            "export_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "version": "1.0",
+            "papers": [
+              {
+                "filename": "streaming-technology-trends-2026.pdf",
+                "title": "流计算技术趋势白皮书 2026",
+                "english_title": "Streaming Technology Trends Whitepaper 2026",
+                "pages": "40+",
+                "size": "~37KB (source)"
+              },
+              {
+                "filename": "flink-enterprise-implementation-guide.pdf",
+                "title": "Flink企业落地指南",
+                "english_title": "Flink Enterprise Implementation Guide",
+                "pages": "60+",
+                "size": "~39KB (source)"
+              },
+              {
+                "filename": "realtime-ai-architecture-practice.pdf",
+                "title": "实时AI架构实践白皮书",
+                "english_title": "Real-Time AI Architecture Practice Whitepaper",
+                "pages": "50+",
+                "size": "~39KB (source)"
+              }
+            ]
+          }
+          EOF
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitepaper-pdfs
+          path: |
+            pdf-output/*.pdf
+            pdf-output/metadata.json
+          retention-days: 30
+
+      - name: Commit PDFs to repository (optional)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # 创建PDF目录
+          mkdir -p whitepapers/pdf
+          cp pdf-output/*.pdf whitepapers/pdf/ 2>/dev/null || true
+          
+          # 如果有变更则提交
+          if [ -n "$(git status --porcelain whitepapers/pdf/)" ]; then
+            git add whitepapers/pdf/
+            git commit -m "Auto-generate PDF whitepapers [skip ci]"
+            git push
+          fi
+        continue-on-error: true
+
+  # 部署到GitHub Pages
+  deploy:
+    needs: build-pdfs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: whitepaper-pdfs
+          path: pdf-output
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Create download page
+        run: |
+          mkdir -p _site/whitepapers
+          
+          cat > _site/whitepapers/index.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html lang="zh-CN">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>白皮书下载 - AnalysisDataFlow</title>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                min-height: 100vh;
+              }
+              .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 40px 20px;
+              }
+              header {
+                text-align: center;
+                margin-bottom: 60px;
+              }
+              header h1 {
+                font-size: 2.5rem;
+                color: #1f4e79;
+                margin-bottom: 10px;
+              }
+              header p {
+                font-size: 1.1rem;
+                color: #666;
+              }
+              .papers-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 30px;
+                margin-bottom: 60px;
+              }
+              .paper-card {
+                background: white;
+                border-radius: 12px;
+                padding: 30px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                transition: transform 0.3s, box-shadow 0.3s;
+              }
+              .paper-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+              }
+              .paper-icon {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #1f4e79, #3a7bd5);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+              }
+              .paper-icon svg {
+                width: 32px;
+                height: 32px;
+                fill: white;
+              }
+              .paper-card h2 {
+                font-size: 1.3rem;
+                color: #1f4e79;
+                margin-bottom: 10px;
+              }
+              .paper-card .subtitle {
+                font-size: 0.9rem;
+                color: #888;
+                margin-bottom: 15px;
+              }
+              .paper-meta {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                font-size: 0.85rem;
+                color: #666;
+              }
+              .paper-meta span {
+                background: #f0f4f8;
+                padding: 4px 12px;
+                border-radius: 20px;
+              }
+              .download-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: linear-gradient(135deg, #1f4e79, #3a7bd5);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: opacity 0.3s;
+              }
+              .download-btn:hover {
+                opacity: 0.9;
+              }
+              .features {
+                background: white;
+                border-radius: 12px;
+                padding: 40px;
+                margin-bottom: 40px;
+              }
+              .features h3 {
+                font-size: 1.5rem;
+                color: #1f4e79;
+                margin-bottom: 20px;
+              }
+              .features ul {
+                list-style: none;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+              }
+              .features li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              }
+              .features li::before {
+                content: "✓";
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                background: #4caf50;
+                color: white;
+                border-radius: 50%;
+                font-size: 0.8rem;
+              }
+              footer {
+                text-align: center;
+                padding: 40px 0;
+                color: #666;
+              }
+              footer a {
+                color: #1f4e79;
+                text-decoration: none;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <header>
+                <h1>📄 AnalysisDataFlow 白皮书</h1>
+                <p>流计算领域权威技术参考文档 - 专业PDF格式下载</p>
+              </header>
+              
+              <div class="papers-grid">
+                <div class="paper-card">
+                  <div class="paper-icon">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                  </div>
+                  <h2>流计算技术趋势白皮书 2026</h2>
+                  <p class="subtitle">Streaming Technology Trends Whitepaper</p>
+                  <div class="paper-meta">
+                    <span>📄 40+ 页</span>
+                    <span>📊 市场分析</span>
+                    <span>🔮 趋势预测</span>
+                  </div>
+                  <a href="streaming-technology-trends-2026.pdf" class="download-btn" download>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    下载 PDF
+                  </a>
+                </div>
+                
+                <div class="paper-card">
+                  <div class="paper-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                  </div>
+                  <h2>Flink企业落地指南</h2>
+                  <p class="subtitle">Flink Enterprise Implementation Guide</p>
+                  <div class="paper-meta">
+                    <span>📄 60+ 页</span>
+                    <span>🏗️ 实施路线图</span>
+                    <span>💼 企业案例</span>
+                  </div>
+                  <a href="flink-enterprise-implementation-guide.pdf" class="download-btn" download>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    下载 PDF
+                  </a>
+                </div>
+                
+                <div class="paper-card">
+                  <div class="paper-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><circle cx="17.5" cy="17.5" r="4.5"/><path d="M3 13.5h8v8H3z"/></svg>
+                  </div>
+                  <h2>实时AI架构实践白皮书</h2>
+                  <p class="subtitle">Real-Time AI Architecture Practice</p>
+                  <div class="paper-meta">
+                    <span>📄 50+ 页</span>
+                    <span>🤖 AI架构</span>
+                    <span>⚡ 实时推理</span>
+                  </div>
+                  <a href="realtime-ai-architecture-practice.pdf" class="download-btn" download>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    下载 PDF
+                  </a>
+                </div>
+              </div>
+              
+              <div class="features">
+                <h3>📋 PDF文档特性</h3>
+                <ul>
+                  <li>专业学术排版（ACM/IEEE格式）</li>
+                  <li>自动生成目录导航</li>
+                  <li>页眉页脚标识</li>
+                  <li>图表公式正确渲染</li>
+                  <li>可打印高质量输出</li>
+                  <li>支持全文检索</li>
+                </ul>
+              </div>
+              
+              <footer>
+                <p>© 2026 AnalysisDataFlow Project | 
+                   <a href="https://github.com/AnalysisDataFlow">GitHub</a> | 
+                   <a href="../">返回主页</a>
+                </p>
+              </footer>
+            </div>
+          </body>
+          </html>
+          HTMLEOF
+          
+          # 复制PDF文件到站点目录
+          cp pdf-output/*.pdf _site/whitepapers/ 2>/dev/null || true
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

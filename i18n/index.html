@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnalysisDataFlow - 流计算知识库 | Stream Computing Knowledge Base</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="流计算理论模型、层次结构、工程实践的全面知识库。A comprehensive knowledge base for stream computing theoretical models, hierarchical structures, and engineering practices.">
+  <meta name="keywords" content="流计算, Stream Computing, Flink, Dataflow, 实时计算, Real-time Processing, 知识图谱, Knowledge Graph">
+  <meta name="author" content="AnalysisDataFlow Team">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="AnalysisDataFlow - Stream Computing Knowledge Base">
+  <meta property="og:description" content="Comprehensive knowledge base for stream computing with formal theories, design patterns, and Flink technology.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://luyanfeng.github.io/AnalysisDataFlow/">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AnalysisDataFlow - Stream Computing Knowledge Base">
+  <meta name="twitter:description" content="Formal theories, design patterns, and Flink technology for stream computing.">
+  
+  <!-- hreflang for SEO -->
+  <link rel="alternate" hreflang="zh-CN" href="https://luyanfeng.github.io/AnalysisDataFlow/i18n/">
+  <link rel="alternate" hreflang="en-US" href="https://luyanfeng.github.io/AnalysisDataFlow/i18n/en/">
+  <link rel="alternate" hreflang="x-default" href="https://luyanfeng.github.io/AnalysisDataFlow/i18n/">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://luyanfeng.github.io/AnalysisDataFlow/i18n/">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #7c3aed;
+      --accent: #f59e0b;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      -webkit-text-fill-color: white;
+    }
+    
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    
+    .lang-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .lang-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .lang-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .lang-btn .flag {
+      font-size: 1rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      background: 
+        radial-gradient(ellipse at top, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+    }
+    
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    
+    /* Main Content */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    /* Language Selection Cards */
+    .lang-section {
+      margin: 4rem 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+    }
+    
+    .lang-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .lang-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .lang-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-1);
+    }
+    
+    .lang-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2);
+    }
+    
+    .lang-card.en::before {
+      background: var(--gradient-3);
+    }
+    
+    .lang-card.en:hover {
+      box-shadow: 0 20px 40px rgba(79, 172, 254, 0.2);
+    }
+    
+    .lang-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .lang-card-flag {
+      font-size: 2.5rem;
+    }
+    
+    .lang-card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .lang-card-desc {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .lang-card-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+    
+    .meta-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+    
+    .meta-badge.complete {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+    
+    .meta-badge.beta {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--accent);
+    }
+    
+    /* Features Grid */
+    .features {
+      margin: 4rem 0;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+    }
+    
+    .feature-card:hover {
+      border-color: var(--primary);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card:nth-child(1) .feature-icon { background: rgba(102, 126, 234, 0.2); }
+    .feature-card:nth-child(2) .feature-icon { background: rgba(118, 75, 162, 0.2); }
+    .feature-card:nth-child(3) .feature-icon { background: rgba(245, 158, 11, 0.2); }
+    .feature-card:nth-child(4) .feature-icon { background: rgba(34, 197, 94, 0.2); }
+    
+    .feature-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-desc {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    
+    /* CTA Buttons */
+    .cta-section {
+      text-align: center;
+      margin: 4rem 0;
+      padding: 3rem;
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--primary);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      margin-top: 4rem;
+    }
+    
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero-stats {
+        gap: 1.5rem;
+      }
+      
+      .stat-value {
+        font-size: 1.75rem;
+      }
+      
+      .lang-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-in {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">🌊</div>
+        <span>AnalysisDataFlow</span>
+      </div>
+      <div class="lang-switcher">
+        <a href="./" class="lang-btn active">
+          <span class="flag">🇨🇳</span>
+          <span>中文</span>
+        </a>
+        <a href="./en/" class="lang-btn">
+          <span class="flag">🇬🇧</span>
+          <span>English</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+  
+  <main>
+    <section class="hero">
+      <h1>流计算知识库</h1>
+      <p class="subtitle">流计算理论模型、层次结构、工程实践的全面梳理与体系构建<br>
+      A comprehensive knowledge base for theoretical models, hierarchical structures, and engineering practices of stream computing</p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value">420+</div>
+          <div class="stat-label">技术文档</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">6,000+</div>
+          <div class="stat-label">形式化元素</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">1,700+</div>
+          <div class="stat-label">Mermaid图表</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">7,000+</div>
+          <div class="stat-label">代码示例</div>
+        </div>
+      </div>
+    </section>
+    
+    <div class="container">
+      <section class="lang-section">
+        <h2 class="section-title">选择语言 / Select Language</h2>
+        <div class="lang-cards">
+          <a href="../" class="lang-card zh animate-in">
+            <div class="lang-card-header">
+              <span class="lang-card-flag">🇨🇳</span>
+              <h3 class="lang-card-title">中文</h3>
+            </div>
+            <p class="lang-card-desc">完整中文版本，包含420+篇技术文档，覆盖Struct理论、Knowledge实践、Flink技术三大核心目录。</p>
+            <div class="lang-card-meta">
+              <span class="meta-badge complete">✓ 完整版</span>
+              <span class="meta-badge">420+ 文档</span>
+            </div>
+          </a>
+          
+          <a href="./en/" class="lang-card en animate-in">
+            <div class="lang-card-header">
+              <span class="lang-card-flag">🇬🇧</span>
+              <h3 class="lang-card-title">English</h3>
+            </div>
+            <p class="lang-card-desc">English version with 41+ translated documents covering core concepts, Flink technology, and practical guides.</p>
+            <div class="lang-card-meta">
+              <span class="meta-badge beta">Beta</span>
+              <span class="meta-badge">41 文档</span>
+            </div>
+          </a>
+        </div>
+      </section>
+      
+      <section class="features">
+        <h2 class="section-title">核心特色 / Core Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📐</div>
+            <h3 class="feature-title">形式化理论</h3>
+            <p class="feature-desc">严格的数学定义、定理证明与形式化论证，为学术研究提供严谨基础</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏗️</div>
+            <h3 class="feature-title">工程实践</h3>
+            <p class="feature-desc">设计模式、业务场景、技术选型与最佳实践，指导工业级应用开发</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Flink 深度解析</h3>
+            <p class="feature-desc">架构机制、SQL/API、运行时原理、生态集成与前沿探索</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3 class="feature-title">可视化导航</h3>
+            <p class="feature-desc">决策树、对比矩阵、知识图谱、思维导图等多维度内容导航</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="cta-section">
+        <h2>探索知识图谱</h2>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">通过交互式知识图谱探索流计算的完整理论体系</p>
+        <div class="cta-buttons">
+          <a href="../knowledge-graph-v4.html" class="btn btn-primary">
+            <span>🌐</span>
+            <span>知识图谱 v4.0</span>
+          </a>
+          <a href="https://github.com/luyanfeng/AnalysisDataFlow" class="btn btn-secondary">
+            <span>📦</span>
+            <span>GitHub 仓库</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <footer>
+    <p>© 2026 AnalysisDataFlow. Licensed under <a href="../LICENSE">MIT License</a>.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="../README.md">中文文档</a> · 
+      <a href="./en/">English Docs</a> · 
+      <a href="../CONTRIBUTING.md">贡献指南</a>
+    </p>
+  </footer>
+  
+  <script>
+    // 简单的动画触发
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.animate-in');
+      cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+    });
+    
+    // 语言检测与重定向
+    const userLang = navigator.language || navigator.userLanguage;
+    if (userLang.startsWith('en') && !window.location.search.includes('noredirect')) {
+      // 如果用户是英语环境且没有禁止重定向参数，可以自动跳转到英文版
+      // 当前默认留在中文版
+    }
+  </script>
+</body>
+</html>

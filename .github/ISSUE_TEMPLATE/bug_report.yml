@@ -1,52 +1,34 @@
-name: 🐛 错误报告 (Bug Report)
-description: 报告文档中的错误、链接失效或内容问题
-title: "[Bug] "
-labels: ["bug", "triage"]
+name: 🐛 错误报告
+labels: ["type:bug", "triage"]
 body:
   - type: markdown
     attributes:
-      value: |
-        感谢您帮助改进 AnalysisDataFlow！请填写以下信息帮助我们快速定位和修复问题。
+      value: 感谢您帮助改进项目！请提供以下信息：
 
   - type: dropdown
-    id: bug-type
+    id: type
     attributes:
       label: 错误类型
-      description: 请选择最符合的错误类型
       options:
-        - 内容错误（概念/公式/代码错误）
-        - 链接失效（外部引用无法访问）
-        - 排版问题（格式混乱/显示异常）
-        - 定理/定义问题（编号冲突/表述不清）
-        - 其他
+        - 内容错误
+        - 链接失效
+        - 排版问题
+        - 定理/定义编号问题
     validations:
       required: true
 
   - type: input
-    id: file-path
+    id: file
     attributes:
-      label: 问题文件路径
-      description: 请提供出现问题的文件路径
-      placeholder: 例如：Flink/1.1-checkpoint-mechanism.md
+      label: 文件路径
+      placeholder: 例如：Struct/1.1-streaming-foundation.md
     validations:
       required: true
-
-  - type: input
-    id: element-id
-    attributes:
-      label: 定理/定义编号（如适用）
-      description: 如果问题涉及特定定理或定义，请提供编号
-      placeholder: 例如：Thm-F-01-03
 
   - type: textarea
     id: description
     attributes:
       label: 问题描述
-      description: 请详细描述发现的问题
-      placeholder: |
-        例如：
-        在"Checkpoint 超时机制"段落中，默认超时时间描述有误。
-        文档中写的是 10 秒，实际默认值为 10 分钟。
     validations:
       required: true
 
@@ -54,39 +36,9 @@ body:
     id: expected
     attributes:
       label: 期望的正确内容
-      description: 请描述期望的正确结果
-      placeholder: |
-        例如：
-        checkpoint.timeout 默认值为 10 分钟（600000ms）。
 
   - type: textarea
     id: references
     attributes:
       label: 参考依据
-      description: 请提供支持您观点的权威来源
-      placeholder: |
-        例如：
-        - Apache Flink 官方文档：https://nightlies.apache.org/...
-        - 相关论文：T. Akidau et al., "The Dataflow Model", PVLDB, 2015
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: 截图（如适用）
-      description: 如果有助于说明问题，请添加截图
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: 自检清单
-      description: 在提交前请确认以下事项
-      options:
-        - label: 我已搜索现有 Issue，确认该问题未被报告
-        - label: 我已验证参考来源的可靠性
-        - label: 我提供的文件路径是正确的
-
-  - type: textarea
-    id: additional
-    attributes:
-      label: 补充信息
-      description: 任何其他有助于理解问题的信息
+      description: 权威来源链接或文献

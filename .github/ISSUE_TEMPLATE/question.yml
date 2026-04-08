@@ -1,44 +1,33 @@
-name: ❓ 问题询问 (Question)
-description: 提出问题、寻求澄清或请求帮助
-title: "[Question] "
+name: ❓ 问题询问
 labels: ["question", "triage"]
 body:
   - type: markdown
     attributes:
-      value: |
-        欢迎提问！请在下方详细描述您的问题，帮助我们更好地理解和回答。
+      value: 欢迎提问！请描述您的问题：
 
   - type: dropdown
-    id: question-type
+    id: type
     attributes:
       label: 问题类型
-      description: 请选择最符合的问题类型
       options:
-        - 概念理解（关于流计算概念的解释）
-        - 文档内容（关于文档内容的疑问）
-        - 使用帮助（如何使用本项目资源）
-        - 贡献流程（如何参与贡献）
-        - 技术讨论（深入的技术问题）
+        - 概念理解
+        - 文档内容
+        - 使用帮助
+        - 贡献流程
         - 其他
     validations:
       required: true
 
   - type: input
-    id: related-file
+    id: file
     attributes:
-      label: 相关文档/文件（如适用）
-      description: 如果问题与特定文件相关，请提供路径
+      label: 相关文件（如适用）
       placeholder: 例如：Struct/1.1-streaming-foundation.md
 
   - type: textarea
     id: question
     attributes:
       label: 您的问题
-      description: 请清晰、详细地描述您的问题
-      placeholder: |
-        例如：
-        在阅读 Watermark 相关内容时，对于 "乱序容忍度" 的概念不太理解。
-        文档中提到 "允许 5 秒的乱序"，这是否意味着所有事件都会有 5 秒的延迟？
     validations:
       required: true
 
@@ -46,36 +35,4 @@ body:
     id: context
     attributes:
       label: 背景/上下文
-      description: 提供有助于理解问题的背景信息
-      placeholder: |
-        例如：
-        - 我正在学习 Flink 流处理
-        - 正在准备相关技术面试
-        - 在实际项目中遇到了类似问题
-
-  - type: textarea
-    id: tried
-    attributes:
-      label: 您已尝试的方法
-      description: 描述您为寻找答案已经尝试过的方法
-      placeholder: |
-        例如：
-        - 已查阅 Flink 官方文档
-        - 搜索了相关 Issue
-        - 阅读了《Streaming Systems》相关章节
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: 自检清单
-      description: 在提交前请确认以下事项
-      options:
-        - label: 我已搜索现有 Issue，确认该问题未被问过
-        - label: 我已查阅相关文档
-        - label: 这是一个具体的问题，而非宽泛的讨论
-
-  - type: textarea
-    id: additional
-    attributes:
-      label: 补充信息
-      description: 任何其他有助于理解问题的信息
+      description: 有助于理解问题的背景信息
