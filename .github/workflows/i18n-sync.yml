@@ -1,0 +1,436 @@
+# I18n Sync - 国际化内容同步
+#
+# 触发条件:
+#   - 每周日自动运行 (检查翻译一致性)
+#   - 手动触发
+# 任务:
+#   1. 检测中文文档变更并标记待翻译
+#   2. 同步英文文档结构
+#   3. 生成翻译进度报告
+#   4. 检查i18n目录一致性
+
+name: I18n Sync
+
+on:
+  schedule:
+    # 每周日凌晨 3:00 UTC (北京时间周日上午11:00)
+    - cron: '0 3 * * 0'
+  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of i18n check'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - progress-only
+          - consistency-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 任务1: 检查翻译进度 ============
+  check-translation-progress:
+    name: Check Translation Progress
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Analyze translation progress
+        run: |
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          # 定义需要翻译的核心文档
+          CORE_DOCS = {
+              'README.md': 'README-EN.md',
+              'QUICK-START.md': 'QUICK-START-EN.md',
+          }
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'total_doc_pairs': len(CORE_DOCS),
+              'up_to_date': 0,
+              'needs_update': 0,
+              'missing_translation': 0,
+              'details': []
+          }
+
+          for zh_file, en_file in CORE_DOCS.items():
+              zh_path = Path(zh_file)
+              en_path = Path(en_file)
+              
+              status = {
+                  'zh_file': zh_file,
+                  'en_file': en_file,
+                  'status': 'unknown'
+              }
+              
+              if not zh_path.exists():
+                  status['status'] = 'missing_zh'
+                  stats['missing_translation'] += 1
+              elif not en_path.exists():
+                  status['status'] = 'missing_en'
+                  status['zh_size'] = zh_path.stat().st_size
+                  stats['missing_translation'] += 1
+              else:
+                  # 比较文件修改时间
+                  zh_mtime = zh_path.stat().st_mtime
+                  en_mtime = en_path.stat().st_mtime
+                  
+                  zh_size = zh_path.stat().st_size
+                  en_size = en_path.stat().st_size
+                  
+                  status['zh_size'] = zh_size
+                  status['en_size'] = en_size
+                  status['zh_mtime'] = zh_mtime
+                  status['en_mtime'] = en_mtime
+                  
+                  # 简单比较：如果中文文档比英文新超过7天，则需要更新
+                  if zh_mtime > en_mtime + 7 * 24 * 3600:
+                      status['status'] = 'needs_update'
+                      status['days_behind'] = int((zh_mtime - en_mtime) / (24 * 3600))
+                      stats['needs_update'] += 1
+                  else:
+                      status['status'] = 'up_to_date'
+                      stats['up_to_date'] += 1
+              
+              stats['details'].append(status)
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# I18n Translation Progress Report",
+              "",
+              f"**Generated**: {stats['generated_at']}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Document Pairs | {stats['total_doc_pairs']} |",
+              f"| ✅ Up to Date | {stats['up_to_date']} |",
+              f"| ⚠️ Needs Update | {stats['needs_update']} |",
+              f"| ❌ Missing Translation | {stats['missing_translation']} |",
+              ""
+          ]
+
+          # 需要更新的文档
+          needs_update = [d for d in stats['details'] if d['status'] == 'needs_update']
+          if needs_update:
+              report_lines.extend([
+                  "## ⚠️ Documents Needing Update",
+                  "",
+                  "| Chinese | English | Days Behind |",
+                  "|---------|---------|-------------|"
+              ])
+              
+              for doc in needs_update:
+                  report_lines.append(
+                      f"| {doc['zh_file']} | {doc['en_file']} | {doc.get('days_behind', 'N/A')} |"
+                  )
+              
+              report_lines.append("")
+
+          # 缺失翻译的文档
+          missing = [d for d in stats['details'] if d['status'] in ['missing_en', 'missing_zh']]
+          if missing:
+              report_lines.extend([
+                  "## ❌ Missing Translations",
+                  "",
+                  "| File | Status | Size |",
+                  "|------|--------|------|"
+              ])
+              
+              for doc in missing:
+                  size = doc.get('zh_size', doc.get('en_size', 0))
+                  status = 'Missing EN' if doc['status'] == 'missing_en' else 'Missing ZH'
+                  file_name = doc['zh_file'] if doc['status'] == 'missing_en' else doc['en_file']
+                  report_lines.append(f"| {file_name} | {status} | {size} bytes |")
+              
+              report_lines.append("")
+
+          # 保存JSON报告
+          with open('reports/i18n-progress.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          # 保存Markdown报告
+          with open('reports/i18n-progress-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Translation Progress:")
+          print(f"  Up to date: {stats['up_to_date']}/{stats['total_doc_pairs']}")
+          print(f"  Needs update: {stats['needs_update']}")
+          print(f"  Missing: {stats['missing_translation']}")
+          PYEOF
+
+      - name: Upload progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-progress-report
+          path: |
+            reports/i18n-progress-report.md
+            reports/i18n-progress.json
+
+  # ============ 任务2: 检查i18n目录一致性 ============
+  check-i18n-consistency:
+    name: Check i18n Directory Consistency
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type != 'progress-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check i18n directory structure
+        run: |
+          python << 'PYEOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          i18n_dir = Path('i18n')
+          
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'languages': {},
+              'issues': []
+          }
+
+          if not i18n_dir.exists():
+              stats['issues'].append({
+                  'type': 'missing_directory',
+                  'message': 'i18n directory does not exist'
+              })
+          else:
+              # 扫描各语言目录
+              for lang_dir in i18n_dir.iterdir():
+                  if lang_dir.is_dir():
+                      lang_code = lang_dir.name
+                      md_files = list(lang_dir.rglob('*.md'))
+                      
+                      stats['languages'][lang_code] = {
+                          'file_count': len(md_files),
+                          'files': [str(f.relative_to(lang_dir)).replace('\\', '/') for f in md_files]
+                      }
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# i18n Directory Consistency Report",
+              "",
+              f"**Generated**: {stats['generated_at']}",
+              ""
+          ]
+
+          if stats['issues']:
+              report_lines.extend([
+                  "## ❌ Issues",
+                  ""
+              ])
+              
+              for issue in stats['issues']:
+                  report_lines.append(f"- **{issue['type']}**: {issue['message']}")
+              
+              report_lines.append("")
+
+          if stats['languages']:
+              report_lines.extend([
+                  "## Language Statistics",
+                  "",
+                  "| Language | File Count |",
+                  "|----------|------------|"
+              ])
+              
+              for lang, info in sorted(stats['languages'].items()):
+                  report_lines.append(f"| {lang} | {info['file_count']} |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          with open('reports/i18n-consistency-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/i18n-consistency.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          print(f"i18n Consistency Check:")
+          print(f"  Languages found: {len(stats['languages'])}")
+          print(f"  Issues: {len(stats['issues'])}")
+          PYEOF
+
+      - name: Upload consistency report
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-consistency-report
+          path: |
+            reports/i18n-consistency-report.md
+            reports/i18n-consistency.json
+
+  # ============ 任务3: 同步文档结构 ============
+  sync-document-structure:
+    name: Sync Document Structure
+    runs-on: ubuntu-latest
+    needs: [check-translation-progress, check-i18n-consistency]
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Generate structure sync report
+        run: |
+          python << 'PYEOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          # 检查根目录中英文文档对应关系
+          zh_docs = list(Path('.').glob('*.md'))
+          en_docs = list(Path('.').glob('*-EN.md'))
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'zh_documents': [f.name for f in zh_docs if not f.name.endswith('-EN.md') and f.name != 'README.md'],
+              'en_documents': [f.name for f in en_docs],
+              'suggestions': []
+          }
+
+          # 建议需要创建英文版的文档
+          for zh_doc in zh_docs:
+              if zh_doc.name.endswith('-EN.md'):
+                  continue
+              
+              expected_en = zh_doc.stem + '-EN.md'
+              if not Path(expected_en).exists():
+                  # 检查文档大小和内容重要性
+                  size = zh_doc.stat().st_size
+                  if size > 10000:  # 大于10KB的文档建议翻译
+                      report['suggestions'].append({
+                          'zh_file': zh_doc.name,
+                          'suggested_en_file': expected_en,
+                          'priority': 'high' if size > 50000 else 'medium',
+                          'size': size
+                      })
+
+          # 排序建议
+          report['suggestions'].sort(key=lambda x: x['size'], reverse=True)
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          lines = [
+              "# Document Structure Sync Report",
+              "",
+              f"**Generated**: {report['generated_at']}",
+              "",
+              "## Summary",
+              "",
+              f"- Chinese documents: {len(report['zh_documents'])}",
+              f"- English documents: {len(report['en_documents'])}",
+              f"- Translation suggestions: {len(report['suggestions'])}",
+              ""
+          ]
+
+          if report['suggestions']:
+              lines.extend([
+                  "## 📋 Translation Suggestions",
+                  "",
+                  "| Priority | Chinese File | Suggested English File | Size |",
+                  "|----------|-------------|----------------------|------|"
+              ])
+              
+              for sug in report['suggestions'][:20]:
+                  size_kb = sug['size'] / 1024
+                  lines.append(
+                      f"| {sug['priority']} | {sug['zh_file']} | {sug['suggested_en_file']} | {size_kb:.1f} KB |"
+                  )
+              
+              lines.append("")
+
+          with open('reports/i18n-structure-sync-report.md', 'w') as f:
+              f.write('\n'.join(lines))
+
+          with open('reports/i18n-structure-sync.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          print(f"Structure Sync Report:")
+          print(f"  Suggestions: {len(report['suggestions'])}")
+          PYEOF
+
+      - name: Upload structure sync report
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-structure-sync-report
+          path: reports/i18n-structure-sync-report.md
+
+  # ============ 汇总报告 ============
+  i18n-summary:
+    name: I18n Sync Summary
+    runs-on: ubuntu-latest
+    needs: [check-translation-progress, check-i18n-consistency, sync-document-structure]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 🌐 I18n Sync Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.check-translation-progress.result }}" == "success" ]; then
+            echo "| Translation Progress | ✅ OK |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Translation Progress | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.check-i18n-consistency.result }}" == "success" ]; then
+            echo "| i18n Consistency | ✅ OK |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.check-i18n-consistency.result }}" == "skipped" ]; then
+            echo "| i18n Consistency | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| i18n Consistency | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.sync-document-structure.result }}" == "success" ]; then
+            echo "| Structure Sync | ✅ OK |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Structure Sync | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY

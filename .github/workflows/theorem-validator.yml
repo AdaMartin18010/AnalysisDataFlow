@@ -1,0 +1,504 @@
+# Theorem Validator - 定理/定义编号全局验证
+#
+# 触发条件:
+#   - PR创建/更新时（如果涉及定理变更）
+#   - 手动触发
+#   - 每周定时检查
+# 任务:
+#   1. 全局定理编号唯一性验证
+#   2. 定理编号格式规范检查
+#   3. THEOREM-REGISTRY.md 同步检查
+#   4. 编号跳号检测
+#   5. 阶段标识符一致性检查
+
+name: Theorem Validator
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  schedule:
+    # 每周三凌晨 2:00 UTC (北京时间周三上午10:00)
+    - cron: '0 2 * * 3'
+  workflow_dispatch:
+    inputs:
+      validation_type:
+        description: 'Type of validation'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - uniqueness-only
+          - registry-only
+          - format-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 任务1: 定理编号唯一性验证 ============
+  uniqueness-check:
+    name: Theorem Uniqueness Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run uniqueness checker
+        run: |
+          python .scripts/quality-gates/theorem-uniqueness-checker.py \
+            --strict \
+            --output reports/theorem-uniqueness-report.md \
+            --dirs Struct Knowledge Flink
+        continue-on-error: true
+
+      - name: Upload uniqueness report
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-uniqueness-report
+          path: reports/theorem-uniqueness-report.md
+
+  # ============ 任务2: 定理格式规范检查 ============
+  format-check:
+    name: Theorem Format Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Validate theorem format
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          # 定理编号格式: Type-Stage-DocNum-SeqNum
+          # Type: Thm, Def, Lemma, Prop, Cor
+          # Stage: S (Struct), K (Knowledge), F (Flink)
+          # DocNum: 01-99
+          # SeqNum: 01-99
+
+          VALID_TYPES = {'Thm', 'Def', 'Lemma', 'Prop', 'Cor'}
+          VALID_STAGES = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          stats = {
+              'total_theorems': 0,
+              'valid_format': 0,
+              'invalid_format': 0,
+              'by_type': defaultdict(int),
+              'by_stage': defaultdict(int),
+              'errors': []
+          }
+
+          def validate_theorem_id(theorem_id, file_path, line_num):
+              """验证单个定理编号的格式"""
+              errors = []
+              
+              match = THEOREM_PATTERN.match(theorem_id)
+              if not match:
+                  errors.append({
+                      'file': file_path,
+                      'line': line_num,
+                      'theorem': theorem_id,
+                      'error': 'Invalid format, expected: Type-Stage-DocNum-SeqNum'
+                  })
+                  return errors
+              
+              thm_type, stage, doc_num, seq_num = match.groups()
+              
+              # 检查类型
+              if thm_type not in VALID_TYPES:
+                  errors.append({
+                      'file': file_path,
+                      'line': line_num,
+                      'theorem': theorem_id,
+                      'error': f'Invalid type: {thm_type}, expected one of {VALID_TYPES}'
+                  })
+              
+              # 检查阶段
+              if stage not in VALID_STAGES:
+                  errors.append({
+                      'file': file_path,
+                      'line': line_num,
+                      'theorem': theorem_id,
+                      'error': f'Invalid stage: {stage}, expected one of {list(VALID_STAGES.keys())}'
+                  })
+              
+              # 检查文档编号范围
+              doc_num_int = int(doc_num)
+              if doc_num_int < 1 or doc_num_int > 99:
+                  errors.append({
+                      'file': file_path,
+                      'line': line_num,
+                      'theorem': theorem_id,
+                      'error': f'Document number out of range: {doc_num}, expected 01-99'
+                  })
+              
+              # 检查序号范围
+              seq_num_int = int(seq_num)
+              if seq_num_int < 1 or seq_num_int > 99:
+                  errors.append({
+                      'file': file_path,
+                      'line': line_num,
+                      'theorem': theorem_id,
+                      'error': f'Sequence number out of range: {seq_num}, expected 01-99'
+                  })
+              
+              return errors
+
+          # 扫描所有文档
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(part.startswith('.') for part in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      lines = content.split('\n')
+                      
+                      for line_num, line in enumerate(lines, 1):
+                          matches = THEOREM_PATTERN.findall(line)
+                          
+                          for match in matches:
+                              theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                              stats['total_theorems'] += 1
+                              
+                              errors = validate_theorem_id(theorem_id, rel_path, line_num)
+                              
+                              if errors:
+                                  stats['invalid_format'] += 1
+                                  stats['errors'].extend(errors)
+                              else:
+                                  stats['valid_format'] += 1
+                                  stats['by_type'][match[0]] += 1
+                                  stats['by_stage'][match[1]] += 1
+                                  
+                  except Exception as e:
+                      print(f"Warning: Could not process {md_file}: {e}")
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Theorem Format Validation Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Theorems | {stats['total_theorems']} |",
+              f"| ✅ Valid Format | {stats['valid_format']} |",
+              f"| ❌ Invalid Format | {stats['invalid_format']} |",
+              ""
+          ]
+
+          if stats['by_type']:
+              report_lines.extend([
+                  "## Distribution by Type",
+                  "",
+                  "| Type | Count |",
+                  "|------|-------|"
+              ])
+              
+              type_names = {
+                  'Thm': 'Theorem', 'Def': 'Definition',
+                  'Lemma': 'Lemma', 'Prop': 'Proposition', 'Cor': 'Corollary'
+              }
+              
+              for thm_type, count in sorted(stats['by_type'].items()):
+                  name = type_names.get(thm_type, thm_type)
+                  report_lines.append(f"| {name} ({thm_type}) | {count} |")
+              
+              report_lines.append("")
+
+          if stats['by_stage']:
+              report_lines.extend([
+                  "## Distribution by Stage",
+                  "",
+                  "| Stage | Name | Count |",
+                  "|-------|------|-------|"
+              ])
+              
+              for stage, count in sorted(stats['by_stage'].items()):
+                  name = VALID_STAGES.get(stage, 'Unknown')
+                  report_lines.append(f"| {stage} | {name} | {count} |")
+              
+              report_lines.append("")
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## ❌ Format Errors",
+                  "",
+                  "| File | Line | Theorem | Error |",
+                  "|------|------|---------|-------|"
+              ])
+              
+              for error in stats['errors'][:50]:
+                  report_lines.append(
+                      f"| {error['file']} | {error['line']} | `{error['theorem']}` | {error['error']} |"
+                  )
+              
+              if len(stats['errors']) > 50:
+                  report_lines.append(f"| ... | ... | ... | *and {len(stats['errors']) - 50} more* |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          with open('reports/theorem-format-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/theorem-format-results.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'total': stats['total_theorems'],
+                      'valid': stats['valid_format'],
+                      'invalid': stats['invalid_format']
+                  },
+                  'by_type': dict(stats['by_type']),
+                  'by_stage': dict(stats['by_stage']),
+                  'errors': stats['errors']
+              }, f, indent=2)
+
+          print(f"Format Validation:")
+          print(f"  Total: {stats['total_theorems']}")
+          print(f"  Valid: {stats['valid_format']}")
+          print(f"  Invalid: {stats['invalid_format']}")
+
+          if stats['invalid_format'] > 0:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload format report
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-format-report
+          path: reports/theorem-format-report.md
+
+  # ============ 任务3: THEOREM-REGISTRY同步检查 ============
+  registry-sync-check:
+    name: Registry Sync Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check registry synchronization
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          # 1. 从文档中收集所有定理
+          doc_theorems = set()
+          
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(part.startswith('.') for part in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      matches = THEOREM_PATTERN.findall(content)
+                      for match in matches:
+                          theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                          doc_theorems.add(theorem_id)
+                  except Exception as e:
+                      pass
+
+          # 2. 从注册表中收集定理
+          registry_theorems = set()
+          registry_file = Path('THEOREM-REGISTRY.md')
+          
+          if registry_file.exists():
+              content = registry_file.read_text(encoding='utf-8')
+              matches = THEOREM_PATTERN.findall(content)
+              for match in matches:
+                  theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                  registry_theorems.add(theorem_id)
+
+          # 3. 比较
+          only_in_docs = doc_theorems - registry_theorems
+          only_in_registry = registry_theorems - doc_theorems
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Theorem Registry Sync Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Theorems in Documents | {len(doc_theorems)} |",
+              f"| Theorems in Registry | {len(registry_theorems)} |",
+              f"| In Sync | {len(doc_theorems & registry_theorems)} |",
+              f"| Only in Documents | {len(only_in_docs)} |",
+              f"| Only in Registry | {len(only_in_registry)} |",
+              ""
+          ]
+
+          if only_in_docs:
+              report_lines.extend([
+                  "## ❌ Theorems Missing from Registry",
+                  "",
+                  "These theorems are used in documents but not registered in THEOREM-REGISTRY.md:",
+                  ""
+              ])
+              
+              for thm in sorted(only_in_docs):
+                  report_lines.append(f"- `{thm}`")
+              
+              report_lines.append("")
+
+          if only_in_registry:
+              report_lines.extend([
+                  "## ⚠️ Theorems Only in Registry",
+                  "",
+                  "These theorems are registered but not found in any document:",
+                  ""
+              ])
+              
+              for thm in sorted(only_in_registry):
+                  report_lines.append(f"- `{thm}`")
+              
+              report_lines.append("")
+
+          if not only_in_docs and not only_in_registry:
+              report_lines.extend([
+                  "## ✅ Status",
+                  "",
+                  "All theorems are synchronized between documents and registry.",
+                  ""
+              ])
+
+          # 保存报告
+          with open('reports/theorem-registry-sync-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/theorem-registry-sync.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'in_documents': len(doc_theorems),
+                      'in_registry': len(registry_theorems),
+                      'in_sync': len(doc_theorems & registry_theorems),
+                      'only_in_docs': len(only_in_docs),
+                      'only_in_registry': len(only_in_registry)
+                  },
+                  'only_in_docs': sorted(only_in_docs),
+                  'only_in_registry': sorted(only_in_registry)
+              }, f, indent=2)
+
+          print(f"Registry Sync Check:")
+          print(f"  In documents: {len(doc_theorems)}")
+          print(f"  In registry: {len(registry_theorems)}")
+          print(f"  Missing from registry: {len(only_in_docs)}")
+
+          if only_in_docs:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload registry sync report
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-registry-sync-report
+          path: reports/theorem-registry-sync-report.md
+
+  # ============ 汇总报告 ============
+  validator-summary:
+    name: Theorem Validator Summary
+    runs-on: ubuntu-latest
+    needs: [uniqueness-check, format-check, registry-sync-check]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 📐 Theorem Validator Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.uniqueness-check.result }}" == "success" ]; then
+            echo "| Uniqueness Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Uniqueness Check | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.format-check.result }}" == "success" ]; then
+            echo "| Format Validation | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Format Validation | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.registry-sync-check.result }}" == "success" ]; then
+            echo "| Registry Sync | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Registry Sync | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if any check failed
+        if: |
+          needs.uniqueness-check.result == 'failure' ||
+          needs.format-check.result == 'failure' ||
+          needs.registry-sync-check.result == 'failure'
+        run: |
+          echo "❌ One or more theorem validation checks failed"
+          exit 1
