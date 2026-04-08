@@ -1,0 +1,134 @@
+# GitHub 标签标准化配置
+# 用于批量管理仓库标签
+# 使用方法: 通过 GitHub CLI 或 Actions 导入
+# gh label create -f labels.yml
+
+# 类型标签 (Type)
+- name: "type:bug"
+  color: "d73a4a"
+  description: "代码或文档中的错误"
+
+- name: "type:feature"
+  color: "a2eeef"
+  description: "新功能或新内容建议"
+
+- name: "type:docs"
+  color: "0075ca"
+  description: "文档改进"
+
+- name: "type:refactor"
+  color: "6f42c1"
+  description: "重构或结构调整"
+
+- name: "type:chore"
+  color: "6e7781"
+  description: "维护工作"
+
+# 优先级标签 (Priority)
+- name: "priority:p0"
+  color: "b60205"
+  description: "紧急 - 需要立即处理"
+
+- name: "priority:p1"
+  color: "fbca04"
+  description: "高优先级"
+
+- name: "priority:p2"
+  color: "0e8a16"
+  description: "中等优先级"
+
+- name: "priority:p3"
+  color: "1d76db"
+  description: "低优先级"
+
+# 状态标签 (Status)
+- name: "status:in-progress"
+  color: "ededed"
+  description: "正在进行中"
+
+- name: "status:review"
+  color: "d93f0b"
+  description: "等待审查"
+
+- name: "status:blocked"
+  color: "000000"
+  description: "被阻塞"
+
+- name: "status:todo"
+  color: "c2e0c6"
+  description: "待处理"
+
+- name: "status:done"
+  color: "0e8a16"
+  description: "已完成"
+
+# 领域标签 (Area)
+- name: "area:theory"
+  color: "7057ff"
+  description: "形式理论 (Struct/)"
+
+- name: "area:implementation"
+  color: "008672"
+  description: "工程实现 (Flink/)"
+
+- name: "area:patterns"
+  color: "e99695"
+  description: "设计模式 (Knowledge/)"
+
+- name: "area:docs"
+  color: "bfd4f2"
+  description: "文档基础设施"
+
+- name: "area:ci-cd"
+  color: "c5def5"
+  description: "CI/CD 工作流"
+
+# 兼容性标签 (Compatibility)
+- name: "compatibility:breaking"
+  color: "b60205"
+  description: "破坏性变更"
+
+- name: "compatibility:deprecation"
+  color: "f9d0c4"
+  description: "功能弃用"
+
+# 其他常用标签
+- name: "bug"
+  color: "d73a4a"
+  description: "错误报告"
+
+- name: "enhancement"
+  color: "a2eeef"
+  description: "功能增强"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "文档相关"
+
+- name: "question"
+  color: "d876e3"
+  description: "问题询问"
+
+- name: "triage"
+  color: "f9d0c4"
+  description: "待分类"
+
+- name: "good first issue"
+  color: "7057ff"
+  description: "适合新贡献者"
+
+- name: "help wanted"
+  color: "008672"
+  description: "需要帮助"
+
+- name: "duplicate"
+  color: "cfd3d7"
+  description: "重复 issue"
+
+- name: "invalid"
+  color: "e4e669"
+  description: "无效 issue"
+
+- name: "wontfix"
+  color: "ffffff"
+  description: "不修复"

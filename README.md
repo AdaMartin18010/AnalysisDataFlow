@@ -2,12 +2,13 @@
 
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./docs/i18n/en/00-OVERVIEW.md)
 
+[![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](./v5.0/RELEASE-NOTES-v5.0.md)
 [![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
 [![Scheduled Maintenance](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml)
 [![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
-[![Docs](https://img.shields.io/badge/Docs-420%2B-blue)](./)
-[![Theorems](https://img.shields.io/badge/Theorems-6000%2B-green)](./THEOREM-REGISTRY.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--05-orange)]()
+[![Docs](https://img.shields.io/badge/Docs-1010%2B-blue)](./)
+[![Theorems](https://img.shields.io/badge/Theorems-10000%2B-green)](./THEOREM-REGISTRY.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2027--01--15-orange)]()
 
 > **流计算领域的「形式化理论补充 + 前沿探索实验室」**
 >

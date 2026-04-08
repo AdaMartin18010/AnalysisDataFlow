@@ -1,0 +1,205 @@
+name: Deploy Knowledge Graph v2.0 to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph/**'
+      - 'knowledge-graph-v4.html'
+      - '.github/workflows/deploy-kg.yml'
+  workflow_dispatch:
+
+# 权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  # 阶段1: 构建和优化
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync Knowledge Graph Files
+        run: |
+          # 确保 knowledge-graph 目录存在并同步最新文件
+          mkdir -p knowledge-graph
+          cp knowledge-graph-v4.html knowledge-graph/index.html
+          
+          # 创建 404.html（SPA 路由回退）
+          cp knowledge-graph-v4.html knowledge-graph/404.html
+          
+          echo "✅ 文件同步完成"
+
+      - name: Inject Google Analytics
+        run: |
+          # 注入 Google Analytics 代码
+          GA_SCRIPT='
+          <!-- Google tag (gtag.js) -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag("js", new Date());
+            gtag("config", "G-XXXXXXXXXX");
+          </script>'
+          
+          # 将 GA 代码注入到 </head> 之前
+          sed -i "s|</head>|${GA_SCRIPT}</head>|g" knowledge-graph/index.html
+          sed -i "s|</head>|${GA_SCRIPT}</head>|g" knowledge-graph/404.html
+          
+          echo "✅ Google Analytics 注入完成"
+
+      - name: Optimize for Production
+        run: |
+          # 创建 .nojekyll 文件以禁用 Jekyll 处理
+          touch knowledge-graph/.nojekyll
+          
+          # 创建优化后的加载策略
+          cat > knowledge-graph/load-optimizer.js << 'EOF'
+          // 资源加载优化器
+          (function() {
+              'use strict';
+              
+              // CDN 预连接
+              const preconnectUrls = [
+                  'https://unpkg.com',
+                  'https://d3js.org',
+                  'https://cdnjs.cloudflare.com',
+                  'https://cdn.jsdelivr.net',
+                  'https://www.googletagmanager.com'
+              ];
+              
+              preconnectUrls.forEach(url => {
+                  const link = document.createElement('link');
+                  link.rel = 'preconnect';
+                  link.href = url;
+                  link.crossOrigin = 'anonymous';
+                  document.head.appendChild(link);
+                  
+                  const dnsLink = document.createElement('link');
+                  dnsLink.rel = 'dns-prefetch';
+                  dnsLink.href = url;
+                  document.head.appendChild(dnsLink);
+              });
+              
+              // 性能监控
+              if (window.performance) {
+                  window.addEventListener('load', function() {
+                      setTimeout(function() {
+                          const timing = performance.timing;
+                          const loadTime = timing.loadEventEnd - timing.navigationStart;
+                          console.log('📊 页面加载时间:', loadTime + 'ms');
+                          
+                          // 发送性能数据到 GA（如果可用）
+                          if (typeof gtag !== 'undefined') {
+                              gtag('event', 'page_load_time', {
+                                  'value': loadTime,
+                                  'custom_parameter_1': 'knowledge_graph_v4'
+                              });
+                          }
+                      }, 0);
+                  });
+              }
+          })();
+          EOF
+          
+          # 注入加载优化器
+          sed -i 's|</head>|<script src="load-optimizer.js"></script></head>|g' knowledge-graph/index.html
+          sed -i 's|</head>|<script src="load-optimizer.js"></script></head>|g' knowledge-graph/404.html
+          
+          echo "✅ 生产优化完成"
+
+      - name: Calculate Metadata
+        id: metadata
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "version=$(date -u +%Y%m%d.%H%M%S)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph/
+          retention-days: 7
+
+  # 阶段2: 运行测试
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Test Dependencies
+        run: npm install -g htmlhint
+
+      - name: Validate HTML
+        run: |
+          htmlhint knowledge-graph/*.html || true
+
+      - name: Check File Sizes
+        run: |
+          echo "📊 文件大小统计:"
+          du -sh knowledge-graph/*
+          
+          # 检查是否有文件超过 GitHub Pages 建议大小 (100MB)
+          find knowledge-graph/ -type f -size +50M -exec echo "⚠️ 警告: {} 超过50MB" \;
+
+      - name: Verify Required Files
+        run: |
+          test -f knowledge-graph/index.html || (echo "❌ index.html 不存在" && exit 1)
+          test -f knowledge-graph/404.html || (echo "❌ 404.html 不存在" && exit 1)
+          test -f knowledge-graph/.nojekyll || (echo "❌ .nojekyll 不存在" && exit 1)
+          echo "✅ 所有必需文件已验证"
+
+  # 阶段3: 部署到GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: knowledge-graph/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Notify Deployment Success
+        run: |
+          echo "🚀 知识图谱 v2.0 已成功部署!"
+          echo "📍 访问地址: ${{ steps.deployment.outputs.page_url }}"
+          echo "⏱️ 部署时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)"

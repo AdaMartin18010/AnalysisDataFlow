@@ -1,0 +1,207 @@
+# GitHub Repository Settings
+# 通过 Probot Settings 应用自动配置仓库设置
+# https://probot.github.io/apps/settings/
+
+repository:
+  # 基本信息
+  name: AnalysisDataFlow
+  description: 流计算领域最全面、最严谨的知识库 - 涵盖理论模型、层次结构、工程实践、业务建模
+  homepage: https://github.com/AnalysisDataFlow/AnalysisDataFlow
+  
+  # 可见性
+  private: false
+  
+  # 功能开关
+  has_issues: true
+  has_projects: true
+  has_wiki: false
+  has_downloads: true
+  
+  # 讨论功能
+  has_discussions: true
+  
+  # 允许的操作
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+  
+  # 删除分支选项
+  delete_branch_on_merge: true
+  
+  # 默认分支
+  default_branch: main
+  
+  # 安全
+  enable_automated_security_fixes: true
+  enable_vulnerability_alerts: true
+
+# 分支保护规则
+branches:
+  - name: main
+    protection:
+      # 启用分支保护
+      enabled: true
+      
+      # 必需状态检查
+      required_status_checks:
+        strict: true  # 要求分支是最新的
+        contexts:
+          - "Markdown Lint"
+          - "Link Check"
+          - "Mermaid Validation"
+          - "Theorem Validation"
+          - "PR Quality Gate"
+      
+      # 必需审查
+      required_pull_request_reviews:
+        required_approving_review_count: 1  # 至少1个批准
+        dismiss_stale_reviews: true  # 新提交时驳回旧审查
+        require_code_owner_reviews: true  # 需要代码所有者审查
+        dismissal_restrictions: {}
+      
+      # 限制推送
+      restrictions:
+        users: []
+        teams: []
+      
+      # 禁止强制推送
+      allow_force_pushes: false
+      
+      # 禁止直接推送（通过必需PR审查实现）
+      allow_deletions: false
+      
+      # 需要线性历史
+      required_linear_history: false
+      
+      # 需要签名提交
+      required_signatures: false
+      
+      # 需要对话解决
+      required_conversation_resolution: true
+
+# 标签体系
+labels:
+  # 类型标签
+  - name: type:bug
+    color: "d73a4a"
+    description: 代码或文档中的错误
+  - name: type:feature
+    color: "a2eeef"
+    description: 新功能或新内容建议
+  - name: type:docs
+    color: "0075ca"
+    description: 文档改进
+  - name: type:refactor
+    color: "6f42c1"
+    description: 重构或结构调整
+  - name: type:chore
+    color: "6e7781"
+    description: 维护工作
+
+  # 优先级标签
+  - name: priority:p0
+    color: "b60205"
+    description: 紧急 - 需要立即处理
+  - name: priority:p1
+    color: "fbca04"
+    description: 高优先级
+  - name: priority:p2
+    color: "0e8a16"
+    description: 中等优先级
+  - name: priority:p3
+    color: "1d76db"
+    description: 低优先级
+
+  # 状态标签
+  - name: status:in-progress
+    color: "ededed"
+    description: 正在进行中
+  - name: status:review
+    color: "d93f0b"
+    description: 等待审查
+  - name: status:blocked
+    color: "000000"
+    description: 被阻塞
+  - name: status:todo
+    color: "c2e0c6"
+    description: 待处理
+
+  # 领域标签
+  - name: area:theory
+    color: "7057ff"
+    description: 形式理论 (Struct/)
+  - name: area:implementation
+    color: "008672"
+    description: 工程实现 (Flink/)
+  - name: area:patterns
+    color: "e99695"
+    description: 设计模式 (Knowledge/)
+  - name: area:docs
+    color: "bfd4f2"
+    description: 文档基础设施
+
+  # 其他常用标签
+  - name: bug
+    color: "d73a4a"
+    description: 错误报告
+  - name: enhancement
+    color: "a2eeef"
+    description: 功能增强
+  - name: documentation
+    color: "0075ca"
+    description: 文档相关
+  - name: question
+    color: "d876e3"
+    description: 问题询问
+  - name: triage
+    color: "f9d0c4"
+    description: 待分类
+  - name: good first issue
+    color: "7057ff"
+    description: 适合新贡献者
+  - name: help wanted
+    color: "008672"
+    description: 需要帮助
+  - name: duplicate
+    color: "cfd3d7"
+    description: 重复 issue
+  - name: invalid
+    color: "e4e669"
+    description: 无效 issue
+  - name: wontfix
+    color: "ffffff"
+    description: 不修复
+
+# 里程碑
+milestones:
+  - title: v2.9 定理注册表完善
+    description: 完善定理注册表，提升可追溯性
+    state: open
+  - title: v3.0 知识体系重构
+    description: 重大版本更新，优化知识结构
+    state: open
+
+# 协作者
+collaborators: []
+
+# 团队权限
+teams: []
+
+# 议题模板配置
+issue_template:
+  - filename: bug_report.yml
+    name: 🐛 错误报告
+    description: 报告文档中的错误
+    labels: ["type:bug", "triage"]
+  - filename: feature_request.yml
+    name: ✨ 功能建议
+    description: 建议新功能或改进
+    labels: ["type:feature", "triage"]
+  - filename: doc_improvement.yml
+    name: 📝 文档改进
+    description: 改进文档质量
+    labels: ["type:docs", "triage"]
+  - filename: question.yml
+    name: ❓ 问题询问
+    description: 提出问题
+    labels: ["question", "triage"]

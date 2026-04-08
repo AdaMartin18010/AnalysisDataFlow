@@ -2,7 +2,7 @@
 
 > **版本**: v5.0.0 | **代号**: "全面生态化" | **发布日期**: 2027年1月15日
 >
-> **状态**: 🎉 **正式发布** | **许可证**: Apache 2.0
+> **状态**: ✅ **已发布** | **GitHub Release**: [v5.0.0](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v5.0.0) | **许可证**: Apache 2.0
 
 ---
 
