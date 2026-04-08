@@ -279,17 +279,17 @@ kafka-acls.sh --bootstrap-server kafka:9093 \
 # flink-operator-rbac.yaml
 apiVersion: v1
 kind: ServiceAccount
-metadata:
+metadata: 
   name: flink-operator
   namespace: flink-jobs
 automountServiceAccountToken: false  # 安全最佳实践
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
-metadata:
+metadata: 
   name: flink-operator-role
   namespace: flink-jobs
-rules:
+rules: 
   # 最小权限 - 仅必要的资源
   - apiGroups: ["apps"]
     resources: ["deployments"]
@@ -305,14 +305,14 @@ rules:
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
-metadata:
+metadata: 
   name: flink-operator-binding
   namespace: flink-jobs
-subjects:
+subjects: 
   - kind: ServiceAccount
     name: flink-operator
     namespace: flink-jobs
-roleRef:
+roleRef: 
   kind: Role
   name: flink-operator-role
   apiGroup: rbac.authorization.k8s.io
@@ -348,77 +348,77 @@ checkpointConfig.setExternalizedCheckpointCleanup(
 # flink-network-policy.yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata:
+metadata: 
   name: flink-jobmanager-policy
   namespace: flink-jobs
-spec:
-  podSelector:
-    matchLabels:
+spec: 
+  podSelector: 
+    matchLabels: 
       app: flink-jobmanager
-  policyTypes:
+  policyTypes: 
     - Ingress
     - Egress
-  ingress:
+  ingress: 
     # 仅允许来自 Web UI 的流量
     - from:
         - namespaceSelector:
-            matchLabels:
+            matchLabels: 
               name: ingress-nginx
-      ports:
+      ports: 
         - protocol: TCP
           port: 8081  # Flink Web UI
     # 允许 TaskManager 连接
     - from:
         - podSelector:
-            matchLabels:
+            matchLabels: 
               app: flink-taskmanager
-      ports:
+      ports: 
         - protocol: TCP
           port: 6123  # JobManager RPC
-  egress:
+  egress: 
     # 仅允许连接到 Kafka
     - to:
         - podSelector:
-            matchLabels:
+            matchLabels: 
               app: kafka
-      ports:
+      ports: 
         - protocol: TCP
           port: 9093  # Kafka SSL
     # DNS 查询
     - to:
         - namespaceSelector: {}
-      ports:
+      ports: 
         - protocol: UDP
           port: 53
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata:
+metadata: 
   name: flink-taskmanager-policy
   namespace: flink-jobs
-spec:
-  podSelector:
-    matchLabels:
+spec: 
+  podSelector: 
+    matchLabels: 
       app: flink-taskmanager
-  policyTypes:
+  policyTypes: 
     - Ingress
     - Egress
-  ingress:
+  ingress: 
     # 仅允许 JobManager 连接
     - from:
         - podSelector:
-            matchLabels:
+            matchLabels: 
               app: flink-jobmanager
-  egress:
+  egress: 
     # 允许连接到 JobManager
     - to:
         - podSelector:
-            matchLabels:
+            matchLabels: 
               app: flink-jobmanager
     # 允许连接到 Kafka
     - to:
         - podSelector:
-            matchLabels:
+            matchLabels: 
               app: kafka
 ```
 
@@ -429,47 +429,47 @@ spec:
 security_profile: financial_grade
 compliance: [PCI-DSS, SOC2, ISO27001]
 
-transport_security:
+transport_security: 
   tls_version: "1.3"
-  cipher_suites:
+  cipher_suites: 
     - TLS_AES_256_GCM_SHA384
     - TLS_AES_128_GCM_SHA256
   mutual_tls: required
   certificate_validity_days: 90
   auto_rotation: enabled
 
-authentication:
+authentication: 
   kafka: SCRAM-SHA-512
   flink_ui: OAuth2/OIDC
   k8s_api: short-lived-tokens
   admin_access: MFA_required
 
-authorization:
+authorization: 
   kafka_acls: enabled
   k8s_rbac: strict
   least_privilege: enforced
   regular_audit: monthly
 
-encryption_at_rest:
+encryption_at_rest: 
   checkpoints: AES-256-GCM
   state_backend: encrypted
   log_files: encrypted
   key_management: AWS-KMS/Azure-KeyVault
 
-audit_logging:
+audit_logging: 
   flink_audit: enabled
   k8s_audit: enabled
   kafka_audit: enabled
   log_retention_days: 2555  # 7 years
   tamper_protection: enabled
 
-network_security:
+network_security: 
   network_policies: strict
   service_mesh: enabled
   egress_filtering: whitelist_only
   ingress_controller: waf_enabled
 
-monitoring:
+monitoring: 
   security_alerts: real_time
   anomaly_detection: ML_based
   incident_response: automated

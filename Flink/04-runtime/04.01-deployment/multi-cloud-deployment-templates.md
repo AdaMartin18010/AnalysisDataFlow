@@ -2469,11 +2469,11 @@ resources:
       - FLINK
       - DOCKER
     properties:
-      dataproc:dataproc.logging.stackdriver.enable: 'true'
-      dataproc:dataproc.monitoring.stackdriver.enable: 'true'
-      flink:taskmanager.memory.process.size: 8192m
-      flink:jobmanager.memory.process.size: 4096m
-      flink:parallelism.default: '4'
+      dataproc: dataproc.logging.stackdriver.enable: 'true'
+      dataproc: dataproc.monitoring.stackdriver.enable: 'true'
+      flink: taskmanager.memory.process.size: 8192m
+      flink: jobmanager.memory.process.size: 4096m
+      flink: parallelism.default: '4'
 ```
 
 **Jinja 模板 (flink-cluster.jinja)**:
@@ -3364,7 +3364,7 @@ Resources:
         state.backend: rocksdb
         state.checkpoint-storage: filesystem
         state.checkpoints.dir: |
-          Fn::Join:
+          Fn: :Join:
             - ''
             - - 'oss://'
               - Ref: OssBucketName
@@ -3376,7 +3376,7 @@ Resources:
         metrics.reporter.slf4j.interval: 60s
       Artifact:
         JarUrl: |
-          Fn::Join:
+          Fn: :Join:
             - ''
             - - 'oss://'
               - Ref: OssBucketName

@@ -283,28 +283,28 @@ graph TB
 
 1. **代码度量绑定**
 
-   ```
+   ```text
    Enclave 启动时：
    MRENCLAVE = SHA256(CODE_INIT || DATA_INIT || HEAP_INIT)
-   ```
+```
 
    攻击者无法伪造匹配特定 MRENCLAVE 的恶意代码
 
 2. **密钥密封机制**
 
-   ```
+   ```text
    SealedKey = AES-GCM(K_seal, Key_material)
    K_seal = CMAC(SK, MRENCLAVE || MRSIGNER)
-   ```
+```
 
    只有具有相同 MRENCLAVE 的飞地可以解封密钥
 
 3. **安全输入通道**
 
-   ```
+   ```text
    Data_in = Decrypt(K_session, Ciphertext)
    K_session 派生自 RA-TLS 握手
-   ```
+```
 
    输入数据仅对经过远程证明的飞地可见
 
@@ -493,7 +493,7 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
            record[field] = generate_token(field_value)
 
        return record
-   ```
+```
 
 2. **差分隐私噪声添加**
 
@@ -504,18 +504,18 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
        sensitivity = compute_sensitivity()
        noise = laplace_noise(sensitivity / epsilon)
        return result + noise
-   ```
+```
 
 3. **审计日志（飞地签名）**
 
-   ```
+   ```text
    LogEntry = {
        timestamp: 1712054400,
        operation: "AGGREGATION",
        data_hash: SHA256(input_data),
        enclave_signature: Sign(AK, log_content)
    }
-   ```
+```
 
 **合规性保证**:
 

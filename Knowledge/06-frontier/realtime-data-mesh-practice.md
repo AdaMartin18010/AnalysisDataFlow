@@ -40,11 +40,11 @@
 
 ```yaml
 # 数据契约示例 (data-contract.yaml)
-contract:
+contract: 
   id: "user-profile-v2"
   owner: "customer-domain@company.com"
 
-  schema:
+  schema: 
     type: "avro"
     definition: |
       {
@@ -57,12 +57,12 @@ contract:
         ]
       }
 
-  sla:
+  sla: 
     freshness: "PT5S"           # 5秒新鲜度
     availability: "99.99%"      # 四个9可用性
     latency_p99: "100ms"        # P99延迟
 
-  compatibility:
+  compatibility: 
     policy: "BACKWARD_FORWARD"  # 双向兼容
     deprecation_period: "90d"   # 90天弃用期
 ```
@@ -371,18 +371,18 @@ SELECT * FROM lineage;
 # data-product-definition.yaml
 apiVersion: datamesh.company.io/v1
 kind: DataProduct
-metadata:
+metadata: 
   name: user-behavior-stream
   domain: customer-experience
   owner: team-ce@company.com
-spec:
-  inputs:
+spec: 
+  inputs: 
     - source: kafka://events/user-clicks
       format: json
     - source: kafka://events/page-views
       format: json
 
-  processing:
+  processing: 
     engine: flink
     sql: |
       CREATE TABLE user_behavior (
@@ -404,19 +404,19 @@ spec:
         ) as event_count_10m
       FROM user_behavior;
 
-  output:
+  output: 
     topic: dataproduct.customer-experience.user-behavior
     format: avro
     schemaRegistry: https://schema-registry.company.io
 
-  quality:
+  quality: 
     freshness_sla: "PT30S"
     completeness_threshold: 0.999
     schema_compatibility: BACKWARD_FORWARD
 
-  access:
+  access: 
     auth: mTLS
-    consumers:
+    consumers: 
       - domain: personalization
         permissions: [read]
       - domain: analytics

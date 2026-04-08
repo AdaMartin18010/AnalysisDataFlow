@@ -52,7 +52,7 @@ stream
 
 ```sql
 -- 流批混合查询：实时流 JOIN 历史批数据
-SELECT 
+SELECT
     s.user_id,
     s.event_type,
     s.amount as realtime_amount,
@@ -93,9 +93,9 @@ serverless.cold-start:
   warmup-pool-size: 2        # 保持2个预热实例
   max-concurrent-startups: 10
   startup-timeout: 30s
-  
+
   # 镜像优化
-  image:
+  image: 
     preloaded-jars:          # 预加载的JAR包
       - flink-connector-kafka
       - flink-connector-jdbc
@@ -108,13 +108,13 @@ serverless.cold-start:
 serverless.auto-scaling:
   enabled: true
   mode: predictive           # 预测性扩缩容
-  
-  prediction:
+
+  prediction: 
     window-size: 5m          # 预测窗口
     algorithm: lstm          # LSTM预测模型
     lookahead: 2m            # 提前2分钟预测
-  
-  scaling:
+
+  scaling: 
     min-replicas: 0
     max-replicas: 100
     target-latency: 100ms    # 目标处理延迟
@@ -161,22 +161,22 @@ InferenceConfig config = InferenceConfig.builder()
 # AI 推理服务配置
 ai.inference:
   enabled: true
-  
-  models:
+
+  models: 
     - id: text-generation-v1
       path: s3://models/llama-2-7b
       framework: vllm
       device: GPU
       replicas: 2
-      
+
       # 推理优化
-      optimization:
+      optimization: 
         batching: true
         speculative-decoding: true
         kv-cache-sharing: true
-      
+
       # 自动扩缩容
-      autoscaling:
+      autoscaling: 
         min-replicas: 1
         max-replicas: 10
         target-qps: 100
@@ -198,7 +198,7 @@ WITH (
     'refresh-interval' = '5 minutes',     -- 刷新间隔
     'refresh-trigger' = 'watermark'       -- 基于Watermark触发
 )
-AS SELECT 
+AS SELECT
     user_id,
     COUNT(*) as event_count,
     SUM(amount) as total_amount,
@@ -277,7 +277,7 @@ tEnv.createTemporarySystemFunction(
 
 // SQL 使用
 String sql = """
-    SELECT 
+    SELECT
         review_id,
         sentiment_score(review_text) as sentiment,
         geo_distance(user_lat, user_lon, store_lat, store_lon) as distance_km

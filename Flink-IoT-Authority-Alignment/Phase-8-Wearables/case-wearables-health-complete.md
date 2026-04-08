@@ -4892,7 +4892,7 @@ class HypoglycemiaPredictor:
     - 特征: 原始血糖值 + 趋势特征 + 时间特征
     """
 
-    def __init__(self,
+    def __init__(self,:
                  sequence_length: int = 60,
                  prediction_horizon: int = 6,
                  lstm_units: int = 128,
@@ -4999,7 +4999,7 @@ class HypoglycemiaPredictor:
 
         return features
 
-    def prepare_sequences(self,
+    def prepare_sequences(self,:
                           glucose_data: np.ndarray,
                           step_size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -5023,7 +5023,7 @@ class HypoglycemiaPredictor:
 
         return np.array(X), np.array(y)
 
-    def train(self,
+    def train(self,:
               training_data: np.ndarray,
               validation_split: float = 0.2,
               epochs: int = 100,
@@ -5076,7 +5076,7 @@ class HypoglycemiaPredictor:
         logger.info("Model training completed")
         return history
 
-    def predict(self,
+    def predict(self,:
                 recent_glucose: np.ndarray,
                 return_confidence: bool = True) -> dict:
         """
@@ -5124,7 +5124,7 @@ class HypoglycemiaPredictor:
             result['prediction_std'] = pred_std.tolist()
             result['confidence_interval_95'] = [
                 (p - 1.96 * s, p + 1.96 * s)
-                for p, s in zip(prediction, pred_std)
+                for p, s in zip(prediction, pred_std):
             ]
 
         return result
@@ -5162,7 +5162,7 @@ class HypoglycemiaPredictor:
             'clarke_error_grid_a_zone': float(cegr_a_zone)
         }
 
-    def _clarke_error_grid_analysis(self,
+    def _clarke_error_grid_analysis(self,:
                                     predicted: np.ndarray,
                                     reference: np.ndarray) -> float:
         """
@@ -5233,7 +5233,7 @@ class GlucoseKalmanFilter:
     - 估计真实变化趋势
     """
 
-    def __init__(self,
+    def __init__(self,:
                  process_noise: float = 1.0,
                  measurement_noise: float = 25.0,
                  initial_uncertainty: float = 100.0):
@@ -5463,7 +5463,7 @@ class SensorFaultDetector:
         'NORMAL': {'code': 0, 'desc': '正常', 'threshold': 0.0}
     }
 
-    def __init__(self,
+    def __init__(self,:
                  contamination: float = 0.1,
                  n_estimators: int = 100,
                  window_size: int = 12):
@@ -5571,7 +5571,7 @@ class SensorFaultDetector:
 
         print(f"SensorFaultDetector fitted on {len(training_data)} samples")
 
-    def detect(self,
+    def detect(self,:
                glucose_window: np.ndarray,
                return_details: bool = True) -> Dict:
         """
@@ -5620,7 +5620,7 @@ class SensorFaultDetector:
 
         return result
 
-    def _identify_fault_type(self,
+    def _identify_fault_type(self,:
                              features: np.ndarray,
                              glucose_window: np.ndarray) -> str:
         """识别具体故障类型"""
@@ -5643,7 +5643,7 @@ class SensorFaultDetector:
 
         return 'NORMAL'
 
-    def _calculate_confidence(self,
+    def _calculate_confidence(self,:
                               anomaly_score: float,
                               fault_type: str) -> float:
         """计算故障检测置信度"""
@@ -5666,7 +5666,7 @@ class SensorFaultDetector:
         }
         return recommendations.get(fault_type, '请检查传感器状态')
 
-    def detect_stream(self,
+    def detect_stream(self,:
                       glucose_readings: List[float],
                       step: int = 1) -> List[Dict]:
         """
@@ -5766,7 +5766,7 @@ class LaplaceMechanism:
     提供(ε,δ)-差分隐私保证的噪声添加机制
     """
 
-    def __init__(self,
+    def __init__(self,:
                  privacy_budget: PrivacyBudget,
                  seed: Optional[int] = None):
         """
@@ -5779,7 +5779,7 @@ class LaplaceMechanism:
         self.budget = privacy_budget
         self.rng = np.random.RandomState(seed)
 
-    def add_noise(self,
+    def add_noise(self,:
                   value: Union[float, np.ndarray],
                   sensitivity: float,
                   epsilon: float,
@@ -5816,7 +5816,7 @@ class LaplaceMechanism:
 
         return noisy_value
 
-    def noisy_count(self,
+    def noisy_count(self,:
                     count: int,
                     epsilon: float = 1.0,
                     query_name: str = "count") -> int:
@@ -5829,7 +5829,7 @@ class LaplaceMechanism:
                                epsilon=epsilon, query_name=query_name)
         return max(0, int(round(noisy)))  # 计数不能为负
 
-    def noisy_sum(self,
+    def noisy_sum(self,:
                   values: np.ndarray,
                   lower_bound: float,
                   upper_bound: float,
@@ -5848,7 +5848,7 @@ class LaplaceMechanism:
 
         return self.add_noise(np.sum(clipped), sensitivity, epsilon, query_name)
 
-    def noisy_mean(self,
+    def noisy_mean(self,:
                    values: np.ndarray,
                    lower_bound: float,
                    upper_bound: float,
@@ -5871,7 +5871,7 @@ class LaplaceMechanism:
 
         return noisy_sum / noisy_count
 
-    def noisy_histogram(self,
+    def noisy_histogram(self,:
                         values: np.ndarray,
                         bins: int,
                         epsilon: float = 1.0,
@@ -5888,12 +5888,12 @@ class LaplaceMechanism:
 
         noisy_hist = np.array([
             self.noisy_count(count, epsilon_per_bin, f"{query_name}_bin_{i}")
-            for i, count in enumerate(hist)
+            for i, count in enumerate(hist):
         ])
 
         return noisy_hist
 
-    def exponential_mechanism(self,
+    def exponential_mechanism(self,:
                               candidates: List[str],
                               utility_scores: np.ndarray,
                               sensitivity: float,
@@ -5919,7 +5919,7 @@ class LaplaceMechanism:
 
         return selected
 
-    def _audit_log(self,
+    def _audit_log(self,:
                    query_name: str,
                    epsilon: float,
                    sensitivity: float,
@@ -5946,7 +5946,7 @@ class PrivacyAccountant:
     - 零集中差分隐私 (zCDP)
     """
 
-    def __init__(self,
+    def __init__(self,:
                  epsilon_total: float = 1.0,
                  delta_total: float = 1e-6):
         self.epsilon_total = epsilon_total
@@ -5961,7 +5961,7 @@ class PrivacyAccountant:
         """基础组合: ε_total = Σε_i"""
         return sum(q['epsilon'] for q in self.queries)
 
-    def get_epsilon_advanced_composition(self,
+    def get_epsilon_advanced_composition(self,:
                                           delta_prime: float = 1e-6) -> float:
         """
         高级组合定理
@@ -6074,7 +6074,7 @@ class DempsterShaferFusion:
     得到综合的健康状态评估
     """
 
-    def __init__(self,
+    def __init__(self,:
                  frame_of_discernment: Set[HealthHypothesis] = None):
         """
         初始化
@@ -6093,9 +6093,9 @@ class DempsterShaferFusion:
             return evidences
 
         return [Evidence(e.source, e.hypothesis, e.mass / total_mass)
-                for e in evidences]
+                for e in evidences]:
 
-    def combine(self,
+    def combine(self,:
                 evidence1: Evidence,
                 evidence2: Evidence) -> List[Evidence]:
         """
@@ -6136,7 +6136,7 @@ class DempsterShaferFusion:
 
         return result
 
-    def combine_multiple(self,
+    def combine_multiple(self,:
                          evidences: List[Evidence]) -> Dict[FrozenSet[HealthHypothesis], float]:
         """
         融合多个证据
@@ -6162,7 +6162,7 @@ class DempsterShaferFusion:
         final_result = {frozenset(result.hypothesis): result.mass}
         return final_result
 
-    def calculate_belief(self,
+    def calculate_belief(self,:
                          fused_mass: Dict[FrozenSet[HealthHypothesis], float],
                          hypothesis: Set[HealthHypothesis]) -> float:
         """
@@ -6177,7 +6177,7 @@ class DempsterShaferFusion:
 
         return belief
 
-    def calculate_plausibility(self,
+    def calculate_plausibility(self,:
                                 fused_mass: Dict[FrozenSet[HealthHypothesis], float],
                                 hypothesis: Set[HealthHypothesis]) -> float:
         """
@@ -6192,7 +6192,7 @@ class DempsterShaferFusion:
 
         return plausibility
 
-    def get_decision(self,
+    def get_decision(self,:
                      fused_mass: Dict[FrozenSet[HealthHypothesis], float],
                      decision_rule: str = "max_belief") -> Tuple[Set[HealthHypothesis], float]:
         """
@@ -6241,7 +6241,7 @@ class MultiModalHealthFusion:
     def __init__(self):
         self.ds_fusion = DempsterShaferFusion()
 
-    def extract_cgm_evidence(self,
+    def extract_cgm_evidence(self,:
                              glucose: float,
                              trend: float,
                              variability: float) -> List[Evidence]:
@@ -6276,7 +6276,7 @@ class MultiModalHealthFusion:
 
         return evidences
 
-    def extract_hr_evidence(self,
+    def extract_hr_evidence(self,:
                             heart_rate: float,
                             hrv: float,
                             activity: str) -> List[Evidence]:
@@ -6302,7 +6302,7 @@ class MultiModalHealthFusion:
 
         return evidences
 
-    def extract_bp_evidence(self,
+    def extract_bp_evidence(self,:
                             systolic: float,
                             diastolic: float) -> List[Evidence]:
         """从血压数据提取证据"""
@@ -6318,7 +6318,7 @@ class MultiModalHealthFusion:
 
         return evidences
 
-    def extract_sleep_evidence(self,
+    def extract_sleep_evidence(self,:
                                sleep_stage: str,
                                glucose_during_sleep: float) -> List[Evidence]:
         """从睡眠数据提取证据"""
@@ -6335,7 +6335,7 @@ class MultiModalHealthFusion:
 
         return evidences
 
-    def fuse_health_data(self,
+    def fuse_health_data(self,:
                          glucose: float,
                          glucose_trend: float,
                          heart_rate: float,

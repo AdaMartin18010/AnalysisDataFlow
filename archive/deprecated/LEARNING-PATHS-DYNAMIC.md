@@ -31,11 +31,11 @@ graph TB
     G --> H[Markdown文档]
     G --> I[JSON数据]
     G --> J[检查清单]
-    
+
     K[用户反馈] --> L[反馈收集]
     L --> M[推荐策略调整]
     M --> D
-    
+
     N[内容更新] --> C
 ```
 
@@ -262,17 +262,17 @@ score = Σ(维度权重 × 匹配度)
 def resolve_dependencies(selected_items):
     visited = set()
     result = []
-    
+
     def visit(item_id):
         if item_id in visited: return
         for prereq in item.prerequisites:
             visit(prereq)  # 先访问依赖
         visited.add(item_id)
         result.append(item_id)
-    
+
     for item in selected_items:
         visit(item.id)
-    
+
     return result
 ```
 
@@ -296,7 +296,7 @@ sequenceDiagram
     participant U as 用户
     participant S as 推荐系统
     participant F as 反馈存储
-    
+
     U->>S: 获取推荐
     S->>U: 返回推荐内容
     U->>S: 评分/反馈
@@ -707,16 +707,16 @@ graph LR
 def recommend_based_on_dependencies(known_concepts, target_goal):
     # 1. 找到已知概念的依赖闭包
     closure = compute_dependency_closure(known_concepts)
-    
+
     # 2. 找到可达但尚未学习的概念
     candidates = find_reachable_unlearned(closure)
-    
+
     # 3. 根据目标筛选和排序
     scored = score_by_goal(candidates, target_goal)
-    
+
     # 4. 应用路径优化算法
     optimal_path = find_optimal_learning_path(scored)
-    
+
     return optimal_path
 ```
 
@@ -849,7 +849,7 @@ $ python .scripts/learning-path-recommender.py \
 
 ---
 
-**开始使用**: 
+**开始使用**:
 
 ```bash
 python .scripts/learning-path-recommender.py --interactive

@@ -252,7 +252,8 @@
 68:   text,
 >>> 69:   ML_PREDICT('text-embedding-3-small', text) AS embedding
 70: FROM documents;
-71: ```
+71:
+```
 ```
 
 **🟡 [SQL-006] VECTOR_SEARCH函数**
@@ -539,7 +540,8 @@
 
 ```markdown
 247:
-248: ```java
+248:
+```java
 >>> 249: // SQL: SELECT * FROM ML_PREDICT(TABLE events, MODEL gpt4, PASSING (message))
 250:
 251: DataStream<Row> result = events
@@ -737,7 +739,8 @@
 1231: responses.add_sink(KafkaSink(...))
 1232:
 >>> 1233: env.execute("Async OpenAI Inference")
-1234: ```
+1234:
+```
 1235:
 ```
 
@@ -1193,7 +1196,8 @@
 
 ```markdown
 50:
-51: ```sql
+51:
+```sql
 >>> 52: ML_PREDICT(
 53:   model_name,           -- 模型名称 (STRING)
 54:   input_columns,        -- 输入列或表达式
@@ -1468,7 +1472,8 @@
 740:   PIIMask(m.message_content) AS safe_content,
 >>> 741:   ML_PREDICT('gpt4_chat', PIIMask(m.message_content)) AS response
 742: FROM messages m;
-743: ```
+743:
+```
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -1768,7 +1773,8 @@
 374: FROM documents
 >>> 375: WHERE VECTOR_SEARCH(embedding, :query_vector) > 0.8
 376: ORDER BY similarity DESC;
-377: ```
+377:
+```
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -1940,7 +1946,8 @@
 **代码片段**：
 
 ```markdown
-48: ```sql
+48:
+```sql
 49: -- 概念设计阶段，非实际API
 >>> 50: -- CREATE AGENT example_agent
 51: ```
@@ -2014,7 +2021,8 @@
 1204: // 2.4 新增: AI Agent 集成 (可选)
 >>> 1205: // 注: ai.agent.enabled 为未来配置参数（概念），尚未正式实现
 1206: // env.getConfig().setBoolean("ai.agent.enabled", true);
-1207: ```
+1207:
+```
 ```
 
 **🔴 [CFG-001] AI Agent启用配置**
@@ -2060,7 +2068,8 @@
 **代码片段**：
 
 ```markdown
-679: ```yaml
+679:
+```yaml
 680: # flink-conf.yaml - GPU 配置
 >>> 681: gpu.enabled: true
 682: gpu.device.ids: "0,1,2,3"  # 可用 GPU 列表
@@ -2718,7 +2727,8 @@
 **代码片段**：
 
 ```markdown
-182: ```yaml
+182:
+```yaml
 183: # Serverless配置
 >>> 184: serverless.enabled: true
 185: serverless.scale-to-zero.delay: 5min
@@ -2856,7 +2866,8 @@
 **代码片段**：
 
 ```markdown
-979: ```
+979:
+```
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
@@ -2997,7 +3008,8 @@
 1285: # 复制 native 库
 1286: COPY libflink_gpu_bridge.so /opt/flink/native/
 >>> 1287: COPY flink-gpu-udf.jar /opt/flink/usrlib/
-1288: ```
+1288:
+```
 1289:
 ```
 
@@ -3846,7 +3858,8 @@
 46: <artifactId>flink-ai-agent</artifactId>           # ❌ 不存在
 >>> 47: <artifactId>flink-mcp-connector</artifactId>      # ❌ 不存在
 48: <artifactId>flink-serverless</artifactId>         # ❌ 不存在
-49: ```
+49:
+```
 ```
 
 #### archive\deprecated\MAINTENANCE-NOTICE.md
@@ -4105,7 +4118,8 @@
 58: | 依赖 | 说明 |
 59: |------|------|
 >>> 60: | flink-ai-agent <!-- 设计阶段，尚未发布 --> | AI Agent支持 |
-61: ```
+61:
+```
 62:
 ```
 
@@ -4646,7 +4660,8 @@
 611: 阶段 2 (2026 Q2): 引入 0.3 运行时，支持混合执行
 >>> 612: 阶段 3 (2026 Q4): 默认 0.3，0.2 通过适配层支持
 613: 阶段 4 (2027): 可选移除 0.2 适配层
-614: ```
+614:
+```
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5584,7 +5599,8 @@
 **代码片段**：
 
 ```markdown
-524: ```mermaid
+524:
+```mermaid
 525: gantt
 >>> 526:     title 2026 Q2 Flink 推进任务甘特图
 527:     dateFormat  YYYY-MM-DD
@@ -5682,7 +5698,8 @@
 **代码片段**：
 
 ```markdown
-337: ```
+337:
+```
 338:
 >>> 339: ### 6.2 重要讨论跟踪 (2025 Q1)
 340:
@@ -5732,7 +5749,8 @@
 **代码片段**：
 
 ```markdown
-427: ```mermaid
+427:
+```mermaid
 428: gantt
 >>> 429:     title Flink 2.1 功能路线图 (2026 Q3 - 2027 Q1)
 430:     dateFormat  YYYY-MM-DD
@@ -5814,7 +5832,8 @@
 **代码片段**：
 
 ```markdown
-30: ```yaml
+30:
+```yaml
 31: 版本定位: "AI原生与云原生融合版本"
 >>> 32: 预计发布周期: 2026 Q3-Q4
 33: Feature Freeze: 2026-08-15
@@ -6010,7 +6029,8 @@
 **代码片段**：
 
 ```markdown
-80: ```yaml
+80:
+```yaml
 81: Flink 3.0 Architecture Goals:
 >>> 82:   目标发布: "2027 Q1-Q2"
 83:   核心主题:
@@ -6242,7 +6262,8 @@
 **代码片段**：
 
 ```markdown
-207: ```mermaid
+207:
+```mermaid
 208: gantt
 >>> 209:     title 中期计划 (2026 Q4-2027 Q2) 详细时间线
 210:     dateFormat  YYYY-MM
@@ -6516,7 +6537,8 @@
 **代码片段**：
 
 ```markdown
-43: ```
+43:
+```
 44:
 >>> 45: ## 2. 雷达概览 (2026 Q2)
 46:
@@ -7122,7 +7144,8 @@
 **代码片段**：
 
 ```markdown
-73: ```yaml
+73:
+```yaml
 74: Flink 2.4:
 >>> 75:   预计发布: 2026 Q3-Q4
 76:   状态: upcoming (规划中)
@@ -7219,7 +7242,8 @@
 
 ```markdown
 255:
-256: ```
+256:
+```
 >>> 257: 2026 Q3-Q4: Flink 2.4 GA 发布
 258:     ├── 2026-08: Feature Freeze
 259:     ├── 2026-09: RC1 发布
@@ -7418,7 +7442,8 @@
 **代码片段**：
 
 ```markdown
-65: ```markdown
+65:
+```markdown
 66: <!-- 预测时间线，以Apache Flink官方发布为准 -->
 >>> 67: 预计 2026 Q1 发布
 68: ```
@@ -7839,7 +7864,8 @@
 **代码片段**：
 
 ```markdown
-979: ```
+979:
+```
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
@@ -8945,7 +8971,8 @@
 **代码片段**：
 
 ```markdown
-242: ```
+242:
+```
 243: ┌─────────────────────────────────────────────────────────────────┐
 >>> 244: │                     FLIP-531 特性依赖图                          │
 245: ├─────────────────────────────────────────────────────────────────┤
@@ -8977,11 +9004,12 @@
 **代码片段**：
 
 ```markdown
-1012: ```
+1012: ```text
 1013:
 >>> 1014: ### 7.5 FLIP-531 路线图时间线
 1015:
-1016: ```mermaid
+1016:
+```mermaid
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9173,7 +9201,8 @@
 947:
 >>> 948: ### 6.1 FLIP-531 Agent完整示例 (Java API)
 949:
-950: ```java
+950:
+```java
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9425,7 +9454,8 @@
 **代码片段**：
 
 ```markdown
-1334: ```sql
+1334:
+```sql
 1335: -- ============================================================
 >>> 1336: -- FLIP-531 GA版本：SQL DDL 完整示例
 1337: -- 生产级销售分析Agent系统
@@ -9537,7 +9567,8 @@
 **代码片段**：
 
 ```markdown
-3037: ```yaml
+3037:
+```yaml
 3038: # prometheus-rules.yaml
 >>> 3039: # FLIP-531 GA监控告警规则
 3040:
@@ -9605,7 +9636,8 @@
 **代码片段**：
 
 ```markdown
-280: ```
+280:
+```
 281:
 >>> 282: ### 3.2 与 FLIP-531 AI Agents 的集成关系
 283:
@@ -10108,7 +10140,8 @@
 
 ```markdown
 27:
-28: ```yaml
+28:
+```yaml
 >>> 29: FLIP-531: "Building and Running AI Agents in Flink"
 30: 状态: MVP设计完成 (Q2 2025) → MVP实现 (Q3 2025)
 31: 目标: 提供企业级Agentic AI运行时
@@ -10187,7 +10220,8 @@
 **代码片段**：
 
 ```markdown
-378: ```
+378:
+```
 379:
 >>> 380: ### 7.2 FLIP-531架构
 381:
@@ -10221,7 +10255,8 @@
 **代码片段**：
 
 ```markdown
-40: ```
+40:
+```
 41:
 >>> 42: ### Def-F-08-71: AI Agent GA (FLIP-531 Completion)
 43:
@@ -10254,7 +10289,8 @@
 
 ```markdown
 45:
-46: ```yaml
+46:
+```yaml
 >>> 47: FLIP-531: "Building and Running AI Agents in Flink"
 48: MVP状态: Flink 2.3（规划中）- 基础Agent支持（以官方发布为准）
 49: GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪
@@ -10496,7 +10532,8 @@
 
 ```markdown
 100:
-101: ```yaml
+101:
+```yaml
 >>> 102: FLIP-531演进: MVP (2.3) → GA (2.4) → Production (2.5)
 103: 新增能力:
 104:   LLM推理优化:
@@ -10952,7 +10989,8 @@
 
 ```markdown
 884:
-885: ```
+885:
+```
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
@@ -12718,7 +12756,8 @@
 
 ```markdown
 884:
-885: ```
+885:
+```
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
@@ -13080,7 +13119,8 @@
 85:   预计发布: 2027 Q1-Q2
 86:   状态: upcoming (规划中)
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
-88: ```
+88:
+```
 89:
 ```
 
@@ -13112,7 +13152,8 @@
 85:   预计发布: 2027 Q1-Q2
 86:   状态: upcoming (规划中)
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
-88: ```
+88:
+```
 89:
 ```
 

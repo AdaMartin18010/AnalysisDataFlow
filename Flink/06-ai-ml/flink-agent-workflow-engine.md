@@ -34,63 +34,63 @@ $$
 
 ```yaml
 # 工作流定义Schema
-workflow:
+workflow: 
   id: string                    # 工作流标识
   name: string                  # 显示名称
   version: string               # 语义化版本
-  
+
   # 触发配置
-  triggers:
+  triggers: 
     - type: event               # event/schedule/webhook
       source: kafka_topic
       filter: "$.type == 'order.created'"
-  
+
   # Agent节点定义
-  nodes:
+  nodes: 
     - id: node_1
       type: agent               # agent/condition/parallel/subflow
       agent_ref: intent_classifier
-      input_mapping:
+      input_mapping: 
         text: "$.event.message"
-      output_mapping:
+      output_mapping: 
         intent: "$.output.intent"
       timeout: 30s
-      retry:
+      retry: 
         max_attempts: 3
         backoff: exponential
-    
+
     - id: node_2
       type: parallel
-      branches:
+      branches: 
         - id: branch_a
           nodes: [...]
         - id: branch_b
           nodes: [...]
       aggregation: merge          # merge/first/all
-    
+
     - id: node_3
       type: condition
       expression: "$.node_1.intent == 'order_query'"
       then: node_4
       else: node_5
-  
+
   # 边定义
-  edges:
+  edges: 
     - from: node_1
       to: node_2
       condition: always
     - from: node_2
       to: node_3
       condition: on_success
-  
+
   # 错误处理
-  error_handling:
+  error_handling: 
     strategy: retry_fallback     # retry_fallback/compensate/abort
     fallback: fallback_node
     max_retries: 3
-  
+
   # 资源限制
-  resources:
+  resources: 
     max_execution_time: 5m
     max_memory: 512MB
 ```
@@ -164,10 +164,10 @@ $$
 public interface DynamicOrchestrator {
     // 基于负载动态扩展Agent
     WorkflowGraph scaleAgents(WorkflowGraph graph, LoadMetrics metrics);
-    
+
     // 基于数据特征动态路由
     WorkflowGraph adjustRouting(WorkflowGraph graph, DataCharacteristics data);
-    
+
     // 基于历史性能动态优化
     WorkflowGraph optimizePath(WorkflowGraph graph, ExecutionHistory history);
 }
@@ -316,15 +316,15 @@ graph TB
 
     F1 --> F2
     F2 --> F3
-    
+
     F2 --> P1
     F2 --> P2
     F2 --> P3
-    
+
     P1 --> E1
     P2 --> E1
     P3 --> E2
-    
+
     F2 -.->|Function Calling| E3
 
     style F1 fill:#e3f2fd
@@ -373,14 +373,14 @@ graph TB
 
     FC1 --> FA1
     FC3 --> FA2
-    
+
     FA1 --> FA2
     FA2 --> FA3
-    
+
     FA2 --> CO1
     FA2 --> CO2
     FA3 --> CO3
-    
+
     CO1 --> EX3
     CO2 --> EX2
     CO3 --> EX1
@@ -539,22 +539,22 @@ graph TB
     W1 --> O1
     W2 --> O1
     W3 --> O1
-    
+
     O1 --> O2
     O2 --> O3
     O3 --> O4
-    
+
     O4 --> E1
     O4 --> E2
     O4 --> E4
-    
+
     E1 --> P1
     E1 --> P3
     E1 --> P4
-    
+
     E2 --> F3
     E3 --> F4
-    
+
     E1 --> F2
     O4 --> F1
 ```
@@ -573,27 +573,27 @@ public class FlinkAgentWorkflowEngine {
      * 工作流主入口
      */
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置Checkpoint
         env.enableCheckpointing(5000);
         env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints/");
-        
+
         // 配置状态后端
-        EmbeddedRocksDBStateBackend stateBackend = 
+        EmbeddedRocksDBStateBackend stateBackend =
             new EmbeddedRocksDBStateBackend(true);
         env.setStateBackend(stateBackend);
 
         // 加载工作流定义
         WorkflowDefinition workflow = WorkflowLoader.load(args[0]);
-        
+
         // 构建执行图
         WorkflowExecutionGraph graph = WorkflowCompiler.compile(workflow);
-        
+
         // 部署工作流
         deployWorkflow(env, graph);
-        
+
         env.execute("Flink Agent Workflow: " + workflow.getName());
     }
 
@@ -601,20 +601,20 @@ public class FlinkAgentWorkflowEngine {
      * 部署工作流执行图
      */
     private static void deployWorkflow(
-            StreamExecutionEnvironment env, 
+            StreamExecutionEnvironment env,
             WorkflowExecutionGraph graph) {
-        
+
         // 创建触发源流
         DataStream<WorkflowEvent> triggerStream = createTriggerStream(env, graph);
-        
+
         // 按工作流实例key分区
         KeyedStream<WorkflowEvent, String> keyedStream = triggerStream
             .keyBy(WorkflowEvent::getWorkflowInstanceId);
-        
+
         // 核心工作流处理函数
         DataStream<WorkflowResult> results = keyedStream
             .process(new WorkflowExecutionFunction(graph));
-        
+
         // 结果输出
         results.addSink(new WorkflowResultSink());
     }
@@ -623,11 +623,11 @@ public class FlinkAgentWorkflowEngine {
 /**
  * 工作流执行核心函数
  */
-public class WorkflowExecutionFunction 
+public class WorkflowExecutionFunction
     extends KeyedProcessFunction<String, WorkflowEvent, WorkflowResult> {
 
     private final WorkflowExecutionGraph graph;
-    
+
     // 状态声明
     private transient ValueState<WorkflowInstanceState> instanceState;
     private transient MapState<String, NodeExecutionState> nodeStates;
@@ -643,21 +643,21 @@ public class WorkflowExecutionFunction
         // 初始化状态
         instanceState = getRuntimeContext().getState(
             new ValueStateDescriptor<>("instance-state", WorkflowInstanceState.class));
-        
+
         nodeStates = getRuntimeContext().getMapState(
             new MapStateDescriptor<>("node-states", String.class, NodeExecutionState.class));
-        
+
         variables = getRuntimeContext().getMapState(
             new MapStateDescriptor<>("variables", String.class, Object.class));
-        
+
         pendingEvents = getRuntimeContext().getListState(
             new ListStateDescriptor<>("pending-events", PendingEvent.class));
     }
 
     @Override
-    public void processElement(WorkflowEvent event, Context ctx, 
+    public void processElement(WorkflowEvent event, Context ctx,
                               Collector<WorkflowResult> out) throws Exception {
-        
+
         WorkflowInstanceState instance = instanceState.value();
         if (instance == null) {
             instance = initializeInstance(event);
@@ -686,7 +686,7 @@ public class WorkflowExecutionFunction
      */
     private void handleTriggerEvent(WorkflowEvent event, WorkflowInstanceState instance,
                                    Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         // 设置变量
         for (Map.Entry<String, Object> entry : event.getPayload().entrySet()) {
             variables.put(entry.getKey(), entry.getValue());
@@ -694,7 +694,7 @@ public class WorkflowExecutionFunction
 
         // 找到起始节点
         List<WorkflowNode> startNodes = graph.getStartNodes();
-        
+
         for (WorkflowNode node : startNodes) {
             executeNode(node, instance, ctx, out);
         }
@@ -705,11 +705,11 @@ public class WorkflowExecutionFunction
      */
     private void executeNode(WorkflowNode node, WorkflowInstanceState instance,
                             Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         NodeExecutionState nodeState = new NodeExecutionState(node.getId());
         nodeState.setStatus(NodeStatus.RUNNING);
         nodeState.setStartTime(System.currentTimeMillis());
-        
+
         switch (node.getType()) {
             case AGENT:
                 executeAgentNode(node, instance, ctx, out);
@@ -730,7 +730,7 @@ public class WorkflowExecutionFunction
                 executeEventWaitNode(node, instance, ctx);
                 break;
         }
-        
+
         nodeStates.put(node.getId(), nodeState);
     }
 
@@ -739,13 +739,13 @@ public class WorkflowExecutionFunction
      */
     private void executeAgentNode(WorkflowNode node, WorkflowInstanceState instance,
                                  Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         // 准备输入
         Map<String, Object> input = resolveInputMapping(node.getInputMapping());
-        
+
         // 获取Agent引用
         AgentRef agentRef = node.getAgentRef();
-        
+
         // 调用Agent（异步）
         AgentInvocation invocation = AgentInvocation.builder()
             .agentRef(agentRef)
@@ -754,11 +754,11 @@ public class WorkflowExecutionFunction
             .workflowInstanceId(instance.getId())
             .nodeId(node.getId())
             .build();
-        
+
         // 注册超时定时器
         long timeoutTimestamp = ctx.timestamp() + node.getTimeout().toMillis();
         ctx.timerService().registerProcessingTimeTimer(timeoutTimestamp);
-        
+
         // 发送Agent调用请求
         ctx.output(agentInvocationTag, invocation);
     }
@@ -768,24 +768,24 @@ public class WorkflowExecutionFunction
      */
     private void handleAgentComplete(WorkflowEvent event, WorkflowInstanceState instance,
                                     Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         String nodeId = event.getNodeId();
         AgentResult result = (AgentResult) event.getPayload().get("result");
-        
+
         // 更新节点状态
         NodeExecutionState nodeState = nodeStates.get(nodeId);
         nodeState.setStatus(result.isSuccess() ? NodeStatus.COMPLETED : NodeStatus.FAILED);
         nodeState.setEndTime(System.currentTimeMillis());
         nodeState.setOutput(result.getOutput());
         nodeStates.put(nodeId, nodeState);
-        
+
         // 输出变量映射
         WorkflowNode node = graph.getNode(nodeId);
         for (Map.Entry<String, String> mapping : node.getOutputMapping().entrySet()) {
             Object value = JsonPath.read(result.getOutput(), mapping.getValue());
             variables.put(mapping.getKey(), value);
         }
-        
+
         // 触发下游节点
         if (result.isSuccess()) {
             triggerDownstreamNodes(nodeId, instance, ctx, out);
@@ -799,14 +799,14 @@ public class WorkflowExecutionFunction
      */
     private void triggerDownstreamNodes(String nodeId, WorkflowInstanceState instance,
                                        Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         List<WorkflowEdge> outgoingEdges = graph.getOutgoingEdges(nodeId);
-        
+
         for (WorkflowEdge edge : outgoingEdges) {
             // 检查边条件
             if (evaluateEdgeCondition(edge.getCondition())) {
                 WorkflowNode nextNode = graph.getNode(edge.getTo());
-                
+
                 // 检查所有前置节点是否完成
                 if (areAllPredecessorsCompleted(nextNode)) {
                     executeNode(nextNode, instance, ctx, out);
@@ -818,13 +818,13 @@ public class WorkflowExecutionFunction
     /**
      * 处理节点失败
      */
-    private void handleNodeFailure(String nodeId, Throwable error, 
+    private void handleNodeFailure(String nodeId, Throwable error,
                                   WorkflowInstanceState instance,
                                   Context ctx, Collector<WorkflowResult> out) throws Exception {
-        
+
         WorkflowNode node = graph.getNode(nodeId);
         ErrorHandlingConfig errorConfig = node.getErrorHandling();
-        
+
         switch (errorConfig.getStrategy()) {
             case RETRY:
                 retryNode(node, instance, ctx, out);
@@ -842,7 +842,7 @@ public class WorkflowExecutionFunction
     }
 
     @Override
-    public void onTimer(long timestamp, OnTimerContext ctx, 
+    public void onTimer(long timestamp, OnTimerContext ctx,
                        Collector<WorkflowResult> out) throws Exception {
         // 处理超时
         handleTimeout(timestamp, ctx, out);
@@ -870,7 +870,7 @@ public class AgentInvocationHandler {
      */
     public AgentResult invoke(AgentInvocation invocation) {
         AgentRef agentRef = invocation.getAgentRef();
-        
+
         switch (agentRef.getProtocol()) {
             case MCP_TOOL:
                 return invokeMCPTool(agentRef, invocation.getInput());
@@ -930,7 +930,7 @@ public class AgentInvocationHandler {
         try {
             // 发现Remote Agent
             AgentCard agentCard = a2aClient.discover(agentRef.getUrl());
-            
+
             // 创建Task
             Task task = Task.builder()
                 .id(UUID.randomUUID().toString())
@@ -944,7 +944,7 @@ public class AgentInvocationHandler {
 
             // 流式发送Task
             CompletableFuture<TaskResult> future = new CompletableFuture<>();
-            
+
             a2aClient.sendTaskStreaming(agentCard, task, new TaskCallback() {
                 @Override
                 public void onStatusUpdate(TaskStatus status) {
@@ -1116,7 +1116,7 @@ WorkflowDefinition workflow = WorkflowBuilder
         .source("customer-messages")
         .filter("$.type == 'message'")
         .build())
-    
+
     .addAgentNode("intent-classifier")
         .withAgent("intent-agent")
         .withInputMapping("text", "$.message")
@@ -1124,25 +1124,25 @@ WorkflowDefinition workflow = WorkflowBuilder
         .withTimeout(Duration.ofSeconds(5))
         .withRetry(3, BackoffStrategy.EXPONENTIAL)
         .end()
-    
+
     .addConditionNode("route-by-intent", "$.intent == 'order_query'")
         .withThenBranch("order-query-agent")
         .withElseBranch("general-agent")
         .end()
-    
+
     .addAgentNode("order-query-agent")
         .withAgent("order-agent")
         .withInputMapping("order_id", "$.entities.order_id")
         .end()
-    
+
     .addAgentNode("general-agent")
         .withAgent("faq-agent")
         .end()
-    
+
     .connect("intent-classifier", "route-by-intent")
     .connect("route-by-intent", "order-query-agent", EdgeCondition.ON_TRUE)
     .connect("route-by-intent", "general-agent", EdgeCondition.ON_FALSE)
-    
+
     .build();
 ```
 
@@ -1154,69 +1154,69 @@ WorkflowDefinition workflow = WorkflowBuilder
 # flink-agent-workflow-deployment.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: agent-workflow-engine
   namespace: flink-agents
-spec:
+spec: 
   image: flink-ai-agents:2.0-workflow
   flinkVersion: v1.20
-  
-  jobManager:
-    resource:
+
+  jobManager: 
+    resource: 
       memory: 8Gi
       cpu: 4
     replicas: 2
-    podTemplate:
-      spec:
-        containers:
+    podTemplate: 
+      spec: 
+        containers: 
           - name: flink-main-container
-            env:
+            env: 
               - name: FLINK_AGENT_WORKFLOW_ENABLED
                 value: "true"
               - name: MCP_DISCOVERY_URL
                 value: "http://mcp-registry:8080"
               - name: A2A_DISCOVERY_ENABLED
                 value: "true"
-  
-  taskManager:
-    resource:
+
+  taskManager: 
+    resource: 
       memory: 16Gi
       cpu: 8
     replicas: 4
-  
-  job:
+
+  job: 
     jarURI: local:///opt/flink/jobs/agent-workflow-engine.jar
     parallelism: 16
     upgradeMode: savepoint
     state: running
-    args:
+    args: 
       - --workflow-def-path
       - /opt/flink/workflows/
       - --checkpoint-interval
       - "5000"
       - --enable-metrics
       - "true"
-  
-  flinkConfiguration:
+
+  flinkConfiguration: 
     # 状态后端配置
     state.backend: rocksdb
     state.backend.incremental: "true"
     state.checkpoint-storage: filesystem
     state.checkpoints.dir: s3://flink-checkpoints/workflows
-    
+
     # Checkpoint配置
     execution.checkpointing.interval: 5s
     execution.checkpointing.min-pause-between-checkpoints: 1s
     execution.checkpointing.max-concurrent-checkpoints: 1
     execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
-    
+
     # Agent工作流特定配置
     flink.agent.workflow.enabled: "true"
     flink.agent.workflow.default-timeout: 30s
     flink.agent.workflow.max-retries: 3
     flink.agent.mcp.enabled: "true"
     flink.agent.a2a.enabled: "true"
-    
+
     # 网络配置
     taskmanager.memory.network.fraction: 0.15
     taskmanager.memory.network.min: 128mb
@@ -1226,12 +1226,12 @@ spec:
 # Service配置
 apiVersion: v1
 kind: Service
-metadata:
+metadata: 
   name: agent-workflow-api
-spec:
-  selector:
+spec: 
+  selector: 
     app: agent-workflow-engine
-  ports:
+  ports: 
     - port: 8080
       targetPort: 8080
   type: LoadBalancer
@@ -1240,18 +1240,18 @@ spec:
 # 工作流配置ConfigMap
 apiVersion: v1
 kind: ConfigMap
-metadata:
+metadata: 
   name: workflow-definitions
-data:
+data: 
   customer-service.yaml: |
-    workflow:
+    workflow: 
       id: customer-service
       name: 智能客服工作流
       version: "1.0"
       nodes: [...]
-  
+
   risk-analysis.yaml: |
-    workflow:
+    workflow: 
       id: risk-analysis
       name: 实时风控分析
       version: "2.0"
@@ -1267,106 +1267,106 @@ data:
 **工作流定义**:
 
 ```yaml
-workflow:
+workflow: 
   id: intelligent-customer-service
   name: 智能客服工作流
   version: "2.0"
-  
-  trigger:
+
+  trigger: 
     type: kafka
     topic: customer-messages
     filter: "$.channel == 'chat'"
-  
-  nodes:
+
+  nodes: 
     - id: enrich-context
       type: agent
-      agent_ref:
+      agent_ref: 
         type: native
         name: context-enricher
-      input_mapping:
+      input_mapping: 
         user_id: "$.user_id"
         message: "$.message"
         session_id: "$.session_id"
-      output_mapping:
+      output_mapping: 
         user_profile: "$.user_profile"
         conversation_history: "$.history"
-        
+
     - id: classify-intent
       type: agent
-      agent_ref:
+      agent_ref: 
         type: mcp_tool
         server: nlp-service
         tool: intent_classifier
-      input_mapping:
+      input_mapping: 
         text: "$.message"
         context: "$.conversation_history"
-      output_mapping:
+      output_mapping: 
         intent: "$.intent"
         confidence: "$.confidence"
         entities: "$.entities"
-        
+
     - id: route-by-intent
       type: condition
       expression: "$.intent"
-      branches:
+      branches: 
         order_query: order-handling
         return_request: return-handling
         complaint: escalation
         default: general-response
-        
+
     - id: order-handling
       type: agent
-      agent_ref:
+      agent_ref: 
         type: mcp_tool
         server: order-service
         tool: query_order
-      input_mapping:
+      input_mapping: 
         order_id: "$.entities.order_id"
         user_id: "$.user_id"
-        
+
     - id: return-handling
       type: parallel
-      branches:
+      branches: 
         - id: check-policy
-          nodes:
+          nodes: 
             - type: agent
-              agent_ref:
+              agent_ref: 
                 type: mcp_tool
                 server: policy-service
                 tool: check_return_policy
         - id: get-order
-          nodes:
+          nodes: 
             - type: agent
-              agent_ref:
+              agent_ref: 
                 type: mcp_tool
                 server: order-service
                 tool: get_order_details
       aggregation: merge
-      
+
     - id: escalation
       type: human_task
       assignee: "senior-agents"
       timeout: 5m
-      
+
     - id: general-response
       type: agent
-      agent_ref:
+      agent_ref: 
         type: a2a
         url: "https://general-agent.company.com"
       timeout: 10s
-      
+
     - id: quality-check
       type: agent
-      agent_ref:
+      agent_ref: 
         type: native
         name: response-validator
-      input_mapping:
+      input_mapping: 
         response: "$.previous_output"
         policy: "$.company_policy"
-      output_mapping:
+      output_mapping: 
         approved: "$.approved"
         issues: "$.issues"
-        
+
     - id: final-output
       type: output
       template: |
@@ -1375,8 +1375,8 @@ workflow:
         {% else %}
           抱歉，我需要再确认一下...
         {% endif %}
-  
-  edges:
+
+  edges: 
     - from: enrich-context
       to: classify-intent
     - from: classify-intent
@@ -1413,7 +1413,7 @@ WorkflowDefinition riskWorkflow = WorkflowBuilder
         .source("transaction-stream")
         .filter("$.amount > 10000")
         .build())
-    
+
     .addParallelNode("parallel-analysis")
         .addBranch("rule-check")
             .addAgentNode("rule-engine")
@@ -1433,12 +1433,12 @@ WorkflowDefinition riskWorkflow = WorkflowBuilder
                 .end()
             .endBranch()
         .end()
-    
+
     .addAgentNode("risk-aggregator")
         .withAgent("risk-aggregator")
         .withAggregation(AggregationType.WEIGHTED_SUM)
         .end()
-    
+
     .addConditionNode("risk-decision", "$.risk_score > 0.8")
         .withThenBranch(
             WorkflowBuilder.branch()
@@ -1456,7 +1456,7 @@ WorkflowDefinition riskWorkflow = WorkflowBuilder
                     .end()
         )
         .end()
-    
+
     .build();
 
 // 部署
@@ -1509,12 +1509,12 @@ graph TB
     T1 --> P2
     T1 --> P3
     T1 --> P4
-    
+
     P1 --> A1
     P2 --> A1
     P3 --> A1
     P4 --> A1
-    
+
     A1 --> D1
     D1 -->|否| O1
     D1 -->|是| O2
@@ -1567,33 +1567,33 @@ mindmap
 ```mermaid
 stateDiagram-v2
     [*] --> CREATED: 创建工作流
-    
+
     CREATED --> RUNNING: 触发执行
-    
+
     RUNNING --> NODE_RUNNING: 执行节点
     NODE_RUNNING --> NODE_COMPLETED: 节点成功
     NODE_RUNNING --> NODE_FAILED: 节点失败
-    
+
     NODE_COMPLETED --> RUNNING: 触发下游
     NODE_FAILED --> ERROR_HANDLING: 错误处理
-    
+
     ERROR_HANDLING --> RUNNING: 重试成功
     ERROR_HANDLING --> FALLBACK: 执行fallback
     ERROR_HANDLING --> COMPENSATING: 执行补偿
-    
+
     FALLBACK --> RUNNING: 继续执行
     COMPENSATING --> FAILED: 补偿完成
-    
+
     RUNNING --> WAITING: 等待事件
     WAITING --> RUNNING: 事件到达
     WAITING --> TIMEOUT: 超时
-    
+
     RUNNING --> PAUSED: 人工暂停
     PAUSED --> RUNNING: 恢复执行
-    
+
     RUNNING --> COMPLETED: 全部完成
     TIMEOUT --> FAILED: 超时失败
-    
+
     COMPLETED --> [*]: 归档
     FAILED --> [*]: 记录日志
 ```
@@ -1694,24 +1694,24 @@ graph TB
     LB --> GW2
     GW1 --> JM1
     GW2 --> JM1
-    
+
     JM1 --> TM1
     JM1 --> TM2
     JM1 --> TM3
     JM1 --> TM4
     JM2 -.->|HA| JM1
-    
+
     TM1 --> S1
     TM2 --> S1
     TM3 --> S1
     TM4 --> S1
-    
+
     TM1 --> S2
     TM2 --> S2
-    
+
     TM1 --> S3
     TM2 --> S3
-    
+
     TM1 --> S4
     TM2 --> S4
 ```

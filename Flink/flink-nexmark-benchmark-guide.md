@@ -7,30 +7,37 @@
 
 ## 目录
 
-- [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-  - [Def-FNB-01 (Nexmark 模型)](#def-fnb-01-nexmark-模型)
-  - [Def-FNB-02 (查询分类)](#def-fnb-02-查询分类)
-  - [Def-FNB-03 (性能指标)](#def-fnb-03-性能指标)
-- [2. 属性推导 (Properties)](#2-属性推导-properties)
-  - [Prop-FNB-01 (查询复杂度与性能关系)](#prop-fnb-01-查询复杂度与性能关系)
-  - [Prop-FNB-02 (数据倾斜影响)](#prop-fnb-02-数据倾斜影响)
-- [3. 关系建立 (Relations)](#3-关系建立-relations)
-  - [关系 1: Nexmark 查询与 SQL 特性映射](#关系-1-nexmark-查询与-sql-特性映射)
-  - [关系 2: 查询与 Flink 组件关联](#关系-2-查询与-flink-组件关联)
-- [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-  - [4.1 Nexmark 设计原理](#41-nexmark-设计原理)
-  - [4.2 结果可复现性保障](#42-结果可复现性保障)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-  - [Thm-FNB-01 (Nexmark 代表性定理)](#thm-fnb-01-nexmark-代表性定理)
-- [6. 实例验证 (Examples)](#6-实例验证-examples)
-  - [6.1 Nexmark 环境搭建](#61-nexmark-环境搭建)
-  - [6.2 各查询实现详解](#62-各查询实现详解)
-  - [6.3 性能调优建议](#63-性能调优建议)
-  - [6.4 与其他系统对比](#64-与其他系统对比)
-- [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-  - [7.1 Nexmark 数据模型](#71-nexmark-数据模型)
-  - [7.2 查询依赖关系图](#72-查询依赖关系图)
-- [8. 引用参考 (References)](#8-引用参考-references)
+- [Flink Nexmark 基准测试指南](#flink-nexmark-基准测试指南)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-FNB-01 (Nexmark 模型)](#def-fnb-01-nexmark-模型)
+    - [Def-FNB-02 (查询分类)](#def-fnb-02-查询分类)
+    - [Def-FNB-03 (性能指标)](#def-fnb-03-性能指标)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-FNB-01 (查询复杂度与性能关系)](#prop-fnb-01-查询复杂度与性能关系)
+    - [Prop-FNB-02 (数据倾斜影响)](#prop-fnb-02-数据倾斜影响)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: Nexmark 查询与 SQL 特性映射](#关系-1-nexmark-查询与-sql-特性映射)
+    - [关系 2: 查询与 Flink 组件关联](#关系-2-查询与-flink-组件关联)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 Nexmark 设计原理](#41-nexmark-设计原理)
+    - [4.2 结果可复现性保障](#42-结果可复现性保障)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-FNB-01 (Nexmark 代表性定理)](#thm-fnb-01-nexmark-代表性定理)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 Nexmark 环境搭建](#61-nexmark-环境搭建)
+    - [6.2 各查询实现详解](#62-各查询实现详解)
+      - [q0: Pass-through (基线测试)](#q0-pass-through-基线测试)
+      - [q1: 投影与过滤](#q1-投影与过滤)
+      - [q5: 滑动窗口聚合 (热点查询)](#q5-滑动窗口聚合-热点查询)
+      - [q7: Stream-Stream Join](#q7-stream-stream-join)
+      - [q8: Stream-Table Join (维表 Join)](#q8-stream-table-join-维表-join)
+    - [6.3 性能调优建议](#63-性能调优建议)
+    - [6.4 与其他系统对比](#64-与其他系统对比)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 Nexmark 数据模型](#71-nexmark-数据模型)
+    - [7.2 查询依赖关系图](#72-查询依赖关系图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -159,7 +166,7 @@ graph TB
         Q7[q7 Stream-Stream Join]
         Q8[q8 Stream-Table Join]
     end
-    
+
     subgraph SQL特性
         S1[SELECT / WHERE]
         S2[UDF]
@@ -169,7 +176,7 @@ graph TB
         S6[Interval Join]
         S7[Lookup Join]
     end
-    
+
     subgraph Flink算子
         F1[Source]
         F2[Calc]
@@ -178,7 +185,7 @@ graph TB
         F5[Async Lookup]
         F6[Sink]
     end
-    
+
     Q0 --> S1 --> F1 --> F2 --> F6
     Q1 --> S1 --> F1 --> F2 --> F6
     Q5 --> S3 --> S4 --> F1 --> F3 --> F6
@@ -263,6 +270,7 @@ $$
 **工程论证**:
 
 **步骤 1**: Nexmark 覆盖了流计算的 6 大核心操作类型：
+
 - 过滤/投影 (q0-q2)
 - 窗口聚合 (q4-q7)
 - 多流 Join (q8-q11)
@@ -271,6 +279,7 @@ $$
 - 高级分析 (q20-q22)
 
 **步骤 2**: 每个查询对应真实业务场景的关键特征：
+
 - q4 (窗口聚合) → 实时仪表盘
 - q7 (Stream Join) → 实时推荐
 - q12 (维表 Join) → 实时风控
@@ -319,18 +328,18 @@ kafka-topics.sh --create \
 public class NexmarkGenerator {
     public static void main(String[] args) {
         ParameterTool params = ParameterTool.fromArgs(args);
-        
+
         long targetTps = params.getLong("tps", 1_000_000);
         long durationSec = params.getLong("duration", 600);
-        
+
         NexmarkConfiguration config = new NexmarkConfiguration();
         config.maxEvents = targetTps * durationSec;
         config.numEventGenerators = 4;
         config.rateShape = RateShape.SQUARE;
-        
-        GeneratorConfig generatorConfig = 
+
+        GeneratorConfig generatorConfig =
             GeneratorConfig.of(config, System.currentTimeMillis(), 1, 1);
-        
+
         // 生成并发送到 Kafka
         // ...
     }
@@ -354,6 +363,7 @@ DataStreamScan(table=[Bid], fields=[auction, bidder, price, datetime])
 ```
 
 **预期性能** (Flink 2.0, 16 并行度)：
+
 - 吞吐: ~900K events/sec
 - P99 延迟: ~10ms
 
@@ -361,8 +371,8 @@ DataStreamScan(table=[Bid], fields=[auction, bidder, price, datetime])
 
 ```sql
 -- 选择特定字段并过滤
-SELECT auction, bidder, price 
-FROM Bid 
+SELECT auction, bidder, price
+FROM Bid
 WHERE price > 10000;
 ```
 
@@ -378,14 +388,14 @@ tableEnv.getConfig().getConfiguration()
 
 ```sql
 -- 每 60 秒计算过去 1 小时的平均出价
-SELECT 
+SELECT
     auction,
     TUMBLE_START(datetime, INTERVAL '60' SECOND) as starttime,
     TUMBLE_END(datetime, INTERVAL '60' SECOND) as endtime,
     AVG(price) as avg_price,
     COUNT(*) as bid_count
 FROM Bid
-GROUP BY 
+GROUP BY
     auction,
     TUMBLE(datetime, INTERVAL '60' SECOND);
 ```
@@ -408,7 +418,7 @@ conf.setString("state.backend.incremental", "true");
 
 ```sql
 -- 关联出价和拍卖信息
-SELECT 
+SELECT
     B.auction,
     B.price,
     B.bidder,
@@ -416,7 +426,7 @@ SELECT
     A.item,
     A.category
 FROM Bid B
-JOIN Auction A 
+JOIN Auction A
     ON B.auction = A.id
 WHERE B.datetime BETWEEN A.datetime AND A.expires;
 ```
@@ -433,7 +443,7 @@ WHERE B.datetime BETWEEN A.datetime AND A.expires;
 
 ```sql
 -- 关联出价人和用户信息
-SELECT 
+SELECT
     B.auction,
     B.price,
     P.name,
@@ -484,7 +494,7 @@ CREATE TABLE Person (
 
 ```java
 // q5 窗口聚合调优
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用 mini-batch
@@ -526,7 +536,7 @@ DataStream<Result> result = bidStream
 erDiagram
     PERSON ||--o{ BID : places
     AUCTION ||--o{ BID : receives
-    
+
     PERSON {
         bigint id PK
         string name
@@ -535,7 +545,7 @@ erDiagram
         string state
         timestamp datetime
     }
-    
+
     AUCTION {
         bigint id PK
         string item
@@ -547,7 +557,7 @@ erDiagram
         bigint seller
         bigint category
     }
-    
+
     BID {
         bigint auction FK
         bigint bidder FK
@@ -569,28 +579,28 @@ graph BT
         Q2[q2 Selection]
         Q3[q3 Local Item]
     end
-    
+
     subgraph Category II
         Q4[q4 Average Price]
         Q5[q5 Hot Items]
         Q6[q6 AVG by Seller]
         Q7[q7 Highest Bid]
     end
-    
+
     subgraph Category III
         Q8[q8 Monitor New Users]
         Q9[q9 Winning Bids]
         Q10[q10 Auction Trends]
         Q11[q11 Session Bids]
     end
-    
+
     subgraph Category IV
         Q12[q12 Top Bidders]
         Q13[q13 Connected Bidders]
         Q14[q14 Top Categories]
         Q15[q15 Reserved Bids]
     end
-    
+
     Q0 -.-> Q1
     Q1 -.-> Q2
     Q2 -.-> Q4
@@ -605,7 +615,7 @@ graph BT
     Q9 -.-> Q13
     Q10 -.-> Q14
     Q11 -.-> Q15
-    
+
     style Q0 fill:#e1f5fe
     style Q5 fill:#fff3e0
     style Q8 fill:#e8f5e9
@@ -616,11 +626,6 @@ graph BT
 
 ## 8. 引用参考 (References)
 
-[^1]: P. Tucker et al., "NEXMark — A Benchmark for Queries over Data Streams", 2002. https://web.cecs.pdx.edu/~tufte/nexmark/
-[^2]: Apache Beam Nexmark Documentation. https://beam.apache.org/documentation/sdks/java/nexmark/
-[^3]: RisingWave Nexmark Benchmark. https://www.risingwave.dev/blog/nexmark-benchmark/
-[^4]: Materialize Nexmark Results. https://materialize.com/blog/nexmark-benchmark/
-[^5]: F. McSherry et al., "Scalability! But at what COST?", HotOS 2015.
 
 ---
 

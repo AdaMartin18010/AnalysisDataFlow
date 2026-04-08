@@ -176,7 +176,7 @@ gantt
      click_count_1h * 1.0 / NULLIF(buy_count_1h, 0) as ctr_1h
    FROM user_behavior
    GROUP BY item_id;
-   ```
+```
 
 2. **特征存储设计**
    - 设计 Feature Store Schema
@@ -248,7 +248,7 @@ gantt
        out.collect(profile);
      }
    }
-   ```
+```
 
 2. **向量检索集成**
    - 集成 Milvus/Pinecone
@@ -293,7 +293,7 @@ gantt
    FROM user_behavior
    WHERE event_type = 'click'
    GROUP BY item_id;
-   ```
+```
 
 2. **召回服务**
    - 基于协同过滤的召回
@@ -312,7 +312,7 @@ gantt
        # 模型推理
        score = model.predict(features)
        return score
-   ```
+```
 
 4. **推荐 API**
 
@@ -334,7 +334,7 @@ gantt
        return rerankService.rerank(ranked);
      }
    }
-   ```
+```
 
 **评估指标**:
 

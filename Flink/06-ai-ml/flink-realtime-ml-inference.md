@@ -394,19 +394,19 @@ class DriftDetectionFunction extends ProcessFunction<Prediction, Alert> {
 # tf-serving-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: 
   name: tensorflow-serving
-spec:
+spec: 
   replicas: 3
-  template:
-    spec:
-      containers:
+  template: 
+    spec: 
+      containers: 
       - name: tf-serving
         image: tensorflow/serving:latest
-        ports:
+        ports: 
         - containerPort: 8501  # REST API
         - containerPort: 8500  # gRPC
-        env:
+        env: 
         - name: MODEL_NAME
           value: "recommendation_model"
 ```

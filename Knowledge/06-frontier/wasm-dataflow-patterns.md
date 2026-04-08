@@ -2377,23 +2377,23 @@ class WasmUDF extends UserDefinedFunction {
 # serverless-wasm.yaml
 apiVersion: serving.knative.dev/v1
 kind: Service
-metadata:
+metadata: 
   name: wasm-stream-processor
-spec:
-  template:
-    metadata:
-      annotations:
+spec: 
+  template: 
+    metadata: 
+      annotations: 
         # 使用 Wasm 运行时替代容器
         wasm.runtime: "wasmedge"
         wasm.module: "processor.wasm"
-    spec:
-      containers:
+    spec: 
+      containers: 
         - image: gcr.io/wasm/runtime:latest
-          resources:
-            limits:
+          resources: 
+            limits: 
               memory: "32Mi"  # Wasm 只需要少量内存
               cpu: "100m"
-  traffic:
+  traffic: 
     - latestRevision: true
       percent: 100
 ```
@@ -2546,21 +2546,21 @@ impl GuestSource for RedisSource {
 # wasm-function.yaml
 apiVersion: wasm.cloud/v1
 kind: WasmFunction
-metadata:
+metadata: 
   name: stream-processor
-spec:
+spec: 
   module: "ghcr.io/example/stream-processor:v1.2.0"
   runtime: "wasmedge"  # 或 wasmtime
 
   # 资源限制
-  resources:
+  resources: 
     memory: "32Mi"
     cpu: "100m"
 
   # 触发器配置
-  triggers:
+  triggers: 
     - type: http
-      routes:
+      routes: 
         - path: /process
           method: POST
     - type: event
@@ -2568,21 +2568,21 @@ spec:
       topic: events
 
   # 状态配置
-  state:
+  state: 
     type: redis
     ttl: 3600
 
   # 多云部署
-  placement:
+  placement: 
     strategy: "multi-cloud"
-    providers:
+    providers: 
       - aws
       - azure
       - gcp
     replicas: 3
 
   # 状态同步
-  stateSync:
+  stateSync: 
     enabled: true
     mode: "eventual"
     interval: "5s"

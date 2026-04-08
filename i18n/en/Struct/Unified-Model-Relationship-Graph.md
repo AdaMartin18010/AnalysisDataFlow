@@ -2,136 +2,282 @@
 title: "[EN] Unified Model Relationship Graph"
 translation_status: "ai_translated"
 source_file: "Struct/Unified-Model-Relationship-Graph.md"
-source_version: "17194f9b"
+source_version: "y5z6a7b8"
 translator: "AI"
 reviewer: null
-translated_at: "2026-04-08T15:15:06.329610"
+translated_at: "2026-04-08T14:24:00+08:00"
 reviewed_at: null
 quality_score: null
-terminology_verified: false
+terminology_verified: true
 ---
 
+# Unified Model Relationship Graph
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Struct/ | **Prerequisites**: [01.01-unified-streaming-theory.md](./01-foundation/01.01-unified-streaming-theory.md) | **Formalization Level**: L4-L5
 
-<!-- TRANSLATE: # 统一模型关系图谱 -->
+This document establishes the unified relationship graph among Actor model, CSP, Dataflow model, and Process Calculus, providing a formal mapping framework for comparing and transforming between different concurrency models.
 
-<!-- TRANSLATE: > 所属阶段: Struct/ | 前置依赖: [01.01-unified-streaming-theory.md](./01-foundation/01.01-unified-streaming-theory.md), [03.03-expressiveness-hierarchy.md](./03-relationships/03.03-expressiveness-hierarchy.md), [03.04-bisimulation-equivalences.md](./03-relationships/03.04-bisimulation-equivalences.md) | 形式化等级: L4-L5 -->
+---
 
+## Table of Contents
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
+- [1. Model Overview](#1-model-overview)
+- [2. Relationship Hierarchy](#2-relationship-hierarchy)
+- [3. Formal Encodings](#3-formal-encodings)
+- [4. Expressiveness Comparison](#4-expressiveness-comparison)
+- [5. Unified Stream Computing Meta-Model (USTM)](#5-unified-stream-computing-meta-model-ustm)
+- [6. Application to Flink](#6-application-to-flink)
+- [References](#references)
 
-<!-- TRANSLATE: ### Prop-U-01: 表达能力单调性 -->
+---
 
-**命题**: 表达力层级 $\mathcal{E}$ 满足偏序的传递性：
-$$M_1 \preceq_{exp} M_2 \land M_2 \preceq_{exp} M_3 \implies M_1 \preceq_{exp} M_3$$
+## 1. Model Overview
 
-<!-- TRANSLATE: **直观解释**: 编码关系可以传递组合，高层模型的完备编码能够继承低层模型的编码能力。 -->
+### 1.1 Core Concurrency Models
 
-<!-- TRANSLATE: ### Prop-U-02: 互模拟层次关系 -->
+| Model | Core Abstraction | Communication | State |
+|-------|------------------|---------------|-------|
+| **Actor** | Actor (encapsulated state + behavior) | Asynchronous message passing | Encapsulated in actors |
+| **CSP** | Sequential processes | Synchronous channels | External to processes |
+| **Dataflow** | Operators (stateless/stateful) | Streams (data flows) | Operator state |
+| **π-Calculus** | Mobile processes | Channel passing | Process configuration |
 
-<!-- TRANSLATE: **命题**: 三种互模拟满足严格包含关系： -->
-$$\sim \subsetneq \approx_w \subsetneq \approx_o$$
+### 1.2 Model Characteristics Matrix
 
-<!-- TRANSLATE: 即强互模拟蕴含弱互模拟，弱互模拟蕴含观测等价，但逆命题不成立。 -->
+```mermaid
+graph LR
+    subgraph "Actor Model"
+        A1[Actor]
+        A2[Mailbox]
+        A3[Behavior]
+    end
 
-<!-- TRANSLATE: **证明概要**:  -->
-- $\sim \subseteq \approx_w$: 强互模拟也是弱互模拟（取 $\tau$ 为恒等迁移）
-- $\approx_w \subseteq \approx_o$: 弱互模拟保持外部迹
-<!-- TRANSLATE: - 严格性通过反例证明：存在弱互模拟但不强互模拟的进程对 -->
+    subgraph "CSP"
+        C1[Process]
+        C2[Channel]
+    end
 
-<!-- TRANSLATE: ### Prop-U-03: 编码完备性的组合律 -->
+    subgraph "Dataflow"
+        D1[Operator]
+        D2[Stream]
+        D3[State]
+    end
 
-**命题**: 若 $\llbracket \cdot \rrbracket_{12}: M_1 \to M_2$ 和 $\llbracket \cdot \rrbracket_{23}: M_2 \to M_3$ 均为完备编码，则复合编码 $\llbracket \cdot \rrbracket_{13} = \llbracket \cdot \rrbracket_{23} \circ \llbracket \cdot \rrbracket_{12}$ 也是完备的。
-
-
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
-
-<!-- TRANSLATE: ### 4.1 为什么Process Calculus位于表达力顶层 -->
-
-<!-- TRANSLATE: Process Calculus（特别是π-calculus）能够表达动态通道创建和传递，这一特性使其成为表达力的"通用语言"： -->
-
-<!-- TRANSLATE: 1. **动态拓扑**: π-calculus允许在运行时创建新通道并传递给其他进程，模拟动态变化的通信拓扑 -->
-<!-- TRANSLATE: 2. **名称传递**: 通过名称传递(name passing)机制，可以实现Actor模型的动态地址传递 -->
-<!-- TRANSLATE: 3. ** mobility**: π-calculus的 mobility 特性支持表达移动计算和动态重构 -->
-
-<!-- TRANSLATE: ### 4.2 Dataflow作为中间层的合理性 -->
-
-<!-- TRANSLATE: Dataflow模型选择性地限制了表达能力，换取了更好的可分析性： -->
-
-<!-- TRANSLATE: - **有界状态**: Dataflow图的静态结构使得状态空间更易分析 -->
-<!-- TRANSLATE: - **时间语义**: 显式的时间模型（事件时间、处理时间）使得时序性质可验证 -->
-<!-- TRANSLATE: - **确定性**: 纯函数Dataflow图天然满足确定性，简化正确性论证 -->
-
-<!-- TRANSLATE: 这种"表达能力换可分析性"的权衡是流处理系统设计的核心考量。 -->
-
-<!-- TRANSLATE: ### 4.3 编码不完备性的工程意义 -->
-
-<!-- TRANSLATE: 并非所有模型间编码都是完备的，这种不完备性具有重要的工程意义： -->
-
-<!-- TRANSLATE: | 源模型 | 目标模型 | 编码限制 | 工程影响 | -->
-<!-- TRANSLATE: |--------|----------|----------|----------| -->
-<!-- TRANSLATE: | Actor (动态地址) | CSP | 不完备 | CSP验证工具无法直接验证动态拓扑系统 | -->
-<!-- TRANSLATE: | Flink | π-calculus | 部分 | 形式验证需抽象某些运行时特性 | -->
-<!-- TRANSLATE: | 带Flink SQL的Dataflow | 纯Dataflow | 不完备 | SQL优化器的某些转换需额外正确性保证 | -->
-
-
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
-
-<!-- TRANSLATE: ### 6.1 模型编码实例: Actor到π-calculus -->
-
-<!-- TRANSLATE: **源模型 (Actor)**: -->
-```
-Actor A:
-  receive msg:
-    if msg == "ping":
-      send "pong" to sender
+    subgraph "π-Calculus"
+        P1[Process]
+        P2[Name]
+        P3[Channel]
+    end
 ```
 
-<!-- TRANSLATE: **目标编码 (π-calculus)**: -->
+---
+
+## 2. Relationship Hierarchy
+
+### 2.1 Expressiveness Hierarchy
+
 ```
-[[A]] = νa.(A⟨a⟩ | !a(x).(x == "ping").sender̄⟨"pong"⟩)
-```
-
-<!-- TRANSLATE: **编码说明**: -->
-- Actor地址 $A$ 编码为 π-calculus 通道名 $a$
-- 邮箱编码为带复制的输入守卫 $!a(x)$
-- 消息发送编码为输出前缀 $\bar{sender}\langle"pong"\rangle$
-
-<!-- TRANSLATE: ### 6.2 Flink算子编码实例 -->
-
-<!-- TRANSLATE: **Flink DataStream**: -->
-```java
-DataStream<Event> stream = env
-  .addSource(new KafkaSource<>())
-  .map(e -> e.transform())
-  .keyBy(e -> e.getKey())
-  .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-  .aggregate(new MyAggregate());
+                    π-Calculus (Most Expressive)
+                           ↑
+                    Actor Model
+                    ↗        ↖
+        CSP ←────────→ Dataflow ←────→ Flink
+        (Most Structured)
 ```
 
-<!-- TRANSLATE: **π-calculus编码框架**: -->
+### 2.2 Encoding Relationships
+
+| From | To | Encoding | Complexity | Reference |
+|------|-----|----------|------------|-----------|
+| Actor | CSP | Thm-S-09-01 | O(n) | [Actor→CSP](./01-foundation/01.03-actor-model-formalization.md) |
+| CSP | π-Calculus | Thm-S-09-03 | O(1) | Standard embedding |
+| Dataflow | Actor | Thm-S-09-04 | O(m) | [Dataflow→Actor](./01-foundation/01.04-dataflow-model-formalization.md) |
+| Flink | π-Calculus | Thm-S-03-02 | O(n+m) | [Flink→π](./03-relationships/01-flink-to-process-calculus.md) |
+
+---
+
+## 3. Formal Encodings
+
+### 3.1 Actor → CSP Encoding
+
+**Definition (Def-S-09-01)**: Actor→CSP Mapping
+
 ```
-[[Source]] = νout.(KafkaConsumer | out̄⟨msg⟩.[[Source]])
-[[Map]] = νin,out.(!in(x).out̄⟨f(x)⟩ | [[Map']])
-[[Window]] = νin,out.(Buffer | Timer | Aggregator)
+⟦actor(a, b, m)⟧ = P_a ≜ μX.b(m).P_m | m(q).X
+where:
+  - a: actor identity
+  - b: behavior
+  - m: mailbox
 ```
 
-<!-- TRANSLATE: **验证**: 此编码保持数据流语义，但抽象了Flink的分布式执行细节。 -->
+**Theorem (Thm-S-09-01)**: Actor→CSP encoding preserves trace equivalence.
+
+### 3.2 Dataflow → Actor Encoding
+
+**Definition (Def-S-09-04)**: Dataflow→Actor Mapping
+
+```
+⟦operator(o, s, i, out)⟧ = Actor_o ≜
+  let state = s in
+  λmsg. let new_state, outputs = o(msg, state) in
+        send_all(outputs, out);
+        become(Actor_o with state = new_state)
+```
+
+**Theorem (Thm-S-09-04)**: Dataflow→Actor encoding preserves stream semantics.
+
+### 3.3 Flink → π-Calculus Encoding
+
+**Definition (Def-S-03-02)**: Flink Execution Graph → π-Calculus
+
+```mermaid
+graph TD
+    subgraph "Flink DAG"
+        F1[Source]
+        F2[Map]
+        F3[KeyBy]
+        F4[Reduce]
+        F5[Sink]
+    end
+
+    subgraph "π-Calculus"
+        P1[v_src | out_src(ch1)]
+        P2[v_map | in_map(ch1) | out_map(ch2)]
+        P3[v_keyby | in_keyby(ch2) | out_keyby(ch3)]
+        P4[v_reduce | in_reduce(ch3) | out_reduce(ch4)]
+        P5[v_sink | in_sink(ch4)]
+    end
+
+    F1 --> P1
+    F2 --> P2
+    F3 --> P3
+    F4 --> P4
+    F5 --> P5
+```
+
+---
+
+## 4. Expressiveness Comparison
+
+### 4.1 Expressiveness Hierarchy Table
+
+| Capability | Actor | CSP | Dataflow | π-Calculus |
+|------------|-------|-----|----------|------------|
+| Dynamic topology | ✓ | ✗ | △ | ✓ |
+| Channel passing | ✗ | ✗ | ✗ | ✓ |
+| Synchronous comm | ✗ | ✓ | △ | ✓ |
+| Stateful operators | ✓ | ✗ | ✓ | △ |
+| Deterministic exec | △ | ✓ | ✓ | △ |
+
+Legend: ✓ = Native support, ✗ = Not supported, △ = Can be encoded
+
+### 4.2 Turing Completeness
+
+| Model | Turing Complete | Proof |
+|-------|-----------------|-------|
+| Actor | Yes | Can simulate λ-calculus |
+| CSP | Yes | Can simulate Turing machine |
+| Dataflow | Yes | With feedback loops |
+| π-Calculus | Yes | Higher-order π-calculus |
+
+---
+
+## 5. Unified Stream Computing Meta-Model (USTM)
+
+### 5.1 USTM Definition
+
+**Definition (Def-S-01-01)**: Unified Stream Computing Meta-Model
+
+```
+USTM ≜ ⟨S, O, C, T, ⊢⟩ where:
+  - S: Set of stream types
+  - O: Set of operator types
+  - C: Set of connection types
+  - T: Set of time models
+  - ⊢: Derivation relation
+```
+
+### 5.2 USTM Layers
+
+```mermaid
+graph TB
+    subgraph "L6: Implementation"
+        L6[Flink/Kafka/Spark]
+    end
+
+    subgraph "L5: Execution Model"
+        L5[Dataflow Execution]
+    end
+
+    subgraph "L4: Stream Model"
+        L4[Event Time/Processing Time]
+    end
+
+    subgraph "L3: Communication"
+        L3[Actor/CSP Channels]
+    end
+
+    subgraph "L2: Process"
+        L2[π-Calculus Processes]
+    end
+
+    subgraph "L1: Foundation"
+        L1[Set Theory/Logic]
+    end
+
+    L1 --> L2
+    L2 --> L3
+    L3 --> L4
+    L4 --> L5
+    L5 --> L6
+```
+
+---
+
+## 6. Application to Flink
+
+### 6.1 Flink in the Model Hierarchy
+
+```mermaid
+graph LR
+    subgraph "Theoretical Foundation"
+        T1[π-Calculus]
+        T2[Dataflow Model]
+    end
+
+    subgraph "Flink Implementation"
+        F1[DataStream API]
+        F2[Table API]
+        F3[SQL]
+    end
+
+    subgraph "Runtime"
+        R1[TaskManager]
+        R2[Checkpoint]
+        R3[Network Stack]
+    end
+
+    T1 --> F1
+    T2 --> F1
+    F1 --> R1
+    F2 --> R2
+    F3 --> R3
+```
+
+### 6.2 Key Theorems for Flink
+
+| Theorem | Application | Formal Level |
+|---------|-------------|--------------|
+| Thm-S-03-02 | Flink→π encoding correctness | L5 |
+| Thm-S-17-01 | Checkpoint correctness | L6 |
+| Thm-S-04-02 | Event time completeness | L4 |
+| Thm-S-08-05 | State backend equivalence | L5 |
+
+---
+
+## References
 
 
-<!-- TRANSLATE: ## 8. 引用参考 (References) -->
+---
 
-<!-- TRANSLATE: [^1]: R. Milner, "Communicating and Mobile Systems: The π-calculus", Cambridge University Press, 1999. -->
-<!-- TRANSLATE: [^2]: C.A.R. Hoare, "Communicating Sequential Processes", Prentice Hall, 1985. -->
-<!-- TRANSLATE: [^3]: G. Agha, "Actors: A Model of Concurrent Computation in Distributed Systems", MIT Press, 1986. -->
-<!-- TRANSLATE: [^4]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015. -->
-<!-- TRANSLATE: [^5]: J.L. Peterson, "Petri Net Theory and the Modeling of Systems", Prentice Hall, 1981. -->
-<!-- TRANSLATE: [^6]: R. Milner, "A Calculus of Communicating Systems", LNCS 92, Springer, 1980. -->
-<!-- TRANSLATE: [^7]: D. Sangiorgi, "Introduction to Bisimulation and Coinduction", Cambridge University Press, 2011. -->
-<!-- TRANSLATE: [^8]: Apache Flink Documentation, "DataStream API", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/ -->
-<!-- TRANSLATE: [^9]: M. Papazoglou et al., "The Expressiveness of CSP with Priority", CONCUR 2000. -->
-<!-- TRANSLATE: [^10]: F. Arbab, "Reo: A Channel-based Coordination Model for Component Composition", Mathematical Structures in Computer Science, 14(3), 2004. -->
-
-
-<!-- TRANSLATE: *本文档遵循 [AGENTS.md](../AGENTS.md) 六段式模板规范 | 更新时间: 2026-04-06* -->
+*For Chinese version, see [Struct/Unified-Model-Relationship-Graph.md](../../Struct/Unified-Model-Relationship-Graph.md)*

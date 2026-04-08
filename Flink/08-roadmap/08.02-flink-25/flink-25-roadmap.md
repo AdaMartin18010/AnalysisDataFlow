@@ -39,20 +39,20 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 消除流处理和批处理的执行引擎差异，实现真正的统一执行。
 
 ```yaml
-核心组件:
-  StreamBatchUnifiedOptimizer:
+核心组件: 
+  StreamBatchUnifiedOptimizer: 
     - 统一执行计划生成器
     - 统一 Cost Model
     - 自适应执行策略选择
     状态: 🔄 设计中 (40%)
-    
-  UnifiedTaskExecutor:
+
+  UnifiedTaskExecutor: 
     - 统一 Task 执行模型
     - 统一状态访问接口
     - 统一 Checkpoint 机制
     状态: 📋 规划中 (20%)
-    
-  AdaptiveModeSelector:
+
+  AdaptiveModeSelector: 
     - 自动执行模式检测
     - 运行时模式切换
     - 混合执行支持
@@ -74,19 +74,19 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 将 Serverless Flink 从 Beta 推进到 GA，实现真正的按需计算。
 
 ```yaml
-核心能力:
-  Scale-to-Zero:
+核心能力: 
+  Scale-to-Zero: 
     - 无流量时资源释放至 0
     - 自动休眠与唤醒
     - 成本优化报告
     状态: 🔄 实现中 (70%)
-    
+
   Fast Cold Start:
     - 冷启动 < 500ms
     - 预置镜像优化
     - 增量状态恢复
     状态: 🔄 实现中 (60%)
-    
+
   Predictive Scaling:
     - 基于负载预测的扩缩容
     - 减少扩缩容抖动
@@ -107,19 +107,19 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 将 FLIP-531 (AI Agent) 扩展到生产级推理服务。
 
 ```yaml
-核心优化:
+核心优化: 
   Batch Inference:
     - 动态批处理
     - 批大小自适应
     - 延迟-吞吐权衡
     状态: 🔄 设计中 (30%)
-    
+
   Speculative Decoding:
     - 投机解码加速
     - Draft Model 支持
     - 接受率优化
     状态: 📋 规划中 (10%)
-    
+
   KV-Cache 优化:
     - 跨请求 KV-Cache 共享
     - 前缀缓存 (Prefix Caching)

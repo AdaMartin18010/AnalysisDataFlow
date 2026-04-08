@@ -51,11 +51,6 @@
     - [7.2 State Backend 快照流程图](#72-state-backend-快照流程图)
     - [7.3 Checkpoint 类型对比决策树](#73-checkpoint-类型对比决策树)
     - [7.4 架构层次关联图](#74-架构层次关联图)
-  - [8. 调优建议与监控指标](#8-调优建议与监控指标)
-    - [8.1 Checkpoint 调优最佳实践](#81-checkpoint-调优最佳实践)
-      - [基础配置原则](#基础配置原则)
-      - [大状态作业调优](#大状态作业调优)
-      - [低延迟作业调优](#低延迟作业调优)
     - [8.2 关键监控指标](#82-关键监控指标)
       - [Flink 原生指标](#flink-原生指标)
       - [JVM 和系统指标](#jvm-和系统指标)
@@ -1004,7 +999,7 @@ env.configure(rocksDbConfig);
 
 env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
-```
+```text
 
 ---
 
@@ -1027,8 +1022,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 2. **作业重启决策**：根据 `restart-strategy` 配置，触发固定延迟重启。
 
 3. **状态恢复**：
-
-   ```
+```
 
 - 查询最新成功 Checkpoint: CP_150
 - 基础 Checkpoint: CP_140 (全量)
@@ -1225,7 +1219,7 @@ graph TB
     style E2 fill:#bbdefb,stroke:#1565c0
     style D1 fill:#c8e6c9,stroke:#2e7d32
     style S2 fill:#e1bee7,stroke:#6a1b9a
-```
+```text
 
 **图说明**：
 
@@ -1256,31 +1250,27 @@ graph TB
 **解决方案**：
 
 1. **启用增量 Checkpoint**（必需）
-
-   ```java
+```java
    new EmbeddedRocksDBStateBackend(true)  // true 启用增量
-   ```
+   ```text
 
 2. **调优 RocksDB 参数**
-
-   ```java
+```java
    DefaultConfigurableStateBackend backend = new EmbeddedRocksDBStateBackend(true);
    Configuration config = new Configuration();
    config.setString("state.backend.rocksdb.predefined-options", "FLASH_SSD_OPTIMIZED");
    config.setString("state.backend.rocksdb.thread.num", "4");
-   ```
+   ```text
 
 3. **增加 Checkpoint 间隔**
-
-   ```java
+```java
    env.enableCheckpointing(60000);  // 1 分钟，减少频率
-   ```
+   ```text
 
 4. **使用本地恢复**
-
-   ```java
+```java
    env.getCheckpointConfig().setPreferCheckpointForRecovery(true);
-   ```
+   ```text
 
 #### 低延迟作业调优
 
@@ -1289,19 +1279,17 @@ graph TB
 **解决方案**：
 
 1. **启用 Unaligned Checkpoint**
-
-   ```java
+```java
    env.getCheckpointConfig().enableUnalignedCheckpoints();
    env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(1));
-   ```
+   ```text
 
 2. **减少状态大小**
    - 使用更小的状态 TTL
    - 优化状态数据结构
 
 3. **使用异步 Checkpoint 模式**
-
-   ```java
+```java
    env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);
    ```
 

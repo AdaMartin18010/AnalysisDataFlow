@@ -15,6 +15,7 @@ $$
 $$
 
 **核心特征**:
+
 - 静态 Slot 分配
 - 资源预留模式
 - 批处理与流处理统一调度
@@ -32,6 +33,7 @@ $$
 $$
 
 **改进点**:
+
 - 引入 SlotRequest 机制
 - 优化 Deployment 顺序 (上游优先)
 - 增强错误恢复能力
@@ -47,6 +49,7 @@ $$
 $$
 
 **核心创新**:
+
 - 声明式资源需求: $\text{ResourceSpec} = \langle cpu, memory, disk \rangle$
 - 动态 Slot 分配
 - 支持细粒度资源管理
@@ -68,6 +71,7 @@ P_{target} = f(\lambda_{current}, \lambda_{target}, P_{current})
 $$
 
 其中:
+
 - $\lambda_{current}$: 当前吞吐率
 - $\lambda_{target}$: 目标吞吐率
 - $P_{current}$: 当前并行度
@@ -85,6 +89,7 @@ $$
 $$
 
 **V2 增强特性**:
+
 1. **存算分离集成**: 扩缩容无需状态迁移
 2. **快速扩缩容**: $T_{scale} = O(1)$
 3. **ML 驱动预测**: 基于历史数据预测负载
@@ -161,6 +166,7 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 ```
 
 **演进主线**:
+
 1. **静态 → 动态**: 从预留到按需分配
 2. **被动 → 主动**: 从人工调整到自动优化
 3. **计算绑定 → 计算分离**: 从状态迁移到无状态扩缩容
@@ -184,41 +190,49 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 
 #### 阶段 1: 基础调度 (1.0 → 1.5)
 
-**问题**: 
+**问题**:
+
 - 批处理与流处理调度逻辑混杂
 - 错误恢复粒度粗
 
-**改进**: 
+**改进**:
+
 - 优化部署顺序
 - 增强错误恢复
 
 #### 阶段 2: 声明式调度 (1.11)
 
-**问题**: 
+**问题**:
+
 - 资源需求硬编码
 - 无法动态适配
 
-**改进**: 
+**改进**:
+
 - 声明式资源需求
 - 细粒度资源管理
 
 #### 阶段 3: 自适应调度 (1.17)
 
-**问题**: 
+**问题**:
+
 - 负载波动导致资源浪费
 - 人工扩缩容延迟高
 
-**改进**: 
+**改进**:
+
 - 自动负载监控
 - 动态并行度调整
 
 #### 阶段 4: 智能调度 (2.0)
 
-**问题**: 
+**问题**:
+
 - 大状态扩缩容慢
 - 无法预测负载
 
-**改进**: 
+**改进**:
+
 - 存算分离实现快速扩缩容
 - ML 预测实现预调整
 
@@ -247,10 +261,12 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 设负载随时间变化为 $\lambda(t)$，并行度为 $P(t)$。
 
 **静态调度**: $P(t) = P_{fixed}$
+
 - 过载时: $\lambda(t) > \mu \cdot P_{fixed}$，导致积压
 - 欠载时: $\lambda(t) < \mu \cdot P_{fixed}$，资源浪费
 
 **自适应调度**: $P(t) = \lceil \lambda(t) / \mu \rceil$
+
 - 始终维持 $\lambda(t) \approx \mu \cdot P(t)$
 - 资源利用率最优
 
@@ -271,6 +287,7 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 | 成本 (月度) | $1000 | $600 | $450 |
 
 **关键改进**:
+
 1. **存算分离**: 扩缩容无需等待状态迁移
 2. **ML 预测**: 提前扩容，避免延迟尖峰
 3. **智能缩容**: 避免过早缩容导致反弹
@@ -283,7 +300,7 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 
 ```java
 // Flink 1.0 - 1.4 默认调度器
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 静态 Slot 分配
@@ -299,7 +316,7 @@ env.setParallelism(4);  // 需要 4 个 Slot
 
 ```java
 // Flink 1.5+ LegacyScheduler
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // flink-conf.yaml
@@ -315,7 +332,7 @@ cluster.evenly-spread-out-slots: true
 
 ```java
 // Flink 1.11+ DeclarativeScheduler
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 声明式资源配置
@@ -335,7 +352,7 @@ cluster.evenly-spread-out-slots: true
 
 ```java
 // Flink 1.17+ AdaptiveScheduler
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用自适应调度
@@ -362,7 +379,7 @@ scheduler.adaptive.scale-down.cooldown: 300s
 
 ```java
 // Flink 2.0+ AdaptiveScheduler V2
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 必须使用存算分离状态后端
@@ -397,41 +414,41 @@ scheduler.adaptive-v2.state.migration.enabled: false  # 2.0 无需状态迁移
  * 基于负载监控的自适应调度
  */
 public class AdaptiveScheduler implements SchedulerNG {
-    
+
     private final LoadMonitor loadMonitor;
     private final ScalingPolicy scalingPolicy;
     private final RescaleController rescaleController;
-    
+
     @Override
-    public void onProcessingStatusUpdate(ExecutionJobVertex vertex, 
+    public void onProcessingStatusUpdate(ExecutionJobVertex vertex,
                                          AggregatedMetric metrics) {
         // 1. 计算当前负载
         double currentLoad = loadMonitor.calculateLoad(metrics);
-        
+
         // 2. 评估是否需要扩缩容
         ScalingDecision decision = scalingPolicy.evaluate(
-            currentLoad, 
+            currentLoad,
             vertex.getParallelism(),
             vertex.getMinParallelism(),
             vertex.getMaxParallelism()
         );
-        
+
         // 3. 执行扩缩容
         if (decision.shouldScale()) {
             // 触发 Savepoint (Flink 1.x 需要)
-            CompletableFuture<Savepoint> savepoint = 
+            CompletableFuture<Savepoint> savepoint =
                 triggerSavepoint();
-            
+
             savepoint.thenAccept(s -> {
                 // 从 Savepoint 恢复，调整并行度
                 rescaleController.rescaleFromSavepoint(
-                    s, 
+                    s,
                     decision.getTargetParallelism()
                 );
             });
         }
     }
-    
+
     private CompletableFuture<Savepoint> triggerSavepoint() {
         // 创建 Savepoint 以保存状态
         return checkpointCoordinator.triggerSavepoint(
@@ -450,25 +467,25 @@ public class AdaptiveScheduler implements SchedulerNG {
  * 与存算分离集成的自适应调度
  */
 public class AdaptiveScheduler implements SchedulerNG {
-    
+
     private final LoadMonitor loadMonitor;
     private final ScalingPolicy scalingPolicy;
     private final RescaleController rescaleController;
     private final MLPredictor mlPredictor;  // V2 新增
-    
+
     @Override
     public void onProcessingStatusUpdate(ExecutionJobVertex vertex,
                                          AggregatedMetric metrics) {
         // 1. 计算当前负载
         double currentLoad = loadMonitor.calculateLoad(metrics);
-        
+
         // 2. ML 预测未来负载 (V2 新增)
         double predictedLoad = mlPredictor.predict(
-            vertex.getID(), 
+            vertex.getID(),
             currentLoad,
             Duration.ofMinutes(5)
         );
-        
+
         // 3. 评估是否需要扩缩容 (使用预测值)
         ScalingDecision decision = scalingPolicy.evaluate(
             predictedLoad,  // 使用预测负载
@@ -476,7 +493,7 @@ public class AdaptiveScheduler implements SchedulerNG {
             vertex.getMinParallelism(),
             vertex.getMaxParallelism()
         );
-        
+
         // 4. 执行扩缩容 (V2 无需 Savepoint)
         if (decision.shouldScale()) {
             // 直接调整并行度，无需状态迁移
@@ -486,27 +503,27 @@ public class AdaptiveScheduler implements SchedulerNG {
             );
         }
     }
-    
+
     /**
      * V2 核心改进: 无需 Savepoint 的扩缩容
      * 依赖存算分离架构
      */
-    private void rescaleWithoutSavepoint(JobVertexID vertexId, 
+    private void rescaleWithoutSavepoint(JobVertexID vertexId,
                                          int targetParallelism) {
         // 1. 申请新资源
         Collection<SlotOffer> newSlots = resourceManager.requestSlots(
             targetParallelism - currentParallelism
         );
-        
+
         // 2. 部署新 Task (状态自动从 UFS 加载)
         for (SlotOffer slot : newSlots) {
             deployTask(slot, vertexId);
             // 无需等待状态迁移!
         }
-        
+
         // 3. 重新分配数据分区
         partitionAssigner.redistribute(vertexId, targetParallelism);
-        
+
         // 4. 释放旧资源
         releaseExcessResources(vertexId, targetParallelism);
     }
@@ -526,13 +543,13 @@ gantt
     section Flink 1.x
     DefaultScheduler    :done, 1.0, 2016-03, 2017-06
     LegacyScheduler     :done, 1.5, 2017-06, 2021-05
-    
+
     section Flink 1.11+
     DeclarativeScheduler :done, 1.11, 2020-07, 2026-12
-    
+
     section Flink 1.17+
     AdaptiveScheduler    :done, 1.17, 2023-05, 2026-12
-    
+
     section Flink 2.0+
     AdaptiveScheduler V2 :active, 2.0, 2025-03, 2027-12
     ML Predictor         :crit, 2.1, 2025-06, 2027-12
@@ -552,7 +569,7 @@ graph TB
         D3 --> D6[Task 3]
         style D3 fill:#ffccbc
     end
-    
+
     subgraph "DeclarativeScheduler (1.11)"
         DS1[JobManager] --> DS2[ResourceSpec]
         DS2 --> DS3[SlotAllocator]
@@ -561,7 +578,7 @@ graph TB
         DS4 --> DS6[Task 2]
         style DS2 fill:#e3f2fd
     end
-    
+
     subgraph "AdaptiveScheduler (1.17)"
         A1[JobManager] --> A2[LoadMonitor]
         A2 --> A3[ScalingPolicy]
@@ -571,7 +588,7 @@ graph TB
         A4 -->|否| A7[继续监控]
         style A5 fill:#ffccbc
     end
-    
+
     subgraph "AdaptiveScheduler V2 (2.0)"
         AV1[JobManager] --> AV2[LoadMonitor]
         AV2 --> AV3[ML Predictor]
@@ -595,7 +612,7 @@ sequenceDiagram
     participant TM_OLD as Old TaskManagers
     participant Storage as Checkpoint Storage
     participant TM_NEW as New TaskManagers
-    
+
     rect rgb(255, 243, 224)
         Note over JM,TM_NEW: AdaptiveScheduler (1.17) - 需要状态迁移
         JM->>JM: 检测到需要扩容
@@ -609,7 +626,7 @@ sequenceDiagram
         TM_NEW-->>JM: 8. 就绪
         Note over JM: 总时间: 分钟级
     end
-    
+
     rect rgb(232, 245, 233)
         Note over JM,TM_NEW: AdaptiveScheduler V2 (2.0) - 无需状态迁移
         JM->>JM: 检测到需要扩容
@@ -617,7 +634,7 @@ sequenceDiagram
         TM_NEW->>TM_NEW: 2. 加载元数据
         TM_NEW-->>JM: 3. 就绪 (秒级)
         Note over JM: 总时间: 秒级
-        
+
         alt 缓存未命中
             TM_NEW->>Storage: 按需异步加载状态
         end
@@ -643,23 +660,18 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Job Scheduling", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/internals/job_scheduling/>
 
-[^2]: Apache Flink Documentation, "Adaptive Scheduler", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/elastic_scaling/>
 
-[^3]: Apache Flink FLIP-160, "Adaptive Scheduler", 2021. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-160>
 
-[^4]: Apache Flink FLIP-168, "Declarative Resource Management", 2020. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-168>
 
-[^5]: Apache Flink Blog, "Apache Flink 2.0.0 Release Announcement", March 2025. <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 
-[^6]: M. Zaharia et al., "Spark: Cluster Computing with Working Sets," *HotCloud*, 2010.
 
 ---
 
 *文档版本: 2026.04-001 | 形式化等级: L4 | 最后更新: 2026-04-06*
 
 **关联文档**:
+
 - [autoscaling-evolution.md](./autoscaling-evolution.md) - 自动扩缩容演进
 - [flink-kubernetes-autoscaler-deep-dive.md](../flink-kubernetes-autoscaler-deep-dive.md) - K8s Autoscaler 深度分析
 - [flink-architecture-evolution-1x-to-2x.md](../../../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析

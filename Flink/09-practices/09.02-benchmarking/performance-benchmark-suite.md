@@ -853,18 +853,18 @@ cluster.evenly-spread-out-slots: true
 # JVM 调优
 # -----------------------------------------------------------------------------
 env.java.opts.jobmanager: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=100
-  -XX:+UnlockDiagnosticVMOptions
-  -XX:+DebugNonSafepoints
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=100
+  -XX: +UnlockDiagnosticVMOptions
+  -XX: +DebugNonSafepoints
 
 env.java.opts.taskmanager: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=200
-  -XX:+UnlockDiagnosticVMOptions
-  -XX:+DebugNonSafepoints
-  -XX:+UseStringDeduplication
-  -XX:+AlwaysPreTouch
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=200
+  -XX: +UnlockDiagnosticVMOptions
+  -XX: +DebugNonSafepoints
+  -XX: +UseStringDeduplication
+  -XX: +AlwaysPreTouch
 ```
 
 #### Kubernetes部署配置
@@ -873,42 +873,42 @@ env.java.opts.taskmanager: >
 # flink-deployment.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: flink-benchmark
   namespace: flink
-spec:
+spec: 
   image: flink:1.18-scala_2.12
   flinkVersion: v1.18
-  jobManager:
-    resource:
+  jobManager: 
+    resource: 
       memory: "4Gi"
       cpu: 2
     replicas: 1
-  taskManager:
-    resource:
+  taskManager: 
+    resource: 
       memory: "16Gi"
       cpu: 8
     replicas: 8
-  job:
+  job: 
     jarURI: local:///opt/flink/examples/benchmarking/nexmark-benchmark.jar
     parallelism: 32
     upgradeMode: stateful
     state: running
-  podTemplate:
-    spec:
-      containers:
+  podTemplate: 
+    spec: 
+      containers: 
         - name: flink-main-container
-          volumeMounts:
+          volumeMounts: 
             - name: flink-config
               mountPath: /opt/flink/conf
             - name: checkpoint-storage
               mountPath: /data/checkpoints
-      volumes:
+      volumes: 
         - name: flink-config
-          configMap:
+          configMap: 
             name: flink-config
         - name: checkpoint-storage
-          persistentVolumeClaim:
+          persistentVolumeClaim: 
             claimName: flink-checkpoints
 ```
 
@@ -1219,7 +1219,7 @@ class FlinkMetricsCollector:
         resp = self.session.get(f"{self.jobmanager_url}/jobs/overview")
         resp.raise_for_status()
         return [job for job in resp.json().get("jobs", [])
-                if job.get("state") == "RUNNING"]
+                if job.get("state") == "RUNNING"]:
 
     def get_job_metrics(self, job_id: str) -> Dict:
         """获取作业级指标"""
@@ -1529,7 +1529,7 @@ class ReportGenerator:
             <tbody>
         """
 
-        for result in sorted(self.data["nexmark"],
+        for result in sorted(self.data["nexmark"],:
                             key=lambda x: x.get("query", "")):
             query = result.get("query", "N/A")
             throughput = result.get("throughput", 0)
@@ -1636,7 +1636,7 @@ class ReportGenerator:
             <tbody>
         """
 
-        for result in sorted(self.data["checkpoint"],
+        for result in sorted(self.data["checkpoint"],:
                             key=lambda x: x.get("state_size_mb", 0)):
             state_size = result.get("state_size_mb", 0)
             avg_duration = result.get("avg_duration_ms", 0) / 1000
@@ -1669,7 +1669,7 @@ class ReportGenerator:
         # 分析结果并生成建议
         high_latency_queries = [
             r for r in self.data["nexmark"]
-            if r.get("latency_p99", 0) > 500
+            if r.get("latency_p99", 0) > 500:
         ]
 
         if high_latency_queries:
@@ -1686,7 +1686,7 @@ class ReportGenerator:
         # Checkpoint建议
         slow_checkpoints = [
             r for r in self.data["checkpoint"]
-            if r.get("avg_duration_ms", 0) > 60000
+            if r.get("avg_duration_ms", 0) > 60000:
         ]
 
         if slow_checkpoints:

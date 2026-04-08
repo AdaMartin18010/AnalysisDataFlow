@@ -983,7 +983,7 @@ jobs:
         run: |
           mkdir -p ~/.pandoc/templates
           curl -L -o ~/.pandoc/templates/eisvogel.latex \
-            https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/eisvogel.tex
+            https: //raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/master/eisvogel.tex
 
       - name: Generate PDF
         run: |

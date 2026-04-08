@@ -96,7 +96,7 @@ $$\sim \subsetneq \approx_w \subsetneq \approx_o$$
 
 ### 3.2 模型间编码关系
 
-```
+```text
 Expressiveness Hierarchy (表达力层级):
 
 Turing Machine (最高，图灵完备)
@@ -104,7 +104,7 @@ Turing Machine (最高，图灵完备)
 Process Calculus (π-calculus)
     ↑ 可编码
     ├── Actor Model → 编码为: π-calculus with name passing
-    ├── CSP → 编码为: CCS with channels  
+    ├── CSP → 编码为: CCS with channels
     └── Dataflow → 编码为: π-calculus with stream types
         ↑ 可编码
         └── Petri Net → 编码为: Dataflow with bounded buffers
@@ -271,29 +271,29 @@ DataStream<Event> stream = env
 ```mermaid
 graph BT
     TM[Turing Machine<br/>图灵完备<br/>L6]
-    
+
     subgraph High["高表达能力 L5"]
         PC[Process Calculus<br/>π-calculus]
         Actor[Actor Model]
         CSP[CSP]
     end
-    
+
     subgraph Medium["中表达能力 L3-L4"]
         DF[Dataflow Model]
         PN[Petri Net]
     end
-    
+
     subgraph Low["专用表达能力 L1-L2"]
         SDF[Synchronous Dataflow]
         FSM[Finite State Machine]
     end
-    
+
     SDF --> DF --> PC --> TM
     FSM --> PN
     PN --> DF
     Actor --> PC
     CSP --> PC
-    
+
     style TM fill:#ff6b6b,stroke:#333,stroke-width:4px
     style PC fill:#4ecdc4,stroke:#333,stroke-width:3px
     style Actor fill:#45b7d1,stroke:#333,stroke-width:3px
@@ -314,28 +314,28 @@ graph LR
         D[Dataflow]
         P[Petri Net]
     end
-    
+
     subgraph Target["目标模型 - Process Calculus"]
         PC[π-calculus<br/>通用形式化基础]
     end
-    
+
     subgraph Encoding["编码特性"]
         E1[动态名称传递]
         E2[通道同步]
         E3[流类型]
         E4[有界缓冲]
     end
-    
+
     A -->|encoding<br/>name passing| PC
     C -->|encoding<br/>channel sync| PC
     D -->|encoding<br/>stream types| PC
     P -->|encoding<br/>via Dataflow| D
-    
+
     A -.-> E1
     C -.-> E2
     D -.-> E3
     P -.-> E4
-    
+
     style PC fill:#f9f,stroke:#333,stroke-width:4px
     style A fill:#a8e6cf,stroke:#333
     style C fill:#dcedc1,stroke:#333
@@ -355,31 +355,31 @@ graph TB
         F3[Dataflow<br/>Model]
         F4[CSP]
     end
-    
+
     subgraph Flink["Flink实现层"]
         FL1[DataStream API<br/>数据流编程]
         FL2[State Backend<br/>状态管理]
         FL3[Checkpoint<br/>容错机制]
         FL4[Watermark<br/>时间管理]
     end
-    
+
     subgraph Semantics["语义对应"]
         S1[算子组合]
         S2[Actor状态]
         S3[屏障同步]
         S4[事件时间格]
     end
-    
+
     F1 -->|语义基础| FL1
     F2 -->|状态模型| FL2
     F3 -->|执行模型| FL3
     F4 -->|同步原语| FL4
-    
+
     FL1 -.-> S1
     FL2 -.-> S2
     FL3 -.-> S3
     FL4 -.-> S4
-    
+
     style F1 fill:#e74c3c,stroke:#333,stroke-width:2px,color:#fff
     style F2 fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
     style F3 fill:#2ecc71,stroke:#333,stroke-width:2px,color:#fff
@@ -398,37 +398,37 @@ graph TB
 graph TB
     subgraph Equivalence["互模拟等价层次"]
         direction TB
-        
+
         subgraph Strong["强互模拟 ~"]
             S1[Actor: 消息序列等价]
             S2[CSP: 迹等价]
             S3[π-calculus: 标准强互模拟]
         end
-        
+
         subgraph Weak["弱互模拟 ≈w"]
             W1[忽略内部τ动作]
             W2[适用于所有模型]
         end
-        
+
         subgraph Obs["观测等价 ≈o"]
             O1[仅观察外部行为]
             O2[迹集合等价]
         end
     end
-    
+
     Strong -->|蕴含| Weak
     Weak -->|蕴含| Obs
-    
+
     subgraph Application["应用场景"]
         A1[协议验证: 强互模拟]
         A2[编译优化: 弱互模拟]
         A3[黑盒测试: 观测等价]
     end
-    
+
     Strong -.-> A1
     Weak -.-> A2
     Obs -.-> A3
-    
+
     style Strong fill:#ff7675,stroke:#333,stroke-width:3px
     style Weak fill:#74b9ff,stroke:#333,stroke-width:3px
     style Obs fill:#55efc4,stroke:#333,stroke-width:3px
@@ -441,24 +441,24 @@ graph TB
 ```mermaid
 flowchart TD
     Start([选择计算模型]) --> Q1{需要动态拓扑?}
-    
+
     Q1 -->|是| Q2{需要形式验证?}
     Q1 -->|否| Q3{核心关注点?}
-    
+
     Q2 -->|是| Actor[Actor Model<br/>动态地址传递]
     Q2 -->|否| PC[Process Calculus<br/>π-calculus]
-    
+
     Q3 -->|并发协议| CSP[CSP<br/>通信顺序进程]
     Q3 -->|流处理| Q4{时间语义要求?}
     Q3 -->|工作流| PN[Petri Net<br/>工作流建模]
-    
+
     Q4 -->|事件时间| Flink[Flink<br/>Dataflow实现]
     Q4 -->|处理时间| DF[Dataflow<br/>通用流处理]
     Q4 -->|批处理| SDF[Synchronous Dataflow<br/>静态调度]
-    
+
     Actor --> FlinkInt[Flink集成<br/>Akka/Pekko]
     Flink --> Prod[生产部署<br/>Exactly-Once]
-    
+
     style Start fill:#f39c12,stroke:#333,stroke-width:3px
     style Actor fill:#e74c3c,stroke:#333,color:#fff
     style PC fill:#9b59b6,stroke:#333,color:#fff

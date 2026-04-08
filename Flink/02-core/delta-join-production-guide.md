@@ -892,9 +892,9 @@ taskmanager.memory.network.min: 128mb
 
 # JVM GC优化（G1GC低延迟）
 env.java.opts.taskmanager: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=50
-  -XX:+UnlockExperimentalVMOptions
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=50
+  -XX: +UnlockExperimentalVMOptions
 ```
 
 ---

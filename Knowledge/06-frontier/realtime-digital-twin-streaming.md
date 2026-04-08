@@ -286,12 +286,12 @@ prediction = model.predict(clean_data)
 twin_service: single_instance  # 故障即失联
 
 # ✅ 正确：分布式孪生
-edge_twins:
+edge_twins: 
   - location: factory_a
     autonomy: high  # 离线自治
   - location: factory_b
     sync: eventual
-cloud_twin:
+cloud_twin: 
   aggregation: global_view
 ```
 

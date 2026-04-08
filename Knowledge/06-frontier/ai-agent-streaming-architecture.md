@@ -882,32 +882,32 @@ sequenceDiagram
 
 ```yaml
 # Guardrails配置示例
-guardrails:
-  input:
+guardrails: 
+  input: 
     - type: toxicity_filter
       threshold: 0.8
     - type: prompt_injection_detector
       action: block
 
-  output:
+  output: 
     - type: fact_checker
       confidence_threshold: 0.9
     - type: sensitive_data_filter
       patterns: [SSN, CreditCard]
 
-  tools:
+  tools: 
     - type: rate_limit
       calls_per_minute: 100
     - type: allowed_domains
       whitelist: [api.example.com]
 
-  cost:
+  cost: 
     - type: token_limit
       max_tokens_per_request: 4000
     - type: budget_limit
       daily_budget_usd: 1000
 
-  memory:
+  memory: 
     - type: privacy_filter
       pii_detection: true
       retention_limit: 30d

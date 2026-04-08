@@ -1338,7 +1338,7 @@ class AsyncFeatureServiceClient(AsyncFunction):
     支持批量特征获取，适用于实时推荐系统
     """
 
-    def __init__(
+    def __init__(:
         self,
         service_endpoint: str,
         capacity: int = 200,

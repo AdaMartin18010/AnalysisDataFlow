@@ -99,7 +99,7 @@ gantt
    GROUP BY
      TUMBLE(event_time, INTERVAL '1' HOUR),
      event_type;
-   ```
+```
 
 2. **更新模式理解**
    - 对比 Append-only 和 Retract 模式
@@ -157,7 +157,7 @@ gantt
      COUNT(*) as cnt
    FROM user_events
    GROUP BY TUMBLE(event_time, INTERVAL '1' HOUR);
-   ```
+```
 
 2. **SQL 优化实验**
    - 使用 EXPLAIN 分析执行计划
@@ -207,7 +207,7 @@ Kafka (ODS) → Flink SQL (DWD) → Flink SQL (DWS) → ClickHouse (ADS)
      'properties.bootstrap.servers' = 'kafka:9092',
      'format' = 'raw'
    );
-   ```
+```
 
 2. **DWD 层（明细数据）**
 
@@ -221,7 +221,7 @@ Kafka (ODS) → Flink SQL (DWD) → Flink SQL (DWS) → ClickHouse (ADS)
      `ts` as event_time
    FROM ods_events
    WHERE JSON_VALUE(`data`, '$.user_id') IS NOT NULL;
-   ```
+```
 
 3. **DWS 层（汇总数据）**
 
@@ -237,7 +237,7 @@ Kafka (ODS) → Flink SQL (DWD) → Flink SQL (DWS) → ClickHouse (ADS)
    GROUP BY
      DATE_FORMAT(event_time, 'yyyy-MM-dd HH:00:00'),
      event_type;
-   ```
+```
 
 4. **维度表 Join**
 
@@ -253,7 +253,7 @@ Kafka (ODS) → Flink SQL (DWD) → Flink SQL (DWS) → ClickHouse (ADS)
    FROM dwd_events e
    LEFT JOIN dim_users FOR SYSTEM_TIME AS OF e.event_time AS u
    ON e.user_id = u.user_id;
-   ```
+```
 
 ### 检查点
 

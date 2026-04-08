@@ -686,52 +686,52 @@ MATCH_RECOGNIZE(
 # docker-compose.yml - Flink IoT本地开发环境
 version: '3.8'
 
-services:
+services: 
   # ============================================
   # 消息层：MQTT Broker (EMQX)
   # ============================================
-  emqx:
+  emqx: 
     image: emqx/emqx:5.6.0
     container_name: iot-emqx
-    ports:
+    ports: 
       - "1883:1883"    # MQTT协议
       - "8083:8083"    # MQTT over WebSocket
       - "8883:8883"    # MQTT over SSL
       - "18083:18083"  # Dashboard管理界面
-    environment:
+    environment: 
       - EMQX_NODE_NAME=emqx@127.0.0.1
       - EMQX_ALLOW_ANONYMOUS=true
-    volumes:
+    volumes: 
       - emqx-data:/opt/emqx/data
       - emqx-log:/opt/emqx/log
-    healthcheck:
+    healthcheck: 
       test: ["CMD", "emqx", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 消息层：Kafka (MSK本地模拟)
   # ============================================
-  zookeeper:
+  zookeeper: 
     image: confluentinc/cp-zookeeper:7.6.0
     container_name: iot-zookeeper
-    environment:
+    environment: 
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    networks:
+    networks: 
       - iot-network
 
-  kafka:
+  kafka: 
     image: confluentinc/cp-kafka:7.6.0
     container_name: iot-kafka
-    depends_on:
+    depends_on: 
       - zookeeper
-    ports:
+    ports: 
       - "9092:9092"
-    environment:
+    environment: 
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -739,17 +739,17 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-    volumes:
+    volumes: 
       - kafka-data:/var/lib/kafka/data
-    networks:
+    networks: 
       - iot-network
 
   # 初始化Kafka Topic
-  kafka-init:
+  kafka-init: 
     image: confluentinc/cp-kafka:7.6.0
-    depends_on:
+    depends_on: 
       - kafka
-    entrypoint:
+    entrypoint: 
       - /bin/sh
       - -c
       - |
@@ -762,51 +762,51 @@ services:
           --partitions 3 --replication-factor 1 \
           --topic iot.processed.metrics
         echo "Topics created successfully"
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 处理层：Flink JobManager
   # ============================================
-  jobmanager:
+  jobmanager: 
     image: flink:1.18-scala_2.12
     container_name: iot-flink-jobmanager
-    ports:
+    ports: 
       - "8081:8081"    # Flink Web UI
     command: jobmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size: 2048m
-    volumes:
+    volumes: 
       - ./flink-sql:/opt/flink/sql-scripts
-    networks:
+    networks: 
       - iot-network
 
   # 处理层：Flink TaskManager
-  taskmanager:
+  taskmanager: 
     image: flink:1.18-scala_2.12
     container_name: iot-flink-taskmanager
-    depends_on:
+    depends_on: 
       - jobmanager
     command: taskmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           taskmanager.memory.process.size: 4096m
           taskmanager.numberOfTaskSlots: 4
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 存储层：InfluxDB（热存储）
   # ============================================
-  influxdb:
+  influxdb: 
     image: influxdb:2.7
     container_name: iot-influxdb
-    ports:
+    ports: 
       - "8086:8086"
-    environment:
+    environment: 
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
       - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword123
@@ -814,75 +814,75 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=iot_metrics
       - DOCKER_INFLUXDB_INIT_RETENTION=30d
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-token
-    volumes:
+    volumes: 
       - influxdb-data:/var/lib/influxdb2
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 存储层：TimescaleDB（告警存储）
   # ============================================
-  timescaledb:
+  timescaledb: 
     image: timescale/timescaledb:latest-pg15
     container_name: iot-timescaledb
-    ports:
+    ports: 
       - "5432:5432"
-    environment:
+    environment: 
       - POSTGRES_USER=iot_user
       - POSTGRES_PASSWORD=iot_pass
       - POSTGRES_DB=iot_alerts
-    volumes:
+    volumes: 
       - timescaledb-data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 可视化层：Grafana
   # ============================================
-  grafana:
+  grafana: 
     image: grafana/grafana:10.4.0
     container_name: iot-grafana
-    ports:
+    ports: 
       - "3000:3000"
-    environment:
+    environment: 
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_INSTALL_PLUGINS=grafana-influxdb-datasource
-    volumes:
+    volumes: 
       - grafana-data:/var/lib/grafana
       - ./grafana-dashboards:/etc/grafana/provisioning/dashboards
-    depends_on:
+    depends_on: 
       - influxdb
-    networks:
+    networks: 
       - iot-network
 
   # ============================================
   # 数据模拟器：传感器数据生成
   # ============================================
-  sensor-simulator:
+  sensor-simulator: 
     build: ./sensor-simulator
     container_name: iot-sensor-simulator
-    depends_on:
+    depends_on: 
       - emqx
-    environment:
+    environment: 
       - MQTT_BROKER=emqx
       - MQTT_PORT=1883
       - DEVICE_COUNT=50
       - MESSAGE_RATE=100
-    networks:
+    networks: 
       - iot-network
 
-volumes:
-  emqx-data:
-  emqx-log:
-  kafka-data:
-  influxdb-data:
-  timescaledb-data:
-  grafana-data:
+volumes: 
+  emqx-data: 
+  emqx-log: 
+  kafka-data: 
+  influxdb-data: 
+  timescaledb-data: 
+  grafana-data: 
 
-networks:
-  iot-network:
+networks: 
+  iot-network: 
     driver: bridge
 ```
 
@@ -1073,129 +1073,129 @@ if __name__ == '__main__':
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Flink IoT Reference Architecture - AWS Infrastructure'
 
-Parameters:
-  EnvironmentName:
+Parameters: 
+  EnvironmentName: 
     Type: String
     Default: 'flink-iot-prod'
     Description: '环境名称'
 
-  VpcCIDR:
+  VpcCIDR: 
     Type: String
     Default: '10.0.0.0/16'
     Description: 'VPC CIDR块'
 
-Resources:
+Resources: 
   # ============================================
   # VPC 网络基础设施
   # ============================================
-  VPC:
+  VPC: 
     Type: AWS::EC2::VPC
-    Properties:
+    Properties: 
       CidrBlock: !Ref VpcCIDR
       EnableDnsHostnames: true
       EnableDnsSupport: true
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Ref EnvironmentName
 
-  InternetGateway:
+  InternetGateway: 
     Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
+    Properties: 
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-igw'
 
-  VPCGatewayAttachment:
+  VPCGatewayAttachment: 
     Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
   # 公共子网（负载均衡器）
-  PublicSubnet1:
+  PublicSubnet1: 
     Type: AWS::EC2::Subnet
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
       CidrBlock: !Select [0, !Cidr [!Ref VpcCIDR, 6, 8]]
       AvailabilityZone: !Select [0, !GetAZs '']
       MapPublicIpOnLaunch: true
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-public-1'
 
-  PublicSubnet2:
+  PublicSubnet2: 
     Type: AWS::EC2::Subnet
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
       CidrBlock: !Select [1, !Cidr [!Ref VpcCIDR, 6, 8]]
       AvailabilityZone: !Select [1, !GetAZs '']
       MapPublicIpOnLaunch: true
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-public-2'
 
   # 私有子网（MSK、Flink）
-  PrivateSubnet1:
+  PrivateSubnet1: 
     Type: AWS::EC2::Subnet
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
       CidrBlock: !Select [2, !Cidr [!Ref VpcCIDR, 6, 8]]
       AvailabilityZone: !Select [0, !GetAZs '']
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-private-1'
 
-  PrivateSubnet2:
+  PrivateSubnet2: 
     Type: AWS::EC2::Subnet
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
       CidrBlock: !Select [3, !Cidr [!Ref VpcCIDR, 6, 8]]
       AvailabilityZone: !Select [1, !GetAZs '']
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-private-2'
 
   # NAT Gateway（私有子网访问外网）
-  NatGateway1EIP:
+  NatGateway1EIP: 
     Type: AWS::EC2::EIP
     DependsOn: VPCGatewayAttachment
-    Properties:
+    Properties: 
       Domain: vpc
 
-  NatGateway1:
+  NatGateway1: 
     Type: AWS::EC2::NatGateway
-    Properties:
+    Properties: 
       AllocationId: !GetAtt NatGateway1EIP.AllocationId
       SubnetId: !Ref PublicSubnet1
 
   # 路由表
-  PublicRouteTable:
+  PublicRouteTable: 
     Type: AWS::EC2::RouteTable
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-public-rt'
 
-  PublicRoute:
+  PublicRoute: 
     Type: AWS::EC2::Route
     DependsOn: VPCGatewayAttachment
-    Properties:
+    Properties: 
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: '0.0.0.0/0'
       GatewayId: !Ref InternetGateway
 
-  PrivateRouteTable1:
+  PrivateRouteTable1: 
     Type: AWS::EC2::RouteTable
-    Properties:
+    Properties: 
       VpcId: !Ref VPC
-      Tags:
+      Tags: 
         - Key: Name
           Value: !Sub '${EnvironmentName}-private-rt-1'
 
-  PrivateRoute1:
+  PrivateRoute1: 
     Type: AWS::EC2::Route
-    Properties:
+    Properties: 
       RouteTableId: !Ref PrivateRouteTable1
       DestinationCidrBlock: '0.0.0.0/0'
       NatGatewayId: !Ref NatGateway1
@@ -1203,13 +1203,13 @@ Resources:
   # ============================================
   # MSK Serverless (Kafka)
   # ============================================
-  MSKSecurityGroup:
+  MSKSecurityGroup: 
     Type: AWS::EC2::SecurityGroup
-    Properties:
+    Properties: 
       GroupName: !Sub '${EnvironmentName}-msk-sg'
       GroupDescription: 'Security group for MSK cluster'
       VpcId: !Ref VPC
-      SecurityGroupIngress:
+      SecurityGroupIngress: 
         - IpProtocol: tcp
           FromPort: 9092
           ToPort: 9098
@@ -1219,76 +1219,76 @@ Resources:
           ToPort: 2181
           SourceSecurityGroupId: !Ref FlinkSecurityGroup
 
-  MSKCluster:
+  MSKCluster: 
     Type: AWS::MSK::ServerlessCluster
-    Properties:
+    Properties: 
       ClusterName: !Sub '${EnvironmentName}-msk'
-      VpcConfigs:
+      VpcConfigs: 
         - SubnetIds:
             - !Ref PrivateSubnet1
             - !Ref PrivateSubnet2
-          SecurityGroupIds:
+          SecurityGroupIds: 
             - !Ref MSKSecurityGroup
-      ClientAuthentication:
-        Sasl:
-          Iam:
+      ClientAuthentication: 
+        Sasl: 
+          Iam: 
             Enabled: true
 
   # ============================================
   # Managed Service for Apache Flink
   # ============================================
-  FlinkSecurityGroup:
+  FlinkSecurityGroup: 
     Type: AWS::EC2::SecurityGroup
-    Properties:
+    Properties: 
       GroupName: !Sub '${EnvironmentName}-flink-sg'
       GroupDescription: 'Security group for Flink application'
       VpcId: !Ref VPC
 
-  FlinkApplication:
+  FlinkApplication: 
     Type: AWS::KinesisAnalyticsV2::Application
-    Properties:
+    Properties: 
       ApplicationName: !Sub '${EnvironmentName}-iot-processor'
       RuntimeEnvironment: FLINK-1_18
       ServiceExecutionRole: !GetAtt FlinkExecutionRole.Arn
-      ApplicationConfiguration:
-        FlinkApplicationConfiguration:
-          MonitoringConfiguration:
+      ApplicationConfiguration: 
+        FlinkApplicationConfiguration: 
+          MonitoringConfiguration: 
             ConfigurationType: CUSTOM
             MetricsLevel: APPLICATION
             LogLevel: INFO
-          ParallelismConfiguration:
+          ParallelismConfiguration: 
             AutoScalingEnabled: true
             ConfigurationType: CUSTOM
             Parallelism: 4
             ParallelismPerKPU: 1
-        VpcConfigurations:
+        VpcConfigurations: 
           - SubnetIds:
               - !Ref PrivateSubnet1
               - !Ref PrivateSubnet2
-            SecurityGroupIds:
+            SecurityGroupIds: 
               - !Ref FlinkSecurityGroup
 
-  FlinkExecutionRole:
+  FlinkExecutionRole: 
     Type: AWS::IAM::Role
-    Properties:
+    Properties: 
       RoleName: !Sub '${EnvironmentName}-flink-execution-role'
-      AssumeRolePolicyDocument:
+      AssumeRolePolicyDocument: 
         Version: '2012-10-17'
-        Statement:
+        Statement: 
           - Effect: Allow
-            Principal:
+            Principal: 
               Service: kinesisanalytics.amazonaws.com
             Action: sts:AssumeRole
-      ManagedPolicyArns:
+      ManagedPolicyArns: 
         - arn:aws:iam::aws:policy/AmazonMSKReadOnlyAccess
         - arn:aws:iam::aws:policy/AmazonTimestreamFullAccess
-      Policies:
+      Policies: 
         - PolicyName: MSKIAMAccess
-          PolicyDocument:
+          PolicyDocument: 
             Version: '2012-10-17'
-            Statement:
+            Statement: 
               - Effect: Allow
-                Action:
+                Action: 
                   - kafka-cluster:Connect
                   - kafka-cluster:DescribeCluster
                   - kafka-cluster:ReadData
@@ -1298,90 +1298,90 @@ Resources:
   # ============================================
   # Timestream 时序数据库
   # ============================================
-  TimestreamDatabase:
+  TimestreamDatabase: 
     Type: AWS::Timestream::Database
-    Properties:
+    Properties: 
       DatabaseName: !Sub '${EnvironmentName}-iot-db'
 
-  TimestreamTable:
+  TimestreamTable: 
     Type: AWS::Timestream::Table
-    Properties:
+    Properties: 
       DatabaseName: !Ref TimestreamDatabase
       TableName: sensor_metrics
-      RetentionProperties:
+      RetentionProperties: 
         MemoryStoreRetentionPeriodInHours: 24
         MagneticStoreRetentionPeriodInDays: 365
 
   # ============================================
   # IoT Core 事物类型和策略
   # ============================================
-  IoTPolicy:
+  IoTPolicy: 
     Type: AWS::IoT::Policy
-    Properties:
+    Properties: 
       PolicyName: !Sub '${EnvironmentName}-device-policy'
-      PolicyDocument:
+      PolicyDocument: 
         Version: '2012-10-17'
-        Statement:
+        Statement: 
           - Effect: Allow
-            Action:
+            Action: 
               - iot:Connect
             Resource: '*'
-            Condition:
-              Bool:
+            Condition: 
+              Bool: 
                 'iot:Connection.Thing.IsAttached': 'true'
           - Effect: Allow
-            Action:
+            Action: 
               - iot:Publish
               - iot:Receive
-            Resource:
+            Resource: 
               - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topic/iot/sensors/*'
           - Effect: Allow
-            Action:
+            Action: 
               - iot:Subscribe
-            Resource:
+            Resource: 
               - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:topicfilter/iot/sensors/*'
 
-  IoTRule:
+  IoTRule: 
     Type: AWS::IoT::TopicRule
-    Properties:
+    Properties: 
       RuleName: !Sub '${EnvironmentName}-sensor-to-kafka'
-      TopicRulePayload:
+      TopicRulePayload: 
         RuleDisabled: false
         Sql: >
           SELECT *, topic(3) as device_id, topic(2) as location
           FROM 'iot/sensors/+/+'
-        Actions:
+        Actions: 
           - Kafka:
               DestinationArn: !GetAtt MSKCluster.Arn
               Topic: iot.raw.sensors
-              ClientProperties:
+              ClientProperties: 
                 bootstrap.servers: !GetAtt MSKCluster.BootstrapString
                 security.protocol: SASL_SSL
                 sasl.mechanism: AWS_MSK_IAM
 
-Outputs:
-  VPCId:
+Outputs: 
+  VPCId: 
     Description: VPC ID
     Value: !Ref VPC
-    Export:
+    Export: 
       Name: !Sub '${EnvironmentName}-vpc-id'
 
-  MSKClusterArn:
+  MSKClusterArn: 
     Description: MSK Cluster ARN
     Value: !Ref MSKCluster
-    Export:
+    Export: 
       Name: !Sub '${EnvironmentName}-msk-arn'
 
-  FlinkApplicationName:
+  FlinkApplicationName: 
     Description: Flink Application Name
     Value: !Ref FlinkApplication
-    Export:
+    Export: 
       Name: !Sub '${EnvironmentName}-flink-app'
 
-  TimestreamDatabase:
+  TimestreamDatabase: 
     Description: Timestream Database Name
     Value: !Ref TimestreamDatabase
-    Export:
+    Export: 
       Name: !Sub '${EnvironmentName}-timestream-db'
 ```
 
@@ -1713,24 +1713,24 @@ IoT数据处理需满足数据隐私法规要求：
 
 ```yaml
 # 核心监控指标清单
-Flink指标:
+Flink指标: 
   - jobmanager.numRegisteredTaskManagers
   - taskmanager.memory.used
   - checkpoint.duration
   - records.lag
   - numRecordsInPerSecond
 
-Kafka指标:
+Kafka指标: 
   - kafka.consumer.lag
   - kafka.broker.messages.in
   - kafka.request.queue.time
 
-MQTT指标:
+MQTT指标: 
   - mqtt.connections.current
   - mqtt.messages.received
   - mqtt.messages.sent
 
-存储指标:
+存储指标: 
   - timestream.write.throttled
   - timestream.query.duration
   - s3.put.latency

@@ -86,29 +86,29 @@ ResourceProfile := {
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: declarative-resource-job
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: application
-  
+
   # 声明式资源配置（1.14 新特性）
-  resourceProfile:
+  resourceProfile: 
     name: "streaming-production"
     tier: large
-    autoScaling:
+    autoScaling: 
       enabled: true
       minTaskManagers: 2
       maxTaskManagers: 20
       targetUtilization: 0.7
-  
+
   # 细粒度资源声明
-  jobManager:
+  jobManager: 
     resourceProfileRef: "streaming-production"
-    overrides:
+    overrides: 
       memory: "6g"  # 覆盖默认值
-  
-  taskManager:
+
+  taskManager: 
     resourceProfileRef: "streaming-production"
     slots: 4
 ```
@@ -125,11 +125,11 @@ spec:
 
 Autoscaling V2 是改进的自动缩放算法，定义为优化问题求解器：
 
-```
+```text
 AutoscalingV2 = ⟨ Metrics, PredictionModel, OptimizationEngine, ActionExecutor ⟩
 
-OptimizationTarget: min Σᵢ(Cost(TMᵢ)) 
-s.t. ∀j: Backpressure(Vⱼ) < threshold ∧ 
+OptimizationTarget: min Σᵢ(Cost(TMᵢ))
+s.t. ∀j: Backpressure(Vⱼ) < threshold ∧
      Latency(Vⱼ) < SLO ∧
      Cost < Budget
 ```
@@ -146,10 +146,10 @@ s.t. ∀j: Backpressure(Vⱼ) < threshold ∧
 
 **算法核心公式**：
 
-```
+```text
 # 目标并行度计算
 TargetParallelism(V) = ceil(
-    IncomingRate(V) × ProcessingTime(V) / 
+    IncomingRate(V) × ProcessingTime(V) /
     (TargetUtilization × SlotCapacity)
 )
 
@@ -165,22 +165,22 @@ CoolingPeriod(t) = BasePeriod × (1 + ErrorRate(t) × PenaltyFactor)
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-spec:
-  flinkConfiguration:
+spec: 
+  flinkConfiguration: 
     # V2 算法配置
     job.autoscaler.enabled: "true"
     job.autoscaler.algorithm.version: "v2"
-    
+
     # 多目标优化权重
     job.autoscaler.optimization.weights.performance: "0.5"
     job.autoscaler.optimization.weights.cost: "0.3"
     job.autoscaler.optimization.weights.stability: "0.2"
-    
+
     # 预测模型配置
     job.autoscaler.prediction.window: "30m"
     job.autoscaler.prediction.model: "lstm"
     job.autoscaler.prediction.seasonality: "true"
-    
+
     # 自适应冷却
     job.autoscaler.cooling.base-period: "2m"
     job.autoscaler.cooling.adaptive: "true"
@@ -210,24 +210,24 @@ SessionEnhancements = ⟨ DynamicSlotAllocation, JobQueue, ResourceSharing, Mult
 
 **动态 Slot 分配算法**：
 
-```
+```text
 DynamicSlotAllocation(JobQueue, AvailableResources):
     # 1. 按优先级排序待处理作业
     SortedJobs = sortByPriority(JobQueue)
-    
+
     # 2. 计算资源需求
     for job in SortedJobs:
         RequiredSlots = estimateRequiredSlots(job)
-        
+
         # 3. 尝试从预热池分配
         if WarmPool.hasAvailable(RequiredSlots):
             allocateFromWarmPool(job, RequiredSlots)
-        
+
         # 4. 动态扩展 TM
         else if canScaleUp(RequiredSlots):
             scaleUpTaskManagers(ceil(RequiredSlots / slotsPerTM))
             allocateAfterScale(job, RequiredSlots)
-        
+
         # 5. 资源不足，进入等待队列
         else:
             enqueueWithTimeout(job, timeout=5min)
@@ -238,35 +238,35 @@ DynamicSlotAllocation(JobQueue, AvailableResources):
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: enhanced-session-cluster
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: session
-  
-  spec:
+
+  spec: 
     # Session 集群增强配置
-    sessionClusterConfig:
+    sessionClusterConfig: 
       # 动态 Slot 分配
-      dynamicSlotAllocation:
+      dynamicSlotAllocation: 
         enabled: true
         minSlots: 4
         maxSlots: 128
         scaleUpThreshold: 0.8
         scaleDownThreshold: 0.3
-      
+
       # 预热池配置
-      warmPool:
+      warmPool: 
         enabled: true
         preWarmTaskManagers: 2
         idleTimeout: "10m"
-        
+
       # 作业队列配置
-      jobQueue:
+      jobQueue: 
         enabled: true
         maxConcurrentJobs: 10
         defaultQueue: "default"
-        queues:
+        queues: 
           - name: "critical"
             priority: 10
             maxSlots: 64
@@ -274,9 +274,9 @@ spec:
             priority: 1
             maxSlots: 32
             timeWindow: "off-peak"
-      
+
       # 资源超售配置
-      overcommit:
+      overcommit: 
         enabled: true
         cpuRatio: 1.5
         memoryRatio: 1.2
@@ -336,7 +336,7 @@ appVersion: "1.14.0"
 ```yaml
 # values.yaml (1.14 优化版)
 # 全局镜像配置
-image:
+image: 
   registry: "docker.io"
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
@@ -344,51 +344,51 @@ image:
   pullSecrets: []
 
 # Operator 配置（结构化增强）
-operatorConfiguration:
+operatorConfiguration: 
   # 核心配置
-  core:
+  core: 
     reconcileInterval: 60s
     progressCheckInterval: 10s
     savepointTriggerInterval: 3600s
-    
+
   # 资源配置
-  resources:
+  resources: 
     cleanupTimeout: 5m
     creationTimeout: 10m
     upgradeTimeout: 15m
-    
+
   # 功能开关
-  features:
+  features: 
     declarativeResourceManagement: true
     autoscalingV2: true
     sessionClusterEnhancements: true
     blueGreenDeployment: true
 
 # 命名空间监控（支持动态更新）
-watchNamespaces:
+watchNamespaces: 
   - "flink-jobs"
   - "flink-production"
 
 # RBAC 配置（细化权限）
-rbac:
+rbac: 
   create: true
   scope: cluster  # cluster | namespace
   additionalRules: []
 
 # 资源限制
-resources:
-  limits:
+resources: 
+  limits: 
     cpu: 2000m
     memory: 2Gi
-  requests:
+  requests: 
     cpu: 500m
     memory: 512Mi
 
 # 高可用配置
-highAvailability:
+highAvailability: 
   enabled: true
   replicas: 2
-  leaderElection:
+  leaderElection: 
     leaseDuration: 15s
     renewDeadline: 10s
     retryPeriod: 2s
@@ -411,70 +411,70 @@ ResourceProfileTemplate = ⟨ Name, Tier, JobManagerSpec, TaskManagerSpec, Const
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkResourceProfile
-metadata:
+metadata: 
   name: resource-profile-templates
-spec:
-  profiles:
+spec: 
+  profiles: 
     - name: "small"
       tier: development
-      jobManager:
-        resource:
+      jobManager: 
+        resource: 
           memory: "2g"
           cpu: 1
         replicas: 1
-      taskManager:
-        resource:
+      taskManager: 
+        resource: 
           memory: "2g"
           cpu: 1
         slots: 2
         replicas: 1
-      
+
     - name: "medium"
       tier: staging
-      jobManager:
-        resource:
+      jobManager: 
+        resource: 
           memory: "4g"
           cpu: 2
         replicas: 2
-      taskManager:
-        resource:
+      taskManager: 
+        resource: 
           memory: "4g"
           cpu: 2
         slots: 4
         replicas: 2
-      
+
     - name: "large"
       tier: production
-      jobManager:
-        resource:
+      jobManager: 
+        resource: 
           memory: "8g"
           cpu: 4
         replicas: 2
-      taskManager:
-        resource:
+      taskManager: 
+        resource: 
           memory: "8g"
           cpu: 4
         slots: 4
         replicas: 4
-      scalingPolicy:
+      scalingPolicy: 
         minReplicas: 4
         maxReplicas: 20
         targetCPUUtilization: 70
-      
+
     - name: "xlarge"
       tier: large-scale-production
-      jobManager:
-        resource:
+      jobManager: 
+        resource: 
           memory: "16g"
           cpu: 8
         replicas: 3
-      taskManager:
-        resource:
+      taskManager: 
+        resource: 
           memory: "16g"
           cpu: 8
         slots: 8
         replicas: 8
-      scalingPolicy:
+      scalingPolicy: 
         minReplicas: 8
         maxReplicas: 100
         targetCPUUtilization: 70
@@ -486,17 +486,17 @@ spec:
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: production-job
-spec:
+spec: 
   # 引用预定义资源模板
-  resourceProfileRef:
+  resourceProfileRef: 
     name: "large"
     namespace: "flink-operator"
-  
+
   # 局部覆盖
-  jobManager:
-    overrides:
+  jobManager: 
+    overrides: 
       replicas: 3  # 覆盖模板中的 replicas
 ```
 
@@ -517,12 +517,12 @@ FlinkDeploymentSet = ⟨ Environments, Template, PromotionStrategy, SyncPolicy �
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeploymentSet
-metadata:
+metadata: 
   name: multi-env-pipeline
   namespace: flink-apps
-spec:
+spec: 
   # 环境定义
-  environments:
+  environments: 
     - name: development
       namespace: flink-dev
       resourceProfile: small
@@ -535,35 +535,35 @@ spec:
       namespace: flink-prod
       resourceProfile: large
       replicas: 3
-  
+
   # 通用模板
-  template:
+  template: 
     flinkVersion: v1_20
     image: myregistry/flink-app:v1.0.0
-    job:
+    job: 
       jarURI: local:///opt/flink/app.jar
       parallelism: 8
-    flinkConfiguration:
+    flinkConfiguration: 
       state.backend: rocksdb
       execution.checkpointing.interval: 60s
-  
+
   # 晋升策略
-  promotionStrategy:
+  promotionStrategy: 
     autoPromotion: true
-    stages:
+    stages: 
       - from: development
         to: staging
-        criteria:
+        criteria: 
           minRunningTime: 30m
           maxErrorRate: 0.01
       - from: staging
         to: production
-        criteria:
+        criteria: 
           minRunningTime: 2h
           manualApproval: true
-  
+
   # 同步策略
-  syncPolicy:
+  syncPolicy: 
     automated: true
     prune: true
     selfHeal: true
@@ -698,18 +698,18 @@ Declarative Resource Management
 
 ```yaml
 # 命令式（1.13 及之前）- 关注具体数值
-spec:
-  taskManager:
-    resource:
+spec: 
+  taskManager: 
+    resource: 
       memory: "8192m"
       cpu: 4
     replicas: 8
 
 # 声明式（1.14）- 关注业务需求
-spec:
-  resourceProfile:
+spec: 
+  resourceProfile: 
     tier: large
-    autoScaling:
+    autoScaling: 
       enabled: true
       minTaskManagers: 4
       maxTaskManagers: 20
@@ -743,16 +743,16 @@ class AutoscalingV2:
     def predict_load(self, metrics_history, horizon):
         # 1. 季节性分解
         trend, seasonal, residual = decompose(metrics_history)
-        
+
         # 2. LSTM 预测
         lstm_input = concatenate([trend, seasonal])
         predicted = self.lstm_model.predict(lstm_input, horizon)
-        
+
         # 3. 置信区间估计
         confidence_interval = calculate_ci(residual, confidence=0.95)
-        
+
         return predicted, confidence_interval
-    
+
     def optimize_resources(self, predicted_load, constraints):
         # 多目标优化
         objectives = [
@@ -760,7 +760,7 @@ class AutoscalingV2:
             Minimize(cost),
             Maximize(throughput)
         ]
-        
+
         return pareto_optimize(objectives, constraints)
 ```
 
@@ -770,8 +770,8 @@ class AutoscalingV2:
 
 ```yaml
 # 手动配置的问题：固定资源配置
-spec:
-  taskManager:
+spec: 
+  taskManager: 
     replicas: 10  # 按峰值配置，平时浪费
 
 # 结果：
@@ -783,9 +783,9 @@ spec:
 
 ```yaml
 # 自动扩缩容
-spec:
-  resourceProfile:
-    autoScaling:
+spec: 
+  resourceProfile: 
+    autoScaling: 
       enabled: true
       minTaskManagers: 4   # 保底容量
       maxTaskManagers: 20  # 峰值容量
@@ -825,7 +825,7 @@ spec:
 
 *算法*：ResourceAllocationAlgorithm
 
-```
+```text
 输入: ResourceRequest R, ClusterState S
 输出: ResourceAllocation A 或 UNSATISFIABLE
 
@@ -844,13 +844,13 @@ spec:
 
 4. 分配执行
    executeAllocation(A)
-   
+
 5. 收敛验证
    for i in range(maxRetries):
       if verifyAllocation(A):
          return A
       A = adjustAllocation(A, observedDelta)
-   
+
    return ERROR("Convergence failed")
 ```
 
@@ -910,23 +910,23 @@ spec:
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: declarative-etl-pipeline
   namespace: flink-production
-  labels:
+  labels: 
     app: etl-pipeline
     tier: production
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: application
-  
+
   # ========== 声明式资源配置（1.14 核心特性）==========
-  resourceProfile:
+  resourceProfile: 
     name: "streaming-production"
     tier: large
-    
+
     # 自动扩缩容配置
-    autoScaling:
+    autoScaling: 
       enabled: true
       algorithm: "v2"
       minTaskManagers: 4
@@ -934,39 +934,39 @@ spec:
       targetUtilization: 0.7
       scaleUpDelay: 2m
       scaleDownDelay: 5m
-      
+
       # V2 算法高级配置
-      prediction:
+      prediction: 
         enabled: true
         window: 30m
         seasonality: true
-      
+
       # 成本优化
-      costOptimization:
+      costOptimization: 
         enabled: true
         spotInstances: true
         maxHourlyCost: "100.0"
-  
+
   # 引用全局资源模板
-  jobManager:
-    resourceProfileRef:
+  jobManager: 
+    resourceProfileRef: 
       name: "streaming-production"
       namespace: "flink-operator"
-    overrides:
+    overrides: 
       replicas: 2  # HA 配置
-      resource:
+      resource: 
         memory: "8g"  # 覆盖模板默认值
-  
-  taskManager:
-    resourceProfileRef:
+
+  taskManager: 
+    resourceProfileRef: 
       name: "streaming-production"
     slots: 4
-  
+
   # ========== Flink 配置 ==========
-  flinkConfiguration:
+  flinkConfiguration: 
     # 声明式资源管理集成
     kubernetes.operator.declarative.resource.management.enabled: "true"
-    
+
     # Checkpoint 配置
     execution.checkpointing.interval: 60s
     execution.checkpointing.min-pause: 30s
@@ -976,55 +976,55 @@ spec:
     state.backend.incremental: true
     state.checkpoints.dir: s3p://flink-checkpoints/etl-pipeline
     state.savepoints.dir: s3p://flink-savepoints/etl-pipeline
-    
+
     # 高可用
     high-availability: kubernetes
     high-availability.storageDir: s3p://flink-ha/etl-pipeline
-    
+
     # 重启策略
     restart-strategy: exponential-delay
     restart-strategy.exponential-delay.initial-backoff: 10s
     restart-strategy.exponential-delay.max-backoff: 5min
-    
+
     # 网络配置
     taskmanager.memory.network.fraction: 0.15
     taskmanager.memory.network.min: 512m
     taskmanager.memory.network.max: 2g
-    
+
     # 指标
     metrics.reporters: prom
     metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
     metrics.reporter.prom.port: 9249
-  
+
   # ========== 作业配置 ==========
-  job:
+  job: 
     jarURI: local:///opt/flink/usrlib/etl-pipeline.jar
     parallelism: 16
     upgradeMode: stateful
     state: running
-    args:
+    args: 
       - --environment
       - production
       - --source.kafka.topics
       - events,orders,users
-  
+
   # ========== Pod 模板 ==========
-  podTemplate:
-    spec:
+  podTemplate: 
+    spec: 
       serviceAccountName: flink-job-sa
-      containers:
+      containers: 
         - name: flink-main-container
-          env:
+          env: 
             - name: AWS_REGION
               value: us-west-2
             - name: ENABLE_BUILT_IN_PLUGINS
               value: flink-metrics-prometheus,flink-gs-fs-hadoop
-          volumeMounts:
+          volumeMounts: 
             - name: flink-config
               mountPath: /opt/flink/conf
-      volumes:
+      volumes: 
         - name: flink-config
-          configMap:
+          configMap: 
             name: flink-config
 ```
 
@@ -1035,39 +1035,39 @@ spec:
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: autoscaling-v2-demo
   namespace: flink-production
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: application
-  
-  jobManager:
-    resource:
+
+  jobManager: 
+    resource: 
       memory: "4g"
       cpu: 2
-  
-  taskManager:
-    resource:
+
+  taskManager: 
+    resource: 
       memory: "8g"
       cpu: 4
     # 不指定 replicas - 由 Autoscaler 控制
-  
+
   # ========== Autoscaling V2 完整配置 ==========
-  flinkConfiguration:
+  flinkConfiguration: 
     # 启用 Autoscaler V2
     job.autoscaler.enabled: "true"
     job.autoscaler.algorithm.version: "v2"
-    
+
     # ===== 核心算法配置 =====
     # 目标利用率（关键参数）
     job.autoscaler.target.utilization: "0.7"
     job.autoscaler.target.utilization.boundary: "0.15"
-    
+
     # 指标收集窗口
     job.autoscaler.metrics.window: "5m"
     job.autoscaler.stabilization.interval: "1m"
-    
+
     # ===== V2 高级特性 =====
     # 预测模型
     job.autoscaler.prediction.enabled: "true"
@@ -1075,36 +1075,36 @@ spec:
     job.autoscaler.prediction.window: "30m"
     job.autoscaler.prediction.horizon: "5m"
     job.autoscaler.prediction.seasonality.enabled: "true"
-    
+
     # 多目标优化权重
     job.autoscaler.optimization.weights.latency: "0.4"
     job.autoscaler.optimization.weights.cost: "0.35"
     job.autoscaler.optimization.weights.stability: "0.25"
-    
+
     # 自适应冷却期
     job.autoscaler.cooling.enabled: "true"
     job.autoscaler.cooling.base-period: "2m"
     job.autoscaler.cooling.scale-up-penalty: "0.5"
     job.autoscaler.cooling.scale-down-penalty: "1.5"
-    
+
     # 抖动控制
     job.autoscaler.scale-up.grace-period: "1m"
     job.autoscaler.scale-down.grace-period: "5m"
     job.autoscaler.scale-down.min-reduction-ratio: "0.25"
-    
+
     # 成本约束
     job.autoscaler.cost.max-hourly: "50.0"
     job.autoscaler.cost.preemptible-ratio: "0.5"
-    
+
     # 最大并行度（重要：需提前规划）
     pipeline.max-parallelism: "720"
-    
+
     # 重启配置
     job.autoscaler.restart.time: "2m"
     job.autoscaler.catch-up.duration: "10m"
     job.autoscaler.restart.time-tracking.enabled: "true"
-  
-  job:
+
+  job: 
     jarURI: local:///opt/flink/usrlib/scalable-job.jar
     parallelism: 8
     upgradeMode: stateful
@@ -1119,142 +1119,142 @@ spec:
 # ========== 增强型 Session Cluster ==========
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: enhanced-session-cluster
   namespace: flink-shared
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: session
-  
-  jobManager:
-    resource:
+
+  jobManager: 
+    resource: 
       memory: "8g"
       cpu: 4
     replicas: 2
-  
-  taskManager:
-    resource:
+
+  taskManager: 
+    resource: 
       memory: "8g"
       cpu: 4
     slots: 4
-  
+
   # ========== Session 集群增强配置 ==========
-  spec:
-    sessionClusterConfig:
+  spec: 
+    sessionClusterConfig: 
       # ---- 动态 Slot 分配 ----
-      dynamicSlotAllocation:
+      dynamicSlotAllocation: 
         enabled: true
         minSlots: 8
         maxSlots: 128
-        
+
         # 扩容阈值：当使用率超过 80% 时扩容
         scaleUpThreshold: 0.8
-        
+
         # 缩容阈值：当使用率低于 30% 时缩容
         scaleDownThreshold: 0.3
-        
+
         # 缩容延迟：防止过早释放资源
         scaleDownDelay: 10m
-        
+
         # 资源保留：保证最少可用资源
         minAvailableSlots: 8
-      
+
       # ---- 预热池配置 ----
-      warmPool:
+      warmPool: 
         enabled: true
-        
+
         # 预启动的 TaskManager 数量
         preWarmTaskManagers: 2
-        
+
         # 预热 Slot 数量
         preWarmSlots: 8
-        
+
         # 空闲超时：超过此时间后回收预热资源
         idleTimeout: 15m
-        
+
         # 预热池扩容策略
         autoScaleWarmPool: true
         minWarmTaskManagers: 1
         maxWarmTaskManagers: 4
-      
+
       # ---- 作业队列配置 ----
-      jobQueue:
+      jobQueue: 
         enabled: true
-        
+
         # 最大并发作业数
         maxConcurrentJobs: 20
-        
+
         # 默认队列
         defaultQueue: "default"
-        
+
         # 队列定义
-        queues:
+        queues: 
           - name: "critical"
             priority: 100
             maxSlots: 64
             maxConcurrentJobs: 5
             preemption: true
-            
+
           - name: "production"
             priority: 50
             maxSlots: 48
             maxConcurrentJobs: 10
-            
+
           - name: "analytics"
             priority: 20
             maxSlots: 32
             maxConcurrentJobs: 8
             timeWindow: "0-6,22-24"  # 低峰时段运行
-            
+
           - name: "batch"
             priority: 10
             maxSlots: 16
             maxConcurrentJobs: 5
             timeWindow: "1-5"  # 凌晨时段
-      
+
       # ---- 资源超售配置 ----
-      overcommit:
+      overcommit: 
         enabled: true
-        
+
         # CPU 超售比：请求 1 CPU，可分配 1.5 CPU
         cpuRatio: 1.5
-        
+
         # 内存超售比（谨慎使用）
         memoryRatio: 1.2
-        
+
         # 最大超售限制
         maxOvercommitSlots: 16
-        
+
         # 内存压力检测
         memoryPressureThreshold: 0.9
-        
+
         # 自动回收策略
         reclamationPolicy: "gentle"  # gentle | aggressive
-      
+
       # ---- 多租户隔离 ----
-      multiTenancy:
+      multiTenancy: 
         enabled: true
-        
+
         # 命名空间隔离
         namespaceIsolation: true
-        
+
         # 资源配额
-        resourceQuotas:
+        resourceQuotas: 
           - namespace: "team-a"
             maxSlots: 32
             maxJobs: 5
           - namespace: "team-b"
             maxSlots: 48
             maxJobs: 8
-  
-  flinkConfiguration:
+
+  flinkConfiguration: 
     # 启用 Session 集群增强
     kubernetes.operator.session.cluster.enhancements.enabled: "true"
-    
+
     # 高可用
     high-availability: kubernetes
     high-availability.storageDir: s3p://flink-ha/session-cluster
-    
+
     # Checkpoint 配置
     state.backend: rocksdb
     state.checkpoints.dir: s3p://flink-checkpoints/session-cluster
@@ -1264,23 +1264,23 @@ spec:
 # ========== 提交作业到增强 Session Cluster ==========
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
-metadata:
+metadata: 
   name: critical-analytics-job
   namespace: flink-shared
-spec:
+spec: 
   sessionClusterReference: enhanced-session-cluster
-  
+
   # 指定队列
   queue: "critical"
-  
-  job:
+
+  job: 
     jarURI: https://storage.example.com/jobs/analytics.jar
     parallelism: 16
     upgradeMode: stateful
     state: running
-    
+
     # 资源需求声明
-    resourceRequirements:
+    resourceRequirements: 
       minSlots: 8
       maxSlots: 32
       priority: 100
@@ -1295,48 +1295,48 @@ spec:
 # Flink Kubernetes Operator 1.14 Helm Chart 生产配置
 
 # 镜像配置
-image:
+image: 
   registry: "docker.io"
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
   pullPolicy: IfNotPresent
 
 # 镜像仓库密钥
-imagePullSecrets:
+imagePullSecrets: 
   - name: regcred
 
 # 部署副本数（高可用）
 replicaCount: 2
 
 # ========== Operator 核心配置 ==========
-operatorConfiguration:
+operatorConfiguration: 
   # 基础配置
   kubernetes.operator.namespace: "flink-operator"
   kubernetes.operator.reconcile.interval: 60s
   kubernetes.operator.reconcile.parallelism: 10
-  
+
   # 资源管理配置
   kubernetes.operator.resource.cleanup.timeout: 5m
   kubernetes.operator.resource.creation.timeout: 10m
   kubernetes.operator.resource.upgrade.timeout: 15m
   kubernetes.operator.resource.deletion.timeout: 5m
-  
+
   # 声明式资源管理
   kubernetes.operator.declarative.resource.management.enabled: "true"
   kubernetes.operator.declarative.resource.profile.namespace: "flink-operator"
   kubernetes.operator.declarative.resource.default.profile: "medium"
-  
+
   # 自动扩缩容配置
   kubernetes.operator.autoscaler.enabled: "true"
   kubernetes.operator.autoscaler.algorithm.default.version: "v2"
   kubernetes.operator.autoscaler.metrics.window: 5m
   kubernetes.operator.autoscaler.stabilization.interval: 1m
-  
+
   # Session 集群增强
   kubernetes.operator.session.cluster.enhancements.enabled: "true"
   kubernetes.operator.session.cluster.dynamic.slot.enabled: "true"
   kubernetes.operator.session.cluster.warm.pool.enabled: "true"
-  
+
   # Leader 选举配置（高可用）
   kubernetes.operator.leader-election.enabled: "true"
   kubernetes.operator.leader-election.lease-name: "flink-operator-lease"
@@ -1345,7 +1345,7 @@ operatorConfiguration:
   kubernetes.operator.leader-election.retry-period: 2s
 
 # ========== 监控命名空间 ==========
-watchNamespaces:
+watchNamespaces: 
   - "flink-jobs"
   - "flink-production"
   - "flink-staging"
@@ -1355,12 +1355,12 @@ watchNamespaces:
 excludedNamespaces: "kube-.*,istio-.*"
 
 # ========== RBAC 配置 ==========
-rbac:
+rbac: 
   create: true
   scope: cluster  # cluster | namespace
-  
+
   # 额外规则
-  additionalRules:
+  additionalRules: 
     - apiGroups: ["metrics.k8s.io"]
       resources: ["pods", "nodes"]
       verbs: ["get", "list"]
@@ -1369,58 +1369,58 @@ rbac:
       verbs: ["*"]
 
 # ========== 资源限制 ==========
-resources:
-  limits:
+resources: 
+  limits: 
     cpu: 2000m
     memory: 2Gi
-  requests:
+  requests: 
     cpu: 500m
     memory: 512Mi
 
 # ========== 高可用配置 ==========
-highAvailability:
+highAvailability: 
   enabled: true
   replicas: 2
-  podDisruptionBudget:
+  podDisruptionBudget: 
     enabled: true
     minAvailable: 1
 
 # ========== 网络配置 ==========
-networkPolicy:
+networkPolicy: 
   enabled: true
-  ingress:
+  ingress: 
     - from:
         - namespaceSelector:
-            matchLabels:
+            matchLabels: 
               name: flink-jobs
-      ports:
+      ports: 
         - protocol: TCP
           port: 8081
 
 # ========== 指标与监控 ==========
-metrics:
+metrics: 
   enabled: true
   port: 9249
-  serviceMonitor:
+  serviceMonitor: 
     enabled: true
     namespace: monitoring
     interval: 30s
     scrapeTimeout: 10s
-  prometheusRule:
+  prometheusRule: 
     enabled: true
-    alerts:
+    alerts: 
       - alert: FlinkOperatorDown
         expr: up{job="flink-kubernetes-operator"} == 0
         for: 5m
-        labels:
+        labels: 
           severity: critical
 
 # ========== 日志配置 ==========
-logConfiguration:
+logConfiguration: 
   log4j-operator.properties: |
     rootLogger.level = INFO
     rootLogger.appenderRef.rolling.ref = RollingAppender
-    
+
     appender.rolling.name = RollingAppender
     appender.rolling.type = RollingFile
     appender.rolling.fileName = /opt/flink/log/operator.log
@@ -1429,83 +1429,83 @@ logConfiguration:
     appender.rolling.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
 
 # ========== 持久化存储 ==========
-volumes:
+volumes: 
   - name: flink-operator-logs
-    emptyDir:
+    emptyDir: 
       sizeLimit: 1Gi
   - name: flink-operator-state
-    persistentVolumeClaim:
+    persistentVolumeClaim: 
       claimName: flink-operator-pvc
 
-volumeMounts:
+volumeMounts: 
   - name: flink-operator-logs
     mountPath: /opt/flink/log
   - name: flink-operator-state
     mountPath: /opt/flink/operator-state
 
 # ========== 节点亲和性 ==========
-nodeSelector:
+nodeSelector: 
   workload-type: platform
 
-tolerations:
+tolerations: 
   - key: "dedicated"
     operator: "Equal"
     value: "platform"
     effect: "NoSchedule"
 
-affinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
+affinity: 
+  podAntiAffinity: 
+    preferredDuringSchedulingIgnoredDuringExecution: 
       - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchLabels:
+        podAffinityTerm: 
+          labelSelector: 
+            matchLabels: 
               app.kubernetes.io/name: flink-kubernetes-operator
           topologyKey: kubernetes.io/hostname
 
 # ========== Webhook 配置 ==========
-webhook:
+webhook: 
   enabled: true
-  certManager:
+  certManager: 
     enabled: true
-    issuer:
+    issuer: 
       name: flink-operator-issuer
       kind: Issuer
   port: 9443
-  mutating:
+  mutating: 
     enabled: true
-  validating:
+  validating: 
     enabled: true
 
 # ========== 默认 Flink 版本 ==========
 defaultFlinkVersion: "v1_20"
 
 # ========== 资源模板（声明式管理） ==========
-resourceProfiles:
+resourceProfiles: 
   - name: "small"
-    jobManager:
+    jobManager: 
       memory: "2g"
       cpu: 1
       replicas: 1
-    taskManager:
+    taskManager: 
       memory: "2g"
       cpu: 1
       slots: 2
   - name: "medium"
-    jobManager:
+    jobManager: 
       memory: "4g"
       cpu: 2
       replicas: 2
-    taskManager:
+    taskManager: 
       memory: "4g"
       cpu: 2
       slots: 4
   - name: "large"
-    jobManager:
+    jobManager: 
       memory: "8g"
       cpu: 4
       replicas: 2
-    taskManager:
+    taskManager: 
       memory: "8g"
       cpu: 4
       slots: 4
@@ -1520,51 +1520,51 @@ resourceProfiles:
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeploymentSet
-metadata:
+metadata: 
   name: multi-env-etl-pipeline
   namespace: flink-operator
-spec:
+spec: 
   # ========== 环境定义 ==========
-  environments:
+  environments: 
     - name: development
       namespace: flink-dev
       resourceProfile: small
       replicas: 1
-      patches:
+      patches: 
         - target:
             kind: FlinkDeployment
             path: /spec/flinkConfiguration
           patch: |
             logging.level: DEBUG
             execution.checkpointing.interval: 300s
-      
+
     - name: staging
       namespace: flink-staging
       resourceProfile: medium
       replicas: 1
-      patches:
+      patches: 
         - target:
             kind: FlinkDeployment
             path: /spec/flinkConfiguration
           patch: |
             execution.checkpointing.interval: 120s
-      
+
     - name: production
       namespace: flink-prod
       resourceProfile: large
       replicas: 3
-      patches:
+      patches: 
         - target:
             kind: FlinkDeployment
             path: /spec/jobManager
           patch: |
             replicas: 2
-      
+
     - name: dr
       namespace: flink-dr
       resourceProfile: large
       replicas: 1
-      patches:
+      patches: 
         - target:
             kind: FlinkDeployment
             path: /spec/flinkConfiguration
@@ -1572,25 +1572,25 @@ spec:
             high-availability.region: dr
 
   # ========== 通用模板 ==========
-  template:
+  template: 
     apiVersion: flink.apache.org/v1beta1
     kind: FlinkDeployment
-    spec:
+    spec: 
       flinkVersion: v1_20
       image: myregistry/flink-etl:v1.2.0
-      
-      jobManager:
-        resource:
+
+      jobManager: 
+        resource: 
           memory: "4g"
           cpu: 2
-      
-      taskManager:
-        resource:
+
+      taskManager: 
+        resource: 
           memory: "8g"
           cpu: 4
         slots: 4
-      
-      flinkConfiguration:
+
+      flinkConfiguration: 
         state.backend: rocksdb
         state.backend.incremental: true
         execution.checkpointing.interval: 60s
@@ -1598,72 +1598,72 @@ spec:
         restart-strategy: exponential-delay
         restart-strategy.exponential-delay.initial-backoff: 10s
         restart-strategy.exponential-delay.max-backoff: 5min
-      
-      job:
+
+      job: 
         jarURI: local:///opt/flink/usrlib/etl-pipeline.jar
         parallelism: 8
         upgradeMode: stateful
         state: running
-        args:
+        args: 
           - --environment
           - "${ENVIRONMENT}"
           - --kafka.brokers
           - "kafka-${ENVIRONMENT}:9092"
 
   # ========== 晋升策略 ==========
-  promotionStrategy:
+  promotionStrategy: 
     autoPromotion: true
     rollbackOnFailure: true
-    
-    stages:
+
+    stages: 
       - name: dev-to-staging
         from: development
         to: staging
-        criteria:
+        criteria: 
           minRunningTime: 30m
           maxErrorRate: 0.01
-          requiredMetrics:
+          requiredMetrics: 
             - throughput > 1000
             - latency_p99 < 1000ms
-      
+
       - name: staging-to-prod
         from: staging
         to: production
-        criteria:
+        criteria: 
           minRunningTime: 2h
           maxErrorRate: 0.001
           manualApproval: true
-          canary:
+          canary: 
             enabled: true
             trafficSplit: "10:90"
             duration: 30m
-      
+
       - name: prod-to-dr
         from: production
         to: dr
-        criteria:
+        criteria: 
           minRunningTime: 24h
           syncInterval: 1h
 
   # ========== 同步策略 ==========
-  syncPolicy:
+  syncPolicy: 
     automated: true
     prune: true
     selfHeal: true
-    retry:
+    retry: 
       limit: 5
       backoff: exponential
-    
+
   # ========== 差异忽略规则 ==========
-  ignoreDifferences:
+  ignoreDifferences: 
     - group: flink.apache.org
       kind: FlinkDeployment
-      jsonPointers:
+      jsonPointers: 
         - /status
         - /metadata/generation
     - group: flink.apache.org
       kind: FlinkDeployment
-      jqPathExpressions:
+      jqPathExpressions: 
         - .spec.flinkConfiguration["kubernetes.operator.job.upgrade.last-stateful-checkpoint"]
 ```
 
@@ -1673,7 +1673,7 @@ spec:
 
 ```yaml
 # ========== 目录结构 ==========
-# 
+#
 # flink-gitops/
 # ├── base/
 # │   ├── kustomization.yaml
@@ -1698,33 +1698,33 @@ spec:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
+resources: 
   - flink-deployment.yaml
   - resource-profiles.yaml
 
-commonLabels:
+commonLabels: 
   app.kubernetes.io/name: flink-etl-pipeline
   app.kubernetes.io/managed-by: kustomize
 
 # ========== base/flink-deployment.yaml ==========
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: etl-pipeline
-spec:
+spec: 
   flinkVersion: v1_20
   deploymentMode: application
-  
-  resourceProfile:
+
+  resourceProfile: 
     tier: medium
-    autoScaling:
+    autoScaling: 
       enabled: true
-  
-  flinkConfiguration:
+
+  flinkConfiguration: 
     state.backend: rocksdb
     execution.checkpointing.interval: 60s
-  
-  job:
+
+  job: 
     jarURI: local:///opt/flink/usrlib/etl.jar
     parallelism: 8
     upgradeMode: stateful
@@ -1735,40 +1735,40 @@ kind: Kustomization
 
 namespace: flink-production
 
-resources:
+resources: 
   - ../../base
   - secrets/aws-credentials.enc.yaml
 
 namePrefix: prod-
 
-commonLabels:
+commonLabels: 
   environment: production
 
-patchesStrategicMerge:
+patchesStrategicMerge: 
   - patches/resource-scale.yaml
   - patches/ha-config.yaml
 
 # ========== overlays/production/patches/resource-scale.yaml ==========
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: etl-pipeline
-spec:
-  resourceProfile:
+spec: 
+  resourceProfile: 
     tier: large
-    autoScaling:
+    autoScaling: 
       enabled: true
       minTaskManagers: 4
       maxTaskManagers: 32
-  
-  jobManager:
-    resource:
+
+  jobManager: 
+    resource: 
       memory: "8g"
       cpu: 4
     replicas: 2
-  
-  taskManager:
-    resource:
+
+  taskManager: 
+    resource: 
       memory: "16g"
       cpu: 8
     slots: 4
@@ -1776,32 +1776,32 @@ spec:
 # ========== apps/flink-pipeline-app.yaml (ArgoCD Application) ==========
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata:
+metadata: 
   name: flink-etl-pipeline
   namespace: argocd
-  finalizers:
+  finalizers: 
     - resources-finalizer.argocd.argoproj.io
-spec:
+spec: 
   project: data-platform
-  source:
+  source: 
     repoURL: https://github.com/company/flink-gitops.git
     targetRevision: HEAD
     path: overlays/production
-  destination:
+  destination: 
     server: https://kubernetes.default.svc
     namespace: flink-production
-  syncPolicy:
-    automated:
+  syncPolicy: 
+    automated: 
       prune: true
       selfHeal: true
       allowEmpty: false
-    syncOptions:
+    syncOptions: 
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
       - PruneLast=true
-    retry:
+    retry: 
       limit: 5
-      backoff:
+      backoff: 
         duration: 5s
         factor: 2
         maxDuration: 3m
@@ -1819,14 +1819,14 @@ graph TB
     subgraph "User Layer"
         U[用户声明<br/>resourceProfile: large]
     end
-    
+
     subgraph "Operator Control Plane"
         DRM[Declarative Resource Manager]
         RT[Resource Templates]
         Opt[Optimization Engine]
         Rec[Reconciler]
     end
-    
+
     subgraph "Kubernetes"
         K8sAPI[Kubernetes API]
         subgraph "Flink Cluster"
@@ -1836,12 +1836,12 @@ graph TB
             TMn[TaskManager-n]
         end
     end
-    
+
     subgraph "External Resources"
         S3[(Checkpoint Storage)]
         Metrics[Metrics Backend]
     end
-    
+
     U -->|声明| DRM
     DRM -->|查询| RT
     RT -->|模板| Opt
@@ -1892,28 +1892,28 @@ graph TB
         J3[Job-3<br/>Priority: 50]
         J4[Job-4<br/>Priority: 10]
     end
-    
+
     subgraph "Resource Manager"
         RM[Dynamic Allocator]
         WP[Warm Pool<br/>2 TMs Ready]
         SQ[Slot Quota<br/>Team A: 32<br/>Team B: 48]
     end
-    
+
     subgraph "Active Resources"
         subgraph "Running Jobs"
             RJ1[Job-1: 8 slots]
             RJ2[Job-2: 16 slots]
         end
-        
+
         subgraph "Available Slots"
             AS[32 slots free]
         end
-        
+
         subgraph "Pre-warmed"
             PW[8 slots warm]
         end
     end
-    
+
     J1 -->|High Priority| RM
     J2 -->|Medium| RM
     J3 -->|Medium| RM
@@ -1936,7 +1936,7 @@ graph TB
         C[Chart.yaml
           values.schema.json]
     end
-    
+
     subgraph "Kubernetes Cluster"
         subgraph "flink-operator Namespace"
             OP[Flink Operator<br/>Deployment]
@@ -1947,14 +1947,14 @@ graph TB
                 FlinkBlueGreenDeployment
                 FlinkResourceProfile]
         end
-        
+
         subgraph "Watched Namespaces"
             FD1[FlinkDeployment]
             FD2[FlinkDeployment]
             SC[Session Cluster]
         end
     end
-    
+
     V -->|Render| T
     T -->|Apply| OP
     T -->|Apply| RBAC
@@ -1975,29 +1975,29 @@ flowchart TD
     B -->|长运行流作业| C[Application Mode]
     B -->|多短作业/批处理| D[Session Mode]
     B -->|零停机升级需求| E[Blue/Green Deployment]
-    
+
     C --> F{资源管理策略}
     D --> G{资源管理策略}
     E --> H{资源管理策略}
-    
+
     F -->|追求简单| I[ResourceProfile Template
     small/medium/large]
     F -->|追求优化| J[Declarative DRM
     Autoscaling V2]
     F -->|成本控制| K[Autoscaling V2
     Spot Instances]
-    
+
     G -->|多租户共享| L[Session Cluster
     Enhancements
     Dynamic Slot]
     G -->|快速启动| M[Session Cluster
     Warm Pool]
-    
+
     H -->|无状态| N[Instant Switch
     Stateless Apps]
     H -->|有状态| O[DUAL_WRITE
     State Sync]
-    
+
     I --> P[生成 FlinkDeployment]
     J --> P
     K --> P
@@ -2005,7 +2005,7 @@ flowchart TD
     M --> P
     N --> P
     O --> P
-    
+
     P --> Q[部署到 Kubernetes]
 ```
 

@@ -598,36 +598,36 @@ GROUP BY
 # docker-compose.yml
 version: '3.8'
 
-services:
-  arroyo-controller:
+services: 
+  arroyo-controller: 
     image: ghcr.io/arroyosystems/arroyo:latest
     command: controller
-    environment:
+    environment: 
       - ARROYO__DATABASE__URL=postgres://arroyo:password@postgres:5432/arroyo
-    ports:
+    ports: 
       - "8000:8000"  # Web UI
       - "8001:8001"  # gRPC API
 
-  arroyo-worker:
+  arroyo-worker: 
     image: ghcr.io/arroyosystems/arroyo:latest
     command: worker
-    environment:
+    environment: 
       - ARROYO__CONTROLLER__ENDPOINT=arroyo-controller:8001
-    depends_on:
+    depends_on: 
       - arroyo-controller
-    deploy:
+    deploy: 
       replicas: 2
 
-  postgres:
+  postgres: 
     image: postgres:15
-    environment:
+    environment: 
       POSTGRES_USER: arroyo
       POSTGRES_PASSWORD: password
       POSTGRES_DB: arroyo
-    volumes:
+    volumes: 
       - postgres_data:/var/lib/postgresql/data
 
-volumes:
+volumes: 
   postgres_data:
 ```
 
@@ -637,51 +637,51 @@ volumes:
 # arroyo-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: 
   name: arroyo-controller
-spec:
+spec: 
   replicas: 1
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: 
       app: arroyo-controller
-  template:
-    metadata:
-      labels:
+  template: 
+    metadata: 
+      labels: 
         app: arroyo-controller
-    spec:
-      containers:
+    spec: 
+      containers: 
       - name: controller
         image: ghcr.io/arroyosystems/arroyo:latest
         command: ["arroyo", "controller"]
-        env:
+        env: 
         - name: ARROYO__DATABASE__URL
-          valueFrom:
-            secretKeyRef:
+          valueFrom: 
+            secretKeyRef: 
               name: arroyo-secrets
               key: database-url
-        ports:
+        ports: 
         - containerPort: 8000
         - containerPort: 8001
 ---
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: 
   name: arroyo-worker
-spec:
+spec: 
   replicas: 3
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: 
       app: arroyo-worker
-  template:
-    metadata:
-      labels:
+  template: 
+    metadata: 
+      labels: 
         app: arroyo-worker
-    spec:
-      containers:
+    spec: 
+      containers: 
       - name: worker
         image: ghcr.io/arroyosystems/arroyo:latest
         command: ["arroyo", "worker"]
-        env:
+        env: 
         - name: ARROYO__CONTROLLER__ENDPOINT
           value: "arroyo-controller:8001"
 ```
@@ -929,7 +929,7 @@ GROUP BY user_id, HOP(INTERVAL '1' HOUR, INTERVAL '5' MINUTE)
    ```rust
    // 调整 Arrow 记录批次大小
    ARROYO_ARROW_BATCH_SIZE=8192
-   ```
+```
 
 2. **状态后端配置**
 
@@ -941,14 +941,14 @@ GROUP BY user_id, HOP(INTERVAL '1' HOUR, INTERVAL '5' MINUTE)
    [state]
    backend = "rocksdb"
    cache_size = "512MB"
-   ```
+```
 
 3. **Worker 并行度**
 
    ```bash
    # 建议: 与 Kafka partition 数对齐
    arroyo run --parallelism 16 pipeline.sql
-   ```
+```
 
 ---
 

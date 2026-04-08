@@ -181,7 +181,7 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
     # Sort by fused score
     fused_results = sorted(
         [(doc_id, score) for doc_id, score in scores.items()
-         if not doc_id.endswith("_rank")],
+         if not doc_id.endswith("_rank")],:
         key=lambda x: x[1],
         reverse=True
     )
@@ -680,7 +680,8 @@ chatbot:
 > env.enableCheckpointing(60000);  // 60 second interval
 > env.getCheckpointConfig().setCheckpointingMode(
 >     CheckpointingMode.EXACTLY_ONCE);
-> ```
+>
+```
 >
 > See [Checkpoint Mechanism Deep Dive](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) for complete details.
 >

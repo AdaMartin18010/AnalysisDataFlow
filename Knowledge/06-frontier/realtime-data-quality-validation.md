@@ -496,18 +496,18 @@ public class SchemaRegistryValidation implements
 ```yaml
 # Grafana Dashboard配置片段
 apiVersion: 1
-datasources:
+datasources: 
   - name: QualityMetrics
     type: postgres
     url: postgres:5432
     database: data_quality
 
-dashboards:
+dashboards: 
   - title: "实时数据质量监控"
-    panels:
+    panels: 
       - title: "质量分数趋势"
         type: graph
-        targets:
+        targets: 
           - rawSql: |
               SELECT
                 time_bucket('1 minute', window_start) as time,
@@ -518,7 +518,7 @@ dashboards:
 
       - title: "验证失败分布"
         type: pie
-        targets:
+        targets: 
           - rawSql: |
               SELECT
                 validation_type,
@@ -529,7 +529,7 @@ dashboards:
 
       - title: "数据延迟热力图"
         type: heatmap
-        targets:
+        targets: 
           - rawSql: |
               SELECT
                 time_bucket('5 minutes', event_time) as time,

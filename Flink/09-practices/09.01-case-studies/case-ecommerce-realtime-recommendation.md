@@ -1896,17 +1896,17 @@ public UserProfile updateProfile(UserProfile current, BehaviorEvent event) {
 
 ```yaml
 # 推荐API服务配置
-recommendation:
-  cache:
-    caffeine:
+recommendation: 
+  cache: 
+    caffeine: 
       max-size: 100000
       expire-after-write: 5m
-  redis:
-    pool:
+  redis: 
+    pool: 
       min-idle: 50
       max-active: 200
     timeout: 20ms
-  vector-search:
+  vector-search: 
     algorithm: HNSW
     ef-construction: 200
     m: 16

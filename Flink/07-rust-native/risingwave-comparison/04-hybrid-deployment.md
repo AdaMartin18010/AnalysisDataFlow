@@ -407,20 +407,20 @@ W_SQL: 需要 SQL 分析, 高吞吐 (500K/s)
 
 ```yaml
 # hybrid-deployment.yaml
-architecture:
+architecture: 
   name: "E-Commerce Real-time Platform"
 
-  components:
+  components: 
     # Flink: 负责 CEP 风控检测
-    flink_cluster:
+    flink_cluster: 
       version: "1.18.0"
       job_managers: 2
       task_managers: 8
-      resources:
+      resources: 
         cpu: 4
         memory: 16Gi
       state_backend: rocksdb
-      jobs:
+      jobs: 
         - name: fraud_detection
           parallelism: 8
           checkpoint_interval: 30s
@@ -429,26 +429,26 @@ architecture:
             CREATE TABLE orders (...);
             CREATE TABLE fraud_patterns
             MATCH_RECOGNIZE (...);
-      outputs:
+      outputs: 
         - kafka_topic: "fraud-alerts"
         - kafka_topic: "clean-orders"
 
     # RisingWave: 负责实时报表
-    risingwave_cluster:
+    risingwave_cluster: 
       version: "v1.7.0"
       compute_nodes: 6
       meta_nodes: 3
-      resources:
+      resources: 
         cpu: 8
         memory: 32Gi
-      sources:
+      sources: 
         - name: clean_orders
           type: kafka
           topic: "clean-orders"
         - name: fraud_alerts
           type: kafka
           topic: "fraud-alerts"
-      materialized_views:
+      materialized_views: 
         - name: realtime_dashboard
           sql: |
             CREATE MATERIALIZED VIEW order_stats AS
@@ -471,9 +471,9 @@ architecture:
             GROUP BY risk_level;
 
     # Kafka: 数据总线
-    kafka_cluster:
+    kafka_cluster: 
       brokers: 3
-      topics:
+      topics: 
         - name: "raw-orders"
           partitions: 12
           replication: 3
@@ -483,9 +483,9 @@ architecture:
           partitions: 12
 
     # 统一查询层
-    unified_query_layer:
+    unified_query_layer: 
       type: trino  # 或使用 RisingWave 作为查询入口
-      connectors:
+      connectors: 
         - name: risingwave
           type: postgresql
         - name: flink
@@ -589,9 +589,9 @@ WHERE o.created_at > NOW() - INTERVAL '5' MINUTE;
 
 ```yaml
 # monitoring-config.yaml
-dashboards:
+dashboards: 
   - name: "Hybrid Platform Overview"
-    panels:
+    panels: 
       # Flink 指标
       - title: "Flink Throughput"
         metric: flink_taskmanager_job_task_numRecordsInPerSecond
@@ -619,7 +619,7 @@ dashboards:
         metric: now() - max(event_time)
         type: sql
 
-alerts:
+alerts: 
   - name: "Flink High Latency"
     condition: flink_latency_p99 > 100ms
     severity: warning

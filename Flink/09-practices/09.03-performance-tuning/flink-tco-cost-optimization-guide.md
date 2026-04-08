@@ -701,21 +701,21 @@ $$
 
 ```yaml
 # 计算资源配置
-taskmanagers:
+taskmanagers: 
   count: 12
-  resources:
+  resources: 
     cpu: 8
     memory: 32GB
     disk: 500GB SSD
 
 # Checkpoint配置
-checkpoint:
+checkpoint: 
   interval: 30s
   mode: incremental
   state_backend: rocksdb
 
 # 状态存储
-state:
+state: 
   backend: rocksdb
   checkpoints_dir: s3://flink-checkpoints/risk-control/
   savepoints_dir: s3://flink-savepoints/risk-control/
@@ -832,27 +832,27 @@ state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 # Kubernetes HPA 配置
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
-metadata:
+metadata: 
   name: flink-recommendation-hpa
-spec:
-  scaleTargetRef:
+spec: 
+  scaleTargetRef: 
     apiVersion: apps/v1
     kind: Deployment
     name: flink-taskmanager
   minReplicas: 6
   maxReplicas: 20
-  metrics:
+  metrics: 
   - type: Pods
-    pods:
-      metric:
+    pods: 
+      metric: 
         name: kafka_lag
-      target:
+      target: 
         type: AverageValue
         averageValue: "1000"
   - type: Resource
-    resource:
+    resource: 
       name: cpu
-      target:
+      target: 
         type: Utilization
         averageUtilization: 70
 ```
@@ -912,23 +912,23 @@ spec:
 # emr-flink-values.yaml
 flinkVersion: v1.18
 
-jobManager:
-  resource:
+jobManager: 
+  resource: 
     memory: 4Gi
     cpu: 2
   replicas: 2  # HA 配置
 
-taskManager:
-  resource:
+taskManager: 
+  resource: 
     memory: 16Gi
     cpu: 8
   replicas: 10
 
 # 使用 Spot 实例降低计算成本
-nodeSelector:
+nodeSelector: 
   node-type: spot
 
-tolerations:
+tolerations: 
 - key: "spot"
   operator: "Equal"
   value: "true"

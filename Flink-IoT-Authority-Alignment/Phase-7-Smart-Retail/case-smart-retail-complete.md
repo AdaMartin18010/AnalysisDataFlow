@@ -3728,7 +3728,7 @@ class InventoryFusionEngine:
         self.config = config or {}
         self.history_buffer = {}  # 历史数据缓冲区
 
-    def fuse_inventory(
+    def fuse_inventory(:
         self,
         readings: List[SensorReading],
         sku: str,
@@ -3811,7 +3811,7 @@ class InventoryFusionEngine:
             fusion_method='weighted_average_with_decay'
         )
 
-    def _group_by_sensor(
+    def _group_by_sensor(:
         self,
         readings: List[SensorReading]
     ) -> Dict[SensorType, List[SensorReading]]:
@@ -3821,7 +3821,7 @@ class InventoryFusionEngine:
             grouped[reading.sensor_type].append(reading)
         return grouped
 
-    def _aggregate_sensor_readings(
+    def _aggregate_sensor_readings(:
         self,
         readings: List[SensorReading]
     ) -> SensorReading:
@@ -3854,7 +3854,7 @@ class InventoryFusionEngine:
 
         return max(0.3, decay)  # 最低保留30%
 
-    def _calculate_coverage_factor(
+    def _calculate_coverage_factor(:
         self,
         grouped_readings: Dict[SensorType, List[SensorReading]]
     ) -> float:
@@ -3873,7 +3873,7 @@ class InventoryFusionEngine:
 
         return coverage_factors.get(active_sensors, 0.60)
 
-    def _check_historical_consistency(
+    def _check_historical_consistency(:
         self,
         sku: str,
         shelf_id: str,
@@ -3896,7 +3896,7 @@ class InventoryFusionEngine:
         recent_values = history[-10:]  # 最近10次
         avg_change = sum(
             abs(recent_values[i] - recent_values[i-1])
-            for i in range(1, len(recent_values))
+            for i in range(1, len(recent_values)):
         ) / (len(recent_values) - 1)
 
         # 如果当前值与历史趋势一致，给予置信度奖励
@@ -3956,7 +3956,7 @@ class DSFusionEngine:
             'UNKNOWN'       # 未知
         }
 
-    def combine_evidence(
+    def combine_evidence(:
         self,
         evidence_list: List[List[BasicProbabilityAssignment]]
     ) -> Dict[str, float]:
@@ -3972,7 +3972,7 @@ class DSFusionEngine:
 
         if not evidence_list:
             return {h: 1.0/len(self.frame_of_discernment)
-                   for h in self.frame_of_discernment}
+                   for h in self.frame_of_discernment}:
 
         if len(evidence_list) == 1:
             return self._bpa_to_dict(evidence_list[0])
@@ -3984,7 +3984,7 @@ class DSFusionEngine:
 
         return self._bpa_to_dict(result)
 
-    def _dempster_combine(
+    def _dempster_combine(:
         self,
         evidence1: List[BasicProbabilityAssignment],
         evidence2: List[BasicProbabilityAssignment]
@@ -4021,7 +4021,7 @@ class DSFusionEngine:
 
         return result
 
-    def _bpa_to_dict(
+    def _bpa_to_dict(:
         self,
         bpa_list: List[BasicProbabilityAssignment]
     ) -> Dict[str, float]:
@@ -4032,7 +4032,7 @@ class DSFusionEngine:
             result[hypothesis_key] = bpa.mass
         return result
 
-    def make_decision(
+    def make_decision(:
         self,
         fused_belief: Dict[str, float],
         decision_rule: str = 'maximum_belief'
@@ -4072,7 +4072,7 @@ class DSFusionEngine:
 
 
 # 传感器证据生成示例
-def create_sensor_evidence(
+def create_sensor_evidence(:
     sensor_type: str,
     rfid_count: int,
     weight_estimated: float,
@@ -4205,7 +4205,7 @@ class HybridDemandForecaster:
             'promotion_adjusted': 0.30
         }
 
-    def forecast(
+    def forecast(:
         self,
         sku: str,
         store_id: str,
@@ -4255,7 +4255,7 @@ class HybridDemandForecaster:
 
             weighted_pred = sum(
                 model_predictions[model] * weight
-                for model, weight in self.models.items()
+                for model, weight in self.models.items():
             )
 
             # 计算置信区间
@@ -4277,7 +4277,7 @@ class HybridDemandForecaster:
 
         return forecasts
 
-    def _moving_average_predict(
+    def _moving_average_predict(:
         self,
         historical_sales: List[Tuple[datetime, int]],
         days: int = 7
@@ -4286,7 +4286,7 @@ class HybridDemandForecaster:
         recent_sales = [qty for _, qty in historical_sales[-days:]]
         return np.mean(recent_sales) if recent_sales else 0.0
 
-    def _exponential_smoothing_predict(
+    def _exponential_smoothing_predict(:
         self,
         historical_sales: List[Tuple[datetime, int]],
         alpha: float = 0.3
@@ -4302,7 +4302,7 @@ class HybridDemandForecaster:
 
         return smoothed
 
-    def _seasonal_decomposition_predict(
+    def _seasonal_decomposition_predict(:
         self,
         historical_sales: List[Tuple[datetime, int]],
         forecast_date: datetime
@@ -4329,7 +4329,7 @@ class HybridDemandForecaster:
 
         return recent_trend * seasonal_factor
 
-    def _promotion_adjusted_predict(
+    def _promotion_adjusted_predict(:
         self,
         historical_sales: List[Tuple[datetime, int]],
         forecast_date: datetime,
@@ -4412,7 +4412,7 @@ class DynamicPricingEngine:
         self.min_margin_pct = self.config.get('min_margin_pct', 0.15)
         self.max_adjustment_pct = self.config.get('max_adjustment_pct', 0.30)
 
-    def calculate_optimal_price(
+    def calculate_optimal_price(:
         self,
         sku: str,
         store_id: str,
@@ -4489,7 +4489,7 @@ class DynamicPricingEngine:
         target_margin = 0.35  # 目标毛利率35%
         return cost_price / (1 - target_margin)
 
-    def _competitive_price(
+    def _competitive_price(:
         self,
         competitor_prices: List[float],
         cost_price: float
@@ -4509,7 +4509,7 @@ class DynamicPricingEngine:
         min_price = cost_price * (1 + self.min_margin_pct)
         return max(target_price, min_price)
 
-    def _demand_based_price(
+    def _demand_based_price(:
         self,
         current_price: float,
         demand_trend: float,
@@ -4541,7 +4541,7 @@ class DynamicPricingEngine:
 
         return current_price * inventory_factor * demand_factor
 
-    def _determine_weights(
+    def _determine_weights(:
         self,
         inventory_level: int,
         days_of_inventory: float,
@@ -4561,7 +4561,7 @@ class DynamicPricingEngine:
         else:
             return {'cost': 0.30, 'competitive': 0.35, 'demand': 0.35}
 
-    def _apply_constraints(
+    def _apply_constraints(:
         self,
         price: float,
         cost_price: float,
@@ -4582,7 +4582,7 @@ class DynamicPricingEngine:
 
         return round(price, 2)
 
-    def _generate_reasoning(
+    def _generate_reasoning(:
         self,
         weights: Dict[str, float],
         inventory_level: int,
@@ -5689,31 +5689,31 @@ ORDER BY lift DESC;
 
 ```yaml
 # 边缘节点Kubernetes配置
-edge_node_configuration:
-  kubernetes:
+edge_node_configuration: 
+  kubernetes: 
     version: "v1.28.0"
     runtime: containerd
     cni: calico
 
-  flink_edge:
+  flink_edge: 
     version: "1.18.0"
     task_managers: 8
     slots_per_tm: 4
     memory_per_tm: "16g"
 
-  kafka_local:
+  kafka_local: 
     version: "3.6.0"
     brokers: 3
     replication_factor: 3
     partitions: 12
 
-  redis:
+  redis: 
     version: "7.2"
     mode: cluster
     nodes: 6
     max_memory: "48gb"
 
-  monitoring:
+  monitoring: 
     prometheus: true
     grafana: true
     jaeger: true

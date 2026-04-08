@@ -193,7 +193,7 @@ stream
        }
      }
    }
-   ```
+```
 
 2. **数据质量处理**
    - 异常值检测
@@ -266,7 +266,7 @@ stream
        }
      }
    }
-   ```
+```
 
 2. **时序数据分析**
 
@@ -287,7 +287,7 @@ stream
    SELECT device_id, window_start, avg_temp
    FROM device_stats
    WHERE ABS(avg_temp - 25.0) > 3 * 2.0;  -- 均值25，标准差2
-   ```
+```
 
 ### 检查点 3.1
 
@@ -340,7 +340,7 @@ stream
        state.update(new EquipmentState(newStatus));
      }
    }
-   ```
+```
 
 3. **预测性维护**
    - 设备健康度评分

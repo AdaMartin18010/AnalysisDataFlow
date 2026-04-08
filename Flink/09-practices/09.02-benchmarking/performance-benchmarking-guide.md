@@ -147,13 +147,13 @@ state.backend.incremental: true
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-spec:
-  jobManager:
-    resource:
+spec: 
+  jobManager: 
+    resource: 
       memory: "4Gi"
       cpu: 2
-  taskManager:
-    resource:
+  taskManager: 
+    resource: 
       memory: "16Gi"
       cpu: 8
     replicas: 4

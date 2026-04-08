@@ -48,14 +48,14 @@
         <artifactId>flink-streaming-java</artifactId>
         <version>${flink.version}</version>
     </dependency>
-    
+
     <!-- Table API -->
     <dependency>
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-table-api-java</artifactId>
         <version>${flink.version}</version>
     </dependency>
-    
+
     <!-- 连接器 -->
     <dependency>
         <groupId>org.apache.flink</groupId>
@@ -144,7 +144,7 @@ execution.runtime-mode: batch
 
 ```java
 // Flink 2.4 代码在 2.5 中无需修改
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 DataStream<Event> stream = env
@@ -250,7 +250,7 @@ kubernetes.operator.job.autoscaler:
   enabled: true
   min-parallelism: 1
   max-parallelism: 100
-  
+
 # TaskManager 资源配置
 taskmanager.memory.process.size: 4gb
 taskmanager.numberOfTaskSlots: 2
@@ -266,25 +266,25 @@ serverless.cold-start.warmup-pool-size: 2
 # flink-deployment-2.5.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: my-job
-spec:
+spec: 
   image: flink:2.5.0
   flinkVersion: v2.5
-  
-  jobManager:
-    resource:
+
+  jobManager: 
+    resource: 
       memory: 2Gi
       cpu: 1
-  
-  taskManager:
-    resource:
+
+  taskManager: 
+    resource: 
       memory: 4Gi
       cpu: 2
     # Serverless 配置 (新增)
-    serverless:
+    serverless: 
       enabled: true
-      scale-to-zero:
+      scale-to-zero: 
         enabled: true
         idle-timeout: 10m
 ```

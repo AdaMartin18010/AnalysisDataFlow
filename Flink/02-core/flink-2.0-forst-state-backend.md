@@ -36,13 +36,15 @@ $$
 4. **成本优化**: 利用廉价对象存储替代本地 SSD，降低 50% 存储成本
 
 **源码实现**:
+
 ```java
 // 主类: org.apache.flink.runtime.state.forst.ForStStateBackend
 // 配置: org.apache.flink.runtime.state.forst.ForStOptions
 // 配置构建器: org.apache.flink.runtime.state.forst.ForStStateBackendConfig
 ```
+
 - 位于: `flink-runtime` 模块 (`flink-state-backends/flink-state-backend-forst`)
-- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+- Flink 官方文档: <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 - FLIP 论文: VLDB 2025 "ForSt: A Disaggregated State Backend for Stream Processing"
 
 ### Def-F-02-62: 统一文件系统层 (UFS - Unified File System)

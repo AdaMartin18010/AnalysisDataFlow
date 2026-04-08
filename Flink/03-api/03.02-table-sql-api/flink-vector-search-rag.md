@@ -364,7 +364,8 @@ LIMIT k;
     update_time TIMESTAMP(3),
     VECTOR TTL update_time + INTERVAL '30' DAY
   );
-  ```
+
+```
 
 **挑战3：一致性保证**
 
@@ -1200,7 +1201,7 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ## 8. 引用参考 (References)
 
-[^10]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/
+[^10]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. <https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/>
 
 
 

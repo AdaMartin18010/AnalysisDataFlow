@@ -443,12 +443,12 @@ ReleaseLock(p) ==
 
 (* 安全属性：互斥 *)
 MutualExclusion ==
-  \A p1, p2 \in Processes : 
+  \A p1, p2 \in Processes :
     (lockHolder = p1 /\ lockHolder = p2) => p1 = p2
 
 (* 活性属性：无饥饿 *)
 NoStarvation ==
-  \A p \in Processes : 
+  \A p \in Processes :
     p \in requested ~> lockHolder = p
 ```
 
@@ -461,29 +461,29 @@ NoStarvation ==
 ```mermaid
 flowchart TD
     Start([选择计算模型]) --> Q1{计算模式?}
-    
+
     Q1 -->|分布式系统| Q2{一致性要求?}
     Q2 -->|强一致| Q3{拓扑动态?}
     Q3 -->|是| Actor2PC["Actor + 2PC/Paxos<br/>强一致 + 动态拓扑"]
     Q3 -->|否| CSP["CSP<br/>强一致 + 静态拓扑"]
-    
+
     Q2 -->|最终一致| Q4{数据类型?}
     Q4 -->|可CRDT化| CRDT["CRDTs<br/>高可用 + 自动收敛"]
     Q4 -->|需协调| ActorGossip["Actor + Gossip<br/>最终一致广播"]
-    
+
     Q1 -->|流处理| Q5{复杂事件?}
     Q5 -->|是| CEP["Dataflow + CEP<br/>模式匹配 + 窗口"]
     Q5 -->|否| Q6{延迟要求?}
     Q6 -->|毫秒级| Flink["Flink Dataflow<br/>低延迟处理"]
     Q6 -->|秒级| Spark["Spark Streaming<br/>高吞吐批处理"]
-    
+
     Q1 -->|并发验证| Q7{验证焦点?}
     Q7 -->|通信顺序| CSPVerify["CSP/FDR<br/>迹验证"]
     Q7 -->|类型安全| Session["Session Types<br/>编译期协议检查"]
-    
+
     Q7 -->|状态推理| SepLog["Separation Logic<br/>资源不变式"]
     Q7 -->|时序属性| TLA["TLA+<br/>活性/安全性证明"]
-    
+
     Start -.-> Q8{已有模型?}
     Q8 -->|Actor| ActorExtend["扩展选项:<br/>• + CRDTs (最终一致)<br/>• + 2PC (强一致)<br/>• + Choreography (全局协议)"]
     Q8 -->|Dataflow| DFExtend["扩展选项:<br/>• + CEP (复杂事件)<br/>• + Window (时间窗口)<br/>• + State (有状态计算)"]
@@ -497,7 +497,7 @@ flowchart TD
     style Q6 fill:#fff9c4,stroke:#f57f17
     style Q7 fill:#fff9c4,stroke:#f57f17
     style Q8 fill:#e1bee7,stroke:#6a1b9a
-    
+
     style Actor2PC fill:#c8e6c9,stroke:#2e7d32
     style CSP fill:#c8e6c9,stroke:#2e7d32
     style CRDT fill:#ffccbc,stroke:#d84315
@@ -526,27 +526,27 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start([一致性选择]) --> Q1{业务场景?}
-    
+
     Q1 -->|金融/交易| Strong["强一致性<br/>Linearizability"]
     Strong --> Tech1["Actor + Paxos/Raft<br/>或 Spanner"]
     Strong --> Cost1["成本: 高延迟<br/>网络分区时不可用"]
-    
+
     Q1 -->|库存/库存| Seq["顺序一致性<br/>Sequential"]
     Seq --> Tech2["Actor + 2PC<br/>或分布式数据库"]
     Seq --> Cost2["成本: 中高延迟<br/>协调开销"]
-    
+
     Q1 -->|社交/评论| Causal["因果一致性<br/>Causal"]
     Causal --> Tech3["Dataflow + Vector Clocks<br/>或 COPS"]
     Causal --> Cost3["成本: 中等延迟<br/>保留因果关系"]
-    
+
     Q1 -->|计数/购物车| Eventual["最终一致性<br/>Eventual"]
     Eventual --> Tech4["CRDTs<br/>Dynamo-style"]
     Eventual --> Cost4["成本: 低延迟<br/>高可用性"]
-    
+
     Start -.-> Q2{网络条件?}
     Q2 -->|稳定| Stable["可接受<br/>强一致"]
     Q2 -->|分区频繁| Partition["推荐<br/>最终一致"]
-    
+
     Start -.-> Q3{冲突频率?}
     Q3 -->|高| ConflictHigh["需要<br/>CRDTs"]
     Q3 -->|低| ConflictLow["可接受<br/>简单版本向量"]
@@ -555,22 +555,22 @@ flowchart TD
     style Q1 fill:#fff9c4,stroke:#f57f17
     style Q2 fill:#e1bee7,stroke:#6a1b9a
     style Q3 fill:#e1bee7,stroke:#6a1b9a
-    
+
     style Strong fill:#ffcdd2,stroke:#c62828
     style Seq fill:#ffccbc,stroke:#d84315
     style Causal fill:#fff9c4,stroke:#f57f17
     style Eventual fill:#c8e6c9,stroke:#2e7d32
-    
+
     style Tech1 fill:#e1f5fe,stroke:#0277bd
     style Tech2 fill:#e1f5fe,stroke:#0277bd
     style Tech3 fill:#e1f5fe,stroke:#0277bd
     style Tech4 fill:#e1f5fe,stroke:#0277bd
-    
+
     style Cost1 fill:#f3e5f5,stroke:#7b1fa2
     style Cost2 fill:#f3e5f5,stroke:#7b1fa2
     style Cost3 fill:#f3e5f5,stroke:#7b1fa2
     style Cost4 fill:#f3e5f5,stroke:#7b1fa2
-    
+
     style Stable fill:#c8e6c9,stroke:#2e7d32
     style Partition fill:#ffcdd2,stroke:#c62828
     style ConflictHigh fill:#ffcdd2,stroke:#c62828
@@ -590,26 +590,26 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start([验证方法选择]) --> Q1{需验证属性?}
-    
+
     Q1 -->|时序属性| Q2{系统规模?}
     Q2 -->|中小| MC["模型检验<br/>TLC / SPIN / FDR"]
     Q2 -->|大| Proof["交互式证明<br/>TLAPS / Coq / Isabelle"]
-    
+
     Q1 -->|状态/内存| Q3{自动化程度?}
     Q3 -->|全自动| Shape["形状分析<br/>Infer / SLAyer"]
     Q3 -->|半自动| Sep["分离逻辑<br/>Iris / VST / VeriFast"]
-    
+
     Q1 -->|通信协议| Q4{验证阶段?}
     Q4 -->|设计阶段| Choreo["Choreography<br/>全局协议设计"]
     Q4 -->|实现阶段| ST["Session Types<br/>编译期类型检查"]
     Q4 -->|部署阶段| Monitor["运行时监控<br/>Contract monitoring"]
-    
+
     Q1 -->|类型安全| TS["类型系统<br/>依赖类型 / 线性类型"]
-    
+
     Start -.-> Q5{团队经验?}
     Q5 -->|形式化专家| Expert["可用:<br/>TLAPS / Coq / Iris"]
     Q5 -->|工程团队| Engineer["推荐:<br/>TLA+ / Session Types / 测试"]
-    
+
     Start -.-> Q6{关键程度?}
     Q6 -->|安全关键| Safety["需要:<br/>形式化证明"]
     Q6 -->|业务关键| Business["需要:<br/>模型检验 + 测试"]
@@ -622,7 +622,7 @@ flowchart TD
     style Q4 fill:#fff9c4,stroke:#f57f17
     style Q5 fill:#e1bee7,stroke:#6a1b9a
     style Q6 fill:#e1bee7,stroke:#6a1b9a
-    
+
     style MC fill:#c8e6c9,stroke:#2e7d32
     style Proof fill:#c8e6c9,stroke:#2e7d32
     style Shape fill:#bbdefb,stroke:#1565c0
@@ -631,7 +631,7 @@ flowchart TD
     style ST fill:#ffccbc,stroke:#d84315
     style Monitor fill:#ffccbc,stroke:#d84315
     style TS fill:#ffccbc,stroke:#d84315
-    
+
     style Expert fill:#f3e5f5,stroke:#7b1fa2
     style Engineer fill:#f3e5f5,stroke:#7b1fa2
     style Safety fill:#ffcdd2,stroke:#c62828
@@ -652,24 +652,24 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start([流处理模型选择]) --> Q1{延迟要求?}
-    
+
     Q1 -->|毫秒级| Q2{状态复杂度?}
     Q2 -->|简单| FlinkLow["Flink<br/>低延迟处理"]
     Q2 -->|复杂| FlinkState["Flink + RocksDB State<br/>有状态低延迟"]
-    
+
     Q1 -->|秒级| Q3{吞吐量优先?}
     Q3 -->|是| Spark["Spark Streaming<br/>微批处理"]
     Q3 -->|否| FlinkSec["Flink<br/>秒级窗口"]
-    
+
     Q1 -->|分钟级| Q4{与批处理统一?}
     Q4 -->|是| SparkUnified["Spark Structured Streaming<br/>统一批流"]
     Q4 -->|否| Kafka["Kafka Streams<br/>轻量级处理"]
-    
+
     Start -.-> Q5{事件复杂度?}
     Q5 -->|简单转换| Simple["Map/Filter/Reduce<br/>任何引擎均可"]
     Q5 -->|窗口聚合| Window["Tumbling/Sliding/Session<br/>窗口语义重要"]
     Q5 -->|模式匹配| Pattern["CEP<br/>复杂事件处理"]
-    
+
     Start -.-> Q6{交付语义?}
     Q6 -->|至多一次| AtMost["低延迟<br/>可容忍丢失"]
     Q6 -->|至少一次| AtLeast["需要幂等<br/>或去重"]
@@ -682,14 +682,14 @@ flowchart TD
     style Q4 fill:#fff9c4,stroke:#f57f17
     style Q5 fill:#e1bee7,stroke:#6a1b9a
     style Q6 fill:#e1bee7,stroke:#6a1b9a
-    
+
     style FlinkLow fill:#c8e6c9,stroke:#2e7d32
     style FlinkState fill:#c8e6c9,stroke:#2e7d32
     style FlinkSec fill:#c8e6c9,stroke:#2e7d32
     style Spark fill:#bbdefb,stroke:#1565c0
     style SparkUnified fill:#bbdefb,stroke:#1565c0
     style Kafka fill:#ffccbc,stroke:#d84315
-    
+
     style Simple fill:#f3e5f5,stroke:#7b1fa2
     style Window fill:#f3e5f5,stroke:#7b1fa2
     style Pattern fill:#f3e5f5,stroke:#7b1fa2

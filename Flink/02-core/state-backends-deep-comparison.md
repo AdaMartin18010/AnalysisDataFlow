@@ -49,7 +49,17 @@
     - [7.3 Checkpoint 流程对比](#73-checkpoint-流程对比)
     - [7.4 故障恢复流程对比](#74-故障恢复流程对比)
     - [7.5 选择决策树](#75-选择决策树)
-  - [8. 引用参考 (References)](#8-引用参考-references)
+  - [8. 源码深度分析 (Source Code Analysis)](#8-源码深度分析-source-code-analysis)
+    - [8.1 RocksDB SST 文件格式详解](#81-rocksdb-sst-文件格式详解)
+      - [8.1.1 SST 文件在 RocksDBStateBackend 中的应用](#811-sst-文件在-rocksdbstatebackend-中的应用)
+      - [8.1.2 SST 文件版本管理](#812-sst-文件版本管理)
+    - [8.2 Compaction 机制对比源码分析](#82-compaction-机制对比源码分析)
+      - [8.2.1 RocksDB 本地 Compaction](#821-rocksdb-本地-compaction)
+      - [8.2.2 ForSt 远程 Compaction](#822-forst-远程-compaction)
+    - [8.3 三种 State Backend Checkpoint 源码对比](#83-三种-state-backend-checkpoint-源码对比)
+    - [8.4 状态后端选择决策的源码映射](#84-状态后端选择决策的源码映射)
+    - [8.5 性能监控指标的源码实现](#85-性能监控指标的源码实现)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
@@ -934,10 +944,10 @@ flowchart TD
  * EmbeddedRocksDBStateBackend 增量Checkpoint机制
  */
 public class EmbeddedRocksDBStateBackend implements StateBackend {
-    
+
     private final boolean incrementalCheckpointMode;
     private final RocksDBIncrementalSnapshotStrategy snapshotStrategy;
-    
+
     /**
      * 增量Checkpoint核心实现
      */
@@ -947,39 +957,39 @@ public class EmbeddedRocksDBStateBackend implements StateBackend {
             long timestamp,
             CheckpointStreamFactory streamFactory,
             CheckpointOptions checkpointOptions) {
-        
+
         // 1. Flush MemTable到L0，生成新的SST文件
         rocksDB.flush(new FlushOptions().setWaitForFlush(true));
-        
+
         // 2. 获取当前所有SST文件列表
         List<LiveFileMetaData> liveFiles = rocksDB.getLiveFilesMetaData();
-        
+
         // 3. 对比上一次Checkpoint，找出新增的SST文件
         Set<SSTFileInfo> newSSTFiles = getNewSSTFiles(liveFiles, previousCheckpointFiles);
-        
+
         // 4. 上传新增的SST文件
         List<KeyGroupStateSnapshot> snapshots = new ArrayList<>();
         for (SSTFileInfo file : newSSTFiles) {
             Path localPath = file.getPath();
             StreamStateHandle remoteHandle = uploadToCheckpointStorage(
-                localPath, 
+                localPath,
                 streamFactory,
                 checkpointId
             );
             snapshots.add(new KeyGroupStateSnapshot(file.getFileNumber(), remoteHandle));
         }
-        
+
         // 5. 未变更的SST文件复用之前Checkpoint的引用
         snapshots.addAll(reusePreviousSSTFiles(unchangedFiles));
-        
+
         return new SnapshotResult<>(new RocksDBStateHandle(snapshots));
     }
-    
+
     /**
      * 判断SST文件是否变更（基于文件大小和修改时间）
      */
     private boolean isSSTFileChanged(SSTFileInfo current, SSTFileInfo previous) {
-        return current.getFileSize() != previous.getFileSize() 
+        return current.getFileSize() != previous.getFileSize()
             || current.getSequenceNumber() > previous.getSequenceNumber();
     }
 }
@@ -990,18 +1000,18 @@ public class EmbeddedRocksDBStateBackend implements StateBackend {
 ```mermaid
 graph TB
     subgraph "增量Checkpoint SST版本链"
-        CP1[Checkpoint 1<br/>SST: A.sst, B.sst] 
+        CP1[Checkpoint 1<br/>SST: A.sst, B.sst]
         CP2[Checkpoint 2<br/>SST: A.sst, B.sst, C.sst]
         CP3[Checkpoint 3<br/>SST: A.sst, B.sst, C.sst, D.sst]
         CP4[Checkpoint 4<br/>SST: B.sst, C.sst, D.sst, E.sst]
-        
+
         CP1 -->|A删除| CP2
         CP1 -->|新增C| CP2
         CP2 -->|新增D| CP3
         CP3 -->|A删除| CP4
         CP3 -->|新增E| CP4
     end
-    
+
     style CP1 fill:#e3f2fd
     style CP2 fill:#e3f2fd
     style CP3 fill:#e3f2fd
@@ -1017,21 +1027,21 @@ graph TB
  * RocksDB 本地 Compaction 配置
  */
 public class RocksDBOptions {
-    
+
     // Compaction 策略选择
     public static final ConfigOption<String> COMPACTION_STYLE =
         ConfigOptions.key("state.backend.rocksdb.compaction.style")
             .stringType()
             .defaultValue("LEVEL")  // LEVEL / UNIVERSAL / FIFO
             .withDescription("RocksDB compaction style");
-    
+
     // Level Compaction 配置
     public static final ConfigOption<Long> MAX_BYTES_FOR_LEVEL_BASE =
         ConfigOptions.key("state.backend.rocksdb.compaction.level.max-bytes-for-level-base")
             .longType()
             .defaultValue(256 * 1024 * 1024L)  // 256MB
             .withDescription("Level 1总大小阈值");
-    
+
     // Compaction 线程数
     public static final ConfigOption<Integer> MAX_BACKGROUND_COMPACTIONS =
         ConfigOptions.key("state.backend.rocksdb.compaction.max-background-compactions")
@@ -1044,27 +1054,27 @@ public class RocksDBOptions {
  * Compaction 对Checkpoint的影响
  */
 public class CompactionImpactAnalysis {
-    
+
     /**
      * Compaction 导致的文件变更
      */
     public CompactionEffect calculateCompactionEffect(
             List<LiveFileMetaData> before,
             List<LiveFileMetaData> after) {
-        
+
         // 被删除的文件（已合并）
         Set<String> deletedFiles = getDeletedFiles(before, after);
-        
+
         // 新增的文件（合并结果）
         Set<String> addedFiles = getAddedFiles(before, after);
-        
+
         // 未变更的文件
         Set<String> unchangedFiles = getUnchangedFiles(before, after);
-        
+
         // Compaction导致新增的文件需要在下次Checkpoint上传
         return new CompactionEffect(deletedFiles, addedFiles, unchangedFiles);
     }
-    
+
     /**
      * 估算Compaction导致的额外Checkpoint开销
      */
@@ -1085,16 +1095,16 @@ public class CompactionImpactAnalysis {
  * ForSt 远程 Compaction 调度器
  */
 public class ForStRemoteCompactionScheduler {
-    
+
     private final RemoteCompactionServiceClient compactionClient;
-    
+
     /**
      * 提交远程 Compaction 任务
      */
     public CompactionTask submitRemoteCompaction(
             Set<VersionedFile> inputFiles,
             int outputLevel) {
-        
+
         // 1. 构建Compaction任务
         CompactionTaskRequest request = new CompactionTaskRequest(
             UUID.randomUUID().toString(),
@@ -1102,22 +1112,22 @@ public class ForStRemoteCompactionScheduler {
             outputLevel,
             getCompactionOptions()
         );
-        
+
         // 2. 提交到远程服务
         CompactionTask task = compactionClient.submitCompaction(request);
-        
+
         // 3. 异步监听完成事件
         task.addCompletionListener(completedTask -> {
             // 更新本地元数据引用
             updateSSTMetadata(completedTask.getOutputFiles());
-            
+
             // 清理输入文件（引用计数减1）
             cleanupInputFiles(inputFiles);
         });
-        
+
         return task;
     }
-    
+
     /**
      * 判断是否应该使用远程Compaction
      */
@@ -1139,9 +1149,9 @@ sequenceDiagram
     participant RocksDB as RocksDB实例
     participant ForSt as ForSt实例
     participant Storage as Checkpoint Storage
-    
+
     Note over TM: Checkpoint触发
-    
+
     alt HashMapStateBackend
         TM->>Backend: snapshotState()
         Backend->>Backend: Copy-on-Write
@@ -1183,73 +1193,73 @@ sequenceDiagram
  * StateBackend 选择决策工厂
  */
 public class StateBackendSelector {
-    
+
     /**
      * 根据配置和场景选择最优State Backend
      */
     public static StateBackend selectBackend(
             Configuration config,
             StateBackendRequirements requirements) {
-        
+
         // 1. 检查状态大小
         long estimatedStateSize = requirements.getEstimatedStateSize();
         if (estimatedStateSize < 100 * 1024 * 1024L) {  // < 100MB
             // 小状态使用HashMap（低延迟）
             return new HashMapStateBackend();
         }
-        
+
         // 2. 检查部署环境
         DeploymentEnvironment env = requirements.getDeploymentEnvironment();
-        if (env == DeploymentEnvironment.CLOUD_K8S 
+        if (env == DeploymentEnvironment.CLOUD_K8S
             && estimatedStateSize > 100 * 1024 * 1024 * 1024L) {  // > 100GB
             // 云原生大状态使用ForSt
             return createForStBackend(config);
         }
-        
+
         // 3. 检查网络带宽
         if (requirements.getNetworkBandwidth() < 1024 * 1024 * 1024L) {  // < 1Gbps
             // 低带宽环境避免ForSt
             return createRocksDBBackend(config, true);  // 启用增量
         }
-        
+
         // 默认使用RocksDB（通用场景）
         return createRocksDBBackend(config, true);
     }
-    
+
     /**
      * ForSt Backend创建
      */
     private static ForStStateBackend createForStBackend(Configuration config) {
         ForStStateBackend backend = new ForStStateBackend();
-        
+
         // 配置UFS存储路径
         String ufsPath = config.getString(ForStOptions.UFS_PATH);
         backend.setUFSStoragePath(ufsPath);
-        
+
         // 启用远程Compaction
         backend.setRemoteCompactionEnabled(
             config.getBoolean(ForStOptions.REMOTE_COMPACTION_ENABLED)
         );
-        
+
         // 配置LazyRestore
         backend.setLazyRestoreEnabled(true);
-        
+
         return backend;
     }
-    
+
     /**
      * RocksDB Backend创建
      */
     private static EmbeddedRocksDBStateBackend createRocksDBBackend(
-            Configuration config, 
+            Configuration config,
             boolean incremental) {
         EmbeddedRocksDBStateBackend backend = new EmbeddedRocksDBStateBackend(incremental);
-        
+
         // 配置增量Checkpoint
         backend.setIncrementalRestorePath(
             config.getString(RocksDBOptions.INCREMENTAL_RESTORE_PATH)
         );
-        
+
         return backend;
     }
 }
@@ -1262,29 +1272,29 @@ public class StateBackendSelector {
  * State Backend 性能监控
  */
 public class StateBackendMetrics {
-    
+
     /**
      * RocksDB 特定指标
      */
     public static class RocksDBMetrics {
         // SST文件数量
         public static final String ROCKSDB_NUM_SST_FILES = "rocksdb.num.sst.files";
-        
+
         // Compaction相关指标
         public static final String ROCKSDB_COMPACTION_PENDING = "rocksdb.compaction.pending";
         public static final String ROCKSDB_COMPACTION_RUNNING = "rocksdb.compaction.running";
         public static final String ROCKSDB_COMPACTION_BYTES_READ = "rocksdb.compaction.bytes.read";
         public static final String ROCKSDB_COMPACTION_BYTES_WRITTEN = "rocksdb.compaction.bytes.written";
-        
+
         // MemTable指标
         public static final String ROCKSDB_MEMTABLE_FLUSH_PENDING = "rocksdb.memtable.flush.pending";
         public static final String ROCKSDB_MEMTABLE_SIZE = "rocksdb.memtable.size";
-        
+
         // 估算指标
         public static final String ROCKSDB_ESTIMATE_NUM_KEYS = "rocksdb.estimate.num.keys";
         public static final String ROCKSDB_ESTIMATE_LIVE_DATA_SIZE = "rocksdb.estimate.live.data.size";
     }
-    
+
     /**
      * ForSt 特定指标
      */
@@ -1292,20 +1302,20 @@ public class StateBackendMetrics {
         // UFS访问延迟
         public static final String FORST_UFS_READ_LATENCY = "forst.ufs.read.latency";
         public static final String FORST_UFS_WRITE_LATENCY = "forst.ufs.write.latency";
-        
+
         // 本地缓存命中率
         public static final String FORST_CACHE_HIT_RATIO = "forst.cache.hit.ratio";
         public static final String FORST_CACHE_SIZE = "forst.cache.size";
-        
+
         // LazyRestore指标
         public static final String FORST_LAZY_RESTORE_PENDING_KEYS = "forst.lazy.restore.pending.keys";
         public static final String FORST_LAZY_RESTORE_FETCH_LATENCY = "forst.lazy.restore.fetch.latency";
-        
+
         // 远程Compaction指标
         public static final String FORST_REMOTE_COMPACTION_QUEUE_SIZE = "forst.remote.compaction.queue.size";
         public static final String FORST_REMOTE_COMPACTION_DURATION = "forst.remote.compaction.duration";
     }
-    
+
     /**
      * 注册指标采集器
      */

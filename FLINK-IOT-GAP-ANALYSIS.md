@@ -197,7 +197,8 @@ Flink IoT 数据处理 - 权威实践系列
 
   ```sql
   WATERMARK FOR device_time AS device_time - INTERVAL '30' SECOND
-  ```
+
+```
 
 - **迟到数据处理**: Allowed Lateness + Side Output
 - **时钟漂移处理**: NTP同步 + 服务端校正
@@ -210,7 +211,7 @@ Flink IoT 数据处理 - 权威实践系列
   -- 原始 → 1分钟 → 1小时
   CREATE VIEW sensor_one_minute_agg AS ...
   CREATE VIEW sensor_one_hour_agg AS ...
-  ```
+```
 
 - **存储策略**: 冷热分离、压缩、TTL
 

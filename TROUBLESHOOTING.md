@@ -966,18 +966,18 @@ taskmanager.memory.jvm-overhead.max: 2gb
 ```yaml
 # flink-conf.yaml
 env.java.opts.taskmanager: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=100
-  -XX:+UnlockExperimentalVMOptions
-  -XX:+UseCGroupMemoryLimitForHeap
-  -XX:+ParallelRefProcEnabled
-  -XX:InitiatingHeapOccupancyPercent=35
-  -XX:G1HeapRegionSize=16m
-  -XX:G1ReservePercent=15
-  -XX:+DisableExplicitGC
-  -XX:+HeapDumpOnOutOfMemoryError
-  -XX:HeapDumpPath=/var/log/flink/heap-dumps/
-  -Xlog:gc*:file=/var/log/flink/gc.log::filecount=10,filesize=10m
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=100
+  -XX: +UnlockExperimentalVMOptions
+  -XX: +UseCGroupMemoryLimitForHeap
+  -XX: +ParallelRefProcEnabled
+  -XX: InitiatingHeapOccupancyPercent=35
+  -XX: G1HeapRegionSize=16m
+  -XX: G1ReservePercent=15
+  -XX: +DisableExplicitGC
+  -XX: +HeapDumpOnOutOfMemoryError
+  -XX: HeapDumpPath=/var/log/flink/heap-dumps/
+  -Xlog: gc*:file=/var/log/flink/gc.log::filecount=10,filesize=10m
 ```
 
 #### GC监控指标

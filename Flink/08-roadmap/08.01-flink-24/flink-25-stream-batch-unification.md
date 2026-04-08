@@ -14,23 +14,23 @@
 **流批一体架构**是Flink 2.5的核心演进目标，旨在从架构层面彻底消除流处理与批处理的边界：
 
 ```yaml
-架构演进:
+架构演进: 
   Flink 1.x: DataStream API (流) + DataSet API (批) - 双API分离
   Flink 2.0: DataStream API统一 (批作为有界流) - 执行层部分统一
   Flink 2.5: 完全统一架构 - 执行引擎、存储层、API全面统一
 
-核心特征:
-  统一执行引擎:
+核心特征: 
+  统一执行引擎: 
     - 单一执行计划生成器 (Unified Planner)
     - 自适应算子实现 (Adaptive Operator)
     - 统一调度策略 (Unified Scheduling)
 
-  统一存储层:
+  统一存储层: 
     - 流状态与批Shuffle统一抽象
     - 分层存储策略 (Memory/Local/Remote)
     - 零拷贝数据交换
 
-  统一API层:
+  统一API层: 
     - 声明式API (SQL/Table API) 自动模式选择
     - DataStream API显式控制
     - 混合执行声明支持
@@ -96,23 +96,23 @@ $$
 **自适应模式选择**机制根据数据源特性、作业特征和集群状态动态选择最优执行模式：
 
 ```yaml
-输入维度:
-  数据源特征:
+输入维度: 
+  数据源特征: 
     boundedness: [BOUNDED, CONTINUOUS_UNBOUNDED, CONTINUOUS_BOUNDED]
     cardinality: 估计记录数
     arrival_rate: 到达速率 (records/sec)
 
-  作业特征:
+  作业特征: 
     latency_requirement: 延迟要求 (ms)
     throughput_target: 吞吐量目标 (records/sec)
     state_size_estimate: 预估状态大小
 
-  集群状态:
+  集群状态: 
     available_memory: 可用内存
     available_slots: 可用Slot数
     network_bandwidth: 网络带宽
 
-决策输出:
+决策输出: 
   mode: STREAMING | BATCH | MIXED
   parallelism: int
   resource_profile: ResourceProfile
@@ -137,7 +137,7 @@ $$
 **统一容错机制**将流处理的Checkpoint机制与批处理的容错机制统一为单一抽象：
 
 ```yaml
-容错层级:
+容错层级: 
   Level 1 - 任务级容错:
     流模式: 精确一次Checkpoint恢复
     批模式: 任务失败重试 (Task Retry)
@@ -153,7 +153,7 @@ $$
     批模式: 静态重新调度
     统一: 自适应资源重分配
 
-容错协议:
+容错协议: 
   统一Barrier: 全局一致性标记
   增量Snapshot: 仅变更状态持久化
   并行恢复: 多TaskManager并行加载状态
@@ -216,18 +216,18 @@ $$
 **流批混合执行**允许同一作业内同时包含流算子和批算子：
 
 ```yaml
-混合模式特征:
-  数据源混合:
+混合模式特征: 
+  数据源混合: 
     - 流源: Kafka, Pulsar (CONTINUOUS_UNBOUNDED)
     - 批源: 文件, Iceberg表 (BOUNDED)
     - 有界流: 历史Kafka数据 (CONTINUOUS_BOUNDED)
 
-  执行图结构:
+  执行图结构: 
     - 流子图: 低延迟路径，持续执行
     - 批子图: 高吞吐路径，触发执行
     - 混合边: 流批数据交换协议
 
-  触发机制:
+  触发机制: 
     - 流部分: Watermark驱动
     - 批部分: 数据完成或时间触发
     - 同步点: 全局Barrier协调
@@ -411,7 +411,7 @@ graph TB
 
 ```yaml
 问题: 流数据速率突发增长，原STREAMING模式不再最优
-解决方案:
+解决方案: 
   - 运行时监控数据速率
   - 支持执行模式在线切换 (Mode Switch)
   - 渐进式状态迁移
@@ -421,7 +421,7 @@ graph TB
 
 ```yaml
 问题: 流批子图间的Barrier同步引入延迟
-解决方案:
+解决方案: 
   - 异步Barrier传播
   - 流水线Barrier合并
   - 基于Watermark的松散同步
@@ -431,7 +431,7 @@ graph TB
 
 ```yaml
 问题: 统一抽象可能引入性能开销
-解决方案:
+解决方案: 
   - 零拷贝数据传输
   - 自适应缓存策略
   - 模式特化的存储实现
@@ -1217,23 +1217,23 @@ flink run -s hdfs:///savepoints/job-123 \
 ### 9.1 执行模式选择建议
 
 ```yaml
-场景决策矩阵:
-  纯实时处理:
+场景决策矩阵: 
+  纯实时处理: 
     特征: 持续数据流, 延迟<1s
     推荐: STREAMING模式
     配置: execution.runtime-mode: STREAMING
 
-  纯离线处理:
+  纯离线处理: 
     特征: 固定数据集, 延迟>1min
     推荐: BATCH模式
     配置: execution.runtime-mode: BATCH
 
-  实时数仓:
+  实时数仓: 
     特征: 流数据+历史数据JOIN
     推荐: MIXED模式
     配置: execution.runtime-mode: MIXED
 
-  多变负载:
+  多变负载: 
     特征: 流量波动大, 难以预测
     推荐: ADAPTIVE模式
     配置: execution.runtime-mode: ADAPTIVE

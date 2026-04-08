@@ -511,6 +511,7 @@ DataStream<StructuredLog> unifiedLogs = jsonLogs
             .<StructuredLog>forBoundedOutOfOrderness(Duration.ofSeconds(5))
             .withTimestampAssigner((log, _) -> log.getTimestamp())
     );
+}
 ```
 
 ---

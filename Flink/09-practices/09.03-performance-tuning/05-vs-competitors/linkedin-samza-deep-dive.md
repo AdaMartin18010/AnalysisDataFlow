@@ -96,17 +96,17 @@ Samza支持两种资源管理器的部署模式：
 ```yaml
 apiVersion: samza.apache.org/v1
 kind: SamzaJob
-metadata:
+metadata: 
   name: stream-processing-job
-spec:
-  jobCoordinator:
+spec: 
+  jobCoordinator: 
     replicas: 1
-  containers:
+  containers: 
     replicas: 3
-    resources:
+    resources: 
       memory: "4Gi"
       cpu: "2"
-  stores:
+  stores: 
     - name: local-store
       type: rocksdb
       changelog: input-topic-changelog

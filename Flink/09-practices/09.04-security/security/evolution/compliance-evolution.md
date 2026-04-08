@@ -53,11 +53,11 @@ $$
 ### 5.1 合规配置
 
 ```yaml
-compliance:
-  gdpr:
+compliance: 
+  gdpr: 
     data_retention: 7y
     right_to_erasure: true
-  hipaa:
+  hipaa: 
     encryption_required: true
     audit_logging: true
 ```

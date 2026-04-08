@@ -357,14 +357,14 @@ public class SensorDataGenerator implements SourceFunction<SensorEvent> {
 
 ```yaml
 # prometheus.yml 抓取配置
-scrape_configs:
+scrape_configs: 
   - job_name: 'flink-jobmanager'
-    static_configs:
+    static_configs: 
       - targets: ['jobmanager:9249']
     metrics_path: /metrics
 
   - job_name: 'flink-taskmanager'
-    static_configs:
+    static_configs: 
       - targets: ['taskmanager:9249']
     metrics_path: /metrics
 

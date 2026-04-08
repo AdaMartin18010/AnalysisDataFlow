@@ -3541,7 +3541,7 @@ jobs:
     - name: Push Helm chart to ECR
       run: |
         helm push flink-iot-${{ github.run_number }}.tgz \
-          oci://${{ steps.login-ecr.outputs.registry }}/charts
+          oci: //${{ steps.login-ecr.outputs.registry }}/charts
 
   # ==========================================================
   # Job: Terraform Plan
@@ -3618,7 +3618,7 @@ jobs:
     - name: Deploy with Helm
       run: |
         helm upgrade --install flink-iot \
-          oci://${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
+          oci: //${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
           --version ${{ github.run_number }} \
           -f ./helm/flink-iot/values.yaml \
           -f ./helm/flink-iot/values-dev.yaml \
@@ -3663,7 +3663,7 @@ jobs:
     - name: Deploy with Helm
       run: |
         helm upgrade --install flink-iot \
-          oci://${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
+          oci: //${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
           --version ${{ github.run_number }} \
           -f ./helm/flink-iot/values.yaml \
           -f ./helm/flink-iot/values-staging.yaml \
@@ -3708,7 +3708,7 @@ jobs:
       run: |
         # Deploy to "green" environment
         helm upgrade --install flink-iot-green \
-          oci://${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
+          oci: //${{ steps.login-ecr.outputs.registry }}/charts/flink-iot \
           --version ${{ github.run_number }} \
           -f ./helm/flink-iot/values.yaml \
           -f ./helm/flink-iot/values-prod.yaml \

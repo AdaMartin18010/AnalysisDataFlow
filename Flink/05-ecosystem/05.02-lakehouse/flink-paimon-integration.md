@@ -891,11 +891,11 @@ CREATE TABLE optimized_table (
     PRIMARY KEY (id) NOT ENFORCED
 ) WITH (
     'connector' = 'paimon',
-    
+
     -- Flink 2.2 新增: 增量 Compaction
     'compaction.incremental' = 'true',
     'compaction.incremental.trigger' = 'size-based',
-    
+
     -- 智能 Compaction 调度
     'compaction.smart-scheduling' = 'true',
     'compaction.resource-ratio' = '0.2'

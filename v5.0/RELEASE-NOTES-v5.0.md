@@ -56,7 +56,7 @@ mindmap
 - 📝 **在线测验**: 知识点验证与证书颁发
 - 💬 **讨论区**: 课程相关问答与讨论
 
-**访问地址**: https://learn.analysisdataflow.org
+**访问地址**: <https://learn.analysisdataflow.org>
 
 ### 2. 交互式知识图谱 v3.0
 
@@ -68,7 +68,7 @@ mindmap
 - 📱 **移动端适配**: 响应式设计与触摸支持
 - 🔗 **深度链接**: 任意节点可分享
 
-**访问地址**: https://graph.analysisdataflow.org
+**访问地址**: <https://graph.analysisdataflow.org>
 
 ### 3. 完整英文版 (English Edition)
 
@@ -83,7 +83,8 @@ mindmap
 | visuals/ 可视化 | 21篇 | 21篇 | ✅ 100% |
 | 项目级文档 | 97篇 | 97篇 | ✅ 100% |
 
-**术语标准化**: 
+**术语标准化**:
+
 - 10,000+技术术语双语对照
 - 统一术语表: [GLOSSARY-EN.md](../GLOSSARY-EN.md)
 
@@ -102,6 +103,7 @@ mindmap
 #### Knowledge/ 工程实践 (新增50篇)
 
 **前沿技术探索 (20篇)**:
+
 - AI-Native流数据库
 - 向量搜索与流计算融合
 - LLM流式处理模式
@@ -109,6 +111,7 @@ mindmap
 - WebAssembly流处理
 
 **行业案例研究 (15篇)**:
+
 - 金融实时风控系统
 - 电商实时推荐引擎
 - IoT设备监控平台
@@ -116,6 +119,7 @@ mindmap
 - 物流路径优化系统
 
 **技术选型指南 (15篇)**:
+
 - 流处理引擎对比2027
 - 云原生流服务选型
 - 边缘流处理方案
@@ -124,30 +128,35 @@ mindmap
 #### Flink/ 专项技术 (新增345篇)
 
 **Flink 2.4/2.5/3.0 前瞻 (100篇)**:
+
 - Flink 2.4 新特性全景
 - Adaptive Scheduling V2
 - 云原生增强特性
 - 统一批流处理深化
 
 **AI/ML集成 (50篇)**:
+
 - Flink ML 2.0 完整指南
 - 实时特征工程
 - 流式模型推理
 - FLIP-531 AI Agent
 
 **生态集成 (100篇)**:
+
 - Apache Paimon深度集成
 - Flink CDC Connectors
 - 实时数仓构建
 - 流式Lakehouse
 
 **性能优化 (50篇)**:
+
 - State Backend深度对比
 - Checkpoint调优指南
 - 内存管理优化
 - 网络层优化
 
 **生产实践 (45篇)**:
+
 - 大规模集群运维
 - 多租户隔离方案
 - 灾备与恢复策略
@@ -163,18 +172,18 @@ mindmap
 # 示例: 学习路径推荐API
 GET /api/v1/learning-path/recommend
 {
-  "background": "backend_engineer",
-  "goal": "flink_expert",
-  "time_available": "10_hours_week",
-  "preferred_lang": "zh"
+    "background": "backend_engineer",
+    "goal": "flink_expert",
+    "time_available": "10_hours_week",
+    "preferred_lang": "zh"
 }
 
 Response:
 {
-  "path_id": "backend-to-flink-zh",
-  "duration_weeks": 12,
-  "courses": [...],
-  "milestones": [...]
+    "path_id": "backend-to-flink-zh",
+    "duration_weeks": 12,
+    "courses": [...],
+    "milestones": [...]
 }
 ```
 
@@ -310,12 +319,12 @@ v1.0.0 (2025-10-10) - 初始发布
 
 ## 🔗 相关资源
 
-- 🌐 **官方网站**: https://analysisdataflow.org
-- 📖 **完整文档**: https://docs.analysisdataflow.org
-- 🎓 **学习平台**: https://learn.analysisdataflow.org
-- 🕸️ **知识图谱**: https://graph.analysisdataflow.org
-- 💬 **社区论坛**: https://discuss.analysisdataflow.org
-- 🐙 **GitHub**: https://github.com/luyanfeng/AnalysisDataFlow
+- 🌐 **官方网站**: <https://analysisdataflow.org>
+- 📖 **完整文档**: <https://docs.analysisdataflow.org>
+- 🎓 **学习平台**: <https://learn.analysisdataflow.org>
+- 🕸️ **知识图谱**: <https://graph.analysisdataflow.org>
+- 💬 **社区论坛**: <https://discuss.analysisdataflow.org>
+- 🐙 **GitHub**: <https://github.com/luyanfeng/AnalysisDataFlow>
 - 🐦 **Twitter/X**: @AnalysisDataFlow
 - 💼 **LinkedIn**: AnalysisDataFlow
 
@@ -323,7 +332,7 @@ v1.0.0 (2025-10-10) - 初始发布
 
 ## 📞 联系方式
 
-- 📧 **邮件**: contact@analysisdataflow.org
+- 📧 **邮件**: <contact@analysisdataflow.org>
 - 💬 **Slack**: [加入社区Slack](https://slack.analysisdataflow.org)
 - 📅 **社区会议**: 每月第一个周五 20:00 UTC+8
 

@@ -1335,7 +1335,8 @@ GROUP BY user_id;
    SET table.exec.mini-batch.enabled = 'true';
    SET table.exec.mini-batch.allow-latency = '1s';
    SET table.exec.mini-batch.size = '1000';
-   ```
+
+```
 
    效果：相同key的更新合并，减少Retraction数量
 
@@ -1343,15 +1344,16 @@ GROUP BY user_id;
 
    ```sql
    SET table.optimizer.local-global-enabled = 'true';
-   ```
+```
 
    效果：先Local聚合减少Global的Retraction
 
-3. **Split Distinct优化**：
+1. **Split Distinct优化**：
 
    ```sql
    SET table.optimizer.distinct-agg.split.enabled = 'true';
-   ```
+
+```
 
    效果：多DISTINCT拆分为子聚合，避免重复计算
 

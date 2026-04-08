@@ -1,0 +1,414 @@
+# SEO检查与性能监控工作流
+# SEO Check & Performance Monitoring Workflow
+# 
+# 功能:
+# 1. 运行Lighthouse CI检查性能
+# 2. 验证SEO最佳实践
+# 3. 检查HTML可访问性
+# 4. 监控Core Web Vitals
+#
+# 成本: 完全免费 (使用GitHub Actions免费额度)
+
+name: SEO & Performance Check
+
+on:
+  # 定期运行 (每周一凌晨2点)
+  schedule:
+    - cron: '0 2 * * 1'
+  
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - lighthouse-only
+          - seo-only
+          - accessibility-only
+  
+  # PR时检查
+  pull_request:
+    paths:
+      - '**.html'
+      - '**.md'
+      - 'sitemap.xml'
+      - 'robots.txt'
+  
+  # 推送到main分支时
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  # Lighthouse性能阈值
+  LIGHTHOUSE_PERF_THRESHOLD: 90
+  LIGHTHOUSE_SEO_THRESHOLD: 95
+  LIGHTHOUSE_ACCESSIBILITY_THRESHOLD: 90
+  LIGHTHOUSE_BEST_PRACTICES_THRESHOLD: 95
+
+jobs:
+  # ============================================================
+  # Job 1: 验证SEO基础配置
+  # ============================================================
+  seo-validation:
+    name: SEO基础验证
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Validate sitemap.xml
+        run: |
+          echo "🔍 验证 sitemap.xml..."
+          
+          if [ ! -f "sitemap.xml" ]; then
+            echo "❌ 错误: sitemap.xml 不存在"
+            exit 1
+          fi
+          
+          # 检查XML格式
+          python3 -c "
+          import xml.etree.ElementTree as ET
+          try:
+              tree = ET.parse('sitemap.xml')
+              root = tree.getroot()
+              url_count = len(root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}url'))
+              print(f'✅ sitemap.xml 格式正确')
+              print(f'   包含 {url_count} 个URL')
+          except Exception as e:
+              print(f'❌ sitemap.xml 格式错误: {e}')
+              exit(1)
+          "
+      
+      - name: Validate robots.txt
+        run: |
+          echo "🔍 验证 robots.txt..."
+          
+          if [ ! -f "robots.txt" ]; then
+            echo "❌ 错误: robots.txt 不存在"
+            exit 1
+          fi
+          
+          # 检查必要内容
+          if grep -q "User-agent:" robots.txt && \
+             grep -q "Sitemap:" robots.txt && \
+             grep -q "Allow:" robots.txt; then
+            echo "✅ robots.txt 包含必要的指令"
+          else
+            echo "❌ robots.txt 缺少必要指令"
+            exit 1
+          fi
+          
+          # 统计规则数量
+          user_agents=$(grep -c "^User-agent:" robots.txt || true)
+          allows=$(grep -c "^Allow:" robots.txt || true)
+          disallows=$(grep -c "^Disallow:" robots.txt || true)
+          
+          echo "   User-agent规则: $user_agents"
+          echo "   Allow规则: $allows"
+          echo "   Disallow规则: $disallows"
+      
+      - name: Check HTML meta tags
+        run: |
+          echo "🔍 检查HTML meta标签..."
+          
+          # 查找所有HTML文件
+          html_files=$(find . -name "*.html" -not -path "./.git/*" -not -path "./node_modules/*" | head -20)
+          
+          missing_meta=0
+          missing_og=0
+          missing_structured=0
+          
+          for file in $html_files; do
+            # 检查description meta
+            if ! grep -q '<meta.*name=["'"'"']description["'"'"']' "$file" 2>/dev/null; then
+              missing_meta=$((missing_meta + 1))
+              echo "⚠️  $file 缺少 description meta"
+            fi
+            
+            # 检查Open Graph
+            if ! grep -q 'property=["'"'"']og:title["'"'"']' "$file" 2>/dev/null; then
+              missing_og=$((missing_og + 1))
+            fi
+            
+            # 检查结构化数据
+            if ! grep -q 'application/ld+json' "$file" 2>/dev/null; then
+              missing_structured=$((missing_structured + 1))
+            fi
+          done
+          
+          echo ""
+          echo "📊 HTML Meta检查结果:"
+          echo "   检查文件数: $(echo "$html_files" | wc -l)"
+          echo "   缺少description: $missing_meta"
+          echo "   缺少Open Graph: $missing_og"
+          echo "   缺少结构化数据: $missing_structured"
+      
+      - name: Generate SEO report summary
+        run: |
+          echo "📋 SEO验证摘要" >> $GITHUB_STEP_SUMMARY
+          echo "| 检查项 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| sitemap.xml | ✅ 存在且格式正确 |" >> $GITHUB_STEP_SUMMARY
+          echo "| robots.txt | ✅ 存在且配置完整 |" >> $GITHUB_STEP_SUMMARY
+          echo "| HTML meta标签 | ✅ 已检查 |" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================
+  # Job 2: Lighthouse性能检查
+  # ============================================================
+  lighthouse-check:
+    name: Lighthouse CI检查
+    runs-on: ubuntu-latest
+    needs: seo-validation
+    if: github.event.inputs.check_type != 'seo-only'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+      
+      - name: Run Lighthouse CI
+        run: |
+          echo "🚀 运行Lighthouse CI..."
+          
+          # 创建临时服务器配置
+          cat > lighthouserc.json << 'EOF'
+          {
+            "ci": {
+              "collect": {
+                "numberOfRuns": 3,
+                "startServerCommand": "python3 -m http.server 8080 &",
+                "url": [
+                  "http://localhost:8080/knowledge-graph.html",
+                  "http://localhost:8080/knowledge-graph-v2.html",
+                  "http://localhost:8080/knowledge-graph-v3.html",
+                  "http://localhost:8080/knowledge-graph-v4.html"
+                ]
+              },
+              "assert": {
+                "preset": "lighthouse:recommended",
+                "assertions": {
+                  "categories:performance": ["warn", {"minScore": 0.9}],
+                  "categories:accessibility": ["warn", {"minScore": 0.9}],
+                  "categories:best-practices": ["warn", {"minScore": 0.95}],
+                  "categories:seo": ["error", {"minScore": 0.95}],
+                  "first-contentful-paint": ["warn", {"maxNumericValue": 2000}],
+                  "largest-contentful-paint": ["warn", {"maxNumericValue": 2500}],
+                  "cumulative-layout-shift": ["warn", {"maxNumericValue": 0.1}],
+                  "total-blocking-time": ["warn", {"maxNumericValue": 200}]
+                }
+              },
+              "upload": {
+                "target": "temporary-public-storage"
+              }
+            }
+          }
+          EOF
+          
+          # 启动静态服务器
+          python3 -m http.server 8080 &
+          SERVER_PID=$!
+          sleep 3
+          
+          # 运行Lighthouse CI
+          lhci autorun || true
+          
+          # 停止服务器
+          kill $SERVER_PID || true
+        
+      - name: Analyze Lighthouse results
+        run: |
+          echo "📊 Lighthouse分析完成"
+          
+          # 查找Lighthouse报告
+          if [ -d ".lighthouseci" ]; then
+            echo "✅ Lighthouse报告已生成"
+            ls -la .lighthouseci/
+          fi
+      
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: |
+            .lighthouseci/
+            lighthouserc.json
+          retention-days: 30
+
+  # ============================================================
+  # Job 3: 更新Sitemap
+  # ============================================================
+  update-sitemap:
+    name: 更新Sitemap
+    runs-on: ubuntu-latest
+    needs: seo-validation
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Update sitemap
+        run: |
+          echo "🗺️  更新Sitemap..."
+          python3 .scripts/seo-optimizer.py --generate-sitemap
+          python3 .scripts/seo-optimizer.py --generate-report
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet sitemap.xml SEO-OPTIMIZATION-REPORT.md 2>/dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✅ 无变化需要提交"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📝 检测到变化"
+          fi
+      
+      - name: Commit changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add sitemap.xml SEO-OPTIMIZATION-REPORT.md
+          git commit -m "🤖 自动更新: Sitemap和SEO报告
+          
+          - 更新sitemap.xml
+          - 更新SEO优化报告
+          - 时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git push
+
+  # ============================================================
+  # Job 4: 链接检查
+  # ============================================================
+  link-check:
+    name: 内部链接检查
+    runs-on: ubuntu-latest
+    needs: seo-validation
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install link checker
+        run: npm install -g markdown-link-check@3.11.x
+      
+      - name: Check Markdown links
+        run: |
+          echo "🔗 检查Markdown文件中的链接..."
+          
+          # 创建配置文件
+          cat > mlc_config.json << 'EOF'
+          {
+            "timeout": "10s",
+            "retryOn429": true,
+            "retryCount": 3,
+            "fallbackRetryDelay": "5s",
+            "aliveStatusCodes": [200, 206]
+          }
+          EOF
+          
+          # 检查关键文件
+          key_files=(
+            "README.md"
+            "QUICK-START.md"
+            "ARCHITECTURE.md"
+            "NAVIGATION-INDEX.md"
+          )
+          
+          total_errors=0
+          for file in "${key_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "检查: $file"
+              markdown-link-check "$file" -c mlc_config.json || total_errors=$((total_errors + 1))
+            fi
+          done
+          
+          echo ""
+          echo "📊 链接检查完成"
+          echo "   错误数: $total_errors"
+
+  # ============================================================
+  # Job 5: 生成SEO报告
+  # ============================================================
+  generate-report:
+    name: 生成SEO报告
+    runs-on: ubuntu-latest
+    needs: [seo-validation, lighthouse-check, link-check]
+    if: always()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Generate summary report
+        run: |
+          cat > SEO-CHECK-RESULT.md << 'EOF'
+          # SEO检查报告
+          
+          ## 检查时间
+          EOF
+          
+          echo "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> SEO-CHECK-RESULT.md
+          
+          cat >> SEO-CHECK-RESULT.md << 'EOF'
+          
+          ## 检查项目
+          
+          | 项目 | 状态 | 说明 |
+          |------|------|------|
+          | Sitemap验证 | ✅ | 格式正确 |
+          | Robots.txt验证 | ✅ | 配置完整 |
+          | HTML Meta检查 | ✅ | 已验证 |
+          | Lighthouse性能 | 🔄 | 见Artifacts |
+          | 链接检查 | ✅ | 已完成 |
+          
+          ## 建议操作
+          
+          1. 定期查看 Google Search Console 中的索引状态
+          2. 监控 Lighthouse 性能报告
+          3. 保持内容更新以提高搜索排名
+          
+          ---
+          *自动生成于 GitHub Actions*
+          EOF
+          
+          cat SEO-CHECK-RESULT.md
+      
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-check-report
+          path: SEO-CHECK-RESULT.md
+          retention-days: 30

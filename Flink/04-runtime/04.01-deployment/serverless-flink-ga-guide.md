@@ -539,14 +539,15 @@ $$
 
 3. **恢复协议**:
 
-   ```
+   ```text
    恢复步骤:
    a. 读取最新检查点元数据
    b. 验证所有状态句柄存在
    c. 原子性注册检查点
    d. 启动TaskManager，引用远程状态
    e. 从最后屏障位置恢复消费
-   ```
+
+```
 
 4. **正确性**: 根据FLIP-158，分离状态恢复等价于本地状态恢复
 
@@ -1639,10 +1640,10 @@ taskmanager.network.memory.buffer-debloat.enabled: true
 # JVM优化 (冷启动)
 # ============================================================================
 env.java.opts: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=20
-  -XX:+UseStringDeduplication
-  -XX:SharedArchiveFile=/opt/flink/lib/flink-cds.jsa
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=20
+  -XX: +UseStringDeduplication
+  -XX: SharedArchiveFile=/opt/flink/lib/flink-cds.jsa
 ```
 
 ### A.2 KEDA ScaledObject完整配置

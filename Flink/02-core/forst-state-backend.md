@@ -26,10 +26,11 @@ $$\text{ForSt} = \langle \text{UFS}, \text{LocalCache}, \text{StateMapping}, \te
 **直观解释**: 传统 RocksDB 将状态完全存储在 TaskManager 本地磁盘，而 ForSt 将状态主要存储在分布式文件系统（DFS）中，本地仅作为热数据缓存。这类似于 CPU 的多级缓存架构 —— L1/L2 是本地，主存是 DFS。
 
 **源码实现**:
+
 - 主类: `org.apache.flink.runtime.state.forst.ForStStateBackend`
 - 配置: `org.apache.flink.runtime.state.forst.ForStOptions`
 - 位于: `flink-runtime` 模块 (flink-state-backends-forst)
-- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+- Flink 官方文档: <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
 ### Def-F-02-10: Unified File System (UFS)层
 
@@ -270,7 +271,7 @@ Checkpoint Barrier → Snapshot State Mapping
 
 3. **两阶段提交协议**:
 
-   ```
+   ```text
    Phase 1 (Prepare):
      - Flush 所有脏页到 DFS
      - 生成新的 SST 文件列表
@@ -280,7 +281,8 @@ Checkpoint Barrier → Snapshot State Mapping
      - 收到 Checkpoint Coordinator 确认
      - 原子更新元数据状态为 COMMITTED
      - 旧版本元数据可安全清理
-   ```
+
+```
 
 ### 4.3 边界讨论
 
@@ -662,11 +664,11 @@ graph TB
         A --> E[Meta Block]
         A --> F[Meta Index Block]
         A --> G[Footer]
-        
+
         B --> B1[Key-Value Pairs<br/>有序存储]
         B --> B2[Restart Points<br/>索引加速]
         B --> B3[压缩数据<br/>LZ4/ZSTD]
-        
+
         E --> E1[Filter Block<br/>Bloom Filter]
         E --> E2[Properties Block<br/>统计信息]
         E --> E3[Range Tombstones<br/>删除标记]
@@ -690,27 +692,27 @@ graph TB
  * ForSt SST 文件格式实现
  */
 public class ForStSSTFile {
-    
+
     /**
      * SST 文件魔数（用于文件类型识别）
      */
     private static final byte[] SST_MAGIC = new byte[] {0x53, 0x53, 0x54}; // "SST"
-    
+
     /**
      * SST 文件版本号
      */
     private static final int SST_VERSION = 2;
-    
+
     /**
      * Data Block 结构
      */
     public static class DataBlock {
         // 重启点数量（每N个key设置一个重启点）
         private final int numRestarts;
-        
+
         // 实际的键值对数据（Delta编码压缩）
         private final byte[] data;
-        
+
         /**
          * 读取单个Key-Value对
          */
@@ -722,22 +724,22 @@ public class ForStSSTFile {
             int unsharedKeyLen = readVarint();
             // Value长度
             int valueLen = readVarint();
-            
+
             // 重构完整Key
             byte[] key = reconstructKey(sharedPrefixLen, unsharedKeyLen);
             byte[] value = readBytes(valueLen);
-            
+
             return new KeyValue(key, value);
         }
     }
-    
+
     /**
      * Block 句柄（用于定位）
      */
     public static class BlockHandle {
         private final long offset;  // Block在文件中的偏移
         private final long size;    // Block大小
-        
+
         public byte[] encode() {
             // Varint编码：offset + size
             ByteBuffer buffer = ByteBuffer.allocate(16);
@@ -746,7 +748,7 @@ public class ForStSSTFile {
             return buffer.array();
         }
     }
-    
+
     /**
      * Footer 结构（文件末尾48字节）
      */
@@ -757,9 +759,9 @@ public class ForStSSTFile {
         private final BlockHandle indexHandle;
         // 魔数（用于校验）
         private final byte[] magic;
-        
+
         public static final int ENCODED_LENGTH = 48;
-        
+
         public byte[] encode() {
             ByteBuffer buffer = ByteBuffer.allocate(ENCODED_LENGTH);
             buffer.put(metaIndexHandle.encode());
@@ -778,21 +780,21 @@ public class ForStSSTFile {
  * ForSt 内部键格式设计
  */
 public class ForStKeyFormat {
-    
+
     /**
      * Internal Key 结构：
      * +-----------------+-----------------+---------------+
      * |  User Key       |  Sequence Num   |  Value Type   |
      * |  (变长)          |  (7 bytes)      |  (1 byte)     |
      * +-----------------+-----------------+---------------+
-     * 
+     *
      * 总长度：user_key_len + 8 bytes
      */
     public static class InternalKey {
         private final byte[] userKey;
         private final long sequenceNumber;
         private final ValueType valueType;
-        
+
         public byte[] encode() {
             ByteBuffer buffer = ByteBuffer.allocate(userKey.length + 8);
             buffer.put(userKey);
@@ -803,7 +805,7 @@ public class ForStKeyFormat {
             return buffer.array();
         }
     }
-    
+
     /**
      * Value Type 枚举
      */
@@ -812,9 +814,9 @@ public class ForStKeyFormat {
         DELETE((byte) 0x00),        // 删除标记
         MERGE((byte) 0x02),         // 合并操作
         SINGLE_DELETE((byte) 0x07); // 单条删除
-        
+
         private final byte code;
-        
+
         ValueType(byte code) {
             this.code = code;
         }
@@ -833,7 +835,7 @@ public class ForStKeyFormat {
  * ForSt Compaction 调度器
  */
 public class ForStCompactionScheduler {
-    
+
     /**
      * 检查是否需要Compaction
      */
@@ -843,25 +845,25 @@ public class ForStCompactionScheduler {
         if (level0Files >= L0_COMPACTION_TRIGGER) {
             return createL0CompactionTask();
         }
-        
+
         // 2. 检查各Level大小
         for (int level = 1; level < MAX_LEVELS; level++) {
             long levelSize = stateBackend.getLevelSize(level);
             long threshold = getLevelThreshold(level);
-            
+
             if (levelSize > threshold) {
                 return createLevelCompactionTask(level);
             }
         }
-        
+
         // 3. 检查Seek次数（读放大触发）
         if (stateBackend.getSeekCompactionScore() > SEEK_COMPACTION_THRESHOLD) {
             return createSeekCompactionTask();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Level阈值计算（指数增长）
      * Level N阈值 = Level N-1阈值 × 10
@@ -881,11 +883,11 @@ sequenceDiagram
     participant TM as TaskManager
     participant RS as RemoteCompactionService
     participant UFS as Unified File System
-    
+
     Note over CS: 检测到需要Compaction
     CS->>TM: 提交Compaction任务
     TM->>TM: 暂停相关SST文件写入
-    
+
     alt 本地Compaction
         TM->>TM: 执行本地Compaction
         TM->>TM: 合并SST文件
@@ -897,7 +899,7 @@ sequenceDiagram
         RS->>UFS: 写入新SST文件
         RS-->>TM: 返回新文件列表
     end
-    
+
     TM->>TM: 更新元数据引用
     TM->>UFS: 原子替换文件列表
     TM->>UFS: 删除过期文件
@@ -915,21 +917,21 @@ sequenceDiagram
  * 屏蔽底层存储差异（S3/HDFS/GCS/OSS）
  */
 public class UnifiedFileSystem {
-    
+
     private final StorageBackend storageBackend;
     private final PathMapping pathMapping;
     private final ConsistencyManager consistencyManager;
-    
+
     /**
      * 原子写操作（Copy-on-Write模式）
      */
     public boolean writeAtomic(Path tempPath, Path targetPath, byte[] data) {
         // 1. 写入临时文件
         storageBackend.write(tempPath, data);
-        
+
         // 2. 校验数据完整性
         Checksum checksum = calculateChecksum(data);
-        
+
         // 3. 原子重命名（保证可见性）
         if (storageBackend.supportsAtomicRename()) {
             // HDFS/OSS支持原子rename
@@ -939,10 +941,10 @@ public class UnifiedFileSystem {
             storageBackend.putObject(targetPath, data);
             consistencyManager.registerVersion(targetPath, checksum);
         }
-        
+
         return true;
     }
-    
+
     /**
      * 一致性读操作
      */
@@ -952,34 +954,34 @@ public class UnifiedFileSystem {
                 // 强一致性：等待所有写入完成
                 consistencyManager.waitForConsistency(path);
                 return storageBackend.read(path);
-                
+
             case EVENTUAL:
                 // 最终一致性：直接读取
                 return storageBackend.read(path);
-                
+
             case VERSIONED:
                 // 版本一致性：读取指定版本
                 Version version = consistencyManager.getLatestVersion(path);
                 return storageBackend.readVersion(path, version);
-                
+
             default:
                 throw new IllegalArgumentException("Unsupported consistency level");
         }
     }
-    
+
     /**
      * 多版本SST文件管理
      */
     public VersionedFile createVersionedSST(String baseName, byte[] data) {
         // 生成版本号
         Version version = versionManager.nextVersion();
-        
+
         // 版本化路径：/baseName_v{version}.sst
         Path versionedPath = pathMapping.toVersionedPath(baseName, version);
-        
+
         // 原子写入
         writeAtomic(createTempPath(versionedPath), versionedPath, data);
-        
+
         return new VersionedFile(versionedPath, version, calculateChecksum(data));
     }
 }
@@ -1007,26 +1009,26 @@ public interface StorageBackend {
 public class S3StorageBackend implements StorageBackend {
     private final S3Client s3Client;
     private final String bucket;
-    
+
     @Override
     public void write(Path path, byte[] data) {
         // 使用S3多部分上传保证原子性
         String key = path.toString();
         s3Client.putObject(bucket, key, data);
     }
-    
+
     @Override
     public boolean rename(Path source, Path target) {
         // S3不支持原子rename，使用copy+delete模拟
         String sourceKey = source.toString();
         String targetKey = target.toString();
-        
+
         s3Client.copyObject(bucket, sourceKey, bucket, targetKey);
         s3Client.deleteObject(bucket, sourceKey);
-        
+
         return true;
     }
-    
+
     @Override
     public boolean supportsAtomicRename() {
         return false;  // S3不支持原子rename
@@ -1038,13 +1040,13 @@ public class S3StorageBackend implements StorageBackend {
  */
 public class HdfsStorageBackend implements StorageBackend {
     private final FileSystem hdfs;
-    
+
     @Override
     public boolean rename(Path source, Path target) {
         // HDFS原生支持原子rename
         return hdfs.rename(source, target);
     }
-    
+
     @Override
     public boolean supportsAtomicRename() {
         return true;
@@ -1064,30 +1066,30 @@ public class HdfsStorageBackend implements StorageBackend {
  * 利用SST文件不可变性实现高效Checkpoint
  */
 public class ForStIncrementalSnapshotStrategy {
-    
+
     private final UnifiedFileSystem ufs;
     private final SSTVersionManager versionManager;
-    
+
     /**
      * 执行增量Checkpoint
      */
-    public CheckpointHandle snapshotState(long checkpointId, 
+    public CheckpointHandle snapshotState(long checkpointId,
                                           Set<VersionedFile> currentSSTFiles,
                                           Set<VersionedFile> previousSSTFiles) {
-        
+
         // 1. 计算增量：找出新增的SST文件
         Set<VersionedFile> newFiles = Sets.difference(currentSSTFiles, previousSSTFiles);
-        
+
         // 2. 计算未变更的文件（可复用）
         Set<VersionedFile> unchangedFiles = Sets.intersection(currentSSTFiles, previousSSTFiles);
-        
+
         // 3. 处理新增文件
         Set<FileReference> uploadedFiles = new HashSet<>();
         for (VersionedFile file : newFiles) {
             // 上传SST文件到Checkpoint目录
             Path checkpointPath = createCheckpointPath(checkpointId, file.getName());
             ufs.copy(file.getPath(), checkpointPath);
-            
+
             uploadedFiles.add(new FileReference(
                 file.getName(),
                 checkpointPath,
@@ -1095,7 +1097,7 @@ public class ForStIncrementalSnapshotStrategy {
                 file.getChecksum()
             ));
         }
-        
+
         // 4. 处理未变更文件（仅记录引用）
         for (VersionedFile file : unchangedFiles) {
             uploadedFiles.add(new FileReference(
@@ -1105,7 +1107,7 @@ public class ForStIncrementalSnapshotStrategy {
                 file.getChecksum()
             ));
         }
-        
+
         // 5. 持久化元数据
         CheckpointMetadata metadata = new CheckpointMetadata(
             checkpointId,
@@ -1113,32 +1115,32 @@ public class ForStIncrementalSnapshotStrategy {
             uploadedFiles,
             currentSSTFiles.stream().map(v -> v.getVersion()).max(Long::compare).orElse(0L)
         );
-        
+
         Path metadataPath = createCheckpointPath(checkpointId, "_metadata");
         ufs.write(metadataPath, serializeMetadata(metadata));
-        
+
         return new CheckpointHandle(checkpointId, metadataPath);
     }
-    
+
     /**
      * 恢复Checkpoint
      */
     public Set<VersionedFile> restoreState(CheckpointHandle handle) {
         // 1. 读取元数据
         CheckpointMetadata metadata = readMetadata(handle.getMetadataPath());
-        
+
         // 2. 验证所有文件存在且完整
         for (FileReference ref : metadata.getFiles()) {
-            Path filePath = ref.getCheckpointPath() != null 
-                ? ref.getCheckpointPath() 
+            Path filePath = ref.getCheckpointPath() != null
+                ? ref.getCheckpointPath()
                 : versionManager.resolvePath(ref.getName(), ref.getVersion());
-                
+
             Checksum actualChecksum = ufs.calculateChecksum(filePath);
             if (!actualChecksum.equals(ref.getChecksum())) {
                 throw new CorruptedCheckpointException("Checksum mismatch for " + ref.getName());
             }
         }
-        
+
         // 3. 构建当前SST文件集合
         return metadata.getFiles().stream()
             .map(ref -> new VersionedFile(
@@ -1159,9 +1161,9 @@ public class ForStIncrementalSnapshotStrategy {
  * SST文件生命周期管理
  */
 public class SSTLifecycleManager {
-    
+
     private final Map<String, ReferenceCount> referenceCounts;
-    
+
     /**
      * 引用计数结构
      */
@@ -1170,20 +1172,20 @@ public class SSTLifecycleManager {
         final long version;
         final Set<Long> referencingCheckpoints;  // 引用该文件的Checkpoint集合
         boolean markedForDeletion;
-        
+
         void addReference(long checkpointId) {
             referencingCheckpoints.add(checkpointId);
         }
-        
+
         void removeReference(long checkpointId) {
             referencingCheckpoints.remove(checkpointId);
         }
-        
+
         boolean canBeDeleted() {
             return referencingCheckpoints.isEmpty() && !markedForDeletion;
         }
     }
-    
+
     /**
      * 触发垃圾回收
      */
@@ -1191,7 +1193,7 @@ public class SSTLifecycleManager {
         for (ReferenceCount ref : referenceCounts.values()) {
             // 移除已过期Checkpoint的引用
             ref.referencingCheckpoints.retainAll(activeCheckpoints);
-            
+
             // 引用为0的文件可被删除
             if (ref.canBeDeleted()) {
                 Path filePath = versionManager.resolvePath(ref.fileName, ref.version);
@@ -1216,7 +1218,7 @@ graph TB
         R6 --> R7[全量下载SST文件]
         R7 --> R1
     end
-    
+
     subgraph "ForSt State Backend"
         F1[ForSt实例] --> F2[UFS写入]
         F2 --> F3[S3/HDFS SST文件]
@@ -1226,7 +1228,7 @@ graph TB
         F6 --> F7[LazyRestore<br/>按需加载]
         F7 --> F1
     end
-    
+
     style R1 fill:#fff3e0
     style F1 fill:#e8f5e9
     style R7 fill:#ffcdd2
@@ -1245,10 +1247,9 @@ graph TB
 
 ## 9. 引用参考 (References)
 
-[^3]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+[^3]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 
 
-[^1]: J. Zhang et al., "ForSt: A Disaggregated State Backend for Stream Processing Systems", Proceedings of the VLDB Endowment, Vol. 18, No. 4, 2025. (Apache Flink 2.0)
 
 [^2]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12):1792-1803, 2015.
 

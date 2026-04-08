@@ -24,16 +24,16 @@
 gantt
     title AnalysisDataFlow v5.0 发布时间线
     dateFormat  YYYY-MM-DD
-    
+
     section 准备阶段
     RC1发布              :rc1, 2026-12-18, 7d
     社区测试与反馈        :test, after rc1, 7d
     问题修复与优化        :fix, after test, 7d
     最终准备与预热        :prep, after fix, 7d
-    
+
     section 发布阶段
     正式发布 (T-Day)     :milestone, release, 2027-01-15, 0d
-    
+
     section 推广阶段
     社区活动与推广        :promo, after release, 7d
 ```

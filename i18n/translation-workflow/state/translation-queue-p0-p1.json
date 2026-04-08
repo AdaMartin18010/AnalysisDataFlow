@@ -1,388 +1,388 @@
 {
-  "version": "4.0-prep",
-  "description": "P0+P1优先级翻译队列 - 195K字",
-  "created_at": "2026-04-08T14:06:16+08:00",
-  "total_tasks": 48,
-  "total_word_count": 195000,
-  "stats": {
-    "P0": {
-      "files": 9,
-      "words": 50000
-    },
-    "P1": {
-      "files": 39,
-      "words": 145000
-    }
-  },
-  "tasks": [
-    {
-      "id": "P0-001",
-      "priority": "P0",
-      "source_file": "README.md",
-      "target_file": "i18n/en/README.md",
-      "word_count": 5000,
-      "category": "navigation",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-002",
-      "priority": "P0",
-      "source_file": "QUICK-START.md",
-      "target_file": "i18n/en/QUICK-START.md",
-      "word_count": 5000,
-      "category": "navigation",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-003",
-      "priority": "P0",
-      "source_file": "ARCHITECTURE.md",
-      "target_file": "i18n/en/ARCHITECTURE.md",
-      "word_count": 6000,
-      "category": "navigation",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-004",
-      "priority": "P0",
-      "source_file": "Struct/00-INDEX.md",
-      "target_file": "i18n/en/Struct/00-INDEX.md",
-      "word_count": 8000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-005",
-      "priority": "P0",
-      "source_file": "Struct/00-STRUCT-DERIVATION-CHAIN.md",
-      "target_file": "i18n/en/Struct/00-STRUCT-DERIVATION-CHAIN.md",
-      "word_count": 8000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-006",
-      "priority": "P0",
-      "source_file": "Struct/Key-Theorem-Proof-Chains.md",
-      "target_file": "i18n/en/Struct/Key-Theorem-Proof-Chains.md",
-      "word_count": 6000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-007",
-      "priority": "P0",
-      "source_file": "Struct/Model-Selection-Decision-Tree.md",
-      "target_file": "i18n/en/Struct/Model-Selection-Decision-Tree.md",
-      "word_count": 14000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-008",
-      "priority": "P0",
-      "source_file": "Struct/Struct-to-Knowledge-Mapping.md",
-      "target_file": "i18n/en/Struct/Struct-to-Knowledge-Mapping.md",
-      "word_count": 14000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P0-009",
-      "priority": "P0",
-      "source_file": "Struct/Unified-Model-Relationship-Graph.md",
-      "target_file": "i18n/en/Struct/Unified-Model-Relationship-Graph.md",
-      "word_count": 10000,
-      "category": "core-theory",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-001",
-      "priority": "P1",
-      "source_file": "Knowledge/00-INDEX.md",
-      "target_file": "i18n/en/Knowledge/00-INDEX.md",
-      "word_count": 14000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-002",
-      "priority": "P1",
-      "source_file": "Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md",
-      "target_file": "i18n/en/Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md",
-      "word_count": 7000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-003",
-      "priority": "P1",
-      "source_file": "Knowledge/3.10-flink-production-checklist.md",
-      "target_file": "i18n/en/Knowledge/3.10-flink-production-checklist.md",
-      "word_count": 14000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-004",
-      "priority": "P1",
-      "source_file": "Knowledge/cep-complete-tutorial.md",
-      "target_file": "i18n/en/Knowledge/cep-complete-tutorial.md",
-      "word_count": 6000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-005",
-      "priority": "P1",
-      "source_file": "Knowledge/kafka-streams-migration.md",
-      "target_file": "i18n/en/Knowledge/kafka-streams-migration.md",
-      "word_count": 3000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-006",
-      "priority": "P1",
-      "source_file": "Knowledge/Knowledge-to-Flink-Mapping.md",
-      "target_file": "i18n/en/Knowledge/Knowledge-to-Flink-Mapping.md",
-      "word_count": 12000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-007",
-      "priority": "P1",
-      "source_file": "Knowledge/learning-path-recommender.md",
-      "target_file": "i18n/en/Knowledge/learning-path-recommender.md",
-      "word_count": 6000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-008",
-      "priority": "P1",
-      "source_file": "Knowledge/personalized-learning-engine.md",
-      "target_file": "i18n/en/Knowledge/personalized-learning-engine.md",
-      "word_count": 10000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-009",
-      "priority": "P1",
-      "source_file": "Knowledge/production-checklist.md",
-      "target_file": "i18n/en/Knowledge/production-checklist.md",
-      "word_count": 6000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-010",
-      "priority": "P1",
-      "source_file": "Knowledge/production-deployment-checklist.md",
-      "target_file": "i18n/en/Knowledge/production-deployment-checklist.md",
-      "word_count": 16000,
-      "category": "design-patterns",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-011",
-      "priority": "P1",
-      "source_file": "Flink/00-FLINK-TECH-STACK-DEPENDENCY.md",
-      "target_file": "i18n/en/Flink/00-FLINK-TECH-STACK-DEPENDENCY.md",
-      "word_count": 9000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-012",
-      "priority": "P1",
-      "source_file": "Flink/3.9-state-backends-deep-comparison.md",
-      "target_file": "i18n/en/Flink/3.9-state-backends-deep-comparison.md",
-      "word_count": 12000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-013",
-      "priority": "P1",
-      "source_file": "Flink/built-in-functions-reference.md",
-      "target_file": "i18n/en/Flink/built-in-functions-reference.md",
-      "word_count": 5000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-014",
-      "priority": "P1",
-      "source_file": "Flink/data-types-complete-reference.md",
-      "target_file": "i18n/en/Flink/data-types-complete-reference.md",
-      "word_count": 4000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-015",
-      "priority": "P1",
-      "source_file": "Flink/elasticsearch-connector-guide.md",
-      "target_file": "i18n/en/Flink/elasticsearch-connector-guide.md",
-      "word_count": 5000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-016",
-      "priority": "P1",
-      "source_file": "Flink/flink-built-in-functions-reference.md",
-      "target_file": "i18n/en/Flink/flink-built-in-functions-reference.md",
-      "word_count": 11000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-017",
-      "priority": "P1",
-      "source_file": "Flink/flink-cep-complete-tutorial.md",
-      "target_file": "i18n/en/Flink/flink-cep-complete-tutorial.md",
-      "word_count": 20000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-018",
-      "priority": "P1",
-      "source_file": "Flink/flink-data-types-reference.md",
-      "target_file": "i18n/en/Flink/flink-data-types-reference.md",
-      "word_count": 9000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-019",
-      "priority": "P1",
-      "source_file": "Flink/flink-nexmark-benchmark-guide.md",
-      "target_file": "i18n/en/Flink/flink-nexmark-benchmark-guide.md",
-      "word_count": 9000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-020",
-      "priority": "P1",
-      "source_file": "Flink/flink-performance-benchmark-suite.md",
-      "target_file": "i18n/en/Flink/flink-performance-benchmark-suite.md",
-      "word_count": 8000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-021",
-      "priority": "P1",
-      "source_file": "Flink/flink-pyflink-deep-dive.md",
-      "target_file": "i18n/en/Flink/flink-pyflink-deep-dive.md",
-      "word_count": 19000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-022",
-      "priority": "P1",
-      "source_file": "Flink/flink-state-backends-comparison.md",
-      "target_file": "i18n/en/Flink/flink-state-backends-comparison.md",
-      "word_count": 15000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-023",
-      "priority": "P1",
-      "source_file": "Flink/flink-ycsb-benchmark-guide.md",
-      "target_file": "i18n/en/Flink/flink-ycsb-benchmark-guide.md",
-      "word_count": 11000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-024",
-      "priority": "P1",
-      "source_file": "Flink/Formal-to-Code-Mapping-v2.md",
-      "target_file": "i18n/en/Flink/Formal-to-Code-Mapping-v2.md",
-      "word_count": 6000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-025",
-      "priority": "P1",
-      "source_file": "Flink/FORMAL-TO-CODE-MAPPING.md",
-      "target_file": "i18n/en/Flink/FORMAL-TO-CODE-MAPPING.md",
-      "word_count": 9000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-026",
-      "priority": "P1",
-      "source_file": "Flink/jdbc-connector-guide.md",
-      "target_file": "i18n/en/Flink/jdbc-connector-guide.md",
-      "word_count": 5000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-027",
-      "priority": "P1",
-      "source_file": "Flink/materialize-comparison.md",
-      "target_file": "i18n/en/Flink/materialize-comparison.md",
-      "word_count": 2000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-028",
-      "priority": "P1",
-      "source_file": "Flink/mongodb-connector-guide.md",
-      "target_file": "i18n/en/Flink/mongodb-connector-guide.md",
-      "word_count": 6000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-029",
-      "priority": "P1",
-      "source_file": "Flink/pulsar-functions-integration.md",
-      "target_file": "i18n/en/Flink/pulsar-functions-integration.md",
-      "word_count": 4000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-030",
-      "priority": "P1",
-      "source_file": "Flink/pyflink-deep-guide.md",
-      "target_file": "i18n/en/Flink/pyflink-deep-guide.md",
-      "word_count": 6000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-031",
-      "priority": "P1",
-      "source_file": "Flink/risingwave-integration-guide.md",
-      "target_file": "i18n/en/Flink/risingwave-integration-guide.md",
-      "word_count": 3000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    },
-    {
-      "id": "P1-032",
-      "priority": "P1",
-      "source_file": "Flink/state-backends-comparison.md",
-      "target_file": "i18n/en/Flink/state-backends-comparison.md",
-      "word_count": 7000,
-      "category": "flink-quickstart",
-      "status": "ai_translated"
-    }
-  ]
+    "version":  "4.0-prep",
+    "description":  "P0+P1优先级翻译队列 - 195K字",
+    "created_at":  "2026-04-08T14:06:16+08:00",
+    "total_tasks":  48,
+    "total_word_count":  195000,
+    "stats":  {
+                  "P0":  {
+                             "files":  9,
+                             "words":  50000
+                         },
+                  "P1":  {
+                             "files":  39,
+                             "words":  145000
+                         }
+              },
+    "tasks":  [
+                  {
+                      "id":  "P0-001",
+                      "priority":  "P0",
+                      "source_file":  "README.md",
+                      "target_file":  "i18n/en/README.md",
+                      "word_count":  5000,
+                      "category":  "navigation",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-002",
+                      "priority":  "P0",
+                      "source_file":  "QUICK-START.md",
+                      "target_file":  "i18n/en/QUICK-START.md",
+                      "word_count":  5000,
+                      "category":  "navigation",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-003",
+                      "priority":  "P0",
+                      "source_file":  "ARCHITECTURE.md",
+                      "target_file":  "i18n/en/ARCHITECTURE.md",
+                      "word_count":  6000,
+                      "category":  "navigation",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-004",
+                      "priority":  "P0",
+                      "source_file":  "Struct/00-INDEX.md",
+                      "target_file":  "i18n/en/Struct/00-INDEX.md",
+                      "word_count":  8000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-005",
+                      "priority":  "P0",
+                      "source_file":  "Struct/00-STRUCT-DERIVATION-CHAIN.md",
+                      "target_file":  "i18n/en/Struct/00-STRUCT-DERIVATION-CHAIN.md",
+                      "word_count":  8000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-006",
+                      "priority":  "P0",
+                      "source_file":  "Struct/Key-Theorem-Proof-Chains.md",
+                      "target_file":  "i18n/en/Struct/Key-Theorem-Proof-Chains.md",
+                      "word_count":  6000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-007",
+                      "priority":  "P0",
+                      "source_file":  "Struct/Model-Selection-Decision-Tree.md",
+                      "target_file":  "i18n/en/Struct/Model-Selection-Decision-Tree.md",
+                      "word_count":  14000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-008",
+                      "priority":  "P0",
+                      "source_file":  "Struct/Struct-to-Knowledge-Mapping.md",
+                      "target_file":  "i18n/en/Struct/Struct-to-Knowledge-Mapping.md",
+                      "word_count":  14000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P0-009",
+                      "priority":  "P0",
+                      "source_file":  "Struct/Unified-Model-Relationship-Graph.md",
+                      "target_file":  "i18n/en/Struct/Unified-Model-Relationship-Graph.md",
+                      "word_count":  10000,
+                      "category":  "core-theory",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-001",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/00-INDEX.md",
+                      "target_file":  "i18n/en/Knowledge/00-INDEX.md",
+                      "word_count":  14000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-002",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md",
+                      "target_file":  "i18n/en/Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md",
+                      "word_count":  7000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-003",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/3.10-flink-production-checklist.md",
+                      "target_file":  "i18n/en/Knowledge/3.10-flink-production-checklist.md",
+                      "word_count":  14000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-004",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/cep-complete-tutorial.md",
+                      "target_file":  "i18n/en/Knowledge/cep-complete-tutorial.md",
+                      "word_count":  6000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-005",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/kafka-streams-migration.md",
+                      "target_file":  "i18n/en/Knowledge/kafka-streams-migration.md",
+                      "word_count":  3000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-006",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/Knowledge-to-Flink-Mapping.md",
+                      "target_file":  "i18n/en/Knowledge/Knowledge-to-Flink-Mapping.md",
+                      "word_count":  12000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-007",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/learning-path-recommender.md",
+                      "target_file":  "i18n/en/Knowledge/learning-path-recommender.md",
+                      "word_count":  6000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-008",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/personalized-learning-engine.md",
+                      "target_file":  "i18n/en/Knowledge/personalized-learning-engine.md",
+                      "word_count":  10000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-009",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/production-checklist.md",
+                      "target_file":  "i18n/en/Knowledge/production-checklist.md",
+                      "word_count":  6000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-010",
+                      "priority":  "P1",
+                      "source_file":  "Knowledge/production-deployment-checklist.md",
+                      "target_file":  "i18n/en/Knowledge/production-deployment-checklist.md",
+                      "word_count":  16000,
+                      "category":  "design-patterns",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-011",
+                      "priority":  "P1",
+                      "source_file":  "Flink/00-FLINK-TECH-STACK-DEPENDENCY.md",
+                      "target_file":  "i18n/en/Flink/00-FLINK-TECH-STACK-DEPENDENCY.md",
+                      "word_count":  9000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-012",
+                      "priority":  "P1",
+                      "source_file":  "Flink/3.9-state-backends-deep-comparison.md",
+                      "target_file":  "i18n/en/Flink/3.9-state-backends-deep-comparison.md",
+                      "word_count":  12000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-013",
+                      "priority":  "P1",
+                      "source_file":  "Flink/built-in-functions-reference.md",
+                      "target_file":  "i18n/en/Flink/built-in-functions-reference.md",
+                      "word_count":  5000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-014",
+                      "priority":  "P1",
+                      "source_file":  "Flink/data-types-complete-reference.md",
+                      "target_file":  "i18n/en/Flink/data-types-complete-reference.md",
+                      "word_count":  4000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-015",
+                      "priority":  "P1",
+                      "source_file":  "Flink/elasticsearch-connector-guide.md",
+                      "target_file":  "i18n/en/Flink/elasticsearch-connector-guide.md",
+                      "word_count":  5000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-016",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-built-in-functions-reference.md",
+                      "target_file":  "i18n/en/Flink/flink-built-in-functions-reference.md",
+                      "word_count":  11000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-017",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-cep-complete-tutorial.md",
+                      "target_file":  "i18n/en/Flink/flink-cep-complete-tutorial.md",
+                      "word_count":  20000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-018",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-data-types-reference.md",
+                      "target_file":  "i18n/en/Flink/flink-data-types-reference.md",
+                      "word_count":  9000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-019",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-nexmark-benchmark-guide.md",
+                      "target_file":  "i18n/en/Flink/flink-nexmark-benchmark-guide.md",
+                      "word_count":  9000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-020",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-performance-benchmark-suite.md",
+                      "target_file":  "i18n/en/Flink/flink-performance-benchmark-suite.md",
+                      "word_count":  8000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-021",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-pyflink-deep-dive.md",
+                      "target_file":  "i18n/en/Flink/flink-pyflink-deep-dive.md",
+                      "word_count":  19000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-022",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-state-backends-comparison.md",
+                      "target_file":  "i18n/en/Flink/flink-state-backends-comparison.md",
+                      "word_count":  15000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-023",
+                      "priority":  "P1",
+                      "source_file":  "Flink/flink-ycsb-benchmark-guide.md",
+                      "target_file":  "i18n/en/Flink/flink-ycsb-benchmark-guide.md",
+                      "word_count":  11000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-024",
+                      "priority":  "P1",
+                      "source_file":  "Flink/Formal-to-Code-Mapping-v2.md",
+                      "target_file":  "i18n/en/Flink/Formal-to-Code-Mapping-v2.md",
+                      "word_count":  6000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-025",
+                      "priority":  "P1",
+                      "source_file":  "Flink/FORMAL-TO-CODE-MAPPING.md",
+                      "target_file":  "i18n/en/Flink/FORMAL-TO-CODE-MAPPING.md",
+                      "word_count":  9000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-026",
+                      "priority":  "P1",
+                      "source_file":  "Flink/jdbc-connector-guide.md",
+                      "target_file":  "i18n/en/Flink/jdbc-connector-guide.md",
+                      "word_count":  5000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-027",
+                      "priority":  "P1",
+                      "source_file":  "Flink/materialize-comparison.md",
+                      "target_file":  "i18n/en/Flink/materialize-comparison.md",
+                      "word_count":  2000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-028",
+                      "priority":  "P1",
+                      "source_file":  "Flink/mongodb-connector-guide.md",
+                      "target_file":  "i18n/en/Flink/mongodb-connector-guide.md",
+                      "word_count":  6000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-029",
+                      "priority":  "P1",
+                      "source_file":  "Flink/pulsar-functions-integration.md",
+                      "target_file":  "i18n/en/Flink/pulsar-functions-integration.md",
+                      "word_count":  4000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-030",
+                      "priority":  "P1",
+                      "source_file":  "Flink/pyflink-deep-guide.md",
+                      "target_file":  "i18n/en/Flink/pyflink-deep-guide.md",
+                      "word_count":  6000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-031",
+                      "priority":  "P1",
+                      "source_file":  "Flink/risingwave-integration-guide.md",
+                      "target_file":  "i18n/en/Flink/risingwave-integration-guide.md",
+                      "word_count":  3000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  },
+                  {
+                      "id":  "P1-032",
+                      "priority":  "P1",
+                      "source_file":  "Flink/state-backends-comparison.md",
+                      "target_file":  "i18n/en/Flink/state-backends-comparison.md",
+                      "word_count":  7000,
+                      "category":  "flink-quickstart",
+                      "status":  "completed"
+                  }
+              ]
 }

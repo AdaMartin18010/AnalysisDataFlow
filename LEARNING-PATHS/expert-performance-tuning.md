@@ -81,7 +81,7 @@ gantt
    env.addSource(new FastSource())
       .map(new NormalMap())
       .addSink(new SlowSink());  // 故意降低处理速度
-   ```
+```
 
    - 使用 Web UI 观察背压传播
    - 分析背压对吞吐量的影响
@@ -100,7 +100,7 @@ gantt
    -XX:MaxGCPauseMillis=100
    -XX:+PrintGCDetails
    -XX:+PrintGCDateStamps
-   ```
+```
 
    - 分析 GC 日志
    - 调整堆内存大小
@@ -147,7 +147,7 @@ gantt
    // taskmanager.memory.network.fraction: 0.15
    // taskmanager.memory.network.min: 128mb
    // taskmanager.memory.network.max: 512mb
-   ```
+```
 
 2. **并行度调优**
    - 分析数据倾斜问题
@@ -162,7 +162,7 @@ gantt
    kubernetes.operator.job.autoscaler.scaleUp.delay: 5m
    kubernetes.operator.job.autoscaler.scaleDown.delay: 10m
    kubernetes.operator.job.autoscaler.target.utilization: 0.6
-   ```
+```
 
 ### 检查点 2.1
 
@@ -283,11 +283,11 @@ kubernetes.operator.job.autoscaler.target.utilization: 0.7
 
 1. **诊断分析**
 
-   ```
+   ```text
    - 背压分析：发现 Sink 算子瓶颈
    - GC 分析：发现内存不足，频繁 GC
    - Checkpoint 分析：状态过大，同步阶段耗时
-   ```
+```
 
 2. **优化措施**
 
@@ -321,7 +321,7 @@ kubernetes.operator.job.autoscaler.target.utilization: 0.7
    // -Xms4g -Xmx4g
    // -XX:+UseG1GC
    // -XX:MaxGCPauseMillis=100
-   ```
+```
 
 3. **优化效果**
    - 吞吐量：100K → 600K events/s

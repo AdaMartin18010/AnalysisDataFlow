@@ -412,18 +412,18 @@ $$
 
 ```yaml
 # 基准测试配置
-job:
+job: 
   parallelism: 100
   source: Kafka (100K events/sec)
   sink: Elasticsearch
 
 # 结果对比
-results:
-  without_spire:
+results: 
+  without_spire: 
     throughput: 100000 eps
     latency_p99: 120ms
 
-  with_spire:
+  with_spire: 
     throughput: 99850 eps  # -0.15%
     latency_p99: 125ms     # +4%
 ```
@@ -442,56 +442,56 @@ results:
 # spire-server.yaml
 apiVersion: apps/v1
 kind: StatefulSet
-metadata:
+metadata: 
   name: spire-server
   namespace: spire
-spec:
+spec: 
   replicas: 2  # HA 配置
   serviceName: spire-server
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: 
       app: spire-server
-  template:
-    metadata:
-      labels:
+  template: 
+    metadata: 
+      labels: 
         app: spire-server
-    spec:
+    spec: 
       serviceAccountName: spire-server
-      containers:
+      containers: 
       - name: spire-server
         image: ghcr.io/spiffe/spire-server:1.8.0
-        args:
+        args: 
         - -config
         - /run/spire/config/server.conf
-        volumeMounts:
+        volumeMounts: 
         - name: spire-config
           mountPath: /run/spire/config
         - name: spire-data
           mountPath: /run/spire/data
-        livenessProbe:
-          grpc:
+        livenessProbe: 
+          grpc: 
             port: 8080
           initialDelaySeconds: 30
-      volumes:
+      volumes: 
       - name: spire-config
-        configMap:
+        configMap: 
           name: spire-server-config
-  volumeClaimTemplates:
+  volumeClaimTemplates: 
   - metadata:
       name: spire-data
-    spec:
+    spec: 
       accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
+      resources: 
+        requests: 
           storage: 10Gi
 ---
 # server.conf
 apiVersion: v1
 kind: ConfigMap
-metadata:
+metadata: 
   name: spire-server-config
   namespace: spire
-data:
+data: 
   server.conf: |
     server {
       trust_domain = "flink.example.com"
@@ -542,36 +542,36 @@ data:
 # spire-agent.yaml
 apiVersion: apps/v1
 kind: DaemonSet
-metadata:
+metadata: 
   name: spire-agent
   namespace: spire
-spec:
-  selector:
-    matchLabels:
+spec: 
+  selector: 
+    matchLabels: 
       app: spire-agent
-  template:
-    metadata:
-      labels:
+  template: 
+    metadata: 
+      labels: 
         app: spire-agent
-    spec:
+    spec: 
       hostPID: true
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: spire-agent
-      initContainers:
+      initContainers: 
       - name: init
         image: busybox
         command: ['sh', '-c', 'mkdir -p /run/spire/sockets']
-        volumeMounts:
+        volumeMounts: 
         - name: spire-sockets
           mountPath: /run/spire/sockets
-      containers:
+      containers: 
       - name: spire-agent
         image: ghcr.io/spiffe/spire-agent:1.8.0
-        args:
+        args: 
         - -config
         - /run/spire/config/agent.conf
-        volumeMounts:
+        volumeMounts: 
         - name: spire-config
           mountPath: /run/spire/config
         - name: spire-bundle
@@ -580,19 +580,19 @@ spec:
           mountPath: /run/spire/sockets
         - name: kubelet-config
           mountPath: /var/lib/kubelet
-      volumes:
+      volumes: 
       - name: spire-config
-        configMap:
+        configMap: 
           name: spire-agent-config
       - name: spire-bundle
-        configMap:
+        configMap: 
           name: spire-bundle
       - name: spire-sockets
-        hostPath:
+        hostPath: 
           path: /run/spire/sockets
           type: DirectoryOrCreate
       - name: kubelet-config
-        hostPath:
+        hostPath: 
           path: /var/lib/kubelet
           type: Directory
 ```
@@ -604,14 +604,14 @@ spec:
 # JobManager 注册
 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
-metadata:
+metadata: 
   name: flink-jobmanager
-spec:
+spec: 
   spiffeIDTemplate: "spiffe://flink.example.com/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/jm"
-  podSelector:
-    matchLabels:
+  podSelector: 
+    matchLabels: 
       app: flink-jobmanager
-  dnsNames:
+  dnsNames: 
     - "{{ .PodMeta.Name }}"
     - "flink-jobmanager.{{ .PodMeta.Namespace }}.svc.cluster.local"
   ttl: 3600  # 1小时
@@ -619,12 +619,12 @@ spec:
 # TaskManager 注册
 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
-metadata:
+metadata: 
   name: flink-taskmanager
-spec:
+spec: 
   spiffeIDTemplate: "spiffe://flink.example.com/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/tm/{{ .PodMeta.Name }}"
-  podSelector:
-    matchLabels:
+  podSelector: 
+    matchLabels: 
       app: flink-taskmanager
   ttl: 3600
 ```
@@ -637,27 +637,27 @@ spec:
 # flink-deployment-with-spiffe.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: flink-job
   namespace: processing
-spec:
+spec: 
   image: flink:1.18-scala_2.12
   flinkVersion: v1.18
-  jobManager:
-    resource:
+  jobManager: 
+    resource: 
       memory: "2048m"
       cpu: 1
-    podTemplate:
-      spec:
+    podTemplate: 
+      spec: 
         serviceAccountName: flink-job-manager
-        containers:
+        containers: 
         - name: jobmanager
-          volumeMounts:
+          volumeMounts: 
           - name: spiffe-socket
             mountPath: /spiffe-socket
           - name: certs
             mountPath: /certs
-          env:
+          env: 
           - name: SPIFFE_SOCKET_PATH
             value: /spiffe-socket/agent.sock
           - name: KEYSTORE_PATH
@@ -667,24 +667,24 @@ spec:
         # SPIFFE Helper Sidecar
         - name: spiffe-helper
           image: ghcr.io/spiffe/spiffe-helper:0.6.0
-          args:
+          args: 
           - -config
           - /etc/spiffe-helper/config.conf
-          volumeMounts:
+          volumeMounts: 
           - name: spiffe-socket
             mountPath: /spiffe-socket
           - name: certs
             mountPath: /certs
           - name: helper-config
             mountPath: /etc/spiffe-helper
-        volumes:
+        volumes: 
         - name: spiffe-socket
-          hostPath:
+          hostPath: 
             path: /run/spire/sockets
         - name: certs
           emptyDir: {}
         - name: helper-config
-          configMap:
+          configMap: 
             name: spiffe-helper-config
 ```
 
@@ -787,44 +787,44 @@ RestHighLevelClient client = new RestHighLevelClient(builder);
 # istio-spire-config.yaml
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
-metadata:
+metadata: 
   name: istio-with-spire
-spec:
+spec: 
   profile: default
-  components:
-    pilot:
-      k8s:
-        env:
+  components: 
+    pilot: 
+      k8s: 
+        env: 
         - name: EXTERNAL_CA
           value: "ISTIOD_RA_KUBERNETES_API"
         - name: K8S_SIGNER_NAME
           value: "clusterissuers.cert-manager.io/spire"
-        overlays:
+        overlays: 
         - apiVersion: apps/v1
           kind: Deployment
           name: istiod
-          patches:
+          patches: 
           - path: spec.template.spec.volumes
-            value:
+            value: 
             - name: spire-socket
-              hostPath:
+              hostPath: 
                 path: /run/spire/sockets
           - path: spec.template.spec.containers.[name:discovery].volumeMounts
-            value:
+            value: 
             - name: spire-socket
               mountPath: /run/spire/sockets
 ---
 # PeerAuthentication 强制 mTLS
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
-metadata:
+metadata: 
   name: flink-mtls
   namespace: processing
-spec:
-  mtls:
+spec: 
+  mtls: 
     mode: STRICT
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: 
       app.kubernetes.io/name: flink
 ```
 
@@ -834,46 +834,46 @@ spec:
 # authorization-policy.yaml
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
-metadata:
+metadata: 
   name: flink-jobmanager-access
   namespace: processing
-spec:
-  selector:
-    matchLabels:
+spec: 
+  selector: 
+    matchLabels: 
       app: flink-jobmanager
   action: ALLOW
-  rules:
+  rules: 
   # 只允许 TaskManager 访问 JobManager
   - from:
     - source:
         principals: ["cluster.local/ns/processing/sa/flink-task-manager"]
-    to:
+    to: 
     - operation:
         ports: ["6123", "8081"]
   # 允许监控
   - from:
     - source:
         principals: ["cluster.local/ns/monitoring/sa/prometheus"]
-    to:
+    to: 
     - operation:
         ports: ["9249"]
         paths: ["/metrics"]
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
-metadata:
+metadata: 
   name: flink-taskmanager-access
   namespace: processing
-spec:
-  selector:
-    matchLabels:
+spec: 
+  selector: 
+    matchLabels: 
       app: flink-taskmanager
   action: ALLOW
-  rules:
+  rules: 
   - from:
     - source:
         principals: ["cluster.local/ns/processing/sa/flink-job-manager"]
-    to:
+    to: 
     - operation:
         ports: ["6121", "6122"]
 ```
@@ -1045,14 +1045,14 @@ server.conf: |
 # Prometheus ServiceMonitor
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
-metadata:
+metadata: 
   name: spire-metrics
   namespace: monitoring
-spec:
-  selector:
-    matchLabels:
+spec: 
+  selector: 
+    matchLabels: 
       app: spire-server
-  endpoints:
+  endpoints: 
   - port: metrics
     path: /metrics
     interval: 30s
@@ -1061,19 +1061,19 @@ spec:
     interval: 30s
 ---
 # 关键告警规则
-alerting_rules:
+alerting_rules: 
   - alert: SPIRESVIDExpiry
     expr: spire_server_svid_ttl_hours < 2
     for: 5m
-    labels:
+    labels: 
       severity: critical
-    annotations:
+    annotations: 
       summary: "SVID 即将过期"
 
   - alert: SPIREAgentDown
     expr: up{job="spire-agent"} == 0
     for: 1m
-    labels:
+    labels: 
       severity: critical
 ```
 

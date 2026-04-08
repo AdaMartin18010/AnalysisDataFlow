@@ -81,7 +81,7 @@ gantt
    // 1. 使用 Spark Streaming 实现 WordCount
    // 2. 使用 Flink DataStream 实现 WordCount
    // 3. 对比延迟、吞吐量、语义保证
-   ```
+```
 
 2. **Checkpoint 配置实验**
    - 配置不同 Checkpoint 间隔
@@ -129,7 +129,7 @@ gantt
    // 1. 实现 ValueState、ListState、MapState
    // 2. 测试状态恢复
    // 3. 对比 RocksDB 和 Heap 状态后端
-   ```
+```
 
 2. **端到端一致性项目**
    - Kafka → Flink → Kafka 管道

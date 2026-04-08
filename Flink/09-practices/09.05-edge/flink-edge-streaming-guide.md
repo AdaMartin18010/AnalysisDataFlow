@@ -435,14 +435,14 @@ $$
 
 ```yaml
 # 边缘节点配置
-edge_nodes:
+edge_nodes: 
   - name: edge-gateway-01
     device: NVIDIA Jetson Nano
     cpu: 4_cores
     memory: 4GB
     storage: 64GB_eMMC
     network: 4G_LTE
-    
+
   - name: edge-gateway-02
     device: Raspberry Pi 4
     cpu: 4_cores
@@ -451,7 +451,7 @@ edge_nodes:
     network: WiFi_Ethernet
 
 # 云端集群
-cloud_cluster:
+cloud_cluster: 
   flink_version: 1.18
   taskmanagers: 10
   slots_per_tm: 4
@@ -524,15 +524,15 @@ log4j.logger.org.apache.flink.runtime.checkpoint: INFO
 ```yaml
 version: '3.8'
 
-services:
+services: 
   # MQTT Broker - 设备接入
-  mosquitto:
+  mosquitto: 
     image: eclipse-mosquitto:2.0
     container_name: edge-mosquitto
-    ports:
+    ports: 
       - "1883:1883"
       - "9001:9001"
-    volumes:
+    volumes: 
       - ./mosquitto/config:/mosquitto/config
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
@@ -541,45 +541,45 @@ services:
     cpus: 0.5
 
   # Flink JobManager (MiniCluster模式)
-  flink-jobmanager:
+  flink-jobmanager: 
     image: flink:1.18-scala_2.12
     container_name: edge-flink-jm
     command: standalone-job --job-classname com.example.EdgeProcessingJob
-    ports:
+    ports: 
       - "8081:8081"
-    volumes:
+    volumes: 
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
       - ./job.jar:/opt/flink/usrlib/job.jar
       - ./checkpoint-data:/opt/flink/checkpoints
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size=512m
           taskmanager.memory.process.size=1536m
     mem_limit: 512m
     cpus: 1.0
-    depends_on:
+    depends_on: 
       - mosquitto
     restart: unless-stopped
 
   # Flink TaskManager
-  flink-taskmanager:
+  flink-taskmanager: 
     image: flink:1.18-scala_2.12
     container_name: edge-flink-tm
     command: taskmanager
-    volumes:
+    volumes: 
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
       - ./checkpoint-data:/opt/flink/checkpoints
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
     mem_limit: 1536m
     cpus: 2.0
-    depends_on:
+    depends_on: 
       - flink-jobmanager
     restart: unless-stopped
 
   # 本地数据同步服务
-  sync-agent:
+  sync-agent: 
     image: alpine:latest
     container_name: edge-sync-agent
     command: >
@@ -596,14 +596,14 @@ services:
           sleep 60
         done
       "
-    volumes:
+    volumes: 
       - ./buffer-data:/data/buffer
     mem_limit: 128m
     cpus: 0.2
     restart: unless-stopped
 
-volumes:
-  checkpoint-data:
+volumes: 
+  checkpoint-data: 
   buffer-data:
 ```
 
@@ -623,7 +623,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * 边缘流处理作业 - IoT传感器数据预处理
- * 
+ *
  * 功能：
  * 1. 接收MQTT传感器数据
  * 2. 数据清洗和验证
@@ -635,13 +635,13 @@ public class EdgeProcessingJob {
 
     public static void main(String[] args) throws Exception {
         // 创建本地环境(边缘模式)
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置检查点(适应间歇性网络)
         env.enableCheckpointing(60000); // 60秒检查点
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
-        
+
         // 设置并行度(边缘资源受限)
         env.setParallelism(2);
 
@@ -735,20 +735,20 @@ class DataCleaningFunction implements MapFunction<SensorReading, SensorReading> 
 /**
  * 增量聚合函数(内存高效)
  */
-class IncrementalAggregateFunction implements 
+class IncrementalAggregateFunction implements
     AggregateFunction<SensorReading, AggregateAccumulator, AggregatedReading> {
-    
+
     @Override
     public AggregateAccumulator createAccumulator() {
         return new AggregateAccumulator();
     }
-    
+
     @Override
     public AggregateAccumulator add(SensorReading value, AggregateAccumulator acc) {
         acc.add(value.getValue());
         return acc;
     }
-    
+
     @Override
     public AggregatedReading getResult(AggregateAccumulator acc) {
         return new AggregatedReading(
@@ -760,7 +760,7 @@ class IncrementalAggregateFunction implements
             acc.getTimestamp()
         );
     }
-    
+
     @Override
     public AggregateAccumulator merge(AggregateAccumulator a, AggregateAccumulator b) {
         return a.merge(b);
@@ -808,14 +808,14 @@ graph TB
         S2[传感器 Sensor B]
         S3[传感器 Sensor C]
     end
-    
+
     subgraph EdgeLayer["边缘层 Edge Layer"]
         MQTT[MQTT Broker]
         FlinkJM[Flink JobManager]
         FlinkTM[Flink TaskManager]
         Buffer[本地缓冲区 Local Buffer]
         Sync[同步代理 Sync Agent]
-        
+
         subgraph EdgeProcessing["边缘处理 Pipeline"]
             Parse[数据解析]
             Filter[过滤清洗]
@@ -823,14 +823,14 @@ graph TB
             Alert[异常检测]
         end
     end
-    
+
     subgraph CloudLayer["云端 Cloud Layer"]
         CloudKafka[Kafka Cluster]
         CloudFlink[Flink Cluster]
         Storage[(数据存储)]
         Analytics[分析平台]
     end
-    
+
     S1 --> MQTT
     S2 --> MQTT
     S3 --> MQTT
@@ -850,26 +850,26 @@ graph TB
 ```mermaid
 flowchart TD
     A[原始数据流<br/>Raw Data] --> B{数据分类}
-    
+
     B -->|高频/小数据| C[边缘实时处理<br/>Edge Real-time]
     B -->|批量/大数据| D[边缘聚合缓冲<br/>Edge Buffer]
     B -->|控制指令| E[本地响应<br/>Local Response]
-    
+
     C --> C1[毫秒级告警<br/>ms-Level Alert]
     C --> C2[实时控制<br/>Real-time Control]
-    
+
     D --> D1[分钟级聚合<br/>Min-Level Agg]
     D --> D2[批量压缩<br/>Batch Compress]
     D1 --> D3[云端同步<br/>Cloud Sync]
     D2 --> D3
-    
+
     E --> E1[设备控制<br/>Device Control]
     E --> E2[状态反馈<br/>Status Feedback]
-    
+
     D3 --> F[云端分析<br/>Cloud Analytics]
     F --> G[长期存储<br/>Long-term Storage]
     F --> H[ML推理<br/>ML Inference]
-    
+
     style C fill:#e1f5e1
     style E fill:#e1f5e1
     style D3 fill:#fff4e1
@@ -880,36 +880,36 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[开始边缘部署评估] --> B{数据量?}
-    
+
     B -->|< 1K events/s| C[低吞吐场景]
     B -->|1K-10K events/s| D[中吞吐场景]
     B -->|> 10K events/s| E[高吞吐场景]
-    
+
     C --> F{延迟要求?}
     D --> G{延迟要求?}
     E --> H[需数据采样<br/>或分层处理]
-    
+
     F -->|< 100ms| I[推荐: Raspberry Pi 4]
     F -->|> 100ms| J[推荐: 轻量级网关]
-    
+
     G -->|< 500ms| K[推荐: NVIDIA Jetson]
     G -->|> 500ms| L[推荐: Intel NUC]
-    
+
     H --> M[边缘预处理<br/>降低至 < 1K/s]
     M --> N[云端处理
 原始数据]
-    
+
     I --> O{网络稳定性?}
     J --> O
     K --> O
     L --> O
-    
+
     O -->|稳定| P[实时同步策略]
     O -->|间歇| Q[批量缓冲策略]
-    
+
     P --> R[配置 Flink<br/>内存状态后端]
     Q --> S[配置 RocksDB<br/>增量检查点]
-    
+
     R --> T[部署完成]
     S --> T
     N --> T

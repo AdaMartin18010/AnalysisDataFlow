@@ -800,6 +800,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
         this.contextSerializer = checkNotNull(contextSerializer);
         this.transactionSerializer = checkNotNull(transactionSerializer);
     }
+}
 ```
 
 #### 11.1.2 事务生命周期方法
@@ -1036,6 +1037,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
             transaction.producer.close();
         }
     }
+}
 ```
 
 ### 11.3 CheckpointCoordinator 协调机制
@@ -1125,6 +1127,7 @@ public class CheckpointCoordinator {
             );
         }
     }
+}
 ```
 
 ### 11.4 故障恢复时的 2PC 状态恢复

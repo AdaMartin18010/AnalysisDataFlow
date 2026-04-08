@@ -346,7 +346,7 @@ flowchart TD
         B --> C[添加上游仓库]
         C --> D[创建功能分支]
     end
-    
+
     subgraph "开发阶段"
         D --> E[进行更改]
         E --> F[本地验证]
@@ -354,13 +354,13 @@ flowchart TD
         G -->|否| E
         G -->|是| H[提交更改]
     end
-    
+
     subgraph "提交阶段"
         H --> I[推送到 Fork]
         I --> J[创建 PR]
         J --> K[自动化检查]
     end
-    
+
     subgraph "审核阶段"
         K --> L{检查通过?}
         L -->|否| M[修复问题]
@@ -370,12 +370,12 @@ flowchart TD
         O -->|是| M
         O -->|否| P[审核通过]
     end
-    
+
     subgraph "合并阶段"
         P --> Q[合并到主分支]
         Q --> R[贡献完成!]
     end
-    
+
     style A fill:#e1f5fe
     style R fill:#e8f5e9
 ```
@@ -562,7 +562,7 @@ flowchart LR
     E --> F{通过?}
     F -->|否| D
     F -->|是| G[合并]
-    
+
     subgraph "自动化检查"
         B1[Markdown 格式]
         B2[链接有效性]
@@ -571,7 +571,7 @@ flowchart LR
     B -.-> B1
     B -.-> B2
     B -.-> B3
-    
+
     subgraph "人工审核"
         E1[内容准确性]
         E2[定理编号]
@@ -970,7 +970,7 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
 **致谢格式**：
 
 ```markdown
-> **致谢**：感谢 @username 对本节内容的贡献，包括添加 Watermark 
+> **致谢**：感谢 @username 对本节内容的贡献，包括添加 Watermark
 > 延迟边界定理的完整证明和相关示例。
 ```
 

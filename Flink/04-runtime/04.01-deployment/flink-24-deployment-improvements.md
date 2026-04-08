@@ -907,14 +907,15 @@ else:
    kubectl exec -it flink-taskmanager-xyz -- /bin/sh
    > vi conf/flink-conf.yaml  # 修改不持久化
    > bin/taskmanager.sh restart  # 服务中断
-   ```
+
+```
 
 2. **配置漂移**：
 
-   ```
+   ```text
    Expected: taskmanager.memory.process.size=8g
    Actual:   taskmanager.memory.process.size=4g (Pod重启后恢复)
-   ```
+```
 
 **声明式热更新优势**：
 

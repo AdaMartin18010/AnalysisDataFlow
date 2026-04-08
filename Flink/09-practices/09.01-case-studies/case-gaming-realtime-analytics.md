@@ -1265,80 +1265,80 @@ public class ClickHouseStatsSink extends org.apache.flink.streaming.api.function
 #### 6.1.7 配置文件 (application.yml)
 
 ```yaml
-flink:
-  parallelism:
+flink: 
+  parallelism: 
     default: 512
     kafka-source: 128
     cep-operator: 256
-  checkpointing:
+  checkpointing: 
     interval: 10000
     mode: EXACTLY_ONCE
     timeout: 60000
     min-pause: 5000
-  state:
+  state: 
     backend: rocksdb
     checkpoints-dir: s3://game-flink-checkpoints/
     savepoints-dir: s3://game-flink-savepoints/
 
-kafka:
+kafka: 
   bootstrap-servers: kafka1:9092,kafka2:9092,kafka3:9092
-  consumer:
+  consumer: 
     group-id: gaming-analytics-flink
     auto-offset-reset: latest
-    topics:
+    topics: 
       - game-events
       - combat-events
       - economy-events
       - social-events
-  producer:
+  producer: 
     topic-cheat-detections: cheat-detections
     acks: all
     retries: 3
 
-redis:
-  cluster:
-    nodes:
+redis: 
+  cluster: 
+    nodes: 
       - redis1:6379
       - redis2:6379
       - redis3:6379
     timeout: 5000
     max-redirects: 3
-    pool:
+    pool: 
       max-total: 128
       max-idle: 64
       min-idle: 16
 
-clickhouse:
+clickhouse: 
   url: jdbc:clickhouse://clickhouse:8123/game_analytics
   username: default
   password: ""
   batch-size: 10000
   flush-interval: 5000
 
-anti-cheat:
-  rules:
-    teleport:
+anti-cheat: 
+  rules: 
+    teleport: 
       enabled: true
       max-distance: 500.0
       time-window: 1000
       confidence: 0.85
-    aimbot:
+    aimbot: 
       enabled: true
       min-headshots: 3
       min-distance: 100.0
       time-window: 3000
       confidence: 0.80
-    speed-hack:
+    speed-hack: 
       enabled: true
       max-speed: 15.0
       consecutive-moves: 3
       time-window: 5000
       confidence: 0.75
-  ml:
+  ml: 
     model-path: s3://game-ml-models/anti-cheat/
     inference-batch-size: 32
     update-interval: 3600
-  risk:
+  risk: 
     ban-threshold: 0.95
     suspect-threshold: 0.70
     cooldown-hours: 24

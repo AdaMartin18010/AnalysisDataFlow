@@ -138,41 +138,41 @@ taskmanager.data.port: 6126-6130
 ```yaml
 version: '3.8'
 
-services:
-  jobmanager:
+services: 
+  jobmanager: 
     image: flink:1.18-scala_2.12
     container_name: flink-jobmanager
     hostname: jobmanager
-    ports:
+    ports: 
       - "8081:8081"
       - "6123:6123"
     command: jobmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size: 2048m
           jobmanager.memory.jvm-heap.size: 1536m
-    volumes:
+    volumes: 
       - flink-checkpoints:/opt/flink/checkpoints
       - flink-savepoints:/opt/flink/savepoints
       - ./conf:/opt/flink/conf
-    networks:
+    networks: 
       - flink-network
-    healthcheck:
+    healthcheck: 
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-  taskmanager:
+  taskmanager: 
     image: flink:1.18-scala_2.12
     container_name: flink-taskmanager
     hostname: taskmanager
-    depends_on:
-      jobmanager:
+    depends_on: 
+      jobmanager: 
         condition: service_healthy
     command: taskmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           taskmanager.memory.process.size: 4096m
@@ -180,24 +180,24 @@ services:
           taskmanager.numberOfTaskSlots: 4
           taskmanager.memory.network.min: 256m
           taskmanager.memory.network.max: 512m
-    volumes:
+    volumes: 
       - flink-checkpoints:/opt/flink/checkpoints
       - flink-savepoints:/opt/flink/savepoints
-    networks:
+    networks: 
       - flink-network
-    deploy:
-      resources:
-        limits:
+    deploy: 
+      resources: 
+        limits: 
           cpus: '2'
           memory: 4G
-        reservations:
+        reservations: 
           cpus: '1'
           memory: 2G
 
-  sql-gateway:
+  sql-gateway: 
     image: flink:1.18-scala_2.12
     container_name: flink-sql-gateway
-    depends_on:
+    depends_on: 
       - jobmanager
     command: >
       bash -c "
@@ -205,21 +205,21 @@ services:
         -Dsql-gateway.endpoint.rest.address=0.0.0.0
         -Dsql-gateway.endpoint.rest.port=8083
       "
-    ports:
+    ports: 
       - "8083:8083"
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
-    networks:
+    networks: 
       - flink-network
 
-volumes:
-  flink-checkpoints:
+volumes: 
+  flink-checkpoints: 
     driver: local
-  flink-savepoints:
+  flink-savepoints: 
     driver: local
 
-networks:
-  flink-network:
+networks: 
+  flink-network: 
     driver: bridge
 ```
 
@@ -509,7 +509,7 @@ source ~/.zshrc
    # PowerShell 管理员权限
    [Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Eclipse Adoptium\jdk-17", "Machine")
    [Environment]::SetEnvironmentVariable("Path", $env:JAVA_HOME + "\bin;" + $env:Path, "Machine")
-   ```
+```
 
 #### 5.2.2 Flink 下载和配置
 

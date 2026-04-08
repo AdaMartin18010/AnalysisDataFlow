@@ -341,14 +341,14 @@ taskmanager.memory.network.max: 256m
 
 # JVM参数优化
 env.java.opts.taskmanager: >
-  -XX:+UseG1GC
-  -XX:MaxRAMPercentage=75.0
-  -XX:+UseContainerSupport
-  -XX:MaxDirectMemorySize=256m
-  -XX:+UnlockExperimentalVMOptions
-  -XX:+UseCGroupMemoryLimitForHeap
-  -XX:+HeapDumpOnOutOfMemoryError
-  -XX:HeapDumpPath=/data/flink/heap-dumps
+  -XX: +UseG1GC
+  -XX: MaxRAMPercentage=75.0
+  -XX: +UseContainerSupport
+  -XX: MaxDirectMemorySize=256m
+  -XX: +UnlockExperimentalVMOptions
+  -XX: +UseCGroupMemoryLimitForHeap
+  -XX: +HeapDumpOnOutOfMemoryError
+  -XX: HeapDumpPath=/data/flink/heap-dumps
 ```
 
 ### 4.3 低功耗模式设计
@@ -638,23 +638,23 @@ taskmanager.network.memory.buffers-per-channel: 2
 
 ```yaml
 # Docker Compose
-services:
-  flink-taskmanager:
-    deploy:
-      resources:
-        limits:
+services: 
+  flink-taskmanager: 
+    deploy: 
+      resources: 
+        limits: 
           cpus: '1.5'
           memory: 2G
-        reservations:
+        reservations: 
           cpus: '1.0'
           memory: 1G
 
 # Kubernetes
-resources:
-  requests:
+resources: 
+  requests: 
     cpu: "1000m"
     memory: "1536Mi"
-  limits:
+  limits: 
     cpu: "1500m"
     memory: "2Gi"
 ```

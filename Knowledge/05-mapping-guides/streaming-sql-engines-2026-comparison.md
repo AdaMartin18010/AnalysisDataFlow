@@ -318,19 +318,19 @@ $$\mathcal{E} \cong \langle \text{Query Planner}, \text{Stream Runtime}, \text{S
 **核心创新点**:
 
 1. **存算分离 (Compute-Storage Separation)**:
-   ```
+   ```text
    传统模式: 状态存储在本地 → 扩容需迁移状态 → 分钟级
    RisingWave: 状态存储在S3 → 计算节点无状态 → 秒级扩缩容
-   ```
+```
 
 2. **分层存储架构**:
-   ```
+   ```text
    Hot Data (LRU Cache) ←── Compute Node内存
           ↓
    Warm Data (Local SSD) ←── 可选本地加速
           ↓
    Cold Data (Object Store) ←── S3/MinIO/GCS (持久化)
-   ```
+```
 
 3. **Rust实现的性能优势**:
    - 零成本抽象

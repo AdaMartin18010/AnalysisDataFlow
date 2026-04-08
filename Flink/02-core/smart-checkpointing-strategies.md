@@ -2024,7 +2024,8 @@ execution.checkpointing.storage.async-upload.threads: 16
   execution.checkpointing.unaligned.enabled: true
   state.backend.incremental: true
   execution.checkpointing.timeout: 30min
-  ```
+
+```
 
 **问题 2: 增量比例过低**
 
@@ -2038,7 +2039,7 @@ execution.checkpointing.storage.async-upload.threads: 16
   ```yaml
   state.backend.rocksdb.compaction.style: UNIVERSAL
   execution.checkpointing.incremental.gc.retention: 12h
-  ```
+```
 
 **问题 3: 恢复时间过长**
 
@@ -2052,7 +2053,8 @@ execution.checkpointing.storage.async-upload.threads: 16
   ```yaml
   execution.checkpointing.storage.tiered.enabled: true
   execution.checkpointing.storage.read-ahead.enabled: true
-  ```
+
+```
 
 **问题 4: 自适应间隔振荡**
 
@@ -2067,7 +2069,7 @@ execution.checkpointing.storage.async-upload.threads: 16
   execution.checkpointing.adaptive.kp: 0.3
   execution.checkpointing.adaptive.ki: 0.05
   execution.checkpointing.adaptive.smoothing-factor: 0.8
-  ```
+```
 
 ### 10.4 最佳实践清单
 

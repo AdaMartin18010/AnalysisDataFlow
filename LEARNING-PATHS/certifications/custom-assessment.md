@@ -592,12 +592,12 @@ java.util.concurrent.TimeoutException: Checkpoint expired
 题目ID: Q001
 类型: 单选题
 难度: L2
-知识点:
+知识点: 
   - Checkpoint
   - 容错机制
 题干: |
   以下关于 Checkpoint 的说法正确的是：
-选项:
+选项: 
   A: Checkpoint 间隔越短越好
   B: Checkpoint 可以保证端到端 Exactly-Once
   C: Checkpoint 主要用于故障恢复

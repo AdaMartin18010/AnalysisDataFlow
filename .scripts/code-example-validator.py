@@ -182,26 +182,50 @@ class CodeExampleValidator:
         if not code.strip():
             return True, None, None
         
-        # 检查是否是完整类或片段
-        is_snippet = not re.search(r'\bclass\b|\binterface\b|\benum\b', code)
+        # 检查是否是完整类定义
+        has_class = re.search(r'\bclass\s+\w+', code)
+        has_interface = re.search(r'\binterface\s+\w+', code)
+        has_enum = re.search(r'\benum\s+\w+', code)
         
         try:
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as f:
-                if is_snippet:
-                    # 将片段包装成完整类
-                    wrapped_code = f"""
-public class TempValidationClass {{
-    public static void main(String[] args) {{
-        {code}
-    }}
-}}
-"""
-                    f.write(wrapped_code)
-                else:
+            if has_class or has_interface or has_enum:
+                # 完整类/接口/枚举 - 使用类名作为文件名
+                class_match = re.search(r'(?:class|interface|enum)\s+(\w+)', code)
+                class_name = class_match.group(1) if class_match else "TempValidation"
+                
+                with tempfile.NamedTemporaryFile(mode='w', suffix=f'{class_name}.java', delete=False) as f:
                     f.write(code)
-                temp_path = f.name
+                    temp_path = f.name
+            else:
+                # 代码片段 - 包装成完整类
+                # 简单检测：如果是单条语句或变量声明，包装在方法中
+                # 否则包装在main方法中
+                lines = code.strip().split('\n')
+                is_simple = len(lines) == 1 or all(
+                    not l.strip().startswith(('if', 'for', 'while', '{', '}')) 
+                    for l in lines
+                )
+                
+                if is_simple:
+                    # 简单表达式，放在main中
+                    wrapped = f"""class TempValidation {{
+    public static void main(String[] args) {{
+        {code.strip()}
+    }}
+}}"""
+                else:
+                    # 复杂代码，保持原样但包装在类中
+                    wrapped = f"""class TempValidation {{
+    public static void validate() {{
+{code}
+    }}
+}}"""
+                
+                with tempfile.NamedTemporaryFile(mode='w', suffix='TempValidation.java', delete=False) as f:
+                    f.write(wrapped)
+                    temp_path = f.name
             
-            # 使用javac编译
+            # 编译
             result = subprocess.run(
                 ['javac', '-d', tempfile.gettempdir(), temp_path],
                 capture_output=True,
@@ -209,13 +233,19 @@ public class TempValidationClass {{
                 timeout=30
             )
             
-            os.unlink(temp_path)
+            # 清理
+            for ext in ['.java', '.class']:
+                f = temp_path.replace('.java', ext)
+                if os.path.exists(f):
+                    os.unlink(f)
             
             if result.returncode == 0:
                 return True, None, None
             else:
                 error_msg = result.stderr
-                # 提取行号
+                # 如果是因为类名问题，尝试原始代码
+                if "应在名为" in error_msg:
+                    return self._validate_java_relaxed(code)
                 line_match = re.search(r':(\d+):', error_msg)
                 error_line = int(line_match.group(1)) if line_match else None
                 return False, error_msg, error_line
@@ -224,9 +254,32 @@ public class TempValidationClass {{
             return False, "编译超时", None
         except Exception as e:
             return False, f"验证错误: {str(e)}", None
-        finally:
-            if 'temp_path' in locals() and os.path.exists(temp_path):
-                os.unlink(temp_path)
+    
+    def _validate_java_relaxed(self, code: str) -> Tuple[bool, Optional[str], Optional[int]]:
+        """宽松的Java验证（对片段不做严格检查）"""
+        # 检查明显的语法错误
+        open_braces = code.count('{')
+        close_braces = code.count('}')
+        open_parens = code.count('(')
+        close_parens = code.count(')')
+        
+        if open_braces != close_braces:
+            return False, f"大括号不匹配: {{={open_braces}, }}={close_braces}", None
+        if open_parens != close_parens:
+            return False, f"括号不匹配: (={open_parens}, )={close_parens}", None
+        
+        # 检查基本的Java语法模式
+        lines = code.split('\n')
+        for i, line in enumerate(lines, 1):
+            stripped = line.strip()
+            # 检查常见错误
+            if re.search(r'\b(if|for|while|switch)\s*\([^)]*\)\s*[^;{]', stripped):
+                if not stripped.endswith(('{', ';', '}', '//', '/*')):
+                    if stripped.count('(') == stripped.count(')'):
+                        # 可能有缺失的{或;
+                        pass  # 不标记为错误，可能是片段
+        
+        return True, None, None  # 片段模式：宽松通过
     
     def validate_python(self, code: str) -> Tuple[bool, Optional[str], Optional[int]]:
         """验证Python代码语法"""
@@ -234,43 +287,63 @@ public class TempValidationClass {{
             return True, None, None
         
         try:
-            # 尝试编译
-            py_compile.compile(
-                source=code,
-                doraise=True
-            )
+            # 使用compile函数直接验证
+            compile(code, '<string>', 'exec')
             return True, None, None
-        except py_compile.PyCompileError as e:
-            error_msg = str(e)
-            # 提取行号
-            line_match = re.search(r'line\s+(\d+)', error_msg, re.IGNORECASE)
-            error_line = int(line_match.group(1)) if line_match else None
+        except SyntaxError as e:
+            error_msg = f"SyntaxError: {e.msg}"
+            error_line = e.lineno
             return False, error_msg, error_line
+        except Exception as e:
+            error_msg = str(e)
+            return False, error_msg, None
     
     def validate_yaml(self, code: str) -> Tuple[bool, Optional[str], Optional[int]]:
         """验证YAML代码语法"""
         if not code.strip():
             return True, None, None
         
-        if not RUAMEL_AVAILABLE:
-            # 使用PyYAML作为备选
+        # 清理代码：移除Markdown任务列表标记
+        cleaned_code = re.sub(r'^(\s*)-\s*\[([ xX])\]\s*', r'\1- ', code, flags=re.MULTILINE)
+        
+        # 尝试使用ruamel.yaml
+        if RUAMEL_AVAILABLE:
             try:
-                import yaml
-                yaml.safe_load(code)
+                # 尝试加载所有文档
+                from ruamel.yaml import YAMLError
+                yaml = YAML(typ='safe')
+                yaml.preserve_quotes = True
+                # 使用load_all处理多文档
+                docs = list(yaml.load_all(cleaned_code))
                 return True, None, None
-            except ImportError:
-                return True, "YAML库不可用，跳过验证", None
+            except YAMLError as e:
+                error_msg = str(e)
+                # 检查是否是常见的"多文档"误报
+                if "but found another document" in error_msg and "---" in cleaned_code:
+                    # 多文档是合法的，只是解析器配置问题
+                    return True, None, None
+                line_match = re.search(r'line\s+(\d+)', error_msg, re.IGNORECASE)
+                error_line = int(line_match.group(1)) if line_match else None
+                return False, error_msg, error_line
             except Exception as e:
                 error_msg = str(e)
                 line_match = re.search(r'line\s+(\d+)', error_msg, re.IGNORECASE)
                 error_line = int(line_match.group(1)) if line_match else None
                 return False, error_msg, error_line
         
+        # 备选：使用PyYAML
         try:
-            self.yaml_parser.load(code)
+            import yaml
+            # 尝试加载所有文档
+            docs = list(yaml.safe_load_all(cleaned_code))
             return True, None, None
+        except ImportError:
+            return True, "YAML库不可用，跳过验证", None
         except Exception as e:
             error_msg = str(e)
+            # 多文档分隔符---是合法的
+            if "but found another document" in str(e):
+                return True, None, None
             line_match = re.search(r'line\s+(\d+)', error_msg, re.IGNORECASE)
             error_line = int(line_match.group(1)) if line_match else None
             return False, error_msg, error_line

@@ -373,9 +373,9 @@ $$P(\text{OOM}) \leq \epsilon \quad \text{where } \epsilon \ll 0.001$$
 *工程论证*:
 
 1. **内存预算分配**：
-   ```
+   ```text
    Total Memory = 任务堆内存 + 托管内存 + 网络内存 + JVM开销
-   ```
+```
 
 2. **JVM参数配置**：
    ```bash
@@ -383,7 +383,7 @@ $$P(\text{OOM}) \leq \epsilon \quad \text{where } \epsilon \ll 0.001$$
    -XX:MaxGCPauseMillis=100
    -XX:G1HeapRegionSize=16m
    -XX:InitiatingHeapOccupancyPercent=35
-   ```
+```
 
 3. **监控与自适应**：通过JMMetrics实时监控各代内存使用，动态调整分配策略
 
@@ -523,13 +523,13 @@ taskmanager.memory.task.off-heap.size: 512m
 
 # JVM GC参数
 env.java.opts.taskmanager: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=100
-  -XX:G1HeapRegionSize=16m
-  -XX:InitiatingHeapOccupancyPercent=35
-  -XX:+UnlockDiagnosticVMOptions
-  -XX:+DebugNonSafepoints
-  -XX:+UseStringDeduplication
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=100
+  -XX: G1HeapRegionSize=16m
+  -XX: InitiatingHeapOccupancyPercent=35
+  -XX: +UnlockDiagnosticVMOptions
+  -XX: +DebugNonSafepoints
+  -XX: +UseStringDeduplication
 ```
 
 **GC性能对比**：

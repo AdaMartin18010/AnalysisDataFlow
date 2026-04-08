@@ -197,7 +197,8 @@ Struct/01-foundation/ (理论基础)
 
    ```bash
    pandoc document.md -o output.pdf --pdf-engine=xelatex
-   ```
+
+```
 
 3. **浏览器打印**：
    - 使用 Markdown 渲染工具（如 Typora）打开

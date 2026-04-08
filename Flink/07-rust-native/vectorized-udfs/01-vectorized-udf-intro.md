@@ -443,7 +443,7 @@ def vec_risk_grade(scores: pd.Series) -> pd.Series:
 
 @udf(result_type=DataTypes.DOUBLE(),
      func_type='pandas')
-def vec_weighted_score(
+def vec_weighted_score(:
     scores: pd.Series,
     weights: pd.Series
 ) -> pd.Series:

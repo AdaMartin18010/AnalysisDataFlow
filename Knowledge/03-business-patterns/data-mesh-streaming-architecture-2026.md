@@ -371,18 +371,18 @@ graph TB
 
 ```yaml
 # user-profile-stream.yaml
-data_product:
+data_product: 
   name: user-profile-realtime
   domain: user-behavior
   owner: team-user-platform@company.com
-  sla:
+  sla: 
     latency_p99: 50ms
     availability: 99.99%
-  interface:
+  interface: 
     type: kafka
     topic: user-profile-v2
     schema: avro/UserProfile.avsc
-  quality:
+  quality: 
     freshness: < 5 seconds
     completeness: > 99.9%
 ```
@@ -599,52 +599,52 @@ flowchart TB
 # data-product-template.yaml
 apiVersion: datamesh.io/v1
 kind: StreamingDataProduct
-metadata:
+metadata: 
   name: {product-name}
   domain: {domain-name}
   owner: {team-email}
   version: 1.0.0
-spec:
+spec: 
   description: "数据产品描述"
 
-  interface:
+  interface: 
     type: kafka # 或: pulsar, kinesis, pubsub
     endpoint: "kafka.datamesh.internal:9092"
     topic: "{domain}.{product-name}.{version}"
     format: avro # 或: json, protobuf
     schemaRef: "https://schema-registry.datamesh.io/schemas/{product-name}/1.0.0"
 
-  sla:
-    latency:
+  sla: 
+    latency: 
       p50: 10ms
       p99: 50ms
       max: 100ms
     availability: 99.9%
     freshness: "< 5 seconds"
 
-  quality:
+  quality: 
     completeness: "> 99.9%"
     accuracy: "> 99.5%"
     schemaEvolution: backward_compatible
 
-  access:
+  access: 
     authentication: mTLS
     authorization: RBAC
     public: false
-    consumers:
+    consumers: 
       - domain: analytics
         purpose: real-time_dashboard
       - domain: ml-platform
         purpose: feature_engineering
 
-  lineage:
-    upstream:
+  lineage: 
+    upstream: 
       - source: mysql://orders-db/orders
         type: CDC
         transformation: debezium-json-to-avro
     downstream: []
 
-  governance:
+  governance: 
     classification: confidential
     piiFields: [customer_email, customer_phone]
     retention: "7 days hot, 90 days warm, 7 years cold"

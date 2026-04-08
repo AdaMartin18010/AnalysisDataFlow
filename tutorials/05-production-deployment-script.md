@@ -164,33 +164,33 @@ kubectl get pods -n default
 # FlinkDeployment示例 - wordcount.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: wordcount-job
   namespace: default
-spec:
+spec: 
   image: flink:2.0.0-scala_2.12
   flinkVersion: v2.0
   mode: native
 
-  jobManager:
-    resource:
+  jobManager: 
+    resource: 
       memory: "2Gi"
       cpu: 1
     replicas: 1
 
-  taskManager:
-    resource:
+  taskManager: 
+    resource: 
       memory: "4Gi"
       cpu: 2
     replicas: 2
 
-  job:
+  job: 
     jarURI: local:///opt/flink/examples/streaming/WordCount.jar
     parallelism: 4
     upgradeMode: stateful
     state: running
 
-  flinkConfiguration:
+  flinkConfiguration: 
     # Checkpoint配置
     execution.checkpointing.interval: "60s"
     execution.checkpointing.timeout: "600s"
@@ -319,14 +319,14 @@ CPU配置相对简单：
 ```yaml
 # TaskManager内存配置详解
 
-spec:
-  taskManager:
-    resource:
+spec: 
+  taskManager: 
+    resource: 
       memory: "8Gi"  # 总内存
       cpu: 2
 
     # 内存组件详细配置
-    memory:
+    memory: 
       # 任务堆内存 - 用于用户代码和数据结构
       taskmanager.memory.task.heap.size: "3gb"
 
@@ -355,8 +355,8 @@ spec:
 
 # RocksDB调优配置
 
-spec:
-  flinkConfiguration:
+spec: 
+  flinkConfiguration: 
     # 状态后端
     state.backend: rocksdb
     state.backend.incremental: "true"
@@ -442,25 +442,25 @@ Checkpoint配置要点：
 
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata:
+metadata: 
   name: ha-flink-job
-spec:
+spec: 
   image: flink:2.0.0-scala_2.12
   flinkVersion: v2.0
 
-  jobManager:
+  jobManager: 
     replicas: 3  # 3个JobManager实现HA
-    resource:
+    resource: 
       memory: "2Gi"
       cpu: 1
 
-  taskManager:
-    resource:
+  taskManager: 
+    resource: 
       memory: "4Gi"
       cpu: 2
     replicas: 3
 
-  flinkConfiguration:
+  flinkConfiguration: 
     # ========== Checkpoint配置 ==========
     execution.checkpointing.interval: "60s"
     execution.checkpointing.timeout: "600s"
@@ -578,8 +578,8 @@ Grafana Dashboard应该包含：
 ```yaml
 # Flink Prometheus Reporter配置
 
-spec:
-  flinkConfiguration:
+spec: 
+  flinkConfiguration: 
     # 启用Prometheus Reporter
     metrics.reporters: prom
     metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
@@ -601,22 +601,22 @@ spec:
 
 apiVersion: v1
 kind: ConfigMap
-metadata:
+metadata: 
   name: prometheus-config
-data:
+data: 
   prometheus.yml: |
-    global:
+    global: 
       scrape_interval: 15s
 
-    scrape_configs:
+    scrape_configs: 
       # JobManager指标
       - job_name: 'flink-jobmanager'
-        kubernetes_sd_configs:
+        kubernetes_sd_configs: 
           - role: pod
-            namespaces:
-              names:
+            namespaces: 
+              names: 
                 - default
-        relabel_configs:
+        relabel_configs: 
           - source_labels: [__meta_kubernetes_pod_label_component]
             action: keep
             regex: jobmanager
@@ -629,9 +629,9 @@ data:
 
       # TaskManager指标
       - job_name: 'flink-taskmanager'
-        kubernetes_sd_configs:
+        kubernetes_sd_configs: 
           - role: pod
-        relabel_configs:
+        relabel_configs: 
           - source_labels: [__meta_kubernetes_pod_label_component]
             action: keep
             regex: taskmanager
@@ -740,20 +740,20 @@ data:
 
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
-metadata:
+metadata: 
   name: flink-alerts
-spec:
-  groups:
+spec: 
+  groups: 
     - name: flink-critical
-      rules:
+      rules: 
         # Checkpoint失败告警
         - alert: FlinkCheckpointFailed
           expr: |
             flink_jobmanager_numberOfFailedCheckpoints > 0
           for: 1m
-          labels:
+          labels: 
             severity: critical
-          annotations:
+          annotations: 
             summary: "Flink Checkpoint失败"
             description: "作业 {{ $labels.job_name }} Checkpoint连续失败"
 
@@ -762,9 +762,9 @@ spec:
           expr: |
             flink_jobmanager_job_status{status="FAILED"} == 1
           for: 0m
-          labels:
+          labels: 
             severity: critical
-          annotations:
+          annotations: 
             summary: "Flink作业失败"
             description: "作业 {{ $labels.job_name }} 失败"
 
@@ -773,9 +773,9 @@ spec:
           expr: |
             avg(flink_taskmanager_job_task_backPressuredTimeMsPerSecond) > 500
           for: 5m
-          labels:
+          labels: 
             severity: warning
-          annotations:
+          annotations: 
             summary: "Flink背压过高"
             description: "作业存在严重背压，需要优化"
 
@@ -785,9 +785,9 @@ spec:
             (flink_taskmanager_job_task_operator_currentProcessingTime -
              flink_taskmanager_job_task_operator_currentInputWatermark) > 60000
           for: 5m
-          labels:
+          labels: 
             severity: warning
-          annotations:
+          annotations: 
             summary: "Flink Watermark滞后"
             description: "Watermark滞后超过1分钟"
 
@@ -797,9 +797,9 @@ spec:
             flink_taskmanager_Status_JVM_Memory_Heap_Used /
             flink_taskmanager_Status_JVM_Memory_Heap_Committed > 0.9
           for: 5m
-          labels:
+          labels: 
             severity: warning
-          annotations:
+          annotations: 
             summary: "Flink内存使用率高"
             description: "TaskManager堆内存使用率超过90%"
 ```
@@ -809,18 +809,18 @@ spec:
 
 apiVersion: v1
 kind: ConfigMap
-metadata:
+metadata: 
   name: alertmanager-config
-data:
+data: 
   alertmanager.yml: |
-    global:
+    global: 
       slack_api_url: '<your-slack-webhook-url>'
       smtp_smarthost: 'smtp.example.com:587'
       smtp_from: 'alerts@example.com'
 
-    route:
+    route: 
       receiver: 'default'
-      routes:
+      routes: 
         - match:
             severity: critical
           receiver: 'pagerduty'
@@ -829,18 +829,18 @@ data:
             severity: warning
           receiver: 'slack'
 
-    receivers:
+    receivers: 
       - name: 'default'
-        email_configs:
+        email_configs: 
           - to: 'oncall@example.com'
 
       - name: 'pagerduty'
-        pagerduty_configs:
+        pagerduty_configs: 
           - service_key: '<your-pagerduty-key>'
             severity: critical
 
       - name: 'slack'
-        slack_configs:
+        slack_configs: 
           - channel: '#flink-alerts'
             title: 'Flink Alert'
             text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'

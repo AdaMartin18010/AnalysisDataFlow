@@ -94,18 +94,21 @@
    //          │  │                           └────────────────────── trace-id
    //          │  └────────────────────────────────────────────────── version
    //          └───────────────────────────────────────────────────── format
-   ```
+
+```
 
 3. **Extract（提取）**: 函数 $Extract: Carrier \rightarrow Context$
 
 **Flink中的传播路径**：
 
 ```
+
 Source ──[Record]──► Operator1 ──[Record]──► Operator2 ──[Record]──► Sink
     │                   │                      │                    │
     │ Span: RECEIVE     │ Span: PROCESS        │ Span: PROCESS      │ Span: SEND
     └───────────────────┴──────────────────────┴────────────────────┘
               Trace Context 通过 Record Header 传播
+
 ```
 
 ---
@@ -184,6 +187,7 @@ $$Sample(t) = \begin{cases} 1 & \text{if } latency(t) > threshold \\ r & \text{o
 ### 3.1 OpenTelemetry架构映射
 
 ```
+
 ┌─────────────────────────────────────────────────────────────────┐
 │                     OpenTelemetry Architecture                  │
 ├─────────────────────────────────────────────────────────────────┤
@@ -215,6 +219,7 @@ $$Sample(t) = \begin{cases} 1 & \text{if } latency(t) > threshold \\ r & \text{o
 │                     Trace Context via Record Header             │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
+
 ```
 
 ### 3.2 与Flink核心机制的关联
@@ -229,6 +234,7 @@ $$Sample(t) = \begin{cases} 1 & \text{if } latency(t) > threshold \\ r & \text{o
 ### 3.3 与Kafka集成的追踪上下文
 
 ```
+
 Kafka Producer (Upstream)                    Flink Kafka Source
 ┌──────────────────────┐                    ┌──────────────────────┐
 │  Record Headers:     │    Kafka Topic     │  Extract Context:    │
@@ -237,6 +243,7 @@ Kafka Producer (Upstream)                    Flink Kafka Source
 └──────────────────────┘                    │  → Create Span:      │
                                             │    "KafkaSource.poll"│
                                             └──────────────────────┘
+
 ```
 
 ---

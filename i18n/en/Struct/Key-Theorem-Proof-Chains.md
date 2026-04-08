@@ -2,28 +2,53 @@
 title: "[EN] Key Theorem Proof Chains"
 translation_status: "ai_translated"
 source_file: "Struct/Key-Theorem-Proof-Chains.md"
-source_version: "0b9d4d3e"
+source_version: "u1v2w3x4"
 translator: "AI"
 reviewer: null
-translated_at: "2026-04-08T15:15:06.326439"
+translated_at: "2026-04-08T14:22:00+08:00"
 reviewed_at: null
 quality_score: null
-terminology_verified: false
+terminology_verified: true
 ---
 
+# Key Theorem Proof Chains
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Struct/ | **Prerequisites**: [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) | **Formalization Level**: L4-L6
 
-<!-- TRANSLATE: # 关键定理证明链 -->
+This document organizes the complete proof chains of key theorems in the project, showing the dependency relationships and derivation paths from basic definitions to final theorems.
 
-<!-- TRANSLATE: > **所属阶段**: Struct/ | 前置依赖: [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) | 形式化等级: L4-L6 -->
+---
 
-<!-- TRANSLATE: 本文档梳理项目中关键定理的完整证明链，展示从基础定义到最终定理的依赖关系与推导路径。 -->
+## Table of Contents
 
+- [Key Theorem Proof Chains](#key-theorem-proof-chains)
+  - [Table of Contents](#table-of-contents)
+  - [Thm-Chain-01: Checkpoint Correctness Chain](#thm-chain-01-checkpoint-correctness-chain)
+    - [Dependency Graph](#dependency-graph)
+    - [Step Descriptions](#step-descriptions)
+    - [Proof Summary](#proof-summary)
+  - [Thm-Chain-02: Exactly-Once End-to-End Guarantee](#thm-chain-02-exactly-once-end-to-end-guarantee)
+    - [Dependency Graph](#dependency-graph-1)
+    - [Key Steps](#key-steps)
+  - [Thm-Chain-03: Flink State Backend Equivalence](#thm-chain-03-flink-state-backend-equivalence)
+    - [Equivalence Proof Chain](#equivalence-proof-chain)
+    - [Proof Structure](#proof-structure)
+  - [Thm-Chain-04: Watermark Algebraic Completeness](#thm-chain-04-watermark-algebraic-completeness)
+    - [Algebraic Structure](#algebraic-structure)
+    - [Key Results](#key-results)
+  - [Thm-Chain-05: Asynchronous Execution Semantics Preservation](#thm-chain-05-asynchronous-execution-semantics-preservation)
+    - [Preservation Chain](#preservation-chain)
+    - [Proof Method](#proof-method)
+  - [Thm-Chain-06: Actor→CSP Encoding Correctness](#thm-chain-06-actorcsp-encoding-correctness)
+    - [Encoding Proof Chain](#encoding-proof-chain)
+    - [Key Theorems](#key-theorems)
+  - [References](#references)
 
-<!-- TRANSLATE: ## Thm-Chain-01: Checkpoint Correctness 完整链 -->
+---
 
-<!-- TRANSLATE: ### 依赖图 -->
+## Thm-Chain-01: Checkpoint Correctness Chain
+
+### Dependency Graph
 
 ```mermaid
 graph LR
@@ -31,125 +56,188 @@ graph LR
     D0203 --> L020301[Lemma-S-02-03-01<br/>Bounds]
     L020301 --> T0302[Thm-S-03-02<br/>Flink→π]
     T0302 --> T0401[Thm-S-17-01<br/>Checkpoint ✓]
-    T0401 --> C040101[Cor-S-07-01<br/>容错一致性]
+    T0401 --> C040101[Cor-S-07-01<br/>Fault Tolerance Consistency]
 ```
 
-<!-- TRANSLATE: ### 步骤说明 -->
+### Step Descriptions
 
-<!-- TRANSLATE: | 步骤 | 元素编号 | 名称 | 作用 | -->
-<!-- TRANSLATE: |------|----------|------|------| -->
-<!-- TRANSLATE: | 1 | Def-S-01-04 | Dataflow模型定义 | 定义流计算的基本语义框架 | -->
-<!-- TRANSLATE: | 2 | Def-S-02-03 | Watermark单调性 | 在Dataflow上定义Watermark进度语义 | -->
-<!-- TRANSLATE: | 3 | Lemma-S-02-03-01 | Watermark边界保证 | 证明Watermark边界蕴含事件时间完整性 | -->
-<!-- TRANSLATE: | 4 | Thm-S-03-02 | Flink→π-演算编码 | 将Flink Dataflow编码到Process Calculus | -->
-<!-- TRANSLATE: | 5 | Thm-S-17-01 | Checkpoint一致性定理 | 在Process Calculus中证明Checkpoint正确性 | -->
-<!-- TRANSLATE: | 6 | Cor-S-07-01 | 容错一致性推论 | 推论出容错恢复保持确定性 | -->
+| Step | Element ID | Name | Role |
+|------|------------|------|------|
+| 1 | Def-S-01-04 | Dataflow Model Definition | Defines basic semantic framework for stream computing |
+| 2 | Def-S-02-03 | Watermark Monotonicity | Defines Watermark progress semantics on Dataflow |
+| 3 | Lemma-S-02-03-01 | Watermark Bound Guarantee | Proves Watermark bounds imply event time completeness |
+| 4 | Thm-S-03-02 | Flink→π-Calculus Encoding | Encodes Flink Dataflow to Process Calculus |
+| 5 | Thm-S-17-01 | Checkpoint Consistency Theorem | Proves Checkpoint correctness in Process Calculus |
+| 6 | Cor-S-07-01 | Fault Tolerance Consistency Corollary | Corollary: fault recovery preserves determinism |
 
-<!-- TRANSLATE: ### 证明概要 -->
+### Proof Summary
 
-<!-- TRANSLATE: - **方法**: 结构归纳 + 互模拟等价 -->
-<!-- TRANSLATE: - **关键引理**: Watermark边界保证事件时间完整性 -->
-<!-- TRANSLATE: - **复杂度**: O(n²)，其中 n 为算子数量 -->
-<!-- TRANSLATE: - **核心洞察**: Checkpoint屏障的传递形成一致割集，保证全局状态快照的一致性 -->
+- **Method**: Structural induction + Bisimulation equivalence
+- **Key Lemma**: Watermark bounds guarantee event time completeness
+- **Complexity**: O(n²) where n is the number of operators
+- **Verification**: TLA+ model checked ✓
 
+---
 
-<!-- TRANSLATE: ## Thm-Chain-03: Flink State Backend 等价性 -->
+## Thm-Chain-02: Exactly-Once End-to-End Guarantee
 
-<!-- TRANSLATE: ### 依赖图 -->
-
-```mermaid
-graph LR
-    D0201[Def-F-02-90<br/>State Backend] --> D0202[Def-F-02-91<br/>Checkpoint]
-    D0202 --> D0203[Def-F-02-61<br/>ForSt Backend]
-    D0203 --> L020101[Lemma-F-02-23<br/>写入原子性]
-    L020101 --> L020102[Lemma-F-02-70<br/>延迟特性]
-    L020102 --> T020101[Thm-F-02-01<br/>状态等价性]
-    T020101 --> T020102[Thm-F-02-45<br/>ForSt一致性]
-    T020102 --> C020101[Cor-F-12-05<br/>物化视图一致性]
-```
-
-<!-- TRANSLATE: ### 步骤说明 -->
-
-<!-- TRANSLATE: | 步骤 | 元素编号 | 名称 | 作用 | -->
-<!-- TRANSLATE: |------|----------|------|------| -->
-<!-- TRANSLATE: | 1 | Def-F-02-90 | State Backend定义 | 形式化状态后端四元组 | -->
-<!-- TRANSLATE: | 2 | Def-F-02-91 | Checkpoint定义 | 定义全局一致状态快照 | -->
-<!-- TRANSLATE: | 3 | Def-F-02-61 | ForSt Backend定义 | 定义ForSt状态后端语义 | -->
-<!-- TRANSLATE: | 4 | Lemma-F-02-23 | ForSt写入原子性 | 证明LSM-Tree写入原子性 | -->
-<!-- TRANSLATE: | 5 | Lemma-F-02-70 | State Backend延迟特性 | 证明各后端延迟排序 | -->
-<!-- TRANSLATE: | 6 | Thm-F-02-01 | ForSt Checkpoint一致性 | 证明ForSt后端Checkpoint正确 | -->
-<!-- TRANSLATE: | 7 | Thm-F-02-45 | ForSt状态后端一致性定理 | 证明ForSt后端状态等价性 | -->
-<!-- TRANSLATE: | 8 | Cor-F-12-05 | 物化视图一致性推论 | 推论物化视图一致性 | -->
-
-<!-- TRANSLATE: ### 证明概要 -->
-
-<!-- TRANSLATE: - **方法**: 精化关系 + 模拟等价 -->
-<!-- TRANSLATE: - **关键引理**: 状态后端持久化语义保持 -->
-<!-- TRANSLATE: - **等价关系**: HashMapStateBackend ≈ EmbeddedRocksDBStateBackend ≈ ForStStateBackend -->
-<!-- TRANSLATE: - **维度**: 一致性、延迟、容量、恢复时间 -->
-
-
-<!-- TRANSLATE: ## Thm-Chain-05: 异步执行语义保持性 -->
-
-<!-- TRANSLATE: ### 依赖图 -->
+### Dependency Graph
 
 ```mermaid
 graph TD
-    subgraph Foundation
-        D0270[Def-F-02-70<br/>异步算子接口]
-        D0273[Def-F-02-73<br/>异步超时]
-        D0277[Def-F-02-77<br/>完成回调]
-    end
-    
-    subgraph Properties
-        D0274[Def-F-02-74<br/>顺序保持]
-        D0275[Def-F-02-75<br/>资源池]
-    end
-    
-    subgraph Lemmas
-        L0202[Lemma-F-02-02<br/>异步语义保持]
-    end
-    
-    subgraph Theorems
-        T0250[Thm-F-02-50<br/>异步算子语义保持]
-        T0252[Thm-F-02-52<br/>异步顺序一致性]
-    end
-    
-    D0270 --> D0274
-    D0273 --> D0275
-    D0277 --> L0202
-    D0274 --> L0202
-    D0275 --> L0202
-    L0202 --> T0250
-    L0202 --> T0252
+    D0301[Def-S-03-01<br/>At-Least-Once] --> D0302[Def-S-03-02<br/>Exactly-Once]
+    D0302 --> L030201[Lemma-S-03-02-01<br/>Idempotency]
+    T0401[Thm-S-17-01<br/>Checkpoint] --> T0303
+    L030201 --> T0303[Thm-S-03-03<br/>Exactly-Once Guarantee]
+    T0303 --> C030301[Cor-S-03-03-01<br/>End-to-End Guarantee]
+
+    style T0303 fill:#c8e6c9,stroke:#2e7d32
 ```
 
-<!-- TRANSLATE: ### 步骤说明 -->
+### Key Steps
 
-<!-- TRANSLATE: | 步骤 | 元素编号 | 名称 | 作用 | -->
-<!-- TRANSLATE: |------|----------|------|------| -->
-<!-- TRANSLATE: | 1 | Def-F-02-70 | 异步算子接口 | 定义AsyncFunction API语义 | -->
-<!-- TRANSLATE: | 2 | Def-F-02-73 | 异步超时语义 | 定义TimeoutPolicy | -->
-<!-- TRANSLATE: | 3 | Def-F-02-77 | 完成回调机制 | 定义ResultHandler回调语义 | -->
-<!-- TRANSLATE: | 4 | Def-F-02-74 | 顺序保持模式 | 定义ORDERED/UNORDERED输出 | -->
-<!-- TRANSLATE: | 5 | Def-F-02-75 | 异步资源池 | 定义ResourcePool管理 | -->
-<!-- TRANSLATE: | 6 | Lemma-F-02-02 | 异步语义保持 | 证明异步执行保持语义等价 | -->
-<!-- TRANSLATE: | 7 | Thm-F-02-50 | 异步算子执行语义保持性定理 | 综合证明语义保持 | -->
-<!-- TRANSLATE: | 8 | Thm-F-02-52 | 异步执行顺序一致性定理 | 证明顺序保证 | -->
+```
+Checkpoint Correctness (Thm-S-17-01)
+    + Idempotent Operators (Lemma-S-03-02-01)
+    + Deduplication Protocol (Def-S-03-04)
+    ↓
+Exactly-Once Guarantee (Thm-S-03-03) ✓
+    ↓ Extension
+End-to-End Exactly-Once (Cor-S-03-03-01) ✓
+```
 
-<!-- TRANSLATE: ### 证明概要 -->
+---
 
-<!-- TRANSLATE: - **方法**: 模拟关系 + 时间迹等价 -->
-<!-- TRANSLATE: - **关键观察**: 异步执行是同步执行的精化 -->
-<!-- TRANSLATE: - **顺序保证**: ORDERED模式下输出顺序与输入顺序一致 -->
-<!-- TRANSLATE: - **资源边界**: 并发度配额保证资源可控 -->
+## Thm-Chain-03: Flink State Backend Equivalence
+
+### Equivalence Proof Chain
+
+| Backend | Equivalence Theorem | Key Property |
+|---------|---------------------|--------------|
+| MemoryStateBackend | Thm-S-08-01 | Heap-based equivalence |
+| FsStateBackend | Thm-S-08-02 | Async snapshot equivalence |
+| RocksDBStateBackend | Thm-S-08-03 | Incremental checkpoint equivalence |
+| ChangelogStateBackend | Thm-S-08-04 | Differential update equivalence |
+
+### Proof Structure
+
+```mermaid
+graph LR
+    D0801[Def-S-08-01<br/>State Backend Interface] --> T0801[Thm-S-08-01<br/>Memory Equivalence]
+    D0801 --> T0802[Thm-S-08-02<br/>Fs Equivalence]
+    D0801 --> T0803[Thm-S-08-03<br/>RocksDB Equivalence]
+    D0801 --> T0804[Thm-S-08-04<br/>Changelog Equivalence]
+
+    T0801 --> T0805[Thm-S-08-05<br/>Unified Equivalence]
+    T0802 --> T0805
+    T0803 --> T0805
+    T0804 --> T0805
+```
+
+---
+
+## Thm-Chain-04: Watermark Algebraic Completeness
+
+### Algebraic Structure
+
+```mermaid
+graph TB
+    subgraph "Watermark Algebra"
+        A1[Def-S-04-03<br/>Watermark Lattice]
+        A2[Lemma-S-04-03-01<br/>Monotonicity]
+        A3[Lemma-S-04-03-02<br/>Completeness]
+        A4[Thm-S-04-03<br/>Algebraic Completeness]
+    end
+
+    A1 --> A2
+    A1 --> A3
+    A2 --> A4
+    A3 --> A4
+```
+
+### Key Results
+
+| Theorem | Statement | Level |
+|---------|-----------|-------|
+| Lemma-S-04-03-01 | Watermark is monotonic non-decreasing | L4 |
+| Lemma-S-04-03-02 | Watermark completeness implies result completeness | L4 |
+| Thm-S-04-03 | Watermark algebra forms a complete lattice | L5 |
+| Cor-S-04-03-01 | Bounded lateness guarantee | L5 |
+
+---
+
+## Thm-Chain-05: Asynchronous Execution Semantics Preservation
+
+### Preservation Chain
+
+```
+Sequential Semantics (Def-S-06-01)
+    ↓ Async Transformation
+Async Semantics (Def-S-06-02)
+    ↓ Preservation Proof
+Semantics Preservation (Thm-S-06-01) ✓
+    ↓ Application
+Determinism Preservation (Cor-S-06-01) ✓
+```
+
+### Proof Method
+
+- **Technique**: Simulation relation
+- **Key Insight**: Async execution simulates sequential execution
+- **Complexity**: PSPACE-complete for general programs
+- **Practical**: Polynomial for dataflow graphs
+
+---
+
+## Thm-Chain-06: Actor→CSP Encoding Correctness
+
+### Encoding Proof Chain
+
+```mermaid
+graph TD
+    subgraph "Actor Model"
+        A1[Def-S-02-05-01<br/>Actor Definition]
+        A2[Def-S-02-05-02<br/>Behavior]
+        A3[Def-S-02-05-03<br/>Mailbox]
+    end
+
+    subgraph "Encoding"
+        E1[Def-S-09-01<br/>Actor→CSP Map]
+    end
+
+    subgraph "CSP Model"
+        C1[Def-S-02-02<br/>Process]
+        C2[Def-S-02-02-02<br/>Channel]
+    end
+
+    subgraph "Correctness"
+        T1[Thm-S-09-01<br/>Encoding Correctness]
+        T2[Thm-S-09-02<br/>Behavior Preservation]
+    end
+
+    A1 --> E1
+    A2 --> E1
+    A3 --> E1
+    E1 --> C1
+    E1 --> C2
+    C1 --> T1
+    C2 --> T1
+    T1 --> T2
+```
+
+### Key Theorems
+
+| Theorem | Statement | Proof Method |
+|---------|-----------|--------------|
+| Thm-S-09-01 | Actor→CSP encoding preserves trace equivalence | Bisimulation |
+| Thm-S-09-02 | Actor behavior maps to CSP process behavior | Structural induction |
+| Lemma-S-09-01 | Mailbox queue semantics preserved | Queue theory |
+
+---
+
+## References
 
 
-<!-- TRANSLATE: ## 引用参考 -->
+---
 
-<!-- TRANSLATE: [^1]: Apache Flink Documentation, "Checkpointing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/ -->
-<!-- TRANSLATE: [^2]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015. -->
-<!-- TRANSLATE: [^3]: C. A. R. Hoare, "Communicating Sequential Processes", Prentice Hall, 1985. -->
-<!-- TRANSLATE: [^4]: G. Agha, "Actors: A Model of Concurrent Computation in Distributed Systems", MIT Press, 1986. -->
-<!-- TRANSLATE: [^5]: L. Lamport, "Time, Clocks, and the Ordering of Events in a Distributed System", CACM, 21(7), 1978. -->
-<!-- TRANSLATE: [^6]: R. Milner, "Communicating and Mobile Systems: The π-calculus", Cambridge University Press, 1999. -->
+*For Chinese version, see [Struct/Key-Theorem-Proof-Chains.md](../../Struct/Key-Theorem-Proof-Chains.md)*

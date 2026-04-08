@@ -542,22 +542,22 @@ security.authentication.oidc.jwks-endpoint: https://auth.example.com/.well-known
 # Kubernetes Ingress + OAuth2 Proxy
 apiVersion: networking.k8s.io/v1
 kind: Ingress
-metadata:
+metadata: 
   name: flink-oauth-ingress
-  annotations:
+  annotations: 
     nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
     nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=$escaped_request_uri"
-spec:
-  rules:
+spec: 
+  rules: 
   - host: flink.example.com
-    http:
-      paths:
+    http: 
+      paths: 
       - path: /
         pathType: Prefix
-        backend:
-          service:
+        backend: 
+          service: 
             name: flink-jobmanager
-            port:
+            port: 
               number: 8081
 ```
 
@@ -569,16 +569,16 @@ spec:
 ---
 apiVersion: v1
 kind: Namespace
-metadata:
+metadata: 
   name: flink-production
-  labels:
+  labels: 
     environment: production
     security-tier: high
 ---
 # ServiceAccount
 apiVersion: v1
 kind: ServiceAccount
-metadata:
+metadata: 
   name: flink-job-operator
   namespace: flink-production
 automountServiceAccountToken: false
@@ -586,10 +586,10 @@ automountServiceAccountToken: false
 # Role - 最小权限
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
-metadata:
+metadata: 
   name: flink-job-role
   namespace: flink-production
-rules:
+rules: 
 # Flink 部署资源
 - apiGroups: ["flink.apache.org"]
   resources: ["flinkdeployments", "flinksessionjobs"]
@@ -619,14 +619,14 @@ rules:
 # RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
-metadata:
+metadata: 
   name: flink-job-binding
   namespace: flink-production
-subjects:
+subjects: 
 - kind: ServiceAccount
   name: flink-job-operator
   namespace: flink-production
-roleRef:
+roleRef: 
   kind: Role
   name: flink-job-role
   apiGroup: rbac.authorization.k8s.io
@@ -634,9 +634,9 @@ roleRef:
 # ClusterRole - 用于跨命名空间资源（如节点信息）
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
-metadata:
+metadata: 
   name: flink-node-reader
-rules:
+rules: 
 - apiGroups: [""]
   resources: ["nodes"]
   verbs: ["get", "list", "watch"]
@@ -644,13 +644,13 @@ rules:
 # ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
-metadata:
+metadata: 
   name: flink-node-reader-binding
-subjects:
+subjects: 
 - kind: ServiceAccount
   name: flink-job-operator
   namespace: flink-production
-roleRef:
+roleRef: 
   kind: ClusterRole
   name: flink-node-reader
   apiGroup: rbac.authorization.k8s.io
@@ -1084,32 +1084,32 @@ public class FlinkAuditLogger {
 # JobManager 网络策略
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata:
+metadata: 
   name: flink-jobmanager-policy
   namespace: flink-production
-spec:
-  podSelector:
-    matchLabels:
+spec: 
+  podSelector: 
+    matchLabels: 
       app: flink-jobmanager
       component: jobmanager
-  policyTypes:
+  policyTypes: 
   - Ingress
   - Egress
-  ingress:
+  ingress: 
   # Web UI 访问
   - from:
     - namespaceSelector:
-        matchLabels:
+        matchLabels: 
           name: ingress-nginx
-    ports:
+    ports: 
     - protocol: TCP
       port: 8081
   # TaskManager 连接
   - from:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: flink-taskmanager
-    ports:
+    ports: 
     - protocol: TCP
       port: 6123
     - protocol: TCP
@@ -1117,88 +1117,88 @@ spec:
   # Blob Server
   - from:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: flink-taskmanager
-    ports:
+    ports: 
     - protocol: TCP
       port: 6125
-  egress:
+  egress: 
   # DNS
   - to:
     - namespaceSelector: {}
-    ports:
+    ports: 
     - protocol: UDP
       port: 53
   # Kafka 访问
   - to:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: kafka
-    ports:
+    ports: 
     - protocol: TCP
       port: 9093
   # ZooKeeper
   - to:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: zookeeper
-    ports:
+    ports: 
     - protocol: TCP
       port: 2181
 ---
 # TaskManager 网络策略
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata:
+metadata: 
   name: flink-taskmanager-policy
   namespace: flink-production
-spec:
-  podSelector:
-    matchLabels:
+spec: 
+  podSelector: 
+    matchLabels: 
       app: flink-taskmanager
       component: taskmanager
-  policyTypes:
+  policyTypes: 
   - Ingress
   - Egress
-  ingress:
+  ingress: 
   # 仅允许 JobManager 连接
   - from:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: flink-jobmanager
-  egress:
+  egress: 
   # JobManager
   - to:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: flink-jobmanager
-    ports:
+    ports: 
     - protocol: TCP
       port: 6123
   # Kafka
   - to:
     - podSelector:
-        matchLabels:
+        matchLabels: 
           app: kafka
-    ports:
+    ports: 
     - protocol: TCP
       port: 9093
   # DNS
   - to:
     - namespaceSelector: {}
-    ports:
+    ports: 
     - protocol: UDP
       port: 53
 ---
 # 默认拒绝策略
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata:
+metadata: 
   name: default-deny-all
   namespace: flink-production
-spec:
+spec: 
   podSelector: {}
-  policyTypes:
+  policyTypes: 
   - Ingress
   - Egress
 ```
@@ -1209,79 +1209,79 @@ spec:
 # production-security-profile.yaml
 # 生产环境安全配置清单
 
-security_profile:
+security_profile: 
   name: "flink-production-high-security"
   version: "1.0.0"
-  compliance_requirements:
+  compliance_requirements: 
     - SOC2
     - ISO27001
     - GDPR
 
-authentication:
+authentication: 
   primary: "OAuth2/OIDC"
   secondary: "mTLS"
-  kerberos:
+  kerberos: 
     enabled: true
     keytab_rotation: "30d"
-    service_principals:
+    service_principals: 
       - flink/_HOST@EXAMPLE.COM
       - HTTP/_HOST@EXAMPLE.COM
-  oauth2:
+  oauth2: 
     provider: "Keycloak"
     client_id: "flink-production"
     scopes: ["openid", "profile", "flink:admin"]
     pkce_enabled: true
-  mTLS:
+  mTLS: 
     enabled: true
     client_auth: "REQUIRED"
     certificate_validity: "90d"
     auto_rotation: true
 
-authorization:
+authorization: 
   model: "RBAC+ABAC"
-  rbac:
+  rbac: 
     strict_mode: true
     regular_audit: "monthly"
-  abac:
-    policies:
+  abac: 
+    policies: 
       - name: "business_hours_only"
         condition: "time BETWEEN 09:00 AND 18:00"
       - name: "corporate_network_only"
         condition: "source_ip IN corporate_cidr"
 
-transport_security:
+transport_security: 
   tls_version: "1.3"
-  cipher_suites:
+  cipher_suites: 
     - "TLS_AES_256_GCM_SHA384"
     - "TLS_AES_128_GCM_SHA256"
-  mutual_tls:
+  mutual_tls: 
     internal: true
     rest_api: true
-  certificate_management:
+  certificate_management: 
     provider: "cert-manager"
     issuer: "letsencrypt-prod"
     auto_renewal: true
 
-data_protection:
-  encryption_at_rest:
+data_protection: 
+  encryption_at_rest: 
     checkpoints: "AES-256-GCM"
     state_backend: "AES-256-GCM"
     logs: "AES-256-GCM"
-  encryption_in_transit:
+  encryption_in_transit: 
     kafka: "SASL_SSL"
     internal: "TLS1.3"
-  field_level_encryption:
+  field_level_encryption: 
     enabled: true
     algorithm: "AES-256-GCM"
     key_management: "HashiCorp Vault"
-    sensitive_fields:
+    sensitive_fields: 
       - "ssn"
       - "credit_card"
       - "bank_account"
-  data_masking:
+  data_masking: 
     enabled: true
     strategy: "dynamic"
-    rules:
+    rules: 
       - field: "email"
         mask_type: "email"
       - field: "phone"
@@ -1289,77 +1289,77 @@ data_protection:
       - field: "name"
         mask_type: "name"
 
-key_management:
+key_management: 
   provider: "HashiCorp Vault"
   auto_rotation: true
   rotation_period: "90d"
-  key_hierarchy:
+  key_hierarchy: 
     level0: "HSM"
     level1: "Vault Transit"
     level2: "Application Key"
-  backup:
+  backup: 
     enabled: true
     location: "s3://vault-backup/"
     encryption: "AES-256-GCM"
 
-audit_logging:
+audit_logging: 
   enabled: true
   level: "INFO"
   retention_days: 2555  # 7 years
-  destinations:
+  destinations: 
     - type: "elasticsearch"
       endpoint: "https://logs.example.com"
     - type: "s3"
       bucket: "flink-audit-logs"
-  events:
+  events: 
     - authentication
     - authorization
     - data_access
     - configuration_change
-  integrity:
+  integrity: 
     signing: true
     hash_algorithm: "SHA-256"
     tamper_detection: true
 
-network_security:
-  network_policies:
+network_security: 
+  network_policies: 
     enabled: true
     default_deny: true
-  service_mesh:
+  service_mesh: 
     enabled: true
     provider: "Istio"
     mTLS: true
-  ingress:
+  ingress: 
     controller: "nginx"
     waf_enabled: true
-    rate_limiting:
+    rate_limiting: 
       enabled: true
       requests_per_second: 100
-  egress_filtering:
+  egress_filtering: 
     enabled: true
     mode: "whitelist"
 
-monitoring:
-  siem_integration:
+monitoring: 
+  siem_integration: 
     enabled: true
     provider: "Splunk"
-  alerting:
-    channels:
+  alerting: 
+    channels: 
       - type: "pagerduty"
         severity: ["critical", "high"]
       - type: "slack"
         severity: ["medium", "low"]
-  anomaly_detection:
+  anomaly_detection: 
     enabled: true
     ml_based: true
     baseline_learning_period: "7d"
 
-compliance:
-  gdpr:
+compliance: 
+  gdpr: 
     data_classification: true
     retention_policies: true
     right_to_erasure: true
-  soc2:
+  soc2: 
     access_reviews: "quarterly"
     penetration_testing: "annual"
     vulnerability_scanning: "weekly"

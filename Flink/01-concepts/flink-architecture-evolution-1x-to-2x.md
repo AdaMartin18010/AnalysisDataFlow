@@ -252,7 +252,8 @@ $$
    state.getAsync(key)
        .thenApply(v -> { /* 处理1 */ })
        .thenCompose(v -> state.updateAsync(key, v));
-   ```
+
+```
 
 2. **Mailbox 优先级**:
    - 控制消息 (Barrier) 优先于数据事件
@@ -340,20 +341,24 @@ $$
 **Flink 1.x 恢复过程**:
 
 ```
+
 T+0s:   检测到故障
 T+5s:   JM 调度新 TM
 T+10s:  开始下载状态 (100TB / 10Gbps = 80,000s)
 T+3h:   状态下载完成
 T+3h5m: 作业恢复运行
+
 ```
 
 **Flink 2.x 恢复过程**:
 
 ```
+
 T+0s:   检测到故障
 T+5s:   JM 调度新 TM
 T+10s:  加载元数据 (100MB)
 T+15s:  作业恢复运行 (状态按需加载)
+
 ```
 
 **结果**: 恢复时间从 3 小时降至 15 秒，加速比 720x。

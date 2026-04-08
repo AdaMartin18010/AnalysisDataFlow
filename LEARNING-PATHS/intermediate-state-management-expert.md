@@ -87,7 +87,7 @@ gantt
 
    // 3. ForStStateBackend (Flink 2.0+)
    env.setStateBackend(new ForStStateBackend());
-   ```
+```
 
    - 对比内存使用、CPU 占用、Checkpoint 时间
    - 测试大规模状态场景
@@ -156,7 +156,7 @@ gantt
        }
      }
    }
-   ```
+```
 
 2. **大状态优化**
    - 实现状态分区策略
@@ -262,7 +262,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    ```java
    // 使用 keyBy 进行自然分区
    stream.keyBy(event -> event.getUserId() % 1000)
-   ```
+```
 
 2. **RocksDB 调优**
 
@@ -273,7 +273,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    stateBackend.setPredefinedOptions(
      PredefinedOptions.FLASH_SSD_OPTIMIZED
    );
-   ```
+```
 
 3. **增量 Checkpoint**
 
@@ -283,7 +283,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    );
    // 启用增量 Checkpoint
    env.getCheckpointConfig().enableUnalignedCheckpoints();
-   ```
+```
 
 ### 检查点
 

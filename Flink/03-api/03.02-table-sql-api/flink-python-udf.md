@@ -306,7 +306,7 @@ def sha256_hash_vectorized(input_series: pd.Series) -> pd.Series:
     """向量化版本的SHA256哈希函数"""
     return input_series.apply(
         lambda x: hashlib.sha256(x.encode('utf-8')).hexdigest()
-        if x is not None else None
+        if x is not None else None:
     )
 ```
 

@@ -41,7 +41,7 @@
 版本定位: "AI原生与云原生融合版本"
 预计发布周期: 2026 Q3-Q4
 Feature Freeze: 2026-08-15
-主要主题:
+主要主题: 
   1. AI Agent GA: FLIP-531 从MVP到正式版
   2. 云原生架构: Serverless Flink, 按需扩缩到0
   3. 性能优化: 自适应执行引擎v2, 智能检查点
@@ -75,7 +75,7 @@ Preview/GA特性清单:
   - [ ] 生产级监控与可观测性
   - [ ] Agent市场/注册中心
 
-API状态:
+API状态: 
   Java API:     Preview (v0.2.0) - API可能变更
   Python API:   Preview (v0.2.0) - API可能变更
   SQL API:      概念设计阶段
@@ -87,13 +87,13 @@ API状态:
 **Serverless Flink** 实现按需扩缩容至零实例：
 
 ```yaml
-核心能力:
+核心能力: 
   Scale-to-Zero: 无作业时零成本
   Cold Start:    <30秒从0到运行
   Auto Scaling:  基于负载的智能扩缩
   Pay-per-Use:   按实际处理数据量计费
 
-架构组件:
+架构组件: 
   1. Serverless Dispatcher:
      - 事件驱动的作业调度器
      - 支持Knative/EventBridge集成
@@ -106,7 +106,7 @@ API状态:
      - 预置TaskManager池
      - 快速分配与回收
 
-集成平台:
+集成平台: 
   - AWS: EMR Serverless, Kinesis Data Analytics
   - Azure: HDInsight on AKS, Stream Analytics
   - GCP: Dataproc Serverless, Dataflow
@@ -120,18 +120,18 @@ API状态:
 ```yaml
 V1 (Flink 1.18+) vs V2 (Flink 2.4):
 
-V1能力:
+V1能力: 
   - 自动并行度调整
   - 基于背压的调度
   - 静态启发式规则
 
-V2增强:
+V2增强: 
   - ML模型预测最优配置
   - 实时执行计划重写
   - 工作负载感知优化
   - 历史执行学习
 
-优化维度:
+优化维度: 
   ┌─────────────┬─────────────────────────────────────┐
   │ 维度        │ 优化策略                            │
   ├─────────────┼─────────────────────────────────────┤
@@ -148,22 +148,22 @@ V2增强:
 **智能检查点策略** 基于作业特征自动优化：
 
 ```yaml
-策略类型:
+策略类型: 
   Time-Based:      传统时间间隔 (默认)
   Load-Based:      基于处理负载动态调整
   Cost-Based:      平衡检查点成本与恢复时间
   ML-Predicted:    预测最优检查点时机
 
-智能决策公式:
+智能决策公式: 
   optimal_interval = f(state_size, throughput, latency_sla, storage_cost)
 
-自适应触发条件:
+自适应触发条件: 
   - 状态大小变化 >20%
   - 吞吐量波动 >30%
   - 连续失败检查点 >=2
   - 预测恢复时间 >SLA阈值
 
-优化技术:
+优化技术: 
   - 增量检查点v2: 仅捕获真正变更的状态
   - 区域检查点: 分区独立检查点
   - 异步快照: 非阻塞状态捕获
@@ -174,7 +174,7 @@ V2增强:
 **ANSI SQL 2023** 标准兼容增强：
 
 ```yaml
-新增标准特性:
+新增标准特性: 
   JSON Support:
     - JSON data type
     - JSON path expressions (SQL/JSON path)
@@ -194,7 +194,7 @@ V2增强:
     - Aggregate function enhancements
     - String functions (NORMALIZE, etc.)
 
-兼容性级别:
+兼容性级别: 
   Core SQL:     100% (全部核心特性)
   Feature T501: Enhanced cast (✅)
   Feature T617: Nullable foreign keys (✅)
@@ -355,7 +355,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 企业AI Agent需求爆发
    问题: 现有方案(LangChain/Ray)缺乏生产级保证
    方案: FLIP-531 GA 提供分布式、容错、可扩展的Agent运行时
-   差异化:
+   差异化: 
      - 状态持久化作为Agent记忆
      - 事件驱动毫秒级响应
      - Exactly-once语义保证
@@ -364,7 +364,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 成本优化成为首要考量
    问题: 常驻集群资源利用率低(<30%)
    方案: Scale-to-Zero架构
-   收益:
+   收益: 
      - 空闲时成本降低95%+
      - 自动扩缩应对流量峰值
      - 免运维托管体验
@@ -373,7 +373,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 调优复杂度高，需要专家知识
    问题: 静态配置无法适应动态负载
    方案: ML驱动的自适应执行
-   收益:
+   收益: 
      - 自动达到接近最优配置
      - 减少人工调优工作量80%
      - 持续学习优化
@@ -897,13 +897,13 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 
 ```yaml
 # 回滚条件检查
-自动触发回滚条件:
+自动触发回滚条件: 
   - 作业失败率 > 5%
   - Checkpoint成功率 < 95%
   - 延迟超过SLA 2倍
   - 资源使用率异常
 
-回滚步骤:
+回滚步骤: 
   1. 暂停新作业提交
   2. 触发所有作业Savepoint
   3. 停止Flink 2.4集群
@@ -911,7 +911,7 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
   5. 从Savepoint恢复作业
   6. 验证作业状态
 
-回滚时间目标:
+回滚时间目标: 
   - 检测时间: < 5分钟
   - 决策时间: < 2分钟
   - 执行时间: < 10分钟
@@ -934,13 +934,13 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 ### 11.2 更新触发条件
 
 ```yaml
-自动更新触发:
+自动更新触发: 
   - FLIP状态变更 (JIRA webhook)
   - 发布里程碑达成
   - 新的RC版本发布
   - 发现新的破坏性变更
 
-手动更新触发:
+手动更新触发: 
   - 社区反馈问题
   - 文档评审会议
   - 发布计划调整

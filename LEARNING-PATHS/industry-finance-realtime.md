@@ -173,7 +173,7 @@ gantt
        rules.put(rule.getId(), rule);
      }
    }
-   ```
+```
 
 2. **特征计算**
    - 实现滑动窗口统计特征
@@ -226,7 +226,7 @@ gantt
      .next("middle")
      .where(tx -> tx.getLocation() != start.getLocation())
      .within(Time.minutes(10));
-   ```
+```
 
 2. **合规数据处理**
    - 数据脱敏和加密

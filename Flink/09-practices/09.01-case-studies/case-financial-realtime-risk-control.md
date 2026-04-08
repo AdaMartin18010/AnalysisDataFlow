@@ -587,11 +587,11 @@ LoadingCache<String, UserProfile> profileCache = Caffeine.newBuilder()
 
 ```yaml
 env.java.opts: >
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=20
-  -XX:G1HeapRegionSize=16m
-  -XX:+UnlockExperimentalVMOptions
-  -XX:+UseCGroupMemoryLimitForHeap
+  -XX: +UseG1GC
+  -XX: MaxGCPauseMillis=20
+  -XX: G1HeapRegionSize=16m
+  -XX: +UnlockExperimentalVMOptions
+  -XX: +UseCGroupMemoryLimitForHeap
 ```
 
 ---
@@ -1816,7 +1816,7 @@ DataStream<Result> result = AsyncDataStream.unorderedWait(
 
 ```yaml
 # 关键指标监控
-metrics:
+metrics: 
   - name: checkpoint_duration
     threshold: "> 60s"
     alert: critical

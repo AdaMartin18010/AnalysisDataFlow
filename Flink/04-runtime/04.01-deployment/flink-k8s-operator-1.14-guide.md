@@ -741,32 +741,34 @@ Therefore:
 
 1. **双写阶段**：所有状态更新同时写入 B 和 G
 
-   ```
+   ```text
    ∀t ∈ [t_dual_start, t_switch]:
        Write(State(B), update) ∧ Write(State(G), update)
-   ```
+
+```
 
 2. **一致性检查**：切换前验证状态一致性
 
-   ```
+   ```text
    Consistent(State(B), State(G)) ⇔ Hash(State(B)) = Hash(State(G))
-   ```
+```
 
-3. **切换原子性**：使用分布式锁确保无并发更新
+1. **切换原子性**：使用分布式锁确保无并发更新
 
-   ```
+   ```text
    Lock(B) ∧ Lock(G) ⇒
        ApplyPendingUpdates() ∧
        SwitchTraffic() ∧
        Unlock(G)
-   ```
+
+```
 
 4. **回滚保证**：保留 Blue 状态直到 Green 稳定
 
-   ```
+   ```text
    ∀t ∈ [t_switch, t_switch + stability_period]:
        State(B, t) = State(B, t_switch) ⊕ Δ(t_switch, t)
-   ```
+```
 
 **结论**：
 

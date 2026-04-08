@@ -85,32 +85,32 @@ class DocumentAuditResult:
     definition_count: int
     proposition_count: int
     corollary_count: int
-    theorem_ids: List[str] = field(default_factory=list)
     
     # Mermaid图表
     mermaid_count: int
-    mermaid_issues: List[str] = field(default_factory=list)
     
     # 引用
     reference_count: int
-    broken_refs: List[str] = field(default_factory=list)
     
     # 代码示例
     code_block_count: int
     inline_code_count: int
     
-    # 图片
-    image_refs: List[str] = field(default_factory=list)
-    missing_images: List[str] = field(default_factory=list)
-    
     # 表格
     table_count: int
-    table_issues: List[str] = field(default_factory=list)
     
     # 元信息
     has_stage_info: bool
     has_prerequisites: bool
     has_formal_level: bool
+    
+    # 列表字段（带默认值）
+    theorem_ids: List[str] = field(default_factory=list)
+    mermaid_issues: List[str] = field(default_factory=list)
+    broken_refs: List[str] = field(default_factory=list)
+    image_refs: List[str] = field(default_factory=list)
+    missing_images: List[str] = field(default_factory=list)
+    table_issues: List[str] = field(default_factory=list)
     
     # 评分
     score: DocumentQualityScore = field(default_factory=DocumentQualityScore)

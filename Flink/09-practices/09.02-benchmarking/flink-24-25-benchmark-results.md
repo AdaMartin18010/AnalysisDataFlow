@@ -44,11 +44,11 @@
 
 ```yaml
 基线版本: Flink 2.3.0 (2025 Q2)
-对比版本:
+对比版本: 
   - Flink 2.4.0 (2026 Q3) - 当前稳定版
   - Flink 2.5.0-preview (2026 Q4) - 预览版
 
-测试矩阵:
+测试矩阵: 
   执行引擎: [自适应v1, 自适应v2, 自适应v2-ML, 自适应v3-预览]
   状态后端: [RocksDB, ForSt, ForSt-Remote, ForSt-Tiered]
   部署模式: [常驻集群, Kubernetes, Serverless, 边缘计算]
@@ -369,7 +369,7 @@ $$
   网络: 50Gbps
   GPU: NVIDIA A100 40GB (仅2.5测试)
 
-网络配置:
+网络配置: 
   集群网络: 100Gbps RoCE v2
   延迟: < 30μs RTT
   拓扑: 全胖树 (Full Fat Tree)
@@ -383,12 +383,12 @@ JVM: Eclipse Temurin 21.0.5+11
 OS: Ubuntu 24.04.1 LTS
 Kernel: 6.8.0-45-generic (优化版本)
 
-状态后端:
+状态后端: 
   RocksDB: 9.2.0
   ForSt: 2.4.0-native (2.4)
   ForSt: 2.5.0-tiered (2.5)
 
-外部系统:
+外部系统: 
   Kafka: 3.8.0
   ZooKeeper: 3.9.2
   Prometheus: 2.55.0

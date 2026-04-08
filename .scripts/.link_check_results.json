@@ -1,0 +1,3106 @@
+{
+  "check_time": "2026-04-08T15:19:43.141433",
+  "total": 200,
+  "accessible": 199,
+  "failed": 1,
+  "results": [
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/fault_tolerance/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 832.9579830169678,
+      "source_files": [
+        "visuals\\selection-tree-consistency.md",
+        "Struct\\04-proofs\\04.01-flink-checkpoint-correctness.md",
+        "Struct\\02-properties\\02.02-consistency-hierarchy.md",
+        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        "Flink\\02-core\\checkpoint-mechanism-deep-dive.md"
+      ],
+      "check_time": "2026-04-08T15:16:57.228396",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 979.3951511383057,
+      "source_files": [
+        "Knowledge\\09-anti-patterns\\streaming-anti-patterns.md",
+        "FLINK-AUTHORITY-ALIGNMENT-COMPLETION-REPORT.md",
+        "Flink\\09-practices\\09.03-performance-tuning\\production-config-templates.md",
+        "Flink\\03-api\\09-language-foundations\\datastream-api-cheatsheet.md",
+        "Flink\\02-core\\checkpoint-mechanism-deep-dive.md",
+        "Knowledge\\05-mapping-guides\\struct-to-flink-mapping.md",
+        "Knowledge\\07-best-practices\\07.01-flink-production-checklist.md",
+        "Knowledge\\09-anti-patterns\\anti-pattern-03-checkpoint-interval-misconfig.md",
+        "Flink\\02-core\\smart-checkpointing-strategies.md",
+        "Flink\\02-core\\time-semantics-and-watermark.md",
+        "Flink\\02-core\\exactly-once-end-to-end.md",
+        "REFERENCES.md",
+        "CONTENT-BOUNDARY.md",
+        "Struct\\02-properties\\02.02-consistency-hierarchy.md",
+        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        "Struct\\Struct-to-Knowledge-Mapping.md",
+        "Knowledge\\03-business-patterns\\iot-stream-processing.md"
+      ],
+      "check_time": "2026-04-08T15:16:30.395494",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 791.9046878814697,
+      "source_files": [
+        "docs\\i18n\\en\\05-LEARNING-PATH.md",
+        "LEARNING-PATH-GUIDE.md",
+        "archive\\deprecated\\THIRD-PARTY-NOTICES.md",
+        "docs\\certification\\csp\\quizzes\\README.md",
+        "LEARNING-PATHS\\data-engineer-path.md",
+        "NAVIGATION-INDEX.md",
+        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        ".improvement-tracking\\fictional-markers-guide.md",
+        "LEARNING-PATHS\\expert-contributor-path.md"
+      ],
+      "check_time": "2026-04-08T15:16:41.996331",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://issues.apache.org/jira/browse/FLINK-36556",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 791.607141494751,
+      "source_files": [
+        "Flink\\02-core\\backpressure-and-flow-control.md"
+      ],
+      "check_time": "2026-04-08T15:17:39.344028",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 783.9694023132324,
+      "source_files": [
+        "Flink\\02-core\\backpressure-and-flow-control.md",
+        "Knowledge\\07-best-practices\\07.01-flink-production-checklist.md",
+        "Knowledge\\07-best-practices\\07.03-troubleshooting-guide.md",
+        "BEST-PRACTICES.md",
+        "EXTERNAL-LINK-HEALTH-REPORT.md"
+      ],
+      "check_time": "2026-04-08T15:16:57.228603",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/network_mem_tuning/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 873.9719390869141,
+      "source_files": [
+        "Flink\\02-core\\backpressure-and-flow-control.md"
+      ],
+      "check_time": "2026-04-08T15:17:39.345786",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing_under_backpressure/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 710.7639312744141,
+      "source_files": [
+        "Flink\\09-practices\\09.03-performance-tuning\\troubleshooting-handbook.md",
+        "Flink\\09-practices\\09.03-performance-tuning\\production-config-templates.md",
+        "TROUBLESHOOTING.md",
+        "Flink\\02-core\\backpressure-and-flow-control.md",
+        "Knowledge\\09-anti-patterns\\anti-pattern-03-checkpoint-interval-misconfig.md",
+        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        "Flink\\02-core\\checkpoint-mechanism-deep-dive.md"
+      ],
+      "check_time": "2026-04-08T15:17:06.815499",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://issues.apache.org/jira/browse/FLINK-7282",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 618.2618141174316,
+      "source_files": [
+        "Flink\\02-core\\backpressure-and-flow-control.md"
+      ],
+      "check_time": "2026-04-08T15:17:39.346126",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/back_pressure/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 719.4440364837646,
+      "source_files": [
+        "Flink\\02-core\\backpressure-and-flow-control.md",
+        "Flink\\09-practices\\09.03-performance-tuning\\troubleshooting-handbook.md"
+      ],
+      "check_time": "2026-04-08T15:17:39.346183",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.1.0...v1.1.1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1311.927318572998,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:39.346225",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/2019883d4a054b95856b6d421e106b9a0fe0f20b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 712.3475074768066,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.179261",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/30b38436f06003ab2ea0a9571e3bc5bbf6d6e9fb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 828.066349029541,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.179744",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/47e3be7cda282144ddc18204534ec5983055a48e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1187.2663497924805,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180130",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.2.1...v1.2.2",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1049.0038394927979,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180399",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/ed6e69963e3b7252ce6fc82a92f0843bf92e2cb8",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 957.7188491821289,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180577",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/8a6fcb543f3854f4124b26a60d651f26cb836658",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 814.4993782043457,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180722",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/c7146f172d379e423abb95928ca29659d710dceb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 864.5062446594238,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180853",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/899e29acdeb046b92e6a19739cc97f0605bd074d",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 866.1465644836426,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.180986",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/ba57e7fb3d85c5d022f84538ac610cbbad3a1f06",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 783.1621170043945,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.181151",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/b834c114ae5bea9c1002a31574545b01c479c2fd",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 802.9365539550781,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:43.181279",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/f339e4d0748f32a640e58ce3282d98d1baf73269",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 787.757396697998,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.881373",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/e016a98c2ee504e43a7d6018fae31cbe972c1db9",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 812.2611045837402,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.881785",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/c9407677645d551481e8b98f96297fec7518165a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 805.1948547363281,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882005",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/96e976af6cbe6240472bf6ac509526e66bb48fbc",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 781.0935974121094,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882146",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/09387d910af91741959ee9106f20b8379b80fdcb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 699.3310451507568,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882283",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/a3703b0dbeefb1dcd4c4fcec9f89c67bc7513821",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 849.2231369018555,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882539",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/d94083fc3de59677540a3021c6f3082a22a804e6",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 840.4552936553955,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882710",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/cb11c670b831ede1df53cf312dc6b0bcd96236cc",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 793.8423156738281,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.882953",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/3e818971d0432e11e639d4e0f13fba7ca7f1392d",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 892.5859928131104,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.883183",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/116bfa3374f7adbe4363ee186ae397d6175a1386",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 845.9928035736084,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:46.883424",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/e85dfc7f324f61e1dc2c99129f4bcc7837ce3ac4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 858.7145805358887,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.283841",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/d56fd280792c2fa78d6b4efd9c419df5bf49e6d8",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 887.0975971221924,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284052",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/499fd61f61d094d997b53c34628e477089b6ff96",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 729.4142246246338,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284129",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/70cf3b1254a43d7fc32bc7726f6c372656f84182",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1039.3917560577393,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284188",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/3483d489b0a2c17509d34aa386de8b83d4c6c0a1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 852.5192737579346,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284243",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/3055ac5ad56eb224f72c4cc18a06d0af06c6d2a1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 812.2293949127197,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284295",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.2.3...v1.2.4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 930.1314353942871,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284345",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/a59f069678049d3d8589c2ea22cf65160998fde3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 959.1488838195801,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284393",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.2.4...v1.2.5",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 981.7521572113037,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284440",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/fdf9269de92629dbbb101e91971efbab45634020",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 878.1619071960449,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:50.284484",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/e41c6718bb4e1f498bc0c7d850fe6f595e6314d1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 783.4062576293945,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.839183",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/da9ec926ee4393d8cf2e2b74202a059a92ef59ac",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 815.0715827941895,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.839601",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/10118cc9b896f4c7fa01bfbab17018400b2a7ddb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1000.8878707885742,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.839778",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.1.1...v1.2.0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1210.9546661376953,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.839912",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/ad7421298490b3355b1d3f0a8fa51b8704e5a0ba",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 859.3976497650146,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840038",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/4faa27421b982962f4b68e199308bfc25300ccc4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 846.2328910827637,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840162",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/ea7f11e9ee4961c68104ba43958f5a45a0cffa65",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 964.0824794769287,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840294",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.2.2...v1.2.3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1054.457426071167,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840413",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/c8bd8e9410e3b0468754bcc722d10eade90d6b8d",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 952.7151584625244,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840535",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/4639a6b10b3ecb84e1bc3e645cad1c60de8d99da",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 804.5444488525391,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:53.840656",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.0.0...v1.1.0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 994.9765205383301,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.565505",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/9833a38b6f6d949636fca1e945b2eee1812e142b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1970.1554775238037,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.566067",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/26586043f36390c4967972c2caf318c0bbf583fb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 926.6560077667236,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.566340",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/4830a173290c5b6fbfda494936ebfc13fb188e9b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 953.3023834228516,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.566494",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/compare/v1.2.0...v1.2.1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 899.1641998291016,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.566626",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/db8fe56e3196ea8e74b6c4bda67efef03f6c6594",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 780.3354263305664,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.566749",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/6960289aad2898b3c1c3b874937fe171ccd195cb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 680.5036067962646,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.567069",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/11a6b0a9d34bc6bbd8271b37594ec9ba5fd4ca87",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1803.8194179534912,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.567371",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/16149a0cdf6e8a78e386e435d8a6b1f83a792142",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 833.4059715270996,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.567550",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/9e4ac5e104a2f258cb818a19d3e6eb4023d1edd3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 878.5948753356934,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:17:57.567690",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/3b66016b8f9e19084cdcafa1a125eb6b2d26f527",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 893.7060832977295,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054339",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/Array.prototype.findLast/commit/7dd1e3706aa4d1dc8007dc430ad721b787cceece",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 993.6563968658447,
+      "source_files": [
+        "learning-platform\\node_modules\\array.prototype.findlast\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054612",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/sindresorhus/binary-extensions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 967.5216674804688,
+      "source_files": [
+        "learning-platform\\node_modules\\is-binary-path\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054703",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/sindresorhus/is-text-path",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 970.8442687988281,
+      "source_files": [
+        "learning-platform\\node_modules\\is-binary-path\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054772",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/Methuselah96",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 643.0437564849854,
+      "source_files": [
+        "learning-platform\\node_modules\\@types\\d3-path\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-zoom\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-fetch\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dsv\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-axis\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-ease\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-color\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-drag\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-polygon\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-geo\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-array\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-timer\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-hierarchy\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-quadtree\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dispatch\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-transition\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-brush\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-chord\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-shape\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-random\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-contour\\README.md",
+        "learning-platform\\node_modules\\@types\\d3\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-force\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-interpolate\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-selection\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale-chromatic\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-delaunay\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054831",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/tomwanzek",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 558.466911315918,
+      "source_files": [
+        "learning-platform\\node_modules\\@types\\d3-path\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-zoom\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dsv\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-axis\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-ease\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-color\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-drag\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-polygon\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-geo\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-array\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-timer\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-hierarchy\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-quadtree\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dispatch\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-transition\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-brush\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-chord\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-shape\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-random\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-contour\\README.md",
+        "learning-platform\\node_modules\\@types\\d3\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-force\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-interpolate\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-selection\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054885",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/gustavderdrache",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 3903.940439224243,
+      "source_files": [
+        "learning-platform\\node_modules\\@types\\d3-path\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-zoom\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dsv\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-axis\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-ease\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-color\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-drag\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-polygon\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-geo\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-array\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-timer\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-hierarchy\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-quadtree\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dispatch\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-transition\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-brush\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-chord\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-shape\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-random\\README.md",
+        "learning-platform\\node_modules\\@types\\d3\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-force\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-interpolate\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-selection\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale-chromatic\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.054934",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/borisyankov",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 623.1458187103271,
+      "source_files": [
+        "learning-platform\\node_modules\\@types\\d3-path\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-zoom\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-format\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dsv\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-axis\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-ease\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-color\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-drag\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-polygon\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-geo\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-array\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-timer\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-hierarchy\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-quadtree\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-dispatch\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-transition\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-brush\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-chord\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-shape\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-random\\README.md",
+        "learning-platform\\node_modules\\@types\\d3\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-force\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-interpolate\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-selection\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-scale-chromatic\\README.md",
+        "learning-platform\\node_modules\\@types\\d3-time-format\\README.md",
+        "learning-platform\\node_modules\\eslint-plugin-import\\CHANGELOG.md",
+        "learning-platform\\node_modules\\@types\\d3-scale\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.055003",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-string/actions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1087.7513885498047,
+      "source_files": [
+        "learning-platform\\node_modules\\is-string\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.055056",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/juliangruber/brace-expansion/actions/workflows/ci.yml/badge.svg",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 511.3379955291748,
+      "source_files": [
+        "learning-platform\\node_modules\\@typescript-eslint\\typescript-estree\\node_modules\\brace-expansion\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:02.055105",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/mdx-js/recma/actions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1260.9038352966309,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.478418",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/syntax-tree/hast-util-to-estree",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1387.4623775482178,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\estree-util-build-jsx\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.478778",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/mdx-js/.github/blob/main/code-of-conduct.md",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 847.8732109069824,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\react\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\loader\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\mdx\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md",
+        "learning-platform\\node_modules\\remark-mdx\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479033",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/unifiedjs/unified",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1029.9701690673828,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\remark-rehype\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\vfile\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\remark-parse\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\mdx\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md",
+        "learning-platform\\node_modules\\remark-mdx\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479198",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/mdx-js/recma/actions/workflows/main.yml/badge.svg",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 653.8269519805908,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479329",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/mdx-js/mdx/discussions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1855.1528453826904,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\react\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\loader\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\mdx\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md",
+        "learning-platform\\node_modules\\remark-mdx\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479454",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c",
+      "status_code": null,
+      "is_accessible": false,
+      "redirect_url": null,
+      "error_message": "连接超时",
+      "response_time_ms": 10750.237703323364,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\micromark-extension-mdxjs\\readme.md",
+        "learning-platform\\node_modules\\esast-util-from-js\\readme.md",
+        "learning-platform\\node_modules\\remark-rehype\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-to-hast\\readme.md",
+        "learning-platform\\node_modules\\hast-util-to-estree\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-mdxjs-esm\\readme.md",
+        "learning-platform\\node_modules\\micromark\\readme.md",
+        "learning-platform\\node_modules\\estree-util-attach-comments\\readme.md",
+        "learning-platform\\node_modules\\ccount\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-phrasing\\readme.md",
+        "learning-platform\\node_modules\\recma-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\vfile\\readme.md",
+        "learning-platform\\node_modules\\comma-separated-tokens\\readme.md",
+        "learning-platform\\node_modules\\micromark-extension-mdx-jsx\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-combine-extensions\\readme.md",
+        "learning-platform\\node_modules\\zwitch\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-mdx-expression\\readme.md",
+        "learning-platform\\node_modules\\stringify-entities\\readme.md",
+        "learning-platform\\node_modules\\is-alphabetical\\readme.md",
+        "learning-platform\\node_modules\\devlop\\readme.md",
+        "learning-platform\\node_modules\\collapse-white-space\\readme.md",
+        "learning-platform\\node_modules\\unified\\readme.md",
+        "learning-platform\\node_modules\\unist-util-visit\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-to-string\\readme.md",
+        "learning-platform\\node_modules\\estree-util-scope\\readme.md",
+        "learning-platform\\node_modules\\estree-util-visit\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\react\\readme.md",
+        "learning-platform\\node_modules\\property-information\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-decode-string\\readme.md",
+        "learning-platform\\node_modules\\micromark-core-commonmark\\readme.md",
+        "learning-platform\\node_modules\\unist-util-position\\readme.md",
+        "learning-platform\\node_modules\\recma-parse\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-space\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-mdx\\readme.md",
+        "learning-platform\\node_modules\\trim-lines\\readme.md",
+        "learning-platform\\node_modules\\trough\\readme.md",
+        "learning-platform\\node_modules\\unist-util-visit-parents\\readme.md",
+        "learning-platform\\node_modules\\remark-parse\\readme.md",
+        "learning-platform\\node_modules\\longest-streak\\readme.md",
+        "learning-platform\\node_modules\\estree-util-build-jsx\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-chunked\\readme.md",
+        "learning-platform\\node_modules\\is-decimal\\readme.md",
+        "learning-platform\\node_modules\\parse-entities\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-html-tag-name\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-subtokenize\\readme.md",
+        "learning-platform\\node_modules\\unist-util-stringify-position\\readme.md",
+        "learning-platform\\node_modules\\character-entities\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-encode\\readme.md",
+        "learning-platform\\node_modules\\estree-util-is-identifier-name\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-events-to-acorn\\readme.md",
+        "learning-platform\\node_modules\\decode-named-character-reference\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-mdx-expression\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-sanitize-uri\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-resolve-all\\readme.md",
+        "learning-platform\\node_modules\\bail\\readme.md",
+        "learning-platform\\node_modules\\hast-util-to-jsx-runtime\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-whitespace\\readme.md",
+        "learning-platform\\node_modules\\micromark-extension-mdxjs-esm\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\loader\\readme.md",
+        "learning-platform\\node_modules\\micromark-extension-mdx-expression\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-mdx-jsx\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-symbol\\readme.md",
+        "learning-platform\\node_modules\\unist-util-position-from-estree\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-label\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-title\\readme.md",
+        "learning-platform\\node_modules\\is-alphanumerical\\readme.md",
+        "learning-platform\\node_modules\\micromark-extension-mdx-md\\readme.md",
+        "learning-platform\\node_modules\\character-entities-html4\\readme.md",
+        "learning-platform\\node_modules\\recma-jsx\\readme.md",
+        "learning-platform\\node_modules\\character-entities-legacy\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-from-markdown\\readme.md",
+        "learning-platform\\node_modules\\vfile-message\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-normalize-identifier\\readme.md",
+        "learning-platform\\node_modules\\hast-util-whitespace\\readme.md",
+        "learning-platform\\node_modules\\@mdx-js\\mdx\\readme.md",
+        "learning-platform\\node_modules\\is-hexadecimal\\readme.md",
+        "learning-platform\\node_modules\\recma-stringify\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-decode-numeric-character-reference\\readme.md",
+        "learning-platform\\node_modules\\unist-util-is\\readme.md",
+        "learning-platform\\node_modules\\mdast-util-to-markdown\\readme.md",
+        "learning-platform\\node_modules\\esast-util-from-estree\\readme.md",
+        "learning-platform\\node_modules\\space-separated-tokens\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-classify-character\\readme.md",
+        "learning-platform\\node_modules\\character-reference-invalid\\readme.md",
+        "learning-platform\\node_modules\\micromark-factory-destination\\readme.md",
+        "learning-platform\\node_modules\\micromark-util-character\\readme.md",
+        "learning-platform\\node_modules\\remark-mdx\\readme.md",
+        "learning-platform\\node_modules\\estree-util-to-js\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479579",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/rehypejs/rehype",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 927.8552532196045,
+      "source_files": [
+        "learning-platform\\node_modules\\rehype-recma\\readme.md",
+        "learning-platform\\node_modules\\remark-rehype\\readme.md",
+        "learning-platform\\node_modules\\unified\\readme.md",
+        "learning-platform\\node_modules\\remark-parse\\readme.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479689",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/FormidableLabs/react-fast-compare",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 905.5557250976562,
+      "source_files": [
+        "learning-platform\\node_modules\\fast-deep-equal\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.479901",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/epoberezkin/fast-deep-equal/blob/master/LICENSE",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 807.2521686553955,
+      "source_files": [
+        "learning-platform\\node_modules\\fast-deep-equal\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:08.480090",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-finalizationregistry/actions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1395.5163955688477,
+      "source_files": [
+        "learning-platform\\node_modules\\is-finalizationregistry\\README.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.751675",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/1173c79914076d73aec9aebc22dce4122e7bd3ae",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 887.1011734008789,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.751946",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/ce173bda6e146907e3061a0e70463107d955de35",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1049.2804050445557,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752049",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.0.0...v1.0.1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1115.091323852539,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752114",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.0.3...v1.0.4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1021.2843418121338,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752177",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/06be1a9d1bf57181e35b1ffe446196243cc8becc",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 960.1762294769287,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752234",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/089d2cf7cad87b75aa534769af11524ad2e79080",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1067.6453113555908,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752289",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/42560e466e17cbbb9fa71c0121f4bbbcf266c887",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 905.7421684265137,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752341",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/8cbe69c3fafe9cfbe7d27f710c88d02d2d2c6a00",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 995.4040050506592,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752391",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/6ce7de53c866c068de2c28d97b3a64cf6d5f6a76",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 988.1649017333984,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:21.752449",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/7d4082ca9502118e70d24f526704d45a1a7f2067",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1223.06489944458,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.663544",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/d993fae6d89856d4ab7818874be597249cb8a8cc",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 881.1032772064209,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.664033",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/5d9a7441f724630070e9bd74a995191cafa1064b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 949.0842819213867,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.664341",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9b9d06f571cf5b8481216b32474b567b02b14ae3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 928.4019470214844,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.664655",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/ed6a057e9595fb14c7d322ed4aba3433386d07bb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2437.640428543091,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.664912",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/aae7f09bd59d36df69d3b66d9b351c39fe072330",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1372.429609298706,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.665066",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/ab8f4492115270cc00a479915b02ac1bac75dfed",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 3191.324472427368,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.665195",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c90040f0aeded8d0071a78d5cd593b385f8828ee",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 966.0215377807617,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.665314",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/71ab543e09b820378362f4f66248addd410c6388",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 839.6759033203125,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.665432",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/dc7e142724e9dce678b1ead151c7fedd02411a03",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 936.8007183074951,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:25.665557",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/241e6a655c0e19e9dcf0ae88e7fddd4cde394c5c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2924.4399070739746,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.385655",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/59f1a428ae625b59b618493c2454096900451d84",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2119.7662353515625,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386083",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/ae365048c0c1b13457faa78658b80561f5a0bcd0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1591.707468032837,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386258",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/acf85f027ec6ea70a7023646c47f9324ff9a5e25",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 6879.965305328369,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386392",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/3ab2748ab6c2de21fc24f131bb880c68ba0b7b34",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 10268.24402809143,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386514",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/5c332fc92cecbed4a2041bc0c52b991b4a593f34",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 5479.243993759155,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386639",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9d25dd79347c89f98207a3bad39f667f1f8a410e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1296.1156368255615,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386753",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/33990c0d76db7f44bcf177f7f5b602747b159a35",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 4262.664794921875,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386865",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9cb5b2a9a3b89e8e0246be8df4fff3f5ceac7309",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 956.6261768341064,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.386978",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9047c232857ecb80551a21cc0b1cc4c91d28da1f",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1374.3088245391846,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:31.387092",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/07f36476b69e98353c09dc58cbcab8891e3ed2b7",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 5992.74206161499,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.171989",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/a191ff5f0320fc16db42fdaa40f0c21d4326255e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1416.7604446411133,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.172288",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/3bd149c869c099b07104b06c0692755a01f8298c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 3071.7129707336426,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.172414",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c5a58a8bea390a9b02e1c8c4aac30c223370297b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1029.2582511901855,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.172494",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/93dfed0de6c1da2946d83017cc0f44f8f7d15ded",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1176.8698692321777,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.172676",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/69b4231632b170e5ddb350db2f0c59e6cad6f548",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1738.8420104980469,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.172819",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/53be884c2811f7a4452581003d9cdaf6f9bddd3c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1348.801851272583,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.173021",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/fe0ccb7b7b64e74e095ef782dcc1d24d6c4b0be4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2680.1111698150635,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.173136",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/0d75a6638ad6f7ff7d5bc958531a6328fb13e3fe",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 955.5873870849609,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.173290",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c1822e84d6cc0cee9f1c2893e91b1aa999ad41db",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1174.9250888824463,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:44.173385",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.0.2...v1.0.3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2709.470272064209,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.680388",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/042fb3aec590f0c0d205b15812b285ad95cfff6b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 8398.800134658813,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.680821",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/e66ab989e48b81b48bd443d35dba0071950c5d7a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1136.8277072906494,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681006",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c0dcc98313d17151ec043e5452df306618be865e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1044.2955493927002,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681139",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/06926811fa029fe0fded5d0af4553a7808c143d1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2756.8275928497314,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681261",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/034afdd677c1b72b76751f3e5131acc927a32916",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 4998.024940490723,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681390",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/d6154e10f79b572630fd309543160c446d7e46ef",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2485.0821495056152,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681509",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/aae9c6a724578659976ea74e11ec9fe35608607b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1049.5266914367676,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681626",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9fee159403d499a5ed2f5cb5db03747d09ab1766",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 891.7856216430664,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681737",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/51808a55f272023201f40a59b2459ec6305bf73a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 6763.722658157349,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:18:52.681847",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/e4759f8bea3b66d6d70f8b7b2656cc9b987ca874",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 885.3821754455566,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597452",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/655c288a815856e647dba4b6049b1743cec3533c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2536.54146194458,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597684",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/4b8b2f9e844ebac93e89cf8e88e08ae0e8f4cc7f",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 839.134693145752,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597765",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/95888727f109c7e9d2fdfe7ed419cc8452505503",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 4058.335304260254,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597827",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/f7a6575fbdef13abcc412c63d22b56943ed85969",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1046.649694442749,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597883",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/892d92e7c40f3c0577583a98134106181c38bb7e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 6309.0479373931885,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597937",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/741b51dac868f6b22736c204910d257bcf4d5044",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 925.0423908233643,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.597988",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/9a1776bb49f3e6ac12a5b3a447edcc651216891b",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2309.8244667053223,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.598201",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/f4d15b928b4b754b097a84f7c3ceac73c486aceb",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1452.3499011993408,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.598286",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.1.0...v1.1.1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 15106.502532958984,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:03.598348",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/44402cb82d4499e947b48b31b14667d1ebe7e2b4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 923.1669902801514,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225363",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/b166afc3ae3c6d11721a9558ddb112a28261688d",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1974.5032787322998,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225608",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/28bd1eda310590e13ada19cbd718c85c25d8a0c5",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 944.5552825927734,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225688",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/799b0da1902dfa5b02456fcf32887ead6e332358",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1227.8592586517334,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225754",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/97b12296bf8fa1ce0c6121bf3de56c413da10aae",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1958.3027362823486,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225813",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/8af56631950dcee48b36f517837273193a6ba119",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 886.37375831604,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225869",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/f20fafeb21585c7b4871ea19f104fd7696734fe8",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1785.9888076782227,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225921",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/0b61ac7ac4de390296aeefb9395549592ea87da4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2061.4864826202393,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.225971",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/e86aaea8d81356801ecfc60540523e9b809a55f4",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 917.2451496124268,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.226020",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/33ae2d3940e9daa6003a84c232874ee558b2fb44",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1225.1746654510498,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:21.226080",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/629344654a72e7fc8059607d6a86c64b002c3e5d",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 808.2795143127441,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.807896",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/cb51248eedaf55e0b8ad7dacdab179db2d76e96e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 983.0670356750488,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.808514",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.0.1...v1.0.2",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2037.2588634490967,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.808795",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/3f02ff4459ec96e22be4ef8cda0c966fafb5509a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1084.404468536377,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.808994",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/05ce701e3c1be8b3266ffac49806832e410491c1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1944.2553520202637,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.809179",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/099a775e7e751706283ae1cab7a8635c094773a9",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 2039.0233993530273,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.809368",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/91bc802e18e63f4e8230ee0148302ce849e2f733",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1633.9991092681885,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.809543",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c2e6d6a71f839522bbd124b7419f5fc42ffff6d3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1018.9287662506104,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.809760",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/cbb179f677bd3dcb56ac5e3f0a7a9af503fd8952",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1735.788106918335,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.809966",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/799402d3b0f291981b6406ec92c8c45cdad4e75e",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 939.7566318511963,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:25.810105",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/77c818ebf4dc1107d945854185071ca76ef94d31",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 886.3716125488281,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.363475",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/65b58d1e9fc572712d462d615e6b2418627d8fb9",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 853.6732196807861,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.363855",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/bcd9258d161fe709148fcc47962df3372c544727",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 815.4819011688232,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364020",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/70f87c2715ad4cc8e66ce0eb4a4d2c4034b8e19c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1118.2026863098145,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364146",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/c6212f94e28622c94bb37189ffc241ee88b5b1dd",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 792.3038005828857,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364266",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/149b2f20bde92b2da12ccfeb8988beb2dc95c37c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 811.3489151000977,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364389",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/5c8d5deb9b7c01a8cdf959082a3d619c19751b0a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 825.9632587432861,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364505",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/3215a60cf4ffce688e3911025cf2ccca95e259d0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 949.1448402404785,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364618",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/29e52140fac2049b4a32e175787bb3b184a1dd72",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 873.0475902557373,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364725",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/7f81ccc8bb2c667e6975f278c9dec7310a923749",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 932.6949119567871,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:30.364833",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/5e1b2008c910bcdabee299a1ac599143ea07c3f9",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 816.8721199035645,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995190",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/06047bf72b20a66c0b455e80856b2d00b1910391",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 949.4235515594482,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995526",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/997d43c091d1f8d3a2b3d7dfb17a73cdc5a75dde",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 988.7840747833252,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995656",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/23a6db49a338d19eab19d876745513820bb6a9dc",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 950.8383274078369,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995730",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/94a6348f6274eac9bf4c5a6057b4f6120fc7d1d1",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 795.6509590148926,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995795",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/398abaaea5a6192cd0eb9fda5f0a3cfb5b1da845",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 892.6293849945068,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995869",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/50bc07f2ff73e5499b02a61f0a00ea48a84ae213",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1106.4822673797607,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995927",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/45e17bdf145846f30122348a94c5e506b90836ba",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1030.036449432373,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.995983",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/97c87ef52b966f211e231092a54ef6ed05c99a26",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 796.600341796875,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.996039",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/0c026a06815e46a33a8a5b4b1be8965d32d38e5c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 841.3395881652832,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:33.996093",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/compare/v1.0.4...v1.1.0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1101.0932922363281,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.618633",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/d57d1ce3fc0b740885a1ed5c0738d4a27b29ab07",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 860.5883121490479,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619020",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/129bc68dd619b789b9956ac9b63b46257ee1060c",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 824.3613243103027,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619176",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/59e2f680992f630eb1d76dd8e009d7fa074e3055",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 775.5863666534424,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619303",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/e53def0b77c38cbfae87fd8bbfd78953b845ea94",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 934.3855381011963,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619423",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/94c64a367a1c34f960cf6007fc65cfbbcba34ba3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 758.6777210235596,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619538",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/ed478333c72384f8dbeb51e5fd501238f52a4972",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 777.6572704315186,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619690",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/58ce871674e857955b333aa057eeecd68b40e988",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 888.5624408721924,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.619987",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/fbcbc9eb5bfe2cf9a77d5bd86bb1dece8e5f81d0",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 999.0315437316895,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.620247",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/d1853adf6369ab9d4c4516bdb032c2e42f52f90a",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 780.0815105438232,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:37.620579",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/inspect-js/is-symbol/commit/4a0fe3aa074b933074fcc231ce739005e1fec195",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 839.3330574035645,
+      "source_files": [
+        "learning-platform\\node_modules\\is-symbol\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.235724",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/String.prototype.trimStart/actions",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1074.1112232208252,
+      "source_files": [
+        "learning-platform\\node_modules\\string.prototype.trimstart\\README.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.236107",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/es-shims/api",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1393.784523010254,
+      "source_files": [
+        "learning-platform\\node_modules\\string.prototype.trimstart\\README.md",
+        "learning-platform\\node_modules\\object.assign\\README.md",
+        "learning-platform\\node_modules\\object.fromentries\\README.md",
+        "learning-platform\\node_modules\\object.groupby\\README.md",
+        "learning-platform\\node_modules\\globalthis\\README.md",
+        "learning-platform\\node_modules\\object.values\\README.md",
+        "learning-platform\\node_modules\\string.prototype.repeat\\README.md",
+        "learning-platform\\node_modules\\reflect.getprototypeof\\README.md",
+        "learning-platform\\node_modules\\array.prototype.findlastindex\\README.md",
+        "learning-platform\\node_modules\\array.prototype.tosorted\\README.md",
+        "learning-platform\\node_modules\\regexp.prototype.flags\\README.md",
+        "learning-platform\\node_modules\\string.prototype.includes\\README.md",
+        "learning-platform\\node_modules\\arraybuffer.prototype.slice\\README.md",
+        "learning-platform\\node_modules\\es-iterator-helpers\\README.md",
+        "learning-platform\\node_modules\\array-includes\\README.md",
+        "learning-platform\\node_modules\\array.prototype.flatmap\\README.md",
+        "learning-platform\\node_modules\\object.entries\\README.md",
+        "learning-platform\\node_modules\\array.prototype.findlast\\README.md",
+        "learning-platform\\node_modules\\string.prototype.trimend\\README.md",
+        "learning-platform\\node_modules\\function.prototype.name\\README.md",
+        "learning-platform\\node_modules\\string.prototype.trim\\README.md",
+        "learning-platform\\node_modules\\array.prototype.flat\\README.md",
+        "learning-platform\\node_modules\\string.prototype.matchall\\README.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.236274",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/lodash/lodash/tree/4.18.1-es",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1237.128734588623,
+      "source_files": [
+        "learning-platform\\node_modules\\lodash-es\\README.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.236402",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/mootools/slick/blob/master/Source/Slick.Parser.js",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 767.2984600067139,
+      "source_files": [
+        "learning-platform\\node_modules\\axe-core\\README.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.236585",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/ljharb/call-bind/commit/64cd289ae5862c250a4ca80aa8d461047c166af5",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 850.2016067504883,
+      "source_files": [
+        "learning-platform\\node_modules\\call-bind\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.236896",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/ljharb/call-bind/commit/a994df69f401f4bf735a4ccd77029b85d1549453",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 979.048490524292,
+      "source_files": [
+        "learning-platform\\node_modules\\call-bind\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.237138",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/ljharb/call-bind/compare/v1.0.2...v1.0.3",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1014.2652988433838,
+      "source_files": [
+        "learning-platform\\node_modules\\call-bind\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.237446",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/ljharb/call-bind/commit/407fd5eec34ec58394522a6ce3badfa4788fd5ae",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 805.413007736206,
+      "source_files": [
+        "learning-platform\\node_modules\\call-bind\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.237860",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://github.com/ljharb/call-bind/commit/ec81665b300f87eabff597afdc8b8092adfa7afd",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 873.5620975494385,
+      "source_files": [
+        "learning-platform\\node_modules\\call-bind\\CHANGELOG.md"
+      ],
+      "check_time": "2026-04-08T15:19:41.238057",
+      "archive_url": null,
+      "priority": 2
+    }
+  ]
+}

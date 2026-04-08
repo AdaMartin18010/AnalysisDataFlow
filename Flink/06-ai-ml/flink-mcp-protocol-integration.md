@@ -174,15 +174,15 @@ $$
 
 ```yaml
 # MCP v2.0 OAuth 2.1 配置示例
-oauth2_1:
-  grant_types:
+oauth2_1: 
+  grant_types: 
     - authorization_code
     - client_credentials
     - device_code
-  pkce:
+  pkce: 
     enabled: true
     method: S256
-  scopes:
+  scopes: 
     - mcp:tools:read
     - mcp:tools:invoke
     - mcp:resources:read
@@ -200,10 +200,10 @@ public class FlinkMcpOAuthConfig {
     private String clientId = "flink-mcp-server";
     private Set<String> allowedScopes = Set.of(
         "mcp:tools:read",
-        "mcp:tools:invoke", 
+        "mcp:tools:invoke",
         "mcp:resources:read"
     );
-    
+
     // PKCE 验证
     public boolean verifyPKCE(String codeChallenge, String codeVerifier) {
         String computed = Base64.getUrlEncoder().withoutPadding()
@@ -498,7 +498,7 @@ public class IdempotentMcpCall extends RichAsyncFunction<Event, Result> {
 // MCP v2.0 OAuth 2.1 服务器配置
 @Component
 public class McpOAuth2ServerConfig {
-    
+
     @Bean
     public OAuth2AuthorizationServerConfigurer authorizationServer() {
         return new OAuth2AuthorizationServerConfigurer()
@@ -522,7 +522,7 @@ public class McpOAuth2ServerConfig {
                 .refreshTokenTimeToLive(Duration.ofDays(7))
             );
     }
-    
+
     // MCP 作用域定义
     public static final Set<String> MCP_SCOPES = Set.of(
         "mcp:tools:read",      // 读取工具列表
@@ -539,19 +539,19 @@ public class McpOAuth2ServerConfig {
 ```java
 // MCP v2.0 Streamable HTTP 服务器
 public class McpV2StreamableServer {
-    
+
     private final HttpServer httpServer;
     private final McpV2ProtocolHandler protocolHandler;
-    
+
     public McpV2StreamableServer(int port) {
         this.httpServer = HttpServer.create(
             new InetSocketAddress(port), 0);
         this.protocolHandler = new McpV2ProtocolHandler();
-        
+
         // 配置 HTTP/2 支持
         configureHttp2();
     }
-    
+
     private void configureHttp2() {
         httpServer.createContext("/mcp/v2", exchange -> {
             // 处理 MCP v2.0 流式请求
@@ -560,23 +560,23 @@ public class McpV2StreamableServer {
             }
         });
     }
-    
+
     private void handleStreamableRequest(HttpExchange exchange) {
         // 读取 JSON-RPC 请求流
         try (InputStream is = exchange.getRequestBody();
              OutputStream os = exchange.getResponseBody()) {
-            
+
             // 解析批量请求
             List<McpRequest> batchRequests = parseBatchRequests(is);
-            
+
             // 原子执行批量操作
             List<McpResponse> responses = executeBatch(batchRequests);
-            
+
             // 流式返回结果
             exchange.getResponseHeaders()
                 .set("Content-Type", "application/x-ndjson");
             exchange.sendResponseHeaders(200, 0);
-            
+
             for (McpResponse response : responses) {
                 os.write(JsonUtils.toJsonBytes(response));
                 os.write('\n'); // NDJSON 分隔符
@@ -584,7 +584,7 @@ public class McpV2StreamableServer {
             }
         }
     }
-    
+
     // 批量操作原子性保证
     private List<McpResponse> executeBatch(List<McpRequest> requests) {
         // 开启事务或检查点
@@ -610,11 +610,11 @@ public class McpV2StreamableServer {
 ```java
 // Flink MCP v2.0 客户端
 public class FlinkMcpV2Client {
-    
+
     private final OAuth2Client oauth2Client;
     private final HttpClient httpClient;
     private String accessToken;
-    
+
     public FlinkMcpV2Client(String serverUrl, OAuth2Credentials credentials) {
         this.oauth2Client = new OAuth2Client(credentials);
         this.httpClient = HttpClient.newBuilder()
@@ -622,12 +622,12 @@ public class FlinkMcpV2Client {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
     }
-    
+
     // 带 OAuth 2.1 认证的工具调用
     public CompletableFuture<ToolResult> invokeTool(
-            String toolName, 
+            String toolName,
             Map<String, Object> args) {
-        
+
         // 确保令牌有效
         return ensureToken()
             .thenCompose(token -> {
@@ -638,7 +638,7 @@ public class FlinkMcpV2Client {
                         "arguments", args
                     ))
                     .build();
-                
+
                 HttpRequest httpReq = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + "/mcp/v2"))
                     .header("Authorization", "Bearer " + token)
@@ -646,32 +646,32 @@ public class FlinkMcpV2Client {
                     .header("Accept", "application/x-ndjson")
                     .POST(BodyPublishers.ofString(JsonUtils.toJson(request)))
                     .build();
-                
+
                 return httpClient.sendAsync(
-                        httpReq, 
+                        httpReq,
                         BodyHandlers.ofInputStream())
                     .thenCompose(this::parseStreamableResponse);
             });
     }
-    
+
     // 批量工具调用（v2.0 原子操作）
     public CompletableFuture<List<ToolResult>> invokeToolsBatch(
             List<ToolCallRequest> batchRequests) {
-        
+
         return ensureToken()
             .thenCompose(token -> {
                 McpBatchRequest batchReq = McpBatchRequest.builder()
                     .requests(batchRequests)
                     .atomic(true)  // 原子执行
                     .build();
-                
+
                 HttpRequest httpReq = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + "/mcp/v2/batch"))
                     .header("Authorization", "Bearer " + token)
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(JsonUtils.toJson(batchReq)))
                     .build();
-                
+
                 return httpClient.sendAsync(httpReq, BodyHandlers.ofString())
                     .thenApply(resp -> parseBatchResponse(resp.body()));
             });
@@ -685,37 +685,37 @@ public class FlinkMcpV2Client {
 graph TB
     subgraph "AI 协议生态"
         direction TB
-        
+
         MCP[MCP Protocol<br/>模型上下文协议]
         A2A[A2A Protocol<br/>Agent-to-Agent]
-        
+
         subgraph "MCP v2.0 扩展"
             MCP_v2[MCP v2.0 Core]
             OAuth[OAuth 2.1 模块]
             Stream[Streamable HTTP]
             Batch[批量操作]
         end
-        
+
         subgraph "A2A 能力"
             A2A_Core[A2A Core]
             AgentDiscovery[Agent 发现]
             TaskMgmt[任务管理]
         end
-        
+
         MCP_v2 --> OAuth
         MCP_v2 --> Stream
         MCP_v2 --> Batch
-        
+
         MCP -.->|v2.0 集成| A2A
         A2A_Core --> AgentDiscovery
         A2A_Core --> TaskMgmt
     end
-    
+
     subgraph "Flink 集成"
         Flink[Apache Flink]
         MCP_Client[MCP v2.0 Client]
         A2A_Agent[Flink A2A Agent]
-        
+
         Flink --> MCP_Client
         Flink --> A2A_Agent
         MCP_Client -.->|调用| MCP_v2
@@ -1329,50 +1329,50 @@ tEnv.executeSql("""
 ```yaml
 version: '3.8'
 
-services:
-  flink-jobmanager:
+services: 
+  flink-jobmanager: 
     image: flink:1.19-scala_2.12
     command: jobmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
-    ports:
+    ports: 
       - "8081:8081"
-    volumes:
+    volumes: 
       - ./jobs:/opt/flink/jobs
 
-  flink-taskmanager:
+  flink-taskmanager: 
     image: flink:1.19-scala_2.12
     command: taskmanager
-    environment:
+    environment: 
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
-    depends_on:
+    depends_on: 
       - flink-jobmanager
-    deploy:
+    deploy: 
       replicas: 2
 
-  flink-mcp-server:
+  flink-mcp-server: 
     build: ./mcp-server
-    environment:
+    environment: 
       - FLINK_JOBMANAGER_HOST=flink-jobmanager
       - FLINK_JOBMANAGER_PORT=8081
       - MCP_PORT=3000
-    ports:
+    ports: 
       - "3000:3000"
-    depends_on:
+    depends_on: 
       - flink-jobmanager
       - kafka
 
-  kafka:
+  kafka: 
     image: confluentinc/cp-kafka:7.5.0
-    environment:
+    environment: 
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-    depends_on:
+    depends_on: 
       - zookeeper
 
-  zookeeper:
+  zookeeper: 
     image: confluentinc/cp-zookeeper:7.5.0
-    environment:
+    environment: 
       ZOOKEEPER_CLIENT_PORT: 2181
 ```
 
@@ -1382,46 +1382,46 @@ services:
 # flink-mcp-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: 
   name: flink-mcp-server
-spec:
+spec: 
   replicas: 3
-  selector:
-    matchLabels:
+  selector: 
+    matchLabels: 
       app: flink-mcp-server
-  template:
-    metadata:
-      labels:
+  template: 
+    metadata: 
+      labels: 
         app: flink-mcp-server
-    spec:
-      containers:
+    spec: 
+      containers: 
       - name: mcp-server
         image: flink-mcp-server:1.0.0
-        ports:
+        ports: 
         - containerPort: 3000
-        env:
+        env: 
         - name: FLINK_REST_ENDPOINT
           value: "http://flink-jobmanager:8081"
         - name: MCP_AUTH_TOKEN
-          valueFrom:
-            secretKeyRef:
+          valueFrom: 
+            secretKeyRef: 
               name: mcp-secrets
               key: auth-token
-        resources:
-          requests:
+        resources: 
+          requests: 
             memory: "512Mi"
             cpu: "500m"
-          limits:
+          limits: 
             memory: "2Gi"
             cpu: "2000m"
-        livenessProbe:
-          httpGet:
+        livenessProbe: 
+          httpGet: 
             path: /health
             port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
-        readinessProbe:
-          httpGet:
+        readinessProbe: 
+          httpGet: 
             path: /ready
             port: 3000
           initialDelaySeconds: 5
@@ -1429,12 +1429,12 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata:
+metadata: 
   name: flink-mcp-service
-spec:
-  selector:
+spec: 
+  selector: 
     app: flink-mcp-server
-  ports:
+  ports: 
   - port: 3000
     targetPort: 3000
   type: LoadBalancer
@@ -1833,14 +1833,14 @@ public class AccessControlledMcpServer {
 
 ```yaml
 # 资源限制配置
-mcp:
-  server:
-    limits:
+mcp: 
+  server: 
+    limits: 
       max_query_timeout_ms: 30000
       max_result_rows: 10000
       max_sql_length: 5000
       max_concurrent_queries: 50
-      rate_limit:
+      rate_limit: 
         requests_per_minute: 100
         burst_size: 20
 ```

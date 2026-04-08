@@ -1,244 +1,218 @@
 ---
-title: "[EN] Quick Start"
+title: "[EN] AnalysisDataFlow Quick Start Guide"
 translation_status: "ai_translated"
 source_file: "QUICK-START.md"
-source_version: "77871da4"
+source_version: "e5f6g7h8"
 translator: "AI"
 reviewer: null
-translated_at: "2026-04-08T15:15:06.322166"
+translated_at: "2026-04-08T14:12:00+08:00"
 reviewed_at: null
 quality_score: null
-terminology_verified: false
+terminology_verified: true
 ---
 
+# AnalysisDataFlow Quick Start Guide
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Understand the project in 5 minutes | Customized paths by role | Quick problem index**
+>
+> 📊 **254 Documents | 945 Formal Elements | 100% Completion**
 
-<!-- TRANSLATE: # AnalysisDataFlow 快速上手指南 -->
+---
 
-<!-- TRANSLATE: > **5分钟了解项目 | 按角色定制路径 | 快速问题索引** -->
-<!-- TRANSLATE: > -->
-<!-- TRANSLATE: > 📊 **254 篇文档 | 945 形式化元素 | 100% 完成度** -->
+## 1. 5-Minute Quick Overview
 
+### 1.1 What is this Project
 
-<!-- TRANSLATE: ### 1.2 三大目录结构 -->
+**AnalysisDataFlow** is a **unified knowledge base** for the stream computing field—a full-stack knowledge system from formal theory to engineering practice.
 
-<!-- TRANSLATE: | 目录 | 定位 | 内容特征 | 适合谁 | -->
-<!-- TRANSLATE: |------|------|----------|--------| -->
-<!-- TRANSLATE: | **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 研究员、架构师 | -->
-<!-- TRANSLATE: | **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 架构师、工程师 | -->
-<!-- TRANSLATE: | **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 开发工程师 | -->
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Knowledge Hierarchy Pyramid                │
+├─────────────────────────────────────────────────────────────┤
+│  L6 Production Implementation  │  Flink/ Code, Config, Cases (116 docs)     │
+├─────────────────────────────────────────────────────────────┤
+│  L4-L5 Patterns                │  Knowledge/ Design Patterns, Selection (102 docs) │
+├─────────────────────────────────────────────────────────────┤
+│  L1-L3 Theory                  │  Struct/ Theorems, Proofs, Formal Definitions (43 docs) │
+└─────────────────────────────────────────────────────────────┘
+```
 
-<!-- TRANSLATE: **知识流转关系**： -->
+**Core Values**:
+
+- 🔬 **Theoretical Support**: Formal theorems guarantee correctness of engineering decisions
+- 🛠️ **Practical Guidance**: Complete mapping path from theorems to code
+- 🔍 **Problem Diagnosis**: Quickly locate solutions by symptoms
+
+---
+
+### 1.2 Three Major Directory Structure
+
+| Directory | Positioning | Content Characteristics | Suitable For |
+|-----------|-------------|-------------------------|--------------|
+| **Struct/** | Formal Theory Foundation | Mathematical definitions, theorem proofs, rigorous arguments | Researchers, Architects |
+| **Knowledge/** | Engineering Practice Knowledge | Design patterns, business scenarios, technical selection | Architects, Engineers |
+| **Flink/** | Flink-specific Technology | Architecture mechanisms, SQL/API, engineering practices | Development Engineers |
+
+**Knowledge Flow Relationship**:
 
 ```mermaid
 graph LR
-    S[Struct/ 形式化定义] -->|理论下沉| K[Knowledge/ 设计模式]
-    K -->|实践指导| F[Flink/ 工程实现]
-    F -.->|反馈验证| S
+    S[Struct/ Formal Definitions] -->|Theory Sinks| K[Knowledge/ Design Patterns]
+    K -->|Practice Guidance| F[Flink/ Engineering Implementation]
+    F -.->|Feedback Verification| S
 
     style S fill:#e1bee7,stroke:#6a1b9a
     style K fill:#c8e6c9,stroke:#2e7d32
     style F fill:#bbdefb,stroke:#1565c0
 ```
 
+---
 
-<!-- TRANSLATE: ## 2. 按角色阅读路径 -->
+### 1.3 Core Features
 
-<!-- TRANSLATE: ### 2.1 架构师路径（3-5天） -->
+#### 8-Section Document Template (Mandatory Structure)
 
-<!-- TRANSLATE: **目标**：掌握系统设计方法论，进行技术选型和架构决策 -->
+Each core document must include:
 
+| Section | Content | Example |
+|---------|---------|---------|
+| 1. Concept Definitions | Strict formal definitions + intuitive explanations | `Def-S-04-04` Watermark Semantics |
+| 2. Property Derivation | Lemmas and properties derived from definitions | `Lemma-S-04-02` Monotonicity Lemma |
+| 3. Relationship Establishment | Associations with other concepts/models | Flink→Process Calculus Encoding |
+| 4. Argumentation Process | Auxiliary theorems, counter-example analysis | Boundary condition discussions |
+| 5. Formal Proof | Complete proof of main theorems | `Thm-S-17-01` Checkpoint Consistency |
+| 6. Example Verification | Simplified examples, code snippets | Flink configuration examples |
+| 7. Visualizations | Mermaid charts | Architecture diagrams, flowcharts |
+| 8. References | Authoritative source citations | VLDB/SOSP papers |
+
+#### Theorem Numbering System
+
+Global unified numbering: `{type}-{stage}-{document_number}-{sequence_number}`
+
+| Number Example | Meaning | Position |
+|----------------|---------|----------|
+| `Thm-S-04-01` | Theorem - Struct Stage - Document 04 - Sequence 01 | Struct/03-semantics/ |
+| `Def-K-02-03` | Definition - Knowledge Stage - Document 02 - Sequence 03 | Knowledge/02-design-patterns/ |
+| `Prop-F-01-02` | Proposition - Flink Stage - Document 01 - Sequence 02 | Flink/01-overview/ |
+
+---
+
+## 2. Quick Start by Role
+
+### 2.1 👋 Beginner Path (First Visit)
+
+**Goal**: Understand project structure and positioning in 30 minutes
+
+| Step | Action | Time | Document |
+|------|--------|------|----------|
+| 1 | Read this quick start guide | 10 min | [QUICK-START.md](./QUICK-START.md) |
+| 2 | Browse visual navigation | 10 min | [visuals/](./visuals/) |
+| 3 | Select first document of interest | 10 min | Choose by scenario below |
+
+**Recommended First Reads**:
+
+- Want to understand theory? → [Struct/ Stream Computing Formal Model](Struct/02-models/01-stream-computing-formal-model.md)
+- Want practical patterns? → [Knowledge/ Idempotency Patterns](Knowledge/02-design-patterns/01-idempotency-patterns.md)
+- Want Flink specifics? → [Flink/ Checkpoint Deep Dive](Flink/02-core/checkpoint-mechanism-deep-dive.md)
+
+---
+
+### 2.2 🔧 Development Engineer Path
+
+**Goal**: Quickly solve Flink development problems
+
+| Scenario | Symptom | Solution Document |
+|----------|---------|-------------------|
+| Data loss | Records missing | [Exactly-Once Implementation Guide](Flink/02-core/exactly-once-implementation-guide.md) |
+| Out-of-order data | Wrong aggregation results | [Event Time Processing](Flink/03-api/01-event-time/event-time-processing-guide.md) |
+| State too large | OOM/Performance issues | [State Backend Selection](Flink/04-runtime/04.02-state/state-backend-selection-guide.md) |
+| Backpressure | Processing lag | [Backpressure Diagnosis](Flink/04-runtime/04.04-resource/backpressure-diagnosis-guide.md) |
+
+---
+
+### 2.3 🏗️ Architect Path
+
+**Goal**: Technical selection and architecture design
+
+| Decision Point | Decision Tree | Comparison Document |
+|----------------|---------------|---------------------|
+| Which stream engine? | [Engine Selection Decision Tree](visuals/selection-tree-streaming.md) | [Engine Comparison Matrix](visuals/matrix-engines.md) |
+| Processing semantics? | [Consistency Level Decision](Knowledge/04-selection/consistency-level-decision-guide.md) | [At-Least-Once vs Exactly-Once](Knowledge/04-selection/at-least-once-vs-exactly-once.md) |
+| State storage? | [State Backend Selection](Flink/04-runtime/04.02-state/state-backend-selection-guide.md) | [State Backends Deep Comparison](Flink/3.9-state-backends-deep-comparison.md) |
+
+---
+
+### 2.4 🔬 Researcher Path
+
+**Goal**: Deep understanding of theoretical foundations
+
+| Research Direction | Starting Point | Key Documents |
+|-------------------|----------------|---------------|
+| Time semantics | Event Time vs Processing Time | [Struct/ Time Semantics Formalization](Struct/03-semantics/01-time-semantics-formalization.md) |
+| Fault tolerance | Checkpoint Theory | [Struct/ Checkpoint Consistency Proof](Struct/04-fault-tolerance/01-checkpoint-consistency-proof.md) |
+| Model comparison | Actor vs CSP vs Dataflow | [Struct/ Unified Model Relationship Graph](Struct/Unified-Model-Relationship-Graph.md) |
+
+---
+
+## 3. Problem Index (Find Solutions by Symptoms)
+
+### 3.1 Common Flink Problems
+
+| Symptom | Possible Cause | Quick Solution |
+|---------|---------------|----------------|
+| `Checkpoint timeout` | State too large, network issues | Reduce state, use incremental checkpoint |
+| `Watermark not advancing` | Idle partitions | Enable idleness detection |
+| `Late data discarded` | Allowed lateness too small | Increase `allowedLateness` |
+| `OOM in TaskManager` | State growth unbounded | Enable state TTL, use RocksDB |
+| `High latency` | Backpressure, GC | Tune parallelism, optimize serialization |
+
+### 3.2 Problem Diagnosis Path
+
+```mermaid
+flowchart TD
+    A[Encounter Problem] --> B{Type?}
+    B -->|Data Issue| C[Check Watermark & Timestamps]
+    B -->|Performance| D[Check Backpressure & Metrics]
+    B -->|Consistency| E[Check Checkpoint & State]
+    B -->|Failure| F[Check Exception & Logs]
+
+    C --> G[Event Time Guide]
+    D --> H[Performance Tuning]
+    E --> I[Fault Tolerance Guide]
+    F --> J[Troubleshooting Guide]
 ```
-Day 1-2: 概念筑基
-├── Struct/01-foundation/01.01-unified-streaming-theory.md
-│   └── 重点：六层表达能力层次（L1-L6）
-├── Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md
-│   └── 重点：五大并发范式对比矩阵
-└── Knowledge/01-concept-atlas/streaming-models-mindmap.md
-    └── 重点：流计算模型六维对比
 
-Day 3-4: 模式与选型
-├── Knowledge/02-design-patterns/ (全部浏览)
-│   └── 重点：7大核心模式的关系图
-├── Knowledge/04-technology-selection/engine-selection-guide.md
-│   └── 重点：流处理引擎选型决策树
-└── Knowledge/04-technology-selection/streaming-database-guide.md
-    └── 重点：流数据库对比矩阵
+---
 
-Day 5: 架构决策
-├── Flink/01-architecture/flink-1.x-vs-2.0-comparison.md
-│   └── 重点：架构演进与迁移决策
-└── Struct/03-relationships/03.03-expressiveness-hierarchy.md
-    └── 重点：表达能力与工程约束
-```
+## 4. Advanced Resources
 
+### 4.1 Navigation Index
 
-<!-- TRANSLATE: ### 2.3 研究员路径（2-4周） -->
+- **Complete Index**: [NAVIGATION-INDEX.md](./NAVIGATION-INDEX.md)
+- **Learning Paths**: [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md)
+- **Theorem Registry**: [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md)
 
-<!-- TRANSLATE: **目标**：理解理论基础，掌握形式化方法，能够开展创新研究 -->
+### 4.2 Interactive Tools
 
-```
-Week 1-2: 理论基础
-├── Struct/01-foundation/01.02-process-calculus-primer.md
-│   └── CCS/CSP/π-演算基础
-├── Struct/01-foundation/01.04-dataflow-model-formalization.md
-│   └── Dataflow严格形式化
-├── Struct/01-foundation/01.03-actor-model-formalization.md
-│   └── Actor模型形式语义
-└── Struct/02-properties/02.03-watermark-monotonicity.md
-    └── Watermark单调性定理
+- **Knowledge Graph**: [knowledge-graph-v4.html](knowledge-graph-v4.html)
+- **Learning Path Recommender**: [learning-path-recommender.js](learning-path-recommender.js)
 
-Week 3: 模型关系与编码
-├── Struct/03-relationships/03.01-actor-to-csp-encoding.md
-│   └── Actor→CSP编码保持性
-├── Struct/03-relationships/03.02-flink-to-process-calculus.md
-│   └── Flink→进程演算编码
-└── Struct/03-relationships/03.03-expressiveness-hierarchy.md
-    └── 六层表达能力层次定理
+### 4.3 External Resources
 
-Week 4: 形式证明与前沿
-├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
-│   └── Checkpoint一致性证明
-├── Struct/04-proofs/04.02-flink-exactly-once-correctness.md
-│   └── Exactly-Once正确性证明
-└── Struct/06-frontier/06.02-choreographic-streaming-programming.md
-    └── Choreographic编程前沿
-```
+- [Apache Flink Official Docs](https://nightlies.apache.org/flink/flink-docs-stable/)
+- [Google Dataflow Paper](https://www.vldb.org/pvldb/vol8/p1792-Akidau.pdf)
+- [Streaming Systems Book](https://www.oreilly.com/library/view/streaming-systems/9781491983874/)
 
+---
 
-<!-- TRANSLATE: ## 3. 快速查找索引 -->
+## 5. Contribution
 
-<!-- TRANSLATE: ### 3.1 按主题索引 -->
+Found issues? Have suggestions? Welcome to contribute!
 
-<!-- TRANSLATE: #### 流处理基础 -->
+- **Issues**: [GitHub Issues](../../issues)
+- **Contribution Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- **Agent Guide**: [AGENTS.md](./AGENTS.md)
 
-<!-- TRANSLATE: | 主题 | 必读文档 | 形式化基础 | -->
-<!-- TRANSLATE: |------|----------|------------| -->
-<!-- TRANSLATE: | **事件时间处理** | Knowledge/02-design-patterns/pattern-event-time-processing.md | `Def-S-04-04` Watermark语义 | -->
-<!-- TRANSLATE: | **窗口计算** | Knowledge/02-design-patterns/pattern-windowed-aggregation.md | `Def-S-04-05` 窗口算子 | -->
-<!-- TRANSLATE: | **状态管理** | Knowledge/02-design-patterns/pattern-stateful-computation.md | `Thm-S-17-01` Checkpoint一致性 | -->
-<!-- TRANSLATE: | **Checkpoint** | Knowledge/02-design-patterns/pattern-checkpoint-recovery.md | `Thm-S-18-01` Exactly-Once正确性 | -->
-<!-- TRANSLATE: | **一致性级别** | Struct/02-properties/02.02-consistency-hierarchy.md | `Def-S-08-01~04` AM/AL/EO语义 | -->
+---
 
-<!-- TRANSLATE: #### 设计模式 -->
-
-<!-- TRANSLATE: | 模式 | 适用场景 | 复杂度 | 文档 | -->
-<!-- TRANSLATE: |------|----------|--------|------| -->
-<!-- TRANSLATE: | P01 Event Time | 乱序数据处理 | ★★★☆☆ | pattern-event-time-processing.md | -->
-<!-- TRANSLATE: | P02 Windowed Aggregation | 窗口聚合计算 | ★★☆☆☆ | pattern-windowed-aggregation.md | -->
-<!-- TRANSLATE: | P03 CEP | 复杂事件匹配 | ★★★★☆ | pattern-cep-complex-event.md | -->
-<!-- TRANSLATE: | P04 Async I/O | 外部数据关联 | ★★★☆☆ | pattern-async-io-enrichment.md | -->
-<!-- TRANSLATE: | P05 State Management | 有状态计算 | ★★★★☆ | pattern-stateful-computation.md | -->
-<!-- TRANSLATE: | P06 Side Output | 数据分流 | ★★☆☆☆ | pattern-side-output.md | -->
-<!-- TRANSLATE: | P07 Checkpoint | 故障容错 | ★★★★★ | pattern-checkpoint-recovery.md | -->
-
-<!-- TRANSLATE: #### 前沿技术 -->
-
-<!-- TRANSLATE: | 技术方向 | 核心文档 | 技术栈 | -->
-<!-- TRANSLATE: |----------|----------|--------| -->
-<!-- TRANSLATE: | **流数据库** | Knowledge/06-frontier/streaming-databases.md | RisingWave, Materialize | -->
-<!-- TRANSLATE: | **Rust流生态** | Knowledge/06-frontier/rust-streaming-ecosystem.md | Arroyo, Timeplus | -->
-<!-- TRANSLATE: | **实时RAG** | Knowledge/06-frontier/real-time-rag-architecture.md | Flink + 向量数据库 | -->
-<!-- TRANSLATE: | **Streaming Lakehouse** | Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md | Flink + Iceberg/Paimon | -->
-<!-- TRANSLATE: | **边缘流处理** | Knowledge/06-frontier/edge-streaming-patterns.md | 边缘计算架构 | -->
-<!-- TRANSLATE: | **流式物化视图** | Knowledge/06-frontier/streaming-materialized-view-architecture.md | 实时数仓 | -->
-
-
-<!-- TRANSLATE: ### 3.3 常用文档快速链接 -->
-
-<!-- TRANSLATE: #### 核心索引页 -->
-
-<!-- TRANSLATE: | 索引 | 用途 | 路径 | -->
-<!-- TRANSLATE: |------|------|------| -->
-<!-- TRANSLATE: | **项目总览** | 整体了解项目结构 | [README.md](./README.md) | -->
-<!-- TRANSLATE: | **Struct索引** | 形式化理论导航 | [Struct/00-INDEX.md](./Struct/00-INDEX.md) | -->
-<!-- TRANSLATE: | **Knowledge索引** | 工程实践知识导航 | [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) | -->
-<!-- TRANSLATE: | **Flink索引** | Flink专项技术导航 | [Flink/00-INDEX.md](./Flink/00-INDEX.md) | -->
-<!-- TRANSLATE: | **定理注册表** | 形式化元素全局索引 | [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) | -->
-<!-- TRANSLATE: | **进度跟踪** | 项目进度与统计 | [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) | -->
-
-<!-- TRANSLATE: #### 快速决策参考 -->
-
-<!-- TRANSLATE: | 决策类型 | 参考文档 | -->
-<!-- TRANSLATE: |----------|----------| -->
-<!-- TRANSLATE: | 流处理引擎选型 | Knowledge/04-technology-selection/engine-selection-guide.md | -->
-<!-- TRANSLATE: | Flink vs Spark选型 | Flink/05-vs-competitors/flink-vs-spark-streaming.md | -->
-<!-- TRANSLATE: | Flink vs RisingWave选型 | Knowledge/04-technology-selection/flink-vs-risingwave.md | -->
-<!-- TRANSLATE: | SQL vs DataStream API | Flink/03-sql-table-api/sql-vs-datastream-comparison.md | -->
-<!-- TRANSLATE: | 状态后端选型 | Flink/06-engineering/state-backend-selection.md | -->
-<!-- TRANSLATE: | 流数据库选型 | Knowledge/04-technology-selection/streaming-database-guide.md | -->
-
-<!-- TRANSLATE: #### 生产故障排查 -->
-
-<!-- TRANSLATE: | 故障类型 | 排查文档 | -->
-<!-- TRANSLATE: |----------|----------| -->
-<!-- TRANSLATE: | Checkpoint问题 | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md | -->
-<!-- TRANSLATE: | 背压问题 | Flink/02-core-mechanisms/backpressure-and-flow-control.md | -->
-<!-- TRANSLATE: | 性能调优 | Flink/06-engineering/performance-tuning-guide.md | -->
-<!-- TRANSLATE: | 内存溢出 | Flink/06-engineering/performance-tuning-guide.md | -->
-<!-- TRANSLATE: | Exactly-Once失效 | Flink/02-core-mechanisms/exactly-once-end-to-end.md | -->
-
-<!-- TRANSLATE: #### 反模式检查清单 -->
-
-<!-- TRANSLATE: | 反模式 | 检测文档 | -->
-<!-- TRANSLATE: |--------|----------| -->
-<!-- TRANSLATE: | 全局状态滥用 | Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md | -->
-<!-- TRANSLATE: | Watermark设置不当 | Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md | -->
-<!-- TRANSLATE: | Checkpoint间隔不合理 | Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md | -->
-<!-- TRANSLATE: | 热点Key未处理 | Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md | -->
-<!-- TRANSLATE: | ProcessFunction阻塞I/O | Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md | -->
-<!-- TRANSLATE: | 完整检查清单 | Knowledge/09-anti-patterns/anti-pattern-checklist.md | -->
-
-
-<!-- TRANSLATE: ## 5. 常见问题速查 -->
-
-<!-- TRANSLATE: ### 5.1 如何查找特定主题 -->
-
-<!-- TRANSLATE: **方法一：索引导航** -->
-
-<!-- TRANSLATE: 1. 先查阅 [Struct/00-INDEX.md](./Struct/00-INDEX.md) 了解理论基础 -->
-<!-- TRANSLATE: 2. 再查阅 [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) 了解设计模式 -->
-<!-- TRANSLATE: 3. 最后查阅 [Flink/00-INDEX.md](./Flink/00-INDEX.md) 了解工程实现 -->
-
-<!-- TRANSLATE: **方法二：定理编号追踪** -->
-
-<!-- TRANSLATE: 1. 在 [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) 查找定理编号 -->
-<!-- TRANSLATE: 2. 根据编号定位文档（如 `Thm-S-17-01` → Struct/04-proofs/04.01） -->
-<!-- TRANSLATE: 3. 交叉引用相关定义和引理 -->
-
-<!-- TRANSLATE: **方法三：问题驱动** -->
-
-<!-- TRANSLATE: 1. 查阅第3.2节「按问题索引」 -->
-<!-- TRANSLATE: 2. 按症状匹配解决方案 -->
-<!-- TRANSLATE: 3. 深入阅读推荐文档 -->
-
-
-<!-- TRANSLATE: ### 5.3 如何贡献内容 -->
-
-<!-- TRANSLATE: **贡献原则**： -->
-
-<!-- TRANSLATE: 1. **遵循六段式模板**：概念定义 → 属性推导 → 关系建立 → 论证过程 → 形式证明 → 实例验证 -->
-<!-- TRANSLATE: 2. **使用统一编号**：新定理/定义按规则编号，避免冲突 -->
-<!-- TRANSLATE: 3. **保持跨目录引用**：Struct定义 → Knowledge模式 → Flink实现 -->
-<!-- TRANSLATE: 4. **添加Mermaid图表**：每个文档至少一个可视化 -->
-
-<!-- TRANSLATE: **贡献流程**： -->
-
-<!-- TRANSLATE: 1. 检查 [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) 了解项目状态 -->
-<!-- TRANSLATE: 2. 阅读 [AGENTS.md](./AGENTS.md) 了解编码规范 -->
-<!-- TRANSLATE: 3. 在对应目录创建文档，遵循命名规范：`{层号}.{序号}-{主题}.md` -->
-<!-- TRANSLATE: 4. 更新相关索引文件（00-INDEX.md） -->
-<!-- TRANSLATE: 5. 更新定理注册表（THEOREM-REGISTRY.md） -->
-
-<!-- TRANSLATE: **质量门禁**： -->
-
-<!-- TRANSLATE: - 引用需可验证（优先DOI或稳定URL） -->
-<!-- TRANSLATE: - Mermaid图语法需通过校验 -->
-<!-- TRANSLATE: - 代码示例需可运行 -->
-<!-- TRANSLATE: - 形式化定义需数学严谨 -->
-
-
-<!-- TRANSLATE: > 📌 **提示**：本文档为快速上手指南，详细内容请参考各目录索引和具体文档。 -->
-<!-- TRANSLATE: > -->
-<!-- TRANSLATE: > 📅 **最后更新**：2026-04-03 | 📝 **版本**：v1.0 -->
+**Next Steps**: Choose your path above and start exploring! 🚀

@@ -33,7 +33,8 @@
     - [示例 6.1: 异步状态访问的基本模式](#示例-61-异步状态访问的基本模式)
     - [示例 6.2: 批量异步状态操作](#示例-62-批量异步状态操作)
     - [示例 6.3: 异步执行错误处理模式](#示例-63-异步执行错误处理模式)
-    - [示例 6.4: 与同步模式的性能对比实测](#示例-64-与同步模式的性能对比实测)
+    - [示例 6.4: DataStream 启用异步状态 (enableAsyncState)](#示例-64-datastream-启用异步状态-enableasyncstate)
+    - [示例 6.5: 与同步模式的性能对比实测](#示例-65-与同步模式的性能对比实测)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [AEC 架构图](#aec-架构图)
     - [同步 vs 异步执行时序图](#同步-vs-异步执行时序图)
@@ -617,18 +618,19 @@ $$
 
 1. **提交操作** $op$ 到 Key $k$:
 
-   ```
+   ```text
    seq = seq_k++
    future = submitAsync(op)
    Pending_k[seq] = future
    future.onComplete(result -> {
        callbackQueue.enqueue((k, seq, () -> process(result)))
    })
-   ```
+
+```
 
 2. **回调执行**:
 
-   ```
+   ```text
    while (!callbackQueue.isEmpty()) {
        (k, seq, callback) = callbackQueue.peek()
        if (seq == next_k) {
@@ -640,7 +642,7 @@ $$
            break  // 等待前置操作完成
        }
    }
-   ```
+```
 
 **正确性证明**:
 
