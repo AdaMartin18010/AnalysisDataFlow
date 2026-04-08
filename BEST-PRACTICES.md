@@ -1520,7 +1520,7 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Performance Tuning," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/>
+[^1]: Apache Flink Documentation, "Performance Tuning," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/performance/tuning/>
 
 [^2]: M. Kleppmann, "Designing Data-Intensive Applications," O'Reilly Media, 2017.
 

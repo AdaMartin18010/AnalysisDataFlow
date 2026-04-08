@@ -127,8 +127,9 @@ Proof.
   intros P a P' ucfg Hstep Hsim.
   exists (encode_csp_process_config P').
   split.
-  - (* Show reflexive-transitive closure holds *)
-    admit. (* Need to construct USTM steps *)
+  - (** Show reflexive-transitive closure holds *)
+    (** CSP steps are reflected as USTM Process actions *)
+    admit. (** Construct U_Process step for CSP transition *)
   - reflexivity.
 Admitted.
 
@@ -157,7 +158,8 @@ Proof.
   intros cfg action cfg' Hstep.
   exists (encode_actor_config cfg').
   split; [ | reflexivity].
-  admit. (* Apply actor_to_ustm_preservation *)
+  (** Apply actor_to_ustm_preservation *)
+  admit. (** Show step preservation directly *)
 Admitted.
 
 (** ** Bisimulation Characterization *)
@@ -195,8 +197,10 @@ Theorem actor_encoding_bisimulation :
 Proof.
   unfold EncodingBisimulation.
   split.
-  - admit. (* Identity property *)
-  - admit. (* Bisimulation property *)
+  - (** Identity property: decode after encode *)
+    admit. (** Requires proper decode implementation *)
+  - (** Bisimulation property: commuting diagram *)
+    admit. (** Use actor_to_ustm_preservation *)
 Admitted.
 
 (** ** Compositionality of Encodings *)
@@ -217,14 +221,14 @@ Proof.
   unfold encode_actor_config, ustm_compose.
   simpl.
   f_equal.
-  - (* PEs list *)
-    admit.
-  - (* Streams *)
-    admit.
-  - (* Semantics *)
-    admit.
-  - (* States *)
-    admit.
+  - (** PEs list: map encode preserves union *)
+    admit. (** List.map and list_union commute *)
+  - (** Streams: mailbox concatenation *)
+    admit. (** Stream composition corresponds to mailbox union *)
+  - (** Semantics: behavior union *)
+    admit. (** Function extensionality over option types *)
+  - (** States: state composition *)
+    admit. (** Existential type composition *)
 Admitted.
 
 (** ** Full Abstraction *)
@@ -263,10 +267,10 @@ Theorem actor_encoding_full_abstraction : forall cfg1 cfg2,
 Proof.
   intros cfg1 cfg2.
   split.
-  - (* Contextual equivalence implies bisimulation *)
-    admit.
-  - (* Bisimulation implies contextual equivalence *)
-    admit.
+  - (** Contextual equivalence implies bisimulation *)
+    admit. (** Full abstraction: encode contexts as USTM contexts *)
+  - (** Bisimimulation implies contextual equivalence *)
+    admit. (** USTM bisimulation is context-respecting *)
 Admitted.
 
 (** ** Trace Correspondence *)
@@ -298,13 +302,13 @@ Theorem actor_ustm_trace_correspondence : forall acfg trace acfg' ucfg,
 Proof.
   intros acfg trace acfg' ucfg Hatrace Henc.
   induction Hatrace.
-  - (* Empty trace *)
+  - (** Empty trace *)
     exists ucfg, []. split; [constructor | split; [reflexivity | assumption]].
-  - (* Non-empty trace *)
+  - (** Non-empty trace *)
     destruct IHHatrace as [ucfg'' [utrace [Hustm [Hlen Henc']]]].
     subst.
-    (* Use preservation to get corresponding USTM step *)
-    admit.
+    (** Use preservation to get corresponding USTM step *)
+    admit. (** Construct corresponding USTM step from Actor step *)
 Admitted.
 
 (** ** Behavioral Equivalence *)
@@ -322,7 +326,8 @@ Theorem encoding_preserves_weak_bisim : forall cfg1 cfg2,
   WeakBisim WeakUSTMStep (encode_actor_config cfg1) (encode_actor_config cfg2).
 Proof.
   intros cfg1 cfg2 Hbisim.
-  admit. (* Requires constructing the bisimulation relation *)
+  (** Construct bisimulation relation on encoded configurations *)
+  admit. (** Lift Actor bisimulation through encoding *)
 Admitted.
 
 (** Placeholder for WeakBisim in this context *)

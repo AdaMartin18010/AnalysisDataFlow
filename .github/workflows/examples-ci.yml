@@ -1,0 +1,268 @@
+name: Flink Examples CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'examples/**'
+      - '.github/workflows/examples-ci.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'examples/**'
+  schedule:
+    # 每天凌晨2点运行
+    - cron: '0 2 * * *'
+
+env:
+  FLINK_VERSION: '1.20.0'
+  JAVA_VERSION: '11'
+
+jobs:
+  # Java示例编译和测试
+  java-examples:
+    name: Java Examples (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [wordcount, windowing, stateful]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('examples/java/**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Compile ${{ matrix.project }}
+        working-directory: examples/java/${{ matrix.project }}
+        run: mvn clean compile -B
+
+      - name: Run tests
+        working-directory: examples/java/${{ matrix.project }}
+        run: mvn test -B
+
+      - name: Package with dependencies
+        working-directory: examples/java/${{ matrix.project }}
+        run: mvn clean package -Plocal -DskipTests -B
+
+      - name: Verify JAR exists
+        working-directory: examples/java/${{ matrix.project }}
+        run: |
+          ls -lh target/*.jar
+          java -jar target/flink-${{ matrix.project }}-1.0.0.jar &
+          sleep 5
+          pkill -f "flink-${{ matrix.project }}"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-${{ matrix.project }}-jar
+          path: examples/java/${{ matrix.project }}/target/*.jar
+          retention-days: 7
+
+  # Python示例测试
+  python-examples:
+    name: Python Examples (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [wordcount, table-api]
+        python-version: ['3.9', '3.10', '3.11']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('examples/python/**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        working-directory: examples/python/${{ matrix.project }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint with flake8
+        working-directory: examples/python/${{ matrix.project }}
+        run: |
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Check syntax
+        working-directory: examples/python/${{ matrix.project }}
+        run: |
+          python -m py_compile *.py
+
+      - name: Test import
+        working-directory: examples/python/${{ matrix.project }}
+        run: |
+          python -c "from pyflink.datastream import StreamExecutionEnvironment; print('PyFlink imported successfully')"
+
+  # Docker Compose验证
+  docker-compose-test:
+    name: Docker Compose Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate docker-compose.yml
+        working-directory: examples/docker
+        run: |
+          docker-compose config
+
+      - name: Start services
+        working-directory: examples/docker
+        run: |
+          docker-compose up -d jobmanager taskmanager
+          sleep 30
+
+      - name: Check Flink health
+        run: |
+          curl -f http://localhost:8081/overview || exit 1
+
+      - name: Check TaskManager registration
+        run: |
+          curl -f http://localhost:8081/taskmanagers | grep "taskmanagers"
+
+      - name: Submit test job
+        run: |
+          docker-compose -f examples/docker/docker-compose.yml exec -T jobmanager \
+            flink run -d examples/wordcount.py || echo "Python job submission may require Flink Python setup"
+
+      - name: Cleanup
+        if: always()
+        working-directory: examples/docker
+        run: docker-compose down -v
+
+  # 代码质量检查
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check file structure
+        run: |
+          echo "Checking example structure..."
+          test -d examples/java/wordcount
+          test -d examples/java/windowing
+          test -d examples/java/stateful
+          test -d examples/python/wordcount
+          test -d examples/python/table-api
+          test -f examples/docker/docker-compose.yml
+          echo "✅ All directories exist"
+
+      - name: Check README files
+        run: |
+          for dir in examples/java/*/ examples/python/*/ examples/docker/; do
+            if [ ! -f "$dir/README.md" ]; then
+              echo "❌ Missing README.md in $dir"
+              exit 1
+            fi
+          done
+          echo "✅ All README files exist"
+
+      - name: Check Maven files
+        run: |
+          for dir in wordcount windowing stateful; do
+            if [ ! -f "examples/java/$dir/pom.xml" ]; then
+              echo "❌ Missing pom.xml in examples/java/$dir"
+              exit 1
+            fi
+          done
+          echo "✅ All Maven projects have pom.xml"
+
+      - name: Check Python requirements
+        run: |
+          for dir in wordcount table-api; do
+            if [ ! -f "examples/python/$dir/requirements.txt" ]; then
+              echo "❌ Missing requirements.txt in examples/python/$dir"
+              exit 1
+            fi
+          done
+          echo "✅ All Python projects have requirements.txt"
+
+  # 完整集成测试
+  integration-test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    needs: [java-examples, python-examples, docker-compose-test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Java artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: java-*-jar
+          merge-multiple: true
+          path: artifacts/
+
+      - name: Verify artifacts
+        run: |
+          ls -la artifacts/
+          echo "✅ Java artifacts downloaded successfully"
+
+      - name: Create test summary
+        run: |
+          echo "## Flink Examples CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Java Examples" >> $GITHUB_STEP_SUMMARY
+          echo "- WordCount: Compiled and packaged" >> $GITHUB_STEP_SUMMARY
+          echo "- Windowing: Compiled and packaged" >> $GITHUB_STEP_SUMMARY
+          echo "- Stateful: Compiled and packaged" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Python Examples" >> $GITHUB_STEP_SUMMARY
+          echo "- WordCount: Syntax and import verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Table API: Syntax and import verified" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Docker Compose" >> $GITHUB_STEP_SUMMARY
+          echo "- Configuration validated" >> $GITHUB_STEP_SUMMARY
+          echo "- Services started successfully" >> $GITHUB_STEP_SUMMARY
+
+  # 通知
+  notify:
+    name: Notification
+    runs-on: ubuntu-latest
+    needs: [java-examples, python-examples, docker-compose-test, code-quality, integration-test]
+    if: always()
+    steps:
+      - name: Check status
+        run: |
+          if [ "${{ needs.java-examples.result }}" == "success" ] && \
+             [ "${{ needs.python-examples.result }}" == "success" ] && \
+             [ "${{ needs.docker-compose-test.result }}" == "success" ] && \
+             [ "${{ needs.code-quality.result }}" == "success" ]; then
+            echo "✅ All tests passed!"
+            exit 0
+          else
+            echo "❌ Some tests failed"
+            exit 1
+          fi

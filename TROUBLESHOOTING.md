@@ -1246,7 +1246,7 @@ metrics:
 
 ### 8.2 相关文档链接
 
-- [Flink官方文档 - 调优指南](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/)
+- [Flink官方文档 - 调优指南](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/performance/tuning/)
 - [Flink官方文档 - Checkpoint故障排查](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing_under_backpressure/)
 - [RocksDB调优指南](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide)
 

@@ -794,7 +794,7 @@ SET FRESHNESS = INTERVAL '1' MINUTE;
 
 [^8]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
 
-[^9]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/
+[^9]: Apache Flink Documentation, "Materialized Table", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/materialized-table/
 
 ---
 

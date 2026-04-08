@@ -205,8 +205,13 @@ Proof.
   - (* P [T= P [] STOP *)
     induction H as [P' | P' e s P'' P''' Hstep Hafter IH].
     + exists (P [] STOP). apply After_Nil.
-    + admit. (* Need more detailed reasoning *)
-Admitted.
+    + (** P' can do e to P'' *)
+      (** Show (P [] STOP) can simulate P *)
+      exists (P'' [] STOP).
+      apply After_Cons with (P'' [] STOP).
+      * apply CS_ExtChoiceResolveL. assumption.
+      * assumption.
+Qed.
 
 (** Parallel composition is commutative *)
 Theorem parallel_comm : forall P Q A,
@@ -312,11 +317,14 @@ Proof.
   - (* IntChoice *)
     apply in_app_or in Hin. destruct Hin; eauto.
   - (* Parallel *)
-    admit. (* Complex case *)
+    (** Case analysis: event is in synchronization set or not *)
+    admit. (** Requires case analysis on filter results *)
   - (* Hide *)
-    admit.
+    (** Hidden events are not in initials by definition *)
+    admit. (** Contradiction from filter condition *)
   - (* Rename *)
-    admit.
+    (** Renaming preserves performability *)
+    admit. (** Apply renaming function to the transition *)
 Admitted.
 
 (** ** CSP Weak Bisimulation (Simplified) *)

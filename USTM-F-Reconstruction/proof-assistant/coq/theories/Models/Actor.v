@@ -155,6 +155,21 @@ Qed.
 
 (** ** Actor Confluence *)
 
+(** Diamond property for commuting actor actions *)
+Lemma actor_diamond : forall cfg cfg1 cfg2 a1 a2,
+  ActorStep cfg a1 cfg1 ->
+  ActorStep cfg a2 cfg2 ->
+  action_actor a1 <> action_actor a2 ->
+  exists cfg',
+    ActorStep cfg1 a2 cfg' /\
+    ActorStep cfg2 a1 cfg'.
+Proof.
+  intros cfg cfg1 cfg2 a1 a2 Hstep1 Hstep2 Hneq.
+  (** Actions by different actors commute because actors are isolated *)
+  (** We construct cfg' by applying both actions in either order *)
+  admit.  (* Detailed case analysis on action types *)
+Admitted.
+
 (** Actor reductions are confluent (Church-Rosser) *)
 Theorem actor_confluence : forall cfg cfg1 cfg2,
   rt_clos (fun c c' => exists a, ActorStep c a c') cfg cfg1 ->
@@ -163,16 +178,23 @@ Theorem actor_confluence : forall cfg cfg1 cfg2,
     rt_clos (fun c c' => exists a, ActorStep c a c') cfg1 cfg' /\
     rt_clos (fun c c' => exists a, ActorStep c a c') cfg2 cfg'.
 Proof.
-  (* This is a complex proof that requires establishing the diamond property
-     for Actor transitions. We provide the structure here. *)
   intros cfg cfg1 cfg2 H1 H2.
-  (* Key insight: Actor model satisfies the diamond property because
-     actions by different actors commute *)
-  exists cfg1. split.
-  - apply RT_refl.
-  - (* Need to show cfg2 can reach cfg1 - this requires detailed analysis
-       of commuting reductions *)
-    admit.
+  (** Proof by induction on reduction sequences *)
+  (** Base case: reflexive closures *)
+  induction H1; induction H2.
+  - exists x. split; apply RT_refl.
+  - exists z0. split; [ | assumption].
+    apply RT_refl.
+  - exists y. split; [assumption | apply RT_refl].
+  - (** Inductive step: use diamond property for commuting actions *)
+    destruct H as [a1 Hstep1].
+    destruct H0 as [a2 Hstep2].
+    (** Case analysis on whether actions target same actor *)
+    destruct (dec_eq (action_actor a1) (action_actor a2)).
+    + (** Same actor: use determinism *)
+      admit.
+    + (** Different actors: use diamond property *)
+      admit.
 Admitted.
 
 (** ** Actor Isolation *)
@@ -193,8 +215,21 @@ Theorem isolated_reduction_commute : forall cfg a1 a2 cfg1 cfg2 action1 action2,
     ActorStep cfg1 action2 cfg' /\
     ActorStep cfg2 action1 cfg'.
 Proof.
-  (* Helper function to extract actor from action *)
-  admit.
+  intros cfg a1 a2 cfg1 cfg2 action1 action2 Hisolated Hstep1 Hstep2 Hact1 Hact2.
+  destruct Hisolated as [Hneq Hdisjoint].
+  (** Isolated actors operate on disjoint mailboxes *)
+  (** Therefore their actions commute *)
+  (** Case analysis on the type of actions *)
+  inversion Hstep1; inversion Hstep2; subst;
+  try (eexists; split; econstructor; eauto; fail).
+  - (** Send-Send case *)
+    admit.  (** Show mailboxes remain disjoint after sends *)
+  - (** Send-Receive case *)
+    admit.  (** Show receive doesn't interfere with send *)
+  - (** Receive-Send case *)
+    admit.
+  - (** Spawn cases - spawn affects actor list *)
+    admit.  (** Show spawns are independent *)
 Admitted.
 
 (** Placeholder - need to define action_actor *)
@@ -229,7 +264,19 @@ Theorem fair_trace_progress : forall trace,
     ).
 Proof.
   intros trace Hfair n actor msg Hin.
-  specialize (Hfair n actor).
-  (* Need to connect mailbox non-empty to actor being active *)
-  admit.
+  (** Fairness ensures that any actor with messages will eventually process them *)
+  (** First, establish that the actor is in the configuration *)
+  assert (In_nat actor (actors (trace n)) = true) as Hin_cfg.
+  { (** Prove from mailbox non-empty and well-formedness *)
+    admit. }
+  (** Apply fairness to get that actor eventually progresses *)
+  specialize (Hfair n actor Hin_cfg).
+  destruct Hfair as [m [Hge Hprogress]].
+  exists m. split; [assumption | ].
+  (** Show that progress means mailbox processed or step taken *)
+  destruct Hprogress as [Hnone | [cfg' [action [Hstep Htarget]]]].
+  - (** Actor no longer exists - contradiction with well-formedness *)
+    admit.
+  - (** Actor took a step *)
+    right. exists cfg', action. auto.
 Admitted.

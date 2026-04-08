@@ -1,0 +1,93 @@
+# Docker-based PDF Export Workflow
+# 使用Docker容器生成PDF，无需安装LaTeX
+
+name: PDF Export (Docker)
+
+on:
+  workflow_dispatch:
+    inputs:
+      paper:
+        description: '选择要导出的白皮书'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - 'all'
+          - 'streaming-technology-trends-2026'
+          - 'flink-enterprise-implementation-guide'
+          - 'realtime-ai-architecture-practice'
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdfs-docker:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Pull pandoc/latex image
+        run: docker pull pandoc/latex:3.1
+
+      - name: Create output directory
+        run: mkdir -p pdf-output
+
+      - name: Generate PDFs using Docker
+        run: |
+          # 定义白皮书列表
+          if [ "${{ github.event.inputs.paper }}" = "all" ] || [ -z "${{ github.event.inputs.paper }}" ]; then
+            PAPERS="streaming-technology-trends-2026 flink-enterprise-implementation-guide realtime-ai-architecture-practice"
+          else
+            PAPERS="${{ github.event.inputs.paper }}"
+          fi
+          
+          for paper in $PAPERS; do
+            echo "Generating PDF for: $paper"
+            
+            # 使用Docker运行pandoc
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              pandoc/latex:3.1 \
+              sh -c "
+                # 安装中文字体
+                apk add --no-cache font-noto-cjk
+                
+                # 生成PDF
+                pandoc whitepapers/${paper}.md \
+                  --pdf-engine=xelatex \
+                  --output=pdf-output/${paper}.pdf \
+                  --toc \
+                  --toc-depth=3 \
+                  --number-sections \
+                  -V geometry:margin=2.5cm \
+                  -V CJKmainfont='Noto Serif CJK SC' \
+                  -V colorlinks=true
+              "
+          done
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitepaper-pdfs-docker
+          path: pdf-output/*.pdf
+          retention-days: 30
+
+      - name: Copy to whitepapers/pdf
+        run: |
+          mkdir -p whitepapers/pdf
+          cp pdf-output/*.pdf whitepapers/pdf/ || true
+
+      - name: Commit PDFs
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          git add whitepapers/pdf/*.pdf
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Auto-generate PDF whitepapers (Docker) [skip ci]"
+            git push
+          fi
+        continue-on-error: true

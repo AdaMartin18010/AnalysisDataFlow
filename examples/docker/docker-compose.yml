@@ -1,0 +1,199 @@
+version: '3.8'
+
+# Flink可运行示例 - Docker Compose配置
+# 
+# 快速开始：
+#   cd examples/docker
+#   docker-compose up -d
+#
+# 服务说明：
+#   - jobmanager: Flink作业管理器
+#   - taskmanager: Flink任务管理器
+#   - zookeeper: Kafka依赖
+#   - kafka: 消息队列（可选）
+#   - jobmanager-rest: REST API端口 8081
+#
+# 提交作业：
+#   docker-compose exec jobmanager flink run -py /opt/flink/examples/python/wordcount.py
+
+services:
+  # Flink JobManager
+  jobmanager:
+    image: flink:1.20-scala_2.12-java11
+    container_name: flink-jobmanager
+    hostname: jobmanager
+    ports:
+      - "8081:8081"  # Flink Web UI
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          jobmanager.memory.process.size: 1024m
+          jobmanager.memory.jvm-heap.size: 512m
+          jobmanager.memory.off-heap.size: 128m
+    networks:
+      - flink-network
+    volumes:
+      - ../python/wordcount:/opt/flink/examples/python/wordcount
+      - ../python/table-api:/opt/flink/examples/python/table-api
+      - ../java/wordcount/target:/opt/flink/examples/java
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/overview"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Flink TaskManager
+  taskmanager:
+    image: flink:1.20-scala_2.12-java11
+    container_name: flink-taskmanager
+    hostname: taskmanager
+    command: taskmanager
+    depends_on:
+      - jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          taskmanager.memory.process.size: 2048m
+          taskmanager.memory.flink.size: 1536m
+          taskmanager.numberOfTaskSlots: 4
+          taskmanager.memory.network.max: 256m
+    networks:
+      - flink-network
+    deploy:
+      replicas: 2
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep TaskManagerRunner || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Zookeeper (Kafka依赖)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: flink-zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - flink-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Kafka (可选消息队列)
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: flink-kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - flink-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Kafka UI (可选)
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: flink-kafka-ui
+    ports:
+      - "8082:8080"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - flink-network
+
+  # Flink SQL Client (可选)
+  sql-client:
+    image: flink:1.20-scala_2.12-java11
+    container_name: flink-sql-client
+    command: bin/sql-client.sh
+    depends_on:
+      - jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - FLINK_PROPERTIES=
+          jobmanager.rpc.address: jobmanager
+          rest.address: jobmanager
+    networks:
+      - flink-network
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./sql-scripts:/opt/sql-scripts
+
+  # 示例数据生成器
+  datagen:
+    image: python:3.11-slim
+    container_name: flink-datagen
+    depends_on:
+      - kafka
+    command: >
+      sh -c "
+        pip install kafka-python &&
+        python -c '
+import time
+import json
+import random
+from kafka import KafkaProducer
+
+producer = KafkaProducer(
+    bootstrap_servers=[\"kafka:29092\"],
+    value_serializer=lambda x: json.dumps(x).encode(\"utf-8\")
+)
+
+print(\"Starting data generator...\")
+while True:
+    data = {
+        \"sensor_id\": f\"sensor_{random.randint(1, 3)}\",
+        \"temperature\": round(random.uniform(20, 40), 2),
+        \"timestamp\": int(time.time() * 1000)
+    }
+    producer.send(\"sensor-data\", data)
+    print(f\"Sent: {data}\")
+    time.sleep(1)
+        '
+      "
+    networks:
+      - flink-network
+    profiles:
+      - datagen  # 使用: docker-compose --profile datagen up datagen
+
+networks:
+  flink-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  flink-checkpoints:
+  flink-savepoints:

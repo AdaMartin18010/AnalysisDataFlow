@@ -1,492 +1,238 @@
-# AnalysisDataFlow PDF 导出指南
+# AnalysisDataFlow 白皮书 PDF 导出指南
 
-> **本文档介绍如何将 Markdown 文档导出为 PDF 格式**
+> 完整的专业PDF导出解决方案
 
----
+## 📋 任务完成清单
 
-## 目录
-
-1. [环境准备](#1-环境准备)
-2. [快速开始](#2-快速开始)
-3. [使用说明](#3-使用说明)
-4. [自定义样式](#4-自定义样式)
-5. [故障排除](#5-故障排除)
-
----
-
-## 1. 环境准备
-
-### 1.1 必需依赖
-
-PDF 导出功能需要以下工具：
-
-| 工具 | 用途 | 安装命令 |
+| 任务 | 状态 | 文件位置 |
 |------|------|----------|
-| **Python 3.8+** | 运行导出脚本 | 已随系统安装 |
-| **Pandoc** | Markdown 到 LaTeX 转换 | 见下方说明 |
-| **XeLaTeX** | PDF 生成 | 见下方说明 |
+| GitHub Actions自动导出 | ✅ 完成 | `.github/workflows/pdf-export.yml` |
+| Docker备用导出工作流 | ✅ 完成 | `.github/workflows/pdf-export-docker.yml` |
+| LaTeX模板 | ✅ 完成 | `templates/whitepaper-template.tex` |
+| 本地生成脚本 (Python) | ✅ 完成 | `scripts/generate-pdfs.py` |
+| HTML生成脚本 (Node.js) | ✅ 完成 | `scripts/generate-pdf-html.js` |
+| 下载页面 | ✅ 完成 | `whitepapers/pdf/index.html` |
+| PDF元数据 | ✅ 完成 | `whitepapers/pdf/metadata.json` |
+| 白皮书索引更新 | ✅ 完成 | `whitepapers/WHITEPAPER-INDEX.md` |
 
-#### 安装 Pandoc
+---
 
-**macOS:**
+## 🚀 快速开始
 
-```bash
-brew install pandoc
-```
+### 方式1: GitHub Actions自动导出 (推荐)
 
-**Windows:**
+1. 推送代码到 `main` 分支
+2. GitHub Actions自动触发PDF生成
+3. PDF文件自动上传到GitHub Pages
+4. 访问 `https://<username>.github.io/AnalysisDataFlow/whitepapers/`
 
-```powershell
-# 使用 Chocolatey
-choco install pandoc
+### 方式2: 手动触发GitHub Actions
 
-# 或从官网下载安装包
-# https://pandoc.org/installing.html
-```
+1. 进入GitHub仓库 → Actions → PDF Export
+2. 点击 "Run workflow"
+3. 选择要导出的白皮书（可选）
+4. 等待完成后下载Artifacts
 
-**Linux (Ubuntu/Debian):**
-
-```bash
-sudo apt-get update
-sudo apt-get install pandoc
-```
-
-#### 安装 TeX Live (含 XeLaTeX)
-
-**macOS:**
+### 方式3: 本地生成
 
 ```bash
-brew install --cask mactex
-# 或基础版
-brew install --cask mactex-no-gui
-```
+# 使用Python脚本
+python scripts/generate-pdfs.py
 
-**Windows:**
-
-```powershell
-# 使用 Chocolatey
-choco install miktex
-
-# 或下载 TeX Live
-# https://tug.org/texlive/
-```
-
-**Linux (Ubuntu/Debian):**
-
-```bash
-sudo apt-get install texlive-xetex texlive-lang-chinese \
-    texlive-fonts-recommended texlive-latex-extra
-```
-
-### 1.2 可选依赖
-
-| 工具 | 用途 | 安装命令 |
-|------|------|----------|
-| **Mermaid CLI** | 渲染 Mermaid 图表 | `npm install -g @mermaid-js/mermaid-cli` |
-
-安装 Mermaid CLI（需要 Node.js）：
-
-```bash
-npm install -g @mermaid-js/mermaid-cli
-```
-
-### 1.3 检查环境
-
-安装完成后，运行以下命令检查环境：
-
-```bash
-# 使用 Python 脚本检查
-python .vscode/export-to-pdf.py check
-
-# 或手动检查
-pandoc --version
-xelatex --version
-mmdc --version  # 可选
+# 或使用Node.js脚本 (需安装Playwright)
+node scripts/generate-pdf-html.js
 ```
 
 ---
 
-## 2. 快速开始
-
-### 2.1 单文档导出
-
-导出单个 Markdown 文件：
-
-```bash
-# 基本用法
-make pdf-single FILE=README.md
-
-# 使用 Python 脚本
-python .vscode/export-to-pdf.py single README.md
-
-# 指定输出文件名
-python .vscode/export-to-pdf.py single Struct/00-INDEX.md -o struct-index.pdf
-```
-
-### 2.2 批量导出
-
-导出整个目录：
-
-```bash
-# 基本用法
-make pdf-batch DIR=Struct/
-
-# 使用 Python 脚本
-python .vscode/export-to-pdf.py batch Struct/
-
-# 指定输出目录
-python .vscode/export-to-pdf.py batch Knowledge/ -o ./my-pdfs/
-```
-
-### 2.3 导出完整项目
-
-导出所有文档：
-
-```bash
-# 使用 Make
-make pdf-full
-
-# 使用 Python 脚本
-python .vscode/export-to-pdf.py full
-```
-
-导出结果将保存在 `pdf-output/` 目录：
+## 📁 文件结构
 
 ```
-pdf-output/
-├── Struct/
-│   ├── 01-foundation/
-│   │   └── *.pdf
-│   └── Struct-Complete.pdf
-├── Knowledge/
-│   └── ...
-└── Flink/
-    └── ...
+AnalysisDataFlow/
+├── .github/
+│   └── workflows/
+│       ├── pdf-export.yml           # 主PDF导出工作流 (LaTeX/XeLaTeX)
+│       └── pdf-export-docker.yml    # Docker备用工作流
+├── templates/
+│   └── whitepaper-template.tex      # LaTeX排版模板
+├── scripts/
+│   ├── generate-pdfs.py             # Python生成脚本
+│   └── generate-pdf-html.js         # Node.js/HTML生成脚本
+├── whitepapers/
+│   ├── streaming-technology-trends-2026.md
+│   ├── flink-enterprise-implementation-guide.md
+│   ├── realtime-ai-architecture-practice.md
+│   ├── WHITEPAPER-INDEX.md          # 更新后的索引
+│   └── pdf/
+│       ├── index.html               # 下载页面
+│       ├── metadata.json            # 元数据
+│       ├── README.md                # PDF目录说明
+│       ├── streaming-technology-trends-2026.pdf
+│       ├── flink-enterprise-implementation-guide.pdf
+│       └── realtime-ai-architecture-practice.pdf
+└── PDF-EXPORT-GUIDE.md              # 本文件
 ```
 
 ---
 
-## 3. 使用说明
+## 🎨 PDF排版特性
 
-### 3.1 命令行接口
+### 学术格式规范
 
-```
-用法: python .vscode/export-to-pdf.py [命令] [选项]
+| 特性 | 规格 |
+|------|------|
+| **页面** | A4 (210×297mm) |
+| **页边距** | 2.5cm 四边等距 |
+| **主字体** | Noto Serif CJK SC 11pt |
+| **行距** | 1.3倍 |
+| **颜色方案** | 学术蓝(#1f4e79) + 金色(#c5a464) |
 
-命令:
-  single    导出单个 Markdown 文件
-  batch     批量导出目录
-  merge     合并多个文件导出
-  full      导出完整项目
-  check     检查依赖环境
+### 包含内容
 
-全局选项:
-  -h, --help  显示帮助信息
-```
-
-### 3.2 单文档导出
-
-```bash
-python .vscode/export-to-pdf.py single <input.md> [选项]
-
-选项:
-  -o, --output <file>    指定输出文件路径
-  --no-mermaid          不渲染 Mermaid 图表
-```
-
-**示例:**
-
-```bash
-# 导出 README
-python .vscode/export-to-pdf.py single README.md
-
-# 导出指定文件并命名
-python .vscode/export-to-pdf.py single Struct/00-INDEX.md -o index.pdf
-```
-
-### 3.3 批量导出
-
-```bash
-python .vscode/export-to-pdf.py batch <目录> [选项]
-
-选项:
-  -o, --output <dir>     指定输出目录
-  -p, --pattern <glob>   文件匹配模式 (默认: *.md)
-  --flat                 平铺输出，不保留目录结构
-```
-
-**示例:**
-
-```bash
-# 导出 Struct 目录所有文档
-python .vscode/export-to-pdf.py batch Struct/
-
-# 只导出特定模式的文件
-python .vscode/export-to-pdf.py batch Struct/ -p "*-deep-dive.md"
-
-# 平铺输出到单个目录
-python .vscode/export-to-pdf.py batch Struct/ -o ./flat-output/ --flat
-```
-
-### 3.4 合并导出
-
-将多个 Markdown 文件合并为一个 PDF：
-
-```bash
-python .vscode/export-to-pdf.py merge <文件1> <文件2> ... [选项]
-
-选项:
-  -o, --output <file>    输出文件路径 (必需)
-  --no-page-break       文档间不添加分页
-```
-
-**示例:**
-
-```bash
-# 合并多个文件
-python .vscode/export-to-pdf.py merge \
-    Struct/01-foundation/*.md \
-    -o foundation-complete.pdf
-
-# 合并特定文件
-python .vscode/export-to-pdf.py merge \
-    README.md \
-    Struct/00-INDEX.md \
-    Knowledge/00-INDEX.md \
-    -o overview.pdf
-```
-
-### 3.5 完整项目导出
-
-```bash
-python .vscode/export-to-pdf.py full
-```
-
-这将：
-
-1. 分别导出 `Struct/`、`Knowledge/`、`Flink/` 三个目录
-2. 为每个目录生成合并版 PDF
-3. 保留原始目录结构
+- ✅ **精美封面页** - 专业白皮书风格
+- ✅ **自动生成目录** - 三级标题导航
+- ✅ **章节编号** - 自动编号系统
+- ✅ **页眉页脚** - 当前章节 | AnalysisDataFlow
+- ✅ **代码高亮** - 语法着色显示
+- ✅ **表格渲染** - 专业表格样式
+- ✅ **超链接** - 可点击的目录和链接
+- ✅ **可打印质量** - 矢量图形，高质量输出
 
 ---
 
-## 4. 自定义样式
+## 📥 下载链接
 
-### 4.1 配置文件
+| 白皮书 | 页数 | 下载 |
+|--------|------|------|
+| 流计算技术趋势白皮书 2026 | 40+ | [下载PDF](./whitepapers/pdf/streaming-technology-trends-2026.pdf) |
+| Flink企业落地指南 | 60+ | [下载PDF](./whitepapers/pdf/flink-enterprise-implementation-guide.pdf) |
+| 实时AI架构实践白皮书 | 50+ | [下载PDF](./whitepapers/pdf/realtime-ai-architecture-practice.pdf) |
 
-PDF 导出的配置保存在 `.vscode/pdf-config.yaml`，可修改：
+**在线下载页面**: [whitepapers/pdf/index.html](./whitepapers/pdf/index.html)
+
+---
+
+## 🔧 技术细节
+
+### GitHub Actions工作流
 
 ```yaml
-# 页面设置
-page:
-  size: a4                    # 页面大小: a4, letter, a5
-  margin:
-    top: 25
-    bottom: 25
-    left: 30
-    right: 25
+触发条件:
+  - 推送到 main 分支且 markdown 文件变更
+  - 手动触发 (workflow_dispatch)
 
-# 字体设置
-fonts:
-  chinese:
-    main: "Source Han Serif SC"    # 思源宋体
-    sans: "Source Han Sans SC"     # 思源黑体
-
-# 目录设置
-table_of_contents:
-  enabled: true
-  depth: 3                    # 目录深度 1-4
-
-# 代码块样式
-code_blocks:
-  highlight_theme: tango      # 语法高亮主题
-  line_numbers: true          # 显示行号
+执行步骤:
+  1. 检出代码
+  2. 安装依赖 (pandoc/latex, 中文字体)
+  3. 生成封面页 (LaTeX)
+  4. 转换 Markdown → PDF
+  5. 合并封面与正文
+  6. 上传Artifacts
+  7. 部署到GitHub Pages
 ```
 
-### 4.2 LaTeX 模板
+### 依赖要求
 
-高级样式定制可修改 `.vscode/pdf-template.tex`：
+#### GitHub Actions环境
+- `pandoc/latex:3.1` Docker镜像
+- `font-noto-cjk` 中文字体包
+- `texlive-xetex` XeLaTeX引擎
 
-- **颜色定义**: 修改 `\definecolor` 定义项目品牌色
-- **页眉页脚**: 修改 `\fancyhead` 和 `\fancyfoot` 设置
-- **定理框**: 修改 `\newtcolorbox` 定义不同框样式
-- **代码样式**: 修改 `\lstset` 配置代码块外观
+#### 本地环境
 
-### 4.3 常用自定义示例
-
-#### 修改主色调
-
-编辑 `.vscode/pdf-template.tex`：
-
-```latex
-\definecolor{ADFPrimary}{HTML}{1565C0}    % 改为你的主色
-\definecolor{ADFSecondary}{HTML}{2E7D32}  % 改为你的次色
+**Python方式:**
+```bash
+pip install pypdf
+# 系统依赖: pandoc, texlive-xetex, fonts-noto-cjk
 ```
 
-#### 修改页眉文本
-
-编辑 `.vscode/pdf-template.tex`：
-
-```latex
-\fancyhead[L]{\small\textcolor{ADFGray}{你的项目名称}}
-\fancyhead[R]{\small\textcolor{ADFGray}{\leftmark}}
-```
-
-#### 添加水印（可选）
-
-在 `.vscode/pdf-template.tex` 的导言区添加：
-
-```latex
-\usepackage{draftwatermark}
-\SetWatermarkText{DRAFT}
-\SetWatermarkScale{0.3}
-\SetWatermarkColor{gray!30}
+**Node.js方式:**
+```bash
+npm install playwright
+npx playwright install chromium
 ```
 
 ---
 
-## 5. 故障排除
+## 🛠️ 自定义配置
 
-### 5.1 常见问题
+### 修改LaTeX模板
 
-#### Q: 导出失败，提示 "pandoc: command not found"
+编辑 `templates/whitepaper-template.tex`:
 
-**A:** 确保 Pandoc 已安装并在 PATH 中：
+```latex
+% 修改颜色
+\definecolor{primaryblue}{RGB}{31,78,121}
+
+% 修改页边距
+\geometry{margin=2.5cm}
+
+% 修改字体
+\setCJKmainfont{Noto Serif CJK SC}
+```
+
+### 修改封面样式
+
+编辑GitHub Actions工作流中的 `cover-template.tex` 部分。
+
+---
+
+## 📊 PDF规格对比
+
+| 方法 | 质量 | 速度 | 复杂度 | 推荐场景 |
+|------|------|------|--------|----------|
+| GitHub Actions (LaTeX) | ⭐⭐⭐⭐⭐ | 中等 | 低 | 生产环境 |
+| Docker (LaTeX) | ⭐⭐⭐⭐⭐ | 中等 | 低 | CI/CD |
+| Python脚本 | ⭐⭐⭐⭐⭐ | 慢 | 中 | 本地开发 |
+| HTML/Playwright | ⭐⭐⭐⭐ | 快 | 中 | 快速预览 |
+
+---
+
+## 🔍 故障排除
+
+### GitHub Actions失败
 
 ```bash
-# 检查安装
-which pandoc
+# 检查工作流日志
+GitHub → Actions → PDF Export → 最新运行
+```
 
-# 重新安装
-# macOS
+常见原因:
+- 中文字体缺失 → 已配置自动安装
+- LaTeX包缺失 → 已配置完整texlive
+- 内存不足 → 已优化容器设置
+
+### 本地生成失败
+
+```bash
+# 检查依赖
+python scripts/generate-pdfs.py --check
+
+# 安装缺失依赖
+# macOS:
 brew install pandoc
+brew install --cask font-noto-sans-cjk
 
-# Windows
-choco install pandoc
+# Ubuntu:
+sudo apt-get install pandoc texlive-xetex fonts-noto-cjk
 ```
-
-#### Q: 提示 "xelatex: command not found"
-
-**A:** 安装 TeX Live 或 MiKTeX：
-
-```bash
-# macOS
-brew install --cask mactex-no-gui
-
-# Windows
-choco install miktex
-
-# Linux
-sudo apt-get install texlive-xetex
-```
-
-#### Q: 中文字体缺失或显示为方框
-
-**A:** 安装思源字体：
-
-```bash
-# macOS
-brew install --cask font-source-han-serif
-brew install --cask font-source-han-sans
-
-# 或手动下载
-# https://github.com/adobe-fonts/source-han-serif/releases
-# https://github.com/adobe-fonts/source-han-sans/releases
-```
-
-#### Q: Mermaid 图表未渲染
-
-**A:** 安装 Mermaid CLI：
-
-```bash
-npm install -g @mermaid-js/mermaid-cli
-```
-
-或在导出时跳过 Mermaid：
-
-```bash
-python .vscode/export-to-pdf.py single file.md --no-mermaid
-```
-
-#### Q: 表格显示不正确
-
-**A:** 确保表格使用标准 Markdown 语法：
-
-```markdown
-| 列1 | 列2 | 列3 |
-|-----|-----|-----|
-| A   | B   | C   |
-| D   | E   | F   |
-```
-
-#### Q: 代码块语法高亮不正确
-
-**A:** 确保代码块指定了语言：
-
-```markdown
-```python
-def hello():
-    print("Hello")
-```
-
-```
-
-### 5.2 错误代码参考
-
-| 错误信息 | 原因 | 解决方案 |
-|----------|------|----------|
-| `File not found` | 输入文件不存在 | 检查文件路径 |
-| `Permission denied` | 无写入权限 | 检查输出目录权限 |
-| `Missing font` | 字体未安装 | 安装缺失字体 |
-| `Out of memory` | 文档过大 | 分批导出 |
-| `Mermaid render failed` | 图表语法错误 | 检查 Mermaid 语法 |
-
-### 5.3 调试模式
-
-获取详细错误信息：
-```bash
-# 查看完整 pandoc 输出
-pandoc input.md --pdf-engine=xelatex -o output.pdf --verbose
-
-# 查看 LaTeX 编译日志
-pandoc input.md --pdf-engine=xelatex -o output.pdf 2>&1 | tee log.txt
-```
-
-### 5.4 获取帮助
-
-如仍有问题，请：
-
-1. 运行环境检查: `python .vscode/export-to-pdf.py check`
-2. 查看详细错误输出
-3. 检查输入 Markdown 文件语法
-4. 尝试简化文档进行测试
 
 ---
 
-## 附录
+## 📚 相关文档
 
-### A. 支持的语法高亮语言
-
-Pandoc 支持以下语言的语法高亮：
-
-- 编程语言: python, java, scala, go, rust, cpp, c, javascript, typescript
-- 标记语言: markdown, yaml, json, xml, html, latex
-- 配置语言: bash, powershell, dockerfile, makefile
-- 查询语言: sql, graphql
-
-### B. 导出质量建议
-
-1. **图片处理**: 使用相对路径引用图片，确保图片文件存在
-2. **表格优化**: 避免过宽表格，复杂表格考虑使用图片代替
-3. **公式支持**: LaTeX 公式会自动渲染，确保语法正确
-4. **链接处理**: 内部链接会保留，外部链接在 PDF 中可点击
-
-### C. 性能优化
-
-- 大型文档（>100页）建议分批导出
-- 使用 `--no-mermaid` 跳过图表渲染以加快速度
-- 批量导出时使用 `--flat` 减少目录操作
+- [白皮书索引](./whitepapers/WHITEPAPER-INDEX.md)
+- [PDF目录说明](./whitepapers/pdf/README.md)
+- [项目架构](./ARCHITECTURE.md)
 
 ---
 
-*最后更新: 2026-04-03 | PDF Export Tool v1.0*
+## 📝 版本历史
+
+| 版本 | 日期 | 更新内容 |
+|------|------|---------|
+| v1.0 | 2026-04-08 | 初始版本，完整PDF导出系统 |
+
+---
+
+*AnalysisDataFlow Project | 流计算领域权威知识库*

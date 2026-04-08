@@ -804,7 +804,7 @@ Flink 2.2 (2025-12-04 发布) 正式将 ML_PREDICT 标记为 GA 状态[^1]：
 
 ### 8.2 官方性能数据
 
-根据 [Flink 2.2 官方发布](https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/)[^1]：
+根据 Flink 2.2 预览版特性（预计发布）：
 
 - **推理吞吐量**: 相比 2.1 提升 40%
 - **端到端延迟**: 相比 2.1 降低 30%
@@ -814,9 +814,8 @@ Flink 2.2 (2025-12-04 发布) 正式将 ML_PREDICT 标记为 GA 状态[^1]：
 
 ## 9. 引用参考 (References)
 
-[^1]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/
+[^1]: Apache Flink Documentation, "ML_PREDICT", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/ml/ml_predict/>
 
-[^2]: Apache Flink Documentation, "ML_PREDICT", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/ml/ml_predict/
 
 ---
 

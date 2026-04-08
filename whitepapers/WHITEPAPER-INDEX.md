@@ -136,32 +136,49 @@
 
 ## 📥 下载与使用
 
+### PDF下载
+
+| 白皮书 | 页数 | 大小 | 下载链接 |
+|--------|------|------|----------|
+| **流计算技术趋势白皮书 2026** | 40+ | ~37KB | [📄 PDF](./pdf/streaming-technology-trends-2026.pdf) |
+| **Flink企业落地指南** | 60+ | ~39KB | [📄 PDF](./pdf/flink-enterprise-implementation-guide.pdf) |
+| **实时AI架构实践白皮书** | 50+ | ~39KB | [📄 PDF](./pdf/realtime-ai-architecture-practice.pdf) |
+
+**在线下载页面**: [https://analysisdataflow.github.io/whitepapers/](https://analysisdataflow.github.io/whitepapers/)
+
 ### 格式说明
 
-白皮书以Markdown格式提供，支持：
+白皮书以Markdown和PDF格式提供，支持：
 
 - ✅ GitHub/GitLab 在线阅读
-- ✅ 导出PDF (使用 `pandoc` 或类似工具)
+- ✅ 专业PDF格式下载
 - ✅ 导出Word (使用 `pandoc`)
 - ✅ 转换为HTML展示
 
-### 导出PDF示例
+### 本地生成PDF
 
 ```bash
-# 安装 pandoc 和 wkhtmltopdf
-# macOS: brew install pandoc wkhtmltopdf
-# Ubuntu: apt-get install pandoc wkhtmltopdf
+# 方式1: 使用自动化脚本
+python scripts/generate-pdfs.py
 
-# 导出单个白皮书
-pandoc streaming-technology-trends-2026.md \
-  --pdf-engine=wkhtmltopdf \
-  --output=streaming-technology-trends-2026.pdf
-
-# 批量导出所有白皮书
-for file in *.md; do
-  pandoc "$file" --pdf-engine=wkhtmltopdf --output="${file%.md}.pdf"
-done
+# 方式2: 使用pandoc手动生成
+pandoc whitepapers/streaming-technology-trends-2026.md \
+  --pdf-engine=xelatex \
+  --output=streaming-technology-trends-2026.pdf \
+  --toc --toc-depth=3 \
+  --number-sections \
+  -V geometry:margin=2.5cm \
+  -V CJKmainfont="Noto Serif CJK SC"
 ```
+
+### 自动导出 (GitHub Actions)
+
+本项目配置了GitHub Actions自动导出PDF：
+
+- **触发条件**: Markdown文件变更、手动触发
+- **输出位置**: `whitepapers/pdf/`
+- **部署目标**: GitHub Pages
+- **工作流文件**: [`.github/workflows/pdf-export.yml`](../.github/workflows/pdf-export.yml)
 
 ---
 

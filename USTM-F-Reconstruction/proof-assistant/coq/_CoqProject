@@ -1,0 +1,12 @@
+-Q theories/Foundation Foundation
+-Q theories/Models Models
+-Q theories/USTM USTM
+-Q theories/Encodings Encodings
+-Q theories/Proofs Proofs
+
+theories/Foundation/Types.v
+theories/Models/Actor.v
+theories/Models/CSP.v
+theories/USTM/Core.v
+theories/Encodings/Encoding.v
+theories/Proofs/Determinism.v

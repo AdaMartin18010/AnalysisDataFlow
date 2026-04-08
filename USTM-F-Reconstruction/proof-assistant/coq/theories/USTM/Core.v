@@ -205,13 +205,27 @@ Theorem ustm_local_confluence : forall cfg cfg1 cfg2 a1 a2,
     rt_clos (fun c c' => exists a, USTMStep c a c') cfg1 cfg' /\
     rt_clos (fun c c' => exists a, USTMStep c a c') cfg2 cfg'.
 Proof.
-  (* Key insight: different PEs can process concurrently *)
+  (** Key insight: different PEs can process concurrently *)
   intros cfg cfg1 cfg2 a1 a2 H1 H2.
+  (** Case analysis on whether actions target same PE *)
   inversion H1; inversion H2; subst;
   try (exists cfg1; split; [apply RT_refl | apply RT_refl]);
   try (exists cfg2; split; [apply RT_refl | apply RT_refl]).
-  (* Case: different PEs processing *)
-  admit. (* Need detailed case analysis *)
+  - (** Both Process steps for same PE: deterministic *)
+    assert (pe0 = pe) by congruence. subst.
+    (** Use functional determinism of pe_step *)
+    assert (st'0 = st') by congruence. subst.
+    assert (outputs0 = outputs) by congruence. subst.
+    exists (mkUSTMConfig
+      (ustm_pes cfg)
+      new_streams0
+      (ustm_semantics cfg)
+      (fun p => if p == pe then Some (existT _ sem st') else ustm_pe_states cfg p)
+      (fun p => if p == pe then PE_Running else ustm_pe_status cfg p)
+      (S (ustm_global_time cfg))).
+    split; apply RT_refl.
+  - (** Different PEs: actions commute by independence *)
+    admit.  (** Show PEs can be executed in either order *)
 Admitted.
 
 (** ** USTM-F Time Properties *)
@@ -259,9 +273,18 @@ Proof.
   destruct HWF1 as [Hsem1 [Hst1 [Hconn1 Hvalid1]]].
   destruct HWF2 as [Hsem2 [Hst2 [Hconn2 Hvalid2]]].
   repeat split; intros; simpl in *;
-  try (destruct (In_nat pe (ustm_pes cfg1)) eqn:E1;
-       destruct (In_nat pe (ustm_pes cfg2)) eqn:E2;
-       intuition; congruence).
+  destruct (In_nat pe (ustm_pes cfg1)) eqn:E1;
+  destruct (In_nat pe (ustm_pes cfg2)) eqn:E2;
+  try (intuition; congruence);
+  try (apply Hsem1; assumption);
+  try (apply Hsem2; assumption);
+  try (apply Hst1; assumption);
+  try (apply Hst2; assumption);
+  try (apply Hconn1; eassumption);
+  try (apply Hconn2; eassumption);
+  try (apply Hvalid1; eassumption);
+  try (apply Hvalid2; eassumption);
+  try (specialize (Hdisjoint pe); intuition; congruence).
 Admitted.
 
 (** ** USTM-F Invariants *)
@@ -281,11 +304,12 @@ Proof.
   unfold Invariant, stream_order_invariant.
   intros cfg cfg' a Hinv Hstep.
   inversion Hstep; subst; simpl.
-  - (* Process case - need to show appended streams are ordered *)
-    admit. (* Need lemma about appending events in order *)
-  - (* Fail case *)
+  - (** Process case - need to show appended streams are ordered *)
+    (** Invariant: pe_step preserves event ordering in outputs *)
+    admit. (** Requires lemma: events are appended in timestamp order *)
+  - (** Fail case - streams unchanged *)
     intros s str Hsome. apply Hinv. assumption.
-  - (* Recover case *)
+  - (** Recover case - streams unchanged *)
     intros s str Hsome. apply Hinv. assumption.
 Admitted.
 
@@ -310,6 +334,12 @@ Inductive USTMBisim : USTMConfig -> USTMConfig -> Prop :=
 Theorem ustm_bisim_equivalence : 
   reflexive USTMBisim /\ symmetric USTMBisim /\ transitive USTMBisim.
 Proof.
-  (* Standard result for bisimulation *)
-  admit.
+  (** Standard result for bisimulation *)
+  repeat split.
+  - (** Reflexivity: identity relation is a bisimulation *)
+    admit. (** Construct bisimulation using equality *)
+  - (** Symmetry: flip the relation *)
+    admit. (** Construct symmetric bisimulation *)
+  - (** Transitivity: compose bisimulations *)
+    admit. (** Compose two bisimulation relations *)
 Admitted.

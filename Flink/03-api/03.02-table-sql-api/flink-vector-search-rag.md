@@ -22,7 +22,7 @@ $$\text{VECTOR\_SEARCH}(\mathbf{q}, S, k, \text{sim}) = \{(\mathbf{v}_i, s_i) \m
 
 **Flink 2.2 GA 特性：**
 
-根据 [Apache Flink 2.2.0 官方发布](https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/)[^10]，VECTOR_SEARCH 正式发布：
+根据 Flink 2.2 路线图，VECTOR_SEARCH 预计发布特性：
 
 | 特性 | 说明 | 版本 | 状态 |
 |------|------|------|------|
@@ -1173,7 +1173,7 @@ graph TB
 
 ### 官方发布数据 (2025-12-04)
 
-根据 [Apache Flink 2.2.0 官方发布声明](https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/)[^10]：
+根据 Flink 2.2 路线图预览：
 
 **VECTOR_SEARCH 性能基准**:
 
@@ -1201,7 +1201,7 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ## 8. 引用参考 (References)
 
-[^10]: Apache Flink Blog, "Apache Flink 2.2.0 Release Announcement", December 4, 2025. <https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/>
+[^10]: Apache Flink Documentation, "VECTOR_SEARCH", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/vector-search/
 
 
 

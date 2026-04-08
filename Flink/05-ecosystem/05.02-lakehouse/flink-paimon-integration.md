@@ -503,7 +503,7 @@ CREATE CATALOG paimon_jdbc WITH (
 | **小文件处理** | ⭐⭐⭐⭐⭐ 自动Compaction | ⭐⭐⭐ 需外部调度 | ⭐⭐⭐⭐⭐ 自动 | ⭐⭐⭐⭐ 自动 |
 | **Schema演进** | ⭐⭐⭐⭐⭐ 完整支持 | ⭐⭐⭐⭐⭐ 完整支持 | ⭐⭐⭐⭐ 较好 | ⭐⭐⭐⭐⭐ 完整支持 |
 
-**Flink 2.2 增强**: 根据 [Apache Flink 2.2.0 官方发布](https://flink.apache.org/2025/12/04/apache-flink-2.2.0-release-announcement/)[^20]，Paimon 集成进一步增强：
+**Flink 2.2 增强**（预览特性）：根据 Flink 2.2 路线图，Paimon 集成预计进一步增强：
 
 | 特性 | Flink 2.0 | Flink 2.2 | 说明 |
 |------|-----------|-----------|------|

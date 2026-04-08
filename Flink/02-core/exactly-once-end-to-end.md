@@ -734,7 +734,7 @@ echo "验证完成!"
 
 [^3]: Chandy, K.M., & Lamport, L. (1985). "Distributed Snapshots: Determining Global States of Distributed Systems". ACM Transactions on Computer Systems.
 
-[^4]: Apache Kafka Documentation. "Transactions in Kafka". <https://kafka.apache.org/documentation/transactions>
+[^4]: Apache Kafka Documentation. "Transactions in Kafka". <https://kafka.apache.org/documentation/#transactions>
 
 [^5]: Flink Documentation. "Checkpoints". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
