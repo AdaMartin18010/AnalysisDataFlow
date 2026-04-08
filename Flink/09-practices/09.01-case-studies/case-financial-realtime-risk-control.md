@@ -1,6 +1,6 @@
 # 金融实时风控系统案例研究 (Financial Real-time Risk Control Case Study)
 
-> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md), [../02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md), [../12-ai-ml/model-serving-streaming.md](Flink/06-ai-ml/model-serving-streaming.md) | **形式化等级**: L4
+> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md), [../02-core-mechanisms/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md), [../12-ai-ml/model-serving-streaming.md](../../06-ai-ml/model-serving-streaming.md) | **形式化等级**: L4
 
 ---
 

@@ -72,8 +72,8 @@ Databricks 生态绑定 → Delta Lake
 
 ## 前置依赖
 
-- [Flink/09-language-foundations/04-streaming-lakehouse.md](Flink/03-api/09-language-foundations/04-streaming-lakehouse.md)
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink/09-language-foundations/04-streaming-lakehouse.md](../../03-api/09-language-foundations/04-streaming-lakehouse.md)
+- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md)
 
 ---
 

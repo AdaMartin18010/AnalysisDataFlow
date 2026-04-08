@@ -1,6 +1,6 @@
 # Iron Functions WASM 运行时源码深度分析
 
-> 所属阶段: Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/ | 前置依赖: [WASM 基础架构](../wasm-runtime-fundamentals.md) | 形式化等级: L4
+> 所属阶段: Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/ | 前置依赖: [WASM 基础架构](../../../Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md) | 形式化等级: L4
 
 ## 1. 架构概览
 

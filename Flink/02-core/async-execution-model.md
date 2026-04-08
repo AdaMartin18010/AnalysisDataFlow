@@ -1,6 +1,6 @@
 # Flink 2.0 异步执行模型与 AEC (Asynchronous Execution Controller)
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [../01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md), [../01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [../01-architecture/disaggregated-state-analysis.md](../01-concepts/disaggregated-state-analysis.md), [../01-architecture/flink-1.x-vs-2.0-comparison.md](../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4-L5
 
 ---
 
@@ -265,7 +265,7 @@ $$
 r_1.complete \prec_{hb} r_2.start \implies \mathcal{Q}_k = [..., r_1, ..., r_2, ...]
 $$
 
-AEC 保证 $r_2$ 开始时，$r_1$ 的所有副作用（包括状态写入）已可见。由于状态版本单调递增（见 [Lemma-F-01-02](Flink/01-concepts/disaggregated-state-analysis.md#lemma-f-01-02-异步同步的单调版本性)），得证。
+AEC 保证 $r_2$ 开始时，$r_1$ 的所有副作用（包括状态写入）已可见。由于状态版本单调递增（见 [Lemma-F-01-02](../01-concepts/disaggregated-state-analysis.md#lemma-f-01-02-异步同步的单调版本性)），得证。
 
 ∎
 
@@ -1257,6 +1257,6 @@ class AECCallbackProcessor {
 
 **关联文档**:
 
-- [../01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
-- [../01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
+- [../01-architecture/disaggregated-state-analysis.md](../01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
+- [../01-architecture/flink-1.x-vs-2.0-comparison.md](../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
 - [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) - Dataflow 模型形式化

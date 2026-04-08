@@ -1,6 +1,6 @@
 # Flink vs Kafka Streams 对比 (Flink vs Kafka Streams Comparison)
 
-> 所属阶段: Flink/05-vs-competitors | 前置依赖: [Dataflow模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md), [Flink架构详解](Flink/01-concepts/deployment-architectures.md) | 形式化等级: L4
+> 所属阶段: Flink/05-vs-competitors | 前置依赖: [Dataflow模型形式化](../../../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Flink架构详解](../../../01-concepts/deployment-architectures.md) | 形式化等级: L4
 
 ---
 
@@ -1356,5 +1356,5 @@ Apache Flink 与 Kafka Streams 代表了流处理领域的两种不同哲学：
 **关联文档**:
 
 - [Flink vs Spark Streaming](./flink-vs-spark-streaming.md)
-- [Flink 架构详解](Flink/01-concepts/deployment-architectures.md)
-- [Flink Checkpoint 机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink 架构详解](../../../01-concepts/deployment-architectures.md)
+- [Flink Checkpoint 机制](../../../02-core/checkpoint-mechanism-deep-dive.md)

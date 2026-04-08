@@ -252,7 +252,7 @@ graph TB
 **其他核心索引**:
 
 - [📚 Knowledge/索引](../Knowledge/00-INDEX.md) — 知识结构文档导航
-- [⚡ Flink/索引](Struct/00-INDEX.md) — Flink专项文档导航
+- [⚡ Flink/索引](../Struct/00-INDEX.md) — Flink专项文档导航
 - [📖 THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) — 全库定理注册表
 
 **学习路径**:

@@ -1,6 +1,6 @@
 # Iron Functions 完整技术指南
 
-> **所属阶段**: Flink | **前置依赖**: [Flink DataStream API](Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Flink Table/SQL API](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L4
+> **所属阶段**: Flink | **前置依赖**: [Flink DataStream API](../../03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Flink Table/SQL API](../../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L4
 >
 > 本文档涵盖 Iron Functions 的架构原理、开发实践与生产部署，提供从基础概念到高级用例的完整技术参考。
 

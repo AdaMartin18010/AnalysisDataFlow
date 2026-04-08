@@ -1,6 +1,6 @@
 # Kafka Streams 迁移到 Flink 完整指南
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [Flink vs Kafka Streams 对比](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/ | **前置依赖**: [Flink vs Kafka Streams 对比](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md) | **形式化等级**: L4
 
 ---
 

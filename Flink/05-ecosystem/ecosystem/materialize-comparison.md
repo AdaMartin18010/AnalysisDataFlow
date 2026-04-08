@@ -368,8 +368,8 @@ flowchart TD
 
 - [Materialize Documentation](https://materialize.com/docs/)
 - [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-stable/)
-- [RisingWave Deep Dive](Knowledge/06-frontier/risingwave-deep-dive.md)
-- [Streaming Databases Guide](Knowledge/06-frontier/streaming-databases.md)
+- [RisingWave Deep Dive](../../../Knowledge/06-frontier/risingwave-deep-dive.md)
+- [Streaming Databases Guide](../../../Knowledge/06-frontier/streaming-databases.md)
 
 ---
 

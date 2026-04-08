@@ -1,6 +1,6 @@
 # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 
-> **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](Flink/02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md), [Flink状态管理](../02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 
 ---
 

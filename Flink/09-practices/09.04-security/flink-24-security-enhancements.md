@@ -7,7 +7,7 @@
 
 # Flink 2.4 安全增强完整指南
 
-> **所属阶段**: Flink/13-security | **前置依赖**: [Flink 安全特性完整指南](./flink-security-complete-guide.md), [Flink 2.3/2.4 路线图](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L4-L5 | **状态**: preview
+> **所属阶段**: Flink/13-security | **前置依赖**: [Flink 安全特性完整指南](./flink-security-complete-guide.md), [Flink 2.3/2.4 路线图](../../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L4-L5 | **状态**: preview
 
 ---
 

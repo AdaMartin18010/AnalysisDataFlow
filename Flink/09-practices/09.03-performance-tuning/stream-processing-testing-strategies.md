@@ -1,6 +1,6 @@
 # 流处理测试策略与最佳实践
 
-> 所属阶段: Flink/Engineering | 前置依赖: [Checkpoint机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md), [状态后端选择](./state-backend-selection.md) | 形式化等级: L3
+> 所属阶段: Flink/Engineering | 前置依赖: [Checkpoint机制深度解析](../../02-core/checkpoint-mechanism-deep-dive.md), [状态后端选择](./state-backend-selection.md) | 形式化等级: L3
 
 ---
 

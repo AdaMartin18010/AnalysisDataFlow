@@ -1,6 +1,6 @@
 # 流数据安全与合规 (Streaming Data Security & Compliance)
 
-> **所属阶段**: Knowledge/08-standards | **前置依赖**: [streaming-data-governance.md](./streaming-data-governance.md), [Flink安全架构](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/08-standards | **前置依赖**: [streaming-data-governance.md](./streaming-data-governance.md), [Flink安全架构](../../Flink/09-practices/09.04-security/flink-security-complete-guide.md) | **形式化等级**: L4
 
 ---
 

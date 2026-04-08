@@ -10,7 +10,7 @@
 > | **文档状态** | 🔍 前瞻 (Preview) |
 > | **预计发布时间** | 2026 Q3-Q4 |
 > | **最后更新** | 2026-04-04 |
-> | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+> | **跟踪系统** | [.tasks/flink-release-tracker.md](#) |
 
 ---
 

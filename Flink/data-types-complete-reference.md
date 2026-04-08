@@ -1,6 +1,6 @@
 # Flink Data Types 完整参考
 
-> 所属阶段: Flink | 前置依赖: [Flink/00-QUICK-START.md](Flink/00-meta/00-QUICK-START.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink/00-QUICK-START.md](00-meta/00-QUICK-START.md) | 形式化等级: L4
 
 ---
 

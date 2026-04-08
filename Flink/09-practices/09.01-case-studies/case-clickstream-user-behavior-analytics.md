@@ -1,6 +1,6 @@
 # 案例研究：Clickstream实时用户行为分析系统
 
-> **所属阶段**: Flink | **前置依赖**: [Flink/05-ecosystem/](../04-connectors/) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Flink | **前置依赖**: [Flink/05-ecosystem/](../../05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | **形式化等级**: L4 (工程论证)
 > **案例来源**: 大型电商平台真实案例(脱敏处理) | **文档编号**: F-07-09
 
 ---

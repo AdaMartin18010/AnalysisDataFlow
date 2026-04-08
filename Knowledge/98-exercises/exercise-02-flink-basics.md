@@ -1,6 +1,6 @@
 # 练习 02: Flink 基础编程
 
-> 所属阶段: Knowledge | 前置依赖: [部署架构](Flink/01-concepts/deployment-architectures.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [部署架构](../../Flink/01-concepts/deployment-architectures.md) | 形式化等级: L3
 
 ---
 

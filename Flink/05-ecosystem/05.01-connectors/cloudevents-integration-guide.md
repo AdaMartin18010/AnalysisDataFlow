@@ -1,6 +1,6 @@
 # CloudEvents 标准集成指南 (CloudEvents Integration Guide)
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Flink/04-connectors/kafka-integration-patterns.md](Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) | **形式化等级**: L4
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Flink/04-connectors/kafka-integration-patterns.md](kafka-integration-patterns.md) | **形式化等级**: L4
 
 ---
 

@@ -7,7 +7,7 @@
 
 # Flink 2.4 部署改进完整指南
 
-> **所属阶段**: Flink Deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md), [flink-2.3-2.4-roadmap.md](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L5 (工程严格)
+> **所属阶段**: Flink Deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md), [flink-2.3-2.4-roadmap.md](../../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L5 (工程严格)
 >
 > **适用版本**: Flink 2.4+ | **Operator版本**: 1.12+ | **状态**: preview
 

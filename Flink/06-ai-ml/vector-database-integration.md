@@ -1,6 +1,6 @@
 # Flink与向量数据库集成 - Milvus/PgVector/Pinecone
 
-> 所属阶段: Flink | 前置依赖: [11.4-flink-ml-inference.md](./flink-realtime-ml-inference.md), [JDBC连接器](Flink/05-ecosystem/05.01-connectors/jdbc-connector-complete-guide.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [11.4-flink-ml-inference.md](./flink-realtime-ml-inference.md), [JDBC连接器](../05-ecosystem/05.01-connectors/jdbc-connector-complete-guide.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

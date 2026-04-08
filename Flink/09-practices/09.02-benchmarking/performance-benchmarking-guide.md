@@ -1,6 +1,6 @@
 # Flink 性能基准测试完整指南
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 核心机制](../02-core-mechanisms/) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink 核心机制](../../02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ---
 

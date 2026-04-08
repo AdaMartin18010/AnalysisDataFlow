@@ -1,6 +1,6 @@
 # 案例: IoT 流处理平台 (Case Study: IoT Stream Processing)
 
-> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | **形式化等级**: L3
+> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md) | **形式化等级**: L3
 
 ---
 
@@ -235,7 +235,7 @@ public class CloudIoTProcessingJob {
 
 ### 4.3 Watermark 与窗口配置
 
-本案例的 Watermark 配置基于 [Flink 时间语义与 Watermark](Flink/02-core/time-semantics-and-watermark.md) 的形式化定义：
+本案例的 Watermark 配置基于 [Flink 时间语义与 Watermark](../../02-core/time-semantics-and-watermark.md) 的形式化定义：
 
 ```java
 WatermarkStrategy
@@ -244,15 +244,15 @@ WatermarkStrategy
     .withTimestampAssigner((event, timestamp) -> event.getSensorTimestamp());
 ```
 
-**配置依据**（参见 [Def-F-02-04](Flink/02-core/time-semantics-and-watermark.md)）：
+**配置依据**（参见 [Def-F-02-04](../../02-core/time-semantics-and-watermark.md)）：
 
 | 参数 | 值 | 理论依据 |
 |-----|-----|---------|
 | 乱序容忍 | 10s | 覆盖 99.9% 网络抖动 |
 | 空闲检测 | 1min | 快速检测传感器离线 |
-| 允许延迟 | 30s | [Def-F-02-05](Flink/02-core/time-semantics-and-watermark.md) |
+| 允许延迟 | 30s | [Def-F-02-05](../../02-core/time-semantics-and-watermark.md) |
 
-**窗口触发条件**（参见 [Def-F-02-06](Flink/02-core/time-semantics-and-watermark.md)）：
+**窗口触发条件**（参见 [Def-F-02-06](../../02-core/time-semantics-and-watermark.md)）：
 
 ```
 Trigger(wid, w) = FIRE iff w >= t_end + F

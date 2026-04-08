@@ -350,7 +350,7 @@ Knowledge/
 | 目录 | 索引 | 描述 |
 |------|------|------|
 | Struct/ | [../Struct/00-INDEX.md](../Struct/00-INDEX.md) | 形式理论与严格证明 |
-| Flink/ | [../Flink/00-INDEX.md](Struct/00-INDEX.md) | Flink专项技术与实现 |
+| Flink/ | [../Flink/00-INDEX.md](../Struct/00-INDEX.md) | Flink专项技术与实现 |
 
 ### 其他重要文档
 
@@ -360,7 +360,7 @@ Knowledge/
 | [../BEST-PRACTICES.md](../BEST-PRACTICES.md) | 项目级最佳实践 |
 | [../TROUBLESHOOTING.md](../TROUBLESHOOTING.md) | 故障排查指南 |
 | [../GLOSSARY.md](../GLOSSARY.md) | 术语表(中文) |
-| [../GLOSSARY-EN.md](../GLOSSARY-EN.md) | 术语表(英文) |
+| [../GLOSSARY-EN.md](../GLOSSARY.md) | 术语表(英文) |
 | [../REFERENCES.md](../REFERENCES.md) | 参考文献 |
 
 ---

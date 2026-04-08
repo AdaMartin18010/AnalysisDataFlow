@@ -1,6 +1,6 @@
 # 调度器演进分析
 
-> 所属阶段: Flink/deployment/evolution | 前置依赖: [autoscaling-evolution.md](./autoscaling-evolution.md), [flink-kubernetes-autoscaler-deep-dive.md](Flink/04-runtime/04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L4
+> 所属阶段: Flink/deployment/evolution | 前置依赖: [autoscaling-evolution.md](./autoscaling-evolution.md), [flink-kubernetes-autoscaler-deep-dive.md](../flink-kubernetes-autoscaler-deep-dive.md) | 形式化等级: L4
 
 ---
 
@@ -661,5 +661,5 @@ sequenceDiagram
 
 **关联文档**:
 - [autoscaling-evolution.md](./autoscaling-evolution.md) - 自动扩缩容演进
-- [flink-kubernetes-autoscaler-deep-dive.md](Flink/04-runtime/04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md) - K8s Autoscaler 深度分析
+- [flink-kubernetes-autoscaler-deep-dive.md](../flink-kubernetes-autoscaler-deep-dive.md) - K8s Autoscaler 深度分析
 - [flink-architecture-evolution-1x-to-2x.md](../../../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析

@@ -16,7 +16,7 @@
 
 # Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L4-L5
 > **版本**: since 2.4-preview | **状态**: 🔍 前瞻
 
 ---

@@ -1,6 +1,6 @@
 # Flink 版本对比矩阵
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink版本演进完整指南](flink-version-evolution-complete-guide.md), [兼容性矩阵](../../COMPATIBILITY-MATRIX.md) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink版本演进完整指南](flink-version-evolution-complete-guide.md), [兼容性矩阵](../../../COMPATIBILITY-MATRIX.md) | 形式化等级: L3
 
 本文档提供 Flink 2.x 系列各版本的全面对比矩阵，涵盖功能特性、兼容性、升级路径和选择指南，帮助用户做出明智的版本决策。
 

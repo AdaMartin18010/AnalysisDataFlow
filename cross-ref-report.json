@@ -1,0 +1,21 @@
+{
+  "stats": {
+    "files_checked": 613,
+    "links_checked": 10548,
+    "valid_links": 10278,
+    "ignored": 270
+  },
+  "errors": {
+    "file_not_found": [],
+    "anchor_not_found": [],
+    "case_mismatch": [],
+    "other": []
+  },
+  "summary": {
+    "total_files": 613,
+    "total_errors": 0,
+    "file_errors": 0,
+    "anchor_errors": 0,
+    "case_errors": 0
+  }
+}

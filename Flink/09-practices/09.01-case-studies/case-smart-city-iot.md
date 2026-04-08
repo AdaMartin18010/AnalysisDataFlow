@@ -1,6 +1,6 @@
 # 案例研究：智慧城市IoT多源数据融合与实时决策平台
 
-> **所属阶段**: Flink | **前置依赖**: [Flink/14-graph/](../14-graph/) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Flink | **前置依赖**: [Flink/14-graph/](../../05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md) | **形式化等级**: L4 (工程论证)
 > **案例来源**: 亚洲一线城市智慧城市建设真实案例(脱敏处理) | **文档编号**: F-07-24
 
 ---

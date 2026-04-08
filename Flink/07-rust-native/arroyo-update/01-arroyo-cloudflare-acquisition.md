@@ -1,6 +1,6 @@
 # Arroyo 与 Cloudflare Pipelines：Rust 原生流处理的云原生进化
 
-> 所属阶段: Flink/ | 前置依赖: [13.1-dataflow-model.md](Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md), [14.1-risingwave-comparison.md](../risingwave-rust-udf-native-guide.md) | 形式化等级: L4-L5
+> 所属阶段: Flink/ | 前置依赖: [13.1-dataflow-model.md](../../03-api/09-language-foundations/09-wasm-udf-frameworks.md), [14.1-risingwave-comparison.md](../risingwave-rust-udf-native-guide.md) | 形式化等级: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

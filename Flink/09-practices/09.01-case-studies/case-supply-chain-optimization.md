@@ -1,6 +1,6 @@
 # 案例研究：供应链实时优化与智能追踪平台
 
-> **所属阶段**: Flink | **前置依赖**: [Flink/02-core-mechanisms/](../02-core-mechanisms/) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Flink | **前置依赖**: [Flink/02-core-mechanisms/](../../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4 (工程论证)
 > **案例来源**: 全球头部消费电子制造企业真实案例(脱敏处理) | **文档编号**: F-07-23
 
 ---

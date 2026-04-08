@@ -1,6 +1,6 @@
 # Flink Rust Connector 开发指南 (Flink Rust Connector Development Guide)
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [03-rust-native.md](03-rust-native.md), [Flink/04-connectors/kafka-integration-patterns.md](Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) | **形式化等级**: L4 | **版本**: Flink 2.0+
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [03-rust-native.md](03-rust-native.md), [Flink/04-connectors/kafka-integration-patterns.md](../../05-ecosystem/05.01-connectors/kafka-integration-patterns.md) | **形式化等级**: L4 | **版本**: Flink 2.0+
 
 ---
 
@@ -2229,5 +2229,5 @@ public class ConnectorBenchmark {
 **关联文档**:
 
 - [03-rust-native.md](03-rust-native.md) - Rust UDF 基础
-- [Flink/04-connectors/kafka-integration-patterns.md](Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) - Kafka 集成模式
-- [Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 2.0 架构变化
+- [Flink/04-connectors/kafka-integration-patterns.md](../../05-ecosystem/05.01-connectors/kafka-integration-patterns.md) - Kafka 集成模式
+- [Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 2.0 架构变化

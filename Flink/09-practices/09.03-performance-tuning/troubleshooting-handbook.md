@@ -1,6 +1,6 @@
 # Flink 故障排查手册
 
-> 所属阶段: Flink/09-practices | 前置依赖: [生产配置模板](./production-config-templates.md), [Checkpoint 机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
+> 所属阶段: Flink/09-practices | 前置依赖: [生产配置模板](./production-config-templates.md), [Checkpoint 机制深度解析](../../02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ---
 

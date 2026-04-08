@@ -1,6 +1,6 @@
 # TLA+形式化验证在Flink中的应用
 
-> 所属阶段: Struct/07-tools | 前置依赖: [00-INDEX.md](../00-INDEX.md), [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L5
+> 所属阶段: Struct/07-tools | 前置依赖: [00-INDEX.md](../00-INDEX.md), [checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L5
 
 ## 1. 概念定义 (Definitions)
 

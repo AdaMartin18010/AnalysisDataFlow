@@ -1,0 +1,433 @@
+# Mermaid Validator - Mermaid语法验证
+#
+# 触发条件:
+#   - PR创建/更新时（如果涉及Markdown文件变更）
+#   - 手动触发
+# 任务:
+#   1. 验证所有Mermaid图表的语法正确性
+#   2. 检查图表类型和方向定义
+#   3. 检测括号匹配等问题
+# 状态: 阻塞合并 (错误率超过阈值时失败)
+
+name: Mermaid Syntax Validator
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - '.scripts/quality-gates/mermaid-syntax-validator.py'
+  workflow_dispatch:
+    inputs:
+      validation_mode:
+        description: 'Validation mode'
+        required: true
+        default: 'strict'
+        type: choice
+        options:
+          - strict
+          - lenient
+      directories:
+        description: 'Directories to scan (comma-separated)'
+        required: true
+        default: 'Struct,Knowledge,Flink,docs,tutorials'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============ 任务1: Mermaid CLI语法验证 ============
+  mermaid-cli-validate:
+    name: Mermaid CLI Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Mermaid CLI
+        run: |
+          npm install -g @mermaid-js/mermaid-cli@10.9.1
+
+      - name: Extract and validate Mermaid diagrams
+        run: |
+          # 创建临时目录
+          mkdir -p /tmp/mermaid-diagrams
+          
+          # 提取所有Mermaid图表
+          python3 << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+          
+          # 获取要扫描的目录
+          dirs_input = "${{ github.event.inputs.directories }}"
+          if dirs_input:
+              dirs = [d.strip() for d in dirs_input.split(',')]
+          else:
+              dirs = ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']
+          
+          total_diagrams = 0
+          extracted = 0
+          
+          for directory in dirs:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(part.startswith('.') for part in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      diagrams = mermaid_pattern.findall(content)
+                      
+                      for i, diagram in enumerate(diagrams):
+                          total_diagrams += 1
+                          # 保存到临时文件
+                          temp_file = Path(f'/tmp/mermaid-diagrams/{directory.replace("/", "_")}_{md_file.stem}_{i}.mmd')
+                          temp_file.write_text(diagram, encoding='utf-8')
+                          extracted += 1
+                  except Exception as e:
+                      print(f"Warning: Could not process {md_file}: {e}", file=sys.stderr)
+          
+          print(f"Extracted {extracted} diagrams from {total_diagrams} found")
+          PYEOF
+
+      - name: Validate with Mermaid CLI
+        run: |
+          validation_errors=0
+          total_checked=0
+          
+          for file in /tmp/mermaid-diagrams/*.mmd; do
+            if [ -f "$file" ]; then
+              total_checked=$((total_checked + 1))
+              # 尝试渲染图表（不生成输出文件，仅验证语法）
+              if ! mmdc -i "$file" -o /dev/null 2>&1 | head -5; then
+                echo "❌ Syntax error in: $file"
+                validation_errors=$((validation_errors + 1))
+              fi
+            fi
+          done
+          
+          echo "Total checked: $total_checked"
+          echo "Validation errors: $validation_errors"
+          
+          # 保存结果供后续步骤使用
+          echo "total_checked=$total_checked" >> $GITHUB_ENV
+          echo "validation_errors=$validation_errors" >> $GITHUB_ENV
+        continue-on-error: true
+
+  # ============ 任务2: Python语法验证 ============
+  mermaid-python-validate:
+    name: Mermaid Python Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run Python Mermaid validator
+        id: python_validate
+        run: |
+          # 获取验证模式
+          mode="${{ github.event.inputs.validation_mode }}"
+          if [ -z "$mode" ]; then
+            mode="strict"
+          fi
+          
+          # 获取目录
+          dirs_input="${{ github.event.inputs.directories }}"
+          if [ -n "$dirs_input" ]; then
+            dirs=$(echo "$dirs_input" | tr ',' ' ')
+          else
+            dirs="Struct Knowledge Flink docs tutorials"
+          fi
+          
+          echo "Running Mermaid validation in $mode mode..."
+          echo "Directories: $dirs"
+          
+          python .scripts/quality-gates/mermaid-syntax-validator.py \
+            --strict \
+            --threshold 0.05 \
+            --output reports/mermaid-validation-report.md \
+            --dirs $dirs
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-validation-report
+          path: |
+            reports/mermaid-validation-report.md
+            reports/mermaid-validation-results.json
+
+      - name: Parse validation results
+        id: parse-results
+        run: |
+          if [ -f reports/mermaid-validation-results.json ]; then
+            total=$(python3 -c "import json; d=json.load(open('reports/mermaid-validation-results.json')); print(d['summary']['total'])")
+            invalid=$(python3 -c "import json; d=json.load(open('reports/mermaid-validation-results.json')); print(d['summary']['invalid'])")
+            error_rate=$(python3 -c "import json; d=json.load(open('reports/mermaid-validation-results.json')); total=d['summary']['total']; invalid=d['summary']['invalid']; print(f'{invalid/total:.2f}' if total > 0 else '0')")
+            
+            echo "total_diagrams=$total" >> $GITHUB_OUTPUT
+            echo "invalid_diagrams=$invalid" >> $GITHUB_OUTPUT
+            echo "error_rate=$error_rate" >> $GITHUB_OUTPUT
+          else
+            echo "total_diagrams=0" >> $GITHUB_OUTPUT
+            echo "invalid_diagrams=0" >> $GITHUB_OUTPUT
+            echo "error_rate=0" >> $GITHUB_OUTPUT
+          fi
+
+    outputs:
+      total_diagrams: ${{ steps.parse-results.outputs.total_diagrams }}
+      invalid_diagrams: ${{ steps.parse-results.outputs.invalid_diagrams }}
+      error_rate: ${{ steps.parse-results.outputs.error_rate }}
+
+  # ============ 任务3: 变更文件Mermaid检查 ============
+  mermaid-pr-check:
+    name: Mermaid PR Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check Mermaid in changed files
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import subprocess
+          from pathlib import Path
+          
+          # 获取变更的文件
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
+          
+          if not changed_files:
+              print("No markdown files changed in this PR")
+              sys.exit(0)
+          
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+          
+          errors = []
+          warnings = []
+          total_diagrams = 0
+          
+          # 支持的图表类型
+          VALID_CHART_TYPES = [
+              'graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
+              'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt',
+              'pie', 'mindmap', 'timeline', 'quadrantChart', 'gitGraph',
+              'journey', 'requirementDiagram'
+          ]
+          
+          for file_path in changed_files:
+              if not Path(file_path).exists():
+                  continue
+              
+              try:
+                  content = Path(file_path).read_text(encoding='utf-8')
+                  diagrams = mermaid_pattern.findall(content)
+                  
+                  for i, diagram in enumerate(diagrams):
+                      total_diagrams += 1
+                      lines = diagram.strip().split('\n')
+                      if not lines:
+                          continue
+                      
+                      first_line = lines[0].strip()
+                      
+                      # 检查图表类型
+                      chart_type = None
+                      for vt in VALID_CHART_TYPES:
+                          if first_line.startswith(vt):
+                              chart_type = vt
+                              break
+                      
+                      if not chart_type:
+                          errors.append({
+                              'file': file_path,
+                              'diagram': i + 1,
+                              'message': f'Unknown chart type: {first_line[:50]}'
+                          })
+                          continue
+                      
+                      # 检查graph/flowchart方向
+                      if chart_type in ['graph', 'flowchart']:
+                          if not re.search(r'(?:graph|flowchart)\s+(TD|TB|BT|RL|LR)', first_line):
+                              warnings.append({
+                                  'file': file_path,
+                                  'diagram': i + 1,
+                                  'message': f'Missing direction in {chart_type} definition'
+                              })
+                      
+                      # 检查括号匹配
+                      open_brackets = diagram.count('[') + diagram.count('{') + diagram.count('(')
+                      close_brackets = diagram.count(']') + diagram.count('}') + diagram.count(')')
+                      if open_brackets != close_brackets:
+                          errors.append({
+                              'file': file_path,
+                              'diagram': i + 1,
+                              'message': f'Unbalanced brackets: {open_brackets} open, {close_brackets} close'
+                          })
+                      
+                      # 检查引号匹配
+                      if diagram.count('"') % 2 != 0:
+                          warnings.append({
+                              'file': file_path,
+                              'diagram': i + 1,
+                              'message': 'Odd number of double quotes detected'
+                          })
+              
+              except Exception as e:
+                  print(f"Warning: Could not process {file_path}: {e}")
+          
+          # 输出结果
+          print(f"\n{'='*60}")
+          print("Mermaid Diagram Check (PR Changed Files)")
+          print(f"{'='*60}")
+          print(f"Files checked: {len(changed_files)}")
+          print(f"Diagrams found: {total_diagrams}")
+          print(f"Errors: {len(errors)}")
+          print(f"Warnings: {len(warnings)}")
+          
+          if errors:
+              print("\n❌ Errors:")
+              for error in errors[:10]:
+                  print(f"  - {error['file']} (diagram {error['diagram']}): {error['message']}")
+              if len(errors) > 10:
+                  print(f"  ... and {len(errors) - 10} more")
+          
+          if warnings:
+              print("\n⚠️ Warnings:")
+              for warning in warnings[:5]:
+                  print(f"  - {warning['file']} (diagram {warning['diagram']}): {warning['message']}")
+              if len(warnings) > 5:
+                  print(f"  ... and {len(warnings) - 5} more")
+          
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Mermaid PR Check Report",
+              "",
+              f"Files checked: {len(changed_files)}",
+              f"Diagrams found: {total_diagrams}",
+              f"Errors: {len(errors)}",
+              f"Warnings: {len(warnings)}",
+              ""
+          ]
+          
+          if errors:
+              report_lines.extend(["## Errors", ""])
+              for error in errors:
+                  report_lines.append(f"- `{error['file']}` (diagram {error['diagram']}): {error['message']}")
+              report_lines.append("")
+          
+          if warnings:
+              report_lines.extend(["## Warnings", ""])
+              for warning in warnings:
+                  report_lines.append(f"- `{warning['file']}` (diagram {warning['diagram']}): {warning['message']}")
+          
+          Path('reports/mermaid-pr-check-report.md').write_text('\n'.join(report_lines), encoding='utf-8')
+          
+          # 如果有错误，返回非零退出码
+          if errors:
+              print(f"\n❌ Found {len(errors)} Mermaid syntax errors")
+              sys.exit(1)
+          
+          print("\n✅ All Mermaid diagrams passed validation")
+          PYEOF
+
+      - name: Upload PR check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-pr-check-report
+          path: reports/mermaid-pr-check-report.md
+          if-no-files-found: ignore
+
+  # ============ 汇总报告 ============
+  mermaid-summary:
+    name: Mermaid Validation Summary
+    runs-on: ubuntu-latest
+    needs: [mermaid-cli-validate, mermaid-python-validate, mermaid-pr-check]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 📊 Mermaid Syntax Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # CLI Validation
+          if [ "${{ needs.mermaid-cli-validate.result }}" == "success" ]; then
+            echo "| Mermaid CLI | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.mermaid-cli-validate.result }}" == "skipped" ]; then
+            echo "| Mermaid CLI | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mermaid CLI | ⚠️ Issues Found |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Python Validation
+          if [ "${{ needs.mermaid-python-validate.result }}" == "success" ]; then
+            total="${{ needs.mermaid-python-validate.outputs.total_diagrams }}"
+            invalid="${{ needs.mermaid-python-validate.outputs.invalid_diagrams }}"
+            echo "| Python Validator ($total diagrams) | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.mermaid-python-validate.result }}" == "skipped" ]; then
+            echo "| Python Validator | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Python Validator | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # PR Check
+          if [ "${{ needs.mermaid-pr-check.result }}" == "success" ]; then
+            echo "| PR Changed Files | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.mermaid-pr-check.result }}" == "skipped" ]; then
+            echo "| PR Changed Files | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| PR Changed Files | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if validation failed
+        if: |
+          needs.mermaid-python-validate.result == 'failure' ||
+          needs.mermaid-pr-check.result == 'failure'
+        run: |
+          echo "❌ Mermaid syntax validation failed"
+          exit 1

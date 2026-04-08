@@ -1,13 +1,17 @@
-# PR Quality Gate - Pull Request 质量门禁
-# 
+# PR Quality Gate - Pull Request 质量门禁 (v2.0)
+#
+# 版本: v2.0 | 日期: 2026-04-08 | 状态: Production
+#
 # 触发条件: PR 创建和更新时
-# 检查项目:
-#   1. Markdown语法检查
-#   2. 定理编号唯一性验证
-#   3. Mermaid语法验证
-#   4. 六段式模板结构检查
-#   5. 内部链接健康检查
-#   6. 前瞻性内容标记检查
+# 检查项目及级别:
+#   1. Markdown语法检查        - 阻塞合并 (blocking)
+#   2. 定理编号唯一性验证      - 阻塞合并 (blocking)
+#   3. Mermaid语法验证         - 阻塞合并 (blocking)
+#   4. 六段式模板结构检查      - 警告 (warning)
+#   5. 内部链接健康检查        - 阻塞合并 (blocking)
+#   6. 前瞻性内容标记检查      - 阻塞合并 (blocking)
+#   7. 交叉引用完整性          - 阻塞合并 (blocking) - NEW
+#   8. 形式化元素完整性        - 警告 (warning) - NEW
 
 name: PR Quality Gate
 
@@ -25,9 +29,9 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  # ============ 任务1: Markdown语法检查 ============
+  # ============ 任务1: Markdown语法检查 [阻塞合并] ============
   markdown-lint:
-    name: Markdown Syntax Check
+    name: Markdown Syntax Check [BLOCKING]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -46,7 +50,6 @@ jobs:
       - name: Get changed markdown files
         id: changed-files
         run: |
-          # 获取PR中变更的markdown文件
           changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD | grep '\.md$' || true)
           echo "changed_files<<EOF" >> $GITHUB_OUTPUT
           echo "$changed_files" >> $GITHUB_OUTPUT
@@ -56,7 +59,6 @@ jobs:
       - name: Run markdownlint on changed files
         if: steps.changed-files.outputs.changed_files != ''
         run: |
-          # 创建自定义配置
           cat > .markdownlint.json << 'EOF'
           {
             "default": true,
@@ -74,35 +76,34 @@ jobs:
           }
           EOF
           
-          # 只检查变更的文件
           echo "${{ steps.changed-files.outputs.changed_files }}" | xargs -I {} markdownlint {} || true
 
       - name: Check for critical markdown errors
         if: steps.changed-files.outputs.changed_files != ''
         run: |
-          # 检查严重错误（如YAML frontmatter错误）
           errors=0
           while IFS= read -r file; do
             if [ -f "$file" ]; then
               # 检查YAML frontmatter
               if head -1 "$file" | grep -q '^---'; then
                 if ! grep -q '^---' "$file" | head -3 | tail -1; then
-                  echo "⚠️ YAML frontmatter may be malformed in: $file"
-                fi
-              fi
-              # 检查表格语法
-              if grep -q '|' "$file"; then
-                if grep '|' "$file" | grep -v '---' | grep -v '^\s*$' | head -5 | tail -1 | grep -q '|'; then
-                  : # 表格语法正确
+                  echo "❌ YAML frontmatter may be malformed in: $file"
+                  errors=$((errors + 1))
                 fi
               fi
             fi
           done <<< "${{ steps.changed-files.outputs.changed_files }}"
-          echo "✅ Markdown syntax check completed"
+          
+          if [ $errors -gt 0 ]; then
+            echo "❌ Found $errors critical markdown errors"
+            exit 1
+          fi
+          
+          echo "✅ Markdown syntax check passed"
 
-  # ============ 任务2: 定理编号唯一性验证 ============
+  # ============ 任务2: 定理编号唯一性验证 [阻塞合并] ============
   theorem-validate:
-    name: Theorem Registry Validation
+    name: Theorem Registry Validation [BLOCKING]
     runs-on: ubuntu-latest
     needs: markdown-lint
     steps:
@@ -116,14 +117,12 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: Run theorem uniqueness checker
         run: |
-          pip install -q regex tabulate
-
-      - name: Run theorem validation
-        run: |
-          python scripts/theorem-validator.py --strict
-        continue-on-error: false
+          python .scripts/quality-gates/theorem-uniqueness-checker.py \
+            --strict \
+            --output reports/theorem-uniqueness-report.md \
+            --dirs Struct Knowledge Flink
 
       - name: Check theorem uniqueness in PR
         run: |
@@ -132,16 +131,14 @@ jobs:
           import sys
           from pathlib import Path
           from collections import defaultdict
-
-          # 获取变更的文件
           import subprocess
+
           result = subprocess.run(
               ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
               capture_output=True, text=True
           )
           changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
 
-          # 定理编号模式
           theorem_patterns = [
               r'Thm-[SKF]-\d{2}-\d{2}',
               r'Def-[SKF]-\d{2}-\d{2}',
@@ -151,7 +148,6 @@ jobs:
           ]
 
           new_theorems = defaultdict(list)
-          errors = []
 
           for file_path in changed_files:
               if not Path(file_path).exists():
@@ -165,7 +161,6 @@ jobs:
               except Exception as e:
                   print(f"Warning: Could not read {file_path}: {e}")
 
-          # 检查重复
           duplicate_count = 0
           for theorem_id, files in new_theorems.items():
               if len(files) > 1:
@@ -185,12 +180,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: theorem-validation-report
-          path: reports/theorem-validation-report.md
+          path: reports/theorem-uniqueness-report.md
           if-no-files-found: ignore
 
-  # ============ 任务3: Mermaid语法验证 ============
+  # ============ 任务3: Mermaid语法验证 [阻塞合并] ============
   mermaid-validate:
-    name: Mermaid Syntax Validation
+    name: Mermaid Syntax Validation [BLOCKING]
     runs-on: ubuntu-latest
     needs: markdown-lint
     steps:
@@ -206,10 +201,80 @@ jobs:
         run: |
           python .scripts/quality-gates/mermaid-syntax-validator.py \
             --strict \
-            --threshold 0.1 \
+            --threshold 0.05 \
             --output reports/mermaid-validation-report.md \
             --dirs Struct Knowledge Flink docs tutorials
-        continue-on-error: false
+
+      - name: Check Mermaid in changed files
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import subprocess
+          from pathlib import Path
+          
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
+          
+          if not changed_files:
+              print("No markdown files changed")
+              sys.exit(0)
+          
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+          VALID_CHART_TYPES = ['graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
+              'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt', 'pie', 'mindmap']
+          
+          errors = []
+          
+          for file_path in changed_files:
+              if not Path(file_path).exists():
+                  continue
+              try:
+                  content = Path(file_path).read_text(encoding='utf-8')
+                  diagrams = mermaid_pattern.findall(content)
+                  
+                  for i, diagram in enumerate(diagrams):
+                      lines = diagram.strip().split('\n')
+                      if not lines:
+                          continue
+                      
+                      first_line = lines[0].strip()
+                      chart_type = None
+                      for vt in VALID_CHART_TYPES:
+                          if first_line.startswith(vt):
+                              chart_type = vt
+                              break
+                      
+                      if not chart_type:
+                          errors.append({
+                              'file': file_path,
+                              'diagram': i + 1,
+                              'message': f'Unknown chart type: {first_line[:50]}'
+                          })
+                      
+                      # 检查括号匹配
+                      open_brackets = diagram.count('[') + diagram.count('{') + diagram.count('(')
+                      close_brackets = diagram.count(']') + diagram.count('}') + diagram.count(')')
+                      if open_brackets != close_brackets:
+                          errors.append({
+                              'file': file_path,
+                              'diagram': i + 1,
+                              'message': f'Unbalanced brackets'
+                          })
+              except Exception as e:
+                  print(f"Warning: Could not process {file_path}: {e}")
+          
+          if errors:
+              print(f"\n❌ Found {len(errors)} Mermaid syntax errors:")
+              for error in errors[:10]:
+                  print(f"  - {error['file']} (diagram {error['diagram']}): {error['message']}")
+              sys.exit(1)
+          
+          print("✅ Mermaid syntax validation passed")
+          PYEOF
 
       - name: Upload Mermaid validation report
         if: always()
@@ -220,9 +285,9 @@ jobs:
             reports/mermaid-validation-report.md
             reports/mermaid-validation-results.json
 
-  # ============ 任务4: 六段式模板结构检查 ============
+  # ============ 任务4: 六段式模板结构检查 [警告级别] ============
   template-structure-check:
-    name: Six-Section Template Check
+    name: Six-Section Template Check [WARNING]
     runs-on: ubuntu-latest
     needs: markdown-lint
     steps:
@@ -252,14 +317,12 @@ jobs:
           from collections import defaultdict
           import subprocess
 
-          # 获取变更的文件
           result = subprocess.run(
               ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
               capture_output=True, text=True
           )
           changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
 
-          # 六段式必需章节
           REQUIRED_SECTIONS = [
               ('概念定义', 'Definitions'),
               ('属性推导', 'Properties'),
@@ -272,7 +335,6 @@ jobs:
           checked_files = 0
 
           for file_path in changed_files:
-              # 只检查核心目录的文档
               if not any(d in file_path for d in ['Struct/', 'Knowledge/', 'Flink/']):
                   continue
               
@@ -282,15 +344,12 @@ jobs:
               try:
                   content = Path(file_path).read_text(encoding='utf-8')
                   
-                  # 检查是否有元数据块（六段式文档标记）
                   if not re.search(r'所属阶段[:：]', content):
-                      continue  # 不是六段式文档，跳过
+                      continue
                   
                   checked_files += 1
                   
-                  # 检查必需章节
                   for zh_name, en_name in REQUIRED_SECTIONS:
-                      # 支持 ## 1. 概念定义 (Definitions) 或 ## 概念定义 格式
                       pattern = rf'^##+\s*\d*\.?\s*{re.escape(zh_name)}|##+\s*\d*\.?\s*{re.escape(en_name)}'
                       if not re.search(pattern, content, re.MULTILINE | re.IGNORECASE):
                           errors.append({
@@ -298,46 +357,38 @@ jobs:
                               'missing_section': zh_name,
                               'suggestion': f'Add section "## {zh_name} ({en_name})"'
                           })
-                          
               except Exception as e:
                   print(f"Warning: Could not read {file_path}: {e}")
 
-          # 输出结果
           print(f"\n{'='*60}")
           print("Six-Section Template Check (PR Changed Files)")
           print(f"{'='*60}")
           print(f"Files checked: {checked_files}")
-          print(f"Errors: {len(errors)}")
+          print(f"Missing sections: {len(errors)}")
 
           if errors:
-              print("\n❌ Missing required sections:")
+              print("\n⚠️ Missing required sections:")
               for error in errors[:10]:
                   print(f"  - {error['file']}: {error['missing_section']}")
-              if len(errors) > 10:
-                  print(f"  ... and {len(errors) - 10} more")
-              
-              # 生成报告
-              Path('reports').mkdir(exist_ok=True)
-              report_lines = [
-                  "# Six-Section Template Check Report (PR)",
-                  "",
-                  f"Files checked: {checked_files}",
-                  f"Errors: {len(errors)}",
-                  "",
-                  "## Missing Sections",
-                  ""
-              ]
-              
+
+          Path('reports').mkdir(exist_ok=True)
+          report_lines = [
+              "# Six-Section Template Check Report (PR)",
+              "",
+              f"Files checked: {checked_files}",
+              f"Missing sections: {len(errors)}",
+              ""
+          ]
+          
+          if errors:
+              report_lines.extend(["## Missing Sections", ""])
               for error in errors:
                   report_lines.append(f"- `{error['file']}`: {error['missing_section']}")
-                  report_lines.append(f"  - Suggestion: {error['suggestion']}")
-              
-              Path('reports/pr-template-check-report.md').write_text('\n'.join(report_lines), encoding='utf-8')
-              
-              # 非阻塞，只警告
-              print("\n⚠️ Template check completed with warnings (non-blocking)")
-          else:
-              print("\n✅ All checked files comply with six-section template")
+          
+          Path('reports/pr-template-check-report.md').write_text('\n'.join(report_lines), encoding='utf-8')
+          
+          # 警告级别 - 不返回错误码
+          print("\n⚠️ Template check completed (warning level - non-blocking)")
           PYEOF
 
       - name: Upload template check report
@@ -350,9 +401,9 @@ jobs:
             reports/pr-template-check-report.md
           if-no-files-found: ignore
 
-  # ============ 任务5: 内部链接健康检查 ============
+  # ============ 任务5: 内部链接健康检查 [阻塞合并] ============
   internal-link-check:
-    name: Internal Link Health Check
+    name: Internal Link Health Check [BLOCKING]
     runs-on: ubuntu-latest
     needs: [markdown-lint]
     steps:
@@ -375,7 +426,6 @@ jobs:
           from collections import defaultdict
           from urllib.parse import urlparse
 
-          # 统计信息
           stats = {
               'total_links': 0,
               'valid_links': 0,
@@ -383,24 +433,18 @@ jobs:
               'warnings': []
           }
 
-          # 内部链接模式: [text](path) 或 [text](./path) 或 [text](../path)
           link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
 
-          # 收集所有文档
           all_docs = set()
           for directory in ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials', 'docs']:
               if Path(directory).exists():
                   for md_file in Path(directory).rglob('*.md'):
                       all_docs.add(str(md_file).replace('\\', '/'))
 
-          # 根目录文档
           for md_file in Path('.').glob('*.md'):
               if not str(md_file).startswith('.') and md_file.is_file():
                   all_docs.add(str(md_file).replace('\\', '/'))
 
-          print(f"Found {len(all_docs)} markdown documents")
-
-          # 检查每个文件中的链接
           for doc_path in sorted(all_docs):
               try:
                   content = Path(doc_path).read_text(encoding='utf-8')
@@ -411,31 +455,23 @@ jobs:
                       link_target = match.group(2)
                       stats['total_links'] += 1
 
-                      # 跳过外部链接
-                      if link_target.startswith(('http://', 'https://', 'mailto:', '#')):
+                      if link_target.startswith(('http://', 'https://', 'mailto://', '#')):
                           stats['valid_links'] += 1
                           continue
 
-                      # 移除锚点
                       target_path = link_target.split('#')[0]
-
                       if not target_path:
                           continue
 
-                      # 解析相对路径
                       if target_path.startswith('/'):
-                          # 绝对路径（相对于项目根）
                           full_path = target_path.lstrip('/')
                       else:
-                          # 相对路径
                           full_path = str((doc_dir / target_path).resolve())
                           full_path = full_path.replace('\\', '/')
-                          # 移除工作目录前缀
                           cwd = str(Path('.').resolve()).replace('\\', '/')
                           if full_path.startswith(cwd):
                               full_path = full_path[len(cwd)+1:]
 
-                      # 检查文件是否存在
                       if full_path in all_docs or Path(full_path).exists():
                           stats['valid_links'] += 1
                       else:
@@ -443,14 +479,11 @@ jobs:
                           stats['warnings'].append({
                               'source': doc_path,
                               'target': link_target,
-                              'resolved': full_path,
-                              'text': link_text[:50]
+                              'resolved': full_path
                           })
-
               except Exception as e:
                   print(f"Warning: Could not process {doc_path}: {e}")
 
-          # 输出结果
           print("\n" + "="*60)
           print("Internal Link Health Check Report")
           print("="*60)
@@ -461,10 +494,7 @@ jobs:
           if stats['warnings']:
               print("\nBroken links (showing first 20):")
               for warning in stats['warnings'][:20]:
-                  print(f"  - {warning['source']}")
-                  print(f"    -> '{warning['target']}' (resolved: {warning['resolved']})")
-              if len(stats['warnings']) > 20:
-                  print(f"  ... and {len(stats['warnings']) - 20} more")
+                  print(f"  - {warning['source']} -> '{warning['target']}'")
 
           # 生成报告
           Path('reports').mkdir(exist_ok=True)
@@ -472,14 +502,11 @@ jobs:
           report_lines = [
               "# Internal Link Health Check Report",
               "",
-              "## Summary",
-              "",
               f"| Metric | Count |",
               f"|--------|-------|",
               f"| Total Internal Links | {stats['total_links']} |",
               f"| ✅ Valid | {stats['valid_links']} |",
               f"| ❌ Broken | {stats['broken_links']} |",
-              f"| Success Rate | {(stats['valid_links']/stats['total_links']*100):.1f}% |" if stats['total_links'] > 0 else "| Success Rate | N/A |",
               ""
           ]
 
@@ -487,25 +514,26 @@ jobs:
               report_lines.extend([
                   "## Broken Links",
                   "",
-                  "| Source File | Link Text | Target | Resolved Path |",
-                  "|-------------|-----------|--------|---------------|"
+                  "| Source File | Target |",
+                  "|-------------|--------|"
               ])
               for warning in stats['warnings']:
-                  report_lines.append(
-                      f"| {warning['source']} | {warning['text']} | `{warning['target']}` | {warning['resolved']} |"
-                  )
+                  report_lines.append(f"| {warning['source']} | `{warning['target']}` |")
 
           with open('reports/internal-link-report.md', 'w') as f:
               f.write('\n'.join(report_lines))
 
-          print("\n✅ Internal link check completed")
-
-          # 如果损坏率超过5%，返回非零退出码
+          # 如果损坏率超过3%，阻塞合并
           if stats['total_links'] > 0:
               broken_rate = stats['broken_links'] / stats['total_links']
-              if broken_rate > 0.05:
-                  print(f"\n❌ Broken link rate {broken_rate:.1%} exceeds threshold (5%)")
+              if broken_rate > 0.03:
+                  print(f"\n❌ Broken link rate {broken_rate:.1%} exceeds threshold (3%)")
                   sys.exit(1)
+          
+          if stats['broken_links'] > 0:
+              print(f"\n⚠️ Found {stats['broken_links']} broken links (below threshold)")
+          else:
+              print("\n✅ All internal links are valid")
           PYEOF
 
       - name: Upload internal link report
@@ -515,9 +543,9 @@ jobs:
           name: internal-link-report
           path: reports/internal-link-report.md
 
-  # ============ 任务6: 前瞻性内容标记检查 ============
+  # ============ 任务6: 前瞻性内容标记检查 [阻塞合并] ============
   prospective-content-check:
-    name: Prospective Content Marker Check
+    name: Prospective Content Marker Check [BLOCKING]
     runs-on: ubuntu-latest
     needs: [markdown-lint]
     steps:
@@ -540,7 +568,6 @@ jobs:
           from collections import defaultdict
           from datetime import datetime
 
-          # 统计信息
           stats = {
               'files_checked': 0,
               'prospective_files': 0,
@@ -548,14 +575,12 @@ jobs:
               'warnings': []
           }
 
-          # 前瞻性内容关键词
           prospective_keywords = [
               'Flink 2.4', 'Flink 2.5', 'Flink 3.0', 'Flink 3.x',
               '即将发布', 'coming soon', 'roadmap', 'preview',
               '规划中', '设计中', '草案', '草案阶段'
           ]
 
-          # 必须包含前瞻性标记的文件模式
           prospective_file_patterns = [
               r'flink-2\.4',
               r'flink-2\.5', 
@@ -565,7 +590,6 @@ jobs:
               r'vision'
           ]
 
-          # 检查的文件
           check_dirs = ['Struct', 'Knowledge', 'Flink']
           
           for directory in check_dirs:
@@ -579,13 +603,11 @@ jobs:
                       content = md_file.read_text(encoding='utf-8')
                       file_name = md_file.name.lower()
                       
-                      # 判断是否为前瞻性内容文件
                       is_prospective_file = any(
                           re.search(pattern, file_name) 
                           for pattern in prospective_file_patterns
                       )
                       
-                      # 检查是否包含前瞻性标记
                       has_prospective_marker = any(marker in content for marker in [
                           '> ⚠️ **前瞻性声明**',
                           '> **前瞻性声明**',
@@ -595,7 +617,6 @@ jobs:
                           'forward-looking'
                       ])
                       
-                      # 检查是否包含前瞻性关键词
                       has_prospective_keywords = any(
                           keyword in content 
                           for keyword in prospective_keywords
@@ -618,19 +639,9 @@ jobs:
                                       'file': str(md_file),
                                       'reason': 'Potential fictional API without proper marking'
                                   })
-                      
-                      # 检查版本兼容性标记
-                      if 'Flink' in content:
-                          # 检查是否有版本兼容性表格或说明
-                          if '| 版本 |' not in content and '兼容性' not in content:
-                              if 'Flink 2.' in content or 'Flink 1.' in content:
-                                  # 只警告，不报错
-                                  pass
-                                  
                   except Exception as e:
                       print(f"Warning: Could not process {md_file}: {e}")
 
-          # 输出结果
           print("\n" + "="*60)
           print("Prospective Content Marker Check Report")
           print("="*60)
@@ -643,11 +654,6 @@ jobs:
               print("\n❌ Errors (missing prospective markers):")
               for error in stats['errors']:
                   print(f"  - {error['file']}: {error['reason']}")
-
-          if stats['warnings']:
-              print("\n⚠️ Warnings:")
-              for warning in stats['warnings']:
-                  print(f"  - {warning['file']}: {warning['reason']}")
 
           # 生成报告
           Path('reports').mkdir(exist_ok=True)
@@ -679,25 +685,14 @@ jobs:
                   report_lines.append(f"| {error['file']} | {error['reason']} |")
               report_lines.append("")
 
-          if stats['warnings']:
-              report_lines.extend([
-                  "## Warnings",
-                  "",
-                  "| File | Reason |",
-                  "|------|--------|"
-              ])
-              for warning in stats['warnings']:
-                  report_lines.append(f"| {warning['file']} | {warning['reason']} |")
-
           with open('reports/prospective-content-report.md', 'w') as f:
               f.write('\n'.join(report_lines))
 
-          print("\n✅ Prospective content check completed")
-
-          # 如果有错误，返回非零退出码
           if stats['errors']:
               print(f"\n❌ Found {len(stats['errors'])} missing prospective markers")
               sys.exit(1)
+          
+          print("\n✅ Prospective content check passed")
           PYEOF
 
       - name: Upload prospective content report
@@ -707,80 +702,296 @@ jobs:
           name: prospective-content-report
           path: reports/prospective-content-report.md
 
+  # ============ 任务7: 交叉引用完整性检查 [阻塞合并] ============
+  cross-ref-check:
+    name: Cross-Reference Integrity Check [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: [markdown-lint]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run cross-reference validation
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+          from collections import defaultdict
+          import subprocess
+
+          # 获取变更的文件
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '--diff-filter=ACMRT', 'origin/' + '${{ github.base_ref }}', '...HEAD'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f.endswith('.md')]
+
+          stats = {
+              'files_checked': 0,
+              'broken_refs': 0,
+              'warnings': []
+          }
+
+          # 定理引用模式 [^Thm-X-X-X] 或 Thm-X-X-X
+          theorem_ref_pattern = re.compile(r'(?:\[\^)?(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})(?:\])?')
+          
+          # 文档引用模式 [text](./path/to/doc.md)
+          doc_ref_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+\.md)\)')
+
+          # 收集所有存在的定理
+          all_theorems = set()
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  if any(part.startswith('.') for part in md_file.parts):
+                      continue
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      matches = theorem_ref_pattern.findall(content)
+                      for match in matches:
+                          theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                          all_theorems.add(theorem_id)
+                  except Exception:
+                      pass
+
+          # 检查变更文件中的引用
+          for file_path in changed_files:
+              if not any(d in file_path for d in ['Struct/', 'Knowledge/', 'Flink/']):
+                  continue
+              
+              if not Path(file_path).exists():
+                  continue
+              
+              try:
+                  content = Path(file_path).read_text(encoding='utf-8')
+                  stats['files_checked'] += 1
+                  
+                  # 检查定理引用
+                  for match in theorem_ref_pattern.finditer(content):
+                      theorem_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                      
+                      # 简化检查：如果引用定理ID不在已收集的定理中，记录警告
+                      # 实际场景可能需要更复杂的验证逻辑
+                      
+                  # 检查文档引用
+                  for match in doc_ref_pattern.finditer(content):
+                      link_text = match.group(1)
+                      doc_path = match.group(2)
+                      
+                      # 解析相对路径
+                      if not doc_path.startswith(('http://', 'https://', '#')):
+                          doc_dir = Path(file_path).parent
+                          target_path = doc_dir / doc_path
+                          
+                          if not target_path.exists():
+                              stats['broken_refs'] += 1
+                              stats['warnings'].append({
+                                  'file': file_path,
+                                  'ref': doc_path,
+                                  'type': 'document',
+                                  'message': f"Referenced document not found: {doc_path}"
+                              })
+              except Exception as e:
+                  print(f"Warning: Could not process {file_path}: {e}")
+
+          print("\n" + "="*60)
+          print("Cross-Reference Integrity Check Report")
+          print("="*60)
+          print(f"Files checked: {stats['files_checked']}")
+          print(f"Broken references: {stats['broken_refs']}")
+
+          if stats['warnings']:
+              print("\n⚠️ Broken references:")
+              for warning in stats['warnings'][:10]:
+                  print(f"  - {warning['file']}: {warning['message']}")
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report_lines = [
+              "# Cross-Reference Integrity Check Report",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Files Checked | {stats['files_checked']} |",
+              f"| Broken References | {stats['broken_refs']} |",
+              ""
+          ]
+
+          if stats['warnings']:
+              report_lines.extend([
+                  "## Broken References",
+                  "",
+                  "| File | Reference | Type | Message |",
+                  "|------|-----------|------|----------|"
+              ])
+              for warning in stats['warnings']:
+                  report_lines.append(f"| {warning['file']} | `{warning['ref']}` | {warning['type']} | {warning['message']} |")
+
+          with open('reports/cross-reference-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          # 如果有文档引用损坏，阻塞合并
+          doc_errors = [w for w in stats['warnings'] if w['type'] == 'document']
+          if doc_errors:
+              print(f"\n❌ Found {len(doc_errors)} broken document references")
+              sys.exit(1)
+          
+          print("\n✅ Cross-reference check passed")
+          PYEOF
+
+      - name: Upload cross-reference report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-reference-report
+          path: reports/cross-reference-report.md
+
+  # ============ 任务8: 形式化元素完整性检查 [警告级别] ============
+  formal-element-check:
+    name: Formal Element Integrity Check [WARNING]
+    runs-on: ubuntu-latest
+    needs: [markdown-lint]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run formal element checker
+        run: |
+          python .scripts/formal-element-checker.py \
+            --warning \
+            --output reports/formal-element-check-report.md \
+            --dirs Struct Knowledge Flink
+        continue-on-error: true
+
+      - name: Upload formal element report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-element-check-report
+          path: reports/formal-element-check-report.md
+          if-no-files-found: ignore
+
   # ============ 汇总报告 ============
   summary:
     name: Quality Gate Summary
     runs-on: ubuntu-latest
-    needs: [markdown-lint, theorem-validate, mermaid-validate, template-structure-check, internal-link-check, prospective-content-check]
+    needs: [markdown-lint, theorem-validate, mermaid-validate, template-structure-check, 
+            internal-link-check, prospective-content-check, cross-ref-check, formal-element-check]
     if: always()
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: reports/
+        continue-on-error: true
 
       - name: Generate summary
         run: |
           echo "## 📊 PR Quality Gate Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Level | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|--------|" >> $GITHUB_STEP_SUMMARY
           
-          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          
-          # Markdown Lint
+          # Markdown Lint [BLOCKING]
           if [ "${{ needs.markdown-lint.result }}" == "success" ]; then
-            echo "| Markdown Syntax | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Markdown Syntax | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Markdown Syntax | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+            echo "| Markdown Syntax | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
           fi
           
-          # Theorem Validation
+          # Theorem Validation [BLOCKING]
           if [ "${{ needs.theorem-validate.result }}" == "success" ]; then
-            echo "| Theorem Registry | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Theorem Registry | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Theorem Registry | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+            echo "| Theorem Registry | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
           fi
           
-          # Mermaid Validation
+          # Mermaid Validation [BLOCKING]
           if [ "${{ needs.mermaid-validate.result }}" == "success" ]; then
-            echo "| Mermaid Syntax | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Mermaid Syntax | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Mermaid Syntax | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+            echo "| Mermaid Syntax | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
           fi
           
-          # Template Structure Check
+          # Template Structure [WARNING]
           if [ "${{ needs.template-structure-check.result }}" == "success" ]; then
-            echo "| Template Structure | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Template Structure | 🟡 WARNING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ needs.template-structure-check.result }}" == "skipped" ]; then
-            echo "| Template Structure | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+            echo "| Template Structure | 🟡 WARNING | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Template Structure | ⚠️ Warning |" >> $GITHUB_STEP_SUMMARY
+            echo "| Template Structure | 🟡 WARNING | ⚠️ Issues |" >> $GITHUB_STEP_SUMMARY
           fi
           
-          # Internal Link Check
+          # Internal Link Check [BLOCKING]
           if [ "${{ needs.internal-link-check.result }}" == "success" ]; then
-            echo "| Internal Links | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Internal Links | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Internal Links | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+            echo "| Internal Links | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
           fi
           
-          # Prospective Content Check
+          # Prospective Content Check [BLOCKING]
           if [ "${{ needs.prospective-content-check.result }}" == "success" ]; then
-            echo "| Prospective Markers | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+            echo "| Prospective Markers | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
           else
-            echo "| Prospective Markers | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+            echo "| Prospective Markers | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Cross-Reference Check [BLOCKING]
+          if [ "${{ needs.cross-ref-check.result }}" == "success" ]; then
+            echo "| Cross-References | 🔴 BLOCKING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Cross-References | 🔴 BLOCKING | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Formal Element Check [WARNING]
+          if [ "${{ needs.formal-element-check.result }}" == "success" ]; then
+            echo "| Formal Elements | 🟡 WARNING | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.formal-element-check.result }}" == "skipped" ]; then
+            echo "| Formal Elements | 🟡 WARNING | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Formal Elements | 🟡 WARNING | ⚠️ Issues |" >> $GITHUB_STEP_SUMMARY
           fi
           
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Legend" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔴 **BLOCKING**: Must pass to merge PR" >> $GITHUB_STEP_SUMMARY
+          echo "- 🟡 **WARNING**: Issues reported but don't block merge" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
 
-      - name: Fail if any check failed
+      - name: Fail if any blocking check failed
         if: |
           needs.markdown-lint.result == 'failure' ||
           needs.theorem-validate.result == 'failure' ||
           needs.mermaid-validate.result == 'failure' ||
           needs.internal-link-check.result == 'failure' ||
-          needs.prospective-content-check.result == 'failure'
+          needs.prospective-content-check.result == 'failure' ||
+          needs.cross-ref-check.result == 'failure'
         run: |
-          echo "❌ One or more quality checks failed"
+          echo "❌ One or more BLOCKING quality checks failed"
+          echo "Please fix the issues above before merging"
           exit 1
+
+      - name: Report success
+        run: |
+          echo "✅ All blocking quality checks passed!"
+          echo "⚠️ Check warning-level reports for non-blocking issues"

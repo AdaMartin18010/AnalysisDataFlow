@@ -1,7 +1,7 @@
 # Flink 2.0 DataStream V2 API (Scala 3)
 
 > **状态**: ✅ Released (2025-03-24, GA in Flink 2.0)
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md), [../01-architecture/datastream-v2-semantics.md](Flink/01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md), [../01-architecture/datastream-v2-semantics.md](../../01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4-L5
 > **版本**: Flink 2.0+ | **语言**: Scala 3.3+ | **API 状态**: 稳定版 (Stable)
 
 ---
@@ -256,13 +256,13 @@ trait MapStateV2[K, V] extends StateV2[Map[K, V]]:
 // StateDeclarations DSL (Scala 3)
 object StateDeclarations:
   def valueState[V: TypeInformation](name: String): ValueStateBuilder[V] =
-    new ValueStateBuilder[V](name)
+    new ValueStateBuilder[V](#)
 
   def listState[V: TypeInformation](name: String): ListStateBuilder[V] =
-    new ListStateBuilder[V](name)
+    new ListStateBuilder[V](#)
 
   def mapState[K: TypeInformation, V: TypeInformation](name: String): MapStateBuilder[K, V] =
-    new MapStateBuilder[K, V](name)
+    new MapStateBuilder[K, V](#)
 
 class ValueStateBuilder[V](name: String)(using TypeInformation[V]):
   private var defaultValue: Option[V] = None
@@ -546,7 +546,7 @@ object StateMigration:
 
 | 维度 | DataStream V1 | DataStream V2 | 影响分析 |
 |------|---------------|---------------|----------|
-| **状态声明方式** | 命令式: `getRuntimeContext().getState(descriptor)` | 声明式: `StateDeclarations.valueState[T](name).build()` | V2 编译期类型安全，无运行时 ClassCastException |
+| **状态声明方式** | 命令式: `getRuntimeContext().getState(descriptor)` | 声明式: `StateDeclarations.valueState[T](#).build()` | V2 编译期类型安全，无运行时 ClassCastException |
 | **状态访问模式** | 同步阻塞 (`state.value()`) | 同步 + 异步 (`state.valueAsync()`) | V2 支持非阻塞 I/O，吞吐量提升 |
 | **类型安全等级** | 运行时 (`TypeInformation` 擦除) | 编译期 (Scala 3 类型推导) | V2 类型错误在编译期捕获 |
 | **空状态处理** | 返回 `null` (NPE 风险) | 返回 `Option[T]` 或默认值 | V2 空安全 |

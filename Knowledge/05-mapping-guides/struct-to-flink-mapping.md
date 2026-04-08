@@ -1,6 +1,6 @@
 # Struct 到 Flink 形式化映射指南
 
-> 所属阶段: Knowledge/05-mapping-guides | 前置依赖: [Struct/01-foundation](../../Struct/01-foundation/), [Flink/02-core-mechanisms](../../Flink/02-core-mechanisms/) | 形式化等级: L4-L5
+> 所属阶段: Knowledge/05-mapping-guides | 前置依赖: [Struct/01-foundation](../../Struct/01-foundation/), [Flink/02-core-mechanisms](../../Flink/02-core/) | 形式化等级: L4-L5
 
 ---
 

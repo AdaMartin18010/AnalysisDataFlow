@@ -1,6 +1,6 @@
 # Flink REST API 完整参考
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink部署架构](Flink/01-concepts/deployment-architectures.md), [Checkpoint机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3
+> **所属阶段**: Flink/ | **前置依赖**: [Flink部署架构](../../01-concepts/deployment-architectures.md), [Checkpoint机制深度解析](../../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3
 
 ---
 

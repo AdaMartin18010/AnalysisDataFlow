@@ -1,6 +1,6 @@
 # Flink 2.1 前沿追踪 (Flink 2.1 Frontier Tracking)
 
-> **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
+> **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 > **文档类型**: 技术路线图/前沿追踪 | **覆盖版本**: Flink 2.1.x | **状态**: 规划中
 
 ---
@@ -124,7 +124,7 @@ $$
 
 **Lemma-F-08-03: 架构兼容性引理**
 
-基于 [Flink 2.0 架构](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) [^6]:
+基于 [Flink 2.0 架构](../../01-concepts/flink-1.x-vs-2.0-comparison.md) [^6]:
 
 $$
 \mathcal{F}_{2.1} = \mathcal{F}_{2.0} \cup \{MLModule, CloudNativeModule, PerfModule\}
@@ -178,7 +178,7 @@ $$
 
 ### 3.1 与 Flink 2.0 架构的关系
 
-基于 [Flink 1.x vs 2.0 对比](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) [^8]:
+基于 [Flink 1.x vs 2.0 对比](../../01-concepts/flink-1.x-vs-2.0-comparison.md) [^8]:
 
 ```
 Flink 2.0 Core
@@ -545,11 +545,11 @@ graph TB
 
 [^5]: Apache Flink, "Latency Optimization Goals," 2026.
 
-[^6]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 2.0 架构定义。
+[^6]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 2.0 架构定义。
 
-[^7]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - 性能基准。
+[^7]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - 性能基准。
 
-[^8]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - 架构对比全篇。
+[^8]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - 架构对比全篇。
 
 [^9]: Gartner, "Top Strategic Technology Trends 2026," 2025.
 
@@ -560,9 +560,9 @@ graph TB
 
 **关联文档**:
 
-- [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
-- [../../Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
-- [../../Flink/08-roadmap/2026-q2-flink-tasks.md](Flink/08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md) - 2026 Q2 推进任务
+- [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
+- [../../Flink/01-architecture/disaggregated-state-analysis.md](../../01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
+- [../../Flink/08-roadmap/2026-q2-flink-tasks.md](2026-q2-flink-tasks.md) - 2026 Q2 推进任务
 
 ---
 

@@ -5,7 +5,7 @@
 > 部分特性为早期规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [Flink/09-language-foundations/09-wasm-udf-frameworks.md](./09-wasm-udf-frameworks.md), [Flink/09-language-foundations/10-wasi-component-model.md](./10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.5 GA | status: early-preview
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [Flink/09-language-foundations/09-wasm-udf-frameworks.md](./09-wasm-udf-frameworks.md), [Flink/09-language-foundations/10-wasi-component-model.md](./10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](../../05-ecosystem/05.03-wasm-udf/wasm-streaming.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.5 GA | status: early-preview
 
 ---
 

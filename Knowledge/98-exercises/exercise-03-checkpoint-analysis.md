@@ -1,6 +1,6 @@
 # 练习 03: Checkpoint 分析
 
-> 所属阶段: Knowledge | 前置依赖: [Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md), [exercise-02](./exercise-02-flink-basics.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [Checkpoint机制](../../Flink/02-core/checkpoint-mechanism-deep-dive.md), [exercise-02](./exercise-02-flink-basics.md) | 形式化等级: L4
 
 ---
 

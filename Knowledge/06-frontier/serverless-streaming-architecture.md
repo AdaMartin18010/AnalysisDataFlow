@@ -1,6 +1,6 @@
 # Serverless流处理架构与云原生实践
 
-> 所属阶段: Knowledge | 前置依赖: [../../Flink/10-deployment/serverless-flink-ga-guide.md](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [../../Flink/10-deployment/serverless-flink-ga-guide.md](../../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

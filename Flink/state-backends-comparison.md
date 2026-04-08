@@ -1,6 +1,6 @@
 # Flink State Backends 深度对比
 
-> 所属阶段: Flink | 前置依赖: [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
 
 ---
 

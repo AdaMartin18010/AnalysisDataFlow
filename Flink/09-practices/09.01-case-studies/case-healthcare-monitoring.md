@@ -1,6 +1,6 @@
 # 案例研究：医疗患者实时监控与异常检测平台
 
-> **所属阶段**: Flink | **前置依赖**: [Flink/15-observability/](../15-observability/) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Flink | **前置依赖**: [Flink/15-observability/](../../04-runtime/04.03-observability/flink-observability-complete-guide.md) | **形式化等级**: L4 (工程论证)
 > **案例来源**: 大型三甲医院真实案例(脱敏处理) | **文档编号**: F-07-25
 
 ---

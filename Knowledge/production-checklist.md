@@ -1,6 +1,6 @@
 # Flink 生产环境检查清单
 
-> 所属阶段: Knowledge | 前置依赖: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ---
 

@@ -434,7 +434,7 @@
 ### 引用格式
 
 ```markdown
-[Def-WASM-01](./THEOREM-INDEX.md#def-wasm-xx)
+[Def-WASM-01](./THEOREM-INDEX.md#wasm-模块)
 ```
 
 ### 更新索引

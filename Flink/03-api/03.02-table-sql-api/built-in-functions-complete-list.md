@@ -1,6 +1,6 @@
 # Flink Built-in Functions 完整列表
 
-> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [Flink SQL 概述](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L3 | **版本兼容**: Flink 1.17-1.20
+> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [Flink SQL 概述](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L3 | **版本兼容**: Flink 1.17-1.20
 
 ---
 

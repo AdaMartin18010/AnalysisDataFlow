@@ -1,6 +1,6 @@
 # CUDA GPU UDF 开发指南
 
-> 所属阶段: Flink/14-rust-assembly-ecosystem/heterogeneous-computing | 前置依赖: [Flink UDF 基础](Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Rust FFI 绑定](../../09-language-foundations/) | 形式化等级: L4 (工程实践)
+> 所属阶段: Flink/14-rust-assembly-ecosystem/heterogeneous-computing | 前置依赖: [Flink UDF 基础](../../03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Rust FFI 绑定](../../03-api/09-language-foundations/flink-rust-native-api-guide.md) | 形式化等级: L4 (工程实践)
 
 ## 1. 概念定义 (Definitions)
 

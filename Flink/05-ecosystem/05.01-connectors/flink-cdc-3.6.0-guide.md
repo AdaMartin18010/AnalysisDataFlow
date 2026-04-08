@@ -1,6 +1,6 @@
 # Flink CDC 3.6.0 特性同步完整指南
 
-> 所属阶段: Flink/05-ecosystem/05.01-connectors | 前置依赖: [Flink CDC 3.0 数据集成框架](./flink-cdc-3.0-data-integration.md), [Flink 2.2 前沿特性](Flink/02-core/flink-2.2-frontier-features.md) | 形式化等级: L4
+> 所属阶段: Flink/05-ecosystem/05.01-connectors | 前置依赖: [Flink CDC 3.0 数据集成框架](./flink-cdc-3.0-data-integration.md), [Flink 2.2 前沿特性](../../02-core/flink-2.2-frontier-features.md) | 形式化等级: L4
 
 **发布日期**: 2026-03-30 | **版本**: 3.6.0 | **状态**: GA (General Availability)
 

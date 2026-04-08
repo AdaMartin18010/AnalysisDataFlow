@@ -1,6 +1,6 @@
 # Flink 状态后端选型指南 (State Backend Selection Guide)
 
-> 所属阶段: Flink/06-engineering | 前置依赖: [一致性层级文档](Struct/02-properties/02.02-consistency-hierarchy.md), [Checkpoint 机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
+> 所属阶段: Flink/06-engineering | 前置依赖: [一致性层级文档](../../../Struct/02-properties/02.02-consistency-hierarchy.md), [Checkpoint 机制深度解析](../../02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
 
 ---
 
@@ -143,7 +143,7 @@ $$
 
 **陈述**：状态后端的选择不影响 Flink 作业能够达到的一致性语义级别。
 
-**证明**：一致性语义由 Checkpoint 机制决定（参见 [02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md)）。无论使用何种后端，只要满足 Source 可重放、Barrier 对齐、Sink 原子性，端到端 Exactly-Once 即成立。状态后端仅影响性能，不改变正确性。∎
+**证明**：一致性语义由 Checkpoint 机制决定（参见 [02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md)）。无论使用何种后端，只要满足 Source 可重放、Barrier 对齐、Sink 原子性，端到端 Exactly-Once 即成立。状态后端仅影响性能，不改变正确性。∎
 
 ---
 
@@ -188,7 +188,7 @@ $$
 
 ### 关系 1: 状态后端与一致性层级的映射
 
-根据 [02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md)，端到端 Exactly-Once 由三个子属性构成：
+根据 [02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md)，端到端 Exactly-Once 由三个子属性构成：
 
 $$
 \text{End-to-End-EO}(J) \iff \text{Replayable}(Src) \land \text{ConsistentCheckpoint}(Ops) \land \text{AtomicOutput}(Snk)

@@ -1,6 +1,6 @@
 # Flink on Kubernetes - 云原生部署完整指南
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 部署架构分析](Flink/01-concepts/deployment-architectures.md), [Flink 性能调优指南](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink 部署架构分析](../../01-concepts/deployment-architectures.md), [Flink 性能调优指南](../../09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 形式化等级: L3
 
 ---
 

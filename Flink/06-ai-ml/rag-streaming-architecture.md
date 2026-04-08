@@ -1,6 +1,6 @@
 # Real-time RAG (Retrieval-Augmented Generation) with Streaming
 
-> **Stage**: Flink/12-ai-ml | **Prerequisites**: [vector-database-integration.md](./vector-database-integration.md), [vector-search.md](Flink/03-api/03.02-table-sql-api/vector-search.md) | **Formalization Level**: L4-L5
+> **Stage**: Flink/12-ai-ml | **Prerequisites**: [vector-database-integration.md](./vector-database-integration.md), [vector-search.md](../03-api/03.02-table-sql-api/vector-search.md) | **Formalization Level**: L4-L5
 
 ---
 

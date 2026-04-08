@@ -1,6 +1,6 @@
 # Flink 与 Apache Pulsar Functions 集成指南
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink Connectors Overview](Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | **形式化等级**: L4
+> **所属阶段**: Flink/ | **前置依赖**: [Flink Connectors Overview](05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | **形式化等级**: L4
 
 ---
 

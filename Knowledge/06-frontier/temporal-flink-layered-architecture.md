@@ -1,6 +1,6 @@
 # Temporal与Flink分层架构整合指南
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [00.md](../../00.md), [stateful-serverless.md](./stateful-serverless.md) | 形式化等级: L4-L5
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [00.md](../../Flink/00-meta/00-INDEX.md), [stateful-serverless.md](./stateful-serverless.md) | 形式化等级: L4-L5
 
 ## 目录
 

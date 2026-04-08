@@ -1,6 +1,6 @@
 # Serverless流处理云成本优化指南
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [serverless-streaming-architecture.md](./serverless-streaming-architecture.md), [Flink流处理成本优化](Flink/09-practices/09.03-performance-tuning/stream-processing-cost-optimization.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [serverless-streaming-architecture.md](./serverless-streaming-architecture.md), [Flink流处理成本优化](../../Flink/09-practices/09.03-performance-tuning/stream-processing-cost-optimization.md) | **形式化等级**: L4
 
 ---
 

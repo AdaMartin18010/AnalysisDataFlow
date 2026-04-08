@@ -1,6 +1,6 @@
 # Flink CEP 完整教程 (Complete Tutorial)
 
-> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [flink-cep-complete-guide.md](Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md), [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [flink-cep-complete-guide.md](03-api/03.02-table-sql-api/flink-cep-complete-guide.md), [time-semantics-and-watermark.md](02-core/time-semantics-and-watermark.md) | **形式化等级**: L3-L4
 > **版本**: Flink 1.13-2.2+ | **难度**: 中级-高级 | **预计阅读时间**: 90分钟
 
 ---

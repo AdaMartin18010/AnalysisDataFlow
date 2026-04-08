@@ -1,6 +1,6 @@
 # Flink 与 Apache Paimon 深度集成 - 流式 Lakehouse 存储连接器
 
-> **所属阶段**: Flink/04-connectors/ | **前置依赖**: [Flink/14-lakehouse/flink-paimon-integration.md](Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md), [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+ | Paimon 0.8+
+> **所属阶段**: Flink/04-connectors/ | **前置依赖**: [Flink/14-lakehouse/flink-paimon-integration.md](flink-paimon-integration.md), [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+ | Paimon 0.8+
 
 ---
 

@@ -1,6 +1,6 @@
 # Iron Functions 完全指南 — Flink Rust UDF 开发
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem | **前置依赖**: [Flink/14-rust-assembly-ecosystem/rust-udf-development-guide.md](./risingwave-rust-udf-native-guide.md), [Flink/04-datastream-api/flink-wasm-integration.md](Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **形式化等级**: L4 (工程实践+形式化语义) | **状态**: 生产可用 (Production Ready) | **版本**: v1.0 (2025)
+> **所属阶段**: Flink/14-rust-assembly-ecosystem | **前置依赖**: [Flink/14-rust-assembly-ecosystem/rust-udf-development-guide.md](./risingwave-rust-udf-native-guide.md), [Flink/04-datastream-api/flink-wasm-integration.md](../03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **形式化等级**: L4 (工程实践+形式化语义) | **状态**: 生产可用 (Production Ready) | **版本**: v1.0 (2025)
 
 ---
 

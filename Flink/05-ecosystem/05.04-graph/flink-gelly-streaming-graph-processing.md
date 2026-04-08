@@ -1,6 +1,6 @@
 # Flink Gelly Streaming - 图流处理
 
-> 所属阶段: Flink | 前置依赖: [Flink Gelly](flink-gelly.md), [Flink DataStream API](Flink/01-concepts/datastream-v2-semantics.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink Gelly](flink-gelly.md), [Flink DataStream API](../../01-concepts/datastream-v2-semantics.md) | 形式化等级: L4
 
 ---
 

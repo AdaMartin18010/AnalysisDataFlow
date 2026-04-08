@@ -1,6 +1,6 @@
 # Rust 流处理引擎生态全面对比矩阵
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 架构文档](../../01-architecture/), [Dataflow 模型理论](../../../Struct/) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [Flink 架构文档](../../01-concepts/deployment-architectures.md), [Dataflow 模型理论](../../../Struct/) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

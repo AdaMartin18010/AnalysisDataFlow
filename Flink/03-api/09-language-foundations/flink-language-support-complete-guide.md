@@ -1,6 +1,6 @@
 # Flink 语言支持完整特性指南
 
-> **所属阶段**: Flink | **前置依赖**: [Flink 部署架构](Flink/01-concepts/deployment-architectures.md), [TypeInformation 推导](./01.02-typeinformation-derivation.md), [Python API 详解](./02-python-api.md) | **形式化等级**: L4
+> **所属阶段**: Flink | **前置依赖**: [Flink 部署架构](../../01-concepts/deployment-architectures.md), [TypeInformation 推导](./01.02-typeinformation-derivation.md), [Python API 详解](./02-python-api.md) | **形式化等级**: L4
 
 ---
 

@@ -1,6 +1,6 @@
 # Flink + Delta Lake 深度集成：流批统一的 Lakehouse 存储
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [04.04-cdc-debezium-integration.md](./04.04-cdc-debezium-integration.md), [../14-lakehouse/streaming-lakehouse-architecture.md](Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.17+, Delta Lake 3.0+
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [04.04-cdc-debezium-integration.md](./04.04-cdc-debezium-integration.md), [../14-lakehouse/streaming-lakehouse-architecture.md](../05.02-lakehouse/streaming-lakehouse-architecture.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.17+, Delta Lake 3.0+
 
 ---
 

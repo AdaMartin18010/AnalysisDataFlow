@@ -1,6 +1,6 @@
 # Kafka Streams 到 Flink 迁移指南
 
-> 所属阶段: Knowledge/05-migrations | 前置依赖: [Flink DataStream API](Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Kafka Streams 官方文档](https://kafka.apache.org/documentation/streams/) | 形式化等级: L4
+> 所属阶段: Knowledge/05-migrations | 前置依赖: [Flink DataStream API](../../Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Kafka Streams 官方文档](https://kafka.apache.org/documentation/streams/) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

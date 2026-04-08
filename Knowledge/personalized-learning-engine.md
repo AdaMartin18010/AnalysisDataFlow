@@ -2,7 +2,7 @@
 
 > **Project**: P3-8 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04
 >
-> **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS-DYNAMIC.md)
+> **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md)
 
 This document describes the design and implementation of a personalized learning path recommendation engine for the AnalysisDataFlow knowledge base.
 
@@ -679,7 +679,7 @@ class ABTestFramework:
 
 ## 9. References
 
-- [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS-DYNAMIC.md) - Dynamic learning paths
+- [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) - Dynamic learning paths
 - [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) - Learning path guide
 - [QUICK-START.md](../QUICK-START.md) - Quick start guide
 

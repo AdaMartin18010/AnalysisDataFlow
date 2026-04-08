@@ -1,6 +1,6 @@
 # Flink 2.3/2.4 路线图与新特性全解
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2前沿特性](Flink/02-core/flink-2.2-frontier-features.md) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2前沿特性](../../02-core/flink-2.2-frontier-features.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

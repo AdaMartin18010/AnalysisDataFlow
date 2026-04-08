@@ -1,6 +1,6 @@
 # WebAssembly与流计算 - 轻量级边缘计算
 
-> 所属阶段: Flink | 前置依赖: [Flink部署架构](Flink/01-concepts/deployment-architectures.md), [Flink UDF扩展](Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [Flink部署架构](../../01-concepts/deployment-architectures.md), [Flink UDF扩展](../../03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

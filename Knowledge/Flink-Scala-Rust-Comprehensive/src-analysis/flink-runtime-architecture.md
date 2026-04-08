@@ -1,6 +1,6 @@
 # Flink 运行时架构源码深度分析
 
-> 所属阶段: Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis | 前置依赖: [Flink架构概述](../flink-architecture-overview.md) | 形式化等级: L4
+> 所属阶段: Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis | 前置依赖: [Flink架构概述](../../../Flink/01-concepts/deployment-architectures.md) | 形式化等级: L4
 
 ---
 

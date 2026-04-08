@@ -1,0 +1,273 @@
+# Link Checker - 外部链接每日检查
+#
+# 触发条件:
+#   - 每日定时运行 (北京时间每天上午9:00)
+#   - 手动触发
+# 任务:
+#   1. 检查所有外部链接的有效性
+#   2. 发现失效链接时自动创建Issue通知
+#   3. 生成链接健康报告
+# 状态: 通知级别 (非阻塞)
+
+name: Daily Link Check
+
+on:
+  schedule:
+    # 每天凌晨 1:00 UTC (北京时间上午9:00)
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of link check'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - quick
+          - external-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 任务1: 外部链接检查 ============
+  check-external-links:
+    name: Check External Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q aiohttp
+
+      - name: Restore link check cache
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-cache-${{ github.run_id }}
+          restore-keys: |
+            link-checker-cache-
+
+      - name: Run external link checker
+        id: link_check
+        run: |
+          python scripts/link-health-checker.py \
+            --path . \
+            --output reports/external-link-report.md \
+            --json reports/external-link-results.json \
+            --timeout 30 \
+            --retries 2 \
+            --concurrent 30
+        continue-on-error: true
+
+      - name: Upload link check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-link-check-results
+          path: |
+            reports/external-link-report.md
+            reports/external-link-results.json
+            link-health-checker.log
+          if-no-files-found: ignore
+
+      - name: Parse link check results
+        id: parse-results
+        run: |
+          if [ -f reports/external-link-results.json ]; then
+            broken=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['broken_links'])")
+            total=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['total_links'])")
+            health_rate=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); total=d['summary']['total_links']; broken=d['summary']['broken_links']; print(f'{(total-broken)/total*100:.1f}' if total > 0 else '0')")
+            echo "broken_links=$broken" >> $GITHUB_OUTPUT
+            echo "total_links=$total" >> $GITHUB_OUTPUT
+            echo "health_rate=$health_rate" >> $GITHUB_OUTPUT
+          else
+            echo "broken_links=0" >> $GITHUB_OUTPUT
+            echo "total_links=0" >> $GITHUB_OUTPUT
+            echo "health_rate=100" >> $GITHUB_OUTPUT
+          fi
+
+    outputs:
+      broken_links: ${{ steps.parse-results.outputs.broken_links }}
+      total_links: ${{ steps.parse-results.outputs.total_links }}
+      health_rate: ${{ steps.parse-results.outputs.health_rate }}
+
+  # ============ 任务2: 创建失效链接Issue ============
+  create-broken-link-issue:
+    name: Create Issue for Broken Links
+    runs-on: ubuntu-latest
+    needs: check-external-links
+    if: needs.check-external-links.outputs.broken_links != '0'
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download link check results
+        uses: actions/download-artifact@v4
+        with:
+          name: external-link-check-results
+          path: reports/
+
+      - name: Create or update issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const brokenLinks = parseInt('${{ needs.check-external-links.outputs.broken_links }}');
+            const totalLinks = parseInt('${{ needs.check-external-links.outputs.total_links }}');
+            const healthRate = '${{ needs.check-external-links.outputs.health_rate }}';
+            
+            // 读取报告内容
+            let reportContent = '';
+            const reportPath = path.join('reports', 'external-link-report.md');
+            if (fs.existsSync(reportPath)) {
+              reportContent = fs.readFileSync(reportPath, 'utf8');
+            }
+            
+            // 提取失效链接列表
+            const brokenLinksSection = reportContent.match(/## ❌ 失效链接[\s\S]*?(?=## |$)/);
+            const brokenLinksPreview = brokenLinksSection ? brokenLinksSection[0].substring(0, 2000) : '';
+            
+            const title = `🚨 [Daily Check] ${brokenLinks} broken external links detected`;
+            
+            const body = `## 🔗 External Link Health Check Results
+
+**Check Date**: ${new Date().toISOString()}
+**Health Rate**: ${healthRate}%
+**Broken Links**: ${brokenLinks}
+**Total Links Checked**: ${totalLinks}
+
+---
+
+### 📋 Quick Summary
+
+| Metric | Value |
+|--------|-------|
+| Health Rate | ${healthRate}% |
+| Broken Links | ${brokenLinks} |
+| Total Links | ${totalLinks} |
+
+---
+
+### 🔍 Broken Links Preview
+
+<details>
+<summary>Click to expand broken links (first 10)</summary>
+
+${brokenLinksPreview}
+
+</details>
+
+---
+
+### 🛠️ Recommended Actions
+
+1. Download the full report from workflow artifacts
+2. Run the auto-fix script:
+   \`\`\`bash
+   python scripts/link-auto-fix.py --fix-redirects
+   \`\`\`
+3. Manually fix remaining broken links
+4. Re-run the check to verify fixes
+
+---
+
+### 📄 Reports
+
+- [Download Full Report](../../actions/runs/${{ github.run_id }})
+- [View Workflow Run](../../actions/runs/${{ github.run_id }})
+
+---
+
+*This issue was automatically created by the Daily Link Check workflow.*
+*Next scheduled check: Tomorrow at 01:00 UTC*`;
+
+            // 查找现有未关闭的issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'maintenance,links,automated'
+            });
+            
+            const existingIssue = issues.data.find(i => i.title.includes('[Daily Check]') && i.title.includes('broken external links'));
+            
+            if (!existingIssue) {
+              // 创建新issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['maintenance', 'links', 'automated', 'daily-check']
+              });
+              console.log('✅ Created new issue for broken links');
+            } else {
+              // 更新现有issue
+              const updatedBody = `${body}\n\n---\n\n**Previous Updates:**\n- Last updated: ${new Date().toISOString()}`;
+              
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: updatedBody
+              });
+              
+              // 添加评论
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `**Updated**: ${brokenLinks} broken links detected (Health Rate: ${healthRate}%) - [View Run](../../actions/runs/${{ github.run_id }})`
+              });
+              console.log('📝 Updated existing issue #' + existingIssue.number);
+            }
+
+  # ============ 任务3: 发送通知汇总 ============
+  notify-summary:
+    name: Send Summary
+    runs-on: ubuntu-latest
+    needs: [check-external-links, create-broken-link-issue]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## 🔗 Daily Link Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          broken="${{ needs.check-external-links.outputs.broken_links }}"
+          total="${{ needs.check-external-links.outputs.total_links }}"
+          health_rate="${{ needs.check-external-links.outputs.health_rate }}"
+          
+          if [ "$broken" = "0" ] || [ -z "$broken" ]; then
+            echo "✅ **All links are healthy!**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Found $broken broken links** (Health Rate: $health_rate%)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Links | $total |" >> $GITHUB_STEP_SUMMARY
+          echo "| Broken Links | $broken |" >> $GITHUB_STEP_SUMMARY
+          echo "| Health Rate | $health_rate% |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$broken" != "0" ] && [ -n "$broken" ]; then
+            echo "📌 An issue has been created/updated to track these broken links." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Detailed Report](../../actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY

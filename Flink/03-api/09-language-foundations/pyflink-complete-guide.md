@@ -5,7 +5,7 @@
 > **Python 版本**: 3.9 - 3.12
 > **稳定性**: GA (Generally Available)
 >
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [02-python-api.md](./02-python-api.md), [Flink/03-sql-table-api/flink-table-sql-complete-guide.md](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L2-L3
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [02-python-api.md](./02-python-api.md), [Flink/03-sql-table-api/flink-table-sql-complete-guide.md](../03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L2-L3
 
 ---
 

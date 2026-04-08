@@ -1,6 +1,6 @@
 # Flink SQL vs DataStream API 对比 (SQL vs DataStream Comparison)
 
-> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [Flink SQL 查询优化分析](./query-optimization-analysis.md), [DataStream V2 API 语义分析](Flink/01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4
+> **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [Flink SQL 查询优化分析](./query-optimization-analysis.md), [DataStream V2 API 语义分析](../../01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4
 
 ---
 

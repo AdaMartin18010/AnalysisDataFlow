@@ -1256,4 +1256,4 @@ graph TB
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-02 | 形式化等级: L3-L4*
-*关联文档: [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) · [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) · [Flink: Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)*
+*关联文档: [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) · [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) · [Flink: Checkpoint Mechanism](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)*

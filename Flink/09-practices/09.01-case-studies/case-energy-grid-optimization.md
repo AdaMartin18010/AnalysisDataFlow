@@ -1,6 +1,6 @@
 # 案例研究：智能电网能源优化与负载预测平台
 
-> **所属阶段**: Flink | **前置依赖**: [Flink/02-core-mechanisms/](../02-core-mechanisms/) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Flink | **前置依赖**: [Flink/02-core-mechanisms/](../../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4 (工程论证)
 > **案例来源**: 省级电网公司真实案例(脱敏处理) | **文档编号**: F-07-26
 
 ---

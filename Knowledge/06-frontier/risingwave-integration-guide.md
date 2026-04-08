@@ -1419,7 +1419,7 @@ Flink:
 
 - [flink-vs-risingwave.md](../04-technology-selection/flink-vs-risingwave.md) —— Flink vs RisingWave 深度对比
 - [risingwave-deep-dive.md](./risingwave-deep-dive.md) —— RisingWave 技术深度解析
-- [../../Flink/09-language-foundations/06-risingwave-deep-dive.md](Flink/03-api/09-language-foundations/06-risingwave-deep-dive.md) —— Flink 视角的 RisingWave 分析
+- [../../Flink/09-language-foundations/06-risingwave-deep-dive.md](../../Flink/03-api/09-language-foundations/06-risingwave-deep-dive.md) —— Flink 视角的 RisingWave 分析
 
 ---
 

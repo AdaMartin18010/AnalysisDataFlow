@@ -1,6 +1,6 @@
 # Apache Flink 2.2 前沿特性全面解析
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [Flink 2.1 Delta Join](delta-join.md), [物化表](Flink/03-api/03.02-table-sql-api/materialized-tables.md), [向量搜索](Flink/03-api/03.02-table-sql-api/vector-search.md) | **形式化等级**: L4
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [Flink 2.1 Delta Join](delta-join.md), [物化表](../03-api/03.02-table-sql-api/materialized-tables.md), [向量搜索](../03-api/03.02-table-sql-api/vector-search.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 

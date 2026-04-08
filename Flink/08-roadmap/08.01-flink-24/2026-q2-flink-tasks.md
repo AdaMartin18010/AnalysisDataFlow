@@ -1,6 +1,6 @@
 # 2026 Q2 Flink 推进任务 (2026 Q2 Flink Tasks)
 
-> **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
+> **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 > **文档类型**: 工程路线图 | **规划周期**: 2026 Q2 (4月-6月) | **状态**: 已批准
 
 ---
@@ -123,7 +123,7 @@ P3 = {task | Complete(task) → NiceToHave}
 
 **Lemma-F-08-01: 性能基线引理 (Performance Baseline Lemma)**
 
-基于 [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) 中的基准数据 [^10]:
+基于 [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) 中的基准数据 [^10]:
 
 $$
 \begin{aligned}
@@ -233,7 +233,7 @@ graph TB
 
 ### 3.2 与 Flink 1.x/2.0 对比文档的关联
 
-基于 [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) 的关键发现，本路线图着重解决以下架构差异带来的工程挑战 [^18]:
+基于 [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) 的关键发现，本路线图着重解决以下架构差异带来的工程挑战 [^18]:
 
 | 对比维度 | 1.x → 2.0 变化 | Q2 重点任务 |
 |---------|---------------|------------|
@@ -642,7 +642,7 @@ quadrantChart
 
 [^9]: Apache Flink, "Documentation Standards", 2026.
 
-[^10]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比，第 10 节性能基准。
+[^10]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比，第 10 节性能基准。
 
 [^11]: Apache Flink Benchmarks, "Throughput Improvement Goals", 2026.
 
@@ -661,7 +661,7 @@ quadrantChart
 
 [^17]: Apache Flink, "Documentation Coverage Metrics", 2026.
 
-[^18]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - 第 3 节详细维度对比表。
+[^18]: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - 第 3 节详细维度对比表。
 
 <!-- 同[^3]: FLIP-444 (Checkpoint V2) -->
 [^19]: Apache Flink FLIP-444 (Draft), "Checkpoint V2 Motivation", 2026.
@@ -683,10 +683,10 @@ quadrantChart
 
 **关联文档**:
 
-- [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
-- [../../Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
-- [../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) - Checkpoint 机制深度分析
-- [../../Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) - 性能调优指南
+- [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
+- [../../Flink/01-architecture/disaggregated-state-analysis.md](../../01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
+- [../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md) - Checkpoint 机制深度分析
+- [../../Flink/06-engineering/performance-tuning-guide.md](../../09-practices/09.03-performance-tuning/performance-tuning-guide.md) - 性能调优指南
 
 ---
 

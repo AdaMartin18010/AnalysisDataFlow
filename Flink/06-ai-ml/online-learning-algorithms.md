@@ -1,6 +1,6 @@
 # 在线学习算法 - 流式机器学习核心 (Online Learning Algorithms)
 
-> 所属阶段: Flink/12-ai-ml | 前置依赖: [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md), [state-backend-selection.md](Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) | 形式化等级: L4
+> 所属阶段: Flink/12-ai-ml | 前置依赖: [checkpoint-mechanism-deep-dive.md](../02-core/checkpoint-mechanism-deep-dive.md), [state-backend-selection.md](../09-practices/09.03-performance-tuning/state-backend-selection.md) | 形式化等级: L4
 
 ---
 

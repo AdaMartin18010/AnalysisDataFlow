@@ -1,6 +1,6 @@
 # CEP (Complex Event Processing) 完整教程
 
-> 所属阶段: Knowledge | 前置依赖: [Flink/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L4
+> 所属阶段: Knowledge | 前置依赖: [Flink/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L4
 
 ---
 

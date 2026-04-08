@@ -1,6 +1,6 @@
 # Flink on Kubernetes 生产级部署深度指南
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink on Kubernetes 云原生部署完整指南](./kubernetes-deployment.md), [Flink 部署架构模式分析](Flink/01-concepts/deployment-architectures.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/ | **前置依赖**: [Flink on Kubernetes 云原生部署完整指南](./kubernetes-deployment.md), [Flink 部署架构模式分析](../../01-concepts/deployment-architectures.md) | **形式化等级**: L3-L4
 
 ---
 

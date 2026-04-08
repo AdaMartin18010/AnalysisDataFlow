@@ -1,6 +1,6 @@
 # Flink 性能基准测试套件 - 完整指南
 
-> 所属阶段: Flink/ | 前置依赖: [流处理Benchmark体系](./streaming-benchmarks.md), [Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/ | 前置依赖: [流处理Benchmark体系](./streaming-benchmarks.md), [Checkpoint机制](../../02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

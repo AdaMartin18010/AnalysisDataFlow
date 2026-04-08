@@ -9,13 +9,13 @@
 > | **目标版本** | 2.6.0 / 2.7.0 GA |
 > | **预计发布时间** | 2.6: 2026 Q2 / 2.7: 2026 Q4 |
 > | **最后更新** | 2026-04-05 |
-> | **跟踪系统** | [.scripts/flink-release-tracker-v2.py](../../.scripts/flink-release-tracker.py) |
+> | **跟踪系统** | [.scripts/flink-release-tracker-v2.py](#) |
 
 ---
 
 # Flink 2.6/2.7 特性跟踪
 
-> 所属阶段: Flink/version-tracking | 前置依赖: [Flink 2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
+> 所属阶段: Flink/version-tracking | 前置依赖: [Flink 2.4 跟踪](../../08-roadmap/08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
 
 ---
 
@@ -328,7 +328,7 @@ graph TB
 - [FLIP 提案索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
 - [Flink JIRA 看板](https://issues.apache.org/jira/browse/FLINK)
 - [Flink GitHub 仓库](https://github.com/apache/flink)
-- [Flink 2.4 跟踪文档](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
+- [Flink 2.4 跟踪文档](../../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 
 ---
 

@@ -5,7 +5,7 @@
 > 部分特性为早期规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
 
-> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink 2.5版本预览](Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md), [Flink实时ML推理](./flink-realtime-ml-inference.md) | 形式化等级: L4 | status: early-preview
+> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink 2.5版本预览](../08-roadmap/08.01-flink-24/flink-2.5-preview.md), [Flink实时ML推理](./flink-realtime-ml-inference.md) | 形式化等级: L4 | status: early-preview
 
 ---
 

@@ -1,6 +1,6 @@
 # 智能电网实时能源管理与优化案例研究 (Smart Grid Real-time Energy Management)
 
-> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md), [../02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md), [../12-ai-ml/online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | **形式化等级**: L4
+> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../02-core-mechanisms/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md), [../02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md), [../12-ai-ml/online-learning-algorithms.md](../../06-ai-ml/online-learning-algorithms.md) | **形式化等级**: L4
 
 ---
 

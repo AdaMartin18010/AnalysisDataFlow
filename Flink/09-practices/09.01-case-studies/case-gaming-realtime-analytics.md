@@ -1,6 +1,6 @@
 # 案例研究：游戏行业实时分析与反作弊系统
 
-> 所属阶段: Flink/ | 前置依赖: [Flink SQL窗口函数](Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md), [Flink ML架构](Flink/06-ai-ml/flink-ml-architecture.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [Flink SQL窗口函数](../../03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md), [Flink ML架构](../../06-ai-ml/flink-ml-architecture.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

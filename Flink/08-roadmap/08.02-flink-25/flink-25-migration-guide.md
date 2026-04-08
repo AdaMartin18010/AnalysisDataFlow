@@ -1,6 +1,6 @@
 # Flink 2.5 迁移指南
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 发布](flink-2.4-tracking.md) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 发布](../08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
 
 ---
 

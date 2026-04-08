@@ -1,6 +1,6 @@
 # Flink实时机器学习推理与模型服务
 
-> 所属阶段: Flink | 前置依赖: [Flink异步I/O机制](Flink/02-core/async-execution-model.md), [Flink状态管理](Flink/02-core/flink-state-management-complete-guide.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink异步I/O机制](../02-core/async-execution-model.md), [Flink状态管理](../02-core/flink-state-management-complete-guide.md) | 形式化等级: L4
 
 ---
 

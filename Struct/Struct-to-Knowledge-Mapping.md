@@ -551,7 +551,7 @@ graph TB
 | Struct 形式定义 | Knowledge 概念文档 | 映射类型 | 映射说明 |
 |----------------|-------------------|----------|----------|
 | [Def-S-02-01 CCS](./01-foundation/01.02-process-calculus-primer.md#def-s-02-01-ccs-calculus-of-communicating-systems) | [concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md#def-k-01-01-csp-communicating-sequential-processes) | Direct | 进程演算作为并发范式之一，CSP/CCS 在概念图谱中对比呈现 |
-| [Def-S-03-01 Actor](./01-foundation/01.03-actor-model-formalization.md#def-s-03-01-actor-经典-actor-模型) | [concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md#def-k-01-02-actor-model) | Direct | Actor 模型作为并发范式之一，四元组定义映射到工程概念 |
+| [Def-S-03-01 Actor](./01-foundation/01.03-actor-model-formalization.md#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型) | [concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md#def-k-01-02-actor-model) | Direct | Actor 模型作为并发范式之一，四元组定义映射到工程概念 |
 | [Def-S-04-01 Dataflow](./01-foundation/01.04-dataflow-model-formalization.md) | [streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md) | Direct | Dataflow 作为流计算基础模型，形式定义指导概念图谱构建 |
 | [Def-S-05-01 CSP](./01-foundation/01.05-csp-formalization.md) | [concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md#def-k-01-01-csp-communicating-sequential-processes) | Direct | CSP 作为并发范式之一，进程代数语法映射到工程通信模式 |
 | [Def-S-06-01 Petri Net](./01-foundation/01.06-petri-net-formalization.md) | [streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md) | Inspired | Petri 网用于工作流建模，启发流处理状态机设计 |

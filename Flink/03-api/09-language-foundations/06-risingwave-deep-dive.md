@@ -1,6 +1,6 @@
 # RisingWave 深度解析：Rust 原生流数据库与 Flink 对比分析
 
-> 所属阶段: Flink/09-language-foundations | 前置依赖: [Flink/05-vs-competitors/flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md), [Knowledge/06-frontier/risingwave-deep-dive.md](Knowledge/06-frontier/risingwave-deep-dive.md) | 形式化等级: L4 | **版本**: RisingWave 2.0+ / Flink 1.18+
+> 所属阶段: Flink/09-language-foundations | 前置依赖: [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../../09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md), [Knowledge/06-frontier/risingwave-deep-dive.md](../../../Knowledge/06-frontier/risingwave-deep-dive.md) | 形式化等级: L4 | **版本**: RisingWave 2.0+ / Flink 1.18+
 
 ---
 
@@ -567,7 +567,7 @@ graph TB
 
 ### 3.3 Dataflow 模型实现差异
 
-根据 [Dataflow 模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md)：
+根据 [Dataflow 模型形式化](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md)：
 
 | 属性 | Flink 实现 | RisingWave 实现 |
 |------|-----------|-----------------|

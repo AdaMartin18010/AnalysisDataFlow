@@ -1,6 +1,6 @@
 # Streaming Lakehouse - 流批统一的Lakehouse架构
 
-> **所属阶段**: Flink/09-language-foundations/ | **前置依赖**: [Flink/00-INDEX.md](Struct/00-INDEX.md), [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | **形式化等级**: L3-L4 | **版本**: Flink 1.18+
+> **所属阶段**: Flink/09-language-foundations/ | **前置依赖**: [Flink/00-INDEX.md](../../../Struct/00-INDEX.md), [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../03.02-table-sql-api/sql-vs-datastream-comparison.md) | **形式化等级**: L3-L4 | **版本**: Flink 1.18+
 
 ---
 

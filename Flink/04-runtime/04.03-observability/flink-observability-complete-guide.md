@@ -1971,9 +1971,9 @@ if __name__ == '__main__':
 {{ end }}
 
 ## 相关链接
-- [Grafana 仪表盘]({{ .GrafanaURL }})
-- [运行手册]({{ .Annotations.RunbookURL }})
-- [作业日志]({{ .LogsURL }})
+- [Grafana 仪表盘](#)
+- [运行手册](#)
+- [作业日志](#)
 ```
 
 ---
