@@ -1,8 +1,8 @@
 {
   "stats": {
-    "files_checked": 613,
-    "links_checked": 10548,
-    "valid_links": 10278,
+    "files_checked": 615,
+    "links_checked": 10630,
+    "valid_links": 10360,
     "ignored": 270
   },
   "errors": {
@@ -12,7 +12,7 @@
     "other": []
   },
   "summary": {
-    "total_files": 613,
+    "total_files": 615,
     "total_errors": 0,
     "file_errors": 0,
     "anchor_errors": 0,

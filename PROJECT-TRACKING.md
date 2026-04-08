@@ -139,6 +139,36 @@
 | P2-11 | 文档关系自动映射 | ✅ 已完成 | [.scripts/doc-relationship-mapper.py](./.scripts/doc-relationship-mapper.py) - 自动扫描文档引用关系 |
 | P2-12 | 学习路径动态推荐 | ✅ 已完成 | [Knowledge/learning-path-recommender.md](./Knowledge/learning-path-recommender.md) - 动态推荐系统文档 |
 | P2-13 | 概念依赖图自动生成 | ✅ 已完成 | [.scripts/concept-dependency-generator.py](./.scripts/concept-dependency-generator.py) - Mermaid依赖图生成 |
+| **P2-3** | **边缘流处理实战** | **✅ 已完成** | **5篇边缘流处理文档 ([详细](#p2-3-边缘流处理实战))** |
+
+**P2-3 边缘流处理实战** | 状态: **✅ 已完成** | 日期: 2026-04-08
+
+| 任务ID | 任务描述 | 状态 | 交付物 |
+|--------|----------|------|--------|
+| P2-3-1 | 边缘流处理完整指南 | ✅ 已完成 | [Flink/09-practices/09.05-edge/flink-edge-streaming-guide.md](./Flink/09-practices/09.05-edge/flink-edge-streaming-guide.md) - 架构设计、资源优化、部署流程 |
+| P2-3-2 | K3s边缘部署 | ✅ 已完成 | [Flink/09-practices/09.05-edge/flink-edge-kubernetes-k3s.md](./Flink/09-practices/09.05-edge/flink-edge-kubernetes-k3s.md) - K3s集群、Flink Operator、资源限制 |
+| P2-3-3 | MQTT/CoAP IoT网关 | ✅ 已完成 | [Flink/09-practices/09.05-edge/flink-edge-iot-gateway.md](./Flink/09-practices/09.05-edge/flink-edge-iot-gateway.md) - 协议适配、消息路由、网关架构 |
+| P2-3-4 | 离线同步策略 | ✅ 已完成 | [Flink/09-practices/09.05-edge/flink-edge-offline-sync.md](./Flink/09-practices/09.05-edge/flink-edge-offline-sync.md) - 断网检测、本地缓冲、批量同步 |
+| P2-3-5 | 资源优化 | ✅ 已完成 | [Flink/09-practices/09.05-edge/flink-edge-resource-optimization.md](./Flink/09-practices/09.05-edge/flink-edge-resource-optimization.md) - CPU/内存/功耗优化 |
+
+**P2-3 交付内容**:
+
+- **5篇边缘流处理文档** (总计 ~192KB)
+- **20个形式化定义** (Def-F-09-05-01 至 Def-F-09-05-20)
+- **8个定理/引理/命题** (Thm-F-09-05-01 至 Prop-F-09-05-05)
+- **完整的Docker/K8s配置示例**
+- **Mermaid架构图**: 15个
+- **生产检查清单**: 5份
+
+**技术覆盖**:
+
+- ✅ 边缘流处理架构设计
+- ✅ K3s轻量级Kubernetes部署
+- ✅ MQTT/CoAP IoT协议集成
+- ✅ 间歇性网络离线同步
+- ✅ CPU/内存/功耗资源优化
+- ✅ 边缘场景JVM调优
+- ✅ 低功耗模式设计
 
 **P2-B - Flink 架构演进分析** (新增) | 状态: **✅ 已完成** | 日期: 2026-04-06
 
