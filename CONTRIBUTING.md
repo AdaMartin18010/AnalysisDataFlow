@@ -337,6 +337,49 @@ sequenceDiagram
 
 ## 3. Pull Request流程
 
+以下图表展示了完整的 PR 流程：
+
+```mermaid
+flowchart TD
+    subgraph "准备阶段"
+        A[Fork 项目] --> B[克隆到本地]
+        B --> C[添加上游仓库]
+        C --> D[创建功能分支]
+    end
+    
+    subgraph "开发阶段"
+        D --> E[进行更改]
+        E --> F[本地验证]
+        F --> G{检查通过?}
+        G -->|否| E
+        G -->|是| H[提交更改]
+    end
+    
+    subgraph "提交阶段"
+        H --> I[推送到 Fork]
+        I --> J[创建 PR]
+        J --> K[自动化检查]
+    end
+    
+    subgraph "审核阶段"
+        K --> L{检查通过?}
+        L -->|否| M[修复问题]
+        M --> I
+        L -->|是| N[人工审核]
+        N --> O{需要修改?}
+        O -->|是| M
+        O -->|否| P[审核通过]
+    end
+    
+    subgraph "合并阶段"
+        P --> Q[合并到主分支]
+        Q --> R[贡献完成!]
+    end
+    
+    style A fill:#e1f5fe
+    style R fill:#e8f5e9
+```
+
 ### 3.1 Fork和分支
 
 **第一步：Fork 项目**
@@ -509,17 +552,34 @@ git commit -m "docs(knowledge): 改进 Exactly-Once 语义解释
 
 **合并流程**：
 
-```
-+-------------+    +-------------+    +-------------+    +-------------+
-|   提交 PR   | -> | 自动化检查  | -> | 人工审核    | -> |   合并/反馈   |
-+-------------+    +-------------+    +-------------+    +-------------+
-                          |                  |
-                          v                  v
-                    +-------------+    +-------------+
-                    | Markdown    |    | 内容审核    |
-                    | 格式检查    |    | 定理验证    |
-                    | 链接检查    |    | 引用验证    |
-                    +-------------+    +-------------+
+```mermaid
+flowchart LR
+    A[提交 PR] --> B[自动化检查]
+    B --> C{通过?}
+    C -->|否| D[修复问题]
+    D --> A
+    C -->|是| E[人工审核]
+    E --> F{通过?}
+    F -->|否| D
+    F -->|是| G[合并]
+    
+    subgraph "自动化检查"
+        B1[Markdown 格式]
+        B2[链接有效性]
+        B3[Mermaid 语法]
+    end
+    B -.-> B1
+    B -.-> B2
+    B -.-> B3
+    
+    subgraph "人工审核"
+        E1[内容准确性]
+        E2[定理编号]
+        E3[引用质量]
+    end
+    E -.-> E1
+    E -.-> E2
+    E -.-> E3
 ```
 
 **合并标准**：
@@ -999,7 +1059,35 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
 | 项目进度 | [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) | 项目进度看板 |
 | 导航索引 | [NAVIGATION-INDEX.md](./NAVIGATION-INDEX.md) | 文档导航索引 |
 
+### 贡献指南文档
+
+| 文档 | 链接 | 说明 |
+|-----|------|------|
+| 新贡献者入门 | [docs/contributing/getting-started.md](./docs/contributing/getting-started.md) | 零基础入门指南 |
+| 写作风格指南 | [docs/contributing/writing-guide.md](./docs/contributing/writing-guide.md) | 详细写作规范 |
+| 审核清单 | [docs/contributing/review-checklist.md](./docs/contributing/review-checklist.md) | 提交前自检清单 |
+| 行为准则 | [docs/contributing/code-of-conduct.md](./docs/contributing/code-of-conduct.md) | 社区行为规范 |
+
+### 视频教程脚本
+
+| 教程 | 链接 | 内容 |
+|-----|------|------|
+| 第一次贡献 | [docs/contributing/video-scripts/01-first-contribution.md](./docs/contributing/video-scripts/01-first-contribution.md) | 从零开始的完整流程 |
+| 编写形式化定理 | [docs/contributing/video-scripts/02-writing-theorem.md](./docs/contributing/video-scripts/02-writing-theorem.md) | 定理编写深度指南 |
+| 创建 Mermaid 图表 | [docs/contributing/video-scripts/03-creating-mermaid.md](./docs/contributing/video-scripts/03-creating-mermaid.md) | 可视化图表制作 |
+
+### GitHub 模板
+
+| 模板 | 链接 | 用途 |
+|-----|------|------|
+| Bug 报告 | [.github/ISSUE_TEMPLATE/bug_report.yml](./.github/ISSUE_TEMPLATE/bug_report.yml) | 报告错误 |
+| 功能建议 | [.github/ISSUE_TEMPLATE/feature_request.yml](./.github/ISSUE_TEMPLATE/feature_request.yml) | 建议新功能 |
+| 文档改进 | [.github/ISSUE_TEMPLATE/doc_improvement.yml](./.github/ISSUE_TEMPLATE/doc_improvement.yml) | 改进文档 |
+| PR 模板 | [.github/PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md) | 提交 PR 时使用 |
+
 ### 新贡献者快速开始
+
+如果你是第一次贡献，请按照以下步骤操作：
 
 ```bash
 # 1. Fork 并克隆项目
@@ -1026,6 +1114,21 @@ git push origin docs/fix-typo-in-readme
 # 7. 创建 PR，等待审核
 ```
 
+**新手建议**：
+1. 首先阅读 [新贡献者入门指南](./docs/contributing/getting-started.md)
+2. 从简单的任务开始，如修正拼写错误或添加示例
+3. 查看带有 `good first issue` 标签的 Issue
+4. 如有疑问，在 Discussion 中提问
+
+**首次贡献检查清单**：
+- [ ] 已 Fork 项目并克隆到本地
+- [ ] 已阅读项目规范 [AGENTS.md](./AGENTS.md)
+- [ ] 已阅读本贡献指南
+- [ ] 已创建功能分支
+- [ ] 已进行本地验证
+- [ ] 已提交符合规范的 commit
+- [ ] 已创建 PR 并填写描述
+
 ### 许可证
 
 通过提交 PR，您同意您的贡献将采用与项目相同的许可证：[LICENSE](./LICENSE)
@@ -1040,4 +1143,4 @@ git push origin docs/fix-typo-in-readme
 
 ---
 
-*最后更新：2026-04-04*
+*最后更新：2026-04-08*

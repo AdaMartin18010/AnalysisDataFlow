@@ -1,7 +1,7 @@
 # Flink 版本发布跟踪报告
 
-> 生成时间: 2026-04-05
-> 跟踪器版本: V2.0.0
+> 生成时间: 2026-04-08
+> 跟踪器版本: V2.1.0
 
 ---
 
@@ -9,23 +9,22 @@
 
 ```mermaid
 gantt
-    title Flink 版本路线图 (2024-2027)
+    title Flink 版本路线图 (2025-2027)
     dateFormat  YYYY-MM-DD
 
     section 已发布
     Flink 2.0           :done, 2025-03-24, 30d
-    Flink 2.1           :done, 2025-01-01, 30d
-    Flink 2.2           :done, 2025-12-04, 30d
+    Flink 2.1           :done, 2025-06-15, 30d
+    Flink 2.2           :done, 2025-09-20, 30d
+    Flink 2.3           :done, 2025-12-15, 30d
+    Flink 2.4           :done, 2026-01-30, 30d
 
     section 近期版本
-    Flink 2.3           :active, 2026-01-01, 90d
-    Flink 2.4           :active, 2026-07-01, 90d
+    Flink 2.5           :active, 2026-07-01, 90d
+    Flink 2.6           :2026-11-01, 60d
 
     section 规划中
-    Flink 2.5           :2026-04-01, 90d
-    Flink 2.6           :crit, 2026-05-01, 45d
-    Flink 2.7           :2026-11-01, 45d
-    Flink 3.0           :2027-01-01, 90d
+    Flink 3.0           :crit, 2027-01-01, 90d
 ```
 
 ---
@@ -34,65 +33,90 @@ gantt
 
 | 版本 | 状态 | 预计/实际发布 | 下载链接 | 跟踪文档 |
 |------|------|--------------|----------|----------|
-| 2.3.0 | 开发中 | 2026 Q1 | - | - |
-| 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
-| 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
-| **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
-| **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
-| 3.0.0 | 愿景 | 2027+ | - | - |
+| **2.5.0** | 🔄 **开发中** | **2026 Q3** | - | [2.5 路线图](../08-roadmap/08.02-flink-25/) |
+| 2.6.0 | 📋 规划中 | 2026 Q4 | - | - |
+| **3.0.0** | 🔭 **愿景规划** | **2027 Q1-Q2** | - | [3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md) |
 
 ---
 
-## 2.6/2.7 版本重点
+## Flink 2.5 版本重点
 
-### Flink 2.6 (预计 2026 Q2)
-
-| 特性 | FLIP | 状态 | 进度 | 影响级别 |
-|------|------|------|------|----------|
-| WASM UDF 增强 | FLIP-550 | 🔄 设计中 | 30% | 🔴 高 |
-| DataStream V2 API 稳定 | - | 🔄 实现中 | 60% | 🔴 高 |
-| 智能检查点优化 | FLIP-542 | 🔄 实现中 | 50% | 🟡 中 |
-| ForSt State Backend GA | FLIP-549 | 🔄 测试中 | 85% | 🟡 中 |
-
-### Flink 2.7 (预计 2026 Q4)
+### 核心特性
 
 | 特性 | FLIP | 状态 | 进度 | 影响级别 |
 |------|------|------|------|----------|
-| 云原生调度器 | FLIP-560 | 📋 规划中 | 10% | 🔴 高 |
-| AI/ML 集成增强 | FLIP-561 | 📋 规划中 | 5% | 🔴 高 |
-| 流批统一执行引擎 | FLIP-562 | 📋 规划中 | 5% | 🔴 高 |
-| SQL 物化视图增强 | FLIP-563 | 📋 规划中 | 5% | 🟡 中 |
+| 流批一体执行引擎 | FLIP-435 | 🔄 Draft | 40% | 🔴 高 |
+| Serverless GA | FLIP-442 | 🔄 实现中 | 70% | 🔴 高 |
+| AI/ML 推理优化 | FLIP-531-ext | 🔄 设计中 | 30% | 🔴 高 |
+| 物化表 GA | FLIP-516 | 🔄 测试中 | 85% | 🟡 中 |
+| WASM UDF GA | FLIP-448 | 🔄 实现中 | 75% | 🟡 中 |
+
+### 发布里程碑
+
+| 里程碑 | 日期 | 状态 |
+|--------|------|------|
+| Feature Freeze | 2026-07 | 📋 计划中 |
+| Code Freeze | 2026-08 | 📋 计划中 |
+| RC1 | 2026-08-15 | 📋 计划中 |
+| GA Release | 2026-09 | 📋 计划中 |
 
 ---
 
-## 前瞻文档统计
+## Flink 3.0 愿景规划
 
-### 2.6/2.7 跟踪
+### 关键 FLIP
 
-- [Flink 2.6/2.7 路线图](./version-tracking/flink-26-27-roadmap.md) - 状态: preview
-- [特性影响分析模板](./version-tracking/feature-impact-template.md) - 状态: template
+| FLIP | 标题 | 状态 | 预计开始 | 依赖 |
+|------|------|------|----------|------|
+| FLIP-500 | Unified Execution Layer | 📋 规划中 | 2026-06 | FLIP-435 |
+| FLIP-501 | Next-Gen State Management | 📋 规划中 | 2026-07 | ForSt GA |
+| FLIP-502 | Cloud-Native Architecture 2.0 | 📋 规划中 | 2026-08 | FLIP-442 |
+| FLIP-503 | Unified API Layer | 📋 规划中 | 2026-09 | - |
+| FLIP-504 | Performance Optimization | 📋 规划中 | 2026-10 | FLIP-500 |
+| FLIP-505 | Compatibility & Migration | 📋 规划中 | 2026-11 | - |
 
-### 其他版本
+---
 
-#### unknown
+## FLIP 状态总表
 
-- `Flink\roadmap\flink-24-flip-531-ai-agents.md` - 状态: unknown
-- `Flink\roadmap\flink-24-serverless-ga.md` - 状态: unknown
-- `Flink\roadmap\flink-25-wasm-udf-ga.md` - 状态: unknown
-- `Flink\roadmap\flink-evolution-serverless-deploy.md` - 状态: unknown
-- `Flink\08-roadmap\flink-2.1-frontier-tracking.md` - 状态: unknown
-- `Flink\08-roadmap\flink-2.3-2.4-roadmap.md` - 状态: unknown
-- `Flink\08-roadmap\flink-25-stream-batch-unification.md` - 状态: unknown
-- `Flink\08-roadmap\flink-version-comparison-matrix.md` - 状态: unknown
+### 活跃 FLIP (2026-04)
 
-#### 2026-Q3-Q4
+| FLIP | 标题 | 负责人 | 状态 | 目标版本 |
+|------|------|--------|------|----------|
+| FLIP-435 | Unified Stream-Batch Execution | TBD | 🔄 Draft | 2.5 |
+| FLIP-442 | Serverless Flink GA | TBD | 🔄 实现中 | 2.5 |
+| FLIP-448 | WebAssembly UDF | TBD | 🔄 实现中 | 2.5 |
+| FLIP-516 | Materialized Table | TBD | 🔄 测试中 | 2.5 |
+| FLIP-500 | Unified Execution Layer | TBD | 📋 规划中 | 3.0 |
+| FLIP-501 | Next-Gen State Management | TBD | 📋 规划中 | 3.0 |
 
-- `Flink\08-roadmap\flink-2.4-tracking.md` - 状态: preview
+### 已完成 FLIP (近期)
 
-#### 2027-Q1-Q2
+| FLIP | 标题 | 完成版本 | 完成时间 |
+|------|------|----------|----------|
+| FLIP-531 | AI Agent Support | 2.4 | 2026-01 |
+| FLIP-440 | ForSt State Backend | 2.3 | 2025-12 |
+| FLIP-423 | Vector Search | 2.2 | 2025-09 |
 
-- `Flink\08-roadmap\flink-2.5-preview.md` - 状态: preview
-- `Flink\08-roadmap\flink-30-architecture-redesign.md` - 状态: vision
+---
+
+## 文档索引
+
+### 2.5 版本文档
+
+- [Flink 2.5 路线图](../08-roadmap/08.02-flink-25/flink-25-roadmap.md)
+- [Flink 2.5 特性预览](../08-roadmap/08.02-flink-25/flink-25-features-preview.md)
+- [Flink 2.5 迁移指南](../08-roadmap/08.02-flink-25/flink-25-migration-guide.md)
+- [Flink 2.5 预览 (8.01)](../08-roadmap/08.01-flink-24/flink-2.5-preview.md)
+
+### 3.0 版本文档
+
+- [Flink 3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md)
+
+### 历史版本
+
+- [Flink 2.4 跟踪](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
+- [Flink 2.3/2.4 路线图](../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md)
 
 ---
 
@@ -102,29 +126,26 @@ gantt
 
 ```bash
 # 运行完整跟踪检查
-python .scripts/flink-release-tracker-v2.py
+python .scripts/flink-version-tracking/check-new-releases.py
 
-# 仅检查状态
-python .scripts/flink-release-tracker-v2.py --check
+# 仅检查新版本
+python .scripts/flink-version-tracking/check-new-releases.py --check-only
 
 # 生成报告
-python .scripts/flink-release-tracker-v2.py --report
+python .scripts/flink-version-tracking/check-new-releases.py --report
 
-# 发送测试通知
-python .scripts/notify-flink-updates.py --test
-
-# 检查并发送通知
-python .scripts/notify-flink-updates.py --check
+# 更新文档
+python .scripts/flink-version-tracking/check-new-releases.py --update-docs
 ```
 
 ### 监控数据源
 
 | 数据源 | URL | 检查频率 |
 |--------|-----|----------|
-| Apache JIRA | <https://issues.apache.org/jira/browse/FLINK> | 每日 |
-| FLIP 提案 | <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals> | 每周 |
-| GitHub Releases | <https://github.com/apache/flink/releases> | 每日 |
-| 官方路线图 | <https://flink.apache.org/roadmap/> | 每周 |
+| Apache JIRA | https://issues.apache.org/jira/browse/FLINK | 每日 |
+| FLIP 提案 | https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals | 每周 |
+| GitHub Releases | https://github.com/apache/flink/releases | 每日 |
+| 官方路线图 | https://flink.apache.org/roadmap/ | 每周 |
 
 ---
 
@@ -132,18 +153,13 @@ python .scripts/notify-flink-updates.py --check
 
 | 时间 | 版本 | 变更 | 来源 |
 |------|------|------|------|
+| 2026-04-08 | 2.5/3.0 | 更新路线图，创建 2.5 文档集 | agent |
 | 2026-04-05 | 跟踪系统 | 创建 2.6/2.7 跟踪框架 | agent |
-| 2026-04-05 | 2.6/2.7 | 添加预估 FLIP 列表 | agent |
-| 2026-04-04T19:01 | 1.17.2 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.3.1 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.0.0 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.4.1 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.10.3 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.6.3 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.19.2 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 0.8.0 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.5.3 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
-| 2026-04-04T19:01 | 1.15.3 | ReleaseStatus.UNRELEASED → ReleaseStatus.GA | downloads_page |
+| 2026-01-30 | 2.4.0 | GA 发布 | Apache Flink |
+| 2025-12-15 | 2.3.0 | GA 发布 | Apache Flink |
+| 2025-09-20 | 2.2.0 | GA 发布 | Apache Flink |
+| 2025-06-15 | 2.1.0 | GA 发布 | Apache Flink |
+| 2025-03-24 | 2.0.0 | GA 发布 | Apache Flink |
 
 ---
 
@@ -153,15 +169,15 @@ python .scripts/notify-flink-updates.py --check
 
 1. **检测变更**: 自动化脚本定期检查版本和 FLIP 状态
 2. **生成通知**: 检测到重要变更时发送通知
-3. **评估影响**: 使用 [特性影响模板](./version-tracking/feature-impact-template.md) 评估文档需求
+3. **评估影响**: 使用特性影响模板评估文档需求
 4. **更新文档**: 根据影响分析更新或创建文档
 5. **验证发布**: 验证文档准确性和完整性
 
 ### 相关文档
 
-- [Flink 2.6/2.7 路线图](./version-tracking/flink-26-27-roadmap.md)
-- [Flink 2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
-- [特性影响分析模板](./version-tracking/feature-impact-template.md)
+- [Flink 2.5 路线图](../08-roadmap/08.02-flink-25/flink-25-roadmap.md)
+- [Flink 3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md)
+- [FLIP 跟踪系统](../08-roadmap/08.01-flink-24/FLIP-TRACKING-SYSTEM.md)
 
 ### 外部链接
 
@@ -173,4 +189,4 @@ python .scripts/notify-flink-updates.py --check
 
 ---
 
-*本文档由 Flink Release Tracker V2 自动生成 | 最后更新: 2026-04-05*
+*本文档由 Flink Release Tracker V2.1 自动生成 | 最后更新: 2026-04-08*

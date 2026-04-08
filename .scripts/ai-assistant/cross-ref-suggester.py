@@ -427,6 +427,9 @@ class CrossRefSuggester:
     
     def export_suggestions_json(self, output_path: str) -> None:
         """导出建议为 JSON"""
+        # 确保输出目录存在
+        os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
+        
         data = {
             'documents': {
                 path: {

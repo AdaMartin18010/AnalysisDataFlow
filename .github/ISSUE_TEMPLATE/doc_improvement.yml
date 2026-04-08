@@ -1,0 +1,97 @@
+name: 📝 文档改进 (Documentation Improvement)
+description: 提出文档改进建议，如添加示例、优化表达等
+title: "[Docs] "
+labels: ["documentation", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您帮助改进文档质量！请填写以下信息。
+
+  - type: dropdown
+    id: improvement-type
+    attributes:
+      label: 改进类型
+      description: 请选择最符合的改进类型
+      options:
+        - 补充示例（添加代码示例或案例）
+        - 优化表达（改进文字描述）
+        - 添加可视化（创建 Mermaid 图表）
+        - 补充引用（添加权威来源）
+        - 翻译贡献（多语言版本）
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: file-path
+    attributes:
+      label: 目标文件路径
+      description: 请提供需要改进的文件路径
+      placeholder: 例如：Knowledge/2.1-streaming-patterns.md
+    validations:
+      required: true
+
+  - type: input
+    id: section
+    attributes:
+      label: 目标章节（如适用）
+      description: 如果涉及特定章节，请提供章节标题
+      placeholder: 例如：第 3 节 "窗口模式"
+
+  - type: textarea
+    id: current-state
+    attributes:
+      label: 当前状态
+      description: 请描述当前文档的状态
+      placeholder: |
+        例如：
+        当前"窗口模式"章节缺少 Sliding Window 的代码示例，
+        只有概念描述，读者难以理解具体实现。
+
+  - type: textarea
+    id: proposed-change
+    attributes:
+      label: 建议改进
+      description: 请详细描述您建议的改进
+      placeholder: |
+        例如：
+        建议添加 Sliding Window 的完整 Java 代码示例，包括：
+        - 窗口定义
+        - 聚合函数
+        - 触发器配置
+        
+        示例代码：
+        ```java
+        stream
+            .keyBy(Event::getKey)
+            .window(SlidingEventTimeWindows.of(Time.minutes(10), Time.minutes(5)))
+            .aggregate(new MyAggregateFunction());
+        ```
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: 预期收益
+      description: 说明改进后的收益
+      placeholder: |
+        例如：
+        - 读者可以更快理解 Sliding Window 的用法
+        - 减少读者的实践试错成本
+        - 与文档其他章节的代码示例风格保持一致
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 自检清单
+      description: 在提交前请确认以下事项
+      options:
+        - label: 我已搜索现有 Issue，确认该改进未被提出
+        - label: 我已阅读写作风格指南
+        - label: 我愿意协助实施该改进（如需要）
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 补充信息
+      description: 任何其他相关信息
