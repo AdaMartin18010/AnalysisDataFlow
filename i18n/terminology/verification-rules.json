@@ -225,7 +225,7 @@
         },
         "configuration_keys": {
           "description": "配置键保留原文",
-          "pattern": "^[a-z]+(\.[a-z]+)+$",
+          "pattern": "^[a-z]+(\\.[a-z]+)+$",
           "examples": [
             "execution.checkpointing.interval",
             "parallelism.default",

@@ -1,0 +1,69 @@
+name: 🙋 问答 (Q&A)
+description: 提出问题并获取社区答案
+title: "[Q&A] "
+labels: ["q-a"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        欢迎提问！社区成员会尽力帮助您找到答案。
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 问题类别
+      description: 选择最符合的问题类别
+      options:
+        - 流计算基础概念
+        - Flink 使用
+        - 形式化理论
+        - 设计模式
+        - 性能优化
+        - 故障排查
+        - 学习建议
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 您的问题
+      description: 清晰、详细地描述您的问题
+      placeholder: |
+        例如：
+        在 Flink 中配置 Checkpoint 时，应该如何选择合适的间隔时间？
+        有哪些因素需要考虑？
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息（如适用）
+      description: 提供相关的环境或背景信息
+      placeholder: |
+        例如：
+        - Flink 版本：1.18
+        - 部署环境：Kubernetes
+        - 数据源：Kafka
+        - 数据量级：每秒 10 万条事件
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: 已尝试的解决方案
+      description: 描述您已经尝试过的方法
+      placeholder: |
+        例如：
+        - 已尝试调整 checkpoint.interval 为 30s，但效果不理想
+        - 参考了官方文档的推荐配置
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提问前检查
+      options:
+        - label: 我已搜索现有 Discussion 和 Issue
+        - label: 我已查阅相关文档
+        - label: 我提供了足够的上下文信息

@@ -1,0 +1,545 @@
+{
+  "test_type": "Checkpoint Test",
+  "description": "Checkpoint 性能与一致性测试",
+  "timestamp": "2026-04-08T15:14:17.178021",
+  "environment": {
+    "flink_versions": [
+      "1.18.1",
+      "2.0.0",
+      "2.2.0"
+    ],
+    "hardware_specs": {
+      "cpu_cores": 16,
+      "memory_gb": 64,
+      "disk_type": "NVMe SSD",
+      "network_gbps": 10
+    },
+    "cluster_config": {
+      "nodes": 3,
+      "task_managers": 6,
+      "slots_per_tm": 8,
+      "total_slots": 48
+    }
+  },
+  "checkpoint_configs": {
+    "5min_interval": {
+      "description": "5分钟间隔 Checkpoint",
+      "results": {
+        "1.18.1": {
+          "duration_ms": 3266.94,
+          "size_mb": 12159.94,
+          "sync_time_ms": 486.65,
+          "async_time_ms": 2855.87,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 3413.5
+            },
+            {
+              "timestamp": 1,
+              "value": 3393.06
+            },
+            {
+              "timestamp": 2,
+              "value": 3494.18
+            },
+            {
+              "timestamp": 3,
+              "value": 3430.03
+            },
+            {
+              "timestamp": 4,
+              "value": 3321.67
+            },
+            {
+              "timestamp": 5,
+              "value": 3285.7
+            },
+            {
+              "timestamp": 6,
+              "value": 3173.09
+            },
+            {
+              "timestamp": 7,
+              "value": 3219.45
+            },
+            {
+              "timestamp": 8,
+              "value": 3079.57
+            },
+            {
+              "timestamp": 9,
+              "value": 3115.92
+            },
+            {
+              "timestamp": 10,
+              "value": 3184.21
+            },
+            {
+              "timestamp": 11,
+              "value": 3287.23
+            }
+          ]
+        },
+        "2.0.0": {
+          "duration_ms": 2398.54,
+          "size_mb": 13045.21,
+          "sync_time_ms": 315.87,
+          "async_time_ms": 2158.53,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 2636.09
+            },
+            {
+              "timestamp": 1,
+              "value": 2548.22
+            },
+            {
+              "timestamp": 2,
+              "value": 2675.24
+            },
+            {
+              "timestamp": 3,
+              "value": 2583.31
+            },
+            {
+              "timestamp": 4,
+              "value": 2596.9
+            },
+            {
+              "timestamp": 5,
+              "value": 2668.87
+            },
+            {
+              "timestamp": 6,
+              "value": 2572.41
+            },
+            {
+              "timestamp": 7,
+              "value": 2705.07
+            },
+            {
+              "timestamp": 8,
+              "value": 2688.3
+            },
+            {
+              "timestamp": 9,
+              "value": 2823.63
+            },
+            {
+              "timestamp": 10,
+              "value": 2924.21
+            },
+            {
+              "timestamp": 11,
+              "value": 2894.74
+            }
+          ]
+        },
+        "2.2.0": {
+          "duration_ms": 2222.73,
+          "size_mb": 12997.42,
+          "sync_time_ms": 281.79,
+          "async_time_ms": 1752.72,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 2021.79
+            },
+            {
+              "timestamp": 1,
+              "value": 1965.3
+            },
+            {
+              "timestamp": 2,
+              "value": 1953.68
+            },
+            {
+              "timestamp": 3,
+              "value": 1882.16
+            },
+            {
+              "timestamp": 4,
+              "value": 1942.4
+            },
+            {
+              "timestamp": 5,
+              "value": 2047.5
+            },
+            {
+              "timestamp": 6,
+              "value": 2050.47
+            },
+            {
+              "timestamp": 7,
+              "value": 2109.88
+            },
+            {
+              "timestamp": 8,
+              "value": 2076.25
+            },
+            {
+              "timestamp": 9,
+              "value": 2071.14
+            },
+            {
+              "timestamp": 10,
+              "value": 2136.69
+            },
+            {
+              "timestamp": 11,
+              "value": 2165.07
+            }
+          ]
+        }
+      }
+    },
+    "1min_interval": {
+      "description": "1分钟间隔 Checkpoint (高频)",
+      "results": {
+        "1.18.1": {
+          "duration_ms": 4033.61,
+          "size_mb": 2805.66,
+          "sync_time_ms": 547.24,
+          "async_time_ms": 3792.1,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 4152.2
+            },
+            {
+              "timestamp": 1,
+              "value": 4164.5
+            },
+            {
+              "timestamp": 2,
+              "value": 4356.97
+            },
+            {
+              "timestamp": 3,
+              "value": 4609.74
+            },
+            {
+              "timestamp": 4,
+              "value": 4675.88
+            },
+            {
+              "timestamp": 5,
+              "value": 4799.56
+            },
+            {
+              "timestamp": 6,
+              "value": 5023.36
+            },
+            {
+              "timestamp": 7,
+              "value": 4870.83
+            },
+            {
+              "timestamp": 8,
+              "value": 5050.88
+            },
+            {
+              "timestamp": 9,
+              "value": 5128.55
+            },
+            {
+              "timestamp": 10,
+              "value": 5185.07
+            },
+            {
+              "timestamp": 11,
+              "value": 5078.39
+            }
+          ]
+        },
+        "2.0.0": {
+          "duration_ms": 3101.8,
+          "size_mb": 2914.13,
+          "sync_time_ms": 359.33,
+          "async_time_ms": 2656.31,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 3210.32
+            },
+            {
+              "timestamp": 1,
+              "value": 3243.45
+            },
+            {
+              "timestamp": 2,
+              "value": 3361.72
+            },
+            {
+              "timestamp": 3,
+              "value": 3511.71
+            },
+            {
+              "timestamp": 4,
+              "value": 3528.49
+            },
+            {
+              "timestamp": 5,
+              "value": 3461.48
+            },
+            {
+              "timestamp": 6,
+              "value": 3562.41
+            },
+            {
+              "timestamp": 7,
+              "value": 3537.55
+            },
+            {
+              "timestamp": 8,
+              "value": 3710.37
+            },
+            {
+              "timestamp": 9,
+              "value": 3791.08
+            },
+            {
+              "timestamp": 10,
+              "value": 3885.23
+            },
+            {
+              "timestamp": 11,
+              "value": 3974.6
+            }
+          ]
+        },
+        "2.2.0": {
+          "duration_ms": 2747.51,
+          "size_mb": 3025.55,
+          "sync_time_ms": 329.91,
+          "async_time_ms": 2359.71,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 2553.22
+            },
+            {
+              "timestamp": 1,
+              "value": 2692.17
+            },
+            {
+              "timestamp": 2,
+              "value": 2828.32
+            },
+            {
+              "timestamp": 3,
+              "value": 2986.47
+            },
+            {
+              "timestamp": 4,
+              "value": 2950.33
+            },
+            {
+              "timestamp": 5,
+              "value": 2980.14
+            },
+            {
+              "timestamp": 6,
+              "value": 3137.29
+            },
+            {
+              "timestamp": 7,
+              "value": 3214.97
+            },
+            {
+              "timestamp": 8,
+              "value": 3279.61
+            },
+            {
+              "timestamp": 9,
+              "value": 3236.58
+            },
+            {
+              "timestamp": 10,
+              "value": 3347.49
+            },
+            {
+              "timestamp": 11,
+              "value": 3329.1
+            }
+          ]
+        }
+      }
+    },
+    "incremental": {
+      "description": "增量 Checkpoint",
+      "results": {
+        "1.18.1": {
+          "duration_ms": 1162.67,
+          "size_mb": 456.97,
+          "sync_time_ms": 307.24,
+          "async_time_ms": 980.26,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 1208.39
+            },
+            {
+              "timestamp": 1,
+              "value": 1182.69
+            },
+            {
+              "timestamp": 2,
+              "value": 1249.89
+            },
+            {
+              "timestamp": 3,
+              "value": 1216.51
+            },
+            {
+              "timestamp": 4,
+              "value": 1283.09
+            },
+            {
+              "timestamp": 5,
+              "value": 1264.54
+            },
+            {
+              "timestamp": 6,
+              "value": 1318.85
+            },
+            {
+              "timestamp": 7,
+              "value": 1381.66
+            },
+            {
+              "timestamp": 8,
+              "value": 1353.41
+            },
+            {
+              "timestamp": 9,
+              "value": 1373.43
+            },
+            {
+              "timestamp": 10,
+              "value": 1424.94
+            },
+            {
+              "timestamp": 11,
+              "value": 1442.29
+            }
+          ]
+        },
+        "2.0.0": {
+          "duration_ms": 863.26,
+          "size_mb": 473.56,
+          "sync_time_ms": 189.27,
+          "async_time_ms": 616.06,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 819.7
+            },
+            {
+              "timestamp": 1,
+              "value": 855.51
+            },
+            {
+              "timestamp": 2,
+              "value": 880.55
+            },
+            {
+              "timestamp": 3,
+              "value": 869.94
+            },
+            {
+              "timestamp": 4,
+              "value": 855.54
+            },
+            {
+              "timestamp": 5,
+              "value": 846.47
+            },
+            {
+              "timestamp": 6,
+              "value": 877.89
+            },
+            {
+              "timestamp": 7,
+              "value": 927.78
+            },
+            {
+              "timestamp": 8,
+              "value": 951.19
+            },
+            {
+              "timestamp": 9,
+              "value": 984.32
+            },
+            {
+              "timestamp": 10,
+              "value": 963.83
+            },
+            {
+              "timestamp": 11,
+              "value": 932.52
+            }
+          ]
+        },
+        "2.2.0": {
+          "duration_ms": 666.81,
+          "size_mb": 482.54,
+          "sync_time_ms": 188.9,
+          "async_time_ms": 503.52,
+          "duration_time_series": [
+            {
+              "timestamp": 0,
+              "value": 699.67
+            },
+            {
+              "timestamp": 1,
+              "value": 674.4
+            },
+            {
+              "timestamp": 2,
+              "value": 660.88
+            },
+            {
+              "timestamp": 3,
+              "value": 664.49
+            },
+            {
+              "timestamp": 4,
+              "value": 652.29
+            },
+            {
+              "timestamp": 5,
+              "value": 625.71
+            },
+            {
+              "timestamp": 6,
+              "value": 612.42
+            },
+            {
+              "timestamp": 7,
+              "value": 650.09
+            },
+            {
+              "timestamp": 8,
+              "value": 656.27
+            },
+            {
+              "timestamp": 9,
+              "value": 692.24
+            },
+            {
+              "timestamp": 10,
+              "value": 685.28
+            },
+            {
+              "timestamp": 11,
+              "value": 708.4
+            }
+          ]
+        }
+      }
+    }
+  }
+}

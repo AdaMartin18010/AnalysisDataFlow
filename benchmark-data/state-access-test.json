@@ -1,0 +1,92 @@
+{
+  "test_type": "State Access Test",
+  "description": "状态后端性能测试",
+  "timestamp": "2026-04-08T15:14:17.178004",
+  "environment": {
+    "flink_versions": [
+      "1.18.1",
+      "2.0.0",
+      "2.2.0"
+    ],
+    "hardware_specs": {
+      "cpu_cores": 16,
+      "memory_gb": 64,
+      "disk_type": "NVMe SSD",
+      "network_gbps": 10
+    },
+    "cluster_config": {
+      "nodes": 3,
+      "task_managers": 6,
+      "slots_per_tm": 8,
+      "total_slots": 48
+    }
+  },
+  "state_configs": {
+    "10GB_heap": {
+      "description": "10GB Heap State (内存状态)",
+      "results": {
+        "1.18.1": {
+          "get_latency_us": 0.47,
+          "put_latency_us": 1.12,
+          "throughput_kops": 861.32
+        },
+        "2.0.0": {
+          "get_latency_us": 0.43,
+          "put_latency_us": 0.86,
+          "throughput_kops": 1118.3
+        },
+        "2.2.0": {
+          "get_latency_us": 0.35,
+          "put_latency_us": 0.82,
+          "throughput_kops": 1250.25
+        }
+      }
+    },
+    "100GB_rocksdb": {
+      "description": "100GB RocksDB State",
+      "results": {
+        "1.18.1": {
+          "get_latency_us": 7.93,
+          "put_latency_us": 24.58,
+          "throughput_kops": 180.87,
+          "compaction_mb_s": 41.57
+        },
+        "2.0.0": {
+          "get_latency_us": 6.43,
+          "put_latency_us": 16.67,
+          "throughput_kops": 246.74,
+          "compaction_mb_s": 65.53
+        },
+        "2.2.0": {
+          "get_latency_us": 5.92,
+          "put_latency_us": 16.24,
+          "throughput_kops": 301.39,
+          "compaction_mb_s": 76.58
+        }
+      }
+    },
+    "500GB_rocksdb": {
+      "description": "500GB RocksDB State (大规模)",
+      "results": {
+        "1.18.1": {
+          "get_latency_us": 15.83,
+          "put_latency_us": 40.87,
+          "throughput_kops": 92.96,
+          "compaction_mb_s": 35.34
+        },
+        "2.0.0": {
+          "get_latency_us": 11.39,
+          "put_latency_us": 32.91,
+          "throughput_kops": 138.1,
+          "compaction_mb_s": 55.94
+        },
+        "2.2.0": {
+          "get_latency_us": 8.99,
+          "put_latency_us": 30.69,
+          "throughput_kops": 156.05,
+          "compaction_mb_s": 62.9
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+name: 💡 创意分享 (Ideas)
+description: 分享创意、提案或未来设想
+title: "[Idea] "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        欢迎分享您的创意！无论是新功能想法、内容建议还是改进提案，都欢迎在这里讨论。
+
+  - type: input
+    id: title
+    attributes:
+      label: 创意标题
+      description: 给您的创意起一个简洁的标题
+      placeholder: 例如：添加交互式知识图谱功能
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 影响范围
+      description: 该创意主要影响哪些方面？
+      options:
+        - 内容改进（Struct/Knowledge/Flink 文档）
+        - 社区建设
+        - 工具/自动化
+        - 学习资源
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 创意描述
+      description: 详细描述您的创意
+      placeholder: |
+        例如：
+        建议为项目添加一个交互式的知识图谱，让读者可以：
+        - 可视化浏览概念之间的关系
+        - 点击节点查看详细定义
+        - 查看定理之间的依赖关系
+        
+        这样可以降低学习门槛，帮助读者建立系统的知识框架。
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机/价值
+      description: 说明这个创意的价值和预期收益
+      placeholder: |
+        例如：
+        - 降低新读者的学习门槛
+        - 帮助读者建立知识点之间的联系
+        - 提升项目的可视化体验
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: 可能的实现方式
+      description: 如果您有关于如何实现的想法，请分享
+      placeholder: |
+        例如：
+        - 使用 D3.js 或 Cytoscape.js 构建图谱
+        - 从现有文档中提取概念和关系
+        - 托管在 GitHub Pages 上
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考案例
+      description: 如有类似的项目或案例，请在此分享
+      placeholder: |
+        例如：
+        - 类似项目的链接
+        - 相关技术工具
+        - 参考设计

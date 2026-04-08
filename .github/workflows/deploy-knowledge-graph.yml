@@ -1,0 +1,173 @@
+name: Deploy Knowledge Graph v2.0 to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph-v4.html'
+      - 'knowledge-graph-v3.html'
+      - 'THEOREM-REGISTRY.md'
+      - 'knowledge-graph-site/**'
+      - '.scripts/kg-v2/**'
+      - '.github/workflows/deploy-knowledge-graph.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph-site/**'
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: '部署目标'
+        required: true
+        default: 'gh-pages'
+        type: choice
+        options:
+          - gh-pages
+          - staging
+
+# 权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  # 阶段1: 构建和生成静态数据
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install markdown beautifulsoup4 lunr
+
+      - name: Generate Static Data
+        id: generate
+        run: |
+          python .scripts/kg-v2/generate-static-data.py
+          python .scripts/kg-v2/generate-search-index.py
+          python .scripts/kg-v2/generate-learning-paths.py
+
+      - name: Optimize Assets
+        run: |
+          python .scripts/kg-v2/optimize-assets.py
+
+      - name: Validate Generated Files
+        run: |
+          test -f knowledge-graph-site/index.html || exit 1
+          test -f knowledge-graph-site/data/graph-data.json || exit 1
+          test -f knowledge-graph-site/data/search-index.json || exit 1
+          echo "✅ 所有必需文件已生成"
+
+      - name: Calculate Metadata
+        id: metadata
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "version=$(date -u +%Y%m%d.%H%M%S)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+          retention-days: 7
+
+  # 阶段2: 运行测试
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Test Dependencies
+        run: npm install -g htmlhint lighthouse-ci
+
+      - name: Validate HTML
+        run: |
+          htmlhint knowledge-graph-site/*.html || true
+
+      - name: Check File Sizes
+        run: |
+          echo "📊 文件大小统计:"
+          du -sh knowledge-graph-site/*
+          find knowledge-graph-site/ -name "*.json" -size +10M -exec echo "⚠️ 警告: {} 超过10MB" \;
+
+  # 阶段3: 部署到GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: knowledge-graph-site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Notify Deployment Success
+        run: |
+          echo "🚀 知识图谱 v2.0 已成功部署!"
+          echo "📍 访问地址: ${{ steps.deployment.outputs.page_url }}"
+
+  # 阶段4: 部署到预览环境 (PR only)
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📦 知识图谱预览构建已完成 (PR #${{ github.event.pull_request.number }})'
+            })

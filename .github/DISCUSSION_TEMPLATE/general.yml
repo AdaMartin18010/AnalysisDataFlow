@@ -1,0 +1,53 @@
+name: 💬 一般讨论 (General Discussion)
+description: 进行一般性讨论、分享观点或交流想法
+title: "[Discussion] "
+labels: ["discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        欢迎参与讨论！这里是社区成员交流想法、分享观点的地方。
+
+  - type: input
+    id: topic
+    attributes:
+      label: 讨论主题
+      description: 简要描述讨论的主题
+      placeholder: 例如：关于流计算与批处理融合趋势的看法
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: 讨论内容
+      description: 详细描述您想讨论的内容
+      placeholder: |
+        请分享您的观点、问题或想法...
+        
+        可以包括：
+        - 行业趋势观察
+        - 技术选型思考
+        - 学习心得分享
+        - 项目经验交流
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 相关资源
+      description: 如有相关文章、论文或资源，请在此分享
+      placeholder: |
+        - 文章链接
+        - 论文引用
+        - 相关项目
+
+  - type: checkboxes
+    id: guidelines
+    attributes:
+      label: 社区准则
+      description: 请确认您将遵守社区讨论准则
+      options:
+        - label: 我将保持友善和尊重的态度参与讨论
+        - label: 我将遵守项目的行为准则

@@ -1,0 +1,86 @@
+{
+  "test_type": "Backpressure Test",
+  "description": "背压检测与处理测试",
+  "timestamp": "2026-04-08T15:14:17.178095",
+  "environment": {
+    "flink_versions": [
+      "1.18.1",
+      "2.0.0",
+      "2.2.0"
+    ],
+    "hardware_specs": {
+      "cpu_cores": 16,
+      "memory_gb": 64,
+      "disk_type": "NVMe SSD",
+      "network_gbps": 10
+    },
+    "cluster_config": {
+      "nodes": 3,
+      "task_managers": 6,
+      "slots_per_tm": 8,
+      "total_slots": 48
+    }
+  },
+  "backpressure_levels": {
+    "mild": {
+      "description": "轻度背压 (下游慢2倍)",
+      "results": {
+        "1.18.1": {
+          "backpressure_ratio": 0.34,
+          "throughput_degradation": 0.4,
+          "latency_increase": 2.73
+        },
+        "2.0.0": {
+          "backpressure_ratio": 0.27,
+          "throughput_degradation": 0.34,
+          "latency_increase": 2.35
+        },
+        "2.2.0": {
+          "backpressure_ratio": 0.21,
+          "throughput_degradation": 0.29,
+          "latency_increase": 1.84
+        }
+      }
+    },
+    "moderate": {
+      "description": "中度背压 (下游慢5倍)",
+      "results": {
+        "1.18.1": {
+          "backpressure_ratio": 0.67,
+          "throughput_degradation": 0.71,
+          "latency_increase": 5.69
+        },
+        "2.0.0": {
+          "backpressure_ratio": 0.55,
+          "throughput_degradation": 0.59,
+          "latency_increase": 3.95
+        },
+        "2.2.0": {
+          "backpressure_ratio": 0.46,
+          "throughput_degradation": 0.46,
+          "latency_increase": 3.32
+        }
+      }
+    },
+    "severe": {
+      "description": "重度背压 (下游慢10倍)",
+      "results": {
+        "1.18.1": {
+          "backpressure_ratio": 0.96,
+          "throughput_degradation": 0.93,
+          "latency_increase": 12.31
+        },
+        "2.0.0": {
+          "backpressure_ratio": 0.84,
+          "throughput_degradation": 0.82,
+          "latency_increase": 9.66
+        },
+        "2.2.0": {
+          "backpressure_ratio": 0.79,
+          "throughput_degradation": 0.73,
+          "latency_increase": 7.54
+        }
+      }
+    }
+  }
+}

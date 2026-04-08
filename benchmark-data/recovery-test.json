@@ -1,0 +1,106 @@
+{
+  "test_type": "Recovery Test",
+  "description": "故障恢复与状态重建测试",
+  "timestamp": "2026-04-08T15:14:17.178079",
+  "environment": {
+    "flink_versions": [
+      "1.18.1",
+      "2.0.0",
+      "2.2.0"
+    ],
+    "hardware_specs": {
+      "cpu_cores": 16,
+      "memory_gb": 64,
+      "disk_type": "NVMe SSD",
+      "network_gbps": 10
+    },
+    "cluster_config": {
+      "nodes": 3,
+      "task_managers": 6,
+      "slots_per_tm": 8,
+      "total_slots": 48
+    }
+  },
+  "recovery_scenarios": {
+    "lightweight_10GB": {
+      "description": "轻量级状态 (10GB) Failover",
+      "results": {
+        "1.18.1": {
+          "restart_time_ms": 4567.85,
+          "state_restore_ms": 2795.62,
+          "total_recovery_ms": 7236.37
+        },
+        "2.0.0": {
+          "restart_time_ms": 3381.79,
+          "state_restore_ms": 2309.04,
+          "total_recovery_ms": 5648.15
+        },
+        "2.2.0": {
+          "restart_time_ms": 2979.0,
+          "state_restore_ms": 1789.64,
+          "total_recovery_ms": 4339.89
+        }
+      }
+    },
+    "medium_100GB": {
+      "description": "中等状态 (100GB) Failover",
+      "results": {
+        "1.18.1": {
+          "restart_time_ms": 9026.97,
+          "state_restore_ms": 18947.99,
+          "total_recovery_ms": 24738.88
+        },
+        "2.0.0": {
+          "restart_time_ms": 5742.05,
+          "state_restore_ms": 13074.53,
+          "total_recovery_ms": 21166.4
+        },
+        "2.2.0": {
+          "restart_time_ms": 5735.79,
+          "state_restore_ms": 12173.32,
+          "total_recovery_ms": 18226.4
+        }
+      }
+    },
+    "heavy_500GB": {
+      "description": "大规模状态 (500GB) Failover",
+      "results": {
+        "1.18.1": {
+          "restart_time_ms": 11322.52,
+          "state_restore_ms": 80496.09,
+          "total_recovery_ms": 96386.98
+        },
+        "2.0.0": {
+          "restart_time_ms": 8531.17,
+          "state_restore_ms": 61460.65,
+          "total_recovery_ms": 66405.63
+        },
+        "2.2.0": {
+          "restart_time_ms": 7655.37,
+          "state_restore_ms": 56077.94,
+          "total_recovery_ms": 63111.05
+        }
+      }
+    },
+    "local_recovery_enabled": {
+      "description": "本地恢复优化 (100GB)",
+      "results": {
+        "1.18.1": {
+          "restart_time_ms": 8500.26,
+          "state_restore_ms": 9238.07,
+          "total_recovery_ms": 16497.37
+        },
+        "2.0.0": {
+          "restart_time_ms": 6099.53,
+          "state_restore_ms": 6310.48,
+          "total_recovery_ms": 13136.48
+        },
+        "2.2.0": {
+          "restart_time_ms": 5832.64,
+          "state_restore_ms": 5975.0,
+          "total_recovery_ms": 10277.64
+        }
+      }
+    }
+  }
+}
