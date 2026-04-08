@@ -1,6 +1,6 @@
 # 实时流处理数据质量与验证
 
-> **所属阶段**: Knowledge | **前置依赖**: [05-streaming-design-patterns.md](../02-design-patterns/pattern-event-time-processing.md), [Flink/04-state-checkpoint/exactly-once-semantics.md](../../Flink/02-core-mechanisms/exactly-once-end-to-end.md) | **形式化等级**: L3
+> **所属阶段**: Knowledge | **前置依赖**: [05-streaming-design-patterns.md](../02-design-patterns/pattern-event-time-processing.md), [Flink/04-state-checkpoint/exactly-once-semantics.md](Flink/02-core/exactly-once-end-to-end.md) | **形式化等级**: L3
 
 ---
 

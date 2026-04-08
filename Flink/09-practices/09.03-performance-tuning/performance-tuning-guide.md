@@ -1,6 +1,6 @@
 # Flink 性能调优指南 (Flink Performance Tuning Guide)
 
-> 所属阶段: Flink/06-engineering | 前置依赖: [02.01-determinism-in-streaming.md](../../Struct/02-properties/02.01-determinism-in-streaming.md) | 形式化等级: L3
+> 所属阶段: Flink/06-engineering | 前置依赖: [02.01-determinism-in-streaming.md](Struct/02-properties/02.01-determinism-in-streaming.md) | 形式化等级: L3
 
 ---
 
@@ -149,11 +149,11 @@ $$
 
 ### 关系 1: 性能调优与确定性保证的兼容性
 
-由 [Thm-S-07-01](../../Struct/02-properties/02.01-determinism-in-streaming.md#thm-s-07-01-流计算确定性定理)，流计算确定性要求纯函数性、FIFO 通道、事件时间语义、无共享状态。
+由 [Thm-S-07-01](Struct/02-properties/02.01-determinism-in-streaming.md#thm-s-07-01-流计算确定性定理)，流计算确定性要求纯函数性、FIFO 通道、事件时间语义、无共享状态。
 
 | 调优维度 | 可能影响 | 保持确定性的措施 |
 |----------|----------|------------------|
-| **并行度调整** | 改变分区映射 | 确保 KeyBy 哈希函数确定性（见 [Lemma-S-07-03](../../Struct/02-properties/02.01-determinism-in-streaming.md#lemma-s-07-03-分区哈希的确定性)） |
+| **并行度调整** | 改变分区映射 | 确保 KeyBy 哈希函数确定性（见 [Lemma-S-07-03](Struct/02-properties/02.01-determinism-in-streaming.md#lemma-s-07-03-分区哈希的确定性)） |
 | **检查点配置** | 影响恢复行为 | 使用精确对齐模式保证 Exactly-Once 语义 |
 | **状态后端切换** | 状态访问时序 | 保持 Keyed 状态分区语义不变 |
 | **网络缓冲区** | 延迟但不影响顺序 | TCP 保序保证 FIFO 语义 |

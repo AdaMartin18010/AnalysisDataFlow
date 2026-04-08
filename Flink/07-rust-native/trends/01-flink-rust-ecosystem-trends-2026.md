@@ -1,6 +1,6 @@
 # Flink + Rust 生态系统 2025-2026 趋势分析
 
-> 所属阶段: Flink/趋势分析 | 前置依赖: [14.0-rust-assembly-overview](../00-MASTER-INDEX.md), [12.1-flink-rust-connector-adoption](../../04-connectors/flink-connectors-ecosystem-complete-guide.md) | 形式化等级: L4 | 置信度: 高
+> 所属阶段: Flink/趋势分析 | 前置依赖: [14.0-rust-assembly-overview](../00-MASTER-INDEX.md), [12.1-flink-rust-connector-adoption](Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | 形式化等级: L4 | 置信度: 高
 
 ---
 

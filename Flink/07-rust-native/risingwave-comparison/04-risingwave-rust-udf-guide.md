@@ -1,6 +1,6 @@
 # RisingWave 原生 Rust UDF 技术指南
 
-> **所属阶段**: Flink/Rust 生态对比 | **前置依赖**: [Flink WASM UDF 指南](../../../09-language-foundations/flink-25-wasm-udf-ga.md) | **形式化等级**: L3
+> **所属阶段**: Flink/Rust 生态对比 | **前置依赖**: [Flink WASM UDF 指南](Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **形式化等级**: L3
 
 ---
 

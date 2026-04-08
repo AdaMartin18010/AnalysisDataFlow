@@ -1,7 +1,7 @@
 # Flash 引擎整体架构分析
 
 > **所属阶段**: Flink/14-rust-assembly-ecosystem/flash-engine
-> **前置依赖**: [Apache Flink 架构基础](../../../01-architecture/deployment-architectures.md) | [向量化执行原理](../simd-optimization/)
+> **前置依赖**: [Apache Flink 架构基础](Flink/01-concepts/deployment-architectures.md) | [向量化执行原理](../simd-optimization/)
 > **形式化等级**: L4（工程论证 + 定量分析）
 
 ---

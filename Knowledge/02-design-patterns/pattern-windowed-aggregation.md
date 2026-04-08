@@ -903,9 +903,9 @@ flowchart TD
 
 [^4]: 窗口形式化定义，详见 [Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)
 
-[^5]: 金融风控实时欺诈检测案例，详见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/07-case-studies/case-financial-realtime-risk-control.md)
+[^5]: 金融风控实时欺诈检测案例，详见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
-[^6]: IoT 流处理工业案例，详见 [Flink/07-case-studies/case-iot-stream-processing.md](../../Flink/07-case-studies/case-iot-stream-processing.md)
+[^6]: IoT 流处理工业案例，详见 [Flink/07-case-studies/case-iot-stream-processing.md](Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
 
 [^7]: Apache Flink SQL Documentation, "Windowing Table-Valued Functions," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/window-tvf/>
 

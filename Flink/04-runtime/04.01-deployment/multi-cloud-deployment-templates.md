@@ -1,6 +1,6 @@
 # Flink 多云部署模板
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink Kubernetes部署指南](./kubernetes-deployment.md), [Flink 集群架构](../01-architecture/deployment-architectures.md) | **形式化等级**: L3
+> **所属阶段**: Flink/ | **前置依赖**: [Flink Kubernetes部署指南](./kubernetes-deployment.md), [Flink 集群架构](Flink/01-concepts/deployment-architectures.md) | **形式化等级**: L3
 >
 > **标签**: #Multi-Cloud #AWS #Azure #GCP #AlibabaCloud #Terraform #Bicep #DeploymentManager #ROS #EMR #HDInsight #Dataproc
 

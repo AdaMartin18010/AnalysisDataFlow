@@ -1,6 +1,6 @@
 # Flink State Backends 深度对比与选型指南
 
-> **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](./02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [Flink/3.9-state-backends-deep-comparison.md](./3.9-state-backends-deep-comparison.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md), [Flink/3.9-state-backends-deep-comparison.md](./3.9-state-backends-deep-comparison.md) | **形式化等级**: L3-L4
 > **版本**: 2026.04 | **适用版本**: Flink 1.16+ - 2.5+ | **更新说明**: 新增 ForStStateBackend (Flink 2.0+)
 
 ---

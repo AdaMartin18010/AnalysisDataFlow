@@ -1,6 +1,6 @@
 # Web3 与区块链流处理架构
 
-> **所属阶段**: Knowledge/Frontier | **前置依赖**: [Flink Source 机制](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md), [时间语义与窗口](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/Frontier | **前置依赖**: [Flink Source 机制](Flink/02-core/time-semantics-and-watermark.md), [时间语义与窗口](Flink/02-core/time-semantics-and-watermark.md) | **形式化等级**: L4
 
 ---
 

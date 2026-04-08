@@ -1,6 +1,6 @@
 # Apache Fluss (Incubating) - 为流分析而生的分布式存储
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 2.2 Delta Join](../02-core-mechanisms/delta-join.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink 2.2 Delta Join](Flink/02-core/delta-join.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

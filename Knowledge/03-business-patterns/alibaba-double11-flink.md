@@ -1064,6 +1064,6 @@ flowchart TD
 > - 作者: AnalysisDataFlow Agent
 > - 版本: 1.0
 > - 关联文档:
->   - [Flink 2.0 Architecture](../../Flink/06-engineering/flink-24-performance-improvements.md)
+>   - [Flink 2.0 Architecture](Flink/09-practices/09.03-performance-tuning/flink-24-performance-improvements.md)
 >   - [Pattern: CEP Complex Event](../02-design-patterns/pattern-cep-complex-event.md)
 >   - [Pattern: Stateful Computation](../02-design-patterns/pattern-stateful-computation.md)

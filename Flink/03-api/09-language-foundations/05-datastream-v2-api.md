@@ -1,7 +1,7 @@
 # Flink 2.0 DataStream V2 API (Scala 3)
 
 > **状态**: ✅ Released (2025-03-24, GA in Flink 2.0)
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md), [../01-architecture/datastream-v2-semantics.md](../01-architecture/datastream-v2-semantics.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md), [../01-architecture/datastream-v2-semantics.md](Flink/01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4-L5
 > **版本**: Flink 2.0+ | **语言**: Scala 3.3+ | **API 状态**: 稳定版 (Stable)
 
 ---

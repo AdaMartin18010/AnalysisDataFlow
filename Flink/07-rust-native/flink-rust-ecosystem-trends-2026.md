@@ -1,6 +1,6 @@
 # Flink + Rust 生态趋势总结（2026 展望）
 
-> 所属阶段: Flink/ | 前置依赖: [Flink WASM UDF 生态](../../09-language-foundations/flink-25-wasm-udf-ga.md), [Flink 2.x 路线图](../../08-roadmap/flink-2.3-2.4-roadmap.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [Flink WASM UDF 生态](Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md), [Flink 2.x 路线图](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | 形式化等级: L4
 
 ---
 

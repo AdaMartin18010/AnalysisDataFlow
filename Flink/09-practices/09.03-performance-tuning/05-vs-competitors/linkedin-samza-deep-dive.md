@@ -1,6 +1,6 @@
 # LinkedIn Samza 深度分析
 
-> 所属阶段: Flink/ | 前置依赖: [Flink架构详解](../01-architecture/deployment-architectures.md), [竞品对比](./flink-vs-spark-streaming.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink架构详解](Flink/01-concepts/deployment-architectures.md), [竞品对比](./flink-vs-spark-streaming.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

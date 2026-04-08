@@ -1,6 +1,6 @@
 # Flink 多语言编程基础模块索引
 
-> **所属阶段**: Flink/ | **前置依赖**: [Flink/00-INDEX.md](../00-INDEX.md), [Actor模型形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L2-L4 | **版本**: Flink 1.18+ / 2.0+
+> **所属阶段**: Flink/ | **前置依赖**: [Flink/00-INDEX.md](Struct/00-INDEX.md), [Actor模型形式化](Struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L2-L4 | **版本**: Flink 1.18+ / 2.0+
 
 ---
 
@@ -392,25 +392,25 @@ graph LR
 
 | Struct/ Document | Flink/09 Document | Relationship |
 |------------------|-------------------|--------------|
-| [类型系统形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | DOT calculus → Scala 3 type system |
-| [类型安全边界](../../Struct/01-foundation/01.03-actor-model-formalization.md) | [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Type boundaries → TypeInformation |
-| [Actor模型形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | [03-rust-native.md](03-rust-native.md) | Actor semantics → Rust async |
+| [类型系统形式化](Struct/01-foundation/01.03-actor-model-formalization.md) | [01.03-scala3-type-system-formalization.md](01.03-scala3-type-system-formalization.md) | DOT calculus → Scala 3 type system |
+| [类型安全边界](Struct/01-foundation/01.03-actor-model-formalization.md) | [01.02-typeinformation-derivation.md](01.02-typeinformation-derivation.md) | Type boundaries → TypeInformation |
+| [Actor模型形式化](Struct/01-foundation/01.03-actor-model-formalization.md) | [03-rust-native.md](03-rust-native.md) | Actor semantics → Rust async |
 
 ### 5.2 Links to Knowledge/ Patterns
 
 | Knowledge/ Document | Flink/09 Document | Relationship |
 |---------------------|-------------------|--------------|
-| [设计模式](../../Knowledge/02-design-patterns/pattern-async-io-enrichment.md) | [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | Patterns → Type-safe implementation |
-| [技术选型](../../Knowledge/04-technology-selection/engine-selection-guide.md) | [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | Business patterns → Lakehouse architecture |
-| [金融实时风控](../../Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | [03-rust-native.md](03-rust-native.md) | Financial use cases → High-performance UDF |
+| [设计模式](Knowledge/02-design-patterns/pattern-async-io-enrichment.md) | [01.01-scala-types-for-streaming.md](01.01-scala-types-for-streaming.md) | Patterns → Type-safe implementation |
+| [技术选型](Knowledge/04-technology-selection/engine-selection-guide.md) | [04-streaming-lakehouse.md](04-streaming-lakehouse.md) | Business patterns → Lakehouse architecture |
+| [金融实时风控](Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | [03-rust-native.md](03-rust-native.md) | Financial use cases → High-performance UDF |
 
 ### 5.3 Links to Flink/ Core Mechanisms
 
 | Flink/ Document | Flink/09 Document | Relationship |
 |-----------------|-------------------|--------------|
-| [Flink/01-architecture/datastream-v2-semantics.md](../01-architecture/datastream-v2-semantics.md) | [05-datastream-v2-api.md](05-datastream-v2-api.md) | V2 semantics → V2 API usage |
-| [Checkpoint机制深度解析](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | [03.01-migration-guide.md](03.01-migration-guide.md) | Checkpointing → Migration considerations |
-| [Flink/13-wasm/wasm-streaming.md](../13-wasm/wasm-streaming.md) | [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM streaming → UDF frameworks |
+| [Flink/01-architecture/datastream-v2-semantics.md](Flink/01-concepts/datastream-v2-semantics.md) | [05-datastream-v2-api.md](05-datastream-v2-api.md) | V2 semantics → V2 API usage |
+| [Checkpoint机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md) | [03.01-migration-guide.md](03.01-migration-guide.md) | Checkpointing → Migration considerations |
+| [Flink/13-wasm/wasm-streaming.md](Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md) | [09-wasm-udf-frameworks.md](09-wasm-udf-frameworks.md) | WASM streaming → UDF frameworks |
 
 ---
 

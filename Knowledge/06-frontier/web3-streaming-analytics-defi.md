@@ -1,6 +1,6 @@
 # Web3流数据分析与DeFi实时分析
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink核心机制](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md), [实时数据网格](realtime-data-mesh-practice.md) | 形式化等级: L3
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink核心机制](Flink/02-core/time-semantics-and-watermark.md), [实时数据网格](realtime-data-mesh-practice.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

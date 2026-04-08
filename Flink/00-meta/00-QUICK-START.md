@@ -1131,6 +1131,6 @@ graph LR
 >
 > 🔗 **相关文档**：
 >
-> - [Flink 2.4 完整跟踪](./08-roadmap/flink-2.4-tracking.md)
-> - [Flink 2.5 预览](./08-roadmap/flink-2.5-preview.md)
-> - [Serverless Flink GA 指南](./10-deployment/serverless-flink-ga-guide.md)
+> - [Flink 2.4 完整跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
+> - [Flink 2.5 预览](Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md)
+> - [Serverless Flink GA 指南](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md)

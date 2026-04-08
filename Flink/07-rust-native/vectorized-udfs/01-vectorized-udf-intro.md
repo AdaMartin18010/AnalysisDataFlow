@@ -1,6 +1,6 @@
 # 向量化 UDF 入门
 
-> 所属阶段: Flink/14-rust-assembly-ecosystem/vectorized-udfs | 前置依赖: [Flink Python UDF](../../03-sql-table-api/flink-python-udf.md) | 形式化等级: L4
+> 所属阶段: Flink/14-rust-assembly-ecosystem/vectorized-udfs | 前置依赖: [Flink Python UDF](Flink/03-api/03.02-table-sql-api/flink-python-udf.md) | 形式化等级: L4
 
 ---
 

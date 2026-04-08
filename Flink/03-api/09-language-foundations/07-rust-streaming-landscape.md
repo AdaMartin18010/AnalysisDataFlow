@@ -1,6 +1,6 @@
 # Rust 原生流处理系统全景：从 Differential Dataflow 到 RisingWave
 
-> 所属阶段: Flink/ | 前置依赖: [Rust UDF 架构](03-rust-native.md), [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | 形式化等级: L3-L4 | 版本: 2025
+> 所属阶段: Flink/ | 前置依赖: [Rust UDF 架构](03-rust-native.md), [Dataflow 模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md) | 形式化等级: L3-L4 | 版本: 2025
 
 ---
 
@@ -977,6 +977,6 @@ Rust 流系统增长预测 (2025-2028):
 **关联文档**：
 
 - [Rust UDF 架构](03-rust-native.md)
-- [Flink vs Spark Streaming 对比](../05-vs-competitors/flink-vs-spark-streaming.md)
-- [流处理 Benchmark 体系](../11-benchmarking/streaming-benchmarks.md)
-- [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)
+- [Flink vs Spark Streaming 对比](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md)
+- [流处理 Benchmark 体系](Flink/09-practices/09.02-benchmarking/streaming-benchmarks.md)
+- [Dataflow 模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md)

@@ -1,6 +1,6 @@
 # 实时RAG架构
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink 架构概述](../../Flink/01-architecture/deployment-architectures.md), [流处理模式](../02-design-patterns/pattern-event-time-processing.md) | 形式化等级: L3
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink 架构概述](Flink/01-concepts/deployment-architectures.md), [流处理模式](../02-design-patterns/pattern-event-time-processing.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

@@ -1,6 +1,8 @@
 # Flink CDC 3.0 数据集成框架
 
-> 所属阶段: Flink | 前置依赖: [Flink CDC基础](./04.04-cdc-debezium-integration.md), [Flink SQL 完整指南](../03-sql-table-api/flink-table-sql-complete-guide.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink CDC基础](./04.04-cdc-debezium-integration.md), [Flink SQL 完整指南](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | 形式化等级: L4
+>
+> **📢 版本更新**: 本文档描述CDC 3.0特性。查看最新版本 [Flink CDC 3.6.0 特性同步完整指南](./flink-cdc-3.6.0-guide.md) 了解Flink 2.2.x支持、JDK 11升级、Oracle Source、Hudi Sink等新增特性。
 
 ---
 

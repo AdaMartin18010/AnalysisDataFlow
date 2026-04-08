@@ -1,6 +1,6 @@
 # Flink 2.4/2.5 性能基准测试报告
 
-> 所属阶段: Flink/11-benchmarking | 前置依赖: [性能基准测试套件](./performance-benchmark-suite.md), [Flink 2.4 版本跟踪](../08-roadmap/flink-2.4-tracking.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/11-benchmarking | 前置依赖: [性能基准测试套件](./performance-benchmark-suite.md), [Flink 2.4 版本跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

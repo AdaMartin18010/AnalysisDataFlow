@@ -1,6 +1,6 @@
 # 物流行业实时追踪与供应链优化：全球物流巨头案例研究
 
-> **所属阶段**: Flink | **前置依赖**: [Flink SQL窗口函数](../03-sql-table-api/flink-sql-window-functions-deep-dive.md), [时间语义与Watermark](../02-core-mechanisms/time-semantics-and-watermark.md), [Flink部署运维指南](../10-deployment/flink-deployment-ops-complete-guide.md) | **形式化等级**: L4-L5 (工程实践+形式化建模)
+> **所属阶段**: Flink | **前置依赖**: [Flink SQL窗口函数](Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md), [时间语义与Watermark](Flink/02-core/time-semantics-and-watermark.md), [Flink部署运维指南](Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md) | **形式化等级**: L4-L5 (工程实践+形式化建模)
 
 ---
 

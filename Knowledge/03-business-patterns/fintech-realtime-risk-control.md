@@ -982,9 +982,9 @@ graph TB
 | **[Pattern 04: Async I/O Enrichment](../02-design-patterns/pattern-async-io-enrichment.md)** | 强依赖 | 异步查询用户画像、设备指纹等外部特征，不阻塞流处理 |
 | **[Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md)** | 强依赖 | 用户级风控状态维护依赖 Keyed State 和 TTL 管理 [^12] |
 | **[Pattern 07: Checkpoint & Recovery](../02-design-patterns/pattern-checkpoint-recovery.md)** | 强依赖 | Exactly-Once 保证风控决策不重复、不丢失 [^13] |
-| **Flink: [Time Semantics and Watermark](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md)** | 实现基础 | Flink 事件时间语义的具体实现 [^9] |
-| **Flink: [Checkpoint Mechanism](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)** | 实现基础 | Checkpoint 配置与调优指南 [^13] |
-| **Flink: [Exactly-Once End-to-End](../../Flink/02-core-mechanisms/exactly-once-end-to-end.md)** | 实现基础 | 端到端 Exactly-Once 实现细节 |
+| **Flink: [Time Semantics and Watermark](Flink/02-core/time-semantics-and-watermark.md)** | 实现基础 | Flink 事件时间语义的具体实现 [^9] |
+| **Flink: [Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)** | 实现基础 | Checkpoint 配置与调优指南 [^13] |
+| **Flink: [Exactly-Once End-to-End](Flink/02-core/exactly-once-end-to-end.md)** | 实现基础 | 端到端 Exactly-Once 实现细节 |
 
 **模式组合架构**:
 
@@ -1026,7 +1026,7 @@ graph TB
 
 [^4]: G. Cugola and A. Margara, "Complex Event Processing with T-REX," *Journal of Systems and Software*, 85(8), 2012. <https://doi.org/10.1016/j.jss.2012.03.056>
 
-[^5]: 实时信用评分算法，参见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/07-case-studies/case-financial-realtime-risk-control.md)
+[^5]: 实时信用评分算法，参见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
 [^6]: FATF (Financial Action Task Force), "International Standards on Combating Money Laundering and the Financing of Terrorism & Proliferation," 2023. <https://www.fatf-gafi.org/recommendations.html>
 
@@ -1034,7 +1034,7 @@ graph TB
 
 [^8]: Apache Flink CEP Library Documentation, "Complex Event Processing for Flink," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/cep/>
 
-[^9]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+[^9]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md)
 
 [^10]: Y. LeCun et al., "Deep Learning for Finance: Methods and Applications," *Journal of Financial Data Science*, 2021.
 
@@ -1042,7 +1042,7 @@ graph TB
 
 [^12]: P. Carbone et al., "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing," *PVLDB*, 10(12), 2017. <https://doi.org/10.14778/3137765.3137777>
 
-[^13]: Flink Checkpoint 机制深度剖析，详见 [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+[^13]: Flink Checkpoint 机制深度剖析，详见 [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 ---
 

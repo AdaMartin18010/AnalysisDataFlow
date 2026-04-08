@@ -1,6 +1,6 @@
 # 流数据库 - Materialize/RisingWave/Timeplus
 
-> **所属阶段**: Knowledge | **前置依赖**: [Flink/03-internals/flink-sql-overview.md](../../Flink/03-sql-table-api/flink-table-sql-complete-guide.md), [Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4 (结构化论证 + 形式化语义)
+> **所属阶段**: Knowledge | **前置依赖**: [Flink/03-internals/flink-sql-overview.md](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md), [Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4 (结构化论证 + 形式化语义)
 
 ## 目录
 

@@ -1,6 +1,6 @@
 # Flink Delta Join：大状态流Join优化
 
-> 所属阶段: Flink/ | 前置依赖: [Flink SQL Join语义](../03-sql-table-api/query-optimization-analysis.md), [Checkpoint机制](./checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [Flink SQL Join语义](Flink/03-api/03.02-table-sql-api/query-optimization-analysis.md), [Checkpoint机制](./checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

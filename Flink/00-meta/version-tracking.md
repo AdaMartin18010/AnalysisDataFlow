@@ -35,7 +35,7 @@ gantt
 | 版本 | 状态 | 预计/实际发布 | 下载链接 | 跟踪文档 |
 |------|------|--------------|----------|----------|
 | 2.3.0 | 开发中 | 2026 Q1 | - | - |
-| 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](./08-roadmap/flink-2.4-tracking.md) |
+| 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
 | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
 | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
 | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
@@ -160,7 +160,7 @@ python .scripts/notify-flink-updates.py --check
 ### 相关文档
 
 - [Flink 2.6/2.7 路线图](./version-tracking/flink-26-27-roadmap.md)
-- [Flink 2.4 跟踪](./08-roadmap/flink-2.4-tracking.md)
+- [Flink 2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 - [特性影响分析模板](./version-tracking/feature-impact-template.md)
 
 ### 外部链接

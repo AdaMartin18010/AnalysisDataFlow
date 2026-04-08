@@ -1,6 +1,6 @@
 # Flink MongoDB Connector 详细指南
 
-> **所属阶段**: Flink/connectors | **前置依赖**: [Flink Connectors生态](../04-connectors/flink-connectors-ecosystem-complete-guide.md), [Exactly-Once语义](../02-core-mechanisms/exactly-once-end-to-end.md) | **形式化等级**: L4
+> **所属阶段**: Flink/connectors | **前置依赖**: [Flink Connectors生态](Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md), [Exactly-Once语义](Flink/02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
 
 ---
 

@@ -1,6 +1,6 @@
 # Flink SQL Hints 查询优化与执行计划调优
 
-> 所属阶段: Flink Stage 3 | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md), [流批一体统一](../08-roadmap/flink-25-stream-batch-unification.md) | 形式化等级: L3
+> 所属阶段: Flink Stage 3 | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md), [流批一体统一](Flink/08-roadmap/08.01-flink-24/flink-25-stream-batch-unification.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

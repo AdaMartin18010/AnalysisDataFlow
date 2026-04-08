@@ -1,6 +1,6 @@
 # Flink 与 dbt 集成: 流式数据转换的工程实践
 
-> **所属阶段**: Flink/06-engineering | **前置依赖**: [Flink SQL 深度解析](../03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md), [Flink-Paimon 集成](../04-connectors/flink-paimon-integration.md) | **形式化等级**: L4
+> **所属阶段**: Flink/06-engineering | **前置依赖**: [Flink SQL 深度解析](Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md), [Flink-Paimon 集成](Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md) | **形式化等级**: L4
 
 ---
 

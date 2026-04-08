@@ -1142,7 +1142,7 @@ Nexmark 吞吐量对比 (K events/sec)
 
 - [rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md) — Rust 流计算生态概览
 - [streaming-databases.md](./streaming-databases.md) — 流数据库通用概念
-- [../../Flink/01-architecture/deployment-architectures.md](../../Flink/01-architecture/deployment-architectures.md) — Flink 架构详解
+- [../../Flink/01-architecture/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) — Flink 架构详解
 
 ### 同层关联
 

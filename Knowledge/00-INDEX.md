@@ -350,7 +350,7 @@ Knowledge/
 | 目录 | 索引 | 描述 |
 |------|------|------|
 | Struct/ | [../Struct/00-INDEX.md](../Struct/00-INDEX.md) | 形式理论与严格证明 |
-| Flink/ | [../Flink/00-INDEX.md](../Flink/00-INDEX.md) | Flink专项技术与实现 |
+| Flink/ | [../Flink/00-INDEX.md](Struct/00-INDEX.md) | Flink专项技术与实现 |
 
 ### 其他重要文档
 

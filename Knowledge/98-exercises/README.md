@@ -1,6 +1,6 @@
 # 流计算练习集
 
-> 所属阶段: Knowledge | 前置依赖: [Struct/ 理论基础](../../Struct/00-INDEX.md), [Flink/ 实践指南](../../Flink/00-INDEX.md) | 形式化等级: L3-L5
+> 所属阶段: Knowledge | 前置依赖: [Struct/ 理论基础](../../Struct/00-INDEX.md), [Flink/ 实践指南](Struct/00-INDEX.md) | 形式化等级: L3-L5
 
 本文档汇总流计算核心练习，涵盖理论基础、工程实践与形式化验证三大维度。
 
@@ -121,7 +121,7 @@ exercise-01 → exercise-02 → exercise-03 → exercise-05 → exercise-04 → 
 ## 参考资源
 
 - [Struct/ 理论文档](../../Struct/00-INDEX.md)
-- [Flink/ 实践指南](../../Flink/00-INDEX.md)
+- [Flink/ 实践指南](Struct/00-INDEX.md)
 - [TLA+ 官方网站](https://lamport.azurewebsites.net/tla/tla.html)
 - [Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/)
 

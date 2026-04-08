@@ -4,7 +4,7 @@
 > **Flink 版本**: 2.0.0+
 > **稳定性**: 稳定版
 >
-> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [disaggregated-state-analysis.md](../01-architecture/disaggregated-state-analysis.md) | 形式化等级: L4
+> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 形式化等级: L4
 
 ---
 

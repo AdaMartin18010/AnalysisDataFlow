@@ -1,6 +1,6 @@
 # PyFlink 深度指南：架构原理与工程实践
 
-> **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/09-language-foundations/pyflink-complete-guide.md](./09-language-foundations/pyflink-complete-guide.md), [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](./02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/09-language-foundations/pyflink-complete-guide.md](Flink/03-api/09-language-foundations/pyflink-complete-guide.md), [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4
 > **版本**: 2026.04 | **适用版本**: Flink 1.18+ - 2.5+ | **Python**: 3.9+
 
 ---

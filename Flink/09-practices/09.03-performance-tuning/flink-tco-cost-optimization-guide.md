@@ -1,6 +1,6 @@
 # Flink 总体拥有成本(TCO)与成本优化策略指南
 
-> **所属阶段**: Flink/06-engineering | **前置依赖**: [状态后端选型指南](./state-backend-selection.md), [分离状态存储分析](../01-architecture/disaggregated-state-analysis.md) | **形式化等级**: L4
+> **所属阶段**: Flink/06-engineering | **前置依赖**: [状态后端选型指南](./state-backend-selection.md), [分离状态存储分析](Flink/01-concepts/disaggregated-state-analysis.md) | **形式化等级**: L4
 
 ---
 

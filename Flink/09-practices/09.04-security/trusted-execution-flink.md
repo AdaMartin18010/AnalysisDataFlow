@@ -1,6 +1,6 @@
 # Flink 可信执行环境 — Intel SGX/AMD SEV/ARM TrustZone
 
-> 所属阶段: Flink/Security | 前置依赖: [Flink 安全特性](../13-security/flink-security-complete-guide.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/Security | 前置依赖: [Flink 安全特性](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

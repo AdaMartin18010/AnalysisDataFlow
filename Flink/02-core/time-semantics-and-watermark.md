@@ -1,6 +1,6 @@
 # Flink 时间语义与 Watermark (Time Semantics and Watermark)
 
-> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [Flink 部署架构](../01-architecture/deployment-architectures.md) | **形式化等级**: L4
+> **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [Flink 部署架构](Flink/01-concepts/deployment-architectures.md) | **形式化等级**: L4
 >
 > 本文档系统阐述 Flink 流处理中的时间语义体系，包括 Event Time、Processing Time、Ingestion Time 的核心区别，Watermark 机制的原理与生成策略，以及窗口类型与迟到数据处理策略。
 

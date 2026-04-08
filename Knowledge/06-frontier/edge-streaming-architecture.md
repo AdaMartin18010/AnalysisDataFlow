@@ -1,6 +1,6 @@
 # 边缘流处理架构与IoT实时分析
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink部署模式](../../Flink/10-deployment/flink-deployment-ops-complete-guide.md), [流处理系统对比](../01-concept-atlas/streaming-models-mindmap.md) | 形式化等级: L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink部署模式](Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md), [流处理系统对比](../01-concept-atlas/streaming-models-mindmap.md) | 形式化等级: L4
 
 ---
 

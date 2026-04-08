@@ -27,7 +27,7 @@
 
 ---
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4路线图](flink-2.3-2.4-roadmap.md), [Flink 1.x vs 2.0对比](../01-architecture/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L5
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4路线图](flink-2.3-2.4-roadmap.md), [Flink 1.x vs 2.0对比](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L5
 > **版本**: 3.0-vision | **状态**: 🔭 愿景 | **目标发布**: 2027 Q1-Q2 (预估)
 
 ---
@@ -1440,6 +1440,6 @@ timeline
 **关联文档**:
 
 - [flink-2.3-2.4-roadmap.md](./flink-2.3-2.4-roadmap.md) - Flink 2.3/2.4路线图
-- [../01-architecture/flink-1.x-vs-2.0-comparison.md](../01-architecture/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比
-- [../01-architecture/disaggregated-state-analysis.md](../01-architecture/disaggregated-state-analysis.md) - 分离状态存储分析
-- [../10-deployment/kubernetes-deployment.md](../10-deployment/kubernetes-deployment.md) - Kubernetes部署指南
+- [../01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比
+- [../01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
+- [../10-deployment/kubernetes-deployment.md](Flink/04-runtime/04.01-deployment/kubernetes-deployment.md) - Kubernetes部署指南

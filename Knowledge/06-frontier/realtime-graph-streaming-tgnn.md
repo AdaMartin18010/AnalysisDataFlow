@@ -1,6 +1,6 @@
 # 实时图流处理与Temporal GNN (StreamTGN)
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [流处理模式](../02-design-patterns/pattern-event-time-processing.md), [Flink Gelly图处理](../../Flink/14-graph/flink-gelly-streaming-graph-processing.md) | 形式化等级: L3
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [流处理模式](../02-design-patterns/pattern-event-time-processing.md), [Flink Gelly图处理](Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

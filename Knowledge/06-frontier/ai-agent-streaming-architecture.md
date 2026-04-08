@@ -63,7 +63,7 @@ $$
 **定义**: Agent记忆系统是一个分层存储架构，形式化为：
 
 $$
-\mathcal{M} = \langle \mathcal{M}_{stm}, \mathcal{M}_{ltm}, \mathcal{M}_{ep} \rangle
+\mathcal{M} = \langle \mathcal{M}_{stm}, \mathcal{M}_{mtm}, \mathcal{M}_{ltm}, \mathcal{M}_{ep} \rangle
 $$
 
 **短期记忆 (STM - Short-Term Memory)**:
@@ -73,6 +73,14 @@ $$
 $$
 
 其中 $w$ 为上下文窗口大小，通常受限于LLM的token限制(4k-128k)。
+
+**中期记忆 (MTM - Medium-Term Memory)**:
+
+$$
+\mathcal{M}_{mtm}(t) = \{ (s_j, v_j, t_j) \mid t - \Delta t_{mtm} \leq t_j \leq t \}
+$$
+
+存储会话级上下文，包括对话摘要、用户偏好、任务状态等，保留时间通常在小时到天级别。
 
 **长期记忆 (LTM - Long-Term Memory)**:
 
@@ -89,6 +97,14 @@ $$
 $$
 
 存储完整的交互episode，用于强化学习与经验回放。
+
+**记忆流式更新机制**:
+
+$$
+\mathcal{M}_{t+1} = \alpha \cdot \mathcal{M}_{stm} \oplus \beta \cdot \mathcal{M}_{mtm} \oplus \gamma \cdot \text{Embed}(\mathcal{M}_{ltm}) \oplus \delta \cdot \mathcal{M}_{ep}
+$$
+
+其中 $\oplus$ 表示记忆融合操作，权重参数满足 $\alpha + \beta + \gamma + \delta = 1$。
 
 ---
 
@@ -144,6 +160,100 @@ $$
 $$
 
 Agent间直接通信，无中央协调器。
+
+**分层协作模式 (Hierarchical)**:
+
+$$
+\mathcal{H} = \langle \mathcal{L}_1, \mathcal{L}_2, ..., \mathcal{L}_k \rangle, \quad \mathcal{L}_i \xrightarrow{\text{delegate}} \mathcal{L}_{i+1}
+$$
+
+多级分层架构，上层Agent负责战略决策，下层Agent负责执行。
+
+---
+
+### Def-K-06-115: Agent状态机 (Agent State Machine)
+
+**定义**: Agent状态机是一个扩展的有限状态机，形式化为七元组：
+
+$$
+\mathcal{M}_{agent} = \langle Q, \Sigma, \delta, q_0, F, \mathcal{V}, \eta \rangle
+$$
+
+其中：
+
+| 组件 | 符号 | 定义 | 描述 |
+|------|------|------|------|
+| 状态集 | $Q$ | $\{idle, perceiving, reasoning, tool\_selecting, executing, reflecting, error, completed\}$ | Agent状态 |
+| 输入字母表 | $\Sigma$ | $\{evt\_input, evt\_mem\_retrieved, evt\_tool\_needed, evt\_tool\_done, evt\_error, evt\_timeout\}$ | 触发事件 |
+| 转移函数 | $\delta$ | $Q \times \Sigma \rightarrow Q$ | 状态转换 |
+| 初始状态 | $q_0$ | $idle$ | 初始状态 |
+| 终止状态 | $F$ | $\{completed, error\}$ | 结束状态 |
+| 变量集 | $\mathcal{V}$ | $\{context, memory, tools, iteration\}$ | 状态变量 |
+| 守卫条件 | $\eta$ | $\mathcal{V} \rightarrow \{true, false\}$ | 转换条件 |
+
+**状态转移语义**:
+
+$$
+\delta(q, \sigma) =
+\begin{cases}
+perceiving & \text{if } q = idle \land \sigma = evt\_input \\
+reasoning & \text{if } q = perceiving \land \sigma = evt\_mem\_retrieved \\
+tool\_selecting & \text{if } q = reasoning \land \sigma = evt\_tool\_needed \\
+executing & \text{if } q = tool\_selecting \land \exists t \in \mathcal{T}: match(t, goal) \\
+reflecting & \text{if } q = executing \land \sigma = evt\_tool\_done \\
+reasoning & \text{if } q = reflecting \land \eta(iteration < max\_iter) \\
+completed & \text{if } q = reflecting \land \eta(goal\_achieved) \\
+error & \text{if } \sigma = evt\_error \lor \eta(iteration \geq max\_iter)
+\end{cases}
+$$
+
+---
+
+### Def-K-06-116: 工具调用流编排 (Tool Calling Flow Orchestration)
+
+**定义**: 工具调用流编排定义了Agent选择和执行工具的动态流程：
+
+$$
+\mathcal{T}_{flow} = \langle \mathcal{T}, \mathcal{G}_{dep}, \mathcal{S}_{exec}, \mathcal{O}_{order} \rangle
+$$
+
+其中：
+
+- $\mathcal{T} = \{t_1, t_2, ..., t_n\}$: 可用工具集合
+- $\mathcal{G}_{dep} = (\mathcal{T}, \mathcal{E}_{dep})$: 工具依赖图
+- $\mathcal{S}_{exec} \in \{sequential, parallel, conditional\}$: 执行策略
+- $\mathcal{O}_{order}: \mathcal{T} \rightarrow \mathbb{N}$: 执行顺序
+
+**工具选择函数**:
+
+$$
+\text{select\_tool}(goal, context) = \arg\max_{t \in \mathcal{T}} \left( \text{relevance}(t, goal) \cdot \text{confidence}(t, context) \right)
+$$
+
+---
+
+### Def-K-06-117: 记忆流式更新协议 (Memory Streaming Update Protocol)
+
+**定义**: 记忆流式更新协议规范了记忆的实时更新流程：
+
+$$
+\mathcal{P}_{mem} = \langle \mathcal{E}_{update}, \mathcal{P}_{process}, \mathcal{S}_{storage}, \mathcal{N}_{notify} \rangle
+$$
+
+**更新事件类型**:
+
+| 事件类型 | 触发条件 | 处理策略 | 存储目标 |
+|----------|----------|----------|----------|
+| `context_update` | 对话轮次增加 | 滑动窗口更新 | $\mathcal{M}_{stm}$ |
+| `session_checkpoint` | 会话里程碑 | 摘要生成 | $\mathcal{M}_{mtm}$ |
+| `insight_extracted` | 重要信息识别 | 向量化存储 | $\mathcal{M}_{ltm}$ |
+| `episode_complete` | 任务完成 | 经验打包 | $\mathcal{M}_{ep}$ |
+
+**更新流水线**:
+
+$$
+\mathcal{E}_{update} \xrightarrow{extract} \mathcal{F}_{features} \xrightarrow{embed} \mathbb{R}^d \xrightarrow{store} \mathcal{M}_{\bullet} \xrightarrow{index} \mathcal{I}_{searchable}
+$$
 
 ---
 
@@ -235,6 +345,42 @@ $$
 
 ---
 
+### Lemma-K-06-81: 记忆一致性引理
+
+**引理**: 在流式更新场景下，记忆系统满足最终一致性：
+
+$$
+\forall m \in \mathcal{M}, \forall t > t_{write}: \lim_{t \to \infty} P(read(m, t) = m_{latest}) = 1
+$$
+
+**一致性级别**:
+
+| 记忆类型 | 一致性模型 | 保证延迟 |
+|----------|------------|----------|
+| $\mathcal{M}_{stm}$ | 强一致性 | < 10ms |
+| $\mathcal{M}_{mtm}$ | 会话一致性 | < 100ms |
+| $\mathcal{M}_{ltm}$ | 最终一致性 | < 1s |
+| $\mathcal{M}_{ep}$ | 最终一致性 | < 5s |
+
+---
+
+### Prop-K-06-83: Agent状态机活性定理
+
+**命题**: Agent状态机满足活性条件（Liveness），即：
+
+$$
+\Diamond (q \in F), \quad \forall \text{合法输入序列}
+$$
+
+**证明概要**:
+
+1. **有限迭代保证**: $iteration < max\_iter$ 确保推理循环终止
+2. **超时机制**: $L_{elapsed} < L_{timeout}$ 强制终止长时间运行
+3. **错误处理**: 任何错误状态最终转移到 $error \in F$
+4. **完成检测**: $goal\_achieved$ 条件确保正常终止到 $completed \in F$
+
+---
+
 ## 3. 关系建立 (Relations)
 
 ### 3.1 Agent vs 传统AI系统的对比关系
@@ -318,7 +464,18 @@ graph TB
 
 ---
 
-### 3.3 2026年Agent架构趋势映射
+### 3.3 Multi-Agent协作模式对比
+
+| 模式 | 拓扑结构 | 通信复杂度 | 容错性 | 适用场景 |
+|------|----------|------------|--------|----------|
+| **Orchestrator-Worker** | 星型 | $O(n)$ | 中 | 任务分解明确 |
+| **Supervisor-Workers** | 星型+监控 | $O(n)$ | 高 | 需要容错保障 |
+| **去中心化** | 网状 | $O(n^2)$ | 高 | 自主协作 |
+| **分层架构** | 树型 | $O(\log n)$ | 高 | 复杂组织 |
+
+---
+
+### 3.4 2026年Agent架构趋势映射
 
 | 趋势 | 2024年状态 | 2026年预期 | 技术驱动 |
 |------|------------|------------|----------|
@@ -367,7 +524,33 @@ graph TB
 
 ---
 
-### 4.2 流式处理与Agent结合的必然性论证
+### 4.2 Multi-Agent协作的必然性论证
+
+**观察**: 2026年复杂任务处理呈现以下特征：
+
+1. **专业化分工**: 单一Agent难以同时精通多个领域
+2. **并行效率**: 独立子任务并行处理可显著降低总延迟
+3. **容错需求**: 单个Agent失败不应导致整个任务失败
+4. **可扩展性**: 动态添加新Agent扩展系统能力
+
+**论证**: Multi-Agent架构是解决复杂问题的必然选择：
+
+$$
+\text{Complexity}(\text{Single Agent}) > \text{Threshold} \Rightarrow \text{Require Multi-Agent}
+$$
+
+**复杂度阈值判定**:
+
+| 指标 | 单Agent上限 | Multi-Agent优势 |
+|------|-------------|-----------------|
+| 工具数量 | 10-20个 | 可扩展至100+ |
+| 领域跨度 | 1-2个 | 无限制 |
+| 任务步骤 | 10步 | 100+步 |
+| 执行时间 | 5分钟 | 小时级 |
+
+---
+
+### 4.3 流式处理与Agent结合的必然性论证
 
 **观察**: 2026年Agent工作负载呈现以下特征：
 
@@ -387,7 +570,7 @@ graph TB
 
 ---
 
-### 4.3 反例分析：Agent不适用场景
+### 4.4 反例分析：Agent不适用场景
 
 **场景1: 超低延迟高频交易**
 
@@ -431,8 +614,9 @@ graph TB
 
     subgraph "记忆系统 Memory"
         M1[STM<br/>上下文窗口]
-        M2[LTM<br/>Vector DB]
-        M3[Episodic<br/>经验库]
+        M2[MTM<br/>会话记忆]
+        M3[LTM<br/>Vector DB]
+        M4[Episodic<br/>经验库]
     end
 
     subgraph "工具执行 Tools"
@@ -456,6 +640,7 @@ graph TB
     R1 <--> M1
     R1 <--> M2
     R1 <--> M3
+    R1 <--> M4
 
     R1 --> R4
     R4 --> T1
@@ -472,7 +657,148 @@ graph TB
 
 ---
 
-### 5.2 流式处理集成模式
+### 5.2 Agent状态机详细定义
+
+```mermaid
+stateDiagram-v2
+    [*] --> idle: 系统初始化
+
+    idle --> perceiving: 输入事件触发
+
+    perceiving --> memory_retrieval: 特征提取完成
+    memory_retrieval --> reasoning: 上下文组装完成
+
+    reasoning --> tool_selecting: 需要外部信息
+    tool_selecting --> executing: 工具匹配成功
+    executing --> observing: 工具执行完成
+    observing --> reasoning: 更新上下文
+
+    reasoning --> reflecting: 需要验证
+    reflecting --> reasoning: 重新评估
+
+    reasoning --> action_executing: 决策完成
+    action_executing --> completed: 执行成功
+
+    perceiving --> error: 感知失败
+    memory_retrieval --> error: 检索失败
+    tool_selecting --> error: 无匹配工具
+    executing --> error: 工具调用失败
+
+    error --> retrying: 可重试错误
+    retrying --> tool_selecting: 重试
+    retrying --> fallback: 重试耗尽
+
+    fallback --> action_executing: 降级处理
+    fallback --> error: 不可恢复
+
+    completed --> [*]: 输出结果
+    error --> [*]: 错误报告
+
+    note right of reasoning
+        最大迭代次数检查
+        timeout检查
+    end note
+```
+
+**状态转移表**:
+
+| 当前状态 | 触发事件 | 守卫条件 | 下一状态 | 动作 |
+|----------|----------|----------|----------|------|
+| idle | `evt_input` | - | perceiving | 启动感知处理 |
+| perceiving | `evt_perceive_done` | - | memory_retrieval | 触发记忆检索 |
+| memory_retrieval | `evt_mem_retrieved` | - | reasoning | 开始推理 |
+| reasoning | `evt_tool_needed` | `confidence < threshold` | tool_selecting | 选择工具 |
+| reasoning | `evt_goal_achieved` | `confidence >= threshold` | action_executing | 执行行动 |
+| tool_selecting | `evt_tool_matched` | $\exists t \in \mathcal{T}$ | executing | 调用工具 |
+| executing | `evt_tool_done` | success | observing | 处理结果 |
+| executing | `evt_tool_error` | fail | retrying | 错误处理 |
+| retrying | `evt_retry` | `retry_count < max` | tool_selecting | 重试选择 |
+| retrying | `evt_max_retry` | `retry_count >= max` | fallback | 降级 |
+
+---
+
+### 5.3 记忆管理流式更新机制
+
+```mermaid
+flowchart TD
+    subgraph "记忆更新触发源"
+        T1[对话轮次]
+        T2[用户反馈]
+        T3[工具结果]
+        T4[时间触发]
+    end
+
+    subgraph "更新处理器"
+        P1[特征提取]
+        P2[重要性评分]
+        P3[向量化]
+        P4[摘要生成]
+    end
+
+    subgraph "存储目标"
+        S1[STM<br/>Redis/Memory]
+        S2[MTM<br/>Document DB]
+        S3[LTM<br/>Vector DB]
+        S4[Episodic<br/>Object Storage]
+    end
+
+    T1 --> P1
+    T2 --> P2
+    T3 --> P2
+    T4 --> P4
+
+    P1 -->|高频更新| S1
+    P1 -->|重要性>θ| P3
+    P2 -->|中频更新| S2
+    P3 -->|异步写入| S3
+    P4 -->|批量写入| S4
+```
+
+**记忆更新策略**:
+
+```python
+class StreamingMemoryUpdater:
+    """流式记忆更新处理器"""
+
+    async def process_update(self, event: MemoryEvent):
+        # 1. 确定更新目标
+        if event.type == "context_update":
+            await self._update_stm(event)
+        elif event.type == "session_checkpoint":
+            await self._update_mtm(event)
+        elif event.type == "insight_extracted":
+            await self._update_ltm(event)
+        elif event.type == "episode_complete":
+            await self._update_episodic(event)
+
+    async def _update_stm(self, event):
+        """短期记忆更新 - 毫秒级"""
+        # 滑动窗口更新
+        self.stm.append(event.data)
+        if len(self.stm) > self.window_size:
+            self.stm.pop(0)
+        await self.stm_store.write(self.session_id, self.stm)
+
+    async def _update_ltm(self, event):
+        """长期记忆更新 - 异步批量"""
+        # 向量化
+        embedding = await self.embedding_model.encode(event.data)
+        # 批量写入Vector DB
+        await self.ltm_buffer.add({
+            "id": event.id,
+            "vector": embedding,
+            "metadata": event.metadata,
+            "timestamp": event.timestamp
+        })
+
+        # 批量刷新
+        if self.ltm_buffer.size >= self.batch_size:
+            await self._flush_ltm_buffer()
+```
+
+---
+
+### 5.4 流式处理集成模式
 
 **模式1: 实时上下文组装 (Streaming Joins)**
 
@@ -540,7 +866,7 @@ sequenceDiagram
 
 ---
 
-### 5.3 生产实践最佳实践
+### 5.5 生产实践最佳实践
 
 **评估与测试 (Trajectory Evaluation)**:
 
@@ -580,6 +906,11 @@ guardrails:
       max_tokens_per_request: 4000
     - type: budget_limit
       daily_budget_usd: 1000
+
+  memory:
+    - type: privacy_filter
+      pii_detection: true
+      retention_limit: 30d
 ```
 
 **可观测性 (Tracing)**:
@@ -590,20 +921,24 @@ graph TB
         T1[Trace: Task Execution]
         T2[Span: Perception]
         T3[Span: Reasoning]
-        T4[Span: Tool Call]
-        T5[Span: Action]
-        T6[Event: LLM Request]
-        T7[Event: LLM Response]
-        T8[Event: Tool Result]
+        T4[Span: Memory Retrieval]
+        T5[Span: Tool Call]
+        T6[Span: Action]
+        T7[Event: LLM Request]
+        T8[Event: LLM Response]
+        T9[Event: Tool Result]
+        T10[Event: Memory Update]
     end
 
     T1 --> T2
     T1 --> T3
     T1 --> T4
     T1 --> T5
-    T3 --> T6
+    T1 --> T6
     T3 --> T7
-    T4 --> T8
+    T3 --> T8
+    T4 --> T10
+    T5 --> T9
 ```
 
 **成本优化策略**:
@@ -614,10 +949,11 @@ graph TB
 | **缓存复用** | 相似查询结果缓存 | 20-40% |
 | **批处理** | 非实时任务合并 | 30-50% |
 | **蒸馏部署** | 本地小模型替代API | 90%+ |
+| **记忆压缩** | 智能摘要减少token | 30-50% |
 
 ---
 
-### 5.4 Flink作为Agent数据管道
+### 5.6 Flink作为Agent数据管道
 
 **架构定位**:
 
@@ -634,6 +970,7 @@ graph TB
         F2[特征工程]
         F3[上下文组装]
         F4[实时RAG]
+        F5[记忆更新]
     end
 
     subgraph "Agent层"
@@ -656,76 +993,11 @@ graph TB
     F2 --> F4
     F3 --> A1
     F4 --> A2
+    F5 --> A1
 
     A1 --> O2
     A2 --> O1
     A3 --> O3
-```
-
-**实时特征服务**:
-
-```java
-// Flink实时特征计算
-public class RealtimeFeatureJob {
-
-    public static void main(String[] args) {
-        StreamExecutionEnvironment env =
-            StreamExecutionEnvironment.getExecutionEnvironment();
-
-        // 用户行为流
-        DataStream<UserAction> actions = env
-            .addSource(new KafkaSource<>())
-            .keyBy(UserAction::getUserId);
-
-        // 实时特征聚合
-        DataStream<UserFeatures> features = actions
-            .window(TumblingProcessingTimeWindows.of(Time.minutes(5)))
-            .aggregate(new FeatureAggregator())
-            .map(new FeatureEnrichment())
-            .addSink(new FeatureStoreSink());
-
-        // 触发Agent决策
-        features
-            .filter(f -> f.getRiskScore() > 0.8)
-            .addSink(new AgentTriggerSink());
-
-        env.execute("Realtime Feature Service");
-    }
-}
-```
-
-**流式RAG增强**:
-
-```java
-// 流式RAG: 实时索引更新 + 检索
-DataStream<Document> documentStream = env
-    .addSource(new CDCSource());
-
-// 实时生成嵌入并更新Vector DB
-documentStream
-    .map(doc -> new EmbeddingRequest(doc.getContent()))
-    .asyncWait(new AsyncEmbeddingFunction(), 1000, TimeUnit.MILLISECONDS)
-    .addSink(new VectorDBUpdateSink());
-
-// Agent查询时获取最新上下文
-public class StreamingRAGFunction extends RichAsyncFunction<Query, Response> {
-    @Override
-    public void asyncInvoke(Query query, ResultFuture<Response> future) {
-        // 1. 实时检索
-        List<Document> docs = vectorStore.search(query, 5);
-
-        // 2. 组装上下文
-        Context context = Context.builder()
-            .query(query)
-            .documents(docs)
-            .timestamp(System.currentTimeMillis())
-            .build();
-
-        // 3. 调用Agent
-        agentService.process(context)
-            .thenAccept(future::complete);
-    }
-}
 ```
 
 ---
@@ -756,6 +1028,7 @@ graph TB
         F2[实时意图识别]
         F3[上下文组装]
         F4[知识检索]
+        F5[记忆更新流]
     end
 
     subgraph "Agent层"
@@ -769,6 +1042,7 @@ graph TB
         D1[(Vector DB<br/>知识库)]
         D2[(Redis<br/>会话状态)]
         D3[(订单DB<br/>实时数据)]
+        D4[(记忆存储<br/>长期记忆)]
     end
 
     U1 --> GW
@@ -783,6 +1057,7 @@ graph TB
     F4 --> D1
     F3 --> D2
     F3 --> D3
+    F5 --> D4
 
     F2 --> A1
     F3 --> A1
@@ -812,13 +1087,17 @@ class AgentContext:
     conversation_history: List[Dict]
     user_profile: Dict
     retrieved_knowledge: List[str]
+    short_term_memory: List[Dict]
+    medium_term_memory: Dict
+    long_term_context: List[str]
     order_info: Dict = None
 
 class CustomerServiceAgent:
     def __init__(self):
         self.llm = ChatOpenAI(model="gpt-4o", temperature=0.2)
         self.tools = self._setup_tools()
-        self.memory = ConversationBufferMemory()
+        self.memory_manager = HierarchicalMemoryManager()
+        self.state_machine = AgentStateMachine()
 
     def _setup_tools(self) -> List[Tool]:
         return [
@@ -838,6 +1117,11 @@ class CustomerServiceAgent:
                 description="搜索产品知识和政策"
             ),
             Tool(
+                name="update_preferences",
+                func=self._update_preferences,
+                description="更新用户偏好记忆"
+            ),
+            Tool(
                 name="transfer_human",
                 func=self._transfer_human,
                 description="转接人工客服"
@@ -845,62 +1129,63 @@ class CustomerServiceAgent:
         ]
 
     async def process(self, message: str, context: AgentContext) -> str:
-        # Step 1: 意图识别
+        # Step 1: 更新短期记忆
+        await self.memory_manager.update_stm(
+            context.session_id,
+            {"role": "user", "content": message}
+        )
+
+        # Step 2: 意图识别
         intent = await self._classify_intent(message, context)
 
-        # Step 2: 上下文组装 (Streaming Join)
-        enriched_context = await self._enrich_context(context, intent)
+        # Step 3: 记忆检索 (分层)
+        memories = await self._retrieve_memories(context, intent)
 
-        # Step 3: ReAct推理循环
+        # Step 4: 上下文组装 (Streaming Join)
+        enriched_context = await self._enrich_context(context, intent, memories)
+
+        # Step 5: ReAct推理循环
         response = await self._react_loop(message, enriched_context)
 
-        # Step 4: 更新记忆
-        await self._update_memory(context.session_id, message, response)
+        # Step 6: 更新记忆层次
+        await self._update_all_memories(context.session_id, message, response, intent)
 
         return response
 
-    async def _classify_intent(self, message: str, context: AgentContext) -> str:
-        """使用LLM进行意图分类"""
-        prompt = f"""
-        分析用户消息意图，从以下选项中选择：
-        - ORDER_QUERY: 订单查询
-        - RETURN_REQUEST: 退换货
-        - PRODUCT_INQUIRY: 产品咨询
-        - COMPLAINT: 投诉
-        - GENERAL: 一般咨询
+    async def _retrieve_memories(self, context: AgentContext, intent: str) -> Dict:
+        """分层记忆检索"""
+        tasks = {
+            "stm": self.memory_manager.get_stm(context.session_id),
+            "mtm": self.memory_manager.get_mtm(context.user_id),
+            "ltm": self.memory_manager.search_ltm(intent, top_k=5),
+            "episodic": self.memory_manager.get_similar_episodes(context.user_id, intent)
+        }
 
-        用户消息: {message}
-        历史上下文: {context.conversation_history[-3:]}
+        results = await asyncio.gather(*tasks.values())
+        return dict(zip(tasks.keys(), results))
 
-        意图:"""
+    async def _update_all_memories(self, session_id: str, message: str,
+                                    response: str, intent: str):
+        """流式更新所有记忆层次"""
+        # STM - 立即更新
+        await self.memory_manager.update_stm(session_id, {
+            "role": "assistant",
+            "content": response,
+            "intent": intent
+        })
 
-        response = await self.llm.ainvoke(prompt)
-        return response.content.strip()
-
-    async def _enrich_context(self, context: AgentContext, intent: str) -> AgentContext:
-        """实时组装上下文 - Streaming Join逻辑"""
-        tasks = []
-
-        # 并行获取多源数据
-        if intent == "ORDER_QUERY":
-            tasks.append(self._fetch_order_info(context.user_id))
-
-        tasks.append(self._retrieve_knowledge(context.conversation_history))
-        tasks.append(self._fetch_user_profile(context.user_id))
-
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-
-        # 组装上下文
-        enriched = AgentContext(
-            session_id=context.session_id,
-            user_id=context.user_id,
-            conversation_history=context.conversation_history,
-            user_profile=results[-1] if not isinstance(results[-1], Exception) else {},
-            retrieved_knowledge=results[-2] if not isinstance(results[-2], Exception) else [],
-            order_info=results[0] if len(results) > 2 and not isinstance(results[0], Exception) else None
+        # MTM - 异步会话检查点
+        asyncio.create_task(
+            self.memory_manager.checkpoint_session(session_id)
         )
 
-        return enriched
+        # LTM - 异步提取洞察
+        if self._is_insight_worthy(message, response):
+            asyncio.create_task(
+                self.memory_manager.extract_and_store_insight(
+                    session_id, message, response
+                )
+            )
 
     async def _react_loop(self, message: str, context: AgentContext) -> str:
         """ReAct推理循环"""
@@ -929,177 +1214,11 @@ class CustomerServiceAgent:
 
         # 达到最大迭代次数，返回当前最佳答案
         return await self._generate_final_answer(thoughts)
-
-    async def _generate_thought(self, message: str, context: AgentContext,
-                                thoughts: List[str], actions: List[str]) -> str:
-        """生成推理步骤"""
-        prompt = f"""
-        你是电商客服助手。基于以下信息决定下一步：
-
-        用户消息: {message}
-        用户画像: {context.user_profile}
-        订单信息: {context.order_info}
-        检索到的知识: {context.retrieved_knowledge}
-
-        思考历史:
-        {chr(10).join(thoughts)}
-
-        行动历史:
-        {chr(10).join(actions)}
-
-        下一步思考 (如果需要工具，请说明使用哪个工具):
-        """
-
-        response = await self.llm.ainvoke(prompt)
-        return response.content.strip()
-
-    async def _query_order(self, order_id: str) -> Dict:
-        """查询订单API调用"""
-        # 实际实现调用订单服务
-        pass
-
-    async def _process_return(self, order_id: str, reason: str) -> str:
-        """处理退换货"""
-        # 实际实现调用售后系统
-        pass
-
-    async def _search_knowledge(self, query: str) -> List[str]:
-        """检索知识库"""
-        # 调用Vector DB进行语义检索
-        pass
-
-    async def _transfer_human(self, reason: str) -> str:
-        """转人工"""
-        # 触发人工介入流程
-        pass
-
-# 使用示例
-async def main():
-    agent = CustomerServiceAgent()
-
-    context = AgentContext(
-        session_id="sess_12345",
-        user_id="user_67890",
-        conversation_history=[],
-        user_profile={},
-        retrieved_knowledge=[]
-    )
-
-    response = await agent.process(
-        "我的订单什么时候能到？订单号是ORD-2026-001",
-        context
-    )
-    print(response)
-
-if __name__ == "__main__":
-    asyncio.run(main())
 ```
-
-**Flink流处理集成**:
-
-```java
-// Flink作业：客服Agent实时管道
-public class CustomerServiceAgentJob {
-
-    public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env =
-            StreamExecutionEnvironment.getExecutionEnvironment();
-        env.enableCheckpointing(5000);
-
-        // 用户消息流
-        DataStream<UserMessage> messages = env
-            .addSource(new KafkaSource<UserMessage>()
-                .setTopics("customer-messages")
-                .setGroupId("agent-processor"))
-            .keyBy(UserMessage::getSessionId);
-
-        // 广播流：动态意图路由规则
-        BroadcastStream<RoutingRule> rules = env
-            .fromSource(new RulesSource(),
-                WatermarkStrategy.noWatermarks(), "rules")
-            .broadcast(Descriptors.rulesDescriptor);
-
-        // 处理：Agent调用
-        DataStream<AgentResponse> responses = messages
-            .connect(rules)
-            .process(new AgentInvocationFunction());
-
-        // 输出到消息队列
-        responses.addSink(new KafkaSink<>());
-
-        env.execute("Customer Service Agent Pipeline");
-    }
-}
-
-// Agent调用处理函数
-public class AgentInvocationFunction
-    extends KeyedBroadcastProcessFunction<String, UserMessage, RoutingRule, AgentResponse> {
-
-    private transient ValueState<ConversationState> conversationState;
-    private transient AsyncAgentClient agentClient;
-
-    @Override
-    public void open(Configuration parameters) {
-        conversationState = getRuntimeContext().getState(
-            new ValueStateDescriptor<>("conversation", ConversationState.class));
-        agentClient = new AsyncAgentClient(System.getenv("AGENT_API_URL"));
-    }
-
-    @Override
-    public void processElement(UserMessage message, ReadOnlyContext ctx,
-                               Collector<AgentResponse> out) throws Exception {
-
-        // 获取或创建会话状态
-        ConversationState state = conversationState.value();
-        if (state == null) {
-            state = new ConversationState(message.getSessionId());
-        }
-
-        // 组装上下文
-        AgentContext agentContext = AgentContext.builder()
-            .sessionId(message.getSessionId())
-            .userId(message.getUserId())
-            .message(message.getContent())
-            .history(state.getHistory())
-            .timestamp(System.currentTimeMillis())
-            .build();
-
-        // 异步调用Agent服务
-        CompletableFuture<AgentResponse> future = agentClient.process(agentContext);
-
-        future.thenAccept(response -> {
-            // 更新会话状态
-            state.addTurn(message.getContent(), response.getContent());
-            conversationState.update(state);
-
-            out.collect(response);
-        });
-    }
-
-    @Override
-    public void processBroadcastElement(RoutingRule rule, Context ctx,
-                                        Collector<AgentResponse> out) {
-        // 更新路由规则
-        ctx.applyToKeyedState(Descriptors.rulesDescriptor, (key, state) -> {
-            // 应用新规则
-        });
-    }
-}
-```
-
-**性能指标**:
-
-| 指标 | 目标 | 实测 | 说明 |
-|------|------|------|------|
-| 首次响应延迟 | < 1s | 0.8s | 从用户发消息到首次回复 |
-| 完整任务延迟 | < 5s | 3.2s | 含工具调用的完整处理 |
-| 任务成功率 | > 95% | 97.5% | 无需人工介入解决率 |
-| 人工转接率 | < 10% | 7.2% | 复杂问题转人工比例 |
-| 并发处理能力 | 1000 QPS | 1200 QPS | 峰值处理能力 |
 
 ---
 
-### 6.2 多Agent协作实例: 研究报告生成
+### 6.2 Multi-Agent协作实例: 研究报告生成
 
 ```mermaid
 sequenceDiagram
@@ -1108,14 +1227,15 @@ sequenceDiagram
     participant R as Researcher Agent
     participant A as Analyst Agent
     participant W as Writer Agent
+    participant M as Memory Manager
     participant V as Vector DB
-    participant S as Search API
 
     U->>O: "生成AI Agent市场报告"
 
     rect rgb(230, 245, 255)
         Note over O: Plan阶段
         O->>O: 任务分解
+        O->>M: 存储任务计划
         O->>R: 分配研究任务
         O->>A: 分配分析任务
         O->>W: 预分配写作任务
@@ -1123,32 +1243,78 @@ sequenceDiagram
 
     rect rgb(255, 245, 230)
         Note over R: Research阶段
-        R->>S: 搜索市场数据
-        S-->>R: 返回原始数据
-        R->>V: 存储结构化发现
+        R->>V: 搜索市场数据
+        V-->>R: 返回原始数据
+        R->>M: 存储研究发现
+        R->>O: 通知研究完成
     end
 
     rect rgb(230, 255, 230)
         Note over A: Analysis阶段
-        A->>V: 检索研究发现
-        V-->>A: 返回相关数据
+        A->>M: 检索研究发现
+        M-->>A: 返回相关数据
         A->>A: 趋势分析
         A->>A: 竞品对比
-        A->>V: 存储分析结论
+        A->>M: 存储分析结论
+        A->>O: 通知分析完成
     end
 
     rect rgb(255, 230, 245)
         Note over W: Writing阶段
-        W->>V: 检索研究+分析结果
-        V-->>W: 返回完整上下文
+        W->>M: 检索研究+分析结果
+        M-->>W: 返回完整上下文
         W->>W: 生成报告章节
+        W->>M: 存储草稿
     end
 
     W->>O: 提交初稿
     O->>O: 质量检查
-    O->>W: 修订建议(如有)
-    W->>O: 提交终稿
+    alt 需要修订
+        O->>W: 修订建议
+        W->>O: 提交修订稿
+    end
+    O->>M: 存储最终报告
     O->>U: 返回完整报告
+```
+
+---
+
+### 6.3 记忆流式更新实例
+
+```java
+// Flink记忆更新流处理
+public class MemoryUpdateJob {
+
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 记忆更新事件流
+        DataStream<MemoryEvent> memoryEvents = env
+            .addSource(new KafkaSource<MemoryEvent>()
+                .setTopics("agent-memory-updates")
+                .setGroupId("memory-processor"))
+            .keyBy(MemoryEvent::getUserId);
+
+        // 分层处理
+        DataStream<MemoryUpdate> stmUpdates = memoryEvents
+            .filter(e -> e.getTargetTier() == MemoryTier.STM)
+            .process(new STMUpdateFunction());
+
+        DataStream<MemoryUpdate> ltmUpdates = memoryEvents
+            .filter(e -> e.getTargetTier() == MemoryTier.LTM)
+            .map(new EmbeddingFunction())
+            .addSink(new VectorDBSink());
+
+        DataStream<MemoryUpdate> mtmUpdates = memoryEvents
+            .filter(e -> e.getTargetTier() == MemoryTier.MTM)
+            .window(TumblingProcessingTimeWindows.of(Time.minutes(5)))
+            .process(new SessionSummarizationFunction())
+            .addSink(new DocumentDBSink());
+
+        env.execute("Agent Memory Streaming Updates");
+    }
+}
 ```
 
 ---
@@ -1173,6 +1339,7 @@ mindmap
         工具选择
       记忆系统
         STM上下文窗口
+        MTM会话记忆
         LTM向量检索
         Episodic经验
       工具执行
@@ -1184,6 +1351,7 @@ mindmap
         实时上下文组装
         Streaming Joins
         Broadcast State
+        记忆更新流
       事件驱动
         动态触发
         多Agent协调
@@ -1198,43 +1366,101 @@ mindmap
       Plan-and-Execute
       Orchestrator-Worker
       Supervisor模式
+      Hierarchical分层
 ```
 
 ---
 
-### 7.2 Agent状态机
+### 7.2 多Agent协作拓扑演进
 
 ```mermaid
-stateDiagram-v2
-    [*] --> 感知: 输入事件
+graph TB
+    subgraph "阶段1: Single Agent"
+        S1[用户] --> S2[单一Agent]
+        S2 --> S3[工具集合]
+    end
 
-    感知 --> 记忆检索: 提取特征
-    记忆检索 --> 推理: 组装上下文
+    subgraph "阶段2: Orchestrator-Worker"
+        O1[用户] --> O2[Orchestrator]
+        O2 --> O3[Worker A]
+        O2 --> O4[Worker B]
+        O2 --> O5[Worker C]
+        O3 --> O2
+        O4 --> O2
+        O5 --> O2
+    end
 
-    推理 --> 工具选择: 需要外部信息
-    工具选择 --> 工具执行: 调用API
-    工具执行 --> 观察: 获取结果
-    观察 --> 推理: 更新上下文
+    subgraph "阶段3: Hierarchical分层"
+        H1[用户] --> H2[战略层<br/>Strategy Agent]
+        H2 --> H3[规划层<br/>Planning Agent]
+        H2 --> H4[规划层<br/>Planning Agent]
+        H3 --> H5[执行层<br/>Execution]
+        H4 --> H5
+        H5 --> H6[工具集合]
+    end
 
-    推理 --> 行动执行: 决策完成
+    subgraph "阶段4: 去中心化协作"
+        D1[Agent A] <-->|A2A| D2[Agent B]
+        D2 <-->|A2A| D3[Agent C]
+        D3 <-->|A2A| D1
+        D1 --> D4[MCP Tools]
+        D2 --> D5[MCP Tools]
+        D3 --> D6[MCP Tools]
+    end
 
-    行动执行 --> [*]: 输出结果
-
-    推理 --> 反思: 需要验证
-    反思 --> 推理: 重新评估
-
-    工具执行 --> 错误处理: 调用失败
-    错误处理 --> 工具选择: 重试/替代
-    错误处理 --> 降级: 最大重试
-    降级 --> 行动执行
+    S1 -.->|演进| O1
+    O1 -.->|演进| H1
+    H1 -.->|演进| D1
 ```
 
 ---
 
-### 7.3 ReAct vs Plan-and-Execute对比
+### 7.3 记忆层次架构图
 
 ```mermaid
-graph LR
+graph TB
+    subgraph "记忆层次金字塔"
+        direction TB
+
+        subgraph "LTM 长期记忆"
+            L1[知识库<br/>Vector DB]
+            L2[用户画像<br/>结构化存储]
+            L3[历史会话<br/>压缩存储]
+        end
+
+        subgraph "MTM 中期记忆"
+            M1[会话摘要<br/>Document DB]
+            M2[任务状态<br/>Redis]
+            M3[偏好学习<br/>Feature Store]
+        end
+
+        subgraph "STM 短期记忆"
+            S1[上下文窗口<br/>Memory]
+            S2[当前轮次<br/>In-Memory]
+        end
+
+        subgraph "Episodic 情景记忆"
+            E1[完整Episode<br/>Object Storage]
+            E2[经验回放<br/>训练数据]
+        end
+    end
+
+    S1 -->|摘要提取| M1
+    M1 -->|洞察提取| L1
+    S1 -->|完整记录| E1
+
+    style L1 fill:#e3f2fd
+    style M1 fill:#fff3e0
+    style S1 fill:#e8f5e9
+    style E1 fill:#fce4ec
+```
+
+---
+
+### 7.4 Agent工作流编排对比
+
+```mermaid
+graph TB
     subgraph "ReAct模式"
         R1[观察] --> R2[思考]
         R2 --> R3[行动]
@@ -1251,55 +1477,34 @@ graph LR
         P5 --> P6[汇总]
     end
 
+    subgraph "Hierarchical Multi-Agent"
+        H1[战略Agent] --> H2[规划Agent A]
+        H1 --> H3[规划Agent B]
+        H2 --> H4[执行Agent]
+        H3 --> H4
+        H4 --> H5[工具调用]
+        H5 -.->|反馈| H4
+        H4 -.->|进度| H2
+        H4 -.->|进度| H3
+        H2 -.->|状态| H1
+        H3 -.->|状态| H1
+    end
+
     style R1 fill:#e3f2fd
     style R2 fill:#e3f2fd
     style R3 fill:#e3f2fd
     style P2 fill:#fff3e0
+    style H1 fill:#e8f5e9
 ```
 
-| 维度 | ReAct | Plan-and-Execute |
-|------|-------|------------------|
-| **适用任务** | 工具依赖不确定 | 步骤可预先规划 |
-| **灵活性** | 高（自适应） | 中（需重新规划） |
-| **可解释性** | 中等 | 高（计划清晰） |
-| **效率** | 可能多步探索 | 执行更高效 |
-| **容错性** | 可动态调整 | 需显式错误处理 |
-
----
-
-### 7.4 多Agent协作拓扑
-
-```mermaid
-graph TB
-    subgraph "Orchestrator-Worker模式"
-        O1[Orchestrator] --> W1[Worker A]
-        O1 --> W2[Worker B]
-        O1 --> W3[Worker C]
-        W1 --> O1
-        W2 --> O1
-        W3 --> O1
-    end
-
-    subgraph "Supervisor模式"
-        S[Supervisor]
-        S --> SW1[Worker 1]
-        S --> SW2[Worker 2]
-        S --> SW3[Worker 3]
-        SW1 -.->|状态| S
-        SW2 -.->|状态| S
-        SW3 -.->|状态| S
-    end
-
-    subgraph "去中心化模式"
-        D1[Agent 1] <-->|消息| D2[Agent 2]
-        D2 <-->|消息| D3[Agent 3]
-        D3 <-->|消息| D1
-    end
-
-    style O1 fill:#e8f5e9
-    style S fill:#fff3e0
-    style D1 fill:#fce4ec
-```
+| 维度 | ReAct | Plan-and-Execute | Hierarchical Multi-Agent |
+|------|-------|------------------|--------------------------|
+| **适用任务** | 工具依赖不确定 | 步骤可预先规划 | 复杂多域任务 |
+| **灵活性** | 高（自适应） | 中（需重新规划） | 高（动态调度） |
+| **可解释性** | 中等 | 高（计划清晰） | 高（层级清晰） |
+| **效率** | 可能多步探索 | 执行更高效 | 并行度高 |
+| **容错性** | 可动态调整 | 需显式错误处理 | 层级隔离容错 |
+| **延迟** | 中等 | 低（预规划） | 可并行降低 |
 
 ---
 
@@ -1319,17 +1524,20 @@ graph TB
         F3[Streaming Joins]
         F4[Broadcast State]
         F5[窗口聚合]
+        F6[记忆更新流]
     end
 
     subgraph "Agent服务层"
         A1[意图识别Agent]
         A2[任务执行Agent]
         A3[结果验证Agent]
+        A4[记忆管理Agent]
     end
 
     subgraph "基础设施"
         V[(Vector DB)]
         R[(Redis)]
+        D[(Document DB)]
         CK[Checkpoint]
     end
 
@@ -1341,14 +1549,18 @@ graph TB
     F2 --> F3
     F2 --> F4
     F3 --> F5
+    F3 --> F6
 
     F3 --> A1
     F4 --> A1
     F5 --> A2
+    F6 --> A4
 
     A1 --> V
     A1 --> R
     A2 --> V
+    A4 --> V
+    A4 --> D
 
     F1 -.->|State| CK
     F2 -.->|State| CK
@@ -1379,18 +1591,27 @@ flowchart TD
 
     J --> M[GPU集群]
     K --> N[无状态服务]
-    L --> O[消息队列协调]
+    L --> O{协作模式?}
+
+    O -->|中心化| P[Orchestrator模式]
+    O -->|去中心化| Q[A2A协议]
+    O -->|分层| R[Hierarchical模式]
+
+    M --> S[监控告警]
+    N --> S
+    P --> S
+    Q --> S
+    R --> S
 
     style C fill:#e8f5e9
     style D fill:#e3f2fd
     style L fill:#fff3e0
+    style R fill:#f3e5f5
 ```
 
 ---
 
 ## 8. 引用参考 (References)
-
-
 
 
 
@@ -1410,13 +1631,17 @@ flowchart TD
 | **ReAct** | 交错推理与行动的Agent模式 | Chain-of-Thought |
 | **Plan-and-Execute** | 先规划后执行的Agent模式 | Task Decomposition |
 | **STM** | 短期记忆，当前上下文窗口 | Context Window |
+| **MTM** | 中期记忆，会话级上下文 | Session Memory |
 | **LTM** | 长期记忆，持久化向量存储 | Vector DB, RAG |
-| **Tool Calling** | Agent调用外部工具的能力 | Function Calling |
+| **Tool Calling** | Agent调用外部工具的能力 | Function Calling, MCP |
 | **Orchestrator** | 协调多Agent工作的中心节点 | Multi-Agent |
 | **Guardrails** | Agent行为的边界保护机制 | Safety, Alignment |
 | **Streaming Joins** | 实时多流数据关联 | Flink, Window |
 | **Broadcast State** | Flink动态规则分发模式 | Dynamic Rules |
+| **A2A Protocol** | Agent间通信的开放协议 | Google A2A |
+| **MCP Protocol** | 模型上下文协议 | Anthropic MCP |
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-03 | 状态: Active*
+*文档版本: v2.0 | 更新日期: 2026-04-08 | 状态: Active*
+*更新内容: 补充Multi-Agent协作、状态机定义、分层记忆管理机制*

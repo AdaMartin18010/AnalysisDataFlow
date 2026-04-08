@@ -1,6 +1,6 @@
 # Flink Kafka 集成模式 (Flink Kafka Integration Patterns)
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md), [../../Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../Flink/02-core-mechanisms/exactly-once-end-to-end.md) | **形式化等级**: L4
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md), [../../Flink/02-core-mechanisms/exactly-once-end-to-end.md](Flink/02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
 
 ---
 
@@ -54,7 +54,7 @@
 
 $$\\text{Replayable}(K) \\iff \\forall t \\in T, p \\in P_t, o \\in O_{t,p}. \\; \\exists! S(t, p, o)$$
 
-**直观解释**：Kafka 通过仅追加日志（append-only log）保证每个分区内的记录具有全序性和不可变性。给定一个偏移量，消费者总能读取到相同的记录序列。这是实现 Source 层 Exactly-Once 的基础——故障恢复后可以精确地"倒带"到已知位置重新读取[^1][^3]。根据 [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) 中 Def-S-08-05，可重放 Source 是端到端 Exactly-Once 的必要条件之一。
+**直观解释**：Kafka 通过仅追加日志（append-only log）保证每个分区内的记录具有全序性和不可变性。给定一个偏移量，消费者总能读取到相同的记录序列。这是实现 Source 层 Exactly-Once 的基础——故障恢复后可以精确地"倒带"到已知位置重新读取[^1][^3]。根据 [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) 中 Def-S-08-05，可重放 Source 是端到端 Exactly-Once 的必要条件之一。
 
 ### Def-F-04-02 (事务性生产者语义)
 
@@ -164,7 +164,7 @@ $$\\forall r \\in W_k. \\; \\text{Visible}(r) \\iff \\text{Committed}(T_k)$$
 
 $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint}(Ops) \\land \\text{AtomicOutput}(Sink)$$
 
-根据 [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) 中的 Prop-S-08-01 和 [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../Flink/02-core-mechanisms/exactly-once-end-to-end.md)，需要 Source 可重放、引擎内部一致性和 Sink 原子性同时满足。
+根据 [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) 中的 Prop-S-08-01 和 [Flink/02-core-mechanisms/exactly-once-end-to-end.md](Flink/02-core/exactly-once-end-to-end.md)，需要 Source 可重放、引擎内部一致性和 Sink 原子性同时满足。
 
 ---
 

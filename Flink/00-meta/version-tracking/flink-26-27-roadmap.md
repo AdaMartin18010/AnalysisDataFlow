@@ -15,7 +15,7 @@
 
 # Flink 2.6/2.7 特性跟踪
 
-> 所属阶段: Flink/version-tracking | 前置依赖: [Flink 2.4 跟踪](../08-roadmap/flink-2.4-tracking.md) | 形式化等级: L3
+> 所属阶段: Flink/version-tracking | 前置依赖: [Flink 2.4 跟踪](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
 
 ---
 
@@ -328,7 +328,7 @@ graph TB
 - [FLIP 提案索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
 - [Flink JIRA 看板](https://issues.apache.org/jira/browse/FLINK)
 - [Flink GitHub 仓库](https://github.com/apache/flink)
-- [Flink 2.4 跟踪文档](../08-roadmap/flink-2.4-tracking.md)
+- [Flink 2.4 跟踪文档](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 
 ---
 

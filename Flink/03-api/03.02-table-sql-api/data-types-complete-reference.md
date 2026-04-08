@@ -1,6 +1,6 @@
 # Flink Data Types 完整参考
 
-> 所属阶段: Flink | 前置依赖: [01-基础架构概述](../01-architecture/deployment-architectures.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [01-基础架构概述](Flink/01-concepts/deployment-architectures.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

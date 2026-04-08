@@ -1,6 +1,6 @@
 # Flink Elasticsearch Connector 详细指南
 
-> **所属阶段**: Flink/connectors | **前置依赖**: [Flink Connectors生态](../04-connectors/flink-connectors-ecosystem-complete-guide.md), [Checkpoint机制](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
+> **所属阶段**: Flink/connectors | **前置依赖**: [Flink Connectors生态](Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md), [Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
 
 ---
 

@@ -1,7 +1,7 @@
 # WASI 0.3 规范完整指南
 
 > **所属阶段**: Flink/14-rust-assembly-ecosystem/wasi-0.3-async/
-> **前置依赖**: [WebAssembly Component Model](../../09-language-foundations/09-wasm-udf-frameworks.md), [WASI 0.2 接口规范](../../../09-language-foundations/09-wasm-udf-frameworks.md)
+> **前置依赖**: [WebAssembly Component Model](Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md), [WASI 0.2 接口规范](Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md)
 > **形式化等级**: L4 (工程形式化 + 标准化规范)
 
 ---

@@ -1,6 +1,6 @@
 # Flink 与 MCP 协议集成：AI 驱动的实时流计算
 
-> **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink LLM 集成](./flink-llm-integration.md), [Flink 异步 I/O](../02-core-mechanisms/async-execution-model.md) | **形式化等级**: L3 (工程实现)
+> **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink LLM 集成](./flink-llm-integration.md), [Flink 异步 I/O](Flink/02-core/async-execution-model.md) | **形式化等级**: L3 (工程实现)
 
 ---
 

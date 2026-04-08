@@ -1,6 +1,6 @@
 # 案例: 实时分析平台 (Case Study: Real-time Analytics Platform)
 
-> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/01-architecture/](../../Flink/01-architecture/), [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L3
+> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/01-architecture/](../../Flink/01-architecture/), [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](Struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L3
 
 ---
 
@@ -209,7 +209,7 @@
 
 ### 3.2 Flink 核心组件映射
 
-根据 [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 的定义，本案例的 Flink 作业可形式化映射为：
+根据 [Dataflow 模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md) 的定义，本案例的 Flink 作业可形式化映射为：
 
 $$
 \mathcal{G}_{realtime} = (V_{realtime}, E_{realtime}, P_{realtime}, \Sigma_{realtime}, \mathbb{T})
@@ -302,7 +302,7 @@ $$
 \mathcal{J}_{analytics} = (V, E, P, \Sigma, \mathbb{T}, \mathcal{W})
 $$
 
-其中 $(V, E, P, \Sigma, \mathbb{T})$ 为标准 Dataflow 图（参见 [Def-S-04-01](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)），而 $\mathcal{W}$ 为**窗口配置函数**：
+其中 $(V, E, P, \Sigma, \mathbb{T})$ 为标准 Dataflow 图（参见 [Def-S-04-01](Struct/01-foundation/01.04-dataflow-model-formalization.md)），而 $\mathcal{W}$ 为**窗口配置函数**：
 
 $$
 \mathcal{W}: V_{window} \to (\text{WindowType}, \text{Size}, \text{Slide}, \text{AllowedLateness})
@@ -434,7 +434,7 @@ L_e2e ≤ 5 + 10 + 30 + 0.2 = 45.2s (最坏情况)
 
 **论证**：
 
-本案例的实时分析平台架构与 [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 存在以下严格映射：
+本案例的实时分析平台架构与 [Dataflow 模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md) 存在以下严格映射：
 
 | 理论概念 | 本案例实现 | 映射关系 |
 |---------|-----------|---------|
@@ -457,7 +457,7 @@ L_e2e ≤ 5 + 10 + 30 + 0.2 = 45.2s (最坏情况)
 
 **论证**：
 
-本案例的多层窗口设计直接应用 [Def-S-04-05](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 的窗口形式化定义：
+本案例的多层窗口设计直接应用 [Def-S-04-05](Struct/01-foundation/01.04-dataflow-model-formalization.md) 的窗口形式化定义：
 
 $$
 \text{WindowOp} = (W, A, T, F)
@@ -470,7 +470,7 @@ $$
 - $T$: 触发器 `EventTimeTrigger`，当 Watermark $\geq t_{end} + F$ 时触发
 - $F$: 允许延迟 `Duration.ofSeconds(30)`
 
-**窗口触发条件验证**（参见 [Def-S-04-05](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
+**窗口触发条件验证**（参见 [Def-S-04-05](Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
 
 $$
 T(wid, w) = \text{FIRE} \iff w \geq t_{end} + F
@@ -488,7 +488,7 @@ $$
 
 **论证**：
 
-本案例的容错机制基于 [Flink Checkpoint 机制](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) 的实现：
+本案例的容错机制基于 [Flink Checkpoint 机制](Flink/02-core/checkpoint-mechanism-deep-dive.md) 的实现：
 
 | Checkpoint 组件 | 本案例配置 | 理论依据 |
 |----------------|-----------|---------|
@@ -499,7 +499,7 @@ $$
 
 **正确性保证**：
 
-由 [Thm-F-02-01](../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)，故障恢复后的系统状态等价于故障前的某个 consistent cut，满足：
+由 [Thm-F-02-01](Flink/02-core/checkpoint-mechanism-deep-dive.md)，故障恢复后的系统状态等价于故障前的某个 consistent cut，满足：
 
 $$
 tr = E_{prefix} \circ E_{suffix}, \quad tr' = E_{prefix} \circ E_{suffix}

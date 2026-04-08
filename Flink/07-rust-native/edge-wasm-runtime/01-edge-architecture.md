@@ -1,6 +1,6 @@
 # 边缘计算 Wasm 运行时架构设计 (Edge Computing Wasm Runtime Architecture)
 
-> **所属阶段**: Flink/14-rust-assembly-ecosystem/edge-wasm-runtime | **前置依赖**: [WASM UDF Frameworks](../../09-language-foundations/09-wasm-udf-frameworks.md), [IoT 流处理案例](../../07-case-studies/case-iot-stream-processing.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/14-rust-assembly-ecosystem/edge-wasm-runtime | **前置依赖**: [WASM UDF Frameworks](Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md), [IoT 流处理案例](Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md) | **形式化等级**: L3-L4
 
 ---
 

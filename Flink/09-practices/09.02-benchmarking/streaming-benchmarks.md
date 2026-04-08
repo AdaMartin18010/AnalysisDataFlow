@@ -1,6 +1,6 @@
 # 流处理Benchmark体系 - 性能评估方法论
 
-> 所属阶段: Flink/ | 前置依赖: [Flink核心机制](../00-INDEX.md) | 形式化等级: L3
+> 所属阶段: Flink/ | 前置依赖: [Flink核心机制](Struct/00-INDEX.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

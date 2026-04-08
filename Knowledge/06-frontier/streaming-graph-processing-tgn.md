@@ -1,6 +1,6 @@
 # 实时图流处理与Temporal Graph Neural Networks (TGN)
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink核心机制](../../Flink/02-core-mechanisms/time-semantics-and-watermark.md), [GNN基础](./realtime-graph-streaming-tgnn.md) | 形式化等级: L4-L5
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink核心机制](Flink/02-core/time-semantics-and-watermark.md), [GNN基础](./realtime-graph-streaming-tgnn.md) | 形式化等级: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

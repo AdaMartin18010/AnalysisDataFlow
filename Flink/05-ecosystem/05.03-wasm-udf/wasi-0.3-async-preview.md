@@ -1,6 +1,6 @@
 # WASI 0.3 (Preview 3) 原生异步支持前瞻
 
-> **所属阶段**: Flink/13-wasm | **前置依赖**: [Flink/09-language-foundations/10-wasi-component-model.md](../09-language-foundations/10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](./wasm-streaming.md) | **形式化等级**: L3-L4 | **文档状态**: 🧪 实验性预览 (Experimental Preview)
+> **所属阶段**: Flink/13-wasm | **前置依赖**: [Flink/09-language-foundations/10-wasi-component-model.md](Flink/03-api/09-language-foundations/10-wasi-component-model.md), [Flink/13-wasm/wasm-streaming.md](./wasm-streaming.md) | **形式化等级**: L3-L4 | **文档状态**: 🧪 实验性预览 (Experimental Preview)
 
 ---
 

@@ -1,6 +1,6 @@
 # Streaming-first Lakehouse: Iceberg/Delta Lake 集成
 
-> 所属阶段: Knowledge | 前置依赖: [05-frontier/flink-cdc-patterns.md](./streaming-databases.md), [Flink/03-storage/flink-paimon-lakehouse.md](../../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md) | 形式化等级: L3-L4
+> 所属阶段: Knowledge | 前置依赖: [05-frontier/flink-cdc-patterns.md](./streaming-databases.md), [Flink/03-storage/flink-paimon-lakehouse.md](Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

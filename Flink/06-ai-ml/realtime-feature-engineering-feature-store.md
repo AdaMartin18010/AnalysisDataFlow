@@ -1,6 +1,6 @@
 # 实时特征工程与 Feature Store 架构
 
-> **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink双流Join机制](../02-core-mechanisms/delta-join.md), [Flink状态管理](../02-core-mechanisms/flink-state-management-complete-guide.md) | **形式化等级**: L4 (工程理论)
+> **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink双流Join机制](Flink/02-core/delta-join.md), [Flink状态管理](Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 (工程理论)
 
 ---
 

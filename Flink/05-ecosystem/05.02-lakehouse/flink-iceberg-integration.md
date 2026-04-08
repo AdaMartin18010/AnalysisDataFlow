@@ -1,6 +1,6 @@
 # Flink + Apache Iceberg 集成：流批统一的 Lakehouse 存储
 
-> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/09-language-foundations/04-streaming-lakehouse.md](../09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.17+, Iceberg 1.4+
+> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/09-language-foundations/04-streaming-lakehouse.md](Flink/03-api/09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.17+, Iceberg 1.4+
 
 ---
 

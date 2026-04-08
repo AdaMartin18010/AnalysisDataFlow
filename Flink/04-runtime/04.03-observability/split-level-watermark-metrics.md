@@ -1,6 +1,6 @@
 # Flink 2.1 Split-level Watermark指标 - 细粒度可观测性
 
-> 所属阶段: Flink | 前置依赖: [metrics-and-monitoring.md](./metrics-and-monitoring.md), [time-semantics-and-watermark.md](../02-core-mechanisms/time-semantics-and-watermark.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [metrics-and-monitoring.md](./metrics-and-monitoring.md), [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

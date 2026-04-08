@@ -21,4 +21,4 @@ Flink 通过 WASM (WebAssembly) 技术支持 Rust 语言的 UDF 开发。Rust �
 ## 4. 参考文档
 
 - [WASI Component Model](10-wasi-component-model.md)
-- [Flink WASM Streaming](../13-wasm/wasm-streaming.md)
+- [Flink WASM Streaming](Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md)

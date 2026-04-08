@@ -1,6 +1,6 @@
 # WASM UDF Frameworks Comparison for Flink
 
-> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [WASM流处理](../13-wasm/wasm-streaming.md), [Actor模型形式化](../../Struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.0+
+> **所属阶段**: Flink/09-language-foundations | **前置依赖**: [WASM流处理](Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md), [Actor模型形式化](Struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L3-L4 | **版本**: Flink 2.0+
 
 ---
 

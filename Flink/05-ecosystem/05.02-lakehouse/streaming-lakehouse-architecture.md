@@ -1,6 +1,6 @@
 # Streaming Lakehouse Architecture - 流式湖仓架构设计与实践
 
-> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/14-lakehouse/flink-iceberg-integration.md](./flink-iceberg-integration.md), [Flink/14-lakehouse/flink-paimon-integration.md](./flink-paimon-integration.md), [Flink/09-language-foundations/04-streaming-lakehouse.md](../09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+
+> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/14-lakehouse/flink-iceberg-integration.md](./flink-iceberg-integration.md), [Flink/14-lakehouse/flink-paimon-integration.md](./flink-paimon-integration.md), [Flink/09-language-foundations/04-streaming-lakehouse.md](Flink/03-api/09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+
 
 ---
 

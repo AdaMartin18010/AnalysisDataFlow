@@ -1,6 +1,6 @@
 # AI 原生流处理架构
 
-> 所属阶段: Flink/14-rust-assembly-ecosystem/ai-native-streaming/ | 前置依赖: [FLIP-531 AI Agents](../../../12-ai-ml/flink-ai-ml-integration-complete-guide.md) | 形式化等级: L4
+> 所属阶段: Flink/14-rust-assembly-ecosystem/ai-native-streaming/ | 前置依赖: [FLIP-531 AI Agents](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 
