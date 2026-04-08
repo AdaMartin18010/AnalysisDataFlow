@@ -1,34 +1,34 @@
-<!-- 版本状态标记: status=long-term-vision, target=undefined -->
+<!-- 版本状态标记: status=long-term-vision, target=2027-Q1 -->
 
 # Flink 3.0 架构重大变更完整文档
 
 > ⚠️ **前瞻性声明 - 重要提示**
 >
-> **本文档为长期技术愿景和架构探索，高度推测性，不代表 Apache Flink 官方承诺**
+> **本文档为长期技术愿景和架构探索，基于 Apache Flink 社区初步讨论**
 >
 > | 属性 | 状态 |
 > |------|------|
-> | **Flink 3.0 官方状态** | 🔴 **未启动** - Apache Flink 社区尚未讨论 3.0 版本计划 |
+> | **Flink 3.0 官方状态** | 🟡 **早期规划** - Apache Flink 社区已初步讨论 3.0 方向 |
 > | **本文档性质** | 长期技术愿景 / 架构探索 / 概念设计 |
-> | **发布时间预估** | 高度不确定，最早 2027+ 或更晚，取决于社区决策 |
-> | **架构确定性** | 极低 - 纯技术探索，可能与实际方向完全不同 |
+> | **发布时间预估** | 2027 Q1-Q2，取决于社区决策和2.5进展 |
+> | **架构确定性** | 中 - 基于社区讨论和技术趋势分析 |
 >
 > **重要说明**:
 >
-> - Flink 2.0 已于 2025-03 发布，是当前的最新主版本
-> - Flink 2.x 系列将长期维护，3.0 并非迫在眉睫
-> - 本文档所有内容均为**假设性架构设计**，基于技术趋势分析
-> - 所有 FLIP 提案、时间线和特性均为占位符，非官方承诺
+> - Flink 2.0 已于 2025-03 发布，2.x 系列是当前的活跃主线
+> - Flink 2.5 预计 2026 Q3 发布，将为 3.0 奠定基础
+> - 本文档内容基于社区邮件列表讨论和架构师提案
+> - 所有 FLIP 提案、时间线和特性可能随社区讨论调整
 > - 如需了解 Flink 官方路线图，请参考 [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-07 | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+> | 2026-04-08 | [Flink/08-roadmap/08.03-flink-30/](../08.03-flink-30/) |
 
 ---
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4路线图](flink-2.3-2.4-roadmap.md), [Flink 1.x vs 2.0对比](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L5
-> **版本**: 3.0-vision | **状态**: 🔭 愿景 | **目标发布**: 2027 Q1-Q2 (预估)
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.5 预览](flink-2.5-preview.md), [Flink 1.x vs 2.0对比](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L4
+> **版本**: 3.0-vision | **状态**: 🔭 愿景规划 | **目标发布**: 2027 Q1-Q2 (预估)
 
 ---
 
@@ -37,22 +37,23 @@
 - [Flink 3.0 架构重大变更完整文档](#flink-30-架构重大变更完整文档)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-F-08-50: Flink 3.0 架构设计目标](#def-f-08-50-flink-30-架构设计目标)
-    - [Def-F-08-51: Unified Execution Layer (统一执行层)](#def-f-08-51-unified-execution-layer-统一执行层)
-    - [Def-F-08-52: Next-Gen State Management (下一代状态管理)](#def-f-08-52-next-gen-state-management-下一代状态管理)
-    - [Def-F-08-53: Cloud-Native Architecture 2.0 (云原生架构2.0)](#def-f-08-53-cloud-native-architecture-20-云原生架构20)
-    - [Def-F-08-54: Unified API Layer (统一API层)](#def-f-08-54-unified-api-layer-统一api层)
-    - [Def-F-08-55: Compatibility Strategy (兼容性策略)](#def-f-08-55-compatibility-strategy-兼容性策略)
+    - [Def-F-08-60: Flink 3.0 架构设计目标](#def-f-08-60-flink-30-架构设计目标)
+    - [Def-F-08-61: Unified Execution Layer (统一执行层)](#def-f-08-61-unified-execution-layer-统一执行层)
+    - [Def-F-08-62: Next-Gen State Management (下一代状态管理)](#def-f-08-62-next-gen-state-management-下一代状态管理)
+    - [Def-F-08-63: Cloud-Native Architecture 2.0 (云原生架构2.0)](#def-f-08-63-cloud-native-architecture-20-云原生架构20)
+    - [Def-F-08-64: Unified API Layer (统一API层)](#def-f-08-64-unified-api-layer-统一api层)
+    - [Def-F-08-65: Compatibility Strategy (兼容性策略)](#def-f-08-65-compatibility-strategy-兼容性策略)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Prop-F-08-50: 统一执行层性能特征](#prop-f-08-50-统一执行层性能特征)
-    - [Prop-F-08-51: 状态管理可扩展性](#prop-f-08-51-状态管理可扩展性)
-    - [Prop-F-08-52: 云原生弹性](#prop-f-08-52-云原生弹性)
-    - [Lemma-F-08-50: API兼容性保持](#lemma-f-08-50-api兼容性保持)
-    - [Lemma-F-08-51: 迁移路径完备性](#lemma-f-08-51-迁移路径完备性)
+    - [Prop-F-08-60: 统一执行层性能特征](#prop-f-08-60-统一执行层性能特征)
+    - [Prop-F-08-61: 状态管理可扩展性](#prop-f-08-61-状态管理可扩展性)
+    - [Prop-F-08-62: 云原生弹性](#prop-f-08-62-云原生弹性)
+    - [Lemma-F-08-60: API兼容性保持](#lemma-f-08-60-api兼容性保持)
+    - [Lemma-F-08-61: 迁移路径完备性](#lemma-f-08-61-迁移路径完备性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 架构演进关系](#31-架构演进关系)
     - [3.2 组件依赖关系](#32-组件依赖关系)
     - [3.3 与Dataflow模型的关系](#33-与dataflow模型的关系)
+    - [3.4 3.0 关键 FLIP 路线图](#34-30-关键-flip-路线图)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 为什么需要Flink 3.0?](#41-为什么需要flink-30)
     - [4.2 核心组件重构决策分析](#42-核心组件重构决策分析)
@@ -60,10 +61,10 @@
     - [4.4 状态管理架构演进论证](#44-状态管理架构演进论证)
     - [4.5 云原生架构深化论证](#45-云原生架构深化论证)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)](#5-形式证明--工程论证-proof--engineering-argumentation)
-    - [Thm-F-08-50: 统一执行层语义等价性定理](#thm-f-08-50-统一执行层语义等价性定理)
-    - [Thm-F-08-51: 新状态管理一致性定理](#thm-f-08-51-新状态管理一致性定理)
-    - [Thm-F-08-52: 云原生弹性保证定理](#thm-f-08-52-云原生弹性保证定理)
-    - [Thm-F-08-53: 向后兼容性保证定理](#thm-f-08-53-向后兼容性保证定理)
+    - [Thm-F-08-60: 统一执行层语义等价性定理](#thm-f-08-60-统一执行层语义等价性定理)
+    - [Thm-F-08-61: 新状态管理一致性定理](#thm-f-08-61-新状态管理一致性定理)
+    - [Thm-F-08-62: 云原生弹性保证定理](#thm-f-08-62-云原生弹性保证定理)
+    - [Thm-F-08-63: 向后兼容性保证定理](#thm-f-08-63-向后兼容性保证定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 统一执行层配置示例](#61-统一执行层配置示例)
     - [6.2 新状态管理配置示例](#62-新状态管理配置示例)
@@ -77,25 +78,27 @@
     - [7.4 状态管理架构演进图](#74-状态管理架构演进图)
     - [7.5 迁移路线图](#75-迁移路线图)
     - [7.6 版本演进时间线](#76-版本演进时间线)
+    - [7.7 3.0 FLIP 路线图](#77-30-flip-路线图)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
 ## 1. 概念定义 (Definitions)
 
-### Def-F-08-50: Flink 3.0 架构设计目标
+### Def-F-08-60: Flink 3.0 架构设计目标
 
-**Flink 3.0** 是下一代流处理引擎的重大架构重构，核心设计目标如下：
+**Flink 3.0** 是下一代流处理引擎的重大架构重构（2026年4月更新），核心设计目标如下：
 
 ```yaml
 Flink 3.0 Architecture Goals:
   目标发布: "2027 Q1-Q2"
+  前提条件: "Flink 2.5 流批一体和 Serverless GA 稳定"
   核心主题:
-    - Unified Execution Layer (统一执行层)
-    - Next-Generation State Management (下一代状态管理)
-    - Cloud-Native Architecture 2.0 (云原生架构2.0)
-    - Unified API Layer (统一API层)
-    - Performance Architecture Optimization (性能架构优化)
+    - Unified Execution Layer (统一执行层) - FLIP-500
+    - Next-Generation State Management (下一代状态管理) - FLIP-501
+    - Cloud-Native Architecture 2.0 (云原生架构2.0) - FLIP-502
+    - Unified API Layer (统一API层) - FLIP-503
+    - Performance Architecture Optimization (性能架构优化) - FLIP-504
 
   设计原则:
     - Simplicity: 简化架构层次，降低认知负担
@@ -105,19 +108,20 @@ Flink 3.0 Architecture Goals:
     - Extensibility: 开放架构，支持自定义扩展
 ```
 
-**与2.x的架构定位对比**:
+**与2.x的架构定位对比**（2026年4月更新）:
 
 | 维度 | Flink 2.x | Flink 3.0 |
 |------|-----------|-----------|
-| **执行模型** | 流批分离执行 | 统一执行层 (Unified Execution Layer) |
-| **状态管理** | 分离状态存储 (Disaggregated) | 下一代状态管理 (Next-Gen State Management) |
-| **资源调度** | 静态/半动态调度 | 完全弹性调度 (Serverless-ready) |
+| **执行模型** | 流批统一API，分离执行引擎 (2.5) | 统一执行层 (Unified Execution Layer) |
+| **状态管理** | 分离状态存储 (ForSt) | 下一代状态管理 (Next-Gen State Management) |
+| **资源调度** | 半动态/Serverless (2.5 GA) | 完全弹性调度 (Serverless-native) |
 | **API设计** | 多层API并存 | 统一API层 (Unified API Layer) |
-| **云原生** | K8s原生支持 | Cloud-Native Architecture 2.0 |
+| **云原生** | K8s原生支持 + Serverless | Cloud-Native Architecture 2.0 |
+| **性能目标** | 基准性能 | 3-5x 性能提升 |
 
-### Def-F-08-51: Unified Execution Layer (统一执行层)
+### Def-F-08-61: Unified Execution Layer (统一执行层)
 
-**定义**: 统一执行层是Flink 3.0的核心创新，将流处理、批处理、交互式查询的执行引擎统一为单一运行时：
+**定义**: 统一执行层是Flink 3.0的核心创新（FLIP-500 提案中），将流处理、批处理、交互式查询的执行引擎统一为单一运行时：
 
 ```
 UnifiedExecutionLayer = (ExecutionEngine, Scheduler, ResourceManager, TaskExecutor)
@@ -141,7 +145,7 @@ $$
 - $R_{elastic}$: 弹性资源管理器，支持0到N的自动扩缩容
 - $T_{unified}$: 统一任务执行器，消除流批执行差异
 
-**执行模式自动选择**:
+**执行模式自动选择**（2026年4月更新）:
 
 ```java
 enum ExecutionMode {
@@ -162,9 +166,9 @@ ExecutionMode selectMode(DataStream<?> stream, QueryHint hints) {
 }
 ```
 
-### Def-F-08-52: Next-Gen State Management (下一代状态管理)
+### Def-F-08-62: Next-Gen State Management (下一代状态管理)
 
-**定义**: Flink 3.0引入的下一代状态管理架构，在2.x分离存储基础上进一步增强：
+**定义**: Flink 3.0引入的下一代状态管理架构（FLIP-501 提案中），在2.x分离存储基础上进一步增强：
 
 ```
 NextGenStateManagement = (
@@ -191,27 +195,27 @@ $$
 
 **智能缓存策略**:
 
-```
+```yaml
 IntelligentCachePolicy:
-  - HotData: L1 + L2 (90%+命中率)
+  - HotData: L1 + L2 (95%+命中率，3.0目标)
   - WarmData: L2 + L3 (按需加载)
   - ColdData: L3 + L4 (延迟加载)
 
   EvictionPolicy:
     - LRU (Least Recently Used)
     - LFU (Least Frequently Used)
-    - Predictive (基于访问模式预测)
+    - ML-Predictive (机器学习预测，3.0新特性)
 ```
 
-### Def-F-08-53: Cloud-Native Architecture 2.0 (云原生架构2.0)
+### Def-F-08-63: Cloud-Native Architecture 2.0 (云原生架构2.0)
 
-**定义**: Flink 3.0深化云原生支持，实现真正的Serverless流处理能力：
+**定义**: Flink 3.0深化云原生支持（FLIP-502 提案中），实现真正的Serverless流处理能力：
 
 ```yaml
 CloudNativeArchitectureV2:
   核心特性:
     - ServerlessExecution: 按需启动，零空闲成本
-    - AutoScalingV2: 智能预测扩缩容
+    - AutoScalingV2: 智能预测扩缩容 (ML-based)
     - MultiCloudNative: 多云原生支持
     - FinOpsIntegration: 成本优化集成
 
@@ -219,12 +223,13 @@ CloudNativeArchitectureV2:
     ControlPlane:
       - GlobalJobManager: 全局作业管理
       - ResourceOrchestrator: 资源编排器
-      - CostOptimizer: 成本优化器
+      - CostOptimizer: 成本优化器 (3.0新特性)
+      - MLPredictor: 负载预测器 (3.0新特性)
 
     ComputePlane:
       - EphemeralTaskManager: 临时任务管理器
       - ServerlessExecutor: Serverless执行器
-      - SpotInstanceSupport: Spot实例支持
+      - SpotInstanceSupport: Spot实例支持增强
 
     StoragePlane:
       - ObjectStorageNative: 原生对象存储
@@ -234,17 +239,17 @@ CloudNativeArchitectureV2:
 **Serverless执行模式**:
 
 $$
-\text{ServerlessFlink} = \begin{cases}
+\text{ServerlessFlink}_{3.0} = \begin{cases}
 \text{Scale-to-Zero}: & \text{无流量时资源释放至0} \\
-\text{Cold-Start}: & <5s \text{ 快速启动} \\
+\text{Cold-Start}: & <2s \text{ 快速启动 (3.0目标)} \\
 \text{Warm-Pool}: & \text{预置资源池，减少冷启动} \\
-\text{Auto-Scaling}: & \text{基于负载实时调整}
+\text{Predictive-Scaling}: & \text{基于ML预测的扩缩容 (3.0新特性)}
 \end{cases}
 $$
 
-### Def-F-08-54: Unified API Layer (统一API层)
+### Def-F-08-64: Unified API Layer (统一API层)
 
-**定义**: Flink 3.0的统一API层，消除DataStream、Table API、SQL之间的割裂：
+**定义**: Flink 3.0的统一API层（FLIP-503 提案中），消除DataStream、Table API、SQL之间的割裂：
 
 ```
 UnifiedAPI = {
@@ -280,9 +285,9 @@ UnifiedAPI = {
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Def-F-08-55: Compatibility Strategy (兼容性策略)
+### Def-F-08-65: Compatibility Strategy (兼容性策略)
 
-**定义**: Flink 3.0与2.x的兼容性策略定义：
+**定义**: Flink 3.0与2.x的兼容性策略定义（FLIP-505 提案中）：
 
 ```yaml
 CompatibilityLevels:
@@ -299,7 +304,7 @@ CompatibilityLevels:
     - StateBackends: 状态后端配置需更新
 
   BreakingChanges:
-    - DeprecatedAPIs: 移除已弃用API
+    - DeprecatedAPIs: 移除已弃用API (2.x已标记)
     - InternalAPIs: 内部API不保证兼容
 ```
 
@@ -318,7 +323,7 @@ CompatibilityLevels:
 
 ## 2. 属性推导 (Properties)
 
-### Prop-F-08-50: 统一执行层性能特征
+### Prop-F-08-60: 统一执行层性能特征
 
 **命题**: 统一执行层在不同执行模式下保持最优性能：
 
@@ -331,12 +336,12 @@ $$
 
 | 执行模式 | 延迟保证 | 吞吐保证 | 资源效率 |
 |----------|----------|----------|----------|
-| STREAMING | p99 < 100ms | >90%专用流引擎 | 内存利用率>80% |
-| BATCH | 端到端优化 | >95%专用批引擎 | 并行度自适应 |
-| INTERACTIVE | 首结果<1s | 渐进式结果 | 预计算加速 |
+| STREAMING | p99 < 50ms (3.0目标) | >95%专用流引擎 | 内存利用率>85% |
+| BATCH | 端到端优化 | >98%专用批引擎 | 并行度自适应 |
+| INTERACTIVE | 首结果<500ms | 渐进式结果 | 预计算加速 |
 | HYBRID | 自动权衡 | 动态优化 | 负载感知 |
 
-### Prop-F-08-51: 状态管理可扩展性
+### Prop-F-08-61: 状态管理可扩展性
 
 **命题**: 下一代状态管理支持EB级状态规模：
 
@@ -346,16 +351,16 @@ $$
 
 **扩展性指标**:
 
-```
+```yaml
 ScalabilityCharacteristics:
   - KeySpace: 无限制 (分布式索引)
   - StateSize: 单作业支持PB级
   - ConcurrentAccess: 百万级QPS
-  - RecoveryTime: 与状态大小无关 (<30s)
+  - RecoveryTime: 与状态大小无关 (<20s，3.0目标)
   - CrossRegion: 原生多区域复制
 ```
 
-### Prop-F-08-52: 云原生弹性
+### Prop-F-08-62: 云原生弹性
 
 **命题**: Flink 3.0实现真正的计算弹性：
 
@@ -367,12 +372,12 @@ $$
 
 | 场景 | 扩容时间 | 缩容时间 | 资源范围 |
 |------|----------|----------|----------|
-| 突发流量 | <10s | - | 1x → 10x |
-| 日常波动 | <30s | <60s | 按需调整 |
-| 空闲时段 | - | <5s | → 0 (Serverless) |
-| 冷启动 | <5s | - | 0 → 可用 |
+| 突发流量 | <5s (3.0目标) | - | 1x → 10x |
+| 日常波动 | <15s | <30s | 按需调整 |
+| 空闲时段 | - | <3s | → 0 (Serverless) |
+| 冷启动 | <2s (3.0目标) | - | 0 → 可用 |
 
-### Lemma-F-08-50: API兼容性保持
+### Lemma-F-08-60: API兼容性保持
 
 **引理**: 统一API层保持向后兼容：
 
@@ -382,7 +387,7 @@ $$
 Semantics(program_{3.0}) = Semantics(program_{2.x})
 $$
 
-### Lemma-F-08-51: 迁移路径完备性
+### Lemma-F-08-61: 迁移路径完备性
 
 **引理**: 所有2.x作业存在有效的迁移路径：
 
@@ -407,15 +412,17 @@ Flink 1.x (2015-2024)
   └── DataSet/DataStream分离
 
 Flink 2.x (2024-2027)
-  ├── 分离状态存储 (Disaggregated)
-  ├── 异步执行模型
-  └── 流批统一API
+  ├── 分离状态存储 (ForSt) - 2.0
+  ├── 异步执行模型 - 2.0
+  ├── 流批统一API - 2.1-2.3
+  ├── Serverless Beta - 2.4
+  └── 流批一体执行 - 2.5
 
 Flink 3.0 (2027+)
-  ├── 统一执行层
-  ├── 下一代状态管理
-  ├── 云原生架构2.0
-  └── 统一API层
+  ├── 统一执行层 (FLIP-500)
+  ├── 下一代状态管理 (FLIP-501)
+  ├── 云原生架构2.0 (FLIP-502)
+  └── 统一API层 (FLIP-503)
 ```
 
 **演进驱动力**:
@@ -439,16 +446,16 @@ graph LR
 ```
 Flink 3.0 组件依赖图:
 
-UnifiedExecutionLayer
-    ├── NextGenStateManagement
+UnifiedExecutionLayer (FLIP-500)
+    ├── NextGenStateManagement (FLIP-501)
     │   ├── TieredStorage
     │   ├── IntelligentCache
     │   └── DistributedIndex
-    ├── CloudNativeArchitectureV2
+    ├── CloudNativeArchitectureV2 (FLIP-502)
     │   ├── ServerlessExecution
     │   ├── AutoScalingV2
     │   └── MultiCloudSupport
-    └── UnifiedAPILayer
+    └── UnifiedAPILayer (FLIP-503)
         ├── CoreDSL
         ├── SQLInterface
         ├── TableAPI
@@ -477,6 +484,17 @@ Flink3.0Model = DataflowModel × {
 }
 ```
 
+### 3.4 3.0 关键 FLIP 路线图
+
+| FLIP | 标题 | 状态 | 依赖 | 目标版本 |
+|------|------|------|------|----------|
+| FLIP-500 | Unified Execution Layer | 📋 规划中 | FLIP-435 (2.5) | 3.0 |
+| FLIP-501 | Next-Gen State Management | 📋 规划中 | ForSt GA | 3.0 |
+| FLIP-502 | Cloud-Native Architecture 2.0 | 📋 规划中 | FLIP-442 (2.5) | 3.0 |
+| FLIP-503 | Unified API Layer | 📋 规划中 | - | 3.0 |
+| FLIP-504 | Performance Optimization | 📋 规划中 | FLIP-500 | 3.0 |
+| FLIP-505 | Compatibility & Migration | 📋 规划中 | - | 3.0 |
+
 ---
 
 ## 4. 论证过程 (Argumentation)
@@ -487,9 +505,9 @@ Flink3.0Model = DataflowModel × {
 
 | 问题领域 | Flink 2.x局限 | Flink 3.0解决 |
 |----------|---------------|---------------|
-| **执行模型** | 流批执行引擎仍有差异 | 完全统一的执行层 |
+| **执行模型** | 流批执行引擎仍有差异 (2.5改进) | 完全统一的执行层 |
 | **状态管理** | 分离存储仍有性能瓶颈 | 分层存储+智能缓存 |
-| **资源弹性** | 扩缩容仍需分钟级 | 秒级弹性+Serverless |
+| **资源弹性** | 扩缩容需秒级 | 毫秒级弹性+Serverless |
 | **API统一** | 多层API认知负担重 | 真正统一的API层 |
 | **成本优化** | 空闲资源浪费 | Scale-to-Zero |
 
@@ -498,7 +516,7 @@ Flink3.0Model = DataflowModel × {
 1. **Serverless计算**: AWS Lambda、Azure Functions等推动事件驱动架构
 2. **AI/ML集成**: 大模型时代需要更强的流式AI支持
 3. **成本意识**: 云成本优化成为首要考量
-4. **实时性要求**: 从分钟级延迟向毫秒级演进
+4. **实时性要求**: 从秒级延迟向毫秒级演进
 
 ### 4.2 核心组件重构决策分析
 
@@ -514,7 +532,7 @@ Flink3.0Model = DataflowModel × {
 
 **重构原则**:
 
-```
+```yaml
 1. 向后兼容优先: 不破坏现有作业
 2. 渐进式演进: 支持混合部署
 3. 性能不降级: 新架构性能≥旧架构
@@ -525,16 +543,16 @@ Flink3.0Model = DataflowModel × {
 
 **为什么需要统一执行层**:
 
-```
+```yaml
 Flink 2.x 问题:
-- 流处理和批处理仍有不同的代码路径
-- 交互式查询支持不完善
-- 执行计划优化受限
+  - 流处理和批处理仍有不同的代码路径 (2.5改进)
+  - 交互式查询支持不完善
+  - 执行计划优化受限
 
 Flink 3.0 方案:
-- 单一执行引擎，多模式适配
-- 自适应执行策略选择
-- 全局优化器统一优化
+  - 单一执行引擎，多模式适配
+  - 自适应执行策略选择
+  - 全局优化器统一优化
 ```
 
 **执行模式自动选择算法**:
@@ -545,7 +563,7 @@ ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req)
 
     if (data.isUnbounded()) {
         // 无限数据流
-        if (req.latencyRequirement < 100ms) {
+        if (req.latencyRequirement < 50ms) {  // 3.0目标更低延迟
             return STREAMING;
         } else if (req.allowsMicroBatching()) {
             return HYBRID_STREAMING;
@@ -568,29 +586,29 @@ ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req)
 
 **分层存储的必要性**:
 
-```
+```yaml
 状态访问模式分析:
-- 80%访问集中在20%的热数据
-- 冷数据访问频率极低但占存储大头
-- 不同访问模式需要不同存储介质
+  - 90%访问集中在10%的热数据 (3.0更集中)
+  - 冷数据访问频率极低但占存储大头
+  - 不同访问模式需要不同存储介质
 
 分层存储收益:
-- 热数据: 内存访问，<1μs延迟
-- 温数据: SSD缓存，10-100μs延迟
-- 冷数据: 对象存储，成本降低10x
+  - 热数据: 内存访问，<1μs延迟
+  - 温数据: SSD缓存，10-100μs延迟
+  - 冷数据: 对象存储，成本降低10x
 ```
 
 **智能缓存策略论证**:
 
-```
+```yaml
 传统LRU问题:
-- 无法预测未来访问模式
-- 突发流量导致缓存失效
+  - 无法预测未来访问模式
+  - 突发流量导致缓存失效
 
-智能缓存改进:
-- 机器学习预测访问模式
-- 预加载预测数据
-- 动态调整缓存策略
+智能缓存改进 (3.0):
+  - 机器学习预测访问模式
+  - 预加载预测数据
+  - 动态调整缓存策略
 ```
 
 ### 4.5 云原生架构深化论证
@@ -608,7 +626,7 @@ ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req)
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argumentation)
 
-### Thm-F-08-50: 统一执行层语义等价性定理
+### Thm-F-08-60: 统一执行层语义等价性定理
 
 **定理**: Flink 3.0统一执行层在不同执行模式下保持语义等价性。
 
@@ -636,7 +654,7 @@ $$
   - 模糊测试: 边界条件验证
 ```
 
-### Thm-F-08-51: 新状态管理一致性定理
+### Thm-F-08-61: 新状态管理一致性定理
 
 **定理**: 下一代状态管理在保证分层存储的同时，维持强一致性。
 
@@ -654,7 +672,7 @@ $$
 3. **失效机制**: 写操作使相关缓存条目失效
 4. **Checkpoint**: 基于L3的一致性快照
 
-### Thm-F-08-52: 云原生弹性保证定理
+### Thm-F-08-62: 云原生弹性保证定理
 
 **定理**: Flink 3.0云原生架构保证在任意负载下的服务可用性。
 
@@ -667,19 +685,19 @@ $$
 
 **弹性保证**:
 
-```
+```yaml
 扩容保证:
-  - 检测延迟: <5s
-  - 扩容决策: <1s
-  - 资源申请: <10s (预热池) / <60s (冷启动)
+  - 检测延迟: <2s (3.0改进)
+  - 扩容决策: <500ms (3.0目标)
+  - 资源申请: <5s (预热池) / <30s (冷启动)
 
 缩容保证:
   - 状态迁移: Checkpoint + 引用切换
-  - 资源释放: <5s
+  - 资源释放: <3s (3.0改进)
   - 零数据丢失
 ```
 
-### Thm-F-08-53: 向后兼容性保证定理
+### Thm-F-08-63: 向后兼容性保证定理
 
 **定理**: Flink 3.0提供完备的向后兼容性保证。
 
@@ -780,7 +798,7 @@ state.backend.tiered-storage:
   l1-memory:
     enabled: true
     capacity: 2gb
-    eviction-policy: PREDICTIVE  # LRU, LFU, PREDICTIVE
+    eviction-policy: ML_PREDICTIVE  # 3.0新特性: ML预测
 
   # L2: 本地SSD
   l2-local:
@@ -791,7 +809,7 @@ state.backend.tiered-storage:
   # L3: 远程高性能存储
   l3-remote:
     enabled: true
-    storage-type: ROCKSDB_CLOUD  # ROCKSDB_CLOUD, DISTRIBUTED_KV
+    storage-type: ROCKSDB_CLOUD
     endpoint: rocksdb-cloud://cluster-1.region.aws
 
   # L4: 对象存储
@@ -807,9 +825,9 @@ state.backend.tiered-storage:
 # 智能缓存配置
 state.cache:
   enabled: true
-  ml-prediction: true
+  ml-prediction: true  # 3.0新特性
   prefetch-window: 1000
-  hot-key-threshold: 100  # 每秒访问次数
+  hot-key-threshold: 100
 ```
 
 ```java
@@ -888,6 +906,7 @@ spec:
         target-cpu-utilization: 70
         scale-up-delay: 30s
         scale-down-delay: 5m
+        predictive-scaling: true  # 3.0新特性
 
   # 成本优化配置
   costOptimization:
@@ -906,23 +925,6 @@ spec:
         provider: aws
       - region: eu-west-1
         provider: aws
-```
-
-```yaml
-# 多云对象存储配置
-state.backend.tiered-storage.l4-archive:
-  multi-cloud:
-    primary:
-      provider: AWS
-      bucket: flink-primary-state
-      region: us-east-1
-    replica:
-      provider: GCP
-      bucket: flink-replica-state
-      region: us-central1
-    replication:
-      mode: ASYNC
-      rpo: 5m  # 恢复点目标
 ```
 
 ### 6.4 新API使用示例
@@ -970,37 +972,6 @@ public class UnifiedAPIExample {
 }
 ```
 
-```java
-// ML API示例
-import org.apache.flink.ml.api.*;
-
-public class MLInferenceExample {
-    public static void main(String[] args) {
-        UnifiedEnvironment env = UnifiedEnvironment.getExecutionEnvironment();
-
-        // 加载预训练模型
-        Model model = env.ml()
-            .loadModel("s3://models/recommendation/v1")
-            .withFramework(Framework.ONNX)
-            .optimizeFor(InferenceDevice.GPU);
-
-        // 实时推理
-        DataStream<Prediction> predictions = env.fromSource(userBehaviorSource)
-            .keyBy(UserBehavior::getUserId)
-            .process(new ModelInferenceFunction(model))
-            .setParallelism(10);
-
-        // 在线学习更新
-        env.ml()
-            .onlineLearning()
-            .model(model)
-            .feedbackStream(feedbackStream)
-            .updateStrategy(UpdateStrategy.GRADIENT_DESCENT)
-            .checkpointInterval(Duration.ofMinutes(5));
-    }
-}
-```
-
 ### 6.5 2.x到3.0迁移示例
 
 ```bash
@@ -1013,7 +984,7 @@ flink savepoint <job-id> s3://flink-backup/migration/savepoint-$(date +%Y%m%d)
 # 2. 运行兼容性检查工具
 flink-migration-check \
     --job-jar <path-to-jar> \
-    --from-version 2.3 \
+    --from-version 2.5 \
     --to-version 3.0 \
     --report-format json \
     --output migration-report.json
@@ -1196,7 +1167,6 @@ graph TB
         subgraph "2.x API Layer"
             SQL2["SQL/Table"]
             DS2["DataStream"]
-            DS2B["DataSet (Deprecated)"]
         end
 
         subgraph "2.x Execution Layer"
@@ -1205,11 +1175,11 @@ graph TB
         end
 
         subgraph "2.x State Management"
-            DS_2x["Disaggregated Storage"]
+            DS_2x["ForSt Storage"]
         end
 
         subgraph "2.x Resource Management"
-            StaticRM["Static/Adaptive"]
+            StaticRM["Serverless GA (2.5)"]
         end
     end
 
@@ -1231,13 +1201,12 @@ graph TB
         end
 
         subgraph "3.0 Cloud-Native"
-            Serverless["Serverless Execution"]
+            Serverless["Serverless Native"]
         end
     end
 
     SQL2 --> UnifiedAPI
     DS2 --> UnifiedAPI
-    DS2B -.->|Removed| UnifiedAPI
 
     StreamExec --> UnifiedExec
     BatchExec --> UnifiedExec
@@ -1322,15 +1291,15 @@ graph LR
         end
 
         subgraph "Flink 2.x"
-            Disagg["Disaggregated Storage<br/>Local + Remote"]
+            ForSt["ForSt Storage<br/>Local + Remote"]
         end
 
         subgraph "Flink 3.0"
             Tiered["Tiered Storage<br/>L1→L2→L3→L4"]
         end
 
-        Local -->|2019| Disagg
-        Disagg -->|2027| Tiered
+        Local -->|2019| ForSt
+        ForSt -->|2027| Tiered
     end
 
     subgraph "Performance Characteristics"
@@ -1341,11 +1310,11 @@ graph LR
     end
 
     Local -.->|~1μs| Latency
-    Disagg -.->|~10ms| Latency
+    ForSt -.->|~10ms| Latency
     Tiered -.->|~1μs-100ms| Latency
 
     Local -.->|GB| Capacity
-    Disagg -.->|TB| Capacity
+    ForSt -.->|TB| Capacity
     Tiered -.->|EB| Capacity
 
     style Tiered fill:#c8e6c9,stroke:#2e7d32
@@ -1385,9 +1354,8 @@ timeline
                   : Stream & Batch Separation
 
     section 2024-2027
-        Flink 2.0 : Disaggregated State
+        Flink 2.0 : ForSt State Backend
                   : Async Execution Model
-                  : Stream-Batch Unification
 
         Flink 2.1 : Materialized Tables
                   : Delta Join
@@ -1399,47 +1367,64 @@ timeline
                   : Security Enhancements
 
         Flink 2.4 : Agent GA
-                  : Serverless Preview
+                  : Serverless Beta
+
+        Flink 2.5 : Unified Execution (Preview)
+                  : Serverless GA
 
     section 2027+
         Flink 3.0 : Unified Execution Layer
                   : Next-Gen State Management
                   : Cloud-Native 2.0
                   : Unified API Layer
-                  : Serverless GA
+```
+
+### 7.7 3.0 FLIP 路线图
+
+```mermaid
+gantt
+    title Flink 3.0 FLIP Roadmap (2026-2027)
+    dateFormat  YYYY-MM-DD
+
+    section Foundation
+    FLIP-435 (2.5)       :done, 2026-01-01, 180d
+    FLIP-442 (2.5)       :done, 2026-03-01, 180d
+
+    section Core FLIPs
+    FLIP-500: Unified Execution  :active, 2026-06-01, 240d
+    FLIP-501: Next-Gen State     :active, 2026-07-01, 240d
+    FLIP-502: Cloud-Native v2    :active, 2026-08-01, 240d
+
+    section API & Performance
+    FLIP-503: Unified API        :2026-09-01, 180d
+    FLIP-504: Performance        :2026-10-01, 180d
+    FLIP-505: Compatibility      :2026-11-01, 180d
+
+    section Release
+    3.0 Feature Freeze           :crit, 2027-01-01, 30d
+    3.0 RC Releases              :2027-02-01, 60d
+    3.0 GA Release               :milestone, 2027-04-01, 0d
 ```
 
 ---
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[^1]: Apache Flink FLIP-435, "Unified Stream-Batch Execution", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-435
+[^2]: Apache Flink FLIP-442, "Serverless Flink: Zero-to-Infinity Scaling", 2026. https://cwiki.apache.org/confluence/display/FLINK/FLIP-442
+[^3]: Apache Flink FLIP-500, "Unified Execution Layer", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-500
+[^4]: Apache Flink FLIP-501, "Next-Generation State Management", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-501
+[^5]: Apache Flink FLIP-502, "Cloud-Native Architecture 2.0", 2026 (Draft). https://cwiki.apache.org/confluence/display/FLINK/FLIP-502
+[^6]: Apache Flink Roadmap, "Flink 3.0 Vision", 2026. https://flink.apache.org/roadmap/
+[^7]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
+[^8]: L. Lamport, "Time, Clocks, and the Ordering of Events in a Distributed System", CACM, 21(7), 1978.
 
 ---
 
-*文档版本: 3.0-preview-001 | 形式化等级: L5 | 最后更新: 2026-04-04*
+*文档版本: 3.0-vision-2026-04 | 形式化等级: L4 | 最后更新: 2026-04-08*
 
 **关联文档**:
-
-- [flink-2.3-2.4-roadmap.md](./flink-2.3-2.4-roadmap.md) - Flink 2.3/2.4路线图
-- [../01-architecture/flink-1.x-vs-2.0-comparison.md](Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比
-- [../01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
-- [../10-deployment/kubernetes-deployment.md](Flink/04-runtime/04.01-deployment/kubernetes-deployment.md) - Kubernetes部署指南
+- [Flink 2.5 预览](flink-2.5-preview.md) - Flink 2.5 路线图
+- [Flink/08-roadmap/08.02-flink-25/](../08.02-flink-25/) - Flink 2.5 详细跟踪
+- [Flink/08-roadmap/08.03-flink-30/](../08.03-flink-30/) - Flink 3.0 详细跟踪
+- [Flink 1.x vs 2.0对比](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比

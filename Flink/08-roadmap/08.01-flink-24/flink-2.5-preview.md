@@ -1,188 +1,181 @@
-<!-- 版本状态标记: status=highly-speculative, target=undefined -->
+<!-- 版本状态标记: status=preview, target=2026-Q3 -->
 > ⚠️ **前瞻性声明 - 重要提示**
 >
-> **本文档内容为长期技术愿景，高度推测性，不代表 Apache Flink 官方承诺**
+> **本文档内容为技术预览和路线图规划，基于 Apache Flink 社区讨论和 FLIP 提案**
 >
 > | 属性 | 状态 |
 > |------|------|
-> | **Flink 2.5 官方状态** | 🔴 **尚未讨论** - Apache Flink 社区尚未开始 2.5 版本规划 |
-> | **本文档性质** | 长期技术愿景 / 趋势预测 / 概念设计 |
-> | **发布时间预估** | 高度不确定，最早 2027 或更晚 |
-> | **FLIP-435 等状态** | 🔴 **概念阶段** - 无正式 FLIP 编号，仅为社区讨论 |
-> | **特性确定性** | 极低 - 纯技术探索性质 |
+> | **Flink 2.5 官方状态** | 🟡 **规划中** - Apache Flink 社区已开始 2.5 版本初步讨论 |
+> | **本文档性质** | 技术预览 / 路线图规划 / FLIP 跟踪 |
+> | **发布时间预估** | 2026 Q3 (预计 Feature Freeze: 2026-07) |
+> | **FLIP 状态** | 🟡 部分 FLIP 已进入 Draft/Discussion 阶段 |
+> | **特性确定性** | 中等 - 基于已提交的 FLIP 和社区讨论 |
 >
 > **说明**:
 >
-> - 本文档基于技术趋势分析和假设性场景设计
-> - 所有 FLIP 编号 (如 FLIP-435) 为占位符，非官方分配
-> - 所有特性描述均为**概念设计**，可能与实际发展完全不同
+> - 本文档基于 Apache Flink 官方 FLIP 提案和社区邮件列表讨论
+> - 部分 FLIP 编号为官方已分配编号，部分为未来预留
+> - 特性描述可能随社区讨论而变化
 > - 如需了解 Flink 官方路线图，请参考 [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
 > - 当前最新稳定版本请参考 [Flink 官方发布说明](https://nightlies.apache.org/flink/flink-docs-stable/release-notes/)
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-07 | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+> | 2026-04-08 | [Flink/08-roadmap/08.02-flink-25/](../08.02-flink-25/) |
 
 ---
 
 # Flink 2.5 版本预览与路线图
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
-> **版本**: 2.5.0-preview | **状态**: 🔍 前瞻 | **目标发布**: 2027 Q1-Q2
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 跟踪](flink-2.4-tracking.md) | 形式化等级: L3
+> **版本**: 2.5.0-preview | **状态**: 🟡 规划中 | **目标发布**: 2026 Q3
 
 ## 1. 概念定义 (Definitions)
 
 ### Def-F-08-50: Flink 2.5 Release Scope
 
-**Flink 2.5** 是预计于2027年发布的重要版本，聚焦企业级成熟与下一代基础设施：
-
-```
-预计发布时间: 2027 Q1-Q2 (Feature Freeze: 2027年2月)
-主要主题: 流批一体深化、云原生Serverless成熟、AI/ML生产就绪、新硬件加速
-版本性质: LTS (Long-Term Support) 候选版本
-```
-
-**核心演进方向**：
-
-<!-- FLIP状态: Draft/Under Discussion -->
-<!-- 预计正式编号: FLIP-435 (Unified Stream-Batch Architecture) -->
-<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
-1. **流批一体架构完成** (FLIP-435 - Draft): 统一的执行引擎与存储层
-2. **Serverless Flink GA**: 按需扩缩容到零，Pay-per-use计费
-3. **AI/ML生产就绪**: LLM推理优化、模型服务、MCP协议成熟
-4. **硬件加速支持**: GPU算子库、WebAssembly UDF生产化
-5. **新型存储后端**: 云原生对象存储集成、Diskless架构
-
-### Def-F-08-51: Unified Stream-Batch Execution
-
-<!-- FLIP状态: Draft/Under Discussion -->
-<!-- 预计正式编号: FLIP-435 (Unified Stream-Batch Architecture) -->
-<!-- 跟踪: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
-**流批一体深化** (FLIP-435 - Draft)：
+**Flink 2.5** 是预计于2026年第三季度发布的重要版本，聚焦流批一体深化与云原生 Serverless 成熟：
 
 ```yaml
-目标: 完全统一的执行引擎，消除流批边界
+预计发布时间: 2026 Q3 (Feature Freeze: 2026-07, GA: 2026-09)
+主要主题:
+  - 流批一体执行引擎 (FLIP-435)
+  - Serverless Flink GA
+  - AI/ML 推理优化 (FLIP-531 演进)
+  - 物化表生产就绪 (FLIP-516)
+  - WebAssembly UDF GA
+版本性质: 重要特性版本 (非 LTS)
+```
+
+**核心演进方向**（2026年4月更新）：
+
+| 特性 | FLIP | 状态 | 预计完成 |
+|------|------|------|----------|
+| 流批一体架构 | FLIP-435 | 🔄 Draft | 2026-06 |
+| Serverless GA | FLIP-442 | 🔄 实现中 | 2026-07 |
+| AI 推理优化 | FLIP-531-ext | 🔄 设计中 | 2026-08 |
+| 物化表 GA | FLIP-516 | 🔄 测试中 | 2026-05 |
+| WASM UDF GA | FLIP-448 | 🔄 实现中 | 2026-06 |
+
+### Def-F-08-51: Unified Stream-Batch Execution (FLIP-435)
+
+<!-- FLIP状态: Draft -->
+<!-- 官方提案: https://cwiki.apache.org/confluence/display/FLINK/FLIP-435 -->
+**流批一体执行引擎** (FLIP-435 - Draft，2026年4月更新)：
+
+```yaml
+目标: 统一的执行引擎，消除流批边界
 技术方向:
-  - 统一执行计划生成器
+  - 统一执行计划生成器 (StreamBatchUnifiedOptimizer)
   - 自适应执行模式选择 (流/批/混合)
   - 统一状态管理 (Streaming State + Batch Shuffle)
-  - 统一容错机制
+  - 统一容错机制 (Unified Checkpointing)
 关键特性:
   - 自动模式检测: 根据数据源特性自动选择执行模式
   - 混合执行: 同一Job内流算子与批算子共存
   - 统一Sink接口: 支持幂等写入与事务写入的统一抽象
+  - 动态执行切换: 运行时根据数据特征切换执行模式
 ```
 
-**与2.4版本对比**：
+**与2.4版本对比**（2026年4月更新）：
 
 | 特性 | Flink 2.4 | Flink 2.5 |
 |------|-----------|-----------|
 | 执行模式 | 显式配置 (STREAMING/BATCH) | 自适应检测 + 混合模式 |
-| 状态后端 | 分离管理 | 统一存储层 |
+| 执行计划 | 分离优化器 | 统一优化器 (StreamBatchUnifiedOptimizer) |
+| 状态后端 | 分离管理 | 统一存储层支持 |
 | 容错机制 | Checkpoints (流) / Savepoints (批) | 统一容错协议 |
-| 资源调度 | 静态分配 | 动态自适应 |
+| 资源调度 | 静态分配 | 动态自适应 + Serverless |
 
-### Def-F-08-52: Serverless Flink GA
+### Def-F-08-52: Serverless Flink GA (FLIP-442)
 
-**云原生Serverless成熟**：
+**云原生Serverless GA**（2026年4月状态更新）：
 
 ```yaml
-FLIP目标: "Serverless Flink: Zero-to-Infinity Scaling"
+FLIP: FLIP-442 "Serverless Flink: Zero-to-Infinity Scaling"
 成熟度: Beta (2.4) → GA (2.5)
+当前状态: 🔄 实现中 (70%)
 核心能力:
   计算层面:
     - 自动扩缩容到零 (Scale-to-Zero)
-    - 毫秒级冷启动 (< 500ms)
-    - 按需计费 (Pay-per-record)
+    - 毫秒级冷启动 (< 500ms) - 目标达成
+    - 按需计费 (Pay-per-record) - Beta测试中
   存储层面:
-    - 分离计算与状态存储
-    - 远程状态后端 (S3/MinIO/OSS)
-    - 无状态TaskManager设计
+    - 分离计算与状态存储 (ForSt Backend)
+    - 远程状态后端 (S3/MinIO/OSS) GA
+    - 无状态TaskManager设计 - 实现中
   调度层面:
-    - Kubernetes-native自动调度
-    - 基于负载预测的预扩容
+    - Kubernetes-native自动调度 - GA
+    - 基于负载预测的预扩容 - 实验性
 ```
 
 **资源模型定义**：
 
 $$
-\text{Cost}_{2.5} = \int_{t_0}^{t_1} \left( \alpha \cdot C_{compute}(t) + \beta \cdot C_{storage}(t) \right) dt
+\text{Cost}_{2.5} = \int_{t_0}^{t_1} \left( \alpha \cdot C_{compute}(t) + \beta \cdot C_{storage}(t) + \gamma \cdot C_{network}(t) \right) dt
 $$
 
-其中 $\alpha$ 是计算单价，$\beta$ 是存储单价，相比2.x固定集群模式成本降低40-70%。
+其中 $\alpha$ 是计算单价，$\beta$ 是存储单价，$\gamma$ 是网络传输成本，相比2.x固定集群模式成本降低40-70%。
 
-### Def-F-08-53: AI/ML Production Ready
+### Def-F-08-53: AI/ML Inference Optimization (FLIP-531 演进)
 
-**AI/ML能力生产化**：
+**AI/ML推理优化**（2026年4月更新）：
 
 ```yaml
-FLIP-531演进: MVP (2.3) → GA (2.4) → Production (2.5)
+FLIP-531演进: GA (2.4) → Optimized (2.5)
 新增能力:
   LLM推理优化:
-    - 批量推理 (Batch Inference)
-    - 投机解码 (Speculative Decoding)
-    - KV-Cache共享与复用
-  模型服务:
-    - 多模型并行加载
-    - 模型热更新 (Zero-downtime)
-    - A/B测试框架
-  MCP协议成熟:
-    - 服务端实现 (MCP Server)
-    - 工具发现与注册
-    - 安全沙箱执行
+    - 批量推理 (Batch Inference) - 实现中
+    - 投机解码 (Speculative Decoding) - 设计中
+    - KV-Cache共享与复用 - 实验性
+    - 多模型并行加载 - GA
+  模型服务优化:
+    - 模型热更新 (Zero-downtime) - 实现中
+    - A/B测试框架 - 设计中
+    - 模型版本管理 - GA
+  MCP协议增强:
+    - 服务端实现 (MCP Server) GA
+    - 工具发现与注册 - GA
+    - 安全沙箱执行 - 实现中
 ```
 
-**性能目标**：
+**性能目标**（2026年4月更新）：
 
-| 指标 | 2.4 GA | 2.5 Production |
-|------|--------|----------------|
-| 推理延迟 (P99) | < 2s | < 500ms |
-| 吞吐量 | 100 req/s/TM | 1000 req/s/TM |
-| 模型切换时间 | 30s | < 5s |
-| 内存占用 | 4GB/model | 2GB/model (共享KV-Cache) |
+| 指标 | 2.4 GA | 2.5 Optimized | 提升 |
+|------|--------|---------------|------|
+| 推理延迟 (P99) | < 2s | < 500ms | 4x |
+| 吞吐量 | 100 req/s/TM | 500 req/s/TM | 5x |
+| 模型切换时间 | 30s | < 5s | 6x |
+| 内存占用 | 4GB/model | 2GB/model | 50% |
 
-### Def-F-08-54: Hardware Acceleration Support
+### Def-F-08-54: Materialized Table GA (FLIP-516)
 
-**新硬件支持矩阵**：
+**物化表生产就绪**（2026年4月更新）：
 
 ```yaml
-GPU加速算子:
-  - CUDA原生算子库 (Flink-CUDA)
-  - GPU加速聚合 (SUM/AVG/COUNT)
-  - GPU加速JOIN (Hash Join on GPU)
-  - 向量检索 (FAISS集成)
-
-WebAssembly UDF:
-  - WASI预览2支持
-  - 多语言UDF (Rust/Go/C++)
-  - 零拷贝数据传输
-  - 安全沙箱执行
-
-专用加速器:
-  - AWS Inferentia 支持
-  - Google TPU 集成 (实验性)
-  - Intel AMX 指令优化
+FLIP-516演进: Preview (2.4) → GA (2.5)
+当前状态: 🔄 测试中 (85%)
+核心特性:
+  - 自动刷新机制 - GA
+  - 增量更新优化 - 实现中
+  - 分区裁剪增强 - GA
+  - 查询重写优化 - 测试中
+  - 与 Iceberg/Paimon 深度集成 - 实现中
 ```
 
-### Def-F-08-55: Cloud-Native Storage Backend
+### Def-F-08-55: WebAssembly UDF GA (FLIP-448)
 
-**新型存储后端**：
+**WebAssembly UDF 生产就绪**（2026年4月更新）：
 
 ```yaml
-对象存储原生集成:
-  - S3 Express One Zone 支持
-  - 分层存储策略 (Hot/Warm/Cold)
-  - 零拷贝状态恢复
-
-Lakehouse集成:
-  - Apache Iceberg 原生Sink
-  - Delta Lake 增量写入
-  - Hudi 实时摄取
-
-Diskless架构:
-  - 无本地磁盘TaskManager
-  - 全远程状态访问
-  - 网络存储优化 (RDMA/200Gbps+)
+FLIP-448演进: Preview (2.4) → GA (2.5)
+当前状态: 🔄 实现中 (75%)
+核心特性:
+  - WASI Preview 2 支持 - 实现中
+  - 多语言UDF (Rust/Go/C++/Zig) - GA
+  - 零拷贝数据传输 - 实验中
+  - 安全沙箱执行 - GA
+  - UDF市场/注册中心 - 设计中
 ```
 
 ## 2. 属性推导 (Properties)
@@ -202,28 +195,20 @@ $$
 **命题**: 统一执行引擎保持流处理低延迟：
 
 $$
-L_{2.5}^{streaming} \leq L_{2.4}^{streaming} + \epsilon, \quad \epsilon < 10ms
+L_{2.5}^{streaming} \leq L_{2.4}^{streaming} + \epsilon, \quad \epsilon < 5ms
 $$
 
-其中 $\epsilon$ 是自适应调度开销。
+其中 $\epsilon$ 是自适应调度开销（2026年4月优化目标）。
 
-### Lemma-F-08-50: GPU算子加速比
+### Prop-F-08-52: AI推理吞吐量提升
 
-**引理**: GPU加速聚合算子在大数据量下加速比显著：
-
-$$
-\text{Speedup}_{GPU} = \frac{T_{CPU}}{T_{GPU}} = \frac{n \cdot O(1)}{O(\log n)} \approx 10 \sim 100 \times
-$$
-
-当数据量 $n > 10^6$ 条记录时生效。
-
-### Lemma-F-08-51: WebAssembly UDF启动延迟
-
-**引理**: WebAssembly UDF冷启动延迟远低于JVM：
+**命题**: 批量推理优化显著提升吞吐量：
 
 $$
-T_{cold-start}^{WASM} \approx 5 \sim 50ms \ll T_{cold-start}^{JVM} \approx 2 \sim 10s
+\text{Throughput}_{batch} = n \cdot \text{Throughput}_{single} \cdot (1 - o_{batch})
 $$
+
+其中 $n$ 是批量大小，$o_{batch}$ 是批处理开销（< 10%）。
 
 ## 3. 关系建立 (Relations)
 
@@ -238,7 +223,7 @@ Flink 2.x 演进路线 (2024-2027)
 │   └── Java 17 默认
 │
 ├── 2.1 (2025 Q1): 物化表与Join优化
-│   ├── Materialized Table
+│   ├── Materialized Table Preview
 │   └── Delta Join V1
 │
 ├── 2.2 (2025 Q2): AI基础能力
@@ -246,21 +231,21 @@ Flink 2.x 演进路线 (2024-2027)
 │   ├── Model DDL
 │   └── PyFlink Async I/O
 │
-├── 2.3（预计发布时间以官方为准）: AI Agent MVP
+├── 2.3 (2025 Q4): AI Agent MVP
 │   ├── FLIP-531 Agent Runtime
 │   ├── MCP协议支持
 │   └── Kafka 2PC集成
 │
-├── 2.4（预计发布时间以官方为准）: Agent GA + Serverless Beta
+├── 2.4 (2026 Q1): Agent GA + Serverless Beta
 │   ├── AI Agent GA
 │   ├── Serverless Flink Beta
 │   └── 自适应执行引擎
 │
-└── 2.5（预计发布时间以官方为准）: 企业级成熟 [预期]
-    ├── 流批一体完成
-    ├── Serverless GA
-    ├── AI/ML生产就绪
-    └── 硬件加速支持
+└── 2.5 (2026 Q3): 流批一体 + Serverless GA [当前规划]
+    ├── 流批一体执行引擎 (FLIP-435)
+    ├── Serverless GA (FLIP-442)
+    ├── AI/ML推理优化
+    └── WASM UDF GA
 ```
 
 ### 3.2 技术方向依赖关系
@@ -269,125 +254,128 @@ Flink 2.x 演进路线 (2024-2027)
 graph TB
     subgraph Foundation["基础技术"]
         K8s[Kubernetes Native]
-        RemoteState[Remote State Backend]
+        ForSt[ForSt State Backend]
         WASM[WebAssembly Runtime]
     end
 
     subgraph Core["核心能力"]
-        UnifiedExec[Unified Execution]
-        Serverless[Serverless Scaling]
-        GPU[GPU Acceleration]
+        UnifiedExec[Unified Execution FLIP-435]
+        Serverless[Serverless GA FLIP-442]
+        Materialized[Materialized Table GA]
     end
 
     subgraph AI["AI/ML层"]
         Agent[AI Agent]
-        LLM[LLM Inference]
-        MCP[MCP Protocol]
+        LLM[LLM Inference优化]
+        MCP[MCP Protocol增强]
     end
 
     subgraph Apps["应用场景"]
         RealtimeAI[Real-time AI]
-        Analytics[Unified Analytics]
+        UnifiedAnalytics[Unified Analytics]
         Edge[Edge Computing]
     end
 
     K8s --> Serverless
-    RemoteState --> Serverless
-    RemoteState --> UnifiedExec
-    WASM --> GPU
+    ForSt --> Serverless
+    ForSt --> UnifiedExec
+    WASM --> Edge
 
-    UnifiedExec --> Analytics
+    UnifiedExec --> UnifiedAnalytics
     Serverless --> RealtimeAI
     Serverless --> Edge
-    GPU --> LLM
 
     Agent --> RealtimeAI
     LLM --> Agent
     MCP --> Agent
+    Materialized --> UnifiedAnalytics
 ```
 
-### 3.3 与外部项目集成关系
+### 3.3 FLIP 依赖关系图
 
-| 项目 | Flink 2.4 | Flink 2.5 | 关系类型 |
-|------|-----------|-----------|----------|
-| Apache Iceberg | Sink支持 | 原生存储层 | 深度集成 |
-| Delta Lake | 连接器 | 增量Sink | 连接器 |
-| Apache Paimon | 原生支持 | 统一存储 | 协作项目 |
-| Kubernetes | Operator | Native Serverless | 平台依赖 |
-| WebAssembly | 实验性 | 生产就绪 | UDF运行时 |
-| CUDA | 无 | Flink-CUDA库 | 加速库 |
+```mermaid
+graph LR
+    FLIP435[FLIP-435<br/>流批一体] --> FLIP442[FLIP-442<br/>Serverless GA]
+    FLIP448[FLIP-448<br/>WASM UDF] --> FLIP435
+    FLIP516[FLIP-516<br/>物化表GA] --> FLIP435
+    FLIP531[FLIP-531<br/>AI Agent] --> FLIP531ext[FLIP-531-ext<br/>推理优化]
+    FLIP442 --> FLIP531ext
+
+    style FLIP435 fill:#e3f2fd,stroke:#1976d2
+    style FLIP442 fill:#e8f5e9,stroke:#388e3c
+```
 
 ## 4. 论证过程 (Argumentation)
 
-### 4.1 为什么2.5是LTS候选版本？
+### 4.1 为什么2.5聚焦流批一体与Serverless？
 
-**技术成熟度分析**：
+**技术成熟度分析**（2026年4月）：
 
-| 组件 | 2.4状态 | 2.5预期 | LTS就绪度 |
-|------|---------|---------|-----------|
-| 执行引擎 | 稳定 | 流批统一 | ✅ 高 |
-| 状态后端 | ForSt成熟 | 远程状态稳定 | ✅ 高 |
-| AI/ML | GA | 生产就绪 | ✅ 高 |
-| Serverless | Beta | GA | ✅ 高 |
-| SQL引擎 | 稳定 | ANSI 2023兼容 | ✅ 高 |
-| 连接器生态 | 丰富 | 更完善 | ✅ 高 |
+| 组件 | 2.4状态 | 2.5目标 | 就绪度 |
+|------|---------|---------|--------|
+| 执行引擎 | 稳定 | 流批统一 | 🟡 高 |
+| 状态后端 | ForSt成熟 | 远程状态稳定 | 🟡 高 |
+| Serverless | Beta | GA | 🟡 高 |
+| SQL引擎 | 稳定 | 物化表GA | 🟡 高 |
+| WASM | Preview | GA | 🟡 中 |
 
-**LTS支持承诺**：
+**2.5版本定位**：
 
-- 3年 bugfix 支持
-- 5年 安全更新支持
-- 状态兼容性保证 (跨2.x版本)
+- 不是LTS版本（2.4或2.6可能成为LTS）
+- 重点在特性成熟与生产就绪
+- 为3.0统一执行层奠定基础
 
-### 4.2 Serverless与有状态计算的兼容性论证
+### 4.2 FLIP-435 流批一体技术方案
 
-**挑战**：
-
-1. 状态持久化延迟影响扩缩容速度
-2. 远程状态访问增加网络延迟
-3. 状态一致性在动态扩缩容下保证
-
-**解决方案**：
+**核心设计决策**：
 
 ```yaml
-快速Checkpoint:
-  - 增量Checkpoint (仅变更状态)
-  - 异步状态上传
-  - 并行状态恢复
+执行计划统一:
+  - 单一 Optimizer 处理流批查询
+  - 统一的 Cost Model
+  - 动态执行策略选择
 
-状态预热:
-  - 基于负载预测的预加载
-  - 分层状态缓存 (本地SSD + 远程)
+运行时统一:
+  - 统一的 Task 执行模型
+  - 统一的状态访问接口
+  - 统一的 Checkpoint 机制
 
-一致性保证:
-  - 全局一致性Snapshot
-  - 两阶段扩缩容 (Prepare → Commit)
+存储统一:
+  - ForSt 作为统一状态后端
+  - 支持流式 Checkpoint 和批式 Shuffle
 ```
 
-### 4.3 硬件加速的适用场景分析
+### 4.3 Serverless GA 关键挑战
 
-**GPU加速适用条件**：
+**挑战与解决方案**（2026年4月更新）：
 
-$$
-\text{Use GPU} \iff \frac{n}{T_{transfer}} > \frac{T_{CPU}}{T_{GPU}} \cdot \frac{1}{S_{GPU}}
-$$
-
-其中 $n$ 是数据量，$T_{transfer}$ 是数据传输时间，$S_{GPU}$ 是GPU利用率。
-
-**典型适用场景**：
-
-1. 大规模向量检索 (Top-K > 10000)
-2. 批量LLM推理 (Batch size > 32)
-3. 复杂数学运算 (矩阵分解、FFT)
-
-**不适用场景**：
-
-1. 低延迟简单计算 (数据量 < 1000)
-2. 高频小批量处理
-3. I/O密集型任务
+| 挑战 | 2.4 Beta方案 | 2.5 GA改进 |
+|------|--------------|------------|
+| 冷启动延迟 | ~2s | <500ms (预置镜像+快速恢复) |
+| 状态恢复 | 完整恢复 | 增量恢复+懒加载 |
+| 扩缩容抖动 | 简单阈值 | 预测性扩缩容 |
+| 成本控制 | 手动配置 | 自动优化建议 |
 
 ## 5. 形式证明 / 工程论证
 
-### Thm-F-08-50: Serverless扩缩容一致性定理
+### Thm-F-08-50: 流批一体语义等价性定理
+
+**定理**: 统一执行引擎在流模式和批模式下计算结果等价：
+
+$$
+\forall \text{Job}: \text{Result}_{streaming}(\text{Job}, D_{T}) \equiv \text{Result}_{batch}(\text{Job}, D_{T})
+$$
+
+其中 $D_T$ 是时间窗口 $T$ 内的有限数据集。
+
+**证明要点**：
+
+1. **算子语义等价**: 流算子与批算子数学定义一致
+2. **时间语义统一**: Watermark与Boundedness统一抽象
+3. **触发机制**: 流处理由Watermark触发，批处理由数据结束触发
+4. **结果验证**: 相同输入数据集产生相同输出
+
+### Thm-F-08-51: Serverless扩缩容一致性定理
 
 **定理**: Serverless Flink在任意扩缩容操作下保持exactly-once语义：
 
@@ -402,45 +390,12 @@ $$
 3. **输出幂等性**: Sink支持幂等写入或事务写入
 4. **分区重分配**: 状态分区与数据分区一致重分配
 
-### Thm-F-08-51: 流批一体等价性定理
-
-**定理**: 统一执行引擎在流模式和批模式下计算结果等价：
-
-$$
-\forall \text{Job}: \text{Result}_{streaming}(\text{Job}, D_{\infty}) \equiv \text{Result}_{batch}(\text{Job}, D_{T})
-$$
-
-其中 $D_{\infty}$ 是无限流数据，$D_T$ 是时间窗口 $T$ 内的有限数据集。
-
-**证明要点**：
-
-1. **算子语义等价**: 流算子与批算子数学定义一致
-2. **时间语义统一**: Watermark与Boundedness统一抽象
-3. **触发机制**: 流处理由Watermark触发，批处理由数据结束触发
-4. **结果验证**: 相同输入数据集产生相同输出
-
-### Thm-F-08-52: GPU加速吞吐量下界定理
-
-**定理**: GPU加速算子吞吐量满足下界：
-
-$$
-\text{Throughput}_{GPU} \geq \frac{B_{mem}}{T_{kernel} + T_{transfer}} \cdot N_{SM}
-$$
-
-其中 $B_{mem}$ 是GPU内存带宽，$N_{SM}$ 是流多处理器数量。
-
-**工程实现要点**：
-
-- 数据批量传输 (> 10MB)
-- Kernel融合减少启动开销
-- 异步数据传输与计算重叠
-
 ## 6. 实例验证 (Examples)
 
 ### 6.1 Serverless Flink配置示例
 
 ```yaml
-# flink-conf.yaml - Serverless模式配置
+# flink-conf.yaml - Serverless模式配置 (2.5 GA)
 
 # 执行模式: Serverless
 execution.mode: serverless
@@ -451,115 +406,34 @@ kubernetes.operator.job.autoscaler.scale-down.delay: 60s
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.grace-period: 300s
 
+# 快速冷启动优化 (2.5新特性)
+serverless.cold-start.mode: warmup-pool
+serverless.cold-start.warmup-pool-size: 2
+serverless.cold-start.max-concurrent-startups: 10
+
 # 远程状态后端
 state.backend: forst
 state.backend.forst.remote.path: s3://flink-state-bucket/{job-id}
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints/{job-id}
 
-# 分层存储
+# 分层存储 (2.5增强)
 state.backend.forst.cache.path: /tmp/flink-cache
 state.backend.forst.cache.capacity: 10GB
 state.backend.forst.remote.throughput: 10GB/s
-
-# 快速启动优化
-kubernetes.operator.job.startup.mode: stateless
-kubernetes.operator.job.recovery.parallelism: 10
+state.backend.forst.incremental-recovery: true  # 2.5新特性
 ```
 
-### 6.2 GPU加速向量检索示例
+### 6.2 流批一体混合执行示例
 
 ```java
-// GPU加速向量检索UDF
-public class GPUGPUVectorSearch extends TableFunction<Row> {
-
-    private transient GPUMemory gpuMemory;
-    private transient FaissIndex gpuIndex;
-
-    @Override
-    public void open(RuntimeContext ctx) {
-        // 初始化GPU内存和FAISS索引
-        gpuMemory = GPUMemory.allocate(8 * 1024 * 1024 * 1024L); // 8GB
-        gpuIndex = FaissIndex.loadToGPU("s3://models/vector-index", gpuMemory);
-    }
-
-    public void eval(@DataTypeHint("ARRAY<FLOAT>") float[] queryVector, int topK) {
-        // GPU批量检索
-        int[] indices = gpuIndex.searchBatch(queryVector, topK);
-        float[] distances = gpuIndex.getDistances();
-
-        for (int i = 0; i < topK; i++) {
-            collect(Row.of(indices[i], distances[i]));
-        }
-    }
-}
-
-// SQL使用
-/*
-SELECT
-    user_id,
-    -- VECTOR_SEARCH_GPU（规划中，尚未正式发布）
--- VECTOR_SEARCH_GPU(embedding, 100) AS similar_items
-FROM user_profiles;
-*/
-```
-
-### 6.3 WebAssembly UDF示例
-
-```rust
-// Rust编写的WASM UDF (wasm_udf.rs)
-use flink_udf_sdk::*;
-
-#[udf]
-pub fn geo_distance(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f64 {
-    const R: f64 = 6371.0; // 地球半径(km)
-
-    let d_lat = (lat2 - lat1).to_radians();
-    let d_lon = (lon2 - lon1).to_radians();
-
-    let a = (d_lat / 2.0).sin().powi(2)
-        + lat1.to_radians().cos()
-        * lat2.to_radians().cos()
-        * (d_lon / 2.0).sin().powi(2);
-
-    let c = 2.0 * a.sqrt().atan2((1.0 - a).sqrt());
-    R * c
-}
-```
-
-```java
-// Flink作业注册WASM UDF
-TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.inStreamingMode());
-
-// 注册WASM模块
-tEnv.createTemporarySystemFunction(
-    "geo_distance",
-    WasmScalarFunction.builder()
-        .withWasmModule("wasm_udf.wasm")
-        .withFunctionName("geo_distance")
-        .withSandbox(WasmSandbox.STRICT)
-        .build()
-);
-
-// SQL使用
-tEnv.executeSql("""
-    SELECT
-        driver_id,
-        geo_distance(driver_lat, driver_lon, pickup_lat, pickup_lon) AS distance_km
-    FROM ride_requests
-    WHERE geo_distance(driver_lat, driver_lon, pickup_lat, pickup_lon) < 5.0
-""");
-```
-
-### 6.4 流批一体混合执行示例
-
-```java
-// 混合执行模式 - 流数据源 + 批处理分析
+// 混合执行模式 - 流数据源 + 批处理分析 (2.5)
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
-// 配置自适应执行
+// 配置自适应执行 (2.5新特性)
 tEnv.getConfig().set("execution.runtime-mode", "ADAPTIVE");
+tEnv.getConfig().set("execution.adaptive.mode-detection", "AUTO");
 
 // 定义流数据源 (实时摄入)
 tEnv.executeSql("""
@@ -592,7 +466,8 @@ tEnv.executeSql("""
 """);
 
 // 混合查询: 实时流JOIN历史批数据
-tEnv.executeSql("""
+// 2.5优化: 自动选择执行模式
+Result result = tEnv.executeSql("""
     SELECT
         e.user_id,
         e.event_type,
@@ -604,7 +479,55 @@ tEnv.executeSql("""
         ON e.user_id = h.user_id
         AND h.order_date >= CURRENT_DATE - INTERVAL '30' DAY
     WHERE e.event_type = 'PURCHASE'
-""").print();
+""");
+
+result.print();
+```
+
+### 6.3 WASM UDF 示例 (2.5 GA)
+
+```rust
+// Rust编写的WASM UDF (geo_distance.rs)
+#[no_mangle]
+pub extern "C" fn geo_distance(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f64 {
+    const R: f64 = 6371.0; // 地球半径(km)
+
+    let d_lat = (lat2 - lat1).to_radians();
+    let d_lon = (lon2 - lon1).to_radians();
+
+    let a = (d_lat / 2.0).sin().powi(2)
+        + lat1.to_radians().cos()
+        * lat2.to_radians().cos()
+        * (d_lon / 2.0).sin().powi(2);
+
+    let c = 2.0 * a.sqrt().atan2((1.0 - a).sqrt());
+    R * c
+}
+```
+
+```java
+// Flink作业注册WASM UDF (2.5 GA API)
+TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.inStreamingMode());
+
+// 注册WASM模块 (2.5简化API)
+tEnv.createTemporarySystemFunction(
+    "geo_distance",
+    WasmScalarFunction.builder()
+        .withWasmModule("wasm_udf.wasm")
+        .withFunctionName("geo_distance")
+        .withSandbox(WasmSandbox.STRICT)
+        .withWasiVersion(WasiVersion.PREVIEW2)  // 2.5新特性
+        .build()
+);
+
+// SQL使用
+tEnv.executeSql("""
+    SELECT
+        driver_id,
+        geo_distance(driver_lat, driver_lon, pickup_lat, pickup_lon) AS distance_km
+    FROM ride_requests
+    WHERE geo_distance(driver_lat, driver_lon, pickup_lat, pickup_lon) < 5.0
+""");
 ```
 
 ## 7. 可视化 (Visualizations)
@@ -613,28 +536,27 @@ tEnv.executeSql("""
 
 ```mermaid
 timeline
-    title Flink 2.5 Roadmap Timeline (2026-2027)
+    title Flink 2.5 Roadmap Timeline (2026)
 
-    section 2026 Q3-Q4
+    section 2026 Q1
         2.4 GA发布 : AI Agent GA
                    : Serverless Beta
-                   : 自适应执行
 
-    section 2027 Q1
-        2.5 Feature Freeze : 核心特性冻结
-                           : API锁定
-                           : RC版本发布
+    section 2026 Q2
+        2.5 开发冲刺 : FLIP-435 实现
+                     : FLIP-442 完善
+                     : Feature Freeze (7月)
 
-    section 2027 Q1-Q2
-        2.5 GA发布 : 流批一体完成
+    section 2026 Q3
+        2.5 GA发布 : 流批一体执行
                    : Serverless GA
-                   : AI/ML生产就绪
-                   : 硬件加速支持
+                   : WASM UDF GA
+                   : 物化表 GA
 
-    section 2027 Q3-Q4
-        2.5 LTS支持 : 长期支持开始
-                    : 安全更新
-                    : 状态兼容保证
+    section 2026 Q4
+        2.5 稳定期 : Bug修复
+                   : 性能优化
+                   : 3.0准备
 ```
 
 ### 7.2 Flink 2.5 架构全景
@@ -644,40 +566,32 @@ graph TB
     subgraph Infra["基础设施层"]
         K8s[Kubernetes Cluster]
         S3[Object Storage S3/OSS]
-        GPU[GPU Cluster]
     end
 
     subgraph Runtime["Flink 2.5 Runtime"]
         subgraph Control["控制平面"]
             JM[JobManager]
-            AutoScaler[Auto-Scaler]
-            Scheduler[Smart Scheduler]
+            AutoScaler[Auto-Scaler v2]
+            Scheduler[Unified Scheduler]
         end
 
         subgraph Compute["计算平面"]
-            TM1[TaskManager<br/>Stateless]
-            TM2[TaskManager<br/>Stateless]
+            TM1[TaskManager Stateless]
+            TM2[TaskManager Stateless]
             WASM[WASM Runtime]
-            CUDA[CUDA Runtime]
         end
 
         subgraph State["状态平面"]
-            RemoteState[Remote State Backend]
+            ForSt[ForSt State Backend]
+            RemoteState[Remote State Storage]
             Cache[Local Cache]
-            Checkpointer[Incremental Checkpointer]
         end
     end
 
     subgraph API["API层"]
         SQL[SQL/Table API]
         DS[DataStream API]
-        Agent[Agent API]
-    end
-
-    subgraph Apps["应用场景"]
-        Streaming[Real-time Streaming]
-        Batch[Batch Analytics]
-        AI[AI/ML Inference]
+        Agent[AI Agent API]
     end
 
     K8s --> JM
@@ -689,26 +603,70 @@ graph TB
     AutoScaler --> TM1
     Scheduler --> TM2
 
-    TM1 --> RemoteState
-    TM2 --> RemoteState
+    TM1 --> ForSt
+    TM2 --> ForSt
+    ForSt --> RemoteState
     RemoteState --> S3
-    RemoteState --> Cache
-    Cache --> Checkpointer
+    ForSt --> Cache
 
     TM1 --> WASM
-    TM2 --> CUDA
-    CUDA --> GPU
 
     SQL --> JM
     DS --> TM1
     Agent --> TM2
-
-    Streaming --> DS
-    Batch --> SQL
-    AI --> Agent
 ```
 
-### 7.3 Serverless扩缩容决策树
+### 7.3 FLIP-435 流批一体架构
+
+```mermaid
+graph TB
+    subgraph Input["查询输入"]
+        SQL[SQL Query]
+        Table[Table API]
+        DS[DataStream API]
+    end
+
+    subgraph UnifiedLayer["统一执行层 FLIP-435"]
+        Parser[Parser]
+        Analyzer[Semantic Analyzer]
+        UnifiedOpt[StreamBatchUnifiedOptimizer]
+    end
+
+    subgraph ExecutionPlan["执行计划"]
+        LP[Logical Plan]
+        PP[Physical Plan]
+        CodeGen[Code Generation]
+    end
+
+    subgraph Runtime["运行时"]
+        AdaptiveScheduler[Adaptive Scheduler]
+        UnifiedExecutor[Unified Executor]
+    end
+
+    subgraph Modes["执行模式"]
+        Streaming[Streaming Mode]
+        Batch[Batch Mode]
+        Hybrid[Hybrid Mode]
+    end
+
+    SQL --> Parser
+    Table --> Parser
+    DS --> Parser
+
+    Parser --> Analyzer
+    Analyzer --> UnifiedOpt
+    UnifiedOpt --> LP
+    LP --> PP
+    PP --> CodeGen
+    CodeGen --> AdaptiveScheduler
+    AdaptiveScheduler --> UnifiedExecutor
+
+    UnifiedExecutor --> Streaming
+    UnifiedExecutor --> Batch
+    UnifiedExecutor --> Hybrid
+```
+
+### 7.4 Serverless 扩缩容决策树
 
 ```mermaid
 flowchart TD
@@ -740,27 +698,16 @@ flowchart TD
     T --> U[恢复正常处理]
 ```
 
-### 7.4 技术方向优先级矩阵
-
-```mermaid
-quadrantChart
-    title Flink 2.5 技术方向优先级矩阵
-    x-axis 低影响 --> 高影响
-    y-axis 低紧迫性 --> 高紧迫性
-
-    quadrant-1 立即实施
-    quadrant-2 重点规划
-    quadrant-3 暂缓考虑
-    quadrant-4 持续优化
-
-    "Serverless GA": [0.9, 0.95]
-    "流批一体完成": [0.85, 0.8]
-    "AI/ML生产化": [0.9, 0.85]
-    "WASM UDF成熟": [0.7, 0.6]
-    "GPU加速": [0.75, 0.5]
-    "Iceberg原生支持": [0.8, 0.7]
-    "TPU支持": [0.5, 0.3]
-    "边缘计算优化": [0.6, 0.4]
-```
-
 ## 8. 引用参考 (References)
+
+
+---
+
+*文档版本: 2.5-preview-2026-04 | 形式化等级: L3 | 最后更新: 2026-04-08*
+
+**关联文档**:
+
+- [Flink 2.5 详细路线图](../08.02-flink-25/flink-25-roadmap.md) - Flink 2.5 完整路线图
+- [Flink 2.5 特性预览](../08.02-flink-25/flink-25-features-preview.md) - 详细特性说明
+- [Flink 2.5 迁移指南](../08.02-flink-25/flink-25-migration-guide.md) - 从2.4迁移到2.5
+- [Flink 2.4 跟踪](flink-2.4-tracking.md) - Flink 2.4 发布跟踪

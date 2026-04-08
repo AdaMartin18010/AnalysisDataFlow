@@ -1,0 +1,101 @@
+name: ✨ 功能建议 (Feature Request)
+description: 建议添加新主题、改进结构或新增功能
+title: "[Feature] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您为 AnalysisDataFlow 提出宝贵建议！请填写以下信息帮助我们评估和实施。
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: 建议类型
+      description: 请选择最符合的建议类型
+      options:
+        - 新主题建议（添加新的知识领域）
+        - 章节重组（改进文档组织结构）
+        - 工具/流程改进（改进贡献流程或工具）
+        - 交互功能（改进用户体验）
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: target-area
+    attributes:
+      label: 目标领域
+      description: 该建议主要涉及哪个领域？
+      placeholder: 例如：Struct/形式理论、Flink/Checkpoint、全局改进
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 详细描述
+      description: 请清晰描述您的建议
+      placeholder: |
+        例如：
+        建议添加"Flink 与 Pulsar 集成"专题，涵盖：
+        - Pulsar Connector 的使用
+        - Exactly-Once 语义保证
+        - 性能优化实践
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机/背景
+      description: 说明为什么这个建议对项目有益
+      placeholder: |
+        例如：
+        Pulsar 作为新一代消息队列，在流处理场景中应用越来越广泛。
+        当前文档缺少 Flink 与 Pulsar 集成的系统性说明，
+        补充这部分内容可以帮助更多开发者。
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: 实施方案（可选）
+      description: 如果您有具体的实施想法，请描述
+      placeholder: |
+        例如：
+        可以在 Flink/ 目录下新建文件：
+        - 4.5-flink-pulsar-integration.md
+        
+        内容结构：
+        1. Pulsar 架构概述
+        2. Flink Pulsar Connector 配置
+        3. Exactly-Once 保证机制
+        4. 性能调优实践
+        5. 常见问题排查
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考资源
+      description: 相关的参考资料或示例
+      placeholder: |
+        例如：
+        - Pulsar 官方文档：https://pulsar.apache.org/
+        - Flink Pulsar Connector：https://nightlies.apache.org/...
+        - 相关论文或博客文章
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 自检清单
+      description: 在提交前请确认以下事项
+      options:
+        - label: 我已搜索现有 Issue，确认该建议未被提出
+        - label: 我已阅读 CONTRIBUTING.md 了解项目规范
+        - label: 该建议符合项目的定位和范围
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 补充信息
+      description: 任何其他相关信息

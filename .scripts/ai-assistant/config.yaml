@@ -1,0 +1,330 @@
+# AnalysisDataFlow AI Assistant Configuration
+# AI辅助文档生成工具配置
+
+version: "1.0.0"
+project:
+  name: "AnalysisDataFlow"
+  root_dir: "e:/_src/AnalysisDataFlow"
+  doc_dirs:
+    - "Struct"
+    - "Knowledge"
+    - "Flink"
+
+# 文档结构规范 (六段式)
+document_structure:
+  sections:
+    - name: "概念定义"
+      id: "definitions"
+      required: true
+      patterns:
+        - "## 1. 概念定义"
+        - "## 1. 概念"
+        - "## Definitions"
+    - name: "属性推导"
+      id: "properties"
+      required: true
+      patterns:
+        - "## 2. 属性推导"
+        - "## 2. 属性"
+        - "## Properties"
+    - name: "关系建立"
+      id: "relations"
+      required: true
+      patterns:
+        - "## 3. 关系建立"
+        - "## 3. 关系"
+        - "## Relations"
+    - name: "论证过程"
+      id: "argumentation"
+      required: true
+      patterns:
+        - "## 4. 论证过程"
+        - "## 4. 论证"
+        - "## Argumentation"
+    - name: "形式证明"
+      id: "proof"
+      required: true
+      patterns:
+        - "## 5. 形式证明"
+        - "## 5. 证明"
+        - "## Proof"
+    - name: "实例验证"
+      id: "examples"
+      required: true
+      patterns:
+        - "## 6. 实例验证"
+        - "## 6. 实例"
+        - "## Examples"
+    - name: "可视化"
+      id: "visualizations"
+      required: true
+      patterns:
+        - "## 7. 可视化"
+        - "## Visualizations"
+    - name: "引用参考"
+      id: "references"
+      required: true
+      patterns:
+        - "## 8. 引用参考"
+        - "## References"
+
+# 定理/定义编号模式
+patterns:
+  theorem: 'Thm-[SKF]-\d{2}-\d{2}'
+  lemma: 'Lemma-[SKF]-\d{2}-\d{2}'
+  definition: 'Def-[SKF]-\d{2}-\d{2}'
+  proposition: 'Prop-[SKF]-\d{2}-\d{2}'
+  corollary: 'Cor-[SKF]-\d{2}-\d{2}'
+  mermaid_block: '```mermaid[\s\S]*?```'
+  reference: '\[\^(\d+)\]'
+  doc_link: '\[([^\]]+)\]\(([^)]+\.md)\)'
+
+# 摘要生成配置
+summarizer:
+  max_title_length: 100
+  max_summary_length: 500
+  extract_definitions: true
+  extract_theorems: true
+  suggest_mermaid: true
+  key_terms_count: 10
+  
+  # 摘要模板
+  templates:
+    header: |
+      # 文档摘要: {title}
+      
+      > 生成时间: {timestamp}
+      > 原文档: `{filepath}`
+      > 形式化等级: {formal_level}
+      
+    summary: |
+      ## 内容概要
+      
+      {content}
+      
+    structure_analysis: |
+      ## 结构分析
+      
+      | 章节 | 状态 | 内容量 |
+      |------|------|--------|
+      {section_table}
+      
+    key_elements: |
+      ## 关键元素
+      
+      ### 定义 ({def_count})
+      {definitions}
+      
+      ### 定理/引理 ({theorem_count})
+      {theorems}
+      
+    suggestions: |
+      ## 改进建议
+      
+      {suggestions}
+      
+    mermaid_suggestions: |
+      ## 建议的可视化
+      
+      基于文档内容，建议添加以下 Mermaid 图：
+      
+      {mermaid_suggestions}
+
+# 翻译配置
+translator:
+  default_source: "zh"
+  default_target: "en"
+  preserve_code: true
+  preserve_math: true
+  preserve_patterns:
+    - "`[^`]+`"  # 行内代码
+    - "```[\s\S]*?```"  # 代码块
+    - "\\$[^$]+\\$"  # 行内公式
+    - "\\$\\$[\s\S]*?\\$\\$"  # 公式块
+    - "Thm-[SKF]-\d{2}-\d{2}"
+    - "Def-[SKF]-\d{2}-\d{2}"
+    - "Lemma-[SKF]-\d{2}-\d{2}"
+  
+  # 术语对照表 (可扩展)
+  terminology:
+    - zh: "流计算"
+      en: "Stream Computing"
+    - zh: "数据流"
+      en: "Dataflow"
+    - zh: "定理"
+      en: "Theorem"
+    - zh: "引理"
+      en: "Lemma"
+    - zh: "定义"
+      en: "Definition"
+    - zh: "命题"
+      en: "Proposition"
+    - zh: "推论"
+      en: "Corollary"
+    - zh: "形式化"
+      en: "Formalization"
+    - zh: "一致性"
+      en: "Consistency"
+    - zh: "容错"
+      en: "Fault Tolerance"
+    - zh: "检查点"
+      en: "Checkpoint"
+    - zh: "水印"
+      en: "Watermark"
+    - zh: "背压"
+      en: "Backpressure"
+    - zh: "恰好一次"
+      en: "Exactly-Once"
+    - zh: "至少一次"
+      en: "At-Least-Once"
+    - zh: "至多一次"
+      en: "At-Most-Once"
+    - zh: "进程演算"
+      en: "Process Calculus"
+    - zh: "Actor模型"
+      en: "Actor Model"
+    - zh: "时间戳"
+      en: "Timestamp"
+    - zh: "事件时间"
+      en: "Event Time"
+    - zh: "处理时间"
+      en: "Processing Time"
+
+# 代码注释配置
+code_comment:
+  languages:
+    python:
+      extension: ".py"
+      comment_style: "#"
+      docstring_style: '"""'
+      supported: true
+    java:
+      extension: ".java"
+      comment_style: "//"
+      docstring_style: "/**"
+      supported: true
+    scala:
+      extension: ".scala"
+      comment_style: "//"
+      docstring_style: "/**"
+      supported: true
+    rust:
+      extension: ".rs"
+      comment_style: "//"
+      docstring_style: "///"
+      supported: true
+    go:
+      extension: ".go"
+      comment_style: "//"
+      docstring_style: "//"
+      supported: true
+    javascript:
+      extension: ".js"
+      comment_style: "//"
+      docstring_style: "/**"
+      supported: true
+    typescript:
+      extension: ".ts"
+      comment_style: "//"
+      docstring_style: "/**"
+      supported: true
+  
+  templates:
+    function: |
+      {style} {name}
+      {style} 
+      {style} 功能: {description}
+      {style} 
+      {style} 参数:
+      {params}
+      {style} 
+      {style} 返回:
+      {style}   {returns}
+      {style} 
+      {style} 示例:
+      {style}   {example}
+    
+    class: |
+      {style} {name}
+      {style}
+      {style} {description}
+      {style}
+      {style} 属性:
+      {attributes}
+      {style}
+      {style} 方法:
+      {methods}
+
+# 交叉引用配置
+cross_ref:
+  similarity_threshold: 0.6
+  max_suggestions: 5
+  
+  # 相关文档匹配规则
+  matching_rules:
+    - type: "directory"
+      weight: 0.3
+      description: "同目录文档"
+    - type: "keywords"
+      weight: 0.4
+      description: "关键词匹配"
+    - type: "references"
+      weight: 0.3
+      description: "引用关系"
+  
+  # 关键词提取配置
+  keyword_extraction:
+    min_length: 2
+    max_keywords: 20
+    stopwords:
+      - "的"
+      - "是"
+      - "在"
+      - "和"
+      - "了"
+      - "与"
+      - "为"
+      - "对"
+      - "有"
+      - "将"
+      - "the"
+      - "is"
+      - "are"
+      - "and"
+      - "of"
+      - "to"
+      - "in"
+      - "for"
+      - "with"
+
+# 输出配置
+output:
+  default_format: "markdown"
+  save_directory: ".scripts/ai-assistant/output"
+  backup_original: true
+  
+  formats:
+    markdown:
+      extension: ".md"
+      template_dir: ".scripts/ai-assistant/templates"
+    json:
+      extension: ".json"
+      pretty_print: true
+    yaml:
+      extension: ".yaml"
+      pretty_print: true
+
+# 批处理配置
+batch:
+  max_workers: 4
+  chunk_size: 10
+  timeout: 300
+  retry_count: 3
+  
+# 日志配置
+logging:
+  level: "INFO"
+  file: ".scripts/ai-assistant/logs/ai-assistant.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_size: 10485760  # 10MB
+  backup_count: 5

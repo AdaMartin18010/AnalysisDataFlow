@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow - 流计算学习平台</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <!-- Monaco Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for progress visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-stream"></i>
+                    <span>AnalysisDataFlow</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-title">学习导航</div>
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>学习仪表盘</span>
+                    </a>
+                    <a href="#courses" class="nav-item" data-section="courses">
+                        <i class="fas fa-book"></i>
+                        <span>课程目录</span>
+                    </a>
+                    <a href="#labs" class="nav-item" data-section="labs">
+                        <i class="fas fa-flask"></i>
+                        <span>动手实验</span>
+                    </a>
+                    <a href="#challenges" class="nav-item" data-section="challenges">
+                        <i class="fas fa-code"></i>
+                        <span>编程挑战</span>
+                    </a>
+                    <a href="#quizzes" class="nav-item" data-section="quizzes">
+                        <i class="fas fa-question-circle"></i>
+                        <span>知识测验</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">认证体系</div>
+                    <a href="#certification" class="nav-item" data-section="certification">
+                        <i class="fas fa-certificate"></i>
+                        <span>认证考试</span>
+                    </a>
+                    <a href="#certificate" class="nav-item" data-section="certificate">
+                        <i class="fas fa-award"></i>
+                        <span>我的证书</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">社区</div>
+                    <a href="#community" class="nav-item" data-section="community">
+                        <i class="fas fa-users"></i>
+                        <span>学习社区</span>
+                    </a>
+                    <a href="#profile" class="nav-item" data-section="profile">
+                        <i class="fas fa-user"></i>
+                        <span>个人档案</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <div class="avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">学习者</div>
+                        <div class="user-level" id="userLevel">初级学员</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索课程、实验、知识点..." id="searchInput">
+                </div>
+                <div class="top-actions">
+                    <button class="action-btn" id="themeToggle" title="切换主题">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="action-btn" id="notificationBtn" title="通知">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationBadge">3</span>
+                    </button>
+                    <button class="action-btn" id="settingsBtn" title="设置">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- 内容区域 -->
+            <div class="content-wrapper" id="contentWrapper">
+                <!-- 仪表盘 -->
+                <section class="section active" id="dashboard-section">
+                    <div class="section-header">
+                        <h1>学习仪表盘</h1>
+                        <p class="section-desc">欢迎回来，继续你的流计算学习之旅</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="studyTime">0</div>
+                                <div class="stat-label">学习时长(小时)</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="completedCourses">0</div>
+                                <div class="stat-label">已完成课程</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="completedLabs">0</div>
+                                <div class="stat-label">完成实验</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="totalScore">0</div>
+                                <div class="stat-label">测验总分</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>学习进度</h3>
+                                <a href="#courses" class="view-all">查看全部</a>
+                            </div>
+                            <div class="progress-list" id="progressList">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>技能雷达</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="skillsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>继续学习</h3>
+                        </div>
+                        <div class="continue-learning" id="continueLearning">
+                            <!-- 动态生成 -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>最近成就</h3>
+                        </div>
+                        <div class="achievements-list" id="achievementsList">
+                            <!-- 动态生成 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 课程目录 -->
+                <section class="section" id="courses-section">
+                    <div class="section-header">
+                        <h1>课程目录</h1>
+                        <p class="section-desc">从基础到高级，系统学习流计算</p>
+                    </div>
+                    
+                    <div class="course-filters">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="beginner">初级</button>
+                        <button class="filter-btn" data-filter="intermediate">中级</button>
+                        <button class="filter-btn" data-filter="advanced">高级</button>
+                    </div>
+                    
+                    <div class="courses-grid" id="coursesGrid">
+                        <!-- 动态生成 -->
+                    </div>
+                </section>
+
+                <!-- 动手实验 -->
+                <section class="section" id="labs-section">
+                    <div class="section-header">
+                        <h1>动手实验</h1>
+                        <p class="section-desc">6个精心设计的 Hands-on Labs</p>
+                    </div>
+                    
+                    <div class="labs-timeline" id="labsTimeline">
+                        <!-- 动态生成 -->
+                    </div>
+                </section>
+
+                <!-- 编程挑战 -->
+                <section class="section" id="challenges-section">
+                    <div class="section-header">
+                        <h1>编程挑战</h1>
+                        <p class="section-desc">5个难度递增的实战编程挑战</p>
+                    </div>
+                    
+                    <div class="challenges-list" id="challengesList">
+                        <!-- 动态生成 -->
+                    </div>
+                </section>
+
+                <!-- 知识测验 -->
+                <section class="section" id="quizzes-section">
+                    <div class="section-header">
+                        <h1>知识测验</h1>
+                        <p class="section-desc">检验学习成果，巩固知识点</p>
+                    </div>
+                    
+                    <div class="quizzes-grid" id="quizzesGrid">
+                        <!-- 动态生成 -->
+                    </div>
+                </section>
+
+                <!-- 认证考试 -->
+                <section class="section" id="certification-section">
+                    <div class="section-header">
+                        <h1>认证考试</h1>
+                        <p class="section-desc">获得专业认证，提升职业竞争力</p>
+                    </div>
+                    
+                    <div class="certification-path">
+                        <div class="cert-level" data-level="csa">
+                            <div class="cert-badge csa">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h3>CSA</h3>
+                            <p>认证助理</p>
+                            <div class="cert-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="csaProgress"></div>
+                                </div>
+                                <span class="progress-text" id="csaProgressText">0%</span>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.startExam('csa')">开始考试</button>
+                        </div>
+                        
+                        <div class="cert-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        
+                        <div class="cert-level" data-level="csp">
+                            <div class="cert-badge csp">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <h3>CSP</h3>
+                            <p>认证专业人员</p>
+                            <div class="cert-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="cspProgress"></div>
+                                </div>
+                                <span class="progress-text" id="cspProgressText">0%</span>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.startExam('csp')" disabled>请先完成CSA</button>
+                        </div>
+                        
+                        <div class="cert-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        
+                        <div class="cert-level" data-level="cse">
+                            <div class="cert-badge cse">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3>CSE</h3>
+                            <p>认证专家</p>
+                            <div class="cert-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="cseProgress"></div>
+                                </div>
+                                <span class="progress-text" id="cseProgressText">0%</span>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.startExam('cse')" disabled>请先完成CSP</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 我的证书 -->
+                <section class="section" id="certificate-section">
+                    <div class="section-header">
+                        <h1>我的证书</h1>
+                        <p class="section-desc">预览和下载你的学习证书</p>
+                    </div>
+                    
+                    <div class="certificates-container" id="certificatesContainer">
+                        <!-- 动态生成 -->
+                    </div>
+                    
+                    <div class="certificate-preview" id="certificatePreview" style="display: none;">
+                        <div class="certificate-frame" id="certificateFrame">
+                            <div class="cert-border">
+                                <div class="cert-inner">
+                                    <div class="cert-header">
+                                        <div class="cert-logo">
+                                            <i class="fas fa-stream"></i>
+                                        </div>
+                                        <h1>AnalysisDataFlow</h1>
+                                        <h2>流计算学习认证证书</h2>
+                                    </div>
+                                    <div class="cert-body">
+                                        <p class="cert-text">兹证明</p>
+                                        <h3 class="cert-recipient" id="certRecipient">学习者</h3>
+                                        <p class="cert-text">已完成 <span id="certType">CSA</span> 认证课程</p>
+                                        <p class="cert-description" id="certDescription">通过所有考核，具备流计算基础开发能力</p>
+                                        <div class="cert-meta">
+                                            <div class="cert-date">
+                                                <span>完成日期</span>
+                                                <strong id="certDate">2026年4月8日</strong>
+                                            </div>
+                                            <div class="cert-score">
+                                                <span>综合评分</span>
+                                                <strong id="certScore">95分</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cert-footer">
+                                        <div class="cert-skills" id="certSkills">
+                                            <span class="skill-tag">Flink DataStream API</span>
+                                            <span class="skill-tag">Event Time 处理</span>
+                                            <span class="skill-tag">Window 聚合</span>
+                                        </div>
+                                        <div class="cert-signature">
+                                            <div class="signature-line"></div>
+                                            <p>AnalysisDataFlow 认证委员会</p>
+                                        </div>
+                                        <div class="cert-seal">
+                                            <i class="fas fa-certificate"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="certificate-actions">
+                            <button class="btn btn-primary" onclick="app.downloadCertificate()">
+                                <i class="fas fa-download"></i> 下载证书
+                            </button>
+                            <button class="btn btn-secondary" onclick="app.shareCertificate()">
+                                <i class="fas fa-share-alt"></i> 分享证书
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 学习社区 -->
+                <section class="section" id="community-section">
+                    <div class="section-header">
+                        <h1>学习社区</h1>
+                        <p class="section-desc">与其他学习者交流，共同进步</p>
+                    </div>
+                    
+                    <div class="community-grid">
+                        <div class="community-card">
+                            <div class="community-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>讨论论坛</h3>
+                            <p>提问、解答、分享学习心得</p>
+                            <a href="https://discuss.analysisdataflow.org" target="_blank" class="btn btn-outline">进入论坛</a>
+                        </div>
+                        <div class="community-card">
+                            <div class="community-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <h3>开源贡献</h3>
+                            <p>参与项目改进，提交PR</p>
+                            <a href="https://github.com/AnalysisDataFlow" target="_blank" class="btn btn-outline">访问 GitHub</a>
+                        </div>
+                        <div class="community-card">
+                            <div class="community-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>学习小组</h3>
+                            <p>加入学习小组，互相监督</p>
+                            <button class="btn btn-outline" onclick="app.joinStudyGroup()">查找小组</button>
+                        </div>
+                        <div class="community-card">
+                            <div class="community-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3>线上活动</h3>
+                            <p>直播讲座、答疑、工作坊</p>
+                            <button class="btn btn-outline" onclick="app.viewEvents()">查看活动</button>
+                        </div>
+                    </div>
+                    
+                    <div class="leaderboard-section">
+                        <h3>本周学习排行</h3>
+                        <div class="leaderboard" id="leaderboard">
+                            <!-- 动态生成 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 个人档案 -->
+                <section class="section" id="profile-section">
+                    <div class="section-header">
+                        <h1>个人档案</h1>
+                        <p class="section-desc">管理你的学习档案和设置</p>
+                    </div>
+                    
+                    <div class="profile-container">
+                        <div class="profile-card">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-circle"></i>
+                                <button class="avatar-edit">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="profile-form">
+                                <div class="form-group">
+                                    <label>昵称</label>
+                                    <input type="text" id="profileName" value="学习者">
+                                </div>
+                                <div class="form-group">
+                                    <label>邮箱</label>
+                                    <input type="email" id="profileEmail" placeholder="your@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>学习目标</label>
+                                    <select id="profileGoal">
+                                        <option value="beginner">系统学习流计算</option>
+                                        <option value="job">找工作/转行</option>
+                                        <option value="skill">提升技能</option>
+                                        <option value="cert">获得认证</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>每周学习时长目标</label>
+                                    <input type="range" id="studyGoal" min="1" max="20" value="5">
+                                    <span class="range-value"><span id="studyGoalValue">5</span> 小时/周</span>
+                                </div>
+                                <button class="btn btn-primary" onclick="app.saveProfile()">保存设置</button>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-stats">
+                            <h3>学习统计</h3>
+                            <div class="stats-chart-container">
+                                <canvas id="studyChart"></canvas>
+                            </div>
+                            <div class="learning-streak">
+                                <div class="streak-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="streak-info">
+                                    <div class="streak-count" id="streakCount">0</div>
+                                    <div class="streak-label">连续学习天数</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 课程学习页面 -->
+                <section class="section" id="lesson-section">
+                    <div class="lesson-container">
+                        <div class="lesson-sidebar">
+                            <div class="lesson-nav-header">
+                                <button class="btn btn-icon" onclick="app.backToCourses()">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <span id="lessonCourseTitle">课程标题</span>
+                            </div>
+                            <div class="lesson-nav" id="lessonNav">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                        <div class="lesson-content">
+                            <div class="lesson-header">
+                                <h1 id="lessonTitle">课时标题</h1>
+                                <div class="lesson-meta">
+                                    <span id="lessonDuration"><i class="fas fa-clock"></i> 15分钟</span>
+                                    <span id="lessonType"><i class="fas fa-file-video"></i> 视频</span>
+                                </div>
+                            </div>
+                            <div class="lesson-body" id="lessonBody">
+                                <!-- 动态生成 -->
+                            </div>
+                            <div class="lesson-actions">
+                                <button class="btn btn-secondary" onclick="app.prevLesson()">
+                                    <i class="fas fa-arrow-left"></i> 上一节
+                                </button>
+                                <button class="btn btn-primary" onclick="app.completeLesson()">
+                                    <i class="fas fa-check"></i> 完成学习
+                                </button>
+                                <button class="btn btn-secondary" onclick="app.nextLesson()">
+                                    下一节 <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 代码编辑器页面 -->
+                <section class="section" id="editor-section">
+                    <div class="editor-container">
+                        <div class="editor-sidebar">
+                            <div class="editor-nav-header">
+                                <button class="btn btn-icon" onclick="app.backToChallenges()">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <span id="editorChallengeTitle">挑战标题</span>
+                            </div>
+                            <div class="challenge-info" id="challengeInfo">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                        <div class="editor-main">
+                            <div class="editor-toolbar">
+                                <div class="toolbar-left">
+                                    <select id="languageSelect">
+                                        <option value="java">Java</option>
+                                        <option value="python">Python</option>
+                                        <option value="scala">Scala</option>
+                                        <option value="sql">SQL</option>
+                                    </select>
+                                    <button class="btn btn-icon" onclick="app.resetCode()" title="重置代码">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </div>
+                                <div class="toolbar-right">
+                                    <button class="btn btn-secondary" onclick="app.runCode()">
+                                        <i class="fas fa-play"></i> 运行
+                                    </button>
+                                    <button class="btn btn-primary" onclick="app.submitCode()">
+                                        <i class="fas fa-check"></i> 提交
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="editor-wrapper">
+                                <div id="monacoEditor" class="monaco-editor"></div>
+                            </div>
+                            <div class="editor-output" id="editorOutput">
+                                <div class="output-header">
+                                    <span>输出</span>
+                                    <button class="btn btn-icon" onclick="app.clearOutput()">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="output-content" id="outputContent">
+                                    <p class="output-placeholder">点击"运行"查看输出结果</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 测验页面 -->
+                <section class="section" id="quiz-section">
+                    <div class="quiz-container">
+                        <div class="quiz-header">
+                            <button class="btn btn-icon" onclick="app.backToQuizzes()">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h1 id="quizTitle">测验标题</h1>
+                            <div class="quiz-timer" id="quizTimer">
+                                <i class="fas fa-clock"></i>
+                                <span id="timerValue">30:00</span>
+                            </div>
+                        </div>
+                        <div class="quiz-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="quizProgressFill"></div>
+                            </div>
+                            <span class="progress-text" id="quizProgressText">1/20</span>
+                        </div>
+                        <div class="quiz-content" id="quizContent">
+                            <!-- 动态生成 -->
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="btn btn-secondary" onclick="app.prevQuestion()" id="prevQuestionBtn" disabled>
+                                上一题
+                            </button>
+                            <button class="btn btn-primary" onclick="app.nextQuestion()" id="nextQuestionBtn">
+                                下一题
+                            </button>
+                            <button class="btn btn-success" onclick="app.submitQuiz()" id="submitQuizBtn" style="display: none;">
+                                提交测验
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 通知面板 -->
+        <div class="notification-panel" id="notificationPanel" style="display: none;">
+            <div class="notification-header">
+                <h3>通知</h3>
+                <button class="btn btn-icon" onclick="app.clearNotifications()">
+                    <i class="fas fa-check-double"></i>
+                </button>
+            </div>
+            <div class="notification-list" id="notificationList">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+
+        <!-- 设置面板 -->
+        <div class="settings-modal" id="settingsModal" style="display: none;">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>设置</h2>
+                    <button class="btn btn-icon" onclick="app.closeSettings()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="settings-body">
+                    <div class="setting-group">
+                        <h3>外观</h3>
+                        <div class="setting-item">
+                            <label>主题</label>
+                            <select id="themeSelect">
+                                <option value="light">浅色</option>
+                                <option value="dark">深色</option>
+                                <option value="auto">跟随系统</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>代码编辑器主题</label>
+                            <select id="editorThemeSelect">
+                                <option value="vs">浅色</option>
+                                <option value="vs-dark">深色</option>
+                                <option value="hc-black">高对比度</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>学习</h3>
+                        <div class="setting-item">
+                            <label>自动保存进度</label>
+                            <input type="checkbox" id="autoSave" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>显示学习提醒</label>
+                            <input type="checkbox" id="studyReminder" checked>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>数据</h3>
+                        <div class="setting-item">
+                            <label>导出学习数据</label>
+                            <button class="btn btn-secondary" onclick="app.exportData()">导出</button>
+                        </div>
+                        <div class="setting-item">
+                            <label>清除所有数据</label>
+                            <button class="btn btn-danger" onclick="app.clearAllData()">清除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast 通知 -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="assets/progress-storage.js"></script>
+    <script src="assets/quiz-component.js"></script>
+    <script src="assets/certificate-generator.js"></script>
+    <script src="assets/code-editor.js"></script>
+    <script src="assets/courses-data.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+</html>
