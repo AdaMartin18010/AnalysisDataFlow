@@ -1,0 +1,502 @@
+# Deploy Workflow - 自动部署工作流 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-08 | 状态: Production
+#
+# 功能: 自动部署知识图谱和学习平台
+#   1. 知识图谱 v2.0 部署到 GitHub Pages
+#   2. 学习平台静态资源部署
+#   3. 定理注册表同步更新
+#
+# 触发条件:
+#   - push 到 main/master 分支 (指定路径)
+#   - 手动触发 (可选择部署目标)
+#   - 定时部署 (每周)
+
+name: Deploy
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph*.html'
+      - 'THEOREM-REGISTRY.md'
+      - 'knowledge-graph-site/**'
+      - '.scripts/kg-v2/**'
+      - 'learning-path-recommender.js'
+      - '.github/workflows/deploy.yml'
+  schedule:
+    # 每周六凌晨 2:00 UTC (北京时间上午10:00)
+    - cron: '0 2 * * 6'
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: '部署目标'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - preview
+      skip_tests:
+        description: '跳过测试'
+        required: false
+        default: false
+        type: boolean
+
+# 权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制
+concurrency:
+  group: 'deploy-${{ github.event.inputs.deploy_target || 'production' }}'
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+jobs:
+  # ============ 任务1: 预部署检查 ============
+  pre-deploy-check:
+    name: Pre-Deploy Check
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+      deploy_target: ${{ steps.check.outputs.deploy_target }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine deploy target
+        id: check
+        run: |
+          target="${{ github.event.inputs.deploy_target || 'production' }}"
+          echo "deploy_target=$target" >> $GITHUB_OUTPUT
+
+          # 检查是否有重要变更
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "Manual deployment triggered to: $target"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "Scheduled deployment triggered"
+          else
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "Push deployment triggered"
+          fi
+
+      - name: Verify critical files exist
+        run: |
+          critical_files=(
+            "THEOREM-REGISTRY.md"
+            "knowledge-graph.html"
+          )
+
+          for file in "${critical_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "⚠️ Warning: $file not found"
+            else
+              echo "✅ $file exists"
+            fi
+          done
+
+  # ============ 任务2: 构建知识图谱 ============
+  build-knowledge-graph:
+    name: Build Knowledge Graph
+    runs-on: ubuntu-latest
+    needs: pre-deploy-check
+    if: needs.pre-deploy-check.outputs.should_deploy == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python (with cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements.txt', '**/*.py') }}
+          restore-keys: |
+            pip-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          pip install -q markdown beautifulsoup4 lunr
+
+      - name: Generate static data
+        run: |
+          mkdir -p knowledge-graph-site/data
+
+          if [ -f .scripts/kg-v2/generate-static-data.py ]; then
+            python .scripts/kg-v2/generate-static-data.py
+          fi
+
+          if [ -f .scripts/kg-v2/generate-search-index.py ]; then
+            python .scripts/kg-v2/generate-search-index.py
+          fi
+
+          if [ -f .scripts/kg-v2/generate-learning-paths.py ]; then
+            python .scripts/kg-v2/generate-learning-paths.py
+          fi
+
+      - name: Optimize assets
+        run: |
+          if [ -f .scripts/kg-v2/optimize-assets.py ]; then
+            python .scripts/kg-v2/optimize-assets.py
+          fi
+
+      - name: Copy knowledge graph files
+        run: |
+          mkdir -p knowledge-graph-site
+
+          # Copy knowledge graph HTML files
+          for file in knowledge-graph*.html; do
+            if [ -f "$file" ]; then
+              cp "$file" knowledge-graph-site/
+              echo "Copied: $file"
+            fi
+          done
+
+          # Copy theorem registry
+          if [ -f THEOREM-REGISTRY.md ]; then
+            cp THEOREM-REGISTRY.md knowledge-graph-site/
+          fi
+
+          # Copy learning path files
+          if [ -f learning-path-recommender.js ]; then
+            cp learning-path-recommender.js knowledge-graph-site/
+          fi
+
+      - name: Validate generated files
+        run: |
+          required_files=(
+            "knowledge-graph-site/index.html"
+            "knowledge-graph-site/knowledge-graph.html"
+          )
+
+          # 检查是否有至少一个HTML文件
+          html_count=$(find knowledge-graph-site -name "*.html" | wc -l)
+          if [ "$html_count" -eq 0 ]; then
+            echo "❌ No HTML files found in knowledge-graph-site"
+            exit 1
+          fi
+
+          echo "✅ Found $html_count HTML files"
+
+          # 检查数据文件
+          if [ -f knowledge-graph-site/data/graph-data.json ]; then
+            echo "✅ graph-data.json exists"
+          fi
+
+          if [ -f knowledge-graph-site/data/search-index.json ]; then
+            echo "✅ search-index.json exists"
+          fi
+
+      - name: Calculate build metadata
+        id: metadata
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "version=$(date -u +%Y%m%d.%H%M%S)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          echo "deploy_target=${{ needs.pre-deploy-check.outputs.deploy_target }}" >> $GITHUB_OUTPUT
+
+      - name: Create build info
+        run: |
+          cat > knowledge-graph-site/build-info.json << EOF
+          {
+            "build_time": "${{ steps.metadata.outputs.build_time }}",
+            "version": "${{ steps.metadata.outputs.version }}",
+            "commit_sha": "${{ steps.metadata.outputs.commit_sha }}",
+            "deploy_target": "${{ steps.metadata.outputs.deploy_target }}",
+            "trigger": "${{ github.event_name }}"
+          }
+          EOF
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+          retention-days: 7
+
+  # ============ 任务3: 运行部署前测试 ============
+  pre-deploy-test:
+    name: Pre-Deploy Tests
+    runs-on: ubuntu-latest
+    needs: build-knowledge-graph
+    if: |
+      needs.build-knowledge-graph.result == 'success' &&
+      !inputs.skip_tests
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install test tools
+        run: npm install -g htmlhint
+
+      - name: Validate HTML
+        run: |
+          htmlhint knowledge-graph-site/*.html --rules "tag-pair,attr-no-duplication,id-unique" || true
+
+      - name: Check file sizes
+        run: |
+          echo "📊 File size statistics:"
+          du -sh knowledge-graph-site/* 2>/dev/null || true
+
+          # 检查是否有超大文件
+          large_files=$(find knowledge-graph-site/ -type f -size +50M)
+          if [ -n "$large_files" ]; then
+            echo "⚠️ Warning: Large files detected (>50MB):"
+            echo "$large_files"
+          fi
+
+      - name: Validate JSON data files
+        run: |
+          for json_file in knowledge-graph-site/data/*.json; do
+            if [ -f "$json_file" ]; then
+              if python3 -c "import json; json.load(open('$json_file'))" 2>/dev/null; then
+                echo "✅ Valid JSON: $json_file"
+              else
+                echo "❌ Invalid JSON: $json_file"
+                exit 1
+              fi
+            fi
+          done
+
+  # ============ 任务4: 部署到 GitHub Pages ============
+  deploy-to-pages:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [pre-deploy-check, build-knowledge-graph, pre-deploy-test]
+    if: |
+      always() &&
+      needs.pre-deploy-check.outputs.should_deploy == 'true' &&
+      needs.build-knowledge-graph.result == 'success' &&
+      (needs.pre-deploy-test.result == 'success' || inputs.skip_tests)
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: knowledge-graph-site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Report deployment success
+        run: |
+          echo "🚀 Knowledge Graph v2.0 deployed successfully!"
+          echo "📍 URL: ${{ steps.deployment.outputs.page_url }}"
+
+  # ============ 任务5: 部署到预览环境 (PR/Manual) ============
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: build-knowledge-graph
+    if: |
+      github.event_name == 'pull_request' ||
+      github.event.inputs.deploy_target == 'preview'
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📦 Knowledge Graph preview build completed (PR #' + context.issue.number + ')'
+            });
+
+  # ============ 任务6: 更新定理注册表索引 ============
+  update-theorem-registry:
+    name: Update Theorem Registry
+    runs-on: ubuntu-latest
+    needs: pre-deploy-check
+    if: |
+      needs.pre-deploy-check.outputs.should_deploy == 'true' &&
+      (github.event_name == 'push' || github.event_name == 'schedule')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Generate theorem index
+        run: |
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          theorem_index = {
+              'generated_at': datetime.now().isoformat(),
+              'theorems': [],
+              'by_stage': defaultdict(list),
+              'by_type': defaultdict(list)
+          }
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+
+                          theorem_info = {
+                              'id': thm_id,
+                              'type': match.group(1),
+                              'stage': match.group(2),
+                              'doc_num': match.group(3),
+                              'seq_num': match.group(4),
+                              'file': rel_path
+                          }
+
+                          theorem_index['theorems'].append(theorem_info)
+                          theorem_index['by_stage'][match.group(2)].append(thm_id)
+                          theorem_index['by_type'][match.group(1)].append(thm_id)
+
+                  except Exception as e:
+                      print(f"Warning: Could not process {md_file}: {e}")
+
+          # Convert defaultdicts to regular dicts
+          theorem_index['by_stage'] = dict(theorem_index['by_stage'])
+          theorem_index['by_type'] = dict(theorem_index['by_type'])
+
+          # Save index
+          Path('knowledge-graph-site/data').mkdir(parents=True, exist_ok=True)
+          with open('knowledge-graph-site/data/theorem-index.json', 'w') as f:
+              json.dump(theorem_index, f, indent=2)
+
+          print(f"Generated theorem index with {len(theorem_index['theorems'])} theorems")
+          PYEOF
+
+      - name: Upload theorem index
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-index
+          path: knowledge-graph-site/data/theorem-index.json
+          if-no-files-found: ignore
+
+  # ============ 部署汇总报告 ============
+  deploy-summary:
+    name: Deploy Summary
+    runs-on: ubuntu-latest
+    needs: [pre-deploy-check, build-knowledge-graph, deploy-to-pages, update-theorem-registry]
+    if: always()
+    steps:
+      - name: Generate deploy summary
+        run: |
+          echo "## 🚀 Deploy Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Deploy Info" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Target | ${{ needs.pre-deploy-check.outputs.deploy_target || 'production' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Skip Tests | ${{ inputs.skip_tests || false }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Job Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.pre-deploy-check.result }}" == "success" ]; then
+            echo "| Pre-Deploy Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Pre-Deploy Check | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.build-knowledge-graph.result }}" == "success" ]; then
+            echo "| Build Knowledge Graph | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.build-knowledge-graph.result }}" == "skipped" ]; then
+            echo "| Build Knowledge Graph | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Build Knowledge Graph | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.deploy-to-pages.result }}" == "success" ]; then
+            echo "| Deploy to Pages | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.deploy-to-pages.result }}" == "skipped" ]; then
+            echo "| Deploy to Pages | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Deploy to Pages | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.update-theorem-registry.result }}" == "success" ]; then
+            echo "| Update Theorem Registry | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.update-theorem-registry.result }}" == "skipped" ]; then
+            echo "| Update Theorem Registry | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Update Theorem Registry | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.deploy-to-pages.result }}" == "success" ]; then
+            echo "✅ Deployment completed successfully!" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.deploy-to-pages.result }}" == "skipped" ]; then
+            echo "⏭️ Deployment skipped" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Deployment failed" >> $GITHUB_STEP_SUMMARY
+          fi

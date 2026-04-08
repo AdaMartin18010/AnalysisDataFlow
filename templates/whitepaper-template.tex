@@ -1,0 +1,220 @@
+% AnalysisDataFlow 白皮书 LaTeX 模板
+% 专业学术排版格式 (ACM/IEEE风格)
+
+\documentclass[11pt,a4paper]{article}
+
+% ==================== 基础包 ====================
+\usepackage[UTF8]{ctex}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{tocloft}
+
+% ==================== 页面设置 ====================
+\geometry{
+  a4paper,
+  margin=2.5cm,
+  top=3cm,
+  bottom=3cm,
+  headheight=14pt
+}
+
+% ==================== 颜色定义 ====================
+\definecolor{primaryblue}{RGB}{31,78,121}
+\definecolor{accentgold}{RGB}{197,164,100}
+\definecolor{darkgray}{RGB}{64,64,64}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codered}{RGB}{169,68,66}
+\definecolor{codegreen}{RGB}{77,136,81}
+
+% ==================== 字体设置 ====================
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans Mono CJK SC}
+
+% ==================== 页眉页脚 ====================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{darkgray}\leftmark}
+\fancyhead[R]{\small\color{darkgray}AnalysisDataFlow Whitepaper}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primaryblue}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{accentgold}\leaders\hrule height \footrulewidth\hfill}}
+
+% ==================== 章节标题样式 ====================
+\titleformat{\section}
+  {\Large\bfseries\color{primaryblue}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{primaryblue!80}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{primaryblue!60}}
+  {\thesubsubsection}{1em}{}
+
+% ==================== 目录样式 ====================
+\renewcommand{\cftsecfont}{\bfseries\color{primaryblue}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{primaryblue}}
+\renewcommand{\cftsubsecfont}{\color{darkgray}}
+\renewcommand{\cftsecdotsep}{\cftdotsep}
+
+% ==================== 代码块样式 ====================
+\lstset{
+  basicstyle=\small\ttfamily\color{darkgray},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.5pt,
+  rulecolor=\color{lightgray},
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  numbers=none,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=1em,
+  belowskip=1em
+}
+
+% ==================== 超链接设置 ====================
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primaryblue,
+  filecolor=primaryblue,
+  urlcolor=primaryblue,
+  citecolor=accentgold,
+  bookmarks=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  pdfpagemode=UseOutlines,
+  pdfstartview=FitH
+}
+
+% ==================== 图表标题样式 ====================
+\captionsetup{
+  font=small,
+  labelfont=bf,
+  labelsep=period,
+  format=plain,
+  justification=centering
+}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=below}
+
+% ==================== 列表样式 ====================
+\setlist[itemize]{leftmargin=2em}
+\setlist[enumerate]{leftmargin=2em}
+
+% ==================== 行距 ====================
+\setstretch{1.25}
+
+% ==================== 文档信息 ====================
+\title{\vspace{-2cm}\rule{\textwidth}{2pt}\\[0.5cm]
+       {\Huge\bfseries\color{primaryblue} $title$}\\[0.3cm]
+       {\Large\color{darkgray} $subtitle$}\\[0.5cm]
+       \rule{\textwidth}{2pt}}
+\author{\Large AnalysisDataFlow Project Team}
+\date{\today}
+
+% ==================== 封面页 ====================
+\newcommand{\coverpage}[4]{%
+  \begin{titlepage}
+    \begin{tikzpicture}[remember picture,overlay]
+      % 顶部色块
+      \fill[primaryblue] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+      % 装饰线
+      \draw[accentgold, line width=4pt] ([yshift=-9cm,xshift=2cm]current page.north west) -- ([yshift=-9cm,xshift=-2cm]current page.north east);
+      % 底部装饰
+      \fill[lightgray] (current page.south west) rectangle ([yshift=3cm]current page.south east);
+    \end{tikzpicture}
+    
+    \vspace*{3cm}
+    \begin{center}
+      {\fontsize{14}{16}\selectfont\color{white} AnalysisDataFlow Project}
+      
+      \vspace{0.8cm}
+      
+      {\fontsize{28}{36}\selectfont\bfseries\color{white} WHITEPAPER}
+      
+      \vspace{4cm}
+      
+      {\fontsize{32}{40}\selectfont\bfseries\color{primaryblue} #1}
+      
+      \vspace{0.5cm}
+      
+      {\fontsize{18}{24}\selectfont\color{darkgray} #2}
+      
+      \vfill
+      
+      \begin{tikzpicture}
+        \draw[accentgold, line width=1.5pt] (-5,0) -- (5,0);
+      \end{tikzpicture}
+      
+      \vspace{1cm}
+      
+      {\fontsize{14}{18}\selectfont\color{darkgray} 版本: #3}
+      
+      \vspace{0.3cm}
+      
+      {\fontsize{14}{18}\selectfont\color{darkgray} 发布日期: #4}
+      
+      \vspace{0.5cm}
+      
+      {\fontsize{12}{14}\selectfont\color{gray} https://github.com/AnalysisDataFlow}
+    \end{center}
+  \end{titlepage}
+}
+
+% ==================== 摘要环境 ====================
+\newenvironment{whitepaperabstract}{
+  \begin{center}
+    \begin{minipage}{0.9\textwidth}
+      \section*{摘要}
+}{\end{minipage}\end{center}}
+
+% ==================== 文档开始 ====================
+\begin{document}
+
+% 如果有自定义封面信息则使用
+$if(cover-title)$
+  \coverpage{$cover-title$}{$cover-subtitle$}{$cover-version$}{$cover-date$}
+$endif$
+
+% 标准标题页
+$if(title)$
+  \maketitle
+$endif$
+
+% 目录
+$if(toc)$
+  \newpage
+  \tableofcontents
+  \newpage
+$endif$
+
+% 文档主体
+$body$
+
+\end{document}
