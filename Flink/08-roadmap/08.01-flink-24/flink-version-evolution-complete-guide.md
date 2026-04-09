@@ -1,6 +1,11 @@
 # Flink 版本演进与路线图完整指南
 
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L4
+>
+> **相关文档**:
+>
+> - [Flink 2.4/2.5/3.0 版本跟踪报告](../flink-2.4-2.5-3.0-tracking.md) - 最新版本跟踪
+> - [Flink 版本跟踪](../../00-meta/version-tracking.md) - 版本状态总览
 
 ---
 
@@ -131,7 +136,7 @@ Flink 1.17.0:
   发布时间: "2023-03-23"
   生命周期: "2023-03 ~ 2024-03"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-217: "Incremental Checkpoints Improvement"
     - 基于Changelog的增量检查点
     - 支持DFS作为Changelog存储
@@ -167,7 +172,7 @@ Flink 1.18.0:
   发布时间: "2023-10-25"
   生命周期: "2023-10 ~ 2024-10"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-265: "Adaptive Scheduler Improvements"
     - 自适应调度器GA
     - 自动并行度调整
@@ -204,7 +209,7 @@ Flink 1.19.0:
   生命周期: "2024-03 ~ 2024-12 (最后1.x版本)"
   状态: "1.x系列最终版本, LTS维护"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-311: "DataSet API Deprecation Complete"
     - DataSet API标记废弃
     - 推荐迁移到DataStream API
@@ -218,7 +223,7 @@ Flink 1.19.0:
     - Kubernetes集成增强
     - 为2.0云原生特性做准备
 
-重大变更: 
+重大变更:
   - DataSet API完全废弃 (将在2.0移除)
   - 多项API弃用 (详见迁移指南)
   - 旧状态后端配置弃用
@@ -240,7 +245,7 @@ Flink 2.0.0:
   状态: "重大版本, 架构级重构"
   开发周期: "约18个月"
 
-架构重构核心: 
+架构重构核心:
   1. 分离状态后端 (Disaggregated State):
      FLIP-392: "Disaggregated State Storage"
      - 状态与计算分离
@@ -257,15 +262,15 @@ Flink 2.0.0:
      - 支持Java 21预览
      - 利用新特性优化
 
-新状态后端: 
+新状态后端:
   ForSt State Backend:
     FLIP-391: "ForSt: A New State Backend"
     - 基于RocksDB改进
     - 更好的云原生支持
     - 分离存储优化
 
-核心抽象: 
-  ClassData抽象: 
+核心抽象:
+  ClassData抽象:
     - 统一数据交换格式
     - 序列化优化
     - 跨语言支持基础
@@ -292,7 +297,7 @@ Flink 2.1.0:
   发布时间: "2025-01-15"
   主题: "Lakehouse集成与物化表"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-435: "Materialized Table"
     - 物化表支持
     - 增量物化视图
@@ -335,7 +340,7 @@ Flink 2.2.0:
   发布时间: "2025-12-04"
   主题: "AI/ML原生支持与向量搜索"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-471: "VECTOR_SEARCH Support"（规划中）
     - 向量搜索SQL函数
     - 向量索引集成
@@ -405,7 +410,7 @@ Flink 2.3.0:
   发布时间: "2026-Q1"
   主题: "AI Agents与协议集成"
 
-关键FLIPs: 
+关键FLIPs:
   FLIP-531: "Flink AI Agents" (MVP→GA过渡)
     - Agent运行时
     - MCP协议集成
@@ -432,23 +437,23 @@ Flink 2.4.0 (预计):
   预计时间: "2026 H2"
   主题: "AI Agent GA与云原生"
 
-预期特性: 
-  AI与ML: 
+预期特性:
+  AI与ML:
     - FLIP-531 GA: AI Agents正式版
     - 多Agent协调
     - 高级工具集成
 
-  云原生: 
+  云原生:
     - Serverless Flink (按需扩容到0)
     - 增强Kubernetes Operator
     - 自动扩缩容v2
 
-  性能: 
+  性能:
     - 自适应执行引擎v2
     - 智能检查点策略
     - 内存管理优化
 
-  SQL: 
+  SQL:
     - ANSI SQL 2023兼容
     - 更多标准函数
     - 查询优化增强
@@ -462,7 +467,7 @@ Flink 2.4.0 (预计):
 Flink 2.5+ 路线图:
   主题: "下一代流处理平台"
 
-重点领域: 
+重点领域:
   1. 智能流处理:
      - 自适应优化
      - ML驱动调度
@@ -999,6 +1004,7 @@ state.checkpoints.dir: s3://flink-checkpoints
   ```bash
   grep -r "ExecutionEnvironment" src/
   grep -r "DataSet<" src/
+
 ```
 
 - [ ] 检查 Scala API 使用

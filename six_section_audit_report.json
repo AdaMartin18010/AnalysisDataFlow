@@ -1,0 +1,4157 @@
+{
+  "summary": {
+    "total_documents": 54,
+    "compliant_documents": 39,
+    "non_compliant_documents": 15,
+    "compliance_rate": 72.22
+  },
+  "section_statistics": {
+    "概念定义": {
+      "missing_count": 3,
+      "missing_rate": 5.555555555555555
+    },
+    "属性推导": {
+      "missing_count": 1,
+      "missing_rate": 1.8518518518518516
+    },
+    "关系建立": {
+      "missing_count": 1,
+      "missing_rate": 1.8518518518518516
+    },
+    "论证过程": {
+      "missing_count": 3,
+      "missing_rate": 5.555555555555555
+    },
+    "形式证明": {
+      "missing_count": 1,
+      "missing_rate": 1.8518518518518516
+    },
+    "实例验证": {
+      "missing_count": 3,
+      "missing_rate": 5.555555555555555
+    },
+    "可视化": {
+      "missing_count": 4,
+      "missing_rate": 7.4074074074074066
+    },
+    "引用参考": {
+      "missing_count": 4,
+      "missing_rate": 7.4074074074074066
+    }
+  },
+  "compliant_documents": [
+    {
+      "file": "01.02-process-calculus-primer.md",
+      "path": "Struct\\01-foundation\\01.02-process-calculus-primer.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.03-actor-model-formalization.md",
+      "path": "Struct\\01-foundation\\01.03-actor-model-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.04-dataflow-model-formalization.md",
+      "path": "Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.06-petri-net-formalization.md",
+      "path": "Struct\\01-foundation\\01.06-petri-net-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.08-streaming-database-formalization.md",
+      "path": "Struct\\01-foundation\\01.08-streaming-database-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.09-edge-streaming-semantics.md",
+      "path": "Struct\\01-foundation\\01.09-edge-streaming-semantics.md",
+      "sections_found": 8
+    },
+    {
+      "file": "01.10-schema-evolution-formalization.md",
+      "path": "Struct\\01-foundation\\01.10-schema-evolution-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "stream-processing-semantics-formalization.md",
+      "path": "Struct\\01-foundation\\stream-processing-semantics-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "02.01-determinism-in-streaming.md",
+      "path": "Struct\\02-properties\\02.01-determinism-in-streaming.md",
+      "sections_found": 8
+    },
+    {
+      "file": "02.02-consistency-hierarchy.md",
+      "path": "Struct\\02-properties\\02.02-consistency-hierarchy.md",
+      "sections_found": 8
+    },
+    {
+      "file": "02.03-watermark-monotonicity.md",
+      "path": "Struct\\02-properties\\02.03-watermark-monotonicity.md",
+      "sections_found": 8
+    },
+    {
+      "file": "02.05-type-safety-derivation.md",
+      "path": "Struct\\02-properties\\02.05-type-safety-derivation.md",
+      "sections_found": 8
+    },
+    {
+      "file": "03.02-flink-to-process-calculus.md",
+      "path": "Struct\\03-relationships\\03.02-flink-to-process-calculus.md",
+      "sections_found": 8
+    },
+    {
+      "file": "03.03-expressiveness-hierarchy-supplement.md",
+      "path": "Struct\\03-relationships\\03.03-expressiveness-hierarchy-supplement.md",
+      "sections_found": 8
+    },
+    {
+      "file": "03.03-expressiveness-hierarchy.md",
+      "path": "Struct\\03-relationships\\03.03-expressiveness-hierarchy.md",
+      "sections_found": 8
+    },
+    {
+      "file": "03.04-bisimulation-equivalences.md",
+      "path": "Struct\\03-relationships\\03.04-bisimulation-equivalences.md",
+      "sections_found": 8
+    },
+    {
+      "file": "03.05-cross-model-mappings.md",
+      "path": "Struct\\03-relationships\\03.05-cross-model-mappings.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.01-flink-checkpoint-correctness.md",
+      "path": "Struct\\04-proofs\\04.01-flink-checkpoint-correctness.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.02-flink-exactly-once-correctness.md",
+      "path": "Struct\\04-proofs\\04.02-flink-exactly-once-correctness.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.03-chandy-lamport-consistency.md",
+      "path": "Struct\\04-proofs\\04.03-chandy-lamport-consistency.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.04-watermark-algebra-formal-proof.md",
+      "path": "Struct\\04-proofs\\04.04-watermark-algebra-formal-proof.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.05-type-safety-fg-fgg.md",
+      "path": "Struct\\04-proofs\\04.05-type-safety-fg-fgg.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.06-dot-subtyping-completeness.md",
+      "path": "Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
+      "sections_found": 8
+    },
+    {
+      "file": "04.07-deadlock-freedom-choreographic.md",
+      "path": "Struct\\04-proofs\\04.07-deadlock-freedom-choreographic.md",
+      "sections_found": 8
+    },
+    {
+      "file": "05.02-expressiveness-vs-decidability.md",
+      "path": "Struct\\05-comparative-analysis\\05.02-expressiveness-vs-decidability.md",
+      "sections_found": 8
+    },
+    {
+      "file": "05.03-encoding-completeness-analysis.md",
+      "path": "Struct\\05-comparative-analysis\\05.03-encoding-completeness-analysis.md",
+      "sections_found": 8
+    },
+    {
+      "file": "06.01-open-problems-streaming-verification.md",
+      "path": "Struct\\06-frontier\\06.01-open-problems-streaming-verification.md",
+      "sections_found": 8
+    },
+    {
+      "file": "06.02-choreographic-streaming-programming.md",
+      "path": "Struct\\06-frontier\\06.02-choreographic-streaming-programming.md",
+      "sections_found": 8
+    },
+    {
+      "file": "06.03-ai-agent-session-types.md",
+      "path": "Struct\\06-frontier\\06.03-ai-agent-session-types.md",
+      "sections_found": 8
+    },
+    {
+      "file": "06.04-pdot-path-dependent-types.md",
+      "path": "Struct\\06-frontier\\06.04-pdot-path-dependent-types.md",
+      "sections_found": 8
+    },
+    {
+      "file": "06.05-ai-agent-streaming-formalization.md",
+      "path": "Struct\\06-frontier\\06.05-ai-agent-streaming-formalization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "coq-mechanization.md",
+      "path": "Struct\\07-tools\\coq-mechanization.md",
+      "sections_found": 8
+    },
+    {
+      "file": "iris-separation-logic.md",
+      "path": "Struct\\07-tools\\iris-separation-logic.md",
+      "sections_found": 8
+    },
+    {
+      "file": "proof-automation-guide.md",
+      "path": "Struct\\07-tools\\proof-automation-guide.md",
+      "sections_found": 8
+    },
+    {
+      "file": "smart-casual-verification.md",
+      "path": "Struct\\07-tools\\smart-casual-verification.md",
+      "sections_found": 8
+    },
+    {
+      "file": "tla-for-flink.md",
+      "path": "Struct\\07-tools\\tla-for-flink.md",
+      "sections_found": 8
+    },
+    {
+      "file": "Model-Selection-Decision-Tree.md",
+      "path": "Struct\\Model-Selection-Decision-Tree.md",
+      "sections_found": 8
+    },
+    {
+      "file": "Struct-to-Knowledge-Mapping.md",
+      "path": "Struct\\Struct-to-Knowledge-Mapping.md",
+      "sections_found": 8
+    },
+    {
+      "file": "Unified-Model-Relationship-Graph.md",
+      "path": "Struct\\Unified-Model-Relationship-Graph.md",
+      "sections_found": 8
+    }
+  ],
+  "non_compliant_documents": [
+    {
+      "file": "00-INDEX.md",
+      "path": "Struct\\00-INDEX.md",
+      "sections_found": 3,
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 概念定义",
+        "缺少章节: 论证过程",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "00-STRUCT-DERIVATION-CHAIN.md",
+      "path": "Struct\\00-STRUCT-DERIVATION-CHAIN.md",
+      "sections_found": 4,
+      "issues": [
+        "缺少章节: 概念定义",
+        "缺少章节: 论证过程",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化"
+      ]
+    },
+    {
+      "file": "01.01-unified-streaming-theory.md",
+      "path": "Struct\\01-foundation\\01.01-unified-streaming-theory.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "01.05-csp-formalization.md",
+      "path": "Struct\\01-foundation\\01.05-csp-formalization.md",
+      "sections_found": 7,
+      "issues": [
+        "缺少章节: 可视化"
+      ]
+    },
+    {
+      "file": "01.07-session-types.md",
+      "path": "Struct\\01-foundation\\01.07-session-types.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "02.04-liveness-and-safety.md",
+      "path": "Struct\\02-properties\\02.04-liveness-and-safety.md",
+      "sections_found": 7,
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "02.06-calm-theorem.md",
+      "path": "Struct\\02-properties\\02.06-calm-theorem.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "02.07-encrypted-stream-processing.md",
+      "path": "Struct\\02-properties\\02.07-encrypted-stream-processing.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 实例验证 (41 字符)"
+      ]
+    },
+    {
+      "file": "02.08-differential-privacy-streaming.md",
+      "path": "Struct\\02-properties\\02.08-differential-privacy-streaming.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (46 字符)"
+      ]
+    },
+    {
+      "file": "03.01-actor-to-csp-encoding.md",
+      "path": "Struct\\03-relationships\\03.01-actor-to-csp-encoding.md",
+      "sections_found": 7,
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "05.01-go-vs-scala-expressiveness.md",
+      "path": "Struct\\05-comparative-analysis\\05.01-go-vs-scala-expressiveness.md",
+      "sections_found": 7,
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "first-person-choreographies.md",
+      "path": "Struct\\06-frontier\\first-person-choreographies.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (35 字符)"
+      ]
+    },
+    {
+      "file": "model-checking-practice.md",
+      "path": "Struct\\07-tools\\model-checking-practice.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (0 字符)"
+      ]
+    },
+    {
+      "file": "streaming-sql-standard.md",
+      "path": "Struct\\08-standards\\streaming-sql-standard.md",
+      "sections_found": 8,
+      "issues": [
+        "章节内容过短: 引用参考 (0 字符)"
+      ]
+    },
+    {
+      "file": "Key-Theorem-Proof-Chains.md",
+      "path": "Struct\\Key-Theorem-Proof-Chains.md",
+      "sections_found": 1,
+      "issues": [
+        "缺少章节: 概念定义",
+        "缺少章节: 属性推导",
+        "缺少章节: 关系建立",
+        "缺少章节: 论证过程",
+        "缺少章节: 形式证明",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化"
+      ]
+    }
+  ],
+  "detailed_results": [
+    {
+      "file": "00-INDEX.md",
+      "path": "Struct\\00-INDEX.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": false,
+      "total_sections": 15,
+      "required_sections_found": 3,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 68,
+          "content_length": 1335,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 85,
+          "content_length": 866,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 99,
+          "content_length": 1230,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "可视化",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "引用参考",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        }
+      ],
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 概念定义",
+        "缺少章节: 论证过程",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "00-STRUCT-DERIVATION-CHAIN.md",
+      "path": "Struct\\00-STRUCT-DERIVATION-CHAIN.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 26,
+      "required_sections_found": 4,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 42,
+          "content_length": 1449,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 111,
+          "content_length": 1341,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 171,
+          "content_length": 1398,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "可视化",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 429,
+          "content_length": 61,
+          "issues": []
+        }
+      ],
+      "issues": [
+        "缺少章节: 概念定义",
+        "缺少章节: 论证过程",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化"
+      ]
+    },
+    {
+      "file": "01.01-unified-streaming-theory.md",
+      "path": "Struct\\01-foundation\\01.01-unified-streaming-theory.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 5792,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 251,
+          "content_length": 1106,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 311,
+          "content_length": 1192,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 352,
+          "content_length": 1020,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 401,
+          "content_length": 1384,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 469,
+          "content_length": 679,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 501,
+          "content_length": 1680,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 585,
+          "content_length": 3,
+          "issues": [
+            "内容过短 (3 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "01.02-process-calculus-primer.md",
+      "path": "Struct\\01-foundation\\01.02-process-calculus-primer.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 32,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 40,
+          "content_length": 6659,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 252,
+          "content_length": 1495,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 307,
+          "content_length": 1672,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 354,
+          "content_length": 1310,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 393,
+          "content_length": 3346,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 500,
+          "content_length": 2249,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 603,
+          "content_length": 1341,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 651,
+          "content_length": 848,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.03-actor-model-formalization.md",
+      "path": "Struct\\01-foundation\\01.03-actor-model-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 43,
+          "content_length": 4048,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 187,
+          "content_length": 1884,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 245,
+          "content_length": 1960,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 298,
+          "content_length": 845,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 321,
+          "content_length": 2753,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 393,
+          "content_length": 3148,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 513,
+          "content_length": 1591,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 574,
+          "content_length": 560,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.04-dataflow-model-formalization.md",
+      "path": "Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 30,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 40,
+          "content_length": 5926,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 215,
+          "content_length": 1728,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 269,
+          "content_length": 1689,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 302,
+          "content_length": 1478,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 338,
+          "content_length": 1662,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 386,
+          "content_length": 3325,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 465,
+          "content_length": 2861,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 588,
+          "content_length": 950,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.05-csp-formalization.md",
+      "path": "Struct\\01-foundation\\01.05-csp-formalization.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 39,
+      "required_sections_found": 7,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 49,
+          "content_length": 6540,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 253,
+          "content_length": 1541,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 307,
+          "content_length": 907,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 328,
+          "content_length": 1535,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 361,
+          "content_length": 2562,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 421,
+          "content_length": 2004,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 513,
+          "content_length": 1051,
+          "issues": []
+        }
+      ],
+      "issues": [
+        "缺少章节: 可视化"
+      ]
+    },
+    {
+      "file": "01.06-petri-net-formalization.md",
+      "path": "Struct\\01-foundation\\01.06-petri-net-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 36,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 48,
+          "content_length": 6604,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 273,
+          "content_length": 1796,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 337,
+          "content_length": 1841,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 404,
+          "content_length": 1466,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 451,
+          "content_length": 1744,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 515,
+          "content_length": 1851,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 629,
+          "content_length": 1064,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 672,
+          "content_length": 1210,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.07-session-types.md",
+      "path": "Struct\\01-foundation\\01.07-session-types.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 43,
+          "content_length": 2255,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 123,
+          "content_length": 1056,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 171,
+          "content_length": 991,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 220,
+          "content_length": 690,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 260,
+          "content_length": 1389,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 320,
+          "content_length": 505,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 414,
+          "content_length": 1976,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 518,
+          "content_length": 3,
+          "issues": [
+            "内容过短 (3 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "01.08-streaming-database-formalization.md",
+      "path": "Struct\\01-foundation\\01.08-streaming-database-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 47,
+          "content_length": 5542,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 266,
+          "content_length": 2031,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 363,
+          "content_length": 1510,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 443,
+          "content_length": 749,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 492,
+          "content_length": 1064,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 533,
+          "content_length": 1600,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 613,
+          "content_length": 1700,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 725,
+          "content_length": 568,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.09-edge-streaming-semantics.md",
+      "path": "Struct\\01-foundation\\01.09-edge-streaming-semantics.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 29,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 3335,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 132,
+          "content_length": 1258,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 164,
+          "content_length": 1112,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 201,
+          "content_length": 629,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 233,
+          "content_length": 2614,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 339,
+          "content_length": 210,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 414,
+          "content_length": 3508,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 583,
+          "content_length": 55,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "01.10-schema-evolution-formalization.md",
+      "path": "Struct\\01-foundation\\01.10-schema-evolution-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 4896,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 202,
+          "content_length": 2715,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 286,
+          "content_length": 2696,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 383,
+          "content_length": 1193,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 454,
+          "content_length": 1667,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 515,
+          "content_length": 1979,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 658,
+          "content_length": 1882,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 764,
+          "content_length": 847,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "stream-processing-semantics-formalization.md",
+      "path": "Struct\\01-foundation\\stream-processing-semantics-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 56,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 7,
+          "content_length": 3204,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 104,
+          "content_length": 2809,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 176,
+          "content_length": 2860,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 288,
+          "content_length": 2343,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 382,
+          "content_length": 2596,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 499,
+          "content_length": 1583,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 577,
+          "content_length": 2615,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 739,
+          "content_length": 156,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "02.01-determinism-in-streaming.md",
+      "path": "Struct\\02-properties\\02.01-determinism-in-streaming.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 3435,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 157,
+          "content_length": 4491,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 305,
+          "content_length": 1133,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 344,
+          "content_length": 1401,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 413,
+          "content_length": 1999,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 491,
+          "content_length": 2055,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 588,
+          "content_length": 4260,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 771,
+          "content_length": 985,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "02.02-consistency-hierarchy.md",
+      "path": "Struct\\02-properties\\02.02-consistency-hierarchy.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 41,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 51,
+          "content_length": 6182,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 215,
+          "content_length": 4195,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 368,
+          "content_length": 1938,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 436,
+          "content_length": 2387,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 514,
+          "content_length": 3857,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 646,
+          "content_length": 3684,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 778,
+          "content_length": 2072,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 863,
+          "content_length": 1162,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "02.03-watermark-monotonicity.md",
+      "path": "Struct\\02-properties\\02.03-watermark-monotonicity.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 31,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 41,
+          "content_length": 2016,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 123,
+          "content_length": 772,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 151,
+          "content_length": 1341,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 181,
+          "content_length": 1274,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 208,
+          "content_length": 3227,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 293,
+          "content_length": 1501,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 333,
+          "content_length": 1261,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 385,
+          "content_length": 523,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "02.04-liveness-and-safety.md",
+      "path": "Struct\\02-properties\\02.04-liveness-and-safety.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": false,
+      "total_sections": 34,
+      "required_sections_found": 7,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 4765,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 1,
+          "content_length": 20128,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 349,
+          "content_length": 854,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 398,
+          "content_length": 1635,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 466,
+          "content_length": 2357,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 558,
+          "content_length": 1464,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 667,
+          "content_length": 3266,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        }
+      ],
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "02.05-type-safety-derivation.md",
+      "path": "Struct\\02-properties\\02.05-type-safety-derivation.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 47,
+          "content_length": 4377,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 190,
+          "content_length": 1287,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 235,
+          "content_length": 1490,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 280,
+          "content_length": 1661,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 338,
+          "content_length": 4396,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 535,
+          "content_length": 1903,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 633,
+          "content_length": 2789,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 749,
+          "content_length": 1095,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "02.06-calm-theorem.md",
+      "path": "Struct\\02-properties\\02.06-calm-theorem.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 38,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 7,
+          "content_length": 1136,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 49,
+          "content_length": 919,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 78,
+          "content_length": 1238,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 134,
+          "content_length": 391,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 187,
+          "content_length": 1947,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 276,
+          "content_length": 94,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 361,
+          "content_length": 3125,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 528,
+          "content_length": 3,
+          "issues": [
+            "内容过短 (3 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (3 字符)"
+      ]
+    },
+    {
+      "file": "02.07-encrypted-stream-processing.md",
+      "path": "Struct\\02-properties\\02.07-encrypted-stream-processing.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 60,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 7,
+          "content_length": 3297,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 104,
+          "content_length": 1609,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 170,
+          "content_length": 1410,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 289,
+          "content_length": 2270,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 384,
+          "content_length": 3427,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 513,
+          "content_length": 41,
+          "issues": [
+            "内容过短 (41 字符)"
+          ]
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 719,
+          "content_length": 2480,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 878,
+          "content_length": 1563,
+          "issues": []
+        }
+      ],
+      "issues": [
+        "章节内容过短: 实例验证 (41 字符)"
+      ]
+    },
+    {
+      "file": "02.08-differential-privacy-streaming.md",
+      "path": "Struct\\02-properties\\02.08-differential-privacy-streaming.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 39,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 1949,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 81,
+          "content_length": 710,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 115,
+          "content_length": 1215,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 179,
+          "content_length": 1279,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 255,
+          "content_length": 3458,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 387,
+          "content_length": 170,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 520,
+          "content_length": 1581,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 607,
+          "content_length": 46,
+          "issues": [
+            "内容过短 (46 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (46 字符)"
+      ]
+    },
+    {
+      "file": "03.01-actor-to-csp-encoding.md",
+      "path": "Struct\\03-relationships\\03.01-actor-to-csp-encoding.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": false,
+      "total_sections": 34,
+      "required_sections_found": 7,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 50,
+          "content_length": 3403,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 189,
+          "content_length": 1221,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 235,
+          "content_length": 973,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 267,
+          "content_length": 1159,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 317,
+          "content_length": 3285,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 420,
+          "content_length": 3405,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 564,
+          "content_length": 3907,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        }
+      ],
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "03.02-flink-to-process-calculus.md",
+      "path": "Struct\\03-relationships\\03.02-flink-to-process-calculus.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 29,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 39,
+          "content_length": 5547,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 197,
+          "content_length": 1515,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 250,
+          "content_length": 1342,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 295,
+          "content_length": 731,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 335,
+          "content_length": 1563,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 412,
+          "content_length": 3075,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 557,
+          "content_length": 3482,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 711,
+          "content_length": 200,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "03.03-expressiveness-hierarchy-supplement.md",
+      "path": "Struct\\03-relationships\\03.03-expressiveness-hierarchy-supplement.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 35,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 4216,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 200,
+          "content_length": 1093,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 252,
+          "content_length": 2313,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 357,
+          "content_length": 1250,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 413,
+          "content_length": 1546,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 484,
+          "content_length": 2435,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 607,
+          "content_length": 5737,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 827,
+          "content_length": 1523,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "03.03-expressiveness-hierarchy.md",
+      "path": "Struct\\03-relationships\\03.03-expressiveness-hierarchy.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 3338,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 139,
+          "content_length": 1736,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 212,
+          "content_length": 1706,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 272,
+          "content_length": 1550,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 333,
+          "content_length": 2293,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 433,
+          "content_length": 1554,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 525,
+          "content_length": 3383,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 668,
+          "content_length": 901,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "03.04-bisimulation-equivalences.md",
+      "path": "Struct\\03-relationships\\03.04-bisimulation-equivalences.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 4069,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 159,
+          "content_length": 3731,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 278,
+          "content_length": 1955,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 354,
+          "content_length": 1660,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 420,
+          "content_length": 2814,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 495,
+          "content_length": 2134,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 605,
+          "content_length": 3971,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 776,
+          "content_length": 842,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "03.05-cross-model-mappings.md",
+      "path": "Struct\\03-relationships\\03.05-cross-model-mappings.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 38,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 49,
+          "content_length": 3606,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 171,
+          "content_length": 2052,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 261,
+          "content_length": 2275,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 333,
+          "content_length": 910,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 379,
+          "content_length": 2320,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 500,
+          "content_length": 2064,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 616,
+          "content_length": 3686,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 800,
+          "content_length": 1060,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.01-flink-checkpoint-correctness.md",
+      "path": "Struct\\04-proofs\\04.01-flink-checkpoint-correctness.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 4313,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 173,
+          "content_length": 5829,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 398,
+          "content_length": 2821,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 503,
+          "content_length": 3360,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 28540,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 817,
+          "content_length": 1543,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 902,
+          "content_length": 3764,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1074,
+          "content_length": 614,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.02-flink-exactly-once-correctness.md",
+      "path": "Struct\\04-proofs\\04.02-flink-exactly-once-correctness.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 42,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 74,
+          "content_length": 3055,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 192,
+          "content_length": 719,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 225,
+          "content_length": 1246,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 279,
+          "content_length": 2387,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 23001,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 728,
+          "content_length": 2538,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 534,
+          "content_length": 4114,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 847,
+          "content_length": 833,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.03-chandy-lamport-consistency.md",
+      "path": "Struct\\04-proofs\\04.03-chandy-lamport-consistency.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 5199,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 209,
+          "content_length": 5621,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 425,
+          "content_length": 2606,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 514,
+          "content_length": 2156,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 27285,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 757,
+          "content_length": 1524,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 838,
+          "content_length": 3831,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 987,
+          "content_length": 607,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.04-watermark-algebra-formal-proof.md",
+      "path": "Struct\\04-proofs\\04.04-watermark-algebra-formal-proof.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 5771,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 246,
+          "content_length": 4632,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 506,
+          "content_length": 3121,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 632,
+          "content_length": 3264,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 30768,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 1007,
+          "content_length": 3820,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1221,
+          "content_length": 3692,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1377,
+          "content_length": 479,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.05-type-safety-fg-fgg.md",
+      "path": "Struct\\04-proofs\\04.05-type-safety-fg-fgg.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 3605,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 181,
+          "content_length": 831,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 208,
+          "content_length": 601,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 241,
+          "content_length": 1534,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 16465,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 451,
+          "content_length": 1574,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 533,
+          "content_length": 2281,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 637,
+          "content_length": 546,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.06-dot-subtyping-completeness.md",
+      "path": "Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 5498,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 291,
+          "content_length": 1686,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 388,
+          "content_length": 1462,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 469,
+          "content_length": 1114,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 24059,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 770,
+          "content_length": 1975,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 900,
+          "content_length": 3994,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1075,
+          "content_length": 1129,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "04.07-deadlock-freedom-choreographic.md",
+      "path": "Struct\\04-proofs\\04.07-deadlock-freedom-choreographic.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 37,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 49,
+          "content_length": 9856,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 318,
+          "content_length": 5855,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 497,
+          "content_length": 3150,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 596,
+          "content_length": 2931,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 1,
+          "content_length": 38268,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 924,
+          "content_length": 3633,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1093,
+          "content_length": 4422,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1280,
+          "content_length": 1059,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "05.01-go-vs-scala-expressiveness.md",
+      "path": "Struct\\05-comparative-analysis\\05.01-go-vs-scala-expressiveness.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": false,
+      "total_sections": 37,
+      "required_sections_found": 7,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 51,
+          "content_length": 3093,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 159,
+          "content_length": 3282,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 319,
+          "content_length": 1372,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 387,
+          "content_length": 1089,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 454,
+          "content_length": 1930,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 562,
+          "content_length": 2084,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 832,
+          "content_length": 2242,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        }
+      ],
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）",
+        "缺少章节: 引用参考"
+      ]
+    },
+    {
+      "file": "05.02-expressiveness-vs-decidability.md",
+      "path": "Struct\\05-comparative-analysis\\05.02-expressiveness-vs-decidability.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": false,
+      "total_sections": 36,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 54,
+          "content_length": 2312,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 56,
+          "content_length": 555,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 196,
+          "content_length": 981,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 255,
+          "content_length": 1157,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 311,
+          "content_length": 1534,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 399,
+          "content_length": 1389,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 483,
+          "content_length": 2151,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 559,
+          "content_length": 953,
+          "issues": []
+        }
+      ],
+      "issues": [
+        "缺少元数据（所属阶段、前置依赖等）"
+      ]
+    },
+    {
+      "file": "05.03-encoding-completeness-analysis.md",
+      "path": "Struct\\05-comparative-analysis\\05.03-encoding-completeness-analysis.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 45,
+          "content_length": 4607,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 192,
+          "content_length": 2048,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 254,
+          "content_length": 2058,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 331,
+          "content_length": 1975,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 407,
+          "content_length": 2741,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 527,
+          "content_length": 2065,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 643,
+          "content_length": 3340,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 790,
+          "content_length": 378,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "06.01-open-problems-streaming-verification.md",
+      "path": "Struct\\06-frontier\\06.01-open-problems-streaming-verification.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 38,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 51,
+          "content_length": 4030,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 173,
+          "content_length": 1303,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 245,
+          "content_length": 1529,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 298,
+          "content_length": 1468,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 386,
+          "content_length": 2694,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 528,
+          "content_length": 2139,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 661,
+          "content_length": 2845,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 801,
+          "content_length": 2557,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "06.02-choreographic-streaming-programming.md",
+      "path": "Struct\\06-frontier\\06.02-choreographic-streaming-programming.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 40,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 67,
+          "content_length": 6880,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 330,
+          "content_length": 2167,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 422,
+          "content_length": 2083,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 535,
+          "content_length": 4746,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 780,
+          "content_length": 1819,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 888,
+          "content_length": 4895,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1084,
+          "content_length": 4411,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1290,
+          "content_length": 878,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "06.03-ai-agent-session-types.md",
+      "path": "Struct\\06-frontier\\06.03-ai-agent-session-types.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 38,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 65,
+          "content_length": 6499,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 275,
+          "content_length": 3607,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 451,
+          "content_length": 2362,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 544,
+          "content_length": 2735,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 699,
+          "content_length": 3238,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 849,
+          "content_length": 2359,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 974,
+          "content_length": 2230,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1082,
+          "content_length": 674,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "06.04-pdot-path-dependent-types.md",
+      "path": "Struct\\06-frontier\\06.04-pdot-path-dependent-types.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 30,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 42,
+          "content_length": 4870,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 179,
+          "content_length": 2012,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 257,
+          "content_length": 2313,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 340,
+          "content_length": 2233,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 456,
+          "content_length": 1278,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 505,
+          "content_length": 3196,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 629,
+          "content_length": 2857,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 764,
+          "content_length": 806,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "06.05-ai-agent-streaming-formalization.md",
+      "path": "Struct\\06-frontier\\06.05-ai-agent-streaming-formalization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 37,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 66,
+          "content_length": 7279,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 346,
+          "content_length": 2100,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 440,
+          "content_length": 6848,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 613,
+          "content_length": 2934,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 766,
+          "content_length": 1505,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 845,
+          "content_length": 7166,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1016,
+          "content_length": 3364,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1222,
+          "content_length": 708,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "first-person-choreographies.md",
+      "path": "Struct\\06-frontier\\first-person-choreographies.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 32,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 1952,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 97,
+          "content_length": 873,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 137,
+          "content_length": 1352,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 207,
+          "content_length": 792,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 264,
+          "content_length": 1880,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 364,
+          "content_length": 1362,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 437,
+          "content_length": 1774,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 549,
+          "content_length": 35,
+          "issues": [
+            "内容过短 (35 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (35 字符)"
+      ]
+    },
+    {
+      "file": "coq-mechanization.md",
+      "path": "Struct\\07-tools\\coq-mechanization.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 5552,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 258,
+          "content_length": 785,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 310,
+          "content_length": 707,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 338,
+          "content_length": 767,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 392,
+          "content_length": 12122,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 892,
+          "content_length": 1889,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1199,
+          "content_length": 1571,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1298,
+          "content_length": 1167,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "iris-separation-logic.md",
+      "path": "Struct\\07-tools\\iris-separation-logic.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 33,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 7,
+          "content_length": 3923,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 146,
+          "content_length": 1148,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 198,
+          "content_length": 966,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 240,
+          "content_length": 780,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 290,
+          "content_length": 1062,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 347,
+          "content_length": 1192,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 419,
+          "content_length": 2010,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 503,
+          "content_length": 1286,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "model-checking-practice.md",
+      "path": "Struct\\07-tools\\model-checking-practice.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 36,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 1728,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 60,
+          "content_length": 1080,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 93,
+          "content_length": 867,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 135,
+          "content_length": 646,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 170,
+          "content_length": 3283,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 355,
+          "content_length": 3559,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 520,
+          "content_length": 2130,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 688,
+          "content_length": 0,
+          "issues": [
+            "内容过短 (0 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (0 字符)"
+      ]
+    },
+    {
+      "file": "proof-automation-guide.md",
+      "path": "Struct\\07-tools\\proof-automation-guide.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 27,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 1526,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 77,
+          "content_length": 419,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 102,
+          "content_length": 225,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 117,
+          "content_length": 477,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 44,
+          "content_length": 374,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 318,
+          "content_length": 3947,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 531,
+          "content_length": 687,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 623,
+          "content_length": 784,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "smart-casual-verification.md",
+      "path": "Struct\\07-tools\\smart-casual-verification.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 65,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 3591,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 134,
+          "content_length": 1247,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 201,
+          "content_length": 3338,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 346,
+          "content_length": 2912,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 502,
+          "content_length": 6474,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 714,
+          "content_length": 1156,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1029,
+          "content_length": 2994,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 1321,
+          "content_length": 892,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "tla-for-flink.md",
+      "path": "Struct\\07-tools\\tla-for-flink.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 73,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 3878,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 142,
+          "content_length": 1949,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 208,
+          "content_length": 2057,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 260,
+          "content_length": 997,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 317,
+          "content_length": 24749,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 1085,
+          "content_length": 5210,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 1468,
+          "content_length": 3802,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 2043,
+          "content_length": 1157,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "streaming-sql-standard.md",
+      "path": "Struct\\08-standards\\streaming-sql-standard.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 32,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 5,
+          "content_length": 2186,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 101,
+          "content_length": 874,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 153,
+          "content_length": 1287,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 215,
+          "content_length": 797,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 273,
+          "content_length": 1096,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 343,
+          "content_length": 1465,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 422,
+          "content_length": 2595,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 552,
+          "content_length": 0,
+          "issues": [
+            "内容过短 (0 字符)"
+          ]
+        }
+      ],
+      "issues": [
+        "章节内容过短: 引用参考 (0 字符)"
+      ]
+    },
+    {
+      "file": "Key-Theorem-Proof-Chains.md",
+      "path": "Struct\\Key-Theorem-Proof-Chains.md",
+      "is_compliant": false,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 27,
+      "required_sections_found": 1,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "属性推导",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "关系建立",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "论证过程",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "形式证明",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "实例验证",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "可视化",
+          "found": false,
+          "line_number": -1,
+          "content_length": 0,
+          "issues": [
+            "章节缺失"
+          ]
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 313,
+          "content_length": 615,
+          "issues": []
+        }
+      ],
+      "issues": [
+        "缺少章节: 概念定义",
+        "缺少章节: 属性推导",
+        "缺少章节: 关系建立",
+        "缺少章节: 论证过程",
+        "缺少章节: 形式证明",
+        "缺少章节: 实例验证",
+        "缺少章节: 可视化"
+      ]
+    },
+    {
+      "file": "Model-Selection-Decision-Tree.md",
+      "path": "Struct\\Model-Selection-Decision-Tree.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 32,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 42,
+          "content_length": 1074,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 88,
+          "content_length": 1017,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 129,
+          "content_length": 1235,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 185,
+          "content_length": 1226,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 257,
+          "content_length": 1167,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 322,
+          "content_length": 2017,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 457,
+          "content_length": 7511,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 709,
+          "content_length": 967,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "Struct-to-Knowledge-Mapping.md",
+      "path": "Struct\\Struct-to-Knowledge-Mapping.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 46,
+          "content_length": 2403,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 129,
+          "content_length": 973,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 165,
+          "content_length": 1193,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 213,
+          "content_length": 906,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 265,
+          "content_length": 820,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 300,
+          "content_length": 1379,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 353,
+          "content_length": 4638,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 619,
+          "content_length": 435,
+          "issues": []
+        }
+      ],
+      "issues": []
+    },
+    {
+      "file": "Unified-Model-Relationship-Graph.md",
+      "path": "Struct\\Unified-Model-Relationship-Graph.md",
+      "is_compliant": true,
+      "has_title": true,
+      "has_metadata": true,
+      "total_sections": 34,
+      "required_sections_found": 8,
+      "sections": [
+        {
+          "name": "概念定义",
+          "found": true,
+          "line_number": 7,
+          "content_length": 1965,
+          "issues": []
+        },
+        {
+          "name": "属性推导",
+          "found": true,
+          "line_number": 58,
+          "content_length": 736,
+          "issues": []
+        },
+        {
+          "name": "关系建立",
+          "found": true,
+          "line_number": 85,
+          "content_length": 1100,
+          "issues": []
+        },
+        {
+          "name": "论证过程",
+          "found": true,
+          "line_number": 136,
+          "content_length": 770,
+          "issues": []
+        },
+        {
+          "name": "形式证明",
+          "found": true,
+          "line_number": 168,
+          "content_length": 1154,
+          "issues": []
+        },
+        {
+          "name": "实例验证",
+          "found": true,
+          "line_number": 220,
+          "content_length": 834,
+          "issues": []
+        },
+        {
+          "name": "可视化",
+          "found": true,
+          "line_number": 265,
+          "content_length": 6101,
+          "issues": []
+        },
+        {
+          "name": "引用参考",
+          "found": true,
+          "line_number": 499,
+          "content_length": 1460,
+          "issues": []
+        }
+      ],
+      "issues": []
+    }
+  ]
+}

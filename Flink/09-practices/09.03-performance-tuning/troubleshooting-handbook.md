@@ -1,10 +1,10 @@
-# Flink 故障排查手册
+# Flink 故障排查手册 {#flink-故障排查手册}
 
 > 所属阶段: Flink/09-practices | 前置依赖: [生产配置模板](./production-config-templates.md), [Checkpoint 机制深度解析](../../02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3
 
 ---
 
-## 目录
+## 目录 {#目录}
 
 - [Flink 故障排查手册](#flink-故障排查手册)
   - [目录](#目录)
@@ -64,9 +64,9 @@
 
 ---
 
-## 1. 概念定义 (Definitions)
+## 1. 概念定义 (Definitions) {#1-概念定义-definitions}
 
-### Def-F-09-03-04 (故障症状 Fault Symptom)
+### Def-F-09-03-04 (故障症状 Fault Symptom) {#def-f-09-03-04-故障症状-fault-symptom}
 
 **故障症状**（Fault Symptom）是 Flink 作业运行异常的可观测表现，形式化定义为三元组：
 
@@ -91,7 +91,7 @@ $$
 
 ---
 
-### Def-F-09-03-05 (排查路径 Troubleshooting Path)
+### Def-F-09-03-05 (排查路径 Troubleshooting Path) {#def-f-09-03-05-排查路径-troubleshooting-path}
 
 **排查路径**（Troubleshooting Path）是从症状到根因的诊断步骤序列，形式化为：
 
@@ -107,7 +107,7 @@ $$
 
 ---
 
-### Def-F-09-03-06 (根因定位 Root Cause Analysis)
+### Def-F-09-03-06 (根因定位 Root Cause Analysis) {#def-f-09-03-06-根因定位-root-cause-analysis}
 
 **根因定位**（Root Cause Analysis）是通过系统性分析确定故障根本原因的过程。设所有可能根因集合为 $R = \{r_1, r_2, ..., r_m\}$，症状为 $\mathcal{S}$，则根因定位函数为：
 
@@ -119,9 +119,9 @@ $$
 
 ---
 
-## 2. 属性推导 (Properties)
+## 2. 属性推导 (Properties) {#2-属性推导-properties}
 
-### Lemma-F-09-03-03 (症状-根因的多对一映射)
+### Lemma-F-09-03-03 (症状-根因的多对一映射) {#lemma-f-09-03-03-症状-根因的多对一映射}
 
 **陈述**: 同一故障症状可能由多种根因引起，形成多对一的映射关系：
 
@@ -140,7 +140,7 @@ $$
 
 ---
 
-### Lemma-F-09-03-04 (排查步骤的收敛性)
+### Lemma-F-09-03-04 (排查步骤的收敛性) {#lemma-f-09-03-04-排查步骤的收敛性}
 
 **陈述**: 对于任何可诊断的故障，存在有限的排查步骤序列能够收敛到根因：
 
@@ -157,7 +157,7 @@ $$
 
 ---
 
-### Prop-F-09-03-02 (故障严重程度的可分级性)
+### Prop-F-09-03-02 (故障严重程度的可分级性) {#prop-f-09-03-02-故障严重程度的可分级性}
 
 **陈述**: 所有故障可按影响范围和紧急程度分为四级：
 
@@ -170,9 +170,9 @@ $$
 
 ---
 
-## 3. 关系建立 (Relations)
+## 3. 关系建立 (Relations) {#3-关系建立-relations}
 
-### 关系 1: 症状与指标的映射关系
+### 关系 1: 症状与指标的映射关系 {#关系-1-症状与指标的映射关系}
 
 | 症状描述 | 关键指标 | 指标路径 | 阈值 |
 |----------|----------|----------|------|
@@ -182,7 +182,7 @@ $$
 | Kafka 延迟 | `recordsLagMax` | `/jobs/{id}/vertices/{vid}` | > 10000 |
 | Watermark 停滞 | `watermarkLag` | 自定义指标 | > 5min |
 
-### 关系 2: 故障类型的依赖关系
+### 关系 2: 故障类型的依赖关系 {#关系-2-故障类型的依赖关系}
 
 ```
 数据倾斜
@@ -202,7 +202,7 @@ $$
               └──→ Checkpoint 超时
 ```
 
-### 关系 3: 排查策略与场景的关系
+### 关系 3: 排查策略与场景的关系 {#关系-3-排查策略与场景的关系}
 
 | 业务场景 | 高发故障 | 优先排查方向 |
 |----------|----------|--------------|
@@ -214,9 +214,9 @@ $$
 
 ---
 
-## 4. 论证过程 (Argumentation)
+## 4. 论证过程 (Argumentation) {#4-论证过程-argumentation}
 
-### 引理 4.1 (Checkpoint 超时的常见根因)
+### 引理 4.1 (Checkpoint 超时的常见根因) {#引理-41-checkpoint-超时的常见根因}
 
 **论证**: Checkpoint 超时是最常见的生产故障，其根因可按频率排序：
 
@@ -228,7 +228,7 @@ $$
 
 **排查策略**: 按上述频率从高到低逐一排查。
 
-### 引理 4.2 (背压传播的级联效应)
+### 引理 4.2 (背压传播的级联效应) {#引理-42-背压传播的级联效应}
 
 **论证**: 背压具有级联传播特性：
 
@@ -239,7 +239,7 @@ $$
 
 **关键洞察**: 背压的"症状"出现在上游，但"根因"在下游。排查时应从最后一个非背压算子开始向下游追踪[^4]。
 
-### 反例 4.1 (误判 OOM 根因的案例)
+### 反例 4.1 (误判 OOM 根因的案例) {#反例-41-误判-oom-根因的案例}
 
 **场景**: TaskManager 频繁 OOM 重启
 
@@ -254,9 +254,9 @@ $$
 
 ---
 
-## 5. 工程论证 (Engineering Argument)
+## 5. 工程论证 (Engineering Argument) {#5-工程论证-engineering-argument}
 
-### Thm-F-09-03-03 (故障排查完备性定理)
+### Thm-F-09-03-03 (故障排查完备性定理) {#thm-f-09-03-03-故障排查完备性定理}
 
 **定理**: 本手册定义的排查路径集合 $\{\mathcal{P}_1, \mathcal{P}_2, ..., \mathcal{P}_k\}$ 对于 Flink 1.18+ 版本的常见生产故障是完备的。
 
@@ -271,7 +271,7 @@ $$
 
 ---
 
-### Thm-F-09-03-04 (快速恢复策略有效性定理)
+### Thm-F-09-03-04 (快速恢复策略有效性定理) {#thm-f-09-03-04-快速恢复策略有效性定理}
 
 **定理**: 对于 P0/P1 级别故障，应用本手册的快速恢复策略可在 5 分钟内恢复服务。
 
@@ -290,16 +290,16 @@ $$
 
 ---
 
-## 6. 实例验证 (Examples)
+## 6. 实例验证 (Examples) {#6-实例验证-examples}
 
-### 故障 6.1: Checkpoint 超时
+### 故障 6.1: Checkpoint 超时 {#故障-61-checkpoint-超时}
 
-#### 症状
+#### 症状 {#症状}
 
 - Checkpoint 持续时间持续增长，最终超过 `execution.checkpointing.timeout`
 - Flink UI 显示 Checkpoint 状态为 `IN_PROGRESS` 后转为 `FAILED`
 
-#### 关键指标
+#### 关键指标 {#关键指标}
 
 ```
 checkpointDuration: > 10min (timeout)
@@ -307,12 +307,12 @@ checkpointAlignmentTime: > 5min
 checkpointStartDelay: > 1min
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤}
 
 **步骤 1: 检查对齐时间**
 
 ```bash
-# 通过 Flink REST API 获取 Checkpoint 详情
+# 通过 Flink REST API 获取 Checkpoint 详情 {#通过-flink-rest-api-获取-checkpoint-详情}
 curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints
 ```
 
@@ -340,7 +340,7 @@ execution.checkpointing.min-pause-between-checkpoints: 30s
 **步骤 3: 检查状态大小**
 
 ```bash
-# 查看各 Task 的状态大小
+# 查看各 Task 的状态大小 {#查看各-task-的状态大小}
 curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints/config
 ```
 
@@ -357,28 +357,28 @@ curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints/config
 
 ---
 
-### 故障 6.2: 背压严重
+### 故障 6.2: 背压严重 {#故障-62-背压严重}
 
-#### 症状
+#### 症状 {#症状-1}
 
 - `backPressuredTimeMsPerSecond` > 800ms（即 80% 时间处于背压）
 - 数据吞吐量显著低于预期
 - 延迟持续增长
 
-#### 关键指标
+#### 关键指标 {#关键指标-1}
 
 ```
 backPressuredTimeMsPerSecond: > 800
 numRecordsInPerSecond (上游) >> numRecordsOutPerSecond (下游)
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-1}
 
 **步骤 1: 定位背压源**
 
 ```bash
-# 使用 Flink Web UI Backpressure 标签
-# 或使用命令行
+# 使用 Flink Web UI Backpressure 标签 {#使用-flink-web-ui-backpressure-标签}
+# 或使用命令行 {#或使用命令行}
 flink list -r
 flink backpressure <job-id>
 ```
@@ -399,7 +399,7 @@ taskmanager.network.memory.buffer-debloat.target: 500ms
 **步骤 4: 调整网络缓冲区**
 
 ```yaml
-# 如果禁用 Debloat，手动调整
+# 如果禁用 Debloat，手动调整 {#如果禁用-debloat手动调整}
 taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffer-size: 32kb
 ```
@@ -407,22 +407,22 @@ taskmanager.network.memory.buffer-size: 32kb
 **步骤 5: 检查资源利用率**
 
 ```bash
-# 检查 TaskManager CPU 使用率
-# 如果 CPU < 50%，可能是 I/O 或等待问题
-# 如果 CPU > 90%，需要扩容
+# 检查 TaskManager CPU 使用率 {#检查-taskmanager-cpu-使用率}
+# 如果 CPU < 50%，可能是 I/O 或等待问题 {#如果-cpu-50可能是-io-或等待问题}
+# 如果 CPU > 90%，需要扩容 {#如果-cpu-90需要扩容}
 ```
 
 ---
 
-### 故障 6.3: OOM 崩溃
+### 故障 6.3: OOM 崩溃 {#故障-63-oom-崩溃}
 
-#### 症状
+#### 症状 {#症状-2}
 
 - TaskManager JVM 崩溃，日志中出现 `OutOfMemoryError`
 - Container 被 YARN/K8s 杀掉（exit code 137 或 143）
 - 频繁的 Full GC 后仍无法回收内存
 
-#### 关键指标
+#### 关键指标 {#关键指标-2}
 
 ```
 heapUsed / heapCommitted: > 95%
@@ -430,18 +430,18 @@ rocksdbMemTable: 持续增长
 containerMemoryUsage: > limit
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-2}
 
 **步骤 1: 确定 OOM 类型**
 
 ```
-# Java Heap OOM
+# Java Heap OOM {#java-heap-oom}
 java.lang.OutOfMemoryError: Java heap space
 
-# Direct Memory OOM
+# Direct Memory OOM {#direct-memory-oom}
 java.lang.OutOfMemoryError: Direct buffer memory
 
-# Metaspace OOM
+# Metaspace OOM {#metaspace-oom}
 java.lang.OutOfMemoryError: Metaspace
 ```
 
@@ -463,10 +463,10 @@ state.backend.rocksdb.memory.managed: true
 - **解决**:
 
 ```yaml
-# 限制网络内存
+# 限制网络内存 {#限制网络内存}
 taskmanager.memory.network.fraction: 0.1
 
-# 启用 RocksDB 托管内存
+# 启用 RocksDB 托管内存 {#启用-rocksdb-托管内存}
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
 ```
@@ -489,10 +489,10 @@ byte[] largeBuffer = new byte[100 * 1024 * 1024];
 **步骤 5: 内存调优**
 
 ```yaml
-# 增加 TaskManager 内存
+# 增加 TaskManager 内存 {#增加-taskmanager-内存}
 taskmanager.memory.process.size: 8gb
 
-# 调整各区域比例
+# 调整各区域比例 {#调整各区域比例}
 taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.network.fraction: 0.1
 taskmanager.memory.jvm-heap.fraction: 0.4
@@ -500,15 +500,15 @@ taskmanager.memory.jvm-heap.fraction: 0.4
 
 ---
 
-### 故障 6.4: Kafka 消费延迟
+### 故障 6.4: Kafka 消费延迟 {#故障-64-kafka-消费延迟}
 
-#### 症状
+#### 症状 {#症状-3}
 
 - `recordsLagMax` 持续增长
 - 消费者组延迟监控显示消费速度低于生产速度
 - Flink UI 显示 Source 算子输出速率低
 
-#### 关键指标
+#### 关键指标 {#关键指标-3}
 
 ```
 recordsLagMax: > 10000 (具体阈值取决于业务)
@@ -516,7 +516,7 @@ recordsConsumedRate: < recordsProducedRate
 kafka-consumer-lag: 持续增长
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-3}
 
 **步骤 1: 检查分区与并行度匹配**
 
@@ -534,8 +534,8 @@ int flinkParallelism = 16; // 应 <= 32
 **步骤 2: 检查数据倾斜**
 
 ```bash
-# 查看各 Source Subtask 的消费速率
-# 如果某几个 Subtask 速率远高于其他：数据倾斜
+# 查看各 Source Subtask 的消费速率 {#查看各-source-subtask-的消费速率}
+# 如果某几个 Subtask 速率远高于其他：数据倾斜 {#如果某几个-subtask-速率远高于其他数据倾斜}
 ```
 
 **解决**: 检查 Kafka Key 分区策略，必要时重新分区
@@ -543,12 +543,12 @@ int flinkParallelism = 16; // 应 <= 32
 **步骤 3: 调整 Kafka Consumer 配置**
 
 ```yaml
-# 增加每次拉取的数据量
+# 增加每次拉取的数据量 {#增加每次拉取的数据量}
 properties.fetch.min.bytes: 1
 properties.fetch.max.wait.ms: 500
 properties.max.poll.records: 500
 
-# 增加网络缓冲区
+# 增加网络缓冲区 {#增加网络缓冲区}
 properties.receive.buffer.bytes: 65536
 properties.send.buffer.bytes: 65536
 ```
@@ -564,24 +564,24 @@ properties.send.buffer.bytes: 65536
 **步骤 5: 扩容**
 
 ```yaml
-# 增加 Source 并行度（不超过 Kafka 分区数）
+# 增加 Source 并行度（不超过 Kafka 分区数） {#增加-source-并行度不超过-kafka-分区数}
 parallelism.default: 32
 
-# 或增加 TaskManager 资源
+# 或增加 TaskManager 资源 {#或增加-taskmanager-资源}
 taskmanager.numberOfTaskSlots: 8
 ```
 
 ---
 
-### 故障 6.5: Watermark 不推进
+### 故障 6.5: Watermark 不推进 {#故障-65-watermark-不推进}
 
-#### 症状
+#### 症状 {#症状-4}
 
 - 窗口算子长时间不触发计算
 - Watermark 值长时间不更新
 - 事件时间处理延迟持续增长
 
-#### 关键指标
+#### 关键指标 {#关键指标-4}
 
 ```
 watermarkLag: > 5min (相对于当前时间)
@@ -589,13 +589,13 @@ currentInputWatermark: 停滞不变
 numRecordsInPerSecond: 0 (某些分区)
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-4}
 
 **步骤 1: 检查空闲分区**
 
 ```bash
-# 查看各 Source Subtask 的输入速率
-# 如果某些 Subtask recordsIn = 0：空闲分区
+# 查看各 Source Subtask 的输入速率 {#查看各-source-subtask-的输入速率}
+# 如果某些 Subtask recordsIn = 0：空闲分区 {#如果某些-subtask-recordsin-0空闲分区}
 ```
 
 **解决**: 启用空闲检测
@@ -609,8 +609,8 @@ WatermarkStrategy
 **步骤 2: 检查数据源**
 
 ```bash
-# 验证上游数据源是否持续产生数据
-# 检查 Kafka Topic 是否有新消息
+# 验证上游数据源是否持续产生数据 {#验证上游数据源是否持续产生数据}
+# 检查 Kafka Topic 是否有新消息 {#检查-kafka-topic-是否有新消息}
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group flink-group
 ```
 
@@ -642,30 +642,30 @@ WatermarkStrategy.<Event>forBoundedOutOfOrderness(
 
 ---
 
-### 故障 6.6: 状态恢复失败
+### 故障 6.6: 状态恢复失败 {#故障-66-状态恢复失败}
 
-#### 症状
+#### 症状 {#症状-5}
 
 - 作业重启时从 Checkpoint/Savepoint 恢复失败
 - 日志中出现 `StateBackendException` 或 `IOException`
 - 恢复过程卡住或超时
 
-#### 关键指标
+#### 关键指标 {#关键指标-5}
 
 ```
 restoreDuration: 超时失败
 stateSize: 异常大或无法读取
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-5}
 
 **步骤 1: 检查 Checkpoint 完整性**
 
 ```bash
-# 验证 Checkpoint 文件是否存在
+# 验证 Checkpoint 文件是否存在 {#验证-checkpoint-文件是否存在}
 hdfs dfs -ls /flink/checkpoints/{job-id}/chk-{checkpoint-id}
 
-# 检查元数据文件
+# 检查元数据文件 {#检查元数据文件}
 hdfs dfs -cat /flink/checkpoints/{job-id}/chk-{checkpoint-id}/_metadata
 ```
 
@@ -686,9 +686,9 @@ new ValueStateDescriptor<>("newName", ...); // 名称变更会导致状态找不
 **步骤 3: 检查存储系统**
 
 ```bash
-# HDFS/S3 连接问题
-# 权限问题
-# 网络分区导致无法读取
+# HDFS/S3 连接问题 {#hdfss3-连接问题}
+# 权限问题 {#权限问题}
+# 网络分区导致无法读取 {#网络分区导致无法读取}
 ```
 
 **解决**: 验证存储系统可访问性，检查权限配置
@@ -696,22 +696,22 @@ new ValueStateDescriptor<>("newName", ...); // 名称变更会导致状态找不
 **步骤 4: 增量 Checkpoint 问题**
 
 ```yaml
-# 如果增量 Checkpoint 损坏，可能无法恢复
-# 解决：切换到全量 Checkpoint 或从更早版本恢复
+# 如果增量 Checkpoint 损坏，可能无法恢复 {#如果增量-checkpoint-损坏可能无法恢复}
+# 解决：切换到全量 Checkpoint 或从更早版本恢复 {#解决切换到全量-checkpoint-或从更早版本恢复}
 state.backend.incremental: false
 ```
 
 ---
 
-### 故障 6.7: 任务重启循环
+### 故障 6.7: 任务重启循环 {#故障-67-任务重启循环}
 
-#### 症状
+#### 症状 {#症状-6}
 
 - 作业频繁重启（每分钟多次）
 - Flink UI 显示 Job 状态在 RUNNING 和 RESTARTING 间切换
 - 无法达到稳定运行状态
 
-#### 关键指标
+#### 关键指标 {#关键指标-6}
 
 ```
 numberOfRestarts: 持续增长
@@ -719,12 +719,12 @@ lastCheckpointDuration: 可能为 N/A（来不及完成）
 lastCheckpointSize: 可能为 0
 ```
 
-#### 排查步骤
+#### 排查步骤 {#排查步骤-6}
 
 **步骤 1: 查看异常日志**
 
 ```bash
-# 找出每次重启的根本原因
+# 找出每次重启的根本原因 {#找出每次重启的根本原因}
 grep "Exception" flink-taskmanager-*.log | tail -100
 ```
 
@@ -737,12 +737,12 @@ grep "Exception" flink-taskmanager-*.log | tail -100
 **步骤 2: 调整重启策略**
 
 ```yaml
-# 增加重启延迟，避免频繁重启
+# 增加重启延迟，避免频繁重启 {#增加重启延迟避免频繁重启}
 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 30s
 
-# 或使用指数退避
+# 或使用指数退避 {#或使用指数退避}
 restart-strategy: exponential-delay
 restart-strategy.exponential-delay.initial-backoff: 10s
 restart-strategy.exponential-delay.max-backoff: 300s
@@ -751,8 +751,8 @@ restart-strategy.exponential-delay.max-backoff: 300s
 **步骤 3: 检查资源不足**
 
 ```bash
-# 如果 TaskManager 频繁被 K8s 驱逐
-# 可能是内存或 CPU 资源不足
+# 如果 TaskManager 频繁被 K8s 驱逐 {#如果-taskmanager-频繁被-k8s-驱逐}
+# 可能是内存或 CPU 资源不足 {#可能是内存或-cpu-资源不足}
 describe pod <taskmanager-pod>
 ```
 
@@ -773,9 +773,9 @@ try {
 
 ---
 
-## 7. 可视化 (Visualizations)
+## 7. 可视化 (Visualizations) {#7-可视化-visualizations}
 
-### 故障排查决策树
+### 故障排查决策树 {#故障排查决策树}
 
 ```mermaid
 flowchart TD
@@ -815,7 +815,7 @@ flowchart TD
 
 ---
 
-### 故障传播依赖图
+### 故障传播依赖图 {#故障传播依赖图}
 
 ```mermaid
 graph TB
@@ -856,7 +856,7 @@ graph TB
 
 ---
 
-### 排查工具与指标映射表
+### 排查工具与指标映射表 {#排查工具与指标映射表}
 
 ```mermaid
 graph LR
@@ -908,7 +908,7 @@ graph LR
 
 ---
 
-## 8. 引用参考 (References)
+## 8. 引用参考 (References) {#8-引用参考-references}
 
 [^1]: Apache Flink Documentation, "Monitoring and Debugging", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/>
 

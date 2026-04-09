@@ -1,7 +1,11 @@
 # Flink 版本发布跟踪报告
 
-> 生成时间: 2026-04-08
-> 跟踪器版本: V2.1.0
+> 生成时间: 2026-04-09
+> 跟踪器版本: V2.2.0
+>
+> **重要更新**: 本跟踪器已更新以反映Flink 2.0-2.2的实际发布情况
+>
+> - 参见: [Flink 2.4/2.5/3.0 版本跟踪报告](../08-roadmap/flink-2.4-2.5-3.0-tracking.md)
 
 ---
 
@@ -14,17 +18,16 @@ gantt
 
     section 已发布
     Flink 2.0           :done, 2025-03-24, 30d
-    Flink 2.1           :done, 2025-06-15, 30d
-    Flink 2.2           :done, 2025-09-20, 30d
-    Flink 2.3           :done, 2025-12-15, 30d
-    Flink 2.4           :done, 2026-01-30, 30d
+    Flink 2.1           :done, 2025-07-31, 30d
+    Flink 2.2           :done, 2025-12-04, 30d
 
-    section 近期版本
-    Flink 2.5           :active, 2026-07-01, 90d
-    Flink 2.6           :2026-11-01, 60d
+    section 开发中
+    Flink 2.3           :active, 2026-04-01, 90d
+    Flink 2.4           :2026-10-01, 60d
 
     section 规划中
-    Flink 3.0           :crit, 2027-01-01, 90d
+    Flink 2.5           :2027-01-01, 90d
+    Flink 3.0           :crit, 2027-07-01, 120d
 ```
 
 ---
@@ -33,9 +36,17 @@ gantt
 
 | 版本 | 状态 | 预计/实际发布 | 下载链接 | 跟踪文档 |
 |------|------|--------------|----------|----------|
-| **2.5.0** | 🔄 **开发中** | **2026 Q3** | - | [2.5 路线图](../08-roadmap/08.02-flink-25/) |
-| 2.6.0 | 📋 规划中 | 2026 Q4 | - | - |
-| **3.0.0** | 🔭 **愿景规划** | **2027 Q1-Q2** | - | [3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md) |
+| **2.0.0** | ✅ **已发布** | **2025-03-24** | [下载](https://flink.apache.org/downloads/) | [2.0 新特性](../02-core/flink-2.0-async-execution-model.md) |
+| **2.0.1** | ✅ **已发布** | **2025-11-10** | [下载](https://flink.apache.org/downloads/) | Bug修复版本 |
+| **2.1.0** | ✅ **已发布** | **2025-07-31** | [下载](https://flink.apache.org/downloads/) | [物化表增强](../03-api/03.02-table-sql-api/materialized-tables.md) |
+| **2.1.1** | ✅ **已发布** | **2025-11-10** | [下载](https://flink.apache.org/downloads/) | Bug修复版本 |
+| **2.2.0** | ✅ **已发布** | **2025-12-04** | [下载](https://flink.apache.org/downloads/) | 稳定性增强 |
+| **2.3.0** | 🔄 **规划中** | **2026 Q2** | - | AI Agent预览 |
+| **2.4.0** | 🔮 **前瞻** | **2026 Q4** | - | [2.4 跟踪](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
+| **2.5.0** | 🔭 **前瞻** | **2027 Q1** | - | [2.5 路线图](../08-roadmap/08.02-flink-25/) |
+| **3.0.0** | 🔭 **愿景规划** | **2027+** | - | [3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md) |
+
+> 完整版本跟踪报告: [Flink 2.4/2.5/3.0 版本跟踪报告](../08-roadmap/flink-2.4-2.5-3.0-tracking.md)
 
 ---
 
@@ -142,10 +153,10 @@ python .scripts/flink-version-tracking/check-new-releases.py --update-docs
 
 | 数据源 | URL | 检查频率 |
 |--------|-----|----------|
-| Apache JIRA | https://issues.apache.org/jira/browse/FLINK | 每日 |
-| FLIP 提案 | https://github.com/apache/flink/tree/master/flink-docs/docs/flips | 每周 |
-| GitHub Releases | https://github.com/apache/flink/releases | 每日 |
-| 官方路线图 | https://flink.apache.org/roadmap/ | 每周 |
+| Apache JIRA | <https://issues.apache.org/jira/browse/FLINK> | 每日 |
+| FLIP 提案 | <https://github.com/apache/flink/tree/master/flink-docs/docs/flips> | 每周 |
+| GitHub Releases | <https://github.com/apache/flink/releases> | 每日 |
+| 官方路线图 | <https://flink.apache.org/roadmap/> | 每周 |
 
 ---
 
