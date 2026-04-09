@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流处理实时监控仪表板 - AnalysisDataFlow</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.8em; }
+        .header .status {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .dashboard {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+        }
+        .card h3 {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .metric {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+        .metric.change {
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        .metric.change.positive { color: #22c55e; }
+        .metric.change.negative { color: #ef4444; }
+        .chart-container {
+            grid-column: span 2;
+            height: 300px;
+        }
+        .chart {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.3) 0%, transparent 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(180deg, #3b82f6 0%, transparent 100%);
+            clip-path: polygon(
+                0% 80%, 10% 60%, 20% 70%, 30% 40%, 
+                40% 50%, 50% 30%, 60% 45%, 70% 25%,
+                80% 35%, 90% 20%, 100% 40%, 100% 100%, 0% 100%
+            );
+        }
+        .log-container {
+            grid-column: span 2;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 8px 12px;
+            border-bottom: 1px solid #334155;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+        .log-entry.info { border-left: 3px solid #3b82f6; }
+        .log-entry.success { border-left: 3px solid #22c55e; }
+        .log-entry.warning { border-left: 3px solid #f59e0b; }
+        .log-entry.error { border-left: 3px solid #ef4444; }
+        .log-time { color: #64748b; margin-right: 10px; }
+        .log-message { color: #e2e8f0; }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📊 流处理实时监控仪表板</h1>
+        <div class="status">
+            <div class="status-item">
+                <span class="status-dot"></span>
+                <span>系统正常运行</span>
+            </div>
+            <div class="status-item">
+                <span>⏱️ 刷新: 1s</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="dashboard">
+        <!-- 核心指标卡片 -->
+        <div class="card">
+            <h3>输入吞吐量 (records/s)</h3>
+            <div class="metric">
+                125.4K
+                <span class="metric change positive">↑ 12%</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>处理延迟 (ms)</h3>
+            <div class="metric">
+                45
+                <span class="metric change positive">↓ 8%</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>检查点成功率 (%)</h3>
+            <div class="metric">
+                99.98
+                <span class="metric change positive">→ 0%</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>任务失败率 (%)</h3>
+            <div class="metric">
+                0.02
+                <span class="metric change positive">→ 0%</span>
+            </div>
+        </div>
+        
+        <!-- 吞吐量图表 -->
+        <div class="card chart-container">
+            <h3>📈 吞吐量趋势 (过去1小时)</h3>
+            <div class="chart">
+                <div class="chart-line"></div>
+            </div>
+        </div>
+        
+        <!-- 延迟图表 -->
+        <div class="card chart-container">
+            <h3>📉 处理延迟趋势 (过去1小时)</h3>
+            <div class="chart">
+                <div class="chart-line" style="clip-path: polygon(0% 50%, 10% 45%, 20% 55%, 30% 40%, 40% 45%, 50% 35%, 60% 40%, 70% 30%, 80% 35%, 90% 25%, 100% 30%, 100% 100%, 0% 100%);"></div>
+            </div>
+        </div>
+        
+        <!-- 系统日志 -->
+        <div class="card log-container">
+            <h3>📝 系统日志</h3>
+            <div class="log-entry info">
+                <span class="log-time">18:05:23</span>
+                <span class="log-message">检查点 #4521 完成，耗时 1.2s</span>
+            </div>
+            <div class="log-entry success">
+                <span class="log-time">18:05:12</span>
+                <span class="log-message">任务 Task-3 重启成功</span>
+            </div>
+            <div class="log-entry info">
+                <span class="log-time">18:04:58</span>
+                <span class="log-message">Watermark 推进至 18:04:55</span>
+            </div>
+            <div class="log-entry warning">
+                <span class="log-time">18:04:45</span>
+                <span class="log-message">背压检测到，触发自动扩容</span>
+            </div>
+            <div class="log-entry info">
+                <span class="log-time">18:04:30</span>
+                <span class="log-message">Kafka 分区重平衡完成</span>
+            </div>
+            <div class="log-entry error">
+                <span class="log-time">18:04:15</span>
+                <span class="log-message">Task-3 异常退出: OutOfMemoryError</span>
+            </div>
+            <div class="log-entry info">
+                <span class="log-time">18:04:00</span>
+                <span class="log-message">检查点 #4520 开始</span>
+            </div>
+            <div class="log-entry success">
+                <span class="log-time">18:03:45</span>
+                <span class="log-message">状态后端切换至 RocksDB 完成</span>
+            </div>
+        </div>
+        
+        <!-- 任务状态 -->
+        <div class="card">
+            <h3>📋 任务状态</h3>
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Running</span>
+                    <span style="color: #22c55e;">12</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Failed</span>
+                    <span style="color: #ef4444;">0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Restarting</span>
+                    <span style="color: #f59e0b;">1</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Canceled</span>
+                    <span style="color: #64748b;">2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>AnalysisDataFlow - Phase 2 实时监控仪表板 (实时数据模拟)</p>
+    </footer>
+</body>
+</html>
