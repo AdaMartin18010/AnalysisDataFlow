@@ -5689,31 +5689,31 @@ ORDER BY lift DESC;
 
 ```yaml
 # 边缘节点Kubernetes配置
-edge_node_configuration: 
-  kubernetes: 
+edge_node_configuration:
+  kubernetes:
     version: "v1.28.0"
     runtime: containerd
     cni: calico
 
-  flink_edge: 
+  flink_edge:
     version: "1.18.0"
     task_managers: 8
     slots_per_tm: 4
     memory_per_tm: "16g"
 
-  kafka_local: 
+  kafka_local:
     version: "3.6.0"
     brokers: 3
     replication_factor: 3
     partitions: 12
 
-  redis: 
+  redis:
     version: "7.2"
     mode: cluster
     nodes: 6
     max_memory: "48gb"
 
-  monitoring: 
+  monitoring:
     prometheus: true
     grafana: true
     jaeger: true

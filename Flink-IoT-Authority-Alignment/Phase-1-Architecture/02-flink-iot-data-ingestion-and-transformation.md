@@ -8,6 +8,42 @@
 
 ---
 
+## 目录
+
+- [Flink IoT 数据摄取与转换](#flink-iot-数据摄取与转换)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 Source Connector 定义](#11-source-connector-定义)
+    - [1.2 Data Format 定义](#12-data-format-定义)
+    - [1.3 Schema Registry 定义](#13-schema-registry-定义)
+    - [1.4 水印策略定义](#14-水印策略定义)
+    - [1.5 数据富化 (Data Enrichment) 定义](#15-数据富化-data-enrichment-定义)
+  - [2. Kafka 集成: Flink SQL Kafka Connector](#2-kafka-集成-flink-sql-kafka-connector)
+    - [2.1 Connector 配置全景](#21-connector-配置全景)
+    - [2.2 Source 配置详解](#22-source-配置详解)
+    - [2.3 Sink 配置详解](#23-sink-配置详解)
+  - [3. 数据格式处理](#3-数据格式处理)
+    - [3.1 JSON 格式处理](#31-json-格式处理)
+    - [3.2 Avro 格式处理](#32-avro-格式处理)
+    - [3.3 Protobuf 格式处理](#33-protobuf-格式处理)
+    - [3.4 格式对比与选型](#34-格式对比与选型)
+  - [4. Schema 管理: Schema Registry 集成](#4-schema-管理-schema-registry-集成)
+    - [4.1 Confluent Schema Registry 集成](#41-confluent-schema-registry-集成)
+    - [4.2 Schema 演进策略](#42-schema-演进策略)
+  - [5. 数据清洗、转换与富化](#5-数据清洗转换与富化)
+    - [5.1 数据清洗](#51-数据清洗)
+    - [5.2 数据转换](#52-数据转换)
+    - [5.3 设备注册表 (Device Registry)](#53-设备注册表-device-registry)
+    - [5.4 数据富化 JOIN](#54-数据富化-join)
+  - [6. 实例验证](#6-实例验证)
+    - [6.1 完整 SQL 示例汇总](#61-完整-sql-示例汇总)
+    - [6.2 数据摄取流程的形式化描述](#62-数据摄取流程的形式化描述)
+  - [7. 可视化](#7-可视化)
+    - [7.1 IoT 数据摄取架构图](#71-iot-数据摄取架构图)
+    - [7.2 数据流转换流程图](#72-数据流转换流程图)
+  - [8. 引用参考](#8-引用参考)
+  - [附录 A: 配置速查表](#附录-a-配置速查表)
+
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 Source Connector 定义

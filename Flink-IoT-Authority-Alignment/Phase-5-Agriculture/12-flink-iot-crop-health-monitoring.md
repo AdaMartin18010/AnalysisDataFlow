@@ -8,6 +8,34 @@
 
 ---
 
+## 目录
+
+- [Flink-IoT 作物健康监测与病虫害预警](#flink-iot-作物健康监测与病虫害预警)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 作物健康评分模型](#11-作物健康评分模型)
+    - [1.2 病虫害传播预测模型](#12-病虫害传播预测模型)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [2.1 NDVI指数的时空稳定性](#21-ndvi指数的时空稳定性)
+    - [2.2 病虫害预警提前量边界](#22-病虫害预警提前量边界)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 多源数据融合关系](#31-多源数据融合关系)
+    - [3.2 与灌溉系统的反馈关系](#32-与灌溉系统的反馈关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 多光谱 vs RGB成像的经济性论证](#41-多光谱-vs-rgb成像的经济性论证)
+    - [4.2 病虫害早期检测的敏感性分析](#42-病虫害早期检测的敏感性分析)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 健康评分模型验证](#51-健康评分模型验证)
+    - [5.2 病虫害传播预测模型校准](#52-病虫害传播预测模型校准)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 NDVI指数实时计算](#61-ndvi指数实时计算)
+    - [6.2 多光谱传感器数据处理](#62-多光谱传感器数据处理)
+    - [6.3 病虫害早期预警CEP模式](#63-病虫害早期预警cep模式)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 作物健康监测数据流架构](#71-作物健康监测数据流架构)
+    - [7.2 病虫害预警决策树](#72-病虫害预警决策树)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 作物健康评分模型
@@ -54,12 +82,15 @@ $$\frac{\partial I}{\partial t} = D \nabla^2 I + \beta S I - \gamma I + R_{env}(
 - $R_{env}(\mathcal{W})$: 环境驱动项，与气象条件相关
 
 **环境驱动函数**:
-$$R_{env} = f(T, RH, LW) = \begin{cases}
+$$
+R_{env} = f(T, RH, LW) = \begin{cases}
 +\alpha & \text{if } T_{min} < T < T_{opt} \land RH > RH_{threshold} \\
 0 & \text{otherwise}
-\end{cases}$$
+\end{cases}
+$$
 
 其中：
+
 - $T_{min}, T_{opt}$: 病虫害发育最低/最适温度
 - $RH_{threshold}$: 临界相对湿度（通常 > 85%）
 - $LW$: 叶片湿润时长（Leaf Wetness Duration）
@@ -82,6 +113,7 @@ $$DRI = \int_{t_0}^{t} f(T(\tau), RH(\tau)) \cdot I_{initial} \cdot e^{\beta \ta
 $$n \geq \frac{4\sigma^2_{NDVI}}{\epsilon^2} \cdot \left(\frac{A}{\lambda^2}\right)^{2/d}$$
 
 其中：
+
 - $\sigma^2_{NDVI}$: NDVI场方差（通常 0.01-0.04）
 - $\epsilon$: 允许误差（如 0.05）
 - $d$: 空间维度（通常为 2）
@@ -100,11 +132,13 @@ $$n \geq \frac{4 \times 0.02}{0.0025} \cdot \frac{6.67 \times 10^6}{2500} \appro
 $$t_{warn} = \frac{L^2}{4D \cdot \ln(I_{threshold}/I_0)} - t_{detect}$$
 
 其中：
+
 - $I_0$: 初始感染密度
 - $I_{threshold}$: 可检测阈值（早期症状显现）
 - $t_{detect}$: 检测系统响应时间
 
 **典型参数**（以小麦锈病为例）：
+
 - $D \approx 100$ m²/day
 - $\beta \approx 0.3$ /day
 - $I_{threshold}/I_0 \approx 10$
@@ -197,6 +231,7 @@ graph TB
 | 混合方案 | ￥80万 | ￥30万 | 分层覆盖 | 推荐方案 |
 
 **推荐方案**: 混合部署
+
 - 全生育期：固定多光谱节点（5套×￥10万）+ 定期无人机多光谱巡测
 - 关键生育期（开花、灌浆）：高光谱精细化诊断外包
 - 日常监测：RGB摄像头网格（每100亩1套）
@@ -228,6 +263,7 @@ graph TB
 $$r = \frac{\sum(\mathcal{H}_i - \bar{\mathcal{H}})(Y_i - \bar{Y})}{\sqrt{\sum(\mathcal{H}_i - \bar{\mathcal{H}})^2 \sum(Y_i - \bar{Y})^2}}$$
 
 假设检验：
+
 - $H_0: \rho = 0$（无相关）
 - $H_1: \rho > 0$（正相关）
 
@@ -236,6 +272,7 @@ $$r = \frac{\sum(\mathcal{H}_i - \bar{\mathcal{H}})(Y_i - \bar{Y})}{\sqrt{\sum(\
 若 $t > t_{0.95, n-2}$，拒绝 $H_0$。
 
 **实证结果**（基于玉米试验数据 $n=120$）：
+
 - $r = 0.82$
 - $p < 0.001$
 - 结论：健康评分与产量显著正相关
@@ -722,21 +759,13 @@ graph TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Rouse, J.W., et al., "Monitoring vegetation systems in the Great Plains with ERTS", NASA SP-351, 1974.
 
-[^2]: Gitelson, A.A., et al., "Detection of red edge position and chlorophyll content by reflectance measurements near 700 nm", Journal of Plant Physiology, 1993.
 
-[^3]: Idso, S.B., et al., "Normalizing the stress-degree-day parameter for environmental variability", Agricultural Meteorology, 1981.
 
-[^4]: Kermack, W.O., and McKendrick, A.G., "A contribution to the mathematical theory of epidemics", Proceedings of the Royal Society A, 1927.
 
-[^5]: PMC, "Remote Sensing in Precision Agriculture: 2025 Review", 2025.
 
-[^6]: MDPI Remote Sensing, "Crop Disease Detection Using Hyperspectral Imaging and Deep Learning", 2024.
 
-[^7]: Apache Flink Documentation, "Geospatial Functions", https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/geospatial/
 
-[^8]: AWS, "Using SageMaker for Crop Health Analysis", AWS Solutions, 2025.
 
 ---
 
