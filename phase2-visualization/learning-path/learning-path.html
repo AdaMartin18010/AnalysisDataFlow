@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习路径推荐 - AnalysisDataFlow</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { opacity: 0.9; font-size: 1.1em; }
+        
+        .selection-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .selection-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .role-btn {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .role-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        .role-btn.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .role-btn .icon { font-size: 2em; margin-bottom: 10px; }
+        .role-btn h3 { color: #333; margin-bottom: 5px; }
+        .role-btn p { color: #666; font-size: 0.9em; }
+        
+        .path-container {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .path-container.active { display: block; }
+        
+        .path-step {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .path-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: #e0e0e0;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+        .step-content { flex: 1; }
+        .step-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .step-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .resource-list {
+            list-style: none;
+        }
+        .resource-list li {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .resource-list li::before {
+            content: '📄';
+            margin-right: 10px;
+        }
+        .resource-list li a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .resource-list li a:hover { text-decoration: underline; }
+        
+        .progress-bar {
+            margin-top: 10px;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 AnalysisDataFlow 学习路径</h1>
+            <p class="subtitle">根据你的角色和目标，定制专属学习路线</p>
+        </header>
+        
+        <div class="selection-card">
+            <h2>选择你的角色</h2>
+            <div class="role-grid">
+                <button class="role-btn" onclick="showPath('researcher')">
+                    <div class="icon">🎓</div>
+                    <h3>学术研究者</h3>
+                    <p>深入理解流处理理论基础</p>
+                </button>
+                <button class="role-btn" onclick="showPath('engineer')">
+                    <div class="icon">⚙️</div>
+                    <h3>系统工程师</h3>
+                    <p>掌握流处理系统设计实践</p>
+                </button>
+                <button class="role-btn" onclick="showPath('developer')">
+                    <div class="icon">💻</div>
+                    <h3>开发工程师</h3>
+                    <p>学习Flink开发与调优</p>
+                </button>
+                <button class="role-btn" onclick="showPath('architect')">
+                    <div class="icon">🏗️</div>
+                    <h3>架构师</h3>
+                    <p>构建企业级流处理平台</p>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 学术研究者路径 -->
+        <div id="path-researcher" class="path-container">
+            <h2>🎓 学术研究者学习路径</h2>
+            
+            <div class="path-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>流处理理论基础</h3>
+                    <p>建立扎实的理论基础，理解流计算的本质</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Struct/01.01-lambda-calculus-foundation.md">Lambda演算基础</a></li>
+                        <li><a href="../../Struct/01.02-process-calculus-streaming.md">进程演算与流处理</a></li>
+                        <li><a href="../../Struct/01.03-dataflow-model-formalization.md">Dataflow模型形式化</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 30%"></div></div>
+                </div>
+            </div>
+            
+            <div class="path-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>一致性模型</h3>
+                    <p>深入理解流处理中的各种一致性保证</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Struct/02.01-determinism-in-streaming.md">流处理确定性</a></li>
+                        <li><a href="../../Struct/02.02-consistency-hierarchy.md">一致性层次结构</a></li>
+                        <li><a href="../../Struct/02.03-watermark-monotonicity.md">Watermark单调性定理</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+            
+            <div class="path-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>形式化验证</h3>
+                    <p>学习使用形式化方法验证流处理系统</p>
+                    <ul class="resource-list">
+                        <li><a href="../../phase2-formal-proofs/">形式化证明库</a></li>
+                        <li><a href="../../Struct/04.01-flink-checkpoint-correctness.md">Checkpoint正确性</a></li>
+                        <li><a href="../../Struct/04.02-flink-exactly-once-correctness.md">Exactly-Once语义</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 系统工程师路径 -->
+        <div id="path-engineer" class="path-container">
+            <h2>⚙️ 系统工程师学习路径</h2>
+            
+            <div class="path-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>流处理设计模式</h3>
+                    <p>掌握常用的流处理设计模式</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Knowledge/03-pattern-catalog/">流处理模式目录</a></li>
+                        <li><a href="../../Knowledge/03-pattern-catalog/03.01-event-time-processing.md">事件时间处理</a></li>
+                        <li><a href="../../Knowledge/03-pattern-catalog/03.02-stateful-computation.md">有状态计算</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div>
+                </div>
+            </div>
+            
+            <div class="path-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>系统架构</h3>
+                    <p>学习构建高可用、高性能的流处理系统</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Knowledge/05-deployment-architectures/">部署架构</a></li>
+                        <li><a href="../../Knowledge/06-observability/">可观测性</a></li>
+                        <li><a href="../../Knowledge/07-troubleshooting/">故障排查</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 开发工程师路径 -->
+        <div id="path-developer" class="path-container">
+            <h2>💻 开发工程师学习路径</h2>
+            
+            <div class="path-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Flink基础</h3>
+                    <p>快速上手Flink开发</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Flink/01-getting-started/">Flink入门</a></li>
+                        <li><a href="../../Flink/02-datastream-api/">DataStream API</a></li>
+                        <li><a href="../../Flink/03-state-management/">状态管理</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+                </div>
+            </div>
+            
+            <div class="path-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>高级特性</h3>
+                    <p>掌握Flink高级功能</p>
+                    <ul class="resource-list">
+                        <li><a href="../../Flink/04-window-operations/">窗口操作</a></li>
+                        <li><a href="../../Flink/05-cep/">复杂事件处理(CEP)</a></li>
+                        <li><a href="../../Flink/06-connectors/">连接器</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 架构师路径 -->
+        <div id="path-architect" class="path-container">
+            <h2>🏗️ 架构师学习路径</h2>
+            
+            <div class="path-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>整体架构</h3>
+                    <p>理解流处理平台整体架构</p>
+                    <ul class="resource-list">
+                        <li><a href="../../ARCHITECTURE.md">项目架构</a></li>
+                        <li><a href="../../DEPLOYMENT-ARCHITECTURES.md">部署架构</a></li>
+                        <li><a href="../../Knowledge/3.10-flink-production-checklist.md">生产检查清单</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 25%"></div></div>
+                </div>
+            </div>
+            
+            <div class="path-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>最佳实践</h3>
+                    <p>学习企业级最佳实践</p>
+                    <ul class="resource-list">
+                        <li><a href="../../BEST-PRACTICES.md">最佳实践</a></li>
+                        <li><a href="../../CASE-STUDIES.md">案例研究</a></li>
+                        <li><a href="../../TROUBLESHOOTING.md">故障排查指南</a></li>
+                    </ul>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>AnalysisDataFlow - Phase 2 学习路径推荐系统</p>
+        </footer>
+    </div>
+    
+    <script>
+        function showPath(role) {
+            // 隐藏所有路径
+            document.querySelectorAll('.path-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 移除所有按钮active状态
+            document.querySelectorAll('.role-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 显示选中的路径
+            document.getElementById('path-' + role).classList.add('active');
+            
+            // 添加按钮active状态
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

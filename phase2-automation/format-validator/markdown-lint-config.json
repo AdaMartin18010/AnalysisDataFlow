@@ -1,0 +1,208 @@
+{
+  "comment": "Markdown Lint Configuration - Phase 2 Task 5-2",
+  "version": "1.0",
+  "rules": {
+    "MD001": {
+      "comment": "Heading levels should only increment by one level at a time",
+      "enabled": true
+    },
+    "MD003": {
+      "comment": "Heading style",
+      "enabled": true,
+      "style": "atx"
+    },
+    "MD004": {
+      "comment": "Unordered list style",
+      "enabled": true,
+      "style": "dash"
+    },
+    "MD005": {
+      "comment": "Inconsistent indentation for list items at the same level",
+      "enabled": true
+    },
+    "MD006": {
+      "comment": "Consider starting bulleted lists at the beginning of the line",
+      "enabled": true
+    },
+    "MD007": {
+      "comment": "Unordered list indentation",
+      "enabled": true,
+      "indent": 2
+    },
+    "MD009": {
+      "comment": "Trailing spaces",
+      "enabled": true
+    },
+    "MD010": {
+      "comment": "Hard tabs",
+      "enabled": true
+    },
+    "MD011": {
+      "comment": "Reversed link syntax",
+      "enabled": true
+    },
+    "MD012": {
+      "comment": "Multiple consecutive blank lines",
+      "enabled": true,
+      "maximum": 2
+    },
+    "MD013": {
+      "comment": "Line length",
+      "enabled": true,
+      "line_length": 100,
+      "heading_line_length": 80,
+      "code_block_line_length": 120,
+      "tables": false
+    },
+    "MD014": {
+      "comment": "Dollar signs used before commands without showing output",
+      "enabled": false
+    },
+    "MD018": {
+      "comment": "No space after hash on atx style heading",
+      "enabled": true
+    },
+    "MD019": {
+      "comment": "Multiple spaces after hash on atx style heading",
+      "enabled": true
+    },
+    "MD022": {
+      "comment": "Headings should be surrounded by blank lines",
+      "enabled": true,
+      "lines_above": 1,
+      "lines_below": 1
+    },
+    "MD023": {
+      "comment": "Headings must start at the beginning of the line",
+      "enabled": true
+    },
+    "MD024": {
+      "comment": "Multiple headings with the same content",
+      "enabled": true,
+      "siblings_only": true
+    },
+    "MD025": {
+      "comment": "Multiple top level headings in the same document",
+      "enabled": true,
+      "level": 1
+    },
+    "MD026": {
+      "comment": "Trailing punctuation in heading",
+      "enabled": true,
+      "punctuation": ".,;:!"
+    },
+    "MD027": {
+      "comment": "Multiple spaces after blockquote symbol",
+      "enabled": true
+    },
+    "MD028": {
+      "comment": "Blank line inside blockquote",
+      "enabled": true
+    },
+    "MD029": {
+      "comment": "Ordered list item prefix",
+      "enabled": true,
+      "style": "one_or_ordered"
+    },
+    "MD030": {
+      "comment": "Spaces after list markers",
+      "enabled": true,
+      "ul_single": 1,
+      "ol_single": 1,
+      "ul_multi": 1,
+      "ol_multi": 1
+    },
+    "MD031": {
+      "comment": "Fenced code blocks should be surrounded by blank lines",
+      "enabled": true
+    },
+    "MD032": {
+      "comment": "Lists should be surrounded by blank lines",
+      "enabled": true
+    },
+    "MD033": {
+      "comment": "Inline HTML",
+      "enabled": false
+    },
+    "MD034": {
+      "comment": "Bare URL used",
+      "enabled": true
+    },
+    "MD035": {
+      "comment": "Horizontal rule style",
+      "enabled": true,
+      "style": "consistent"
+    },
+    "MD036": {
+      "comment": "Emphasis used instead of a heading",
+      "enabled": false
+    },
+    "MD037": {
+      "comment": "Spaces inside emphasis markers",
+      "enabled": true
+    },
+    "MD038": {
+      "comment": "Spaces inside code span elements",
+      "enabled": true
+    },
+    "MD039": {
+      "comment": "Spaces inside link text",
+      "enabled": true
+    },
+    "MD040": {
+      "comment": "Fenced code blocks should have a language specified",
+      "enabled": true
+    },
+    "MD041": {
+      "comment": "First line in file should be a top level heading",
+      "enabled": true,
+      "level": 1
+    },
+    "MD042": {
+      "comment": "No empty links",
+      "enabled": true
+    },
+    "MD043": {
+      "comment": "Required heading structure",
+      "enabled": false
+    },
+    "MD044": {
+      "comment": "Proper names should have the correct capitalization",
+      "enabled": false
+    },
+    "MD045": {
+      "comment": "Images should have alternate text (alt text)",
+      "enabled": true
+    },
+    "MD046": {
+      "comment": "Code block style",
+      "enabled": true,
+      "style": "fenced"
+    },
+    "MD047": {
+      "comment": "File should end with a single newline character",
+      "enabled": true
+    },
+    "MD048": {
+      "comment": "Code fence style",
+      "enabled": true,
+      "style": "backtick"
+    },
+    "MD049": {
+      "comment": "Emphasis style should be consistent",
+      "enabled": true,
+      "style": "asterisk"
+    },
+    "MD050": {
+      "comment": "Strong style should be consistent",
+      "enabled": true,
+      "style": "asterisk"
+    }
+  },
+  "ignores": [
+    "node_modules",
+    "learning-platform/node_modules",
+    "archive",
+    "**/*.min.md"
+  ]
+}

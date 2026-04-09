@@ -1,0 +1,213 @@
+# GitHub Actions CI/CD Pipeline - Phase 2 Task 5-6
+# File: .github/workflows/quality-gate.yml
+
+name: Quality Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  COQ_VERSION: '8.17'
+
+jobs:
+  # Job 1: Markdown Lint and Link Check
+  markdown-quality:
+    name: Markdown Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+        
+      - name: Run markdown lint
+        run: |
+          markdownlint '**/*.md' \
+            --config .markdownlint.json \
+            --ignore node_modules \
+            --ignore 'learning-platform/node_modules'
+            
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install dependencies
+        run: |
+          pip install -r phase2-automation/requirements.txt
+          
+      - name: Run link checker
+        run: |
+          python phase2-automation/link-checker/link_checker.py \
+            --output link-check-report.json
+            
+      - name: Upload link check report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: link-check-report
+          path: link-check-report.json
+
+  # Job 2: Cross-reference Validation
+  cross-ref-check:
+    name: Cross-Reference Check
+    runs-on: ubuntu-latest
+    needs: markdown-quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Run cross-reference checker
+        run: |
+          python phase2-automation/cross-ref-checker/check_refs.py \
+            --output cross-ref-report.json
+            
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cross-ref-report
+          path: cross-ref-report.json
+
+  # Job 3: Coq Proof Compilation
+  coq-compilation:
+    name: Coq Proof Compilation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Coq
+        uses: coq-community/setup-coq@v1
+        with:
+          coq-version: ${{ env.COQ_VERSION }}
+          
+      - name: Compile Coq proofs
+        run: |
+          cd phase2-formal-proofs/coq
+          coq_makefile -f _CoqProject -o Makefile
+          make -j$(nproc)
+          
+      - name: Generate compilation report
+        run: |
+          echo "# Coq Compilation Report" > coq-report.md
+          echo "Date: $(date)" >> coq-report.md
+          echo "" >> coq-report.md
+          echo "## Compilation Status: SUCCESS" >> coq-report.md
+          
+      - name: Upload Coq report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coq-compilation-report
+          path: coq-report.md
+
+  # Job 4: TLA+ Model Checking
+  tla-model-check:
+    name: TLA+ Model Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup TLA+ Tools
+        run: |
+          wget https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar
+          
+      - name: Run model checker
+        run: |
+          cd phase2-formal-proofs/tla
+          for model in *.tla; do
+            echo "Checking $model..."
+            java -cp tla2tools.jar tlc2.TLC "$model" -deadlock
+          done
+          
+      - name: Upload TLA+ report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tla-model-check-report
+          path: phase2-formal-proofs/tla/*.out
+
+  # Job 5: Build and Deploy
+  build-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    needs: [markdown-quality, cross-ref-check, coq-compilation, tla-model-check]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build static site
+        run: npm run build
+        
+      - name: Deploy to CDN
+        run: |
+          # Deployment script
+          echo "Deploying to CDN..."
+          
+      - name: Purge CDN cache
+        run: |
+          # Purge cache
+          echo "Purging CDN cache..."
+
+  # Job 6: Generate Summary Report
+  summary:
+    name: Generate Summary Report
+    runs-on: ubuntu-latest
+    needs: [markdown-quality, cross-ref-check, coq-compilation, tla-model-check]
+    if: always()
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        
+      - name: Generate summary
+        run: |
+          echo "# Quality Gate Summary" > summary.md
+          echo "Date: $(date)" >> summary.md
+          echo "" >> summary.md
+          echo "| Check | Status |" >> summary.md
+          echo "|-------|--------|" >> summary.md
+          echo "| Markdown Lint | ${{ needs.markdown-quality.result }} |" >> summary.md
+          echo "| Cross-Reference | ${{ needs.cross-ref-check.result }} |" >> summary.md
+          echo "| Coq Compilation | ${{ needs.coq-compilation.result }} |" >> summary.md
+          echo "| TLA+ Model Check | ${{ needs.tla-model-check.result }} |" >> summary.md
+          
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gate-summary
+          path: summary.md
