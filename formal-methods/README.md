@@ -98,8 +98,19 @@ formal-methods/
 │   ├── 01-key-theorems.md               # 关键定理汇总
 │   └── 02-glossary.md                   # 术语表
 │
-└── 99-references/                       # 参考文献
-    └── bibliography.md                  # 完整参考文献
+└── 99-references/                       # 参考文献网络
+    ├── bibliography.md                  # 完整参考文献索引
+    ├── classical-papers.md              # 经典论文分类
+    ├── surveys.md                       # 综述文献
+    ├── books.md                         # 经典书籍
+    ├── conferences.md                   # 学术会议
+    ├── online-resources.md              # 在线资源
+    └── by-topic/                        # 按主题分类
+        ├── README.md
+        ├── model-checking.md
+        ├── theorem-proving.md
+        ├── process-algebra.md
+        └── distributed-systems.md
 ```
 
 ---

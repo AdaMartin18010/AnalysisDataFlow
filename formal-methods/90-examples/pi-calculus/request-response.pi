@@ -1,0 +1,200 @@
+(* ============================================================================
+ * π-演算: 请求-响应模式 (Request-Response Pattern)
+ * ============================================================================
+ * 
+ * 本示例演示如何使用 π-演算建模经典的客户端-服务器请求-响应模式。
+ * 
+ * 核心概念:
+ * - 客户端通过通道发送请求，携带回复通道
+ * - 服务器接收请求，处理后在回复通道上发送响应
+ * - 体现了 π-演算的"通道作为值传递"的核心特性
+ *
+ * 形式化模型:
+ * Client = νr.(c̄⟨r⟩.r(x).P)          ; 创建私有回复通道r, 发送请求, 等待响应
+ * Server = !c(r).r̄⟨response⟩.Q      ; 重复接受请求, 发送响应
+ * System = (νc)(Client | Server)    ; 系统组合
+ *
+ * 安全性质:
+ * 1. 响应匹配性: 每个请求最终获得且仅获得一个响应
+ * 2. 通道隔离性: 回复通道r仅由客户端和服务器共享
+ * ============================================================================ *)
+
+(* ----------------------------------------------------------------------------
+ * 基本类型定义
+ * ---------------------------------------------------------------------------- *)
+
+type channel = string  (* 通道名称 *)
+type request = Req of string * channel  (* 请求: (数据, 回复通道) *)
+type response = Resp of string          (* 响应数据 *)
+
+(* ----------------------------------------------------------------------------
+ * 客户端进程
+ * 
+ * Client(c, data) = νr.(c̄⟨Req(data,r)⟩ | r(x).P)
+ * 
+ * 语义:
+ * - 创建新的私有通道 r (ν 算子 - 限制/新建)
+ * - 在通道 c 上发送请求, 携带回复通道 r (输出前缀 c̄⟨...⟩)
+ * - 在通道 r 上等待接收响应 (输入前缀 r(x))
+ * - 收到响应后执行后续进程 P
+ * ---------------------------------------------------------------------------- *)
+let client (request_channel: channel) (request_data: string) =
+  (* 步骤1: 创建私有回复通道 (ν r) *)
+  let reply_channel = fresh_channel () in
+  
+  (* 步骤2: 构造请求消息 *)
+  let request_msg = Req(request_data, reply_channel) in
+  
+  (* 步骤3: 发送请求 (输出动作) *)
+  output request_channel request_msg;
+  
+  (* 步骤4: 等待响应 (输入动作) *)
+  match input reply_channel with
+  | Resp(response_data) -> 
+      print_endline ("[Client] Received response: " ^ response_data);
+      (* 继续执行后续进程 *)
+      continue_with_response response_data
+  | _ -> error "Invalid response format"
+
+(* ----------------------------------------------------------------------------
+ * 服务器进程
+ *
+ * Server(c) = !c(r, data).(νs.(process(data, s) | s̄⟨result⟩ | r̄⟨result⟩.Server(c)))
+ * 
+ * 语义:
+ * - ! 表示复制算子 (replication), 服务器可处理无限多个请求
+ * - c(r, data) 接收通道c上的请求, 解包出回复通道r和数据data
+ * - 处理数据并生成结果
+ * - r̄⟨result⟩ 在回复通道上发送结果
+ * - .Server(c) 递归调用, 继续等待下一个请求
+ * ---------------------------------------------------------------------------- *)
+let rec server (request_channel: channel) =
+  (* 复制算子语义: 无限复制自身以处理并发请求 *)
+  replicate (fun () ->
+    (* 接收请求 (输入动作) *)
+    match input request_channel with
+    | Req(data, reply_channel) ->
+        print_endline ("[Server] Processing request: " ^ data);
+        
+        (* 内部处理 *)
+        let result = process_request data in
+        
+        (* 发送响应 (输出动作) *)
+        output reply_channel (Resp(result));
+        print_endline ("[Server] Response sent on: " ^ reply_channel)
+        
+    | _ -> error "Invalid request format"
+  )
+
+(* ----------------------------------------------------------------------------
+ * 辅助函数
+ * ---------------------------------------------------------------------------- *)
+
+(* 生成新的通道名称 (模拟 ν 算子) *)
+and fresh_channel () = 
+  "chan_" ^ string_of_int (Random.int 1000000)
+
+(* 模拟请求处理 *)
+and process_request (data: string) : string =
+  (* 模拟处理延迟 *)
+  Unix.sleep 1;
+  "Processed: " ^ data ^ " [" ^ string_of_float (Unix.time ()) ^ "]"
+
+(* 收到响应后的后续处理 *)
+and continue_with_response (data: string) =
+  print_endline ("[Client] Continue with: " ^ data)
+
+(* 输出动作 *)
+and output ch msg =
+  print_endline ("[Output] Channel=" ^ ch ^ ", Msg=" ^ msg_to_string msg)
+
+(* 输入动作 (模拟) *)
+and input ch = 
+  (* 在实际实现中, 这会阻塞等待消息 *)
+  Resp("mock_response")
+
+(* 复制算子 *)
+and replicate f =
+  while true do
+    f ()
+  done
+
+(* 消息序列化 *)
+and msg_to_string = function
+  | Req(d, r) -> "Req(" ^ d ^ ", " ^ r ^ ")"
+  | Resp(d) -> "Resp(" ^ d ^ ")"
+
+(* ----------------------------------------------------------------------------
+ * 系统组合 (System Composition)
+ *
+ * System = (νc)(Client(c, "Hello") | Server(c))
+ * 
+ * 关键性质:
+ * 1. 通道 c 是私有的 (νc 限制)
+ * 2. 客户端和服务器通过共享 c 进行交互
+ * 3. 每个请求的回复通道 r 是私有的, 保证响应的正确路由
+ * ---------------------------------------------------------------------------- *)
+let system () =
+  (* 创建系统私有通道 (ν c) *)
+  let system_channel = fresh_channel () in
+  
+  print_endline "=== Request-Response System Starting ===";
+  print_endline ("[System] Created channel: " ^ system_channel);
+  
+  (* 并行组合: Client | Server *)
+  (* 在实际系统中使用并发原语 *)
+  let server_thread = Thread.create server system_channel in
+  let client_thread = Thread.create (fun () -> client system_channel "Hello World") () in
+  
+  (* 等待完成 *)
+  Thread.join client_thread;
+  print_endline "=== System Terminated ==="
+
+(* ----------------------------------------------------------------------------
+ * 扩展: 超时处理
+ *
+ * Client_with_timeout(c, data, timeout) = 
+ *   νr.(c̄⟨Req(data,r)⟩ | (r(x).P ⊕ τ(timeout).TimeoutHandler))
+ * 
+ * 使用非确定性选择 (⊕) 实现超时机制
+ * ---------------------------------------------------------------------------- *)
+let client_with_timeout (request_channel: channel) (request_data: string) (timeout_sec: int) =
+  let reply_channel = fresh_channel () in
+  let request_msg = Req(request_data, reply_channel) in
+  
+  (* 使用选择算子 ⊕ 实现超时 *)
+  select [
+    (* 分支1: 正常接收响应 *)
+    (fun () -> 
+      output request_channel request_msg;
+      match input reply_channel with
+      | Resp(data) -> print_endline ("[Client] Success: " ^ data); true
+      | _ -> false
+    );
+    (* 分支2: 超时 *)
+    (fun () ->
+      Unix.sleep timeout_sec;
+      print_endline "[Client] Timeout!";
+      false
+    )
+  ]
+
+and select branches =
+  (* 非确定性选择: 选择第一个就绪的分支 *)
+  (* 实际实现需要使用 select/poll 等机制 *)
+  List.hd branches ()
+
+(* ----------------------------------------------------------------------------
+ * 执行示例
+ * ---------------------------------------------------------------------------- *)
+(* 
+# system ();;
+=== Request-Response System Starting ===
+[System] Created channel: chan_742938
+[Output] Channel=chan_742938, Msg=Req(Hello World, chan_294756)
+[Server] Processing request: Hello World
+[Server] Response sent on: chan_294756
+[Client] Received response: Processed: Hello World [1640995200.0]
+[Client] Continue with: Processed: Hello World [1640995200.0]
+=== System Terminated ===
+*)

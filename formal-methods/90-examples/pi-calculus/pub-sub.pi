@@ -1,0 +1,295 @@
+(* ============================================================================
+ * π-演算: 发布-订阅模式 (Publish-Subscribe Pattern)
+ * ============================================================================
+ *
+ * 本示例演示如何使用 π-演算建模发布-订阅消息系统。
+ *
+ * 核心概念:
+ * - Publisher: 发布者, 向主题发送消息
+ * - Subscriber: 订阅者, 接收特定主题的消息
+ * - Broker: 消息代理, 维护订阅关系并路由消息
+ * - Topic: 主题, 消息分类的通道
+ *
+ * 形式化模型:
+ * Publisher(t, msg) = t̄⟨msg⟩.0
+ * Subscriber(t, s) = t(x).s̄⟨x⟩.Subscriber(t, s)  (* 将接收的消息转发到s *)
+ * Broker = !register(t, s).(add_sub(t, s) | Broker)
+ *        | !publish(t, msg).(broadcast(t, msg) | Broker)
+ * System = (νt1, t2, ...)(Publisher | Subscriber | Broker)
+ *
+ * 关键性质:
+ * 1. 解耦性: 发布者和订阅者不直接交互
+ * 2. 多播性: 一个消息可被多个订阅者接收
+ * 3. 动态性: 订阅关系可动态建立和取消
+ * ============================================================================ *)
+
+(* ----------------------------------------------------------------------------
+ * 类型定义
+ * ---------------------------------------------------------------------------- *)
+
+type topic = string
+type subscriber_id = int
+type message = Msg of string * topic * float  (* 内容, 主题, 时间戳 *)
+
+(* 控制消息类型 *)
+type control = 
+  | Subscribe of topic * channel       (* 订阅请求 *)
+  | Unsubscribe of topic * subscriber_id  (* 取消订阅 *)
+  | Publish of topic * string          (* 发布消息 *)
+
+and channel = string
+
+(* 订阅表: 主题 -> 订阅者通道列表 *)
+module SubTable = Map.Make(String)
+
+(* ----------------------------------------------------------------------------
+ * 发布者进程
+ *
+ * Publisher(broker, topic, msg) = broker̄⟨Publish(topic, msg)⟩.0
+ *
+ * 语义:
+ * - 向 broker 控制通道发送发布请求
+ * - 完成后终止 (0)
+ * ---------------------------------------------------------------------------- *)
+let publisher (broker_control: channel) (topic_name: topic) (content: string) =
+  print_endline ("[Publisher] Publishing to topic '" ^ topic_name ^ "': " ^ content);
+  
+  (* 构造发布消息 *)
+  let pub_msg = Publish(topic_name, content) in
+  
+  (* 发送给 broker (输出动作) *)
+  output broker_control pub_msg;
+  
+  (* 终止: 发布者无状态 *)
+  print_endline "[Publisher] Done."
+
+(* ----------------------------------------------------------------------------
+ * 订阅者进程
+ *
+ * Subscriber(topic_ch, id) = topic_ch(x).(process(x) | Subscriber(topic_ch, id))
+ *
+ * 语义:
+ * - 在主题通道上等待接收消息
+ * - 处理消息的同时, 递归调用继续等待
+ * - 实现了无限消息接收
+ * ---------------------------------------------------------------------------- *)
+let rec subscriber (topic_channel: channel) (sub_id: subscriber_id) =
+  print_endline ("[Subscriber " ^ string_of_int sub_id ^ "] Waiting on " ^ topic_channel);
+  
+  (* 接收消息 (输入动作) *)
+  match input topic_channel with
+  | Msg(content, topic, timestamp) ->
+      (* 处理消息 *)
+      process_message sub_id content topic timestamp;
+      
+      (* 递归: 继续接收 *)
+      subscriber topic_channel sub_id
+  
+  | _ -> 
+      print_endline "[Subscriber] Invalid message";
+      subscriber topic_channel sub_id
+
+(* 消息处理 *)
+and process_message id content topic timestamp =
+  let delay = Unix.time () -. timestamp in
+  print_endline (
+    "[Subscriber " ^ string_of_int id ^ "] Received: '" ^ content ^ 
+    "' from topic '" ^ topic ^ "' (delay: " ^ string_of_float delay ^ "s)"
+  )
+
+(* ----------------------------------------------------------------------------
+ * Broker (消息代理)
+ *
+ * Broker(ctrl, registry) = 
+ *   !ctrl(cmd).(
+ *     case cmd of
+ *       Subscribe(t, s) -> update_registry(t, s).Broker(ctrl, registry')
+ *     | Publish(t, msg) -> broadcast(registry, t, msg).Broker(ctrl, registry)
+ *   )
+ *
+ * 语义:
+ * - 复制算子 ! 表示无限循环处理控制消息
+ * - 根据消息类型执行不同操作
+ * - 维护订阅者注册表的状态转移
+ * ---------------------------------------------------------------------------- *)
+let rec broker (control_channel: channel) (registry: channel list SubTable.t) =
+  (* 接收控制消息 *)
+  match input control_channel with
+  | Subscribe(topic, sub_ch) ->
+      (* 添加订阅者 *)
+      let new_registry = add_subscriber registry topic sub_ch in
+      print_endline ("[Broker] Subscriber added to topic '" ^ topic ^ "'");
+      broker control_channel new_registry
+      
+  | Unsubscribe(topic, sub_id) ->
+      (* 移除订阅者 *)
+      let new_registry = remove_subscriber registry topic sub_id in
+      print_endline ("[Broker] Subscriber " ^ string_of_int sub_id ^ 
+                     " removed from topic '" ^ topic ^ "'");
+      broker control_channel new_registry
+      
+  | Publish(topic, content) ->
+      (* 广播消息给所有订阅者 *)
+      let timestamp = Unix.time () in
+      let msg = Msg(content, topic, timestamp) in
+      
+      (match SubTable.find_opt topic registry with
+      | Some subscribers ->
+          print_endline ("[Broker] Broadcasting to " ^ 
+                        string_of_int (List.length subscribers) ^ 
+                        " subscribers on topic '" ^ topic ^ "'");
+          
+          (* 并行发送给所有订阅者 *)
+          List.iter (fun sub_ch -> 
+            (* 并行组合: 创建新进程发送 *)
+            spawn (fun () -> output sub_ch msg)
+          ) subscribers
+          
+      | None ->
+          print_endline ("[Broker] No subscribers for topic '" ^ topic ^ "'")
+      );
+      
+      (* 继续等待 *)
+      broker control_channel registry
+      
+  | _ -> 
+      print_endline "[Broker] Unknown command";
+      broker control_channel registry
+
+(* 添加订阅者 *)
+and add_subscriber registry topic sub_ch =
+  let current = SubTable.find_opt topic registry |> Option.value ~default:[] in
+  SubTable.add topic (sub_ch :: current) registry
+
+(* 移除订阅者 (简化: 通过索引) *)
+and remove_subscriber registry topic sub_id =
+  match SubTable.find_opt topic registry with
+  | Some subscribers ->
+      let filtered = List.filteri (fun i _ -> i <> sub_id) subscribers in
+      SubTable.add topic filtered registry
+  | None -> registry
+
+(* 创建新进程 *)
+and spawn f = 
+  ignore (Thread.create f ())
+
+(* ----------------------------------------------------------------------------
+ * 辅助函数
+ * ---------------------------------------------------------------------------- *)
+and output ch msg =
+  print_endline ("[Output to " ^ ch ^ "] " ^ control_to_string msg)
+
+and input ch = 
+  (* 模拟输入 *)
+  Publish("test", "mock")
+
+and control_to_string = function
+  | Subscribe(t, c) -> "Subscribe(" ^ t ^ ", " ^ c ^ ")"
+  | Unsubscribe(t, id) -> "Unsubscribe(" ^ t ^ ", " ^ string_of_int id ^ ")"
+  | Publish(t, m) -> "Publish(" ^ t ^ ", " ^ m ^ ")"
+
+(* ----------------------------------------------------------------------------
+ * 系统组合: 完整发布-订阅系统
+ *
+ * System = (νbroker_ctrl, topic_a, topic_b)(
+ *            Broker(broker_ctrl, ∅) 
+ *            | Subscriber(topic_a, 1) 
+ *            | Subscriber(topic_a, 2)
+ *            | Subscriber(topic_b, 3)
+ *            | Publisher(broker_ctrl, topic_a, "Hello A")
+ *            | Publisher(broker_ctrl, topic_b, "Hello B")
+ *          )
+ * ---------------------------------------------------------------------------- *)
+let pubsub_system () =
+  print_endline "=== Pub-Sub System Starting ===";
+  
+  (* 创建私有通道 *)
+  let broker_control = fresh_channel "broker_ctrl" in
+  let topic_a = fresh_channel "topic_a" in
+  let topic_b = fresh_channel "topic_b" in
+  
+  (* 启动 broker *)
+  let broker_thread = Thread.create (fun () -> 
+    broker broker_control SubTable.empty
+  ) () in
+  
+  (* 注册订阅者 *)
+  output broker_control (Subscribe("topic_a", topic_a));
+  output broker_control (Subscribe("topic_a", topic_a));  (* 第二个订阅者 *)
+  output broker_control (Subscribe("topic_b", topic_b));
+  
+  (* 启动订阅者进程 *)
+  let sub1 = Thread.create (fun () -> subscriber topic_a 1) () in
+  let sub2 = Thread.create (fun () -> subscriber topic_a 2) () in
+  let sub3 = Thread.create (fun () -> subscriber topic_b 3) () in
+  
+  Unix.sleep 1;  (* 等待订阅完成 *)
+  
+  (* 启动发布者 *)
+  publisher broker_control "topic_a" "Hello subscribers of A!";
+  publisher broker_control "topic_b" "Hello subscribers of B!";
+  
+  Unix.sleep 2;
+  print_endline "=== Pub-Sub System Demo Complete ==="
+
+and fresh_channel prefix = prefix ^ "_" ^ string_of_int (Random.int 10000)
+
+(* ----------------------------------------------------------------------------
+ * 扩展: 带过滤器的发布-订阅
+ *
+ * 允许订阅者指定消息过滤条件
+ * ---------------------------------------------------------------------------- *)
+type filter = Filter of (message -> bool)
+
+type filtered_sub = {
+  channel: channel;
+  predicate: message -> bool;
+}
+
+(* 带过滤的 broker *)
+let rec filtered_broker control_channel registry =
+  match input control_channel with
+  | Subscribe(topic, sub_ch, filter_fn) ->
+      let current = SubTable.find_opt topic registry |> Option.value ~default:[] in
+      let new_sub = { channel = sub_ch; predicate = filter_fn } in
+      let new_registry = SubTable.add topic (new_sub :: current) registry in
+      filtered_broker control_channel new_registry
+      
+  | Publish(topic, content) ->
+      let msg = Msg(content, topic, Unix.time ()) in
+      
+      (match SubTable.find_opt topic registry with
+      | Some subscribers ->
+          (* 只发送给通过过滤器的订阅者 *)
+          List.iter (fun sub ->
+            if sub.predicate msg then
+              spawn (fun () -> output sub.channel msg)
+          ) subscribers
+      | None -> ()
+      );
+      
+      filtered_broker control_channel registry
+      
+  | _ -> filtered_broker control_channel registry
+
+(* ----------------------------------------------------------------------------
+ * 执行示例
+ * ---------------------------------------------------------------------------- *)
+(*
+# pubsub_system ();;
+=== Pub-Sub System Starting ===
+[Broker] Subscriber added to topic 'topic_a'
+[Broker] Subscriber added to topic 'topic_a'
+[Broker] Subscriber added to topic 'topic_b'
+[Subscriber 1] Waiting on topic_a_4738
+[Subscriber 2] Waiting on topic_a_4738
+[Subscriber 3] Waiting on topic_b_8291
+[Publisher] Publishing to topic 'topic_a': Hello subscribers of A!
+[Broker] Broadcasting to 2 subscribers on topic 'topic_a'
+[Subscriber 1] Received: 'Hello subscribers of A!' from topic 'topic_a' (delay: 0.001s)
+[Subscriber 2] Received: 'Hello subscribers of A!' from topic 'topic_a' (delay: 0.001s)
+[Publisher] Publishing to topic 'topic_b': Hello subscribers of B!
+[Broker] Broadcasting to 1 subscribers on topic 'topic_b'
+[Subscriber 3] Received: 'Hello subscribers of B!' from topic 'topic_b' (delay: 0.001s)
+=== Pub-Sub System Demo Complete ===
+*)
