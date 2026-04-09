@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Metrics Explorer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .metric-card { background: #16213e; padding: 20px; border-radius: 10px; }
+        .metric-name { color: #888; font-size: 14px; }
+        .metric-value { font-size: 36px; font-weight: bold; color: #00d9ff; }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>📊 Metrics Explorer</h1></div>
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-name">吞吐量</div>
+            <div class="metric-value">125.4K</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-name">延迟</div>
+            <div class="metric-value">45ms</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-name">CPU</div>
+            <div class="metric-value">68%</div>
+        </div>
+    </div>
+</body>
+</html>

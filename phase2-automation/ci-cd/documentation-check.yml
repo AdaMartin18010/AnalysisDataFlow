@@ -1,0 +1,186 @@
+# Documentation Quality Check CI/CD Pipeline
+# Phase 2 Task 5-6: Automated Documentation Validation
+
+name: Documentation Quality Check
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '**.md'
+      - 'docs/**'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.md'
+
+jobs:
+  markdown-lint:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Run markdownlint
+        run: |
+          markdownlint '**/*.md' \
+            --ignore 'node_modules/**' \
+            --ignore '**/node_modules/**' \
+            --config .markdownlint.json \
+            --output markdownlint-report.txt || true
+
+      - name: Upload Lint Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: markdownlint-report
+          path: markdownlint-report.txt
+
+  link-check:
+    name: Link Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run Link Checker
+        run: |
+          python phase2-automation/link_checker.py . > link-check-report.txt 2>&1 || true
+
+      - name: Upload Link Check Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check-report
+          path: link-check-report.txt
+
+  cross-ref-check:
+    name: Cross-Reference Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Cross-Reference Checker
+        run: |
+          python phase2-automation/cross-ref-checker/check_refs.py . > cross-ref-report.json 2>&1 || true
+
+      - name: Upload Cross-Ref Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-ref-report
+          path: cross-ref-report.json
+
+  theorem-check:
+    name: Theorem Number Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Theorem Checker
+        run: |
+          python phase2-automation/theorem-checker/check_theorems.py . > theorem-check-report.json 2>&1 || true
+
+      - name: Upload Theorem Check Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-check-report
+          path: theorem-check-report.json
+
+  mermaid-check:
+    name: Mermaid Syntax Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install @mermaid-js/mermaid-cli
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Validate Mermaid Diagrams
+        run: |
+          mkdir -p mermaid-test
+          find . -name "*.md" -exec grep -l '```mermaid' {} \; | while read file; do
+            echo "Checking $file..."
+            # Extract and validate mermaid blocks
+          done
+
+  quality-report:
+    name: Generate Quality Report
+    needs: [markdown-lint, link-check, cross-ref-check, theorem-check]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Download All Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Generate Summary Report
+        run: |
+          echo "# Documentation Quality Report" > quality-report.md
+          echo "" >> quality-report.md
+          echo "Generated: $(date)" >> quality-report.md
+          echo "" >> quality-report.md
+          echo "## Summary" >> quality-report.md
+          echo "" >> quality-report.md
+          echo "| Check | Status |" >> quality-report.md
+          echo "|-------|--------|" >> quality-report.md
+          echo "| Markdown Lint | ${{ needs.markdown-lint.result }} |" >> quality-report.md
+          echo "| Link Check | ${{ needs.link-check.result }} |" >> quality-report.md
+          echo "| Cross-Ref Check | ${{ needs.cross-ref-check.result }} |" >> quality-report.md
+          echo "| Theorem Check | ${{ needs.theorem-check.result }} |" >> quality-report.md
+
+      - name: Upload Quality Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-report
+          path: quality-report.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('quality-report.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });

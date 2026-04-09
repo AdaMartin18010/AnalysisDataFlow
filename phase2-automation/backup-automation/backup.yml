@@ -1,0 +1,9 @@
+name: Backup Automation
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Backing up..."

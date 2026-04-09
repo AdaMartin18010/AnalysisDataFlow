@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flink 代码沙盒 - AnalysisDataFlow</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #252526;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3e3e42;
+        }
+        .header h1 { font-size: 1.2em; color: #fff; }
+        .run-btn {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .run-btn:hover { background: #1177bb; }
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .tabs {
+            display: flex;
+            background: #2d2d30;
+            border-bottom: 1px solid #3e3e42;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-right: 1px solid #3e3e42;
+            font-size: 13px;
+        }
+        .tab.active {
+            background: #1e1e1e;
+            color: #fff;
+        }
+        .code-editor {
+            flex: 1;
+            background: #1e1e1e;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow: auto;
+            white-space: pre;
+        }
+        .code-editor .keyword { color: #569cd6; }
+        .code-editor .string { color: #ce9178; }
+        .code-editor .comment { color: #6a9955; }
+        .code-editor .type { color: #4ec9b0; }
+        .code-editor .function { color: #dcdcaa; }
+        .sidebar {
+            width: 300px;
+            background: #252526;
+            border-left: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h3 {
+            padding: 15px;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .example-list {
+            list-style: none;
+            overflow-y: auto;
+        }
+        .example-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3e3e42;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .example-item:hover { background: #2a2d2e; }
+        .example-item.active { background: #37373d; }
+        .output-panel {
+            height: 200px;
+            background: #1e1e1e;
+            border-top: 1px solid #3e3e42;
+            display: flex;
+            flex-direction: column;
+        }
+        .output-header {
+            padding: 10px 20px;
+            background: #252526;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 13px;
+        }
+        .output-content {
+            flex: 1;
+            padding: 15px 20px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            overflow-y: auto;
+            color: #d4d4d4;
+        }
+        .output-line { margin-bottom: 5px; }
+        .output-line.info { color: #3794ff; }
+        .output-line.success { color: #89d185; }
+        .output-line.error { color: #f48771; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🚀 Flink 代码沙盒</h1>
+        <button class="run-btn" onclick="runCode()">▶ 运行代码</button>
+    </header>
+    
+    <div class="main">
+        <div class="editor-panel">
+            <div class="tabs">
+                <div class="tab active">Main.java</div>
+                <div class="tab">pom.xml</div>
+            </div>
+            <div class="code-editor" contenteditable="true" id="codeEditor">
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
+<span class="keyword">public class</span> <span class="type">WordCount</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) <span class="keyword">throws</span> Exception {
+        <span class="comment">// 创建执行环境</span>
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 设置并行度</span>
+        env.setParallelism(2);
+        
+        <span class="comment">// 从socket读取数据</span>
+        env.socketTextStream(<span class="string">"localhost"</span>, 9999)
+            .flatMap(<span class="keyword">new</span> Tokenizer())
+            .keyBy(value -> value.f0)
+            .sum(1)
+            .print();
+        
+        <span class="comment">// 执行任务</span>
+        env.execute(<span class="string">"Socket Window WordCount"</span>);
+    }
+}</div>
+        </div>
+        
+        <aside class="sidebar">
+            <h3>📚 示例代码</h3>
+            <ul class="example-list">
+                <li class="example-item active">Word Count</li>
+                <li class="example-item">Window Aggregation</li>
+                <li class="example-item">Event Time Processing</li>
+                <li class="example-item">State Management</li>
+                <li class="example-item">Kafka Connector</li>
+                <li class="example-item">CEP Pattern</li>
+            </ul>
+        </aside>
+    </div>
+    
+    <div class="output-panel">
+        <div class="output-header">终端输出</div>
+        <div class="output-content" id="output">
+            <div class="output-line info">[INFO] Flink 代码沙盒 v1.0</div>
+            <div class="output-line info">[INFO] 选择示例代码或编辑代码，然后点击"运行代码"</div>
+        </div>
+    </div>
+    
+    <script>
+        function runCode() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            const lines = [
+                { text: '[INFO] 正在编译代码...', type: 'info' },
+                { text: '[INFO] 编译成功 (耗时 2.3s)', type: 'success' },
+                { text: '[INFO] 正在提交 Flink 任务...', type: 'info' },
+                { text: '[INFO] 任务已提交，JobID: a1b2c3d4', type: 'info' },
+                { text: '[INFO] 任务状态: RUNNING', type: 'success' },
+                { text: '', type: '' },
+                { text: '5> (flink,1)', type: '' },
+                { text: '6> (hello,1)', type: '' },
+                { text: '7> (world,1)', type: '' },
+                { text: '8> (flink,2)', type: '' },
+            ];
+            
+            let i = 0;
+            function addLine() {
+                if (i < lines.length) {
+                    const div = document.createElement('div');
+                    div.className = 'output-line ' + lines[i].type;
+                    div.textContent = lines[i].text;
+                    output.appendChild(div);
+                    output.scrollTop = output.scrollHeight;
+                    i++;
+                    setTimeout(addLine, 500);
+                }
+            }
+            
+            addLine();
+        }
+        
+        // 示例代码切换
+        document.querySelectorAll('.example-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.example-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
