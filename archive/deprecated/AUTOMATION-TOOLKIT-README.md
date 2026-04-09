@@ -8,13 +8,38 @@
 
 ## 📋 目录
 
-- [概述](#概述)
-- [安装要求](#安装要求)
-- [脚本清单](#脚本清单)
-- [使用方法](#使用方法)
-- [Makefile 命令](#makefile-命令)
-- [CI/CD 集成](#cicd-集成)
-- [故障排除](#故障排除)
+- [AnalysisDataFlow 自动化工具集](#analysisdataflow-自动化工具集)
+  - [📋 目录](#-目录)
+  - [概述](#概述)
+  - [安装要求](#安装要求)
+    - [必需依赖](#必需依赖)
+    - [可选依赖](#可选依赖)
+  - [脚本清单](#脚本清单)
+    - [1. 定理编号验证脚本](#1-定理编号验证脚本)
+    - [2. Mermaid 语法校验脚本](#2-mermaid-语法校验脚本)
+    - [3. 统计报告自动生成](#3-统计报告自动生成)
+    - [4. 项目健康检查仪表盘](#4-项目健康检查仪表盘)
+    - [5. 文档一致性检查](#5-文档一致性检查)
+    - [6. 进度自动更新](#6-进度自动更新)
+  - [使用方法](#使用方法)
+    - [快速开始](#快速开始)
+    - [日常使用流程](#日常使用流程)
+  - [Makefile 命令](#makefile-命令)
+    - [验证命令](#验证命令)
+    - [统计与报告](#统计与报告)
+    - [维护命令](#维护命令)
+    - [综合命令](#综合命令)
+  - [CI/CD 集成](#cicd-集成)
+    - [GitHub Actions 示例](#github-actions-示例)
+    - [预提交钩子示例](#预提交钩子示例)
+  - [故障排除](#故障排除)
+    - [常见问题](#常见问题)
+      - [1. Mermaid 验证失败](#1-mermaid-验证失败)
+      - [2. 定理编号验证报告大量警告](#2-定理编号验证报告大量警告)
+      - [3. 健康检查运行缓慢](#3-健康检查运行缓慢)
+    - [调试模式](#调试模式)
+  - [版本历史](#版本历史)
+  - [贡献指南](#贡献指南)
 
 ---
 
@@ -56,12 +81,14 @@ npm install -g @mermaid-js/mermaid-cli
 **文件**: `.scripts/validate_theorem_numbers.py`
 
 **功能**:
+
 - 检查所有定理/定义/引理/命题/推论编号的连续性
 - 检测重复编号
 - 验证与 THEOREM-REGISTRY.md 的一致性
 - 检测格式不规范的编号
 
 **使用示例**:
+
 ```bash
 # 基本验证
 python .scripts/validate_theorem_numbers.py
@@ -77,6 +104,7 @@ python .scripts/validate_theorem_numbers.py --fix
 ```
 
 **退出码**:
+
 - `0` - 所有检查通过
 - `1` - 发现错误
 - `2` - 运行异常
@@ -88,12 +116,14 @@ python .scripts/validate_theorem_numbers.py --fix
 **文件**: `.scripts/validate_mermaid.py`
 
 **功能**:
+
 - 提取所有 Markdown 文件中的 Mermaid 代码块
 - 使用本地 mermaid-cli 或在线 API 验证语法
 - 检测括号不匹配、无效节点等常见问题
 - 支持基本语法检查（无需外部依赖）
 
 **使用示例**:
+
 ```bash
 # 基本验证（使用基本语法检查）
 python .scripts/validate_mermaid.py
@@ -112,6 +142,7 @@ python .scripts/validate_mermaid.py --fix
 ```
 
 **退出码**:
+
 - `0` - 所有检查通过
 - `1` - 发现语法错误
 - `2` - 运行异常
@@ -123,12 +154,14 @@ python .scripts/validate_mermaid.py --fix
 **文件**: `.scripts/generate_stats_report.py`
 
 **功能**:
+
 - 自动统计文档数量、分布
 - 统计形式化元素（定理/定义/引理等）
 - 统计代码行数、Mermaid 图表数量
 - 自动更新 STATISTICS-REPORT.md
 
 **使用示例**:
+
 ```bash
 # 显示统计摘要
 python .scripts/generate_stats_report.py
@@ -144,6 +177,7 @@ python .scripts/generate_stats_report.py --output my-report.md
 ```
 
 **退出码**:
+
 - `0` - 执行成功
 - `1` - 执行出错
 
@@ -154,6 +188,7 @@ python .scripts/generate_stats_report.py --output my-report.md
 **文件**: `.scripts/health_check_dashboard.py`
 
 **功能**:
+
 - 综合检查所有健康指标
 - 文档覆盖率检查
 - 定理注册表同步状态
@@ -163,6 +198,7 @@ python .scripts/generate_stats_report.py --output my-report.md
 - 趋势分析和历史对比
 
 **使用示例**:
+
 ```bash
 # 运行健康检查
 python .scripts/health_check_dashboard.py
@@ -178,6 +214,7 @@ python .scripts/health_check_dashboard.py --trend
 ```
 
 **输出指标**:
+
 | 指标 | 说明 | 阈值 |
 |:-----|:-----|:-----|
 | document_coverage | 核心文档覆盖率 | > 90% |
@@ -188,6 +225,7 @@ python .scripts/health_check_dashboard.py --trend
 | progress_alignment | 进度跟踪对齐 | 已更新 |
 
 **退出码**:
+
 - `0` - 健康状态良好
 - `1` - 发现需要关注的问题
 - `2` - 运行异常
@@ -199,6 +237,7 @@ python .scripts/health_check_dashboard.py --trend
 **文件**: `.scripts/check_consistency.py`
 
 **功能**:
+
 - 检查术语使用一致性
 - 检查格式一致性（标题、列表、代码块）
 - 检查引用格式一致性
@@ -206,6 +245,7 @@ python .scripts/health_check_dashboard.py --trend
 - 生成术语使用统计
 
 **使用示例**:
+
 ```bash
 # 检查整个项目
 python .scripts/check_consistency.py
@@ -221,6 +261,7 @@ python .scripts/check_consistency.py --fix
 ```
 
 **检查项**:
+
 - 标题层级跳跃
 - 标题末尾标点
 - 术语变体检测（如 Dataflow vs Data Flow）
@@ -229,6 +270,7 @@ python .scripts/check_consistency.py --fix
 - 列表标记一致性
 
 **退出码**:
+
 - `0` - 一致性良好
 - `1` - 发现不一致问题
 - `2` - 运行异常
@@ -240,12 +282,14 @@ python .scripts/check_consistency.py --fix
 **文件**: `.scripts/update_progress.py`
 
 **功能**:
+
 - 自动扫描项目文档计算实际进度
 - 更新 PROJECT-TRACKING.md 中的进度条
 - 支持手动指定进度数值
 - 生成进度更新报告
 
 **使用示例**:
+
 ```bash
 # 自动扫描并显示进度
 python .scripts/update_progress.py --auto
@@ -261,6 +305,7 @@ python .scripts/update_progress.py --dry-run
 ```
 
 **退出码**:
+
 - `0` - 更新成功
 - `1` - 更新失败
 - `2` - 运行异常
@@ -358,23 +403,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
+
       - name: Validate Theorem Numbers
         run: python .scripts/validate_theorem_numbers.py --json
         continue-on-error: true
-      
+
       - name: Validate Mermaid
         run: python .scripts/validate_mermaid.py --json
         continue-on-error: true
-      
+
       - name: Health Check
         run: python .scripts/health_check_dashboard.py --json
-      
+
       - name: Check Consistency
         run: python .scripts/check_consistency.py --json
 ```
@@ -391,7 +436,7 @@ repos:
         entry: python .scripts/validate_theorem_numbers.py
         language: system
         pass_filenames: false
-      
+
       - id: check-consistency
         name: Check document consistency
         entry: python .scripts/check_consistency.py
@@ -410,6 +455,7 @@ repos:
 **问题**: `mmdc` 命令未找到
 
 **解决**:
+
 ```bash
 # 安装 mermaid-cli
 npm install -g @mermaid-js/mermaid-cli
@@ -423,6 +469,7 @@ python .scripts/validate_mermaid.py --online
 **问题**: 注册表中缺少部分定理
 
 **解决**:
+
 ```bash
 # 查看详细报告
 python .scripts/validate_theorem_numbers.py --verbose
@@ -435,6 +482,7 @@ python .scripts/validate_theorem_numbers.py --verbose
 **问题**: 交叉引用验证耗时较长
 
 **解决**:
+
 ```bash
 # 单独运行健康检查（跳过交叉引用）
 python .scripts/health_check_dashboard.py

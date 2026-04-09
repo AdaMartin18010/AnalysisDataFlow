@@ -1116,35 +1116,35 @@ graph TB
 ```yaml
 version: '3.8'
 
-services: 
-  jobmanager: 
+services:
+  jobmanager:
     image: flink:1.18-scala_2.12
     command: jobmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size: 2048m
           state.backend: rocksdb
           state.checkpoints.dir: s3://checkpoints
-    ports: 
+    ports:
       - "8081:8081"
-    volumes: 
+    volumes:
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
 
-  taskmanager: 
+  taskmanager:
     image: flink:1.18-scala_2.12
     command: taskmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           taskmanager.memory.process.size: 8192m
           taskmanager.numberOfTaskSlots: 4
-    depends_on: 
+    depends_on:
       - jobmanager
-    volumes: 
+    volumes:
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
 
-  llm-agent-job: 
+  llm-agent-job:
     image: flink-llm-agent:latest
     command: >
       flink run
@@ -1153,11 +1153,11 @@ services:
       /opt/flink/usrlib/llm-agent.jar
       --bootstrap-servers kafka:9092
       --model-endpoint http://vllm:8000
-    depends_on: 
+    depends_on:
       - jobmanager
       - taskmanager
 
-  vllm: 
+  vllm:
     image: vllm/vllm-openai:latest
     command: >
       --model meta-llama/Llama-3-8B-Instruct
@@ -1165,11 +1165,11 @@ services:
       --max-num-seqs 256
       --max-model-len 8192
     runtime: nvidia
-    environment: 
+    environment:
       - NVIDIA_VISIBLE_DEVICES=0,1
-    ports: 
+    ports:
       - "8000:8000"
-    volumes: 
+    volumes:
       - ./models:/models
 ```
 
@@ -1178,33 +1178,33 @@ services:
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: llm-inference-pipeline
-spec: 
+spec:
   image: flink-llm-agent:latest
   flinkVersion: v1.18
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: "2048m"
       cpu: 1
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "8192m"
       cpu: 4
     replicas: 3
-  job: 
+  job:
     jarURI: local:///opt/flink/usrlib/llm-agent.jar
     parallelism: 12
     upgradeMode: stateful
     state: running
-  podTemplate: 
-    spec: 
-      containers: 
+  podTemplate:
+    spec:
+      containers:
         - name: flink-main-container
-          env: 
+          env:
             - name: OPENAI_API_KEY
-              valueFrom: 
-                secretKeyRef: 
+              valueFrom:
+                secretKeyRef:
                   name: llm-secrets
                   key: openai-key
             - name: KAFKA_BROKERS
@@ -1215,17 +1215,17 @@ spec:
 
 ```yaml
 # prometheus.yml
-scrape_configs: 
+scrape_configs:
   - job_name: 'flink-jobmanager'
-    static_configs: 
+    static_configs:
       - targets: ['jobmanager:9249']
 
   - job_name: 'flink-taskmanager'
-    static_configs: 
+    static_configs:
       - targets: ['taskmanager:9249']
 
   - job_name: 'llm-agent-custom'
     metrics_path: '/metrics'
-    static_configs: 
+    static_configs:
       - targets: ['llm-agent:8080']
 ```

@@ -34,34 +34,34 @@ $$
 
 ```yaml
 # 工作流定义Schema
-workflow: 
+workflow:
   id: string                    # 工作流标识
   name: string                  # 显示名称
   version: string               # 语义化版本
 
   # 触发配置
-  triggers: 
+  triggers:
     - type: event               # event/schedule/webhook
       source: kafka_topic
       filter: "$.type == 'order.created'"
 
   # Agent节点定义
-  nodes: 
+  nodes:
     - id: node_1
       type: agent               # agent/condition/parallel/subflow
       agent_ref: intent_classifier
-      input_mapping: 
+      input_mapping:
         text: "$.event.message"
-      output_mapping: 
+      output_mapping:
         intent: "$.output.intent"
       timeout: 30s
-      retry: 
+      retry:
         max_attempts: 3
         backoff: exponential
 
     - id: node_2
       type: parallel
-      branches: 
+      branches:
         - id: branch_a
           nodes: [...]
         - id: branch_b
@@ -75,7 +75,7 @@ workflow:
       else: node_5
 
   # 边定义
-  edges: 
+  edges:
     - from: node_1
       to: node_2
       condition: always
@@ -84,13 +84,13 @@ workflow:
       condition: on_success
 
   # 错误处理
-  error_handling: 
+  error_handling:
     strategy: retry_fallback     # retry_fallback/compensate/abort
     fallback: fallback_node
     max_retries: 3
 
   # 资源限制
-  resources: 
+  resources:
     max_execution_time: 5m
     max_memory: 512MB
 ```
@@ -1154,23 +1154,23 @@ WorkflowDefinition workflow = WorkflowBuilder
 # flink-agent-workflow-deployment.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: agent-workflow-engine
   namespace: flink-agents
-spec: 
+spec:
   image: flink-ai-agents:2.0-workflow
   flinkVersion: v1.20
 
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: 8Gi
       cpu: 4
     replicas: 2
-    podTemplate: 
-      spec: 
-        containers: 
+    podTemplate:
+      spec:
+        containers:
           - name: flink-main-container
-            env: 
+            env:
               - name: FLINK_AGENT_WORKFLOW_ENABLED
                 value: "true"
               - name: MCP_DISCOVERY_URL
@@ -1178,18 +1178,18 @@ spec:
               - name: A2A_DISCOVERY_ENABLED
                 value: "true"
 
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: 16Gi
       cpu: 8
     replicas: 4
 
-  job: 
+  job:
     jarURI: local:///opt/flink/jobs/agent-workflow-engine.jar
     parallelism: 16
     upgradeMode: savepoint
     state: running
-    args: 
+    args:
       - --workflow-def-path
       - /opt/flink/workflows/
       - --checkpoint-interval
@@ -1197,7 +1197,7 @@ spec:
       - --enable-metrics
       - "true"
 
-  flinkConfiguration: 
+  flinkConfiguration:
     # 状态后端配置
     state.backend: rocksdb
     state.backend.incremental: "true"
@@ -1226,12 +1226,12 @@ spec:
 # Service配置
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: agent-workflow-api
-spec: 
-  selector: 
+spec:
+  selector:
     app: agent-workflow-engine
-  ports: 
+  ports:
     - port: 8080
       targetPort: 8080
   type: LoadBalancer
@@ -1240,18 +1240,18 @@ spec:
 # 工作流配置ConfigMap
 apiVersion: v1
 kind: ConfigMap
-metadata: 
+metadata:
   name: workflow-definitions
-data: 
+data:
   customer-service.yaml: |
-    workflow: 
+    workflow:
       id: customer-service
       name: 智能客服工作流
       version: "1.0"
       nodes: [...]
 
   risk-analysis.yaml: |
-    workflow: 
+    workflow:
       id: risk-analysis
       name: 实时风控分析
       version: "2.0"
@@ -1267,40 +1267,40 @@ data:
 **工作流定义**:
 
 ```yaml
-workflow: 
+workflow:
   id: intelligent-customer-service
   name: 智能客服工作流
   version: "2.0"
 
-  trigger: 
+  trigger:
     type: kafka
     topic: customer-messages
     filter: "$.channel == 'chat'"
 
-  nodes: 
+  nodes:
     - id: enrich-context
       type: agent
-      agent_ref: 
+      agent_ref:
         type: native
         name: context-enricher
-      input_mapping: 
+      input_mapping:
         user_id: "$.user_id"
         message: "$.message"
         session_id: "$.session_id"
-      output_mapping: 
+      output_mapping:
         user_profile: "$.user_profile"
         conversation_history: "$.history"
 
     - id: classify-intent
       type: agent
-      agent_ref: 
+      agent_ref:
         type: mcp_tool
         server: nlp-service
         tool: intent_classifier
-      input_mapping: 
+      input_mapping:
         text: "$.message"
         context: "$.conversation_history"
-      output_mapping: 
+      output_mapping:
         intent: "$.intent"
         confidence: "$.confidence"
         entities: "$.entities"
@@ -1308,7 +1308,7 @@ workflow:
     - id: route-by-intent
       type: condition
       expression: "$.intent"
-      branches: 
+      branches:
         order_query: order-handling
         return_request: return-handling
         complaint: escalation
@@ -1316,28 +1316,28 @@ workflow:
 
     - id: order-handling
       type: agent
-      agent_ref: 
+      agent_ref:
         type: mcp_tool
         server: order-service
         tool: query_order
-      input_mapping: 
+      input_mapping:
         order_id: "$.entities.order_id"
         user_id: "$.user_id"
 
     - id: return-handling
       type: parallel
-      branches: 
+      branches:
         - id: check-policy
-          nodes: 
+          nodes:
             - type: agent
-              agent_ref: 
+              agent_ref:
                 type: mcp_tool
                 server: policy-service
                 tool: check_return_policy
         - id: get-order
-          nodes: 
+          nodes:
             - type: agent
-              agent_ref: 
+              agent_ref:
                 type: mcp_tool
                 server: order-service
                 tool: get_order_details
@@ -1350,20 +1350,20 @@ workflow:
 
     - id: general-response
       type: agent
-      agent_ref: 
+      agent_ref:
         type: a2a
         url: "https://general-agent.company.com"
       timeout: 10s
 
     - id: quality-check
       type: agent
-      agent_ref: 
+      agent_ref:
         type: native
         name: response-validator
-      input_mapping: 
+      input_mapping:
         response: "$.previous_output"
         policy: "$.company_policy"
-      output_mapping: 
+      output_mapping:
         approved: "$.approved"
         issues: "$.issues"
 
@@ -1376,7 +1376,7 @@ workflow:
           抱歉，我需要再确认一下...
         {% endif %}
 
-  edges: 
+  edges:
     - from: enrich-context
       to: classify-intent
     - from: classify-intent
@@ -1720,21 +1720,13 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink, "FLIP-531: AI Agents for Flink", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-531.md
 
-[^2]: Apache Flink, "Stateful Stream Processing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/stateful-stream-processing/
 
-[^3]: Temporal, "Temporal Documentation", 2024. https://docs.temporal.io/
 
-[^4]: Apache Airflow, "Airflow Documentation", 2024. https://airflow.apache.org/docs/
 
-[^5]: Anthropic, "Model Context Protocol (MCP)", 2024. https://modelcontextprotocol.io/
 
-[^6]: Google, "A2A (Agent-to-Agent) Protocol", 2025. https://github.com/google/A2A
 
-[^7]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.
 
-[^8]: G. Hohpe and B. Woolf, "Enterprise Integration Patterns", Addison-Wesley, 2003.
 
 ---
 

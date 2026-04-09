@@ -1,8 +1,8 @@
 # P1 链接健康检查与CI/CD自动化 - 完成报告
 
-> **任务ID**: P1-5 ~ P1-10  
-> **完成时间**: 2026-04-04  
-> **执行者**: CI/CD Automation Team  
+> **任务ID**: P1-5 ~ P1-10
+> **完成时间**: 2026-04-04
+> **执行者**: CI/CD Automation Team
 > **状态**: ✅ 已完成
 
 ---
@@ -34,6 +34,7 @@
 | `check_prospective_content.py` | 前瞻性内容检测 | 4个 | ~750行 |
 
 **脚本特性**:
+
 - 全部支持命令行参数配置
 - 支持JSON和Markdown双格式报告输出
 - 内置缓存机制避免重复检查
@@ -50,6 +51,7 @@
 | `check-links.yml` | 每周三 | 内部+外部链接检查 | 现有增强 |
 
 **工作流特性**:
+
 - 支持手动触发(workflow_dispatch)
 - 支持路径过滤（仅Markdown变更时触发）
 - 自动PR评论和状态检查
@@ -76,6 +78,7 @@ python .scripts/link_checker.py \
 ```
 
 **功能特性**:
+
 - ✅ 检查外部链接HTTP状态码
 - ✅ 检查内部链接文件存在性
 - ✅ 检查锚点引用有效性
@@ -84,6 +87,7 @@ python .scripts/link_checker.py \
 - ✅ 生成Markdown和JSON报告
 
 **输出示例**:
+
 ```markdown
 # 🔗 链接健康检查报告
 
@@ -108,6 +112,7 @@ python .scripts/fix_broken_links.py process-report report.json --dry-run
 ```
 
 **修复能力**:
+
 - ✅ 自动修复已知域名重定向
 - ✅ 修复特定URL映射
 - ✅ 生成Wayback Machine存档链接
@@ -115,6 +120,7 @@ python .scripts/fix_broken_links.py process-report report.json --dry-run
 - ✅ 自动备份原文件
 
 **已知修复模式**:
+
 - Flink文档迁移: `flink.apache.org` → `nightlies.apache.org`
 - Oracle JDK文档更新
 - Scala API版本更新
@@ -130,12 +136,14 @@ python .scripts/validate_api_params.py --focus suspicious
 ```
 
 **参数库覆盖**:
+
 - Flink DataStream API: 25+ 个已知参数
 - Flink Table API: 12+ 个已知参数
 - Flink SQL: 10+ 个已知参数
 - Flink Connectors: 40+ 个已知参数
 
 **可疑模式检测**:
+
 - 占位符模式: `your-param`, `example-config`
 - 不完整参数: `table.exec...`
 - 过时包名: `flink.contrib.*`
@@ -152,12 +160,14 @@ python .scripts/check_prospective_content.py --focus-version 2.4
 ```
 
 **检测范围**:
+
 - 前瞻/预览标记
 - 实验性/Beta/Alpha声明
 - 版本路线图引用
 - 即将发布功能
 
 **置信度评分**:
+
 - 🔴 高 (≥0.7): 高可能性前瞻内容
 - 🟡 中 (0.4-0.7): 可能的前瞻内容
 - 🟢 低 (<0.4): 需要审核
@@ -172,6 +182,7 @@ python .scripts/check_prospective_content.py --focus-version 2.4
 4. 失败时阻止PR合并
 
 **PR评论示例**:
+
 ```markdown
 ## ❌ PR链接检查失败
 
@@ -238,20 +249,20 @@ graph TB
         PR_CHECK[link-check-pr.yml]
         ANCHOR[anchor-check.yml]
         API[api-validation.yml]
-        
+
         PR --> PR_CHECK
         PR --> ANCHOR
         PR --> API
     end
-    
+
     subgraph "Scheduled Jobs"
         MONTHLY[每月1日]
         WEEKLY[每周]
-        
+
         MONTHLY --> HEALTH[link-health-check.yml]
         WEEKLY --> LINKS[check-links.yml]
     end
-    
+
     subgraph "Scripts"
         HEALTH --> LC[link_checker.py]
         PR_CHECK --> LC
@@ -260,7 +271,7 @@ graph TB
         API --> VA[validate_api_params.py]
         MONTHLY --> PC[check_prospective_content.py]
     end
-    
+
     subgraph "Reports"
         LC --> R1[link-health-report.md]
         FB --> R2[link-fix-report.md]
@@ -370,6 +381,6 @@ python .scripts/fix_broken_links.py process-report \
 
 ---
 
-> **报告生成**: 2026-04-04  
-> **版本**: v1.0.0  
+> **报告生成**: 2026-04-04
+> **版本**: v1.0.0
 > **状态**: ✅ 任务完成

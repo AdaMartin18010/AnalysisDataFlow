@@ -45,22 +45,22 @@ Flink-CUDA运行时是将NVIDIA CUDA与Flink执行引擎集成的中间件层，
 
 ```yaml
 Flink-CUDA Runtime:
-  资源管理层: 
+  资源管理层:
     - GPU设备发现与枚举
     - 流多处理器(SM)分配
     - 计算流(Stream)管理
 
-  内存管理层: 
+  内存管理层:
     - 统一虚拟内存(UVA)
     - 页锁定内存(Pinned Memory)
     - 显存池(GPU Memory Pool)
 
-  执行层: 
+  执行层:
     - CUDA Kernel启动器
     - 异步执行队列
     - 事件同步机制
 
-  算子层: 
+  算子层:
     - GPU聚合算子
     - GPU Join算子
     - GPU UDF运行时
@@ -1041,46 +1041,46 @@ gpu.recovery.reuse-context: true  # 前瞻性配置: Flink 2.5规划中
 # flink-deployment-gpu.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: flink-gpu-job
-spec: 
+spec:
   image: flink:2.5-gpu-cuda12  <!-- 前瞻性镜像: Flink 2.5规划中 -->
   flinkVersion: v2.5
 
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: "4Gi"
       cpu: 2
 
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "16Gi"
       cpu: 8
 
     # GPU资源请求
-    podTemplate: 
-      spec: 
-        containers: 
+    podTemplate:
+      spec:
+        containers:
           - name: flink-task-manager
-            resources: 
-              limits: 
+            resources:
+              limits:
                 nvidia.com/gpu: 1
-              requests: 
+              requests:
                 nvidia.com/gpu: 1
-            env: 
+            env:
               - name: NVIDIA_VISIBLE_DEVICES
                 value: "all"
               - name: CUDA_CACHE_PATH
                 value: "/tmp/cuda-cache"
         # GPU节点亲和性
-        nodeSelector: 
+        nodeSelector:
           accelerator: nvidia-tesla-a100
-        tolerations: 
+        tolerations:
           - key: nvidia.com/gpu
             operator: Exists
             effect: NoSchedule
 
-  job: 
+  job:
     jarURI: local:///opt/flink/examples/gpu-streaming.jar
     parallelism: 4
     upgradeMode: savepoint

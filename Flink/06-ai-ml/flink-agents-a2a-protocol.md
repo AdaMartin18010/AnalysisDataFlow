@@ -15,6 +15,7 @@ $$
 $$
 
 Where:
+
 - $\mathcal{A}$: Set of participating Agents
 - $\mathcal{T}$: Task space with lifecycle states
 - $\mathcal{M}$: Message format for communication
@@ -146,31 +147,31 @@ graph TB
         F2[Table API]
         F3[StateFun]
     end
-    
+
     subgraph "A2A Integration"
         A1[Agent Registry]
         A2[Task Router]
         A3[Collaboration Manager]
     end
-    
+
     subgraph "External Agents"
         E1[Analytics Agent]
         E2[CRM Agent]
         E3[Code Agent]
         E4[Human Agent]
     end
-    
+
     F1 --> A2
     F3 --> A3
-    
+
     A1 --> A2
     A2 --> A3
-    
+
     A3 -.A2A.-> E1
     A3 -.A2A.-> E2
     A3 -.A2A.-> E3
     A3 -.A2A.-> E4
-    
+
     E1 -.MCP.-> A1
     E2 -.MCP.-> A1
 ```
@@ -206,6 +207,7 @@ graph TB
 **Traditional A2A**: Synchronous, request-response based
 
 **Streaming A2A Extensions**:
+
 - Continuous task updates via SSE
 - Real-time artifact streaming
 - Event-driven collaboration triggers
@@ -214,11 +216,13 @@ graph TB
 ### 4.3 Fault Tolerance in Multi-Agent Systems
 
 **Challenges**:
+
 1. Partial failure of Agent network
 2. Message loss in collaboration
 3. Inconsistent task states
 
 **Flink Solutions**:
+
 1. **Checkpointing**: Capture collaboration state
 2. **Exactly-once**: Ensure message delivery
 3. **Timeout Handling**: Detect stale tasks
@@ -265,43 +269,43 @@ $$
  * Supports Agent discovery, task delegation, and collaboration
  */
 public class FlinkA2AProtocol {
-    
+
     /**
      * Agent Card Registry using Broadcast State
      */
-    public static class AgentRegistryFunction 
-        extends KeyedBroadcastProcessFunction<String, AgentHeartbeat, 
+    public static class AgentRegistryFunction
+        extends KeyedBroadcastProcessFunction<String, AgentHeartbeat,
             AgentRegistryCommand, AgentRegistryEvent> {
-        
+
         // Broadcast state for Agent Cards
         private BroadcastState<String, AgentCard> agentCards;
-        
+
         // Keyed state for agent liveness
         private MapState<String, Long> lastHeartbeat;
-        
+
         // Configuration
         private static final long HEARTBEAT_TIMEOUT_MS = 60000;
         private static final long CHECK_INTERVAL_MS = 30000;
-        
+
         @Override
         public void open(Configuration parameters) {
-            MapStateDescriptor<String, AgentCard> cardDescriptor = 
+            MapStateDescriptor<String, AgentCard> cardDescriptor =
                 new MapStateDescriptor<>("agent-cards", String.class, AgentCard.class);
             agentCards = getRuntimeContext().getBroadcastState(cardDescriptor);
-            
-            MapStateDescriptor<String, Long> heartbeatDescriptor = 
+
+            MapStateDescriptor<String, Long> heartbeatDescriptor =
                 new MapStateDescriptor<>("last-heartbeat", String.class, Long.class);
             lastHeartbeat = getRuntimeContext().getMapState(heartbeatDescriptor);
         }
-        
+
         @Override
         public void processElement(AgentHeartbeat heartbeat, ReadOnlyContext ctx,
                                    Collector<AgentRegistryEvent> out) throws Exception {
             String agentId = heartbeat.getAgentId();
-            
+
             // Update liveness
             lastHeartbeat.put(agentId, ctx.currentProcessingTime());
-            
+
             // Check if new or updated
             AgentCard existing = agentCards.get(agentId);
             if (existing == null || !existing.equals(heartbeat.getCard())) {
@@ -314,7 +318,7 @@ public class FlinkA2AProtocol {
                 ));
             }
         }
-        
+
         @Override
         public void processBroadcastElement(AgentRegistryCommand command, Context ctx,
                                            Collector<AgentRegistryEvent> out) throws Exception {
@@ -333,18 +337,18 @@ public class FlinkA2AProtocol {
                         matches
                     ));
                     break;
-                    
+
                 case EXPIRE_CHECK:
                     // Check for expired agents
                     long currentTime = ctx.currentProcessingTime();
                     List<String> expired = new ArrayList<>();
-                    
+
                     for (Map.Entry<String, Long> entry : lastHeartbeat.entries()) {
                         if (currentTime - entry.getValue() > HEARTBEAT_TIMEOUT_MS) {
                             expired.add(entry.getKey());
                         }
                     }
-                    
+
                     for (String agentId : expired) {
                         agentCards.remove(agentId);
                         lastHeartbeat.remove(agentId);
@@ -357,7 +361,7 @@ public class FlinkA2AProtocol {
                     break;
             }
         }
-        
+
         @Override
         public void onTimer(long timestamp, OnTimerContext ctx,
                            Collector<AgentRegistryEvent> out) throws Exception {
@@ -366,43 +370,43 @@ public class FlinkA2AProtocol {
                 timestamp + CHECK_INTERVAL_MS
             );
         }
-        
+
         private boolean matchesCapability(AgentCard card, String required) {
             return card.getSkills().stream()
                 .anyMatch(skill -> skill.getId().equals(required));
         }
     }
-    
+
     /**
      * A2A Task Router for multi-Agent collaboration
      */
-    public static class A2ATaskRouter 
+    public static class A2ATaskRouter
         extends KeyedCoProcessFunction<String, TaskRequest, AgentResponse, TaskResult> {
-        
+
         // Task state
         private ValueState<TaskContext> taskState;
-        
+
         // Pending subtasks
         private MapState<String, SubTaskStatus> subTasks;
-        
+
         // A2A client
         private transient A2AClient a2aClient;
-        
+
         @Override
         public void open(Configuration parameters) {
             taskState = getRuntimeContext().getState(
                 new ValueStateDescriptor<>("task-context", TaskContext.class));
-            
+
             subTasks = getRuntimeContext().getMapState(
                 new MapStateDescriptor<>("subtasks", String.class, SubTaskStatus.class));
-            
+
             a2aClient = A2AClient.builder()
                 .withDiscovery(new AgentCardDiscovery())
                 .withAuth(OAuth2Provider.fromEnv())
                 .withStreamingSupport(true)
                 .build();
         }
-        
+
         @Override
         public void processElement1(TaskRequest request, Context ctx,
                                    Collector<TaskResult> out) throws Exception {
@@ -410,15 +414,15 @@ public class FlinkA2AProtocol {
             if (context == null) {
                 context = new TaskContext(request.getTaskId());
             }
-            
+
             // Decompose task if needed
             if (request.isComplex()) {
                 List<SubTask> subtasks = decomposeTask(request);
-                
+
                 for (SubTask subtask : subtasks) {
                     // Find capable agent
                     AgentCard targetAgent = findAgentForSubTask(subtask);
-                    
+
                     if (targetAgent != null) {
                         // Send task via A2A
                         sendA2ATask(subtask, targetAgent, ctx);
@@ -428,42 +432,42 @@ public class FlinkA2AProtocol {
                         subTasks.put(subtask.getId(), SubTaskStatus.FAILED);
                     }
                 }
-                
+
                 context.setPendingSubTasks(subtasks.size());
             } else {
                 // Simple task - execute directly
                 TaskResult result = executeDirectly(request);
                 out.collect(result);
             }
-            
+
             taskState.update(context);
         }
-        
+
         @Override
         public void processElement2(AgentResponse response, Context ctx,
                                    Collector<TaskResult> out) throws Exception {
             // Handle A2A response
             String subtaskId = response.getSubTaskId();
             SubTaskStatus status = subTasks.get(subtaskId);
-            
+
             if (status != null) {
                 status.setCompleted(true);
                 status.setResult(response.getResult());
                 subTasks.put(subtaskId, status);
-                
+
                 // Check if all subtasks complete
                 TaskContext context = taskState.value();
                 if (allSubTasksComplete()) {
                     TaskResult aggregated = aggregateResults(context);
                     out.collect(aggregated);
-                    
+
                     // Cleanup
                     taskState.clear();
                     subTasks.clear();
                 }
             }
         }
-        
+
         private void sendA2ATask(SubTask subtask, AgentCard targetAgent, Context ctx) {
             // Build A2A task
             Task a2aTask = Task.builder()
@@ -474,7 +478,7 @@ public class FlinkA2AProtocol {
                     "requested_skill", subtask.getRequiredSkill()
                 ))
                 .build();
-            
+
             // Send with streaming updates
             a2aClient.sendTaskStreaming(targetAgent, a2aTask, new TaskCallback() {
                 @Override
@@ -484,7 +488,7 @@ public class FlinkA2AProtocol {
                         subtask.getId(), status
                     ));
                 }
-                
+
                 @Override
                 public void onArtifact(Artifact artifact) {
                     // Handle streaming artifact
@@ -492,12 +496,12 @@ public class FlinkA2AProtocol {
                         subtask.getId(), artifact
                     ));
                 }
-                
+
                 @Override
                 public void onComplete(TaskResult result) {
                     // Will be handled by processElement2
                 }
-                
+
                 @Override
                 public void onError(A2AError error) {
                     // Mark subtask as failed
@@ -509,7 +513,7 @@ public class FlinkA2AProtocol {
                 }
             });
         }
-        
+
         private AgentCard findAgentForSubTask(SubTask subtask) {
             // Query registry for capable agent
             // Consider: load, latency, cost
@@ -519,61 +523,61 @@ public class FlinkA2AProtocol {
                 .orElse(null);
         }
     }
-    
+
     /**
      * A2A Server implementation for Flink-hosted Agents
      */
     public static class FlinkA2AServer {
-        
+
         private final AgentCard agentCard;
         private final A2ARequestHandler requestHandler;
-        
+
         public FlinkA2AServer(AgentConfig config) {
             this.agentCard = buildAgentCard(config);
             this.requestHandler = new A2ARequestHandler(config);
         }
-        
+
         public void start() {
             // Expose Agent Card at well-known endpoint
             exposeAgentCard();
-            
+
             // Start HTTP server for A2A protocol
             Undertow server = Undertow.builder()
                 .addHttpListener(8080, "0.0.0.0")
                 .setHandler(path()
-                    .addPrefixPath("/.well-known/agent.json", 
+                    .addPrefixPath("/.well-known/agent.json",
                         exchange -> serveAgentCard(exchange))
-                    .addPrefixPath("/a2a/tasks", 
+                    .addPrefixPath("/a2a/tasks",
                         exchange -> handleTaskRequest(exchange))
-                    .addPrefixPath("/a2a/tasks/{taskId}", 
+                    .addPrefixPath("/a2a/tasks/{taskId}",
                         exchange -> handleTaskUpdate(exchange))
                 )
                 .build();
-                
+
             server.start();
         }
-        
+
         private void handleTaskRequest(HttpServerExchange exchange) {
             // Parse A2A task request
             TaskRequest request = parseRequest(exchange);
-            
+
             // Validate against capabilities
             if (!validateCapability(request)) {
                 exchange.setStatusCode(400);
                 exchange.getResponseSender().send("Capability not supported");
                 return;
             }
-            
+
             // Submit to Flink for processing
             String taskId = submitToFlink(request);
-            
+
             // Return task ID for polling/streaming
             exchange.setStatusCode(202);
             exchange.getResponseSender().send(
                 JsonUtils.toJson(Map.of("taskId", taskId))
             );
         }
-        
+
         private AgentCard buildAgentCard(AgentConfig config) {
             return AgentCard.builder()
                 .name(config.getName())
@@ -624,7 +628,7 @@ class AgentCard:
     capabilities: Dict
     authentication: Dict
     skills: List[Dict]
-    
+
 @dataclass
 class Task:
     """A2A Task representation"""
@@ -638,27 +642,27 @@ class A2AClient:
     """
     A2A Protocol Client for Python/Flink
     """
-    
+
     def __init__(self, discovery_endpoint: str = None):
         self.discovery_endpoint = discovery_endpoint
         self.agent_cache: Dict[str, AgentCard] = {}
         self.session: Optional[aiohttp.ClientSession] = None
-        
+
     async def __aenter__(self):
         self.session = aiohttp.ClientSession()
         return self
-        
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         if self.session:
             await self.session.close()
-            
+
     async def discover_agent(self, agent_url: str) -> AgentCard:
         """Discover Agent via well-known endpoint"""
         if agent_url in self.agent_cache:
             return self.agent_cache[agent_url]
-            
+
         well_known_url = f"{agent_url}/.well-known/agent.json"
-        
+
         async with self.session.get(well_known_url) as resp:
             if resp.status == 200:
                 data = await resp.json()
@@ -667,18 +671,18 @@ class A2AClient:
                 return card
             else:
                 raise Exception(f"Agent discovery failed: {resp.status}")
-                
+
     async def send_task(self, agent_card: AgentCard, task: Task) -> Task:
         """Send task to remote Agent"""
         task_url = f"{agent_card.url}/a2a/tasks"
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self._get_auth_token()}"
         }
-        
+
         async with self.session.post(
-            task_url, 
+            task_url,
             json={
                 "id": task.id,
                 "message": task.message,
@@ -692,22 +696,22 @@ class A2AClient:
                 return task
             else:
                 raise Exception(f"Task submission failed: {resp.status}")
-                
+
     async def send_task_streaming(
-        self, 
-        agent_card: AgentCard, 
+        self,
+        agent_card: AgentCard,
         task: Task,
         callback: Callable
     ) -> None:
         """Send task with streaming updates via SSE"""
         task_url = f"{agent_card.url}/a2a/tasks"
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self._get_auth_token()}",
             "Accept": "text/event-stream"
         }
-        
+
         async with self.session.post(
             task_url,
             json={"id": task.id, "message": task.message},
@@ -718,11 +722,11 @@ class A2AClient:
                 if line.startswith('data: '):
                     data = json.loads(line[6:])
                     await self._handle_sse_event(data, callback)
-                    
+
     async def _handle_sse_event(self, data: Dict, callback: Callable):
         """Handle SSE event from A2A server"""
         event_type = data.get("type")
-        
+
         if event_type == "status":
             await callback.on_status_update(TaskStatus(data.get("status")))
         elif event_type == "artifact":
@@ -731,7 +735,7 @@ class A2AClient:
             await callback.on_complete(data.get("result"))
         elif event_type == "error":
             await callback.on_error(data.get("error"))
-            
+
     def _get_auth_token(self) -> str:
         # Implement token retrieval
         return os.getenv("A2A_AUTH_TOKEN")
@@ -741,11 +745,11 @@ class A2AStreamingIntegration:
     """
     Flink Streaming integration for A2A protocol
     """
-    
+
     def __init__(self, env: StreamExecutionEnvironment):
         self.env = env
         self.agent_registry = {}
-        
+
     def create_collaboration_flow(
         self,
         input_stream,
@@ -754,37 +758,37 @@ class A2AStreamingIntegration:
     ):
         """
         Create a streaming multi-Agent collaboration flow
-        
+
         Pattern: Orchestrator-Workers with A2A
         """
-        
+
         # Step 1: Task decomposition by orchestrator
         decomposed = input_stream.map(
             lambda event: self._decompose_task(event, orchestrator_agent)
         )
-        
+
         # Step 2: Distribute to worker agents via A2A
         distributed = decomposed.key_by(lambda x: x["worker_id"])\
             .process(A2ATaskSender(worker_agents))
-            
+
         # Step 3: Collect responses
         collected = distributed.key_by(lambda x: x["parent_task_id"])\
             .window(TumblingProcessingTimeWindows.of(Time.seconds(30)))\
             .aggregate(ResultAggregator())
-            
+
         # Step 4: Final synthesis
         result = collected.map(
             lambda agg: self._synthesize_results(agg, orchestrator_agent)
         )
-        
+
         return result
-        
+
     def _decompose_task(self, event: Dict, orchestrator: str) -> List[Dict]:
         """Decompose complex task into subtasks"""
         # Use LLM or rule-based decomposition
         # Return list of subtasks with assigned workers
         pass
-        
+
     def _synthesize_results(self, aggregated: Dict, orchestrator: str) -> Dict:
         """Synthesize worker results into final output"""
         # Use orchestrator Agent for synthesis
@@ -795,37 +799,37 @@ class A2ATaskSender(KeyedProcessFunction):
     """
     Flink ProcessFunction for sending A2A tasks
     """
-    
+
     def __init__(self, worker_agents: List[str]):
         self.worker_agents = worker_agents
         self.pending_tasks = None
         self.a2a_client = None
-        
+
     def open(self, runtime_context):
         self.pending_tasks = runtime_context.get_map_state(
             MapStateDescriptor("pending-tasks", Types.STRING(), Types.PICKLED_BYTE_ARRAY())
         )
         self.a2a_client = A2AClient()
-        
+
     def process_element(self, subtask, ctx, out):
         # Send via A2A
         asyncio.run(self._send_task(subtask))
-        
+
         # Track pending
         self.pending_tasks.put(subtask["id"], subtask)
-        
+
         # Register timeout
         ctx.timer_service().register_processing_time_timer(
             ctx.timestamp() + 60000  # 1 minute timeout
         )
-        
+
     def on_timer(self, timestamp, ctx, out):
         # Check for timed out tasks
         for task_id, task in self.pending_tasks.items():
             if task["status"] == "SENT":
                 # Retry or fail
                 pass
-                
+
     async def _send_task(self, subtask: Dict):
         async with self.a2a_client as client:
             agent_card = await client.discover_agent(subtask["agent_url"])
@@ -899,40 +903,40 @@ graph TB
         A2[Task Orchestration]
         A3[Result Aggregation]
     end
-    
+
     subgraph "A2A Protocol Layer"
         P1[Agent Discovery]
         P2[Task Management]
         P3[Streaming Updates]
         P4[Artifact Exchange]
     end
-    
+
     subgraph "Flink Integration Layer"
         F1[Broadcast State Registry]
         F2[Keyed Co-Process]
         F3[Async I/O]
         F4[Checkpoint Recovery]
     end
-    
+
     subgraph "Transport Layer"
         T1[HTTP/2]
         T2[SSE]
         T3[JSON-RPC]
     end
-    
+
     A1 --> P1
     A2 --> P2
     A3 --> P4
-    
+
     P1 --> F1
     P2 --> F2
     P3 --> F3
     P4 --> F3
-    
+
     F1 --> F2
     F2 --> F4
     F3 --> T2
-    
+
     F2 --> T1
     T1 --> T3
 ```
@@ -947,19 +951,19 @@ sequenceDiagram
     participant A1 as Analytics Agent
     participant A2 as CRM Agent
     participant A3 as Code Agent
-    
+
     User->>Gateway: Complex Request
     Gateway->>Flink: Submit Task
-    
+
     Flink->>A1: Discover & Delegate (Analyze)
     A1-->>Flink: Analysis Complete
-    
+
     Flink->>A2: Discover & Delegate (Query)
     A2-->>Flink: Customer Data
-    
+
     Flink->>A3: Discover & Delegate (Generate)
     A3-->>Flink: Code Artifact
-    
+
     Flink->>Flink: Aggregate Results
     Flink-->>Gateway: Complete Response
     Gateway-->>User: Final Output
@@ -970,18 +974,18 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> SUBMITTED: Task Created
-    
+
     SUBMITTED --> WORKING: Agent Accepts
     SUBMITTED --> FAILED: Rejected
-    
+
     WORKING --> WORKING: Streaming Updates
     WORKING --> INPUT_REQUIRED: Need Info
     WORKING --> COMPLETED: Success
     WORKING --> FAILED: Error
-    
+
     INPUT_REQUIRED --> WORKING: Input Provided
     INPUT_REQUIRED --> CANCELLED: Timeout
-    
+
     COMPLETED --> [*]
     FAILED --> [*]
     CANCELLED --> [*]
@@ -990,15 +994,3 @@ stateDiagram-v2
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Google, "A2A (Agent-to-Agent) Protocol Specification", 2025. https://google.github.io/A2A/
-
-[^2]: Linux Foundation, "Agent Communication Protocol Working Group", 2025.
-
-[^3]: Anthropic, "Model Context Protocol", 2024. https://modelcontextprotocol.io/
-
-[^4]: Akka Documentation, "Actor Model", https://akka.io/docs/
-
-[^5]: Apache Flink Documentation, "Broadcast State", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/broadcast_state/
-
-[^6]: Fielding, R., "Architectural Styles and the Design of Network-based Software Architectures", PhD Dissertation, 2000.

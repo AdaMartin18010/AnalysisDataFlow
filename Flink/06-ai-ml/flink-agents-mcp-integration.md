@@ -15,6 +15,7 @@ $$
 $$
 
 Where:
+
 - $\mathcal{F}_{flink}$: Flink streaming runtime
 - $\mathcal{M}_{protocol}$: MCP protocol specification
 - $\phi_{map}$: Capability mapping between Flink and MCP
@@ -68,6 +69,7 @@ $$
 $$
 
 Where:
+
 - $\mathcal{T}_{tools}$: Tool node set
 - $\mathcal{E}_{deps}$: Dependency edges
 - $\phi_{parallel}$: Parallel execution predicate
@@ -136,40 +138,40 @@ graph TB
         A2[Tool Selector]
         A3[Context Manager]
     end
-    
+
     subgraph "MCP Protocol Layer"
         M1[MCP Client]
         M2[Capability Registry]
         M3[Connection Manager]
         M4[JSON-RPC/SSE]
     end
-    
+
     subgraph "Flink Integration Layer"
         F1[Async I/O Function]
         F2[Broadcast State]
         F3[Keyed State]
         F4[Checkpoint Manager]
     end
-    
+
     subgraph "MCP Server Layer"
         S1[Tool Registry]
         S2[Resource Provider]
         S3[Prompt Manager]
     end
-    
+
     A1 --> A2
     A2 --> M1
     A3 --> M2
-    
+
     M1 --> M3
     M1 --> M4
     M2 --> M1
-    
+
     M4 --> F1
     M1 --> F2
     M1 --> F3
     F1 --> F4
-    
+
     M4 --> S1
     M4 --> S2
     M4 --> S3
@@ -182,7 +184,7 @@ Pattern 1: Synchronous Tool Call
 Input → [Tool Selection] → [MCP Call] → [Result] → Output
 
 Pattern 2: Parallel Tool Calls
-Input → [Tool Selection] 
+Input → [Tool Selection]
            ├→ [Tool A] ─┐
            ├→ [Tool B] ─┼→ [Result Aggregation] → Output
            └→ [Tool C] ─┘
@@ -211,11 +213,13 @@ Pattern 3: Streaming Resource Subscription
 ### 4.2 MCP over Async I/O vs Direct Call
 
 **Direct Call Limitations**:
+
 - Blocks stream processing
 - No backpressure handling
 - Hard to checkpoint
 
 **Async I/O Benefits**:
+
 - Non-blocking execution
 - Backpressure propagation
 - State checkpoint support
@@ -256,6 +260,7 @@ $$
 $$
 
 **依赖条件**:
+
 - Flink event time processing
 - Watermark propagation
 - SSE ordered delivery
@@ -272,42 +277,42 @@ $$
  * Demonstrates tool discovery, async execution, and state management
  */
 public class FlinkMCPClient {
-    
+
     /**
      * MCP Tool Call Operator with State Management
      */
-    public static class MCPToolCallFunction 
+    public static class MCPToolCallFunction
         extends RichAsyncFunction<AgentRequest, AgentResponse> {
-        
+
         // State declarations
         private transient ValueState<ConnectionState> connectionState;
         private transient ListState<PendingRequest> pendingRequests;
         private transient MapState<String, ToolSchema> toolRegistry;
-        
+
         // Transient clients
         private transient MCPClient mcpClient;
         private transient Executor executor;
-        
+
         private final String mcpServerEndpoint;
         private final Duration timeout;
-        
+
         public MCPToolCallFunction(String endpoint, Duration timeout) {
             this.mcpServerEndpoint = endpoint;
             this.timeout = timeout;
         }
-        
+
         @Override
         public void open(Configuration parameters) throws Exception {
             // Initialize state
             connectionState = getRuntimeContext().getState(
                 new ValueStateDescriptor<>("mcp-connection", ConnectionState.class));
-            
+
             pendingRequests = getRuntimeContext().getListState(
                 new ListStateDescriptor<>("pending-requests", PendingRequest.class));
-            
+
             toolRegistry = getRuntimeContext().getMapState(
                 new MapStateDescriptor<>("tool-registry", String.class, ToolSchema.class));
-            
+
             // Initialize MCP client
             this.mcpClient = MCPClient.builder()
                 .withEndpoint(mcpServerEndpoint)
@@ -315,18 +320,18 @@ public class FlinkMCPClient {
                 .withTimeout(timeout)
                 .withRetryPolicy(RetryPolicy.exponentialBackoff(3, Duration.ofSeconds(1)))
                 .build();
-            
+
             // Establish connection and discover capabilities
             mcpClient.connect();
             discoverCapabilities();
-            
+
             // Executor for async operations
             this.executor = Executors.newFixedThreadPool(10);
         }
-        
+
         private void discoverCapabilities() throws Exception {
             ServerCapabilities caps = mcpClient.getCapabilities();
-            
+
             if (caps.getToolsSupport().isSupported()) {
                 List<Tool> tools = mcpClient.listTools();
                 for (Tool tool : tools) {
@@ -335,65 +340,65 @@ public class FlinkMCPClient {
                 LOG.info("Discovered {} tools from MCP server", tools.size());
             }
         }
-        
+
         @Override
         public void asyncInvoke(AgentRequest request, ResultFuture<AgentResponse> resultFuture) {
             executor.execute(() -> {
                 try {
                     // Step 1: Tool Selection (using LLM or rule-based)
                     ToolSelection selection = selectTools(request);
-                    
+
                     // Step 2: Execute tools
                     if (selection.isParallel()) {
                         executeParallelTools(selection, request, resultFuture);
                     } else {
                         executeSequentialTools(selection, request, resultFuture);
                     }
-                    
+
                 } catch (Exception e) {
                     LOG.error("Error processing request {}", request.getId(), e);
                     resultFuture.completeExceptionally(e);
                 }
             });
         }
-        
-        private void executeParallelTools(ToolSelection selection, 
+
+        private void executeParallelTools(ToolSelection selection,
                                           AgentRequest request,
                                           ResultFuture<AgentResponse> resultFuture) {
             List<CompletableFuture<ToolResult>> futures = new ArrayList<>();
-            
+
             for (ToolCall call : selection.getToolCalls()) {
                 // Validate against schema
                 ToolSchema schema = toolRegistry.get(call.getToolName());
                 validateParams(call.getParams(), schema);
-                
+
                 // Track pending request
                 PendingRequest pending = new PendingRequest(
                     request.getId(), call.getToolName(), System.currentTimeMillis()
                 );
-                
+
                 // Execute tool
                 CompletableFuture<ToolResult> future = mcpClient.callToolAsync(
-                    call.getToolName(), 
+                    call.getToolName(),
                     call.getParams()
                 );
-                
+
                 futures.add(future);
             }
-            
+
             // Aggregate results
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .thenAccept(v -> {
                     List<ToolResult> results = futures.stream()
                         .map(CompletableFuture::join)
                         .collect(Collectors.toList());
-                    
+
                     AgentResponse response = new AgentResponse(
                         request.getId(),
                         aggregateResults(results),
                         request.getContext()
                     );
-                    
+
                     resultFuture.complete(Collections.singletonList(response));
                 })
                 .exceptionally(ex -> {
@@ -401,28 +406,28 @@ public class FlinkMCPClient {
                     return null;
                 });
         }
-        
+
         private void executeSequentialTools(ToolSelection selection,
                                             AgentRequest request,
                                             ResultFuture<AgentResponse> resultFuture) {
             CompletableFuture<ToolResult> chain = CompletableFuture.completedFuture(null);
             Map<String, Object> context = new HashMap<>();
-            
+
             for (ToolCall call : selection.getToolCalls()) {
                 chain = chain.thenCompose(prevResult -> {
                     if (prevResult != null) {
                         context.put(call.getToolName() + "_result", prevResult);
                     }
-                    
+
                     // Inject previous results into params
                     Map<String, Object> enrichedParams = enrichParams(
                         call.getParams(), context
                     );
-                    
+
                     return mcpClient.callToolAsync(call.getToolName(), enrichedParams);
                 });
             }
-            
+
             chain.thenAccept(finalResult -> {
                 AgentResponse response = new AgentResponse(
                     request.getId(),
@@ -435,7 +440,7 @@ public class FlinkMCPClient {
                 return null;
             });
         }
-        
+
         @Override
         public void timeout(AgentRequest request, ResultFuture<AgentResponse> resultFuture) {
             LOG.warn("MCP tool call timeout for request {}", request.getId());
@@ -443,7 +448,7 @@ public class FlinkMCPClient {
                 AgentResponse.timeout(request.getId())
             ));
         }
-        
+
         @Override
         public void close() throws Exception {
             if (mcpClient != null) {
@@ -454,17 +459,17 @@ public class FlinkMCPClient {
             }
         }
     }
-    
+
     /**
      * Resource Subscription Function
      * Streams Flink data to MCP clients via SSE
      */
     public static class MCPResourceSubscriptionFunction
         extends ProcessFunction<DataEvent, Void> {
-        
+
         private transient MCPClient mcpClient;
         private transient Map<String, ResourceSubscriber> subscribers;
-        
+
         @Override
         public void open(Configuration parameters) throws Exception {
             mcpClient = MCPClient.builder()
@@ -472,24 +477,24 @@ public class FlinkMCPClient {
                 .build();
             subscribers = new ConcurrentHashMap<>();
         }
-        
+
         @Override
         public void processElement(DataEvent event, Context ctx, Collector<Void> out) {
             String resourceUri = buildResourceUri(event);
-            
+
             // Notify all subscribers
             ResourceUpdate update = new ResourceUpdate(
                 resourceUri,
                 event.getMimeType(),
                 event.toJson()
             );
-            
+
             mcpClient.publishResourceUpdate(resourceUri, update);
         }
-        
+
         private String buildResourceUri(DataEvent event) {
-            return String.format("flink://%s/%s/%s", 
-                event.getStreamName(), 
+            return String.format("flink://%s/%s/%s",
+                event.getStreamName(),
                 event.getPartition(),
                 event.getKey()
             );
@@ -526,60 +531,60 @@ class MCPAsyncFunction(AsyncFunction):
     """
     PyFlink AsyncFunction for MCP tool calls
     """
-    
+
     def __init__(self, mcp_endpoint: str, timeout_sec: int = 30):
         self.mcp_endpoint = mcp_endpoint
         self.timeout = timeout_sec
         self.mcp_client = None
         self.tool_registry = {}
-        
+
     def open(self, runtime_context):
         # Initialize MCP client
         from mcp.client import MCPClient
-        
+
         self.mcp_client = MCPClient(
             endpoint=self.mcp_endpoint,
             auth_token=os.getenv("MCP_TOKEN")
         )
-        
+
         # Discover tools
         asyncio.run(self._discover_tools())
-        
+
     async def _discover_tools(self):
         """Discover available tools from MCP server"""
         tools = await self.mcp_client.list_tools()
         for tool in tools:
             self.tool_registry[tool.name] = tool.schema
         print(f"Discovered {len(tools)} tools")
-        
+
     async def async_invoke(self, input_data: Dict, result_future: ResultFuture):
         """Async invocation for each stream element"""
         try:
             # Extract tool calls from input
             tool_calls = self._extract_tool_calls(input_data)
-            
+
             # Execute tools in parallel
             results = await self._execute_tools_parallel(tool_calls)
-            
+
             # Aggregate and return
             output = {
                 "input_id": input_data.get("id"),
                 "tool_results": [r.__dict__ for r in results],
                 "success": all(r.success for r in results)
             }
-            
+
             result_future.complete([output])
-            
+
         except Exception as e:
             result_future.complete_exceptionally(e)
-            
+
     async def _execute_tools_parallel(self, tool_calls: List[ToolCall]) -> List[ToolResult]:
         """Execute multiple tools in parallel"""
         tasks = []
         for call in tool_calls:
             task = self._execute_single_tool(call)
             tasks.append(task)
-            
+
         results = await asyncio.gather(*tasks, return_exceptions=True)
         return [r if isinstance(r, ToolResult) else ToolResult(
             tool_name="unknown",
@@ -588,24 +593,24 @@ class MCPAsyncFunction(AsyncFunction):
             success=False,
             error=str(r)
         ) for r in results]
-        
+
     async def _execute_single_tool(self, call: ToolCall) -> ToolResult:
         """Execute a single tool with timeout"""
         start_time = time.time()
-        
+
         try:
             result = await asyncio.wait_for(
                 self.mcp_client.call_tool(call.tool_name, call.params),
                 timeout=self.timeout
             )
-            
+
             return ToolResult(
                 tool_name=call.tool_name,
                 content=result,
                 latency_ms=int((time.time() - start_time) * 1000),
                 success=True
             )
-            
+
         except asyncio.TimeoutError:
             return ToolResult(
                 tool_name=call.tool_name,
@@ -622,7 +627,7 @@ class MCPAsyncFunction(AsyncFunction):
                 success=False,
                 error=str(e)
             )
-            
+
     def _extract_tool_calls(self, input_data: Dict) -> List[ToolCall]:
         """Extract tool calls from input (using LLM or rules)"""
         # Implementation depends on use case
@@ -637,7 +642,7 @@ class MCPAsyncFunction(AsyncFunction):
 # Usage in PyFlink job
 def create_mcp_integration_job():
     env = StreamExecutionEnvironment.get_execution_environment()
-    
+
     # Input stream
     input_stream = env.from_source(
         KafkaSource.builder()
@@ -647,7 +652,7 @@ def create_mcp_integration_job():
         WatermarkStrategy.no_watermarks(),
         "kafka-source"
     )
-    
+
     # MCP tool integration with Async I/O
     mcp_result = AsyncDataStream.unordered_wait(
         input_stream,
@@ -658,7 +663,7 @@ def create_mcp_integration_job():
         timeout=30000,  # 30 seconds
         capacity=100    # Max concurrent requests
     )
-    
+
     # Output
     mcp_result.add_sink(
         KafkaSink.builder()
@@ -673,7 +678,7 @@ def create_mcp_integration_job():
             )
             .build()
     )
-    
+
     env.execute("Flink MCP Integration Job")
 
 
@@ -681,25 +686,25 @@ class MCPResourcePublisher:
     """
     Publish Flink streams as MCP Resources
     """
-    
+
     def __init__(self, mcp_endpoint: str):
         self.mcp_endpoint = mcp_endpoint
         self.client = None
-        
+
     async def start(self):
         from mcp.server import MCPServer
-        
+
         self.server = MCPServer("FlinkDataProvider")
-        
+
         # Register streaming resource
         @self.server.resource("flink://sales/metrics")
         async def get_sales_metrics() -> str:
             # Query Flink for real-time metrics
             return await self._query_flink_metrics()
-            
+
         # Start server
         await self.server.run(transport='sse')
-        
+
     async def _query_flink_metrics(self) -> str:
         # Implementation to query Flink REST API
         pass
@@ -714,38 +719,38 @@ mcp:
     # Connection settings
     endpoint: https://mcp-server.internal:8080
     transport: sse  # or stdio, http
-    
+
     # Authentication
     auth:
       type: bearer_token  # or oauth2, mTLS
       token_env: MCP_TOKEN
-      
+
     # Timeouts
     timeouts:
       connect: 10s
       request: 30s
       total: 60s
-      
+
     # Retry policy
     retry:
       max_attempts: 3
       backoff_strategy: exponential
       initial_delay: 1s
       max_delay: 30s
-      
+
     # Connection pool
     pool:
       max_connections: 50
       max_per_route: 20
       keep_alive: 30s
-      
+
   flink:
     async_io:
       # Async I/O configuration
       timeout: 30s
       capacity: 100
       ordered: false  # Unordered for better throughput
-      
+
     state:
       # State backend for MCP connection state
       backend: rocksdb
@@ -753,27 +758,27 @@ mcp:
         connection_state: 1h
         pending_requests: 5m
         tool_registry: 1h
-        
+
     checkpoint:
       # Ensure pending requests are checkpointed
       include_pending: true
-      
+
   tools:
     # Tool execution configuration
     execution:
       default_timeout: 30s
       max_parallel: 10
-      
+
     # Tool-specific overrides
     overrides:
       - name: long_running_query
         timeout: 120s
         max_parallel: 2
-        
+
       - name: external_api_call
         timeout: 10s
         retry_attempts: 5
-        
+
   observability:
     metrics:
       enabled: true
@@ -783,7 +788,7 @@ mcp:
         - tool_latency_seconds
       histograms:
         - tool_execution_duration
-        
+
     tracing:
       enabled: true
       include_tool_params: false  # Don't trace sensitive params
@@ -798,23 +803,23 @@ mcp:
  * Complex Tool Orchestration with Dependencies
  */
 public class ToolOrchestrator {
-    
+
     public CompletableFuture<OrchestrationResult> executeOrchestration(
-            OrchestrationPlan plan, 
+            OrchestrationPlan plan,
             Map<String, Object> initialContext) {
-        
+
         // Build execution graph
         ExecutionGraph graph = buildExecutionGraph(plan);
-        
+
         // Execute in topological order
         Map<String, CompletableFuture<ToolResult>> results = new HashMap<>();
-        
+
         for (ToolNode node : graph.topologicalSort()) {
             // Wait for dependencies
             List<CompletableFuture<ToolResult>> deps = node.getDependencies().stream()
                 .map(results::get)
                 .collect(Collectors.toList());
-            
+
             CompletableFuture<ToolResult> future = CompletableFuture
                 .allOf(deps.toArray(new CompletableFuture[0]))
                 .thenCompose(v -> {
@@ -823,14 +828,14 @@ public class ToolOrchestrator {
                     for (ToolNode dep : node.getDependencies()) {
                         context.put(dep.getName(), results.get(dep.getName()).join());
                     }
-                    
+
                     // Execute this node
                     return executeTool(node.getToolCall(), context);
                 });
-            
+
             results.put(node.getName(), future);
         }
-        
+
         // Aggregate all results
         return CompletableFuture.allOf(
             results.values().toArray(new CompletableFuture[0])
@@ -861,25 +866,25 @@ graph TB
         F4[Result Aggregation]
         F5[Sink]
     end
-    
+
     subgraph "MCP Client"
         M1[Connection Pool]
         M2[Request Queue]
         M3[Response Handler]
     end
-    
+
     subgraph "MCP Server"
         S1[Tool Registry]
         S2[Resource Manager]
         S3[Execution Engine]
     end
-    
+
     subgraph "External Systems"
         E1[Database]
         E2[APIs]
         E3[File System]
     end
-    
+
     F1 --> F2
     F2 --> F3
     F3 --> M2
@@ -903,12 +908,12 @@ sequenceDiagram
     participant MCP as MCP Client
     participant Server as MCP Server
     participant Tool as External Tool
-    
+
     Agent->>MCP: 1. Discover Tools
     MCP->>Server: capabilities/list
     Server-->>MCP: Tool Schemas
     MCP-->>Agent: Available Tools
-    
+
     Agent->>MCP: 2. Call Tool
     MCP->>MCP: Validate Params
     MCP->>Server: tools/call
@@ -923,28 +928,18 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     Input([Input]) --> Select[Tool Selection]
-    
+
     Select --> A[Tool A]
     Select --> B[Tool B]
     Select --> C[Tool C]
-    
+
     A --> Agg[Result Aggregation]
     B --> Agg
     C --> Agg
-    
+
     Agg --> Output([Output])
 ```
 
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Anthropic, "Model Context Protocol Specification", 2024. https://modelcontextprotocol.io/
-
-[^2]: Apache Flink Documentation, "Async I/O", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/async_io/
-
-[^3]: JSON-RPC 2.0 Specification, http://www.jsonrpc.org/specification
-
-[^4]: HTML5 Specification, "Server-Sent Events", https://html.spec.whatwg.org/multipage/server-sent-events.html
-
-[^5]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.

@@ -174,15 +174,15 @@ $$
 
 ```yaml
 # MCP v2.0 OAuth 2.1 配置示例
-oauth2_1: 
-  grant_types: 
+oauth2_1:
+  grant_types:
     - authorization_code
     - client_credentials
     - device_code
-  pkce: 
+  pkce:
     enabled: true
     method: S256
-  scopes: 
+  scopes:
     - mcp:tools:read
     - mcp:tools:invoke
     - mcp:resources:read
@@ -226,6 +226,7 @@ public class FlinkMcpOAuthConfig {
 | **Streamable HTTP (v2.0)** | 1 | 双向 | 低 | 实时应用 |
 
 **Streamable HTTP 特点**:
+
 - 单一 HTTP 连接支持全双工通信
 - 基于 HTTP/2 Server Push 或 WebSocket
 - 自动流控和背压处理
@@ -1329,50 +1330,50 @@ tEnv.executeSql("""
 ```yaml
 version: '3.8'
 
-services: 
-  flink-jobmanager: 
+services:
+  flink-jobmanager:
     image: flink:1.19-scala_2.12
     command: jobmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
-    ports: 
+    ports:
       - "8081:8081"
-    volumes: 
+    volumes:
       - ./jobs:/opt/flink/jobs
 
-  flink-taskmanager: 
+  flink-taskmanager:
     image: flink:1.19-scala_2.12
     command: taskmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
-    depends_on: 
+    depends_on:
       - flink-jobmanager
-    deploy: 
+    deploy:
       replicas: 2
 
-  flink-mcp-server: 
+  flink-mcp-server:
     build: ./mcp-server
-    environment: 
+    environment:
       - FLINK_JOBMANAGER_HOST=flink-jobmanager
       - FLINK_JOBMANAGER_PORT=8081
       - MCP_PORT=3000
-    ports: 
+    ports:
       - "3000:3000"
-    depends_on: 
+    depends_on:
       - flink-jobmanager
       - kafka
 
-  kafka: 
+  kafka:
     image: confluentinc/cp-kafka:7.5.0
-    environment: 
+    environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-    depends_on: 
+    depends_on:
       - zookeeper
 
-  zookeeper: 
+  zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
-    environment: 
+    environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 ```
 
@@ -1382,46 +1383,46 @@ services:
 # flink-mcp-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: flink-mcp-server
-spec: 
+spec:
   replicas: 3
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       app: flink-mcp-server
-  template: 
-    metadata: 
-      labels: 
+  template:
+    metadata:
+      labels:
         app: flink-mcp-server
-    spec: 
-      containers: 
+    spec:
+      containers:
       - name: mcp-server
         image: flink-mcp-server:1.0.0
-        ports: 
+        ports:
         - containerPort: 3000
-        env: 
+        env:
         - name: FLINK_REST_ENDPOINT
           value: "http://flink-jobmanager:8081"
         - name: MCP_AUTH_TOKEN
-          valueFrom: 
-            secretKeyRef: 
+          valueFrom:
+            secretKeyRef:
               name: mcp-secrets
               key: auth-token
-        resources: 
-          requests: 
+        resources:
+          requests:
             memory: "512Mi"
             cpu: "500m"
-          limits: 
+          limits:
             memory: "2Gi"
             cpu: "2000m"
-        livenessProbe: 
-          httpGet: 
+        livenessProbe:
+          httpGet:
             path: /health
             port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
-        readinessProbe: 
-          httpGet: 
+        readinessProbe:
+          httpGet:
             path: /ready
             port: 3000
           initialDelaySeconds: 5
@@ -1429,12 +1430,12 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: flink-mcp-service
-spec: 
-  selector: 
+spec:
+  selector:
     app: flink-mcp-server
-  ports: 
+  ports:
   - port: 3000
     targetPort: 3000
   type: LoadBalancer
@@ -1833,14 +1834,14 @@ public class AccessControlledMcpServer {
 
 ```yaml
 # 资源限制配置
-mcp: 
-  server: 
-    limits: 
+mcp:
+  server:
+    limits:
       max_query_timeout_ms: 30000
       max_result_rows: 10000
       max_sql_length: 5000
       max_concurrent_queries: 50
-      rate_limit: 
+      rate_limit:
         requests_per_minute: 100
         burst_size: 20
 ```

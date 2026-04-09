@@ -81,10 +81,11 @@ $$\text{AEC} = (\mathcal{Q}_{in}, \mathcal{Q}_{out}, \mathcal{H}_{pending}, \mat
 - $\mathcal{M}_{key}$: Key→执行状态映射
 
 **源码实现**:
+
 - 核心类: `org.apache.flink.runtime.asyncprocessing.AsyncExecutionController`
 - 处理器: `org.apache.flink.runtime.asyncprocessing.RecordProcessor`
 - 位于: `flink-runtime` 模块
-- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/async-state/
+- Flink 官方文档: <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/async-state/>
 
 ```mermaid
 flowchart TB
@@ -199,10 +200,11 @@ interface AsyncMapState<K, V> {
 ```
 
 **源码实现**:
+
 - 接口定义: `org.apache.flink.runtime.state.v2.*`
 - 内部实现: `org.apache.flink.runtime.state.v2.internal.*`
 - 位于: `flink-runtime` 模块
-- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/runtime/state/v2/package-summary.html
+- Flink 官方文档: <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/runtime/state/v2/package-summary.html>
 
 **定义 Def-F-02-81**: **StateFuture与回调链**
 
@@ -227,11 +229,12 @@ interface StateFuture<V> {
 ```
 
 **源码实现**:
+
 - 接口: `org.apache.flink.core.state.StateFuture`
 - 实现: `org.apache.flink.core.state.StateFutureImpl`
 - 组合工具: `org.apache.flink.core.state.StateFutureUtils`
 - 位于: `flink-core` 模块
-- Flink 官方文档: https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/core/state/StateFuture.html
+- Flink 官方文档: <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/core/state/StateFuture.html>
 
 **定义 Def-F-02-82**: **thenXXX方法链**
 
@@ -364,15 +367,16 @@ $$\text{Watermark}_{out}(t) \Rightarrow \forall r: t_r \leq t \Rightarrow \text{
 **定义**: ∀k, ∀i < j: Process(r_i^k) ≺ Process(r_j^k)
 
 **源码实现**:
+
 ```java
 // AsyncExecutionController.java (第 200-320 行)
 public class AsyncExecutionController<K, N> {
-    
+
     // Key 到执行队列的映射
     private final Map<K, KeyExecutionQueue> keyQueues;
     private final KeySelector<?, K> keySelector;
     private final RecordProcessor recordProcessor;
-    
+
     /**
      * 处理输入记录
      * 核心逻辑：确保同一 Key 的记录按 FIFO 顺序处理
@@ -380,18 +384,18 @@ public class AsyncExecutionController<K, N> {
     public void processRecord(StreamRecord record) {
         // 提取记录的 Key
         K key = keySelector.getKey(record);
-        
+
         // 获取或创建该 Key 对应的执行队列
-        KeyExecutionQueue queue = keyQueues.computeIfAbsent(key, 
+        KeyExecutionQueue queue = keyQueues.computeIfAbsent(key,
             k -> new KeyExecutionQueue());
-        
+
         // 创建异步处理任务
         AsyncTask task = new AsyncTask(record, key);
-        
+
         // 提交到 Key 队列：确保 FIFO 顺序
         queue.submit(task);
     }
-    
+
     /**
      * Key 执行队列：维护同一 Key 的顺序处理
      */
@@ -402,7 +406,7 @@ public class AsyncExecutionController<K, N> {
         private StateFuture<Void> currentFuture = StateFutureUtils.completedVoidFuture();
         // 锁保护并发访问
         private final Object lock = new Object();
-        
+
         /**
          * 提交新任务：链式依赖保证 FIFO
          */
@@ -410,11 +414,11 @@ public class AsyncExecutionController<K, N> {
             synchronized (lock) {
                 // 获取前一个任务的 Future
                 StateFuture<Void> previous = currentFuture;
-                
+
                 // 提交异步处理：Stage 1 (CPU) + Stage 2 (I/O)
-                StateFuture<StateAccessResult> stateFuture = 
+                StateFuture<StateAccessResult> stateFuture =
                     recordProcessor.processAsync(task.record);
-                
+
                 // 创建当前任务的完成 Future
                 // thenCompose 链确保：前一个任务完成后才执行当前任务
                 currentFuture = previous.thenCompose(v -> {
@@ -424,17 +428,17 @@ public class AsyncExecutionController<K, N> {
                         return recordProcessor.postProcessAsync(result, task.record);
                     });
                 });
-                
+
                 // 注册完成回调，处理异常和队列状态
                 currentFuture.exceptionally(ex -> {
                     handleProcessingError(task, ex);
                     return null;
                 });
-                
+
                 pendingTasks.offer(task);
             }
         }
-        
+
         /**
          * 获取最后一个任务的 Future（用于链式依赖）
          */
@@ -443,7 +447,7 @@ public class AsyncExecutionController<K, N> {
                 return currentFuture;
             }
         }
-        
+
         /**
          * 检查队列是否空闲
          */
@@ -453,7 +457,7 @@ public class AsyncExecutionController<K, N> {
             }
         }
     }
-    
+
     /**
      * 异步任务包装
      */
@@ -461,7 +465,7 @@ public class AsyncExecutionController<K, N> {
         final StreamRecord record;
         final Object key;
         final long sequenceNumber;  // 序列号用于调试和验证
-        
+
         AsyncTask(StreamRecord record, Object key) {
             this.record = record;
             this.key = key;
@@ -486,8 +490,9 @@ public class AsyncExecutionController<K, N> {
 **基础**: 对于 Key $k$ 的第一个记录 $r_1^k$，队列为空，`currentFuture` 为已完成状态，$r_1^k$ 立即开始处理。
 
 **归纳**: 假设记录 $r_i^k$ 的处理 Future 为 $F_i$。对于 $r_{i+1}^k$:
+
 - 提交时 `previous = F_i`
-- `currentFuture = F_i.thenCompose(...)` 
+- `currentFuture = F_i.thenCompose(...)`
 - 因此 $r_{i+1}^k$ 的处理在 $F_i$ 完成后才开始
 
 由数学归纳法，∀i < j: Process(r_i^k) ≺ Process(r_j^k) ∎
@@ -499,13 +504,14 @@ public class AsyncExecutionController<K, N> {
 **定义**: Watermark(t) ⟹ ∀r with t_r ≤ t: already processed
 
 **源码实现**:
+
 ```java
 // AsyncExecutionController.java (Watermark 处理)
 public class AsyncExecutionController<K, N> {
-    
+
     // Watermark 队列：按 Key 收集待处理 Watermark
     private final PriorityQueue<Watermark> pendingWatermarks;
-    
+
     /**
      * 处理 Watermark：确保所有前置记录完成才传播
      */
@@ -515,17 +521,17 @@ public class AsyncExecutionController<K, N> {
         for (KeyExecutionQueue queue : keyQueues.values()) {
             keyFutures.add(queue.getLastFuture());
         }
-        
+
         // 等待所有 Key 的待处理任务完成
         StateFuture<Void> allKeysComplete = StateFutureUtils.allOf(keyFutures);
-        
+
         // 所有记录处理完成后，才输出 Watermark
         allKeysComplete.thenAccept(v -> {
             // 验证：此时所有时间戳 <= watermark 的记录都已处理
             output.emitWatermark(watermark);
         });
     }
-    
+
     /**
      * Checkpoint 屏障处理：确保状态一致性
      */
@@ -535,9 +541,9 @@ public class AsyncExecutionController<K, N> {
         for (KeyExecutionQueue queue : keyQueues.values()) {
             keyFutures.add(queue.getLastFuture());
         }
-        
+
         StateFuture<Void> allComplete = StateFutureUtils.allOf(keyFutures);
-        
+
         allComplete.thenAccept(v -> {
             // 所有异步操作完成，可以安全进行状态快照
             checkpointListener.notifyCheckpoint(barrier.getCheckpointId());
@@ -547,6 +553,7 @@ public class AsyncExecutionController<K, N> {
 ```
 
 **验证结论**:
+
 - ✅ **Watermark 语义保持**: `allOf(keyFutures)` 确保所有记录处理完成后才传播 Watermark
 - ✅ **Checkpoint 一致性**: 屏障到达时等待所有异步操作完成，保证快照包含一致状态
 - ✅ **跨 Key 协调**: 取所有 Key 队列 Future 的最小值 (通过 allOf)，确保全局一致性
@@ -1483,9 +1490,9 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+[^1]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 
-[^2]: Apache Flink Documentation, "Release Notes - Flink 2.0", 2025. https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/
+[^2]: Apache Flink Documentation, "Release Notes - Flink 2.0", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/>
 
 
 

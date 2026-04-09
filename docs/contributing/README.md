@@ -77,7 +77,7 @@ flowchart TD
     E --> F[提交 PR]
     F --> G[审核]
     G --> H[合并]
-    
+
     style A fill:#e1f5fe
     style H fill:#e8f5e9
 ```
@@ -147,7 +147,7 @@ mindmap
 
 - **GitHub Issues**: 报告问题、提出功能建议
 - **GitHub Discussions**: 一般讨论、问答
-- **邮件**: discussion@analysisdataflow.org
+- **邮件**: <discussion@analysisdataflow.org>
 
 ---
 

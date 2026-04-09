@@ -297,6 +297,7 @@ graph TB
    - Retrieved Documents: 60%
    - Conversation History: 25%
    - Current Query: 5%
+
 ```
 
 3. **缓存策略**:
@@ -1135,12 +1136,12 @@ $$
 **推荐配置**（生产环境）:
 
 ```yaml
-memory: 
-  short_term: 
+memory:
+  short_term:
     backend: rocksdb
     ttl: 30m
     max_size: 10000
-  long_term: 
+  long_term:
     backend: pinecone
     namespace: agent_memory
     batch_size: 100
@@ -1472,6 +1473,7 @@ graph LR
    GROUP BY
        user_id,
        TUMBLE(event_time, INTERVAL '5' MINUTE);
+
 ```
 
 3. **决策可解释性**:
@@ -1672,27 +1674,27 @@ state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
 ```yaml
 # agent-config.yaml
-agent: 
+agent:
   max_concurrent_requests: 100
   request_timeout_ms: 30000
   retry_attempts: 3
   retry_backoff_ms: 100
 
-llm: 
+llm:
   provider: openai
   model: gpt-4-turbo
   temperature: 0.7
   max_tokens: 2000
   api_key: ${OPENAI_API_KEY}
 
-rag: 
+rag:
   vector_store: pinecone
   top_k: 5
   similarity_threshold: 0.7
   cache_enabled: true
   cache_ttl_seconds: 300
 
-memory: 
+memory:
   session_ttl_minutes: 30
   max_history_turns: 20
   vector_index_namespace: agent_memory

@@ -64,6 +64,7 @@ python scripts/link-health-checker.py --verbose
 ### 3. 查看报告
 
 检查完成后，报告将生成在：
+
 - **Markdown报告**: `reports/link-health-report.md`
 - **JSON数据**: `reports/link-health-results.json`
 
@@ -186,6 +187,7 @@ python scripts/link-quick-fix.py --file README.md --line 42 --new-url "https://n
 ### 工作流配置
 
 **触发条件:**
+
 - **定时触发**: 每月1日 UTC 02:00
 - **手动触发**: 通过 Actions 页面手动运行
 
@@ -292,18 +294,21 @@ python scripts/link-health-checker.py --timeout 15 --retries 1
 ### 常见问题
 
 **Q: 检查过程超时怎么办？**
+
 ```bash
 # 减少并发和超时时间
 python scripts/link-health-checker.py --concurrent 20 --timeout 20
 ```
 
 **Q: 某些链接被误判为失效？**
+
 ```bash
 # 检查是否在排除列表中
 # 编辑 .scripts/link-checker/config.yaml 添加排除规则
 ```
 
 **Q: 如何只检查特定目录？**
+
 ```bash
 # 指定路径
 python scripts/link-health-checker.py --path ./Flink
@@ -339,6 +344,7 @@ python scripts/link-health-checker.py --path ./Flink
 ## 📝 更新日志
 
 ### v3.0 (2026-04-04)
+
 - ✅ 创建链接健康检查器 v3.0
 - ✅ 创建自动修复工具
 - ✅ 创建快速修复工具

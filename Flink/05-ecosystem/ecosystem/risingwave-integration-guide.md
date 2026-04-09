@@ -410,7 +410,7 @@ processed.executeInsert("risingwave_sink");
 
 ```yaml
 # Sample Prometheus queries
-queries: 
+queries:
   throughput: |
     rate(flink_taskmanager_job_task_operator_numRecordsIn[1m])
 

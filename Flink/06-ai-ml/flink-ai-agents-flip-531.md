@@ -68,10 +68,10 @@ public class AgentState {
 
 ```yaml
 # 工具定义 schema
-tool: 
+tool:
   name: "query_sales_data"
   description: "查询实时销售数据"
-  parameters: 
+  parameters:
     - name: "time_range"
       type: "string"
       required: true
@@ -81,7 +81,7 @@ tool:
       required: false
 
   # Flink SQL实现的工具
-  implementation: 
+  implementation:
     type: "sql"
     sql: |
       SELECT
@@ -92,7 +92,7 @@ tool:
       ${product_category != null ? "AND category = '" + product_category + "'" : ""}
 
   # 执行配置
-  execution: 
+  execution:
     timeout_ms: 5000
     retry_policy: "exponential_backoff"
     max_retries: 3

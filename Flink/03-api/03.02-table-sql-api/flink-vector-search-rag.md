@@ -1201,7 +1201,6 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ## 8. 引用参考 (References)
 
-[^10]: Apache Flink Documentation, "VECTOR_SEARCH", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/vector-search/
 
 
 

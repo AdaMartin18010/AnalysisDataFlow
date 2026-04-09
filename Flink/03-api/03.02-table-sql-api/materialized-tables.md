@@ -24,12 +24,12 @@ $$
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Materialized Table                    │
+│                    Materialized Table                   │
 ├─────────────────────────────────────────────────────────┤
 │  Source → [Query] → [Materialized Result] → Storage     │
 │            ↑                    ↓                       │
 │         Refresh              Query Engine               │
-│          Trigger                                         │
+│          Trigger                                        │
 └─────────────────────────────────────────────────────────┘
 ```
 

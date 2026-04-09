@@ -33,18 +33,18 @@ $$
 gantt
     title MCP 协议版本演进
     dateFormat  YYYY-MM-DD
-    
+
     section v1.x
     MCP v1.0 发布           :milestone, v10, 2024-11-01, 0d
     stdio 传输稳定          :active, v10_stdio, 2024-11-01, 90d
     HTTP+SSE 传输           :active, v10_http, 2024-12-01, 120d
-    
+
     section v2.0
     v2.0 开发启动           :v20_dev, 2025-01-01, 60d
     OAuth 2.1 集成          :v20_oauth, 2025-02-01, 30d
     Streamable HTTP 开发    :v20_stream, 2025-02-15, 30d
     MCP v2.0 发布           :milestone, v20, 2025-03-26, 0d
-    
+
     section v2.x 规划
     批量操作优化            :v21_batch, 2025-04-01, 60d
     改进的订阅机制          :v21_sub, 2025-05-01, 60d
@@ -175,15 +175,15 @@ interface BatchResponse {
 ```java
 // Flink MCP v2.0 客户端适配器
 public class McpV2Adapter {
-    
+
     private final McpClientConfig config;
     private OAuth2Token token;
-    
+
     // 版本协商
     public McpVersion negotiateVersion() {
         // 尝试 v2.0
         try {
-            McpResponse resp = sendRequest(new McpRequest("initialize", 
+            McpResponse resp = sendRequest(new McpRequest("initialize",
                 Map.of("protocolVersion", "2.0")));
             if (resp.isSuccess()) return McpVersion.V2_0;
         } catch (VersionMismatchException e) {
@@ -192,7 +192,7 @@ public class McpV2Adapter {
         }
         return McpVersion.V1_0;
     }
-    
+
     // 批量 SQL 查询（v2.0 优化）
     public List<QueryResult> batchQuery(List<String> sqlStatements) {
         if (version == McpVersion.V2_0) {
@@ -229,19 +229,19 @@ sequenceDiagram
     participant AgentA as Agent A (Flink)
     participant McpServer as MCP Server
     participant AgentB as Agent B (外部)
-    
+
     User->>AgentA: 提交复杂查询任务
-    
+
     Note over AgentA: A2A 协议
     AgentA->>AgentB: 委托部分数据处理 (tasks/send)
     AgentB-->>AgentA: 任务接受确认
-    
+
     Note over AgentA: MCP v2.0 协议
     AgentA->>McpServer: 查询本地流数据
     McpServer-->>AgentA: 返回实时数据
-    
+
     AgentB-->>AgentA: 异步返回处理结果 (push notification)
-    
+
     AgentA->>User: 合并结果返回
 ```
 
@@ -289,17 +289,11 @@ sequenceDiagram
 
 ## 7. 引用参考 (References)
 
-[^1]: Anthropic, "Model Context Protocol Specification", 2025. https://modelcontextprotocol.io/
 
-[^2]: Anthropic, "MCP v2.0 Release Notes", 2025-03-26. https://modelcontextprotocol.io/spec/v2.0
 
-[^3]: OAuth Working Group, "OAuth 2.1 Specification", 2025. https://oauth.net/2.1/
 
-[^4]: IETF, "PKCE RFC 7636", 2015. https://tools.ietf.org/html/rfc7636
 
-[^5]: Google, "A2A Protocol Specification", 2025. https://developers.google.com/a2a
 
-[^6]: Flink MCP Integration, "Flink MCP Protocol Integration", 2025. [../../flink-mcp-protocol-integration.md](../../flink-mcp-protocol-integration.md)
 
 ---
 

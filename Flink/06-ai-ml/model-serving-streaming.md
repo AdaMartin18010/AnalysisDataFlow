@@ -383,10 +383,10 @@ public class OnnxScoringUdf extends TableFunction<Row> {
 
 ```yaml
 # model-routing-config.yaml
-model_registry: 
-  models: 
+model_registry:
+  models:
     - name: fraud_detection
-      versions: 
+      versions:
         - version: "2.1.0"
           path: "s3://models/fraud/v2.1.0/"
           state: production
@@ -395,18 +395,18 @@ model_registry:
           path: "s3://models/fraud/v2.2.0-rc1/"
           state: canary
           traffic_weight: 0.1
-          rollback_threshold: 
+          rollback_threshold:
             error_rate: 0.01
             latency_p99: 50ms
 
     - name: recommendation
-      versions: 
+      versions:
         - version: "1.5.0"
           path: "hdfs://models/rec/v1.5.0/"
           state: production
           traffic_weight: 1.0
 
-routing_strategy: 
+routing_strategy:
   type: weighted_random
   sticky_session: true
   session_ttl: 300s

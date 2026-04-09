@@ -1,8 +1,8 @@
 # 知识图谱 2.0 实现报告
 
-> **项目**: AnalysisDataFlow 知识图谱 2.0  
-> **版本**: v2.0.0  
-> **日期**: 2026-04-04  
+> **项目**: AnalysisDataFlow 知识图谱 2.0
+> **版本**: v2.0.0
+> **日期**: 2026-04-04
 > **状态**: ✅ 已完成
 
 ---
@@ -10,6 +10,7 @@
 ## 📋 任务概述
 
 实现知识图谱2.0系统，包括：
+
 1. 交互式图谱可视化
 2. 动态学习路径推荐
 3. 文档关系自动映射
@@ -22,6 +23,7 @@
 ### 1. 交互式知识图谱页面 (`knowledge-graph-v2.html`)
 
 #### 核心特性
+
 | 特性 | 实现状态 | 说明 |
 |------|----------|------|
 | D3.js 力导向图 | ✅ | 流畅的物理模拟布局 |
@@ -35,6 +37,7 @@
 | SVG导出 | ✅ | 支持导出图谱为SVG图像 |
 
 #### 节点类型支持
+
 - 📄 **文档** (Struct/Knowledge/Flink)
 - 📐 **定理** (Theorem)
 - 📐 **定义** (Definition)
@@ -43,6 +46,7 @@
 - 📐 **推论** (Corollary)
 
 #### 关系类型支持
+
 - 🔗 **包含关系** (contains) - 灰色细线
 - 🔗 **依赖关系** (dependency) - 橙色虚线
 - 🔗 **引用关系** (citation) - 绿色实线
@@ -51,11 +55,13 @@
 ### 2. 学习路径推荐器 (`learning-path-recommender.js`)
 
 #### 核心算法
+
 ```
 推荐得分 = 重要性(25%) + 依赖满足度(30%) + 进度(20%) + 类型(15%) + 层次(10%)
 ```
 
 #### 功能特性
+
 | 功能 | 实现状态 | 说明 |
 |------|----------|------|
 | PageRank中心性 | ✅ | 计算节点重要性 |
@@ -66,6 +72,7 @@
 | 进度统计 | ✅ | 统计学习覆盖率和进度 |
 
 #### API接口
+
 ```javascript
 // 初始化
 const recommender = new LearningPathRecommender();
@@ -90,6 +97,7 @@ const stats = recommender.getProgressStats();
 ### 3. 知识图谱数据生成器 (`scripts/knowledge-graph-generator.py`)
 
 #### 功能特性
+
 | 功能 | 实现状态 | 说明 |
 |------|----------|------|
 | 文档扫描 | ✅ | 自动扫描Struct/Knowledge/Flink目录 |
@@ -100,6 +108,7 @@ const stats = recommender.getProgressStats();
 | GraphJSON输出 | ✅ | 标准JSON格式图谱数据 |
 
 #### 运行结果
+
 ```
 ✅ 共扫描 400 个文档
 ✅ 共提取 246 个形式化元素
@@ -114,6 +123,7 @@ const stats = recommender.getProgressStats();
 ```
 
 #### 命令行用法
+
 ```bash
 # 基本用法
 python scripts/knowledge-graph-generator.py
@@ -131,6 +141,7 @@ python scripts/knowledge-graph-generator.py --output ./data/graph.json
 ### 4. 文档关系自动映射脚本 (`scripts/doc-relationship-mapper.py`)
 
 #### 功能特性
+
 | 功能 | 实现状态 | 说明 |
 |------|----------|------|
 | 交叉引用分析 | ✅ | 识别文档间的引用关系 |
@@ -142,6 +153,7 @@ python scripts/knowledge-graph-generator.py --output ./data/graph.json
 | 多格式输出 | ✅ | JSON/Markdown/DOT |
 
 #### 输出报告
+
 | 文件 | 格式 | 内容 |
 |------|------|------|
 | `doc-relationship-report.json` | JSON | 完整报告数据 |
@@ -150,6 +162,7 @@ python scripts/knowledge-graph-generator.py --output ./data/graph.json
 | `doc-statistics.json` | JSON | 统计数据 |
 
 #### 命令行用法
+
 ```bash
 # 生成完整报告
 python scripts/doc-relationship-mapper.py
@@ -166,6 +179,7 @@ python scripts/doc-relationship-mapper.py --output ./reports
 ## 📁 文件清单
 
 ### 核心文件
+
 | 文件 | 大小 | 说明 |
 |------|------|------|
 | `knowledge-graph-v2.html` | ~71 KB | 交互式知识图谱页面 |
@@ -175,6 +189,7 @@ python scripts/doc-relationship-mapper.py --output ./reports
 | `KNOWLEDGE-GRAPH-GUIDE.md` | ~17 KB | 使用指南 |
 
 ### 生成的数据文件
+
 | 文件 | 大小 | 说明 |
 |------|------|------|
 | `.vscode/graph-data.json` | ~361 KB | 知识图谱数据 |
@@ -195,15 +210,18 @@ python scripts/doc-relationship-mapper.py --output ./reports
 ## 🔧 技术架构
 
 ### 前端技术栈
+
 - **D3.js v7** - 力导向图可视化
 - **原生JavaScript (ES6+)** - 交互逻辑
 - **CSS3** - 响应式样式
 
 ### 后端/脚本技术栈
+
 - **Python 3** - 数据生成和处理
 - **标准库** - 无需额外依赖
 
 ### 数据格式
+
 - **GraphJSON** - 标准图谱数据格式
 - **节点属性**: id, label, type, group, size, color, metadata
 - **边属性**: source, target, type, weight
@@ -231,19 +249,23 @@ python scripts/doc-relationship-mapper.py --output ./reports
 ## 🚀 快速开始
 
 ### 1. 生成知识图谱数据
+
 ```bash
 python scripts/knowledge-graph-generator.py --stats
 ```
 
 ### 2. 启动HTTP服务器
+
 ```bash
 python -m http.server 8000
 ```
 
 ### 3. 打开知识图谱
+
 浏览器访问: `http://localhost:8000/knowledge-graph-v2.html`
 
 ### 4. 生成文档关系报告
+
 ```bash
 python scripts/doc-relationship-mapper.py
 ```
@@ -257,6 +279,7 @@ python scripts/doc-relationship-mapper.py
 ### 核心功能演示
 
 #### 交互式图谱浏览
+
 1. 打开 `knowledge-graph-v2.html`
 2. 使用搜索框查找特定节点
 3. 点击节点查看详情
@@ -264,12 +287,14 @@ python scripts/doc-relationship-mapper.py
 5. 使用工具栏缩放和重置
 
 #### 学习路径推荐
+
 1. 切换到 **💡 推荐** 标签页
 2. 输入已掌握的概念ID（如: `Thm-S-01-01`）
 3. 点击 **生成学习推荐** 按钮
 4. 查看推荐结果并点击节点查看
 
 #### 文档关系分析
+
 ```bash
 python scripts/doc-relationship-mapper.py
 cat reports/doc-relationship-report.md

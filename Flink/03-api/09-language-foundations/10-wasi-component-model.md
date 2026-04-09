@@ -28,10 +28,6 @@
     - [4.3 边界与限制分析](#43-边界与限制分析)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 组件组合正确性论证](#51-组件组合正确性论证)
-    - [5.2 流计算组件化性能论证](#52-流计算组件化性能论证)
-    - [5.3 Flink 集成架构论证](#53-flink-集成架构论证)
-  - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 完整开发工作流](#61-完整开发工作流)
     - [6.2 Java 宿主代码实现](#62-java-宿主代码实现)
     - [6.3 组件组合示例](#63-组件组合示例)
     - [6.4 测试与验证](#64-测试与验证)
@@ -487,7 +483,7 @@ world operator-embedded-state {
    ∀ import ∈ C.imports: ∃ export ∈ (⋃ C_k.exports)
    such that type(import) = type(export)
 
-```
+    ```
 
 2. **类型转换正确性**
    - Lift/Lower 操作由 wit-bindgen 生成

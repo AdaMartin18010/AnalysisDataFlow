@@ -29,7 +29,7 @@
     - [4.3 Breaking Changes 分析](#43-breaking-changes-分析)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 V2 API Correctness Arguments](#51-v2-api-correctness-arguments)
-    - [5.2 Performance Benchmarks (Real Data)](#52-performance-benchmarks-real-data)
+    - [5.2 Performance Benchmarks (Flink 2.0 GA)](#52-performance-benchmarks-flink-20-ga)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Scala 3 项目结构](#61-scala-3-项目结构)
     - [6.2 WordCount in V2 API (Scala 3)](#62-wordcount-in-v2-api-scala-3)
@@ -41,6 +41,7 @@
     - [7.1 V1 vs V2 Architecture Comparison](#71-v1-vs-v2-architecture-comparison)
     - [7.2 Migration Decision Flowchart](#72-migration-decision-flowchart)
     - [7.3 API Mapping Diagram](#73-api-mapping-diagram)
+    - [5.3 State V2 API 生产使用建议](#53-state-v2-api-生产使用建议)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -2109,12 +2110,14 @@ graph LR
 根据 Flink 2.0 GA 发布[^20]，State V2 API 生产使用建议：
 
 **适用场景**:
+
 - ✅ 大状态作业 (> 100GB)
 - ✅ 云原生部署 (Kubernetes + S3/OSS)
 - ✅ 高频 Checkpoint 需求
 - ✅ 快速扩缩容场景
 
 **配置建议**:
+
 ```scala
 // 启用 State V2 API
 env.setStateBackend(new ForStStateBackend())
@@ -2126,6 +2129,7 @@ env.getConfig.setAsyncStateMaxPendingRequests(1000)
 ```
 
 **迁移检查清单**:
+
 - [ ] 代码迁移到声明式 State API
 - [ ] 测试异步状态访问语义
 - [ ] 验证 Checkpoint 一致性
@@ -2136,7 +2140,7 @@ env.getConfig.setAsyncStateMaxPendingRequests(1000)
 
 ## 8. 引用参考 (References)
 
-[^20]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+[^20]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 
 
 

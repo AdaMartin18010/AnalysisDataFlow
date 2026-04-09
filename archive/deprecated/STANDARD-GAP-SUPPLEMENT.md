@@ -11,6 +11,7 @@
 CloudEvents是CNCF主导的**事件数据标准规范**，旨在以通用方式描述事件数据，实现跨服务、跨平台的互操作性。
 
 **项目当前缺失**:
+
 - CloudEvents核心属性（specversion、type、source、id、time等）定义
 - Flink与CloudEvents的集成实践
 - CloudEvents与Kafka消息格式的映射
@@ -53,16 +54,16 @@ public class CloudEvent {
     private String type;         // 事件类型
     private String source;       // 事件来源
     private String id;           // UUID
-    
+
     // 可选属性
     private Instant time;        // ISO 8601格式
     private String dataschema;   // Schema URI
     private String datacontenttype; // 如 "application/json"
     private String subject;      // 子主题
-    
+
     // 扩展属性
     private Map<String, Object> extensions;
-    
+
     // 数据负载
     private byte[] data;
 }
@@ -92,20 +93,20 @@ CREATE TABLE cloudevents (
     `type` STRING,
     `source` STRING,
     id STRING,
-    
+
     -- CloudEvents可选属性
     `time` TIMESTAMP(3),
     dataschema STRING,
     datacontenttype STRING,
     subject STRING,
-    
+
     -- 扩展属性
     traceparent STRING,
     mycustomext STRING,
-    
+
     -- 数据负载
     data STRING,
-    
+
     -- Flink特定
     WATERMARK FOR `time` AS `time` - INTERVAL '5' SECOND
 ) WITH (
@@ -114,6 +115,7 @@ CREATE TABLE cloudevents (
     'format' = 'json'
 );
 ```
+
 ```
 
 ---
@@ -146,6 +148,7 @@ public interface Publisher<T> {
 ```
 
 **Subscriber<T>**: 数据消费者
+
 ```java
 public interface Subscriber<T> {
     void onSubscribe(Subscription s);
@@ -156,6 +159,7 @@ public interface Subscriber<T> {
 ```
 
 **Subscription**: 订阅关系管理
+
 ```java
 public interface Subscription {
     void request(long n);  // 背压核心: 请求n个元素
@@ -164,6 +168,7 @@ public interface Subscription {
 ```
 
 **Processor<T,R>**: 转换处理器
+
 ```java
 public interface Processor<T,R> extends Subscriber<T>, Publisher<R> {
 }
@@ -194,9 +199,11 @@ Reactive Streams定义了以下必须遵守的规则：
 ### Flink为何不直接使用Reactive Streams
 
 **论证**:
+
 1. **延迟要求**: Flink追求亚秒级延迟，RS的显式request增加开销
 2. **分布式场景**: RS针对单JVM，Flink跨网络需不同机制
 3. **自动优化**: Flink背压自动调整，无需用户介入
+
 ```
 
 ---
@@ -261,6 +268,7 @@ public class FlinkAsyncAPIGenerator {
     }
 }
 ```
+
 ```
 
 ---
@@ -283,8 +291,8 @@ public class FlinkAsyncAPIGenerator {
 [^X]: 作者, "论文标题", 会议名, 卷(期), 年份, 页码. [PDF](链接)
 
 示例:
-[^2024-01]: J. Smith et al., "Deterministic Stream Processing at Scale", 
-    PVLDB, 17(12), 2024, pp. 3847-3860. 
+[^2024-01]: J. Smith et al., "Deterministic Stream Processing at Scale",
+    PVLDB, 17(12), 2024, pp. 3847-3860.
     https://www.vldb.org/pvldb/vol17/p3847-smith.pdf
 ```
 
@@ -312,6 +320,7 @@ public class FlinkAsyncAPIGenerator {
 ```
 
 **推荐实施顺序**:
+
 1. CloudEvents（高影响，中等难度）
 2. 2024顶会论文更新（高影响，低难度）
 3. Reactive Streams（中等影响，中等难度）

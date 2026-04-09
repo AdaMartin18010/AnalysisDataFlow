@@ -392,14 +392,17 @@ $$
 ### 4.3 移动性场景下的服务连续性保障
 
 **场景一：园区内移动** (AR 巡检)
+
 - 用户在同一 MEC 覆盖范围内移动
 - 解决方案：保持同一 UPF 锚点
 
 **场景二：跨区域移动** (车联网)
+
 - 用户跨越 MEC 边界
 - 解决方案：SSC Mode 3 + 状态迁移
 
 **场景三：城市级移动** (物流配送)
+
 - 用户在城市范围内大范围移动
 - 解决方案：会话上下文同步 + 云端协调
 
@@ -444,6 +447,7 @@ $$
 ```
 
 **隔离验证**：
+
 - 网络层：iperf 测试，租户间带宽互不影响
 - 计算层：stress-ng 测试，CPU 限制生效
 - 存储层：fio 测试，IOPS 限制生效
@@ -550,11 +554,11 @@ network:
   spectrum:
     band: n78  # 3.5GHz
     bandwidth: 100MHz
-    
+
   core:
     type: "private"
     vendor: "Huawei/ZTE/Ericsson"
-    
+
   slices:
     - name: "industrial-control"
       sst: 2  # URLLC
@@ -564,7 +568,7 @@ network:
         gfbr: 10Mbps
         delay: 1ms
         reliability: "99.9999%"
-        
+
     - name: "video-analytics"
       sst: 1  # eMBB
       sd: "000002"
@@ -575,7 +579,7 @@ network:
 
 mec_infrastructure:
   location: "factory-site-01"
-  
+
   compute:
     nodes:
       - name: "mec-master"
@@ -584,7 +588,7 @@ mec_infrastructure:
           cpu: 16
           memory: 64GB
           storage: 1TB SSD
-          
+
       - name: "mec-worker-01"
         role: "compute"
         spec:
@@ -592,7 +596,7 @@ mec_infrastructure:
           memory: 128GB
           storage: 2TB SSD
           gpu: "NVIDIA A30"
-          
+
       - name: "mec-worker-02"
         role: "compute"
         spec:
@@ -600,16 +604,16 @@ mec_infrastructure:
           memory: 128GB
           storage: 2TB SSD
           gpu: "NVIDIA A30"
-          
+
   kubernetes:
     distribution: "k8s"  # or "openshift"
     version: "1.28"
     cni: "calico"
-    
+
   storage:
     type: "rook-ceph"
     replication: 3
-    
+
 applications:
   - name: "flink-control-plane"
     namespace: "streaming"
@@ -619,7 +623,7 @@ applications:
       resources:
         memory: "4Gi"
         cpu: "2"
-        
+
   - name: "wasmedge-runtime"
     namespace: "wasm"
     image: "wasmedge/slim-runtime:0.14.0"
@@ -657,7 +661,7 @@ impl V2xMecApp {
     async fn new(mep_endpoint: &str) -> Self {
         // 1. 初始化 MEC 平台客户端
         let mec_client = MecPlatformClient::connect(mep_endpoint).await;
-        
+
         // 2. 注册应用到 MEP
         mec_client.register_application(AppRegistration {
             app_id: "v2x-processor-001",
@@ -673,7 +677,7 @@ impl V2xMecApp {
                 },
             ],
         }).await;
-        
+
         // 3. 配置流量规则 (V2X 消息分流)
         mec_client.configure_traffic_rule(TrafficRule {
             rule_id: "v2x-bsm-rule",
@@ -684,7 +688,7 @@ impl V2xMecApp {
             },
             action: "FORWARD_DECAPSULATED",
         }).await;
-        
+
         // 4. 配置 QoS (URLLC)
         mec_client.configure_qos(QosProfile {
             five_qi: 79,  # V2X
@@ -692,13 +696,13 @@ impl V2xMecApp {
             delay: "10ms",
             reliability: "99.999%",
         }).await;
-        
+
         // 5. 初始化 Wasm 运行时
         let wasm_runtime = WasmRuntime::builder()
             .with_memory_limit(4 * 1024 * 1024 * 1024)
             .with_aot_enabled(true)
             .build();
-        
+
         V2xMecApp {
             mec_client,
             wasm_runtime,
@@ -706,7 +710,7 @@ impl V2xMecApp {
             message_buffer: Arc::new(RwLock::new(MessageBuffer::new())),
         }
     }
-    
+
     /// 处理 V2X 消息
     async fn process_v2x_message(&self, message: V2xMessage) -> Result<V2xResponse, Error> {
         match message.message_type {
@@ -728,11 +732,11 @@ impl V2xMecApp {
             }
         }
     }
-    
+
     async fn process_bsm(&self, bsm: V2xMessage) -> Result<V2xResponse, Error> {
         // 1. 解析 BSM
         let basic_safety = BasicSafetyMessage::parse(&bsm.payload)?;
-        
+
         // 2. 更新车辆注册表
         {
             let mut registry = self.vehicle_registry.write().await;
@@ -742,23 +746,23 @@ impl V2xMecApp {
                 &basic_safety.velocity,
             );
         }
-        
+
         // 3. 调用 Wasm 模块进行碰撞检测
         let collision_risk = {
             let registry = self.vehicle_registry.read().await;
             let nearby = registry.get_nearby_vehicles(&basic_safety.position, 100.0);
-            
+
             let input = serde_json::json!({
                 "ego": basic_safety,
                 "others": nearby,
             });
-            
+
             self.wasm_runtime.call(
                 "collision_detection",
                 input.to_string().as_bytes(),
             )?
         };
-        
+
         // 4. 生成响应
         let response = if collision_risk.risk_level != RiskLevel::None {
             // 高风险 - 生成警告
@@ -771,13 +775,13 @@ impl V2xMecApp {
         } else {
             V2xResponse::Ack
         };
-        
+
         // 5. 上报 MEP (位置更新)
         self.mec_client.report_location(
             &basic_safety.vehicle_id,
             &basic_safety.position,
         ).await;
-        
+
         Ok(response)
     }
 }
@@ -786,10 +790,10 @@ impl V2xMecApp {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 初始化 V2X MEC 应用
     let app = V2xMecApp::new("http://mep:8080").await;
-    
+
     // 订阅 V2X 消息流
     let mut message_stream = app.mec_client.subscribe_v2x_messages();
-    
+
     while let Some(message) = message_stream.next().await {
         match app.process_v2x_message(message).await {
             Ok(response) => {
@@ -801,7 +805,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    
+
     Ok(())
 }
 ```
@@ -815,7 +819,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 application:
   name: "ar-inference-service"
   version: "1.0.0"
-  
+
   components:
     - name: "pose-estimation"
       type: "wasm"
@@ -829,7 +833,7 @@ application:
         input_shape: [1, 256, 256, 3]
         output_shape: [1, 17, 3]  # 17 keypoints, x,y,confidence
         target_latency_ms: 10
-        
+
     - name: "object-detection"
       type: "wasm"
       image: "wasmedge/yolov8n:v1.0"
@@ -841,7 +845,7 @@ application:
         model: "yolov8n.onnx"
         input_shape: [1, 3, 640, 640]
         target_latency_ms: 20
-        
+
     - name: "gesture-recognition"
       type: "wasm"
       image: "wasmedge/gesture-net:v1.0"
@@ -862,7 +866,7 @@ network:
       gfbr: "50Mbps"
       mfbr: "100Mbps"
       delay: "10ms"
-      
+
   # MEC 流量规则
   traffic_rules:
     - rule_id: "ar-traffic"
@@ -871,7 +875,7 @@ network:
         protocol: "UDP"
         dst_port: ["8000", "8001"]
       action: "FORWARD_DECAPSULATED"
-      
+
   # 本地 DNS
   dns_rules:
     - domain: "ar-inference.local"
@@ -883,7 +887,7 @@ performance:
     end_to_end_latency_ms: 20
     inference_latency_ms: 15
     network_latency_ms: 5
-    
+
   # 弹性伸缩
   autoscaling:
     min_replicas: 2
@@ -920,13 +924,13 @@ graph TB
     subgraph "MEC Infrastructure"
         MEP[MEC Platform]
         MEPM[MEC Platform Manager]
-        
+
         subgraph "MEC Host - Zone A"
             UPF_A[UPF Edge A]
             APP_A1[Flink Edge<br/>IoT Processing]
             APP_A2[WasmEdge<br/>AI Inference]
         end
-        
+
         subgraph "MEC Host - Zone B"
             UPF_B[UPF Edge B]
             APP_B1[Flink Edge<br/>Video Analytics]
@@ -943,33 +947,33 @@ graph TB
     SMF -->|N4| UPF_C
     SMF -->|N4| UPF_A
     SMF -->|N4| UPF_B
-    
+
     PCF -->|N7| SMF
     NEF -->|N5| PCF
     NEF <-->|Mp1| MEP
-    
+
     MEP -->|App LCM| APP_A1
     MEP -->|App LCM| APP_A2
     MEP -->|App LCM| APP_B1
     MEP -->|App LCM| APP_B2
-    
+
     AMF -->|N2| GNB1
     AMF -->|N2| GNB2
     AMF -->|N2| GNB3
-    
+
     GNB1 -->|N3| UPF_A
     GNB2 -->|N3| UPF_A
     GNB3 -->|N3| UPF_B
-    
+
     UPF_A -->|N6| APP_A1
     UPF_A -->|N6| APP_A2
     UPF_B -->|N6| APP_B1
     UPF_B -->|N6| APP_B2
-    
+
     UE1 -.->|URLLC| GNB1
     UE2 -.->|eMBB| GNB2
     UE3 -.->|V2X| GNB3
-    
+
     style MEP fill:#bbdefb,stroke:#1565c0
     style UPF_A fill:#c8e6c9,stroke:#2e7d32
     style UPF_B fill:#c8e6c9,stroke:#2e7d32
@@ -982,31 +986,31 @@ graph TB
 ```mermaid
 flowchart LR
     UE([User Equipment]) -->|Uu Interface| GNB[gNB]
-    
+
     GNB -->|N3| UPF{UPF - UL CL}
-    
+
     UPF -->|Match Rule 1| MEC1[MEC App 1<br/>Local Processing]
     UPF -->|Match Rule 2| MEC2[MEC App 2<br/>AI Inference]
     UPF -->|Default| CORE[Core UPF]
-    
+
     MEC1 -->|Local Response| UPF
     MEC2 -->|Inference Result| UPF
-    
+
     CORE -->|Internet| INTERNET([Internet / Cloud])
-    
+
     UPF -->|Response| GNB
     GNB -->|Downlink| UE
-    
+
     subgraph "Traffic Rules"
         R1[Rule 1: FQDN=ar.local<br/>Action=FORWARD_DECAPSULATED]
         R2[Rule 2: Port=8080<br/>Action=FORWARD_DECAPSULATED]
         R3[Default: Action=FORWARD]
     end
-    
+
     R1 -.-> UPF
     R2 -.-> UPF
     R3 -.-> UPF
-    
+
     style MEC1 fill:#c8e6c9,stroke:#2e7d32
     style MEC2 fill:#ffcc80,stroke:#ef6c00
     style UPF fill:#bbdefb,stroke:#1565c0
@@ -1025,39 +1029,39 @@ sequenceDiagram
 
     Dev->>MEO: 1. Submit App Package
     MEO->>MEO: 2. Validate Package
-    
+
     alt Validation Success
         MEO->>MEPM: 3. Instantiate App
         MEPM->>VIM: 4. Create Resources
         VIM->>VIM: 5. Pull Image / Deploy
         VIM-->>MEPM: 6. Resources Created
-        
+
         MEPM->>MEP: 7. Register App Services
         MEP->>APP: 8. Configure Traffic Rules
         MEP->>APP: 9. Configure DNS Rules
-        
+
         APP->>APP: 10. Start Application
         APP-->>MEPM: 11. App Ready
         MEPM-->>MEO: 12. Instantiation Complete
         MEO-->>Dev: 13. App Deployed
-        
+
         Note over APP: Running State
-        
+
         loop Health Monitoring
             MEPM->>APP: Health Check
             APP-->>MEPM: Status Report
         end
-        
+
     else Validation Failed
         MEO-->>Dev: Error: Invalid Package
     end
-    
+
     Dev->>MEO: Scale Request
     MEO->>MEPM: Scale App
     MEPM->>VIM: Update Resources
     VIM->>VIM: Scale Pods
     VIM-->>MEPM: Scale Complete
-    
+
     Dev->>MEO: Terminate Request
     MEO->>MEPM: Terminate App
     MEPM->>MEP: Deregister Services
@@ -1071,32 +1075,32 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> Connected: Attach
-    
+
     Connected --> HandoverPrepare: Measurement Report
     HandoverPrepare --> HandoverExecute: HO Command
     HandoverExecute --> Connected: HO Complete
-    
+
     Connected --> Idle: Inactivity Timer
     Idle --> Connected: UL Data / Service Request
-    
+
     HandoverPrepare --> Connected: HO Cancel
     HandoverExecute --> Idle: HO Failure
-    
+
     Connected --> [*]: Detach
     Idle --> [*]: Detach
-    
+
     note right of Connected
         - Data Transmission Active
         - UPF Anchor Established
         - QoS Flow Active
     end note
-    
+
     note right of HandoverPrepare
         - Target Cell Selected
         - Resource Reservation
         - Bearer Setup
     end note
-    
+
     note right of HandoverExecute
         - RACH to Target
         - Path Switch
@@ -1108,23 +1112,14 @@ stateDiagram-v2
 
 ## 8. 引用参考 (References)
 
-[^1]: ETSI GS MEC 003, "Multi-access Edge Computing (MEC); Framework and Reference Architecture", V2.1.1, 2019.
 
-[^2]: 3GPP TS 23.501, "System Architecture for the 5G System (5GS)", V18.3.0, 2023.
 
-[^3]: 3GPP TS 23.502, "Procedures for the 5G System (5GS)", V18.3.0, 2023.
 
-[^4]: ETSI GS MEC 009, "Multi-access Edge Computing (MEC); General principles for MEC Service APIs", V2.1.1, 2020.
 
-[^5]: GSMA, "5G MEC Operator Requirements and Use Cases", 2023.
 
-[^6]: O-RAN Alliance, "O-RAN.WG1.O-RAN-Architecture-Description", 2023.
 
-[^7]: 5G-ACIA, "5G for Connected Industries and Automation", White Paper, 2023.
 
-[^8]: Apache Flink Documentation, "Deployment", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/
 
-[^9]: WasmEdge Documentation, "Deploy on 5G Edge Computing", 2024. https://wasmedge.org/docs/
 
 ---
 

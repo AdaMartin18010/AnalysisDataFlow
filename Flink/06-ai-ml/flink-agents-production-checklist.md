@@ -70,7 +70,7 @@ graph TB
         D[Security] --> E[Compliance]
         F[Observability] --> G[Operations]
         H[Code Quality] --> I[Reliability]
-        
+
         B --> J[Production Ready]
         E --> J
         G --> J
@@ -159,14 +159,14 @@ $$
 # infrastructure-config.yaml
 flink:
   version: "1.20.0"
-  
+
   jobmanager:
     memory:
       process:
         size: 4096m
     high-availability: zookeeper
     high-availability.zookeeper.quorum: zk-1:2181,zk-2:2181,zk-3:2181
-    
+
   taskmanager:
     memory:
       process:
@@ -174,7 +174,7 @@ flink:
       managed:
         fraction: 0.4
     numberOfTaskSlots: 4
-    
+
   state:
     backend: rocksdb
     checkpoint-storage: filesystem
@@ -182,7 +182,7 @@ flink:
       dir: hdfs:///flink/checkpoints
     savepoints:
       dir: hdfs:///flink/savepoints
-      
+
   execution:
     checkpointing:
       interval: 30s
@@ -191,7 +191,7 @@ flink:
       max-concurrent-checkpoints: 1
       unaligned: true
       incremental: true
-      
+
   security:
     ssl:
       enabled: true
@@ -221,14 +221,14 @@ flink:
 ```java
 // ✅ 正确: 完整的错误处理和资源管理
 public class ProductionReadyAgent extends KeyedProcessFunction<String, Event, Result> {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ProductionReadyAgent.class);
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final int MAX_RETRIES = 3;
-    
+
     private transient ValueState<AgentState> state;
     private transient LLMClient llmClient;
-    
+
     @Override
     public void open(Configuration parameters) {
         // 状态声明
@@ -237,19 +237,19 @@ public class ProductionReadyAgent extends KeyedProcessFunction<String, Event, Re
             .setStateVisibility(NeverReturnExpired)
             .cleanupIncrementally(10, true)
             .build();
-            
-        ValueStateDescriptor<AgentState> descriptor = 
+
+        ValueStateDescriptor<AgentState> descriptor =
             new ValueStateDescriptor<>("agent-state", AgentState.class);
         descriptor.enableTimeToLive(ttlConfig);
         state = getRuntimeContext().getState(descriptor);
-        
+
         // 客户端初始化
         llmClient = LLMClient.builder()
             .withTimeout(TIMEOUT)
             .withRetryPolicy(RetryPolicy.exponentialBackoff(MAX_RETRIES))
             .build();
     }
-    
+
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) {
         try {
@@ -259,34 +259,34 @@ public class ProductionReadyAgent extends KeyedProcessFunction<String, Event, Re
                 metrics.counter("events.invalid").inc();
                 return;
             }
-            
+
             // 处理逻辑
             AgentState currentState = state.value();
             if (currentState == null) {
                 currentState = new AgentState(event.getAgentId());
             }
-            
+
             // 带超时的外部调用
             Result result = processWithTimeout(event, currentState);
-            
+
             // 更新状态
             currentState.update(result);
             state.update(currentState);
-            
+
             // 输出结果
             out.collect(result);
-            
+
             // 记录指标
             metrics.histogram("processing.latency").update(
                 System.currentTimeMillis() - ctx.timestamp()
             );
-            
+
         } catch (ValidationException e) {
             LOG.error("Validation failed for event {}", event.getId(), e);
             metrics.counter("errors.validation").inc();
             // 发送到死信队列
             ctx.output(DEAD_LETTER_TAG, new DeadLetter(event, e));
-            
+
         } catch (LLMException e) {
             LOG.error("LLM call failed for event {}", event.getId(), e);
             metrics.counter("errors.llm").inc();
@@ -296,23 +296,23 @@ public class ProductionReadyAgent extends KeyedProcessFunction<String, Event, Re
             } else {
                 ctx.output(DEAD_LETTER_TAG, new DeadLetter(event, e));
             }
-            
+
         } catch (Exception e) {
             LOG.error("Unexpected error processing event {}", event.getId(), e);
             metrics.counter("errors.unexpected").inc();
             throw e; // 让 Flink 决定处理策略
         }
     }
-    
+
     private boolean isValid(Event event) {
-        return event != null 
-            && event.getId() != null 
+        return event != null
+            && event.getId() != null
             && event.getAgentId() != null
             && event.getPayload() != null
             && event.getPayload().length() < MAX_PAYLOAD_SIZE;
     }
-    
-    private Result processWithTimeout(Event event, AgentState state) 
+
+    private Result processWithTimeout(Event event, AgentState state)
         throws TimeoutException {
         return CompletableFuture.supplyAsync(() -> process(event, state))
             .orTimeout(TIMEOUT.getSeconds(), TimeUnit.SECONDS)
@@ -348,48 +348,48 @@ llm:
     provider: openai
     model: gpt-4-turbo-preview
     api_key: ${OPENAI_API_KEY}  # 从环境变量读取
-    
+
     # 生成参数
     temperature: 0.7
     max_tokens: 4096
     top_p: 1.0
     frequency_penalty: 0.0
     presence_penalty: 0.0
-    
+
     # 连接配置
     base_url: https://api.openai.com/v1
     timeout: 30s
     connect_timeout: 10s
-    
+
     # 重试配置
     retry:
       max_attempts: 3
       backoff_strategy: exponential
       initial_delay: 1s
       max_delay: 30s
-      
+
     # 连接池
     connection_pool:
       max_total: 50
       max_per_route: 20
-      
+
   # 备用模型
   fallback:
     provider: anthropic
     model: claude-3-opus-20240229
     api_key: ${ANTHROPIC_API_KEY}
-    
+
     # 简化的参数配置
     temperature: 0.7
     max_tokens: 4096
     timeout: 60s
-    
+
   # 成本监控
   cost_tracking:
     enabled: true
     metrics_enabled: true
     alert_threshold_usd: 1000  # 每日预算告警
-    
+
   # 缓存配置
   cache:
     enabled: true
@@ -399,19 +399,19 @@ llm:
       port: 6379
       ttl: 3600  # 1小时
     similarity_threshold: 0.95
-    
+
   # 护栏配置
   guardrails:
     input:
       toxicity_detection: true
       prompt_injection_detection: true
       max_input_tokens: 8000
-      
+
     output:
       toxicity_detection: true
       pii_detection: true
       max_output_tokens: 4096
-      
+
     rate_limiting:
       requests_per_minute: 100
       tokens_per_minute: 100000
@@ -446,24 +446,24 @@ mcp:
         type: mTLS
         cert_path: /etc/certs/mcp-client.crt
         key_path: /etc/certs/mcp-client.key
-      
+
       # 工具权限
       tools:
         - name: query_database
           allowed_roles: [analyst, admin]
           rate_limit: 100/hour
           timeout: 30s
-          
+
         - name: delete_data
           allowed_roles: [admin]
           require_approval: true
           audit_required: true
-          
+
         - name: export_report
           allowed_roles: [analyst, admin, viewer]
           rate_limit: 10/hour
           max_file_size: 100MB
-          
+
   # 安全策略
   security:
     # 输入验证
@@ -471,7 +471,7 @@ mcp:
       enabled: true
       max_query_length: 10000
       forbidden_keywords: ["DROP", "DELETE", "TRUNCATE"]
-      
+
     # 审计日志
     audit:
       enabled: true
@@ -482,7 +482,7 @@ mcp:
       kafka:
         bootstrap_servers: kafka:9092
         topic: mcp-audit-logs
-        
+
     # 熔断配置
     circuit_breaker:
       enabled: true
@@ -518,26 +518,26 @@ monitoring:
     enabled: true
     port: 9249
     path: /metrics
-    
+
     # 自定义指标
     custom_metrics:
       - name: agent_processing_latency
         type: histogram
         labels: [agent_type, status]
         buckets: [10, 50, 100, 500, 1000, 5000]
-        
+
       - name: llm_token_usage
         type: counter
         labels: [model, agent_id]
-        
+
       - name: tool_call_duration
         type: histogram
         labels: [tool_name, status]
-        
+
       - name: agent_state_size
         type: gauge
         labels: [agent_id, state_type]
-        
+
   # 日志配置
   logging:
     format: json
@@ -551,7 +551,7 @@ monitoring:
       - agent_id
       - trace_id
       - span_id
-      
+
   # 分布式追踪
   tracing:
     enabled: true
@@ -561,7 +561,7 @@ monitoring:
     sampler:
       type: probabilistic
       rate: 0.1  # 10% 采样
-      
+
   # 告警规则
   alerts:
     - name: HighProcessingLatency
@@ -570,21 +570,21 @@ monitoring:
       severity: warning
       annotations:
         summary: "Agent processing latency is high"
-        
+
     - name: LLMRateLimit
       expr: rate(llm_errors_total{reason="rate_limit"}[5m]) > 0
       for: 1m
       severity: critical
       annotations:
         summary: "LLM API rate limit hit"
-        
+
     - name: HighErrorRate
       expr: rate(agent_errors_total[5m]) / rate(agent_events_total[5m]) > 0.05
       for: 5m
       severity: critical
       annotations:
         summary: "Agent error rate exceeds 5%"
-        
+
     - name: StateSizeGrowing
       expr: agent_state_size > 1000000000  # 1GB
       for: 10m
@@ -641,14 +641,14 @@ graph TB
         R5[Observability: 85%]
         R6[Operations: 70%]
     end
-    
+
     R1 --> Total[Overall: 85%]
     R2 --> Total
     R3 --> Total
     R4 --> Total
     R5 --> Total
     R6 --> Total
-    
+
     Total --> Status[Status: READY with WARNINGS]
 ```
 
@@ -659,22 +659,22 @@ flowchart TD
     Start([开始部署]) --> Code[代码检查]
     Code -->|通过| Config[配置检查]
     Code -->|失败| Fix1[修复代码] --> Code
-    
+
     Config -->|通过| Security[安全检查]
     Config -->|失败| Fix2[修复配置] --> Config
-    
+
     Security -->|通过| Infra[基础设施检查]
     Security -->|失败| Fix3[修复安全] --> Security
-    
+
     Infra -->|通过| Monitor[监控配置]
     Infra -->|失败| Fix4[修复基础设施] --> Infra
-    
+
     Monitor -->|通过| Backup[备份验证]
     Monitor -->|失败| Fix5[修复监控] --> Monitor
-    
+
     Backup -->|通过| Deploy[执行部署]
     Backup -->|失败| Fix6[修复备份] --> Backup
-    
+
     Deploy --> Verify[部署验证]
     Verify -->|成功| Done([部署完成])
     Verify -->|失败| Rollback[回滚]
@@ -684,13 +684,3 @@ flowchart TD
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Google SRE Book, "Production Readiness Review", https://sre.google/sre-book/table-of-contents/
-
-[^2]: AWS Well-Architected Framework, "Operational Excellence Pillar", 2024.
-
-[^3]: Azure Well-Architected Framework, "Reliability Pillar", 2024.
-
-[^4]: NIST Cybersecurity Framework, Version 1.1, 2018.
-
-[^5]: OWASP Top 10, 2021. https://owasp.org/www-project-top-ten/

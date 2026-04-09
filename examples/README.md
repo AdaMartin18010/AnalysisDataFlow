@@ -65,16 +65,19 @@ python wordcount.py
 ## 🔧 环境要求
 
 ### Java示例
+
 - JDK 11+
 - Apache Maven 3.6+
 - (可选) Flink 1.20+
 
 ### Python示例
+
 - Python 3.8+
 - Java 11+ (Flink依赖)
 - pip
 
 ### Docker环境
+
 - Docker 20.10+
 - Docker Compose 2.0+
 

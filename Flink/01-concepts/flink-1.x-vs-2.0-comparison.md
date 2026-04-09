@@ -33,8 +33,10 @@
   - [8. 与 Dataflow 模型的关系](#8-与-dataflow-模型的关系)
   - [9. 迁移路径与向后兼容性](#9-迁移路径与向后兼容性)
     - [9.1 迁移策略](#91-迁移策略)
-    - [9.2 向后兼容性](#92-向后兼容性)
-    - [9.3 风险与缓解](#93-风险与缓解)
+- [从 Flink 1.x 创建 Savepoint](#从-flink-1x-创建-savepoint)
+- [使用 Flink 2.0 恢复](#使用-flink-20-恢复)
+  - [9.2 向后兼容性](#92-向后兼容性)
+  - [9.3 风险与缓解](#93-风险与缓解)
   - [10. 性能基准对比](#10-性能基准对比)
     - [10.1 官方发布数据 (2025-03-24)](#101-官方发布数据-2025-03-24)
     - [10.2 实验室测试数据](#102-实验室测试数据)
@@ -450,7 +452,7 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
      -Dstate.backend=disaggregated \
      job-2.0.jar
 
-```
+    ```
 
 4. **验证阶段**: 对比输出结果一致性，逐步切流
 
@@ -616,9 +618,8 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 
 [^44]: Apache Flink, "Migration Guide," <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/migration/>
 
-[^45]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/
+[^45]: Apache Flink Blog, "Apache Flink 2.0.0: A New Era of Real-Time Data Processing", March 24, 2025. <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 
-[^46]: Apache Flink Documentation, "Release Notes - Flink 2.0", 2025. https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/
 
 ---
 
