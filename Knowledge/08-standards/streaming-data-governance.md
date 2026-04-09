@@ -180,10 +180,10 @@ Flink 作业未声明该字段 → 反序列化异常 → 订单流中断
 
 ```yaml
 # docker-compose.yml 部署
-services: 
-  schema-registry: 
+services:
+  schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
-    environment: 
+    environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
       SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: BACKWARD
@@ -413,7 +413,7 @@ class QualityValidator(MapFunction):
 # 治理即代码 (Governance as Code)
 # governance/trade-events.yaml
 
-schema: 
+schema:
   name: TradeEvent
   format: AVRO
   compatibility: FULL
@@ -432,9 +432,9 @@ schema:
       ]
     }
 
-lineage: 
+lineage:
   source: kafka://trading-cluster/trade-events
-  processors: 
+  processors:
     - name: trade-validation
       type: flink-job
       inputs: [trade-events]
@@ -445,33 +445,33 @@ lineage:
       outputs: [risk-enriched-trades]
   sink: kafka://analytics-cluster/enriched-trades
 
-access_control: 
-  roles: 
+access_control:
+  roles:
     - name: trader
-      permissions: 
+      permissions:
         - topic: trade-events
           operations: [READ, WRITE]
           row_filter: "trader_id = '${user.id}'"
-      field_masking: 
+      field_masking:
         - field: client_id
           mask_type: HASH  # 哈希脱敏
     - name: risk_manager
-      permissions: 
+      permissions:
         - topic: "*"
           operations: [READ]
       field_masking: []  # 无脱敏
     - name: auditor
-      permissions: 
+      permissions:
         - topic: "*"
           operations: [READ]
-      field_masking: 
+      field_masking:
         - field: trader_id
           mask_type: FULL  # 完全脱敏
         - field: client_id
           mask_type: FULL
 
-quality: 
-  checks: 
+quality:
+  checks:
     - name: price_positive
       type: ExpectColumnValuesToBeBetween
       column: price
@@ -483,15 +483,15 @@ quality:
       value_set_ref: listed_symbols  # 动态从数据库加载
       on_failure: ALERT
 
-compliance: 
-  gdpr: 
+compliance:
+  gdpr:
     - field: trader_id
       purpose: contract_performance
       retention_days: 2555  # 7年
     - field: client_id
       purpose: legal_obligation
       retention_days: 3650  # 10年
-  audit: 
+  audit:
     enabled: true
     log_topics: [audit-events]
     retention_days: 2555

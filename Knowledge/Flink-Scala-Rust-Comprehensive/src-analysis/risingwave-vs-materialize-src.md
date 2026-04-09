@@ -14,20 +14,20 @@ graph TB
         RW_Compute["Compute Node (Stateless)"]
         RW_Compactor["Compactor Node"]
         RW_Hummock["Hummock (S3)"]
-        
+
         RW_Frontend --> RW_Meta
         RW_Meta --> RW_Compute
         RW_Meta --> RW_Compactor
         RW_Compute --> RW_Hummock
         RW_Compactor --> RW_Hummock
     end
-    
+
     subgraph "Materialize Architecture"
         MZ_Adapter["Adapter (PostgreSQL)"]
         MZ_Compute["Compute (Timely/Differential)"]
         MZ_Storage["Storage (Persist)"]
         MZ_S3["S3 / Blob Storage"]
-        
+
         MZ_Adapter --> MZ_Compute
         MZ_Compute --> MZ_Storage
         MZ_Storage --> MZ_S3
@@ -54,6 +54,7 @@ graph TB
 ### 2.1 Hummock vs RocksDB (Materialize Persist)
 
 **路径位置**:
+
 - RisingWave: `src/storage/src/hummock/`
 - Materialize: `src/persist/src/`
 
@@ -76,28 +77,28 @@ impl HummockStorage {
         // 1. 写入 MemTable (内存)
         let mut mem_table = self.mem_table.write().await;
         mem_table.insert(key, value);
-        
+
         // 2. 检查是否需要刷盘到 S3
         if mem_table.size() >= self.config.mem_table_size_limit {
             self.flush_memtable_to_s3().await?;
         }
-        
+
         Ok(())
     }
-    
+
     async fn flush_memtable_to_s3(&self) -> Result<()> {
         let mem_table = self.mem_table.read().await;
-        
+
         // 构建 SSTable
         let sstable = self.build_sstable(&mem_table).await?;
-        
+
         // 直接上传到 S3
         let path = format!("hummock/{}/{}.sst", self.table_id, sstable.id);
         self.object_store.put(&path, sstable.data).await?;
-        
+
         // 更新元数据
         self.version_manager.register_sstable(sstable.meta).await?;
-        
+
         Ok(())
     }
 }
@@ -110,22 +111,22 @@ impl Indexed<K, V, T, D> {
     ) -> Result<Upper<T>, Error> {
         // 1. 分配新的 Upper 时间戳
         let new_upper = self.advance_upper();
-        
+
         // 2. 写入 WAL
         let wal_entry = WalEntry::Batch {
             data: batch.clone(),
             upper: new_upper.clone(),
         };
         self.blob.write_wal(wal_entry).await?;
-        
+
         // 3. 更新内存索引
         self.log.extend(batch);
-        
+
         // 4. 异步 Compaction (非阻塞)
         if self.log.len() > self.compaction_threshold {
             self.trigger_compaction().await?;
         }
-        
+
         Ok(Upper(new_upper))
     }
 }
@@ -141,19 +142,19 @@ graph TB
         RW_DiskCache["Foyer Disk Cache"]
         RW_S3["S3 (Source of Truth)"]
         RW_Compactor["Compactor Node"]
-        
+
         RW_Mem --"Flush"--> RW_S3
         RW_BlockCache -."Cache".- RW_S3
         RW_DiskCache -."Cache".- RW_S3
         RW_Compactor --"Compaction"--> RW_S3
     end
-    
+
     subgraph "Materialize Persist"
         MZ_Buffer["Write Buffer (内存)"]
         MZ_Index["Indexed Trace"]
         MZ_Blob["Blob Storage (S3)"]
         MZ_Compact["Compaction Service"]
-        
+
         MZ_Buffer --"WAL + Index"--> MZ_Blob
         MZ_Buffer --> MZ_Index
         MZ_Index -."Retrieve".- MZ_Blob
@@ -169,7 +170,7 @@ graph TB
 impl Compactor {
     pub async fn compact(&self, task: CompactionTask) -> Result<Vec<SstableInfo>> {
         let merge_iterator = self.create_merge_iterator(&task.input_sstables).await?;
-        
+
         while let Some((key, value)) = merge_iterator.next().await? {
             // Block 级优化：未重叠 Block 直接复制
             if self.can_fast_copy(&key, &task.input_sstables) {
@@ -180,7 +181,7 @@ impl Compactor {
                 current_sstable_builder.add(key, value)?;
             }
         }
-        
+
         // 上传合并后的 SSTable
         self.upload_sstables(output_sstables).await
     }
@@ -192,13 +193,13 @@ impl<K, V, T, R> Spine<K, V, T, R> {
     pub fn insert(&mut self, batch: Batch<K, V, T, R>) {
         let mut level = 0;
         let mut batch = Some(batch);
-        
+
         // 层级合并策略 (类似 LSM-tree)
         while let Some(b) = batch.take() {
             if level >= self.layers.len() {
                 self.layers.push(Layer::new());
             }
-            
+
             if self.merging[level].is_none() {
                 self.merging[level] = Some(MergeState::Single(b));
             } else {
@@ -206,7 +207,7 @@ impl<K, V, T, R> Spine<K, V, T, R> {
                 let existing = self.merging[level].take().unwrap();
                 batch = Some(self.merge_batches(existing, b));
             }
-            
+
             level += 1;
         }
     }
@@ -259,8 +260,8 @@ impl HashJoinExecutor {
 ```rust
 // differential-dataflow/src/operators/join.rs
 impl<G, K, V1, V2, R1, R2> JoinCore for Arranged<G, K, V1, R1> {
-    fn join_core(&self, other: &Arranged<G, K, V2, R2>, logic: F) 
-        -> Collection<G, (K, V3), R3> 
+    fn join_core(&self, other: &Arranged<G, K, V2, R2>, logic: F)
+        -> Collection<G, (K, V3), R3>
     {
         self.stream.binary_frontier(
             &other.stream,
@@ -268,7 +269,7 @@ impl<G, K, V1, V2, R1, R2> JoinCore for Arranged<G, K, V1, R1> {
             move |capability, info| {
                 let mut trace1_cursor = trace1.cursor();
                 let mut trace2_cursor = trace2.cursor();
-                
+
                 move |input1, input2, output| {
                     // 当被拉动时才处理数据
                     input1.for_each(|time, data| {
@@ -320,7 +321,7 @@ impl HashAggExecutor {
         }
         Ok(())
     }
-    
+
     async fn checkpoint(&mut self, barrier: Barrier) -> Result<()> {
         // 刷入状态到 Hummock
         for (key, table) in &self.state_tables {
@@ -346,7 +347,7 @@ impl<G, K, V, R> Arranged<G, K, V, R> {
     /// 通过 Arrangement 共享状态
     pub fn reduce<L, V2, R2>(&self, logic: L) -> Collection<G, (K, V2), R2> {
         let trace = self.trace.clone();
-        
+
         self.stream.unary_frontier("Reduce", move |cap, info| {
             move |input, output| {
                 input.for_each(|time, data| {
@@ -381,20 +382,20 @@ impl Optimizer {
     pub fn optimize(&mut self, stmt: Statement) -> Result<PlanRef> {
         // 1. 绑定 (Binder)
         let bound = Binder::new().bind(stmt)?;
-        
+
         // 2. 逻辑计划
         let logical = LogicalPlanner::new().plan(bound)?;
-        
+
         // 3. 逻辑优化
         let optimized = self.apply_logical_rules(logical)?;
-        
+
         // 4. 物理计划
         let physical = PhysicalPlanner::new().plan(optimized)?;
-        
+
         // 5. 物理优化
         self.apply_physical_rules(physical)
     }
-    
+
     fn apply_logical_rules(&self, plan: PlanRef) -> Result<PlanRef> {
         // 谓词下推、投影下推、Join 重排等
         let rules: Vec<Box<dyn Rule>> = vec![
@@ -403,7 +404,7 @@ impl Optimizer {
             Box::new(JoinReorder),
             Box::new(SubqueryUnnesting),
         ];
-        
+
         self.apply_rules_iteratively(plan, &rules)
     }
 }
@@ -420,20 +421,20 @@ pub fn optimize(
     // 1. SQL 解析和名称解析
     let raw_plan = sql_parser::parse(stmt)?;
     let resolved_plan = NameResolver::resolve(raw_plan)?;
-    
+
     // 2. 转换为内部表示 (HIR)
     let hir = HirRelationExpr::from(resolved_plan);
-    
+
     // 3. 应用变换
     let transformed = hir
         .transform(InlineLets)      // 内联 let 绑定
         .transform(Fusion)          // 算子融合
         .transform(Demand)          // 需求分析
         .transform(MapFilterProject)?; // 投影下推
-    
+
     // 4. 转换为数据流描述
     let dataflow = DataflowDescription::from(transformed);
-    
+
     // 5. 索引和 Arrangement 优化
     self.optimize_arrangements(dataflow)
 }
@@ -462,18 +463,18 @@ pub fn optimize(
 impl BarrierManager {
     async fn coordinate_checkpoint(&self) -> Result<()> {
         let epoch = self.generate_epoch();
-        
+
         // 1. 注入 Barrier
         let injection_result = self.inject_barrier_to_all_nodes(
             Barrier::new_checkpoint(epoch)
         ).await?;
-        
+
         // 2. 等待所有节点对齐
         self.collect_barrier_acks(epoch).await?;
-        
+
         // 3. 提交 Epoch
         self.hummock_manager.commit_epoch(epoch).await?;
-        
+
         Ok(())
     }
 }
@@ -497,10 +498,10 @@ impl<T: Timestamp> MutableAntichain<T> {
             if delta > 0 {
                 self.occurances.insert(time.clone(), delta as usize);
             }
-            
+
             // 重新计算 Frontier
             let new_frontier = self.rebuild_frontier();
-            
+
             // 传播 Frontier 变化
             self.propagate_frontier_changes(new_frontier);
         }
@@ -530,7 +531,7 @@ impl<T: Timestamp> MutableAntichain<T> {
 **RisingWave 数据摄取**:
 
 ```
-Source (Kafka/CDC) 
+Source (Kafka/CDC)
   -> Connector (src/connector/src/)
   -> Parser (Protobuf/JSON/Avro)
   -> Stream Source Executor
@@ -615,10 +616,3 @@ SQL Query
 ---
 
 ## 8. 引用参考
-
-[^1]: RisingWave 架构文档: https://risingwave.com/blog/architecture-distributed-streaming-database/
-[^2]: Materialize 架构介绍: https://materialize.com/blog/differential-from-scratch/
-[^3]: RisingWave vs Materialize 对比: https://risingwave.com/blog/risingwave-vs-materialize-comparison/
-[^4]: Differential Dataflow 论文: https://github.com/TimelyDataflow/differential-dataflow
-[^5]: State Management 深度对比: https://risingwave.com/blog/state-management-stream-processing-deep-dive/
-[^6]: Nexmark Benchmark 对比: https://risingwave.com/blog/risingwave-vs-materialize-benchmark-2026/

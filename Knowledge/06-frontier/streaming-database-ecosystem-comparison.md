@@ -509,6 +509,7 @@ $$Throughput_{strict} = \frac{Throughput_{best}}{CoordinationOverhead}$$
    -- 不可增量化的示例
    SELECT DISTINCT user_id FROM events;  -- 需维护全集
    SELECT * FROM events ORDER BY ts;      -- 需全局排序
+
 ```
 
 2. **递归查询**：
@@ -518,11 +519,12 @@ $$Throughput_{strict} = \frac{Throughput_{best}}{CoordinationOverhead}$$
    WITH RECURSIVE paths AS (...)
 ```
 
-3. **非确定性函数**：
+1. **非确定性函数**：
 
    ```sql
    -- 结果不可重现
    SELECT NOW(), RANDOM(), UUID();
+
 ```
 
 **各产品SQL边界**：

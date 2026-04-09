@@ -519,15 +519,15 @@ DataStream<TrendSignal> trendStream = nftEventStream
 
 ```yaml
 # flink-conf.yaml 区块链源配置
-blockchain: 
-  source: 
+blockchain:
+  source:
     type: websocket
     endpoint: wss://mainnet.infura.io/ws/v3/${INFURA_KEY}
 
   # 合约监听配置
-  contracts: 
+  contracts:
     - address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"  # USDC
-      events: 
+      events:
         - name: "Transfer"
           signature: "Transfer(address,address,uint256)"
           handler: com.example.handlers.USDC transferHandler
@@ -535,17 +535,17 @@ blockchain:
           signature: "Approval(address,address,uint256)"
 
     - address: "0x1F98431c8aD98523631AE4a59f267346ea31F984"  # Uniswap V3 Factory
-      events: 
+      events:
         - name: "PoolCreated"
           handler: com.example.handlers.PoolCreatedHandler
 
   # 确认策略
-  confirmation: 
+  confirmation:
     strategy: "optimistic"  # optimistic | finalized
     blocks: 3               # 乐观确认等待 3 个区块
 
   # 重连配置
-  reconnection: 
+  reconnection:
     maxRetries: 10
     backoffMs: 1000
     maxBackoffMs: 60000

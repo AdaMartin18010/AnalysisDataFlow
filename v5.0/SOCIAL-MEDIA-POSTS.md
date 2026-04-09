@@ -25,6 +25,7 @@
 ### 1. Twitter/X (280字符限制)
 
 **主帖**:
+
 ```
 🎉 AnalysisDataFlow v5.0 is here!
 
@@ -41,6 +42,7 @@ https://analysisdataflow.org
 ```
 
 **线程帖1** - 功能亮点:
+
 ```
 What's new in v5.0? 🧵
 
@@ -51,6 +53,7 @@ What's new in v5.0? 🧵
 ```
 
 **线程帖2** - 双语支持:
+
 ```
 2/ 🌍 Full Bilingual Support
    • Complete Chinese & English versions
@@ -59,6 +62,7 @@ What's new in v5.0? 🧵
 ```
 
 **线程帖3** - 新平台:
+
 ```
 3/ 🎓 New Platforms
    • Learning platform: learn.analysisdataflow.org
@@ -145,6 +149,7 @@ We'd love your feedback! Join our community at https://discuss.analysisdataflow.
 **标题**: AnalysisDataFlow v5.0 发布 - 流计算知识生态的全新里程碑
 
 **正文**:
+
 ```
 各位开发者好，
 
@@ -209,6 +214,7 @@ D3.js驱动的可视化概念关系探索：
 **标题**: [开源项目] AnalysisDataFlow v5.0 发布 - 1,010+篇流计算技术文档，完整中英文双语
 
 **正文**:
+
 ```
 AnalysisDataFlow 是一个专注于流计算领域的技术知识库，今天正式发布 v5.0 版本。
 
@@ -244,6 +250,7 @@ GitHub：https://github.com/luyanfeng/AnalysisDataFlow
 **标题**: AnalysisDataFlow v5.0 发布 - 流计算知识库的全新里程碑
 
 **正文**:
+
 ```
 📢 项目介绍
 
@@ -286,6 +293,7 @@ AnalysisDataFlow 是一个专注于流计算领域的技术知识库，今天正
 **标题**: AnalysisDataFlow v5.0 正式发布 - 流计算知识生态全面升级
 
 **正文**:
+
 ```
 🎉 很高兴宣布 AnalysisDataFlow v5.0 正式发布！
 
@@ -337,9 +345,10 @@ AnalysisDataFlow 是一个专注于流计算领域的技术知识库，涵盖 Ap
 
 **标题**: Show HN: AnalysisDataFlow v5.0 – 1,010+ docs on stream computing, now bilingual
 
-**链接**: https://analysisdataflow.org
+**链接**: <https://analysisdataflow.org>
 
 **正文**:
+
 ```
 AnalysisDataFlow is a comprehensive knowledge base for stream computing, with focus on Apache Flink.
 
@@ -365,6 +374,7 @@ We'd love your feedback!
 **标题**: [ANNOUNCEMENT] AnalysisDataFlow v5.0 Released – 1,010+ Stream Computing Docs
 
 **正文**:
+
 ```
 Hi Flink community!
 

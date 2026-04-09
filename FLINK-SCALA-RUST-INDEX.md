@@ -28,6 +28,7 @@
 ### 1.2 核心形式化定义
 
 **Def-F-09-01**: Case Class 作为 DataType (L4)
+
 ```scala
 // 结构不可变性: ∂fᵢ/∂t = 0
 // 模式匹配分解: unapply: C → (T₁, ..., Tₙ)
@@ -35,6 +36,7 @@ case class Event(userId: String, timestamp: Long, value: Double)
 ```
 
 **Def-F-09-34**: Scala 3 DOT 演算扩展 (L5)
+
 ```scala
 // 路径依赖类型
 type KeyedStream[S, K] = S#GroupBy { type Key = K }
@@ -51,6 +53,7 @@ given TypeInformation[Event] = deriveTypeInfo[Event]
 **主入口**: [Flink/07-rust-native/00-MASTER-INDEX.md](Flink/07-rust-native/00-MASTER-INDEX.md)
 
 **9 大模块结构**:
+
 ```
 Flink/07-rust-native/
 ├── iron-functions/              # WASM UDF (Rust/Go/TypeScript)
@@ -74,12 +77,14 @@ Flink/07-rust-native/
 **文档**: [iron-functions/01-iron-functions-complete-guide.md](Flink/07-rust-native/iron-functions/01-iron-functions-complete-guide.md)
 
 **核心内容**:
+
 - **架构**: Rust/Go/TypeScript → WASM → Flink
 - **性能**: WASM (Rust) 85K-95K records/s vs Java 100K+
 - **安全**: 沙箱隔离 > JNI
 - **CLI**: `ironfun generate|package-udf|validate`
 
 **形式化定义**:
+
 ```
 IF = ⟨L, W, R, F, I⟩
 L = {Rust, Go, TypeScript}
@@ -91,12 +96,14 @@ W = WebAssembly Runtime
 **文档**: [flash-engine/01-flash-architecture.md](Flink/07-rust-native/flash-engine/01-flash-architecture.md)
 
 **核心内容**:
+
 - **架构**: Leno (Planner) + Falcon (C++ 向量层) + ForStDB (存储)
 - **性能**: 3-10x 性能提升 (Nexmark)
 - **兼容**: 100% Flink API 兼容
 - **生产**: 阿里云 100K+ CUs，50% 成本降低
 
 **关键指标**:
+
 | 算子类型 | 加速比 |
 |---------|-------|
 | 计算密集 | 10x-100x |
@@ -108,11 +115,13 @@ W = WebAssembly Runtime
 **文档**: [comparison/01-rust-streaming-engines-comparison.md](Flink/07-rust-native/comparison/01-rust-streaming-engines-comparison.md)
 
 **对比维度**: 7 大系统
+
 - **流处理框架**: Flink (Java), Timely Dataflow (Rust)
 - **流数据库**: RisingWave (Rust), Materialize (Rust/C++)
 - **流分析服务**: Arroyo (Rust), ksqlDB (Java)
 
 **关键发现**:
+
 - Rust 引擎内存效率: 2-5x 优于 Java
 - 冷启动: 毫秒级 (vs JVM 秒级)
 - 替代率预测: 15-25% (2026-2027)
@@ -122,6 +131,7 @@ W = WebAssembly Runtime
 **文档**: [trends/01-flink-rust-ecosystem-trends-2026.md](Flink/07-rust-native/trends/01-flink-rust-ecosystem-trends-2026.md)
 
 **五大趋势**:
+
 1. WASM UDF 标准化 (92% 置信度)
 2. 向量化引擎革命 (5-10x 性能)
 3. Rust 引擎崛起 (15-25% 替代率)
@@ -185,10 +195,12 @@ W = WebAssembly Runtime
 ## 第五部分: 外部关键链接
 
 ### Scala 相关
+
 - **Flink Scala 社区**: <https://github.com/flink-scala-api>
 - **Scala 3 文档**: <https://docs.scala-lang.org/scala3/reference/>
 
 ### Rust 相关
+
 - **Iron Functions**: <https://irontools.dev/>
 - **Arroyo**: <https://www.arroyo.dev/>
 - **RisingWave**: <https://www.risingwave.com/>

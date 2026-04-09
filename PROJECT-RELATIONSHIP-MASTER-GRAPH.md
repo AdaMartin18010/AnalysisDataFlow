@@ -1,6 +1,6 @@
 # AnalysisDataFlow 项目全局关系总图
 
-> **版本**: v1.0 | **创建日期**: 2026-04-06 | **状态**: Production  
+> **版本**: v1.0 | **创建日期**: 2026-04-06 | **状态**: Production
 > **涵盖范围**: 524文档 | 880形式化元素 | 5,200+关系边
 
 ---
@@ -27,10 +27,10 @@ graph TB
         S4[04 Proofs<br/>形式证明]
         S5[05 Comparative<br/>对比分析]
         S6[06 Frontier<br/>前沿探索]
-        
+
         S1 --> S2 --> S3 --> S4 --> S5 --> S6
     end
-    
+
     subgraph Layer2["Layer 2: Knowledge 知识结构层"]
         direction TB
         K1[01 Concepts<br/>概念图谱]
@@ -43,13 +43,13 @@ graph TB
         K8[08 Standards<br/>标准规范]
         K9[09 Anti-patterns<br/>反模式]
         K10[10 Case Studies<br/>案例研究]
-        
+
         K1 --> K2 --> K3 --> K4
         K2 --> K5
         K3 --> K7 --> K10
         K4 --> K6
     end
-    
+
     subgraph Layer3["Layer 3: Flink 工程实践层"]
         direction TB
         F1[01 Concepts<br/>核心概念]
@@ -61,27 +61,27 @@ graph TB
         F7[07 Rust Native<br/>Rust原生]
         F8[08 Roadmap<br/>路线图]
         F9[09 Practices<br/>实践指南]
-        
+
         F1 --> F2 --> F3 --> F4 --> F5
         F4 --> F6
         F5 --> F7
         F8 -.-> F1
         F8 -.-> F2
     end
-    
+
     %% 垂直实例化关系
     S1 ==>|"形式化定义<br/>实例化"| K1
     S2 ==>|"性质推导<br/>模式化"| K2
     S3 ==>|"关系映射<br/>编码实现"| K5
     S4 ==>|"证明方法<br/>验证实践"| K7
-    
+
     K1 ==>|"概念实现"| F1
     K2 ==>|"模式应用"| F2
     K3 ==>|"场景实现"| F9
     K4 ==>|"选型决策"| F5
-    
+
     S4 ==>|"定理直接指导<br/>实现正确性"| F2
-    
+
     style Layer1 fill:#4A90D9,stroke:#2E5A8C,color:#fff
     style Layer2 fill:#5CB85C,stroke:#3D7A3D,color:#fff
     style Layer3 fill:#F0AD4E,stroke:#9C6B2F,color:#fff
@@ -111,16 +111,16 @@ graph LR
         S03[03 Relationships<br/>关系建立]
         S04[04 Proofs<br/>形式证明]
         S05[05 Comparative<br/>对比分析]
-        
+
         S01 -->|"基于定义<br/>推导性质"| S02
         S02 -->|"性质间<br/>关系映射"| S03
         S03 -->|"建立等价<br/>进行证明"| S04
         S04 -->|"证明结果<br/>对比分析"| S05
-        
+
         S01 -.->|"原始定义<br/>直接引用"| S04
         S02 -.->|"性质对比<br/>表达能力"| S05
     end
-    
+
     style S01 fill:#4A90D9,color:#fff
     style S02 fill:#5CB85C,color:#fff
     style S03 fill:#F0AD4E,color:#fff
@@ -163,17 +163,17 @@ graph TB
         K04[04 Technology Selection<br/>技术选型]
         K05[05 Mapping Guides<br/>迁移指南]
         K10[10 Case Studies<br/>案例研究]
-        
+
         K01 -->|"概念组合<br/>形成模式"| K02
         K02 -->|"模式应用<br/>业务场景"| K03
         K03 -->|"场景需求<br/>驱动选型"| K04
         K04 -->|"技术差异<br/>产生迁移"| K05
         K03 -->|"真实落地<br/>形成案例"| K10
         K05 -->|"迁移经验<br/>丰富案例"| K10
-        
+
         K02 -.->|"模式对比<br/>影响选型"| K04
     end
-    
+
     style K01 fill:#4A90D9,color:#fff
     style K02 fill:#5CB85C,color:#fff
     style K03 fill:#F0AD4E,color:#fff
@@ -193,17 +193,17 @@ graph TB
         F04[04 Runtime<br/>运行时]
         F05[05 Ecosystem<br/>生态系统]
         F09[09 Practices<br/>实践指南]
-        
+
         F01 -->|"概念具象化<br/>实现机制"| F02
         F02 -->|"机制暴露<br/>API接口"| F03
         F03 -->|"API底层<br/>运行时支撑"| F04
         F04 -->|"运行时扩展<br/>生态系统"| F05
         F05 -->|"综合应用<br/>实践指南"| F09
-        
+
         F02 -.->|"机制优化<br/>影响实践"| F09
         F04 -.->|"运行时调优<br/>生态集成"| F05
     end
-    
+
     style F01 fill:#4A90D9,color:#fff
     style F02 fill:#5CB85C,color:#fff
     style F03 fill:#F0AD4E,color:#fff
@@ -220,34 +220,34 @@ graph TB
 graph TB
     subgraph DiagonalRelations["跨层级对角关系示例"]
         direction TB
-        
+
         %% Struct 层元素
         Thm0401["Thm-S-04-01<br/>Checkpoint Correctness"]
         Def0104["Def-S-01-04<br/>Dataflow Model"]
         Thm0203["Thm-S-02-03<br/>Watermark Monotonicity"]
-        
+
         %% Knowledge 层元素
         PtnCheckpoint["pattern-checkpoint-recovery<br/>检查点恢复模式"]
         PtnEventTime["pattern-event-time-processing<br/>事件时间处理模式"]
-        
+
         %% Flink 层元素
         FlinkCheckpoint["checkpoint-mechanism-deep-dive<br/>检查点机制深度解析"]
         FlinkWatermark["time-semantics-and-watermark<br/>时间语义与Watermark"]
         FlinkSmart["smart-checkpointing-strategies<br/>智能检查点策略"]
-        
+
         %% 对角关系
         Thm0401 -.->|"定理直接指导<br/>实现正确性"| FlinkCheckpoint
         Def0104 -.->|"模型定义直接<br/>指导API设计"| FlinkWatermark
         Thm0203 -.->|"性质保证<br/>驱动优化"| FlinkSmart
-        
+
         PtnCheckpoint -->|"模式直接应用"| FlinkSmart
         PtnEventTime -->|"模式直接应用"| FlinkWatermark
-        
+
         %% 垂直关系
         Thm0401 --> PtnCheckpoint
         Def0104 --> PtnEventTime
     end
-    
+
     style Thm0401 fill:#D9534F,color:#fff
     style Def0104 fill:#9B59B6,color:#fff
     style Thm0203 fill:#D9534F,color:#fff
@@ -284,7 +284,7 @@ gantt
     1.4 性能优化         :done, f14, 2017-12, 6M
     1.5 生态扩展         :done, f15, 2018-05, 6M
     1.6-1.9 稳定迭代     :done, f16, 2018-08, 24M
-    
+
     section Flink 2.0
     2.0 架构重构         :done, f20, 2024-08, 6M
     2.1 云原生改进       :done, f21, 2025-02, 6M
@@ -304,16 +304,16 @@ graph LR
         F22["Flink 2.2<br/>Async模型"]
         F24["Flink 2.4<br/>性能飞跃"]
         F30["Flink 3.0<br/>未来架构"]
-        
+
         F1x -->|"JobManager重构<br/>Checkpoint优化"| F20
         F20 -->|"异步执行<br/>ForSt后端"| F22
         F22 -->|"自适应调度<br/>向量化执行"| F24
         F24 -->|"流批统一<br/>AI原生"| F30
-        
+
         F1x -.->|"向后兼容<br/>迁移路径"| F20
         F20 -.->|"API兼容<br/>平滑升级"| F22
     end
-    
+
     style F1x fill:#6C757D,color:#fff
     style F20 fill:#17A2B8,color:#fff
     style F22 fill:#5CB85C,color:#fff
@@ -331,48 +331,48 @@ graph LR
 graph TB
     subgraph TheoremDependency["核心定理依赖网络"]
         direction TB
-        
+
         %% 基础定义层
         Def0101["Def-S-01-01<br/>Stream Processing<br/>语义定义"]
         Def0102["Def-S-01-02<br/>Process Calculus<br/>语法"]
         Def0103["Def-S-01-03<br/>Actor Model<br/>操作语义"]
         Def0104["Def-S-01-04<br/>Dataflow Model<br/>执行语义"]
-        
+
         %% 性质推导层
         Lemma0201["Lemma-S-02-01<br/>Determinism<br/>Preservation"]
         Lemma0202["Lemma-S-02-02<br/>Consistency<br/>Hierarchy"]
         Prop0203["Prop-S-02-03<br/>Watermark<br/>Monotonicity"]
         Lemma0204["Lemma-S-02-04<br/>Liveness<br/>Guarantee"]
-        
+
         %% 定理层
         Thm0301["Thm-S-03-01<br/>Actor-CSP<br/>Encoding"]
         Thm0302["Thm-S-03-02<br/>Flink-Process<br/>Calculus<br/>Mapping"]
-        
+
         %% 证明层
         Thm0401["Thm-S-04-01<br/>Checkpoint<br/>Correctness"]
         Thm0402["Thm-S-04-02<br/>Exactly-Once<br/>Correctness"]
         Thm0403["Thm-S-04-03<br/>Chandy-Lamport<br/>Consistency"]
         Thm0404["Thm-S-04-04<br/>Watermark<br/>Algebra<br/>Correctness"]
-        
+
         %% 依赖边
         Def0101 --> Lemma0201
         Def0102 --> Lemma0201
         Def0103 --> Lemma0204
         Def0104 --> Prop0203
-        
+
         Lemma0201 --> Thm0301
         Lemma0202 --> Thm0302
-        
+
         Thm0301 --> Thm0401
         Thm0302 --> Thm0402
         Prop0203 --> Thm0404
         Lemma0204 --> Thm0403
-        
+
         %% 交叉依赖
         Def0104 -.-> Thm0401
         Def0101 -.-> Thm0402
     end
-    
+
     style Def0101 fill:#9B59B6,color:#fff
     style Def0102 fill:#9B59B6,color:#fff
     style Def0103 fill:#9B59B6,color:#fff
@@ -397,25 +397,25 @@ graph TB
         D0104["01.04-dataflow-model-formalization<br/>Dataflow模型形式化"]
         P0201["pattern-event-time-processing<br/>事件时间处理模式"]
         F0201["flink-watermark.md<br/>Flink Watermark机制"]
-        
+
         T0401["04.01-flink-checkpoint-correctness<br/>Checkpoint正确性证明"]
         P0202["pattern-checkpoint-recovery<br/>检查点恢复模式"]
         F0202["checkpoint-mechanism-deep-dive<br/>检查点机制深度解析"]
-        
+
         A0301["03.01-actor-to-csp-encoding<br/>Actor-CSP编码"]
         M0501["05.1-spark-streaming-to-flink-migration<br/>Spark迁移指南"]
         F0901["09.01-case-studies/financial-risk<br/>金融风控案例"]
-        
+
         %% 依赖链
         D0104 --> P0201 --> F0201
         T0401 --> P0202 --> F0202
         A0301 --> M0501 --> F0901
-        
+
         %% 交叉引用
         D0104 -.-> F0201
         T0401 -.-> F0202
     end
-    
+
     style D0104 fill:#4A90D9,color:#fff
     style T0401 fill:#4A90D9,color:#fff
     style A0301 fill:#4A90D9,color:#fff
@@ -480,54 +480,54 @@ mindmap
 graph TB
     subgraph 3DView["三维关系立体图"]
         direction TB
-        
+
         %% Layer 1: Struct
         subgraph Layer1["📐 Layer 1: Struct 形式理论"]
             S_F[Foundation<br/>基础]
             S_P[Properties<br/>性质]
             S_R[Relationships<br/>关系]
             S_Pr[Proofs<br/>证明]
-            
+
             S_F --> S_P --> S_R --> S_Pr
         end
-        
+
         %% Layer 2: Knowledge
         subgraph Layer2["📚 Layer 2: Knowledge 知识结构"]
             K_C[Concept<br/>概念]
             K_Pa[Pattern<br/>模式]
             K_B[Business<br/>业务]
             K_Pr[Practice<br/>实践]
-            
+
             K_C --> K_Pa --> K_B --> K_Pr
         end
-        
+
         %% Layer 3: Flink
         subgraph Layer3["⚙️ Layer 3: Flink 工程实现"]
             F_C[Core<br/>核心]
             F_A[API<br/>接口]
             F_R[Runtime<br/>运行时]
             F_E[Ecosystem<br/>生态]
-            
+
             F_C --> F_A --> F_R --> F_E
         end
-        
+
         %% 垂直关系（实线）
         S_F ==> K_C ==> F_C
         S_P ==> K_Pa ==> F_A
         S_R ==> K_B ==> F_R
         S_Pr ==> K_Pr ==> F_E
-        
+
         %% 对角关系（虚线）
         S_F -.->|"定义→实现"| F_A
         S_P -.->|"性质→运行时"| F_R
         S_R -.->|"关系→生态"| F_E
         S_Pr -.->|"证明→核心"| F_C
-        
+
         %% 层内循环
         K_B -.->|"业务反馈"| K_Pa
         F_E -.->|"生态驱动"| F_C
     end
-    
+
     style Layer1 fill:#E3F2FD,stroke:#4A90D9
     style Layer2 fill:#E8F5E9,stroke:#5CB85C
     style Layer3 fill:#FFF3E0,stroke:#F0AD4E
@@ -550,13 +550,13 @@ graph LR
         F2[Flink/02 Core]
         F3[Flink/09 Practices]
         End([掌握])
-        
+
         Start --> S1 --> S2 --> K1 --> F1 --> F2 --> F3 --> End
-        
+
         S1 -.->|快速路径| F1
         K1 -.->|实践导向| F3
     end
-    
+
     style Start fill:#5CB85C,color:#fff
     style End fill:#D9534F,color:#fff
 ```
@@ -571,13 +571,13 @@ graph TB
         C["pattern-event-time<br/>事件时间模式"]
         D["flink-watermark<br/>Watermark实现"]
         E["flink-cep-complete<br/>CEP实现"]
-        
+
         A --> B --> C --> D --> E
-        
+
         A -.->|"直接应用"| D
         C -.->|"模式扩展"| E
     end
-    
+
     style A fill:#9B59B6,color:#fff
     style B fill:#D9534F,color:#fff
     style C fill:#5CB85C,color:#fff
@@ -657,13 +657,6 @@ def extract_subgraph(center, depth=2):
 
 ## 8. 引用参考
 
-[^1]: PROJECT-TRACKING.md - 项目进度跟踪文档  
-[^2]: THEOREM-REGISTRY.md - 定理注册表  
-[^3]: KNOWLEDGE-GRAPH-GUIDE.md - 知识图谱使用指南  
-[^4]: NAVIGATION-INDEX.md - 导航索引  
-[^5]: Struct/04-proofs/04.01-flink-checkpoint-correctness.md  
-[^6]: Flink/02-core/checkpoint-mechanism-deep-dive.md  
-[^7]: Flink/02-core/time-semantics-and-watermark.md  
 
 ---
 

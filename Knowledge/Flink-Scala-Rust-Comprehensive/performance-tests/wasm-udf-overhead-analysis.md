@@ -21,12 +21,12 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │                    UDF 执行方式对比                              │
 ├─────────────┬─────────────┬─────────────┬───────────────────────┤
-│   方式      │  安全性     │  性能       │  适用场景             │
+│   方式      │  安全性      │  性能       │  适用场景              │
 ├─────────────┼─────────────┼─────────────┼───────────────────────┤
-│ 原生代码    │  低         │  100%       │  内部函数             │
-│ JNI         │  中         │  ~85%       │  遗留系统集成         │
-│ WASM        │  高         │  ~70-90%    │  第三方 UDF           │
-│ gRPC/HTTP   │  高         │  ~30-50%    │  外部服务             │
+│ 原生代码     │  低         │  100%       │  内部函数              │
+│ JNI         │  中         │  ~85%       │  遗留系统集成           │
+│ WASM        │  高         │  ~70-90%    │  第三方 UDF            │
+│ gRPC/HTTP   │  高         │  ~30-50%    │  外部服务              │
 └─────────────┴─────────────┴─────────────┴───────────────────────┘
 ```
 
@@ -53,15 +53,15 @@ graph TB
         A[调用开销] --> A1[空函数调用]
         A --> A2[参数传递]
         A --> A3[返回值]
-        
+
         B[数据传输] --> B1[标量类型]
         B --> B2[数组类型]
         B --> B3[复杂对象]
-        
+
         C[内存管理] --> C1[栈分配]
         C --> C2[堆分配]
         C --> C3[GC 开销]
-        
+
         D[并发] --> D1[单线程]
         D --> D2[多线程]
         D --> D3[协程]
@@ -143,20 +143,20 @@ pub fn calculate_tax(json_input: &str) -> String {
         _ => 0.10,
     };
     let tax = tx.amount * tax_rate;
-    
+
     #[derive(Serialize)]
     struct TaxResult {
         id: i64,
         tax_amount: f64,
         total: f64,
     }
-    
+
     let result = TaxResult {
         id: tx.id,
         tax_amount: tax,
         total: tx.amount + tax,
     };
-    
+
     serde_json::to_string(&result).unwrap()
 }
 ```
@@ -216,14 +216,14 @@ pub fn native_calculate_tax(json_input: &str) -> String {
         _ => 0.10,
     };
     let tax = tx.amount * tax_rate;
-    
+
     #[derive(Serialize)]
     struct TaxResult {
         id: i64,
         tax_amount: f64,
         total: f64,
     }
-    
+
     serde_json::to_string(&TaxResult {
         id: tx.id,
         tax_amount: tax,
@@ -242,25 +242,25 @@ public class JniUdf {
     static {
         System.loadLibrary("native_udf");
     }
-    
+
     // 空函数
     public static native void emptyNative();
-    
+
     // 恒等函数
     public static native long identityNative(long x);
-    
+
     // 加法
     public static native long addNative(long a, long b);
-    
+
     // 过滤
     public static native boolean filterGtNative(long x, long threshold);
-    
+
     // 数组求和
     public static native long sumArrayNative(long[] arr);
-    
+
     // 货币转换
     public static native long[] currencyConvertNative(long[] prices);
-    
+
     // 斐波那契
     public static native long fibonacciNative(int n);
 }
@@ -338,21 +338,21 @@ impl WasmRuntime {
     pub fn new(wasm_bytes: &[u8]) -> Self {
         let engine = Engine::default();
         let module = Module::new(&engine, wasm_bytes).unwrap();
-        
+
         let linker = Linker::new(&engine);
         let mut store = Store::new(&engine, ());
         let instance = linker.instantiate(&mut store, &module).unwrap().start(&mut store).unwrap();
-        
+
         Self { engine, store, instance }
     }
-    
+
     pub fn call_empty(&mut self) {
         let empty_fn = self.instance.get_export(&self.store, "empty")
             .and_then(|e| e.into_func())
             .unwrap();
         empty_fn.call(&mut self.store, &[], &mut []).unwrap();
     }
-    
+
     pub fn call_identity(&mut self, x: i64) -> i64 {
         let identity_fn = self.instance.get_export(&self.store, "identity")
             .and_then(|e| e.into_func())
@@ -361,7 +361,7 @@ impl WasmRuntime {
         identity_fn.call(&mut self.store, &[Value::I64(x)], &mut result).unwrap();
         result[0].i64().unwrap()
     }
-    
+
     pub fn call_add(&mut self, a: i64, b: i64) -> i64 {
         let add_fn = self.instance.get_export(&self.store, "add")
             .and_then(|e| e.into_func())
@@ -381,47 +381,47 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion, Benchmark
 
 fn bench_empty_call(c: &mut Criterion) {
     let mut group = c.benchmark_group("empty_call");
-    
+
     // 原生调用
     group.bench_function("native", |b| {
         b.iter(|| wasm_udf::native::native_empty())
     });
-    
+
     // WASM 调用
     let wasm_bytes = include_bytes!("../target/wasm32-unknown-unknown/release/wasm_udf.wasm");
     let mut runtime = wasm_udf::wasm_runtime::WasmRuntime::new(wasm_bytes);
     group.bench_function("wasm", |b| {
         b.iter(|| runtime.call_empty())
     });
-    
+
     group.finish();
 }
 
 fn bench_identity(c: &mut Criterion) {
     let mut group = c.benchmark_group("identity_i64");
     let input = 42i64;
-    
+
     group.bench_function("native", |b| {
         b.iter(|| wasm_udf::native::native_identity(black_box(input)))
     });
-    
+
     let wasm_bytes = include_bytes!("../target/wasm32-unknown-unknown/release/wasm_udf.wasm");
     let mut runtime = wasm_udf::wasm_runtime::WasmRuntime::new(wasm_bytes);
     group.bench_function("wasm", |b| {
         b.iter(|| runtime.call_identity(black_box(input)))
     });
-    
+
     group.finish();
 }
 
 fn bench_fibonacci(c: &mut Criterion) {
     let mut group = c.benchmark_group("fibonacci");
-    
+
     for n in [10, 20, 30].iter() {
         group.bench_with_input(BenchmarkId::new("native", n), n, |b, n| {
             b.iter(|| wasm_udf::native::native_fibonacci(black_box(*n)))
         });
-        
+
         // WASM 版本
         let wasm_bytes = include_bytes!("../target/wasm32-unknown-unknown/release/wasm_udf.wasm");
         let mut runtime = wasm_udf::wasm_runtime::WasmRuntime::new(wasm_bytes);
@@ -429,7 +429,7 @@ fn bench_fibonacci(c: &mut Criterion) {
             b.iter(|| runtime.call_fibonacci(black_box(*n)))
         });
     }
-    
+
     group.finish();
 }
 
@@ -451,42 +451,42 @@ class WasmUdfRuntime(wasmBytes: Array[Byte]) extends AutoCloseable {
   private val store = new Store(engine)
   private val module = new Module(engine, wasmBytes)
   private val instance = new Instance(engine, module)
-  
+
   def callEmpty(): Unit = {
     instance.exports.getFunction("empty").call()
   }
-  
+
   def callIdentity(x: Long): Long = {
     val result = instance.exports.getFunction("identity").call(Value.fromI64(x))
     result(0).i64
   }
-  
+
   def callAdd(a: Long, b: Long): Long = {
     val result = instance.exports.getFunction("add").call(
       Value.fromI64(a), Value.fromI64(b)
     )
     result(0).i64
   }
-  
+
   def callSumArray(arr: Array[Long]): Long = {
     // 将数组传递到 WASM 内存
     val memory = instance.exports.getMemory("memory")
     val ptr = 0
-    
+
     // 写入数组长度
     memory.writeLong(ptr, arr.length)
-    
+
     // 写入数组数据
     for (i <- arr.indices) {
       memory.writeLong(ptr + 8 + i * 8, arr(i))
     }
-    
+
     val result = instance.exports.getFunction("sum_array").call(
       Value.fromI32(ptr), Value.fromI32(arr.length)
     )
     result(0).i64
   }
-  
+
   override def close(): Unit = {
     instance.close()
     store.close()
@@ -497,7 +497,7 @@ class WasmUdfRuntime(wasmBytes: Array[Byte]) extends AutoCloseable {
 // Flink UDF 包装器
 class WasmIdentityUdf(wasmBytes: Array[Byte]) extends ScalarFunction {
   @transient private lazy val runtime = new WasmUdfRuntime(wasmBytes)
-  
+
   def eval(x: Long): Long = runtime.callIdentity(x)
 }
 ```
@@ -576,12 +576,12 @@ flowchart TD
     A[UDF 执行方式选择] --> B{安全隔离要求?}
     B -->|高| C[选择 WASM]
     B -->|低| D[选择原生]
-    
+
     C --> E{性能要求?}
     E -->|极高| F[Wasmtime/AOT编译]
     E -->|标准| G[Wasmi/轻量运行时]
     E -->|低| H[gRPC UDF]
-    
+
     D --> I{语言栈?}
     I -->|JVM| J[JNI/JNA]
     I -->|Python| J
@@ -606,7 +606,3 @@ flowchart TD
 4. **AOT 编译**: Wasmtime AOT 可减少 50% 启动时间
 
 ---
-
-[^1]: WebAssembly Specification, "Core Specification", W3C, 2024.
-[^2]: Wasmtime Docs, "Performance Characteristics", Bytecode Alliance.
-[^3]: WASI Specification, "System Interface", 2024.

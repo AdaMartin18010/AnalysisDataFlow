@@ -134,6 +134,7 @@ AnalysisDataFlow/
 ### 依赖要求
 
 #### GitHub Actions环境
+
 - `pandoc/latex:3.1` Docker镜像
 - `font-noto-cjk` 中文字体包
 - `texlive-xetex` XeLaTeX引擎
@@ -141,12 +142,14 @@ AnalysisDataFlow/
 #### 本地环境
 
 **Python方式:**
+
 ```bash
 pip install pypdf
 # 系统依赖: pandoc, texlive-xetex, fonts-noto-cjk
 ```
 
 **Node.js方式:**
+
 ```bash
 npm install playwright
 npx playwright install chromium
@@ -198,6 +201,7 @@ GitHub → Actions → PDF Export → 最新运行
 ```
 
 常见原因:
+
 - 中文字体缺失 → 已配置自动安装
 - LaTeX包缺失 → 已配置完整texlive
 - 内存不足 → 已优化容器设置

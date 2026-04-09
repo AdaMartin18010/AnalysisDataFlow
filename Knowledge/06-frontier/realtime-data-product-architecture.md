@@ -404,43 +404,43 @@ graph TB
 # data-product-definition.yaml
 apiVersion: datamesh.io/v1
 kind: DataProduct
-metadata: 
+metadata:
   name: realtime-fraud-signals
   domain: finance.risk
   version: v1
   owner: risk-platform-team@company.com
 
-spec: 
+spec:
   description: |
     实时欺诈风险信号流，基于用户行为序列、设备指纹和关联图谱
     生成风险评分，支持实时风控决策。
 
-  interfaces: 
-    streaming: 
+  interfaces:
+    streaming:
       type: kafka
       topic: com.finance.risk.realtime-fraud-signals.v1
-      schema: 
+      schema:
         format: avro
         registry: https://schema-registry.company.com
         id: fraud-signals-v1
         compatibility: BACKWARD_AND_FORWARD
 
-  sla: 
-    availability: 
+  sla:
+    availability:
       target: 99.99%
       measurement: monthly_uptime
-    latency: 
+    latency:
       target: p99 < 50ms
       measurement: end_to_end_latency
-    freshness: 
+    freshness:
       target: < 1s
       measurement: watermark_delay
-    completeness: 
+    completeness:
       target: > 99.999%
       measurement: event_count_reconciliation
 
-  quality: 
-    checks: 
+  quality:
+    checks:
       - name: schema_validation
         type: automatic
         threshold: 100%
@@ -451,29 +451,29 @@ spec:
         type: relational
         reference: user-device-mapping
 
-  lineage: 
-    sources: 
+  lineage:
+    sources:
       - com.userplatform.behavior.events.v2
       - com.security.device-fingerprint.v1
       - com.graph.relation-features.v3
     transformation: |
       Flink SQL: 实时特征工程 + LightGBM模型推理
-    consumers: 
+    consumers:
       - 实时风控决策引擎
       - 风控监控看板
       - 案件调查系统
 
-  governance: 
+  governance:
     classification: highly_confidential
     pii_fields: [user_id, device_id]
     retention: 90d
-    access_control: 
+    access_control:
       - role: risk-engine
         permission: read
       - role: risk-analyst
         permission: read-with-masking
 
-  metadata: 
+  metadata:
     tags: [fraud, realtime, risk-score, ml-inference]
     domain_expert: risk-data-lead@company.com
     documentation: https://wiki.company.com/data-products/fraud-signals

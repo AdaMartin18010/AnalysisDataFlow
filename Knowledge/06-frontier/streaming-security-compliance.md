@@ -542,42 +542,42 @@ public class FieldEncryptionMapFunction
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata: 
+metadata:
   name: flink-job-isolation
   namespace: streaming
-spec: 
-  podSelector: 
-    matchLabels: 
+spec:
+  podSelector:
+    matchLabels:
       app: flink-job
-  policyTypes: 
+  policyTypes:
     - Ingress
     - Egress
-  ingress: 
+  ingress:
     # 只允许来自Kafka的流量
     - from:
         - namespaceSelector:
-            matchLabels: 
+            matchLabels:
               name: kafka
         - podSelector:
-            matchLabels: 
+            matchLabels:
               app: kafka
-      ports: 
+      ports:
         - protocol: TCP
           port: 9092
-  egress: 
+  egress:
     # 只允许访问Kafka和监控
     - to:
         - namespaceSelector:
-            matchLabels: 
+            matchLabels:
               name: kafka
-      ports: 
+      ports:
         - protocol: TCP
           port: 9092
     - to:
         - namespaceSelector:
-            matchLabels: 
+            matchLabels:
               name: monitoring
-      ports: 
+      ports:
         - protocol: TCP
           port: 9090
 ```
