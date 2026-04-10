@@ -1,174 +1,332 @@
-# 安全策略 (Security Policy)
+# Security Policy
 
-> **版本**: v1.0 | **生效日期**: 2026-04-08 | **状态**: Active
-
----
-
-## 支持的版本
-
-AnalysisDataFlow 是一个文档知识库项目，主要包含 Markdown 文档和辅助脚本。由于项目的特殊性，我们的安全策略主要关注以下方面：
-
-| 组件类型 | 支持范围 | 说明 |
-|---------|---------|------|
-| 核心文档 | 最新版本 | 所有 Markdown 文档 |
-| 验证脚本 | 最新版本 | `.scripts/` 目录下的自动化工具 |
-| CI/CD 配置 | 最新版本 | `.github/workflows/` 工作流 |
-| 示例代码 | 最新版本 | 文档中的代码示例 |
+> **Version**: v1.0 | **Effective Date**: 2026-04-10 | **Status**: Active
 
 ---
 
-## 报告安全漏洞
+## Table of Contents
 
-### 负责任披露
-
-我们非常重视安全问题，并承诺对安全研究人员和社区成员负责地披露漏洞表示感谢。
-
-### 报告渠道
-
-**⚠️ 重要**: 请不要通过公共 Issue 或 Discussion 报告安全漏洞。
-
-| 渠道 | 联系方式 | 响应时间 |
-|-----|---------|---------|
-| **安全邮箱** | <security@analysisdataflow.org> | 24 小时内 |
-| **私信** | 私信 GitHub 项目维护者 | 48 小时内 |
-
-### 报告内容
-
-为了帮助我们快速理解和修复问题，请在报告中包含以下信息：
-
-- [ ] 漏洞的描述和类型
-- [ ] 受影响的文件/组件
-- [ ] 复现步骤（如适用）
-- [ ] 概念验证（PoC）（如适用）
-- [ ] 可能的修复建议（可选）
-- [ ] 您的联系方式（用于后续沟通）
-
-### 我们的承诺
-
-收到安全报告后，我们承诺：
-
-1. **24 小时内确认收到**: 发送确认邮件
-2. **评估与分类**: 在 72 小时内完成初步评估
-3. **修复计划**: 根据严重程度制定修复时间表
-4. **修复完成**: 完成修复并验证
-5. **公开披露**: 在修复后协调公开披露
+- [Security Policy](#security-policy)
+  - [Table of Contents](#table-of-contents)
+  - [1. Security Policy Overview](#1-security-policy-overview)
+  - [2. Supported Versions](#2-supported-versions)
+  - [3. Reporting a Vulnerability](#3-reporting-a-vulnerability)
+    - [3.1 Reporting Process](#31-reporting-process)
+    - [3.2 What to Include](#32-what-to-include)
+    - [3.3 Response Timeline](#33-response-timeline)
+  - [4. Security Best Practices](#4-security-best-practices)
+    - [4.1 For Contributors](#41-for-contributors)
+      - [Code Examples](#code-examples)
+      - [Documentation Links](#documentation-links)
+      - [Build Scripts and CI/CD](#build-scripts-and-cicd)
+    - [4.2 For Users](#42-for-users)
+      - [Example Code](#example-code)
+      - [Configuration Files](#configuration-files)
+  - [5. Vulnerability Disclosure Policy](#5-vulnerability-disclosure-policy)
+    - [5.1 Disclosure Principles](#51-disclosure-principles)
+    - [5.2 Disclosure Process](#52-disclosure-process)
+    - [5.3 Security Advisories](#53-security-advisories)
+  - [6. Security-Related Configuration](#6-security-related-configuration)
+    - [6.1 Repository Security Settings](#61-repository-security-settings)
+    - [6.2 Security-Related Workflows](#62-security-related-workflows)
+    - [6.3 Trusted Tools and Dependencies](#63-trusted-tools-and-dependencies)
+  - [7. Acknowledgments](#7-acknowledgments)
+  - [Contact](#contact)
+  - [Policy Updates](#policy-updates)
 
 ---
 
-## 安全考虑范围
+## 1. Security Policy Overview
 
-### 在考虑范围内的安全问题
+AnalysisDataFlow is a documentation knowledge base project focused on stream computing theory and practice. While the project primarily consists of documentation (Markdown files), diagrams, and example code, we take security seriously to ensure:
 
-| 类别 | 示例 |
-|-----|------|
-| **代码注入** | 脚本中的命令注入、SQL 注入 |
-| **路径遍历** | 文件操作中的路径遍历漏洞 |
-| **敏感信息泄露** | 意外暴露的密钥、令牌 |
-| **依赖漏洞** | npm/pip 依赖中的已知 CVE |
-| **工作流安全** | GitHub Actions 配置问题 |
-| **链接安全** | 指向恶意网站的链接 |
+- The integrity and authenticity of our documentation
+- The safety of example code provided to users
+- The protection of our infrastructure and build systems
+- The privacy of our contributors and users
 
-### 不在考虑范围内的安全问题
-
-| 类别 | 说明 |
-|-----|------|
-| **文档内容错误** | 概念、公式错误（请用普通 Issue 报告） |
-| **拼写错误** | 拼写和语法错误（请用普通 Issue 报告） |
-| **过时的信息** | 文档内容过时（请用普通 Issue 报告） |
-| **拒绝服务** | 针对静态网站的 DoS（超出范围） |
-| **社会工程学** | 针对个人的钓鱼攻击 |
+This document outlines our security policies, vulnerability reporting procedures, and best practices for contributing and using the project.
 
 ---
 
-## 安全最佳实践
+## 2. Supported Versions
 
-### 对于贡献者
+Since AnalysisDataFlow is a documentation project rather than software with traditional version releases, our security policy applies to:
 
-1. **不要提交敏感信息**
-   - API 密钥
-   - 密码
-   - 私钥
-   - 个人访问令牌
+| Component | Security Support Status | Notes |
+|-----------|------------------------|-------|
+| **Main Documentation** | ✅ Supported | All content in `main` branch |
+| **Example Code** | ✅ Supported | All code examples in `examples/` |
+| **Build Scripts** | ✅ Supported | Scripts in `.scripts/` and `.github/workflows/` |
+| **Archived Content** | ⚠️ Limited | Content in `archive/` directory |
+| **External Dependencies** | ⚠️ Reviewed | Third-party GitHub Actions and tools |
 
-2. **验证外部链接**
-   - 确保引用的外部链接是安全的
-   - 优先使用 HTTPS
-   - 避免链接到已知恶意网站
-
-3. **代码审查**
-   - 仔细检查脚本中的输入验证
-   - 避免使用 eval() 等危险函数
-   - 对文件路径进行适当的清理
-
-4. **依赖管理**
-   - 定期更新依赖包
-   - 使用 `npm audit` 或 `pip audit` 检查漏洞
-   - 锁定依赖版本
-
-### 对于维护者
-
-1. **定期安全审查**
-   - 每月审查项目依赖
-   - 检查 GitHub 的安全警报
-   - 更新过期依赖
-
-2. **访问控制**
-   - 最小权限原则
-   - 定期审查访问权限
-   - 使用强密码和双因素认证
-
-3. **安全监控**
-   - 监控异常活动
-   - 响应安全警报
-   - 维护安全日志
+**Note**: We regularly review and update dependencies used in our CI/CD pipelines and build scripts to address known security vulnerabilities.
 
 ---
 
-## 已知安全问题
+## 3. Reporting a Vulnerability
 
-### 当前已知问题
+We appreciate the efforts of security researchers and community members who help us maintain the security of our project.
 
-目前没有发现已知的安全问题。
+### 3.1 Reporting Process
 
-### 历史安全问题
+If you discover a security vulnerability, please report it to us privately rather than opening a public issue.
 
-| 日期 | 问题 | 严重程度 | 状态 |
-|-----|------|---------|------|
-| 无 | - | - | - |
+**Reporting Channels** (in order of preference):
+
+| Method | Contact | Response Time |
+|--------|---------|---------------|
+| **Primary** | 📧 <security@analysisdataflow.org> | Within 48 hours |
+| **Secondary** | 🔒 GitHub Security Advisory | Within 72 hours |
+| **Alternative** | 🐛 Private GitHub Issue (mark as sensitive) | Within 72 hours |
+
+**GitHub Security Advisory Process**:
+
+1. Go to the repository's Security tab
+2. Click "Advisories" → "New draft security advisory"
+3. Fill in the vulnerability details
+4. Submit for maintainer review
+
+### 3.2 What to Include
+
+A good vulnerability report should include:
+
+```markdown
+## Summary
+Brief description of the vulnerability
+
+## Affected Component
+- File path or system component
+- Version/branch (if applicable)
+
+## Severity Assessment
+- Critical / High / Medium / Low
+- Justification for rating
+
+## Steps to Reproduce
+1. Step one
+2. Step two
+3. ...
+
+## Impact
+Description of potential security impact
+
+## Suggested Fix (Optional)
+Your recommendations for addressing the issue
+
+## Additional Context
+Any other relevant information
+```
+
+### 3.3 Response Timeline
+
+Our commitment to security researchers:
+
+| Phase | Timeframe | Action |
+|-------|-----------|--------|
+| **Acknowledgment** | Within 48 hours | Confirm receipt of report |
+| **Initial Assessment** | Within 7 days | Triage and assign severity |
+| **Fix Development** | Depends on severity | Develop and test fix |
+| **Disclosure** | Coordinated with reporter | Public disclosure with credit |
+
+**Severity-Based Timelines**:
+
+| Severity | Fix Target | Disclosure |
+|----------|------------|------------|
+| Critical | 7 days | After fix deployment |
+| High | 14 days | After fix deployment |
+| Medium | 30 days | After fix deployment |
+| Low | 90 days | Coordinated with reporter |
 
 ---
 
-## 安全更新通知
+## 4. Security Best Practices
 
-订阅安全更新：
+### 4.1 For Contributors
 
-- 启用 GitHub 仓库的 "Watch" 功能
-- 关注 "security" 标签的 Issue
-- 订阅安全邮件列表（即将推出）
+When contributing to the project, please follow these security guidelines:
+
+#### Code Examples
+
+- **Never include secrets**: No API keys, passwords, tokens, or private credentials
+- **Sanitize data**: Use dummy/fake data in examples
+- **Safe defaults**: Configuration examples should use secure default settings
+- **Version pinning**: Specify specific versions for dependencies
+
+**Example - Safe Configuration**:
+
+```yaml
+# ✅ GOOD - No secrets, safe defaults
+kafka:
+  bootstrap.servers: "localhost:9092"
+  security.protocol: "SASL_SSL"
+  sasl.mechanism: "PLAIN"
+  # Credentials should be provided via environment variables
+  sasl.jaas.config: ${KAFKA_JAAS_CONFIG}
+```
+
+```yaml
+# ❌ BAD - Hardcoded credentials
+kafka:
+  bootstrap.servers: "localhost:9092"
+  sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username='admin' password='secret123';"
+```
+
+#### Documentation Links
+
+- Verify all external links are to legitimate sources
+- Prefer HTTPS over HTTP
+- Use official documentation domains
+- Check for potential typosquatting in URLs
+
+#### Build Scripts and CI/CD
+
+- Pin GitHub Actions to specific commit SHAs or versions
+- Use least-privilege permissions for workflows
+- Validate inputs in scripts
+- Avoid executing untrusted code
+
+**Example - Secure Workflow**:
+
+```yaml
+# ✅ GOOD - Pinned versions, minimal permissions
+name: Secure CI
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af  # v4.1.0
+        with:
+          node-version: '20'
+```
+
+### 4.2 For Users
+
+When using materials from this project:
+
+#### Example Code
+
+- **Review before running**: Always review code before execution
+- **Use test environments**: Test in isolated environments first
+- **Check dependencies**: Verify the sources of any dependencies
+- **Update regularly**: Keep dependencies up to date
+
+#### Configuration Files
+
+- **Replace placeholders**: Ensure all placeholder values are replaced
+- **Use secrets management**: Store credentials in proper secrets management systems
+- **Enable security features**: Use encryption, authentication, and authorization where available
 
 ---
 
-## 致谢
+## 5. Vulnerability Disclosure Policy
 
-我们感谢以下安全研究人员对项目安全做出的贡献：
+We follow a coordinated disclosure policy:
 
-> *目前尚无安全研究人员报告漏洞。如果您是第一个，您的名字将出现在这里！*
+### 5.1 Disclosure Principles
+
+1. **Private Disclosure**: Vulnerabilities are initially handled privately
+2. **Fix First**: Public disclosure after a fix is available
+3. **Researcher Credit**: Acknowledge the reporter (with permission)
+4. **Transparency**: Publish security advisories for significant issues
+
+### 5.2 Disclosure Process
+
+```mermaid
+flowchart TD
+    A[Report Received] --> B{Valid Vulnerability?}
+    B -->|No| C[Close Report]
+    B -->|Yes| D[Assign Severity]
+    D --> E[Develop Fix]
+    E --> F[Test Fix]
+    F --> G[Prepare Advisory]
+    G --> H[Notify Reporter]
+    H --> I[Coordinated Disclosure]
+    I --> J[Publish Advisory]
+
+    style A fill:#e3f2fd
+    style J fill:#e8f5e9
+```
+
+### 5.3 Security Advisories
+
+Security advisories will be published in:
+
+- GitHub Security Advisories (official)
+- CHANGELOG.md (notable security updates)
+- Project mailing list (if applicable)
 
 ---
 
-## 政策更新
+## 6. Security-Related Configuration
 
-本安全策略可能会根据需要进行更新。重大变更将通过 GitHub Discussion 通知社区。
+### 6.1 Repository Security Settings
+
+Our repository has the following security features enabled:
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| **Branch Protection** | ✅ Enabled | Requires PR reviews, status checks |
+| **Dependency Scanning** | ✅ Enabled | Automated vulnerability scanning |
+| **Secret Scanning** | ✅ Enabled | Detects accidentally committed secrets |
+| **CodeQL Analysis** | ✅ Enabled | Static security analysis |
+
+### 6.2 Security-Related Workflows
+
+| Workflow | Purpose | Location |
+|----------|---------|----------|
+| **pr-quality-gate.yml** | Validates PR content and structure | `.github/workflows/` |
+| **scheduled-maintenance.yml** | Regular security audits | `.github/workflows/` |
+| **link-checker.yml** | Validates external links | `.github/workflows/` |
+
+### 6.3 Trusted Tools and Dependencies
+
+We use the following tools for security:
+
+| Tool | Purpose | Source |
+|------|---------|--------|
+| **markdownlint** | Markdown linting | npm |
+| **markdown-link-check** | Link validation | npm |
+| **GitHub Advanced Security** | Vulnerability scanning | GitHub |
 
 ---
 
-## 联系
+## 7. Acknowledgments
 
-如有安全相关问题，请联系：
+We thank the following security researchers and contributors who have helped improve the security of our project:
 
-- 📧 **安全邮箱**: <security@analysisdataflow.org>
-- 🔐 **PGP 密钥**: [即将提供]
+| Date | Researcher | Contribution |
+|------|------------|--------------|
+| - | - | No reported vulnerabilities to date |
+
+**Hall of Fame**: Security researchers who have responsibly disclosed vulnerabilities will be listed here with their permission.
 
 ---
 
-*最后更新: 2026-04-08 | 版本: v1.0*
+## Contact
+
+For security-related inquiries:
+
+- 📧 **Email**: <security@analysisdataflow.org>
+- 🔒 **GitHub**: Use the Security tab to report advisories
+- 🐛 **Issues**: For non-sensitive issues, use regular GitHub Issues
+
+---
+
+## Policy Updates
+
+This security policy may be updated from time to time. Changes will be announced through:
+
+- Updates to this document (with revision date)
+- GitHub Discussions announcements (for significant changes)
+- CHANGELOG.md entries (for security-related updates)
+
+---
+
+*Last Updated: 2026-04-10 | Version: v1.0*

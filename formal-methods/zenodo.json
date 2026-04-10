@@ -1,0 +1,151 @@
+{
+  "metadata": {
+    "title": "Distributed Systems Formal Methods: Complete Technical System",
+    "upload_type": "publication",
+    "publication_type": "technicalnote",
+    "publication_date": "2026-04-10",
+    "language": "eng",
+    "description": "<p>A comprehensive technical system for formal methods in distributed systems, covering mathematical foundations, process calculi, model taxonomy, verification techniques, and industrial case studies.</p><p>This work presents 95+ technical documents with 550+ formal definitions, 380+ theorems/lemmas, and 450+ visual diagrams. It serves as both a theoretical reference and practical guide for researchers and engineers working with distributed systems formalization, including stream processing, workflow systems, and cloud-native applications.</p>",
+    "creators": [
+      {
+        "name": "Ma, Lu",
+        "affiliation": "Independent Researcher",
+        "orcid": "0000-0000-0000-0000"
+      }
+    ],
+    "access_right": "open",
+    "license": "Apache-2.0",
+    "prereserve_doi": true,
+    "keywords": [
+      "formal methods",
+      "distributed systems",
+      "process calculus",
+      "verification",
+      "TLA+",
+      "stream processing",
+      "actor model",
+      "dataflow",
+      "concurrency theory",
+      "model checking",
+      "temporal logic",
+      "consensus protocols",
+      "workflow systems",
+      "cloud-native"
+    ],
+    "notes": "This is part of the AnalysisDataFlow project (https://github.com/luyanfeng/AnalysisDataFlow). The complete project includes additional modules on Flink streaming systems, knowledge graphs, and practical tutorials.",
+    "related_identifiers": [
+      {
+        "relation": "isSupplementTo",
+        "identifier": "https://github.com/luyanfeng/AnalysisDataFlow",
+        "resource_type": "software",
+        "scheme": "url"
+      },
+      {
+        "relation": "isPartOf",
+        "identifier": "https://github.com/luyanfeng/AnalysisDataFlow/tree/main/formal-methods",
+        "resource_type": "other",
+        "scheme": "url"
+      },
+      {
+        "relation": "isDocumentedBy",
+        "identifier": "https://github.com/luyanfeng/AnalysisDataFlow/blob/main/formal-methods/PUBLICATION.md",
+        "resource_type": "other",
+        "scheme": "url"
+      }
+    ],
+    "communities": [
+      {
+        "identifier": "cs"
+      },
+      {
+        "identifier": "software"
+      }
+    ],
+    "grants": [],
+    "subjects": [
+      {
+        "term": "Distributed, Parallel, and Cluster Computing",
+        "identifier": "cs.DC",
+        "scheme": "url"
+      },
+      {
+        "term": "Logic in Computer Science",
+        "identifier": "cs.LO",
+        "scheme": "url"
+      },
+      {
+        "term": "Software Engineering",
+        "identifier": "cs.SE",
+        "scheme": "url"
+      },
+      {
+        "term": "Programming Languages",
+        "identifier": "cs.PL",
+        "scheme": "url"
+      }
+    ],
+    "version": "4.0",
+    "contributors": [],
+    "references": [
+      "Akidau, T., et al. (2015). The Dataflow Model. PVLDB, 8(12).",
+      "Hoare, C. A. R. (1978). Communicating Sequential Processes. CACM, 21(8).",
+      "Milner, R. (1999). Communicating and Mobile Systems: The π-calculus. Cambridge University Press.",
+      "Lamport, L. (2002). Specifying Systems. Addison-Wesley.",
+      "Kleppmann, M. (2017). Designing Data-Intensive Applications. O'Reilly."
+    ],
+    "journal": {
+      "title": "AnalysisDataFlow Technical Reference",
+      "volume": "4",
+      "issue": "0",
+      "pages": "1-500+"
+    },
+    "conference": {},
+    "imprint": {
+      "publisher": "AnalysisDataFlow Project",
+      "place": "Online"
+    },
+    "thesis": {},
+    "book": {
+      "title": "Distributed Systems Formal Methods",
+      "publisher": "AnalysisDataFlow Project"
+    }
+  },
+  "files": {
+    "description": "Primary distribution files for the formal-methods module",
+    "types": [
+      {
+        "type": "document",
+        "format": "pdf",
+        "description": "Complete PDF version of all technical documents"
+      },
+      {
+        "type": "archive",
+        "format": "zip",
+        "description": "ZIP archive of markdown source files"
+      },
+      {
+        "type": "archive",
+        "format": "tar.gz",
+        "description": "Gzipped tarball of source files"
+      }
+    ]
+  },
+  "statistics": {
+    "documents": 95,
+    "formal_definitions": 550,
+    "theorems_lemmas": 380,
+    "proofs": 180,
+    "mermaid_diagrams": 450,
+    "references": 550,
+    "code_examples": 200
+  },
+  "funding": {
+    "note": "This project is independently developed without external funding."
+  },
+  "embargo": {
+    "active": false
+  },
+  "doi": "",
+  "doi_url": "",
+  "_comment": "TODO: Update DOI fields after initial Zenodo upload"
+}

@@ -1,0 +1,111 @@
+# Citation File Format for AnalysisDataFlow
+# Version: 1.2.0
+# https://citation-file-format.github.io/
+
+cff-version: 1.2.0
+message: "If you use this software or documentation in your research, please cite it as below."
+type: software
+title: "AnalysisDataFlow: Formal Theory and Engineering Practice of Stream Computing"
+abstract: >
+  A comprehensive knowledge base for stream computing theory, hierarchy, 
+  engineering practice, and business modeling. This project provides 
+  rigorous, complete, and navigable documentation for academic research, 
+  industrial engineering, and technology selection in the field of 
+  stream processing and dataflow systems.
+authors:
+  - family-names: "Ma"
+    given-names: "Lu"
+    affiliation: "Independent Researcher"
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # TODO: Replace with actual ORCID
+repository-code: "https://github.com/luyanfeng/AnalysisDataFlow"
+url: "https://github.com/luyanfeng/AnalysisDataFlow"
+license: Apache-2.0
+version: 5.0.0
+date-released: 2026-04-10
+
+# Keywords for discoverability
+keywords:
+  - stream processing
+  - dataflow model
+  - formal methods
+  - distributed systems
+  - Apache Flink
+  - concurrency theory
+  - process calculus
+  - actor model
+  - verification
+  - stream computing
+
+# TODO: Add DOI after Zenodo registration
+# doi: 10.5281/zenodo.XXXXXXX
+
+# Preferred citation format for academic papers
+preferred-citation:
+  type: generic
+  title: "AnalysisDataFlow: A Comprehensive Knowledge Base for Stream Computing Theory and Practice"
+  authors:
+    - family-names: "Ma"
+      given-names: "Lu"
+  year: 2026
+  url: "https://github.com/luyanfeng/AnalysisDataFlow"
+  # TODO: Add DOI after Zenodo registration
+  # doi: 10.5281/zenodo.XXXXXXX
+
+# References to related resources
+references:
+  - type: software
+    title: "Apache Flink"
+    authors:
+      - name: "Apache Software Foundation"
+    url: "https://flink.apache.org/"
+    
+  - type: book
+    title: "Streaming Systems: The What, Where, When, and How of Large-Scale Data Processing"
+    authors:
+      - family-names: "Akidau"
+        given-names: "Tyler"
+      - family-names: "Chernyak"
+        given-names: "Slava"
+      - family-names: "Lax"
+        given-names: "Reuven"
+    year: 2018
+    publisher: "O'Reilly Media"
+    isbn: "978-1-491-98787-2"
+    
+  - type: article
+    title: "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing"
+    authors:
+      - family-names: "Akidau"
+        given-names: "Tyler"
+      - family-names: "Balikov"
+        given-names: "Alex"
+      - family-names: "Bekiroğlu"
+        given-names: "Kaya"
+      - family-names: "Chernyak"
+        given-names: "Slava"
+      - family-names: "Haberman"
+        given-names: "Josh"
+      - family-names: "Lax"
+        given-names: "Reuven"
+      - family-names: "McVeety"
+        given-names: "Sam"
+      - family-names: "Mills"
+        given-names: "Daniel"
+      - family-names: "Nordstrom"
+        given-names: "Paul"
+      - family-names: "Whittle"
+        given-names: "Sam"
+    year: 2015
+    journal: "Proceedings of the VLDB Endowment"
+    volume: 8
+    issue: 12
+    pages: "1792-1803"
+    doi: "10.14778/2824032.2824076"
+
+# Additional notes
+notes: >
+  This project includes formal mathematical definitions, theorem proofs,
+  engineering best practices, and comprehensive comparisons of stream
+  processing systems. It serves as a supplementary resource to official
+  documentation, focusing on theoretical foundations and deep understanding
+  rather than operational guides.

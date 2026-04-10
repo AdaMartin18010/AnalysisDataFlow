@@ -1,0 +1,465 @@
+# GitHub Actions Workflow for Formal Methods Release
+# 自动发布流程：PDF生成、DOI注册触发、版本发布
+#
+# 触发条件:
+#   - 推送版本标签 (formal-methods-v*)
+#   - 手动触发 (workflow_dispatch)
+#   - 定期发布 (每月1日)
+
+name: Formal Methods Release
+
+on:
+  # 1. 标签推送触发（推荐）
+  push:
+    tags:
+      - 'formal-methods-v*'
+      - 'v*'
+  
+  # 2. 手动触发
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+          - prerelease
+      release_notes:
+        description: 'Release notes'
+        required: false
+        type: string
+  
+  # 3. 定期发布（可选）
+  # schedule:
+  #   - cron: '0 0 1 * *'  # 每月1日 UTC 00:00
+
+env:
+  NODE_VERSION: '20'
+  PANDOC_VERSION: '3.1.11'
+  RELEASE_DIR: 'release-artifacts'
+
+jobs:
+  # ============================================
+  # Job 1: 预检查与准备
+  # ============================================
+  pre-check:
+    name: Pre-release Checks
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      should_release: ${{ steps.check.outputs.should_release }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get version info
+        id: get_version
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_type }}" == "tag" ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="v$(date +%Y.%m.%d)-${{ github.run_number }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION"
+      
+      - name: Check release prerequisites
+        id: check
+        run: |
+          # 检查关键文件存在
+          REQUIRED_FILES=(
+            "formal-methods/README.md"
+            "formal-methods/zenodo.json"
+            "CITATION.cff"
+            "LICENSE"
+          )
+          
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "❌ Required file missing: $file"
+              echo "should_release=false" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          done
+          
+          echo "✅ All prerequisite files present"
+          echo "should_release=true" >> $GITHUB_OUTPUT
+
+  # ============================================
+  # Job 2: 文档构建与PDF生成
+  # ============================================
+  build-docs:
+    name: Build Documentation
+    needs: pre-check
+    if: needs.pre-check.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          # 安装 pandoc
+          wget -q "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz"
+          tar xvzf "pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz" --strip-components 1 -C /usr/local
+          
+          # 安装 LaTeX（用于PDF生成）
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-lang-chinese
+          sudo apt-get install -y fonts-wqy-zenhei fonts-wqy-microhei
+          
+          # 安装 Node.js 工具
+          npm install -g @mermaid-js/mermaid-cli
+          npm install -g markdown-pdf
+      
+      - name: Generate combined markdown
+        run: |
+          mkdir -p ${{ env.RELEASE_DIR }}
+          
+          # 创建合并后的文档（包含元数据）
+          cat > ${{ env.RELEASE_DIR }}/formal-methods-complete.md << 'EOF'
+          ---
+          title: "分布式系统形式化方法：完整技术体系"
+          subtitle: "Distributed Systems Formal Methods: Complete Technical System"
+          version: ${{ needs.pre-check.outputs.version }}
+          date: $(date +%Y-%m-%d)
+          author: "Lu Ma"
+          license: "Apache-2.0"
+          ---
+          
+          EOF
+          
+          # 添加主 README
+          echo "" >> ${{ env.RELEASE_DIR }}/formal-methods-complete.md
+          cat formal-methods/README.md >> ${{ env.RELEASE_DIR }}/formal-methods-complete.md
+          
+          # 添加索引
+          echo -e "\n\n---\n\n# 文档索引\n" >> ${{ env.RELEASE_DIR }}/formal-methods-complete.md
+          cat formal-methods/INDEX.md >> ${{ env.RELEASE_DIR }}/formal-methods-complete.md
+      
+      - name: Generate PDF
+        run: |
+          # 使用 pandoc 生成 PDF
+          pandoc ${{ env.RELEASE_DIR }}/formal-methods-complete.md \
+            --from markdown \
+            --to pdf \
+            --output ${{ env.RELEASE_DIR }}/formal-methods-${{ needs.pre-check.outputs.version }}.pdf \
+            --pdf-engine=xelatex \
+            -V CJKmainfont="WenQuanYi Zen Hei" \
+            -V geometry:margin=1in \
+            --toc \
+            --toc-depth=3 \
+            --number-sections \
+            -V colorlinks=true \
+            -V linkcolor=blue \
+            -V urlcolor=blue
+          
+          echo "✅ PDF generated successfully"
+          ls -lh ${{ env.RELEASE_DIR }}/*.pdf
+      
+      - name: Generate HTML version
+        run: |
+          pandoc ${{ env.RELEASE_DIR }}/formal-methods-complete.md \
+            --from markdown \
+            --to html5 \
+            --output ${{ env.RELEASE_DIR }}/formal-methods-${{ needs.pre-check.outputs.version }}.html \
+            --standalone \
+            --toc \
+            --toc-depth=3 \
+            --css=styles.css \
+            --mathjax
+          
+          echo "✅ HTML generated successfully"
+      
+      - name: Package release artifacts
+        run: |
+          # 创建发布包
+          RELEASE_NAME="formal-methods-${{ needs.pre-check.outputs.version }}"
+          
+          # 创建 ZIP（排除开发文件）
+          zip -r "${{ env.RELEASE_DIR }}/${RELEASE_NAME}.zip" formal-methods/ \
+            -x "*.git*" \
+            -x "*/.scripts/*" \
+            -x "*/node_modules/*" \
+            -x "*/.github/*"
+          
+          # 创建 Tarball
+          tar czvf "${{ env.RELEASE_DIR }}/${RELEASE_NAME}.tar.gz" \
+            --exclude=".git" \
+            --exclude=".scripts" \
+            --exclude="node_modules" \
+            --exclude=".github" \
+            formal-methods/
+          
+          # 生成校验和
+          cd ${{ env.RELEASE_DIR }}
+          sha256sum *.{zip,tar.gz,pdf} > checksums.sha256
+          cd ..
+          
+          echo "✅ Release artifacts packaged"
+          ls -lh ${{ env.RELEASE_DIR }}/
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: ${{ env.RELEASE_DIR }}/
+          retention-days: 30
+
+  # ============================================
+  # Job 3: 创建 GitHub Release
+  # ============================================
+  create-release:
+    name: Create GitHub Release
+    needs: [pre-check, build-docs]
+    if: needs.pre-check.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      release_id: ${{ steps.create_release.outputs.id }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: ${{ env.RELEASE_DIR }}/
+      
+      - name: Generate release notes
+        run: |
+          VERSION="${{ needs.pre-check.outputs.version }}"
+          
+          cat > ${{ env.RELEASE_DIR }}/RELEASE_NOTES.md << EOF
+          ## Formal Methods Release ${VERSION}
+          
+          ### 📊 内容统计
+          - **技术文档**: 95+
+          - **形式化定义**: 550+
+          - **定理/引理**: 380+
+          - **Mermaid图表**: 450+
+          - **参考文献**: 550+
+          
+          ### 📚 文档结构
+          | 单元 | 内容 | 文档数 |
+          |------|------|--------|
+          | 01-foundations | 数学基础 | 6 |
+          | 02-calculi | 计算演算 | 8 |
+          | 03-model-taxonomy | 模型分类 | 12 |
+          | 04-application-layer | 应用层 | 15 |
+          | 05-verification | 验证技术 | 10 |
+          | 06-tools | 工具生态 | 8 |
+          | 07-future | 未来方向 | 5 |
+          
+          ### 📦 分发文件
+          | 文件 | 说明 |
+          |------|------|
+          | formal-methods-\${VERSION}.pdf | 完整PDF文档 |
+          | formal-methods-\${VERSION}.html | 网页版本 |
+          | formal-methods-\${VERSION}.zip | ZIP格式源码 |
+          | formal-methods-\${VERSION}.tar.gz | Tarball格式源码 |
+          | checksums.sha256 | 校验和 |
+          
+          ### 🔗 引用信息
+          \`\`\`bibtex
+          @software{formal_methods_2026,
+            author = {Ma, Lu},
+            title = {Distributed Systems Formal Methods: Complete Technical System},
+            url = {https://github.com/luyanfeng/AnalysisDataFlow},
+            version = {${VERSION#v}},
+            year = {2026}
+          }
+          \`\`\`
+          
+          ### 📄 许可证
+          Apache License 2.0
+          
+          ---
+          **完整文档**: https://github.com/luyanfeng/AnalysisDataFlow/tree/main/formal-methods
+          EOF
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.pre-check.outputs.version }}
+          release_name: Formal Methods ${{ needs.pre-check.outputs.version }}
+          body_path: ${{ env.RELEASE_DIR }}/RELEASE_NOTES.md
+          draft: false
+          prerelease: ${{ contains(needs.pre-check.outputs.version, 'rc') || contains(needs.pre-check.outputs.version, 'beta') || contains(needs.pre-check.outputs.version, 'alpha') }}
+      
+      - name: Upload release assets
+        run: |
+          for file in ${{ env.RELEASE_DIR }}/*.{pdf,html,zip,tar.gz,sha256,md}; do
+            if [[ -f "$file" && ! "$file" =~ RELEASE_NOTES ]]; then
+              echo "Uploading: $file"
+              gh release upload "${{ needs.pre-check.outputs.version }}" "$file" --clobber
+            fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============================================
+  # Job 4: Zenodo DOI 注册触发
+  # ============================================
+  zenodo-publish:
+    name: Trigger Zenodo DOI
+    needs: [pre-check, create-release]
+    if: needs.pre-check.outputs.should_release == 'true' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests
+      
+      - name: Prepare Zenodo metadata
+        run: |
+          cat > zenodo_metadata.json << 'EOF'
+          {
+            "metadata": {
+              "title": "Distributed Systems Formal Methods: Complete Technical System",
+              "upload_type": "publication",
+              "publication_type": "technicalnote",
+              "description": "A comprehensive technical system for formal methods in distributed systems, covering mathematical foundations, process calculi, model taxonomy, verification techniques, and industrial case studies.",
+              "creators": [
+                {
+                  "name": "Ma, Lu",
+                  "affiliation": "Independent Researcher"
+                }
+              ],
+              "access_right": "open",
+              "license": "Apache-2.0",
+              "keywords": [
+                "formal methods",
+                "distributed systems",
+                "process calculus",
+                "verification",
+                "TLA+",
+                "stream processing",
+                "actor model",
+                "dataflow"
+              ],
+              "related_identifiers": [
+                {
+                  "relation": "isSupplementTo",
+                  "identifier": "https://github.com/luyanfeng/AnalysisDataFlow",
+                  "resource_type": "software"
+                },
+                {
+                  "relation": "isDocumentedBy",
+                  "identifier": "https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/${{ needs.pre-check.outputs.version }}",
+                  "resource_type": "other"
+                }
+              ],
+              "communities": [
+                {"identifier": "cs"},
+                {"identifier": "arxiv"}
+              ],
+              "grants": [],
+              "subjects": [
+                {"term": "Distributed Computing", "identifier": "cs.DC", "scheme": "url"},
+                {"term": "Logic in Computer Science", "identifier": "cs.LO", "scheme": "url"},
+                {"term": "Software Engineering", "identifier": "cs.SE", "scheme": "url"}
+              ]
+            }
+          }
+          EOF
+      
+      - name: Upload to Zenodo Sandbox (Test)
+        if: contains(needs.pre-check.outputs.version, 'rc') || contains(needs.pre-check.outputs.version, 'beta')
+        env:
+          ZENODO_SANDBOX_TOKEN: ${{ secrets.ZENODO_SANDBOX_TOKEN }}
+        run: |
+          echo "🧪 Testing Zenodo upload to sandbox..."
+          # 这里可以添加沙盒环境测试代码
+          # python scripts/upload_to_zenodo.py --sandbox
+      
+      - name: Upload to Zenodo Production
+        if: "!contains(needs.pre-check.outputs.version, 'rc') && !contains(needs.pre-check.outputs.version, 'beta')"
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: |
+          echo "🚀 Publishing to Zenodo..."
+          # 注意：需要配置 ZENODO_TOKEN secret
+          # python scripts/upload_to_zenodo.py
+          
+          # 目前仅记录发布事件
+          echo "Zenodo publication triggered for version ${{ needs.pre-check.outputs.version }}"
+          echo "Please manually verify the DOI registration at https://zenodo.org/"
+      
+      - name: Update DOI badge
+        run: |
+          # 创建 DOI badge 更新提示
+          echo "📌 Remember to update the DOI badge in README.md after Zenodo publication"
+          echo "Badge URL: https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg"
+
+  # ============================================
+  # Job 5: 验证与通知
+  # ============================================
+  verify-release:
+    name: Verify Release
+    needs: [pre-check, create-release, zenodo-publish]
+    if: always() && needs.pre-check.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Verify release artifacts
+        run: |
+          VERSION="${{ needs.pre-check.outputs.version }}"
+          
+          echo "🔍 Verifying release ${VERSION}..."
+          
+          # 检查 GitHub Release 是否存在
+          RELEASE_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${VERSION}"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $RELEASE_URL)
+          
+          if [[ "$STATUS" == "200" ]]; then
+            echo "✅ GitHub Release verified"
+          else
+            echo "⚠️ GitHub Release not found (status: $STATUS)"
+          fi
+      
+      - name: Post-release summary
+        run: |
+          echo "========================================"
+          echo "📦 Release Summary"
+          echo "========================================"
+          echo "Version: ${{ needs.pre-check.outputs.version }}"
+          echo "Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ needs.pre-check.outputs.version }}"
+          echo ""
+          echo "📋 Next Steps:"
+          echo "  1. Verify release artifacts are correct"
+          echo "  2. Update CITATION.cff with DOI (if available)"
+          echo "  3. Submit to arXiv (if applicable)"
+          echo "  4. Announce on social media/channels"
+          echo "========================================"

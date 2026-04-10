@@ -13,6 +13,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - v4.0长期愿景规划
 - 新领域扩展（详见[路线图](#roadmap)）
 
+### Added
+
+#### 社区基础设施建设 🏗️
+
+> **里程碑**: 建立完整的开源社区治理体系
+
+- **CONTRIBUTING-EN.md** - 英文版贡献指南
+  - Code standards and conventions
+  - Commit message specifications
+  - Pull Request workflow
+  - Review processes
+- **SECURITY.md** - 安全政策文档
+  - Vulnerability reporting procedures
+  - Security best practices
+  - Coordinated disclosure policy
+- **Issue Templates** - Markdown格式Issue模板
+  - `bug_report.md` - 错误报告模板
+  - `feature_request.md` - 功能建议模板
+  - `documentation_request.md` - 文档请求模板
+- **Enhanced GitHub Templates** - 增强型GitHub模板
+  - YAML格式Issue模板（已有）与Markdown格式互补
+  - Pull Request模板完善检查清单
+
+### Changed
+
+- **社区治理**: 完善开源社区治理结构
+  - 中英文双语言贡献指南
+  - 安全漏洞响应机制
+  - 标准化的Issue/PR工作流
+
+---
+
 ---
 
 ## [3.0.0] - 2026-04-03 - 项目完成版
