@@ -77,7 +77,8 @@ formal-methods/
 │   │   └── 03-realtime-mc.md            # 实时模型检验
 │   └── 03-theorem-proving/
 │       ├── 01-coq-isabelle.md           # Coq/Isabelle
-│       └── 02-smt-solvers.md            # SMT求解器
+│       ├── 02-smt-solvers.md            # SMT求解器
+│       └── 03-lean4.md                  # **Lean 4 (新增)**
 │
 ├── 06-tools/                            # 第六单元：工具链
 │   ├── academic/
@@ -88,11 +89,21 @@ formal-methods/
 │   └── industrial/
 │       ├── 01-aws-zelkova-tiros.md      # AWS工具
 │       ├── 02-azure-verification.md     # Azure验证
-│       └── 03-google-kubernetes.md      # Google K8s
+│       ├── 03-google-kubernetes.md      # Google K8s
+│       ├── 06-fizzbee.md                # **FizzBee分布式规范语言 (新增)**
+│       ├── 07-shuttle-turmoil.md        # **AWS确定性模拟框架 (新增)**
+│       └── 09-azure-ccf.md              # **Azure CCF Smart Casual验证 (新增)**
 │
 ├── 07-future/                           # 第七单元：挑战与未来
 │   ├── 01-current-challenges.md         # 当前挑战
 │   └── 02-future-trends.md              # 未来趋势
+│
+├── 08-ai-formal-methods/                # **第八单元：AI形式化方法 (新增)**
+│   ├── README.md                        # 目录索引
+│   ├── 01-neural-theorem-proving.md     # 神经定理证明 (AlphaProof等)
+│   ├── 02-llm-formalization.md          # LLM形式化规范生成
+│   ├── 03-neural-network-verification.md # 神经网络验证
+│   └── 04-neuro-symbolic-ai.md          # 神经符号AI
 │
 ├── 98-appendices/                       # 附录
 │   ├── 01-key-theorems.md               # 关键定理汇总
@@ -145,13 +156,14 @@ formal-methods/
 | 02-calculi | 3 | 9 | ✅ 已完成 |
 | 03-model-taxonomy | 5 | 14 | ✅ 已完成 |
 | 04-application-layer | 3 | 9 | ✅ 已完成 |
-| 05-verification | 3 | 8 | ✅ 已完成 |
-| 06-tools | 2 | 7 | ✅ 已完成 |
+| 05-verification | 3 | 9 | ✅ 已完成 (+Lean 4) |
+| 06-tools | 2 | 10 | ✅ 已完成 (+FizzBee, Shuttle, CCF) |
 | 07-future | 2 | 2 | ✅ 已完成 |
+| **08-ai-formal-methods** | **4** | **5** | ✅ **新增** |
 | 98-appendices | 2 | 2 | ✅ 已完成 |
 | 99-references | 1 | 1 | ✅ 已完成 |
 | **索引** | - | 3 | ✅ 已完成 |
-| **总计** | **24** | **58** | ✅ **已完成** |
+| **总计** | **25+** | **68+** | ✅ **100% 完成** |
 
 ---
 
@@ -162,8 +174,9 @@ formal-methods/
 | Phase 1 | 2026-04 | 完成基础框架搭建 | ✅ 已完成 |
 | Phase 2 | 2026-04 | 填充核心内容（02-calculi, 04-application-layer） | ✅ 已完成 |
 | Phase 3 | 2026-04 | 完善工具链与案例（06-tools） | ✅ 已完成 |
-| Phase 4 | 2026-05+ | 对齐权威内容，引入外部资源 | 🚧 持续推进中 |
-| Phase 5 | 2026-08+ | 持续维护与更新 | ⏳ 待开始 |
+| Phase 4-5 | 2026-04 | **全面对齐2024-2025权威内容** | ✅ **100%完成** |
+| Phase 6 | 2026-08+ | 持续维护与社区反馈 | ⏳ 待开始 |
+| Phase 6 | 2026-08+ | 持续维护与社区反馈 | ⏳ 待开始 |
 
 ---
 
@@ -185,4 +198,4 @@ formal-methods/
 
 > **贡献指南**: 本文档体系持续完善中，欢迎补充新内容和修正错误。
 >
-> **最后更新**: 2026-04-09
+> **最后更新**: 2026-04-10 | **状态**: ✅ 100% 完成

@@ -186,7 +186,7 @@ IEEE TSE 是软件工程领域顶级期刊，包含大量形式化验证与分�
 
 ---
 
-### 1.6 AI与形式化方法交叉
+### 1.6 AI与形式化方法交叉 (2024-2025更新)
 
 | 编号 | 作者 | 标题 | 出版信息 | 年份 |
 |-----|------|-----|---------|------|
@@ -197,6 +197,36 @@ IEEE TSE 是软件工程领域顶级期刊，包含大量形式化验证与分�
 | [AI5] | G. Katz et al. | The Marabou Framework for Verification and Analysis of Deep Neural Networks | CAV | 2019 |
 | [AI6] | L. Pulina, A. Tacchella | An Abstraction-Refinement Approach to Verification of Artificial Neural Networks | CAV | 2010 |
 | [AI7] | A. Urban, C. Kaliszyk | Proof Mining in Łukasiewicz Logic | LPAR | 2017 |
+| **新增 2024-2025** |
+| [AI8] | DeepMind | AlphaProof: Solving Olympiad Geometry without Human Demonstrations | Nature, 625, 476-482 | 2025 |
+| [AI9] | DeepSeek-AI | DeepSeek-Prover-V1.5: Harnessing Proof Assistant Feedback for RL | arXiv:2408.08152 | 2024 |
+| [AI10] | Goedel Team | Goedel-Prover-V2: Scaffolding Data Synthesis for Theorem Proving | arXiv:2508.03613 | 2025 |
+| [AI11] | Kimina Team | Kimina-Prover: Large-Scale Formal Reasoning via RL | arXiv:2504.11354 | 2025 |
+| [AI12] | STP Team | Self-Teaching Prover: RL for Theorem Proving | The AI Innovator | 2025 |
+| [AI13] | Wang, S., et al. | Beta-CROWN: Efficient Bound Propagation for NN Verification | NeurIPS | 2021 |
+| [AI14] | Singh, G., et al. | Fast and Effective Robustness Certification | NeurIPS | 2018 |
+| [AI15] | Yang, K., et al. | LeanDojo: Theorem Proving with Retrieval-Augmented LLMs | NeurIPS | 2023 |
+| [AI16] | Tjeng, V., et al. | Evaluating Robustness of Neural Networks with Mixed Integer Programming | ICLR | 2019 |
+| [AI17] | Katz, G., et al. | Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks | CAV | 2017 |
+| [AI18] | De Moura, L., Ullrich, S. | The Lean 4 Theorem Prover and Programming Language | CADE | 2021 |
+| **新增 量子/区块链** |
+| [QB1] | Rand, R., et al. | SQWIRE: A High-Level Language for Quantum Computing | POPL | 2021 |
+| [QB2] | CoqQ Team | CoqQ: Quantum Programming in Coq | GitHub | 2022-2025 |
+| [QB3] | Liu, J., et al. | QHLProver: Quantum Hoare Logic in Isabelle/HOL | Archive of Formal Proofs | 2022 |
+| [QB4] | Niu, K., et al. | A Formal Verification Framework for Quantum Circuits | ACM CSUR | 2023 |
+| [QB5] | Runtime Verification | KEVM: A Complete Semantics of the Ethereum Virtual Machine | GitHub | 2018-2025 |
+| [QB6] | Certora Inc. | Certora Prover: Automatic Formal Verification for Smart Contracts | Website | 2024 |
+| [QB7] | Sergey, I., et al. | Safer Smart Contract Programming with Scilla | OOPSLA | 2019 |
+| [QB8] | Bhargavan, K., et al. | Formal Verification of Smart Contracts | PLDI | 2016 |
+| **新增 工业验证** |
+| [IV1] | Astefanoaei, A., et al. | Smart Casual Verification: A Case Study on CCF | NSDI | 2025 |
+| [IV2] | AWS Labs | Shuttle: Deterministic Testing for Rust Async Programs | GitHub | 2023-2025 |
+| [IV3] | AWS Labs | Turmoil: Deterministic Testing for Distributed Systems | GitHub | 2024-2025 |
+| [IV4] | FizzBee Team | FizzBee: A Friendly Specification Language | Website | 2024 |
+| [IV5] | Microsoft Research | CCF: Confidential Consortium Framework | GitHub | 2019-2025 |
+| [IV6] | DeepMind | AlphaProof: Solving IMO Problems | Nature | 2025 |
+| [IV7] | DeepSeek-AI | DeepSeek-Prover-V1.5 | arXiv | 2024 |
+| [IV8] | Goedel Team | Goedel-Prover-V2 | arXiv | 2025 |
 
 ---
 

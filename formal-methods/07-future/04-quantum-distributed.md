@@ -377,6 +377,10 @@ graph TB
 | 量子网络协议 | Quantum Internet Stack[^4] | 量子互联网协议层次架构 | Nature 2025 |
 | 分布式量子计算 | DQC验证[^5] | 分布式量子算法的正确性验证 | QPL 2024 |
 | 量子拜占庭协议 | QBA形式化[^6] | 量子拜占庭共识的完整形式化 | DISC 2024 |
+| **CoqQ框架** | CoqQ Team[^7] | **Coq中的量子编程框架** | 2022-2025 |
+| **QHLProver** | QHL Team[^8] | **Isabelle/HOL量子霍尔逻辑** | 2020-2025 |
+| **VyZX** | VyZX Team[^9] | **Coq中ZX-演算形式化** | QPL 2022 |
+| **MerLean** | MerLean Team[^10] | **量子计算自动形式化智能体** | arXiv 2026 |
 
 ### 8.2 开放问题
 
@@ -390,7 +394,89 @@ graph TB
 
 5. **量子优势验证**: 如何形式化证明量子分布式算法相对于经典算法的优势？
 
-## 9. 引用参考 (References)
+## 9. 量子形式化工具链详解
+
+### 9.1 SQIR (Coq Quantum IR)
+
+**Def-F-07-04-06** (SQIR). SQIR 是在 Coq 中开发的量子中间表示，用于验证量子电路优化和程序正确性：
+
+```coq
+(* SQIR 电路定义示例 *)
+Inductive Unitary (n : nat) : Type :=
+  | U_H (q : nat) : q < n -> Unitary n  (* Hadamard 门 *)
+  | U_X (q : nat) : q < n -> Unitary n  (* Pauli-X 门 *)
+  | U_CNOT (c t : nat) : c < n -> t < n -> c <> t -> Unitary n
+  | U_Apply (U : SquareMatrix (2^n)) : WF_Unitary U -> Unitary n.
+```
+
+**应用**: Grover 算法验证、量子傅里叶变换优化验证
+
+### 9.2 CoqQ 框架
+
+**Def-F-07-04-07** (CoqQ). CoqQ 是基于希尔伯特空间指称语义的 Coq 量子编程框架：
+
+- **语义基础**: 希尔伯特空间、量子操作、密度矩阵
+- **霍尔逻辑**: 量子程序的正确性证明
+- **应用**: 量子行走、量子模拟验证
+
+```coq
+(* CoqQ 量子程序验证示例 *)
+Definition teleport : program :=
+  qinit (0,0,0) ;;  (* 初始化三个量子比特 *)
+  H 0 ;;           (* 对第一个比特应用 Hadamard *)
+  CNOT 0 1 ;;      (* 纠缠前两个比特 *)
+  CNOT 1 2 ;;      (* Bell 态测量 *)
+  H 1 ;;
+  meas 1 0 ;;      (* 测量并经典通信 *)
+  meas 2 0.
+
+Theorem teleport_correct : 
+  forall psi, ⊢ {{ ⟨0| psi ⟩ }} teleport {{ psi }}.
+```
+
+### 9.3 QHLProver (Isabelle/HOL)
+
+**Def-F-07-04-08** (QHLProver). QHLProver 是 Isabelle/HOL 中实现的量子霍尔逻辑证明器：
+
+- **量子霍尔逻辑**: 扩展经典霍尔逻辑到量子程序
+- **部分正确性**: 证明量子程序的部分正确性
+- **完全正确性**: 处理量子概率结果
+
+```isar
+(* QHLProver 示例 *)
+theory Grover
+  imports Quantum_Hoare_Logic
+begin
+
+lemma grover_correct:
+  "\<turnstile>_{pt} 
+    {tensor_P (proj_psi_l (2^n)) (proj_k (2^n) 0)}
+    grover 
+    {tensor_P (proj_psi) (proj_k (2^n) 0)}"
+  using grover_partial_correct by simp
+
+end
+```
+
+### 9.4 VyZX (ZX-演算形式化)
+
+**Def-F-07-04-09** (VyZX). VyZX 是 Coq 中 ZX-演算的证明认证形式化：
+
+- **ZX-演算**: 图形化量子计算语言
+- **重写规则**: 验证 ZX 图变换的正确性
+- **优化验证**: 验证量子电路优化等价性
+
+### 9.5 工具链对比
+
+| 工具 | 证明器 | 应用领域 | 特点 |
+|------|--------|---------|------|
+| **SQIR** | Coq | 电路优化 | 基于矩阵语义 |
+| **CoqQ** | Coq | 程序验证 | 希尔伯特空间语义 |
+| **QHLProver** | Isabelle/HOL | 算法验证 | 量子霍尔逻辑 |
+| **VyZX** | Coq | 图形化计算 | ZX-演算形式化 |
+| **QWire/ReQWIRE** | Coq | 电路编译 | 类型化量子电路 |
+
+## 10. 引用参考 (References)
 
 [^1]: Bennett, C. H., & Brassard, G. (1984). Quantum cryptography: Public key distribution and coin tossing. In *Proceedings of IEEE International Conference on Computers, Systems, and Signal Processing* (pp. 175-179).
 
@@ -403,3 +489,11 @@ graph TB
 [^5]: Coopmans, T., et al. (2024). Verification of distributed quantum algorithms. In *Quantum Physics and Logic (QPL)*.
 
 [^6]: Ben-Or, M., & Hassidim, A. (2024). Fast quantum byzantine agreement. In *DISC 2024*.
+
+[^7]: CoqQ Team. *CoqQ: Quantum Programming in Coq*. <https://github.com/coq-quantum>, 2022-2025.
+
+[^8]: QHLProver Team. *QHLProver: Quantum Hoare Logic in Isabelle/HOL*. <https://www.isa-afp.org/entries/QHLProver.html>, 2020-2025.
+
+[^9]: VyZX Team. *VyZX: Formal Verification of ZX-Calculus*. QPL 2022.
+
+[^10]: MerLean Team. *MerLean: Automated Formalization for Quantum Computing*. arXiv:2602.16554, 2026.

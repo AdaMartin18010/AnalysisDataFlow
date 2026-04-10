@@ -351,6 +351,146 @@ proof = λa:A. λb:B. a
 
 对应于直觉主义逻辑中的蕴涵引入规则。
 
+### 6.5 扩展：System Fω 完整定义
+
+**Def-F-05-11: System Fω 的类型层级 (CMU 15-814)**
+
+System Fω 引入类型构造器的 kind 层级：
+
+$$\kappa ::= * \mid \kappa_1 \to \kappa_2$$
+
+- $*$: 具体类型 (如 `Int`, `Bool`)
+- $\kappa_1 \to \kappa_2$: 类型构造器 (如 `List`, `Tree`)
+
+**Def-F-05-12: System Fω 语法**
+
+$$\begin{aligned}
+\text{Kinds: } & \kappa ::= * \mid \kappa \to \kappa \\
+\text{Types: } & \tau ::= \alpha \mid \tau \to \tau \mid \forall \alpha:\kappa.\tau \mid \lambda \alpha:\kappa.\tau \mid \tau\,\tau \\
+\text{Terms: } & e ::= x \mid \lambda x:\tau.e \mid e\,e \mid \Lambda \alpha:\kappa.e \mid e[\tau]
+\end{aligned}$$
+
+**Def-F-05-13: 高阶类型实例**
+
+| 类型 | Kind | 说明 |
+|------|------|------|
+| `Int` | $*$ | 具体类型 |
+| `List` | $* \to *$ | 一阶构造器 |
+| `Functor` | $(* \to *) \to *$ | 高阶构造器 |
+| `Monad` | $(* \to *) \to *$ | 高阶构造器 |
+
+### 6.6 扩展：归纳类型与共归纳类型
+
+**Def-F-05-14: 归纳类型 (Inductive Types)**
+
+归纳类型由构造器定义，是最小不动点 $\mu X.F(X)$：
+
+$$\text{Inductive } T \text{ where } \{c_i : F_i(T) \to T\}_{i=1}^n$$
+
+**示例 - 自然数**:
+```
+Inductive Nat :=
+  | O : Nat
+  | S : Nat -> Nat
+```
+
+语义：$\mathbb{N} = \mu X. 1 + X$
+
+**Def-F-05-15: 共归纳类型 (Coinductive Types)**
+
+共归纳类型由观察器定义，是最大不动点 $\nu X.F(X)$：
+
+$$\text{CoInductive } C \text{ where } \{obs_i : C \to T_i\}_{i=1}^n$$
+
+**示例 - 无限流**:
+```
+CoInductive Stream(A) :=
+  | head : Stream A -> A
+  | tail : Stream A -> Stream A
+```
+
+语义：$\text{Stream}(A) = \nu X. A \times X$
+
+**Prop-F-05-08: 归纳 vs 共归纳**
+
+| 特性 | 归纳类型 | 共归纳类型 |
+|------|----------|-----------|
+| 不动点 | 最小 ($\mu$) | 最大 ($\nu$) |
+| 引入方式 | 构造器 | 观察器 |
+| 递归 | 结构递归 (必须终止) | Guarded 递归 (必须产出) |
+| 示例 | 自然数、有限列表 | 无限流、进程 |
+
+### 6.7 扩展：依赖模式匹配
+
+**Def-F-05-16: 依赖模式匹配 (Dependent Pattern Matching)**
+
+依赖模式匹配允许类型随模式分支细化：
+
+```agda
+append : ∀{A}{m n : ℕ} → Vec A m → Vec A n → Vec A (m + n)
+append []        ys = ys                    -- m = 0, 返回 Vec A n
+append (x :: xs) ys = x :: append xs ys     -- m = suc m', 返回 Vec A (suc (m' + n))
+```
+
+**Def-F-05-17: 统一化在模式匹配中的作用**
+
+在分支内部，类型系统从模式约束中推导出等式：
+
+- 模式 `[]` 统一 `m` 与 `0`
+- 模式 `(x :: xs)` 统一 `m` 与 `suc m'`
+
+这允许类型检查器验证 `append` 返回类型的正确性。
+
+### 6.8 扩展：类型族 (Type Families)
+
+**Def-F-05-18: 类型族定义**
+
+类型族是从值到类型的映射：
+
+$$F : \Pi x:A. *$$
+
+**示例 - 有限类型**:
+```agda
+Fin : ℕ → Set
+Fin 0       = ⊥           -- 空类型
+Fin (suc n) = ⊤ + Fin n   -- 单位类型与 Fin n 的和
+```
+
+**Def-F-05-19: 索引类型族 (Inductive Families)**
+
+索引类型族是依赖于参数的归纳定义：
+
+```agda
+data Vec (A : Set) : ℕ → Set where
+  nil  : Vec A 0
+  cons : ∀{n} → A → Vec A n → Vec A (suc n)
+```
+
+这里 `Vec A` 是一个类型族，`n : ℕ` 是索引。
+
+**Def-F-05-20: 类型族的应用**
+
+| 应用 | 类型族 | 说明 |
+|------|--------|------|
+| 定长向量 | `Vec A n` | 长度在类型中 |
+| 类型安全查找 | `lookup : ∀{n} → Fin n → Vec A n → A` | 索引在范围内 |
+| 排序列表 | `SortedList A` | 元素有序 |
+| 平衡树 | `AVL A h` | 高度在类型中 |
+
+**Thm-F-05-06: 依赖类型消除运行时检查**
+
+使用类型族可以在编译时证明性质，消除运行时检查：
+
+```agda
+-- 传统方式: 可能抛出异常
+head : List a -> a
+
+-- 依赖类型方式: 类型保证安全
+head : Vec a (suc n) -> a
+```
+
+第二种形式的 `head` 无法应用于空列表，类型检查会拒绝。
+
 ## 7. 可视化
 
 ### 类型系统层级

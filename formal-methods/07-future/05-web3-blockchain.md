@@ -466,6 +466,9 @@ stateDiagram-v2
 | DeFi安全 | DeFiSec[^4] | DeFi组合安全分析框架 | CCS 2024 |
 | MEV形式化 | MEV-Inspect[^5] | MEV提取的形式化建模 | FC 2024 |
 | 零知识证明 | ZK-Verify[^6] | zk-SNARK电路正确性验证 | CRYPTO 2024 |
+| **KEVM** | Runtime Verification[^11] | **K框架形式化EVM** | 2018-2025 |
+| **Certora** | Certora Inc.[^12] | **智能合约自动验证** | 2024 |
+| **IsabeLLM** | Wu et al.[^13] | **Isabelle+LLM区块链共识验证** | arXiv 2026 |
 
 ### 8.2 开放问题
 
@@ -480,6 +483,116 @@ stateDiagram-v2
 5. **治理安全**: 如何形式化分析DAO治理机制的攻击向量？
 
 6. **L2验证**: 如何验证Layer 2扩容方案的正确性和安全性？
+
+### 8.3 关键验证工具详解
+
+#### KEVM (K Framework + EVM)
+
+**Def-F-07-05-06** (KEVM). KEVM 是使用 K Framework 形式化定义的以太坊虚拟机语义，支持 EVM 字节码的严格验证：
+
+```k
+// KEVM 语义片段示例
+syntax KItem ::= "#exec" OpCode
+rule <k> #exec PUSH(W, N) => . ... </k>
+     <pc> PC => PC +Int W +Int 1 </pc>
+     <wordStack> WS => N : WS </wordStack>
+     requires N <Int 2 ^Int (W *Int 8)
+```
+
+**验证能力**:
+- **字节码验证**: 验证编译后的 EVM 字节码
+- **Gas 分析**: 精确计算 gas 消耗
+- **属性证明**: 使用 Reachability Logic 证明合约性质
+
+**应用案例**:
+- Gnosis Safe 多签钱包验证
+- MakerDAO 抵押债仓验证
+- Uniswap 核心合约验证
+
+#### Certora Prover
+
+**Def-F-07-05-07** (Certora Prover). Certora Prover 是工业级智能合约自动形式化验证工具，使用 CVL (Certora Verification Language) 表达规范：
+
+```solidity
+// CVL 规范示例
+rule transferPreservesTotalSupply {
+    uint256 totalBefore = totalSupply();
+    
+    env e;
+    address from;
+    address to;
+    uint256 amount;
+    
+    transferFrom(e, from, to, amount);
+    
+    uint256 totalAfter = totalSupply();
+    
+    assert totalBefore == totalAfter, 
+           "转账不应改变总供应量";
+}
+
+rule noTransferFromZeroUnlessMinting {
+    address from;
+    address to;
+    uint256 amount;
+    
+    require from == 0 => isMintingFunction(f);
+    
+    transferFrom(e, from, to, amount);
+    
+    satisfy from != 0 || isMintingFunction(f);
+}
+```
+
+**关键特性**:
+- **自动验证**: 无需手动证明，SMT 求解器自动验证
+- **CVL 语言**: 专门用于表达智能合约规范的声明式语言
+- **持续集成**: 可与 CI/CD 流程集成，自动检查每次代码变更
+- **反例生成**: 当验证失败时提供具体的反例场景
+
+**验证的安全属性**:
+1. **ERC20 标准合规性**: transfer、approve 等行为正确
+2. **访问控制**: 只有授权地址可执行敏感操作
+3. **资金守恒**: 总供应量变化符合预期
+4. **无重入**: 防止重入攻击
+5. **溢出保护**: 算术操作不会溢出
+
+#### IsabeLLM
+
+**Def-F-07-05-08** (IsabeLLM). IsabeLLM 是将 Isabelle/HOL 证明助手与大型语言模型集成，自动化区块链共识协议验证：
+
+- **自然语言规约**: 从白皮书自动提取形式化规约
+- **证明草图生成**: LLM 生成 Isabelle 证明草图
+- **交互式精化**: 人类专家验证和精化自动生成的证明
+
+### 8.4 五类安全问题验证框架
+
+根据最新研究，智能合约安全验证框架覆盖以下五类问题：
+
+```mermaid
+mindmap
+  root((智能合约<br/>安全验证))
+    整数溢出
+      算术运算边界检查
+      SafeMath库验证
+      编译器优化安全
+    函数规范
+      前置条件验证
+      后置条件验证
+      副作用分析
+    不变量维护
+      状态不变式
+      资金守恒
+      访问控制不变式
+    权限控制
+      只有所有者
+      角色基础访问
+      时间锁机制
+    特定函数行为
+      转账正确性
+      铸造/销毁规则
+      升级安全性
+```
 
 ## 9. 引用参考 (References)
 
@@ -502,3 +615,9 @@ stateDiagram-v2
 [^9]: Buterin, V. (2014). Ethereum white paper: A next generation smart contract and decentralized application platform. *Whitepaper*.
 
 [^10]: Castro, M., & Liskov, B. (2002). Practical byzantine fault tolerance and proactive recovery. *ACM Transactions on Computer Systems*, 20(4), 398-461.
+
+[^11]: Runtime Verification. *KEVM: A Complete Semantics of the Ethereum Virtual Machine*. <https://github.com/runtimeverification/evm-semantics>, 2018-2025.
+
+[^12]: Certora Inc. *Certora Prover: Automatic Formal Verification for Smart Contracts*. <https://www.certora.com/>, 2024.
+
+[^13]: Wu, X., et al. (2026). IsabeLLM: Integrating Isabelle with LLMs for Automated Blockchain Consensus Verification. *arXiv:2601.07654*.
