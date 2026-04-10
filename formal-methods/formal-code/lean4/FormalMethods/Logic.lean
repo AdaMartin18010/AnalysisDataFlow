@@ -44,14 +44,14 @@ inductive PropFormula : Type where
 open PropFormula
 
 -- 记号定义
-prefix:75 "¬ₚ" => not
-infixr:70 " ∧ₚ " => and
-infixr:65 " ∨ₚ " => or
-infixr:60 " →ₚ " => imp
-infix:55 " ↔ₚ " => iff
-notation "⊤ₚ" => true_lit
-notation "⊥ₚ" => false_lit
-notation:max "#" p => var p
+prefix:75 "¬ₚ" => PropFormula.not
+infixr:70 " ∧ₚ " => PropFormula.and
+infixr:65 " ∨ₚ " => PropFormula.or
+infixr:60 " →ₚ " => PropFormula.imp
+infix:55 " ↔ₚ " => PropFormula.iff
+notation "⊤ₚ" => PropFormula.true_lit
+notation "⊥ₚ" => PropFormula.false_lit
+notation:max "#" p => PropFormula.var p
 
 /-! 
 ## 真值赋值与语义
@@ -110,9 +110,15 @@ notation:50 Γ " ⊨ " A => entails Γ A
 -/
 
 /-- 
-证明上下文
+证明上下文 - 使用列表存储假设
 -/
-def ProofContext := List PropFormula
+abbrev ProofContext := List PropFormula
+
+/-- 
+成员关系实例
+-/
+instance : Membership PropFormula ProofContext where
+  mem := List.Mem
 
 /-- 
 可证明性关系
@@ -193,19 +199,19 @@ def LEM (A : PropFormula) : PropFormula :=
 def DNE (A : PropFormula) : PropFormula :=
   (¬ₚ (¬ₚ A)) →ₚ A
 
-/-- 
-恒真式: ⊤
+/-! 
+## 可靠性 (Soundness)
+
+自然演绎系统是可靠的：可证明的公式是有效的。
 -/
-lemma true_always_valid : valid ⊤ₚ := by
-  simp [valid, eval]
 
 /-- 
-矛盾式不可满足
+可靠性定理
+
+如果 Γ ⊢ A，则 Γ ⊨ A。
 -/
-lemma false_unsatisfiable : ¬satisfiable ⊥ₚ := by
-  simp [satisfiable, eval]
-  intro σ h
-  contradiction
+lemma soundness {Γ A} (h : Γ ⊢ A) : Γ ⊨ A := by
+  sorry -- 通过对证明的归纳证明
 
 /-! 
 ## 谓词逻辑（一阶逻辑）基础

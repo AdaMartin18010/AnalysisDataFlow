@@ -212,12 +212,6 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
       · exact ih₁
       · exact ih₂
 
-/-- 
-Alpha 等价是传递的
--/
-lemma alpha_equiv_trans {t s r : Term} (h₁ : t =α s) (h₂ : s =α r) : t =α r := by
-  sorry -- 传递性的证明较复杂
-
 /-! 
 ## 替换与 Alpha 等价的交互
 -/
