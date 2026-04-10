@@ -108,9 +108,9 @@ inductive Process (α : Type) where
   | prefix : α → Process α → Process α   -- 前缀 a.P
   | choice : Process α → Process α → Process α  -- 选择 P + Q
   | par    : Process α → Process α → Process α  -- 并行 P | Q
-  | restrict : (α → Bool) → Process α → Process α  -- 限制 P \ L
-  | rename : (α → α) → Process α → Process α     -- 重命名 P[f]
-  deriving Repr, Inhabited
+  | restrict : List α → Process α → Process α   -- 限制 P \ L (限制动作集合)
+  | rename : (α → α) → Process α → Process α    -- 重命名 P[f]
+  deriving Inhabited
 
 open Process
 
@@ -122,23 +122,11 @@ open Process
 def Trace (α : Type) := List α
 
 /-- 
-进程具有特定迹
--/
-inductive HasTrace {α : Type} : Process α → Trace α → Prop where
-  | empty (P : Process α) : 
-      HasTrace P []
-  
-  | step {a : α} {tr : Trace α} {P P' : Process α} : 
-      CanPerform P a P' → 
-      HasTrace P' tr → 
-      HasTrace P (a :: tr)
-
-/-- 
 进程可以执行动作并转移到另一进程
 
 简化的语义定义。
 -/
-inductive CanPerform {α : Type} : Process α → α → Process α → Prop where
+inductive CanPerform {α : Type} [BEq α] : Process α → α → Process α → Prop where
   | prefix_act {a : α} {P : Process α} : 
       CanPerform (prefix a P) a P
   
@@ -158,6 +146,18 @@ inductive CanPerform {α : Type} : Process α → α → Process α → Prop whe
       CanPerform Q a Q' → 
       CanPerform (par P Q) a (par P Q')
 
+/-- 
+进程具有特定迹
+-/
+inductive HasTrace {α : Type} [BEq α] : Process α → Trace α → Prop where
+  | empty (P : Process α) : 
+      HasTrace P []
+  
+  | step {a : α} {tr : Trace α} {P P' : Process α} : 
+      CanPerform P a P' → 
+      HasTrace P' tr → 
+      HasTrace P (a :: tr)
+
 /-! 
 ## 进程性质
 -/
@@ -166,23 +166,26 @@ inductive CanPerform {α : Type} : Process α → α → Process α → Prop whe
 死锁自由
 
 进程不会出现死锁（总可以进行某些动作或已经终止）。
+简化的定义：所有可达状态要么是终止状态，要么可以执行动作。
 -/
-def DeadlockFree {α : Type} (P : Process α) : Prop :=
-  ∀ P', P →* P' → 
-    (∃ a P'', CanPerform P' a P'') ∨ P' = nil
+def DeadlockFree {α : Type} [BEq α] (P : Process α) : Prop :=
+  ∀ (P' : Process α), 
+    ReflexiveTransitiveClosure P P' → 
+    ((∃ a P'', CanPerform P' a P'') ∨ P' = nil)
 
 where
   /-- 
-  多步转移（传递闭包）
+  自反传递闭包（多步转移）
   -/
-  "→*" (P Q : Process α) : Prop := sorry -- 需要定义
+  ReflexiveTransitiveClosure (P Q : Process α) : Prop :=
+    P = Q ∨ ∃ R a, CanPerform P a R ∧ ReflexiveTransitiveClosure R Q
 
 /-- 
 确定性
 
 进程在任何状态下对同一动作最多只有一个转移。
 -/
-def Deterministic {α : Type} (P : Process α) : Prop :=
+def Deterministic {α : Type} [BEq α] (P : Process α) : Prop :=
   ∀ a P₁ P₂, CanPerform P a P₁ → CanPerform P a P₂ → P₁ = P₂
 
 /-! 
@@ -210,18 +213,5 @@ def complementary {α : Type} [BEq α] (a b : CCSAction α) : Bool :=
   | CCSAction.input x, CCSAction.output y => x == y
   | CCSAction.output x, CCSAction.input y => x == y
   | _, _ => false
-
-/-- 
-同步组合
-
-两个进程通过互补动作进行同步。
--/
-inductive Sync {α : Type} [BEq α] : 
-    Process (CCSAction α) → Process (CCSAction α) → 
-    CCSAction α → Process (CCSAction α) → Process (CCSAction α) → Prop where
-  | comm {x : α} {P Q P' Q' : Process (CCSAction α)} : 
-      CanPerform P (CCSAction.input x) P' → 
-      CanPerform Q (CCSAction.output x) Q' → 
-      Sync P Q (CCSAction.tau) P' Q'
 
 end FormalMethods.Concurrent
