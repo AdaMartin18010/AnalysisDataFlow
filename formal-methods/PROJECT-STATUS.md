@@ -30,6 +30,7 @@
 | **06-tools** | 工具链 | 10 | ✅ | 学术工具、工业工具、**FizzBee, Shuttle, CCF新增** |
 | **07-future** | 未来方向 | 2 | ✅ | 挑战与趋势 |
 | **08-ai-formal-methods** | **AI形式化方法** | **4** | ✅ **完成** | **神经定理证明、LLM形式化、NN验证、神经符号AI** |
+| **98-appendices/wikipedia-concepts** | **Wikipedia核心概念** | **12/25** | 🚧 **进行中** | **已添加: 时序逻辑、霍尔逻辑、抽象解释、互模拟、线性一致性。MIT 6.826/CMU 15-814课程对齐完成** |
 | **98-appendices** | 附录 | 2 | ✅ | 定理汇总、术语表 |
 | **99-references** | 参考文献 | 1 | ✅ | 完整文献列表（**2025更新**） |
 | **索引文档** | - | 3 | ✅ | README、INDEX、LEARNING-PATHS |
