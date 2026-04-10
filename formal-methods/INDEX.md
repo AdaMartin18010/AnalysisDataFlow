@@ -1,6 +1,6 @@
 # 分布式系统形式化方法 - 总索引
 
-> **文档版本**: v3.0 | **最后更新**: 2026-04-09 | **文档总数**: 51+ 篇
+> **文档版本**: v4.0 | **最后更新**: 2026-04-10 | **文档总数**: 95+ 篇
 
 ---
 
@@ -17,6 +17,9 @@
 | **验证方法** | 05-verification/**/*.md | L4-L6 |
 | **工具链** | 06-tools/**/*.md | L3-L5 |
 | **未来方向** | 07-future/*.md | L5-L6 |
+| **AI形式化** | 08-ai-formal-methods/*.md | L5-L6 |
+| **Wikipedia概念** | 98-appendices/wikipedia-concepts/*.md | L1-L6 |
+| **附录** | 98-appendices/*.md | L1-L6 |
 
 ### 按难度索引
 
@@ -52,6 +55,11 @@
 | Thm-C-05-01 | Kahn不动点定理 | 02-calculi/03-stream-calculus/03-kahn-process-networks.md |
 | Thm-A-02-01 | Soundness判定定理 | 04-application-layer/01-workflow/02-soundness-axioms.md |
 | Thm-M-04-02-01 | CAP定理 | 03-model-taxonomy/04-consistency/02-cap-theorem.md |
+| Thm-FM-18-01 | Paxos Safety | 98-appendices/wikipedia-concepts/18-paxos.md |
+| Thm-FM-19-01 | Raft Election Safety | 98-appendices/wikipedia-concepts/19-raft.md |
+| Thm-FM-22-01 | Gödel完备性 | 98-appendices/wikipedia-concepts/22-first-order-logic.md |
+| Thm-FL-04-01 | Flink Checkpoint一致性 | 04-application-layer/02-stream-processing/04-flink-formal-verification.md |
+| Thm-K8s-02-01 | K8s控制器收敛 | 04-application-layer/03-cloud-native/02-kubernetes-verification.md |
 
 ### 核心定义 (Def-)
 

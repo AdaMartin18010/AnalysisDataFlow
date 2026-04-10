@@ -23,31 +23,31 @@
 | 07 | **Type Theory** | [07-type-theory.md](07-type-theory.md) | ✅ | 强归一化、Curry-Howard |
 | 08 | **Abstract Interpretation** | [08-abstract-interpretation.md](08-abstract-interpretation.md) | ✅ | Galois连接定理 |
 | 09 | **Bisimulation** | [09-bisimulation.md](09-bisimulation.md) | ✅ | 互模拟同余性 |
-| 10 | **Petri Nets** | [10-petri-nets.md](10-petri-nets.md) | ⏳ | 可达性可判定性 |
+| 10 | **Petri Nets** | [10-petri-nets.md](10-petri-nets.md) | ✅ | 可达性可判定性 |
 
 ### 分布式系统核心 (10个)
 
 | # | 概念 | 文档 | 状态 | 关键定理 |
 |---|------|------|------|---------|
-| 11 | **Distributed Computing** | [11-distributed-computing.md](11-distributed-computing.md) | ⏳ | 时空复杂性 |
+| 11 | **Distributed Computing** | [11-distributed-computing.md](11-distributed-computing.md) | ✅ | 时空复杂性 |
 | 12 | **Byzantine Fault Tolerance** | [12-byzantine-fault-tolerance.md](12-byzantine-fault-tolerance.md) | ✅ | PBFT安全性、活性 |
 | 13 | **Consensus** | [13-consensus.md](13-consensus.md) | ✅ | FLP不可能性、Paxos安全性 |
 | 14 | **CAP Theorem** | [14-cap-theorem.md](14-cap-theorem.md) | ✅ | Gilbert-Lynch证明 |
 | 15 | **Linearizability** | [15-linearizability.md](15-linearizability.md) | ✅ | Herlihy-Wing定理 |
-| 16 | **Serializability** | [16-serializability.md](16-serializability.md) | ⏳ | 冲突可串行化判定 |
-| 17 | **Two-Phase Commit** | [17-two-phase-commit.md](17-two-phase-commit.md) | ⏳ | 原子性保证 |
-| 18 | **Paxos** | [18-paxos.md](18-paxos.md) | ⏳ | Lamport安全性证明 |
-| 19 | **Raft** | [19-raft.md](19-raft.md) | ⏳ | Raft状态机安全 |
-| 20 | **Distributed Hash Table** | [20-distributed-hash-table.md](20-distributed-hash-table.md) | ⏳ | Chord路由正确性 |
+| 16 | **Serializability** | [16-serializability.md](16-serializability.md) | ✅ | 冲突可串行化判定 |
+| 17 | **Two-Phase Commit** | [17-two-phase-commit.md](17-two-phase-commit.md) | ✅ | 原子性保证 |
+| 18 | **Paxos** | [18-paxos.md](18-paxos.md) | ✅ | Lamport安全性证明 |
+| 19 | **Raft** | [19-raft.md](19-raft.md) | ✅ | Raft状态机安全 |
+| 20 | **Distributed Hash Table** | [20-distributed-hash-table.md](20-distributed-hash-table.md) | ✅ | Chord路由正确性 |
 
 ### 逻辑与数学基础 (5个)
 
 | # | 概念 | 文档 | 状态 | 关键定理 |
 |---|------|------|------|---------|
-| 21 | **Modal Logic** | [21-modal-logic.md](21-modal-logic.md) | ⏳ | Kripke完备性 |
+| 21 | **Modal Logic** | [21-modal-logic.md](21-modal-logic.md) | ✅ | Kripke完备性 |
 | 22 | **First-Order Logic** | [22-first-order-logic.md](22-first-order-logic.md) | ✅ | Gödel完备性 |
-| 23 | **Set Theory** | [23-set-theory.md](23-set-theory.md) | ⏳ | ZFC公理系统 |
-| 24 | **Domain Theory** | [24-domain-theory.md](24-domain-theory.md) | ⏳ | Scott不动点定理 |
+| 23 | **Set Theory** | [23-set-theory.md](23-set-theory.md) | ✅ | ZFC公理系统 |
+| 24 | **Domain Theory** | [24-domain-theory.md](24-domain-theory.md) | ✅ | Scott不动点定理 |
 | 25 | **Category Theory** | [25-category-theory.md](25-category-theory.md) | ⏳ | CCC与λ演算对应 |
 
 ---
