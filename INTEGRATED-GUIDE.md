@@ -17,6 +17,7 @@
 ### 流处理核心概念
 
 流处理（Stream Processing）是对持续到达的数据进行实时计算的技术。与批处理不同，流处理要求：
+
 - **低延迟**：毫秒级或秒级响应
 - **高吞吐**：处理大量并发数据
 - **容错性**：故障时保证数据不丢失
@@ -32,6 +33,7 @@ Watermark：进度标记，表示<=该时间的数据已到达
 ```
 
 **关键属性**：
+
 - 单调递增：Watermark只能前进不能后退
 - 触发计算：当Watermark超过窗口结束时间时触发
 - 处理延迟：允许一定时间的乱序数据
@@ -55,7 +57,7 @@ Checkpoint 是流处理的容错基础：
 
 ```java
 // 创建执行环境
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置Checkpoint
@@ -95,18 +97,21 @@ env.execute("My Streaming Job");
 
 ### 实时风控系统
 
-**场景**：金融交易实时风控  
+**场景**：金融交易实时风控
 **挑战**：
+
 - 10万+ TPS
 - 延迟要求<100ms
 - 欺诈识别准确率>95%
 
 **方案**：
+
 - Flink + CEP（复杂事件处理）
 - 规则引擎 + 机器学习
 - 多级缓存优化
 
 **效果**：
+
 - 延迟：50ms
 - 准确率：98%
 - 吞吐量：15万TPS
@@ -116,11 +121,13 @@ env.execute("My Streaming Job");
 ## 工具链
 
 ### 开发工具
+
 - **IDE**: IntelliJ IDEA + Flink插件
 - **构建**: Maven/Gradle
 - **测试**: JUnit + TestContainers
 
 ### 运维工具
+
 - **监控**: Prometheus + Grafana
 - **日志**: ELK Stack
 - **告警**: Alertmanager
@@ -130,6 +137,7 @@ env.execute("My Streaming Job");
 ## 社区参与
 
 ### 如何贡献
+
 1. 阅读贡献者指南
 2. 找到合适的任务
 3. 提交Pull Request
