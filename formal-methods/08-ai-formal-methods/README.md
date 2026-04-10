@@ -15,6 +15,7 @@
 ├── 02-llm-formalization.md            # LLM形式化规范生成
 ├── 03-neural-network-verification.md  # 神经网络形式化验证
 ├── 04-neuro-symbolic-ai.md            # 神经符号AI
+├── 09-ai-verification-tools-comparison.md  # AI验证工具对比
 └── 90-examples/                       # 代码示例
     ├── copra_example.py
     ├── lean_dojo_example.py
@@ -89,7 +90,8 @@
 | LLM形式化 | 1 | 6+ | 4+ |
 | NN验证 | 1 | 10+ | 8+ |
 | 神经符号AI | 1 | 7+ | 4+ |
-| **总计** | **4** | **31+** | **21+** |
+| AI验证工具对比 | 1 | 9+ | 3+ |
+| **总计** | **5** | **40+** | **24+** |
 
 ---
 
