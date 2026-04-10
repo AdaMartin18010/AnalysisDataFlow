@@ -1,17 +1,23 @@
-name = "FormalMethods"
-version = "0.1.0"
-defaultTargets = ["FormalMethods"]
+name := "FormalMethods"
+version := "0.1.0"
+defaultTargets := #[`FormalMethods]
 
-[[lean_lib]]
-name = "FormalMethods"
+leanOptions := #[
+  ⟨`pp.unicode.fun, true⟩,
+  ⟨`pp.proofs.withType, false⟩,
+  ⟨`autoImplicit, false⟩
+]
 
-[[lean_exe]]
-name = "formalmethods"
-root = "Main"
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.16.0"
 
-[dependencies]
-std = { git = "https://github.com/leanprover/std4", rev = "v4.8.0" }
-mathlib = { git = "https://github.com/leanprover-community/mathlib4", rev = "v4.8.0" }
+package FormalMethods where
+  moreLinkArgs := #["-rdynamic"]
 
-[build]
-target = "all"
+@[default_target]
+lean_lib FormalMethods where
+  roots := #[`FormalMethods]
+
+lean_exe formal_methods where
+  root := `Main
+  supportInterpreter := true

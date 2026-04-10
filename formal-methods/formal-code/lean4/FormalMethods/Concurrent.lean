@@ -105,7 +105,7 @@ notation:50 p " ≈ " q => WeakBisimilar _ p q
 -/
 inductive Process (α : Type) where
   | nil : Process α                      -- 空进程 0
-  | prefix : α → Process α → Process α   -- 前缀 a.P
+  | pref : α → Process α → Process α     -- 前缀 a.P
   | choice : Process α → Process α → Process α  -- 选择 P + Q
   | par    : Process α → Process α → Process α  -- 并行 P | Q
   | restrict : List α → Process α → Process α   -- 限制 P \ L (限制动作集合)
@@ -127,8 +127,8 @@ def Trace (α : Type) := List α
 简化的语义定义。
 -/
 inductive CanPerform {α : Type} [BEq α] : Process α → α → Process α → Prop where
-  | prefix_act {a : α} {P : Process α} : 
-      CanPerform (prefix a P) a P
+  | pref_act {a : α} {P : Process α} : 
+      CanPerform (pref a P) a P
   
   | choice_left {a : α} {P Q P' : Process α} : 
       CanPerform P a P' → 
@@ -163,6 +163,14 @@ inductive HasTrace {α : Type} [BEq α] : Process α → Trace α → Prop where
 -/
 
 /-- 
+自反传递闭包（多步转移）
+-/
+inductive RTClosure {α : Type} [BEq α] : Process α → Process α → Prop where
+  | refl (P : Process α) : RTClosure P P
+  | trans {P Q R : Process α} {a : α} : 
+      CanPerform P a Q → RTClosure Q R → RTClosure P R
+
+/-- 
 死锁自由
 
 进程不会出现死锁（总可以进行某些动作或已经终止）。
@@ -170,15 +178,8 @@ inductive HasTrace {α : Type} [BEq α] : Process α → Trace α → Prop where
 -/
 def DeadlockFree {α : Type} [BEq α] (P : Process α) : Prop :=
   ∀ (P' : Process α), 
-    ReflexiveTransitiveClosure P P' → 
+    RTClosure P P' → 
     ((∃ a P'', CanPerform P' a P'') ∨ P' = nil)
-
-where
-  /-- 
-  自反传递闭包（多步转移）
-  -/
-  ReflexiveTransitiveClosure (P Q : Process α) : Prop :=
-    P = Q ∨ ∃ R a, CanPerform P a R ∧ ReflexiveTransitiveClosure R Q
 
 /-- 
 确定性

@@ -1445,3 +1445,840 @@ Vellvm 使用模拟关系来证明优化正确性：
 **Vellvm 的意义**：
 
 Vellvm 展示了编译器形式化验证的可行性，为 CompCert 之后的编译器验证研究开辟了新方向，特别是在处理工业级编译器（LLVM）的形式化方面。
+
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 简单函数的IR表示
+
+**示例一：计算阶乘函数**
+
+C 语言源代码：
+
+```c
+int factorial(int n) {
+    if (n <= 1)
+        return 1;
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+```
+
+对应的 LLVM IR（优化前）：
+
+```llvm
+define i32 @factorial(i32 %n) {
+entry:
+  %cmp = icmp sle i32 %n, 1
+  br i1 %cmp, label %return, label %if.end
+
+if.end:
+  %result.alloca = alloca i32, align 4
+  %i.alloca = alloca i32, align 4
+  store i32 1, i32* %result.alloca, align 4
+  store i32 2, i32* %i.alloca, align 4
+  br label %for.cond
+
+for.cond:
+  %i = load i32, i32* %i.alloca, align 4
+  %cmp1 = icmp sle i32 %i, %n
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:
+  %result = load i32, i32* %result.alloca, align 4
+  %mul = mul i32 %result, %i
+  store i32 %mul, i32* %result.alloca, align 4
+  %inc = add i32 %i, 1
+  store i32 %inc, i32* %i.alloca, align 4
+  br label %for.cond
+
+for.end:
+  %result.final = load i32, i32* %result.alloca, align 4
+  br label %return
+
+return:
+  %retval = phi i32 [ 1, %entry ], [ %result.final, %for.end ]
+  ret i32 %retval
+}
+```
+
+**分析**：
+
+- `alloca` 指令在栈上分配局部变量空间
+- `load`/`store` 进行内存访问
+- `phi` 节点在 `return` 块合并两个返回路径的结果
+
+优化后的 SSA 形式（经过 mem2reg）：
+
+```llvm
+define i32 @factorial(i32 %n) {
+entry:
+  %cmp = icmp sle i32 %n, 1
+  br i1 %cmp, label %return, label %for.preheader
+
+for.preheader:
+  br label %for.body
+
+for.body:
+  %i = phi i32 [ 2, %for.preheader ], [ %i.next, %for.body ]
+  %result = phi i32 [ 1, %for.preheader ], [ %mul, %for.body ]
+  %mul = mul i32 %result, %i
+  %i.next = add i32 %i, 1
+  %cmp1 = icmp sle i32 %i.next, %n
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.end:
+  %result.lcssa = phi i32 [ %mul, %for.body ]
+  br label %return
+
+return:
+  %retval = phi i32 [ 1, %entry ], [ %result.lcssa, %for.end ]
+  ret i32 %retval
+}
+```
+
+**分析**：
+
+- `mem2reg` Pass 将 `alloca` 提升为 SSA 值
+- 循环变量 `i` 和 `result` 用 `phi` 节点表示迭代值
+- `%result.lcssa` 是循环退出后的最终值（LCSSA 形式）
+
+---
+
+### PHI节点的使用示例
+
+**示例二：最大值函数（if-else合并）**
+
+C 语言源代码：
+
+```c
+int max(int a, int b) {
+    int result;
+    if (a > b)
+        result = a;
+    else
+        result = b;
+    return result;
+}
+```
+
+对应的 LLVM IR：
+
+```llvm
+define i32 @max(i32 %a, i32 %b) {
+entry:
+  %cmp = icmp sgt i32 %a, %b
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:
+  br label %if.end
+
+if.else:
+  br label %if.end
+
+if.end:
+  %result = phi i32 [ %a, %if.then ], [ %b, %if.else ]
+  ret i32 %result
+}
+```
+
+**PHI 节点分析**：
+
+- 基本块 `if.end` 有两个前驱：`if.then` 和 `if.else`
+- `phi` 节点选择逻辑：
+  - 如果从 `if.then` 到达（条件为真），选择 `%a`
+  - 如果从 `if.else` 到达（条件为假），选择 `%b`
+
+**示例三：Switch 语句的 PHI 使用**
+
+C 语言源代码：
+
+```c
+int classify(int x) {
+    int category;
+    switch (x) {
+        case 0: category = 1; break;
+        case 1: category = 2; break;
+        case 2: category = 3; break;
+        default: category = 0;
+    }
+    return category;
+}
+```
+
+对应的 LLVM IR：
+
+```llvm
+define i32 @classify(i32 %x) {
+entry:
+  switch i32 %x, label %default [
+    i32 0, label %case.0
+    i32 1, label %case.1
+    i32 2, label %case.2
+  ]
+
+case.0:
+  br label %merge
+
+case.1:
+  br label %merge
+
+case.2:
+  br label %merge
+
+default:
+  br label %merge
+
+merge:
+  %category = phi i32 [ 1, %case.0 ], [ 2, %case.1 ], [ 3, %case.2 ], [ 0, %default ]
+  ret i32 %category
+}
+```
+
+**PHI 节点分析**：
+
+- `merge` 块有四个前驱，对应 `switch` 的四个分支
+- `phi` 节点有四个参数，每个参数对应一个前驱块的返回类别值
+
+---
+
+### 内存操作的SSA形式
+
+**示例四：数组求和（内存操作）**
+
+C 语言源代码：
+
+```c
+int sum_array(int* arr, int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+```
+
+对应的 LLVM IR（优化前）：
+
+```llvm
+define i32 @sum_array(i32* %arr, i32 %n) {
+entry:
+  %sum.ptr = alloca i32, align 4
+  %i.ptr = alloca i32, align 4
+  store i32 0, i32* %sum.ptr, align 4
+  store i32 0, i32* %i.ptr, align 4
+  br label %for.cond
+
+for.cond:
+  %i = load i32, i32* %i.ptr, align 4
+  %cmp = icmp slt i32 %i, %n
+  br i1 %cmp, label %for.body, label %for.end
+
+for.body:
+  %sum = load i32, i32* %sum.ptr, align 4
+  %idxprom = sext i32 %i to i64
+  %arrayidx = getelementptr inbounds i32, i32* %arr, i64 %idxprom
+  %val = load i32, i32* %arrayidx, align 4
+  %add = add i32 %sum, %val
+  store i32 %add, i32* %sum.ptr, align 4
+  %inc = add i32 %i, 1
+  store i32 %inc, i32* %i.ptr, align 4
+  br label %for.cond
+
+for.end:
+  %sum.final = load i32, i32* %sum.ptr, align 4
+  ret i32 %sum.final
+}
+```
+
+**内存操作分析**：
+
+1. **`alloca` 分配**：为 `sum` 和 `i` 分配栈空间
+2. **`getelementptr` 地址计算**：
+   - `%idxprom`：将 `i32` 符号扩展为 `i64`
+   - `%arrayidx = getelementptr i32, i32* %arr, i64 %idxprom`
+   - 计算 `arr[i]` 的地址：`arr + i * sizeof(i32)`
+3. **内存访问模式**：
+   - `load` 从数组读取元素
+   - `add` 执行累加
+   - `store` 将结果写回 `sum`
+
+优化后的 SSA 形式：
+
+```llvm
+define i32 @sum_array(i32* %arr, i32 %n) {
+entry:
+  %cmp = icmp sgt i32 %n, 0
+  br i1 %cmp, label %for.body.preheader, label %for.end
+
+for.body.preheader:
+  br label %for.body
+
+for.body:
+  %i = phi i32 [ 0, %for.body.preheader ], [ %i.next, %for.body ]
+  %sum = phi i32 [ 0, %for.body.preheader ], [ %add, %for.body ]
+  %idxprom = zext i32 %i to i64
+  %arrayidx = getelementptr inbounds i32, i32* %arr, i64 %idxprom
+  %val = load i32, i32* %arrayidx, align 4
+  %add = add i32 %sum, %val
+  %i.next = add nuw nsw i32 %i, 1
+  %cmp.loop = icmp slt i32 %i.next, %n
+  br i1 %cmp.loop, label %for.body, label %for.end
+
+for.end:
+  %sum.lcssa = phi i32 [ 0, %entry ], [ %add, %for.body ]
+  ret i32 %sum.lcssa
+}
+```
+
+**优化分析**：
+
+- `mem2reg` 将 `sum` 和 `i` 提升为 SSA 值
+- `%i.next = add nuw nsw i32 %i, 1`：
+  - `nuw`（No Unsigned Wrap）：无符号不溢出
+  - `nsw`（No Signed Wrap）：有符号不溢出
+  - 这两个标记帮助后续优化
+
+---
+
+### 常见优化（常量传播、死代码消除）
+
+**示例五：常量传播优化**
+
+优化前的 LLVM IR：
+
+```llvm
+define i32 @constant_folding_example() {
+entry:
+  %a = add i32 10, 20          ; a = 30
+  %b = mul i32 %a, 2           ; b = 60
+  %c = add i32 %b, 5           ; c = 65
+  %d = sub i32 100, %c         ; d = 35
+  ret i32 %d
+}
+```
+
+**常量传播分析**：
+
+| 指令 | 优化前 | 常量折叠后 |
+|------|--------|------------|
+| `%a` | `add i32 10, 20` | `i32 30` |
+| `%b` | `mul i32 %a, 2` | `mul i32 30, 2` → `i32 60` |
+| `%c` | `add i32 %b, 5` | `add i32 60, 5` → `i32 65` |
+| `%d` | `sub i32 100, %c` | `sub i32 100, 65` → `i32 35` |
+
+优化后的 LLVM IR：
+
+```llvm
+define i32 @constant_folding_example() {
+entry:
+  ret i32 35
+}
+```
+
+**进一步折叠**：整个函数可以被优化为直接返回常量 35。
+
+**示例六：死代码消除优化**
+
+优化前的 LLVM IR：
+
+```llvm
+define i32 @dead_code_example(i32 %x, i32 %y) {
+entry:
+  %a = add i32 %x, %y          ; 被使用
+  %b = mul i32 %x, 2           ; 死代码：结果不被使用
+  %c = sub i32 %a, %y          ; 被使用（等于 %x）
+  %d = add i32 %c, 5           ; 被使用
+  ; %e 的计算（无副作用但结果不用）
+  %e = udiv i32 %x, 3          ; 死代码
+  ret i32 %d
+}
+```
+
+**死代码分析**：
+
+| 指令 | 使用者 | 死代码？ | 原因 |
+|------|--------|----------|------|
+| `%a` | `%c` | 否 | 被使用 |
+| `%b` | 无 | 是 | 无使用者，无副作用 |
+| `%c` | `%d` | 否 | 被使用 |
+| `%d` | `ret` | 否 | 返回值 |
+| `%e` | 无 | 是 | 无使用者，但注意：`udiv` 可能触发除零异常 |
+
+**注意事项**：`udiv`（无符号除法）可能触发异常（除零），因此在没有证明除数非零之前不能简单删除。
+
+优化后的 LLVM IR（假设 %x 已知不为零）：
+
+```llvm
+define i32 @dead_code_example(i32 %x, i32 %y) {
+entry:
+  %a = add i32 %x, %y
+  %c = sub i32 %a, %y          ; 可以进一步简化为 %x
+  %d = add i32 %c, 5           ; 可以进一步简化为 add i32 %x, 5
+  ret i32 %d
+}
+```
+
+**进一步代数简化**：
+
+由于 `%c = sub i32 (add i32 %x, %y), %y` = `%x`，可以继续简化：
+
+```llvm
+define i32 @dead_code_example(i32 %x, i32 %y) {
+entry:
+  %d = add i32 %x, 5
+  ret i32 %d
+}
+```
+
+**示例七：公共子表达式消除（CSE）**
+
+优化前的 LLVM IR：
+
+```llvm
+define i32 @cse_example(i32 %x, i32 %y) {
+entry:
+  %a = add i32 %x, %y
+  %b = mul i32 %a, 2
+  %c = add i32 %x, %y       ; 与 %a 相同的计算！
+  %d = mul i32 %c, 3
+  %result = add i32 %b, %d
+  ret i32 %result
+}
+```
+
+**CSE 分析**：
+
+- `%c` 的计算 `%x + %y` 与 `%a` 相同
+- 由于 `%a` 在 `%c` 的定义点活跃，可以复用 `%a`
+
+优化后的 LLVM IR：
+
+```llvm
+define i32 @cse_example(i32 %x, i32 %y) {
+entry:
+  %a = add i32 %x, %y
+  %b = mul i32 %a, 2
+  ; %c 被替换为 %a
+  %d = mul i32 %a, 3
+  %result = add i32 %b, %d
+  ret i32 %result
+}
+```
+
+**示例八：循环不变量外提（Loop Invariant Code Motion）**
+
+优化前的 LLVM IR：
+
+```llvm
+define i32 @licm_example(i32* %arr, i32 %n, i32 %x) {
+entry:
+  %cmp = icmp sgt i32 %n, 0
+  br i1 %cmp, label %loop, label %exit
+
+loop:
+  %i = phi i32 [ 0, %entry ], [ %i.next, %loop ]
+  %invariant = mul i32 %x, 10       ; 循环不变量！
+  %arrayidx = getelementptr i32, i32* %arr, i32 %i
+  %val = load i32, i32* %arrayidx
+  %add = add i32 %val, %invariant
+  store i32 %add, i32* %arrayidx
+  %i.next = add i32 %i, 1
+  %cond = icmp slt i32 %i.next, %n
+  br i1 %cond, label %loop, label %exit
+
+exit:
+  ret i32 0
+}
+```
+
+**循环不变量分析**：
+
+- `%invariant = mul i32 %x, 10`：只依赖于 `%x`，而 `%x` 在循环中不变
+- 可以将其移到循环外
+
+优化后的 LLVM IR：
+
+```llvm
+define i32 @licm_example(i32* %arr, i32 %n, i32 %x) {
+entry:
+  %cmp = icmp sgt i32 %n, 0
+  %invariant = mul i32 %x, 10       ; 移到循环外
+  br i1 %cmp, label %loop, label %exit
+
+loop:
+  %i = phi i32 [ 0, %entry ], [ %i.next, %loop ]
+  %arrayidx = getelementptr i32, i32* %arr, i32 %i
+  %val = load i32, i32* %arrayidx
+  %add = add i32 %val, %invariant   ; 使用外提后的值
+  store i32 %add, i32* %arrayidx
+  %i.next = add i32 %i, 1
+  %cond = icmp slt i32 %i.next, %n
+  br i1 %cond, label %loop, label %exit
+
+exit:
+  ret i32 0
+}
+```
+
+**性能影响**：
+
+- 原始代码：每次迭代执行一次乘法
+- 优化后：乘法只执行一次
+- 如果循环执行 N 次，节省了 N-1 次乘法运算
+
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 图1：LLVM编译流程思维导图
+
+以下思维导图展示了从源代码到机器码的完整 LLVM 编译流程，包括前端、优化器和后端的各个阶段：
+
+```mermaid
+mindmap
+  root((LLVM编译流程))
+    前端
+      C/C++
+        Clang
+        词法分析
+        语法分析
+        语义分析
+      Rust
+        rustc
+        MIR转换
+      Swift
+        swiftc
+      其他语言
+        Fortran
+        Julia
+        Haskell
+    中间表示
+      AST
+        抽象语法树
+        高级语义
+      LLVM IR
+        文本格式.ll
+        二进制.bc
+        SSA形式
+      内存表示
+        Module
+        Function
+        BasicBlock
+        Instruction
+    优化器
+      分析Pass
+        支配树
+        循环分析
+        别名分析
+        内存依赖
+      变换Pass
+        常量传播
+        死代码消除
+        函数内联
+        循环优化
+        向量化
+      Pass管理器
+        旧版PassManager
+        新版PassManager
+    代码生成
+      指令选择
+        SelectionDAG
+        模式匹配
+      寄存器分配
+        图着色
+        线性扫描
+      指令调度
+        列表调度
+        软件流水线
+    后端输出
+      汇编代码
+        目标相关
+        人可读
+      机器码
+        ELF格式
+        Mach-O格式
+        COFF格式
+```
+
+### 图2：控制流图示例
+
+以下控制流图展示了一个包含条件分支和循环的函数的控制流结构：
+
+```mermaid
+graph TB
+    subgraph "max函数控制流图"
+    Entry[entry<br/>%cmp = icmp sgt i32 %a, %b]
+    Entry -->|cond = true| Then[then<br/>ret i32 %a]
+    Entry -->|cond = false| Else[else<br/>ret i32 %b]
+    end
+    
+    style Entry fill:#e1f5ff,stroke:#01579b
+    style Then fill:#c8e6c9,stroke:#2e7d32
+    style Else fill:#c8e6c9,stroke:#2e7d32
+```
+
+**复杂控制流示例（循环结构）**：
+
+```mermaid
+graph TB
+    subgraph "factorial函数控制流图"
+    E[entry<br/>%cmp = icmp sle i32 %n, 1] -->|n <= 1| R[return<br/>ret i32 1]
+    E -->|n > 1| LP[loop.preheader]
+    LP --> L[loop<br/>%i = phi [2, LP], [%i.next, L]<br/>%result = phi [1, LP], [%mul, L]]
+    L -->|%mul = mul %result, %i| C[loop.check<br/>%cmp1 = icmp sle %i.next, %n]
+    C -->|i <= n| L
+    C -->|i > n| FE[for.end<br/>%result.final = phi [%mul, L]]
+    FE --> R2[return<br/>ret i32 %result.final]
+    end
+    
+    style E fill:#e3f2fd,stroke:#1565c0
+    style R fill:#c8e6c9,stroke:#2e7d32
+    style L fill:#fff3e0,stroke:#ef6c00
+    style C fill:#fce4ec,stroke:#c2185b
+    style FE fill:#f3e5f5,stroke:#7b1fa2
+    style R2 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 图3：SSA构造流程图
+
+以下流程图展示了将普通代码转换为 SSA 形式的完整过程：
+
+```mermaid
+flowchart TD
+    A[开始: 普通代码] --> B[计算支配树]
+    B --> C[计算支配边界]
+    C --> D{对每个变量v}
+    D --> E[收集v的定义点]
+    E --> F[计算DF+ = 迭代支配边界]
+    F --> G[在DF+节点插入PHI节点]
+    G --> D
+    D -->|所有变量处理完成| H[变量重命名]
+    H --> I[为每个定义分配版本号]
+    I --> J[替换使用点为正确的版本]
+    K[结束: SSA形式代码]
+    
+    style A fill:#e3f2fd,stroke:#1565c0
+    style K fill:#c8e6c9,stroke:#2e7d32
+    style B fill:#fff3e0,stroke:#ef6c00
+    style C fill:#fff3e0,stroke:#ef6c00
+    style H fill:#fff3e0,stroke:#ef6c00
+```
+
+**SSA构造详细步骤说明**：
+
+```mermaid
+graph LR
+    subgraph "步骤1: 原始代码"
+    S1[x = 5<br/>if cond:<br/>    x = x + 1<br/>y = x * 2]
+    end
+    
+    subgraph "步骤2: 插入PHI"
+    S2[x0 = 5<br/>if cond:<br/>    x1 = x0 + 1<br/>x2 = phi(x1, x0)<br/>y = x2 * 2]
+    end
+    
+    subgraph "步骤3: 最终SSA"
+    S3[x0 = 5<br/>if cond:<br/>    x1 = x0 + 1<br/>x2 = phi[x1, if.then], [x0, entry]<br/>y0 = x2 * 2]
+    end
+    
+    S1 -->|插入PHI节点| S2
+    S2 -->|重命名变量| S3
+```
+
+### 图4：LLVM IR类型系统层次图
+
+以下层次图展示了 LLVM IR 的类型系统结构：
+
+```mermaid
+graph TD
+    Type[LLVM IR类型] --> Void[void]
+    Type --> FirstClass[第一类类型]
+    Type --> Derived[派生类型]
+    
+    FirstClass --> Primitive[原始类型]
+    FirstClass --> Aggregate[聚合类型]
+    
+    Primitive --> Integer[整数类型<br/>i1, i8, i16, i32, i64, i128]
+    Primitive --> FloatPoint[浮点类型<br/>float, double, fp128]
+    Primitive --> Pointer[指针类型<br/>i32*, i8*]
+    Primitive --> Label[label<br/>基本块标签]
+    
+    Aggregate --> Array[数组类型<br/>[10 x i32]]
+    Aggregate --> Struct[结构体类型<br/>{i32, float, i8*}]
+    Aggregate --> Vector[向量类型<br/><4 x float>]
+    
+    Derived --> Function[函数类型<br/>i32 (i32, i32)*]
+    
+    style Type fill:#e3f2fd,stroke:#1565c0
+    style FirstClass fill:#fff3e0,stroke:#ef6c00
+    style Derived fill:#f3e5f5,stroke:#7b1fa2
+    style Primitive fill:#e8f5e9,stroke:#2e7d32
+    style Aggregate fill:#e8f5e9,stroke:#2e7d32
+```
+
+### 图5：优化Pass执行流程
+
+以下流程图展示了 LLVM 优化器中的典型 Pass 执行流程：
+
+```mermaid
+flowchart TD
+    A[LLVM IR输入] --> B[Module Passes]
+    B --> C[Function Passes]
+    C --> D[Function内联]
+    D --> E[常量传播]
+    E --> F[死代码消除]
+    F --> G[循环优化]
+    G --> H[向量化]
+    H --> I[CGSCC Passes]
+    I --> J[代码生成准备]
+    
+    subgraph "分析Pass"
+    K[支配树分析]
+    L[循环分析]
+    M[别名分析]
+    end
+    
+    C -.->|依赖| K
+    G -.->|依赖| L
+    G -.->|依赖| M
+    
+    style A fill:#e3f2fd,stroke:#1565c0
+    style J fill:#c8e6c9,stroke:#2e7d32
+    style D fill:#fff3e0,stroke:#ef6c00
+    style E fill:#fff3e0,stroke:#ef6c00
+    style F fill:#fff3e0,stroke:#ef6c00
+    style G fill:#fff3e0,stroke:#ef6c00
+    style H fill:#fff3e0,stroke:#ef6c00
+```
+
+---
+
+## 8. 引用参考 (References)
+
+[^1]: LLVM Project, "LLVM Language Reference Manual," 2025. https://llvm.org/docs/LangRef.html
+
+[^2]: C. Lattner and V. Adve, "LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation," in Proceedings of the International Symposium on Code Generation and Optimization (CGO), 2004, pp. 75-86. https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf
+
+[^3]: R. Cytron, J. Ferrante, B. K. Rosen, M. N. Wegman, and F. K. Zadeck, "Efficiently Computing Static Single Assignment Form and the Control Dependence Graph," ACM Transactions on Programming Languages and Systems (TOPLAS), vol. 13, no. 4, pp. 451-490, 1991. https://doi.org/10.1145/115372.115320
+
+[^4]: J. Zhao, S. Nagarakatte, M. M. K. Martin, and S. Zdancewic, "Formalizing the LLVM Intermediate Representation for Verified Program Transformations," in Proceedings of the 39th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL), 2012, pp. 427-440. https://doi.org/10.1145/2103656.2103709
+
+[^5]: Y. K. Tan, M. O. Myreen, R. Kumar, A. C. J. Fox, S. Owens, and M. Norrish, "The Verified CakeML Compiler Backend," Journal of Functional Programming, vol. 29, e2, 2019. https://doi.org/10.1017/S0956796818000229
+
+[^6]: A. W. Appel, "Modern Compiler Implementation in ML," Cambridge University Press, 1998. （包含SSA形式的详细讨论）
+
+[^7]: S. S. Muchnick, "Advanced Compiler Design and Implementation," Morgan Kaufmann Publishers, 1997. （涵盖数据流分析和优化技术）
+
+[^8]: K. Cooper and L. Torczon, "Engineering a Compiler," 2nd Edition, Morgan Kaufmann, 2011. （编译器工程实践经典教材）
+
+[^9]: F. M. Q. Pereira and J. Palsberg, "Register Allocation via Graph Coloring," in Companion to the 23rd ACM SIGPLAN Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA), 2008, pp. 759-760. https://doi.org/10.1145/1449764.1449803
+
+[^10]: A. Aho, M. Lam, R. Sethi, and J. Ullman, "Compilers: Principles, Techniques, and Tools (Dragon Book)," 2nd Edition, Addison-Wesley, 2006. （编译器设计的经典教材）
+
+---
+
+## 附录A：LLVM IR指令速查表
+
+| 指令类别 | 指令 | 功能描述 | 示例 |
+|----------|------|----------|------|
+| **终止指令** | `ret` | 函数返回 | `ret i32 42` |
+| | `br` | 分支跳转 | `br i1 %cond, label %A, label %B` |
+| | `switch` | 多路分支 | `switch i32 %x, label %D [i32 0, label %A]` |
+| | `unreachable` | 不可达标记 | `unreachable` |
+| **二元运算** | `add` | 加法 | `%z = add i32 %x, %y` |
+| | `sub` | 减法 | `%z = sub i32 %x, %y` |
+| | `mul` | 乘法 | `%z = mul i32 %x, %y` |
+| | `sdiv`/`udiv` | 有符号/无符号除法 | `%z = sdiv i32 %x, %y` |
+| | `srem`/`urem` | 有符号/无符号取模 | `%z = srem i32 %x, %y` |
+| **位运算** | `shl` | 左移 | `%z = shl i32 %x, 2` |
+| | `lshr`/`ashr` | 逻辑/算术右移 | `%z = ashr i32 %x, 2` |
+| | `and`/`or`/`xor` | 按位与/或/异或 | `%z = and i32 %x, %y` |
+| **比较** | `icmp` | 整数比较 | `%c = icmp sgt i32 %x, %y` |
+| | `fcmp` | 浮点比较 | `%c = fcmp ogt float %x, %y` |
+| **内存访问** | `alloca` | 栈分配 | `%p = alloca i32, align 4` |
+| | `load` | 内存读取 | `%v = load i32, i32* %p` |
+| | `store` | 内存写入 | `store i32 %v, i32* %p` |
+| | `getelementptr` | 地址计算 | `%p2 = getelementptr i32, i32* %p, i64 %i` |
+| **转换** | `trunc` | 截断 | `%y = trunc i32 %x to i8` |
+| | `zext`/`sext` | 零/符号扩展 | `%y = zext i8 %x to i32` |
+| | `bitcast` | 位模式转换 | `%y = bitcast i32 %x to float` |
+| **其他** | `phi` | PHI节点 | `%x = phi i32 [%a, %B1], [%b, %B2]` |
+| | `select` | 条件选择 | `%y = select i1 %c, i32 %a, i32 %b` |
+| | `call` | 函数调用 | `%r = call i32 @foo(i32 %x)` |
+
+---
+
+## 附录B：SSA构造算法伪代码
+
+```
+算法: SSA构造（Cytron算法）
+输入: 控制流图CFG，变量集合Vars
+输出: SSA形式的CFG
+
+// 阶段1：支配树计算
+1. 计算每个节点的直接支配者idom
+2. 构建支配树
+
+// 阶段2：支配边界计算
+3. 对于CFG中的每个节点n:
+   如果n有多个前驱:
+     对于n的每个前驱p:
+       runner = p
+       当runner != idom(n):
+         将n加入DF(runner)
+         runner = idom(runner)
+
+// 阶段3：PHI节点插入
+4. 对于每个变量v:
+   定义集合Defs(v) = v的所有定义点
+   工作集Work = Defs(v)
+   已处理Processed = {}
+   当Work非空:
+     从Work中取出节点n
+     对于DF(n)中的每个节点y:
+       如果y不在Processed中:
+         在y处插入PHI节点: v = phi(v, v, ..., v)
+         将y加入Processed
+         如果y不在Defs(v)中:
+           将y加入Work
+
+// 阶段4：变量重命名
+5. 定义栈Stack[v]用于跟踪v的当前版本
+6. 定义Rename(b)函数:
+   对于b中的每个PHI节点:
+     为结果分配新版本，压入Stack[v]
+   对于b中的每条普通指令:
+     对于每个使用v的操作数:
+       用Stack[v].top()替换
+     对于定义v的结果:
+       分配新版本，压入Stack[v]
+   对于b的每个后继s:
+     对于s中的每个PHI节点:
+       如果该PHI对应v:
+         用Stack[v].top()填充对应参数槽
+   对于支配树中b的每个子节点c:
+     调用Rename(c)
+   对于b中定义v的每个指令:
+     从Stack[v]弹出
+
+7. 调用Rename(入口基本块)
+```
+
+---
+
+> **文档信息**
+> 
+> - **文档编号**: 99-llvm-ir-semantics.md
+> - **版本**: v1.0
+> - **创建日期**: 2026-04-10
+> - **所属目录**: formal-methods/
+> - **形式化元素**: 7定义, 3引理, 1命题, 2定理
+> - **字数统计**: 约 12,000 字
+> - **文档大小**: 约 45KB
+
