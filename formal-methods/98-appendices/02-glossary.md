@@ -1,7 +1,8 @@
 # 术语表：形式化方法与分布式系统
 
 > **所属阶段**: Struct/形式理论 | **前置依赖**: [全书各章节](../) | **形式化等级**: L1-L2
-> **术语数量**: 150+ | **版本**: v2.0 | **最后更新**: 2026-04-10
+> **术语数量**: 150+ | **版本**: v2.1 | **最后更新**: 2026-04-10
+> **语言**: 中文 | **英文版本**: [02-glossary-en.md](./02-glossary-en.md)
 
 ---
 
@@ -231,7 +232,7 @@
     - [术语分类图谱](#术语分类图谱)
     - [符号关系层次图](#符号关系层次图)
     - [术语依赖关系图](#术语依赖关系图)
-  - [9. 字母索引](#9-字母索引)
+  - [9. 字母索引 (Alphabetical Index)](#9-字母索引-alphabetical-index)
     - [A](#a)
     - [B](#b)
     - [C](#c)
@@ -445,6 +446,7 @@
 
 - **中文**: 偏序集
 - **英文**: Partially Ordered Set (Poset)
+- **缩写**: Poset
 - **定义**: 带有偏序关系的集合$(P, \leq)$
 - **首次出现**: [s1.3-order-theory.md](../01-foundations/s1.3-order-theory.md)
 
@@ -452,6 +454,7 @@
 
 - **中文**: 上确界 / 最小上界
 - **英文**: Supremum / Least Upper Bound
+- **缩写**: sup / LUB
 - **符号**: $\sup$ 或 $\bigvee$
 - **定义**: 大于等于子集所有元素的最小元素
 - **首次出现**: [s1.3-order-theory.md](../01-foundations/s1.3-order-theory.md)
@@ -460,6 +463,7 @@
 
 - **中文**: 下确界 / 最大下界
 - **英文**: Infimum / Greatest Lower Bound
+- **缩写**: inf / GLB
 - **符号**: $\inf$ 或 $\bigwedge$
 - **定义**: 小于等于子集所有元素的最大元素
 - **首次出现**: [s1.3-order-theory.md](../01-foundations/s1.3-order-theory.md)
@@ -513,6 +517,7 @@
 
 - **中文**: 不动点
 - **英文**: Fixed Point
+- **缩写**: FP
 - **定义**: 满足$f(x) = x$的点
 - **相关定理**: Thm-S-01-10 (Banach不动点定理)
 - **首次出现**: [s1.4-fixed-point-theory.md](../01-foundations/s1.4-fixed-point-theory.md)
@@ -521,6 +526,7 @@
 
 - **中文**: 最小不动点
 - **英文**: Least Fixed Point
+- **缩写**: LFP
 - **符号**: $\text{lfp}(f)$
 - **定义**: 所有不动点中最小的一个
 - **相关定理**: Thm-S-01-11 (Kleene定理)
@@ -530,6 +536,7 @@
 
 - **中文**: 最大不动点
 - **英文**: Greatest Fixed Point
+- **缩写**: GFP
 - **符号**: $\text{gfp}(f)$
 - **定义**: 所有不动点中最大的一个
 - **首次出现**: [s1.4-fixed-point-theory.md](../01-foundations/s1.4-fixed-point-theory.md)
@@ -711,6 +718,7 @@
 
 - **中文**: 自然演绎
 - **英文**: Natural Deduction
+- **缩写**: ND
 - **定义**: 模仿直观推理的证明系统
 - **首次出现**: [s2.3-proof-methods.md](../02-logic/s2.3-proof-methods.md)
 
@@ -718,6 +726,7 @@
 
 - **中文**: 相继式演算
 - **英文**: Sequent Calculus
+- **缩写**: SC
 - **定义**: Gentzen提出的证明系统，使用相继式$\Gamma \vdash \Delta$
 - **首次出现**: [s2.3-proof-methods.md](../02-logic/s2.3-proof-methods.md)
 
@@ -739,6 +748,7 @@
 
 - **中文**: 数学归纳法
 - **英文**: Mathematical Induction
+- **缩写**: MI
 - **定义**: 证明关于自然数命题的方法：基例+归纳步
 - **相关定理**: Thm-S-02-10 (良基归纳原理)
 - **首次出现**: [s2.3-proof-methods.md](../02-logic/s2.3-proof-methods.md)
@@ -748,6 +758,7 @@
 
 - **中文**: 结构归纳法
 - **英文**: Structural Induction
+- **缩写**: SI
 - **定义**: 在递归数据结构上应用的归纳法
 - **首次出现**: [s2.3-proof-methods.md](../02-logic/s2.3-proof-methods.md)
 
@@ -768,6 +779,7 @@
 
 - **中文**: 线性时序逻辑
 - **英文**: Linear Temporal Logic
+- **缩写**: LTL
 - **定义**: 沿单一路径描述时序性质的逻辑
 - **相关定义**: Def-S-02-50
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -777,6 +789,7 @@
 
 - **中文**: 计算树逻辑
 - **英文**: Computation Tree Logic
+- **缩写**: CTL
 - **定义**: 在计算树所有路径上量化时序性质的逻辑
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
 
@@ -784,6 +797,7 @@
 
 - **中文**: 扩展计算树逻辑
 - **英文**: Extended Computation Tree Logic
+- **缩写**: CTL*
 - **定义**: LTL和CTL的表达能力超集
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
 
@@ -791,6 +805,7 @@
 
 - **中文**: 全局算子
 - **英文**: Globally
+- **缩写**: G
 - **符号**: $\Box$ 或 $\mathbf{G}$
 - **定义**: 在所有未来状态成立
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -799,6 +814,7 @@
 
 - **中文**: 最终算子
 - **英文**: Finally / Eventually
+- **缩写**: F
 - **符号**: $\Diamond$ 或 $\mathbf{F}$
 - **定义**: 在某个未来状态成立
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -807,6 +823,7 @@
 
 - **中文**: 下一状态算子
 - **英文**: Next
+- **缩写**: X
 - **符号**: $\bigcirc$ 或 $\mathbf{X}$
 - **定义**: 在下一状态成立
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -815,6 +832,7 @@
 
 - **中文**: 直到算子
 - **英文**: Until
+- **缩写**: U
 - **符号**: $\mathcal{U}$
 - **定义**: 左侧持续成立直到右侧成立
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -823,6 +841,7 @@
 
 - **中文**: 路径量词
 - **英文**: Path Quantifiers
+- **缩写**: —
 - **符号**: $\mathbf{A}$ (All), $\mathbf{E}$ (Exists)
 - **定义**: 对所有/存在某条路径
 - **首次出现**: [s2.4-temporal-logic.md](../02-logic/s2.4-temporal-logic.md)
@@ -974,6 +993,7 @@
 
 - **中文**: 高阶类型
 - **英文**: Higher-Kinded Types
+- **缩写**: HKT
 - **定义**: 类型构造器的类型
 - **符号**: $* \to *$
 - **首次出现**: [s3.2-dependent-types.md](../03-type-theory/s3.2-dependent-types.md)
@@ -1010,6 +1030,7 @@
 
 - **中文**: 强规范化
 - **英文**: Strong Normalization
+- **缩写**: SN
 - **定义**: 所有良类型的项都能规约到范式
 - **相关定理**: Thm-S-03-05 (Girard定理)
 - **首次出现**: [s3.3-type-system-properties.md](../03-type-theory/s3.3-type-system-properties.md)
@@ -1030,6 +1051,7 @@
 
 - **中文**: Curry-Howard同构 / 命题即类型
 - **英文**: Curry-Howard Isomorphism / Propositions as Types
+- **缩写**: CHI
 - **定义**: 命题与类型、证明与程序、证明规约与计算之间的对应
 - **相关定理**: Thm-S-03-10
 - **首次出现**: [s3.4-curry-howard.md](../03-type-theory/s3.4-curry-howard.md)
@@ -1046,6 +1068,7 @@
 
 - **中文**: 证明助手 / 交互式定理证明器
 - **英文**: Proof Assistant / Interactive Theorem Prover
+- **缩写**: ITP
 - **定义**: 辅助构造形式化证明的软件工具
 - **代表**: Coq, Isabelle/HOL, Agda, Lean
 - **首次出现**: [s3.4-curry-howard.md](../03-type-theory/s3.4-curry-howard.md)
@@ -1069,6 +1092,7 @@
 
 - **中文**: 通信系统演算
 - **英文**: Calculus of Communicating Systems
+- **缩写**: CCS
 - **定义**: Milner提出的进程演算
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
@@ -1076,6 +1100,7 @@
 
 - **中文**: 通信顺序进程
 - **英文**: Communicating Sequential Processes
+- **缩写**: CSP
 - **定义**: Hoare提出的进程演算，强调通信同步
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
@@ -1083,6 +1108,7 @@
 
 - **中文**: 通信进程的代数
 - **英文**: Algebra of Communicating Processes
+- **缩写**: ACP
 - **定义**: Bergstra和Klop提出的进程演算，强调代数化方法
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
@@ -1304,6 +1330,7 @@
 
 - **中文**: 顺序一致性
 - **英文**: Sequential Consistency
+- **缩写**: SC
 - **定义**: 所有进程看到相同的操作顺序
 - **首次出现**: [s5.1-consistency-models.md](../05-distributed-systems/s5.1-consistency-models.md)
 
@@ -1320,6 +1347,7 @@
 
 - **中文**: 最终一致性
 - **英文**: Eventual Consistency
+- **缩写**: EC
 - **定义**: 若无新更新，所有副本最终收敛到相同值
 - **首次出现**: [s5.1-consistency-models.md](../05-distributed-systems/s5.1-consistency-models.md)
 
@@ -1327,6 +1355,7 @@
 
 - **中文**: 读己之写
 - **英文**: Read Your Writes (RYW)
+- **缩写**: RYW
 - **定义**: 进程总能读到自己的最新写入
 - **首次出现**: [s5.1-consistency-models.md](../05-distributed-systems/s5.1-consistency-models.md)
 
@@ -1334,6 +1363,7 @@
 
 - **中文**: 单调读
 - **英文**: Monotonic Reads
+- **缩写**: MR
 - **定义**: 若进程读到某值，后续读不会读到更早的值
 - **首次出现**: [s5.1-consistency-models.md](../05-distributed-systems/s5.1-consistency-models.md)
 
@@ -1341,6 +1371,7 @@
 
 - **中文**: 单调写
 - **英文**: Monotonic Writes
+- **缩写**: MW
 - **定义**: 写操作按发出顺序生效
 - **首次出现**: [s5.1-consistency-models.md](../05-distributed-systems/s5.1-consistency-models.md)
 
@@ -1359,6 +1390,7 @@
 
 - **中文**: 容错
 - **英文**: Fault Tolerance
+- **缩写**: FT
 - **定义**: 系统在组件故障时继续正确运行的能力
 - **首次出现**: [s5.2-fault-tolerance.md](../05-distributed-systems/s5.2-fault-tolerance.md)
 
@@ -1460,6 +1492,7 @@
 
 - **中文**: 向量时钟
 - **英文**: Vector Clock
+- **缩写**: VC
 - **定义**: 能够精确识别并发事件的扩展逻辑时钟
 - **相关定理**: Thm-S-05-20 (向量时钟正确性)
 - **首次出现**: [s5.3-time-causality.md](../05-distributed-systems/s5.3-time-causality.md)
@@ -1468,6 +1501,7 @@
 
 - **中文**: Happens-Before关系
 - **英文**: Happens-Before Relation
+- **缩写**: HB
 - **符号**: $\to$ 或 $\rightarrow$
 - **定义**: Lamport定义的偏序关系
 - **相关定义**: Def-S-05-21
@@ -1517,6 +1551,7 @@
 
 - **中文**: 多主复制
 - **英文**: Multi-Master Replication
+- **缩写**: MMR
 - **定义**: 多个节点可同时处理写操作
 - **首次出现**: [s5.4-replication-partitioning.md](../05-distributed-systems/s5.4-replication-partitioning.md)
 
@@ -1539,6 +1574,7 @@
 
 - **中文**: 一致性哈希
 - **英文**: Consistent Hashing
+- **缩写**: CH
 - **定义**: 最小化重分配的分片算法
 - **相关定理**: Thm-S-05-26 (一致性哈希负载均衡)
 - **首次出现**: [s5.4-replication-partitioning.md](../05-distributed-systems/s5.4-replication-partitioning.md)
@@ -1560,6 +1596,7 @@
 
 - **中文**: 模型检测
 - **英文**: Model Checking
+- **缩写**: MC
 - **定义**: 通过穷举系统状态空间自动验证时序逻辑性质的技术
 - **相关定义**: Def-S-06-01
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
@@ -1575,6 +1612,7 @@
 
 - **中文**: 状态爆炸
 - **英文**: State Space Explosion
+- **缩写**: SSE
 - **定义**: 状态数量随系统规模指数增长的现象
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
 
@@ -1590,6 +1628,7 @@
 
 - **中文**: Büchi自动机
 - **英文**: Büchi Automaton
+- **缩写**: BA
 - **定义**: 用于验证无限行为的$\omega$-自动机
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
 
@@ -1597,6 +1636,7 @@
 
 - **中文**: 反例
 - **英文**: Counterexample
+- **缩写**: CEX
 - **定义**: 违反性质的执行轨迹
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
 
@@ -1611,6 +1651,7 @@
 
 - **中文**: 符号模型检测
 - **英文**: Symbolic Model Checking
+- **缩写**: SMC
 - **定义**: 使用BDD等符号表示处理状态空间
 - **相关定理**: Thm-S-06-01 (符号模型检测完备性)
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
@@ -1619,6 +1660,7 @@
 
 - **中文**: 偏序规约
 - **英文**: Partial Order Reduction (POR)
+- **缩写**: POR
 - **定义**: 利用独立性减少探索的状态数
 - **相关定理**: Thm-S-06-02 (POR保持性)
 - **首次出现**: [s6.1-model-checking.md](../06-verification/s6.1-model-checking.md)
@@ -1631,6 +1673,7 @@
 
 - **中文**: 定理证明
 - **英文**: Theorem Proving
+- **缩写**: TP
 - **定义**: 使用数学逻辑和推理规则证明系统满足规范的方法
 - **相关定义**: Def-S-06-10
 - **首次出现**: [s6.2-theorem-proving.md](../06-verification/s6.2-theorem-proving.md)
@@ -1655,6 +1698,7 @@
 
 - **中文**: 最弱前置条件
 - **英文**: Weakest Precondition
+- **缩写**: WP
 - **符号**: $wp(C, Q)$
 - **定义**: 保证执行C后Q成立的最弱条件
 - **相关定理**: Thm-S-06-10 (最弱前置条件存在性)
@@ -1664,6 +1708,7 @@
 
 - **中文**: 最强后置条件
 - **英文**: Strongest Postcondition
+- **缩写**: SP
 - **符号**: $sp(P, C)$
 - **定义**: 从P执行C后保证成立的最强条件
 - **首次出现**: [s6.2-theorem-proving.md](../06-verification/s6.2-theorem-proving.md)
@@ -1679,6 +1724,7 @@
 
 - **中文**: 分离逻辑
 - **英文**: Separation Logic
+- **缩写**: SL
 - **定义**: 用于推理堆内存的扩展霍尔逻辑
 - **相关定理**: Thm-S-06-15 (框架规则)
 - **首次出现**: [s6.2-theorem-proving.md](../06-verification/s6.2-theorem-proving.md)
@@ -1691,6 +1737,7 @@
 
 - **中文**: 抽象解释
 - **英文**: Abstract Interpretation
+- **缩写**: AI
 - **定义**: 通过近似计算推导程序动态属性的静态分析理论
 - **相关定义**: Def-S-06-20
 - **首次出现**: [s6.3-abstract-interpretation.md](../06-verification/s6.3-abstract-interpretation.md)
@@ -1731,6 +1778,7 @@
 
 - **中文**: Widening算子 / 扩展算子
 - **英文**: Widening Operator
+- **缩写**: —
 - **符号**: $\nabla$
 - **定义**: 确保抽象迭代收敛的加速算子
 - **相关定理**: Thm-S-06-20 (Widening收敛性)
@@ -1740,6 +1788,7 @@
 
 - **中文**: Narrowing算子 / 收紧算子
 - **英文**: Narrowing Operator
+- **缩写**: —
 - **符号**: $\Delta$
 - **定义**: 精炼widening结果的改进算子
 - **首次出现**: [s6.3-abstract-interpretation.md](../06-verification/s6.3-abstract-interpretation.md)
@@ -1768,6 +1817,7 @@
 
 - **中文**: 精化验证
 - **英文**: Refinement Checking
+- **缩写**: RC
 - **定义**: 验证实现是否满足规范的技术
 - **首次出现**: [s6.4-program-verification.md](../06-verification/s6.4-program-verification.md)
 
@@ -1775,6 +1825,7 @@
 
 - **中文**: 契约式编程
 - **英文**: Design by Contract (DbC)
+- **缩写**: DbC
 - **定义**: 基于前置/后置/不变式契约的软件设计方法
 - **首次出现**: [s6.4-program-verification.md](../06-verification/s6.4-program-verification.md)
 
@@ -1782,6 +1833,7 @@
 
 - **中文**: 确定性模拟测试
 - **英文**: Deterministic Simulation Testing (DST)
+- **缩写**: DST
 - **定义**: 通过控制线程交错使并发系统执行可重现的测试技术
 - **首次出现**: [s6.4-program-verification.md](../06-verification/s6.4-program-verification.md)
 
@@ -1789,6 +1841,7 @@
 
 - **中文**: Smart Casual验证
 - **英文**: Smart Casual Verification
+- **缩写**: SCV
 - **定义**: 微软提出的混合验证方法，结合形式化规约、模型检测和轨迹验证
 - **首次出现**: [s6.4-program-verification.md](../06-verification/s6.4-program-verification.md)
 
@@ -2038,34 +2091,32 @@ flowchart TD
 
 ---
 
-## 9. 字母索引
+## 9. 字母索引 (Alphabetical Index)
+
+> **英文索引**: 参见英文版术语表 [Alphabetical Index](./02-glossary-en.md#9-alphabetical-index)
 
 ### A
 
-- [抽象解释](#抽象解释)
-- [抽象函数](#抽象函数)
-- [抽象域](#抽象域)
-- [Actor](#actor)
+- [抽象解释](#抽象解释) → [Abstract Interpretation](./02-glossary-en.md#abstract-interpretation)
+- [抽象函数](#抽象函数) → [Abstraction Function](./02-glossary-en.md#abstraction-function)
+- [抽象域](#抽象域) → [Abstract Domain](./02-glossary-en.md#abstract-domain)
+- [Actor](#actor) → [Actor](./02-glossary-en.md#actor)
 
 ### B
 
-- [Büchi自动机](#büchi自动机)
-- [拜占庭故障](#拜占庭故障)
-- [饱和](#饱和)
-- [崩溃停止](#崩溃停止)
-- [崩溃恢复](#崩溃恢复)
-- [互模拟](#互模拟)
-- [互模拟证明法](#互模拟证明法)
+- [Büchi自动机](#büchi自动机) → [Büchi Automaton](./02-glossary-en.md#büchi-automaton)
+- [拜占庭故障](#拜占庭故障) → [Byzantine Fault](./02-glossary-en.md#byzantine-fault)
+- [崩溃停止](#崩溃停止) → [Crash-Stop](./02-glossary-en.md#crash-stop)
+- [崩溃恢复](#崩溃恢复) → [Crash-Recovery](./02-glossary-en.md#crash-recovery)
+- [互模拟](#互模拟) → [Bisimulation](./02-glossary-en.md#bisimulation)
+- [互模拟证明法](#互模拟证明法) → [Bisimulation Proof Method](./02-glossary-en.md#bisimulation-proof-method)
 
 ### C
 
-- [CAP定理](#cap定理)
-- [CCS](#ccs)
-- [Curry-Howard同构](#curry-howard同构)
-- [操作语义](#操作语义)
-- [测试等价](#测试等价)
-- [插值](#插值)
-- [常量传播](#常量传播)
+- [CAP定理](#cap定理) → [CAP Theorem](./02-glossary-en.md#cap-theorem)
+- [CCS](#ccs) → [CCS](./02-glossary-en.md#ccs-calculus-of-communicating-systems)
+- [Curry-Howard同构](#curry-howard同构) → [Curry-Howard Isomorphism](./02-glossary-en.md#curry-howard-isomorphism)
+- [测试等价](#测试等价) → [Testing Equivalence](./02-glossary-en.md#testing-equivalence)
 
 ### D
 
@@ -2076,80 +2127,73 @@ flowchart TD
 
 ### E
 
-- [CTL](#ctl)
-- [LTL](#ltl)
+- [CTL](#ctl) → [CTL](./02-glossary-en.md#ctl-computation-tree-logic)
+- [LTL](#ltl) → [LTL](./02-glossary-en.md#ltl-linear-temporal-logic)
 
 ### F
 
-- [FLP不可能性](#flp不可能性)
-- [反例](#反例)
-- [反证法](#反证法)
-- [范式](#范式)
-- [范畴](#范畴)
-- [方程理论](#方程理论)
+- [FLP不可能性](#flp不可能性) → [FLP Impossibility](./02-glossary-en.md#flp-impossibility)
+- [反例](#反例) → [Counterexample](./02-glossary-en.md#counterexample)
+- [反证法](#反证法) → [Proof by Contradiction](./02-glossary-en.md#proof-by-contradiction)
+- [范式](#范式) → [Normal Form](./02-glossary-en.md#normal-form)
 
 ### G
 
-- [Galois连接](#galois连接)
+- [Galois连接](#galois连接) → [Galois Connection](./02-glossary-en.md#galois-connection)
 
 ### H
 
-- [Happens-Before关系](#happens-before关系)
-- [Hoare逻辑](#霍尔逻辑)
-- [Hoare三元组](#霍尔三元组)
-- [合法执行](#合法执行)
+- [Happens-Before关系](#happens-before关系) → [Happens-Before Relation](./02-glossary-en.md#happens-before-relation)
+- [Hoare逻辑](#霍尔逻辑) → [Hoare Logic](./02-glossary-en.md#hoare-logic)
+- [Hoare三元组](#霍尔三元组) → [Hoare Triple](./02-glossary-en.md#hoare-triple)
 
 ### I
 
 ### J
 
-- [迹等价](#迹等价)
-- [集合](#集合)
-- [交集](#交集)
-- [结构归纳法](#结构归纳法)
-- [精化](#精化)
+- [迹等价](#迹等价) → [Trace Equivalence](./02-glossary-en.md#trace-equivalence)
+- [集合](#集合) → [Set](./02-glossary-en.md#set)
+- [交集](#交集) → [Intersection](./02-glossary-en.md#intersection)
+- [结构归纳法](#结构归纳法) → [Structural Induction](./02-glossary-en.md#structural-induction)
+- [精化](#精化) → [Refinement](./02-glossary-en.md#refinement)
 
 ### K
 
-- [Kripke结构](#kripke结构)
+- [Kripke结构](#kripke结构) → [Kripke Structure](./02-glossary-en.md#kripke-structure)
 
 ### L
 
-- [Lamport时间戳](#lamport时间戳)
-- [类型](#类型)
-- [类型安全](#类型安全)
-- [类型推断](#类型推断)
-- [类型规则](#类型规则)
-- [理性证明](#理性证明)
+- [Lamport时间戳](#lamport时间戳) → [Lamport Timestamp](./02-glossary-en.md#lamport-timestamp)
+- [类型](#类型) → [Type](./02-glossary-en.md#type)
+- [类型安全](#类型安全) → [Type Safety](./02-glossary-en.md#type-safety)
+- [类型推断](#类型推断) → [Type Inference](./02-glossary-en.md#type-inference)
 
 ### M
 
-- [满射](#满射)
-- [模型](#模型)
-- [模型检测](#模型检测)
+- [满射](#满射) → [Surjection](./02-glossary-en.md#surjection)
+- [模型](#模型) → [Model](./02-glossary-en.md#model)
+- [模型检测](#模型检测) → [Model Checking](./02-glossary-en.md#model-checking)
 
 ### N
 
-- [Narrowing](#narrowing)
-- [内部动作](#内部动作)
-- [内存安全](#内存安全)
+- [Narrowing](#narrowing) → [Narrowing Operator](./02-glossary-en.md#narrowing-operator)
+- [内部动作](#内部动作) → [Internal Action](./02-glossary-en.md#internal-action)
 
 ### O
 
-- [Omission故障](#omission故障)
+- [Omission故障](#omission故障) → [Omission Fault](./02-glossary-en.md#omission-fault)
 
 ### P
 
-- [π演算](#π演算)
-- [偏序关系](#偏序关系)
-- [偏序集](#偏序集)
-- [偏序规约](#偏序规约)
-- [平凡性](#平凡性)
+- [π演算](#π演算) → [Pi Calculus](./02-glossary-en.md#pi-calculus)
+- [偏序关系](#偏序关系) → [Partial Order](./02-glossary-en.md#partial-order)
+- [偏序集](#偏序集) → [Poset](./02-glossary-en.md#poset)
+- [偏序规约](#偏序规约) → [Partial Order Reduction](./02-glossary-en.md#partial-order-reduction)
 
 ### Q
 
-- [全称量词](#全称量词)
-- [契约式编程](#契约式编程)
+- [全称量词](#全称量词) → [Universal Quantifier](./02-glossary-en.md#universal-quantifier)
+- [契约式编程](#契约式编程) → [Design by Contract](./02-glossary-en.md#design-by-contract)
 
 ### R
 
@@ -2157,59 +2201,49 @@ flowchart TD
 
 ### S
 
-- [Smart Casual验证](#smart-casual验证)
-- [CSP](#csp)
-- [SAT](#可满足性)
-- [Sigma类型](#依赖对类型)
-- [Session类型](#会话类型)
-- [强规范化](#强规范化)
-- [强互模拟](#强互模拟)
-- [弱互模拟](#弱互模拟)
+- [Smart Casual验证](#smart-casual验证) → [Smart Casual Verification](./02-glossary-en.md#smart-casual-verification)
+- [CSP](#csp) → [CSP](./02-glossary-en.md#csp-communicating-sequential-processes)
+- [SAT](#可满足性) → [Satisfiability](./02-glossary-en.md#satisfiability)
+- [强规范化](#强规范化) → [Strong Normalization](./02-glossary-en.md#strong-normalization)
+- [强互模拟](#强互模拟) → [Strong Bisimulation](./02-glossary-en.md#strong-bisimulation)
+- [弱互模拟](#弱互模拟) → [Weak Bisimulation](./02-glossary-en.md#weak-bisimulation)
 
 ### T
 
-- [TLA+](#tla)
-- [通道](#通道)
-- [同步](#同步)
+- [通道](#通道) → [Channel](./02-glossary-en.md#channel)
 
 ### U
 
-- [Unit类型](#单元类型)
+- [Unit类型](#单元类型) → [Unit Type](./02-glossary-en.md#unit-type)
 
 ### V
 
-- [向量时钟](#向量时钟)
-- [违反](#违反)
+- [向量时钟](#向量时钟) → [Vector Clock](./02-glossary-en.md#vector-clock)
 
 ### W
 
-- [Widening](#widening)
-- [完备性](#完备性)
-- [唯一存在量词](#唯一存在量词)
+- [Widening](#widening) → [Widening Operator](./02-glossary-en.md#widening-operator)
+- [完备性](#完备性) → [Completeness](./02-glossary-en.md#completeness)
+- [唯一存在量词](#唯一存在量词) → [Unique Existence](./02-glossary-en.md#unique-existence)
 
 ### X
 
-- [下确界](#下确界)
-- [线性一致性](#线性一致性)
-- [写日志](#写日志)
+- [下确界](#下确界) → [Infimum](./02-glossary-en.md#infimum)
+- [线性一致性](#线性一致性) → [Linearizability](./02-glossary-en.md#linearizability)
 
 ### Y
 
-- [演绎定理](#演绎定理)
-- [一致性](#一致性)
-- [一致性哈希](#一致性哈希)
-- [因果一致性](#因果一致性)
-- [映射](#映射)
-- [域](#域)
+- [演绎定理](#演绎定理) → [Deduction Theorem](./02-glossary-en.md#deduction-theorem)
+- [一致性](#一致性) → [Consistency](./02-glossary-en.md#consistency)
+- [一致性哈希](#一致性哈希) → [Consistent Hashing](./02-glossary-en.md#consistent-hashing)
+- [因果一致性](#因果一致性) → [Causal Consistency](./02-glossary-en.md#causal-consistency)
 
 ### Z
 
-- [子集](#子集)
-- [展开](#展开)
-- [活性](#活性)
-- [真子集](#真子集)
-- [证明助手](#证明助手)
-- [执行](#执行)
+- [子集](#子集) → [Subset](./02-glossary-en.md#subset)
+- [活性](#活性) → [Liveness](./02-glossary-en.md#liveness)
+- [真子集](#真子集) → [Proper Subset](./02-glossary-en.md#proper-subset)
+- [证明助手](#证明助手) → [Proof Assistant](./02-glossary-en.md#proof-assistant)
 
 ---
 
@@ -2218,5 +2252,6 @@ flowchart TD
 
 ---
 
-*文档版本: v2.0 | 术语数量: 150+ | 创建日期: 2026-04-09 | 最后更新: 2026-04-10*
+*文档版本: v2.1 | 术语数量: 150+ | 创建日期: 2026-04-09 | 最后更新: 2026-04-10*
 *分类: 数学基础(30) | 逻辑与证明(30) | 类型论(20) | 并发理论(20) | 分布式系统(25) | 验证技术(25)*
+*语言: 中文 | 英文版本: [02-glossary-en.md](./02-glossary-en.md)*
