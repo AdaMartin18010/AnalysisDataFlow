@@ -1,4 +1,4 @@
-# 全局定理索引 (Global Theorem Index)
+﻿# 全局定理索引 (Global Theorem Index)
 
 > **所属单元**: 98-appendices | **前置依赖**: 所有形式化文档 | **形式化等级**: L1-L6汇总
 >
@@ -19,7 +19,7 @@
       - [02-范畴论 (Category Theory)](#02-范畴论-category-theory)
       - [03-逻辑基础 (Logic Foundations)](#03-逻辑基础-logic-foundations)
       - [04-域论进阶 (Domain Theory)](#04-域论进阶-domain-theory)
-      - [05-类型理论 (Type Theory)](#05-类型理论-type-theory)
+      - [05-类型论 (Type Theory)](#05-类型论-type-theory)
       - [06-余代数进阶 (Coalgebra Advanced)](#06-余代数进阶-coalgebra-advanced)
     - [2.2 进程演算阶段 (C)](#22-进程演算阶段-c)
       - [01-ω-calculus 家族](#01-ω-calculus-家族)
@@ -36,7 +36,7 @@
       - [02-流处理形式化](#02-流处理形式化)
     - [2.5 验证方法阶段 (V)](#25-验证方法阶段-v)
       - [01-逻辑验证 (Logic)](#01-逻辑验证-logic)
-      - [02-模型检验 (Model Checking)](#02-模型检验-model-checking)
+      - [02-模型检测 (Model Checking)](#02-模型检测-model-checking)
       - [03-定理证明 (Theorem Proving)](#03-定理证明-theorem-proving)
       - [04-SMT求解器](#04-smt求解器)
     - [2.6 工具阶段 (T)](#26-工具阶段-t)
@@ -161,13 +161,13 @@
 | Def-F-02-03 | 自然变换 | 定义 | 02-category-theory.md | N/A | 8 |
 | Def-F-02-04 | F-余代数 | 定义 | 02-category-theory.md | N/A | 18 |
 | Def-F-02-05 | 余代数同态 | 定义 | 02-category-theory.md | N/A | 10 |
-| Def-F-02-06 | 双模拟关系 | 定义 | 02-category-theory.md | N/A | 14 |
+| Def-F-02-06 | 互模拟关系 | 定义 | 02-category-theory.md | N/A | 14 |
 | Lemma-F-02-01 | 余代数终对象存在性 | 引理 | 02-category-theory.md | ✅ | 9 |
-| Prop-F-02-01 | 双模拟的等价刻画 | 命题 | 02-category-theory.md | ✅ | 7 |
+| Prop-F-02-01 | 互模拟的等价刻画 | 命题 | 02-category-theory.md | ✅ | 7 |
 | Prop-F-02-02 | CPO作为范畴 | 命题 | 02-category-theory.md | ✅ | 5 |
 | Prop-F-02-03 | 余代数与CPO | 命题 | 02-category-theory.md | ✅ | 6 |
 | Thm-F-02-01 | 流的终余代数刻画 | 定理 | 02-category-theory.md | ✅ | 16 |
-| Thm-F-02-02 | 双模拟=同态核 | 定理 | 02-category-theory.md | ✅ | 11 |
+| Thm-F-02-02 | 互模拟=同态核 | 定理 | 02-category-theory.md | ✅ | 11 |
 
 #### 03-逻辑基础 (Logic Foundations)
 
@@ -184,7 +184,7 @@
 | Prop-F-03-02 | CTL* 统一框架 | 命题 | 03-logic-foundations.md | ✅ | 6 |
 | Prop-F-03-03 | 相对完备性 | 命题 | 03-logic-foundations.md | ✅ | 10 |
 | Prop-F-03-04 | 霍尔逻辑的范畴语义 | 命题 | 03-logic-foundations.md | ✅ | 5 |
-| Thm-F-03-01 | LTL模型检验复杂度 | 定理 | 03-logic-foundations.md | ✅ | 15 |
+| Thm-F-03-01 | LTL模型检测复杂度 | 定理 | 03-logic-foundations.md | ✅ | 15 |
 | Thm-F-03-02 | 帧规则的安全性 | 定理 | 03-logic-foundations.md | ✅ | 12 |
 
 #### 04-域论进阶 (Domain Theory)
@@ -214,7 +214,7 @@
 | Thm-F-04-02 | Tarski-Knaster不动点定理 | 定理 | 04-domain-theory.md | ✅ | 18 |
 | Thm-F-04-03 | 抽象严格性分析的安全性 | 定理 | 04-domain-theory.md | ✅ | 8 |
 
-#### 05-类型理论 (Type Theory)
+#### 05-类型论 (Type Theory)
 
 | 编号 | 名称 | 类型 | 文档 | 证明 | 引用 |
 |------|------|------|------|------|------|
@@ -295,7 +295,7 @@
 |------|------|------|------|------|------|
 | Def-F-06-01 | 终余代数 | 定义 | 06-coalgebra-advanced.md | N/A | 13 |
 | Def-F-06-02 | 行为等价 | 定义 | 06-coalgebra-advanced.md | N/A | 15 |
-| Def-F-06-03 | 余代数双模拟 | 定义 | 06-coalgebra-advanced.md | N/A | 18 |
+| Def-F-06-03 | 余代数互模拟 | 定义 | 06-coalgebra-advanced.md | N/A | 18 |
 | Def-F-06-04 | 余代数模态逻辑语法 | 定义 | 06-coalgebra-advanced.md | N/A | 8 |
 | Def-F-06-05 | 谓词提升 | 定义 | 06-coalgebra-advanced.md | N/A | 10 |
 | Def-F-06-06 | 模态语义 | 定义 | 06-coalgebra-advanced.md | N/A | 7 |
@@ -306,7 +306,7 @@
 | Def-F-06-11 | 概率互模拟 | 定义 | 06-coalgebra-advanced.md | N/A | 14 |
 | Lemma-F-06-01 | 终余代数的唯一性 | 引理 | 06-coalgebra-advanced.md | ✅ | 10 |
 | Lemma-F-06-02 | Lambek引理 | 引理 | 06-coalgebra-advanced.md | ✅ | 16 |
-| Prop-F-06-01 | 双模拟与行为等价 | 命题 | 06-coalgebra-advanced.md | ✅ | 12 |
+| Prop-F-06-01 | 互模拟与行为等价 | 命题 | 06-coalgebra-advanced.md | ✅ | 12 |
 | Prop-F-06-02 | 互模拟是等价关系 | 命题 | 06-coalgebra-advanced.md | ✅ | 9 |
 | Prop-F-06-03 | Hennessy-Milner定理 | 命题 | 06-coalgebra-advanced.md | ✅ | 11 |
 | Prop-F-06-04 | 归纳 vs 共归纳 | 命题 | 06-coalgebra-advanced.md | ✅ | 7 |
@@ -314,7 +314,7 @@
 | Thm-F-06-01 | Adámek定理 | 定理 | 06-coalgebra-advanced.md | ✅ | 14 |
 | Thm-F-06-02 | 共归纳证明原理 | 定理 | 06-coalgebra-advanced.md | ✅ | 19 |
 | Thm-F-06-03 | 概率互模拟的逼近 | 定理 | 06-coalgebra-advanced.md | ✅ | 8 |
-| Thm-F-06-04 | Coalgebraic μ-演算模型检验 | 定理 | 06-coalgebra-advanced.md | ✅ | 6 |
+| Thm-F-06-04 | Coalgebraic μ-演算模型检测 | 定理 | 06-coalgebra-advanced.md | ✅ | 6 |
 
 ### 2.2 进程演算阶段 (C)
 
@@ -376,9 +376,9 @@
 | Def-C-04-08 | 线性 π-calculus | 定义 | 01-pi-calculus-basics.md | N/A | 12 |
 | Def-C-04-09 | 线性 π-calculus 进程 | 定义 | 01-pi-calculus-basics.md | N/A | 10 |
 | Def-C-04-10 | 替换 | 定义 | 01-pi-calculus-basics.md | N/A | 16 |
-| Def-C-04-11 | 早期双模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 13 |
-| Def-C-04-12 | 晚期双模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 14 |
-| Def-C-04-13 | 开放双模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 11 |
+| Def-C-04-11 | 早期互模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 13 |
+| Def-C-04-12 | 晚期互模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 14 |
+| Def-C-04-13 | 开放互模拟 | 定义 | 01-pi-calculus-basics.md | N/A | 11 |
 | Def-C-04-14 | 观察同余 | 定义 | 01-pi-calculus-basics.md | N/A | 9 |
 | Def-C-04-15 | 编码的正确性标准 | 定义 | 01-pi-calculus-basics.md | N/A | 8 |
 | Prop-C-04-01 | 结构化操作语义 | 命题 | 01-pi-calculus-basics.md | ✅ | 17 |
@@ -386,7 +386,7 @@
 | Prop-C-04-03 | π-calculus 扩展 CCS | 命题 | 01-pi-calculus-basics.md | ✅ | 10 |
 | Prop-C-04-04 | 编码 λ-calculus | 命题 | 01-pi-calculus-basics.md | ✅ | 14 |
 | Prop-C-04-05 | 早期 vs 晚期 | 命题 | 01-pi-calculus-basics.md | ✅ | 8 |
-| Prop-C-04-06 | 开放双模拟的优势 | 命题 | 01-pi-calculus-basics.md | ✅ | 7 |
+| Prop-C-04-06 | 开放互模拟的优势 | 命题 | 01-pi-calculus-basics.md | ✅ | 7 |
 | Prop-C-04-07 | λ-calculus 到 π-calculus 编码 | 命题 | 01-pi-calculus-basics.md | ✅ | 11 |
 | Thm-C-04-01 | 强互模拟同余 | 定理 | 01-pi-calculus-basics.md | ✅ | 20 |
 | Thm-C-04-02 | 并行展开 | 定理 | 01-pi-calculus-basics.md | ✅ | 13 |
@@ -453,13 +453,13 @@
 
 | 编号 | 名称 | 类型 | 文档 | 证明 | 引用 |
 |------|------|------|------|------|------|
-| Def-M-02-01 | 进程代数 | 定义 | 01-process-algebras.md | N/A | 12 |
+| Def-M-02-01 | 进程演算 | 定义 | 01-process-algebras.md | N/A | 12 |
 | Def-M-02-02 | 有限状态机 | 定义 | 02-automata.md | N/A | 15 |
 | Def-M-02-03 | Petri网 | 定义 | 03-net-models.md | N/A | 14 |
-| Lemma-M-02-01 | 进程代数同余性 | 引理 | 01-process-algebras.md | ✅ | 8 |
+| Lemma-M-02-01 | 进程演算同余性 | 引理 | 01-process-algebras.md | ✅ | 8 |
 | Lemma-M-02-02 | 有限状态机等价判定 | 引理 | 02-automata.md | ✅ | 10 |
 | Lemma-M-02-03 | Petri网可达性 | 引理 | 03-net-models.md | ✅ | 12 |
-| Thm-M-02-01 | 进程代数完全抽象 | 定理 | 01-process-algebras.md | ✅ | 9 |
+| Thm-M-02-01 | 进程演算完全抽象 | 定理 | 01-process-algebras.md | ✅ | 9 |
 | Thm-M-02-02 | Büchi自动机空性 | 定理 | 02-automata.md | ✅ | 11 |
 | Thm-M-02-03 | Petri网有界性 | 定理 | 03-net-models.md | ✅ | 8 |
 
@@ -500,7 +500,7 @@
 | Def-V-01-02 | 动作逻辑 | 定义 | 01-tla-plus.md | N/A | 12 |
 | Def-V-01-03 | 状态与行为 | 定义 | 01-tla-plus.md | N/A | 14 |
 | Def-V-01-04 | TLA+ 时序运算符 | 定义 | 01-tla-plus.md | N/A | 16 |
-| Def-V-01-05 | TLC模型检验 | 定义 | 01-tla-plus.md | N/A | 11 |
+| Def-V-01-05 | TLC模型检测 | 定义 | 01-tla-plus.md | N/A | 11 |
 | Def-V-01-06 | TLAPS结构 | 定义 | 01-tla-plus.md | N/A | 9 |
 | Def-V-01-07 | 公平性类型 | 定义 | 01-tla-plus.md | N/A | 13 |
 | Lemma-V-01-01 | 规范分解 | 引理 | 01-tla-plus.md | ✅ | 8 |
@@ -509,21 +509,21 @@
 | Thm-V-01-01 | TLC完备性 | 定理 | 01-tla-plus.md | ✅ | 12 |
 | Thm-V-01-02 | TLAPS可靠性 | 定理 | 01-tla-plus.md | ✅ | 14 |
 
-#### 02-模型检验 (Model Checking)
+#### 02-模型检测 (Model Checking)
 
 | 编号 | 名称 | 类型 | 文档 | 证明 | 引用 |
 |------|------|------|------|------|------|
-| Def-V-02-01 | 显式状态模型检验 | 定义 | 01-explicit-state.md | N/A | 14 |
-| Def-V-02-02 | 符号模型检验 | 定义 | 02-symbolic-mc.md | N/A | 16 |
-| Def-V-02-03 | 实时模型检验 | 定义 | 03-realtime-mc.md | N/A | 12 |
+| Def-V-02-01 | 显式状态模型检测 | 定义 | 01-explicit-state.md | N/A | 14 |
+| Def-V-02-02 | 符号模型检测 | 定义 | 02-symbolic-mc.md | N/A | 16 |
+| Def-V-02-03 | 实时模型检测 | 定义 | 03-realtime-mc.md | N/A | 12 |
 | Def-V-02-04 | BDD表示 | 定义 | 02-symbolic-mc.md | N/A | 15 |
 | Def-V-02-05 | 时间自动机 | 定义 | 03-realtime-mc.md | N/A | 18 |
 | Lemma-V-02-01 | 状态爆炸缓解 | 引理 | 01-explicit-state.md | ✅ | 11 |
 | Lemma-V-02-02 | BDD唯一性 | 引理 | 02-symbolic-mc.md | ✅ | 13 |
 | Lemma-V-02-03 | 区域构造 | 引理 | 03-realtime-mc.md | ✅ | 9 |
-| Thm-V-02-01 | CTL模型检验正确性 | 定理 | 02-symbolic-mc.md | ✅ | 16 |
-| Thm-V-02-02 | LTL模型检验正确性 | 定理 | 01-explicit-state.md | ✅ | 14 |
-| Thm-V-02-03 | TCTL模型检验 | 定理 | 03-realtime-mc.md | ✅ | 12 |
+| Thm-V-02-01 | CTL模型检测正确性 | 定理 | 02-symbolic-mc.md | ✅ | 16 |
+| Thm-V-02-02 | LTL模型检测正确性 | 定理 | 01-explicit-state.md | ✅ | 14 |
+| Thm-V-02-03 | TCTL模型检测 | 定理 | 03-realtime-mc.md | ✅ | 12 |
 
 #### 03-定理证明 (Theorem Proving)
 
@@ -668,7 +668,7 @@
 | Def-T-07-02 | Ivy逻辑 | 定义 | 07-ivy.md | N/A | 13 |
 | Def-T-07-03 | Ivy程序结构 | 定义 | 07-ivy.md | N/A | 9 |
 | Def-T-07-04 | Ivy类型系统 | 定义 | 07-ivy.md | N/A | 7 |
-| Def-T-07-05 | 有限范围模型检验 | 定义 | 07-ivy.md | N/A | 10 |
+| Def-T-07-05 | 有限范围模型检测 | 定义 | 07-ivy.md | N/A | 10 |
 | Def-T-07-06 | 归纳不变式合成 | 定义 | 07-ivy.md | N/A | 12 |
 | Def-T-07-07 | 小模型性质 | 定义 | 07-ivy.md | N/A | 8 |
 | Lemma-T-07-01 | EPR可满足性 | 引理 | 07-ivy.md | ✅ | 11 |
@@ -696,7 +696,7 @@
 | 编号 | 名称 | 类型 | 文档 | 证明 | 引用 |
 |------|------|------|------|------|------|
 | Def-I-04-01 | 量子进程 | 定义 | 04-quantum-distributed.md | N/A | 10 |
-| Def-I-04-02 | 量子进程代数 | 定义 | 04-quantum-distributed.md | N/A | 12 |
+| Def-I-04-02 | 量子进程演算 | 定义 | 04-quantum-distributed.md | N/A | 12 |
 | Def-I-04-03 | 量子密钥分发协议 | 定义 | 04-quantum-distributed.md | N/A | 14 |
 | Def-I-04-04 | 量子纠缠 | 定义 | 04-quantum-distributed.md | N/A | 11 |
 | Def-I-04-05 | 量子分布式系统 | 定义 | 04-quantum-distributed.md | N/A | 9 |
@@ -774,14 +774,14 @@
 | Thm-F-01-01 | Kleene不动点定理 | ⭐⭐⭐⭐⭐ | 语义学、递归理论 |
 | Thm-F-01-02 | 前向模拟蕴含数据精化 | ⭐⭐⭐⭐ | 程序验证、精化理论 |
 | Thm-F-02-01 | 流的终余代数刻画 | ⭐⭐⭐⭐⭐ | 流计算、共归纳 |
-| Thm-F-03-01 | LTL模型检验复杂度 | ⭐⭐⭐⭐ | 形式验证、模型检验 |
+| Thm-F-03-01 | LTL模型检测复杂度 | ⭐⭐⭐⭐ | 形式验证、模型检测 |
 | Thm-F-04-02 | Tarski-Knaster不动点定理 | ⭐⭐⭐⭐⭐ | 格论、抽象解释 |
 | Thm-F-05-01 | 类型安全性 | ⭐⭐⭐⭐⭐ | 类型系统、程序语言 |
 | Thm-F-05-02 | 强归约性 | ⭐⭐⭐⭐ | λ演算、证明论 |
 | Thm-F-05-07 | Curry-Howard同构定理 | ⭐⭐⭐⭐⭐ | 逻辑、类型论、证明论 |
 | Thm-F-05-10 | System F强归一化 | ⭐⭐⭐⭐ | 多态类型、证明论 |
 | Thm-F-06-01 | Adámek定理 | ⭐⭐⭐⭐ | 余代数、范畴论 |
-| Thm-F-06-02 | 共归纳证明原理 | ⭐⭐⭐⭐⭐ | 共归纳、双模拟 |
+| Thm-F-06-02 | 共归纳证明原理 | ⭐⭐⭐⭐⭐ | 共归纳、互模拟 |
 
 #### 进程演算核心定理
 
@@ -812,10 +812,10 @@
 
 | 编号 | 名称 | 重要性 | 应用领域 |
 |------|------|--------|----------|
-| Thm-V-01-01 | TLC完备性 | ⭐⭐⭐⭐ | TLA+、模型检验 |
+| Thm-V-01-01 | TLC完备性 | ⭐⭐⭐⭐ | TLA+、模型检测 |
 | Thm-V-01-02 | TLAPS可靠性 | ⭐⭐⭐⭐ | 定理证明、TLA+ |
-| Thm-V-02-01 | CTL模型检验正确性 | ⭐⭐⭐⭐⭐ | 模型检验、时序逻辑 |
-| Thm-V-02-03 | TCTL模型检验 | ⭐⭐⭐⭐ | 实时系统、时间自动机 |
+| Thm-V-02-01 | CTL模型检测正确性 | ⭐⭐⭐⭐⭐ | 模型检测、时序逻辑 |
+| Thm-V-02-03 | TCTL模型检测 | ⭐⭐⭐⭐ | 实时系统、时间自动机 |
 | Thm-V-07-01 | Curry-Howard同构 | ⭐⭐⭐⭐⭐ | 定理证明、构造逻辑 |
 | Thm-V-07-02 | 结构归纳 | ⭐⭐⭐⭐⭐ | 归纳证明、类型论 |
 | Thm-V-08-01 | DPLL(T)正确性 | ⭐⭐⭐⭐⭐ | SMT求解、自动推理 |
@@ -829,7 +829,7 @@
 - **范畴论**: Def-F-02-01 至 Def-F-02-06 (6个)
 - **逻辑系统**: Def-F-03-01 至 Def-F-03-06 (6个)
 - **域论**: Def-F-04-01 至 Def-F-04-11 (11个)
-- **类型理论**: Def-F-05-01 至 Def-F-05-40 (40个)
+- **类型论**: Def-F-05-01 至 Def-F-05-40 (40个)
 - **余代数**: Def-F-06-01 至 Def-F-06-11 (11个)
 
 #### 计算模型定义
@@ -841,7 +841,7 @@
 #### 验证技术定义
 
 - **逻辑验证**: Def-V-01-01 至 Def-V-01-07 (7个)
-- **模型检验**: Def-V-02-01 至 Def-V-02-05 (5个)
+- **模型检测**: Def-V-02-01 至 Def-V-02-05 (5个)
 - **定理证明**: Def-V-07-01 至 Def-V-07-12 (12个)
 - **SMT求解**: Def-V-08-01 至 Def-V-08-08 (8个)
 
@@ -866,7 +866,7 @@
 |------|------|----------|
 | 表达能力 | 8 | LTL/CTL表达对比、编码能力 |
 | 语义性质 | 12 | 组合性、单调性、保持性 |
-| 等价关系 | 6 | 双模拟、精化、同余 |
+| 等价关系 | 6 | 互模拟、精化、同余 |
 | 复杂性结果 | 4 | 可判定性、复杂度边界 |
 | 应用性质 | 5 | 工作流、流处理特性 |
 
@@ -992,7 +992,7 @@ graph TB
         K3 --> K4[Thm-C-01-04<br/>流共归纳原理]
     end
 
-    subgraph 类型理论依赖链
+    subgraph 类型论依赖链
         CH[Thm-F-05-07<br/>Curry-Howard] --> SN[Thm-F-05-02<br/>强归一化]
         SN --> TS[Thm-F-05-01<br/>类型安全性]
         CH --> TP[Thm-V-07-01<br/>定理证明CH]

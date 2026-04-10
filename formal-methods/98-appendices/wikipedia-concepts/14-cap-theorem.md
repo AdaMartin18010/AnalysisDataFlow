@@ -24,14 +24,14 @@
 
 ### 2.1 Gilbert-Lynch形式化
 
-**Def-W-14-01** (异步网络模型). 分布式系统模型 $\mathcal{A}$：
+**Def-S-98-01** (异步网络模型). 分布式系统模型 $\mathcal{A}$：
 
 - 进程集合$\Pi = \{p_1, p_2, \ldots, p_n\}$
 - 共享寄存器集合$\mathcal{R}$
 - 每个寄存器支持$read()$和$write(v)$操作
 - **异步性**: 消息延迟无上界，无时钟
 
-**Def-W-14-02** (CAP三属性形式化).
+**Def-S-98-02** (CAP三属性形式化).
 
 **一致性 (Consistency)**:
 $$\forall r \in \text{Reads}: r.\text{value} = \text{latest-write}(r.\text{register})$$
@@ -46,7 +46,7 @@ $$\text{partition}(\Pi_1, \Pi_2) \Rightarrow \text{system-operational}(\Pi_1) \l
 
 ### 2.2 PACELC扩展
 
-**Def-W-14-03** (PACELC). 若分区 (P) 则可用性 (A) 或一致性 (C)，否则 (E) 延迟 (L) 或一致性 (C)：
+**Def-S-98-03** (PACELC). 若分区 (P) 则可用性 (A) 或一致性 (C)，否则 (E) 延迟 (L) 或一致性 (C)：
 
 $$\text{If } P \text{ then } (A \text{ or } C) \text{ else } (L \text{ or } C)$$
 
@@ -173,7 +173,7 @@ graph BT
 
 ### 6.1 Gilbert-Lynch完整证明
 
-**Thm-W-14-01** (CAP定理). 异步网络中，共享寄存器系统不能同时满足一致性、可用性和分区容错。
+**Thm-S-98-01** (CAP定理). 异步网络中，共享寄存器系统不能同时满足一致性、可用性和分区容错。
 
 *详细证明*:
 
@@ -213,7 +213,7 @@ graph BT
 
 ### 6.2 Quorum系统的CAP边界
 
-**Thm-W-14-02** (Quorum CAP边界). 对于读Quorum $R$和写Quorum $W$：
+**Thm-S-98-02** (Quorum CAP边界). 对于读Quorum $R$和写Quorum $W$：
 
 $$R + W > N \Rightarrow \text{CP系统}$$
 $$R + W \leq N \Rightarrow \text{AP系统}$$
@@ -252,6 +252,7 @@ $$R + W \leq N \Rightarrow \text{AP系统}$$
 
 ## 9. 相关概念
 
+- [CAP定理详解](../../03-model-taxonomy/04-consistency/02-cap-theorem.md) - CAP定理的完整形式化分析与证明
 - [Consensus](13-consensus.md)
-- [Linearizability](14-linearizability.md)
-- [Consistency Models](consistency-models.md)
+- [Linearizability](15-linearizability.md)
+- [Consistency Models](01-consistency-spectrum.md)

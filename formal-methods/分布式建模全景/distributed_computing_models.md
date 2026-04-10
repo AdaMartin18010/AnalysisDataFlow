@@ -1,4 +1,4 @@
-# 分布式系统形式化计算模型全景图谱
+﻿# 分布式系统形式化计算模型全景图谱
 
 ---
 
@@ -14,7 +14,7 @@
       - [1.2.1 基本Petri网](#121-基本petri网)
       - [1.2.2 有色Petri网（CPN）](#122-有色petri网cpn)
       - [1.2.3 时序Petri网](#123-时序petri网)
-    - [1.3 进程代数](#13-进程代数)
+    - [1.3 进程演算](#13-进程演算)
       - [1.3.1 CSP（通信顺序进程）](#131-csp通信顺序进程)
       - [1.3.2 CCS（通信系统演算）](#132-ccs通信系统演算)
       - [1.3.3 π演算](#133-π演算)
@@ -237,7 +237,7 @@ $$CPN = (\Sigma, P, T, A, N, C, G, E, I)$$
 
 ---
 
-### 1.3 进程代数
+### 1.3 进程演算
 
 #### 1.3.1 CSP（通信顺序进程）
 
@@ -274,7 +274,7 @@ $$
 - 并发程序验证
 - 安全协议分析
 - 操作系统设计
-- FDR模型检验器
+- FDR模型检测器
 
 **建模示例：读者-写者问题**
 
@@ -296,11 +296,11 @@ $$P ::= 0 \mid \alpha.P \mid P + Q \mid P | Q \mid P \setminus L \mid P[f] \mid 
 
 其中 $\alpha \in Act = \mathcal{N} \cup \overline{\mathcal{N}} \cup \{\tau\}$
 
-**双模拟等价**
+**互模拟等价**
 
-强双模拟：关系 $R$ 满足若 $(P, Q) \in R$ 且 $P \xrightarrow{\alpha} P'$，则存在 $Q \xrightarrow{\alpha} Q'$ 使得 $(P', Q') \in R$。
+强互模拟：关系 $R$ 满足若 $(P, Q) \in R$ 且 $P \xrightarrow{\alpha} P'$，则存在 $Q \xrightarrow{\alpha} Q'$ 使得 $(P', Q') \in R$。
 
-弱双模拟（观测等价）：忽略内部动作 $\tau$。
+弱互模拟（观测等价）：忽略内部动作 $\tau$。
 
 **表达能力对比**
 
@@ -309,7 +309,7 @@ $$P ::= 0 \mid \alpha.P \mid P + Q \mid P | Q \mid P \setminus L \mid P[f] \mid 
 | 通信方式 | 基于事件 | 基于名称 |
 | 选择算子 | 外部/内部选择 | 非确定性选择 |
 | 隐藏操作 | 限制操作符 | 限制操作符 |
-| 等价关系 | 失败/迹等价 | 双模拟等价 |
+| 等价关系 | 失败/迹等价 | 互模拟等价 |
 
 #### 1.3.3 π演算
 
@@ -1306,7 +1306,7 @@ $$\frac{State \vdash Method_i \Downarrow State'}{State \xrightarrow{Method_i} St
 | **经典模型** | | | | | | |
 | 状态机 | FSM, Mealy, Moore | 正则语言 | 完全可判定 | 有限 | 无 | SPIN, UPPAAL |
 | Petri网 | 基本/有色/时序 | 图灵完备 | 部分可判定 | 原生 | 扩展 | CPN Tools, Tina |
-| 进程代数 | CSP, CCS, π | 图灵完备 | 双模拟可判定 | 原生 | π演算 | FDR, CADP |
+| 进程演算 | CSP, CCS, π | 图灵完备 | 互模拟可判定 | 原生 | π演算 | FDR, CADP |
 | **工作流模型** | | | | | | |
 | BPMN | BPMN 2.0 | 上下文相关 | 验证困难 | 原生 | 扩展 | Camunda, Activiti |
 | WF-nets | 工作流网 | 上下文无关 | 合理性可判定 | 原生 | 无 | ProM, WoPeD |
@@ -1332,8 +1332,8 @@ $$\frac{State \vdash Method_i \Downarrow State'}{State \xrightarrow{Method_i} St
 需要形式化验证？
 ├── 是
 │   ├── 状态空间有限？
-│   │   ├── 是 → 状态机/模型检验
-│   │   └── 否 → Petri网/进程代数
+│   │   ├── 是 → 状态机/模型检测
+│   │   └── 否 → Petri网/进程演算
 │   └── 需要并发分析？
 │       ├── 是 → Petri网/CSP
 │       └── 否 → 时序逻辑
@@ -1361,7 +1361,7 @@ $$\frac{State \vdash Method_i \Downarrow State'}{State \xrightarrow{Method_i} St
 
 1. **从理论到实践**：形式化模型正在快速转化为工业级系统
 2. **融合趋势**：不同模型的边界正在模糊（如Actor + CRDT）
-3. **自动化验证**：模型检验与定理证明工具日益成熟
+3. **自动化验证**：模型检测与定理证明工具日益成熟
 4. **云原生原生支持**：新模型设计考虑云环境特性
 5. **形式化安全**：安全属性的形式化验证成为标准
 

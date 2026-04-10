@@ -6,7 +6,7 @@
 
 ### 1.1 决策树 (Decision Tree)
 
-**定义 Def-FM-CDT-01**: 形式化方法选择决策树是一种层次化的决策支持结构，通过一系列判断节点引导用户从系统特征出发，逐步收敛到最适合的形式化建模与验证技术。
+**定义 Def-S-98-CDT-01**: 形式化方法选择决策树是一种层次化的决策支持结构，通过一系列判断节点引导用户从系统特征出发，逐步收敛到最适合的形式化建模与验证技术。
 
 **决策树组成要素**:
 
@@ -19,11 +19,11 @@
 
 ### 1.2 场景树 (Scenario Tree)
 
-**定义 Def-FM-CDT-02**: 场景树是验证需求的层次化分解结构，将复杂的验证目标分解为可管理的子场景，每个子场景对应特定的验证技术和工具配置。
+**定义 Def-S-98-CDT-02**: 场景树是验证需求的层次化分解结构，将复杂的验证目标分解为可管理的子场景，每个子场景对应特定的验证技术和工具配置。
 
 ### 1.3 形式化方法选择维度
 
-**定义 Def-FM-CDT-03**: 形式化方法选择维度是影响技术选型的关键系统特征集合：
+**定义 Def-S-98-CDT-03**: 形式化方法选择维度是影响技术选型的关键系统特征集合：
 
 $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 
@@ -39,7 +39,7 @@ $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 
 ### 2.1 决策树完备性
 
-**引理 Lemma-FM-CDT-01** [选择维度完备性]:
+**引理 Lemma-S-98-CDT-01** [选择维度完备性]:
 五维选择框架 $\mathcal{D}$ 覆盖了工业形式化验证中 95% 以上的技术选型场景。
 
 **证明概要**:
@@ -54,7 +54,7 @@ $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 
 ### 2.2 推荐准确性
 
-**引理 Lemma-FM-CDT-02** [决策路径唯一性]:
+**引理 Lemma-S-98-CDT-02** [决策路径唯一性]:
 对于确定的系统特征向量 $\vec{d} \in \mathcal{D}$，决策树产生唯一的形式化方法推荐集合 $R(\vec{d})$，且 $|R(\vec{d})| \leq 3$。
 
 **理由**: 每个判断节点的分支条件互斥且完备，确保路径唯一性；叶节点限制最多推荐 3 种技术以避免选择困难。
@@ -88,7 +88,7 @@ $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 **设计原则 1: 从宏观到微观**
 决策顺序遵循：领域 → 规模 → 属性 → 时间 → 概率
 
-理由：领域决定基础框架（如流处理首选流演算），规模决定方法类别（模型检验 vs 定理证明），其他维度精化具体技术。
+理由：领域决定基础框架（如流处理首选流演算），规模决定方法类别（模型检测 vs 定理证明），其他维度精化具体技术。
 
 **设计原则 2: 避免过早优化**
 前两层决策不引入具体工具，聚焦方法类别选择。
@@ -101,7 +101,7 @@ $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 **反例 1**: 微服务架构的 API 兼容性验证
 
 - 问题特征：分布式、接口契约、有限状态
-- 决策树推荐：进程代数 + 模型检验
+- 决策树推荐：进程演算 + 模型检测
 - 实际最佳：CSP/FDR4 或 TLA+（两者皆适用，但 TLA+ 更易表达高层属性）
 
 **教训**: 对于架构验证，即使状态有限，也可能需要定理证明表达高层不变式。
@@ -118,7 +118,7 @@ $$\mathcal{D} = \{D_{scale}, D_{property}, D_{time}, D_{prob}, D_{domain}\}$$
 
 ### 5.1 决策树有效性定理
 
-**定理 Thm-FM-CDT-01** [决策树推荐有效性]:
+**定理 Thm-S-98-CDT-01** [决策树推荐有效性]:
 对于任意系统特征向量 $\vec{d}$，决策树推荐的方法集合 $R(\vec{d})$ 满足：
 
 $$\forall r \in R(\vec{d}): Compatible(r, \vec{d}) \land \neg\exists r': Better(r', r, \vec{d})$$
@@ -129,12 +129,12 @@ $$\forall r \in R(\vec{d}): Compatible(r, \vec{d}) \land \neg\exists r': Better(
 
 ### 5.2 复杂度指导原则
 
-**定理 Thm-FM-CDT-02** [验证复杂度匹配]:
+**定理 Thm-S-98-CDT-02** [验证复杂度匹配]:
 决策树隐含的复杂度层次与实际可接受复杂度匹配：
 
 | 系统规模 | 可接受复杂度 | 推荐方法复杂度 |
 |---------|-------------|---------------|
-| 有限状态 | PSPACE | PSPACE（符号模型检验） |
+| 有限状态 | PSPACE | PSPACE（符号模型检测） |
 | 参数化 | EXPTIME | EXPTIME（参数化验证） |
 | 无限状态 | 不可判定（半算法） | 交互式定理证明 |
 
@@ -155,7 +155,7 @@ $$\forall r \in R(\vec{d}): Compatible(r, \vec{d}) \land \neg\exists r': Better(
 ```
 系统验证决策树
 └── 领域: 状态机系统 → 自动机分支
-    └── 规模: 有限状态 → 模型检验分支
+    └── 规模: 有限状态 → 模型检测分支
         └── 属性: 两者兼具 → TLA+/Event-B
             └── 无时序/确定性 → TLA+ 推荐
 ```
@@ -188,68 +188,68 @@ $$\forall r \in R(\vec{d}): Compatible(r, \vec{d}) \land \neg\exists r': Better(
 
 ```mermaid
 flowchart TD
-    Root[开始: 系统验证需求分析]
+    Root["开始: 系统验证需求分析"]
 
     Root --> D1{系统规模?}
 
-    D1 -->|有限状态| Scale_Finite[模型检验分支]
-    D1 -->|无限状态| Scale_Infinite[定理证明分支]
-    D1 -->|参数化| Scale_Param[参数化验证分支]
+    D1 -->|有限状态| Scale_Finite["模型检测分支"]
+    D1 -->|无限状态| Scale_Infinite["定理证明分支"]
+    D1 -->|参数化| Scale_Param["参数化验证分支"]
 
     Scale_Finite --> D2a{验证属性?}
-    D2a -->|仅安全性| Prop_Safety[不变式证明]
-    D2a -->|仅活性| Prop_Liveness[时序逻辑检验]
+    D2a -->|仅安全性| Prop_Safety["不变式证明"]
+    D2a -->|仅活性| Prop_Liveness["时序逻辑检验"]
     D2a -->|两者兼具| Prop_Both[TLA+/Event-B]
 
     Scale_Infinite --> D2b{数学结构?}
-    D2b -->|归纳结构| Struct_Inductive[归纳定理证明<br/>Coq/Isabelle]
-    D2b -->|连续变量| Struct_Continuous[SMT求解<br/>Z3/CVC5]
-    D2b -->|并发程序| Struct_Concurrent[分离逻辑<br/>Iris/VST]
+    D2b -->|归纳结构| Struct_Inductive["归纳定理证明<br/>Coq/Isabelle"]
+    D2b -->|连续变量| Struct_Continuous["SMT求解<br/>Z3/CVC5"]
+    D2b -->|并发程序| Struct_Concurrent["分离逻辑<br/>Iris/VST"]
 
     Scale_Param --> D2c{参数类型?}
-    D2c -->|进程数| Param_Process[正则模型检验<br/>PVS/Undip]
-    D2c -->|数据范围| Param_Data[参数化SMT]
+    D2c -->|进程数| Param_Process["正则模型检测<br/>PVS/Undip"]
+    D2c -->|数据范围| Param_Data["参数化SMT"]
 
     Prop_Safety --> D3a{时间约束?}
-    D3a -->|硬实时| Time_Hard_Safe[时间自动机<br/>UPPAAL]
-    D3a -->|软实时| Time_Soft_Safe[概率模型检验<br/>PRISM]
-    D3a -->|无时序| Time_None_Safe[标准模型检验<br/>SPIN/NuSMV]
+    D3a -->|硬实时| Time_Hard_Safe["时间自动机<br/>UPPAAL"]
+    D3a -->|软实时| Time_Soft_Safe["概率模型检测<br/>PRISM"]
+    D3a -->|无时序| Time_None_Safe["标准模型检测<br/>SPIN/NuSMV"]
 
     Prop_Liveness --> D3b{时间约束?}
-    D3b -->|硬实时| Time_Hard_Live[Büchi自动机<br/>UPPAAL]
-    D3b -->|软实时| Time_Soft_Live[马尔可夫决策<br/>PRISM]
-    D3b -->|无时序| Time_None_Live[LTL模型检验<br/>NuSMV]
+    D3b -->|硬实时| Time_Hard_Live["Büchi自动机<br/>UPPAAL"]
+    D3b -->|软实时| Time_Soft_Live["马尔可夫决策<br/>PRISM"]
+    D3b -->|无时序| Time_None_Live["LTL模型检测<br/>NuSMV"]
 
     Prop_Both --> D3c{时间约束?}
     D3c -->|硬实时| Time_Hard_Both[Timed CSP<br/>FDR4]
-    D3c -->|软实时| Time_Soft_Both[概率TLA+<br/>PRISM+TLA+]
+    D3c -->|软实时| Time_Soft_Both["概率TLA+<br/>PRISM+TLA+"]
     D3c -->|无时序| Time_None_Both[TLA+/Event-B<br/>TLC/Rodin]
 
     D4{概率行为?} -.->|随机性| Probabilistic
     D4 -.->|确定性| Deterministic
 
-    Probabilistic --> Prob_Rec[PRISM/Storm<br/>概率模型检验]
-    Deterministic --> Det_Cont[继续标准路径]
+    Probabilistic --> Prob_Rec["PRISM/Storm<br/>概率模型检测"]
+    Deterministic --> Det_Cont["继续标准路径"]
 
     %% 叶节点工具推荐
-    Time_Hard_Safe --> Rec1[主推荐: UPPAAL<br/>次推荐: Times<br/>学习: TINA]
-    Time_Soft_Safe --> Rec2[主推荐: PRISM<br/>次推荐: Storm<br/>学习: MODES]
-    Time_None_Safe --> Rec3[主推荐: NuSMV<br/>次推荐: SPIN<br/>学习: CBMC]
+    Time_Hard_Safe --> Rec1["主推荐: UPPAAL<br/>次推荐: Times<br/>学习: TINA"]
+    Time_Soft_Safe --> Rec2["主推荐: PRISM<br/>次推荐: Storm<br/>学习: MODES"]
+    Time_None_Safe --> Rec3["主推荐: NuSMV<br/>次推荐: SPIN<br/>学习: CBMC"]
 
-    Time_Hard_Live --> Rec4[主推荐: UPPAAL<br/>次推荐: PAT<br/>学习: Roméo]
-    Time_Soft_Live --> Rec5[主推荐: PRISM<br/>次推荐: IscasMC<br/>学习: Ymer]
-    Time_None_Live --> Rec6[主推荐: SPIN<br/>次推荐: NuSMV<br/>学习: CADP]
+    Time_Hard_Live --> Rec4["主推荐: UPPAAL<br/>次推荐: PAT<br/>学习: Roméo"]
+    Time_Soft_Live --> Rec5["主推荐: PRISM<br/>次推荐: IscasMC<br/>学习: Ymer"]
+    Time_None_Live --> Rec6["主推荐: SPIN<br/>次推荐: NuSMV<br/>学习: CADP"]
 
-    Time_Hard_Both --> Rec7[主推荐: FDR4<br/>次推荐: UPPAAL<br/>学习: PAT]
-    Time_Soft_Both --> Rec8[主推荐: PRISM<br/>次推荐: Plasma<br/>学习: MRMC]
-    Time_None_Both --> Rec9[主推荐: TLA+<br/>次推荐: Event-B<br/>学习: Alloy]
+    Time_Hard_Both --> Rec7["主推荐: FDR4<br/>次推荐: UPPAAL<br/>学习: PAT"]
+    Time_Soft_Both --> Rec8["主推荐: PRISM<br/>次推荐: Plasma<br/>学习: MRMC"]
+    Time_None_Both --> Rec9["主推荐: TLA+<br/>次推荐: Event-B<br/>学习: Alloy"]
 
-    Struct_Inductive --> Rec10[主推荐: Coq<br/>次推荐: Isabelle<br/>学习: Lean]
-    Struct_Continuous --> Rec11[主推荐: Z3<br/>次推荐: CVC5<br/>学习: Yices]
-    Struct_Concurrent --> Rec12[主推荐: Iris/Coq<br/>次推荐: VST<br/>学习: VeriFast]
+    Struct_Inductive --> Rec10["主推荐: Coq<br/>次推荐: Isabelle<br/>学习: Lean"]
+    Struct_Continuous --> Rec11["主推荐: Z3<br/>次推荐: CVC5<br/>学习: Yices"]
+    Struct_Concurrent --> Rec12["主推荐: Iris/Coq<br/>次推荐: VST<br/>学习: VeriFast"]
 
-    Param_Process --> Rec13[主推荐: PVS<br/>次推荐: Undip<br/>学习: B symmetry]
-    Param_Data --> Rec14[主推荐: Z3参数化<br/>次推荐: CVC5数组<br/>学习: Alt-Ergo]
+    Param_Process --> Rec13["主推荐: PVS<br/>次推荐: Undip<br/>学习: B symmetry"]
+    Param_Data --> Rec14["主推荐: Z3参数化<br/>次推荐: CVC5数组<br/>学习: Alt-Ergo"]
 ```
 
 ### 7.2 决策维度分解图
@@ -257,42 +257,42 @@ flowchart TD
 ```mermaid
 graph TB
     subgraph "选择维度空间"
-    D_SCALE[系统规模]
-    D_PROP[验证属性]
-    D_TIME[时间约束]
-    D_PROB[概率行为]
-    D_DOMAIN[应用领域]
+    D_SCALE["系统规模"]
+    D_PROP["验证属性"]
+    D_TIME["时间约束"]
+    D_PROB["概率行为"]
+    D_DOMAIN["应用领域"]
     end
 
     subgraph "规模分支"
-    SCALE1[有限状态]
-    SCALE2[无限状态]
-    SCALE3[参数化]
+    SCALE1["有限状态"]
+    SCALE2["无限状态"]
+    SCALE3["参数化"]
     end
 
     subgraph "属性分支"
-    PROP1[安全性<br/>Safety]
-    PROP2[活性<br/>Liveness]
-    PROP3[两者兼具]
+    PROP1["安全性<br/>Safety"]
+    PROP2["活性<br/>Liveness"]
+    PROP3["两者兼具"]
     end
 
     subgraph "时间分支"
-    TIME1[无时序]
-    TIME2[软实时]
-    TIME3[硬实时]
+    TIME1["无时序"]
+    TIME2["软实时"]
+    TIME3["硬实时"]
     end
 
     subgraph "概率分支"
-    PROB1[确定性]
-    PROB2[随机性]
+    PROB1["确定性"]
+    PROB2["随机性"]
     end
 
     subgraph "领域分支"
-    DOMAIN1[工作流]
-    DOMAIN2[流处理]
-    DOMAIN3[云原生]
-    DOMAIN4[嵌入式]
-    DOMAIN5[区块链]
+    DOMAIN1["工作流"]
+    DOMAIN2["流处理"]
+    DOMAIN3["云原生"]
+    DOMAIN4["嵌入式"]
+    DOMAIN5["区块链"]
     end
 
     D_SCALE --> SCALE1
@@ -322,15 +322,15 @@ graph TB
 ```mermaid
 flowchart LR
     subgraph "通用决策"
-    Root[系统验证决策树]
+    Root["系统验证决策树"]
     end
 
     subgraph "领域特化"
-    Wf[工作流场景树]
-    Sp[流处理场景树]
-    Cloud[云原生决策树]
-    Cons[一致性决策树]
-    Embed[嵌入式决策树]
+    Wf["工作流场景树"]
+    Sp["流处理场景树"]
+    Cloud["云原生决策树"]
+    Cons["一致性决策树"]
+    Embed["嵌入式决策树"]
     end
 
     Root -->|业务流程| Wf
@@ -340,23 +340,23 @@ flowchart LR
     Root -->|实时控制| Embed
 
     Wf --> Wf1[BPMN Soundness]
-    Wf --> Wf2[性能验证]
-    Wf --> Wf3[资源验证]
+    Wf --> Wf2["性能验证"]
+    Wf --> Wf3["资源验证"]
 
     Sp --> Sp1[Exactly-Once]
     Sp --> Sp2[Watermark]
-    Sp --> Sp3[窗口语义]
+    Sp --> Sp3["窗口语义"]
 
-    Cons --> Cons1[CAP权衡]
-    Cons --> Cons2[延迟需求]
-    Cons --> Cons3[可用性需求]
+    Cons --> Cons1["CAP权衡"]
+    Cons --> Cons2["延迟需求"]
+    Cons --> Cons3["可用性需求"]
 ```
 
 ### 7.4 决策路径示例（自动驾驶系统）
 
 ```mermaid
 flowchart TD
-    Start[自动驾驶实时控制验证]
+    Start["自动驾驶实时控制验证"]
 
     Start --> D1{系统规模?}
     D1 -->|有限状态<br/>控制循环有限| Finite
@@ -370,14 +370,14 @@ flowchart TD
     HardRT --> D4{概率行为?}
     D4 -->|随机性<br/>传感器噪声| Prob
 
-    Prob --> Rec[推荐: UPPAAL SMC]
+    Prob --> Rec["推荐: UPPAAL SMC"]
     Rec --> Detail[
         主推荐: UPPAAL SMC<br/>
-        统计模型检验<br/>
+        统计模型检测<br/>
         支持时间+概率
         ---
         次推荐: PRISM<br/>
-        概率模型检验
+        概率模型检测
         ---
         备选: Storm<br/>
         高性能概率检验
@@ -393,3 +393,4 @@ flowchart TD
 [^1]: J. Woodcock et al., "Industrial Application of Formal Methods: A Survey of Practitioners", IEEE TSE, 2024.
 [^2]: B. Mueller, "Smashing Ethereum Smart Contracts for Fun and Real Profit", HITB SECCONF, 2018.
 [^3]: K. G. Larsen et al., "Verification of Real-Time Systems using UPPAAL", Handbook of Model Checking, 2018.
+

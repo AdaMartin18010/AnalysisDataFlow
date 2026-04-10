@@ -1124,7 +1124,46 @@ graph LR
     style P4 fill:#90EE90
 ```
 
-## 8. 引用参考 (References)
+## 8. 关系建立 (Relations)
+
+### 与Raft共识算法的关系
+
+Kubernetes形式化验证与Raft共识算法密切相关。Kubernetes使用etcd作为其分布式键值存储，etcd基于Raft算法实现强一致性保证。
+
+- 详见：[Raft共识算法](../../../98-appendices/wikipedia-concepts/19-raft.md)
+
+etcd中的Raft实现：
+
+- **领导者选举**: etcd集群通过Raft选举Leader节点
+- **日志复制**: 所有状态变更通过Raft日志复制到多数节点
+- **线性一致性**: etcd提供Linearizability保证，确保读操作返回最新写入值
+
+### Kubernetes与Raft的集成
+
+**etcd共识层模型** (来自Kubernetes形式化定义):
+
+```
+etcd = (N_cluster, L_leader, T_term, E_entries, C_commit)
+```
+
+其中：
+
+- $N_{cluster}$: 集群节点集合（通常是3或5个节点）
+- $L_{leader}$: 当前Leader节点
+- $T_{term}$: Raft任期号
+- $E_{entries}$: 日志条目序列
+- $C_{commit}$: 提交条件（多数派确认）
+
+**控制循环与Raft的协同**:
+
+1. 用户通过API Server提交声明式配置
+2. 配置变更写入etcd（Raft复制）
+3. 控制器通过Watch机制接收变更通知
+4. 控制器调谐实际状态以匹配期望状态
+
+---
+
+## 9. 引用参考 (References)
 
 
 

@@ -43,7 +43,7 @@
 
 ### 2.1 签名 (Signature)
 
-**Def-W-22-01** (一阶签名). 一阶逻辑的签名 Σ 是一个三元组：
+**Def-S-98-01** (一阶签名). 一阶逻辑的签名 Σ 是一个三元组：
 
 $$\Sigma = \langle \mathcal{C}, \mathcal{F}, \mathcal{P} \rangle$$
 
@@ -60,7 +60,7 @@ $$\Sigma = \langle \mathcal{C}, \mathcal{F}, \mathcal{P} \rangle$$
 
 ### 2.2 项 (Terms)
 
-**Def-W-22-02** (项的语法). 给定签名 Σ 和可数无穷变量集 $V = \{x_1, x_2, x_3, \ldots\}$，项的集合 $\mathcal{T}_\Sigma$ 由以下文法归纳定义：
+**Def-S-98-02** (项的语法). 给定签名 Σ 和可数无穷变量集 $V = \{x_1, x_2, x_3, \ldots\}$，项的集合 $\mathcal{T}_\Sigma$ 由以下文法归纳定义：
 
 $$t ::= c \mid x \mid f(t_1, \ldots, t_n)$$
 
@@ -81,7 +81,7 @@ $$\text{FV}(t) = \begin{cases}
 
 ### 2.3 公式 (Formulas)
 
-**Def-W-22-03** (公式的语法). 一阶公式的集合 $\mathcal{L}_\Sigma$ 由以下文法定义：
+**Def-S-98-03** (公式的语法). 一阶公式的集合 $\mathcal{L}_\Sigma$ 由以下文法定义：
 
 $$\varphi ::= P(t_1, \ldots, t_n) \mid t_1 = t_2 \mid \top \mid \bot \mid \neg\varphi \mid \varphi \land \varphi \mid \varphi \lor \varphi \mid \varphi \rightarrow \varphi \mid \forall x.\varphi \mid \exists x.\varphi$$
 
@@ -95,7 +95,7 @@ $$\varphi ::= P(t_1, \ldots, t_n) \mid t_1 = t_2 \mid \top \mid \bot \mid \neg\v
 
 ### 2.4 自由变量与约束变量
 
-**Def-W-22-04** (自由变量). 公式 $\varphi$ 的自由变量集合 $\text{FV}(\varphi)$ 递归定义：
+**Def-S-98-04** (自由变量). 公式 $\varphi$ 的自由变量集合 $\text{FV}(\varphi)$ 递归定义：
 
 | 公式形式 | 自由变量 |
 |---------|---------|
@@ -107,7 +107,7 @@ $$\varphi ::= P(t_1, \ldots, t_n) \mid t_1 = t_2 \mid \top \mid \bot \mid \neg\v
 
 **闭公式 (句子)**: 满足 $\text{FV}(\varphi) = \emptyset$ 的公式称为句子。
 
-**Def-W-22-05** (替换). 项 $t$ 在公式 $\varphi$ 中对变量 $x$ 的捕获避免替换 $[t/x]$：
+**Def-S-98-05** (替换). 项 $t$ 在公式 $\varphi$ 中对变量 $x$ 的捕获避免替换 $[t/x]$：
 
 $$\varphi[t/x] = \varphi \text{ 中所有 } x \text{ 的自由出现替换为 } t$$
 
@@ -128,7 +128,7 @@ $$\exists x \in A.\varphi \equiv \exists x.(A(x) \land \varphi)$$
 
 ### 3.1 结构 (Structure)
 
-**Def-W-22-06** (一阶结构). 签名 Σ 的一个结构 $\mathcal{M}$ 是一个对：
+**Def-S-98-06** (一阶结构). 签名 Σ 的一个结构 $\mathcal{M}$ 是一个对：
 
 $$\mathcal{M} = \langle D, \mathcal{I} \rangle$$
 
@@ -149,7 +149,7 @@ $$\mathcal{M} = \langle D, \mathcal{I} \rangle$$
 
 ### 3.2 赋值 (Assignment)
 
-**Def-W-22-07** (变量赋值). 变量赋值 $\sigma : V \rightarrow D$ 是从变量集到论域的函数。
+**Def-S-98-07** (变量赋值). 变量赋值 $\sigma : V \rightarrow D$ 是从变量集到论域的函数。
 
 **变体赋值**: 给定 $\sigma$, $x \in V$, $d \in D$：
 
@@ -160,7 +160,7 @@ d & \text{if } y = x \\
 
 ### 3.3 项的语义解释
 
-**Def-W-22-08** (项解释). 项 $t$ 在结构 $\mathcal{M}$ 和赋值 $\sigma$ 下的解释 $[\![t]\!]_{\mathcal{M},\sigma}$：
+**Def-S-98-08** (项解释). 项 $t$ 在结构 $\mathcal{M}$ 和赋值 $\sigma$ 下的解释 $[\![t]\!]_{\mathcal{M},\sigma}$：
 
 $$[\![t]\!]_{\mathcal{M},\sigma} = \begin{cases}
 \mathcal{I}(c) & \text{if } t = c \\
@@ -170,7 +170,7 @@ $$[\![t]\!]_{\mathcal{M},\sigma} = \begin{cases}
 
 ### 3.4 满足关系 (Satisfaction)
 
-**Def-W-22-09** (满足关系 $\models$). 公式 $\varphi$ 在结构 $\mathcal{M}$ 和赋值 $\sigma$ 下的满足关系归纳定义：
+**Def-S-98-09** (满足关系 $\models$). 公式 $\varphi$ 在结构 $\mathcal{M}$ 和赋值 $\sigma$ 下的满足关系归纳定义：
 
 | 公式形式 | 满足条件 |
 |---------|---------|
@@ -187,7 +187,7 @@ $$[\![t]\!]_{\mathcal{M},\sigma} = \begin{cases}
 
 ### 3.5 语义核心概念
 
-**Def-W-22-10** (有效性、可满足性、逻辑后承).
+**Def-S-98-10** (有效性、可满足性、逻辑后承).
 
 | 概念 | 定义 | 记号 |
 |------|------|------|
@@ -203,7 +203,7 @@ $$[\![t]\!]_{\mathcal{M},\sigma} = \begin{cases}
 
 ### 4.1 Hilbert系统
 
-**Def-W-22-11** (Hilbert式公理系统 $\mathcal{H}$). 包含以下公理模式和推理规则：
+**Def-S-98-11** (Hilbert式公理系统 $\mathcal{H}$). 包含以下公理模式和推理规则：
 
 **命题逻辑公理**:
 
@@ -235,7 +235,7 @@ $$\text{(Gen)} \quad \frac{\varphi}{\forall x.\varphi} \quad \text{(全称概括
 
 ### 4.2 自然演绎 (Natural Deduction)
 
-**Def-W-22-12** (自然演绎系统 $\mathcal{N}$). 以相继式 $\Gamma \vdash \varphi$ 形式呈现：
+**Def-S-98-12** (自然演绎系统 $\mathcal{N}$). 以相继式 $\Gamma \vdash \varphi$ 形式呈现：
 
 **结构规则**:
 
@@ -263,7 +263,7 @@ $$\text{(∃E)} \quad \frac{\Gamma \vdash \exists x.\varphi \quad \Gamma, \varph
 
 ### 4.3 相继演算 (Sequent Calculus)
 
-**Def-W-22-13** (相继演算系统 $\mathcal{G}$). 相继式形式为 $\Gamma \vdash \Delta$，其中 $\Gamma, \Delta$ 是公式多重集。
+**Def-S-98-13** (相继演算系统 $\mathcal{G}$). 相继式形式为 $\Gamma \vdash \Delta$，其中 $\Gamma, \Delta$ 是公式多重集。
 
 **结构规则**:
 
@@ -296,7 +296,7 @@ $$\text{(∃R)} \quad \frac{\Gamma \vdash \Delta, \varphi[x/t]}{\Gamma \vdash \D
 
 ### 5.1 可靠性定理 (Soundness)
 
-**Thm-W-22-01** (可靠性). 对于任何公式集 $\Gamma$ 和公式 $\varphi$：
+**Thm-S-98-01** (可靠性). 对于任何公式集 $\Gamma$ 和公式 $\varphi$：
 
 $$\text{若 } \Gamma \vdash \varphi \text{，则 } \Gamma \models \varphi$$
 
@@ -304,7 +304,7 @@ $$\text{若 } \Gamma \vdash \varphi \text{，则 } \Gamma \models \varphi$$
 
 ### 5.2 完备性定理 (Gödel Completeness)
 
-**Thm-W-22-02** (Gödel完备性定理, 1929). 对于任何公式集 $\Gamma$ 和公式 $\varphi$：
+**Thm-S-98-02** (Gödel完备性定理, 1929). 对于任何公式集 $\Gamma$ 和公式 $\varphi$：
 
 $$\text{若 } \Gamma \models \varphi \text{，则 } \Gamma \vdash \varphi$$
 
@@ -316,7 +316,7 @@ $$\text{若 } \Gamma \models \varphi \text{，则 } \Gamma \vdash \varphi$$
 
 ### 5.3 紧致性定理 (Compactness)
 
-**Thm-W-22-03** (紧致性定理). 公式集 $\Gamma$ 可满足当且仅当它的每个有限子集可满足。
+**Thm-S-98-03** (紧致性定理). 公式集 $\Gamma$ 可满足当且仅当它的每个有限子集可满足。
 
 **等价形式**: 
 - 若 $\Gamma \models \varphi$，则存在有限 $\Gamma_0 \subseteq \Gamma$ 使得 $\Gamma_0 \models \varphi$
@@ -325,17 +325,17 @@ $$\text{若 } \Gamma \models \varphi \text{，则 } \Gamma \vdash \varphi$$
 
 ### 5.4 Löwenheim-Skolem定理
 
-**Thm-W-22-04** (向下Löwenheim-Skolem). 若可数签名的一阶理论 $T$ 有无限模型，则对任意无限基数 $\kappa$，$T$ 有基数为 $\kappa$ 的模型。
+**Thm-S-98-04** (向下Löwenheim-Skolem). 若可数签名的一阶理论 $T$ 有无限模型，则对任意无限基数 $\kappa$，$T$ 有基数为 $\kappa$ 的模型。
 
-**Thm-W-22-05** (向上Löwenheim-Skolem). 若一阶理论 $T$ 有无限模型，则 $T$ 有任意大基数的模型。
+**Thm-S-98-05** (向上Löwenheim-Skolem). 若一阶理论 $T$ 有无限模型，则 $T$ 有任意大基数的模型。
 
 **Skolem悖论**: 若ZFC有模型，则它有可数模型。但ZFC可证明存在不可数集 (如实数集)。
 
 ### 5.5 不可判定性 (Church-Turing)
 
-**Thm-W-22-06** (Church定理, 1936). 一阶逻辑的有效性问题 (判定给定公式是否有效) 是**不可判定的** (undecidable)。
+**Thm-S-98-06** (Church定理, 1936). 一阶逻辑的有效性问题 (判定给定公式是否有效) 是**不可判定的** (undecidable)。
 
-**Thm-W-22-07** (半可判定性). 一阶逻辑的有效性是**半可判定的** (semi-decidable)：
+**Thm-S-98-07** (半可判定性). 一阶逻辑的有效性是**半可判定的** (semi-decidable)：
 
 - 若 $\varphi$ 有效，则算法可在有限步内停机并确认
 - 若 $\varphi$ 非有效，算法可能永不停机
@@ -356,7 +356,7 @@ $$\text{若 } \Gamma \models \varphi \text{，则 } \Gamma \vdash \varphi$$
 
 ### 6.1 Gödel完备性定理详细证明
 
-**Thm-W-22-08** (完备性定理 - 构造性证明). 每个一致的公式集 $\Gamma$ 都有模型。
+**Thm-S-98-08** (完备性定理 - 构造性证明). 每个一致的公式集 $\Gamma$ 都有模型。
 
 *证明*:
 
@@ -404,7 +404,7 @@ $$\mathcal{M} \models \varphi \quad \Leftrightarrow \quad \varphi \in \Gamma^*$$
 
 ### 6.2 可靠性证明
 
-**Thm-W-22-09** (可靠性 - 归纳证明). 对每个自然演绎证明，其结论在语义上有效。
+**Thm-S-98-09** (可靠性 - 归纳证明). 对每个自然演绎证明，其结论在语义上有效。
 
 *证明框架*:
 
@@ -442,7 +442,7 @@ $$\frac{\Gamma \vdash \varphi[x/c]}{\Gamma \vdash \forall x.\varphi}$$
 
 ### 7.1 Curry-Howard对应的FOL版本
 
-**Prop-W-22-01** (FOL与依赖类型的对应). 直觉主义一阶逻辑与依赖类型系统存在Curry-Howard对应：
+**Prop-S-98-01** (FOL与依赖类型的对应). 直觉主义一阶逻辑与依赖类型系统存在Curry-Howard对应：
 
 | 逻辑侧 | 类型侧 |
 |--------|--------|
@@ -454,7 +454,7 @@ $$\frac{\Gamma \vdash \varphi[x/c]}{\Gamma \vdash \forall x.\varphi}$$
 
 ### 7.2 BHK解释
 
-**Def-W-22-14** (Brouwer-Heyting-Kolmogorov解释). 直觉主义逻辑中公式的"证明"含义：
+**Def-S-98-14** (Brouwer-Heyting-Kolmogorov解释). 直觉主义逻辑中公式的"证明"含义：
 
 | 公式 | 证明是... |
 |------|----------|
@@ -544,32 +544,32 @@ mindmap
 ```mermaid
 graph TD
     subgraph "公理基础"
-        A1[命题公理 H1-H3]
-        A2[量化公理 Q1-Q3]
-        A3[等词公理 EQ1-EQ2]
+        A1["命题公理 H1-H3"]
+        A2["量化公理 Q1-Q3"]
+        A3["等词公理 EQ1-EQ2"]
     end
 
     subgraph "推理规则"
-        R1[假言推理 MP]
-        R2[全称概括 Gen]
+        R1["假言推理 MP"]
+        R2["全称概括 Gen"]
     end
 
     subgraph "基本定理"
-        T1[可靠性: ⊢φ ⟹ ⊨φ]
-        T2[完备性: ⊨φ ⟹ ⊢φ]
-        T3[一致性: 非⊢⊥]
+        T1["可靠性: ⊢φ ⟹ ⊨φ"]
+        T2["完备性: ⊨φ ⟹ ⊢φ"]
+        T3["一致性: 非⊢⊥"]
     end
 
     subgraph "高级定理"
-        T4[紧致性]
+        T4["紧致性"]
         T5[Löwenheim-Skolem]
-        T6[Church不可判定性]
+        T6["Church不可判定性"]
     end
 
     subgraph "推论与应用"
-        C1[模型存在性]
-        C2[非标准模型]
-        C3[自动推理基础]
+        C1["模型存在性"]
+        C2["非标准模型"]
+        C3["自动推理基础"]
     end
 
     A1 --> T1
@@ -622,31 +622,31 @@ stateDiagram-v2
 ```mermaid
 graph BT
     subgraph "数学基础"
-        M1[集合论]
-        M2[模型论]
-        M3[证明论]
-        M4[递归论]
+        M1["集合论"]
+        M2["模型论"]
+        M3["证明论"]
+        M4["递归论"]
     end
 
     subgraph "一阶逻辑核心"
-        F1[语法理论]
-        F2[语义学]
-        F3[证明系统]
-        F4[元数学]
+        F1["语法理论"]
+        F2["语义学"]
+        F3["证明系统"]
+        F4["元数学"]
     end
 
     subgraph "应用层"
-        A1[程序验证]
-        A2[数据库理论]
-        A3[知识表示]
-        A4[自动推理]
+        A1["程序验证"]
+        A2["数据库理论"]
+        A3["知识表示"]
+        A4["自动推理"]
     end
 
     subgraph "扩展"
-        E1[模态逻辑]
-        E2[时序逻辑]
-        E3[高阶逻辑]
-        E4[类型论]
+        E1["模态逻辑"]
+        E2["时序逻辑"]
+        E3["高阶逻辑"]
+        E4["类型论"]
     end
 
     M1 --> F2
@@ -719,36 +719,36 @@ timeline
 ```mermaid
 graph TB
     subgraph "应用层"
-        A1[程序验证/形式化方法]
-        A2[数据库查询优化]
-        A3[知识图谱推理]
-        A4[自动定理证明]
+        A1["程序验证/形式化方法"]
+        A2["数据库查询优化"]
+        A3["知识图谱推理"]
+        A4["自动定理证明"]
     end
 
     subgraph "元理论层"
-        M1[Gödel完备性]
-        M2[紧致性]
+        M1["Gödel完备性"]
+        M2["紧致性"]
         M3[Löwenheim-Skolem]
-        M4[不可判定性]
+        M4["不可判定性"]
     end
 
     subgraph "证明系统层"
-        P1[Hilbert系统]
-        P2[自然演绎]
-        P3[相继演算]
-        P4[归结原理]
+        P1["Hilbert系统"]
+        P2["自然演绎"]
+        P3["相继演算"]
+        P4["归结原理"]
     end
 
     subgraph "语义层"
-        S1[Tarski语义]
-        S2[Kripke语义]
-        S3[博弈语义]
+        S1["Tarski语义"]
+        S2["Kripke语义"]
+        S3["博弈语义"]
     end
 
     subgraph "语法层"
-        G1[项/公式]
-        G2[签名]
-        G3[变量绑定]
+        G1["项/公式"]
+        G2["签名"]
+        G3["变量绑定"]
     end
 
     G3 --> G2
@@ -770,35 +770,35 @@ graph TB
 
 ```mermaid
 graph TD
-    A[目标: Γ ⊢ ∀x.∃y.P] --> B{选择策略}
+    A["目标: Γ ⊢ ∀x.∃y.P"] --> B{选择策略}
 
-    B -->|语义方法| C[构造模型]
-    B -->|语法方法| D[应用推理规则]
+    B -->|语义方法| C["构造模型"]
+    B -->|语法方法| D["应用推理规则"]
 
-    C --> E[定义论域 D]
-    C --> F[解释符号]
+    C --> E["定义论域 D"]
+    C --> F["解释符号"]
 
     E --> G{验证满足性}
     F --> G
 
-    G -->|满足| H[找到模型]
-    G -->|不满足| I[公式非有效]
+    G -->|满足| H["找到模型"]
+    G -->|不满足| I["公式非有效"]
 
-    D --> J[Skolem化]
-    D --> K[前束范式]
+    D --> J["Skolem化"]
+    D --> K["前束范式"]
 
-    J --> L[归结推理]
+    J --> L["归结推理"]
     K --> L
 
     L --> M{导出空子句?}
-    M -->|是| N[证明存在]
+    M -->|是| N["证明存在"]
     M -->|否| O{搜索空间穷尽?}
 
-    O -->|是| P[公式可满足]
+    O -->|是| P["公式可满足"]
     O -->|否| L
 
-    H --> Q[可满足性确认]
-    N --> R[有效性确认]
+    H --> Q["可满足性确认"]
+    N --> R["有效性确认"]
     P --> Q
 
     style H fill:#ccffcc
@@ -880,3 +880,4 @@ graph TD
 ---
 
 *文档版本: v1.0 | 创建时间: 2026-04-10 | 文件大小: ~20KB*
+

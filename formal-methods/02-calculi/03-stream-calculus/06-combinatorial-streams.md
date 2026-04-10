@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-FM-03-06-01. 组合物种 (Combinatorial Species)
+### Def-C-03-06-01. 组合物种 (Combinatorial Species)
 
 **定义**: 组合物种是组合结构的函子化描述，将有限集合映射到该集合上的结构集合。
 
@@ -41,7 +41,7 @@ C[U] = (|U|-1)! if U≠∅ else ∅     // 循环序
 
 ---
 
-### Def-FM-03-06-02. 流的组合操作 (Combinatorial Operations on Streams)
+### Def-C-03-06-02. 流的组合操作 (Combinatorial Operations on Streams)
 
 **定义**: 流的组合操作是将物种的代数结构提升到流（无限序列）上的操作。
 
@@ -87,7 +87,7 @@ C[U] = (|U|-1)! if U≠∅ else ∅     // 循环序
 
 ---
 
-### Def-FM-03-06-03. 物种的计数序列 (Counting Sequences)
+### Def-C-03-06-03. 物种的计数序列 (Counting Sequences)
 
 **定义**: 物种F的计数序列是 `(f₀, f₁, f₂, ...)`，其中 `f_n = |F[n]|` 是n元集合上的F-结构数量。
 
@@ -114,7 +114,7 @@ F̃(x) = Σ_{n=0}^∞ f_n x^n
 
 ---
 
-### Def-FM-03-06-04. 在算法分析中的应用 (Applications in Algorithm Analysis)
+### Def-C-03-06-04. 在算法分析中的应用 (Applications in Algorithm Analysis)
 
 **定义**: 组合流方法用于分析算法的期望复杂度、平均情况行为和概率分布。
 
@@ -138,7 +138,7 @@ A = CYC(B)    ⇒    A(x) = log(1/(1 - B(x)))
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-FM-03-06-01. 物种和与积的计数
+### Lemma-C-03-06-01. 物种和与积的计数
 
 **陈述**: 对于物种F和G，它们的和与积的计数满足:
 
@@ -168,15 +168,15 @@ A = CYC(B)    ⇒    A(x) = log(1/(1 - B(x)))
 
 ---
 
-### Lemma-FM-03-06-02. 流柯西积的生成函数
+### Lemma-C-03-06-02. 流柯西积的生成函数
 
 **陈述**: 对于流σ和τ，柯西积 `σ · τ` 的普通生成函数等于生成函数的乘积: `G_{σ·τ}(x) = G_σ(x) · G_τ(x)`。
 
-**证明**: 见Lemma-FM-03-05-02。
+**证明**: 见Lemma-C-03-05-02。
 
 ---
 
-### Prop-FM-03-06-01. 指数公式（Exponential Formula）
+### Prop-C-03-06-01. 指数公式（Exponential Formula）
 
 **陈述**: 若 `F = SET(G)`，则:
 
@@ -211,7 +211,7 @@ C(x) = log(S(x))
 
 ---
 
-### Prop-FM-03-06-02. 拉格朗日反演（Lagrange Inversion）
+### Prop-C-03-06-02. 拉格朗日反演（Lagrange Inversion）
 
 **陈述**: 若 `y = x φ(y)`，则:
 
@@ -395,7 +395,7 @@ C_n = 2(n+1)H_n - 4n
 
 ## 5. 形式证明 (Proofs)
 
-### Thm-FM-03-06-01. 指数公式与连通结构
+### Thm-C-03-06-01. 指数公式与连通结构
 
 **陈述**: 设 `S = SET(C)`，其中C是连通结构物种，则:
 
@@ -431,7 +431,7 @@ exp(C(x)) = Π_{n≥1} exp(c_n x^n/n!)
 
 ---
 
-### Thm-FM-03-06-02. 拉格朗日反演公式
+### Thm-C-03-06-02. 拉格朗日反演公式
 
 **陈述**: 若 `y = x φ(y)` 且 φ(0) ≠ 0，则:
 
@@ -463,7 +463,7 @@ exp(C(x)) = Π_{n≥1} exp(c_n x^n/n!)
 
 ---
 
-### Cor-FM-03-06-01. Cayley树计数公式
+### Cor-C-03-06-01. Cayley树计数公式
 
 **陈述**: n个标记顶点的有根树数量为 `n^{n-1}`。
 

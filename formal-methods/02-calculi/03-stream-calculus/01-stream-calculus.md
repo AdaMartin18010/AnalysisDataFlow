@@ -143,6 +143,8 @@ $$\sigma \times (\tau + \rho) = (\sigma \times \tau) + (\sigma \times \rho)$$
 
 ### 3.1 与其他计算模型的关系
 
+**相关概念**: [流方程求解](./05-stream-equations.md) - 流微分方程与生成函数方法的形式化理论
+
 **关系映射表**:
 
 | Stream Calculus | 对应概念 | 数学结构 |
@@ -151,9 +153,9 @@ $$\sigma \times (\tau + \rho) = (\sigma \times \tau) + (\sigma \times \rho)$$
 | 初值 $\sigma(0)$ | 常数项 | 环元素 |
 | 导数 $\sigma'$ | 形式导数 | 微分算子 |
 | 卷积乘法 | 柯西乘积 | 级数乘法 |
-| 共归纳证明 | 双模拟等价 | 终极共代数 |
+| 共归纳证明 | 互模拟等价 | 终极共代数 |
 
-### 3.2 与进程代数的关系
+### 3.2 与进程演算的关系
 
 **定理 Thm-C-01-02 (流与确定型进程)**
 流演算可视为**确定型进程**的迹语义 (trace semantics)：
@@ -256,7 +258,7 @@ $$\begin{aligned}
 ### 5.2 共归纳证明原理
 
 **定理 Thm-C-01-04 (共归纳证明原理)**
-设 $R \subseteq A^\omega \times A^\omega$ 是一个**双模拟关系**，即：
+设 $R \subseteq A^\omega \times A^\omega$ 是一个**互模拟关系**，即：
 
 $$\forall (\sigma, \tau) \in R: \sigma(0) = \tau(0) \land (\sigma', \tau') \in R$$
 
@@ -265,7 +267,7 @@ $$\forall (\sigma, \tau) \in R: \sigma(0) = \tau(0) \land (\sigma', \tau') \in R
 **证明**:
 考虑终极共代数 $(A^\omega, \langle (\cdot)(0), (\cdot)' \rangle)$。
 
-由终极性质，任意状态到流的映射是唯一的。由于 $R$ 是双模拟，投影 $\pi_1, \pi_2: R \to A^\omega$ 都是同态：
+由终极性质，任意状态到流的映射是唯一的。由于 $R$ 是互模拟，投影 $\pi_1, \pi_2: R \to A^\omega$ 都是同态：
 - $\pi_1(\sigma, \tau) = \sigma$
 - $\pi_2(\sigma, \tau) = \tau$
 
@@ -285,7 +287,7 @@ $$(\sigma \times \tau) \times \rho = \sigma \times (\tau \times \rho)$$
 **共归纳证明**:
 定义关系 $R = \{((\sigma \times \tau) \times \rho, \sigma \times (\tau \times \rho)) : \sigma, \tau, \rho \in A^\omega\}$。
 
-需证 $R$ 是双模拟：
+需证 $R$ 是互模拟：
 
 **初值相等**:
 $$\begin{aligned}
@@ -306,7 +308,7 @@ $$\begin{aligned}
 
 其中 $(*)$ 利用分配律和归纳假设。
 
-因此 $R$ 是双模拟，由共归纳原理得证。∎
+因此 $R$ 是互模拟，由共归纳原理得证。∎
 
 ## 6. 实例验证 (Examples)
 
@@ -353,7 +355,7 @@ $$(\underline{a} \times X)(n) = \sum_{i=0}^{n} a \cdot X(n-i) = a \cdot X(n) = \
 
 **例4: 证明 $X \times \text{geo}(1) = \text{geo}(1) - 1$**
 
-定义关系 $R = \{(X \times \text{geo}(1), \text{geo}(1) - 1)\}$，验证其为双模拟：
+定义关系 $R = \{(X \times \text{geo}(1), \text{geo}(1) - 1)\}$，验证其为互模拟：
 
 **初值**:
 - $(X \times \text{geo}(1))(0) = 0$
@@ -426,7 +428,7 @@ graph LR
 ```mermaid
 graph TB
     subgraph "共归纳证明框架"
-        R["双模拟关系 R ⊆ A^ω × A^ω"]
+        R["互模拟关系 R ⊆ A^ω × A^ω"]
         COND1{"∀(σ,τ)∈R:<br/>σ(0) = τ(0)"}
         COND2{"∀(σ,τ)∈R:<br/>(σ', τ') ∈ R"}
         CONCL["结论: σ = τ"]
@@ -439,7 +441,7 @@ graph TB
 
     subgraph "与归纳证明对比"
         IND["归纳证明: 从基例到归纳步<br/>证明性质对所有n成立"]
-        COIND["共归纳证明: 证明关系是双模拟<br/>证明两个流行为等价"]
+        COIND["共归纳证明: 证明关系是互模拟<br/>证明两个流行为等价"]
     end
 ```
 
@@ -451,7 +453,7 @@ mindmap
     理论基础
       共归纳Coinduction
       终极共代数
-      双模拟
+      互模拟
     代数结构
       形式幂级数
       交换环

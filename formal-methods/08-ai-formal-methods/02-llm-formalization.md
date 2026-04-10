@@ -1,4 +1,4 @@
-# LLM形式化规范生成
+﻿# LLM形式化规范生成
 
 > **所属阶段**: AI-Formal-Methods | **前置依赖**: [神经定理证明](01-neural-theorem-proving.md), [Lean 4](../05-verification/03-theorem-proving/03-lean4.md) | **形式化等级**: L4
 >
@@ -46,7 +46,7 @@ $$\text{Semantic-Gap} = \mathbb{H}(Req_{\text{NL}}) - \mathbb{I}(Req_{\text{NL}}
     ↓
 [形式化生成] → 生成TLA+/Coq/Lean代码
     ↓
-[验证反馈] → 语法检查、类型检查、模型检验
+[验证反馈] → 语法检查、类型检查、模型检测
     ↓
 [人工审查] → 专家验证、修正
     ↓

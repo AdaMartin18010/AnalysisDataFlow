@@ -1,12 +1,12 @@
-# 符号模型检验
+﻿# 符号模型检测
 
-> **所属单元**: Verification/Model-Checking | **前置依赖**: [显式状态模型检验](./01-explicit-state.md) | **形式化等级**: L5
+> **所属单元**: Verification/Model-Checking | **前置依赖**: [显式状态模型检测](./01-explicit-state.md) | **形式化等级**: L5
 
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 符号状态表示
 
-**Def-V-05-01** (符号表示)。在符号模型检验中，状态集合使用布尔公式编码而非显式枚举：
+**Def-V-05-01** (符号表示)。在符号模型检测中，状态集合使用布尔公式编码而非显式枚举：
 
 $$S_{\text{set}} \triangleq \{s \in \{0,1\}^n \mid f_S(s) = \text{true}\}$$
 
@@ -80,7 +80,7 @@ $$|BDD_{\pi_1}(f)| \text{ vs } |BDD_{\pi_2}(f)| \text{ 可指数差异}$$
 
 ### 2.2 BMC完备性边界
 
-**Def-V-05-08** (有界模型检验)。BMC检验是否存在长度为$k$的反例：
+**Def-V-05-08** (有界模型检测)。BMC检验是否存在长度为$k$的反例：
 
 $$\text{BMC}(M, \varphi, k) = \text{SAT}\left(I(V_0) \land \bigwedge_{i=0}^{k-1} T(V_i, V_{i+1}) \land \neg \varphi(V_0, \ldots, V_k)\right)$$
 
@@ -247,7 +247,7 @@ SPEC
 
 ## 7. 可视化 (Visualizations)
 
-### 7.1 符号模型检验架构
+### 7.1 符号模型检测架构
 
 ```mermaid
 graph TB

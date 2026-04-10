@@ -1,4 +1,4 @@
-# CMU 15-712/15-814: 高级类型理论 (Advanced Type Theory)
+# CMU 15-712/15-814: 高级类型论 (Advanced Type Theory)
 
 > **所属阶段**: 01-foundations | **前置依赖**: [05-type-theory.md](./05-type-theory.md) | **形式化等级**: L5-L6
 >
@@ -8,7 +8,7 @@
 
 ### 1.1 System Fω (高阶多态λ演算)
 
-**Def-CMU-01-01: 类型构造器层级**
+**Def-F-01-01: 类型构造器层级**
 
 System Fω 通过引入**类型构造器**扩展 System F，形成类型层级：
 
@@ -19,7 +19,7 @@ $$\kappa ::= * \mid \kappa_1 \to \kappa_2$$
 - $*$: 具体类型 (kind of types)，如 `Int`, `Bool`
 - $\kappa_1 \to \kappa_2$: 类型构造器，如 `List`, `Tree`
 
-**Def-CMU-01-02: System Fω 类型**
+**Def-F-01-02: System Fω 类型**
 
 类型由以下文法生成：
 
@@ -28,12 +28,12 @@ $$\begin{aligned}
 \kappa &::= * \mid \kappa_1 \to \kappa_2
 \end{aligned}$$
 
-**Def-CMU-01-03: 类型运算与抽象**
+**Def-F-01-03: 类型运算与抽象**
 
 - **类型构造器抽象**: 若 $\Gamma, X:\kappa \vdash \sigma : *$，则 $\Gamma \vdash \Lambda X:\kappa. \sigma : \kappa \to *$
 - **类型构造器应用**: 若 $\Gamma \vdash \sigma : \kappa_1 \to \kappa_2$ 且 $\Gamma \vdash \tau : \kappa_1$，则 $\Gamma \vdash \sigma\,\tau : \kappa_2$
 
-**Def-CMU-01-04: 高阶类型实例**
+**Def-F-01-04: 高阶类型实例**
 
 | 类型 | Kind | 说明 |
 |------|------|------|
@@ -43,15 +43,15 @@ $$\begin{aligned}
 | `Monad` | $(* \to *) \to *$ | 高阶类型构造器 |
 | `Fix` | $(* \to *) \to *$ | 递归类型构造器 |
 
-### 1.2 依赖类型理论 (Dependent Type Theory)
+### 1.2 依赖类型论 (Dependent Type Theory)
 
-**Def-CMU-01-05: 依赖函数类型 ($\Pi$-类型)**
+**Def-F-01-05: 依赖函数类型 ($\Pi$-类型)**
 
 $$\Pi x:A. B(x) \quad \text{(若 $x$ 不在 $B$ 中自由出现，退化为 $A \to B$)}$$
 
 其中 $B(x)$ 是依赖于 $x:A$ 的类型族。
 
-**Def-CMU-01-06: 依赖对类型 ($\Sigma$-类型)**
+**Def-F-01-06: 依赖对类型 ($\Sigma$-类型)**
 
 $$\Sigma x:A. B(x) = \{(a, b) \mid a:A, b:B(a)\}$$
 
@@ -59,13 +59,13 @@ $$\Sigma x:A. B(x) = \{(a, b) \mid a:A, b:B(a)\}$$
 - $\pi_1 : \Sigma x:A. B(x) \to A$
 - $\pi_2 : \Pi p:(\Sigma x:A.B(x)). B(\pi_1(p))$
 
-**Def-CMU-01-07: 归纳类型定义 (Inductive Families)**
+**Def-F-01-07: 归纳类型定义 (Inductive Families)**
 
 归纳族 $P : A \to *$ 由构造器生成：
 
 $$\text{Inductive } P : A \to * \text{ where } \{c_i : \Pi \vec{x}:\vec{T_i}. P(t_i[\vec{x}])\}_{i=1}^n$$
 
-**Def-CMU-01-08: 共归纳类型 (Coinductive Types)**
+**Def-F-01-08: 共归纳类型 (Coinductive Types)**
 
 共归纳类型由其观察器定义：
 
@@ -77,7 +77,7 @@ $$\text{CoInductive } C : * \text{ where } \{obs_i : C \to T_i\}_{i=1}^n$$
 
 ### 1.3 逻辑框架 (Logical Framework, LF)
 
-**Def-CMU-01-09: LF 类型层级**
+**Def-F-01-09: LF 类型层级**
 
 LF (Edinburgh Logical Framework) 是一个依赖类型元语言：
 
@@ -87,7 +87,7 @@ LF (Edinburgh Logical Framework) 是一个依赖类型元语言：
 | Type | kind | 对象级类型 |
 | Object | obj | 证明/项 |
 
-**Def-CMU-01-10: LF 判断即类型 (Judgments-as-Types)**
+**Def-F-01-10: LF 判断即类型 (Judgments-as-Types)**
 
 在 LF 中，判断 $J$ 编码为类型，证明编码为项：
 
@@ -95,7 +95,7 @@ $$\vdash_{\text{obj}} J \quad \Leftrightarrow \quad \vdash_{\text{LF}} M : \ulco
 
 其中 $\ulcorner \cdot \urcorner$ 是编码函数。
 
-**Def-CMU-01-11: 签名 (Signature)**
+**Def-F-01-11: 签名 (Signature)**
 
 LF 签名 $\Sigma$ 是常数声明的集合：
 
@@ -103,7 +103,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 
 ### 1.4 Curry-Howard 对应深入
 
-**Def-CMU-01-12: 命题即类型 (Propositions as Types)**
+**Def-F-01-12: 命题即类型 (Propositions as Types)**
 
 | 逻辑构造 | 类型构造 | $\lambda$-项 |
 |----------|----------|--------------|
@@ -116,7 +116,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 | $\top$ | $1$ (单位类型) | $()$ |
 | $\bot$ | $0$ (空类型) | - |
 
-**Def-CMU-01-13: 经典逻辑与构造性逻辑**
+**Def-F-01-13: 经典逻辑与构造性逻辑**
 
 | 原理 | 经典 | 构造性 |
 |------|------|--------|
@@ -126,7 +126,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 
 ### 1.5 线性逻辑 (Linear Logic)
 
-**Def-CMU-01-14: 线性命题连接词**
+**Def-F-01-14: 线性命题连接词**
 
 | 连接词 | 符号 | 线性解释 |
 |--------|------|----------|
@@ -139,7 +139,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 | 当然(!) | $!A$ | 可复制资源 |
 | 何必(?) | $?A$ | 可丢弃资源 |
 
-**Def-CMU-01-15: 线性类型上下文**
+**Def-F-01-15: 线性类型上下文**
 
 线性类型判断：$\Gamma ; \Delta \vdash M : A$
 
@@ -147,7 +147,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 - $\Gamma$: 直觉主义上下文 (可重复使用)
 - $\Delta$: 线性上下文 (必须使用恰好一次)
 
-**Def-CMU-01-16: 资源敏感计算**
+**Def-F-01-16: 资源敏感计算**
 
 资源解释：类型 $A$ 表示资源，项 $M : A$ 表示资源的变换过程。
 
@@ -159,17 +159,17 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 
 ### 2.1 System Fω 的元理论
 
-**Lemma-CMU-01-01: System Fω 的替换引理**
+**Lemma-F-01-01: System Fω 的替换引理**
 
 若 $\Gamma, X:\kappa \vdash \sigma : \kappa'$ 且 $\Gamma \vdash \tau : \kappa$，则 $\Gamma \vdash \sigma[\tau/X] : \kappa'$。
 
 *证明概要*: 对 $\sigma$ 的推导进行结构归纳。
 
-**Lemma-CMU-01-02: System Fω 的类型保持**
+**Lemma-F-01-02: System Fω 的类型保持**
 
 若 $\Gamma \vdash M : \sigma$ 且 $M \to_\beta M'$，则 $\Gamma \vdash M' : \sigma$。
 
-**Lemma-CMU-01-03: System Fω 的强归约性**
+**Lemma-F-01-03: System Fω 的强归约性**
 
 所有良类型的 System Fω 项都是强归约的。
 
@@ -177,21 +177,21 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 
 ### 2.2 依赖类型的唯一性
 
-**Lemma-CMU-01-04: 类型唯一性 (Uniqueness of Typing)**
+**Lemma-F-01-04: 类型唯一性 (Uniqueness of Typing)**
 
 若 $\Gamma \vdash M : A$ 且 $\Gamma \vdash M : B$，则 $A \equiv_\beta B$。
 
-**Prop-CMU-01-01: 依赖类型的一致性**
+**Prop-F-01-01: 依赖类型的一致性**
 
 纯构造演算 (CC) 是逻辑一致的：不存在闭项 $M$ 使得 $\vdash M : \Pi A:*. A$。
 
 ### 2.3 线性逻辑的切消
 
-**Prop-CMU-01-02: 线性逻辑的切消定理**
+**Prop-F-01-02: 线性逻辑的切消定理**
 
 线性序列演算具有切消性质：任何证明可转换为无切证明。
 
-**Prop-CMU-01-03: 线性逻辑的表达能力**
+**Prop-F-01-03: 线性逻辑的表达能力**
 
 线性逻辑可编码：
 - 直觉主义逻辑：$A \to B \triangleq !A \multimap B$
@@ -200,7 +200,7 @@ $$\Sigma ::= \cdot \mid \Sigma, c:A \mid \Sigma, a:K$$
 
 ### 2.4 Curry-Howard 的完备性
 
-**Prop-CMU-01-04: Curry-Howard 同构的完备性**
+**Prop-F-01-04: Curry-Howard 同构的完备性**
 
 对于构造性命题逻辑：
 $$A \vdash B \text{ (逻辑可证)} \Leftrightarrow \exists M. \vdash M : A \to B \text{ (类型可居)}$$
@@ -213,11 +213,11 @@ $$A \vdash B \text{ (逻辑可证)} \Leftrightarrow \exists M. \vdash M : A \to 
 STLC ⊂ System F ⊂ System Fω ⊂ CC (Calculus of Constructions) ⊂ CIC (Coq)
 ```
 
-**Prop-CMU-01-05: System Fω 表达 System F**
+**Prop-F-01-05: System Fω 表达 System F**
 
 System F 是 System Fω 在 kind $*$ 上的片段。
 
-**Prop-CMU-01-06: 与范畴论语义的对应**
+**Prop-F-01-06: 与范畴论语义的对应**
 
 | 类型论 | 范畴论 |
 |--------|--------|
@@ -238,7 +238,7 @@ System F 是 System Fω 在 kind $*$ 上的片段。
 
 ### 3.3 线性逻辑与资源模型
 
-**Prop-CMU-01-07: 线性类型与内存管理**
+**Prop-F-01-07: 线性类型与内存管理**
 
 | 线性类型性质 | 编程语言实现 |
 |-------------|-------------|
@@ -249,7 +249,7 @@ System F 是 System Fω 在 kind $*$ 上的片段。
 
 ### 3.4 LF 与逻辑嵌入
 
-**Prop-CMU-01-08: LF 的通用性**
+**Prop-F-01-08: LF 的通用性**
 
 LF 可以嵌入：
 - 一阶逻辑
@@ -312,7 +312,7 @@ Functor F = forall a. (a -> b) -> F a -> F b
 
 ### 5.1 System Fω 的强归约性
 
-**Thm-CMU-01-01: System Fω 强归约定理**
+**Thm-F-01-01: System Fω 强归约定理**
 
 所有良类型的 System Fω 项都是强归约的。
 
@@ -335,7 +335,7 @@ $$\text{RED}_{\kappa_1 \to \kappa_2} = \{F \mid \forall R \in \text{RED}_{\kappa
 
 ### 5.2 构造演算的一致性
 
-**Thm-CMU-01-02: 构造演算一致性**
+**Thm-F-01-02: 构造演算一致性**
 
 不存在闭项 $M$ 使得 $\vdash_{CC} M : \Pi A:*. A$。
 
@@ -351,7 +351,7 @@ $$\text{RED}_{\kappa_1 \to \kappa_2} = \{F \mid \forall R \in \text{RED}_{\kappa
 
 ### 5.3 线性逻辑的切消
 
-**Thm-CMU-01-03: 线性序列演算切消定理**
+**Thm-F-01-03: 线性序列演算切消定理**
 
 任何可证sequent都有无切证明。
 
@@ -367,7 +367,7 @@ $$\text{RED}_{\kappa_1 \to \kappa_2} = \{F \mid \forall R \in \text{RED}_{\kappa
 
 ### 5.4 Curry-Howard 同构的形式化
 
-**Thm-CMU-01-04: Curry-Howard 同构**
+**Thm-F-01-04: Curry-Howard 同构**
 
 对于构造性命题逻辑 IPL 和简单类型 $\lambda$-演算 STLC：
 

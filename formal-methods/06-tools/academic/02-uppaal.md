@@ -1,6 +1,6 @@
-# UPPAAL
+﻿# UPPAAL
 
-> **所属单元**: Tools/Academic | **前置依赖**: [实时模型检验](../../05-verification/02-model-checking/03-realtime-mc.md) | **形式化等级**: L4
+> **所属单元**: Tools/Academic | **前置依赖**: [实时模型检测](../../05-verification/02-model-checking/03-realtime-mc.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 
@@ -8,13 +8,13 @@
 
 **Def-T-02-01** (UPPAAL定义)。UPPAAL是用于实时系统建模、验证和模拟的工具套件：
 
-$$\text{UPPAAL} = \text{时间自动机编辑器} + \text{模拟器} + \text{模型检验器}$$
+$$\text{UPPAAL} = \text{时间自动机编辑器} + \text{模拟器} + \text{模型检测器}$$
 
 **核心特性**：
 
 - 基于时间自动机网络建模
 - 使用约束求解技术（DBM）
-- 支持模型检验和优化
+- 支持模型检测和优化
 - 提供图形化用户界面
 
 **Def-T-02-02** (UPPAAL模型结构)。一个UPPAAL模型由以下部分组成：
@@ -154,7 +154,7 @@ flowchart TD
     D --> E[UPPAAL建模]
     E --> F[模拟验证]
     F --> G{性质满足?}
-    G -->|是| H[模型检验]
+    G -->|是| H[模型检测]
     G -->|否| I[调试修正]
     I --> E
     H --> J{检验通过?}

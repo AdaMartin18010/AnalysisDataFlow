@@ -24,21 +24,21 @@
 
 ### 2.1 简单类型λ演算 (Simply Typed Lambda Calculus, λ→)
 
-**Def-W-07-01** (类型语法). 简单类型：
+**Def-S-98-01** (类型语法). 简单类型：
 
 $$\tau, \sigma ::= \iota \mid \tau \rightarrow \sigma$$
 
 其中$\iota$是基本类型（如Bool, Nat）。
 
-**Def-W-07-02** (项语法). 有类型λ项：
+**Def-S-98-02** (项语法). 有类型λ项：
 
 $$t, u ::= x \mid \lambda x:\tau.t \mid t\,u \mid c$$
 
-**Def-W-07-03** (类型判断). 在上下文$\Gamma$下，项$t$具有类型$\tau$：
+**Def-S-98-03** (类型判断). 在上下文$\Gamma$下，项$t$具有类型$\tau$：
 
 $$\Gamma \vdash t : \tau$$
 
-**Def-W-07-04** (类型规则).
+**Def-S-98-04** (类型规则).
 
 $$
 \text{(VAR)} \quad \frac{x:\tau \in \Gamma}{\Gamma \vdash x : \tau}
@@ -54,11 +54,11 @@ $$
 
 ### 2.2 系统F (多态λ演算)
 
-**Def-W-07-05** (系统F语法). 扩展类型含类型变量和全称量词：
+**Def-S-98-05** (系统F语法). 扩展类型含类型变量和全称量词：
 
 $$\tau ::= \alpha \mid \tau \rightarrow \tau \mid \forall\alpha.\tau$$
 
-**Def-W-07-06** (类型抽象与应用).
+**Def-S-98-06** (类型抽象与应用).
 
 $$
 \text{(TABS)} \quad \frac{\Gamma \vdash t : \tau, \quad \alpha \notin \text{FTV}(\Gamma)}{\Gamma \vdash \Lambda\alpha.t : \forall\alpha.\tau}
@@ -70,14 +70,14 @@ $$
 
 ### 2.3 Martin-Löf类型论 (MLTT)
 
-**Def-W-07-07** (判断形式). MLTT有四类判断：
+**Def-S-98-07** (判断形式). MLTT有四类判断：
 
 1. $\Gamma \vdash A\,\text{type}$ —— $A$是良类型
 2. $\Gamma \vdash A \equiv B\,\text{type}$ —— $A$和$B$是相等的类型
 3. $\Gamma \vdash a : A$ —— $a$是类型$A$的项
 4. $\Gamma \vdash a \equiv b : A$ —— $a$和$b$在类型$A$中相等
 
-**Def-W-07-08** (归纳类型). 归纳类型由构造子定义：
+**Def-S-98-08** (归纳类型). 归纳类型由构造子定义：
 
 $$
 \frac{\Gamma \vdash a : A \quad \Gamma \vdash b : B(a)}{\Gamma \vdash (a, b) : \Sigma x:A.B(x)} \quad (\Sigma\text{-INTRO})
@@ -93,7 +93,7 @@ $$
 
 ### 3.1 Curry-Howard同构
 
-**Def-W-07-09** (Curry-Howard-Lambek对应). 三领域同构：
+**Def-S-98-09** (Curry-Howard-Lambek对应). 三领域同构：
 
 | 逻辑 | 类型论 | 范畴论 |
 |------|--------|--------|
@@ -225,7 +225,7 @@ timeline
 
 ### 6.1 类型安全性定理
 
-**Thm-W-07-01** (类型安全). 良类型程序不会陷入停滞（无类型错误）：
+**Thm-S-98-01** (类型安全). 良类型程序不会陷入停滞（无类型错误）：
 
 $$\Gamma \vdash t : \tau \Rightarrow \text{Progress}(t) \land \text{Preservation}(t, \tau)$$
 
@@ -238,7 +238,7 @@ $$\Gamma \vdash t : \tau \Rightarrow \text{Progress}(t) \land \text{Preservation
 
 ### 6.2 强归一化定理
 
-**Thm-W-07-02** (强归一化). 简单类型λ演算的所有良类型项都是强归一化的：
+**Thm-S-98-02** (强归一化). 简单类型λ演算的所有良类型项都是强归一化的：
 
 $$\Gamma \vdash t : \tau \Rightarrow \exists n \in \mathbb{N}, \forall \text{归约序列}: |\text{序列}| \leq n$$
 
@@ -251,7 +251,7 @@ $$\Gamma \vdash t : \tau \Rightarrow \exists n \in \mathbb{N}, \forall \text{归
 
 ### 6.3 Curry-Howard同构定理
 
-**Thm-W-07-03** (Curry-Howard). 直觉主义命题逻辑和自然演绎与简单类型λ演算同构：
+**Thm-S-98-03** (Curry-Howard). 直觉主义命题逻辑和自然演绎与简单类型λ演算同构：
 
 $$\Gamma \vdash_{\text{IPL}} \varphi \quad \Leftrightarrow \quad \Gamma^* \vdash_{\lambda\rightarrow} t : \varphi^*$$
 
@@ -278,6 +278,7 @@ $$\Gamma \vdash_{\text{IPL}} \varphi \quad \Leftrightarrow \quad \Gamma^* \vdash
 
 ## 9. 相关概念
 
+- [类型论基础](../../01-foundations/05-type-theory.md) - 更深入的类型论形式化内容
 - [Curry-Howard Correspondence](08-curry-howard.md)
 - [Set Theory](22-set-theory.md)
 - [Category Theory](24-category-theory.md)

@@ -25,7 +25,7 @@
 |-----|---------|---------|
 | I/O自动机 | 算法正确性 | IOA Toolkit |
 | TLA+ | 规格与验证 | TLC/TLAPS |
-| 进程代数 | 协议验证 | FSP/LTSA |
+| 进程演算 | 协议验证 | FSP/LTSA |
 | 时序逻辑 | 性质规约 | Temporal Logic |
 
 ---

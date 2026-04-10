@@ -24,7 +24,7 @@
 
 ### 2.1 CCS (Calculus of Communicating Systems)
 
-**Def-W-04-01** (CCS语法). CCS进程由以下语法定义：
+**Def-S-98-01** (CCS语法). CCS进程由以下语法定义：
 
 $$P, Q ::= 0 \mid \alpha.P \mid P + Q \mid P \mid Q \mid (\nu a)P \mid A$$
 
@@ -37,7 +37,7 @@ $$P, Q ::= 0 \mid \alpha.P \mid P + Q \mid P \mid Q \mid (\nu a)P \mid A$$
 - $(\nu a)P$: 限制（隐藏通道$a$）
 - $A$: 进程常量，$A \stackrel{\text{def}}{=} P_A$
 
-**Def-W-04-02** (CCS操作语义). SOS规则：
+**Def-S-98-02** (CCS操作语义). SOS规则：
 
 $$
 \text{(ACT)} \quad \frac{}{\alpha.P \xrightarrow{\alpha} P}
@@ -65,7 +65,7 @@ $$
 
 ### 2.2 CSP (Communicating Sequential Processes)
 
-**Def-W-04-03** (CSP语法). CSP进程：
+**Def-S-98-03** (CSP语法). CSP进程：
 
 $$P, Q ::= \text{SKIP} \mid \text{STOP} \mid a \rightarrow P \mid P \square Q \mid P \sqcap Q \mid P \parallel_A Q \mid P \setminus A \mid \mu X \cdot F(X)$$
 
@@ -79,7 +79,7 @@ $$P, Q ::= \text{SKIP} \mid \text{STOP} \mid a \rightarrow P \mid P \square Q \m
 
 ### 2.3 π-演算 (Pi Calculus)
 
-**Def-W-04-04** (π-演算语法). π-演算扩展CCS支持通道传递：
+**Def-S-98-04** (π-演算语法). π-演算扩展CCS支持通道传递：
 
 $$P, Q ::= 0 \mid \alpha.P \mid P + Q \mid P \mid Q \mid (\nu x)P \mid !P$$
 
@@ -89,7 +89,7 @@ $$P, Q ::= 0 \mid \alpha.P \mid P + Q \mid P \mid Q \mid (\nu x)P \mid !P$$
 - $\bar{x}\langle y \rangle$: 在通道$x$上发送名称$y$
 - $\tau$: 内部动作
 
-**Def-W-04-05** (名字传递语义). 关键规则：
+**Def-S-98-05** (名字传递语义). 关键规则：
 
 $$
 \text{(IN)} \quad x(y).P \xrightarrow{x(z)} P\{z/y\}
@@ -119,18 +119,18 @@ $$
 
 ### 3.2 行为等价
 
-**Def-W-04-06** (强互模拟). 关系$\mathcal{R}$是强互模拟，如果：
+**Def-S-98-06** (强互模拟). 关系$\mathcal{R}$是强互模拟，如果：
 
 $$(P, Q) \in \mathcal{R} \Rightarrow \forall \alpha:$$
 
 - 若$P \xrightarrow{\alpha} P'$，则$\exists Q': Q \xrightarrow{\alpha} Q'$且$(P', Q') \in \mathcal{R}$
 - 若$Q \xrightarrow{\alpha} Q'$，则$\exists P': P \xrightarrow{\alpha} P'$且$(P', Q') \in \mathcal{R}$
 
-**Def-W-04-07** (弱互模拟). 忽略内部动作$\tau$：
+**Def-S-98-07** (弱互模拟). 忽略内部动作$\tau$：
 
 $$P \approx Q \text{ (弱互模拟)} \Leftrightarrow P \approx_b Q \text{ (分支互模拟)}$$
 
-**Def-W-04-08** (互模拟等价). 最大互模拟：
+**Def-S-98-08** (互模拟等价). 最大互模拟：
 
 $$\sim \stackrel{\text{def}}{=} \bigcup\{\mathcal{R} : \mathcal{R} \text{是互模拟}\}$$
 
@@ -230,7 +230,7 @@ timeline
 | 1980 | CCS | 并发理论基础 |
 | 1989 | 互模拟同余 | Milner证明CCS互模拟是同余 |
 | 1992 | π-演算 | 移动计算理论 |
-| 2001 | 一致性检查 | 会话类型理论 |
+| 2001 | 一致性检查 | 会话类型论 |
 | 2020+ | 概率/实时扩展 | 定量分析 |
 
 ---
@@ -239,7 +239,7 @@ timeline
 
 ### 6.1 互模拟同余定理
 
-**Thm-W-04-01** (CCS互模拟是同余). 强互模拟$\sim$是CCS的同余关系：
+**Thm-S-98-01** (CCS互模拟是同余). 强互模拟$\sim$是CCS的同余关系：
 
 $$P \sim Q \Rightarrow \forall C[\cdot]: C[P] \sim C[Q]$$
 
@@ -257,13 +257,13 @@ $$P \sim Q \Rightarrow \forall C[\cdot]: C[P] \sim C[Q]$$
 
 ### 6.2 π-演算的同余性
 
-**Thm-W-04-02** (π-演算早期互模拟). 在π-演算中，强互模拟是同余关系。
+**Thm-S-98-02** (π-演算早期互模拟). 在π-演算中，强互模拟是同余关系。
 
 *注意*: 对于弱互模拟，需要**早期**或**晚期**语义变体。
 
 ### 6.3 表达能力定理
 
-**Thm-W-04-03** (π-演算图灵完备性). π-演算是图灵完备的。
+**Thm-S-98-03** (π-演算图灵完备性). π-演算是图灵完备的。
 
 *证明概要*:
 
@@ -331,7 +331,7 @@ mindmap
 
 ```mermaid
 graph TD
-    A1[公理: 进程代数基本定律] --> B1[和定律]
+    A1[公理: 进程演算基本定律] --> B1[和定律]
     A1 --> B2[并行定律]
     A1 --> B3[限制定律]
 

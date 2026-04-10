@@ -44,7 +44,7 @@ $$|S_{\text{global}}| = \prod_{i=1}^{n} |S_i|$$
 
 ### Prop-S-07-01: 异构组合的非组合性
 
-若子系统 $\mathcal{C}_1$ 和 $\mathcal{C}_2$ 采用不同的进程代数语义（如 CCS vs CSP），则它们的并行组合 $\mathcal{C}_1 \parallel \mathcal{C}_2$ 的语义可能无法通过简单的同态映射保持原有性质。
+若子系统 $\mathcal{C}_1$ 和 $\mathcal{C}_2$ 采用不同的进程演算语义（如 CCS vs CSP），则它们的并行组合 $\mathcal{C}_1 \parallel \mathcal{C}_2$ 的语义可能无法通过简单的同态映射保持原有性质。
 
 ---
 
@@ -135,7 +135,7 @@ $$S_{\text{global}} = \{(s_1, s_2, \ldots, s_n) \mid s_i \in S_i, |S_i| = k\}$$
 
 ### Thm-S-07-02: 异构系统验证的不可组合性定理
 
-设 $\mathcal{C}_1$ 和 $\mathcal{C}_2$ 分别基于不同进程代数 $\mathcal{A}_1$ 和 $\mathcal{A}_2$，若 $\mathcal{A}_1$ 和 $\mathcal{A}_2$ 的同步组合语义不兼容（如 CCS 的 handshake 与 CSP 的多路同步），则不存在通用的组合验证框架能同时保持两者的全部语义特性。
+设 $\mathcal{C}_1$ 和 $\mathcal{C}_2$ 分别基于不同进程演算 $\mathcal{A}_1$ 和 $\mathcal{A}_2$，若 $\mathcal{A}_1$ 和 $\mathcal{A}_2$ 的同步组合语义不兼容（如 CCS 的 handshake 与 CSP 的多路同步），则不存在通用的组合验证框架能同时保持两者的全部语义特性。
 
 **工程论证**：
 这一理论结果解释了实践中异构系统验证的困难。工业界的应对策略包括：

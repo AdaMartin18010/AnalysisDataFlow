@@ -6,7 +6,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-FM-06-03-01: 形式化验证工具分类体系
+### Def-T-03-06-03-01: 形式化验证工具分类体系
 
 形式化验证工具是根据其核心技术原理、自动化程度和适用问题域进行分类的软件系统。本分析采用五维分类框架：
 
@@ -14,13 +14,13 @@
 
 | 维度 | 说明 | 典型取值 |
 |------|------|----------|
-| 验证技术 | 核心数学方法 | 模型检测、定理证明、SAT/SMT求解、抽象解释、类型理论 |
+| 验证技术 | 核心数学方法 | 模型检测、定理证明、SAT/SMT求解、抽象解释、类型论 |
 | 自动化程度 | 用户干预需求 | 全自动、半自动、交互式、手动辅助 |
 | 表达能力 | 可验证性质范围 | 时序逻辑、霍尔逻辑、分离逻辑、依赖类型 |
 | 适用范围 | 目标系统类型 | 有限状态系统、无限状态系统、并发程序、神经网络 |
 | 工业就绪度 | 生产环境适用性 | 学术研究、工业原型、生产部署 |
 
-### Def-FM-06-03-02: 表达能力等级 (Expressiveness Hierarchy)
+### Def-T-03-06-03-02: 表达能力等级 (Expressiveness Hierarchy)
 
 形式化工具的表达能力可分为以下层级：
 
@@ -30,7 +30,7 @@
 - **L4 - 高阶逻辑层**: 函数、归纳类型、依赖类型
 - **L5 - 程序逻辑层**: 霍尔逻辑、分离逻辑、类型与效果系统
 
-### Def-FM-06-03-03: 自动化-可靠性权衡 (Automation-Soundness Trade-off)
+### Def-T-03-06-03-03: 自动化-可靠性权衡 (Automation-Soundness Trade-off)
 
 对于验证工具 $T$，定义其自动化指数 $\alpha(T) \in [0,1]$ 和可靠性保证 $\sigma(T) \in [0,1]$，则工具的综合效能：
 
@@ -42,7 +42,7 @@ $$E(T) = w_1 \cdot \alpha(T) + w_2 \cdot \sigma(T) + w_3 \cdot \delta(T)$$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-FM-06-03-01: 表达能力蕴含关系
+### Lemma-T-03-06-03-01: 表达能力蕴含关系
 
 对于主流形式化工具，存在以下表达能力蕴含链：
 
@@ -54,15 +54,15 @@ $$E(T) = w_1 \cdot \alpha(T) + w_2 \cdot \sigma(T) + w_3 \cdot \delta(T)$$
 - SMT可规约模型检测的迁移约束
 - 模型检测状态约束可编码为SAT公式
 
-**推论 (Cor-FM-06-03-01):** 表达能力越强，自动化程度通常越低，形成**反比关系**。
+**推论 (Cor-T-03-06-03-01):** 表达能力越强，自动化程度通常越低，形成**反比关系**。
 
-### Lemma-FM-06-03-02: 工具选择空间完备性
+### Lemma-T-03-06-03-02: 工具选择空间完备性
 
 对于任意验证需求 $R = (S, P, C)$，其中 $S$ 为系统类型、$P$ 为性质类别、$C$ 为约束条件，存在工具 $T$ 使得 $T$ 可满足 $R$ 当且仅当：
 
 $$\text{expr}(T) \supseteq \text{expr}(P) \land \text{auto}(T) \geq \text{threshold}(C_{\text{time}}) \land \text{sound}(T) \geq C_{\text{correctness}}$$
 
-### Prop-FM-06-03-01: 工业工具与学术工具的互补性
+### Prop-T-03-06-03-01: 工业工具与学术工具的互补性
 
 **命题:** 工业级形式化工具（AWS Zelkova、Azure CCF、Google FizzBee）与学术工具在以下维度呈现互补分布：
 
@@ -201,7 +201,7 @@ $$\text{expr}(T) \supseteq \text{expr}(P) \land \text{auto}(T) \geq \text{thresh
 | **Coq** | 归纳构造演算 (CIC) | 战术脚本 | Ltac, auto | CompCert, VST | ★★★★☆ |
 | **Isabelle/HOL** | 高阶逻辑 + 类型类 | 结构化/声明式 | Sledgehammer, Nitpick | seL4, IronFleet | ★★★★★ |
 | **Lean 4** | 依赖类型 (CIC变体) | 战术+元编程 | Lean 4自动化 | Mathlib, Liquid Haskell | ★★★★★ |
-| **Agda** | 依赖类型 (MLTT) | 交互式/直接构造 | Agsy (简单自动化) | 类型理论研究 | ★★★☆☆ |
+| **Agda** | 依赖类型 (MLTT) | 交互式/直接构造 | Agsy (简单自动化) | 类型论研究 | ★★★☆☆ |
 | **Twelf** | LF (逻辑框架) | 声明式 | 有限 | PLT元理论 | ★★☆☆☆ |
 
 #### 5.1.3 SMT求解器详细对比

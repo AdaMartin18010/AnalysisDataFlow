@@ -1,4 +1,4 @@
-# Rust形式化验证
+﻿# Rust形式化验证
 
 > **所属单元**: Tools/Industrial | **前置依赖**: [类型系统理论](../../03-foundation/02-types/01-type-systems.md) | **形式化等级**: L4
 
@@ -39,7 +39,7 @@ $$\text{Rust Verification} = \text{Prusti} + \text{MIRAI} + \text{Kani} + \text{
 |------|------|----------|--------|
 | Prusti | Viper框架 | 功能正确性 | 自动 |
 | MIRAI | 抽象解释 | 错误检测 | 自动 |
-| Kani | 模型检验 | 安全性 | 自动 |
+| Kani | 模型检测 | 安全性 | 自动 |
 | Creusot | Why3 | 功能正确性 | 半自动 |
 | Aeneas | 特征化 | 功能正确性 | 自动 |
 
@@ -156,7 +156,7 @@ graph TB
 
 | 特性 | Prusti | MIRAI | Kani | Creusot |
 |------|--------|-------|------|---------|
-| 技术 | Viper/SL | 抽象解释 | 模型检验 | Why3 |
+| 技术 | Viper/SL | 抽象解释 | 模型检测 | Why3 |
 | 规范语言 | 过程宏 | 断言/assume | 断言 | Pearlite |
 | 自动化 | 全自动 | 全自动 | 全自动 | 半自动 |
 | 功能正确性 | 是 | 否 | 部分 | 是 |
@@ -437,7 +437,7 @@ fn main() {
 cargo mirai
 ```
 
-### 6.5 Kani模型检验
+### 6.5 Kani模型检测
 
 **安装**：
 

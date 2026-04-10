@@ -1,4 +1,4 @@
-# 定理证明
+﻿# 定理证明
 
 > **所属单元**: formal-methods/03-model-taxonomy/05-verification-methods | **前置依赖**: [02-model-checking](02-model-checking.md) | **形式化等级**: L6
 
@@ -153,7 +153,7 @@ SMT求解器
 
 ### 为什么使用定理证明？
 
-**超越模型检验**：
+**超越模型检测**：
 
 - 处理**无限状态**系统
 - 验证**参数化**系统（任意 $n$）

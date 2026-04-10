@@ -45,7 +45,7 @@
 | [B9] | H. Geuvers | Introduction to Type Theory | Nijmegen Lecture Notes | 2008 |
 | [B10] | J. Avigad et al. | Theorem Proving in Lean 4 | Electronic | 2024 |
 
-#### 进程代数与并发理论
+#### 进程演算与并发理论
 
 | 编号 | 作者 | 标题 | 出版社 | 年份 |
 |-----|------|-----|--------|------|
@@ -412,13 +412,13 @@ graph TB
 timeline
     title 形式化方法与分布式系统文献演进
     section 1970s-1980s
-        基础建立 : CSP/CCS进程代数
+        基础建立 : CSP/CCS进程演算
                  : Kahn数据流网络
                  : Happens-before关系
     section 1990s
         工具成熟 : SPIN模型检测器
                  : 符号模型检测
-                 : 进程代数工具
+                 : 进程演算工具
     section 2000s
         工业应用 : SLAM/SDV微软项目
                  : 分布式一致性理论

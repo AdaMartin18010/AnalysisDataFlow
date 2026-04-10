@@ -109,7 +109,7 @@ graph TB
 - **ITP**: Interactive Theorem Proving
 - **CPP**: Certified Programs and Proofs
 - **CADE/IJCAR**: 自动推理
-- **POPL**: 类型理论与证明
+- **POPL**: 类型论与证明
 
 ---
 

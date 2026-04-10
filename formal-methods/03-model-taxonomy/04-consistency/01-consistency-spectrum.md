@@ -1,4 +1,4 @@
-# 一致性谱系
+﻿# 一致性谱系
 
 > **所属单元**: formal-methods/03-model-taxonomy/04-consistency | **前置依赖**: [03-resource-deployment/03-elasticity](../../03-resource-deployment/03-elasticity.md) | **形式化等级**: L5-L6
 
@@ -171,7 +171,7 @@ CDN缓存 ──→ Eventual (性能优先)
 
 $$\forall o_1, o_2: lp(o_1) < lp(o_2) \land o_1 \parallel o_2 \Rightarrow \text{valid}(H, lp)$$
 
-**验证算法**（模型检验）：
+**验证算法**（模型检测）：
 
 1. 枚举所有可能的线性化点分配
 2. 检查每个分配是否满足：
@@ -401,4 +401,42 @@ graph TB
     end note
 ```
 
-## 8. 引用参考 (References)
+## 8. 关系建立 (Relations)
+
+### 与线性一致性的关系
+
+一致性谱系中的线性一致性（Linearizability）是强一致性的关键级别。它要求所有操作看起来在调用和响应之间的某个瞬间原子执行，且与全局实时顺序一致。
+
+- 详见：[线性一致性](../../../98-appendices/wikipedia-concepts/15-linearizability.md)
+
+线性一致性的核心特性：
+
+- **原子性**: 每个操作在某个瞬间生效
+- **实时性**: 遵守全局时间顺序
+- **可组合性**: 多个线性一致的对象组合后仍保持线性一致
+
+### 一致性模型与应用场景
+
+```
+金融交易 ──→ Linearizable (强一致性必需)
+    ↓
+社交状态 ──→ Causal (因果相关需有序)
+    ↓
+购物车 ──→ Eventual + Session (可用性优先)
+    ↓
+CDN缓存 ──→ Eventual (性能优先)
+```
+
+### 实现机制对比
+
+| 机制 | 支持的一致性 | 开销 |
+|-----|------------|------|
+| 单主复制 | Sequential+ | 低 |
+| 多主复制 | Causal/Eventual | 中 |
+| Paxos/Raft | Linearizable | 高 |
+| Quorum (N/R+W) | 可调 | 可调 |
+| Gossip | Eventual | 低 |
+
+---
+
+## 9. 引用参考 (References)

@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-A-03-01: 流计算系统 (Stream Processing System)
+### Def-A-02-01: 流计算系统 (Stream Processing System)
 
 流计算系统是一个六元组 $\mathcal{S} = (\mathcal{O}, \mathcal{F}, \mathcal{W}, \Sigma, \tau, \Gamma)$，其中：
 
@@ -15,7 +15,7 @@
 - $\tau$: 时间模型，可为事件时间 (event-time) 或处理时间 (processing-time)
 - $\Gamma$: 一致性保证级别，如 At-Most-Once、At-Least-Once、Exactly-Once
 
-### Def-A-03-02: Kahn进程网络 (Kahn Process Network, KPN)
+### Def-A-02-02: Kahn进程网络 (Kahn Process Network, KPN)
 
 KPN是一个计算模型 $\mathcal{K} = (P, C)$，其中：
 
@@ -28,7 +28,7 @@ $$p_i: \prod_{j \in In(i)} Stream(A_j) \rightarrow \prod_{k \in Out(i)} Stream(B
 
 满足**单调性**: 输入流的扩展导致输出流的扩展（非严格扩展）。
 
-### Def-A-03-03: 确定性保证 (Determinism Guarantee)
+### Def-A-02-03: 确定性保证 (Determinism Guarantee)
 
 流计算系统 $\mathcal{S}$ 是**确定的**，当且仅当对于任意输入流 $I$ 和配置 $C$：
 
@@ -36,7 +36,7 @@ $$\forall I_1 = I_2: \mathcal{S}(I_1, C) = \mathcal{S}(I_2, C)$$
 
 即相同输入产生相同输出，与执行调度无关。
 
-### Def-A-03-04: 窗口语义 (Window Semantics)
+### Def-A-02-04: 窗口语义 (Window Semantics)
 
 窗口是一个四元组 $\mathcal{W} = (T, P, E, F)$：
 
@@ -51,7 +51,7 @@ $$\forall I_1 = I_2: \mathcal{S}(I_1, C) = \mathcal{S}(I_2, C)$$
 - **滑动窗口 (Sliding)**: $P(t) = \{k \cdot s \mid k \cdot s \leq t < k \cdot s + w\}$，步长 $s$，大小 $w$
 - **会话窗口 (Session)**: $P(t)$ 由超时阈值 $\delta$ 动态确定，间隙 $> \delta$ 时关闭
 
-### Def-A-03-05: Exactly-Once语义
+### Def-A-02-05: Exactly-Once语义
 
 Exactly-Once处理语义要求对于每条输入记录 $e$：
 
@@ -67,7 +67,7 @@ $$|\{o \in Output \mid cause(o) = e\}| = 1$$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-A-03-01: KPN的确定性
+### Lemma-A-02-01: KPN的确定性
 
 任何Kahn进程网络都是确定的。
 
@@ -77,7 +77,7 @@ $$|\{o \in Output \mid cause(o) = e\}| = 1$$
 - 单调连续函数在CPO上有唯一最小不动点
 - 该不动点即为网络语义，与求值顺序无关
 
-### Lemma-A-03-02: 窗口分配函数的性质
+### Lemma-A-02-02: 窗口分配函数的性质
 
 对于任意窗口分配函数 $P$：
 
@@ -89,7 +89,7 @@ $$\forall t \in T: |P(t)| \leq \omega$$
 - 滑动窗口: $\omega = \lceil w/s \rceil$
 - 会话窗口: $\omega$ 无界（理论上）
 
-### Prop-A-03-01: Exactly-Once与检查点的关系
+### Prop-A-02-01: Exactly-Once与检查点的关系
 
 若流计算系统实现**分布式快照** (Chandy-Lamport) 作为检查点机制，则：
 
@@ -100,7 +100,7 @@ $$\text{Exactly-Once} \iff \text{幂等输出} \land \text{屏障对齐}$$
 - ($\Rightarrow$): Exactly-Once要求失败重放不重复输出，即幂等；屏障对齐确保状态一致性
 - ($\Leftarrow$): 幂等保证重复安全，屏障对齐保证快照一致性，结合可得Exactly-Once
 
-### Lemma-A-03-03: Stream Calculus的组合性
+### Lemma-A-02-03: Stream Calculus的组合性
 
 Stream Calculus操作符满足以下代数定律：
 
@@ -111,6 +111,8 @@ Stream Calculus操作符满足以下代数定律：
 ## 3. 关系建立 (Relations)
 
 ### 3.1 流计算模型对比
+
+**工业实现**: [Apache Flink形式化模型](./04-flink-formalization.md) - Flink计算模型与Exactly-Once语义的形式化定义
 
 | 特性 | KPN | Dataflow | Actor模型 | Stream Calculus |
 |-----|-----|----------|----------|----------------|

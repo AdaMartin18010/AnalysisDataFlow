@@ -23,7 +23,7 @@
 
 经典论文在形式化方法领域的分布呈现明显的**代际特征**：
 
-- **1970s-1980s**: 理论基础建立期（进程代数、时序逻辑）
+- **1970s-1980s**: 理论基础建立期（进程演算、时序逻辑）
 - **1990s**: 工具与算法成熟期（模型检测、符号方法）
 - **2000s**: 工业应用拓展期（SLAM、AWS验证）
 - **2010s-2020s**: 新范式融合期（AI+形式化、云原生）
@@ -35,7 +35,7 @@
 | 特征 | 描述 | 示例 |
 |-----|------|------|
 | 枢纽节点 | 被大量后续工作引用 | Lamport时钟论文 (>10,000引用) |
-| 桥梁节点 | 连接不同子领域 | 双模拟等价性论文 |
+| 桥梁节点 | 连接不同子领域 | 互模拟等价性论文 |
 | 前沿节点 | 近期高影响力工作 | seL4验证论文 |
 
 ---
@@ -141,11 +141,11 @@ graph TB
 
 | 编号 | 作者 | 标题 | 年份 | 影响 |
 |-----|------|-----|------|-----|
-| CP-01 | C. A. R. Hoare | Communicating Sequential Processes | 1978/1985 | 奠定进程代数基础，CSP语言起源 [^1] |
+| CP-01 | C. A. R. Hoare | Communicating Sequential Processes | 1978/1985 | 奠定进程演算基础，CSP语言起源 [^1] |
 | CP-02 | R. Milner | A Calculus of Communicating Systems | 1980 | CCS进程演算开山之作 [^2] |
 | CP-03 | R. Milner | Communicating and Mobile Systems: The π-Calculus | 1999 | 移动进程理论里程碑 [^3] |
 | CP-04 | M. Hennessy, R. Milner | Algebraic Laws for Nondeterminism and Concurrency | 1985 | 并发代数公理化 [^4] |
-| CP-05 | D. Park | Concurrency and Automata on Infinite Sequences | 1981 | 双模拟概念起源 [^5] |
+| CP-05 | D. Park | Concurrency and Automata on Infinite Sequences | 1981 | 互模拟概念起源 [^5] |
 
 **摘要与影响分析**:
 
@@ -198,7 +198,7 @@ graph TB
 | CP-18 | E. A. Emerson, E. M. Clarke | Characterizing Correctness Properties of Parallel Programs | 1980 | CTL创立 [^18] |
 | CP-19 | Z. Manna, A. Pnueli | The Temporal Logic of Reactive and Concurrent Systems | 1992 | 时序逻辑系统教科书 [^19] |
 
-#### 5.1.5 类型理论与程序语义
+#### 5.1.5 类型论与程序语义
 
 | 编号 | 作者 | 标题 | 年份 | 影响 |
 |-----|------|-----|------|-----|

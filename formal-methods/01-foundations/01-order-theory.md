@@ -247,7 +247,7 @@ $$\forall c: RI(c) \land pre_{Op}(c) \Rightarrow RI(Op(c))$$
 
 ### 3.1 与域论的关系
 
-序理论是域论的基础。在形式语义学中：
+序理论是域论的基础。详细域论内容参见 [域论](../98-appendices/wikipedia-concepts/24-domain-theory.md)。在形式语义学中：
 
 | 概念 | 语义解释 |
 |------|----------|

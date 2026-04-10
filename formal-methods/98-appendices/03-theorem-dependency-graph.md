@@ -50,7 +50,7 @@ $$\text{depth}(T) = \begin{cases} 0 & \text{若 } T \text{ 是公理} \\ 1 + \ma
 |------|--------|--------|--------|------|
 | 基础理论 | 45 | 32 | 18 | 95 |
 | 进程演算 | 38 | 56 | 24 | 118 |
-| 类型理论 | 42 | 48 | 22 | 112 |
+| 类型论 | 42 | 48 | 22 | 112 |
 | 验证方法 | 35 | 41 | 19 | 95 |
 | 应用层 | 28 | 34 | 15 | 77 |
 | **总计** | **188** | **211** | **98** | **497** |
@@ -446,7 +446,7 @@ graph TB
 |------|----------|----------|
 | 基础理论 | `formal-methods/01-foundations/` | `Thm-F-*` |
 | 进程演算 | `formal-methods/02-calculi/` | `Thm-C-*` |
-| 类型理论 | `formal-methods/02-calculi/` | `Thm-T-*` |
+| 类型论 | `formal-methods/02-calculi/` | `Thm-T-*` |
 | 验证方法 | `formal-methods/05-verification/` | `Thm-V-*` |
 | 应用层 | `formal-methods/04-application-layer/` | `Thm-A-*` |
 

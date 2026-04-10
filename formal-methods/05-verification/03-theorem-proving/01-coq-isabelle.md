@@ -351,3 +351,7 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
+
+### 相关概念
+
+- [定理证明概述](../../98-appendices/wikipedia-concepts/03-theorem-proving.md) - 定理证明基础概念

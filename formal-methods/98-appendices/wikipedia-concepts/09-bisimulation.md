@@ -1,6 +1,6 @@
 # 互模拟 (Bisimulation)
 
-> **所属阶段**: Struct | **前置依赖**: [进程代数](../03-models/process-algebra.md), [标记转移系统](../01-foundations/lts.md) | **形式化等级**: L5
+> **所属阶段**: Struct | **前置依赖**: [进程演算](../03-models/process-algebra.md), [标记转移系统](../01-foundations/lts.md) | **形式化等级**: L5
 
 ---
 
@@ -521,7 +521,7 @@ gantt
     dateFormat YYYY
     section 奠基
     Park引入互模拟概念     :1980, 1981
-    CCS进程代数建立         :1980, 1984
+    CCS进程演算建立         :1980, 1984
     section 理论完善
     Hennessy-Milner逻辑    :1985, 1986
     弱互模拟形式化          :1986, 1990
@@ -557,7 +557,7 @@ mindmap
       逻辑等价
       刻画定理
     代数维度
-      进程代数
+      进程演算
       CCS
       CSP
       ACP

@@ -1,12 +1,12 @@
-# SPIN和NuSMV
+﻿# SPIN和NuSMV
 
-> **所属单元**: Tools/Academic | **前置依赖**: [显式状态模型检验](../../05-verification/02-model-checking/01-explicit-state.md) | **形式化等级**: L4
+> **所属单元**: Tools/Academic | **前置依赖**: [显式状态模型检测](../../05-verification/02-model-checking/01-explicit-state.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 
-### 1.1 SPIN模型检验器
+### 1.1 SPIN模型检测器
 
-**Def-T-01-01** (SPIN概述)。SPIN是基于Promela语言的显式状态模型检验器：
+**Def-T-01-01** (SPIN概述)。SPIN是基于Promela语言的显式状态模型检测器：
 
 $$\text{SPIN} = \text{Promela} + \text{on-the-fly验证} + \text{部分序归约} + \text{比特状态哈希}$$
 
@@ -32,7 +32,7 @@ chan name = [capacity] of { type_list }
 
 ### 1.2 NuSMV符号检验器
 
-**Def-T-01-03** (NuSMV概述)。NuSMV是基于BDD和SAT的符号模型检验器：
+**Def-T-01-03** (NuSMV概述)。NuSMV是基于BDD和SAT的符号模型检测器：
 
 $$\text{NuSMV} = \text{SMV语言} + \text{BDD-based MC} + \text{BMC} + \text{不变式生成}$$
 
@@ -123,7 +123,7 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[模型检验需求] --> B{系统类型?}
+    A[模型检测需求] --> B{系统类型?}
     B -->|异步进程| C{状态空间大小?}
     B -->|同步状态机| D[NuSMV]
 

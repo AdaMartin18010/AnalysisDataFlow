@@ -6,7 +6,7 @@
 
 ### 1.1 流处理验证场景树
 
-**定义 Def-FM-SP-ST-01**: 流处理验证场景树是流计算系统验证需求的层次化结构，以数据流一致性语义为核心，涵盖从 Exactly-Once 处理语义到窗口计算正确性的完整验证维度。
+**定义 Def-S-98-SP-ST-01**: 流处理验证场景树是流计算系统验证需求的层次化结构，以数据流一致性语义为核心，涵盖从 Exactly-Once 处理语义到窗口计算正确性的完整验证维度。
 
 **形式化表示**:
 
@@ -22,7 +22,7 @@ $$\mathcal{T}_{sp} = (V, E, \mathcal{S}, v_0, \lambda)$$
 
 ### 1.2 流处理验证维度
 
-**定义 Def-FM-SP-ST-02**: 流处理验证的四大核心维度：
+**定义 Def-S-98-SP-ST-02**: 流处理验证的四大核心维度：
 
 | 维度 | 核心问题 | 典型验证场景 |
 |------|---------|-------------|
@@ -33,7 +33,7 @@ $$\mathcal{T}_{sp} = (V, E, \mathcal{S}, v_0, \lambda)$$
 
 ### 1.3 一致性语义层次
 
-**定义 Def-FM-SP-ST-03**: 流处理系统的一致性语义层次（从弱到强）：
+**定义 Def-S-98-SP-ST-03**: 流处理系统的一致性语义层次（从弱到强）：
 
 $$\text{At-Most-Once} \prec \text{At-Least-Once} \prec \text{Exactly-Once}$$
 
@@ -49,7 +49,7 @@ $$\text{At-Most-Once} \prec \text{At-Least-Once} \prec \text{Exactly-Once}$$
 
 ### 2.1 Exactly-Once 验证条件
 
-**引理 Lemma-FM-SP-ST-01** [Exactly-Once 充分条件]:
+**引理 Lemma-S-98-SP-ST-01** [Exactly-Once 充分条件]:
 流处理系统实现 Exactly-Once 语义，当且仅当满足以下三个条件：
 
 1. **幂等输出** (Idempotent Output): $\forall op \in Operators, \forall s \in States: op(s, r) = op(op(s, r), r)$
@@ -61,7 +61,7 @@ $$\text{At-Most-Once} \prec \text{At-Least-Once} \prec \text{Exactly-Once}$$
 
 ### 2.2 Watermark 正确性
 
-**引理 Lemma-FM-SP-ST-02** [Watermark 正确性条件]:
+**引理 Lemma-S-98-SP-ST-02** [Watermark 正确性条件]:
 Watermark 机制正确，当且仅当：
 
 $$\forall w \in Watermarks, \forall e \in Events: timestamp(e) \leq w \rightarrow e \text{ 已处理}$$
@@ -72,7 +72,7 @@ $$\forall w \in Watermarks, \forall e \in Events: timestamp(e) \leq w \rightarro
 
 | 验证场景 | 复杂度 | 可判定性 | 推荐方法 |
 |---------|--------|---------|---------|
-| 窗口完整性 | PSPACE | 可判定 | 模型检验 |
+| 窗口完整性 | PSPACE | 可判定 | 模型检测 |
 | 增量正确性 | PSPACE | 可判定 | 定理证明 |
 | 触发及时性 | NP-完全 | 可判定 | SMT求解 |
 | 乱序处理 | PSPACE | 可判定 | 时间自动机 |
@@ -168,7 +168,7 @@ $$\forall w \in Watermarks, \forall e \in Events: timestamp(e) \leq w \rightarro
 
 ### 5.1 Exactly-Once 语义定理
 
-**定理 Thm-FM-SP-ST-01** [Exactly-Once 等价性]:
+**定理 Thm-S-98-SP-ST-01** [Exactly-Once 等价性]:
 设 $\mathcal{S}$ 为流处理系统，$C$ 为检查点机制，$O$ 为输出提交协议，则：
 
 $$(\mathcal{S}, C, O) \models Exactly\text{-}Once$$
@@ -184,7 +184,7 @@ $$\forall r, \forall \pi \in Paths(\mathcal{S}): Committed_O(r, \pi) \leftrighta
 
 ### 5.2 Watermark 完备性定理
 
-**定理 Thm-FM-SP-ST-02** [Watermark 完备性]:
+**定理 Thm-S-98-SP-ST-02** [Watermark 完备性]:
 在事件时间语义下，Watermark $w$ 是完备的当且仅当：
 
 $$P(\exists e: timestamp(e) \leq w \land e \not\in Processed) = 0$$
@@ -193,7 +193,7 @@ $$P(\exists e: timestamp(e) \leq w \land e \not\in Processed) = 0$$
 
 ### 5.3 窗口正确性定理
 
-**定理 Thm-FM-SP-ST-03** [窗口计算正确性]:
+**定理 Thm-S-98-SP-ST-03** [窗口计算正确性]:
 设 $W$ 为窗口分配函数，$T$ 为触发器，$F$ 为窗口计算函数，则窗口计算正确当且仅当：
 
 $$\forall k \in Keys, \forall w \in Windows:$$
@@ -229,7 +229,7 @@ RecoveryCorrect ==
         ~checkpointed[r] => r \in toReplay
 ```
 
-**验证结果**: 模型检验确认在 2PC 协议下 Exactly-Once 成立。
+**验证结果**: 模型检测确认在 2PC 协议下 Exactly-Once 成立。
 
 ### 6.2 Watermark 延迟场景
 
@@ -268,40 +268,40 @@ RecoveryCorrect ==
 
 ```mermaid
 graph TB
-    Root[流处理验证需求]
+    Root["流处理验证需求"]
 
-    Root --> S1[语义验证]
-    Root --> S2[时间验证]
-    Root --> S3[窗口验证]
-    Root --> S4[状态验证]
+    Root --> S1["语义验证"]
+    Root --> S2["时间验证"]
+    Root --> S3["窗口验证"]
+    Root --> S4["状态验证"]
 
-    S1 --> S1_1[Exactly-Once验证]
-    S1 --> S1_2[At-Least-Once验证]
-    S1 --> S1_3[At-Most-Once验证]
+    S1 --> S1_1["Exactly-Once验证"]
+    S1 --> S1_2["At-Least-Once验证"]
+    S1 --> S1_3["At-Most-Once验证"]
 
-    S1_1 --> E1_1[幂等性验证]
-    S1_1 --> E1_2[事务提交验证]
-    S1_1 --> E1_3[确定性重放验证]
+    S1_1 --> E1_1["幂等性验证"]
+    S1_1 --> E1_2["事务提交验证"]
+    S1_1 --> E1_3["确定性重放验证"]
 
-    S2 --> S2_1[Watermark正确性]
-    S2 --> S2_2[乱序处理验证]
-    S2 --> S2_3[延迟数据处理]
+    S2 --> S2_1["Watermark正确性"]
+    S2 --> S2_2["乱序处理验证"]
+    S2 --> S2_3["延迟数据处理"]
 
-    S2_1 --> W2_1[单调性验证]
-    S2_1 --> W2_2[完整性验证]
-    S2_1 --> W2_3[延迟边界验证]
+    S2_1 --> W2_1["单调性验证"]
+    S2_1 --> W2_2["完整性验证"]
+    S2_1 --> W2_3["延迟边界验证"]
 
-    S3 --> S3_1[窗口语义验证]
-    S3 --> S3_2[增量计算验证]
-    S3 --> S3_3[触发机制验证]
+    S3 --> S3_1["窗口语义验证"]
+    S3 --> S3_2["增量计算验证"]
+    S3 --> S3_3["触发机制验证"]
 
-    S3_1 --> Win3_1[分配正确性]
-    S3_1 --> Win3_2[触发正确性]
-    S3_1 --> Win3_3[清理正确性]
+    S3_1 --> Win3_1["分配正确性"]
+    S3_1 --> Win3_2["触发正确性"]
+    S3_1 --> Win3_3["清理正确性"]
 
-    S4 --> S4_1[检查点正确性]
-    S4 --> S4_2[恢复正确性]
-    S4 --> S4_3[并发安全验证]
+    S4 --> S4_1["检查点正确性"]
+    S4 --> S4_2["恢复正确性"]
+    S4 --> S4_3["并发安全验证"]
 
     style Root fill:#e3f2fd
     style S1 fill:#e8f5e9
@@ -314,7 +314,7 @@ graph TB
 
 ```mermaid
 flowchart TD
-    Start[Exactly-Once验证]
+    Start["Exactly-Once验证"]
 
     Start --> Q1{系统组件?}
 
@@ -323,24 +323,24 @@ flowchart TD
     Q1 -->|Sink| SinkVer
     Q1 -->|End-to-End| E2EVer
 
-    SourceVer --> SV1[Offset管理<br/>消费位置持久化]
-    SourceVer --> SV2[重置能力<br/>从检查点重启]
-    SourceVer --> SV3[分区分配<br/>重平衡正确性]
+    SourceVer --> SV1["Offset管理<br/>消费位置持久化"]
+    SourceVer --> SV2["重置能力<br/>从检查点重启"]
+    SourceVer --> SV3["分区分配<br/>重平衡正确性"]
 
-    OpVer --> OV1[状态管理<br/>检查点一致性]
-    OpVer --> OV2[算子链<br/>Barrier传播]
-    OpVer --> OV3[异步检查点<br/>快照一致性]
+    OpVer --> OV1["状态管理<br/>检查点一致性"]
+    OpVer --> OV2["算子链<br/>Barrier传播"]
+    OpVer --> OV3["异步检查点<br/>快照一致性"]
 
-    SinkVer --> SinkV1[两阶段提交<br/>预提交+提交]
-    SinkVer --> SinkV2[幂等写入<br/>重复数据去重]
-    SinkV2 --> SinkV2_1[主键去重]
-    SinkV2 --> SinkV2_2[事务ID去重]
+    SinkVer --> SinkV1["两阶段提交<br/>预提交+提交"]
+    SinkVer --> SinkV2["幂等写入<br/>重复数据去重"]
+    SinkV2 --> SinkV2_1["主键去重"]
+    SinkV2 --> SinkV2_2["事务ID去重"]
 
-    E2EVer --> E2E1[Source-Sink一致性]
-    E2EVer --> E2E2[故障场景覆盖]
-    E2E2 --> E2E2_1[JM故障<br/>作业管理器]
-    E2E2 --> E2E2_2[TM故障<br/>任务管理器]
-    E2E2 --> E2E2_3[网络分区<br/>脑裂处理]
+    E2EVer --> E2E1["Source-Sink一致性"]
+    E2EVer --> E2E2["故障场景覆盖"]
+    E2E2 --> E2E2_1["JM故障<br/>作业管理器"]
+    E2E2 --> E2E2_2["TM故障<br/>任务管理器"]
+    E2E2 --> E2E2_3["网络分区<br/>脑裂处理"]
 
     style Start fill:#d4edda
     style E2EVer fill:#fff3cd
@@ -350,38 +350,38 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start[Watermark验证需求]
+    Start["Watermark验证需求"]
 
     Start --> Q1{时间语义?}
 
-    Q1 -->|处理时间| ProcTime[处理时间<br/>无Watermark]
-    Q1 -->|摄取时间| IngestTime[摄取时间<br/>系统时钟]
-    Q1 -->|事件时间| EventTime[事件时间<br/>业务时间戳]
+    Q1 -->|处理时间| ProcTime["处理时间<br/>无Watermark"]
+    Q1 -->|摄取时间| IngestTime["摄取时间<br/>系统时钟"]
+    Q1 -->|事件时间| EventTime["事件时间<br/>业务时间戳"]
 
     EventTime --> Q2{Watermark策略?}
 
-    Q2 -->|固定延迟| FixedWM[固定延迟Watermark]
-    FixedWM --> F1[延迟设置验证<br/>权衡延迟vs完整性]
-    FixedWM --> F2[单调性验证<br/>Watermark不减]
+    Q2 -->|固定延迟| FixedWM["固定延迟Watermark"]
+    FixedWM --> F1["延迟设置验证<br/>权衡延迟vs完整性"]
+    FixedWM --> F2["单调性验证<br/>Watermark不减"]
 
     Q2 -->|Punctuated| PuncWM[Punctuated Watermark]
-    PuncWM --> P1[标记正确性<br/>特殊事件触发]
-    PuncWM --> P2[覆盖率验证<br/>所有分区生成]
+    PuncWM --> P1["标记正确性<br/>特殊事件触发"]
+    PuncWM --> P2["覆盖率验证<br/>所有分区生成"]
 
-    Q2 -->|启发式| HeurWM[启发式Watermark]
-    HeurWM --> H1[统计正确性<br/>分位数估计]
-    HeurWM --> H2[自适应调整<br/>延迟动态变化]
+    Q2 -->|启发式| HeurWM["启发式Watermark"]
+    HeurWM --> H1["统计正确性<br/>分位数估计"]
+    HeurWM --> H2["自适应调整<br/>延迟动态变化"]
 
-    Q2 -->|空闲源处理| IdleWM[空闲源处理]
-    IdleWM --> I1[超时检测<br/>空闲超时]
-    IdleWM --> I2[Watermark推进<br/>空闲源Watermark]
+    Q2 -->|空闲源处理| IdleWM["空闲源处理"]
+    IdleWM --> I1["超时检测<br/>空闲超时"]
+    IdleWM --> I2["Watermark推进<br/>空闲源Watermark"]
 
     EventTime --> Q3{多输入?}
-    Q3 -->|是| MultiInput[多输入对齐]
-    MultiInput --> M1[Watermark取最小<br/>对齐策略]
-    MultiInput --> M2[早期触发<br/>部分结果]
+    Q3 -->|是| MultiInput["多输入对齐"]
+    MultiInput --> M1["Watermark取最小<br/>对齐策略"]
+    MultiInput --> M2["早期触发<br/>部分结果"]
 
-    ProcTime --> PT1[无Watermark验证<br/>到达即处理]
+    ProcTime --> PT1["无Watermark验证<br/>到达即处理"]
 
     style Start fill:#fff3e0
     style EventTime fill:#d4edda
@@ -391,7 +391,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start[窗口语义验证]
+    Start["窗口语义验证"]
 
     Start --> Q1{窗口类型?}
 
@@ -400,38 +400,38 @@ flowchart TD
     Q1 -->|会话窗口| Session[Session Window]
     Q1 -->|全局窗口| Global[Global Window]
 
-    Tumble --> T1[分配正确性<br/>无重叠无间隙]
-    Tumble --> T2[边界计算<br/>时间对齐]
+    Tumble --> T1["分配正确性<br/>无重叠无间隙"]
+    Tumble --> T2["边界计算<br/>时间对齐"]
 
-    Slide --> S1[重叠处理<br/>数据复制正确]
-    Slide --> S2[增量计算<br/>状态共享]
+    Slide --> S1["重叠处理<br/>数据复制正确"]
+    Slide --> S2["增量计算<br/>状态共享"]
 
-    Session --> Se1[超时检测<br/>会话边界]
-    Session --> Se2[动态窗口<br/>合并正确性]
+    Session --> Se1["超时检测<br/>会话边界"]
+    Session --> Se2["动态窗口<br/>合并正确性"]
 
-    Global --> G1[触发驱动<br/>完全由Trigger控制]
+    Global --> G1["触发驱动<br/>完全由Trigger控制"]
 
     Q2{触发策略?}
 
-    Q2 -->|Watermark| TrigWM[Watermark触发]
-    TrigWM --> TW1[及时性验证<br/>不早于Watermark]
+    Q2 -->|Watermark| TrigWM["Watermark触发"]
+    TrigWM --> TW1["及时性验证<br/>不早于Watermark"]
 
-    Q2 -->|处理时间| TrigPT[Processing Time触发]
-    TrigPT --> TP1[定时准确性<br/>调度正确]
+    Q2 -->|处理时间| TrigPT["Processing Time触发"]
+    TrigPT --> TP1["定时准确性<br/>调度正确"]
 
-    Q2 -->|计数| TrigCount[Count触发]
-    TrigCount --> TC1[计数准确性<br/>无丢失重复]
+    Q2 -->|计数| TrigCount["Count触发"]
+    TrigCount --> TC1["计数准确性<br/>无丢失重复"]
 
-    Q2 -->|混合| TrigMix[混合触发]
-    TrigMix --> TM1[优先级处理<br/>多条件协调]
+    Q2 -->|混合| TrigMix["混合触发"]
+    TrigMix --> TM1["优先级处理<br/>多条件协调"]
 
     Q3{允许延迟?}
-    Q3 -->|是| AllowLate[允许延迟]
-    AllowLate --> AL1[延迟数据分配<br/>正确窗口]
-    AllowLate --> AL2[状态保持<br/>过期清理]
+    Q3 -->|是| AllowLate["允许延迟"]
+    AllowLate --> AL1["延迟数据分配<br/>正确窗口"]
+    AllowLate --> AL2["状态保持<br/>过期清理"]
 
-    Q3 -->|否| NoLate[无延迟]
-    NoLate --> NL1[数据丢弃<br/>侧输出验证]
+    Q3 -->|否| NoLate["无延迟"]
+    NoLate --> NL1["数据丢弃<br/>侧输出验证"]
 
     style Start fill:#fce4ec
 ```
@@ -440,47 +440,47 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start[状态一致性验证]
+    Start["状态一致性验证"]
 
     Start --> Q1{状态类型?}
 
-    Q1 -->|ValueState| ValueSt[单值状态]
-    Q1 -->|ListState| ListSt[列表状态]
-    Q1 -->|MapState| MapSt[Map状态]
-    Q1 -->|ReducingState| ReduceSt[Reducing状态]
-    Q1 -->|AggregatingState| AggSt[Aggregating状态]
+    Q1 -->|ValueState| ValueSt["单值状态"]
+    Q1 -->|ListState| ListSt["列表状态"]
+    Q1 -->|MapState| MapSt["Map状态"]
+    Q1 -->|ReducingState| ReduceSt["Reducing状态"]
+    Q1 -->|AggregatingState| AggSt["Aggregating状态"]
 
-    ValueSt --> V1[读写原子性<br/>并发安全]
-    ListSt --> L1[列表操作<br/>添加/获取]
-    MapSt --> M1[Map操作<br/>PUT/GET/REMOVE]
-    ReduceSt --> R1[归约函数<br/>结合律验证]
-    AggSt --> A1[聚合函数<br/>增量正确]
+    ValueSt --> V1["读写原子性<br/>并发安全"]
+    ListSt --> L1["列表操作<br/>添加/获取"]
+    MapSt --> M1["Map操作<br/>PUT/GET/REMOVE"]
+    ReduceSt --> R1["归约函数<br/>结合律验证"]
+    AggSt --> A1["聚合函数<br/>增量正确"]
 
     Start --> Q2{检查点机制?}
 
-    Q2 -->|同步| SyncCP[同步检查点]
-    SyncCP --> SC1[暂停处理<br/>一致性保证]
-    SyncCP --> SC2[快照时间<br/>阻塞影响]
+    Q2 -->|同步| SyncCP["同步检查点"]
+    SyncCP --> SC1["暂停处理<br/>一致性保证"]
+    SyncCP --> SC2["快照时间<br/>阻塞影响"]
 
-    Q2 -->|异步| AsyncCP[异步检查点]
-    AsyncCP --> AC1[增量快照<br/>状态变化追踪]
-    AsyncCP --> AC2[Barrier对齐<br/>Exactly-Once]
-    AsyncCP --> AC3[非对齐检查点<br/>低延迟]
+    Q2 -->|异步| AsyncCP["异步检查点"]
+    AsyncCP --> AC1["增量快照<br/>状态变化追踪"]
+    AsyncCP --> AC2["Barrier对齐<br/>Exactly-Once"]
+    AsyncCP --> AC3["非对齐检查点<br/>低延迟"]
 
-    Q2 -->|增量| IncCP[增量检查点]
-    IncCP --> IC1[变更日志<br/>差异存储]
-    IncCP --> IC2[恢复优化<br/>基线+增量]
+    Q2 -->|增量| IncCP["增量检查点"]
+    IncCP --> IC1["变更日志<br/>差异存储"]
+    IncCP --> IC2["恢复优化<br/>基线+增量"]
 
     Start --> Q3{恢复场景?}
 
-    Q3 -->|全量恢复| FullRec[全量恢复]
-    FullRec --> FR1[状态重建<br/>从完整快照]
+    Q3 -->|全量恢复| FullRec["全量恢复"]
+    FullRec --> FR1["状态重建<br/>从完整快照"]
 
-    Q3 -->|增量恢复| IncRec[增量恢复]
-    IncRec --> IR1[日志回放<br/>变更应用]
+    Q3 -->|增量恢复| IncRec["增量恢复"]
+    IncRec --> IR1["日志回放<br/>变更应用"]
 
-    Q3 -->|局部恢复| LocalRec[局部恢复]
-    LocalRec --> LR1[任务级恢复<br/>最小影响]
+    Q3 -->|局部恢复| LocalRec["局部恢复"]
+    LocalRec --> LR1["任务级恢复<br/>最小影响"]
 
     style Start fill:#f3e5f5
 ```
@@ -492,22 +492,22 @@ graph LR
     subgraph "验证场景"
     Sc1[Exactly-Once]
     Sc2[Watermark]
-    Sc3[窗口语义]
-    Sc4[状态一致性]
+    Sc3["窗口语义"]
+    Sc4["状态一致性"]
     end
 
     subgraph "Flink机制"
     F1[Checkpoint Barrier]
-    F2[Watermark传播]
+    F2["Watermark传播"]
     F3[Window Operator]
     F4[State Backend]
     end
 
     subgraph "验证方法"
-    V1[TLA+模型]
-    V2[UPPAAL时间自动机]
-    V3[Coq定理证明]
-    V4[Iris分离逻辑]
+    V1["TLA+模型"]
+    V2["UPPAAL时间自动机"]
+    V3["Coq定理证明"]
+    V4["Iris分离逻辑"]
     end
 
     Sc1 --> F1
@@ -524,3 +524,4 @@ graph LR
 ## 8. 引用参考 (References)
 
 [^1]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
+

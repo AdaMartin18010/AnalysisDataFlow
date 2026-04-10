@@ -1,20 +1,23 @@
 # Paxos共识算法
 
 > 所属阶段: Struct/Formal Methods | 前置依赖: [13-consensus.md](./13-consensus.md), [15-linearizability.md](./15-linearizability.md) | 形式化等级: L5
+>
+> **相关概念**: [Consensus概述](./13-consensus.md) - 共识问题的一般性介绍
 
 ## 1. 概念定义 (Definitions)
 
-### Def-FM-18-01: Paxos算法（Wikipedia标准定义）
+### Def-S-98-01: Paxos算法（Wikipedia标准定义）
 
 **Paxos**是由Leslie Lamport于1989年提出、1998年发表的分布式共识算法[^1]。该算法解决的是**拜占庭将军问题**的非拜占庭版本——即在**崩溃容错（Crash-Stop）**模型下，如何让分布式系统中的多个节点就某个值达成一致。
 
 > **Wikipedia定义**: "Paxos is a family of protocols for solving consensus in a network of unreliable processors (that is, processors that may fail)."[^2]
 
 **核心问题陈述**: 给定一组可能故障的进程，设计一个协议使得：
+
 - 所有**未故障**进程最终同意同一个值
 - 被同意的值必须**由某个进程提议**
 
-### Def-FM-18-02: 提案（Proposal）
+### Def-S-98-02: 提案（Proposal）
 
 提案是Paxos协议中的基本操作单元，定义为二元组：
 
@@ -23,6 +26,7 @@ $$
 $$
 
 其中：
+
 - $n \in \mathbb{N}$: **提案编号**（Proposal Number），全局唯一且单调递增
 - $v \in \mathcal{V}$: **提案值**（Proposal Value），来自值域$\mathcal{V}$
 
@@ -32,7 +36,7 @@ $$
 \langle n_1, v_1 \rangle < \langle n_2, v_2 \rangle \iff n_1 < n_2
 $$
 
-### Def-FM-18-03: 角色定义（Roles）
+### Def-S-98-03: 角色定义（Roles）
 
 Paxos定义了三类角色，进程可以同时担任多个角色：
 
@@ -45,21 +49,21 @@ Paxos定义了三类角色，进程可以同时担任多个角色：
 **形式化角色状态**:
 
 ```
-ProposerState ::= { proposalNum: ℕ, 
-                    promises: Set⟨Promise⟩, 
+ProposerState ::= { proposalNum: ℕ,
+                    promises: Set⟨Promise⟩,
                     phase: {IDLE, PREPARING, ACCEPTING, CHOSEN} }
 
-AcceptorState ::= { minProposal: ℕ ∪ {⊥}, 
-                    acceptedProposal: Proposal ∪ {⊥}, 
+AcceptorState ::= { minProposal: ℕ ∪ {⊥},
+                    acceptedProposal: Proposal ∪ {⊥},
                     maxAcceptedNum: ℕ ∪ {⊥} }
 
-LearnerState ::= { chosenValue: 𝒱 ∪ {⊥}, 
+LearnerState ::= { chosenValue: 𝒱 ∪ {⊥},
                    acceptorsHeardFrom: Set⟨AcceptorID⟩ }
 ```
 
-### Def-FM-18-04: 多数派（Quorum）
+### Def-S-98-04: 多数派（Quorum）
 
-**Def-FM-18-04a: Quorum定义**
+**Def-S-98-04a: Quorum定义**
 
 对于包含$N$个Acceptor的集合$\mathcal{A} = \{A_1, A_2, ..., A_N\}$，Quorum $Q$是$\mathcal{A}$的子集，满足：
 
@@ -67,7 +71,7 @@ $$
 Q \subseteq \mathcal{A} \land |Q| > \frac{N}{2}
 $$
 
-**Def-FM-18-04b: Quorum交集性质**
+**Def-S-98-04b: Quorum交集性质**
 
 对于任意两个Quorum $Q_1, Q_2$：
 
@@ -77,7 +81,7 @@ $$
 
 这是Paxos安全性的核心数学基础。
 
-### Def-FM-18-05: 值被选定（Chosen）
+### Def-S-98-05: 值被选定（Chosen）
 
 值$v$被**选定**（Chosen）当且仅当：
 
@@ -89,11 +93,11 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-FM-18-01: 提案编号的唯一性
+### Lemma-S-98-01: 提案编号的唯一性
 
 **命题**: 在Paxos协议执行过程中，不同Proposer生成的提案编号全局唯一。
 
-**证明概要**: 
+**证明概要**:
 假设有$M$个Proposer，第$i$个Proposer使用编号序列：
 
 $$
@@ -104,11 +108,11 @@ $$
 
 ∎
 
-### Lemma-FM-18-02: Promise的单调性
+### Lemma-S-98-02: Promise的单调性
 
 **命题**: 一旦Acceptor $A$对提案编号$n$发送了Promise，则$A$不会再接受任何提案编号$n' < n$的提案。
 
-**证明**: 
+**证明**:
 由Promise定义，Acceptor在发送Promise时更新：
 
 $$
@@ -123,18 +127,18 @@ $$
 
 因此当$n' < n \leq minProposal(A)$时，接受被拒绝。∎
 
-### Prop-FM-18-01: 值的合法性（Validity）
+### Prop-S-98-01: 值的合法性（Validity）
 
 **命题**: 任何被Chosen的值$v$，必然被某个Proposer提出。
 
-**证明**: 
+**证明**:
 由Chosen定义，需要Quorum的Acceptor接受提案。而Acceptor仅在收到Accept请求时才可能接受，Accept请求由Proposer发送，且必须包含Proposer选定的值。∎
 
-### Prop-FM-18-02: Quorum的非空交集
+### Prop-S-98-02: Quorum的非空交集
 
 **命题**: 对于$N$个Acceptor，任何两个大小为$\lceil (N+1)/2 \rceil$的Quorum必有非空交集。
 
-**证明**: 
+**证明**:
 设$|Q_1| = |Q_2| = \lceil (N+1)/2 \rceil$，由鸽巢原理：
 
 $$
@@ -164,19 +168,20 @@ graph TB
         B2 -->|Vote Yes/No| A2
         A2 -->|Commit/Abort| B2
     end
-    
+
     subgraph "Paxos"
         AP[Proposer] -->|Prepare| BP[Acceptors]
         BP -->|Promise| AP
         AP -->|Accept| BP
         BP -->|Accepted| AL[Learners]
     end
-    
+
     style A2 fill:#f96,stroke:#333
     style AP fill:#9f6,stroke:#333
 ```
 
 **关键区别**:
+
 - 2PC: Coordinator单点，阻塞协议
 - Paxos: 多Proposer，非阻塞，容错
 
@@ -205,8 +210,9 @@ Paxos是PBFT在崩溃容错场景下的简化版本。
 **为什么需要Prepare阶段？**
 
 假设只有Accept阶段：
+
 1. Proposer P1向Acceptor A1发送Accept(n=1, v=X)
-2. P2向A2发送Accept(n=2, v=Y)  
+2. P2向A2发送Accept(n=2, v=Y)
 3. 两者都获得"多数派"（但不同Acceptor集合）
 4. **冲突**: 不同Learner可能学到不同值
 
@@ -223,19 +229,20 @@ graph TB
         P1 --> A1
         P1 --> A2
     end
-    
+
     subgraph "分区2"
         P2[Proposer P2]
         A3[Acceptor A3]
         A4[Acceptor A4]
     end
-    
-    A5[Acceptor A5<br/>网络不可达]
-    
+
+    A5["Acceptor A5<br/>网络不可达"]
+
     style A5 fill:#f96,stroke:#333
 ```
 
 **分析**:
+
 - 分区1: 2个Acceptor，无法形成Quorum（假设N=5，需要≥3）
 - 分区2: 同理无法形成Quorum
 - **安全性**: 不会有冲突值被Chosen（因为都需要Quorum）
@@ -254,7 +261,8 @@ t=4: P3发送Prepare(n=4)
 ...
 ```
 
-**解决方案**: 
+**解决方案**:
+
 - **Leader选举**: 让单一Proposer主导（Multi-Paxos）
 - **随机退避**: 冲突后随机等待
 - **提案号间隔**: Proposer使用间隔较大的提案号
@@ -263,7 +271,7 @@ t=4: P3发送Prepare(n=4)
 
 ### 5.1 Paxos安全性定理（单一值一致性）
 
-**Thm-FM-18-01: Paxos Safety（一致性）**
+**Thm-S-98-01: Paxos Safety（一致性）**
 
 > 如果值$v$被第一个Chosen，那么之后被选定的值都等于$v$。
 
@@ -283,17 +291,18 @@ $$
 
 设$Q_1$是使$\langle n_1, v_1 \rangle$被Chosen的Quorum，$Q_2$是使$\langle n_2, v_2 \rangle$被Chosen的Quorum。
 
-由Quorum交集性质（Lemma-FM-18-02推论）：
+由Quorum交集性质（Lemma-S-98-02推论）：
 
 $$
 \exists A \in \mathcal{A}: A \in Q_1 \cap Q_2
 $$
 
-**关键观察**: 
+**关键观察**:
+
 - 由于$A \in Q_1$，$A$接受了$\langle n_1, v_1 \rangle$，即$\text{accepted}(A, \langle n_1, v_1 \rangle)$
 - 由于$A \in Q_2$，$A$接受了$\langle n_2, v_2 \rangle$
 
-由Lemma-FM-18-02（Promise单调性），Acceptor在$\langle n_2, v_2 \rangle$之前必须对$n_2$发送了Promise。
+由Lemma-S-98-02（Promise单调性），Acceptor在$\langle n_2, v_2 \rangle$之前必须对$n_2$发送了Promise。
 
 **情况分析**:
 
@@ -319,7 +328,7 @@ $$
 
 ### 5.2 Quorum交集引理
 
-**Lemma-FM-18-03: Quorum交集**
+**Lemma-S-98-03: Quorum交集**
 
 对于$N$个Acceptor的系统，任何两个Quorum $Q_1, Q_2$满足：
 
@@ -352,9 +361,10 @@ $$
 
 ### 5.3 活性定理（部分同步模型）
 
-**Thm-FM-18-02: Paxos Liveness**
+**Thm-S-98-02: Paxos Liveness**
 
 在**部分同步**（Partial Synchronization）模型下，假设：
+
 1. 存在一个Quorum的Acceptor不会故障
 2. 消息延迟有上界$\Delta$
 3. 最多一个Proposer在任一时刻进行提议
@@ -376,7 +386,7 @@ $$
 P在收到Promise后立即发送Accept(n, v)，其中：
 
 $$
-v = \begin{cases} 
+v = \begin{cases}
 v_{max} & \text{if } \exists \langle n', v' \rangle \in \text{Promises} \\
 v_{proposed} & \text{otherwise}
 \end{cases}
@@ -384,7 +394,7 @@ $$
 
 同样，在$t \leq 3\Delta$内，所有$A \in Q$收到Accept请求。
 
-由Lemma-FM-18-02，这些Acceptor在Promise后$minProposal \geq n$，因此接受条件满足。
+由Lemma-S-98-02，这些Acceptor在Promise后$minProposal \geq n$，因此接受条件满足。
 
 **阶段3**: 学习阶段
 
@@ -394,9 +404,10 @@ $$
 
 ### 5.4 安全性与活性的不可兼得（FLP结果）
 
-**Cor-FM-18-01: FLP不可能性**
+**Cor-S-98-01: FLP不可能性**
 
 在**纯异步**系统中，如果允许至少一个进程故障，则不存在确定性的共识算法同时满足：
+
 - **终止性**（Termination）：所有非故障进程最终决策
 - **一致性**（Agreement）：所有决策进程决定相同值
 - **有效性**（Validity）：决策值由某个进程提议
@@ -416,24 +427,24 @@ sequenceDiagram
     participant A2 as Acceptor A2
     participant A3 as Acceptor A3
     participant L as Learner L
-    
+
     Note over P: 选择提案号 n=5
-    
+
     P->>A1: Prepare(5)
     P->>A2: Prepare(5)
     P->>A3: Prepare(5)
-    
+
     A1-->>P: Promise(5, ⊥)<br/>minProposal=5
     A2-->>P: Promise(5, ⊥)<br/>minProposal=5
     Note over P: 收到2个Promise<br/>形成Quorum<br/>没有已接受的值
-    
+
     P->>A1: Accept(5, "value-X")
     P->>A2: Accept(5, "value-X")
-    
+
     A1-->>P: Accepted(5, "value-X")
     A2-->>P: Accepted(5, "value-X")
     Note over P: 值被Chosen
-    
+
     A1->>L: Accepted(5, "value-X")
     A2->>L: Accepted(5, "value-X")
     Note over L: 学习到"value-X"
@@ -449,27 +460,27 @@ sequenceDiagram
     participant P2 as P2 (n=8)
     participant A1 as A1
     participant A2 as A2
-    
+
     P1->>A1: Prepare(5)
     P1->>A2: Prepare(5)
     A1-->>P1: Promise(5, ⊥)
     A2-->>P1: Promise(5, ⊥)
-    
+
     Note over P1: P1准备发送Accept...
-    
+
     P2->>A1: Prepare(8)
     P2->>A2: Prepare(8)
     A1-->>P2: Promise(8, ⊥)<br/>minProposal=8
     A2-->>P2: Promise(8, ⊥)<br/>minProposal=8
-    
+
     P1->>A1: Accept(5, "X")
     A1-->>P1: Reject!<br/>minProposal=8 > 5
-    
+
     P2->>A1: Accept(8, "Y")
     P2->>A2: Accept(8, "Y")
     A1-->>P2: Accepted(8, "Y")
     A2-->>P2: Accepted(8, "Y")
-    
+
     Note over P1: P1需要重新开始<br/>使用更大的提案号
 ```
 
@@ -484,26 +495,26 @@ sequenceDiagram
     participant A1 as A1
     participant A2 as A2
     participant A3 as A3
-    
+
     Note over P1: P1的Accept阶段<br/>只到达A1和A2
     P1->>A1: Accept(5, "foo")
     P1->>A2: Accept(5, "foo")
     A1-->>P1: Accepted(5, "foo")
     A2-xP1: [网络丢失]
     Note over P1: 未形成Quorum，失败
-    
+
     P2->>A2: Prepare(8)
     P2->>A3: Prepare(8)
     A2-->>P2: Promise(8, ⟨5, "foo"⟩)
     A3-->>P2: Promise(8, ⊥)
-    
+
     Note over P2: 发现已接受的值"foo"<br/>必须使用此值
-    
+
     P2->>A2: Accept(8, "foo")
     P2->>A3: Accept(8, "foo")
     A2-->>P2: Accepted(8, "foo")
     A3-->>P2: Accepted(8, "foo")
-    
+
     Note over P2: "foo"被Chosen<br/>P1的原始意图被保留
 ```
 
@@ -520,11 +531,11 @@ graph TD
     subgraph "Basic Paxos（每次）"
         B1[Prepare] --> B2[Promise] --> B3[Accept] --> B4[Accepted]
     end
-    
+
     subgraph "Multi-Paxos（首轮后）"
-        M1[首轮: Prepare] --> M2[Promise] --> M3[Accept] --> M4[Accepted]
-        M4 -.->|Leader稳定| M5[跳过Prepare]
-        M5 --> M6[直接Accept]
+        M1["首轮: Prepare"] --> M2[Promise] --> M3[Accept] --> M4[Accepted]
+        M4 -.->|Leader稳定| M5["跳过Prepare"]
+        M5 --> M6["直接Accept"]
         M6 --> M7[Accepted]
         M7 -.-> M5
     end
@@ -536,11 +547,13 @@ graph TD
 
 **目标**: 在稳定状态下，将消息延迟从3个RTT减少到2个RTT。
 
-**机制**: 
+**机制**:
+
 - **Classic Quorum**: $|Q_C| = \lceil (N+1)/2 \rceil$
 - **Fast Quorum**: $|Q_F| = \lceil 3N/4 \rceil$（更大的Quorum）
 
 **协议**:
+
 1. 若Leader检测到无冲突，直接发送Accept（跳过Prepare）
 2. Client可直接向Acceptor发送提案
 3. 使用更大的Fast Quorum来容忍冲突
@@ -557,7 +570,8 @@ Fast Paxos:   Client → Acceptors → Client = 2 RTT（最佳情况）
 
 **传统Paxos**: Prepare Quorum = Accept Quorum = 多数派
 
-**Flexible Paxos**: 
+**Flexible Paxos**:
+
 - Prepare Quorum: $Q_P$
 - Accept Quorum: $Q_A$
 
@@ -568,11 +582,13 @@ $$
 $$
 
 **示例**: N=5
+
 - $Q_P$: 任意2个Acceptor
 - $Q_A$: 任意4个Acceptor
 - 交集: 2 + 4 - 5 = 1（满足条件）
 
-**应用场景**: 
+**应用场景**:
+
 - 读优化系统：减少Prepare阶段的开销
 - 地理分布式：减少跨区域通信
 
@@ -594,11 +610,13 @@ $$
 **用途**: 分布式锁服务、粗粒度同步、元数据存储
 
 **Paxos应用**:
+
 - 使用Multi-Paxos实现副本状态机
 - 5个副本，典型部署跨数据中心
 - 日志复制确保所有副本一致
 
 **特点**:
+
 - 长连接，客户端缓存
 - 事件通知机制
 - 支持小文件读写
@@ -608,11 +626,13 @@ $$
 **协议**: ZAB（ZooKeeper Atomic Broadcast）
 
 **与Paxos的关系**:
+
 ```
 ZAB ≈ Multi-Paxos + 顺序保证 + 崩溃恢复优化
 ```
 
 **关键差异**:
+
 - ZAB保证**FIFO客户端顺序**
 - 主备切换时有同步阶段
 - 所有更新通过Leader
@@ -623,13 +643,15 @@ ZAB ≈ Multi-Paxos + 顺序保证 + 崩溃恢复优化
 
 **协议**: Raft（类Paxos）
 
-**设计目标**: 
+**设计目标**:
+
 - 简单性（比Paxos易理解）
 - 安全性
 - 可用性
 - 性能
 
 **Paxos元素在Raft中的体现**:
+
 | Raft概念 | Paxos对应 |
 |----------|-----------|
 | Leader Election | Paxos Leader |
@@ -683,7 +705,8 @@ mindmap
 | **容忍数量** | $f$故障需要$2f+1$节点 |
 | **拜占庭容错** | 否（需要PBFT扩展）|
 
-**边界条件**: 
+**边界条件**:
+
 - 少于多数派故障时，安全性始终保证
 - 多数派故障时，活性丧失但安全性保持
 
@@ -713,19 +736,19 @@ classDiagram
         +prepare(n)
         +accept(n, v)
     }
-    
+
     class Acceptor {
         +minProposal: ℕ
         +acceptedProposal: Proposal
         +promise(n)
         +accept(n, v)
     }
-    
+
     class Learner {
         +chosenValue: Value
         +learn()
     }
-    
+
     Proposer --> Acceptor : Prepare/Accept
     Acceptor --> Proposer : Promise/Accepted
     Acceptor --> Learner : Accepted
@@ -789,7 +812,7 @@ classDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE: 初始化
-    
+
     state Proposer {
         IDLE --> PREPARING: 选择提案号
         PREPARING --> ACCEPTING: 收到Quorum Promise
@@ -798,7 +821,7 @@ stateDiagram-v2
         ACCEPTING --> PREPARING: 接受被拒绝
         CHOSEN --> [*]
     }
-    
+
     state Acceptor {
         [*] --> IDLE_A
         IDLE_A --> PROMISED: 收到Prepare(n)<br/>n > minProposal
@@ -806,7 +829,7 @@ stateDiagram-v2
         PROMISED --> PROMISED: 收到Prepare(n')<br/>n' > n, 更新minProposal
         ACCEPTED --> ACCEPTED: 已接受状态
     }
-    
+
     state Learner {
         [*] --> LEARNING
         LEARNING --> LEARNED: 收到Quorum Accepted
@@ -824,18 +847,18 @@ graph TB
             A2[A2]
             A3[A3]
         end
-        
+
         subgraph "Quorum Q2"
             A3[A3]
             A4[A4]
             A5[A5]
         end
-        
+
         A1 --- A2 --- A3 --- A4 --- A5
     end
-    
+
     style A3 fill:#f96,stroke:#333,stroke-width:4px
-    
+
     NOTE["交集: A3<br/>|Q1 ∩ Q2| = 1<br/>保证安全性"]
 ```
 
@@ -845,19 +868,19 @@ graph TB
 graph LR
     subgraph "共识算法谱系"
         direction TB
-        
+
         PAX[Paxos<br/>1989] --> MP[Multi-Paxos]
         PAX --> FP[Fast Paxos]
         PAX --> FLP[Flexible Paxos]
-        
+
         PAX --> RAFT[Raft<br/>2013]
         PAX --> ZAB[ZAB<br/>ZooKeeper]
-        
+
         PAX --> PBFT[PBFT<br/>1999]
         PBFT --> HOT[HOTStuff]
         PBFT --> TEND[Tendermint]
     end
-    
+
     style PAX fill:#9f6,stroke:#333,stroke-width:3px
 ```
 
@@ -870,31 +893,31 @@ graph TB
         DC1B[Acceptor 2]
         DC1L[Learner 1]
     end
-    
+
     subgraph "数据中心2"
         DC2A[Acceptor 3]
         DC2B[Acceptor 4]
         DC2L[Learner 2]
     end
-    
+
     subgraph "数据中心3"
         DC3A[Acceptor 5]
         DC3L[Learner 3]
     end
-    
+
     subgraph "客户端"
         C1[Client 1]
         C2[Client 2]
     end
-    
+
     C1 -->|Propose| DC1A
     C2 -->|Propose| DC2A
-    
+
     DC1A <-->|Quorum通信| DC1B
     DC1A <-->|Quorum通信| DC2A
     DC1A <-->|Quorum通信| DC2B
     DC1A <-->|Quorum通信| DC3A
-    
+
     DC1A -->|Accepted| DC1L
     DC2A -->|Accepted| DC2L
     DC3A -->|Accepted| DC3L
@@ -906,26 +929,19 @@ graph TB
 
 [^2]: L. Lamport, "Paxos Made Simple," ACM SIGACT News, 32(4), pp. 51-58, 2001. (简化版Paxos描述，更易于理解)
 
-[^3]: Wikipedia contributors, "Paxos (computer science)," Wikipedia, The Free Encyclopedia. https://en.wikipedia.org/wiki/Paxos_(computer_science)
+[^3]: Wikipedia contributors, "Paxos (computer science)," Wikipedia, The Free Encyclopedia. <https://en.wikipedia.org/wiki/Paxos_(computer_science)>
 
 [^4]: T. D. Chandra, R. Griesemer, and J. Redstone, "Paxos Made Live - An Engineering Perspective," PODC 2007. (Google Chubby团队的工程经验)
 
-[^5]: M. Burrows, "The Chubby Lock Service for Loosely-Coupled Distributed Systems," OSDI 2006.
 
-[^6]: P. Hunt, M. Konar, F. P. Junqueira, and B. Reed, "ZooKeeper: Wait-free Coordination for Internet-scale Systems," USENIX ATC 2010.
 
-[^7]: D. Ongaro and J. Ousterhout, "In Search of an Understandable Consensus Algorithm," USENIX ATC 2014. (Raft论文，与Paxos对比)
 
-[^8]: M. J. Fischer, N. A. Lynch, and M. S. Paterson, "Impossibility of Distributed Consensus with One Faulty Process," Journal of the ACM, 32(2), pp. 374-382, 1985. (FLP不可能性结果)
 
-[^9]: L. Lamport, "Fast Paxos," Distributed Computing, 19(2), pp. 79-103, 2006.
 
-[^10]: H. Howard, D. Malkhi, and S. Weil, "Flexible Paxos: Quorum Intersection Revisited," OPODIS 2016.
 
-[^11]: R. G. Guerraoui and A. Schiper, "The Generic Consensus Service," IEEE Transactions on Software Engineering, 27(1), pp. 29-41, 2001.
 
-[^12]: T. D. Chandra and S. Toueg, "Unreliable Failure Detectors for Reliable Distributed Systems," Journal of the ACM, 43(2), pp. 225-267, 1996.
 
 ---
 
-*文档版本: v1.0* | *创建日期: 2026-04-10* | *形式化等级: L5* | *定理引用: Thm-FM-18-01, Thm-FM-18-02, Lemma-FM-18-01~03*
+*文档版本: v1.0* | *创建日期: 2026-04-10* | *形式化等级: L5* | *定理引用: Thm-S-98-01, Thm-S-98-02, Lemma-S-98-01~03*
+

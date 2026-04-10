@@ -1,6 +1,8 @@
 # CAP定理
 
 > **所属单元**: formal-methods/03-model-taxonomy/04-consistency | **前置依赖**: [01-consistency-spectrum](01-consistency-spectrum.md) | **形式化等级**: L5-L6
+>
+> **相关概念**: [CAP定理Wikipedia概念页](../../98-appendices/wikipedia-concepts/14-cap-theorem.md) - CAP定理标准定义与概述
 
 ## 1. 概念定义 (Definitions)
 

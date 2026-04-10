@@ -66,7 +66,7 @@ Phase B 的核心目标是实现与 **Wikipedia核心概念** 和 **国际顶尖
 
 - ✅ OCaml/Lambda演算
 - ✅ 类型安全证明技术
-- ✅ 子类型理论
+- ✅ 子类型论
 
 #### ETH Zurich - Program Verification
 
@@ -98,17 +98,17 @@ Phase B 的核心目标是实现与 **Wikipedia核心概念** 和 **国际顶尖
 
 每个概念页包含 3-5 个完整的形式证明：
 
-- ✅ **定理编号**: `Thm-FM-XX-YY` (统一格式)
+- ✅ **定理编号**: `Thm-S-98-XX-YY` (统一格式)
 - ✅ **数学符号**: LaTeX风格 (□, ◇, ⊢, ⊨)
 - ✅ **证明结构**: 假设 → 推导 → 结论 → QED
 - ✅ **引理支持**: 必要的引理和前置定义
 
 **示例定理**:
 
-- Gödel完备性定理 (`Thm-FM-22-01`)
-- Scott不动点定理 (`Thm-FM-24-01`)
+- Gödel完备性定理 (`Thm-S-98-22-01`)
+- Scott不动点定理 (`Thm-S-98-24-01`)
 - CAP定理形式证明 (`Thm-M-04-02-01`)
-- Paxos Safety (`Thm-FM-18-01`)
+- Paxos Safety (`Thm-S-98-18-01`)
 
 ---
 

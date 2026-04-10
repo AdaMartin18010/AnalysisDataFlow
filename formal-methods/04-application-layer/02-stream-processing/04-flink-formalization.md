@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-A-03-06: Flink计算模型
+### Def-A-02-06: Flink计算模型
 
 Apache Flink计算模型是一个八元组 $\mathcal{F} = (S, O, E, T, W, C, K, \Sigma)$：
 
@@ -17,7 +17,7 @@ Apache Flink计算模型是一个八元组 $\mathcal{F} = (S, O, E, T, W, C, K, 
 - $K$: 状态后端类型，$K \in \{\text{Memory}, \text{FsState}, \text{RocksDB}\}$
 - $\Sigma$: 状态空间，记录有状态操作符的中间结果
 
-### Def-A-03-07: DataStream API语义
+### Def-A-02-07: DataStream API语义
 
 DataStream API操作符语义定义为：
 
@@ -38,7 +38,7 @@ $$\text{reduce}(\oplus): \langle e_1, e_2, e_3, ... \rangle \mapsto \langle e_1,
 $$\text{window}(w, f): S \rightarrow \langle f(S_{w_1}), f(S_{w_2}), ... \rangle$$
 其中 $S_{w_i}$ 是窗口 $w_i$ 内的元素集合。
 
-### Def-A-03-08: Checkpoint机制形式化
+### Def-A-02-08: Checkpoint机制形式化
 
 检查点是一个分布式快照操作：
 
@@ -61,7 +61,7 @@ $$\text{insert}(b_k, p) \Rightarrow \forall e \in S_{before\_p}: e \in \text{Sna
 
 $$\text{snapshot}(o) = \{(k, \Sigma_o(k)) \mid b_k \text{ received on all inputs}\}$$
 
-### Def-A-03-09: Watermark传播语义
+### Def-A-02-09: Watermark传播语义
 
 Watermark是时间进展的标记：
 
@@ -83,7 +83,7 @@ $$w_{out} = \min_{i \in inputs} w_i$$
 
 $$\forall t_1 < t_2: w(t_1) \leq w(t_2)$$
 
-### Def-A-03-10: 恰好一次语义
+### Def-A-02-10: 恰好一次语义
 
 恰好一次处理语义要求：
 
@@ -99,7 +99,7 @@ $$\text{Output}(e) \text{ committed } \Rightarrow \text{ never re-emitted }$$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-A-03-04: 检查点一致性
+### Lemma-A-02-04: 检查点一致性
 
 若所有操作符在收到所有输入的barrier后才进行状态快照，则全局快照是一致的：
 
@@ -107,7 +107,7 @@ $$\forall o: (\forall i \in In(o): b_k \in i) \Rightarrow \text{Snapshot}_o(k) \
 
 **证明**: 满足Chandy-Lamport快照算法的条件。
 
-### Lemma-A-03-05: Watermark完备性
+### Lemma-A-02-05: Watermark完备性
 
 对于Watermark $w$，所有事件时间 $\tau < w$ 的事件都已到达：
 
@@ -115,7 +115,7 @@ $$\forall e: \tau(e) < w \Rightarrow e \in \text{processed}$$
 
 **证明**: 由源操作符watermark生成策略保证。
 
-### Prop-A-03-02: Exactly-Once的充分条件
+### Prop-A-02-02: Exactly-Once的充分条件
 
 恰好一次语义满足当：
 
@@ -125,7 +125,7 @@ $$\forall e: \tau(e) < w \Rightarrow e \in \text{processed}$$
 
 $$\text{Exactly-Once} \iff \text{IdempotentOutput} \land \text{AtomicCommit} \land \text{ReplayableSource}$$
 
-### Lemma-A-03-06: Flink DAG确定性
+### Lemma-A-02-06: Flink DAG确定性
 
 对于给定的输入流和检查点配置，Flink程序产生确定性的输出流：
 

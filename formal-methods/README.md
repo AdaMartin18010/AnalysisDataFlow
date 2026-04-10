@@ -38,10 +38,10 @@ formal-methods/
 │
 ├── 01-foundations/                       # 第一单元：数学基础
 │   ├── 01-order-theory.md               # 序理论 - CPO、格论
-│   ├── 02-category-theory.md            # 范畴论 - 余代数、双模拟
+│   ├── 02-category-theory.md            # 范畴论 - 余代数、互模拟
 │   ├── 03-logic-foundations.md          # 逻辑基础 - LTL/CTL/Hoare
 │   ├── 04-domain-theory.md              # 域理论 - 指称语义基础
-│   ├── 05-type-theory.md                # 类型理论 - 静态验证基础
+│   ├── 05-type-theory.md                # 类型论 - 静态验证基础
 │   └── 06-coalgebra-advanced.md         # 余代数进阶 - 无限行为
 │
 ├── 02-calculi/                          # 第二单元：计算演算
@@ -68,7 +68,7 @@ formal-methods/
 │   │   ├── 02-failure-models.md         # 故障模型
 │   │   └── 03-communication-models.md   # 通信模型
 │   ├── 02-computation-models/
-│   │   ├── 01-process-algebras.md       # 进程代数家族
+│   │   ├── 01-process-algebras.md       # 进程演算家族
 │   │   ├── 02-automata.md               # 自动机模型
 │   │   ├── 03-net-models.md             # 网模型 (Petri网)
 │   │   ├── abstract-interpretation.md   # 抽象解释
@@ -83,7 +83,7 @@ formal-methods/
 │   │   └── consistency-decision-tree.md # 一致性选择决策树
 │   └── 05-verification-methods/
 │       ├── 01-logic-methods.md          # 逻辑方法 (TLA+/Event-B)
-│       ├── 02-model-checking.md         # 模型检验
+│       ├── 02-model-checking.md         # 模型检测
 │       └── 03-theorem-proving.md        # 定理证明
 │
 ├── 04-application-layer/                # 第四单元：应用层形式化
@@ -121,9 +121,9 @@ formal-methods/
 │   │   ├── 02-event-b.md                # Event-B 精化
 │   │   └── 03-separation-logic.md       # 分离逻辑
 │   ├── 02-model-checking/
-│   │   ├── 01-explicit-state.md         # 显式状态模型检验
-│   │   ├── 02-symbolic-mc.md            # 符号模型检验
-│   │   └── 03-realtime-mc.md            # 实时模型检验
+│   │   ├── 01-explicit-state.md         # 显式状态模型检测
+│   │   ├── 02-symbolic-mc.md            # 符号模型检测
+│   │   └── 03-realtime-mc.md            # 实时模型检测
 │   └── 03-theorem-proving/
 │       ├── 01-coq-isabelle.md           # Coq/Isabelle
 │       ├── 02-smt-solvers.md            # SMT求解器
@@ -189,12 +189,12 @@ formal-methods/
 │   └── wikipedia-concepts/              # Wikipedia 25概念全覆盖
 │       ├── README.md                    # 概念索引
 │       ├── 01-formal-methods.md         # 形式化方法
-│       ├── 02-model-checking.md         # 模型检验
+│       ├── 02-model-checking.md         # 模型检测
 │       ├── 03-theorem-proving.md        # 定理证明
 │       ├── 04-process-calculus.md       # 进程演算
 │       ├── 05-temporal-logic.md         # 时序逻辑
 │       ├── 06-hoare-logic.md            # Hoare逻辑
-│       ├── 07-type-theory.md            # 类型理论
+│       ├── 07-type-theory.md            # 类型论
 │       ├── 08-abstract-interpretation.md # 抽象解释
 │       ├── 09-bisimulation.md           # 互模拟
 │       ├── 10-petri-nets.md             # Petri网
@@ -304,8 +304,8 @@ formal-methods/
 
 | 类别 | 概念链接 |
 |------|----------|
-| **基础理论** | [形式化方法](98-appendices/wikipedia-concepts/01-formal-methods.md) · [类型理论](98-appendices/wikipedia-concepts/07-type-theory.md) · [集合论](98-appendices/wikipedia-concepts/23-set-theory.md) · [一阶逻辑](98-appendices/wikipedia-concepts/22-first-order-logic.md) · [模态逻辑](98-appendices/wikipedia-concepts/21-modal-logic.md) |
-| **验证技术** | [模型检验](98-appendices/wikipedia-concepts/02-model-checking.md) · [定理证明](98-appendices/wikipedia-concepts/03-theorem-proving.md) · [抽象解释](98-appendices/wikipedia-concepts/08-abstract-interpretation.md) · [Hoare逻辑](98-appendices/wikipedia-concepts/06-hoare-logic.md) |
+| **基础理论** | [形式化方法](98-appendices/wikipedia-concepts/01-formal-methods.md) · [类型论](98-appendices/wikipedia-concepts/07-type-theory.md) · [集合论](98-appendices/wikipedia-concepts/23-set-theory.md) · [一阶逻辑](98-appendices/wikipedia-concepts/22-first-order-logic.md) · [模态逻辑](98-appendices/wikipedia-concepts/21-modal-logic.md) |
+| **验证技术** | [模型检测](98-appendices/wikipedia-concepts/02-model-checking.md) · [定理证明](98-appendices/wikipedia-concepts/03-theorem-proving.md) · [抽象解释](98-appendices/wikipedia-concepts/08-abstract-interpretation.md) · [Hoare逻辑](98-appendices/wikipedia-concepts/06-hoare-logic.md) |
 | **计算模型** | [进程演算](98-appendices/wikipedia-concepts/04-process-calculus.md) · [时序逻辑](98-appendices/wikipedia-concepts/05-temporal-logic.md) · [Petri网](98-appendices/wikipedia-concepts/10-petri-nets.md) · [互模拟](98-appendices/wikipedia-concepts/09-bisimulation.md) |
 | **分布式核心** | [分布式计算](98-appendices/wikipedia-concepts/11-distributed-computing.md) · [共识算法](98-appendices/wikipedia-concepts/13-consensus.md) · [CAP定理](98-appendices/wikipedia-concepts/14-cap-theorem.md) · [线性一致性](98-appendices/wikipedia-concepts/15-linearizability.md) · [可串行化](98-appendices/wikipedia-concepts/16-serializability.md) |
 | **容错机制** | [拜占庭容错](98-appendices/wikipedia-concepts/12-byzantine-fault-tolerance.md) · [两阶段提交](98-appendices/wikipedia-concepts/17-two-phase-commit.md) · [Paxos](98-appendices/wikipedia-concepts/18-paxos.md) · [Raft](98-appendices/wikipedia-concepts/19-raft.md) |
@@ -380,7 +380,7 @@ formal-methods/
 
 | 单元 | 主题数 | 文件数 | 状态 | 亮点 |
 |------|--------|--------|------|------|
-| 01-foundations | 6 | 7 | ✅ 已完成 | 新增域理论、类型理论、余代数 |
+| 01-foundations | 6 | 7 | ✅ 已完成 | 新增域理论、类型论、余代数 |
 | 02-calculi | 3 | 15 | ✅ 已完成 | 扩展π演算模式与编码 |
 | 03-model-taxonomy | 5 | 16 | ✅ 已完成 | 新增抽象解释、数据流分析 |
 | 04-application-layer | 6 | 18 | ✅ 已完成 | 新增区块链、网络协议、编译器验证 |

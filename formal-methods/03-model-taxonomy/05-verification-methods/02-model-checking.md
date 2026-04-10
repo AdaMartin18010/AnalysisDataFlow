@@ -1,12 +1,12 @@
-# 模型检验
+﻿# 模型检测
 
 > **所属单元**: formal-methods/03-model-taxonomy/05-verification-methods | **前置依赖**: [01-logic-methods](01-logic-methods.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 
-### Def-M-05-02-01 模型检验 (Model Checking)
+### Def-M-05-02-01 模型检测 (Model Checking)
 
-模型检验是**自动验证有限状态系统**是否满足时序逻辑规范的技术：
+模型检测是**自动验证有限状态系统**是否满足时序逻辑规范的技术：
 
 $$\mathcal{MC}: (\mathcal{M}, \phi) \to \{\top, \bot, \text{CounterExample}\}$$
 
@@ -18,7 +18,7 @@ $$\mathcal{MC}: (\mathcal{M}, \phi) \to \{\top, \bot, \text{CounterExample}\}$$
 
 ### Def-M-05-02-02 Kripke结构
 
-模型检验的基础语义结构：
+模型检测的基础语义结构：
 
 $$\mathcal{M} = (S, S_0, R, L, AP)$$
 
@@ -57,7 +57,7 @@ $$\phi ::= p \ | \ \neg\phi \ | \ \phi \land \phi \ | \ X\phi \ | \ F\phi \ | \ 
 
 **语义**：在路径 $\pi$ 上解释，如 $\pi \models G\phi$ 表示 $\phi$ 在 $\pi$ 的所有后缀上成立。
 
-### Def-M-05-02-05 显式状态模型检验
+### Def-M-05-02-05 显式状态模型检测
 
 显式状态方法直接枚举状态空间：
 
@@ -71,7 +71,7 @@ $$\text{ExplicitMC}(\mathcal{M}, \phi) = \text{DFS/BFS}(S_{reach}, \phi)$$
 
 **复杂度**：$O(|S| \cdot |\phi|)$ 时间和空间。
 
-### Def-M-05-02-06 符号模型检验 (Symbolic MC)
+### Def-M-05-02-06 符号模型检测 (Symbolic MC)
 
 符号方法使用**布尔函数**表示状态集合：
 
@@ -86,7 +86,7 @@ $$\text{SymbolicMC}(\mathcal{M}, \phi) = \text{FixedPoint}(BDD, \phi)$$
 **数据结构**：
 
 - **BDD**（二元决策图）：规范化布尔函数表示
-- **SAT求解器**：用于有界模型检验
+- **SAT求解器**：用于有界模型检测
 
 ## 2. 属性推导 (Properties)
 
@@ -106,7 +106,7 @@ $$|S_{total}| = \prod_{i=1}^{n} |S_i|$$
 
 对于 $n$ 个组件各 $k$ 个状态，总状态数 $k^n$。
 
-### Prop-M-05-02-01 模型检验复杂度
+### Prop-M-05-02-01 模型检测复杂度
 
 | 逻辑 | 复杂度 | 说明 |
 |-----|-------|------|
@@ -124,7 +124,7 @@ BDD表示的紧凑性：
 
 ## 3. 关系建立 (Relations)
 
-### 模型检验方法谱系
+### 模型检测方法谱系
 
 ```
 显式状态
@@ -133,7 +133,7 @@ BDD表示的紧凑性：
 
 符号方法
     ├── BDD-based（SMV, NuSMV）
-    └── SAT-based（有界模型检验）
+    └── SAT-based（有界模型检测）
 
 抽象方法
     ├── 谓词抽象
@@ -159,11 +159,11 @@ BDD表示的紧凑性：
 2. **对称性约简**：利用系统对称性
 3. **部分序约简**：忽略独立动作的交错
 4. **组合验证**：分组件验证后组合
-5. **有界模型检验**：限制搜索深度
+5. **有界模型检测**：限制搜索深度
 
-### 模型检验 vs 定理证明
+### 模型检测 vs 定理证明
 
-| 特性 | 模型检验 | 定理证明 |
+| 特性 | 模型检测 | 定理证明 |
 |-----|---------|---------|
 | 自动化 | 全自动 | 交互式 |
 | 适用范围 | 有限状态 | 无限状态 |
@@ -173,9 +173,9 @@ BDD表示的紧凑性：
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### Thm-M-05-02-01 CTL模型检验算法
+### Thm-M-05-02-01 CTL模型检测算法
 
-**定理**：CTL模型检验可在 $O(|\mathcal{M}| \cdot |\phi|)$ 时间内完成。
+**定理**：CTL模型检测可在 $O(|\mathcal{M}| \cdot |\phi|)$ 时间内完成。
 
 **算法**（标记法）：
 
@@ -205,9 +205,9 @@ Mark(phi):
 - 子公式数：$O(|\phi|)$
 - 总复杂度：$O(|\mathcal{M}| \cdot |\phi|)$
 
-### Thm-M-05-02-02 有界模型检验正确性
+### Thm-M-05-02-02 有界模型检测正确性
 
-**定理**：若有界模型检验在深度 $k$ 发现错误，则原系统确实存在错误。
+**定理**：若有界模型检测在深度 $k$ 发现错误，则原系统确实存在错误。
 
 **逆否命题**：若系统在深度 $k$ 无错误，不能推出系统无错误。
 
@@ -288,14 +288,14 @@ LTLSPEC G (state = busy -> request)
 LTLSPEC G (request -> F state = busy)
 ```
 
-### 实例3：有界模型检验Python实现
+### 实例3：有界模型检测Python实现
 
 ```python
 from pysat.solvers import Solver
 
 def bmc_check(kripke, property_neg, max_depth=100):
     """
-    有界模型检验简化实现
+    有界模型检测简化实现
     """
     for k in range(1, max_depth + 1):
         # 编码转移关系为CNF
@@ -333,12 +333,12 @@ def encode_transition(kripke, k):
 
 ## 7. 可视化 (Visualizations)
 
-### 模型检验流程
+### 模型检测流程
 
 ```mermaid
 flowchart TD
     A[系统模型<br/>Kripke结构] --> B[规范<br/>时序逻辑公式]
-    B --> C[模型检验器]
+    B --> C[模型检测器]
 
     C --> D{验证}
     D -->|满足| E[验证通过<br/>性质成立]
@@ -394,7 +394,7 @@ graph TB
         ABS[抽象<br/>隐藏细节]
         SYM[对称性约简<br/>合并等价状态]
         POR[部分序约简<br/>省略独立交错]
-        BMC[有界模型检验<br/>限制深度]
+        BMC[有界模型检测<br/>限制深度]
     end
 
     EXP1 -.-> ABS

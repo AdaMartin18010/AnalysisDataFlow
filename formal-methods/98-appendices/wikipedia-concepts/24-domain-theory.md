@@ -28,7 +28,7 @@
 
 ### 2.1 偏序集 (Partially Ordered Set, Poset)
 
-**Def-W-24-01** (偏序集). 偏序集是一个二元组 $(D, \sqsubseteq)$，其中：
+**Def-S-98-01** (偏序集). 偏序集是一个二元组 $(D, \sqsubseteq)$，其中：
 
 - $D$ 是一个集合
 - $\sqsubseteq \subseteq D \times D$ 是一个二元关系，满足：
@@ -36,13 +36,13 @@
   2. **反对称性**: $\forall x, y \in D. (x \sqsubseteq y \land y \sqsubseteq x) \Rightarrow x = y$
   3. **传递性**: $\forall x, y, z \in D. (x \sqsubseteq y \land y \sqsubseteq z) \Rightarrow x \sqsubseteq z$
 
-**Def-W-24-02** (定向集). 子集 $S \subseteq D$ 是**定向的**（directed），当且仅当：
+**Def-S-98-02** (定向集). 子集 $S \subseteq D$ 是**定向的**（directed），当且仅当：
 
 $$\forall x, y \in S. \exists z \in S. (x \sqsubseteq z \land y \sqsubseteq z)$$
 
 即 $S$ 中任意两个元素都有上界在 $S$ 中。
 
-**Def-W-24-03** (链). 子集 $S \subseteq D$ 是**链**（chain），当且仅当：
+**Def-S-98-03** (链). 子集 $S \subseteq D$ 是**链**（chain），当且仅当：
 
 $$\forall x, y \in S. (x \sqsubseteq y \lor y \sqsubseteq x)$$
 
@@ -50,7 +50,7 @@ $$\forall x, y \in S. (x \sqsubseteq y \lor y \sqsubseteq x)$$
 
 ### 2.2 完全偏序 (Complete Partial Order, CPO)
 
-**Def-W-24-04** (完全偏序, CPO). 完全偏序是一个偏序集 $(D, \sqsubseteq)$ 满足：
+**Def-S-98-04** (完全偏序, CPO). 完全偏序是一个偏序集 $(D, \sqsubseteq)$ 满足：
 
 1. **有底元**: 存在最小元素 $\bot \in D$，使得 $\forall x \in D. \bot \sqsubseteq x$
 2. **定向最小上界存在**: 对任意定向子集 $S \subseteq D$，最小上界 $\bigsqcup S$ 存在
@@ -59,42 +59,42 @@ $$\forall x, y \in S. (x \sqsubseteq y \lor y \sqsubseteq x)$$
 - **上界**: $\forall x \in S. x \sqsubseteq \bigsqcup S$
 - **最小性**: $\forall y \in D. (\forall x \in S. x \sqsubseteq y) \Rightarrow \bigsqcup S \sqsubseteq y$
 
-**Def-W-24-05** ($\omega$-CPO). 若偏序集 $(D, \sqsubseteq)$ 有底元，且每个可数链都有最小上界，则称为 $\omega$-CPO。
+**Def-S-98-05** ($\omega$-CPO). 若偏序集 $(D, \sqsubseteq)$ 有底元，且每个可数链都有最小上界，则称为 $\omega$-CPO。
 
-**Lemma-W-24-01**. 每个CPO都是$\omega$-CPO，但反之不成立。
+**Lemma-S-98-01**. 每个CPO都是$\omega$-CPO，但反之不成立。
 
 *证明*: 可数链是定向集的特例。反例：考虑不可数反链添加底元，它是$\omega$-CPO但不是CPO。∎
 
 ### 2.3 Scott连续性
 
-**Def-W-24-06** (Scott连续函数). 函数 $f: D \to E$ 在CPO之间是**Scott连续的**，当且仅当：
+**Def-S-98-06** (Scott连续函数). 函数 $f: D \to E$ 在CPO之间是**Scott连续的**，当且仅当：
 
 1. **单调性**: $\forall x, y \in D. x \sqsubseteq_D y \Rightarrow f(x) \sqsubseteq_E f(y)$
 2. **保持定向LUB**: 对任意定向集 $S \subseteq D$：
 
 $$f\left(\bigsqcup_D S\right) = \bigsqcup_E \{f(s) \mid s \in S\}$$
 
-**Def-W-24-07** (连续函数空间). 记 $[D \to E]$ 为从 $D$ 到 $E$ 的所有Scott连续函数集合，配备逐点序：
+**Def-S-98-07** (连续函数空间). 记 $[D \to E]$ 为从 $D$ 到 $E$ 的所有Scott连续函数集合，配备逐点序：
 
 $$f \sqsubseteq_{[D \to E]} g \triangleq \forall x \in D. f(x) \sqsubseteq_E g(x)$$
 
-**Lemma-W-24-02**. 若 $D, E$ 是CPO，则 $[D \to E]$ 也是CPO。
+**Lemma-S-98-02**. 若 $D, E$ 是CPO，则 $[D \to E]$ 也是CPO。
 
 ### 2.4 紧致元素
 
-**Def-W-24-08** (紧致元素). 元素 $c \in D$ 是**紧致的**（compact 或 finite），当且仅当：
+**Def-S-98-08** (紧致元素). 元素 $c \in D$ 是**紧致的**（compact 或 finite），当且仅当：
 
 $$\forall \text{定向集 } S \subseteq D. \left(c \sqsubseteq \bigsqcup S \Rightarrow \exists s \in S. c \sqsubseteq s\right)$$
 
 直观上，$c$ 紧致意味着 $c$ 的任何上界逼近都必须被某个有限阶段达到。
 
-**Def-W-24-09** (代数CPO). CPO $D$ 是**代数的**，当且仅当：
+**Def-S-98-09** (代数CPO). CPO $D$ 是**代数的**，当且仅当：
 
 $$\forall x \in D. x = \bigsqcup \{c \in D \mid c \text{ 紧致} \land c \sqsubseteq x\}$$
 
 即每个元素都是其下方紧致元素的LUB。
 
-**Def-W-24-10** (Scott域). 一个**Scott域**是满足以下条件的代数CPO：
+**Def-S-98-10** (Scott域). 一个**Scott域**是满足以下条件的代数CPO：
 
 1. 紧致元素构成的集合是可数的
 2. 任意两个有上界的紧致元素有最小上界（且也是紧致的）
@@ -105,24 +105,24 @@ $$\forall x \in D. x = \bigsqcup \{c \in D \mid c \text{ 紧致} \land c \sqsubs
 
 ### 3.1 Scott拓扑的定义
 
-**Def-W-24-11** (Scott拓扑). CPO $(D, \sqsubseteq)$ 上的**Scott拓扑** $\sigma(D)$ 定义为：
+**Def-S-98-11** (Scott拓扑). CPO $(D, \sqsubseteq)$ 上的**Scott拓扑** $\sigma(D)$ 定义为：
 
 子集 $U \subseteq D$ 是开集，当且仅当：
 
 1. **向上封闭**: $\forall x \in U. \forall y \in D. (x \sqsubseteq y \Rightarrow y \in U)$
 2. **不可由定向LUB逼近**: $\forall \text{定向集 } S \subseteq D. \left(\bigsqcup S \in U \Rightarrow \exists s \in S. s \in U\right)$
 
-**Lemma-W-24-03**. Scott开集恰好是Scott拓扑的拓扑开集。
+**Lemma-S-98-03**. Scott开集恰好是Scott拓扑的拓扑开集。
 
 ### 3.2 Scott拓扑的性质
 
-**Prop-W-24-01** (Scott拓扑的基本性质).
+**Prop-S-98-01** (Scott拓扑的基本性质).
 
 1. $D$ 中的闭集恰好是下集（lower sets）且在定向LUB下封闭
 2. 所有主滤子 $\uparrow x = \{y \mid x \sqsubseteq y\}$ 都是开集
 3. Scott拓扑是 $T_0$ 的，但一般不是 $T_1$ 的
 
-**Def-W-24-12** (Scott开滤子基). 对紧致元素 $c$，定义基本开集：
+**Def-S-98-12** (Scott开滤子基). 对紧致元素 $c$，定义基本开集：
 
 $$\uparrow c = \{x \in D \mid c \sqsubseteq x\}$$
 
@@ -130,7 +130,7 @@ $$\uparrow c = \{x \in D \mid c \sqsubseteq x\}$$
 
 ### 3.3 拓扑连续性等价
 
-**Thm-W-24-01** (拓扑连续等价Scott连续). 函数 $f: D \to E$ 是Scott连续的（按Def-W-24-06）当且仅当 $f$ 关于Scott拓扑是拓扑连续的。
+**Thm-S-98-01** (拓扑连续等价Scott连续). 函数 $f: D \to E$ 是Scott连续的（按Def-S-98-06）当且仅当 $f$ 关于Scott拓扑是拓扑连续的。
 
 *证明*:
 
@@ -150,16 +150,16 @@ $$\uparrow c = \{x \in D \mid c \sqsubseteq x\}$$
 
 ### 4.1 最小不动点 (Least Fixed Point)
 
-**Def-W-24-13** (不动点). 对函数 $f: D \to D$，元素 $x \in D$ 是**不动点**，当且仅当 $f(x) = x$。
+**Def-S-98-13** (不动点). 对函数 $f: D \to D$，元素 $x \in D$ 是**不动点**，当且仅当 $f(x) = x$。
 
-**Def-W-24-14** (最小不动点). $x$ 是 $f$ 的**最小不动点**，记作 $\mu f$ 或 $\text{fix}(f)$，当且仅当：
+**Def-S-98-14** (最小不动点). $x$ 是 $f$ 的**最小不动点**，记作 $\mu f$ 或 $\text{fix}(f)$，当且仅当：
 
 1. $f(x) = x$（是不动点）
 2. $\forall y \in D. (f(y) = y \Rightarrow x \sqsubseteq y)$（是最小的）
 
 ### 4.2 Knaster-Tarski定理
 
-**Thm-W-24-02** (Knaster-Tarski不动点定理). 设 $(L, \sqsubseteq)$ 是完全格，$f: L \to L$ 是单调函数，则：
+**Thm-S-98-02** (Knaster-Tarski不动点定理). 设 $(L, \sqsubseteq)$ 是完全格，$f: L \to L$ 是单调函数，则：
 
 $$\mu f = \bigsqcup \{x \in L \mid x \sqsubseteq f(x)\}$$
 
@@ -183,7 +183,7 @@ $$\mu f = \bigsqcup \{x \in L \mid x \sqsubseteq f(x)\}$$
 
 ### 4.3 Scott不动点定理
 
-**Thm-W-24-03** (Scott不动点定理). 设 $(D, \sqsubseteq)$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
+**Thm-S-98-03** (Scott不动点定理). 设 $(D, \sqsubseteq)$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
 
 1. $f$ 有最小不动点
 2. 最小不动点可计算为：$\mu f = \bigsqcup_{n \geq 0} f^n(\bot)$
@@ -194,11 +194,11 @@ $$\mu f = \bigsqcup \{x \in L \mid x \sqsubseteq f(x)\}$$
 
 ### 4.4 不动点归纳法
 
-**Def-W-24-15** (可接纳谓词). 谓词 $P: D \to \mathbb{B}$ 是**可接纳的**（admissible），当且仅当：
+**Def-S-98-15** (可接纳谓词). 谓词 $P: D \to \mathbb{B}$ 是**可接纳的**（admissible），当且仅当：
 
 $$\forall \text{定向集 } S \subseteq D. \left((\forall s \in S. P(s)) \Rightarrow P(\bigsqcup S)\right)$$
 
-**Thm-W-24-04** (Scott不动点归纳). 设 $f: D \to D$ 连续，$P$ 是可接纳谓词，则：
+**Thm-S-98-04** (Scott不动点归纳). 设 $f: D \to D$ 连续，$P$ 是可接纳谓词，则：
 
 $$\left(P(\bot) \land \forall x \in D. (P(x) \Rightarrow P(f(x)))\right) \Rightarrow P(\mu f)$$
 
@@ -208,13 +208,13 @@ $$\left(P(\bot) \land \forall x \in D. (P(x) \Rightarrow P(f(x)))\right) \Righta
 
 ### 5.1 程序语义的域论语义
 
-**Def-W-24-16** (指称语义). 程序语言 $\mathcal{L}$ 的**指称语义**是一个解释函数：
+**Def-S-98-16** (指称语义). 程序语言 $\mathcal{L}$ 的**指称语义**是一个解释函数：
 
 $$\llbracket \cdot \rrbracket: \mathcal{L} \to D$$
 
 将语法对象映射到数学对象（域元素），其中 $D$ 是适当的语义域。
 
-**Def-W-24-17** (基本语义域). 常用语义域包括：
+**Def-S-98-17** (基本语义域). 常用语义域包括：
 
 | 类型 | 语义域 | 解释 |
 |------|--------|------|
@@ -225,21 +225,21 @@ $$\llbracket \cdot \rrbracket: \mathcal{L} \to D$$
 
 ### 5.2 递归方程的解
 
-**Def-W-24-18** (递归域方程). 在指称语义中，递归类型对应于域方程：
+**Def-S-98-18** (递归域方程). 在指称语义中，递归类型对应于域方程：
 
 $$D \cong F(D)$$
 
 其中 $F$ 是域构造子函子（如积、和、函数空间、提升）。
 
-**Thm-W-24-05** (逆极限定理). 对任意投影函子 $F$，域方程 $D \cong F(D)$ 在同构意义下有唯一解（在适当的范畴中）。
+**Thm-S-98-05** (逆极限定理). 对任意投影函子 $F$，域方程 $D \cong F(D)$ 在同构意义下有唯一解（在适当的范畴中）。
 
 ### 5.3 非终止的语义
 
-**Def-W-24-19** (非终止). 程序的非终止由底元 $\bot$ 表示：
+**Def-S-98-19** (非终止). 程序的非终止由底元 $\bot$ 表示：
 
 $$\llbracket \text{diverge} \rrbracket = \bot$$
 
-**Def-W-24-20** (部分正确性与完全正确性).
+**Def-S-98-20** (部分正确性与完全正确性).
 
 - **部分正确性**: $\{P\}C\{Q\} \triangleq \forall s. (P(s) \Rightarrow (\llbracket C \rrbracket(s) \neq \bot \Rightarrow Q(\llbracket C \rrbracket(s))))$
 - **完全正确性**: 加上终止性保证
@@ -250,13 +250,13 @@ $$\llbracket \text{diverge} \rrbracket = \bot$$
 
 ### 6.1 递归类型的域论模型
 
-**Def-W-24-21** (递归类型). 递归类型形如：
+**Def-S-98-21** (递归类型). 递归类型形如：
 
 $$\mu \alpha. \tau$$
 
 其中 $\alpha$ 是类型变量，$\tau$ 是类型表达式（可能包含$\alpha$）。
 
-**Def-W-24-22** (递归类型的语义). 递归类型的语义是其展开的不动点：
+**Def-S-98-22** (递归类型的语义). 递归类型的语义是其展开的不动点：
 
 $$\llbracket \mu \alpha. \tau \rrbracket = \mu \left(\lambda X. \llbracket \tau \rrbracket_{[\alpha \mapsto X]}\right)$$
 
@@ -271,13 +271,13 @@ $$\llbracket \mu \alpha. \tau \rrbracket = \mu \left(\lambda X. \llbracket \tau 
 
 ### 6.3 余递归与最大不动点
 
-**Def-W-24-23** (最大不动点). 对完全格上的单调函数 $f$：
+**Def-S-98-23** (最大不动点). 对完全格上的单调函数 $f$：
 
 $$\nu f = \sqcap_{n \geq 0} f^n(\top)$$
 
 表示**最大不动点**，用于建模无限数据结构（如流）。
 
-**Def-W-24-24** (归纳类型 vs 余归纳类型).
+**Def-S-98-24** (归纳类型 vs 余归纳类型).
 
 | 特征 | 归纳类型 ($\mu$) | 余归纳类型 ($\nu$) |
 |------|------------------|-------------------|
@@ -293,7 +293,7 @@ $$\nu f = \sqcap_{n \geq 0} f^n(\top)$$
 
 ### 7.1 Scott不动点定理详细证明
 
-**Thm-W-24-06** (Scott不动点定理完整版). 设 $(D, \sqsubseteq)$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
+**Thm-S-98-06** (Scott不动点定理完整版). 设 $(D, \sqsubseteq)$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
 
 1. **存在性**: $f$ 有最小不动点
 2. **可计算性**: $\mu f = \bigsqcup_{n \geq 0} f^n(\bot)$
@@ -338,7 +338,7 @@ f(u) &= f\left(\bigsqcup_{n \geq 0} f^n(\bot)\right) \\
 
 ### 7.2 CPO中连续函数存在唯一最小不动点
 
-**Thm-W-24-07** (唯一最小不动点定理). 设 $D$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
+**Thm-S-98-07** (唯一最小不动点定理). 设 $D$ 是CPO，$f: D \to D$ 是Scott连续函数，则：
 
 1. $f$ 的不动点集合构成完全格
 2. $\mu f$ 是此格的最小元
@@ -346,7 +346,7 @@ f(u) &= f\left(\bigsqcup_{n \geq 0} f^n(\bot)\right) \\
 
 *证明*:
 
-**部分1**: 不动点集合非空（由Thm-W-24-06）。
+**部分1**: 不动点集合非空（由Thm-S-98-06）。
 
 **部分2**: 设 $F = \{x \in D \mid f(x) = x\}$ 是不动点集合。定义：
 
@@ -370,7 +370,7 @@ $$M = \sqcap \{x \in D \mid f(x) \sqsubseteq x\}$$
 
 ### 7.3 不动点算子的连续性
 
-**Thm-W-24-08** (不动点算子的连续性). 函数 $\text{fix}: [D \to D] \to D$，定义为 $\text{fix}(f) = \mu f$，是Scott连续的。
+**Thm-S-98-08** (不动点算子的连续性). 函数 $\text{fix}: [D \to D] \to D$，定义为 $\text{fix}(f) = \mu f$，是Scott连续的。
 
 *证明*:
 

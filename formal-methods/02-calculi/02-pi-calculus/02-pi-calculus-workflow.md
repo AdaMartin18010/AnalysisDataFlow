@@ -1,4 +1,4 @@
-# π-calculus 在工作流建模中的应用
+﻿# π-calculus 在工作流建模中的应用
 
 > **所属单元**: 02-calculi | **前置依赖**: 01-pi-calculus-basics.md | **形式化等级**: L3-L4
 
@@ -128,7 +128,7 @@ $$\llbracket \text{write}(D, v) \rrbracket = \bar{d}_D\langle v \rangle.P$$
 对 π-calculus 编码的工作流 $W$，检查是否存在 deadlock 状态：
 $$\exists S. W \to^* S \land S \not\to \land S \neq 0$$
 
-*方法*: 使用类型系统或模型检验。
+*方法*: 使用类型系统或模型检测。
 
 ### 5.2 流程等价性
 

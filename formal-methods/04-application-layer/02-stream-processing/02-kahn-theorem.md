@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-A-04-01: CPO (Complete Partial Order)
+### Def-A-02-01: CPO (Complete Partial Order)
 
 偏序集 $(D, \sqsubseteq)$ 是**完全偏序** (CPO)，当且仅当：
 
@@ -13,20 +13,20 @@
 
 $$\bigsqcup_{i \geq 0} d_i \in D$$
 
-### Def-A-04-02: 单调函数 (Monotonic Function)
+### Def-A-02-02: 单调函数 (Monotonic Function)
 
 函数 $f: D \rightarrow D$ 是**单调的**，当且仅当：
 
 $$\forall x, y \in D: x \sqsubseteq y \Rightarrow f(x) \sqsubseteq f(y)$$
 
-### Def-A-04-03: 连续函数 (Continuous Function)
+### Def-A-02-03: 连续函数 (Continuous Function)
 
 函数 $f: D \rightarrow D$ 是**连续的**，当且仅当：
 
 - $f$ 是单调的
 - $f$ 保持上确界：$f(\bigsqcup_{i \geq 0} d_i) = \bigsqcup_{i \geq 0} f(d_i)$
 
-### Def-A-04-04: 流 (Stream)
+### Def-A-02-04: 流 (Stream)
 
 在域 $A$ 上的流是 $A^\infty = A^* \cup A^\omega$，其中：
 
@@ -39,7 +39,7 @@ $$\forall x, y \in D: x \sqsubseteq y \Rightarrow f(x) \sqsubseteq f(y)$$
 - 最小元 $\bot$: 空序列 $\epsilon$
 - 上确界: 链的极限（有限或无限序列）
 
-### Def-A-04-05: 不动点 (Fixed Point)
+### Def-A-02-05: 不动点 (Fixed Point)
 
 元素 $x \in D$ 是函数 $f: D \rightarrow D$ 的**不动点**，当且仅当：
 
@@ -51,7 +51,7 @@ $$\text{lfp}(f) = \bigsqcup_{n \geq 0} f^n(\bot)$$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-A-04-01: 流的CPO性质
+### Lemma-A-02-01: 流的CPO性质
 
 $(A^\infty, \sqsubseteq)$ 是一个CPO。
 
@@ -62,14 +62,14 @@ $(A^\infty, \sqsubseteq)$ 是一个CPO。
   - 若链稳定（存在 $n$ 使得 $s_n = s_{n+1} = ...$），则 $s = s_n \in A^*$
   - 否则，$s$ 是无限序列，$s \in A^\omega$
 
-### Lemma-A-04-02: 单调性蕴含链保持
+### Lemma-A-02-02: 单调性蕴含链保持
 
 若 $f$ 单调，则对于任意链 $\{d_i\}$，$\{f(d_i)\}$ 也是链。
 
 **证明**:
 由 $d_i \sqsubseteq d_{i+1}$ 和单调性，$f(d_i) \sqsubseteq f(d_{i+1})$。
 
-### Lemma-A-04-03: 连续性蕴含单调性
+### Lemma-A-02-03: 连续性蕴含单调性
 
 $$f \text{ 连续} \Rightarrow f \text{ 单调}$$
 
@@ -79,7 +79,7 @@ $$f(y) = f(\bigsqcup \{x, y\}) = \bigsqcup \{f(x), f(y)\}$$
 
 故 $f(x) \sqsubseteq f(y)$。
 
-### Prop-A-04-01: Kleene链收敛性
+### Prop-A-02-01: Kleene链收敛性
 
 对于连续函数 $f$，Kleene链 $\{f^n(\bot)\}_{n \geq 0}$ 是递增链：
 

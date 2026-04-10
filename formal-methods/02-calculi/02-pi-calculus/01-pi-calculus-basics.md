@@ -8,7 +8,7 @@
 
 **Def-C-04-01: π-calculus**
 
-由 Robin Milner 等人（1992）提出的 π-calculus 是描述**移动并发系统**的进程代数。核心创新是通过 **name passing**（名称传递）实现动态拓扑变化。
+由 Robin Milner 等人（1992）提出的 π-calculus 是描述**移动并发系统**的进程演算。核心创新是通过 **name passing**（名称传递）实现动态拓扑变化。
 
 ### 1.2 语法定义
 
@@ -218,33 +218,33 @@ $$\llbracket \lambda x.M \rrbracket_\pi = \ldots$$
 
 关键洞察：函数应用 ↔ 通道通信。
 
-### 3.3 双模拟理论谱系
+### 3.3 互模拟理论谱系
 
-**Def-C-04-11: 早期双模拟 (Early Bisimulation)**
+**Def-C-04-11: 早期互模拟 (Early Bisimulation)**
 
-关系 $\mathcal{R}$ 是早期双模拟，若 $(P, Q) \in \mathcal{R}$ 且 $P \xrightarrow{\alpha} P'$ 蕴含：
+关系 $\mathcal{R}$ 是早期互模拟，若 $(P, Q) \in \mathcal{R}$ 且 $P \xrightarrow{\alpha} P'$ 蕴含：
 - 若 $\alpha$ 是输入 $a(x)$，则对所有 $b$，存在 $Q'$ 使得 $Q \xrightarrow{a(x)} Q'$ 且 $(P'\{b/x\}, Q'\{b/x\}) \in \mathcal{R}$
 
-**Def-C-04-12: 晚期双模拟 (Late Bisimulation)**
+**Def-C-04-12: 晚期互模拟 (Late Bisimulation)**
 
 $Q$ 的响应可以依赖于输入值：
 - 若 $\alpha$ 是输入 $a(x)$，则存在 $Q'$ 使得 $Q \xrightarrow{a(x)} Q'$ 且对所有 $b$，$(P'\{b/x\}, Q'\{b/x\}) \in \mathcal{R}$
 
-**关键区别**: 早期双模拟要求对所有可能的输入值同时响应；晚期双模拟允许根据具体输入值选择不同的响应。
+**关键区别**: 早期互模拟要求对所有可能的输入值同时响应；晚期互模拟允许根据具体输入值选择不同的响应。
 
 **Prop-C-04-05: 早期 vs 晚期**
 
-在 π-calculus 中，早期和晚期双模拟**不等价**。存在进程在早期双模拟意义下等价但在晚期双模拟意义下不等价。
+在 π-calculus 中，早期和晚期互模拟**不等价**。存在进程在早期互模拟意义下等价但在晚期互模拟意义下不等价。
 
-**Def-C-04-13: 开放双模拟 (Open Bisimulation)**
+**Def-C-04-13: 开放互模拟 (Open Bisimulation)**
 
-开放双模拟允许替换 (substitution) 作为观察的一部分：
+开放互模拟允许替换 (substitution) 作为观察的一部分：
 
-$P$ 和 $Q$ 开放双模拟，若对所有替换 $\sigma$，$P\sigma$ 和 $Q\sigma$ 在输入值替换后保持双模拟。
+$P$ 和 $Q$ 开放互模拟，若对所有替换 $\sigma$，$P\sigma$ 和 $Q\sigma$ 在输入值替换后保持互模拟。
 
-**Prop-C-04-06: 开放双模拟的优势**
+**Prop-C-04-06: 开放互模拟的优势**
 
-- **同余性**: 开放双模拟是同余关系
+- **同余性**: 开放互模拟是同余关系
 - **完全抽象**: 相对于上下文等价
 
 **Def-C-04-14: 观察同余 (Observational Congruence)**
@@ -255,7 +255,7 @@ $$P \approx Q \iff \forall C[\cdot]. C[P] \Downarrow \Leftrightarrow C[Q] \Downa
 
 **Thm-C-04-06: 完全抽象定理**
 
-开放双模拟等于观察同余：
+开放互模拟等于观察同余：
 $$P \sim_{\text{open}} Q \iff P \approx Q$$
 
 ### 3.4 编码理论
@@ -350,7 +350,7 @@ closeFile : chan^lin⟨fileHandle⟩ → unit
 4. $(\nu a)P \sim (\nu a)Q$
 5. $!P \sim !Q$
 
-*证明*: 构造适当的双模拟关系。∎
+*证明*: 构造适当的互模拟关系。∎
 
 ### 5.2 扩张定理 (Expansion Law)
 
@@ -507,8 +507,8 @@ Saga = !Order.?Confirm.+{Commit: !Payment.?Receipt.!Ship.?Deliver.end,
 
 **Mobility Workbench (MWB)**:
 - π-calculus 模型检测工具
-- 自动双模拟检查
-- 支持早期/晚期/开放双模拟
+- 自动互模拟检查
+- 支持早期/晚期/开放互模拟
 
 **Spi Calculus / ProVerif**:
 - 安全协议验证
@@ -578,11 +578,11 @@ graph TD
     end
 ```
 
-### 8.4 双模拟谱系图
+### 8.4 互模拟谱系图
 
 ```mermaid
 graph LR
-    subgraph 双模拟谱系
+    subgraph 互模拟谱系
     A[Strong Bisimulation<br>~] --> B[Weak Bisimulation<br>≈]
     B --> C[Early Bisimulation]
     B --> D[Late Bisimulation]
@@ -664,7 +664,7 @@ flowchart TD
 
 [^11]: **Wadler, P. (2012).** "Propositions as Sessions". *ICFP 2012*. — 经典-直觉主义对应在并发中的体现。
 
-[^12]: **Sangiorgi, D. (1996).** "A Theory of Bisimulation for the π-Calculus". *Acta Informatica*, 33(1), 69-97. — 双模拟理论的系统性阐述。
+[^12]: **Sangiorgi, D. (1996).** "A Theory of Bisimulation for the π-Calculus". *Acta Informatica*, 33(1), 69-97. — 互模拟理论的系统性阐述。
 
 [^13]: **Parrow, J., & Victor, B. (1998).** "The Fusion Calculus: Expressiveness and Symmetry in Mobile Processes". *LICS 1998*. — π-calculus 变体与编码理论。
 

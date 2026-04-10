@@ -4,7 +4,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-A-03-11: 流连接操作
+### Def-A-02-11: 流连接操作
 
 流连接是将两个或多个流基于关联条件组合的操作：
 
@@ -20,7 +20,7 @@ $$S = \langle (e_1, \tau_1), (e_2, \tau_2), ... \rangle$$
 
 其中 $\tau_i \in \mathbb{T}$ 是事件时间戳。
 
-### Def-A-03-12: 窗口连接语义
+### Def-A-02-12: 窗口连接语义
 
 窗口连接在有限时间窗口内匹配元素：
 
@@ -30,7 +30,7 @@ $$\bowtie_{W}: Stream(A) \times Stream(B) \rightarrow Stream(A \times B)$$
 
 $$S_A \bowtie_{w} S_B = \{(a, b) \mid a \in S_A(w) \land b \in S_B(w) \land \theta(a, b)\}$$
 
-### Def-A-03-13: 连接类型形式化
+### Def-A-02-13: 连接类型形式化
 
 **内连接** (Inner Join)：
 
@@ -58,7 +58,7 @@ $$S_A \bowtie_{[l,r]} S_B = \{(a, b) \mid a \in S_A \land b \in S_B \land \tau(b
 
 匹配时间间隔内的元素。
 
-### Def-A-03-14: 流-表连接 (Stream-Table Join)
+### Def-A-02-14: 流-表连接 (Stream-Table Join)
 
 $$\bowtie_{ST}: Stream(A) \times Table(B) \rightarrow Stream(A \times B)$$
 
@@ -68,7 +68,7 @@ $$a \bowtie_{ST} T = \{(a, b) \mid b \in T \land key(a) = key(b) \land \tau_{val
 
 其中 $\tau_{valid}(b)$ 是表行 $b$ 的有效时间区间。
 
-### Def-A-03-15: 时态表连接 (Temporal Table Join)
+### Def-A-02-15: 时态表连接 (Temporal Table Join)
 
 $$S \bowtie_{temporal} T(t) = \{(s, T(key(s), \tau_s)) \mid s \in S\}$$
 
@@ -76,7 +76,7 @@ $$S \bowtie_{temporal} T(t) = \{(s, T(key(s), \tau_s)) \mid s \in S\}$$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-A-03-07: 连接的对称性
+### Lemma-A-02-07: 连接的对称性
 
 内连接是对称的：
 
@@ -88,7 +88,7 @@ $$S_A \bowtie_{inner} S_B = S_B \bowtie_{inner} S_A$$
 
 $$S_A \bowtie_{left} S_B \neq S_B \bowtie_{left} S_A$$
 
-### Lemma-A-03-08: 窗口连接的有界状态
+### Lemma-A-02-08: 窗口连接的有界状态
 
 对于大小为 $W$ 的时间窗口连接，状态空间是有界的：
 
@@ -98,7 +98,7 @@ $$|State| \leq \lambda_A \cdot W + \lambda_B \cdot W$$
 
 **证明**: 窗口外的事件被清理，窗口内事件数有界。
 
-### Prop-A-03-03: Interval Join的传递性
+### Prop-A-02-03: Interval Join的传递性
 
 Interval Join在特定条件下具有传递性：
 
@@ -106,7 +106,7 @@ $$(S_A \bowtie_{[l_1,r_1]} S_B) \bowtie_{[l_2,r_2]} S_C = S_A \bowtie_{[l,r]} (S
 
 当区间满足特定重叠条件时成立。
 
-### Lemma-A-03-09: 连接结果的完整性
+### Lemma-A-02-09: 连接结果的完整性
 
 对于完整的历史表 $T_{hist}$，时态表连接产生确定结果：
 

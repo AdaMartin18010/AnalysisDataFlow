@@ -1,4 +1,4 @@
-# 余代数进阶 (Coalgebra Advanced)
+﻿# 余代数进阶 (Coalgebra Advanced)
 
 > **所属单元**: 01-foundations | **前置依赖**: 02-category-theory.md | **形式化等级**: L3-L4
 
@@ -23,9 +23,9 @@ $$
 两个状态 $a \in A$ 和 $b \in B$ 是行为等价的，记作 $a \sim b$，如果它们在终余代数中被映射到同一元素：
 $$a \sim b \triangleq !_A(a) = !_B(b)$$
 
-**Def-F-06-03: 余代数双模拟 (Coalgebraic Bisimulation)**
+**Def-F-06-03: 余代数互模拟 (Coalgebraic Bisimulation)**
 
-关系 $R \subseteq A \times B$ 是 $F$-双模拟，如果存在 $\gamma: R \to F(R)$ 使得投影是同态：
+关系 $R \subseteq A \times B$ 是 $F$-互模拟，如果存在 $\gamma: R \to F(R)$ 使得投影是同态：
 
 $$
 \begin{array}{ccc}
@@ -121,17 +121,17 @@ $$\text{out} \circ h = F(h) \circ F(\text{out})$$
 
 类似可证 $\text{out} \circ h = \text{id}_{F(\nu F)}$。∎
 
-### 2.2 双模拟的等价刻画
+### 2.2 互模拟的等价刻画
 
-**Prop-F-06-01: 双模拟与行为等价**
+**Prop-F-06-01: 互模拟与行为等价**
 
-$s \sim t$ (行为等价) 当且仅当存在双模拟 $R$ 使得 $s \mathrel{R} t$。
+$s \sim t$ (行为等价) 当且仅当存在互模拟 $R$ 使得 $s \mathrel{R} t$。
 
 *证明概要*:
 
-$(\Rightarrow)$: 若 $s \sim t$，则关系 $R = \{(a,b) \mid !_A(a) = !_B(b)\}$ 是双模拟。
+$(\Rightarrow)$: 若 $s \sim t$，则关系 $R = \{(a,b) \mid !_A(a) = !_B(b)\}$ 是互模拟。
 
-$(\Leftarrow)$: 若 $R$ 是双模拟且 $s \mathrel{R} t$，则 $!_A(s) = !_B(t)$ (由余代数同态的交换图)。∎
+$(\Leftarrow)$: 若 $R$ 是互模拟且 $s \mathrel{R} t$，则 $!_A(s) = !_B(t)$ (由余代数同态的交换图)。∎
 
 **Prop-F-06-02: 互模拟是等价关系**
 
@@ -166,7 +166,7 @@ $$s \sim t \Leftrightarrow \forall \phi. s \models \phi \Leftrightarrow t \model
 |------|---------------|-------------------|
 | 构造 | 从基本元素合成 | 从观察分解 |
 | 典型结构 | 自然数、列表、表达式 | 流、进程、状态机 |
-| 证明原理 | 结构归纳 | 双模拟/共归纳 |
+| 证明原理 | 结构归纳 | 互模拟/共归纳 |
 | 语义对象 | 初始代数 | 终余代数 |
 | 递归 | 原始递归 | 共递归 (guarded) |
 
@@ -241,13 +241,13 @@ $$1 \xleftarrow{!} F(1) \xleftarrow{F(!)} F^2(1) \xleftarrow{F^2(!)} \cdots$$
 
 由极限的泛性质，存在唯一的 $h: A \to \nu F$ 使得 $p_n \circ h = h_n$。验证 $h$ 是同态。∎
 
-### 5.2 双模拟证明原理
+### 5.2 互模拟证明原理
 
 **Thm-F-06-02: 共归纳证明原理**
 
-要证明 $s \sim t$，只需构造一个包含 $(s, t)$ 的双模拟关系。
+要证明 $s \sim t$，只需构造一个包含 $(s, t)$ 的互模拟关系。
 
-*证明*: 由 Prop-F-06-01，双模拟关系中的元素行为等价。∎
+*证明*: 由 Prop-F-06-01，互模拟关系中的元素行为等价。∎
 
 **Thm-F-06-03: 概率互模拟的逼近**
 
@@ -264,11 +264,11 @@ $$\mathcal{P}_{i+1} = \{[s]_{\mathcal{P}_i} \cap \alpha^{-1}(\lambda([\phi])) \m
 
 复杂度：$O(|S|^3 \cdot |A|)$。∎
 
-### 5.3 时序逻辑的模型检验
+### 5.3 时序逻辑的模型检测
 
-**Thm-F-06-04: Coalgebraic μ-演算模型检验**
+**Thm-F-06-04: Coalgebraic μ-演算模型检测**
 
-对有限状态系统和封闭公式，Coalgebraic μ-演算的模型检验是多项式时间可解的 (假设 $F$ 的谓词提升可有效计算)。
+对有限状态系统和封闭公式，Coalgebraic μ-演算的模型检测是多项式时间可解的 (假设 $F$ 的谓词提升可有效计算)。
 
 *证明概要*:
 
@@ -311,7 +311,7 @@ $$!(s) = h(s) : !(t(s))$$
 
 关系 $R = \{(P, Q), (P_1, Q_1), (P_2, Q_2)\}$ 是概率互模拟。
 
-### 6.4 示例：模态逻辑的模型检验
+### 6.4 示例：模态逻辑的模型检测
 
 对余代数 $\alpha: S \to \mathcal{P}(A \times S)$ (标记转移系统)：
 
@@ -335,11 +335,11 @@ graph TD
     end
 ```
 
-### 双模拟关系图
+### 互模拟关系图
 
 ```mermaid
 graph BT
-    subgraph 双模拟
+    subgraph 互模拟
     S1[S₁] -->|π₁| R[R⊆S₁×S₂]
     S2[S₂] -->|π₂| R
     R -->|γ| FR[F R]

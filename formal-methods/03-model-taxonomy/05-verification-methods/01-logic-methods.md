@@ -1,4 +1,4 @@
-# 逻辑方法
+﻿# 逻辑方法
 
 > **所属单元**: formal-methods/03-model-taxonomy/05-verification-methods | **前置依赖**: [04-consistency/02-cap-theorem](../../04-consistency/02-cap-theorem.md) | **形式化等级**: L5-L6
 
@@ -121,7 +121,7 @@ $$\text{Invariant}(I) \triangleq \forall s \in \text{Reachable}: s \models I$$
 
 | 特性 | TLA+ | Event-B | Z | VDM |
 |-----|------|---------|---|-----|
-| 验证方式 | 模型检验+证明 | 精化+证明 | 证明 | 证明 |
+| 验证方式 | 模型检测+证明 | 精化+证明 | 证明 | 证明 |
 | 工具支持 | TLC, TLAPS | Rodin | Z/EVES | VDMTools |
 | 应用领域 | 分布式算法 | 嵌入式系统 | 软件规范 | 复杂系统 |
 | 学习曲线 | 中等 | 较陡 | 陡 | 中等 |
@@ -140,11 +140,11 @@ $$\text{Invariant}(I) \triangleq \forall s \in \text{Reachable}: s \models I$$
 
 **正确性保证**：每层精化保持上层性质。
 
-### 与模型检验的关系
+### 与模型检测的关系
 
-- **TLA+**：TLC模型检验器枚举状态空间
-- **Event-B**：ProB模型检验器动画演示
-- **混合方法**：小状态空间用模型检验，大状态空间用证明
+- **TLA+**：TLC模型检测器枚举状态空间
+- **Event-B**：ProB模型检测器动画演示
+- **混合方法**：小状态空间用模型检测，大状态空间用证明
 
 ## 4. 论证过程 (Argumentation)
 
@@ -342,7 +342,7 @@ graph TB
     end
 
     subgraph "验证方法"
-        TLC[TLC模型检验<br/>有限状态枚举]
+        TLC[TLC模型检测<br/>有限状态枚举]
         TLAPS[TLAPS证明器<br/>交互式证明]
     end
 

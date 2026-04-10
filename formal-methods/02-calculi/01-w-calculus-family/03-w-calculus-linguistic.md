@@ -1,4 +1,4 @@
-# w-calculus (小写): 多模态意义进程代数
+# w-calculus (小写): 多模态意义进程演算
 
 > **所属单元**: 02-calculi | **前置依赖**: 02-pi-calculus/01-pi-calculus-basics.md | **形式化等级**: L2
 
@@ -8,7 +8,7 @@
 
 **Def-C-03-01: w-calculus (Linguistic)**
 
-由 Bengtson 等人（2011）开发的 w-calculus（小写）属于进程代数家族，源自 Milner 的 π-calculus。在计算语言学中用于多模态意义表示（Multi-modal Meaning）。
+由 Bengtson 等人（2011）开发的 w-calculus（小写）属于进程演算家族，源自 Milner 的 π-calculus。在计算语言学中用于多模态意义表示（Multi-modal Meaning）。
 
 > **注意**: 此 w-calculus **与工作流建模无关**，专注于自然语言处理中的语义表示。
 
@@ -77,7 +77,7 @@ $$\frac{\Gamma \vdash P : \tau_1 \quad \Gamma \vdash Q : \tau_2}{\Gamma \vdash P
 ├── Montague语义
 ├── 范畴语法 (Categorial Grammar)
 ├── 话语表示理论 (DRT)
-└── 进程代数方法 ← w-calculus
+└── 进程演算方法 ← w-calculus
 ```
 
 ### 3.2 与 Type-Theoretical 语义的关系
@@ -94,7 +94,7 @@ w-calculus 的 λ-terms 可以映射到 **Martin-Löf Type Theory** 的上下文
 
 ## 4. 论证过程
 
-### 4.1 为什么要进程代数？
+### 4.1 为什么要进程演算？
 
 自然语言理解涉及**动态**和**交互**过程：
 
@@ -102,7 +102,7 @@ w-calculus 的 λ-terms 可以映射到 **Martin-Löf Type Theory** 的上下文
 2. **预设投射 (Presupposition Projection)**: 上下文中信息的传递
 3. **多模态交互**: 语言与手势、视觉的结合
 
-进程代数提供**动态语义**的形式化框架。
+进程演算提供**动态语义**的形式化框架。
 
 ### 4.2 多模态组合
 
@@ -123,7 +123,7 @@ Scene = Pointing | Speaking
 
 若 $P$ 表示短语 $\phi$ 的意义，$Q$ 表示 $\psi$ 的意义，则 $P \mid Q$ 表示 $\phi \cdot \psi$ 的意义。
 
-*证明*: 基于进程代数语义和 λ-calculus 的组合性。∎
+*证明*: 基于进程演算语义和 λ-calculus 的组合性。∎
 
 ### 5.2 与 Discourse Representation Theory 的等价性
 

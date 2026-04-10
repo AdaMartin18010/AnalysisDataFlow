@@ -117,7 +117,7 @@
       - [证明即程序 (Proofs as Programs)](#证明即程序-proofs-as-programs)
       - [证明助手 (Proof Assistant)](#证明助手-proof-assistant)
   - [4. 并发理论术语](#4-并发理论术语)
-    - [4.1 进程代数](#41-进程代数)
+    - [4.1 进程演算](#41-进程演算)
       - [进程 (Process)](#进程-process)
       - [CCS (Calculus of Communicating Systems)](#ccs-calculus-of-communicating-systems)
       - [CSP (Communicating Sequential Processes)](#csp-communicating-sequential-processes)
@@ -225,7 +225,7 @@
     - [7.1 逻辑符号](#71-逻辑符号)
     - [7.2 时序逻辑符号](#72-时序逻辑符号)
     - [7.3 集合与关系符号](#73-集合与关系符号)
-    - [7.4 进程代数符号](#74-进程代数符号)
+    - [7.4 进程演算符号](#74-进程演算符号)
     - [7.5 分布式系统符号](#75-分布式系统符号)
   - [8. 可视化](#8-可视化)
     - [术语分类图谱](#术语分类图谱)
@@ -1054,7 +1054,7 @@
 
 ## 4. 并发理论术语
 
-### 4.1 进程代数
+### 4.1 进程演算
 
 #### 进程 (Process)
 
@@ -1069,21 +1069,21 @@
 
 - **中文**: 通信系统演算
 - **英文**: Calculus of Communicating Systems
-- **定义**: Milner提出的进程代数
+- **定义**: Milner提出的进程演算
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
 #### CSP (Communicating Sequential Processes)
 
 - **中文**: 通信顺序进程
 - **英文**: Communicating Sequential Processes
-- **定义**: Hoare提出的进程代数，强调通信同步
+- **定义**: Hoare提出的进程演算，强调通信同步
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
 #### ACP (Algebra of Communicating Processes)
 
 - **中文**: 通信进程的代数
 - **英文**: Algebra of Communicating Processes
-- **定义**: Bergstra和Klop提出的进程代数，强调代数化方法
+- **定义**: Bergstra和Klop提出的进程演算，强调代数化方法
 - **首次出现**: [s4.1-process-algebra.md](../04-concurrency/s4.1-process-algebra.md)
 
 #### π演算 (Pi Calculus)
@@ -1843,7 +1843,7 @@
 | $\to$ | 函数类型 | 从...到...的函数 |
 | $\circ$ | 复合 | 函数复合 |
 
-### 7.4 进程代数符号
+### 7.4 进程演算符号
 
 | 符号 | 名称 | 含义 |
 |-----|------|------|
@@ -1922,7 +1922,7 @@ mindmap
         命题即类型
         证明助手
     并发理论
-      进程代数
+      进程演算
         CCS-CSP-π演算
       进程操作
         顺序-选择-并行
@@ -1971,7 +1971,7 @@ graph TB
 
     subgraph "代数层"
         A1[集合运算<br/>∪ ∩ ⊆]
-        A2[进程代数<br/>· + | \\]
+        A2[进程演算<br/>· + | \\]
         A3[关系代数<br/>∘ ⁻¹]
     end
 
@@ -2008,7 +2008,7 @@ flowchart TD
     B --> D[指称语义]
     B --> E[公理语义]
 
-    C --> F[进程代数]
+    C --> F[进程演算]
     D --> G[模型检测]
     E --> H[定理证明]
 

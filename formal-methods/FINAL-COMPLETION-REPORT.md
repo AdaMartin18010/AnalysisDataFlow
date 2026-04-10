@@ -158,7 +158,7 @@ gantt
 | 02-calculi | 计算演算 | 15 | ω-calculus、π-calculus、流演算、网络代数 |
 | 03-model-taxonomy | 模型分类 | 16 | 五维分类体系、一致性谱系 |
 | 04-application-layer | 应用层 | 18 | 工作流、流计算、云原生、区块链 |
-| 05-verification | 验证方法 | 9 | 逻辑、模型检验、定理证明 |
+| 05-verification | 验证方法 | 9 | 逻辑、模型检测、定理证明 |
 | 06-tools | 工具链 | 22 | 学术工具、工业工具、教程 |
 | 07-future | 未来方向 | 8 | 挑战、趋势、量子、AI形式化 |
 
@@ -297,7 +297,7 @@ bar title 各阶段指标增长
 
 | 单元 | 主题数 | 文件数 | 状态 | 亮点 |
 |------|--------|--------|------|------|
-| 01-foundations | 6 | 7 | ✅ | 新增域理论、类型理论、余代数 |
+| 01-foundations | 6 | 7 | ✅ | 新增域理论、类型论、余代数 |
 | 02-calculi | 3 | 15 | ✅ | 扩展π演算模式与编码 |
 | 03-model-taxonomy | 5 | 16 | ✅ | 新增抽象解释、数据流分析 |
 | 04-application-layer | 6 | 18 | ✅ | 新增区块链、网络协议、编译器验证 |
@@ -319,7 +319,7 @@ bar title 各阶段指标增长
 | 领域 | 覆盖内容 | 核心文档 |
 |------|----------|----------|
 | **数学基础** | 序理论、格论、不动点 | `01-foundations/01-order-theory.md` |
-| **范畴论** | 余代数、双模拟、CCC | `01-foundations/02-category-theory.md` |
+| **范畴论** | 余代数、互模拟、CCC | `01-foundations/02-category-theory.md` |
 | **逻辑** | 一阶逻辑、模态逻辑、时序逻辑 | `01-foundations/03-logic-foundations.md` |
 | **域论** | 指称语义、Scott拓扑 | `98-appendices/wikipedia-concepts/24-domain-theory.md` |
 | **类型论** | System F、依赖类型、线性类型 | `98-appendices/wikipedia-concepts/07-type-theory.md` |
@@ -329,7 +329,7 @@ bar title 各阶段指标增长
 
 | 领域 | 覆盖内容 | 核心文档 |
 |------|----------|----------|
-| **进程代数** | CCS、CSP、π-calculus、ACP | `02-calculi/02-pi-calculus/` |
+| **进程演算** | CCS、CSP、π-calculus、ACP | `02-calculi/02-pi-calculus/` |
 | **Petri网** | 库所/变迁网、着色Petri网 | `98-appendices/wikipedia-concepts/10-petri-nets.md` |
 | **流演算** | Rutten流演算、Kahn进程网 | `02-calculi/03-stream-calculus/` |
 | **自动机** | Büchi自动机、 timed自动机 | `03-model-taxonomy/02-computation-models/02-automata.md` |
@@ -404,7 +404,7 @@ flowchart TD
 
 | 类型 | 缩写 | 示例 | 说明 |
 |------|------|------|------|
-| 定理 | Thm | `Thm-FM-22-01` | 形式化方法-第22文档-第1定理 |
+| 定理 | Thm | `Thm-S-98-22-01` | 形式化方法-第22文档-第1定理 |
 | 引理 | Lemma | `Lemma-F-01-02` | 基础定义-第1文档-第2引理 |
 | 定义 | Def | `Def-C-02-01` | 演算定义-第2文档-第1定义 |
 | 命题 | Prop | `Prop-M-03-01` | 模型定义-第3文档-第1命题 |
@@ -449,7 +449,7 @@ flowchart TD
 
 - ✅ OCaml/Lambda演算
 - ✅ 类型安全证明技术
-- ✅ 子类型理论
+- ✅ 子类型论
 
 #### ETH Zurich - Program Verification
 

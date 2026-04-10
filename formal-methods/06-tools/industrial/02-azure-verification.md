@@ -1,4 +1,4 @@
-# Azure验证
+﻿# Azure验证
 
 > **所属单元**: Tools/Industrial | **前置依赖**: [Coq/Isabelle定理证明](../../05-verification/03-theorem-proving/01-coq-isabelle.md) | **形式化等级**: L5
 
@@ -43,7 +43,7 @@ ReplicaProtocol ==
 **Def-T-06-04** (Azure Blockchain验证)。Azure Blockchain Workbench支持智能合约形式化验证：
 
 - **属性规范**: 合约不变式、权限约束
-- **模型检验**: 执行路径探索
+- **模型检测**: 执行路径探索
 - **定理证明**: 关键性质严格证明
 
 ## 2. 属性推导 (Properties)
@@ -225,7 +225,7 @@ graph TB
     subgraph 形式化验证层
         Spec[TLA+规格]
         Proof[定理证明]
-        Testing[模型检验]
+        Testing[模型检测]
     end
     
     subgraph 验证工具
@@ -280,7 +280,7 @@ flowchart TD
     A[协议设计] --> B[TLA+建模]
     B --> C[不变式定义]
     C --> D[时序性质]
-    D --> E[TLC模型检验]
+    D --> E[TLC模型检测]
     E --> F{检验通过?}
     F -->|是| G[多配置检验]
     F -->|否| H[协议/规格修正]

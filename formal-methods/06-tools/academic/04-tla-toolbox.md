@@ -1,4 +1,4 @@
-# TLA+ Toolbox
+﻿# TLA+ Toolbox
 
 > **所属单元**: Tools/Academic | **前置依赖**: [TLA+ 时序逻辑](../../05-verification/01-logic/01-tla-plus.md) | **形式化等级**: L5
 
@@ -8,7 +8,7 @@
 
 **Def-T-04-01** (TLA+ Toolbox定义)。TLA+ Toolbox是TLA+语言的集成开发环境：
 
-$$\text{TLA+ Toolbox} = \text{TLA+编辑器} + \text{TLC模型检验器} + \text{TLAPS集成} + \text{PlusCal编译器}$$
+$$\text{TLA+ Toolbox} = \text{TLA+编辑器} + \text{TLC模型检测器} + \text{TLAPS集成} + \text{PlusCal编译器}$$
 
 **Def-T-04-02** (PlusCal算法语言)。PlusCal是伪代码风格的算法描述语言，可编译为TLA+：
 
@@ -30,9 +30,9 @@ end process;
 end algorithm;
 ```
 
-### 1.2 TLC模型检验器
+### 1.2 TLC模型检测器
 
-**Def-T-04-03** (TLC配置)。TLC模型检验需要以下配置：
+**Def-T-04-03** (TLC配置)。TLC模型检测需要以下配置：
 
 - **What to check?**: 不变式、时序性质、公平性假设
 - **What is the model?**: 常量赋值、状态约束、行为约束
@@ -128,7 +128,7 @@ graph TB
 | 特性 | TLA+ Toolbox | Alloy | Spin |
 |------|-------------|-------|------|
 | 基础逻辑 | TLA | 关系逻辑 | LTL |
-| 建模风格 | 状态机 | 关系约束 | 进程代数 |
+| 建模风格 | 状态机 | 关系约束 | 进程演算 |
 | 验证方法 | MC+证明 | SAT求解 | MC |
 | 并发模型 | 交错 | 无 | 交错 |
 | 工业应用 | 广泛(Amazon) | 学术为主 | 协议验证 |
@@ -141,7 +141,7 @@ graph TB
 flowchart TD
     A[系统需求] --> B[PlusCal草图]
     B --> C[编译为TLA+]
-    C --> D[模型检验]
+    C --> D[模型检测]
     D --> E{性质满足?}
     E -->|否| F[调试修正]
     F --> B
@@ -280,7 +280,7 @@ graph TB
 flowchart TD
     A[TLA+规范] --> B[语法检查]
     B --> C[模型创建]
-    C --> D[TLC模型检验]
+    C --> D[TLC模型检测]
     D --> E{检验通过?}
     E -->|否| F[错误诊断]
     F --> G[修正规范]

@@ -1,12 +1,12 @@
-# 进程代数家族
+# 进程演算家族
 
 > **所属单元**: formal-methods/03-model-taxonomy/02-computation-models | **前置依赖**: [01-system-models/03-communication-models](../../01-system-models/03-communication-models.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 
-### Def-M-02-01-01 进程代数 (Process Algebra)
+### Def-M-02-01-01 进程演算 (Process Algebra)
 
-进程代数是一个形式框架 $\mathcal{PA} = (\mathcal{P}, \mathcal{A}, \mathcal{O}, \sim, \vdash)$，其中：
+进程演算是一个形式框架 $\mathcal{PA} = (\mathcal{P}, \mathcal{A}, \mathcal{O}, \sim, \vdash)$，其中：
 
 - $\mathcal{P}$：进程表达式集合
 - $\mathcal{A}$：动作集合（可见动作 + 内部动作 $\tau$）
@@ -131,7 +131,7 @@ $$(Q \xrightarrow{a} Q' \Rightarrow \exists P': P \xrightarrow{a} P' \land P' \s
 
 **表达能力定理**：π-演算是图灵完备的。
 
-### Prop-M-02-01-01 进程代数比较
+### Prop-M-02-01-01 进程演算比较
 
 | 特性 | CCS | CSP | π-演算 | ACP | I/O自动机 |
 |-----|-----|-----|--------|-----|----------|
@@ -147,7 +147,7 @@ $$\text{同构} \subset \text{强互模拟} \subset \text{弱互模拟} \subset 
 
 ## 3. 关系建立 (Relations)
 
-### 进程代数编码关系
+### 进程演算编码关系
 
 ```
 π-演算
@@ -282,11 +282,11 @@ ORDERED_PHIL(i) = think -> pickL(i) -> pickR(i) -> eat -> ...  (i > 0)
 
 ## 7. 可视化 (Visualizations)
 
-### 进程代数家族谱系
+### 进程演算家族谱系
 
 ```mermaid
 graph TB
-    subgraph "进程代数演化"
+    subgraph "进程演算演化"
         CCS[CCS<br/>Milner 1980]
         CSP[CSP<br/>Hoare 1978]
         PI[π-演算<br/>Milner 1992]

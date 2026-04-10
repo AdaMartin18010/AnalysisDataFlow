@@ -1,6 +1,6 @@
 # 编译器正确性验证
 
-> **所属阶段**: Formal Methods - Application Layer | **前置依赖**: [形式语义基础](../03-concurrency-theory/01-operational-semantics.md), [类型理论](../../01-type-theory/02-advanced-type-systems.md) | **形式化等级**: L5-L6
+> **所属阶段**: Formal Methods - Application Layer | **前置依赖**: [形式语义基础](../03-concurrency-theory/01-operational-semantics.md), [类型论](../../01-type-theory/02-advanced-type-systems.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 
@@ -26,7 +26,7 @@ $$\forall s \in \text{SrcProg}. \, \llbracket s \rrbracket_S \cong \llbracket \m
 | 上下文等价 (Contextual Equivalence) | $\forall C. \, C[s] \Downarrow \iff C[t] \Downarrow$ | 通用程序验证 |
 | 观察等价 (Observational Equivalence) | 所有可观察行为相同 | 并发系统 |
 | 迹等价 (Trace Equivalence) | 产生相同事件迹 | 反应式系统 |
-| 双模拟等价 (Bisimulation) | 存在互模拟关系 | 进程演算 |
+| 互模拟等价 (Bisimulation) | 存在互模拟关系 | 进程演算 |
 
 ### 1.2 语义保持形式化 (Def-CV-01-02)
 

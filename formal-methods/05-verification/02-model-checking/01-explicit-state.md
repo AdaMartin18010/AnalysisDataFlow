@@ -1,16 +1,16 @@
-# 显式状态模型检验
+﻿# 显式状态模型检测
 
 > **所属单元**: Verification/Model-Checking | **前置依赖**: [Event-B 精化方法](../01-logic/02-event-b.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 
-### 1.1 模型检验基础
+### 1.1 模型检测基础
 
-**Def-V-04-01** (模型检验问题)。给定迁移系统$M$和时序逻辑公式$\varphi$，模型检验确定$M$是否满足$\varphi$：
+**Def-V-04-01** (模型检测问题)。给定迁移系统$M$和时序逻辑公式$\varphi$，模型检测确定$M$是否满足$\varphi$：
 
 $$M \models \varphi \quad \text{?}$$
 
-**Def-V-04-02** (显式状态模型检验)。显式状态模型检验通过显式枚举和存储系统的所有可达状态来验证性质：
+**Def-V-04-02** (显式状态模型检测)。显式状态模型检测通过显式枚举和存储系统的所有可达状态来验证性质：
 
 $$\text{ExplicitMC}(M, \varphi) = \begin{cases} \text{True} & \text{if } \forall s \in \text{Reach}(M): s \models \varphi \\ \text{False} + \text{counterexample} & \text{otherwise} \end{cases}$$
 
@@ -102,7 +102,7 @@ $$\text{ample}(s) \subseteq \text{enabled}(s)$$
 
 ```mermaid
 graph TB
-    subgraph 模型检验家族
+    subgraph 模型检测家族
         Explicit[显式状态MC]
         Symbolic[符号MC]
         Bounded[有界MC]
@@ -161,7 +161,7 @@ flowchart TD
     B -->|并发独立| C[偏序归约POR]
     B -->|对称性| D[对称归约]
     B -->|数据域大| E[数据抽象]
-    B -->|复杂逻辑| F[符号模型检验]
+    B -->|复杂逻辑| F[符号模型检测]
     C --> G[减少探索路径]
     D --> G
     E --> G
@@ -239,7 +239,7 @@ $n$个哲学家，每人3种状态（思考、饥饿、就餐）：
 
 ## 7. 可视化 (Visualizations)
 
-### 7.1 模型检验流程
+### 7.1 模型检测流程
 
 ```mermaid
 graph TB
@@ -335,3 +335,7 @@ graph LR
 ```
 
 ## 8. 引用参考 (References)
+
+### 相关概念
+
+- [模型检测概述](../../98-appendices/wikipedia-concepts/02-model-checking.md) - 模型检测基础理论与概念

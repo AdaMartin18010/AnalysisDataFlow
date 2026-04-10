@@ -15,7 +15,7 @@
 | 序号 | 文档 | 重点 | 练习 |
 |------|------|------|------|
 | 1.1 | [序理论](01-foundations/01-order-theory.md) | CPO、不动点 | 证明Kleene定理 |
-| 1.2 | [范畴论](01-foundations/02-category-theory.md) | 余代数、双模拟 | 构造流的双模拟 |
+| 1.2 | [范畴论](01-foundations/02-category-theory.md) | 余代数、互模拟 | 构造流的互模拟 |
 | 1.3 | [逻辑基础](01-foundations/03-logic-foundations.md) | LTL、霍尔逻辑 | 编写时序公式 |
 
 ### 阶段2: 计算演算 (3-4周)
@@ -30,7 +30,7 @@
 
 | 序号 | 文档 | 重点 |
 |------|------|------|
-| 3.1 | [进程代数家族](03-model-taxonomy/02-computation-models/01-process-algebras.md) | CCS/CSP/π对比 |
+| 3.1 | [进程演算家族](03-model-taxonomy/02-computation-models/01-process-algebras.md) | CCS/CSP/π对比 |
 | 3.2 | [一致性模型](03-model-taxonomy/04-consistency/01-consistency-spectrum.md) | CAP权衡 |
 
 ### 阶段4: 高级验证 (3-4周)
@@ -88,7 +88,7 @@
 
 ```mermaid
 graph LR
-    A[SPIN/NuSMV<br>模型检验] --> B[UPPAAL<br>实时验证]
+    A[SPIN/NuSMV<br>模型检测] --> B[UPPAAL<br>实时验证]
     B --> C[CPN Tools<br>Petri网]
     C --> D[TLA+ Toolbox<br>分布式验证]
     D --> E[Coq/Isabelle<br>定理证明]
@@ -151,18 +151,18 @@ graph LR
 
 - [ ] 理解CPO和不动点
 - [ ] 掌握LTL/CTL语义
-- [ ] 熟悉进程代数语法
+- [ ] 熟悉进程演算语法
 
 #### 中级技能
 
 - [ ] 能编写π-calculus进程
-- [ ] 能证明简单的双模拟
+- [ ] 能证明简单的互模拟
 - [ ] 理解Kahn语义
 
 #### 高级应用
 
 - [ ] 能用TLA+写规范
-- [ ] 能进行模型检验
+- [ ] 能进行模型检测
 - [ ] 能应用形式化方法解决实际问题
 
 ---

@@ -1,4 +1,4 @@
-# TLA+ 时序逻辑
+﻿# TLA+ 时序逻辑
 
 > **所属单元**: Verification/Logic | **前置依赖**: [形式逻辑基础](../../01-foundations/03-logic-foundations.md) | **形式化等级**: L5
 
@@ -41,9 +41,9 @@ $$A \equiv P \land Q'$$
 | $\forall x: F$ | 对所有$x$，$F$成立 | 全称量词 |
 | $\exists x: F$ | 存在$x$使得$F$成立 | 存在量词 |
 
-### 1.3 TLC 模型检验器
+### 1.3 TLC 模型检测器
 
-**Def-V-01-05** (TLC模型检验)。TLC是一个显式状态模型检验器：
+**Def-V-01-05** (TLC模型检测)。TLC是一个显式状态模型检测器：
 
 $$\text{TLC}(\text{Spec}, \text{Properties}) \to \{\text{Success}, \text{Counterexample}\}$$
 
@@ -98,13 +98,13 @@ $$\text{SF}_{\text{vars}}(A) \Rightarrow \text{WF}_{\text{vars}}(A)$$
 graph TB
     subgraph TLA+生态系统
         TLA[TLA+语言]
-        TLC[TLC模型检验器]
+        TLC[TLC模型检测器]
         TLAPS[TLAPS证明系统]
         PlusCal[PlusCal算法语言]
     end
 
     subgraph 验证层次
-        MC[模型检验]
+        MC[模型检测]
         TP[定理证明]
         SMT[SMT求解]
     end
@@ -146,7 +146,7 @@ TLA+的设计基于以下核心原则：
 
 1. **状态机视角**: 所有分布式系统都可建模为状态机
 2. **数学表达**: 使用标准数学符号，降低学习成本
-3. **工具支持**: 模型检验与定理证明并重
+3. **工具支持**: 模型检测与定理证明并重
 4. **工业可用**: 成功应用于大规模系统验证
 
 ### 4.2 与其他方法的对比
@@ -154,7 +154,7 @@ TLA+的设计基于以下核心原则：
 ```mermaid
 flowchart TD
     A[验证需求] --> B{系统规模?}
-    B -->|小规模| C[TLC模型检验]
+    B -->|小规模| C[TLC模型检测]
     B -->|大规模| D{性质类型?}
     D -->|安全性质| E[TLAPS证明]
     D -->|活性性质| F[TLC+TLAPS混合]
@@ -165,7 +165,7 @@ flowchart TD
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### 5.1 TLC模型检验的正确性
+### 5.1 TLC模型检测的正确性
 
 **Thm-V-01-01** (TLC完备性)。对于有限状态规范，如果$\text{Spec} \models P$在所有有限行为上成立，则TLC将验证成功：
 
@@ -271,12 +271,12 @@ graph TB
     end
 
     subgraph 验证引擎
-        TLC2[TLC<br/>模型检验器]
+        TLC2[TLC<br/>模型检测器]
         TLAPS2[TLAPS<br/>证明系统]
     end
 
     subgraph 输出层
-        MCResult[模型检验结果<br/>状态空间/反例]
+        MCResult[模型检测结果<br/>状态空间/反例]
         ProofResult[证明结果<br/>证明树/义务]
     end
 

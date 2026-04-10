@@ -14,7 +14,7 @@
 
 | 主题 | 相关文档 | 关键词 |
 |------|----------|--------|
-| **进程代数** | 02-calculi/02-pi-calculus/, 04-process-calculus.md | CCS, CSP, π-calculus, 互模拟 |
+| **进程演算** | 02-calculi/02-pi-calculus/, 04-process-calculus.md | CCS, CSP, π-calculus, 互模拟 |
 | **时序逻辑** | 05-verification/01-logic/, 05-temporal-logic.md | LTL, CTL, Kripke语义, 模型检测 |
 | **类型论** | 01-foundations/05-type-theory.md, 07-type-theory.md | System F, 依赖类型, Curry-Howard |
 | **共识算法** | 13-consensus.md, 18-paxos.md, 19-raft.md | FLP, Paxos, Raft, 2PC, 拜占庭容错 |
@@ -215,8 +215,8 @@
 |------|------|------|
 | Def-F-01-01 | Complete Partial Order | 01-order-theory.md |
 | Def-F-05-01 | Simple Types | 05-type-theory.md |
-| Def-FM-18-01 | Paxos Acceptor | 18-paxos.md |
-| Def-FM-19-01 | Raft Node State | 19-raft.md |
+| Def-S-98-18-01 | Paxos Acceptor | 18-paxos.md |
+| Def-S-98-19-01 | Raft Node State | 19-raft.md |
 | Def-BC-01-01 | Smart Contract State | 04-blockchain-verification/01-smart-contract-formalization.md |
 
 ### 定理 (Thm-*)
@@ -226,10 +226,10 @@
 | Thm-F-01-01 | Knaster-Tarski Fixed Point | 01-order-theory.md |
 | Thm-F-05-01 | Curry-Howard Isomorphism | 05-type-theory.md |
 | Thm-M-04-02-01 | CAP Theorem | 02-cap-theorem.md |
-| Thm-FM-18-01 | Paxos Safety | 18-paxos.md |
-| Thm-FM-19-01 | Raft Election Safety | 19-raft.md |
-| Thm-FM-22-01 | Gödel Completeness | 22-first-order-logic.md |
-| Thm-FM-24-01 | Scott Fixed Point | 24-domain-theory.md |
+| Thm-S-98-18-01 | Paxos Safety | 18-paxos.md |
+| Thm-S-98-19-01 | Raft Election Safety | 19-raft.md |
+| Thm-S-98-22-01 | Gödel Completeness | 22-first-order-logic.md |
+| Thm-S-98-24-01 | Scott Fixed Point | 24-domain-theory.md |
 | Thm-BC-01-01 | Contract Consistency | 04-blockchain-verification/01-smart-contract-formalization.md |
 
 ---

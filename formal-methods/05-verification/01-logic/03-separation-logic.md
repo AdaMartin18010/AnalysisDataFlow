@@ -8,7 +8,7 @@
 
 ### 1.1 分离逻辑断言语法
 
-**Def-SL-01** (分离逻辑断言)。分离逻辑断言$P, Q$的语法定义为：
+**Def-V-03-01** (分离逻辑断言)。分离逻辑断言$P, Q$的语法定义为：
 
 $$P, Q ::= \text{emp} \mid x \mapsto y \mid P \ast Q \mid P \text{--\hspace{-0.5em}*} Q \mid P \land Q \mid P \lor Q \mid \neg P \mid \exists x.P \mid \forall x.P$$
 
@@ -21,7 +21,7 @@ $$P, Q ::= \text{emp} \mid x \mapsto y \mid P \ast Q \mid P \text{--\hspace{-0.5
 | $P \ast Q$ | 分离合取 | $P$和$Q$作用在不相交的堆上 |
 | $P \text{--\hspace{-0.5em}*} Q$ | 分离蕴含 | 若将满足$P$的堆加到当前堆上，则满足$Q$ |
 
-**Def-SL-02** (堆模型)。设$\text{Loc}$为地址集合，$\text{Val}$为值集合：
+**Def-V-03-02** (堆模型)。设$\text{Loc}$为地址集合，$\text{Val}$为值集合：
 
 $$\text{Heap} \triangleq \text{Loc} \rightharpoonup_{\text{fin}} \text{Val}$$
 
@@ -34,7 +34,7 @@ $$\text{Heap} \triangleq \text{Loc} \rightharpoonup_{\text{fin}} \text{Val}$$
 | $s, h \models P \ast Q$ | $\exists h_1, h_2: h = h_1 \uplus h_2 \land s, h_1 \models P \land s, h_2 \models Q$ | 堆可分离 |
 | $s, h \models P \text{--\hspace{-0.5em}*} Q$ | $\forall h': h \perp h' \land s, h' \models P \Rightarrow s, h \cdot h' \models Q$ | 分离蕴含 |
 
-**Def-SL-03** (分离合取)。$P \ast Q$成立当且仅当堆可划分为两个不相交部分：
+**Def-V-03-03** (分离合取)。$P \ast Q$成立当且仅当堆可划分为两个不相交部分：
 
 $$s, h \models P \ast Q \Leftrightarrow \exists h_1, h_2: h_1 \perp h_2 \land h = h_1 \cdot h_2 \land s, h_1 \models P \land s, h_2 \models Q$$
 
@@ -42,7 +42,7 @@ $$s, h \models P \ast Q \Leftrightarrow \exists h_1, h_2: h_1 \perp h_2 \land h 
 
 ### 1.2 分离蕴含 (Magic Wand)
 
-**Def-SL-04** (分离蕴含)。$P \text{--\hspace{-0.5em}*} Q$表示：若将满足$P$的堆与当前堆合并，则结果满足$Q$：
+**Def-V-03-04** (分离蕴含)。$P \text{--\hspace{-0.5em}*} Q$表示：若将满足$P$的堆与当前堆合并，则结果满足$Q$：
 
 $$s, h \models P \text{--\hspace{-0.5em}*} Q \Leftrightarrow \forall h': h \perp h' \land s, h' \models P \Rightarrow s, h \cdot h' \models Q$$
 
@@ -52,35 +52,35 @@ $$(P \ast Q) \Rightarrow R \quad \Leftrightarrow \quad P \Rightarrow (Q \text{--
 
 ### 1.3 数据结构断言
 
-**Def-SL-05** (链表段断言)。单链表段定义为递归断言：
+**Def-V-03-05** (链表段断言)。单链表段定义为递归断言：
 
 $$\text{ls}(x, y) \triangleq (x = y \land \text{emp}) \lor (x \neq y \land \exists z: x \mapsto z \ast \text{ls}(z, y))$$
 
-**Def-SL-06** (树断言)。二叉树定义为：
+**Def-V-03-06** (树断言)。二叉树定义为：
 
 $$\text{tree}(x) \triangleq (x = \text{nil} \land \text{emp}) \lor (x \neq \text{nil} \land \exists l, r: x \mapsto (l, r) \ast \text{tree}(l) \ast \text{tree}(r))$$
 
-**Def-SL-07** (数组段断言)。连续数组段：
+**Def-V-03-07** (数组段断言)。连续数组段：
 
 $$\text{array}(a, n) \triangleq \bigast_{i=0}^{n-1} (a + i) \mapsto v_i$$
 
 ### 1.4 Hoare 三元组
 
-**Def-SL-08** (分离逻辑 Hoare 三元组)。命令 $C$ 关于前置条件 $P$ 和后置条件 $Q$ 的正确性：
+**Def-V-03-08** (分离逻辑 Hoare 三元组)。命令 $C$ 关于前置条件 $P$ 和后置条件 $Q$ 的正确性：
 
 $$\{P\} C \{Q\}$$
 
 语义：从满足 $P$ 的状态执行 $C$，若 $C$ 终止，则结果状态满足 $Q$。
 
-**Def-SL-09** (完全正确性)。$[P] C [Q]$ 表示 $C$ 在 $P$ 下必定终止且满足 $Q$。
+**Def-V-03-09** (完全正确性)。$[P] C [Q]$ 表示 $C$ 在 $P$ 下必定终止且满足 $Q$。
 
-**Def-SL-10** (局部正确性)。$\{P\} C \{Q\}$ 不保证终止，仅保证若终止则满足 $Q$。
+**Def-V-03-10** (局部正确性)。$\{P\} C \{Q\}$ 不保证终止，仅保证若终止则满足 $Q$。
 
 ## 2. 属性推导 (Properties)
 
 ### 2.1 分离逻辑代数性质
 
-**Lemma-SL-01** (分离合取性质)。$\ast$满足以下代数性质：
+**Lemma-V-03-01** (分离合取性质)。$\ast$满足以下代数性质：
 
 | 性质 | 公式 |
 |------|------|
@@ -90,7 +90,7 @@ $$\{P\} C \{Q\}$$
 | **单调性** | $P \Rightarrow Q \Rightarrow (P \ast R) \Rightarrow (Q \ast R)$ |
 | **零元** | $P \ast \bot \equiv \bot$ |
 
-**Lemma-SL-02** (分离蕴含性质)。$\text{--\hspace{-0.5em}*}$满足伴随关系：
+**Lemma-V-03-02** (分离蕴含性质)。$\text{--\hspace{-0.5em}*}$满足伴随关系：
 
 $$(P \ast Q) \Rightarrow R \quad \Leftrightarrow \quad P \Rightarrow (Q \text{--\hspace{-0.5em}*} R)$$
 
@@ -105,7 +105,7 @@ $$(P \ast Q) \Rightarrow R \quad \Leftrightarrow \quad P \Rightarrow (Q \text{--
 
 ### 2.2 纯断言与准确断言
 
-**Def-SL-11** (纯断言)。不包含堆约束的断言：
+**Def-V-03-11** (纯断言)。不包含堆约束的断言：
 
 $$\text{pure}(P) \triangleq \forall s, h: s, h \models P \Rightarrow \forall h': s, h' \models P$$
 
@@ -114,16 +114,26 @@ $$\text{pure}(P) \triangleq \forall s, h: s, h \models P \Rightarrow \forall h':
 **性质**：纯断言可进出分离合取：
 $$\text{pure}(P) \Rightarrow (P \land (Q \ast R)) \equiv ((P \land Q) \ast R)$$
 
-**Def-SL-12** (准确断言)。精确描述一个堆：
+**Def-V-03-12** (准确断言)。精确描述一个堆：
 
 $$\text{precise}(P) \triangleq \forall s, h_1, h_2:
   (s, h_1 \models P \land s, h_2 \models P \land h_1 \subseteq h_2) \Rightarrow h_1 = h_2$$
 
-**Lemma-SL-03**：$x \mapsto y$ 是准确的，$\text{ls}(x, y)$ 是准确的（当 $x \neq y$ 时）。
+**Lemma-V-03-03**：$x \mapsto y$ 是准确的，$\text{ls}(x, y)$ 是准确的（当 $x \neq y$ 时）。
 
 ## 3. 关系建立 (Relations)
 
 ### 3.1 与 Hoare 逻辑的关系
+
+分离逻辑是霍尔逻辑（Hoare Logic）的扩展，专门用于处理堆内存和指针操作。霍尔逻辑提供了程序验证的基础框架，而分离逻辑在此基础上增加了对动态内存管理的支持。
+
+- 详见：[霍尔逻辑](../../98-appendices/wikipedia-concepts/06-hoare-logic.md)
+
+**演进关系**:
+- Hoare 逻辑：处理无指针命令式程序
+- 分离逻辑：扩展堆模型，支持指针和内存操作
+- 逆分离逻辑：支持错误定位和双向推理
+- 应用分离逻辑：支持高阶函数和幽灵状态
 
 ```mermaid
 graph TB
@@ -158,7 +168,7 @@ graph TB
 
 ### 3.2 并发分离逻辑 (CSL)
 
-**Def-SL-13** (并发分离逻辑 / CSL)。扩展分离逻辑支持并发程序验证：
+**Def-V-03-13** (并发分离逻辑 / CSL)。扩展分离逻辑支持并发程序验证：
 
 - **资源不变式** $I$：描述共享资源的状态约束
 - **原子块** $\langle C \rangle$：表示对共享资源的互斥访问
@@ -223,7 +233,7 @@ $$\text{local}(C) \triangleq \forall P, Q: \{P\} C \{Q\} \Rightarrow \forall R: 
 
 ### 5.1 帧规则 (Frame Rule)
 
-**Thm-SL-01** (帧规则)。这是分离逻辑最核心的推理规则：
+**Thm-V-03-01** (帧规则)。这是分离逻辑最核心的推理规则：
 
 $$\frac{\{P\} C \{Q\}}{\{P \ast R\} C \{Q \ast R\}} \quad \text{若 } \text{mod}(C) \cap \text{fv}(R) = \emptyset$$
 
@@ -239,11 +249,11 @@ $$\frac{\{P\} C \{Q\}}{\{P \ast R\} C \{Q \ast R\}} \quad \text{若 } \text{mod}
 5. $h_R$ 不变（$C$ 不修改 $R$ 的变量）
 6. 故结果堆 $h' = h'_P \uplus h_R$ 满足 $s', h' \models Q \ast R$
 
-**Thm-SL-02** (帧规则的完备性)。在标准分离逻辑中，帧规则与局部性等价。
+**Thm-V-03-02** (帧规则的完备性)。在标准分离逻辑中，帧规则与局部性等价。
 
 ### 5.2 并发分离逻辑可靠性
 
-**Thm-SL-03** (CSL可靠性)。若 $\{P\} C \{Q\}$ 在CSL中可证明，则在交错语义下程序满足规范：
+**Thm-V-03-03** (CSL可靠性)。若 $\{P\} C \{Q\}$ 在CSL中可证明，则在交错语义下程序满足规范：
 
 $$\vdash_{\text{CSL}} \{P\} C \{Q\} \Rightarrow \models \{P\} C \{Q\}$$
 
@@ -253,7 +263,7 @@ $$\vdash_{\text{CSL}} \{P\} C \{Q\} \Rightarrow \models \{P\} C \{Q\}$$
 3. 分离合取保证线程私有状态不冲突
 4. 通过轨迹模拟证明交错执行的性质保持
 
-**Thm-SL-04** (无数据竞争保证)。若程序在CSL中可验证，则程序无数据竞争。
+**Thm-V-03-04** (无数据竞争保证)。若程序在CSL中可验证，则程序无数据竞争。
 
 ### 5.3 工具实现
 

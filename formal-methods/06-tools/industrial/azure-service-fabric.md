@@ -1,4 +1,4 @@
-# Azure Service Fabric 形式化验证
+﻿# Azure Service Fabric 形式化验证
 
 > **所属单元**: Tools/Industrial | **前置依赖**: [Azure验证](./02-azure-verification.md) | **形式化等级**: L6
 
@@ -201,7 +201,7 @@ flowchart TD
     B -->|故障检测| D[时序逻辑验证]
     B -->|状态一致性| E[不变式检验]
 
-    C --> F[TLC模型检验]
+    C --> F[TLC模型检测]
     D --> G[实时验证]
     E --> H[归纳证明]
 

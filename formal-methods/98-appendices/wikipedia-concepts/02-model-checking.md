@@ -10,7 +10,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-W-02-01 模型检测 (Model Checking)
+### Def-S-98-01 模型检测 (Model Checking)
 
 #### 英文原文 (Wikipedia标准定义)
 >
@@ -32,7 +32,7 @@ $$\mathcal{MC}: \mathcal{M} \times \Phi \to \{\top, \bot, \text{CounterExample}\
 - $\Phi$: 待验证的规约（时序逻辑公式）
 - 输出：满足($\top$)、不满足($\bot$)附带反例、或资源耗尽
 
-### Def-W-02-02 Kripke结构 (Kripke Structure)
+### Def-S-98-02 Kripke结构 (Kripke Structure)
 
 模型检测的基础语义结构：
 
@@ -54,7 +54,7 @@ $$\pi = s_0 s_1 s_2 \ldots \in S^\omega, \quad \text{满足} \forall i \geq 0: (
 **路径后缀**：
 $$\pi^i = s_i s_{i+1} s_{i+2} \ldots$$
 
-### Def-W-02-03 计算树逻辑 (CTL - Computation Tree Logic)
+### Def-S-98-03 计算树逻辑 (CTL - Computation Tree Logic)
 
 CTL是**分支时序逻辑**，公式由路径量词和时序算子组合构成：
 
@@ -82,7 +82,7 @@ $$\phi ::= p \ | \ \neg\phi \ | \ \phi \land \phi \ | \ \mathbf{AX}\phi \ | \ \m
 - $\mathcal{M}, s \models \mathbf{A}(\phi_1 \mathbf{U} \phi_2) \iff$ 所有路径上$\phi_1$持续成立直到$\phi_2$成立
 - $\mathcal{M}, s \models \mathbf{E}(\phi_1 \mathbf{U} \phi_2) \iff$ 存在路径上$\phi_1$持续成立直到$\phi_2$成立
 
-### Def-W-02-04 线性时序逻辑 (LTL - Linear Temporal Logic)
+### Def-S-98-04 线性时序逻辑 (LTL - Linear Temporal Logic)
 
 LTL描述**单条执行路径**上的性质，不区分分支：
 
@@ -103,7 +103,7 @@ $$\mathcal{M} \models \phi \iff \forall s_0 \in S_0, \forall \pi \in \Pi(s_0): \
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-W-02-01 CTL与LTL表达能力比较
+### Lemma-S-98-01 CTL与LTL表达能力比较
 
 CTL和LTL的表达能力**不可比较**（neither subsumes the other）：
 
@@ -119,7 +119,7 @@ CTL和LTL的表达能力**不可比较**（neither subsumes the other）：
 - $\mathbf{AG}p \equiv \mathbf{G}p$（安全性）
 - $\mathbf{AF}p \equiv \mathbf{F}p$（活性）
 
-### Lemma-W-02-02 状态爆炸问题 (State Space Explosion)
+### Lemma-S-98-02 状态爆炸问题 (State Space Explosion)
 
 对于由$n$个组件组成的并发系统，每个组件有$k$个状态，组合状态空间大小为：
 
@@ -137,7 +137,7 @@ $$|S_{total}| = k^n$$
 - $n$个布尔变量需要$n$位存储每个状态
 - 总存储需求为$O(2^n \cdot n)$位
 
-### Prop-W-02-01 模型检测复杂度
+### Prop-S-98-01 模型检测复杂度
 
 | 逻辑 | 时间复杂度 | 空间复杂度 | 复杂度类 |
 |-----|-----------|-----------|---------|
@@ -151,7 +151,7 @@ $$|S_{total}| = k^n$$
 - $|\mathcal{M}| = |S| + |R|$（模型大小）
 - $|\phi|$（公式大小）
 
-### Prop-W-02-02 模型检测核心特性
+### Prop-S-98-02 模型检测核心特性
 
 | 特性 | 定义 | 重要性 |
 |------|------|--------|
@@ -171,25 +171,25 @@ $$|S_{total}| = k^n$$
 graph TB
     subgraph "时序逻辑谱系"
         direction TB
-        PL[命题逻辑 PL] --> TL[时序逻辑]
-        TL --> Branching[分支时序逻辑]
-        TL --> Linear[线性时序逻辑]
+        PL["命题逻辑 PL"] --> TL["时序逻辑"]
+        TL --> Branching["分支时序逻辑"]
+        TL --> Linear["线性时序逻辑"]
 
         Branching --> CTL[CTL]
         Branching --> CTLStar[CTL*]
-        Branching --> MuCalc[μ-演算]
+        Branching --> MuCalc["μ-演算"]
 
         Linear --> LTL2[LTL]
         Linear --> PTL[PTL]
 
-        MuCalc --> Modal[模态逻辑]
+        MuCalc --> Modal["模态逻辑"]
     end
 
     subgraph "模型检测应用"
-        MC1[CTL模型检测]
-        MC2[LTL模型检测]
-        MC3[CTL*模型检测]
-        MC4[μ-演算模型检测]
+        MC1["CTL模型检测"]
+        MC2["LTL模型检测"]
+        MC3["CTL*模型检测"]
+        MC4["μ-演算模型检测"]
     end
 
     CTL --> MC1
@@ -221,10 +221,10 @@ $$\text{Process Algebra} \xrightarrow{\text{语义映射}} \text{Labeled Transit
 ```mermaid
 graph LR
     subgraph "抽象解释与模型检测"
-        CONC[具体系统<br/>Concrete System]
-        ABS[抽象系统<br/>Abstract System]
-        MC[模型检测<br/>Model Checking]
-        RES[验证结果<br/>Verification Result]
+        CONC["具体系统<br/>Concrete System"]
+        ABS["抽象系统<br/>Abstract System"]
+        MC["模型检测<br/>Model Checking"]
+        RES["验证结果<br/>Verification Result"]
 
         CONC -->|抽象函数 α| ABS
         ABS --> MC
@@ -235,9 +235,9 @@ graph LR
 
     subgraph "抽象性质"
         direction TB
-        SOUND[可靠性<br/>Soundness]
-        COMP[完备性<br/>Completeness]
-        CEGAR[CEGAR精化]
+        SOUND["可靠性<br/>Soundness"]
+        COMP["完备性<br/>Completeness"]
+        CEGAR["CEGAR精化"]
     end
 
     SOUND -.-> MC
@@ -272,17 +272,17 @@ graph LR
 
 ```mermaid
 flowchart TD
-    A[状态空间] --> B{表示方法}
-    B -->|显式| C[状态列表]
-    B -->|符号| D[布尔公式/BDD]
+    A["状态空间"] --> B{表示方法}
+    B -->|显式| C["状态列表"]
+    B -->|符号| D["布尔公式/BDD"]
 
-    C --> C1[O(#状态)]
-    C --> C2[适合稀疏状态]
+    C --> C1["O(#状态)"]
+    C --> C2["适合稀疏状态"]
 
-    D --> D1[O(BDD节点)]
-    D --> D2[适合结构化系统]
+    D --> D1["O(BDD节点)"]
+    D --> D2["适合结构化系统"]
 
-    C1 --> E[存储需求]
+    C1 --> E["存储需求"]
     D1 --> E
 ```
 
@@ -303,7 +303,7 @@ flowchart TD
 
 ## 5. 形式证明 (Proof / Engineering Argument)
 
-### Thm-W-02-01 模型检测算法正确性定理
+### Thm-S-98-01 模型检测算法正确性定理
 
 **定理**：对于任意Kripke结构$\mathcal{M}$和CTL公式$\phi$，CTL模型检测算法返回$\top$当且仅当$\mathcal{M} \models \phi$。
 
@@ -355,7 +355,7 @@ $$\text{CTL-MC}(\mathcal{M}, \phi) = \top \iff \forall s_0 \in S_0: \mathcal{M},
 
 3. **终止性**：状态集有限，每个不动点计算最多$|S|$次迭代。
 
-### Thm-W-02-02 CTL模型检测复杂度定理（P-完全）
+### Thm-S-98-02 CTL模型检测复杂度定理（P-完全）
 
 **定理**：CTL模型检测问题是**P-完全的**。
 
@@ -387,7 +387,7 @@ $$T(CTL\text{-}MC) = O(|\phi| \cdot |S| \cdot |R|) = O(|\phi| \cdot |\mathcal{M}
 3. 构造CTL公式$\phi$使得$\mathcal{M}_C \models \phi$当且仅当$C(I) = 1$
 4. 因此$CVP \leq_p CTL\text{-}MC$
 
-### Thm-W-02-03 LTL模型检测复杂度定理（PSPACE-完全）
+### Thm-S-98-03 LTL模型检测复杂度定理（PSPACE-完全）
 
 **定理**：LTL模型检测问题是**PSPACE-完全的**。
 
@@ -556,14 +556,14 @@ flowchart TB
     subgraph "验证方法对比矩阵"
         direction TB
 
-        COMPARISON[| 维度 | 模型检测 | 定理证明 | 测试 | 抽象解释 |]
+        COMPARISON["| 维度 | 模型检测 | 定理证明 | 测试 | 抽象解释 |"]
 
         subgraph 详细对比
-            D1[完备性: 完全/完全/不完备/过近似]
-            D2[自动化: 高/低/高/高]
-            D3[可扩展性: 有限/高/高/高]
-            D4[反例生成: 自动/人工/自动/无]
-            D5[适用系统: 有限/无限/任意/无限]
+            D1["完备性: 完全/完全/不完备/过近似"]
+            D2["自动化: 高/低/高/高"]
+            D3["可扩展性: 有限/高/高/高"]
+            D4["反例生成: 自动/人工/自动/无"]
+            D5["适用系统: 有限/无限/任意/无限"]
         end
     end
 ```
@@ -587,19 +587,19 @@ graph TB
     subgraph "Kripke语义公理系统"
         direction TB
 
-        A1[公理1: 全关系公理<br/>∀s ∈ S: ∃s' ∈ S: (s,s') ∈ R] --> T1
-        A2[公理2: 标记一致性<br/>L: S → 2^AP] --> T1
-        A3[公理3: 路径存在性<br/>每个状态至少有一条出边] --> T1
+        A1["公理1: 全关系公理<br/>∀s ∈ S: ∃s' ∈ S: (s,s') ∈ R"] --> T1
+        A2["公理2: 标记一致性<br/>L: S → 2^AP"] --> T1
+        A3["公理3: 路径存在性<br/>每个状态至少有一条出边"] --> T1
 
-        T1[定理1: 无限路径存在性<br/>从任意状态出发存在无限执行路径] --> T2
-        T2[定理2: CTL语义良定义性<br/>所有CTL公式有确定语义值] --> T3
-        T3[定理3: 不动点存在性<br/>单调函数在有限格上有不动点] --> T4
-        T4[定理4: 模型检测可判定性<br/>有限Kripke结构上的CTL检测可判定]
+        T1["定理1: 无限路径存在性<br/>从任意状态出发存在无限执行路径"] --> T2
+        T2["定理2: CTL语义良定义性<br/>所有CTL公式有确定语义值"] --> T3
+        T3["定理3: 不动点存在性<br/>单调函数在有限格上有不动点"] --> T4
+        T4["定理4: 模型检测可判定性<br/>有限Kripke结构上的CTL检测可判定"]
 
         subgraph 推理规则
             R1[Modus Ponens]<br/>φ, φ→ψ ⊢ ψ
             R2[Necessitation]<br/>⊢ φ ⇒ ⊢ ☐φ
-            R3[路径归纳]<br/>沿所有路径归纳证明
+            R3["路径归纳"]<br/>沿所有路径归纳证明
         end
     end
 ```
@@ -646,28 +646,28 @@ graph TB
     subgraph "模型检测理论基础依赖图"
         direction TB
 
-        LOGIC[数理逻辑<br/>Mathematical Logic] --> MODAL[模态逻辑<br/>Modal Logic]
-        LOGIC --> AUTOMATA[自动机理论<br/>Automata Theory]
-        SET[集合论<br/>Set Theory] --> Kripke
-        ORDER[序理论<br/>Order Theory] --> FIXPOINT
+        LOGIC["数理逻辑<br/>Mathematical Logic"] --> MODAL["模态逻辑<br/>Modal Logic"]
+        LOGIC --> AUTOMATA["自动机理论<br/>Automata Theory"]
+        SET["集合论<br/>Set Theory"] --> Kripke
+        ORDER["序理论<br/>Order Theory"] --> FIXPOINT
 
-        MODAL --> Kripke[Kripke语义<br/>Kripke Semantics]
-        FIXPOINT[不动点理论<br/>Fixpoint Theory] --> CTL[CTL语义]
+        MODAL --> Kripke["Kripke语义<br/>Kripke Semantics"]
+        FIXPOINT["不动点理论<br/>Fixpoint Theory"] --> CTL["CTL语义"]
 
         Kripke --> CTL
-        Kripke --> LTL[LTL语义<br/>LTL Semantics]
+        Kripke --> LTL["LTL语义<br/>LTL Semantics"]
         AUTOMATA --> LTL
 
-        CTL --> CTL_MC[CTL模型<br/>检测算法]
-        LTL --> LTL_MC[LTL模型<br/>检测算法]
+        CTL --> CTL_MC["CTL模型<br/>检测算法"]
+        LTL --> LTL_MC["LTL模型<br/>检测算法"]
 
         CTL_MC --> TOOLS1[NuSMV<br/>UPPAAL]
         LTL_MC --> TOOLS2[SPIN<br/>TLC]
 
-        BDD[BDD理论<br/>Binary Decision Diagrams] --> SYMBOLIC[符号模型检测<br/>Symbolic MC]
+        BDD["BDD理论<br/>Binary Decision Diagrams"] --> SYMBOLIC["符号模型检测<br/>Symbolic MC"]
         SYMBOLIC --> TOOLS1
 
-        SAT[SAT求解<br/>SAT Solving] --> BMC[有界模型检测<br/>Bounded MC]
+        SAT["SAT求解<br/>SAT Solving"] --> BMC["有界模型检测<br/>Bounded MC"]
         BMC --> TOOLS3[CBMC<br/>NuSMV-BMC]
     end
 ```
@@ -740,46 +740,46 @@ graph TB
         direction TB
 
         subgraph 应用层
-            A1[硬件验证]
-            A2[协议验证]
-            A3[软件验证]
-            A4[安全分析]
+            A1["硬件验证"]
+            A2["协议验证"]
+            A3["软件验证"]
+            A4["安全分析"]
         end
 
         subgraph 工具层
-            T1[SPIN<br/>显式状态]
-            T2[NuSMV<br/>符号BDD]
-            T3[UPPAAL<br/>实时系统]
-            T4[CBMC<br/>有界检测]
-            T5[PRISM<br/>概率系统]
+            T1["SPIN<br/>显式状态"]
+            T2["NuSMV<br/>符号BDD"]
+            T3["UPPAAL<br/>实时系统"]
+            T4["CBMC<br/>有界检测"]
+            T5["PRISM<br/>概率系统"]
         end
 
         subgraph 算法层
-            AL1[显式状态<br/>DFS/BFS]
-            AL2[符号方法<br/>BDD/SAT]
-            AL3[抽象方法<br/>CEGAR]
-            AL4[偏序约简<br/>POR]
+            AL1["显式状态<br/>DFS/BFS"]
+            AL2["符号方法<br/>BDD/SAT"]
+            AL3["抽象方法<br/>CEGAR"]
+            AL4["偏序约简<br/>POR"]
         end
 
         subgraph 逻辑层
-            L1[CTL<br/>分支时序]
-            L2[LTL<br/>线性时序]
-            L3[CTL*<br/>超集]
-            L4[PCTL<br/>概率逻辑]
+            L1["CTL<br/>分支时序"]
+            L2["LTL<br/>线性时序"]
+            L3["CTL*<br/>超集"]
+            L4["PCTL<br/>概率逻辑"]
         end
 
         subgraph 语义层
-            S1[Kripke结构]
-            S2[标记迁移系统]
-            S3[时间自动机]
-            S4[马尔可夫链]
+            S1["Kripke结构"]
+            S2["标记迁移系统"]
+            S3["时间自动机"]
+            S4["马尔可夫链"]
         end
 
         subgraph 数学基础层
-            M1[模态逻辑]
-            M2[不动点理论]
-            M3[自动机理论]
-            M4[布尔函数]
+            M1["模态逻辑"]
+            M2["不动点理论"]
+            M3["自动机理论"]
+            M4["布尔函数"]
         end
 
         M1 --> S1
@@ -819,25 +819,25 @@ graph TB
     subgraph "符号模型检测证明搜索树"
         direction TB
 
-        ROOT[目标: 验证 ℳ ⊨ φ] --> DECOMPOSE{公式分解}
+        ROOT["目标: 验证 ℳ ⊨ φ"] --> DECOMPOSE{公式分解}
 
-        DECOMPOSE --> SUB1[子目标1: φ = p<br/>原子命题]
-        DECOMPOSE --> SUB2[子目标2: φ = ¬ψ<br/>否定]
-        DECOMPOSE --> SUB3[子目标3: φ = ψ₁ ∧ ψ₂<br/>合取]
-        DECOMPOSE --> SUB4[子目标4: φ = AXψ<br/>全称下一时]
-        DECOMPOSE --> SUB5[子目标5: φ = EXψ<br/>存在下一时]
-        DECOMPOSE --> SUB6[子目标6: φ = AFψ<br/>全称最终]
-        DECOMPOSE --> SUB7[子目标7: φ = EFψ<br/>存在最终]
+        DECOMPOSE --> SUB1["子目标1: φ = p<br/>原子命题"]
+        DECOMPOSE --> SUB2["子目标2: φ = ¬ψ<br/>否定"]
+        DECOMPOSE --> SUB3["子目标3: φ = ψ₁ ∧ ψ₂<br/>合取"]
+        DECOMPOSE --> SUB4["子目标4: φ = AXψ<br/>全称下一时"]
+        DECOMPOSE --> SUB5["子目标5: φ = EXψ<br/>存在下一时"]
+        DECOMPOSE --> SUB6["子目标6: φ = AFψ<br/>全称最终"]
+        DECOMPOSE --> SUB7["子目标7: φ = EFψ<br/>存在最终"]
 
-        SUB1 --> SOL1[BDD(S_p)<br/>直接标记]
+        SUB1 --> SOL1["BDD(S_p)<br/>直接标记"]
 
-        SUB2 --> SOL2[BDD(S_ψ)补运算<br/>¬BDD_ψ]
+        SUB2 --> SOL2["BDD(S_ψ)补运算<br/>¬BDD_ψ"]
 
-        SUB3 --> SOL3[BDD_ψ₁ ∧ BDD_ψ₂<br/>Apply算法]
+        SUB3 --> SOL3["BDD_ψ₁ ∧ BDD_ψ₂<br/>Apply算法"]
 
-        SUB4 --> SOL4[∀ V': T(V,V') → BDD_ψ(V')<br/>全称量化]
+        SUB4 --> SOL4["∀ V': T(V,V') → BDD_ψ(V')<br/>全称量化"]
 
-        SUB5 --> SOL5[∃ V': T(V,V') ∧ BDD_ψ(V')<br/>存在量化]
+        SUB5 --> SOL5["∃ V': T(V,V') ∧ BDD_ψ(V')<br/>存在量化"]
 
         SUB6 --> ITER1{不动点迭代<br/>μZ.ψ ∨ AX Z}
         ITER1 -->|迭代1| I1[BDD₁ = BDD_ψ]
@@ -849,7 +849,7 @@ graph TB
         ITER2 -->|迭代i+1| J2[BDD_{i+1} = BDD_ψ ∨ EX BDD_i]
         ITER2 -->|收敛| SOL7[BDD_EFψ]
 
-        SOL1 --> COMBINE[组合结果]
+        SOL1 --> COMBINE["组合结果"]
         SOL2 --> COMBINE
         SOL3 --> COMBINE
         SOL4 --> COMBINE
@@ -858,8 +858,8 @@ graph TB
         SOL7 --> COMBINE
 
         COMBINE --> CHECK{检查初始状态<br/>S₀ ⊆ SAT(φ)?}
-        CHECK -->|是| VALID[✓ 验证通过]
-        CHECK -->|否| INVALID[✗ 提供反例<br/>BDD路径提取]
+        CHECK -->|是| VALID["✓ 验证通过"]
+        CHECK -->|否| INVALID["✗ 提供反例<br/>BDD路径提取"]
     end
 ```
 
@@ -928,6 +928,10 @@ timeline
 
 ## 9. 引用参考 (References)
 
+### 相关概念
+
+- [显式状态模型检测](../../05-verification/02-model-checking/01-explicit-state.md) - 模型检测实现技术详解
+
 ### Wikipedia 参考
 
 
@@ -971,3 +975,4 @@ timeline
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-10 | 最后更新: 2026-04-10*
+

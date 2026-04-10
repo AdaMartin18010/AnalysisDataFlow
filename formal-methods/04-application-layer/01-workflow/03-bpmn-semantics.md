@@ -393,7 +393,7 @@ mindmap
     形式化映射
       Petri网语义
       π-calculus编码
-      CSP进程代数
+      CSP进程演算
 ```
 
 ### 7.2 网关语义对比图

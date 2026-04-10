@@ -24,7 +24,7 @@
 
 ### 2.1 形式化方法的形式定义
 
-**Def-W-01-01** (形式化方法系统). 形式化方法是一个五元组：
+**Def-S-98-01** (形式化方法系统). 形式化方法是一个五元组：
 
 $$\mathcal{FM} = \langle \mathcal{L}_{\text{spec}}, \mathcal{L}_{\text{impl}}, \mathcal{R}_{\text{refine}}, \mathcal{V}_{\text{verify}}, \mathcal{T}_{\text{transform}} \rangle$$
 
@@ -38,7 +38,7 @@ $$\mathcal{FM} = \langle \mathcal{L}_{\text{spec}}, \mathcal{L}_{\text{impl}}, \
 
 ### 2.2 形式化正确性
 
-**Def-W-01-02** (形式化正确性). 系统$S$关于规约$Spec$是形式化正确的，当且仅当：
+**Def-S-98-02** (形式化正确性). 系统$S$关于规约$Spec$是形式化正确的，当且仅当：
 
 $$S \models_{\mathcal{L}} Spec \Leftrightarrow \mathcal{V}(S, Spec) = \text{VALID}$$
 
@@ -162,7 +162,7 @@ timeline
     section 1980s-1990s
         语言发展 : Z、VDM、CSP出现
                  : 模型检测诞生
-                 : 进程代数成熟
+                 : 进程演算成熟
     section 2000s-2010s
         工具成熟 : TLA+工业应用
                  : Coq/Isabelle大规模证明
@@ -180,7 +180,7 @@ timeline
 | 1967 | Floyd赋值公理 | Robert W. Floyd |
 | 1969 | Hoare逻辑 | C.A.R. Hoare |
 | 1975 | 最弱前置条件 | Edsger W. Dijkstra |
-| 1980 | CCS进程代数 | Robin Milner |
+| 1980 | CCS进程演算 | Robin Milner |
 | 1985 | CTL模型检测 | Clarke & Emerson |
 | 1989 | π-演算 | Robin Milner |
 | 1999 | TLA+发布 | Leslie Lamport |
@@ -193,7 +193,7 @@ timeline
 
 ### 6.1 形式化方法的可靠性定理
 
-**Thm-W-01-01** (形式化验证的可靠性). 如果形式化验证器$\mathcal{V}$证明系统$S$满足规约$Spec$，则在形式化语义下$S$确实满足$Spec$：
+**Thm-S-98-01** (形式化验证的可靠性). 如果形式化验证器$\mathcal{V}$证明系统$S$满足规约$Spec$，则在形式化语义下$S$确实满足$Spec$：
 
 $$\mathcal{V}(S, Spec) = \text{VALID} \Rightarrow S \models Spec$$
 
@@ -206,7 +206,7 @@ $$\mathcal{V}(S, Spec) = \text{VALID} \Rightarrow S \models Spec$$
 
 ### 6.2 完备性限制
 
-**Thm-W-01-02** (形式化验证的不可完备性). 对于图灵完备的语言，形式化验证不是完备的：
+**Thm-S-98-02** (形式化验证的不可完备性). 对于图灵完备的语言，形式化验证不是完备的：
 
 $$\exists S, Spec: S \models Spec \land \mathcal{V}(S, Spec) = \text{UNKNOWN}$$
 
@@ -382,7 +382,7 @@ timeline
                  : 结构化程序设计
     section 1980s
         CCS/CSP : 并发理论
-                : 进程代数
+                : 进程演算
         ModelChecking : Clarke/Emerson
                       : 自动验证诞生
     section 1990s

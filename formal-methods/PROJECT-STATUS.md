@@ -10,14 +10,14 @@
 
 | 指标 | 数值 |
 |------|------|
-| **总文件数** | 95+ 篇 |
-| **总大小** | ~3.5 MB |
-| **目录数** | 25+ 个 |
-| **形式化定义** | 550+ 个 |
-| **定理/引理** | 380+ 个 |
+| **总文件数** | 184 篇 |
+| **总大小** | 3.18 MB |
+| **目录数** | 28 个 |
+| **形式化定义** | 539 个 |
+| **定理/引理** | 407 个 |
 | **证明数量** | 180+ 个 |
-| **Mermaid图表** | 450+ 个 |
-| **参考文献** | 550+ 条 |
+| **Mermaid图表** | 751 个 |
+| **参考文献** | 618 条 |
 
 ### 单元完成情况
 
@@ -27,7 +27,7 @@
 | **02-calculi** | 计算演算 | 9 | ✅ | w-calculus、π-calculus、流演算 |
 | **03-model-taxonomy** | 模型分类 | 14 | ✅ | 五维分类体系 |
 | **04-application-layer** | 应用层 | 9 | ✅ | 工作流、流计算、云原生 |
-| **05-verification** | 验证方法 | 9 | ✅ | 逻辑、模型检验、定理证明、**Lean 4新增** |
+| **05-verification** | 验证方法 | 9 | ✅ | 逻辑、模型检测、定理证明、**Lean 4新增** |
 | **06-tools** | 工具链 | 10 | ✅ | 学术工具、工业工具、**FizzBee, Shuttle, CCF新增** |
 | **07-future** | 未来方向 | 2 | ✅ | 挑战与趋势 |
 | **08-ai-formal-methods** | **AI形式化方法** | **4** | ✅ **完成** | **神经定理证明、LLM形式化、NN验证、神经符号AI** |
@@ -52,7 +52,7 @@ formal-methods/
 │
 ├── 01-foundations/                   # 第一单元：数学基础
 │   ├── 01-order-theory.md           # CPO、不动点
-│   ├── 02-category-theory.md        # 余代数、双模拟
+│   ├── 02-category-theory.md        # 余代数、互模拟
 │   └── 03-logic-foundations.md      # LTL/CTL/Hoare
 │
 ├── 02-calculi/                      # 第二单元：计算演算
@@ -235,10 +235,10 @@ formal-methods/
 
 | 领域 | 覆盖的作者/工作 |
 |------|----------------|
-| **进程代数** | Milner (π-calculus), Hoare (CSP), Bergstra (ACP) |
+| **进程演算** | Milner (π-calculus), Hoare (CSP), Bergstra (ACP) |
 | **流计算** | Rutten (Stream Calculus), Kahn (KPN), Lee (Dataflow) |
 | **Petri网** | van der Aalst (Soundness), Murata (网络理论) |
-| **验证方法** | Lamport (TLA+), Vardi (模型检验), Hoare (逻辑) |
+| **验证方法** | Lamport (TLA+), Vardi (模型检测), Hoare (逻辑) |
 | **定理证明器** | **Lean 4** (de Moura), **Coq/Rocq**, **Isabelle2025** |
 | **AI形式化** | **AlphaProof** (DeepMind), **DeepSeek-Prover**, **β-CROWN**, **Goedel-Prover** |
 | **工业应用** | AWS (TLA+, Shuttle, Turmoil), Microsoft (**CCF Smart Casual**, Azure), Google (**FizzBee**) |
@@ -268,7 +268,7 @@ formal-methods/
 
 ---
 
-> **项目状态**: ✅ **100% 完成 | Phase A/B/C/D 全部完成**
+> **项目状态**: ✅ **100% 完成 | Phase A/B/C/D + 方向A维护 全部完成**
 >
 > **总文档数**: 68+ | **总引用**: 110+ | **最新更新**: 2026-04-10
 

@@ -1,6 +1,6 @@
-# Ivy验证工具
+﻿# Ivy验证工具
 
-> **所属单元**: Tools/Academic | **前置依赖**: [时序逻辑与模型检验](../../05-verification/01-logic/02-temporal-logic.md) | **形式化等级**: L5
+> **所属单元**: Tools/Academic | **前置依赖**: [时序逻辑与模型检测](../../05-verification/01-logic/02-temporal-logic.md) | **形式化等级**: L5
 
 ## 1. 概念定义 (Definitions)
 
@@ -71,7 +71,7 @@ $$\Gamma \vdash e : \tau \quad \text{其中} \quad \tau \in \text{UserDefinedSor
 
 ### 1.3 有限范围验证
 
-**Def-T-07-05** (有限范围模型检验)。Ivy对小实例进行模型检验：
+**Def-T-07-05** (有限范围模型检测)。Ivy对小实例进行模型检测：
 
 $$M \models_k \phi \triangleq \forall I. |I| \leq k \Rightarrow M_I \models \phi$$
 
@@ -121,7 +121,7 @@ graph LR
 
     subgraph 验证引擎
         Z3[Z3 SMT]
-        MC[模型检验器]
+        MC[模型检测器]
         QE[量词消去]
     end
 
@@ -484,7 +484,7 @@ graph TB
     subgraph 验证引擎
         Parser[解析器]
         TypeChecker[类型检查器]
-        BoundedMC[有界模型检验器]
+        BoundedMC[有界模型检测器]
         InvariantFinder[不变式发现器]
         SMTSolver[SMT求解器]
     end

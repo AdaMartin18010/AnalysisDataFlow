@@ -55,9 +55,9 @@
 | Thm-C-05-01 | Kahn不动点定理 | 02-calculi/03-stream-calculus/03-kahn-process-networks.md |
 | Thm-A-02-01 | Soundness判定定理 | 04-application-layer/01-workflow/02-soundness-axioms.md |
 | Thm-M-04-02-01 | CAP定理 | 03-model-taxonomy/04-consistency/02-cap-theorem.md |
-| Thm-FM-18-01 | Paxos Safety | 98-appendices/wikipedia-concepts/18-paxos.md |
-| Thm-FM-19-01 | Raft Election Safety | 98-appendices/wikipedia-concepts/19-raft.md |
-| Thm-FM-22-01 | Gödel完备性 | 98-appendices/wikipedia-concepts/22-first-order-logic.md |
+| Thm-S-98-18-01 | Paxos Safety | 98-appendices/wikipedia-concepts/18-paxos.md |
+| Thm-S-98-19-01 | Raft Election Safety | 98-appendices/wikipedia-concepts/19-raft.md |
+| Thm-S-98-22-01 | Gödel完备性 | 98-appendices/wikipedia-concepts/22-first-order-logic.md |
 | Thm-FL-04-01 | Flink Checkpoint一致性 | 04-application-layer/02-stream-processing/04-flink-formal-verification.md |
 | Thm-K8s-02-01 | K8s控制器收敛 | 04-application-layer/03-cloud-native/02-kubernetes-verification.md |
 

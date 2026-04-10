@@ -43,7 +43,7 @@
 
 ### 2.1 证明系统的形式定义
 
-**Def-W-03-01** (形式证明系统). 一个形式证明系统 $\mathcal{P}$ 是一个四元组：
+**Def-S-98-01** (形式证明系统). 一个形式证明系统 $\mathcal{P}$ 是一个四元组：
 
 $$\mathcal{P} = \langle \mathcal{L}, \mathcal{A}, \mathcal{R}, \vdash \rangle$$
 
@@ -54,7 +54,7 @@ $$\mathcal{P} = \langle \mathcal{L}, \mathcal{A}, \mathcal{R}, \vdash \rangle$$
 - $\mathcal{R}$: 推理规则集合，每条规则 $r \in \mathcal{R}$ 具有形式：$\frac{\Gamma \vdash \varphi_1 \quad \cdots \quad \Gamma \vdash \varphi_n}{\Gamma \vdash \varphi}$
 - $\vdash \subseteq 2^{\mathcal{L}} \times \mathcal{L}$: 可推导关系
 
-**Def-W-03-02** (形式证明). 公式 $\varphi$ 从假设 $\Gamma$ 的形式证明是一个有限序列 $\pi = (\psi_1, \psi_2, \ldots, \psi_n)$，其中：
+**Def-S-98-02** (形式证明). 公式 $\varphi$ 从假设 $\Gamma$ 的形式证明是一个有限序列 $\pi = (\psi_1, \psi_2, \ldots, \psi_n)$，其中：
 
 - $\psi_n = \varphi$（最终结论是目标公式）
 - 对每个 $i \in [1,n]$，$\psi_i$ 满足以下条件之一：
@@ -82,13 +82,13 @@ $$\text{($\forall$-Elim)} \quad \frac{\Gamma \vdash \forall x.\varphi}{\Gamma \v
 
 ### 2.3 归结原理的形式化
 
-**Def-W-03-03** (子句与子句集).
+**Def-S-98-03** (子句与子句集).
 
 - 子句 $C$ 是文字的析取：$C = L_1 \lor L_2 \lor \cdots \lor L_n$
 - 文字 $L$ 是原子公式或其否定：$L = p$ 或 $L = \neg p$
 - 空子句 $\square$ 表示矛盾
 
-**Def-W-03-04** (归结规则). 给定两个子句：
+**Def-S-98-04** (归结规则). 给定两个子句：
 
 - $C_1 = P \lor C_1'$（包含正文字 $P$）
 - $C_2 = \neg P \lor C_2'$（包含负文字 $\neg P$）
@@ -102,7 +102,7 @@ $$\text{($\forall$-Elim)} \quad \frac{\Gamma \vdash \forall x.\varphi}{\Gamma \v
 
 ### 2.4 Curry-Howard对应
 
-**Def-W-03-05** (Curry-Howard同构). 直觉主义命题逻辑与简单类型 $\lambda$-演算之间存在对应关系：
+**Def-S-98-05** (Curry-Howard同构). 直觉主义命题逻辑与简单类型 $\lambda$-演算之间存在对应关系：
 
 | 逻辑侧 | 计算侧 |
 |--------|--------|
@@ -119,7 +119,7 @@ $$\Gamma \vdash \varphi \text{ (可证)} \quad \Leftrightarrow \quad \exists t. 
 
 ### 2.5 高阶逻辑与依赖类型
 
-**Def-W-03-06** (简单类型高阶逻辑). 类型定义：
+**Def-S-98-06** (简单类型高阶逻辑). 类型定义：
 
 $$\tau ::= \iota \mid \omicron \mid \tau \rightarrow \tau$$
 
@@ -129,7 +129,7 @@ $$\tau ::= \iota \mid \omicron \mid \tau \rightarrow \tau$$
 - $\omicron$: 命题类型（真值类型）
 - $\tau_1 \rightarrow \tau_2$: 函数类型
 
-**Def-W-03-07** (依赖类型). 依赖函数类型（$\Pi$-类型）：
+**Def-S-98-07** (依赖类型). 依赖函数类型（$\Pi$-类型）：
 
 $$(x : A) \rightarrow B(x) \quad \text{或} \quad \Pi x:A. B(x)$$
 
@@ -209,29 +209,29 @@ mindmap
 ```mermaid
 graph TB
     subgraph "数学基础"
-        LOGIC[数理逻辑]
-        TYPES[类型论]
-        CAT[范畴论]
+        LOGIC["数理逻辑"]
+        TYPES["类型论"]
+        CAT["范畴论"]
     end
 
     subgraph "证明系统"
-        FOL[一阶逻辑]
-        HOL[高阶逻辑]
-        DEP[依赖类型]
-        MODAL[模态逻辑]
+        FOL["一阶逻辑"]
+        HOL["高阶逻辑"]
+        DEP["依赖类型"]
+        MODAL["模态逻辑"]
     end
 
     subgraph "证明方法"
-        ATP[自动定理证明]
-        ITP[交互式证明]
-        SMT[SMT求解]
+        ATP["自动定理证明"]
+        ITP["交互式证明"]
+        SMT["SMT求解"]
     end
 
     subgraph "应用领域"
-        VERIF[程序验证]
-        MATH[数学形式化]
-        HW[硬件验证]
-        SEC[安全协议]
+        VERIF["程序验证"]
+        MATH["数学形式化"]
+        HW["硬件验证"]
+        SEC["安全协议"]
     end
 
     LOGIC --> FOL
@@ -255,6 +255,7 @@ graph TB
 ### 4.2 与其他核心概念的关系
 
 | 概念 | 关系类型 | 说明 |
+| **SMT求解器** | 工具实现 | [SMT求解器](../../05-verification/03-theorem-proving/02-smt-solvers.md) - 基于理论组合的自动化验证工具 |
 |------|---------|------|
 | **一阶逻辑 (FOL)** | 基础 | ATP的核心处理对象，可判定但不完备 |
 | **类型论** | Curry-Howard | 证明与程序的深层对应 |
@@ -266,26 +267,26 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[程序源码] --> B[Hoare三元组生成]
+    A["程序源码"] --> B["Hoare三元组生成"]
     B --> C{验证条件生成}
-    C --> D[循环不变式]
-    C --> E[前置/后置条件]
+    C --> D["循环不变式"]
+    C --> E["前置/后置条件"]
 
-    D --> F[证明义务]
+    D --> F["证明义务"]
     E --> F
 
     F --> G{选择证明工具}
-    G -->|自动| H[SMT求解器]
+    G -->|自动| H["SMT求解器"]
     G -->|交互| I[Coq/Isabelle]
     G -->|混合| J[Why3/Boogie]
 
-    H --> K[验证结果]
+    H --> K["验证结果"]
     I --> K
     J --> K
 
-    K -->|成功| L[程序验证通过]
-    K -->|失败| M[反例/证明义务]
-    M --> N[人工分析]
+    K -->|成功| L["程序验证通过"]
+    K -->|失败| M["反例/证明义务"]
+    M --> N["人工分析"]
     N --> D
 ```
 
@@ -349,7 +350,7 @@ timeline
 
 ### 5.3 Logic Theorist详解
 
-**Def-W-03-08** (Logic Theorist原理). Logic Theorist通过以下策略搜索证明：
+**Def-S-98-08** (Logic Theorist原理). Logic Theorist通过以下策略搜索证明：
 
 1. **替换策略**: 将定理中的子公式替换为已知等价的表达式
 2. **前向链接**: 从已知定理推导新定理
@@ -365,7 +366,7 @@ $$\text{Logic Theorist} = \langle \mathcal{K}, \mathcal{S}, \mathcal{H} \rangle$
 
 ### 5.4 Robinson归结原理详解
 
-**Def-W-03-09** (Robinson归结). Robinson (1965) 证明了归结原理的**反演完备性**：
+**Def-S-98-09** (Robinson归结). Robinson (1965) 证明了归结原理的**反演完备性**：
 
 $$S \models \varphi \quad \Leftrightarrow \quad S \cup \{\neg\varphi\} \vdash_{res} \square$$
 
@@ -380,7 +381,7 @@ $$S \models \varphi \quad \Leftrightarrow \quad S \cup \{\neg\varphi\} \vdash_{r
 
 ### 6.1 归结原理完备性定理
 
-**Thm-W-03-01** (归结原理的反演完备性). 设 $S$ 为一阶逻辑的闭子句集，则：
+**Thm-S-98-01** (归结原理的反演完备性). 设 $S$ 为一阶逻辑的闭子句集，则：
 
 $$S \text{ 不可满足} \quad \Leftrightarrow \quad S \vdash_{res} \square$$
 
@@ -406,7 +407,7 @@ $$S \text{ 不可满足} \quad \Leftrightarrow \quad S \vdash_{res} \square$$
 
 ### 6.2 Curry-Howard同构定理
 
-**Thm-W-03-02** (Curry-Howard同构). 直觉主义命题逻辑 $IPC$ 与简单类型 $\lambda$-演算 $\lambda_\rightarrow$ 之间存在如下对应：
+**Thm-S-98-02** (Curry-Howard同构). 直觉主义命题逻辑 $IPC$ 与简单类型 $\lambda$-演算 $\lambda_\rightarrow$ 之间存在如下对应：
 
 $$\Gamma \vdash_{IPC} \varphi \quad \Leftrightarrow \quad \exists t. \Gamma \vdash_{\lambda_\rightarrow} t : \varphi$$
 
@@ -443,7 +444,7 @@ $$(\text{cut-elimination})(\pi) \quad \longleftrightarrow \quad (\beta\text{-red
 
 ### 6.3 Gödel不完备性定理及其影响
 
-**Thm-W-03-03** (Gödel第一不完备性定理). 对于任何一致的、包含基本算术的形式系统 $F$，存在命题 $G$ 使得：
+**Thm-S-98-03** (Gödel第一不完备性定理). 对于任何一致的、包含基本算术的形式系统 $F$，存在命题 $G$ 使得：
 
 $$F \not\vdash G \quad \text{且} \quad F \not\vdash \neg G$$
 
@@ -462,7 +463,7 @@ $$F \not\vdash G \quad \text{且} \quad F \not\vdash \neg G$$
    - 若 $F \vdash G$，则 $G$ 为假，与 $F$ 的一致性矛盾
    - 若 $F \vdash \neg G$，则 $G$ 可证（因 $G$ 说"$G$不可证"），同样矛盾
 
-**Thm-W-03-04** (Gödel第二不完备性定理). 对于任何一致的、包含基本算术的形式系统 $F$：
+**Thm-S-98-04** (Gödel第二不完备性定理). 对于任何一致的、包含基本算术的形式系统 $F$：
 
 $$F \not\vdash \text{Con}(F)$$
 
@@ -546,25 +547,25 @@ mindmap
 
 ```mermaid
 graph TD
-    A1[公理: 排中律] --> L1[经典逻辑]
-    A2[公理: 归结原理] --> L2[自动推理]
-    A3[公理: β-规约] --> L3[λ-演算]
+    A1["公理: 排中律"] --> L1["经典逻辑"]
+    A2["公理: 归结原理"] --> L2["自动推理"]
+    A3["公理: β-规约"] --> L3["λ-演算"]
 
-    L1 --> T1[定理: 一阶逻辑完备性]
-    L1 --> T2[定理: 归结反演完备性]
-    L2 --> T3[定理: 归结原理可靠性]
-    L3 --> T4[定理: Church-Rosser]
+    L1 --> T1["定理: 一阶逻辑完备性"]
+    L1 --> T2["定理: 归结反演完备性"]
+    L2 --> T3["定理: 归结原理可靠性"]
+    L3 --> T4["定理: Church-Rosser"]
 
-    T1 --> T5[定理: Herbrand定理]
-    T2 --> T6[定理: SLD归结完备性]
-    T4 --> T7[定理: Curry-Howard同构]
+    T1 --> T5["定理: Herbrand定理"]
+    T2 --> T6["定理: SLD归结完备性"]
+    T4 --> T7["定理: Curry-Howard同构"]
 
-    T5 --> C1[推论: ATP半可判定性]
-    T6 --> C2[推论: Prolog完备性]
-    T7 --> C3[推论: 程序抽取正确性]
+    T5 --> C1["推论: ATP半可判定性"]
+    T6 --> C2["推论: Prolog完备性"]
+    T7 --> C3["推论: 程序抽取正确性"]
 
-    L1 -.限制.-> G1[Gödel不完备定理]
-    G1 --> C4[推论: 停机问题不可判定]
+    L1 -.限制.-> G1["Gödel不完备定理"]
+    G1 --> C4["推论: 停机问题不可判定"]
 
     style A1 fill:#ffcccc
     style A2 fill:#ffcccc
@@ -597,24 +598,24 @@ stateDiagram-v2
 ```mermaid
 graph BT
     subgraph "数学基础"
-        A[命题逻辑]
-        B[一阶逻辑]
-        C[集合论]
-        D[类型论]
+        A["命题逻辑"]
+        B["一阶逻辑"]
+        C["集合论"]
+        D["类型论"]
     end
 
     subgraph "证明理论"
-        E[自然演绎]
-        F[相继演算]
-        G[归结原理]
-        H[Hilbert系统]
+        E["自然演绎"]
+        F["相继演算"]
+        G["归结原理"]
+        H["Hilbert系统"]
     end
 
     subgraph "实现技术"
-        I[项重写]
-        J[合一算法]
-        K[索引结构]
-        L[SAT求解]
+        I["项重写"]
+        J["合一算法"]
+        K["索引结构"]
+        L["SAT求解"]
     end
 
     subgraph "证明系统"
@@ -688,31 +689,31 @@ timeline
 ```mermaid
 graph TB
     subgraph "应用层"
-        A1[CompCert编译器]
-        A2[seL4操作系统]
-        A3[数学定理库]
-        A4[程序验证]
+        A1["CompCert编译器"]
+        A2["seL4操作系统"]
+        A3["数学定理库"]
+        A4["程序验证"]
     end
 
     subgraph "证明语言层"
         M1[Gallina/Coq]
         M2[Isar/HOL]
-        M3[Lean语言]
+        M3["Lean语言"]
         M4[Agda]
     end
 
     subgraph "逻辑内核层"
-        L1[归纳构造演算]
-        L2[简单类型λ演算]
-        L3[一阶逻辑]
-        L4[依赖类型]
+        L1["归纳构造演算"]
+        L2["简单类型λ演算"]
+        L3["一阶逻辑"]
+        L4["依赖类型"]
     end
 
     subgraph "推理引擎层"
-        MA1[归结引擎]
-        MA2[SMT核心]
-        MA3[合一代数]
-        MA4[重写系统]
+        MA1["归结引擎"]
+        MA2["SMT核心"]
+        MA3["合一代数"]
+        MA4["重写系统"]
     end
 
     A1 --> M1
@@ -736,35 +737,35 @@ graph TB
 
 ```mermaid
 graph TD
-    A[定理: Γ ⊢ ∀x.∃y.P] --> B{选择策略}
+    A["定理: Γ ⊢ ∀x.∃y.P"] --> B{选择策略}
 
-    B -->|自动| C[归结/SMT]
-    B -->|交互| D[引入引理]
+    B -->|自动| C["归结/SMT"]
+    B -->|交互| D["引入引理"]
 
-    C --> E[Skolem化]
-    C --> F[CNF转换]
+    C --> E["Skolem化"]
+    C --> F["CNF转换"]
 
-    E --> G[归结搜索]
+    E --> G["归结搜索"]
     F --> G
 
     G --> H{找到证明?}
-    H -->|是| I[输出证明]
-    H -->|否| J[返回失败]
+    H -->|是| I["输出证明"]
+    H -->|否| J["返回失败"]
 
-    D --> K[构造见证项]
-    D --> L[归纳原理]
+    D --> K["构造见证项"]
+    D --> L["归纳原理"]
 
-    K --> M[项综合]
-    L --> N[归纳假设]
+    K --> M["项综合"]
+    L --> N["归纳假设"]
 
-    M --> O[类型检查]
-    N --> P[归纳步骤]
+    M --> O["类型检查"]
+    N --> P["归纳步骤"]
 
     O --> Q{验证通过?}
     P --> Q
 
-    Q -->|是| R[证明完成]
-    Q -->|否| S[修正策略]
+    Q -->|是| R["证明完成"]
+    Q -->|否| S["修正策略"]
     S --> D
 
     style I fill:#ccffcc
@@ -799,6 +800,7 @@ graph TD
 
 ## 9. 相关概念
 
+- [Coq/Isabelle定理证明](../../05-verification/03-theorem-proving/01-coq-isabelle.md) - 主流定理证明工具详解
 - [Formal Methods](01-formal-methods.md)
 - [Model Checking](02-model-checking.md)
 - [Process Calculus](04-process-calculus.md)
@@ -815,3 +817,4 @@ graph TD
 > **先修概念**: 一阶逻辑、λ-演算、数理逻辑基础
 >
 > **后续概念**: 类型论、程序验证、形式化数学
+

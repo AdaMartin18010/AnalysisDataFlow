@@ -20,7 +20,7 @@
 
 > 范畴论是**数学结构及其关系的通用理论**。它由**Samuel Eilenberg**和**Saunders Mac Lane**在20世纪中叶提出，源于他们在代数拓扑学上的奠基性工作。现代范畴论研究**范畴（categories）**，即**对象（objects）**和**态射/箭头（morphisms/arrows）**的集合。每个范畴具有两个基本性质：**态射可结合地复合**的能力，以及**每个对象存在单位态射**。
 
-**Def-W-25-01** (范畴的Eilenberg-Mac Lane定义, 1945). 范畴 $\mathcal{C}$ 由以下部分组成：
+**Def-S-98-01** (范畴的Eilenberg-Mac Lane定义, 1945). 范畴 $\mathcal{C}$ 由以下部分组成：
 
 $$
 \mathcal{C} = (\text{Ob}(\mathcal{C}), \text{Hom}_{\mathcal{C}}, \circ, \text{id})
@@ -36,7 +36,7 @@ $$
 
 ### 1.2 形式化表达
 
-**Def-W-25-02** (对象与态射). 在范畴 $\mathcal{C}$ 中：
+**Def-S-98-02** (对象与态射). 在范畴 $\mathcal{C}$ 中：
 
 | 符号 | 含义 | 读法 |
 |------|------|------|
@@ -45,7 +45,7 @@ $$
 | $\text{dom}(f) = A$ | $f$ 的定义域是 $A$ | domain |
 | $\text{cod}(f) = B$ | $f$ 的余定义域是 $B$ | codomain |
 
-**Def-W-25-03** (态射复合, Composition). 对于态射 $f: A \to B$ 和 $g: B \to C$，其复合 $g \circ f: A \to C$ 定义为：
+**Def-S-98-03** (态射复合, Composition). 对于态射 $f: A \to B$ 和 $g: B \to C$，其复合 $g \circ f: A \to C$ 定义为：
 
 $$
 \frac{f: A \to B \quad g: B \to C}{g \circ f: A \to C}
@@ -53,7 +53,7 @@ $$
 
 复合运算满足以下公理：
 
-**Def-W-25-04** (结合律, Associativity). 对于任意 $f: A \to B$, $g: B \to C$, $h: C \to D$：
+**Def-S-98-04** (结合律, Associativity). 对于任意 $f: A \to B$, $g: B \to C$, $h: C \to D$：
 
 $$
 (h \circ g) \circ f = h \circ (g \circ f)
@@ -70,13 +70,13 @@ A & \xrightarrow{h \circ (g \circ f)} & D
 \end{array}
 $$
 
-**Def-W-25-05** (单位态射, Identity Morphism). 对每个对象 $A$，存在单位态射 $\text{id}_A: A \to A$ 满足：
+**Def-S-98-05** (单位态射, Identity Morphism). 对每个对象 $A$，存在单位态射 $\text{id}_A: A \to A$ 满足：
 
 $$
 \forall f: A \to B: \quad f \circ \text{id}_A = f = \text{id}_B \circ f
 $$
 
-**Def-W-25-06** (小范畴与局部小范畴). 
+**Def-S-98-06** (小范畴与局部小范畴). 
 
 - **小范畴** (Small category)：$\text{Ob}(\mathcal{C})$ 是集合（而非真类）
 - **局部小范畴** (Locally small category)：对所有 $A, B$，$\text{Hom}_{\mathcal{C}}(A, B)$ 是集合
@@ -85,7 +85,7 @@ $$
 
 ### 1.3 函子 (Functor)
 
-**Def-W-25-07** (函子). 函子 $F: \mathcal{C} \to \mathcal{D}$ 是两个范畴之间的结构保持映射，包含：
+**Def-S-98-07** (函子). 函子 $F: \mathcal{C} \to \mathcal{D}$ 是两个范畴之间的结构保持映射，包含：
 
 1. **对象映射**：$A \mapsto F(A)$，其中 $A \in \text{Ob}(\mathcal{C})$, $F(A) \in \text{Ob}(\mathcal{D})$
 2. **态射映射**：$(f: A \to B) \mapsto (F(f): F(A) \to F(B))$
@@ -94,13 +94,13 @@ $$
 - **保持复合**：$F(g \circ_{\mathcal{C}} f) = F(g) \circ_{\mathcal{D}} F(f)$
 - **保持单位**：$F(\text{id}_A) = \text{id}_{F(A)}$
 
-**Def-W-25-08** (协变与逆变函子).
+**Def-S-98-08** (协变与逆变函子).
 
 - **协变函子** (Covariant)：如上定义，保持箭头方向
 - **逆变函子** (Contravariant)：$F: \mathcal{C}^{\text{op}} \to \mathcal{D}$，反转箭头方向：
   $$F(g \circ f) = F(f) \circ F(g)$$
 
-**Def-W-25-09** (特殊函子类型).
+**Def-S-98-09** (特殊函子类型).
 
 | 函子类型 | 定义 | 符号 |
 |----------|------|------|
@@ -113,7 +113,7 @@ $$
 
 ### 1.4 自然变换 (Natural Transformation)
 
-**Def-W-25-10** (自然变换). 给定函子 $F, G: \mathcal{C} \to \mathcal{D}$，自然变换 $\alpha: F \Rightarrow G$ 为每个对象 $A \in \mathcal{C}$ 指定一个分量态射 $\alpha_A: F(A) \to G(A)$，使得对任意 $f: A \to B$ 满足**自然性条件**：
+**Def-S-98-10** (自然变换). 给定函子 $F, G: \mathcal{C} \to \mathcal{D}$，自然变换 $\alpha: F \Rightarrow G$ 为每个对象 $A \in \mathcal{C}$ 指定一个分量态射 $\alpha_A: F(A) \to G(A)$，使得对任意 $f: A \to B$ 满足**自然性条件**：
 
 $$
 G(f) \circ \alpha_A = \alpha_B \circ F(f)
@@ -129,15 +129,15 @@ F(B) & \xrightarrow{\alpha_B} & G(B)
 \end{array}
 $$
 
-**Def-W-25-11** (自然同构). 若每个 $\alpha_A$ 都是同构，则称 $\alpha$ 为**自然同构**，记作 $F \cong G$。
+**Def-S-98-11** (自然同构). 若每个 $\alpha_A$ 都是同构，则称 $\alpha$ 为**自然同构**，记作 $F \cong G$。
 
-**Def-W-25-12** (函子范畴). 范畴 $[\mathcal{C}, \mathcal{D}]$ 或 $\mathcal{D}^{\mathcal{C}}$ 的对象是函子 $F: \mathcal{C} \to \mathcal{D}$，态射是自然变换。
+**Def-S-98-12** (函子范畴). 范畴 $[\mathcal{C}, \mathcal{D}]$ 或 $\mathcal{D}^{\mathcal{C}}$ 的对象是函子 $F: \mathcal{C} \to \mathcal{D}$，态射是自然变换。
 
 ---
 
 ### 1.5 泛性质 (Universal Properties)
 
-**Def-W-25-13** (泛性质). 给定范畴 $\mathcal{C}$ 和函子 $F: \mathcal{J} \to \mathcal{C}$，泛性质刻画了某种"最优"的构造：
+**Def-S-98-13** (泛性质). 给定范畴 $\mathcal{C}$ 和函子 $F: \mathcal{J} \to \mathcal{C}$，泛性质刻画了某种"最优"的构造：
 
 对象 $U \in \mathcal{C}$ 连同态射族 $(u_j: U \to F(j))_{j \in \mathcal{J}}$ 是**泛锥（universal cone）**，如果对任意其他锥 $(C, (c_j))$，存在唯一的 $f: C \to U$ 使得对所有 $j$：
 
@@ -149,7 +149,7 @@ $$
 
 #### 1.5.1 积 (Product)
 
-**Def-W-25-14** (二元积). 对象 $A$ 和 $B$ 的**积**是对象 $A \times B$ 连同投影态射：
+**Def-S-98-14** (二元积). 对象 $A$ 和 $B$ 的**积**是对象 $A \times B$ 连同投影态射：
 
 $$
 \pi_1: A \times B \to A, \quad \pi_2: A \times B \to B
@@ -174,7 +174,7 @@ $$
 
 #### 1.5.2 余积 (Coproduct)
 
-**Def-W-25-15** (二元余积). 对象 $A$ 和 $B$ 的**余积**是对象 $A + B$（或 $A \sqcup B$）连同内射态射：
+**Def-S-98-15** (二元余积). 对象 $A$ 和 $B$ 的**余积**是对象 $A + B$（或 $A \sqcup B$）连同内射态射：
 
 $$
 i_1: A \to A + B, \quad \iota_2: B \to A + B
@@ -199,7 +199,7 @@ $$
 
 #### 1.5.3 指数对象 (Exponential)
 
-**Def-W-25-16** (指数对象). 对象 $B$ 的"$A$ 次幂"或指数对象是对象 $B^A$（也记作 $A \Rightarrow B$）连同求值态射：
+**Def-S-98-16** (指数对象). 对象 $B$ 的"$A$ 次幂"或指数对象是对象 $B^A$（也记作 $A \Rightarrow B$）连同求值态射：
 
 $$
 \text{eval}: B^A \times A \to B
@@ -224,13 +224,13 @@ $$
 
 ### 1.6 笛卡尔闭范畴 (Cartesian Closed Category, CCC)
 
-**Def-W-25-17** (笛卡尔闭范畴). 范畴 $\mathcal{C}$ 是**笛卡尔闭范畴**（CCC），如果它满足：
+**Def-S-98-17** (笛卡尔闭范畴). 范畴 $\mathcal{C}$ 是**笛卡尔闭范畴**（CCC），如果它满足：
 
 1. **有终对象**：存在对象 $1$ 使得对所有 $A$，存在唯一的 $!_A: A \to 1$
 2. **有二元积**：对任意 $A, B$，积 $A \times B$ 存在
 3. **有指数对象**：对任意 $A, B$，指数对象 $B^A$ 存在
 
-**Lemma-W-25-01** (CCC的基本性质). 在CCC中，以下自然同构成立：
+**Lemma-S-98-01** (CCC的基本性质). 在CCC中，以下自然同构成立：
 
 $$
 \text{Hom}(A \times B, C) \cong \text{Hom}(A, C^B) \cong \text{Hom}(B, C^A)
@@ -244,7 +244,7 @@ $$
 
 ### 2.1 基本范畴例子
 
-**Prop-W-25-01** (常见范畴).
+**Prop-S-98-01** (常见范畴).
 
 | 范畴 | 对象 | 态射 | 说明 |
 |------|------|------|------|
@@ -255,12 +255,12 @@ $$
 | $\mathbf{Pos}$ | 偏序集 | 单调函数 | 序范畴 |
 | $\mathbf{Cat}$ | 小范畴 | 函子 | 范畴的范畴 |
 
-**Prop-W-25-02** (预序作为范畴). 预序集 $(P, \leq)$ 可视为范畴，其中：
+**Prop-S-98-02** (预序作为范畴). 预序集 $(P, \leq)$ 可视为范畴，其中：
 - 对象是 $P$ 的元素
 - 存在态射 $p \to q$ 当且仅当 $p \leq q$
 - 至多一个态射（thin category）
 
-**Prop-W-25-03** (幺半群作为范畴). 幺半群 $(M, \cdot, e)$ 可视为只有一个对象 $*$ 的范畴，其中：
+**Prop-S-98-03** (幺半群作为范畴). 幺半群 $(M, \cdot, e)$ 可视为只有一个对象 $*$ 的范畴，其中：
 - 对象：$*$
 - 态射：$m: * \to *$ 对应 $m \in M$
 - 复合：$m \circ n = m \cdot n$
@@ -270,7 +270,7 @@ $$
 
 ### 2.2 特殊态射类型
 
-**Def-W-25-18** (单态射与满态射).
+**Def-S-98-18** (单态射与满态射).
 
 - **单态射** (Monomorphism)：$f: A \to B$ 是单的，如果：
   $$\forall g, h: C \to A: \quad f \circ g = f \circ h \Rightarrow g = h$$
@@ -278,7 +278,7 @@ $$
 - **满态射** (Epimorphism)：$f: A \to B$ 是满的，如果：
   $$\forall g, h: B \to C: \quad g \circ f = h \circ f \Rightarrow g = h$$
 
-**Def-W-25-19** (同构). 态射 $f: A \to B$ 是**同构**，如果存在 $f^{-1}: B \to A$ 使得：
+**Def-S-98-19** (同构). 态射 $f: A \to B$ 是**同构**，如果存在 $f^{-1}: B \to A$ 使得：
 
 $$
 f^{-1} \circ f = \text{id}_A, \quad f \circ f^{-1} = \text{id}_B
@@ -286,13 +286,13 @@ $$
 
 记作 $A \cong B$。
 
-**Lemma-W-25-02**. 同构既是单的也是满的，但反之不成立（除非在$\mathbf{Set}$等良态范畴中）。
+**Lemma-S-98-02**. 同构既是单的也是满的，但反之不成立（除非在$\mathbf{Set}$等良态范畴中）。
 
 ---
 
 ### 2.3 函子的性质
 
-**Def-W-25-20** (函子性质分类).
+**Def-S-98-20** (函子性质分类).
 
 | 性质 | 定义 | 意义 |
 |------|------|------|
@@ -301,13 +301,13 @@ $$
 | **完全忠实** (Fully faithful) | $F_{A,B}$ 双射 | 范畴嵌入 |
 | **本质满** (Essentially surjective) | $\forall D \in \mathcal{D}, \exists C: F(C) \cong D$ | 覆盖对象 |
 
-**Def-W-25-21** (范畴等价). 函子 $F: \mathcal{C} \to \mathcal{D}$ 是**范畴等价**，如果存在函子 $G: \mathcal{D} \to \mathcal{C}$ 使得：
+**Def-S-98-21** (范畴等价). 函子 $F: \mathcal{C} \to \mathcal{D}$ 是**范畴等价**，如果存在函子 $G: \mathcal{D} \to \mathcal{C}$ 使得：
 
 $$
 G \circ F \cong \text{Id}_{\mathcal{C}}, \quad F \circ G \cong \text{Id}_{\mathcal{D}}
 $$
 
-**Prop-W-25-04** (等价的刻画). $F$ 是范畴等价当且仅当 $F$ 是完全忠实的且本质满的。
+**Prop-S-98-04** (等价的刻画). $F$ 是范畴等价当且仅当 $F$ 是完全忠实的且本质满的。
 
 ---
 
@@ -315,7 +315,7 @@ $$
 
 ### 3.1 与λ演算的对应 (Curry-Howard-Lambek)
 
-**Def-W-25-22** (Curry-Howard-Lambek对应). 以下三个领域存在深层同构：
+**Def-S-98-22** (Curry-Howard-Lambek对应). 以下三个领域存在深层同构：
 
 | 逻辑 (Logic) | 类型论 (Type Theory) | 范畴论 (Category Theory) |
 |--------------|----------------------|--------------------------|
@@ -333,7 +333,7 @@ $$
 
 ### 3.2 伴随函子 (Adjunction)
 
-**Def-W-25-23** (伴随). 函子 $F: \mathcal{C} \to \mathcal{D}$ 和 $G: \mathcal{D} \to \mathcal{C}$ 构成**伴随**，记作 $F \dashv G$，如果存在自然同构：
+**Def-S-98-23** (伴随). 函子 $F: \mathcal{C} \to \mathcal{D}$ 和 $G: \mathcal{D} \to \mathcal{C}$ 构成**伴随**，记作 $F \dashv G$，如果存在自然同构：
 
 $$
 \text{Hom}_{\mathcal{D}}(F(C), D) \cong \text{Hom}_{\mathcal{C}}(C, G(D))
@@ -341,7 +341,7 @@ $$
 
 $F$ 称为**左伴随**，$G$ 称为**右伴随**。
 
-**Prop-W-25-05** (伴随与逻辑量词). 在逻辑语义中，伴随对应量词：
+**Prop-S-98-05** (伴随与逻辑量词). 在逻辑语义中，伴随对应量词：
 
 $$
 \exists \dashv \Delta \dashv \forall
@@ -353,7 +353,7 @@ $$
 
 ### 3.3 在类型论中的应用
 
-**Prop-W-25-06** (类型构造子的范畴解释).
+**Prop-S-98-06** (类型构造子的范畴解释).
 
 | 类型构造子 | 范畴结构 | 说明 |
 |------------|----------|------|
@@ -369,7 +369,7 @@ $$
 
 ### 3.4 与序理论的对应
 
-**Prop-W-25-07** (Galois连接作为伴随). 预序间的Galois连接 $(f, g)$：
+**Prop-S-98-07** (Galois连接作为伴随). 预序间的Galois连接 $(f, g)$：
 
 $$
 f(p) \leq q \Leftrightarrow p \leq g(q)
@@ -377,7 +377,7 @@ $$
 
 正是伴随函子在预序（作为范畴）中的特例。
 
-**Prop-W-25-08** (完备格作为范畴). 完备格 $(L, \leq)$ 作为范畴：
+**Prop-S-98-08** (完备格作为范畴). 完备格 $(L, \leq)$ 作为范畴：
 - 始对象：$\bot$（最小元）
 - 终对象：$\top$（最大元）
 - 积：$\wedge$（交/下确界）
@@ -437,7 +437,7 @@ $$
 
 ### 5.1 CCC与简单类型λ演算的等价定理
 
-**Thm-W-25-01** (CCC与λ演算的等价). 笛卡尔闭范畴与简单类型λ演算（带积类型）存在等价关系：
+**Thm-S-98-01** (CCC与λ演算的等价). 笛卡尔闭范畴与简单类型λ演算（带积类型）存在等价关系：
 
 $$
 \mathbf{CCC} \simeq \lambda_{\times,\to}\text{-理论}
@@ -478,7 +478,7 @@ $$
 
 ### 5.2 Yoneda引理
 
-**Thm-W-25-02** (Yoneda引理). 设 $F: \mathcal{C}^{\text{op}} \to \mathbf{Set}$ 是反变函子，$A \in \mathcal{C}$。则存在自然同构：
+**Thm-S-98-02** (Yoneda引理). 设 $F: \mathcal{C}^{\text{op}} \to \mathbf{Set}$ 是反变函子，$A \in \mathcal{C}$。则存在自然同构：
 
 $$
 \text{Nat}(\text{Hom}(-, A), F) \cong F(A)
@@ -508,7 +508,7 @@ $$
 
 ### 5.3 伴随函子与逻辑量词的对应
 
-**Thm-W-25-03** (量词作为伴随). 在一阶逻辑的范畴语义中，量词是伴随函子：
+**Thm-S-98-03** (量词作为伴随). 在一阶逻辑的范畴语义中，量词是伴随函子：
 
 设 $\pi: \mathcal{C}^{\Gamma, x:A} \to \mathcal{C}^{\Gamma}$ 是投影函子（忘记变量 $x$）：
 
@@ -545,7 +545,7 @@ $$
 
 ### 5.4 笛卡尔闭性的验证
 
-**Thm-W-25-04** ($\mathbf{Set}$ 是CCC). 集合范畴是笛卡尔闭范畴。
+**Thm-S-98-04** ($\mathbf{Set}$ 是CCC). 集合范畴是笛卡尔闭范畴。
 
 *证明*：
 
@@ -644,10 +644,10 @@ uncurry' f (x, y) = f x y
 ```mermaid
 graph LR
     subgraph 范畴 C
-        A[对象 A]
-        B[对象 B]
-        C[对象 C]
-        D[对象 D]
+        A["对象 A"]
+        B["对象 B"]
+        C["对象 C"]
+        D["对象 D"]
         
         A -->|f: A→B| B
         B -->|g: B→C| C
@@ -665,8 +665,8 @@ graph LR
 ```mermaid
 graph TB
     subgraph 范畴 C
-        A1[对象 A]
-        B1[对象 B]
+        A1["对象 A"]
+        B1["对象 B"]
         A1 -->|f| B1
     end
     
@@ -709,10 +709,10 @@ graph TB
 
 ```mermaid
 graph TD
-    C[任意对象 C]
+    C["任意对象 C"]
     AB[A × B]
-    A[对象 A]
-    B[对象 B]
+    A["对象 A"]
+    B["对象 B"]
     
     C -->|<f,g>| AB
     C -->|f| A
@@ -727,9 +727,9 @@ graph TD
 
 ```mermaid
 graph LR
-    L[逻辑<br/>Logic]
-    T[类型论<br/>Type Theory]
-    C[范畴论<br/>Category Theory]
+    L["逻辑<br/>Logic"]
+    T["类型论<br/>Type Theory"]
+    C["范畴论<br/>Category Theory"]
     
     L -->|Curry-Howard| T
     T -->|Lambek| C
@@ -744,13 +744,13 @@ graph LR
 
 ```mermaid
 graph TD
-    CCC[笛卡尔闭范畴 CCC]
-    T[终对象 1]
-    P[二元积 ×]
-    E[指数对象 ^]
+    CCC["笛卡尔闭范畴 CCC"]
+    T["终对象 1"]
+    P["二元积 ×"]
+    E["指数对象 ^"]
     
-    A[对象 A]
-    B[对象 B]
+    A["对象 A"]
+    B["对象 B"]
     AB[A × B]
     BA[B^A]
     
@@ -832,7 +832,7 @@ graph TB
 ### 8.6 应用表征
 
 - **数学**：代数拓扑、代数几何、同调代数
-- **计算机科学**：编程语言语义、类型理论、函数式编程
+- **计算机科学**：编程语言语义、类型论、函数式编程
 - **逻辑**：范畴逻辑、线性逻辑
 - **物理**：拓扑量子场论
 
@@ -881,3 +881,4 @@ graph TB
 - [Lambda Calculus](23-lambda-calculus.md)
 - [Logic Foundations](formal-methods/01-foundations/03-logic-foundations.md)
 - [Domain Theory](formal-methods/01-foundations/04-domain-theory.md)
+

@@ -1,4 +1,4 @@
-# 逻辑基础 (Logic Foundations)
+﻿# 逻辑基础 (Logic Foundations)
 
 > **所属单元**: 01-foundations | **前置依赖**: 无 | **形式化等级**: L1-L3
 
@@ -105,6 +105,8 @@ $$\{P\} C \{Q\} \text{ 有效} \Leftrightarrow P \Rightarrow wp(C, Q)$$
 
 ### 3.1 逻辑与计算模型的对应
 
+**扩展阅读**: [抽象解释理论](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md) - 程序静态分析的形式化基础
+
 | 计算模型 | 验证逻辑 | 典型性质 |
 |----------|----------|----------|
 | 顺序程序 | 霍尔逻辑 | 部分正确性 |
@@ -156,9 +158,9 @@ $$\{x \mapsto \_ * y \mapsto \_\} x := 5 \{x \mapsto 5 * y \mapsto \_\}$$
 
 ## 5. 形式证明 / 工程论证
 
-### 5.1 LTL模型检验复杂度
+### 5.1 LTL模型检测复杂度
 
-**Thm-F-03-01: LTL模型检验复杂度**
+**Thm-F-03-01: LTL模型检测复杂度**
 
 对有限状态系统 $M$ 和 LTL 公式 $\phi$：
 $$M \models \phi \text{ 可在 } O(|M| \cdot 2^{|\phi|}) \text{ 时间内判定}$$

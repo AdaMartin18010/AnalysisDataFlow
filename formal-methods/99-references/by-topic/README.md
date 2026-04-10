@@ -14,7 +14,7 @@
 |-----|------|---------|
 | [model-checking.md](./model-checking.md) | 模型检测 | 算法、工具、会议、教材 |
 | [theorem-proving.md](./theorem-proving.md) | 定理证明 | 证明助手、里程碑项目 |
-| [process-algebra.md](./process-algebra.md) | 进程代数 | CSP/CCS/π演算 |
+| [process-algebra.md](./process-algebra.md) | 进程演算 | CSP/CCS/π演算 |
 | [distributed-systems.md](./distributed-systems.md) | 分布式系统 | 一致性、共识、形式化 |
 
 ---
@@ -25,7 +25,7 @@
 
 - **模型检测**: 关注自动验证、状态空间探索、反例生成
 - **定理证明**: 关注严格数学证明、无限状态系统、证明助手
-- **进程代数**: 关注并发理论、进程组合、行为等价
+- **进程演算**: 关注并发理论、进程组合、行为等价
 - **分布式系统**: 关注一致性、容错、分布式算法
 
 ### 交叉引用
@@ -34,7 +34,7 @@
 
 ```mermaid
 graph TB
-    PA[进程代数] --> DS[分布式系统]
+    PA[进程演算] --> DS[分布式系统]
     PA --> TP[定理证明]
     MC[模型检测] --> DS
     MC --> PA
@@ -50,7 +50,7 @@ graph TB
 
 - [ ] 时序逻辑与规格语言
 - [ ] SMT求解与约束求解
-- [ ] 类型理论
+- [ ] 类型论
 - [ ] 程序分析与抽象解释
 - [ ] 概率与随机系统
 - [ ] 实时与嵌入式系统

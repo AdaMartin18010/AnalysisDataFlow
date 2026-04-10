@@ -1,4 +1,4 @@
-# 类型理论基础 (Type Theory Foundations)
+# 类型论基础 (Type Theory Foundations)
 
 > **所属单元**: 01-foundations | **前置依赖**: 04-domain-theory.md | **形式化等级**: L2-L4
 
@@ -759,7 +759,7 @@ System F 的语义需要**索引范畴**或**多范畴 (multicategory)**。
 | 类型族 | 纤维化 (Fibration) |
 | 恒等类型 $x =_A y$ | 路径对象 / 对角映射 |
 
-### 3.2 类型理论与形式化验证
+### 3.2 类型论与形式化验证
 
 | 类型系统 | 验证能力 | 工具代表 |
 |----------|---------|----------|

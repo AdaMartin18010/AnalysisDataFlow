@@ -51,6 +51,7 @@ $$\mathcal{DS} = (N, P, \mathcal{C}, \mathcal{M}, \Delta, \mathcal{T}, \mathcal{
 $$\forall r \in \mathbb{N}, \exists \Delta_{max} \in \mathbb{R}^+: \text{MessageDelay}(r) \leq \Delta_{max}$$
 
 **关键特征**：
+
 - 全局时钟或轮次计数器
 - 消息延迟有确定上界 $\Delta_{max}$
 - 所有进程在轮次边界同步执行
@@ -65,6 +66,7 @@ $$\forall r \in \mathbb{N}, \exists \Delta_{max} \in \mathbb{R}^+: \text{Message
 $$\forall m \in \mathcal{M}: \text{MessageDelay}(m) \in [0, +\infty)$$
 
 **关键特征**：
+
 - 无全局时钟，仅有局部时钟
 - 消息延迟**无上界**（但有限）
 - 事件通过 Happens-Before 关系 ($\prec$) 部分排序
@@ -94,17 +96,17 @@ graph TB
         PSYNC[部分同步<br/>Partially Synchronous<br/>最终有界]
         ASYNC[异步网络<br/>Asynchronous<br/>延迟无界]
     end
-    
+
     subgraph "算法能力"
         A1[确定性共识<br/>n > 3f]
         A2[概率终止<br/>PBFT/Tendermint]
         A3[随机化共识<br/>Ben-Or/Rabin]
     end
-    
+
     SYNC -->|最强假设| A1
     PSYNC -->|实用折中| A2
     ASYNC -->|最弱假设| A3
-    
+
     style SYNC fill:#90EE90
     style PSYNC fill:#FFD700
     style ASYNC fill:#FFB6C1
@@ -119,11 +121,13 @@ graph TB
 $$\text{send}(p_i, p_j, m) \circ \text{receive}(p_j, p_i, m')$$
 
 **通信原语**：
+
 - **异步发送**：`send(msg, dest)` 非阻塞
 - **同步发送**：发送者阻塞直到确认
 - **接收**：`receive(source)` 阻塞或带超时
 
 **`Lemma-DC-03` [消息传递基本约束]**: 在消息传递模型中：
+
 - 本地计算比通信快数个数量级
 - 消息可能丢失、延迟、重复或乱序
 - 无共享状态，所有同步显式
@@ -147,6 +151,7 @@ $$\text{read}(p_i, addr) / \text{write}(p_i, addr, value)$$
 **`Thm-DC-01` [消息传递与共享内存等价性]**: 在具有足够同步原语的情况下，消息传递系统和共享内存系统在计算能力上是等价的。
 
 *证明概要*：
+
 1. **共享内存 → 消息传递**：通过复制状态+共识协议模拟共享变量
 2. **消息传递 → 共享内存**：将消息缓冲映射为共享队列
 
@@ -161,7 +166,7 @@ $$\text{read}(p_i, addr) / \text{write}(p_i, addr, value)$$
 | **Timing** | 响应时间 $\notin [\delta, \Delta]$ | $n > 2f$ |
 | **Byzantine** | 任意行为，包括恶意 | $n > 3f$ |
 
-**`Lemma-DC-04` [故障模型层次包含]**: 
+**`Lemma-DC-04` [故障模型层次包含]**:
 
 $$\text{Fail-Stop} \subset \text{Omission} \subset \text{Timing} \subset \text{Byzantine}$$
 
@@ -173,23 +178,23 @@ graph TB
         TM[Timing<br/>时序故障<br/>早/晚/无界]
         BYZ[Byzantine<br/>任意行为<br/>最通用]
     end
-    
+
     FS -->|包含于| OM
     OM -->|包含于| TM
     TM -->|包含于| BYZ
-    
+
     subgraph "典型应用"
         APP1[主从复制]
         APP2[TCP协议]
         APP3[实时系统]
         APP4[区块链/PBFT]
     end
-    
+
     FS -.-> APP1
     OM -.-> APP2
     TM -.-> APP3
     BYZ -.-> APP4
-    
+
     style FS fill:#90EE90
     style OM fill:#87CEEB
     style TM fill:#FFD700
@@ -202,7 +207,7 @@ graph TB
 
 ### 3.1 时间复杂性
 
-**`Def-DC-08` [时间复杂度度量]**: 
+**`Def-DC-08` [时间复杂度度量]**:
 
 | 度量类型 | 定义 | 符号 |
 |----------|------|------|
@@ -230,7 +235,7 @@ $$T_{async}(\mathcal{A}) = \max_{\text{执行 } \sigma} \sum_{i} \delta_i$$
 
 ### 3.3 通信复杂性
 
-**`Def-DC-10` [通信复杂度]**: 
+**`Def-DC-10` [通信复杂度]**:
 
 **消息复杂度**（Message Complexity）：
 
@@ -240,7 +245,7 @@ $$MC(\mathcal{A}) = \max_{\text{执行 } \sigma} \sum_{i=1}^{|\sigma|} |\text{me
 
 $$BC(\mathcal{A}) = \max_{\text{执行 } \sigma} \sum_{m \in \sigma} |m|$$
 
-**`Thm-DC-02` [分布式算法复杂度下界]**: 
+**`Thm-DC-02` [分布式算法复杂度下界]**:
 
 | 问题 | 时间下界 | 消息下界 | 备注 |
 |------|---------|---------|------|
@@ -255,7 +260,7 @@ $$BC(\mathcal{A}) = \max_{\text{执行 } \sigma} \sum_{m \in \sigma} |m|$$
 
 ### 4.1 核心差异对比
 
-**`Prop-DC-01` [分布式 vs 并行计算]**: 
+**`Prop-DC-01` [分布式 vs 并行计算]**:
 
 | 维度 | 分布式计算 (Distributed) | 并行计算 (Parallel) |
 |------|------------------------|-------------------|
@@ -287,7 +292,7 @@ $$\text{Parallel}(S) \iff \begin{cases}
 
 ### 4.3 交集：分布式并行计算
 
-**`Def-DC-13` [分布式并行系统]**: 
+**`Def-DC-13` [分布式并行系统]**:
 
 $$\text{Distributed-Parallel}(S) = \text{Distributed}(S) \cap \text{Parallel}(S)$$
 
@@ -300,34 +305,34 @@ $$\text{Distributed-Parallel}(S) = \text{Distributed}(S) \cap \text{Parallel}(S)
 graph TB
     subgraph "计算系统分类"
         direction TB
-        
+
         CS[计算系统]
-        
+
         DC[分布式计算<br/>多自治节点<br/>消息传递]
         PC[并行计算<br/>紧耦合核心<br/>共享内存]
-        
+
         DPC[分布式并行<br/>MapReduce<br/>Spark/MPI]
-        
+
         SC[串行计算]
-        
+
         CS --> DC
         CS --> PC
         CS --> SC
-        
+
         DC --> DPC
         PC --> DPC
     end
-    
+
     subgraph "典型实例"
         DC_EX[互联网<br/>区块链<br/>云计算]
         PC_EX[GPU计算<br/>多核CPU<br/>SIMD]
         DPC_EX[大数据处理<br/>科学计算集群]
     end
-    
+
     DC -.-> DC_EX
     PC -.-> PC_EX
     DPC -.-> DPC_EX
-    
+
     style DC fill:#87CEEB
     style PC fill:#90EE90
     style DPC fill:#FFD700
@@ -362,27 +367,27 @@ graph TB
         C[一致性<br/>Consistency]
         A[可用性<br/>Availability]
         P[分区容忍<br/>Partition Tolerance]
-    
+
         C --- A
         A --- P
         P --- C
     end
-    
+
     subgraph "系统选择"
         CA[CA系统<br/>传统数据库<br/>放弃分区容忍]
         CP[CP系统<br/>HBase/MongoDB<br/>放弃可用性]
         AP[AP系统<br/>Cassandra/Dynamo<br/>放弃一致性]
     end
-    
+
     C -.-> CA
     A -.-> CA
-    
+
     C -.-> CP
     P -.-> CP
-    
+
     A -.-> AP
     P -.-> AP
-    
+
     style C fill:#ffcccc
     style A fill:#ccffcc
     style P fill:#ccccff
@@ -456,23 +461,23 @@ timeline
 
 ### 6.1 形式化验证需求
 
-**`Prop-DC-02` [分布式系统验证挑战]**: 
+**`Prop-DC-02` [分布式系统验证挑战]**:
 
 | 挑战 | 原因 | 形式化方法应对 |
 |------|------|--------------|
 | 状态空间爆炸 | $n$ 进程 $\times$ $m$ 状态 | 抽象、对称性约减 |
 | 非确定性 | 消息延迟、交错 | 模型检测、时序逻辑 |
-| 并发性 | 交互复杂 | 进程代数、I/O自动机 |
+| 并发性 | 交互复杂 | 进程演算、I/O自动机 |
 | 容错性 | 故障场景组合 | 故障模型规约 |
 
 ### 6.2 形式化方法应用
 
-**`Def-DC-17` [形式化验证技术]**: 
+**`Def-DC-17` [形式化验证技术]**:
 
 | 技术 | 适用场景 | 代表工具 |
 |------|---------|---------|
 | **TLA+** | 规约与模型检测 | TLC, TLAPS |
-| **进程代数** | 协议验证 | CSP, CCS, π-演算 |
+| **进程演算** | 协议验证 | CSP, CCS, π-演算 |
 | **I/O自动机** | 算法正确性 | IOA Toolkit |
 | **定理证明** | 安全关键系统 | Coq, Isabelle/HOL |
 | **模型检测** | 有限状态验证 | SPIN, UPPAAL |
@@ -497,26 +502,26 @@ timeline
 graph TB
     subgraph "形式化方法在分布式系统中的应用"
         DS[分布式系统]
-        
+
         SPEC[形式化规约<br/>TLA+/Z/VDM]
-        MODEL[模型抽象<br/>状态机/进程代数]
+        MODEL[模型抽象<br/>状态机/进程演算]
         VERIFY[验证技术<br/>模型检测/定理证明]
         IMPL[实现导出<br/>精化/代码生成]
-        
+
         DS --> SPEC
         SPEC --> MODEL
         MODEL --> VERIFY
         VERIFY --> IMPL
-        
+
         DS -.->|验证| VERIFY
     end
-    
+
     subgraph "成功案例"
         CASE1[Paxos 验证<br/>TLA+]
         CASE2[Raft 验证<br/>Coq/Verdi]
         CASE3[Chubby 验证<br/>形式化规约]
     end
-    
+
     VERIFY -.-> CASE1
     VERIFY -.-> CASE2
     VERIFY -.-> CASE3
@@ -580,16 +585,16 @@ mindmap
 graph TB
     subgraph "分布式系统层次架构"
         APP[应用层<br/>分布式数据库<br/>文件系统]
-        
+
         MIDDLE[中间件层<br/>消息队列<br/>RPC框架]
-        
+
         ALG[算法层<br/>共识协议<br/>选举算法<br/>时钟同步]
-        
+
         COMM[通信层<br/>可靠传输<br/>组通信<br/>多播]
-        
+
         NET[网络层<br/>拓扑抽象<br/>路由<br/>流量控制]
     end
-    
+
     APP --> MIDDLE
     MIDDLE --> ALG
     ALG --> COMM
@@ -615,14 +620,14 @@ graph TB
 graph LR
     subgraph "时间模型对比"
         SYNC_T[同步时间<br/>全局时钟<br/>轮次驱动]
-        
+
         ASYNC_T[异步时间<br/>Happens-Before<br/>偏序关系]
-        
+
         VC[向量时钟<br/>VC[p] = [t1,t2,...]]
-        
+
         LC[逻辑时钟<br/>Lamport时间戳]
     end
-    
+
     SYNC_T -.->|实现| LC
     ASYNC_T -.->|实现| VC
 ```
@@ -683,11 +688,31 @@ timeline
 
 ---
 
-## 8. 引用参考 (References)
+## 8. 关系建立 (Relations)
+
+### 与故障模型的关系
+
+分布式计算与故障模型密切相关。故障模型定义了分布式系统中组件可能失效的行为模式，是分布式系统设计和分析的基础。
+
+- 详见：[故障模型](../03-model-taxonomy/01-system-models/02-failure-models.md)
+
+分布式系统中的主要故障模型包括：
+- **Fail-Stop**: 进程崩溃且可被检测
+- **Omission**: 消息遗漏（发送或接收）
+- **Timing**: 时序违规
+- **Byzantine**: 任意行为（最通用）
+
+故障模型的选择直接影响分布式算法的复杂度和容错能力：
+- 容忍 $f$ 个 Fail-Stop 故障需要 $n \geq f + 1$ 个节点
+- 容忍 $f$ 个 Byzantine 故障需要 $n \geq 3f + 1$ 个节点
+
+---
+
+## 9. 引用参考 (References)
 
 ### 经典教材
 
-[^1]: N. A. Lynch, *Distributed Algorithms*. Morgan Kaufmann, 1996. 
+[^1]: N. A. Lynch, *Distributed Algorithms*. Morgan Kaufmann, 1996.
 > 分布式算法领域的权威教材，系统阐述了同步/异步网络、共识算法、时钟同步等核心理论。
 
 [^2]: H. Attiya and J. Welch, *Distributed Computing: Fundamentals, Simulations, and Advanced Topics*, 2nd ed. Wiley, 2004.

@@ -1,4 +1,4 @@
-# Event-B 精化方法
+﻿# Event-B 精化方法
 
 > **所属单元**: Verification/Logic | **前置依赖**: [TLA+ 时序逻辑](./01-tla-plus.md) | **形式化等级**: L5
 
@@ -249,7 +249,7 @@ graph TB
     subgraph 验证阶段
         POGen[生成POs]
         Prover[证明器]
-        ModelCheck[模型检验]
+        ModelCheck[模型检测]
     end
 
     subgraph 输出

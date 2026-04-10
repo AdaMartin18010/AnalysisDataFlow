@@ -1,7 +1,7 @@
 # 可串行化 (Serializability)
 
 > **所属阶段**: Struct | **前置依赖**: [事务理论基础](01-transaction-theory.md), [并发控制原理](02-concurrency-control.md) | **形式化等级**: L5
-> 
+>
 > **标签**: #可串行化 #并发控制 #事务隔离 #冲突可串行化 #视图可串行化 #两阶段锁 #SSI
 
 ## 1. 概念定义 (Definitions)
@@ -41,12 +41,14 @@ $$S = \langle op_1, op_2, \ldots, op_m \rangle$$
 **调度示例**:
 
 考虑两个事务：
+
 ```
 T1: r1[x] w1[x] r1[y] w1[y] c1
 T2: r2[x] w2[x] r2[y] w2[y] c2
 ```
 
 一个可能的并发调度：
+
 ```
 S: r1[x] r2[x] w1[x] w2[x] r1[y] w1[y] c1 r2[y] w2[y] c2
 ```
@@ -159,7 +161,7 @@ $$\text{CSR} \subseteq \text{VSR}$$
 - **边集** $E$: 若存在 $op_i \in T_i$ 和 $op_j \in T_j$ 满足：
   1. $op_i$ 和 $op_j$ 是冲突操作
   2. 在 $S$ 中 $op_i <_S op_j$
-  
+
   则存在有向边 $T_i \rightarrow T_j$
 
 **冲突图构建示例**:
@@ -283,6 +285,7 @@ T2: r2[x](50) r2[y](50) 检查通过        w2[y] = -40
 3. **锁点** (Lock Point): 事务获得最后一个锁的时刻，是加锁阶段和解锁阶段的分界点
 
 锁类型：
+
 - **共享锁** (S-Lock/Read Lock): 用于读操作，可共存
 - **排他锁** (X-Lock/Write Lock): 用于写操作，独占
 
@@ -333,20 +336,22 @@ T2: r2[x](50) r2[y](50) 检查通过        w2[y] = -40
 
 **证明概要**:
 
-**NP成员资格**: 
+**NP成员资格**:
 
 给定一个候选串行调度，可以在多项式时间内验证其是否与原始调度视图等价（检查初始读、写读、最终写三个条件）。
 
-**NP困难性**: 
+**NP困难性**:
 
 通过从 **有向图无环划分问题**（Directed Graph Acyclic Partitioning）或 **布尔可满足性问题** 归约证明。
 
 经典归约构造（来自 Papadimitriou [^2]）：
 
 给定一个布尔公式 $\phi$，构造一个调度 $S_\phi$ 使得：
+
 - $S_\phi$ 是视图可串行化的 ⟺ $\phi$ 是可满足的
 
 具体构造涉及：
+
 1. 为每个布尔变量创建事务对
 2. 为每个子句创建事务
 3. 设计读写操作使得冲突模式编码布尔约束
@@ -408,7 +413,7 @@ r1[x] r2[x] w1[x] w2[x]
 
 冲突分析:
 - r1[x] 和 w2[x]: R-W冲突，无顺序要求
-- r2[x] 和 w1[x]: R-W冲突，无顺序要求  
+- r2[x] 和 w1[x]: R-W冲突，无顺序要求
 - w1[x] 和 w2[x]: W-W冲突，需要顺序
 
 若 w1[x] < w2[x]: T1 → T2
@@ -491,6 +496,7 @@ function validate(T_i):
 #### Def-S-98-13: 快照隔离（SI）
 
 **快照隔离**提供：
+
 - 事务读取的是事务开始时刻的数据库快照
 - 事务的写入仅对本地可见直到提交
 - **First-Committer-Wins**规则：若两个并发事务写入同一数据项，先提交者成功，后提交者中止
@@ -543,13 +549,13 @@ graph TD
     A[可串行化实现] --> B[悲观控制]
     A --> C[乐观控制]
     A --> D[多版本控制]
-    
+
     B --> B1[2PL]
     B --> B2[Tree Protocol]
-    
+
     C --> C1[OCC]
     C --> C2[BOCC/FOCC]
-    
+
     D --> D1[MVCC]
     D --> D2[SSI]
 ```
@@ -601,7 +607,7 @@ graph LR
     A[分布式可串行化] --> B[2PC + 2PL]
     A --> C[分布式SSI]
     A --> D[确定性数据库]
-    
+
     B --> B1[全局死锁检测]
     C --> C1[时钟同步依赖]
     D --> D1[执行顺序预先确定]
@@ -628,14 +634,14 @@ graph LR
 graph TB
     subgraph "可串行化层次结构"
     direction TB
-    
+
     A[所有调度] --> B[结果可串行化<br/>Result Serializable]
     B --> C[视图可串行化<br/>View Serializable]
     C --> D[冲突可串行化<br/>Conflict Serializable]
     D --> E[串行调度<br/>Serial Schedule]
-    
+
     end
-    
+
     style A fill:#ffcccc
     style B fill:#ffffcc
     style C fill:#ccffcc
@@ -653,7 +659,7 @@ flowchart TD
     D -->|有环| E[不可冲突串行化]
     D -->|无环| F[可冲突串行化]
     F --> G[拓扑排序得到<br/>等价串行顺序]
-    
+
     style E fill:#ffcccc
     style F fill:#ccffcc
 ```
@@ -668,7 +674,7 @@ flowchart TD
     D -->|低| E[乐观控制<br/>OCC]
     D -->|高| F[悲观控制<br/>2PL]
     B -->|< 10%| F
-    
+
     C --> G{需要可串行化?}
     G -->|是| H[SSI]
     G -->|否| I[基本SI]
@@ -679,29 +685,56 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> Growing: 事务开始
-    
+
     Growing --> Growing: 获取锁
     Growing --> Shrinking: 锁点<br/>(第一个解锁操作)
-    
+
     Shrinking --> Shrinking: 释放锁
     Shrinking --> Committed: 提交
     Shrinking --> Aborted: 中止
-    
+
     Committed --> [*]
     Aborted --> [*]
 ```
 
 ---
 
-## 10. 引用参考 (References)
+## 10. 关系建立 (Relations)
+
+### 与工作流形式化的关系
+
+可串行化（Serializability）与工作流形式化在并发控制和执行正确性方面有深入联系。工作流系统中的事务执行需要保证一致性，而可串行化提供了事务调度的理论基础。
+
+- 详见：[工作流系统形式化目标与技术栈](../../../04-application-layer/01-workflow/01-workflow-formalization.md)
+
+可串行化与工作流形式化的关联：
+
+- **事务隔离**: 工作流中的活动执行可视为事务，需要隔离保证
+- **调度正确性**: 工作流的并发执行需要可串行化保证
+- **冲突检测**: 工作流活动间的数据依赖可通过冲突可串行化分析
+
+### 可串行化在工作流中的应用
+
+| 工作流特性 | 可串行化对应概念 |
+|-----------|----------------|
+| 活动并发执行 | 事务并发调度 |
+| 数据依赖 | 冲突操作对 |
+| 执行顺序 | 串行化顺序 |
+| 正确性验证 | 冲突图无环性检测 |
+
+---
+
+## 11. 引用参考 (References)
 
 ### 核心教材
 
 [^1]: **Wikipedia - Serializability**
-    - https://en.wikipedia.org/wiki/Serializability
+
+    - <https://en.wikipedia.org/wiki/Serializability>
     - 标准定义与基础概念概述
 
 [^2]: **Bernstein, P.A., Hadzilacos, V., & Goodman, N. (1987)**
+
     - *Concurrency Control and Recovery in Database Systems*
     - Addison-Wesley, Reading, MA
     - 数据库并发控制领域的经典教材，系统介绍了可串行化理论、2PL、OCC等
@@ -709,41 +742,42 @@ stateDiagram-v2
 ### 学术论文
 
 [^3]: **Cahill, M.J., Röhm, U., & Fekete, A.D. (2009)**
+
     - "Serializable Isolation for Snapshot Databases"
     - *ACM Transactions on Database Systems*, 34(4), 1-42
     - 首次提出可串行化快照隔离（SSI）算法
 
-[^4]: **Adya, A. (1999)**
+
     - *Weak Consistency: A Generalized Theory and Optimistic Implementations for Distributed Transactions*
     - Ph.D. Thesis, MIT
     - 提出了基于依赖图的事务一致性层次结构，定义了PL-1、PL-2、PL-3等隔离级别
 
-[^5]: **Papadimitriou, C.H. (1979)**
+
     - "The Serializability of Concurrent Database Updates"
     - *Journal of the ACM*, 26(4), 631-653
     - 证明了视图可串行化判定的NP完全性
 
-[^6]: **Kung, H.T., & Robinson, J.T. (1981)**
+
     - "On Optimistic Methods for Concurrency Control"
     - *ACM Transactions on Database Systems*, 6(2), 213-226
     - 乐观并发控制的开创性论文
 
-[^7]: **Eswaran, K.P., Gray, J.N., Lorie, R.A., & Traiger, I.L. (1976)**
+
     - "The Notions of Consistency and Predicate Locks in a Database System"
     - *Communications of the ACM*, 19(11), 624-633
     - 两阶段锁协议的原始论文
 
-[^8]: **Herlihy, M.P., & Wing, J.M. (1990)**
+
     - "Linearizability: A Correctness Condition for Concurrent Objects"
     - *ACM Transactions on Programming Languages and Systems*, 12(3), 463-492
     - Linearizability的奠基性论文
 
-[^9]: **Gray, J., & Reuter, A. (1993)**
+
     - *Transaction Processing: Concepts and Techniques*
     - Morgan Kaufmann
     - 事务处理领域的权威参考书籍
 
-[^10]: **Weikum, G., & Vossen, G. (2002)**
+
     - *Transactional Information Systems: Theory, Algorithms, and the Practice of Concurrency Control and Recovery*
     - Morgan Kaufmann
     - 现代事务处理系统的综合参考
