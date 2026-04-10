@@ -1,0 +1,17 @@
+name = "FormalMethods"
+version = "0.1.0"
+defaultTargets = ["FormalMethods"]
+
+[[lean_lib]]
+name = "FormalMethods"
+
+[[lean_exe]]
+name = "formalmethods"
+root = "Main"
+
+[dependencies]
+std = { git = "https://github.com/leanprover/std4", rev = "v4.8.0" }
+mathlib = { git = "https://github.com/leanprover-community/mathlib4", rev = "v4.8.0" }
+
+[build]
+target = "all"
