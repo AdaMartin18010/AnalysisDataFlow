@@ -25,6 +25,9 @@ import FormalMethods.Lambda.Reduction
 import FormalMethods.TypeSystem.SimpleTypes
 import FormalMethods.TypeSystem.Safety
 
--- 其他形式化模块
+-- 逻辑模块
 import FormalMethods.Logic
+import FormalMethods.Logic.Predicate
+
+-- 其他形式化模块
 import FormalMethods.Concurrent

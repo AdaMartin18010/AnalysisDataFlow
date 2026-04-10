@@ -97,6 +97,42 @@ $$\text{Output}(e) \text{ committed } \Rightarrow \text{ never lost }$$
 **结果唯一性**:
 $$\text{Output}(e) \text{ committed } \Rightarrow \text{ never re-emitted }$$
 
+### Def-A-02-11: Flink 执行图 (Execution Graph)
+
+Flink 程序的执行图是一个有向无环图 $\mathcal{G} = (V, E)$：
+
+- $V = \{v_1, v_2, ..., v_n\}$: 任务顶点集合，每个顶点对应一个操作符实例
+- $E \subseteq V \times V$: 执行边，表示数据流通道
+- 并行度：每个顶点 $v$ 有并行度 $p(v) \in \mathbb{N}^+$
+- 分区策略：边 $e = (u, v)$ 关联分区函数 $\pi_e: K \to \{0, 1, ..., p(v)-1\}$
+
+### Def-A-02-12: State Backend 形式化
+
+State Backend 是一个存储系统接口 $\mathcal{B} = (S, \text{store}, \text{load}, \text{snapshot})$：
+
+- $S$: 状态值空间
+- $\text{store}: S \times K \to \text{Unit}$: 存储键控状态
+- $\text{load}: K \to S$: 加载键控状态
+- $\text{snapshot}: () \to \text{Snapshot}$: 创建一致性快照
+
+**三种后端类型**：
+
+- MemoryStateBackend: $S \subseteq \text{Heap}$, 受限于JVM内存
+- FsStateBackend: $S \subseteq \text{FileSystem}$, 异步快照
+- RocksDBStateBackend: $S \subseteq \text{RocksDB}$, 增量检查点
+
+### Def-A-02-13: 反压机制 (Backpressure)
+
+反压是流量控制机制，形式化为生产者-消费者速率约束：
+
+$$\forall (u, v) \in E: \text{rate}(u) > \text{rate}(v) \Rightarrow \text{throttle}(u) \text{ activated }$$
+
+**Credit-based 流控制**：
+
+- 每个输入通道维护可用缓冲区信用 $c \in \mathbb{N}$
+- 生产者仅当 $c > 0$ 时发送数据
+- 消费者处理完成后返还信用
+
 ## 2. 属性推导 (Properties)
 
 ### Lemma-A-02-04: 检查点一致性

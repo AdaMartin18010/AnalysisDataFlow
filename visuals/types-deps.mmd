@@ -1,0 +1,120 @@
+graph TB
+    %% Types主题依赖图
+    %% 生成时间: 2026-04-10T21:36:38.062976
+
+    subgraph DefGroup[定义 (39)]
+        Def-S-02-04["Def-S-02-04<br/>二进制会话类型"]
+        Def-S-11-02["Def-S-11-02<br/>Featherweight Go语法"]
+        Def-S-11-03["Def-S-11-03<br/>Generic Go语法"]
+        Def-S-11-04["Def-S-11-04<br/>DOT路径依赖类型"]
+        Def-S-21-02["Def-S-21-02<br/>FGG泛型扩展"]
+        Def-S-22-02["Def-S-22-02<br/>路径与路径类型"]
+        Def-S-22-03["Def-S-22-03<br/>名义类型与结构类型"]
+        Def-S-22-04["Def-S-22-04<br/>类型成员声明"]
+        Def-S-23-02["Def-S-23-02<br/>Global Types"]
+        Def-F-03-35["Def-F-03-35<br/>PTF多态处理"]
+        Def-F-09-34["Def-F-09-34<br/>Scala 3 Type System (DOT extension)"]
+        Def-F-09-35["Def-F-09-35<br/>Path-Dependent Types in Streaming"]
+        Def-F-09-36["Def-F-09-36<br/>Typeclass Derivation"]
+        Def-F-09-37["Def-F-09-37<br/>Opaque Types"]
+        Def-F-09-47["Def-F-09-47<br/>向量数据类型与相似度算子"]
+        Def-F-13-12["Def-F-13-12<br/>Stream<T>类型"]
+        Def-F-13-13["Def-F-13-13<br/>Future<T>类型"]
+        Def-F-09-65["Def-F-09-65<br/>DataStream类型层次"]
+        Def-F-12-109["Def-F-12-109<br/>向量索引类型"]
+        Def-F-15-51["Def-F-15-51<br/>指标类型分类体系"]
+        Def-F-09-01["Def-F-09-01<br/>Flink/09-language-foundations/01.01..."]
+        Def-F-09-02["Def-F-09-02<br/>类型擦除与恢复"]
+        Def-F-09-03["Def-F-09-03<br/>Flink/09-language-foundations/01.01..."]
+        Def-F-09-05["Def-F-09-05<br/>Flink/09-language-foundations/01.02..."]
+        Def-F-09-07["Def-F-09-07<br/>Flink/09-language-foundations/01.02..."]
+        Def-K-01-41["Def-K-01-41<br/>Knowledge/01-concept-atlas/data-str..."]
+        Def-K-01-43["Def-K-01-43<br/>Knowledge/01-concept-atlas/data-str..."]
+        Def-K-01-45["Def-K-01-45<br/>Knowledge/01-concept-atlas/data-str..."]
+        Def-K-01-47["Def-K-01-47<br/>Knowledge/01-concept-atlas/data-str..."]
+        Def-K-01-49["Def-K-01-49<br/>Knowledge/01-concept-atlas/data-str..."]
+        Def-K-06-62["Def-K-06-62<br/>Knowledge/06-frontier/edge-llm-real..."]
+        Def-K-06-64["Def-K-06-64<br/>Knowledge/06-frontier/edge-llm-real..."]
+        Def-S-01-08["Def-S-01-08<br/>Struct/01-foundation/01.07-session-..."]
+        Def-S-01-10["Def-S-01-10<br/>Struct/01-foundation/01.07-session-..."]
+        Def-S-11-05["Def-S-11-05<br/>Struct/02-properties/02.05-type-saf..."]
+        Def-S-22-05["Def-S-22-05<br/>Struct/04-proofs/04.06-dot-subtypin..."]
+        Def-S-26-02["Def-S-26-02<br/>Struct/05-comparative-analysis/05.0..."]
+        Def-S-26-04["Def-S-26-04<br/>Struct/05-comparative-analysis/05.0..."]
+        Def-F-03-105["Def-F-03-105<br/>多态表函数PTF"]
+    end
+
+    subgraph LemmaGroup[引理 (17)]
+        Lemma-S-23-03["Lemma-S-23-03<br/>类型保持性"]
+        Lemma-F-09-17["Lemma-F-09-17<br/>DOT类型保持性"]
+        Lemma-F-09-18["Lemma-F-09-18<br/>路径类型消解引理"]
+        Lemma-F-09-26["Lemma-F-09-26<br/>组件接口类型保持"]
+        Lemma-F-03-08["Lemma-F-03-08<br/>Python-Java互操作类型保持引理"]
+        Lemma-K-01-20["Lemma-K-01-20<br/>Knowledge/01-concept-atlas/data-str..."]
+        Lemma-S-01-04["Lemma-S-01-04<br/>Struct/01-foundation/01.07-session-..."]
+        Lemma-S-01-06["Lemma-S-01-06<br/>Struct/01-foundation/01.07-session-..."]
+        Lemma-S-11-03["Lemma-S-11-03<br/>Struct/02-properties/02.05-type-saf..."]
+        Lemma-S-21-02["Lemma-S-21-02<br/>Struct/04-proofs/04.05-type-safety-..."]
+        Lemma-S-21-04["Lemma-S-21-04<br/>Struct/04-proofs/04.05-type-safety-..."]
+        Lemma-S-21-06["Lemma-S-21-06<br/>Struct/04-proofs/04.05-type-safety-..."]
+        Lemma-S-22-02["Lemma-S-22-02<br/>Struct/04-proofs/04.06-dot-subtypin..."]
+        Lemma-S-22-04["Lemma-S-22-04<br/>Struct/04-proofs/04.06-dot-subtypin..."]
+        Lemma-S-22-06["Lemma-S-22-06<br/>Struct/04-proofs/04.06-dot-subtypin..."]
+        Lemma-S-26-01["Lemma-S-26-01<br/>Struct/05-comparative-analysis/05.0..."]
+        Lemma-F-03-100["Lemma-F-03-100<br/>Flink SQL类型系统兼容性"]
+    end
+
+    subgraph PropGroup[命题 (10)]
+        Prop-F-09-02["Prop-F-09-02<br/>类型安全传递性"]
+        Prop-F-02-70["Prop-F-02-70<br/>State类型选择定理"]
+        Prop-F-03-17["Prop-F-03-17<br/>PTF多态处理复杂度"]
+        Prop-F-09-21["Prop-F-09-21<br/>Flink/09-language-foundations/01.03..."]
+        Prop-F-12-30["Prop-F-12-30<br/>Flink/12-ai-ml/flink-realtime-ml-in..."]
+        Prop-F-12-32["Prop-F-12-32<br/>Flink/12-ai-ml/flink-realtime-ml-in..."]
+        Prop-K-01-20["Prop-K-01-20<br/>Knowledge/01-concept-atlas/data-str..."]
+        Prop-K-01-22["Prop-K-01-22<br/>Knowledge/01-concept-atlas/data-str..."]
+        Prop-K-06-15["Prop-K-06-15<br/>Knowledge/06-frontier/edge-llm-real..."]
+        Prop-K-06-17["Prop-K-06-17<br/>Knowledge/06-frontier/edge-llm-real..."]
+    end
+
+    subgraph ThmGroup[定理 (14)]
+        Thm-S-01-03["Thm-S-01-03<br/>会话类型安全性 (Type Safety)"]
+        Thm-S-01-04["Thm-S-01-04<br/>会话类型无死锁性 (Deadlock Freedom)"]
+        Thm-S-11-01["Thm-S-11-01<br/>类型安全(Progress + Preservation)"]
+        Thm-S-21-01["Thm-S-21-01<br/>FG/FGG类型安全定理"]
+        Thm-S-22-01["Thm-S-22-01<br/>DOT子类型完备性定理"]
+        Thm-F-03-20["Thm-F-03-20<br/>PTF多态处理正确性定理"]
+        Thm-F-03-60["Thm-F-03-60<br/>VECTOR_SEARCH类型安全性定理"]
+        Thm-F-09-11["Thm-F-09-11<br/>Scala 3 Type Safety in Flink"]
+        Thm-F-09-12["Thm-F-09-12<br/>Compile-time Type Preservation"]
+        Thm-F-12-103["Thm-F-12-103<br/>向量搜索类型安全性定理"]
+        Thm-K-01-20["Thm-K-01-20<br/>Knowledge/01-concept-atlas/data-str..."]
+        Thm-S-26-01["Thm-S-26-01<br/>Struct/05-comparative-analysis/05.0..."]
+        Thm-S-23-01["Thm-S-23-01<br/>Choreographic死锁自由定理"]
+        Thm-F-09-16["Thm-F-09-16<br/>WASM Sandbox Isolation"]
+    end
+
+    subgraph CorGroup[推论 (3)]
+        Cor-S-02-01["Cor-S-02-01<br/>良类型会话进程无死锁"]
+        Cor-S-22-01["Cor-S-22-01<br/>Struct/04-proofs/04.06-dot-subtypin..."]
+        Cor-S-29-01["Cor-S-29-01<br/>Struct/06-frontier/06.03-ai-agent-s..."]
+    end
+
+    %% 依赖关系
+    Thm-S-23-01 --> Lemma-S-23-03
+    Thm-F-09-11 --> Lemma-F-09-17
+    Thm-F-09-16 --> Lemma-F-09-26
+
+    %% 样式定义
+    classDef ThmStyle fill:#fff3e0,stroke:#333,stroke-width:1px
+    classDef LemmaStyle fill:#f3e5f5,stroke:#333,stroke-width:1px
+    classDef DefStyle fill:#e1f5fe,stroke:#333,stroke-width:1px
+    classDef PropStyle fill:#e8f5e9,stroke:#333,stroke-width:1px
+    classDef CorStyle fill:#fce4ec,stroke:#333,stroke-width:1px
+
+    %% 应用样式
+    class Thm-S-01-03,Thm-S-01-04,Thm-S-11-01,Thm-S-21-01,Thm-S-22-01,Thm-F-03-20,Thm-F-03-60,Thm-F-09-11,Thm-F-09-12,Thm-F-12-103,Thm-K-01-20,Thm-S-26-01,Thm-S-23-01,Thm-F-09-16 ThmStyle
+    class Def-S-02-04,Def-S-11-02,Def-S-11-03,Def-S-11-04,Def-S-21-02,Def-S-22-02,Def-S-22-03,Def-S-22-04,Def-S-23-02,Def-F-03-35,Def-F-09-34,Def-F-09-35,Def-F-09-36,Def-F-09-37,Def-F-09-47,Def-F-13-12,Def-F-13-13,Def-F-09-65,Def-F-12-109,Def-F-15-51,Def-F-09-01,Def-F-09-02,Def-F-09-03,Def-F-09-05,Def-F-09-07,Def-K-01-41,Def-K-01-43,Def-K-01-45,Def-K-01-47,Def-K-01-49,Def-K-06-62,Def-K-06-64,Def-S-01-08,Def-S-01-10,Def-S-11-05,Def-S-22-05,Def-S-26-02,Def-S-26-04,Def-F-03-105 DefStyle
+    class Lemma-S-23-03,Lemma-F-09-17,Lemma-F-09-18,Lemma-F-09-26,Lemma-F-03-08,Lemma-K-01-20,Lemma-S-01-04,Lemma-S-01-06,Lemma-S-11-03,Lemma-S-21-02,Lemma-S-21-04,Lemma-S-21-06,Lemma-S-22-02,Lemma-S-22-04,Lemma-S-22-06,Lemma-S-26-01,Lemma-F-03-100 LemmaStyle
+    class Prop-F-09-02,Prop-F-02-70,Prop-F-03-17,Prop-F-09-21,Prop-F-12-30,Prop-F-12-32,Prop-K-01-20,Prop-K-01-22,Prop-K-06-15,Prop-K-06-17 PropStyle
+    class Cor-S-02-01,Cor-S-22-01,Cor-S-29-01 CorStyle

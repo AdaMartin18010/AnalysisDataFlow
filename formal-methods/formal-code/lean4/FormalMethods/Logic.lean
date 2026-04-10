@@ -9,10 +9,19 @@ Logic.lean - 逻辑基础
 - 自然演绎系统
 - 命题的等价关系
 - 基本的逻辑定律
+- 谓词逻辑的完整形式化（见 Predicate.lean）
 
 作者: AnalysisDataFlow Project
 日期: 2026-04-10
 -/
+
+-- 导入谓词逻辑模块
+import FormalMethods.Logic.Predicate
+-- 导入模态逻辑模块
+import FormalMethods.Logic.Modal
+
+-- 导入高阶逻辑(HOL)模块
+import FormalMethods.Logic.HOL
 
 namespace FormalMethods.Logic
 

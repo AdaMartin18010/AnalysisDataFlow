@@ -282,4 +282,4 @@ graph TB
     MiniSat --> Counter2
 ```
 
-## 8. 引用参考 (References)
+## 8. 引用参考

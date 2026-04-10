@@ -1,0 +1,116 @@
+graph TB
+    %% Concurrency主题依赖图
+    %% 生成时间: 2026-04-10T21:36:38.063288
+
+    subgraph DefGroup[定义 (37)]
+        Def-S-01-04["Def-S-01-04<br/>Channel"]
+        Def-S-01-07["Def-S-01-07<br/>UCM统一并发模型"]
+        Def-S-02-01["Def-S-02-01<br/>CCS语法与SOS语义"]
+        Def-S-02-02["Def-S-02-02<br/>CSP语法"]
+        Def-S-03-01["Def-S-03-01<br/>经典Actor四元组"]
+        Def-S-03-03["Def-S-03-03<br/>Mailbox"]
+        Def-S-03-04["Def-S-03-04<br/>ActorRef"]
+        Def-S-05-01["Def-S-05-01<br/>CSP核心语法"]
+        Def-S-05-02["Def-S-05-02<br/>CSP结构化操作语义"]
+        Def-S-05-03["Def-S-05-03<br/>CSP迹/失败/发散语义"]
+        Def-S-05-04["Def-S-05-04<br/>CSP通道与同步原语"]
+        Def-S-05-05["Def-S-05-05<br/>Go-CS-sync到CSP编码函数"]
+        Def-S-12-01["Def-S-12-01<br/>Actor配置四元组"]
+        Def-S-12-02["Def-S-12-02<br/>CSP核心语法子集"]
+        Def-S-12-03["Def-S-12-03<br/>Actor→CSP编码函数"]
+        Def-S-12-04["Def-S-12-04<br/>受限Actor系统"]
+        Def-S-13-03["Def-S-13-03<br/>Checkpoint→屏障同步协议"]
+        Def-S-14-02["Def-S-14-02<br/>互模拟等价"]
+        Def-S-15-01["Def-S-15-01<br/>强互模拟"]
+        Def-S-15-02["Def-S-15-02<br/>弱互模拟与分支互模拟"]
+        Def-S-15-03["Def-S-15-03<br/>互模拟游戏"]
+        Def-S-07-15["Def-S-07-15<br/>Trace-规格一致性"]
+        Def-S-19-03["Def-S-19-03<br/>通道状态"]
+        Def-S-23-04["Def-S-23-04<br/>Deadlock Freedom"]
+        Def-F-02-52["Def-F-02-52<br/>并行度适配"]
+        Def-F-02-72["Def-F-02-72<br/>并发度配额管理"]
+        Def-F-03-60["Def-F-03-60<br/>CostFactory"]
+        Def-F-04-71["Def-F-04-71<br/>数据管道同步语义"]
+        Def-K-06-184["Def-K-06-184<br/>预留并发成本函数"]
+        Def-F-03-84b["Def-F-03-84b<br/>实时索引同步"]
+        Def-F-15-06a["Def-F-15-06a<br/>Trace上下文传播"]
+        Def-K-01-05["Def-K-01-05<br/>Knowledge/01-concept-atlas/concurre..."]
+        Def-K-01-07["Def-K-01-07<br/>Knowledge/01-concept-atlas/concurre..."]
+        Def-K-01-09["Def-K-01-09<br/>Knowledge/01-concept-atlas/concurre..."]
+        Def-K-01-11["Def-K-01-11<br/>Knowledge/01-concept-atlas/concurre..."]
+        Def-F-02-115["Def-F-02-115<br/>检查点并行度"]
+        Def-F-12-55["Def-F-12-55<br/>CUDA流与并发"]
+    end
+
+    subgraph LemmaGroup[引理 (14)]
+        Lemma-S-02-01["Lemma-S-02-01<br/>静态通道模型的拓扑不变性"]
+        Lemma-S-03-01["Lemma-S-03-01<br/>邮箱串行处理引理"]
+        Lemma-S-05-02["Lemma-S-05-02<br/>CSP同步并行下迹前缀保持性"]
+        Lemma-S-12-01["Lemma-S-12-01<br/>MAILBOX FIFO不变式"]
+        Lemma-S-12-02["Lemma-S-12-02<br/>Actor进程单线程性"]
+        Lemma-S-15-01["Lemma-S-15-01<br/>强互模拟是等价关系"]
+        Lemma-S-15-02["Lemma-S-15-02<br/>互模拟蕴含迹等价反之不成立"]
+        Lemma-S-19-03["Lemma-S-19-03<br/>通道状态完备性"]
+        Lemma-F-10-30["Lemma-F-10-30<br/>背压与并行度单调关系引理"]
+        Lemma-F-11-05["Lemma-F-11-05<br/>并行度扩展效率边界"]
+        Lemma-K-06-231["Lemma-K-06-231<br/>Task并发与隔离性"]
+        Lemma-S-23-01["Lemma-S-23-01<br/>EPP保持通信结构"]
+        Lemma-S-23-02["Lemma-S-23-02<br/>投影合成还原"]
+        Lemma-S-23-03["Lemma-S-23-03<br/>类型保持性"]
+    end
+
+    subgraph PropGroup[命题 (8)]
+        Prop-S-03-01["Prop-S-03-01<br/>ActorRef不透明性蕴含位置透明"]
+        Prop-S-15-01["Prop-S-15-01<br/>弱互模拟的同余缺陷"]
+        Prop-S-15-02["Prop-S-15-02<br/>分支互模拟保持发散行为"]
+        Prop-S-07-03["Prop-S-07-03<br/>Trace覆盖与Bug发现率关系"]
+        Prop-F-03-07["Prop-F-03-07<br/>多窗口并行执行效率"]
+        Prop-F-04-101["Prop-F-04-101<br/>连接器并行度扩展性"]
+        Prop-K-01-02["Prop-K-01-02<br/>Knowledge/01-concept-atlas/concurre..."]
+        Prop-F-02-51["Prop-F-02-51<br/>并行度与吞吐量最优关系"]
+    end
+
+    subgraph ThmGroup[定理 (15)]
+        Thm-S-03-01["Thm-S-03-01<br/>Actor邮箱串行处理下的局部确定性"]
+        Thm-S-05-01["Thm-S-05-01<br/>Go-CS-sync与CSP编码保持迹语义等价"]
+        Thm-S-06-01["Thm-S-06-01<br/>第一人称Choreographic死锁自由"]
+        Thm-S-10-01["Thm-S-10-01<br/>Actor安全/活性组合性"]
+        Thm-S-12-01["Thm-S-12-01<br/>受限Actor系统编码保持迹语义"]
+        Thm-S-15-01["Thm-S-15-01<br/>互模拟同余定理"]
+        Thm-S-23-01["Thm-S-23-01<br/>Choreographic死锁自由定理"]
+        Thm-S-07-05["Thm-S-07-05<br/>Trace验证搜索优化"]
+        Thm-F-02-51["Thm-F-02-51<br/>异步I/O并发度最优性定理"]
+        Thm-F-02-54["Thm-F-02-54<br/>混合同步异步执行正确性定理"]
+        Thm-F-06-53["Thm-F-06-53<br/>并行类加载加速"]
+        Thm-K-06-155["Thm-K-06-155<br/>多模态同步正确性定理"]
+        Thm-F-12-101["Thm-F-12-101<br/>多Agent协作死锁避免"]
+        Thm-F-10-30["Thm-F-10-30<br/>自动扩缩容稳定性定理"]
+        Thm-K-06-250["Thm-K-06-250<br/>A2A互操作性定理"]
+    end
+
+    subgraph CorGroup[推论 (1)]
+        Cor-S-15-01["Cor-S-15-01<br/>互模拟等价类构成商LTS"]
+    end
+
+    %% 依赖关系
+    Thm-S-05-01 --> Lemma-S-05-02
+    Thm-S-12-01 --> Lemma-S-12-01
+    Thm-F-10-30 --> Lemma-F-10-30
+    Thm-K-06-250 --> Lemma-K-06-231
+    Thm-S-23-01 --> Lemma-S-23-01
+    Thm-S-23-01 --> Lemma-S-23-02
+    Thm-S-23-01 --> Lemma-S-23-03
+
+    %% 样式定义
+    classDef ThmStyle fill:#fff3e0,stroke:#333,stroke-width:1px
+    classDef LemmaStyle fill:#f3e5f5,stroke:#333,stroke-width:1px
+    classDef DefStyle fill:#e1f5fe,stroke:#333,stroke-width:1px
+    classDef PropStyle fill:#e8f5e9,stroke:#333,stroke-width:1px
+    classDef CorStyle fill:#fce4ec,stroke:#333,stroke-width:1px
+
+    %% 应用样式
+    class Thm-S-03-01,Thm-S-05-01,Thm-S-06-01,Thm-S-10-01,Thm-S-12-01,Thm-S-15-01,Thm-S-23-01,Thm-S-07-05,Thm-F-02-51,Thm-F-02-54,Thm-F-06-53,Thm-K-06-155,Thm-F-12-101,Thm-F-10-30,Thm-K-06-250 ThmStyle
+    class Def-S-01-04,Def-S-01-07,Def-S-02-01,Def-S-02-02,Def-S-03-01,Def-S-03-03,Def-S-03-04,Def-S-05-01,Def-S-05-02,Def-S-05-03,Def-S-05-04,Def-S-05-05,Def-S-12-01,Def-S-12-02,Def-S-12-03,Def-S-12-04,Def-S-13-03,Def-S-14-02,Def-S-15-01,Def-S-15-02,Def-S-15-03,Def-S-07-15,Def-S-19-03,Def-S-23-04,Def-F-02-52,Def-F-02-72,Def-F-03-60,Def-F-04-71,Def-K-06-184,Def-F-03-84b,Def-F-15-06a,Def-K-01-05,Def-K-01-07,Def-K-01-09,Def-K-01-11,Def-F-02-115,Def-F-12-55 DefStyle
+    class Lemma-S-02-01,Lemma-S-03-01,Lemma-S-05-02,Lemma-S-12-01,Lemma-S-12-02,Lemma-S-15-01,Lemma-S-15-02,Lemma-S-19-03,Lemma-F-10-30,Lemma-F-11-05,Lemma-K-06-231,Lemma-S-23-01,Lemma-S-23-02,Lemma-S-23-03 LemmaStyle
+    class Prop-S-03-01,Prop-S-15-01,Prop-S-15-02,Prop-S-07-03,Prop-F-03-07,Prop-F-04-101,Prop-K-01-02,Prop-F-02-51 PropStyle
+    class Cor-S-15-01 CorStyle

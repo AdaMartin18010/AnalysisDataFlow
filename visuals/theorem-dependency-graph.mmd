@@ -1,0 +1,126 @@
+graph TB
+    %% 定理依赖图 (concurrency)
+    %% 生成时间: 2026-04-10T20:17:06.281269
+
+    subgraph DefGroup[定义]
+        Def-F-02-01["Def-F-02-01<br/>Def-F-02-01"]
+        Def-A-02-01["Def-A-02-01<br/>k-符号流自动机 (k-Symbolic Lookback "]
+        Def-C-05-04["Def-C-05-04<br/>Lazy Soundness**"]
+        Def-F-02-06["Def-F-02-06<br/>Def-F-02-06"]
+        Def-F-02-04["Def-F-02-04<br/>Local vs End-to-End Backpressu"]
+        Def-A-02-03["Def-A-02-03<br/>窗格分解 (Pane Decomposition)"]
+        Def-F-06-02["Def-F-06-02<br/>| Def-F-06-03 | 余代数互模拟 | 定义 | "]
+        Def-F-06-03["Def-F-06-03<br/>- 英文: Coalgebraic Bisimulation"]
+        Def-F-06-10["Def-F-06-10<br/>| Def-F-06-11 | 概率互模拟 | 定义 | 0"]
+    end
+
+    subgraph LemmaGroup[引理]
+        Lemma-F-06-02["Lemma-F-06-02<br/>| 进程演算 | 5 | Lemma-C-01-01 (同余"]
+        Lemma-A-02-01["Lemma-A-02-01<br/>窗格分解的正确性"]
+        Lemma-A-02-02["Lemma-A-02-02<br/>滑动窗口重叠度"]
+    end
+
+    subgraph PropGroup[命题]
+        Prop-F-02-03["Prop-F-02-03<br/>Buffer Isolation Guarantees Lo"]
+        Prop-F-06-01["Prop-F-06-01<br/>| Prop-F-06-02 | 互模拟是等价关系 | 命题"]
+        Prop-F-06-04["Prop-F-06-04<br/>| Prop-F-06-05 | 概率互模拟的度量刻画 | "]
+        Prop-F-02-02["Prop-F-02-02<br/>Backpressure Propagation Guara"]
+        Prop-F-02-01["Prop-F-02-01<br/>CBFC Guarantees No Deadlock"]
+    end
+
+    subgraph ThmGroup[定理]
+        Thm-FM-18-01["Thm-FM-18-01<br/>| `Def-A-03-01` | Def-A-03-01 "]
+        Thm-C-05-01["Thm-C-05-01<br/>死锁检测**"]
+        Thm-F-02-01["Thm-F-02-01<br/>| Thm-F-02-02 | 互模拟=同态核 | 02-c"]
+    end
+
+    %% 依赖关系
+    Prop-F-06-04 --> Lemma-F-06-02
+    Prop-F-06-01 --> Lemma-F-06-02
+    Def-A-02-01 --> Thm-FM-18-01
+    Def-C-05-04 --> Thm-FM-18-01
+    Def-A-02-03 --> Thm-FM-18-01
+    Lemma-A-02-01 --> Thm-FM-18-01
+    Lemma-A-02-02 --> Thm-FM-18-01
+    Def-F-02-06 --> Prop-F-02-03
+    Thm-F-02-01 --> Prop-F-02-03
+    Lemma-F-06-02 --> Def-F-02-01
+    Def-C-05-04 --> Def-F-02-01
+    Def-F-02-06 --> Def-F-02-01
+    Def-F-06-03 --> Def-F-02-01
+    Prop-F-02-03 --> Def-F-02-01
+    Prop-F-02-02 --> Def-F-02-01
+    Def-F-02-04 --> Def-F-02-01
+    Thm-F-02-01 --> Def-F-02-01
+    Prop-F-02-01 --> Def-F-02-01
+    Thm-FM-18-01 --> Def-A-02-01
+    Def-C-05-04 --> Def-A-02-01
+    Def-A-02-03 --> Def-A-02-01
+    Lemma-A-02-01 --> Def-A-02-01
+    Lemma-A-02-02 --> Def-A-02-01
+    Prop-F-06-04 --> Prop-F-06-01
+    Lemma-F-06-02 --> Def-C-05-04
+    Thm-FM-18-01 --> Def-C-05-04
+    Thm-C-05-01 --> Def-C-05-04
+    Def-F-02-06 --> Prop-F-02-02
+    Prop-F-02-03 --> Prop-F-02-02
+    Thm-F-02-01 --> Prop-F-02-02
+    Lemma-F-06-02 --> Def-F-02-06
+    Def-C-05-04 --> Def-F-02-06
+    Def-F-02-01 --> Def-F-02-06
+    Prop-F-02-03 --> Def-F-02-06
+    Prop-F-02-02 --> Def-F-02-06
+    Thm-F-02-01 --> Def-F-02-06
+    Prop-F-02-01 --> Def-F-02-06
+    Def-F-02-06 --> Def-F-02-04
+    Def-F-06-03 --> Def-F-02-04
+    Prop-F-02-03 --> Def-F-02-04
+    Prop-F-02-02 --> Def-F-02-04
+    Thm-F-02-01 --> Def-F-02-04
+    Prop-F-02-01 --> Def-F-02-04
+    Thm-FM-18-01 --> Def-A-02-03
+    Def-A-02-01 --> Def-A-02-03
+    Def-C-05-04 --> Def-A-02-03
+    Lemma-A-02-01 --> Def-A-02-03
+    Lemma-A-02-02 --> Def-A-02-03
+    Thm-FM-18-01 --> Lemma-A-02-01
+    Def-C-05-04 --> Lemma-A-02-01
+    Lemma-A-02-02 --> Lemma-A-02-01
+    Lemma-F-06-02 --> Def-F-06-02
+    Prop-F-06-04 --> Def-F-06-02
+    Def-F-06-03 --> Def-F-06-02
+    Def-F-06-10 --> Def-F-06-02
+    Prop-F-06-01 --> Def-F-06-02
+    Thm-FM-18-01 --> Lemma-A-02-02
+    Def-C-05-04 --> Lemma-A-02-02
+    Lemma-A-02-01 --> Lemma-A-02-02
+    Def-C-05-04 --> Thm-C-05-01
+    Def-F-02-06 --> Thm-C-05-01
+    Def-F-02-01 --> Thm-C-05-01
+    Def-F-02-04 --> Thm-C-05-01
+    Thm-C-05-01 --> Thm-F-02-01
+    Def-F-02-04 --> Thm-F-02-01
+    Def-F-02-06 --> Prop-F-02-01
+    Prop-F-02-03 --> Prop-F-02-01
+    Prop-F-02-02 --> Prop-F-02-01
+    Thm-F-02-01 --> Prop-F-02-01
+    Lemma-F-06-02 --> Def-F-06-03
+    Prop-F-06-04 --> Def-F-06-03
+    Def-F-06-10 --> Def-F-06-03
+    Prop-F-06-01 --> Def-F-06-03
+    Lemma-F-06-02 --> Def-F-06-10
+    Prop-F-06-04 --> Def-F-06-10
+    Prop-F-06-01 --> Def-F-06-10
+
+    %% 样式定义
+    classDef DefStyle fill:#e1f5fe,stroke:#333,stroke-width:1px
+    classDef ThmStyle fill:#fff3e0,stroke:#333,stroke-width:1px
+    classDef LemmaStyle fill:#f3e5f5,stroke:#333,stroke-width:1px
+    classDef PropStyle fill:#e8f5e9,stroke:#333,stroke-width:1px
+    classDef CorStyle fill:#fce4ec,stroke:#333,stroke-width:1px
+
+    %% 应用样式
+    class Def-F-02-01,Def-A-02-01,Def-C-05-04,Def-F-02-06,Def-F-02-04,Def-A-02-03,Def-F-06-02,Def-F-06-03,Def-F-06-10 DefStyle
+    class Thm-FM-18-01,Thm-C-05-01,Thm-F-02-01 ThmStyle
+    class Lemma-F-06-02,Lemma-A-02-01,Lemma-A-02-02 LemmaStyle
+    class Prop-F-02-03,Prop-F-06-01,Prop-F-06-04,Prop-F-02-02,Prop-F-02-01 PropStyle

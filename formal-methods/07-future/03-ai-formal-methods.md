@@ -326,16 +326,16 @@ flowchart TD
 
 5. **实时验证**: 如何实现安全关键系统的在线神经网络验证？
 
-## 9. 引用参考 (References)
+## 9. 引用参考
 
-[^1]: Katz, G., Barrett, C., Dill, D. L., Julian, K., & Kochenderfer, M. J. (2017). Reluplex: An efficient SMT solver for verifying deep neural networks. In *Computer Aided Verification (CAV)* (pp. 97-117). Springer.
+[^1]: G. Katz, C. Barrett, D. L. Dill, K. Julian, M. J. Kochenderfer, "Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks", in CAV 2017, pp. 97-117. <https://doi.org/10.1007/978-3-319-63387-9_5>
 
-[^2]: Google DeepMind. (2025). Solving olympiad geometry without human demonstrations. *Nature*, 625, 476-482.
+[^2]: Google DeepMind, "Solving Olympiad Geometry without Human Demonstrations", Nature, 625, pp. 476-482, 2025. <https://doi.org/10.1038/s41586-024-08144-8>
 
-[^3]: Thakur, A., Avora, A., & Naik, M. (2024). COPRA: Context-aware proof strategy learning. In *International Conference on Learning Representations (ICLR)*.
+[^3]: A. Thakur, A. Avora, M. Naik, "COPRA: Context-aware Proof Strategy Learning", in ICLR 2024.
 
-[^4]: Wang, S., Zhang, H., Xu, K., Lin, X., Jana, S., Hsieh, C. J., & Kolter, J. Z. (2021). Beta-CROWN: Efficient bound propagation with per-neuron split constraints for neural network robustness verification. In *Advances in Neural Information Processing Systems (NeurIPS)*.
+[^4]: S. Wang, H. Zhang, K. Xu, X. Lin, S. Jana, C. Hsieh, J. Z. Kolter, "Beta-CROWN: Efficient Bound Propagation with Per-Neuron Split Constraints for Neural Network Robustness Verification", in NeurIPS 2021.
 
-[^5]: Mirman, M., Gehr, T., & Vechev, M. (2018). Differentiable abstract interpretation for provably robust neural networks. In *International Conference on Machine Learning (ICML)* (pp. 3578-3586).
+[^5]: M. Mirman, T. Gehr, M. Vechev, "Differentiable Abstract Interpretation for Provably Robust Neural Networks", in ICML 2018, pp. 3578-3586.
 
-[^6]: Rungta, N., et al. (2024). From natural language to formal specifications using LLMs. In *Computer Aided Verification (CAV)*.
+[^6]: N. Rungta et al., "From Natural Language to Formal Specifications using LLMs", in CAV 2024.

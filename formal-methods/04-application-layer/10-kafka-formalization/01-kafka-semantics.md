@@ -1506,6 +1506,16 @@ graph TB
 | `transaction.state.log.replication.factor` | `>= 3` | 事务日志副本数 |
 | `transaction.state.log.min.isr` | `>= 2` | 事务日志最小ISR |
 
+## 9. 补充参考文献
+
+
+
+
+
+
+
+
+
 ---
 
 *文档版本: 1.0.0 | 最后更新: 2026-04-10 | 形式化等级: L5*

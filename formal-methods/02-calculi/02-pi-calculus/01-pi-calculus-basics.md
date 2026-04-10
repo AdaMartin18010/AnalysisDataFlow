@@ -677,3 +677,19 @@ flowchart TD
 [^17]: **Kobayashi, N., et al. (1999).** "Statically Guaranteed Safety of File Accesses". — 线性类型在资源管理中的应用。
 
 [^18]: **CMU 15-814 Course Notes** (Spring 2023). "Type Systems for Concurrency". https://www.cs.cmu.edu/~janh/courses/15814/ — CMU 课程讲义。
+
+[^19]: R. Milner, "The Polyadic π-Calculus: A Tutorial", in Logic and Algebra of Specification, Springer, pp. 203-246, 1993. https://doi.org/10.1007/978-3-642-58041-3_6
+
+[^20]: M. Boreale, R. De Nicola, R. Pugliese, "Asynchronous Calculi for Distribution and Mobility", in ICALP 1999, pp. 408-420. https://doi.org/10.1007/3-540-48523-6_37
+
+[^21]: N. Yoshida, "Graph Types for Monadic Mobile Processes", in FSTTCS 1996, pp. 371-386. https://doi.org/10.1007/3-540-62034-6_58
+
+[^22]: D. Sangiorgi, "A Theory of Bisimulation for the π-Calculus", Acta Informatica, 33(1), pp. 69-97, 1996. https://doi.org/10.1007/s002360050041
+
+[^23]: P. Sewell, "Applied π–A Brief Tutorial", in SFM 2006, pp. 180-201. https://doi.org/10.1007/11759974_7
+
+[^24]: K. Honda, N. Yoshida, "On Reduction-Based Process Semantics", Theoretical Computer Science, 151(2), pp. 437-486, 1995. https://doi.org/10.1016/0304-3975(95)00074-7
+
+[^25]: L. Cardelli, A. D. Gordon, "Mobile Ambients", in FoSSaCS 1998, pp. 140-155. https://doi.org/10.1007/BFb0053547
+
+[^26]: M. Hennessy, J. Riely, "Resource Access Control in Systems of Mobile Agents", in HLCL 1998. https://doi.org/10.1016/S1571-0661(05)82618-8

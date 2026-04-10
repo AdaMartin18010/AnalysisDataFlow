@@ -109,6 +109,30 @@ $$\mathcal{A} = (S, s_0, \text{sig}, \Delta)$$
 - 两个自动机 $A_1, A_2$ 可组合当输入输出动作无冲突
 - 共享动作同步执行（输出 = 输入匹配）
 
+### Def-M-02-01-07 标记转移系统 (Labeled Transition System)
+
+LTS是进程语义的基础模型：
+
+$$\mathcal{T} = (S, L, \rightarrow, s_0)$$
+
+其中：
+
+- $S$：状态集合
+- $L$：标签集合（动作）
+- $\rightarrow \subseteq S \times L \times S$：转移关系
+- $s_0 \in S$：初始状态
+
+**进程语义**：每个进程表达式对应一个LTS状态，动作对应转移标签。
+
+### Def-M-02-01-08 双模拟 (Bisimulation)
+
+**强双模拟**：关系 $R \subseteq S \times S$ 是强双模拟，当且仅当对所有 $(p, q) \in R$：
+
+- 若 $p \xrightarrow{a} p'$，则存在 $q'$ 使得 $q \xrightarrow{a} q'$ 且 $(p', q') \in R$
+- 若 $q \xrightarrow{a} q'$，则存在 $p'$ 使得 $p \xrightarrow{a} p'$ 且 $(p', q') \in R$
+
+**双模拟等价**：$p \sim q$ 当且仅当存在双模拟 $R$ 使得 $(p, q) \in R$。
+
 ## 2. 属性推导 (Properties)
 
 ### Lemma-M-02-01-01 CCS的互模拟

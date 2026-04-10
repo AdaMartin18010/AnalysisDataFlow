@@ -45,6 +45,7 @@ $$
 $$
 
 其中：
+
 - $T$ = 词条集合 (Term Dictionary)
 - $D$ = 文档集合
 - $\mathbb{N}$ = 词频 (TF - Term Frequency)
@@ -63,6 +64,7 @@ $$
 $$
 
 其中参数：
+
 - $k_1 \in [1.2, 2.0]$: 控制词频饱和度
 - $b = 0.75$: 控制文档长度归一化
 
@@ -144,6 +146,7 @@ $$
 $$
 
 **证明**:
+
 ```
 给定: hash(d._id) mod P 的均匀分布
 对于任意文档 d，其分片位置唯一确定
@@ -166,6 +169,7 @@ $$
 其中 $\succeq$ 表示版本偏序关系。
 
 **证明概要**:
+
 - 副本分片按顺序应用主分片的操作日志
 - 每个操作都有单调递增的版本号
 - 因此读取操作看到的版本号单调不减
@@ -195,6 +199,7 @@ $$
 其中 $\mathcal{F}$ 是聚合函数（union、sum、top-k等）。
 
 **不可下推查询**:
+
 - 需要全局排序的复杂JOIN
 - 跨索引聚合（除非使用`_index`字段）
 - 某些类型的嵌套查询
@@ -221,6 +226,7 @@ Elasticsearch 在CAP三角中的定位：
 ```
 
 **可调一致性**:
+
 - `write_consistency`: `one`, `quorum`, `all`
 - `search_type`: 影响读取一致性
 
@@ -255,6 +261,7 @@ $$
 - **Safety**: 一个term内最多一个leader
 
 **与Raft的区别**:
+
 - 仅集群元数据使用共识
 - 数据复制使用主从异步复制
 
@@ -313,6 +320,7 @@ $$
 $$
 
 **外部版本控制**:
+
 - 使用外部系统版本号（如数据库序列号）
 - 版本号必须单调递增
 
@@ -381,6 +389,7 @@ Q.E.D.
 ```
 
 **边界条件**:
+
 - 主分片故障转移期间可能有短暂不一致
 - 大量积压可能导致复制延迟
 
@@ -426,6 +435,7 @@ Q.E.D.
 ```
 
 **Top-K查询的复杂性**:
+
 - 需要全局排序，不能简单并集
 - 解决方案: 每个分片返回本地Top-K，协调节点合并
 
@@ -440,6 +450,7 @@ $$
 $$
 
 **证明概要**:
+
 1. ES支持`preference=_replica`路由选项
 2. 当主分片不可用时，查询可路由到副本
 3. 副本可能返回旧数据（最终一致性）
@@ -478,6 +489,7 @@ PUT _index_template/logs_template
 ```
 
 **形式化优势**:
+
 - 时间局部性: 最近数据查询更快
 - 可删除性: 旧索引可直接删除
 - 并行化: 不同时间段索引可并行处理
@@ -505,6 +517,7 @@ GET user_events/_search?routing=user_123
 ```
 
 **性能收益**:
+
 - 单分片查询，避免分布式聚合
 - 查询延迟从 O(√N) 降至 O(log N)
 
@@ -715,16 +728,16 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import java.io.IOException;
 
 public class ElasticsearchClient {
-    
+
     private final RestHighLevelClient client;
-    
+
     public SearchResponse searchWithAggregations(String index) throws IOException {
         // 构建布尔查询
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
             .must(QueryBuilders.matchQuery("title", "elasticsearch"))
             .filter(QueryBuilders.termQuery("status", "published"))
             .filter(QueryBuilders.rangeQuery("created_at").gte("now-7d"));
-        
+
         // 构建搜索源
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
             .query(boolQuery)
@@ -743,13 +756,13 @@ public class ElasticsearchClient {
                     .field("created_at")
                     .calendarInterval(DateHistogramInterval.DAY)
             );
-        
+
         SearchRequest searchRequest = new SearchRequest(index)
             .source(sourceBuilder);
-        
+
         return client.search(searchRequest, RequestOptions.DEFAULT);
     }
-    
+
     public void processResults(SearchResponse response) {
         // 处理terms聚合
         Terms categoryTerms = response.getAggregations().get("by_category");
@@ -776,13 +789,13 @@ ES集群采用主从架构，主节点负责集群状态管理，数据节点承
 graph TB
     subgraph "Elasticsearch Cluster"
         M[Master Node<br/>集群状态管理]
-        
+
         subgraph "Data Nodes"
             D1[Data Node 1<br/>Shards: P0, R1, R2]
             D2[Data Node 2<br/>Shards: P1, R0, R2]
             D3[Data Node 3<br/>Shards: P2, R0, R1]
         end
-        
+
         subgraph "Index: logs-2024.01"
             P0[Primary Shard 0]
             P1[Primary Shard 1]
@@ -791,10 +804,10 @@ graph TB
             R1[Replica 1]
             R2[Replica 2]
         end
-        
+
         C[Coordinate Node<br/>查询聚合]
     end
-    
+
     Client[Client Application] --> C
     C --> D1
     C --> D2
@@ -802,7 +815,7 @@ graph TB
     M -.->|Cluster State| D1
     M -.->|Cluster State| D2
     M -.->|Cluster State| D3
-    
+
     D1 --- P0
     D1 --- R1
     D1 --- R2
@@ -812,7 +825,7 @@ graph TB
     D3 --- P2
     D3 --- R0
     D3 --- R1
-    
+
     style M fill:#e1f5fe
     style C fill:#fff3e0
     style P0 fill:#c8e6c9
@@ -837,31 +850,31 @@ graph LR
         T3[engine]
         T4[distributed]
     end
-    
+
     subgraph "Postings Lists"
         P1["Doc1: TF=2, Pos=[3,8]<br/>Doc3: TF=1, Pos=[5]<br/>Doc7: TF=3, Pos=[1,4,9]"]
         P2["Doc1: TF=1, Pos=[4]<br/>Doc2: TF=2, Pos=[2,6]<br/>Doc5: TF=1, Pos=[1]"]
         P3["Doc1: TF=1, Pos=[5]<br/>Doc4: TF=1, Pos=[3]"]
         P4["Doc3: TF=1, Pos=[1]<br/>Doc6: TF=2, Pos=[2,7]"]
     end
-    
+
     subgraph "Term Stats"
         S1["DF=3, TTF=6"]
         S2["DF=3, TTF=4"]
         S3["DF=2, TTF=2"]
         S4["DF=2, TTF=3"]
     end
-    
+
     T1 --> P1
     T2 --> P2
     T3 --> P3
     T4 --> P4
-    
+
     T1 -.-> S1
     T2 -.-> S2
     T3 -.-> S3
     T4 -.-> S4
-    
+
     style T1 fill:#e3f2fd
     style T2 fill:#e3f2fd
     style T3 fill:#e3f2fd
@@ -881,10 +894,10 @@ sequenceDiagram
     participant Shard1 as Shard 1 (P0)
     participant Shard2 as Shard 2 (P1)
     participant Shard3 as Shard 3 (P2)
-    
+
     Client->>Coordinator: Search Query
     Note over Coordinator: Phase 1: Query
-    
+
     par Parallel Query Execution
         Coordinator->>Shard1: Query + From/Size
         Shard1-->>Coordinator: Top-K IDs + Scores
@@ -895,11 +908,11 @@ sequenceDiagram
         Coordinator->>Shard3: Query + From/Size
         Shard3-->>Coordinator: Top-K IDs + Scores
     end
-    
+
     Note over Coordinator: Merge & Global Sort<br/>Select Final Top-K
-    
+
     Note over Coordinator: Phase 2: Fetch
-    
+
     par Parallel Fetch
         Coordinator->>Shard1: Multi-Get (IDs)
         Shard1-->>Coordinator: Full Documents
@@ -910,7 +923,7 @@ sequenceDiagram
         Coordinator->>Shard3: Multi-Get (IDs)
         Shard3-->>Coordinator: Full Documents
     end
-    
+
     Coordinator-->>Client: Search Results
 ```
 
@@ -923,25 +936,25 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> UNASSIGNED: Create Index
-    
+
     UNASSIGNED --> INITIALIZING: Allocation Decision
-    
+
     INITIALIZING --> STARTED: Recovery Complete
     INITIALIZING --> UNASSIGNED: Recovery Failed
-    
+
     STARTED --> RELOCATING: Rebalance/Move
     STARTED --> UNASSIGNED: Node Left
-    
+
     RELOCATING --> STARTED: Relocation Complete
     RELOCATING --> UNASSIGNED: Target Failed
-    
+
     UNASSIGNED --> INITIALIZING: Re-allocation
-    
+
     note right of INITIALIZING
         Primary: Segment creation
         Replica: Translog replay
     end note
-    
+
     note right of RELOCATING
         Dual mode: Source & Target
         both active during move
@@ -957,27 +970,27 @@ stateDiagram-v2
 ```mermaid
 flowchart TD
     A[网络分区发生] --> B{Master-eligible<br/>nodes in partition}
-    
+
     B -->|>= min_master_nodes| C[Can form cluster]
     B -->|< min_master_nodes| D[Enter candidate state]
-    
+
     C --> E{Existing master<br/>in partition?}
     E -->|Yes| F[Join existing master]
     E -->|No| G[Start election]
-    
+
     G --> H{Votes received<br/>>= min_master_nodes?}
     H -->|Yes| I[Become new master]
     H -->|No| J[Election failed]
-    
+
     D --> K[Cannot elect master]
     J --> L[Retry after timeout]
-    
+
     I --> M[Accept writes?]
     M -->|Yes| N[Master cluster]
-    
+
     K --> O[Read-only state]
     F --> P[Follower node]
-    
+
     style I fill:#c8e6c9
     style N fill:#c8e6c9
     style O fill:#ffcdd2
@@ -996,37 +1009,37 @@ graph LR
         A2[consistency=quorum]
         A3[consistency=all]
     end
-    
+
     subgraph "Latency"
         L1["⚡ Low"]
         L2["⚡⚡ Medium"]
         L3["⚡⚡⚡ High"]
     end
-    
+
     subgraph "Durability"
         D1["⚠️ At Risk"]
         D2["✓ Good"]
         D3["✓✓ Best"]
     end
-    
+
     subgraph "Availability Impact"
         Av1["None"]
         Av2["Moderate"]
         Av3["High - Write unavailability<br/>if any replica fails"]
     end
-    
+
     A1 --> L1
     A1 --> D1
     A1 --> Av1
-    
+
     A2 --> L2
     A2 --> D2
     A2 --> Av2
-    
+
     A3 --> L3
     A3 --> D3
     A3 --> Av3
-    
+
     style A1 fill:#ffccbc
     style A2 fill:#fff9c4
     style A3 fill:#c8e6c9
@@ -1036,35 +1049,25 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Elasticsearch B.V., "Elasticsearch Reference [8.11]", 2024. https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
 
-[^2]: Shay Banon, "The Definitive Guide to Elasticsearch", O'Reilly Media, 2015.
 
-[^3]: L. Lamport, "Time, Clocks, and the Ordering of Events in a Distributed System", Communications of the ACM, 21(7):558-565, 1978.
 
-[^4]: S. Gilbert and N. Lynch, "Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services", ACM SIGACT News, 33(2):51-59, 2002.
 
-[^5]: Diego Ongaro and John Ousterhout, "In Search of an Understandable Consensus Algorithm (Extended Version)", Stanford University Technical Report, 2014.
 
-[^6]: Robert C. Martin, "Clean Architecture: A Craftsman's Guide to Software Structure and Design", Prentice Hall, 2017.
 
-[^7]: Doug Turnbull and John Berryman, "Relevant Search: With Applications for Solr and Elasticsearch", Manning Publications, 2016.
 
-[^8]: R. A. Baeza-Yates and B. A. Ribeiro-Neto, "Modern Information Retrieval: The Concepts and Technology behind Search", 2nd Edition, Addison-Wesley, 2011.
 
-[^9]: Stephen Robertson and Hugo Zaragoza, "The Probabilistic Relevance Framework: BM25 and Beyond", Foundations and Trends in Information Retrieval, 3(4):333-389, 2009.
 
-[^10]: J. Dean and S. Ghemawat, "MapReduce: Simplified Data Processing on Large Clusters", Communications of the ACM, 51(1):107-113, 2008.
 
-[^11]: M. Kleppmann, "Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems", O'Reilly Media, 2017.
 
-[^12]: Apache Lucene Project, "Apache Lucene - Query Parser Syntax", Apache Software Foundation, 2024. https://lucene.apache.org/core/
 
-[^13]: Wikipedia Contributors, "Inverted Index", Wikipedia, The Free Encyclopedia, 2024. https://en.wikipedia.org/wiki/Inverted_index
 
-[^14]: Elasticsearch B.V., "Resiliency in Elasticsearch", Elastic Blog, 2024. https://www.elastic.co/blog/resiliency-elasticsearch
 
-[^15]: P. Bailis and A. Ghodsi, "Eventual Consistency Today: Limitations, Extensions, and Beyond", ACM Queue, 11(3), 2013.
+
+
+
+
+
 
 ---
 

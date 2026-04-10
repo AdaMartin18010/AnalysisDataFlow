@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定理依赖图 - 交互式可视化</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        #container { display: flex; height: 100vh; }
+        #sidebar {
+            width: 340px;
+            background: white;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        #graph {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        h1 { font-size: 18px; margin-bottom: 20px; color: #333; }
+        h2 { font-size: 14px; margin: 20px 0 10px; color: #666; text-transform: uppercase; }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stat-value { font-weight: bold; color: #2196F3; }
+        .legend {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid #333;
+        }
+        #search {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .filter-group { margin: 10px 0; }
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .filter-group input { margin-right: 8px; }
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        #tooltip h3 { font-size: 13px; margin-bottom: 5px; color: #FFD700; }
+        #tooltip p { margin: 3px 0; line-height: 1.4; }
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .controls button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border: none;
+            background: #2196F3;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .controls button:hover { background: #1976D2; }
+        svg { width: 100%; height: 100%; }
+        .node {
+            cursor: pointer;
+            stroke: #333;
+            stroke-width: 1.5px;
+        }
+        .node:hover { stroke-width: 3px; }
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+            stroke-width: 1px;
+        }
+        .link.highlight {
+            stroke: #FF5722;
+            stroke-width: 2px;
+            stroke-opacity: 1;
+        }
+        .node.highlight { stroke: #FF5722; stroke-width: 3px; }
+        .node.dimmed { opacity: 0.2; }
+        .link.dimmed { opacity: 0.1; }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <h1>📊 定理依赖网络可视化</h1>
+            
+            <input type="text" id="search" placeholder="搜索定理、定义、引理...">
+            
+            <h2>📈 统计信息</h2>
+            <div class="stat">
+                <span>总元素数</span>
+                <span class="stat-value">180</span>
+            </div>
+            <div class="stat">
+                <span>定理 (Thm)</span>
+                <span class="stat-value">84</span>
+            </div>
+            <div class="stat">
+                <span>引理 (Lemma)</span>
+                <span class="stat-value">92</span>
+            </div>
+            <div class="stat">
+                <span>定义 (Def)</span>
+                <span class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span>命题 (Prop)</span>
+                <span class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span>推论 (Cor)</span>
+                <span class="stat-value">4</span>
+            </div>
+            
+            <h2>🎨 图例</h2>
+            <div class="legend">
+                <div class="legend-color" style="background: #fff3e0"></div>
+                <span>定理 (Theorem)</span>
+            </div>
+            <div class="legend">
+                <div class="legend-color" style="background: #f3e5f5"></div>
+                <span>引理 (Lemma)</span>
+            </div>
+            <div class="legend">
+                <div class="legend-color" style="background: #e1f5fe"></div>
+                <span>定义 (Definition)</span>
+            </div>
+            <div class="legend">
+                <div class="legend-color" style="background: #e8f5e9"></div>
+                <span>命题 (Proposition)</span>
+            </div>
+            <div class="legend">
+                <div class="legend-color" style="background: #fce4ec"></div>
+                <span>推论 (Corollary)</span>
+            </div>
+            
+            <h2>🔍 类型过滤</h2>
+            <div class="filter-group">
+                <label><input type="checkbox" checked data-type="Thm"> 定理</label>
+                <label><input type="checkbox" checked data-type="Lemma"> 引理</label>
+                <label><input type="checkbox" checked data-type="Def"> 定义</label>
+                <label><input type="checkbox" checked data-type="Prop"> 命题</label>
+                <label><input type="checkbox" checked data-type="Cor"> 推论</label>
+            </div>
+            
+            <h2>📚 阶段过滤</h2>
+            <div class="filter-group">
+                <label><input type="checkbox" checked data-stage="S"> Struct (形式理论)</label>
+                <label><input type="checkbox" checked data-stage="K"> Knowledge (知识结构)</label>
+                <label><input type="checkbox" checked data-stage="F"> Flink (Flink专项)</label>
+            </div>
+            
+            <h2>📖 使用说明</h2>
+            <div style="font-size: 12px; color: #666; line-height: 1.6;">
+                <p>• 滚轮缩放，拖拽移动</p>
+                <p>• 点击节点高亮连接</p>
+                <p>• 拖拽节点调整布局</p>
+                <p>• 搜索框过滤节点</p>
+            </div>
+        </div>
+        
+        <div id="graph">
+            <div class="controls">
+                <button onclick="zoomIn()">🔍 放大</button>
+                <button onclick="zoomOut()">🔍 缩小</button>
+                <button onclick="resetZoom()">⟲ 重置</button>
+                <button onclick="toggleAnimation()">⏯ 动画</button>
+            </div>
+            <div id="tooltip"></div>
+        </div>
+    </div>
+
+    <script>
+        const data = {"nodes": [{"id": "Thm-S-04-01", "name": "Dataflow确定性定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-05-01", "name": "Go-CS-sync与CSP编码保持迹语义等价", "type": "Thm", "stage": "S", "topic": "concurrency", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-07-01", "name": "流计算确定性定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-09-01", "name": "Watermark单调性定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-12-01", "name": "受限Actor系统编码保持迹语义", "type": "Thm", "stage": "S", "topic": "concurrency", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-13-01", "name": "Flink Dataflow Exactly-Once保持", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 2, "dep_count": 0, "radius": 6.0}, {"id": "Thm-S-14-01", "name": "表达能力严格层次定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-S-17-01", "name": "Flink Checkpoint一致性定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 2, "dep_count": 0, "radius": 6.0}, {"id": "Thm-S-19-01", "name": "Chandy-Lamport一致性定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 3, "dep_count": 0, "radius": 6.5}, {"id": "Thm-S-20-01", "name": "Watermark完全格定理", "type": "Thm", "stage": "S", "topic": "general", "group": 0, "ref_count": 4, "dep_count": 0, "radius": 7.0}, {"id": "Thm-S-23-01", "name": "Choreographic死锁自由定理", "type": "Thm", "stage": "S", "topic": "concurrency", "group": 0, "ref_count": 3, "dep_count": 0, "radius": 6.5}, {"id": "Thm-S-07-03", "name": "Smart Casual Verification有效性", "type": "Thm", "stage": "S", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-04-01", "name": "流数据库vs流引擎选择定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-36", "name": "Schema演化兼容性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-40", "name": "多路Join最优计划选择定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-45", "name": "ForSt状态后端一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-60", "name": "智能检查点最优性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-62", "name": "增量检查点完备性定理", "type": "Thm", "stage": "F", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-02-64", "name": "TTL增量清理性能定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-06-41", "name": "自动扩缩容成本最优性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-03-50", "name": "物化表一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-03-51", "name": "物化表最优分桶定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-03-70", "name": "Broadcast Join可行性条件定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-06-20", "name": "dbt模型增量编译正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-06-21", "name": "Flink-dbt血缘追踪完整性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-06-31", "name": "集成测试一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-06-32", "name": "端到端测试正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-10", "name": "V2 API Backward Compatibility", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-11", "name": "Scala 3 Type Safety in Flink", "type": "Thm", "stage": "F", "topic": "types", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-13", "name": "Hummock Performance Bounds", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-15", "name": "向量搜索性能定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-16", "name": "WASM Sandbox Isolation", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-15", "name": "实时特征一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-16", "name": "Feature Store物化视图正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 2, "dep_count": 0, "radius": 6.0}, {"id": "Thm-F-12-30", "name": "异步推理正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-31", "name": "特征一致性约束定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-32", "name": "模型漂移检测统计保证定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-35", "name": "LLM推理容错性保证定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-36", "name": "RAG一致性约束定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-12-37", "name": "LLM批处理吞吐量下界定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-07-32", "name": "智能制造IoT实时检测正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 2, "dep_count": 0, "radius": 6.0}, {"id": "Thm-F-07-61", "name": "游戏反作弊检测正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-07-62", "name": "实时玩家匹配公平性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-07-71", "name": "Clickstream实时分析正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-30", "name": "OpenTelemetry集成完备性定理", "type": "Thm", "stage": "F", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-31", "name": "端到端延迟可追踪性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-32", "name": "Watermark延迟预警定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-30", "name": "Delta Lake写入一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-31", "name": "Flink-Delta事务隔离性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-33", "name": "流批一体存储正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-42", "name": "隐藏分区正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-50", "name": "Paimon LSM-Tree一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-52", "name": "变更日志生成正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-60", "name": "CDC端到端一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-04-61", "name": "Schema变更传播正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-10-20", "name": "Flink Kubernetes Operator部署一致性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-10-21", "name": "Operator自动扩缩容正确性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-10-30", "name": "自动扩缩容稳定性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-10-31", "name": "顶点级别扩缩容最优性定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-10-32", "name": "追赶容量完备性定理", "type": "Thm", "stage": "F", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-50", "name": "区块链流处理一致性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-51", "name": "智能合约事件驱动执行正确性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 2, "dep_count": 0, "radius": 6.0}, {"id": "Thm-K-06-64", "name": "Serverless流处理弹性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-80", "name": "AI Agent流式响应实时性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-90", "name": "Data Mesh域自治与全局一致性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-95", "name": "Serverless成本优化边界定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-97", "name": "Serverless状态外置一致性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-100", "name": "分层验证完备性定理", "type": "Thm", "stage": "K", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-102", "name": "DLQ完整性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-105", "name": "主动-主动架构可行性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-107", "name": "跨云延迟下界定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-110", "name": "端到端安全协议安全性定理", "type": "Thm", "stage": "K", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-111", "name": "合规性验证可判定性定理", "type": "Thm", "stage": "K", "topic": "verification", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-112", "name": "密钥轮换业务连续性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-115", "name": "视图选择NP完全性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-116", "name": "流式物化视图一致性边界定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-117", "name": "增量计算复杂度下界定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-125", "name": "Flink边缘部署资源优化定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-130", "name": "实时数据网格CAP权衡定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-K-06-250", "name": "A2A互操作性定理", "type": "Thm", "stage": "K", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-35", "name": "SLO满足性监控定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-36", "name": "延迟异常检测定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-15-37", "name": "资源利用率优化定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Thm-F-09-30", "name": "算子链优化定理", "type": "Thm", "stage": "F", "topic": "general", "group": 0, "ref_count": 1, "dep_count": 0, "radius": 5.5}, {"id": "Lemma-S-04-01", "name": "算子局部确定性", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-04-02", "name": "Watermark单调性", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-05-02", "name": "CSP同步并行下迹前缀保持性", "type": "Lemma", "stage": "S", "topic": "concurrency", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-07-02", "name": "Watermark单调性蕴含触发确定性", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-12-01", "name": "MAILBOX FIFO不变式", "type": "Lemma", "stage": "S", "topic": "concurrency", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-13-01", "name": "算子编码保持局部确定性", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-13-02", "name": "屏障对齐保证快照一致性", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-07-07", "name": "完备性边界", "type": "Lemma", "stage": "S", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-17-01", "name": "Barrier传播不变式", "type": "Lemma", "stage": "S", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-17-02", "name": "状态一致性引理", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-19-01", "name": "Marker传播不变式", "type": "Lemma", "stage": "S", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-19-02", "name": "一致割集引理", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-19-04", "name": "无孤儿消息保证", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-20-01", "name": "⊔结合律", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-20-02", "name": "⊔交换律", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-20-03", "name": "⊔幂等律", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-20-04", "name": "⊔吸收律与单位元", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-23-01", "name": "EPP保持通信结构", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-23-02", "name": "投影合成还原", "type": "Lemma", "stage": "S", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-S-23-03", "name": "类型保持性", "type": "Lemma", "stage": "S", "topic": "types", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-04-04", "name": "状态位置与扩展性权衡", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-15", "name": "V2状态兼容性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-17", "name": "DOT类型保持性", "type": "Lemma", "stage": "F", "topic": "types", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-19", "name": "Hummock写入原子性", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-25", "name": "WASI能力隔离性", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-26", "name": "组件接口类型保持", "type": "Lemma", "stage": "F", "topic": "types", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-12", "name": "特征点查一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-13", "name": "特征物化视图增量更新引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-15", "name": "异步推理延迟边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-16", "name": "批处理推理确定性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-17", "name": "模型版本切换一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-18", "name": "LLM上下文窗口边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-19", "name": "向量检索相似度保持引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-12-20", "name": "令牌预算约束引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-07-31", "name": "实时检测响应时间边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-07-62", "name": "反作弊规则触发一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-07-63", "name": "玩家匹配公平性边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-07-72", "name": "用户路径追踪一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-21", "name": "Schema演化保持性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-40", "name": "Join计划代价单调性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-23", "name": "ForSt写入原子性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-60", "name": "TTL过期事件触发引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-61", "name": "TTL状态访问原子性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-02-62", "name": "TTL清理性能边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-06-41", "name": "自动扩缩容响应时间边界", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-03-30", "name": "物化表刷新幂等性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-03-31", "name": "分桶数据倾斜边界引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-06-20", "name": "dbt模型增量编译引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-06-21", "name": "血缘传播完整性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-06-02", "name": "集成测试环境隔离引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-06-03", "name": "端到端测试确定性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-40", "name": "Delta写入原子性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-41", "name": "事务日志持久性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-42", "name": "增量读取完备性引理", "type": "Lemma", "stage": "F", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-50", "name": "Paimon LSM写入原子性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-51", "name": "变更日志完备性引理", "type": "Lemma", "stage": "F", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-52", "name": "隐藏分区映射引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-60", "name": "CDC捕获完整性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-04-61", "name": "模式变更传播一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-30", "name": "可观测性信号正交性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-31", "name": "追踪采样代表性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-32", "name": "Metrics聚合准确性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-40", "name": "指标采样一致性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-41", "name": "背压与延迟关联性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-15-42", "name": "Checkpoint可恢复性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-10-21", "name": "滚动升级零停机引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-10-22", "name": "自动扩缩容响应时间引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-10-30", "name": "背压与并行度单调关系引理", "type": "Lemma", "stage": "F", "topic": "concurrency", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-10-31", "name": "目标利用率最优性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-10-32", "name": "顶点独立扩缩容兼容性引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-50", "name": "区块链最终一致性引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-51", "name": "智能合约原子性执行引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-62", "name": "弹性伸缩资源利用率引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-80", "name": "流式Token生成延迟分解引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-90", "name": "Data Mesh域自治边界引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-96", "name": "自动扩缩容响应时间引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-97", "name": "混合架构资源利用率引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-100", "name": "验证延迟不等式", "type": "Lemma", "stage": "K", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-102", "name": "DLQ完备性条件", "type": "Lemma", "stage": "K", "topic": "verification", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-105", "name": "多云可用性上限", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-106", "name": "跨云延迟下界", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-110", "name": "TLS机密性引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-111", "name": "RBAC权限继承引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-112", "name": "端到端加密独立性引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-115", "name": "增量计算正确性引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-116", "name": "级联更新传播引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-117", "name": "存储空间优化引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-125", "name": "边缘延迟优势引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-201", "name": "实时数据网格去中心化优势引理", "type": "Lemma", "stage": "K", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-K-06-231", "name": "Task并发与隔离性", "type": "Lemma", "stage": "K", "topic": "concurrency", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-03-70a", "name": "Broadcast Join可行性条件引理", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Lemma-F-09-32", "name": "Watermark传播单调性", "type": "Lemma", "stage": "F", "topic": "general", "group": 1, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Cor-S-14-01", "name": "可判定性递减推论", "type": "Cor", "stage": "S", "topic": "general", "group": 4, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Cor-F-12-05", "name": "特征存储物化视图一致性推论", "type": "Cor", "stage": "F", "topic": "general", "group": 4, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Cor-K-06-05", "name": "智能合约事件驱动活性推论", "type": "Cor", "stage": "K", "topic": "verification", "group": 4, "ref_count": 0, "dep_count": 1, "radius": 5.0}, {"id": "Cor-F-07-05", "name": "预测性维护误报率边界推论", "type": "Cor", "stage": "F", "topic": "general", "group": 4, "ref_count": 0, "dep_count": 1, "radius": 5.0}], "links": [{"source": 0, "target": 84, "value": 1}, {"source": 3, "target": 85, "value": 1}, {"source": 1, "target": 86, "value": 1}, {"source": 2, "target": 87, "value": 1}, {"source": 4, "target": 88, "value": 1}, {"source": 5, "target": 89, "value": 1}, {"source": 5, "target": 90, "value": 1}, {"source": 11, "target": 91, "value": 1}, {"source": 7, "target": 92, "value": 1}, {"source": 7, "target": 93, "value": 1}, {"source": 8, "target": 94, "value": 1}, {"source": 8, "target": 95, "value": 1}, {"source": 8, "target": 96, "value": 1}, {"source": 9, "target": 97, "value": 1}, {"source": 9, "target": 98, "value": 1}, {"source": 9, "target": 99, "value": 1}, {"source": 9, "target": 100, "value": 1}, {"source": 10, "target": 101, "value": 1}, {"source": 10, "target": 102, "value": 1}, {"source": 10, "target": 103, "value": 1}, {"source": 12, "target": 104, "value": 1}, {"source": 27, "target": 105, "value": 1}, {"source": 28, "target": 106, "value": 1}, {"source": 29, "target": 107, "value": 1}, {"source": 30, "target": 108, "value": 1}, {"source": 31, "target": 109, "value": 1}, {"source": 32, "target": 110, "value": 1}, {"source": 33, "target": 111, "value": 1}, {"source": 34, "target": 112, "value": 1}, {"source": 35, "target": 113, "value": 1}, {"source": 36, "target": 114, "value": 1}, {"source": 37, "target": 115, "value": 1}, {"source": 38, "target": 116, "value": 1}, {"source": 39, "target": 117, "value": 1}, {"source": 40, "target": 118, "value": 1}, {"source": 41, "target": 119, "value": 1}, {"source": 42, "target": 120, "value": 1}, {"source": 43, "target": 121, "value": 1}, {"source": 13, "target": 122, "value": 1}, {"source": 14, "target": 123, "value": 1}, {"source": 15, "target": 124, "value": 1}, {"source": 16, "target": 125, "value": 1}, {"source": 17, "target": 126, "value": 1}, {"source": 18, "target": 127, "value": 1}, {"source": 19, "target": 128, "value": 1}, {"source": 20, "target": 129, "value": 1}, {"source": 21, "target": 130, "value": 1}, {"source": 23, "target": 131, "value": 1}, {"source": 24, "target": 132, "value": 1}, {"source": 25, "target": 133, "value": 1}, {"source": 26, "target": 134, "value": 1}, {"source": 47, "target": 135, "value": 1}, {"source": 48, "target": 136, "value": 1}, {"source": 49, "target": 137, "value": 1}, {"source": 51, "target": 138, "value": 1}, {"source": 52, "target": 139, "value": 1}, {"source": 50, "target": 140, "value": 1}, {"source": 53, "target": 141, "value": 1}, {"source": 54, "target": 142, "value": 1}, {"source": 44, "target": 143, "value": 1}, {"source": 45, "target": 144, "value": 1}, {"source": 46, "target": 145, "value": 1}, {"source": 80, "target": 146, "value": 1}, {"source": 81, "target": 147, "value": 1}, {"source": 82, "target": 148, "value": 1}, {"source": 55, "target": 149, "value": 1}, {"source": 56, "target": 150, "value": 1}, {"source": 57, "target": 151, "value": 1}, {"source": 58, "target": 152, "value": 1}, {"source": 59, "target": 153, "value": 1}, {"source": 60, "target": 154, "value": 1}, {"source": 61, "target": 155, "value": 1}, {"source": 62, "target": 156, "value": 1}, {"source": 63, "target": 157, "value": 1}, {"source": 64, "target": 158, "value": 1}, {"source": 65, "target": 159, "value": 1}, {"source": 66, "target": 160, "value": 1}, {"source": 67, "target": 161, "value": 1}, {"source": 68, "target": 162, "value": 1}, {"source": 69, "target": 163, "value": 1}, {"source": 70, "target": 164, "value": 1}, {"source": 71, "target": 165, "value": 1}, {"source": 72, "target": 166, "value": 1}, {"source": 73, "target": 167, "value": 1}, {"source": 74, "target": 168, "value": 1}, {"source": 75, "target": 169, "value": 1}, {"source": 76, "target": 170, "value": 1}, {"source": 77, "target": 171, "value": 1}, {"source": 78, "target": 172, "value": 1}, {"source": 79, "target": 173, "value": 1}, {"source": 22, "target": 174, "value": 1}, {"source": 83, "target": 175, "value": 1}, {"source": 6, "target": 176, "value": 1}, {"source": 33, "target": 177, "value": 1}, {"source": 61, "target": 178, "value": 1}, {"source": 40, "target": 179, "value": 1}]};
+        const colors = {"Thm": "#fff3e0", "Lemma": "#f3e5f5", "Def": "#e1f5fe", "Prop": "#e8f5e9", "Cor": "#fce4ec"};
+        const stageColors = {"S": "#ffcc80", "K": "#81c784", "F": "#64b5f6", "U": "#ba68c8"};
+        
+        let width, height, svg, g, link, node, simulation;
+        let currentZoom = d3.zoomIdentity;
+        let animationEnabled = true;
+        
+        function init() {
+            const container = document.getElementById('graph');
+            width = container.clientWidth;
+            height = container.clientHeight;
+            
+            svg = d3.select('#graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+            
+            g = svg.append('g');
+            
+            const zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    currentZoom = event.transform;
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            simulation = d3.forceSimulation(data.nodes)
+                .force('link', d3.forceLink(data.links).id(d => d.id).distance(80))
+                .force('charge', d3.forceManyBody().strength(-200))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 3));
+            
+            render();
+            setupInteractions();
+        }
+        
+        function render() {
+            link = g.append('g')
+                .attr('class', 'links')
+                .selectAll('line')
+                .data(data.links)
+                .enter().append('line')
+                .attr('class', 'link');
+            
+            node = g.append('g')
+                .attr('class', 'nodes')
+                .selectAll('circle')
+                .data(data.nodes)
+                .enter().append('circle')
+                .attr('class', 'node')
+                .attr('r', d => d.radius)
+                .attr('fill', d => colors[d.type] || '#ccc')
+                .attr('stroke', d => stageColors[d.stage] || '#333')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            const labels = g.append('g')
+                .attr('class', 'labels')
+                .selectAll('text')
+                .data(data.nodes)
+                .enter().append('text')
+                .attr('font-size', 9)
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => -d.radius - 5)
+                .text(d => d.id)
+                .style('pointer-events', 'none')
+                .style('fill', '#333')
+                .style('opacity', 0.7);
+            
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+                
+                labels
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+        }
+        
+        function setupInteractions() {
+            const tooltip = d3.select('#tooltip');
+            
+            node.on('mouseover', function(event, d) {
+                tooltip.style('opacity', 1)
+                    .html(`
+                        <h3>${d.id}</h3>
+                        <p><strong>名称:</strong> ${d.name}</p>
+                        <p><strong>类型:</strong> ${d.type}</p>
+                        <p><strong>阶段:</strong> ${d.stage}</p>
+                        <p><strong>主题:</strong> ${d.topic}</p>
+                        <p><strong>被引用:</strong> ${d.ref_count} 次</p>
+                        <p><strong>依赖:</strong> ${d.dep_count} 个</p>
+                    `)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY + 10) + 'px');
+                
+                highlightConnections(d);
+            })
+            .on('mouseout', function() {
+                tooltip.style('opacity', 0);
+                unhighlightConnections();
+            })
+            .on('click', function(event, d) {
+                event.stopPropagation();
+                focusOnNode(d);
+            });
+            
+            document.getElementById('search').addEventListener('input', function(e) {
+                const term = e.target.value.toLowerCase();
+                if (term) {
+                    node.classed('dimmed', d => 
+                        !d.id.toLowerCase().includes(term) && 
+                        !d.name.toLowerCase().includes(term)
+                    );
+                } else {
+                    node.classed('dimmed', false);
+                }
+            });
+            
+            document.querySelectorAll('.filter-group input[data-type]').forEach(cb => {
+                cb.addEventListener('change', filterNodes);
+            });
+            
+            document.querySelectorAll('.filter-group input[data-stage]').forEach(cb => {
+                cb.addEventListener('change', filterNodes);
+            });
+            
+            svg.on('click', () => { unhighlightConnections(); });
+        }
+        
+        function highlightConnections(d) {
+            const connected = new Set();
+            connected.add(d.id);
+            
+            data.links.forEach(l => {
+                if (l.source.id === d.id) connected.add(l.target.id);
+                if (l.target.id === d.id) connected.add(l.source.id);
+            });
+            
+            node.classed('dimmed', n => !connected.has(n.id));
+            node.classed('highlight', n => n.id === d.id);
+            link.classed('dimmed', l => l.source.id !== d.id && l.target.id !== d.id);
+            link.classed('highlight', l => l.source.id === d.id || l.target.id === d.id);
+        }
+        
+        function unhighlightConnections() {
+            node.classed('dimmed', false).classed('highlight', false);
+            link.classed('dimmed', false).classed('highlight', false);
+        }
+        
+        function filterNodes() {
+            const activeTypes = Array.from(document.querySelectorAll('.filter-group input[data-type]:checked'))
+                .map(cb => cb.dataset.type);
+            const activeStages = Array.from(document.querySelectorAll('.filter-group input[data-stage]:checked'))
+                .map(cb => cb.dataset.stage);
+            
+            node.style('display', d => {
+                const typeMatch = activeTypes.includes(d.type);
+                const stageMatch = activeStages.includes(d.stage);
+                return typeMatch && stageMatch ? 'block' : 'none';
+            });
+            
+            link.style('display', d => {
+                const sourceVisible = activeTypes.includes(d.source.type) && activeStages.includes(d.source.stage);
+                const targetVisible = activeTypes.includes(d.target.type) && activeStages.includes(d.target.stage);
+                return sourceVisible && targetVisible ? 'block' : 'none';
+            });
+        }
+        
+        function focusOnNode(d) {
+            svg.transition().duration(750).call(
+                d3.zoom().transform,
+                d3.zoomIdentity.translate(width/2, height/2).scale(1.5).translate(-d.x, -d.y)
+            );
+        }
+        
+        function zoomIn() {
+            svg.transition().duration(300).call(d3.zoom().scaleBy, 1.3);
+        }
+        
+        function zoomOut() {
+            svg.transition().duration(300).call(d3.zoom().scaleBy, 0.7);
+        }
+        
+        function resetZoom() {
+            svg.transition().duration(750).call(d3.zoom().transform, d3.zoomIdentity);
+        }
+        
+        function toggleAnimation() {
+            animationEnabled = !animationEnabled;
+            if (animationEnabled) {
+                simulation.restart();
+            } else {
+                simulation.stop();
+            }
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('graph');
+            width = container.clientWidth;
+            height = container.clientHeight;
+            svg.attr('width', width).attr('height', height);
+            simulation.force('center', d3.forceCenter(width / 2, height / 2));
+            simulation.alpha(0.3).restart();
+        });
+        
+        init();
+    </script>
+</body>
+</html>

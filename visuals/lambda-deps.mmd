@@ -1,0 +1,52 @@
+graph TB
+    %% Lambda主题依赖图
+    %% 生成时间: 2026-04-10T21:36:38.062595
+
+    subgraph DefGroup[定义 (15)]
+        Def-S-02-03["Def-S-02-03<br/>π-演算"]
+        Def-S-07-02["Def-S-07-02<br/>合流规约语义"]
+        Def-S-13-01["Def-S-13-01<br/>Flink算子→π-演算编码"]
+        Def-S-13-02["Def-S-13-02<br/>Dataflow边→π-演算通道"]
+        Def-S-21-01["Def-S-21-01<br/>FG抽象语法"]
+        Def-S-21-03["Def-S-21-03<br/>类型替换"]
+        Def-S-22-01["Def-S-22-01<br/>DOT抽象语法"]
+        Def-F-02-41["Def-F-02-41<br/>源系统连接器抽象"]
+        Def-F-02-46["Def-F-02-46<br/>目标系统Sink抽象"]
+        Def-F-03-20["Def-F-03-20<br/>Python UDF抽象"]
+        Def-F-03-30["Def-F-03-30<br/>PTF基本抽象"]
+        Def-F-03-38["Def-F-03-38<br/>PTF应用场景"]
+        Def-F-09-32["Def-F-09-32<br/>State V2 Abstraction"]
+        Def-F-03-05["Def-F-03-05<br/>Flink Table API抽象层次"]
+        Def-F-12-106["Def-F-12-106<br/>LLM集成抽象层"]
+    end
+
+    subgraph LemmaGroup[引理 (2)]
+        Lemma-S-02-02["Lemma-S-02-02<br/>动态通道演算的图灵完备性"]
+        Lemma-S-11-01["Lemma-S-11-01<br/>替换引理"]
+    end
+
+    subgraph PropGroup[命题 (4)]
+        Prop-S-02-02["Prop-S-02-02<br/>有限控制静态演算可判定性"]
+        Prop-S-18-01["Prop-S-18-01<br/>Checkpoint与2PC绑定关系"]
+        Prop-K-06-01["Prop-K-06-01<br/>Rust零成本抽象保持"]
+        Prop-F-13-06["Prop-F-13-06<br/>零成本异步抽象"]
+    end
+
+    subgraph ThmGroup[定理 (1)]
+        Thm-S-02-01["Thm-S-02-01<br/>动态通道演算严格包含静态通道演算"]
+    end
+
+    %% 依赖关系
+
+    %% 样式定义
+    classDef ThmStyle fill:#fff3e0,stroke:#333,stroke-width:1px
+    classDef LemmaStyle fill:#f3e5f5,stroke:#333,stroke-width:1px
+    classDef DefStyle fill:#e1f5fe,stroke:#333,stroke-width:1px
+    classDef PropStyle fill:#e8f5e9,stroke:#333,stroke-width:1px
+    classDef CorStyle fill:#fce4ec,stroke:#333,stroke-width:1px
+
+    %% 应用样式
+    class Thm-S-02-01 ThmStyle
+    class Def-S-02-03,Def-S-07-02,Def-S-13-01,Def-S-13-02,Def-S-21-01,Def-S-21-03,Def-S-22-01,Def-F-02-41,Def-F-02-46,Def-F-03-20,Def-F-03-30,Def-F-03-38,Def-F-09-32,Def-F-03-05,Def-F-12-106 DefStyle
+    class Lemma-S-02-02,Lemma-S-11-01 LemmaStyle
+    class Prop-S-02-02,Prop-S-18-01,Prop-K-06-01,Prop-F-13-06 PropStyle

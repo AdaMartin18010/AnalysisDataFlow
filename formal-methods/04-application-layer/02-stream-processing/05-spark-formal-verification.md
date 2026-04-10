@@ -712,6 +712,24 @@ flowchart TD
 | `union(other)` | Narrow | $R \cup \text{other}$ |
 | `repartition(n)` | Wide | $\text{hash}(R, n)$ |
 
+## 9. 引用参考 (Extended)
+
+[^13]: M. Zaharia et al., "Spark: Cluster Computing with Working Sets", in HotCloud 2010. https://www.usenix.org/event/hotcloud10/tech/full_papers/Zaharia.pdf
+
+[^14]: M. Zaharia et al., "Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing", in NSDI 2012. https://www.usenix.org/conference/nsdi12/technical-sessions/presentation/zaharia
+
+[^15]: M. Zaharia et al., "Discretized Streams: Fault-Tolerant Streaming Computation at Scale", in SOSP 2013. https://doi.org/10.1145/2517349.2522737
+
+[^16]: M. Armbrust et al., "Structured Streaming: A Declarative API for Real-Time Applications in Apache Spark", in SIGMOD 2018. https://doi.org/10.1145/3183713.3190664
+
+[^17]: L. G. Valiant, "A Bridging Model for Parallel Computation", Communications of the ACM, 33(8), pp. 103-111, 1990. https://doi.org/10.1145/79173.79181
+
+[^18]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", in VLDB 2015, 8(12), pp. 1792-1803.
+
+[^19]: S. L. Graham, P. B. Kessler, M. K. McKusick, "gprof: A Call Graph Execution Profiler", in SIGPLAN 1982, pp. 120-126. https://doi.org/10.1145/872726.806987
+
+[^20]: J. Dean, S. Ghemawat, "MapReduce: Simplified Data Processing on Large Clusters", Communications of the ACM, 51(1), pp. 107-113, 2008. https://doi.org/10.1145/1327452.1327492
+
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-10 | 形式化等级: L5-L6*

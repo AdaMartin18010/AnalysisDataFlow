@@ -1,0 +1,126 @@
+graph TB
+    %% Verification主题依赖图
+    %% 生成时间: 2026-04-10T21:36:38.063575
+
+    subgraph DefGroup[定义 (10)]
+        Def-S-10-01["Def-S-10-01<br/>安全性(Safety)"]
+        Def-S-10-02["Def-S-10-02<br/>活性(Liveness)"]
+        Def-S-07-13["Def-S-07-13<br/>Smart Casual Verification"]
+        Def-S-07-14["Def-S-07-14<br/>Casual Verification"]
+        Def-K-05-04["Def-K-05-04<br/>验证金字塔"]
+        Def-K-07-04["Def-K-07-04<br/>远程证明协议"]
+        Def-K-06-83["Def-K-06-83<br/>去中心化身份验证"]
+        Def-F-12-34a["Def-F-12-34a<br/>影子模式验证"]
+        Def-S-10-03["Def-S-10-03<br/>Struct/02-properties/02.04-liveness..."]
+        Def-S-10-05["Def-S-10-05<br/>Struct/02-properties/02.04-liveness..."]
+    end
+
+    subgraph LemmaGroup[引理 (21)]
+        Lemma-S-10-01["Lemma-S-10-01<br/>安全性有限见证"]
+        Lemma-S-10-02["Lemma-S-10-02<br/>活性无限承诺"]
+        Lemma-S-07-07["Lemma-S-07-07<br/>完备性边界"]
+        Lemma-S-07-08["Lemma-S-07-08<br/>TLA+自动转换"]
+        Lemma-S-17-01["Lemma-S-17-01<br/>Barrier传播不变式"]
+        Lemma-S-19-01["Lemma-S-19-01<br/>Marker传播不变式"]
+        Lemma-K-06-01["Lemma-K-06-01<br/>所有权转移不变式"]
+        Lemma-F-04-42["Lemma-F-04-42<br/>增量读取完备性引理"]
+        Lemma-F-04-51["Lemma-F-04-51<br/>变更日志完备性引理"]
+        Lemma-K-06-100["Lemma-K-06-100<br/>验证延迟不等式"]
+        Lemma-K-06-101["Lemma-K-06-101<br/>验证吞吐量上界"]
+        Lemma-K-06-102["Lemma-K-06-102<br/>DLQ完备性条件"]
+        Lemma-F-10-40["Lemma-F-10-40<br/>Slot分配完备性"]
+        Lemma-F-08-51["Lemma-F-08-51<br/>迁移路径完备性"]
+        Lemma-S-10-03["Lemma-S-10-03<br/>Struct/02-properties/02.04-liveness..."]
+        Lemma-F-02-05["Lemma-F-02-05<br/>倾斜检测完备性"]
+        Lemma-F-02-61["Lemma-F-02-61<br/>TTL状态访问原子性引理"]
+        Lemma-F-15-30["Lemma-F-15-30<br/>可观测性信号正交性引理"]
+        Lemma-F-10-32["Lemma-F-10-32<br/>顶点独立扩缩容兼容性引理"]
+        Lemma-K-06-110["Lemma-K-06-110<br/>TLS机密性引理"]
+        Lemma-K-06-111["Lemma-K-06-111<br/>RBAC权限继承引理"]
+    end
+
+    subgraph PropGroup[命题 (8)]
+        Prop-F-09-01["Prop-F-09-01<br/>语言特性完备性"]
+        Prop-F-02-15["Prop-F-02-15<br/>Materialized Table V2智能推断完备性"]
+        Prop-K-06-50["Prop-K-06-50<br/>去中心化流处理活性保证"]
+        Prop-K-06-231["Prop-K-06-231<br/>SSE流式传输可靠性边界"]
+        Prop-K-06-130["Prop-K-06-130<br/>数据契约验证完备性"]
+        Prop-F-15-50["Prop-F-15-50<br/>指标完备性原理"]
+        Prop-F-13-08["Prop-F-13-08<br/>纵深防御完备性"]
+        Prop-F-13-21["Prop-F-13-21<br/>OAuth 2.1 PKCE安全性"]
+    end
+
+    subgraph ThmGroup[定理 (39)]
+        Thm-S-03-02["Thm-S-03-02<br/>监督树活性定理"]
+        Thm-S-06-02["Thm-S-06-02<br/>1CP的EPP完备性"]
+        Thm-S-07-03["Thm-S-07-03<br/>Smart Casual Verification有效性"]
+        Thm-S-07-04["Thm-S-07-04<br/>CCF共识安全性质"]
+        Thm-K-07-03["Thm-K-07-03<br/>GPU TEE远程证明正确性定理"]
+        Thm-F-02-62["Thm-F-02-62<br/>增量检查点完备性定理"]
+        Thm-F-03-52["Thm-F-03-52<br/>新鲜度推断完备性定理"]
+        Thm-F-12-91["Thm-F-12-91<br/>A2A消息可靠性定理"]
+        Thm-F-06-30["Thm-F-06-30<br/>单元测试完备性定理"]
+        Thm-F-15-11["Thm-F-15-11<br/>数据质量规则验证完备性定理"]
+        Thm-F-15-30["Thm-F-15-30<br/>OpenTelemetry集成完备性定理"]
+        Thm-F-10-32["Thm-F-10-32<br/>追赶容量完备性定理"]
+        Thm-K-06-100["Thm-K-06-100<br/>分层验证完备性定理"]
+        Thm-K-06-110["Thm-K-06-110<br/>端到端安全协议安全性定理"]
+        Thm-K-06-111["Thm-K-06-111<br/>合规性验证可判定性定理"]
+        Thm-K-06-131["Thm-K-06-131<br/>数据契约验证完备性定理"]
+        Thm-K-06-146["Thm-K-06-146<br/>Tool调用安全性定理"]
+        Thm-K-06-162["Thm-K-06-162<br/>成本优化决策完备性定理"]
+        Thm-K-06-241["Thm-K-06-241<br/>A2A+MCP正交完备性定理"]
+        Thm-K-06-251["Thm-K-06-251<br/>A2A+MCP正交完备性定理"]
+        Thm-S-07-tools["Thm-S-07-tools<br/>工具链完备性定理"]
+        Thm-F-02-91["Thm-F-02-91<br/>Checkpoint完备性定理"]
+        Thm-F-04-100["Thm-F-04-100<br/>连接器生态完备性定理"]
+        Thm-F-10-40["Thm-F-10-40<br/>Kubernetes Native部署的容错完备性"]
+        Thm-F-15-50["Thm-F-15-50<br/>端到端可观测性完备性定理"]
+        Thm-F-15-52["Thm-F-15-52<br/>Checkpoint超时检测完备性"]
+        Thm-F-09-03["Thm-F-09-03<br/>Flink SQL优化器完备性"]
+        Thm-F-13-03["Thm-F-13-03<br/>Flink安全配置完备性定理"]
+        Thm-F-03-101["Thm-F-03-101<br/>MATCH_RECOGNIZE流处理完备性定理"]
+        Thm-F-04-200["Thm-F-04-200<br/>Flink 2.4连接器生态完备性定理"]
+        Thm-F-13-20["Thm-F-13-20<br/>Flink 2.4安全配置完备性定理"]
+        Thm-F-13-21["Thm-F-13-21<br/>零信任架构正确性证明"]
+        Thm-F-09-50["Thm-F-09-50<br/>WASM UDF安全性定理"]
+        Thm-S-17-01["Thm-S-17-01<br/>Flink Checkpoint一致性定理"]
+        Thm-S-19-01["Thm-S-19-01<br/>Chandy-Lamport一致性定理"]
+        Thm-F-04-33["Thm-F-04-33<br/>流批一体存储正确性定理"]
+        Thm-F-04-52["Thm-F-04-52<br/>变更日志生成正确性定理"]
+        Thm-K-06-102["Thm-K-06-102<br/>DLQ完整性定理"]
+        Thm-K-06-51["Thm-K-06-51<br/>智能合约事件驱动执行正确性定理"]
+    end
+
+    subgraph CorGroup[推论 (1)]
+        Cor-K-06-05["Cor-K-06-05<br/>智能合约事件驱动活性推论"]
+    end
+
+    %% 依赖关系
+    Thm-S-07-03 --> Lemma-S-07-07
+    Thm-S-17-01 --> Lemma-S-17-01
+    Thm-S-19-01 --> Lemma-S-19-01
+    Thm-F-04-33 --> Lemma-F-04-42
+    Thm-F-04-52 --> Lemma-F-04-51
+    Thm-K-06-100 --> Lemma-K-06-100
+    Thm-K-06-102 --> Lemma-K-06-102
+    Thm-K-06-51 --> Cor-K-06-05
+    Thm-F-02-62 --> Lemma-F-02-61
+    Thm-F-15-30 --> Lemma-F-15-30
+    Thm-F-10-32 --> Lemma-F-10-32
+    Thm-K-06-110 --> Lemma-K-06-110
+    Thm-K-06-111 --> Lemma-K-06-111
+
+    %% 样式定义
+    classDef ThmStyle fill:#fff3e0,stroke:#333,stroke-width:1px
+    classDef LemmaStyle fill:#f3e5f5,stroke:#333,stroke-width:1px
+    classDef DefStyle fill:#e1f5fe,stroke:#333,stroke-width:1px
+    classDef PropStyle fill:#e8f5e9,stroke:#333,stroke-width:1px
+    classDef CorStyle fill:#fce4ec,stroke:#333,stroke-width:1px
+
+    %% 应用样式
+    class Thm-S-03-02,Thm-S-06-02,Thm-S-07-03,Thm-S-07-04,Thm-K-07-03,Thm-F-02-62,Thm-F-03-52,Thm-F-12-91,Thm-F-06-30,Thm-F-15-11,Thm-F-15-30,Thm-F-10-32,Thm-K-06-100,Thm-K-06-110,Thm-K-06-111,Thm-K-06-131,Thm-K-06-146,Thm-K-06-162,Thm-K-06-241,Thm-K-06-251,Thm-S-07-tools,Thm-F-02-91,Thm-F-04-100,Thm-F-10-40,Thm-F-15-50,Thm-F-15-52,Thm-F-09-03,Thm-F-13-03,Thm-F-03-101,Thm-F-04-200,Thm-F-13-20,Thm-F-13-21,Thm-F-09-50,Thm-S-17-01,Thm-S-19-01,Thm-F-04-33,Thm-F-04-52,Thm-K-06-102,Thm-K-06-51 ThmStyle
+    class Def-S-10-01,Def-S-10-02,Def-S-07-13,Def-S-07-14,Def-K-05-04,Def-K-07-04,Def-K-06-83,Def-F-12-34a,Def-S-10-03,Def-S-10-05 DefStyle
+    class Lemma-S-10-01,Lemma-S-10-02,Lemma-S-07-07,Lemma-S-07-08,Lemma-S-17-01,Lemma-S-19-01,Lemma-K-06-01,Lemma-F-04-42,Lemma-F-04-51,Lemma-K-06-100,Lemma-K-06-101,Lemma-K-06-102,Lemma-F-10-40,Lemma-F-08-51,Lemma-S-10-03,Lemma-F-02-05,Lemma-F-02-61,Lemma-F-15-30,Lemma-F-10-32,Lemma-K-06-110,Lemma-K-06-111 LemmaStyle
+    class Prop-F-09-01,Prop-F-02-15,Prop-K-06-50,Prop-K-06-231,Prop-K-06-130,Prop-F-15-50,Prop-F-13-08,Prop-F-13-21 PropStyle
+    class Cor-K-06-05 CorStyle

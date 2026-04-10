@@ -88,6 +88,43 @@ $$\forall P: \left( \{P\}\, C\, \{Q\} \text{ 可证} \right) \leftrightarrow \le
 | **循环规则** (While) | $\frac{\{I \land b\}\, C\, \{I\}}{\{I\}\, \mathbf{while}\, b\, \mathbf{do}\, C\, \{I \land \neg b\}}$ |
 | **推论规则** (Consequence) | $\frac{P \rightarrow P', \quad \{P'\}\, C\, \{Q'\}, \quad Q' \rightarrow Q}{\{P\}\, C\, \{Q\}}$ |
 
+### 1.4 扩展定义
+
+#### Def-S-HL-06: 完全正确性霍尔三元组
+
+**定义**: 完全正确性三元组 $[P]\ C\ [Q]$ 表示：
+
+若 $P$ 在初始状态成立，则：
+1. $C$ **必然终止**
+2. 终止状态满足 $Q$
+
+与部分正确性的区别：
+- $\{P\}\ C\ \{Q\}$: 若终止则 $Q$ 成立（部分正确性）
+- $[P]\ C\ [Q]$: 必然终止且 $Q$ 成立（完全正确性）
+
+#### Def-S-HL-07: 变体函数 (Variant Function)
+
+**定义**: 对于循环 $\textbf{while}\ b\ \textbf{do}\ C$，变体函数 $t$ 是一个从状态到良基集合的映射：
+
+$$t: \Sigma \to (W, <)$$
+
+其中 $(W, <)$ 是良基集合（无无限递减链），满足：
+- $P \rightarrow t \geq 0$: 变体有下界
+- $\{P \land b \land t = z\}\ C\ \{P \land t < z\}$: 每次迭代变体递减
+
+#### Def-S-HL-08: 最强后置条件 (Strongest Postcondition)
+
+**定义** (Dijkstra): 对于程序 $C$ 和前置条件 $P$，最强后置条件 $sp(C, P)$ 是满足以下条件的最强断言：
+
+$$\forall Q: \{P\}\ C\ \{Q\} \text{ 可证 } \leftrightarrow sp(C, P) \rightarrow Q$$
+
+**计算规则**：
+| 构造 | 最强后置条件 |
+|------|--------------|
+| $\textbf{skip}$ | $sp(\textbf{skip}, P) = P$ |
+| $x := e$ | $sp(x := e, P) = \exists x'. P[x'/x] \land x = e[x'/x]$ |
+| $C_1; C_2$ | $sp(C_1; C_2, P) = sp(C_2, sp(C_1, P))$ |
+
 ---
 
 ## 2. 属性推导 (Properties)
@@ -621,6 +658,18 @@ mindmap
 [^7]: P.W. O'Hearn, J.C. Reynolds, H. Yang, "Local Reasoning about Programs that Alter Data Structures", CSL 2001.
 
 [^8]: N. Benton, "Simple Relational Correctness Proofs for Static Analyses and Program Transformations", POPL 2004.
+
+[^9]: A.R. Bradley and Z. Manna, "The Calculus of Computation: Decision Procedures with Applications to Verification", Springer, 2007. https://doi.org/10.1007/978-3-540-74113-8
+
+[^10]: M. Huth and M. Ryan, "Logic in Computer Science: Modelling and Reasoning about Systems", Cambridge University Press, 2nd Edition, 2004.
+
+[^11]: F. Pfenning, "Lecture Notes on Hoare Logic", Carnegie Mellon University, 2018. http://www.cs.cmu.edu/~fp/courses/15317-f18/schedule.html
+
+[^12]: G. Winskel, "The Formal Semantics of Programming Languages: An Introduction", MIT Press, 1993.
+
+[^13]: J. C. Reynolds, "Separation Logic: A Logic for Shared Mutable Data Structures", in LICS 2002, pp. 55-74. https://doi.org/10.1109/LICS.2002.1029817
+
+[^14]: N. R. Krishnaswami and J. Aldrich, "Permission-Sensitive Separation Logic", in ESOP 2007, pp. 92-106. https://doi.org/10.1007/978-3-540-71316-6_8
 
 ---
 

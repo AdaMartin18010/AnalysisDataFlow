@@ -39,6 +39,50 @@ $$d(l_P, l_Q) \leq \delta_P(l_P)$$
 
 其中 $d$ 是欧氏距离。
 
+### 1.4 位置与移动性
+
+**Def-C-01-06: 位置空间 (Location Space)**
+
+位置空间 $\mathcal{L}$ 是一个度量空间 $(\mathcal{L}, d)$，其中：
+
+- $\mathcal{L} \subseteq \mathbb{R}^n$ (通常是 $\mathbb{R}^2$ 或 $\mathbb{R}^3$)
+- $d: \mathcal{L} \times \mathcal{L} \to \mathbb{R}_{\geq 0}$ 是距离函数
+
+**Def-C-01-07: 移动性函数 (Mobility Function)**
+
+移动性函数 $m: \mathcal{P} \times \mathbb{T} \to \mathcal{L}$ 将进程映射到时间上的位置：
+$$m(P, t) = l_t$$
+
+其中进程 $P$ 在时间 $t$ 位于位置 $l_t$。
+
+**Def-C-01-08: 网络拓扑 (Network Topology)**
+
+MANET 的网络拓扑是一个时变图 $G(t) = (V, E(t))$，其中：
+
+- $V$: 节点集合（进程集合）
+- $E(t) \subseteq V \times V$: 时间 $t$ 的边集
+- $(P, Q) \in E(t) \iff d(m(P, t), m(Q, t)) \leq \min(\delta_P, \delta_Q)$
+
+### 1.5 广播语义形式化
+
+**Def-C-01-09: 广播作用域 (Broadcast Scope)**
+
+对于广播动作 $\omega(a, r).P$，接收进程集合定义为：
+$$\text{Receivers}(\omega(a, r), P, t) = \{ Q \in \mathcal{P} \mid d(m(P, t), m(Q, t)) \leq r \}$$
+
+### 1.6 结构同余
+
+**Def-C-01-10: ω-演算结构同余**
+
+结构同余 $\equiv$ 是满足以下条件的最小同余关系：
+
+- $P \mid 0 \equiv P$ (空进程单位元)
+- $P \mid Q \equiv Q \mid P$ (并行交换律)
+- $(P \mid Q) \mid R \equiv P \mid (Q \mid R)$ (并行结合律)
+- $(\nu n)0 \equiv 0$ (限制空进程)
+- $(\nu n)(\nu m)P \equiv (\nu m)(\nu n)P$ (限制交换律)
+- $n \notin fn(Q) \Rightarrow (\nu n)(P \mid Q) \equiv (\nu n)P \mid Q$ (限制作用域扩展)
+
 ## 2. 属性推导
 
 ### 2.1 广播语义
