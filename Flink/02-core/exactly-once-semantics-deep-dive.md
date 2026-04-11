@@ -8,7 +8,8 @@
 
 **定义 Def-F-02-91 (Exactly-Once语义)**
 
-给定流处理系统 $S = (I, O, T, \Sigma)$，其中 $I$ 为输入事件流，$O$ 为输出事件流，$T$ 为转换算子集合，$\Sigma$ 为状态空间。系统在事件 $e$ 上满足 **Exactly-Once处理语义** 当且仅当：
+给定流处理系统 $S = (I, O, T, \Sigma)$，其中 $I$ 为输入事件流，$O$ 为输出事件流，$T$ 为转换算子集合，$\Sigma$ 为状态空间。
+系统在事件 $e$ 上满足 **Exactly-Once处理语义** 当且仅当：
 
 $$\forall e \in I: \quad |\{ o \in O \mid o = T(e) \land \text{committed}(o) \}| = 1$$
 

@@ -23,12 +23,14 @@ $$\mathcal{D}_{prod}(s, T, \mathcal{C}) = \{(r_s, \pi(r_t)) \mid r_s \in s \land
 
 **生产就绪标准**：
 
-$$\text{ProductionReady}(\mathcal{D}_{prod}) \equiv \begin{cases}
+$$
+\text{ProductionReady}(\mathcal{D}_{prod}) \equiv \begin{cases}
 \text{StateSize} < 10\text{GB} & \text{(状态可控)} \\
 \text{CheckpointDuration} < 60\text{s} & \text{(容错可行)} \\
 \text{Availability} > 99.9\% & \text{(高可用)} \\
 \text{Latency}_{p99} < 500\text{ms} & \text{(延迟可接受)}
-\end{cases}$$
+\end{cases}
+$$
 
 ---
 

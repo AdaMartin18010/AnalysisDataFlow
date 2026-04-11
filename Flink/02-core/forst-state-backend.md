@@ -23,7 +23,8 @@ $$\text{ForSt} = \langle \text{UFS}, \text{LocalCache}, \text{StateMapping}, \te
 - $\text{StateMapping}$: 状态键到文件位置的映射表
 - $\text{SyncPolicy}$: 同步策略（写直达/写回）
 
-**直观解释**: 传统 RocksDB 将状态完全存储在 TaskManager 本地磁盘，而 ForSt 将状态主要存储在分布式文件系统（DFS）中，本地仅作为热数据缓存。这类似于 CPU 的多级缓存架构 —— L1/L2 是本地，主存是 DFS。
+**直观解释**: 传统 RocksDB 将状态完全存储在 TaskManager 本地磁盘，而 ForSt 将状态主要存储在分布式文件系统（DFS）中，本地仅作为热数据缓存。
+这类似于 CPU 的多级缓存架构 —— L1/L2 是本地，主存是 DFS。
 
 **源码实现**:
 

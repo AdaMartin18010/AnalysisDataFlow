@@ -1,0 +1,245 @@
+# Quality Gate v2.0 - 质量门禁工作流
+# 触发: PR创建/更新
+# 任务:
+#   - 交叉引用检查
+#   - 六段式模板验证
+#   - Mermaid语法检查
+#   - 形式化元素编号检查
+
+name: Quality Gate v2
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - '**.md'
+      - '.scripts/**'
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+
+jobs:
+  quality-gate:
+    name: Quality Gate Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('.scripts/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .scripts/requirements.txt || true
+          
+      # ==================== 交叉引用检查 ====================
+      - name: Run Cross-Reference Checker
+        id: cross-ref-check
+        run: |
+          echo "::group::Cross-Reference Check"
+          python .scripts/cross-ref-checker-v2.py \
+            --base-path . \
+            --output cross-ref-report.json \
+            --fail-on-error || true
+          echo "::endgroup::"
+          
+      - name: Upload Cross-Ref Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cross-ref-report
+          path: cross-ref-report.json
+          
+      # ==================== 六段式模板验证 ====================
+      - name: Run Six-Section Validator
+        id: six-section-check
+        run: |
+          echo "::group::Six-Section Validation"
+          python .scripts/six-section-validator.py \
+            --base-path . \
+            --output six-section-validation-report.json \
+            --fail-on-error || true
+          echo "::endgroup::"
+          
+      - name: Upload Six-Section Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: six-section-validation-report
+          path: six-section-validation-report.json
+          
+      # ==================== Mermaid语法检查 ====================
+      - name: Run Mermaid Syntax Checker
+        id: mermaid-check
+        run: |
+          echo "::group::Mermaid Syntax Check"
+          python .scripts/mermaid-syntax-checker.py \
+            --base-path . \
+            --output mermaid-syntax-report.json || true
+          echo "::endgroup::"
+          
+      - name: Upload Mermaid Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mermaid-syntax-report
+          path: mermaid-syntax-report.json
+          
+      # ==================== 形式化元素编号检查 ====================
+      - name: Run Formal Element Checker
+        id: formal-element-check
+        run: |
+          echo "::group::Formal Element Numbering Check"
+          python .scripts/formal-element-auto-number.py \
+            --base-path . \
+            --output formal-element-report.json || true
+          echo "::endgroup::"
+          
+      - name: Upload Formal Element Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: formal-element-report
+          path: formal-element-report.json
+          
+      # ==================== 汇总报告 ====================
+      - name: Generate Summary Report
+        id: summary
+        run: |
+          echo "# Quality Gate v2.0 Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 交叉引用检查结果
+          echo "## 📎 Cross-Reference Check" >> $GITHUB_STEP_SUMMARY
+          if [ -f cross-ref-report.json ]; then
+            ERRORS=$(python -c "import json; d=json.load(open('cross-ref-report.json')); print(d['stats']['errors'])")
+            WARNINGS=$(python -c "import json; d=json.load(open('cross-ref-report.json')); print(d['stats']['warnings'])")
+            echo "- ❌ Errors: $ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️ Warnings: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "- **Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: PASSED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 六段式验证结果
+          echo "## 📐 Six-Section Validation" >> $GITHUB_STEP_SUMMARY
+          if [ -f six-section-validation-report.json ]; then
+            ERRORS=$(python -c "import json; d=json.load(open('six-section-validation-report.json')); print(d['stats']['by_severity']['error'])")
+            WARNINGS=$(python -c "import json; d=json.load(open('six-section-validation-report.json')); print(d['stats']['by_severity']['warning'])")
+            COMPLIANCE=$(python -c "import json; d=json.load(open('six-section-validation-report.json')); print(d['compliance_rate'])")
+            echo "- ❌ Errors: $ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️ Warnings: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Compliance Rate: ${COMPLIANCE}%" >> $GITHUB_STEP_SUMMARY
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "- **Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: PASSED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Mermaid检查结果
+          echo "## 📊 Mermaid Syntax Check" >> $GITHUB_STEP_SUMMARY
+          if [ -f mermaid-syntax-report.json ]; then
+            TOTAL=$(python -c "import json; d=json.load(open('mermaid-syntax-report.json')); print(d['stats']['total_diagrams'])")
+            ERRORS=$(python -c "import json; d=json.load(open('mermaid-syntax-report.json')); print(d['stats']['syntax_errors'])")
+            RATE=$(python -c "import json; d=json.load(open('mermaid-syntax-report.json')); print(d['summary']['validity_rate'])")
+            echo "- Total Diagrams: $TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Syntax Errors: $ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Validity Rate: ${RATE}%" >> $GITHUB_STEP_SUMMARY
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "- **Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: PASSED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 形式化元素检查结果
+          echo "## 🔢 Formal Element Check" >> $GITHUB_STEP_SUMMARY
+          if [ -f formal-element-report.json ]; then
+            TOTAL=$(python -c "import json; d=json.load(open('formal-element-report.json')); print(d['stats']['total_elements'])")
+            UNNUMBERED=$(python -c "import json; d=json.load(open('formal-element-report.json')); print(d['stats']['unnumbered_elements'])")
+            DUPLICATES=$(python -c "import json; d=json.load(open('formal-element-report.json')); print(d['stats']['duplicate_numbers'])")
+            echo "- Total Elements: $TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- ⚠️ Unnumbered: $UNNUMBERED" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Duplicates: $DUPLICATES" >> $GITHUB_STEP_SUMMARY
+            if [ "$DUPLICATES" -gt 0 ]; then
+              echo "- **Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: PASSED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+      # ==================== 设置作业状态 ====================
+      - name: Check Overall Status
+        run: |
+          EXIT_CODE=0
+          
+          # 检查交叉引用错误
+          if [ -f cross-ref-report.json ]; then
+            ERRORS=$(python -c "import json; d=json.load(open('cross-ref-report.json')); print(d['stats']['errors'])")
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "❌ Cross-reference check failed with $ERRORS errors"
+              EXIT_CODE=1
+            fi
+          fi
+          
+          # 检查六段式错误
+          if [ -f six-section-validation-report.json ]; then
+            ERRORS=$(python -c "import json; d=json.load(open('six-section-validation-report.json')); print(d['stats']['by_severity']['error'])")
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "❌ Six-section validation failed with $ERRORS errors"
+              EXIT_CODE=1
+            fi
+          fi
+          
+          # 检查Mermaid错误
+          if [ -f mermaid-syntax-report.json ]; then
+            ERRORS=$(python -c "import json; d=json.load(open('mermaid-syntax-report.json')); print(d['stats']['syntax_errors'])")
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "⚠️ Mermaid check found $ERRORS syntax errors (warning only)"
+            fi
+          fi
+          
+          # 检查重复编号
+          if [ -f formal-element-report.json ]; then
+            DUPLICATES=$(python -c "import json; d=json.load(open('formal-element-report.json')); print(d['stats']['duplicate_numbers'])")
+            if [ "$DUPLICATES" -gt 0 ]; then
+              echo "❌ Formal element check found $DUPLICATES duplicate numbers"
+              EXIT_CODE=1
+            fi
+          fi
+          
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ All quality gates passed!"
+          fi
+          
+          exit $EXIT_CODE

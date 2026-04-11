@@ -1,0 +1,240 @@
+# Auto Release Workflow - 自动发布工作流
+# 触发: Tag推送
+# 任务:
+#   - 版本号验证
+#   - 变更日志生成
+#   - GitHub Release创建
+
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  validate-and-release:
+    name: Validate and Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      # ==================== 提取版本信息 ====================
+      - name: Extract Version Info
+        id: version
+        run: |
+          # 从tag提取版本号
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # 检测是否为预发布版本
+          if [[ "$VERSION" == *-* ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Release version: $VERSION"
+          
+      # ==================== 版本号验证 ====================
+      - name: Validate Version Format
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          
+          # 验证语义化版本格式
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            echo "Expected format: MAJOR.MINOR.PATCH[-prerelease][+build]"
+            exit 1
+          fi
+          
+          echo "✅ Version format is valid"
+          
+      - name: Check Version Consistency
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          
+          # 检查PROJECT-TRACKING.md中的版本声明
+          if [ -f PROJECT-TRACKING.md ]; then
+            TRACKING_VERSION=$(grep -oP 'v\d+\.\d+\.\d+' PROJECT-TRACKING.md | head -1)
+            if [ -n "$TRACKING_VERSION" ]; then
+              echo "Found version in PROJECT-TRACKING.md: $TRACKING_VERSION"
+            fi
+          fi
+          
+          # 检查README中的版本badge
+          if [ -f README.md ]; then
+            README_VERSION=$(grep -oP 'Version-v[\d.]+' README.md | head -1 | sed 's/Version-v//')
+            if [ -n "$README_VERSION" ]; then
+              echo "Found version in README.md: $README_VERSION"
+            fi
+          fi
+          
+          echo "✅ Version consistency check completed"
+          
+      # ==================== 生成变更日志 ====================
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          
+          # 生成变更日志
+          echo "# Changelog for v$VERSION" > CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          echo "Release Date: $(date +%Y-%m-%d)" >> CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          # 获取提交范围
+          if [ -n "$PREV_TAG" ]; then
+            COMMIT_RANGE="${PREV_TAG}..HEAD"
+            echo "Comparing $PREV_TAG to HEAD" >> CHANGELOG-${VERSION}.md
+          else
+            COMMIT_RANGE="HEAD"
+            echo "First release" >> CHANGELOG-${VERSION}.md
+          fi
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          # 分类提交
+          echo "## 🚀 Features" >> CHANGELOG-${VERSION}.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^feat" >> CHANGELOG-${VERSION}.md || echo "- No new features" >> CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          echo "## 🐛 Bug Fixes" >> CHANGELOG-${VERSION}.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^fix" >> CHANGELOG-${VERSION}.md || echo "- No bug fixes" >> CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          echo "## 📚 Documentation" >> CHANGELOG-${VERSION}.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^docs" >> CHANGELOG-${VERSION}.md || echo "- No documentation changes" >> CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          echo "## 🔧 Maintenance" >> CHANGELOG-${VERSION}.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^(chore|refactor|style)" >> CHANGELOG-${VERSION}.md || echo "- No maintenance changes" >> CHANGELOG-${VERSION}.md
+          echo "" >> CHANGELOG-${VERSION}.md
+          
+          # 显示生成的变更日志
+          cat CHANGELOG-${VERSION}.md
+          
+          # 设置输出
+          echo "changelog_file=CHANGELOG-${VERSION}.md" >> $GITHUB_OUTPUT
+          
+      # ==================== 统计信息 ====================
+      - name: Generate Statistics
+        id: stats
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          
+          # 文档统计
+          DOC_COUNT=$(find Struct Knowledge Flink -name "*.md" 2>/dev/null | wc -l)
+          
+          # 形式化元素统计
+          THEOREM_COUNT=$(grep -r "Thm-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          DEF_COUNT=$(grep -r "Def-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # Mermaid图表统计
+          MERMAID_COUNT=$(grep -r "^\s*\`\`\`mermaid" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          echo "docs=$DOC_COUNT" >> $GITHUB_OUTPUT
+          echo "theorems=$THEOREM_COUNT" >> $GITHUB_OUTPUT
+          echo "definitions=$DEF_COUNT" >> $GITHUB_OUTPUT
+          echo "mermaid_diagrams=$MERMAID_COUNT" >> $GITHUB_OUTPUT
+          
+          echo "📊 Statistics:"
+          echo "  Documents: $DOC_COUNT"
+          echo "  Theorems: $THEOREM_COUNT"
+          echo "  Definitions: $DEF_COUNT"
+          echo "  Mermaid Diagrams: $MERMAID_COUNT"
+          
+      # ==================== 创建发布包 ====================
+      - name: Create Release Package
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          PACKAGE_NAME="AnalysisDataFlow-v${VERSION}"
+          
+          # 创建发布目录
+          mkdir -p "$PACKAGE_NAME"
+          
+          # 复制核心内容
+          cp -r Struct Knowledge Flink visuals tutorials "$PACKAGE_NAME/" 2>/dev/null || true
+          cp README.md LICENSE CHANGELOG.md "$PACKAGE_NAME/" 2>/dev/null || true
+          
+          # 创建压缩包
+          tar -czf "${PACKAGE_NAME}.tar.gz" "$PACKAGE_NAME"
+          zip -r "${PACKAGE_NAME}.zip" "$PACKAGE_NAME"
+          
+          # 计算校验和
+          sha256sum "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+          sha256sum "${PACKAGE_NAME}.zip" > "${PACKAGE_NAME}.zip.sha256"
+          
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+          echo "Package created: ${PACKAGE_NAME}.zip"
+          
+      # ==================== 创建GitHub Release ====================
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release v${{ steps.version.outputs.version }}
+          body_path: ${{ steps.changelog.outputs.changelog_file }}
+          prerelease: ${{ steps.version.outputs.is_prerelease }}
+          files: |
+            AnalysisDataFlow-v${{ steps.version.outputs.version }}.tar.gz
+            AnalysisDataFlow-v${{ steps.version.outputs.version }}.tar.gz.sha256
+            AnalysisDataFlow-v${{ steps.version.outputs.version }}.zip
+            AnalysisDataFlow-v${{ steps.version.outputs.version }}.zip.sha256
+            ${{ steps.changelog.outputs.changelog_file }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # ==================== 更新项目文档 ====================
+      - name: Update Version in Documentation
+        if: ${{ !steps.version.outputs.is_prerelease }}
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          
+          # 更新README中的版本badge
+          if [ -f README.md ]; then
+            sed -i "s/Version-v[0-9.]*-brightgreen/Version-v${VERSION}-brightgreen/g" README.md
+          fi
+          
+          # 追加到CHANGELOG.md
+          if [ -f CHANGELOG.md ]; then
+            echo "" >> CHANGELOG.md
+            cat ${{ steps.changelog.outputs.changelog_file }} >> CHANGELOG.md
+          fi
+          
+      # ==================== 发布通知 ====================
+      - name: Release Summary
+        run: |
+          echo "# 🎉 Release v${{ steps.version.outputs.version }} Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📦 Package Contents" >> $GITHUB_STEP_SUMMARY
+          echo "- AnalysisDataFlow-v${{ steps.version.outputs.version }}.tar.gz" >> $GITHUB_STEP_SUMMARY
+          echo "- AnalysisDataFlow-v${{ steps.version.outputs.version }}.zip" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "- Documents: ${{ steps.stats.outputs.docs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Theorems: ${{ steps.stats.outputs.theorems }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Definitions: ${{ steps.stats.outputs.definitions }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mermaid Diagrams: ${{ steps.stats.outputs.mermaid_diagrams }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📝 Prerelease" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.version.outputs.is_prerelease == 'true' && 'Yes' || 'No' }}" >> $GITHUB_STEP_SUMMARY

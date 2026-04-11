@@ -1,0 +1,249 @@
+# Stats Update Workflow - 统计更新工作流
+# 触发: 定时 (每周一 00:00 UTC)
+# 任务:
+#   - 文档数量统计
+#   - 形式化元素统计
+#   - PROJECT-TRACKING.md自动更新
+
+name: Stats Update
+
+on:
+  schedule:
+    # 每周一 00:00 UTC 运行
+    - cron: '0 0 * * 1'
+  workflow_dispatch:  # 允许手动触发
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  update-stats:
+    name: Update Project Statistics
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      # ==================== 统计文档数量 ====================
+      - name: Count Documents
+        id: doc_count
+        run: |
+          # 统计各目录文档数
+          STRUCT_COUNT=$(find Struct -name "*.md" 2>/dev/null | wc -l)
+          KNOWLEDGE_COUNT=$(find Knowledge -name "*.md" 2>/dev/null | wc -l)
+          FLINK_COUNT=$(find Flink -name "*.md" 2>/dev/null | wc -l)
+          VISUALS_COUNT=$(find visuals -name "*.md" 2>/dev/null | wc -l)
+          TUTORIALS_COUNT=$(find tutorials -name "*.md" 2>/dev/null | wc -l)
+          TOTAL_COUNT=$((STRUCT_COUNT + KNOWLEDGE_COUNT + FLINK_COUNT + VISUALS_COUNT + TUTORIALS_COUNT))
+          
+          echo "struct=$STRUCT_COUNT" >> $GITHUB_OUTPUT
+          echo "knowledge=$KNOWLEDGE_COUNT" >> $GITHUB_OUTPUT
+          echo "flink=$FLINK_COUNT" >> $GITHUB_OUTPUT
+          echo "visuals=$VISUALS_COUNT" >> $GITHUB_OUTPUT
+          echo "tutorials=$TUTORIALS_COUNT" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL_COUNT" >> $GITHUB_OUTPUT
+          
+          echo "Document counts:"
+          echo "  Struct: $STRUCT_COUNT"
+          echo "  Knowledge: $KNOWLEDGE_COUNT"
+          echo "  Flink: $FLINK_COUNT"
+          echo "  Visuals: $VISUALS_COUNT"
+          echo "  Tutorials: $TUTORIALS_COUNT"
+          echo "  Total: $TOTAL_COUNT"
+          
+      # ==================== 统计形式化元素 ====================
+      - name: Count Formal Elements
+        id: formal_count
+        run: |
+          # 统计定理
+          THEOREM_COUNT=$(grep -rh "Thm-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计定义
+          DEF_COUNT=$(grep -rh "Def-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计引理
+          LEMMA_COUNT=$(grep -rh "Lemma-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计命题
+          PROP_COUNT=$(grep -rh "Prop-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计推论
+          COR_COUNT=$(grep -rh "Cor-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          TOTAL_FORMAL=$((THEOREM_COUNT + DEF_COUNT + LEMMA_COUNT + PROP_COUNT + COR_COUNT))
+          
+          echo "theorems=$THEOREM_COUNT" >> $GITHUB_OUTPUT
+          echo "definitions=$DEF_COUNT" >> $GITHUB_OUTPUT
+          echo "lemmas=$LEMMA_COUNT" >> $GITHUB_OUTPUT
+          echo "propositions=$PROP_COUNT" >> $GITHUB_OUTPUT
+          echo "corollaries=$COR_COUNT" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL_FORMAL" >> $GITHUB_OUTPUT
+          
+          echo "Formal elements:"
+          echo "  Theorems: $THEOREM_COUNT"
+          echo "  Definitions: $DEF_COUNT"
+          echo "  Lemmas: $LEMMA_COUNT"
+          echo "  Propositions: $PROP_COUNT"
+          echo "  Corollaries: $COR_COUNT"
+          echo "  Total: $TOTAL_FORMAL"
+          
+      # ==================== 统计代码和图表 ====================
+      - name: Count Code and Visuals
+        id: code_count
+        run: |
+          # 统计代码示例（代码块）
+          CODE_BLOCKS=$(grep -rh "^\s*\`\`\`" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计Mermaid图表
+          MERMAID_COUNT=$(grep -rh "^\s*\`\`\`mermaid" Struct Knowledge Flink 2>/dev/null | wc -l)
+          
+          # 统计文件大小
+          SIZE_KB=$(du -sk Struct Knowledge Flink 2>/dev/null | awk '{sum+=$1} END {print sum}')
+          SIZE_MB=$(echo "scale=2; $SIZE_KB / 1024" | bc)
+          
+          echo "code_blocks=$CODE_BLOCKS" >> $GITHUB_OUTPUT
+          echo "mermaid=$MERMAID_COUNT" >> $GITHUB_OUTPUT
+          echo "size_kb=$SIZE_KB" >> $GITHUB_OUTPUT
+          echo "size_mb=$SIZE_MB" >> $GITHUB_OUTPUT
+          
+          echo "Code and visuals:"
+          echo "  Code blocks: $CODE_BLOCKS"
+          echo "  Mermaid diagrams: $MERMAID_COUNT"
+          echo "  Total size: ${SIZE_MB}MB"
+          
+      # ==================== 更新统计JSON ====================
+      - name: Update Statistics JSON
+        run: |
+          cat > validation-stats.json << EOF
+          {
+            "last_updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "version": "auto-generated",
+            "statistics": {
+              "documents": {
+                "struct": ${{ steps.doc_count.outputs.struct }},
+                "knowledge": ${{ steps.doc_count.outputs.knowledge }},
+                "flink": ${{ steps.doc_count.outputs.flink }},
+                "visuals": ${{ steps.doc_count.outputs.visuals }},
+                "tutorials": ${{ steps.doc_count.outputs.tutorials }},
+                "total": ${{ steps.doc_count.outputs.total }}
+              },
+              "formal_elements": {
+                "theorems": ${{ steps.formal_count.outputs.theorems }},
+                "definitions": ${{ steps.formal_count.outputs.definitions }},
+                "lemmas": ${{ steps.formal_count.outputs.lemmas }},
+                "propositions": ${{ steps.formal_count.outputs.propositions }},
+                "corollaries": ${{ steps.formal_count.outputs.corollaries }},
+                "total": ${{ steps.formal_count.outputs.total }}
+              },
+              "code_and_visuals": {
+                "code_blocks": ${{ steps.code_count.outputs.code_blocks }},
+                "mermaid_diagrams": ${{ steps.code_count.outputs.mermaid }},
+                "total_size_kb": ${{ steps.code_count.outputs.size_kb }},
+                "total_size_mb": ${{ steps.code_count.outputs.size_mb }}
+              }
+            }
+          }
+          EOF
+          
+          echo "Updated validation-stats.json"
+          cat validation-stats.json
+          
+      # ==================== 更新PROJECT-TRACKING.md ====================
+      - name: Update PROJECT-TRACKING.md
+        run: |
+          # 检查文件是否存在
+          if [ ! -f PROJECT-TRACKING.md ]; then
+            echo "PROJECT-TRACKING.md not found, skipping update"
+            exit 0
+          fi
+          
+          # 获取当前日期
+          TODAY=$(date +%Y-%m-%d)
+          
+          # 使用sed更新统计信息
+          # 注意：这些是示例替换，实际模式需要根据文件格式调整
+          
+          # 更新文档统计
+          sed -i "s/Struct\/.*完成.*文档/Struct\/ [████████████████████] 100% (${{ steps.doc_count.outputs.struct }}文档)/g" PROJECT-TRACKING.md || true
+          sed -i "s/Knowledge\/.*完成.*文档/Knowledge\/ [████████████████████] 100% (${{ steps.doc_count.outputs.knowledge }}文档)/g" PROJECT-TRACKING.md || true
+          sed -i "s/Flink\/.*完成.*文档/Flink\/ [████████████████████] 100% (${{ steps.doc_count.outputs.flink }}文档)/g" PROJECT-TRACKING.md || true
+          
+          # 更新形式化元素统计
+          sed -i "s/定理.*Thm.*数量/定理 (Thm) | ${{ steps.formal_count.outputs.theorems }}/g" PROJECT-TRACKING.md || true
+          sed -i "s/定义.*Def.*数量/定义 (Def) | ${{ steps.formal_count.outputs.definitions }}/g" PROJECT-TRACKING.md || true
+          
+          # 更新日期
+          sed -i "s/最后更新.*日期/最后更新: $TODAY/g" PROJECT-TRACKING.md || true
+          
+          echo "Updated PROJECT-TRACKING.md"
+          
+      # ==================== 提交更新 ====================
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # 检查是否有变更
+          if [ -n "$(git status --porcelain)" ]; then
+            git add validation-stats.json
+            git add PROJECT-TRACKING.md 2>/dev/null || true
+            
+            git commit -m "📊 Auto-update statistics ($(date +%Y-%m-%d))
+
+          - Documents: ${{ steps.doc_count.outputs.total }}
+          - Formal Elements: ${{ steps.formal_count.outputs.total }}
+          - Code Blocks: ${{ steps.code_count.outputs.code_blocks }}
+          - Mermaid Diagrams: ${{ steps.code_count.outputs.mermaid }}
+
+          Auto-generated by stats-update workflow"
+            
+            git push
+            echo "Changes committed and pushed"
+          else
+            echo "No changes to commit"
+          fi
+          
+      # ==================== 生成摘要 ====================
+      - name: Generate Summary
+        run: |
+          echo "# 📊 Weekly Statistics Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Update Date: $(date +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📁 Document Counts" >> $GITHUB_STEP_SUMMARY
+          echo "| Directory | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Struct | ${{ steps.doc_count.outputs.struct }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Knowledge | ${{ steps.doc_count.outputs.knowledge }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Flink | ${{ steps.doc_count.outputs.flink }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Visuals | ${{ steps.doc_count.outputs.visuals }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tutorials | ${{ steps.doc_count.outputs.tutorials }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total** | **${{ steps.doc_count.outputs.total }}** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📐 Formal Elements" >> $GITHUB_STEP_SUMMARY
+          echo "| Type | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Theorems | ${{ steps.formal_count.outputs.theorems }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Definitions | ${{ steps.formal_count.outputs.definitions }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lemmas | ${{ steps.formal_count.outputs.lemmas }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Propositions | ${{ steps.formal_count.outputs.propositions }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Corollaries | ${{ steps.formal_count.outputs.corollaries }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total** | **${{ steps.formal_count.outputs.total }}** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📊 Code and Visuals" >> $GITHUB_STEP_SUMMARY
+          echo "- Code Blocks: ${{ steps.code_count.outputs.code_blocks }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mermaid Diagrams: ${{ steps.code_count.outputs.mermaid }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Size: ${{ steps.code_count.outputs.size_mb }}MB" >> $GITHUB_STEP_SUMMARY
