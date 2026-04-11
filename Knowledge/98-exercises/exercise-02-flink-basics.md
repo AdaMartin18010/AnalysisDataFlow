@@ -164,16 +164,134 @@ Flink 提供了 ValueState, ListState, MapState, ReducingState, AggregatingState
 **参考代码**：
 
 ```java
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.Collector;
+
+/**
+ * 实时词频统计程序
+ *
+ * 功能：从Socket读取文本流，分词后统计每个单词的出现次数，每5秒输出一次统计结果
+ *
+ * 运行步骤：
+ * 1. 打开终端运行: nc -lk 9999
+ * 2. 启动WordCount程序
+ * 3. 在nc终端输入文本，如: hello world hello flink
+ * 4. 每5秒会在控制台看到词频统计结果
+ */
 public class WordCount {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env =
-            StreamExecutionEnvironment.getExecutionEnvironment();
+        // 创建Flink流处理执行环境
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // TODO: 实现数据源、转换、窗口和输出
+        // 本地测试设置并行度为1，生产环境根据集群情况调整
+        env.setParallelism(1);
 
+        // ========== 1. 数据源：从Socket读取文本流 ==========
+        // 参数说明：
+        // - "localhost": Socket服务器主机名
+        // - 9999: Socket服务器端口
+        // 启动命令: nc -lk 9999 (Linux/Mac) 或 nc -l -p 9999 (Windows)
+        DataStream<String> source = env.socketTextStream("localhost", 9999);
+
+        // ========== 2. 数据转换：分词并转换为 (word, 1) 元组 ==========
+        DataStream<Tuple2<String, Integer>> wordStream = source
+            // 使用FlatMap进行分词：一行输入可能产生多个单词输出
+            .flatMap(new Tokenizer())
+            // 为算子命名，便于在Web UI中识别
+            .name("Tokenizer: Split Words");
+
+        // ========== 3. 按键分组并开窗统计 ==========
+        DataStream<Tuple2<String, Integer>> windowed = wordStream
+            // keyBy: 按单词分组，相同单词会被分配到同一个并行实例
+            .keyBy(value -> value.f0)
+            // window: 使用滚动窗口（Tumbling Window），窗口之间不重叠
+            // 每5秒生成一个新窗口，统计该窗口内的词频
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
+            // sum: 对Tuple2的第二个字段（计数）求和
+            .sum(1)
+            .name("Windowed Word Count");
+
+        // ========== 4. 输出到控制台 ==========
+        // print() 将结果输出到标准输出，在生产环境可替换为其他Sink
+        windowed.print().name("Print Sink");
+
+        // 执行Flink作业
         env.execute("Socket WordCount");
     }
+
+    /**
+     * 自定义FlatMapFunction：将输入行分割为单词
+     *
+     * FlatMapFunction<T, O>:
+     * - T: 输入类型 (String - 一行文本)
+     * - O: 输出类型 (Tuple2<String, Integer> - (单词, 1))
+     */
+    public static class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
+
+        @Override
+        public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+            // 将输入行按非单词字符分割（正则表达式：\\W+）
+            // 并转换为小写以实现大小写不敏感统计
+            String[] words = value.toLowerCase().split("\\W+");
+
+            for (String word : words) {
+                // 过滤空字符串
+                if (word.length() > 0) {
+                    // 输出 (单词, 1) 元组
+                    out.collect(new Tuple2<>(word, 1));
+                }
+            }
+        }
+    }
 }
+
+// ==================== Maven依赖 (pom.xml) ====================
+/*
+<dependencies>
+    <!-- Flink Streaming API -->
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-streaming-java</artifactId>
+        <version>1.18.0</version>
+    </dependency>
+    <!-- Flink Client（本地执行需要） -->
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-clients</artifactId>
+        <version>1.18.0</version>
+    </dependency>
+</dependencies>
+*/
+
+// ==================== 运行示例 ====================
+/*
+// 步骤1: 启动Socket服务器（终端1）
+$ nc -lk 9999
+
+// 步骤2: 运行WordCount程序（终端2）
+$ mvn exec:java -Dexec.mainClass="WordCount"
+
+// 步骤3: 在Socket服务器输入文本
+hello world
+hello flink
+apache flink is great
+
+// 步骤4: 观察WordCount输出（每5秒输出一次）
+4> (hello, 2)
+4> (world, 1)
+4> (flink, 1)
+...
+4> (apache, 1)
+4> (flink, 2)
+4> (is, 1)
+4> (great, 1)
+*/
 
 // **参考答案**：完整WordCount实现
 /*

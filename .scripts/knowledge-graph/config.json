@@ -1,0 +1,34 @@
+{
+  "base_path": "../..",
+  "output_dir": "output",
+  "index_dir": "index",
+  "source_directories": [
+    "Struct",
+    "Knowledge",
+    "Flink"
+  ],
+  "include_patterns": [
+    "*.md"
+  ],
+  "exclude_patterns": [
+    "README*",
+    "CHANGELOG*",
+    "INDEX*",
+    "ARCHIVE*",
+    "*.draft.md"
+  ],
+  "max_file_size_mb": 10,
+  "use_whoosh": true,
+  "use_semantic": true,
+  "similarity_method": "tfidf",
+  "n_clusters": 10,
+  "duplicate_threshold": 0.85,
+  "similarity_threshold": 0.7,
+  "web_host": "0.0.0.0",
+  "web_port": 5000,
+  "bert_model": "paraphrase-MiniLM-L3-v2",
+  "tfidf_max_features": 5000,
+  "enable_incremental": true,
+  "cache_embeddings": true,
+  "log_level": "INFO"
+}

@@ -41,7 +41,7 @@
 版本定位: "AI原生与云原生融合版本"
 预计发布周期: 2026 Q3-Q4
 Feature Freeze: 2026-08-15
-主要主题: 
+主要主题:
   1. AI Agent GA: FLIP-531 从MVP到正式版
   2. 云原生架构: Serverless Flink, 按需扩缩到0
   3. 性能优化: 自适应执行引擎v2, 智能检查点
@@ -75,7 +75,7 @@ Preview/GA特性清单:
   - [ ] 生产级监控与可观测性
   - [ ] Agent市场/注册中心
 
-API状态: 
+API状态:
   Java API:     Preview (v0.2.0) - API可能变更
   Python API:   Preview (v0.2.0) - API可能变更
   SQL API:      概念设计阶段
@@ -87,13 +87,13 @@ API状态:
 **Serverless Flink** 实现按需扩缩容至零实例：
 
 ```yaml
-核心能力: 
+核心能力:
   Scale-to-Zero: 无作业时零成本
   Cold Start:    <30秒从0到运行
   Auto Scaling:  基于负载的智能扩缩
   Pay-per-Use:   按实际处理数据量计费
 
-架构组件: 
+架构组件:
   1. Serverless Dispatcher:
      - 事件驱动的作业调度器
      - 支持Knative/EventBridge集成
@@ -106,7 +106,7 @@ API状态:
      - 预置TaskManager池
      - 快速分配与回收
 
-集成平台: 
+集成平台:
   - AWS: EMR Serverless, Kinesis Data Analytics
   - Azure: HDInsight on AKS, Stream Analytics
   - GCP: Dataproc Serverless, Dataflow
@@ -120,18 +120,18 @@ API状态:
 ```yaml
 V1 (Flink 1.18+) vs V2 (Flink 2.4):
 
-V1能力: 
+V1能力:
   - 自动并行度调整
   - 基于背压的调度
   - 静态启发式规则
 
-V2增强: 
+V2增强:
   - ML模型预测最优配置
   - 实时执行计划重写
   - 工作负载感知优化
   - 历史执行学习
 
-优化维度: 
+优化维度:
   ┌─────────────┬─────────────────────────────────────┐
   │ 维度        │ 优化策略                            │
   ├─────────────┼─────────────────────────────────────┤
@@ -148,22 +148,22 @@ V2增强:
 **智能检查点策略** 基于作业特征自动优化：
 
 ```yaml
-策略类型: 
+策略类型:
   Time-Based:      传统时间间隔 (默认)
   Load-Based:      基于处理负载动态调整
   Cost-Based:      平衡检查点成本与恢复时间
   ML-Predicted:    预测最优检查点时机
 
-智能决策公式: 
+智能决策公式:
   optimal_interval = f(state_size, throughput, latency_sla, storage_cost)
 
-自适应触发条件: 
+自适应触发条件:
   - 状态大小变化 >20%
   - 吞吐量波动 >30%
   - 连续失败检查点 >=2
   - 预测恢复时间 >SLA阈值
 
-优化技术: 
+优化技术:
   - 增量检查点v2: 仅捕获真正变更的状态
   - 区域检查点: 分区独立检查点
   - 异步快照: 非阻塞状态捕获
@@ -174,7 +174,7 @@ V2增强:
 **ANSI SQL 2023** 标准兼容增强：
 
 ```yaml
-新增标准特性: 
+新增标准特性:
   JSON Support:
     - JSON data type
     - JSON path expressions (SQL/JSON path)
@@ -194,7 +194,7 @@ V2增强:
     - Aggregate function enhancements
     - String functions (NORMALIZE, etc.)
 
-兼容性级别: 
+兼容性级别:
   Core SQL:     100% (全部核心特性)
   Feature T501: Enhanced cast (✅)
   Feature T617: Nullable foreign keys (✅)
@@ -355,7 +355,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 企业AI Agent需求爆发
    问题: 现有方案(LangChain/Ray)缺乏生产级保证
    方案: FLIP-531 GA 提供分布式、容错、可扩展的Agent运行时
-   差异化: 
+   差异化:
      - 状态持久化作为Agent记忆
      - 事件驱动毫秒级响应
      - Exactly-once语义保证
@@ -364,7 +364,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 成本优化成为首要考量
    问题: 常驻集群资源利用率低(<30%)
    方案: Scale-to-Zero架构
-   收益: 
+   收益:
      - 空闲时成本降低95%+
      - 自动扩缩应对流量峰值
      - 免运维托管体验
@@ -373,7 +373,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
    背景: 调优复杂度高，需要专家知识
    问题: 静态配置无法适应动态负载
    方案: ML驱动的自适应执行
-   收益: 
+   收益:
      - 自动达到接近最优配置
      - 减少人工调优工作量80%
      - 持续学习优化
@@ -788,6 +788,9 @@ flowchart TD
 | FLIP-546 | Multi-Agent Coordination | 🔄 设计阶段 | 30% | @alice-w | 2.4 | [FLINK-35400](https://issues.apache.org/jira/browse/FLINK-35400) |
 | FLIP-547 | Delta Lake 3.0 Support | 🔄 实现中 | 65% | @henry-i | 2.4 | [FLINK-35450](https://issues.apache.org/jira/browse/FLINK-35450) |
 | FLIP-548 | NATS Connector | ✅ 已完成 | 100% | @iris-j | 2.4 | [FLINK-35500](https://issues.apache.org/jira/browse/FLINK-35500) |
+| FLIP-549 | Disaggregated Storage v2 | 📋 设计中 | 25% | @storage-team | 2.4 | [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600) |
+| FLIP-550 | Streaming Graph Processing | 📋 设计中 | 20% | @graph-team | 2.4 | [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700) |
+| FLIP-551 | Unified Batch-Streaming Source | 📋 设计中 | 15% | @connector-team | 2.4 | [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800) |
 
 **图例说明**:
 
@@ -897,13 +900,13 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 
 ```yaml
 # 回滚条件检查
-自动触发回滚条件: 
+自动触发回滚条件:
   - 作业失败率 > 5%
   - Checkpoint成功率 < 95%
   - 延迟超过SLA 2倍
   - 资源使用率异常
 
-回滚步骤: 
+回滚步骤:
   1. 暂停新作业提交
   2. 触发所有作业Savepoint
   3. 停止Flink 2.4集群
@@ -911,7 +914,7 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
   5. 从Savepoint恢复作业
   6. 验证作业状态
 
-回滚时间目标: 
+回滚时间目标:
   - 检测时间: < 5分钟
   - 决策时间: < 2分钟
   - 执行时间: < 10分钟
@@ -934,13 +937,13 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 ### 11.2 更新触发条件
 
 ```yaml
-自动更新触发: 
+自动更新触发:
   - FLIP状态变更 (JIRA webhook)
   - 发布里程碑达成
   - 新的RC版本发布
   - 发现新的破坏性变更
 
-手动更新触发: 
+手动更新触发:
   - 社区反馈问题
   - 文档评审会议
   - 发布计划调整
@@ -951,14 +954,836 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 | 日期 | 版本 | 更新内容 | 更新人 |
 |------|------|----------|--------|
 | 2026-04-04 | v0.1 | 初始文档创建 | Agent |
-<!-- TODO: 待补充FLIP详细设计 (预计: 2026-04-15) -->
-<!-- 相关FLIP: FLIP-435 (Unified Execution), FLIP-440 (Serverless) -->
-<!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/ -->
-| 2026-04-15 | v0.2 | 补充FLIP-435/FLIP-440详细设计 | Agent |
-| 2026-05-XX | v0.5 | 开发进度同步 | - |
+| 2026-04-11 | v0.2 | 补充FLIP详细设计 (FLIP-549/FLIP-550/FLIP-551) | Agent |
+| 2026-04-15 | v0.3 | 开发进度同步 | - |
 | 2026-08-15 | v1.0 | Feature Freeze版本 | - |
 | 2026-10-30 | v2.0 | GA发布最终版 | - |
 
 ---
 
-## 12. 引用参考 (References)
+## 13. FLIP 详细设计
+
+### 13.1 FLIP-531: Flink AI Agents GA 详细设计
+
+> **状态**: 🔄 MVP→GA (85%) | **负责人**: @alice-w | **JIRA**: [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000)
+
+#### 13.1.1 概念定义 (Definitions)
+
+##### Def-F-08-77: Agent Runtime Core
+
+**Agent运行时核心**定义分布式AI Agent的执行语义：
+
+```yaml
+Agent运行时三元组: A = (S, M, T)
+  S: Agent状态空间 (Memory + Context)
+  M: 模型提供者接口 (LLM Provider Interface)
+  T: 工具调用能力 (Tool Registry)
+
+状态持久化保证:
+  ∀ agent ∈ Agents: checkpoint(agent.state) → persistent_storage
+  ∀ t > t_checkpoint: recover(agent, t_checkpoint) ≡ state(t_checkpoint)
+
+执行语义:
+  Event-Driven: 每个输入事件触发一次Agent推理周期
+  Exactly-Once: Agent推理结果保证精确一次处理
+  Stateful: Agent记忆跨会话持久化
+```
+
+##### Def-F-08-78: Multi-Agent Coordination Protocol
+
+**多Agent协调协议**定义Agent间通信与协作规范：
+
+```yaml
+协调模式:
+  1. Hierarchical (层级式):
+     - Supervisor Agent 协调多个Worker Agent
+     - 任务分解 → 子Agent执行 → 结果聚合
+
+  2. Peer-to-Peer (对等式):
+     - Agent间直接通信
+     - A2A协议 (Agent-to-Agent Protocol)
+     - 去中心化决策
+
+  3. Workflow (工作流式):
+     - 预定义DAG执行路径
+     - 条件分支与循环支持
+
+消息传递语义:
+  At-Least-Once:  默认保证
+  Exactly-Once:   事务性模式
+  Ordered:        FIFO顺序保证
+```
+
+##### Def-F-08-79: MCP Integration Framework
+
+**MCP (Model Context Protocol) 集成框架**：
+
+```yaml
+MCP客户端核心组件:
+  Transport Layer: SSE / WebSocket / stdio
+  Capability Negotiation: 工具发现与能力协商
+  Session Management: 会话生命周期管理
+  Security: OAuth 2.0 + TLS
+
+工具调用流程:
+  1. Discovery:   GET /tools → List[ToolCapability]
+  2. Invocation:  POST /invoke {tool, params, context}
+  3. Streaming:   SSE stream for partial results
+  4. Completion:  Final result + token usage
+
+内置MCP服务器:
+  - filesystem: 文件系统操作
+  - database:   SQL/NoSQL查询
+  - web-search: 网络搜索
+  - code-exec:  代码执行沙箱
+```
+
+#### 13.1.2 架构设计
+
+```mermaid
+graph TB
+    subgraph UserLayer["用户层"]
+        SQL[SQL DDL]
+        Java[Java API]
+        Python[PyFlink API]
+    end
+
+    subgraph AgentRuntime["Agent Runtime GA"]
+        API[Agent API Layer]
+
+        subgraph Core["核心引擎"]
+            RE[Reasoning Engine]
+            SM[State Manager]
+            PM[Prompt Manager]
+        end
+
+        subgraph Coordination["协调层"]
+            CO[Coordinator]
+            MB[Message Bus]
+            RM[Router Manager]
+        end
+
+        subgraph Integration["集成层"]
+            MCP[MCP Client]
+            A2A[A2A Protocol]
+            LLM[LLM Provider]
+        end
+    end
+
+    subgraph Storage["存储层"]
+        SS[State Backend]
+        CM[Conversation Memory]
+        KM[Knowledge Memory]
+    end
+
+    subgraph External["外部系统"]
+        OPENAI[OpenAI API]
+        ANTHROPIC[Anthropic API]
+        LOCAL[Local Models]
+        MCPSRV[MCP Servers]
+    end
+
+    SQL --> API
+    Java --> API
+    Python --> API
+
+    API --> Core
+    API --> Coordination
+
+    Core --> Integration
+    Coordination --> Integration
+
+    Core --> Storage
+    Coordination --> Storage
+
+    LLM --> OPENAI
+    LLM --> ANTHROPIC
+    LLM --> LOCAL
+    MCP --> MCPSRV
+```
+
+#### 13.1.3 GA 新增功能详述
+
+| 功能模块 | MVP (2.3) | GA (2.4) | 技术实现 |
+|---------|-----------|----------|----------|
+| **多Agent协调** | ❌ | ✅ | Actor模型 + Flink状态后端 |
+| **版本管理** | ❌ | ✅ | 状态版本向量 + 蓝绿部署 |
+| **金丝雀发布** | ❌ | ✅ | 流量分割 + 渐进式 rollout |
+| **Agent市场** | ❌ | ✅ | 注册中心 + 依赖管理 |
+| **SQL支持** | 概念 | ✅ | Calcite扩展 + DDL解析 |
+| **REST API** | ❌ | ✅ | OpenAPI 3.0规范 |
+| **监控可观测性** | 基础 | 完整 | OpenTelemetry集成 |
+
+#### 13.1.4 API 设计
+
+**Java API - 多Agent协调**:
+
+```java
+// Agent定义
+public interface Agent {
+    AgentResponse process(AgentRequest request);
+    void onHandshake(AgentCapabilities capabilities);
+}
+
+// 协调器
+public class AgentCoordinator {
+    public AgentGroup createGroup(String groupId, CoordinationMode mode);
+    public void registerAgent(String groupId, AgentDescriptor agent);
+    public CompletableFuture<AgentResponse> route(String groupId, AgentRequest request);
+}
+
+// 使用示例
+AgentCoordinator coordinator = env.getAgentCoordinator();
+
+AgentGroup salesTeam = coordinator.createGroup("sales-team", CoordinationMode.HIERARCHICAL);
+
+salesTeam.registerAgent(AgentDescriptor.builder()
+    .name("lead-qualifier")
+    .model(ModelProvider.OPENAI, "gpt-4")
+    .tools("crm-query", "score-lead")
+    .build());
+
+salesTeam.registerAgent(AgentDescriptor.builder()
+    .name("product-advisor")
+    .model(ModelProvider.ANTHROPIC, "claude-3")
+    .tools("catalog-search", "recommend")
+    .build());
+
+// 启用金丝雀发布
+salesTeam.enableCanary(CanaryConfig.builder()
+    .percentage(10)
+    .healthCheck(new AgentHealthCheck())
+    .rollbackOnFailure(true)
+    .build());
+```
+
+**SQL DDL 扩展**:
+
+```sql
+-- 创建Agent
+CREATE AGENT customer_support
+WITH (
+    'model.provider' = 'openai',
+    'model.name' = 'gpt-4',
+    'temperature' = '0.7',
+    -- GA: 版本管理
+    'version' = '2.1.0',
+    'version.strategy' = 'semantic',
+    -- GA: 金丝雀发布
+    'canary.enabled' = 'true',
+    'canary.percentage' = '10',
+    -- GA: 监控
+    'metrics.enabled' = 'true',
+    'tracing.sampling.rate' = '0.1'
+)
+INPUT (query STRING, customer_id STRING)
+OUTPUT (response STRING, intent STRING, confidence DOUBLE)
+TOOLS (kb_search, ticket_create, escalation);
+
+-- 创建Agent团队
+CREATE AGENT_TEAM support_team
+WITH (
+    'coordinator' = 'hierarchical',
+    'routing.strategy' = 'intent-based',
+    'max_hops' = '3'
+)
+MEMBERS (
+    customer_support AS primary,
+    technical_agent AS escalation,
+    billing_agent AS specialized
+)
+ROUTING RULES (
+    'technical' -> technical_agent WHEN intent = 'TECH_SUPPORT',
+    'billing' -> billing_agent WHEN intent = 'BILLING',
+    'default' -> customer_support
+);
+```
+
+### 13.2 FLIP-549: Disaggregated Storage v2 存算分离优化
+
+> **状态**: 📋 设计中 | **负责人**: @storage-team | **JIRA**: [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600)
+
+#### 13.2.1 概念定义 (Definitions)
+
+##### Def-F-08-80: Disaggregated State Architecture
+
+**存算分离架构 v2** 定义状态计算与存储的完全解耦：
+
+```yaml
+架构层次:
+  Compute Layer:  无状态TaskManager，专注于计算
+  State Layer:    远程状态服务，支持多种后端
+  Cache Layer:    本地LRU缓存，加速热点访问
+
+状态访问模式:
+  Local Hit:   缓存命中，< 1μs延迟
+  Remote Hit:  状态服务命中，~5ms延迟
+  Cold Read:   从对象存储加载，~100ms延迟
+
+一致性保证:
+  同步模式: 写操作同步到远程存储 (强一致性)
+  异步模式: 写操作异步批量同步 (最终一致性)
+  混合模式: 检查点同步，常规操作异步
+```
+
+##### Def-F-08-81: Tiered State Storage
+
+**分层状态存储**策略：
+
+```yaml
+存储层级:
+  L1 - Local Cache:
+    介质: DRAM
+    容量: 受限 (默认 10% JVM heap)
+    延迟: < 1μs
+
+  L2 - Local SSD:
+    介质: NVMe SSD
+    容量: 单节点TB级
+    延迟: ~100μs
+
+  L3 - Remote State Service:
+    介质: 分布式KV存储
+    容量: 无限制
+    延迟: ~5ms
+
+  L4 - Object Storage:
+    介质: S3/GCS/OSS
+    容量: 无限制
+    延迟: ~100ms
+    用途: 检查点/历史归档
+
+数据流动:
+  Hot Data → L1/L2
+  Warm Data → L3
+  Cold Data → L4
+
+  自动迁移策略基于访问频率和TTL
+```
+
+#### 13.2.2 属性推导 (Properties)
+
+##### Prop-F-08-72: Cost-Performance Tradeoff
+
+**成本性能权衡命题**：
+
+$$
+\text{TotalCost} = C_{compute} \cdot T + C_{storage} \cdot S + C_{network} \cdot N
+$$
+
+$$
+\text{Latency} = P_{hit}^{L1} \cdot L_{L1} + P_{hit}^{L2} \cdot L_{L2} + (1 - P_{hit}^{L1} - P_{hit}^{L2}) \cdot L_{remote}
+$$
+
+其中：
+
+- $P_{hit}^{L1} + P_{hit}^{L2}$: 本地缓存命中率 (目标 > 95%)
+- $C_{compute}$: 计算成本 ($/hour)
+- $C_{storage}$: 存储成本 ($/GB/month)
+
+##### Lemma-F-08-72: Recovery Time Bound
+
+**恢复时间上界引理**：
+
+存算分离架构下的故障恢复时间：
+
+$$
+T_{recovery} \leq T_{schedule} + \frac{S_{checkpoint}}{B_{network}} + T_{warmup}
+$$
+
+其中：
+
+- $T_{schedule}$: 调度时间 (< 5s)
+- $S_{checkpoint}$: 检查点大小
+- $B_{network}$: 网络带宽
+- $T_{warmup}$: 缓存预热时间
+
+#### 13.2.3 架构设计
+
+```mermaid
+graph TB
+    subgraph Compute["计算层 (Stateless TM)"]
+        TM1[TaskManager 1]
+        TM2[TaskManager 2]
+        TM3[TaskManager N]
+    end
+
+    subgraph Cache["本地缓存层"]
+        C1[LRU Cache]
+        C2[LRU Cache]
+        C3[LRU Cache]
+    end
+
+    subgraph StateService["远程状态服务"]
+        SS1[State Service Node 1]
+        SS2[State Service Node 2]
+        SS3[State Service Node 3]
+
+        subgraph StateComponents["服务组件"]
+            KV[RocksDB KV]
+            IDX[Index Service]
+            TS[TimeService]
+        end
+    end
+
+    subgraph ObjectStore["对象存储"]
+        S3[S3/GCS/OSS]
+    end
+
+    TM1 --> C1
+    TM2 --> C2
+    TM3 --> C3
+
+    C1 -. Cache Miss .-> SS1
+    C2 -. Cache Miss .-> SS2
+    C3 -. Cache Miss .-> SS3
+
+    SS1 --> KV
+    SS2 --> KV
+    SS3 --> KV
+
+    KV -. Checkpoint .-> S3
+
+    SS1 <--> SS2
+    SS2 <--> SS3
+```
+
+#### 13.2.4 配置示例
+
+```yaml
+# flink-conf.yaml - 存算分离配置
+
+# 启用存算分离 v2
+state.backend: forst
+state.backend.forst.disaggregated: true
+state.backend.forst.remote.uri: s3://flink-state-service/
+
+# 本地缓存配置
+state.backend.forst.cache.enabled: true
+state.backend.forst.cache.capacity: 512mb
+state.backend.forst.cache.policy: lru
+
+# 远程状态服务
+state.backend.remote.host: state-service.flink.svc.cluster.local
+state.backend.remote.port: 8080
+state.backend.remote.threads.client: 4
+
+# 异步写配置 (性能优先)
+state.backend.async-write: true
+state.backend.async-write.batch-size: 1000
+state.backend.async-write.flush-interval: 10ms
+
+# 分层存储策略
+state.tiered-storage.l1.enabled: true   # DRAM缓存
+state.tiered-storage.l2.enabled: true   # 本地SSD
+state.tiered-storage.l3.enabled: true   # 远程KV服务
+state.tiered-storage.l4.enabled: true   # 对象存储
+```
+
+### 13.3 FLIP-550: Streaming Graph Processing 实时图处理
+
+> **状态**: 📋 设计中 | **负责人**: @graph-team | **JIRA**: [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700)
+
+#### 13.3.1 概念定义 (Definitions)
+
+##### Def-F-08-82: Dynamic Property Graph
+
+**动态属性图模型**定义流式图计算的核心抽象：
+
+```yaml
+动态图: G(t) = (V(t), E(t), P(t))
+  V(t): 时变顶点集合
+  E(t): 时变边集合
+  P(t): 属性函数 P: (V ∪ E) × T → PropertyValue
+
+图更新流: ΔG = {(op, element, timestamp)}
+  op ∈ {ADD_VERTEX, REMOVE_VERTEX, ADD_EDGE, REMOVE_EDGE, UPDATE_PROPERTY}
+
+时间语义:
+  Event Time:    图更新发生的时间
+  Ingestion Time: 图更新进入系统的时间
+  Processing Time: 图更新被处理的时间
+
+窗口操作:
+  Snapshot Window: 特定时刻的图视图 G(t)
+  Delta Window:    时间区间内的增量 ΔG(t1, t2)
+  Tumbling Window: 固定时间间隔的图快照
+```
+
+##### Def-F-08-83: Continuous Graph Query
+
+**持续图查询**定义：
+
+```yaml
+查询类型:
+  1. Path Queries:
+     - 最短路径 (随时间变化)
+     - 可达性查询
+     - 模式匹配 (Pattern Matching)
+
+  2. Neighborhood Queries:
+     - 邻居聚合
+     - 子图提取
+     - 社区发现 (增量)
+
+  3. Global Analytics:
+     - PageRank (增量计算)
+     - Connected Components
+     - Triangle Counting
+
+查询语言: CypherG (Cypher扩展)
+  支持: MATCH, WHERE, RETURN
+  扩展: WINDOW, TUMBLE, HOP
+  语义: 持续更新查询结果
+```
+
+##### Def-F-08-84: Temporal Graph Operator
+
+**时序图算子**集合：
+
+```yaml
+核心算子:
+  GraphStreamSource: 从流构建动态图
+
+  WindowedGraphAggregation:
+    - 时间窗口内的图聚合
+    - 支持增量计算
+
+  TemporalPatternMatch:
+    - 时序模式匹配
+    - 支持CEP-like复杂模式
+
+  GraphJoin:
+    - 双流图合并
+    - 增量更新维护
+
+  GraphSnapshot:
+    - 生成时间点一致的图视图
+    - 支持历史查询
+
+状态管理:
+  Vertex State:  顶点属性状态
+  Edge State:    边属性状态
+  Index State:   邻接表索引
+```
+
+#### 13.3.2 属性推导 (Properties)
+
+##### Prop-F-08-73: Incremental Computation Correctness
+
+**增量计算正确性命题**：
+
+对于图查询 $Q$ 和图更新 $\Delta G$：
+
+$$
+Q(G \oplus \Delta G) = Q(G) \oplus \Delta Q
+$$
+
+其中 $\oplus$ 表示应用更新，$\Delta Q$ 是查询结果的增量。
+
+**可增量计算的算法**：
+
+- PageRank (近似增量)
+- Connected Components (Union-Find)
+- Shortest Path (动态更新)
+- Degree Centrality
+
+**需要重新计算的算法**：
+
+- Betweenness Centrality
+- Eigenvector Centrality
+- Clustering Coefficient
+
+##### Lemma-F-08-73: State Complexity Bound
+
+**状态复杂度上界**：
+
+对于具有 $n$ 个顶点和 $m$ 条边的动态图：
+
+$$
+S_{total} = O(n \cdot S_{vertex} + m \cdot S_{edge} + n \cdot d_{avg} \cdot S_{index})
+$$
+
+其中：
+
+- $S_{vertex}$: 单个顶点状态大小
+- $S_{edge}$: 单条边状态大小
+- $d_{avg}$: 平均度数
+- $S_{index}$: 索引条目大小
+
+#### 13.3.3 架构设计
+
+```mermaid
+graph TB
+    subgraph Input["输入层"]
+        VE[Vertex Event Stream]
+        EE[Edge Event Stream]
+        PE[Property Update Stream]
+    end
+
+    subgraph GraphRuntime["图运行时"]
+        GAS[Graph Assembly Stream]
+
+        subgraph Operators["图算子"]
+            GS[GraphStreamSource]
+            WA[WindowedAggregation]
+            TPM[TemporalPatternMatch]
+            GJ[GraphJoin]
+        end
+
+        subgraph State["图状态"]
+            VS[Vertex State]
+            ES[Edge State]
+            AI[Adjacency Index]
+            PI[Property Index]
+        end
+    end
+
+    subgraph Output["输出层"]
+        QR[Query Results]
+        AN[Analytics Notifications]
+        GV[Graph Views]
+    end
+
+    VE --> GAS
+    EE --> GAS
+    PE --> GAS
+
+    GAS --> GS
+    GS --> WA
+    GS --> TPM
+    GS --> GJ
+
+    WA --> State
+    TPM --> State
+    GJ --> State
+
+    WA --> Output
+    TPM --> Output
+    GJ --> Output
+```
+
+#### 13.3.4 API 设计
+
+**Table API / SQL 扩展**:
+
+```java
+// 创建动态图
+Table vertexTable = tableEnv.from("users")
+    .select($("user_id").as("id"), $("name"), $("age"));
+
+Table edgeTable = tableEnv.from("transactions")
+    .select($("from_id"), $("to_id"), $("amount"), $("timestamp"));
+
+// 构建图流
+GraphStream graph = GraphStream.fromTables(vertexTable, edgeTable)
+    .withVertexId("id")
+    .withEdgeSource("from_id")
+    .withEdgeTarget("to_id")
+    .withTimestamp("timestamp");
+
+// 持续最短路径查询
+Table shortestPaths = graph
+    .shortestPath()
+    .from("user_1")
+    .continuousQuery();
+
+// 时序模式匹配
+Table fraudPatterns = graph
+    .pattern("(a)-[:transfers]->(b)-[:transfers]->(c)")
+    .where($("amount").isGreaterThan(10000))
+    .within(Time.minutes(5))
+    .detect();
+
+// 增量PageRank
+Table pageRank = graph
+    .pageRank()
+    .iterations(10)
+    .dampingFactor(0.85)
+    .incremental()
+    .execute();
+```
+
+**SQL 扩展**:
+
+```sql
+-- 创建图视图
+CREATE DYNAMIC GRAPH social_network
+VERTEX TABLE users
+    (id STRING PRIMARY KEY, name STRING, age INT)
+EDGE TABLE friendships
+    (from_id STRING, to_id STRING, since TIMESTAMP)
+WITH (
+    'vertex.id' = 'id',
+    'edge.source' = 'from_id',
+    'edge.target' = 'to_id'
+);
+
+-- 持续最短路径查询
+SELECT * FROM TABLE(
+    SHORTEST_PATH(
+        GRAPH => social_network,
+        SOURCE => 'user_1',
+        TARGET => 'user_100',
+        MODE => 'CONTINUOUS'
+    )
+);
+
+-- 时序模式匹配 (检测洗钱模式)
+SELECT a.id, b.id, c.id, sum(e1.amount) as total
+FROM social_network
+MATCH (a)-[e1:transfers]->(b)-[e2:transfers]->(c)
+WHERE e1.timestamp > NOW() - INTERVAL '1' HOUR
+  AND e1.amount > 10000
+  AND e2.amount > 10000
+  AND e2.timestamp - e1.timestamp < INTERVAL '5' MINUTE
+EMIT WITH DELAY '30' SECONDS;
+
+-- 增量社区检测
+SELECT community_id, count(*) as size
+FROM TABLE(
+    COMMUNITY_DETECTION(
+        GRAPH => social_network,
+        ALGORITHM => 'LABEL_PROPAGATION',
+        MODE => 'INCREMENTAL'
+    )
+)
+GROUP BY community_id;
+```
+
+### 13.4 FLIP-551: Unified Batch-Streaming Source 批流统一源
+
+> **状态**: 📋 设计中 | **负责人**: @connector-team | **JIRA**: [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800)
+
+#### 13.4.1 概念定义 (Definitions)
+
+##### Def-F-08-85: Unified Source Interface
+
+**统一批流源接口**定义：
+
+```yaml
+统一源抽象:
+  核心原则: 同一套API处理批和流数据
+
+  Source Reader:
+    - 对上层透明，自动适配批/流模式
+    - 根据执行模式选择读取策略
+
+  Split Assignment:
+    Streaming: 持续分配新分片
+    Batch:     一次性分配所有分片
+
+  Watermark Generation:
+    Streaming: 基于事件时间持续生成
+    Batch:     结束时发射最大Watermark
+
+模式检测:
+  自动检测: 基于源特性和配置自动选择模式
+  显式配置: 用户强制指定 BATCH | STREAMING | AUTOMATIC
+```
+
+##### Def-F-08-86: Hybrid Scan Strategy
+
+**混合扫描策略**：
+
+```yaml
+扫描模式:
+  1. Historical Scan (批处理模式):
+     - 读取完整历史数据
+     - 并行分片读取
+     - 适合: 初始加载、批量回填
+
+  2. Incremental Scan (CDC模式):
+     - 读取变更数据
+     - 实时捕获INSERT/UPDATE/DELETE
+     - 适合: 实时同步、增量处理
+
+  3. Hybrid Scan (混合模式):
+     - 先执行Historical Scan
+     - 自动切换到Incremental Scan
+     - 无缝衔接，无数据丢失
+
+状态管理:
+  Split State:    已处理分片跟踪
+  Offset State:   CDC位点记录
+  Schema State:   模式演化历史
+```
+
+#### 13.4.2 架构设计
+
+```mermaid
+graph TB
+    subgraph Sources["数据源"]
+        K[Kafka]
+        P[Pulsar]
+        I[Iceberg]
+        PL[Paimon]
+        DB[Database CDC]
+    end
+
+    subgraph UnifiedLayer["统一源层"]
+        US[Unified Source API]
+
+        subgraph Modes["运行模式"]
+            HS[Historical Scan]
+            IS[Incremental Scan]
+            HY[Hybrid Scan]
+        end
+
+        subgraph SplitMgmt["分片管理"]
+            SD[Split Discovery]
+            SA[Split Assignment]
+            SS[Split State]
+        end
+    end
+
+    subgraph Runtime["Flink Runtime"]
+        SR[Source Reader]
+        WM[Watermark Generator]
+        EP[Event Processor]
+    end
+
+    K --> US
+    P --> US
+    I --> US
+    PL --> US
+    DB --> US
+
+    US --> Modes
+    Modes --> SplitMgmt
+    SplitMgmt --> SR
+    SR --> WM
+    WM --> EP
+```
+
+#### 13.4.3 配置示例
+
+```java
+// 统一源配置
+UnifiedSource<RowData> source = UnifiedSource.<RowData>builder()
+    .setSourceType(SourceType.KAFKA)
+    .setBootstrapServers("kafka:9092")
+    .setTopic("events")
+    .setMode(ScanMode.HYBRID)  // 混合模式
+    .setHistoricalScan(
+        HistoricalScanConfig.builder()
+            .startTimestamp(Instant.parse("2024-01-01T00:00:00Z"))
+            .parallelism(10)
+            .build()
+    )
+    .setIncrementalScan(
+        IncrementalScanConfig.builder()
+            .startingOffsets(OffsetsInitializer.earliest())
+            .watermarkStrategy(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)))
+            .build()
+    )
+    .build();
+
+env.fromSource(source, WatermarkStrategy.noWatermarks(), "Unified Source");
+```
+
+---
+
+## 14. 引用参考 (References)
+
+### FLIP 相关链接

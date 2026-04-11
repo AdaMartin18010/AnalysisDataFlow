@@ -1,0 +1,543 @@
+# Nightly Check Workflow - 夜间检查流水线 (v2.0)
+#
+# 版本: v2.0 | 日期: 2026-04-11 | 状态: Production
+#
+# 触发条件:
+#   - 每天凌晨 2:00 UTC (北京时间上午10:00)
+#   - 手动触发
+
+name: Nightly Check
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      task_type:
+        description: '任务类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - links-only
+          - stats-only
+          - kg-only
+          - quick
+
+env:
+  PYTHON_VERSION: '3.11'
+
+concurrency:
+  group: 'nightly-check'
+  cancel-in-progress: false
+
+jobs:
+  external-link-check:
+    name: External Link Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    if: |
+      github.event.inputs.task_type != 'stats-only' &&
+      github.event.inputs.task_type != 'kg-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -q aiohttp
+
+      - name: Run external link checker
+        run: |
+          mkdir -p reports
+          python3 << 'PYEOF'
+          import re
+          import json
+          import asyncio
+          import aiohttp
+          import os
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          async def check_url(session, url, source_file, semaphore):
+              async with semaphore:
+                  try:
+                      async with session.get(
+                          url, 
+                          timeout=aiohttp.ClientTimeout(total=30),
+                          allow_redirects=True,
+                          headers={'User-Agent': 'Mozilla/5.0 (compatible; DocsBot/1.0)'}
+                      ) as resp:
+                          return {
+                              'url': url,
+                              'status': resp.status,
+                              'source': source_file,
+                              'ok': resp.status < 400
+                          }
+                  except Exception as e:
+                      return {
+                          'url': url,
+                          'status': 0,
+                          'source': source_file,
+                          'ok': False,
+                          'error': str(e)[:50]
+                      }
+
+          async def main():
+              link_pattern = re.compile(r'\[([^\]]+)\]\((https?://[^\s\)]+)\)')
+              urls_map = defaultdict(set)
+              
+              for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+                  if not Path(directory).exists():
+                      continue
+                  for md_file in Path(directory).rglob('*.md'):
+                      try:
+                          content = md_file.read_text(encoding='utf-8')
+                          rel_path = str(md_file.relative_to('.'))
+                          for match in link_pattern.finditer(content):
+                              url = match.group(2)
+                              if any(skip in url for skip in ['localhost', '127.0.0.1']):
+                                  continue
+                              urls_map[url].add(rel_path)
+                      except:
+                          pass
+
+              unique_urls = list(urls_map.keys())
+              print(f"Found {len(unique_urls)} unique external links")
+
+              semaphore = asyncio.Semaphore(50)
+              async with aiohttp.ClientSession() as session:
+                  tasks = [check_url(session, url, list(urls_map[url])[0], semaphore) 
+                          for url in unique_urls]
+                  results = await asyncio.gather(*tasks)
+
+              broken = [r for r in results if not r['ok']]
+              stats = {
+                  'total': len(results),
+                  'ok': len([r for r in results if r['ok']]),
+                  'broken': len(broken)
+              }
+
+              print(f"Results: Total={stats['total']}, OK={stats['ok']}, Broken={stats['broken']}")
+
+              Path('reports').mkdir(exist_ok=True)
+              
+              report = {
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': stats,
+                  'broken_links': broken[:100]
+              }
+              
+              with open('reports/external-link-results.json', 'w') as f:
+                  json.dump(report, f, indent=2)
+
+              health_rate = (stats['ok']/stats['total']*100) if stats['total'] > 0 else 100
+              
+              report_lines = [
+                  f"# External Link Health Check Report",
+                  f"",
+                  f"**Generated**: {datetime.now().isoformat()}",
+                  f"",
+                  f"## Summary",
+                  f"",
+                  f"| Metric | Count |",
+                  f"|--------|-------|",
+                  f"| Total Links | {stats['total']} |",
+                  f"| OK | {stats['ok']} |",
+                  f"| Broken | {stats['broken']} |",
+                  f"| Health Rate | {health_rate:.1f}% |",
+                  f""
+              ]
+
+              if broken:
+                  report_lines.extend(["## Broken Links", "", "| URL | Status | Source |", "|-----|--------|--------|"])
+                  for b in broken[:30]:
+                      report_lines.append(f"| {b['url'][:60]} | {b['status']} | {b['source']} |")
+
+              with open('reports/external-link-report.md', 'w') as f:
+                  f.write('\n'.join(report_lines))
+
+              # 输出到GitHub
+              gh_output = os.environ.get('GITHUB_OUTPUT')
+              if gh_output:
+                  with open(gh_output, 'a') as f:
+                      f.write(f"broken_count={stats['broken']}\n")
+                      f.write(f"total_count={stats['total']}\n")
+                      f.write(f"health_rate={health_rate:.1f}\n")
+
+          asyncio.run(main())
+          PYEOF
+        continue-on-error: true
+
+      - name: Parse results
+        id: parse
+        run: |
+          if [ -f reports/external-link-results.json ]; then
+            broken=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['broken'])")
+            total=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); print(d['summary']['total'])")
+            rate=$(python3 -c "import json; d=json.load(open('reports/external-link-results.json')); s=d['summary']; print(f\"{(s['ok']/s['total']*100):.1f}\") if s['total']>0 else print(\"100\")")
+            echo "broken_count=$broken" >> $GITHUB_OUTPUT
+            echo "total_count=$total" >> $GITHUB_OUTPUT
+            echo "health_rate=$rate" >> $GITHUB_OUTPUT
+          else
+            echo "broken_count=0" >> $GITHUB_OUTPUT
+            echo "total_count=0" >> $GITHUB_OUTPUT
+            echo "health_rate=100" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload link check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-link-check
+          path: |
+            reports/external-link-results.json
+            reports/external-link-report.md
+          retention-days: 30
+
+    outputs:
+      broken_count: ${{ steps.parse.outputs.broken_count }}
+      total_count: ${{ steps.parse.outputs.total_count }}
+      health_rate: ${{ steps.parse.outputs.health_rate }}
+
+  knowledge-graph-update:
+    name: Knowledge Graph Update
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.task_type != 'links-only' &&
+      github.event.inputs.task_type != 'stats-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Update knowledge graph
+        run: |
+          python3 << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          kg = {'nodes': [], 'edges': [], 'metadata': {'generated_at': datetime.now().isoformat(), 'version': '2.0'}}
+          node_ids = set()
+          
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+                      if title_match:
+                          node_id = rel_path.replace('/', '-').replace('.md', '')
+                          if node_id not in node_ids:
+                              node_ids.add(node_id)
+                              kg['nodes'].append({
+                                  'id': node_id,
+                                  'label': title_match.group(1).strip(),
+                                  'type': directory.lower(),
+                                  'path': rel_path
+                              })
+                  except:
+                      pass
+
+          Path('reports').mkdir(exist_ok=True)
+          with open('reports/knowledge-graph.json', 'w') as f:
+              json.dump(kg, f, indent=2)
+
+          print(f"KG updated: {len(kg['nodes'])} nodes")
+          PYEOF
+        continue-on-error: true
+
+      - name: Upload knowledge graph
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-kg-update
+          path: reports/knowledge-graph.json
+          retention-days: 30
+
+  stats-update:
+    name: Statistics Update
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.task_type != 'links-only' &&
+      github.event.inputs.task_type != 'kg-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Generate statistics
+        run: |
+          python3 << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'date': datetime.now().strftime('%Y-%m-%d'),
+              'directories': {},
+              'global': {
+                  'total_docs': 0,
+                  'total_theorems': 0,
+                  'total_definitions': 0,
+                  'total_lemmas': 0,
+                  'total_propositions': 0,
+                  'total_corollaries': 0,
+                  'total_mermaid_diagrams': 0,
+                  'total_code_examples': 0,
+                  'total_lines': 0
+              }
+          }
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              md_files = list(dir_path.rglob('*.md'))
+              dir_stats = {
+                  'doc_count': len(md_files),
+                  'theorems': 0, 'definitions': 0, 'lemmas': 0,
+                  'propositions': 0, 'corollaries': 0,
+                  'mermaid_diagrams': 0, 'code_examples': 0,
+                  'total_lines': 0, 'total_size': 0
+              }
+
+              for md_file in md_files:
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      lines = content.split('\n')
+                      dir_stats['total_size'] += len(content)
+                      dir_stats['total_lines'] += len(lines)
+
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_type = match.group(1)
+                          if thm_type == 'Thm':
+                              dir_stats['theorems'] += 1
+                          elif thm_type == 'Def':
+                              dir_stats['definitions'] += 1
+                          elif thm_type == 'Lemma':
+                              dir_stats['lemmas'] += 1
+                          elif thm_type == 'Prop':
+                              dir_stats['propositions'] += 1
+                          elif thm_type == 'Cor':
+                              dir_stats['corollaries'] += 1
+
+                      dir_stats['mermaid_diagrams'] += len(re.findall(r'```mermaid', content))
+                      dir_stats['code_examples'] += len(re.findall(r'```(java|scala|python|sql|bash|yaml|json|rust|go)', content))
+                  except:
+                      pass
+
+              stats['directories'][directory] = dir_stats
+              for key in ['total_docs', 'total_theorems', 'total_definitions', 'total_lemmas', 
+                         'total_propositions', 'total_corollaries', 'total_mermaid_diagrams', 
+                         'total_code_examples', 'total_lines']:
+                  if key in dir_stats:
+                      stats['global'][key] += dir_stats[key]
+
+          Path('.stats').mkdir(exist_ok=True)
+          Path('reports').mkdir(exist_ok=True)
+
+          history_file = Path('.stats/daily-history.json')
+          history = []
+          if history_file.exists():
+              with open(history_file) as f:
+                  history = json.load(f)
+
+          history.append({
+              'date': stats['date'],
+              'total_docs': stats['global']['total_docs'],
+              'total_theorems': stats['global']['total_theorems'],
+              'total_definitions': stats['global']['total_definitions']
+          })
+          history = history[-30:]
+          
+          with open(history_file, 'w') as f:
+              json.dump(history, f, indent=2)
+
+          with open('reports/daily-stats.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          report_lines = [
+              f"# Daily Statistics Report - {stats['date']}",
+              "", "## Global Statistics", "",
+              "| Metric | Count |", "|--------|-------|",
+              f"| Total Documents | {stats['global']['total_docs']} |",
+              f"| Total Theorems | {stats['global']['total_theorems']} |",
+              f"| Total Definitions | {stats['global']['total_definitions']} |",
+              f"| Total Lines | {stats['global']['total_lines']:,} |", ""
+          ]
+
+          with open('reports/daily-stats-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Stats: Docs={stats['global']['total_docs']}, Theorems={stats['global']['total_theorems']}")
+          PYEOF
+
+      - name: Upload statistics
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-stats
+          path: |
+            reports/daily-stats.json
+            reports/daily-stats-report.md
+            .stats/daily-history.json
+          retention-days: 30
+
+  generate-report:
+    name: Generate Nightly Report
+    runs-on: ubuntu-latest
+    needs: [external-link-check, knowledge-graph-update, stats-update]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+        continue-on-error: true
+
+      - name: Generate nightly report
+        run: |
+          date=$(date -u +%Y-%m-%d)
+          cat > nightly-report.md << EOF
+          # Nightly Maintenance Report - ${date}
+
+          **Run**: ${{ github.run_id }}
+
+          ## Summary
+
+          | Check | Status | Details |
+          |-------|--------|----------|
+          | External Link Check | ${{ needs.external-link-check.result }} | ${{ needs.external-link-check.outputs.broken_count || '0' }} broken (Health: ${{ needs.external-link-check.outputs.health_rate || 'N/A' }}%) |
+          | Knowledge Graph Update | ${{ needs.knowledge-graph-update.result }} | - |
+          | Statistics Update | ${{ needs.stats-update.result }} | - |
+
+          ---
+          *Auto-generated by Nightly Check workflow*
+          EOF
+          cat nightly-report.md
+
+      - name: Upload nightly report
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-report
+          path: nightly-report.md
+          retention-days: 30
+
+  create-issue:
+    name: Create Issue for Issues Found
+    runs-on: ubuntu-latest
+    needs: [external-link-check, generate-report]
+    if: |
+      always() &&
+      needs.external-link-check.outputs.broken_count != '0' &&
+      needs.external-link-check.outputs.broken_count != ''
+    permissions:
+      issues: write
+    steps:
+      - name: Create or update issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const brokenLinks = parseInt('${{ needs.external-link-check.outputs.broken_count }}') || 0;
+            const healthRate = '${{ needs.external-link-check.outputs.health_rate }}';
+            const totalLinks = '${{ needs.external-link-check.outputs.total_count }}';
+
+            if (brokenLinks === 0) {
+              console.log('No broken links found');
+              return;
+            }
+
+            const title = '[Nightly] ' + brokenLinks + ' broken external links detected';
+            const body = '## Nightly Link Health Check Results\\n\\n' +
+              '**Check Date**: ' + new Date().toISOString() + '\\n' +
+              '**Health Rate**: ' + healthRate + '%\\n' +
+              '**Broken Links**: ' + brokenLinks + '\\n' +
+              '**Total Links Checked**: ' + totalLinks + '\\n\\n' +
+              '### Recommended Actions\\n' +
+              '1. Download the detailed report from workflow artifacts\\n' +
+              '2. Run the auto-fix script if available\\n' +
+              '3. Manually fix remaining broken links\\n\\n' +
+              '### Reports\\n' +
+              '- [View Workflow Run](../../actions/runs/${{ github.run_id }})\\n\\n' +
+              '*This issue was automatically created by the Nightly Check workflow.*';
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'maintenance,links,nightly'
+            });
+
+            const existingIssue = issues.data.find(i => 
+              i.title.includes('[Nightly]') && i.title.includes('broken external links')
+            );
+
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['maintenance', 'links', 'nightly', 'automated']
+              });
+              console.log('Created new issue for broken links');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `Updated: ${brokenLinks} broken links (Health: ${healthRate}%) - [View Run](../../actions/runs/${{ github.run_id }})`
+              });
+              console.log('Updated existing issue #' + existingIssue.number);
+            }
+
+  nightly-summary:
+    name: Nightly Summary
+    runs-on: ubuntu-latest
+    needs: [external-link-check, knowledge-graph-update, stats-update, generate-report, create-issue]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## Nightly Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date**: $(date -u +%Y-%m-%d %H:%M UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Task | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          for task in external-link-check knowledge-graph-update stats-update create-issue; do
+            result="${{ needs.${task}.result }}"
+            if [ "$result" == "success" ]; then
+              echo "| $task | OK |" >> $GITHUB_STEP_SUMMARY
+            elif [ "$result" == "skipped" ]; then
+              echo "| $task | Skipped |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| $task | Failed |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Nightly check completed" >> $GITHUB_STEP_SUMMARY

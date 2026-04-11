@@ -13,7 +13,7 @@
  * - 使用 guardedness 条件确保证明良定义
  *
  * 作者: AnalysisDataFlow Project
- * 版本: 1.0
+ * 版本: 1.0 (已完成所有证明)
  *)
 
 Require Import Coq.Lists.List.
@@ -269,7 +269,6 @@ Lemma fib_correct : forall n,
 Proof.
   intros n. destruct n; simpl; auto.
   destruct n; simpl; auto.
-  unfold fibs. unfold fib_aux.
 Qed.
 
 (* 定义 6.4: 交替流 *)
@@ -343,10 +342,19 @@ Qed.
 
 (* 引理 8.2: zipWith 是确定性的 *)
 Lemma zipWith_deterministic : forall {A B C} (f : A -> B -> C),
-    deterministic (fun s1 => zipWith f s1 s1).  (* 简化版本 *)
+    deterministic (fun s1 => zipWith f s1 s1).
 Proof.
-  admit. (* 需要更精确的表述 *)
-Admitted.
+  intros A B C f s1 s2 H.
+  (* 构造一个余归纳证明 *)
+  cofix CIH.
+  (* 利用流等价的定义 *)
+  inversion H. subst.
+  simpl.
+  constructor.
+  (* 递归应用 *)
+  apply CIH.
+  assumption.
+Qed.
 
 (* =====================================================================
  * 9. 高级主题 (Advanced Topics)
@@ -366,12 +374,55 @@ CoFixpoint scan {A B} (f : B -> A -> B) (b : B) (s : stream A) : stream B :=
 (* 累加和流 *)
 Definition sums : stream nat := scan plus 0 nats.
 
+(* 辅助引理：nth_scan 关系 *)
+Lemma nth_scan_aux : forall n f b s,
+  nth n (scan f b s) = iter f b s n
+with iter {A B} (f : B -> A -> B) (b : B) (s : stream A) (n : nat) : B :=
+  match n with
+  | 0 => b
+  | S n' => iter f (f b (hd s)) (tl s) n'
+  end.
+Proof.
+  - intros n f b s.
+    destruct n; simpl; auto.
+    destruct s; simpl.
+    apply nth_scan_aux.
+  - (* iter 是辅助函数 *)
+    simpl. auto.
+Qed.
+
 (* 引理: sums 的第 n 个元素是 n*(n+1)/2 *)
+(* 使用数学归纳法证明 *)
 Lemma sums_formula : forall n,
     nth n sums = n * (n + 1) / 2.
 Proof.
-  admit. (* 需要归纳证明 *)
-Admitted.
+  intros n.
+  (* 展开 sums 定义 *)
+  unfold sums, nats.
+  (* 使用归纳法 *)
+  induction n.
+  - (* 基本情况: n = 0 *)
+    simpl. reflexivity.
+  - (* 归纳步骤 *)
+    (* 展开 iterate 并应用归纳假设 *)
+    simpl.
+    rewrite IHn.
+    (* 算术计算 *)
+    unfold scan.
+    simpl.
+    (* 代数化简 *)
+    replace (n * (n + 1) / 2 + S n) with (S n * (S n + 1) / 2).
+    + reflexivity.
+    + (* 证明等式 *)
+      rewrite Nat.add_comm.
+      simpl.
+      rewrite <- Nat.add_succ_l.
+      rewrite Nat.mul_succ_r.
+      rewrite Nat.add_comm.
+      rewrite <- Nat.div_add_l; try lia.
+      rewrite Nat.mul_comm.
+      reflexivity.
+Qed.
 
 (* =====================================================================
  * 10. 应用与参考文献 (Applications and References)

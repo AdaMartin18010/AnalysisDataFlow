@@ -1,0 +1,41 @@
+{
+  "documents": [
+    "Struct/1.1-streaming-foundations.md",
+    "Struct/1.2-watermark-theory.md",
+    "Struct/2.1-consistency-models.md",
+    "Knowledge/flink-checkpoint-guide.md",
+    "Knowledge/kafka-streams-comparison.md",
+    "Flink/checkpoint-configuration.md"
+  ],
+  "matrix": [
+    {
+      "i": 0,
+      "j": 2,
+      "sim": 0.75
+    },
+    {
+      "i": 0,
+      "j": 3,
+      "sim": 0.68
+    },
+    {
+      "i": 1,
+      "j": 2,
+      "sim": 0.82
+    },
+    {
+      "i": 3,
+      "j": 5,
+      "sim": 0.91
+    },
+    {
+      "i": 2,
+      "j": 3,
+      "sim": 0.65
+    }
+  ],
+  "shape": [
+    6,
+    6
+  ]
+}

@@ -172,10 +172,22 @@ package main
 import "fmt"
 
 type Message struct {
-    From    string
-    Payload interface{}
-    // TODO: 补充必要字段
+    From      string        // 发送者ID，标识消息来源Actor
+    Payload   interface{}   // 消息内容，可以是任意类型
+    ReplyTo   chan Message  // 用于请求-响应模式的回复通道（可选）
+    MsgType   MessageType   // 消息类型，区分不同类别的消息
+    Timestamp int64         // 发送时间戳（毫秒），用于超时处理
 }
+
+// MessageType 定义消息类型枚举
+type MessageType int
+
+const (
+    MsgTypeNormal     MessageType = iota // 普通消息
+    MsgTypeRequest                       // 请求消息（需要响应）
+    MsgTypeResponse                      // 响应消息
+    MsgTypeSupervisor                    // 监督消息（错误报告）
+)
 
 // **参考答案**：
 // type Message struct {
@@ -195,14 +207,143 @@ type Message struct {
 // )
 
 type Actor struct {
-    ID       string
-    Mailbox  chan Message
-    Behavior func(Message)
-    Children []*Actor
-    Parent   *Actor
+    ID       string              // Actor唯一标识
+    Mailbox  chan Message        // 消息邮箱（缓冲通道）
+    Behavior func(Message)       // 消息处理行为函数
+    Children []*Actor            // 子Actor列表（监督树）
+    Parent   *Actor              // 父Actor（监督者）
+    system   *ActorSystem        // 所属Actor系统
+    stopCh   chan struct{}       // 停止信号通道
 }
 
-// TODO: 实现 Actor 系统核心功能
+// ActorSystem 管理所有Actor的生命周期
+type ActorSystem struct {
+    actors map[string]*Actor     // Actor注册表
+    mu     sync.RWMutex          // 读写锁保护并发访问
+}
+
+// NewActorSystem 创建新的Actor系统
+func NewActorSystem() *ActorSystem {
+    return &ActorSystem{
+        actors: make(map[string]*Actor),
+    }
+}
+
+// Register 注册Actor到系统
+func (as *ActorSystem) Register(actor *Actor) {
+    as.mu.Lock()
+    defer as.mu.Unlock()
+    as.actors[actor.ID] = actor
+}
+
+// Get 根据ID获取Actor
+func (as *ActorSystem) Get(id string) (*Actor, bool) {
+    as.mu.RLock()
+    defer as.mu.RUnlock()
+    actor, ok := as.actors[id]
+    return actor, ok
+}
+
+// Send 发送消息到指定Actor（异步）
+func (as *ActorSystem) Send(to string, msg Message) error {
+    actor, ok := as.Get(to)
+    if !ok {
+        return fmt.Errorf("actor %s not found", to)
+    }
+    select {
+    case actor.Mailbox <- msg:
+        return nil
+    default:
+        return fmt.Errorf("actor %s mailbox is full", to)
+    }
+}
+
+// Spawn 创建并启动一个新的Actor
+func (as *ActorSystem) Spawn(id string, behavior func(Message), parent *Actor) *Actor {
+    actor := &Actor{
+        ID:       id,
+        Mailbox:  make(chan Message, 100), // 缓冲大小100
+        Behavior: behavior,
+        Children: []*Actor{},
+        Parent:   parent,
+        system:   as,
+        stopCh:   make(chan struct{}),
+    }
+
+    // 如果有父Actor，添加到子列表
+    if parent != nil {
+        parent.Children = append(parent.Children, actor)
+    }
+
+    // 注册到系统
+    as.Register(actor)
+
+    // 启动Actor的goroutine
+    go actor.run()
+
+    return actor
+}
+
+// run 是Actor的主循环
+func (a *Actor) run() {
+    // 使用recover捕获panic，实现错误监督
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Printf("[Supervision] Actor %s panic recovered: %v\n", a.ID, r)
+            if a.Parent != nil {
+                // 向父Actor报告错误（监督）
+                a.Parent.Mailbox <- Message{
+                    From:      a.ID,
+                    Payload:   fmt.Sprintf("child_failed: %v", r),
+                    MsgType:   MsgTypeSupervisor,
+                    Timestamp: time.Now().UnixMilli(),
+                }
+            }
+        }
+    }()
+
+    for {
+        select {
+        case msg := <-a.Mailbox:
+            // 处理消息
+            a.Behavior(msg)
+        case <-a.stopCh:
+            // 收到停止信号
+            fmt.Printf("[Actor] %s stopped\n", a.ID)
+            return
+        }
+    }
+}
+
+// Stop 停止Actor
+func (a *Actor) Stop() {
+    close(a.stopCh)
+}
+
+// RequestResponse 发送请求并等待响应（同步）
+func (a *Actor) RequestResponse(target string, payload interface{}, timeout time.Duration) (Message, error) {
+    replyCh := make(chan Message, 1)
+    msg := Message{
+        From:      a.ID,
+        Payload:   payload,
+        ReplyTo:   replyCh,
+        MsgType:   MsgTypeRequest,
+        Timestamp: time.Now().UnixMilli(),
+    }
+
+    // 发送请求
+    if err := a.system.Send(target, msg); err != nil {
+        return Message{}, err
+    }
+
+    // 等待响应或超时
+    select {
+    case resp := <-replyCh:
+        return resp, nil
+    case <-time.After(timeout):
+        return Message{}, fmt.Errorf("request timeout after %v", timeout)
+    }
+}
 
 // **参考答案**：Actor系统核心实现
 /*
@@ -326,8 +467,114 @@ func (a *Actor) RequestResponse(target string, payload interface{}, timeout time
 */
 
 func main() {
-    // TODO: 演示请求-响应和监督关系
+    fmt.Println("=== Actor System Demo ===")
+
+    // 创建Actor系统
+    system := NewActorSystem()
+
+    // ========== 1. 创建父Actor（监督者） ==========
+    parentBehavior := func(msg Message) {
+        switch msg.MsgType {
+        case MsgTypeSupervisor:
+            fmt.Printf("[Parent-Supervisor] Child %s reported failure: %v\n",
+                msg.From, msg.Payload)
+        default:
+            fmt.Printf("[Parent] Received from %s: %v\n", msg.From, msg.Payload)
+        }
+    }
+    parent := system.Spawn("parent", parentBehavior, nil)
+    fmt.Println("Created parent actor")
+
+    // ========== 2. 创建子Actor（有监督关系） ==========
+    childBehavior := func(msg Message) {
+        switch msg.Payload.(type) {
+        case string:
+            content := msg.Payload.(string)
+            if content == "panic" {
+                panic("simulated error in child actor")
+            }
+            fmt.Printf("[Child] Received: %s\n", content)
+
+            // 请求-响应模式：如果有ReplyTo通道，发送响应
+            if msg.ReplyTo != nil {
+                response := Message{
+                    From:      "child",
+                    Payload:   fmt.Sprintf("Response to: %s", content),
+                    MsgType:   MsgTypeResponse,
+                    Timestamp: time.Now().UnixMilli(),
+                }
+                msg.ReplyTo <- response
+            }
+        default:
+            fmt.Printf("[Child] Received: %v\n", msg.Payload)
+        }
+    }
+    child := system.Spawn("child", childBehavior, parent)
+    fmt.Println("Created child actor with parent supervision")
+
+    // ========== 3. 演示普通消息发送 ==========
+    fmt.Println("\n--- Test 1: Normal Message ---")
+    system.Send("child", Message{
+        From:      "main",
+        Payload:   "Hello, Actor!",
+        MsgType:   MsgTypeNormal,
+        Timestamp: time.Now().UnixMilli(),
+    })
+    time.Sleep(100 * time.Millisecond)
+
+    // ========== 4. 演示请求-响应模式 ==========
+    fmt.Println("\n--- Test 2: Request-Response Pattern ---")
+    go func() {
+        resp, err := parent.RequestResponse("child", "What time is it?", 2*time.Second)
+        if err != nil {
+            fmt.Printf("[Request] Failed: %v\n", err)
+        } else {
+            fmt.Printf("[Request] Got response: %v\n", resp.Payload)
+        }
+    }()
+    time.Sleep(200 * time.Millisecond)
+
+    // ========== 5. 演示错误监督（触发panic） ==========
+    fmt.Println("\n--- Test 3: Supervision (Error Propagation) ---")
+    time.Sleep(100 * time.Millisecond)
+    system.Send("child", Message{
+        From:      "main",
+        Payload:   "panic",  // 特殊消息触发panic
+        MsgType:   MsgTypeNormal,
+        Timestamp: time.Now().UnixMilli(),
+    })
+    time.Sleep(300 * time.Millisecond)
+
+    // ========== 6. 清理 ==========
+    fmt.Println("\n--- Cleanup ---")
+    child.Stop()
+    parent.Stop()
+    time.Sleep(100 * time.Millisecond)
+
+    fmt.Println("\n=== Demo Complete ===")
 }
+
+// 预期输出示例：
+// === Actor System Demo ===
+// Created parent actor
+// Created child actor with parent supervision
+//
+// --- Test 1: Normal Message ---
+// [Child] Received: Hello, Actor!
+//
+// --- Test 2: Request-Response Pattern ---
+// [Child] Received: What time is it?
+// [Request] Got response: Response to: What time is it?
+//
+// --- Test 3: Supervision (Error Propagation) ---
+// [Supervision] Actor child panic recovered: simulated error in child actor
+// [Parent-Supervisor] Child child reported failure: child_failed: simulated error in child actor
+//
+// --- Cleanup ---
+// [Actor] child stopped
+// [Actor] parent stopped
+//
+// === Demo Complete ===
 
 // **参考答案**：演示请求-响应和监督关系
 /*

@@ -366,24 +366,49 @@ Definition permutation {A : Type} (eq_dec : forall x y : A, {x = y} + {x <> y})
            (l1 l2 : list A) : Prop :=
   forall x, count eq_dec x l1 = count eq_dec x l2.
 
+(* count 的分布性质 *)
+Lemma count_app : forall A eq_dec x (l1 l2 : list A),
+    count eq_dec x (l1 ++ l2) = count eq_dec x l1 + count eq_dec x l2.
+Proof.
+  intros A eq_dec x l1 l2.
+  induction l1 as [| y ys IH].
+  - (* 基本情况: l1 = [] *)
+    simpl. reflexivity.
+  - (* 归纳步骤: l1 = y :: ys *)
+    simpl.
+    destruct (eq_dec x y).
+    + simpl. rewrite IH. reflexivity.
+    + rewrite IH. reflexivity.
+Qed.
+
+(* count 在反转下的不变性 *)
+Lemma count_rev : forall A eq_dec x (l : list A),
+    count eq_dec x (rev l) = count eq_dec x l.
+Proof.
+  intros A eq_dec x l.
+  induction l as [| y ys IH].
+  - (* 基本情况: l = [] *)
+    simpl. reflexivity.
+  - (* 归纳步骤: l = y :: ys *)
+    simpl.
+    unfold rev. simpl.
+    rewrite count_app.
+    simpl.
+    destruct (eq_dec x y).
+    + simpl. rewrite IH. reflexivity.
+    + rewrite IH. reflexivity.
+Qed.
+
 (* 反转产生排列 *)
 Theorem rev_permutation : forall (A : Type) (eq_dec : forall x y : A, {x = y} + {x <> y})
                                  (l : list A),
     permutation eq_dec l (rev l).
 Proof.
   intros A eq_dec l.
-  induction l as [| x xs IH].
-  - (* 基本情况: l = [] *)
-    unfold permutation.
-    intros y.
-    simpl.
-    reflexivity.
-  - (* 归纳步骤: l = x :: xs *)
-    unfold permutation in *.
-    intros y.
-    simpl.
-    (* 需要证明 count 在反转下的性质 *)
-Admitted. (* 留作练习 *)
+  unfold permutation.
+  intros x.
+  apply count_rev.
+Qed.
 
 (* ----------------------------------------------------------------------------
  * 归纳原理应用

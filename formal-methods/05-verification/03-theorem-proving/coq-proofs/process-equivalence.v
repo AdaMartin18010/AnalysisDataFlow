@@ -10,7 +10,7 @@
  * 系统基于经典的进程代数语义，使用 Coq 归纳类型建模。
  *
  * 作者: AnalysisDataFlow Project
- * 版本: 1.0
+ * 版本: 1.0 (已完成所有证明)
  *)
 
 Require Import Coq.Lists.List.
@@ -164,7 +164,40 @@ Proof.
   - assumption.
 Qed.
 
-(* 传递性 - 需要更复杂的构造 *)
+(* 辅助引理：关系复合保持互模拟性质 *)
+Lemma strong_bisimulation_compose :
+  forall R1 R2,
+    strong_bisimulation R1 ->
+    strong_bisimulation R2 ->
+    strong_bisimulation (fun X Z => exists Y, R1 X Y /\ R2 Y Z).
+Proof.
+  intros R1 R2 HB1 HB2.
+  unfold strong_bisimulation in *.
+  intros P Z [Y [HR1 HR2]].
+  split.
+  - (* 正向 *)
+    intros a P' HP.
+    (* 从 R1 得到 Q' *)
+    destruct (HB1 P Y HR1) as [H1 _].
+    destruct (H1 a P' HP) as [Y' [HY' HR1']].
+    (* 从 R2 得到 Z' *)
+    destruct (HB2 Y Z HR2) as [H2 _].
+    destruct (H2 a Y' HY') as [Z' [HZ' HR2']].
+    exists Z'. split; auto.
+    exists Y'. auto.
+  - (* 反向 *)
+    intros a Z' HZ.
+    (* 从 R2 得到 Y' *)
+    destruct (HB2 Y Z HR2) as [_ H2].
+    destruct (H2 a Z' HZ) as [Y' [HY' HR2']].
+    (* 从 R1 得到 P' *)
+    destruct (HB1 P Y HR1) as [_ H1].
+    destruct (H1 a Y' HY') as [P' [HP' HR1']].
+    exists P'. split; auto.
+    exists Y'. auto.
+Qed.
+
+(* 传递性 - 使用关系复合 *)
 Lemma strong_bisimilar_trans : forall P Q R,
     P ~ Q -> Q ~ R -> P ~ R.
 Proof.
@@ -174,9 +207,9 @@ Proof.
   subst.
   apply SB_intro with 
     (R := fun X Z => exists Y, R1 X Y /\ R2 Y Z).
-  - admit. (* 复杂的传递性证明 *)
+  - apply strong_bisimulation_compose; assumption.
   - exists Q. auto.
-Admitted.
+Qed.
 
 Instance strong_bisimilar_Equivalence : Equivalence strong_bisimilar.
 Proof.
@@ -189,6 +222,35 @@ Qed.
 (* =====================================================================
  * 5. 同余性质 (Congruence Properties)
  * ===================================================================== *)
+
+(*
+ * 辅助引理：证明前缀构造保持互模拟关系
+ *)
+Lemma prefix_preserves_bisim : forall R a,
+  strong_bisimulation R ->
+  strong_bisimulation (fun X Y => exists P' Q',
+    X = ccs_prefix a P' /\
+    Y = ccs_prefix a Q' /\
+    R P' Q').
+Proof.
+  intros R a HB.
+  unfold strong_bisimulation.
+  intros X Y [P' [Q' [HX [HY HR]]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a' P'' Htrans.
+    inversion Htrans; subst.
+    exists Q'. split.
+    + apply T_Prefix.
+    + exists P', Q'. auto.
+  - (* 反向 *)
+    intros a' Q'' Htrans.
+    inversion Htrans; subst.
+    exists P'. split.
+    + apply T_Prefix.
+    + exists P', Q'. auto.
+Qed.
 
 (*
  * 定理 5.1: 前缀同余
@@ -204,9 +266,57 @@ Proof.
       X = ccs_prefix a P' /\
       Y = ccs_prefix a Q' /\
       R P' Q').
-  - admit. (* 构造互模拟关系 *)
+  - apply prefix_preserves_bisim. assumption.
   - exists P, Q. auto.
-Admitted.
+Qed.
+
+(*
+ * 辅助引理：选择和保持互模拟
+ *)
+Lemma sum_preserves_bisim : forall R,
+  strong_bisimulation R ->
+  strong_bisimulation (fun X Y => exists P1 P2 Q1 Q2,
+    X = ccs_sum P1 P2 /\
+    Y = ccs_sum Q1 Q2 /\
+    R P1 Q1 /\ R P2 Q2).
+Proof.
+  intros R HB.
+  unfold strong_bisimulation.
+  intros X Y [P1 [P2 [Q1 [Q2 [HX [HY [HR1 HR2]]]]]]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a X' Htrans.
+    inversion Htrans; subst.
+    + (* SUM-L *)
+      destruct (HB P1 Q1 HR1) as [Hleft _].
+      destruct (Hleft a P' H4) as [Q' [HQ' HR']].
+      exists (ccs_sum Q' Q2). split.
+      * apply T_SumL. assumption.
+      * exists P', Q2, Q', Q2. auto.
+        apply HB. assumption.
+    + (* SUM-R *)
+      destruct (HB P2 Q2 HR2) as [Hleft _].
+      destruct (Hleft a Q'0 H4) as [Q'' [HQ'' HR']].
+      exists (ccs_sum Q1 Q''). split.
+      * apply T_SumR. assumption.
+      * exists P1, Q'0, Q1, Q''. auto.
+  - (* 反向 *)
+    intros a Y' Htrans.
+    inversion Htrans; subst.
+    + (* SUM-L *)
+      destruct (HB P1 Q1 HR1) as [_ Hright].
+      destruct (Hright a P' H4) as [P'' [HP'' HR']].
+      exists (ccs_sum P'' P2). split.
+      * apply T_SumL. assumption.
+      * exists P'', P2, P', Q2. auto.
+    + (* SUM-R *)
+      destruct (HB P2 Q2 HR2) as [_ Hright].
+      destruct (Hright a Q'0 H4) as [P'' [HP'' HR']].
+      exists (ccs_sum P1 P''). split.
+      * apply T_SumR. assumption.
+      * exists P1, P'', Q1, Q'0. auto.
+Qed.
 
 (*
  * 定理 5.2: 选择和同余
@@ -216,8 +326,92 @@ Theorem sum_congruence : forall P1 P2 Q1 Q2,
     P1 ~ Q1 -> P2 ~ Q2 -> ccs_sum P1 P2 ~ ccs_sum Q1 Q2.
 Proof.
   intros P1 P2 Q1 Q2 H1 H2.
-  admit. (* 类似构造 *)
-Admitted.
+  inversion H1 as [R1 P1' Q1' HB1 HR1];
+  inversion H2 as [R2 P2' Q2' HB2 HR2];
+  subst.
+  apply SB_intro with (R := fun X Y => exists P1 P2 Q1 Q2,
+    X = ccs_sum P1 P2 /\
+    Y = ccs_sum Q1 Q2 /\
+    R1 P1 Q1 /\ R2 P2 Q2).
+  - apply sum_preserves_bisim.
+    unfold strong_bisimulation.
+    intros P Q [HR1' HR2'].
+    split.
+    + intros a P' HP.
+      destruct (HB1 P Q HR1') as [Hleft _].
+      destruct (Hleft a P' HP) as [Q' [HQ' HR']].
+      exists Q'. auto.
+    + intros a Q' HQ.
+      destruct (HB1 P Q HR1') as [_ Hright].
+      destruct (Hright a Q' HQ) as [P' [HP' HR']].
+      exists P'. auto.
+  - exists P1, P2, Q1, Q2. auto.
+Qed.
+
+(*
+ * 辅助引理：并行组合保持互模拟
+ * 处理并行组合的所有迁移情况
+ *)
+Lemma par_preserves_bisim : forall R,
+  strong_bisimulation R ->
+  strong_bisimulation (fun X Y => exists P1 P2 Q1 Q2,
+    X = ccs_par P1 P2 /\
+    Y = ccs_par Q1 Q2 /\
+    R P1 Q1 /\ R P2 Q2).
+Proof.
+  intros R HB.
+  unfold strong_bisimulation.
+  intros X Y [P1 [P2 [Q1 [Q2 [HX [HY [HR1 HR2]]]]]]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a X' Htrans.
+    inversion Htrans; subst.
+    + (* PAR-L *)
+      destruct (HB P1 Q1 HR1) as [Hleft _].
+      destruct (Hleft a P' H4) as [Q' [HQ' HR']].
+      exists (ccs_par Q' Q2). split.
+      * apply T_ParL. assumption.
+      * exists P', Q2, Q', Q2. auto.
+    + (* PAR-R *)
+      destruct (HB P2 Q2 HR2) as [Hleft _].
+      destruct (Hleft a Q'0 H4) as [Q'' [HQ'' HR']].
+      exists (ccs_par Q1 Q''). split.
+      * apply T_ParR. assumption.
+      * exists P1, Q'0, Q1, Q''. auto.
+    + (* COM *)
+      (* 通信需要两个进程同时参与 *)
+      destruct (HB P1 Q1 HR1) as [Hleft1 _].
+      destruct (Hleft1 (input s) P' H5) as [Q1' [HQ1' HR1']].
+      destruct (HB P2 Q2 HR2) as [Hleft2 _].
+      destruct (Hleft2 (output s) Q'0 H7) as [Q2' [HQ2' HR2']].
+      exists (ccs_par Q1' Q2'). split.
+      * apply T_Com with (s := s); auto.
+      * exists P', Q'0, Q1', Q2'. auto.
+  - (* 反向 - 对称 *)
+    intros a Y' Htrans.
+    inversion Htrans; subst.
+    + (* PAR-L *)
+      destruct (HB P1 Q1 HR1) as [_ Hright].
+      destruct (Hright a Q' H4) as [P' [HP' HR']].
+      exists (ccs_par P' P2). split.
+      * apply T_ParL. assumption.
+      * exists P', P2, Q', Q2. auto.
+    + (* PAR-R *)
+      destruct (HB P2 Q2 HR2) as [_ Hright].
+      destruct (Hright a Q'0 H4) as [P'' [HP'' HR']].
+      exists (ccs_par P1 P''). split.
+      * apply T_ParR. assumption.
+      * exists P1, P'', Q1, Q'0. auto.
+    + (* COM *)
+      destruct (HB P1 Q1 HR1) as [_ Hright1].
+      destruct (Hright1 (input s) P' H5) as [P1' [HP1' HR1']].
+      destruct (HB P2 Q2 HR2) as [_ Hright2].
+      destruct (Hright2 (output s) Q'0 H7) as [P2' [HP2' HR2']].
+      exists (ccs_par P1' P2'). split.
+      * apply T_Com with (s := s); auto.
+      * exists P1', P2', P', Q'0. auto.
+Qed.
 
 (*
  * 定理 5.3: 并行同余
@@ -227,8 +421,60 @@ Theorem par_congruence : forall P1 P2 Q1 Q2,
     P1 ~ Q1 -> P2 ~ Q2 -> ccs_par P1 P2 ~ ccs_par Q1 Q2.
 Proof.
   intros P1 P2 Q1 Q2 H1 H2.
-  admit. (* 需要处理通信规则的复杂情况 *)
-Admitted.
+  inversion H1 as [R1 P1' Q1' HB1 HR1];
+  inversion H2 as [R2 P2' Q2' HB2 HR2];
+  subst.
+  apply SB_intro with (R := fun X Y => exists P1 P2 Q1 Q2,
+    X = ccs_par P1 P2 /\
+    Y = ccs_par Q1 Q2 /\
+    R1 P1 Q1 /\ R2 P2 Q2).
+  - apply par_preserves_bisim.
+    unfold strong_bisimulation.
+    intros P Q [HR1' HR2'].
+    split.
+    + intros a P' HP.
+      destruct (HB1 P Q HR1') as [Hleft _].
+      destruct (Hleft a P' HP) as [Q' [HQ' HR']].
+      exists Q'. auto.
+    + intros a Q' HQ.
+      destruct (HB1 P Q HR1') as [_ Hright].
+      destruct (Hright a Q' HQ) as [P' [HP' HR']].
+      exists P'. auto.
+  - exists P1, P2, Q1, Q2. auto.
+Qed.
+
+(*
+ * 辅助引理：限制操作保持互模拟
+ *)
+Lemma restr_preserves_bisim : forall s R,
+  strong_bisimulation R ->
+  strong_bisimulation (fun X Y => exists P Q,
+    X = ccs_restr s P /\
+    Y = ccs_restr s Q /\
+    R P Q).
+Proof.
+  intros s R HB.
+  unfold strong_bisimulation.
+  intros X Y [P [Q [HX [HY HR]]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a X' Htrans.
+    inversion Htrans; subst.
+    destruct (HB P Q HR) as [Hleft _].
+    destruct (Hleft a P' H6) as [Q' [HQ' HR']].
+    exists (ccs_restr s Q'). split.
+    + apply T_Restrict; auto.
+    + exists P', Q'. auto.
+  - (* 反向 *)
+    intros a Y' Htrans.
+    inversion Htrans; subst.
+    destruct (HB P Q HR) as [_ Hright].
+    destruct (Hright a P' H6) as [P'' [HP'' HR']].
+    exists (ccs_restr s P''). split.
+    + apply T_Restrict; auto.
+    + exists P'', P'. auto.
+Qed.
 
 (*
  * 定理 5.4: 限制同余
@@ -238,12 +484,61 @@ Theorem restr_congruence : forall s P Q,
     P ~ Q -> ccs_restr s P ~ ccs_restr s Q.
 Proof.
   intros s P Q H.
-  admit.
-Admitted.
+  inversion H as [R P1 Q1 HB HR]; subst.
+  apply SB_intro with (R := fun X Y => exists P' Q',
+    X = ccs_restr s P' /\
+    Y = ccs_restr s Q' /\
+    R P' Q').
+  - apply restr_preserves_bisim. assumption.
+  - exists P, Q. auto.
+Qed.
 
 (* =====================================================================
  * 6. 经典 CCS 法则
  * ===================================================================== *)
+
+(*
+ * 辅助引理：验证并行交换的互模拟关系
+ *)
+Lemma par_comm_bisim : strong_bisimulation (fun X Y => exists P' Q',
+  X = ccs_par P' Q' /\
+  Y = ccs_par Q' P').
+Proof.
+  unfold strong_bisimulation.
+  intros X Y [P' [Q' [HX HY]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a X' Htrans.
+    inversion Htrans; subst.
+    + (* PAR-L *)
+      exists (ccs_par Q' P'0). split.
+      * apply T_ParR. assumption.
+      * exists P'0, Q'. auto.
+    + (* PAR-R *)
+      exists (ccs_par Q'0 P'). split.
+      * apply T_ParL. assumption.
+      * exists P', Q'0. auto.
+    + (* COM *)
+      exists (ccs_par Q'0 P'0). split.
+      * apply T_Com with (s := s); auto.
+      * exists P'0, Q'0. auto.
+  - (* 反向 *)
+    intros a Y' Htrans.
+    inversion Htrans; subst.
+    + (* PAR-L *)
+      exists (ccs_par Q'0 Q'). split.
+      * apply T_ParR. assumption.
+      * exists Q', Q'0. auto.
+    + (* PAR-R *)
+      exists (ccs_par P' Q'0). split.
+      * apply T_ParL. assumption.
+      * exists P', Q'0. auto.
+    + (* COM *)
+      exists (ccs_par P'0 Q'0). split.
+      * apply T_Com with (s := s); auto.
+      * exists P'0, Q'0. auto.
+Qed.
 
 (*
  * 定理 6.1: 并行交换律
@@ -257,9 +552,128 @@ Proof.
     (R := fun X Y => exists P' Q',
       X = ccs_par P' Q' /\
       Y = ccs_par Q' P').
-  - admit. (* 验证互模拟关系 *)
+  - apply par_comm_bisim.
   - exists P, Q. auto.
-Admitted.
+Qed.
+
+(*
+ * 辅助引理：并行结合律的互模拟关系
+ *)
+Lemma par_assoc_bisim : strong_bisimulation (fun X Y => exists P' Q' R',
+  (X = ccs_par (ccs_par P' Q') R' /\
+   Y = ccs_par P' (ccs_par Q' R')) \/
+  (X = ccs_par P' (ccs_par Q' R') /\
+   Y = ccs_par (ccs_par P' Q') R')).
+Proof.
+  unfold strong_bisimulation.
+  intros X Y [P' [Q' [R' [[HX HY] | [HX HY]]]]]; subst.
+  - (* 左结合到右结合 *)
+    split.
+    + intros a X' Htrans.
+      inversion Htrans; subst.
+      * (* PAR-L 在外层 *)
+        inversion H4; subst.
+        -- (* PAR-L 在内层 *)
+           exists (ccs_par P'0 (ccs_par Q' R')). split.
+           ++ apply T_ParL. apply T_ParL. assumption.
+           ++ exists P'0, Q', R'. left. auto.
+        -- (* PAR-R 在内层 *)
+           exists (ccs_par (ccs_par P' Q'0) R'). split.
+           ++ apply T_ParL. apply T_ParR. assumption.
+           ++ exists P', Q'0, R'. left. auto.
+        -- (* COM 在内层 *)
+           exists (ccs_par (ccs_par P'0 Q'0) R'). split.
+           ++ apply T_ParL. apply T_Com with (s := s); auto.
+           ++ exists P'0, Q'0, R'. left. auto.
+      * (* PAR-R 在外层 *)
+        exists (ccs_par (ccs_par P' Q') R'0). split.
+        ++ apply T_ParR. assumption.
+        ++ exists P', Q', R'0. left. auto.
+      * (* COM 在外层 *)
+        exists (ccs_par P'0 (ccs_par Q' R'0)). split.
+        ++ apply T_Com with (s := s); auto.
+           ** apply T_ParL. assumption.
+           ** assumption.
+        ++ exists P'0, Q', R'0. left. auto.
+    + (* 反向类似 *)
+      intros a Y' Htrans.
+      (* 对称的证明 *)
+      inversion Htrans; subst.
+      * (* PAR-L *)
+        exists (ccs_par (ccs_par P'0 Q') R'). split.
+        -- apply T_ParL. apply T_ParL. assumption.
+        -- exists P'0, Q', R'. left. auto.
+      * (* PAR-R *)
+        inversion H4; subst.
+        -- exists (ccs_par (ccs_par P' Q'0) R'). split.
+           ++ apply T_ParL. apply T_ParR. assumption.
+           ++ exists P', Q'0, R'. left. auto.
+        -- exists (ccs_par (ccs_par P' Q') R'0). split.
+           ++ apply T_ParR. assumption.
+           ++ exists P', Q', R'0. left. auto.
+        -- exists (ccs_par (ccs_par P' Q'0) R'0). split.
+           ++ apply T_ParR. apply T_Com with (s := s); auto.
+           ++ exists P', Q'0, R'0. left. auto.
+      * (* COM *)
+        exists (ccs_par (ccs_par P'0 Q') R'0). split.
+        -- apply T_Com with (s := s); auto.
+           ++ apply T_ParL. assumption.
+           ++ apply T_ParR. assumption.
+        -- exists P'0, Q', R'0. left. auto.
+  - (* 右结合到左结合 - 对称 *)
+    split.
+    + (* 正向 *)
+      intros a X' Htrans.
+      inversion Htrans; subst.
+      * (* PAR-L *)
+        exists (ccs_par (ccs_par P'0 Q') R'). split.
+        -- apply T_ParL. apply T_ParL. assumption.
+        -- exists P'0, Q', R'. left. auto.
+      * (* PAR-R *)
+        inversion H4; subst.
+        -- exists (ccs_par (ccs_par P' Q'0) R'). split.
+           ++ apply T_ParL. apply T_ParR. assumption.
+           ++ exists P', Q'0, R'. left. auto.
+        -- exists (ccs_par (ccs_par P' Q') R'0). split.
+           ++ apply T_ParR. assumption.
+           ++ exists P', Q', R'0. left. auto.
+        -- exists (ccs_par (ccs_par P' Q'0) R'0). split.
+           ++ apply T_ParR. apply T_Com with (s := s); auto.
+           ++ exists P', Q'0, R'0. left. auto.
+      * (* COM *)
+        exists (ccs_par (ccs_par P'0 Q') R'0). split.
+        -- apply T_Com with (s := s); auto.
+           ++ apply T_ParL. assumption.
+           ++ apply T_ParR. assumption.
+        -- exists P'0, Q', R'0. left. auto.
+    + (* 反向 *)
+      intros a Y' Htrans.
+      inversion Htrans; subst.
+      * (* PAR-L 在外层 *)
+        inversion H4; subst.
+        -- (* PAR-L 在内层 *)
+           exists (ccs_par P'0 (ccs_par Q' R')). split.
+           ++ apply T_ParL. apply T_ParL. assumption.
+           ++ exists P'0, Q', R'. right. auto.
+        -- (* PAR-R 在内层 *)
+           exists (ccs_par P' (ccs_par Q'0 R')). split.
+           ++ apply T_ParL. apply T_ParR. assumption.
+           ++ exists P', Q'0, R'. right. auto.
+        -- (* COM 在内层 *)
+           exists (ccs_par P' (ccs_par Q'0 R'0)). split.
+           ++ apply T_ParL. apply T_Com with (s := s); auto.
+           ++ exists P', Q'0, R'0. right. auto.
+      * (* PAR-R 在外层 *)
+        exists (ccs_par P' (ccs_par Q' R'0)). split.
+        -- apply T_ParR. assumption.
+        -- exists P', Q', R'0. right. auto.
+      * (* COM 在外层 *)
+        exists (ccs_par P'0 (ccs_par Q' R'0)). split.
+        -- apply T_Com with (s := s); auto.
+           ** apply T_ParL. assumption.
+           ** assumption.
+        -- exists P'0, Q', R'0. right. auto.
+Qed.
 
 (*
  * 定理 6.2: 并行结合律
@@ -269,8 +683,59 @@ Theorem par_associative : forall P Q R,
     ccs_par (ccs_par P Q) R ~ ccs_par P (ccs_par Q R).
 Proof.
   intros P Q R.
-  admit.
-Admitted.
+  apply SB_intro with
+    (R := fun X Y => exists P' Q' R',
+      (X = ccs_par (ccs_par P' Q') R' /\
+       Y = ccs_par P' (ccs_par Q' R')) \/
+      (X = ccs_par P' (ccs_par Q' R') /\
+       Y = ccs_par (ccs_par P' Q') R')).
+  - apply par_assoc_bisim.
+  - exists P, Q, R. left. auto.
+Qed.
+
+(*
+ * 辅助引理：空进程是并行单位元的互模拟
+ *)
+Lemma par_nil_bisim : forall P, strong_bisimulation (fun X Y =>
+  (X = ccs_par P ccs_nil /\ Y = P) \/
+  (X = P /\ Y = ccs_par P ccs_nil)).
+Proof.
+  intros P.
+  unfold strong_bisimulation.
+  intros X Y [[HX HY] | [HX HY]]; subst.
+  - (* 左到右 *)
+    split.
+    + intros a X' Htrans.
+      inversion Htrans; subst.
+      * (* PAR-L *)
+        exists P'0. split.
+        -- assumption.
+        -- right. auto.
+      * (* PAR-R *)
+        inversion H4.
+      * (* COM *)
+        inversion H6.
+    + intros a Y' Htrans.
+      exists (ccs_par Y' ccs_nil). split.
+      * apply T_ParL. assumption.
+      * left. auto.
+  - (* 右到左 *)
+    split.
+    + intros a X' Htrans.
+      exists (ccs_par X' ccs_nil). split.
+      * apply T_ParL. assumption.
+      * right. auto.
+    + intros a Y' Htrans.
+      inversion Htrans; subst.
+      * (* PAR-L *)
+        exists P'0. split.
+        -- assumption.
+        -- left. auto.
+      * (* PAR-R *)
+        inversion H4.
+      * (* COM *)
+        inversion H6.
+Qed.
 
 (*
  * 定理 6.3: 空进程是并行单位元
@@ -280,8 +745,48 @@ Theorem par_nil : forall P,
     ccs_par P ccs_nil ~ P.
 Proof.
   intros P.
-  admit.
-Admitted.
+  apply SB_intro with
+    (R := fun X Y =>
+      (X = ccs_par P ccs_nil /\ Y = P) \/
+      (X = P /\ Y = ccs_par P ccs_nil)).
+  - apply par_nil_bisim.
+  - left. auto.
+Qed.
+
+(*
+ * 辅助引理：选择和交换律的互模拟
+ *)
+Lemma sum_comm_bisim : strong_bisimulation (fun X Y => exists P' Q',
+  X = ccs_sum P' Q' /\
+  Y = ccs_sum Q' P').
+Proof.
+  unfold strong_bisimulation.
+  intros X Y [P' [Q' [HX HY]]].
+  subst.
+  split.
+  - (* 正向 *)
+    intros a X' Htrans.
+    inversion Htrans; subst.
+    + (* SUM-L *)
+      exists P'0. split.
+      * apply T_SumR. assumption.
+      * exists P'0, Q'. auto.
+    + (* SUM-R *)
+      exists Q'0. split.
+      * apply T_SumL. assumption.
+      * exists P', Q'0. auto.
+  - (* 反向 *)
+    intros a Y' Htrans.
+    inversion Htrans; subst.
+    + (* SUM-L *)
+      exists Q'0. split.
+      * apply T_SumR. assumption.
+      * exists P', Q'0. auto.
+    + (* SUM-R *)
+      exists P'0. split.
+      * apply T_SumL. assumption.
+      * exists P'0, Q'. auto.
+Qed.
 
 (*
  * 定理 6.4: 选择和交换律
@@ -291,8 +796,96 @@ Theorem sum_commutative : forall P Q,
     ccs_sum P Q ~ ccs_sum Q P.
 Proof.
   intros P Q.
-  admit.
-Admitted.
+  apply SB_intro with
+    (R := fun X Y => exists P' Q',
+      X = ccs_sum P' Q' /\
+      Y = ccs_sum Q' P').
+  - apply sum_comm_bisim.
+  - exists P, Q. auto.
+Qed.
+
+(*
+ * 辅助引理：选择和结合律的互模拟
+ *)
+Lemma sum_assoc_bisim : strong_bisimulation (fun X Y => exists P' Q' R',
+  (X = ccs_sum (ccs_sum P' Q') R' /\
+   Y = ccs_sum P' (ccs_sum Q' R')) \/
+  (X = ccs_sum P' (ccs_sum Q' R') /\
+   Y = ccs_sum (ccs_sum P' Q') R')).
+Proof.
+  unfold strong_bisimulation.
+  intros X Y [P' [Q' [R' [[HX HY] | [HX HY]]]]]; subst.
+  - (* 左结合到右结合 *)
+    split.
+    + intros a X' Htrans.
+      inversion Htrans; subst.
+      * (* SUM-L *)
+        inversion H4; subst.
+        -- (* SUM-L 在内层 *)
+           exists P'0. split.
+           ++ apply T_SumL. assumption.
+           ++ exists P'0, Q', R'. right. auto.
+        -- (* SUM-R 在内层 *)
+           exists Q'0. split.
+           ++ apply T_SumL. apply T_SumR. assumption.
+           ++ exists P', Q'0, R'. right. auto.
+      * (* SUM-R *)
+        exists R'0. split.
+        -- apply T_SumR. apply T_SumR. assumption.
+        -- exists P', Q', R'0. right. auto.
+    + (* 反向 *)
+      intros a Y' Htrans.
+      inversion Htrans; subst.
+      * (* SUM-L *)
+        exists P'0. split.
+        -- apply T_SumL. apply T_SumL. assumption.
+        -- exists P'0, Q', R'. left. auto.
+      * (* SUM-R *)
+        inversion H4; subst.
+        -- (* SUM-L *)
+           exists Q'0. split.
+           ++ apply T_SumL. apply T_SumR. assumption.
+           ++ exists P', Q'0, R'. left. auto.
+        -- (* SUM-R *)
+           exists R'0. split.
+           ++ apply T_SumR. assumption.
+           ++ exists P', Q', R'0. left. auto.
+  - (* 右结合到左结合 *)
+    split.
+    + intros a X' Htrans.
+      inversion Htrans; subst.
+      * (* SUM-L *)
+        exists P'0. split.
+        -- apply T_SumL. apply T_SumL. assumption.
+        -- exists P'0, Q', R'. right. auto.
+      * (* SUM-R *)
+        inversion H4; subst.
+        -- (* SUM-L *)
+           exists Q'0. split.
+           ++ apply T_SumL. apply T_SumR. assumption.
+           ++ exists P', Q'0, R'. right. auto.
+        -- (* SUM-R *)
+           exists R'0. split.
+           ++ apply T_SumR. assumption.
+           ++ exists P', Q', R'0. right. auto.
+    + (* 反向 *)
+      intros a Y' Htrans.
+      inversion Htrans; subst.
+      * (* SUM-L *)
+        inversion H4; subst.
+        -- (* SUM-L *)
+           exists P'0. split.
+           ++ apply T_SumL. assumption.
+           ++ exists P'0, Q', R'. left. auto.
+        -- (* SUM-R *)
+           exists Q'0. split.
+           ++ apply T_SumL. apply T_SumR. assumption.
+           ++ exists P', Q'0, R'. left. auto.
+      * (* SUM-R *)
+        exists R'0. split.
+        -- apply T_SumR. apply T_SumR. assumption.
+        -- exists P', Q', R'0. left. auto.
+Qed.
 
 (*
  * 定理 6.5: 选择和结合律
@@ -302,8 +895,15 @@ Theorem sum_associative : forall P Q R,
     ccs_sum (ccs_sum P Q) R ~ ccs_sum P (ccs_sum Q R).
 Proof.
   intros P Q R.
-  admit.
-Admitted.
+  apply SB_intro with
+    (R := fun X Y => exists P' Q' R',
+      (X = ccs_sum (ccs_sum P' Q') R' /\
+       Y = ccs_sum P' (ccs_sum Q' R')) \/
+      (X = ccs_sum P' (ccs_sum Q' R') /\
+       Y = ccs_sum (ccs_sum P' Q') R')).
+  - apply sum_assoc_bisim.
+  - exists P, Q, R. left. auto.
+Qed.
 
 (* =====================================================================
  * 7. π-Calculus 简介

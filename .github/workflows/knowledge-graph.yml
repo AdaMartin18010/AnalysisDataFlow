@@ -1,0 +1,123 @@
+name: Knowledge Graph Analysis
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  workflow_dispatch:
+
+jobs:
+  build-knowledge-graph:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .scripts/knowledge-graph/requirements.txt
+      
+      - name: Build concept map
+        run: |
+          cd .scripts/knowledge-graph
+          python concept-map-builder.py -c config.json
+      
+      - name: Analyze theorem dependencies
+        run: |
+          cd .scripts/knowledge-graph
+          python theorem-dependency-analyzer.py -c config.json
+      
+      - name: Analyze document similarity
+        run: |
+          cd .scripts/knowledge-graph
+          python doc-similarity-analyzer.py -c config.json
+      
+      - name: Build search index
+        run: |
+          cd .scripts/knowledge-graph
+          python knowledge-search-engine.py index -c config.json
+      
+      - name: Check for duplicate content
+        run: |
+          cd .scripts/knowledge-graph
+          python -c "
+          import json
+          with open('output/content-gaps.json') as f:
+              data = json.load(f)
+          duplicates = [g for g in data.get('gaps', []) if g.get('priority') == 'high']
+          if duplicates:
+              print(f'::warning::Found {len(duplicates)} content gaps')
+              for gap in duplicates[:5]:
+                  print(f'  - {gap[\"topic\"]}')
+          "
+      
+      - name: Upload knowledge graph artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-output
+          path: |
+            .scripts/knowledge-graph/output/
+            .scripts/knowledge-graph/index/
+          retention-days: 30
+      
+      - name: Update knowledge graph badge
+        run: |
+          cd .scripts/knowledge-graph
+          python -c "
+          import json
+          from datetime import datetime
+          
+          # 读取统计数据
+          try:
+              with open('output/concept-summary.json') as f:
+                  concept_data = json.load(f)
+              
+              stats = {
+                  'concepts': concept_data['statistics']['total_concepts'],
+                  'relations': concept_data['statistics']['total_relations'],
+                  'generated': datetime.now().isoformat()
+              }
+              
+              with open('output/stats.json', 'w') as f:
+                  json.dump(stats, f)
+              
+              print(f'Knowledge Graph Stats:')
+              print(f'  Concepts: {stats[\"concepts\"]}')
+              print(f'  Relations: {stats[\"relations\"]}')
+          except Exception as e:
+              print(f'Error updating stats: {e}')
+          "
+
+  deploy-search-engine:
+    needs: build-knowledge-graph
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-output
+          path: knowledge-graph-output/
+      
+      - name: Deploy to GitHub Pages (optional)
+        run: |
+          echo "Search index ready for deployment"
+          ls -la knowledge-graph-output/

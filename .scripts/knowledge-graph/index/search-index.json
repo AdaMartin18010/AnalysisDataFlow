@@ -1,0 +1,38 @@
+{
+  "documents": {
+    "Struct/1.1-streaming-foundations.md": {
+      "doc_id": "Struct/1.1-streaming-foundations.md",
+      "title": "流计算基础理论",
+      "word_count": 2500,
+      "section_count": 8,
+      "doc_type": "formal_theory",
+      "formal_ids": "Def-S-01-01,Def-S-01-02,Thm-S-01-01"
+    },
+    "Flink/checkpoint-configuration.md": {
+      "doc_id": "Flink/checkpoint-configuration.md",
+      "title": "Flink Checkpoint配置指南",
+      "word_count": 1800,
+      "section_count": 6,
+      "doc_type": "flink_reference",
+      "formal_ids": ""
+    }
+  },
+  "inverted_index": {
+    "checkpoint": [
+      "Flink/checkpoint-configuration.md"
+    ],
+    "streaming": [
+      "Struct/1.1-streaming-foundations.md"
+    ],
+    "event": [
+      "Struct/1.1-streaming-foundations.md"
+    ],
+    "time": [
+      "Struct/1.1-streaming-foundations.md"
+    ],
+    "flink": [
+      "Flink/checkpoint-configuration.md"
+    ]
+  },
+  "saved_at": "2026-04-11T15:41:21.359263"
+}

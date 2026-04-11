@@ -1,0 +1,434 @@
+# Release Automation Workflow - 发布自动化 (v2.0)
+#
+# 版本: v2.0 | 日期: 2026-04-11 | 状态: Production
+#
+# 触发条件:
+#   - Tag推送 (v*.*.*)
+#   - 手动触发
+
+name: Release Automation
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (例如: 2.8.0)'
+        required: true
+        type: string
+      prerelease:
+        description: '是否为预发布版本'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+
+# 并发控制
+concurrency:
+  group: 'release-automation'
+  cancel-in-progress: false
+
+jobs:
+  # ============ 任务1: 验证版本 ============
+  validate-version:
+    name: Validate Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version info
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+            IS_PRERELEASE="false"
+            if [[ "$VERSION" == *-* ]]; then
+              IS_PRERELEASE="true"
+            fi
+          else
+            VERSION="${{ github.event.inputs.version }}"
+            IS_PRERELEASE="${{ github.event.inputs.prerelease }}"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "is_prerelease=$IS_PRERELEASE" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION (prerelease: $IS_PRERELEASE)"
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]; then
+            echo "Invalid version format: $VERSION"
+            echo "Expected format: MAJOR.MINOR.PATCH[-prerelease]"
+            exit 1
+          fi
+          echo "Version format is valid"
+
+      - name: Check version consistency
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # 检查PROJECT-TRACKING.md
+          if [ -f PROJECT-TRACKING.md ]; then
+            if grep -q "$VERSION" PROJECT-TRACKING.md; then
+              echo "Version found in PROJECT-TRACKING.md"
+            fi
+          fi
+          
+          # 检查AGENTS.md中的版本
+          if [ -f AGENTS.md ]; then
+            if grep -q "$VERSION" AGENTS.md; then
+              echo "Version found in AGENTS.md"
+            fi
+          fi
+          
+          echo "Version consistency check completed"
+
+  # ============ 任务2: 运行完整质量检查 ============
+  quality-check:
+    name: Full Quality Check
+    runs-on: ubuntu-latest
+    needs: validate-version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run quality checks
+        run: |
+          python3 << 'PYEOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          print("Running full quality checks for release...")
+
+          errors = []
+          warnings = []
+
+          # 1. 检查定理重复
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          all_theorems = {}
+          
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          if thm_id in all_theorems:
+                              errors.append(f"Duplicate theorem {thm_id} in {rel_path} and {all_theorems[thm_id]}")
+                          else:
+                              all_theorems[thm_id] = rel_path
+                  except:
+                      pass
+
+          # 2. 检查文档结构
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      # 检查是否有至少一个章节
+                      if not re.search(r'^##\s+', content, re.MULTILINE):
+                          warnings.append(f"{md_file} may have no sections")
+                  except:
+                      pass
+
+          print(f"Quality check results:")
+          print(f"  Errors: {len(errors)}")
+          print(f"  Warnings: {len(warnings)}")
+
+          if errors:
+              print("\nErrors found:")
+              for e in errors[:10]:
+                  print(f"  - {e}")
+              sys.exit(1)
+
+          print("\nAll quality checks passed!")
+          PYEOF
+
+  # ============ 任务3: 生成发布说明 ============
+  generate-changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    needs: [validate-version, quality-check]
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          
+          # 生成变更日志
+          echo "# Release v$VERSION" > CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          echo "Release Date: $(date +%Y-%m-%d)" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          # 获取提交范围
+          if [ -n "$PREV_TAG" ]; then
+            COMMIT_RANGE="${PREV_TAG}..HEAD"
+            echo "Changes since $PREV_TAG:" >> CHANGELOG-RELEASE.md
+          else
+            COMMIT_RANGE="HEAD"
+            echo "Initial release" >> CHANGELOG-RELEASE.md
+          fi
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          # 分类提交
+          echo "## Features" >> CHANGELOG-RELEASE.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^feat" 2>/dev/null >> CHANGELOG-RELEASE.md || echo "- No new features" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          echo "## Bug Fixes" >> CHANGELOG-RELEASE.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^fix" 2>/dev/null >> CHANGELOG-RELEASE.md || echo "- No bug fixes" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          echo "## Documentation" >> CHANGELOG-RELEASE.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^docs" 2>/dev/null >> CHANGELOG-RELEASE.md || echo "- No documentation changes" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          echo "## Maintenance" >> CHANGELOG-RELEASE.md
+          git log $COMMIT_RANGE --pretty=format:"- %s (%h)" --grep="^(chore|refactor)" 2>/dev/null >> CHANGELOG-RELEASE.md || echo "- No maintenance changes" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          # 统计信息
+          echo "## Statistics" >> CHANGELOG-RELEASE.md
+          DOC_COUNT=$(find Struct Knowledge Flink -name "*.md" 2>/dev/null | wc -l)
+          THEOREM_COUNT=$(grep -r "Thm-[SKF]-" Struct Knowledge Flink 2>/dev/null | wc -l)
+          echo "- Documents: $DOC_COUNT" >> CHANGELOG-RELEASE.md
+          echo "- Theorems: $THEOREM_COUNT" >> CHANGELOG-RELEASE.md
+          echo "" >> CHANGELOG-RELEASE.md
+          
+          cat CHANGELOG-RELEASE.md
+
+      - name: Set output
+        id: set-output
+        run: |
+          CONTENT=$(cat CHANGELOG-RELEASE.md)
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload changelog
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-changelog
+          path: CHANGELOG-RELEASE.md
+
+  # ============ 任务4: 生成发布包 ============
+  build-package:
+    name: Build Release Package
+    runs-on: ubuntu-latest
+    needs: [validate-version, quality-check]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build package
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          PACKAGE_NAME="AnalysisDataFlow-v${VERSION}"
+          
+          mkdir -p "$PACKAGE_NAME"
+          
+          # 复制核心内容
+          for dir in Struct Knowledge Flink visuals tutorials docs; do
+            if [ -d "$dir" ]; then
+              cp -r "$dir" "$PACKAGE_NAME/"
+            fi
+          done
+          
+          # 复制根目录文件
+          for file in README.md README-EN.md LICENSE CHANGELOG.md CONTRIBUTING.md CODE_OF_CONDUCT.md; do
+            if [ -f "$file" ]; then
+              cp "$file" "$PACKAGE_NAME/"
+            fi
+          done
+          
+          # 创建压缩包
+          tar -czf "${PACKAGE_NAME}.tar.gz" "$PACKAGE_NAME"
+          zip -r "${PACKAGE_NAME}.zip" "$PACKAGE_NAME"
+          
+          # 计算校验和
+          sha256sum "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+          sha256sum "${PACKAGE_NAME}.zip" > "${PACKAGE_NAME}.zip.sha256"
+          
+          ls -la ${PACKAGE_NAME}*
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: |
+            AnalysisDataFlow-v*.tar.gz
+            AnalysisDataFlow-v*.zip
+            AnalysisDataFlow-v*.sha256
+
+  # ============ 任务5: 创建GitHub Release ============
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [validate-version, generate-changelog, build-package]
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release v${{ needs.validate-version.outputs.version }}
+          tag_name: v${{ needs.validate-version.outputs.version }}
+          body_path: artifacts/release-changelog/CHANGELOG-RELEASE.md
+          prerelease: ${{ needs.validate-version.outputs.is_prerelease == 'true' }}
+          files: |
+            artifacts/release-packages/AnalysisDataFlow-v*
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============ 任务6: 更新项目统计 ============
+  update-tracking:
+    name: Update PROJECT-TRACKING.md
+    runs-on: ubuntu-latest
+    needs: [validate-version, create-release]
+    if: ${{ needs.validate-version.outputs.is_prerelease != 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update PROJECT-TRACKING.md
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+          
+          if [ -f PROJECT-TRACKING.md ]; then
+            # 在文件开头添加版本信息
+            sed -i "1i\\
+          ## Release v$VERSION - $DATE\n\n- Version: v$VERSION\n- Release Date: $DATE\n- Status: Released\n" PROJECT-TRACKING.md
+            
+            # 更新版本badge
+            sed -i "s/Version-v[0-9.]*/Version-v${VERSION}/g" PROJECT-TRACKING.md 2>/dev/null || true
+          fi
+
+      - name: Commit changes
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add PROJECT-TRACKING.md
+          git diff --staged --quiet || git commit -m "docs: update PROJECT-TRACKING.md for v${VERSION}"
+          
+          # 只在有变更时推送
+          git diff --staged --quiet || git push
+        continue-on-error: true
+
+  # ============ 任务7: 更新版本文档 ============
+  update-version-docs:
+    name: Update Version Documentation
+    runs-on: ubuntu-latest
+    needs: [validate-version, create-release]
+    if: ${{ needs.validate-version.outputs.is_prerelease != 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version badges
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          
+          # 更新README.md
+          if [ -f README.md ]; then
+            sed -i "s/Version-v[0-9.]*-brightgreen/Version-v${VERSION}-brightgreen/g" README.md 2>/dev/null || true
+          fi
+          
+          # 更新README-EN.md
+          if [ -f README-EN.md ]; then
+            sed -i "s/Version-v[0-9.]*-brightgreen/Version-v${VERSION}-brightgreen/g" README-EN.md 2>/dev/null || true
+          fi
+          
+          # 追加到CHANGELOG.md
+          if [ -f CHANGELOG.md ] && [ -f CHANGELOG-RELEASE.md ]; then
+            cat CHANGELOG-RELEASE.md >> CHANGELOG.md
+          fi
+
+      - name: Commit changes
+        run: |
+          VERSION="${{ needs.validate-version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add README.md README-EN.md CHANGELOG.md 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "docs: update version info for v${VERSION}"
+          
+          git diff --staged --quiet || git push
+        continue-on-error: true
+
+  # ============ 发布汇总 ============
+  release-summary:
+    name: Release Summary
+    runs-on: ubuntu-latest
+    needs: [validate-version, quality-check, create-release, update-tracking, update-version-docs]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## Release Automation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: v${{ needs.validate-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Prerelease**: ${{ needs.validate-version.outputs.is_prerelease == 'true' && 'Yes' || 'No' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Version Validation | ${{ needs.validate-version.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Quality Check | ${{ needs.quality-check.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Create Release | ${{ needs.create-release.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Update Tracking | ${{ needs.update-tracking.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Update Version Docs | ${{ needs.update-version-docs.result }} |" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.create-release.result }}" == "success" ]; then
+            echo "Release v${{ needs.validate-version.outputs.version }} created successfully!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Release creation failed!" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi

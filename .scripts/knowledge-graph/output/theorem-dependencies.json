@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-04-11T15:41:21.358178",
+  "statistics": {
+    "total_theorems": 15,
+    "total_dependencies": 28,
+    "by_type": {
+      "theorem": 8,
+      "lemma": 4,
+      "proposition": 2,
+      "definition": 10
+    }
+  },
+  "theorems": {
+    "Thm-S-01-01": {
+      "id": "Thm-S-01-01",
+      "formal_id": "Thm-S-01-01",
+      "name": "流计算基本定理",
+      "theorem_type": "theorem",
+      "source_file": "Struct/1.1-streaming-foundations.md",
+      "statement": "对于任何流计算系统...",
+      "dependencies": [
+        "Def-S-01-01",
+        "Def-S-01-02"
+      ],
+      "used_by": [
+        "Thm-S-02-01",
+        "Lemma-S-02-01"
+      ],
+      "proof_depth": 1,
+      "complexity_score": 8.5
+    },
+    "Def-S-01-01": {
+      "id": "Def-S-01-01",
+      "formal_id": "Def-S-01-01",
+      "name": "Event Time定义",
+      "theorem_type": "definition",
+      "source_file": "Struct/1.1-streaming-foundations.md",
+      "statement": "事件时间是指...",
+      "dependencies": [],
+      "used_by": [
+        "Thm-S-01-01",
+        "Lemma-S-02-01"
+      ],
+      "proof_depth": 0,
+      "complexity_score": 3.0
+    }
+  },
+  "edges": [
+    {
+      "source": "Thm-S-01-01",
+      "target": "Def-S-01-01",
+      "type": "direct"
+    },
+    {
+      "source": "Thm-S-01-01",
+      "target": "Def-S-01-02",
+      "type": "direct"
+    }
+  ],
+  "cycles": [],
+  "foundations": [
+    "Def-S-01-01",
+    "Def-S-01-02",
+    "Def-S-02-01"
+  ],
+  "critical_paths": {
+    "Thm-S-02-01": [
+      "Def-S-01-01",
+      "Thm-S-01-01",
+      "Lemma-S-02-01",
+      "Thm-S-02-01"
+    ]
+  }
+}

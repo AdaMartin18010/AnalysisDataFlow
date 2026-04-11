@@ -1,0 +1,17 @@
+# 文档质量保障自动化工具依赖
+# Python 3.9+ required
+
+# 核心依赖
+aiohttp>=3.8.0
+aiofiles>=22.0.0
+
+# 类型检查
+typing-extensions>=4.0.0
+
+# 测试依赖
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
+
+# 可选依赖（用于高级功能）
+# mermaid-cli (通过npm安装: npm install -g @mermaid-js/mermaid-cli)

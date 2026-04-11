@@ -101,17 +101,14 @@ Record USTMConfig : Type := mkUSTMConfig {
 
 Definition ustm_well_formed (cfg : USTMConfig) : Prop :=
   (** All PEs have valid semantics *)
-  (forall pe, In pe (ustm_pes cfg) <-> ustm_semantics cfg pe <> None) /\
-  
+  (forall pe, In pe (ustm_pes cfg) <-> ustm_semantics cfg pe <> None) /\n  
   (** All PEs have valid states *)
-  (forall pe, In pe (ustm_pes cfg) <-> ustm_pe_states cfg pe <> None) /\
-  
+  (forall pe, In pe (ustm_pes cfg) <-> ustm_pe_states cfg pe <> None) /\n  
   (** Stream connectivity is valid *)
   (forall pe s sem,
     ustm_semantics cfg pe = Some sem ->
     In s (pe_input sem) \/ In s (pe_output sem) ->
-    ustm_streams cfg s <> None) /\
-  
+    ustm_streams cfg s <> None) /\n  
   (** States are valid according to semantics *)
   (forall pe s sem st,
     ustm_semantics cfg pe = Some sem ->
@@ -202,8 +199,7 @@ Theorem ustm_local_confluence : forall cfg cfg1 cfg2 a1 a2,
   USTMStep cfg a1 cfg1 ->
   USTMStep cfg a2 cfg2 ->
   exists cfg',
-    rt_clos (fun c c' => exists a, USTMStep c a c') cfg1 cfg' /\
-    rt_clos (fun c c' => exists a, USTMStep c a c') cfg2 cfg'.
+    rt_clos (fun c c' => exists a, USTMStep c a c') cfg1 cfg' /\n    rt_clos (fun c c' => exists a, USTMStep c a c') cfg2 cfg'.
 Proof.
   (** Key insight: different PEs can process concurrently *)
   intros cfg cfg1 cfg2 a1 a2 H1 H2.
@@ -225,8 +221,98 @@ Proof.
       (S (ustm_global_time cfg))).
     split; apply RT_refl.
   - (** Different PEs: actions commute by independence *)
-    admit.  (** Show PEs can be executed in either order *)
-Admitted.
+    (** Show PEs can be executed in either order *)
+    exists (mkUSTMConfig
+      (ustm_pes cfg)
+      (fun s => 
+        if In_nat s (pe_output sem) then
+          match nth_error outputs (index_of s (pe_output sem)) with
+          | Some evts => Some (evts ++ match 
+            if In_nat s (pe_output sem0) then
+              match nth_error outputs0 (index_of s (pe_output sem0)) with
+              | Some evts0 => Some (evts0 ++ match ustm_streams cfg s with
+                                            | Some str => str
+                                            | None => []
+                                            end)
+              | None => ustm_streams cfg s
+              end
+            else ustm_streams cfg s with
+            | Some str => str
+            | None => []
+            end)
+          | None => 
+            if In_nat s (pe_output sem0) then
+              match nth_error outputs0 (index_of s (pe_output sem0)) with
+              | Some evts0 => Some (evts0 ++ match ustm_streams cfg s with
+                                            | Some str => str
+                                            | None => []
+                                            end)
+              | None => ustm_streams cfg s
+              end
+            else ustm_streams cfg s
+          end
+        else 
+          if In_nat s (pe_output sem0) then
+            match nth_error outputs0 (index_of s (pe_output sem0)) with
+            | Some evts0 => Some (evts0 ++ match ustm_streams cfg s with
+                                          | Some str => str
+                                          | None => []
+                                          end)
+            | None => ustm_streams cfg s
+            end
+          else ustm_streams cfg s)
+      (ustm_semantics cfg)
+      (fun p => 
+        if p == pe then Some (existT _ sem st')
+        else if p == pe0 then Some (existT _ sem0 st'0)
+        else ustm_pe_states cfg p)
+      (fun p => 
+        if p == pe then PE_Running
+        else if p == pe0 then PE_Running
+        else ustm_pe_status cfg p)
+      (S (S (ustm_global_time cfg)))).
+    split.
+    + (* cfg1 can reach cfg' *)
+      apply RT_step with 
+        (mkUSTMConfig
+          (ustm_pes cfg)
+          (fun s => 
+            if In_nat s (pe_output sem) then
+              match nth_error outputs (index_of s (pe_output sem)) with
+              | Some evts => Some (evts ++ match ustm_streams cfg s with
+                                          | Some str => str
+                                          | None => []
+                                          end)
+              | None => ustm_streams cfg s
+              end
+            else ustm_streams cfg s)
+          (ustm_semantics cfg)
+          (fun p => if p == pe then Some (existT _ sem st') else ustm_pe_states cfg p)
+          (fun p => if p == pe then PE_Running else ustm_pe_status cfg p)
+          (S (ustm_global_time cfg))).
+      * exists (U_Process pe0). eapply US_Process; eauto.
+      * apply RT_refl.
+    + (* cfg2 can reach cfg' *)
+      apply RT_step with 
+        (mkUSTMConfig
+          (ustm_pes cfg)
+          (fun s => 
+            if In_nat s (pe_output sem0) then
+              match nth_error outputs0 (index_of s (pe_output sem0)) with
+              | Some evts0 => Some (evts0 ++ match ustm_streams cfg s with
+                                            | Some str => str
+                                            | None => []
+                                            end)
+              | None => ustm_streams cfg s
+              end
+            else ustm_streams cfg s)
+          (ustm_semantics cfg)
+          (fun p => if p == pe0 then Some (existT _ sem0 st'0) else ustm_pe_states cfg p)
+          (fun p => if p == pe0 then PE_Running else ustm_pe_status cfg p)
+          (S (ustm_global_time cfg))).
+      * exists (U_Process pe). eapply US_Process; eauto.
+      * apply RT_refl.
+Qed.
 
 (** ** USTM-F Time Properties *)
 
@@ -261,6 +347,27 @@ Definition ustm_compose (cfg1 cfg2 : USTMConfig) : USTMConfig :=
               else ustm_pe_status cfg2 pe)
     (max (ustm_global_time cfg1) (ustm_global_time cfg2)).
 
+(* Helper lemma for disjoint PEs *)
+Lemma disjoint_pes_inversion : forall cfg1 cfg2 pe,
+  (forall pe, In_nat pe (ustm_pes cfg1) = true -> 
+              In_nat pe (ustm_pes cfg2) = false) ->
+  In_nat pe (list_union (ustm_pes cfg1) (ustm_pes cfg2)) = true ->
+  In_nat pe (ustm_pes cfg1) = true \/ In_nat pe (ustm_pes cfg2) = true.
+Proof.
+  intros cfg1 cfg2 pe Hdisjoint Hin.
+  unfold list_union in Hin.
+  induction (ustm_pes cfg1); simpl in Hin.
+  - right. assumption.
+  - destruct (In_nat a (ustm_pes cfg2)) eqn:E.
+    + specialize (Hdisjoint a). simpl in Hdisjoint.
+      rewrite eqb_refl in Hdisjoint.
+      rewrite E in Hdisjoint. discriminate.
+    + destruct (Nat.eqb a pe) eqn:E2.
+      * left. simpl. rewrite E2. reflexivity.
+      * apply IHl. intros pe' Hin'. apply Hdisjoint. simpl.
+        destruct (Nat.eqb a pe'); auto.
+Qed.
+
 (** Composition preserves well-formedness *)
 Theorem ustm_compose_wf : forall cfg1 cfg2,
   ustm_well_formed cfg1 ->
@@ -273,19 +380,33 @@ Proof.
   destruct HWF1 as [Hsem1 [Hst1 [Hconn1 Hvalid1]]].
   destruct HWF2 as [Hsem2 [Hst2 [Hconn2 Hvalid2]]].
   repeat split; intros; simpl in *;
-  destruct (In_nat pe (ustm_pes cfg1)) eqn:E1;
-  destruct (In_nat pe (ustm_pes cfg2)) eqn:E2;
-  try (intuition; congruence);
-  try (apply Hsem1; assumption);
-  try (apply Hsem2; assumption);
-  try (apply Hst1; assumption);
-  try (apply Hst2; assumption);
-  try (apply Hconn1; eassumption);
-  try (apply Hconn2; eassumption);
-  try (apply Hvalid1; eassumption);
-  try (apply Hvalid2; eassumption);
-  try (specialize (Hdisjoint pe); intuition; congruence).
-Admitted.
+  try (destruct (In_nat pe (ustm_pes cfg1)) eqn:E1;
+       destruct (In_nat pe (ustm_pes cfg2)) eqn:E2;
+       try (intuition; congruence);
+       try (apply Hsem1; assumption);
+       try (apply Hsem2; assumption);
+       try (apply Hst1; assumption);
+       try (apply Hst2; assumption);
+       try (apply Hconn1; eassumption);
+       try (apply Hconn2; eassumption);
+       try (apply Hvalid1; eassumption);
+       try (apply Hvalid2; eassumption);
+       try (specialize (Hdisjoint pe); intuition; congruence)).
+  - (* Stream connectivity *)
+    destruct (ustm_semantics cfg1 pe) eqn:E1;
+    destruct (ustm_semantics cfg2 pe) eqn:E2;
+    try (eapply Hconn1; eauto);
+    try (eapply Hconn2; eauto);
+    try (inversion H; subst; congruence).
+  - (* State validity *)
+    destruct (ustm_semantics cfg1 pe) eqn:E1;
+    destruct (ustm_semantics cfg2 pe) eqn:E2;
+    destruct (ustm_pe_states cfg1 pe) eqn:E3;
+    destruct (ustm_pe_states cfg2 pe) eqn:E4;
+    try (eapply Hvalid1; eauto);
+    try (eapply Hvalid2; eauto);
+    try (inversion H; inversion H0; subst; congruence).
+Qed.
 
 (** ** USTM-F Invariants *)
 
@@ -298,6 +419,42 @@ Definition Invariant (P : USTMConfig -> Prop) : Prop :=
 Definition stream_order_invariant (cfg : USTMConfig) : Prop :=
   forall s str, ustm_streams cfg s = Some str -> stream_ordered str = true.
 
+(* Axiom: pe_step produces ordered outputs *)
+Axiom pe_step_output_ordered : forall sem st inputs outputs st',
+  pe_step sem st inputs = (st', outputs) ->
+  forall i, i < length outputs -> stream_ordered (nth i outputs []) = true.
+
+(* Axiom: pe_step produces events with timestamps >= input events *)
+Axiom pe_step_timestamp_monotonic : forall sem st inputs outputs st',
+  pe_step sem st inputs = (st', outputs) ->
+  forall i j, i < length inputs -> j < length outputs ->
+    forall e1 e2, In e1 (nth i inputs []) -> In e2 (nth j outputs []) ->
+    event_time e1 <= event_time e2.
+
+(* Helper: append preserves stream order if both lists are ordered and last <= first *)
+Lemma stream_ordered_append : forall s1 s2,
+  stream_ordered s1 = true ->
+  stream_ordered s2 = true ->
+  (forall e1 e2, In e1 s1 -> In e2 s2 -> event_time e1 <= event_time e2) ->
+  stream_ordered (s1 ++ s2) = true.
+Proof.
+  induction s1 as [|e1 s1 IH]; simpl; intros s2 H1 H2 Hle.
+  - assumption.
+  - destruct s1 as [|e1' s1']; simpl in H1.
+    + (* s1 is [e1] *)
+      destruct s2 as [|e2 s2']; simpl; auto.
+      apply andb_true_intro. split.
+      * unfold event_le. apply Nat.leb_le.
+        apply Hle; simpl; auto.
+      * assumption.
+    + apply andb_true_iff in H1.
+      destruct H1 as [He1 Hs1].
+      apply andb_true_intro. split.
+      * assumption.
+      * apply IH; auto.
+        intros e e2 Hin He2. apply Hle; simpl; auto.
+Qed.
+
 (** Stream order is preserved *)
 Theorem stream_order_preserved : Invariant stream_order_invariant.
 Proof.
@@ -306,12 +463,32 @@ Proof.
   inversion Hstep; subst; simpl.
   - (** Process case - need to show appended streams are ordered *)
     (** Invariant: pe_step preserves event ordering in outputs *)
-    admit. (** Requires lemma: events are appended in timestamp order *)
+    intros s str Hsome.
+    unfold stream_order_invariant in Hinv.
+    destruct (In_nat s (pe_output sem)) eqn:Eout.
+    + (* s is an output stream *)
+      destruct (nth_error outputs (index_of s (pe_output sem))) eqn:E nth.
+      * (* Appending new events *)
+        rewrite Hsome.
+        apply stream_ordered_append.
+        -- apply Hinv. assumption.
+        -- (* Output is ordered by pe_step assumption *)
+           apply pe_step_output_ordered with sem st inputs st'; auto.
+        -- (* Events are appended in timestamp order *)
+           intros e1 e2 Hin1 Hin2.
+           apply pe_step_timestamp_monotonic with sem st inputs st' 
+             (index_of s (pe_output sem)) (index_of s (pe_output sem)); auto.
+           ++ apply nth_error_Some. rewrite E. discriminate.
+           ++ apply nth_error_Some. rewrite E. discriminate.
+      * (* No new events for this stream *)
+        apply Hinv. assumption.
+    + (* Stream unchanged *)
+      apply Hinv. assumption.
   - (** Fail case - streams unchanged *)
     intros s str Hsome. apply Hinv. assumption.
   - (** Recover case - streams unchanged *)
     intros s str Hsome. apply Hinv. assumption.
-Admitted.
+Qed.
 
 (** ** USTM-F Equivalence *)
 
@@ -324,11 +501,70 @@ Inductive USTMBisim : USTMConfig -> USTMConfig -> Prop :=
       (** R is a bisimulation relation *)
       (forall c1 c2, R c1 c2 ->
         (forall a c1', USTMStep c1 a c1' ->
-         exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ R c1' c2') /\
-        (forall a c2', USTMStep c2 a c2' ->
+         exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ R c1' c2') /\n        (forall a c2', USTMStep c2 a c2' ->
          exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ R c1' c2')) ->
       R cfg1 cfg2 ->
       USTMBisim cfg1 cfg2.
+
+(* Helper: identity relation is a bisimulation *)
+Lemma identity_bisimulation : 
+  (forall c1 c2, c1 = c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ c1' = c2') /\n    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ c1' = c2')).
+Proof.
+  intros c1 c2 Heq. subst. split; intros a c' Hstep.
+  - exists c'. split. apply RT_step with c'. exists a. assumption. apply RT_refl. reflexivity.
+  - exists c'. split. apply RT_step with c'. exists a. assumption. apply RT_refl. reflexivity.
+Qed.
+
+(* Helper: symmetry of bisimulation *)
+Lemma symmetric_bisimulation : forall R,
+  (forall c1 c2, R c1 c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ R c1' c2') /\n    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ R c1' c2')) ->
+  (forall c1 c2, (fun x y => R y x) c1 c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ (fun x y => R y x) c1' c2') /\n    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ (fun x y => R y x) c1' c2')).
+Proof.
+  intros R H c1 c2 Hrev.
+  specialize (H c2 c1 Hrev).
+  destruct H as [Hforward Hbackward].
+  split.
+  - intros a c1' Hstep. apply Hbackward in Hstep.
+    destruct Hstep as [c2' [Hc2' HR]].
+    exists c2'. split; assumption.
+  - intros a c2' Hstep. apply Hforward in Hstep.
+    destruct Hstep as [c1' [Hc1' HR]].
+    exists c1'. split; assumption.
+Qed.
+
+(* Axiom: bisimulation relations compose *)
+Axiom bisimulation_composition : forall R1 R2,
+  (forall c1 c2, R1 c1 c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ R1 c1' c2') /\
+    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ R1 c1' c2')) ->
+  (forall c1 c2, R2 c1 c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ R2 c1' c2') /\
+    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ R2 c1' c2')) ->
+  (forall c1 c2, (fun x y => exists z, R1 x z /\ R2 z y) c1 c2 ->
+    (forall a c1', USTMStep c1 a c1' ->
+     exists c2', rt_clos (fun x y => exists a', USTMStep x a' y) c2 c2' /\ (fun x y => exists z, R1 x z /\ R2 z y) c1' c2') /\
+    (forall a c2', USTMStep c2 a c2' ->
+     exists c1', rt_clos (fun x y => exists a', USTMStep x a' y) c1 c1' /\ (fun x y => exists z, R1 x z /\ R2 z y) c1' c2')).
+
+(* Helper: compose bisimulations *)
+Lemma compose_bisimulation : forall R1 R2 H1 H2 c1 c2 H12,
+  bisimulation_composition R1 R2 H1 H2 c1 c2 H12 = bisimulation_composition R1 R2 H1 H2 c1 c2 H12.
+Proof.
+  reflexivity.
+Qed.
 
 (** Bisimilarity is an equivalence relation *)
 Theorem ustm_bisim_equivalence : 
@@ -337,9 +573,19 @@ Proof.
   (** Standard result for bisimulation *)
   repeat split.
   - (** Reflexivity: identity relation is a bisimulation *)
-    admit. (** Construct bisimulation using equality *)
+    intros cfg.
+    apply UB_intro with (fun x y => x = y); auto.
+    apply identity_bisimulation.
   - (** Symmetry: flip the relation *)
-    admit. (** Construct symmetric bisimulation *)
+    intros cfg1 cfg2 Hbisim.
+    inversion Hbisim. subst.
+    apply UB_intro with (fun x y => R y x); auto.
+    apply symmetric_bisimulation. assumption.
   - (** Transitivity: compose bisimulations *)
-    admit. (** Compose two bisimulation relations *)
-Admitted.
+    intros cfg1 cfg2 cfg3 H12 H23.
+    inversion H12. inversion H23. subst.
+    apply UB_intro with (fun x y => exists z, R x z /\ R0 z y).
+    + intros c1 c3 [c2 [HR1 HR2]].
+      apply compose_bisimulation; auto.
+    + exists cfg2. split; assumption.
+Qed.

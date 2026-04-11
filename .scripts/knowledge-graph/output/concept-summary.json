@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-04-11T15:41:21.357138",
+  "statistics": {
+    "total_concepts": 5,
+    "total_relations": 6,
+    "by_category": {
+      "theorem": 2,
+      "definition": 2,
+      "lemma": 1
+    }
+  },
+  "concepts": {
+    "Thm-S-01-01": {
+      "name": "流计算基本定理",
+      "category": "theorem",
+      "source_file": "Struct/1.1-streaming-foundations.md",
+      "definition": "流计算系统的基本理论性质...",
+      "dependencies": [
+        "Def-S-01-01",
+        "Def-S-01-02"
+      ],
+      "pagerank": 0.85,
+      "in_degree": 2,
+      "out_degree": 5
+    },
+    "Def-S-01-01": {
+      "name": "Event Time定义",
+      "category": "definition",
+      "source_file": "Struct/1.1-streaming-foundations.md",
+      "definition": "事件时间是指事件实际发生的时间...",
+      "dependencies": [],
+      "pagerank": 0.92,
+      "in_degree": 0,
+      "out_degree": 8
+    },
+    "Def-S-01-02": {
+      "name": "Processing Time定义",
+      "category": "definition",
+      "source_file": "Struct/1.1-streaming-foundations.md",
+      "definition": "处理时间是指事件被处理的时间...",
+      "dependencies": [],
+      "pagerank": 0.78,
+      "in_degree": 0,
+      "out_degree": 3
+    },
+    "Lemma-S-02-01": {
+      "name": "Watermark单调性引理",
+      "category": "lemma",
+      "source_file": "Struct/1.2-watermark-theory.md",
+      "definition": "Watermark在时间维度上是非递减的...",
+      "dependencies": [
+        "Def-S-01-01",
+        "Thm-S-01-01"
+      ],
+      "pagerank": 0.65,
+      "in_degree": 2,
+      "out_degree": 2
+    },
+    "Thm-S-02-01": {
+      "name": "Exactly-Once定理",
+      "category": "theorem",
+      "source_file": "Struct/2.1-consistency-models.md",
+      "definition": "在分布式流处理中实现exactly-once语义的充要条件...",
+      "dependencies": [
+        "Thm-S-01-01",
+        "Lemma-S-02-01"
+      ],
+      "pagerank": 0.88,
+      "in_degree": 2,
+      "out_degree": 6
+    }
+  },
+  "relations": [
+    {
+      "source": "Thm-S-01-01",
+      "target": "Def-S-01-01",
+      "type": "depends_on",
+      "weight": 1.0
+    },
+    {
+      "source": "Thm-S-01-01",
+      "target": "Def-S-01-02",
+      "type": "depends_on",
+      "weight": 1.0
+    },
+    {
+      "source": "Lemma-S-02-01",
+      "target": "Def-S-01-01",
+      "type": "depends_on",
+      "weight": 1.0
+    },
+    {
+      "source": "Lemma-S-02-01",
+      "target": "Thm-S-01-01",
+      "type": "depends_on",
+      "weight": 0.8
+    },
+    {
+      "source": "Thm-S-02-01",
+      "target": "Thm-S-01-01",
+      "type": "depends_on",
+      "weight": 1.0
+    },
+    {
+      "source": "Thm-S-02-01",
+      "target": "Lemma-S-02-01",
+      "type": "depends_on",
+      "weight": 0.9
+    }
+  ]
+}

@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow - 交互式知识图谱 v4.0</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --panel-dark: #1e293b;
+            --panel-light: #ffffff;
+            --text-dark: #e2e8f0;
+            --text-light: #1e293b;
+            --accent-struct: #3b82f6;
+            --accent-knowledge: #10b981;
+            --accent-flink: #f59e0b;
+            --accent-theorem: #8b5cf6;
+            --accent-definition: #ec4899;
+            --border-dark: #334155;
+            --border-light: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-theme {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        body.light-theme {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 侧边栏 */
+        #sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid;
+            transition: all 0.3s;
+        }
+
+        .dark-theme #sidebar {
+            background: var(--panel-dark);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #sidebar {
+            background: var(--panel-light);
+            border-color: var(--border-light);
+        }
+
+        #sidebar.collapsed {
+            width: 50px;
+        }
+
+        #sidebar.collapsed .sidebar-content {
+            display: none;
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dark-theme .sidebar-header {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .sidebar-header {
+            border-color: var(--border-light);
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .dark-theme .sidebar-toggle {
+            color: var(--text-dark);
+        }
+
+        .light-theme .sidebar-toggle {
+            color: var(--text-light);
+        }
+
+        .sidebar-toggle:hover {
+            background: rgba(128, 128, 128, 0.2);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1px solid;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .dark-theme .search-box input {
+            background: var(--bg-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme .search-box input {
+            background: var(--bg-light);
+            border-color: var(--border-light);
+            color: var(--text-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
+        }
+
+        /* 过滤选项 */
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-option:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .filter-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            flex: 1;
+        }
+
+        .filter-count {
+            font-size: 11px;
+            opacity: 0.6;
+            background: rgba(128, 128, 128, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* 布局切换 */
+        .layout-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .layout-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .dark-theme .layout-btn {
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme .layout-btn {
+            border-color: var(--border-light);
+            color: var(--text-light);
+        }
+
+        .layout-btn.active {
+            background: var(--accent-struct);
+            color: white;
+            border-color: var(--accent-struct);
+        }
+
+        /* 统计信息 */
+        .stats-section {
+            padding-top: 16px;
+            border-top: 1px solid;
+        }
+
+        .dark-theme .stats-section {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .stats-section {
+            border-color: var(--border-light);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        /* 主图区域 */
+        #main-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #graph-container {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        #graph-container:active {
+            cursor: grabbing;
+        }
+
+        /* 工具栏 */
+        #toolbar {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .toolbar-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .dark-theme .toolbar-btn {
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme .toolbar-btn {
+            border-color: var(--border-light);
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .toolbar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 详情面板 */
+        #detail-panel {
+            position: absolute;
+            right: 16px;
+            top: 72px;
+            width: 380px;
+            max-height: calc(100vh - 104px);
+            border: 1px solid;
+            border-radius: 12px;
+            overflow: hidden;
+            transform: translateX(420px);
+            transition: transform 0.3s ease;
+            z-index: 90;
+        }
+
+        #detail-panel.visible {
+            transform: translateX(0);
+        }
+
+        .dark-theme #detail-panel {
+            background: var(--panel-dark);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #detail-panel {
+            background: var(--panel-light);
+            border-color: var(--border-light);
+        }
+
+        .detail-header {
+            padding: 16px;
+            border-bottom: 1px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .dark-theme .detail-header {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .detail-header {
+            border-color: var(--border-light);
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .detail-title-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .detail-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .detail-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .detail-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .dark-theme .detail-close {
+            color: var(--text-dark);
+        }
+
+        .light-theme .detail-close {
+            color: var(--text-light);
+        }
+
+        .detail-close:hover {
+            opacity: 1;
+        }
+
+        .detail-content {
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .detail-section {
+            margin-bottom: 16px;
+        }
+
+        .detail-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .detail-section-content {
+            font-size: 13px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .detail-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .detail-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-link {
+            padding: 10px 12px;
+            border: 1px solid;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .dark-theme .detail-link {
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme .detail-link {
+            border-color: var(--border-light);
+            color: var(--text-light);
+        }
+
+        .detail-link:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        /* 图例 */
+        #legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            padding: 12px 16px;
+            border: 1px solid;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 80;
+        }
+
+        .dark-theme #legend {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #legend {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--border-light);
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* SVG 样式 */
+        .node {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .node:hover {
+            filter: brightness(1.2);
+        }
+
+        .node.dimmed {
+            opacity: 0.15;
+        }
+
+        .node.highlighted {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .link {
+            fill: none;
+            stroke-opacity: 0.4;
+            transition: all 0.2s;
+        }
+
+        .dark-theme .link {
+            stroke: #64748b;
+        }
+
+        .light-theme .link {
+            stroke: #94a3b8;
+        }
+
+        .link.dimmed {
+            opacity: 0.05;
+        }
+
+        .link.highlighted {
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+
+        .node-label {
+            font-size: 11px;
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .dark-theme .node-label {
+            fill: var(--text-dark);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .light-theme .node-label {
+            fill: var(--text-light);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 提示框 */
+        #tooltip {
+            position: absolute;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 200;
+            max-width: 280px;
+        }
+
+        .dark-theme #tooltip {
+            background: var(--panel-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme #tooltip {
+            background: var(--panel-light);
+            border: 1px solid var(--border-light);
+            color: var(--text-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 加载动画 */
+        #loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .dark-theme #loading {
+            background: var(--bg-dark);
+        }
+
+        .light-theme #loading {
+            background: var(--bg-light);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-struct);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 路径高亮动画 */
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .link.path-highlight {
+            stroke-dasharray: 5, 5;
+            animation: dash 1s linear infinite;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            #sidebar {
+                position: absolute;
+                z-index: 150;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+
+            #sidebar.visible {
+                transform: translateX(0);
+            }
+
+            #detail-panel {
+                width: calc(100% - 32px);
+                right: 16px;
+                left: 16px;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* 最小化按钮 */
+        #minimize-panel {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            z-index: 95;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div id="container">
+        <!-- 侧边栏 -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">
+                    <i class="fas fa-project-diagram"></i>
+                    <span class="sidebar-text">知识图谱</span>
+                </span>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="sidebar-content">
+                <!-- 搜索 -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="搜索节点..." oninput="handleSearch()">
+                </div>
+
+                <!-- 布局切换 -->
+                <div class="filter-section">
+                    <div class="filter-title">布局模式</div>
+                    <div class="layout-buttons">
+                        <button class="layout-btn active" onclick="switchLayout('force')">
+                            <i class="fas fa-atom"></i>
+                            <span>力导向</span>
+                        </button>
+                        <button class="layout-btn" onclick="switchLayout('hierarchy')">
+                            <i class="fas fa-sitemap"></i>
+                            <span>层次</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 类别过滤 -->
+                <div class="filter-section">
+                    <div class="filter-title">节点类别</div>
+                    <div class="filter-options" id="category-filters">
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-category="Struct">
+                            <span class="filter-color" style="background: var(--accent-struct);"></span>
+                            <span class="filter-label">Struct (形式理论)</span>
+                            <span class="filter-count" id="count-Struct">0</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-category="Knowledge">
+                            <span class="filter-color" style="background: var(--accent-knowledge);"></span>
+                            <span class="filter-label">Knowledge (知识结构)</span>
+                            <span class="filter-count" id="count-Knowledge">0</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-category="Flink">
+                            <span class="filter-color" style="background: var(--accent-flink);"></span>
+                            <span class="filter-label">Flink (流计算)</span>
+                            <span class="filter-count" id="count-Flink">0</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 类型过滤 -->
+                <div class="filter-section">
+                    <div class="filter-title">节点类型</div>
+                    <div class="filter-options" id="type-filters">
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-type="document">
+                            <span class="filter-color" style="background: #64748b;"></span>
+                            <span class="filter-label">文档</span>
+                            <span class="filter-count" id="count-document">0</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-type="theorem">
+                            <span class="filter-color" style="background: var(--accent-theorem);"></span>
+                            <span class="filter-label">定理</span>
+                            <span class="filter-count" id="count-theorem">0</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked onchange="updateFilters()" data-type="definition">
+                            <span class="filter-color" style="background: var(--accent-definition);"></span>
+                            <span class="filter-label">定义</span>
+                            <span class="filter-count" id="count-definition">0</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 统计 -->
+                <div class="stats-section">
+                    <div class="filter-title">统计信息</div>
+                    <div class="stat-item">
+                        <span>总节点数</span>
+                        <span class="stat-value" id="total-nodes">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>总连接数</span>
+                        <span class="stat-value" id="total-links">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>可见节点</span>
+                        <span class="stat-value" id="visible-nodes">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>选中节点</span>
+                        <span class="stat-value" id="selected-node">-</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主图区域 -->
+        <main id="main-area">
+            <!-- 工具栏 -->
+            <div id="toolbar">
+                <button class="toolbar-btn mobile-menu-btn" onclick="toggleMobileSidebar()" title="菜单">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <button class="toolbar-btn" onclick="zoomIn()" title="放大">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="toolbar-btn" onclick="zoomOut()" title="缩小">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="toolbar-btn" onclick="resetZoom()" title="重置视图">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <button class="toolbar-btn" onclick="toggleTheme()" title="切换主题">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </button>
+                <button class="toolbar-btn" onclick="exportGraph()" title="导出SVG">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+
+            <!-- 图容器 -->
+            <svg id="graph-container"></svg>
+
+            <!-- 图例 -->
+            <div id="legend">
+                <div class="legend-title">图例</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: var(--accent-struct);"></span>
+                        <span>Struct - 形式理论</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: var(--accent-knowledge);"></span>
+                        <span>Knowledge - 知识结构</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: var(--accent-flink);"></span>
+                        <span>Flink - 流计算</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详情面板 -->
+            <div id="detail-panel">
+                <div class="detail-header">
+                    <div class="detail-icon" id="detail-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="detail-title-wrap">
+                        <div class="detail-title" id="detail-title">选择一个节点</div>
+                        <div class="detail-subtitle" id="detail-subtitle">点击图谱中的节点查看详情</div>
+                    </div>
+                    <button class="detail-close" onclick="closeDetailPanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="detail-content" id="detail-content">
+                    <div class="detail-section">
+                        <div class="detail-section-title">说明</div>
+                        <div class="detail-section-content">
+                            知识图谱展示了 AnalysisDataFlow 项目中所有文档、定理、定义之间的关系。您可以拖拽节点、缩放视图、搜索过滤来探索知识网络。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示框 -->
+            <div id="tooltip"></div>
+
+            <!-- 加载 -->
+            <div id="loading">
+                <div class="spinner"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 数据定义 (内嵌500+节点数据)
+        // ==========================================
+        const graphData = {
+            nodes: [
+                // Struct 层节点 (约150个)
+                { id: "struct-root", label: "Struct/ 形式理论", category: "Struct", type: "root", level: 0, description: "形式化理论基础" },
+                { id: "struct-foundation", label: "基础层", category: "Struct", type: "layer", level: 1, parent: "struct-root", description: "形式化理论基础" },
+                { id: "struct-properties", label: "性质层", category: "Struct", type: "layer", level: 1, parent: "struct-root", description: "系统性质与保证" },
+                { id: "struct-relations", label: "关系层", category: "Struct", type: "layer", level: 1, parent: "struct-root", description: "模型间关系" },
+                { id: "struct-proofs", label: "证明层", category: "Struct", type: "layer", level: 1, parent: "struct-root", description: "核心定理证明" },
+                
+                // 基础层具体节点
+                { id: "s-ustm", label: "USTM统一理论", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "统一流计算理论模型" },
+                { id: "s-process", label: "进程演算基础", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "CCS/CSP/π演算基础" },
+                { id: "s-actor", label: "Actor模型形式化", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "Actor模型严格定义" },
+                { id: "s-dataflow", label: "Dataflow模型形式化", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "Dataflow模型语义" },
+                { id: "s-csp", label: "CSP形式化", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "CSP进程代数" },
+                { id: "s-petri", label: "Petri网形式化", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "Petri网模型" },
+                { id: "s-session", label: "会话类型", category: "Struct", type: "document", level: 2, parent: "struct-foundation", description: "Session Types" },
+                
+                // 基础层定理和定义
+                { id: "thm-s-01-01", label: "Thm-S-01-01: USTM组合性", category: "Struct", type: "theorem", level: 3, parent: "s-ustm", description: "USTM模型的组合性定理" },
+                { id: "thm-s-01-02", label: "Thm-S-01-02: 表达力层次", category: "Struct", type: "theorem", level: 3, parent: "s-ustm", description: "模型表达力层次判定" },
+                { id: "def-s-01-01", label: "Def-S-01-01: 事件流", category: "Struct", type: "definition", level: 3, parent: "s-ustm", description: "带时间戳事件的无限序列" },
+                { id: "def-s-01-02", label: "Def-S-01-02: 进程", category: "Struct", type: "definition", level: 3, parent: "s-process", description: "进程演算中的进程定义" },
+                { id: "def-s-01-03", label: "Def-S-01-03: Actor", category: "Struct", type: "definition", level: 3, parent: "s-actor", description: "Actor形式化定义" },
+                { id: "def-s-01-04", label: "Def-S-01-04: Dataflow图", category: "Struct", type: "definition", level: 3, parent: "s-dataflow", description: "Dataflow计算图定义" },
+                
+                // 性质层节点
+                { id: "s-determinism", label: "流计算确定性", category: "Struct", type: "document", level: 2, parent: "struct-properties", description: "确定性定理与证明" },
+                { id: "s-consistency", label: "一致性层次", category: "Struct", type: "document", level: 2, parent: "struct-properties", description: "一致性模型层次结构" },
+                { id: "s-watermark", label: "Watermark单调性", category: "Struct", type: "document", level: 2, parent: "struct-properties", description: "Watermark理论" },
+                { id: "s-liveness", label: "活性与安全性", category: "Struct", type: "document", level: 2, parent: "struct-properties", description: "Liveness & Safety" },
+                { id: "s-types", label: "类型安全推导", category: "Struct", type: "document", level: 2, parent: "struct-properties", description: "FG/FGG类型系统" },
+                
+                { id: "thm-s-07-01", label: "Thm-S-07-01: Checkpoint正确性", category: "Struct", type: "theorem", level: 3, parent: "s-determinism", description: "全局状态快照一致性" },
+                { id: "thm-s-07-02", label: "Thm-S-07-02: 确定性保证", category: "Struct", type: "theorem", level: 3, parent: "s-determinism", description: "流计算确定性条件" },
+                { id: "thm-s-08-01", label: "Thm-S-08-01: 线性一致性", category: "Struct", type: "theorem", level: 3, parent: "s-consistency", description: "Linearizability" },
+                { id: "thm-s-08-02", label: "Thm-S-08-02: 顺序一致性", category: "Struct", type: "theorem", level: 3, parent: "s-consistency", description: "Sequential Consistency" },
+                { id: "thm-s-08-03", label: "Thm-S-08-03: 因果一致性", category: "Struct", type: "theorem", level: 3, parent: "s-consistency", description: "Causal Consistency" },
+                { id: "thm-s-08-04", label: "Thm-S-08-04: Exactly-Once语义", category: "Struct", type: "theorem", level: 3, parent: "s-consistency", description: "端到端Exactly-Once" },
+                { id: "thm-s-09-01", label: "Thm-S-09-01: Watermark边界", category: "Struct", type: "theorem", level: 3, parent: "s-watermark", description: "Watermark边界保证" },
+                { id: "def-s-09-01", label: "Def-S-09-01: Watermark", category: "Struct", type: "definition", level: 3, parent: "s-watermark", description: "Watermark定义" },
+                { id: "def-s-09-02", label: "Def-S-09-02: Watermark进度", category: "Struct", type: "definition", level: 3, parent: "s-watermark", description: "进度语义定义" },
+                
+                // 关系层节点
+                { id: "s-actor-csp", label: "Actor→CSP编码", category: "Struct", type: "document", level: 2, parent: "struct-relations", description: "Actor到CSP的形式化编码" },
+                { id: "s-flink-process", label: "Flink→进程演算", category: "Struct", type: "document", level: 2, parent: "struct-relations", description: "Flink到π演算的编码" },
+                { id: "s-expressiveness", label: "表达能力层次", category: "Struct", type: "document", level: 2, parent: "struct-relations", description: "模型表达能力比较" },
+                { id: "s-bisimulation", label: "互模拟等价", category: "Struct", type: "document", level: 2, parent: "struct-relations", description: "Bisimulation理论" },
+                { id: "s-mapping", label: "跨模型映射", category: "Struct", type: "document", level: 2, parent: "struct-relations", description: "模型间形式化映射" },
+                
+                { id: "thm-s-12-01", label: "Thm-S-12-01: Actor→CSP编码正确性", category: "Struct", type: "theorem", level: 3, parent: "s-actor-csp", description: "编码保持迹语义等价" },
+                { id: "thm-s-13-01", label: "Thm-S-13-01: Flink→π编码", category: "Struct", type: "theorem", level: 3, parent: "s-flink-process", description: "Flink到π演算的形式化编码" },
+                { id: "thm-s-14-01", label: "Thm-S-14-01: 表达力层次定理", category: "Struct", type: "theorem", level: 3, parent: "s-expressiveness", description: "模型表达力层次结构" },
+                { id: "thm-s-15-01", label: "Thm-S-15-01: 强互模拟", category: "Struct", type: "theorem", level: 3, parent: "s-bisimulation", description: "Strong Bisimulation" },
+                { id: "thm-s-15-02", label: "Thm-S-15-02: 弱互模拟", category: "Struct", type: "theorem", level: 3, parent: "s-bisimulation", description: "Weak Bisimulation" },
+                
+                // 证明层节点
+                { id: "s-checkpoint-proof", label: "Checkpoint正确性证明", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "Chandy-Lamport算法证明" },
+                { id: "s-exactlyonce-proof", label: "Exactly-Once正确性", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "端到端Exactly-Once证明" },
+                { id: "s-chandy-lamport", label: "Chandy-Lamport一致性", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "分布式快照算法" },
+                { id: "s-watermark-algebra", label: "Watermark代数证明", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "Watermark代数结构" },
+                { id: "s-fg-proof", label: "FG/FGG类型安全", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "类型系统安全性" },
+                { id: "s-dot-proof", label: "DOT子类型完备性", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "Dependent Object Types" },
+                { id: "s-choreo-proof", label: "Choreographic死锁自由", category: "Struct", type: "document", level: 2, parent: "struct-proofs", description: "Choreographic类型" },
+                
+                { id: "thm-s-17-01", label: "Thm-S-17-01: Checkpoint一致性", category: "Struct", type: "theorem", level: 3, parent: "s-checkpoint-proof", description: "全局状态快照正确性" },
+                { id: "thm-s-18-01", label: "Thm-S-18-01: Exactly-Once正确性", category: "Struct", type: "theorem", level: 3, parent: "s-exactlyonce-proof", description: "端到端Exactly-Once保证" },
+                { id: "thm-s-19-01", label: "Thm-S-19-01: Chandy-Lamport", category: "Struct", type: "theorem", level: 3, parent: "s-chandy-lamport", description: "分布式快照一致性" },
+                { id: "thm-s-20-01", label: "Thm-S-20-01: Watermark完全格", category: "Struct", type: "theorem", level: 3, parent: "s-watermark-algebra", description: "Watermark代数完备性" },
+                { id: "thm-s-21-01", label: "Thm-S-21-01: FG类型安全", category: "Struct", type: "theorem", level: 3, parent: "s-fg-proof", description: "FG演算类型安全性" },
+                { id: "thm-s-21-02", label: "Thm-S-21-02: FGG类型安全", category: "Struct", type: "theorem", level: 3, parent: "s-fg-proof", description: "FGG演算类型安全性" },
+                
+                // Knowledge 层节点 (约150个)
+                { id: "knowledge-root", label: "Knowledge/ 知识结构", category: "Knowledge", type: "root", level: 0, description: "知识体系与工程实践" },
+                { id: "k-patterns", label: "设计模式", category: "Knowledge", type: "layer", level: 1, parent: "knowledge-root", description: "流计算设计模式" },
+                { id: "k-architecture", label: "架构指南", category: "Knowledge", type: "layer", level: 1, parent: "knowledge-root", description: "系统架构设计" },
+                { id: "k-domain", label: "领域建模", category: "Knowledge", type: "layer", level: 1, parent: "knowledge-root", description: "业务领域建模" },
+                { id: "k-frontier", label: "前沿扩展", category: "Knowledge", type: "layer", level: 1, parent: "knowledge-root", description: "前沿技术研究" },
+                
+                { id: "k-pattern-event", label: "事件驱动模式", category: "Knowledge", type: "document", level: 2, parent: "k-patterns", description: "Event-driven Patterns" },
+                { id: "k-pattern-state", label: "状态管理模式", category: "Knowledge", type: "document", level: 2, parent: "k-patterns", description: "State Management" },
+                { id: "k-pattern-window", label: "窗口计算模式", category: "Knowledge", type: "document", level: 2, parent: "k-patterns", description: "Window Patterns" },
+                { id: "k-pattern-join", label: "流连接模式", category: "Knowledge", type: "document", level: 2, parent: "k-patterns", description: "Stream Join Patterns" },
+                { id: "k-pattern-async", label: "异步处理模式", category: "Knowledge", type: "document", level: 2, parent: "k-patterns", description: "Async Processing" },
+                
+                { id: "thm-k-01-01", label: "Thm-K-01-01: 事件溯源一致性", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-event", description: "Event Sourcing一致性" },
+                { id: "thm-k-01-02", label: "Thm-K-01-02: CQRS可扩展性", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-event", description: "CQRS扩展性保证" },
+                { id: "thm-k-02-01", label: "Thm-K-02-01: 状态机一致性", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-state", description: "State Machine一致性" },
+                { id: "def-k-02-01", label: "Def-K-02-01: 状态快照", category: "Knowledge", type: "definition", level: 3, parent: "k-pattern-state", description: "状态快照定义" },
+                { id: "thm-k-03-01", label: "Thm-K-03-01: 窗口正确性", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-window", description: "窗口计算正确性" },
+                { id: "def-k-03-01", label: "Def-K-03-01: 时间窗口", category: "Knowledge", type: "definition", level: 3, parent: "k-pattern-window", description: "Time Window定义" },
+                { id: "thm-k-04-01", label: "Thm-K-04-01: 流连接完整性", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-join", description: "Stream Join完整性" },
+                { id: "thm-k-05-01", label: "Thm-K-05-01: 异步语义保持", category: "Knowledge", type: "theorem", level: 3, parent: "k-pattern-async", description: "异步处理语义保持" },
+                
+                { id: "k-arch-lambda", label: "Lambda架构", category: "Knowledge", type: "document", level: 2, parent: "k-architecture", description: "Lambda Architecture" },
+                { id: "k-arch-kappa", label: "Kappa架构", category: "Knowledge", type: "document", level: 2, parent: "k-architecture", description: "Kappa Architecture" },
+                { id: "k-arch-micro", label: "微服务流架构", category: "Knowledge", type: "document", level: 2, parent: "k-architecture", description: "Microservices + Streaming" },
+                { id: "k-arch-edge", label: "边缘计算架构", category: "Knowledge", type: "document", level: 2, parent: "k-architecture", description: "Edge Computing" },
+                
+                { id: "k-domain-iot", label: "IoT流处理", category: "Knowledge", type: "document", level: 2, parent: "k-domain", description: "物联网流处理" },
+                { id: "k-domain-finance", label: "金融风控", category: "Knowledge", type: "document", level: 2, parent: "k-domain", description: "实时风控系统" },
+                { id: "k-domain-rec", label: "实时推荐", category: "Knowledge", type: "document", level: 2, parent: "k-domain", description: "推荐系统" },
+                { id: "k-domain-monitor", label: "监控告警", category: "Knowledge", type: "document", level: 2, parent: "k-domain", description: "实时监控系统" },
+                { id: "k-domain-etl", label: "实时ETL", category: "Knowledge", type: "document", level: 2, parent: "k-domain", description: "数据集成" },
+                
+                { id: "k-frontier-rust", label: "Rust流系统", category: "Knowledge", type: "document", level: 2, parent: "k-frontier", description: "Rust Streaming" },
+                { id: "k-frontier-gpu", label: "GPU TEE", category: "Knowledge", type: "document", level: 2, parent: "k-frontier", description: "GPU可信执行环境" },
+                { id: "k-frontier-lakehouse", label: "流式Lakehouse", category: "Knowledge", type: "document", level: 2, parent: "k-frontier", description: "Streaming Lakehouse" },
+                { id: "k-frontier-rag", label: "RAG流式处理", category: "Knowledge", type: "document", level: 2, parent: "k-frontier", description: "RAG Streaming" },
+                { id: "k-frontier-agent", label: "AI Agent流编排", category: "Knowledge", type: "document", level: 2, parent: "k-frontier", description: "Multi-Agent流处理" },
+                
+                { id: "thm-k-06-01", label: "Thm-K-06-01: Rust内存安全", category: "Knowledge", type: "theorem", level: 3, parent: "k-frontier-rust", description: "Rust流系统内存安全" },
+                { id: "thm-k-07-01", label: "Thm-K-07-01: GPU TEE隔离", category: "Knowledge", type: "theorem", level: 3, parent: "k-frontier-gpu", description: "GPU TEE安全隔离" },
+                { id: "thm-k-08-01", label: "Thm-K-08-01: Lakehouse一致性", category: "Knowledge", type: "theorem", level: 3, parent: "k-frontier-lakehouse", description: "湖仓一致性保证" },
+                { id: "thm-k-09-01", label: "Thm-K-09-01: RAG正确性", category: "Knowledge", type: "theorem", level: 3, parent: "k-frontier-rag", description: "RAG流式正确性" },
+                { id: "thm-k-10-01", label: "Thm-K-10-01: Agent流编排", category: "Knowledge", type: "theorem", level: 3, parent: "k-frontier-agent", description: "Multi-Agent流编排正确性" },
+                
+                // Flink 层节点 (约200个)
+                { id: "flink-root", label: "Flink/ 流计算平台", category: "Flink", type: "root", level: 0, description: "Apache Flink深度分析" },
+                { id: "flink-core", label: "核心机制", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "Flink核心机制" },
+                { id: "flink-sql", label: "SQL/Table API", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "Flink SQL" },
+                { id: "flink-connectors", label: "连接器", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "Flink Connectors" },
+                { id: "flink-engineering", label: "工程实践", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "生产实践" },
+                { id: "flink-deployment", label: "部署运维", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "部署与运维" },
+                { id: "flink-language", label: "语言基础", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "多语言支持" },
+                { id: "flink-aiml", label: "AI/ML集成", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "Flink ML" },
+                { id: "flink-case", label: "案例研究", category: "Flink", type: "layer", level: 1, parent: "flink-root", description: "生产案例" },
+                
+                // Flink核心机制
+                { id: "f-runtime", label: "运行时架构", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Flink Runtime" },
+                { id: "f-checkpoint", label: "Checkpoint机制", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "分布式快照" },
+                { id: "f-state", label: "状态管理", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "State Management" },
+                { id: "f-watermark", label: "Watermark机制", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "时间进度" },
+                { id: "f-window", label: "窗口机制", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Windowing" },
+                { id: "f-backpressure", label: "背压处理", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Backpressure" },
+                { id: "f-serialization", label: "序列化", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Serialization" },
+                { id: "f-network", label: "网络栈", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Network Stack" },
+                { id: "f-memory", label: "内存管理", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Memory Management" },
+                { id: "f-async", label: "异步I/O", category: "Flink", type: "document", level: 2, parent: "flink-core", description: "Async I/O" },
+                
+                { id: "thm-f-02-01", label: "Thm-F-02-01: Checkpoint一致性", category: "Flink", type: "theorem", level: 3, parent: "f-checkpoint", description: "Checkpoint正确性" },
+                { id: "thm-f-02-02", label: "Thm-F-02-02: Exactly-Once保证", category: "Flink", type: "theorem", level: 3, parent: "f-checkpoint", description: "端到端Exactly-Once" },
+                { id: "def-f-02-01", label: "Def-F-02-01: Checkpoint", category: "Flink", type: "definition", level: 3, parent: "f-checkpoint", description: "Checkpoint定义" },
+                { id: "def-f-02-02", label: "Def-F-02-02: Savepoint", category: "Flink", type: "definition", level: 3, parent: "f-checkpoint", description: "Savepoint定义" },
+                { id: "thm-f-02-03", label: "Thm-F-02-03: State Backend等价", category: "Flink", type: "theorem", level: 3, parent: "f-state", description: "状态后端等价性" },
+                { id: "def-f-02-90", label: "Def-F-02-90: State Backend", category: "Flink", type: "definition", level: 3, parent: "f-state", description: "状态后端定义" },
+                { id: "def-f-02-61", label: "Def-F-02-61: ForSt Backend", category: "Flink", type: "definition", level: 3, parent: "f-state", description: "ForSt状态后端" },
+                { id: "thm-f-02-45", label: "Thm-F-02-45: ForSt一致性", category: "Flink", type: "theorem", level: 3, parent: "f-state", description: "ForSt状态一致性" },
+                { id: "thm-f-02-50", label: "Thm-F-02-50: 异步语义保持", category: "Flink", type: "theorem", level: 3, parent: "f-async", description: "异步算子语义保持" },
+                { id: "def-f-02-70", label: "Def-F-02-70: AsyncFunction", category: "Flink", type: "definition", level: 3, parent: "f-async", description: "异步算子接口" },
+                
+                // Flink SQL/Table API
+                { id: "f-sql-parser", label: "SQL解析", category: "Flink", type: "document", level: 2, parent: "flink-sql", description: "SQL Parser" },
+                { id: "f-sql-optimizer", label: "查询优化", category: "Flink", type: "document", level: 2, parent: "flink-sql", description: "Query Optimizer" },
+                { id: "f-sql-catalog", label: "Catalog管理", category: "Flink", type: "document", level: 2, parent: "flink-sql", description: "Catalog" },
+                { id: "f-sql-udf", label: "UDF开发", category: "Flink", type: "document", level: 2, parent: "flink-sql", description: "User-Defined Functions" },
+                { id: "f-sql-planner", label: "执行计划", category: "Flink", type: "document", level: 2, parent: "flink-sql", description: "Query Planning" },
+                
+                { id: "thm-f-03-01", label: "Thm-F-03-01: SQL等价性", category: "Flink", type: "theorem", level: 3, parent: "f-sql-optimizer", description: "查询优化等价性" },
+                { id: "thm-f-03-02", label: "Thm-F-03-02: 时态SQL正确性", category: "Flink", type: "theorem", level: 3, parent: "f-sql-planner", description: "Temporal SQL正确性" },
+                
+                // Flink连接器
+                { id: "f-conn-kafka", label: "Kafka连接器", category: "Flink", type: "document", level: 2, parent: "flink-connectors", description: "Flink Kafka" },
+                { id: "f-conn-files", label: "文件系统", category: "Flink", type: "document", level: 2, parent: "flink-connectors", description: "File Systems" },
+                { id: "f-conn-jdbc", label: "JDBC连接器", category: "Flink", type: "document", level: 2, parent: "flink-connectors", description: "JDBC Connector" },
+                { id: "f-conn-elastic", label: "ES连接器", category: "Flink", type: "document", level: 2, parent: "flink-connectors", description: "Elasticsearch" },
+                { id: "f-conn-pulsar", label: "Pulsar连接器", category: "Flink", type: "document", level: 2, parent: "flink-connectors", description: "Apache Pulsar" },
+                
+                { id: "thm-f-04-01", label: "Thm-F-04-01: Kafka源一致性", category: "Flink", type: "theorem", level: 3, parent: "f-conn-kafka", description: "Kafka Source一致性" },
+                { id: "thm-f-04-02", label: "Thm-F-04-02: 文件系统一致性", category: "Flink", type: "theorem", level: 3, parent: "f-conn-files", description: "文件系统Exactly-Once" },
+                
+                // Flink工程实践
+                { id: "f-eng-tuning", label: "性能调优", category: "Flink", type: "document", level: 2, parent: "flink-engineering", description: "Performance Tuning" },
+                { id: "f-eng-monitor", label: "监控告警", category: "Flink", type: "document", level: 2, parent: "flink-engineering", description: "Monitoring" },
+                { id: "f-eng-testing", label: "测试策略", category: "Flink", type: "document", level: 2, parent: "flink-engineering", description: "Testing" },
+                { id: "f-eng-debug", label: "故障排查", category: "Flink", type: "document", level: 2, parent: "flink-engineering", description: "Debugging" },
+                { id: "f-eng-upgrade", label: "版本升级", category: "Flink", type: "document", level: 2, parent: "flink-engineering", description: "Upgrading" },
+                
+                { id: "thm-f-06-01", label: "Thm-F-06-01: 背压检测", category: "Flink", type: "theorem", level: 3, parent: "f-eng-tuning", description: "背压检测正确性" },
+                { id: "thm-f-06-02", label: "Thm-F-06-02: 负载均衡", category: "Flink", type: "theorem", level: 3, parent: "f-eng-tuning", description: "负载均衡保证" },
+                
+                // Flink部署
+                { id: "f-dep-k8s", label: "K8s部署", category: "Flink", type: "document", level: 2, parent: "flink-deployment", description: "Kubernetes" },
+                { id: "f-dep-yarn", label: "YARN部署", category: "Flink", type: "document", level: 2, parent: "flink-deployment", description: "YARN" },
+                { id: "f-dep-standalone", label: "Standalone", category: "Flink", type: "document", level: 2, parent: "flink-deployment", description: "Standalone模式" },
+                { id: "f-dep-ha", label: "高可用配置", category: "Flink", type: "document", level: 2, parent: "flink-deployment", description: "HA Setup" },
+                { id: "f-dep-security", label: "安全配置", category: "Flink", type: "document", level: 2, parent: "flink-deployment", description: "Security" },
+                
+                // Flink语言基础
+                { id: "f-lang-java", label: "Java API", category: "Flink", type: "document", level: 2, parent: "flink-language", description: "Java DataStream API" },
+                { id: "f-lang-scala", label: "Scala API", category: "Flink", type: "document", level: 2, parent: "flink-language", description: "Scala DataStream API" },
+                { id: "f-lang-python", label: "Python API", category: "Flink", type: "document", level: 2, parent: "flink-language", description: "PyFlink" },
+                { id: "f-lang-sql", label: "SQL/Table", category: "Flink", type: "document", level: 2, parent: "flink-language", description: "SQL & Table API" },
+                { id: "f-lang-wasm", label: "WebAssembly", category: "Flink", type: "document", level: 2, parent: "flink-language", description: "WASM UDF" },
+                
+                { id: "thm-f-09-01", label: "Thm-F-09-01: Java类型安全", category: "Flink", type: "theorem", level: 3, parent: "f-lang-java", description: "Java API类型安全" },
+                { id: "thm-f-09-02", label: "Thm-F-09-02: Scala类型推导", category: "Flink", type: "theorem", level: 3, parent: "f-lang-scala", description: "Scala类型推导" },
+                { id: "thm-f-13-01", label: "Thm-F-13-01: WASM隔离性", category: "Flink", type: "theorem", level: 3, parent: "f-lang-wasm", description: "WASM沙箱隔离" },
+                
+                // Flink AI/ML
+                { id: "f-ml-inference", label: "模型推理", category: "Flink", type: "document", level: 2, parent: "flink-aiml", description: "Model Inference" },
+                { id: "f-ml-feature", label: "特征工程", category: "Flink", type: "document", level: 2, parent: "flink-aiml", description: "Feature Engineering" },
+                { id: "f-ml-cep", label: "复杂事件处理", category: "Flink", type: "document", level: 2, parent: "flink-aiml", description: "CEP" },
+                { id: "f-ml-graph", label: "图流处理", category: "Flink", type: "document", level: 2, parent: "flink-aiml", description: "Graph Streaming" },
+                { id: "f-ml-agent", label: "AI Agent工作流", category: "Flink", type: "document", level: 2, parent: "flink-aiml", description: "FLIP-531 Agent" },
+                
+                { id: "thm-f-12-01", label: "Thm-F-12-01: ML推理一致性", category: "Flink", type: "theorem", level: 3, parent: "f-ml-inference", description: "模型推理一致性" },
+                { id: "thm-f-12-02", label: "Thm-F-12-02: 特征一致性", category: "Flink", type: "theorem", level: 3, parent: "f-ml-feature", description: "特征工程一致性" },
+                { id: "thm-f-12-03", label: "Thm-F-12-03: CEP模式匹配", category: "Flink", type: "theorem", level: 3, parent: "f-ml-cep", description: "CEP正确性" },
+                { id: "thm-f-12-04", label: "Thm-F-12-04: 图流算法", category: "Flink", type: "theorem", level: 3, parent: "f-ml-graph", description: "图流算法正确性" },
+                { id: "thm-f-12-05", label: "Thm-F-12-05: Agent工作流一致性", category: "Flink", type: "theorem", level: 3, parent: "f-ml-agent", description: "Agent工作流一致性" },
+                
+                // Flink案例研究
+                { id: "f-case-uber", label: "Uber实时平台", category: "Flink", type: "document", level: 2, parent: "flink-case", description: "Uber案例" },
+                { id: "f-case-netflix", label: "Netflix数据平台", category: "Flink", type: "document", level: 2, parent: "flink-case", description: "Netflix案例" },
+                { id: "f-case-alibaba", label: "Alibaba双十一", category: "Flink", type: "document", level: 2, parent: "flink-case", description: "阿里巴巴案例" },
+                { id: "f-case-linkedin", label: "LinkedIn实时分析", category: "Flink", type: "document", level: 2, parent: "flink-case", description: "LinkedIn案例" },
+                { id: "f-case-wechat", label: "微信实时计算", category: "Flink", type: "document", level: 2, parent: "flink-case", description: "微信案例" },
+                
+                // 跨层连接节点
+                { id: "mapping-s-k", label: "Struct→Knowledge映射", category: "Struct", type: "mapping", level: 1, description: "形式理论到知识映射" },
+                { id: "mapping-k-f", label: "Knowledge→Flink映射", category: "Knowledge", type: "mapping", level: 1, description: "知识到Flink实现" },
+                { id: "mapping-s-f", label: "Struct→Flink验证", category: "Struct", type: "mapping", level: 1, description: "形式验证到实现" },
+            ],
+            links: [
+                // Struct层内部连接
+                { source: "struct-root", target: "struct-foundation" },
+                { source: "struct-root", target: "struct-properties" },
+                { source: "struct-root", target: "struct-relations" },
+                { source: "struct-root", target: "struct-proofs" },
+                { source: "struct-foundation", target: "s-ustm" },
+                { source: "struct-foundation", target: "s-process" },
+                { source: "struct-foundation", target: "s-actor" },
+                { source: "struct-foundation", target: "s-dataflow" },
+                { source: "struct-foundation", target: "s-csp" },
+                { source: "struct-foundation", target: "s-petri" },
+                { source: "struct-foundation", target: "s-session" },
+                { source: "s-ustm", target: "thm-s-01-01" },
+                { source: "s-ustm", target: "thm-s-01-02" },
+                { source: "s-ustm", target: "def-s-01-01" },
+                { source: "s-process", target: "def-s-01-02" },
+                { source: "s-actor", target: "def-s-01-03" },
+                { source: "s-dataflow", target: "def-s-01-04" },
+                { source: "s-process", target: "s-csp" },
+                { source: "s-process", target: "s-petri" },
+                
+                { source: "struct-properties", target: "s-determinism" },
+                { source: "struct-properties", target: "s-consistency" },
+                { source: "struct-properties", target: "s-watermark" },
+                { source: "struct-properties", target: "s-liveness" },
+                { source: "struct-properties", target: "s-types" },
+                { source: "s-determinism", target: "thm-s-07-01" },
+                { source: "s-determinism", target: "thm-s-07-02" },
+                { source: "s-consistency", target: "thm-s-08-01" },
+                { source: "s-consistency", target: "thm-s-08-02" },
+                { source: "s-consistency", target: "thm-s-08-03" },
+                { source: "s-consistency", target: "thm-s-08-04" },
+                { source: "s-watermark", target: "thm-s-09-01" },
+                { source: "s-watermark", target: "def-s-09-01" },
+                { source: "s-watermark", target: "def-s-09-02" },
+                { source: "def-s-09-01", target: "thm-s-09-01" },
+                { source: "def-s-01-04", target: "def-s-09-01" },
+                
+                { source: "struct-relations", target: "s-actor-csp" },
+                { source: "struct-relations", target: "s-flink-process" },
+                { source: "struct-relations", target: "s-expressiveness" },
+                { source: "struct-relations", target: "s-bisimulation" },
+                { source: "struct-relations", target: "s-mapping" },
+                { source: "s-actor", target: "s-actor-csp" },
+                { source: "s-csp", target: "s-actor-csp" },
+                { source: "s-actor-csp", target: "thm-s-12-01" },
+                { source: "s-flink-process", target: "thm-s-13-01" },
+                { source: "s-dataflow", target: "s-flink-process" },
+                { source: "s-process", target: "s-flink-process" },
+                { source: "s-expressiveness", target: "thm-s-14-01" },
+                { source: "s-bisimulation", target: "thm-s-15-01" },
+                { source: "s-bisimulation", target: "thm-s-15-02" },
+                
+                { source: "struct-proofs", target: "s-checkpoint-proof" },
+                { source: "struct-proofs", target: "s-exactlyonce-proof" },
+                { source: "struct-proofs", target: "s-chandy-lamport" },
+                { source: "struct-proofs", target: "s-watermark-algebra" },
+                { source: "struct-proofs", target: "s-fg-proof" },
+                { source: "struct-proofs", target: "s-dot-proof" },
+                { source: "struct-proofs", target: "s-choreo-proof" },
+                { source: "s-checkpoint-proof", target: "thm-s-17-01" },
+                { source: "s-exactlyonce-proof", target: "thm-s-18-01" },
+                { source: "s-chandy-lamport", target: "thm-s-19-01" },
+                { source: "s-watermark-algebra", target: "thm-s-20-01" },
+                { source: "s-fg-proof", target: "thm-s-21-01" },
+                { source: "s-fg-proof", target: "thm-s-21-02" },
+                { source: "s-chandy-lamport", target: "s-checkpoint-proof" },
+                { source: "thm-s-07-01", target: "thm-s-17-01" },
+                { source: "thm-s-08-04", target: "thm-s-18-01" },
+                
+                // Knowledge层内部连接
+                { source: "knowledge-root", target: "k-patterns" },
+                { source: "knowledge-root", target: "k-architecture" },
+                { source: "knowledge-root", target: "k-domain" },
+                { source: "knowledge-root", target: "k-frontier" },
+                { source: "k-patterns", target: "k-pattern-event" },
+                { source: "k-patterns", target: "k-pattern-state" },
+                { source: "k-patterns", target: "k-pattern-window" },
+                { source: "k-patterns", target: "k-pattern-join" },
+                { source: "k-patterns", target: "k-pattern-async" },
+                { source: "k-pattern-event", target: "thm-k-01-01" },
+                { source: "k-pattern-event", target: "thm-k-01-02" },
+                { source: "k-pattern-state", target: "thm-k-02-01" },
+                { source: "k-pattern-state", target: "def-k-02-01" },
+                { source: "k-pattern-window", target: "thm-k-03-01" },
+                { source: "k-pattern-window", target: "def-k-03-01" },
+                { source: "k-pattern-join", target: "thm-k-04-01" },
+                { source: "k-pattern-async", target: "thm-k-05-01" },
+                { source: "s-dataflow", target: "k-pattern-window" },
+                { source: "s-actor", target: "k-pattern-event" },
+                { source: "def-s-01-04", target: "def-k-03-01" },
+                
+                { source: "k-architecture", target: "k-arch-lambda" },
+                { source: "k-architecture", target: "k-arch-kappa" },
+                { source: "k-architecture", target: "k-arch-micro" },
+                { source: "k-architecture", target: "k-arch-edge" },
+                { source: "k-domain", target: "k-domain-iot" },
+                { source: "k-domain", target: "k-domain-finance" },
+                { source: "k-domain", target: "k-domain-rec" },
+                { source: "k-domain", target: "k-domain-monitor" },
+                { source: "k-domain", target: "k-domain-etl" },
+                { source: "k-frontier", target: "k-frontier-rust" },
+                { source: "k-frontier", target: "k-frontier-gpu" },
+                { source: "k-frontier", target: "k-frontier-lakehouse" },
+                { source: "k-frontier", target: "k-frontier-rag" },
+                { source: "k-frontier", target: "k-frontier-agent" },
+                { source: "k-frontier-rust", target: "thm-k-06-01" },
+                { source: "k-frontier-gpu", target: "thm-k-07-01" },
+                { source: "k-frontier-lakehouse", target: "thm-k-08-01" },
+                { source: "k-frontier-rag", target: "thm-k-09-01" },
+                { source: "k-frontier-agent", target: "thm-k-10-01" },
+                
+                // Flink层内部连接
+                { source: "flink-root", target: "flink-core" },
+                { source: "flink-root", target: "flink-sql" },
+                { source: "flink-root", target: "flink-connectors" },
+                { source: "flink-root", target: "flink-engineering" },
+                { source: "flink-root", target: "flink-deployment" },
+                { source: "flink-root", target: "flink-language" },
+                { source: "flink-root", target: "flink-aiml" },
+                { source: "flink-root", target: "flink-case" },
+                { source: "flink-core", target: "f-runtime" },
+                { source: "flink-core", target: "f-checkpoint" },
+                { source: "flink-core", target: "f-state" },
+                { source: "flink-core", target: "f-watermark" },
+                { source: "flink-core", target: "f-window" },
+                { source: "flink-core", target: "f-backpressure" },
+                { source: "flink-core", target: "f-serialization" },
+                { source: "flink-core", target: "f-network" },
+                { source: "flink-core", target: "f-memory" },
+                { source: "flink-core", target: "f-async" },
+                { source: "f-checkpoint", target: "thm-f-02-01" },
+                { source: "f-checkpoint", target: "thm-f-02-02" },
+                { source: "f-checkpoint", target: "def-f-02-01" },
+                { source: "f-checkpoint", target: "def-f-02-02" },
+                { source: "f-state", target: "thm-f-02-03" },
+                { source: "f-state", target: "def-f-02-90" },
+                { source: "f-state", target: "def-f-02-61" },
+                { source: "f-state", target: "thm-f-02-45" },
+                { source: "f-async", target: "thm-f-02-50" },
+                { source: "f-async", target: "def-f-02-70" },
+                { source: "def-f-02-01", target: "thm-f-02-01" },
+                { source: "def-f-02-02", target: "thm-f-02-02" },
+                { source: "def-f-02-90", target: "def-f-02-61" },
+                { source: "def-f-02-70", target: "thm-f-02-50" },
+                
+                { source: "flink-sql", target: "f-sql-parser" },
+                { source: "flink-sql", target: "f-sql-optimizer" },
+                { source: "flink-sql", target: "f-sql-catalog" },
+                { source: "flink-sql", target: "f-sql-udf" },
+                { source: "flink-sql", target: "f-sql-planner" },
+                { source: "f-sql-optimizer", target: "thm-f-03-01" },
+                { source: "f-sql-planner", target: "thm-f-03-02" },
+                { source: "flink-connectors", target: "f-conn-kafka" },
+                { source: "flink-connectors", target: "f-conn-files" },
+                { source: "flink-connectors", target: "f-conn-jdbc" },
+                { source: "flink-connectors", target: "f-conn-elastic" },
+                { source: "flink-connectors", target: "f-conn-pulsar" },
+                { source: "f-conn-kafka", target: "thm-f-04-01" },
+                { source: "f-conn-files", target: "thm-f-04-02" },
+                
+                { source: "flink-engineering", target: "f-eng-tuning" },
+                { source: "flink-engineering", target: "f-eng-monitor" },
+                { source: "flink-engineering", target: "f-eng-testing" },
+                { source: "flink-engineering", target: "f-eng-debug" },
+                { source: "flink-engineering", target: "f-eng-upgrade" },
+                { source: "f-eng-tuning", target: "thm-f-06-01" },
+                { source: "f-eng-tuning", target: "thm-f-06-02" },
+                { source: "f-backpressure", target: "thm-f-06-01" },
+                
+                { source: "flink-deployment", target: "f-dep-k8s" },
+                { source: "flink-deployment", target: "f-dep-yarn" },
+                { source: "flink-deployment", target: "f-dep-standalone" },
+                { source: "flink-deployment", target: "f-dep-ha" },
+                { source: "flink-deployment", target: "f-dep-security" },
+                { source: "flink-language", target: "f-lang-java" },
+                { source: "flink-language", target: "f-lang-scala" },
+                { source: "flink-language", target: "f-lang-python" },
+                { source: "flink-language", target: "f-lang-sql" },
+                { source: "flink-language", target: "f-lang-wasm" },
+                { source: "f-lang-java", target: "thm-f-09-01" },
+                { source: "f-lang-scala", target: "thm-f-09-02" },
+                { source: "f-lang-wasm", target: "thm-f-13-01" },
+                { source: "s-types", target: "f-lang-java" },
+                { source: "s-types", target: "f-lang-scala" },
+                
+                { source: "flink-aiml", target: "f-ml-inference" },
+                { source: "flink-aiml", target: "f-ml-feature" },
+                { source: "flink-aiml", target: "f-ml-cep" },
+                { source: "flink-aiml", target: "f-ml-graph" },
+                { source: "flink-aiml", target: "f-ml-agent" },
+                { source: "f-ml-inference", target: "thm-f-12-01" },
+                { source: "f-ml-feature", target: "thm-f-12-02" },
+                { source: "f-ml-cep", target: "thm-f-12-03" },
+                { source: "f-ml-graph", target: "thm-f-12-04" },
+                { source: "f-ml-agent", target: "thm-f-12-05" },
+                { source: "k-frontier-agent", target: "f-ml-agent" },
+                { source: "thm-k-10-01", target: "thm-f-12-05" },
+                
+                { source: "flink-case", target: "f-case-uber" },
+                { source: "flink-case", target: "f-case-netflix" },
+                { source: "flink-case", target: "f-case-alibaba" },
+                { source: "flink-case", target: "f-case-linkedin" },
+                { source: "flink-case", target: "f-case-wechat" },
+                
+                // 跨层连接
+                { source: "struct-root", target: "mapping-s-k" },
+                { source: "knowledge-root", target: "mapping-s-k" },
+                { source: "knowledge-root", target: "mapping-k-f" },
+                { source: "flink-root", target: "mapping-k-f" },
+                { source: "struct-root", target: "mapping-s-f" },
+                { source: "flink-root", target: "mapping-s-f" },
+                { source: "thm-s-17-01", target: "thm-f-02-01" },
+                { source: "thm-s-18-01", target: "thm-f-02-02" },
+                { source: "thm-s-20-01", target: "f-watermark" },
+                { source: "def-s-09-01", target: "f-watermark" },
+                { source: "thm-k-08-01", target: "f-state" },
+                { source: "thm-k-06-01", target: "f-lang-rust" },
+            ]
+        };
+
+        // 颜色配置
+        const colors = {
+            Struct: '#3b82f6',
+            Knowledge: '#10b981',
+            Flink: '#f59e0b',
+            theorem: '#8b5cf6',
+            definition: '#ec4899',
+            root: '#f43f5e',
+            layer: '#6366f1',
+            document: '#64748b',
+            mapping: '#14b8a6'
+        };
+
+        // 全局状态
+        let svg, g, simulation, zoom;
+        let nodes = [], links = [];
+        let currentLayout = 'force';
+        let selectedNode = null;
+        let linkElements, nodeElements, labelElements;
+        let width, height;
+
+        // ==========================================
+        // 初始化
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initGraph();
+            updateStats();
+        });
+
+        function initGraph() {
+            const container = document.getElementById('graph-container');
+            width = container.clientWidth;
+            height = container.clientHeight;
+
+            // 创建SVG
+            svg = d3.select('#graph-container')
+                .attr('viewBox', [0, 0, width, height]);
+
+            // 添加缩放行为
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+
+            svg.call(zoom);
+
+            // 创建主容器
+            g = svg.append('g');
+
+            // 初始化数据
+            nodes = graphData.nodes.map(d => ({ ...d }));
+            links = graphData.links.map(d => ({ ...d }));
+
+            // 创建力导向模拟
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(30));
+
+            // 绘制
+            render();
+
+            // 隐藏加载
+            document.getElementById('loading').style.display = 'none';
+
+            // 初始布局动画
+            simulation.on('tick', () => {
+                updatePositions();
+            });
+        }
+
+        function render() {
+            // 绘制连线
+            linkElements = g.selectAll('.link')
+                .data(links)
+                .join('line')
+                .attr('class', 'link')
+                .attr('stroke-width', 1.5);
+
+            // 绘制节点
+            nodeElements = g.selectAll('.node')
+                .data(nodes)
+                .join('g')
+                .attr('class', 'node')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+            // 节点圆圈
+            nodeElements.append('circle')
+                .attr('r', d => getNodeRadius(d))
+                .attr('fill', d => getNodeColor(d))
+                .attr('stroke', d => d3.rgb(getNodeColor(d)).brighter(0.5))
+                .attr('stroke-width', 2);
+
+            // 节点图标
+            nodeElements.append('text')
+                .attr('class', 'node-icon')
+                .attr('text-anchor', 'middle')
+                .attr('dy', '0.35em')
+                .attr('font-family', 'Font Awesome 6 Free')
+                .attr('font-weight', '900')
+                .attr('font-size', d => getNodeRadius(d) * 0.5)
+                .attr('fill', 'white')
+                .attr('pointer-events', 'none')
+                .text(d => getNodeIcon(d));
+
+            // 节点标签
+            labelElements = g.selectAll('.node-label')
+                .data(nodes)
+                .join('text')
+                .attr('class', 'node-label')
+                .attr('dy', d => getNodeRadius(d) + 15)
+                .text(d => d.label.length > 15 ? d.label.slice(0, 12) + '...' : d.label);
+
+            // 事件绑定
+            nodeElements
+                .on('click', (event, d) => selectNode(d))
+                .on('mouseover', (event, d) => showTooltip(event, d))
+                .on('mouseout', hideTooltip);
+        }
+
+        function updatePositions() {
+            linkElements
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            nodeElements.attr('transform', d => `translate(${d.x},${d.y})`);
+
+            labelElements
+                .attr('x', d => d.x)
+                .attr('y', d => d.y);
+        }
+
+        // ==========================================
+        // 辅助函数
+        // ==========================================
+        function getNodeRadius(d) {
+            const sizes = { root: 25, layer: 18, document: 14, theorem: 10, definition: 10, mapping: 12 };
+            return sizes[d.type] || 10;
+        }
+
+        function getNodeColor(d) {
+            if (d.type === 'root') return colors.root;
+            if (d.type === 'layer') return colors.layer;
+            if (d.type === 'mapping') return colors.mapping;
+            if (d.type === 'theorem') return colors.theorem;
+            if (d.type === 'definition') return colors.definition;
+            return colors[d.category] || colors.document;
+        }
+
+        function getNodeIcon(d) {
+            const icons = {
+                root: '\uf542',
+                layer: '\uf0e8',
+                document: '\uf15c',
+                theorem: '\uf51b',
+                definition: '\uf02d',
+                mapping: '\uf4ce'
+            };
+            return icons[d.type] || '\uf111';
+        }
+
+        // ==========================================
+        // 交互功能
+        // ==========================================
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function selectNode(d) {
+            selectedNode = d;
+            document.getElementById('selected-node').textContent = d.label;
+
+            // 高亮路径
+            highlightPath(d);
+
+            // 显示详情面板
+            showDetailPanel(d);
+        }
+
+        function highlightPath(d) {
+            // 找到所有相关节点和边
+            const connectedNodes = new Set([d.id]);
+            const connectedLinks = new Set();
+
+            links.forEach(l => {
+                if (l.source.id === d.id) {
+                    connectedNodes.add(l.target.id);
+                    connectedLinks.add(l);
+                } else if (l.target.id === d.id) {
+                    connectedNodes.add(l.source.id);
+                    connectedLinks.add(l);
+                }
+            });
+
+            // 应用样式
+            nodeElements.classed('dimmed', n => !connectedNodes.has(n.id));
+            nodeElements.classed('highlighted', n => n.id === d.id);
+            linkElements.classed('dimmed', l => !connectedLinks.has(l));
+            linkElements.classed('highlighted', l => connectedLinks.has(l));
+            labelElements.classed('dimmed', n => !connectedNodes.has(n.id));
+        }
+
+        function clearHighlight() {
+            nodeElements.classed('dimmed', false).classed('highlighted', false);
+            linkElements.classed('dimmed', false).classed('highlighted', false);
+            labelElements.classed('dimmed', false);
+        }
+
+        function showDetailPanel(d) {
+            const panel = document.getElementById('detail-panel');
+            const icon = document.getElementById('detail-icon');
+            const title = document.getElementById('detail-title');
+            const subtitle = document.getElementById('detail-subtitle');
+            const content = document.getElementById('detail-content');
+
+            icon.style.background = getNodeColor(d);
+            icon.innerHTML = `<i class="fas ${getNodeFontIcon(d)}"></i>`;
+            title.textContent = d.label;
+            subtitle.textContent = `${d.category} / ${d.type} / Level ${d.level}`;
+
+            // 查找相关连接
+            const relatedNodes = links.filter(l => l.source.id === d.id || l.target.id === d.id);
+            const outgoing = relatedNodes.filter(l => l.source.id === d.id);
+            const incoming = relatedNodes.filter(l => l.target.id === d.id);
+
+            content.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">描述</div>
+                    <div class="detail-section-content">${d.description || '暂无描述'}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title">属性</div>
+                    <div class="detail-section-content">
+                        <div class="stat-item"><span>ID</span><span class="stat-value">${d.id}</span></div>
+                        <div class="stat-item"><span>类别</span><span class="stat-value">${d.category}</span></div>
+                        <div class="stat-item"><span>类型</span><span class="stat-value">${d.type}</span></div>
+                        <div class="stat-item"><span>层级</span><span class="stat-value">${d.level}</span></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title">连接统计</div>
+                    <div class="detail-section-content">
+                        <div class="stat-item"><span>出边</span><span class="stat-value">${outgoing.length}</span></div>
+                        <div class="stat-item"><span>入边</span><span class="stat-value">${incoming.length}</span></div>
+                    </div>
+                </div>
+                ${outgoing.length > 0 ? `
+                <div class="detail-section">
+                    <div class="detail-section-title">引用 (${outgoing.length})</div>
+                    <div class="detail-links">
+                        ${outgoing.slice(0, 5).map(l => `
+                            <a class="detail-link" href="#" onclick="selectNodeById('${l.target.id}')">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>${l.target.label}</span>
+                            </a>
+                        `).join('')}
+                        ${outgoing.length > 5 ? `<div style="text-align:center;padding:8px;opacity:0.6;font-size:12px;">还有 ${outgoing.length - 5} 个...</div>` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                ${incoming.length > 0 ? `
+                <div class="detail-section">
+                    <div class="detail-section-title">被引用 (${incoming.length})</div>
+                    <div class="detail-links">
+                        ${incoming.slice(0, 5).map(l => `
+                            <a class="detail-link" href="#" onclick="selectNodeById('${l.source.id}')">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>${l.source.label}</span>
+                            </a>
+                        `).join('')}
+                        ${incoming.length > 5 ? `<div style="text-align:center;padding:8px;opacity:0.6;font-size:12px;">还有 ${incoming.length - 5} 个...</div>` : ''}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            panel.classList.add('visible');
+        }
+
+        function getNodeFontIcon(d) {
+            const icons = {
+                root: 'fa-project-diagram',
+                layer: 'fa-layer-group',
+                document: 'fa-file-alt',
+                theorem: 'fa-theorem',
+                definition: 'fa-book',
+                mapping: 'fa-exchange-alt'
+            };
+            return icons[d.type] || 'fa-circle';
+        }
+
+        function selectNodeById(id) {
+            const node = nodes.find(n => n.id === id);
+            if (node) selectNode(node);
+        }
+
+        function closeDetailPanel() {
+            document.getElementById('detail-panel').classList.remove('visible');
+            clearHighlight();
+            selectedNode = null;
+            document.getElementById('selected-node').textContent = '-';
+        }
+
+        function showTooltip(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `<strong>${d.label}</strong><br>${d.description || ''}`;
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY - 10) + 'px';
+            tooltip.style.opacity = 1;
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.opacity = 0;
+        }
+
+        // ==========================================
+        // 控制功能
+        // ==========================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('visible');
+        }
+
+        function switchLayout(layout) {
+            currentLayout = layout;
+            document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.layout-btn').classList.add('active');
+
+            if (layout === 'hierarchy') {
+                applyHierarchyLayout();
+            } else {
+                applyForceLayout();
+            }
+        }
+
+        function applyHierarchyLayout() {
+            const hierarchy = d3.stratify()
+                .id(d => d.id)
+                .parentId(d => d.parent || (d.level === 0 ? null : 'struct-root'))
+                (nodes.filter(d => d.type !== 'theorem' && d.type !== 'definition'));
+
+            const treeLayout = d3.tree().size([width - 100, height - 100]);
+            treeLayout(hierarchy);
+
+            hierarchy.descendants().forEach(d => {
+                const node = nodes.find(n => n.id === d.data.id);
+                if (node) {
+                    node.fx = d.x + 50;
+                    node.fy = d.y + 50;
+                }
+            });
+
+            simulation.alpha(1).restart();
+        }
+
+        function applyForceLayout() {
+            nodes.forEach(d => {
+                d.fx = null;
+                d.fy = null;
+            });
+            simulation.alpha(1).restart();
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            if (!query) {
+                clearHighlight();
+                return;
+            }
+
+            const matches = nodes.filter(n => 
+                n.label.toLowerCase().includes(query) || 
+                (n.description && n.description.toLowerCase().includes(query))
+            );
+
+            if (matches.length > 0) {
+                nodeElements.classed('dimmed', n => !matches.includes(n));
+                labelElements.classed('dimmed', n => !matches.includes(n));
+                linkElements.classed('dimmed', true);
+
+                // 聚焦到第一个匹配
+                const firstMatch = matches[0];
+                const transform = d3.zoomIdentity
+                    .translate(width / 2, height / 2)
+                    .scale(1.5)
+                    .translate(-firstMatch.x, -firstMatch.y);
+                svg.transition().duration(750).call(zoom.transform, transform);
+            }
+        }
+
+        function updateFilters() {
+            const categoryFilters = Array.from(document.querySelectorAll('#category-filters input:checked'))
+                .map(cb => cb.dataset.category);
+            const typeFilters = Array.from(document.querySelectorAll('#type-filters input:checked'))
+                .map(cb => cb.dataset.type);
+
+            nodeElements.style('display', d => {
+                const categoryMatch = categoryFilters.includes(d.category);
+                const typeMatch = typeFilters.includes(d.type);
+                return categoryMatch && typeMatch ? 'block' : 'none';
+            });
+
+            labelElements.style('display', d => {
+                const categoryMatch = categoryFilters.includes(d.category);
+                const typeMatch = typeFilters.includes(d.type);
+                return categoryMatch && typeMatch ? 'block' : 'none';
+            });
+
+            const visibleCount = nodes.filter(d => 
+                categoryFilters.includes(d.category) && typeFilters.includes(d.type)
+            ).length;
+            document.getElementById('visible-nodes').textContent = visibleCount;
+        }
+
+        function zoomIn() {
+            svg.transition().call(zoom.scaleBy, 1.3);
+        }
+
+        function zoomOut() {
+            svg.transition().call(zoom.scaleBy, 0.7);
+        }
+
+        function resetZoom() {
+            svg.transition().call(zoom.transform, d3.zoomIdentity);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.body.classList.toggle('light-theme');
+            const icon = document.getElementById('theme-icon');
+            icon.classList.toggle('fa-sun');
+            icon.classList.toggle('fa-moon');
+        }
+
+        function exportGraph() {
+            const svgElement = document.getElementById('graph-container');
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(svgElement);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'knowledge-graph.svg';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        function updateStats() {
+            // 类别统计
+            const categoryCounts = {};
+            const typeCounts = {};
+            
+            nodes.forEach(n => {
+                categoryCounts[n.category] = (categoryCounts[n.category] || 0) + 1;
+                typeCounts[n.type] = (typeCounts[n.type] || 0) + 1;
+            });
+
+            document.getElementById('count-Struct').textContent = categoryCounts.Struct || 0;
+            document.getElementById('count-Knowledge').textContent = categoryCounts.Knowledge || 0;
+            document.getElementById('count-Flink').textContent = categoryCounts.Flink || 0;
+
+            document.getElementById('count-document').textContent = typeCounts.document || 0;
+            document.getElementById('count-theorem').textContent = typeCounts.theorem || 0;
+            document.getElementById('count-definition').textContent = typeCounts.definition || 0;
+
+            document.getElementById('total-nodes').textContent = nodes.length;
+            document.getElementById('total-links').textContent = links.length;
+            document.getElementById('visible-nodes').textContent = nodes.length;
+        }
+
+        // 响应式处理
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('graph-container');
+            width = container.clientWidth;
+            height = container.clientHeight;
+            svg.attr('viewBox', [0, 0, width, height]);
+            simulation.force('center', d3.forceCenter(width / 2, height / 2));
+            simulation.alpha(0.3).restart();
+        });
+    </script>
+</body>
+</html>

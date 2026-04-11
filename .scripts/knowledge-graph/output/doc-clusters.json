@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-04-11T15:41:21.358725",
+  "total_clusters": 4,
+  "clusters": {
+    "0": {
+      "documents": [
+        "Struct/1.1-streaming-foundations.md",
+        "Struct/1.2-watermark-theory.md"
+      ],
+      "size": 2,
+      "keywords": [
+        "streaming",
+        "event time",
+        "watermark"
+      ],
+      "sample_titles": [
+        "流计算基础理论",
+        "Watermark理论"
+      ]
+    },
+    "1": {
+      "documents": [
+        "Flink/checkpoint-configuration.md",
+        "Knowledge/flink-checkpoint-guide.md"
+      ],
+      "size": 2,
+      "keywords": [
+        "flink",
+        "checkpoint",
+        "fault tolerance"
+      ],
+      "sample_titles": [
+        "Flink Checkpoint配置",
+        "Checkpoint指南"
+      ]
+    },
+    "2": {
+      "documents": [
+        "Knowledge/kafka-streams-comparison.md"
+      ],
+      "size": 1,
+      "keywords": [
+        "kafka",
+        "comparison",
+        "streams"
+      ],
+      "sample_titles": [
+        "Kafka Streams对比分析"
+      ]
+    },
+    "3": {
+      "documents": [
+        "Struct/2.1-consistency-models.md"
+      ],
+      "size": 1,
+      "keywords": [
+        "consistency",
+        "exactly-once",
+        "models"
+      ],
+      "sample_titles": [
+        "一致性模型"
+      ]
+    }
+  }
+}

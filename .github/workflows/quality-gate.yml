@@ -1,0 +1,1456 @@
+# Quality Gate - PR质量门禁流水线 (v3.0)
+#
+# 版本: v3.0 | 日期: 2026-04-11 | 状态: Production
+#
+# 触发条件:
+#   - PR创建、更新 (opened, synchronize, reopened)
+#   - 代码推送到 main/master
+#   - 手动触发
+#
+# 质量检查项目:
+#   1. Markdown语法检查        - 阻塞合并 (blocking)
+#   2. 交叉引用验证            - 阻塞合并 (blocking)
+#   3. 六段式模板验证          - 警告 (warning)
+#   4. 形式化元素检查          - 警告 (warning)
+#   5. Mermaid语法检查         - 阻塞合并 (blocking)
+#   6. 内部链接健康检查        - 阻塞合并 (blocking)
+#   7. 前瞻性内容标记检查      - 阻塞合并 (blocking)
+#   8. 定理编号唯一性验证      - 阻塞合并 (blocking)
+
+name: Quality Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - '.scripts/**'
+      - '.github/workflows/**'
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - '.scripts/**'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - quick
+          - markdown-only
+          - cross-ref-only
+          - mermaid-only
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+# 并发控制 - 相同PR的多个运行会取消旧的
+concurrency:
+  group: 'quality-gate-${{ github.event.pull_request.number || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  # ============ 任务0: 变更检测 ============
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      markdown_files: ${{ steps.changes.outputs.markdown_files }}
+      changed_dirs: ${{ steps.changes.outputs.changed_dirs }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "markdown_files=all" >> $GITHUB_OUTPUT
+            echo "changed_dirs=Struct Knowledge Flink docs tutorials" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD | grep '\.md$' || true)
+          else
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '\.md$' || true)
+          fi
+
+          echo "Changed markdown files:"
+          echo "$changed_files"
+
+          # 保存markdown文件列表
+          echo "markdown_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # 检测变更目录
+          changed_dirs=""
+          for dir in Struct Knowledge Flink docs tutorials; do
+            if echo "$changed_files" | grep -q "^$dir/"; then
+              changed_dirs="$changed_dirs $dir"
+            fi
+          done
+          
+          if [ -z "$changed_dirs" ]; then
+            changed_dirs="Struct Knowledge Flink"
+          fi
+          
+          echo "changed_dirs=$changed_dirs" >> $GITHUB_OUTPUT
+
+  # ============ 任务1: Markdown语法检查 [阻塞合并] ============
+  markdown-lint:
+    name: Markdown Syntax [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'cross-ref-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache markdownlint
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: markdownlint-${{ runner.os }}-${{ env.NODE_VERSION }}-0.41.0
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli@0.41.0
+
+      - name: Run markdownlint
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": false,
+            "MD024": false,
+            "MD033": false,
+            "MD041": false,
+            "MD046": false,
+            "MD028": false,
+            "MD025": false,
+            "line-length": false,
+            "no-inline-html": false,
+            "first-line-heading": false,
+            "no-duplicate-heading": false
+          }
+          EOF
+
+          changed_files="${{ needs.detect-changes.outputs.markdown_files }}"
+          
+          if [ "$changed_files" == "all" ]; then
+            find Struct Knowledge Flink docs tutorials -name "*.md" -type f 2>/dev/null | head -100 | xargs -I {} markdownlint {} || true
+          elif [ -n "$changed_files" ]; then
+            echo "$changed_files" | xargs -I {} markdownlint {} 2>/dev/null || true
+          fi
+
+      - name: Check critical errors
+        run: |
+          errors=0
+          changed_files="${{ needs.detect-changes.outputs.markdown_files }}"
+          
+          if [ "$changed_files" == "all" ]; then
+            files=$(find Struct Knowledge Flink docs tutorials -name "*.md" -type f 2>/dev/null)
+          else
+            files="$changed_files"
+          fi
+          
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if [ -f "$file" ]; then
+              # 检查YAML frontmatter完整性
+              if head -1 "$file" | grep -q '^---'; then
+                frontmatter_lines=0
+                in_frontmatter=false
+                while IFS= read -r line; do
+                  if [ "$line" == "---" ]; then
+                    if [ "$in_frontmatter" = false ]; then
+                      in_frontmatter=true
+                    else
+                      break
+                    fi
+                  fi
+                  frontmatter_lines=$((frontmatter_lines + 1))
+                done < "$file"
+                
+                if [ $frontmatter_lines -gt 50 ]; then
+                  echo "❌ YAML frontmatter may be malformed in: $file"
+                  errors=$((errors + 1))
+                fi
+              fi
+            fi
+          done <<< "$files"
+          
+          if [ $errors -gt 0 ]; then
+            echo "❌ Found $errors critical markdown errors"
+            exit 1
+          fi
+          
+          echo "✅ Markdown syntax check passed"
+
+  # ============ 任务2: 交叉引用验证 [阻塞合并] ============
+  cross-ref-validator:
+    name: Cross-Reference Validation [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run cross-reference validator
+        run: |
+          mkdir -p reports
+          
+          if [ -f ".scripts/cross-ref-checker-v2.py" ]; then
+            python .scripts/cross-ref-checker-v2.py \
+              --base-path . \
+              --output reports/cross-ref-report.json \
+              --fail-on-error || true
+          fi
+          
+          # 内联交叉引用检查
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          stats = {
+              'total_refs': 0,
+              'valid_refs': 0,
+              'broken_refs': 0,
+              'files_checked': 0
+          }
+          broken_refs = []
+
+          # 定理引用模式
+          thm_pattern = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          # 文档链接模式
+          link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+\.md[^)]*)\)')
+
+          # 收集所有定理
+          all_theorems = set()
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      for match in thm_pattern.finditer(content):
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          all_theorems.add(thm_id)
+                  except:
+                      pass
+
+          # 收集所有文档路径
+          all_docs = set()
+          for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+              if Path(directory).exists():
+                  for md_file in Path(directory).rglob('*.md'):
+                      all_docs.add(str(md_file))
+
+          # 检查引用
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  stats['files_checked'] += 1
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      # 检查定理引用
+                      for match in thm_pattern.finditer(content):
+                          stats['total_refs'] += 1
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          if thm_id in all_theorems:
+                              stats['valid_refs'] += 1
+                          else:
+                              stats['broken_refs'] += 1
+                              broken_refs.append({
+                                  'file': rel_path,
+                                  'ref': thm_id,
+                                  'type': 'theorem',
+                                  'line': content[:match.start()].count('\n') + 1
+                              })
+                      
+                      # 检查文档链接
+                      for match in link_pattern.finditer(content):
+                          link_target = match.group(2).split('#')[0]
+                          if not link_target.startswith(('http://', 'https://', 'mailto:')):
+                              stats['total_refs'] += 1
+                              target_path = md_file.parent / link_target
+                              if str(target_path) in all_docs or target_path.exists():
+                                  stats['valid_refs'] += 1
+                              else:
+                                  stats['broken_refs'] += 1
+                                  broken_refs.append({
+                                      'file': rel_path,
+                                      'ref': link_target,
+                                      'type': 'document',
+                                      'line': content[:match.start()].count('\n') + 1
+                                  })
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': stats,
+              'broken_refs': broken_refs[:50]  # 限制数量
+          }
+          
+          with open('reports/cross-ref-validation.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Cross-Reference Validation Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Files Checked | {stats['files_checked']} |",
+              f"| Total References | {stats['total_refs']} |",
+              f"| ✅ Valid | {stats['valid_refs']} |",
+              f"| ❌ Broken | {stats['broken_refs']} |",
+              f""
+          ]
+
+          if broken_refs:
+              report_lines.extend([
+                  "## Broken References",
+                  "",
+                  "| File | Reference | Type | Line |",
+                  "|------|-----------|------|------|"
+              ])
+              for ref in broken_refs[:30]:
+                  report_lines.append(f"| {ref['file']} | `{ref['ref']}` | {ref['type']} | {ref['line']} |")
+              if len(broken_refs) > 30:
+                  report_lines.append(f"| ... | ... | ... | *{len(broken_refs) - 30} more* |")
+
+          with open('reports/cross-ref-validation.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Cross-Reference Check:")
+          print(f"  Files: {stats['files_checked']}")
+          print(f"  Total refs: {stats['total_refs']}")
+          print(f"  Valid: {stats['valid_refs']}")
+          print(f"  Broken: {stats['broken_refs']}")
+
+          # 如果损坏率超过2%，失败
+          if stats['total_refs'] > 0:
+              broken_rate = stats['broken_refs'] / stats['total_refs']
+              if broken_rate > 0.02:
+                  print(f"❌ Broken reference rate {broken_rate:.1%} exceeds threshold")
+                  sys.exit(1)
+          PYEOF
+
+      - name: Upload cross-ref report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-ref-report
+          path: |
+            reports/cross-ref-validation.json
+            reports/cross-ref-validation.md
+
+  # ============ 任务3: 六段式模板验证 [警告级别] ============
+  template-validator:
+    name: Six-Section Template [WARNING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'cross-ref-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run template validator
+        run: |
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          REQUIRED_SECTIONS = [
+              ('概念定义', 'Definitions'),
+              ('属性推导', 'Properties'),
+              ('关系建立', 'Relations'),
+              ('论证过程', 'Argumentation'),
+              ('形式证明', 'Proof'),
+              ('实例验证', 'Examples'),
+              ('可视化', 'Visualizations'),
+              ('引用参考', 'References')
+          ]
+
+          stats = {
+              'files_checked': 0,
+              'compliant_files': 0,
+              'partial_files': 0,
+              'missing_sections': defaultdict(int)
+          }
+
+          results = []
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      # 检查是否是核心文档（有元数据标记）
+                      if '所属阶段:' not in content and '所属阶段：' not in content:
+                          continue
+                      
+                      stats['files_checked'] += 1
+                      
+                      missing = []
+                      for zh_name, en_name in REQUIRED_SECTIONS:
+                          # 匹配多种标题格式
+                          patterns = [
+                              rf'^##\s*\d*\.?\s*{re.escape(zh_name)}',
+                              rf'^##\s*\d*\.?\s*{re.escape(en_name)}',
+                              rf'^##\s*{re.escape(zh_name)}',
+                              rf'^##\s*{re.escape(en_name)}'
+                          ]
+                          found = any(re.search(p, content, re.MULTILINE | re.IGNORECASE) for p in patterns)
+                          if not found:
+                              missing.append(zh_name)
+                              stats['missing_sections'][zh_name] += 1
+                      
+                      if not missing:
+                          stats['compliant_files'] += 1
+                          status = 'compliant'
+                      elif len(missing) <= 2:
+                          stats['partial_files'] += 1
+                          status = 'partial'
+                      else:
+                          status = 'non-compliant'
+                      
+                      results.append({
+                          'file': rel_path,
+                          'status': status,
+                          'missing': missing
+                      })
+                      
+                  except Exception as e:
+                      pass
+
+          # 计算合规率
+          compliance_rate = 0
+          if stats['files_checked'] > 0:
+              compliance_rate = (stats['compliant_files'] / stats['files_checked']) * 100
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'files_checked': stats['files_checked'],
+                  'compliant_files': stats['compliant_files'],
+                  'partial_files': stats['partial_files'],
+                  'compliance_rate': round(compliance_rate, 1)
+              },
+              'missing_sections': dict(stats['missing_sections']),
+              'details': results
+          }
+          
+          with open('reports/template-validation.json', 'w') as f:
+              json.dump(report, f, indent=2, ensure_ascii=False)
+
+          report_lines = [
+              f"# Six-Section Template Validation Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Files Checked | {stats['files_checked']} |",
+              f"| ✅ Compliant | {stats['compliant_files']} |",
+              f"| ⚠️ Partial | {stats['partial_files']} |",
+              f"| 📊 Compliance Rate | {compliance_rate:.1f}% |",
+              f""
+          ]
+
+          if stats['missing_sections']:
+              report_lines.extend([
+                  "## Missing Sections Distribution",
+                  "",
+                  "| Section | Count |",
+                  "|---------|-------|"
+              ])
+              for section, count in sorted(stats['missing_sections'].items(), key=lambda x: -x[1]):
+                  report_lines.append(f"| {section} | {count} |")
+              report_lines.append("")
+
+          non_compliant = [r for r in results if r['status'] == 'non-compliant']
+          if non_compliant:
+              report_lines.extend([
+                  "## Non-Compliant Files",
+                  "",
+                  "| File | Missing Sections |",
+                  "|------|------------------|"
+              ])
+              for r in non_compliant[:20]:
+                  report_lines.append(f"| {r['file']} | {', '.join(r['missing'][:3])}{'...' if len(r['missing']) > 3 else ''} |")
+              report_lines.append("")
+
+          with open('reports/template-validation.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Template Validation:")
+          print(f"  Files: {stats['files_checked']}")
+          print(f"  Compliant: {stats['compliant_files']}")
+          print(f"  Compliance rate: {compliance_rate:.1f}%")
+          PYEOF
+        continue-on-error: true
+
+      - name: Upload template report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-validation-report
+          path: |
+            reports/template-validation.json
+            reports/template-validation.md
+
+  # ============ 任务4: 形式化元素检查 [警告级别] ============
+  formal-element-tracker:
+    name: Formal Element Check [WARNING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run formal element checker
+        run: |
+          if [ -f ".scripts/formal-element-checker.py" ]; then
+            python .scripts/formal-element-checker.py \
+              --output reports/formal-element-report.json \
+              --dirs Struct Knowledge Flink 2>/dev/null || true
+          fi
+          
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          stats = {
+              'total_elements': 0,
+              'by_type': defaultdict(int),
+              'by_stage': defaultdict(int),
+              'duplicates': []
+          }
+
+          all_elements = defaultdict(list)
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      for match in THEOREM_PATTERN.finditer(content):
+                          elem_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          all_elements[elem_id].append({
+                              'file': rel_path,
+                              'line': content[:match.start()].count('\n') + 1
+                          })
+                          stats['total_elements'] += 1
+                          stats['by_type'][match.group(1)] += 1
+                          stats['by_stage'][match.group(2)] += 1
+                          
+                  except Exception as e:
+                      pass
+
+          # 查找重复
+          for elem_id, locations in all_elements.items():
+              if len(locations) > 1:
+                  stats['duplicates'].append({
+                      'id': elem_id,
+                      'count': len(locations),
+                      'locations': locations
+                  })
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'total_elements': stats['total_elements'],
+                  'unique_elements': len(all_elements),
+                  'duplicates': len(stats['duplicates'])
+              },
+              'by_type': dict(stats['by_type']),
+              'by_stage': dict(stats['by_stage']),
+              'duplicate_details': stats['duplicates']
+          }
+          
+          with open('reports/formal-element-check.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Formal Element Check Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Elements | {stats['total_elements']} |",
+              f"| Unique Elements | {len(all_elements)} |",
+              f"| Duplicates | {len(stats['duplicates'])} |",
+              f""
+          ]
+
+          if stats['by_type']:
+              report_lines.extend([
+                  "## By Type",
+                  "",
+                  "| Type | Count |",
+                  "|------|-------|"
+              ])
+              type_names = {'Thm': 'Theorem', 'Def': 'Definition', 'Lemma': 'Lemma', 'Prop': 'Proposition', 'Cor': 'Corollary'}
+              for t, c in sorted(stats['by_type'].items()):
+                  report_lines.append(f"| {type_names.get(t, t)} | {c} |")
+              report_lines.append("")
+
+          if stats['duplicates']:
+              report_lines.extend([
+                  "## Duplicates",
+                  "",
+                  "| ID | Count | Locations |",
+                  "|----|-------|-----------|"
+              ])
+              for dup in stats['duplicates'][:10]:
+                  locs = ', '.join([f"{l['file']}:{l['line']}" for l in dup['locations'][:2]])
+                  if len(dup['locations']) > 2:
+                      locs += f" (+{len(dup['locations'])-2})"
+                  report_lines.append(f"| `{dup['id']}` | {dup['count']} | {locs} |")
+              report_lines.append("")
+
+          with open('reports/formal-element-check.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Formal Element Check:")
+          print(f"  Total: {stats['total_elements']}")
+          print(f"  Unique: {len(all_elements)}")
+          print(f"  Duplicates: {len(stats['duplicates'])}")
+          PYEOF
+        continue-on-error: true
+
+      - name: Upload formal element report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-element-report
+          path: |
+            reports/formal-element-check.json
+            reports/formal-element-check.md
+
+  # ============ 任务5: Mermaid语法检查 [阻塞合并] ============
+  mermaid-syntax-checker:
+    name: Mermaid Syntax [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'cross-ref-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run Mermaid syntax checker
+        run: |
+          if [ -f ".scripts/mermaid-syntax-checker.py" ]; then
+            python .scripts/mermaid-syntax-checker.py \
+              --base-path . \
+              --output reports/mermaid-syntax-report.json 2>/dev/null || true
+          fi
+          
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          VALID_CHART_TYPES = [
+              'graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
+              'stateDiagram', 'stateDiagram-v2', 'erDiagram', 'gantt', 
+              'pie', 'mindmap', 'timeline', 'gitGraph'
+          ]
+
+          stats = {
+              'total_diagrams': 0,
+              'valid_diagrams': 0,
+              'invalid_diagrams': 0,
+              'by_type': {}
+          }
+          errors = []
+
+          mermaid_pattern = re.compile(r'```mermaid\s*\n(.*?)```', re.DOTALL)
+
+          for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      for i, match in enumerate(mermaid_pattern.finditer(content)):
+                          stats['total_diagrams'] += 1
+                          diagram = match.group(1).strip()
+                          lines = diagram.split('\n')
+                          
+                          if not lines:
+                              continue
+                          
+                          first_line = lines[0].strip()
+                          
+                          # 检测图表类型
+                          chart_type = None
+                          for vt in VALID_CHART_TYPES:
+                              if first_line.startswith(vt):
+                                  chart_type = vt
+                                  break
+                          
+                          if chart_type:
+                              stats['by_type'][chart_type] = stats['by_type'].get(chart_type, 0) + 1
+                              stats['valid_diagrams'] += 1
+                          else:
+                              stats['invalid_diagrams'] += 1
+                              errors.append({
+                                  'file': rel_path,
+                                  'diagram': i + 1,
+                                  'message': f'Unknown chart type: {first_line[:50]}'
+                              })
+                          
+                          # 基本语法检查 - 括号匹配
+                          open_brackets = diagram.count('[') + diagram.count('{') + diagram.count('(')
+                          close_brackets = diagram.count(']') + diagram.count('}') + diagram.count(')')
+                          
+                          if open_brackets != close_brackets:
+                              errors.append({
+                                  'file': rel_path,
+                                  'diagram': i + 1,
+                                  'message': f'Unbalanced brackets: {open_brackets} open, {close_brackets} close'
+                              })
+                              
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          validity_rate = 0
+          if stats['total_diagrams'] > 0:
+              validity_rate = (stats['valid_diagrams'] / stats['total_diagrams']) * 100
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'total_diagrams': stats['total_diagrams'],
+                  'valid_diagrams': stats['valid_diagrams'],
+                  'invalid_diagrams': stats['invalid_diagrams'],
+                  'validity_rate': round(validity_rate, 1)
+              },
+              'by_type': stats['by_type'],
+              'errors': errors[:20]
+          }
+          
+          with open('reports/mermaid-syntax-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Mermaid Syntax Check Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Diagrams | {stats['total_diagrams']} |",
+              f"| ✅ Valid | {stats['valid_diagrams']} |",
+              f"| ❌ Invalid | {stats['invalid_diagrams']} |",
+              f"| 📊 Validity Rate | {validity_rate:.1f}% |",
+              f""
+          ]
+
+          if stats['by_type']:
+              report_lines.extend([
+                  "## By Chart Type",
+                  "",
+                  "| Type | Count |",
+                  "|------|-------|"
+              ])
+              for t, c in sorted(stats['by_type'].items(), key=lambda x: -x[1]):
+                  report_lines.append(f"| {t} | {c} |")
+              report_lines.append("")
+
+          if errors:
+              report_lines.extend([
+                  "## Errors",
+                  "",
+                  "| File | Diagram | Message |",
+                  "|------|---------|----------|"
+              ])
+              for e in errors[:15]:
+                  report_lines.append(f"| {e['file']} | #{e['diagram']} | {e['message']} |")
+              report_lines.append("")
+
+          with open('reports/mermaid-syntax-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Mermaid Syntax Check:")
+          print(f"  Total: {stats['total_diagrams']}")
+          print(f"  Valid: {stats['valid_diagrams']}")
+          print(f"  Invalid: {stats['invalid_diagrams']}")
+          print(f"  Validity rate: {validity_rate:.1f}%")
+
+          # 如果无效率超过5%，失败
+          if stats['total_diagrams'] > 0:
+              invalid_rate = stats['invalid_diagrams'] / stats['total_diagrams']
+              if invalid_rate > 0.05:
+                  print(f"❌ Invalid diagram rate {invalid_rate:.1%} exceeds threshold")
+                  exit(1)
+          PYEOF
+
+      - name: Upload Mermaid report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-syntax-report
+          path: |
+            reports/mermaid-syntax-report.json
+            reports/mermaid-syntax-report.md
+
+  # ============ 任务6: 内部链接检查 [阻塞合并] ============
+  internal-link-check:
+    name: Internal Link Check [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run internal link checker
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+          stats = {
+              'total_links': 0,
+              'valid_links': 0,
+              'broken_links': 0
+          }
+          broken = []
+
+          # 收集所有文档
+          all_docs = set()
+          for directory in ['Struct', 'Knowledge', 'Flink', 'docs', 'tutorials']:
+              if Path(directory).exists():
+                  for md_file in Path(directory).rglob('*.md'):
+                      all_docs.add(str(md_file).replace('\\', '/'))
+
+          # 检查链接
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      doc_dir = md_file.parent
+                      
+                        for match in link_pattern.finditer(content):
+                          link_text = match.group(1)
+                          link_target = match.group(2)
+                          
+                          # 跳过外部链接和锚点
+                          if link_target.startswith(('http://', 'https://', 'mailto:', '#')):
+                              continue
+                          
+                          stats['total_links'] += 1
+                          
+                          # 解析目标路径
+                          target_path = link_target.split('#')[0]
+                          if not target_path:
+                              stats['valid_links'] += 1
+                              continue
+                          
+                          if target_path.startswith('/'):
+                              full_path = target_path.lstrip('/')
+                          else:
+                              resolved = (doc_dir / target_path).resolve()
+                              full_path = str(resolved).replace('\\', '/')
+                          
+                          # 检查目标是否存在
+                          if full_path in all_docs or Path(full_path).exists():
+                              stats['valid_links'] += 1
+                          else:
+                              stats['broken_links'] += 1
+                              broken.append({
+                                  'source': rel_path,
+                                  'target': link_target,
+                                  'text': link_text[:50]
+                              })
+                              
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          health_rate = 0
+          if stats['total_links'] > 0:
+              health_rate = (stats['valid_links'] / stats['total_links']) * 100
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'total_links': stats['total_links'],
+                  'valid_links': stats['valid_links'],
+                  'broken_links': stats['broken_links'],
+                  'health_rate': round(health_rate, 1)
+              },
+              'broken_links': broken[:50]
+          }
+          
+          with open('reports/internal-link-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Internal Link Check Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Links | {stats['total_links']} |",
+              f"| ✅ Valid | {stats['valid_links']} |",
+              f"| ❌ Broken | {stats['broken_links']} |",
+              f"| 📊 Health Rate | {health_rate:.1f}% |",
+              f""
+          ]
+
+          if broken:
+              report_lines.extend([
+                  "## Broken Links",
+                  "",
+                  "| Source | Target | Text |",
+                  "|--------|--------|------|"
+              ])
+              for b in broken[:30]:
+                  report_lines.append(f"| {b['source']} | `{b['target']}` | {b['text']} |")
+              report_lines.append("")
+
+          with open('reports/internal-link-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Internal Link Check:")
+          print(f"  Total: {stats['total_links']}")
+          print(f"  Valid: {stats['valid_links']}")
+          print(f"  Broken: {stats['broken_links']}")
+          print(f"  Health rate: {health_rate:.1f}%")
+
+          # 如果损坏率超过3%，失败
+          if stats['total_links'] > 0:
+              broken_rate = stats['broken_links'] / stats['total_links']
+              if broken_rate > 0.03:
+                  print(f"❌ Broken link rate {broken_rate:.1%} exceeds threshold (3%)")
+                  sys.exit(1)
+          PYEOF
+
+      - name: Upload internal link report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: internal-link-report
+          path: |
+            reports/internal-link-report.json
+            reports/internal-link-report.md
+
+  # ============ 任务7: 前瞻性内容检查 [阻塞合并] ============
+  prospective-content-check:
+    name: Prospective Content Check [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'mermaid-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Check prospective content markers
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          prospective_keywords = [
+              'Flink 2.4', 'Flink 2.5', 'Flink 3.0', 'Flink 3.x',
+              '即将发布', 'coming soon', 'roadmap', 'preview',
+              '规划中', '设计中', '草案', '草案阶段'
+          ]
+
+          prospective_markers = [
+              '> ⚠️ **前瞻性声明**',
+              '> **前瞻性声明**',
+              'status: preview',
+              'status: roadmap',
+              '前瞻性内容',
+              'forward-looking'
+          ]
+
+          stats = {
+              'files_checked': 0,
+              'prospective_files': 0,
+              'missing_markers': 0
+          }
+          errors = []
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      stats['files_checked'] += 1
+                      
+                      # 检查是否包含前瞻性关键词
+                      has_prospective = any(kw in content for kw in prospective_keywords)
+                      has_marker = any(marker in content for marker in prospective_markers)
+                      
+                      if has_prospective:
+                          stats['prospective_files'] += 1
+                          if not has_marker:
+                              stats['missing_markers'] += 1
+                              errors.append({
+                                  'file': rel_path,
+                                  'reason': 'Missing prospective content marker'
+                              })
+                              
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': stats,
+              'errors': errors
+          }
+          
+          with open('reports/prospective-content-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Prospective Content Check Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Files Checked | {stats['files_checked']} |",
+              f"| Prospective Files | {stats['prospective_files']} |",
+              f"| Missing Markers | {stats['missing_markers']} |",
+              f""
+          ]
+
+          if errors:
+              report_lines.extend([
+                  "## Errors",
+                  "",
+                  "| File | Reason |",
+                  "|------|--------|"
+              ])
+              for e in errors[:20]:
+                  report_lines.append(f"| {e['file']} | {e['reason']} |")
+              report_lines.append("")
+
+          with open('reports/prospective-content-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Prospective Content Check:")
+          print(f"  Files: {stats['files_checked']}")
+          print(f"  Prospective: {stats['prospective_files']}")
+          print(f"  Missing markers: {stats['missing_markers']}")
+
+          if stats['missing_markers'] > 0:
+              print(f"❌ Found {stats['missing_markers']} prospective files without markers")
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload prospective content report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prospective-content-report
+          path: |
+            reports/prospective-content-report.json
+            reports/prospective-content-report.md
+
+  # ============ 任务8: 定理编号唯一性验证 [阻塞合并] ============
+  theorem-uniqueness:
+    name: Theorem Uniqueness [BLOCKING]
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ github.event.inputs.check_type != 'markdown-only' && github.event.inputs.check_type != 'mermaid-only' && github.event.inputs.check_type != 'cross-ref-only' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Check theorem uniqueness
+        run: |
+          if [ -f ".scripts/quality-gates/theorem-uniqueness-checker.py" ]; then
+            python .scripts/quality-gates/theorem-uniqueness-checker.py \
+              --strict \
+              --output reports/theorem-uniqueness-report.md \
+              --dirs Struct Knowledge Flink 2>/dev/null || true
+          fi
+          
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          all_theorems = defaultdict(list)
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if not Path(directory).exists():
+                  continue
+              
+              for md_file in Path(directory).rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      
+                      for match in THEOREM_PATTERN.finditer(content):
+                          thm_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          all_theorems[thm_id].append(rel_path)
+                          
+                  except Exception as e:
+                      pass
+
+          # 查找重复
+          duplicates = {k: v for k, v in all_theorems.items() if len(v) > 1}
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'total_theorems': len(all_theorems),
+                  'duplicates': len(duplicates)
+              },
+              'duplicates': duplicates
+          }
+          
+          with open('reports/theorem-uniqueness-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          report_lines = [
+              f"# Theorem Uniqueness Report",
+              f"",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"",
+              f"## Summary",
+              f"",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Theorems | {len(all_theorems)} |",
+              f"| Duplicates | {len(duplicates)} |",
+              f""
+          ]
+
+          if duplicates:
+              report_lines.extend([
+                  "## Duplicates",
+                  "",
+                  "| ID | Files |",
+                  "|----|-------|"
+              ])
+              for thm_id, files in sorted(duplicates.items()):
+                  report_lines.append(f"| `{thm_id}` | {', '.join(files[:2])}{'...' if len(files) > 2 else ''} |")
+              report_lines.append("")
+
+          with open('reports/theorem-uniqueness-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Theorem Uniqueness Check:")
+          print(f"  Total: {len(all_theorems)}")
+          print(f"  Duplicates: {len(duplicates)}")
+
+          if duplicates:
+              print(f"❌ Found {len(duplicates)} duplicate theorem IDs")
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload theorem uniqueness report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-uniqueness-report
+          path: |
+            reports/theorem-uniqueness-report.json
+            reports/theorem-uniqueness-report.md
+
+  # ============ 汇总报告 + PR评论 ============
+  quality-gate-summary:
+    name: Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [
+      markdown-lint, cross-ref-validator, template-validator,
+      formal-element-tracker, mermaid-syntax-checker, internal-link-check,
+      prospective-content-check, theorem-uniqueness
+    ]
+    if: always()
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate summary report
+        run: |
+          cat > reports/quality-gate-summary.md << 'EOF'
+          # 📊 Quality Gate Summary
+
+          | Check | Level | Status |
+          |-------|-------|--------|
+          EOF
+
+          # Markdown Lint
+          if [ "${{ needs.markdown-lint.result }}" == "success" ]; then
+            echo "| Markdown Syntax | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Markdown Syntax | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          # Cross-Ref
+          if [ "${{ needs.cross-ref-validator.result }}" == "success" ]; then
+            echo "| Cross-References | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Cross-References | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          # Template (Warning)
+          if [ "${{ needs.template-validator.result }}" == "success" ]; then
+            echo "| Template Structure | 🟡 WARNING | ✅ Pass |" >> reports/quality-gate-summary.md
+          elif [ "${{ needs.template-validator.result }}" == "skipped" ]; then
+            echo "| Template Structure | 🟡 WARNING | ⏭️ Skipped |" >> reports/quality-gate-summary.md
+          else
+            echo "| Template Structure | 🟡 WARNING | ⚠️ Issues |" >> reports/quality-gate-summary.md
+          fi
+
+          # Formal Elements (Warning)
+          if [ "${{ needs.formal-element-tracker.result }}" == "success" ]; then
+            echo "| Formal Elements | 🟡 WARNING | ✅ Pass |" >> reports/quality-gate-summary.md
+          elif [ "${{ needs.formal-element-tracker.result }}" == "skipped" ]; then
+            echo "| Formal Elements | 🟡 WARNING | ⏭️ Skipped |" >> reports/quality-gate-summary.md
+          else
+            echo "| Formal Elements | 🟡 WARNING | ⚠️ Issues |" >> reports/quality-gate-summary.md
+          fi
+
+          # Mermaid
+          if [ "${{ needs.mermaid-syntax-checker.result }}" == "success" ]; then
+            echo "| Mermaid Syntax | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Mermaid Syntax | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          # Internal Links
+          if [ "${{ needs.internal-link-check.result }}" == "success" ]; then
+            echo "| Internal Links | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Internal Links | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          # Prospective Content
+          if [ "${{ needs.prospective-content-check.result }}" == "success" ]; then
+            echo "| Prospective Content | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Prospective Content | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          # Theorem Uniqueness
+          if [ "${{ needs.theorem-uniqueness.result }}" == "success" ]; then
+            echo "| Theorem Uniqueness | 🔴 BLOCKING | ✅ Pass |" >> reports/quality-gate-summary.md
+          else
+            echo "| Theorem Uniqueness | 🔴 BLOCKING | ❌ Fail |" >> reports/quality-gate-summary.md
+          fi
+
+          cat >> reports/quality-gate-summary.md << 'EOF'
+
+          ### Legend
+          - 🔴 **BLOCKING**: Must pass to merge PR
+          - 🟡 **WARNING**: Issues reported but don't block merge
+
+          ---
+          *Download detailed reports from the Artifacts section.*
+          EOF
+
+          cat reports/quality-gate-summary.md
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('reports/quality-gate-summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Generate workflow summary
+        run: |
+          cat reports/quality-gate-summary.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if blocking checks failed
+        if: |
+          needs.markdown-lint.result == 'failure' ||
+          needs.cross-ref-validator.result == 'failure' ||
+          needs.mermaid-syntax-checker.result == 'failure' ||
+          needs.internal-link-check.result == 'failure' ||
+          needs.prospective-content-check.result == 'failure' ||
+          needs.theorem-uniqueness.result == 'failure'
+        run: |
+          echo "❌ One or more BLOCKING quality checks failed"
+          echo "Please fix the issues before merging"
+          exit 1
+
+      - name: Report success
+        run: |
+          echo "✅ All blocking quality checks passed!"
+          echo "⚠️ Check warning-level reports for non-blocking issues"

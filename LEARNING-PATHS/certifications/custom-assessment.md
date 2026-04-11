@@ -95,7 +95,33 @@ public class WordCountExercise {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // TODO: 实现代码
+        // 完整实现：WordCount
+
+        // 1. 从Socket读取数据
+        DataStream<String> source = env.socketTextStream("localhost", 9999);
+
+        // 2. 分词并转换为(word, 1)格式
+        DataStream<Tuple2<String, Integer>> words = source
+            .flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
+                @Override
+                public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+                    // 分割句子为单词，过滤空字符串
+                    for (String word : value.toLowerCase().split("\\s+")) {
+                        if (word.length() > 0 && word.matches("[a-z0-9]+")) {
+                            out.collect(new Tuple2<>(word, 1));
+                        }
+                    }
+                }
+            });
+
+        // 3. 按单词分组，每秒统计一次（使用Processing Time窗口）
+        DataStream<Tuple2<String, Integer>> wordCounts = words
+            .keyBy(value -> value.f0)
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(1)))
+            .sum(1);
+
+        // 4. 输出结果到控制台
+        wordCounts.print();
 
         env.execute("WordCount");
     }
@@ -164,7 +190,63 @@ public class WordCountExercise {
 public class OrderTimeoutDetection extends KeyedProcessFunction<String,
     OrderEvent, OrderTimeoutAlert> {
 
-    // TODO: 实现代码
+    // 状态声明：保存订单创建时间
+    private ValueState<Long> createTimeState;
+    // 状态声明：保存定时器时间戳
+    private ValueState<Long> timerState;
+
+    @Override
+    public void open(Configuration parameters) {
+        // 初始化状态
+        createTimeState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("createTime", Long.class));
+        timerState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("timer", Long.class));
+    }
+
+    @Override
+    public void processElement(OrderEvent event, Context ctx,
+                               Collector<OrderTimeoutAlert> out) throws Exception {
+
+        if ("CREATE".equals(event.eventType)) {
+            // 订单创建事件：设置30分钟后的超时检测定时器
+            long delay = 30 * 60 * 1000; // 30分钟（毫秒）
+            long timerTimestamp = ctx.timerService().currentProcessingTime() + delay;
+
+            // 注册Processing Time定时器
+            ctx.timerService().registerProcessingTimeTimer(timerTimestamp);
+
+            // 保存状态
+            createTimeState.update(event.timestamp);
+            timerState.update(timerTimestamp);
+
+            System.out.println("订单 " + event.orderId + " 创建，设置超时检测定时器");
+
+        } else if ("PAY".equals(event.eventType)) {
+            // 订单支付事件：取消定时器
+            Long timer = timerState.value();
+            if (timer != null) {
+                ctx.timerService().deleteProcessingTimeTimer(timer);
+                createTimeState.clear();
+                timerState.clear();
+                System.out.println("订单 " + event.orderId + " 已支付，取消超时检测");
+            }
+        }
+    }
+
+    @Override
+    public void onTimer(long timestamp, OnTimerContext ctx,
+                        Collector<OrderTimeoutAlert> out) throws Exception {
+        // 定时器触发，订单超时
+        Long createTime = createTimeState.value();
+        String orderId = ctx.getCurrentKey();
+
+        out.collect(new OrderTimeoutAlert(orderId, createTime, "订单超时未支付"));
+
+        // 清理状态
+        createTimeState.clear();
+        timerState.clear();
+    }
 }
 
 // **参考答案**：订单超时检测实现
@@ -297,8 +379,118 @@ orderStream.keyBy(event -> event.orderId)
  *
  * 时间：120分钟
  */
-public class DynamicRiskControlEngine {
-    // TODO: 实现代码
+public class DynamicRiskControlEngine
+    extends KeyedBroadcastProcessFunction<String, TransactionEvent, RiskRule, RiskResult> {
+
+    // Broadcast State描述器（存储动态规则，所有并行实例共享）
+    public static final MapStateDescriptor<String, RiskRule> ruleStateDescriptor =
+        new MapStateDescriptor<>("rules", String.class, RiskRule.class);
+
+    // Keyed State：用户交易计数（用于频率检测）
+    private ValueState<Integer> transactionCountState;
+    // Keyed State：用户累计金额（用于金额检测）
+    private ValueState<Double> totalAmountState;
+    // Keyed State：上次交易时间（用于窗口清理）
+    private ValueState<Long> lastTimestampState;
+
+    @Override
+    public void open(Configuration parameters) {
+        // 初始化Keyed State
+        transactionCountState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("count", Integer.class));
+        totalAmountState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("amount", Double.class));
+        lastTimestampState = getRuntimeContext().getState(
+            new ValueStateDescriptor<>("lastTime", Long.class));
+    }
+
+    @Override
+    public void processElement(TransactionEvent event, ReadOnlyContext ctx,
+                               Collector<RiskResult> out) throws Exception {
+
+        // 获取所有广播的规则
+        ReadOnlyBroadcastState<String, RiskRule> rules =
+            ctx.getBroadcastState(ruleStateDescriptor);
+
+        // 检查每条启用的规则
+        for (Map.Entry<String, RiskRule> entry : rules.immutableEntries()) {
+            RiskRule rule = entry.getValue();
+            if (!rule.enabled) continue;
+
+            switch (rule.ruleType) {
+                case "AMOUNT":
+                    checkAmountRule(event, rule, out);
+                    break;
+                case "FREQUENCY":
+                    checkFrequencyRule(event, rule, out);
+                    break;
+                case "REGION":
+                    checkRegionRule(event, rule, out);
+                    break;
+            }
+        }
+
+        // 更新用户状态
+        updateState(event);
+    }
+
+    // 金额规则检查
+    private void checkAmountRule(TransactionEvent event, RiskRule rule,
+                                  Collector<RiskResult> out) {
+        if (event.amount > rule.threshold) {
+            out.collect(new RiskResult(
+                event.userId, rule.ruleId, "AMOUNT",
+                event.amount, rule.threshold, true));
+        }
+    }
+
+    // 频率规则检查
+    private void checkFrequencyRule(TransactionEvent event, RiskRule rule,
+                                     Collector<RiskResult> out) throws Exception {
+        Integer count = transactionCountState.value();
+        if (count == null) count = 0;
+
+        // 简单的频率检查（实际应用需要滑动窗口）
+        if (count + 1 > rule.threshold) {
+            out.collect(new RiskResult(
+                event.userId, rule.ruleId, "FREQUENCY",
+                count + 1, rule.threshold, true));
+        }
+        transactionCountState.update(count + 1);
+    }
+
+    // 地域规则检查（示例）
+    private void checkRegionRule(TransactionEvent event, RiskRule rule,
+                                  Collector<RiskResult> out) {
+        // 简化示例：高风险地域列表检查
+        String[] highRiskRegions = {"region_a", "region_b"};
+        for (String region : highRiskRegions) {
+            if (region.equals(event.region)) {
+                out.collect(new RiskResult(
+                    event.userId, rule.ruleId, "REGION",
+                    0, 0, true));
+                break;
+            }
+        }
+    }
+
+    // 更新用户状态
+    private void updateState(TransactionEvent event) throws Exception {
+        Double total = totalAmountState.value();
+        if (total == null) total = 0.0;
+        totalAmountState.update(total + event.amount);
+        lastTimestampState.update(event.timestamp);
+    }
+
+    @Override
+    public void processBroadcastElement(RiskRule rule, Context ctx,
+                                       Collector<RiskResult> out) throws Exception {
+        // 更新规则（动态广播）
+        BroadcastState<String, RiskRule> broadcastState =
+            ctx.getBroadcastState(ruleStateDescriptor);
+        broadcastState.put(rule.ruleId, rule);
+        System.out.println("规则更新: " + rule.ruleId + " 类型: " + rule.ruleType);
+    }
 }
 
 // **参考答案**：动态规则风控引擎实现
@@ -592,12 +784,12 @@ java.util.concurrent.TimeoutException: Checkpoint expired
 题目ID: Q001
 类型: 单选题
 难度: L2
-知识点: 
+知识点:
   - Checkpoint
   - 容错机制
 题干: |
   以下关于 Checkpoint 的说法正确的是：
-选项: 
+选项:
   A: Checkpoint 间隔越短越好
   B: Checkpoint 可以保证端到端 Exactly-Once
   C: Checkpoint 主要用于故障恢复

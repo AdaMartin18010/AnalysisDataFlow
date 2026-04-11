@@ -60,11 +60,24 @@ public class ProcessingTimeExample {
         // 创建模拟数据流
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
-        // TODO: 实现数据处理逻辑
-        // 1. 将输入转换为 (word, 1) 格式
-        // 2. 按 word 分组
-        // 3. 使用 5 秒 Processing Time 窗口
-        // 4. 统计每个单词出现次数
+        // 完整实现：数据处理逻辑
+        DataStream<Tuple2<String, Integer>> wordCounts = stream
+            // 1. 将输入转换为 (word, 1) 格式
+            .map(new MapFunction<String, Tuple2<String, Integer>>() {
+                @Override
+                public Tuple2<String, Integer> map(String value) {
+                    return Tuple2.of(value.trim(), 1);
+                }
+            })
+            // 2. 按 word 分组
+            .keyBy(value -> value.f0)
+            // 3. 使用 5 秒 Processing Time 窗口
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
+            // 4. 统计每个单词出现次数
+            .sum(1);
+
+        // 输出结果
+        wordCounts.print();
 
         env.execute("Processing Time Example");
     }
@@ -130,11 +143,35 @@ public class EventTimeExample {
 
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
-        // TODO: 实现 Event Time 处理
-        // 1. 解析输入，提取时间戳（格式: word,timestamp）
-        // 2. 分配 Watermark（允许 2 秒乱序）
+        // 完整实现：Event Time 处理
+        DataStream<Tuple3<String, Long, Integer>> eventStream = stream
+            // 1. 解析输入，提取时间戳（格式: word,timestamp）
+            .map(line -> {
+                String[] parts = line.split(",");
+                String word = parts[0].trim();
+                long timestamp = Long.parseLong(parts[1].trim());
+                return Tuple3.of(word, timestamp, 1);
+            })
+            // 2. 分配 Watermark（允许 2 秒乱序）
+            .assignTimestampsAndWatermarks(
+                new BoundedOutOfOrdernessTimestampExtractor<
+                    Tuple3<String, Long, Integer>>(Time.seconds(2)) {
+                    @Override
+                    public long extractTimestamp(Tuple3<String, Long, Integer> element) {
+                        return element.f1;
+                    }
+                }
+            );
+
         // 3. 使用 5 秒 Event Time 窗口
-        // 4. 观察乱序数据的处理
+        DataStream<Tuple3<String, Long, Integer>> result = eventStream
+            .keyBy(value -> value.f0)
+            .window(TumblingEventTimeWindows.of(Time.seconds(5)))
+            // 4. 统计每个单词出现次数
+            .sum(2);
+
+        // 输出结果
+        result.print();
 
         env.execute("Event Time Example");
     }

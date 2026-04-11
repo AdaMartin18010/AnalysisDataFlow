@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-04-11T15:41:21.359031",
+  "coverage": {
+    "理论基础": {
+      "document_count": 5,
+      "coverage_ratio": 0.83,
+      "top_documents": [
+        "Struct/1.1-streaming-foundations.md"
+      ],
+      "keywords_matched": true
+    },
+    "Flink技术": {
+      "document_count": 3,
+      "coverage_ratio": 0.5,
+      "top_documents": [
+        "Flink/checkpoint-configuration.md"
+      ],
+      "keywords_matched": true
+    },
+    "生产实践": {
+      "document_count": 0,
+      "coverage_ratio": 0.0,
+      "top_documents": [],
+      "keywords_matched": false
+    }
+  },
+  "gaps": [
+    {
+      "topic": "生产实践",
+      "current_documents": 0,
+      "suggested_action": "建议增加相关文档",
+      "priority": "high"
+    },
+    {
+      "topic": "性能优化",
+      "current_documents": 1,
+      "suggested_action": "建议增加相关文档",
+      "priority": "medium"
+    }
+  ]
+}

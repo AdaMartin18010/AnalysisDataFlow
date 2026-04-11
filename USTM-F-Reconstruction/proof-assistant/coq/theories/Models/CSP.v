@@ -168,16 +168,23 @@ Proof.
   - (* P [] P [T= P *)
     induction H. exists x. assumption.
   - (* P [T= P [] P *)
-    (* Need to show P can do whatever P [] P can do *)
-    admit.
-Admitted.
+    induction H as [P' | P' e s P'' P''' Hstep Hafter IH].
+    + exists (P [] P). apply After_Nil.
+    + (* P' can do e to P'' *)
+      (* Show (P [] P) can simulate P by using left branch *)
+      destruct IH as [Q' HQ'].
+      exists Q'.
+      eapply After_Cons.
+      * apply CS_ExtChoiceResolveL. eassumption.
+      * eassumption.
+Qed.
 
 (** External choice is commutative *)
 Theorem ext_choice_comm : forall P Q,
   (P [] Q) [T= (Q [] P).
 Proof.
   unfold TraceRefinement. intros P Q s H.
-  induction H as [P' | P e s P' P'' Hstep Hafter IH].
+  induction H as [P' | P' e s P'' P''' Hstep Hafter IH].
   - exists P. apply After_Nil.
   - inversion Hstep; subst;
     try (eexists; apply After_Cons; [
@@ -305,6 +312,9 @@ Fixpoint initials (P : CSP) : list Event :=
   | Rename P f => map f (initials P)
   end.
 
+(* Helper: string equality is decidable *)
+Axiom string_dec : forall s1 s2 : string, {s1 = s2} + {s1 <> s2}.
+
 (** Initials are sound: any initial can be performed *)
 Theorem initials_sound : forall P e,
   In e (initials P) ->
@@ -317,15 +327,53 @@ Proof.
   - (* IntChoice *)
     apply in_app_or in Hin. destruct Hin; eauto.
   - (* Parallel *)
-    (** Case analysis: event is in synchronization set or not *)
-    admit. (** Requires case analysis on filter results *)
+    (* Case analysis: event is in synchronization set or not *)
+    apply in_app_or in Hin.
+    destruct Hin as [Hin | Hin].
+    + (* Event is in synchronization set *)
+      apply filter_In in Hin.
+      destruct Hin as [Hin_union Hin_in_A].
+      apply in_app_or in Hin_union.
+      destruct Hin_union as [HinP | HinQ].
+      * destruct (IHP1 e HinP) as [P' HP'].
+        exists (P' [| l |] P2).
+        apply CS_ParallelL; auto.
+        intros e' Heq. inversion Heq; subst.
+        unfold In_nat in Hin_in_A.
+        destruct (In_nat e l); discriminate.
+      * destruct (IHP2 e HinQ) as [Q' HQ'].
+        exists (P1 [| l |] Q').
+        apply CS_ParallelR; auto.
+        intros e' Heq. inversion Heq; subst.
+        unfold In_nat in Hin_in_A.
+        destruct (In_nat e l); discriminate.
+    + (* Event not in synchronization set *)
+      apply filter_In in Hin.
+      destruct Hin as [HinP Hin_not_in_A].
+      destruct (IHP1 e HinP) as [P' HP'].
+      exists (P' [| l |] P2).
+      apply CS_ParallelL; auto.
+      intros e' Heq. inversion Heq; subst.
+      unfold negb, In_nat in Hin_not_in_A.
+      destruct (In_nat e l); discriminate.
   - (* Hide *)
-    (** Hidden events are not in initials by definition *)
-    admit. (** Contradiction from filter condition *)
+    (* Hidden events are not in initials by definition *)
+    apply filter_In in Hin.
+    destruct Hin as [HinP Hin_not_in_A].
+    destruct (IHP e HinP) as [P' HP'].
+    exists (P' \ l).
+    apply CS_HidePreserve; auto.
+    intros e' Heq. inversion Heq; subst.
+    unfold negb, In_nat in Hin_not_in_A.
+    destruct (In_nat e l); discriminate.
   - (* Rename *)
-    (** Renaming preserves performability *)
-    admit. (** Apply renaming function to the transition *)
-Admitted.
+    (* Renaming preserves performability *)
+    apply in_map_iff in Hin.
+    destruct Hin as [e' [Heq Hin']].
+    destruct (IHP e' Hin') as [P' HP'].
+    exists (Rename P' f).
+    subst. apply CS_Rename. assumption.
+Qed.
 
 (** ** CSP Weak Bisimulation (Simplified) *)
 
@@ -345,8 +393,7 @@ Definition WeakBisimulation (R : CSP -> CSP -> Prop) : Prop :=
     (forall a P',
       CSPStep P a P' ->
       exists Q',
-        WeakCSPStep Q a Q' /\ R P' Q') /\
-    (forall a Q',
+        WeakCSPStep Q a Q' /\ R P' Q') /\n    (forall a Q',
       CSPStep Q a Q' ->
       exists P',
         WeakCSPStep P a P' /\ R P' Q').

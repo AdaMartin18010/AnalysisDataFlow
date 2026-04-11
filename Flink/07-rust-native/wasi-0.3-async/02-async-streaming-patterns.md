@@ -813,7 +813,43 @@ impl BackpressureController {
                 //       Credit-based Flow Control in Apache Flink
                 //       TCP拥塞控制算法 (Reno/CUBIC) 的流式系统适配
 
-                todo!("Adaptive backpressure strategy: 基于PID控制器的多指标自适应速率调整")
+                // 实现: 基于PID控制器的多指标自适应速率调整
+                let buffer_ratio = metrics.buffer_utilization.load(Ordering::Relaxed) as f64
+                    / config.buffer_capacity as f64;
+                let buffer_error = if buffer_ratio > config.target_utilization {
+                    (buffer_ratio - config.target_utilization)
+                        .min(1.0)
+                        .max(-1.0)
+                } else {
+                    0.0
+                };
+
+                let processing_latency = metrics.processing_latency.load(Ordering::Relaxed);
+                let latency_ratio = processing_latency.as_secs_f64()
+                    / config.latency_threshold.as_secs_f64();
+                let latency_error = if latency_ratio > 1.0 {
+                    (latency_ratio - 1.0).min(1.0)
+                } else {
+                    0.0
+                };
+
+                // 综合误差 (buffer占用权重0.6, 延迟权重0.4)
+                let error = 0.6 * buffer_error + 0.4 * latency_error;
+
+                // PID控制输出
+                let kp = config.pid_kp;  // 比例系数
+                let adjustment = kp * error;
+                let new_rate = current_rate * (1.0 - adjustment)
+                    .clamp(config.min_rate / current_rate.max(1.0),
+                           config.max_rate / current_rate.max(1.0));
+
+                if new_rate < current_rate * 0.95 {
+                    BackpressureAction::ReduceRate(new_rate)
+                } else if new_rate > current_rate * 1.05 {
+                    BackpressureAction::IncreaseRate(new_rate.min(config.max_rate))
+                } else {
+                    BackpressureAction::Maintain
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 # 流处理系统性能基准报告
 
-> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [Flink性能调优指南](./Flink/06-engineering/performance-tuning-guide.md), [Flink vs RisingWave对比](./Knowledge/04-technology-selection/flink-vs-risingwave.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [Flink性能调优指南](./Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md), [Flink vs RisingWave对比](./Knowledge/04-technology-selection/flink-vs-risingwave.md) | **形式化等级**: L4
 > **版本**: v1.0 | **报告日期**: 2026-04-03 | **文档规模**: ~15KB
 
 ---
@@ -670,7 +670,7 @@ xychart-beta
 
 **关联文档**:
 
-- [Flink/06-engineering/performance-tuning-guide.md](./Flink/06-engineering/performance-tuning-guide.md) —— Flink性能调优详细指南
+- [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](./Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) —— Flink性能调优详细指南
 - [Knowledge/04-technology-selection/flink-vs-risingwave.md](./Knowledge/04-technology-selection/flink-vs-risingwave.md) —— Flink与RisingWave深度对比
 - [Flink/11-benchmarking/streaming-benchmarks.md](./Flink/11-benchmarking/streaming-benchmarks.md) —— 流处理Benchmark方法论
 

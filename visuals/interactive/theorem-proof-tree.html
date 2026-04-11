@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow - 定理证明树可视化</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --panel-dark: #1e293b;
+            --panel-light: #ffffff;
+            --text-dark: #e2e8f0;
+            --text-light: #1e293b;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-dark: #334155;
+            --border-light: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-theme {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        body.light-theme {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 头部 */
+        #header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            border-bottom: 1px solid;
+        }
+
+        .dark-theme #header {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--border-dark);
+            backdrop-filter: blur(10px);
+        }
+
+        .light-theme #header {
+            background: rgba(248, 250, 252, 0.95);
+            border-color: var(--border-light);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header-title i {
+            color: var(--accent-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            border: 1px solid;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .dark-theme .header-btn {
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme .header-btn {
+            border-color: var(--border-light);
+            color: var(--text-light);
+        }
+
+        .header-btn:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        .header-btn.primary {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* 侧边栏 */
+        #sidebar {
+            width: 350px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid;
+            margin-top: 60px;
+            transition: all 0.3s;
+        }
+
+        .dark-theme #sidebar {
+            background: var(--panel-dark);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #sidebar {
+            background: var(--panel-light);
+            border-color: var(--border-light);
+        }
+
+        #sidebar.collapsed {
+            width: 50px;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            width: 24px;
+            height: 24px;
+            border: 1px solid;
+            border-radius: 50%;
+            background: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            z-index: 10;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        /* 证明链列表 */
+        .chain-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chain-item {
+            padding: 12px;
+            border: 1px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dark-theme .chain-item {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .chain-item {
+            border-color: var(--border-light);
+        }
+
+        .chain-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .chain-item.active {
+            border-color: var(--accent-primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .chain-name {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .chain-meta {
+            font-size: 11px;
+            opacity: 0.7;
+            display: flex;
+            gap: 12px;
+        }
+
+        .chain-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .badge-struct { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .badge-knowledge { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge-flink { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+
+        /* 证明统计 */
+        .proof-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            padding: 12px;
+            border: 1px solid;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .dark-theme .stat-card {
+            border-color: var(--border-dark);
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .light-theme .stat-card {
+            border-color: var(--border-light);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* 主图区域 */
+        #main-area {
+            flex: 1;
+            position: relative;
+            margin-top: 60px;
+            overflow: hidden;
+        }
+
+        #tree-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 工具栏 */
+        #toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid;
+            border-radius: 8px;
+            z-index: 90;
+        }
+
+        .dark-theme #toolbar {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #toolbar {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--border-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .dark-theme .toolbar-btn {
+            color: var(--text-dark);
+        }
+
+        .light-theme .toolbar-btn {
+            color: var(--text-light);
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(128, 128, 128, 0.2);
+        }
+
+        /* 详情面板 */
+        #detail-panel {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 400px;
+            max-height: calc(100% - 100px);
+            border: 1px solid;
+            border-radius: 12px;
+            overflow: hidden;
+            transform: translateX(440px);
+            transition: transform 0.3s ease;
+            z-index: 80;
+        }
+
+        #detail-panel.visible {
+            transform: translateX(0);
+        }
+
+        .dark-theme #detail-panel {
+            background: var(--panel-dark);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #detail-panel {
+            background: var(--panel-light);
+            border-color: var(--border-light);
+        }
+
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .dark-theme .panel-header {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .panel-header {
+            border-color: var(--border-light);
+        }
+
+        .panel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .panel-title-wrap {
+            flex: 1;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .panel-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.6;
+        }
+
+        .dark-theme .panel-close {
+            color: var(--text-dark);
+        }
+
+        .light-theme .panel-close {
+            color: var(--text-light);
+        }
+
+        .panel-content {
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(100vh - 300px);
+        }
+
+        .panel-section {
+            margin-bottom: 16px;
+        }
+
+        .panel-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .panel-section-content {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .proof-step {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px dashed;
+        }
+
+        .dark-theme .proof-step {
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .proof-step {
+            border-color: var(--border-light);
+        }
+
+        .proof-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-name {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        /* 树节点样式 */
+        .node circle {
+            fill: var(--accent-primary);
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .node:hover circle {
+            filter: brightness(1.2);
+            r: 8;
+        }
+
+        .node text {
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .dark-theme .node text {
+            fill: var(--text-dark);
+        }
+
+        .light-theme .node text {
+            fill: var(--text-light);
+        }
+
+        .link {
+            fill: none;
+            stroke-opacity: 0.4;
+            stroke-width: 1.5px;
+        }
+
+        .dark-theme .link {
+            stroke: #64748b;
+        }
+
+        .light-theme .link {
+            stroke: #94a3b8;
+        }
+
+        /* 节点类型颜色 */
+        .node-root circle { fill: var(--accent-danger); }
+        .node-theorem circle { fill: var(--accent-secondary); }
+        .node-lemma circle { fill: var(--accent-success); }
+        .node-definition circle { fill: var(--accent-warning); }
+        .node-proposition circle { fill: var(--accent-primary); }
+
+        /* 折叠指示器 */
+        .node-toggle {
+            cursor: pointer;
+        }
+
+        .node-toggle circle {
+            fill: #fff;
+            stroke: var(--accent-primary);
+            stroke-width: 1.5px;
+        }
+
+        .node-toggle text {
+            font-size: 10px;
+            fill: var(--accent-primary);
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        /* 工具提示 */
+        #tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 200;
+            max-width: 300px;
+        }
+
+        .dark-theme #tooltip {
+            background: var(--panel-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .light-theme #tooltip {
+            background: var(--panel-light);
+            border: 1px solid var(--border-light);
+            color: var(--text-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 加载动画 */
+        #loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .dark-theme #loading {
+            background: var(--bg-dark);
+        }
+
+        .light-theme #loading {
+            background: var(--bg-light);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 图例 */
+        #legend {
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            padding: 12px 16px;
+            border: 1px solid;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .dark-theme #legend {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme #legend {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--border-light);
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* 导出菜单 */
+        .export-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            border: 1px solid;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 150px;
+            display: none;
+        }
+
+        .export-menu.visible {
+            display: block;
+        }
+
+        .dark-theme .export-menu {
+            background: var(--panel-dark);
+            border-color: var(--border-dark);
+        }
+
+        .light-theme .export-menu {
+            background: var(--panel-light);
+            border-color: var(--border-light);
+        }
+
+        .export-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-item:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            #sidebar {
+                position: absolute;
+                z-index: 150;
+                height: calc(100% - 60px);
+                transform: translateX(-100%);
+            }
+
+            #sidebar.visible {
+                transform: translateX(0);
+            }
+
+            #detail-panel {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <div id="container">
+        <!-- 头部 -->
+        <header id="header">
+            <div class="header-title">
+                <i class="fas fa-sitemap"></i>
+                <span>定理证明树可视化</span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="toggleTheme()">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                    <span>主题</span>
+                </button>
+                <div style="position: relative;">
+                    <button class="header-btn primary" onclick="toggleExportMenu()">
+                        <i class="fas fa-download"></i>
+                        <span>导出</span>
+                    </button>
+                    <div class="export-menu" id="export-menu">
+                        <div class="export-item" onclick="exportSVG()">
+                            <i class="fas fa-image"></i>
+                            <span>导出为 SVG</span>
+                        </div>
+                        <div class="export-item" onclick="exportPNG()">
+                            <i class="fas fa-file-image"></i>
+                            <span>导出为 PNG</span>
+                        </div>
+                        <div class="export-item" onclick="exportJSON()">
+                            <i class="fas fa-code"></i>
+                            <span>导出为 JSON</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 侧边栏 -->
+        <aside id="sidebar">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-chevron-left" id="sidebar-toggle-icon"></i>
+            </button>
+            <div class="sidebar-content">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">证明链选择</div>
+                    <div class="chain-list" id="chain-list">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">证明统计</div>
+                    <div class="proof-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-theorems">0</div>
+                            <div class="stat-label">定理</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-lemmas">0</div>
+                            <div class="stat-label">引理</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-definitions">0</div>
+                            <div class="stat-label">定义</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="stat-depth">0</div>
+                            <div class="stat-label">最大深度</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">图例</div>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--accent-danger);"></span>
+                            <span>根定理 (Goal)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--accent-secondary);"></span>
+                            <span>定理 (Theorem)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--accent-success);"></span>
+                            <span>引理 (Lemma)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--accent-warning);"></span>
+                            <span>定义 (Definition)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: var(--accent-primary);"></span>
+                            <span>命题 (Proposition)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主图区域 -->
+        <main id="main-area">
+            <svg id="tree-container"></svg>
+
+            <!-- 工具栏 -->
+            <div id="toolbar">
+                <button class="toolbar-btn" onclick="zoomIn()" title="放大">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="toolbar-btn" onclick="zoomOut()" title="缩小">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="toolbar-btn" onclick="resetView()" title="重置视图">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="toolbar-btn" onclick="expandAll()" title="展开全部">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <button class="toolbar-btn" onclick="collapseAll()" title="折叠全部">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </button>
+                <button class="toolbar-btn" onclick="toggleOrientation()" title="切换方向">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+            </div>
+
+            <!-- 详情面板 -->
+            <div id="detail-panel">
+                <div class="panel-header">
+                    <div class="panel-icon" id="panel-icon" style="background: var(--accent-secondary);">
+                        <i class="fas fa-theorem"></i>
+                    </div>
+                    <div class="panel-title-wrap">
+                        <div class="panel-title" id="panel-title">选择一个节点</div>
+                        <div class="panel-subtitle" id="panel-subtitle">点击查看证明详情</div>
+                    </div>
+                    <button class="panel-close" onclick="closePanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="panel-content" id="panel-content">
+                    <div class="panel-section">
+                        <div class="panel-section-content">
+                            定理证明树展示了从基础定义到最终定理的完整推导链条。选择一个证明链或点击节点查看详细信息。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示框 -->
+            <div id="tooltip"></div>
+
+            <!-- 加载 -->
+            <div id="loading">
+                <div class="spinner"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 数据定义 - 6条核心证明链 (50+定理)
+        // ==========================================
+        const proofChains = [
+            {
+                id: "chain-01",
+                name: "Checkpoint Correctness",
+                description: "分布式快照正确性证明链",
+                category: "Struct",
+                nodeCount: 8,
+                maxDepth: 4,
+                root: "Thm-S-17-01",
+                data: {
+                    name: "Thm-S-17-01: Checkpoint一致性定理",
+                    type: "root",
+                    description: "Flink Checkpoint机制保证全局状态快照的一致性",
+                    proofMethod: "结构归纳 + 互模拟等价",
+                    complexity: "O(n²)，其中n为算子数量",
+                    children: [
+                        {
+                            name: "Thm-S-03-02: Flink→π-演算编码",
+                            type: "theorem",
+                            description: "将Flink Dataflow编码到Process Calculus",
+                            children: [
+                                {
+                                    name: "Lemma-S-02-03-01: Watermark边界保证",
+                                    type: "lemma",
+                                    description: "证明Watermark边界蕴含事件时间完整性",
+                                    children: [
+                                        {
+                                            name: "Def-S-02-03: Watermark单调性",
+                                            type: "definition",
+                                            description: "在Dataflow上定义Watermark进度语义",
+                                            children: [
+                                                {
+                                                    name: "Def-S-01-04: Dataflow Model",
+                                                    type: "definition",
+                                                    description: "定义流计算的基本语义框架"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: "Cor-S-07-01: 容错一致性推论",
+                            type: "proposition",
+                            description: "推论出容错恢复保持确定性",
+                            children: [
+                                {
+                                    name: "Prop-S-07-01: 状态恢复保持性",
+                                    type: "proposition",
+                                    description: "从Checkpoint恢复保持计算状态"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: "chain-02",
+                name: "Exactly-Once端到端保证",
+                description: "端到端Exactly-Once语义证明链",
+                category: "Struct",
+                nodeCount: 10,
+                maxDepth: 4,
+                root: "Thm-S-18-01",
+                data: {
+                    name: "Thm-S-18-01: Exactly-Once正确性定理",
+                    type: "root",
+                    description: "综合证明端到端Exactly-Once保证",
+                    proofMethod: "组合推理 + 协议验证",
+                    complexity: "O(n·m)，n为算子数，m为状态大小",
+                    children: [
+                        {
+                            name: "Thm-S-12-01: Actor→CSP编码正确性",
+                            type: "theorem",
+                            description: "证明编码保持迹语义等价",
+                            children: [
+                                {
+                                    name: "Def-S-02-01: 确定性定义",
+                                    type: "definition",
+                                    description: "定义流计算确定性条件",
+                                    children: [
+                                        {
+                                            name: "Def-S-01-02: Process Calculus",
+                                            type: "definition",
+                                            description: "定义进程演算基础语义"
+                                        },
+                                        {
+                                            name: "Def-S-01-03: Actor Model",
+                                            type: "definition",
+                                            description: "定义Actor模型基础语义"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: "Lemma-S-18-01: Source可重放引理",
+                            type: "lemma",
+                            description: "证明Source可重放性",
+                            children: [
+                                {
+                                    name: "Def-S-08-04: Exactly-Once语义",
+                                    type: "definition",
+                                    description: "精确定义效果唯一性"
+                                }
+                            ]
+                        },
+                        {
+                            name: "Lemma-S-18-02: 2PC原子性引理",
+                            type: "lemma",
+                            description: "证明两阶段提交原子性",
+                            children: [
+                                {
+                                    name: "Def-S-08-03: 幂等性",
+                                    type: "definition",
+                                    description: "定义幂等操作语义"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                id: "chain-03",
+                name: "Flink State Backend等价性",
+                description: "状态后端等价性证明链",
+                category: "Flink",
+                nodeCount: 9,
+                maxDepth: 4,
+                root: "Thm-F-02-45",
+                data: {
+                    name: "Thm-F-02-45: ForSt状态后端一致性定理",
+                    type: "root",
+                    description: "证明ForSt后端状态等价性",
+                    proofMethod: "精化关系 + 模拟等价",
+                    complexity: "O(log n)空间复杂度",
+                    children: [
+                        {
+                            name: "Thm-F-02-01: ForSt Checkpoint一致性",
+                            type: "theorem",
+                            description: "证明ForSt后端Checkpoint正确",
+                            children: [
+                                {
+                                    name: "Lemma-F-02-23: ForSt写入原子性",
+                                    type: "lemma",
+                                    description: "证明LSM-Tree写入原子性",
+                                    children: [
+                                        {
+                                            name: "Def-F-02-61: ForSt Backend",
+                                            type: "definition",
+                                            description: "定义ForSt状态后端语义",
+                                            children: [
+                                                {
+                                                    name: "Def-F-02-91: Checkpoint",
+                                                    type: "definition",
+                                                    description: "定义全局一致状态快照"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: "Lemma-F-02-70: State Backend延迟特性",
+                                    type: "lemma",
+                                    description: "证明各后端延迟排序"
+                                }
+                            ]
+                        },
+                        {
+                            name: "Cor-F-12-05: 物化视图一致性推论",
+                            type: "proposition",
+                            description: "推论物化视图一致性"
+                        }
+                    ]
+                }
+            },
+            {
+                id: "chain-04",
+                name: "Watermark代数完备性",
+                description: "Watermark格结构证明链",
+                category: "Struct",
+                nodeCount: 11,
+                maxDepth: 5,
+                root: "Thm-S-20-01",
+                data: {
+                    name: "Thm-S-20-01: Watermark完全格定理",
+                    type: "root",
+                    description: "综合证明Watermark格结构完备",
+                    proofMethod: "代数推导 + 格论",
+                    complexity: "O(1)格运算",
+                    children: [
+                        {
+                            name: "Lemma-S-20-04: 吸收律与单位元",
+                            type: "lemma",
+                            description: "证明格运算完备性",
+                            children: [
+                                {
+                                    name: "Lemma-S-20-01: ⊔结合律",
+                                    type: "lemma",
+                                    description: "证明合并算子结合性",
+                                    children: [
+                                        {
+                                            name: "Def-S-20-01: Watermark格元素",
+                                            type: "definition",
+                                            description: "定义完全格结构",
+                                            children: [
+                                                {
+                                                    name: "Def-S-09-02: Watermark进度语义",
+                                                    type: "definition",
+                                                    description: "定义单调不减性质",
+                                                    children: [
+                                                        {
+                                                            name: "Def-S-04-04: Watermark语义",
+                                                            type: "definition",
+                                                            description: "定义Watermark为进度指示器",
+                                                            children: [
+                                                                {
+                                                                    name: "Def-S-01-04: Dataflow模型",
+                                                                    type: "definition",
+                                                                    description: "基础流计算框架"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: "Lemma-S-20-02: ⊔交换律",
+                                    type: "lemma",
+                                    description: "证明合并算子交换性"
+                                },
+                                {
+                                    name: "Lemma-S-20-03: ⊔幂等律",
+                                    type: "lemma",
+                                    description: "证明合并算子幂等性"
+                                }
+                            ]
+                        },
+                        {
+                            name: "Prop-S-20-01: 格结构兼容性",
+                            type: "proposition",
+                            description: "证明单调性与格兼容"
+                        }
+                    ]
+                }
+            },
+            {
+                id: "chain-05",
+                name: "异步执行语义保持性",
+                description: "Flink异步I/O语义证明链",
+                category: "Flink",
+                nodeCount: 9,
+                maxDepth: 4,
+                root: "Thm-F-02-50",
+                data: {
+                    name: "Thm-F-02-50: 异步算子语义保持性定理",
+                    type: "root",
+                    description: "综合证明异步算子语义保持",
+                    proofMethod: "模拟关系 + 时间迹等价",
+                    complexity: "O(k)并发度控制",
+                    children: [
+                        {
+                            name: "Lemma-F-02-02: 异步语义保持",
+                            type: "lemma",
+                            description: "证明异步执行保持语义等价",
+                            children: [
+                                {
+                                    name: "Def-F-02-77: 完成回调机制",
+                                    type: "definition",
+                                    description: "定义ResultHandler回调语义"
+                                },
+                                {
+                                    name: "Def-F-02-74: 顺序保持模式",
+                                    type: "definition",
+                                    description: "定义ORDERED/UNORDERED输出",
+                                    children: [
+                                        {
+                                            name: "Def-F-02-70: 异步算子接口",
+                                            type: "definition",
+                                            description: "定义AsyncFunction API语义"
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: "Def-F-02-75: 异步资源池",
+                                    type: "definition",
+                                    description: "定义ResourcePool管理",
+                                    children: [
+                                        {
+                                            name: "Def-F-02-73: 异步超时语义",
+                                            type: "definition",
+                                            description: "定义TimeoutPolicy"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: "Thm-F-02-52: 异步执行顺序一致性定理",
+                            type: "theorem",
+                            description: "证明顺序保证"
+                        }
+                    ]
+                }
+            },
+            {
+                id: "chain-06",
+                name: "Actor→CSP编码正确性",
+                description: "Actor到CSP形式化编码证明链",
+                category: "Struct",
+                nodeCount: 8,
+                maxDepth: 4,
+                root: "Thm-S-12-01",
+                data: {
+                    name: "Thm-S-12-01: Actor→CSP编码正确性定理",
+                    type: "root",
+                    description: "证明编码保持迹语义等价",
+                    proofMethod: "双模拟 + 编码正确性",
+                    complexity: "O(|A|)编码复杂度",
+                    children: [
+                        {
+                            name: "Lemma-S-12-01: Actor行为编码",
+                            type: "lemma",
+                            description: "Actor行为到CSP进程的编码",
+                            children: [
+                                {
+                                    name: "Def-S-01-03: Actor形式化定义",
+                                    type: "definition",
+                                    description: "Actor模型严格定义",
+                                    children: [
+                                        {
+                                            name: "Def-S-01-03-01: Actor状态转移",
+                                            type: "definition",
+                                            description: "Actor状态转移系统"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: "Lemma-S-12-02: 消息传递编码",
+                            type: "lemma",
+                            description: "消息传递到通道事件的编码",
+                            children: [
+                                {
+                                    name: "Def-S-01-05: CSP形式化",
+                                    type: "definition",
+                                    description: "CSP进程代数定义",
+                                    children: [
+                                        {
+                                            name: "Def-S-01-05-01: CSP事件",
+                                            type: "definition",
+                                            description: "CSP事件集合定义"
+                                        },
+                                        {
+                                            name: "Def-S-01-02: 进程演算基础",
+                                            type: "definition",
+                                            description: "CCS/CSP/π演算基础"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: "Lemma-S-12-03: 双模拟等价",
+                            type: "lemma",
+                            description: "证明编码前后行为等价",
+                            children: [
+                                {
+                                    name: "Def-S-15-01: 强互模拟",
+                                    type: "definition",
+                                    description: "Strong Bisimulation定义"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ];
+
+        // 全局状态
+        let svg, g, tree, root, zoom;
+        let currentChain = proofChains[0];
+        let orientation = 'vertical'; // 'vertical' or 'horizontal'
+        let i = 0;
+        const duration = 750;
+
+        // ==========================================
+        // 初始化
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initSidebar();
+            initTree();
+            updateStats();
+            document.getElementById('loading').style.display = 'none';
+        });
+
+        function initSidebar() {
+            const chainList = document.getElementById('chain-list');
+            
+            proofChains.forEach((chain, index) => {
+                const item = document.createElement('div');
+                item.className = `chain-item ${index === 0 ? 'active' : ''}`;
+                item.dataset.chainId = chain.id;
+                item.innerHTML = `
+                    <div class="chain-name">${chain.name}</div>
+                    <div class="chain-meta">
+                        <span class="chain-badge badge-${chain.category.toLowerCase()}">${chain.category}</span>
+                        <span><i class="fas fa-code-branch"></i> ${chain.nodeCount} 节点</span>
+                        <span><i class="fas fa-layer-group"></i> 深度 ${chain.maxDepth}</span>
+                    </div>
+                `;
+                item.onclick = () => selectChain(chain);
+                chainList.appendChild(item);
+            });
+        }
+
+        function initTree() {
+            const container = document.getElementById('tree-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // 创建SVG
+            svg = d3.select('#tree-container')
+                .attr('width', width)
+                .attr('height', height);
+
+            // 添加缩放行为
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 3])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+
+            svg.call(zoom);
+
+            // 创建主容器
+            g = svg.append('g')
+                .attr('transform', `translate(${width / 2}, 80)`);
+
+            // 创建树布局
+            tree = d3.tree().nodeSize([60, 80]);
+
+            // 加载初始数据
+            loadChainData(currentChain.data);
+        }
+
+        function loadChainData(data) {
+            // 转换数据为层次结构
+            root = d3.hierarchy(data, d => d.children);
+            root.x0 = 0;
+            root.y0 = 0;
+
+            // 初始化时折叠深层节点
+            if (root.children) {
+                root.children.forEach(collapse);
+            }
+
+            update(root);
+        }
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        function expand(d) {
+            if (d._children) {
+                d.children = d._children;
+                d.children.forEach(expand);
+                d._children = null;
+            }
+        }
+
+        function update(source) {
+            const treeData = tree(root);
+            const nodes = treeData.descendants();
+            const links = treeData.links();
+
+            // 标准化固定深度
+            nodes.forEach(d => { 
+                d.y = d.depth * (orientation === 'vertical' ? 100 : 120);
+            });
+
+            // 节点更新
+            const node = g.selectAll('g.node')
+                .data(nodes, d => d.id || (d.id = ++i));
+
+            const nodeEnter = node.enter().append('g')
+                .attr('class', d => `node node-${d.data.type}`)
+                .attr('transform', d => {
+                    if (orientation === 'vertical') {
+                        return `translate(${source.x0},${source.y0})`;
+                    } else {
+                        return `translate(${source.y0},${source.x0})`;
+                    }
+                })
+                .on('click', (event, d) => {
+                    click(d);
+                    showDetail(d);
+                })
+                .on('mouseover', (event, d) => showTooltip(event, d))
+                .on('mouseout', hideTooltip);
+
+            // 节点圆圈
+            nodeEnter.append('circle')
+                .attr('r', 1e-6)
+                .style('fill', d => d._children ? getNodeColor(d) : '#fff');
+
+            // 节点文本
+            nodeEnter.append('text')
+                .attr('dy', '.35em')
+                .attr('x', d => d.children || d._children ? -13 : 13)
+                .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+                .text(d => d.data.name.length > 25 ? d.data.name.slice(0, 22) + '...' : d.data.name)
+                .style('fill-opacity', 1e-6);
+
+            // 展开/折叠指示器
+            nodeEnter.filter(d => d.children || d._children)
+                .append('g')
+                .attr('class', 'node-toggle')
+                .attr('transform', 'translate(0, 0)')
+                .on('click', (event, d) => {
+                    event.stopPropagation();
+                    click(d);
+                })
+                .append('circle')
+                .attr('r', 6)
+                .attr('cy', 0);
+
+            nodeEnter.selectAll('.node-toggle')
+                .append('text')
+                .attr('dy', '0.05em')
+                .text(d => d._children ? '+' : '-');
+
+            // 更新节点位置
+            const nodeUpdate = node.merge(nodeEnter).transition()
+                .duration(duration)
+                .attr('transform', d => {
+                    if (orientation === 'vertical') {
+                        return `translate(${d.x},${d.y})`;
+                    } else {
+                        return `translate(${d.y},${d.x})`;
+                    }
+                });
+
+            nodeUpdate.select('circle')
+                .attr('r', 6)
+                .style('fill', d => d._children ? getNodeColor(d) : '#fff')
+                .style('stroke', d => getNodeColor(d));
+
+            nodeUpdate.select('text')
+                .style('fill-opacity', 1);
+
+            // 移除退出的节点
+            const nodeExit = node.exit().transition()
+                .duration(duration)
+                .attr('transform', d => {
+                    if (orientation === 'vertical') {
+                        return `translate(${source.x},${source.y})`;
+                    } else {
+                        return `translate(${source.y},${source.x})`;
+                    }
+                })
+                .remove();
+
+            nodeExit.select('circle').attr('r', 1e-6);
+            nodeExit.select('text').style('fill-opacity', 1e-6);
+
+            // 连线更新
+            const link = g.selectAll('path.link')
+                .data(links, d => d.target.id);
+
+            const linkEnter = link.enter().insert('path', 'g')
+                .attr('class', 'link')
+                .attr('d', d => {
+                    const o = { x: source.x0, y: source.y0 };
+                    return diagonal(o, o);
+                });
+
+            const linkUpdate = link.merge(linkEnter).transition()
+                .duration(duration)
+                .attr('d', d => diagonal(d.source, d.target));
+
+            link.exit().transition()
+                .duration(duration)
+                .attr('d', d => {
+                    const o = { x: source.x, y: source.y };
+                    return diagonal(o, o);
+                })
+                .remove();
+
+            // 保存旧位置
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+
+        function diagonal(s, d) {
+            if (orientation === 'vertical') {
+                return `M ${s.x} ${s.y}
+                        C ${s.x} ${(s.y + d.y) / 2},
+                          ${d.x} ${(s.y + d.y) / 2},
+                          ${d.x} ${d.y}`;
+            } else {
+                return `M ${s.y} ${s.x}
+                        C ${(s.y + d.y) / 2} ${s.x},
+                          ${(s.y + d.y) / 2} ${d.x},
+                          ${d.y} ${d.x}`;
+            }
+        }
+
+        function click(d) {
+            if (d.children) {
+                d._children = d.children;
+                d.children = null;
+            } else {
+                d.children = d._children;
+                d._children = null;
+            }
+            update(d);
+        }
+
+        function getNodeColor(d) {
+            const colors = {
+                root: '#ef4444',
+                theorem: '#8b5cf6',
+                lemma: '#10b981',
+                definition: '#f59e0b',
+                proposition: '#3b82f6'
+            };
+            return colors[d.data.type] || '#64748b';
+        }
+
+        // ==========================================
+        // 交互功能
+        // ==========================================
+        function selectChain(chain) {
+            currentChain = chain;
+            
+            // 更新UI
+            document.querySelectorAll('.chain-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.chainId === chain.id);
+            });
+
+            // 加载新数据
+            loadChainData(chain.data);
+            updateStats();
+            closePanel();
+        }
+
+        function updateStats() {
+            const stats = countNodeTypes(currentChain.data);
+            document.getElementById('stat-theorems').textContent = stats.theorem || 0;
+            document.getElementById('stat-lemmas').textContent = stats.lemma || 0;
+            document.getElementById('stat-definitions').textContent = stats.definition || 0;
+            document.getElementById('stat-depth').textContent = currentChain.maxDepth;
+        }
+
+        function countNodeTypes(node, stats = {}) {
+            stats[node.type] = (stats[node.type] || 0) + 1;
+            if (node.children) {
+                node.children.forEach(child => countNodeTypes(child, stats));
+            }
+            return stats;
+        }
+
+        function showDetail(d) {
+            const panel = document.getElementById('detail-panel');
+            const icon = document.getElementById('panel-icon');
+            const title = document.getElementById('panel-title');
+            const subtitle = document.getElementById('panel-subtitle');
+            const content = document.getElementById('panel-content');
+
+            icon.style.background = getNodeColor(d);
+            title.textContent = d.data.name;
+            subtitle.textContent = `类型: ${d.data.type} | 深度: ${d.depth}`;
+
+            let html = `
+                <div class="panel-section">
+                    <div class="panel-section-title">描述</div>
+                    <div class="panel-section-content">${d.data.description || '暂无描述'}</div>
+                </div>
+            `;
+
+            if (d.data.proofMethod) {
+                html += `
+                    <div class="panel-section">
+                        <div class="panel-section-title">证明方法</div>
+                        <div class="panel-section-content">${d.data.proofMethod}</div>
+                    </div>
+                `;
+            }
+
+            if (d.data.complexity) {
+                html += `
+                    <div class="panel-section">
+                        <div class="panel-section-title">复杂度</div>
+                        <div class="panel-section-content">${d.data.complexity}</div>
+                    </div>
+                `;
+            }
+
+            // 构建证明步骤链
+            const path = [];
+            let current = d;
+            while (current) {
+                path.unshift(current);
+                current = current.parent;
+            }
+
+            if (path.length > 1) {
+                html += `
+                    <div class="panel-section">
+                        <div class="panel-section-title">证明路径</div>
+                        <div class="panel-section-content">
+                `;
+                
+                path.forEach((node, index) => {
+                    html += `
+                        <div class="proof-step">
+                            <div class="step-number">${index + 1}</div>
+                            <div class="step-content">
+                                <div class="step-name">${node.data.name}</div>
+                                <div class="step-desc">${node.data.description || ''}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div></div>';
+            }
+
+            content.innerHTML = html;
+            panel.classList.add('visible');
+        }
+
+        function closePanel() {
+            document.getElementById('detail-panel').classList.remove('visible');
+        }
+
+        function showTooltip(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `<strong>${d.data.name}</strong><br>${d.data.description || ''}`;
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY - 10) + 'px';
+            tooltip.style.opacity = 1;
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.opacity = 0;
+        }
+
+        // ==========================================
+        // 控制功能
+        // ==========================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('sidebar-toggle-icon');
+            sidebar.classList.toggle('collapsed');
+            icon.classList.toggle('fa-chevron-left');
+            icon.classList.toggle('fa-chevron-right');
+        }
+
+        function zoomIn() {
+            svg.transition().call(zoom.scaleBy, 1.3);
+        }
+
+        function zoomOut() {
+            svg.transition().call(zoom.scaleBy, 0.7);
+        }
+
+        function resetView() {
+            svg.transition().call(zoom.transform, d3.zoomIdentity.translate(svg.attr('width') / 2, 80));
+        }
+
+        function expandAll() {
+            expand(root);
+            update(root);
+        }
+
+        function collapseAll() {
+            if (root.children) {
+                root.children.forEach(collapse);
+            }
+            update(root);
+        }
+
+        function toggleOrientation() {
+            orientation = orientation === 'vertical' ? 'horizontal' : 'vertical';
+            
+            // 重新计算布局
+            const treeData = tree(root);
+            const nodes = treeData.descendants();
+            
+            nodes.forEach(d => {
+                d.y = d.depth * (orientation === 'vertical' ? 100 : 120);
+            });
+
+            update(root);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.body.classList.toggle('light-theme');
+            const icon = document.getElementById('theme-icon');
+            icon.classList.toggle('fa-sun');
+            icon.classList.toggle('fa-moon');
+        }
+
+        function toggleExportMenu() {
+            document.getElementById('export-menu').classList.toggle('visible');
+        }
+
+        function exportSVG() {
+            const svgElement = document.getElementById('tree-container');
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(svgElement);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `theorem-proof-tree-${currentChain.id}.svg`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            toggleExportMenu();
+        }
+
+        function exportPNG() {
+            const svgElement = document.getElementById('tree-container');
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(svgElement);
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                
+                const pngUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = pngUrl;
+                link.download = `theorem-proof-tree-${currentChain.id}.png`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+            toggleExportMenu();
+        }
+
+        function exportJSON() {
+            const json = JSON.stringify(currentChain.data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `proof-chain-${currentChain.id}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            toggleExportMenu();
+        }
+
+        // 点击外部关闭导出菜单
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.header-actions')) {
+                document.getElementById('export-menu').classList.remove('visible');
+            }
+        });
+
+        // 响应式处理
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('tree-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            svg.attr('width', width).attr('height', height);
+            update(root);
+        });
+    </script>
+</body>
+</html>

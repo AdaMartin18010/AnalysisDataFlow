@@ -16,7 +16,7 @@ authors:
   - family-names: "Ma"
     given-names: "Lu"
     affiliation: "Independent Researcher"
-    orcid: "https://orcid.org/0000-0000-0000-0000"  # TODO: Replace with actual ORCID
+    # ORCID: 作者尚未注册ORCID，如需引用请联系作者获取最新信息
 repository-code: "https://github.com/luyanfeng/AnalysisDataFlow"
 url: "https://github.com/luyanfeng/AnalysisDataFlow"
 license: Apache-2.0
@@ -36,8 +36,7 @@ keywords:
   - verification
   - stream computing
 
-# TODO: Add DOI after Zenodo registration
-# doi: 10.5281/zenodo.XXXXXXX
+# DOI: 项目尚未注册DOI，计划未来在Zenodo上注册以获得永久引用标识
 
 # Preferred citation format for academic papers
 preferred-citation:
@@ -48,8 +47,7 @@ preferred-citation:
       given-names: "Lu"
   year: 2026
   url: "https://github.com/luyanfeng/AnalysisDataFlow"
-  # TODO: Add DOI after Zenodo registration
-  # doi: 10.5281/zenodo.XXXXXXX
+  # DOI: 项目尚未注册DOI，计划未来在Zenodo上注册以获得永久引用标识
 
 # References to related resources
 references:

@@ -1,0 +1,470 @@
+# Dependency Update Workflow - 依赖更新流水线 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-11 | 状态: Production
+#
+# 触发条件:
+#   - 每周一凌晨 4:00 UTC
+#   - 手动触发
+
+name: Dependency Update
+
+on:
+  schedule:
+    # 每周一凌晨 4:00 UTC
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - flink-only
+          - python-only
+          - node-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+# 并发控制
+concurrency:
+  group: 'dependency-update'
+  cancel-in-progress: false
+
+jobs:
+  # ============ 任务1: 检查Flink新版本 ============
+  check-flink:
+    name: Check Flink Releases
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.check_type != 'python-only' &&
+      github.event.inputs.check_type != 'node-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check Flink releases
+        id: flink-check
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request
+          import json
+          import re
+          from datetime import datetime
+
+          def get_latest_flink_releases():
+              """从Maven Central获取Flink最新版本"""
+              try:
+                  url = "https://search.maven.org/solrsearch/select?q=g:org.apache.flink&rows=20&wt=json"
+                  with urllib.request.urlopen(url, timeout=30) as response:
+                      data = json.loads(response.read().decode())
+                      docs = data.get('response', {}).get('docs', [])
+                      
+                      versions = set()
+                      for doc in docs:
+                          v = doc.get('latestVersion', '')
+                          if v and re.match(r'^\d+\.\d+\.\d+$', v):
+                              versions.add(v)
+                      
+                      return sorted(list(versions), key=lambda x: [int(n) for n in x.split('.')], reverse=True)[:5]
+              except Exception as e:
+                  print(f"Error fetching from Maven: {e}")
+                  return []
+
+          # 获取当前文档中的Flink版本
+          current_versions = set()
+          import os
+          from pathlib import Path
+          
+          for root, dirs, files in os.walk('.'):
+              # 跳过某些目录
+              dirs[:] = [d for d in dirs if d not in ['.git', 'node_modules', '.venv']]
+              
+              for file in files:
+                  if file.endswith('.md'):
+                      filepath = os.path.join(root, file)
+                      try:
+                          with open(filepath, 'r', encoding='utf-8') as f:
+                              content = f.read()
+                              # 查找Flink版本引用
+                              matches = re.findall(r'Flink\s+(\d+\.\d+\.\d+)', content)
+                              current_versions.update(matches)
+                      except:
+                          pass
+
+          print("Current Flink versions in docs:", sorted(current_versions))
+          
+          # 获取最新版本
+          latest_versions = get_latest_flink_releases()
+          print("Latest Flink releases:", latest_versions)
+
+          # 比较版本
+          updates_available = []
+          for current in current_versions:
+              current_major = '.'.join(current.split('.')[:2])
+              for latest in latest_versions:
+                  latest_major = '.'.join(latest.split('.')[:2])
+                  if current_major == latest_major and latest != current:
+                      updates_available.append({
+                          'current': current,
+                          'latest': latest,
+                          'type': 'minor' if current.split('.')[1] == latest.split('.')[1] else 'major'
+                      })
+                      break
+
+          # 保存结果
+          result = {
+              'checked_at': datetime.now().isoformat(),
+              'current_versions': sorted(list(current_versions)),
+              'latest_releases': latest_versions,
+              'updates_available': updates_available
+          }
+
+          with open('flink-version-check.json', 'w') as f:
+              json.dump(result, f, indent=2)
+
+          print(f"\nUpdates available: {len(updates_available)}")
+          for update in updates_available:
+              print(f"  {update['current']} -> {update['latest']} ({update['type']})")
+
+          # 设置输出
+          import os
+          gh_output = os.environ.get('GITHUB_OUTPUT')
+          if gh_output:
+              with open(gh_output, 'a') as f:
+                  f.write(f"updates_count={len(updates_available)}\n")
+                  f.write(f"has_updates={'true' if updates_available else 'false'}\n")
+          PYEOF
+
+      - name: Upload Flink check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: flink-version-check
+          path: flink-version-check.json
+
+    outputs:
+      updates_count: ${{ steps.flink-check.outputs.updates_count }}
+      has_updates: ${{ steps.flink-check.outputs.has_updates }}
+
+  # ============ 任务2: 检查Python依赖更新 ============
+  check-python-deps:
+    name: Check Python Dependencies
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.check_type != 'flink-only' &&
+      github.event.inputs.check_type != 'node-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check Python dependencies
+        run: |
+          python3 << 'PYEOF'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          # 查找requirements文件
+          req_files = list(Path('.').rglob('requirements*.txt'))
+          
+          deps_status = []
+          
+          for req_file in req_files:
+              if '.venv' in str(req_file) or 'node_modules' in str(req_file):
+                  continue
+                  
+              try:
+                  content = req_file.read_text()
+                  deps = []
+                  for line in content.split('\n'):
+                      line = line.strip()
+                      if line and not line.startswith('#') and not line.startswith('-'):
+                          deps.append(line.split('==')[0].split('>=')[0].split('<')[0].strip())
+                  
+                  deps_status.append({
+                      'file': str(req_file),
+                      'dependencies': deps[:10]  # 只保存前10个
+                  })
+              except:
+                  pass
+
+          result = {
+              'checked_at': datetime.now().isoformat(),
+              'requirement_files': deps_status
+          }
+
+          with open('python-deps-check.json', 'w') as f:
+              json.dump(result, f, indent=2)
+
+          print(f"Checked {len(deps_status)} requirements files")
+          PYEOF
+
+      - name: Upload Python deps check
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-deps-check
+          path: python-deps-check.json
+
+  # ============ 任务3: 检查Node.js依赖更新 ============
+  check-node-deps:
+    name: Check Node.js Dependencies
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.check_type != 'flink-only' &&
+      github.event.inputs.check_type != 'python-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check package.json files
+        run: |
+          python3 << 'PYEOF'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          # 查找package.json文件
+          pkg_files = list(Path('.').rglob('package.json'))
+          
+          pkg_status = []
+          
+          for pkg_file in pkg_files:
+              if 'node_modules' in str(pkg_file):
+                  continue
+                  
+              try:
+                  data = json.loads(pkg_file.read_text())
+                  pkg_status.append({
+                      'file': str(pkg_file),
+                      'name': data.get('name', 'unknown'),
+                      'version': data.get('version', 'unknown'),
+                      'dependencies': list(data.get('dependencies', {}).keys())[:5],
+                      'devDependencies': list(data.get('devDependencies', {}).keys())[:5]
+                  })
+              except:
+                  pass
+
+          result = {
+              'checked_at': datetime.now().isoformat(),
+              'packages': pkg_status
+          }
+
+          with open('node-deps-check.json', 'w') as f:
+              json.dump(result, f, indent=2)
+
+          print(f"Checked {len(pkg_status)} package.json files")
+          PYEOF
+
+      - name: Upload Node deps check
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-deps-check
+          path: node-deps-check.json
+
+  # ============ 任务4: 创建更新PR ============
+  create-update-pr:
+    name: Create Update PR
+    runs-on: ubuntu-latest
+    needs: [check-flink, check-python-deps, check-node-deps]
+    if: |
+      (needs.check-flink.outputs.has_updates == 'true' || 
+       github.event_name == 'workflow_dispatch')
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate update report
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          
+          cat > DEPENDENCY-UPDATE-REPORT.md << EOF
+          # Dependency Update Report - $DATE
+
+          ## Flink Version Updates
+
+          $(if [ -f artifacts/flink-version-check/flink-version-check.json ]; then
+            echo "\`\`\`json"
+            cat artifacts/flink-version-check/flink-version-check.json
+            echo "\`\`\`"
+          else
+            echo "No Flink updates available"
+          fi)
+
+          ## Python Dependencies
+
+          $(if [ -f artifacts/python-deps-check/python-deps-check.json ]; then
+            echo "Checked $(cat artifacts/python-deps-check/python-deps-check.json | grep -c 'file') requirements files"
+          fi)
+
+          ## Node.js Dependencies
+
+          $(if [ -f artifacts/node-deps-check/node-deps-check.json ]; then
+            echo "Checked $(cat artifacts/node-deps-check/node-deps-check.json | grep -c 'file') package.json files"
+          fi)
+
+          ---
+          *Auto-generated by Dependency Update workflow*
+          EOF
+
+          cat DEPENDENCY-UPDATE-REPORT.md
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update dependency tracking report'
+          title: '📦 Dependency Update Report - ${{ github.run_id }}'
+          body: |
+            ## Dependency Update Report
+
+            This PR contains the latest dependency check results.
+
+            ### Changes
+            - Updated Flink version tracking
+            - Checked Python dependencies
+            - Checked Node.js dependencies
+
+            ### Checklist
+            - [ ] Review Flink version updates
+            - [ ] Update documentation if needed
+            - [ ] Test with new versions
+
+            ---
+            *Auto-generated by Dependency Update workflow*
+          branch: deps/update-report-${{ github.run_id }}
+          delete-branch: true
+          add-paths: |
+            DEPENDENCY-UPDATE-REPORT.md
+
+  # ============ 任务5: 更新版本跟踪文档 ============
+  update-version-docs:
+    name: Update Version Tracking Docs
+    runs-on: ubuntu-latest
+    needs: [check-flink]
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Flink check results
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+        continue-on-error: true
+
+      - name: Update version tracking
+        run: |
+          mkdir -p .scripts/flink-version-tracking
+          
+          if [ -f artifacts/flink-version-check/flink-version-check.json ]; then
+            cp artifacts/flink-version-check/flink-version-check.json .scripts/flink-version-tracking/latest-check.json
+          fi
+          
+          # 生成版本跟踪报告
+          python3 << 'PYEOF'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          check_file = Path('.scripts/flink-version-tracking/latest-check.json')
+          
+          if check_file.exists():
+              data = json.loads(check_file.read_text())
+              
+              report_lines = [
+                  f"# Flink Version Tracking Report",
+                  f"",
+                  f"**Last Checked**: {data.get('checked_at', 'Unknown')}",
+                  f"",
+                  f"## Current Versions in Documentation",
+                  f"",
+              ]
+              
+              for v in data.get('current_versions', []):
+                  report_lines.append(f"- {v}")
+              
+              report_lines.extend([
+                  f"",
+                  f"## Latest Releases",
+                  f"",
+              ])
+              
+              for v in data.get('latest_releases', [])[:10]:
+                  report_lines.append(f"- {v}")
+              
+              if data.get('updates_available'):
+                  report_lines.extend([
+                      f"",
+                      f"## Available Updates",
+                      f"",
+                      f"| Current | Latest | Type |",
+                      f"|---------|--------|------|"
+                  ])
+                  for u in data['updates_available']:
+                      report_lines.append(f"| {u['current']} | {u['latest']} | {u['type']} |")
+              
+              Path('.scripts/flink-version-tracking/REPORT.md').write_text('\n'.join(report_lines))
+              print("Version tracking report updated")
+          else:
+              print("No check results available")
+          PYEOF
+
+      - name: Upload tracking report
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-tracking-report
+          path: .scripts/flink-version-tracking/
+
+  # ============ 依赖更新汇总 ============
+  dependency-summary:
+    name: Dependency Update Summary
+    runs-on: ubuntu-latest
+    needs: [check-flink, check-python-deps, check-node-deps, create-update-pr, update-version-docs]
+    if: always()
+    steps:
+      - name: Generate workflow summary
+        run: |
+          echo "## Dependency Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status | Updates |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|----------|" >> $GITHUB_STEP_SUMMARY
+          
+          FLINK_UPDATES="${{ needs.check-flink.outputs.updates_count }}"
+          echo "| Flink Releases | ${{ needs.check-flink.result }} | ${FLINK_UPDATES:-0} updates |" >> $GITHUB_STEP_SUMMARY
+          echo "| Python Dependencies | ${{ needs.check-python-deps.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| Node.js Dependencies | ${{ needs.check-node-deps.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| Create PR | ${{ needs.create-update-pr.result }} | - |" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.check-flink.outputs.has_updates }}" == "true" ]; then
+            echo "Flink updates available!" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Dependency update check completed" >> $GITHUB_STEP_SUMMARY

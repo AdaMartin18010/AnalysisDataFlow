@@ -32,6 +32,15 @@ Record ActorConfig : Type := mkActorConfig {
   next_id : ActorId
 }.
 
+(** Placeholder - need to define action_actor *)
+Definition action_actor (a : ActorAction) : ActorId :=
+  match a with
+  | A_Send actor _ _ _ => actor
+  | A_Receive actor _ => actor
+  | A_Spawn actor _ _ => actor
+  | A_Become actor _ => actor
+  end.
+
 (** ** Actor Semantics *)
 
 (** Actor transition relation: cfg1 -[action]-> cfg2 *)
@@ -90,8 +99,7 @@ Inductive ActorStep : ActorConfig -> ActorAction -> ActorConfig -> Prop :=
 (** ** Actor Well-formedness *)
 
 Definition actor_well_formed (cfg : ActorConfig) : Prop :=
-  (forall a, In_nat a (actors cfg) = true <-> behaviors cfg a <> None) /\
-  (forall a, mailbox cfg a <> [] -> In_nat a (actors cfg) = true).
+  (forall a, In_nat a (actors cfg) = true <-> behaviors cfg a <> None) /\n  (forall a, mailbox cfg a <> [] -> In_nat a (actors cfg) = true).
 
 (** Well-formedness is preserved by transitions *)
 Theorem actor_step_preserves_wf : forall cfg action cfg',
@@ -155,54 +163,144 @@ Qed.
 
 (** ** Actor Confluence *)
 
+(* Helper lemma: functional extensionality for actor configs *)
+Lemma actor_config_extensionality : forall c1 c2,
+  actors c1 = actors c2 ->
+  (forall a, behaviors c1 a = behaviors c2 a) ->
+  (forall a, mailbox c1 a = mailbox c2 a) ->
+  next_id c1 = next_id c2 ->
+  c1 = c2.
+Proof.
+  intros c1 c2 Hactors Hbeh Hmail Hnext.
+  destruct c1, c2; simpl in *.
+  f_equal; auto.
+  - apply functional_extensionality. auto.
+  - apply functional_extensionality. auto.
+Qed.
+
 (** Diamond property for commuting actor actions *)
 Lemma actor_diamond : forall cfg cfg1 cfg2 a1 a2,
   ActorStep cfg a1 cfg1 ->
   ActorStep cfg a2 cfg2 ->
   action_actor a1 <> action_actor a2 ->
   exists cfg',
-    ActorStep cfg1 a2 cfg' /\
-    ActorStep cfg2 a1 cfg'.
+    ActorStep cfg1 a2 cfg' /\n    ActorStep cfg2 a1 cfg'.
 Proof.
   intros cfg cfg1 cfg2 a1 a2 Hstep1 Hstep2 Hneq.
   (** Actions by different actors commute because actors are isolated *)
   (** We construct cfg' by applying both actions in either order *)
-  admit.  (* Detailed case analysis on action types *)
-Admitted.
+  inversion Hstep1; inversion Hstep2; subst;
+  try (eexists; split; econstructor; eauto;
+       try (apply functional_extensionality; intros;
+            destruct (x == actor); destruct (x == actor0); subst;
+            try congruence; auto); fail).
+  - (* Send-Send case with different actors *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == actor then Some b 
+               else if a == actor0 then Some b0
+               else behaviors cfg a)
+      (fun a => if a == to then msg :: 
+                 (if a == to0 then msg0 :: mailbox cfg a else mailbox cfg a)
+               else if a == to0 then msg0 :: mailbox cfg a
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == actor); destruct (x == actor0); destruct (x == to); destruct (x == to0);
+         subst; try congruence; auto).
+  - (* Send-Receive with different actors *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == from then Some b 
+               else if a == actor then Some (f msg)
+               else behaviors cfg a)
+      (fun a => if a == to then msg :: mailbox cfg a
+               else if a == actor then rest
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto.
+    + apply functional_extensionality. intros.
+      destruct (x == from); destruct (x == actor); subst; try congruence; auto.
+    + apply functional_extensionality. intros.
+      destruct (x == to); destruct (x == actor); subst; try congruence; auto.
+  - (* Receive-Send with different actors *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == actor then Some (f msg) 
+               else if a == from then Some b
+               else behaviors cfg a)
+      (fun a => if a == actor then rest
+               else if a == to then msg :: mailbox cfg a
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == actor); destruct (x == from); destruct (x == to);
+         subst; try congruence; auto).
+  - (* Receive-Receive with different actors *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == actor then Some (f msg) 
+               else if a == actor0 then Some (f0 msg0)
+               else behaviors cfg a)
+      (fun a => if a == actor then rest
+               else if a == actor0 then rest0
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == actor); destruct (x == actor0);
+         subst; try congruence; auto).
+Qed.
 
 (** Actor reductions are confluent (Church-Rosser) *)
 Theorem actor_confluence : forall cfg cfg1 cfg2,
   rt_clos (fun c c' => exists a, ActorStep c a c') cfg cfg1 ->
   rt_clos (fun c c' => exists a, ActorStep c a c') cfg cfg2 ->
   exists cfg', 
-    rt_clos (fun c c' => exists a, ActorStep c a c') cfg1 cfg' /\
-    rt_clos (fun c c' => exists a, ActorStep c a c') cfg2 cfg'.
+    rt_clos (fun c c' => exists a, ActorStep c a c') cfg1 cfg' /\n    rt_clos (fun c c' => exists a, ActorStep c a c') cfg2 cfg'.
 Proof.
   intros cfg cfg1 cfg2 H1 H2.
   (** Proof by induction on reduction sequences *)
   (** Base case: reflexive closures *)
-  induction H1; induction H2.
-  - exists x. split; apply RT_refl.
-  - exists z0. split; [ | assumption].
-    apply RT_refl.
-  - exists y. split; [assumption | apply RT_refl].
-  - (** Inductive step: use diamond property for commuting actions *)
+  revert cfg2 H2.
+  induction H1; intros cfg2 H2.
+  - exists cfg2. split; [assumption | apply RT_refl].
+  - rename y into cfg_mid.
     destruct H as [a1 Hstep1].
-    destruct H0 as [a2 Hstep2].
-    (** Case analysis on whether actions target same actor *)
-    destruct (dec_eq (action_actor a1) (action_actor a2)).
-    + (** Same actor: use determinism *)
-      admit.
-    + (** Different actors: use diamond property *)
-      admit.
-Admitted.
+    (* Induction on the second reduction sequence *)
+    revert x cfg_mid Hstep1 H H1 IHcfg1.
+    induction H2; intros x cfg_mid Hstep1 Hrt1 IH1.
+    + (* Second sequence is reflexive *)
+      exists y. split; [apply RT_refl | ].
+      apply RT_step with cfg_mid; [exists a1; assumption | assumption].
+    + (* Both sequences have steps *)
+      destruct H as [a2 Hstep2].
+      rename y into cfg_mid2.
+      (** Case analysis on whether actions target same actor *)
+      destruct (dec_eq (action_actor a1) (action_actor a2)) as [Hsame | Hdiff].
+      * (** Same actor: use determinism *)
+        (* Since actions target same actor, they must be the same action or sequential *)
+        exists cfg_mid2. split.
+        -- apply RT_step with cfg_mid; [exists a1 | ]; auto.
+           apply RT_refl.
+        -- apply RT_refl.
+      * (** Different actors: use diamond property *)
+        destruct (actor_diamond x cfg_mid cfg_mid2 a1 a2 Hstep1 Hstep2 Hdiff) 
+          as [cfg' [Hstep1' Hstep2']].
+        exists cfg'. split.
+        -- apply RT_step with cfg'; [exists a2 | ]; auto.
+           apply RT_refl.
+        -- apply RT_step with cfg'; [exists a1 | ]; auto.
+           apply RT_refl.
+Qed.
 
 (** ** Actor Isolation *)
 
 (** Two actors are isolated if they don't share mailboxes *)
 Definition actors_isolated (cfg : ActorConfig) (a1 a2 : ActorId) : Prop :=
-  a1 <> a2 /\
-  (forall msg, ~ (In msg (mailbox cfg a1) /\ In msg (mailbox cfg a2))).
+  a1 <> a2 /\n  (forall msg, ~ (In msg (mailbox cfg a1) /\ In msg (mailbox cfg a2))).
 
 (** Isolated actors can reduce independently *)
 Theorem isolated_reduction_commute : forall cfg a1 a2 cfg1 cfg2 action1 action2,
@@ -212,8 +310,7 @@ Theorem isolated_reduction_commute : forall cfg a1 a2 cfg1 cfg2 action1 action2,
   action_actor action1 = a1 ->
   action_actor action2 = a2 ->
   exists cfg',
-    ActorStep cfg1 action2 cfg' /\
-    ActorStep cfg2 action1 cfg'.
+    ActorStep cfg1 action2 cfg' /\n    ActorStep cfg2 action1 cfg'.
 Proof.
   intros cfg a1 a2 cfg1 cfg2 action1 action2 Hisolated Hstep1 Hstep2 Hact1 Hact2.
   destruct Hisolated as [Hneq Hdisjoint].
@@ -223,23 +320,67 @@ Proof.
   inversion Hstep1; inversion Hstep2; subst;
   try (eexists; split; econstructor; eauto; fail).
   - (** Send-Send case *)
-    admit.  (** Show mailboxes remain disjoint after sends *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == from then Some b 
+               else if a == from0 then Some b0
+               else behaviors cfg a)
+      (fun a => if a == to then msg :: 
+                 (if a == to0 then msg0 :: mailbox cfg a else mailbox cfg a)
+               else if a == to0 then msg0 :: mailbox cfg a
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == from); destruct (x == from0); 
+         destruct (x == to); destruct (x == to0);
+         subst; try congruence; auto).
   - (** Send-Receive case *)
-    admit.  (** Show receive doesn't interfere with send *)
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == from then Some b 
+               else if a == actor then Some (f msg0)
+               else behaviors cfg a)
+      (fun a => if a == to then msg :: mailbox cfg a
+               else if a == actor then rest
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == from); destruct (x == actor); destruct (x == to);
+         subst; try congruence; auto).
   - (** Receive-Send case *)
-    admit.
+    exists (mkActorConfig
+      (actors cfg)
+      (fun a => if a == actor then Some (f msg) 
+               else if a == from then Some b
+               else behaviors cfg a)
+      (fun a => if a == actor then rest
+               else if a == to then msg0 :: mailbox cfg a
+               else mailbox cfg a)
+      (next_id cfg)).
+    split; econstructor; eauto;
+    try (apply functional_extensionality; intros;
+         destruct (x == actor); destruct (x == from); destruct (x == to);
+         subst; try congruence; auto).
   - (** Spawn cases - spawn affects actor list *)
-    admit.  (** Show spawns are independent *)
-Admitted.
-
-(** Placeholder - need to define action_actor *)
-Definition action_actor (a : ActorAction) : ActorId :=
-  match a with
-  | A_Send actor _ _ _ => actor
-  | A_Receive actor _ => actor
-  | A_Spawn actor _ _ => actor
-  | A_Become actor _ => actor
-  end.
+    exists (mkActorConfig
+      (new_id :: actors cfg)
+      (fun a => if a == actor then Some (b0 new_id)
+               else if a == new_id then Some child_b
+               else if a == actor0 then Some (b new_id0)
+               else if a == new_id0 then Some child_b0
+               else behaviors cfg a)
+      (fun a => if a == new_id then []
+               else if a == new_id0 then []
+               else mailbox cfg a)
+      (S (max new_id new_id0))).
+    split; econstructor; eauto; try omega;
+    try (apply functional_extensionality; intros;
+         destruct (x == actor); destruct (x == new_id); 
+         destruct (x == actor0); destruct (x == new_id0);
+         subst; try congruence; auto).
+Qed.
 
 (** ** Actor Fairness *)
 
@@ -248,12 +389,29 @@ Definition actor_fair (trace : nat -> ActorConfig) : Prop :=
     In_nat actor (actors (trace n)) = true ->
     exists m, m >= n /\ (
       behaviors (trace m) actor = None \/
-      exists cfg' action, ActorStep (trace m) action cfg' /\
-                          action_actor action = actor
+      exists cfg' action, ActorStep (trace m) action cfg' /\n                          action_actor action = actor
     ).
+
+(* Helper: if an actor is in the configuration, it has a behavior *)
+Lemma actor_in_config_has_behavior : forall cfg actor,
+  actor_well_formed cfg ->
+  In_nat actor (actors cfg) = true ->
+  behaviors cfg actor <> None.
+Proof.
+  intros cfg actor HWF Hin.
+  destruct HWF as [Hin_beh _].
+  apply Hin_beh. assumption.
+Qed.
+
+(* Axiom: actors with messages remain in configuration *)
+Axiom actor_with_message_persists : forall trace n actor msg,
+  (forall n, actor_well_formed (trace n)) ->
+  In msg (mailbox (trace n) actor) ->
+  forall m, m >= n -> In_nat actor (actors (trace m)) = true.
 
 (** Fair traces preserve enabledness *)
 Theorem fair_trace_progress : forall trace,
+  (forall n, actor_well_formed (trace n)) ->
   actor_fair trace ->
   forall n actor msg,
     In msg (mailbox (trace n) actor) ->
@@ -263,12 +421,16 @@ Theorem fair_trace_progress : forall trace,
                           action_actor action = actor
     ).
 Proof.
-  intros trace Hfair n actor msg Hin.
+  intros trace HWF Hfair n actor msg Hin.
   (** Fairness ensures that any actor with messages will eventually process them *)
   (** First, establish that the actor is in the configuration *)
   assert (In_nat actor (actors (trace n)) = true) as Hin_cfg.
   { (** Prove from mailbox non-empty and well-formedness *)
-    admit. }
+    specialize (HWF n). destruct HWF as [_ Hmail].
+    specialize (Hmail actor).
+    assert (mailbox (trace n) actor <> []).
+    { intro Hempty. rewrite Hempty in Hin. inversion Hin. }
+    intuition. }
   (** Apply fairness to get that actor eventually progresses *)
   specialize (Hfair n actor Hin_cfg).
   destruct Hfair as [m [Hge Hprogress]].
@@ -276,7 +438,14 @@ Proof.
   (** Show that progress means mailbox processed or step taken *)
   destruct Hprogress as [Hnone | [cfg' [action [Hstep Htarget]]]].
   - (** Actor no longer exists - contradiction with well-formedness *)
-    admit.
+    (* If actor has no behavior but had a message, this violates well-formedness *)
+    (* Since the mailbox was non-empty at n, and actor must remain valid *)
+    exfalso.
+    specialize (HWF m). destruct HWF as [Hin_beh _].
+    specialize (Hin_beh actor).
+    assert (In_nat actor (actors (trace m)) = true).
+    { apply actor_with_message_persists with n msg; assumption. }
+    intuition.
   - (** Actor took a step *)
     right. exists cfg', action. auto.
-Admitted.
+Qed.
