@@ -44,6 +44,29 @@
 
 This project systematically organizes the theoretical models, hierarchical structures, engineering practices, and business modeling aspects of stream computing. Its goal is to provide a **rigorous, complete, and navigable** knowledge repository for academic research, industrial engineering, and technology selection.
 
+### Mission and Vision
+
+The mission of AnalysisDataFlow is to bridge the gap between academic research and industrial practice in stream computing. While many resources focus on either theoretical foundations or practical implementation, few provide the comprehensive connection between these two worlds. This project aims to:
+
+1. **Formalize Stream Computing Theory**: Provide rigorous mathematical foundations for stream computing concepts, enabling researchers to build upon solid theoretical ground.
+
+2. **Guide Engineering Practice**: Offer practical design patterns, best practices, and anti-patterns that engineers can apply in real-world scenarios.
+
+3. **Enable Technology Selection**: Provide comprehensive comparisons and decision frameworks for choosing appropriate stream processing technologies.
+
+4. **Explore Frontier Technologies**: Investigate emerging trends such as AI Agent integration, streaming databases, and cloud-native architectures.
+
+### Historical Context
+
+Stream processing has evolved significantly over the past two decades. From early Complex Event Processing (CEP) systems to modern unified batch-stream processing frameworks, the field has undergone substantial transformation. Apache Flink emerged as a leading stream processing engine, introducing groundbreaking concepts such as:
+
+- **Event Time Processing**: Handling out-of-order events and late data
+- **Exactly-Once Semantics**: Guaranteeing correctness in distributed processing
+- **Stateful Stream Processing**: Maintaining and querying large-scale distributed state
+- **Unified Batch and Stream Processing**: The Dataflow Model
+
+AnalysisDataFlow builds upon these foundations, providing deeper analysis and formalization of the underlying principles.
+
 ### Relationship with Flink Official Documentation
 
 | Dimension | Official Documentation | AnalysisDataFlow (This Project) |
@@ -53,6 +76,8 @@ This project systematically organizes the theoretical models, hierarchical struc
 | **Narrative Style** | Pragmatic, concise and clear | Formal analysis, rigorous argumentation |
 | **Target Audience** | Application engineers, beginners | Researchers, architects, senior engineers |
 | **Depth Level** | API level, configuration level | Principle level, architecture level, theory level |
+
+The relationship between this project and the official Flink documentation is complementary. While the official documentation excels at teaching users how to use Flink effectively, AnalysisDataFlow explains why Flink works the way it does, exploring the theoretical foundations that make Flink's design choices sound and effective.
 
 ### Four Core Directories
 
@@ -141,7 +166,7 @@ This project has reached **100% completion status**, with all planned content fu
 │   ├── 03-sql-table-api/ # SQL and Table API
 │   ├── 04-connectors/    # Connector ecosystem (CDC, Debezium, Paimon, Iceberg)
 │   ├── 05-vs-competitors/ # Competitor comparison (RisingWave, Spark Streaming, Kafka Streams)
-│   ├── 06-engineering/   # Engineering practice (cost optimization, testing strategy, performance tuning)
+│   ├── 06-engineering/   # Engineering practice (cost optimization, testing, performance tuning)
 │   ├── 08-roadmap/       # Roadmap and version tracking
 │   ├── 09-language-foundations/ # Multi-language foundations (Scala 3, Python, Rust, WASM)
 │   ├── 10-deployment/    # Deployment and operations (K8s Operator, Serverless, cloud provider integration)
@@ -200,6 +225,8 @@ Each core document follows a unified template:
 6. **Example Verification** - Simplified examples, code snippets
 7. **Visualizations** - Mermaid diagrams
 8. **References** - Authoritative source citations
+
+This structure ensures that every document provides comprehensive coverage of its topic, from theoretical foundations to practical applications, supported by visual aids and proper citations.
 
 ### 2. Theorem/Definition Numbering System
 
@@ -270,17 +297,58 @@ graph LR
 
 ---
 
+## Key Concepts Explained
+
+### The Dataflow Model
+
+The Dataflow Model, introduced by Google researchers in 2015, provides a unified abstraction for batch and stream processing. Central to this model are the concepts of:
+
+- **Event Time**: The time when an event actually occurred
+- **Processing Time**: The time when an event is observed during processing
+- **Windows**: Temporal boundaries for grouping events
+- **Watermarks**: Progress indicators for event time
+- **Triggers**: Conditions for emitting results
+
+AnalysisDataFlow provides formal definitions and proofs related to these concepts, establishing rigorous foundations for understanding stream processing semantics.
+
+### Exactly-Once Semantics
+
+Exactly-once processing guarantees that each record is processed exactly once, even in the presence of failures. This is achieved through:
+
+1. **Distributed Snapshots (Checkpoints)**: Periodic consistent snapshots of distributed state
+2. **Replayable Sources**: Ability to re-read data from a specific position
+3. **Transactional Sinks**: Idempotent or transactional writes to output systems
+
+Our documentation provides formal proofs of exactly-once correctness and explores various implementation strategies.
+
+### State Management
+
+Stateful stream processing is essential for complex analytics. Flink provides sophisticated state management capabilities:
+
+- **Keyed State**: State scoped to a specific key
+- **Operator State**: State not associated with any key
+- **State Backends**: Pluggable storage implementations (Heap, RocksDB)
+- **Queryable State**: Direct access to runtime state
+
+---
+
 ## Contributing
 
 We welcome contributions from the community! Please see our [Contributing Guide](../CONTRIBUTING-EN.md) for details.
 
 Key areas for contribution:
-
 - Documentation improvements
 - New design patterns
 - Case studies
 - Performance benchmarks
 - Translation assistance
+
+### How to Contribute
+
+1. **Fork the Repository**: Create your own fork of the project
+2. **Create a Branch**: `git checkout -b feature/your-feature-name`
+3. **Make Changes**: Follow our documentation standards
+4. **Submit PR**: Create a pull request with clear description
 
 ---
 
@@ -311,6 +379,8 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../LIC
 - [Apache Software Foundation](https://www.apache.org/)
 - All contributors and reviewers
 
+Special thanks to the researchers and engineers whose work forms the foundation of this knowledge base.
+
 ---
 
 ## Related Links
@@ -323,4 +393,28 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../LIC
 
 ---
 
+## Contact and Community
+
+- **GitHub Issues**: For bug reports and feature requests
+- **Discussions**: For questions and community interaction
+- **Email**: For private inquiries
+
+---
+
 > **Note**: This is the English version of the AnalysisDataFlow documentation. For the complete Chinese documentation, please visit the [project root](../).
+
+---
+
+## Version History
+
+| Version | Date | Major Changes |
+|---------|------|---------------|
+| v3.6 | 2026-04-11 | 100% Completion, Cross-references zeroed out |
+| v3.5 | 2026-04-08 | AI Agent integration, 24 new formal elements |
+| v3.4 | 2026-04-06 | Relationship mapping, 500+ relationship edges |
+| v3.3 | 2026-04-04 | Flink 2.4/2.5/3.0 roadmap completion |
+| v3.0 | 2026-03-01 | Major restructuring, English documentation added |
+
+---
+
+*Last updated: 2026-04-11 | Status: Production | Version: v3.6*
