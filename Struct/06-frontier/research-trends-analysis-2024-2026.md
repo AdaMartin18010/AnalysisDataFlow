@@ -515,7 +515,7 @@ CDC输出:   逻辑行级变更
 
 - [01.09-edge-streaming-semantics.md](../01-foundation/01.09-edge-streaming-semantics.md) 建立了边缘流处理的形式化语义
 - [Flink/09-practices/09.05-edge/](../../Flink/09-practices/09.05-edge/) 包含完整的边缘流处理实战文档
-- [02-B-evolution/flink-2.0-async-execution-model.md](../../Flink/02-core/02-B-evolution/flink-2.0-async-execution-model.md) 讨论了存算分离架构
+- [02-B-evolution/flink-2.0-async-execution-model.md](../../Flink/02-core/flink-2.0-async-execution-model.md) 讨论了存算分离架构
 
 **需要补充**:
 

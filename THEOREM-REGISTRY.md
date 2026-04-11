@@ -1,4 +1,4 @@
-# 全项目定理、定义、引理全局注册表
+﻿# 全项目定理、定义、引理全局注册表
 
 > **版本**: v2.9.7 | **更新日期**: 2026-04-06 | **范围**: AnalysisDataFlow 全项目
 >
@@ -110,15 +110,15 @@
       - [v2.9.4 补充统计](#v294-补充统计)
     - [8.10 v2.9.5 Flink 深度对齐补充注册 (2026-04-06)](#810-v295-flink-深度对齐补充注册-2026-04-06)
       - [新增定理 (7个)](#新增定理-7个-1)
-      - [新增定义 (18个)](#新增定义-18个-1)
+      - [新增定义 (18个)](#新增定义-18个)
       - [新增引理 (6个)](#新增引理-6个)
       - [新增命题 (3个)](#新增命题-3个)
       - [v2.9.5 补充统计](#v295-补充统计)
-    - [8.11 v2.9.6 统一模型关系图谱 (2026-04-06)](#811-v296-统一模型关系图谱-2026-04-06)
-      - [新增定理 (1个)](#新增定理-1个)
-      - [新增定义 (5个)](#新增定义-5个)
-      - [新增命题 (3个)](#新增命题-3个-1)
-      - [v2.9.6 补充统计](#v296-补充统计)
+      - [v2.9.6 统一模型关系图谱](#v296-统一模型关系图谱)
+        - [新增定理 (1个)](#新增定理-1个)
+        - [新增定义 (5个)](#新增定义-5个)
+        - [新增命题 (3个)](#新增命题-3个-1)
+        - [v2.9.6 补充统计](#v296-补充统计)
     - [8.12 v2.9.7 P6未完成内容修复 (2026-04-06)](#812-v297-p6未完成内容修复-2026-04-06)
       - [新增定义 (15个)](#新增定义-15个)
       - [v2.9.7 补充统计](#v297-补充统计)
@@ -2123,9 +2123,9 @@
 | Thm-F-01-01 | Flink/01-architecture/datastream-v2-semantics.md | ✅ |
 | Thm-F-01-02 | Flink/01-architecture/datastream-v2-semantics.md | ✅ |
 | Thm-F-02-05 | PRESENTATION-DECK.md | ✅ |
-| Thm-F-02-30 | Flink/02-core-mechanisms/delta-join-production-guide.md | ✅ |
-| Thm-F-02-31 | Flink/02-core-mechanisms/delta-join-production-guide.md | ✅ |
-| Thm-F-02-32 | Flink/02-core-mechanisms/delta-join-production-guide.md | ✅ |
+| Thm-F-02-30 | Flink/02-core/delta-join-production-guide.md | ✅ |
+| Thm-F-02-31 | Flink/02-core/delta-join-production-guide.md | ✅ |
+| Thm-F-02-32 | Flink/02-core/delta-join-production-guide.md | ✅ |
 | Thm-F-03-01 | Flink/03-sql-table-api/sql-vs-datastream-comparison.md | ✅ |
 | Thm-F-03-02 | Flink/03-sql-table-api/vector-search.md | ✅ |
 | Thm-F-03-21 | Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md | ✅ |
@@ -2252,17 +2252,17 @@
 | Def-F-02-04 | GLOSSARY.md | ✅ |
 | Def-F-02-05 | GLOSSARY.md | ✅ |
 | Def-F-02-06 | GLOSSARY.md | ✅ |
-| Def-F-02-07 | Flink/02-core-mechanisms/async-execution-model.md | ✅ |
+| Def-F-02-07 | Flink/02-core/async-execution-model.md | ✅ |
 | Def-F-02-08 | DESIGN-PRINCIPLES.md | ✅ |
-| Def-F-02-09 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
-| Def-F-02-10 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
-| Def-F-02-11 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
-| Def-F-02-12 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
-| Def-F-02-13 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
+| Def-F-02-09 | Flink/02-core/forst-state-backend.md | ✅ |
+| Def-F-02-10 | Flink/02-core/forst-state-backend.md | ✅ |
+| Def-F-02-11 | Flink/02-core/forst-state-backend.md | ✅ |
+| Def-F-02-12 | Flink/02-core/forst-state-backend.md | ✅ |
+| Def-F-02-13 | Flink/02-core/forst-state-backend.md | ✅ |
 | Def-F-02-15 | MAINTENANCE-GUIDE.md | ✅ |
-| Def-F-02-20 | Flink/02-core-mechanisms/delta-join.md | ✅ |
-| Def-F-02-21 | Flink/02-core-mechanisms/delta-join.md | ✅ |
-| Def-F-02-22 | Flink/02-core-mechanisms/delta-join.md | ✅ |
+| Def-F-02-20 | Flink/02-core/delta-join.md | ✅ |
+| Def-F-02-21 | Flink/02-core/delta-join.md | ✅ |
+| Def-F-02-22 | Flink/02-core/delta-join.md | ✅ |
 | Def-F-03-01 | Flink/03-sql-table-api/sql-vs-datastream-comparison.md | ✅ |
 | Def-F-03-02 | Flink/03-sql-table-api/sql-vs-datastream-comparison.md | ✅ |
 | Def-F-03-03 | Flink/03-sql-table-api/materialized-tables.md | ✅ |
@@ -2781,9 +2781,9 @@
 | Lemma-F-01-01 | Flink/01-architecture/datastream-v2-semantics.md | ✅ |
 | Lemma-F-01-02 | Flink/01-architecture/datastream-v2-semantics.md | ✅ |
 | Lemma-F-02-01 | DESIGN-PRINCIPLES.md | ✅ |
-| Lemma-F-02-02 | Flink/02-core-mechanisms/async-execution-model.md | ✅ |
-| Lemma-F-02-03 | Flink/02-core-mechanisms/async-execution-model.md | ✅ |
-| Lemma-F-02-05 | Flink/02-core-mechanisms/forst-state-backend.md | ✅ |
+| Lemma-F-02-02 | Flink/02-core/async-execution-model.md | ✅ |
+| Lemma-F-02-03 | Flink/02-core/async-execution-model.md | ✅ |
+| Lemma-F-02-05 | Flink/02-core/forst-state-backend.md | ✅ |
 | Lemma-F-03-01 | Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md | ✅ |
 | Lemma-F-03-02 | Flink/03-sql-table-api/sql-vs-datastream-comparison.md | ✅ |
 | Lemma-F-03-04 | Flink/03-sql-table-api/vector-search.md | ✅ |
@@ -2976,19 +2976,19 @@
 | 编号 | 位置 | 状态 |
 |------|------|------|
 | Prop-F-01-01 | Flink/01-architecture/datastream-v2-semantics.md | ✅ |
-| Prop-F-02-01 | Flink/02-core-mechanisms/async-execution-model.md | ✅ |
-| Prop-F-02-02 | Flink/02-core-mechanisms/backpressure-and-flow-control.md | ✅ |
-| Prop-F-02-03 | Flink/02-core-mechanisms/backpressure-and-flow-control.md | ✅ |
-| Prop-F-02-04 | Flink/02-core-mechanisms/backpressure-and-flow-control.md | ✅ |
-| Prop-F-02-05 | Flink/02-core-mechanisms/backpressure-and-flow-control.md | ✅ |
-| Prop-F-02-07 | Flink/02-core-mechanisms/flink-2.2-frontier-features.md | ✅ |
-| Prop-F-02-08 | Flink/02-core-mechanisms/flink-2.2-frontier-features.md | ✅ |
-| Prop-F-02-09 | Flink/02-core-mechanisms/flink-2.2-frontier-features.md | ✅ |
-| Prop-F-02-10 | Flink/02-core-mechanisms/flink-2.2-frontier-features.md | ✅ |
-| Prop-F-02-11 | Flink/02-core-mechanisms/flink-2.2-frontier-features.md | ✅ |
-| Prop-F-02-18 | Flink/02-core-mechanisms/delta-join.md | ✅ |
-| Prop-F-02-19 | Flink/02-core-mechanisms/delta-join-production-guide.md | ✅ |
-| Prop-F-02-20 | Flink/02-core-mechanisms/delta-join-production-guide.md | ✅ |
+| Prop-F-02-01 | Flink/02-core/async-execution-model.md | ✅ |
+| Prop-F-02-02 | Flink/02-core/backpressure-and-flow-control.md | ✅ |
+| Prop-F-02-03 | Flink/02-core/backpressure-and-flow-control.md | ✅ |
+| Prop-F-02-04 | Flink/02-core/backpressure-and-flow-control.md | ✅ |
+| Prop-F-02-05 | Flink/02-core/backpressure-and-flow-control.md | ✅ |
+| Prop-F-02-07 | Flink/02-core/flink-2.2-frontier-features.md | ✅ |
+| Prop-F-02-08 | Flink/02-core/flink-2.2-frontier-features.md | ✅ |
+| Prop-F-02-09 | Flink/02-core/flink-2.2-frontier-features.md | ✅ |
+| Prop-F-02-10 | Flink/02-core/flink-2.2-frontier-features.md | ✅ |
+| Prop-F-02-11 | Flink/02-core/flink-2.2-frontier-features.md | ✅ |
+| Prop-F-02-18 | Flink/02-core/delta-join.md | ✅ |
+| Prop-F-02-19 | Flink/02-core/delta-join-production-guide.md | ✅ |
+| Prop-F-02-20 | Flink/02-core/delta-join-production-guide.md | ✅ |
 | Prop-F-03-01 | Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md | ✅ |
 | Prop-F-03-02 | Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md | ✅ |
 | Prop-F-03-20 | Flink/03-sql-table-api/flink-vector-search-rag.md | ✅ |

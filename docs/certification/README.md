@@ -1,4 +1,4 @@
-# AnalysisDataFlow 流计算认证课程体系
+﻿# AnalysisDataFlow 流计算认证课程体系
 
 > **版本**: v1.0 | **生效日期**: 2026-04-08 | **形式化等级**: L2-L5
 
@@ -174,7 +174,7 @@ graph LR
 | 等级 | 必读文档 |
 |------|----------|
 | CSA | `tutorials/00-5-MINUTE-QUICK-START.md`<br/>`Knowledge/01-concept-atlas/streaming-models-mindmap.md`<br/>`Flink/01-getting-started/` |
-| CSP | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`<br/>`Knowledge/02-design-patterns/`<br/>`Knowledge/09-anti-patterns/` |
+| CSP | `Flink/02-core/checkpoint-mechanism-deep-dive.md`<br/>`Knowledge/02-design-patterns/`<br/>`Knowledge/09-anti-patterns/` |
 | CSE | `Struct/01-foundations/`<br/>`Struct/02-properties/`<br/>`Flink/06-formal-verification/` |
 
 ### 5.2 推荐书籍
@@ -239,3 +239,4 @@ graph LR
 ---
 
 *本认证体系基于 AnalysisDataFlow 项目知识体系构建，持续更新迭代中。*
+

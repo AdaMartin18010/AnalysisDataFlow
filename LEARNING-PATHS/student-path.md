@@ -1,4 +1,4 @@
-# 学生学习路径
+﻿# 学生学习路径
 
 > **难度级别**: 初级 | **预计时长**: 4-6周 | **目标受众**: 计算机专业学生、转行者
 
@@ -64,7 +64,7 @@
 
 **推荐文档**:
 
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
 - [Knowledge/98-exercises/exercise-02-flink-basics.md](../Knowledge/98-exercises/exercise-02-flink-basics.md)
@@ -275,3 +275,4 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
+

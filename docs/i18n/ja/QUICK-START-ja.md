@@ -1,4 +1,4 @@
-# AnalysisDataFlow クイックスタートガイド
+﻿# AnalysisDataFlow クイックスタートガイド
 
 > **5分でプロジェクトを理解 | 役割別カスタムパス | クイック問題索引**
 >
@@ -114,7 +114,7 @@ Day 5: アーキテクチャ決定
 Week 1: クイックスタート
 ├── Day 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
 │   └── Flink定位と優位性
-├── Day 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Day 2-3: Flink/02-core/time-semantics-and-watermark.md
 │   └── イベント時間、Watermarkメカニズム
 ├── Day 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
 │   └── イベント時間処理パターン
@@ -122,11 +122,11 @@ Week 1: クイックスタート
     └── Kafka統合ベストプラクティス
 
 Week 2: 核心メカニズム深化
-├── Day 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+├── Day 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 │   └── Checkpointメカニズム、障害復旧
-├── Day 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+├── Day 3: Flink/02-core/exactly-once-end-to-end.md
 │   └── Exactly-Once実装原理
-├── Day 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+├── Day 4: Flink/02-core/backpressure-and-flow-control.md
 │   └── バックプレッシャー処理とフロー制御
 └── Day 5: Flink/06-engineering/performance-tuning-guide.md
     └── パフォーマンスチューニング実践
@@ -168,3 +168,4 @@ grep -r "Thm-F-02" Flink/
 ---
 
 *最終更新: 2026-04-11 | 日本語版翻訳完了*
+

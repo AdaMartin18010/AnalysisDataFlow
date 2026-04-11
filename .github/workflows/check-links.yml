@@ -1,0 +1,756 @@
+# Link Checker - 链接验证工作流
+#
+# 触发条件:
+#   - push 到 main 分支
+#   - pull_request 创建/更新
+#   - 定时每日检查 (外部链接)
+#   - 手动触发
+#
+# 任务:
+#   1. 内部链接验证 (相对路径)
+#   2. 交叉引用验证 (定理引用)
+#   3. 外部链接健康检查
+#   4. 锚点链接验证
+#   5. 生成链接健康报告
+
+name: Link Check
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+  schedule:
+    # 每天凌晨 2:00 UTC (北京时间上午10:00)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - internal      # 仅内部链接
+          - external      # 仅外部链接
+          - cross-ref     # 仅交叉引用
+          - anchors       # 仅锚点链接
+          - all           # 全部检查
+      fail_threshold:
+        description: '失败阈值 (%)'
+        required: true
+        default: '95'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.11'
+  CHECK_TYPE: ${{ github.event.inputs.check_type || 'all' }}
+  FAIL_THRESHOLD: ${{ github.event.inputs.fail_threshold || '95' }}
+
+jobs:
+  # ============ 任务1: 变更检测 ============
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      markdown_changed: ${{ steps.filter.outputs.markdown_changed }}
+      changed_files: ${{ steps.filter.outputs.changed_files }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "markdown_changed=true" >> $GITHUB_OUTPUT
+            echo "changed_files=all" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD || true)
+          else
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD || true)
+          fi
+
+          echo "Changed files:"
+          echo "$changed_files"
+
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          if echo "$changed_files" | grep -q '\.md$'; then
+            echo "markdown_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "markdown_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ============ 任务2: 内部链接验证 ============
+  internal-links:
+    name: Internal Links Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.markdown_changed == 'true' ||
+      env.CHECK_TYPE == 'internal' ||
+      env.CHECK_TYPE == 'all' ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run internal link checker
+        run: |
+          mkdir -p reports
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          # 链接模式
+          LINK_PATTERN = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+          
+          stats = {
+              'total_links': 0,
+              'valid_links': 0,
+              'broken_links': 0,
+              'skipped_links': 0,
+              'errors': []
+          }
+
+          # 收集所有文档
+          all_docs = set()
+          doc_dirs = ['Struct', 'Knowledge', 'Flink', 'visuals', 'tutorials', 'docs', 'en']
+          
+          for directory in doc_dirs:
+              if not Path(directory).exists():
+                  continue
+              for md_file in Path(directory).rglob('*.md'):
+                  rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                  all_docs.add(rel_path)
+
+          # 检查每个文档中的链接
+          for doc_path in sorted(all_docs):
+              try:
+                  content = Path(doc_path).read_text(encoding='utf-8')
+                  doc_dir = Path(doc_path).parent
+                  
+                  for match in LINK_PATTERN.finditer(content):
+                      link_text = match.group(1)
+                      link_target = match.group(2)
+                      stats['total_links'] += 1
+
+                      # 跳过外部链接
+                      if link_target.startswith(('http://', 'https://', 'mailto:', 'tel:')):
+                          stats['skipped_links'] += 1
+                          continue
+
+                      # 处理锚点链接
+                      if link_target.startswith('#'):
+                          stats['valid_links'] += 1
+                          continue
+
+                      # 分离路径和锚点
+                      target_parts = link_target.split('#')
+                      target_path = target_parts[0]
+                      anchor = target_parts[1] if len(target_parts) > 1 else None
+
+                      if not target_path:
+                          # 纯锚点链接，验证锚点是否存在
+                          if anchor:
+                              heading_pattern = re.compile(rf'^#+\s*{re.escape(anchor.replace("-", " "))}\s*$', re.IGNORECASE | re.MULTILINE)
+                              if heading_pattern.search(content) or f'id="{anchor}"' in content:
+                                  stats['valid_links'] += 1
+                              else:
+                                  stats['broken_links'] += 1
+                                  stats['errors'].append({
+                                      'file': doc_path,
+                                      'link_text': link_text,
+                                      'target': link_target,
+                                      'error': 'Anchor not found'
+                                  })
+                          else:
+                              stats['valid_links'] += 1
+                          continue
+
+                      # 解析目标路径
+                      if target_path.startswith('/'):
+                          full_path = target_path.lstrip('/')
+                      else:
+                          full_path = str((doc_dir / target_path).resolve().relative_to(Path('.').resolve())).replace('\\', '/')
+
+                      # 检查文件是否存在
+                      if full_path in all_docs or Path(full_path).exists():
+                          stats['valid_links'] += 1
+                      else:
+                          stats['broken_links'] += 1
+                          stats['errors'].append({
+                              'file': doc_path,
+                              'link_text': link_text,
+                              'target': link_target,
+                              'resolved_path': full_path,
+                              'error': 'File not found'
+                          })
+
+              except Exception as e:
+                  print(f"Warning: Could not process {doc_path}: {e}")
+
+          # 生成报告
+          success_rate = (stats['valid_links'] / (stats['total_links'] - stats['skipped_links']) * 100) if (stats['total_links'] - stats['skipped_links']) > 0 else 100
+
+          report_lines = [
+              "# Internal Link Check Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Links | {stats['total_links']} |",
+              f"| Valid Links | {stats['valid_links']} |",
+              f"| Broken Links | {stats['broken_links']} |",
+              f"| Skipped (External) | {stats['skipped_links']} |",
+              f"| Success Rate | {success_rate:.1f}% |",
+              ""
+          ]
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## ❌ Broken Internal Links",
+                  "",
+                  "| File | Link Text | Target | Error |",
+                  "|------|-----------|--------|-------|"
+              ])
+              
+              for error in stats['errors'][:50]:
+                  report_lines.append(
+                      f"| {error['file']} | {error['link_text'][:30]}... | `{error['target']}` | {error['error']} |"
+                      if len(error['link_text']) > 30
+                      else f"| {error['file']} | {error['link_text']} | `{error['target']}` | {error['error']} |"
+                  )
+              
+              if len(stats['errors']) > 50:
+                  report_lines.append(f"| ... | ... | ... | *and {len(stats['errors']) - 50} more* |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/internal-link-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/internal-link-results.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'total': stats['total_links'],
+                      'valid': stats['valid_links'],
+                      'broken': stats['broken_links'],
+                      'skipped': stats['skipped_links'],
+                      'success_rate': success_rate
+                  },
+                  'errors': stats['errors']
+              }, f, indent=2)
+
+          print(f"Internal Link Check:")
+          print(f"  Total: {stats['total_links']}")
+          print(f"  Valid: {stats['valid_links']}")
+          print(f"  Broken: {stats['broken_links']}")
+          print(f"  Success rate: {success_rate:.1f}%")
+
+          threshold = float('${{ env.FAIL_THRESHOLD }}')
+          if success_rate < threshold:
+              print(f"❌ Success rate {success_rate:.1f}% below threshold {threshold}%")
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload internal link report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: internal-link-report
+          path: |
+            reports/internal-link-report.md
+            reports/internal-link-results.json
+
+  # ============ 任务3: 交叉引用验证 ============
+  cross-references:
+    name: Cross-Reference Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      env.CHECK_TYPE == 'cross-ref' ||
+      env.CHECK_TYPE == 'all' ||
+      github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run cross-reference checker
+        run: |
+          mkdir -p reports
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          # 定理/定义引用模式
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          
+          stats = {
+              'total_refs': 0,
+              'valid_refs': 0,
+              'broken_refs': 0,
+              'errors': []
+          }
+
+          # 收集所有定理定义
+          all_theorems = {}  # theorem_id -> {file, line}
+          
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      lines = content.split('\n')
+                      
+                      for line_num, line in enumerate(lines, 1):
+                          for match in THEOREM_PATTERN.findall(line):
+                              theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                              
+                              # 检查是否是定义（在定义章节或作为标题）
+                              is_definition = (
+                                  '## 1.' in line or  # 概念定义章节
+                                  '概念定义' in line or
+                                  line.strip().startswith('#') or
+                                  'Definition' in line or
+                                  '定理' in line
+                              )
+                              
+                              if is_definition or theorem_id not in all_theorems:
+                                  all_theorems[theorem_id] = {
+                                      'file': rel_path,
+                                      'line': line_num
+                                  }
+                  
+                  except Exception as e:
+                      pass
+
+          # 验证引用
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      
+                      for match in THEOREM_PATTERN.findall(content):
+                          theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                          stats['total_refs'] += 1
+                          
+                          if theorem_id in all_theorems:
+                              stats['valid_refs'] += 1
+                          else:
+                              stats['broken_refs'] += 1
+                              stats['errors'].append({
+                                  'file': rel_path,
+                                  'theorem': theorem_id,
+                                  'error': 'Theorem not defined'
+                              })
+                  
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          success_rate = (stats['valid_refs'] / stats['total_refs'] * 100) if stats['total_refs'] > 0 else 100
+
+          report_lines = [
+              "# Cross-Reference Check Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total References | {stats['total_refs']} |",
+              f"| Valid References | {stats['valid_refs']} |",
+              f"| Broken References | {stats['broken_refs']} |",
+              f"| Success Rate | {success_rate:.1f}% |",
+              f"| Total Defined Theorems | {len(all_theorems)} |",
+              ""
+          ]
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## ❌ Broken Cross-References",
+                  "",
+                  "These theorems are referenced but not defined:",
+                  "",
+                  "| File | Theorem | Error |",
+                  "|------|---------|-------|"
+              ])
+              
+              # 按定理分组
+              errors_by_theorem = defaultdict(list)
+              for error in stats['errors']:
+                  errors_by_theorem[error['theorem']].append(error['file'])
+              
+              for theorem, files in sorted(errors_by_theorem.items())[:30]:
+                  files_str = ', '.join(files[:3])
+                  if len(files) > 3:
+                      files_str += f' (+{len(files)-3} more)'
+                  report_lines.append(f"| {files_str} | `{theorem}` | Not defined |")
+              
+              if len(errors_by_theorem) > 30:
+                  report_lines.append(f"| ... | ... | *and {len(errors_by_theorem) - 30} more* |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/cross-reference-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/cross-reference-results.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'total_refs': stats['total_refs'],
+                      'valid_refs': stats['valid_refs'],
+                      'broken_refs': stats['broken_refs'],
+                      'success_rate': success_rate,
+                      'defined_theorems': len(all_theorems)
+                  },
+                  'errors': stats['errors']
+              }, f, indent=2)
+
+          print(f"Cross-Reference Check:")
+          print(f"  Total refs: {stats['total_refs']}")
+          print(f"  Valid: {stats['valid_refs']}")
+          print(f"  Broken: {stats['broken_refs']}")
+          print(f"  Success rate: {success_rate:.1f}%")
+
+          if stats['broken_refs'] > 0:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload cross-reference report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-reference-report
+          path: |
+            reports/cross-reference-report.md
+            reports/cross-reference-results.json
+
+  # ============ 任务4: 外部链接检查 ============
+  external-links:
+    name: External Links Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      github.event_name == 'schedule' ||
+      env.CHECK_TYPE == 'external' ||
+      env.CHECK_TYPE == 'all' ||
+      github.event_name == 'workflow_dispatch'
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -q aiohttp
+
+      - name: Cache link check results
+        uses: actions/cache@v4
+        with:
+          path: .link-checker-cache
+          key: link-checker-${{ github.run_id }}
+          restore-keys: |
+            link-checker-
+
+      - name: Run external link checker
+        run: |
+          mkdir -p reports
+          if [ -f scripts/link-health-checker.py ]; then
+            python scripts/link-health-checker.py \
+              --path . \
+              --output reports/external-link-report.md \
+              --json reports/external-link-results.json \
+              --timeout 30 \
+              --retries 2 \
+              --concurrent 30
+          else
+            echo "External link checker not found, using built-in check"
+            python << 'PYEOF'
+          import re
+          import asyncio
+          import aiohttp
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+          from urllib.parse import urlparse
+
+          # 外部链接模式
+          EXTERNAL_LINK_PATTERN = re.compile(r'\[([^\]]+)\]\((https?://[^\s\)]+)\)')
+          
+          stats = {
+              'total_links': 0,
+              'ok_links': 0,
+              'broken_links': 0,
+              'errors': []
+          }
+
+          # 收集外部链接
+          external_links = defaultdict(list)  # url -> [(file, text)]
+          
+          for directory in ['.', 'Struct', 'Knowledge', 'Flink', 'docs']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  if 'node_modules' in str(md_file):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      
+                      for match in EXTERNAL_LINK_PATTERN.finditer(content):
+                          link_text = match.group(1)
+                          url = match.group(2)
+                          external_links[url].append((rel_path, link_text))
+                  except Exception:
+                      pass
+
+          # 限制检查数量（避免超时）
+          urls_to_check = list(external_links.keys())[:100]
+          
+          async def check_url(session, url):
+              try:
+                  async with session.head(url, timeout=aiohttp.ClientTimeout(total=10), allow_redirects=True) as resp:
+                      if resp.status < 400:
+                          return url, 'ok', resp.status
+                      return url, 'error', resp.status
+              except Exception as e:
+                  return url, 'exception', str(e)[:50]
+
+          async def main():
+              headers = {
+                  'User-Agent': 'Mozilla/5.0 (compatible; AnalysisDataFlow-Bot/1.0)'
+              }
+              
+              async with aiohttp.ClientSession(headers=headers) as session:
+                  tasks = [check_url(session, url) for url in urls_to_check]
+                  results = await asyncio.gather(*tasks, return_exceptions=True)
+                  
+                  for result in results:
+                      if isinstance(result, Exception):
+                          continue
+                      
+                      url, status, code = result
+                      stats['total_links'] += 1
+                      
+                      if status == 'ok':
+                          stats['ok_links'] += 1
+                      else:
+                          stats['broken_links'] += 1
+                          for file, text in external_links[url]:
+                              stats['errors'].append({
+                                  'url': url,
+                                  'file': file,
+                                  'status': code
+                              })
+
+          asyncio.run(main())
+
+          # 生成报告
+          health_rate = (stats['ok_links'] / stats['total_links'] * 100) if stats['total_links'] > 0 else 100
+
+          report_lines = [
+              "# External Link Health Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| URLs Checked | {stats['total_links']} |",
+              f"| Healthy | {stats['ok_links']} |",
+              f"| Broken | {stats['broken_links']} |",
+              f"| Health Rate | {health_rate:.1f}% |",
+              f"| Total Unique URLs | {len(external_links)} |",
+              ""
+          ]
+
+          if stats['errors']:
+              report_lines.extend([
+                  "## ❌ Broken External Links",
+                  "",
+                  "| URL | File | Status |",
+                  "|-----|------|--------|"
+              ])
+              
+              for error in stats['errors'][:30]:
+                  url_display = error['url'][:50] + '...' if len(error['url']) > 50 else error['url']
+                  report_lines.append(f"| {url_display} | {error['file']} | {error['status']} |")
+              
+              if len(stats['errors']) > 30:
+                  report_lines.append(f"| ... | ... | *and {len(stats['errors']) - 30} more* |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/external-link-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/external-link-results.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'checked': stats['total_links'],
+                      'healthy': stats['ok_links'],
+                      'broken': stats['broken_links'],
+                      'health_rate': health_rate,
+                      'total_unique': len(external_links)
+                  },
+                  'errors': stats['errors']
+              }, f, indent=2)
+
+          print(f"External Link Check:")
+          print(f"  Checked: {stats['total_links']}/{len(external_links)}")
+          print(f"  Healthy: {stats['ok_links']}")
+          print(f"  Broken: {stats['broken_links']}")
+          print(f"  Health rate: {health_rate:.1f}%")
+          PYEOF
+          fi
+        continue-on-error: true
+
+      - name: Upload external link report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-link-report
+          path: |
+            reports/external-link-report.md
+            reports/external-link-results.json
+
+  # ============ 任务5: 汇总报告 ============
+  link-check-summary:
+    name: Link Check Summary
+    runs-on: ubuntu-latest
+    needs: [detect-changes, internal-links, cross-references, external-links]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 🔗 Link Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Check Type**: ${{ env.CHECK_TYPE }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.internal-links.result }}" == "success" ]; then
+            echo "| Internal Links | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.internal-links.result }}" == "skipped" ]; then
+            echo "| Internal Links | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Internal Links | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.cross-references.result }}" == "success" ]; then
+            echo "| Cross-References | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.cross-references.result }}" == "skipped" ]; then
+            echo "| Cross-References | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Cross-References | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.external-links.result }}" == "success" ]; then
+            echo "| External Links | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.external-links.result }}" == "skipped" ]; then
+            echo "| External Links | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| External Links | ⚠️ Warning (Non-blocking) |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for failures
+        if: |
+          needs.internal-links.result == 'failure' ||
+          needs.cross-references.result == 'failure'
+        run: |
+          echo "❌ Link validation failed"
+          exit 1

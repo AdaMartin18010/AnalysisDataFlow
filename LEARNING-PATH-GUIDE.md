@@ -1,4 +1,4 @@
-# AnalysisDataFlow 学习路径指南
+﻿# AnalysisDataFlow 学习路径指南
 
 > **版本**: v1.0 | **更新日期**: 2026-04-03
 
@@ -165,12 +165,12 @@ python .vscode/generate-learning-path.py
 
 | 主题 | 推荐文档 |
 |------|----------|
-| Checkpoint | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` |
-| Exactly-Once | `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` |
+| Checkpoint | `Flink/02-core/checkpoint-mechanism-deep-dive.md` |
+| Exactly-Once | `Flink/02-core/exactly-once-semantics-deep-dive.md` |
 | Watermark | `Struct/02-properties/02.03-watermark-monotonicity.md` |
-| 时间语义 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` |
+| 时间语义 | `Flink/02-core/time-semantics-and-watermark.md` |
 | 状态管理 | `Knowledge/02-design-patterns/pattern-stateful-computation.md` |
-| 反压 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` |
+| 反压 | `Flink/02-core/backpressure-and-flow-control.md` |
 | 技术选型 | `Knowledge/04-technology-selection/engine-selection-guide.md` |
 | 设计模式 | `Knowledge/02-design-patterns/` |
 | 反模式 | `Knowledge/09-anti-patterns/` |
@@ -272,3 +272,4 @@ python .vscode/generate-learning-path.py
 ---
 
 **祝您学习顺利！如有问题，欢迎反馈。**
+

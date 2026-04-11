@@ -1,0 +1,426 @@
+(* ============================================================================
+ * π-演算: 负载均衡器 (Load Balancer)
+ * ============================================================================
+ *
+ * 本示例演示如何使用 π-演算建模分布式负载均衡系统。
+ *
+ * 核心组件:
+ * - LoadBalancer: 接收请求并分发给后端服务器
+ * - BackendServer: 处理实际请求的后端服务
+ * - HealthChecker: 监控后端健康状态
+ * - Client: 发送请求的客户端
+ *
+ * 形式化模型:
+ * LoadBalancer(front, backends, strategy) = 
+ *   front(req, reply).(
+ *     select_backend(strategy, backends) = backend;
+ *     backend̄⟨req, reply⟩.LoadBalancer(front, backends, strategy)
+ *   )
+ *
+ * BackendServer(id, listen) = 
+ *   !listen(req, reply).(process(req, result).replȳ⟨result⟩.BackendServer(id, listen))
+ *
+ * 负载均衡策略:
+ * - RoundRobin: 轮询
+ * - Random: 随机
+ * - LeastConn: 最少连接
+ * - Weighted: 加权
+ *
+ * 关键性质:
+ * 1. 透明性: 客户端感知不到后端切换
+ * 2. 可用性: 自动剔除故障后端
+ * 3. 可扩展性: 动态添加/移除后端
+ * ============================================================================ *)
+
+(* ----------------------------------------------------------------------------
+ * 类型定义
+ * ---------------------------------------------------------------------------- *)
+
+type server_id = int
+type request = { req_id: int; payload: string; timestamp: float }
+type response = { resp_id: int; result: string; server: server_id }
+
+(* 后端服务器状态 *)
+type backend = {
+  id: server_id;
+  channel: string;      (* 服务器监听通道 *)
+  weight: int;          (* 权重 *)
+  healthy: bool ref;    (* 健康状态 *)
+  conns: int ref;       (* 当前连接数 *)
+}
+
+(* 负载均衡策略 *)
+type lb_strategy = 
+  | RoundRobin
+  | Random
+  | LeastConnections
+  | WeightedRoundRobin
+
+(* 控制消息 *)
+type lb_control =
+  | AddBackend of backend
+  | RemoveBackend of server_id
+  | HealthStatus of server_id * bool
+  | GetStats of string  (* 回复通道 *)
+
+(* ----------------------------------------------------------------------------
+ * 负载均衡器
+ *
+ * LoadBalancer(front, backends, strategy, rr_counter) =
+ *   !front(req, reply).(
+ *     νbackend.(
+ *       select_backend(strategy, backends, rr_counter) = backend;
+ *       incr(backend.conns);
+ *       backend̄⟨req, reply⟩;
+ *       wait_reply(reply);
+ *       decr(backend.conns);
+ *       LoadBalancer(front, backends, strategy, rr_counter+1)
+ *     )
+ *   )
+ *   | !ctrl(cmd).(handle_control(cmd).LoadBalancer(...))
+ *
+ * 注意: 使用复制算子 ! 实现并发处理多个请求
+ * ---------------------------------------------------------------------------- *)
+let rec load_balancer 
+    (front_channel: string) 
+    (backends: backend list ref)
+    (strategy: lb_strategy)
+    (rr_counter: int ref)
+    (control: string) =
+    
+  (* 使用选择算子实现并发等待 *)
+  select [
+    (* 分支1: 接收客户端请求 *)
+    (fun () ->
+      match input front_channel with
+      | Req(req, reply_ch) ->
+          (* 选择后端服务器 *)
+          match select_backend !backends strategy rr_counter with
+          | Some backend when !(backend.healthy) ->
+              incr backend.conns;
+              
+              (* 转发请求到后端 *)
+              output backend.channel (Fwd(req, reply_ch));
+              print_endline ("[LB] Request " ^ string_of_int req.req_id ^ 
+                           " -> Backend " ^ string_of_int backend.id);
+              
+              (* 异步等待响应, 不阻塞 *)
+              spawn (fun () ->
+                match input reply_ch with
+                | Resp(response) ->
+                    decr backend.conns;
+                    print_endline ("[LB] Response from Backend " ^ 
+                                 string_of_int response.server)
+                | _ -> decr backend.conns
+              );
+              
+              (* 轮询计数器更新 *)
+              if strategy = RoundRobin || strategy = WeightedRoundRobin then
+                rr_counter := (!rr_counter + 1) mod List.length !backends
+              
+          | _ ->
+              (* 无可用后端 *)
+              output reply_ch (Error("No healthy backend available"))
+      | _ -> ()
+    );
+    
+    (* 分支2: 接收控制命令 *)
+    (fun () ->
+      match input control with
+      | AddBackend(backend) ->
+          backends := backend :: !backends;
+          print_endline ("[LB] Added backend " ^ string_of_int backend.id)
+          
+      | RemoveBackend(id) ->
+          backends := List.filter (fun b -> b.id <> id) !backends;
+          print_endline ("[LB] Removed backend " ^ string_of_int id)
+          
+      | HealthStatus(id, status) ->
+          List.iter (fun b ->
+            if b.id = id then b.healthy := status
+          ) !backends;
+          print_endline ("[LB] Backend " ^ string_of_int id ^ 
+                       " health: " ^ string_of_bool status)
+          
+      | GetStats(reply_ch) ->
+          let stats = List.map (fun b ->
+            (b.id, !(b.healthy), !(b.conns))
+          ) !backends in
+          output reply_ch (Stats(stats))
+    )
+  ];
+  
+  (* 递归继续 *)
+  load_balancer front_channel backends strategy rr_counter control
+
+(* 后端选择策略 *)
+and select_backend backends strategy rr_counter =
+  let healthy = List.filter (fun b -> !(b.healthy)) backends in
+  if healthy = [] then None
+  else match strategy with
+  | RoundRobin ->
+      (* 简单轮询 *)
+      let idx = !rr_counter mod List.length healthy in
+      Some (List.nth healthy idx)
+      
+  | Random ->
+      (* 随机选择 *)
+      let idx = Random.int (List.length healthy) in
+      Some (List.nth healthy idx)
+      
+  | LeastConnections ->
+      (* 最少连接 *)
+      Some (List.hd (List.sort (fun a b -> 
+        compare !(a.conns) !(b.conns)
+      ) healthy))
+      
+  | WeightedRoundRobin ->
+      (* 加权轮询 (简化实现) *)
+      let total_weight = List.fold_left (fun acc b -> acc + b.weight) 0 healthy in
+      let pos = !rr_counter mod total_weight in
+      let rec find pos = function
+        | [] -> List.hd healthy
+        | b::bs ->
+            if pos < b.weight then b
+            else find (pos - b.weight) bs
+      in
+      Some (find pos healthy)
+
+(* 输入消息类型 *)
+and input_msg = 
+  | Req of request * string    (* 请求和回复通道 *)
+  | Fwd of request * string    (* 转发的请求 *)
+  | Resp of response
+  | Error of string
+  | Stats of (server_id * bool * int) list
+
+(* ----------------------------------------------------------------------------
+ * 后端服务器
+ *
+ * BackendServer(id, listen, process_fn) =
+ *   !listen(req, reply).(
+ *     νresult.(
+ *       process_fn(req, result);
+ *       replȳ⟨Resp(result, id)⟩;
+ *       BackendServer(id, listen, process_fn)
+ *     )
+ *   )
+ *
+ * 使用复制算子 ! 实现并发处理
+ * ---------------------------------------------------------------------------- *)
+let rec backend_server 
+    (id: server_id) 
+    (listen_ch: string)
+    (process_fn: request -> string) =
+    
+  (* 复制算子: 无限循环处理请求 *)
+  replicate (fun () ->
+    match input listen_ch with
+    | Fwd(req, reply_ch) ->
+        print_endline ("[Backend " ^ string_of_int id ^ "] Processing request " ^ 
+                      string_of_int req.req_id);
+        
+        (* 模拟处理时间 *)
+        let processing_time = Random.float 2.0 in
+        Unix.sleep (int_of_float processing_time);
+        
+        (* 生成结果 *)
+        let result = process_fn req in
+        let response = { resp_id = req.req_id; result = result; server = id } in
+        
+        (* 发送响应 *)
+        output reply_ch (Resp(response));
+        print_endline ("[Backend " ^ string_of_int id ^ "] Completed request " ^ 
+                      string_of_int req.req_id)
+        
+    | _ -> print_endline "[Backend] Invalid message"
+  )
+
+(* ----------------------------------------------------------------------------
+ * 健康检查器
+ *
+ * HealthChecker(backends, interval) =
+ *   sleep(interval);
+ *   foreach backend in backends:
+ *     check_health(backend);
+ *   HealthChecker(backends, interval)
+ *
+ * 定期检测后端健康状态
+ * ---------------------------------------------------------------------------- *)
+let rec health_checker 
+    (backends: backend list ref)
+    (interval: int)
+    (control_ch: string) =
+    
+  Unix.sleep interval;
+  
+  List.iter (fun backend ->
+    (* 模拟健康检查 *)
+    let healthy = simulate_health_check backend in
+    
+    (* 通知负载均衡器 *)
+    output control_ch (HealthStatus(backend.id, healthy));
+    
+    print_endline ("[HealthChecker] Backend " ^ string_of_int backend.id ^ 
+                 " check: " ^ (if healthy then "HEALTHY" else "UNHEALTHY"))
+  ) !backends;
+  
+  health_checker backends interval control_ch
+
+and simulate_health_check backend =
+  (* 模拟: 90% 概率健康 *)
+  Random.float 1.0 < 0.9
+
+(* ----------------------------------------------------------------------------
+ * 客户端
+ *
+ * Client(lb_front, num_requests) =
+ *   for i = 1 to num_requests:
+ *     νreply.(lb_front̄⟨Req(i, data), reply⟩ | reply(resp).process(resp))
+ * ---------------------------------------------------------------------------- *)
+let client (lb_front: string) (num_requests: int) =
+  for i = 1 to num_requests do
+    (* 创建私有回复通道 *)
+    let reply_ch = fresh_channel ("reply_" ^ string_of_int i) in
+    
+    (* 构造请求 *)
+    let req = {
+      req_id = i;
+      payload = "Request data #" ^ string_of_int i;
+      timestamp = Unix.time ()
+    } in
+    
+    (* 发送请求 *)
+    output lb_front (Req(req, reply_ch));
+    print_endline ("[Client] Sent request " ^ string_of_int i);
+    
+    (* 等待响应 *)
+    spawn (fun () ->
+      match input reply_ch with
+      | Resp(resp) ->
+          let latency = Unix.time () -. req.timestamp in
+          print_endline ("[Client] Got response for " ^ string_of_int i ^
+                       " from Backend " ^ string_of_int resp.server ^
+                       " (latency: " ^ string_of_float latency ^ "s)")
+      | Error(msg) ->
+          print_endline ("[Client] Request " ^ string_of_int i ^ " failed: " ^ msg)
+      | _ -> ()
+    );
+    
+    (* 请求间隔 *)
+    Unix.sleep 1
+  done
+
+(* ----------------------------------------------------------------------------
+ * 辅助函数
+ * ---------------------------------------------------------------------------- *)
+
+and fresh_channel prefix = prefix ^ "_" ^ string_of_int (Random.int 100000)
+
+and output ch msg = 
+  (* 实际实现中发送消息到通道 *)
+  ()
+
+and input ch = 
+  (* 实际实现中从通道接收消息 *)
+  Req({req_id=0; payload=""; timestamp=0.0}, "")
+
+and select branches =
+  (* 非确定性选择: 选择第一个就绪的分支 *)
+  List.hd branches ()
+
+and replicate f =
+  while true do f () done
+
+and spawn f =
+  ignore (Thread.create f ())
+
+and incr r = r := !r + 1
+and decr r = r := !r - 1
+
+(* ----------------------------------------------------------------------------
+ * 系统组合
+ *
+ * System = (νfront, ctrl)(
+ *            LoadBalancer(front, [b1,b2,b3], RoundRobin, 0, ctrl)
+ *            | BackendServer(1, ch1, handler)
+ *            | BackendServer(2, ch2, handler)
+ *            | BackendServer(3, ch3, handler)
+ *            | HealthChecker([b1,b2,b3], 5, ctrl)
+ *            | Client(front, 10)
+ *          )
+ * ---------------------------------------------------------------------------- *)
+let lb_system () =
+  print_endline "=== Load Balancer System Starting ===";
+  
+  (* 创建通道 *)
+  let front_ch = fresh_channel "frontend" in
+  let control_ch = fresh_channel "control" in
+  
+  (* 创建后端服务器 *)
+  let backends = ref [] in
+  
+  for i = 1 to 3 do
+    let ch = fresh_channel ("backend_" ^ string_of_int i) in
+    let backend = {
+      id = i;
+      channel = ch;
+      weight = i;  (* 不同权重 *)
+      healthy = ref true;
+      conns = ref 0
+    } in
+    backends := backend :: !backends;
+    
+    (* 启动后端服务器 *)
+    spawn (fun () ->
+      backend_server i ch (fun req -> "Processed: " ^ req.payload)
+    )
+  done;
+  
+  (* 启动负载均衡器 *)
+  let rr_counter = ref 0 in
+  spawn (fun () ->
+    load_balancer front_ch backends RoundRobin rr_counter control_ch
+  );
+  
+  (* 启动健康检查器 *)
+  spawn (fun () ->
+    health_checker backends 5 control_ch
+  );
+  
+  Unix.sleep 1;
+  
+  (* 启动客户端 *)
+  client front_ch 10;
+  
+  Unix.sleep 20;
+  print_endline "=== Load Balancer System Demo Complete ==="
+
+(* ----------------------------------------------------------------------------
+ * 执行示例
+ * ---------------------------------------------------------------------------- *)
+(*
+# lb_system ();;
+=== Load Balancer System Starting ===
+[LB] Added backend 1
+[LB] Added backend 2
+[LB] Added backend 3
+[Backend 1] Waiting for requests
+[Backend 2] Waiting for requests
+[Backend 3] Waiting for requests
+[HealthChecker] Starting health checks
+[Client] Sent request 1
+[LB] Request 1 -> Backend 1
+[Backend 1] Processing request 1
+[Client] Sent request 2
+[LB] Request 2 -> Backend 2
+[Backend 2] Processing request 2
+...
+[Client] Got response for 1 from Backend 1 (latency: 0.523s)
+[HealthChecker] Backend 1 check: HEALTHY
+[HealthChecker] Backend 2 check: HEALTHY
+[HealthChecker] Backend 3 check: UNHEALTHY
+[LB] Backend 3 health: false
+...
+=== Load Balancer System Demo Complete ===
+*)

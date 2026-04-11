@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全文搜索 - AnalysisDataFlow</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+</head>
+<body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-stream"></i>
+                <span>AnalysisDataFlow</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3><i class="fas fa-home"></i> 首页</h3>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-chart-line"></i> 项目概览</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-project-diagram"></i> 推导链</h3>
+                <ul>
+                    <li><a href="../chains/index.html"><i class="fas fa-list"></i> 全部推导链</a></li>
+                    <li><a href="../chains/checkpoint.html"><i class="fas fa-save"></i> Checkpoint 正确性</a></li>
+                    <li><a href="../chains/exactly-once.html"><i class="fas fa-check-double"></i> Exactly-Once</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-network-wired"></i> 可视化</h3>
+                <ul>
+                    <li><a href="../graph/index.html"><i class="fas fa-project-diagram"></i> 交互式依赖图</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-search"></i> 工具</h3>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-search"></i> 全文搜索</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <span>v3.6 | 100% Complete</span>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="top-header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span class="project-name">AnalysisDataFlow</span>
+                <span class="separator">/</span>
+                <span class="page-title">全文搜索</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="content-wrapper">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索定理、定义、引理... (例如: Thm-S-17-01, Checkpoint, Exactly-Once)">
+                </div>
+                
+                <div class="search-filters">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="Thm">定理 (Thm)</button>
+                    <button class="filter-btn" data-filter="Def">定义 (Def)</button>
+                    <button class="filter-btn" data-filter="Lemma">引理 (Lemma)</button>
+                    <button class="filter-btn" data-filter="Prop">命题 (Prop)</button>
+                    <button class="filter-btn" data-filter="Cor">推论 (Cor)</button>
+                </div>
+                
+                <div class="search-results" id="searchResults">
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>输入关键词开始搜索</p>
+                        <p style="font-size: 0.85rem; margin-top: 8px;">支持模糊匹配，可搜索编号、名称或描述</p>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="features" style="margin-top: 48px;">
+                <h2><i class="fas fa-lightbulb"></i> 搜索提示</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h3>按编号搜索</h3>
+                        <p>直接输入完整编号如 Thm-S-17-01</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <h3>按名称搜索</h3>
+                        <p>输入定理/定义名称关键词</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h3>类型筛选</h3>
+                        <p>使用过滤器按类型筛选结果</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3>模糊匹配</h3>
+                        <p>支持拼写容错和相似匹配</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

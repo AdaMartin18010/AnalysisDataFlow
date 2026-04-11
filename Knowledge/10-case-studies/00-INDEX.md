@@ -373,7 +373,7 @@ graph LR
 ## 参考资源
 
 - [项目根目录 CASE-STUDIES.md](../../CASE-STUDIES.md) - 案例概览
-- [Flink/07-case-studies/](../../Flink/09-practices/09.01-case-studies/) - Flink专项案例
+- [Flink/09-practices/09.01-case-studies/](../../Flink/09-practices/09.01-case-studies/) - Flink专项案例
 - [Knowledge/03-business-patterns/](../../Knowledge/03-business-patterns/) - 业务模式模式库
 - [Knowledge/02-design-patterns/](../../Knowledge/02-design-patterns/) - 设计模式库
 

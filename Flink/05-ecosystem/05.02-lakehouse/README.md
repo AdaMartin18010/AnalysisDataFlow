@@ -1,4 +1,4 @@
-# Flink/14-lakehouse - 流式湖仓 (Streaming Lakehouse)
+﻿# Flink/14-lakehouse - 流式湖仓 (Streaming Lakehouse)
 
 > **状态**: 已完成 | **最后更新**: 2026-04-02
 
@@ -73,7 +73,7 @@ Databricks 生态绑定 → Delta Lake
 ## 前置依赖
 
 - [Flink/09-language-foundations/04-streaming-lakehouse.md](../../03-api/09-language-foundations/04-streaming-lakehouse.md)
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md)
 
 ---
 
@@ -83,3 +83,4 @@ Databricks 生态绑定 → Delta Lake
 - Apache Paimon: <https://paimon.apache.org/>
 - Delta Lake: <https://delta.io/>
 - Apache Hudi: <https://hudi.apache.org/>
+

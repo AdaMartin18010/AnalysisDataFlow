@@ -1,4 +1,4 @@
-# AnalysisDataFlow 技术架构文档
+﻿# AnalysisDataFlow 技术架构文档
 
 > **版本**: v1.1 | **更新日期**: 2026-04-11 | **状态**: Production | **项目状态**: 100%完成 ✅
 >
@@ -626,7 +626,7 @@ graph TB
 示例:
 - 01.01-unified-streaming-theory.md    (Struct/01-foundation/)
 - 02-design-patterns-overview.md        (Knowledge/02-design-patterns/)
-- checkpoint-mechanism-deep-dive.md     (Flink/02-core-mechanisms/)
+- checkpoint-mechanism-deep-dive.md     (Flink/02-core/)
 ```
 
 ### 4.2 索引系统
@@ -970,3 +970,4 @@ flowchart TD
 ---
 
 *本文档由 AnalysisDataFlow 架构组维护，最后更新: 2026-04-11 | 版本: v1.1 | 状态: 100%完成 ✅*
+

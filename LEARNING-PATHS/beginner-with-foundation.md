@@ -1,4 +1,4 @@
-# 学习路径：有基础入门（2周）
+﻿# 学习路径：有基础入门（2周）
 
 > **所属阶段**: 初学者路径 | **难度等级**: L2-L3 | **预计时长**: 2周（每天3-4小时）
 
@@ -67,9 +67,9 @@ gantt
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
 | 1.1 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | 对比 | 2h | 框架对比分析 |
-| 1.2 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 核心 | 3h | Checkpoint 深度解析 |
-| 1.3 | `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` | 核心 | 2h | Exactly-Once 语义 |
-| 1.4 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | 核心 | 2h | 背压机制 |
+| 1.2 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 核心 | 3h | Checkpoint 深度解析 |
+| 1.3 | `Flink/02-core/exactly-once-semantics-deep-dive.md` | 核心 | 2h | Exactly-Once 语义 |
+| 1.4 | `Flink/02-core/backpressure-and-flow-control.md` | 核心 | 2h | 背压机制 |
 | 1.5 | `Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md` | 迁移 | 2h | 迁移指南 |
 
 ### 实践任务
@@ -115,9 +115,9 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 2.1 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | 核心 | 3h | 状态管理完整指南 |
-| 2.2 | `Flink/02-core-mechanisms/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
-| 2.3 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | 核心 | 2h | 端到端一致性 |
+| 2.1 | `Flink/02-core/flink-state-management-complete-guide.md` | 核心 | 3h | 状态管理完整指南 |
+| 2.2 | `Flink/02-core/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
+| 2.3 | `Flink/02-core/exactly-once-end-to-end.md` | 核心 | 2h | 端到端一致性 |
 | 2.4 | `Knowledge/07-best-practices/07.01-flink-production-checklist.md` | 清单 | 2h | 生产检查清单 |
 
 ### 实践任务
@@ -229,3 +229,4 @@ env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，针对有基础开发者快速入门 |
+

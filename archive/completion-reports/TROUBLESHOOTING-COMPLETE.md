@@ -1,6 +1,6 @@
-# 流计算系统综合故障排查手册
+﻿# 流计算系统综合故障排查手册
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md), [Flink Checkpoint机制深度剖析](./Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [Flink背压与流控机制](./Flink/02-core-mechanisms/backpressure-and-flow-control.md) | **形式化等级**: L3-L4 | **版本**: v1.0 | **更新日期**: 2026-04-04
+> **所属阶段**: Knowledge/ | **前置依赖**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md), [Flink Checkpoint机制深度剖析](./Flink/02-core/checkpoint-mechanism-deep-dive.md), [Flink背压与流控机制](./Flink/02-core/backpressure-and-flow-control.md) | **形式化等级**: L3-L4 | **版本**: v1.0 | **更新日期**: 2026-04-04
 
 ---
 
@@ -1545,3 +1545,4 @@ flowchart LR
 ---
 
 *本文档基于 Apache Flink 1.17+ 版本编写，部分内容适用于其他流计算系统*
+

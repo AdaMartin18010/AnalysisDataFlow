@@ -1,4 +1,4 @@
-# AnalysisDataFlow 项目演示文稿大纲
+﻿# AnalysisDataFlow 项目演示文稿大纲
 
 > **演讲时长**: 33分钟 | **目标受众**: 技术管理者、架构师、流计算工程师 | **版本**: v2.8 (2026-04)
 
@@ -661,11 +661,11 @@ flowchart LR
    ```
    初学者 (2-3周):
    Flink/05-vs-competitors/flink-vs-spark-streaming.md
-   → Flink/02-core-mechanisms/time-semantics-and-watermark.md
+   → Flink/02-core/time-semantics-and-watermark.md
    → Knowledge/02-design-patterns/pattern-event-time-processing.md
 
    进阶工程师 (4-6周):
-   Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+   Flink/02-core/checkpoint-mechanism-deep-dive.md
    → Struct/04-proofs/04.01-flink-checkpoint-correctness.md
    → Knowledge/02-design-patterns/ (全模式深入)
 
@@ -789,3 +789,4 @@ gantt
 *演示文稿大纲版本: v1.0*
 *创建日期: 2026-04-03*
 *适用项目: AnalysisDataFlow v2.8*
+

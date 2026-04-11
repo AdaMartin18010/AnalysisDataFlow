@@ -1,4 +1,4 @@
-# AnalysisDataFlow完整知识体系思维导图
+﻿# AnalysisDataFlow完整知识体系思维导图
 
 > **版本**: v2.9 | **最后更新**: 2026-04-03 | **文档统计**: 261篇技术文档 | **形式化元素**: 945+
 
@@ -351,7 +351,7 @@ flowchart TD
 |----------|----------|----------|
 | **理解理论基础** | Struct/01-foundation/ → 02-properties/ | 01.01 USTM, 01.02 进程演算 |
 | **掌握设计模式** | Knowledge/02-design-patterns/ | P01-P07 模式全览 |
-| **Flink生产实践** | Flink/02-core-mechanisms/ → 06-engineering/ | Checkpoint机制、性能调优 |
+| **Flink生产实践** | Flink/02-core/ → 06-engineering/ | Checkpoint机制、性能调优 |
 | **技术选型决策** | Knowledge/04-technology-selection/ | 引擎/范式/存储选型 |
 | **AI集成方案** | Flink/12-ai-ml/ + Knowledge/06-frontier/ | RAG架构、向量数据库 |
 | **流数据库选型** | Knowledge/06-frontier/streaming-database-guide.md | RisingWave/Materialize对比 |
@@ -436,3 +436,4 @@ graph LR
 *文档创建时间: 2026-04-03*
 *适用项目: AnalysisDataFlow*
 *维护建议: 随项目扩展定期更新思维导图分支*
+

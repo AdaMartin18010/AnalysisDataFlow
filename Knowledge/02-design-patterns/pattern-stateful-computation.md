@@ -1,4 +1,4 @@
-# 设计模式: 有状态计算 (Pattern: Stateful Computation)
+﻿# 设计模式: 有状态计算 (Pattern: Stateful Computation)
 
 > **模式编号**: 05/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5
 >
@@ -385,7 +385,7 @@ Struct/02-properties/02.05-type-safety-derivation.md
 ├── FGG 泛型 ──► KeyedState<T> 类型安全
 └── DOT 路径依赖 ──► State-Key 绑定
 
-Flink/02-core-mechanisms/
+Flink/02-core/
 ├── checkpoint-mechanism-deep-dive.md
 ├── exactly-once-end-to-end.md
 └── time-semantics-and-watermark.md
@@ -403,14 +403,15 @@ Flink/02-core-mechanisms/
 
 [^8]: Flink Queryable State. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state/>
 
-[^9]: Flink State Backend Selection. [Flink/06-engineering/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
+[^9]: Flink State Backend Selection. [Flink/09-practices/09.03-performance-tuning/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
 
-[^10]: Flink Time Semantics. [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^10]: Flink Time Semantics. [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
-[^11]: Flink Checkpoint Mechanism. [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+[^11]: Flink Checkpoint Mechanism. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 [^12]: Type Safety Derivation. [Struct/02-properties/02.05-type-safety-derivation.md](../../Struct/02-properties/02.05-type-safety-derivation.md)
 
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02*
+

@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化</title>
+    
+    <!-- React 18 + ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- D3.js v7 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- Three.js for 3D visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- TensorFlow.js for client-side AI -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    
+    <!-- Semantic UI for components -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79b8ff;
+            --success: #238636;
+            --warning: #f0883e;
+            --error: #f85149;
+            
+            --color-struct: #4A90D9;
+            --color-knowledge: #5CB85C;
+            --color-flink: #F0AD4E;
+            --color-theorem: #D9534F;
+            --color-definition: #9B59B6;
+            --color-lemma: #17A2B8;
+            --color-proposition: #E83E8C;
+            --color-corollary: #6C757D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #root {
+            height: 100vh;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Graph container */
+        .graph-container {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+        }
+        
+        /* Tooltip */
+        .custom-tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background: rgba(22, 27, 34, 0.98);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-primary);
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 320px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Node styles */
+        .node {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .node:hover {
+            filter: brightness(1.3);
+        }
+        
+        .node.selected circle {
+            stroke: #fff;
+            stroke-width: 3px;
+        }
+        
+        .node.dimmed {
+            opacity: 0.15;
+        }
+        
+        .node.highlighted {
+            opacity: 1;
+        }
+        
+        /* Link styles */
+        .link {
+            stroke-opacity: 0.6;
+            transition: all 0.2s;
+        }
+        
+        .link.dependency {
+            stroke-dasharray: 5,5;
+        }
+        
+        .link.highlighted {
+            stroke-opacity: 1;
+            stroke-width: 3px;
+        }
+        
+        .link.dimmed {
+            stroke-opacity: 0.05;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 400px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .sidebar.collapsed {
+            width: 50px;
+        }
+        
+        /* Semantic UI Overrides */
+        .ui.menu {
+            background: var(--bg-tertiary);
+            border-color: var(--border-color);
+        }
+        
+        .ui.menu .item {
+            color: var(--text-secondary);
+        }
+        
+        .ui.menu .item:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .ui.menu .active.item {
+            color: var(--accent);
+            background: var(--bg-secondary);
+        }
+        
+        .ui.segment {
+            background: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+        
+        .ui.input input {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        
+        .ui.input input:focus {
+            border-color: var(--accent);
+        }
+        
+        .ui.button {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .ui.button:hover {
+            background: var(--border-color);
+        }
+        
+        .ui.button.primary {
+            background: var(--accent);
+        }
+        
+        .ui.button.primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .ui.checkbox label {
+            color: var(--text-primary);
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Search results dropdown */
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        
+        .search-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+        
+        .search-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Stats bar */
+        .stats-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 420px;
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px 20px;
+            display: flex;
+            gap: 30px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        
+        /* 3D Canvas */
+        #three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Toolbar */
+        .toolbar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .toolbar-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .toolbar-btn:hover {
+            background: var(--border-color);
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        /* Path controls */
+        .path-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            max-width: 320px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sidebar { width: 350px; }
+            .stats-bar { right: 370px; }
+        }
+        
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                z-index: 200;
+                height: 100%;
+                transform: translateX(0);
+            }
+            .sidebar.collapsed { transform: translateX(-100%); }
+            .stats-bar { right: 20px; left: 20px; }
+        }
+    </style>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="AnalysisDataFlow: AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化">
+    <meta name="keywords" content="流计算, Flink, 数据流, 分布式系统, 实时计算, 流处理, 知识图谱, 形式化理论">
+    <meta name="author" content="AnalysisDataFlow Project">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://analysisdataflow.github.io/knowledge-graph-v4.html">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化">
+    <meta property="og:description" content="AnalysisDataFlow: AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://analysisdataflow.github.io/knowledge-graph-v4.html">
+    <meta property="og:site_name" content="AnalysisDataFlow">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化">
+    <meta name="twitter:description" content="AnalysisDataFlow: AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化">
+    <meta name="twitter:creator" content="@AnalysisDataFlow">
+    
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化",
+  "description": "AnalysisDataFlow: AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化",
+  "url": "https://analysisdataflow.github.io/knowledge-graph-v4.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "license": "https://github.com/AnalysisDataFlow/AnalysisDataFlow/blob/main/LICENSE"
+}
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+        
+        // ============================================
+        // Constants & Configurations
+        // ============================================
+        const COLORS = {
+            Struct: '#4A90D9',
+            Knowledge: '#5CB85C',
+            Flink: '#F0AD4E',
+            Root: '#9B59B6',
+            theorem: '#D9534F',
+            definition: '#9B59B6',
+            lemma: '#17A2B8',
+            proposition: '#E83E8C',
+            corollary: '#6C757D'
+        };
+        
+        const EDGE_COLORS = {
+            dependency: '#F0AD4E',
+            citation: '#5CB85C',
+            contains: '#6C757D',
+            instantiates: '#9B59B6',
+            evolves: '#17A2B8',
+            implicit: '#FF6B9D'
+        };
+        
+        // ============================================
+        // Utility Functions
+        // ============================================
+        const debounce = (fn, delay) => {
+            let timeoutId;
+            return (...args) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => fn(...args), delay);
+            };
+        };
+        
+        const calculateConnectedComponents = (nodes, edges) => {
+            const visited = new Set();
+            let components = 0;
+            const adjacency = {};
+            
+            nodes.forEach(n => adjacency[n.id] = []);
+            edges.forEach(e => {
+                const source = typeof e.source === 'object' ? e.source.id : e.source;
+                const target = typeof e.target === 'object' ? e.target.id : e.target;
+                if (adjacency[source]) adjacency[source].push(target);
+                if (adjacency[target]) adjacency[target].push(source);
+            });
+            
+            const dfs = (nodeId) => {
+                visited.add(nodeId);
+                adjacency[nodeId].forEach(neighbor => {
+                    if (!visited.has(neighbor)) dfs(neighbor);
+                });
+            };
+            
+            nodes.forEach(node => {
+                if (!visited.has(node.id)) {
+                    components++;
+                    dfs(node.id);
+                }
+            });
+            
+            return components;
+        };
+        
+        // ============================================
+        // Semantic Search Engine
+        // ============================================
+        class SemanticSearchEngine {
+            constructor() {
+                this.embeddings = new Map();
+                this.concepts = new Map();
+                this.initialized = false;
+            }
+            
+            async initialize() {
+                // Load pre-computed embeddings
+                try {
+                    const response = await fetch('.scripts/kg-v2/concept-embeddings.json');
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.embeddings = new Map(Object.entries(data.embeddings));
+                        this.concepts = new Map(Object.entries(data.concepts));
+                        this.initialized = true;
+                        console.log('Semantic search engine initialized');
+                    }
+                } catch (e) {
+                    console.log('Using fallback keyword search');
+                }
+            }
+            
+            // Simple cosine similarity
+            cosineSimilarity(a, b) {
+                let dotProduct = 0;
+                let normA = 0;
+                let normB = 0;
+                for (let i = 0; i < a.length; i++) {
+                    dotProduct += a[i] * b[i];
+                    normA += a[i] * a[i];
+                    normB += b[i] * b[i];
+                }
+                return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+            }
+            
+            async search(query, limit = 10) {
+                if (!this.initialized) {
+                    await this.initialize();
+                }
+                
+                // Fallback to keyword search
+                const results = [];
+                const queryLower = query.toLowerCase();
+                
+                this.concepts.forEach((concept, id) => {
+                    const label = (concept.label || '').toLowerCase();
+                    const description = (concept.description || '').toLowerCase();
+                    
+                    let score = 0;
+                    if (label.includes(queryLower)) score += 0.5;
+                    if (description.includes(queryLower)) score += 0.3;
+                    
+                    // Fuzzy match
+                    const words = queryLower.split(/\s+/);
+                    words.forEach(word => {
+                        if (label.includes(word)) score += 0.1;
+                        if (description.includes(word)) score += 0.05;
+                    });
+                    
+                    if (score > 0) {
+                        results.push({ id, ...concept, score });
+                    }
+                });
+                
+                return results.sort((a, b) => b.score - a.score).slice(0, limit);
+            }
+        }
+        
+        // ============================================
+        // Components
+        // ============================================
+        
+        // Loading Component
+        const LoadingScreen = ({ message }) => (
+            <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'var(--bg-primary)',
+                zIndex: 9999
+            }}>
+                <div className="loading-spinner"></div>
+                <p style={{ marginTop: 16, color: 'var(--text-secondary)' }}>{message}</p>
+            </div>
+        );
+        
+        // Header Component
+        const Header = ({ title, subtitle }) => (
+            <div style={{
+                padding: '20px',
+                borderBottom: '1px solid var(--border-color)',
+                background: 'var(--bg-secondary)'
+            }}>
+                <h1 style={{ 
+                    fontSize: '18px', 
+                    color: 'var(--accent)', 
+                    marginBottom: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                }}>
+                    <span>🔮</span> {title}
+                </h1>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{subtitle}</p>
+            </div>
+        );
+        
+        // Search Component with Semantic Search
+        const SearchPanel = ({ nodes, onSearch, onSelect }) => {
+            const [query, setQuery] = useState('');
+            const [results, setResults] = useState([]);
+            const [isSearching, setIsSearching] = useState(false);
+            const searchEngine = useRef(new SemanticSearchEngine());
+            
+            const debouncedSearch = useCallback(
+                debounce(async (q) => {
+                    if (!q.trim()) {
+                        setResults([]);
+                        return;
+                    }
+                    setIsSearching(true);
+                    const searchResults = await searchEngine.current.search(q, 10);
+                    setResults(searchResults);
+                    onSearch?.(searchResults);
+                    setIsSearching(false);
+                }, 300),
+                [onSearch]
+            );
+            
+            const handleInputChange = (e) => {
+                const value = e.target.value;
+                setQuery(value);
+                debouncedSearch(value);
+            };
+            
+            const handleSelect = (result) => {
+                setQuery(result.label);
+                setResults([]);
+                onSelect?.(result);
+            };
+            
+            return (
+                <div style={{ position: 'relative', marginBottom: '16px' }}>
+                    <div className="ui input fluid">
+                        <input
+                            type="text"
+                            placeholder="语义搜索概念、定理、定义..."
+                            value={query}
+                            onChange={handleInputChange}
+                            style={{
+                                background: 'var(--bg-primary)',
+                                color: 'var(--text-primary)',
+                                borderColor: 'var(--border-color)'
+                            }}
+                        />
+                        {isSearching && <i className="spinner icon" style={{ position: 'absolute', right: 10, top: 10 }}></i>}
+                    </div>
+                    {results.length > 0 && (
+                        <div className="search-dropdown animate-fade-in">
+                            {results.map((result, idx) => (
+                                <div key={idx} className="search-item" onClick={() => handleSelect(result)}>
+                                    <div style={{ fontWeight: 600, color: 'var(--accent)' }}>{result.label}</div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                                        {result.type} · 匹配度: {(result.score * 100).toFixed(1)}%
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        
+        // Filter Controls Component
+        const FilterPanel = ({ filters, onFilterChange }) => {
+            const filterGroups = [
+                {
+                    label: '📁 显示类型',
+                    items: [
+                        { key: 'documents', label: '文档', color: COLORS.Struct },
+                        { key: 'theorems', label: '定理', color: COLORS.theorem },
+                        { key: 'definitions', label: '定义', color: COLORS.definition },
+                        { key: 'lemmas', label: '引理', color: COLORS.lemma }
+                    ]
+                },
+                {
+                    label: '🎯 显示阶段',
+                    items: [
+                        { key: 'struct', label: 'Struct', color: COLORS.Struct },
+                        { key: 'knowledge', label: 'Knowledge', color: COLORS.Knowledge },
+                        { key: 'flink', label: 'Flink', color: COLORS.Flink }
+                    ]
+                }
+            ];
+            
+            return (
+                <div style={{ marginBottom: '20px' }}>
+                    {filterGroups.map((group, idx) => (
+                        <div key={idx} style={{ marginBottom: '16px' }}>
+                            <label style={{ 
+                                display: 'block', 
+                                fontSize: '11px', 
+                                color: 'var(--text-secondary)',
+                                marginBottom: '8px',
+                                textTransform: 'uppercase'
+                            }}>
+                                {group.label}
+                            </label>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {group.items.map(item => (
+                                    <label key={item.key} style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        padding: '6px 10px',
+                                        background: 'var(--bg-primary)',
+                                        borderRadius: '4px',
+                                        border: '1px solid var(--border-color)',
+                                        fontSize: '13px',
+                                        cursor: 'pointer'
+                                    }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={filters[item.key] !== false}
+                                            onChange={(e) => onFilterChange(item.key, e.target.checked)}
+                                        />
+                                        <span style={{
+                                            width: '10px',
+                                            height: '10px',
+                                            borderRadius: '50%',
+                                            background: item.color
+                                        }}></span>
+                                        {item.label}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                    
+                    <div style={{ marginBottom: '16px' }}>
+                        <label style={{ 
+                            display: 'block', 
+                            fontSize: '11px', 
+                            color: 'var(--text-secondary)',
+                            marginBottom: '8px',
+                            textTransform: 'uppercase'
+                        }}>
+                            📐 布局模式
+                        </label>
+                        <select 
+                            className="ui dropdown fluid"
+                            value={filters.layout || 'force'}
+                            onChange={(e) => onFilterChange('layout', e.target.value)}
+                            style={{
+                                background: 'var(--bg-primary)',
+                                color: 'var(--text-primary)',
+                                borderColor: 'var(--border-color)'
+                            }}
+                        >
+                            <option value="force">力导向布局</option>
+                            <option value="hierarchy">层次布局</option>
+                            <option value="circular">环形布局</option>
+                            <option value="cluster">聚类布局</option>
+                            <option value="3d">3D力导向</option>
+                        </select>
+                    </div>
+                </div>
+            );
+        };
+        
+        // Node Details Component
+        const NodeDetails = ({ node, onClose }) => {
+            if (!node) return (
+                <div style={{ 
+                    padding: '40px 20px', 
+                    textAlign: 'center',
+                    color: 'var(--text-secondary)'
+                }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }}>📄</div>
+                    <p>点击图谱中的节点<br/>查看详细信息</p>
+                </div>
+            );
+            
+            const typeLabels = {
+                document: '📄 文档',
+                theorem: '📐 定理',
+                definition: '📋 定义',
+                lemma: '🔍 引理',
+                proposition: '💡 命题',
+                corollary: '✓ 推论'
+            };
+            
+            const groupLabels = {
+                Struct: '形式理论',
+                Knowledge: '知识结构',
+                Flink: 'Flink专项'
+            };
+            
+            return (
+                <div className="animate-fade-in">
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        marginBottom: '16px',
+                        paddingBottom: '16px',
+                        borderBottom: '1px solid var(--border-color)'
+                    }}>
+                        <span style={{
+                            padding: '4px 10px',
+                            borderRadius: '12px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            background: COLORS[node.type] || COLORS[node.group] || '#999',
+                            color: '#fff'
+                        }}>
+                            {typeLabels[node.type] || node.type}
+                        </span>
+                        <span style={{
+                            padding: '4px 10px',
+                            borderRadius: '12px',
+                            fontSize: '11px',
+                            background: 'var(--bg-tertiary)',
+                            color: 'var(--text-secondary)'
+                        }}>
+                            {groupLabels[node.group] || node.group}
+                        </span>
+                    </div>
+                    
+                    <h3 style={{ fontSize: '16px', marginBottom: '16px', lineHeight: 1.4 }}>
+                        {node.label || node.id}
+                    </h3>
+                    
+                    {node.metadata && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {node.metadata.path && (
+                                <div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>路径</div>
+                                    <div style={{ fontSize: '13px', wordBreak: 'break-all' }}>{node.metadata.path}</div>
+                                </div>
+                            )}
+                            {node.metadata.formality_level && (
+                                <div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>形式化等级</div>
+                                    <div style={{ fontSize: '13px' }}>{node.metadata.formality_level}</div>
+                                </div>
+                            )}
+                            {node.metadata.word_count && (
+                                <div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>字数</div>
+                                    <div style={{ fontSize: '13px' }}>{node.metadata.word_count.toLocaleString()}</div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
+                    <div style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
+                        <button className="ui button primary fluid" onClick={() => window.open(`#${node.id}`, '_blank')}>
+                            查看文档
+                        </button>
+                        <button className="ui button fluid" onClick={onClose}>
+                            关闭
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+        
+        // Path Finder Component
+        const PathFinder = ({ nodes, onFindPath }) => {
+            const [source, setSource] = useState('');
+            const [target, setTarget] = useState('');
+            const [algorithm, setAlgorithm] = useState('shortest');
+            
+            const nodeOptions = useMemo(() => {
+                return nodes
+                    .filter(n => n.type === 'document')
+                    .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+            }, [nodes]);
+            
+            const handleFindPath = () => {
+                if (source && target) {
+                    onFindPath?.(source, target, algorithm);
+                }
+            };
+            
+            return (
+                <div style={{ marginBottom: '20px' }}>
+                    <h4 style={{ color: 'var(--accent)', marginBottom: '12px' }}>🔍 路径追踪</h4>
+                    
+                    <div style={{ marginBottom: '12px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>起点</label>
+                        <select 
+                            className="ui dropdown fluid"
+                            value={source}
+                            onChange={(e) => setSource(e.target.value)}
+                            style={{ marginTop: '4px' }}
+                        >
+                            <option value="">选择起始节点...</option>
+                            {nodeOptions.map(n => (
+                                <option key={n.id} value={n.id}>{n.label || n.id}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div style={{ marginBottom: '12px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>终点</label>
+                        <select 
+                            className="ui dropdown fluid"
+                            value={target}
+                            onChange={(e) => setTarget(e.target.value)}
+                            style={{ marginTop: '4px' }}
+                        >
+                            <option value="">选择目标节点...</option>
+                            {nodeOptions.map(n => (
+                                <option key={n.id} value={n.id}>{n.label || n.id}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div style={{ marginBottom: '12px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>算法</label>
+                        <select 
+                            className="ui dropdown fluid"
+                            value={algorithm}
+                            onChange={(e) => setAlgorithm(e.target.value)}
+                            style={{ marginTop: '4px' }}
+                        >
+                            <option value="shortest">最短路径 (Dijkstra)</option>
+                            <option value="all">所有路径</option>
+                            <option value="dependency">仅依赖路径</option>
+                        </select>
+                    </div>
+                    
+                    <button 
+                        className="ui button primary fluid"
+                        onClick={handleFindPath}
+                        disabled={!source || !target}
+                    >
+                        查找路径
+                    </button>
+                </div>
+            );
+        };
+        
+        // Stats Bar Component
+        const StatsBar = ({ stats }) => (
+            <div className="stats-bar">
+                <div className="stat-item">
+                    <span className="stat-value">{stats.nodes}</span>
+                    <span className="stat-label">节点</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-value">{stats.edges}</span>
+                    <span className="stat-label">关系边</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-value">{stats.documents}</span>
+                    <span className="stat-label">文档</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-value">{stats.theorems}</span>
+                    <span className="stat-label">定理</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-value">{stats.components}</span>
+                    <span className="stat-label">连通分量</span>
+                </div>
+            </div>
+        );
+        
+        // ============================================
+        // D3 Graph Component
+        // ============================================
+        const D3Graph = ({ 
+            data, 
+            filters, 
+            selectedNode, 
+            onNodeClick, 
+            highlightedPath,
+            width, 
+            height 
+        }) => {
+            const svgRef = useRef(null);
+            const containerRef = useRef(null);
+            const simulationRef = useRef(null);
+            const zoomRef = useRef(null);
+            
+            // Filter nodes and edges
+            const { filteredNodes, filteredEdges } = useMemo(() => {
+                const nodeSet = new Set();
+                
+                const nodes = data.nodes.filter(node => {
+                    if (node.type === 'document' && filters.documents === false) return false;
+                    if (node.type === 'theorem' && filters.theorems === false) return false;
+                    if (node.type === 'definition' && filters.definitions === false) return false;
+                    if (node.type === 'lemma' && filters.lemmas === false) return false;
+                    
+                    if (node.group === 'Struct' && filters.struct === false) return false;
+                    if (node.group === 'Knowledge' && filters.knowledge === false) return false;
+                    if (node.group === 'Flink' && filters.flink === false) return false;
+                    
+                    nodeSet.add(node.id);
+                    return true;
+                });
+                
+                const edges = data.edges.filter(edge => {
+                    const sourceId = typeof edge.source === 'object' ? edge.source.id : edge.source;
+                    const targetId = typeof edge.target === 'object' ? edge.target.id : edge.target;
+                    return nodeSet.has(sourceId) && nodeSet.has(targetId);
+                });
+                
+                return { filteredNodes: nodes, filteredEdges: edges };
+            }, [data, filters]);
+            
+            useEffect(() => {
+                if (!svgRef.current || !width || !height) return;
+                
+                const svg = d3.select(svgRef.current);
+                svg.selectAll('*').remove();
+                
+                // Create main group
+                const g = svg.append('g');
+                
+                // Setup zoom
+                zoomRef.current = d3.zoom()
+                    .scaleExtent([0.1, 4])
+                    .on('zoom', (event) => {
+                        g.attr('transform', event.transform);
+                    });
+                
+                svg.call(zoomRef.current);
+                
+                // Create force simulation
+                simulationRef.current = d3.forceSimulation(filteredNodes)
+                    .force('link', d3.forceLink(filteredEdges)
+                        .id(d => d.id)
+                        .distance(d => d.type === 'dependency' ? 100 : 80)
+                        .strength(0.5))
+                    .force('charge', d3.forceManyBody().strength(d => 
+                        d.type === 'document' ? -300 : -100
+                    ))
+                    .force('center', d3.forceCenter(width / 2, height / 2))
+                    .force('collision', d3.forceCollide().radius(d => (d.size || 10) + 5));
+                
+                // Create arrow markers
+                const defs = svg.append('defs');
+                Object.entries(EDGE_COLORS).forEach(([type, color]) => {
+                    defs.append('marker')
+                        .attr('id', `arrow-${type}`)
+                        .attr('viewBox', '0 -5 10 10')
+                        .attr('refX', 25)
+                        .attr('refY', 0)
+                        .attr('markerWidth', 6)
+                        .attr('markerHeight', 6)
+                        .attr('orient', 'auto')
+                        .append('path')
+                        .attr('d', 'M0,-5L10,0L0,5')
+                        .attr('fill', color);
+                });
+                
+                // Draw edges
+                const link = g.append('g')
+                    .attr('class', 'links')
+                    .selectAll('line')
+                    .data(filteredEdges)
+                    .enter().append('line')
+                    .attr('class', d => `link ${d.type}`)
+                    .attr('stroke', d => EDGE_COLORS[d.type] || '#999')
+                    .attr('stroke-width', d => Math.sqrt(d.weight || 1))
+                    .attr('marker-end', d => `url(#arrow-${d.type})`);
+                
+                // Draw nodes
+                const node = g.append('g')
+                    .attr('class', 'nodes')
+                    .selectAll('g')
+                    .data(filteredNodes)
+                    .enter().append('g')
+                    .attr('class', 'node')
+                    .call(d3.drag()
+                        .on('start', (event, d) => {
+                            if (!event.active) simulationRef.current.alphaTarget(0.3).restart();
+                            d.fx = d.x;
+                            d.fy = d.y;
+                        })
+                        .on('drag', (event, d) => {
+                            d.fx = event.x;
+                            d.fy = event.y;
+                        })
+                        .on('end', (event, d) => {
+                            if (!event.active) simulationRef.current.alphaTarget(0);
+                            d.fx = null;
+                            d.fy = null;
+                        }));
+                
+                // Add circles to nodes
+                node.append('circle')
+                    .attr('r', d => d.size || 8)
+                    .attr('fill', d => d.color || '#999')
+                    .attr('stroke', '#fff')
+                    .attr('stroke-width', 1.5)
+                    .attr('stroke-opacity', 0.3);
+                
+                // Add labels to nodes
+                node.append('text')
+                    .attr('class', 'node-label')
+                    .attr('dx', d => (d.size || 8) + 5)
+                    .attr('dy', 4)
+                    .text(d => d.label || d.id)
+                    .style('font-size', '10px')
+                    .style('fill', 'var(--text-primary)')
+                    .style('text-shadow', '0 1px 3px rgba(0,0,0,0.8)');
+                
+                // Node click handler
+                node.on('click', (event, d) => {
+                    event.stopPropagation();
+                    onNodeClick?.(d);
+                });
+                
+                // Update positions on tick
+                simulationRef.current.on('tick', () => {
+                    link
+                        .attr('x1', d => d.source.x)
+                        .attr('y1', d => d.source.y)
+                        .attr('x2', d => d.target.x)
+                        .attr('y2', d => d.target.y);
+                    
+                    node.attr('transform', d => `translate(${d.x},${d.y})`);
+                });
+                
+                // Handle highlighted path
+                if (highlightedPath && highlightedPath.length > 0) {
+                    const pathSet = new Set(highlightedPath);
+                    node.classed('dimmed', d => !pathSet.has(d.id));
+                    link.classed('dimmed', d => 
+                        !pathSet.has(d.source.id) || !pathSet.has(d.target.id)
+                    );
+                }
+                
+                // Handle selected node
+                if (selectedNode) {
+                    node.classed('selected', d => d.id === selectedNode.id);
+                }
+                
+                return () => {
+                    simulationRef.current?.stop();
+                };
+            }, [filteredNodes, filteredEdges, width, height]);
+            
+            return (
+                <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+                    <svg ref={svgRef} width={width} height={height}></svg>
+                </div>
+            );
+        };
+        
+        // ============================================
+        // Main App Component
+        // ============================================
+        const KnowledgeGraphApp = () => {
+            const [data, setData] = useState({ nodes: [], edges: [] });
+            const [loading, setLoading] = useState(true);
+            const [activeTab, setActiveTab] = useState('controls');
+            const [selectedNode, setSelectedNode] = useState(null);
+            const [filters, setFilters] = useState({
+                documents: true,
+                theorems: true,
+                definitions: true,
+                lemmas: true,
+                struct: true,
+                knowledge: true,
+                flink: true,
+                layout: 'force'
+            });
+            const [highlightedPath, setHighlightedPath] = useState([]);
+            const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+            const [searchResults, setSearchResults] = useState([]);
+            
+            const containerRef = useRef(null);
+            
+            // Load data
+            useEffect(() => {
+                const loadData = async () => {
+                    try {
+                        const response = await fetch('.vscode/graph-data.json');
+                        if (response.ok) {
+                            const graphData = await response.json();
+                            setData(graphData);
+                        } else {
+                            // Use sample data
+                            setData(generateSampleData());
+                        }
+                    } catch (error) {
+                        console.error('Failed to load data:', error);
+                        setData(generateSampleData());
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                
+                loadData();
+            }, []);
+            
+            // Handle resize
+            useEffect(() => {
+                const updateDimensions = () => {
+                    if (containerRef.current) {
+                        setDimensions({
+                            width: containerRef.current.clientWidth,
+                            height: containerRef.current.clientHeight
+                        });
+                    }
+                };
+                
+                updateDimensions();
+                window.addEventListener('resize', updateDimensions);
+                return () => window.removeEventListener('resize', updateDimensions);
+            }, []);
+            
+            // Calculate stats
+            const stats = useMemo(() => ({
+                nodes: data.nodes.length,
+                edges: data.edges.length,
+                documents: data.nodes.filter(n => n.type === 'document').length,
+                theorems: data.nodes.filter(n => n.type === 'theorem').length,
+                components: calculateConnectedComponents(data.nodes, data.edges)
+            }), [data]);
+            
+            // Filter change handler
+            const handleFilterChange = (key, value) => {
+                setFilters(prev => ({ ...prev, [key]: value }));
+            };
+            
+            // Find path handler
+            const handleFindPath = (source, target, algorithm) => {
+                // Simple BFS for shortest path
+                const adj = {};
+                data.nodes.forEach(n => adj[n.id] = []);
+                data.edges.forEach(e => {
+                    const s = typeof e.source === 'object' ? e.source.id : e.source;
+                    const t = typeof e.target === 'object' ? e.target.id : e.target;
+                    adj[s].push(t);
+                });
+                
+                const queue = [[source]];
+                const visited = new Set([source]);
+                
+                while (queue.length > 0) {
+                    const path = queue.shift();
+                    const node = path[path.length - 1];
+                    
+                    if (node === target) {
+                        setHighlightedPath(path);
+                        return;
+                    }
+                    
+                    for (const neighbor of adj[node] || []) {
+                        if (!visited.has(neighbor)) {
+                            visited.add(neighbor);
+                            queue.push([...path, neighbor]);
+                        }
+                    }
+                }
+                
+                alert('未找到路径');
+            };
+            
+            // Sample data generator
+            const generateSampleData = () => {
+                const nodes = [];
+                const edges = [];
+                
+                const categories = {
+                    Struct: ['foundation', 'properties', 'relationships'],
+                    Knowledge: ['concepts', 'patterns', 'scenarios'],
+                    Flink: ['architecture', 'core', 'sql']
+                };
+                
+                Object.entries(categories).forEach(([group, cats]) => {
+                    cats.forEach((cat, idx) => {
+                        for (let i = 1; i <= 3; i++) {
+                            const id = `${group}_${cat}_0${i}`;
+                            nodes.push({
+                                id,
+                                label: `${group} ${cat} ${i}`,
+                                type: 'document',
+                                group,
+                                size: 15 + Math.random() * 10,
+                                color: COLORS[group],
+                                x: Math.random() * 800,
+                                y: Math.random() * 600
+                            });
+                            
+                            if (nodes.length > 1 && Math.random() > 0.6) {
+                                const targetIdx = Math.floor(Math.random() * (nodes.length - 1));
+                                edges.push({
+                                    source: id,
+                                    target: nodes[targetIdx].id,
+                                    type: Math.random() > 0.5 ? 'citation' : 'dependency',
+                                    weight: 1 + Math.floor(Math.random() * 3)
+                                });
+                            }
+                        }
+                    });
+                });
+                
+                return { nodes, edges };
+            };
+            
+            if (loading) {
+                return <LoadingScreen message="正在加载知识图谱 v4.0..." />;
+            }
+            
+            return (
+                <div style={{ display: 'flex', height: '100vh' }}>
+                    {/* Sidebar */}
+                    <div className="sidebar">
+                        <Header 
+                            title="知识图谱 v4.0" 
+                            subtitle="React + 语义搜索 + 3D可视化" 
+                        />
+                        
+                        {/* Tabs */}
+                        <div className="ui menu fluid" style={{ margin: 0, borderRadius: 0 }}>
+                            <a 
+                                className={`item ${activeTab === 'controls' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('controls')}
+                            >
+                                ⚙️ 控制
+                            </a>
+                            <a 
+                                className={`item ${activeTab === 'path' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('path')}
+                            >
+                                🔍 路径
+                            </a>
+                            <a 
+                                className={`item ${activeTab === 'details' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('details')}
+                            >
+                                📋 详情
+                            </a>
+                        </div>
+                        
+                        {/* Tab Content */}
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
+                            {activeTab === 'controls' && (
+                                <div className="animate-fade-in">
+                                    <SearchPanel 
+                                        nodes={data.nodes}
+                                        onSearch={setSearchResults}
+                                        onSelect={(result) => {
+                                            const node = data.nodes.find(n => n.id === result.id);
+                                            if (node) setSelectedNode(node);
+                                        }}
+                                    />
+                                    <FilterPanel 
+                                        filters={filters}
+                                        onFilterChange={handleFilterChange}
+                                    />
+                                </div>
+                            )}
+                            
+                            {activeTab === 'path' && (
+                                <div className="animate-fade-in">
+                                    <PathFinder 
+                                        nodes={data.nodes}
+                                        onFindPath={handleFindPath}
+                                    />
+                                </div>
+                            )}
+                            
+                            {activeTab === 'details' && (
+                                <div className="animate-fade-in">
+                                    <NodeDetails 
+                                        node={selectedNode}
+                                        onClose={() => setSelectedNode(null)}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    
+                    {/* Graph Container */}
+                    <div className="graph-container" ref={containerRef}>
+                        {dimensions.width > 0 && (
+                            <D3Graph
+                                data={data}
+                                filters={filters}
+                                selectedNode={selectedNode}
+                                onNodeClick={setSelectedNode}
+                                highlightedPath={highlightedPath}
+                                width={dimensions.width}
+                                height={dimensions.height}
+                            />
+                        )}
+                        
+                        {/* Toolbar */}
+                        <div className="toolbar">
+                            <button className="toolbar-btn" title="放大">+</button>
+                            <button className="toolbar-btn" title="缩小">−</button>
+                            <button className="toolbar-btn" title="适应窗口">⊡</button>
+                            <button className="toolbar-btn" title="重置">↺</button>
+                            <button className="toolbar-btn" title="导出SVG">💾</button>
+                            <button className="toolbar-btn" title="3D模式">🧊</button>
+                        </div>
+                        
+                        {/* Stats Bar */}
+                        <StatsBar stats={stats} />
+                    </div>
+                </div>
+            );
+        };
+        
+        // ============================================
+        // Render App
+        // ============================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<KnowledgeGraphApp />);
+    </script>
+</body>
+</html>

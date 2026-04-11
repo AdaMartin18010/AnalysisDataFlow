@@ -1,4 +1,4 @@
-# Flink 2.4/2.5 快速开始指南
+﻿# Flink 2.4/2.5 快速开始指南
 
 > **5分钟上手 Flink 2.4/2.5 | 新特性快速体验 | 生产级部署**
 >
@@ -316,7 +316,7 @@ docker-compose exec jobmanager ./bin/flink cancel <job-id>
 
 ### 2.1 AI Agents 快速上手
 
-**Def-F-00-01: Flink AI Agent** - FLIP-531 引入的原生 Agent 抽象，将 Flink 的流处理能力扩展到自主 AI Agent 领域。
+**Def-F-META-01: Flink AI Agent** - FLIP-531 引入的原生 Agent 抽象，将 Flink 的流处理能力扩展到自主 AI Agent 领域。
 
 **快速开始：**
 
@@ -423,7 +423,7 @@ ai.llm.retry.max-attempts: 3
 
 ### 2.2 Serverless 快速部署
 
-**Def-F-00-02: Serverless Flink** - 按需扩缩容至零实例，Pay-per-use 计费模式。
+**Def-F-META-02: Serverless Flink** - 按需扩缩容至零实例，Pay-per-use 计费模式。
 
 **Kubernetes 部署：**
 
@@ -604,7 +604,7 @@ GROUP BY event_type;
 
 ### 3.1 流批一体配置
 
-**Def-F-00-03: Unified Stream-Batch Execution** - Flink 2.5 实现完全统一的执行引擎，消除流批边界。
+**Def-F-META-03: Unified Stream-Batch Execution** - Flink 2.5 实现完全统一的执行引擎，消除流批边界。
 
 **自适应执行模式：**
 
@@ -675,7 +675,7 @@ WHERE e.event_type = 'PURCHASE';
 
 ### 3.2 GPU 加速尝试
 
-**Def-F-00-04: GPU-Accelerated Stream Processing** - 利用 GPU 大规模并行计算能力执行流处理算子。
+**Def-F-META-04: GPU-Accelerated Stream Processing** - 利用 GPU 大规模并行计算能力执行流处理算子。
 
 **配置启用 GPU：**
 
@@ -745,7 +745,7 @@ DataStream<Result> result = transactions
 
 ### 3.3 WASM UDF 开发
 
-**Def-F-00-05: Flink 2.5 WASM UDF GA** - 基于 WASI 0.2/0.3 标准的多语言 UDF 支持。
+**Def-F-META-05: Flink 2.5 WASM UDF GA** - 基于 WASI 0.2/0.3 标准的多语言 UDF 支持。
 
 **Rust UDF 开发：**
 
@@ -953,7 +953,7 @@ docker-compose exec kafka kafka-consumer-groups \
 
 ```
 Week 1: 基础概念
-├── [Flink/02-core-mechanisms/time-semantics-and-watermark.md]
+├── [Flink/02-core/time-semantics-and-watermark.md]
 │   └── 事件时间、Watermark 机制
 ├── [Flink/03-sql-table-api/flink-table-sql-complete-guide.md]
 │   └── SQL/Table API 完整指南
@@ -961,19 +961,19 @@ Week 1: 基础概念
     └── Kafka 集成最佳实践
 
 Week 2: 核心机制
-├── [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md]
+├── [Flink/02-core/checkpoint-mechanism-deep-dive.md]
 │   └── Checkpoint 机制深度解析
-├── [Flink/02-core-mechanisms/exactly-once-end-to-end.md]
+├── [Flink/02-core/exactly-once-end-to-end.md]
 │   └── Exactly-Once 端到端实现
-└── [Flink/02-core-mechanisms/backpressure-and-flow-control.md]
+└── [Flink/02-core/backpressure-and-flow-control.md]
     └── 背压处理与流控
 
 Week 3: 生产实践
-├── [Flink/06-engineering/performance-tuning-guide.md]
+├── [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md]
 │   └── 性能调优完整指南
 ├── [Flink/10-deployment/kubernetes-deployment-production-guide.md]
 │   └── K8s 生产部署
-└── [Flink/07-case-studies/case-realtime-analytics.md]
+└── [Flink/09-practices/09.01-case-studies/case-realtime-analytics.md]
     └── 实时分析案例
 ```
 
@@ -1134,3 +1134,5 @@ graph LR
 > - [Flink 2.4 完整跟踪](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 > - [Flink 2.5 预览](../08-roadmap/08.01-flink-24/flink-2.5-preview.md)
 > - [Serverless Flink GA 指南](../04-runtime/04.01-deployment/serverless-flink-ga-guide.md)
+
+

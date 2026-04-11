@@ -1,4 +1,4 @@
-# 流计算基础知识测验
+﻿# 流计算基础知识测验
 
 > 所属阶段: 测验 | 前置依赖: [Struct/](../../../Struct/) 理论文档 | 预计时间: 30分钟
 
@@ -45,7 +45,7 @@ Event Time 是事件实际发生的时间，通常嵌入在数据本身中。与
 
 Watermark 是 Flink 处理乱序数据的核心机制。它表示"所有时间戳小于等于该值的事件都已到达"，用于触发窗口计算和处理延迟数据。
 
-**参考**: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+**参考**: Flink/02-core/time-semantics-and-watermark.md
 </details>
 
 ### 问题 3
@@ -210,7 +210,7 @@ Trigger 决定何时触发窗口计算并输出结果。默认情况下，当 Wa
 
 Exactly-Once 保证每条数据在发生故障恢复后，最终效果等价于恰好处理一次，不会丢失也不会重复处理。注意这指的是结果正确性，而非实际处理次数。
 
-**参考**: Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md
+**参考**: Flink/02-core/exactly-once-semantics-deep-dive.md
 </details>
 
 ### 问题 12
@@ -402,3 +402,4 @@ Checkpoint 由 Checkpoint Coordinator 周期性地触发，与具体算子操作
 - [Flink 专项测验](./flink-specialized.md)
 - [设计模式测验](./design-patterns.md)
 - [综合测试](./comprehensive-test.md)
+

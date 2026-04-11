@@ -43,7 +43,7 @@ gantt
 | **2.2.0** | ✅ **已发布** | **2025-12-04** | [下载](https://flink.apache.org/downloads/) | 稳定性增强 |
 | **2.3.0** | 🔄 **规划中** | **2026 Q2** | - | AI Agent预览 |
 | **2.4.0** | 🔮 **前瞻** | **2026 Q4** | - | [2.4 跟踪](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
-| **2.5.0** | 🔭 **前瞻** | **2027 Q1** | - | [2.5 路线图](../08-roadmap/08.02-flink-25/) |
+| **2.5.0** | 🔭 **前瞻** | **2027 Q1** | - | [2.5 路线图](../08-roadmap/08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/) |
 | **3.0.0** | 🔭 **愿景规划** | **2027+** | - | [3.0 架构设计](../08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md) |
 
 > 完整版本跟踪报告: [Flink 2.4/2.5/3.0 版本跟踪报告](../08-roadmap/flink-2.4-2.5-3.0-tracking.md)

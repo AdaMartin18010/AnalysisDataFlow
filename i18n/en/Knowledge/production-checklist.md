@@ -1,4 +1,4 @@
----
+﻿---
 title: "[EN] Production Checklist"
 translation_status: "ai_translated"
 source_file: "Knowledge/production-checklist.md"
@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink 生产环境检查清单 -->
 
-<!-- TRANSLATE: > 所属阶段: Knowledge | 前置依赖: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3 -->
+<!-- TRANSLATE: > 所属阶段: Knowledge | 前置依赖: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L3 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
@@ -319,3 +319,4 @@ metrics.reporter.prometheus.filter.includes: "*checkpoint*,*records*,*latency*"
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
+

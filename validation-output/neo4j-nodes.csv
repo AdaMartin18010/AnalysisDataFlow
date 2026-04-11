@@ -1,0 +1,448 @@
+elementId:ID,name,type,stage,docNum,formalLevel,:LABEL
+"Thm-S-17-01","Flink Checkpoint 一致性定理","Thm","S","17","",Thm
+"Thm-S-04-01","(Dataflow确定性) | `CheckpointBarrier` + 状态后端 | 故障恢复后结果一致性测试 |","Thm","S","04","",Thm
+"Thm-S-04-02","(算子组合确定性) | `OperatorChain` 优化 | 链化/非链化执行结果比对 |","Thm","S","04","",Thm
+"Thm-S-07-01","(流计算确定性) | 端到端 Exactly-Once 实现 | `TwoPhaseCommitSinkFunction` |","Thm","S","07","",Thm
+"Def-S-04-01","(Dataflow图) | `StreamGraph` → `JobGraph` → `ExecutionGraph` | 检查图转换保持 DAG 结构 |","Def","S","04","",Def
+"Def-S-04-02","(算子语义) | `StreamOperator` 接口 | 实现类是否满足纯函数性 |","Def","S","04","",Def
+"Def-S-04-03","(偏序多重集) | `StreamRecord` + `timestamp` 字段 | 事件时间戳是否正确提取 |","Def","S","04","",Def
+"Def-S-04-04","(Watermark) | `WatermarkGenerator` + `WatermarkStrategy` | Watermark 是否单调不减 |","Def","S","04","",Def
+"Thm-S-18-01","| **1** |","Thm","S","18","",Thm
+"Thm-F-02-47","RocksDBStateBackend 一致性定理","Thm","F","02","",Thm
+"Thm-F-02-45","ForStStateBackend 一致性定理","Thm","F","02","",Thm
+"Thm-F-02-50","异步算子执行语义保持性定理","Thm","F","02","",Thm
+"Thm-F-02-52","异步执行顺序一致性定理","Thm","F","02","",Thm
+"Def-F-02-91","HashMapStateBackend 是内存状态后端的形式化定义","Def","F","02","",Def
+"Def-F-02-63","RocksDBStateBackend 是嵌入式磁盘状态后端的形式化定义","Def","F","02","",Def
+"Def-F-02-61","ForStStateBackend 是 Flink 2.0 引入的云原生分离式状态后端","Def","F","02","",Def
+"Def-F-02-70","异步算子接口定义","Def","F","02","",Def
+"Def-F-02-77","完成回调机制","Def","F","02","",Def
+"Def-F-02-74","顺序保持模式","Def","F","02","",Def
+"Def-F-02-75","异步资源池","Def","F","02","",Def
+"Lemma-F-02-23","Checkpoint Barrier 对齐引理","Lemma","F","02","",Lemma
+"Lemma-F-02-70","异步快照非阻塞性引理","Lemma","F","02","",Lemma
+"Lemma-F-02-02","异步资源配额保持引理","Lemma","F","02","",Lemma
+"Thm-S-08-02","| pattern-end-to-end-consistency | KafkaSource/Sink | ⭐⭐⭐⭐⭐ | E2EConsistencyTest |","Thm","S","08","",Thm
+"Def-S-12-01","[Actor配置四元组]","Def","S","12","",Def
+"Def-S-12-02","[CSP核心语法子集]","Def","S","12","",Def
+"Def-S-12-03","[Actor→CSP编码函数]","Def","S","12","",Def
+"Def-S-12-05","[Actor监督树结构]","Def","S","12","",Def
+"Def-S-12-06","[分布式Actor网络]","Def","S","12","",Def
+"Def-S-13-01","[Flink算子→π-演算编码]","Def","S","13","",Def
+"Def-S-13-02","[Dataflow边→π-演算通道]","Def","S","13","",Def
+"Def-S-13-03","[Checkpoint→屏障同步协议]","Def","S","13","",Def
+"Def-S-13-04","[状态算子→带状态进程]","Def","S","13","",Def
+"Def-S-13-06","[RocksDB状态后端编码]","Def","S","13","",Def
+"Def-S-13-07","[Hive状态后端编码]","Def","S","13","",Def
+"Def-S-14-01","[表达能力预序]","Def","S","14","",Def
+"Def-S-14-02","[互模拟等价]","Def","S","14","",Def
+"Def-S-14-03","[六层表达能力层次]","Def","S","14","",Def
+"Def-S-14-05","[流SQL表达能力]","Def","S","14","",Def
+"Def-S-14-06","[窗口操作层级]","Def","S","14","",Def
+"Def-S-14-07","[时间语义影响]","Def","S","14","",Def
+"Def-S-15-01","[强互模拟]","Def","S","15","",Def
+"Def-S-15-02","[弱互模拟与分支互模拟]","Def","S","15","",Def
+"Def-S-15-03","[互模拟游戏]","Def","S","15","",Def
+"Def-S-15-04","[同余关系]","Def","S","15","",Def
+"Def-S-15-05","[分支互模拟]","Def","S","15","",Def
+"Def-S-15-06","[测试等价]","Def","S","15","",Def
+"Def-S-15-07","[失败等价]","Def","S","15","",Def
+"Def-S-15-08","[概率互模拟]","Def","S","15","",Def
+"Def-S-15-09","[时间互模拟]","Def","S","15","",Def
+"Def-S-16-01","[四层统一映射框架]","Def","S","16","",Def
+"Def-S-16-02","[层间Galois连接]","Def","S","16","",Def
+"Def-S-16-03","[跨层组合映射]","Def","S","16","",Def
+"Def-S-16-04","[语义保持性与精化关系]","Def","S","16","",Def
+"Def-S-16-05","[模型精化链]","Def","S","16","",Def
+"Def-S-16-06","[逆向映射]","Def","S","16","",Def
+"Def-S-16-07","[多模型融合]","Def","S","16","",Def
+"Def-S-16-08","[模型演化映射]","Def","S","16","",Def
+"Def-S-16-09","[抽象解释连接]","Def","S","16","",Def
+"Lemma-S-12-01","[MAILBOX FIFO不变式]","Lemma","S","12","",Lemma
+"Lemma-S-12-02","[Actor进程单线程性]","Lemma","S","12","",Lemma
+"Lemma-S-12-03","[状态不可外部访问]","Lemma","S","12","",Lemma
+"Lemma-S-13-01","[算子编码保持局部确定性]","Lemma","S","13","",Lemma
+"Lemma-S-13-02","[屏障对齐保证快照一致性]","Lemma","S","13","",Lemma
+"Lemma-S-13-03","[异步快照非阻塞性]","Lemma","S","13","",Lemma
+"Lemma-S-14-01","[组合性编码状态空间上界]","Lemma","S","14","",Lemma
+"Lemma-S-14-02","[动态拓扑不可回归性]","Lemma","S","14","",Lemma
+"Lemma-S-15-01","[强互模拟是等价关系]","Lemma","S","15","",Lemma
+"Lemma-S-15-02","[互模拟蕴含迹等价反之不成立]","Lemma","S","15","",Lemma
+"Lemma-S-16-01","[Galois连接的保序性]","Lemma","S","16","",Lemma
+"Lemma-S-16-02","[映射复合的Galois连接保持]","Lemma","S","16","",Lemma
+"Cor-S-14-01","[可判定性递减推论]","Cor","S","14","",Cor
+"Thm-S-09-01","的工程实现：尽管 DAG 中不同分支进度不同，但每个节点本地的 Watermark 序列都保持单调不减。","Thm","S","09","",Thm
+"Lemma-S-04-02","的严格深化与独立证明。","Lemma","S","04","",Lemma
+"Lemma-S-09-01","，$w_{v_k}(t)$ 也是单调不减序列。 ∎(情况 B)","Lemma","S","09","",Lemma
+"Thm-S-02-08","(CALM定理 — Consistency As Logical Monotonicity):","Thm","S","02","",Thm
+"Def-S-02-13","(分布式问题): 一个分布式问题 $\mathcal{P}$ 是一个映射 $P: \mathcal{I} \to \mathcal{O}$，其中：","Def","S","02","L5",Def
+"Def-S-02-14","(逻辑单调性): 问题 $P$ 是**逻辑单调的**（Logically Monotone），当且仅当：","Def","S","02","L5",Def
+"Def-S-02-15","(协调): 协调（Coordination）是指在分布式计算中，为了确保正确性而引入的**进程间同步机制**，包括：","Def","S","02","L5",Def
+"Def-S-02-16","(一致性作为程序结果确定性): 分布式实现 $\mathcal{A}$ 满足**一致性**，当且仅当对于所有可能的执行轨迹 $\sigma \in \text{Exec}(\mathcal{A})$：","Def","S","02","L5",Def
+"Lemma-S-02-12","(单调性的集合运算封闭性): 逻辑单调性对以下运算封闭：","Lemma","S","02","",Lemma
+"Lemma-S-02-13","(非单调操作的不封闭性): 以下操作**不保持**逻辑单调性：","Lemma","S","02","",Lemma
+"Lemma-S-02-14","(单调性的网络容忍性): 若问题 $P$ 是逻辑单调的，则对于任意消息延迟函数 $\delta: \mathbb{M} \to \mathbb{R}^+$，存在异步实现 $\mathcal{A}_\d","Lemma","S","02","",Lemma
+"Cor-S-02-04","流计算中，无界聚合操作（如全局SUM、COUNT）必然引入协调开销。","Cor","S","02","",Cor
+"Cor-S-02-05","基于事件时间的窗口聚合可以通过Watermark机制**延迟**协调到窗口边界，而非每条记录都协调。","Cor","S","02","",Cor
+"Cor-S-02-06","存在近似算法（如Count-Min Sketch、HyperLogLog）可以将非单调问题转化为单调的近似版本，从而避免协调。","Cor","S","02","",Cor
+"Lemma-S-18-01","（Source 可重放引理），可重放 Source 保证故障恢复后从最后一个成功 Checkpoint $C_n$ 的偏移量重放。因此所有在 $C_n$ 之后到达的记录都会被重新处理。不存在记录被永久","Lemma","S","18","",Lemma
+"Lemma-S-18-02","，Sink 不会重新提交 $T_n$（或即使重新提交，幂等 commit 保证无重复效果）","Lemma","S","18","",Lemma
+"Def-S-09-02","，Watermark 作为时间函数满足：","Def","S","09","",Def
+"Def-S-20-04","）与格论中的最小上界计算存在深刻联系。","Def","S","20","",Def
+"Lemma-S-20-01","（结合律），有限集合的最小上界可通过成对合并计算：","Lemma","S","20","",Lemma
+"Def-S-17-02","| 一致全局状态 | Struct/04.01 | Checkpoint 捕获异步算子的全局状态 |","Def","S","17","",Def
+"Def-S-18-02","| 端到端一致性 | Struct/04.02 | 异步 I/O 不破坏端到端 Exactly-Once |","Def","S","18","",Def
+"Lemma-S-18-04","| 算子确定性引理 | Struct/04.02 | 异步回调完成顺序不影响最终结果确定性 |","Lemma","S","18","",Lemma
+"Thm-S-03-01","| Actor 局部确定性定理 | Struct/01.03 | Keyed CEP 状态更新串行化，保证局部确定性 |","Thm","S","03","",Thm
+"Def-S-08-04","| Exactly-Once 语义 | Struct/02.02 | 复杂事件输出因果影响计数 = 1 |","Def","S","08","",Def
+"Def-S-10-01","| 安全性 (Safety) | Struct/02.04 | 模式匹配不会产生假阳性 (可通过有限执行验证) |","Def","S","10","",Def
+"Def-S-10-02","| 活性 (Liveness) | Struct/02.04 | 有效模式最终会被检测到 (在公平性假设下) |","Def","S","10","",Def
+"Thm-S-19-01","| Chandy-Lamport 一致性定理 | Struct/04.03 | Marker 协议产生一致全局状态 |","Thm","S","19","",Thm
+"Def-S-17-01","| Checkpoint Barrier 语义 | Struct/04.01 | Bₙ = ⟨BARRIER, cid, ts, source⟩ 形式化定义 |","Def","S","17","",Def
+"Def-S-17-03","| Checkpoint 对齐 | Struct/04.01 | 多输入算子 Barrier 同步的形式化条件 |","Def","S","17","",Def
+"Def-S-19-02","| 一致割集 | Struct/04.03 | happens-before 封闭性保证快照一致性 |","Def","S","19","",Def
+"Def-S-18-03","| 两阶段提交协议 (2PC) | Struct/04.02 | Sink 端事务性提交的形式化模型 |","Def","S","18","",Def
+"Def-S-07-01","| 确定性流计算系统 | Struct/02.01 | 事件时间是实现确定性处理的六元组组成部分 |","Def","S","07","",Def
+"Prop-S-08-01","| 端到端 Exactly-Once 分解 | Struct/02.02 | Source ∧ Checkpoint ∧ Sink 三要素合取 |","Prop","S","08","",Prop
+"Def-S-08-01","| At-Most-Once 语义 | Struct/02.02 | 每条记录最多进入一个输出通道 |","Def","S","08","",Def
+"Def-S-08-02","| At-Least-Once 语义 | Struct/02.02 | 记录至少被处理一次，不丢失 |","Def","S","08","",Def
+"Lemma-K-02-04","| 侧输出 Watermark 继承性 | 本模式 | 所有侧输出流继承上游 Watermark |","Lemma","K","02","",Lemma
+"Lemma-K-02-05","| 时序一致性 | 本模式 | 分流不改变记录间的相对顺序 |","Lemma","K","02","",Lemma
+"Lemma-K-02-06","| 并发安全性 | 本模式 | 多并行度下侧输出数据互不干扰 |","Lemma","K","02","",Lemma
+"Prop-K-02-03","| 多路分发正确性 | 本模式 | 每条记录有且仅有一个输出目的地 |","Prop","K","02","",Prop
+"Def-S-03-01","| 经典 Actor 四元组 | Struct/01.03 | Keyed State 的并发模型基础：⟨α, b, m, σ⟩ |","Def","S","03","",Def
+"Def-S-18-05","| 幂等性 | Struct/04.02 | 状态更新重放需满足幂等性 |","Def","S","18","",Def
+"Lemma-S-03-01","| Actor 邮箱串行处理引理 | Struct/01.03 | 同一 Key 的消息按 FIFO 处理 |","Lemma","S","03","",Lemma
+"Lemma-S-18-03","| 状态恢复一致性引理 | Struct/04.02 | 恢复后状态与故障前某时刻一致 |","Lemma","S","18","",Lemma
+"Def-S-04-05","| 窗口形式化 | Struct/01.04 | WindowOp = (W, A, T, F) 窗口算子四元组 |","Def","S","04","",Def
+"Thm-K-03-02","给定Netflix业务负载特征，Keystone平台满足：","Thm","K","03","",Thm
+"Thm-K-06-125","[Flink边缘资源优化]: 在资源受限的边缘节点（内存 < 4GB）上，Flink 作业的最优配置满足：","Thm","K","06","",Thm
+"Thm-K-06-126","[断网容错保证]: 边缘流处理系统在网络分区期间的数据不丢失条件：","Thm","K","06","",Thm
+"Thm-K-06-127","[边缘-云数据一致性]: 采用 **Delta Sync + CRDT** 机制可实现边缘-云数据的最终一致性：","Thm","K","06","",Thm
+"Def-K-06-190","[边缘流处理]: 边缘流处理是指在数据源产生地或其邻近的计算节点上，对连续到达的数据流进行实时处理、过滤、聚合和推理的计算范式。形式上，边缘流处理系统可建模为六元组：","Def","K","06","L4",Def
+"Def-K-06-191","[边缘计算延迟模型]: 边缘流处理的端到端延迟由以下组件构成：","Def","K","06","L4",Def
+"Def-K-06-192","[边缘-云协同层级]:","Def","K","06","",Def
+"Def-K-06-193","[边缘部署决策函数]: 给定应用特征向量 $\vec{A} = (d_{latency}, v_{data}, c_{compute}, r_{reliability})$，边缘部署决策为：","Def","K","06","",Def
+"Def-K-06-194","[离线优先约束]: 离线优先架构必须满足 CAP 变体——在断网场景下优先保证 **可用性(A)** 和 **分区容忍性(P)**，通过最终一致性实现数据同步：","Def","K","06","",Def
+"Def-K-06-195","[边缘运维自动化]: 边缘运维复杂度随节点数 $N$ 呈亚线性增长：","Def","K","06","",Def
+"Lemma-K-06-125","[边缘计算优势边界]: 对于数据密集型IoT应用，当满足以下条件时，边缘处理优于纯云处理：","Lemma","K","06","",Lemma
+"Prop-K-06-126","[数据本地化收益]: 在边缘执行数据预过滤和聚合，可将上传数据量减少 **70-95%**[^1]。","Prop","K","06","",Prop
+"Prop-K-06-127","[边缘AI融合]: 到2026年，超过 **75%** 的企业数据将在边缘产生和处理（2020年仅为10%），主要驱动因素包括：","Prop","K","06","",Prop
+"Thm-K-06-40","(实时多模态的必要性定理): 在以下应用场景中，多模态处理的延迟约束是刚性需求：","Thm","K","06","",Thm
+"Def-K-06-70","(多模态AI): 多模态AI是一个五元组 $\mathcal{M} = \langle \mathcal{M}_T, \mathcal{M}_I, \mathcal{M}_A, \mathcal{M}","Def","K","06","L4",Def
+"Def-K-06-71","(实时多模态流): 实时多模态流是一个带时序约束的数据序列 $S = \langle (d_1, t_1, m_1), (d_2, t_2, m_2), \ldots \rangle$，其中：","Def","K","06","L4",Def
+"Def-K-06-72","(跨模态统一表示): 设 $\phi_i: \mathcal{M}_i \rightarrow \mathbb{R}^d$ 为各模态的编码器，若存在投影矩阵 $W_i$ 使得对于语义等价的数据 $x_","Def","K","06","",Def
+"Def-K-06-73","(时间戳对齐误差): 对于同步采集的多模态数据对 $(x_A, x_V)$（音频-视频），若其采集时间戳分别为 $t_A, t_V$，则对齐误差 $\delta = |t_A - t_V|$。人眼可感","Def","K","06","",Def
+"Lemma-K-06-40","(多模态流延迟下界): 对于包含 $n$ 个模态的实时流系统，端到端延迟满足：","Lemma","K","06","",Lemma
+"Lemma-K-06-41","(多模态吞吐量上限): 设模型单次推理处理批次大小为 $B$，推理时间为 $T_{inf}$，则系统最大吞吐量：","Lemma","K","06","",Lemma
+"Prop-K-06-40","(多模态流处理的Flink适配性): Apache Flink的以下特性使其成为多模态流处理的理想基础设施：","Prop","K","06","",Prop
+"Prop-K-06-41","(异步推理模式): 为避免模型推理阻塞数据流，采用AsyncFunction模式：","Prop","K","06","",Prop
+"Thm-K-06-01","(快照一致性). RisingWave 提供的快照一致性保证：对于任意查询 $q$ 在时刻 $t_q$ 发出，系统返回结果 $R$ 满足：","Thm","K","06","",Thm
+"Thm-K-06-02","(RisingWave 快照一致性保证). RisingWave 的查询结果始终对应于某一历史时刻的全局一致状态。","Thm","K","06","",Thm
+"Thm-K-06-03","(一致性模型蕴含关系). 设：","Thm","K","06","",Thm
+"Def-K-06-01","(RisingWave 系统架构). RisingWave 是一个分布式流处理数据库系统，其架构可形式化定义为五元组：","Def","K","06","L4-L5",Def
+"Def-K-06-02","(无状态计算节点). 计算节点 $\mathcal{N}_{compute}$ 被定义为**逻辑无状态**的，当且仅当：","Def","K","06","L4-L5",Def
+"Def-K-06-03","(有状态存储节点 - Hummock). Hummock 存储引擎是一个基于 LSM-Tree 的云原生键值存储，形式化为：","Def","K","06","",Def
+"Def-K-06-04","(增量视图维护). 给定基础表 $B$ 和物化视图定义查询 $Q$，增量维护机制 $\mathcal{I}$ 定义为：","Def","K","06","",Def
+"Def-K-06-05","(变更传播框架). RisingWave 采用变更传播（Change Propagation）框架，对于查询执行计划 $G = (V, E)$，每个算子 $v \in V$ 满足：","Def","K","06","",Def
+"Def-K-06-06","(Barrier 与 Epoch). Barrier 是流处理中的全局同步标记，形式化为：","Def","K","06","",Def
+"Def-K-06-07","(检查点周期一致性). 设检查点间隔为 $\Delta_{ckpt}$（默认 1 秒），系统在任意时刻 $t$ 提供的一致性边界为：","Def","K","06","",Def
+"Lemma-K-06-01","(计算节点故障独立性). 对于任意计算节点 $n_c \in \mathcal{N}_{compute}$，其故障不会影响系统持久状态：","Lemma","K","06","",Lemma
+"Lemma-K-06-02","(计算弹性). 计算节点可独立扩展：","Lemma","K","06","",Lemma
+"Lemma-K-06-03","(写路径优化). Hummock 的写放大因子 $\alpha_{write}$ 满足：","Lemma","K","06","",Lemma
+"Lemma-K-06-04","(读路径局部性). 对于热点数据访问模式，缓存命中率 $h$ 满足：","Lemma","K","06","",Lemma
+"Lemma-K-06-05","(增量计算等价性). 对于任意查询 $Q$ 和基础表变更 $\Delta B$：","Lemma","K","06","",Lemma
+"Lemma-K-06-06","(Barrier 一致性). 对于任意执行路径 $p$，Barrier $B(e)$ 保证：","Lemma","K","06","",Lemma
+"Thm-K-06-115","(视图选择NP完全性). 给定查询工作负载 $\mathcal{Q}$ 和物化视图候选集 $\mathcal{C}$，在满足存储约束 $S_{budget}$ 的前提下最大化查询性能提升的视图选择问题","Thm","K","06","",Thm
+"Thm-K-06-116","(流式物化视图一致性边界). 采用Barrier检查点机制的流式物化视图系统提供有界一致性：","Thm","K","06","",Thm
+"Thm-K-06-117","(增量计算复杂度下界). 对于聚合查询类，增量维护的时间复杂度下界为：","Thm","K","06","",Thm
+"Def-K-06-170","(物化视图). 给定基础表集合 $\mathcal{B} = \{B_1, B_2, ..., B_n\}$ 和视图定义查询 $Q$，物化视图 $V$ 定义为：","Def","K","06","L4-L5",Def
+"Def-K-06-171","(传统物化视图 vs 流式物化视图). 两类物化视图的形式化对比：","Def","K","06","L4-L5",Def
+"Def-K-06-172","(增量视图维护 IVM). 增量视图维护机制 $\mathcal{I}$ 定义为映射函数：","Def","K","06","L4-L5",Def
+"Def-K-06-173","(计算-存储分离架构). 流式物化视图系统架构定义为四元组：","Def","K","06","L4-L5",Def
+"Def-K-06-174","(级联物化视图). 级联物化视图是由视图依赖关系构成的有向无环图 $DAG = (\mathcal{V}, \mathcal{E})$：","Def","K","06","",Def
+"Def-K-06-175","(流式一致性模型). 流式物化视图的一致性级别定义：","Def","K","06","",Def
+"Lemma-K-06-115","(增量计算正确性). 对于任意查询 $Q$ 和基础表变更序列 $\langle \Delta B_1, \Delta B_2, ..., \Delta B_k \rangle$，增量维护机制 $\ma","Lemma","K","06","",Lemma
+"Lemma-K-06-116","(级联更新传播). 在级联物化视图 $DAG$ 中，对于任意节点 $V$，其更新延迟满足：","Lemma","K","06","",Lemma
+"Lemma-K-06-117","(存储空间优化). 物化视图系统的存储复杂度：","Lemma","K","06","",Lemma
+"Thm-K-06-50","(链上流处理延迟下界): 任何基于区块链的实时处理系统，其端到端延迟 $\tau_{e2e}$ 满足：","Thm","K","06","",Thm
+"Thm-K-06-51","(重组风险与一致性权衡): 设链重组概率为 $p_{reorg}$，则系统必须在一致性与延迟之间权衡：","Thm","K","06","",Thm
+"Def-K-06-80","(Web3 形式化定义): Web3 是一个去中心化的价值互联网协议栈，由三元组 $\mathcal{W}_3 = (\mathcal{L}, \mathcal{C}, \mathcal{T})$ 定","Def","K","06","",Def
+"Def-K-06-81","(区块结构): 区块链中的区块 $B_n$ 定义为：","Def","K","06","",Def
+"Def-K-06-82","(事件日志): 智能合约事件是状态变更的不可变记录：","Def","K","06","",Def
+"Def-K-06-83","(区块链事件流): 区块链事件流 $\mathcal{S}_{chain}$ 是一个有序事件序列：","Def","K","06","",Def
+"Def-K-06-84","(最终性窗口): 对于采用概率最终性的区块链（如 PoW），交易在区块深度 $k$ 后被认为最终确定：","Def","K","06","",Def
+"Lemma-K-06-50","(追加不可变性): 区块链事件流 $\mathcal{S}_{chain}$ 满足追加写入语义，历史事件不可变更：","Lemma","K","06","",Lemma
+"Lemma-K-06-51","(最终一致性边界): 设区块链出块间隔为 $\Delta_b$，确认深度为 $k$，则事件可见性延迟满足：","Lemma","K","06","",Lemma
+"Lemma-K-06-52","(事件溯源完备性): 区块链状态 $S_n$ 可完全由其创世状态 $S_0$ 和事件流前缀 $\mathcal{S}_{chain}[0:n]$ 重建：","Lemma","K","06","",Lemma
+"Thm-K-07-01","对于流处理作业 $J$，测试套件 $S$ 达到完全覆盖当且仅当：","Thm","K","07","",Thm
+"Def-K-01-01","掌握 CCS/CSP/π-calculus 的基本语法与语义","Def","K","01","L4",Def
+"Def-K-01-02","使用进程演算建模简单的并发系统","Def","K","01","L4",Def
+"Def-K-01-03","理解互模拟等价的概念及其证明方法","Def","K","01","L4",Def
+"Def-K-01-04","能够分析并发系统的死锁与活锁","Def","K","01","L4",Def
+"Def-K-02-01","掌握 DataStream API 的核心操作（Transformation, Sink）","Def","K","02","L3",Def
+"Def-K-02-02","理解 Flink 的并行度与分区策略","Def","K","02","L3",Def
+"Def-K-02-03","能够设计简单的流处理拓扑","Def","K","02","",Def
+"Def-K-02-04","掌握 Flink 本地开发与调试技巧","Def","K","02","",Def
+"Def-K-03-01","深入理解 Checkpoint 的触发机制与执行流程","Def","K","03","",Def
+"Def-K-03-02","掌握 Checkpoint 超时、失败的诊断方法","Def","K","03","",Def
+"Def-K-03-03","能够配置与优化 Checkpoint 参数","Def","K","03","",Def
+"Def-K-03-04","理解 Exactly-Once 语义在 Checkpoint 中的实现","Def","K","03","",Def
+"Def-K-04-01","形式化定义多种一致性模型（线性一致性、顺序一致性、因果一致性、最终一致性）","Def","K","04","L5",Def
+"Def-K-04-02","分析流计算系统中的一致性保障机制","Def","K","04","",Def
+"Def-K-04-03","使用形式化方法证明一致性性质","Def","K","04","",Def
+"Def-K-04-04","在实际系统设计中权衡一致性与性能","Def","K","04","",Def
+"Def-K-05-01","掌握流计算中的核心设计模式","Def","K","05","L4",Def
+"Def-K-05-02","实现复杂的窗口计算模式","Def","K","05","L4",Def
+"Def-K-05-03","使用 CEP 库处理复杂事件","Def","K","05","",Def
+"Def-K-05-04","设计可复用的流处理组件","Def","K","05","",Def
+"Thm-K-10-201","(吞吐量扩展性): 设单节点吞吐量为 $TPS_{single}$，节点数为 $N$，线性扩展系数为 $\alpha$（通常 $\alpha \in [0.8, 0.95]$），则系统总吞吐量：","Thm","K","10","",Thm
+"Thm-K-10-202","(特征一致性): Flink特征工程管道保证 Exactly-Once 语义，确保训练/推理特征一致性。","Thm","K","10","",Thm
+"Def-K-10-201","(实时推荐系统): 实时推荐系统是一个九元组 $\mathcal{R} = (U, I, C, B, F, M, S, P, W)$：","Def","K","10","",Def
+"Def-K-10-202","(用户实时画像): 用户 $u$ 在时间 $t$ 的实时画像定义为：","Def","K","10","",Def
+"Def-K-10-203","(实时特征向量): 特征工程输出：","Def","K","10","",Def
+"Def-K-10-204","(推荐效果指标):","Def","K","10","",Def
+"Def-K-10-205","(延迟约束):","Def","K","10","",Def
+"Def-K-10-206","(冷启动分类):","Def","K","10","",Def
+"Lemma-K-10-201","设特征查询延迟为 $L_f$，召回阶段延迟为 $L_r$，排序阶段延迟为 $L_s$，则总延迟满足：","Lemma","K","10","",Lemma
+"Lemma-K-10-202","(特征存储容量): 设用户数为 $N_u$，每用户特征维度为 $d$，单条特征大小为 $s$ 字节，Redis集群分片数为 $S$，则每分片存储：","Lemma","K","10","",Lemma
+"Thm-K-10-221","(延迟分解定理): 设各阶段延迟为 $L_i$，则总延迟满足：","Thm","K","10","",Thm
+"Thm-K-10-222","(水平扩展性): 设节点数为 $N$，单节点吞吐为 $t$，则系统总吞吐：","Thm","K","10","",Thm
+"Thm-K-10-223","(CEP检测完备性): 对于给定的CEP模式集合 $\mathcal{P}$，Flink CEP引擎能够检测所有满足模式约束的事件序列。","Thm","K","10","",Thm
+"Def-K-10-221","(高性能反欺诈系统): 高性能反欺诈系统是一个十二元组 $\mathcal{F} = (T, U, D, R, C, G, F, M, E, P, S, A)$：","Def","K","10","",Def
+"Def-K-10-222","(CEP欺诈模式): 复杂事件模式是一个五元组 $\mathcal{P} = (E_{seq}, \phi, \tau, \omega, \lambda)$：","Def","K","10","",Def
+"Def-K-10-223","(位置跳跃检测):","Def","K","10","",Def
+"Def-K-10-224","(交易关系图): 交易图 $G = (V, E, X)$ 其中：","Def","K","10","",Def
+"Def-K-10-225","(图神经网络风险评分):","Def","K","10","",Def
+"Lemma-K-10-221","在10ms延迟约束下，各阶段时间分配：","Lemma","K","10","",Lemma
+"Lemma-K-10-222","要达到50万TPS，假设单核处理能力为 $c$ TPS，则需要的最小核数：","Lemma","K","10","",Lemma
+"Thm-K-10-231","(吞吐量扩展): 设每玩家每秒产生 $e$ 个事件，DAU为 $N_{DAU}$，在线率为 $\eta$，则事件吞吐需求：","Thm","K","10","",Thm
+"Thm-K-10-232","(Exactly-Once语义): 通过两阶段提交，Flink + Kafka能够保证：","Thm","K","10","",Thm
+"Thm-K-10-233","(实时指标准确性): 基于Flink窗口的实时指标计算，在保证Exactly-Once语义下，结果与批处理一致。","Thm","K","10","",Thm
+"Def-K-10-231","(游戏实时分析平台): 游戏实时分析平台是一个十元组 $\mathcal{A} = (P, S, E, M, C, F, D, R, V, B)$：","Def","K","10","",Def
+"Def-K-10-232","(实时指标):","Def","K","10","",Def
+"Def-K-10-233","(玩家实时画像): 玩家 $p$ 在时间 $t$ 的实时画像：","Def","K","10","",Def
+"Def-K-10-234","(流失风险模型):","Def","K","10","",Def
+"Def-K-10-235","(A/B测试实验): 实验定义为五元组 $\mathcal{E} = (N, V, A, H, M)$：","Def","K","10","",Def
+"Def-K-10-236","(流量分配):","Def","K","10","",Def
+"Def-K-10-237","(统计显著性):","Def","K","10","",Def
+"Def-K-10-238","(玩家分群):","Def","K","10","",Def
+"Lemma-K-10-231","设事件上报延迟为 $L_{report}$，网络传输延迟为 $L_{network}$，处理延迟为 $L_{process}$，则端到端可见延迟：","Lemma","K","10","",Lemma
+"Lemma-K-10-232","设Kafka分区数为 $P$，Flink并行度为 $F$，要保证全局顺序，需满足：","Lemma","K","10","",Lemma
+"Thm-K-10-211","(吞吐量与设备数关系): 设每台电表上报频率为 $f$（次/秒），设备总数为 $N_d$，则系统需支持的总吞吐量为：","Thm","K","10","",Thm
+"Thm-K-10-212","(系统可用性): 设各组件可用性为 $A_i$，则系统整体可用性：","Thm","K","10","",Thm
+"Thm-K-10-213","(负荷预测准确性): 基于LSTM的短期负荷预测模型在典型场景下 MAPE < 3%。","Thm","K","10","",Thm
+"Def-K-10-211","(智能电网IoT系统): 智能电网IoT系统是一个十元组 $\mathcal{G} = (D, M, E, C, N, F, P, A, S, R)$：","Def","K","10","",Def
+"Def-K-10-212","(短期负荷预测): 区域 $r$ 在时间 $t+\Delta t$ 的负荷预测：","Def","K","10","",Def
+"Def-K-10-213","(预测误差度量):","Def","K","10","",Def
+"Def-K-10-214","(用电异常评分):","Def","K","10","",Def
+"Def-K-10-215","(设备健康度):","Def","K","10","",Def
+"Lemma-K-10-211","设边缘聚合延迟为 $L_{edge}$，网络传输延迟为 $L_{net}$，云端处理延迟为 $L_{cloud}$，则端到端延迟：","Lemma","K","10","",Lemma
+"Lemma-K-10-212","(数据完整性): 设单条消息丢失概率为 $p$，系统采用 $k$ 重备份，则数据丢失概率：","Lemma","K","10","",Lemma
+"Thm-K-05-01","端到端延迟分析定理","Thm","K","05","",Thm
+"Thm-K-05-03","迁移正确性证明（双写一致性保证）","Thm","K","05","",Thm
+"Thm-K-05-04","多可用区部署 99.9%+ 可用性证明","Thm","K","05","",Thm
+"Thm-K-05-05","边缘-云延迟分界点定理","Thm","K","05","",Thm
+"Def-K-05-05","API 兼容性矩阵（Flink Scala → RisingWave）","Def","K","05","",Def
+"Def-K-05-07","云原生流处理部署模型五元组","Def","K","05","",Def
+"Def-K-05-08","自动扩缩容策略（HPA/VPA/Custom Metrics）","Def","K","05","",Def
+"Def-K-05-10","边缘-云协同架构六元组定义","Def","K","05","",Def
+"Def-K-05-11","资源受限执行环境五维约束模型","Def","K","05","",Def
+"Thm-F-02-40","(中间结果爆炸定理): 对于 $n$ 路Join，若各流记录独立到达且匹配概率为 $p$，第 $k$ 层中间流的期望大小为：","Thm","F","02","",Thm
+"Def-F-02-50","(多路Join): 设流集合 $\mathcal{S} = \{S_1, S_2, \ldots, S_n\}$，其中每个流 $S_i$ 包含记录 $(k, v_i, t_i)$，$k$ 为Join ","Def","F","02","L4",Def
+"Def-F-02-51","(Join链): 二Join的序列组合称为Join链，记为：","Def","F","02","L4",Def
+"Def-F-02-52","(状态膨胀因子): 对于Join链，定义状态膨胀因子为：","Def","F","02","L4",Def
+"Def-F-02-53","(状态存储复杂度): 对于 $n$ 路Join，传统Join链的状态空间复杂度为：","Def","F","02","",Def
+"Def-F-02-54","(MultiJoin支持矩阵):","Def","F","02","",Def
+"Lemma-F-02-40","(MultiJoin状态上界): 对于 $n$ 路Join，设各流Key空间大小为 $|K_i|$，MultiJoin的最大状态条目数为：","Lemma","F","02","",Lemma
+"Lemma-F-02-41","(Join链状态下界): 传统Join链的最小状态条目数满足：","Lemma","F","02","",Lemma
+"Prop-F-02-40","(状态减少比率): 对于均匀分布的 $n$ 路等值Join，MultiJoin相对于Join链的状态减少比率为：","Prop","F","02","",Prop
+"Prop-F-02-41","(延迟边界): MultiJoin的端到端延迟 $L_{\text{multi}}$ 与Join链延迟 $L_{\text{chain}}$ 满足：","Prop","F","02","",Prop
+"Prop-F-02-42","(吞吐优势条件): MultiJoin的吞吐量优势在以下条件下显著：","Prop","F","02","",Prop
+"Lemma-F-02-01","的工程实现：尽管 DAG 中不同分支进度不同，但每个节点本地的 Watermark 序列都保持单调不减。","Lemma","F","02","",Lemma
+"Thm-F-07-71","(实时性价值定理): 设问题发生时刻为 $t_0$，发现时刻为 $t_d$，修复时刻为 $t_f$，则损失函数满足：","Thm","F","07","",Thm
+"Def-F-07-71","(Clickstream 点击流): 点击流是用户在数字平台上的交互事件序列，定义为四元组 $\mathcal{C} = (\mathcal{E}, \mathcal{T}, \mathcal{A},","Def","F","07","",Def
+"Def-F-07-72","(用户会话 User Session): 用户会话是会话窗口内的连续交互序列，定义为三元组 $\mathcal{S} = (u, \mathcal{E}_s, \tau)$：","Def","F","07","",Def
+"Def-F-07-73","(转化漏斗 Conversion Funnel): 转化漏斗是预定义的用户行为路径，定义为有序列表 $\mathcal{F} = [(s_1, r_1), (s_2, r_2), \ldots, (s","Def","F","07","",Def
+"Def-F-07-74","(实时用户画像 Real-time User Profile): 用户画像是在线更新的用户特征向量，定义为 $\mathcal{P}_u(t) = (\mathbf{d}_u, \mathbf{b}_","Def","F","07","",Def
+"Def-F-07-75","(异常行为检测 Anomaly Detection): Bot/爬虫行为检测定义为分类函数 $\mathcal{D}: \mathcal{E}_s \rightarrow \{0, 1\}$，其中：","Def","F","07","",Def
+"Lemma-F-07-71","(会话边界一致性): 对于有序事件流 $\mathcal{E} = [e_1, e_2, \ldots, e_n]$，在固定会话超时参数 $\tau_{gap}$ 下，会话划分是确定性的：","Lemma","F","07","",Lemma
+"Lemma-F-07-72","(漏斗计算单调性): 在转化漏斗 $\mathcal{F} = [(s_1, r_1), \ldots, (s_n, r_n)]$ 中，用户集合满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-73","(检测准确率下界): 设人类用户行为特征分布为 $\mathcal{N}(\mu_h, \sigma_h^2)$，Bot特征分布为 $\mathcal{N}(\mu_b, \sigma_b^2)$，则","Lemma","F","07","",Lemma
+"Prop-F-07-71","(端到端延迟分解): 从用户行为发生到分析结果可见的总延迟 $L_{total}$ 可分解为：","Prop","F","07","",Prop
+"Def-F-07-01","(实时推荐系统 Real-time Recommendation System): 实时推荐系统是一个五元组 $\mathcal{R} = (\mathcal{U}, \mathcal{I}, \ma","Def","F","07","",Def
+"Def-F-07-02","(实时协同过滤 Real-time Collaborative Filtering): 基于隐语义模型的实时协同过滤定义为：","Def","F","07","",Def
+"Def-F-07-03","(域数据产品 Domain Data Product): 在Data Mesh架构中，域数据产品是自包含的数据单元，定义为三元组 $\mathcal{D} = (\mathcal{S}, \mathc","Def","F","07","",Def
+"Lemma-F-07-01","(端到端延迟边界): 在Flink实时推荐系统中，从用户行为发生到推荐结果更新的端到端延迟 $L_{total}$ 满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-02","(实时特征有效性): 设离线批处理特征为 $\phi_{batch}$，实时特征为 $\phi_{rt}$，则推荐准确率损失上界为：","Lemma","F","07","",Lemma
+"Prop-F-07-01","(新鲜度收益递减): 设特征新鲜度为 $f$（分钟），CTR提升 $\Delta_{CTR}$ 满足对数关系：","Prop","F","07","",Prop
+"Def-F-07-261","(智能电网数据空间 Smart Grid Data Space): 电网数据空间是电力系统运行数据的联合空间，定义为七元组 $\mathcal{G} = (\mathcal{N}, \mathcal{","Def","F","07","",Def
+"Def-F-07-262","(多时间尺度负载预测 Multi-timescale Load Forecasting): 负载预测在不同时间尺度上的定义：","Def","F","07","",Def
+"Def-F-07-263","(需求响应优化 Demand Response Optimization): 需求响应是在价格或激励信号引导下调整负载：","Def","F","07","",Def
+"Def-F-07-264","(电能质量指数 Power Quality Index): 综合电能质量评分：","Def","F","07","",Def
+"Def-F-07-265","(DER优化调度 DER Dispatch Optimization): 分布式能源的实时调度：","Def","F","07","",Def
+"Lemma-F-07-261","(预测误差下界): 在平稳假设下，最小可达MAPE满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-262","(电网控制响应延迟): 从测量采集到控制指令执行的端到端延迟：","Lemma","F","07","",Lemma
+"Lemma-F-07-263","(储能投资回收期): 储能系统的投资回收期：","Lemma","F","07","",Lemma
+"Prop-F-07-261","(频率偏差控制): 在需求响应参与下，系统频率偏差满足：","Prop","F","07","",Prop
+"Thm-F-07-10","(延迟保证): 若各分量满足上述上界，则：","Thm","F","07","",Thm
+"Thm-F-07-11","(误报率优化): 通过动态阈值调整，实时风控系统的误报率 $FPR$ 满足：","Thm","F","07","",Thm
+"Thm-F-07-12","(状态规模可扩展性): 对于状态大小 $S$（GB），系统仍能保持延迟保证的最大吞吐量 $T_{\max}$：","Thm","F","07","",Thm
+"Def-F-07-10","(实时风控系统): 实时风控系统是一个六元组 $\mathcal{R} = (E, S, \mathcal{F}, \mathcal{D}, \mathcal{A}, \tau)$，其中：","Def","F","07","",Def
+"Def-F-07-11","(欺诈检测模型): 欺诈检测模型是一个概率分类器：","Def","F","07","",Def
+"Def-F-07-12","(域所有权): 在Data Mesh架构中，金融数据域定义为：","Def","F","07","",Def
+"Lemma-F-07-10","(端到端延迟分解): 实时风控系统的端到端延迟 $L_{\text{total}}$ 可分解为：","Lemma","F","07","",Lemma
+"Lemma-F-07-11","(实时准确率边界): 设批处理系统准确率为 $A_{\text{batch}}$，实时系统准确率为 $A_{\text{realtime}}$，则：","Lemma","F","07","",Lemma
+"Lemma-F-07-12","(水平扩展线性度): Flink风控系统的吞吐量 $T$ 与并行度 $p$ 满足：","Lemma","F","07","",Lemma
+"Def-F-07-221","(金融交易图 Financial Transaction Graph): 金融交易图是动态异构图 $\mathcal{G}(t) = (\mathcal{V}, \mathcal{E}(t), \ma","Def","F","07","",Def
+"Def-F-07-222","(欺诈模式 Fraud Pattern): 欺诈模式是交易序列上的异常子图结构，定义为四元组 $\mathcal{P} = (\mathcal{S}, \phi, \theta, \tau)$：","Def","F","07","",Def
+"Def-F-07-223","(实时风险评分 Real-time Risk Score): 交易级别的风险评分是多元函数：","Def","F","07","",Def
+"Def-F-07-224","(欺诈检测CEP模式 Fraud CEP Pattern): CEP模式用于检测时序上的异常行为序列：","Def","F","07","",Def
+"Def-F-07-225","(实时图嵌入 Real-time Graph Embedding): 图嵌入是映射函数 $f_{GNN}: \mathcal{V} \times \mathcal{G} \rightarrow \ma","Def","F","07","",Def
+"Lemma-F-07-221","(图特征区分度下界): 设欺诈节点集合为 $\mathcal{V}_f$，正常节点为 $\mathcal{V}_n$，图嵌入的区分能力满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-222","(欺诈检测延迟分解): 从交易发生到风险决策的端到端延迟：","Lemma","F","07","",Lemma
+"Lemma-F-07-223","(模型时效性衰减): 设模型训练时刻为 $t_0$，当前时刻为 $t$，模型效果衰减满足：","Lemma","F","07","",Lemma
+"Prop-F-07-221","(CEP检测精度): 对于欺诈模式 $\mathcal{P}$，CEP检测的精确率和召回率满足：","Prop","F","07","",Prop
+"Def-F-07-251","(患者生理数据流 Patient Physiological Data Stream): 患者生理数据流是连续监测信号的时间序列，定义为五元组 $\mathcal{P} = (\mathcal{V},","Def","F","07","",Def
+"Def-F-07-252","(生理异常检测 Physiological Anomaly Detection): 异常检测是分类函数：","Def","F","07","",Def
+"Def-F-07-253","(早期预警评分 Early Warning Score): 综合评分系统量化患者恶化风险：","Def","F","07","",Def
+"Def-F-07-254","(生理趋势分析 Physiological Trend Analysis): 趋势分析检测体征变化方向：","Def","F","07","",Def
+"Def-F-07-255","(患者状态相似度 Patient State Similarity): 基于历史数据的相似患者检索：","Def","F","07","",Def
+"Lemma-F-07-251","(异常检测响应延迟): 从生理异常发生到告警触发的端到端延迟：","Lemma","F","07","",Lemma
+"Lemma-F-07-252","(告警疲劳控制): 通过分层阈值和趋势确认，假阳性率可控制在：","Lemma","F","07","",Lemma
+"Lemma-F-07-253","(数据完整性边界): 对于采样频率 $f$，数据完整性要求：","Lemma","F","07","",Lemma
+"Prop-F-07-251","(EWS敏感性): EWS评分对危重患者的敏感性满足：","Prop","F","07","",Prop
+"Def-F-07-241","(城市IoT数据空间 Urban IoT Data Space): 城市IoT数据空间是异构数据源的联合空间，定义为八元组 $\mathcal{U} = (\mathcal{S}, \mathcal{","Def","F","07","",Def
+"Def-F-07-242","(城市数字孪生 City Digital Twin): 城市数字孪生是物理城市的实时镜像，定义为：","Def","F","07","",Def
+"Def-F-07-243","(城市治理决策规则 Urban Governance Rules): 决策规则是条件-动作映射：","Def","F","07","",Def
+"Def-F-07-244","(跨域事件关联 Cross-domain Event Correlation): 跨域关联发现因果或相关关系：","Def","F","07","",Def
+"Def-F-07-245","(城市健康指数 City Health Index): 综合评估城市运行状态的指标：","Def","F","07","",Def
+"Lemma-F-07-241","(多源数据一致性): 对于同一物理量 $m$ 的多个传感器测量 $\{m_1, m_2, \ldots, m_n\}$，融合估计 $\hat{m}$ 的方差满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-242","(城市事件响应延迟): 从事件发生到决策执行的端到端延迟：","Lemma","F","07","",Lemma
+"Lemma-F-07-243","(数字孪生同步误差): 数字孪生状态 $\mathcal{DT}(t)$ 与物理世界状态 $S(t)$ 的同步误差：","Lemma","F","07","",Lemma
+"Prop-F-07-241","(跨域关联精确率): 基于时空窗口的关联检测精确率：","Prop","F","07","",Prop
+"Thm-F-07-50","(预测精度上界定理): 在给定数据质量 $Q_{data}$ 和模型复杂度 $\mathcal{C}_{model}$ 约束下，可达到的最佳预测精度满足：","Thm","F","07","",Thm
+"Thm-F-07-51","(实时性保证定理): 在Flink流处理系统中，端到端延迟满足：","Thm","F","07","",Thm
+"Thm-F-07-52","(可再生能源渗透率上限): 在给定系统惯性和调节能力下，可再生能源渗透率上限为：","Thm","F","07","",Thm
+"Def-F-07-50","(智能电网系统): 智能电网是一个十元组 $\mathcal{G} = (N, L, G, C, S, D, \mathcal{P}, \mathcal{F}, \mathcal{T}, \mathc","Def","F","07","",Def
+"Def-F-07-51","(负荷预测): 负荷预测是一个时序回归问题，定义为：","Def","F","07","",Def
+"Def-F-07-52","(可再生能源出力预测):","Def","F","07","",Def
+"Def-F-07-53","(预测区间): 预测区间 $[\hat{P}_{lower}, \hat{P}_{upper}]$ 满足：","Def","F","07","",Def
+"Def-F-07-54","(需求响应): 需求响应是负荷侧弹性资源的调度机制：","Def","F","07","",Def
+"Def-F-07-55","(电网异常检测): 电网异常检测是一个复杂事件处理 (CEP) 问题：","Def","F","07","",Def
+"Lemma-F-07-50","(预测误差下界): 对于任何负荷预测模型，预测误差的理论下界由信号本身的不可预测性决定：","Lemma","F","07","",Lemma
+"Lemma-F-07-51","(预测精度随提前期衰减): 预测精度随预测提前期 $h$ 增加而衰减：","Lemma","F","07","",Lemma
+"Lemma-F-07-52","(端到端延迟分解): 智能电网实时处理系统的端到端延迟 $L_{total}$ 可分解为：","Lemma","F","07","",Lemma
+"Lemma-F-07-53","(功率平衡稳定性条件): 电网频率稳定的必要条件是实时功率平衡：","Lemma","F","07","",Lemma
+"Thm-F-07-30","(实时性保证): 若各分量满足上述上界，则：","Thm","F","07","",Thm
+"Thm-F-07-31","(质量异常检测准确率): 对于质量缺陷检测，设：","Thm","F","07","",Thm
+"Thm-F-07-32","(设备规模可扩展性): 设系统支持的最大设备数为 $N_{max}$，实际接入设备数为 $N$，则系统可用性保证：","Thm","F","07","",Thm
+"Def-F-07-30","(智能制造系统): 智能制造系统是一个八元组 $\mathcal{M} = (P, D, S, F, C, A, \mathcal{T}, \mathcal{O})$，其中：","Def","F","07","",Def
+"Def-F-07-31","(OEE - Overall Equipment Effectiveness): OEE是三个效率指标的乘积：","Def","F","07","",Def
+"Def-F-07-32","(数字孪生): 数字孪生是物理实体在数字空间的实时映射：","Def","F","07","",Def
+"Def-F-07-33","(预测性维护): 预测性维护系统是一个预测模型：","Def","F","07","",Def
+"Def-F-07-34","(边缘-云协同模型): 边缘-云协同是一个处理函数分解：","Def","F","07","",Def
+"Def-F-07-35","(边缘-云决策函数): 处理函数 $f$ 的执行位置决策：","Def","F","07","",Def
+"Lemma-F-07-30","(端到端延迟分解): 智能制造IoT系统的端到端延迟 $L_{total}$ 可分解为：","Lemma","F","07","",Lemma
+"Lemma-F-07-31","(故障检测准确率边界): 设故障检测系统的真正例率为 $TPR$，假正例率为 $FPR$，则：","Lemma","F","07","",Lemma
+"Lemma-F-07-32","(水平扩展线性度): Flink智能制造系统的吞吐量 $T$ 与并行度 $p$ 满足：","Lemma","F","07","",Lemma
+"Def-F-07-211","(社交媒体事件流 Social Media Event Stream): 社交媒体事件流是用户生成内容的时序序列，定义为六元组 $\mathcal{S} = (\mathcal{U}, \mathca","Def","F","07","",Def
+"Def-F-07-212","(实时情感分析 Real-time Sentiment Analysis): 实时情感分析是映射函数 $\mathcal{A}: \mathcal{P} \times \mathcal{T} \rig","Def","F","07","",Def
+"Def-F-07-213","(趋势检测 Trend Detection): 趋势是话题热度随时间变化的显著上升模式。趋势检测定义为二元判定函数：","Def","F","07","",Def
+"Def-F-07-214","(影响力传播 Influence Propagation): 影响力在用户社交网络中的传播遵循独立级联模型。用户 $u$ 在时间 $t$ 被激活的概率：","Def","F","07","",Def
+"Def-F-07-215","(动态社交图谱 Dynamic Social Graph): 社交图谱是在线更新的有向图 $\mathcal{G}(t) = (\mathcal{V}(t), \mathcal{E}(t), \mat","Def","F","07","",Def
+"Lemma-F-07-211","(情感聚合单调性): 对于话题 $T$ 的情感分析，当新内容 $p_{new}$ 的情感极性与当前情感一致时，聚合情感会强化：","Lemma","F","07","",Lemma
+"Lemma-F-07-212","(趋势检测召回率下界): 设真实趋势发生率为 $\rho$，检测窗口为 $W$，则召回率满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-213","(传播覆盖上界): 在独立级联模型下，初始种子集 $\mathcal{S}_0$ 的期望传播覆盖满足：","Lemma","F","07","",Lemma
+"Prop-F-07-211","(端到端延迟边界): 社交媒体实时分析的端到端延迟：","Prop","F","07","",Prop
+"Def-F-07-231","(供应链事件流 Supply Chain Event Stream): 供应链事件流是物流、生产、库存状态的时序序列，定义为七元组 $\mathcal{S} = (\mathcal{E}, \math","Def","F","07","",Def
+"Def-F-07-232","(实时库存状态 Real-time Inventory State): 位置 $l$ 产品 $p$ 在时刻 $t$ 的库存水平：","Def","F","07","",Def
+"Def-F-07-233","(实时需求预测 Real-time Demand Forecasting): 需求预测是基于历史数据和实时信号的函数：","Def","F","07","",Def
+"Def-F-07-234","(实时路径优化 Real-time Route Optimization): 对于配送请求集合 $\mathcal{R}$，路径优化求解：","Def","F","07","",Def
+"Def-F-07-235","(供应链风险指数 Supply Chain Risk Index): 综合风险评分函数：","Def","F","07","",Def
+"Lemma-F-07-231","(库存状态一致性): 对于任意位置 $l$、产品 $p$ 和时刻 $t$，库存计算满足：","Lemma","F","07","",Lemma
+"Lemma-F-07-232","(预测误差上界): 指数平滑预测的MAPE（平均绝对百分比误差）满足：","Lemma","F","07","",Lemma
+"Prop-F-07-231","(VRP启发式算法近似比): 对于容量约束的车辆路径问题， savings算法 + 2-opt优化的近似比：","Prop","F","07","",Prop
+"Prop-F-07-232","(供应链实时性边界): 从事件发生到决策执行的端到端延迟：","Prop","F","07","",Prop
+"Thm-F-06-30","(算子单元测试完备性定理): 对于任意有状态流算子 $Op$，若满足以下条件，则其单元测试是完备的：","Thm","F","06","",Thm
+"Thm-F-06-31","(连接器集成测试正确性定理): 对于 Source/Sink 连接器 $C$，若集成测试通过以下条件验证，则连接器行为正确：","Thm","F","06","",Thm
+"Thm-F-06-32","(E2E测试完备性定理): 端到端测试必须验证以下系统属性：","Thm","F","06","",Thm
+"Def-F-06-30","(流处理测试复杂度): 流处理系统的测试复杂度 $C_{stream}$ 定义为：","Def","F","06","L3",Def
+"Def-F-06-31","(测试金字塔 - 流处理版本): 流处理测试金字塔包含三个层次：","Def","F","06","L3",Def
+"Def-F-06-32","(确定性重放 - Deterministic Replay): 给定相同的输入事件序列 $E = \{e_1, e_2, ..., e_n\}$ 和系统配置 $C$，流处理系统 $S$ 的输出 $O$","Def","F","06","L3",Def
+"Def-F-06-33","(水印边界 - Watermark Boundary): 对于事件时间窗口 $W = [start, end]$，当水印 $Wm \geq end$ 时，窗口被触发。","Def","F","06","L3",Def
+"Def-F-06-34","(状态一致性 - State Consistency): 在检查点 $cp$ 之后，系统状态 $State_{cp}$ 满足：","Def","F","06","",Def
+"Def-F-06-35","(测试数据生成器): 测试数据生成器 $G$ 是一个函数：","Def","F","06","",Def
+"Lemma-F-06-01","(流处理测试完备性边界): 对于无限流数据，完备的测试覆盖是不可能的。测试策略必须针对以下边界：","Lemma","F","06","",Lemma
+"Lemma-F-06-02","(单元测试覆盖率): 算子逻辑单元测试应达到：","Lemma","F","06","",Lemma
+"Lemma-F-06-03","(集成测试数据量): 集成测试的最小数据量应满足：","Lemma","F","06","",Lemma
+"Prop-F-06-01","(端到端测试延迟上界): E2E测试的执行时间 $T_{e2e}$ 受以下约束：","Prop","F","06","",Prop
+"Thm-F-14-15","Streaming-First Lakehouse一致性定理","Thm","F","14","",Thm
+"Thm-F-14-16","多格式Catalog统一治理定理","Thm","F","14","",Thm
+"Thm-F-14-17","S3 Tables托管服务SLA边界定理","Thm","F","14","",Thm
+"Thm-F-14-18","Table Format选型决策完备性定理","Thm","F","14","",Thm
+"Thm-F-14-04","统一批流结果一致性定理","Thm","F","14","",Thm
+"Thm-F-14-05","湖仓格式端到端 Exactly-Once 语义定理","Thm","F","14","",Thm
+"Thm-F-14-06","增量消费完备性定理","Thm","F","14","",Thm
+"Def-F-14-21","Streaming-First Lakehouse Architecture 形式化定义","Def","F","14","",Def
+"Def-F-14-22","Open Table Format 2026 Maturity Model","Def","F","14","",Def
+"Def-F-14-23","Table Format 存储语义形式化","Def","F","14","",Def
+"Def-F-14-24","Catalog 标准化与治理抽象","Def","F","14","",Def
+"Def-F-14-25","S3 Tables与Storage-First架构","Def","F","14","",Def
+"Def-F-14-05","流式湖仓架构形式化定义","Def","F","14","",Def
+"Def-F-14-06","Apache Iceberg 流式集成语义","Def","F","14","",Def
+"Def-F-14-07","Apache Paimon LSM-Tree 流批模型","Def","F","14","",Def
+"Def-F-14-08","Delta Lake 流式架构","Def","F","14","",Def
+"Def-F-14-09","统一批流处理语义","Def","F","14","",Def
+"Thm-F-14-21","(流式连通组件算法的正确性). 设边流 $ℰ$ 按时间戳非递减到达，算法在每个时间 $t$ 输出连通组件标识 $C_t(v)$，则：","Thm","F","14","",Thm
+"Thm-F-14-22","(增量三角形计数的复杂度上界). 设图 $G$ 的最大度数为 $Δ$，流式三角形计数算法处理单条边的时间复杂度为 $O(Δ)$。","Thm","F","14","",Thm
+"Thm-F-14-23","(分区策略对局部性的影响). 对于度分布服从幂律的图，度感知分区（DGR）相比哈希分区可减少 $O(\log |V|)$ 倍的跨分区边。","Thm","F","14","",Thm
+"Def-F-14-31","(图流数据模型). 设图流为随时间演化的图序列 $𝒢 = \{G_t\}_{t=0}^{∞}$，其中每个时间点的图状态为：","Def","F","14","L4",Def
+"Def-F-14-32","(边添加流模型 - Edge Addition Stream). Gelly Streaming 采用边添加流模型，定义图更新操作：","Def","F","14","L4",Def
+"Def-F-14-33","(GraphStream 抽象). Gelly Streaming 的核心抽象 `GraphStream<K, VV, EV>` 定义为：","Def","F","14","L4",Def
+"Def-F-14-34","(图窗口切片 - Graph Window Slice). 设时间窗口 $W = [t_{start}, t_{end})$，图窗口切片定义为：","Def","F","14","",Def
+"Def-F-14-35","(分布式图摘要 - Distributed Graph Summarization). 设图 $G=(V,E)$，图摘要为映射函数 $φ: V → V'$ 诱导的压缩图 $G'=(V',E')$，其中","Def","F","14","",Def
+"Lemma-F-14-11","(窗口切片复杂度). 对于时间窗口 $W$，设窗口内边数为 $|E_W|$，顶点数为 $|V_W|$，则：","Lemma","F","14","",Lemma
+"Lemma-F-14-12","(流式连通组件的近似边界). 在边添加流模型下，设图演化速率为 $λ$（边/秒），算法处理延迟为 $τ$，则连通组件标识的滞后误差界为：","Lemma","F","14","",Lemma
+"Lemma-F-14-13","(三角形计数的内存边界). 对于 $k$-跳邻居存储策略，流式三角形计数的内存消耗上界为：","Lemma","F","14","",Lemma
+"Prop-F-14-21","(状态一致性保证). Gelly Streaming 的状态更新满足：","Prop","F","14","",Prop
+"Prop-F-14-22","(流式图算法选择决策树). 对于给定图分析问题，选择流式处理的准则：","Prop","F","14","",Prop
+"Thm-F-14-01","(PageRank 在 Gelly 中的收敛性). 设图 $G=(V,E)$ 的邻接矩阵为 $A$，阻尼系数为 $d$，则 Gelly 实现的 PageRank 迭代：","Thm","F","14","",Thm
+"Def-F-14-01","(图数据模型). 设图数据模型为二元组 $G = (V, E)$，其中：","Def","F","14","L3",Def
+"Def-F-14-02","(迭代图算法 - BSP模型). BSP (Bulk Synchronous Parallel) 模型定义图算法的执行语义：","Def","F","14","L3",Def
+"Def-F-14-03","(增量图更新). 设原始图为 $G_t = (V_t, E_t)$，增量更新为 $ΔG = (ΔV^+, ΔV^-, ΔE^+, ΔE^-)$，其中：","Def","F","14","L3",Def
+"Lemma-F-14-01","(Gelly 图的不变性). 对于任何有效的 Flink Gelly 图实例，满足：","Lemma","F","14","",Lemma
+"Lemma-F-14-02","(BSP 迭代的单调性). 在 BSP 模型下，若顶点计算函数是单调的（即状态更新仅依赖于前序状态），则算法收敛性不受消息传递顺序影响。","Lemma","F","14","",Lemma
+"Lemma-F-14-03","(增量更新的影响范围). 增量更新 $ΔG$ 的影响范围 $A(ΔG)$ 满足：","Lemma","F","14","",Lemma
+"Prop-F-14-01","(算法选择决策树). 对于给定图算法问题，选择 Gelly 计算模式的准则：","Prop","F","14","",Prop
+"Thm-F-10-30","在流量平稳且配置合理的前提下，Flink Autoscaler 保证系统最终会收敛到**稳定状态**，即并行度不再频繁变更。","Thm","F","10","",Thm
+"Thm-F-10-31","对于异构流水线，顶点级别扩缩容的资源效率**不低于**全局扩缩容。","Thm","F","10","",Thm
+"Thm-F-10-32","追赶容量公式能确保在目标时间 T 内处理完积压数据。","Thm","F","10","",Thm
+"Def-F-10-31","背压是数据生产者速率超过消费者处理能力时产生的**流控反馈机制**，形式化定义为：","Def","F","10","",Def
+"Def-F-10-32","目标利用率是 Autoscaler 追求的**最优资源使用比例**，定义为：","Def","F","10","",Def
+"Def-F-10-33","顶点级别扩缩容允许**独立调整 JobGraph 中每个顶点的并行度**，形式化为：","Def","F","10","",Def
+"Def-F-10-34","追赶容量是系统处理**积压数据**所需的额外资源配额，定义为：","Def","F","10","",Def
+"Def-F-10-35","稳定窗口是防止**抖动扩缩容**的时间缓冲机制：","Def","F","10","",Def
+"Prop-F-10-15","在资源充足的前提下，增加瓶颈算子的并行度会**单调递减**背压比率。","Prop","F","10","",Prop
+"Prop-F-10-16","在存在流量波动的场景下，TargetUtilization = 80% 是**成本-延迟权衡的帕累托最优**。","Prop","F","10","",Prop
+"Prop-F-10-17","对于使用 `FORWARD` 分区策略的边，上下游顶点的并行度必须**相等**；使用 `HASH` 或 `REBALANCE` 策略则无此限制。","Prop","F","10","",Prop
+"Def-F-05-01","**生产就绪(Production Ready)** — 系统具备在真实业务环境中稳定运行、可监控、可运维、可恢复的能力。","Def","F","05","",Def
+"Def-F-05-02","**检查项(Check Item)** — 包含检查内容、检查方法、预期结果、不通过处理四个要素的验证单元。","Def","F","05","",Def
+"Def-F-05-03","**P0/P1/P2分级** — 按重要性划分的检查项等级：","Def","F","05","",Def
+"Prop-F-05-01","生产环境检查清单的完备性","Prop","F","05","",Prop
+"Def-F-15-05","分布式追踪是函数 $T: R \rightarrow G$，将请求 $R$ 映射为有向无环图 $G = (V, E')$，其中：","Def","F","15","L3",Def
+"Def-F-15-07","上下文传播由三元组 $CtxProp = (Carrier, Inject, Extract)$ 组成：","Def","F","15","",Def
+"Def-F-15-08","采样策略是函数 $Sample: TraceCandidate \rightarrow \{0, 1\}$，其中 $1$ 表示采样（记录）。","Def","F","15","",Def
+"Def-F-15-11","统一可观测性模型 $\mathcal{U}$ 定义为：","Def","F","15","L4",Def
+"Def-F-15-12","流可观测性维度 $\mathcal{D}_{streaming}$ 是六元组：","Def","F","15","",Def
+"Def-F-15-13","异步边界追踪是函数 $ABT: Event \rightarrow TraceContext$，满足：","Def","F","15","",Def
+"Def-F-15-14","采样器 $Sampler$ 是函数 $S: Trace \rightarrow \{0, 1\}$，其中：","Def","F","15","",Def
+"Thm-F-03-15","(Python UDF性能优化定理): 对于Python UDF执行时间 $T_{total}$，通过以下优化策略可将性能提升 $2\times$ 至 $10\times$：","Thm","F","03","",Thm
+"Def-F-03-20","(Python UDF): 设 $\mathcal{D}$ 为Flink分布式执行环境，$P$ 为Python运行时进程，则Python UDF是一个四元组 $\mathcal{U}_{py} = (","Def","F","03","L4",Def
+"Def-F-03-21","(UDF类型分类): Python UDF根据输入输出基数划分为：","Def","F","03","L4",Def
+"Def-F-03-22","(UDF执行模型差异): 设 $\mathcal{U}_{java}$ 为Java UDF，$\mathcal{U}_{py}$ 为Python UDF，则两者执行模型差异可定义为：","Def","F","03","L4",Def
+"Lemma-F-03-07","(Python UDF性能上界): 设 $T_{java}$ 为同功能Java UDF执行时间，$T_{py}$ 为Python UDF执行时间，则存在常数 $k > 1$ 使得：","Lemma","F","03","",Lemma
+"Lemma-F-03-08","(类型一致性): 对于任意Python UDF $\mathcal{U}_{py}$，若输入类型满足 $\Gamma \vdash e : \tau$，则输出类型满足：","Lemma","F","03","",Lemma
+"Prop-F-03-07","(Python UDF选型准则): 对于给定的计算任务 $Task$，选择Python UDF的充分条件为：","Prop","F","03","",Prop
+"Lemma-F-03-01","对于确定性等价变换（如谓词下推），HepPlanner的最优应用顺序与输入计划形状无关。","Lemma","F","03","",Lemma
+"Thm-F-09-01","设 $\mathcal{C}$ 为 Scala Case Class 构成的范畴，$\mathcal{F}$ 为 Flink 可序列化类型的范畴，则存在 **完全忠实的函子** $F: \mathca","Thm","F","09","",Thm

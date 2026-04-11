@@ -1,4 +1,4 @@
-# Chatbot Integration Guide
+﻿# Chatbot Integration Guide
 
 > **Project**: P3-7 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04
 
@@ -683,9 +683,9 @@ chatbot:
 >
 ```
 >
-> See [Checkpoint Mechanism Deep Dive](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) for complete details.
+> See [Checkpoint Mechanism Deep Dive](../Flink/02-core/checkpoint-mechanism-deep-dive.md) for complete details.
 >
-> [^1]: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+> [^1]: Flink/02-core/checkpoint-mechanism-deep-dive.md
 
 ### 7.2 Follow-up Query
 
@@ -698,7 +698,7 @@ chatbot:
 > 2. **Unaligned Checkpoint**: Buffers in-flight data to continue processing
 > 3. **Incremental Checkpoint**: Only saves changed state to reduce I/O
 >
-> [^2]: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md, Section "Checkpoint and Backpressure"
+> [^2]: Flink/02-core/checkpoint-mechanism-deep-dive.md, Section "Checkpoint and Backpressure"
 
 ---
 
@@ -715,3 +715,4 @@ chatbot:
 | Version | Date | Changes |
 |---------|------|---------|
 | v1.0 | 2026-04-04 | Initial version |
+

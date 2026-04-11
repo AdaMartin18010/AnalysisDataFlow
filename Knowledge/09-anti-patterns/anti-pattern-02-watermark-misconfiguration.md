@@ -652,7 +652,7 @@ timeline
 
 [^6]: M. Kleppmann, "Designing Data-Intensive Applications," O'Reilly Media, 2017. Chapter 11: Stream Processing.
 
-[^7]: 金融风控实时欺诈检测案例，详见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
+[^7]: 金融风控实时欺诈检测案例，详见 [Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
 ---
 

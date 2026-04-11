@@ -1,0 +1,2687 @@
+{
+  "timestamp": "2026-04-10 20:14:38",
+  "summary": {
+    "files_processed": 6,
+    "files_modified": 6,
+    "total_mermaid_blocks": 25,
+    "total_fixes": 0
+  },
+  "files": [
+    {
+      "file_path": "formal-methods\\99-probabilistic-programming.md",
+      "mermaid_blocks": 4,
+      "fixes": [
+        {
+          "line": 853,
+          "original": "-->",
+          "fixed": "PCHL -->|扩展概率选择| PPHL",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 853,
+          "original": "-->",
+          "fixed": "PCHL -->|扩展概率选择| PPHL",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 854,
+          "original": "-->",
+          "fixed": "PPHL -->|增加推导能力| EXT",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 854,
+          "original": "-->",
+          "fixed": "PPHL -->|增加推导能力| EXT",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 923,
+          "original": "-->",
+          "fixed": "A1 -->|路径聚合| B1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 923,
+          "original": "-->",
+          "fixed": "A1 -->|路径聚合| B1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 924,
+          "original": "-->",
+          "fixed": "A2 -->|采样解释| B2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 924,
+          "original": "-->",
+          "fixed": "A2 -->|采样解释| B2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 925,
+          "original": "-->",
+          "fixed": "B1 -->|分布解释| C1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 925,
+          "original": "-->",
+          "fixed": "B1 -->|分布解释| C1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 926,
+          "original": "-->",
+          "fixed": "B2 -->|极限构造| C3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 926,
+          "original": "-->",
+          "fixed": "B2 -->|极限构造| C3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 927,
+          "original": "-->",
+          "fixed": "C1 -->|wp/wlp| D1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 927,
+          "original": "-->",
+          "fixed": "C1 -->|wp/wlp| D1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 928,
+          "original": "-->",
+          "fixed": "C2 -->|逻辑编码| D2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 928,
+          "original": "-->",
+          "fixed": "C2 -->|逻辑编码| D2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 929,
+          "original": "-->",
+          "fixed": "D1 -->|验证应用| D3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 929,
+          "original": "-->",
+          "fixed": "D1 -->|验证应用| D3",
+          "type": "箭头空格修复"
+        }
+      ]
+    },
+    {
+      "file_path": "formal-methods\\99-homotopy-type-theory.md",
+      "mermaid_blocks": 4,
+      "fixes": [
+        {
+          "line": 842,
+          "original": "-->",
+          "fixed": "Contr --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 842,
+          "original": "-->",
+          "fixed": "Contr --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 843,
+          "original": "-->",
+          "fixed": "Prop --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 843,
+          "original": "-->",
+          "fixed": "Prop --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 844,
+          "original": "-->",
+          "fixed": "Set --> Groupoid",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 844,
+          "original": "-->",
+          "fixed": "Set --> Groupoid",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 845,
+          "original": "-->",
+          "fixed": "Groupoid --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 845,
+          "original": "-->",
+          "fixed": "Groupoid --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 847,
+          "original": "-->",
+          "fixed": "Unit --> Contr",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 847,
+          "original": "-->",
+          "fixed": "Unit --> Contr",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 848,
+          "original": "-->",
+          "fixed": "Interval --> Contr",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 848,
+          "original": "-->",
+          "fixed": "Interval --> Contr",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 850,
+          "original": "-->",
+          "fixed": "Empty --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 850,
+          "original": "-->",
+          "fixed": "Empty --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 851,
+          "original": "-->",
+          "fixed": "EqProp --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 851,
+          "original": "-->",
+          "fixed": "EqProp --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 852,
+          "original": "-->",
+          "fixed": "ContrProp --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 852,
+          "original": "-->",
+          "fixed": "ContrProp --> Prop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 854,
+          "original": "-->",
+          "fixed": "Nat --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 854,
+          "original": "-->",
+          "fixed": "Nat --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 855,
+          "original": "-->",
+          "fixed": "Bool --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 855,
+          "original": "-->",
+          "fixed": "Bool --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 856,
+          "original": "-->",
+          "fixed": "Int --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 856,
+          "original": "-->",
+          "fixed": "Int --> Set",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 858,
+          "original": "-->",
+          "fixed": "SetGroupoid --> Groupoid",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 858,
+          "original": "-->",
+          "fixed": "SetGroupoid --> Groupoid",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 860,
+          "original": "-->",
+          "fixed": "S1 --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 860,
+          "original": "-->",
+          "fixed": "S1 --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 861,
+          "original": "-->",
+          "fixed": "S2 --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 861,
+          "original": "-->",
+          "fixed": "S2 --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 862,
+          "original": "-->",
+          "fixed": "Torus --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 862,
+          "original": "-->",
+          "fixed": "Torus --> Infinite",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 877,
+          "original": "-->",
+          "fixed": "[*] --> S1 : 定义S¹类型",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 877,
+          "original": "-->",
+          "fixed": "[*] --> S1 : 定义S¹类型",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 880,
+          "original": "-->",
+          "fixed": "[*] --> Point : 点构造子",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 880,
+          "original": "-->",
+          "fixed": "[*] --> Point : 点构造子",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 881,
+          "original": "-->",
+          "fixed": "Point --> base : 引入 base : S¹",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 881,
+          "original": "-->",
+          "fixed": "Point --> base : 引入 base : S¹",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 882,
+          "original": "-->",
+          "fixed": "base --> Path : 路径构造子",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 882,
+          "original": "-->",
+          "fixed": "base --> Path : 路径构造子",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 883,
+          "original": "-->",
+          "fixed": "Path --> loop : 引入 loop : base = base",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 883,
+          "original": "-->",
+          "fixed": "Path --> loop : 引入 loop : base = base",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 884,
+          "original": "-->",
+          "fixed": "loop --> [*] : 构造完成",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 884,
+          "original": "-->",
+          "fixed": "loop --> [*] : 构造完成",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 888,
+          "original": "-->",
+          "fixed": "[*] --> Input : 目标类型 P : S¹ → 𝒰",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 888,
+          "original": "-->",
+          "fixed": "[*] --> Input : 目标类型 P : S¹ → 𝒰",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 889,
+          "original": "-->",
+          "fixed": "Input --> BaseCase : 处理base",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 889,
+          "original": "-->",
+          "fixed": "Input --> BaseCase : 处理base",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 890,
+          "original": "-->",
+          "fixed": "BaseCase --> base* : 提供 base* : P(base)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 890,
+          "original": "-->",
+          "fixed": "BaseCase --> base* : 提供 base* : P(base)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 891,
+          "original": "-->",
+          "fixed": "base* --> PathCase : 处理loop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 891,
+          "original": "-->",
+          "fixed": "base* --> PathCase : 处理loop",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 892,
+          "original": "-->",
+          "fixed": "PathCase --> loop* : 提供 loop* : PathP (λi → P(loop i)) base* base*",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 892,
+          "original": "-->",
+          "fixed": "PathCase --> loop* : 提供 loop* : PathP (λi → P(loop i)) base* base*",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 893,
+          "original": "-->",
+          "fixed": "loop* --> Compute : 计算结果",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 893,
+          "original": "-->",
+          "fixed": "loop* --> Compute : 计算结果",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 894,
+          "original": "-->",
+          "fixed": "Compute --> result : ∀ x → P x",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 894,
+          "original": "-->",
+          "fixed": "Compute --> result : ∀ x → P x",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 895,
+          "original": "-->",
+          "fixed": "result --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 895,
+          "original": "-->",
+          "fixed": "result --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 899,
+          "original": "-->",
+          "fixed": "[*] --> Cover : 定义覆盖空间",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 899,
+          "original": "-->",
+          "fixed": "[*] --> Cover : 定义覆盖空间",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 900,
+          "original": "-->",
+          "fixed": "Cover --> C : C(base) = ℤ<br/>C(loop) = ua(succ)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 900,
+          "original": "-->",
+          "fixed": "Cover --> C : C(base) = ℤ<br/>C(loop) = ua(succ)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 901,
+          "original": "-->",
+          "fixed": "C --> Encode : 编码函数",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 901,
+          "original": "-->",
+          "fixed": "C --> Encode : 编码函数",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 902,
+          "original": "-->",
+          "fixed": "Encode --> encode : (base = x) → C(x)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 902,
+          "original": "-->",
+          "fixed": "Encode --> encode : (base = x) → C(x)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 903,
+          "original": "-->",
+          "fixed": "encode --> Decode : 解码函数",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 903,
+          "original": "-->",
+          "fixed": "encode --> Decode : 解码函数",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 904,
+          "original": "-->",
+          "fixed": "Decode --> decode : C(x) → (base = x)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 904,
+          "original": "-->",
+          "fixed": "Decode --> decode : C(x) → (base = x)",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 905,
+          "original": "-->",
+          "fixed": "decode --> Iso : 证明互逆",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 905,
+          "original": "-->",
+          "fixed": "decode --> Iso : 证明互逆",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 906,
+          "original": "-->",
+          "fixed": "Iso --> π1 : π₁(S¹) ≅ ℤ",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 906,
+          "original": "-->",
+          "fixed": "Iso --> π1 : π₁(S¹) ≅ ℤ",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 907,
+          "original": "-->",
+          "fixed": "π1 --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 907,
+          "original": "-->",
+          "fixed": "π1 --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 910,
+          "original": "-->",
+          "fixed": "Construction --> Elimination : 归纳原理",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 910,
+          "original": "-->",
+          "fixed": "Construction --> Elimination : 归纳原理",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 911,
+          "original": "-->",
+          "fixed": "Elimination --> Application : 计算基本群",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 911,
+          "original": "-->",
+          "fixed": "Elimination --> Application : 计算基本群",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 967,
+          "original": "-->",
+          "fixed": "TT_Type <-->|解释| Top_Space",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 967,
+          "original": "-->",
+          "fixed": "TT_Type <-->|解释| Top_Space",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 967,
+          "original": "<-->",
+          "fixed": "TT_Type <-->|解释| Top_Space",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 968,
+          "original": "-->",
+          "fixed": "TT_Type <-->|实现| Inf_Obj",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 968,
+          "original": "-->",
+          "fixed": "TT_Type <-->|实现| Inf_Obj",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 968,
+          "original": "<-->",
+          "fixed": "TT_Type <-->|实现| Inf_Obj",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 970,
+          "original": "-->",
+          "fixed": "TT_Elem <-->|解释| Top_Point",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 970,
+          "original": "-->",
+          "fixed": "TT_Elem <-->|解释| Top_Point",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 970,
+          "original": "<-->",
+          "fixed": "TT_Elem <-->|解释| Top_Point",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 971,
+          "original": "-->",
+          "fixed": "TT_Elem <-->|实现| Inf_0Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 971,
+          "original": "-->",
+          "fixed": "TT_Elem <-->|实现| Inf_0Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 971,
+          "original": "<-->",
+          "fixed": "TT_Elem <-->|实现| Inf_0Cell",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 973,
+          "original": "-->",
+          "fixed": "TT_Path <-->|解释| Top_Path",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 973,
+          "original": "-->",
+          "fixed": "TT_Path <-->|解释| Top_Path",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 973,
+          "original": "<-->",
+          "fixed": "TT_Path <-->|解释| Top_Path",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 974,
+          "original": "-->",
+          "fixed": "TT_Path <-->|实现| Inf_1Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 974,
+          "original": "-->",
+          "fixed": "TT_Path <-->|实现| Inf_1Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 974,
+          "original": "<-->",
+          "fixed": "TT_Path <-->|实现| Inf_1Cell",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 976,
+          "original": "-->",
+          "fixed": "TT_Path2 <-->|解释| Top_Hom",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 976,
+          "original": "-->",
+          "fixed": "TT_Path2 <-->|解释| Top_Hom",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 976,
+          "original": "<-->",
+          "fixed": "TT_Path2 <-->|解释| Top_Hom",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 977,
+          "original": "-->",
+          "fixed": "TT_Path2 <-->|实现| Inf_2Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 977,
+          "original": "-->",
+          "fixed": "TT_Path2 <-->|实现| Inf_2Cell",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 977,
+          "original": "<-->",
+          "fixed": "TT_Path2 <-->|实现| Inf_2Cell",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 979,
+          "original": "-->",
+          "fixed": "TT_Trans <-->|解释| Top_Lift",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 979,
+          "original": "-->",
+          "fixed": "TT_Trans <-->|解释| Top_Lift",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 979,
+          "original": "<-->",
+          "fixed": "TT_Trans <-->|解释| Top_Lift",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 980,
+          "original": "-->",
+          "fixed": "TT_Trans <-->|实现| Inf_Funct",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 980,
+          "original": "-->",
+          "fixed": "TT_Trans <-->|实现| Inf_Funct",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 980,
+          "original": "<-->",
+          "fixed": "TT_Trans <-->|实现| Inf_Funct",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 982,
+          "original": "-->",
+          "fixed": "TT_Univ <-->|解释| Top_WE",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 982,
+          "original": "-->",
+          "fixed": "TT_Univ <-->|解释| Top_WE",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 982,
+          "original": "<-->",
+          "fixed": "TT_Univ <-->|解释| Top_WE",
+          "type": "双向箭头修复"
+        },
+        {
+          "line": 983,
+          "original": "-->",
+          "fixed": "TT_Univ <-->|实现| Inf_WE",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 983,
+          "original": "-->",
+          "fixed": "TT_Univ <-->|实现| Inf_WE",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 983,
+          "original": "<-->",
+          "fixed": "TT_Univ <-->|实现| Inf_WE",
+          "type": "双向箭头修复"
+        }
+      ]
+    },
+    {
+      "file_path": "formal-methods\\99-game-semantics.md",
+      "mermaid_blocks": 4,
+      "fixes": [
+        {
+          "line": 943,
+          "original": "-->",
+          "fixed": "C1 -->|\"τ 响应\"| B1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 943,
+          "original": "-->",
+          "fixed": "C1 -->|\"τ 响应\"| B1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 944,
+          "original": "-->",
+          "fixed": "B1 -->|\"σ 提出\"| A1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 944,
+          "original": "-->",
+          "fixed": "B1 -->|\"σ 提出\"| A1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 945,
+          "original": "-->",
+          "fixed": "A1 -->|\"O 行动\"| A2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 945,
+          "original": "-->",
+          "fixed": "A1 -->|\"O 行动\"| A2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 946,
+          "original": "-->",
+          "fixed": "A2 -->|\"σ 回答\"| B2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 946,
+          "original": "-->",
+          "fixed": "A2 -->|\"σ 回答\"| B2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 947,
+          "original": "-->",
+          "fixed": "B2 -->|\"τ 回答\"| C2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 947,
+          "original": "-->",
+          "fixed": "B2 -->|\"τ 回答\"| C2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 948,
+          "original": "-->",
+          "fixed": "C2 -->|\"τ 提出\"| B3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 948,
+          "original": "-->",
+          "fixed": "C2 -->|\"τ 提出\"| B3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 949,
+          "original": "-->",
+          "fixed": "B3 -->|\"σ 响应\"| B4",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 949,
+          "original": "-->",
+          "fixed": "B3 -->|\"σ 响应\"| B4",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 950,
+          "original": "-->",
+          "fixed": "B4 -->|\"τ 看到\"| C2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 950,
+          "original": "-->",
+          "fixed": "B4 -->|\"τ 看到\"| C2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 960,
+          "original": "-->",
+          "fixed": "R1 --> R2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 960,
+          "original": "-->",
+          "fixed": "R1 --> R2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 961,
+          "original": "-->",
+          "fixed": "R2 --> R3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 961,
+          "original": "-->",
+          "fixed": "R2 --> R3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 962,
+          "original": "-->",
+          "fixed": "R3 --> R4",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 962,
+          "original": "-->",
+          "fixed": "R3 --> R4",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1004,
+          "original": "-->",
+          "fixed": "OS1 -->|\"计算对应\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1004,
+          "original": "-->",
+          "fixed": "OS1 -->|\"计算对应\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1005,
+          "original": "-->",
+          "fixed": "OS2 -->|\"轨迹对应\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1005,
+          "original": "-->",
+          "fixed": "OS2 -->|\"轨迹对应\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1006,
+          "original": "-->",
+          "fixed": "DS1 -->|\"函子映射<br/>丢失交互\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1006,
+          "original": "-->",
+          "fixed": "DS1 -->|\"函子映射<br/>丢失交互\"| GS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1007,
+          "original": "-->",
+          "fixed": "GS1 -->|\"验证基础\"| AS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1007,
+          "original": "-->",
+          "fixed": "GS1 -->|\"验证基础\"| AS1",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1009,
+          "original": "-.->",
+          "fixed": "DS1 -.->|\"不完全抽象问题\"| DS3",
+          "type": "点线箭头修复"
+        },
+        {
+          "line": 1010,
+          "original": "-.->",
+          "fixed": "GS1 -.->|\"解决完全抽象\"| GS2",
+          "type": "点线箭头修复"
+        }
+      ]
+    },
+    {
+      "file_path": "formal-methods\\99-kubernetes-scheduler.md",
+      "mermaid_blocks": 3,
+      "fixes": [
+        {
+          "line": 1166,
+          "original": "-->",
+          "fixed": "A[Pod 创建] --> B{准入控制}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1166,
+          "original": "-->",
+          "fixed": "A[Pod 创建] --> B{准入控制}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1167,
+          "original": "-->",
+          "fixed": "B -->|通过| C[添加到调度队列]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1167,
+          "original": "-->",
+          "fixed": "B -->|通过| C[添加到调度队列]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1168,
+          "original": "-->",
+          "fixed": "B -->|拒绝| D[返回错误]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1168,
+          "original": "-->",
+          "fixed": "B -->|拒绝| D[返回错误]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1170,
+          "original": "-->",
+          "fixed": "C --> E[从队列取出 Pod]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1170,
+          "original": "-->",
+          "fixed": "C --> E[从队列取出 Pod]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1171,
+          "original": "-->",
+          "fixed": "E --> F[获取集群状态快照]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1171,
+          "original": "-->",
+          "fixed": "E --> F[获取集群状态快照]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1173,
+          "original": "-->",
+          "fixed": "F --> G[过滤阶段]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1173,
+          "original": "-->",
+          "fixed": "F --> G[过滤阶段]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1174,
+          "original": "-->",
+          "fixed": "G --> G1[检查资源充足性]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1174,
+          "original": "-->",
+          "fixed": "G --> G1[检查资源充足性]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1175,
+          "original": "-->",
+          "fixed": "G --> G2[检查节点选择器]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1175,
+          "original": "-->",
+          "fixed": "G --> G2[检查节点选择器]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1176,
+          "original": "-->",
+          "fixed": "G --> G3[检查亲和性约束]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1176,
+          "original": "-->",
+          "fixed": "G --> G3[检查亲和性约束]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1177,
+          "original": "-->",
+          "fixed": "G --> G4[检查污点容忍]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1177,
+          "original": "-->",
+          "fixed": "G --> G4[检查污点容忍]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1179,
+          "original": "-->",
+          "fixed": "G1 --> H{可行节点?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1179,
+          "original": "-->",
+          "fixed": "G1 --> H{可行节点?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1180,
+          "original": "-->",
+          "fixed": "G2 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1180,
+          "original": "-->",
+          "fixed": "G2 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1181,
+          "original": "-->",
+          "fixed": "G3 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1181,
+          "original": "-->",
+          "fixed": "G3 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1182,
+          "original": "-->",
+          "fixed": "G4 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1182,
+          "original": "-->",
+          "fixed": "G4 --> H",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1184,
+          "original": "-->",
+          "fixed": "H -->|无| I{可抢占?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1184,
+          "original": "-->",
+          "fixed": "H -->|无| I{可抢占?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1185,
+          "original": "-->",
+          "fixed": "H -->|有| J[评分阶段]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1185,
+          "original": "-->",
+          "fixed": "H -->|有| J[评分阶段]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1187,
+          "original": "-->",
+          "fixed": "I -->|是| K[计算抢占候选]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1187,
+          "original": "-->",
+          "fixed": "I -->|是| K[计算抢占候选]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1188,
+          "original": "-->",
+          "fixed": "I -->|否| L[加入不可调度队列]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1188,
+          "original": "-->",
+          "fixed": "I -->|否| L[加入不可调度队列]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1190,
+          "original": "-->",
+          "fixed": "K --> M[发送抢占请求]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1190,
+          "original": "-->",
+          "fixed": "K --> M[发送抢占请求]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1191,
+          "original": "-->",
+          "fixed": "M --> N[等待终止]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1191,
+          "original": "-->",
+          "fixed": "M --> N[等待终止]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1192,
+          "original": "-->",
+          "fixed": "N --> O[重新调度]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1192,
+          "original": "-->",
+          "fixed": "N --> O[重新调度]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1194,
+          "original": "-->",
+          "fixed": "J --> J1[计算节点得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1194,
+          "original": "-->",
+          "fixed": "J --> J1[计算节点得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1195,
+          "original": "-->",
+          "fixed": "J1 --> J2[资源平衡得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1195,
+          "original": "-->",
+          "fixed": "J1 --> J2[资源平衡得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1196,
+          "original": "-->",
+          "fixed": "J1 --> J3[亲和性得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1196,
+          "original": "-->",
+          "fixed": "J1 --> J3[亲和性得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1197,
+          "original": "-->",
+          "fixed": "J1 --> J4[镜像本地性得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1197,
+          "original": "-->",
+          "fixed": "J1 --> J4[镜像本地性得分]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1199,
+          "original": "-->",
+          "fixed": "J2 --> P[选择最高分节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1199,
+          "original": "-->",
+          "fixed": "J2 --> P[选择最高分节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1200,
+          "original": "-->",
+          "fixed": "J3 --> P",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1200,
+          "original": "-->",
+          "fixed": "J3 --> P",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1201,
+          "original": "-->",
+          "fixed": "J4 --> P",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1201,
+          "original": "-->",
+          "fixed": "J4 --> P",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1203,
+          "original": "-->",
+          "fixed": "P --> Q[预留资源]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1203,
+          "original": "-->",
+          "fixed": "P --> Q[预留资源]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1204,
+          "original": "-->",
+          "fixed": "Q --> R[绑定 Pod 到节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1204,
+          "original": "-->",
+          "fixed": "Q --> R[绑定 Pod 到节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1205,
+          "original": "-->",
+          "fixed": "R --> S[更新 etcd]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1205,
+          "original": "-->",
+          "fixed": "R --> S[更新 etcd]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1206,
+          "original": "-->",
+          "fixed": "S --> T[Pod 状态: Scheduled]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1206,
+          "original": "-->",
+          "fixed": "S --> T[Pod 状态: Scheduled]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1208,
+          "original": "-->",
+          "fixed": "L --> U[等待条件变化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1208,
+          "original": "-->",
+          "fixed": "L --> U[等待条件变化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1209,
+          "original": "-->",
+          "fixed": "U --> V{可调度?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1209,
+          "original": "-->",
+          "fixed": "U --> V{可调度?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1210,
+          "original": "-->",
+          "fixed": "V -->|是| E",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1210,
+          "original": "-->",
+          "fixed": "V -->|是| E",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1211,
+          "original": "-->",
+          "fixed": "V -->|否| U",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1211,
+          "original": "-->",
+          "fixed": "V -->|否| U",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1225,
+          "original": "-->",
+          "fixed": "[*] --> Pending: Pod 创建",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1225,
+          "original": "-->",
+          "fixed": "[*] --> Pending: Pod 创建",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1227,
+          "original": "-->",
+          "fixed": "Pending --> Scheduling: 调度器获取",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1227,
+          "original": "-->",
+          "fixed": "Pending --> Scheduling: 调度器获取",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1228,
+          "original": "-->",
+          "fixed": "Scheduling --> Predicates: 开始过滤",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1228,
+          "original": "-->",
+          "fixed": "Scheduling --> Predicates: 开始过滤",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1230,
+          "original": "-->",
+          "fixed": "Predicates --> Feasible: 通过所有谓词",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1230,
+          "original": "-->",
+          "fixed": "Predicates --> Feasible: 通过所有谓词",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1231,
+          "original": "-->",
+          "fixed": "Predicates --> Unschedulable: 谓词失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1231,
+          "original": "-->",
+          "fixed": "Predicates --> Unschedulable: 谓词失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1233,
+          "original": "-->",
+          "fixed": "Feasible --> Scoring: 进入评分",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1233,
+          "original": "-->",
+          "fixed": "Feasible --> Scoring: 进入评分",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1234,
+          "original": "-->",
+          "fixed": "Scoring --> Selected: 选择最高分节点",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1234,
+          "original": "-->",
+          "fixed": "Scoring --> Selected: 选择最高分节点",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1236,
+          "original": "-->",
+          "fixed": "Selected --> Reserving: 预留资源",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1236,
+          "original": "-->",
+          "fixed": "Selected --> Reserving: 预留资源",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1237,
+          "original": "-->",
+          "fixed": "Reserving --> Reserved: 资源预留成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1237,
+          "original": "-->",
+          "fixed": "Reserving --> Reserved: 资源预留成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1238,
+          "original": "-->",
+          "fixed": "Reserving --> Unschedulable: 资源竞争失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1238,
+          "original": "-->",
+          "fixed": "Reserving --> Unschedulable: 资源竞争失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1240,
+          "original": "-->",
+          "fixed": "Reserved --> Binding: 绑定节点",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1240,
+          "original": "-->",
+          "fixed": "Reserved --> Binding: 绑定节点",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1241,
+          "original": "-->",
+          "fixed": "Binding --> Bound: 绑定成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1241,
+          "original": "-->",
+          "fixed": "Binding --> Bound: 绑定成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1242,
+          "original": "-->",
+          "fixed": "Binding --> Unschedulable: 绑定失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1242,
+          "original": "-->",
+          "fixed": "Binding --> Unschedulable: 绑定失败",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1244,
+          "original": "-->",
+          "fixed": "Bound --> Running: Kubelet 启动容器",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1244,
+          "original": "-->",
+          "fixed": "Bound --> Running: Kubelet 启动容器",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1246,
+          "original": "-->",
+          "fixed": "Unschedulable --> Backoff: 加入退避队列",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1246,
+          "original": "-->",
+          "fixed": "Unschedulable --> Backoff: 加入退避队列",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1247,
+          "original": "-->",
+          "fixed": "Backoff --> Pending: 退避时间结束",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1247,
+          "original": "-->",
+          "fixed": "Backoff --> Pending: 退避时间结束",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1249,
+          "original": "-->",
+          "fixed": "Running --> Succeeded: 容器正常退出",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1249,
+          "original": "-->",
+          "fixed": "Running --> Succeeded: 容器正常退出",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1250,
+          "original": "-->",
+          "fixed": "Running --> Failed: 容器异常退出",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1250,
+          "original": "-->",
+          "fixed": "Running --> Failed: 容器异常退出",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1251,
+          "original": "-->",
+          "fixed": "Running --> Unknown: 节点失联",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1251,
+          "original": "-->",
+          "fixed": "Running --> Unknown: 节点失联",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1253,
+          "original": "-->",
+          "fixed": "Succeeded --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1253,
+          "original": "-->",
+          "fixed": "Succeeded --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1254,
+          "original": "-->",
+          "fixed": "Failed --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1254,
+          "original": "-->",
+          "fixed": "Failed --> [*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1255,
+          "original": "-->",
+          "fixed": "Unknown --> Running: 节点恢复",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1255,
+          "original": "-->",
+          "fixed": "Unknown --> Running: 节点恢复",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1256,
+          "original": "-->",
+          "fixed": "Unknown --> Failed: 超时判定",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1256,
+          "original": "-->",
+          "fixed": "Unknown --> Failed: 超时判定",
+          "type": "箭头空格修复"
+        }
+      ]
+    },
+    {
+      "file_path": "formal-methods\\99-raft-consensus.md",
+      "mermaid_blocks": 3,
+      "fixes": [
+        {
+          "line": 1715,
+          "original": "-->",
+          "fixed": "[*] --> Follower: 初始化",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1715,
+          "original": "-->",
+          "fixed": "[*] --> Follower: 初始化",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1717,
+          "original": "-->",
+          "fixed": "Follower --> Candidate: 选举超时",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1717,
+          "original": "-->",
+          "fixed": "Follower --> Candidate: 选举超时",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1718,
+          "original": "-->",
+          "fixed": "Candidate --> Leader: 获得多数票",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1718,
+          "original": "-->",
+          "fixed": "Candidate --> Leader: 获得多数票",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1719,
+          "original": "-->",
+          "fixed": "Candidate --> Follower: 发现更高任期",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1719,
+          "original": "-->",
+          "fixed": "Candidate --> Follower: 发现更高任期",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1720,
+          "original": "-->",
+          "fixed": "Candidate --> Candidate: 选举超时（新任期）",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1720,
+          "original": "-->",
+          "fixed": "Candidate --> Candidate: 选举超时（新任期）",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1722,
+          "original": "-->",
+          "fixed": "Leader --> Follower: 发现更高任期",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1722,
+          "original": "-->",
+          "fixed": "Leader --> Follower: 发现更高任期",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1724,
+          "original": "-->",
+          "fixed": "Follower --> Follower: 收到有效心跳/AppendEntries",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1724,
+          "original": "-->",
+          "fixed": "Follower --> Follower: 收到有效心跳/AppendEntries",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1725,
+          "original": "-->",
+          "fixed": "Follower --> Follower: 投票给候选人",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1725,
+          "original": "-->",
+          "fixed": "Follower --> Follower: 投票给候选人",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1727,
+          "original": "-->",
+          "fixed": "Leader --> Leader: 发送心跳/日志复制",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1727,
+          "original": "-->",
+          "fixed": "Leader --> Leader: 发送心跳/日志复制",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1755,
+          "original": "-->",
+          "fixed": "A[节点作为Follower运行] --> B{选举超时?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1755,
+          "original": "-->",
+          "fixed": "A[节点作为Follower运行] --> B{选举超时?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1756,
+          "original": "-->",
+          "fixed": "B -->|是| C[转换为Candidate]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1756,
+          "original": "-->",
+          "fixed": "B -->|是| C[转换为Candidate]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1757,
+          "original": "-->",
+          "fixed": "B -->|否| A",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1757,
+          "original": "-->",
+          "fixed": "B -->|否| A",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1759,
+          "original": "-->",
+          "fixed": "C --> D[任期Term += 1]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1759,
+          "original": "-->",
+          "fixed": "C --> D[任期Term += 1]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1760,
+          "original": "-->",
+          "fixed": "D --> E[投票给自己]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1760,
+          "original": "-->",
+          "fixed": "D --> E[投票给自己]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1761,
+          "original": "-->",
+          "fixed": "E --> F[重置选举定时器]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1761,
+          "original": "-->",
+          "fixed": "E --> F[重置选举定时器]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1762,
+          "original": "-->",
+          "fixed": "F --> G[并行发送RequestVote RPC]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1762,
+          "original": "-->",
+          "fixed": "F --> G[并行发送RequestVote RPC]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1764,
+          "original": "-->",
+          "fixed": "G --> H{收到更高任期?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1764,
+          "original": "-->",
+          "fixed": "G --> H{收到更高任期?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1765,
+          "original": "-->",
+          "fixed": "H -->|是| I[转换为Follower]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1765,
+          "original": "-->",
+          "fixed": "H -->|是| I[转换为Follower]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1766,
+          "original": "-->",
+          "fixed": "H -->|否| J{收到多数票?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1766,
+          "original": "-->",
+          "fixed": "H -->|否| J{收到多数票?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1768,
+          "original": "-->",
+          "fixed": "J -->|是| K[转换为Leader]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1768,
+          "original": "-->",
+          "fixed": "J -->|是| K[转换为Leader]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1769,
+          "original": "-->",
+          "fixed": "J -->|否| L{选举超时?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1769,
+          "original": "-->",
+          "fixed": "J -->|否| L{选举超时?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1770,
+          "original": "-->",
+          "fixed": "L -->|是| C",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1770,
+          "original": "-->",
+          "fixed": "L -->|是| C",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1771,
+          "original": "-->",
+          "fixed": "L -->|否| G",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1771,
+          "original": "-->",
+          "fixed": "L -->|否| G",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1773,
+          "original": "-->",
+          "fixed": "K --> M[初始化nextIndex和matchIndex]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1773,
+          "original": "-->",
+          "fixed": "K --> M[初始化nextIndex和matchIndex]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1774,
+          "original": "-->",
+          "fixed": "M --> N[发送心跳消息]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1774,
+          "original": "-->",
+          "fixed": "M --> N[发送心跳消息]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1775,
+          "original": "-->",
+          "fixed": "N --> O[保持Leader状态]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1775,
+          "original": "-->",
+          "fixed": "N --> O[保持Leader状态]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1776,
+          "original": "-->",
+          "fixed": "O --> P{收到更高任期?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1776,
+          "original": "-->",
+          "fixed": "O --> P{收到更高任期?}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1777,
+          "original": "-->",
+          "fixed": "P -->|是| I",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1777,
+          "original": "-->",
+          "fixed": "P -->|是| I",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1778,
+          "original": "-->",
+          "fixed": "P -->|否| N",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1778,
+          "original": "-->",
+          "fixed": "P -->|否| N",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1780,
+          "original": "-->",
+          "fixed": "I --> Q[更新Term]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1780,
+          "original": "-->",
+          "fixed": "I --> Q[更新Term]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1781,
+          "original": "-->",
+          "fixed": "Q --> A",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1781,
+          "original": "-->",
+          "fixed": "Q --> A",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1856,
+          "original": "-->",
+          "fixed": "L-->>C: 响应成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1856,
+          "original": "-->",
+          "fixed": "L-->>C: 响应成功",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 1856,
+          "original": "-->>",
+          "fixed": "L-->>C: 响应成功",
+          "type": "开放箭头修复"
+        }
+      ]
+    },
+    {
+      "file_path": "formal-methods\\99-llvm-ir-semantics.md",
+      "mermaid_blocks": 7,
+      "fixes": [
+        {
+          "line": 2018,
+          "original": "-->",
+          "fixed": "Entry -->|cond = true| Then[then<br/>ret i32 %a]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2018,
+          "original": "-->",
+          "fixed": "Entry -->|cond = true| Then[then<br/>ret i32 %a]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2019,
+          "original": "-->",
+          "fixed": "Entry -->|cond = false| Else[else<br/>ret i32 %b]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2019,
+          "original": "-->",
+          "fixed": "Entry -->|cond = false| Else[else<br/>ret i32 %b]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2032,
+          "original": "-->",
+          "fixed": "E[entry<br/>%cmp = icmp sle i32 %n, 1] -->|n <= 1| R[return<br/>ret i32 1]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2032,
+          "original": "-->",
+          "fixed": "E[entry<br/>%cmp = icmp sle i32 %n, 1] -->|n <= 1| R[return<br/>ret i32 1]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2033,
+          "original": "-->",
+          "fixed": "E -->|n > 1| LP[loop.preheader]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2033,
+          "original": "-->",
+          "fixed": "E -->|n > 1| LP[loop.preheader]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2034,
+          "original": "-->",
+          "fixed": "LP --> L[loop<br/>%i = phi [2, LP], [%i.next, L]<br/>%result = phi [1, LP], [%mul, L]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2034,
+          "original": "-->",
+          "fixed": "LP --> L[loop<br/>%i = phi [2, LP], [%i.next, L]<br/>%result = phi [1, LP], [%mul, L]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2035,
+          "original": "-->",
+          "fixed": "L -->|%mul = mul %result, %i| C[loop.check<br/>%cmp1 = icmp sle %i.next, %n]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2035,
+          "original": "-->",
+          "fixed": "L -->|%mul = mul %result, %i| C[loop.check<br/>%cmp1 = icmp sle %i.next, %n]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2036,
+          "original": "-->",
+          "fixed": "C -->|i <= n| L",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2036,
+          "original": "-->",
+          "fixed": "C -->|i <= n| L",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2037,
+          "original": "-->",
+          "fixed": "C -->|i > n| FE[for.end<br/>%result.final = phi [%mul, L]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2037,
+          "original": "-->",
+          "fixed": "C -->|i > n| FE[for.end<br/>%result.final = phi [%mul, L]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2038,
+          "original": "-->",
+          "fixed": "FE --> R2[return<br/>ret i32 %result.final]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2038,
+          "original": "-->",
+          "fixed": "FE --> R2[return<br/>ret i32 %result.final]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2055,
+          "original": "-->",
+          "fixed": "A[开始: 普通代码] --> B[计算支配树]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2055,
+          "original": "-->",
+          "fixed": "A[开始: 普通代码] --> B[计算支配树]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2056,
+          "original": "-->",
+          "fixed": "B --> C[计算支配边界]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2056,
+          "original": "-->",
+          "fixed": "B --> C[计算支配边界]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2057,
+          "original": "-->",
+          "fixed": "C --> D{对每个变量v}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2057,
+          "original": "-->",
+          "fixed": "C --> D{对每个变量v}",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2058,
+          "original": "-->",
+          "fixed": "D --> E[收集v的定义点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2058,
+          "original": "-->",
+          "fixed": "D --> E[收集v的定义点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2059,
+          "original": "-->",
+          "fixed": "E --> F[计算DF+ = 迭代支配边界]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2059,
+          "original": "-->",
+          "fixed": "E --> F[计算DF+ = 迭代支配边界]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2060,
+          "original": "-->",
+          "fixed": "F --> G[在DF+节点插入PHI节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2060,
+          "original": "-->",
+          "fixed": "F --> G[在DF+节点插入PHI节点]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2061,
+          "original": "-->",
+          "fixed": "G --> D",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2061,
+          "original": "-->",
+          "fixed": "G --> D",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2062,
+          "original": "-->",
+          "fixed": "D -->|所有变量处理完成| H[变量重命名]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2062,
+          "original": "-->",
+          "fixed": "D -->|所有变量处理完成| H[变量重命名]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2063,
+          "original": "-->",
+          "fixed": "H --> I[为每个定义分配版本号]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2063,
+          "original": "-->",
+          "fixed": "H --> I[为每个定义分配版本号]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2064,
+          "original": "-->",
+          "fixed": "I --> J[替换使用点为正确的版本]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2064,
+          "original": "-->",
+          "fixed": "I --> J[替换使用点为正确的版本]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2090,
+          "original": "-->",
+          "fixed": "S1 -->|插入PHI节点| S2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2090,
+          "original": "-->",
+          "fixed": "S1 -->|插入PHI节点| S2",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2091,
+          "original": "-->",
+          "fixed": "S2 -->|重命名变量| S3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2091,
+          "original": "-->",
+          "fixed": "S2 -->|重命名变量| S3",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2100,
+          "original": "-->",
+          "fixed": "Type[LLVM IR类型] --> Void[void]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2100,
+          "original": "-->",
+          "fixed": "Type[LLVM IR类型] --> Void[void]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2101,
+          "original": "-->",
+          "fixed": "Type --> FirstClass[第一类类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2101,
+          "original": "-->",
+          "fixed": "Type --> FirstClass[第一类类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2102,
+          "original": "-->",
+          "fixed": "Type --> Derived[派生类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2102,
+          "original": "-->",
+          "fixed": "Type --> Derived[派生类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2104,
+          "original": "-->",
+          "fixed": "FirstClass --> Primitive[原始类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2104,
+          "original": "-->",
+          "fixed": "FirstClass --> Primitive[原始类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2105,
+          "original": "-->",
+          "fixed": "FirstClass --> Aggregate[聚合类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2105,
+          "original": "-->",
+          "fixed": "FirstClass --> Aggregate[聚合类型]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2107,
+          "original": "-->",
+          "fixed": "Primitive --> Integer[整数类型<br/>i1, i8, i16, i32, i64, i128]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2107,
+          "original": "-->",
+          "fixed": "Primitive --> Integer[整数类型<br/>i1, i8, i16, i32, i64, i128]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2108,
+          "original": "-->",
+          "fixed": "Primitive --> FloatPoint[浮点类型<br/>float, double, fp128]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2108,
+          "original": "-->",
+          "fixed": "Primitive --> FloatPoint[浮点类型<br/>float, double, fp128]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2109,
+          "original": "-->",
+          "fixed": "Primitive --> Pointer[指针类型<br/>i32*, i8*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2109,
+          "original": "-->",
+          "fixed": "Primitive --> Pointer[指针类型<br/>i32*, i8*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2110,
+          "original": "-->",
+          "fixed": "Primitive --> Label[label<br/>基本块标签]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2110,
+          "original": "-->",
+          "fixed": "Primitive --> Label[label<br/>基本块标签]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2112,
+          "original": "-->",
+          "fixed": "Aggregate --> Array[数组类型<br/>[10 x i32]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2112,
+          "original": "-->",
+          "fixed": "Aggregate --> Array[数组类型<br/>[10 x i32]]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2113,
+          "original": "-->",
+          "fixed": "Aggregate --> Struct[结构体类型<br/>{i32, float, i8*}]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2113,
+          "original": "-->",
+          "fixed": "Aggregate --> Struct[结构体类型<br/>{i32, float, i8*}]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2114,
+          "original": "-->",
+          "fixed": "Aggregate --> Vector[向量类型<br/><4 x float>]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2114,
+          "original": "-->",
+          "fixed": "Aggregate --> Vector[向量类型<br/><4 x float>]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2116,
+          "original": "-->",
+          "fixed": "Derived --> Function[函数类型<br/>i32 (i32, i32)*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2116,
+          "original": "-->",
+          "fixed": "Derived --> Function[函数类型<br/>i32 (i32, i32)*]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2131,
+          "original": "-->",
+          "fixed": "A[LLVM IR输入] --> B[Module Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2131,
+          "original": "-->",
+          "fixed": "A[LLVM IR输入] --> B[Module Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2132,
+          "original": "-->",
+          "fixed": "B --> C[Function Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2132,
+          "original": "-->",
+          "fixed": "B --> C[Function Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2133,
+          "original": "-->",
+          "fixed": "C --> D[Function内联]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2133,
+          "original": "-->",
+          "fixed": "C --> D[Function内联]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2134,
+          "original": "-->",
+          "fixed": "D --> E[常量传播]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2134,
+          "original": "-->",
+          "fixed": "D --> E[常量传播]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2135,
+          "original": "-->",
+          "fixed": "E --> F[死代码消除]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2135,
+          "original": "-->",
+          "fixed": "E --> F[死代码消除]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2136,
+          "original": "-->",
+          "fixed": "F --> G[循环优化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2136,
+          "original": "-->",
+          "fixed": "F --> G[循环优化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2137,
+          "original": "-->",
+          "fixed": "G --> H[向量化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2137,
+          "original": "-->",
+          "fixed": "G --> H[向量化]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2138,
+          "original": "-->",
+          "fixed": "H --> I[CGSCC Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2138,
+          "original": "-->",
+          "fixed": "H --> I[CGSCC Passes]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2139,
+          "original": "-->",
+          "fixed": "I --> J[代码生成准备]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2139,
+          "original": "-->",
+          "fixed": "I --> J[代码生成准备]",
+          "type": "箭头空格修复"
+        },
+        {
+          "line": 2147,
+          "original": "-.->",
+          "fixed": "C -.->|依赖| K",
+          "type": "点线箭头修复"
+        },
+        {
+          "line": 2148,
+          "original": "-.->",
+          "fixed": "G -.->|依赖| L",
+          "type": "点线箭头修复"
+        },
+        {
+          "line": 2149,
+          "original": "-.->",
+          "fixed": "G -.->|依赖| M",
+          "type": "点线箭头修复"
+        }
+      ]
+    }
+  ]
+}

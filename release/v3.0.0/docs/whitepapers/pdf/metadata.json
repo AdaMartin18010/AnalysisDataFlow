@@ -1,0 +1,52 @@
+{
+  "export_date": "2026-04-08T14:06:16Z",
+  "version": "1.0",
+  "generator": "AnalysisDataFlow PDF Export Pipeline",
+  "papers": [
+    {
+      "id": "streaming-technology-trends-2026",
+      "filename": "streaming-technology-trends-2026.pdf",
+      "title": "流计算技术趋势白皮书 2026",
+      "english_title": "Streaming Technology Trends Whitepaper 2026",
+      "subtitle": "技术趋势预测、市场分析、选型指南",
+      "version": "v1.0",
+      "date": "2026-04-08",
+      "audience": "CTO、架构师、技术决策者",
+      "pages": "40+",
+      "source_size": "~37KB",
+      "md5": "TBD",
+      "download_url": "./streaming-technology-trends-2026.pdf",
+      "source_url": "../streaming-technology-trends-2026.md"
+    },
+    {
+      "id": "flink-enterprise-implementation-guide",
+      "filename": "flink-enterprise-implementation-guide.pdf",
+      "title": "Flink企业落地指南",
+      "english_title": "Flink Enterprise Implementation Guide",
+      "subtitle": "实施路线图、最佳实践、成功案例",
+      "version": "v1.0",
+      "date": "2026-04-08",
+      "audience": "技术负责人、架构师、运维工程师",
+      "pages": "60+",
+      "source_size": "~39KB",
+      "md5": "TBD",
+      "download_url": "./flink-enterprise-implementation-guide.pdf",
+      "source_url": "../flink-enterprise-implementation-guide.md"
+    },
+    {
+      "id": "realtime-ai-architecture-practice",
+      "filename": "realtime-ai-architecture-practice.pdf",
+      "title": "实时AI架构实践白皮书",
+      "english_title": "Real-Time AI Architecture Practice Whitepaper",
+      "subtitle": "AI+流计算架构、生产案例、技术实现",
+      "version": "v1.0",
+      "date": "2026-04-08",
+      "audience": "AI工程师、架构师、技术决策者",
+      "pages": "50+",
+      "source_size": "~39KB",
+      "md5": "TBD",
+      "download_url": "./realtime-ai-architecture-practice.pdf",
+      "source_url": "../realtime-ai-architecture-practice.md"
+    }
+  ]
+}

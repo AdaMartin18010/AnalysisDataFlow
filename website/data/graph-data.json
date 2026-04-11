@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {"id": "Thm-S-17-01", "name": "Checkpoint 一致性定理", "group": "struct", "size": 28, "path": "../chains/checkpoint.html"},
+    {"id": "Thm-S-18-01", "name": "Exactly-Once 正确性定理", "group": "struct", "size": 28, "path": "../chains/exactly-once.html"},
+    {"id": "Thm-S-03-02", "name": "Flink→π-Calculus 保持定理", "group": "struct", "size": 22},
+    {"id": "Def-S-17-01", "name": "Checkpoint Barrier 语义", "group": "struct", "size": 18},
+    {"id": "Def-S-18-01", "name": "Source 可重放", "group": "struct", "size": 18},
+    {"id": "Def-S-18-02", "name": "算子确定性", "group": "struct", "size": 18},
+    {"id": "Def-S-18-03", "name": "2PC 协议", "group": "struct", "size": 18},
+    {"id": "Lemma-S-17-01", "name": "Barrier 传播不变式", "group": "struct", "size": 16},
+    {"id": "Lemma-S-17-02", "name": "状态一致性引理", "group": "struct", "size": 16},
+    {"id": "Lemma-S-18-01", "name": "Source 可重放引理", "group": "struct", "size": 16},
+    {"id": "Lemma-S-18-02", "name": "2PC 原子性", "group": "struct", "size": 16},
+    {"id": "Def-S-01-04", "name": "Dataflow 模型", "group": "struct", "size": 20},
+    {"id": "Def-S-04-01", "name": "Dataflow 图", "group": "struct", "size": 18},
+    {"id": "Def-S-04-02", "name": "算子语义", "group": "struct", "size": 18},
+    {"id": "Def-S-08-03", "name": "Exactly-Once 定义", "group": "struct", "size": 18},
+    {"id": "Def-S-13-01", "name": "Flink→π 编码", "group": "struct", "size": 16},
+    {"id": "Lemma-S-04-01", "name": "算子局部确定性", "group": "struct", "size": 14},
+    {"id": "Lemma-S-04-02", "name": "Watermark 单调性保持", "group": "struct", "size": 14},
+    {"id": "Thm-S-08-02", "name": "端到端正确性", "group": "struct", "size": 22},
+    
+    {"id": "Knowledge-01", "name": "流处理设计模式", "group": "knowledge", "size": 20},
+    {"id": "Knowledge-02", "name": "事件时间处理", "group": "knowledge", "size": 18},
+    {"id": "Knowledge-03", "name": "Checkpoint 恢复模式", "group": "knowledge", "size": 18},
+    {"id": "Knowledge-04", "name": "Exactly-Once 实践", "group": "knowledge", "size": 18},
+    {"id": "Thm-K-02-01", "name": "事件时间模式正确性", "group": "knowledge", "size": 16},
+    
+    {"id": "Flink-01", "name": "Checkpoint 机制", "group": "flink", "size": 22, "path": "../chains/checkpoint.html"},
+    {"id": "Flink-02", "name": "Exactly-Once Sink", "group": "flink", "size": 20, "path": "../chains/exactly-once.html"},
+    {"id": "Flink-03", "name": "State Backend", "group": "flink", "size": 18},
+    {"id": "Flink-04", "name": "Barrier Buffer", "group": "flink", "size": 16},
+    {"id": "Flink-05", "name": "TwoPhaseCommit", "group": "flink", "size": 16},
+    {"id": "Thm-F-02-01", "name": "Checkpoint 算法正确性", "group": "flink", "size": 18},
+    {"id": "Thm-F-02-02", "name": "Exactly-Once Sink 协议", "group": "flink", "size": 18}
+  ],
+  "links": [
+    {"source": "Thm-S-17-01", "target": "Thm-S-18-01"},
+    {"source": "Def-S-17-01", "target": "Thm-S-17-01"},
+    {"source": "Lemma-S-17-01", "target": "Thm-S-17-01"},
+    {"source": "Lemma-S-17-02", "target": "Thm-S-17-01"},
+    {"source": "Def-S-17-01", "target": "Lemma-S-17-01"},
+    {"source": "Def-S-17-01", "target": "Lemma-S-17-02"},
+    
+    {"source": "Def-S-18-01", "target": "Thm-S-18-01"},
+    {"source": "Def-S-18-02", "target": "Thm-S-18-01"},
+    {"source": "Def-S-18-03", "target": "Thm-S-18-01"},
+    {"source": "Lemma-S-18-01", "target": "Thm-S-18-01"},
+    {"source": "Lemma-S-18-02", "target": "Thm-S-18-01"},
+    {"source": "Def-S-18-03", "target": "Lemma-S-18-02"},
+    
+    {"source": "Def-S-01-04", "target": "Def-S-04-01"},
+    {"source": "Def-S-04-01", "target": "Lemma-S-04-01"},
+    {"source": "Def-S-04-02", "target": "Lemma-S-04-02"},
+    {"source": "Lemma-S-04-01", "target": "Thm-S-03-02"},
+    {"source": "Thm-S-03-02", "target": "Def-S-13-01"},
+    {"source": "Def-S-13-01", "target": "Def-S-17-01"},
+    
+    {"source": "Def-S-08-03", "target": "Thm-S-08-02"},
+    {"source": "Thm-S-08-02", "target": "Def-S-18-01"},
+    {"source": "Thm-S-08-02", "target": "Def-S-18-03"},
+    
+    {"source": "Thm-S-17-01", "target": "Def-S-18-02"},
+    
+    {"source": "Thm-S-17-01", "target": "Flink-01"},
+    {"source": "Thm-S-18-01", "target": "Flink-02"},
+    {"source": "Def-S-17-01", "target": "Flink-04"},
+    {"source": "Def-S-18-03", "target": "Flink-05"},
+    {"source": "Flink-04", "target": "Flink-01"},
+    {"source": "Flink-05", "target": "Flink-02"},
+    {"source": "Flink-01", "target": "Thm-F-02-01"},
+    {"source": "Flink-02", "target": "Thm-F-02-02"},
+    
+    {"source": "Knowledge-02", "target": "Thm-K-02-01"},
+    {"source": "Thm-S-03-02", "target": "Knowledge-01"},
+    {"source": "Thm-S-17-01", "target": "Knowledge-03"},
+    {"source": "Thm-S-18-01", "target": "Knowledge-04"},
+    {"source": "Knowledge-03", "target": "Knowledge-04"}
+  ]
+}

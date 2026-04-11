@@ -1,4 +1,4 @@
-# Design Pattern: Event Time Processing
+﻿# Design Pattern: Event Time Processing
 
 > **Pattern ID**: 01/7 | **Series**: Knowledge/02-design-patterns | **Formalization Level**: L4-L5
 >
@@ -693,7 +693,7 @@ This section establishes the formal connection between Event Time Processing pat
 
 [^3]: Watermark Monotonicity Theorem, see [Struct/02-properties/02.03-watermark-monotonicity.md](../../Struct/02-properties/02.03-watermark-monotonicity.md)
 
-[^4]: Flink Time Semantics and Watermark, see [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^4]: Flink Time Semantics and Watermark, see [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
 [^5]: Financial Risk Control Real-time Fraud Detection Case, see [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
@@ -706,3 +706,4 @@ This section establishes the formal connection between Event Time Processing pat
 ---
 
 *Document Version: v1.0 | Last Updated: 2026-04-02 | Status: Complete*
+

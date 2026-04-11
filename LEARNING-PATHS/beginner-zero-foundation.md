@@ -1,4 +1,4 @@
-# 学习路径：零基础入门（4周）
+﻿# 学习路径：零基础入门（4周）
 
 > **所属阶段**: 初学者路径 | **难度等级**: L1-L2 | **预计时长**: 4周（每天2-3小时）
 
@@ -116,7 +116,7 @@ gantt
 | 2.1 | `Flink/09-language-foundations/flink-datastream-api-complete-guide.md` | API指南 | 3h | DataStream 完整指南 |
 | 2.2 | `Knowledge/02-design-patterns/pattern-stateful-computation.md` | 设计模式 | 2h | 有状态计算入门 |
 | 2.3 | `Flink/04-connectors/kafka-integration-patterns.md` | 连接器 | 2h | Kafka 基础集成 |
-| 2.4 | `Flink/02-core-mechanisms/streaming-etl-best-practices.md` | 实践 | 1h | ETL 基础实践 |
+| 2.4 | `Flink/02-core/streaming-etl-best-practices.md` | 实践 | 1h | ETL 基础实践 |
 
 ### 实践任务
 
@@ -163,7 +163,7 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 3.1 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 核心机制 | 3h | 时间语义详解 |
+| 3.1 | `Flink/02-core/time-semantics-and-watermark.md` | 核心机制 | 3h | 时间语义详解 |
 | 3.2 | `Struct/02-properties/02.03-watermark-monotonicity.md` | 理论 | 2h | Watermark 理论基础 |
 | 3.3 | `Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` | SQL | 2h | 窗口函数详解 |
 | 3.4 | `Knowledge/02-design-patterns/pattern-windowed-aggregation.md` | 设计模式 | 1h | 窗口聚合模式 |
@@ -254,7 +254,7 @@ gantt
 | 快速开始 | `QUICK-START.md` |
 | 概念图谱 | `Knowledge/01-concept-atlas/streaming-models-mindmap.md` |
 | DataStream API | `Flink/09-language-foundations/flink-datastream-api-complete-guide.md` |
-| 时间语义 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` |
+| 时间语义 | `Flink/02-core/time-semantics-and-watermark.md` |
 | 窗口函数 | `Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` |
 | 可观测性 | `Flink/15-observability/flink-observability-complete-guide.md` |
 
@@ -306,3 +306,4 @@ gantt
 ---
 
 **祝您学习顺利！**
+

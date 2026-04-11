@@ -1,6 +1,6 @@
-# Flink Kafka 集成模式 (Flink Kafka Integration Patterns)
+﻿# Flink Kafka 集成模式 (Flink Kafka Integration Patterns)
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Struct/02-properties/02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md), [../../Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Struct/02-properties/02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md), [../../Flink/02-core/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
 
 ---
 
@@ -164,7 +164,7 @@ $$\\forall r \\in W_k. \\; \\text{Visible}(r) \\iff \\text{Committed}(T_k)$$
 
 $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint}(Ops) \\land \\text{AtomicOutput}(Sink)$$
 
-根据 [Struct/02-properties/02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md) 中的 Prop-S-08-01 和 [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md)，需要 Source 可重放、引擎内部一致性和 Sink 原子性同时满足。
+根据 [Struct/02-properties/02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md) 中的 Prop-S-08-01 和 [Flink/02-core/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md)，需要 Source 可重放、引擎内部一致性和 Sink 原子性同时满足。
 
 ---
 
@@ -742,3 +742,4 @@ properties.setProperty("group.instance.id", "flink-instance-" + taskId);
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+

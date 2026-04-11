@@ -224,7 +224,7 @@
   - 运行时自动优化
   - 降低架构复杂度
 - **项目文档状态**: 需要更新
-  - 参见: Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md
+  - 参见: Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md
 
 #### 规划特性2: Serverless Flink GA
 
@@ -259,7 +259,7 @@
   - 自适应执行策略选择
   - 全局优化器
 - **项目文档状态**: 概念阶段
-  - 参见: Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md
+  - 参见: Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md
 
 #### 规划方向2: 下一代状态管理
 
@@ -291,8 +291,8 @@
 | 文档路径 | 更新原因 | 预计工作量 |
 |----------|----------|------------|
 | Flink/06-ai-ml/flink-agents-flip-531.md | FLIP-531 实际发布状态跟踪 | 2小时 |
-| Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md | 更新为实际路线图 | 1小时 |
-| Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md | 更新发布时间线 | 1小时 |
+| Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md | 更新为实际路线图 | 1小时 |
+| Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md | 更新发布时间线 | 1小时 |
 | Flink/02-core/forst-state-backend.md | 补充2.0正式版特性 | 1小时 |
 
 ### 中优先级更新
@@ -307,7 +307,7 @@
 
 | 文档路径 | 更新原因 | 预计工作量 |
 |----------|----------|------------|
-| Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md | 更新3.0规划状态 | 1小时 |
+| Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md | 更新3.0规划状态 | 1小时 |
 | Flink/00-meta/version-tracking.md | 同步版本信息 | 0.5小时 |
 
 ---

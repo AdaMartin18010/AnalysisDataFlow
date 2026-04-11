@@ -1,4 +1,4 @@
-# 项目技术深度与准确性审计报告
+﻿# 项目技术深度与准确性审计报告
 
 > **审计日期**: 2026-04-04
 > **审计范围**: AnalysisDataFlow 项目全部文档
@@ -62,15 +62,15 @@ checkpointing.mode: intelligent           # ❌ 不存在
 
 | 问题 | 位置 | 风险等级 | 说明 |
 |------|------|----------|------|
-| **Checkpoint 同步阶段时间复杂度描述** | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 🟡 中 | 称 HashMapStateBackend 同步阶段为 O(\|S\|)，实际应为 O(1)（仅引用拷贝） |
-| **ForSt 性能数据引用** | `Flink/02-core-mechanisms/forst-state-backend.md` | 🟡 中 | 引用 "VLDB 2025" 论文作为性能数据来源，但该论文可能尚未发表或不存在 |
+| **Checkpoint 同步阶段时间复杂度描述** | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 🟡 中 | 称 HashMapStateBackend 同步阶段为 O(\|S\|)，实际应为 O(1)（仅引用拷贝） |
+| **ForSt 性能数据引用** | `Flink/02-core/forst-state-backend.md` | 🟡 中 | 引用 "VLDB 2025" 论文作为性能数据来源，但该论文可能尚未发表或不存在 |
 | **RocksDB 增量 Checkpoint 原理描述** | 多份文档 | 🟡 中 | 对 SST 文件不可变性的描述正确，但对 Manifest 文件更新的描述过于简化 |
 
 #### 1.4 性能基准数据缺乏来源
 
 | 问题 | 位置 | 风险等级 | 说明 |
 |------|------|----------|------|
-| **Nexmark Benchmark 结果** | `Flink/02-core-mechanisms/forst-state-backend.md` | 🟡 中 | 声称 ForSt 相比 RocksDB "Checkpoint 时间减少 94%"、"恢复速度提升 49x"，但未提供可验证的测试环境细节 |
+| **Nexmark Benchmark 结果** | `Flink/02-core/forst-state-backend.md` | 🟡 中 | 声称 ForSt 相比 RocksDB "Checkpoint 时间减少 94%"、"恢复速度提升 49x"，但未提供可验证的测试环境细节 |
 | **SQL 优化提升幅度** | `Flink/03-sql-table-api/flink-sql-calcite-optimizer-deep-dive.md` | 🟡 中 | 声称谓词下推可减少 99% IO，但未说明测试场景 |
 
 ### 🟢 低风险问题
@@ -314,3 +314,4 @@ checkpointing.mode: intelligent           # ❌ 不存在
 *审计完成时间: 2026-04-04*
 *审计人员: Kimi Code CLI Agent*
 *文档版本: v1.0*
+

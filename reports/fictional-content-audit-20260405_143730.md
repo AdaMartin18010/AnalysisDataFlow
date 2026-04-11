@@ -1,4 +1,4 @@
-# AnalysisDataFlow 虚构内容审计报告
+﻿# AnalysisDataFlow 虚构内容审计报告
 
 > **报告生成时间**: 2026-04-05 14:37:30
 > **扫描文件数**: 0
@@ -3360,7 +3360,7 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
 167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
 >>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
 169:
@@ -3376,7 +3376,7 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
 167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
 >>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
 169:
@@ -3609,7 +3609,7 @@
 70: #### PROJECT-MAINTENANCE-DASHBOARD.md (6个)
 71:
 >>> 72: - `Flink/7.1-flink-ai-agents.md` → `Flink/12-ai-ml/flink-ai-agents-flip-531.md`
-73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md`
+73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core/adaptive-execution-engine-v2.md`
 74: - `Flink/2.0-disaggregated-state.md` → `Flink/01-architecture/disaggregated-state-analysis.md`
 ```
 
@@ -3625,7 +3625,7 @@
 70: #### PROJECT-MAINTENANCE-DASHBOARD.md (6个)
 71:
 >>> 72: - `Flink/7.1-flink-ai-agents.md` → `Flink/12-ai-ml/flink-ai-agents-flip-531.md`
-73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md`
+73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core/adaptive-execution-engine-v2.md`
 74: - `Flink/2.0-disaggregated-state.md` → `Flink/01-architecture/disaggregated-state-analysis.md`
 ```
 
@@ -3996,7 +3996,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -4012,7 +4012,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -11497,7 +11497,7 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
 167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
 >>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
 169:
@@ -11513,7 +11513,7 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
 167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
 >>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
 169:
@@ -12078,7 +12078,7 @@
 70: #### PROJECT-MAINTENANCE-DASHBOARD.md (6个)
 71:
 >>> 72: - `Flink/7.1-flink-ai-agents.md` → `Flink/12-ai-ml/flink-ai-agents-flip-531.md`
-73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md`
+73: - `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core/adaptive-execution-engine-v2.md`
 74: - `Flink/2.0-disaggregated-state.md` → `Flink/01-architecture/disaggregated-state-analysis.md`
 ```
 
@@ -12496,8 +12496,8 @@
 104: |--------|----------|----------|----------------|
 105: | 🔴 高 | `Flink/08-roadmap/flink-2.4-tracking.md` | preview | 4小时 |
 >>> 106: | 🔴 高 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | preview | 3小时 |
-107: | 🟡 中 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | preview | 2小时 |
-108: | 🟡 中 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | preview | 2小时 |
+107: | 🟡 中 | `Flink/02-core/smart-checkpointing-strategies.md` | preview | 2小时 |
+108: | 🟡 中 | `Flink/02-core/adaptive-execution-engine-v2.md` | preview | 2小时 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13425,8 +13425,8 @@
 325: #### Flink 2.4
 326:
 >>> 327: - [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
-328: - [智能检查点策略](Flink/02-core-mechanisms/smart-checkpointing-strategies.md)
-329: - [自适应执行引擎v2](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md)
+328: - [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
+329: - [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13441,8 +13441,8 @@
 325: #### Flink 2.4
 326:
 >>> 327: - [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
-328: - [智能检查点策略](Flink/02-core-mechanisms/smart-checkpointing-strategies.md)
-329: - [自适应执行引擎v2](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md)
+328: - [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
+329: - [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
 ```
 
 #### archive\tracking-reports\PROJECT-CHECKLIST.md
@@ -13509,7 +13509,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -13525,7 +13525,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -13541,7 +13541,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -13557,7 +13557,7 @@
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
 >>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
-252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core-mechanisms/adaptive-execution-engine-v2.md](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md) | 2026-04-02 |
+252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
 253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
@@ -15094,3 +15094,4 @@
 ---
 
 *报告生成时间: 2026-04-05 14:37:30*
+

@@ -1,4 +1,4 @@
-# AnalysisDataFlow 项目总览仪表盘
+﻿# AnalysisDataFlow 项目总览仪表盘
 
 > **版本**: v6.0 | **最后更新**: 2026-04-03 | **状态**: ✅ 生产就绪
 >
@@ -223,7 +223,7 @@ mindmap
 |:---|:---|:---|
 | **Struct/** | [📐 形式理论索引](../Struct/00-INDEX.md) | [USTM统一理论](../Struct/01-foundation/01.01-unified-streaming-theory.md) |
 | **Knowledge/** | [📚 知识结构索引](../Knowledge/00-INDEX.md) | [设计模式总览](../Knowledge/02-design-patterns/) |
-| **Flink/** | [⚡ Flink索引](../Flink/00-INDEX.md) | [Checkpoint机制](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
+| **Flink/** | [⚡ Flink索引](../Flink/00-INDEX.md) | [Checkpoint机制](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
 | **反模式** | [🚨 反模式专题](../Knowledge/09-anti-patterns/) | [全局状态滥用](../Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md) |
 
 ### 学习路径导航
@@ -350,3 +350,4 @@ python .tools/generate-stats-report.py --format markdown
 ---
 
 *本仪表盘由自动化工具生成 | 数据版本: v6.0 | 状态: ✅ 实时同步*
+

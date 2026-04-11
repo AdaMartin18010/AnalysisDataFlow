@@ -1,4 +1,4 @@
-# CSA 认证课程大纲
+﻿# CSA 认证课程大纲
 
 > **版本**: v1.0 | **生效日期**: 2026-04-08 | **形式化等级**: L2
 >
@@ -181,7 +181,7 @@ pie title CSA 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 - `Flink/03-apis/window-operations.md`
 
 **实验任务**:
@@ -220,7 +220,7 @@ pie title CSA 课程时间分配
 **必读文档**:
 
 - `Knowledge/02-design-patterns/pattern-stateful-computation.md`
-- `Flink/02-core-mechanisms/state-management-overview.md`
+- `Flink/02-core/state-management-overview.md`
 
 **实验任务**:
 
@@ -258,8 +258,8 @@ pie title CSA 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`（前3节）
-- `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md`（概述）
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md`（前3节）
+- `Flink/02-core/exactly-once-semantics-deep-dive.md`（概述）
 
 **实验任务**:
 
@@ -391,9 +391,9 @@ pie title CSA 课程时间分配
 | P0 | `Knowledge/01-concept-atlas/streaming-models-mindmap.md` | 30分钟 |
 | P0 | `tutorials/02-first-flink-job.md` | 45分钟 |
 | P1 | `Flink/01-getting-started/datastream-api-basics.md` | 60分钟 |
-| P1 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 60分钟 |
-| P2 | `Flink/02-core-mechanisms/state-management-overview.md` | 45分钟 |
-| P2 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 60分钟 |
+| P1 | `Flink/02-core/time-semantics-and-watermark.md` | 60分钟 |
+| P2 | `Flink/02-core/state-management-overview.md` | 45分钟 |
+| P2 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 60分钟 |
 
 ### 推荐书籍章节
 
@@ -484,3 +484,4 @@ pie title CSA 课程时间分配
 ---
 
 [返回认证首页 →](../README.md) | [查看练习题库 →](./quizzes/README.md) | [查看考试说明 →](./exam-guide-csa.md)
+

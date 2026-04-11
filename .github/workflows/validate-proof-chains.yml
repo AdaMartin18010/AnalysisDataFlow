@@ -1,0 +1,687 @@
+# Proof Chain Validator - 定理证明链验证
+#
+# 触发条件:
+#   - push 到 main 分支
+#   - pull_request 创建/更新
+#   - 定时每日检查
+#   - 手动触发
+#
+# 任务:
+#   1. 验证定理依赖关系完整性
+#   2. 检查证明链引用一致性
+#   3. 验证依赖图中无循环
+#   4. 检查孤立定理（无依赖、无被依赖）
+#   5. 生成证明链覆盖率报告
+
+name: Validate Proof Chains
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'THEOREM-REGISTRY.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'THEOREM-REGISTRY.md'
+  schedule:
+    # 每天凌晨 3:00 UTC (北京时间上午11:00)
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      validation_level:
+        description: '验证级别'
+        required: true
+        default: 'standard'
+        type: choice
+        options:
+          - quick      # 快速检查（仅验证修改的文件）
+          - standard   # 标准检查（完整验证）
+          - strict     # 严格检查（包含警告）
+          - full       # 完整检查（包含依赖图生成）
+
+env:
+  PYTHON_VERSION: '3.11'
+  VALIDATION_LEVEL: ${{ github.event.inputs.validation_level || 'standard' }}
+
+jobs:
+  # ============ 任务1: 环境准备 ============
+  setup:
+    name: Setup Environment
+    runs-on: ubuntu-latest
+    outputs:
+      validation_level: ${{ env.VALIDATION_LEVEL }}
+      changed_files: ${{ steps.detect-changes.outputs.changed_files }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -q networkx requests pyyaml
+
+      - name: Detect changed files
+        id: detect-changes
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD | grep -E '\.(md)$' || true)
+          elif [ "${{ github.event_name }}" == "push" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -E '\.(md)$' || true)
+          else
+            changed_files=""
+          fi
+
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "Changed files:"
+          echo "$changed_files"
+
+      - name: Cache theorem data
+        uses: actions/cache@v4
+        with:
+          path: .proof-chain-cache
+          key: proof-chain-${{ github.run_id }}
+          restore-keys: |
+            proof-chain-
+
+  # ============ 任务2: 定理依赖完整性验证 ============
+  dependency-integrity:
+    name: Dependency Integrity Check
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -q networkx pyyaml
+
+      - name: Run dependency integrity check
+        run: |
+          mkdir -p reports
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from collections import defaultdict
+          from datetime import datetime
+
+          # 定理编号模式
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          
+          # 依赖声明模式
+          DEPENDENCY_PATTERN = re.compile(
+              r'(?:前置依赖|依赖|Prerequisites|Dependencies):?\s*\[?([^\]]+)\]?',
+              re.IGNORECASE
+          )
+
+          stats = {
+              'total_theorems': 0,
+              'with_dependencies': 0,
+              'with_dependents': 0,
+              'orphaned': 0,
+              'missing_refs': [],
+              'orphaned_theorems': []
+          }
+
+          # 收集所有定理
+          all_theorems = {}  # theorem_id -> {file, line, dependencies, dependents}
+          
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      lines = content.split('\n')
+                      
+                      # 查找依赖声明
+                      dependencies = set()
+                      for match in DEPENDENCY_PATTERN.findall(content):
+                          for dep_match in THEOREM_PATTERN.findall(match):
+                              dep_id = f"{dep_match[0]}-{dep_match[1]}-{dep_match[2]}-{dep_match[3]}"
+                              dependencies.add(dep_id)
+                      
+                      # 查找文档中的所有定理
+                      for line_num, line in enumerate(lines, 1):
+                          for match in THEOREM_PATTERN.findall(line):
+                              theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                              
+                              if theorem_id not in all_theorems:
+                                  all_theorems[theorem_id] = {
+                                      'file': rel_path,
+                                      'line': line_num,
+                                      'dependencies': set(),
+                                      'dependents': set()
+                                  }
+                              
+                              # 合并依赖
+                              all_theorems[theorem_id]['dependencies'].update(dependencies)
+                  
+                  except Exception as e:
+                      print(f"Warning: Could not process {md_file}: {e}")
+
+          # 构建依赖关系
+          for theorem_id, info in all_theorems.items():
+              stats['total_theorems'] += 1
+              
+              # 检查依赖是否存在
+              for dep_id in list(info['dependencies']):
+                  if dep_id in all_theorems:
+                      all_theorems[dep_id]['dependents'].add(theorem_id)
+                  else:
+                      stats['missing_refs'].append({
+                          'theorem': theorem_id,
+                          'missing_dependency': dep_id,
+                          'file': info['file']
+                      })
+
+          # 统计
+          for theorem_id, info in all_theorems.items():
+              if info['dependencies']:
+                  stats['with_dependencies'] += 1
+              if info['dependents']:
+                  stats['with_dependents'] += 1
+              if not info['dependencies'] and not info['dependents']:
+                  stats['orphaned'] += 1
+                  stats['orphaned_theorems'].append({
+                      'theorem': theorem_id,
+                      'file': info['file'],
+                      'line': info['line']
+                  })
+
+          # 生成报告
+          report_lines = [
+              "# Proof Chain Dependency Integrity Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              f"**Validation Level**: ${{ env.VALIDATION_LEVEL }}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Theorems | {stats['total_theorems']} |",
+              f"| With Dependencies | {stats['with_dependencies']} ({stats['with_dependencies']/stats['total_theorems']*100:.1f}%) |" if stats['total_theorems'] > 0 else "| With Dependencies | 0 (0%) |",
+              f"| With Dependents | {stats['with_dependents']} ({stats['with_dependents']/stats['total_theorems']*100:.1f}%) |" if stats['total_theorems'] > 0 else "| With Dependents | 0 (0%) |",
+              f"| Orphaned | {stats['orphaned']} |",
+              f"| Missing References | {len(stats['missing_refs'])} |",
+              ""
+          ]
+
+          if stats['missing_refs']:
+              report_lines.extend([
+                  "## ❌ Missing Dependency References",
+                  "",
+                  "These theorems reference dependencies that were not found:",
+                  "",
+                  "| Theorem | Missing Dependency | File |",
+                  "|---------|-------------------|------|"
+              ])
+              
+              for ref in stats['missing_refs'][:30]:
+                  report_lines.append(
+                      f"| `{ref['theorem']}` | `{ref['missing_dependency']}` | {ref['file']} |"
+                  )
+              
+              if len(stats['missing_refs']) > 30:
+                  report_lines.append(f"| ... | ... | *and {len(stats['missing_refs']) - 30} more* |")
+              
+              report_lines.append("")
+
+          if stats['orphaned_theorems'] and '${{ env.VALIDATION_LEVEL }}' in ['strict', 'full']:
+              report_lines.extend([
+                  "## ⚠️ Orphaned Theorems",
+                  "",
+                  "These theorems have no dependencies and no dependents:",
+                  "",
+                  "| Theorem | File | Line |",
+                  "|---------|------|------|"
+              ])
+              
+              for thm in stats['orphaned_theorems'][:20]:
+                  report_lines.append(
+                      f"| `{thm['theorem']}` | {thm['file']} | {thm['line']} |"
+                  )
+              
+              if len(stats['orphaned_theorems']) > 20:
+                  report_lines.append(f"| ... | ... | *and {len(stats['orphaned_theorems']) - 20} more* |")
+              
+              report_lines.append("")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/proof-chain-integrity-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/proof-chain-integrity.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'total': stats['total_theorems'],
+                      'with_dependencies': stats['with_dependencies'],
+                      'with_dependents': stats['with_dependents'],
+                      'orphaned': stats['orphaned'],
+                      'missing_refs': len(stats['missing_refs'])
+                  },
+                  'missing_refs': stats['missing_refs'],
+                  'orphaned': stats['orphaned_theorems']
+              }, f, indent=2)
+
+          print(f"Dependency Integrity Check:")
+          print(f"  Total theorems: {stats['total_theorems']}")
+          print(f"  With dependencies: {stats['with_dependencies']}")
+          print(f"  Missing references: {len(stats['missing_refs'])}")
+
+          if stats['missing_refs']:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload integrity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-chain-integrity-report
+          path: reports/proof-chain-integrity-report.md
+
+  # ============ 任务3: 循环依赖检测 ============
+  cycle-detection:
+    name: Cycle Detection
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -q networkx
+
+      - name: Run cycle detection
+        run: |
+          mkdir -p reports
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          import networkx as nx
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          
+          # 构建依赖图
+          G = nx.DiGraph()
+          theorem_locations = {}
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      
+                      # 查找所有定理定义
+                      for match in THEOREM_PATTERN.findall(content):
+                          theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                          if theorem_id not in theorem_locations:
+                              theorem_locations[theorem_id] = rel_path
+                          
+                          # 查找引用关系（简化检测）
+                          if '证明' in content or 'Proof' in content or 'depends on' in content:
+                              # 查找可能的依赖引用
+                              for ref_match in THEOREM_PATTERN.findall(content):
+                                  ref_id = f"{ref_match[0]}-{ref_match[1]}-{ref_match[2]}-{ref_match[3]}"
+                                  if ref_id != theorem_id:
+                                      G.add_edge(theorem_id, ref_id)
+                  
+                  except Exception as e:
+                      pass
+
+          # 检测循环
+          cycles = list(nx.simple_cycles(G))
+
+          # 生成报告
+          report_lines = [
+              "# Proof Chain Cycle Detection Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Theorems | {len(theorem_locations)} |",
+              f"| Dependency Edges | {G.number_of_edges()} |",
+              f"| Cycles Detected | {len(cycles)} |",
+              ""
+          ]
+
+          if cycles:
+              report_lines.extend([
+                  "## ❌ Circular Dependencies Detected",
+                  "",
+                  "The following cycles were found in the proof chain:",
+                  ""
+              ])
+              
+              for i, cycle in enumerate(cycles[:10], 1):
+                  cycle_str = ' → '.join(cycle) + ' → ' + cycle[0]
+                  report_lines.append(f"### Cycle {i}")
+                  report_lines.append(f"```")
+                  report_lines.append(cycle_str)
+                  report_lines.append(f"```")
+                  report_lines.append("")
+              
+              if len(cycles) > 10:
+                  report_lines.append(f"*... and {len(cycles) - 10} more cycles*")
+                  report_lines.append("")
+          else:
+              report_lines.extend([
+                  "## ✅ Status",
+                  "",
+                  "No circular dependencies detected in the proof chain.",
+                  ""
+              ])
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/proof-chain-cycles-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          with open('reports/proof-chain-cycles.json', 'w') as f:
+              json.dump({
+                  'generated_at': datetime.now().isoformat(),
+                  'summary': {
+                      'total_theorems': len(theorem_locations),
+                      'edges': G.number_of_edges(),
+                      'cycles': len(cycles)
+                  },
+                  'cycles': cycles
+              }, f, indent=2)
+
+          print(f"Cycle Detection:")
+          print(f"  Theorems: {len(theorem_locations)}")
+          print(f"  Edges: {G.number_of_edges()}")
+          print(f"  Cycles: {len(cycles)}")
+
+          if cycles:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload cycle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-chain-cycles-report
+          path: reports/proof-chain-cycles-report.md
+
+  # ============ 任务4: 证明覆盖率分析 ============
+  coverage-analysis:
+    name: Proof Coverage Analysis
+    runs-on: ubuntu-latest
+    needs: [dependency-integrity, cycle-detection]
+    if: |
+      needs.dependency-integrity.result == 'success' &&
+      (env.VALIDATION_LEVEL == 'full' || github.event_name == 'schedule')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -q networkx matplotlib
+
+      - name: Run coverage analysis
+        run: |
+          mkdir -p reports
+          python << 'PYEOF'
+          import re
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          PROOF_PATTERN = re.compile(
+              r'(?:## 5\.\s*(?:形式证明|证明|Proof)|##\s*Proof|##\s*形式证明)',
+              re.IGNORECASE
+          )
+
+          stats = {
+              'total_theorems': 0,
+              'with_proof': 0,
+              'without_proof': 0,
+              'by_stage': defaultdict(lambda: {'total': 0, 'with_proof': 0}),
+              'by_type': defaultdict(lambda: {'total': 0, 'with_proof': 0})
+          }
+
+          theorems_without_proof = []
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+              
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+                  
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.')).replace('\\', '/')
+                      
+                      # 检查是否有证明章节
+                      has_proof_section = PROOF_PATTERN.search(content) is not None
+                      
+                      # 查找所有定理
+                      for match in THEOREM_PATTERN.findall(content):
+                          theorem_id = f"{match[0]}-{match[1]}-{match[2]}-{match[3]}"
+                          thm_type = match[0]
+                          stage = match[1]
+                          
+                          stats['total_theorems'] += 1
+                          stats['by_stage'][stage]['total'] += 1
+                          stats['by_type'][thm_type]['total'] += 1
+                          
+                          # 判断是否包含证明（简化：检查证明章节或引用的存在）
+                          # 实际判断可能更复杂
+                          if has_proof_section or '证明' in content:
+                              stats['with_proof'] += 1
+                              stats['by_stage'][stage]['with_proof'] += 1
+                              stats['by_type'][thm_type]['with_proof'] += 1
+                          else:
+                              stats['without_proof'] += 1
+                              theorems_without_proof.append({
+                                  'theorem': theorem_id,
+                                  'file': rel_path,
+                                  'stage': stage,
+                                  'type': thm_type
+                              })
+                  
+                  except Exception as e:
+                      pass
+
+          # 生成报告
+          coverage_rate = (stats['with_proof'] / stats['total_theorems'] * 100) if stats['total_theorems'] > 0 else 0
+
+          report_lines = [
+              "# Proof Coverage Analysis Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count | Percentage |",
+              f"|--------|-------|------------|",
+              f"| Total Theorems | {stats['total_theorems']} | 100% |",
+              f"| With Proof | {stats['with_proof']} | {coverage_rate:.1f}% |",
+              f"| Without Proof | {stats['without_proof']} | {100-coverage_rate:.1f}% |",
+              "",
+              "## Coverage by Stage",
+              "",
+              "| Stage | Total | With Proof | Coverage |",
+              "|-------|-------|------------|----------|"
+          ]
+
+          stage_names = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+          for stage, data in sorted(stats['by_stage'].items()):
+              cov = (data['with_proof'] / data['total'] * 100) if data['total'] > 0 else 0
+              report_lines.append(
+                  f"| {stage_names.get(stage, stage)} | {data['total']} | {data['with_proof']} | {cov:.1f}% |"
+              )
+
+          report_lines.extend([
+              "",
+              "## Coverage by Type",
+              "",
+              "| Type | Total | With Proof | Coverage |",
+              "|------|-------|------------|----------|"
+          ])
+
+          type_names = {
+              'Thm': 'Theorem', 'Def': 'Definition', 'Lemma': 'Lemma',
+              'Prop': 'Proposition', 'Cor': 'Corollary'
+          }
+          for thm_type, data in sorted(stats['by_type'].items()):
+              cov = (data['with_proof'] / data['total'] * 100) if data['total'] > 0 else 0
+              report_lines.append(
+                  f"| {type_names.get(thm_type, thm_type)} | {data['total']} | {data['with_proof']} | {cov:.1f}% |"
+              )
+
+          if theorems_without_proof:
+              report_lines.extend([
+                  "",
+                  "## Theorems Without Proof",
+                  "",
+                  "| Theorem | Type | Stage | File |",
+                  "|---------|------|-------|------|"
+              ])
+              
+              for thm in theorems_without_proof[:50]:
+                  report_lines.append(
+                      f"| `{thm['theorem']}` | {type_names.get(thm['type'], thm['type'])} | {stage_names.get(thm['stage'], thm['stage'])} | {thm['file']} |"
+                  )
+              
+              if len(theorems_without_proof) > 50:
+                  report_lines.append(f"| ... | ... | ... | *and {len(theorems_without_proof) - 50} more* |")
+
+          # 保存报告
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/proof-coverage-report.md', 'w') as f:
+              f.write('\n'.join(report_lines))
+
+          print(f"Coverage Analysis:")
+          print(f"  Total: {stats['total_theorems']}")
+          print(f"  With proof: {stats['with_proof']} ({coverage_rate:.1f}%)")
+          PYEOF
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-coverage-report
+          path: reports/proof-coverage-report.md
+
+  # ============ 任务5: 汇总报告 ============
+  proof-chain-summary:
+    name: Proof Chain Summary
+    runs-on: ubuntu-latest
+    needs: [setup, dependency-integrity, cycle-detection, coverage-analysis]
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 📐 Proof Chain Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Validation Level**: ${{ needs.setup.outputs.validation_level }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.dependency-integrity.result }}" == "success" ]; then
+            echo "| Dependency Integrity | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.dependency-integrity.result }}" == "skipped" ]; then
+            echo "| Dependency Integrity | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Dependency Integrity | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.cycle-detection.result }}" == "success" ]; then
+            echo "| Cycle Detection | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.cycle-detection.result }}" == "skipped" ]; then
+            echo "| Cycle Detection | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Cycle Detection | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.coverage-analysis.result }}" == "success" ]; then
+            echo "| Coverage Analysis | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.coverage-analysis.result }}" == "skipped" ]; then
+            echo "| Coverage Analysis | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Coverage Analysis | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for failures
+        if: |
+          needs.dependency-integrity.result == 'failure' ||
+          needs.cycle-detection.result == 'failure'
+        run: |
+          echo "❌ Proof chain validation failed"
+          exit 1

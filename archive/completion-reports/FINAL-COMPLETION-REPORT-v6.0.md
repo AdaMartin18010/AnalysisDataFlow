@@ -1,4 +1,4 @@
-# 最终完成报告 v6.0 - AnalysisDataFlow 项目交付
+﻿# 最终完成报告 v6.0 - AnalysisDataFlow 项目交付
 
 > **版本**: v6.0 | **日期**: 2026-04-03 | **状态**: ✅ **项目交付完成**
 >
@@ -69,7 +69,7 @@
 | 4 | `Struct/00-INDEX.md` | 添加Smart Casual Verification链接 | ✅ |
 | 5 | `Knowledge/00-INDEX.md` | 更新反模式目录与前沿技术索引 | ✅ |
 | 6 | `Flink/00-INDEX.md` | 添加物化表、K8s扩缩容文档链接 | ✅ |
-| 7 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 修复交叉引用链接 | ✅ |
+| 7 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 修复交叉引用链接 | ✅ |
 | 8 | `Flink/03-sql-table-api/materialized-tables.md` | 统一定理编号格式 | ✅ |
 | 9 | `Knowledge/06-frontier/streaming-security-compliance.md` | 补充GDPR合规映射表 | ✅ |
 | 10 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | 更新A2A协议引用 | ✅ |
@@ -334,7 +334,7 @@ python .tools/generate-stats-report.py --format markdown --output PROJECT-STATS-
 #### 按主题查找
 
 - **API参考**: `Flink/03-sql-table-api/`、`Flink/09-language-foundations/`
-- **性能优化**: `Flink/06-engineering/`、`Flink/02-core-mechanisms/`
+- **性能优化**: `Flink/06-engineering/`、`Flink/02-core/`
 - **部署运维**: `Flink/10-deployment/`、`Flink/15-observability/`
 - **AI/ML集成**: `Flink/12-ai-ml/`、`Knowledge/06-frontier/`
 - **安全合规**: `Flink/13-security/`、`Knowledge/08-standards/`
@@ -464,3 +464,4 @@ python .tools/generate-stats-report.py --format markdown --output PROJECT-STATS-
 *项目版本: v6.0 FINAL*
 *状态: ✅ 生产就绪并交付*
 *维护责任: AnalysisDataFlow Core Team*
+

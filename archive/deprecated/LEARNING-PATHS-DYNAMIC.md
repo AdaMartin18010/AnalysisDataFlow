@@ -1,4 +1,4 @@
-# AnalysisDataFlow 动态学习路径推荐系统
+﻿# AnalysisDataFlow 动态学习路径推荐系统
 
 > **版本**: v1.0 | **更新日期**: 2026-04-04 | **状态**: 生产就绪
 
@@ -122,8 +122,8 @@ graph TB
 
 | 标签 | 描述 | 相关文档 |
 |------|------|---------|
-| `checkpoint` | Checkpoint机制 | Flink/02-core-mechanisms/ |
-| `state` | 状态管理 | Flink/02-core-mechanisms/ |
+| `checkpoint` | Checkpoint机制 | Flink/02-core/ |
+| `state` | 状态管理 | Flink/02-core/ |
 | `time` | 时间语义 | Struct/02-properties/ |
 | `watermark` | Watermark机制 | Struct/02-properties/ |
 | `kafka` | Kafka集成 | Flink/04-connectors/ |
@@ -856,3 +856,4 @@ python .scripts/learning-path-recommender.py --interactive
 ```
 
 **反馈与支持**: 如有问题或建议，请参考项目反馈渠道。
+

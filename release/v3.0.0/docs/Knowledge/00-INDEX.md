@@ -1,0 +1,407 @@
+# Knowledge/ 知识结构导航索引
+
+> 所属阶段: Knowledge | 前置依赖: [../README.md](../README.md), [../QUICK-START.md](../QUICK-START.md) | 形式化等级: L3-L5
+
+## 简介
+
+本目录收录流计算领域的**知识结构、设计模式、业务建模、技术选型**等实践性文档。与 `Struct/` 的理论严格性不同，`Knowledge/` 聚焦于工程实践中的知识组织、模式提炼和经验总结。
+
+**核心定位**:
+
+- 🗺️ 概念图谱: 流计算核心概念的系统性梳理
+- 🎨 设计模式: 可复用的流处理架构模式
+- 💼 业务场景: 行业典型应用与解决方案
+- ⚖️ 技术选型: 引擎、存储、架构的选择指南
+- 🔄 映射指南: 理论到实践、旧系统到新系统的迁移路径
+- 🚀 前沿探索: 实时AI、Serverless、Data Mesh等新兴方向
+- ✅ 最佳实践: 生产环境检查清单与调优指南
+- 📋 标准规范: 数据治理、安全合规规范
+- ⚠️ 反模式: 常见陷阱与规避策略
+- 📚 案例研究: 真实生产案例分析
+
+---
+
+## 目录结构
+
+```
+Knowledge/
+├── 01-concept-atlas/          # 概念图谱 (3文档)
+├── 02-design-patterns/        # 设计模式 (8文档)
+├── 03-business-patterns/      # 业务场景 (13文档)
+├── 04-technology-selection/   # 技术选型 (5文档)
+├── 05-mapping-guides/         # 映射指南 (7文档)
+├── 06-frontier/               # 前沿探索 (40+文档)
+├── 07-best-practices/         # 最佳实践 (7文档)
+├── 08-standards/              # 标准规范 (2文档)
+├── 09-anti-patterns/          # 反模式 (11文档)
+├── 10-case-studies/           # 案例研究 (独立索引)
+└── 98-exercises/              # 练习与速查 (11文档)
+```
+
+---
+
+## 01. 概念图谱 (Concept Atlas)
+
+流计算核心概念的系统性梳理与可视化。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [concurrency-paradigms-matrix.md](01-concept-atlas/concurrency-paradigms-matrix.md) | 并发范式对比矩阵: Actor vs CSP vs Dataflow vs Thread 的全维度对比 | 技术选型、架构设计、团队培训 |
+| [data-streaming-landscape-2026-complete.md](01-concept-atlas/data-streaming-landscape-2026-complete.md) | 2026年流计算全景图: 引擎、数据库、生态系统的完整梳理 | 行业调研、技术战略、投资决策 |
+| [streaming-models-mindmap.md](01-concept-atlas/streaming-models-mindmap.md) | 流计算模型思维导图: 从理论模型到工程实现的知识地图 | 学习路径规划、知识体系构建 |
+
+---
+
+## 02. 设计模式 (Design Patterns)
+
+流处理领域可复用的架构与实现模式。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [pattern-event-time-processing.md](02-design-patterns/pattern-event-time-processing.md) | 事件时间处理模式: Watermark、窗口、乱序处理的完整方案 | 实时ETL、日志分析、IoT数据处理 |
+| [pattern-windowed-aggregation.md](02-design-patterns/pattern-windowed-aggregation.md) | 窗口聚合模式: 滚动、滑动、会话窗口的设计与实现 | 实时指标计算、行为分析、监控告警 |
+| [pattern-stateful-computation.md](02-design-patterns/pattern-stateful-computation.md) | 有状态计算模式: State Backend选型、状态TTL、Queryable State | 用户会话、实时推荐、模式检测 |
+| [pattern-async-io-enrichment.md](02-design-patterns/pattern-async-io-enrichment.md) | 异步IO维表关联模式: 高并发外部数据关联的最佳实践 | 实时风控、用户画像增强、数据补全 |
+| [pattern-side-output.md](02-design-patterns/pattern-side-output.md) | 侧输出流模式: 异常数据分流、多路输出的优雅实现 | 数据质量监控、异常处理、多目标投递 |
+| [pattern-cep-complex-event.md](02-design-patterns/pattern-cep-complex-event.md) | 复杂事件处理(CEP)模式: 模式定义、匹配策略、超时处理 | 欺诈检测、业务流程监控、安全分析 |
+| [pattern-checkpoint-recovery.md](02-design-patterns/pattern-checkpoint-recovery.md) | 检查点与恢复模式: Exactly-Once实现、Savepoint策略 | 金融交易、关键业务、容错设计 |
+| [pattern-realtime-feature-engineering.md](02-design-patterns/pattern-realtime-feature-engineering.md) | 实时特征工程模式: 特征计算、在线/离线一致性 | ML特征平台、实时推荐、智能决策 |
+| [pattern-log-analysis.md](02-design-patterns/pattern-log-analysis.md) | 日志实时分析模式: 结构化解析、聚合、异常检测 | 运维监控、安全审计、业务分析 |
+
+---
+
+## 03. 业务场景 (Business Patterns)
+
+各行业流计算典型应用场景与解决方案。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [fintech-realtime-risk-control.md](03-business-patterns/fintech-realtime-risk-control.md) | 金融实时风控: 反欺诈、信用评估、交易监控 | 银行、支付、保险、证券 |
+| [real-time-recommendation.md](03-business-patterns/real-time-recommendation.md) | 实时推荐系统: 个性化推荐、实时特征更新 | 电商、内容平台、社交媒体 |
+| [iot-stream-processing.md](03-business-patterns/iot-stream-processing.md) | IoT流处理: 设备数据采集、边缘计算、实时监控 | 智能制造、车联网、能源管理 |
+| [log-monitoring.md](03-business-patterns/log-monitoring.md) | 日志监控与告警: 集中采集、实时分析、智能告警 | 运维可观测、DevOps、SRE |
+| [alibaba-double11-flink.md](03-business-patterns/alibaba-double11-flink.md) | 阿里双11实时计算: 超大规模流处理架构 | 大促活动、流量峰值、电商核心系统 |
+| [netflix-streaming-pipeline.md](03-business-patterns/netflix-streaming-pipeline.md) | Netflix实时数据处理: 播放体验优化、内容推荐 | 视频流媒体、用户体验优化 |
+| [uber-realtime-platform.md](03-business-patterns/uber-realtime-platform.md) | Uber实时平台: 供需匹配、动态定价、ETA计算 | 共享经济、出行服务、物流调度 |
+| [spotify-music-recommendation.md](03-business-patterns/spotify-music-recommendation.md) | Spotify音乐推荐: 实时音乐推荐与发现 | 音乐平台、内容发现、个性化体验 |
+| [stripe-payment-processing.md](03-business-patterns/stripe-payment-processing.md) | Stripe支付处理: 实时支付风控与对账 | 支付处理、金融科技、交易合规 |
+| [gaming-analytics.md](03-business-patterns/gaming-analytics.md) | 游戏实时分析: 玩家行为、反作弊、运营决策 | 游戏行业、实时运营、玩家体验 |
+| [airbnb-marketplace-dynamics.md](03-business-patterns/airbnb-marketplace-dynamics.md) | Airbnb市场动态: 供需平衡、定价策略、搜索排序 | 双边市场、平台经济、动态定价 |
+| [data-mesh-streaming-architecture-2026.md](03-business-patterns/data-mesh-streaming-architecture-2026.md) | Data Mesh流式架构: 域驱动数据产品、自助服务 | 大型企业、数据平台、组织架构变革 |
+| [streaming-data-product-economics.md](03-business-patterns/streaming-data-product-economics.md) | 流数据产品经济学: 成本模型、价值评估、ROI分析 | 数据产品管理、成本控制、价值度量 |
+
+---
+
+## 04. 技术选型 (Technology Selection)
+
+流计算引擎、存储系统、架构方案的选择指南。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [paradigm-selection-guide.md](04-technology-selection/paradigm-selection-guide.md) | 并发范式选型指南: Actor/CSP/Dataflow的选择决策树 | 架构设计初期、技术栈评估 |
+| [engine-selection-guide.md](04-technology-selection/engine-selection-guide.md) | 流处理引擎选型: Flink/Spark/Kafka Streams对比 | 流处理平台选型、引擎迁移评估 |
+| [streaming-database-guide.md](04-technology-selection/streaming-database-guide.md) | 流数据库选型: Materialize/Risingwave/Timeplus等对比 | 实时分析、物化视图、流SQL需求 |
+| [storage-selection-guide.md](04-technology-selection/storage-selection-guide.md) | 存储系统选型: State Backend、Sink存储选择 | 状态存储、数据持久化、查询需求 |
+| [flink-vs-risingwave.md](04-technology-selection/flink-vs-risingwave.md) | Flink vs RisingWave深度对比: 架构、场景、成本 | 流处理vs流数据库、简化架构评估 |
+
+---
+
+## 05. 映射指南 (Mapping Guides)
+
+理论到代码、旧系统到新系统的迁移路径。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [struct-to-flink-mapping.md](05-mapping-guides/struct-to-flink-mapping.md) | Struct到Flink映射: 理论概念到Flink API的对应关系 | 理论学习后的工程实践、API选择 |
+| [theory-to-code-patterns.md](05-mapping-guides/theory-to-code-patterns.md) | 理论到代码模式: 进程演算、类型理论到实现 | 学术研究转工程、形式化方法应用 |
+| [migration-guides/05.1-spark-streaming-to-flink-migration.md](05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md) | Spark Streaming迁移到Flink: 代码转换、语义映射 | Spark用户迁移、技术栈统一 |
+| [migration-guides/05.2-kafka-streams-to-flink-migration.md](05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md) | Kafka Streams迁移到Flink: DSL转换、状态迁移 | Kafka Streams扩展、复杂处理需求 |
+| [migration-guides/05.3-storm-to-flink-migration.md](05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md) | Storm迁移到Flink: 拓扑转换、语义升级 | Storm系统现代化、Exactly-Once需求 |
+| [migration-guides/05.4-flink-1x-to-2x-migration.md](05-mapping-guides/migration-guides/05.4-flink-1x-to-2x-migration.md) | Flink 1.x到2.x迁移: API变更、配置调整、兼容性 | Flink版本升级、新特性采用 |
+| [migration-guides/05.5-batch-to-streaming-migration.md](05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md) | 批处理迁移到流处理: 架构转型、思维模式转变 | Lambda架构简化、实时化改造 |
+| [streaming-etl-tools-landscape-2026.md](05-mapping-guides/streaming-etl-tools-landscape-2026.md) | 2026年流式ETL工具全景: 工具对比与选型 | ETL现代化、数据集成项目 |
+| [streaming-sql-engines-2026-comparison.md](05-mapping-guides/streaming-sql-engines-2026-comparison.md) | 2026年流式SQL引擎对比: Flink SQL、RisingWave等 | SQL优先团队、降低开发门槛 |
+| [multi-agent-frameworks-2026-comparison.md](05-mapping-guides/multi-agent-frameworks-2026-comparison.md) | 2026年多Agent框架对比: AutoGen、LangGraph等 | AI Agent架构、多智能体系统 |
+
+---
+
+## 06. 前沿探索 (Frontier)
+
+流计算与AI、Serverless、Data Mesh等新兴方向的融合探索。
+
+### 实时AI与智能体 (Real-time AI & Agents)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [realtime-ai-streaming-2026.md](06-frontier/realtime-ai-streaming-2026.md) | 2026年实时AI与流计算融合全景 | AI工程化、实时智能决策 |
+| [ai-agent-streaming-architecture.md](06-frontier/ai-agent-streaming-architecture.md) | AI Agent流式架构: 流计算驱动智能体工作流 | Agent系统、AI工作流编排 |
+| [mcp-protocol-agent-streaming.md](06-frontier/mcp-protocol-agent-streaming.md) | MCP协议与Agent流式处理 | AI工具集成、协议标准 |
+| [a2a-protocol-agent-communication.md](06-frontier/a2a-protocol-agent-communication.md) | A2A协议: Agent间通信标准与流式实现 | 多Agent协作、Google A2A |
+| [ai-agent-a2a-protocol.md](06-frontier/ai-agent-a2a-protocol.md) | AI Agent A2A协议详细解析 | Agent通信、企业级AI |
+| [real-time-rag-architecture.md](06-frontier/real-time-rag-architecture.md) | 实时RAG架构: 流式知识库更新与检索 | 实时知识增强、动态RAG |
+| [multimodal-streaming-architecture.md](06-frontier/multimodal-streaming-architecture.md) | 多模态流处理架构: 文本/图像/音频实时处理 | 多媒体AI、实时内容理解 |
+| [multimodal-ai-streaming-architecture.md](06-frontier/multimodal-ai-streaming-architecture.md) | 多模态AI流式架构详解 | 跨模态实时分析、智能监控 |
+| [edge-llm-realtime-inference.md](06-frontier/edge-llm-realtime-inference.md) | 边缘LLM实时推理: 端侧大模型与流计算 | 边缘AI、低延迟推理 |
+| [ai-agent-database-workloads.md](06-frontier/ai-agent-database-workloads.md) | AI Agent数据库工作负载: 向量+流+事务融合 | AI数据基础设施、统一存储 |
+
+### 流数据库与存储 (Streaming Databases)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [streaming-databases.md](06-frontier/streaming-databases.md) | 流数据库综述: 架构、能力、适用场景 | 简化实时分析架构、SQL优先 |
+| [streaming-database-ecosystem-comparison.md](06-frontier/streaming-database-ecosystem-comparison.md) | 流数据库生态系统对比 | 技术选型、生态评估 |
+| [risingwave-deep-dive.md](06-frontier/risingwave-deep-dive.md) | RisingWave深度解析: 架构、性能、最佳实践 | RisingWave adoption、技术评估 |
+| [risingwave-integration-guide.md](06-frontier/risingwave-integration-guide.md) | RisingWave集成指南: 与Flink、Kafka等集成 | 混合架构、渐进式采用 |
+| [materialize-comparison-guide.md](06-frontier/materialize-comparison-guide.md) | Materialize对比指南: SQL物化视图引擎 | 实时物化视图、SQL流处理 |
+| [streaming-materialized-view-architecture.md](06-frontier/streaming-materialized-view-architecture.md) | 流式物化视图架构设计 | 实时报表、增量计算 |
+| [vector-search-streaming-convergence.md](06-frontier/vector-search-streaming-convergence.md) | 向量搜索与流计算融合: 实时向量索引更新 | RAG系统、实时语义搜索 |
+
+### Serverless与云原生 (Serverless & Cloud Native)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [serverless-stream-processing-architecture.md](06-frontier/serverless-stream-processing-architecture.md) | Serverless流处理架构 | 弹性 workloads、成本优化 |
+| [serverless-streaming-architecture.md](06-frontier/serverless-streaming-architecture.md) | Serverless流架构详解 | 云原生流处理、按需付费 |
+| [serverless-streaming-cost-optimization.md](06-frontier/serverless-streaming-cost-optimization.md) | Serverless流处理成本优化 | FinOps、成本控制 |
+| [stateful-serverless.md](06-frontier/stateful-serverless.md) | 有状态Serverless: 状态管理与函数计算 | 复杂Serverless应用、长时间运行 |
+| [faas-dataflow.md](06-frontier/faas-dataflow.md) | FaaS Dataflow模式: 函数编排与数据流 | 事件驱动架构、函数工作流 |
+| [wasm-dataflow-patterns.md](06-frontier/wasm-dataflow-patterns.md) | WebAssembly Dataflow模式: WASM与流计算 | 边缘计算、跨平台运行时 |
+| [multi-cloud-streaming-architecture.md](06-frontier/multi-cloud-streaming-architecture.md) | 多云流处理架构 | 云厂商解耦、灾备设计 |
+
+### 数据网格与Data Mesh
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [streaming-data-mesh-architecture.md](06-frontier/streaming-data-mesh-architecture.md) | 流式Data Mesh架构 | 企业数据平台、域驱动设计 |
+| [realtime-data-mesh-practice.md](06-frontier/realtime-data-mesh-practice.md) | 实时Data Mesh实践 | 数据网格落地、实时数据产品 |
+| [realtime-data-product-architecture.md](06-frontier/realtime-data-product-architecture.md) | 实时数据产品架构 | 数据即产品、自助服务 |
+
+### 图流处理与实时特征 (Graph & Features)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [streaming-graph-processing-tgn.md](06-frontier/streaming-graph-processing-tgn.md) | 流式图处理与TGN(时序图网络) | 实时图分析、社交网络 |
+| [realtime-graph-streaming-tgnn.md](06-frontier/realtime-graph-streaming-tgnn.md) | 实时图流处理与TGNN | 图神经网络、动态图分析 |
+| [realtime-feature-store-architecture.md](06-frontier/realtime-feature-store-architecture.md) | 实时特征存储架构 | MLOps、特征平台 |
+| [realtime-digital-twin-streaming.md](06-frontier/realtime-digital-twin-streaming.md) | 实时数字孪生流处理 | 工业4.0、仿真模拟 |
+
+### 边缘计算 (Edge Computing)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [edge-streaming-architecture.md](06-frontier/edge-streaming-architecture.md) | 边缘流处理架构 | 边缘AI、工业物联网 |
+| [edge-streaming-patterns.md](06-frontier/edge-streaming-patterns.md) | 边缘流处理模式 | 边缘计算最佳实践 |
+| [cloud-edge-continuum.md](06-frontier/cloud-edge-continuum.md) | 云边端连续体架构 | 云边协同、分层处理 |
+
+### Lakehouse与数据湖 (Lakehouse)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [streaming-lakehouse-iceberg-delta.md](06-frontier/streaming-lakehouse-iceberg-delta.md) | 流式Lakehouse: Iceberg与Delta Lake | 实时数仓、湖仓一体 |
+
+### Web3与区块链 (Web3)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [web3-blockchain-streaming-architecture.md](06-frontier/web3-blockchain-streaming-architecture.md) | Web3区块链流处理架构 | 链上数据分析、DeFi |
+| [web3-streaming-analytics-defi.md](06-frontier/web3-streaming-analytics-defi.md) | Web3流分析: DeFi场景 | 区块链分析、实时风控 |
+
+### 质量与治理 (Quality & Governance)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [realtime-data-quality-validation.md](06-frontier/realtime-data-quality-validation.md) | 实时数据质量验证 | 数据质量、实时校验 |
+
+### 新兴技术 (Emerging Tech)
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [temporal-flink-layered-architecture.md](06-frontier/temporal-flink-layered-architecture.md) | Temporal+Flink分层架构 | 工作流+流处理、持久化执行 |
+| [rust-streaming-ecosystem.md](06-frontier/rust-streaming-ecosystem.md) | Rust流处理生态 | 高性能计算、系统级编程 |
+| [rust-streaming-comparison.md](06-frontier/rust-streaming-comparison.md) | Rust流处理对比 | Rust技术栈评估 |
+| [data-streaming-landscape-2025.md](06-frontier/data-streaming-landscape-2025.md) | 2025年流计算全景图 | 行业趋势、技术发展 |
+
+---
+
+## 07. 最佳实践 (Best Practices)
+
+生产环境检查清单、调优指南与运维策略。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [07.01-flink-production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | Flink生产检查清单: 上线前的完整检查项 | 生产上线、运维审计、合规检查 |
+| [07.02-performance-tuning-patterns.md](07-best-practices/07.02-performance-tuning-patterns.md) | 性能调优模式: 背压优化、序列化优化、并行度调优 | 性能优化、瓶颈排查 |
+| [07.03-troubleshooting-guide.md](07-best-practices/07.03-troubleshooting-guide.md) | 故障排查指南: 常见问题诊断与解决 | 线上故障、紧急修复 |
+| [07.04-cost-optimization-patterns.md](07-best-practices/07.04-cost-optimization-patterns.md) | 成本优化模式: 资源利用率、存储成本、计算优化 | FinOps、降本增效 |
+| [07.05-security-hardening-guide.md](07-best-practices/07.05-security-hardening-guide.md) | 安全加固指南: 认证、授权、加密、审计 | 安全合规、生产加固 |
+| [07.06-high-availability-patterns.md](07-best-practices/07.06-high-availability-patterns.md) | 高可用模式: 故障转移、多活架构、灾备 | 关键业务、SLA保障 |
+| [07.07-testing-strategies-complete.md](07-best-practices/07.07-testing-strategies-complete.md) | 测试策略完整指南: 单元、集成、端到端测试 | 质量保障、CI/CD |
+
+---
+
+## 08. 标准规范 (Standards)
+
+数据治理、安全合规的行业标准与最佳实践。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [streaming-data-governance.md](08-standards/streaming-data-governance.md) | 流数据治理: 元数据管理、数据血缘、质量标准 | 数据治理项目、合规要求 |
+| [streaming-data-governance-quality.md](08-standards/streaming-data-governance-quality.md) | 流数据治理与质量: 质量规则、监控、改进 | 数据质量管理、持续改进 |
+
+---
+
+## 09. 反模式 (Anti-Patterns)
+
+流处理常见陷阱、错误实践与规避策略。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [README.md](09-anti-patterns/README.md) | 反模式总览与索引 | 反模式入门、快速浏览 |
+| [anti-pattern-checklist.md](09-anti-patterns/anti-pattern-checklist.md) | 反模式检查清单: 代码审查、设计评审 | 代码审查、设计评审 |
+| [anti-pattern-01-global-state-abuse.md](09-anti-patterns/anti-pattern-01-global-state-abuse.md) | 反模式01: 全局状态滥用 | 状态设计、并发安全 |
+| [anti-pattern-02-watermark-misconfiguration.md](09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md) | 反模式02: Watermark配置错误 | 时间处理、延迟数据 |
+| [anti-pattern-03-checkpoint-interval-misconfig.md](09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md) | 反模式03: Checkpoint间隔配置不当 | 容错设计、性能优化 |
+| [anti-pattern-04-hot-key-skew.md](09-anti-patterns/anti-pattern-04-hot-key-skew.md) | 反模式04: 热点Key倾斜 | 数据分布、负载均衡 |
+| [anti-pattern-05-blocking-io-processfunction.md](09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md) | 反模式05: ProcessFunction中的阻塞IO | 异步设计、性能优化 |
+| [anti-pattern-06-serialization-overhead.md](09-anti-patterns/anti-pattern-06-serialization-overhead.md) | 反模式06: 序列化开销过大 | 性能优化、序列化选择 |
+| [anti-pattern-07-window-state-explosion.md](09-anti-patterns/anti-pattern-07-window-state-explosion.md) | 反模式07: 窗口状态爆炸 | 状态管理、内存优化 |
+| [anti-pattern-08-ignoring-backpressure.md](09-anti-patterns/anti-pattern-08-ignoring-backpressure.md) | 反模式08: 忽视背压信号 | 流控设计、稳定性保障 |
+| [anti-pattern-09-multi-stream-join-misalignment.md](09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md) | 反模式09: 多流Join错位 | Join设计、时间对齐 |
+| [anti-pattern-10-resource-estimation-oom.md](09-anti-patterns/anti-pattern-10-resource-estimation-oom.md) | 反模式10: 资源估算不足导致OOM | 容量规划、资源管理 |
+| [streaming-anti-patterns.md](09-anti-patterns/streaming-anti-patterns.md) | 流处理反模式综合指南 | 反模式系统学习 |
+
+---
+
+## 10. 案例研究 (Case Studies)
+
+真实生产环境的详细案例分析。
+
+> 📂 **独立索引**: [10-case-studies/00-INDEX.md](10-case-studies/00-INDEX.md)
+
+| 分类 | 文档数量 | 主要内容 |
+|------|----------|----------|
+| 金融 (finance) | 4 | 反欺诈、交易监控、风控决策、支付风控 |
+| 电商 (ecommerce) | 3 | 实时推荐、库存同步、大促实时大屏 |
+| IoT (iot) | 3 | 智能制造、车联网、预测性维护 |
+| 社交媒体 (social-media) | 2 | 内容推荐、实时推荐系统 |
+| 游戏 (gaming) | 2 | 实时对战分析、反作弊系统 |
+
+---
+
+## 98. 练习与速查 (Exercises & Quick Ref)
+
+学习练习与快速参考手册。
+
+### 练习文档
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [README.md](98-exercises/README.md) | 练习目录说明与使用指南 | 学习计划、练习导航 |
+| [exercise-01-process-calculus.md](98-exercises/exercise-01-process-calculus.md) | 练习01: 进程演算实践 | 理论基础巩固 |
+| [exercise-02-flink-basics.md](98-exercises/exercise-02-flink-basics.md) | 练习02: Flink基础编程 | Flink入门实践 |
+| [exercise-03-checkpoint-analysis.md](98-exercises/exercise-03-checkpoint-analysis.md) | 练习03: Checkpoint分析 | 容错机制理解 |
+| [exercise-04-consistency-models.md](98-exercises/exercise-04-consistency-models.md) | 练习04: 一致性模型 | 分布式一致性 |
+| [exercise-05-pattern-implementation.md](98-exercises/exercise-05-pattern-implementation.md) | 练习05: 设计模式实现 | 模式应用实践 |
+| [exercise-06-tla-practice.md](98-exercises/exercise-06-tla-practice.md) | 练习06: TLA+形式化验证 | 形式化方法入门 |
+
+### 速查手册
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [quick-ref-streaming-anti-patterns.md](98-exercises/quick-ref-streaming-anti-patterns.md) | 流处理反模式速查 | 快速参考、代码审查 |
+| [quick-ref-flink-vs-risingwave.md](98-exercises/quick-ref-flink-vs-risingwave.md) | Flink vs RisingWave速查 | 技术选型快速对比 |
+| [quick-ref-security-compliance.md](98-exercises/quick-ref-security-compliance.md) | 安全合规速查 | 安全检查、合规审计 |
+| [quick-ref-a2a-protocol.md](98-exercises/quick-ref-a2a-protocol.md) | A2A协议速查 | Agent开发参考 |
+| [quick-ref-temporal-flink.md](98-exercises/quick-ref-temporal-flink.md) | Temporal+Flink速查 | 工作流开发参考 |
+
+---
+
+## 独立文档
+
+位于 Knowledge/ 根目录下的其他重要文档。
+
+| 文档 | 描述 | 适用场景 |
+|------|------|----------|
+| [cep-complete-tutorial.md](cep-complete-tutorial.md) | CEP完整教程: 复杂事件处理入门到精通 | CEP学习、模式匹配 |
+| [kafka-streams-migration.md](kafka-streams-migration.md) | Kafka Streams迁移指南 | Kafka Streams到Flink迁移 |
+| [learning-path-recommender.md](learning-path-recommender.md) | 学习路径推荐器 | 个性化学习、能力评估 |
+| [personalized-learning-engine.md](personalized-learning-engine.md) | 个性化学习引擎 | 自适应学习系统 |
+| [production-checklist.md](production-checklist.md) | 生产检查清单(综合版) | 生产部署准备 |
+| [production-deployment-checklist.md](production-deployment-checklist.md) | 生产部署检查清单 | 部署前检查 |
+
+---
+
+## 导航链接
+
+### 项目索引
+
+| 目标 | 路径 |
+|------|------|
+| 🏠 项目根目录 | [../README.md](../README.md) |
+| 🚀 快速开始 | [../QUICK-START.md](../QUICK-START.md) |
+| 📊 项目跟踪 | [../PROJECT-TRACKING.md](../PROJECT-TRACKING.md) |
+| 🔧 定理注册表 | [../THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) |
+| 🗺️ 路线图 | [../ROADMAP.md](../ROADMAP.md) |
+| 📖 英文README | [../README-EN.md](../README-EN.md) |
+| 🚀 英文快速开始 | [../QUICK-START-EN.md](../QUICK-START-EN.md) |
+
+### 姐妹目录索引
+
+| 目录 | 索引 | 描述 |
+|------|------|------|
+| Struct/ | [../Struct/00-INDEX.md](../Struct/00-INDEX.md) | 形式理论与严格证明 |
+| Flink/ | [../Flink/00-INDEX.md](../Struct/00-INDEX.md) | Flink专项技术与实现 |
+
+### 其他重要文档
+
+| 文档 | 描述 |
+|------|------|
+| [../ARCHITECTURE.md](../ARCHITECTURE.md) | 项目架构总览 |
+| [../BEST-PRACTICES.md](../BEST-PRACTICES.md) | 项目级最佳实践 |
+| [../TROUBLESHOOTING.md](../TROUBLESHOOTING.md) | 故障排查指南 |
+| [../GLOSSARY.md](../GLOSSARY.md) | 术语表(中文) |
+| [../GLOSSARY-EN.md](../GLOSSARY.md) | 术语表(英文) |
+| [../REFERENCES.md](../REFERENCES.md) | 参考文献 |
+
+---
+
+## 统计信息
+
+```
+Knowledge/ 目录统计:
+├── 01-concept-atlas/:        3 文档
+├── 02-design-patterns/:      9 文档
+├── 03-business-patterns/:   13 文档
+├── 04-technology-selection/: 5 文档
+├── 05-mapping-guides/:      10 文档
+├── 06-frontier/:            40+ 文档
+├── 07-best-practices/:       7 文档
+├── 08-standards/:            2 文档
+├── 09-anti-patterns/:       13 文档
+├── 10-case-studies/:        14 文档 (独立索引)
+└── 98-exercises/:           12 文档
+----------------------------------------
+总计: 约 128+ 文档
+```
+
+---
+
+## 使用建议
+
+### 🎯 按角色选择
+
+- **架构师**: 01-concept-atlas → 04-technology-selection → 06-frontier
+- **开发工程师**: 02-design-patterns → 07-best-practices → 09-anti-patterns
+- **数据工程师**: 03-business-patterns → 05-mapping-guides → 10-case-studies
+- **运维工程师**: 07-best-practices → 09-anti-patterns → 08-standards
+- **学习者**: 98-exercises → 01-concept-atlas → 02-design-patterns
+
+### 🔄 典型学习路径
+
+1. **入门路径**: 概念图谱 → 设计模式 → 练习 → 案例研究
+2. **进阶路径**: 业务场景 → 技术选型 → 最佳实践 → 前沿探索
+3. **专家路径**: 前沿探索 → 映射指南 → 反模式 → 标准规范
+
+---
+
+## 引用参考

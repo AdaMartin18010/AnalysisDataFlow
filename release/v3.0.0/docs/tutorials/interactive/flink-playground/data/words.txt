@@ -1,0 +1,18 @@
+apache flink is a framework and distributed processing engine for stateful computations over unbounded and bounded data streams
+flink has been designed to run in all common cluster environments perform computations at in memory speed and at any scale
+flink features
+streaming first runtime built on top of the streaming first principle
+fault tolerant exactly once stateful computations
+lightweight distributed snapshots
+high throughput and low latency
+memory management inside the jvm
+event time semantics
+layered APIs
+unified stream and batch processing
+flink applications
+real time analytics
+continuous applications
+event driven applications
+data pipeline applications
+machine learning pipelines
+graph processing applications

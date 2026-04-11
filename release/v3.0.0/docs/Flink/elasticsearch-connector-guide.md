@@ -1,0 +1,444 @@
+# Elasticsearch Connector 详细指南
+
+> 所属阶段: Flink | 前置依赖: [data-types-complete-reference.md](./data-types-complete-reference.md) | 形式化等级: L4
+
+---
+
+## 1. 概念定义 (Definitions)
+
+### Def-F-ES-01: Elasticsearch Sink 定义
+
+**定义**: Elasticsearch Sink 是将 Flink 数据流写入 ES 集群的连接器：
+
+$$
+\text{ESSink} = \langle C, I, B, R, S \rangle
+$$
+
+其中：
+
+- $C$: 集群配置 $\langle hosts, username, password, ssl \rangle$
+- $I$: 索引配置 $\langle indexName, type, routing \rangle$
+- $B$: 批量配置 $\langle batchSize, batchInterval, maxActions \rangle$
+- $R$: 重试配置 $\langle maxRetries, retryInterval \rangle$
+- $S$: 序列化配置
+
+**核心语义**：
+
+$$
+\forall r \in \text{Stream}: r \xrightarrow{serialize} \text{Doc} \xrightarrow{bulk} \text{ES Index}
+$$
+
+### Def-F-ES-02: 索引与文档模型
+
+**定义**: Elasticsearch 数据组织层级：
+
+| 层级 | 概念 | 映射到关系型数据库 |
+|------|------|-------------------|
+| Cluster | 集群 | 数据库实例 |
+| Index | 索引 | 表 |
+| Shard | 分片 | 分区 |
+| Document | 文档 | 行 |
+| Field | 字段 | 列 |
+
+**形式化表示**：
+
+$$
+\text{Index} = \{ \text{Doc}_1, \text{Doc}_2, ..., \text{Doc}_n \}
+$$
+
+$$
+\text{Doc} = \langle \_id: String, \_source: JSON, \_version: Long, \_timestamp: Long \rangle
+$$
+
+### Def-F-ES-03: Bulk API 机制
+
+**定义**: Bulk API 将多个操作打包成一个请求：
+
+$$
+\text{BulkRequest} = [\text{IndexOp} | \text{UpdateOp} | \text{DeleteOp}]^{+}
+$$
+
+约束条件：
+
+- $|\text{BulkRequest}| \leq bulk.flush.max.actions$
+- $size(\text{BulkRequest}) \leq bulk.flush.max.size$
+
+### Def-F-ES-04: 幂等写入语义
+
+**定义**: 通过 `_id` 实现 Exactly-Once 语义：
+
+$$
+\forall \text{checkpoint}: \text{records processed} \rightarrow \text{ES committed}
+$$
+
+$$
+\land \text{failure} \rightarrow \text{replay from checkpoint}
+$$
+
+$$
+\land \text{no duplicate documents (by } \_id \text{)}
+$$
+
+---
+
+## 2. 属性推导 (Properties)
+
+### Lemma-F-ES-01: 批量大小与延迟权衡
+
+**引理**: 增大 `bulk.flush.max.actions` 可提高吞吐但增加延迟：
+
+$$
+\text{Latency} \approx \frac{N_{actions}}{\lambda_{arrival}} + RTT_{network} + T_{processing}
+$$
+
+$$
+\text{Throughput} \approx \frac{N_{actions}}{\text{Latency}}
+$$
+
+其中：
+
+- $\lambda_{arrival}$: 记录到达率
+- $RTT_{network}$: 网络往返延迟
+- $T_{processing}$: ES 处理时间
+
+### Lemma-F-ES-02: 写入性能边界
+
+**引理**: ES Sink 的最大吞吐量受以下因素约束：
+
+$$
+T_{max} = \min(T_{bulk}, T_{es}, T_{network})
+$$
+
+其中：
+
+- $T_{bulk}$: Bulk API 吞吐
+- $T_{es}$: ES 集群索引能力（分片数 × 单分片吞吐）
+- $T_{network}$: 网络带宽 / 平均文档大小
+
+### Prop-F-ES-01: 版本冲突处理
+
+**命题**: 当多个并发写入同一文档时：
+
+$$
+\text{if } (v_{provided} = v_{current}) \lor (v_{provided} > v_{current}) \Rightarrow \text{update succeeds}
+$$
+
+$$
+\text{if } v_{provided} < v_{current} \Rightarrow \text{VersionConflictException}
+$$
+
+---
+
+## 3. 关系建立 (Relations)
+
+### 3.1 Flink Stream 到 ES Index 映射
+
+```mermaid
+graph LR
+    A[Flink DataStream] --> B[ESSinkFunction]
+    B --> C[Document Serializer]
+    C --> D[Bulk Processor]
+    D --> E[ES REST Client]
+    E --> F[Elasticsearch Cluster]
+    F --> G[Index 1]
+    F --> H[Index 2]
+    F --> I[Index N]
+```
+
+### 3.2 数据类型映射
+
+| Flink SQL Type | Elasticsearch Type | 说明 |
+|----------------|-------------------|------|
+| STRING | `text` / `keyword` | text 用于全文搜索，keyword 用于精确匹配 |
+| INT / BIGINT | `integer` / `long` | 整数类型 |
+| DECIMAL | `scaled_float` | 定点数存储 |
+| FLOAT / DOUBLE | `float` / `double` | 浮点数 |
+| BOOLEAN | `boolean` | 布尔值 |
+| TIMESTAMP | `date` | 日期时间 |
+| ARRAY | `array` | 数组类型 |
+| MAP / ROW | `object` / `nested` | 嵌套对象 |
+
+### 3.3 Checkpoint 与 Flush 关系
+
+```
+Flink Checkpoint
+    ↓ (触发)
+Flush All Buffered Documents
+    ↓ (等待)
+Bulk Response ACK
+    ↓ (确认)
+Checkpoint Complete
+```
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+### 4.1 索引名称动态化策略
+
+**策略对比**：
+
+| 策略 | 实现方式 | 适用场景 |
+|------|----------|----------|
+| 静态索引 | 固定索引名 | 小规模数据 |
+| 时间轮转 | `logs-{date}` | 日志场景 |
+| 字段路由 | 基于记录字段 | 多租户场景 |
+
+### 4.2 失败处理策略
+
+| 策略 | 行为 | 数据保证 |
+|------|------|----------|
+| Ignore | 忽略失败 | 可能丢数据 |
+| Fail | 作业失败 | 严格一致性 |
+| Retry | 指数退避重试 | 最终一致性 |
+| DLQ | 写入死信队列 | 可审计恢复 |
+
+---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+### Thm-F-ES-01: At-Least-Once 正确性
+
+**定理**: 在 Checkpoint 启用条件下，ES Sink 提供 At-Least-Once 语义。
+
+**证明概要**：
+
+1. 记录到达 Sink 后先进入缓冲区
+2. Checkpoint 时强制 Flush 所有缓冲数据
+3. Flush 成功后才确认 Checkpoint
+4. 故障恢复后从上一个成功 Checkpoint 重放
+5. 因此所有记录至少被写入一次
+
+### Thm-F-ES-02: Exactly-Once 条件
+
+**定理**: 在满足以下条件时，ES Sink 可实现 Exactly-Once：
+
+1. **幂等写入**: 使用 `_id` 确保文档唯一性
+2. **UPSERT 语义**: `index` 操作覆盖或创建文档
+3. **版本控制**: 使用外部版本号控制并发
+
+**证明**：
+
+- 同一记录多次写入因 `_id` 相同而覆盖
+- 最终结果等效于恰好一次写入
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 6.1 Maven 依赖
+
+```xml
+<dependency>
+    <groupId>org.apache.flink</groupId>
+    <artifactId>flink-connector-elasticsearch7</artifactId>
+    <version>3.0.1-1.17</version>
+</dependency>
+
+<!-- 或使用 Elasticsearch 8 -->
+<dependency>
+    <groupId>org.apache.flink</groupId>
+    <artifactId>flink-connector-elasticsearch8</artifactId>
+    <version>3.0.1-1.17</version>
+</dependency>
+```
+
+### 6.2 DataStream API 示例
+
+```java
+import org.apache.flink.connector.elasticsearch.sink.Elasticsearch7SinkBuilder;
+import org.apache.flink.connector.elasticsearch.sink.ElasticsearchEmitter;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.Requests;
+
+import java.util.HashMap;
+import java.util.Map;
+
+// 创建 ES Sink
+ElasticsearchSink<Event> esSink = new Elasticsearch7SinkBuilder<Event>()
+    .setBulkFlushMaxActions(1000)
+    .setBulkFlushInterval(5000)
+    .setHosts(new HttpHost("localhost", 9200))
+    // 认证配置（如果需要）
+    .setRestClientFactory(
+        restClientBuilder -> {
+            restClientBuilder.setDefaultHeaders(
+                new Header[]{new BasicHeader("Authorization", "ApiKey xxx")}
+            );
+        }
+    )
+    // 文档构建
+    .setEmitter((element, context, indexer) -> {
+        Map<String, Object> json = new HashMap<>();
+        json.put("user_id", element.getUserId());
+        json.put("event_type", element.getEventType());
+        json.put("timestamp", element.getTimestamp());
+        json.put("data", element.getData());
+
+        IndexRequest request = Requests.indexRequest()
+            .index("events-" + element.getDate())
+            .id(element.getEventId())  // 设置 _id 实现幂等
+            .source(json);
+
+        indexer.add(request);
+    })
+    .build();
+
+// 添加到流
+stream.sinkTo(esSink);
+```
+
+### 6.3 Table API / SQL 示例
+
+```sql
+-- 创建 Elasticsearch 表
+CREATE TABLE user_events (
+    user_id STRING,
+    event_type STRING,
+    event_time TIMESTAMP,
+    properties MAP<STRING, STRING>,
+    -- 元数据列
+    INDEX VARCHAR METADATA FROM 'index'
+) WITH (
+    'connector' = 'elasticsearch-7',
+    'hosts' = 'http://localhost:9200',
+    'index' = 'user-events-{event_time|yyyy.MM.dd}',
+    'document-id' = 'user_id-event_time',
+    'bulk-flush.max-actions' = '1000',
+    'bulk-flush.interval' = '5000',
+    'format' = 'json'
+);
+
+-- 写入数据
+INSERT INTO user_events
+SELECT
+    user_id,
+    event_type,
+    event_time,
+    properties
+FROM kafka_source;
+```
+
+### 6.4 配置模板
+
+```java
+// 高级配置示例
+ElasticsearchSink<Event> esSink = new Elasticsearch7SinkBuilder<Event>()
+    // 批量配置
+    .setBulkFlushMaxActions(1000)
+    .setBulkFlushMaxSizeMb(5)
+    .setBulkFlushInterval(5000)
+
+    // 重试配置
+    .setBulkFlushBackoffStrategy(
+        ElasticsearchSinkBase.FlushBackoffType.EXPONENTIAL,
+        8,    // 最大重试次数
+        1000  // 初始重试间隔(ms)
+    )
+
+    // 连接配置
+    .setHosts(
+        new HttpHost("es-node1", 9200),
+        new HttpHost("es-node2", 9200),
+        new HttpHost("es-node3", 9200)
+    )
+
+    // 失败处理
+    .setFailureHandler(new RetryRejectedExecutionFailureHandler())
+
+    // 文档构建器
+    .setEmitter(new MyElasticsearchEmitter())
+    .build();
+```
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 7.1 ES Connector 架构图
+
+```mermaid
+graph TB
+    subgraph Flink
+        A[DataStream] --> B[ESSink]
+        B --> C[Bulk Processor]
+    end
+
+    subgraph Transport
+        C --> D[HTTP Client]
+        D --> E[Connection Pool]
+    end
+
+    subgraph Elasticsearch
+        E --> F[Node 1]
+        E --> G[Node 2]
+        E --> H[Node 3]
+        F --> I[Primary Shard]
+        F --> J[Replica Shard]
+    end
+
+    style B fill:#e1f5fe
+    style D fill:#fff3e0
+    style F fill:#e8f5e9
+```
+
+### 7.2 Bulk 处理流程
+
+```mermaid
+sequenceDiagram
+    participant F as Flink Record
+    participant BP as Bulk Processor
+    participant ES as Elasticsearch
+
+    F->>BP: add(document)
+    BP->>BP: buffer document
+
+    alt 缓冲区满或超时
+        BP->>ES: POST /_bulk
+        ES-->>BP: BulkResponse
+
+        alt 成功
+            BP->>BP: clear buffer
+        else 部分失败
+            BP->>BP: retry failed items
+        else 全部失败
+            BP->>F: throw exception / DLQ
+        end
+    end
+
+    alt Checkpoint
+        BP->>BP: flush immediately
+        BP->>ES: POST /_bulk
+        ES-->>BP: success
+    end
+```
+
+### 7.3 索引设计决策树
+
+```mermaid
+flowchart TD
+    A[设计 ES 索引] --> B{数据规模?}
+    B -->|小型| C[单索引]
+    B -->|大型| D{时间特性?}
+
+    D -->|时序数据| E[按时间轮询索引<br/>logs-{YYYY.MM.DD}]
+    D -->|非时序| F{多租户?}
+
+    F -->|是| G[按租户路由<br/>索引别名]
+    F -->|否| H[按业务分区]
+
+    C --> I[配置 Mapping]
+    E --> I
+    G --> I
+    H --> I
+
+    I --> J{字段类型?}
+    J -->|文本搜索| K[text + keyword]
+    J -->|精确匹配| L[keyword]
+    J -->|数值范围| M[numeric + range]
+```
+
+---
+
+## 8. 引用参考 (References)

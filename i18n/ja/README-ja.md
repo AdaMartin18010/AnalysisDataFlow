@@ -1,4 +1,4 @@
-# AnalysisDataFlow
+﻿# AnalysisDataFlow
 
 [![日本語](https://img.shields.io/badge/日本語-🇯🇵-red)](./README-ja.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../../docs/i18n/en/00-OVERVIEW.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
 
@@ -171,14 +171,14 @@ Struct/ 形式化定義 ──→ Knowledge/ デザインパターン ──→ 
 
 ```
 Week 1: Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md
-Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 2: Flink/02-core/time-semantics-and-watermark.md
 Week 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
 ```
 
 ### 上級エンジニアパス (4-6週間)
 
 ```
-Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Week 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
 Week 5-6: Knowledge/02-design-patterns/ (全パターン深層理解)
 ```
@@ -247,3 +247,4 @@ Struct/01-foundation/ (理論基盤)
 ---
 
 > **翻訳者注記**: 本ドキュメントは原文の技術的な正確性を保持しつつ、日本の技術文書の慣習に従って翻訳されています。形式化定義と定理は元の英語表記を保持しています。最終更新: 2026-04-11
+

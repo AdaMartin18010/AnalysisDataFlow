@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalysisDataFlow - 流计算知识体系</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-stream"></i>
+                <span>AnalysisDataFlow</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3><i class="fas fa-home"></i> 首页</h3>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-chart-line"></i> 项目概览</a></li>
+                    <li><a href="../README.md" target="_blank"><i class="fas fa-book"></i> 完整文档</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-project-diagram"></i> 推导链</h3>
+                <ul>
+                    <li><a href="chains/index.html"><i class="fas fa-list"></i> 全部推导链</a></li>
+                    <li><a href="chains/checkpoint.html"><i class="fas fa-save"></i> Checkpoint 正确性</a></li>
+                    <li><a href="chains/exactly-once.html"><i class="fas fa-check-double"></i> Exactly-Once</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-network-wired"></i> 可视化</h3>
+                <ul>
+                    <li><a href="graph/index.html"><i class="fas fa-project-diagram"></i> 交互式依赖图</a></li>
+                    <li><a href="../knowledge-graph-v3.html" target="_blank"><i class="fas fa-globe"></i> 知识图谱 v3</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-search"></i> 工具</h3>
+                <ul>
+                    <li><a href="search/index.html"><i class="fas fa-search"></i> 全文搜索</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-folder"></i> 目录</h3>
+                <ul>
+                    <li><a href="../Struct/00-INDEX.md" target="_blank"><i class="fas fa-cube"></i> Struct/ 形式理论</a></li>
+                    <li><a href="../Knowledge/00-INDEX.md" target="_blank"><i class="fas fa-lightbulb"></i> Knowledge/ 知识</a></li>
+                    <li><a href="../Flink/00-FLINK-TECH-STACK-DEPENDENCY.md" target="_blank"><i class="fas fa-fire"></i> Flink/ 专项</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <span>v3.6 | 100% Complete</span>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="top-header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span class="project-name">AnalysisDataFlow</span>
+                <span class="separator">/</span>
+                <span class="page-title">项目概览</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <a href="https://github.com/luyanfeng/AnalysisDataFlow" target="_blank" class="github-link">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="content-wrapper">
+            <!-- Hero 区域 -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>流计算领域的<span class="highlight">形式化理论补充</span></h1>
+                    <p class="hero-subtitle">深度原理理解 · 前沿技术探索 · 全景引擎对比 · 严格形式化分析</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">940+</span>
+                            <span class="stat-label">技术文档</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">10,483+</span>
+                            <span class="stat-label">形式化元素</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1,600+</span>
+                            <span class="stat-label">Mermaid图表</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4,500+</span>
+                            <span class="stat-label">代码示例</span>
+                        </div>
+                    </div>
+                    <div class="hero-badges">
+                        <span class="badge success"><i class="fas fa-check-circle"></i> 100% 完成</span>
+                        <span class="badge"><i class="fas fa-code-branch"></i> v3.6</span>
+                        <span class="badge"><i class="fas fa-calendar"></i> 2026-04-11</span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="layer-visualization">
+                        <div class="layer struct">
+                            <div class="layer-icon"><i class="fas fa-cube"></i></div>
+                            <div class="layer-content">
+                                <h3>Struct</h3>
+                                <p>形式理论层</p>
+                                <span class="layer-count">43 文档</span>
+                            </div>
+                        </div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="layer knowledge">
+                            <div class="layer-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div class="layer-content">
+                                <h3>Knowledge</h3>
+                                <p>知识结构层</p>
+                                <span class="layer-count">134 文档</span>
+                            </div>
+                        </div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="layer flink">
+                            <div class="layer-icon"><i class="fas fa-fire"></i></div>
+                            <div class="layer-content">
+                                <h3>Flink</h3>
+                                <p>工程实践层</p>
+                                <span class="layer-count">178 文档</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 快速导航卡片 -->
+            <section class="quick-nav">
+                <h2><i class="fas fa-compass"></i> 快速导航</h2>
+                <div class="card-grid">
+                    <a href="chains/index.html" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3>推导链</h3>
+                        <p>从基础定义到形式证明的完整推导路径</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-link"></i> 16+ 条链</span>
+                        </div>
+                    </a>
+                    
+                    <a href="graph/index.html" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>交互式依赖图</h3>
+                        <p>可缩放、可拖拽的定理依赖关系可视化</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-nodes"></i> 5,200+ 关系</span>
+                        </div>
+                    </a>
+                    
+                    <a href="search/index.html" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>全文搜索</h3>
+                        <p>支持模糊匹配的定理、定义快速检索</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-database"></i> 10,483+ 元素</span>
+                        </div>
+                    </a>
+                    
+                    <a href="chains/checkpoint.html" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <h3>Checkpoint 正确性</h3>
+                        <p>Flink Checkpoint 机制的形式化证明</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-check-circle"></i> 已验证</span>
+                        </div>
+                    </a>
+                    
+                    <a href="chains/exactly-once.html" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <h3>Exactly-Once</h3>
+                        <p>端到端一致性语义的形式化推导</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-check-circle"></i> 已验证</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../THEOREM-REGISTRY.md" target="_blank" class="nav-card">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>定理注册表</h3>
+                        <p>全项目定理、定义、引理全局索引</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-registered"></i> v2.9.7</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 核心特性 -->
+            <section class="features">
+                <h2><i class="fas fa-star"></i> 核心特性</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>形式化理论</h3>
+                        <p>基于进程演算、Actor模型、类型理论的严格数学定义与证明</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>工程实践</h3>
+                        <p>从形式理论到 Flink 实现的完整映射与最佳实践</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>前沿探索</h3>
+                        <p>AI/ML流处理、多模态流、实时图计算等前沿方向</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <h3>形式验证</h3>
+                        <p>Coq/TLA+形式化验证，确保定理正确性</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 完成状态 -->
+            <section class="completion-status">
+                <h2><i class="fas fa-flag-checkered"></i> 项目完成状态</h2>
+                <div class="status-grid">
+                    <div class="status-card completed">
+                        <div class="status-icon"><i class="fas fa-check"></i></div>
+                        <div class="status-content">
+                            <h4>交叉引用清零</h4>
+                            <p>730个错误已全部修复</p>
+                        </div>
+                    </div>
+                    <div class="status-card completed">
+                        <div class="status-icon"><i class="fas fa-check"></i></div>
+                        <div class="status-content">
+                            <h4>形式化验证</h4>
+                            <p>5个Coq/TLA+文件，2份验证报告</p>
+                        </div>
+                    </div>
+                    <div class="status-card completed">
+                        <div class="status-icon"><i class="fas fa-check"></i></div>
+                        <div class="status-content">
+                            <h4>Flink 路线图</h4>
+                            <p>2.4/2.5/3.0 100个子任务完成</p>
+                        </div>
+                    </div>
+                    <div class="status-card completed">
+                        <div class="status-icon"><i class="fas fa-check"></i></div>
+                        <div class="status-content">
+                            <h4>AI Agent深化</h4>
+                            <p>24个新增形式化元素</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 页脚 -->
+            <footer class="page-footer">
+                <p>© 2026 AnalysisDataFlow Project | <a href="https://github.com/luyanfeng/AnalysisDataFlow" target="_blank"><i class="fab fa-github"></i> GitHub</a></p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</body>
+</html>

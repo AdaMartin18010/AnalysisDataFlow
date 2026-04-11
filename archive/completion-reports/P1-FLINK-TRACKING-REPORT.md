@@ -1,4 +1,4 @@
-# P1 Flink版本发布跟踪系统 - 执行报告
+﻿# P1 Flink版本发布跟踪系统 - 执行报告
 
 > **任务ID**: P1 | **执行日期**: 2026-04-04 | **执行状态**: ✅ 已完成
 >
@@ -106,8 +106,8 @@ $ cd .scripts && python check_flink_release.py --verbose
 |--------|----------|----------|----------------|
 | 🔴 高 | `Flink/08-roadmap/flink-2.4-tracking.md` | preview | 4小时 |
 | 🔴 高 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | preview | 3小时 |
-| 🟡 中 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | preview | 2小时 |
-| 🟡 中 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | preview | 2小时 |
+| 🟡 中 | `Flink/02-core/smart-checkpointing-strategies.md` | preview | 2小时 |
+| 🟡 中 | `Flink/02-core/adaptive-execution-engine-v2.md` | preview | 2小时 |
 | 🟡 中 | `Flink/04-connectors/flink-24-connectors-guide.md` | preview | 2小时 |
 | 🟡 中 | `Flink/10-deployment/serverless-flink-ga-guide.md` | preview | 2小时 |
 | 🟢 低 | 其他2.4相关文档 | preview | 1小时/个 |
@@ -336,3 +336,4 @@ $ cd .scripts && python check_flink_release.py --verbose
 **审核状态**: 待审核
 
 **下次检查**: 2026-04-04 23:30:00
+

@@ -1,4 +1,4 @@
-# AnalysisDataFlow 学习路径索引
+﻿# AnalysisDataFlow 学习路径索引
 
 > **版本**: v1.0 | **更新日期**: 2026-04-04 | **学习路径总数**: 15
 
@@ -201,8 +201,8 @@ flowchart TD
 
 | 主题 | 文档路径 |
 |------|----------|
-| Checkpoint机制 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` |
-| 状态管理 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` |
+| Checkpoint机制 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` |
+| 状态管理 | `Flink/02-core/flink-state-management-complete-guide.md` |
 | DataStream API | `Flink/09-language-foundations/flink-datastream-api-complete-guide.md` |
 | SQL完整指南 | `Flink/03-sql-table-api/flink-table-sql-complete-guide.md` |
 
@@ -272,3 +272,4 @@ flowchart TD
 ---
 
 **开始您的流计算学习之旅！**
+

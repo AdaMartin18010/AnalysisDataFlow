@@ -1,4 +1,4 @@
-# AnalysisDataFlow 项目统计报告
+﻿# AnalysisDataFlow 项目统计报告
 
 > **生成日期**: 2026-04-04 | **项目版本**: v2.8 | **状态**: 已完成 ✅
 
@@ -317,7 +317,7 @@ pie title 引用类型分布
 | 6 | REFERENCES.md | ~60 | 参考文献 |
 | 7 | Struct/01-foundation/*.md | ~45 | 基础理论 |
 | 8 | Knowledge/02-design-patterns/*.md | ~40 | 设计模式 |
-| 9 | Flink/02-core-mechanisms/*.md | ~35 | 核心机制 |
+| 9 | Flink/02-core/*.md | ~35 | 核心机制 |
 | 10 | NAVIGATION-INDEX.md | ~30 | 导航索引 |
 
 ---
@@ -495,3 +495,4 @@ mindmap
 *报告生成时间: 2026-04-04*
 *AnalysisDataFlow Project v2.8*
 *统计工具: PowerShell + ripgrep*
+

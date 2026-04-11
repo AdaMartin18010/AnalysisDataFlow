@@ -1,4 +1,4 @@
-# AnalysisDataFlow 术语表 (Glossary)
+﻿# AnalysisDataFlow 术语表 (Glossary)
 
 > **版本**: v1.1 | **更新日期**: 2026-04-04 | **范围**: 全项目
 >
@@ -86,7 +86,7 @@ AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
+- `Flink/02-core/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
 
 ---
 
@@ -167,7 +167,7 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
 
 ---
@@ -189,7 +189,7 @@ AsyncFunction: I × C → Future[O]
 **参考文档**:
 
 - `Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
-- `Flink/02-core-mechanisms/async-execution-model.md`
+- `Flink/02-core/async-execution-model.md`
 
 ---
 
@@ -243,7 +243,7 @@ AsyncFunction: I × C → Future[O]
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/backpressure-and-flow-control.md`
+- `Flink/02-core/backpressure-and-flow-control.md`
 - `Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md`
 
 ---
@@ -262,7 +262,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-02)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-02)
 
 ---
 
@@ -433,7 +433,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-01)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-01)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
 
 ---
@@ -764,7 +764,7 @@ t_e: Record → Timestamp
 **参考文档**:
 
 - `Struct/01-foundation/01.01-unified-streaming-theory.md` (Def-S-01-05)
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 
 ---
 
@@ -802,7 +802,7 @@ t_e: Record → Timestamp
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-04)
 - `Struct/04-proofs/04.02-flink-exactly-once-correctness.md` (Thm-S-18-01)
-- `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md`
+- `Flink/02-core/exactly-once-semantics-deep-dive.md`
 
 ---
 
@@ -911,8 +911,8 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/forst-state-backend.md` (Thm-F-02-45)
-- `Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md`
+- `Flink/02-core/forst-state-backend.md` (Thm-F-02-45)
+- `Flink/02-core/flink-2.0-forst-state-backend.md`
 
 ---
 
@@ -1017,7 +1017,7 @@ Global: wid_global = (-∞, +∞)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 
 ---
 
@@ -1071,7 +1071,7 @@ f 是幂等的 ⟺ ∀x. f(f(x)) = f(x)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-05, Thm-F-02-02)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-05, Thm-F-02-02)
 
 ---
 
@@ -1183,7 +1183,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/delta-join.md`
+- `Flink/02-core/delta-join.md`
 
 ---
 
@@ -1684,7 +1684,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 
 ---
 
@@ -1860,7 +1860,7 @@ SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
+- `Flink/02-core/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
 
 ---
 
@@ -1962,7 +1962,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 - `Flink/06-engineering/state-backend-selection.md`
 
 ---
@@ -1997,7 +1997,7 @@ F: (K, V) × State[K] → State[K] × O
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/flink-state-ttl-best-practices.md`
+- `Flink/02-core/flink-state-ttl-best-practices.md`
 
 ---
 
@@ -2098,7 +2098,7 @@ UnifiedArch = ⟨ℱ, 𝒰_exec, 𝒰_storage, 𝒰_api⟩
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/streaming-etl-best-practices.md`
+- `Flink/02-core/streaming-etl-best-practices.md`
 
 ---
 
@@ -2316,7 +2316,7 @@ UnalignedSnapshot(t, n) ⟺ ∃c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 
 **参考文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-04)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-04)
 
 ---
 
@@ -2446,7 +2446,7 @@ Watermark(t_w) ::= ∀e ∈ Stream. t_e(e) ≤ t_w ∨ late(e)
 
 - `Struct/02-properties/02.03-watermark-monotonicity.md` (Thm-S-09-01)
 - `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md` (Thm-S-20-01)
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 
 ---
 

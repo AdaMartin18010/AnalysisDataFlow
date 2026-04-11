@@ -1,4 +1,4 @@
-# 视频教程脚本 06：高级主题
+﻿# 视频教程脚本 06：高级主题
 
 > **视频标题**: Flink高级主题——状态管理、Checkpoint调优与性能优化
 > **目标受众**: 高级开发者、性能工程师、架构师
@@ -1494,7 +1494,7 @@ mindmap
 
 ## 🔗 相关文档
 
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
 - [Flink/03-sql-table-api/query-optimization-analysis.md](../Flink/03-sql-table-api/query-optimization-analysis.md)
 - [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)
@@ -1504,3 +1504,4 @@ mindmap
 *脚本版本: v1.0*
 *创建日期: 2026-04-03*
 *预计制作时长: 30分钟*
+

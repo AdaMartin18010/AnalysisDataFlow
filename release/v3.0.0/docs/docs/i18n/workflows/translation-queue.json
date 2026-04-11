@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "description": "翻译任务队列",
+  "last_updated": "2026-04-04",
+  "queue": [
+    {
+      "id": "T001",
+      "file": "README.md",
+      "source_language": "zh",
+      "target_language": "en",
+      "priority": "high",
+      "status": "not_started",
+      "assigned_to": null,
+      "created_at": "2026-04-04T15:26:26Z",
+      "deadline": "2026-04-11T15:26:26Z"
+    },
+    {
+      "id": "T002",
+      "file": "QUICK-START.md",
+      "source_language": "zh",
+      "target_language": "en",
+      "priority": "high",
+      "status": "not_started",
+      "assigned_to": null,
+      "created_at": "2026-04-04T15:26:26Z",
+      "deadline": "2026-04-11T15:26:26Z"
+    },
+    {
+      "id": "T003",
+      "file": "ARCHITECTURE.md",
+      "source_language": "zh",
+      "target_language": "en",
+      "priority": "high",
+      "status": "not_started",
+      "assigned_to": null,
+      "created_at": "2026-04-04T15:26:26Z",
+      "deadline": "2026-04-11T15:26:26Z"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# 学习路径：性能调优专家（2周）
+﻿# 学习路径：性能调优专家（2周）
 
 > **所属阶段**: 专家路径 | **难度等级**: L4-L5 | **预计时长**: 2周（每天3-4小时）
 
@@ -66,7 +66,7 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 1.1 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | 核心 | 3h | 背压机制深度 |
+| 1.1 | `Flink/02-core/backpressure-and-flow-control.md` | 核心 | 3h | 背压机制深度 |
 | 1.2 | `Flink/06-engineering/performance-tuning-guide.md` | 工程 | 4h | 性能调优指南 |
 | 1.3 | `Flink/15-observability/flink-observability-complete-guide.md` | 可观测 | 3h | 监控指标 |
 | 1.4 | `Knowledge/07-best-practices/07.02-performance-tuning-patterns.md` | 实践 | 3h | 调优模式 |
@@ -352,3 +352,4 @@ kubernetes.operator.job.autoscaler.target.utilization: 0.7
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，性能调优专家路径 |
+

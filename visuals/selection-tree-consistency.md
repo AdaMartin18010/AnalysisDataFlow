@@ -1,6 +1,6 @@
-# 一致性级别选择决策树
+﻿# 一致性级别选择决策树
 
-> 所属阶段: Knowledge/Visuals | 前置依赖: [一致性层次](../Struct/02-properties/02.02-consistency-hierarchy.md), [端到端Exactly-Once](../Flink/02-core-mechanisms/exactly-once-end-to-end.md) | 形式化等级: L3
+> 所属阶段: Knowledge/Visuals | 前置依赖: [一致性层次](../Struct/02-properties/02.02-consistency-hierarchy.md), [端到端Exactly-Once](../Flink/02-core/exactly-once-end-to-end.md) | 形式化等级: L3
 
 ---
 
@@ -564,3 +564,4 @@ echo "=== 验证完成 ==="
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-03 | 状态: 已完成 | 形式化元素: 3定义引用, 1命题引用*
+

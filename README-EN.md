@@ -1,4 +1,4 @@
----
+﻿---
 title: "AnalysisDataFlow - Unified Stream Computing Knowledge Base"
 source_file: "README.md"
 source_version: "v3.3.0"
@@ -64,7 +64,7 @@ AnalysisDataFlow is a comprehensive knowledge system for the stream computing do
 
 - **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](Struct/00-INDEX.md)
 - **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](Knowledge/02-design-patterns/)
-- **Flink Core**: [Flink/ Checkpoint Mechanism](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+- **Flink Core**: [Flink/ Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **Frontier Tech**: [Knowledge/06-frontier/ AI-Native Database](Knowledge/06-frontier/vector-search-streaming-convergence.md)
 - **Anti-patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-patterns](Knowledge/09-anti-patterns/)
 
@@ -151,14 +151,14 @@ Struct/ Formal Definitions ──→ Knowledge/ Design Patterns ──→ Flink/
 
 ```
 Week 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
-Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 2: Flink/02-core/time-semantics-and-watermark.md
 Week 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
 ```
 
 ### Advanced Engineer Path (4-6 Weeks)
 
 ```
-Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Week 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
 Week 5-6: Knowledge/02-design-patterns/ (All Patterns Deep Dive)
 ```
@@ -234,3 +234,4 @@ Copyright 2026 AdaMartin18010
 - [中文版 README](README.md) - Chinese Version
 - [GLOSSARY-EN.md](GLOSSARY-EN.md) - English Glossary
 - [QUICK-START-EN.md](QUICK-START-EN.md) - English Quick Start Guide
+

@@ -1,4 +1,4 @@
-# 业务模式: 金融实时风控 (Business Pattern: FinTech Real-time Risk Control)
+﻿# 业务模式: 金融实时风控 (Business Pattern: FinTech Real-time Risk Control)
 
 > **业务领域**: 金融科技 (FinTech) | **复杂度等级**: ★★★★★ | **延迟要求**: < 100ms | **形式化等级**: L4-L5
 >
@@ -1026,7 +1026,7 @@ graph TB
 
 [^4]: G. Cugola and A. Margara, "Complex Event Processing with T-REX," *Journal of Systems and Software*, 85(8), 2012. <https://doi.org/10.1016/j.jss.2012.03.056>
 
-[^5]: 实时信用评分算法，参见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
+[^5]: 实时信用评分算法，参见 [Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
 [^6]: FATF (Financial Action Task Force), "International Standards on Combating Money Laundering and the Financing of Terrorism & Proliferation," 2023. <https://www.fatf-gafi.org/recommendations.html>
 
@@ -1034,17 +1034,18 @@ graph TB
 
 [^8]: Apache Flink CEP Library Documentation, "Complex Event Processing for Flink," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/libs/cep/>
 
-[^9]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^9]: Flink 时间语义与 Watermark，详见 [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
 [^10]: Y. LeCun et al., "Deep Learning for Finance: Methods and Applications," *Journal of Financial Data Science*, 2021.
 
-[^11]: 规则引擎与模型融合最佳实践，参见 Flink/06-engineering/rule-engine-ml-fusion.md
+[^11]: 规则引擎与模型融合最佳实践，参见 Flink/09-practices/09.03-performance-tuning/rule-engine-ml-fusion.md
 
 [^12]: P. Carbone et al., "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing," *PVLDB*, 10(12), 2017. <https://doi.org/10.14778/3137765.3137777>
 
-[^13]: Flink Checkpoint 机制深度剖析，详见 [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+[^13]: Flink Checkpoint 机制深度剖析，详见 [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
 *关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) | [Knowledge 索引](../00-INDEX.md)*
+

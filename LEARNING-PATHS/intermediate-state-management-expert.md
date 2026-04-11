@@ -1,4 +1,4 @@
-# 学习路径：状态管理专家（2周）
+﻿# 学习路径：状态管理专家（2周）
 
 > **所属阶段**: 进阶路径 | **难度等级**: L4-L5 | **预计时长**: 2周（每天3-4小时）
 
@@ -66,11 +66,11 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 1.1 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | 核心 | 4h | 状态管理完整指南 |
+| 1.1 | `Flink/02-core/flink-state-management-complete-guide.md` | 核心 | 4h | 状态管理完整指南 |
 | 1.2 | `Flink/06-engineering/state-backend-selection.md` | 工程 | 3h | 状态后端选择 |
-| 1.3 | `Flink/02-core-mechanisms/forst-state-backend.md` | 核心 | 2h | ForSt 状态后端 |
+| 1.3 | `Flink/02-core/forst-state-backend.md` | 核心 | 2h | ForSt 状态后端 |
 | 1.4 | `Flink/01-architecture/disaggregated-state-analysis.md` | 架构 | 3h | 分离状态分析 |
-| 1.5 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 核心 | 2h | Checkpoint 深度 |
+| 1.5 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 核心 | 2h | Checkpoint 深度 |
 
 ### 实践任务
 
@@ -124,7 +124,7 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 2.1 | `Flink/02-core-mechanisms/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
+| 2.1 | `Flink/02-core/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
 | 2.2 | `Knowledge/02-design-patterns/pattern-stateful-computation.md` | 模式 | 2h | 有状态计算模式 |
 | 2.3 | `Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md` | 反模式 | 1h | 状态爆炸问题 |
 | 2.4 | `Flink/15-observability/flink-observability-complete-guide.md` | 可观测 | 2h | 状态监控 |
@@ -372,3 +372,4 @@ public void processBatch(List<Event> events) {
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，状态管理专家路径 |
+

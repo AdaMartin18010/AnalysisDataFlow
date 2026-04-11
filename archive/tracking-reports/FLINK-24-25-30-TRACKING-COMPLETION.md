@@ -1,4 +1,4 @@
-# Flink 2.4/2.5/3.0 版本跟踪完成报告
+﻿# Flink 2.4/2.5/3.0 版本跟踪完成报告
 
 > **报告版本**: v1.0 | **创建日期**: 2026-04-04 | **状态**: ✅ 跟踪系统已建立
 >
@@ -117,8 +117,8 @@ Flink 3.0:
 | 文档路径 | 当前状态 | 更新操作 |
 |----------|----------|----------|
 | `Flink/08-roadmap/flink-2.4-tracking.md` | preview | 状态标记改为 released |
-| `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | preview | 验证API，更新标记 |
-| `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | preview | 验证API，更新标记 |
+| `Flink/02-core/smart-checkpointing-strategies.md` | preview | 验证API，更新标记 |
+| `Flink/02-core/adaptive-execution-engine-v2.md` | preview | 验证API，更新标记 |
 | `Flink/04-connectors/flink-24-connectors-guide.md` | preview | 验证连接器，更新标记 |
 | `Flink/10-deployment/serverless-flink-ga-guide.md` | preview | 验证配置，更新标记 |
 | `Flink/10-deployment/flink-24-deployment-improvements.md` | preview | 验证配置，更新标记 |
@@ -333,8 +333,8 @@ checkpointing.intelligent.strategy: cost-based
 #### Flink 2.4
 
 - [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
-- [智能检查点策略](Flink/02-core-mechanisms/smart-checkpointing-strategies.md)
-- [自适应执行引擎v2](Flink/02-core-mechanisms/adaptive-execution-engine-v2.md)
+- [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
+- [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
 - [Flink 2.4连接器指南](Flink/04-connectors/flink-24-connectors-guide.md)
 - [Serverless Flink GA](Flink/10-deployment/serverless-flink-ga-guide.md)
 - [ANSI SQL 2023兼容](Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md)
@@ -428,3 +428,4 @@ gh workflow run flink-release-tracker.yml
 **下次检查时间**: 2026-04-04 23:30:00 (每6小时)
 
 **维护责任人**: AnalysisDataFlow 项目团队
+

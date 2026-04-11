@@ -1,6 +1,6 @@
-# 存储系统选型指南 (Storage System Selection Guide)
+﻿# 存储系统选型指南 (Storage System Selection Guide)
 
-> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [../02-design-patterns/pattern-stateful-computation.md](../02-design-patterns/pattern-stateful-computation.md), [../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [../02-design-patterns/pattern-stateful-computation.md](../02-design-patterns/pattern-stateful-computation.md), [../../Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
 
 ---
 
@@ -709,10 +709,11 @@ flowchart TD
 ## 关联文档
 
 - [../02-design-patterns/pattern-stateful-computation.md](../02-design-patterns/pattern-stateful-computation.md) —— 状态管理设计模式
-- [../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) —— Flink Checkpoint 机制详解
+- [../../Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) —— Flink Checkpoint 机制详解
 - [./engine-selection-guide.md](./engine-selection-guide.md) —— 流处理引擎选型指南
 - [./paradigm-selection-guide.md](./paradigm-selection-guide.md) —— 并发范式选型指南
 
 ---
 
 *文档版本: 2026.04 | 形式化等级: L4 | 状态: 完整*
+

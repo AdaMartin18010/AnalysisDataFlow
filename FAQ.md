@@ -1,4 +1,4 @@
-# AnalysisDataFlow 常见问题解答 (FAQ)
+﻿# AnalysisDataFlow 常见问题解答 (FAQ)
 
 > **版本**: v1.1 | **更新日期**: 2026-04-04 | **状态**: 与项目同步
 
@@ -174,14 +174,14 @@
 
 ```
 Week 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
-Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 2: Flink/02-core/time-semantics-and-watermark.md
 Week 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
 ```
 
 **进阶工程师路径 (4-6周)**：
 
 ```
-Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Week 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
 Week 5-6: Knowledge/02-design-patterns/ (全模式深入)
 ```
@@ -201,7 +201,7 @@ Struct/01-foundation/ (理论基础)
 | 问题类型 | 推荐阅读 |
 |----------|----------|
 | "流处理是什么？" | Struct/01-foundation/ 基础理论 |
-| "Flink 如何做 Checkpoint？" | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
+| "Flink 如何做 Checkpoint？" | Flink/02-core/checkpoint-mechanism-deep-dive.md |
 | "Checkpoint 正确性如何保证？" | Struct/04-proofs/04.01-flink-checkpoint-correctness.md |
 | "如何设计事件时间窗口？" | Knowledge/02-design-patterns/pattern-event-time-processing.md |
 | "Flink vs Spark 选哪个？" | Flink/05-vs-competitors/flink-vs-spark-streaming.md |

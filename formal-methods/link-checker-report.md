@@ -1,4 +1,4 @@
-# Link Check Report
+﻿# Link Check Report
 
 Generated: 2026-04-10 20:03:42
 
@@ -100,7 +100,7 @@ Generated: 2026-04-10 20:03:42
 | `cross-ref-validation-report.md` | 211 | `2` | File not found: 2 |
 | `cross-ref-validation-report.md` | 235 | `len` | File not found: len |
 | `cross-ref-validation-report.md` | 237 | `1024` | File not found: 1024 |
-| `DESIGN-PRINCIPLES.md` | 518 | `./Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
+| `DESIGN-PRINCIPLES.md` | 518 | `./Flink/02-core/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
 | `FAQ.md` | 12 | `#-目录` | Anchor '#-目录' not found in current file |
 | `FAQ.md` | 55 | `#-快速参考` | Anchor '#-快速参考' not found in current file |
 | `FLINK_REVISION_REPORT.md` | 111 | `02-core/checkpoint-mechanisms-deep-dive.md` | File not found: 02-core\checkpoint-mechanisms-deep-dive.md |
@@ -1339,7 +1339,7 @@ Generated: 2026-04-10 20:03:42
 | `HOMEPAGE-REDESIGN.md` | 77 | `#` | Anchor '#' not found in current file |
 | `HOMEPAGE-REDESIGN.md` | 77 | `#` | Anchor '#' not found in current file |
 | `KNOWLEDGE-GRAPH-GUIDE.md` | 33 | `#使用方法-1` | Anchor '#使用方法-1' not found in current file |
-| `MAINTENANCE-GUIDE.md` | 308 | `./Flink/02-core-mechanisms/flink-2.2-frontier-features.md` | File not found: Flink\02-core-mechanisms\flink-2.2-frontier-features.md |
+| `MAINTENANCE-GUIDE.md` | 308 | `./Flink/02-core/flink-2.2-frontier-features.md` | File not found: Flink\02-core-mechanisms\flink-2.2-frontier-features.md |
 | `MAINTENANCE-GUIDE.md` | 809 | `./PROJECT-VERSION-TRACKING.md` | File not found: PROJECT-VERSION-TRACKING.md |
 | `NAVIGATION-INDEX.md` | 9 | `#analysisdataflow--综合导航索引` | Anchor '#analysisdataflow--综合导航索引' not found in current file |
 | `NAVIGATION-INDEX.md` | 10 | `#-目录` | Anchor '#-目录' not found in current file |
@@ -1356,19 +1356,19 @@ Generated: 2026-04-10 20:03:42
 | `PDF-EXPORT-GUIDE.md` | 107 | `./whitepapers/pdf/streaming-technology-trends-2026.pdf` | File not found: whitepapers\pdf\streaming-technology-trends-2026.pdf |
 | `PDF-EXPORT-GUIDE.md` | 108 | `./whitepapers/pdf/flink-enterprise-implementation-guide.pdf` | File not found: whitepapers\pdf\flink-enterprise-implementation-guide.pdf |
 | `PDF-EXPORT-GUIDE.md` | 109 | `./whitepapers/pdf/realtime-ai-architecture-practice.pdf` | File not found: whitepapers\pdf\realtime-ai-architecture-practice.pdf |
-| `PROJECT-QUICK-REFERENCE.md` | 44 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `PROJECT-QUICK-REFERENCE.md` | 45 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `PROJECT-QUICK-REFERENCE.md` | 46 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `PROJECT-QUICK-REFERENCE.md` | 44 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `PROJECT-QUICK-REFERENCE.md` | 45 | `Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `PROJECT-QUICK-REFERENCE.md` | 46 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `PROJECT-QUICK-REFERENCE.md` | 47 | `Flink/01-architecture/flink-1.x-vs-2.0-comparison.md` | File not found: Flink\01-architecture\flink-1.x-vs-2.0-comparison.md |
 | `PROJECT-QUICK-REFERENCE.md` | 48 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `PROJECT-QUICK-REFERENCE.md` | 49 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `PROJECT-QUICK-REFERENCE.md` | 50 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `PROJECT-QUICK-REFERENCE.md` | 53 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
-| `PROJECT-QUICK-REFERENCE.md` | 63 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `PROJECT-QUICK-REFERENCE.md` | 64 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `PROJECT-QUICK-REFERENCE.md` | 65 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
-| `PROJECT-QUICK-REFERENCE.md` | 66 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
-| `PROJECT-QUICK-REFERENCE.md` | 67 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `PROJECT-QUICK-REFERENCE.md` | 53 | `Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `PROJECT-QUICK-REFERENCE.md` | 63 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `PROJECT-QUICK-REFERENCE.md` | 64 | `Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `PROJECT-QUICK-REFERENCE.md` | 65 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `PROJECT-QUICK-REFERENCE.md` | 66 | `Flink/02-core/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
+| `PROJECT-QUICK-REFERENCE.md` | 67 | `Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `PROJECT-QUICK-REFERENCE.md` | 73 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `PROJECT-QUICK-REFERENCE.md` | 74 | `Flink/12-ai-ml/flink-llm-integration.md` | File not found: Flink\12-ai-ml\flink-llm-integration.md |
 | `PROJECT-QUICK-REFERENCE.md` | 75 | `Flink/12-ai-ml/online-learning-algorithms.md` | File not found: Flink\12-ai-ml\online-learning-algorithms.md |
@@ -1391,28 +1391,28 @@ Generated: 2026-04-10 20:03:42
 | `PROJECT-QUICK-REFERENCE.md` | 121 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `PROJECT-QUICK-REFERENCE.md` | 122 | `Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md` | File not found: Flink\12-ai-ml\flink-ai-ml-integration-complete-guide.md |
 | `PROJECT-QUICK-REFERENCE.md` | 123 | `Flink/13-security/flink-security-complete-guide.md` | File not found: Flink\13-security\flink-security-complete-guide.md |
-| `PROJECT-QUICK-REFERENCE.md` | 124 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
+| `PROJECT-QUICK-REFERENCE.md` | 124 | `Flink/02-core/flink-state-management-complete-guide.md` | File not found: Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
 | `PROJECT-QUICK-REFERENCE.md` | 125 | `Flink/10-deployment/flink-deployment-ops-complete-guide.md` | File not found: Flink\10-deployment\flink-deployment-ops-complete-guide.md |
 | `PROJECT-QUICK-REFERENCE.md` | 126 | `Flink/14-lakehouse/streaming-lakehouse-deep-dive-2026.md` | File not found: Flink\14-lakehouse\streaming-lakehouse-deep-dive-2026.md |
 | `PROJECT-QUICK-REFERENCE.md` | 127 | `Flink/14-graph/flink-gelly-streaming-graph-processing.md` | File not found: Flink\14-graph\flink-gelly-streaming-graph-processing.md |
 | `PROJECT-QUICK-REFERENCE.md` | 128 | `Flink/10-deployment/flink-serverless-architecture.md` | File not found: Flink\10-deployment\flink-serverless-architecture.md |
 | `PROJECT-QUICK-REFERENCE.md` | 129 | `Flink/08-roadmap/flink-2.3-2.4-roadmap.md` | File not found: Flink\08-roadmap\flink-2.3-2.4-roadmap.md |
 | `PROJECT-QUICK-REFERENCE.md` | 130 | `Flink/12-ai-ml/flink-llm-integration.md` | File not found: Flink\12-ai-ml\flink-llm-integration.md |
-| `PROJECT-QUICK-REFERENCE.md` | 163 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `PROJECT-QUICK-REFERENCE.md` | 163 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `PROJECT-QUICK-REFERENCE.md` | 163 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
-| `PROJECT-QUICK-REFERENCE.md` | 164 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `PROJECT-QUICK-REFERENCE.md` | 164 | `Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `PROJECT-QUICK-REFERENCE.md` | 164 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
-| `PROJECT-QUICK-REFERENCE.md` | 165 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `PROJECT-QUICK-REFERENCE.md` | 166 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `PROJECT-QUICK-REFERENCE.md` | 165 | `Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `PROJECT-QUICK-REFERENCE.md` | 166 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `PROJECT-QUICK-REFERENCE.md` | 166 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `PROJECT-QUICK-REFERENCE.md` | 167 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `PROJECT-QUICK-REFERENCE.md` | 167 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: Flink\05-vs-competitors\flink-vs-spark-streaming.md |
 | `PROJECT-QUICK-REFERENCE.md` | 168 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `PROJECT-QUICK-REFERENCE.md` | 168 | `Flink/12-ai-ml/rag-streaming-architecture.md` | File not found: Flink\12-ai-ml\rag-streaming-architecture.md |
 | `PROJECT-QUICK-REFERENCE.md` | 178 | `Flink/01-architecture/datastream-v2-semantics.md` | File not found: Flink\01-architecture\datastream-v2-semantics.md |
-| `PROJECT-QUICK-REFERENCE.md` | 179 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `PROJECT-QUICK-REFERENCE.md` | 180 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `PROJECT-QUICK-REFERENCE.md` | 181 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `PROJECT-QUICK-REFERENCE.md` | 179 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `PROJECT-QUICK-REFERENCE.md` | 180 | `Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `PROJECT-QUICK-REFERENCE.md` | 181 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `PROJECT-TRACKING.md` | 11 | `P2-CONTENT-COMPLETION-REPORT.md` | File not found: P2-CONTENT-COMPLETION-REPORT.md |
 | `PROJECT-TRACKING.md` | 13 | `FLINK-24-25-30-COMPLETION-REPORT.md` | File not found: FLINK-24-25-30-COMPLETION-REPORT.md |
 | `PROJECT-TRACKING.md` | 131 | `Flink/connectors/flink-jdbc-connector-guide.md` | File not found: Flink\connectors\flink-jdbc-connector-guide.md |
@@ -1436,7 +1436,7 @@ Generated: 2026-04-10 20:03:42
 | `QUICK-START-PATHS.md` | 13 | `#-常见问题快速入口` | Anchor '#-常见问题快速入口' not found in current file |
 | `QUICK-START.md` | 313 | `./Flink/00-INDEX.md` | File not found: Flink\00-INDEX.md |
 | `QUICK-START.md` | 463 | `./Flink/00-INDEX.md` | File not found: Flink\00-INDEX.md |
-| `README-EN.md` | 67 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `README-EN.md` | 67 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `README-EN.md` | 226 | `./LICENSE-NOTICE.md` | File not found: LICENSE-NOTICE.md |
 | `README.md` | 90 | `E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md` | File not found: E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md |
 | `README.md` | 241 | `./PROJECT-VERSION-TRACKING.md` | File not found: PROJECT-VERSION-TRACKING.md |
@@ -1521,7 +1521,7 @@ Generated: 2026-04-10 20:03:42
 | `.vscode\README.md` | 29 | `#-文档差异分析工具` | Anchor '#-文档差异分析工具' not found in current file |
 | `.vscode\README.md` | 35 | `#-参考文档` | Anchor '#-参考文档' not found in current file |
 | `docs\chatbot-integration.md` | 392 | `{doc_url}` | File not found: docs\{doc_url} |
-| `docs\chatbot-integration.md` | 686 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `docs\chatbot-integration.md` | 686 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `docs\chatbot-integration.md` | 708 | `../Flink/12-ai-ml/rag-streaming-architecture.md` | File not found: Flink\12-ai-ml\rag-streaming-architecture.md |
 | `docs\LEARNING-PATH-PERSONALIZATION.md` | 372 | `../.scripts/learning-path-recommender.py` | File not found: .scripts\learning-path-recommender.py |
 | `docs\LEARNING-PATH-PERSONALIZATION.md` | 373 | `../P2-12-COMMUNITY-FEEDBACK-SYSTEM.md` | File not found: P2-12-COMMUNITY-FEEDBACK-SYSTEM.md |
@@ -1627,36 +1627,36 @@ Generated: 2026-04-10 20:03:42
 | `LEARNING-PATHS\architect-path.md` | 129 | `../Flink/07-case-studies/case-financial-realtime-risk-control.md` | File not found: Flink\07-case-studies\case-financial-realtime-risk-control.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 43 | `../Flink/01-architecture/deployment-architectures.md` | File not found: Flink\01-architecture\deployment-architectures.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 44 | `../Flink/09-language-foundations/02.01-java-api-from-scala.md` | File not found: Flink\09-language-foundations\02.01-java-api-from-scala.md |
-| `LEARNING-PATHS\backend-developer-path.md` | 67 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
-| `LEARNING-PATHS\backend-developer-path.md` | 68 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `LEARNING-PATHS\backend-developer-path.md` | 67 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `LEARNING-PATHS\backend-developer-path.md` | 68 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 94 | `../Flink/04-connectors/kafka-integration-patterns.md` | File not found: Flink\04-connectors\kafka-integration-patterns.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 95 | `../Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 96 | `../Flink/10-deployment/kubernetes-deployment.md` | File not found: Flink\10-deployment\kubernetes-deployment.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 120 | `../Flink/15-observability/metrics-and-monitoring.md` | File not found: Flink\15-observability\metrics-and-monitoring.md |
 | `LEARNING-PATHS\backend-developer-path.md` | 121 | `../Flink/15-observability/distributed-tracing.md` | File not found: Flink\15-observability\distributed-tracing.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 45 | `../Flink/01-architecture/deployment-architectures.md` | File not found: Flink\01-architecture\deployment-architectures.md |
-| `LEARNING-PATHS\data-engineer-path.md` | 46 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
-| `LEARNING-PATHS\data-engineer-path.md` | 69 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `LEARNING-PATHS\data-engineer-path.md` | 70 | `../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
-| `LEARNING-PATHS\data-engineer-path.md` | 71 | `../Flink/02-core-mechanisms/state-backends-deep-comparison.md` | File not found: Flink\02-core-mechanisms\state-backends-deep-comparison.md |
+| `LEARNING-PATHS\data-engineer-path.md` | 46 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `LEARNING-PATHS\data-engineer-path.md` | 69 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `LEARNING-PATHS\data-engineer-path.md` | 70 | `../Flink/02-core/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
+| `LEARNING-PATHS\data-engineer-path.md` | 71 | `../Flink/02-core/state-backends-deep-comparison.md` | File not found: Flink\02-core-mechanisms\state-backends-deep-comparison.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 96 | `../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` | File not found: Flink\03-sql-table-api\flink-sql-window-functions-deep-dive.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 97 | `../Flink/03-sql-table-api/materialized-tables.md` | File not found: Flink\03-sql-table-api\materialized-tables.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 98 | `../Flink/04-connectors/kafka-integration-patterns.md` | File not found: Flink\04-connectors\kafka-integration-patterns.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 99 | `../Flink/04-connectors/flink-cdc-3.0-data-integration.md` | File not found: Flink\04-connectors\flink-cdc-3.0-data-integration.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 100 | `../Flink/10-deployment/kubernetes-deployment.md` | File not found: Flink\10-deployment\kubernetes-deployment.md |
-| `LEARNING-PATHS\data-engineer-path.md` | 126 | `../Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `LEARNING-PATHS\data-engineer-path.md` | 126 | `../Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 127 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 128 | `../Flink/07-case-studies/case-realtime-analytics.md` | File not found: Flink\07-case-studies\case-realtime-analytics.md |
 | `LEARNING-PATHS\data-engineer-path.md` | 129 | `../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md` | File not found: Flink\07-case-studies\case-ecommerce-realtime-recommendation.md |
-| `LEARNING-PATHS\interview-prep-path.md` | 44 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
-| `LEARNING-PATHS\interview-prep-path.md` | 73 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `LEARNING-PATHS\interview-prep-path.md` | 74 | `../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
-| `LEARNING-PATHS\interview-prep-path.md` | 109 | `../Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `LEARNING-PATHS\interview-prep-path.md` | 44 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `LEARNING-PATHS\interview-prep-path.md` | 73 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `LEARNING-PATHS\interview-prep-path.md` | 74 | `../Flink/02-core/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
+| `LEARNING-PATHS\interview-prep-path.md` | 109 | `../Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `LEARNING-PATHS\interview-prep-path.md` | 110 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `LEARNING-PATHS\interview-prep-path.md` | 139 | `../Flink/07-case-studies/case-realtime-analytics.md` | File not found: Flink\07-case-studies\case-realtime-analytics.md |
 | `LEARNING-PATHS\interview-prep-path.md` | 140 | `../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md` | File not found: Flink\07-case-studies\case-ecommerce-realtime-recommendation.md |
 | `LEARNING-PATHS\student-path.md` | 44 | `../Flink/01-architecture/deployment-architectures.md` | File not found: Flink\01-architecture\deployment-architectures.md |
-| `LEARNING-PATHS\student-path.md` | 67 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `LEARNING-PATHS\student-path.md` | 67 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `LEARNING-PATHS\student-path.md` | 93 | `../Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `LEARNING-PATHS\student-path.md` | 118 | `../Flink/07-case-studies/case-realtime-analytics.md` | File not found: Flink\07-case-studies\case-realtime-analytics.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 2787 | `03-api/03.02-table-sql-api/data-types-complete-reference.md` | File not found: reports\03-api\03.02-table-sql-api\data-types-complete-reference.md |
@@ -1725,13 +1725,13 @@ Generated: 2026-04-10 20:03:42
 | `reports\fictional-content-audit-20260405_143730.md` | 3349 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3350 | `Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md` | File not found: reports\Flink\12-ai-ml\flink-ai-ml-integration-complete-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3351 | `Flink/13-security/flink-security-complete-guide.md` | File not found: reports\Flink\13-security\flink-security-complete-guide.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 3363 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 3363 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3363 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: reports\Flink\06-engineering\performance-tuning-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3364 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: reports\Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3364 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: reports\Flink\05-vs-competitors\flink-vs-spark-streaming.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3365 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3365 | `Flink/12-ai-ml/rag-streaming-architecture.md` | File not found: reports\Flink\12-ai-ml\rag-streaming-architecture.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 3379 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 3379 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3379 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: reports\Flink\06-engineering\performance-tuning-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3380 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: reports\Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3380 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: reports\Flink\05-vs-competitors\flink-vs-spark-streaming.md |
@@ -1743,10 +1743,10 @@ Generated: 2026-04-10 20:03:42
 | `reports\fictional-content-audit-20260405_143730.md` | 3400 | `Knowledge/06-frontier/a2a-protocol-agent-communication.md` | File not found: reports\Knowledge\06-frontier\a2a-protocol-agent-communication.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3401 | `Struct/07-tools/smart-casual-verification.md` | File not found: reports\Struct\07-tools\smart-casual-verification.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 3998 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 3999 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 3999 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 4000 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 4014 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 4015 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 4015 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 4016 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 4244 | `08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md` | File not found: reports\08-roadmap\08.01-flink-24\flink-2.1-frontier-tracking.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 4245 | `08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md` | File not found: reports\08-roadmap\08.01-flink-24\2026-q2-flink-tasks.md |
@@ -1928,13 +1928,13 @@ Generated: 2026-04-10 20:03:42
 | `reports\fictional-content-audit-20260405_143730.md` | 11486 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11487 | `Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md` | File not found: reports\Flink\12-ai-ml\flink-ai-ml-integration-complete-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11488 | `Flink/13-security/flink-security-complete-guide.md` | File not found: reports\Flink\13-security\flink-security-complete-guide.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 11500 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 11500 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11500 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: reports\Flink\06-engineering\performance-tuning-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11501 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: reports\Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11501 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: reports\Flink\05-vs-competitors\flink-vs-spark-streaming.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11502 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11502 | `Flink/12-ai-ml/rag-streaming-architecture.md` | File not found: reports\Flink\12-ai-ml\rag-streaming-architecture.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 11516 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 11516 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11516 | `Flink/06-engineering/performance-tuning-guide.md` | File not found: reports\Flink\06-engineering\performance-tuning-guide.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11517 | `Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: reports\Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 11517 | `Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: reports\Flink\05-vs-competitors\flink-vs-spark-streaming.md |
@@ -1984,22 +1984,22 @@ Generated: 2026-04-10 20:03:42
 | `reports\fictional-content-audit-20260405_143730.md` | 12601 | `#e` | Anchor '#e' not found in current file |
 | `reports\fictional-content-audit-20260405_143730.md` | 12602 | `#5-frontier-terms` | Anchor '#5-frontier-terms' not found in current file |
 | `reports\fictional-content-audit-20260405_143730.md` | 13427 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | File not found: reports\Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13428 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | File not found: reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13429 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13428 | `Flink/02-core/smart-checkpointing-strategies.md` | File not found: reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13429 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13443 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | File not found: reports\Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13444 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | File not found: reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13445 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13444 | `Flink/02-core/smart-checkpointing-strategies.md` | File not found: reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13445 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13511 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13512 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13512 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13513 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13527 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13528 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13528 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13529 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13543 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13544 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13544 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13545 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13559 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `reports\fictional-content-audit-20260405_143730.md` | 13560 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `reports\fictional-content-audit-20260405_143730.md` | 13560 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13561 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13573 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13574 | `Flink/03-sql-table-api/materialized-tables.md` | File not found: reports\Flink\03-sql-table-api\materialized-tables.md |
@@ -2057,7 +2057,7 @@ Generated: 2026-04-10 20:03:42
 | `TECH-RADAR\README.md` | 114 | `../Flink/04-connectors/flink-iceberg-integration.md` | File not found: Flink\04-connectors\flink-iceberg-integration.md |
 | `TECH-RADAR\README.md` | 115 | `../Flink/06-engineering/state-backend-selection.md` | File not found: Flink\06-engineering\state-backend-selection.md |
 | `TECH-RADAR\README.md` | 122 | `../Flink/04-connectors/flink-delta-lake-integration.md` | File not found: Flink\04-connectors\flink-delta-lake-integration.md |
-| `TECH-RADAR\README.md` | 124 | `../Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md` | File not found: Flink\02-core-mechanisms\flink-2.0-forst-state-backend.md |
+| `TECH-RADAR\README.md` | 124 | `../Flink/02-core/flink-2.0-forst-state-backend.md` | File not found: Flink\02-core-mechanisms\flink-2.0-forst-state-backend.md |
 | `TECH-RADAR\README.md` | 125 | `../Flink/04-connectors/fluss-integration.md` | File not found: Flink\04-connectors\fluss-integration.md |
 | `TECH-RADAR\README.md` | 133 | `../Flink/01-architecture/disaggregated-state-analysis.md` | File not found: Flink\01-architecture\disaggregated-state-analysis.md |
 | `TECH-RADAR\README.md` | 134 | `../Flink/12-ai-ml/vector-database-integration.md` | File not found: Flink\12-ai-ml\vector-database-integration.md |
@@ -2075,15 +2075,15 @@ Generated: 2026-04-10 20:03:42
 | `tutorials\00-5-MINUTE-QUICK-START.md` | 10 | `#-15分钟完整体验` | Anchor '#-15分钟完整体验' not found in current file |
 | `tutorials\00-5-MINUTE-QUICK-START.md` | 11 | `#-常见错误速查` | Anchor '#-常见错误速查' not found in current file |
 | `tutorials\01-introduction-script.md` | 325 | `../Flink/00-INDEX.md` | File not found: Flink\00-INDEX.md |
-| `tutorials\02-streaming-fundamentals-script.md` | 612 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `tutorials\02-streaming-fundamentals-script.md` | 612 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `tutorials\03-flink-quickstart-script.md` | 769 | `../Flink/01-architecture/deployment-architectures.md` | File not found: Flink\01-architecture\deployment-architectures.md |
 | `tutorials\03-flink-quickstart-script.md` | 770 | `../Flink/04-connectors/kafka-integration-patterns.md` | File not found: Flink\04-connectors\kafka-integration-patterns.md |
-| `tutorials\04-design-patterns-script.md` | 1289 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `tutorials\04-design-patterns-script.md` | 1290 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `tutorials\04-design-patterns-script.md` | 1289 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `tutorials\04-design-patterns-script.md` | 1290 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `tutorials\05-production-deployment-script.md` | 1037 | `../Flink/10-deployment/kubernetes-deployment.md` | File not found: Flink\10-deployment\kubernetes-deployment.md |
 | `tutorials\05-production-deployment-script.md` | 1038 | `../Flink/10-deployment/flink-kubernetes-operator-deep-dive.md` | File not found: Flink\10-deployment\flink-kubernetes-operator-deep-dive.md |
 | `tutorials\05-production-deployment-script.md` | 1039 | `../Flink/15-observability/metrics-and-monitoring.md` | File not found: Flink\15-observability\metrics-and-monitoring.md |
-| `tutorials\06-advanced-topics-script.md` | 1497 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `tutorials\06-advanced-topics-script.md` | 1497 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `tutorials\06-advanced-topics-script.md` | 1498 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `tutorials\06-advanced-topics-script.md` | 1499 | `../Flink/03-sql-table-api/query-optimization-analysis.md` | File not found: Flink\03-sql-table-api\query-optimization-analysis.md |
 | `USTM-F-Reconstruction\00-INDEX.md` | 16 | `#阶段一元理论基础-第1-4周----进行中` | Anchor '#阶段一元理论基础-第1-4周----进行中' not found in current file |
@@ -2097,24 +2097,24 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\USTM-F-NAVIGATION.md` | 136 | `./03-proof-chains/03.07-type-safety-proof.md` | Anchor '#thm-u-38-fgfgg类型安全定理' not found |
 | `v5.0\ANNOUNCEMENT.md` | 246 | `../STATISTICS-REPORT.md` | File not found: STATISTICS-REPORT.md |
 | `visuals\dashboard-overview.md` | 226 | `../Flink/00-INDEX.md` | File not found: Flink\00-INDEX.md |
-| `visuals\dashboard-overview.md` | 226 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\dashboard-overview.md` | 226 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
 | `visuals\dashboard-overview.md` | 308 | `../FINAL-COMPLETION-REPORT-v6.0.md` | File not found: FINAL-COMPLETION-REPORT-v6.0.md |
 | `visuals\dashboard-overview.md` | 310 | `../PROJECT-VERSION-TRACKING.md` | File not found: PROJECT-VERSION-TRACKING.md |
 | `visuals\index-visual.md` | 158 | `../Flink/12-ai-ml/` | File not found: Flink\12-ai-ml |
-| `visuals\index-visual.md` | 173 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `visuals\index-visual.md` | 174 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `visuals\index-visual.md` | 175 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `visuals\index-visual.md` | 176 | `../Flink/02-core-mechanisms/flink-state-ttl-best-practices.md` | File not found: Flink\02-core-mechanisms\flink-state-ttl-best-practices.md |
-| `visuals\index-visual.md` | 183 | `../Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `visuals\index-visual.md` | 173 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\index-visual.md` | 174 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\index-visual.md` | 175 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\index-visual.md` | 176 | `../Flink/02-core/flink-state-ttl-best-practices.md` | File not found: Flink\02-core-mechanisms\flink-state-ttl-best-practices.md |
+| `visuals\index-visual.md` | 183 | `../Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `visuals\index-visual.md` | 184 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `visuals\index-visual.md` | 185 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `visuals\index-visual.md` | 191 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
-| `visuals\index-visual.md` | 198 | `../Flink/02-core-mechanisms/async-execution-model.md` | File not found: Flink\02-core-mechanisms\async-execution-model.md |
-| `visuals\index-visual.md` | 199 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `visuals\index-visual.md` | 198 | `../Flink/02-core/async-execution-model.md` | File not found: Flink\02-core-mechanisms\async-execution-model.md |
+| `visuals\index-visual.md` | 199 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `visuals\index-visual.md` | 200 | `../Flink/12-ai-ml/model-serving-streaming.md` | File not found: Flink\12-ai-ml\model-serving-streaming.md |
-| `visuals\index-visual.md` | 206 | `../Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `visuals\index-visual.md` | 207 | `../Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `visuals\index-visual.md` | 217 | `../Flink/02-core-mechanisms/` | File not found: Flink\02-core-mechanisms |
+| `visuals\index-visual.md` | 206 | `../Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `visuals\index-visual.md` | 207 | `../Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `visuals\index-visual.md` | 217 | `../Flink/02-core/` | File not found: Flink\02-core-mechanisms |
 | `visuals\index-visual.md` | 218 | `../Flink/03-sql-table-api/` | File not found: Flink\03-sql-table-api |
 | `visuals\index-visual.md` | 219 | `../Flink/04-connectors/` | File not found: Flink\04-connectors |
 | `visuals\index-visual.md` | 220 | `../Flink/10-deployment/` | File not found: Flink\10-deployment |
@@ -2137,14 +2137,14 @@ Generated: 2026-04-10 20:03:42
 | `visuals\index-visual.md` | 700 | `../Flink/05-vs-competitors/flink-vs-spark-streaming.md` | File not found: Flink\05-vs-competitors\flink-vs-spark-streaming.md |
 | `visuals\index-visual.md` | 701 | `../Flink/03-sql-table-api/sql-vs-datastream-comparison.md` | File not found: Flink\03-sql-table-api\sql-vs-datastream-comparison.md |
 | `visuals\index-visual.md` | 702 | `../Flink/06-engineering/state-backend-selection.md` | File not found: Flink\06-engineering\state-backend-selection.md |
-| `visuals\index-visual.md` | 710 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `visuals\index-visual.md` | 711 | `../Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `visuals\index-visual.md` | 710 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\index-visual.md` | 711 | `../Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `visuals\index-visual.md` | 712 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
 | `visuals\index-visual.md` | 713 | `../Flink/06-engineering/performance-tuning-guide.md` | File not found: Flink\06-engineering\performance-tuning-guide.md |
-| `visuals\index-visual.md` | 714 | `../Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `visuals\index-visual.md` | 714 | `../Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
 | `visuals\layer-decidability.md` | 3 | `../00.md` | File not found: 00.md |
-| `visuals\layer-decidability.md` | 90 | `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `visuals\layer-decidability.md` | 91 | `../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `visuals\layer-decidability.md` | 90 | `../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `visuals\layer-decidability.md` | 91 | `../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `visuals\layer-decidability.md` | 92 | `../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` | File not found: Flink\03-sql-table-api\flink-sql-window-functions-deep-dive.md |
 | `visuals\layer-decidability.md` | 93 | `../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md` | File not found: Flink\04-connectors\flink-connectors-ecosystem-complete-guide.md |
 | `visuals\matrix-engines.md` | 3 | `../Flink/05-vs-competitors/flink-vs-kafka-streams.md` | File not found: Flink\05-vs-competitors\flink-vs-kafka-streams.md |
@@ -2166,7 +2166,7 @@ Generated: 2026-04-10 20:03:42
 | `visuals\scenario-hierarchy.md` | 611 | `../Flink/07-case-studies/case-smart-manufacturing-iot.md` | File not found: Flink\07-case-studies\case-smart-manufacturing-iot.md |
 | `visuals\scenario-hierarchy.md` | 612 | `../Flink/07-case-studies/case-logistics-realtime-tracking.md` | File not found: Flink\07-case-studies\case-logistics-realtime-tracking.md |
 | `visuals\scenario-hierarchy.md` | 613 | `../Flink/07-case-studies/case-clickstream-user-behavior-analytics.md` | File not found: Flink\07-case-studies\case-clickstream-user-behavior-analytics.md |
-| `visuals\selection-tree-consistency.md` | 3 | `../Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `visuals\selection-tree-consistency.md` | 3 | `../Flink/02-core/exactly-once-end-to-end.md` | File not found: Flink\02-core-mechanisms\exactly-once-end-to-end.md |
 | `visuals\selection-tree-consistency.md` | 304 | `P.` | File not found: visuals\P. |
 | `visuals\selection-tree-streaming.md` | 350 | `../Flink/00-INDEX.md` | File not found: Flink\00-INDEX.md |
 | `visuals\theorem-dependencies.md` | 26 | `#l3-语法操作语义层` | Anchor '#l3-语法操作语义层' not found in current file |
@@ -5277,18 +5277,18 @@ Generated: 2026-04-10 20:03:42
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 70 | `../../Flink/01-architecture/01.06-resource-management.md` | File not found: docs\Flink\01-architecture\01.06-resource-management.md |
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 71 | `../../Flink/01-architecture/01.07-network-stack.md` | File not found: docs\Flink\01-architecture\01.07-network-stack.md |
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 72 | `../../Flink/01-architecture/01.08-memory-management.md` | File not found: docs\Flink\01-architecture\01.08-memory-management.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 82 | `../../Flink/02-core-mechanisms/02.01-checkpoint-mechanism.md` | File not found: docs\Flink\02-core-mechanisms\02.01-checkpoint-mechanism.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 83 | `../../Flink/02-core-mechanisms/02.02-exactly-once-semantics.md` | File not found: docs\Flink\02-core-mechanisms\02.02-exactly-once-semantics.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 84 | `../../Flink/02-core-mechanisms/02.03-time-semantics-watermark.md` | File not found: docs\Flink\02-core-mechanisms\02.03-time-semantics-watermark.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 85 | `../../Flink/02-core-mechanisms/02.04-state-backends.md` | File not found: docs\Flink\02-core-mechanisms\02.04-state-backends.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 86 | `../../Flink/02-core-mechanisms/02.05-backpressure-flow-control.md` | File not found: docs\Flink\02-core-mechanisms\02.05-backpressure-flow-control.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 87 | `../../Flink/02-core-mechanisms/02.06-fault-tolerance-recovery.md` | File not found: docs\Flink\02-core-mechanisms\02.06-fault-tolerance-recovery.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 88 | `../../Flink/02-core-mechanisms/02.07-savepoint-operations.md` | File not found: docs\Flink\02-core-mechanisms\02.07-savepoint-operations.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 89 | `../../Flink/02-core-mechanisms/02.08-broadcast-state.md` | File not found: docs\Flink\02-core-mechanisms\02.08-broadcast-state.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 90 | `../../Flink/02-core-mechanisms/02.09-queryable-state.md` | File not found: docs\Flink\02-core-mechanisms\02.09-queryable-state.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 91 | `../../Flink/02-core-mechanisms/02.10-side-outputs.md` | File not found: docs\Flink\02-core-mechanisms\02.10-side-outputs.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 92 | `../../Flink/02-core-mechanisms/02.11-async-checkpointing.md` | File not found: docs\Flink\02-core-mechanisms\02.11-async-checkpointing.md |
-| `docs\i18n\en\03-FLINK-GUIDE.md` | 93 | `../../Flink/02-core-mechanisms/02.12-state-ttl.md` | File not found: docs\Flink\02-core-mechanisms\02.12-state-ttl.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 82 | `../../Flink/02-core/02.01-checkpoint-mechanism.md` | File not found: docs\Flink\02-core-mechanisms\02.01-checkpoint-mechanism.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 83 | `../../Flink/02-core/02.02-exactly-once-semantics.md` | File not found: docs\Flink\02-core-mechanisms\02.02-exactly-once-semantics.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 84 | `../../Flink/02-core/02.03-time-semantics-watermark.md` | File not found: docs\Flink\02-core-mechanisms\02.03-time-semantics-watermark.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 85 | `../../Flink/02-core/02.04-state-backends.md` | File not found: docs\Flink\02-core-mechanisms\02.04-state-backends.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 86 | `../../Flink/02-core/02.05-backpressure-flow-control.md` | File not found: docs\Flink\02-core-mechanisms\02.05-backpressure-flow-control.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 87 | `../../Flink/02-core/02.06-fault-tolerance-recovery.md` | File not found: docs\Flink\02-core-mechanisms\02.06-fault-tolerance-recovery.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 88 | `../../Flink/02-core/02.07-savepoint-operations.md` | File not found: docs\Flink\02-core-mechanisms\02.07-savepoint-operations.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 89 | `../../Flink/02-core/02.08-broadcast-state.md` | File not found: docs\Flink\02-core-mechanisms\02.08-broadcast-state.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 90 | `../../Flink/02-core/02.09-queryable-state.md` | File not found: docs\Flink\02-core-mechanisms\02.09-queryable-state.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 91 | `../../Flink/02-core/02.10-side-outputs.md` | File not found: docs\Flink\02-core-mechanisms\02.10-side-outputs.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 92 | `../../Flink/02-core/02.11-async-checkpointing.md` | File not found: docs\Flink\02-core-mechanisms\02.11-async-checkpointing.md |
+| `docs\i18n\en\03-FLINK-GUIDE.md` | 93 | `../../Flink/02-core/02.12-state-ttl.md` | File not found: docs\Flink\02-core-mechanisms\02.12-state-ttl.md |
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 103 | `../../Flink/03-sql-table-api/03.01-flink-sql-overview.md` | File not found: docs\Flink\03-sql-table-api\03.01-flink-sql-overview.md |
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 104 | `../../Flink/03-sql-table-api/03.02-table-api-guide.md` | File not found: docs\Flink\03-sql-table-api\03.02-table-api-guide.md |
 | `docs\i18n\en\03-FLINK-GUIDE.md` | 105 | `../../Flink/03-sql-table-api/03.03-window-functions.md` | File not found: docs\Flink\03-sql-table-api\03.03-window-functions.md |
@@ -5616,14 +5616,14 @@ Generated: 2026-04-10 20:03:42
 | `docs\certification\csp\quizzes\README.md` | 36 | `./deployment-ops.md` | File not found: docs\certification\csp\quizzes\deployment-ops.md |
 | `docs\certification\csp\quizzes\README.md` | 37 | `./performance-tuning.md` | File not found: docs\certification\csp\quizzes\performance-tuning.md |
 | `docs\certification\csp\quizzes\README.md` | 153 | `./runtime-architecture.md` | File not found: docs\certification\csp\quizzes\runtime-architecture.md |
-| `docs\certification\csp\resources\README.md` | 11 | `../../../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `docs\certification\csp\resources\README.md` | 12 | `../../../../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
+| `docs\certification\csp\resources\README.md` | 11 | `../../../../Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `docs\certification\csp\resources\README.md` | 12 | `../../../../Flink/02-core/exactly-once-semantics-deep-dive.md` | File not found: Flink\02-core-mechanisms\exactly-once-semantics-deep-dive.md |
 | `docs\certification\csp\resources\README.md` | 13 | `../../../../Flink/08-operations/state-backends-configuration.md` | File not found: Flink\08-operations\state-backends-configuration.md |
 | `docs\certification\csp\resources\README.md` | 14 | `../../../../Struct/02-properties/02.01-exactly-once-semantics.md` | File not found: Struct\02-properties\02.01-exactly-once-semantics.md |
 | `docs\certification\csp\resources\README.md` | 20 | `../../../../Flink/05-internals/job-submission-flow.md` | File not found: Flink\05-internals\job-submission-flow.md |
 | `docs\certification\csp\resources\README.md` | 21 | `../../../../Flink/05-internals/network-stack-deep-dive.md` | File not found: Flink\05-internals\network-stack-deep-dive.md |
-| `docs\certification\csp\resources\README.md` | 22 | `../../../../Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
-| `docs\certification\csp\resources\README.md` | 28 | `../../../../Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `docs\certification\csp\resources\README.md` | 22 | `../../../../Flink/02-core/backpressure-and-flow-control.md` | File not found: Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `docs\certification\csp\resources\README.md` | 28 | `../../../../Flink/02-core/time-semantics-and-watermark.md` | File not found: Flink\02-core-mechanisms\time-semantics-and-watermark.md |
 | `docs\certification\csp\resources\README.md` | 51 | `../../../../Flink/07-case-studies/` | File not found: Flink\07-case-studies |
 | `docs\certification\csp\resources\README.md` | 57 | `../../../../Flink/08-operations/production-checklist.md` | File not found: Flink\08-operations\production-checklist.md |
 | `docs\certification\csp\resources\README.md` | 58 | `../../../../Flink/08-operations/performance-tuning-guide.md` | File not found: Flink\08-operations\performance-tuning-guide.md |
@@ -5677,11 +5677,11 @@ Generated: 2026-04-10 20:03:42
 | `archive\completion-reports\FLINK-24-25-30-COMPLETION-REPORT.md` | 383 | `.tasks/FLINK-24-25-30-MASTER-TASK.md` | File not found: archive\completion-reports\.tasks\FLINK-24-25-30-MASTER-TASK.md |
 | `archive\completion-reports\FLINK-24-25-30-COMPLETION-REPORT.md` | 383 | `PROJECT-TRACKING.md` | File not found: archive\completion-reports\PROJECT-TRACKING.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 97 | `Flink/01-architecture/datastream-v2-semantics.md` | File not found: archive\completion-reports\Flink\01-architecture\datastream-v2-semantics.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 98 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 99 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 100 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 101 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\exactly-once-end-to-end.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 102 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 98 | `Flink/02-core/time-semantics-and-watermark.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\time-semantics-and-watermark.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 99 | `Flink/02-core/flink-state-management-complete-guide.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 100 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 101 | `Flink/02-core/exactly-once-end-to-end.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\exactly-once-end-to-end.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 102 | `Flink/02-core/backpressure-and-flow-control.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 103 | `Flink/03-sql-table-api/flink-table-sql-complete-guide.md` | File not found: archive\completion-reports\Flink\03-sql-table-api\flink-table-sql-complete-guide.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 104 | `Flink/03-sql-table-api/flink-table-sql-complete-guide.md` | File not found: archive\completion-reports\Flink\03-sql-table-api\flink-table-sql-complete-guide.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 105 | `Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` | File not found: archive\completion-reports\Flink\03-sql-table-api\flink-sql-window-functions-deep-dive.md |
@@ -5703,11 +5703,11 @@ Generated: 2026-04-10 20:03:42
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 153 | `Flink/15-observability/flink-observability-complete-guide.md` | File not found: archive\completion-reports\Flink\15-observability\flink-observability-complete-guide.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 154 | `Flink/15-observability/distributed-tracing.md` | File not found: archive\completion-reports\Flink\15-observability\distributed-tracing.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 155 | `Flink/15-observability/flink-opentelemetry-observability.md` | File not found: archive\completion-reports\Flink\15-observability\flink-opentelemetry-observability.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 156 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 156 | `Flink/02-core/flink-state-management-complete-guide.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-state-management-complete-guide.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 163 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: archive\completion-reports\Flink\01-architecture\disaggregated-state-analysis.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 164 | `Flink/02-core-mechanisms/flink-2.0-async-execution-model.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-2.0-async-execution-model.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 164 | `Flink/02-core/flink-2.0-async-execution-model.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\flink-2.0-async-execution-model.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 165 | `Flink/03-sql-table-api/materialized-tables.md` | File not found: archive\completion-reports\Flink\03-sql-table-api\materialized-tables.md |
-| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 166 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
+| `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 166 | `Flink/02-core/smart-checkpointing-strategies.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 170 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | File not found: archive\completion-reports\Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 171 | `Flink/12-ai-ml/flink-25-gpu-acceleration.md` | File not found: archive\completion-reports\Flink\12-ai-ml\flink-25-gpu-acceleration.md |
 | `archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md` | 172 | `Flink/09-language-foundations/flink-25-wasm-udf-ga.md` | File not found: archive\completion-reports\Flink\09-language-foundations\flink-25-wasm-udf-ga.md |
@@ -5748,8 +5748,8 @@ Generated: 2026-04-10 20:03:42
 | `archive\completion-reports\PROJECT-FINAL-STATUS-REPORT.md` | 251 | `./ROADMAP-v3.3-and-beyond.md` | File not found: archive\completion-reports\ROADMAP-v3.3-and-beyond.md |
 | `archive\completion-reports\PROJECT-FINALLY-COMPLETE.md` | 152 | `README.md` | File not found: archive\completion-reports\README.md |
 | `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 3 | `./TROUBLESHOOTING.md` | File not found: archive\completion-reports\TROUBLESHOOTING.md |
-| `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 3 | `./Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
-| `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 3 | `./Flink/02-core-mechanisms/backpressure-and-flow-control.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\backpressure-and-flow-control.md |
+| `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 3 | `./Flink/02-core/checkpoint-mechanism-deep-dive.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\checkpoint-mechanism-deep-dive.md |
+| `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 3 | `./Flink/02-core/backpressure-and-flow-control.md` | File not found: archive\completion-reports\Flink\02-core-mechanisms\backpressure-and-flow-control.md |
 | `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 19 | `#关系-1-问题症状--根因映射` | Anchor '#关系-1-问题症状--根因映射' not found in current file |
 | `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 20 | `#关系-2-排查流程--故障恢复` | Anchor '#关系-2-排查流程--故障恢复' not found in current file |
 | `archive\completion-reports\TROUBLESHOOTING-COMPLETE.md` | 25 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证' not found in current file |
@@ -5914,8 +5914,8 @@ Generated: 2026-04-10 20:03:42
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 328 | `Flink/08-roadmap/flink-30-architecture-redesign.md` | File not found: archive\tracking-reports\Flink\08-roadmap\flink-30-architecture-redesign.md |
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 329 | `Flink/08-roadmap/flink-version-comparison-matrix.md` | File not found: archive\tracking-reports\Flink\08-roadmap\flink-version-comparison-matrix.md |
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 335 | `Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md` | File not found: archive\tracking-reports\Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md |
-| `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 336 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
-| `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 337 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 336 | `Flink/02-core/smart-checkpointing-strategies.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\smart-checkpointing-strategies.md |
+| `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 337 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 338 | `Flink/04-connectors/flink-24-connectors-guide.md` | File not found: archive\tracking-reports\Flink\04-connectors\flink-24-connectors-guide.md |
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 339 | `Flink/10-deployment/serverless-flink-ga-guide.md` | File not found: archive\tracking-reports\Flink\10-deployment\serverless-flink-ga-guide.md |
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 340 | `Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md` | File not found: archive\tracking-reports\Flink\03-sql-table-api\ansi-sql-2023-compliance-guide.md |
@@ -5924,7 +5924,7 @@ Generated: 2026-04-10 20:03:42
 | `archive\tracking-reports\FLINK-24-25-30-TRACKING-COMPLETION.md` | 346 | `Flink/09-language-foundations/flink-25-wasm-udf-ga.md` | File not found: archive\tracking-reports\Flink\09-language-foundations\flink-25-wasm-udf-ga.md |
 | `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 3 | `PROJECT-TRACKING.md` | File not found: archive\tracking-reports\PROJECT-TRACKING.md |
 | `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 251 | `Flink/12-ai-ml/flink-ai-agents-flip-531.md` | File not found: archive\tracking-reports\Flink\12-ai-ml\flink-ai-agents-flip-531.md |
-| `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 252 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
+| `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 252 | `Flink/02-core/adaptive-execution-engine-v2.md` | File not found: archive\tracking-reports\Flink\02-core-mechanisms\adaptive-execution-engine-v2.md |
 | `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 253 | `Flink/01-architecture/disaggregated-state-analysis.md` | File not found: archive\tracking-reports\Flink\01-architecture\disaggregated-state-analysis.md |
 | `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 254 | `Flink/03-sql-table-api/materialized-tables.md` | File not found: archive\tracking-reports\Flink\03-sql-table-api\materialized-tables.md |
 | `archive\tracking-reports\PROJECT-MAINTENANCE-DASHBOARD.md` | 255 | `Flink/03-sql-table-api/model-ddl-and-ml-predict.md` | File not found: archive\tracking-reports\Flink\03-sql-table-api\model-ddl-and-ml-predict.md |
@@ -6044,3 +6044,4 @@ Generated: 2026-04-10 20:03:42
 ---
 
 *Generated by LinkChecker v1.0.0*
+

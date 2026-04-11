@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>白皮书下载 - AnalysisDataFlow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #1f4e79;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+    .papers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    .paper-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .paper-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .paper-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #1f4e79, #3a7bd5);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .paper-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+    .paper-card h2 {
+      font-size: 1.3rem;
+      color: #1f4e79;
+      margin-bottom: 10px;
+    }
+    .paper-card .subtitle {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 15px;
+    }
+    .paper-meta {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: #666;
+      flex-wrap: wrap;
+    }
+    .paper-meta span {
+      background: #f0f4f8;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1f4e79, #3a7bd5);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.3s;
+    }
+    .download-btn:hover {
+      opacity: 0.9;
+    }
+    .download-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    .features {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+    .features h3 {
+      font-size: 1.5rem;
+      color: #1f4e79;
+      margin-bottom: 20px;
+    }
+    .features ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .features li::before {
+      content: "✓";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #4caf50;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.8rem;
+    }
+    .instructions {
+      background: #fffbeb;
+      border: 1px solid #f59e0b;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+    .instructions h3 {
+      font-size: 1.3rem;
+      color: #92400e;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .instructions pre {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+    .instructions code {
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    }
+    .timestamp {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
+    footer a {
+      color: #1f4e79;
+      text-decoration: none;
+    }
+    .badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #4338ca;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📄 AnalysisDataFlow 白皮书</h1>
+      <p>流计算领域权威技术参考文档 - 专业PDF格式下载</p>
+    </header>
+    
+    <div class="papers-grid">
+      <div class="paper-card">
+        <div class="paper-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        </div>
+        <h2>流计算技术趋势白皮书 2026 <span class="badge">PDF</span></h2>
+        <p class="subtitle">Streaming Technology Trends Whitepaper 2026</p>
+        <div class="paper-meta">
+          <span>📄 40+ 页</span>
+          <span>📊 市场分析</span>
+          <span>🔮 趋势预测</span>
+        </div>
+        <a href="streaming-technology-trends-2026.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          下载 PDF
+        </a>
+      </div>
+      
+      <div class="paper-card">
+        <div class="paper-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <h2>Flink企业落地指南 <span class="badge">PDF</span></h2>
+        <p class="subtitle">Flink Enterprise Implementation Guide</p>
+        <div class="paper-meta">
+          <span>📄 60+ 页</span>
+          <span>🏗️ 实施路线图</span>
+          <span>💼 企业案例</span>
+        </div>
+        <a href="flink-enterprise-implementation-guide.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          下载 PDF
+        </a>
+      </div>
+      
+      <div class="paper-card">
+        <div class="paper-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><circle cx="17.5" cy="17.5" r="4.5"/><path d="M3 13.5h8v8H3z"/></svg>
+        </div>
+        <h2>实时AI架构实践白皮书 <span class="badge">PDF</span></h2>
+        <p class="subtitle">Real-Time AI Architecture Practice Whitepaper</p>
+        <div class="paper-meta">
+          <span>📄 50+ 页</span>
+          <span>🤖 AI架构</span>
+          <span>⚡ 实时推理</span>
+        </div>
+        <a href="realtime-ai-architecture-practice.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          下载 PDF
+        </a>
+      </div>
+    </div>
+    
+    <div class="instructions">
+      <h3>⚙️ 本地生成PDF</h3>
+      <p>如需本地生成PDF，请执行以下命令：</p>
+      <pre><code># 安装依赖
+pip install pypdf
+
+# 使用pandoc生成PDF
+pandoc whitepapers/streaming-technology-trends-2026.md \
+  --pdf-engine=xelatex \
+  --output=whitepapers/pdf/streaming-technology-trends-2026.pdf \
+  --toc --toc-depth=3 \
+  --number-sections \
+  -V geometry:margin=2.5cm \
+  -V CJKmainfont="Noto Serif CJK SC"</code></pre>
+      <p style="margin-top: 15px; color: #666;">
+        或使用自动化脚本：<code>python scripts/generate-pdfs.py</code>
+      </p>
+    </div>
+    
+    <div class="features">
+      <h3>📋 PDF文档特性</h3>
+      <ul>
+        <li>专业学术排版（ACM/IEEE格式）</li>
+        <li>自动生成目录导航</li>
+        <li>页眉页脚标识</li>
+        <li>图表公式正确渲染</li>
+        <li>可打印高质量输出</li>
+        <li>支持全文检索</li>
+      </ul>
+    </div>
+    
+    <div class="timestamp">
+      <p>最后更新: 2026-04-08</p>
+    </div>
+    
+    <footer>
+      <p>© 2026 AnalysisDataFlow Project | 
+         <a href="https://github.com/AnalysisDataFlow">GitHub</a> | 
+         <a href="../WHITEPAPER-INDEX.md">白皮书索引</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

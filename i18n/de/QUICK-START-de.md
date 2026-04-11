@@ -1,4 +1,4 @@
-# AnalysisDataFlow Schnellstart-Leitfaden
+﻿# AnalysisDataFlow Schnellstart-Leitfaden
 
 > **Projekt in 5 Minuten verstehen | Rollen-basierte Pfade | Schneller Problemindex**
 >
@@ -129,7 +129,7 @@ Tag 5: Architekturentscheidungen
 Woche 1: Schnellstart
 ├── Tag 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
 │   └── Flink-Positionierung und Stärken
-├── Tag 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Tag 2-3: Flink/02-core/time-semantics-and-watermark.md
 │   └── Event-Time, Watermark-Mechanismus
 ├── Tag 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
 │   └── Event-Time-Processing-Pattern
@@ -137,11 +137,11 @@ Woche 1: Schnellstart
     └── Kafka-Integration Best Practices
 
 Woche 2: Kernmechanismen vertiefen
-├── Tag 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+├── Tag 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 │   └── Checkpoint-Mechanismus, Fehlerwiederherstellung
-├── Tag 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+├── Tag 3: Flink/02-core/exactly-once-end-to-end.md
 │   └── Exactly-Once-Implementierungsprinzipien
-├── Tag 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+├── Tag 4: Flink/02-core/backpressure-and-flow-control.md
 │   └── Backpressure-Behandlung und Flusskontrolle
 └── Tag 5: Flink/06-engineering/performance-tuning-guide.md
     └── Performance-Tuning in der Praxis
@@ -196,7 +196,7 @@ Monat 1: Grundlagenaufbau
 ├── Woche 2: Stream-Computing Grundlagen
 │   ├── Struct/01-foundation/01.04-dataflow-model-formalization.md
 │   ├── Knowledge/01-concept-atlas/streaming-models-mindmap.md
-│   └── Flink/02-core-mechanisms/time-semantics-and-watermark.md
+│   └── Flink/02-core/time-semantics-and-watermark.md
 ├── Woche 3: Kerneigenschaften
 │   ├── Struct/02-properties/02.01-determinism-in-streaming.md
 │   ├── Struct/02-properties/02.02-consistency-hierarchy.md
@@ -207,7 +207,7 @@ Monat 1: Grundlagenaufbau
 
 Monat 2: Vertiefung und Erweiterung
 ├── Woche 5-6: Flink-Ingenieurpraxis
-│   ├── Flink/02-core-mechanisms/ (alle Kern-Dokumente)
+│   ├── Flink/02-core/ (alle Kern-Dokumente)
 │   └── Flink/06-engineering/performance-tuning-guide.md
 ├── Woche 7: Einführung in formalisierte Beweise
 │   ├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
@@ -321,11 +321,11 @@ Monat 2: Vertiefung und Erweiterung
 
 | Fehlertyp | Fehlerbehebungsdokument |
 |-----------|-------------------------|
-| Checkpoint-Probleme | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
-| Backpressure-Probleme | Flink/02-core-mechanisms/backpressure-and-flow-control.md |
+| Checkpoint-Probleme | Flink/02-core/checkpoint-mechanism-deep-dive.md |
+| Backpressure-Probleme | Flink/02-core/backpressure-and-flow-control.md |
 | Performance-Tuning | Flink/06-engineering/performance-tuning-guide.md |
 | Speicherüberlauf | Flink/06-engineering/performance-tuning-guide.md |
-| Exactly-Once-Ausfall | Flink/02-core-mechanisms/exactly-once-end-to-end.md |
+| Exactly-Once-Ausfall | Flink/02-core/exactly-once-end-to-end.md |
 
 ---
 
@@ -517,3 +517,4 @@ L₁: Regulär (P-Complete) ── FSM, Regex
 ---
 
 > **Übersetzer-Hinweis**: Dieses Dokument wurde im deutschen technischen Dokumentationsstil übersetzt. Formalisierte Notationen, Theorem-Nummern und Code-Beispiele sind identisch mit dem Original. Letztes Update: 2026-04-11
+

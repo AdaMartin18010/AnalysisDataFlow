@@ -1,0 +1,304 @@
+{
+  "version": "4.0-prep",
+  "description": "翻译验证规则配置",
+  "last_updated": "2026-04-08",
+  "rules": {
+    "term_consistency": {
+      "enabled": true,
+      "description": "术语一致性检查规则",
+      "rules": [
+        {
+          "id": "TERM-001",
+          "name": "强制术语匹配",
+          "severity": "error",
+          "description": "核心术语必须使用术语库中的标准翻译",
+          "check": "exact_match",
+          "applies_to": ["CT-001", "CT-002", "CT-003", "CT-004", "CT-005", "CT-006", "CT-007", "CT-008", "CT-009", "CT-010"]
+        },
+        {
+          "id": "TERM-002",
+          "name": "禁止变体检查",
+          "severity": "warning",
+          "description": "检测并使用术语的禁止变体",
+          "check": "forbidden_variants",
+          "applies_to": ["all"]
+        },
+        {
+          "id": "TERM-003",
+          "name": "大小写一致性",
+          "severity": "warning",
+          "description": "检查术语大小写使用是否一致",
+          "check": "case_consistency",
+          "applies_to": ["all"]
+        },
+        {
+          "id": "TERM-004",
+          "name": "Flink专有名词",
+          "severity": "error",
+          "description": "Flink专有名词必须保留英文",
+          "check": "keep_original",
+          "applies_to": ["FT-001", "FT-002", "FT-006", "FT-010", "FT-020", "FT-021", "FT-023"]
+        }
+      ]
+    },
+    "format_validation": {
+      "enabled": true,
+      "description": "格式验证规则",
+      "rules": [
+        {
+          "id": "FMT-001",
+          "name": "Markdown语法检查",
+          "severity": "error",
+          "description": "确保Markdown语法正确",
+          "checks": [
+            "balanced_headers",
+            "valid_code_blocks",
+            "valid_links",
+            "valid_images"
+          ]
+        },
+        {
+          "id": "FMT-002",
+          "name": "标题层级一致性",
+          "severity": "error",
+          "description": "翻译文档的标题层级应与原文一致",
+          "check": "header_hierarchy"
+        },
+        {
+          "id": "FMT-003",
+          "name": "代码块语言标签",
+          "severity": "warning",
+          "description": "代码块应保留语言标签",
+          "check": "code_block_language"
+        },
+        {
+          "id": "FMT-004",
+          "name": "Frontmatter完整性",
+          "severity": "error",
+          "description": "翻译文档必须包含完整的frontmatter",
+          "required_fields": [
+            "title",
+            "translation_status",
+            "source_version",
+            "translator",
+            "translated_at"
+          ]
+        },
+        {
+          "id": "FMT-005",
+          "name": "链接有效性",
+          "severity": "warning",
+          "description": "内部链接应指向有效的目标",
+          "check": "internal_links"
+        }
+      ]
+    },
+    "content_validation": {
+      "enabled": true,
+      "description": "内容验证规则",
+      "rules": [
+        {
+          "id": "CNT-001",
+          "name": "Mermaid图表语法",
+          "severity": "error",
+          "description": "Mermaid图表必须语法正确",
+          "check": "mermaid_syntax"
+        },
+        {
+          "id": "CNT-002",
+          "name": "公式完整性",
+          "severity": "error",
+          "description": "数学公式应完整翻译且格式正确",
+          "check": "math_formulas"
+        },
+        {
+          "id": "CNT-003",
+          "name": "代码示例一致性",
+          "severity": "warning",
+          "description": "代码示例应与原文功能一致",
+          "check": "code_examples"
+        },
+        {
+          "id": "CNT-004",
+          "name": "表格结构一致性",
+          "severity": "error",
+          "description": "表格列数和结构应与原文一致",
+          "check": "table_structure"
+        }
+      ]
+    },
+    "style_guidelines": {
+      "enabled": true,
+      "description": "风格指南规则",
+      "rules": [
+        {
+          "id": "STY-001",
+          "name": "句子长度",
+          "severity": "suggestion",
+          "description": "建议句子长度不超过25个单词",
+          "max_words": 25
+        },
+        {
+          "id": "STY-002",
+          "name": "段落长度",
+          "severity": "suggestion",
+          "description": "建议段落不超过5句话",
+          "max_sentences": 5
+        },
+        {
+          "id": "STY-003",
+          "name": "被动语态限制",
+          "severity": "suggestion",
+          "description": "技术文档建议减少被动语态使用",
+          "max_passive_ratio": 0.3
+        },
+        {
+          "id": "STY-004",
+          "name": "缩写首次展开",
+          "severity": "error",
+          "description": "缩写首次出现应展开全称",
+          "check": "abbreviation_expansion"
+        },
+        {
+          "id": "STY-005",
+          "name": "时态一致性",
+          "severity": "warning",
+          "description": "技术描述应使用现在时",
+          "preferred_tense": "present"
+        }
+      ]
+    },
+    "prohibited_translation": {
+      "enabled": true,
+      "description": "禁止翻译列表",
+      "categories": {
+        "products": {
+          "description": "产品名称保留原文",
+          "terms": [
+            "Apache Flink",
+            "Apache Kafka",
+            "Apache Spark",
+            "Apache Pulsar",
+            "Akka",
+            "Pekko",
+            "Temporal",
+            "Kubernetes",
+            "Docker",
+            "Prometheus",
+            "Grafana",
+            "Elasticsearch"
+          ]
+        },
+        "programming_languages": {
+          "description": "编程语言保留原文",
+          "terms": [
+            "Java",
+            "Scala",
+            "Python",
+            "Go",
+            "Rust",
+            "JavaScript",
+            "TypeScript",
+            "Kotlin",
+            "C++",
+            "C#"
+          ]
+        },
+        "api_methods": {
+          "description": "API方法名保留原文",
+          "terms": [
+            "map",
+            "flatMap",
+            "filter",
+            "reduce",
+            "keyBy",
+            "window",
+            "trigger",
+            "evictor",
+            "aggregate",
+            "process",
+            "connect",
+            "union",
+            "join",
+            "coGroup"
+          ]
+        },
+        "configuration_keys": {
+          "description": "配置键保留原文",
+          "pattern": "^[a-z]+(\\.[a-z]+)+$",
+          "examples": [
+            "execution.checkpointing.interval",
+            "parallelism.default",
+            "state.backend",
+            "taskmanager.memory.network.fraction"
+          ]
+        },
+        "class_names": {
+          "description": "类名和接口名保留原文",
+          "pattern": "^[A-Z][a-zA-Z0-9]*$",
+          "examples": [
+            "DataStream",
+            "StreamExecutionEnvironment",
+            "ProcessFunction",
+            "KeyedProcessFunction"
+          ]
+        }
+      }
+    },
+    "severity_levels": {
+      "error": {
+        "description": "必须修复的问题",
+        "action": "block_merge",
+        "notification": "immediate"
+      },
+      "warning": {
+        "description": "建议修复的问题",
+        "action": "require_approval",
+        "notification": "daily_summary"
+      },
+      "suggestion": {
+        "description": "可选的改进建议",
+        "action": "no_block",
+        "notification": "weekly_report"
+      }
+    },
+    "custom_rules": {
+      "zh_to_en": {
+        "description": "中文到英文的特殊规则",
+        "rules": [
+          {
+            "id": "CUSTOM-001",
+            "pattern": "([0-9]+)s",
+            "replacement": "$1 seconds",
+            "context": "duration"
+          },
+          {
+            "id": "CUSTOM-002",
+            "pattern": "([0-9]+)ms",
+            "replacement": "$1 milliseconds",
+            "context": "duration"
+          },
+          {
+            "id": "CUSTOM-003",
+            "pattern": "第([0-9]+)个",
+            "replacement": "the $1th",
+            "notes": "需处理序数词变体(1st, 2nd, 3rd)"
+          }
+        ]
+      }
+    }
+  },
+  "quality_thresholds": {
+    "pre_publish": {
+      "term_consistency": 98,
+      "format_validation": 100,
+      "link_validity": 100,
+      "max_error_count": 0,
+      "max_warning_count": 5
+    },
+    "post_publish": {
+      "user_feedback_score": 4.5,
+      "issue_response_time_hours": 48
+    }
+  }
+}

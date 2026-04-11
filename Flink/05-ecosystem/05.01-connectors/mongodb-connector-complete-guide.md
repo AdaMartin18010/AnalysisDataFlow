@@ -1,6 +1,6 @@
-# MongoDB Connector 详细指南 (MongoDB Connector Complete Guide)
+﻿# MongoDB Connector 详细指南 (MongoDB Connector Complete Guide)
 
-> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md](flink-connectors-ecosystem-complete-guide.md), [../../Flink/02-core-mechanisms/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
+> **所属阶段**: Flink/04-connectors | **前置依赖**: [../../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md](flink-connectors-ecosystem-complete-guide.md), [../../Flink/02-core/exactly-once-end-to-end.md](../../02-core/exactly-once-end-to-end.md) | **形式化等级**: L4
 
 ---
 
@@ -1114,3 +1114,4 @@ mongodb://user:pass@host1:27017,host2:27017,host3:27017/mydb?replicaSet=rs0&auth
 [^4]: MongoDB Documentation, "Change Events", 2024. <https://www.mongodb.com/docs/manual/reference/change-events/>
 
 [^5]: Apache Flink Documentation, "Exactly Once Semantics", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/>
+

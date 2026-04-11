@@ -1,4 +1,4 @@
-# Flink 官方文档对标分析报告
+﻿# Flink 官方文档对标分析报告
 
 > **分析日期**: 2026-04-04 | **分析版本**: Flink 1.16-3.0 | **项目文档版本**: v2.9
 > **分析范围**: 项目Flink/目录 vs Apache Flink官方稳定版文档
@@ -95,11 +95,11 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
 | **DataStream API Overview** | ⚠️ 部分 | [datastream-v2-semantics.md](Flink/01-architecture/datastream-v2-semantics.md) | 60% | 缺少基础API入门教程 |
-| **Time & Watermarks** | ✅ 完整 | [time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md) | 90% | 深度足够，缺少快速入门 |
-| **State Management** | ✅ 完整 | [flink-state-management-complete-guide.md](Flink/02-core-mechanisms/flink-state-management-complete-guide.md) | 95% | 覆盖全面 |
-| **Checkpointing** | ✅ 完整 | [checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | 95% | 理论与工程结合好 |
-| **Exactly-Once** | ✅ 完整 | [exactly-once-end-to-end.md](Flink/02-core-mechanisms/exactly-once-end-to-end.md) | 95% | 包含端到端实现 |
-| **Backpressure** | ✅ 完整 | [backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md) | 90% | 深度优秀 |
+| **Time & Watermarks** | ✅ 完整 | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 90% | 深度足够，缺少快速入门 |
+| **State Management** | ✅ 完整 | [flink-state-management-complete-guide.md](Flink/02-core/flink-state-management-complete-guide.md) | 95% | 覆盖全面 |
+| **Checkpointing** | ✅ 完整 | [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 95% | 理论与工程结合好 |
+| **Exactly-Once** | ✅ 完整 | [exactly-once-end-to-end.md](Flink/02-core/exactly-once-end-to-end.md) | 95% | 包含端到端实现 |
+| **Backpressure** | ✅ 完整 | [backpressure-and-flow-control.md](Flink/02-core/backpressure-and-flow-control.md) | 90% | 深度优秀 |
 | **Table API Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-sql-table-api/flink-table-sql-complete-guide.md) | 70% | 缺少基础教程 |
 | **SQL Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-sql-table-api/flink-table-sql-complete-guide.md) | 70% | 缺少SQL基础入门 |
 | **Window Functions** | ✅ 完整 | [flink-sql-window-functions-deep-dive.md](Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md) | 85% | 深度足够 |
@@ -153,7 +153,7 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 | **Monitoring** | ✅ 完整 | [flink-observability-complete-guide.md](Flink/15-observability/flink-observability-complete-guide.md) | 85% | 覆盖良好 |
 | **Distributed Tracing** | ✅ 完整 | [distributed-tracing.md](Flink/15-observability/distributed-tracing.md) | 80% | 覆盖良好 |
 | **OpenTelemetry Integration** | ✅ 完整 | [flink-opentelemetry-observability.md](Flink/15-observability/flink-opentelemetry-observability.md) | 85% | 前沿特性 |
-| **State Management Operations** | ⚠️ 部分 | [flink-state-management-complete-guide.md](Flink/02-core-mechanisms/flink-state-management-complete-guide.md) | 60% | **需补充运维操作** |
+| **State Management Operations** | ⚠️ 部分 | [flink-state-management-complete-guide.md](Flink/02-core/flink-state-management-complete-guide.md) | 60% | **需补充运维操作** |
 | **Logging** | ❌ 缺失 | - | 0% | **缺失** |
 
 ### 2.6 最新特性覆盖对比 (Flink 1.18/1.19/2.0)
@@ -161,9 +161,9 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 | 官方特性 | 项目覆盖 | 覆盖文档 | 状态 |
 |---------|---------|---------|------|
 | **Disaggregated State (Flink 2.0)** | ✅ 完整 | [disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 已覆盖 |
-| **Async Execution Model (Flink 2.0)** | ✅ 完整 | [flink-2.0-async-execution-model.md](Flink/02-core-mechanisms/flink-2.0-async-execution-model.md) | 已覆盖 |
+| **Async Execution Model (Flink 2.0)** | ✅ 完整 | [flink-2.0-async-execution-model.md](Flink/02-core/flink-2.0-async-execution-model.md) | 已覆盖 |
 | **Materialized Tables (Flink 1.20)** | ✅ 完整 | [materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 已覆盖 |
-| **File Merging for Checkpointing** | ⚠️ 部分 | [smart-checkpointing-strategies.md](Flink/02-core-mechanisms/smart-checkpointing-strategies.md) | 提及但未深入 |
+| **File Merging for Checkpointing** | ⚠️ 部分 | [smart-checkpointing-strategies.md](Flink/02-core/smart-checkpointing-strategies.md) | 提及但未深入 |
 | **Batch Job Recovery** | ❌ 缺失 | - | **缺失** |
 | **Dynamic Partition Pruning** | ❌ 缺失 | - | **缺失** |
 | **Runtime Filter** | ❌ 缺失 | - | **缺失** |
@@ -321,7 +321,7 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 
 ```
 新增文档:
-├── Flink/02-core-mechanisms/
+├── Flink/02-core/
 │   ├── cep-complex-event-processing.md       # CEP复杂事件处理
 │   ├── process-function-deep-dive.md         # ProcessFunction深度
 │   ├── async-io-pattern.md                   # 异步I/O模式
@@ -513,3 +513,4 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 *报告生成时间: 2026-04-04*
 *分析工具: 项目文档索引 + 官方文档结构抓取*
 *版本: v1.0*
+

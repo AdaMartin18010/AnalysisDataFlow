@@ -1,4 +1,4 @@
-# 面试准备学习路径
+﻿# 面试准备学习路径
 
 > **难度级别**: 中高级 | **预计时长**: 2-4周 | **目标受众**: 准备流处理相关面试的候选人
 
@@ -41,7 +41,7 @@
 - [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md)
 - [Struct/02-properties/02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md)
 - [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md)
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 
 **面试重点**:
 
@@ -70,8 +70,8 @@
 
 **推荐文档**:
 
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
-- [Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md](../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/exactly-once-semantics-deep-dive.md](../Flink/02-core/exactly-once-semantics-deep-dive.md)
 - [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)
 - [Struct/04-proofs/04.02-flink-exactly-once-correctness.md](../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)
 
@@ -106,7 +106,7 @@
 - [Knowledge/02-design-patterns/pattern-stateful-computation.md](../Knowledge/02-design-patterns/pattern-stateful-computation.md)
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
-- [Flink/02-core-mechanisms/backpressure-and-flow-control.md](../Flink/02-core-mechanisms/backpressure-and-flow-control.md)
+- [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md)
 - [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
 
 **面试重点**:
@@ -353,3 +353,4 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
+

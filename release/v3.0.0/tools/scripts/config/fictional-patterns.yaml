@@ -1,0 +1,259 @@
+# 虚构内容检测规则配置文件
+# AnalysisDataFlow 项目 - 虚构API和配置参数检测
+# 版本: 1.0
+# 创建日期: 2026-04-05
+
+metadata:
+  name: fictional-content-detection-rules
+  version: "1.0"
+  description: 用于检测AnalysisDataFlow项目中虚构API、配置参数、Maven依赖和时间线的规则集
+  created: "2026-04-05"
+  author: "AnalysisDataFlow Project"
+
+# 检测规则分类
+categories:
+  - sql_syntax
+  - config_params
+  - maven_deps
+  - timeline_predictions
+  - flips
+
+# SQL语法虚构内容检测规则
+sql_syntax:
+  name: "虚构SQL语法"
+  description: "检测非标准的Flink SQL扩展语法"
+  severity: medium
+  patterns:
+    - id: SQL-001
+      name: "CREATE AGENT语法"
+      pattern: "CREATE\\s+AGENT"
+      example: "CREATE AGENT sales_analytics_agent"
+      note: "未来可能的语法（概念设计阶段），尚未正式发布"
+      
+    - id: SQL-002
+      name: "CREATE TOOL语法"
+      pattern: "CREATE\\s+TOOL"
+      example: "CREATE TOOL query_sales_data"
+      note: "未来可能的语法（概念设计阶段），尚未正式发布"
+      
+    - id: SQL-003
+      name: "CREATE WORKFLOW语法"
+      pattern: "CREATE\\s+WORKFLOW"
+      example: "CREATE WORKFLOW sales_monitoring_workflow"
+      note: "未来可能的语法（概念设计阶段），尚未正式发布"
+      
+    - id: SQL-004
+      name: "CREATE AGENT TEAM语法"
+      pattern: "CREATE\\s+AGENT_?TEAM"
+      example: "CREATE AGENT_TEAM customer_service_team"
+      note: "未来可能的语法（概念设计阶段），尚未正式发布"
+      
+    - id: SQL-005
+      name: "ML_PREDICT函数"
+      pattern: "ML_PREDICT\\s*\\("
+      example: "ML_PREDICT(model_id, features)"
+      note: "概念设计阶段的ML预测函数，非实际SQL函数"
+      
+    - id: SQL-006
+      name: "VECTOR_SEARCH函数"
+      pattern: "VECTOR_SEARCH\\s*\\("
+      example: "VECTOR_SEARCH(vector_column, query_vector)"
+      note: "概念设计阶段的向量搜索函数"
+      
+    - id: SQL-007
+      name: "AI推理SQL扩展"
+      pattern: "AI\\s+(INFER|PREDICT|GENERATE)"
+      example: "AI INFER(image_data)"
+      note: "概念设计阶段的AI推理SQL扩展"
+
+# 配置参数虚构内容检测规则
+config_params:
+  name: "虚构配置参数"
+  description: "检测非标准的Flink配置参数"
+  severity: high
+  patterns:
+    - id: CFG-001
+      name: "AI Agent启用配置"
+      pattern: "ai\\.agent\\.enabled"
+      example: "ai.agent.enabled: true"
+      note: "未来配置参数（概念），尚未正式实现"
+      
+    - id: CFG-002
+      name: "Serverless启用配置"
+      pattern: "serverless\\.enabled"
+      example: "serverless.enabled: true"
+      note: "未来配置参数（概念），尚未正式实现"
+      
+    - id: CFG-003
+      name: "GPU资源配置"
+      pattern: "gpu\\.(cores|memory|enabled)"
+      example: "gpu.cores: 4"
+      note: "概念设计阶段的GPU资源配置"
+      
+    - id: CFG-004
+      name: "MCP协议配置"
+      pattern: "mcp\\.(enabled|endpoint|timeout)"
+      example: "mcp.enabled: true"
+      note: "概念设计阶段的MCP协议配置"
+      
+    - id: CFG-005
+      name: "A2A协议配置"
+      pattern: "a2a\\.(enabled|endpoint|agent)"
+      example: "a2a.enabled: true"
+      note: "概念设计阶段的A2A协议配置"
+      
+    - id: CFG-006
+      name: "Vector Search配置"
+      pattern: "vector\\.search\\.(enabled|index|dimension)"
+      example: "vector.search.enabled: true"
+      note: "概念设计阶段的向量搜索配置"
+      
+    - id: CFG-007
+      name: "AI推理配置"
+      pattern: "ai\\.(inference|model|endpoint)"
+      example: "ai.inference.timeout: 30s"
+      note: "概念设计阶段的AI推理配置"
+
+# Maven依赖虚构内容检测规则
+maven_deps:
+  name: "虚构Maven依赖"
+  description: "检测不存在的Flink Maven依赖"
+  severity: high
+  patterns:
+    - id: DEP-001
+      name: "Flink AI Agent依赖"
+      pattern: "flink-ai-agent[s]?"
+      example: "<artifactId>flink-ai-agents</artifactId>"
+      note: "为未来可能提供的模块（设计阶段），尚未正式发布"
+      
+    - id: DEP-002
+      name: "Flink MCP Connector依赖"
+      pattern: "flink-mcp-connector"
+      example: "<artifactId>flink-mcp-connector</artifactId>"
+      note: "概念设计阶段的MCP连接器依赖"
+      
+    - id: DEP-003
+      name: "Flink GPU依赖"
+      pattern: "flink-gpu"
+      example: "<artifactId>flink-gpu</artifactId>"
+      note: "概念设计阶段的GPU支持依赖"
+      
+    - id: DEP-004
+      name: "Flink Vector Search依赖"
+      pattern: "flink-vector-search"
+      example: "<artifactId>flink-vector-search</artifactId>"
+      note: "概念设计阶段的向量搜索依赖"
+      
+    - id: DEP-005
+      name: "Flink ML Inference依赖"
+      pattern: "flink-ml-inference"
+      example: "<artifactId>flink-ml-inference</artifactId>"
+      note: "概念设计阶段的ML推理依赖"
+      
+    - id: DEP-006
+      name: "Flink A2A依赖"
+      pattern: "flink-a2a"
+      example: "<artifactId>flink-a2a</artifactId>"
+      note: "概念设计阶段的A2A协议依赖"
+
+# 时间线预测虚构内容检测规则
+timeline_predictions:
+  name: "虚构时间线预测"
+  description: "检测未来发布时间的预测"
+  severity: low
+  patterns:
+    - id: TIME-001
+      name: "Flink 2.3+版本发布时间预测"
+      pattern: "20(25|26|27|28|29)\\s+Q[1-4]"
+      example: "2026 Q1发布"
+      note: "预测时间线，以Apache Flink官方发布为准"
+      
+    - id: TIME-002
+      name: "未来日期预测"
+      pattern: "预计发布[:：]?\\s*20"
+      example: "预计发布: 2026 Q3-Q4"
+      note: "预测时间线，以Apache Flink官方发布为准"
+      
+    - id: TIME-003
+      name: "GA发布预测"
+      pattern: "20(25|26|27)\\-(0[1-9]|1[0-2])\\s*GA"
+      example: "2026-10 GA 发布"
+      note: "预测时间线，以Apache Flink官方发布为准"
+
+# FLIP提案虚构内容检测规则
+flips:
+  name: "FLIP提案状态"
+  description: "检测FLIP提案的状态声明"
+  severity: medium
+  patterns:
+    - id: FLIP-001
+      name: "FLIP-531状态声明"
+      pattern: "FLIP-531.*(进行中|已实现|已合并|Accepted)"
+      example: "FLIP-531: AI Agent Support 🟡 进行中"
+      note: "需核实FLIP-531在Apache Flink社区的实际状态"
+      
+    - id: FLIP-002
+      name: "未确认FLIP编号"
+      pattern: "FLIP-(5\\d{2}|6\\d{2}|7\\d{2}|8\\d{2}|9\\d{2})"
+      example: "FLIP-600"
+      note: "需核实该FLIP编号在Apache Flink社区是否真实存在"
+
+# 排除规则 - 用于减少误报
+exclusions:
+  # 文件排除
+  files:
+    - "**/archive/deprecated/**"
+    - "**/reports/**"
+    - "**/.templates/**"
+    - "**/CHANGELOG.md"
+    - "**/PROJECT-TRACKING.md"
+    
+  # 行排除 - 包含这些内容的行将被忽略
+  lines:
+    - "注.*概念.*阶段"
+    - "注.*未来.*可能"
+    - "注.*设计.*阶段"
+    - "注.*尚未.*发布"
+    - "未来可能的语法"
+    - "概念设计阶段"
+    - "规划中.*以官方为准"
+    - "<!--.*虚构.*-->$"
+    - "`[^`]*`.*标记.*概念"
+    
+  # 代码块内的注释排除
+  code_comments:
+    - "^\\s*//.*概念.*阶段"
+    - "^\\s*#.*概念.*阶段"
+    - "^\\s*--.*概念.*阶段"
+    - "^\\s*/\\*.*概念.*阶段"
+    - "^\\s*\\*.*概念.*阶段"
+
+# 标记规范
+marking_spec:
+  # 删除线标记
+  strikethrough:
+    enabled: true
+    template: "~~{content}~~ <!-- {note} -->"
+    
+  # 代码块注释标记
+  code_comment:
+    enabled: true
+    template: "// 概念设计阶段，非实际API: {content}"
+    
+  # 表格标记
+  table_note:
+    enabled: true
+    template: "{content} <!-- {note} -->"
+    
+  # 通用注释标记
+  general_note:
+    enabled: true
+    template: "<!-- {note}: {content} -->"
+
+# 报告配置
+report:
+  template_name: "fictional-content-audit-report.md"
+  include_context: true
+  context_lines: 2
+  max_findings_per_file: 50
+  severity_order: ["high", "medium", "low"]

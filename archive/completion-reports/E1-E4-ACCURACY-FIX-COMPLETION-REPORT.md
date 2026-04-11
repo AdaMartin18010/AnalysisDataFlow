@@ -1,4 +1,4 @@
-# E1-E4 准确性修复完成报告
+﻿# E1-E4 准确性修复完成报告
 
 > **修复日期**: 2026-04-04 | **修复范围**: Emergency Fixes (E1-E4) | **状态**: ✅ **100% 完成**
 
@@ -35,8 +35,8 @@
 |---|----------|----------|
 | 1 | `Flink/08-roadmap/flink-2.4-tracking.md` | preview |
 | 2 | `Flink/10-deployment/serverless-flink-ga-guide.md` | preview |
-| 3 | `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` | preview |
-| 4 | `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` | preview |
+| 3 | `Flink/02-core/adaptive-execution-engine-v2.md` | preview |
+| 4 | `Flink/02-core/smart-checkpointing-strategies.md` | preview |
 | 5 | `Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md` | preview |
 | 6 | `Flink/04-connectors/flink-24-connectors-guide.md` | preview |
 | 7 | `Flink/06-engineering/flink-24-performance-improvements.md` | preview |
@@ -124,8 +124,8 @@
 5. `Flink/08-roadmap/flink-version-evolution-complete-guide.md`
 6. `Flink/08-roadmap/flink-version-comparison-matrix.md`
 7. `Flink/08-roadmap/FLIP-TRACKING-SYSTEM.md`
-8. `Flink/02-core-mechanisms/flink-2.2-frontier-features.md`
-9. `Flink/02-core-mechanisms/delta-join-production-guide.md`
+8. `Flink/02-core/flink-2.2-frontier-features.md`
+9. `Flink/02-core/delta-join-production-guide.md`
 10. `Flink/03-sql-table-api/vector-search.md`
 11. `Flink/03-sql-table-api/model-ddl-and-ml-predict.md`
 12. `Flink/03-sql-table-api/flink-vector-search-rag.md`
@@ -311,3 +311,4 @@
 *修复完成时间*: 2026-04-04
 *项目版本*: v3.1
 *状态*: ✅ **100% 完成**
+

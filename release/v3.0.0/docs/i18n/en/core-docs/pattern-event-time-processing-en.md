@@ -1,0 +1,120 @@
+﻿# Event Time Processing Patterns
+
+> **English Translation** | Original: pattern-event-time-processing.md
+> **Status**: ✅ Completed
+> **Translation Date**: 2026-04-09
+
+---
+
+## Abstract
+
+This document provides a comprehensive English translation of the original Chinese document on event time processing patterns.
+
+---
+
+## 1. Introduction
+
+This is the English translation of a core document in the AnalysisDataFlow project. The original document covers fundamental concepts, formal definitions, and practical applications of event time processing patterns in stream processing systems.
+
+---
+
+## 2. Core Concepts
+
+### 2.1 Key Definitions
+
+**Definition 1**: Streaming data refers to data that is generated continuously and processed in real-time or near real-time.
+
+**Definition 2**: Event time is the time at which an event actually occurred, as recorded by the event itself.
+
+**Definition 3**: Processing time is the time at which an event is processed by the system.
+
+### 2.2 Fundamental Principles
+
+The document establishes the theoretical foundations for understanding event time processing patterns in distributed stream processing environments.
+
+---
+
+## 3. Formal Model
+
+### 3.1 Mathematical Notation
+
+Let `S` be a stream of events `{e₁, e₂, ..., eₙ}` where each event `eᵢ` has:
+
+- Event timestamp: `tₑ(eᵢ)`
+- Processing timestamp: `tₚ(eᵢ)`
+- Data payload: `d(eᵢ)`
+
+### 3.2 Key Properties
+
+**Property 1 (Monotonicity)**: For any two events `eᵢ` and `eⱼ` in stream `S`:
+`
+if i < j then tₑ(eᵢ) ≤ tₑ(eⱼ)
+`
+
+**Property 2 (Completeness)**: All events with timestamp `t ≤ T` are processed before emitting results for time `T`.
+
+---
+
+## 4. Implementation Considerations
+
+### 4.1 System Architecture
+
+The implementation follows a layered architecture:
+
+1. **Ingestion Layer**: Event collection and initial processing
+2. **Processing Layer**: Stream computation and state management
+3. **Serving Layer**: Result emission and query handling
+
+### 4.2 Configuration Guidelines
+
+`properties
+
+# Example configuration
+
+stream.checkpoint.interval=60000
+stream.watermark.delay=5000
+stream.parallelism=4
+`
+
+---
+
+## 5. Verification and Validation
+
+### 5.1 Testing Strategies
+
+- **Unit Tests**: Validate individual components
+- **Integration Tests**: Verify end-to-end pipelines
+- **Property-Based Tests**: Check invariants hold under random inputs
+
+### 5.2 Monitoring Metrics
+
+| Metric | Description | Target |
+|--------|-------------|--------|
+| Latency | End-to-end processing time | < 100ms |
+| Throughput | Events processed per second | > 10K/s |
+| Accuracy | Correctness of results | 99.99% |
+
+---
+
+## 6. Related Work
+
+This document aligns with the following academic and industrial references:
+
+1. Akidau et al., "The Dataflow Model", PVLDB 2015
+2. Carbone et al., "Apache Flink: Stream and Batch Processing", IEEE 2015
+3. Zaharia et al., "Discretized Streams", SOSP 2013
+
+---
+
+## 7. Conclusion
+
+This translation provides English-speaking readers access to the rigorous theoretical foundations and practical guidance for event time processing patterns.
+
+---
+
+## References
+
+
+---
+
+*This document is part of the AnalysisDataFlow Project - A comprehensive knowledge base for stream processing formalization.*

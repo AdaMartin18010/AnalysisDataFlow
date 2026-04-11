@@ -1,4 +1,4 @@
-# 设计模式: 事件时间处理 (Pattern: Event Time Processing)
+﻿# 设计模式: 事件时间处理 (Pattern: Event Time Processing)
 
 > **模式编号**: 01/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5
 >
@@ -689,13 +689,13 @@ Flink 的 Event Time 处理机制是对 Google Dataflow 模型的工程实现：
 
 [^3]: Watermark 单调性定理，详见 [Struct/02-properties/02.03-watermark-monotonicity.md](../../Struct/02-properties/02.03-watermark-monotonicity.md)
 
-[^4]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^4]: Flink 时间语义与 Watermark，详见 [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
-[^5]: 金融风控实时欺诈检测案例，详见 [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
+[^5]: 金融风控实时欺诈检测案例，详见 [Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
-[^6]: IoT 流处理工业案例，详见 [Flink/07-case-studies/case-iot-stream-processing.md](../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
+[^6]: IoT 流处理工业案例，详见 [Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md](../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
 
-[^7]: 实时 ETL 深度解析，详见 [Flink/07-case-studies/case-realtime-analytics.md](../../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
+[^7]: 实时 ETL 深度解析，详见 [Flink/09-practices/09.01-case-studies/case-realtime-analytics.md](../../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
 
 [^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
 
@@ -704,3 +704,4 @@ Flink 的 Event Time 处理机制是对 Google Dataflow 模型的工程实现：
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+

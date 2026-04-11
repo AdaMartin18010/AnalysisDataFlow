@@ -1,0 +1,76 @@
+{
+  "project": {
+    "name": "AnalysisDataFlow",
+    "version": "3.3.0",
+    "source_language": "zh",
+    "default_language": "zh",
+    "description": "Unified Stream Computing Theory and Practice Knowledge Base"
+  },
+  "languages": {
+    "zh": {
+      "name": "中文",
+      "native_name": "简体中文",
+      "code": "zh-CN",
+      "rtl": false,
+      "completeness": 100,
+      "maintainers": ["luyanfeng"]
+    },
+    "en": {
+      "name": "English",
+      "native_name": "English",
+      "code": "en-US",
+      "rtl": false,
+      "completeness": 15,
+      "maintainers": []
+    }
+  },
+  "translation": {
+    "priority_docs": [
+      "README.md",
+      "QUICK-START.md",
+      "GLOSSARY.md",
+      "CONTRIBUTING.md",
+      "AGENTS.md"
+    ],
+    "secondary_docs": [
+      "LEARNING-PATH-GUIDE.md",
+      "Struct/00-INDEX.md",
+      "Knowledge/00-INDEX.md",
+      "Flink/00-INDEX.md"
+    ],
+    "excluded_patterns": [
+      "*.draft.md",
+      "*.archived.md",
+      "reports/*",
+      "*.log",
+      "tmp_*.py",
+      "*-COMPLETE*.md",
+      "*-REPORT*.md",
+      "*-CERTIFICATE*.md"
+    ],
+    "term_consistency": {
+      "enabled": true,
+      "strict_mode": false,
+      "glossary_file": "i18n/config/glossary-core.json",
+      "allowed_variants": true
+    },
+    "format": {
+      "preserve_mermaid": true,
+      "preserve_code_blocks": true,
+      "translate_frontmatter": ["title", "description"],
+      "keep_frontmatter": ["version", "date", "author"]
+    }
+  },
+  "sync": {
+    "check_interval": "daily",
+    "auto_notify": true,
+    "outdated_threshold_days": 7,
+    "sync_on_push": true
+  },
+  "quality": {
+    "min_completion_threshold": 95,
+    "term_check_enabled": true,
+    "link_check_enabled": true,
+    "format_check_enabled": true
+  }
+}

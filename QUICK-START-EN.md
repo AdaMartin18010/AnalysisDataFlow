@@ -1,4 +1,4 @@
----
+﻿---
 title: "AnalysisDataFlow Quick Start Guide"
 source_file: "QUICK-START.md"
 source_version: "v3.3.0"
@@ -139,7 +139,7 @@ Day 5: Architecture Decisions
 Week 1: Quick Start
 ├── Day 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
 │   └── Flink positioning and advantages
-├── Day 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Day 2-3: Flink/02-core/time-semantics-and-watermark.md
 │   └── Event time, Watermark mechanism
 ├── Day 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
 │   └── Event time processing patterns
@@ -147,11 +147,11 @@ Week 1: Quick Start
     └── Kafka integration best practices
 
 Week 2: Core Mechanisms Deep Dive
-├── Day 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+├── Day 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 │   └── Checkpoint mechanism, fault recovery
-├── Day 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+├── Day 3: Flink/02-core/exactly-once-end-to-end.md
 │   └── Exactly-Once implementation principles
-├── Day 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+├── Day 4: Flink/02-core/backpressure-and-flow-control.md
 │   └── Backpressure handling and flow control
 └── Day 5: Flink/06-engineering/performance-tuning-guide.md
     └── Performance tuning in practice

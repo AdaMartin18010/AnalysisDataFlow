@@ -1,4 +1,4 @@
-# AnalysisDataFlow Glossary (English)
+﻿# AnalysisDataFlow Glossary (English)
 
 > **Version**: v1.0 | **Last Updated**: 2026-04-04 | **Scope**: Full Project
 >
@@ -86,7 +86,7 @@ Where 𝒫 is the physical execution plan, ℳ is runtime metrics, 𝒜 is adapt
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
+- `Flink/02-core/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
 
 ---
 
@@ -167,7 +167,7 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
 
 ---
@@ -189,7 +189,7 @@ Where C is the concurrency parameter, controlling the number of simultaneous asy
 **Reference Documents**:
 
 - `Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
-- `Flink/02-core-mechanisms/async-execution-model.md`
+- `Flink/02-core/async-execution-model.md`
 
 ---
 
@@ -243,7 +243,7 @@ Where c(r, 𝒯) is the causal impact count.
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/backpressure-and-flow-control.md`
+- `Flink/02-core/backpressure-and-flow-control.md`
 - `Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md`
 
 ---
@@ -262,7 +262,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-02)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-02)
 
 ---
 
@@ -433,7 +433,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-01)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-01)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
 
 ---
@@ -764,7 +764,7 @@ t_e: Record → Timestamp
 **Reference Documents**:
 
 - `Struct/01-foundation/01.01-unified-streaming-theory.md` (Def-S-01-05)
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 
 ---
 
@@ -802,7 +802,7 @@ t_e: Record → Timestamp
 
 - `Struct/02-properties/02.02-consistency-hierarchy.md` (Def-S-08-04)
 - `Struct/04-proofs/04.02-flink-exactly-once-correctness.md` (Thm-S-18-01)
-- `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md`
+- `Flink/02-core/exactly-once-semantics-deep-dive.md`
 
 ---
 
@@ -911,8 +911,8 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/forst-state-backend.md` (Thm-F-02-45)
-- `Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md`
+- `Flink/02-core/forst-state-backend.md` (Thm-F-02-45)
+- `Flink/02-core/flink-2.0-forst-state-backend.md`
 
 ---
 
@@ -1017,7 +1017,7 @@ Global: wid_global = (-∞, +∞)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 
 ---
 
@@ -1071,7 +1071,7 @@ f is idempotent ⟺ ∀x. f(f(x)) = f(x)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-05, Thm-F-02-02)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-05, Thm-F-02-02)
 
 ---
 
@@ -1183,7 +1183,7 @@ Internal-Consistency(Ops) ⟺ ∀k. Consistent(𝒢_k) ∧ NoOrphans(𝒢_k) ∧
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/delta-join.md`
+- `Flink/02-core/delta-join.md`
 
 ---
 
@@ -1684,7 +1684,7 @@ ReAct: 𝒪_t → Thought → τ_t → Action → a_t → Observation → 𝒪_{
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 
 ---
 
@@ -1860,7 +1860,7 @@ SmartCP = ⟨ℐ_adaptive, Δ_incremental, 𝒫_partial, 𝒫_parallel⟩
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
+- `Flink/02-core/smart-checkpointing-strategies.md` (Def-F-02-110, Thm-F-02-60)
 
 ---
 
@@ -1962,7 +1962,7 @@ Sliding(δ, s): wid_n = [n·s, n·s + δ)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-06)
 - `Flink/06-engineering/state-backend-selection.md`
 
 ---
@@ -2171,7 +2171,7 @@ Tumbling(δ): wid_n = [n·δ, (n+1)·δ)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ---
 
@@ -2240,7 +2240,7 @@ WM(t): t_event ≤ t is considered complete
 **Reference Documents**:
 
 - `Struct/01-foundation/01.01-unified-streaming-theory.md` (Def-S-01-06)
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 
 ---
 
@@ -2340,3 +2340,4 @@ WM(t): t_event ≤ t is considered complete
 ---
 
 *This document is the English version of the AnalysisDataFlow project glossary. For the Chinese source version, please refer to [GLOSSARY.md](./GLOSSARY.md)*
+

@@ -1,0 +1,240 @@
+term_en,term_zh,category,definition_en,context,notes
+Unified Streaming Theory,统一流理论,Concept,Formal framework for stream computation theory,Struct/01-foundation,Core theoretical framework
+Universal Stream Tuple Model,通用流元组模型,Model,Unified data model for streaming systems,Struct/01-foundation,USTM abbreviation
+Process Calculus,进程演算,Theory,Formal language for describing concurrent processes,Struct/01-foundation,"CCS CSP π-calculus"
+Actor Model,Actor模型,Model,Concurrency model based on message-passing actors,Struct/01-foundation,Akka Pekko implementation
+Dataflow Model,Dataflow模型,Model,Computation model based on data dependencies,Struct/01-foundation,Google Dataflow
+Communicating Sequential Processes,CSP,Theory,Process algebra for concurrent systems,Struct/01-foundation,Hoare's CSP
+Petri Net,Petri网,Model,Graphical modeling tool for distributed systems,Struct/01-foundation,Place/transition nets
+Session Types,会话类型,Type Theory,Types for structured communication protocols,Struct/01-foundation,Binary/multiparty session types
+Watermark,水位线/水印,Mechanism,Timestamp marker for event time progress,Flink/02-core-mechanisms,Monotonic timestamp
+Checkpoint,检查点,Mechanism,Periodic state snapshot for fault tolerance,Flink/02-core-mechanisms,Distributed snapshot
+Exactly-Once,精确一次,Semantics,Guaranteed message processing semantics,Flink/02-core-mechanisms,End-to-end consistency
+At-Least-Once,至少一次,Semantics,Minimum message delivery guarantee,Flink/02-core-mechanisms,Retry-based delivery
+At-Most-Once,至多一次,Semantics,Maximum message delivery guarantee,Flink/02-core-mechanisms,No retry semantics
+Determinism,确定性,Property,Same input produces same output,Struct/02-properties,Stream processing property
+Consistency Hierarchy,一致性层级,Concept,Levels of consistency guarantees,Struct/02-properties,From eventual to strong
+Event Time,事件时间,Time Concept,Time when event occurred,Flink/02-core-mechanisms,vs Processing Time
+Processing Time,处理时间,Time Concept,Time when event is processed,Flink/02-core-mechanisms,Wall-clock time
+Ingestion Time,摄取时间,Time Concept,Time when event enters system,Flink/02-core-mechanisms,Hybrid time semantic
+Window,窗口,Operation,Bounded subset of streaming data,Flink/03-sql-table-api,Tumbling/Sliding/Session
+Tumbling Window,滚动窗口,Window,Fixed-size non-overlapping windows,Flink/03-sql-table-api,Fixed time intervals
+Sliding Window,滑动窗口,Window,Fixed-size overlapping windows,Flink/03-sql-table-api,With slide interval
+Session Window,会话窗口,Window,Dynamic gaps-based windows,Flink/03-sql-table-api,Activity-based grouping
+Trigger,触发器,Mechanism,Policy for window result emission,Flink/03-sql-table-api,When to fire
+Evictor,驱逐器,Mechanism,Policy for element removal from window,Flink/03-sql-table-api,Pre/post eviction
+Allowed Lateness,允许延迟,Configuration,Grace period for late data,Flink/03-sql-table-api,Late data handling
+Side Output,侧输出,Feature,Output stream for special handling,Flink/03-sql-table-api,Alternative to exceptions
+State,状态,Concept,Maintained data across events,Flink/02-core-mechanisms,Keyed/Operator state
+Keyed State,键控状态,State,Partitioned by key,Flink/02-core-mechanisms,Per-key storage
+Operator State,算子状态,State,Per-parallel-instance state,Flink/02-core-mechanisms,Non-partitioned
+State Backend,状态后端,Storage,State storage implementation,Flink/02-core-mechanisms,"Memory FS RocksDB"
+Savepoint,保存点,Feature,Manual triggered consistent checkpoint,Flink/02-core-mechanisms,Version migration
+Backpressure,反压,Mechanism,Flow control for slow consumers,Flink/02-core-mechanisms,Automatic throttling
+Barrier,屏障,Mechanism,Checkpoint coordination marker,Flink/02-core-mechanisms,Chandy-Lamport algorithm
+Alignment,对齐,Process,Barrier synchronization in streams,Flink/02-core-mechanisms,Aligned vs unaligned
+Async Checkpoint,异步检查点,Optimization,Non-blocking state snapshot,Flink/02-core-mechanisms,Incremental checkpoint
+Incremental Checkpoint,增量检查点,Optimization,Delta state persistence,Flink/02-core-mechanisms,Size reduction
+Chandy-Lamport Algorithm,Chandy-Lamport算法,Algorithm,Distributed snapshot algorithm,Struct/04-proofs,Checkpoint foundation
+Lamport Timestamp,Lamport时间戳,Mechanism,Logical clock for event ordering,Struct/04-proofs,Causal ordering
+Vector Clock,向量时钟,Mechanism,Logical clock capturing concurrency,Struct/04-proofs,Partial ordering
+Happens-Before,先于关系,Relation,Causal ordering between events,Struct/04-proofs,Lamport's definition
+Causality,因果关系,Concept,Cause-effect relationship in events,Struct/02-properties,Event ordering
+Bisimulation,互模拟,Equivalence,Behavioral equivalence of processes,Struct/03-relationships,Strong/weak bisimulation
+Trace Equivalence,迹等价,Equivalence,Same observable behavior,Struct/03-relationships,Linear time
+Testing Equivalence,测试等价,Equivalence,Same testing behavior,Struct/03-relationships,May/must testing
+Type Safety,类型安全,Property,Well-typed programs don't go wrong,Struct/02-properties,Static guarantee
+Subject Reduction,主题规约,Property,Type preservation under reduction,Struct/04-proofs,Type system soundness
+Progress,进展性,Property,Well-typed terms don't get stuck,Struct/04-proofs,No deadlock guarantee
+Deadlock Freedom,无死锁,Property,System cannot reach deadlocked state,Struct/04-proofs,Liveness property
+Liveness,活性,Property,Good things eventually happen,Struct/02-properties,vs Safety
+Safety,安全性,Property,Bad things never happen,Struct/02-properties,Invariant preservation
+Invariant,不变式,Property,Condition preserved by system,Struct/04-proofs,Safety specification
+Temporal Logic,时序逻辑,Logic,Logic for reasoning about time,Struct/07-tools,TLA+ LTL CTL
+TLA+,TLA+,Language,Temporal Logic of Actions,Struct/07-tools,Lamport's specification language
+Coq,Coq,Tool,Interactive theorem prover,Struct/07-tools,Proof assistant
+Iris,Iris,Framework,Separation logic framework,Struct/07-tools,Concurrent reasoning
+Model Checking,模型检验,Method,Automatic verification of finite systems,Struct/07-tools,State space exploration
+Fuzzing,模糊测试,Method,Randomized input testing,Struct/07-tools,Test generation
+Smart Casual Verification,轻量级严格验证,Method,Combining lightweight and formal methods,Struct/07-tools,Practical verification
+Stream SQL,流式SQL,Language,SQL for streaming queries,Flink/03-sql-table-api,Continuous queries
+Table API,Table API,API,Declarative API for stream/batch,Flink/03-sql-table-api,Flink's SQL equivalent
+DataStream API,DataStream API,API,Low-level stream processing API,Flink/09-language-foundations,Java/Scala/Python
+ProcessFunction,ProcessFunction,API,Low-level event and timer access,Flink/09-language-foundations,Fine-grained control
+CEP,复杂事件处理,Library,Complex Event Processing,Flink/12-ai-ml,Pattern matching
+Pattern,模式,CEP,Event sequence template,Flink/12-ai-ml,CEP pattern definition
+Iteration,迭代,Feature,Feedback loops in dataflow,Flink/03-sql-table-api,Machine learning
+Connector,连接器,Integration,External system integration,Flink/04-connectors,Source/Sink
+Source,数据源,Connector,Data input connector,Flink/04-connectors,Kafka Filesystem
+Sink,数据汇,Connector,Data output connector,Flink/04-connectors,Databases Filesystems
+CDC,变更数据捕获,Integration,Change Data Capture,Flink/04-connectors,Debezium Maxwell
+Schema Registry,Schema注册中心,Infrastructure,Avro/Protobuf/JSON schema management,Flink/04-connectors,Confluent Apicurio
+Serialization,序列化,Process,Data encoding for transport/storage,Flink/04-connectors,Avro Protobuf JSON
+Deserialization,反序列化,Process,Data decoding from transport/storage,Flink/04-connectors,Schema evolution
+Time-to-Live,TTL,Configuration,State expiration policy,Flink/02-core-mechanisms,Auto cleanup
+Queryable State,可查询状态,Feature,Direct state access from outside,Flink/02-core-mechanisms,Monitoring/debugging
+Broadcast State,广播状态,State,Distributed to all parallel instances,Flink/02-core-mechanisms,Rule distribution
+Union State,联合状态,State,Merged from all subtasks,Flink/02-core-mechanisms,Checkpoint restoration
+Task,任务,Runtime,Basic unit of execution,Flink/01-architecture,One parallel instance
+Subtask,子任务,Runtime,Parallel instance of operator,Flink/01-architecture,Thread of execution
+JobGraph,作业图,Runtime,Optimized execution plan,Flink/01-architecture,Client-side optimization
+ExecutionGraph,执行图,Runtime,Distributed execution plan,Flink/01-architecture,JobManager view
+PhysicalGraph,物理图,Runtime,Deployed task topology,Flink/01-architecture,TaskManager view
+JobManager,作业管理器,Component,Central coordinator,Flink/01-architecture,Master process
+TaskManager,任务管理器,Component,Worker process,Flink/01-architecture,Slave process
+ResourceManager,资源管理器,Component,Resource allocation,Flink/01-architecture,YARN K8s Mesos
+Dispatcher,调度器,Component,Job submission entry point,Flink/01-architecture,REST API gateway
+Slot,槽位,Resource,Unit of resource allocation,Flink/01-architecture,Task execution container
+Slot Sharing,槽位共享,Optimization,Multiple tasks in one slot,Flink/01-architecture,Resource efficiency
+Chaining,链式优化,Optimization,Operator fusion,Flink/01-architecture,Reduce serialization
+Scale-out,横向扩展,Operation,Increase parallelism,Flink/10-deployment,Add TaskManagers
+Rescaling,重新扩缩容,Operation,Change parallelism of running job,Flink/10-deployment,Savepoint restart
+Graceful Shutdown,优雅关闭,Operation,Clean shutdown with checkpoint,Flink/10-deployment,No data loss
+Failover,故障恢复,Mechanism,Automatic failure handling,Flink/02-core-mechanisms,Restart strategy
+Restart Strategy,重启策略,Configuration,Failure recovery policy,Flink/02-core-mechanisms,"Fixed exponential delay"
+Fixed Delay,固定延迟,Strategy,Constant restart interval,Flink/02-core-mechanisms,Simple retry
+Exponential Delay,指数延迟,Strategy,Increasing restart interval,Flink/02-core-mechanisms,Backoff retry
+Region Failover,区域故障恢复,Strategy,Partial graph restart,Flink/02-core-mechanisms,Pipelined region
+Global Failover,全局故障恢复,Strategy,Full job restart,Flink/02-core-mechanisms,Complete rollback
+End-to-End Exactly-Once,端到端精确一次,Semantics,Full pipeline guarantee,Flink/02-core-mechanisms,Two-phase commit
+Two-Phase Commit,两阶段提交,Protocol,Distributed transaction protocol,Flink/02-core-mechanisms,2PC
+Transaction,事务,Concept,Atomic operation unit,Flink/02-core-mechanisms,ACID properties
+Idempotency,幂等性,Property,Same result on retry,Flink/02-core-mechanisms,Deduplication
+Deduplication,去重,Mechanism,Duplicate elimination,Flink/02-core-mechanisms,Idempotent writes
+Side Effect,副作用,Concept,Observable external action,Flink/02-core-mechanisms,Non-transactional output
+SAGA Pattern,SAGA模式,Pattern,Long-running transaction pattern,Knowledge/02-design-patterns,Compensating transactions
+Event Sourcing,事件溯源,Pattern,State as event sequence,Knowledge/02-design-patterns,Audit log
+CQRS,命令查询职责分离,Pattern,Separate read/write models,Knowledge/02-design-patterns,Event-driven
+Materialized View,物化视图,Pattern,Precomputed query results,Knowledge/02-design-patterns,Stream-table duality
+Lambda Architecture,Lambda架构,Architecture,Batch + speed layer,Knowledge/02-design-patterns,Largely deprecated
+Kappa Architecture,Kappa架构,Architecture,Streaming-only unified layer,Knowledge/02-design-patterns,Kafka Streams style
+Delta Architecture,Delta架构,Architecture,Unified batch/streaming with quality layers,Knowledge/06-frontier,Lakehouse pattern
+Lakehouse,湖仓一体,Architecture,Data lake + warehouse combined,Flink/14-lakehouse,Iceberg Hudi Paimon
+Streaming Lakehouse,流式湖仓,Architecture,Real-time lakehouse updates,Flink/14-lakehouse,CDC ingestion
+Table Format,表格式,Storage,Table abstraction over files,Flink/14-lakehouse,"Iceberg Hudi Delta Lake"
+Apache Iceberg,Iceberg,Format,Open table format,Flink/14-lakehouse,Netflix open source
+Apache Hudi,Hudi,Format,Upsert-capable table format,Flink/14-lakehouse,Uber open source
+Apache Paimon,Paimon,Format,Streaming lakehouse format,Flink/14-lakehouse,Flink native
+Merge-on-Read,读时合并,Strategy,Lazy update application,Flink/14-lakehouse,Read amplification
+Copy-on-Write,写时复制,Strategy,Eager update application,Flink/14-lakehouse,Write amplification
+Compaction,压缩,Maintenance,File consolidation,Flink/14-lakehouse,Small file problem
+Small File Problem,小文件问题,Issue,Metadata overhead from many files,Flink/14-lakehouse,Compaction solution
+Observability,可观测性,Concept,Metrics logs traces,Flink/15-observability,Three pillars
+Metrics,指标,Observability,Numeric measurements,Flink/15-observability,Counter gauge histogram
+Logs,日志,Observability,Text event records,Flink/15-observability,Structured logging
+Traces,追踪,Observability,Distributed request tracking,Flink/15-observability,OpenTelemetry
+OpenTelemetry,OpenTelemetry,Standard,Cloud-native observability standard,Flink/15-observability,CNCF project
+Prometheus,Prometheus,Tool,Metrics collection,Flink/15-observability,Time series DB
+Grafana,Grafana,Tool,Metrics visualization,Flink/15-observability,Dashboards alerts
+SLO,服务等级目标,Concept,Service Level Objective,Flink/15-observability,Reliability target
+SLI,服务等级指标,Concept,Service Level Indicator,Flink/15-observability,Measurable metric
+SLA,服务等级协议,Concept,Service Level Agreement,Flink/15-observability,Contractual commitment
+Latency,延迟,Metric,Processing time duration,Flink/15-observability,End-to-end time
+Throughput,吞吐量,Metric,Records processed per second,Flink/15-observability,System capacity
+Availability,可用性,Metric,Uptime percentage,Flink/15-observability,9s notation
+Backfill,回填,Operation,Historical data reprocessing,Flink/06-engineering,Rerun with new logic
+Reprocessing,重处理,Operation,Data recomputation,Flink/06-engineering,Corrective operations
+Hot Update,热更新,Operation,Code change without restart,Flink/06-engineering,Savepoint upgrade
+A/B Testing,A/B测试,Method,Controlled experiment,Flink/06-engineering,Feature comparison
+Canary Deployment,金丝雀部署,Method,Gradual rollout,Flink/06-engineering,Risk reduction
+Blue-Green Deployment,蓝绿部署,Method,Instant switchover,Flink/06-engineering,Zero downtime
+Shadow Traffic,影子流量,Method,Production traffic duplication,Flink/06-engineering,Safe testing
+Circuit Breaker,熔断器,Pattern,Failure isolation,Knowledge/02-design-patterns,Fail fast
+Bulkhead,舱壁隔离,Pattern,Resource isolation,Knowledge/02-design-patterns,Failure containment
+Rate Limiting,限流,Mechanism,Request throttling,Knowledge/02-design-patterns,Overload protection
+Throttling,节流,Mechanism,Traffic reduction,Knowledge/02-design-patterns,Backpressure control
+Load Balancing,负载均衡,Mechanism,Request distribution,Flink/01-architecture,Task distribution
+Data Skew,数据倾斜,Issue,Uneven data distribution,Flink/06-engineering,Hot keys
+Hot Key,热键,Issue,Overloaded partition,Flink/06-engineering,Skewed data
+Salting,加盐,Technique,Skew mitigation,Flink/06-engineering,Random prefix
+Local-Global,本地-全局,Optimization,Two-stage aggregation,Flink/03-sql-table-api,Skew handling
+Split Distinct,拆分去重,Optimization,Distributed distinct,Flink/03-sql-table-api,Count distinct optimization
+Mini-Batch,微批处理,Optimization,Batched processing,Flink/03-sql-table-api,Latency vs throughput
+Micro-Batching,微批,Architecture,Small batch processing,Knowledge/05-vs-competitors,Spark Streaming style
+True Streaming,真流式,Architecture,Record-by-record processing,Flink/02-core-mechanisms,Low latency
+Stream Processing,流处理,Domain,Continuous data processing,General,Real-time analytics
+Batch Processing,批处理,Domain,Finite data processing,General,Historical analytics
+Hybrid Processing,混合处理,Architecture,Unified batch/stream,Flink/01-architecture,Flink unified model
+Unified Model,统一模型,Concept,Single API for batch/stream,Flink/01-architecture,Code reuse
+Apache Flink,Flink,System,Distributed stream processor,Flink/01-architecture,Apache project
+Apache Spark,Spark,System,Unified analytics engine,Knowledge/05-vs-competitors,Micro-batch streaming
+Apache Kafka,Kafka,System,Distributed streaming platform,Knowledge/05-vs-competitors,Pub-sub messaging
+Kafka Streams,Kafka Streams,Library,Stream processing on Kafka,Knowledge/05-vs-competitors,Lightweight library
+ksqlDB,ksqlDB,Service,SQL on Kafka,Knowledge/05-vs-competitors,Kafka-native SQL
+Apache Storm,Storm,System,Distributed realtime computation,Knowledge/05-vs-competitors,First generation
+Apache Samza,Samza,System,Stream processing framework,Knowledge/05-vs-competitors,LinkedIn origin
+RisingWave,RisingWave,System,Stream processing database,Knowledge/05-vs-competitors,Materialized views
+Materialize,Materialize,System,SQL streaming database,Knowledge/05-vs-competitors,Differential dataflow
+Timeplus,Timeplus,System,Streaming-first analytics,Knowledge/05-vs-competitors,Proton engine
+Decodable,Decodable,Service,CDC platform,Knowledge/05-vs-competitors,Change data capture
+Flink SQL,Flink SQL,API,SQL interface for Flink,Flink/03-sql-table-api,Declarative queries
+Table Function,表函数,Feature,Row expansion,Flink/03-sql-table-api,UDTF
+Aggregate Function,聚合函数,Feature,Group computation,Flink/03-sql-table-api,UDAF
+Match Recognize,模式识别,Feature,SQL pattern matching,Flink/03-sql-table-api,CEP in SQL
+Over Aggregation,窗口聚合,Feature,Windowed aggregation,Flink/03-sql-table-api,ROWS/RANGE
+Grouping Sets,分组集,Feature,Multi-level aggregation,Flink/03-sql-table-api,CUBE ROLLUP
+Temporal Table,时态表,Feature,Versioned lookup table,Flink/03-sql-table-api,AS OF
+Temporal Join,时态关联,Feature,Point-in-time join,Flink/03-sql-table-api,Versioned joins
+Lookup Join,查找关联,Feature,External table join,Flink/03-sql-table-api,Dimension table
+Interval Join,区间关联,Feature,Time range join,Flink/03-sql-table-api,Event time range
+Regular Join,常规关联,Feature,Standard SQL join,Flink/03-sql-table-api,Stream-stream join
+Dynamic Table,动态表,Concept,Streaming SQL foundation,Flink/03-sql-table-api,Changelog stream
+Changelog Stream,变更流,Concept,Stream of modifications,Flink/03-sql-table-api,CDC format
+Upsert Stream,Upsert流,Format,Insert/update/delete stream,Flink/03-sql-table-api,Keyed changelog
+Append Stream,追加流,Format,Insert-only stream,Flink/03-sql-table-api,Immutable data
+Retract Stream,回撤流,Format,Add/retract stream,Flink/03-sql-table-api,Correction support
+Time Attribute,时间属性,Concept,Event/processing time column,Flink/03-sql-table-api,Special column type
+Watermark Strategy,水印策略,Configuration,Watermark generation config,Flink/02-core-mechanisms,Bounded out-of-orderness
+Idleness,空闲,Configuration,Input timeout detection,Flink/02-core-mechanisms,Watermark progress
+Alignment Timeout,对齐超时,Configuration,Barrier sync timeout,Flink/02-core-mechanisms,Unaligned fallback
+Unaligned Checkpoint,非对齐检查点,Optimization,Non-blocking barrier,Flink/02-core-mechanisms,In-flight buffer snapshot
+Buffer Debloating,缓冲区消胀,Optimization,Dynamic buffer sizing,Flink/02-core-mechanisms,Checkpoint duration
+Generalized Incremental Checkpoint,通用增量检查点,Optimization,Native incremental,Flink/02-core-mechanisms,Changelog backend
+Changelog State Backend,变更日志状态后端,Storage,Durable state changelog,Flink/02-core-mechanisms,State table separation
+ForSt State Backend,ForSt后端,Storage,RocksDB alternative,Flink/02-core-mechanisms,Disaggregated storage
+Disaggregated Storage,存算分离,Architecture,Separate compute and storage,Flink/01-architecture,Flink 2.x direction
+Cloud Native,云原生,Architecture,Kubernetes-based deployment,Flink/10-deployment,Container orchestration
+Kubernetes,Kubernetes,Platform,Container orchestration system,Flink/10-deployment,K8s native integration
+Operator,Operator,Tool,Kubernetes custom controller,Flink/10-deployment,Flink operator
+Helm Chart,Helm图表,Tool,K8s package manager,Flink/10-deployment,Deployment template
+Docker,Docker,Tool,Container runtime,Flink/10-deployment,Containerization
+Pod,Pod,Kubernetes,Smallest deployable unit,Flink/10-deployment,K8s workload
+Service,服务,Kubernetes,Network endpoint abstraction,Flink/10-deployment,K8s networking
+Ingress,入口,Kubernetes,External access routing,Flink/10-deployment,HTTP routing
+ConfigMap,配置映射,Kubernetes,Configuration storage,Flink/10-deployment,Externalized config
+Secret,密钥,Kubernetes,Sensitive data storage,Flink/10-deployment,Credentials
+PersistentVolume,持久卷,Kubernetes,Storage abstraction,Flink/10-deployment,Stateful workloads
+StatefulSet,有状态集,Kubernetes,Stateful workload controller,Flink/10-deployment,Ordered deployment
+Deployment,部署,Kubernetes,Stateless workload controller,Flink/10-deployment,Rolling updates
+Horizontal Pod Autoscaler,水平Pod自动扩缩容,Kubernetes,CPU/memory-based scaling,Flink/10-deployment,HPA
+Vertical Pod Autoscaler,垂直Pod自动扩缩容,Kubernetes,Resource adjustment,Flink/10-deployment,VPA
+Pod Disruption Budget,Pod中断预算,Kubernetes,Availability protection,Flink/10-deployment,Voluntary disruption
+Flink Kubernetes Operator,Flink K8s Operator,Tool,Native K8s integration,Flink/10-deployment,Autoscaling
+Application Mode,应用模式,Deployment,Per-job cluster mode,Flink/01-architecture,Main method on cluster
+Session Mode,会话模式,Deployment,Shared cluster mode,Flink/01-architecture,Multiple jobs
+Per-Job Mode,单作业模式,Deployment,Dedicated cluster per job,Flink/01-architecture,Deprecated
+Adaptive Scheduler,自适应调度器,Feature,Dynamic resource adjustment,Flink/01-architecture,Reactive mode
+Reactive Mode,响应式模式,Feature,K8s-native autoscaling,Flink/01-architecture,Pod-based scaling
+Declarative Resources,声明式资源,Configuration,Resource specification,Flink/01-architecture,K8s style
+Fine-Grained Resource Management,细粒度资源管理,Feature,Slot-level resources,Flink/01-architecture,Per-task resources
+Externalized Checkpoint,外部化检查点,Configuration,Checkpoint retention,Flink/02-core-mechanisms,Manual cleanup
+Unaligned Checkpoints,非对齐检查点,Feature,Buffer snapshot,Flink/02-core-mechanisms,High backpressure
+Local Recovery,本地恢复,Optimization,Task-local state restore,Flink/02-core-mechanisms,Network optimization
+High-Availability,高可用,Architecture,Fault-tolerant setup,Flink/01-architecture,ZK/K8s HA
+ZooKeeper,ZooKeeper,Service,Distributed coordination,Flink/01-architecture,Leader election
+Embedded Journal,嵌入式日志,Feature,K8s-native HA,Flink/01-architecture,No ZK required
+Leader Election,领导者选举,Mechanism,Active standby selection,Flink/01-architecture,HA pattern
+Single Point of Failure,单点故障,Risk,Non-redundant component,Flink/01-architecture,Availability risk
+Flink ML,Flink ML,Library,Machine learning on Flink,Flink/12-ai-ml,Streaming ML
+AI Agent,AI智能体,Concept,Autonomous decision-making entity,Flink/12-ai-ml,Agentic AI
+FLIP,Flink改进提案,Process,Flink Improvement Proposal,Flink/08-roadmap,Design document
+Release,发布,Milestone,Version release,Flink/08-roadmap,Versioned artifact
+Snapshot,快照,Version,Development version,Flink/08-roadmap,Nightly build
+Stable,稳定,Status,Production-ready version,Flink/08-roadmap,GA release
+Preview,预览,Status,Experimental feature,Flink/08-roadmap,Beta feature
+Deprecated,弃用,Status,Phase-out warning,Flink/08-roadmap,Removal planned
+Removed,移除,Status,Feature deletion,Flink/08-roadmap,Breaking change
+Migration,迁移,Process,Version upgrade,Flink/08-roadmap,Compatibility
+Compatibility,兼容性,Property,Version interoperability,Flink/08-roadmap,API stability
+Breaking Change,破坏性变更,Change,Incompatible modification,Flink/08-roadmap,Major version
+Feature Flag,特性开关,Configuration,Runtime feature toggle,Flink/08-roadmap,Gradual rollout

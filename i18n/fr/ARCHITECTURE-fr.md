@@ -1,4 +1,4 @@
-# Documentation d'architecture technique AnalysisDataFlow
+﻿# Documentation d'architecture technique AnalysisDataFlow
 
 > **Version** : v1.0 | **Date de mise à jour** : 2026-04-03 | **Statut** : Production
 >
@@ -524,7 +524,7 @@ graph TB
 Exemples :
 - 01.01-unified-streaming-theory.md    (Struct/01-foundation/)
 - 02-design-patterns-overview.md        (Knowledge/02-design-patterns/)
-- checkpoint-mechanism-deep-dive.md     (Flink/02-core-mechanisms/)
+- checkpoint-mechanism-deep-dive.md     (Flink/02-core/)
 ```
 
 ### 4.2 Système d'index
@@ -708,3 +708,4 @@ flowchart LR
 ---
 
 > **Note du traducteur** : Ce document a été traduit selon le style des documents techniques français. Les termes techniques d'architecture, les noms des composants système et les paramètres de configuration sont identiques à l'original. Dernière mise à jour : 2026-04-11
+

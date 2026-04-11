@@ -1,4 +1,4 @@
-# 学习路径：IoT数据处理
+﻿# 学习路径：IoT数据处理
 
 > **所属阶段**: 行业专项 | **难度等级**: L3-L5 | **预计时长**: 4周（每天3-4小时）
 
@@ -224,7 +224,7 @@ stream
 | 3.1 | `Knowledge/06-frontier/edge-streaming-patterns.md` | 模式 | 2h | 边缘模式 |
 | 3.2 | `Knowledge/06-frontier/edge-llm-realtime-inference.md` | AI | 2h | 边缘 AI |
 | 3.3 | `Flink/07-case-studies/case-smart-manufacturing-iot.md` | 案例 | 2h | 智能制造 |
-| 3.4 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 核心 | 2h | 乱序处理 |
+| 3.4 | `Flink/02-core/time-semantics-and-watermark.md` | 核心 | 2h | 乱序处理 |
 
 ### 边缘计算模式
 
@@ -419,3 +419,4 @@ stream
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，IoT数据处理路径 |
+

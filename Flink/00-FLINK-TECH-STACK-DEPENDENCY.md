@@ -185,7 +185,7 @@
 
 ## 3. 关系建立 (Relations)
 
-### 关系 1: Core → API 支撑关系
+### 关系 1: Core → API 支撑关系 {关系-1-core--api-支撑关系}
 
 核心层为 API 层提供容错、状态管理、网络通信等基础能力支撑。
 
@@ -208,7 +208,7 @@ Flink/02-core (核心机制)
                 └── flink-language-support-complete-guide.md
 ```
 
-### 关系 2: API → Runtime 依赖关系
+### 关系 2: API → Runtime 依赖关系 {关系-2-api--runtime-依赖关系}
 
 API 层依赖运行时层提供部署执行和资源管理能力。
 
@@ -358,7 +358,7 @@ Flink 技术栈采用五层架构设计，遵循计算机系统经典的"抽象-
 
 ## 6. 实例验证 (Examples)
 
-### 6.1 Core → API 依赖实例
+### 6.1 Core → API 依赖实例 {61-core--api-依赖实例}
 
 **实例**：Checkpoint 机制支撑 DataStream API 的 Exactly-Once 语义
 

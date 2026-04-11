@@ -1,4 +1,4 @@
-# 数据工程师学习路径
+﻿# 数据工程师学习路径
 
 > **难度级别**: 中级 | **预计时长**: 8-12周 | **目标受众**: 数据工程师、ETL开发者、数据平台工程师
 
@@ -43,7 +43,7 @@
 - [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md)
 - [Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md](../Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md)
 - [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 
 **实践任务**:
 
@@ -66,9 +66,9 @@
 
 **推荐文档**:
 
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
-- [Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md](../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md)
-- [状态后端选择](../Flink/02-core-mechanisms/state-backends-deep-comparison.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/exactly-once-semantics-deep-dive.md](../Flink/02-core/exactly-once-semantics-deep-dive.md)
+- [状态后端选择](../Flink/02-core/state-backends-deep-comparison.md)
 - [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md)
 - [Struct/02-properties/02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md)
 
@@ -123,7 +123,7 @@
 
 **推荐文档**:
 
-- [Flink/02-core-mechanisms/backpressure-and-flow-control.md](../Flink/02-core-mechanisms/backpressure-and-flow-control.md)
+- [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md)
 - [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
 - [Flink/07-case-studies/case-realtime-analytics.md](../Flink/07-case-studies/case-realtime-analytics.md)
 - [Flink/07-case-studies/case-ecommerce-realtime-recommendation.md](../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md)
@@ -249,3 +249,4 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
+

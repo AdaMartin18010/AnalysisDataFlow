@@ -1,4 +1,4 @@
-# AnalysisDataFlow 综合索引可视化
+﻿# AnalysisDataFlow 综合索引可视化
 
 > **版本**: v1.0 | **更新日期**: 2026-04-03 | **文档总数**: 254 篇 | **形式化元素**: 870 个
 >
@@ -170,17 +170,17 @@ graph TB
 
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
-| Checkpoint频繁超时 | 启用增量Checkpoint、使用RocksDB | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
-| 对齐时间过长 | 启用Unaligned Checkpoint、调整Debloating | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
-| 恢复缓慢 | 本地恢复、增量恢复 | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
-| 状态过大 | 增量Checkpoint、状态TTL | [Flink/02-core-mechanisms/flink-state-ttl-best-practices.md](../Flink/02-core-mechanisms/flink-state-ttl-best-practices.md) |
+| Checkpoint频繁超时 | 启用增量Checkpoint、使用RocksDB | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
+| 对齐时间过长 | 启用Unaligned Checkpoint、调整Debloating | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
+| 恢复缓慢 | 本地恢复、增量恢复 | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
+| 状态过大 | 增量Checkpoint、状态TTL | [Flink/02-core/flink-state-ttl-best-practices.md](../Flink/02-core/flink-state-ttl-best-practices.md) |
 | Checkpoint间隔设置 | 根据延迟容忍和状态大小计算 | [Knowledge/02-design-patterns/pattern-checkpoint-recovery.md](../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md) |
 
 #### 背压与流控问题
 
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
-| 背压严重 | Credit-based流控调优、增加并行度 | [Flink/02-core-mechanisms/backpressure-and-flow-control.md](../Flink/02-core-mechanisms/backpressure-and-flow-control.md) |
+| 背压严重 | Credit-based流控调优、增加并行度 | [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md) |
 | Source背压 | 下游处理慢，需加并行度或优化 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
 | Sink背压 | 批量优化、异步写入 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
 
@@ -195,16 +195,16 @@ graph TB
 
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
-| 延迟抖动 | GC调优、Debloating、异步执行 | [Flink/02-core-mechanisms/async-execution-model.md](../Flink/02-core-mechanisms/async-execution-model.md) |
-| Watermark延迟 | 调整Watermark生成策略 | [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md) |
+| 延迟抖动 | GC调优、Debloating、异步执行 | [Flink/02-core/async-execution-model.md](../Flink/02-core/async-execution-model.md) |
+| Watermark延迟 | 调整Watermark生成策略 | [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) |
 | 模型推理延迟高 | 异步推理、模型缓存 | [Flink/12-ai-ml/model-serving-streaming.md](../Flink/12-ai-ml/model-serving-streaming.md) |
 
 #### Exactly-Once问题
 
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
-| 数据重复 | 检查Sink幂等性、2PC配置 | [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../Flink/02-core-mechanisms/exactly-once-end-to-end.md) |
-| 数据丢失 | 检查Source可重放性、Checkpoint间隔 | [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../Flink/02-core-mechanisms/exactly-once-end-to-end.md) |
+| 数据重复 | 检查Sink幂等性、2PC配置 | [Flink/02-core/exactly-once-end-to-end.md](../Flink/02-core/exactly-once-end-to-end.md) |
+| 数据丢失 | 检查Source可重放性、Checkpoint间隔 | [Flink/02-core/exactly-once-end-to-end.md](../Flink/02-core/exactly-once-end-to-end.md) |
 
 ---
 
@@ -214,7 +214,7 @@ graph TB
 
 | 技术模块 | 核心功能 | 关键文档 |
 |----------|----------|----------|
-| **核心机制** | Checkpoint, Watermark, Exactly-Once | [Flink/02-core-mechanisms/](../Flink/02-core-mechanisms/) |
+| **核心机制** | Checkpoint, Watermark, Exactly-Once | [Flink/02-core/](../Flink/02-core/) |
 | **SQL/Table API** | 查询优化、窗口函数、物化表 | [Flink/03-sql-table-api/](../Flink/03-sql-table-api/) |
 | **连接器** | Kafka, CDC, Iceberg, Paimon | [Flink/04-connectors/](../Flink/04-connectors/) |
 | **部署运维** | Kubernetes, 自动扩缩容 | [Flink/10-deployment/](../Flink/10-deployment/) |
@@ -707,11 +707,11 @@ python .vscode/search.py "checkpoint exactly-once" --category Struct --operator 
 
 | 故障类型 | 排查文档 |
 |----------|----------|
-| **Checkpoint问题** | [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) |
-| **背压问题** | [Flink/02-core-mechanisms/backpressure-and-flow-control.md](../Flink/02-core-mechanisms/backpressure-and-flow-control.md) |
+| **Checkpoint问题** | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
+| **背压问题** | [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md) |
 | **性能调优** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
 | **内存溢出** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
-| **Exactly-Once失效** | [Flink/02-core-mechanisms/exactly-once-end-to-end.md](../Flink/02-core-mechanisms/exactly-once-end-to-end.md) |
+| **Exactly-Once失效** | [Flink/02-core/exactly-once-end-to-end.md](../Flink/02-core/exactly-once-end-to-end.md) |
 
 ---
 
@@ -775,3 +775,4 @@ graph TB
 *版本: v1.0*
 *适用项目: AnalysisDataFlow*
 *维护说明: 新增文档后需更新本索引的对应章节*
+

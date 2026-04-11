@@ -1,0 +1,451 @@
+(* ============================================================================
+ * π-演算: 哲学家就餐问题 (Dining Philosophers)
+ * ============================================================================
+ *
+ * 经典的并发同步问题, 演示如何使用 π-演算建模资源竞争和死锁避免。
+ *
+ * 问题描述:
+ * - 5位哲学家围坐在圆桌旁
+ * - 每位哲学家左右各有一根筷子
+ * - 哲学家需要同时获得两根筷子才能就餐
+ * - 如何设计协议避免死锁和饥饿?
+ *
+ * 形式化模型 (无死锁方案 - 资源排序):
+ * 
+ * Philosopher(i, left, right) = 
+ *   if i < (i+1) mod 5 then
+ *     left(x).right(y).(eat.release(x).release(y).think.Philosopher(i, left, right))
+ *   else
+ *     right(y).left(x).(eat.release(x).release(y).think.Philosopher(i, left, right))
+ *
+ * Chopstick(c) = !c(x).release(x).Chopstick(c)
+ *
+ * System = (νc0,c1,c2,c3,c4)(
+ *            Philosopher(0, c0, c1) | Philosopher(1, c1, c2) | ...
+ *            | Chopstick(c0) | Chopstick(c1) | ...
+ *          )
+ *
+ * 死锁避免策略:
+ * 1. 资源排序: 按固定顺序获取资源
+ * 2. 同时获取: 使用原子操作获取两根筷子
+ * 3. 超时放弃: 获取失败时释放已获得的资源
+ *
+ * π-演算建模要点:
+ * - 筷子是通道, 获取筷子是输入操作
+ * - 哲学家是进程, 在通道上同步
+ * - 释放筷子是输出操作
+ * ============================================================================ *)
+
+(* ----------------------------------------------------------------------------
+ * 类型定义
+ * ---------------------------------------------------------------------------- *)
+
+type phil_id = int
+type chopstick_id = int
+
+(* 筷子状态 *)
+type chopstick = {
+  id: chopstick_id;
+  channel: string;      (* 请求通道 *)
+  available: bool ref;  (* 可用状态 *)
+  holder: phil_id option ref;  (* 当前持有者 *)
+}
+
+(* 哲学家状态 *)
+type philosopher_state = 
+  | Thinking
+  | Hungry
+  | Eating
+  | WaitingLeft
+  | WaitingRight
+
+(* 消息类型 *)
+type fork_msg =
+  | Acquire of phil_id * string    (* 哲学家请求筷子, 携带回复通道 *)
+  | Release of phil_id             (* 释放筷子 *)
+  | Granted                        (* 获得许可 *)
+  | Denied                         (* 请求被拒绝 *)
+
+(* ----------------------------------------------------------------------------
+ * 筷子进程 (资源)
+ *
+ * Chopstick(id, ch) = 
+ *   !ch(req).(
+ *     case req of
+ *       Acquire(pid, reply) -> if available then 
+ *                                available := false;
+ *                                holder := Some pid;
+ *                                replȳ⟨Granted⟩
+ *                              else 
+ *                                replȳ⟨Denied⟩;
+ *       Release(pid) -> if holder = Some pid then
+ *                         available := true;
+ *                         holder := None
+ *   );
+ *   Chopstick(id, ch)
+ *
+ * 使用复制算子 ! 实现可重复使用的资源
+ * ---------------------------------------------------------------------------- *)
+let rec chopstick_process (fork: chopstick) =
+  (* 等待请求 *)
+  match input fork.channel with
+  | Acquire(pid, reply_ch) ->
+      if !(fork.available) then begin
+        (* 筷子可用, 授予请求者 *)
+        fork.available := false;
+        fork.holder := Some pid;
+        output reply_ch Granted;
+        print_endline ("[Chopstick " ^ string_of_int fork.id ^ "] Acquired by Philosopher " ^ 
+                      string_of_int pid)
+      end else begin
+        (* 筷子被占用, 拒绝请求 *)
+        output reply_ch Denied;
+        print_endline ("[Chopstick " ^ string_of_int fork.id ^ "] Denied to Philosopher " ^ 
+                      string_of_int pid)
+      end
+      
+  | Release(pid) ->
+      (match !(fork.holder) with
+      | Some holder_id when holder_id = pid ->
+          (* 只有持有者能释放 *)
+          fork.available := true;
+          fork.holder := None;
+          print_endline ("[Chopstick " ^ string_of_int fork.id ^ "] Released by Philosopher " ^ 
+                        string_of_int pid)
+      | _ ->
+          print_endline ("[Chopstick " ^ string_of_int fork.id ^ "] Release rejected - not holder")
+      )
+      
+  | _ -> print_endline "[Chopstick] Invalid message";
+  
+  (* 递归: 继续服务 *)
+  chopstick_process fork
+
+(* ----------------------------------------------------------------------------
+ * 哲学家进程 - 方案1: 资源排序 (无死锁)
+ *
+ * 策略: 总是先获取编号较小的筷子
+ *
+ * Philosopher_i = 
+ *   think;
+ *   if left_id < right_id then
+ *     acquire(left);
+ *     acquire(right);
+ *   else
+ *     acquire(right);
+ *     acquire(left);
+ *   eat;
+ *   release(left);
+ *   release(right);
+ *   Philosopher_i
+ * ---------------------------------------------------------------------------- *)
+let rec philosopher_ordered 
+    (id: phil_id) 
+    (left_fork: chopstick)
+    (right_fork: chopstick)
+    (state: philosopher_state ref) =
+    
+  (* 思考阶段 *)
+  state := Thinking;
+  print_endline ("[Philosopher " ^ string_of_int id ^ "] Thinking...");
+  Unix.sleep (1 + Random.int 3);
+  
+  (* 饥饿阶段 *)
+  state := Hungry;
+  print_endline ("[Philosopher " ^ string_of_int id ^ "] Hungry! Trying to eat...");
+  
+  (* 确定获取顺序 - 资源排序避免死锁 *)
+  let (first, second) = 
+    if left_fork.id < right_fork.id then
+      (left_fork, right_fork)
+    else
+      (right_fork, left_fork)
+  in
+  
+  (* 获取第一根筷子 *)
+  state := WaitingLeft;
+  print_endline ("[Philosopher " ^ string_of_int id ^ "] Requesting chopstick " ^ 
+                string_of_int first.id);
+  let reply1_ch = fresh_channel ("reply_" ^ string_of_int id ^ "_1") in
+  output first.channel (Acquire(id, reply1_ch));
+  
+  match input reply1_ch with
+  | Granted ->
+      print_endline ("[Philosopher " ^ string_of_int id ^ "] Got chopstick " ^ 
+                    string_of_int first.id);
+      
+      (* 获取第二根筷子 *)
+      state := WaitingRight;
+      print_endline ("[Philosopher " ^ string_of_int id ^ "] Requesting chopstick " ^ 
+                    string_of_int second.id);
+      let reply2_ch = fresh_channel ("reply_" ^ string_of_int id ^ "_2") in
+      output second.channel (Acquire(id, reply2_ch));
+      
+      (match input reply2_ch with
+      | Granted ->
+          (* 获得两根筷子, 开始就餐 *)
+          state := Eating;
+          print_endline ("[Philosopher " ^ string_of_int id ^ "] ***** EATING *****");
+          Unix.sleep (2 + Random.int 3);
+          
+          (* 释放筷子 *)
+          output first.channel (Release(id));
+          output second.channel (Release(id));
+          print_endline ("[Philosopher " ^ string_of_int id ^ "] Released chopsticks")
+          
+      | Denied ->
+          (* 未获得第二根, 释放第一根 *)
+          output first.channel (Release(id));
+          print_endline ("[Philosopher " ^ string_of_int id ^ "] Could not get second, released first")
+      )
+      
+  | Denied ->
+      print_endline ("[Philosopher " ^ string_of_int id ^ "] Could not get first chopstick")
+  | _ -> ();
+  
+  (* 递归: 继续生活 *)
+  philosopher_ordered id left_fork right_fork state
+
+(* ----------------------------------------------------------------------------
+ * 哲学家进程 - 方案2: 带超时的获取 (避免饥饿)
+ *
+ * 策略: 如果无法同时获得两根筷子, 在超时后释放已获得的资源
+ * ---------------------------------------------------------------------------- *)
+let rec philosopher_with_timeout
+    (id: phil_id)
+    (left_fork: chopstick)
+    (right_fork: chopstick)
+    (state: philosopher_state ref)
+    (timeout_sec: int) =
+    
+  state := Thinking;
+  print_endline ("[Philosopher " ^ string_of_int id ^ "] Thinking...");
+  Unix.sleep (1 + Random.int 3);
+  
+  state := Hungry;
+  print_endline ("[Philosopher " ^ string_of_int id ^ "] Hungry!");
+  
+  (* 尝试同时获取两根筷子 *)
+  let reply_left = fresh_channel ("reply_left_" ^ string_of_int id) in
+  let reply_right = fresh_channel ("reply_right_" ^ string_of_int id) in
+  
+  output left_fork.channel (Acquire(id, reply_left));
+  output right_fork.channel (Acquire(id, reply_right));
+  
+  (* 使用选择算子实现超时 *)
+  let got_left = ref false in
+  let got_right = ref false in
+  let start_time = Unix.time () in
+  
+  (* 等待两根筷子, 带超时 *)
+  while not (!got_left && !got_right) && (Unix.time () -. start_time < float_of_int timeout_sec) do
+    select [
+      (fun () ->
+        if not !got_left then
+          match input reply_left with
+          | Granted -> got_left := true; true
+          | _ -> false
+        else false
+      );
+      (fun () ->
+        if not !got_right then
+          match input reply_right with
+          | Granted -> got_right := true; true
+          | _ -> false
+        else false
+      );
+      (fun () ->
+        Unix.sleep 1;
+        false
+      )
+    ]
+  done;
+  
+  if !got_left && !got_right then begin
+    (* 成功获得两根筷子 *)
+    state := Eating;
+    print_endline ("[Philosopher " ^ string_of_int id ^ "] ***** EATING (with timeout) *****");
+    Unix.sleep (2 + Random.int 3);
+    
+    output left_fork.channel (Release(id));
+    output right_fork.channel (Release(id));
+    print_endline ("[Philosopher " ^ string_of_int id ^ "] Finished eating")
+    
+  end else begin
+    (* 超时, 释放已获得的筷子 *)
+    if !got_left then output left_fork.channel (Release(id));
+    if !got_right then output right_fork.channel (Release(id));
+    print_endline ("[Philosopher " ^ string_of_int id ^ "] Timeout, released acquired forks")
+  end;
+  
+  philosopher_with_timeout id left_fork right_fork state timeout_sec
+
+(* ----------------------------------------------------------------------------
+ * 监控进程
+ *
+ * 跟踪系统状态, 检测死锁和饥饿
+ * ---------------------------------------------------------------------------- *)
+let rec monitor (philosophers: (phil_id * philosopher_state ref) list) (forks: chopstick list) =
+  Unix.sleep 5;
+  
+  print_endline "\n========== MONITOR STATUS ==========";
+  
+  (* 哲学家状态 *)
+  print_endline "Philosopher states:";
+  List.iter (fun (id, state_ref) ->
+    let state_str = match !state_ref with
+      | Thinking -> "Thinking"
+      | Hungry -> "Hungry"
+      | Eating -> "EATING"
+      | WaitingLeft -> "Waiting(left)"
+      | WaitingRight -> "Waiting(right)"
+    in
+    print_endline ("  Philosopher " ^ string_of_int id ^ ": " ^ state_str)
+  ) philosophers;
+  
+  (* 筷子状态 *)
+  print_endline "Chopstick states:";
+  List.iter (fun fork ->
+    let status = if !(fork.available) then 
+      "Available" 
+    else 
+      match !(fork.holder) with
+      | Some pid -> "Held by " ^ string_of_int pid
+      | None -> "Unknown"
+    in
+    print_endline ("  Chopstick " ^ string_of_int fork.id ^ ": " ^ status)
+  ) forks;
+  
+  (* 检测死锁: 所有哲学家都在等待 *)
+  let all_waiting = List.for_all (fun (_, state_ref) ->
+    match !state_ref with
+    | WaitingLeft | WaitingRight -> true
+    | _ -> false
+  ) philosophers in
+  
+  if all_waiting then
+    print_endline "\n*** WARNING: DEADLOCK DETECTED! ***"
+  else
+    print_endline "\nSystem healthy";
+  
+  print_endline "====================================\n";
+  
+  monitor philosophers forks
+
+(* ----------------------------------------------------------------------------
+ * 辅助函数
+ * ---------------------------------------------------------------------------- *)
+
+and fresh_channel prefix = prefix ^ "_" ^ string_of_int (Random.int 100000)
+
+and output ch msg = ()
+
+and input ch = 
+  (* 模拟输入 *)
+  Acquire(0, "")
+
+and select branches =
+  (* 非确定性选择 *)
+  try
+    List.find_map (fun f ->
+      let result = f () in
+      if result then Some () else None
+    ) branches |> ignore
+  with Not_found -> ()
+
+(* ----------------------------------------------------------------------------
+ * 系统组合
+ *
+ * System = (νc0,c1,c2,c3,c4)(
+ *            |_{i=0}^{4} Philosopher(i, c_i, c_{(i+1) mod 5})
+ *            | |_{i=0}^{4} Chopstick(c_i)
+ *          )
+ * ---------------------------------------------------------------------------- *)
+let dining_philosophers_system () =
+  print_endline "=== Dining Philosophers Problem ===";
+  print_endline "Modeling with π-calculus...\n";
+  
+  let num_philosophers = 5 in
+  
+  (* 创建筷子 *)
+  let forks = ref [] in
+  for i = 0 to num_philosophers - 1 do
+    let fork = {
+      id = i;
+      channel = fresh_channel ("fork_" ^ string_of_int i);
+      available = ref true;
+      holder = ref None
+    } in
+    forks := fork :: !forks
+  done;
+  let fork_array = Array.of_list (List.rev !forks) in
+  
+  (* 启动筷子进程 *)
+  Array.iter (fun fork ->
+    ignore (Thread.create chopstick_process fork)
+  ) fork_array;
+  
+  (* 创建哲学家 *)
+  let philosopher_states = ref [] in
+  for i = 0 to num_philosophers - 1 do
+    let left = fork_array.(i) in
+    let right = fork_array.((i + 1) mod num_philosophers) in
+    let state = ref Thinking in
+    philosopher_states := (i, state) :: !philosopher_states;
+    
+    (* 使用资源排序方案 *)
+    ignore (Thread.create (fun () ->
+      philosopher_ordered i left right state
+    ) ())
+  done;
+  
+  (* 启动监控 *)
+  ignore (Thread.create (fun () ->
+    monitor !philosopher_states (Array.to_list fork_array)
+  ) ());
+  
+  (* 运行一段时间 *)
+  Unix.sleep 30;
+  print_endline "\n=== Simulation Complete ==="
+
+(* ----------------------------------------------------------------------------
+ * 执行示例
+ * ---------------------------------------------------------------------------- *)
+(*
+# dining_philosophers_system ();;
+=== Dining Philosophers Problem ===
+Modeling with π-calculus...
+
+[Philosopher 0] Thinking...
+[Philosopher 1] Thinking...
+[Philosopher 2] Thinking...
+[Philosopher 3] Thinking...
+[Philosopher 4] Thinking...
+[Philosopher 0] Hungry! Trying to eat...
+[Philosopher 0] Requesting chopstick 0
+[Chopstick 0] Acquired by Philosopher 0
+[Philosopher 0] Got chopstick 0
+[Philosopher 0] Requesting chopstick 1
+[Philosopher 1] Hungry! Trying to eat...
+[Philosopher 1] Requesting chopstick 1
+...
+[Philosopher 0] ***** EATING *****
+...
+========== MONITOR STATUS ==========
+Philosopher states:
+  Philosopher 0: Thinking
+  Philosopher 1: EATING
+  Philosopher 2: Hungry
+  Philosopher 3: Thinking
+  Philosopher 4: Waiting(left)
+Chopstick states:
+  Chopstick 0: Available
+  Chopstick 1: Held by 1
+  Chopstick 2: Held by 1
+  Chopstick 3: Available
+  Chopstick 4: Held by 4
+System healthy
+====================================
+...
+=== Simulation Complete ===
+*)

@@ -1,4 +1,4 @@
-# AI辅助功能套件
+﻿# AI辅助功能套件
 
 AnalysisDataFlow 项目的AI辅助功能集合，提供智能文档分析、搜索、问答和学习路径推荐能力。
 
@@ -83,7 +83,7 @@ python scripts/ai-features/smart-search-indexer.py --hybrid-search "watermark se
 ======================================================================
 
 [1] Checkpoint机制深度解析
-    📄 Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+    📄 Flink/02-core/checkpoint-mechanism-deep-dive.md
     📑 章节: 核心机制
     ⭐ 相关度: 0.9523
     📝 Checkpoint是Flink容错机制的核心，基于Chandy-Lamport...
@@ -124,7 +124,7 @@ python scripts/ai-features/qa-bot-knowledge-base.py --generate-faq --output FAQ-
 Watermark是Flink中用于处理乱序事件的机制，表示事件时间的进度。
 当Watermark超过窗口结束时间时，触发窗口计算...
 
-📄 来源: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+📄 来源: Flink/02-core/time-semantics-and-watermark.md
 🏷️  标签: watermark, time, event-time
 ======================================================================
 ```
@@ -301,3 +301,4 @@ A: 尝试语义搜索或混合搜索，确保已生成嵌入向量。
 ## 许可证
 
 与主项目一致：Apache License 2.0
+

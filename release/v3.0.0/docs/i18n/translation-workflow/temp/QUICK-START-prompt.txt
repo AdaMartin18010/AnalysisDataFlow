@@ -1,0 +1,621 @@
+You are a professional technical translator specializing in stream processing, distributed systems, and formal methods. Translate the following Chinese technical document into English.
+
+## Translation Guidelines
+
+### Terminology Standards (CRITICAL - Must Follow)
+The following terms must be translated EXACTLY as specified:
+- 流处理 → Stream Processing: A processing pattern for real-time computation on unbounded data streams
+- 窗口 → Window: A logical boundary that divides stream data into bounded sets
+- 背压 → Backpressure: A mechanism where consumers signal their processing capacity to producers
+- 状态管理 → State Management: The mechanism for maintaining state of stateful operators in stream computation
+- 事件时间 → Event Time: The timestamp when the data was originally generated
+- 进程演算 → Process Calculus: A formal language for describing concurrent process behavior
+- 算子 → Operator: The basic processing unit in stream computation
+- Source → Source: The input endpoint of a data stream
+- Sink → Sink: The output endpoint of a data stream
+- 状态后端 → State Backend: The mechanism for storing and accessing stream processing state
+- 并行度 → Parallelism: The number of parallel instances for an operator or task
+- Barrier → Barrier: A special event that triggers checkpoints and aligns stream partitions
+- RocksDB状态后端 → RocksDBStateBackend: A state backend using RocksDB for storage, supporting large state
+- DataStream API → DataStream API: Flink's low-level stream processing programming interface
+- 允许延迟 → Allowed Lateness: The grace period for late data arrival in windowed computations
+
+### Terms That MUST NOT Be Translated
+Keep the following terms in their original form:
+
+- All class names (e.g., DataStream, ProcessFunction)
+- All API method names (e.g., map, flatMap, keyBy)
+- All configuration keys (e.g., execution.checkpointing.interval)
+- All product names (e.g., Apache Flink, Apache Kafka)
+
+### Style Guidelines
+1. Use clear, professional technical English
+2. Maintain the original Markdown formatting exactly
+3. Preserve all code blocks, Mermaid diagrams, and mathematical formulas
+4. Use present tense for technical descriptions
+5. Keep sentences concise (under 25 words when possible)
+6. Use active voice where appropriate
+7. Ensure abbreviations are expanded on first use
+
+### Document Structure
+The document follows a standard 8-section structure:
+1. Concept Definitions
+2. Property Derivation
+3. Relationship Establishment
+4. Argumentation Process
+5. Formal Proof / Engineering Argument
+6. Example Verification
+7. Visualizations
+8. References
+
+Maintain this structure in the translation.
+
+### Source Document
+File: QUICK-START.md
+
+---
+
+# AnalysisDataFlow 快速上手指南
+
+> **5分钟了解项目 | 按角色定制路径 | 快速问题索引**
+>
+> 📊 **254 篇文档 | 945 形式化元素 | 100% 完成度**
+
+---
+
+## 1. 5分钟快速了解
+
+### 1.1 项目是什么
+
+**AnalysisDataFlow** 是流计算领域的**统一知识库**——从形式化理论到工程实践的全栈知识体系。
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    知识层次金字塔                             │
+├─────────────────────────────────────────────────────────────┤
+│  L6 生产实现  │  Flink/ 代码、配置、案例 (116篇)              │
+├───────────────┼─────────────────────────────────────────────┤
+│  L4-L5 模式   │  Knowledge/ 设计模式、技术选型 (102篇)        │
+├───────────────┼─────────────────────────────────────────────┤
+│  L1-L3 理论   │  Struct/ 定理、证明、形式化定义 (43篇)         │
+└───────────────┴─────────────────────────────────────────────┘
+```
+
+**核心价值**：
+
+- 🔬 **理论支撑**：形式化定理保证工程决策的正确性
+- 🛠️ **实践指导**：从定理到代码的完整映射路径
+- 🔍 **问题诊断**：按症状快速定位解决方案
+
+---
+
+### 1.2 三大目录结构
+
+| 目录 | 定位 | 内容特征 | 适合谁 |
+|------|------|----------|--------|
+| **Struct/** | 形式理论基础 | 数学定义、定理证明、严格论证 | 研究员、架构师 |
+| **Knowledge/** | 工程实践知识 | 设计模式、业务场景、技术选型 | 架构师、工程师 |
+| **Flink/** | Flink 专项技术 | 架构机制、SQL/API、工程实践 | 开发工程师 |
+
+**知识流转关系**：
+
+```mermaid
+graph LR
+    S[Struct/ 形式化定义] -->|理论下沉| K[Knowledge/ 设计模式]
+    K -->|实践指导| F[Flink/ 工程实现]
+    F -.->|反馈验证| S
+
+    style S fill:#e1bee7,stroke:#6a1b9a
+    style K fill:#c8e6c9,stroke:#2e7d32
+    style F fill:#bbdefb,stroke:#1565c0
+```
+
+---
+
+### 1.3 核心特色
+
+#### 六段式文档模板（强制结构）
+
+每篇核心文档必须包含：
+
+| 章节 | 内容 | 示例 |
+|------|------|------|
+| 1. 概念定义 | 严格形式化定义 + 直观解释 | `Def-S-04-04` Watermark语义 |
+| 2. 属性推导 | 从定义推导的引理与性质 | `Lemma-S-04-02` 单调性引理 |
+| 3. 关系建立 | 与其他概念/模型的关联 | Flink→进程演算编码 |
+| 4. 论证过程 | 辅助定理、反例分析 | 边界条件讨论 |
+| 5. 形式证明 | 主要定理的完整证明 | `Thm-S-17-01` Checkpoint一致性 |
+| 6. 实例验证 | 简化实例、代码片段 | Flink配置示例 |
+| 7. 可视化 | Mermaid图表 | 架构图、流程图 |
+| 8. 引用参考 | 权威来源引用 | VLDB/SOSP论文 |
+
+#### 定理编号体系
+
+全局统一编号：`{类型}-{阶段}-{文档序号}-{顺序号}`
+
+| 编号示例 | 含义 | 位置 |
+|----------|------|------|
+| `Thm-S-17-01` | Struct阶段, 17号文档, 第1个定理 | Checkpoint正确性证明 |
+| `Def-K-02-01` | Knowledge阶段, 02号文档, 第1个定义 | Event Time Processing模式 |
+| `Thm-F-12-01` | Flink阶段, 12号文档, 第1个定理 | 在线学习参数收敛性 |
+
+**快速记忆**：
+
+- **Thm** = Theorem（定理）| **Def** = Definition（定义）| **Lemma** = 引理 | **Prop** = 命题
+- **S** = Struct（理论）| **K** = Knowledge（知识）| **F** = Flink（实现）
+
+---
+
+## 2. 按角色阅读路径
+
+### 2.1 架构师路径（3-5天）
+
+**目标**：掌握系统设计方法论，进行技术选型和架构决策
+
+```
+Day 1-2: 概念筑基
+├── Struct/01-foundation/01.01-unified-streaming-theory.md
+│   └── 重点：六层表达能力层次（L1-L6）
+├── Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md
+│   └── 重点：五大并发范式对比矩阵
+└── Knowledge/01-concept-atlas/streaming-models-mindmap.md
+    └── 重点：流计算模型六维对比
+
+Day 3-4: 模式与选型
+├── Knowledge/02-design-patterns/ (全部浏览)
+│   └── 重点：7大核心模式的关系图
+├── Knowledge/04-technology-selection/engine-selection-guide.md
+│   └── 重点：流处理引擎选型决策树
+└── Knowledge/04-technology-selection/streaming-database-guide.md
+    └── 重点：流数据库对比矩阵
+
+Day 5: 架构决策
+├── Flink/01-architecture/flink-1.x-vs-2.0-comparison.md
+│   └── 重点：架构演进与迁移决策
+└── Struct/03-relationships/03.03-expressiveness-hierarchy.md
+    └── 重点：表达能力与工程约束
+```
+
+---
+
+### 2.2 开发工程师路径（1-2周）
+
+**目标**：掌握Flink核心技术，能够开发生产级流处理应用
+
+```
+Week 1: 快速上手
+├── Day 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
+│   └── Flink定位与优势
+├── Day 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+│   └── 事件时间、Watermark机制
+├── Day 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
+│   └── 事件时间处理模式
+└── Day 5: Flink/04-connectors/kafka-integration-patterns.md
+    └── Kafka集成最佳实践
+
+Week 2: 核心机制深入
+├── Day 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+│   └── Checkpoint机制、故障恢复
+├── Day 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+│   └── Exactly-Once实现原理
+├── Day 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+│   └── 背压处理与流控
+└── Day 5: Flink/06-engineering/performance-tuning-guide.md
+    └── 性能调优实战
+```
+
+---
+
+### 2.3 研究员路径（2-4周）
+
+**目标**：理解理论基础，掌握形式化方法，能够开展创新研究
+
+```
+Week 1-2: 理论基础
+├── Struct/01-foundation/01.02-process-calculus-primer.md
+│   └── CCS/CSP/π-演算基础
+├── Struct/01-foundation/01.04-dataflow-model-formalization.md
+│   └── Dataflow严格形式化
+├── Struct/01-foundation/01.03-actor-model-formalization.md
+│   └── Actor模型形式语义
+└── Struct/02-properties/02.03-watermark-monotonicity.md
+    └── Watermark单调性定理
+
+Week 3: 模型关系与编码
+├── Struct/03-relationships/03.01-actor-to-csp-encoding.md
+│   └── Actor→CSP编码保持性
+├── Struct/03-relationships/03.02-flink-to-process-calculus.md
+│   └── Flink→进程演算编码
+└── Struct/03-relationships/03.03-expressiveness-hierarchy.md
+    └── 六层表达能力层次定理
+
+Week 4: 形式证明与前沿
+├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
+│   └── Checkpoint一致性证明
+├── Struct/04-proofs/04.02-flink-exactly-once-correctness.md
+│   └── Exactly-Once正确性证明
+└── Struct/06-frontier/06.02-choreographic-streaming-programming.md
+    └── Choreographic编程前沿
+```
+
+---
+
+### 2.4 学生路径（1-2月）
+
+**目标**：循序渐进建立完整知识体系，从入门到精通
+
+```
+Month 1: 基础构建
+├── Week 1: 并发计算模型
+│   ├── Struct/01-foundation/01.02-process-calculus-primer.md
+│   ├── Struct/01-foundation/01.03-actor-model-formalization.md
+│   └── Struct/01-foundation/01.05-csp-formalization.md
+├── Week 2: 流计算基础
+│   ├── Struct/01-foundation/01.04-dataflow-model-formalization.md
+│   ├── Knowledge/01-concept-atlas/streaming-models-mindmap.md
+│   └── Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Week 3: 核心性质
+│   ├── Struct/02-properties/02.01-determinism-in-streaming.md
+│   ├── Struct/02-properties/02.02-consistency-hierarchy.md
+│   └── Knowledge/02-design-patterns/pattern-event-time-processing.md
+└── Week 4: 模式实践
+    ├── Knowledge/02-design-patterns/ (全部)
+    └── Knowledge/03-business-patterns/ (选读)
+
+Month 2: 深入与拓展
+├── Week 5-6: Flink工程实践
+│   ├── Flink/02-core-mechanisms/ (全部核心文档)
+│   └── Flink/06-engineering/performance-tuning-guide.md
+├── Week 7: 形式化证明入门
+│   ├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
+│   └── Struct/04-proofs/04.03-chandy-lamport-consistency.md
+└── Week 8: 前沿探索
+    ├── Knowledge/06-frontier/streaming-databases.md
+    └── Knowledge/06-frontier/rust-streaming-ecosystem.md
+```
+
+---
+
+## 3. 快速查找索引
+
+### 3.1 按主题索引
+
+#### 流处理基础
+
+| 主题 | 必读文档 | 形式化基础 |
+|------|----------|------------|
+| **事件时间处理** | Knowledge/02-design-patterns/pattern-event-time-processing.md | `Def-S-04-04` Watermark语义 |
+| **窗口计算** | Knowledge/02-design-patterns/pattern-windowed-aggregation.md | `Def-S-04-05` 窗口算子 |
+| **状态管理** | Knowledge/02-design-patterns/pattern-stateful-computation.md | `Thm-S-17-01` Checkpoint一致性 |
+| **Checkpoint** | Knowledge/02-design-patterns/pattern-checkpoint-recovery.md | `Thm-S-18-01` Exactly-Once正确性 |
+| **一致性级别** | Struct/02-properties/02.02-consistency-hierarchy.md | `Def-S-08-01~04` AM/AL/EO语义 |
+
+#### 设计模式
+
+| 模式 | 适用场景 | 复杂度 | 文档 |
+|------|----------|--------|------|
+| P01 Event Time | 乱序数据处理 | ★★★☆☆ | pattern-event-time-processing.md |
+| P02 Windowed Aggregation | 窗口聚合计算 | ★★☆☆☆ | pattern-windowed-aggregation.md |
+| P03 CEP | 复杂事件匹配 | ★★★★☆ | pattern-cep-complex-event.md |
+| P04 Async I/O | 外部数据关联 | ★★★☆☆ | pattern-async-io-enrichment.md |
+| P05 State Management | 有状态计算 | ★★★★☆ | pattern-stateful-computation.md |
+| P06 Side Output | 数据分流 | ★★☆☆☆ | pattern-side-output.md |
+| P07 Checkpoint | 故障容错 | ★★★★★ | pattern-checkpoint-recovery.md |
+
+#### 前沿技术
+
+| 技术方向 | 核心文档 | 技术栈 |
+|----------|----------|--------|
+| **流数据库** | Knowledge/06-frontier/streaming-databases.md | RisingWave, Materialize |
+| **Rust流生态** | Knowledge/06-frontier/rust-streaming-ecosystem.md | Arroyo, Timeplus |
+| **实时RAG** | Knowledge/06-frontier/real-time-rag-architecture.md | Flink + 向量数据库 |
+| **Streaming Lakehouse** | Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md | Flink + Iceberg/Paimon |
+| **边缘流处理** | Knowledge/06-frontier/edge-streaming-patterns.md | 边缘计算架构 |
+| **流式物化视图** | Knowledge/06-frontier/streaming-materialized-view-architecture.md | 实时数仓 |
+
+---
+
+### 3.2 按问题索引
+
+#### Checkpoint相关问题
+
+| 问题症状 | 解决方案 | 参考文档 |
+|----------|----------|----------|
+| Checkpoint频繁超时 | 启用增量Checkpoint、使用RocksDB | checkpoint-mechanism-deep-dive.md |
+| 对齐时间过长 | 启用Unaligned Checkpoint、调整Debloating | checkpoint-mechanism-deep-dive.md |
+| 恢复缓慢 | 本地恢复、增量恢复 | checkpoint-mechanism-deep-dive.md |
+| 状态过大 | 增量Checkpoint、状态TTL | flink-state-ttl-best-practices.md |
+
+#### 背压处理
+
+| 问题症状 | 解决方案 | 参考文档 |
+|----------|----------|----------|
+| 背压严重 | Credit-based流控调优、增加并行度 | backpressure-and-flow-control.md |
+| Source背压 | 下游处理慢，需加并行度或优化 | performance-tuning-guide.md |
+| Sink背压 | 批量优化、异步写入 | performance-tuning-guide.md |
+
+#### 数据倾斜
+
+| 问题症状 | 解决方案 | 参考文档 |
+|----------|----------|----------|
+| 热点Key | 加盐、两阶段聚合、自定义分区器 | performance-tuning-guide.md |
+| 窗口倾斜 | 自定义窗口分配器、允许延迟 | pattern-windowed-aggregation.md |
+
+#### Exactly-Once问题
+
+| 问题症状 | 解决方案 | 参考文档 |
+|----------|----------|----------|
+| 数据重复 | 检查Sink幂等性、2PC配置 | exactly-once-end-to-end.md |
+| 数据丢失 | 检查Source可重放性、Checkpoint间隔 | exactly-once-end-to-end.md |
+
+#### AI/ML流处理问题
+
+| 问题症状 | 解决方案 | 参考文档 |
+|----------|----------|----------|
+| 模型推理延迟高 | 异步推理、模型缓存 | model-serving-streaming.md |
+| 向量检索精度低 | 索引优化、相似度阈值调整 | rag-streaming-architecture.md |
+| 特征新鲜度不足 | 实时特征工程、Feature Store | realtime-feature-engineering-feature-store.md |
+
+---
+
+### 3.3 常用文档快速链接
+
+#### 核心索引页
+
+| 索引 | 用途 | 路径 |
+|------|------|------|
+| **项目总览** | 整体了解项目结构 | [README.md](./README.md) |
+| **Struct索引** | 形式化理论导航 | [Struct/00-INDEX.md](./Struct/00-INDEX.md) |
+| **Knowledge索引** | 工程实践知识导航 | [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) |
+| **Flink索引** | Flink专项技术导航 | [Flink/00-INDEX.md](./Flink/00-INDEX.md) |
+| **定理注册表** | 形式化元素全局索引 | [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) |
+| **进度跟踪** | 项目进度与统计 | [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) |
+
+#### 快速决策参考
+
+| 决策类型 | 参考文档 |
+|----------|----------|
+| 流处理引擎选型 | Knowledge/04-technology-selection/engine-selection-guide.md |
+| Flink vs Spark选型 | Flink/05-vs-competitors/flink-vs-spark-streaming.md |
+| Flink vs RisingWave选型 | Knowledge/04-technology-selection/flink-vs-risingwave.md |
+| SQL vs DataStream API | Flink/03-sql-table-api/sql-vs-datastream-comparison.md |
+| 状态后端选型 | Flink/06-engineering/state-backend-selection.md |
+| 流数据库选型 | Knowledge/04-technology-selection/streaming-database-guide.md |
+
+#### 生产故障排查
+
+| 故障类型 | 排查文档 |
+|----------|----------|
+| Checkpoint问题 | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
+| 背压问题 | Flink/02-core-mechanisms/backpressure-and-flow-control.md |
+| 性能调优 | Flink/06-engineering/performance-tuning-guide.md |
+| 内存溢出 | Flink/06-engineering/performance-tuning-guide.md |
+| Exactly-Once失效 | Flink/02-core-mechanisms/exactly-once-end-to-end.md |
+
+#### 反模式检查清单
+
+| 反模式 | 检测文档 |
+|--------|----------|
+| 全局状态滥用 | Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md |
+| Watermark设置不当 | Knowledge/09-anti-patterns/anti-pattern-02-watermark-misconfiguration.md |
+| Checkpoint间隔不合理 | Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md |
+| 热点Key未处理 | Knowledge/09-anti-patterns/anti-pattern-04-hot-key-skew.md |
+| ProcessFunction阻塞I/O | Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md |
+| 完整检查清单 | Knowledge/09-anti-patterns/anti-pattern-checklist.md |
+
+---
+
+## 4. 示例：从理论到实践
+
+### 知识流转示例：Checkpoint一致性
+
+```mermaid
+graph TB
+    subgraph "理论层 Struct/"
+        T1[Def-S-17-01<br/>Checkpoint Barrier语义]
+        T2[Def-S-17-02<br/>一致全局状态]
+        T3[Thm-S-17-01<br/>Checkpoint一致性定理]
+    end
+
+    subgraph "模式层 Knowledge/"
+        P1[Pattern 07<br/>Checkpoint & Recovery]
+        P2[反模式 AP-03<br/>Checkpoint间隔不当]
+    end
+
+    subgraph "实现层 Flink/"
+        F1[Checkpoint配置]
+        F2[Barrier对齐代码]
+        F3[故障恢复实现]
+    end
+
+    T1 -->|Barrier定义| P1
+    T2 -->|状态快照概念| P1
+    T3 -->|正确性保证| P1
+    P1 -->|配置指导| F1
+    P1 -->|实现原理| F2
+    P2 -->|避免问题| F3
+
+    style T1 fill:#e1bee7,stroke:#6a1b9a
+    style T3 fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
+    style P1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style F1 fill:#bbdefb,stroke:#1565c0
+```
+
+### 完整知识链路
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Checkpoint知识链路                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. 形式化定义 (Struct/)                                            │
+│     Def-S-17-01: Checkpoint Barrier 语义                           │
+│     Def-S-17-02: 一致全局状态 G = <𝒮, 𝒞>                            │
+│     Def-S-17-03: Checkpoint 对齐定义                                │
+│                                                                     │
+│           ↓ 定理保证                                                │
+│                                                                     │
+│  2. 形式化证明 (Struct/)                                            │
+│     Thm-S-17-01: Flink Checkpoint一致性定理                         │
+│     Lemma-S-17-01: Barrier传播不变式                               │
+│     Lemma-S-17-02: 状态一致性引理                                   │
+│                                                                     │
+│           ↓ 模式提炼                                                │
+│                                                                     │
+│  3. 设计模式 (Knowledge/)                                           │
+│     Pattern 07: Checkpoint & Recovery 模式                          │
+│     - Checkpoint间隔选择指南                                        │
+│     - 状态后端选型矩阵                                              │
+│     - 恢复策略决策树                                                │
+│                                                                     │
+│           ↓ 工程实现                                                │
+│                                                                     │
+│  4. Flink实现 (Flink/)                                              │
+│     - Checkpoint配置参数                                            │
+│     - RocksDB状态后端配置                                           │
+│     - 增量Checkpoint启用                                            │
+│     - Unaligned Checkpoint配置                                      │
+│                                                                     │
+│           ↓ 生产验证                                                │
+│                                                                     │
+│  5. 故障排查                                                        │
+│     - Checkpoint超时诊断                                            │
+│     - 对齐时间过长处理                                              │
+│     - 反模式检查清单                                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 代码映射示例
+
+**定理** `Thm-S-17-01`: Barrier对齐保证一致割集
+
+↓ 映射
+
+**模式** Pattern 07: Checkpoint间隔 = max(处理延迟容忍, 状态大小/带宽)
+
+↓ 映射
+
+**Flink配置**:
+
+```yaml
+# flink-conf.yaml
+execution.checkpointing.interval: 10s      # 根据定理计算
+execution.checkpointing.timeout: 60s       # 状态大小/带宽 + 余量
+execution.checkpointing.mode: EXACTLY_ONCE # Thm-S-17-01保证
+state.backend: rocksdb                     # 大状态场景
+state.backend.incremental: true            # 优化传输
+```
+
+---
+
+## 5. 常见问题速查
+
+### 5.1 如何查找特定主题
+
+**方法一：索引导航**
+
+1. 先查阅 [Struct/00-INDEX.md](./Struct/00-INDEX.md) 了解理论基础
+2. 再查阅 [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md) 了解设计模式
+3. 最后查阅 [Flink/00-INDEX.md](./Flink/00-INDEX.md) 了解工程实现
+
+**方法二：定理编号追踪**
+
+1. 在 [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) 查找定理编号
+2. 根据编号定位文档（如 `Thm-S-17-01` → Struct/04-proofs/04.01）
+3. 交叉引用相关定义和引理
+
+**方法三：问题驱动**
+
+1. 查阅第3.2节「按问题索引」
+2. 按症状匹配解决方案
+3. 深入阅读推荐文档
+
+---
+
+### 5.2 如何理解定理编号
+
+**编号格式**：`{类型}-{阶段}-{文档序号}-{顺序号}`
+
+| 组件 | 取值 | 含义 |
+|------|------|------|
+| 类型 | Thm/Def/Lemma/Prop/Cor | 定理/定义/引理/命题/推论 |
+| 阶段 | S/K/F | Struct/Knowledge/Flink |
+| 文档序号 | 01-99 | 文档在目录中的序号 |
+| 顺序号 | 01-99 | 元素在文档中的顺序 |
+
+**示例解析**：
+
+- `Thm-S-17-01`: Struct阶段04-proofs目录第17号文档的第1个定理 → Checkpoint一致性定理
+- `Def-K-02-01`: Knowledge阶段02-design-patterns目录的第1个定义 → Event Time Processing模式
+- `Lemma-F-12-02`: Flink阶段12-ai-ml目录的第2个引理 → 在线学习相关引理
+
+---
+
+### 5.3 如何贡献内容
+
+**贡献原则**：
+
+1. **遵循六段式模板**：概念定义 → 属性推导 → 关系建立 → 论证过程 → 形式证明 → 实例验证
+2. **使用统一编号**：新定理/定义按规则编号，避免冲突
+3. **保持跨目录引用**：Struct定义 → Knowledge模式 → Flink实现
+4. **添加Mermaid图表**：每个文档至少一个可视化
+
+**贡献流程**：
+
+1. 检查 [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) 了解项目状态
+2. 阅读 [AGENTS.md](./AGENTS.md) 了解编码规范
+3. 在对应目录创建文档，遵循命名规范：`{层号}.{序号}-{主题}.md`
+4. 更新相关索引文件（00-INDEX.md）
+5. 更新定理注册表（THEOREM-REGISTRY.md）
+
+**质量门禁**：
+
+- 引用需可验证（优先DOI或稳定URL）
+- Mermaid图语法需通过校验
+- 代码示例需可运行
+- 形式化定义需数学严谨
+
+---
+
+## 附录：速查表
+
+### 六层表达能力层次
+
+```
+L₆: Turing-Complete (完全不可判定) ── λ-calculus, Turing Machine
+L₅: Higher-Order (大部分不可判定) ── HOπ, Ambient
+L₄: Mobile (部分不可判定) ── π-calculus, Actor
+L₃: Process Algebra (EXPTIME) ── CSP, CCS
+L₂: Context-Free (PSPACE) ── PDA, BPA
+L₁: Regular (P-Complete) ── FSM, Regex
+```
+
+### 一致性级别速查
+
+| 级别 | 定义 | 实现机制 | 适用场景 |
+|------|------|----------|----------|
+| At-Most-Once (AM) | 效果计数 ≤ 1 | 去重/幂等 | 日志聚合、监控 |
+| At-Least-Once (AL) | 效果计数 ≥ 1 | 重试/重放 | 推荐系统、统计 |
+| Exactly-Once (EO) | 效果计数 = 1 | Source+Checkpoint+事务Sink | 金融交易、订单 |
+
+### 核心文档速查
+
+| 场景 | 第一入口 | 第二入口 | 第三入口 |
+|------|----------|----------|----------|
+| 理论入门 | Struct/01-foundation/01.01 | Struct/01-foundation/01.02 | Struct/00-INDEX |
+| Flink入门 | Flink/05-vs-competitors/flink-vs-spark | Flink/02-core-mechanisms/time-semantics | Flink/00-INDEX |
+| 模式学习 | Knowledge/02-design-patterns/pattern-event-time | Knowledge/00-INDEX | 按场景选读 |
+| 问题排查 | 第3.2节按问题索引 | Flink/00-INDEX故障排查 | 反模式检查清单 |
+| 前沿技术 | Knowledge/06-frontier/ | PROJECT-TRACKING.md | 按兴趣选读 |
+
+---
+
+> 📌 **提示**：本文档为快速上手指南，详细内容请参考各目录索引和具体文档。
+>
+> 📅 **最后更新**：2026-04-03 | 📝 **版本**：v1.0
+
+
+---
+
+Please provide the complete English translation, maintaining all formatting and structure.

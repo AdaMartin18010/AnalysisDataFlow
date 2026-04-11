@@ -1,0 +1,591 @@
+/* =============================================================================
+   AnalysisDataFlow PDF 样式表
+   =============================================================================
+   用于 pandoc + wkhtmltopdf / markdown-pdf 导出
+   特性:
+   - A4 页面布局
+   - 中文字体支持
+   - 代码高亮
+   - 数学公式 (KaTeX)
+   - 表格样式
+   - 页眉页脚
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   页面设置
+   ----------------------------------------------------------------------------- */
+@page {
+    size: A4;
+    margin: 2.5cm 2.5cm 3cm 2.5cm;
+    
+    @top-center {
+        content: string(chapter-title);
+        font-size: 9pt;
+        color: #666;
+        border-bottom: 0.5pt solid #1f4e79;
+        padding-bottom: 5pt;
+    }
+    
+    @top-right {
+        content: "AnalysisDataFlow";
+        font-size: 9pt;
+        color: #666;
+    }
+    
+    @bottom-center {
+        content: counter(page);
+        font-size: 10pt;
+        color: #333;
+    }
+    
+    @bottom-left {
+        content: "";
+        border-top: 0.5pt solid #c5a464;
+        width: 100%;
+    }
+}
+
+@page:first {
+    @top-center { content: none; }
+    @top-right { content: none; }
+    @bottom-center { content: none; }
+    @bottom-left { content: none; }
+}
+
+@page cover {
+    margin: 0;
+    @top-center { content: none; }
+    @top-right { content: none; }
+    @bottom-center { content: none; }
+    @bottom-left { content: none; }
+}
+
+/* -----------------------------------------------------------------------------
+   基础样式
+   ----------------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 11pt;
+}
+
+body {
+    font-family: 
+        "Noto Serif CJK SC",
+        "Source Han Serif SC",
+        "WenQuanYi Micro Hei",
+        "Microsoft YaHei",
+        "SimSun",
+        serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+    hyphens: auto;
+}
+
+/* -----------------------------------------------------------------------------
+   标题样式
+   ----------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #1f4e79;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+}
+
+h1 {
+    string-set: chapter-title content();
+    font-size: 20pt;
+    border-bottom: 2pt solid #1f4e79;
+    padding-bottom: 0.3em;
+    margin-top: 0;
+    page-break-before: always;
+}
+
+h1:first-of-type {
+    page-break-before: auto;
+}
+
+h2 {
+    font-size: 16pt;
+    border-bottom: 1pt solid #1f4e79;
+    padding-bottom: 0.2em;
+}
+
+h3 {
+    font-size: 14pt;
+    color: #1f4e79;
+}
+
+h4 {
+    font-size: 12pt;
+    color: #2d5a8a;
+}
+
+h5, h6 {
+    font-size: 11pt;
+    color: #3a6a9a;
+}
+
+/* -----------------------------------------------------------------------------
+   段落和文本
+   ----------------------------------------------------------------------------- */
+p {
+    margin: 0.8em 0;
+    text-indent: 2em;
+}
+
+p:first-of-type {
+    text-indent: 0;
+}
+
+.no-indent {
+    text-indent: 0;
+}
+
+strong {
+    color: #1f4e79;
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+    color: #555;
+}
+
+/* 引用块 */
+blockquote {
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    border-left: 4pt solid #c5a464;
+    background: #f8f9fa;
+    color: #555;
+    font-style: italic;
+}
+
+blockquote p {
+    text-indent: 0;
+    margin: 0.3em 0;
+}
+
+/* -----------------------------------------------------------------------------
+   代码样式
+   ----------------------------------------------------------------------------- */
+pre {
+    background: #f5f5f5;
+    border: 1pt solid #e0e0e0;
+    border-left: 4pt solid #1f4e79;
+    border-radius: 3pt;
+    padding: 1em;
+    margin: 1em 0;
+    overflow-x: auto;
+    font-family: 
+        "Consolas",
+        "Monaco",
+        "Source Code Pro",
+        "Courier New",
+        monospace;
+    font-size: 9pt;
+    line-height: 1.4;
+    page-break-inside: avoid;
+}
+
+code {
+    font-family: 
+        "Consolas",
+        "Monaco",
+        "Source Code Pro",
+        "Courier New",
+        monospace;
+    font-size: 0.9em;
+    background: #f0f0f0;
+    padding: 0.1em 0.3em;
+    border-radius: 2pt;
+    color: #c7254e;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* 语法高亮颜色 */
+.keyword { color: #0000ff; font-weight: bold; }
+.string { color: #008000; }
+.comment { color: #808080; font-style: italic; }
+.number { color: #098658; }
+.function { color: #795e26; }
+.type { color: #267f99; }
+
+/* -----------------------------------------------------------------------------
+   表格样式
+   ----------------------------------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+}
+
+thead {
+    display: table-header-group;
+}
+
+th, td {
+    border: 0.5pt solid #ddd;
+    padding: 8pt;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #f5f7fa;
+    font-weight: bold;
+    color: #1f4e79;
+    border-bottom: 2pt solid #1f4e79;
+}
+
+tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+tr:hover {
+    background: #f0f4f8;
+}
+
+/* -----------------------------------------------------------------------------
+   列表样式
+   ----------------------------------------------------------------------------- */
+ul, ol {
+    margin: 0.8em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}
+
+li > p {
+    text-indent: 0;
+    margin: 0.2em 0;
+}
+
+/* 任务列表 */
+task-list-item {
+    list-style: none;
+}
+
+task-list-item input[type="checkbox"] {
+    margin-right: 0.5em;
+}
+
+/* -----------------------------------------------------------------------------
+   链接样式
+   ----------------------------------------------------------------------------- */
+a {
+    color: #1f4e79;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a[href^="#"] {
+    color: #c5a464;
+}
+
+/* -----------------------------------------------------------------------------
+   图片和图表
+   ----------------------------------------------------------------------------- */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+figure {
+    margin: 1.5em 0;
+    page-break-inside: avoid;
+}
+
+figcaption {
+    text-align: center;
+    font-size: 10pt;
+    color: #666;
+    margin-top: 0.5em;
+    font-style: italic;
+}
+
+.caption {
+    text-align: center;
+    font-size: 10pt;
+    color: #666;
+    margin-top: 0.5em;
+}
+
+/* -----------------------------------------------------------------------------
+   数学公式 (KaTeX)
+   ----------------------------------------------------------------------------- */
+.katex {
+    font-size: 1.1em;
+}
+
+.katex-display {
+    margin: 1em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.math {
+    font-family: "KaTeX_Main", "Times New Roman", serif;
+}
+
+/* -----------------------------------------------------------------------------
+   特殊块样式
+   ----------------------------------------------------------------------------- */
+/* 提示框 */
+.tip, .note, .info {
+    background: #e7f3ff;
+    border-left: 4pt solid #1f4e79;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0 3pt 3pt 0;
+}
+
+.tip::before, .note::before, .info::before {
+    content: "💡 提示";
+    display: block;
+    font-weight: bold;
+    color: #1f4e79;
+    margin-bottom: 0.5em;
+}
+
+/* 警告框 */
+.warning, .warn {
+    background: #fff3cd;
+    border-left: 4pt solid #ffc107;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0 3pt 3pt 0;
+}
+
+.warning::before, .warn::before {
+    content: "⚠️ 警告";
+    display: block;
+    font-weight: bold;
+    color: #856404;
+    margin-bottom: 0.5em;
+}
+
+/* 错误框 */
+.error, .danger {
+    background: #f8d7da;
+    border-left: 4pt solid #dc3545;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0 3pt 3pt 0;
+}
+
+.error::before, .danger::before {
+    content: "❌ 错误";
+    display: block;
+    font-weight: bold;
+    color: #721c24;
+    margin-bottom: 0.5em;
+}
+
+/* 成功框 */
+.success {
+    background: #d4edda;
+    border-left: 4pt solid #28a745;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0 3pt 3pt 0;
+}
+
+.success::before {
+    content: "✅ 成功";
+    display: block;
+    font-weight: bold;
+    color: #155724;
+    margin-bottom: 0.5em;
+}
+
+/* 摘要框 */
+.abstract {
+    background: #f8f9fa;
+    border: 1pt solid #dee2e6;
+    padding: 1.5em;
+    margin: 1.5em 0;
+    border-radius: 3pt;
+}
+
+.abstract-title {
+    font-weight: bold;
+    font-size: 12pt;
+    color: #1f4e79;
+    margin-bottom: 0.5em;
+    border-bottom: 1pt solid #dee2e6;
+    padding-bottom: 0.3em;
+}
+
+/* -----------------------------------------------------------------------------
+   目录样式
+   ----------------------------------------------------------------------------- */
+#TOC, .toc {
+    background: #f8f9fa;
+    border: 1pt solid #dee2e6;
+    padding: 1.5em;
+    margin: 1.5em 0;
+    border-radius: 3pt;
+    page-break-after: always;
+}
+
+#TOC::before, .toc::before {
+    content: "目录";
+    display: block;
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1f4e79;
+    margin-bottom: 1em;
+    border-bottom: 2pt solid #1f4e79;
+    padding-bottom: 0.3em;
+}
+
+#TOC ul, .toc ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#TOC li, .toc li {
+    margin: 0.3em 0;
+}
+
+#TOC a, .toc a {
+    color: #333;
+    text-decoration: none;
+}
+
+#TOC a:hover, .toc a:hover {
+    color: #1f4e79;
+}
+
+.toc-h1 { font-weight: bold; font-size: 11pt; }
+.toc-h2 { padding-left: 1em; font-size: 10pt; }
+.toc-h3 { padding-left: 2em; font-size: 9pt; color: #666; }
+
+/* -----------------------------------------------------------------------------
+   页眉页脚
+   ----------------------------------------------------------------------------- */
+.header {
+    position: running(header);
+    font-size: 9pt;
+    color: #666;
+    border-bottom: 0.5pt solid #1f4e79;
+    padding-bottom: 5pt;
+}
+
+.footer {
+    position: running(footer);
+    font-size: 9pt;
+    color: #666;
+    text-align: center;
+}
+
+/* -----------------------------------------------------------------------------
+   分页控制
+   ----------------------------------------------------------------------------- */
+.page-break {
+    page-break-after: always;
+}
+
+.no-break {
+    page-break-inside: avoid;
+}
+
+.break-before {
+    page-break-before: always;
+}
+
+/* -----------------------------------------------------------------------------
+   Mermaid 图表容器
+   ----------------------------------------------------------------------------- */
+.mermaid {
+    text-align: center;
+    margin: 1em 0;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* -----------------------------------------------------------------------------
+   脚注
+   ----------------------------------------------------------------------------- */
+.footnote {
+    font-size: 9pt;
+    color: #666;
+    border-top: 0.5pt solid #ddd;
+    padding-top: 0.5em;
+    margin-top: 2em;
+}
+
+.footnote-ref {
+    font-size: 0.8em;
+    vertical-align: super;
+}
+
+/* -----------------------------------------------------------------------------
+   定义列表
+   ----------------------------------------------------------------------------- */
+dt {
+    font-weight: bold;
+    color: #1f4e79;
+    margin-top: 0.8em;
+}
+
+dd {
+    margin-left: 2em;
+    margin-bottom: 0.5em;
+}
+
+/* -----------------------------------------------------------------------------
+   水平线
+   ----------------------------------------------------------------------------- */
+hr {
+    border: none;
+    border-top: 1pt solid #ddd;
+    margin: 2em 0;
+}
+
+/* -----------------------------------------------------------------------------
+   打印优化
+   ----------------------------------------------------------------------------- */
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    a {
+        text-decoration: none;
+        color: #333;
+    }
+    
+    a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+}

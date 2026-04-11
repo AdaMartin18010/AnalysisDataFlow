@@ -1,4 +1,4 @@
-# 视频教程脚本 04：设计模式实战
+﻿# 视频教程脚本 04：设计模式实战
 
 > **视频标题**: 流处理7大设计模式实战
 > **目标受众**: 中级Flink开发者、架构师
@@ -1286,11 +1286,12 @@ public class CombinedPatterns {
 ## 🔗 相关文档
 
 - [Knowledge/02-design-patterns/](../Knowledge/02-design-patterns/)
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 
 ---
 
 *脚本版本: v1.0*
 *创建日期: 2026-04-03*
 *预计制作时长: 25分钟*
+

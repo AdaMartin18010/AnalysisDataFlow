@@ -1,4 +1,4 @@
-# Design Pattern: Stateful Computation
+﻿# Design Pattern: Stateful Computation
 
 > **Pattern ID**: 05/7 | **Series**: Knowledge/02-design-patterns | **Formalization Level**: L4-L5
 >
@@ -327,7 +327,7 @@ Struct/02-properties/02.05-type-safety-derivation.md
 ├── FGG Generics ──► KeyedState<T> Type Safety
 └── DOT Path Dependence ──► State-Key Binding
 
-Flink/02-core-mechanisms/
+Flink/02-core/
 ├── checkpoint-mechanism-deep-dive.md
 ├── exactly-once-end-to-end.md
 └── time-semantics-and-watermark.md
@@ -405,12 +405,13 @@ This section establishes the formal connection between the Stateful Computation 
 
 [^9]: Flink State Backend Selection. [Flink/06-engineering/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
 
-[^10]: Flink Time Semantics. [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^10]: Flink Time Semantics. [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
-[^11]: Flink Checkpoint Mechanism. [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+[^11]: Flink Checkpoint Mechanism. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 [^12]: Type Safety Derivation. [Struct/02-properties/02.05-type-safety-derivation.md](../../Struct/02-properties/02.05-type-safety-derivation.md)
 
 ---
 
 *Document Version: v1.0 | Last Updated: 2026-04-02*
+

@@ -1,0 +1,15 @@
+# Theorem Dependency Validator - Python Dependencies
+# Python 3.8+ required
+
+# Standard library only - no external dependencies required
+# The validator uses only Python standard library modules:
+# - os, re, json, sys, argparse, pathlib, datetime, dataclasses, typing, collections, enum
+
+# Optional: For enhanced terminal output (colors on Windows)
+# colorama>=0.4.4; platform_system=="Windows"
+
+# Optional: For development/testing
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+# black>=22.0.0
+# flake8>=5.0.0

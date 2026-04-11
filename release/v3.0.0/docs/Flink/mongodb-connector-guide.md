@@ -1,0 +1,474 @@
+# MongoDB Connector 详细指南
+
+> 所属阶段: Flink | 前置依赖: [data-types-complete-reference.md](./data-types-complete-reference.md) | 形式化等级: L4
+
+---
+
+## 1. 概念定义 (Definitions)
+
+### Def-F-Mongo-01: MongoDB Source 定义
+
+**定义**: MongoDB Source 是从 MongoDB 集合读取数据的连接器：
+
+$$
+\text{MongoSource} = \langle D, C, Q, M, R \rangle
+$$
+
+其中：
+
+- $D$: 数据库连接配置 $\langle uri, database, collection \rangle$
+- $C$: 集合名称
+- $Q$: 查询过滤器
+- $M$: 读取模式 $\{Batch, ChangeStream, Hybrid\}$
+- $R$: Resume Token 存储（用于 CDC）
+
+**读取模式语义**：
+
+| 模式 | 描述 | 适用场景 |
+|------|------|----------|
+| **Batch** | 一次性扫描集合 | 全量同步、离线分析 |
+| **ChangeStream** | 监听变更流 | 实时 CDC |
+| **Hybrid** | 先 Batch 后 ChangeStream | 全量+增量 |
+
+### Def-F-Mongo-02: MongoDB Sink 定义
+
+**定义**: MongoDB Sink 是将流数据写入 MongoDB 的连接器：
+
+$$
+\text{MongoSink} = \langle D, C, W, U, B \rangle
+$$
+
+其中：
+
+- $D$: 数据库连接配置
+- $C$: 目标集合
+- $W$: 写入模式 $\{INSERT, REPLACE, UPDATE, BULK\}$
+- $U$: 更新策略
+- $B$: 批量配置
+
+**写入模式**：
+
+| 模式 | 语义 | 幂等性 |
+|------|------|--------|
+| INSERT | `insertOne/insertMany` | ❌ 否 |
+| REPLACE | `replaceOne` (upsert) | ✅ 是（有 `_id`） |
+| UPDATE | `updateOne` (upsert) | ✅ 是（有 `_id`） |
+| BULK | 批量混合操作 | 依赖具体操作 |
+
+### Def-F-Mongo-03: Change Streams 机制
+
+**定义**: Change Streams 是 MongoDB 的 CDC 机制，基于 oplog 实现：
+
+$$
+\text{ChangeStream} = \langle O, T, F, ResumeToken \rangle
+$$
+
+其中：
+
+- $O$: 操作类型 $\{insert, update, replace, delete, invalidate\}$
+- $T$: 时间戳（集群时间）
+- $F$: 全文档选项
+- $ResumeToken$: 恢复令牌
+
+**事件格式**：
+
+```json
+{
+  "_id": {"_data": "<resume_token>"},
+  "operationType": "insert",
+  "fullDocument": { ... },
+  "ns": {"db": "mydb", "coll": "users"},
+  "documentKey": {"_id": ObjectId("...")},
+  "clusterTime": Timestamp(1234567890, 1)
+}
+```
+
+---
+
+## 2. 属性推导 (Properties)
+
+### Lemma-F-Mongo-01: Change Streams 有序性
+
+**引理**: Change Streams 保证每个分片内的有序性，分片间通过 `clusterTime` 保证因果一致性。
+
+**证明**：
+
+1. MongoDB 复制基于 oplog，oplog 是有序的
+2. Change Streams 读取 oplog，保持顺序
+3. 分片集群中，`clusterTime` 作为逻辑时钟，保证因果序
+
+### Lemma-F-Mongo-02: 批量写入原子性边界
+
+**引理**: MongoDB 批量写入的原子性边界为文档级别，而非批量级别。
+
+**说明**：
+
+- `insertMany` 非原子性：部分失败时部分成功
+- 事务支持多文档原子性，但性能开销大
+- 幂等写入（upsert）可保证最终一致性
+
+### Prop-F-Mongo-01: Resume Token 持久化
+
+**命题**: Resume Token 持久化到 Flink 状态后端后，作业恢复后可从断点续传。
+
+$$
+\text{Resume}(token_{checkpoint}) \Rightarrow \text{No duplicate}, \text{No missing}
+$$
+
+---
+
+## 3. 关系建立 (Relations)
+
+### 3.1 副本集与 Checkpoint 映射
+
+```mermaid
+graph TB
+    subgraph MongoDB ReplicaSet
+        P[Primary]
+        S1[Secondary 1]
+        S2[Secondary 2]
+    end
+
+    subgraph Flink Job
+        F[MongoSource]
+        C[Checkpoint]
+    end
+
+    P -->|oplog| S1
+    P -->|oplog| S2
+    P -->|ChangeStream| F
+    F -->|ResumeToken| C
+
+    style P fill:#e8f5e9
+    style F fill:#e1f5fe
+    style C fill:#fff3e0
+```
+
+### 3.2 BSON 与 Flink 类型映射
+
+| BSON Type | Flink SQL Type | 说明 |
+|-----------|----------------|------|
+| ObjectId | STRING | 24 字符十六进制字符串 |
+| String | STRING | UTF-8 字符串 |
+| Int32 | INT | 32 位整数 |
+| Int64 | BIGINT | 64 位整数 |
+| Double | DOUBLE | 双精度浮点 |
+| Decimal128 | DECIMAL(38,18) | 高精度小数 |
+| Date | TIMESTAMP_LTZ(3) | UTC 时间戳 |
+| Timestamp | TIMESTAMP_LTZ(0) | 内部时间戳 |
+| Boolean | BOOLEAN | 布尔值 |
+| Binary | BYTES | 二进制数据 |
+| Array | ARRAY | 数组类型 |
+| Document | ROW / MAP | 嵌套文档 |
+| Null | NULL | 空值 |
+
+### 3.3 端到端一致性保证
+
+| 组合 | Source 保证 | Sink 保证 | 端到端 |
+|------|-------------|-----------|--------|
+| ChangeStream + Upsert | At-Least-Once | At-Least-Once | At-Least-Once |
+| ChangeStream + Upsert + Checkpoint | At-Least-Once | Exactly-Once | At-Least-Once |
+| Transactional Source + Transactional Sink | Exactly-Once | Exactly-Once | Exactly-Once |
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+### 4.1 Change Stream 事件排序
+
+**问题**: 分片集群中如何保证全局有序？
+
+**分析**：
+
+1. **分片内有序**: 每个分片的 oplog 是有序的
+2. **分片间无序**: 不同分片的变更无全局顺序
+3. **因果一致性**: 通过 `clusterTime` 保证因果关系
+4. **Flink 处理**: Watermark 对齐 + Event Time 处理
+
+### 4.2 幂等写入策略选择
+
+| 策略 | 实现 | 适用场景 |
+|------|------|----------|
+| _id 覆盖 | `replaceOne({_id}, doc, {upsert:true})` | 完整文档替换 |
+| 字段更新 | `updateOne({_id}, {$set: fields})` | 增量更新 |
+| 业务键 | `updateOne({bizKey}, doc, {upsert:true})` | 有业务主键 |
+
+---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+### Thm-F-Mongo-01: Change Streams Source Exactly-Once
+
+**定理**: 在启用 Checkpoint 且 Resume Token 持久化条件下，MongoDB Source 提供 Exactly-Once 语义。
+
+**证明概要**：
+
+1. **初始状态**: 从指定 Resume Token 开始读取
+2. **Checkpoint 时**: 保存当前 Resume Token
+3. **恢复时**: 从保存的 Resume Token 继续
+4. **幂等性**: MongoDB oplog 幂等，重放不产生副作用
+
+### Thm-F-Mongo-02: MongoDB Sink 幂等写入
+
+**定理**: 使用 REPLACE/UPDATE 模式且指定 `_id` 时，Sink 提供幂等写入。
+
+**证明**：
+
+- `replaceOne({_id: X}, doc, {upsert: true})` 执行结果：
+  - 文档存在 → 替换为 doc
+  - 文档不存在 → 插入 doc
+- 多次执行结果相同
+- 因此是幂等的
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 6.1 Maven 依赖
+
+```xml
+<dependency>
+    <groupId>org.apache.flink</groupId>
+    <artifactId>flink-connector-mongodb</artifactId>
+    <version>1.0.1-1.17</version>
+</dependency>
+
+<!-- MongoDB Java Driver -->
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-sync</artifactId>
+    <version>4.11.1</version>
+</dependency>
+```
+
+### 6.2 DataStream API - Source 示例
+
+```java
+import org.apache.flink.connector.mongodb.source.MongoSource;
+import org.apache.flink.connector.mongodb.source.reader.deserializer.MongoDeserializationSchema;
+import org.bson.BsonDocument;
+import org.bson.Document;
+
+// MongoDB Source 配置
+MongoSource<Document> mongoSource = MongoSource.<Document>builder()
+    .setUri("mongodb://user:password@localhost:27017")
+    .setDatabase("mydb")
+    .setCollection("events")
+    // 查询过滤
+    .setProjection(BsonDocument.parse("{user_id: 1, event_type: 1, _id: 0}"))
+    // 分页读取配置
+    .setFetchSize(1000)
+    .setNoCursorTimeout(true)
+    // 反序列化
+    .setDeserializationSchema(new MongoDeserializationSchema<Document>() {
+        @Override
+        public Document deserialize(BsonDocument document) {
+            return Document.parse(document.toJson());
+        }
+
+        @Override
+        public TypeInformation<Document> getProducedType() {
+            return TypeInformation.of(Document.class);
+        }
+    })
+    .build();
+
+env.fromSource(mongoSource, WatermarkStrategy.noWatermarks(), "MongoDB Source")
+    .print();
+```
+
+### 6.3 DataStream API - Change Streams 示例
+
+```java
+import org.apache.flink.connector.mongodb.source.MongoSource;
+import org.apache.flink.connector.mongodb.source.enumerator.splitter.MongoSplitters;
+
+// Change Stream Source 配置
+MongoSource<ChangeStreamDocument<Document>> changeStreamSource =
+    MongoSource.<ChangeStreamDocument<Document>>builder()
+        .setUri("mongodb://user:password@localhost:27017")
+        .setDatabase("mydb")
+        .setCollection("events")
+        // 启用 Change Stream
+        .setChangeStream(true)
+        // 全文档选项
+        .setFullDocument(FullDocument.UPDATE_LOOKUP)
+        // 恢复令牌（从指定位置开始）
+        .setResumeToken(resumeToken)
+        .build();
+
+env.fromSource(
+    changeStreamSource,
+    WatermarkStrategy.forMonotonousTimestamps(),
+    "MongoDB Change Stream"
+).map(doc -> {
+    // 处理变更事件
+    String opType = doc.getOperationType().getValue();
+    Document fullDoc = doc.getFullDocument();
+    // ... 业务处理
+    return fullDoc;
+});
+```
+
+### 6.4 DataStream API - Sink 示例
+
+```java
+import org.apache.flink.connector.mongodb.sink.MongoSink;
+import org.apache.flink.connector.mongodb.sink.writer.context.MongoSinkContext;
+import org.bson.Document;
+
+// MongoDB Sink 配置
+MongoSink<Document> mongoSink = MongoSink.<Document>builder()
+    .setUri("mongodb://user:password@localhost:27017")
+    .setDatabase("mydb")
+    .setCollection("processed_events")
+    // 批量配置
+    .setBatchSize(1000)
+    .setBatchIntervalMs(1000)
+    // 文档构建
+    .setSerializationSchema((element, context) -> {
+        return new Document()
+            .append("_id", element.getEventId())  // 幂等键
+            .append("user_id", element.getUserId())
+            .append("event_type", element.getEventType())
+            .append("processed_time", new Date())
+            .append("data", element.getData());
+    })
+    // 写入模式：UPSERT
+    .setWriteMode(WriteMode.UPSERT)
+    .build();
+
+stream.sinkTo(mongoSink);
+```
+
+### 6.5 Table API / SQL 示例
+
+```sql
+-- 创建 MongoDB 表
+CREATE TABLE user_events (
+    _id STRING,  -- MongoDB 文档 ID
+    user_id STRING,
+    event_type STRING,
+    event_time TIMESTAMP,
+    properties MAP<STRING, STRING>
+) WITH (
+    'connector' = 'mongodb',
+    'uri' = 'mongodb://localhost:27017',
+    'database' = 'mydb',
+    'collection' = 'events',
+    -- 读取模式
+    'scan.fetch-size' = '1000',
+    -- 写入模式
+    'sink.batch.size' = '1000',
+    'sink.max-retries' = '3'
+);
+
+-- 从 Kafka 读取并写入 MongoDB
+INSERT INTO user_events
+SELECT
+    CAST(user_id AS STRING) || '_' || CAST(event_time AS STRING) AS _id,
+    user_id,
+    event_type,
+    event_time,
+    properties
+FROM kafka_source;
+```
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 7.1 MongoDB-Flink 集成架构
+
+```mermaid
+graph TB
+    subgraph MongoDB
+        A[Primary Node]
+        B[Secondary 1]
+        C[Secondary 2]
+        D[(Oplog)]
+    end
+
+    subgraph Flink
+        E[MongoSource] --> F[Transformation]
+        F --> G[MongoSink]
+    end
+
+    subgraph Modes
+        H[Batch Mode] -->|find()| A
+        I[ChangeStream Mode] -->|watch()| D
+    end
+
+    A --> H
+    D --> I
+    H -.-> E
+    I -.-> E
+    G -.->|insert/update| A
+
+    style A fill:#e8f5e9
+    style E fill:#e1f5fe
+    style G fill:#e1f5fe
+```
+
+### 7.2 Change Stream 事件流
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Mongo as MongoDB
+    participant Flink as Flink Source
+    participant State as Flink State
+
+    App->>Mongo: Insert Document
+    Mongo->>Mongo: Write Oplog
+    Mongo->>Flink: Change Event
+
+    Flink->>Flink: Process Event
+    Flink->>State: Update ResumeToken
+
+    opt Checkpoint
+        State->>State: Persist ResumeToken
+    end
+
+    opt Recovery
+        State-->>Flink: Restore ResumeToken
+        Flink-->>Mongo: Resume from Token
+    end
+```
+
+### 7.3 数据类型映射矩阵
+
+```mermaid
+graph LR
+    subgraph BSON
+        B1[ObjectId]
+        B2[String]
+        B3[Int32/Int64]
+        B4[Double]
+        B5[Date]
+        B6[Array]
+        B7[Document]
+    end
+
+    subgraph Flink SQL
+        F1[STRING]
+        F2[STRING]
+        F3[INT/BIGINT]
+        F4[DOUBLE]
+        F5[TIMESTAMP_LTZ]
+        F6[ARRAY]
+        F7[ROW/MAP]
+    end
+
+    B1 -->|toHexString| F1
+    B2 --> F2
+    B3 --> F3
+    B4 --> F4
+    B5 --> F5
+    B6 --> F6
+    B7 --> F7
+```
+
+---
+
+## 8. 引用参考 (References)

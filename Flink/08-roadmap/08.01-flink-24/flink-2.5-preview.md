@@ -21,7 +21,7 @@
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-08 | [Flink/08-roadmap/08.02-flink-25/](../08.02-flink-25/) |
+> | 2026-04-08 | [Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/](../08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/) |
 
 ---
 

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式依赖图 - AnalysisDataFlow</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-stream"></i>
+                <span>AnalysisDataFlow</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3><i class="fas fa-home"></i> 首页</h3>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-chart-line"></i> 项目概览</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-project-diagram"></i> 推导链</h3>
+                <ul>
+                    <li><a href="../chains/index.html"><i class="fas fa-list"></i> 全部推导链</a></li>
+                    <li><a href="../chains/checkpoint.html"><i class="fas fa-save"></i> Checkpoint 正确性</a></li>
+                    <li><a href="../chains/exactly-once.html"><i class="fas fa-check-double"></i> Exactly-Once</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-network-wired"></i> 可视化</h3>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-project-diagram"></i> 交互式依赖图</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-search"></i> 工具</h3>
+                <ul>
+                    <li><a href="../search/index.html"><i class="fas fa-search"></i> 全文搜索</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <span>v3.6 | 100% Complete</span>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="top-header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span class="project-name">AnalysisDataFlow</span>
+                <span class="separator">/</span>
+                <span class="page-title">交互式依赖图</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="content-wrapper">
+            <div class="graph-container">
+                <div class="graph-toolbar">
+                    <button id="zoomIn" title="放大">
+                        <i class="fas fa-plus"></i> 放大
+                    </button>
+                    <button id="zoomOut" title="缩小">
+                        <i class="fas fa-minus"></i> 缩小
+                    </button>
+                    <button id="resetView" title="重置视图">
+                        <i class="fas fa-expand"></i> 重置
+                    </button>
+                    <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 8px;"></div>
+                    <button class="active" data-filter="all">
+                        <i class="fas fa-globe"></i> 全部
+                    </button>
+                    <button data-filter="struct">
+                        <i class="fas fa-cube" style="color: #4A90D9;"></i> Struct
+                    </button>
+                    <button data-filter="knowledge">
+                        <i class="fas fa-lightbulb" style="color: #5CB85C;"></i> Knowledge
+                    </button>
+                    <button data-filter="flink">
+                        <i class="fas fa-fire" style="color: #F0AD4E;"></i> Flink
+                    </button>
+                    <div style="flex: 1;"></div>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">
+                        <i class="fas fa-mouse"></i> 拖拽移动 · 滚轮缩放 · 点击查看详情
+                    </span>
+                </div>
+                <div class="graph-canvas" id="graphCanvas"></div>
+                <div class="graph-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4A90D9;"></div>
+                        <span>Struct 形式理论</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #5CB85C;"></div>
+                        <span>Knowledge 知识</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #F0AD4E;"></div>
+                        <span>Flink 专项</span>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="features" style="margin-top: 32px;">
+                <h2><i class="fas fa-info-circle"></i> 图谱说明</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3>5,200+ 关系边</h3>
+                        <p>连接定理、定义、文档之间的依赖关系</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3>多层结构</h3>
+                        <p>Struct → Knowledge → Flink 三层垂直关系</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-arrows-alt"></i>
+                        </div>
+                        <h3>交互操作</h3>
+                        <p>支持拖拽、缩放、点击查看详情</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h3>分层筛选</h3>
+                        <p>可按目录层级筛选显示节点</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

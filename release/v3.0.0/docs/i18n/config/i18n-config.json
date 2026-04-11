@@ -1,0 +1,75 @@
+{
+  "project": "AnalysisDataFlow",
+  "version": "1.0.0",
+  "default_locale": "zh",
+  "supported_locales": [
+    {
+      "code": "zh",
+      "name": "中文",
+      "name_en": "Chinese",
+      "direction": "ltr",
+      "is_source": true,
+      "completeness": 100
+    },
+    {
+      "code": "en",
+      "name": "English",
+      "name_en": "English",
+      "direction": "ltr",
+      "is_source": false,
+      "completeness": 5
+    }
+  ],
+  "translation": {
+    "strategy": "human_ai_hybrid",
+    "ai_provider": "openai",
+    "ai_model": "gpt-4",
+    "quality_threshold": 0.85,
+    "glossary_enforcement": true,
+    "preserve_formatting": true
+  },
+  "sync": {
+    "auto_detect_changes": true,
+    "change_detection_method": ["hash", "git_diff"],
+    "update_notification": true,
+    "stale_threshold_days": 30
+  },
+  "content_structure": {
+    "excluded_paths": [
+      ".git",
+      ".github",
+      ".scripts",
+      "scripts",
+      "visuals",
+      "reports",
+      "tmp_*.py",
+      "*.log"
+    ],
+    "priority_tiers": {
+      "P0": ["README.md", "Struct/00-INDEX.md", "Struct/01-foundation/"],
+      "P1": ["Struct/02-properties/", "Struct/03-relationships/", "Struct/04-proofs/", "QUICK-START.md"],
+      "P2": ["Struct/05-comparative-analysis/", "Struct/07-tools/", "Knowledge/01-concept-atlas/"],
+      "P3": ["Flink/", "Knowledge/", "tutorials/"]
+    }
+  },
+  "output": {
+    "format": "markdown",
+    "preserve_frontmatter": true,
+    "generate_redirects": true,
+    "validate_links": true
+  },
+  "quality_gates": {
+    "terminology_check": true,
+    "link_validation": true,
+    "markdown_lint": true,
+    "mermaid_validation": true,
+    "required_sections": [
+      "概念定义",
+      "属性推导",
+      "关系建立",
+      "论证过程",
+      "形式证明",
+      "实例验证"
+    ]
+  }
+}

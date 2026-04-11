@@ -1,4 +1,4 @@
-# CSP 学习资源
+﻿# CSP 学习资源
 
 > **中级认证学习资料汇总**
 
@@ -8,8 +8,8 @@
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [Checkpoint 机制深度解析](../../../../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md) | ★★★★☆ | 2h | Barrier、对齐、增量 |
-| [Exactly-Once 语义深度解析](../../../../Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md) | ★★★★☆ | 2h | 2PC、幂等性 |
+| [Checkpoint 机制深度解析](../../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | ★★★★☆ | 2h | Barrier、对齐、增量 |
+| [Exactly-Once 语义深度解析](../../../../Flink/02-core/exactly-once-semantics-deep-dive.md) | ★★★★☆ | 2h | 2PC、幂等性 |
 | [状态后端配置指南](../../../../Flink/08-operations/state-backends-configuration.md) | ★★★☆☆ | 1h | RocksDB 调优 |
 | [Exactly-Once 形式化语义](../../../../Struct/02-properties/02.01-exactly-once-semantics.md) | ★★★★★ | 2h | 形式化定义 |
 
@@ -19,13 +19,13 @@
 |------|------|----------|------|
 | [作业提交流程](../../../../Flink/05-internals/job-submission-flow.md) | ★★★☆☆ | 1.5h | 图转换、调度 |
 | [网络栈深度解析](../../../../Flink/05-internals/network-stack-deep-dive.md) | ★★★★☆ | 2h | Netty、信用值 |
-| [背压与流控](../../../../Flink/02-core-mechanisms/backpressure-and-flow-control.md) | ★★★☆☆ | 1h | 背压传播 |
+| [背压与流控](../../../../Flink/02-core/backpressure-and-flow-control.md) | ★★★☆☆ | 1h | 背压传播 |
 
 ### 时间语义
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [时间语义与 Watermark](../../../../Flink/02-core-mechanisms/time-semantics-and-watermark.md) | ★★★☆☆ | 1.5h | Watermark 生成 |
+| [时间语义与 Watermark](../../../../Flink/02-core/time-semantics-and-watermark.md) | ★★★☆☆ | 1.5h | Watermark 生成 |
 | [Watermark 单调性](../../../../Struct/02-properties/02.03-watermark-monotonicity.md) | ★★★★☆ | 1h | 形式化性质 |
 
 ## 工程实践文档
@@ -141,3 +141,4 @@ services:
 ---
 
 [返回课程大纲 →](../syllabus-csp.md)
+

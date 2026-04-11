@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-04-04",
+  "description": "Core terminology mapping for AnalysisDataFlow i18n",
+  "source_language": "zh",
+  "target_language": "en",
+  "terms": [
+    {"id": "t001", "chinese": "流计算", "english": "Stream Computing", "domain": "core", "abbreviation": ""},
+    {"id": "t002", "chinese": "流处理", "english": "Stream Processing", "domain": "core", "abbreviation": ""},
+    {"id": "t003", "chinese": "批处理", "english": "Batch Processing", "domain": "core", "abbreviation": ""},
+    {"id": "t004", "chinese": "实时处理", "english": "Real-time Processing", "domain": "core", "abbreviation": ""},
+    {"id": "t005", "chinese": "事件时间", "english": "Event Time", "domain": "core", "abbreviation": ""},
+    {"id": "t006", "chinese": "处理时间", "english": "Processing Time", "domain": "core", "abbreviation": ""},
+    {"id": "t007", "chinese": "水印", "english": "Watermark", "domain": "core", "abbreviation": ""},
+    {"id": "t008", "chinese": "窗口", "english": "Window", "domain": "core", "abbreviation": ""},
+    {"id": "t009", "chinese": "检查点", "english": "Checkpoint", "domain": "flink", "abbreviation": "CP"},
+    {"id": "t010", "chinese": "状态后端", "english": "State Backend", "domain": "flink", "abbreviation": ""},
+    {"id": "t011", "chinese": "恰好一次", "english": "Exactly-Once", "domain": "core", "abbreviation": "EO"},
+    {"id": "t012", "chinese": "至少一次", "english": "At-Least-Once", "domain": "core", "abbreviation": "AL"},
+    {"id": "t013", "chinese": "至多一次", "english": "At-Most-Once", "domain": "core", "abbreviation": "AM"},
+    {"id": "t014", "chinese": "反压", "english": "Backpressure", "domain": "core", "abbreviation": ""},
+    {"id": "t015", "chinese": "有界流", "english": "Bounded Stream", "domain": "core", "abbreviation": ""},
+    {"id": "t016", "chinese": "无界流", "english": "Unbounded Stream", "domain": "core", "abbreviation": ""},
+    {"id": "t017", "chinese": "并行度", "english": "Parallelism", "domain": "flink", "abbreviation": ""},
+    {"id": "t018", "chinese": "算子", "english": "Operator", "domain": "flink", "abbreviation": ""},
+    {"id": "t019", "chinese": "任务", "english": "Task", "domain": "flink", "abbreviation": ""},
+    {"id": "t020", "chinese": "作业", "english": "Job", "domain": "flink", "abbreviation": ""},
+    {"id": "t021", "chinese": "进程演算", "english": "Process Calculus", "domain": "theory", "abbreviation": ""},
+    {"id": "t022", "chinese": "Actor模型", "english": "Actor Model", "domain": "theory", "abbreviation": ""},
+    {"id": "t023", "chinese": "CSP", "english": "Communicating Sequential Processes", "domain": "theory", "abbreviation": "CSP"},
+    {"id": "t024", "chinese": "CCS", "english": "Calculus of Communicating Systems", "domain": "theory", "abbreviation": "CCS"},
+    {"id": "t025", "chinese": "π演算", "english": "Pi Calculus", "domain": "theory", "abbreviation": ""},
+    {"id": "t026", "chinese": "形式化验证", "english": "Formal Verification", "domain": "theory", "abbreviation": ""},
+    {"id": "t027", "chinese": "设计模式", "english": "Design Pattern", "domain": "engineering", "abbreviation": ""},
+    {"id": "t028", "chinese": "复杂事件处理", "english": "Complex Event Processing", "domain": "engineering", "abbreviation": "CEP"},
+    {"id": "t029", "chinese": "物化视图", "english": "Materialized View", "domain": "database", "abbreviation": ""},
+    {"id": "t030", "chinese": "数据湖仓", "english": "Lakehouse", "domain": "storage", "abbreviation": ""},
+    {"id": "t031", "chinese": "变更数据捕获", "english": "Change Data Capture", "domain": "integration", "abbreviation": "CDC"},
+    {"id": "t032", "chinese": "AI Agent", "english": "AI Agent", "domain": "ai", "abbreviation": ""},
+    {"id": "t033", "chinese": "存算分离", "english": "Storage-Compute Separation", "domain": "architecture", "abbreviation": ""},
+    {"id": "t034", "chinese": "云原生", "english": "Cloud-Native", "domain": "architecture", "abbreviation": ""},
+    {"id": "t035", "chinese": "无服务器", "english": "Serverless", "domain": "architecture", "abbreviation": ""}
+  ],
+  "prohibited_translations": {
+    "keep_original": [
+      "Flink", "Apache", "Kafka", "Kubernetes", "Docker",
+      "SQL", "API", "JVM", "JAR", "YAML", "JSON",
+      "GitHub", "Git", "Linux", "Windows",
+      "DataStream", "Table API", "DataSet",
+      "JobManager", "TaskManager", "ResourceManager"
+    ],
+    "code_terms": [
+      "checkpoint", "savepoint", "state", "keyed", "broadcast",
+      "process", "map", "filter", "reduce", "join", "union"
+    ]
+  }
+}

@@ -1,4 +1,4 @@
----
+﻿---
 title: "AnalysisDataFlow Glossary"
 source_file: "GLOSSARY.md"
 source_version: "v3.3.0"
@@ -98,7 +98,7 @@ Where 𝒫 is physical execution plan, ℳ is runtime metrics, 𝒜 is adaptive 
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
+- `Flink/02-core/adaptive-execution-engine-v2.md` (Def-F-02-87, Thm-F-02-56)
 
 ---
 
@@ -179,7 +179,7 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 
 **Reference Documents**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md` (Def-F-02-03)
 - `Struct/04-proofs/04.01-flink-checkpoint-correctness.md` (Thm-S-17-01)
 
 ---
@@ -201,7 +201,7 @@ Where C is concurrency parameter controlling simultaneous async requests.
 **Reference Documents**:
 
 - `Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
-- `Flink/02-core-mechanisms/async-execution-model.md`
+- `Flink/02-core/async-execution-model.md`
 
 ---
 
@@ -977,3 +977,4 @@ See [Exactly-Once](#exactly-once)
 > **Note**: This glossary provides core term definitions. For complete formal definitions, please refer to corresponding documents in THEOREM-REGISTRY.md.
 >
 > **Last Updated**: 2026-04-08
+

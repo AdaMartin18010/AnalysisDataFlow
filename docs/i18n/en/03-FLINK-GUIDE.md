@@ -1,4 +1,4 @@
----
+﻿---
 title: "Flink/ Directory Guide - Flink-Specific Technology"
 source_file: "Flink/00-INDEX.md"
 source_version: "v3.3.0"
@@ -79,18 +79,18 @@ Flink's core runtime mechanisms and implementation principles.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [02.01-checkpoint-mechanism.md](../../Flink/02-core-mechanisms/02.01-checkpoint-mechanism.md) | Checkpoint Mechanism Deep Dive | Barrier alignment, incremental checkpoint, exactly-once |
-| [02.02-exactly-once-semantics.md](../../Flink/02-core-mechanisms/02.02-exactly-once-semantics.md) | Exactly-Once Semantics | End-to-end consistency, 2PC protocol implementation |
-| [02.03-time-semantics-watermark.md](../../Flink/02-core-mechanisms/02.03-time-semantics-watermark.md) | Time Semantics and Watermark | Event time, processing time, ingestion time, Watermark propagation |
-| [02.04-state-backends.md](../../Flink/02-core-mechanisms/02.04-state-backends.md) | State Backends Deep Dive | HashMapStateBackend, RocksDBStateBackend comparison |
-| [02.05-backpressure-flow-control.md](../../Flink/02-core-mechanisms/02.05-backpressure-flow-control.md) | Backpressure and Flow Control | Credit-based backpressure, dynamic buffer expansion |
-| [02.06-fault-tolerance-recovery.md](../../Flink/02-core-mechanisms/02.06-fault-tolerance-recovery.md) | Fault Tolerance and Recovery | Failure detection, automatic restart, local recovery |
-| [02.07-savepoint-operations.md](../../Flink/02-core-mechanisms/02.07-savepoint-operations.md) | Savepoint Operations | State migration, version upgrade, application evolution |
-| [02.08-broadcast-state.md](../../Flink/02-core-mechanisms/02.08-broadcast-state.md) | Broadcast State Pattern | Rule updates, configuration broadcasting |
-| [02.09-queryable-state.md](../../Flink/02-core-mechanisms/02.09-queryable-state.md) | Queryable State | Real-time state queries, operational analytics |
-| [02.10-side-outputs.md](../../Flink/02-core-mechanisms/02.10-side-outputs.md) | Side Outputs | Late data handling, multi-stream output |
-| [02.11-async-checkpointing.md](../../Flink/02-core-mechanisms/02.11-async-checkpointing.md) | Asynchronous Checkpointing | Non-blocking checkpoints, performance optimization |
-| [02.12-state-ttl.md](../../Flink/02-core-mechanisms/02.12-state-ttl.md) | State TTL Management | Automatic state expiration, cleanup strategies |
+| [02.01-checkpoint-mechanism.md](../../Flink/02-core/02.01-checkpoint-mechanism.md) | Checkpoint Mechanism Deep Dive | Barrier alignment, incremental checkpoint, exactly-once |
+| [02.02-exactly-once-semantics.md](../../Flink/02-core/02.02-exactly-once-semantics.md) | Exactly-Once Semantics | End-to-end consistency, 2PC protocol implementation |
+| [02.03-time-semantics-watermark.md](../../Flink/02-core/02.03-time-semantics-watermark.md) | Time Semantics and Watermark | Event time, processing time, ingestion time, Watermark propagation |
+| [02.04-state-backends.md](../../Flink/02-core/02.04-state-backends.md) | State Backends Deep Dive | HashMapStateBackend, RocksDBStateBackend comparison |
+| [02.05-backpressure-flow-control.md](../../Flink/02-core/02.05-backpressure-flow-control.md) | Backpressure and Flow Control | Credit-based backpressure, dynamic buffer expansion |
+| [02.06-fault-tolerance-recovery.md](../../Flink/02-core/02.06-fault-tolerance-recovery.md) | Fault Tolerance and Recovery | Failure detection, automatic restart, local recovery |
+| [02.07-savepoint-operations.md](../../Flink/02-core/02.07-savepoint-operations.md) | Savepoint Operations | State migration, version upgrade, application evolution |
+| [02.08-broadcast-state.md](../../Flink/02-core/02.08-broadcast-state.md) | Broadcast State Pattern | Rule updates, configuration broadcasting |
+| [02.09-queryable-state.md](../../Flink/02-core/02.09-queryable-state.md) | Queryable State | Real-time state queries, operational analytics |
+| [02.10-side-outputs.md](../../Flink/02-core/02.10-side-outputs.md) | Side Outputs | Late data handling, multi-stream output |
+| [02.11-async-checkpointing.md](../../Flink/02-core/02.11-async-checkpointing.md) | Asynchronous Checkpointing | Non-blocking checkpoints, performance optimization |
+| [02.12-state-ttl.md](../../Flink/02-core/02.12-state-ttl.md) | State TTL Management | Automatic state expiration, cleanup strategies |
 
 ---
 
@@ -352,3 +352,4 @@ Flink observability and monitoring.
 
 > **Document Specification**: This document follows the six-section template in [AGENTS.md](../../../AGENTS.md)
 > **Last Updated**: 2026-04-08
+

@@ -1,6 +1,6 @@
-# 案例: IoT 流处理平台 (Case Study: IoT Stream Processing)
+﻿# 案例: IoT 流处理平台 (Case Study: IoT Stream Processing)
 
-> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md) | **形式化等级**: L3
+> **所属阶段**: Flink/07-case-studies | **前置依赖**: [../../Flink/02-core/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md) | **形式化等级**: L3
 
 ---
 
@@ -450,3 +450,4 @@ graph LR
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+

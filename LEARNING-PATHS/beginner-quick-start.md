@@ -1,4 +1,4 @@
-# 学习路径：快速上手（1周）
+﻿# 学习路径：快速上手（1周）
 
 > **所属阶段**: 初学者路径 | **难度等级**: L2 | **预计时长**: 1周（每天6-8小时）
 
@@ -116,9 +116,9 @@ curl http://localhost:8081
 
 | 文档 | 时长 | 重点章节 |
 |------|------|----------|
-| `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 2h | 1-3节 |
-| `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 2h | 概述和配置 |
-| `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | 2h | 基础使用 |
+| `Flink/02-core/time-semantics-and-watermark.md` | 2h | 1-3节 |
+| `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 2h | 概述和配置 |
+| `Flink/02-core/flink-state-management-complete-guide.md` | 2h | 基础使用 |
 
 ### 快速实验
 
@@ -299,3 +299,4 @@ ValueState<Integer> state = getRuntimeContext().getState(descriptor);
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，1周快速上手指南 |
+

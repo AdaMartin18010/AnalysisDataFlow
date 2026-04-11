@@ -1,4 +1,4 @@
-# AnalysisDataFlow
+﻿# AnalysisDataFlow
 
 [![Deutsch](https://img.shields.io/badge/Deutsch-🇩🇪-red)](./README-de.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../../docs/i18n/en/00-OVERVIEW.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
 
@@ -170,14 +170,14 @@ Struct/ formalisierte Definitionen ──→ Knowledge/ Design-Patterns ──�
 
 ```
 Woche 1: Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md
-Woche 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Woche 2: Flink/02-core/time-semantics-and-watermark.md
 Woche 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
 ```
 
 ### Fortgeschrittener-Ingenieur-Pfad (4-6 Wochen)
 
 ```
-Woche 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Woche 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 Woche 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
 Woche 5-6: Knowledge/02-design-patterns/ (alle Patterns vertiefen)
 ```
@@ -246,3 +246,4 @@ Dieses Projekt ist unter der [Apache License 2.0](../../LICENSE) lizenziert.
 ---
 
 > **Übersetzer-Hinweis**: Dieses Dokument wurde unter Beibehaltung der technischen Genauigkeit des Originals und im Einklang mit den Gepflogenheiten deutscher technischer Dokumentation übersetzt. Formalisierte Definitionen und Theoreme behalten ihre englische Notation bei. Letztes Update: 2026-04-11
+

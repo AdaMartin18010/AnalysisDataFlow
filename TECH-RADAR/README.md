@@ -1,4 +1,4 @@
-# 流计算技术雷达 (Streaming Technology Radar)
+﻿# 流计算技术雷达 (Streaming Technology Radar)
 
 > 所属阶段: Knowledge | 前置依赖: [Flink生态](../Flink/00-INDEX.md), [技术全景](../Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md) | 形式化等级: L3
 
@@ -121,7 +121,7 @@ graph TB
 |------|------|------|----------|
 | **Delta Lake 2.0** | 3.2+ | 统一批流存储 | [Delta集成](../Flink/04-connectors/flink-delta-lake-integration.md) |
 | **Hudi** | 0.15+ | 近实时数据湖 | |
-| **ForSt State Backend** | - | Flink 2.0 远程状态 | [ForSt](../Flink/02-core-mechanisms/flink-2.0-forst-state-backend.md) |
+| **ForSt State Backend** | - | Flink 2.0 远程状态 | [ForSt](../Flink/02-core/flink-2.0-forst-state-backend.md) |
 | **Fluss (Fluss)** | - | Kafka 兼容流存储 | [Fluss](../Flink/04-connectors/fluss-integration.md) |
 
 #### Assess (评估)
@@ -295,3 +295,4 @@ radar
 ---
 
 *最后更新: 2026-04-04 | 版本: v2026.2 | 维护者: AnalysisDataFlow Team*
+

@@ -1,4 +1,4 @@
-# AnalysisDataFlow 项目维护手册
+﻿# AnalysisDataFlow 项目维护手册
 
 > **版本**: v1.0 | **生效日期**: 2026-04-03 | **维护人员**: 项目维护团队
 >
@@ -119,7 +119,7 @@
 | Struct/01-foundation/ | `01.01-unified-streaming-theory.md` | 基础层第一文档 |
 | Struct/02-properties/ | `02.02-consistency-hierarchy.md` | 性质层第二文档 |
 | Knowledge/02-design-patterns/ | `pattern-event-time-processing.md` | 设计模式文档 |
-| Flink/02-core-mechanisms/ | `checkpoint-mechanism-deep-dive.md` | 核心机制文档 |
+| Flink/02-core/ | `checkpoint-mechanism-deep-dive.md` | 核心机制文档 |
 
 ### 1.3 文档六段式模板要求
 
@@ -240,8 +240,8 @@
 **步骤 2: 创建文档**
 
 ```bash
-# 示例: 在 Flink/02-core-mechanisms/ 添加新文档
-touch Flink/02-core-mechanisms/new-feature-guide.md
+# 示例: 在 Flink/02-core/ 添加新文档
+touch Flink/02-core/new-feature-guide.md
 ```
 
 **步骤 3: 填写六段式内容**
@@ -254,7 +254,7 @@ touch Flink/02-core-mechanisms/new-feature-guide.md
 在 `THEOREM-REGISTRY.md` 的相应章节添加：
 
 ```markdown
-| Thm-F-02-XX | 新定理名称 | Flink/02-core-mechanisms/new-feature-guide.md | L4 | ✅ |
+| Thm-F-02-XX | 新定理名称 | Flink/02-core/new-feature-guide.md | L4 | ✅ |
 ```
 
 **步骤 5: 更新索引**
@@ -305,7 +305,7 @@ python .vscode/validate-cross-refs.py
 
 | 文档 | 定理数 | 定义数 | 状态 |
 |------|--------|--------|------|
-| [new-feature-guide.md](./Flink/02-core-mechanisms/flink-2.2-frontier-features.md) | 2 | 5 | ✅ |
+| [new-feature-guide.md](./Flink/02-core/flink-2.2-frontier-features.md) | 2 | 5 | ✅ |
 ```
 
 **更新定理注册表** (`THEOREM-REGISTRY.md`):
@@ -819,3 +819,4 @@ python .vscode/validate-mermaid.py
 ---
 
 *本手册版本: v1.0 | 最后更新: 2026-04-03 | 下次审查: 2026-07-03*
+

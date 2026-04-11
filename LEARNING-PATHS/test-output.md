@@ -1,4 +1,4 @@
-# 开发者系统学习路径
+﻿# 开发者系统学习路径
 
 > **路径类型**: balanced | **预计总时长**: 90小时 | **生成日期**: 2026-04-04
 
@@ -56,7 +56,7 @@
 | 2 | Flink SQL窗口函数 | L3 | flink | 3h | `Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` |
 | 3 | 实时分析案例 | L3 | flink | 3h | `Flink/07-case-studies/case-realtime-analytics.md` |
 | 4 | 电商实时推荐 | L4 | flink | 4h | `Flink/07-case-studies/case-ecommerce-realtime-recommendation.md` |
-| 5 | Checkpoint机制深入 | L3 | flink | 4h | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` |
+| 5 | Checkpoint机制深入 | L3 | flink | 4h | `Flink/02-core/checkpoint-mechanism-deep-dive.md` |
 
 #### 阶段检查点
 
@@ -77,7 +77,7 @@
 | 2 | 窗口聚合模式 | L2 | engineering | 2h | `Knowledge/02-design-patterns/pattern-windowed-aggregation.md` |
 | 3 | 有状态计算模式 | L3 | engineering | 4h | `Knowledge/02-design-patterns/pattern-stateful-computation.md` |
 | 4 | Kafka集成模式 | L3 | flink | 3h | `Flink/04-connectors/kafka-integration-patterns.md` |
-| 5 | 反压与流控 | L4 | flink | 4h | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` |
+| 5 | 反压与流控 | L4 | flink | 4h | `Flink/02-core/backpressure-and-flow-control.md` |
 | 6 | 性能调优指南 | L4 | flink | 5h | `Flink/06-engineering/performance-tuning-guide.md` |
 
 #### 阶段检查点
@@ -129,3 +129,4 @@
 ---
 
 *此学习路径由动态推荐系统生成*
+

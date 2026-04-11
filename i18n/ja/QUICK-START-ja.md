@@ -1,4 +1,4 @@
-# AnalysisDataFlow クイックスタートガイド
+﻿# AnalysisDataFlow クイックスタートガイド
 
 > **5分でプロジェクトを理解 | ロール別カスタムパス | クイック問題インデックス**
 >
@@ -129,7 +129,7 @@ Day 5: アーキテクチャ決定
 Week 1: クイックスタート
 ├── Day 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
 │   └── Flinkポジショニングと強み
-├── Day 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Day 2-3: Flink/02-core/time-semantics-and-watermark.md
 │   └── イベント時間、Watermarkメカニズム
 ├── Day 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
 │   └── イベント時間処理パターン
@@ -137,11 +137,11 @@ Week 1: クイックスタート
     └── Kafka統合ベストプラクティス
 
 Week 2: コアメカニズム深層
-├── Day 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+├── Day 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 │   └── Checkpointメカニズム、障害回復
-├── Day 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+├── Day 3: Flink/02-core/exactly-once-end-to-end.md
 │   └── Exactly-Once実装原理
-├── Day 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+├── Day 4: Flink/02-core/backpressure-and-flow-control.md
 │   └── バックプレッシャー処理とフロー制御
 └── Day 5: Flink/06-engineering/performance-tuning-guide.md
     └── パフォーマンスチューニング実戦
@@ -196,7 +196,7 @@ Month 1: 基盤構築
 ├── Week 2: ストリームコンピューティング基礎
 │   ├── Struct/01-foundation/01.04-dataflow-model-formalization.md
 │   ├── Knowledge/01-concept-atlas/streaming-models-mindmap.md
-│   └── Flink/02-core-mechanisms/time-semantics-and-watermark.md
+│   └── Flink/02-core/time-semantics-and-watermark.md
 ├── Week 3: コア性質
 │   ├── Struct/02-properties/02.01-determinism-in-streaming.md
 │   ├── Struct/02-properties/02.02-consistency-hierarchy.md
@@ -207,7 +207,7 @@ Month 1: 基盤構築
 
 Month 2: 深層と拡張
 ├── Week 5-6: Flinkエンジニアリング実践
-│   ├── Flink/02-core-mechanisms/ (全コアドキュメント)
+│   ├── Flink/02-core/ (全コアドキュメント)
 │   └── Flink/06-engineering/performance-tuning-guide.md
 ├── Week 7: 形式証明入門
 │   ├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
@@ -321,11 +321,11 @@ Month 2: 深層と拡張
 
 | 障害タイプ | トラブルシューティングドキュメント |
 |------------|-----------------------------------|
-| Checkpoint問題 | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
-| バックプレッシャー問題 | Flink/02-core-mechanisms/backpressure-and-flow-control.md |
+| Checkpoint問題 | Flink/02-core/checkpoint-mechanism-deep-dive.md |
+| バックプレッシャー問題 | Flink/02-core/backpressure-and-flow-control.md |
 | パフォーマンスチューニング | Flink/06-engineering/performance-tuning-guide.md |
 | メモリオーバーフロー | Flink/06-engineering/performance-tuning-guide.md |
-| Exactly-Once失効 | Flink/02-core-mechanisms/exactly-once-end-to-end.md |
+| Exactly-Once失効 | Flink/02-core/exactly-once-end-to-end.md |
 
 ---
 
@@ -528,7 +528,7 @@ L₁: Regular (P-Complete) ── FSM, Regex
 | シナリオ | 第一エントリ | 第二エントリ | 第三エントリ |
 |----------|--------------|--------------|--------------|
 | 理論入門 | Struct/01-foundation/01.01 | Struct/01-foundation/01.02 | Struct/00-INDEX |
-| Flink入門 | Flink/05-vs-competitors/flink-vs-spark | Flink/02-core-mechanisms/time-semantics | Flink/00-INDEX |
+| Flink入門 | Flink/05-vs-competitors/flink-vs-spark | Flink/02-core/time-semantics | Flink/00-INDEX |
 | パターン学習 | Knowledge/02-design-patterns/pattern-event-time | Knowledge/00-INDEX | シナリオに応じて選択読書 |
 | 問題診断 | 第3.2節問題別インデックス | Flink/00-INDEX障害診断 | アンチパターンチェックリスト |
 | 最先端技術 | Knowledge/06-frontier/ | PROJECT-TRACKING.md | 興味に応じて選択読書 |
@@ -542,3 +542,4 @@ L₁: Regular (P-Complete) ── FSM, Regex
 ---
 
 > **翻訳者注記**：本ドキュメントは日本の技術文書スタイルに従って翻訳されています。形式化表記、定理番号、コード例は原文と同一です。最終更新: 2026-04-11
+

@@ -1,4 +1,4 @@
-# CSE 认证课程大纲
+﻿# CSE 认证课程大纲
 
 > **版本**: v1.0 | **生效日期**: 2026-04-08 | **形式化等级**: L4-L6
 >
@@ -289,7 +289,7 @@ pie title CSE 课程时间分配
 **必读文档**:
 
 - `Flink/05-internals/scheduler-optimization.md`
-- `Flink/02-core-mechanisms/large-state-optimization.md`
+- `Flink/02-core/large-state-optimization.md`
 - `Knowledge/02-design-patterns/pattern-incremental-computation.md`
 
 **研究任务**:
@@ -455,3 +455,4 @@ CSE 认证采用导师制，每位学员配备一位认证导师：
 ---
 
 [返回认证首页 →](../README.md) | [查看考试说明 →](./exam-guide-cse.md)
+

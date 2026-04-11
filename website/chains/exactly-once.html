@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exactly-Once 正确性 - AnalysisDataFlow</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-stream"></i>
+                <span>AnalysisDataFlow</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3><i class="fas fa-home"></i> 首页</h3>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-chart-line"></i> 项目概览</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-project-diagram"></i> 推导链</h3>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-list"></i> 全部推导链</a></li>
+                    <li><a href="checkpoint.html"><i class="fas fa-save"></i> Checkpoint 正确性</a></li>
+                    <li><a href="exactly-once.html" class="active"><i class="fas fa-check-double"></i> Exactly-Once</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3><i class="fas fa-network-wired"></i> 可视化</h3>
+                <ul>
+                    <li><a href="../graph/index.html"><i class="fas fa-project-diagram"></i> 交互式依赖图</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <span>v3.6 | 100% Complete</span>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="top-header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span class="project-name">AnalysisDataFlow</span>
+                <span class="separator">/</span>
+                <span class="page-title">Exactly-Once 正确性</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 页面内容 -->
+        <div class="content-wrapper">
+            <div class="chain-detail">
+                <!-- 头部信息 -->
+                <div class="chain-header">
+                    <h1><i class="fas fa-check-double"></i> Exactly-Once 端到端正确性</h1>
+                    <div class="chain-meta-bar">
+                        <div class="chain-meta-item">
+                            <i class="fas fa-tag"></i>
+                            <span>Thm-S-18-01</span>
+                        </div>
+                        <div class="chain-meta-item">
+                            <i class="fas fa-layer-group"></i>
+                            <span>形式化等级: L5</span>
+                        </div>
+                        <div class="chain-meta-item">
+                            <i class="fas fa-sitemap"></i>
+                            <span>依赖深度: 5层</span>
+                        </div>
+                        <div class="chain-meta-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>状态: ✅ 已验证</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 定理陈述 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">★</div>
+                        <h2 class="layer-title">核心定理陈述</h2>
+                    </div>
+                    <div style="padding: 20px; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <p style="font-size: 1.1rem; margin-bottom: 16px;"><strong>Thm-S-18-01:</strong> Flink Exactly-Once 正确性定理</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                            在 Flink Dataflow 系统中，若满足以下条件:
+                        </p>
+                        <ol style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                            <li><strong>Source 可重放:</strong> 数据源支持重放已消费的数据</li>
+                            <li><strong>内部一致性:</strong> Checkpoint 机制保证状态一致性 (Thm-S-17-01)</li>
+                            <li><strong>Sink 原子性:</strong> 输出端支持事务或幂等写入</li>
+                        </ol>
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                            则系统提供端到端的 Exactly-Once 处理语义。
+                        </p>
+                        <pre style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); margin-top: 16px;"><code>∀G=(V,E), ∀source ∈ Sources, ∀sink ∈ Sinks:
+    Replayable(source)
+    ∧ ConsistentCheckpoint(G)   [Thm-S-17-01]
+    ∧ AtomicSink(sink)
+    ⟹ ExactlyOnce(G, source, sink)
+
+ExactlyOnce(G, source, sink) ≜
+    ∀record r: count_effects(sink, r) = 1</code></pre>
+                    </div>
+                </section>
+
+                <!-- Layer 1 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">1</div>
+                        <h2 class="layer-title">基础定义层 (Layer 1)</h2>
+                    </div>
+                    <div class="layer-elements">
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-01-02</div>
+                            <div class="element-name">Process Calculus</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-01-03</div>
+                            <div class="element-name">Actor Model</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-08-01</div>
+                            <div class="element-name">At-Most-Once 语义</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-08-02</div>
+                            <div class="element-name">At-Least-Once 语义</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-08-03</div>
+                            <div class="element-name">Exactly-Once 定义</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-08-04</div>
+                            <div class="element-name">Exactly-Once 语义</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Layer 2 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">2</div>
+                        <h2 class="layer-title">一致性层级 (Layer 2)</h2>
+                    </div>
+                    <div class="layer-elements">
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-08-01</div>
+                            <div class="element-name">蕴含关系</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-08-02</div>
+                            <div class="element-name">组合性</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定理</div>
+                            <div class="element-id">Thm-S-08-01</div>
+                            <div class="element-name">必要条件</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定理</div>
+                            <div class="element-id">Thm-S-08-02</div>
+                            <div class="element-name">端到端正确性</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Layer 3 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">3</div>
+                        <h2 class="layer-title">Checkpoint 基础 (Layer 3)</h2>
+                    </div>
+                    <div class="layer-elements">
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-17-01</div>
+                            <div class="element-name">Checkpoint Barrier</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-17-01</div>
+                            <div class="element-name">传播不变式</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-17-02</div>
+                            <div class="element-name">状态一致性</div>
+                        </div>
+                        <div class="element-card" style="border-color: var(--accent-blue);">
+                            <div class="element-type">定理</div>
+                            <div class="element-id">Thm-S-17-01</div>
+                            <div class="element-name">Checkpoint 一致性 ✓</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Layer 4 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">4</div>
+                        <h2 class="layer-title">EO 三要素 (Layer 4)</h2>
+                    </div>
+                    <div class="layer-elements">
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-18-01</div>
+                            <div class="element-name">Source 可重放</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-18-01</div>
+                            <div class="element-name">Source 可重放引理</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-18-02</div>
+                            <div class="element-name">算子确定性</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">定义</div>
+                            <div class="element-id">Def-S-18-03</div>
+                            <div class="element-name">2PC 协议</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">引理</div>
+                            <div class="element-id">Lemma-S-18-02</div>
+                            <div class="element-name">2PC 原子性</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Layer 5 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">5</div>
+                        <h2 class="layer-title">核心定理层 (Layer 5)</h2>
+                    </div>
+                    <div class="layer-elements">
+                        <div class="element-card" style="border-color: var(--accent-green); background: rgba(63, 185, 80, 0.1);">
+                            <div class="element-type">定理 ✓</div>
+                            <div class="element-id">Thm-S-18-01</div>
+                            <div class="element-name">Exactly-Once 正确性</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-type">推论</div>
+                            <div class="element-id">Cor-S-18-01</div>
+                            <div class="element-name">容错一致性推论</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 三要素模型 -->
+                <section class="layer-step">
+                    <div class="layer-header">
+                        <div class="layer-number">→</div>
+                        <h2 class="layer-title">Exactly-Once 三要素模型</h2>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        <div style="padding: 20px; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center; border-top: 3px solid var(--accent-blue);">
+                            <i class="fas fa-sign-in-alt" style="font-size: 2rem; color: var(--accent-blue); margin-bottom: 12px;"></i>
+                            <h3 style="margin-bottom: 8px;">Source 可重放</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">数据源支持偏移量重置，故障时可重新消费数据</p>
+                        </div>
+                        <div style="padding: 20px; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center; border-top: 3px solid var(--accent-green);">
+                            <i class="fas fa-save" style="font-size: 2rem; color: var(--accent-green); margin-bottom: 12px;"></i>
+                            <h3 style="margin-bottom: 8px;">Checkpoint 一致性</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">内部状态通过 Checkpoint 实现一致性快照</p>
+                        </div>
+                        <div style="padding: 20px; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center; border-top: 3px solid var(--accent-orange);">
+                            <i class="fas fa-sign-out-alt" style="font-size: 2rem; color: var(--accent-orange); margin-bottom: 12px;"></i>
+                            <h3 style="margin-bottom: 8px;">Sink 原子性</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">输出端支持事务写入或幂等写入</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 推导链统计 -->
+                <section class="completion-status" style="margin-top: 48px;">
+                    <h2><i class="fas fa-chart-pie"></i> 推导链统计</h2>
+                    <div class="status-grid">
+                        <div class="status-card completed">
+                            <div class="status-icon"><i class="fas fa-cube"></i></div>
+                            <div class="status-content">
+                                <h4>10 定义</h4>
+                                <p>基础概念形式化</p>
+                            </div>
+                        </div>
+                        <div class="status-card completed">
+                            <div class="status-icon"><i class="fas fa-leaf"></i></div>
+                            <div class="status-content">
+                                <h4>6 引理</h4>
+                                <p>辅助性质推导</p>
+                            </div>
+                        </div>
+                        <div class="status-card completed">
+                            <div class="status-icon"><i class="fas fa-theorem"></i></div>
+                            <div class="status-content">
+                                <h4>3 定理</h4>
+                                <p>核心结论</p>
+                            </div>
+                        </div>
+                        <div class="status-card completed">
+                            <div class="status-icon"><i class="fas fa-layer-group"></i></div>
+                            <div class="status-content">
+                                <h4>20 总计</h4>
+                                <p>形式化元素</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

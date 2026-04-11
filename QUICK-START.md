@@ -1,4 +1,4 @@
-# AnalysisDataFlow 快速上手指南
+﻿# AnalysisDataFlow 快速上手指南
 
 > **5分钟了解项目 | 按角色定制路径 | 快速问题索引**
 >
@@ -129,7 +129,7 @@ Day 5: 架构决策
 Week 1: 快速上手
 ├── Day 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
 │   └── Flink定位与优势
-├── Day 2-3: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+├── Day 2-3: Flink/02-core/time-semantics-and-watermark.md
 │   └── 事件时间、Watermark机制
 ├── Day 4: Knowledge/02-design-patterns/pattern-event-time-processing.md
 │   └── 事件时间处理模式
@@ -137,11 +137,11 @@ Week 1: 快速上手
     └── Kafka集成最佳实践
 
 Week 2: 核心机制深入
-├── Day 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+├── Day 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 │   └── Checkpoint机制、故障恢复
-├── Day 3: Flink/02-core-mechanisms/exactly-once-end-to-end.md
+├── Day 3: Flink/02-core/exactly-once-end-to-end.md
 │   └── Exactly-Once实现原理
-├── Day 4: Flink/02-core-mechanisms/backpressure-and-flow-control.md
+├── Day 4: Flink/02-core/backpressure-and-flow-control.md
 │   └── 背压处理与流控
 └── Day 5: Flink/06-engineering/performance-tuning-guide.md
     └── 性能调优实战
@@ -196,7 +196,7 @@ Month 1: 基础构建
 ├── Week 2: 流计算基础
 │   ├── Struct/01-foundation/01.04-dataflow-model-formalization.md
 │   ├── Knowledge/01-concept-atlas/streaming-models-mindmap.md
-│   └── Flink/02-core-mechanisms/time-semantics-and-watermark.md
+│   └── Flink/02-core/time-semantics-and-watermark.md
 ├── Week 3: 核心性质
 │   ├── Struct/02-properties/02.01-determinism-in-streaming.md
 │   ├── Struct/02-properties/02.02-consistency-hierarchy.md
@@ -207,7 +207,7 @@ Month 1: 基础构建
 
 Month 2: 深入与拓展
 ├── Week 5-6: Flink工程实践
-│   ├── Flink/02-core-mechanisms/ (全部核心文档)
+│   ├── Flink/02-core/ (全部核心文档)
 │   └── Flink/06-engineering/performance-tuning-guide.md
 ├── Week 7: 形式化证明入门
 │   ├── Struct/04-proofs/04.01-flink-checkpoint-correctness.md
@@ -329,11 +329,11 @@ Month 2: 深入与拓展
 
 | 故障类型 | 排查文档 |
 |----------|----------|
-| Checkpoint问题 | Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md |
-| 背压问题 | Flink/02-core-mechanisms/backpressure-and-flow-control.md |
+| Checkpoint问题 | Flink/02-core/checkpoint-mechanism-deep-dive.md |
+| 背压问题 | Flink/02-core/backpressure-and-flow-control.md |
 | 性能调优 | Flink/06-engineering/performance-tuning-guide.md |
 | 内存溢出 | Flink/06-engineering/performance-tuning-guide.md |
-| Exactly-Once失效 | Flink/02-core-mechanisms/exactly-once-end-to-end.md |
+| Exactly-Once失效 | Flink/02-core/exactly-once-end-to-end.md |
 
 #### 反模式检查清单
 
@@ -547,7 +547,7 @@ L₁: Regular (P-Complete) ── FSM, Regex
 | 场景 | 第一入口 | 第二入口 | 第三入口 |
 |------|----------|----------|----------|
 | 理论入门 | Struct/01-foundation/01.01 | Struct/01-foundation/01.02 | Struct/00-INDEX |
-| Flink入门 | Flink/05-vs-competitors/flink-vs-spark | Flink/02-core-mechanisms/time-semantics | Flink/00-INDEX |
+| Flink入门 | Flink/05-vs-competitors/flink-vs-spark | Flink/02-core/time-semantics | Flink/00-INDEX |
 | 模式学习 | Knowledge/02-design-patterns/pattern-event-time | Knowledge/00-INDEX | 按场景选读 |
 | 问题排查 | 第3.2节按问题索引 | Flink/00-INDEX故障排查 | 反模式检查清单 |
 | 前沿技术 | Knowledge/06-frontier/ | PROJECT-TRACKING.md | 按兴趣选读 |
@@ -557,3 +557,4 @@ L₁: Regular (P-Complete) ── FSM, Regex
 > 📌 **提示**：本文档为快速上手指南，详细内容请参考各目录索引和具体文档。
 >
 > 📅 **最后更新**：2026-04-03 | 📝 **版本**：v1.0
+

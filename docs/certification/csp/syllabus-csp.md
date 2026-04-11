@@ -1,4 +1,4 @@
-# CSP 认证课程大纲
+﻿# CSP 认证课程大纲
 
 > **版本**: v1.0 | **生效日期**: 2026-04-08 | **形式化等级**: L3-L4
 >
@@ -72,7 +72,7 @@ pie title CSP 课程时间分配
 
 - `Flink/05-internals/job-submission-flow.md`
 - `Flink/05-internals/network-stack-deep-dive.md`
-- `Flink/02-core-mechanisms/backpressure-and-flow-control.md`
+- `Flink/02-core/backpressure-and-flow-control.md`
 
 **实验任务**:
 
@@ -106,7 +106,7 @@ pie title CSP 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`
+- `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 - `Flink/08-operations/state-backends-configuration.md`
 - `Knowledge/04-technology-selection/state-backend-selection-guide.md`
 
@@ -140,7 +140,7 @@ pie title CSP 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md`
+- `Flink/02-core/exactly-once-semantics-deep-dive.md`
 - `Struct/02-properties/02.01-exactly-once-semantics.md`
 - `Knowledge/02-design-patterns/pattern-exactly-once-sink.md`
 
@@ -174,7 +174,7 @@ pie title CSP 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `Flink/02-core/time-semantics-and-watermark.md`
 - `Struct/02-properties/02.03-watermark-monotonicity.md`
 - `Knowledge/02-design-patterns/pattern-late-data-handling.md`
 
@@ -208,8 +208,8 @@ pie title CSP 课程时间分配
 
 **必读文档**:
 
-- `Flink/02-core-mechanisms/state-management-overview.md`
-- `Flink/02-core-mechanisms/large-state-optimization.md`
+- `Flink/02-core/state-management-overview.md`
+- `Flink/02-core/large-state-optimization.md`
 - `Knowledge/02-design-patterns/pattern-broadcast-state.md`
 
 **实验任务**:
@@ -438,8 +438,8 @@ pie title CSP 课程时间分配
 
 | 优先级 | 文档路径 | 预计阅读 |
 |--------|----------|----------|
-| P0 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | 2h |
-| P0 | `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` | 2h |
+| P0 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | 2h |
+| P0 | `Flink/02-core/exactly-once-semantics-deep-dive.md` | 2h |
 | P0 | `Flink/05-internals/job-submission-flow.md` | 1.5h |
 | P1 | `Knowledge/02-design-patterns/` | 3h |
 | P1 | `Knowledge/09-anti-patterns/` | 2h |
@@ -471,3 +471,4 @@ pie title CSP 课程时间分配
 ---
 
 [返回认证首页 →](../README.md) | [查看考试说明 →](./exam-guide-csp.md)
+

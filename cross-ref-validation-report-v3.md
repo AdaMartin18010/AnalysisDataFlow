@@ -1,6 +1,6 @@
 # 全量交叉引用验证报告 v3
 
-> 生成时间: 2026-04-09T12:23:17.010555
+> 生成时间: 2026-04-11T21:20:54.782917
 > 验证范围: Struct/ Knowledge/ Flink/ 目录下的所有Markdown文件
 > 验证版本: v3（支持带数字前缀的标题锚点）
 
@@ -8,30 +8,35 @@
 
 | 指标 | 数值 |
 |------|------|
-| **扫描文件数** | 624 |
-| **总引用数** | 10,633 |
-| **有效引用** | 9,167 |
-| **已忽略** (外部链接/代码) | 113 |
-| **断裂引用** | 1,353 |
-| **文件不存在** | 7 |
-| **锚点不存在** | 1,346 |
-| **有效引用率** | 87.14% |
+| **扫描文件数** | 655 |
+| **总引用数** | 11,976 |
+| **有效引用** | 9,916 |
+| **已忽略** (外部链接/代码) | 121 |
+| **断裂引用** | 1,939 |
+| **文件不存在** | 12 |
+| **锚点不存在** | 1,927 |
+| **有效引用率** | 83.64% |
 
 ## 🔴 断裂引用详情
 
-### 1. 文件不存在错误 (7 个)
+### 1. 文件不存在错误 (12 个)
 
 | 源文件 | 行号 | 链接文本 | 目标路径 | 代码片段 |
 |--------|------|----------|----------|----------|
 | `Flink\03-api\09-language-foundations\02.01-java-api-from-scala.md` | 108 | Integer | `Flink\03-api\09-language-foundations\_.l` | `stream.map[Integer](_.length)  // 显式指定返回` |
-| `Flink\03-api\09-language-foundations\05-datastream-v2-api.md` | 901 | Long | `Flink\03-api\09-language-foundations\"co` | `.valueState[Long]("counter")  // 类型参数 Lo` |
-| `Struct\01-foundation\01.10-schema-evolution-formalization.md` | 784 | Flink Schema Evolution Guide | `Struct\Flink\flink-schema-evolution-guid` | `- [Flink Schema Evolution Guide](../Flin` |
-| `Struct\01-foundation\01.10-schema-evolution-formalization.md` | 785 | Knowledge/Schema Design Patter | `Struct\Knowledge\03-data-management\sche` | `- [Knowledge/Schema Design Patterns](../` |
+| `Flink\03-api\09-language-foundations\05-datastream-v2-api.md` | 902 | Long | `Flink\03-api\09-language-foundations\"co` | `.valueState[Long]("counter")  // 类型参数 Lo` |
+| `Knowledge\case-studies\ecommerce-realtime-recommendation-v2.md` | 3 | Knowledge/10-case-studies/ecom | `10-case-studies\ecommerce\10.2.1-realtim` | `> **所属阶段**: Knowledge/case-studies/ecomm` |
+| `Knowledge\case-studies\fraud-detection-production-case.md` | 3 | Knowledge/case-studies/finance | `Knowledge\case-studies\realtime-anti-fra` | `> **所属阶段**: Knowledge/case-studies/finan` |
+| `Knowledge\case-studies\gaming-analytics-platform-case.md` | 3 | Knowledge/case-studies/gaming/ | `Knowledge\case-studies\realtime-game-ana` | `> **所属阶段**: Knowledge/case-studies/gamin` |
+| `Knowledge\case-studies\iot-smart-grid-case-study.md` | 3 | Knowledge/10-case-studies/iot/ | `10-case-studies\iot\10.3.1-smart-meter-d` | `> **所属阶段**: Knowledge/case-studies/iot |` |
+| `Struct\01-foundation\01.10-schema-evolution-formalization.md` | 790 | Flink Schema Evolution Guide | `Struct\Flink\flink-schema-evolution-guid` | `- [Flink Schema Evolution Guide](../Flin` |
+| `Struct\01-foundation\01.10-schema-evolution-formalization.md` | 791 | Knowledge/Schema Design Patter | `Struct\Knowledge\03-data-management\sche` | `- [Knowledge/Schema Design Patterns](../` |
 | `Struct\04-proofs\04.05-type-safety-fg-fgg.md` | 172 | \bar{\sigma} | `Struct\04-proofs\v_1, ...` | `\text{(R-Call-G)} & v.m[\bar{\sigma}](v_` |
 | `Struct\06-frontier\06.05-ai-agent-streaming-formalization.md` | 3 | 05.03-streaming-dataflow-equiv | `Struct\05-foundations\05.03-streaming-da` | `> **所属阶段**: Struct/06-frontier | **前置依赖*` |
-| `Struct\06-frontier\research-trends-analysis-2024-2026.md` | 493 | 02-B-evolution/flink-2.0-async | `Flink\02-core\02-B-evolution\flink-2.0-a` | `- [02-B-evolution/flink-2.0-async-execut` |
+| `Struct\06-frontier\research-trends-analysis-2024-2026.md` | 518 | 02-B-evolution/flink-2.0-async | `Flink\02-core\02-B-evolution\flink-2.0-a` | `- [02-B-evolution/flink-2.0-async-execut` |
+| `Struct\Proof-Chains-Process-Calculus-Foundation.md` | 323 | νx | `Struct\·` | `- 限制上下文[νx](·): 限制不破坏模拟关系` |
 
-### 2. 锚点不存在错误 (1346 个)
+### 2. 锚点不存在错误 (1927 个)
 
 展示前100个:
 
@@ -81,6 +86,8 @@
 | `Flink\01-concepts\flink-1.x-vs-2.0-comparison.md` | 16 | 2.2 Flink 2.0 架构模型 | `Flink\01-concepts\flink-1.x-vs-2.0-` | `#22-flink-20-架构模型` |
 | `Flink\01-concepts\flink-1.x-vs-2.0-comparison.md` | 20 | 4.1 本地状态存储 (Flink 1.x) | `Flink\01-concepts\flink-1.x-vs-2.0-` | `#41-本地状态存储-flink-1x` |
 | `Flink\01-concepts\flink-1.x-vs-2.0-comparison.md` | 21 | 4.2 分离状态存储 (Flink 2.0) | `Flink\01-concepts\flink-1.x-vs-2.0-` | `#42-分离状态存储-flink-20` |
+| `Flink\01-concepts\flink-1.x-vs-2.0-comparison.md` | 36 | 从 Flink 1.x 创建 Savepoint | `Flink\01-concepts\flink-1.x-vs-2.0-` | `#从-flink-1x-创建-savepoint` |
+| `Flink\01-concepts\flink-1.x-vs-2.0-comparison.md` | 37 | 使用 Flink 2.0 恢复 | `Flink\01-concepts\flink-1.x-vs-2.0-` | `#使用-flink-20-恢复` |
 | `Flink\02-core\adaptive-execution-engine-v2.md` | 45 | 论证 4.1: 为什么需要自适应执行引擎？ | `Flink\02-core\adaptive-execution-en` | `#论证-41-为什么需要自适应执行引擎` |
 | `Flink\02-core\adaptive-execution-engine-v2.md` | 46 | 论证 4.2: 数据倾斜自动处理策略 | `Flink\02-core\adaptive-execution-en` | `#论证-42-数据倾斜自动处理策略` |
 | `Flink\02-core\adaptive-execution-engine-v2.md` | 47 | 论证 4.3: 资源自适应分配算法 | `Flink\02-core\adaptive-execution-en` | `#论证-43-资源自适应分配算法` |
@@ -115,28 +122,26 @@
 | `Flink\02-core\backpressure-and-flow-control.md` | 44 | 图 7.1: Credit-based 背压在 F | `Flink\02-core\backpressure-and-flow` | `#图-71-credit-based-背压在-flink-流水线中的传播` |
 | `Flink\02-core\backpressure-and-flow-control.md` | 45 | 图 7.2: 控制-执行-数据层关联图 | `Flink\02-core\backpressure-and-flow` | `#图-72-控制-执行-数据层关联图` |
 | `Flink\02-core\backpressure-and-flow-control.md` | 46 | 图 7.3: 背压诊断与调优决策树 | `Flink\02-core\backpressure-and-flow` | `#图-73-背压诊断与调优决策树` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | 关系 1: Flink Checkpoint ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | 关系 2: Checkpoint 机制 ⟹ Exa | `Flink\02-core\checkpoint-mechanism-` | `#关系-2-checkpoint-机制--exactly-once-语义` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | 关系 3: State Backend 类型 ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-3-state-backend-类型--应用场景` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 30 | 4.1 Checkpoint 架构：JM/TM 协 | `Flink\02-core\checkpoint-mechanism-` | `#41-checkpoint-架构jmtm-协调机制` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 31 | 4.2 Aligned vs Unaligned： | `Flink\02-core\checkpoint-mechanism-` | `#42-aligned-vs-unaligned深度对比分析` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 40 | 5. 形式证明 / 工程论证 (Proof / E | `Flink\02-core\checkpoint-mechanism-` | `#5-形式证明--工程论证-proof--engineering-argument` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 46 | 6.1 配置示例：Aligned Checkpoi | `Flink\02-core\checkpoint-mechanism-` | `#61-配置示例aligned-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 47 | 6.2 配置示例：Unaligned Checkp | `Flink\02-core\checkpoint-mechanism-` | `#62-配置示例unaligned-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 48 | 6.3 配置示例：Incremental Chec | `Flink\02-core\checkpoint-mechanism-` | `#63-配置示例incremental-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 49 | 6.4 配置示例：Changelog State  | `Flink\02-core\checkpoint-mechanism-` | `#64-配置示例changelog-state-backend` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 59 | 问题 1：Checkpoint 频繁超时 | `Flink\02-core\checkpoint-mechanism-` | `#问题-1checkpoint-频繁超时` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 60 | 问题 2：Checkpoint 对齐时间过长 | `Flink\02-core\checkpoint-mechanism-` | `#问题-2checkpoint-对齐时间过长` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 61 | 问题 3：状态恢复缓慢 | `Flink\02-core\checkpoint-mechanism-` | `#问题-3状态恢复缓慢` |
-| `Flink\02-core\exactly-once-end-to-end.md` | 28 | 4.2.1 旧版 Kafka Producer ( | `Flink\02-core\exactly-once-end-to-e` | `#421-旧版-kafka-producer-flink-114-之前` |
-| `Flink\02-core\exactly-once-end-to-end.md` | 29 | 4.2.2 新版 Kafka Sink (Flin | `Flink\02-core\exactly-once-end-to-e` | `#422-新版-kafka-sink-flink-115-推荐` |
-| `Flink\02-core\exactly-once-end-to-end.md` | 41 | 7.3 Sink Pre-commit/Commi | `Flink\02-core\exactly-once-end-to-e` | `#73-sink-pre-commitcommit-失败` |
-| `Flink\02-core\exactly-once-end-to-end.md` | 44 | 8.1 Flink 核心配置 (flink-con | `Flink\02-core\exactly-once-end-to-e` | `#81-flink-核心配置-flink-confyaml` |
-| `Flink\02-core\smart-checkpointing-strategies.md` | 34 | 关系 1: 智能检查点 ⊃ 传统检查点 | `Flink\02-core\smart-checkpointing-s` | `#关系-1-智能检查点--传统检查点` |
-| `Flink\02-core\smart-checkpointing-strategies.md` | 35 | 关系 2: 负载感知 ⟹ 自适应间隔 | `Flink\02-core\smart-checkpointing-s` | `#关系-2-负载感知--自适应间隔` |
-| `Flink\02-core\smart-checkpointing-strategies.md` | 36 | 关系 3: 增量检查点 ↔ 存储层优化 | `Flink\02-core\smart-checkpointing-s` | `#关系-3-增量检查点--存储层优化` |
-| `Flink\02-core\smart-checkpointing-strategies.md` | 37 | 关系 4: 局部检查点 ∝ 故障域隔离 | `Flink\02-core\smart-checkpointing-s` | `#关系-4-局部检查点--故障域隔离` |
-| `Flink\02-core\smart-checkpointing-strategies.md` | 61 | 5. 形式证明 / 工程论证 (Proof / E | `Flink\02-core\smart-checkpointing-s` | `#5-形式证明--工程论证-proof--engineering-argument` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 9 | Flink Checkpoint 机制深度剖析 ( | `Flink\02-core\checkpoint-mechanism-` | `#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive-flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 10 | 目录 {#目录} | `Flink\02-core\checkpoint-mechanism-` | `#目录-目录` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 11 | 1. 概念定义 (Definitions) {#1 | `Flink\02-core\checkpoint-mechanism-` | `#1-概念定义-definitions-1-概念定义-definitions` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 12 | Def-F-02-01 (Checkpoint 核 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 13 | Def-F-02-02 (Checkpoint B | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 14 | Def-F-02-03 (Aligned Chec | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 15 | Def-F-02-04 (Unaligned Ch | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 16 | Def-F-02-05 (Incremental  | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 17 | Def-F-02-06 (State Backen | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-06-state-backend-def-f-02-06-state-backend` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 18 | Def-F-02-07 (Checkpoint 协 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 19 | Def-F-02-08 (Changelog St | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 20 | 2. 属性推导 (Properties) {#2- | `Flink\02-core\checkpoint-mechanism-` | `#2-属性推导-properties-2-属性推导-properties` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 21 | Lemma-F-02-01 (Barrier 对齐 | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 22 | Lemma-F-02-02 (异步 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 23 | Lemma-F-02-03 (增量 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 24 | Prop-F-02-01 (Checkpoint  | `Flink\02-core\checkpoint-mechanism-` | `#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 25 | 3. 关系建立 (Relations) {#3-关 | `Flink\02-core\checkpoint-mechanism-` | `#3-关系建立-relations-3-关系建立-relations` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | 关系 1: Flink Checkpoint ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | 关系 2: Checkpoint 机制 ⟹ Exa | `Flink\02-core\checkpoint-mechanism-` | `#关系-2-checkpoint-机制--exactly-once-语义-关系-2-checkpoint-机制--exactly-once-语义` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | 关系 3: State Backend 类型 ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-3-state-backend-类型--应用场景-关系-3-state-backend-类型--应用场景` |
 
 ## 📁 问题文件Top 30
 
@@ -144,47 +149,45 @@
 
 | 排名 | 文件路径 | 断裂引用数 |
 |------|----------|------------|
-| 1 | `Knowledge\09-anti-patterns\streaming-anti-patterns.md` | 41 |
-| 2 | `Flink\09-practices\09.03-performance-tuning\troubleshooting-handbook.md` | 28 |
-| 3 | `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 24 |
-| 4 | `Struct\01-foundation\01.02-process-calculus-primer.md` | 22 |
-| 5 | `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 22 |
-| 6 | `Struct\06-frontier\06.05-ai-agent-streaming-formalization.md` | 21 |
-| 7 | `Struct\Struct-to-Knowledge-Mapping.md` | 21 |
-| 8 | `Struct\01-foundation\01.03-actor-model-formalization.md` | 20 |
-| 9 | `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` | 20 |
-| 10 | `Flink\08-roadmap\08.01-flink-24\flink-version-evolution-complete-guide.md` | 19 |
-| 11 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 19 |
-| 12 | `Knowledge\01-concept-atlas\concurrency-paradigms-matrix.md` | 18 |
-| 13 | `Knowledge\04-technology-selection\streaming-database-guide.md` | 18 |
-| 14 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 18 |
-| 15 | `Struct\06-frontier\research-trends-analysis-2024-2026.md` | 18 |
-| 16 | `Flink\05-ecosystem\05.01-connectors\flink-24-connectors-guide.md` | 16 |
-| 17 | `Struct\03-relationships\03.03-expressiveness-hierarchy.md` | 16 |
-| 18 | `Struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 16 |
-| 19 | `Struct\Model-Selection-Decision-Tree.md` | 16 |
-| 20 | `Flink\02-core\backpressure-and-flow-control.md` | 15 |
-| 21 | `Knowledge\04-technology-selection\engine-selection-guide.md` | 15 |
-| 22 | `Struct\05-comparative-analysis\05.03-encoding-completeness-analysis.md` | 15 |
-| 23 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 14 |
-| 24 | `Struct\02-properties\02.04-liveness-and-safety.md` | 14 |
-| 25 | `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 13 |
-| 26 | `Knowledge\04-technology-selection\storage-selection-guide.md` | 13 |
-| 27 | `Knowledge\Flink-Scala-Rust-Comprehensive\99-appendix\cross-reference-index.md` | 13 |
-| 28 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 13 |
-| 29 | `Flink\02-core\state-backends-deep-comparison.md` | 12 |
-| 30 | `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 12 |
+| 1 | `Struct\Proof-Chains-Flink-Complete.md` | 129 |
+| 2 | `Knowledge\09-anti-patterns\streaming-anti-patterns.md` | 61 |
+| 3 | `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 59 |
+| 4 | `Knowledge\04-technology-selection\engine-selection-guide.md` | 55 |
+| 5 | `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 54 |
+| 6 | `Struct\Proof-Chains-Foundation-Complete.md` | 41 |
+| 7 | `Struct\Proof-Chains-Proofs-Remaining.md` | 37 |
+| 8 | `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 35 |
+| 9 | `Struct\01-foundation\01.02-process-calculus-primer.md` | 32 |
+| 10 | `Struct\Proof-Chains-Actor-Model.md` | 32 |
+| 11 | `Knowledge\06-frontier\streaming-databases.md` | 29 |
+| 12 | `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 27 |
+| 13 | `Struct\Proof-Chains-Properties-Complete.md` | 27 |
+| 14 | `Struct\06-frontier\06.05-ai-agent-streaming-formalization.md` | 21 |
+| 15 | `Struct\06-frontier\research-trends-analysis-2024-2026.md` | 21 |
+| 16 | `Struct\01-foundation\01.03-actor-model-formalization.md` | 20 |
+| 17 | `Struct\02-properties\02.04-liveness-and-safety.md` | 20 |
+| 18 | `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` | 20 |
+| 19 | `Struct\Proof-Chains-Consistency-Hierarchy.md` | 20 |
+| 20 | `Struct\Struct-to-Knowledge-Mapping.md` | 20 |
+| 21 | `Flink\08-roadmap\08.01-flink-24\flink-version-evolution-complete-guide.md` | 19 |
+| 22 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 19 |
+| 23 | `Knowledge\01-concept-atlas\concurrency-paradigms-matrix.md` | 18 |
+| 24 | `Knowledge\04-technology-selection\streaming-database-guide.md` | 18 |
+| 25 | `Struct\06-frontier\06.03-ai-agent-session-types.md` | 18 |
+| 26 | `Struct\Key-Theorem-Proof-Chains.md` | 17 |
+| 27 | `Struct\Proof-Chains-Checkpoint-Correctness.md` | 17 |
+| 28 | `Flink\05-ecosystem\05.01-connectors\flink-24-connectors-guide.md` | 16 |
+| 29 | `Struct\03-relationships\03.03-expressiveness-hierarchy.md` | 16 |
+| 30 | `Struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 16 |
 
 ## 🔧 修复建议
 
 ### 文件不存在错误
-
 1. 检查链接路径是否正确
 2. 确认目标文件是否被移动或重命名
 3. 使用相对路径时，确保路径相对于当前文件位置正确
 
 ### 锚点不存在错误
-
 1. 检查锚点标识符是否拼写正确
 2. 确认目标标题是否包含显式锚点定义 `{#anchor}`
 3. 如果是隐式锚点，确保与GitHub生成的锚点格式一致（小写，空格替换为连字符）

@@ -1,4 +1,4 @@
----
+﻿---
 title: "AnalysisDataFlow Learning Path Guide"
 source_file: "LEARNING-PATH-GUIDE.md"
 source_version: "v3.3.0"
@@ -177,12 +177,12 @@ Each learning path contains the following modules:
 
 | Topic | Recommended Document |
 |-------|---------------------|
-| Checkpoint | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` |
-| Exactly-Once | `Flink/02-core-mechanisms/exactly-once-semantics-deep-dive.md` |
+| Checkpoint | `Flink/02-core/checkpoint-mechanism-deep-dive.md` |
+| Exactly-Once | `Flink/02-core/exactly-once-semantics-deep-dive.md` |
 | Watermark | `Struct/02-properties/02.03-watermark-monotonicity.md` |
-| Time Semantics | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` |
+| Time Semantics | `Flink/02-core/time-semantics-and-watermark.md` |
 | State Management | `Knowledge/02-design-patterns/pattern-stateful-computation.md` |
-| Backpressure | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` |
+| Backpressure | `Flink/02-core/backpressure-and-flow-control.md` |
 | Technology Selection | `Knowledge/04-technology-selection/engine-selection-guide.md` |
 | Design Patterns | `Knowledge/02-design-patterns/` |
 | Anti-Patterns | `Knowledge/09-anti-patterns/` |
@@ -288,3 +288,4 @@ If you find problems in learning paths:
 ---
 
 > **Navigation**: [← Back to Overview](./00-OVERVIEW.md) | [Quick Start →](./04-QUICK-START.md)
+

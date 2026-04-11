@@ -1,4 +1,4 @@
-# 视频教程脚本 02：流计算基础
+﻿# 视频教程脚本 02：流计算基础
 
 > **视频标题**: 流计算基础——时间语义、Watermark与窗口
 > **目标受众**: 流计算初学者、Flink开发者
@@ -609,10 +609,11 @@ mindmap
 
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 
 ---
 
 *脚本版本: v1.0*
 *创建日期: 2026-04-03*
 *预计制作时长: 15分钟*
+

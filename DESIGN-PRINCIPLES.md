@@ -1,4 +1,4 @@
-# AnalysisDataFlow 设计原则文档
+﻿# AnalysisDataFlow 设计原则文档
 
 > **版本**: v1.0 | **生效日期**: 2026-04-04 | **状态**: Production
 > **所属阶段**: 全局规范 | **前置依赖**: [AGENTS.md](./AGENTS.md), [ARCHITECTURE.md](./ARCHITECTURE.md) | **形式化等级**: L4
@@ -515,7 +515,7 @@ flowchart TD
 ```markdown
 # Checkpoint 机制详解
 
-> 所属阶段: Flink/ | 前置依赖: [状态管理](./Flink/02-core-mechanisms/flink-state-management-complete-guide.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [状态管理](./Flink/02-core/flink-state-management-complete-guide.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

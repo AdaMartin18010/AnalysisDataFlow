@@ -1,4 +1,4 @@
-# 学习路径：DataStream专家（3周）
+﻿# 学习路径：DataStream专家（3周）
 
 > **所属阶段**: 进阶路径 | **难度等级**: L3-L4 | **预计时长**: 3周（每天3-4小时）
 
@@ -69,10 +69,10 @@ gantt
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
 | 1.1 | `Flink/09-language-foundations/flink-datastream-api-complete-guide.md` | API | 4h | ProcessFunction 章节 |
-| 1.2 | `Flink/02-core-mechanisms/async-execution-model.md` | 核心 | 3h | 异步执行模型 |
+| 1.2 | `Flink/02-core/async-execution-model.md` | 核心 | 3h | 异步执行模型 |
 | 1.3 | `Knowledge/02-design-patterns/pattern-async-io-enrichment.md` | 模式 | 2h | 异步IO模式 |
 | 1.4 | `Knowledge/02-design-patterns/pattern-side-output.md` | 模式 | 2h | 侧输出流模式 |
-| 1.5 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 核心 | 2h | Timer 机制 |
+| 1.5 | `Flink/02-core/time-semantics-and-watermark.md` | 核心 | 2h | Timer 机制 |
 
 ### 实践任务
 
@@ -117,8 +117,8 @@ gantt
 
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
-| 2.1 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | 核心 | 4h | 高级状态管理 |
-| 2.2 | `Flink/02-core-mechanisms/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
+| 2.1 | `Flink/02-core/flink-state-management-complete-guide.md` | 核心 | 4h | 高级状态管理 |
+| 2.2 | `Flink/02-core/flink-state-ttl-best-practices.md` | 实践 | 2h | TTL 最佳实践 |
 | 2.3 | `Flink/06-engineering/state-backend-selection.md` | 工程 | 2h | 状态后端选择 |
 | 2.4 | `Knowledge/07-best-practices/07.02-performance-tuning-patterns.md` | 实践 | 2h | 性能调优模式 |
 | 2.5 | `Knowledge/09-anti-patterns/anti-pattern-07-window-state-explosion.md` | 反模式 | 1h | 状态爆炸问题 |
@@ -167,7 +167,7 @@ gantt
 | 序号 | 文档 | 类型 | 预计时长 | 重点内容 |
 |------|------|------|----------|----------|
 | 3.1 | `Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md` | 连接器 | 3h | 连接器完整指南 |
-| 3.2 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | 核心 | 3h | 端到端一致性 |
+| 3.2 | `Flink/02-core/exactly-once-end-to-end.md` | 核心 | 3h | 端到端一致性 |
 | 3.3 | `Flink/04-connectors/flink-cdc-3.0-data-integration.md` | CDC | 2h | CDC 集成 |
 | 3.4 | `Knowledge/07-best-practices/07.04-cost-optimization-patterns.md` | 实践 | 2h | 成本优化 |
 
@@ -275,3 +275,4 @@ StateTtlConfig ttlConfig = StateTtlConfig
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，DataStream 专家路径 |
+

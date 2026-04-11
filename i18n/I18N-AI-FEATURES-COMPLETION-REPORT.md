@@ -1,4 +1,4 @@
-# 国际化(i18n)架构和AI辅助功能 - 完成报告
+﻿# 国际化(i18n)架构和AI辅助功能 - 完成报告
 
 > 任务完成日期: 2026-04-04  
 > 版本: v1.0  
@@ -149,7 +149,7 @@ python scripts/ai-features/smart-search-indexer.py --hybrid-search "watermark se
 ======================================================================
 
 [1] Checkpoint机制深度解析
-    📄 Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+    📄 Flink/02-core/checkpoint-mechanism-deep-dive.md
     📑 章节: 核心机制
     ⭐ 相关度: 0.9523
     📝 Checkpoint是Flink容错机制的核心...
@@ -193,7 +193,7 @@ python scripts/ai-features/qa-bot-knowledge-base.py --generate-faq --output FAQ-
 💡 匹配问题: Watermark在Flink中的作用是什么?
    置信度: 89.45%
 📖 答案: Watermark是Flink中用于处理乱序事件的机制...
-📄 来源: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+📄 来源: Flink/02-core/time-semantics-and-watermark.md
 🏷️  标签: watermark, time, event-time
 ```
 
@@ -395,3 +395,4 @@ python scripts/ai-features/learning-path-personalizer.py --list-goals
 ---
 
 *任务完成 ✅*
+

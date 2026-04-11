@@ -1,6 +1,6 @@
 # 金融实时反欺诈系统生产案例研究
 
-> **所属阶段**: Knowledge/case-studies/finance | **前置依赖**: [Knowledge/case-studies/finance/realtime-anti-fraud-system-case.md](./realtime-anti-fraud-system-case.md) | **形式化等级**: L6
+> **所属阶段**: Knowledge/case-studies/finance | **前置依赖**: [Knowledge/case-studies/finance/realtime-anti-fraud-system-case.md](finance/realtime-anti-fraud-system-case.md) | **形式化等级**: L6
 > **案例编号**: CS-F-02 | **完成日期**: 2026-04-11 | **版本**: v2.0
 
 ---

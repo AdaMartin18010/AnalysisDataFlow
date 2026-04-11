@@ -1,4 +1,4 @@
----
+﻿---
 title: "AnalysisDataFlow Project Overview"
 source_file: "README.md"
 source_version: "v3.3.0"
@@ -198,14 +198,14 @@ Struct/ Formal Definitions ──→ Knowledge/ Design Patterns ──→ Flink/
 
 ```
 Week 1: Flink/05-vs-competitors/flink-vs-spark-streaming.md
-Week 2: Flink/02-core-mechanisms/time-semantics-and-watermark.md
+Week 2: Flink/02-core/time-semantics-and-watermark.md
 Week 3: Knowledge/02-design-patterns/pattern-event-time-processing.md
 ```
 
 ### Advanced Engineer Path (4-6 Weeks)
 
 ```
-Week 1-2: Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md
+Week 1-2: Flink/02-core/checkpoint-mechanism-deep-dive.md
 Week 3-4: Struct/04-proofs/04.01-flink-checkpoint-correctness.md
 Week 5-6: Knowledge/02-design-patterns/ (All patterns deep dive)
 ```
@@ -293,3 +293,4 @@ This project is licensed under [Apache License 2.0](../../../LICENSE).
 > **Document Specification**: This document follows the six-section template specification in [AGENTS.md](../../../AGENTS.md)
 > **Theorem Numbering**: Uses `{Type}-{Stage}-{DocNum}-{SeqNum}` format (e.g., `Thm-S-01-01`)
 > **Last Updated**: 2026-04-08
+

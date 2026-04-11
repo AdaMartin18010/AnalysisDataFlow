@@ -1,4 +1,4 @@
-# RisingWave 深度解析：Rust 原生流数据库与 Flink 对比分析
+﻿# RisingWave 深度解析：Rust 原生流数据库与 Flink 对比分析
 
 > 所属阶段: Flink/09-language-foundations | 前置依赖: [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../../09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md), [Knowledge/06-frontier/risingwave-deep-dive.md](../../../Knowledge/06-frontier/risingwave-deep-dive.md) | 形式化等级: L4 | **版本**: RisingWave 2.0+ / Flink 1.18+
 
@@ -2055,5 +2055,6 @@ GROUP BY user_id;
 
 - Knowledge/06-frontier/risingwave-deep-dive.md - RisingWave 架构与一致性模型
 - Flink/05-vs-competitors/flink-vs-spark-streaming.md - Flink vs Spark 对比
-- Flink/02-core-mechanisms/forst-state-backend.md - Flink ForSt 状态后端
+- Flink/02-core/forst-state-backend.md - Flink ForSt 状态后端
 - Flink/09-language-foundations/03-rust-native.md - Flink Rust UDF 集成
+

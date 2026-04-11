@@ -1,4 +1,4 @@
----
+﻿---
 title: "[EN] Flink Pyflink Deep Dive"
 translation_status: "ai_translated"
 source_file: "Flink/flink-pyflink-deep-dive.md"
@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # PyFlink 深度指南：架构原理与工程实践 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/09-language-foundations/pyflink-complete-guide.md](03-api/09-language-foundations/pyflink-complete-guide.md), [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/09-language-foundations/pyflink-complete-guide.md](03-api/09-language-foundations/pyflink-complete-guide.md), [Flink/02-core/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4 -->
 <!-- TRANSLATE: > **版本**: 2026.04 | **适用版本**: Flink 1.18+ - 2.5+ | **Python**: 3.9+ -->
 
 
@@ -842,3 +842,4 @@ config.set_string("python.fn-execution.streaming.enabled", "true")
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
+

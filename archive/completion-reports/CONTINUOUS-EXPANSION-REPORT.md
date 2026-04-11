@@ -1,4 +1,4 @@
-# 持续扩展完成报告：对齐最新权威内容
+﻿# 持续扩展完成报告：对齐最新权威内容
 
 > **版本**: v2.0 | **日期**: 2026-04-02 | **状态**: ✅ **100% 完成**
 
@@ -16,13 +16,13 @@
 
 | # | 文档 | 路径 | 大小 | 行数 | 状态 |
 |---|------|------|------|------|------|
-| 1 | Flink 2.2 前沿特性深度解析 | `Flink/02-core-mechanisms/flink-2.2-frontier-features.md` | 56.2 KB | 1,466 | ✅ |
+| 1 | Flink 2.2 前沿特性深度解析 | `Flink/02-core/flink-2.2-frontier-features.md` | 56.2 KB | 1,466 | ✅ |
 | 2 | WASI 0.3 异步支持前瞻 | `Flink/13-wasm/wasi-0.3-async-preview.md` | ~48 KB | 1,695 | ✅ |
 | 3 | RisingWave v2.6 向量搜索更新 | `Flink/09-language-foundations/06-risingwave-deep-dive.md` | +42 KB | +910 | ✅ |
 | 4 | Timely Dataflow 优化分析 | `Flink/09-language-foundations/07.01-timely-dataflow-optimization.md` | ~22 KB | 638 | ✅ |
 | 5 | 向量搜索流处理融合 | `Knowledge/06-frontier/vector-search-streaming-convergence.md` | ~38 KB | 1,134 | ✅ |
 | 6 | Python Async API 指南 | `Flink/09-language-foundations/02.03-python-async-api.md` | ~98 KB | 2,955 | ✅ |
-| 7 | Delta Join 生产实践 | `Flink/02-core-mechanisms/delta-join-production-guide.md` | ~49 KB | 1,368 | ✅ |
+| 7 | Delta Join 生产实践 | `Flink/02-core/delta-join-production-guide.md` | ~49 KB | 1,368 | ✅ |
 | 8 | 定理注册表更新 | `THEOREM-REGISTRY.md` | - | - | ✅ |
 | 9 | 索引重构 | 多个 INDEX.md | - | - | ✅ |
 | **总计** | **8 新文档 + 1 更新 + 索引** | - | **~353 KB** | **~9,166** | **✅** |
@@ -44,7 +44,7 @@
 
 ### 1. Flink 2.2 前沿特性深度解析
 
-**文件**: `Flink/02-core-mechanisms/flink-2.2-frontier-features.md`
+**文件**: `Flink/02-core/flink-2.2-frontier-features.md`
 
 **覆盖的权威内容** (基于 Apache Flink 2.2 Release Notes):
 
@@ -158,7 +158,7 @@
 
 ### 7. Delta Join 生产实践
 
-**文件**: `Flink/02-core-mechanisms/delta-join-production-guide.md`
+**文件**: `Flink/02-core/delta-join-production-guide.md`
 
 **覆盖的权威内容** (基于 Flink 2.2 Delta Join 增强):
 
@@ -347,3 +347,4 @@ README.md                                    [✅ 重构]
 *报告生成时间: 2026-04-02*
 *项目状态: ✅ 生产就绪并与国际前沿完全对齐*
 *版本: v2.0 FINAL*
+

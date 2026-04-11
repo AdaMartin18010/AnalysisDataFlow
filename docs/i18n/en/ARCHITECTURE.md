@@ -1,4 +1,4 @@
-# AnalysisDataFlow Technical Architecture
+﻿# AnalysisDataFlow Technical Architecture
 
 > **Version**: v1.0 | **Last Updated**: 2026-04-03 | **Status**: Production
 >
@@ -335,9 +335,10 @@ Raw Markdown → Frontmatter Parsing → Content Validation → Cross-Ref Resolu
 |--------------|--------------|
 | `Struct/01-foundation/` | 形式理论基础 |
 | `Knowledge/02-design-patterns/` | 设计模式 |
-| `Flink/02-core-mechanisms/` | 核心机制 |
+| `Flink/02-core/` | 核心机制 |
 
 ---
 
 *Document Version: 1.0*
 *Last Updated: 2026-04-03*
+

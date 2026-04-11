@@ -1,4 +1,4 @@
-# AnalysisDataFlow 技術アーキテクチャドキュメント
+﻿# AnalysisDataFlow 技術アーキテクチャドキュメント
 
 > **バージョン**: v1.0 | **更新日**: 2026-04-03 | **ステータス**: 本番環境
 >
@@ -525,7 +525,7 @@ graph TB
 例:
 - 01.01-unified-streaming-theory.md    (Struct/01-foundation/)
 - 02-design-patterns-overview.md        (Knowledge/02-design-patterns/)
-- checkpoint-mechanism-deep-dive.md     (Flink/02-core-mechanisms/)
+- checkpoint-mechanism-deep-dive.md     (Flink/02-core/)
 ```
 
 ### 4.2 インデックスシステム
@@ -709,3 +709,4 @@ flowchart LR
 ---
 
 > **翻訳者注記**: 本ドキュメントは日本の技術文書スタイルに従って翻訳されています。アーキテクチャの専門用語、システムコンポーネント名、設定パラメータは原文と同一です。最終更新: 2026-04-11
+

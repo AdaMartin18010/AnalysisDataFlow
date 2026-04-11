@@ -1,4 +1,4 @@
-# 后端开发工程师学习路径
+﻿# 后端开发工程师学习路径
 
 > **难度级别**: 中级 | **预计时长**: 6-10周 | **目标受众**: 后端开发工程师、全栈开发者
 
@@ -64,8 +64,8 @@
 
 **推荐文档**:
 
-- [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../Flink/02-core-mechanisms/time-semantics-and-watermark.md)
-- [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)
+- [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
+- [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md)
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 - [Knowledge/02-design-patterns/pattern-stateful-computation.md](../Knowledge/02-design-patterns/pattern-stateful-computation.md)
@@ -235,3 +235,4 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
+

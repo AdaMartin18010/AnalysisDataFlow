@@ -1,4 +1,4 @@
-# 🔧 链接修复报告
+﻿# 🔧 链接修复报告
 
 > **生成时间**: 2026-04-05 09:45:22
 
@@ -1834,7 +1834,7 @@
   - 原因: 无自动修复模式可用
   - 建议存档: [https://web.archive.org/web/20260405/%7Bdoc_url%7D...](https://web.archive.org/web/20260405/%7Bdoc_url%7D)
 
-- **URL**: `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`
+- **URL**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
   - 原因: 无自动修复模式可用
   - 建议存档: [https://web.archive.org/web/20260405/Flink%2F02-co...](https://web.archive.org/web/20260405/Flink%2F02-core-mechanisms%2Fcheckpoint-mechanism-deep-dive.md)
 
@@ -3579,3 +3579,4 @@
 3. **移除不可用的链接**:
    - 如果内容完全无法访问，考虑移除链接
    - 保留文字说明但移除超链接
+

@@ -1,4 +1,4 @@
-# Flink 全生态特性梳理 - 完成报告
+﻿# Flink 全生态特性梳理 - 完成报告
 
 > **任务日期**: 2026-04-04
 > **项目版本**: v3.0+ Flink特性扩展
@@ -20,7 +20,7 @@
 |---|----------|------|------|----------|
 | 1 | `Flink/09-language-foundations/flink-datastream-api-complete-guide.md` | 87.4 KB | 2,639 | DataStream API完整特性 |
 | 2 | `Flink/03-sql-table-api/flink-table-sql-complete-guide.md` | 59.9 KB | 2,182 | Table API & SQL完整特性 |
-| 3 | `Flink/02-core-mechanisms/flink-state-management-complete-guide.md` | 46.8 KB | 1,551 | 状态管理完整特性 |
+| 3 | `Flink/02-core/flink-state-management-complete-guide.md` | 46.8 KB | 1,551 | 状态管理完整特性 |
 | 4 | `Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md` | 77.3 KB | 2,484 | 连接器生态完整指南 |
 | 5 | `Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md` | 97.1 KB | 3,058 | AI/ML集成完整特性 |
 | 6 | `Flink/10-deployment/flink-deployment-ops-complete-guide.md` | 47.9 KB | 1,739 | 部署运维完整指南 |
@@ -151,3 +151,4 @@
 ---
 
 [返回项目主页](README.md) | [查看Flink索引](Flink/00-INDEX.md)
+

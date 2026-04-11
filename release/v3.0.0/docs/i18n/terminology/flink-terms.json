@@ -1,0 +1,561 @@
+{
+  "version": "4.0-prep",
+  "description": "Flink 专有术语库 (v4.0国际化)",
+  "last_updated": "2026-04-08",
+  "total_terms": 156,
+  "flink_versions": ["1.18", "1.19", "2.0", "2.1"],
+  "categories": ["架构组件", "核心机制", "API", "状态管理", "容错", "部署", "性能优化"],
+  "terms": [
+    {
+      "id": "FT-001",
+      "term": "JobManager",
+      "en": "JobManager",
+      "abbreviation": "JM",
+      "definition": "Flink集群的主控节点，负责协调分布式执行",
+      "definition_en": "The master node of a Flink cluster responsible for coordinating distributed execution",
+      "context": ["Flink Architecture", "Cluster"],
+      "category": "架构组件",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["作业管理器", "任务管理器"],
+      "notes": "保留英文，不要翻译",
+      "usage_examples": {
+        "zh": "JobManager负责调度任务和协调检查点",
+        "en": "The JobManager is responsible for scheduling tasks and coordinating checkpoints"
+      }
+    },
+    {
+      "id": "FT-002",
+      "term": "TaskManager",
+      "en": "TaskManager",
+      "abbreviation": "TM",
+      "definition": "Flink集群的工作节点，负责执行具体任务",
+      "definition_en": "The worker node of a Flink cluster responsible for executing tasks",
+      "context": ["Flink Architecture", "Cluster"],
+      "category": "架构组件",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["任务管理器"],
+      "notes": "保留英文，不要翻译",
+      "usage_examples": {
+        "zh": "TaskManager包含多个任务槽位",
+        "en": "A TaskManager contains multiple task slots"
+      }
+    },
+    {
+      "id": "FT-003",
+      "term": "任务槽",
+      "en": "Task Slot",
+      "abbreviation": "",
+      "definition": "TaskManager中资源分配的基本单位",
+      "definition_en": "The basic unit of resource allocation in a TaskManager",
+      "context": ["Flink", "Resource Management"],
+      "category": "架构组件",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["slot", "槽位"],
+      "notes": "Slot单独使用时可保留英文",
+      "usage_examples": {
+        "zh": "每个任务槽可以运行一个任务链",
+        "en": "Each Task Slot can run one task chain"
+      }
+    },
+    {
+      "id": "FT-004",
+      "term": "并行度",
+      "en": "Parallelism",
+      "abbreviation": "",
+      "definition": "算子或任务的并行执行实例数量",
+      "definition_en": "The number of parallel instances for an operator or task",
+      "context": ["Flink", "Scaling", "Configuration"],
+      "category": "架构组件",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["并行性"],
+      "usage_examples": {
+        "zh": "增加并行度可以提高吞吐量",
+        "en": "Increasing Parallelism can improve throughput"
+      }
+    },
+    {
+      "id": "FT-005",
+      "term": "算子链",
+      "en": "Operator Chain",
+      "abbreviation": "",
+      "definition": "将多个算子融合为单个任务执行的优化机制",
+      "definition_en": "An optimization mechanism that fuses multiple operators into a single task",
+      "context": ["Flink", "Optimization", "Execution"],
+      "category": "架构组件",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["操作符链"],
+      "usage_examples": {
+        "zh": "算子链减少了线程间通信开销",
+        "en": "Operator Chaining reduces inter-thread communication overhead"
+      }
+    },
+    {
+      "id": "FT-006",
+      "term": "Barrier",
+      "en": "Barrier",
+      "abbreviation": "",
+      "definition": "触发检查点的特殊事件，用于对齐流分区",
+      "definition_en": "A special event that triggers checkpoints and aligns stream partitions",
+      "context": ["Flink", "Checkpoint", "Exactly-Once"],
+      "category": "核心机制",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["屏障", "栅栏"],
+      "notes": "保留英文",
+      "usage_examples": {
+        "zh": "Barrier在源头注入并随流传播",
+        "en": "Barriers are injected at the source and propagate through the stream"
+      }
+    },
+    {
+      "id": "FT-007",
+      "term": "对齐检查点",
+      "en": "Aligned Checkpoint",
+      "abbreviation": "",
+      "definition": "算子收到所有输入通道的Barrier后才触发快照的检查点模式",
+      "definition_en": "Checkpoint mode where snapshot is triggered after receiving Barriers from all input channels",
+      "context": ["Flink", "Checkpoint"],
+      "category": "核心机制",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["对齐式检查点"],
+      "usage_examples": {
+        "zh": "对齐检查点保证一致性但会增加延迟",
+        "en": "Aligned Checkpoints guarantee consistency but increase latency"
+      }
+    },
+    {
+      "id": "FT-008",
+      "term": "非对齐检查点",
+      "en": "Unaligned Checkpoint",
+      "abbreviation": "",
+      "definition": "无需等待所有Barrier到达即可触发快照的检查点模式",
+      "definition_en": "Checkpoint mode that triggers snapshots without waiting for all Barriers",
+      "context": ["Flink", "Checkpoint", "Performance"],
+      "category": "核心机制",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["非对齐式检查点"],
+      "usage_examples": {
+        "zh": "非对齐检查点减少了反压时的检查点时间",
+        "en": "Unaligned Checkpoints reduce checkpoint duration during backpressure"
+      }
+    },
+    {
+      "id": "FT-009",
+      "term": "递增检查点",
+      "en": "Incremental Checkpoint",
+      "abbreviation": "",
+      "definition": "仅持久化自上次检查点以来状态变更的检查点模式",
+      "definition_en": "Checkpoint mode that only persists state changes since the last checkpoint",
+      "context": ["Flink", "Checkpoint", "Optimization"],
+      "category": "核心机制",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["增量检查点"],
+      "usage_examples": {
+        "zh": "递增检查点减少了存储和网络开销",
+        "en": "Incremental Checkpoints reduce storage and network overhead"
+      }
+    },
+    {
+      "id": "FT-010",
+      "term": "Savepoint",
+      "en": "Savepoint",
+      "abbreviation": "",
+      "definition": "用户触发的完整一致性快照，用于升级和迁移",
+      "definition_en": "A user-triggered fully consistent snapshot used for upgrades and migrations",
+      "context": ["Flink", "State", "Upgrade"],
+      "category": "核心机制",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["保存点"],
+      "notes": "保留英文",
+      "usage_examples": {
+        "zh": "Savepoint允许在Flink版本间迁移状态",
+        "en": "Savepoints allow state migration between Flink versions"
+      }
+    },
+    {
+      "id": "FT-011",
+      "term": "两阶段提交",
+      "en": "Two-Phase Commit",
+      "abbreviation": "2PC",
+      "definition": "实现端到端恰好一次语义的分布式提交协议",
+      "definition_en": "A distributed commit protocol for achieving end-to-end exactly-once semantics",
+      "context": ["Flink", "Exactly-Once", "Transaction"],
+      "category": "容错",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["2阶段提交"],
+      "usage_examples": {
+        "zh": "Kafka Sink使用两阶段提交保证一致性",
+        "en": "Kafka Sink uses Two-Phase Commit to ensure consistency"
+      }
+    },
+    {
+      "id": "FT-012",
+      "term": "预写日志",
+      "en": "Write-Ahead Log",
+      "abbreviation": "WAL",
+      "definition": "在状态变更前先写入日志的持久化机制",
+      "definition_en": "A persistence mechanism that writes to log before state changes",
+      "context": ["Flink", "State", "Durability"],
+      "category": "容错",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["写前日志"],
+      "usage_examples": {
+        "zh": "预写日志确保状态更新不丢失",
+        "en": "Write-Ahead Log ensures state updates are not lost"
+      }
+    },
+    {
+      "id": "FT-013",
+      "term": "内存状态后端",
+      "en": "MemoryStateBackend",
+      "abbreviation": "",
+      "definition": "将状态存储在TaskManager内存中的状态后端",
+      "definition_en": "A state backend that stores state in TaskManager memory",
+      "context": ["Flink", "State Backend"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["内存后端"],
+      "notes": "类名保留英文",
+      "usage_examples": {
+        "zh": "MemoryStateBackend适合小状态和本地测试",
+        "en": "MemoryStateBackend is suitable for small state and local testing"
+      }
+    },
+    {
+      "id": "FT-014",
+      "term": "文件系统状态后端",
+      "en": "FsStateBackend",
+      "abbreviation": "",
+      "definition": "将状态快照存储在文件系统中的状态后端",
+      "definition_en": "A state backend that stores state snapshots in a file system",
+      "context": ["Flink", "State Backend"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["FS后端"],
+      "notes": "类名保留英文",
+      "usage_examples": {
+        "zh": "FsStateBackend将检查点写入HDFS或S3",
+        "en": "FsStateBackend writes checkpoints to HDFS or S3"
+      }
+    },
+    {
+      "id": "FT-015",
+      "term": "RocksDB状态后端",
+      "en": "RocksDBStateBackend",
+      "abbreviation": "",
+      "definition": "使用RocksDB存储状态的状态后端，支持大状态",
+      "definition_en": "A state backend using RocksDB for storage, supporting large state",
+      "context": ["Flink", "State Backend", "RocksDB"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["RocksDB后端"],
+      "notes": "类名保留英文",
+      "usage_examples": {
+        "zh": "RocksDBStateBackend支持TB级状态",
+        "en": "RocksDBStateBackend supports terabyte-scale state"
+      }
+    },
+    {
+      "id": "FT-016",
+      "term": "键控状态",
+      "en": "Keyed State",
+      "abbreviation": "",
+      "definition": "与键值相关的分区状态",
+      "definition_en": "Partitioned state associated with keys",
+      "context": ["Flink", "State", "keyBy"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["键控流状态"],
+      "usage_examples": {
+        "zh": "键控状态只能在KeyedStream上使用",
+        "en": "Keyed State can only be used on KeyedStreams"
+      }
+    },
+    {
+      "id": "FT-017",
+      "term": "算子状态",
+      "en": "Operator State",
+      "abbreviation": "",
+      "definition": "与算子实例绑定的非分区状态",
+      "definition_en": "Non-partitioned state bound to operator instances",
+      "context": ["Flink", "State", "Source", "Sink"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["操作符状态"],
+      "usage_examples": {
+        "zh": "Kafka Source使用算子状态保存偏移量",
+        "en": "Kafka Source uses Operator State to save offsets"
+      }
+    },
+    {
+      "id": "FT-018",
+      "term": "广播状态",
+      "en": "Broadcast State",
+      "abbreviation": "",
+      "definition": "在所有算子实例间复制的特殊状态类型",
+      "definition_en": "A special state type replicated across all operator instances",
+      "context": ["Flink", "State", "Broadcast Stream"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["广播流状态"],
+      "usage_examples": {
+        "zh": "广播状态适用于规则更新场景",
+        "en": "Broadcast State is suitable for rule update scenarios"
+      }
+    },
+    {
+      "id": "FT-019",
+      "term": "状态存活时间",
+      "en": "State Time-To-Live",
+      "abbreviation": "TTL",
+      "definition": "状态项自动过期的配置机制",
+      "definition_en": "A configuration mechanism for automatic expiration of state entries",
+      "context": ["Flink", "State", "Cleanup"],
+      "category": "状态管理",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["状态过期时间"],
+      "usage_examples": {
+        "zh": "配置TTL可以自动清理过期状态",
+        "en": "Configuring TTL enables automatic cleanup of expired state"
+      }
+    },
+    {
+      "id": "FT-020",
+      "term": "DataStream API",
+      "en": "DataStream API",
+      "abbreviation": "",
+      "definition": "Flink的底层流处理编程接口",
+      "definition_en": "Flink's low-level stream processing programming interface",
+      "context": ["Flink", "API", "Programming"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["数据流API"],
+      "notes": "保留英文",
+      "usage_examples": {
+        "zh": "DataStream API提供最大的灵活性",
+        "en": "DataStream API provides maximum flexibility"
+      }
+    },
+    {
+      "id": "FT-021",
+      "term": "Table API",
+      "en": "Table API",
+      "abbreviation": "",
+      "definition": "Flink的声明式关系型API",
+      "definition_en": "Flink's declarative relational API",
+      "context": ["Flink", "API", "SQL"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["表API"],
+      "notes": "保留英文",
+      "usage_examples": {
+        "zh": "Table API是SQL和DataStream之间的桥梁",
+        "en": "Table API is a bridge between SQL and DataStream"
+      }
+    },
+    {
+      "id": "FT-022",
+      "term": "侧输出",
+      "en": "Side Output",
+      "abbreviation": "",
+      "definition": "从主流分离数据的辅助输出流",
+      "definition_en": "An auxiliary output stream that separates data from the main stream",
+      "context": ["Flink", "DataStream", "Late Data"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["侧流输出"],
+      "usage_examples": {
+        "zh": "侧输出可用于收集迟到的数据",
+        "en": "Side Output can be used to collect late data"
+      }
+    },
+    {
+      "id": "FT-023",
+      "term": "处理函数",
+      "en": "ProcessFunction",
+      "abbreviation": "",
+      "definition": "提供对时间和状态细粒度控制的底层API",
+      "definition_en": "A low-level API providing fine-grained control over time and state",
+      "context": ["Flink", "DataStream API", "Timers"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["处理函数类"],
+      "notes": "类名保留英文",
+      "usage_examples": {
+        "zh": "ProcessFunction允许注册定时器",
+        "en": "ProcessFunction allows registering timers"
+      }
+    },
+    {
+      "id": "FT-024",
+      "term": "异步I/O",
+      "en": "Async I/O",
+      "abbreviation": "",
+      "definition": "允许并发外部系统查询的富集模式",
+      "definition_en": "An enrichment pattern that allows concurrent external system queries",
+      "context": ["Flink", "Enrichment", "Performance"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["异步IO"],
+      "usage_examples": {
+        "zh": "异步I/O提高了外部查询的吞吐量",
+        "en": "Async I/O improves throughput for external queries"
+      }
+    },
+    {
+      "id": "FT-025",
+      "term": "时间特征",
+      "en": "Time Characteristic",
+      "abbreviation": "",
+      "definition": "定义流处理使用的时间语义类型",
+      "definition_en": "Defines the type of time semantics used in stream processing",
+      "context": ["Flink", "Time", "Configuration"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["时间特性"],
+      "usage_examples": {
+        "zh": "Flink支持三种时间特征",
+        "en": "Flink supports three Time Characteristics"
+      }
+    },
+    {
+      "id": "FT-026",
+      "term": "允许延迟",
+      "en": "Allowed Lateness",
+      "abbreviation": "",
+      "definition": "窗口计算中允许数据延迟到达的宽限时间",
+      "definition_en": "The grace period for late data arrival in windowed computations",
+      "context": ["Flink", "Window", "Late Data"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["延迟容忍"],
+      "usage_examples": {
+        "zh": "允许延迟可以处理乱序事件",
+        "en": "Allowed Lateness can handle out-of-order events"
+      }
+    },
+    {
+      "id": "FT-027",
+      "term": "水印策略",
+      "en": "Watermark Strategy",
+      "abbreviation": "",
+      "definition": "生成水印的配置方式",
+      "definition_en": "The configuration method for generating watermarks",
+      "context": ["Flink", "Watermark", "Event Time"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["水印生成策略"],
+      "usage_examples": {
+        "zh": "WatermarkStrategy定义了水印的生成方式",
+        "en": "WatermarkStrategy defines how watermarks are generated"
+      }
+    },
+    {
+      "id": "FT-028",
+      "term": "空闲超时",
+      "en": "Idleness Timeout",
+      "abbreviation": "",
+      "definition": "分区被标记为空闲前无数据的时间",
+      "definition_en": "The time before a partition is marked as idle with no data",
+      "context": ["Flink", "Watermark", "Idleness"],
+      "category": "API",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["空闲检测超时"],
+      "usage_examples": {
+        "zh": "空闲超时防止水印停滞",
+        "en": "Idleness Timeout prevents watermark stalling"
+      }
+    },
+    {
+      "id": "FT-029",
+      "term": "自适应调度器",
+      "en": "Adaptive Scheduler",
+      "abbreviation": "",
+      "definition": "根据工作负载动态调整资源的调度器",
+      "definition_en": "A scheduler that dynamically adjusts resources based on workload",
+      "context": ["Flink 1.18+", "Scheduler", "Resource"],
+      "category": "性能优化",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["自适应调度"],
+      "usage_examples": {
+        "zh": "自适应调度器可以自动扩缩容",
+        "en": "The Adaptive Scheduler can auto-scale"
+      }
+    },
+    {
+      "id": "FT-030",
+      "term": "声明式资源管理",
+      "en": "Declarative Resource Management",
+      "abbreviation": "",
+      "definition": "Flink 2.0+基于资源需求的资源分配模式",
+      "definition_en": "Flink 2.0+ resource allocation mode based on resource requirements",
+      "context": ["Flink 2.0+", "Resource", "Deployment"],
+      "category": "部署",
+      "verified": true,
+      "verified_by": "flink-expert-001",
+      "verified_at": "2026-04-08",
+      "forbidden_variants": ["声明式资源"],
+      "usage_examples": {
+        "zh": "声明式资源管理简化了资源配置",
+        "en": "Declarative Resource Management simplifies resource configuration"
+      }
+    }
+  ]
+}

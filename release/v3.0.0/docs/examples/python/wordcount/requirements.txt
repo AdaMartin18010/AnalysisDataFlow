@@ -1,0 +1,7 @@
+# Flink Python API
+apache-flink>=1.20.0
+
+# 开发依赖
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.0.0

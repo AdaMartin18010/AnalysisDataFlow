@@ -1,4 +1,4 @@
-# P0-1 交叉引用错误分析报告
+﻿# P0-1 交叉引用错误分析报告
 
 ## 执行概况
 
@@ -62,7 +62,7 @@
 
 | 旧路径 | 新路径 |
 |--------|--------|
-| Flink/02-core-mechanisms/ | Flink/02-core/ |
+| Flink/02-core/ | Flink/02-core/ |
 | Flink/07-case-studies/ | Flink/09-practices/09.01-case-studies/ |
 | Flink/06-engineering/ | Flink/09-practices/09.03-performance-tuning/ |
 | Flink/03-sql-table-api/ | Flink/03-api/03.02-table-sql-api/ |

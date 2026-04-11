@@ -1,0 +1,368 @@
+You are a professional technical translator specializing in stream processing, distributed systems, and formal methods. Translate the following Chinese technical document into English.
+
+## Translation Guidelines
+
+### Terminology Standards (CRITICAL - Must Follow)
+The following terms must be translated EXACTLY as specified:
+- 窗口 → Window: A logical boundary that divides stream data into bounded sets
+- 状态管理 → State Management: The mechanism for maintaining state of stateful operators in stream computation
+- 进程演算 → Process Calculus: A formal language for describing concurrent process behavior
+- Source → Source: The input endpoint of a data stream
+- Sink → Sink: The output endpoint of a data stream
+- 状态后端 → State Backend: The mechanism for storing and accessing stream processing state
+- Barrier → Barrier: A special event that triggers checkpoints and aligns stream partitions
+- Savepoint → Savepoint: A user-triggered fully consistent snapshot used for upgrades and migrations
+- DataStream API → DataStream API: Flink's low-level stream processing programming interface
+
+### Terms That MUST NOT Be Translated
+Keep the following terms in their original form:
+
+- All class names (e.g., DataStream, ProcessFunction)
+- All API method names (e.g., map, flatMap, keyBy)
+- All configuration keys (e.g., execution.checkpointing.interval)
+- All product names (e.g., Apache Flink, Apache Kafka)
+
+### Style Guidelines
+1. Use clear, professional technical English
+2. Maintain the original Markdown formatting exactly
+3. Preserve all code blocks, Mermaid diagrams, and mathematical formulas
+4. Use present tense for technical descriptions
+5. Keep sentences concise (under 25 words when possible)
+6. Use active voice where appropriate
+7. Ensure abbreviations are expanded on first use
+
+### Document Structure
+The document follows a standard 8-section structure:
+1. Concept Definitions
+2. Property Derivation
+3. Relationship Establishment
+4. Argumentation Process
+5. Formal Proof / Engineering Argument
+6. Example Verification
+7. Visualizations
+8. References
+
+Maintain this structure in the translation.
+
+### Source Document
+File: Flink/FORMAL-TO-CODE-MAPPING.md
+
+---
+
+# Flink 形式化定义与源码实现对照表
+
+> 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./02-core/checkpoint-mechanism-deep-dive.md), [exactly-once-semantics-deep-dive.md](./02-core/exactly-once-semantics-deep-dive.md) | 形式化等级: L5
+
+本文档建立 Flink 形式化定义与 Apache Flink 源码实现之间的严格映射关系，为理论验证和工程实践提供双向参考。
+
+---
+
+## 1. Checkpoint 机制
+
+### 1.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Def-F-02-01 Checkpoint | checkpoint-mechanism-deep-dive.md | `CheckpointCoordinator` | `org.apache.flink.runtime.checkpoint.CheckpointCoordinator` | ✅ 已验证 |
+| Def-F-02-02 Barrier | checkpoint-mechanism-deep-dive.md | `CheckpointBarrier` | `org.apache.flink.runtime.checkpoint.CheckpointBarrier` | ✅ 已验证 |
+| Def-F-02-03 Aligned Checkpoint | checkpoint-mechanism-deep-dive.md | `CheckpointBarrierAligner` | `org.apache.flink.streaming.runtime.io.CheckpointBarrierAligner` | ✅ 已验证 |
+| Def-F-02-04 Unaligned Checkpoint | checkpoint-mechanism-deep-dive.md | `CheckpointBarrierUnaligner` | `org.apache.flink.streaming.runtime.io.CheckpointBarrierUnaligner` | ✅ 已验证 |
+| Def-F-02-05 Incremental Checkpoint | checkpoint-mechanism-deep-dive.md | `IncrementalCheckpoint` (内部) | `org.apache.flink.runtime.state.IncrementalLocalKeyedStateHandle` | ✅ 已验证 |
+| Def-F-02-06 State Backend | checkpoint-mechanism-deep-dive.md | `StateBackend` | `org.apache.flink.runtime.state.StateBackend` | ✅ 已验证 |
+| Def-F-02-07 Checkpoint 协调器 | checkpoint-mechanism-deep-dive.md | `CheckpointCoordinator` | `org.apache.flink.runtime.checkpoint.CheckpointCoordinator` | ✅ 已验证 |
+
+### 1.2 属性引理映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Lemma-F-02-01 Barrier 对齐保证状态一致性 | checkpoint-mechanism-deep-dive.md | `CheckpointBarrierAligner#processBarrier` | `flink-streaming-java` 模块 | ✅ 已验证 |
+| Lemma-F-02-02 异步 Checkpoint 的低延迟特性 | checkpoint-mechanism-deep-dive.md | `AsyncSnapshotCallable` | `org.apache.flink.runtime.state.AsyncSnapshotCallable` | ✅ 已验证 |
+| Lemma-F-02-03 增量 Checkpoint 的存储优化 | checkpoint-mechanism-deep-dive.md | `RocksDBStateUploader` | `org.apache.flink.contrib.streaming.state.RocksDBStateUploader` | ✅ 已验证 |
+| Prop-F-02-01 Checkpoint 类型选择的权衡空间 | checkpoint-mechanism-deep-dive.md | `CheckpointConfig` | `org.apache.flink.streaming.api.environment.CheckpointConfig` | ✅ 已验证 |
+
+### 1.3 定理源码验证
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Thm-F-02-01 状态等价性 | checkpoint-mechanism-deep-dive.md | `CheckpointCoordinator#restoreSavepoint` / `restoreLatestCheckpointedState` | 第 850-920 行 | ✅ 已验证 |
+| Thm-F-02-02 增量 Checkpoint 完备性 | checkpoint-mechanism-deep-dive.md | `RocksDBIncrementalCheckpoint` 系列类 | `flink-state-backends` 模块 | ✅ 已验证 |
+
+---
+
+## 2. Exactly-Once 语义
+
+### 2.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Def-F-02-91 Exactly-Once | exactly-once-semantics-deep-dive.md | `CheckpointingMode.EXACTLY_ONCE` | `org.apache.flink.streaming.api.CheckpointingMode` | ✅ 已验证 |
+| Def-F-02-92 端到端 Exactly-Once | exactly-once-semantics-deep-dive.md | `TwoPhaseCommitSinkFunction` | `org.apache.flink.streaming.api.functions.sink.TwoPhaseCommitSinkFunction` | ✅ 已验证 |
+| Def-F-02-93 一致性语义分类 | exactly-once-semantics-deep-dive.md | `CheckpointingMode` (枚举) | 同上 | ✅ 已验证 |
+| Def-F-02-94 屏障对齐与非对齐 | exactly-once-semantics-deep-dive.md | `CheckpointBarrierAligner` / `Unaligner` | `flink-streaming-java` 模块 | ✅ 已验证 |
+| Def-F-02-95 2PC 协议状态机 | exactly-once-semantics-deep-dive.md | `TwoPhaseCommitSinkFunction` | 内部状态管理 | ✅ 已验证 |
+
+### 2.2 属性引理映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Lemma-F-02-71 屏障对齐保证因果一致性 | exactly-once-semantics-deep-dive.md | `CheckpointBarrierAligner` | `flink-streaming-java` | ✅ 已验证 |
+| Lemma-F-02-72 非对齐 Checkpoint 的有界一致性 | exactly-once-semantics-deep-dive.md | `CheckpointBarrierUnaligner` | `flink-streaming-java` | ✅ 已验证 |
+| Lemma-F-02-73 对齐 Checkpoint 延迟上界 | exactly-once-semantics-deep-dive.md | `CheckpointBarrierAligner#alignmentDuration` | 对齐超时监控 | ✅ 已验证 |
+| Lemma-F-02-74 事务超时与一致性 | exactly-once-semantics-deep-dive.md | `TwoPhaseCommitSinkFunction#notifyCheckpointComplete` | 事务超时处理 | ✅ 已验证 |
+
+### 2.3 定理源码验证
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Thm-F-02-71 端到端 Exactly-Once 充分条件 | exactly-once-semantics-deep-dive.md | `TwoPhaseCommitSinkFunction` | 完整实现 | ✅ 已验证 |
+| Thm-F-02-72 2PC 原子性保证 | exactly-once-semantics-deep-dive.md | `TwoPhaseCommitSinkFunction#commit` / `abort` | 事务提交与回滚 | ✅ 已验证 |
+
+---
+
+## 3. 异步执行模型
+
+### 3.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Def-F-02-70 异步执行模型 (AEM) | flink-2.0-async-execution-model.md | `AsyncExecutionController` | `org.apache.flink.runtime.asyncprocessing.AsyncExecutionController` | ✅ 已验证 |
+| Def-F-02-73 AEC | flink-2.0-async-execution-model.md | `AsyncExecutionController` | 同上 | ✅ 已验证 |
+| Def-F-02-74 非阻塞状态访问 | flink-2.0-async-execution-model.md | `StateFuture` | `org.apache.flink.runtime.state.StateFuture` | ✅ 已验证 |
+| Def-F-02-76 三阶段处理生命周期 | flink-2.0-async-execution-model.md | `RecordProcessor` | `org.apache.flink.runtime.asyncprocessing.RecordProcessor` | ✅ 已验证 |
+| Def-F-02-77 Per-Key FIFO | flink-2.0-async-execution-model.md | `KeyExecutionQueue` | `org.apache.flink.runtime.asyncprocessing.keyed.KeyExecutionQueue` | ✅ 已验证 |
+| Def-F-02-78 Watermark 正确性 | flink-2.0-async-execution-model.md | `AsyncExecutionController#processWatermark` | Watermark 处理 | ✅ 已验证 |
+| Def-F-02-79 容错保证 | flink-2.0-async-execution-model.md | `AsyncSnapshotStrategy` | Checkpoint 集成 | ✅ 已验证 |
+| Def-F-02-80 AsyncValueState | flink-2.0-async-execution-model.md | `ValueState` (v2) | `org.apache.flink.runtime.state.v2.ValueState` | ✅ 已验证 |
+
+### 3.2 State V2 API 映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| AsyncValueState | flink-2.0-async-execution-model.md | `InternalAsyncValueState` | `org.apache.flink.runtime.state.v2.internal.InternalAsyncValueState` | ✅ 已验证 |
+| AsyncListState | flink-2.0-async-execution-model.md | `InternalAsyncListState` | `org.apache.flink.runtime.state.v2.internal.InternalAsyncListState` | ✅ 已验证 |
+| AsyncMapState | flink-2.0-async-execution-model.md | `InternalAsyncMapState` | `org.apache.flink.runtime.state.v2.internal.InternalAsyncMapState` | ✅ 已验证 |
+| AsyncReducingState | flink-2.0-async-execution-model.md | `InternalAsyncReducingState` | `org.apache.flink.runtime.state.v2.internal.InternalAsyncReducingState` | ⚠️ 待验证 |
+| AsyncAggregatingState | flink-2.0-async-execution-model.md | `InternalAsyncAggregatingState` | `org.apache.flink.runtime.state.v2.internal.InternalAsyncAggregatingState` | ⚠️ 待验证 |
+
+---
+
+## 4. Watermark 机制
+
+### 4.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Def-F-02-01 Event Time | time-semantics-and-watermark.md | `TimeCharacteristic.EventTime` | `org.apache.flink.streaming.api.TimeCharacteristic` | ✅ 已验证 |
+| Def-F-02-02 Processing Time | time-semantics-and-watermark.md | `TimeCharacteristic.ProcessingTime` | 同上 | ✅ 已验证 |
+| Def-F-02-03 Ingestion Time | time-semantics-and-watermark.md | `TimeCharacteristic.IngestionTime` | 同上 | ✅ 已验证 |
+| Def-F-02-04 Watermark | time-semantics-and-watermark.md | `Watermark` | `org.apache.flink.streaming.api.watermark.Watermark` | ✅ 已验证 |
+| Def-F-02-05 Allowed Lateness | time-semantics-and-watermark.md | `WindowedStream#allowedLateness` | `flink-streaming-java` | ✅ 已验证 |
+| Def-F-02-06 Window | time-semantics-and-watermark.md | `Window` / `TimeWindow` | `org.apache.flink.streaming.api.windowing.windows` | ✅ 已验证 |
+
+### 4.2 属性引理映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Lemma-F-02-01 Watermark 单调性 | time-semantics-and-watermark.md | `StatusWatermarkValve` | `org.apache.flink.streaming.runtime.io.StatusWatermarkValve` | ✅ 已验证 |
+| Lemma-F-02-02 窗口分配完备性 | time-semantics-and-watermark.md | `WindowAssigner` | `org.apache.flink.streaming.api.windowing.assigners` | ✅ 已验证 |
+| Lemma-F-02-03 延迟上界定理 | time-semantics-and-watermark.md | `BoundedOutOfOrdernessWatermarks` | `org.apache.flink.api.common.eventtime` | ✅ 已验证 |
+
+### 4.3 定理源码验证
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Thm-F-02-01 Event Time 结果确定性定理 | time-semantics-and-watermark.md | `EventTimeTrigger` / `WatermarkStrategy` | 时间触发机制 | ✅ 已验证 |
+| Thm-F-02-02 Allowed Lateness 不破坏 Exactly-Once | time-semantics-and-watermark.md | `LateDataHandling` | 迟到数据处理 | ✅ 已验证 |
+
+---
+
+## 5. 状态后端 (State Backend)
+
+### 5.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| StateBackend 抽象 | checkpoint-mechanism-deep-dive.md | `StateBackend` | `org.apache.flink.runtime.state.StateBackend` | ✅ 已验证 |
+| HashMapStateBackend | checkpoint-mechanism-deep-dive.md | `HashMapStateBackend` | `org.apache.flink.runtime.state.hashmap.HashMapStateBackend` | ✅ 已验证 |
+| EmbeddedRocksDBStateBackend | checkpoint-mechanism-deep-dive.md | `EmbeddedRocksDBStateBackend` | `org.apache.flink.runtime.state.rocksdb.EmbeddedRocksDBStateBackend` | ✅ 已验证 |
+| ForStStateBackend | flink-2.0-forst-state-backend.md | `ForStStateBackend` | `org.apache.flink.state.forst.ForStStateBackend` | ✅ 已验证 |
+
+### 5.2 状态类型映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| ValueState | flink-state-management-complete-guide.md | `ValueState` | `org.apache.flink.api.common.state.ValueState` | ✅ 已验证 |
+| ListState | flink-state-management-complete-guide.md | `ListState` | `org.apache.flink.api.common.state.ListState` | ✅ 已验证 |
+| MapState | flink-state-management-complete-guide.md | `MapState` | `org.apache.flink.api.common.state.MapState` | ✅ 已验证 |
+| ReducingState | flink-state-management-complete-guide.md | `ReducingState` | `org.apache.flink.api.common.state.ReducingState` | ✅ 已验证 |
+| AggregatingState | flink-state-management-complete-guide.md | `AggregatingState` | `org.apache.flink.api.common.state.AggregatingState` | ✅ 已验证 |
+
+---
+
+## 6. 容错与恢复
+
+### 6.1 核心定义映射
+
+| 形式化定义 | 定义位置 | 源码类 | 源码位置 | 验证状态 |
+|-----------|---------|--------|----------|----------|
+| Savepoint 机制 | flink-state-management-complete-guide.md | `SavepointLoader` | `org.apache.flink.runtime.checkpoint.SavepointLoader` | ✅ 已验证 |
+| 状态恢复 | checkpoint-mechanism-deep-dive.md | `StateBackend#restore` | 恢复接口 | ✅ 已验证 |
+| 任务故障恢复 | checkpoint-mechanism-deep-dive.md | `FailoverStrategy` | `org.apache.flink.runtime.executiongraph.failover` | ✅ 已验证 |
+
+---
+
+## 7. 源码验证状态汇总
+
+### 7.1 验证统计
+
+| 类别 | 已验证 (✅) | 待验证 (⚠️) | 未找到 (❓) | 总计 |
+|------|-----------|-----------|-----------|------|
+| Checkpoint 机制 | 12 | 0 | 0 | 12 |
+| Exactly-Once 语义 | 10 | 0 | 0 | 10 |
+| 异步执行模型 | 9 | 2 | 0 | 11 |
+| Watermark 机制 | 10 | 0 | 0 | 10 |
+| 状态后端 | 9 | 0 | 0 | 9 |
+| 容错与恢复 | 3 | 0 | 0 | 3 |
+| **总计** | **53** | **2** | **0** | **55** |
+
+### 7.2 验证覆盖率
+
+- **整体验证覆盖率**: 96.4% (53/55)
+- **核心机制覆盖率**: 100% (Checkpoint, Exactly-Once, Watermark)
+- **待验证项**: 异步状态类型 (ReducingState/AggregatingState v2)
+
+---
+
+## 8. 源码引用规范
+
+### 8.1 模块结构
+
+```
+flink-runtime/              # 运行时核心
+├── checkpoint/             # Checkpoint 机制
+│   ├── CheckpointCoordinator.java
+│   ├── CheckpointBarrier.java
+│   └── ...
+├── state/                  # 状态管理
+│   ├── StateBackend.java
+│   ├── v2/                 # State V2 API
+│   └── ...
+└── asyncprocessing/        # 异步执行
+    ├── AsyncExecutionController.java
+    └── ...
+
+flink-streaming-java/       # DataStream API
+├── streaming/api/
+│   ├── watermark/Watermark.java
+│   ├── environment/CheckpointConfig.java
+│   └── ...
+└── streaming/runtime/io/
+    ├── CheckpointBarrierAligner.java
+    ├── CheckpointBarrierUnaligner.java
+    └── StatusWatermarkValve.java
+
+flink-state-backends/       # 状态后端实现
+├── flink-statebackend-rocksdb/
+│   └── EmbeddedRocksDBStateBackend.java
+└── flink-statebackend-forst/
+    └── ForStStateBackend.java
+```
+
+### 8.2 引用格式
+
+源码引用遵循以下格式：
+
+```
+完整类名: org.apache.flink.{module}.{package}.{ClassName}
+方法: {ClassName}#{methodName}
+行号: 第 {start}-{end} 行
+模块: flink-{module}
+```
+
+---
+
+## 9. 形式→源码依赖链 (v2 扩展)
+
+> 本节补充形式化定义到源码实现的显式依赖链映射，详细说明见 [Formal-to-Code-Mapping-v2.md](./Formal-to-Code-Mapping-v2.md)
+
+### 9.1 核心依赖链
+
+```mermaid
+graph BT
+    subgraph "理论层 Struct"
+        S1[Def-S-01-02<br/>进程演算]
+        S2[Def-S-01-04<br/>Dataflow模型]
+        S3[Thm-S-04-01<br/>确定性定理]
+    end
+
+    subgraph "抽象层 Flink"
+        F1[Def-F-02-01<br/>Checkpoint定义]
+        F2[Def-F-02-91<br/>Exactly-Once语义]
+    end
+
+    subgraph "实现层 Source"
+        I1[CheckpointCoordinator<br/>协调器实现]
+        I2[TwoPhaseCommitSinkFunction<br/>2PC实现]
+        I3[StreamGraph<br/>图构建]
+    end
+
+    S1 -->|扩展| S2
+    S2 -->|保证| S3
+    S3 -->|依赖| F1
+    S3 -->|依赖| F2
+    F1 -->|实现| I1
+    F2 -->|实现| I2
+    S2 -->|实现| I3
+
+    style S1 fill:#fff9c4,stroke:#f57f17
+    style S2 fill:#fff9c4,stroke:#f57f17
+    style S3 fill:#bbdefb,stroke:#1565c0
+    style F1 fill:#e1bee7,stroke:#6a1b9a
+    style F2 fill:#e1bee7,stroke:#6a1b9a
+    style I1 fill:#c8e6c9,stroke:#2e7d32
+    style I2 fill:#c8e6c9,stroke:#2e7d32
+    style I3 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 9.2 显式依赖链表格
+
+| 依赖链 | 形式关系 | 源码实现 | 验证状态 |
+|-------|---------|---------|---------|
+| `Def-S-01-02 → Def-S-01-04` | 进程演算扩展为 Dataflow 模型 | 理论基础 → 模型层 | ✅ |
+| `Def-S-01-04 → Def-F-02-01` | Dataflow 模型引入 Checkpoint 语义 | 模型层 → Flink 抽象 | ✅ |
+| `Def-F-02-01 → CheckpointCoordinator` | Checkpoint 定义到协调器实现 | CheckpointCoordinator:850-920 | ✅ |
+| `Thm-S-04-01 → Def-F-02-91` | 确定性定理支撑 Exactly-Once | 定理 → 语义定义 | ✅ |
+| `Def-F-02-91 → TwoPhaseCommitSinkFunction` | Exactly-Once 到 2PC 实现 | TwoPhaseCommitSinkFunction:98-127 | ✅ |
+
+### 9.3 新增映射条目
+
+| 层级 | 形式元素 | 源码类 | 包路径 | 行号范围 | 验证状态 |
+|------|---------|--------|--------|---------|---------|
+| Struct | Def-S-01-04 (Dataflow Model) | StreamGraph | flink-streaming-java/api/graph | 80-200 | ✅ |
+| Struct | Def-S-02-03 (Watermark Monotonicity) | StatusWatermarkValve | flink-streaming-java/watermark | 120-280 | ✅ |
+| Knowledge | pattern-checkpoint-recovery | CheckpointStorage | flink-runtime/checkpoint | 200-350 | ✅ |
+| Knowledge | pattern-stateful-computation | ValueState/MapState | flink-runtime/state | 45-120 | ✅ |
+| Knowledge | pattern-windowed-aggregation | WindowOperator | flink-streaming-java/windowing | 180-320 | ✅ |
+| Flink | Def-F-02-08 (Changelog State Backend) | ChangelogStateBackend | flink-state-backends | 195-230 | ✅ |
+| Flink | Def-F-02-30 (Netty PooledByteBufAllocator) | NettyBufferPool | flink-runtime/io/network | 87-102 | ✅ |
+| Flink | Def-F-02-31 (Credit-based Flow Control) | CreditBasedFlowControl | flink-runtime/io/network | 106-120 | ✅ |
+| Flink | Def-F-03-57 (VolcanoPlanner) | FlinkOptimizer | flink-table-planner | 200-300 | ✅ |
+
+---
+
+## 10. 引用参考 (References)
+
+
+
+
+
+
+---
+
+*本文档作为 Flink 形式化体系与工程实现的桥梁，持续更新以匹配 Flink 版本演进。*
+*更新: v2.0 新增依赖链映射 (2026-04-06)*
+
+
+---
+
+Please provide the complete English translation, maintaining all formatting and structure.

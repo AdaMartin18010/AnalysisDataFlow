@@ -1,4 +1,4 @@
-# 交叉引用完整性验证报告 v2
+﻿# 交叉引用完整性验证报告 v2
 
 > **验证时间**: 2026-04-04 11:39:47
 > **扫描文件数**: 505 个 Markdown 文件
@@ -61,16 +61,16 @@
 
 #### DESIGN-PRINCIPLES.md
 
-- `./state-management.md` → `./Flink/02-core-mechanisms/flink-state-management-complete-guide.md`
+- `./state-management.md` → `./Flink/02-core/flink-state-management-complete-guide.md`
 
 #### MAINTENANCE-GUIDE.md
 
-- `./02-core-mechanisms/new-feature-guide.md` → `./Flink/02-core-mechanisms/flink-2.2-frontier-features.md`
+- `./02-core-mechanisms/new-feature-guide.md` → `./Flink/02-core/flink-2.2-frontier-features.md`
 
 #### PROJECT-MAINTENANCE-DASHBOARD.md (6个)
 
 - `Flink/7.1-flink-ai-agents.md` → `Flink/12-ai-ml/flink-ai-agents-flip-531.md`
-- `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core-mechanisms/adaptive-execution-engine-v2.md`
+- `Flink/6.2-adaptive-scheduling-v2.md` → `Flink/02-core/adaptive-execution-engine-v2.md`
 - `Flink/2.0-disaggregated-state.md` → `Flink/01-architecture/disaggregated-state-analysis.md`
 - `Flink/2.2-materialized-table.md` → `Flink/03-sql-table-api/materialized-tables.md`
 - `Flink/2.2-model-ddl.md` → `Flink/03-sql-table-api/model-ddl-and-ml-predict.md`
@@ -135,7 +135,7 @@
 
 #### TECH-RADAR/README.md (2个)
 
-- `../Flink/02-core-mechanisms/disaggregated-state-analysis.md` → `../Flink/01-architecture/disaggregated-state-analysis.md`
+- `../Flink/02-core/disaggregated-state-analysis.md` → `../Flink/01-architecture/disaggregated-state-analysis.md`
 - `../Flink/06-frontier/serverless-stream-processing-architecture.md` → `../Knowledge/06-frontier/serverless-stream-processing-architecture.md`
 
 #### visuals/index-visual.md
@@ -147,8 +147,8 @@
 - `../Knowledge/05-patterns/saga-pattern.md` → `../Knowledge/02-design-patterns/pattern-async-io-enrichment.md`
 - `../Knowledge/04-engineering/streaming-systems-design.md` → `../Knowledge/04-technology-selection/engine-selection-guide.md`
 - `../Knowledge/06-frontier/llm-agent-architecture.md` → `../Knowledge/06-frontier/ai-agent-streaming-architecture.md`
-- `../Flink/01-core/checkpoint-mechanism.md` → `../Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md`
-- `../Flink/01-core/watermark-mechanism.md` → `../Flink/02-core-mechanisms/time-semantics-and-watermark.md`
+- `../Flink/01-core/checkpoint-mechanism.md` → `../Flink/02-core/checkpoint-mechanism-deep-dive.md`
+- `../Flink/01-core/watermark-mechanism.md` → `../Flink/02-core/time-semantics-and-watermark.md`
 
 ### 第四轮修复 (9个)
 
@@ -293,3 +293,4 @@
 ---
 
 *报告生成时间: 2026-04-04 11:39:47*
+

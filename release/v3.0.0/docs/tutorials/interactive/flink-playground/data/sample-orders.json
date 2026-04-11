@@ -1,0 +1,8 @@
+{"order_id": "ORD-001", "user_id": "USR-001", "amount": 199.99, "status": "CREATED", "timestamp": "2024-01-15T10:00:00Z"}
+{"order_id": "ORD-002", "user_id": "USR-002", "amount": 59.99, "status": "CREATED", "timestamp": "2024-01-15T10:01:00Z"}
+{"order_id": "ORD-003", "user_id": "USR-001", "amount": 299.99, "status": "CREATED", "timestamp": "2024-01-15T10:02:00Z"}
+{"order_id": "ORD-001", "user_id": "USR-001", "amount": 199.99, "status": "PAID", "timestamp": "2024-01-15T10:05:00Z"}
+{"order_id": "ORD-004", "user_id": "USR-003", "amount": 149.99, "status": "CREATED", "timestamp": "2024-01-15T10:06:00Z"}
+{"order_id": "ORD-002", "user_id": "USR-002", "amount": 59.99, "status": "PAID", "timestamp": "2024-01-15T10:08:00Z"}
+{"order_id": "ORD-005", "user_id": "USR-004", "amount": 499.99, "status": "CREATED", "timestamp": "2024-01-15T10:10:00Z"}
+{"order_id": "ORD-003", "user_id": "USR-001", "amount": 299.99, "status": "CANCELLED", "timestamp": "2024-01-15T10:12:00Z"}

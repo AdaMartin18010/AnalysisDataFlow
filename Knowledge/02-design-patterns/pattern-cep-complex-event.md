@@ -1,4 +1,4 @@
-# 设计模式: 复杂事件处理 (Pattern: Complex Event Processing)
+﻿# 设计模式: 复杂事件处理 (Pattern: Complex Event Processing)
 
 > **模式编号**: 03/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5
 >
@@ -947,9 +947,9 @@ $$
 │                  KeyedProcess ──▶  Alert/Action                     │
 │                                                                     │
 │  相关 Flink 组件:                                                    │
-│  - [Flink/02-core-mechanisms/time-semantics-and-watermark.md]       │
-│  - [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md]     │
-│  - [Flink/07-case-studies/case-iot-stream-processing.md]            │
+│  - [Flink/02-core/time-semantics-and-watermark.md]       │
+│  - [Flink/02-core/checkpoint-mechanism-deep-dive.md]     │
+│  - [Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md]            │
 │  - [Flink/05-vs-competitors/flink-vs-spark-streaming.md]            │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -982,24 +982,25 @@ $$
 
 [^5]: 金融风控实时欺诈检测案例，详见 [Knowledge/03-business-patterns/fintech-realtime-risk-control.md](../../Knowledge/03-business-patterns/fintech-realtime-risk-control.md)
 
-[^6]: IoT 流处理工业案例，详见 [Flink/07-case-studies/case-iot-stream-processing.md](../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
+[^6]: IoT 流处理工业案例，详见 [Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md](../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
 
 [^7]: G. Cugola and A. Margara, "Complex Event Processing: A Survey," *Technical Report*, Politecnico di Milano, 2010.
 
 [^8]: Apache Flink CEP 库设计与实现，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
-[^9]: Flink 状态后端与 CEP 优化，详见 [Flink/06-engineering/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
+[^9]: Flink 状态后端与 CEP 优化，详见 [Flink/09-practices/09.03-performance-tuning/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
 
 [^10]: EsperTech, "Esper - Complex Event Processing," <https://www.espertech.com/esper/>
 
-[^11]: Flink 时间语义与 Watermark，详见 [Flink/02-core-mechanisms/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^11]: Flink 时间语义与 Watermark，详见 [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
 [^12]: 设计模式：有状态计算，详见 [Knowledge/02-design-patterns/pattern-stateful-computation.md](./pattern-stateful-computation.md)
 
-[^13]: Flink Checkpoint 机制深度解析，详见 [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+[^13]: Flink Checkpoint 机制深度解析，详见 [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 [^14]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015.
 
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+

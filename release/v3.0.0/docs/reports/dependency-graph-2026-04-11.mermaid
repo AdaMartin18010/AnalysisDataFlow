@@ -1,0 +1,184 @@
+```mermaid
+graph TB
+    Thm-S-17-01["Thm-S-17-01<br/>Flink Checkpoint 一致性定理"]
+    Def-S-04-04["Def-S-04-04<br/>(Watermark) | `WatermarkGenera..."]
+    Thm-F-14-04["Thm-F-14-04<br/>统一批流结果一致性定理"]
+    Thm-F-14-05["Thm-F-14-05<br/>湖仓格式端到端 Exactly-Once 语义定理"]
+    Thm-F-14-06["Thm-F-14-06<br/>增量消费完备性定理"]
+    Def-F-14-06["Def-F-14-06<br/>Apache Iceberg 流式集成语义"]
+    Def-F-14-07["Def-F-14-07<br/>Apache Paimon LSM-Tree 流批模型"]
+    Def-F-14-08["Def-F-14-08<br/>Delta Lake 流式架构"]
+    Def-F-14-09["Def-F-14-09<br/>统一批流处理语义"]
+    Thm-S-18-01["Thm-S-18-01<br/>| **1** |"]
+    Thm-S-09-01["Thm-S-09-01<br/>的工程实现：尽管 DAG 中不同分支进度不同，但每个节点本地..."]
+    Lemma-S-04-02["Lemma-S-04-02<br/>的严格深化与独立证明。"]
+    Def-F-14-05["Def-F-14-05<br/>流式湖仓架构形式化定义"]
+    Thm-S-13-01["Thm-S-13-01<br/>Flink Dataflow Exactly-Once 保持"]
+    Thm-S-07-01["Thm-S-07-01<br/>(流计算确定性) | 端到端 Exactly-Once 实现..."]
+    Thm-F-14-18["Thm-F-14-18<br/>Table Format选型决策完备性定理"]
+    Thm-S-03-01["Thm-S-03-01<br/>| Actor 局部确定性定理 | Struct/01.03..."]
+    Thm-F-14-17["Thm-F-14-17<br/>S3 Tables托管服务SLA边界定理"]
+    Thm-S-04-01["Thm-S-04-01<br/>(Dataflow确定性) | `CheckpointBar..."]
+    Def-S-04-01["Def-S-04-01<br/>(Dataflow图) | `StreamGraph` → ..."]
+    Thm-F-14-16["Thm-F-14-16<br/>多格式Catalog统一治理定理"]
+    Prop-K-02-03["Prop-K-02-03<br/>| 多路分发正确性 | 本模式 | 每条记录有且仅有一个输出..."]
+    Thm-K-05-05["Thm-K-05-05<br/>边缘-云延迟分界点定理"]
+    Thm-F-14-15["Thm-F-14-15<br/>Streaming-First Lakehouse一致性定理"]
+    Def-S-17-02["Def-S-17-02<br/>| 一致全局状态 | Struct/04.01 | Chec..."]
+    Lemma-K-02-06["Lemma-K-02-06<br/>| 并发安全性 | 本模式 | 多并行度下侧输出数据互不干扰..."]
+    Def-K-05-04["Def-K-05-04<br/>设计可复用的流处理组件"]
+    Thm-K-05-04["Thm-K-05-04<br/>多可用区部署 99.9%+ 可用性证明"]
+    Def-K-05-11["Def-K-05-11<br/>资源受限执行环境五维约束模型"]
+    Def-F-14-25["Def-F-14-25<br/>S3 Tables与Storage-First架构"]
+    Thm-S-12-01["Thm-S-12-01<br/>受限 Actor 系统编码保持迹语义"]
+    Thm-S-04-02["Thm-S-04-02<br/>(算子组合确定性) | `OperatorChain` 优化..."]
+    Thm-F-02-50["Thm-F-02-50<br/>异步算子执行语义保持性定理"]
+    Def-S-13-04["Def-S-13-04<br/>[状态算子→带状态进程]"]
+    Lemma-S-13-03["Lemma-S-13-03<br/>[异步快照非阻塞性]"]
+    Thm-S-19-01["Thm-S-19-01<br/>| Chandy-Lamport 一致性定理 | Struc..."]
+    Def-S-18-03["Def-S-18-03<br/>| 两阶段提交协议 (2PC) | Struct/04.02..."]
+    Lemma-K-02-05["Lemma-K-02-05<br/>| 时序一致性 | 本模式 | 分流不改变记录间的相对顺序 ..."]
+    Def-K-06-07["Def-K-06-07<br/>(检查点周期一致性). 设检查点间隔为 $\Delta_{c..."]
+    Lemma-K-06-05["Lemma-K-06-05<br/>(增量计算等价性). 对于任意查询 $Q$ 和基础表变更 $..."]
+    Def-K-01-04["Def-K-01-04<br/>能够分析并发系统的死锁与活锁"]
+    Def-K-02-04["Def-K-02-04<br/>掌握 Flink 本地开发与调试技巧"]
+    Def-K-03-04["Def-K-03-04<br/>理解 Exactly-Once 语义在 Checkpoint..."]
+    Def-K-04-04["Def-K-04-04<br/>在实际系统设计中权衡一致性与性能"]
+    Def-K-05-01["Def-K-05-01<br/>掌握流计算中的核心设计模式"]
+    Lemma-K-10-201["Lemma-K-10-201<br/>设特征查询延迟为 $L_f$，召回阶段延迟为 $L_r$，排..."]
+    Def-K-10-237["Def-K-10-237<br/>(统计显著性):"]
+    Lemma-K-10-231["Lemma-K-10-231<br/>设事件上报延迟为 $L_{report}$，网络传输延迟为 ..."]
+    Thm-K-05-01["Thm-K-05-01<br/>端到端延迟分析定理"]
+    Def-K-05-08["Def-K-05-08<br/>自动扩缩容策略（HPA/VPA/Custom Metrics..."]
+    Def-S-04-04 --> Def-S-04-01
+    Def-S-04-04 --> Thm-S-04-01
+    Thm-F-14-04 --> Thm-F-14-05
+    Thm-F-14-04 --> Thm-F-14-06
+    Thm-F-14-05 --> Thm-F-14-06
+    Def-F-14-06 --> Def-F-14-07
+    Def-F-14-06 --> Def-F-14-08
+    Def-F-14-06 --> Def-F-14-09
+    Def-F-14-06 --> Thm-F-14-04
+    Def-F-14-06 --> Thm-F-14-05
+    Def-F-14-06 --> Thm-F-14-06
+    Def-F-14-07 --> Def-F-14-08
+    Def-F-14-07 --> Def-F-14-09
+    Def-F-14-07 --> Thm-F-14-04
+    Def-F-14-07 --> Thm-F-14-05
+    Def-F-14-07 --> Thm-F-14-06
+    Def-F-14-08 --> Def-F-14-09
+    Def-F-14-08 --> Thm-F-14-04
+    Def-F-14-08 --> Thm-F-14-05
+    Def-F-14-08 --> Thm-F-14-06
+    Def-F-14-09 --> Thm-F-14-04
+    Def-F-14-09 --> Thm-F-14-05
+    Def-F-14-09 --> Thm-F-14-06
+    Thm-S-18-01 --> Thm-S-18-01
+    Thm-S-18-01 --> Thm-S-17-01
+    Lemma-S-04-02 --> Def-S-04-04
+    Lemma-S-04-02 --> Lemma-S-04-02
+    Lemma-S-04-02 --> Thm-S-09-01
+    Lemma-S-04-02 --> Thm-S-04-01
+    Def-F-14-05 --> Def-F-14-06
+    Def-F-14-05 --> Def-F-14-07
+    Def-F-14-05 --> Def-F-14-08
+    Def-F-14-05 --> Def-F-14-09
+    Def-F-14-05 --> Thm-F-14-04
+    Def-F-14-05 --> Thm-F-14-05
+    Def-F-14-05 --> Thm-F-14-06
+    Thm-S-13-01 --> Def-S-04-01
+    Thm-S-07-01 --> Thm-S-04-01
+    Thm-S-07-01 --> Thm-S-04-02
+    Thm-F-14-18 --> Def-F-14-05
+    Thm-F-14-18 --> Def-F-14-06
+    Thm-F-14-18 --> Def-F-14-07
+    Thm-F-14-18 --> Def-F-14-08
+    Thm-F-14-18 --> Def-F-14-09
+    Thm-F-14-18 --> Thm-F-14-04
+    Thm-F-14-18 --> Thm-F-14-05
+    Thm-F-14-18 --> Thm-F-14-06
+    Thm-S-03-01 --> Thm-S-17-01
+    Thm-S-03-01 --> Thm-S-03-01
+    Thm-F-14-17 --> Thm-F-14-18
+    Thm-F-14-17 --> Def-F-14-05
+    Thm-F-14-17 --> Def-F-14-06
+    Thm-F-14-17 --> Def-F-14-07
+    Thm-F-14-17 --> Def-F-14-08
+    Thm-F-14-17 --> Def-F-14-09
+    Thm-F-14-17 --> Thm-F-14-04
+    Thm-F-14-17 --> Thm-F-14-05
+    Thm-F-14-17 --> Thm-F-14-06
+    Thm-S-04-01 --> Thm-S-04-02
+    Thm-S-04-01 --> Thm-S-07-01
+    Thm-S-04-01 --> Thm-S-04-01
+    Def-S-04-01 --> Def-S-04-04
+    Def-S-04-01 --> Def-S-04-01
+    Thm-F-14-16 --> Thm-F-14-17
+    Thm-F-14-16 --> Thm-F-14-18
+    Thm-F-14-16 --> Def-F-14-05
+    Thm-F-14-16 --> Def-F-14-06
+    Thm-F-14-16 --> Def-F-14-07
+    Thm-F-14-16 --> Def-F-14-08
+    Thm-F-14-16 --> Def-F-14-09
+    Thm-F-14-16 --> Thm-F-14-04
+    Thm-F-14-16 --> Thm-F-14-05
+    Thm-F-14-16 --> Thm-F-14-06
+    Prop-K-02-03 --> Thm-S-17-01
+    Prop-K-02-03 --> Def-S-04-04
+    Thm-K-05-05 --> Def-K-05-01
+    Thm-K-05-05 --> Thm-K-05-01
+    Thm-K-05-05 --> Thm-K-05-05
+    Thm-F-14-15 --> Thm-F-14-16
+    Thm-F-14-15 --> Thm-F-14-17
+    Thm-F-14-15 --> Thm-F-14-18
+    Thm-F-14-15 --> Def-F-14-05
+    Thm-F-14-15 --> Def-F-14-06
+    Thm-F-14-15 --> Def-F-14-07
+    Thm-F-14-15 --> Def-F-14-08
+    Thm-F-14-15 --> Def-F-14-09
+    Thm-F-14-15 --> Thm-F-14-04
+    Thm-F-14-15 --> Thm-F-14-05
+    Def-S-17-02 --> Lemma-S-04-02
+    Def-S-17-02 --> Thm-S-17-01
+    Def-S-17-02 --> Thm-S-18-01
+    Lemma-K-02-06 --> Prop-K-02-03
+    Lemma-K-02-06 --> Thm-S-17-01
+    Lemma-K-02-06 --> Def-S-04-04
+    Thm-K-05-04 --> Def-K-05-11
+    Thm-K-05-04 --> Thm-K-05-05
+    Def-K-05-11 --> Thm-K-05-05
+    Def-K-05-11 --> Def-K-05-01
+    Def-K-05-11 --> Thm-K-05-01
+    Def-F-14-25 --> Thm-F-14-15
+    Def-F-14-25 --> Thm-F-14-16
+    Def-F-14-25 --> Thm-F-14-17
+    Def-F-14-25 --> Thm-F-14-18
+    Def-F-14-25 --> Def-F-14-05
+    Def-F-14-25 --> Def-F-14-06
+    Def-F-14-25 --> Def-F-14-07
+    Def-F-14-25 --> Def-F-14-08
+    Def-F-14-25 --> Def-F-14-09
+    Def-F-14-25 --> Thm-F-14-04
+    Thm-S-04-02 --> Thm-S-07-01
+    Thm-S-04-02 --> Thm-S-04-01
+    Thm-S-04-02 --> Thm-S-04-02
+    Def-S-13-04 --> Thm-S-13-01
+    Lemma-S-13-03 --> Thm-S-13-01
+    Lemma-S-13-03 --> Lemma-S-13-03
+    Thm-S-19-01 --> Thm-S-07-01
+    Thm-S-19-01 --> Thm-S-17-01
+    Def-S-18-03 --> Thm-S-17-01
+    Def-S-18-03 --> Thm-S-18-01
+    Def-S-18-03 --> Thm-S-19-01
+    Def-S-18-03 --> Thm-S-07-01
+    Lemma-K-02-05 --> Lemma-K-02-06
+    Lemma-K-02-05 --> Prop-K-02-03
+    Lemma-K-02-05 --> Thm-S-17-01
+    Lemma-K-02-05 --> Def-S-04-04
+    Def-K-05-01 --> Def-K-05-04
+    Def-K-10-237 --> Lemma-K-10-231
+    Thm-K-05-01 --> Def-K-05-04
+    Def-K-05-08 --> Thm-K-05-04
+    Def-K-05-08 --> Def-K-05-11
+    Def-K-05-08 --> Thm-K-05-05
+```

@@ -1,4 +1,4 @@
-# AnalysisDataFlow 可视化知识地图
+﻿# AnalysisDataFlow 可视化知识地图
 
 > **版本**: v2.8 | **更新日期**: 2026-04-03 | **状态**: 生产就绪 ✅
 >
@@ -449,7 +449,7 @@ flowchart TD
     EO_IMPL --> EO3[事务Sink]
 
     AM --> DOC1[Struct/02.02-consistency-hierarchy]
-    EO --> DOC2[Flink/02-core-mechanisms/exactly-once-end-to-end]
+    EO --> DOC2[Flink/02-core/exactly-once-end-to-end]
 
     style START fill:#e1bee7,stroke:#6a1b9a
     style AM fill:#ffccbc,stroke:#e64a19
@@ -639,3 +639,4 @@ bar title 形式化等级分布
 *版本: v2.8*
 *适用项目: AnalysisDataFlow*
 *维护说明: 新增文档后需更新本地图*
+

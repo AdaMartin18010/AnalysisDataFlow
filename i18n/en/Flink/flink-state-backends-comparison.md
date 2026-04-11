@@ -1,4 +1,4 @@
----
+﻿---
 title: "[EN] Flink State Backends Comparison"
 translation_status: "ai_translated"
 source_file: "Flink/flink-state-backends-comparison.md"
@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink State Backends 深度对比与选型指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md), [Flink/3.9-state-backends-deep-comparison.md](./3.9-state-backends-deep-comparison.md) | **形式化等级**: L3-L4 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/02-core/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md), [Flink/3.9-state-backends-deep-comparison.md](./3.9-state-backends-deep-comparison.md) | **形式化等级**: L3-L4 -->
 <!-- TRANSLATE: > **版本**: 2026.04 | **适用版本**: Flink 1.16+ - 2.5+ | **更新说明**: 新增 ForStStateBackend (Flink 2.0+) -->
 
 
@@ -507,3 +507,4 @@ config.set(ForStOptions.RECOVERY_THREADS, 16);
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
+

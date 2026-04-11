@@ -1,6 +1,6 @@
 # 游戏实时分析平台案例研究
 
-> **所属阶段**: Knowledge/case-studies/gaming | **前置依赖**: [Knowledge/case-studies/gaming/realtime-game-analytics-case.md](./realtime-game-analytics-case.md) | **形式化等级**: L5
+> **所属阶段**: Knowledge/case-studies/gaming | **前置依赖**: [Knowledge/case-studies/gaming/realtime-game-analytics-case.md](gaming/realtime-game-analytics-case.md) | **形式化等级**: L5
 > **案例编号**: CS-G-02 | **完成日期**: 2026-04-11 | **版本**: v2.0
 
 ---

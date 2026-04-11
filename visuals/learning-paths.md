@@ -1,4 +1,4 @@
-# 角色化学习路径引导图
+﻿# 角色化学习路径引导图
 
 > **所属阶段**: Knowledge/ | 形式化等级: L3-L5 | 版本: 2026.04
 >
@@ -190,9 +190,9 @@ flowchart TD
 | 序号 | 文档路径 | 阅读重点 | 预计时间 | 产出 |
 |------|----------|----------|----------|------|
 | 1.1 | `Knowledge/02-design-patterns/pattern-event-time-processing.md` | 代码示例、配置参数 | 3h | Watermark配置能力 |
-| 1.2 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | Flink API实现细节 | 3h | 时间语义实现 |
+| 1.2 | `Flink/02-core/time-semantics-and-watermark.md` | Flink API实现细节 | 3h | 时间语义实现 |
 | 1.3 | `Knowledge/02-design-patterns/pattern-checkpoint-recovery.md` | Checkpoint配置、故障恢复 | 2h | 容错配置能力 |
-| 1.4 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | Barrier机制、状态快照 | 3h | 故障诊断基础 |
+| 1.4 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | Barrier机制、状态快照 | 3h | 故障诊断基础 |
 
 **阶段1关键产出**: 掌握基础概念和配置，能够编写简单流处理应用。
 
@@ -203,9 +203,9 @@ flowchart TD
 | 2.1 | `Knowledge/02-design-patterns/pattern-windowed-aggregation.md` | 窗口类型选择、触发器配置 | 2h | 窗口实现能力 |
 | 2.2 | `Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md` | SQL窗口函数实现 | 2h | SQL窗口能力 |
 | 2.3 | `Knowledge/02-design-patterns/pattern-async-io-enrichment.md` | 异步查询、结果缓冲、超时控制 | 2h | 外部数据关联能力 |
-| 2.4 | `Flink/02-core-mechanisms/` (Async I/O实现) | AsyncFunction实现细节 | 2h | Async I/O代码能力 |
+| 2.4 | `Flink/02-core/` (Async I/O实现) | AsyncFunction实现细节 | 2h | Async I/O代码能力 |
 | 2.5 | `Knowledge/02-design-patterns/pattern-stateful-computation.md` | Keyed State、Operator State、TTL | 3h | 状态管理能力 |
-| 2.6 | `Flink/02-core-mechanisms/flink-state-ttl-best-practices.md` | State TTL最佳实践 | 1h | 状态优化能力 |
+| 2.6 | `Flink/02-core/flink-state-ttl-best-practices.md` | State TTL最佳实践 | 1h | 状态优化能力 |
 
 **阶段2关键产出**: 能够独立实现7大核心模式，编写中等复杂度流处理应用。
 
@@ -214,8 +214,8 @@ flowchart TD
 | 序号 | 文档路径 | 阅读重点 | 预计时间 | 产出 |
 |------|----------|----------|----------|------|
 | 3.1 | `Flink/06-engineering/performance-tuning-guide.md` | 完整调优指南、参数配置 | 4h | 性能调优能力 |
-| 3.2 | `Flink/02-core-mechanisms/backpressure-and-flow-control.md` | Credit-based流控、背压处理 | 3h | 背压诊断与解决 |
-| 3.3 | `Flink/02-core-mechanisms/exactly-once-end-to-end.md` | Exactly-Once实现机制 | 3h | EO实现能力 |
+| 3.2 | `Flink/02-core/backpressure-and-flow-control.md` | Credit-based流控、背压处理 | 3h | 背压诊断与解决 |
+| 3.3 | `Flink/02-core/exactly-once-end-to-end.md` | Exactly-Once实现机制 | 3h | EO实现能力 |
 | 3.4 | `Flink/06-engineering/state-backend-selection.md` | 状态后端选择、RocksDB调优 | 2h | 状态后端优化 |
 | 3.5 | `Flink/03-sql-table-api/query-optimization-analysis.md` | SQL查询优化 | 2h | SQL优化能力 |
 
@@ -400,8 +400,8 @@ flowchart TD
 | 序号 | 文档路径 | 阅读重点 | 预计时间 | 产出 |
 |------|----------|----------|----------|------|
 | 3.1 | `Knowledge/02-design-patterns/` (全部7个模式) | 设计模式实现 | 12h | 模式实现能力 |
-| 3.2 | `Flink/02-core-mechanisms/time-semantics-and-watermark.md` | 时间语义实践 | 4h | 时间语义实现 |
-| 3.3 | `Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md` | Checkpoint实践 | 4h | 容错实现 |
+| 3.2 | `Flink/02-core/time-semantics-and-watermark.md` | 时间语义实践 | 4h | 时间语义实现 |
+| 3.3 | `Flink/02-core/checkpoint-mechanism-deep-dive.md` | Checkpoint实践 | 4h | 容错实现 |
 | 3.4 | `Knowledge/98-exercises/` (配套练习) | 动手练习 | 12h | 实践能力 |
 
 **阶段3关键产出**: 具备流处理系统的实现能力，能够完成练习和实验。
@@ -626,3 +626,4 @@ flowchart LR
 - v1.0 (2026-04-03): 初始版本，包含四条完整学习路径
 
 ---
+
