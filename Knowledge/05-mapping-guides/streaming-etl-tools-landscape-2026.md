@@ -337,11 +337,13 @@ $$Position(Flink) = \arg\max_{SPE} \left( StateComplexity \times TemporalSemanti
 
 **定理 5.4 (Iceberg/Delta集成关系)**: Flink与Lakehouse格式的集成遵循**流批统一**范式：
 
-$$Flink + Iceberg/Delta \Rightarrow \begin{cases}
+$$
+Flink + Iceberg/Delta \Rightarrow \begin{cases}
 Streaming: & \text{实时增量写入} \\
 Batch: & \text{全量回溯查询} \\
 TimeTravel: & \text{历史版本访问}
-\end{cases}$$
+\end{cases}
+$$
 
 Flink通过Table Store或paimon实现与Iceberg/Delta的深度集成，支持流批一体的湖仓架构 [^3]。
 
@@ -438,6 +440,7 @@ flowchart TD
 ```
 
 **工程建议**:
+
 - $L < 50ms$: 必须使用Flink或Kafka Streams的Native Streaming模式
 - $L < 10ms$: 考虑Redpanda替代Kafka作为消息骨干
 - $L > 1s$: Spark Streaming的成熟度优势大于延迟劣势
@@ -530,6 +533,7 @@ graph LR
 ```
 
 **组件选择理由**:
+
 - **Debezium**: 开源CDC标准，支持主流数据库
 - **Kafka**: 企业级事件骨干，高可用保证
 - **Flink**: 复杂事件处理，精确时间语义
@@ -580,6 +584,7 @@ graph LR
 **业务场景**: 电商平台需要构建实时用户行为分析Pipeline
 
 **需求**:
+
 - CDC捕获订单库变更（<1s延迟）
 - 实时计算GMV、UV、转化率
 - 用户行为实时归因
@@ -639,6 +644,7 @@ graph TB
 **关键配置**:
 
 1. **Debezium配置**:
+
 ```json
 {
   "name": "order-connector",
@@ -653,7 +659,8 @@ graph TB
 }
 ```
 
-2. **Flink作业关键代码**:
+1. **Flink作业关键代码**:
+
 ```java
 // 订单流表
 Table orders = tEnv.fromDataStream(
@@ -683,6 +690,7 @@ tEnv.executeSql("""
 ```
 
 **性能指标**:
+
 - 端到端延迟: ~500ms (p99)
 - 吞吐量: 50K events/s
 - 状态规模: ~200GB (7天窗口)
@@ -1070,21 +1078,18 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: Mimacom, "8 Best Data Streaming Tools in 2026: Compared & Ranked", 2026-02-18. https://www.mimacom.com/learning-hub/data-streaming-tools
+[^1]: Mimacom, "8 Best Data Streaming Tools in 2026: Compared & Ranked", 2026-02-18. <https://www.mimacom.com/learning-hub/data-streaming-tools>
 
-[^2]: Estuary, "12 Data Streaming Technologies & Tools For 2026", 2026-03-05. https://estuary.dev/blog/data-streaming-technologies/
+[^2]: Estuary, "12 Data Streaming Technologies & Tools For 2026", 2026-03-05. <https://estuary.dev/blog/data-streaming-technologies/>
 
-[^3]: Redpanda, "Flink vs. Spark—A detailed comparison guide", 2025. https://www.redpanda.com/guides/event-stream-processing-flink-vs-spark
+[^3]: Redpanda, "Flink vs. Spark—A detailed comparison guide", 2025. <https://www.redpanda.com/guides/event-stream-processing-flink-vs-spark>
 
-[^4]: Streamkap, "Data Streaming Tools Compared: Kafka, Flink, Redpanda, and More", 2025-09-15. https://streamkap.com/resources-and-guides/data-streaming-tools-comparison-7-en-badfe/
+[^4]: Streamkap, "Data Streaming Tools Compared: Kafka, Flink, Redpanda, and More", 2025-09-15. <https://streamkap.com/resources-and-guides/data-streaming-tools-comparison-7-en-badfe/>
 
-[^5]: Tinybird, "Streaming Data Processing Tools Compared: Brokers, Engines, and Real-Time Serving", 2026-03-29. https://www.tinybird.co/blog/kafka-alternatives-for-streaming-data-processing-8-tools-compared
+[^5]: Tinybird, "Streaming Data Processing Tools Compared: Brokers, Engines, and Real-Time Serving", 2026-03-29. <https://www.tinybird.co/blog/kafka-alternatives-for-streaming-data-processing-8-tools-compared>
 
-[^6]: Apache Flink Documentation, "Flink 2.0 Preview", 2026. https://nightlies.apache.org/flink/flink-docs-master/
 
-[^7]: Confluent Documentation, "Flink SQL on Confluent Cloud", 2026. https://docs.confluent.io/cloud/current/flink/overview.html
 
-[^8]: Debezium Documentation, "Connector Documentation", 2026. https://debezium.io/documentation/reference/stable/connectors/
 
 ---
 

@@ -217,11 +217,13 @@ $$Completeness(\mathcal{E}) = \sum_{i=1}^{n} w_i \cdot f_i(\mathcal{E})$$
 
 设物化视图 $MV$ 的一致性级别为 $C$，则：
 
-$$C = \begin{cases}
+$$
+C = \begin{cases}
 \text{Strong} & \text{if } \forall t, MV(t) = \mathcal{Q}(S_{[0,t]}) \text{ 原子可见} \\
 \text{Session} & \text{if } MV(t) \text{ 在事务边界一致} \\
 \text{Eventual} & \text{if } \lim_{t \to \infty} MV(t) = \mathcal{Q}(S_{[0,\infty]})
-\end{cases}$$
+\end{cases}
+$$
 
 | 引擎 | 一致性级别 | 刷新模式 | 查询延迟 | 典型场景 |
 |------|-----------|----------|----------|----------|
@@ -371,9 +373,11 @@ $$\mathcal{E} \cong \langle \text{Query Planner}, \text{Stream Runtime}, \text{S
 **核心创新点**:
 
 1. **存算分离 (Compute-Storage Separation)**:
+
    ```text
    传统模式: 状态存储在本地 → 扩容需迁移状态 → 分钟级
    RisingWave: 状态存储在S3 → 计算节点无状态 → 秒级扩缩容
+
 ```
 
 2. **分层存储架构**:
@@ -385,7 +389,7 @@ $$\mathcal{E} \cong \langle \text{Query Planner}, \text{Stream Runtime}, \text{S
    Cold Data (Object Store) ←── S3/MinIO/GCS (持久化)
 ```
 
-3. **Rust实现的性能优势**:
+1. **Rust实现的性能优势**:
    - 零成本抽象
    - 无GC停顿
    - 内存安全保证
@@ -784,6 +788,7 @@ ORDER BY window_start DESC, rank;
 ```
 
 **RisingWave特点**:
+
 - 物化视图原生支持，自动增量更新
 - 支持服务查询，延迟<10ms
 - 无需外部Sink系统
@@ -832,6 +837,7 @@ CREATE SINK CONNECTOR top10_sink WITH (
 ```
 
 **ksqlDB限制**:
+
 - 不支持窗口内的复杂分析函数（ROW_NUMBER OVER PARTITION）
 - TOP10计算需外部系统配合
 - 物化表查询延迟较高（~100ms+）
@@ -903,6 +909,7 @@ WHERE rank_num <= 10;
 ```
 
 **Flink SQL特点**:
+
 - 功能完备，支持复杂分析
 - 需外部Sink系统存储结果
 - 服务查询能力依赖外部数据库
@@ -1077,29 +1084,17 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Labs, "RisingWave vs ksqlDB vs Flink SQL: A 2026 Comparison", 2026. https://risingwave.com/blog/risingwave-vs-ksqldb-vs-flink-sql/
 
-[^2]: Apache Flink Documentation, "Flink SQL", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/
 
-[^3]: Confluent Documentation, "ksqlDB Documentation", 2026. https://docs.ksqldb.io/en/latest/
 
-[^4]: Confluent Blog, "Confluent Flink: The Future of Stream Processing", 2024. https://www.confluent.io/blog/confluent-flink-general-availability/
 
-[^5]: Apache Flink Blog, "The State of Flink SQL in 2025", 2025. https://flink.apache.org/news/
 
-[^6]: RisingWave Documentation, "Architecture Overview", 2026. https://docs.risingwave.com/docs/current/architecture/
 
-[^7]: NEXMark Benchmark Specification, "NEXMark: A Benchmark for Queries over Data Streams", 2020. https://web.archive.org/web/20100620010601/http://www.cs.brown.edu/~ugur/nexmark.pdf
 
-[^8]: A. Arasu et al., "Stream: The Stanford Data Stream Management System", Stanford InfoLab, 2004.
 
-[^9]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
-[^10]: RisingWave Labs, "Nexmark Benchmark Results", 2026. https://github.com/risingwavelabs/nexmark-bench
 
-[^11]: Confluent, "Confluent Platform 7.6 Release Notes", 2025. https://docs.confluent.io/platform/current/release-notes/
 
-[^12]: Apache Flink, "FLIP-320: Flink SQL 2.0 Vision", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-320.md
 
 ---
 

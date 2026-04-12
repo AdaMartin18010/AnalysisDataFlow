@@ -1,10 +1,50 @@
 # Google A2A (Agent-to-Agent) 协议技术分析
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
-
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [MCP协议分析](mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
+
+## 目录
+
+- [Google A2A (Agent-to-Agent) 协议技术分析](#google-a2a-agent-to-agent-协议技术分析)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-06-230: Agent-to-Agent Protocol (A2A)](#def-k-06-230-agent-to-agent-protocol-a2a)
+    - [Def-K-06-231: Agent Card (能力卡片)](#def-k-06-231-agent-card-能力卡片)
+    - [Def-K-06-232: Task 生命周期](#def-k-06-232-task-生命周期)
+    - [Def-K-06-233: Message 与 Part](#def-k-06-233-message-与-part)
+    - [Def-K-06-234: Artifact (任务产出)](#def-k-06-234-artifact-任务产出)
+    - [Def-K-06-235: A2A 与流处理集成模型](#def-k-06-235-a2a-与流处理集成模型)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-06-220: A2A 协议延迟分解](#lemma-k-06-220-a2a-协议延迟分解)
+    - [Prop-K-06-220: 任务状态一致性](#prop-k-06-220-任务状态一致性)
+    - [Prop-K-06-221: 多模态传输容量边界](#prop-k-06-221-多模态传输容量边界)
+    - [Lemma-K-06-221: Agent Card 缓存有效性](#lemma-k-06-221-agent-card-缓存有效性)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 A2A vs MCP: 互补而非竞争](#31-a2a-vs-mcp-互补而非竞争)
+    - [3.2 A2A + MCP 混合架构](#32-a2a--mcp-混合架构)
+    - [3.3 A2A 与流处理（Flink）集成点](#33-a2a-与流处理flink集成点)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 为什么需要 A2A 协议？](#41-为什么需要-a2a-协议)
+    - [4.2 反模式：避免的设计陷阱](#42-反模式避免的设计陷阱)
+    - [4.3 A2A + Flink 集成论证](#43-a2a--flink-集成论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
+    - [Thm-K-06-150: A2A 任务完成可靠性定理](#thm-k-06-150-a2a-任务完成可靠性定理)
+    - [Thm-K-06-151: A2A-MCP 正交性定理](#thm-k-06-151-a2a-mcp-正交性定理)
+    - [Thm-K-06-152: 流式 Artifact 完整性定理](#thm-k-06-152-流式-artifact-完整性定理)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 Flink 作为 A2A Remote Agent](#61-flink-作为-a2a-remote-agent)
+    - [6.2 A2A Client Agent 实现](#62-a2a-client-agent-实现)
+    - [6.3 A2A + Flink CEP 异常检测场景](#63-a2a--flink-cep-异常检测场景)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 A2A 协议架构全景图](#71-a2a-协议架构全景图)
+    - [7.2 A2A Task 生命周期状态机](#72-a2a-task-生命周期状态机)
+    - [7.3 A2A vs MCP 协作架构](#73-a2a-vs-mcp-协作架构)
+    - [7.4 多 Agent 招聘流程示例](#74-多-agent-招聘流程示例)
+    - [7.5 A2A + Flink 实时分析集成](#75-a2a--flink-实时分析集成)
+    - [7.6 企业级 A2A 部署拓扑](#76-企业级-a2a-部署拓扑)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ## 1. 概念定义 (Definitions)
 
