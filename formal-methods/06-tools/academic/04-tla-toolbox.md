@@ -43,6 +43,7 @@ end algorithm;
 $$\text{State} = \text{变量名} \to \text{值}$$
 
 TLC支持：
+
 - **随机模拟**: 生成随机执行轨迹
 - **广度优先搜索**: 系统探索所有可达状态
 - **深度优先搜索**: 用于寻找反例
@@ -54,6 +55,7 @@ TLC支持：
 $$\text{TLAPS} = \text{证明管理器} + \text{后端证明器} + \text{TLA+编码}$$
 
 **后端证明器**：
+
 - **Zenon**: 自动表证证明器
 - **Isabelle/TLA+**: 交互式高阶逻辑证明
 - **SMT求解器**: Z3, CVC4用于自动推理
@@ -83,6 +85,7 @@ $$|\text{States}_{\text{reduced}}| \leq \frac{|\text{States}_{\text{full}}|}{|Sy
 4. **整合**: 与TLA+模块合并
 
 **PlusCal特性**：
+
 - **过程**: 多进程并发
 - **原子块**: `atomic` 或 `await`
 - **非确定性**: `either` 或 `with`
@@ -99,19 +102,19 @@ graph TB
         VSCode[VS Code扩展]
         CLI[命令行工具]
     end
-    
+
     subgraph 核心组件
         PlusCal2[PlusCal编译器]
         TLC2[TLC]
         TLAPS2[TLAPS]
     end
-    
+
     subgraph 扩展工具
         Apalache[Apalache<br/>符号MC]
         TLASharp[TLC#]
         Modelator[Modelator]
     end
-    
+
     Toolbox --> PlusCal2
     Toolbox --> TLC2
     Toolbox --> TLAPS2
@@ -215,7 +218,7 @@ Invariant == MutualExclusion
 Property == Liveness
 
 (* 状态约束 - 限制搜索 *)
-StateConstraint == 
+StateConstraint ==
     /\ pc[0] \in {"L1", "L2", "L3", "CS", "L4"}
     /\ pc[1] \in {"L1", "L2", "L3", "CS", "L4"}
 =============================================================================
@@ -244,25 +247,25 @@ graph TB
         ModelEditor[模型编辑器]
         ResultView[结果视图]
     end
-    
+
     subgraph 编辑器功能
         Syntax[语法高亮]
         ParseError[错误检查]
         GotoDef[跳转定义]
     end
-    
+
     subgraph 模型编辑器
         ConstAssign[常量赋值]
         InvariantDef[不变式定义]
         TLCConfig[TLC配置]
     end
-    
+
     subgraph 结果视图
         StateGraph[状态图]
         ErrorTrace[错误轨迹]
         Coverage[覆盖率]
     end
-    
+
     SpecEditor --> Syntax
     SpecEditor --> ParseError
     SpecEditor --> GotoDef
@@ -308,17 +311,3 @@ graph LR
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: L. Lamport, "Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers", Addison-Wesley, 2002. https://lamport.azurewebsites.net/tla/book.html
-
-[^2]: K. Y. Rozier and M. Y. Vardi, "LTL Satisfiability Checking", SPIN 2007. https://doi.org/10.1007/978-3-540-73370-6_13
-
-[^3]: M. Bofill et al., "The TLA+ Proof System: Building a Heterogeneous Verification Platform", ICTAC 2011. https://doi.org/10.1007/978-3-642-23283-1_5
-
-[^4]: I. Konnov et al., "APALACHE: A Symbolic Model Checker for TLA+", CAV 2021. https://doi.org/10.1007/978-3-030-81688-9_15
-
-[^5]: L. Lamport, "The PlusCal Algorithm Language", ICTAC 2009. https://doi.org/10.1007/978-3-642-03466-4_2
-
-[^6]: H. Van Dyke et al., "Teaching Concurrency and Model Checking via TLA+ and PlusCal", SIGCSE 2019.
-
-[^7]: TLA+ Toolbox Documentation, https://lamport.azurewebsites.net/tla/toolbox.html

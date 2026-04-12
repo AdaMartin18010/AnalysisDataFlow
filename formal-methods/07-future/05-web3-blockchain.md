@@ -517,17 +517,17 @@ rule <k> #exec PUSH(W, N) => . ... </k>
 // CVL 规范示例
 rule transferPreservesTotalSupply {
     uint256 totalBefore = totalSupply();
-    
+
     env e;
     address from;
     address to;
     uint256 amount;
-    
+
     transferFrom(e, from, to, amount);
-    
+
     uint256 totalAfter = totalSupply();
-    
-    assert totalBefore == totalAfter, 
+
+    assert totalBefore == totalAfter,
            "转账不应改变总供应量";
 }
 
@@ -535,11 +535,11 @@ rule noTransferFromZeroUnlessMinting {
     address from;
     address to;
     uint256 amount;
-    
+
     require from == 0 => isMintingFunction(f);
-    
+
     transferFrom(e, from, to, amount);
-    
+
     satisfy from != 0 || isMintingFunction(f);
 }
 ```

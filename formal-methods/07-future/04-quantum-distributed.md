@@ -430,7 +430,7 @@ Definition teleport : program :=
   meas 1 0 ;;      (* 测量并经典通信 *)
   meas 2 0.
 
-Theorem teleport_correct : 
+Theorem teleport_correct :
   forall psi, ⊢ {{ ⟨0| psi ⟩ }} teleport {{ psi }}.
 ```
 
@@ -449,9 +449,9 @@ theory Grover
 begin
 
 lemma grover_correct:
-  "\<turnstile>_{pt} 
+  "\<turnstile>_{pt}
     {tensor_P (proj_psi_l (2^n)) (proj_k (2^n) 0)}
-    grover 
+    grover
     {tensor_P (proj_psi) (proj_k (2^n) 0)}"
   using grover_partial_correct by simp
 

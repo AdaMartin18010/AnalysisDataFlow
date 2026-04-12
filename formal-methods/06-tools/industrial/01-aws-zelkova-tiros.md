@@ -15,6 +15,7 @@ $$\text{AWS Formal Methods} = \{\text{Zelkova}, \text{Tiros}, \text{CBMC}, \text
 $$\text{Zelkova} = \text{IAM策略语言} + \text{SMT求解} + \text{安全分析}$$
 
 Zelkova自动回答以下问题：
+
 - **可访问性**: 谁可以访问此资源？
 - **不可变性**: 此资源是否受保护？
 - **等价性**: 两个策略是否语义等价？
@@ -53,6 +54,7 @@ $$\text{Authorize}(\text{Request}, \text{PolicySet}) = \begin{cases} \text{Allow
 $$\text{Tiros} = \text{网络拓扑模型} + \text{安全组分析} + \text{可达性查询}$$
 
 **分析能力**：
+
 - **连通性**: 两个端点之间是否存在路径？
 - **隔离性**: 子网/安全组是否正确隔离？
 - **配置检查**: 路由表、ACL是否正确配置？
@@ -87,35 +89,35 @@ graph TB
         S3[S3存储]
         Lambda[Lambda]
     end
-    
+
     subgraph 验证工具
         Zelkova2[Zelkova]
         Tiros2[Tiros]
         S3Checker[S3策略检查器]
         TLA[TLA+]
     end
-    
+
     subgraph 后端技术
         SMT[SMT求解]
         BDD[BDD]
         Graph[图算法]
     end
-    
+
     subgraph 安全目标
         LeastPriv[最小权限]
         Isolation[网络隔离]
         Correctness[正确性]
     end
-    
+
     IAM --> Zelkova2
     VPC --> Tiros2
     S3 --> S3Checker
     Lambda --> TLA
-    
+
     Zelkova2 --> SMT
     Tiros2 --> Graph
     Tiros2 --> BDD
-    
+
     Zelkova2 --> LeastPriv
     Tiros2 --> Isolation
     TLA --> Correctness
@@ -140,11 +142,11 @@ flowchart TD
     B -->|IAM/S3策略| C[策略分析]
     B -->|网络配置| D[Tiros分析]
     B -->|复杂系统| E[TLA+建模]
-    
+
     C --> F{满足性质?}
     D --> F
     E --> F
-    
+
     F -->|是| G[配置安全]
     F -->|否| H[配置风险]
     H --> I[修复建议]
@@ -189,6 +191,7 @@ $$\text{Tiros}(S, T) = \text{REACHABLE} \Leftrightarrow \exists p: \text{Network
 ```
 
 **Zelkova查询**:
+
 ```
 IsPubliclyAccessible(bucket=mybucket) = false
 IsAccessibleFromVPC(bucket=mybucket, vpc=vpc-123) = true
@@ -222,19 +225,19 @@ graph TB
         VPC2[VPC网络]
         S32[S3服务]
     end
-    
+
     subgraph 验证层
         Zelkova3[Zelkova分析器]
         Tiros3[Tiros分析器]
         Config[AWS Config]
     end
-    
+
     subgraph 分析结果
         Dashboard[安全仪表板]
         Alerts[告警]
         Report2[合规报告]
     end
-    
+
     IAM2 --> Zelkova3
     VPC2 --> Tiros3
     S32 --> Zelkova3
@@ -269,17 +272,17 @@ graph TB
         SG1[安全组1]
         SG2[安全组2]
     end
-    
+
     subgraph 分析
         GraphBuild[构建图模型]
         ReachAlgo[可达性算法]
         PolicyCheck[策略检查]
     end
-    
+
     Subnet1 --> SG1
     Subnet2 --> SG2
     Subnet3 --> SG2
-    
+
     SG1 --> GraphBuild
     SG2 --> GraphBuild
     GraphBuild --> ReachAlgo
@@ -287,17 +290,3 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: M. R. Clarkson et al., "Implementing and Deploying a Cloud-Scale Access Control Verification Service", ACM CCS 2018. https://doi.org/10.1145/3243734.3243846
-
-[^2]: J. Backes et al., "Semantic-based Automated Reasoning for AWS Access Policies using SMT", FMCAD 2018. https://doi.org/10.23919/FMCAD.2018.8602994
-
-[^3]: J. Backes et al., "Reachability Analysis for AWS-based Networks", CAV 2019. https://doi.org/10.1007/978-3-030-25540-4_7
-
-[^4]: M. Newcombe et al., "How Amazon Web Services Uses Formal Methods", Communications of the ACM, 58(4), 2015. https://doi.org/10.1145/2699417
-
-[^5]: AWS IAM Documentation, "IAM Policy Evaluation Logic", https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
-
-[^6]: AWS VPC Documentation, "VPC Reachability Analyzer", https://docs.aws.amazon.com/vpc/latest/reachability/
-
-[^7]: C. Newcombe, "Why Amazon Chose TLA+", IFM 2014. https://doi.org/10.1007/978-3-319-10181-1_27

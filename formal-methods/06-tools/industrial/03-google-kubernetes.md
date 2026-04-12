@@ -15,6 +15,7 @@ $$\text{K8s Verification} = \{\text{Scheduler}, \text{etcd}, \text{API Server}, 
 $$\text{Scheduler} = (\text{Nodes}, \text{Pods}, \text{Predicates}, \text{Priorities}, \text{Binding})$$
 
 调度正确性要求：
+
 - **可行性**: 所有被调度Pod满足资源约束
 - **最优性**: 在满足约束下优化目标函数
 - **终止性**: 调度决策在有限时间内完成
@@ -26,6 +27,7 @@ $$\text{Scheduler} = (\text{Nodes}, \text{Pods}, \text{Predicates}, \text{Priori
 $$\text{etcd} = \text{Raft算法} + \text{MVCC} + \text{Watch机制}$$
 
 **验证目标**：
+
 - **线性一致性**: 读操作返回最新写入
 - **持久性**: 已提交写入不丢失
 - **可用性**: 多数派存活时可用
@@ -85,27 +87,27 @@ graph TB
         API[API Server]
         Controller[Controller Manager]
     end
-    
+
     subgraph 验证项目
         TLA3[TLA+规格]
         Coq3[Coq证明]
         Alloy2[Alloy分析]
         Sleigh[Sleigh]
     end
-    
+
     subgraph 验证目标
         Safety2[安全性]
         Liveness2[活性]
         Optimal[最优性]
     end
-    
+
     Scheduler2 --> Alloy2
     Scheduler2 --> Sleigh
     Etcd2 --> TLA3
     Etcd2 --> Coq3
     API --> TLA3
     Controller --> TLA3
-    
+
     TLA3 --> Safety2
     TLA3 --> Liveness2
     Alloy2 --> Safety2
@@ -131,19 +133,19 @@ flowchart TD
     B -->|数据一致性| C[etcd/Raft验证]
     B -->|资源分配| D[调度器验证]
     B -->|状态收敛| E[控制器验证]
-    
+
     C --> F[TLA+规格]
     D --> G[约束求解]
     E --> H[不动点分析]
-    
+
     F --> I[TLC检验]
     G --> J[SMT求解]
     H --> K[归纳证明]
-    
+
     I --> L{满足性质?}
     J --> L
     K --> L
-    
+
     L -->|是| M[验证完成]
     L -->|否| N[问题诊断]
     N --> A
@@ -158,6 +160,7 @@ flowchart TD
 $$\forall p \in \text{ScheduledPods}, \forall n = \text{Schedule}(p): \text{Feasible}(p, n)$$
 
 **证明要点**：
+
 1. 调度器仅考虑通过所有Predicates的节点
 2. 绑定前再次验证约束
 3. 原子操作确保一致性
@@ -169,6 +172,7 @@ $$\forall p \in \text{ScheduledPods}, \forall n = \text{Schedule}(p): \text{Feas
 $$\forall r_1, r_2: \text{Complete}(r_1) \prec \text{Start}(r_2) \Rightarrow r_1 \prec_{real} r_2$$
 
 **证明结构**：
+
 1. Raft保证日志顺序一致
 2. Leader读保证最新值
 3. 多数派确认确保可见性
@@ -245,30 +249,30 @@ graph TB
         Worker1[工作节点1]
         Worker2[工作节点2]
     end
-    
+
     subgraph 控制平面组件
         API2[API Server]
         Scheduler3[Scheduler]
         CM[Controller Manager]
         Etcd3[etcd]
     end
-    
+
     subgraph 验证层
         TLA4[TLA+规格]
         Coq4[Coq证明]
         Test[集成测试]
     end
-    
+
     Master --> API2
     Master --> Scheduler3
     Master --> CM
     Master --> Etcd3
-    
+
     API2 --> TLA4
     Scheduler3 --> TLA4
     CM --> TLA4
     Etcd3 --> Coq4
-    
+
     API2 --> Test
     Scheduler3 --> Test
     CM --> Test
@@ -279,16 +283,16 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Follower: 初始化
-    
+
     Follower --> Candidate: 超时
     Candidate --> Leader: 获得多数票
     Candidate --> Follower: 发现更高任期
-    
+
     Leader --> Follower: 发现更高任期
-    
+
     Follower --> Follower: 心跳接收
     Candidate --> Candidate: 选举超时
-    
+
     Leader --> Leader: 日志复制
     Leader --> Leader: 心跳发送
 ```
@@ -311,17 +315,3 @@ flowchart LR
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: D. Ongaro and J. Ousterhout, "In Search of an Understandable Consensus Algorithm", USENIX ATC, 2014. https://doi.org/10.5555/2643634.2643666
-
-[^2]: B. Burns et al., "Borg, Omega, and Kubernetes", Communications of the ACM, 59(5), 2016. https://doi.org/10.1145/2890784
-
-[^3]: M. Schwarzkopf et al., "Omega: Flexible, Scalable Schedulers for Large Compute Clusters", EuroSys 2013. https://doi.org/10.1145/2465351.2465386
-
-[^4]: Kubernetes Documentation, "Scheduling Framework", https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/
-
-[^5]: etcd Documentation, "etcd Raft Consensus", https://etcd.io/docs/v3.5/learning/raft/
-
-[^6]: H. Howard et al., "Raft Refloated: Do We Have Consensus?", Operating Systems Review, 49(1), 2015. https://doi.org/10.1145/2723872.2723876
-
-[^7]: C. D. Richards, "Verifying the Kubernetes Scheduler Using TLA+", Master Thesis, 2019.

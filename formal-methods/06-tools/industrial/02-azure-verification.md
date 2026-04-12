@@ -11,6 +11,7 @@
 $$\text{Azure Verification} = \{\text{TLA+}, \text{Coq}, \text{Symbolic Execution}, \text{Property-Based Testing}\}$$
 
 **核心应用场景**：
+
 - **分布式一致性**: Cosmos DB, Service Fabric
 - **存储系统**: Azure Storage
 - **智能合约**: Azure Blockchain
@@ -32,7 +33,7 @@ $$\text{Azure Verification} = \{\text{TLA+}, \text{Coq}, \text{Symbolic Executio
 
 ```tla
 (* Cosmos DB复制协议核心 *)
-ReplicaProtocol == 
+ReplicaProtocol ==
     /\ LeaderElection
     /\ LogReplication
     /\ ConsistencyGuarantee
@@ -78,26 +79,26 @@ graph TB
         Fabric[Service Fabric]
         Blockchain[Blockchain]
     end
-    
+
     subgraph 验证方法
         TLA2[TLA+规格]
         Coq2[Coq证明]
         SymExec[符号执行]
         PBT[属性测试]
     end
-    
+
     subgraph 工具
         TLC3[TLC]
         TLCSharp[TLC#]
         Cpp[CompCert/Cpp]
         PBTTool[FsCheck]
     end
-    
+
     Cosmos --> TLA2
     Storage --> TLA2
     Fabric --> Coq2
     Blockchain --> SymExec
-    
+
     TLA2 --> TLC3
     TLA2 --> TLCSharp
     Coq2 --> Cpp
@@ -143,6 +144,7 @@ flowchart TD
 $$\text{Strong} \Rightarrow \text{BoundedStaleness} \Rightarrow \text{Session} \Rightarrow \text{ConsistentPrefix} \Rightarrow \text{Eventual}$$
 
 **证明概要**：
+
 1. 强一致性保证线性化
 2. 有界延迟陈旧放松时间约束
 3. 会话一致性仅保证因果+读写保证
@@ -178,7 +180,7 @@ TypeInvariant ==
 
 (* 单调读: 读取看到的操作集单调增长 *)
 MonotonicRead ==
-    \A r \in Replicas: 
+    \A r \in Replicas:
         visible[r] \subseteq {log[r][i].ts: i \in DOMAIN log[r]}
 
 (* 写入传播: 写操作最终传播到所有副本 *)
@@ -221,34 +223,34 @@ graph TB
         Storage2[Azure Storage]
         Fabric2[Service Fabric]
     end
-    
+
     subgraph 形式化验证层
         Spec[TLA+规格]
         Proof[定理证明]
         Testing[模型检测]
     end
-    
+
     subgraph 验证工具
         TLC4[TLC]
         TLCSharp2[TLC#]
         TLCCloud[TLC Cloud]
     end
-    
+
     subgraph 结果
         SpecDoc[规格文档]
         Verified[验证报告]
     end
-    
+
     Cosmos2 --> Spec
     Storage2 --> Spec
     Fabric2 --> Spec
-    
+
     Spec --> Proof
     Spec --> Testing
     Testing --> TLC4
     Testing --> TLCSharp2
     Testing --> TLCCloud
-    
+
     Spec --> SpecDoc
     Proof --> Verified
     Testing --> Verified
@@ -263,12 +265,12 @@ graph BT
     Session[会话一致性]
     Prefix[一致前缀]
     Eventual[最终一致性]
-    
+
     Strong --> Bounded
     Bounded --> Session
     Session --> Prefix
     Prefix --> Eventual
-    
+
     style Strong fill:#90EE90
     style Eventual fill:#FFB6C1
 ```
@@ -291,17 +293,3 @@ flowchart TD
 ```
 
 ## 8. 引用参考 (References)
-
-[^1]: D. B. Terry et al., "Managing Update Conflicts in Bayou, a Weakly Connected Replicated Storage System", SOSP 1995. https://doi.org/10.1145/224056.224070
-
-[^2]: M. Burrows, "The Chubby Lock Service for Loosely-Coupled Distributed Systems", OSDI 2006. https://doi.org/10.5555/1298455.1298487
-
-[^3]: P. Bailis et al., "Quantifying Eventual Consistency with PBS", Communications of the ACM, 57(8), 2014. https://doi.org/10.1145/263690.2636902
-
-[^4]: Azure Cosmos DB Documentation, "Consistency Levels in Azure Cosmos DB", https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels
-
-[^5]: Azure Service Fabric Documentation, "Service Fabric Architecture", https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-architecture
-
-[^6]: D. B. Lomet et al., "Unbundling Transaction Services in the Cloud", CIDR 2009.
-
-[^7]: M. J. Fischer et al., "Impossibility of Distributed Consensus with One Faulty Process", Journal of the ACM, 32(2), 1985. https://doi.org/10.1145/3149.214121
