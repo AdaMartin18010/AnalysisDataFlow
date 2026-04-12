@@ -15,6 +15,10 @@
 | [ai-agent-streaming-patterns.md](./ai-agent-streaming-patterns.md) | AI Agent流处理模式 | 987 | 20 |
 | [vector-db-streaming-integration-guide.md](./vector-db-streaming-integration-guide.md) | 向量数据库流式集成 | 327 | 10 |
 | [realtime-feature-engineering-guide.md](./realtime-feature-engineering-guide.md) | 实时特征工程指南 | 294 | 13 |
+| [flink-22-data-ai-platform.md](./flink-22-data-ai-platform.md) | Flink 2.2 Data+AI平台: ML_PREDICT/VECTOR_SEARCH/LLM连接器 | 1501 | 52 |
+| [streaming-ml-libraries-landscape.md](./streaming-ml-libraries-landscape.md) | 流式ML库全景: River/Vowpal Wabbit/在线学习 | 2555 | 35 |
+| [model-serving-frameworks-integration.md](./model-serving-frameworks-integration.md) | 模型服务框架集成: KServe/Seldon/BentoML/Triton/Ray Serve | 2648 | 32 |
+| [ai-agent-frameworks-ecosystem-2025.md](./ai-agent-frameworks-ecosystem-2025.md) | AI Agent框架生态2025: Confluent/LangGraph/AutoGen/CrewAI | 1233 | 24 |
 
 ## 目录结构导航
 

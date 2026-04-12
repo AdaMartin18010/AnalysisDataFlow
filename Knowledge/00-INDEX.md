@@ -49,6 +49,8 @@ Knowledge/
 | [concurrency-paradigms-matrix.md](01-concept-atlas/concurrency-paradigms-matrix.md) | 并发范式对比矩阵: Actor vs CSP vs Dataflow vs Thread 的全维度对比 | 技术选型、架构设计、团队培训 |
 | [data-streaming-landscape-2026-complete.md](01-concept-atlas/data-streaming-landscape-2026-complete.md) | 2026年流计算全景图: 引擎、数据库、生态系统的完整梳理 | 行业调研、技术战略、投资决策 |
 | [streaming-models-mindmap.md](01-concept-atlas/streaming-models-mindmap.md) | 流计算模型思维导图: 从理论模型到工程实现的知识地图 | 学习路径规划、知识体系构建 |
+| [go-concurrency-evolution-2025.md](01-concept-atlas/go-concurrency-evolution-2025.md) | Go 1.22/1.23/1.24新特性与流计算应用: 迭代器、Swiss Tables、弱指针 | Go流处理系统升级选型 |
+| [streaming-languages-landscape-2025.md](01-concept-atlas/streaming-languages-landscape-2025.md) | 2025年流计算语言生态全景: Java/Scala/Go/Rust/Python对比与选型 | 流计算项目语言选型 |
 
 ---
 
@@ -67,6 +69,7 @@ Knowledge/
 | [pattern-checkpoint-recovery.md](02-design-patterns/pattern-checkpoint-recovery.md) | 检查点与恢复模式: Exactly-Once实现、Savepoint策略 | 金融交易、关键业务、容错设计 |
 | [pattern-realtime-feature-engineering.md](02-design-patterns/pattern-realtime-feature-engineering.md) | 实时特征工程模式: 特征计算、在线/离线一致性 | ML特征平台、实时推荐、智能决策 |
 | [pattern-log-analysis.md](02-design-patterns/pattern-log-analysis.md) | 日志实时分析模式: 结构化解析、聚合、异常检测 | 运维监控、安全审计、业务分析 |
+| [polyglot-streaming-patterns.md](02-design-patterns/polyglot-streaming-patterns.md) | 多语言混合流处理架构模式: Flink+Rust/Python/Go集成 | 多语言流处理系统、UDF优化 |
 
 ---
 
@@ -192,6 +195,7 @@ Knowledge/
 | [edge-streaming-architecture.md](06-frontier/edge-streaming-architecture.md) | 边缘流处理架构 | 边缘AI、工业物联网 |
 | [edge-streaming-patterns.md](06-frontier/edge-streaming-patterns.md) | 边缘流处理模式 | 边缘计算最佳实践 |
 | [cloud-edge-continuum.md](06-frontier/cloud-edge-continuum.md) | 云边端连续体架构 | 云边协同、分层处理 |
+| [edge-ai-streaming-architecture.md](06-frontier/edge-ai-streaming-architecture.md) | 边缘AI与流计算架构: 模型量化、TensorRT-LLM、联邦学习 | 边缘AI部署、端侧推理、边缘智能 |
 
 ### Lakehouse与数据湖 (Lakehouse)
 
@@ -220,6 +224,10 @@ Knowledge/
 | [rust-streaming-ecosystem.md](06-frontier/rust-streaming-ecosystem.md) | Rust流处理生态 | 高性能计算、系统级编程 |
 | [rust-streaming-comparison.md](06-frontier/rust-streaming-comparison.md) | Rust流处理对比 | Rust技术栈评估 |
 | [data-streaming-landscape-2025.md](06-frontier/data-streaming-landscape-2025.md) | 2025年流计算全景图 | 行业趋势、技术发展 |
+| [go-streaming-ecosystem-2025.md](06-frontier/go-streaming-ecosystem-2025.md) | Go流计算框架生态2025: Sarama/kafka-go/Watermill/Goka全景 | Go流处理技术选型 |
+| [rust-streaming-emerging-2025.md](06-frontier/rust-streaming-emerging-2025.md) | Rust流计算新兴项目2024-2025: Fluvio/Bytewax/Redpanda分析 | Rust流处理技术选型 |
+| [rust-2024-edition-streaming.md](06-frontier/rust-2024-edition-streaming.md) | Rust 2024 Edition新特性: 异步闭包、生成器、SIMD优化 | Rust流处理开发 |
+| [rust-streaming-production-cases.md](06-frontier/rust-streaming-production-cases.md) | Rust流计算工业落地案例: Discord/Cloudflare/InfluxDB | Rust生产实践参考 |
 
 ---
 

@@ -144,6 +144,7 @@
 | [05.01-go-vs-scala-expressiveness.md](./05-comparative-analysis/05.01-go-vs-scala-expressiveness.md) | **Go vs Scala表达能力对比** — 类型系统层次、并发原语抽象层次、元编程能力差异、图灵完备性等价证明 | L4-L5 |
 | [05.02-expressiveness-vs-decidability.md](./05-comparative-analysis/05.02-expressiveness-vs-decidability.md) | **表达能力与可判定性权衡** — 可判定性集合、Rice定理框架、停机问题归约、六层模型的权衡分析 | L5 |
 | [05.03-encoding-completeness-analysis.md](./05-comparative-analysis/05.03-encoding-completeness-analysis.md) | **编码完备性分析** — 编码判据体系、满抽象(Full Abstraction)、完备性度量、忠实编码(Faithful Encoding) | L4-L5 |
+| [05.04-concurrency-models-2025-comparison.md](./05-comparative-analysis/05.04-concurrency-models-2025-comparison.md) | **Go vs Rust vs Java并发模型对比2025** — Goroutine/虚拟线程/async-await全方位对比、性能基准、选型决策 | L5 |
 
 ---
 
