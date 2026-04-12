@@ -1257,6 +1257,10 @@ FROM dws_category_stats_5min;
  * Delta Lake 与 Flink 集成示例
  * 使用 delta-flink 连接器
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 public class DeltaLakeFlinkIntegration {
 
     public static void main(String[] args) throws Exception {

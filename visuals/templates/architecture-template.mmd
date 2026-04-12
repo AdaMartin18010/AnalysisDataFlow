@@ -1,0 +1,73 @@
+%% 架构图模板
+%% 适用于：系统架构、组件关系、层次结构
+%% 使用说明：
+%% 1. 修改节点名称和连接关系
+%% 2. 根据组件类型选择对应样式类
+%% 3. 调整子图分组
+
+flowchart TB
+    %% ===== 样式定义 =====
+    classDef user fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#5b21b6
+    classDef gateway fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    classDef service fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef storage fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e
+    classDef external fill:#ccfbf1,stroke:#0891b2,stroke-width:2px,color:#115e59
+    
+    %% ===== 用户层 =====
+    subgraph UserLayer [用户接入层]
+        User([用户/客户端]):::user
+        Admin([管理员]):::user
+    end
+    
+    %% ===== 网关层 =====
+    subgraph GatewayLayer [网关层]
+        LB[负载均衡器]:::gateway
+        APIGateway[API网关]:::gateway
+        Auth[认证服务]:::gateway
+    end
+    
+    %% ===== 服务层 =====
+    subgraph ServiceLayer [业务服务层]
+        ServiceA[服务A]:::service
+        ServiceB[服务B]:::service
+        ServiceC[服务C]:::service
+        Queue[消息队列]:::service
+    end
+    
+    %% ===== 数据层 =====
+    subgraph DataLayer [数据存储层]
+        DB[(主数据库)]:::storage
+        Cache[(缓存)]:::storage
+        ObjectStore[(对象存储)]:::storage
+    end
+    
+    %% ===== 外部依赖 =====
+    subgraph ExternalLayer [外部依赖]
+        ThirdParty[第三方服务]:::external
+        Monitor[监控系统]:::external
+    end
+    
+    %% ===== 连接关系 =====
+    User --> LB
+    Admin --> APIGateway
+    LB --> APIGateway
+    APIGateway --> Auth
+    Auth --> ServiceA
+    Auth --> ServiceB
+    Auth --> ServiceC
+    
+    ServiceA --> Queue
+    ServiceB --> Queue
+    Queue --> ServiceC
+    
+    ServiceA --> DB
+    ServiceB --> Cache
+    ServiceC --> ObjectStore
+    
+    ServiceA -.-> ThirdParty
+    ServiceB -.-> Monitor
+    ServiceC -.-> Monitor
+    
+    %% ===== 说明 =====
+    %% 实线箭头 --> 表示同步调用
+    %% 虚线箭头 -.-> 表示异步/监控调用

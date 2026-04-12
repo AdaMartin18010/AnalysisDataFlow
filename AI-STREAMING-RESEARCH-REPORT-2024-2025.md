@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AI与流计算结合技术调研报告（2024-2025）
 
 > 调研日期: 2026-04-12 | 数据来源: 学术论文、技术博客、官方文档、开源社区
@@ -585,6 +588,9 @@ input_table, LATERAL VECTOR_SEARCH(
 ### 6.3 Table API模型推理
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // Flink Table API模型推理
 EnvironmentSettings settings = EnvironmentSettings.inStreamingMode();
 TableEnvironment tEnv = TableEnvironment.create(settings);

@@ -389,6 +389,9 @@ Flink TaskManager → Internet → Pinecone API Gateway → Vector Index
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.connectors.milvus.*;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 public class MilvusSyncPipeline {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -527,6 +530,10 @@ graph TB
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 混合推荐实现
 DataStream<Recommendation> recommendations =
     userBehaviorStream

@@ -509,6 +509,11 @@ public class BrokenWatermarkGenerator implements WatermarkGenerator<Event> {
 
 ```java
 // ✅ 正确实现：带状态管理的 KeyedProcessFunction
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class StatefulCounterFunction
     extends KeyedProcessFunction<String, Event, Result>
     implements CheckpointedFunction {
@@ -986,6 +991,11 @@ public class BadSink extends RichSinkFunction<Event> {
 
 ```java
 // ✅ 正确实现：组合多个模式
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class ComplexStreamPipeline {
 
     public static void main(String[] args) throws Exception {

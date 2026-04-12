@@ -1553,6 +1553,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 /**
  * 实时负荷预测处理函数
  * 使用LSTM模型结合Prophet进行组合预测

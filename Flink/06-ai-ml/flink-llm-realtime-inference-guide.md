@@ -345,6 +345,14 @@ import org.apache.flink.streaming.api.functions.async.*;
 import org.apache.flink.api.common.state.*;
 import org.apache.flink.configuration.Configuration;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * Flink智能客服Agent
  * 功能：多轮对话、意图识别、工具调用、流式响应
@@ -645,7 +653,7 @@ web.timeout: 60000
 
 ### 6.2 实例：代码补全服务 (Python + PyFlink)
 
-```python
+```text
 from pyflink.datastream import StreamExecutionEnvironment, TimeCharacteristic
 from pyflink.datastream.functions import AsyncFunction, ResultFuture
 from pyflink.common.time import Time
@@ -804,6 +812,10 @@ if __name__ == "__main__":
  * 集成MCP协议的Flink Agent
  * 支持调用外部工具 (数据库查询、API调用等)
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class MCPIntegratedAgent {
 
     public static void main(String[] args) throws Exception {

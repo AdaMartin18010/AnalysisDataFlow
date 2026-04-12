@@ -617,7 +617,7 @@ timeline
 
 [^4]: Flink 设计模式: Checkpoint 恢复，详见 [Knowledge/02-design-patterns/pattern-checkpoint-recovery.md](../02-design-patterns/pattern-checkpoint-recovery.md)
 
-[^5]: Apache Flink Documentation, "Incremental Checkpointing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/incremental_checkpoints/>
+[^5]: Apache Flink Documentation, "Incremental Checkpointing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing//>
 
 [^6]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Engineering Bulletin*, 38(4), 2015.
 

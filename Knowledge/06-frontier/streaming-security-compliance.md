@@ -502,6 +502,8 @@ audit.log.topic: flink-audit-logs
 **Flink DataStream字段加密**：
 
 ```java
+import org.apache.flink.api.common.functions.MapFunction;
+
 public class FieldEncryptionMapFunction
     implements MapFunction<Transaction, EncryptedTransaction> {
 

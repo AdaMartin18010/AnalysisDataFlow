@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挑战1: WordCount实现 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .section h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        
+        .difficulty { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .difficulty-beginner { background: #d4edda; color: #155724; }
+        
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        
+        .hint { background: #fff3cd; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .hint h4 { color: #856404; margin-bottom: 8px; }
+        
+        .solution { display: none; background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4caf50; }
+        .solution.visible { display: block; }
+        .solution h4 { color: #2e7d32; margin-bottom: 10px; }
+        
+        .test-case { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #dee2e6; }
+        .test-case h4 { color: #495057; margin-bottom: 10px; }
+        .test-case pre { background: #e9ecef; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a6fd6; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-outline { background: white; color: #667eea; border: 2px solid #667eea; }
+        
+        .checklist { list-style: none; }
+        .checklist li { padding: 10px 0; border-bottom: 1px solid #eee; }
+        .checklist li:before {
+            content: "☐";
+            margin-right: 10px;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        .checklist li.checked:before { content: "☑"; color: #27ae60; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a { padding: 12px 25px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🏆 编程挑战</span>
+            <span class="badge">100 积分</span>
+            <h1>挑战1: WordCount 实现</h1>
+            <p>流处理领域的 "Hello World" - 实现实时词频统计</p>
+        </header>
+
+        <div class="section">
+            <h2>📝 挑战描述</h2>
+            <span class="difficulty difficulty-beginner">初级</span>
+            <p style="margin-top: 15px;">WordCount 是流处理领域最经典的入门程序。你的任务是实现一个 Flink 作业，从数据源读取文本，实时统计每个单词出现的次数。</p>
+            
+            <h3>功能要求</h3>
+            <ul class="checklist" id="requirements">
+                <li>从 Socket (端口 9999) 或 Kafka Topic 读取文本数据</li>
+                <li>将文本分割为单词，统一转换为小写</li>
+                <li>每5秒输出一次词频统计结果</li>
+                <li>支持处理乱序数据 (使用 Watermark)</li>
+                <li>结果输出到控制台和文件</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔰 初始代码框架</h2>
+            <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.eventtime.WatermarkStrategy;
+<span class="keyword">import</span> org.apache.flink.api.common.functions.FlatMapFunction;
+<span class="keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time;
+<span class="keyword">import</span> org.apache.flink.util.Collector;
+
+<span class="keyword">public class</span> WordCount {
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        <span class="comment">// TODO 1: 创建执行环境</span>
+        StreamExecutionEnvironment env = ...
+        
+        <span class="comment">// TODO 2: 创建数据源 (Socket)</span>
+        DataStream&lt;String&gt; text = ...
+        
+        <span class="comment">// TODO 3: 分词并转换为 (word, 1) 格式</span>
+        DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; wordCounts = ...
+        
+        <span class="comment">// TODO 4: 按单词分组并统计</span>
+        DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; result = ...
+        
+        <span class="comment">// TODO 5: 输出结果</span>
+        ...
+        
+        <span class="comment">// TODO 6: 执行作业</span>
+        ...
+    }
+    
+    <span class="comment">// TODO: 实现 Tokenizer 类</span>
+    <span class="keyword">public static class</span> Tokenizer <span class="keyword">implements</span> FlatMapFunction&lt;String, Tuple2&lt;String, Integer&gt;&gt; {
+        @Override
+        <span class="keyword">public void</span> flatMap(String value, Collector&lt;Tuple2&lt;String, Integer&gt;&gt; out) {
+            <span class="comment">// 实现分词逻辑</span>
+        }
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 测试用例</h2>
+            
+            <div class="test-case">
+                <h4>测试用例 1: 基础分词</h4>
+                <p><strong>输入:</strong></p>
+                <pre>Hello Flink
+Hello World
+Flink is great</pre>
+                <p><strong>预期输出 (每5秒):</strong></p>
+                <pre>(hello, 2)
+(flink, 2)
+(world, 1)
+(is, 1)
+(great, 1)</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 2: 标点处理</h4>
+                <p><strong>输入:</strong></p>
+                <pre>Hello, Flink! 
+Hello... World?</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>(hello, 2)
+(flink, 1)
+(world, 1)</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 3: 大小写统一</h4>
+                <p><strong>输入:</strong></p>
+                <pre>FLINK flink Flink</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>(flink, 3)</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 提示</h2>
+            
+            <div class="hint">
+                <h4>提示 1: 创建数据源</h4>
+                <p>使用 <code>env.socketTextStream("localhost", 9999)</code> 创建 Socket 数据源。</p>
+                <p>测试前需要先启动 <code>nc -lk 9999</code>。</p>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 2: 分词逻辑</h4>
+                <p>使用正则表达式 <code>\\W+</code> 分割非单词字符。</p>
+                <p>过滤空字符串，统一转换为小写。</p>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 3: 窗口聚合</h4>
+                <p>使用 <code>keyBy(0)</code> 按单词分组。</p>
+                <p>使用 <code>sum(1)</code> 对计数求和。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ 参考答案</h2>
+            <p>请先独立完成挑战，遇到困难再查看答案。</p>
+            <button class="btn btn-outline" onclick="toggleSolution()">显示/隐藏答案</button>
+            
+            <div class="solution" id="solution">
+                <h4>完整实现代码</h4>
+                <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.eventtime.WatermarkStrategy;
+<span class="keyword">import</span> org.apache.flink.api.common.functions.FlatMapFunction;
+<span class="keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time;
+<span class="keyword">import</span> org.apache.flink.util.Collector;
+
+<span class="keyword">public class</span> WordCount {
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        <span class="comment">// 1. 创建执行环境</span>
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1);
+        
+        <span class="comment">// 2. 创建数据源 (Socket)</span>
+        DataStream&lt;String&gt; text = env.socketTextStream(<span class="string">"localhost"</span>, 9999);
+        
+        <span class="comment">// 3. 分词并转换</span>
+        DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; wordCounts = text
+            .flatMap(<span class="keyword">new</span> Tokenizer())
+            .returns(<span class="keyword">new</span> TypeHint&lt;Tuple2&lt;String, Integer&gt;&gt;() {});
+        
+        <span class="comment">// 4. 分组聚合</span>
+        DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; result = wordCounts
+            .keyBy(value -> value.f0)
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
+            .sum(1);
+        
+        <span class="comment">// 5. 输出结果</span>
+        result.print();
+        
+        <span class="comment">// 6. 执行作业</span>
+        env.execute(<span class="string">"Streaming WordCount"</span>);
+    }
+    
+    <span class="keyword">public static class</span> Tokenizer <span class="keyword">implements</span> FlatMapFunction&lt;String, Tuple2&lt;String, Integer&gt;&gt; {
+        @Override
+        <span class="keyword">public void</span> flatMap(String value, Collector&lt;Tuple2&lt;String, Integer&gt;&gt; out) {
+            <span class="comment">// 统一转小写，按非单词字符分割</span>
+            String[] words = value.toLowerCase().split(<span class="string">"\\W+"</span>);
+            
+            <span class="keyword">for</span> (String word : words) {
+                <span class="keyword">if</span> (word.length() > 0) {
+                    out.collect(<span class="keyword">new</span> Tuple2&lt;&gt;(word, 1));
+                }
+            }
+        }
+    }
+}</pre>
+                </div>
+                
+                <h4>进阶版本 (带 Watermark)</h4>
+                <div class="code-block">
+<pre><span class="comment">// 支持 Event Time 的版本</span>
+DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; result = text
+    .assignTimestampsAndWatermarks(
+        WatermarkStrategy.&lt;String&gt;forMonotonousTimestamps()
+            .withTimestampAssigner((event, timestamp) -> System.currentTimeMillis())
+    )
+    .flatMap(<span class="keyword">new</span> Tokenizer())
+    .keyBy(value -> value.f0)
+    .window(TumblingEventTimeWindows.of(Time.seconds(5)))
+    .sum(1);</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 扩展练习</h2>
+            <ul>
+                <li>改用 Kafka 作为数据源和输出目标</li>
+                <li>实现基于 Event Time 的 WordCount</li>
+                <li>添加侧输出流处理迟到数据</li>
+                <li>使用 ProcessFunction 实现自定义聚合逻辑</li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.md">← 返回挑战目录</a>
+            <a href="challenge-02-window-agg.html">下一个挑战 →</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSolution() {
+            const solution = document.getElementById('solution');
+            solution.classList.toggle('visible');
+        }
+        
+        // 需求清单交互
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        });
+    </script>
+</body>
+</html>

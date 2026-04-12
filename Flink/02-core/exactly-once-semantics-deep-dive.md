@@ -308,6 +308,9 @@ String transactionalIdPrefix = config.getString("transaction.id.prefix") + subta
 **推荐配置**：
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(60000); // 60秒
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE
@@ -739,6 +742,10 @@ import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 import java.util.Properties;
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 public class ExactlyOnceExample {
     public static void main(String[] args) throws Exception {
@@ -1424,6 +1431,9 @@ public class TwoPhaseCommitRecoveryHandler {
 /**
  * Exactly-Once 语义验证器
  */
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class ExactlyOnceValidator {
 
     /**

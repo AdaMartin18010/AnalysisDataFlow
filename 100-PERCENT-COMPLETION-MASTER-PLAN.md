@@ -72,7 +72,7 @@ gantt
 
 #### Week 1 (4/8-4/15): 批量自动化修复
 
-```python
+```text
 # 自动化修复脚本执行计划
 Day 1-2: 运行 .scripts/cross-ref-fixer.py --auto-fix (预计修复80个)
 Day 3-4: 运行 .scripts/validate-cross-refs.py --fix-suggestions (生成修复建议)

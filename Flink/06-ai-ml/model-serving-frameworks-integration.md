@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 模型服务框架与流计算集成 - KServe/Seldon/BentoML/Triton/Ray Serve全面分析
 
 > 所属阶段: Flink/AI-ML | 前置依赖: [Flink实时ML推理](flink-realtime-ml-inference.md), [模型服务化](model-serving-streaming.md), [Flink异步I/O](../02-core/async-execution-model.md) | 形式化等级: L5
@@ -1152,6 +1156,11 @@ import com.google.protobuf.FloatTensor;
 import inference.GRPCInferenceServiceGrpc;
 import inference.GrpcService.*;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 /**
  * Def-F-12-41: KServe V2 Protocol gRPC客户端
  * 实现Flink AsyncFunction接口进行异步推理
@@ -1389,6 +1398,10 @@ spec:
  * Def-F-12-44: Seldon Core A/B测试路由
  * 基于用户ID哈希实现确定性路由
  */
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SeldonABRouter extends RichAsyncFunction<UserEvent, Recommendation> {
 
     private final double trafficSplitA;  // 0.8
@@ -1643,7 +1656,9 @@ class FeatureTransformerService:
             "avg_latency_ms": 35.2,
             "throughput_rps": 1210.0,
         }
+```
 
+```yaml
 # bentofile.yaml - 构建配置
 service: "service:FeatureTransformerService"
 labels:
@@ -2067,7 +2082,7 @@ with serve.start():
 
 **Ray on Flink集成** (复杂场景):
 
-```python
+```text
 # ray_on_flink_integration.py
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction

@@ -564,6 +564,11 @@ MEMBERS (sales_assistant, support_agent, billing_agent);
 ### 6.3 自适应执行引擎效果示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 启用自适应执行
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1568,6 +1573,9 @@ graph TB
 **Table API / SQL 扩展**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 创建动态图
 Table vertexTable = tableEnv.from("users")
     .select($("user_id").as("id"), $("name"), $("age"));

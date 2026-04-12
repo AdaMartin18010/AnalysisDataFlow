@@ -605,6 +605,12 @@ Flink的Kafka连接器有很多高级特性：
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class KafkaWordCount {
 
     public static void main(String[] args) throws Exception {

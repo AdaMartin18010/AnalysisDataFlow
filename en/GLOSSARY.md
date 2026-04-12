@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AnalysisDataFlow Glossary
 
 > **Version**: v1.1 | **Last Updated**: 2026-04-11 | **Scope**: Full Project
@@ -478,6 +481,9 @@ Exactly-Once(f, D) = ∀d ∈ D: count(processed(f(d))) = 1
 **定义**: Flink 的算子，按指定键将数据分区到相同并行实例。
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(event -> event.getUserId())
       .window(TumblingEventTimeWindows.of(Time.minutes(5)))
       .aggregate(new CountAggregate());
@@ -536,6 +542,11 @@ stream.keyBy(event -> event.getUserId())
 **Example**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 ValueStateDescriptor<Long> descriptor =
     new ValueStateDescriptor<>("counter", Types.LONG);
 ValueState<Long> counter = getRuntimeContext().getState(descriptor);
@@ -835,6 +846,9 @@ Stream(f) = lim_{t→∞} ⋃_{i=0}^{t} f(d_i)  where d_i arrives continuously
 **定义**: 固定大小、不重叠、连续排列的时间窗口。
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.window(TumblingEventTimeWindows.of(Time.minutes(5)))
 ```
 

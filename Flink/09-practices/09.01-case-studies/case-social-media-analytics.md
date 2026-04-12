@@ -300,6 +300,14 @@ T3 (T0+30min): 传统媒体跟进，全面爆发
 #### 5.2.1 多语言NLP处理Job
 
 ```java
+import org.apache.flink.api.common.functions.RichMapFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 public class MultiLanguageNLPJob {
 
     public static void main(String[] args) throws Exception {
@@ -445,6 +453,14 @@ public class MultiLanguageNLPJob {
 #### 5.2.2 实时趋势检测Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeTrendDetectionJob {
 
     public static void main(String[] args) throws Exception {
@@ -610,6 +626,13 @@ public class RealtimeTrendDetectionJob {
 #### 5.2.3 社交图谱实时更新Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SocialGraphUpdateJob {
 
     public static void main(String[] args) throws Exception {
@@ -787,6 +810,15 @@ public class SocialGraphUpdateJob {
  * 4. 社交图谱动态更新
  * 5. 影响力传播分析
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SocialMediaAnalyticsPlatform {
 
     // ==================== 配置常量 ====================
@@ -1224,4 +1256,3 @@ flowchart TD
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-03 | 状态: 已完成*
-

@@ -1018,7 +1018,7 @@ graph TB
 
 ## 6. 引用参考 (References)
 
-[^1]: F. D. Garcia et al., "Fraud Detection in Financial Transactions: A Survey," *IEEE Access*, vol. 8, 2020. <https://doi.org/10.1109/ACCESS.2020.3025677>
+[^1]: F. D. Garcia et al., "Fraud Detection in Financial Transactions: A Survey," *IEEE Access*, vol. 8, 2020. <https://ieeexplore.ieee.org/document/9210124>
 
 [^2]: A. C. Bahnsen et al., "Feature Engineering Strategies for Credit Card Fraud Detection," *Expert Systems with Applications*, 51, 2016. <https://doi.org/10.1016/j.eswa.2015.12.030>
 

@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
@@ -387,6 +390,9 @@ FROM users;
 **Java API 脱敏配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 创建脱敏配置
 DataMaskingConfig maskingConfig = DataMaskingConfig.builder()  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
     .withPolicy("PII_MASKING", policy -> policy
@@ -1253,6 +1259,9 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.security.encryption.*;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class FieldLevelEncryptionExample {
 

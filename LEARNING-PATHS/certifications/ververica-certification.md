@@ -67,6 +67,10 @@
 ### 练习题示例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 题目1：以下代码的输出是什么？
 DataStream<Integer> stream = env.fromElements(1, 2, 3, 4, 5);
 stream
@@ -127,6 +131,9 @@ D. env.setCheckpointMode(CheckpointingMode.EXACTLY_ONCE);
 #### Checkpoint 机制
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Checkpoint 配置
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -144,6 +151,11 @@ env.getCheckpointConfig().enableUnalignedCheckpoints();
 #### State 管理
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // ValueState
 ValueStateDescriptor<Integer> descriptor =
     new ValueStateDescriptor<>("counter", Types.INT);

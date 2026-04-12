@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # WebAssembly与流计算 - 轻量级边缘计算
 
 > 所属阶段: Flink | 前置依赖: [Flink部署架构](../../01-concepts/deployment-architectures.md), [Flink UDF扩展](../../03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | 形式化等级: L3
@@ -1269,7 +1272,7 @@ flowchart TD
 
 
 
-[^7]: Bytecode Alliance, "WASI 0.3 Release Notes", February 2026. <https://bytecodealliance.org/articles/wasi-0-3>
+[^7]: Bytecode Alliance, "WASI 0.3 Release Notes", February 2026. <https://bytecodealliance.org/articles>
 
 [^8]: WebAssembly Component Model Working Group, "Component Model 1.0 Specification", Bytecode Alliance, 2025. <https://component-model.bytecodealliance.org/>
 
@@ -1277,4 +1280,4 @@ flowchart TD
 
 [^10]: Akamai Technologies, "Akamai Completes Acquisition of Fermyon Technologies", Press Release, 2025. <https://www.akamai.com/company/press-room/press-releases/akamai-completes-fermyon-acquisition>
 
-[^11]: Uno Platform, "State of WebAssembly 2025-2026", WebAssembly Survey Report, 2026. <https://platform.uno/blog/state-of-webassembly-2025-2026/>
+[^11]: Uno Platform, "State of WebAssembly 2025-2026", WebAssembly Survey Report, 2026. <https://platform.uno/blog//>

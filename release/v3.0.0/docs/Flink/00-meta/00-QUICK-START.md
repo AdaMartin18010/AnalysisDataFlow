@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 2.4/2.5 快速开始指南
 
 > **5分钟上手 Flink 2.4/2.5 | 新特性快速体验 | 生产级部署**
@@ -609,6 +612,9 @@ GROUP BY event_type;
 **自适应执行模式：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 配置自适应执行
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -718,6 +724,9 @@ GROUP BY category;
 **Java GPU 算子：**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // GPU 加速聚合
 DataStream<Transaction> transactions = ...;
 
@@ -799,6 +808,9 @@ cargo flink build --release
 **Flink 注册使用：**
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 注册 WASM UDF
 TableEnvironment tEnv = TableEnvironment.create(
     EnvironmentSettings.inStreamingMode()

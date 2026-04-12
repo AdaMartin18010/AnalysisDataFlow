@@ -377,6 +377,12 @@ user_transaction_stats = FeatureView(
 
 ```java
 // FlinkJob.java - 实时特征计算
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudFeatureEngineering {
 
     public static void main(String[] args) {
@@ -488,6 +494,11 @@ public class FeatureStoreSink extends RichSinkFunction<UserFeatures> {
 
 ```java
 // StreamFeatureJoin.java - 用户行为 + 商品信息 Join
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class StreamFeatureJoin {
 
     public static void main(String[] args) {
@@ -559,6 +570,10 @@ public class StreamFeatureJoin {
 
 ```java
 // DerivedMetrics.java - 复杂特征计算
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class DerivedMetrics {
 
     /**
@@ -698,6 +713,11 @@ user_profile_service = FeatureService(
 
 ```java
 // 推荐特征计算 Job
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RecommendationFeatureJob {
 
     public static void main(String[] args) {

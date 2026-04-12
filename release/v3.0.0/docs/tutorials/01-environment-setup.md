@@ -657,6 +657,9 @@ stop-cluster.sh
 
 ```java
 // 创建 Live Template: flink-main
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class $NAME$ {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1390,6 +1393,9 @@ package com.example;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class TableWordCount {
     public static void main(String[] args) throws Exception {

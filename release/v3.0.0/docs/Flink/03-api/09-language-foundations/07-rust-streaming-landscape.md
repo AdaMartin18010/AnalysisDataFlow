@@ -874,6 +874,9 @@ g.edges.iterate(|inner| {
 **模式 1：Rust 系统作为 Flink Sink**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink 处理实时流，输出到 RisingWave 进行实时分析
 DataStream<Transaction> transactions = env
     .addSource(new KafkaSource<>())

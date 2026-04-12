@@ -366,6 +366,9 @@ False Positive Rate ≤ 0.5%  (误报率)
 
 ```java
 // 风控模型广播状态更新
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class RiskScoringFunction extends BroadcastProcessFunction<
         PaymentEvent, ModelUpdate, RiskDecision> {
 
@@ -544,6 +547,11 @@ dA/dL = 0.0015 · e^(-0.03·L)
 
 ```java
 // 实时欺诈检测Flink作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionJob {
 
     public static void main(String[] args) {
@@ -628,6 +636,9 @@ public class FraudDetectionJob {
 
 ```java
 // 3DS决策处理函数
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ThreeDSecureDecider extends KeyedProcessFunction<
         String, PaymentEvent, PaymentDecision> {
 
@@ -701,6 +712,12 @@ public class ThreeDSecureDecider extends KeyedProcessFunction<
 
 ```java
 // 商户账单实时分析作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class MerchantAnalyticsJob {
 
     public static void main(String[] args) {

@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 流处理安全最佳实践指南
 
 > **所属阶段**: Flink | **前置依赖**: [Flink 安全强化指南](./security-hardening-guide.md), [Flink 2.4安全增强](./flink-24-security-enhancements.md) | **形式化等级**: L3
@@ -321,6 +324,9 @@ roleRef:
 ### 6.5 Checkpoint 加密配置
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Flink Checkpoint 加密配置
 CheckpointConfig checkpointConfig = env.getCheckpointConfig();
 

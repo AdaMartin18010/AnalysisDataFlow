@@ -170,6 +170,9 @@ ES Sink 作为 Stateful Sink:
 ### 4.3 反例分析：错误的动态索引实现
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // ❌ 错误做法：每条记录创建新的 IndexRequest 函数
 DataStream<LogEvent> stream = ...;
 stream.addSink(new ElasticsearchSink.Builder<LogEvent>(
@@ -408,8 +411,14 @@ builder.setRestClientFactory(
 ### 6.4 动态索引（按时间分区）
 
 ```java
+import java.util.Map;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class DynamicIndexExample {
 
@@ -489,6 +498,10 @@ import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.common.util.concurrent.EsRejectedExecutionException;
 import org.elasticsearch.index.mapper.MapperParsingException;
 import org.apache.flink.util.ExceptionUtils;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class RobustElasticsearchSink {
 

@@ -457,6 +457,10 @@ state.backend.forst.restore.preload.hot-keys: true
 **编程方式配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1158,6 +1162,8 @@ public class ForStIncrementalSnapshotStrategy {
 #### 8.4.2 SST 版本引用计数与垃圾回收
 
 ```java
+import java.util.Map;
+
 /**
  * SST文件生命周期管理
  */

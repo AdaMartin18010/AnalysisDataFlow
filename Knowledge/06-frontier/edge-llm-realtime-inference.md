@@ -472,6 +472,8 @@ $$\forall r: (t_{start} < \tau_{switch} \Rightarrow t_{end} < \tau_{switch}) \lo
 **Flink AsyncFunction 实现**：
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
 // Flink 异步LLM推理函数
 public class LLMInferenceAsyncFunction
     extends RichAsyncFunction<String, InferenceResult> {

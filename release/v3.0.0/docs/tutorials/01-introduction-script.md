@@ -313,7 +313,7 @@ flowchart LR
 ### 附加资源
 
 - 项目GitHub: <https://github.com/AnalysisDataFlow>
-- 在线文档: <https://analysisdataflow.github.io/docs>
+- 在线文档: <[项目文档站点 - 待部署]>
 - 示例代码: tutorials/code/episode01/
 
 ---

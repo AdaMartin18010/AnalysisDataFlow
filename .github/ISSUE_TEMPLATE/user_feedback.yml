@@ -1,0 +1,164 @@
+name: 📝 用户反馈
+about: 分享您的使用体验、建议或问题，帮助我们改进项目
+title: '[反馈] '
+labels: ['user-feedback', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🙏 感谢您抽出时间提供反馈！
+        您的意见对改进我们的项目至关重要。请尽可能详细地填写以下信息。
+
+  - type: dropdown
+    id: feedback_type
+    attributes:
+      label: 反馈类型
+      description: 请选择最符合您反馈的类型
+      options:
+        - 🐛 Bug 报告 - 功能异常或错误
+        - ✨ 功能建议 - 新功能或改进建议
+        - 📚 文档反馈 - 文档内容问题或改进
+        - 🎨 用户体验 - 界面、交互或易用性
+        - ⚡ 性能反馈 - 速度、资源占用等问题
+        - 🤔 使用困惑 - 不理解如何使用
+        - 💡 其他反馈 - 不属于以上类别
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user_type
+    attributes:
+      label: 用户身份
+      description: 您如何描述自己？
+      options:
+        - 学术研究 - 用于研究或论文
+        - 工业开发 - 用于生产系统开发
+        - 学习探索 - 用于学习流计算知识
+        - 技术评估 - 评估项目是否适合采用
+        - 内容贡献 - 希望为项目贡献内容
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: usage_scenario
+    attributes:
+      label: 使用场景
+      description: 请描述您在什么场景下使用本项目
+      placeholder: |
+        例如：
+        - 我正在研究流计算的形式化验证方法
+        - 我在为公司评估 Flink 架构方案
+        - 我在准备分布式系统的课程材料
+    validations:
+      required: true
+
+  - type: textarea
+    id: feedback_content
+    attributes:
+      label: 反馈内容
+      description: 请详细描述您的反馈
+      placeholder: |
+        请尽可能详细地描述：
+        - 遇到了什么问题？
+        - 您期望的行为是什么？
+        - 实际发生了什么？
+        - 这如何影响了您的工作？
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement_suggestion
+    attributes:
+      label: 改进建议
+      description: 如果您有具体的改进建议，请在此说明
+      placeholder: |
+        例如：
+        - 希望增加更多实际案例
+        - 建议优化某个概念的讲解方式
+        - 希望能提供更多代码示例
+
+  - type: dropdown
+    id: overall_rating
+    attributes:
+      label: 总体满意度评分
+      description: 您对本项目的整体满意度如何？（1-5星）
+      options:
+        - ⭐ (1) 非常不满意
+        - ⭐⭐ (2) 不满意
+        - ⭐⭐⭐ (3) 一般
+        - ⭐⭐⭐⭐ (4) 满意
+        - ⭐⭐⭐⭐⭐ (5) 非常满意
+    validations:
+      required: true
+
+  - type: dropdown
+    id: content_quality_rating
+    attributes:
+      label: 内容质量评分
+      description: 您认为项目内容的质量如何？
+      options:
+        - ⭐ (1) 质量很差
+        - ⭐⭐ (2) 质量较差
+        - ⭐⭐⭐ (3) 质量一般
+        - ⭐⭐⭐⭐ (4) 质量良好
+        - ⭐⭐⭐⭐⭐ (5) 质量优秀
+    validations:
+      required: true
+
+  - type: dropdown
+    id: usability_rating
+    attributes:
+      label: 易用性评分
+      description: 您认为项目易于使用和理解吗？
+      options:
+        - ⭐ (1) 非常难用
+        - ⭐⭐ (2) 较难使用
+        - ⭐⭐⭐ (3) 一般
+        - ⭐⭐⭐⭐ (4) 较为易用
+        - ⭐⭐⭐⭐⭐ (5) 非常易用
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: discovery_method
+    attributes:
+      label: 如何发现本项目
+      description: 您是如何了解到这个项目的？（可多选）
+      options:
+        - label: GitHub 搜索
+        - label: 搜索引擎（Google/Baidu 等）
+        - label: 技术社区或论坛
+        - label: 同事或朋友推荐
+        - label: 学术论文引用
+        - label: 社交媒体
+        - label: 其他
+
+  - type: input
+    id: contact
+    attributes:
+      label: 联系方式（可选）
+      description: 如果我们需要进一步沟通，您愿意留下的联系方式
+      placeholder: 邮箱、GitHub用户名或其他联系方式
+
+  - type: checkboxes
+    id: follow_up
+    attributes:
+      label: 后续跟进
+      description: 请选择您希望的跟进方式
+      options:
+        - label: 我希望在此 Issue 中收到回复
+        - label: 我愿意参与后续的用户调研
+        - label: 我愿意提供更多信息以帮助改进
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        📋 **提交后会发生什么？**
+        1. 我们的团队将在 48 小时内对您的反馈进行初步分类
+        2. 根据反馈类型和优先级，我们会安排相应的处理流程
+        3. 您将在此 Issue 中收到我们的回复和进展更新
+        4. 您的反馈将帮助我们持续改进项目质量
+
+        再次感谢您的宝贵时间和反馈！🙏

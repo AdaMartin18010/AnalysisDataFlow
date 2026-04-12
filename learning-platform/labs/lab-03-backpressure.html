@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验3: 背压检测实验 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        
+        .lab-section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lab-section h2 { color: #fc4a1a; margin-bottom: 20px; font-size: 1.5rem; }
+        
+        .controls { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: #fc4a1a; color: white; }
+        .btn-primary:hover { background: #e03e0d; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        
+        .gauge-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .gauge {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .gauge-title { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .gauge-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .gauge-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .gauge-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s, background 0.3s;
+        }
+        
+        #canvas-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        canvas {
+            background: #2d2d2d;
+            border-radius: 8px;
+            width: 100%;
+        }
+        
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .stage {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .stage.healthy { border-left: 4px solid #27ae60; }
+        .stage.warning { border-left: 4px solid #f39c12; }
+        .stage.critical { border-left: 4px solid #e74c3c; animation: pulse-red 1s infinite; }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+        }
+        .stage-name { font-weight: bold; margin-bottom: 5px; }
+        .stage-metric { font-size: 0.85rem; color: #666; }
+        
+        .arrow {
+            font-size: 1.5rem;
+            color: #ccc;
+            transition: color 0.3s;
+        }
+        .arrow.backpressure { color: #e74c3c; }
+        
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .info-box h4 { color: #e65100; margin-bottom: 8px; }
+        
+        .solution-card {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .solution-card h4 { color: #2e7d32; margin-bottom: 8px; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a { padding: 12px 25px; background: #fc4a1a; color: white; text-decoration: none; border-radius: 25px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem;">🧪 交互实验</span>
+            <h1>实验3: 背压检测实验</h1>
+            <p>可视化背压的传播过程，学习 Credit-based 流控制机制</p>
+        </header>
+
+        <div class="lab-section">
+            <h2>📖 实验原理</h2>
+            <div class="info-box">
+                <h4>什么是背压 (Backpressure)?</h4>
+                <p>背压是流处理系统中下游处理速度跟不上上游生产速度时产生的<strong>压力反向传播</strong>现象。Flink 使用 <strong>Credit-based 流控制</strong>机制来优雅地处理背压。</p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h4 style="margin-bottom: 15px;">Credit-based 流控制原理:</h4>
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📤</div>
+                        <div><strong>发送端</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">拥有 Credit 才能发送</div>
+                    </div>
+                    <div style="align-self: center;">← Credit 反馈 →</div>
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📥</div>
+                        <div><strong>接收端</strong></div>
+                        <div style="font-size: 0.85rem; color: #666;">根据缓冲区余量发放 Credit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>🔬 交互演示</h2>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="startSimulation()">▶ 开始模拟</button>
+                <button class="btn btn-success" onclick="addSlowStage()">➕ 添加慢速节点</button>
+                <button class="btn btn-danger" onclick="removeBottleneck()">➖ 移除瓶颈</button>
+                <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
+                    <label>输入速率:</label>
+                    <input type="range" id="inputRate" min="1" max="10" value="5" style="width: 100px;">
+                    <span id="rateValue">5</span>
+                </div>
+            </div>
+
+            <div class="gauge-container">
+                <div class="gauge">
+                    <div class="gauge-title">输入吞吐量</div>
+                    <div class="gauge-value" id="inputThroughput" style="color: #27ae60;">0</div>
+                    <div style="font-size: 0.8rem; color: #666;">events/sec</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="inputBar" style="width: 0%; background: #27ae60;"></div>
+                    </div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-title">输出吞吐量</div>
+                    <div class="gauge-value" id="outputThroughput" style="color: #3498db;">0</div>
+                    <div style="font-size: 0.8rem; color: #666;">events/sec</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="outputBar" style="width: 0%; background: #3498db;"></div>
+                    </div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-title">背压比率</div>
+                    <div class="gauge-value" id="backpressureRatio" style="color: #e74c3c;">0%</div>
+                    <div style="font-size: 0.8rem; color: #666;">0 = 无背压</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="backpressureBar" style="width: 0%; background: #e74c3c;"></div>
+                    </div>
+                </div>
+                <div class="gauge">
+                    <div class="gauge-title">缓冲区占用</div>
+                    <div class="gauge-value" id="bufferUsage" style="color: #f39c12;">0%</div>
+                    <div style="font-size: 0.8rem; color: #666;">积压数据量</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="bufferBar" style="width: 0%; background: #f39c12;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline" id="pipeline">
+                <div class="stage healthy" id="stage-source">
+                    <div class="stage-name">Source</div>
+                    <div class="stage-metric">1000 e/s</div>
+                </div>
+                <div class="arrow" id="arrow-1">→</div>
+                <div class="stage healthy" id="stage-map">
+                    <div class="stage-name">Map</div>
+                    <div class="stage-metric">1000 e/s</div>
+                </div>
+                <div class="arrow" id="arrow-2">→</div>
+                <div class="stage healthy" id="stage-filter">
+                    <div class="stage-name">Filter</div>
+                    <div class="stage-metric">800 e/s</div>
+                </div>
+                <div class="arrow" id="arrow-3">→</div>
+                <div class="stage healthy" id="stage-sink">
+                    <div class="stage-name">Sink</div>
+                    <div class="stage-metric">800 e/s</div>
+                </div>
+            </div>
+
+            <div id="canvas-container">
+                <canvas id="backpressureCanvas" width="1100" height="400"></canvas>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                <h4 style="margin-bottom: 15px;">实时日志</h4>
+                <div id="logPanel" style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;">
+                    <div style="color: #6a9955;">// 等待开始模拟...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>📊 背压检测方法</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">1. Web UI 观察</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>绿色: 无背压</li>
+                        <li>黄色: 轻度背压</li>
+                        <li>红色: 严重背压</li>
+                    </ul>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">2. 指标监控</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>outPoolUsage: 输出缓冲池使用率</li>
+                        <li>backPressuredTimeMsPerSecond</li>
+                        <li>numRecordsInPerSecond</li>
+                    </ul>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">3. Flink REST API</h4>
+                    <code style="background: #1e1e1e; color: #d4d4d4; padding: 10px; border-radius: 5px; display: block; margin-top: 10px; font-size: 0.8rem;">
+                        GET /jobs/{jobId}/vertices/{id}/backpressure
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>✏️ 实验任务</h2>
+            <div class="info-box">
+                <h4>任务列表</h4>
+                <ol style="margin-left: 20px;">
+                    <li>观察正常状态下的数据流，记录各阶段的吞吐量</li>
+                    <li>添加慢速节点，观察背压如何向上游传播</li>
+                    <li>调整输入速率，找到系统的最大处理能力</li>
+                    <li>移除瓶颈，观察系统如何恢复正常</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>💡 背压解决方案</h2>
+            <div class="solution-card">
+                <h4>方案1: 增加并行度</h4>
+                <p>提高瓶颈算子的并行度，增加处理能力。适用于计算密集型算子。</p>
+            </div>
+            <div class="solution-card">
+                <h4>方案2: 优化慢速操作</h4>
+                <p>将同步 IO 改为异步 IO (AsyncFunction)，避免阻塞数据流。</p>
+            </div>
+            <div class="solution-card">
+                <h4>方案3: 限流控制</h4>
+                <p>在 Source 端实施限流，控制输入速率匹配处理能力。</p>
+            </div>
+            <div class="solution-card">
+                <h4>方案4: 资源扩容</h4>
+                <p>增加 TaskManager 资源或优化 JVM 参数。</p>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="lab-02-checkpoint.html">← 上一个实验</a>
+            <a href="../index.html">返回首页 →</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('backpressureCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let isRunning = false;
+        let inputRate = 5;
+        let bottleneckStage = -1;
+        let bufferLevels = [0, 0, 0, 0];
+        let credits = [10, 10, 10];
+        let throughput = [0, 0, 0, 0];
+        let particles = [];
+        let animationId = null;
+        
+        const stages = [
+            { name: 'Source', x: 100, capacity: 100, processingRate: 10 },
+            { name: 'Map', x: 350, capacity: 50, processingRate: 8 },
+            { name: 'Filter', x: 600, capacity: 50, processingRate: 6 },
+            { name: 'Sink', x: 850, capacity: 30, processingRate: 4 }
+        ];
+        
+        function log(message, type = 'info') {
+            const panel = document.getElementById('logPanel');
+            const entry = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            let color = '#d4d4d4';
+            if (type === 'warning') color = '#ff9800';
+            if (type === 'error') color = '#e74c3c';
+            if (type === 'success') color = '#4caf50';
+            entry.innerHTML = `<span style="color: #6a9955;">[${time}]</span> <span style="color: ${color};">${message}</span>`;
+            panel.appendChild(entry);
+            panel.scrollTop = panel.scrollHeight;
+        }
+        
+        function updateGauges() {
+            const inputTP = Math.round(inputRate * 200 + Math.random() * 50);
+            const outputTP = bottleneckStage >= 0 
+                ? Math.round(stages[bottleneckStage].processingRate * 200)
+                : inputTP;
+            const bpRatio = bottleneckStage >= 0 
+                ? Math.round(((inputTP - outputTP) / inputTP) * 100)
+                : 0;
+            const bufUsage = Math.round(bufferLevels.reduce((a, b) => a + b, 0) / bufferLevels.length);
+            
+            document.getElementById('inputThroughput').textContent = inputTP;
+            document.getElementById('outputThroughput').textContent = outputTP;
+            document.getElementById('backpressureRatio').textContent = bpRatio + '%';
+            document.getElementById('bufferUsage').textContent = bufUsage + '%';
+            
+            document.getElementById('inputBar').style.width = Math.min(100, inputTP / 20) + '%';
+            document.getElementById('outputBar').style.width = Math.min(100, outputTP / 20) + '%';
+            document.getElementById('backpressureBar').style.width = bpRatio + '%';
+            document.getElementById('bufferBar').style.width = bufUsage + '%';
+        }
+        
+        function updatePipeline() {
+            stages.forEach((stage, i) => {
+                const el = document.getElementById(`stage-${stage.name.toLowerCase()}`);
+                if (!el) return;
+                
+                el.className = 'stage';
+                if (bufferLevels[i] > 80) {
+                    el.classList.add('critical');
+                } else if (bufferLevels[i] > 50) {
+                    el.classList.add('warning');
+                } else {
+                    el.classList.add('healthy');
+                }
+                
+                const metricEl = el.querySelector('.stage-metric');
+                metricEl.textContent = Math.round(throughput[i]) + ' e/s';
+            });
+            
+            // 更新箭头
+            for (let i = 0; i < 3; i++) {
+                const arrow = document.getElementById(`arrow-${i+1}`);
+                if (arrow) {
+                    arrow.className = 'arrow';
+                    if (bufferLevels[i] > 70) {
+                        arrow.classList.add('backpressure');
+                    }
+                }
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#2d2d2d';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制阶段
+            stages.forEach((stage, i) => {
+                // 缓冲区可视化
+                const bufferHeight = (bufferLevels[i] / 100) * 150;
+                ctx.fillStyle = bufferLevels[i] > 80 ? '#e74c3c' : 
+                               bufferLevels[i] > 50 ? '#f39c12' : '#27ae60';
+                ctx.fillRect(stage.x - 40, 250 - bufferHeight, 80, bufferHeight);
+                
+                // 缓冲区边框
+                ctx.strokeStyle = '#666';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(stage.x - 40, 100, 80, 150);
+                
+                // 阶段名称
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(stage.name, stage.x, 280);
+                
+                // Credit 显示
+                ctx.fillStyle = '#3498db';
+                ctx.font = '12px sans-serif';
+                ctx.fillText(`Credit: ${credits[i] || 0}`, stage.x, 300);
+                
+                // 缓冲区百分比
+                ctx.fillStyle = '#ccc';
+                ctx.fillText(`${bufferLevels[i].toFixed(0)}%`, stage.x, 95);
+            });
+            
+            // 绘制数据流
+            particles.forEach((p, i) => {
+                ctx.fillStyle = p.delayed ? '#e74c3c' : '#4CAF50';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // 绘制背压指示
+            if (bottleneckStage >= 0) {
+                ctx.fillStyle = 'rgba(231, 76, 60, 0.3)';
+                ctx.fillRect(50, 50, stages[bottleneckStage].x - 50, 20);
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = '12px sans-serif';
+                ctx.fillText('BACKPRESSURE', stages[bottleneckStage].x / 2 + 50, 65);
+            }
+        }
+        
+        function simulate() {
+            if (!isRunning) return;
+            
+            // 生成新数据粒子
+            if (Math.random() < inputRate / 10) {
+                particles.push({
+                    x: stages[0].x,
+                    y: 150 + Math.random() * 100,
+                    stage: 0,
+                    delayed: false
+                });
+            }
+            
+            // 移动粒子
+            particles = particles.filter(p => {
+                const targetStage = stages[p.stage + 1];
+                if (!targetStage) {
+                    throughput[3]++;
+                    return false; // 到达终点
+                }
+                
+                // 检查是否可以通过 (Credit-based)
+                if (credits[p.stage] > 0 && bufferLevels[p.stage + 1] < 90) {
+                    const dx = targetStage.x - stages[p.stage].x;
+                    p.x += dx / 20;
+                    
+                    if (p.x >= targetStage.x - 40) {
+                        credits[p.stage]--;
+                        p.stage++;
+                        throughput[p.stage]++;
+                        
+                        // 增加目标缓冲区
+                        bufferLevels[p.stage] = Math.min(100, bufferLevels[p.stage] + 5);
+                    }
+                } else {
+                    p.delayed = true;
+                    // 增加当前缓冲区
+                    bufferLevels[p.stage] = Math.min(100, bufferLevels[p.stage] + 2);
+                }
+                
+                return p.x < canvas.width;
+            });
+            
+            // 处理数据 (减少缓冲区)
+            stages.forEach((stage, i) => {
+                const processAmount = stage.processingRate / 10;
+                bufferLevels[i] = Math.max(0, bufferLevels[i] - processAmount);
+                throughput[i] = Math.max(0, throughput[i] * 0.9);
+                
+                // 恢复 Credit
+                if (credits[i] !== undefined) {
+                    credits[i] = Math.min(10, credits[i] + 0.5);
+                }
+            });
+            
+            // 模拟瓶颈
+            if (bottleneckStage >= 0) {
+                stages[bottleneckStage].processingRate = 2; // 降低处理速度
+                // 背压向上游传播
+                for (let i = bottleneckStage - 1; i >= 0; i--) {
+                    if (bufferLevels[i + 1] > 70) {
+                        bufferLevels[i] = Math.min(100, bufferLevels[i] + 1);
+                    }
+                }
+            }
+            
+            updateGauges();
+            updatePipeline();
+            draw();
+            
+            animationId = requestAnimationFrame(simulate);
+        }
+        
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            log('开始模拟...', 'success');
+            simulate();
+        }
+        
+        function addSlowStage() {
+            bottleneckStage = 2; // Filter 成为瓶颈
+            log('添加瓶颈: Filter 阶段处理速度下降', 'warning');
+        }
+        
+        function removeBottleneck() {
+            bottleneckStage = -1;
+            stages.forEach(s => s.processingRate = s.capacity / 10);
+            log('瓶颈已移除，系统恢复正常', 'success');
+        }
+        
+        // 输入速率滑块
+        document.getElementById('inputRate').addEventListener('input', function() {
+            inputRate = parseInt(this.value);
+            document.getElementById('rateValue').textContent = inputRate;
+        });
+        
+        // 初始绘制
+        draw();
+    </script>
+</body>
+</html>

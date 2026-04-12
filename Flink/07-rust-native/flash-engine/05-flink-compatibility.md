@@ -547,6 +547,9 @@ GROUP BY
 **案例 3: DataStream 作业迁移**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // DataStream 作业（有限兼容）
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())

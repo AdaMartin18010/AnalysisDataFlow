@@ -108,6 +108,10 @@ Computation: Operator chains
 **Flink**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // DataStream API - Maximum flexibility
 DataStream<Event> stream = env.addSource(kafkaSource);
 
@@ -308,6 +312,10 @@ graph TB
 **Code Transformation**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink code
 DataStream<Result> result = stream
     .keyBy(Event::getUserId)

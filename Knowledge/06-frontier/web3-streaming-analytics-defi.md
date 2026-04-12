@@ -350,6 +350,10 @@ $$
 ### 6.1 Flink + Web3实时分析
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class DeFiAnalyticsJob {
     public static void main(String[] args) {
         StreamExecutionEnvironment env =

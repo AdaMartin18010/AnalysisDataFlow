@@ -261,6 +261,11 @@ graph LR
 **关键配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Watermark策略：业务时间 + 200ms延迟
 WatermarkStrategy<Transaction> strategy = WatermarkStrategy
     .<Transaction>forBoundedOutOfOrderness(Duration.ofMillis(200))
@@ -485,6 +490,9 @@ graph LR
 **解决方案**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Broadcast Stream 实现规则热更新
 MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>("rules", Types.STRING, Types.POJO(Rule.class));
@@ -600,6 +608,10 @@ graph TB
 **Flink特征计算Job**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 用户实时行为特征：最近1小时浏览品类
 DataStream<UserFeature> userFeatureStream = env
     .addSource(new UserBehaviorSource())
@@ -717,6 +729,10 @@ graph TB
 **热点Key处理**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // LocalKeyBy：本地预聚合减少网络 shuffle
 DataStream<Order> preAggregated = orderStream
     .keyBy(Order::getItemId)
@@ -891,6 +907,10 @@ DataStream<SensorData> processed = env
     .process(new ThresholdMonitorFunction());
 
 // 阈值监控函数
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+
 class ThresholdMonitorFunction extends KeyedProcessFunction<String, SensorData, Alert> {
     private ValueState<ThresholdConfig> thresholdState;
 
@@ -1136,6 +1156,9 @@ DataStream<PlayerAction> actionStream = env
     .process(new AntiCheatProcessFunction());
 
 // 外挂检测：异常点击频率
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 class AntiCheatProcessFunction extends KeyedProcessFunction<String, PlayerAction, Alert> {
     private ListState<PlayerAction> recentActions;
 
@@ -1417,6 +1440,10 @@ graph LR
 **日志解析与异常检测**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 日志模式识别
 DataStream<LogEvent> parsedLogs = env
     .addSource(new KafkaSource<>())

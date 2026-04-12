@@ -176,6 +176,7 @@ gantt
      click_count_1h * 1.0 / NULLIF(buy_count_1h, 0) as ctr_1h
    FROM user_behavior
    GROUP BY item_id;
+
 ```
 
 2. **特征存储设计**
@@ -212,12 +213,14 @@ gantt
 ### 实时用户画像
 
 ```
+
 用户画像维度：
 ├── 基础属性（性别、年龄、地域）
 ├── 兴趣标签（品类偏好、价格敏感度）
 ├── 行为特征（活跃时段、购买力）
 ├── 实时意图（当前浏览、搜索关键词）
 └── 社交关系（相似用户、影响力）
+
 ```
 
 ### 实践任务
@@ -226,6 +229,9 @@ gantt
 
    ```java
    // 实时更新用户画像
+
+import org.apache.flink.api.common.state.ValueState;
+
    public class UserProfileUpdater extends KeyedProcessFunction<String,
        BehaviorEvent, UserProfile> {
      private ValueState<UserProfile> profileState;
@@ -250,7 +256,7 @@ gantt
    }
 ```
 
-2. **向量检索集成**
+1. **向量检索集成**
    - 集成 Milvus/Pinecone
    - 实现近似最近邻搜索
    - 优化检索性能
@@ -293,6 +299,7 @@ gantt
    FROM user_behavior
    WHERE event_type = 'click'
    GROUP BY item_id;
+
 ```
 
 2. **召回服务**
@@ -304,17 +311,17 @@ gantt
 3. **排序服务**
 
    ```python
-   # Flink ML 集成
-   class RankingModel:
-     def predict(self, user_features, item_features):
-       # 特征拼接
-       features = concat(user_features, item_features)
-       # 模型推理
-       score = model.predict(features)
-       return score
+# Flink ML 集成
+class RankingModel:
+  def predict(self, user_features, item_features):
+    # 特征拼接
+    features = concat(user_features, item_features)
+    # 模型推理
+    score = model.predict(features)
+    return score
 ```
 
-4. **推荐 API**
+1. **推荐 API**
 
    ```java
    @RestController
@@ -334,6 +341,7 @@ gantt
        return rerankService.rerank(ranked);
      }
    }
+
 ```
 
 **评估指标**:

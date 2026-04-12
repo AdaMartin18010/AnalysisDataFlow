@@ -203,6 +203,11 @@ $$
 **代码映射示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 理论: Dataflow 图 G = (V, E, P, Σ, 𝕋)
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -256,6 +261,10 @@ $$
 **代码映射示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 理论: w(t) = max_{r ∈ Observed(t)} t_e(r) - δ
 // 实现: WatermarkStrategy.forBoundedOutOfOrderness
 
@@ -299,6 +308,9 @@ $$
 **配置映射示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 理论: Def-S-17-01 Barrier 语义 + Def-S-17-03 对齐机制
 // 实现: CheckpointConfig
 
@@ -388,6 +400,9 @@ $$
 **端到端 Exactly-Once 配置示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 理论: Def-S-18-01 Exactly-Once + Def-S-18-03 2PC
 // 实现: 事务性 Kafka Source + Sink
 
@@ -500,6 +515,9 @@ $$
 // 实现: Flink TypeInformation
 
 // 自定义类型信息（对应 FG 结构体定义）
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class EventTypeInfo extends TypeInformation<Event> {
     @Override
     public TypeSerializer<Event> createSerializer(ExecutionConfig config) {
@@ -691,12 +709,18 @@ $$
 **Flink 实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 时间语义: Event Time (对应 𝕋)
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 DataStream<Tuple2<String, Integer>> wordCounts = env
     // V_src: Source, P=1
     .socketTextStream("localhost", 9999)
@@ -751,6 +775,11 @@ $$
 **Flink 实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Watermark 策略 (对应 Def-S-04-04)
 WatermarkStrategy<Event> strategy = WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
@@ -793,6 +822,9 @@ lateData.addSink(new LateDataHandler());
 **Flink 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 启用 Checkpoint (对应 Def-S-17-01 Barrier 注入)
 env.enableCheckpointing(60000);
 

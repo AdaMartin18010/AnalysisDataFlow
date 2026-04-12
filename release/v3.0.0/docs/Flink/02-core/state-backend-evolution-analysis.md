@@ -282,12 +282,16 @@ $$
 ### 6.1 MemoryStateBackend 配置 (历史版本)
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.12 及之前
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置 MemoryStateBackend (已弃用)
-MemoryStateBackend memoryBackend = new MemoryStateBackend(
+MemoryStateBackend memoryBackend = new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
+// 
     "hdfs://checkpoints",  // Checkpoint 存储路径
     true                    // 异步快照
 );
@@ -303,6 +307,9 @@ env.setStateBackend(memoryBackend);
 ### 6.2 RocksDBStateBackend 配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.13+ (EmbeddedRocksDBStateBackend)
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

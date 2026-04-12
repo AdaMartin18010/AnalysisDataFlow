@@ -1292,6 +1292,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.*;
 import java.util.concurrent.*;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 /**
  * 工业设备数据模拟器
  * 模拟1000台设备的多传感器数据产生
@@ -1515,6 +1518,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.*;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 /**
  * 智能工厂 Flink 主作业

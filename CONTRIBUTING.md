@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 社区贡献者完整指南 (Contributing Guide)
 
 > 欢迎来到 AnalysisDataFlow 项目！我们致力于打造流计算领域最全面、最严谨的知识库。
@@ -13,6 +16,7 @@
   - [1.2 错误报告](#12-错误报告)
   - [1.3 功能建议](#13-功能建议)
   - [1.4 代码贡献](#14-代码贡献)
+  - [1.5 提交生产案例](#15-提交生产案例)
 - [2. 文档贡献流程](#2-文档贡献流程)
   - [2.1 六段式模板规范](#21-六段式模板规范)
   - [2.2 定理定义编号规范](#22-定理定义编号规范)
@@ -153,6 +157,71 @@
 - 不引入不必要的依赖
 
 **不接受大型代码库贡献**，本项目核心是文档知识库而非软件项目。
+
+### 1.5 提交生产案例
+
+生产案例分享是本项目的重要贡献方式。通过分享真实生产环境中的流计算实践经验，帮助社区了解技术在实际场景中的应用。
+
+**什么是生产案例**：
+- 基于真实生产环境的流计算系统实践
+- 包含具体的架构设计、技术选型、问题诊断和优化经验
+- 有可量化的业务成果和技术指标
+
+**提交方式**：
+
+| 方式 | 适用场景 | 操作步骤 |
+|------|----------|----------|
+| **GitHub Issue** | 首次提交，需要指导 | 使用 [🏭 生产案例提交](../../issues/new?template=production_case.yml) 模板 |
+| **Pull Request** | 已有案例文档 | Fork → 按模板编写 → 提交 PR |
+| **邮件提交** | 不便公开提交 | 发送邮件至项目维护团队 |
+
+**案例内容要求**：
+
+1. **基本信息**
+   - 公司/行业背景（可匿名）
+   - 业务场景描述
+   - 系统规模指标（吞吐量、延迟、集群规模等）
+
+2. **技术架构**
+   - 整体架构图
+   - 技术栈选型及理由
+   - 关键配置参数
+
+3. **挑战与方案**
+   - 遇到的主要技术挑战
+   - 问题根因分析
+   - 解决方案和实施细节
+
+4. **项目成果**
+   - 量化技术指标对比
+   - 业务价值体现
+   - 经验总结和最佳实践
+
+**案例模板**：
+
+详细模板参见 [templates/production-case-template.md](./templates/production-case-template.md)。
+
+**审核流程**：
+
+案例提交后将经过以下审核流程：
+1. **格式初审**（1-2天）- 检查内容完整性和格式规范
+2. **技术评审**（3-5天）- 专家审核技术内容的准确性
+3. **内容优化** - 根据反馈完善案例
+4. **发布确认** - 作者确认后正式发布
+
+详细流程参见 [COMMUNITY/case-review-process.md](./COMMUNITY/case-review-process.md)。
+
+**隐私保护**：
+- 支持匿名提交（如"某电商平台"）
+- 敏感数据可进行脱敏处理
+- 发布前会与作者确认最终内容
+
+**参与回报**：
+- 案例收录至官方案例库（`phase2-case-studies/`）
+- 项目首页展示和社区推广
+- 贡献者名单记录和项目证书
+
+更多详情请参阅 [COMMUNITY/production-case-call.md](./COMMUNITY/production-case-call.md)。
 
 ---
 
@@ -851,6 +920,9 @@ Apache Flink 实现了异步屏障快照（Asynchronous Barrier Snapshotting，A
 **示例**：
 ````markdown
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java 代码示例
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -878,6 +950,9 @@ DataStream<Event> stream = env
 
 **示例**：
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 设置 Watermark 生成策略，允许 5 秒乱序
 // 这是根据业务延迟分布确定的值
 WatermarkStrategy<Event> strategy = WatermarkStrategy

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Microsoft Windows Tile Configuration
+  用于Windows 8/10开始屏幕和浏览器磁贴显示
+  版本: 4.2 | 更新日期: 2026-04-12
+-->
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="/visuals/mstile-70x70.png"/>
+      <square150x150logo src="/visuals/mstile-150x150.png"/>
+      <square310x310logo src="/visuals/mstile-310x310.png"/>
+      <wide310x150logo src="/visuals/mstile-310x150.png"/>
+      <TileColor>#2b5797</TileColor>
+    </tile>
+    <badge>
+      <poll-frequency>60</poll-frequency>
+    </badge>
+    <notification>
+      <polling-uri src="/notifications/polling.xml"/>
+      <frequency>30</frequency>
+      <cycle>1</cycle>
+    </notification>
+  </msapplication>
+</browserconfig>

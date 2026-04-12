@@ -250,6 +250,10 @@ $$
 实时特征-标签关联可直接映射为 Flink 的 Interval Join 操作：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Sample> trainingSamples = featureStream
     .keyBy(FeatureEvent::getUserId)
     .intervalJoin(labelStream.keyBy(LabelEvent::getUserId))
@@ -384,6 +388,11 @@ $$
 ### 6.1 完整持续训练 Pipeline
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ContinuousTrainingPipeline {
 
     public static void main(String[] args) throws Exception {
@@ -438,6 +447,11 @@ public class ContinuousTrainingPipeline {
 ### 6.2 在线训练算子实现
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class OnlineTrainer extends KeyedProcessFunction<String,
         TrainingSample, ModelUpdate> {
 
@@ -530,6 +544,10 @@ public class OnlineTrainer extends KeyedProcessFunction<String,
 ### 6.3 A/B 测试与流量路由
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ABTestRouter extends BroadcastProcessFunction<InferenceRequest,
         ModelVersion, Prediction> {
 
@@ -935,6 +953,9 @@ $$
 
 ```java
 // 模式 1: 单样本即时更新
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class SingleSampleUpdater extends KeyedProcessFunction<String, Sample, ModelUpdate> {
     private ValueState<Vector> weightsState;
 
@@ -991,6 +1012,9 @@ $$
 
 ```java
 // 1. 增量统计特征 (均值/方差)
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class IncrementalStatsFeature extends KeyedProcessFunction<String, Event, Features> {
     private ValueState<RunningStats> statsState;
 
@@ -1074,6 +1098,9 @@ $$
 **Flink 集成的漂移检测算法实现：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class FlinkDriftDetector extends KeyedProcessFunction<String, PredictionResult, DriftAlert> {
 
     // ADWIN (Adaptive Windowing) 实现
@@ -1145,6 +1172,10 @@ public class FlinkDriftDetector extends KeyedProcessFunction<String, PredictionR
 **Flink 启动策略实现：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ModelInitializer extends RichMapFunction<Sample, Sample> {
     private ValueState<Vector> weightsState;
     private ValueState<Boolean> initializedState;
@@ -1299,6 +1330,10 @@ public class TorchServeIntegration extends ProcessFunction<Features, Prediction>
 **版本管理状态机：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class VersionedModelState extends KeyedProcessFunction<String, Sample, Prediction> {
 
     // 版本状态
@@ -1475,6 +1510,9 @@ style SharedState fill:#fff9c4,stroke:#f57f17
 **适用场景与实现：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ColocatedTrainingInference extends KeyedProcessFunction<String, Event, Prediction> {
 
     private ValueState<ModelParams> modelState;
@@ -1550,6 +1588,10 @@ style ServingPath fill:#e3f2fd,stroke:#1565c0
 
 ```java
 // 训练作业：专注于模型更新
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class TrainingJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1605,6 +1647,11 @@ public class ServingJob {
 **反馈循环架构：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FeedbackLoopJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1665,6 +1712,10 @@ public class PredictionFeedbackJoin extends ProcessJoinFunction<
 **影子模式实现：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ShadowDeployment extends ProcessFunction<Request, Prediction> {
 
     private transient Model productionModel;
@@ -1736,6 +1787,9 @@ public class ShadowDeployment extends ProcessFunction<Request, Prediction> {
 
 ```java
 // 方案 1: 定期全局同步 (参数服务器模式)
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ParameterServerSync extends RichFlatMapFunction<Gradient, ModelUpdate> {
 
     private transient ParameterServerClient psClient;
@@ -1792,6 +1846,9 @@ public class ModelVersionSync extends BroadcastProcessFunction<Request, ModelUpd
 **检查点优化配置：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class OptimizedCheckpointConfig {
 
     public static void configureCheckpointing(StreamExecutionEnvironment env) {
@@ -1844,6 +1901,9 @@ public class ModelStateTTLConfig {
 **回滚策略分类：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class RollbackManager {
 
     public enum RollbackTrigger {
@@ -1918,6 +1978,10 @@ public class RollbackAwareModelServing extends BroadcastProcessFunction<Request,
 **监控指标体系：**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ModelPerformanceMonitor extends ProcessFunction<Prediction, EnrichedPrediction> {
 
     private transient Meter predictionRate;
@@ -2050,6 +2114,11 @@ style ServingLayer fill:#e8f5e9,stroke:#2e7d32
 **核心代码：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeRecommendationSystem {
 
     public static void main(String[] args) throws Exception {
@@ -2196,6 +2265,12 @@ style Adaptation fill:#e3f2fd,stroke:#1565c0
 **核心代码：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionAdaptationSystem {
 
     public static void main(String[] args) throws Exception {
@@ -2364,6 +2439,12 @@ style Learning fill:#e8f5e9,stroke:#2e7d32
 **核心代码：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicPricingEngine {
 
     public static void main(String[] args) throws Exception {

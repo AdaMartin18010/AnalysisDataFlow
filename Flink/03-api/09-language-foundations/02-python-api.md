@@ -1017,7 +1017,7 @@ graph TB
 
 **反例分析**:
 
-```python
+```text
 # 危险配置：无并发限制
 @async_func(capacity=10000)  # 过高并发
 def query_external_service(record):
@@ -1032,7 +1032,7 @@ def query_external_service(record):
 
 **最佳实践**:
 
-```python
+```text
 # 合理配置
 @async_func(
     capacity=min(external_service_max_conns, 100),
@@ -1321,7 +1321,7 @@ async def enrich_with_user_profile(event):
 
 #### 9.6.3 异步特征服务调用
 
-```python
+```text
 from dataclasses import dataclass
 from typing import List, Dict
 import asyncio

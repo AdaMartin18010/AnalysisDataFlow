@@ -483,6 +483,9 @@ DataStream<CloudEvent> events = env
   .process(new SchemaRoutingFunction());
 
 // 根据 dataschema 路由到不同的处理逻辑
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 class SchemaRoutingFunction extends ProcessFunction<CloudEvent, CloudEvent> {
   @Override
   public void processElement(CloudEvent event, Context ctx, Collector<CloudEvent> out) {
@@ -891,6 +894,9 @@ public class CloudEventsKafkaSource {
 **使用 Flink SQL Table API**：
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 注册 CloudEvents Kafka 表
 TableEnvironment tableEnv = TableEnvironment.create(EnvironmentSettings.inStreamingMode());
 
@@ -943,6 +949,9 @@ import io.cloudevents.CloudEvent;
 import io.cloudevents.kafka.CloudEventSerializer;
 import io.cloudevents.kafka.CloudEventSerializer.Encoding;
 import org.apache.kafka.clients.producer.ProducerRecord;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 
 public class CloudEventsKafkaSink {
 
@@ -1599,6 +1608,12 @@ public class GoogleEventarcIntegration {
 /**
  * 事件溯源模式实现
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class EventSourcingExample {
 
   /**
@@ -1761,6 +1776,12 @@ import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 
 /**
  * Saga 编排模式实现
@@ -2504,6 +2525,9 @@ props.setProperty("fetch.min.bytes", "1048576"); // 1MB
 **3. Flink 作业调优**
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 检查点配置
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(

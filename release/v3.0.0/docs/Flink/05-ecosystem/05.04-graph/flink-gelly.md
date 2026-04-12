@@ -216,6 +216,10 @@ DataSet<Community> suspiciousCommunities = communities
 **时序图分析增强**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 将交易流转换为时序图切片
 DataStream<Graph<String, AccountInfo, Transaction>> timeSliceGraphs =
     transactions

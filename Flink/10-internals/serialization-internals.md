@@ -207,6 +207,9 @@ DataStream<Tuple2<String, Integer>> stream = env.fromElements(
 );
 
 // 方案2: Returns注解（推荐）
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class MyMap implements MapFunction<String, Tuple2<String, Integer>>,
                               ResultTypeQueryable<Tuple2<String, Integer>> {
     @Override
@@ -682,6 +685,10 @@ public class ProtobufSerializer<T extends GeneratedMessageV3> extends TypeSerial
 
 ```java
 // 定义POJO类
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class UserEvent implements Serializable {
     private long userId;
     private String eventType;
@@ -842,6 +849,8 @@ public class UserEventComparator extends TypeComparator<UserEvent> {
 ### 6.4 复杂泛型类型处理
 
 ```java
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+
 /**
  * 处理嵌套泛型类型：List<Tuple2<String, Map<Integer, Double>>>
  */

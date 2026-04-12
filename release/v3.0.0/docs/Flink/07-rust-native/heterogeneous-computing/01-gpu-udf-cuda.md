@@ -354,6 +354,11 @@ PCIe 5.0 x16 理论带宽: 64 GB/s (双向)
 **场景 1: 小状态 Keyed ProcessFunction**
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+
+
 // 反模式：小状态、低计算量、高吞吐要求低
 class SmallStateProcessor extends KeyedProcessFunction<String, Event, Result> {
     ValueState<Integer> counter;

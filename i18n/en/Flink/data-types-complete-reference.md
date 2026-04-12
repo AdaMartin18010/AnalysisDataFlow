@@ -141,6 +141,9 @@ FROM user_events;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Schema;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 // 编程方式定义 Schema
 Schema schema = Schema.newBuilder()
     .column("user_id", DataTypes.BIGINT().notNull())

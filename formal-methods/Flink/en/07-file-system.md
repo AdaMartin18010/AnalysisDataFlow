@@ -332,6 +332,9 @@ FileSink.forBulkFormat(
 ### 6.1 File Source with Continuous Monitoring
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Continuous file discovery for streaming
 FileSource<String> source = FileSource
     .forRecordStreamFormat(

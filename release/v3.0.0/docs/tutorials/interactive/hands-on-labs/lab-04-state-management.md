@@ -101,6 +101,10 @@ public class TemperatureAlertFunction extends
 ### 步骤 2: ListState 示例 - 会话事件收集
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class SessionEventCollector extends
     KeyedProcessFunction<String, UserEvent, SessionSummary> {
 
@@ -272,6 +276,11 @@ public class RunningAverageFunction extends
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;
 
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class StatefulFunctionWithTTL extends KeyedProcessFunction<...> {
 
     private ValueState<UserSession> sessionState;
@@ -396,6 +405,10 @@ public void testTemperatureAlert() throws Exception {
 
 ```java
 // 订单状态机: CREATED -> PAID -> SHIPPED -> DELIVERED
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, Order> {
 
     private ValueState<OrderStatus> orderStatusState;
@@ -426,6 +439,10 @@ public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, 
 配置可查询状态用于外部监控：
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 // 启用状态查询
 ValueStateDescriptor<Long> descriptor =
     new ValueStateDescriptor<>("counter", Long.class);

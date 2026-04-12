@@ -7,7 +7,7 @@
 
 | 失效链接 | 错误信息 | Archive查询 | 源文件 |
 |----------|----------|-------------|--------|
-| [https://gist.github.com/sindresorhus/a39789f98801d...](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | 连接超时 | [查看备份](https://web.archive.org/web/*/https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | learning-platform\node_modules\rehype-re |
+| [https://gist.github.com/sindresorhus/a39789f98801d...](https://gist.github.com/sindresorhus) | 连接超时 | [查看备份](https://web.archive.org/web/*/https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | learning-platform\node_modules\rehype-re |
 
 ## 批量替换脚本
 
@@ -18,7 +18,7 @@ import re
 
 # 定义替换映射
 replace_map = {
-    "https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c": "https://web.archive.org/web/20240000000000*/https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c",
+    "https://gist.github.com/sindresorhus": "https://web.archive.org/web/20240000000000*/https://gist.github.com/sindresorhus",
 }
 
 # 读取文件并替换

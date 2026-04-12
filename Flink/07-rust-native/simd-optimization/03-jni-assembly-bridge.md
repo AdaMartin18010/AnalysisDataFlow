@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # JNI 调用 Assembly 代码桥梁
 
 > **所属阶段**: Flink/14-rust-assembly-ecosystem/simd-optimization | **前置依赖**: 01-simd-fundamentals.md | **形式化等级**: L4
@@ -309,6 +313,9 @@ package com.flink.simd;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * Flink 向量化 UDF - JNI + SIMD 实现

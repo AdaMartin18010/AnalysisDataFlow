@@ -238,7 +238,7 @@ graph TB
 
 ### 工具功能
 
-```python
+```text
 tools/theorem-dependency-validator.py
 
 功能:

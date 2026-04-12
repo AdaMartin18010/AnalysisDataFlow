@@ -335,6 +335,10 @@ $$
 ### 示例 6.1: HashMapStateBackend 基础配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

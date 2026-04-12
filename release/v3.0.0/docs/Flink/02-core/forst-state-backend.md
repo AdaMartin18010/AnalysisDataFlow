@@ -457,6 +457,10 @@ state.backend.forst.restore.preload.hot-keys: true
 **编程方式配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

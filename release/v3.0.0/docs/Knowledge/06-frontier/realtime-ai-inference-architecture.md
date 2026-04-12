@@ -371,6 +371,10 @@ $$\min C_{total} \quad \text{s.t.} \quad \sum_{i=1}^{k} N_i \cdot acc_i \geq N \
 **核心代码**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class CustomerServiceAgent {
 
     public static void main(String[] args) throws Exception {

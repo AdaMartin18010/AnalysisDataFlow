@@ -55,8 +55,8 @@ public class ProcessingTimeExample {
             StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 使用 Processing Time（默认）
-        env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
-
+        // 处理时间语义 - 不需要显式设置WatermarkStrategy
+// Flink 1.12+ 默认使用事件时间，处理时间窗口使用ProcessingTimeWindow
         // 创建模拟数据流
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
@@ -87,6 +87,9 @@ public class ProcessingTimeExample {
 **实现提示**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream
     .map(new MapFunction<String, Tuple2<String, Integer>>() {
         @Override
@@ -133,14 +136,18 @@ import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class EventTimeExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 设置为 Event Time
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
         // 完整实现：Event Time 处理
@@ -190,6 +197,9 @@ flink,6000
 **实现提示**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream
     .map(line -> {
         String[] parts = line.split(",");

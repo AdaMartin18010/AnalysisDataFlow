@@ -52,6 +52,10 @@ $$
 ### 5.1 DataStream测试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 @Test
 public void testPipeline() throws Exception {
     StreamExecutionEnvironment env =

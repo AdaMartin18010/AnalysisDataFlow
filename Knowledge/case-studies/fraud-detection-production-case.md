@@ -260,6 +260,9 @@ $$
 **高性能CEP实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 盗刷检测：快速多笔交易
 Pattern<Transaction, ?> cardFraudPattern = Pattern
     .<Transaction>begin("first")
@@ -367,6 +370,10 @@ CEP.pattern(
 
 ```java
 // 图特征提取与GNN推理
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class GNNInferenceFunction extends
     RichAsyncFunction<Transaction, TransactionWithRisk> {
 

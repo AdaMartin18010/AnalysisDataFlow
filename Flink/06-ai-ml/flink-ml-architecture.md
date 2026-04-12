@@ -226,6 +226,11 @@ Alink作为Flink ML的算法扩展，提供100+开箱即用算法：
 #### 在线学习支持
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+
 // 在线学习Pipeline示例
 StreamExecutionEnvironment env = ...;
 StreamTableEnvironment tEnv = ...;
@@ -273,6 +278,9 @@ learner.fit(tEnv.from("training"));
 
 ```java
 // 流量分割与模型路由
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ModelRouter extends ProcessFunction<Features, Prediction> {
     private ValueState<ModelVersion> modelState;
 
@@ -301,6 +309,10 @@ public class ModelRouter extends ProcessFunction<Features, Prediction> {
 import org.apache.flink.ml.classification.logisticregression.*;
 import org.apache.flink.ml.feature.standardscaler.*;
 import org.apache.flink.ml.pipeline.*;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class OnlineLearningExample {
     public static void main(String[] args) {

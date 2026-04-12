@@ -120,6 +120,12 @@ graph LR
 
 ```java
 // Storm Bolt
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class WordCountBolt extends BaseRichBolt {
     private Map<String, Integer> counts = new HashMap<>();
 

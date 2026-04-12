@@ -385,7 +385,7 @@ env.execute("PyFlink DataStream Job")
 
 ### 6.6 依赖管理示例
 
-```python
+```text
 # requirements.txt
 apache-flink==1.20.0
 pandas==2.0.3

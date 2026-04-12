@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 案例研究：国际电商平台实时推荐系统重构
 
 > **所属阶段**: Flink | **前置依赖**: [Flink/06-ml/](../../06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4 (工程论证)
@@ -503,6 +506,11 @@ import org.apache.flink.connector.redis.sink.RedisSink;
 
 import java.time.Duration;
 import java.util.*;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * 实时协同过滤推荐引擎
@@ -1187,6 +1195,9 @@ public class ContextAwareRecommender
 package com.ecommerce.recommendation.experiment;
 
 import org.apache.flink.streaming.api.functions.ProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+
 
 /**
  * A/B测试流量分配处理器

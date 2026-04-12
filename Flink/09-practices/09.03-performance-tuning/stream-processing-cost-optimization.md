@@ -174,28 +174,28 @@ $$
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: autoscaling-job
-spec: 
-  podTemplate: 
-    spec: 
-      containers: 
+spec:
+  podTemplate:
+    spec:
+      containers:
         - name: flink-main-container
-          resources: 
-            requests: 
+          resources:
+            requests:
               cpu: "2"
               memory: "4Gi"
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: "2048m"
       cpu: 1
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "4096m"
       cpu: 2
     replicas: 5
   # 自动扩缩容策略
-  job: 
+  job:
     parallelism: 10
     upgradeMode: stateful
     state: running
@@ -203,39 +203,39 @@ spec:
 # HPA配置
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
-metadata: 
+metadata:
   name: flink-taskmanager-hpa
-spec: 
-  scaleTargetRef: 
+spec:
+  scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: flink-taskmanager
   minReplicas: 3
   maxReplicas: 20
-  metrics: 
+  metrics:
     - type: Pods
-      pods: 
-        metric: 
+      pods:
+        metric:
           name: kafka_consumer_lag
-        target: 
+        target:
           type: AverageValue
           averageValue: "500"
     - type: Resource
-      resource: 
+      resource:
         name: cpu
-        target: 
+        target:
           type: Utilization
           averageUtilization: 70
-  behavior: 
-    scaleUp: 
+  behavior:
+    scaleUp:
       stabilizationWindowSeconds: 60
-      policies: 
+      policies:
         - type: Percent
           value: 100
           periodSeconds: 60
-    scaleDown: 
+    scaleDown:
       stabilizationWindowSeconds: 300
-      policies: 
+      policies:
         - type: Percent
           value: 10
           periodSeconds: 60
@@ -546,13 +546,13 @@ $$
 
 ```yaml
 # Flink Checkpoint优化配置
-state: 
+state:
   backend: rocksdb
   checkpoints.dir: s3://flink-checkpoints/production
   savepoints.dir: s3://flink-savepoints/production
 
-execution: 
-  checkpointing: 
+execution:
+  checkpointing:
     interval: 60s
     min-pause-between-checkpoints: 30s
     max-concurrent-checkpoints: 1
@@ -653,15 +653,15 @@ $$
 
 ```yaml
 # 分层扩缩容策略
-autoscaling: 
+autoscaling:
   # 快速响应层 - 垂直扩缩(调整TM资源)
-  fast_layer: 
+  fast_layer:
     trigger: cpu > 80% or kafka_lag > 1000
     action: scale_up_cpu_memory
     cooldown: 60s
 
   # 慢速响应层 - 水平扩缩(增加TM数量)
-  slow_layer: 
+  slow_layer:
     trigger: sustained_load > 5min
     action: add_taskmanagers
     step: 2
@@ -851,24 +851,24 @@ Month 9-12: 智能化 (Sprint)
 
 ```yaml
 # 优化前
-spec: 
-  taskManager: 
-    resource: 
+spec:
+  taskManager:
+    resource:
       memory: "64Gi"
       cpu: 16
     replicas: 20
 
 # 优化后 - 右调优
-spec: 
-  taskManager: 
-    resource: 
+spec:
+  taskManager:
+    resource:
       memory: "32Gi"  # 内存利用率仅35%
       cpu: 8          # CPU利用率仅40%
     replicas: 12      # 基于p95负载计算
     # 混合实例策略
-    podTemplate: 
-      spec: 
-        nodeSelector: 
+    podTemplate:
+      spec:
+        nodeSelector:
           node-type: mixed  # 70% Spot + 30% 按需
 ```
 
@@ -901,14 +901,14 @@ flink-conf.yaml:
   pipeline.compression: "LZ4"  # 减少网络传输
 
 # 同区域部署，消除跨区域流量
-spec: 
-  jobManager: 
-    affinity: 
-      nodeAffinity: 
-        preferredDuringSchedulingIgnoredDuringExecution: 
+spec:
+  jobManager:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
-            preference: 
-              matchExpressions: 
+            preference:
+              matchExpressions:
                 - key: topology.kubernetes.io/zone
                   operator: In
                   values: ["us-east-1a"]  # 统一可用区
@@ -941,23 +941,23 @@ spec:
 
 ```yaml
 # 分层可用性策略
-architecture: 
+architecture:
   # 热路径 - 关键决策（预留实例）
-  hot_path: 
+  hot_path:
     instance_type: on_demand
     availability_sla: 99.99%
     nodes: 8
     reservation: 3_year  # 节省60%
 
   # 温路径 - 特征计算（Spot实例）
-  warm_path: 
+  warm_path:
     instance_type: spot
     availability_sla: 99%
     nodes: 4
     checkpoint_interval: 15s
 
   # 冷路径 - 离线分析（定时扩容）
-  cold_path: 
+  cold_path:
     instance_type: spot
     schedule: "0 2 * * *"  # 凌晨2点运行
     duration: 4h
@@ -1036,18 +1036,18 @@ def calculate_unit_economics():
 # Kubernetes CronJob - 开发环境自动关闭
 apiVersion: batch/v1
 kind: CronJob
-metadata: 
+metadata:
   name: dev-env-auto-shutdown
-spec: 
+spec:
   schedule: "0 20 * * 1-5"  # 工作日晚上8点
-  jobTemplate: 
-    spec: 
-      template: 
-        spec: 
-          containers: 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
           - name: shutdown
             image: bitnami/kubectl
-            command: 
+            command:
             - /bin/sh
             - -c
             - |
@@ -1063,9 +1063,9 @@ spec:
 # 工作日早上自动启动
 apiVersion: batch/v1
 kind: CronJob
-metadata: 
+metadata:
   name: dev-env-auto-start
-spec: 
+spec:
   schedule: "0 8 * * 1-5"  # 工作日早上8点
   # ... 类似配置，执行 resume 操作
 ```
@@ -1076,11 +1076,11 @@ spec:
 # ResourceQuota - 开发环境资源限制
 apiVersion: v1
 kind: ResourceQuota
-metadata: 
+metadata:
   name: dev-env-quota
   namespace: dev
-spec: 
-  hard: 
+spec:
+  hard:
     requests.cpu: "20"
     requests.memory: 80Gi
     limits.cpu: "40"
@@ -1116,6 +1116,9 @@ spec:
 **批流一体优化方案**：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink批流一体作业示例
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1138,21 +1141,21 @@ env.getCheckpointConfig().setCheckpointStorage("s3://unified-checkpoints/");
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: unified-pipeline
-spec: 
+spec:
   # 统一资源池
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "8Gi"
       cpu: 4
     replicas: 10
 
   # 批流模式切换
-  job: 
+  job:
     jarURI: local:///opt/flink/examples/streaming/batch-unified.jar
     parallelism: 20
-    args: 
+    args:
       - --mode  # streaming | batch
       - --schedule  # 流: continuous, 批: "0 2 * * *"
 

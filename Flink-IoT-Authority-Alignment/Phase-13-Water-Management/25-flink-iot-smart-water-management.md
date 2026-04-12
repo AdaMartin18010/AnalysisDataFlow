@@ -527,6 +527,9 @@ $$\min_{x_{leak}} \sum_{i=1}^{n} \left( p_i^{observed} - p_i^{model}(x_{leak}, q
 **Flink CEP漏损模式**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 漏损检测复杂事件模式
 Pattern<WaterEvent, ?> leakPattern = Pattern
     .<WaterEvent>begin("pressure_drop")

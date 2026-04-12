@@ -1,5 +1,9 @@
 # MCP协议与流处理集成架构
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink LLM集成](./real-time-rag-architecture.md), [RAG架构](./real-time-rag-architecture.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
@@ -455,7 +459,7 @@ class StreamingAnalyticsAgent:
 
         # 步骤 1: LLM 理解意图并规划工具调用
         plan = await self.llm.generate(
-            f"基于可用工具，规划如何回答: {query}\n"
+            f"基于可用工具,规划如何回答: {query}\n"
             f"可用工具: analyze_sales_trend, detect_anomaly, compare_metrics"
         )
 
@@ -483,10 +487,13 @@ class StreamingAnalyticsAgent:
         return answer, subscription
 
 # 使用示例
-agent = StreamingAnalyticsAgent()
-answer, live_feed = await agent.handle_user_query(
-    "过去24小时销售趋势如何？有哪些异常？"
-)
+async def main():
+    agent = StreamingAnalyticsAgent()
+    answer, live_feed = await agent.handle_user_query(
+        "过去24小时销售趋势如何？有哪些异常？"
+    )
+
+asyncio.run(main())
 ```
 
 ## 7. 可视化 (Visualizations)

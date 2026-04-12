@@ -372,6 +372,9 @@ import org.apache.flink.streaming.api.functions.async.ResultFuture;
 import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 /**
  * LLM异步推理函数
  *

@@ -337,6 +337,10 @@ AsyncDataStream.unorderedWait(
 .process(new RecommendationModel());
 
 // AsyncUserProfileLookup实现
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class AsyncUserProfileLookup
     extends RichAsyncFunction<UserEvent, EnrichedEvent> {
 

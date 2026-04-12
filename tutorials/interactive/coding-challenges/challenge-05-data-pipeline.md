@@ -62,6 +62,9 @@ graph LR
 ### Step 1: CDC Source 配置
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class CDCSourceConfig {
 
     public static MySqlSource<String> createMySqlSource() {
@@ -419,6 +422,12 @@ public class ErrorHandler extends ProcessFunction<ErrorRecord, Void> {
 ### Step 6: 主程序
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class DataPipelineJob {
 
     public static void main(String[] args) throws Exception {

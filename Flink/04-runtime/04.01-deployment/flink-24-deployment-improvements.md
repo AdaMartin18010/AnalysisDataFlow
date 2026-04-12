@@ -1,11 +1,13 @@
+# Flink 2.4 部署改进完整指南
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
-
----
-
-# Flink 2.4 部署改进完整指南
 
 > **所属阶段**: Flink Deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md), [flink-2.3-2.4-roadmap.md](../../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L5 (工程严格)
 >

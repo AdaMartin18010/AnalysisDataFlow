@@ -298,6 +298,9 @@ $$
 **策略 1: 丢弃 (默认)**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 // allowedLateness 默认为 0，迟到数据直接丢弃
 ```
@@ -305,6 +308,9 @@ $$
 **策略 2: 允许延迟更新**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 .allowedLateness(Time.minutes(5))  // 额外保留 5 分钟
 ```
@@ -312,6 +318,9 @@ $$
 **策略 3: 侧输出捕获**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 .sideOutputLateData(lateDataTag)
@@ -539,6 +548,9 @@ public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T>
 **实例 1: 有序日志流**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Event> stream = env.fromSource(kafkaSource,
     WatermarkStrategy.<Event>forMonotonousTimestamps()
         .withIdleness(Duration.ofMinutes(5)),
@@ -548,6 +560,9 @@ DataStream<Event> stream = env.fromSource(kafkaSource,
 **实例 2: 乱序交易流（常用配置）**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Transaction> stream = env.fromSource(kafkaSource,
     WatermarkStrategy.<Transaction>forBoundedOutOfOrderness(Duration.ofSeconds(10))
         .withIdleness(Duration.ofMinutes(1)),
@@ -561,6 +576,9 @@ DataStream<Transaction> stream = env.fromSource(kafkaSource,
 **Tumbling Window - 每小时 PV 统计**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(Event::getPageId)
     .window(TumblingEventTimeWindows.of(Time.hours(1)))
     .aggregate(new CountAggregate());
@@ -569,6 +587,9 @@ stream.keyBy(Event::getPageId)
 **Sliding Window - 5 分钟滑动平均**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(SensorReading::getSensorId)
     .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
     .aggregate(new AverageAggregate());
@@ -577,6 +598,9 @@ stream.keyBy(SensorReading::getSensorId)
 **Session Window - 用户行为分析**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(ClickEvent::getUserId)
     .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
     .allowedLateness(Time.minutes(10))
@@ -588,6 +612,10 @@ stream.keyBy(ClickEvent::getUserId)
 ### 6.4 迟到数据处理实例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 
 SingleOutputStreamOperator<Result> mainResult = stream
@@ -1137,6 +1165,9 @@ public interface WatermarkStrategy<T> extends TimestampAssignerSupplier<T>,
 /**
  * 带Idle检测的Watermark生成器
  */
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class WatermarkStrategyWithIdleness<T> implements WatermarkGenerator<T> {
 
     private final WatermarkGenerator<T> generator;

@@ -789,6 +789,9 @@ def analyze_utilization(cluster_id, days=7):
 **阶段 2: 状态后端迁移**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 从 HashMapStateBackend 迁移到 RocksDBStateBackend
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

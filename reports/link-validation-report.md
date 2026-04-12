@@ -1,4 +1,7 @@
-﻿# AnalysisDataFlow 交叉链接验证报告
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+# AnalysisDataFlow 交叉链接验证报告
 
 > **生成时间**: 2026-04-11 20:22:48
 > **验证工具**: link-validator.py v1.0.0
@@ -567,16 +570,16 @@
 | [BENCHMARK-RESULT-v4.1.md](BENCHMARK-RESULT-v4.1.md#L657) | 657 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/benchmarks/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [BEST-PRACTICES.md](BEST-PRACTICES.md#L1523) | 1523 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/performance/tuning/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [BEST-PRACTICES.md](BEST-PRACTICES.md#L1533) | 1533 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/docs/operations/autoscaler/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L433) | 433 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/compare/v3.6.0...HEAD) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L434) | 434 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.6.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L435) | 435 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L436) | 436 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.4.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L437) | 437 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.3.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L438) | 438 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.2.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L439) | 439 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.1.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L440) | 440 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L441) | 441 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.8.0) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [CHANGELOG.md](CHANGELOG.md#L442) | 442 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L433) | 433 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/compare/v3.6.0...HEAD) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L434) | 434 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.6.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L435) | 435 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L436) | 436 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.4.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L437) | 437 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.3.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L438) | 438 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.2.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L439) | 439 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.1.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L440) | 440 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L441) | 441 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.8.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [CHANGELOG.md](CHANGELOG.md#L442) | 442 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [CODE-EXAMPLE-FIX-REPORT.md](CODE-EXAMPLE-FIX-REPORT.md#L1188) | 1188 | [https://github.com/company/flink-iot-mid...](https://github.com/company/flink-iot-middleware) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [CODE-EXAMPLE-FIX-REPORT.md](CODE-EXAMPLE-FIX-REPORT.md#L4063) | 4063 | [https://downloads.apache.org/flink/flink...](https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.0/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [CODE-EXAMPLE-FIX-REPORT.md](CODE-EXAMPLE-FIX-REPORT.md#L5363) | 5363 | [https://github.com/company/flink-gitops....](https://github.com/company/flink-gitops.git) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -732,16 +735,16 @@
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L232) | 232 | [https://github.com/skitter-framework...](https://github.com/skitter-framework) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L233) | 233 | [https://github.com/spinroot/spin...](https://github.com/spinroot/spin) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L239) | 239 | [https://github.com/GoogleCloudPlatform/D...](https://github.com/GoogleCloudPlatform/DataflowJav) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L254) | 254 | [https://github.com/nusmv/nusmv...](https://github.com/nusmv/nusmv) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L254) | 254 | [https://github.com/nusmv/nusmv...](https://nusmv.fbk.eu/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L262) | 262 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/compare/v3.0.0...HEAD) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L262) | 262 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/compa) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L263) | 263 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.8.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L263) | 263 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.8.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L263) | 263 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/relea) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L264) | 264 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L264) | 264 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L264) | 264 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/relea) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L265) | 265 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L265) | 265 | [https://github.com/your-org/AnalysisData...](https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.5.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L265) | 265 | [https://github.com/your-org/AnalysisData...](https://github.com/your-org/AnalysisDataFlow/relea) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L267) | 267 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L267) | 267 | [https://github.com/luyanfeng/AnalysisDat...]([内部CI Badge - 需手动验证]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L267) | 267 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/acti) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L268) | 268 | [https://github.com/luyanruyr/AnalysisDat...](https://github.com/luyanruyr/AnalysisDataFlow/issues/new?template=bug_report.yml) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L268) | 268 | [https://github.com/luyanruyr/AnalysisDat...](https://github.com/luyanruyr/AnalysisDataFlow/issu) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -766,7 +769,7 @@
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L285) | 285 | [https://github.com/inspect-js/is-symbol/...](https://github.com/inspect-js/is-symbol/commit/07f) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L286) | 286 | [https://github.com/inspect-js/is-symbol/...](https://github.com/inspect-js/is-symbol/commit/5c3) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L287) | 287 | [https://github.com/inspect-js/is-symbol/...](https://github.com/inspect-js/is-symbol/commit/042) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L288) | 288 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L288) | 288 | [https://github.com/luyanfeng/AnalysisDat...]([内部CI Badge - 需手动验证]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L288) | 288 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/acti) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L289) | 289 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L289) | 289 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/acti) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -787,7 +790,7 @@
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L304) | 304 | [https://www.flexera.com/blog/cloud/state...](https://www.flexera.com/blog/cloud/state-of-the-cl) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L312) | 312 | [https://docs.risingwave.com/docs/current...](https://docs.risingwave.com/docs/current/architecture/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L312) | 312 | [https://docs.risingwave.com/docs/current...](https://docs.risingwave.com/docs/current/architect) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L318) | 318 | [http://www.usingcsp.com/...](http://www.usingcsp.com/) | 500 | HTTP 500 (服务器错误) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L318) | 318 | [http://www.usingcsp.com/...]([CSP资源站点 - 链接已失效]) | 500 | HTTP 500 (服务器错误) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L322) | 322 | [https://www.cs.huji.ac.il/~shais/papers/...](https://www.cs.huji.ac.il/~shais/papers/OLsurvey.p) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L324) | 324 | [https://cloud.google.com/dataflow/docs/c...](https://cloud.google.com/dataflow/docs/concepts/st) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L333) | 333 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/...) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -805,15 +808,15 @@
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L346) | 346 | [https://www.oreilly.com/library/view/str...](https://www.oreilly.com/library/view/stream-proces) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L347) | 347 | [https://www.oreilly.com/library/view/str...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L347) | 347 | [https://www.oreilly.com/library/view/str...](https://www.oreilly.com/library/view/streaming-sys) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L350) | 350 | [https://link.springer.com/article/10.102...](https://link.springer.com/article/10.1023/A:1022964117327) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L350) | 350 | [https://link.springer.com/article/10.102...]([Springer - Article]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L350) | 350 | [https://link.springer.com/article/10.102...](https://link.springer.com/article/10.1023/A:102296) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L352) | 352 | [https://link.springer.com/chapter/10.100...](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L352) | 352 | [https://link.springer.com/chapter/10.100...]([Springer - Chapter]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L352) | 352 | [https://link.springer.com/chapter/10.100...](https://link.springer.com/chapter/10.1007/3-540-49) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L354) | 354 | [https://www.routledge.com/Distributed-Sy...](https://www.routledge.com/Distributed-Systems-An-A) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L357) | 357 | [https://www.uber.com/en-US/blog/flink/...](https://www.uber.com/en-US/blog/flink/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L361) | 361 | [https://sites.cs.ucsb.edu/~rich/class/cs...](https://sites.cs.ucsb.edu/~rich/class/cs293b-cloud/papers/brewer_cap.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L362) | 362 | [https://www.oreilly.com/library/view/spa...](https://www.oreilly.com/library/view/spark-the-def) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L364) | 364 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/...) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L364) | 364 | [https://www.cambridge.org/core/books/pic...]([Cambridge - Pi Calculus]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L364) | 364 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L365) | 365 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L365) | 365 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -826,7 +829,7 @@
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L376) | 376 | [https://www.usenix.org/legacy/publicatio...](https://www.usenix.org/legacy/publications/library/proceedings/osdi06/tech/full_papers/chang/chang.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L378) | 378 | [http://www.morganclaypool.com/doi/abs/10...](http://www.morganclaypool.com/doi/abs/10.2200/S00296ED1V01Y201008DTM007) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L378) | 378 | [http://www.morganclaypool.com/doi/abs/10...](http://www.morganclaypool.com/doi/abs/10.2200/S002) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L383) | 383 | [https://modelcontextprotocol.io/spec...](https://modelcontextprotocol.io/spec) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L383) | 383 | [https://modelcontextprotocol.io/spec...](https://modelcontextprotocol.io/specification) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L392) | 392 | [https://www.uber.com/blog/how-uber-lever...](https://www.uber.com/blog/how-uber-leverages-price-elasticity/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L392) | 392 | [https://www.uber.com/blog/how-uber-lever...](https://www.uber.com/blog/how-uber-leverages-price) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [EXTERNAL-LINK-HEALTH-REPORT.md](EXTERNAL-LINK-HEALTH-REPORT.md#L393) | 393 | [https://www.uber.com/blog/multi-region-a...](https://www.uber.com/blog/multi-region-active-active-kafka/) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -855,13 +858,13 @@
 | [FLINK-RUST-DEEP-DIVE.md](FLINK-RUST-DEEP-DIVE.md#L405) | 405 | [https://docs.risingwave.com/sql/udfs/udf...](https://docs.risingwave.com/sql/udfs/udfs) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [FLINK-SCALA-RUST-INDEX.md](FLINK-SCALA-RUST-INDEX.md#L199) | 199 | [https://github.com/flink-scala-api...](https://github.com/flink-scala-api) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\00-meta\00-QUICK-START.md](Flink\00-meta\00-QUICK-START.md#L502) | 502 | [https://downloads.apache.org/flink/flink...](https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking.md](Flink\00-meta\version-tracking.md#L157) | 157 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking.md](Flink\00-meta\version-tracking.md#L197) | 197 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking\README.md](Flink\00-meta\version-tracking\README.md#L254) | 254 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking\README.md](Flink\00-meta\version-tracking\README.md#L343) | 343 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking\flink-26-27-roadmap.md](Flink\00-meta\version-tracking\flink-26-27-roadmap.md#L62) | 62 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking\flink-26-27-roadmap.md](Flink\00-meta\version-tracking\flink-26-27-roadmap.md#L328) | 328 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\00-meta\version-tracking\flink-26-27-status-report.md](Flink\00-meta\version-tracking\flink-26-27-status-report.md#L90) | 90 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking.md](Flink\00-meta\version-tracking.md#L157) | 157 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking.md](Flink\00-meta\version-tracking.md#L197) | 197 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking\README.md](Flink\00-meta\version-tracking\README.md#L254) | 254 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking\README.md](Flink\00-meta\version-tracking\README.md#L343) | 343 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking\flink-26-27-roadmap.md](Flink\00-meta\version-tracking\flink-26-27-roadmap.md#L62) | 62 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking\flink-26-27-roadmap.md](Flink\00-meta\version-tracking\flink-26-27-roadmap.md#L328) | 328 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\00-meta\version-tracking\flink-26-27-status-report.md](Flink\00-meta\version-tracking\flink-26-27-status-report.md#L90) | 90 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\01-concepts\datastream-v2-semantics.md](Flink\01-concepts\datastream-v2-semantics.md#L555) | 555 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\01-concepts\datastream-v2-semantics.md](Flink\01-concepts\datastream-v2-semantics.md#L557) | 557 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-500.md) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\01-concepts\datastream-v2-semantics.md](Flink\01-concepts\datastream-v2-semantics.md#L569) | 569 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-143.md) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -912,13 +915,13 @@
 | [Flink\04-runtime\04.03-observability\opentelemetry-streaming-observability.md](Flink\04-runtime\04.03-observability\opentelemetry-streaming-observability.md#L1296) | 1296 | [https://opentelemetry.io/blog/2026/annua...](https://opentelemetry.io/blog/2026/annual-survey-results/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\05-ecosystem\05.01-connectors\kafka-integration-patterns.md](Flink\05-ecosystem\05.01-connectors\kafka-integration-patterns.md#L360) | 360 | [https://glue.us-east-1.amazonaws.com...](https://glue.us-east-1.amazonaws.com) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\05-ecosystem\05.02-lakehouse\streaming-lakehouse-deep-dive-2026.md](Flink\05-ecosystem\05.02-lakehouse\streaming-lakehouse-deep-dive-2026.md#L1579) | 1579 | [https://s3tables.us-west-2.amazonaws.com...](https://s3tables.us-west-2.amazonaws.com/iceberg) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md](Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md#L1272) | 1272 | [https://bytecodealliance.org/articles/wa...](https://bytecodealliance.org/articles/wasi-0-3) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md](Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md#L1272) | 1272 | [https://bytecodealliance.org/articles/wa...](https://bytecodealliance.org/articles) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md](Flink\05-ecosystem\05.03-wasm-udf\wasm-streaming.md#L1280) | 1280 | [https://platform.uno/blog/state-of-webas...](https://platform.uno/blog/state-of-webassembly-2025-2026/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\06-ai-ml\flink-25-gpu-acceleration.md](Flink\06-ai-ml\flink-25-gpu-acceleration.md#L1392) | 1392 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-463.md) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\06-ai-ml\flink-agents-flip-531.md](Flink\06-ai-ml\flink-agents-flip-531.md#L21) | 21 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\06-ai-ml\flink-agents-flip-531.md](Flink\06-ai-ml\flink-agents-flip-531.md#L667) | 667 | [http://order-agent.flink:8080/a2a...](http://order-agent.flink:8080/a2a) | 500 | HTTP 500 (服务器错误) (缓存) |
 | [Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md](Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md#L1266) | 1266 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-531.md) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md](Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md#L1268) | 1268 | [https://modelcontextprotocol.io/spec...](https://modelcontextprotocol.io/spec) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md](Flink\06-ai-ml\flip-531-ai-agents-ga-guide.md#L1268) | 1268 | [https://modelcontextprotocol.io/spec...](https://modelcontextprotocol.io/specification) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\06-ai-ml\rag-streaming-architecture.md](Flink\06-ai-ml\rag-streaming-architecture.md#L1159) | 1159 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-393.md) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\arroyo-update\PROGRESS-TRACKING.md](Flink\07-rust-native\arroyo-update\PROGRESS-TRACKING.md#L5) | 5 | [https://www.cloudflare.com/developer-pla...](https://www.cloudflare.com/developer-platform/pipelines) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\arroyo-update\PROGRESS-TRACKING.md](Flink\07-rust-native\arroyo-update\PROGRESS-TRACKING.md#L35) | 35 | [https://blog.cloudflare.com/pipelines-ga...](https://blog.cloudflare.com/pipelines-ga/) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -931,8 +934,8 @@
 | [Flink\07-rust-native\flink-rust-ecosystem-trends-2026.md](Flink\07-rust-native\flink-rust-ecosystem-trends-2026.md#L606) | 606 | [https://github.com/rust-lang-nursery/wg-...](https://github.com/rust-lang-nursery/wg-async) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\flink-rust-ecosystem-trends-2026.md](Flink\07-rust-native\flink-rust-ecosystem-trends-2026.md#L607) | 607 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-wasm-udf) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\heterogeneous-computing\02-gpu-udf-rocm.md](Flink\07-rust-native\heterogeneous-computing\02-gpu-udf-rocm.md#L1201) | 1201 | [https://www.tensorflow.org/install/sourc...](https://www.tensorflow.org/install/source_rocm) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\07-rust-native\iron-functions\VERSION-TRACKING.md](Flink\07-rust-native\iron-functions\VERSION-TRACKING.md#L5) | 5 | [https://github.com/irontools/iron-functi...](https://github.com/irontools/iron-functions) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\07-rust-native\iron-functions\VERSION-TRACKING.md](Flink\07-rust-native\iron-functions\VERSION-TRACKING.md#L81) | 81 | [https://github.com/irontools/iron-functi...](https://github.com/irontools/iron-functions/releases) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\07-rust-native\iron-functions\VERSION-TRACKING.md](Flink\07-rust-native\iron-functions\VERSION-TRACKING.md#L5) | 5 | [https://github.com/irontools/iron-functi...](https://github.com/iron-io/functions) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\07-rust-native\iron-functions\VERSION-TRACKING.md](Flink\07-rust-native\iron-functions\VERSION-TRACKING.md#L81) | 81 | [https://github.com/irontools/iron-functi...](https://github.com/iron-io/functions/releases) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\simd-optimization\03-jni-assembly-bridge.md](Flink\07-rust-native\simd-optimization\03-jni-assembly-bridge.md#L765) | 765 | [https://arrow.apache.org/docs/java/...](https://arrow.apache.org/docs/java/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\simd-optimization\04-vectorized-udf-patterns.md](Flink\07-rust-native\simd-optimization\04-vectorized-udf-patterns.md#L660) | 660 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/udfs/vectorized/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\07-rust-native\trends\01-flink-rust-ecosystem-trends-2026.md](Flink\07-rust-native\trends\01-flink-rust-ecosystem-trends-2026.md#L689) | 689 | [https://arrow.apache.org/benchmarks/...](https://arrow.apache.org/benchmarks/) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -966,7 +969,7 @@
 | [Flink\08-roadmap\08.01-flink-24\release-checklist-template.md](Flink\08-roadmap\08.01-flink-24\release-checklist-template.md#L699) | 699 | [https://repo1.maven.org/maven2/org/apach...](https://repo1.maven.org/maven2/org/apache/flink/${artifact}/${VERSION}/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\08-roadmap\08.01-flink-24\release-checklist-template.md](Flink\08-roadmap\08.01-flink-24\release-checklist-template.md#L737) | 737 | [https://downloads.apache.org/flink/flink...](https://downloads.apache.org/flink/flink-${VERSION}/apache-flink-${VERSION}-bin-scala_2.12.tgz) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\08-roadmap\08.01-flink-24\release-checklist-template.md](Flink\08-roadmap\08.01-flink-24\release-checklist-template.md#L1017) | 1017 | [https://github.com/apache/flink/blob/mas...](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/README.md) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Flink\08-roadmap\flink-2.4-2.5-3.0-tracking.md](Flink\08-roadmap\flink-2.4-2.5-3.0-tracking.md#L372) | 372 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Flink\08-roadmap\flink-2.4-2.5-3.0-tracking.md](Flink\08-roadmap\flink-2.4-2.5-3.0-tracking.md#L372) | 372 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\09-practices\09.01-case-studies\case-financial-realtime-risk-control.md](Flink\09-practices\09.01-case-studies\case-financial-realtime-risk-control.md#L1038) | 1038 | [http://model-service.risk.svc:8080...](http://model-service.risk.svc:8080) | 500 | HTTP 500 (服务器错误) (缓存) |
 | [Flink\09-practices\09.01-case-studies\case-gaming-realtime-analytics.md](Flink\09-practices\09.01-case-studies\case-gaming-realtime-analytics.md#L319) | 319 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Flink\09-practices\09.01-case-studies\case-gaming-realtime-analytics.md](Flink\09-practices\09.01-case-studies\case-gaming-realtime-analytics.md#L321) | 321 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -1005,13 +1008,13 @@
 | [KNOWLEDGE-GRAPH\README.md](KNOWLEDGE-GRAPH\README.md#L33) | 33 | [https://github.com/AdaMartin18010/Analys...](https://github.com/AdaMartin18010/AnalysisDataFlow/workflows/Deploy%20Knowledge%20Graph%20v2.0%20to%20GitHub%20Pages/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [LEARNING-PATHS\beginner-quick-start.md](LEARNING-PATHS\beginner-quick-start.md#L59) | 59 | [https://downloads.apache.org/flink/flink...](https://downloads.apache.org/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [LEARNING-PATHS\beginner-zero-foundation.md](LEARNING-PATHS\beginner-zero-foundation.md#L78) | 78 | [https://downloads.apache.org/flink/flink...](https://downloads.apache.org/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [NAVIGATION-INDEX.md](NAVIGATION-INDEX.md#L689) | 689 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [NAVIGATION-INDEX.md](NAVIGATION-INDEX.md#L689) | 689 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [PROJECT-TRACKING.md](PROJECT-TRACKING.md#L307) | 307 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README-EN.md](README-EN.md#L15) | 15 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README-EN.md](README-EN.md#L15) | 15 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [README-EN.md](README-EN.md#L16) | 16 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [README-EN.md](README-EN.md#L16) | 16 | [https://github.com/luyanfeng/AnalysisDat...]([内部CI Badge - 需手动验证]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README-EN.md](README-EN.md#L16) | 16 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [README-EN.md](README-EN.md#L17) | 17 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [README-EN.md](README-EN.md#L17) | 17 | [https://github.com/luyanfeng/AnalysisDat...]([内部CI Badge - 需手动验证]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README-EN.md](README-EN.md#L17) | 17 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README-PROOF-CHAINS.md](README-PROOF-CHAINS.md#L473) | 473 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [README.md](README.md#L6) | 6 | [https://github.com/luyanfeng/AnalysisDat...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -1024,26 +1027,26 @@
 | [REFERENCES.md](REFERENCES.md#L36) | 36 | [https://sites.cs.ucsb.edu/~rich/class/cs...](https://sites.cs.ucsb.edu/~rich/class/cs293b-cloud/papers/brewer_cap.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L37) | 37 | [https://users.cs.duke.edu/~badi/papers/c...](https://users.cs.duke.edu/~badi/papers/cap.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L41) | 41 | [https://www.usenix.org/legacy/publicatio...](https://www.usenix.org/legacy/publications/library/proceedings/osdi06/tech/full_papers/chang/chang.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L51) | 51 | [http://www.usingcsp.com/...](http://www.usingcsp.com/) | 500 | HTTP 500 (服务器错误) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L54) | 54 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/...) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L51) | 51 | [http://www.usingcsp.com/...]([CSP资源站点 - 链接已失效]) | 500 | HTTP 500 (服务器错误) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L54) | 54 | [https://www.cambridge.org/core/books/pic...]([Cambridge - Pi Calculus]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L54) | 54 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L57) | 57 | [https://link.springer.com/chapter/10.100...](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L57) | 57 | [https://link.springer.com/chapter/10.100...]([Springer - Chapter]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L66) | 66 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/...) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L66) | 66 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L76) | 76 | [https://lamport.azurewebsites.net/pubs/t...](https://lamport.azurewebsites.net/pubs/tla+book.pdf) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L79) | 79 | [https://link.springer.com/article/10.102...](https://link.springer.com/article/10.1023/A:1022964117327) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L79) | 79 | [https://link.springer.com/article/10.102...]([Springer - Article]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L81) | 81 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L81) | 81 | [https://www.cambridge.org/core/journals/...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L95) | 95 | [http://www.morganclaypool.com/doi/abs/10...](http://www.morganclaypool.com/doi/abs/10.2200/S00296ED1V01Y201008DTM007) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L106) | 106 | [https://www.oreilly.com/library/view/str...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L109) | 109 | [https://www.oreilly.com/library/view/lea...](https://www.oreilly.com/library/view/learning-spark/9781492050018/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L131) | 131 | [http://www.usingcsp.com/...](http://www.usingcsp.com/) | 500 | HTTP 500 (服务器错误) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L131) | 131 | [http://www.usingcsp.com/...]([CSP资源站点 - 链接已失效]) | 500 | HTTP 500 (服务器错误) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L134) | 134 | [https://www.cambridge.org/core/books/spa...](https://www.cambridge.org/core/books/space-and-motion-of-communicating-agents/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L135) | 135 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/...) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L135) | 135 | [https://www.cambridge.org/core/books/pic...]([Cambridge - Pi Calculus]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L135) | 135 | [https://www.cambridge.org/core/books/pic...](https://www.cambridge.org/core/books/picalculus/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L158) | 158 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L159) | 159 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L161) | 161 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L161) | 161 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L200) | 200 | [https://pekko.apache.org/docs/...](https://pekko.apache.org/docs/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L218) | 218 | [https://www.uber.com/en-US/blog/exactly-...](https://www.uber.com/en-US/blog/exactly-once/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L219) | 219 | [https://www.uber.com/en-US/blog/flink/...](https://www.uber.com/en-US/blog/flink/) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -1051,16 +1054,16 @@
 | [REFERENCES.md](REFERENCES.md#L224) | 224 | [https://www.confluent.io/blog/kafka-stre...](https://www.confluent.io/blog/kafka-streams-vs-flink/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L282) | 282 | [https://github.com/skitter-framework...](https://github.com/skitter-framework) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L323) | 323 | [https://github.com/spinroot/spin...](https://github.com/spinroot/spin) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [REFERENCES.md](REFERENCES.md#L324) | 324 | [https://github.com/nusmv/nusmv...](https://github.com/nusmv/nusmv) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [REFERENCES.md](REFERENCES.md#L324) | 324 | [https://github.com/nusmv/nusmv...](https://nusmv.fbk.eu/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L337) | 337 | [https://github.com/streamingledger...](https://github.com/streamingledger) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [REFERENCES.md](REFERENCES.md#L343) | 343 | [https://github.com/spring-tutorials/stre...](https://github.com/spring-tutorials/stream-processing) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [SEO-IMPLEMENTATION-GUIDE.md](SEO-IMPLEMENTATION-GUIDE.md#L136) | 136 | [https://analysisdataflow.github.io/sitem...](https://analysisdataflow.github.io/sitemap.xml) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [SEO-IMPLEMENTATION-GUIDE.md](SEO-IMPLEMENTATION-GUIDE.md#L209) | 209 | [https://analysisdataflow.github.io/xxx...](https://analysisdataflow.github.io/xxx) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Struct\01-foundation\01.10-schema-evolution-formalization.md](Struct\01-foundation\01.10-schema-evolution-formalization.md#L780) | 780 | [https://martin.kleppmann.com/2015/11/05/...](https://martin.kleppmann.com/2015/11/05/schema-evolution-in-avro-protocol-buffers-thrift.html) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Struct\02-properties\02.07-encrypted-stream-processing.md](Struct\02-properties\02.07-encrypted-stream-processing.md#L884) | 884 | [https://github.com/ibm/helib...](https://github.com/ibm/helib) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Struct\03-relationships\03.05-cross-model-mappings.md](Struct\03-relationships\03.05-cross-model-mappings.md#L804) | 804 | [http://www.usingcsp.com/...](http://www.usingcsp.com/) | 500 | HTTP 500 (服务器错误) (缓存) |
+| [Struct\03-relationships\03.05-cross-model-mappings.md](Struct\03-relationships\03.05-cross-model-mappings.md#L804) | 804 | [http://www.usingcsp.com/...]([CSP资源站点 - 链接已失效]) | 500 | HTTP 500 (服务器错误) (缓存) |
 | [Struct\07-tools\smart-casual-verification.md](Struct\07-tools\smart-casual-verification.md#L1278) | 1278 | [https://github.com/tlaplus/tlaplus/relea...](https://github.com/tlaplus/tlaplus/releases/download/v1.4.5/tla2tools.jar) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [Struct\07-tools\tla-for-flink.md](Struct\07-tools\tla-for-flink.md#L2063) | 2063 | [https://github.com/apache/flink/tree/mas...](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [Struct\07-tools\tla-for-flink.md](Struct\07-tools\tla-for-flink.md#L2063) | 2063 | [https://github.com/apache/flink/tree/mas...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Struct\Proof-Chains-Flink-Complete.md](Struct\Proof-Chains-Flink-Complete.md#L1874) | 1874 | [https://nightlies.apache.org/flink/flink...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Struct\Proof-Chains-Flink-Complete.md](Struct\Proof-Chains-Flink-Complete.md#L1878) | 1878 | [https://cwiki.apache.org/confluence/disp...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [Struct\Proof-Chains-Flink-Complete.md](Struct\Proof-Chains-Flink-Complete.md#L1884) | 1884 | [https://flink.apache.org/2024/09/12/fors...](https://flink.apache.org/2024/09/12/forst-statebackend/) | 404 | HTTP 404 (页面不存在) (缓存) |
@@ -1145,7 +1148,7 @@
 | [tutorials\01-environment-setup.md](tutorials\01-environment-setup.md#L743) | 743 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [tutorials\01-environment-setup.md](tutorials\01-environment-setup.md#L745) | 745 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [tutorials\01-introduction-script.md](tutorials\01-introduction-script.md#L315) | 315 | [https://github.com/AnalysisDataFlow...](https://github.com/AnalysisDataFlow) | 404 | HTTP 404 (页面不存在) (缓存) |
-| [tutorials\01-introduction-script.md](tutorials\01-introduction-script.md#L316) | 316 | [https://analysisdataflow.github.io/docs...](https://analysisdataflow.github.io/docs) | 404 | HTTP 404 (页面不存在) (缓存) |
+| [tutorials\01-introduction-script.md](tutorials\01-introduction-script.md#L316) | 316 | [https://analysisdataflow.github.io/docs...]([项目文档站点 - 待部署]) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [tutorials\02-first-flink-job.md](tutorials\02-first-flink-job.md#L611) | 611 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [tutorials\02-first-flink-job.md](tutorials\02-first-flink-job.md#L613) | 613 | [http://maven.apache.org/POM/4.0.0...](http://maven.apache.org/POM/4.0.0) | 404 | HTTP 404 (页面不存在) (缓存) |
 | [tutorials\03-flink-quickstart-script.md](tutorials\03-flink-quickstart-script.md#L143) | 143 | [https://dlcdn.apache.org/flink/flink-2.0...](https://dlcdn.apache.org/flink/flink-2.0.0/flink-2.0.0-bin-scala_2.12.tgz) | 404 | HTTP 404 (页面不存在) (缓存) |

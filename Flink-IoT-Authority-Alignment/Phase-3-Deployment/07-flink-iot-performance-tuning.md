@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink IoT 性能优化与调优指南
 
 > **所属阶段**: Flink-IoT-Authority-Alignment/Phase-3-Deployment | **前置依赖**: [Phase-2-Implementation/flink-iot-sql-model.md](../Phase-2-Implementation/flink-iot-sql-model.md) | **形式化等级**: L4
@@ -640,6 +644,12 @@ SET 'state.backend.rocksdb.bloom-filter.block-based-mode' = 'false';
  * 目标吞吐量: 100万事件/秒
  * 目标延迟: P99 < 1秒
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class IoTPerformanceBenchmark {
 
     public static void main(String[] args) throws Exception {

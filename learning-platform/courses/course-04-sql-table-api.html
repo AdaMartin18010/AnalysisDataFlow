@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程4: Flink SQL与Table API精通 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #e8f4f8; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #11998e; }
+        .objectives h4 { color: #11998e; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #856404; margin-bottom: 10px; }
+        .quiz { background: #f3e5f5; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #9c27b0; }
+        .quiz h4 { color: #7b1fa2; margin-bottom: 15px; }
+        .quiz-question { margin: 15px 0; padding: 15px; background: white; border-radius: 8px; }
+        .quiz-question p { font-weight: bold; margin-bottom: 10px; }
+        .quiz-options label { display: block; padding: 8px; cursor: pointer; }
+        .quiz-options label:hover { background: #f5f5f5; border-radius: 5px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #667eea; margin-bottom: 10px; }
+        .reading a { color: #667eea; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .progress-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .progress-dot.active { background: #667eea; color: white; }
+        .progress-dot.completed { background: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">📊 中级课程</span>
+            <span class="badge">⏱️ 约4小时</span>
+            <h1>课程4: Flink SQL与Table API精通</h1>
+            <p>掌握声明式流处理，使用SQL和Table API高效开发流计算应用</p>
+            <div class="progress-indicator">
+                <div class="progress-dot active">1</div>
+                <div class="progress-dot">2</div>
+                <div class="progress-dot">3</div>
+                <div class="progress-dot">4</div>
+            </div>
+        </header>
+
+        <!-- 课节 4.1 -->
+        <div class="lesson">
+            <h2>4.1 Table API基础入门</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Table API 与 DataStream API 的关系</li>
+                    <li>掌握 TableEnvironment 的创建和配置</li>
+                    <li>学会使用 Table API 进行基本数据操作</li>
+                    <li>理解 Table 与 DataStream 的相互转换</li>
+                </ul>
+            </div>
+
+            <h3>4.1.1 Table API 概述</h3>
+            <p>Table API 是 Flink 提供的<strong>声明式编程接口</strong>，具有以下特点：</p>
+            <ul style="margin: 15px 0 15px 30px;">
+                <li><strong>统一批流处理</strong>: 同一套API处理有界和无界数据</li>
+                <li><strong>自动优化</strong>: 内置查询优化器，生成高效执行计划</li>
+                <li><strong>类型安全</strong>: 编译时类型检查，减少运行时错误</li>
+                <li><strong>与SQL互操作</strong>: Table API 和 SQL 可无缝混合使用</li>
+            </ul>
+
+            <h3>4.1.2 环境创建与基本操作</h3>
+            <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.table.api.Table;
+<span class="keyword">import</span> org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+<span class="keyword">public class</span> TableApiBasics {
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        <span class="comment">// 1. 创建 StreamExecutionEnvironment</span>
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 2. 创建 StreamTableEnvironment</span>
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        
+        <span class="comment">// 3. 从 DataStream 创建 Table</span>
+        DataStream&lt;UserEvent&gt; stream = env.addSource(<span class="keyword">new</span> UserEventSource());
+        Table table = tableEnv.fromDataStream(stream);
+        
+        <span class="comment">// 4. 使用 Table API 进行查询</span>
+        Table result = table
+            .groupBy($("userId"))
+            .select($("userId"), $("amount").sum().as("total_amount"));
+        
+        <span class="comment">// 5. 转换回 DataStream</span>
+        DataStream&lt;Row&gt; resultStream = tableEnv.toDataStream(result);
+        resultStream.print();
+        
+        env.execute(<span class="string">"Table API Basics"</span>);
+    }
+}</pre>
+            </div>
+
+            <h3>4.1.3 Table API 核心操作</h3>
+            <div class="code-block">
+<pre><span class="comment">// 选择列和重命名</span>
+Table selected = table.select($("name"), $("age").as("user_age"));
+
+<span class="comment">// 过滤条件</span>
+Table filtered = table.filter($("age").isGreater(18));
+
+<span class="comment">// 分组聚合</span>
+Table aggregated = table
+    .groupBy($("department"))
+    .select($("department"), $("salary").avg().as("avg_salary"));
+
+<span class="comment">// 窗口聚合 (Tumbling Window)</span>
+Table windowed = table
+    .window(Tumble.over(lit(5).minutes()).on($("event_time")).as("w"))
+    .groupBy($("userId"), $("w"))
+    .select($("userId"), $("w").start(), $("w").end(), $("amount").sum());
+
+<span class="comment">// Join 操作</span>
+Table joined = table1
+    .join(table2, $("table1.id").isEqual($("table2.user_id")))
+    .select($("table1.name"), $("table2.order_amount"));</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 4.1</h4>
+                <ol>
+                    <li>创建一个包含用户ID、姓名、年龄的 DataStream</li>
+                    <li>使用 Table API 筛选出年龄大于18岁的用户</li>
+                    <li>按姓名首字母分组，统计每组人数</li>
+                    <li>将结果转换回 DataStream 并输出</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Table API 与 DataStream API 相比，主要优势是什么？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="A"> A. 执行速度更快</label>
+                        <label><input type="radio" name="q1" value="B"> B. 声明式编程，自动优化</label>
+                        <label><input type="radio" name="q1" value="C"> C. 支持更多数据源</label>
+                        <label><input type="radio" name="q1" value="D"> D. 内存占用更少</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 如何将 Table 转换回 DataStream？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="A"> A. table.toStream()</label>
+                        <label><input type="radio" name="q2" value="B"> B. tableEnv.toDataStream(table)</label>
+                        <label><input type="radio" name="q2" value="C"> C. env.fromTable(table)</label>
+                        <label><input type="radio" name="q2" value="D"> D. table.convertToStream()</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. Table API 中，$() 符号的作用是什么？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="A"> A. 定义变量</label>
+                        <label><input type="radio" name="q3" value="B"> B. 引用字段/列</label>
+                        <label><input type="radio" name="q3" value="C"> C. 创建窗口</label>
+                        <label><input type="radio" name="q3" value="D"> D. 设置并行度</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-table-api-streaming.md">Flink Table API 流处理指南</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/tableapi/" target="_blank">Table API 参考</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 4.2 -->
+        <div class="lesson">
+            <h2>4.2 Flink SQL 基础</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Flink SQL 的基本语法</li>
+                    <li>学会创建和使用 Catalog</li>
+                    <li>理解 SQL 中的时间属性和窗口</li>
+                    <li>掌握常用 SQL 函数和操作</li>
+                </ul>
+            </div>
+
+            <h3>4.2.1 SQL 基础语法</h3>
+            <div class="code-block">
+<pre><span class="comment">// 创建 TableEnvironment</span>
+StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+<span class="comment">// 注册表 (从 DataStream)</span>
+tableEnv.createTemporaryView("user_events", stream);
+
+<span class="comment">// 执行 SQL 查询</span>
+Table result = tableEnv.sqlQuery(
+    <span class="string">"SELECT userId, COUNT(*) as event_count "</span> +
+    <span class="string">"FROM user_events "</span> +
+    <span class="string">"GROUP BY userId"</span>
+);
+
+<span class="comment">// 执行 SQL 更新 (INSERT)</span>
+tableEnv.executeSql(
+    <span class="string">"INSERT INTO output_table "</span> +
+    <span class="string">"SELECT userId, amount FROM user_events WHERE amount > 100"</span>
+);</pre>
+            </div>
+
+            <h3>4.2.2 DDL - 定义表结构</h3>
+            <div class="code-block">
+<pre><span class="comment">// 创建 Kafka 源表</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE user_events (
+        user_id STRING,
+        event_type STRING,
+        event_time TIMESTAMP(3),
+        amount DECIMAL(10, 2),
+        WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND
+    ) WITH (
+        'connector' = 'kafka',
+        'topic' = 'user-events',
+        'properties.bootstrap.servers' = 'localhost:9092',
+        'format' = 'json',
+        'scan.startup.mode' = 'latest-offset'
+    )
+"""</span>);
+
+<span class="comment">// 创建 MySQL 结果表</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE event_statistics (
+        event_type STRING PRIMARY KEY NOT ENFORCED,
+        total_amount DECIMAL(10, 2),
+        event_count BIGINT,
+        update_time TIMESTAMP(3)
+    ) WITH (
+        'connector' = 'jdbc',
+        'url' = 'jdbc:mysql://localhost:3306/flink_db',
+        'table-name' = 'event_statistics',
+        'username' = 'flink_user',
+        'password' = 'password'
+    )
+"""</span>);</pre>
+            </div>
+
+            <h3>4.2.3 SQL 窗口函数</h3>
+            <div class="code-block">
+<pre><span class="comment">// TUMBLE 窗口 (滚动窗口)</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        user_id,
+        TUMBLE_START(event_time, INTERVAL '10' MINUTE) as window_start,
+        TUMBLE_END(event_time, INTERVAL '10' MINUTE) as window_end,
+        COUNT(*) as event_count,
+        SUM(amount) as total_amount
+    FROM user_events
+    GROUP BY 
+        user_id,
+        TUMBLE(event_time, INTERVAL '10' MINUTE)
+"""</span>);
+
+<span class="comment">// HOP 窗口 (滑动窗口)</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        user_id,
+        SUM(amount) as total_amount
+    FROM user_events
+    GROUP BY 
+        user_id,
+        HOP(event_time, INTERVAL '5' MINUTE, INTERVAL '15' MINUTE)
+"""</span>);
+
+<span class="comment">// SESSION 窗口 (会话窗口)</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        user_id,
+        SESSION_START(event_time, INTERVAL '30' MINUTE) as session_start,
+        COUNT(*) as events_in_session
+    FROM user_events
+    GROUP BY 
+        user_id,
+        SESSION(event_time, INTERVAL '30' MINUTE)
+"""</span>);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 4.2</h4>
+                <ol>
+                    <li>创建一个 Socket 源表的 SQL DDL</li>
+                    <li>编写 SQL 查询每5分钟的用户活跃度统计</li>
+                    <li>使用 HOP 窗口计算滑动平均</li>
+                    <li>将结果写入文件系统</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Flink SQL 中定义 Watermark 的语法是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="A"> A. WATERMARK = event_time - 5 SECOND</label>
+                        <label><input type="radio" name="q4" value="B"> B. WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND</label>
+                        <label><input type="radio" name="q4" value="C"> C. SET WATERMARK event_time 5 SECOND</label>
+                        <label><input type="radio" name="q4" value="D"> D. WATERMARK(event_time, 5)</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. TUMBLE 窗口与 HOP 窗口的主要区别是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="A"> A. TUMBLE 支持更大窗口</label>
+                        <label><input type="radio" name="q5" value="B"> B. HOP 窗口可以重叠，TUMBLE 不重叠</label>
+                        <label><input type="radio" name="q5" value="C"> C. TUMBLE 性能更好</label>
+                        <label><input type="radio" name="q5" value="D"> D. 没有区别</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 如何将 SQL 查询结果写入外部系统？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="A"> A. 使用 sqlQuery 然后手动写入</label>
+                        <label><input type="radio" name="q6" value="B"> B. 使用 executeSql 配合 INSERT INTO</label>
+                        <label><input type="radio" name="q6" value="C"> C. 使用 toDataStream 转换后写入</label>
+                        <label><input type="radio" name="q6" value="D"> D. B 和 C 都可以</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-sql-complete-guide.md">Flink SQL 完整指南</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/" target="_blank">SQL 参考</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 4.3 -->
+        <div class="lesson">
+            <h2>4.3 流式 Join 与复杂查询</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Regular Join、Interval Join 和 Temporal Join</li>
+                    <li>理解流处理中 Join 的语义和挑战</li>
+                    <li>学会处理多表关联查询</li>
+                    <li>掌握嵌套查询和子查询优化</li>
+                </ul>
+            </div>
+
+            <h3>4.3.1 Regular Join (常规 Join)</h3>
+            <p>Regular Join 是无界的，需要为两个输入流维护状态，适合小规模维度表。</p>
+            <div class="code-block">
+<pre><span class="comment">// 创建订单流表</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE orders (
+        order_id STRING,
+        user_id STRING,
+        product_id STRING,
+        order_time TIMESTAMP(3),
+        amount DECIMAL(10, 2),
+        WATERMARK FOR order_time AS order_time - INTERVAL '5' SECOND
+    ) WITH (...)
+"""</span>);
+
+<span class="comment">// 创建用户维度表</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE users (
+        user_id STRING,
+        user_name STRING,
+        user_level STRING,
+        PRIMARY KEY (user_id) NOT ENFORCED
+    ) WITH (...)
+"""</span>);
+
+<span class="comment">// Regular Join - 关联订单和用户信息</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        o.order_id,
+        o.amount,
+        u.user_name,
+        u.user_level
+    FROM orders o
+    JOIN users u ON o.user_id = u.user_id
+"""</span>);</pre>
+            </div>
+
+            <h3>4.3.2 Interval Join (时间区间 Join)</h3>
+            <p>Interval Join 限制 Join 的时间范围，避免无限状态增长。</p>
+            <div class="code-block">
+<pre><span class="comment">// Interval Join - 关联订单和配送事件</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE shipments (
+        order_id STRING,
+        ship_time TIMESTAMP(3),
+        carrier STRING,
+        WATERMARK FOR ship_time AS ship_time - INTERVAL '5' SECOND
+    ) WITH (...)
+"""</span>);
+
+<span class="comment">// 订单创建后 4 小时内发生的配送事件</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        o.order_id,
+        o.amount,
+        s.carrier,
+        TIMESTAMPDIFF(HOUR, o.order_time, s.ship_time) as ship_delay_hours
+    FROM orders o
+    JOIN shipments s ON o.order_id = s.order_id
+    WHERE o.order_time BETWEEN s.ship_time - INTERVAL '4' HOUR AND s.ship_time
+"""</span>);</pre>
+            </div>
+
+            <h3>4.3.3 Temporal Join (时态表 Join)</h3>
+            <p>Temporal Join 用于关联版本化的维度数据，根据事件时间获取对应版本。</p>
+            <div class="code-block">
+<pre><span class="comment">// 创建汇率时态表 (带版本信息)</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE currency_rates (
+        currency STRING,
+        rate DECIMAL(10, 6),
+        update_time TIMESTAMP(3),
+        WATERMARK FOR update_time AS update_time - INTERVAL '1' SECOND,
+        PRIMARY KEY (currency, update_time) NOT ENFORCED
+    ) WITH (...)
+"""</span>);
+
+<span class="comment">// 创建带货币的订单表</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE TABLE orders_with_currency (
+        order_id STRING,
+        currency STRING,
+        amount DECIMAL(10, 2),
+        order_time TIMESTAMP(3),
+        WATERMARK FOR order_time AS order_time - INTERVAL '5' SECOND
+    ) WITH (...)
+"""</span>);
+
+<span class="comment">// Temporal Join - 获取订单发生时的汇率</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT 
+        o.order_id,
+        o.currency,
+        o.amount,
+        r.rate,
+        o.amount * r.rate as amount_usd,
+        o.order_time
+    FROM orders_with_currency o
+    JOIN currency_rates FOR SYSTEM_TIME AS OF o.order_time r
+    ON o.currency = r.currency
+"""</span>);</pre>
+            </div>
+
+            <h3>4.3.4 复杂查询示例</h3>
+            <div class="code-block">
+<pre><span class="comment">// 多表关联 + 窗口聚合</span>
+tableEnv.sqlQuery(<span class="string">"""
+    WITH hourly_stats AS (
+        SELECT 
+            u.user_level,
+            TUMBLE_START(o.order_time, INTERVAL '1' HOUR) as hour_start,
+            COUNT(*) as order_count,
+            SUM(o.amount) as total_amount,
+            AVG(o.amount) as avg_amount
+        FROM orders o
+        JOIN users u ON o.user_id = u.user_id
+        GROUP BY 
+            u.user_level,
+            TUMBLE(o.order_time, INTERVAL '1' HOUR)
+    )
+    SELECT 
+        user_level,
+        hour_start,
+        order_count,
+        total_amount,
+        avg_amount,
+        RANK() OVER (PARTITION BY hour_start ORDER BY total_amount DESC) as rank
+    FROM hourly_stats
+"""</span>);
+
+<span class="comment">// Top-N 查询 (每类商品销量前3)</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT * FROM (
+        SELECT 
+            product_id,
+            COUNT(*) as sales_count,
+            ROW_NUMBER() OVER (PARTITION BY category ORDER BY COUNT(*) DESC) as rn
+        FROM orders
+        GROUP BY product_id, category
+    ) WHERE rn <= 3
+"""</span>);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 4.3</h4>
+                <ol>
+                    <li>创建订单表和商品维度表，使用 Regular Join 关联</li>
+                    <li>修改查询使用 Interval Join，限制15分钟时间窗口</li>
+                    <li>创建用户等级历史表，使用时态表 Join 获取下单时的用户等级</li>
+                    <li>编写 Top-N 查询，统计每小时消费金额最高的10个用户</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Regular Join 的主要缺点是什么？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="A"> A. 查询速度慢</label>
+                        <label><input type="radio" name="q7" value="B"> B. 需要维护无限状态</label>
+                        <label><input type="radio" name="q7" value="C"> C. 不支持多表 Join</label>
+                        <label><input type="radio" name="q7" value="D"> D. 语法复杂</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. Interval Join 的关键特性是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="A"> A. 支持更多 Join 类型</label>
+                        <label><input type="radio" name="q8" value="B"> B. 限制时间范围，控制状态大小</label>
+                        <label><input type="radio" name="q8" value="C"> C. 自动清理过期数据</label>
+                        <label><input type="radio" name="q8" value="D"> D. 性能更好</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. Temporal Join 适用于什么场景？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="A"> A. 关联静态配置表</label>
+                        <label><input type="radio" name="q9" value="B"> B. 关联历史版本化的维度数据</label>
+                        <label><input type="radio" name="q9" value="C"> C. 关联实时事件流</label>
+                        <label><input type="radio" name="q9" value="D"> D. 关联外部服务</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Knowledge/stream-join-patterns.md">流式 Join 设计模式</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/joins/" target="_blank">Joins in Continuous Queries</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 4.4 -->
+        <div class="lesson">
+            <h2>4.4 Table API 与 SQL 进阶</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Catalog 管理和元数据操作</li>
+                    <li>理解查询优化和执行计划分析</li>
+                    <li>学会自定义函数 (UDF)</li>
+                    <li>掌握批流一体场景的开发技巧</li>
+                </ul>
+            </div>
+
+            <h3>4.4.1 Catalog 管理</h3>
+            <div class="code-block">
+<pre><span class="comment">// 创建内存 Catalog</span>
+tableEnv.executeSql(<span class="string">"CREATE CATALOG memory_catalog WITH ('type' = 'generic_in_memory')"</span>);
+
+<span class="comment">// 使用 JdbcCatalog 连接外部元数据存储</span>
+tableEnv.executeSql(<span class="string">"""
+    CREATE CATALOG my_catalog WITH (
+        'type' = 'jdbc',
+        'default-database' = 'flink_db',
+        'username' = 'user',
+        'password' = 'pass',
+        'base-url' = 'jdbc:mysql://localhost:3306'
+    )
+"""</span>);
+
+<span class="comment">// 切换 Catalog</span>
+tableEnv.executeSql(<span class="string">"USE CATALOG my_catalog"</span>);
+tableEnv.executeSql(<span class="string">"USE DATABASE flink_db"</span>);
+
+<span class="comment">// 列出所有表</span>
+TableResult tables = tableEnv.executeSql(<span class="string">"SHOW TABLES"</span>);
+tables.print();</pre>
+            </div>
+
+            <h3>4.4.2 执行计划分析</h3>
+            <div class="code-block">
+<pre><span class="comment">// 查看逻辑执行计划</span>
+Table result = tableEnv.sqlQuery(<span class="string">"SELECT ..."</span>);
+String explanation = tableEnv.explain(result);
+System.out.println(explanation);
+
+<span class="comment">// 查看优化后的执行计划 (含优化器提示)</span>
+String detailedExplanation = tableEnv.explainSql(
+    <span class="string">"SELECT user_id, SUM(amount) FROM orders GROUP BY user_id"</span>,
+    ExplainDetail.CHANGELOG_MODE,
+    ExplainDetail.ESTIMATED_COST
+);
+System.out.println(detailedExplanation);
+
+<span class="comment">// 使用 EXPLAIN 语句</span>
+tableEnv.executeSql(<span class="string">"""
+    EXPLAIN PLAN FOR
+    SELECT user_id, COUNT(*) 
+    FROM orders 
+    GROUP BY user_id
+"""</span>).print();</pre>
+            </div>
+
+            <h3>4.4.3 自定义函数 (UDF)</h3>
+            <div class="code-block">
+<pre><span class="comment">// Scalar Function - 标量函数</span>
+<span class="keyword">public static class</span> MaskFunction <span class="keyword">extends</span> ScalarFunction {
+    <span class="keyword">public</span> String eval(String str) {
+        <span class="keyword">if</span> (str == <span class="keyword">null</span> || str.length() < 4) {
+            <span class="keyword">return</span> <span class="string">"****"</span>;
+        }
+        <span class="keyword">return</span> str.substring(0, 2) + <span class="string">"****"</span> + str.substring(str.length() - 2);
+    }
+}
+
+<span class="comment">// 注册并使用</span>
+tableEnv.createTemporarySystemFunction(<span class="string">"mask"</span>, MaskFunction.class);
+tableEnv.sqlQuery(<span class="string">"SELECT mask(phone_number) FROM users"</span>);
+
+<span class="comment">// Table Function - 表函数 (一对多)</span>
+<span class="keyword">public static class</span> SplitFunction <span class="keyword">extends</span> TableFunction&lt;Row&gt; {
+    <span class="keyword">public void</span> eval(String str) {
+        <span class="keyword">for</span> (String s : str.split(<span class="string">","</span>)) {
+            collect(Row.of(s.trim()));
+        }
+    }
+    
+    @Override
+    <span class="keyword">public</span> TypeInformation&lt;Row&gt; getResultType() {
+        <span class="keyword">return</span> Types.ROW(Types.STRING);
+    }
+}
+
+<span class="comment">// 使用 Table Function</span>
+tableEnv.sqlQuery(<span class="string">"""
+    SELECT u.user_id, t.tag
+    FROM users u,
+    LATERAL TABLE(split_tags(u.tags)) AS t(tag)
+"""</span>);
+
+<span class="comment">// Aggregate Function - 聚合函数</span>
+<span class="keyword">public static class</span> WeightedAvg <span class="keyword">extends</span> AggregateFunction&lt;Double, WeightedAvgAccum&gt; {
+    @Override
+    <span class="keyword">public</span> WeightedAvgAccum createAccumulator() {
+        <span class="keyword">return new</span> WeightedAvgAccum();
+    }
+    
+    <span class="keyword">public void</span> accumulate(WeightedAvgAccum acc, Double value, Long weight) {
+        acc.sum += value * weight;
+        acc.count += weight;
+    }
+    
+    @Override
+    <span class="keyword">public</span> Double getValue(WeightedAvgAccum acc) {
+        <span class="keyword">return</span> acc.count == 0 ? 0.0 : acc.sum / acc.count;
+    }
+}
+
+<span class="keyword">public static class</span> WeightedAvgAccum {
+    <span class="keyword">public double</span> sum = 0;
+    <span class="keyword">public long</span> count = 0;
+}</pre>
+            </div>
+
+            <h3>4.4.4 批流一体开发</h3>
+            <div class="code-block">
+<pre><span class="comment">// 设置执行模式 (STREAMING 或 BATCH)</span>
+EnvironmentSettings settings = EnvironmentSettings
+    .newInstance()
+    .inStreamingMode()  <span class="comment">// 或 .inBatchMode()</span>
+    .build();
+
+TableEnvironment tableEnv = TableEnvironment.create(settings);
+
+<span class="comment">// 批模式下的特殊优化</span>
+tableEnv.getConfig().set(<span class="string">"table.optimizer.distinct-agg.split.enabled"</span>, <span class="string">"true"</span>);
+tableEnv.getConfig().set(<span class="string">"table.exec.mini-batch.enabled"</span>, <span class="string">"true"</span>);
+tableEnv.getConfig().set(<span class="string">"table.exec.mini-batch.allow-latency"</span>, <span class="string">"1 s"</span>);
+
+<span class="comment">// 统一的 SQL 查询</span>
+<span class="keyword">String</span> unifiedQuery = <span class="string">"""
+    SELECT 
+        DATE_FORMAT(event_time, 'yyyy-MM-dd') as dt,
+        COUNT(DISTINCT user_id) as uv,
+        COUNT(*) as pv
+    FROM user_events
+    GROUP BY DATE_FORMAT(event_time, 'yyyy-MM-dd')
+"""</span>;
+
+<span class="comment">// 同一查询可在批模式和流模式下执行</span>
+<span class="comment">// 批模式: 处理历史数据</span>
+<span class="comment">// 流模式: 实时计算并更新结果</span></pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 4.4</h4>
+                <ol>
+                    <li>创建一个自定义 UDF 用于解析 JSON 字符串</li>
+                    <li>编写一个 Table Function 将逗号分隔的字符串展开为多行</li>
+                    <li>使用 EXPLAIN 分析查询执行计划</li>
+                    <li>将同一查询分别在批模式和流模式下运行，对比结果</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Scalar Function 与 Table Function 的主要区别是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="A"> A. 参数个数不同</label>
+                        <label><input type="radio" name="q10" value="B"> B. Scalar 返回单个值，Table 返回多行</label>
+                        <label><input type="radio" name="q10" value="C"> C. 性能不同</label>
+                        <label><input type="radio" name="q10" value="D"> D. 实现接口不同</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 如何查看 SQL 查询的优化执行计划？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q11" value="A"> A. SHOW PLAN</label>
+                        <label><input type="radio" name="q11" value="B"> B. EXPLAIN PLAN FOR</label>
+                        <label><input type="radio" name="q11" value="C"> C. DESCRIBE QUERY</label>
+                        <label><input type="radio" name="q11" value="D"> D. ANALYZE SQL</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 批流一体的主要优势是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q12" value="A"> A. 执行速度更快</label>
+                        <label><input type="radio" name="q12" value="B"> B. 统一代码逻辑，减少维护成本</label>
+                        <label><input type="radio" name="q12" value="C"> C. 内存占用更少</label>
+                        <label><input type="radio" name="q12" value="D"> D. 支持更多数据源</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-sql-optimization-guide.md">Flink SQL 优化指南</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/udfs/" target="_blank">User-defined Functions</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="course-03-advanced-topics.html">← 上一课程</a>
+            <a href="course-05-state-fault-tolerance.html">下一课程 →</a>
+        </div>
+    </div>
+</body>
+</html>

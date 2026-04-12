@@ -785,6 +785,8 @@ public class Task {
 ### 4.2 内存页分配策略
 
 ```java
+import java.time.Duration;
+
 public class MemoryManager {
 
     /**
@@ -913,6 +915,8 @@ taskmanager.memory.network.max: 256m
 - 引入自动内存调整
 
 ```java
+import org.apache.flink.configuration.Configuration;
+
 // 1.14+ 自动化的 RocksDB 内存管理
 public class RocksDBStateBackend {
 

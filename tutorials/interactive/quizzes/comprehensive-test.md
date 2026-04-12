@@ -437,6 +437,9 @@ Flink CEP 支持 times(n)（精确n次）、oneOrMore()（一次或多次）、o
 <summary>参考答案</summary>
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 Pattern<LoginEvent, ?> pattern = Pattern
     .<LoginEvent>begin("fail")
     .where(e -> e.status.equals("FAIL"))

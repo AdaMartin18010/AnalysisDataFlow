@@ -123,11 +123,11 @@
 - **方法**:
 
   ```python
-  # 伪代码
-  for element in theorem_registry:
-      parse_dependencies(element)
-      check_completeness(element)
-      detect_missing_links(element)
+# 伪代码
+for element in theorem_registry:
+    parse_dependencies(element)
+    check_completeness(element)
+    detect_missing_links(element)
   ```
 
 #### 任务 1.2: 跨层引用完整性检查

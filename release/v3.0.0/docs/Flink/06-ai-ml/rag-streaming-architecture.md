@@ -717,6 +717,13 @@ public class StreamingRAGPipeline {
  * Input: User behavior stream (click/favorite/purchase)
  * Output: User interest vector (for personalized retrieval)
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class UserInterestFeaturePipeline {
 
     public static void main(String[] args) throws Exception {

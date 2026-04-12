@@ -1,3 +1,9 @@
+# Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 <!-- 版本状态标记: status=preview, since=2.4, feature=adaptive-execution-v2 -->
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
@@ -11,10 +17,6 @@
 > | **预计发布时间** | 2026 Q3-Q4 |
 > | **最后更新** | 2026-04-04 |
 > | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
-
----
-
-# Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
 > **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L4-L5
 > **版本**: since 2.4-preview | **状态**: 🔍 前瞻
@@ -241,6 +243,8 @@ $$
 **热点 Key 识别**:
 
 ```java
+import java.util.Map;
+
 // Def-F-02-90: 热点 Key 检测算法
 public class HotKeyDetector {
 
@@ -1135,6 +1139,9 @@ Throughput
 **实践 1: 电商实时推荐系统**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 电商场景：流量波动大，存在热点商品
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

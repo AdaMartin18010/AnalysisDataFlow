@@ -1,11 +1,13 @@
+# Flink 2.4 性能优化完整指南
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
-
----
-
-# Flink 2.4 性能优化完整指南
 
 > **所属阶段**: Flink/06-engineering | **前置依赖**: [Flink 2.3 性能优化](performance-tuning-guide.md), [Flink 状态后端选择](state-backend-selection.md) | **形式化等级**: L4-L5 | **状态**: preview
 
@@ -546,6 +548,9 @@ env.java.opts.taskmanager: >
 **配置示例 6.4：ForSt StateBackend配置**
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 创建ForSt StateBackend
 ForStStateBackend forStBackend = new ForStStateBackend();  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
 
@@ -623,6 +628,9 @@ GROUP BY TUMBLE(rowtime, INTERVAL '1' MINUTE), u.user_id;
 **配置示例 6.6：动态分区裁剪配置**
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 创建分区表
 TableEnvironment tableEnv = TableEnvironment.create(settings);
 

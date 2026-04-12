@@ -315,6 +315,9 @@ dataStream
 使用增量聚合替代全量计算：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 优化前：全量窗口计算
 .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 .apply(new FullWindowFunction());
@@ -624,6 +627,9 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * 边缘流处理作业 - IoT传感器数据预处理

@@ -266,6 +266,12 @@ flowchart TB
 **Flink + TensorFlow实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 区域负荷聚合
 DataStream<RegionLoad> regionLoads = meterReadings
     .keyBy(MeterReading::getRegionId)
@@ -344,6 +350,10 @@ predictions.addSink(new InfluxDBSink<>(
 **基于CEP的用电异常检测**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义窃电检测模式：夜间持续大功率用电
 Pattern<MeterReading, ?> theftPattern = Pattern
     .<MeterReading>begin("night_start")

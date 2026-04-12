@@ -1,11 +1,13 @@
+# Flink 智能检查点策略 (Smart Checkpointing Strategies)
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
-
----
-
-# Flink 智能检查点策略 (Smart Checkpointing Strategies)
 
 > 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | 形式化等级: L4 | 状态: preview
 
@@ -809,6 +811,8 @@ public class DirtyPageTracker {
 **增量压缩优化**：
 
 ```java
+import java.util.List;
+
 public class DeltaCompression {
     // 基于字典的增量压缩
     public byte[] compressWithDictionary(byte[] data, byte[] dictionary) {
@@ -1229,6 +1233,9 @@ execution.checkpointing.adaptive.backpressure-threshold: 0.3
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1333,6 +1340,9 @@ execution.checkpointing.partial.boundary-timeout: 30s
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置局部检查点
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1389,6 +1399,9 @@ execution.checkpointing.parallelism.resource-aware: true
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置并行度优化
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1414,6 +1427,9 @@ env.getCheckpointConfig().setParallelismConfig(parallelismConfig);
 
 ```java
 // 完整配置示例
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class LargeStateJobConfig {
 
     public static void configure(StreamExecutionEnvironment env) {
@@ -1492,6 +1508,9 @@ public class LargeStateJobConfig {
 
 ```java
 // 低延迟作业配置
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class LowLatencyJobConfig {
 
     public static void configure(StreamExecutionEnvironment env) {

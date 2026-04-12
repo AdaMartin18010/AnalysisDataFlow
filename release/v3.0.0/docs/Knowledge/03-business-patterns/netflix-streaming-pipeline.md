@@ -355,6 +355,10 @@ Flink作业逻辑:
 **技术实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink DataStream API 伪代码
 DataStream<PlayEvent> plays = env
     .addSource(new KafkaSource<>("play-events"))

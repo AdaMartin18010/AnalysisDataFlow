@@ -371,6 +371,9 @@ P50 < 50ms, P99 < 100ms, P99.9 < 200ms
 
 ```java
 // 跨设备会话合并逻辑
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class CrossDeviceSessionMerger extends KeyedProcessFunction<
         String, PlaybackEvent, UnifiedSession> {
 
@@ -553,6 +556,13 @@ A(L) = A_base + (A_max - A_base) · (1 - e^(-L/τ))
 
 ```java
 // 实时会话感知推荐Flink作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SessionAwareRecommendationJob {
 
     public static void main(String[] args) {
@@ -728,6 +738,10 @@ class RealtimeRecommender extends KeyedProcessFunction<
 
 ```java
 // Discover Weekly生成作业 (每周日批量)
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class DiscoverWeeklyJob {
 
     public static void main(String[] args) {
@@ -793,6 +807,11 @@ public class DiscoverWeeklyJob {
 
 ```java
 // 实时用户画像更新作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class UserProfileUpdateJob {
 
     public static void main(String[] args) {

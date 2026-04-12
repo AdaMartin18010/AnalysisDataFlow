@@ -249,6 +249,9 @@ THEN throughput = current_rate
 **作业定义**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 标准 WordCount 实现
 DataStream<String> source = env.addSource(new WordSource())
     .setParallelism(parallelism);
@@ -294,6 +297,10 @@ wordCounts.addSink(new DiscardingSink<>());
 **Flink 实现要点**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 广告事件处理流水线
 DataStream<Event> events = env.addSource(new KafkaSource<>())
     .filter(event -> event.eventType.equals("view"))

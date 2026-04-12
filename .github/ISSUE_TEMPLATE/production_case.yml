@@ -1,0 +1,176 @@
+name: 🏭 生产案例提交
+labels: ["type:production-case", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 感谢分享您的生产案例！
+        
+        您的案例将帮助社区了解流计算技术在实际生产环境中的应用。请尽可能详细填写以下信息。
+        
+        > 案例审核通过后将被收录到 `phase2-case-studies/` 目录，并在项目主页展示。
+
+  - type: input
+    id: company
+    attributes:
+      label: 公司名称
+      description: 您的公司或组织名称（可选填"匿名"）
+      placeholder: 例如：某某科技有限公司
+    validations:
+      required: true
+
+  - type: input
+    id: industry
+    attributes:
+      label: 所属行业
+      description: 公司所属的行业领域
+      placeholder: 例如：电商 / 金融 / 物联网 / 游戏 / 物流
+    validations:
+      required: true
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 业务场景描述
+      description: 描述您使用流计算技术解决的具体业务问题
+      placeholder: |
+        例如：
+        - 实时风控系统
+        - 用户行为实时分析
+        - 物联网设备数据实时处理
+        - 实时推荐系统
+    validations:
+      required: true
+
+  - type: textarea
+    id: scale
+    attributes:
+      label: 系统规模
+      description: 请提供系统的关键规模指标
+      placeholder: |
+        - 数据吞吐量：每秒 XX 万条 / 每天 XX TB
+        - 集群规模：X 个 JobManager，XX 个 TaskManager
+        - 作业数量：XX 个流处理作业
+        - 延迟要求：端到端延迟 < XX ms
+        - 数据存储：使用 XX 存储系统
+    validations:
+      required: true
+
+  - type: textarea
+    id: architecture
+    attributes:
+      label: 技术架构
+      description: 描述系统的整体技术架构和组件
+      placeholder: |
+        - 流计算引擎：Flink X.X / Spark Streaming X.X / 其他
+        - 消息队列：Kafka / Pulsar / 其他
+        - 存储系统：HBase / Elasticsearch / ClickHouse / 其他
+        - 资源管理：Kubernetes / YARN / Mesos
+        - 监控告警：Prometheus + Grafana / 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: challenges
+    attributes:
+      label: 面临的挑战
+      description: 在项目实施过程中遇到的主要技术挑战
+      placeholder: |
+        例如：
+        - 数据倾斜问题
+        - 状态一致性保证
+        - 大状态管理
+        - 故障恢复时间要求
+        - 多流Join的性能优化
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 解决方案
+      description: 详细描述您是如何解决上述挑战的
+      placeholder: |
+        包括：
+        - 关键配置参数
+        - 代码优化技巧
+        - 架构设计决策
+        - 调优经验
+    validations:
+      required: true
+
+  - type: textarea
+    id: results
+    attributes:
+      label: 项目成果
+      description: 项目实施后取得的量化成果
+      placeholder: |
+        例如：
+        - 数据处理延迟降低 XX%
+        - 系统吞吐量提升 XX%
+        - 故障恢复时间缩短至 XX 秒
+        - 资源利用率提升 XX%
+        - 业务指标改善（如转化率提升 XX%）
+    validations:
+      required: true
+
+  - type: textarea
+    id: lessons
+    attributes:
+      label: 经验总结
+      description: 您认为对其他团队最有价值的经验教训
+      placeholder: |
+        - 最佳实践建议
+        - 踩过的坑
+        - 给新手的建议
+    validations:
+      required: false
+
+  - type: textarea
+    id: code_snippets
+    attributes:
+      label: 代码片段（可选）
+      description: 可以分享的关键代码片段或配置
+      placeholder: |
+        ```java
+        // 关键配置示例
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: architecture_diagram
+    attributes:
+      label: 架构图（可选）
+      description: 如有架构图，可粘贴图片链接或使用 Mermaid 语法描述
+      placeholder: |
+        ```mermaid
+        graph TB
+          A[数据源] --> B[Kafka]
+          B --> C[Flink]
+          C --> D[存储]
+        ```
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: permissions
+    attributes:
+      label: 授权声明
+      description: 请确认以下授权事项
+      options:
+        - label: 我确认提交的内容不包含公司敏感信息和商业机密
+          required: true
+        - label: 我授权项目方对提交内容进行编辑和发布
+          required: true
+        - label: 我确认内容真实可靠，不存在虚假信息
+          required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: 联系方式（可选）
+      description: 如需进一步沟通，可留下邮箱或其他联系方式
+      placeholder: 例如：example@company.com
+    validations:
+      required: false

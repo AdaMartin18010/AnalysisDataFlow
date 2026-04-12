@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验1: Watermark可视化 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        
+        .lab-section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lab-section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .lab-section h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        
+        .controls { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a6fd6; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-success:hover { background: #219a52; }
+        
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 0.85rem; color: #666; font-weight: bold; }
+        .input-group input, .input-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        #canvas-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        canvas {
+            background: #2d2d2d;
+            border-radius: 8px;
+            width: 100%;
+            height: 400px;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .metric-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .info-box h4 { color: #1976d2; margin-bottom: 8px; }
+        
+        .exercise { background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #856404; margin-bottom: 10px; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a { padding: 12px 25px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem;">🧪 交互实验</span>
+            <h1>实验1: Watermark 可视化</h1>
+            <p>通过交互式演示理解 Watermark 的生成、传播和乱序数据处理机制</p>
+        </header>
+
+        <div class="lab-section">
+            <h2>📖 实验原理</h2>
+            <div class="info-box">
+                <h4>什么是 Watermark?</h4>
+                <p>Watermark 是一个<strong>时间戳标记</strong>，表示 "所有时间戳小于此值的事件都已到达"。它允许系统在处理乱序数据时，安全地触发时间窗口计算。</p>
+            </div>
+            <p><strong>关键公式:</strong></p>
+            <code style="background: #f4f4f4; padding: 10px 15px; border-radius: 5px; display: inline-block; margin: 10px 0;">
+                Watermark = max(EventTime) - maxOutOfOrderness
+            </code>
+            <p>当 Watermark 超过窗口结束时间时，窗口将被触发计算。</p>
+        </div>
+
+        <div class="lab-section">
+            <h2>🔬 交互演示</h2>
+            
+            <div class="controls">
+                <div class="input-group">
+                    <label>乱序容忍度 (秒)</label>
+                    <input type="number" id="maxDelay" value="5" min="0" max="20">
+                </div>
+                <div class="input-group">
+                    <label>事件生成速度</label>
+                    <select id="speed">
+                        <option value="500">慢速</option>
+                        <option value="200" selected>正常</option>
+                        <option value="50">快速</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>乱序程度</label>
+                    <select id="disorderLevel">
+                        <option value="low">低 (1-3秒)</option>
+                        <option value="medium" selected>中 (2-8秒)</option>
+                        <option value="high">高 (5-15秒)</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="startSimulation()">▶ 开始模拟</button>
+                <button class="btn btn-danger" onclick="stopSimulation()">⏹ 停止</button>
+                <button class="btn btn-success" onclick="resetSimulation()">🔄 重置</button>
+            </div>
+
+            <div id="canvas-container">
+                <canvas id="watermarkCanvas" width="1100" height="400"></canvas>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4CAF50;"></div>
+                        <span>正常事件 (准时到达)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF9800;"></div>
+                        <span>乱序事件 (提前/延后)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2196F3;"></div>
+                        <span>Watermark</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #E91E63;"></div>
+                        <span>迟到事件 (被丢弃)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9C27B0; opacity: 0.3;"></div>
+                        <span>窗口边界</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="currentWatermark">0</div>
+                    <div class="metric-label">当前 Watermark</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="processedEvents">0</div>
+                    <div class="metric-label">已处理事件</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="lateEvents">0</div>
+                    <div class="metric-label">迟到事件</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="triggeredWindows">0</div>
+                    <div class="metric-label">触发窗口</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>📊 实时事件日志</h2>
+            <div id="eventLog" style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;">
+                <div style="color: #6a9955;">// 事件日志将在此显示...</div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>🎯 观察要点</h2>
+            <div class="info-box">
+                <h4>实验中请关注:</h4>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Watermark (蓝线) 如何随着时间推移上升</li>
+                    <li>橙色事件点表示乱序到达，观察它们相对于蓝线的位置</li>
+                    <li>当 Watermark 超过紫色窗口线时，窗口触发</li>
+                    <li>红色事件点表示迟到事件（在 Watermark 之后到达）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>✏️ 实验任务</h2>
+            <div class="exercise">
+                <h4>任务列表</h4>
+                <ol>
+                    <li>设置乱序容忍度为 3 秒，观察 Watermark 与最大事件时间的差距</li>
+                    <li>将乱序程度设为 "高"，观察迟到事件的数量变化</li>
+                    <li>尝试将容忍度设为 0，会发生什么？</li>
+                    <li>思考：在实际生产环境中，如何合理设置乱序容忍度？</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>📚 相关知识</h2>
+            <ul style="margin-left: 20px;">
+                <li><a href="../courses/course-01-flink-basics.html">课程1.4: 时间与Watermark</a></li>
+                <li><a href="../../Struct/Proof-Chains-Dataflow-Foundation.md">Dataflow 理论基础</a></li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <a href="index.md">← 实验目录</a>
+            <a href="lab-02-checkpoint.html">下一个实验 →</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('watermarkCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let animationId = null;
+        let events = [];
+        let watermarks = [];
+        let currentTime = 0;
+        let processedCount = 0;
+        let lateCount = 0;
+        let windowTriggers = 0;
+        let maxEventTime = 0;
+        
+        const WINDOW_SIZE = 10;
+        const PIXELS_PER_SECOND = 20;
+        const MAX_DISPLAY_TIME = 60;
+        
+        function logEvent(message, type = 'info') {
+            const log = document.getElementById('eventLog');
+            const entry = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span style="color: #6a9955;">[${time}]</span> ${message}`;
+            if (type === 'late') entry.style.color = '#E91E63';
+            if (type === 'window') entry.style.color = '#9C27B0';
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function generateEvent() {
+            const disorderLevel = document.getElementById('disorderLevel').value;
+            let maxDelay;
+            switch(disorderLevel) {
+                case 'low': maxDelay = 3; break;
+                case 'medium': maxDelay = 8; break;
+                case 'high': maxDelay = 15; break;
+            }
+            
+            // 事件时间 = 当前时间 + 随机偏移（可正可负）
+            const offset = (Math.random() - 0.5) * maxDelay * 2;
+            const eventTime = Math.max(0, currentTime + offset);
+            
+            return {
+                eventTime: eventTime,
+                processTime: currentTime,
+                id: processedCount + 1
+            };
+        }
+        
+        function updateWatermark() {
+            const maxDelay = parseInt(document.getElementById('maxDelay').value);
+            
+            // 找出所有已处理事件的最大事件时间
+            if (events.length > 0) {
+                maxEventTime = Math.max(...events.map(e => e.eventTime));
+            }
+            
+            // Watermark = 最大事件时间 - 乱序容忍度
+            const watermark = Math.max(0, maxEventTime - maxDelay);
+            watermarks.push({ time: currentTime, value: watermark });
+            
+            // 检查窗口触发
+            const currentWindowEnd = Math.floor(watermark / WINDOW_SIZE) * WINDOW_SIZE;
+            const previousWindowEnd = Math.floor((watermark - 1) / WINDOW_SIZE) * WINDOW_SIZE;
+            if (currentWindowEnd > previousWindowEnd && currentWindowEnd > 0) {
+                windowTriggers++;
+                logEvent(`窗口 [${currentWindowEnd - WINDOW_SIZE}, ${currentWindowEnd}) 被触发`, 'window');
+            }
+            
+            return watermark;
+        }
+        
+        function draw() {
+            // 清空画布
+            ctx.fillStyle = '#2d2d2d';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const offsetX = 50;
+            const offsetY = 350;
+            const scaleY = 3;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(offsetX, 20);
+            ctx.lineTo(offsetX, offsetY);
+            ctx.lineTo(canvas.width - 20, offsetY);
+            ctx.stroke();
+            
+            // 绘制时间刻度
+            ctx.fillStyle = '#999';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            for (let t = 0; t <= MAX_DISPLAY_TIME; t += 10) {
+                const x = offsetX + t * PIXELS_PER_SECOND;
+                ctx.fillText(t + 's', x, offsetY + 20);
+                ctx.beginPath();
+                ctx.moveTo(x, offsetY - 5);
+                ctx.lineTo(x, offsetY + 5);
+                ctx.stroke();
+            }
+            
+            // 绘制窗口边界线
+            ctx.strokeStyle = 'rgba(156, 39, 176, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            for (let w = WINDOW_SIZE; w <= MAX_DISPLAY_TIME; w += WINDOW_SIZE) {
+                const x = offsetX + w * PIXELS_PER_SECOND;
+                ctx.beginPath();
+                ctx.moveTo(x, 20);
+                ctx.lineTo(x, offsetY);
+                ctx.stroke();
+                
+                ctx.fillStyle = 'rgba(156, 39, 176, 0.5)';
+                ctx.fillText(`W${w/WINDOW_SIZE}`, x + 15, 35);
+            }
+            ctx.setLineDash([]);
+            
+            // 绘制事件点
+            const currentWatermark = watermarks.length > 0 ? watermarks[watermarks.length - 1].value : 0;
+            events.forEach(event => {
+                const x = offsetX + event.processTime * PIXELS_PER_SECOND;
+                const y = offsetY - event.eventTime * scaleY;
+                
+                // 判断是否迟到
+                const isLate = event.eventTime < currentWatermark;
+                const isDisordered = Math.abs(event.eventTime - event.processTime) > 2;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                if (isLate) {
+                    ctx.fillStyle = '#E91E63';
+                } else if (isDisordered) {
+                    ctx.fillStyle = '#FF9800';
+                } else {
+                    ctx.fillStyle = '#4CAF50';
+                }
+                ctx.fill();
+            });
+            
+            // 绘制 Watermark 线
+            if (watermarks.length > 1) {
+                ctx.strokeStyle = '#2196F3';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                watermarks.forEach((wm, i) => {
+                    const x = offsetX + wm.time * PIXELS_PER_SECOND;
+                    const y = offsetY - wm.value * scaleY;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                
+                // 绘制当前 Watermark 点
+                const lastWm = watermarks[watermarks.length - 1];
+                const wmX = offsetX + lastWm.time * PIXELS_PER_SECOND;
+                const wmY = offsetY - lastWm.value * scaleY;
+                ctx.beginPath();
+                ctx.arc(wmX, wmY, 8, 0, Math.PI * 2);
+                ctx.fillStyle = '#2196F3';
+                ctx.fill();
+                
+                // 标注 Watermark 值
+                ctx.fillStyle = '#2196F3';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.fillText(`WM: ${lastWm.value.toFixed(1)}s`, wmX + 15, wmY);
+            }
+            
+            // 绘制图例说明
+            ctx.fillStyle = '#ccc';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('↑ 事件时间', 10, offsetY / 2);
+            ctx.fillText('→ 处理时间', canvas.width / 2, offsetY + 40);
+        }
+        
+        function updateMetrics(watermark) {
+            document.getElementById('currentWatermark').textContent = watermark.toFixed(1) + 's';
+            document.getElementById('processedEvents').textContent = processedCount;
+            document.getElementById('lateEvents').textContent = lateCount;
+            document.getElementById('triggeredWindows').textContent = windowTriggers;
+        }
+        
+        function simulationStep() {
+            const speed = parseInt(document.getElementById('speed').value);
+            
+            // 生成新事件
+            if (Math.random() < 0.7) {
+                const event = generateEvent();
+                events.push(event);
+                processedCount++;
+                
+                // 检查是否迟到
+                const watermark = updateWatermark();
+                if (event.eventTime < watermark) {
+                    lateCount++;
+                    logEvent(`事件 #${event.id} 迟到! 事件时间: ${event.eventTime.toFixed(1)}s, 当前Watermark: ${watermark.toFixed(1)}s`, 'late');
+                }
+                
+                updateMetrics(watermark);
+            }
+            
+            currentTime += 0.5;
+            
+            // 清理旧数据
+            if (currentTime > MAX_DISPLAY_TIME) {
+                stopSimulation();
+                logEvent('模拟时间到达上限，自动停止');
+                return;
+            }
+            
+            draw();
+            
+            animationId = setTimeout(simulationStep, speed);
+        }
+        
+        function startSimulation() {
+            if (animationId) return;
+            logEvent('开始模拟...');
+            simulationStep();
+        }
+        
+        function stopSimulation() {
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+                logEvent('模拟已停止');
+            }
+        }
+        
+        function resetSimulation() {
+            stopSimulation();
+            events = [];
+            watermarks = [];
+            currentTime = 0;
+            processedCount = 0;
+            lateCount = 0;
+            windowTriggers = 0;
+            maxEventTime = 0;
+            updateMetrics(0);
+            document.getElementById('eventLog').innerHTML = '<div style="color: #6a9955;">// 事件日志已重置...</div>';
+            draw();
+            logEvent('模拟已重置');
+        }
+        
+        // 初始绘制
+        draw();
+    </script>
+</body>
+</html>

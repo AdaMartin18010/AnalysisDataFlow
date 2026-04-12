@@ -286,6 +286,11 @@ cd ycsb-0.17.0
 **步骤 2: 准备 Flink YCSB 适配器**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // FlinkYcsbAdapter.java
 public class FlinkYcsbAdapter {
     
@@ -350,6 +355,11 @@ public class FlinkYcsbAdapter {
 
 ```java
 // YcsbStateFunction.java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class YcsbStateFunction extends KeyedProcessFunction<
     String, YcsbOperation, YcsbResult> {
     

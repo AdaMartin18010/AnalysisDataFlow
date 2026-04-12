@@ -331,6 +331,12 @@ Samza的吞吐限制因素：
 
 ```java
 // Samza 代码
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 class WordCountTask implements StreamTask {
     @Override
     public void process(IncomingMessageEnvelope envelope,
@@ -407,6 +413,10 @@ public class MemberActivityTask implements WindowTask {
 **Flink等价实现**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<MemberActivity> activityStream = events
     .keyBy(MemberEvent::getMemberId)
     .window(TumblingEventTimeWindows.of(Time.minutes(1)))

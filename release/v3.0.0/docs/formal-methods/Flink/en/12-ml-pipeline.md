@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink ML Pipeline: Stream-Based Machine Learning Architecture
 
 > **Stage**: Flink/ML | **Prerequisites**: [Flink Architecture Overview](./01-architecture-overview.md), [State Management](./04-state-backends.md) | **Formal Level**: L3-L4
@@ -307,6 +310,10 @@ import org.apache.flink.ml.classification.logisticregression.*;
 import org.apache.flink.ml.feature.standardscaler.*;
 import org.apache.flink.ml.pipeline.*;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
+
 public class MLPipelineExample {
     public static void main(String[] args) {
         StreamExecutionEnvironment env =
@@ -365,6 +372,9 @@ conf.setString("flink.ml.ps.staleness", "10");
 ### 6.3 A/B Testing Framework
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ModelRouter extends ProcessFunction<Features, Prediction> {
     private ValueState<ModelVersion> modelState;
     private MapState<String, Model> modelCache;

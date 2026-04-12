@@ -217,6 +217,10 @@ $$\text{WindowAgg}(D, f, w) \equiv \text{BatchAgg}(\text{Split}(D, w), f)$$
 **流计算实现 (Flink)**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 订单流处理
 DataStream<OrderEvent> orders = env
     .addSource(new KafkaSource<>("orders"))

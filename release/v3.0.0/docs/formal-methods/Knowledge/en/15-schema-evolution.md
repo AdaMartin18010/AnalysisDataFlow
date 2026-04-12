@@ -540,6 +540,9 @@ producer.send(new ProducerRecord<>("orders", order.get("orderId").toString(), or
 **Schema Definition**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Define table with schema evolution support
 TableDescriptor sourceDescriptor = TableDescriptor
     .forConnector("kafka")

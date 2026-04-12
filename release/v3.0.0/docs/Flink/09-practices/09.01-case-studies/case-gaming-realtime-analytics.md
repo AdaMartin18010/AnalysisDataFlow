@@ -607,6 +607,9 @@ import org.apache.flink.util.Collector;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * CEP作弊检测模式定义
  */
@@ -785,6 +788,10 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternStream;
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * 游戏实时分析与反作弊主应用
@@ -992,6 +999,10 @@ import com.game.analytics.model.*;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 
 /**
  * 风险评级处理函数
@@ -1350,6 +1361,13 @@ anti-cheat:
 /**
  * 实时推荐系统 - 道具推荐
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeRecommendationJob {
 
     public static void main(String[] args) throws Exception {
@@ -1501,6 +1519,11 @@ public class RecommendationEngine extends KeyedProcessFunction<String, PlayerPro
  * 实时匹配系统
  * 基于玩家技能等级、网络延迟、等待时间动态匹配
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicMatchmakingJob {
 
     public static void main(String[] args) throws Exception {
@@ -1617,6 +1640,10 @@ public class MatchmakingWindowFunction extends ProcessWindowFunction<
  * 实时排行榜系统
  * 使用Flink状态存储Top-N排行榜
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RealtimeLeaderboardJob {
 
     public static void main(String[] args) throws Exception {

@@ -1,0 +1,57 @@
+/* TEAM */
+Project: AnalysisDataFlow - 流计算形式化理论与工程实践
+Site: https://analysisdataflow.github.io
+GitHub: https://github.com/luyanfeng/AnalysisDataFlow
+Version: 5.0.0 FINAL
+Status: 100% Complete
+Last Update: 2026-04-12
+
+Project Lead: AnalysisDataFlow Team
+Location: Global
+
+/* THANKS */
+Apache Flink Community: For the amazing stream processing framework
+Academic Community: For formal methods and process calculus research
+Contributors: All contributors to this project
+
+/* TECHNOLOGY */
+Platform: GitHub Pages
+Generator: Jekyll
+Markdown: GitHub Flavored Markdown
+Diagrams: Mermaid.js
+
+Standards:
+- HTML5
+- CSS3
+- ECMAScript 2024
+- Schema.org
+- Open Graph
+- Twitter Cards
+
+/* STATISTICS */
+Documents: 940+
+Formal Elements: 10,745+
+Code Examples: 4,500+
+Mermaid Diagrams: 1,600+
+Total Size: 25+ MB
+
+/* LICENSE */
+Content: See LICENSE file in repository
+Code Examples: Apache 2.0 compatible
+
+/* CONTACT */
+GitHub Issues: https://github.com/luyanfeng/AnalysisDataFlow/issues
+Repository: https://github.com/luyanfeng/AnalysisDataFlow
+
+////////////////////////////////////////////////////////////////////////////////
+
+    ___    _   _   _       _       _           _       ____    _   _   _   _ 
+   / _ \  | | | | | |     | |     | |         | |     |  _ \  | | | | | \ | |
+  / /_\ \ | | | | | |     | | __ _| |__   __ _| |_    | | | | | | | | |  \| |
+  |  _  | | | | | | |     | |/ _` | '_ \ / _` | __|   | | | | | | | | | . ` |
+  | | | | | |_| | | |____ | | (_| | |_) | (_| | |_    | |_| | | |_| | | |\  |
+  \_| |_/  \___/  |______||_|\__,_|_.__/ \__,_|\__|   |____/   \___/  \_| \_/
+                                                                               
+  流计算领域的「形式化理论补充 + 前沿探索实验室」
+
+////////////////////////////////////////////////////////////////////////////////

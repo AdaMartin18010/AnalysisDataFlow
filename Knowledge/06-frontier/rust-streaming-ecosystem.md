@@ -982,7 +982,7 @@ flowchart TD
 
 [^2]: F. McSherry et al., "Scalable Incremental Computing with Differential Dataflow," Microsoft Research Technical Report, 2013.
 
-[^3]: RisingWave Labs, "RisingWave Architecture Documentation," 2024. <https://docs.risingwave.com/docs/current/architecture/>
+[^3]: RisingWave Labs, "RisingWave Architecture Documentation," 2024. <https://docs.risingwave.com/docs/current/architecture-overview//>
 
 [^4]: Y. Huang et al., "RisingWave: A Cloud-Native Streaming Database," ACM SIGMOD 2024.
 

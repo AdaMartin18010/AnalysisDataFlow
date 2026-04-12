@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Knowledge/ 知识结构导航索引
 
 > 所属阶段: Knowledge | 前置依赖: [../README.md](../README.md), [../QUICK-START.md](../QUICK-START.md) | 形式化等级: L3-L5
@@ -409,6 +413,66 @@ Knowledge/ 目录统计:
 1. **入门路径**: 概念图谱 → 设计模式 → 练习 → 案例研究
 2. **进阶路径**: 业务场景 → 技术选型 → 最佳实践 → 前沿探索
 3. **专家路径**: 前沿探索 → 映射指南 → 反模式 → 标准规范
+
+---
+
+## 增强交叉引用网络 (Enhanced Cross-References)
+
+### 到 Struct/ 的反向引用
+
+工程实践到形式理论的反向映射:
+
+| Knowledge 文档 | Struct 对应 | 映射类型 |
+|----------------|-------------|----------|
+| [01-concept-atlas/streaming-models-mindmap.md](01-concept-atlas/streaming-models-mindmap.md) | [Struct/01-foundation/01.01-unified-streaming-theory.md](../Struct/01-foundation/01.01-unified-streaming-theory.md) | 图谱→理论 |
+| [02-design-patterns/pattern-checkpoint-recovery.md](02-design-patterns/pattern-checkpoint-recovery.md) | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](../Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 模式→证明 |
+| [02-design-patterns/pattern-event-time-processing.md](02-design-patterns/pattern-event-time-processing.md) | [Struct/02-properties/02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md) | 实现→定理 |
+| [05-mapping-guides/struct-to-flink-mapping.md](05-mapping-guides/struct-to-flink-mapping.md) | [Struct/03-relationships/03.02-flink-to-process-calculus.md](../Struct/03-relationships/03.02-flink-to-process-calculus.md) | 映射→编码 |
+| [05-mapping-guides/theory-to-code-patterns.md](05-mapping-guides/theory-to-code-patterns.md) | [Struct/07-tools/coq-mechanization.md](../Struct/07-tools/coq-mechanization.md) | 代码→验证 |
+
+### 到 Flink/ 的映射
+
+知识结构到 Flink 实现的映射:
+
+| Knowledge 文档 | Flink 对应 | 映射类型 |
+|----------------|------------|----------|
+| [02-design-patterns/pattern-stateful-computation.md](02-design-patterns/pattern-stateful-computation.md) | [Flink/02-core/flink-state-management-complete-guide.md](../Flink/02-core/flink-state-management-complete-guide.md) | 模式→实现 |
+| [02-design-patterns/pattern-async-io-enrichment.md](02-design-patterns/pattern-async-io-enrichment.md) | [Flink/02-core/async-execution-model.md](../Flink/02-core/async-execution-model.md) | 模式→机制 |
+| [03-business-patterns/fintech-realtime-risk-control.md](03-business-patterns/fintech-realtime-risk-control.md) | [Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md](../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md) | 场景→案例 |
+| [07-best-practices/07.01-flink-production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | [Flink/04-runtime/04.02-operations/production-checklist.md](../Flink/04-runtime/04.02-operations/production-checklist.md) | 清单→运维 |
+| [06-frontier/realtime-ai-streaming-2026.md](06-frontier/realtime-ai-streaming-2026.md) | [Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md](../Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | 趋势→集成 |
+
+### 目录引用关系图
+
+```mermaid
+graph TB
+    subgraph Struct
+        S1[形式理论]
+        S2[定理证明]
+        S3[编码关系]
+    end
+
+    subgraph Knowledge
+        K1[设计模式]
+        K2[最佳实践]
+        K3[业务场景]
+    end
+
+    subgraph Flink
+        F1[Checkpoint]
+        F2[状态管理]
+        F3[连接器]
+    end
+
+    S1 -.->|理论基础| K1
+    S2 -.->|正确性保证| K2
+    S3 -.->|形式化验证| K3
+    K1 -.->|模式应用| F1
+    K2 -.->|实践指导| F2
+    K3 -.->|场景驱动| F3
+    F1 -.->|实现反馈| S1
+    F2 -.->|工程挑战| S2
+```
 
 ---
 

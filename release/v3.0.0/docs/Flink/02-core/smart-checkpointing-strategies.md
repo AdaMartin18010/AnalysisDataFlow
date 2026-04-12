@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
@@ -1229,6 +1232,9 @@ execution.checkpointing.adaptive.backpressure-threshold: 0.3
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1333,6 +1339,9 @@ execution.checkpointing.partial.boundary-timeout: 30s
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置局部检查点
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1389,6 +1398,9 @@ execution.checkpointing.parallelism.resource-aware: true
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 代码方式配置并行度优化
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1414,6 +1426,9 @@ env.getCheckpointConfig().setParallelismConfig(parallelismConfig);
 
 ```java
 // 完整配置示例
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class LargeStateJobConfig {
 
     public static void configure(StreamExecutionEnvironment env) {
@@ -1492,6 +1507,9 @@ public class LargeStateJobConfig {
 
 ```java
 // 低延迟作业配置
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class LowLatencyJobConfig {
 
     public static void configure(StreamExecutionEnvironment env) {

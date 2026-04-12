@@ -419,6 +419,10 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.Pattern;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 /**
  * 日志监控 Flink 作业
  * 功能: 日志解析 → 聚合统计 → 异常检测 → 告警输出
@@ -598,6 +602,11 @@ public class DynamicLogParser extends ProcessFunction<String, LogEvent> {
 /**
  * 基于指纹和冷却时间的告警抑制
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class AlertSuppressionFunction extends KeyedProcessFunction<String, AlertEvent, AlertEvent> {
 
     private final long cooldownMs;
@@ -785,7 +794,7 @@ graph TB
 
 [^6]: P. Carbone et al., "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing," *PVLDB*, 10(12), 2017.
 
-[^7]: Apache Flink Documentation, "Exactly-Once End-to-End," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/>
+[^7]: Apache Flink Documentation, "Exactly-Once End-to-End," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly_once//>
 
 
 

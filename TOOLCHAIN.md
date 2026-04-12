@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AnalysisDataFlow 工具链指南
 
 > 所属阶段: 项目基础设施 | 前置依赖: [AGENTS.md](./AGENTS.md), [PROJECT-MAP.md](./PROJECT-MAP.md) | 形式化等级: L3

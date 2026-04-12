@@ -44,8 +44,8 @@ $$
 <!-- TRANSLATE: **证明**： -->
 
 <!-- TRANSLATE: 1. 每个并行子任务最多需要一个连接 -->
-2. 最大并发需求 = 并行度 $P$
-3. 若 $N_{max} \geq P$，则总有可用连接
+1. 最大并发需求 = 并行度 $P$
+2. 若 $N_{max} \geq P$，则总有可用连接
 <!-- TRANSLATE: 4. 无循环等待，满足死锁避免条件 -->
 
 <!-- TRANSLATE: ### Prop-F-JDBC-01: 幂等写入条件 -->
@@ -113,6 +113,9 @@ import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 // JDBC Sink 配置
 DataStream<Order> orderStream = ...;

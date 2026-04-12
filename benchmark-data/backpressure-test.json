@@ -1,7 +1,7 @@
 {
   "test_type": "Backpressure Test",
   "description": "背压检测与处理测试",
-  "timestamp": "2026-04-08T15:14:17.178095",
+  "timestamp": "2026-04-12T21:19:26.860641",
   "environment": {
     "flink_versions": [
       "1.18.1",
@@ -26,19 +26,19 @@
       "description": "轻度背压 (下游慢2倍)",
       "results": {
         "1.18.1": {
-          "backpressure_ratio": 0.34,
-          "throughput_degradation": 0.4,
-          "latency_increase": 2.73
+          "backpressure_ratio": 0.35,
+          "throughput_degradation": 0.41,
+          "latency_increase": 2.95
         },
         "2.0.0": {
           "backpressure_ratio": 0.27,
-          "throughput_degradation": 0.34,
-          "latency_increase": 2.35
+          "throughput_degradation": 0.36,
+          "latency_increase": 2.31
         },
         "2.2.0": {
-          "backpressure_ratio": 0.21,
-          "throughput_degradation": 0.29,
-          "latency_increase": 1.84
+          "backpressure_ratio": 0.22,
+          "throughput_degradation": 0.28,
+          "latency_increase": 1.87
         }
       }
     },
@@ -46,19 +46,19 @@
       "description": "中度背压 (下游慢5倍)",
       "results": {
         "1.18.1": {
-          "backpressure_ratio": 0.67,
-          "throughput_degradation": 0.71,
-          "latency_increase": 5.69
+          "backpressure_ratio": 0.7,
+          "throughput_degradation": 0.69,
+          "latency_increase": 5.57
         },
         "2.0.0": {
-          "backpressure_ratio": 0.55,
-          "throughput_degradation": 0.59,
-          "latency_increase": 3.95
+          "backpressure_ratio": 0.54,
+          "throughput_degradation": 0.6,
+          "latency_increase": 4.22
         },
         "2.2.0": {
-          "backpressure_ratio": 0.46,
-          "throughput_degradation": 0.46,
-          "latency_increase": 3.32
+          "backpressure_ratio": 0.47,
+          "throughput_degradation": 0.48,
+          "latency_increase": 3.28
         }
       }
     },
@@ -66,19 +66,19 @@
       "description": "重度背压 (下游慢10倍)",
       "results": {
         "1.18.1": {
-          "backpressure_ratio": 0.96,
+          "backpressure_ratio": 0.92,
           "throughput_degradation": 0.93,
-          "latency_increase": 12.31
+          "latency_increase": 12.96
         },
         "2.0.0": {
-          "backpressure_ratio": 0.84,
+          "backpressure_ratio": 0.82,
           "throughput_degradation": 0.82,
-          "latency_increase": 9.66
+          "latency_increase": 9.27
         },
         "2.2.0": {
-          "backpressure_ratio": 0.79,
-          "throughput_degradation": 0.73,
-          "latency_increase": 7.54
+          "backpressure_ratio": 0.8,
+          "throughput_degradation": 0.78,
+          "latency_increase": 8.36
         }
       }
     }

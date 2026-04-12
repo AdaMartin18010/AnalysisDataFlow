@@ -173,6 +173,7 @@ gantt
        rules.put(rule.getId(), rule);
      }
    }
+
 ```
 
 2. **特征计算**
@@ -220,6 +221,9 @@ gantt
 1. **CEP 反欺诈模式**
 
    ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
    // 盗刷检测：短时间内多地点交易
    Pattern<Transaction, ?> fraudPattern = Pattern.<Transaction>begin("start")
      .where(tx -> tx.getAmount() > 1000)
@@ -228,7 +232,7 @@ gantt
      .within(Time.minutes(10));
 ```
 
-2. **合规数据处理**
+1. **合规数据处理**
    - 数据脱敏和加密
    - 审计日志记录
    - 数据血缘追踪

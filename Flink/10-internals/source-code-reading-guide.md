@@ -390,6 +390,10 @@ StreamInputProcessor.processInput() [反序列化并处理]
 **示例场景**: 简单的Word Count程序
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 用户代码
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -410,6 +414,9 @@ env.execute("WordCount");
 **Step 1: 环境创建**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // StreamExecutionEnvironment.java
 public static StreamExecutionEnvironment getExecutionEnvironment() {
     // 根据上下文创建本地或远程环境
@@ -440,6 +447,9 @@ public <R> SingleOutputStreamOperator<R> flatMap(
 **Step 3: Transformation添加到图**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // StreamExecutionEnvironment.java
 protected <T> SingleOutputStreamOperator<T> addOperator(
         String operatorName,

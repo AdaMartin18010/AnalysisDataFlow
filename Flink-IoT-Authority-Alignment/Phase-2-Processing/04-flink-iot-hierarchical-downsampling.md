@@ -493,6 +493,10 @@ CREATE RETENTION POLICY "rp_archive" ON "iot_db"
 **Flink状态TTL配置**：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink作业状态TTL配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 

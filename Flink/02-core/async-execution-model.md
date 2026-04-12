@@ -673,6 +673,9 @@ $$
 **Flink 1.x (同步)**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class SyncCounter extends KeyedProcessFunction<String, Event, Result> {
     private ValueState<Long> counterState;
 
@@ -691,6 +694,9 @@ public class SyncCounter extends KeyedProcessFunction<String, Event, Result> {
 **Flink 2.0 (异步)**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class AsyncCounter extends AsyncKeyedProcessFunction<String, Event, Result> {
     private AsyncValueState<Long> counterState;
 

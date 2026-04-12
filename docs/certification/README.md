@@ -230,7 +230,7 @@ graph LR
 
 - **课程咨询**: <certification@analysisdataflow.org>
 - **技术支持**: <support@analysisdataflow.org>
-- **社区论坛**: <https://discuss.analysisdataflow.org>
+- **社区论坛**: <[社区讨论版 - 待部署]>
 
 ---
 

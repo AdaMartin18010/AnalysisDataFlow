@@ -180,6 +180,12 @@ $$
 **Flink实现**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 玩家行为特征计算
 DataStream<PlayerBehavior> behaviorStream = gameEvents
     .keyBy(event -> event.getPlayerId())
@@ -253,6 +259,10 @@ DataStream<SessionFeature> sessionFeatures = gameEvents
 
 ```java
 // 实时匹配系统
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class RealtimeMatchmaking extends
     KeyedProcessFunction<String, MatchRequest, MatchResult> {
 
@@ -319,6 +329,9 @@ public class RealtimeMatchmaking extends
 **基于CEP的反作弊模式**：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 外挂检测：超人类操作速度
 Pattern<GameEvent, ?> aimbotPattern = Pattern
     .<GameEvent>begin("aim_start")

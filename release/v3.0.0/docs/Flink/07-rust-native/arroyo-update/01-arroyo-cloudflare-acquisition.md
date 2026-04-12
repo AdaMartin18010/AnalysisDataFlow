@@ -903,6 +903,10 @@ graph LR
 **Flink DataStream API:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
     .keyBy(Event::getUserId)

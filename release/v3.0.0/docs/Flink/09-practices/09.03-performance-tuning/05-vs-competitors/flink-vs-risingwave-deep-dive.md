@@ -317,6 +317,9 @@ GROUP BY user_id;
 **模式 2: CDC → Flink 清洗 → RisingWave 分析**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink CDC 数据清洗
 DataStream<CleanedOrder> cleanedOrders = env
     .fromSource(cdcSource, WatermarkStrategy.noWatermarks(), "CDC")

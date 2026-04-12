@@ -9491,7 +9491,7 @@
 2243:
 >>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
 2245:
-2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/spec>
+2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specification>
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9507,7 +9507,7 @@
 2243:
 >>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
 2245:
-2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/spec>
+2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specification>
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13738,7 +13738,7 @@
 **代码片段**：
 
 ```markdown
-386: | `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+386: | `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 387: | `Flink\01-architecture\datastream-v2-semantics.md` | 555 |  | [https://nightlies.apache.org/flink/flink-docs-mast...](https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/) | 404 | 客户端错误: HTTP 404 |
 >>> 388: | `Flink\01-architecture\datastream-v2-semantics.md` | 557 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-500) | 404 | 客户端错误: HTTP 404 |
 389: | `Flink\01-architecture\datastream-v2-semantics.md` | 569 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-143) | 404 | 客户端错误: HTTP 404 |
@@ -13757,7 +13757,7 @@
 424: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
 >>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
-427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/spec) | 404 | 客户端错误: HTTP 404 |
+427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
 ```
 
@@ -13773,7 +13773,7 @@
 424: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
 >>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
-427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/spec) | 404 | 客户端错误: HTTP 404 |
+427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
 ```
 
@@ -13788,9 +13788,9 @@
 ```markdown
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
->>> 427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/spec) | 404 | 客户端错误: HTTP 404 |
+>>> 427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
-429: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1165 |  | [https://doi.org/10.1007/s10115-009-0226-2](https://doi.org/10.1007/s10115-009-0226-2) | N/A | URL在排除列表中 |
+429: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1165 |  | [https://doi.org/10.1007/s10115-009-0226-2]([DOI: 10.1007/s10115-009-0226-2]) | N/A | URL在排除列表中 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**

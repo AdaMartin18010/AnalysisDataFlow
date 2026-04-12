@@ -232,6 +232,8 @@ graph TB
 #### Java 实现模板
 
 ```java
+import org.apache.flink.api.common.functions.MapFunction;
+
 // ✅ 正确实现：纯函数式映射
 public class DeterministicMapFunction
     implements MapFunction<Event, EnrichedEvent> {
@@ -508,6 +510,13 @@ public class BrokenWatermarkGenerator implements WatermarkGenerator<Event> {
 #### Java 实现模板
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 // ✅ 正确实现：带状态管理的 KeyedProcessFunction
 public class StatefulCounterFunction
     extends KeyedProcessFunction<String, Event, Result>
@@ -961,6 +970,8 @@ stream.add_sink(KafkaExactlyOnceSink("output-topic", kafka_config))
 **反模式示例**:
 
 ```java
+import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+
 // ❌ 错误实现：非幂等 Sink
 public class BadSink extends RichSinkFunction<Event> {
     private DatabaseConnection db;
@@ -985,6 +996,12 @@ public class BadSink extends RichSinkFunction<Event> {
 以下展示如何将多个模式组合使用：
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 // ✅ 正确实现：组合多个模式
 public class ComplexStreamPipeline {
 

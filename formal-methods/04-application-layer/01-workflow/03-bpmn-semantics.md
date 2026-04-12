@@ -350,6 +350,8 @@ Compensation = CancelFlight(f).CancelHotel(h)
 ### 6.3 事件网关实现
 
 ```java
+import java.util.List;
+
 // 基于事件的排他网关实现
 class EventBasedGateway {
     List<Event> waitingEvents;

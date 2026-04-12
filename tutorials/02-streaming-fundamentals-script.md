@@ -73,6 +73,10 @@ graph LR
 ### 💻 代码演示
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 批处理示例 (Spark)
 Dataset<Row> batch = spark.read().parquet("/data/logs");
 batch.groupBy("user_id").count().show();
@@ -156,13 +160,16 @@ gantt
 ### 💻 代码演示
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 时间语义配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 1. 事件时间 (推荐用于生产)
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 // 2. 摄入时间
 env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
 
@@ -249,6 +256,9 @@ graph LR
 ### 💻 代码演示
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Watermark 生成策略
 
 // 1. 单调递增 (无乱序)
@@ -372,6 +382,10 @@ graph TB
 ### 💻 代码演示
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 窗口定义示例
 
 // 1. 滚动窗口 - 每5分钟统计一次
@@ -449,14 +463,20 @@ DataStream<Event> lateData = result.getSideOutput(lateDataTag);
 ### 💻 完整代码演示
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class PageViewAnalysis {
     public static void main(String[] args) throws Exception {
         // 1. 创建执行环境
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(4);
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
         // 2. 定义迟到数据的侧输出标签
         final OutputTag<PageViewEvent> lateDataTag =
             new OutputTag<PageViewEvent>("late-data"){};

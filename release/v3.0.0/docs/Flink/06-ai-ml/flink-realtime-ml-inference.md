@@ -360,6 +360,9 @@ $$P(\text{False Positive}) = \alpha \cdot N_{\text{windows}}$$
 
 ```java
 // 漂移检测算子
+
+import org.apache.flink.api.common.state.ValueState;
+
 class DriftDetectionFunction extends ProcessFunction<Prediction, Alert> {
     private ValueState<DescriptiveStatistics> referenceState;
     private ValueState<DescriptiveStatistics> currentState;
@@ -414,6 +417,9 @@ spec:
 **Flink客户端**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class TFServingAsyncFunction
     implements AsyncFunction<UserEvent, EnrichedEvent> {
 
@@ -477,6 +483,9 @@ DataStream<EnrichedEvent> scoredEvents = AsyncDataStream.unorderedWait(
 ### 6.2 批量推理优化实现
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class BatchedInferenceFunction
     extends ProcessFunction<Event, ScoredEvent>
     implements CheckpointedFunction {

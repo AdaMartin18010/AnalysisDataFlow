@@ -1,5 +1,9 @@
 # AI Agent 与 Flink 深度集成技术指南
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](./flink-agents-flip-531.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)
 
 ---
@@ -384,6 +388,9 @@ stateDiagram-v2
 **决策规则引擎**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 基于 Flink CEP 的复杂决策模式
 Pattern<AgentEvent, ?> complexDecision = Pattern
     .<AgentEvent>begin("high-risk")
@@ -412,6 +419,14 @@ import org.apache.flink.util.Collector;
 
 import java.util.*;
 import java.util.concurrent.*;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * 客户支持 Agent - 完整生产实现
@@ -765,7 +780,7 @@ public class CustomerSupportAgent {
 
 #### Python 实现 (PyFlink)
 
-```python
+```text
 # ai_agent_flink_pyflink.py
 from pyflink.datastream import StreamExecutionEnvironment, CheckpointingMode
 from pyflink.datastream.state import ValueStateDescriptor, StateTtlConfig
@@ -1157,6 +1172,8 @@ memory:
 #### 批处理 LLM 调用
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
 /**
  * 动态批处理实现
  *
@@ -1233,6 +1250,8 @@ public class DynamicBatchingFunction
 #### 缓存策略
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
 /**
  * 多级缓存实现
  */
@@ -1294,6 +1313,8 @@ public class CachingAgentFunction
 #### 超时与降级
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
 /**
  * 熔断与降级模式
  */

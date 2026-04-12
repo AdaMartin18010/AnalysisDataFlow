@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AI Agent流式处理架构：实时推理与行动系统
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [realtime-ai-streaming-2026.md](realtime-ai-streaming-2026.md), [ai-agent-database-workloads.md](ai-agent-database-workloads.md), [real-time-rag-architecture.md](real-time-rag-architecture.md) | **形式化等级**: L3-L4
@@ -816,6 +819,9 @@ flowchart LR
 **Flink实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 实时上下文组装
 DataStream<Context> enrichedContext = userMessages
     .keyBy(Message::getUserId)
@@ -1283,6 +1289,11 @@ sequenceDiagram
 
 ```java
 // Flink记忆更新流处理
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class MemoryUpdateJob {
 
     public static void main(String[] args) throws Exception {

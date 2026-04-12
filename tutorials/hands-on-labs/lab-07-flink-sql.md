@@ -99,6 +99,9 @@ public class FlinkSqlDemo {
 **验证环境配置：**
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 检查当前配置
 TableEnvironment tableEnv = ...;
 
@@ -349,6 +352,9 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Schema;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 // 创建 DataStream
 DataStream<Event> eventStream = env.fromElements(
     new Event("u001", "click", "/home", System.currentTimeMillis()),
@@ -376,6 +382,9 @@ Table eventTableWithSchema = tableEnv.fromDataStream(
 #### 5.2 Table 转 DataStream
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Table 转 DataStream（Retract 模式）
 Table resultTable = tableEnv.sqlQuery("""
     SELECT event_type, COUNT(*) as cnt
@@ -419,6 +428,9 @@ package com.example;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class UserBehaviorAnalysis {
     public static void main(String[] args) throws Exception {

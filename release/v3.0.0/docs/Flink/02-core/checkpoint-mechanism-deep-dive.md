@@ -879,6 +879,10 @@ public class RocksDBStateUploader extends StateUploader {
 ### 6.1 配置示例：Aligned Checkpoint {#61-配置示例aligned-checkpoint}
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 启用 Checkpoint，间隔 10 秒
@@ -909,6 +913,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.2 配置示例：Unaligned Checkpoint {#62-配置示例unaligned-checkpoint}
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(10000);
@@ -933,6 +940,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.3 配置示例：Incremental Checkpoint {#63-配置示例incremental-checkpoint}
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(60000); // 增量 Checkpoint 建议间隔稍长
@@ -951,6 +961,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.4 配置示例：Changelog State Backend {#64-配置示例changelog-state-backend}
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(60000);
@@ -1290,6 +1303,9 @@ graph TB
 
 3. **使用异步 Checkpoint 模式**
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
    env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);
    ```
 

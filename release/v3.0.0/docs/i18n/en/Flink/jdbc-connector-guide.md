@@ -114,6 +114,9 @@ import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // JDBC Sink 配置
 DataStream<Order> orderStream = ...;
 

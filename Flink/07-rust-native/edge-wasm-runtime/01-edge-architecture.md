@@ -732,6 +732,11 @@ export default {
 **Flink Wasm UDF 实现**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
+
 // Flink Wasm UDF 注册与使用
 public class EdgeWasmIntegration {
 

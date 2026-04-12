@@ -632,6 +632,11 @@ KafkaSink<String> createKafkaSink(String bootstrapServers, String topic, String 
 ### 8.3 端到端 Exactly-Once 作业完整示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class KafkaExactlyOnceJob {
 
     public static void main(String[] args) throws Exception {

@@ -279,6 +279,12 @@ $$
 #### 5.2.1 多源数据融合Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class MultiSourceFusionJob {
 
     public static void main(String[] args) throws Exception {
@@ -516,6 +522,13 @@ public class MultiSourceFusionJob {
 #### 5.2.2 城市数字孪生更新Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DigitalTwinUpdateJob {
 
     public static void main(String[] args) throws Exception {

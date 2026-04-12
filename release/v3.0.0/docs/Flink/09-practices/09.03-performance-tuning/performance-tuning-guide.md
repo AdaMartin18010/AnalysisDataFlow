@@ -295,6 +295,10 @@ taskmanager.memory.task.heap.size: 4096m
 ### 6.3 并行度调优实例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Kafka 24 分区，聚合算子 2 倍扩展
 DataStream<Order> orders = env
     .addSource(new FlinkKafkaConsumer<>("orders", schema, props))

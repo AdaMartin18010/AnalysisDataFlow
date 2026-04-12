@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 <!-- 版本状态标记: status=preview, target=2026-Q3 -->
 > ⚠️ **前瞻性声明 - 重要提示**
 >
@@ -427,6 +430,10 @@ state.backend.forst.incremental-recovery: true  # 2.5新特性
 ### 6.2 流批一体混合执行示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 // 混合执行模式 - 流数据源 + 批处理分析 (2.5)
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
@@ -506,6 +513,9 @@ pub extern "C" fn geo_distance(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f6
 ```
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // Flink作业注册WASM UDF (2.5 GA API)
 TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.inStreamingMode());
 

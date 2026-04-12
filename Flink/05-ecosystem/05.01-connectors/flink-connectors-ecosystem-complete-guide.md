@@ -799,6 +799,9 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 **Source 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Kafka Source (Flink 1.14+ 新 API)
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092")
@@ -865,6 +868,9 @@ stream.sinkTo(sink);
 **Source 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Pulsar Source
 PulsarSource<String> source = PulsarSource.builder()
     .setServiceUrl("pulsar://pulsar-broker:6650")
@@ -917,6 +923,9 @@ stream.sinkTo(sink);
 **Source/Sink 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // RabbitMQ Connection Config
 RMQConnectionConfig connectionConfig = new RMQConnectionConfig.Builder()
     .setHost("rabbitmq-host")
@@ -963,6 +972,9 @@ stream.addSink(sink);
 **Source 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Kinesis Source
 Properties consumerConfig = new Properties();
 consumerConfig.put(AWSConfigConstants.AWS_REGION, "us-east-1");
@@ -1023,6 +1035,9 @@ stream.sinkTo(sink);
 **Source/Sink 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Pub/Sub Source
 DeserializationSchema<String> deserializer = new SimpleStringSchema();
 
@@ -1063,6 +1078,9 @@ stream.addSink(sink);
 **Source/Sink 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // MQTT Source
 MQTTSource<String> source = MQTTSource.<String>builder()
     .setBrokerUrl("tcp://mqtt-broker:1883")
@@ -1133,6 +1151,9 @@ FileSystem.initialize(conf, null);
 **Parquet 文件读取**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Parquet Source
 FileSource<Row> source = FileSource.forRecordStreamFormat(
     new ParquetRecordFormat(),
@@ -1232,6 +1253,9 @@ stream.sinkTo(sink);
 **JDBC Source**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // JDBC Source (Bounded)
 JdbcSource<Row> source = JdbcSource.<Row>builder()
     .setUrl("jdbc:mysql://localhost:3306/mydb")
@@ -1456,6 +1480,9 @@ stream.addSink(builder.build());
 **MongoDB Source/Sink**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // MongoDB Source
 MongoSource<String> source = MongoSource.<String>builder()
     .setUri("mongodb://user:password@mongodb:27017")
@@ -1646,6 +1673,9 @@ FROM kafka_source;
 **Iceberg Source (流式读取)**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Iceberg Streaming Source
 Table table = catalog.loadTable(TableIdentifier.of("db", "user_events"));
 
@@ -2297,6 +2327,9 @@ stateDiagram-v2
 **Checkpoint 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Checkpoint 配置
 env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
 env.getCheckpointConfig().setCheckpointTimeout(600000);

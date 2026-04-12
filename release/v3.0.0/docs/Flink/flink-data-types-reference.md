@@ -404,6 +404,9 @@ import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableDescriptor;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class DataTypeExample {
 
     // 编程方式定义 Schema

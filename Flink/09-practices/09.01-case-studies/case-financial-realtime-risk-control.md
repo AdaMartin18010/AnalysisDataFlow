@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 金融实时风控系统案例研究 (Financial Real-time Risk Control Case Study)
 
 > **所属阶段**: Flink/07-case-studies | **前置依赖**: [../02-core-mechanisms/checkpoint-mechanism-deep-dive.md](../../02-core/checkpoint-mechanism-deep-dive.md), [../02-core-mechanisms/time-semantics-and-watermark.md](../../02-core/time-semantics-and-watermark.md), [../12-ai-ml/model-serving-streaming.md](../../06-ai-ml/model-serving-streaming.md) | **形式化等级**: L4
@@ -489,6 +493,9 @@ $$
 **1. 状态分区策略**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 按用户ID分区，确保同一用户的事件路由到同一分区
 DataStream<Transaction> partitioned = transactions
     .keyBy(Transaction::getUserId)
@@ -498,6 +505,9 @@ DataStream<Transaction> partitioned = transactions
 **2. 状态TTL配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
@@ -546,6 +556,10 @@ state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
 **1. 异步I/O**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 异步调用模型服务
 AsyncFunction<EnrichedTransaction, ScoredTransaction> asyncFunction =
     new AsyncFunction<>() {
@@ -661,6 +675,11 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 
 /**
  * EuroBank 实时风控引擎主作业
@@ -1245,6 +1264,11 @@ public class DeltaLakeSink<T> extends RichSinkFunction<T> {
 更多CEP模式定义示例：
 
 ```java
+import org.apache.flink.cep.Pattern;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * CEP模式库 - 定义各类欺诈检测模式
  */
@@ -1756,6 +1780,11 @@ xychart-beta
 **1. 状态管理最佳实践**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用State TTL自动清理过期状态
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
@@ -1778,6 +1807,9 @@ ValueState<AggregatedStats> statsState = getRuntimeContext().getState(statsDesc)
 **2. CEP性能优化**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用简化的模式条件，避免复杂计算
 Pattern<Transaction, ?> pattern = Pattern
     .<Transaction>begin("start")
@@ -1802,6 +1834,10 @@ Pattern<Transaction, ?> pattern = Pattern
 **3. 异步I/O配置**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 合理设置并发度和超时
 DataStream<Result> result = AsyncDataStream.unorderedWait(
     inputStream,
@@ -1816,7 +1852,7 @@ DataStream<Result> result = AsyncDataStream.unorderedWait(
 
 ```yaml
 # 关键指标监控
-metrics: 
+metrics:
   - name: checkpoint_duration
     threshold: "> 60s"
     alert: critical
@@ -1857,6 +1893,9 @@ Layer 5 (批处理): 事后分析 - 模式发现
 **模式2: 特征存储分离**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // 在线特征 - 毫秒级延迟
 ValueState<OnlineFeatures> onlineFeatures;
 
@@ -1872,6 +1911,10 @@ HistoricalFeatureService offlineFeatures;
 **模式3: 模型A/B测试**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 影子模式：新模型并行运行，不影响决策
 DataStream<ScoredTransaction> shadowScored = AsyncDataStream.unorderedWait(
     enrichedTransactions,

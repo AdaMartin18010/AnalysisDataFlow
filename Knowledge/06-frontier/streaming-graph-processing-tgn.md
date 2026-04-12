@@ -348,6 +348,9 @@ $$
 import org.apache.flink.graph.streaming.*;
 import org.apache.flink.graph.tgn.*;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 创建时序图流
 TemporalGraphStream graph = TemporalGraphStream
     .fromEdges(
@@ -393,7 +396,7 @@ env.execute("Streaming TGN Link Prediction");
 
 ### 6.2 PyFlink + PyTorch TGN
 
-```python
+```text
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.graph import TemporalGraph
 import torch
@@ -530,6 +533,11 @@ stream_tgn.serve(
 ### 6.4 金融欺诈检测完整案例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionPipeline {
     public static void main(String[] args) {
         StreamExecutionEnvironment env =

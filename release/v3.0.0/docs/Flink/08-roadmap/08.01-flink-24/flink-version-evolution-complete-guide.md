@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 版本演进与路线图完整指南
 
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L4
@@ -852,6 +855,9 @@ Java支持演进:
 **原始 DataSet 代码 (1.19)**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // DataSet API (1.x - 已废弃)
 ExecutionEnvironment env =
     ExecutionEnvironment.getExecutionEnvironment();
@@ -872,6 +878,11 @@ env.execute("WordCount");
 **迁移到 DataStream API (2.x)**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // DataStream API with BATCH execution (2.x)
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -894,6 +905,9 @@ env.execute("WordCount");
 **迁移到 Table API (推荐)**:
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // Table API (统一批流, 推荐)
 EnvironmentSettings settings = EnvironmentSettings
     .newInstance()

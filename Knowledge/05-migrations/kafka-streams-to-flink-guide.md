@@ -368,6 +368,14 @@ public class KafkaStreamsWordCount {
 **Flink 等价实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FlinkWordCount {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -476,6 +484,10 @@ KStream<String, EnrichedOrder> enrichedOrders = orders
 **Flink - Interval Join**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 订单流
 DataStream<Order> orders = env.fromSource(
     KafkaSource.<Order>builder()
@@ -535,6 +547,9 @@ KStream<String, EnrichedOrder> enriched = orders
 **Flink - Stream-Broadcast Join**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 客户数据作为广播流
 DataStream<Customer> customerStream = env.fromSource(
     KafkaSource.<Customer>builder()
@@ -588,6 +603,10 @@ KTable<Windowed<String>, Long> clickCounts = clicks
 **Flink - 滚动窗口聚合**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Tuple2<String, Long>> clickCounts = clicks
     .keyBy(Click::getUserId)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -607,6 +626,10 @@ KTable<Windowed<String>, Long> slidingCounts = clicks
 **Flink - 滑动窗口聚合**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Tuple2<String, Long>> slidingCounts = clicks
     .keyBy(Click::getUserId)
     .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
@@ -626,6 +649,10 @@ KTable<Windowed<String>, Long> sessionCounts = clicks
 **Flink - 会话窗口聚合**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Tuple2<String, Long>> sessionCounts = clicks
     .keyBy(Click::getUserId)
     .window(EventTimeSessionWindows.withGap(Time.minutes(10)))
@@ -681,6 +708,11 @@ public class KafkaStreamsStatefulProcessor {
 **Flink - ValueState 等价实现**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FlinkStatefulFunction extends KeyedProcessFunction<String, Event, Result> {
     private transient ValueState<AggregatedState> state;
 
@@ -811,6 +843,9 @@ props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 **Flink**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 启用Checkpoint实现Exactly-Once
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -830,6 +865,9 @@ KafkaSink<String> sink = KafkaSink.<String>builder()
 **Kafka Streams - Interactive Queries**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // 启动Streams应用
 KafkaStreams streams = new KafkaStreams(builder.build(), props);
 streams.start();
@@ -847,6 +885,10 @@ Long count = store.get("word");
 **Flink - 替代方案1：外部存储同步**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class StateSyncFunction extends KeyedProcessFunction<String, Event, Result> {
     private transient ValueState<AggregatedState> state;
     private transient RedisAsyncCommands<String, String> redisCommands;
@@ -882,6 +924,8 @@ public class StateSyncFunction extends KeyedProcessFunction<String, Event, Resul
 **Flink - 替代方案2：异步查询服务**:
 
 ```java
+import org.apache.flink.streaming.api.functions.async.AsyncFunction;
+
 // 通过AsyncFunction实现异步状态查询
 public class AsyncStateQueryFunction
     extends AsyncFunction<String, QueryResult> {
@@ -923,6 +967,11 @@ props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 **Flink Exactly-Once 配置**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class FlinkExactlyOnceJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -991,6 +1040,9 @@ KGroupedStream<String, Event> grouped = events
 **Flink - 重新分区策略**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 1. 通过keyBy重新分区
 DataStream<Event> repartitioned = events
     .map(event -> {
@@ -1069,6 +1121,10 @@ flowchart TD
 /**
  * 双写验证模式：同时写入两套系统，对比输出一致性
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class DualWriteValidation {
 
     public static void main(String[] args) throws Exception {
@@ -1307,6 +1363,9 @@ gantt
 **Flink 特有优化**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 1. 启用对象复用
 env.getConfig().enableObjectReuse();
 
@@ -1362,6 +1421,10 @@ public class PunctuatedFunction extends KeyedProcessFunction<String, Event, Resu
 
 ```java
 // Kafka Streams Processor API
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class CustomProcessor extends Processor<String, String> {
     private ProcessorContext context;
     private KeyValueStore<String, String> store;
@@ -1399,6 +1462,9 @@ public class CustomProcessFunction extends KeyedProcessFunction<String, String, 
 **A**: Flink 通过 **自定义分区器** 实现：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Event> stream = ...;
 stream.partitionCustom(
     new Partitioner<String>() {

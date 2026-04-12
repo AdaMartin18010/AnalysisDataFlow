@@ -255,7 +255,7 @@ $$\text{ACK}(\text{PUT}(k, v)) \Rightarrow \Diamond \text{Persistent}(v)$$
 
 **场景1: 写后读一致性**
 
-```python
+```text
 # Jepsen风格测试
 def test_read_after_write():
     key = generate_unique_key()

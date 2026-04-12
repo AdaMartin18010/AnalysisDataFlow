@@ -362,6 +362,10 @@ class EmbeddingAsyncFunction implements AsyncFunction<DocumentChunk, EmbeddedChu
 ### 6.2 查询处理服务
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RAGQueryService {
 
     public static void main(String[] args) throws Exception {
@@ -627,6 +631,11 @@ public class CachedEmbeddingClient implements EmbeddingClient {
 ### 7.3 查询结果缓存
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ResultCache implements RichFunction {
     private transient ValueState<CachedResult> cacheState;
 
@@ -663,6 +672,10 @@ public class ResultCache implements RichFunction {
 
 ```java
 // 使用 Flink 的 KeyedProcessFunction 保证单文档的顺序处理
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class OrderedDocumentProcessor extends KeyedProcessFunction<String, DocumentChange, DocumentChunk> {
 
     private transient ListState<DocumentChange> pendingChanges;

@@ -491,6 +491,10 @@ $$
 ### 6.1 MemoryStateBackend / HashMapStateBackend Configuration
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

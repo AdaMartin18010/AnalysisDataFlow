@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 2.1 Model DDL 与实时 AI 推理
 
 > **状态**: ✅ Released (2025-12-04, Flink 2.2 GA)
@@ -251,6 +254,9 @@ $$\frac{d|buf|}{dt} \geq 0 \quad \text{(仅当批次触发时重置为 0)}$$
 **DataStream 等效代码：**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // SQL: SELECT * FROM ML_PREDICT(TABLE events, MODEL gpt4, PASSING (message))
 
 DataStream<Row> result = events
@@ -548,6 +554,9 @@ FROM ML_PREDICT(
 
 ```java
 // 步骤 1: 实现 ModelProviderFactory
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class InternalMLProviderFactory implements ModelProviderFactory {
     @Override
     public String getProviderType() {

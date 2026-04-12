@@ -598,6 +598,12 @@ Flink集群配置:
 
 ```java
 // 动态定价Flink作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicPricingJob {
 
     public static void main(String[] args) {
@@ -754,6 +760,11 @@ class PriceCalculator extends BroadcastProcessFunction<
 
 ```java
 // 供需匹配优化作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+
 public class MarketplaceMatchingJob {
 
     public static void main(String[] args) {
@@ -850,6 +861,13 @@ class MatchingAnalyzer extends KeyedProcessFunction<
 **技术实现**:
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 搜索排序实时特征更新作业
 public class SearchRankingJob {
 

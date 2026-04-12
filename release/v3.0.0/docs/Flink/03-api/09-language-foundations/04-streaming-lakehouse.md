@@ -697,6 +697,11 @@ FROM dws_gmv_5min;
 
 ```java
 // Flink Java API: CDC 入湖完整 Pipeline
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class MySQLToLakehousePipeline {
 
     public static void main(String[] args) {

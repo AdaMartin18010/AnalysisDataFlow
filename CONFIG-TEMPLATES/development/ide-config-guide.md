@@ -79,6 +79,9 @@ File -> Open -> 选择 pom.xml 或 build.gradle
 #### 2.3.1 本地执行调试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 在 main 方法中设置本地环境
 public static void main(String[] args) throws Exception {
     // 创建本地执行环境

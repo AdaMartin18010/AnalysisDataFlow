@@ -131,6 +131,9 @@ import org.apache.flink.configuration.RestOptions;
 import java.util.concurrent.TimeUnit;
 import java.util.Collection;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 @State(Scope.Benchmark)
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 @OutputTimeUnit(TimeUnit.MILLISECONDS)

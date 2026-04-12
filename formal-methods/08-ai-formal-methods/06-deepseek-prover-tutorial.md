@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # DeepSeek-Prover 教程：国产AI定理证明器实战指南
 
 > **所属阶段**: AI-Formal-Methods | **前置依赖**: [神经定理证明](01-neural-theorem-proving.md), [Lean 4](../05-verification/03-theorem-proving/03-lean4.md) | **形式化等级**: L4-L6
@@ -104,10 +108,13 @@ $$\text{Integration} = \langle \text{REPL}, \text{AST}, \text{Tactic}, \text{Env
 1. **REPL 层**: 通过 Lean 4 REPL 实时交互
 
    ```python
-   # LeanDojo 风格的交互接口
-   from lean_dojo import Lean4Env
-   env = Lean4Env("mathlib4")
-   state = env.run_tactic("intro h", initial_state)
+
+# LeanDojo 风格的交互接口
+
+from lean_dojo import Lean4Env
+env = Lean4Env("mathlib4")
+state = env.run_tactic("intro h", initial_state)
+
    ```
 
 2. **AST 层**: 解析 Lean 4 抽象语法树
@@ -176,11 +183,13 @@ $$\text{Training} = \text{Stage-1}_{\text{math}} \to \text{Stage-2}_{\text{forma
 数据组成：
 
 ```
+
 数学教科书: 15B tokens
 arXiv 数学论文: 25B tokens
 Math StackExchange: 5B tokens
 竞赛数学题目: 3B tokens
 代码-数学对齐数据: 10B tokens
+
 ```
 
 **Stage 2: 形式化微调**
@@ -205,7 +214,7 @@ $$\mathcal{L}_{\text{RLEF}} = -\mathbb{E}_{\tau \sim \pi_\theta} \left[ R(\tau) 
 
 奖励函数设计：
 
-```python
+```text
 R(tau) = {
     +1.0   if proof_complete
     +0.5   if partial_progress  # 目标分解

@@ -299,6 +299,9 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 ### 6.1 DefaultScheduler 配置 (历史)
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.0 - 1.4 默认调度器
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -315,6 +318,9 @@ env.setParallelism(4);  // 需要 4 个 Slot
 ### 6.2 LegacyScheduler 配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.5+ LegacyScheduler
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -331,6 +337,9 @@ cluster.evenly-spread-out-slots: true
 ### 6.3 DeclarativeScheduler 配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.11+ DeclarativeScheduler
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -351,6 +360,9 @@ cluster.evenly-spread-out-slots: true
 ### 6.4 AdaptiveScheduler 配置 (Flink 1.17+)
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.17+ AdaptiveScheduler
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -378,6 +390,9 @@ scheduler.adaptive.scale-down.cooldown: 300s
 ### 6.5 AdaptiveScheduler V2 配置 (Flink 2.0+)
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 2.0+ AdaptiveScheduler V2
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

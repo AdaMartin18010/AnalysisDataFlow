@@ -1,11 +1,13 @@
+# Flink 2.4 连接器生态完整指南
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
-
----
-
-# Flink 2.4 连接器生态完整指南
 
 > **所属阶段**: Flink/04-connectors | **前置依赖**: [flink-connectors-ecosystem-complete-guide.md](./flink-connectors-ecosystem-complete-guide.md), [flink-paimon-integration.md](./flink-paimon-integration.md), [flink-iceberg-integration.md](./flink-iceberg-integration.md) | **形式化等级**: L4 | **版本**: Flink 2.4.0 | **状态**: preview
 
@@ -1126,6 +1128,9 @@ Phase 2 (Commit) 扩展性:
 **Kafka 3.x Source (KRaft 模式)**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Kafka 3.x Source with KRaft mode
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092,kafka-3:9092")
@@ -1499,6 +1504,9 @@ TableResult result = tableEnv.executeSql(""
 **AWS Kinesis 4.x 连接器**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // AWS Kinesis 4.x Source with Auto-Scaling
 Properties consumerConfig = new Properties();
 consumerConfig.put(AWSConfigConstants.AWS_REGION, "us-east-1");

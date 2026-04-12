@@ -536,6 +536,9 @@ $$\text{SafetyLevel}(T_1 \rightarrow T_2) = \begin{cases}
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.types.DataType;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 // 定义字段类型
 DataType stringType = DataTypes.STRING();
 DataType intType = DataTypes.INT();
@@ -581,6 +584,9 @@ val rowType = DataTypes.ROW(
 Flink使用TypeSerializer进行类型序列化：
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // 获取类型的序列化器
 DataType dataType = DataTypes.INT();
 TypeSerializer<Integer> serializer = dataType.getLogicalType()
@@ -683,6 +689,9 @@ FROM my_table;
 ### 8.3 Table API类型操作
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 TableEnvironment tEnv = TableEnvironment.create(...);
 
 // 定义带类型的表

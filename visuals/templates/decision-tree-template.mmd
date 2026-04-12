@@ -1,0 +1,70 @@
+%% 决策树模板
+%% 适用于：选型决策、故障排查、策略选择
+%% 使用说明：
+%% 1. 从根节点开始定义决策路径
+%% 2. 每个判断节点明确分支条件
+%% 3. 叶子节点给出最终建议
+
+flowchart TD
+    %% ===== 样式定义 =====
+    classDef root fill:#fef3c7,stroke:#d97706,stroke-width:3px,color:#92400e
+    classDef decision fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    classDef result fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef warning fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b
+    
+    %% ===== 决策节点 =====
+    Root[如何选择<br/>流处理框架?]:::root
+    
+    Q1{延迟要求<br/>< 100ms?}:::decision
+    Q2{吞吐量<br/>> 100K/s?}:::decision
+    Q3{需要精确<br/>一次处理?}:::decision
+    Q4{有状态<br/>计算?}:::decision
+    Q5{SQL<br/>支持?}:::decision
+    
+    %% ===== 结果节点 =====
+    R1[Flink]:::result
+    R2[Spark Streaming]:::result
+    R3[Kafka Streams]:::result
+    R4[Storm]:::warning
+    R5[ksqlDB]:::result
+    R6[Pulsar Functions]:::result
+    
+    %% ===== 决策路径 =====
+    Root --> Q1
+    
+    %% 低延迟分支
+    Q1 -->|是| Q4
+    Q1 -->|否| Q2
+    
+    %% 高吞吐量分支
+    Q2 -->|是| Q3
+    Q2 -->|否| Q5
+    
+    %% 精确一次分支
+    Q3 -->|是| R1
+    Q3 -->|否| R2
+    
+    %% 有状态分支
+    Q4 -->|是| R1
+    Q4 -->|否| R4
+    
+    %% SQL分支
+    Q5 -->|是| R5
+    Q5 -->|否| Q3
+    
+    %% 其他路径
+    Q2 -.->|中等吞吐| R3
+    Q4 -.->|轻量级| R6
+    
+    %% ===== 结果说明 =====
+    subgraph Results [推荐方案]
+        direction TB
+        Note1[Flink: 低延迟+有状态+精确一次]
+        Note2[Spark: 高吞吐批流统一]
+        Note3[Kafka Streams: 轻量级嵌入]
+    end
+    
+    %% 说明节点样式
+    style Note1 fill:#f3f4f6,stroke:#9ca3af
+    style Note2 fill:#f3f4f6,stroke:#9ca3af
+    style Note3 fill:#f3f4f6,stroke:#9ca3af

@@ -1,5 +1,9 @@
 # FLIP 状态跟踪系统 (FLIP Tracking System)
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/08-roadmap | **前置依赖**: [Flink 2.3/2.4 路线图](./flink-2.3-2.4-roadmap.md) | **形式化等级**: L3 (工程实现)
 
 ---
@@ -391,12 +395,12 @@ version: "2.3.0"
 release_date: "2026-03-15"
 status: "Released"
 
-flips: 
-  core: 
+flips:
+  core:
     - id: FLIP-531
       title: "AI Agents"
       impact: "High"
-      highlights: 
+      highlights:
         - MCP协议原生支持
         - A2A Agent间通信
         - 完全可重放性
@@ -404,7 +408,7 @@ flips:
     - id: FLIP-319
       title: "Kafka 2PC"
       impact: "Medium"
-      highlights: 
+      highlights:
         - 原生两阶段提交支持
         - 消除Java反射调用
         - 更好的exactly-once保证
@@ -412,17 +416,17 @@ flips:
     - id: FLINK-39022
       title: "SSL Security Update"
       impact: "High"
-      highlights: 
+      highlights:
         - TLS密码套件更新
         - JDK兼容性修复
         - 前向安全性增强
 
-  sql: 
+  sql:
     - id: FLIP-449
       title: "JSON Functions"
       impact: "Medium"
 
-  connectors: 
+  connectors:
     <!-- FLIP状态: Draft/Under Discussion -->
     <!-- 预计正式编号: FLIP-443 (Connector Improvements) -->
     <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-443 -->
@@ -438,15 +442,15 @@ version: "2.4.0"
 release_date: "2026-H2"
 status: "In Development"
 
-flips: 
-  core: 
+flips:
+  core:
     - id: FLIP-531-GA
       title: "AI Agents GA"
       status: "In Progress"
       progress: 65%
-      dependencies: 
+      dependencies:
         - FLIP-531 (Released)
-      highlights: 
+      highlights:
         - 生产级稳定性保证
         - 完整多Agent协作
         - 企业级安全特性
@@ -455,7 +459,7 @@ flips:
       title: "Async Snapshotting v2"
       status: "In Progress"
       progress: 45%
-      highlights: 
+      highlights:
         - 更低的检查点延迟
         - 更好的背压处理
         - 支持更大状态
@@ -464,7 +468,7 @@ flips:
       title: "Fine-grained Recovery"
       status: "Accepted"
       progress: 20%
-      highlights: 
+      highlights:
         - 任务级恢复
         - 减少全量重启
         - 更快故障恢复
@@ -473,12 +477,12 @@ flips:
       title: "Serverless Flink"
       status: "Draft"
       progress: 10%
-      highlights: 
+      highlights:
         - 按需扩缩容到0
         - 更优的冷启动
         - 成本优化
 
-  sql: 
+  sql:
     - id: FLIP-5XX
       title: "SQL Performance Hints"
       status: "In Progress"
@@ -492,8 +496,8 @@ version: "2.5.0"
 release_date: "2027-H1"
 status: "Planning"
 
-flips: 
-  core: 
+flips:
+  core:
     - id: FLIP-5XX
       title: "Adaptive Execution Engine"
       status: "Draft"
@@ -512,7 +516,7 @@ flips:
         - 统一的语义模型
         - 更好的批流一体
 
-  ai: 
+  ai:
     - id: FLIP-5XX
       title: "Model Serving Runtime"
       status: "Draft"
@@ -782,23 +786,23 @@ if __name__ == '__main__':
 # .github/workflows/flip-tracker.yml
 name: FLIP Status Tracker
 
-on: 
-  schedule: 
+on:
+  schedule:
     # 每周一上午 9 点运行
     - cron: '0 9 * * MON'
   workflow_dispatch:  # 允许手动触发
 
-jobs: 
-  update: 
+jobs:
+  update:
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
-      with: 
+      with:
         python-version: '3.11'
 
     - name: Install dependencies
@@ -806,7 +810,7 @@ jobs:
         pip install requests python-dateutil
 
     - name: Run FLIP tracker
-      env: 
+      env:
         JIRA_USER: ${{ secrets.JIRA_USER }}
         JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

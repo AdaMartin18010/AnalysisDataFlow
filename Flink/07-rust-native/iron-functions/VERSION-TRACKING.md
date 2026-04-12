@@ -2,7 +2,7 @@
 
 > **项目主页**: <https://irontools.dev>
 > **文档**: <https://irontools.dev/docs/>
-> **GitHub**: <https://github.com/irontools/iron-functions>
+> **GitHub**: <https://github.com/iron-io/functions>
 > **最后检查**: 2026-04-05
 
 ## 当前版本
@@ -78,5 +78,5 @@ python .scripts/iron-functions-tracker.py --update
 ## 参考链接
 
 - [Iron Functions 文档](https://irontools.dev/docs/)
-- [GitHub Releases](https://github.com/irontools/iron-functions/releases)
+- [GitHub Releases](https://github.com/iron-io/functions/releases)
 - [Flink 兼容性矩阵](../00-MASTER-INDEX.md)

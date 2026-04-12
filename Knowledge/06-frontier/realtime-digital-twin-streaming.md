@@ -254,7 +254,7 @@ $$
 
 **反模式1: 过度建模**
 
-```python
+```text
 # ❌ 错误：追求100%物理精度
 model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)
 # 计算耗时数小时，无法实时
@@ -266,7 +266,7 @@ model = ReducedOrderModel(physics_constraints)
 
 **反模式2: 忽视数据质量**
 
-```python
+```text
 # ❌ 错误：直接使用原始传感器数据
 prediction = model.predict(raw_sensor_data)
 # 噪声导致误报
@@ -336,6 +336,8 @@ $$
 ### 6.1 风力发电机数字孪生
 
 ```java
+import org.apache.flink.api.common.state.ValueState;
+
 public class WindTurbineTwin {
 
     // 物理参数

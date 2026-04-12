@@ -336,6 +336,9 @@ $$
 ### 6.1 风力发电机数字孪生
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class WindTurbineTwin {
 
     // 物理参数

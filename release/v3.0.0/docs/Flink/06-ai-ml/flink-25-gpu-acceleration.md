@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 2.5 GPU加速算子完整指南
 
 > ⚠️ **前瞻性声明**
@@ -1099,6 +1102,10 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.gpu.operators.GPUAggregationOperator;  // 前瞻性API: Flink 2.5规划中
+
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 public class GPUBenchmark {
 

@@ -164,6 +164,7 @@ $$
 $$
 
 **证明概要**：
+
 1. 协议转换是确定性函数，相同输入产生相同输出
 2. 转换上下文 $ctx$ 不变时，转换结果唯一
 3. 二次应用相同的转换不产生新的信息增益 ∎
@@ -202,6 +203,7 @@ R_{total}(P) = \sum_{i=1}^{n} R_{base}(p_i) + k \cdot N_{connections}
 $$
 
 其中：
+
 - $R_{base}(p_i)$: 协议适配器基础开销
 - $N_{connections}$: 总连接数
 - $k$: 每连接开销系数
@@ -418,21 +420,25 @@ $$
 **证明**：
 
 **步骤 1**: 定义转换正确性
+
 - 转换正确性要求：语义等价性 + 数据完整性
 - 语义等价性：$sem_{p_1}(m) \equiv sem_{p_2}(\mathcal{T}(m))$
 - 数据完整性：$data(m) \subseteq data(\mathcal{T}(m))$
 
 **步骤 2**: 构造转换函数
+
 - 定义映射 $\phi: Field_{p_1} \rightarrow Field_{p_2}$
 - 对于每个字段 $f \in Field_{p_1}$，存在对应 $\phi(f) \in Field_{p_2}$
 - 编码转换 $\psi: Encoding_{p_1} \rightarrow Encoding_{p_2}$
 
 **步骤 3**: 验证可逆性
+
 - 反向映射 $\phi^{-1}$ 存在且定义良好
 - 对于标准字段(deviceId, timestamp, value)，映射是双射
 - 协议特定字段(如MQTT QoS)存储在metadata中保留
 
 **步骤 4**: 结论
+
 - 由于 $\phi$ 是双射，$\phi^{-1}(\phi(m)) = m$
 - 因此转换是可逆且无损的 ∎
 
@@ -552,7 +558,7 @@ bridge_keyfile /etc/mosquitto/client.key
 topic sensors/+/data out 1 cloud/ factory/
 topic alerts/+ out 2 cloud/ factory/
 
-# 远程主题 -> 本地主题  
+# 远程主题 -> 本地主题
 topic commands/# in 1 cloud/factory/ factory/
 
 # 桥接连接重试
@@ -603,13 +609,17 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 /**
  * Flink MQTT Source 集成示例
  */
 public class MQTTIntegrationExample {
 
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(2);
 
@@ -620,16 +630,16 @@ public class MQTTIntegrationExample {
             // 连接配置
             .setServerUri("tcp://localhost:1883")
             .setClientId("flink-edge-source-" + System.currentTimeMillis())
-            
+
             // 订阅主题 (支持通配符)
             .setTopics("sensors/+/data", "devices/+/status")
-            
+
             // 反序列化
             .setDeserializationSchema(new SimpleStringSchema())
-            
+
             // QoS配置
             .setQos(1)  // At-Least-Once
-            
+
             // 连接选项
             .setConnectionOptions(options -> {
                 options.setAutomaticReconnect(true);
@@ -638,12 +648,12 @@ public class MQTTIntegrationExample {
                 options.setKeepAliveInterval(300);  // 5分钟
                 options.setMaxInflight(100);  // 最大并发消息
             })
-            
+
             // 边缘优化: 批处理模式
             .setBatchMode(true)
             .setBatchSize(100)
             .setBatchIntervalMs(100)
-            
+
             .build();
 
         // =============================================================
@@ -665,7 +675,7 @@ public class MQTTIntegrationExample {
         // =============================================================
         // 3. 数据处理
         // =============================================================
-        
+
         // 3.1 数据清洗与验证
         DataStream<SensorEvent> validStream = sensorStream
             .filter(event -> event != null && event.isValid())
@@ -691,11 +701,11 @@ public class MQTTIntegrationExample {
     /**
      * JSON到SensorEvent的映射
      */
-    public static class JsonToSensorEventMapper 
+    public static class JsonToSensorEventMapper
         implements MapFunction<String, SensorEvent> {
-        
+
         private transient ObjectMapper mapper;
-        
+
         @Override
         public SensorEvent map(String json) throws Exception {
             if (mapper == null) {
@@ -713,15 +723,15 @@ public class MQTTIntegrationExample {
     /**
      * 传感器类型路由
      */
-    public static class SensorTypeRouter 
+    public static class SensorTypeRouter
         extends ProcessFunction<SensorEvent, SensorEvent> {
-        
+
         @Override
         public void processElement(
                 SensorEvent event,
                 Context ctx,
                 Collector<SensorEvent> out) throws Exception {
-            
+
             // 根据传感器类型路由到不同输出
             switch (event.getSensorType()) {
                 case "temperature":
@@ -746,26 +756,26 @@ public class MQTTIntegrationExample {
     /**
      * 异常检测函数
      */
-    public static class AnomalyDetectionFunction 
+    public static class AnomalyDetectionFunction
         extends ProcessFunction<SensorEvent, AlertEvent> {
-        
+
         private ValueState<Double> lastValueState;
-        
+
         @Override
         public void open(Configuration parameters) throws Exception {
             lastValueState = getRuntimeContext().getState(
                 new ValueStateDescriptor<>("lastValue", Double.class));
         }
-        
+
         @Override
         public void processElement(
                 SensorEvent event,
                 Context ctx,
                 Collector<AlertEvent> out) throws Exception {
-            
+
             Double lastValue = lastValueState.value();
             double currentValue = event.getValue();
-            
+
             // 突变检测 (> 50%变化)
             if (lastValue != null && Math.abs(currentValue - lastValue) / lastValue > 0.5) {
                 out.collect(new AlertEvent(
@@ -775,7 +785,7 @@ public class MQTTIntegrationExample {
                     event.getTimestamp()
                 ));
             }
-            
+
             // 阈值检测
             if (currentValue > event.getThreshold()) {
                 out.collect(new AlertEvent(
@@ -785,7 +795,7 @@ public class MQTTIntegrationExample {
                     event.getTimestamp()
                 ));
             }
-            
+
             lastValueState.update(currentValue);
         }
     }
@@ -801,13 +811,13 @@ public class SensorEvent {
     private double threshold;
     private long timestamp;
     private Map<String, String> metadata;
-    
+
     public boolean isValid() {
         return deviceId != null && !deviceId.isEmpty()
             && sensorType != null && !sensorType.isEmpty()
             && value >= -9999 && value <= 9999;  // 合理范围检查
     }
-    
+
     // getters and setters...
 }
 ```
@@ -839,7 +849,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class CoAPIntegrationExample {
 
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = 
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
@@ -867,16 +877,16 @@ public class CoAPIntegrationExample {
      * CoAP Source实现
      */
     public static class CoAPSource<T> implements SourceFunction<T> {
-        
+
         private final String serverUri;
         private final DeserializationSchema<T> deserializer;
         private final Duration observeInterval;
-        
+
         private transient CoapClient client;
         private transient CoapObserveRelation observeRelation;
         private transient BlockingQueue<T> queue;
         private volatile boolean isRunning = true;
-        
+
         @Override
         public void open(Configuration parameters) throws Exception {
             // 配置Californium
@@ -884,22 +894,22 @@ public class CoAPIntegrationExample {
             config.setInt(NetworkConfig.Keys.MAX_MESSAGE_SIZE, 1024);
             config.setInt(NetworkConfig.Keys.PREFERRED_BLOCK_SIZE, 1024);
             config.setInt(NetworkConfig.Keys.MAX_RESOURCE_BODY_SIZE, 8192);
-            
+
             // UDP连接器
             UDPConnector connector = new UDPConnector(
                 new InetSocketAddress(0)  // 随机端口
             );
-            
+
             // 创建CoAP客户端
             client = new CoapClient(serverUri);
             client.setEndpoint(new CoapEndpoint.Builder()
                 .setConnector(connector)
                 .setNetworkConfig(config)
                 .build());
-            
+
             queue = new LinkedBlockingQueue<>(1000);
         }
-        
+
         @Override
         public void run(SourceContext<T> ctx) throws Exception {
             // 使用Observe模式订阅资源
@@ -914,13 +924,13 @@ public class CoAPIntegrationExample {
                         // 反序列化失败
                     }
                 }
-                
+
                 @Override
                 public void onError() {
                     // 处理错误
                 }
             });
-            
+
             // 从队列消费数据
             while (isRunning) {
                 T event = queue.poll(100, TimeUnit.MILLISECONDS);
@@ -931,7 +941,7 @@ public class CoAPIntegrationExample {
                 }
             }
         }
-        
+
         @Override
         public void cancel() {
             isRunning = false;
@@ -1075,7 +1085,7 @@ graph TB
         D3[智能电表<br/>Modbus RTU]
         D4[摄像头<br/>HTTP]
     end
-    
+
     subgraph Gateway["边缘IoT网关"]
         subgraph ProtocolLayer["协议接入层"]
             MQTT[MQTT Broker<br/>Mosquitto]
@@ -1083,55 +1093,55 @@ graph TB
             Modbus[Modbus Gateway]
             HTTP[HTTP Server]
         end
-        
+
         subgraph Adaptation["协议适配层"]
             M_Adapter[MQTT Adapter]
             C_Adapter[CoAP Adapter]
             Mod_Adapter[Modbus Adapter]
             H_Adapter[HTTP Adapter]
         end
-        
+
         subgraph Routing["消息路由引擎"]
             Filter[消息过滤]
             Transform[格式转换]
             Router[路由决策]
         end
-        
+
         subgraph Processing["流处理引擎<br/>Flink"]
             Source[SourceFunction]
             Process[DataStream API]
         end
-        
+
         subgraph Storage["本地存储"]
             Buffer[消息缓冲]
             TSDB[(时序数据库)]
         end
     end
-    
+
     subgraph Cloud["云端平台"]
         Kafka[Kafka Cluster]
         TS[(时序存储)]
         Analytics[分析平台]
     end
-    
+
     D1 --> MQTT --> M_Adapter
     D2 --> CoAP --> C_Adapter
     D3 --> Modbus --> Mod_Adapter
     D4 --> HTTP --> H_Adapter
-    
+
     M_Adapter --> Filter
     C_Adapter --> Filter
     Mod_Adapter --> Filter
     H_Adapter --> Filter
-    
+
     Filter --> Transform --> Router
     Router --> Source --> Process
-    
+
     Process --> Buffer
     Process --> TSDB
     Buffer -.4G/WiFi.-> Kafka
     Kafka --> TS --> Analytics
-    
+
     style Gateway fill:#e3f2fd
     style Processing fill:#fff3e0
 ```
@@ -1142,33 +1152,33 @@ graph TB
 flowchart TD
     A[消息到达] --> B[协议解析]
     B --> C[格式验证]
-    
+
     C -->|验证失败| D[丢弃/死信队列]
     C -->|验证通过| E[规则匹配]
-    
+
     E --> F{条件1?<br/>sensorType=temperature}
     E --> G{条件2?<br/>alertLevel=CRITICAL}
     E --> H{条件3?<br/>protocol=CoAP}
-    
+
     F -->|匹配| I[温度处理流]
     F -->|不匹配| J
-    
+
     G -->|匹配| K[紧急告警流]
     G -->|不匹配| J
-    
+
     H -->|匹配| L[批量聚合流]
     H -->|不匹配| J
-    
+
     J[默认流] --> M[云端原始数据]
-    
+
     I --> N[窗口聚合<br/>本地存储]
     K --> O[实时告警<br/>多渠道通知]
     L --> P[批量压缩<br/>延迟上传]
-    
+
     N --> Q[云端Kafka]
     O --> Q
     P --> R[云存储S3]
-    
+
     style K fill:#ffcdd2
     style O fill:#ffcdd2
     style D fill:#ffebee
@@ -1181,27 +1191,27 @@ stateDiagram-v2
     [*] --> MQTT_Connected: 设备连接
     [*] --> CoAP_Received: UDP到达
     [*] --> HTTP_Request: HTTP请求
-    
+
     MQTT_Connected --> Parsing: 收到消息
     CoAP_Received --> Parsing
     HTTP_Request --> Parsing
-    
+
     Parsing --> Validation: 提取字段
     Validation --> Transformation: 验证通过
     Validation --> Rejected: 验证失败
-    
+
     Transformation --> Enrichment: 标准格式
     Enrichment --> Routing: 添加元数据
-    
+
     Routing --> Cloud_Kafka: 规则匹配
     Routing --> Local_Storage: 规则匹配
     Routing --> Alert_Channel: 紧急消息
-    
+
     Cloud_Kafka --> [*]: 上传成功
     Local_Storage --> [*]: 存储成功
     Alert_Channel --> [*]: 通知成功
     Rejected --> [*]: 记录日志
-    
+
     note right of Transformation
         统一数据模型:
         deviceId, timestamp,
@@ -1213,17 +1223,3 @@ stateDiagram-v2
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Eclipse Mosquitto, "MQTT Broker Documentation", https://mosquitto.org/documentation/
-
-[^2]: Eclipse Californium, "CoAP Java Implementation", https://www.eclipse.org/californium/
-
-[^3]: OASIS Standard, "MQTT Version 5.0", https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html
-
-[^4]: IETF RFC 7252, "The Constrained Application Protocol (CoAP)", 2014.
-
-[^5]: Apache Flink, "Connectors", https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/overview/
-
-[^6]: HiveMQ, "MQTT Essentials", https://www.hivemq.com/mqtt-essentials/
-
-[^7]: L. D. Da Xu, et al., "Internet of Things in Industries: A Survey", IEEE Transactions on Industrial Informatics, 10(4), 2014.

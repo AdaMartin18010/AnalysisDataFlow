@@ -163,6 +163,13 @@ IoT 流处理平台采用边缘-云端分层架构：
 ### 4.1 传感器数据采集与边缘预处理
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class EdgePreprocessingJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -194,6 +201,13 @@ public class EdgePreprocessingJob {
 ### 4.2 云端 Flink 作业
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class CloudIoTProcessingJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -346,6 +360,9 @@ WatermarkStrategy
 - **解决**：配置状态 TTL 和增量清理
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(1))
     .cleanupInRocksdbCompactFilter(1000)
@@ -450,4 +467,3 @@ graph LR
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-

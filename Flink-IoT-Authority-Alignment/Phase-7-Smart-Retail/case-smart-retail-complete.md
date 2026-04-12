@@ -3672,7 +3672,7 @@ GROUP BY ci.sku, pm.product_name, cd.store_demand_7d, cd.online_demand_7d;
 
 #### 6.2.1 库存置信度加权算法
 
-```python
+```text
 """
 库存置信度加权融合算法
 实现多传感器数据的智能融合，输出最终库存数量和置信度
@@ -3926,7 +3926,7 @@ class InventoryFusionEngine:
 
 #### 6.2.2 多传感器数据融合算法
 
-```python
+```text
 """
 Dempster-Shafer证据理论实现
 用于多传感器冲突情况下的决策融合
@@ -4170,7 +4170,7 @@ def create_sensor_evidence(:
 
 #### 6.2.3 需求预测模型
 
-```python
+```text
 """
 需求预测模型
 结合时间序列和外部因素的混合预测方法
@@ -4228,7 +4228,7 @@ class HybridDemandForecaster:
         """
 
         if len(historical_sales) < 14:
-            # 数据不足，使用简单预测
+            # 数据不足,使用简单预测
             return self._simple_forecast(sku, store_id, historical_sales, horizon_days)
 
         forecasts = []
@@ -4374,7 +4374,7 @@ class HybridDemandForecaster:
 
 #### 6.2.4 动态定价策略算法
 
-```python
+```text
 """
 动态定价策略引擎
 基于实时供需关系调整价格
@@ -4435,7 +4435,7 @@ class DynamicPricingEngine:
             inventory_level: 当前库存
             days_of_inventory: 库存天数
             competitor_prices: 竞品价格列表
-            demand_trend: 需求趋势(>1上升，<1下降)
+            demand_trend: 需求趋势(>1上升,<1下降)
             sales_velocity: 销售速度(件/天)
 
         Returns:
@@ -4501,7 +4501,7 @@ class DynamicPricingEngine:
         avg_competitor = sum(competitor_prices) / len(competitor_prices)
         min_competitor = min(competitor_prices)
 
-        # 策略:比平均竞品低2%，但不低于最低价
+        # 策略:比平均竞品低2%,但不低于最低价
         target_price = avg_competitor * 0.98
         target_price = max(target_price, min_competitor * 0.95)
 
@@ -4519,12 +4519,12 @@ class DynamicPricingEngine:
 
         # 根据库存天数调整
         if days_of_inventory > 60:
-            # 高库存，降价促销
+            # 高库存,降价促销
             inventory_factor = 0.85
         elif days_of_inventory > 30:
             inventory_factor = 0.95
         elif days_of_inventory < 7:
-            # 低库存，可考虑提价
+            # 低库存,可考虑提价
             inventory_factor = 1.05
         else:
             inventory_factor = 1.0
@@ -4595,9 +4595,9 @@ class DynamicPricingEngine:
         reasons = []
 
         if days_of_inventory > 45:
-            reasons.append(f"高库存({days_of_inventory:.0f}天)，需加速周转")
+            reasons.append(f"高库存({days_of_inventory:.0f}天),需加速周转")
         elif days_of_inventory < 7:
-            reasons.append(f"低库存({days_of_inventory:.0f}天)，库存紧张")
+            reasons.append(f"低库存({days_of_inventory:.0f}天),库存紧张")
 
         if demand_trend > 1.3:
             reasons.append(f"需求上升趋势({demand_trend:.2f}x)")
@@ -4612,7 +4612,7 @@ class DynamicPricingEngine:
 
     def _calculate_confidence(self, weights: Dict[str, float]) -> float:
         """计算建议置信度"""
-        # 权重越分散，置信度越高
+        # 权重越分散,置信度越高
         weight_variance = sum((w - 0.33) ** 2 for w in weights.values())
         confidence = 0.8 + (0.15 - weight_variance)
         return round(min(0.95, confidence), 2)
@@ -6121,6 +6121,9 @@ AI摄像头系统采用端到端的深度学习方案，实现商品识别和顾
 4. **异步快照**: 启用异步快照，避免阻塞数据处理
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink状态配置示例
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))

@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 部署与运维完整特性指南
 
 > **所属阶段**: Flink/10-deployment | **前置依赖**: [kubernetes-deployment.md](./kubernetes-deployment.md), [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md) | **形式化等级**: L3-L4
@@ -1141,6 +1144,10 @@ resourceProfiles:
 **DataStream API 中使用**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java API 配置资源
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())

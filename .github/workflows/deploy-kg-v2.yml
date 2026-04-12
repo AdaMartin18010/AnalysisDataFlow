@@ -1,0 +1,267 @@
+name: Deploy Knowledge Graph v2.0 (Production)
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph-v4.html'
+      - 'knowledge-graph.html'
+      - 'THEOREM-REGISTRY.md'
+      - '.scripts/kg-v2/**'
+      - '.github/workflows/deploy-kg-v2.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'knowledge-graph-v4.html'
+      - '.scripts/kg-v2/**'
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: '部署目标'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+      enable_algolia:
+        description: '推送到 Algolia'
+        required: false
+        default: true
+        type: boolean
+
+# 权限配置
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 并发控制
+concurrency:
+  group: 'pages-${{ github.ref }}'
+  cancel-in-progress: false
+
+jobs:
+  # 阶段1: 构建和生成静态数据
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      build_time: ${{ steps.metadata.outputs.build_time }}
+      version: ${{ steps.metadata.outputs.version }}
+      commit_sha: ${{ steps.metadata.outputs.commit_sha }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install markdown beautifulsoup4 lunr
+
+      - name: Generate Static Data
+        id: generate
+        run: |
+          echo "🚀 开始生成知识图谱静态数据..."
+          python .scripts/kg-v2/generate-static-data.py
+          python .scripts/kg-v2/generate-search-index.py
+          python .scripts/kg-v2/generate-learning-paths.py
+          echo "✅ 数据生成完成"
+
+      - name: Optimize Assets
+        run: |
+          echo "⚡ 优化静态资源..."
+          python .scripts/kg-v2/optimize-assets.py
+
+      - name: Inject Analytics & SEO
+        env:
+          GA_ID: ${{ secrets.GA_TRACKING_ID }}
+        run: |
+          echo "📊 注入分析代码..."
+          
+          # 注入 Google Analytics（如果配置了）
+          if [ -n "$GA_ID" ]; then
+            GA_SCRIPT="<!-- Google tag (gtag.js) --><script async src='https://www.googletagmanager.com/gtag/js?id=$GA_ID'></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','$GA_ID');</script>"
+            sed -i "s|</head>|${GA_SCRIPT}</head>|g" knowledge-graph-site/index.html
+            echo "✅ Google Analytics 已注入"
+          else
+            echo "⚠️  未配置 GA_TRACKING_ID，跳过分析代码注入"
+          fi
+
+      - name: Validate Generated Files
+        run: |
+          echo "🔍 验证生成文件..."
+          test -f knowledge-graph-site/index.html || (echo "❌ index.html 不存在" && exit 1)
+          test -f knowledge-graph-site/data/graph-data.json || (echo "❌ graph-data.json 不存在" && exit 1)
+          test -f knowledge-graph-site/data/search-index.json || (echo "❌ search-index.json 不存在" && exit 1)
+          test -f knowledge-graph-site/service-worker.js || (echo "❌ service-worker.js 不存在" && exit 1)
+          echo "✅ 所有必需文件已验证"
+
+      - name: Calculate Metadata
+        id: metadata
+        run: |
+          echo "build_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "version=$(date -u +%Y%m%d.%H%M%S)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Create Build Info
+        run: |
+          cat > knowledge-graph-site/build-info.json << EOF
+          {
+            "version": "${{ steps.metadata.outputs.version }}",
+            "build_time": "${{ steps.metadata.outputs.build_time }}",
+            "commit_sha": "${{ steps.metadata.outputs.commit_sha }}",
+            "branch": "${{ github.ref_name }}",
+            "workflow": "${{ github.workflow }}"
+          }
+          EOF
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+          retention-days: 7
+          if-no-files-found: error
+
+  # 阶段2: 推送到 Algolia
+  algolia-sync:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event.inputs.enable_algolia != 'false' && github.event_name != 'pull_request' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Push to Algolia
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME || 'analysisdataflow_kg' }}
+        run: |
+          echo "☁️  推送到 Algolia..."
+          python .scripts/kg-v2/push-to-algolia.py || echo "⚠️  Algolia 推送失败，继续部署"
+
+  # 阶段3: 运行测试
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Test Dependencies
+        run: |
+          npm install -g htmlhint
+
+      - name: Validate HTML
+        run: |
+          echo "📝 验证 HTML..."
+          htmlhint knowledge-graph-site/*.html || true
+
+      - name: Check File Sizes
+        run: |
+          echo "📊 文件大小统计:"
+          du -sh knowledge-graph-site/*
+          
+          # 检查是否有文件超过 GitHub Pages 建议大小 (50MB)
+          LARGE_FILES=$(find knowledge-graph-site/ -type f -size +50M)
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ 警告: 发现超过 50MB 的文件:"
+            echo "$LARGE_FILES"
+          fi
+
+      - name: Verify Required Files
+        run: |
+          echo "📋 验证必需文件..."
+          test -f knowledge-graph-site/index.html || (echo "❌ index.html 不存在" && exit 1)
+          test -f knowledge-graph-site/404.html || (echo "❌ 404.html 不存在" && exit 1)
+          test -f knowledge-graph-site/.nojekyll || (echo "❌ .nojekyll 不存在" && exit 1)
+          test -f knowledge-graph-site/manifest.json || (echo "⚠️ manifest.json 不存在" && true)
+          test -f knowledge-graph-site/service-worker.js || (echo "⚠️ service-worker.js 不存在" && true)
+          echo "✅ 文件验证完成"
+
+  # 阶段4: 部署到 GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-site
+          path: knowledge-graph-site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: knowledge-graph-site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Notify Deployment Success
+        run: |
+          echo "🚀 知识图谱 v2.0 已成功部署!"
+          echo "📍 访问地址: ${{ steps.deployment.outputs.page_url }}"
+          echo "⏱️ 部署时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "🔖 版本: ${{ needs.build.outputs.version }}"
+          echo "📝 提交: ${{ needs.build.outputs.commit_sha }}"
+
+  # 阶段5: 创建 PR 预览评论
+  preview-comment:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📦 **知识图谱 v2.0 预览构建完成**\n\n` +
+                    `- 构建版本: ${process.env.VERSION}\n` +
+                    `- 提交: \`${process.env.COMMIT_SHA}\`\n` +
+                    `- 构建时间: ${process.env.BUILD_TIME}\n\n` +
+                    `⚠️ 注意: PR 构建仅供代码审查，不会部署到 GitHub Pages`
+            })
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          COMMIT_SHA: ${{ needs.build.outputs.commit_sha }}
+          BUILD_TIME: ${{ needs.build.outputs.build_time }}

@@ -187,6 +187,9 @@ public class WordCountExercise {
  *
  * 时间：60分钟
  */
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class OrderTimeoutDetection extends KeyedProcessFunction<String,
     OrderEvent, OrderTimeoutAlert> {
 
@@ -379,6 +382,10 @@ orderStream.keyBy(event -> event.orderId)
  *
  * 时间：120分钟
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class DynamicRiskControlEngine
     extends KeyedBroadcastProcessFunction<String, TransactionEvent, RiskRule, RiskResult> {
 

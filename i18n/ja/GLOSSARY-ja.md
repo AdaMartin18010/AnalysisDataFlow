@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 用語表（グロッサリー）
 
 > **バージョン**: v1.1 | **更新日**: 2026-04-04 | **範囲**: 全プロジェクト
@@ -31,26 +35,31 @@
 ## 用語分類インデックス
 
 ### 1. 基礎用語
+
 - **ストリームコンピューティング関連**: Dataflow、Event Time、Processing Time、Watermark、Window
 - **バッチ処理関連**: Batch Processing、Bounded Stream、Checkpoint
 - **リアルタイム処理関連**: Real-time Processing、Latency、Throughput
 
 ### 2. 理論用語
+
 - **プロセス計算用語**: CCS、CSP、π-Calculus、Actor Model、Session Types
 - **形式化検証用語**: Bisimulation、Model Checking、TLA+、Iris
 - **型理論用語**: FG/FGG、DOT、Path-Dependent Types
 
 ### 3. Flink用語
+
 - **コア概念**: JobManager、TaskManager、Operator、State Backend
 - **API関連**: DataStream API、Table API、SQL
 - **設定パラメータ**: Parallelism、Checkpoint Interval、Watermark Strategy
 
 ### 4. エンジニアリング用語
+
 - **デザインパターンパターン用語**: Windowed Aggregation、Async I/O、Side Output
 - **アーキテクチャ用語**: Microservices、Event-Driven Architecture、Data Mesh
 - **運用関連用語**: Backpressure、Monitoring、Autoscaling
 
 ### 5. 最先端用語
+
 - **AI Agent用語**: AI Agent、ReAct、MCP、A2A、Agentic Workflow、FLIP-531
 - **Serverless用語**: Serverless Flink、Scale-to-Zero、FaaS
 - **パフォーマンス最適化用語**: Adaptive Execution Engine、Smart Checkpointing
@@ -66,9 +75,11 @@
 **定義**: Flink が導入したインテリジェント実行最適化フレームワーク。実行時統計情報に基づいて実行計画、リソース配分、並列度を動的に調整します。
 
 **形式化定義**:
+
 ```
 AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 ```
+
 ここで 𝒫 は物理実行計画、ℳ は実行時メトリクス、𝒜 は適応アクション、𝒞 は制約条件、ℛ は再最適化器、δ は決定関数、π はパフォーマンス予測モデルです。
 
 **コア能力**: データスキューの自動処理、並列度の動的調整、リソース適応配分
@@ -82,6 +93,7 @@ AEE-V2 = (𝒫, ℳ, 𝒜, 𝒞, ℛ, δ, π)
 **定義**: メッセージを受信し、決定を下し、新しい Actor を作成し、メッセージを送信できる自律的エンティティである Actor を基本計算単位とする並行計算モデル。
 
 **形式化定義**:
+
 ```
 Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 ```
@@ -111,9 +123,11 @@ Actor ::= ⟨Mailbox, Behavior, State, Children, Supervisor⟩
 **定義**: Google が提案したオープンな Agent 相互運用標準。Agent 間のタスク委任、状態同期、結果返却をサポートします。
 
 **形式化定義**:
+
 ```
 A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 ```
+
 ここで 𝒫 は参加 Agent 集合、ℳ はメッセージタイプ、𝒮 はセッション状態機、𝒜 は認証認可メカニズムです。
 
 **タスク状態遷移**: `pending → working → input-required → completed/failed`
@@ -127,6 +141,7 @@ A2A_Flink = ⟨𝒫, ℳ, 𝒮, 𝒜⟩
 **定義**: Flink において、オペレーターが**すべて**の入力チャネルから Barrier を受信した後に状態スナップショットをトリガーするメカニズム。
 
 **形式化定義**:
+
 ```
 AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 ```
@@ -140,9 +155,11 @@ AlignedSnapshot(t, n) ⟺ ∀c ∈ Inputs(t): Barrier(n) ∈ Received(c)
 **定義**: ストリーム処理オペレーターが外部システム呼び出しを並行して実行できるようにするパターン。データフロー処理のブロックを回避します。
 
 **形式化定義**:
+
 ```
 AsyncFunction: I × C → Future[O]
 ```
+
 ここで C は並行度パラメータで、同時に進行中の非同期リクエスト数を制御します。
 
 **関連概念**: Backpressure、Enrichment、Concurrency
@@ -154,9 +171,11 @@ AsyncFunction: I × C → Future[O]
 **定義**: ストリームコンピューティングシステムが各入力データが最終的な外部世界への影響を**少なくとも一度**保証するセマンティクス。
 
 **形式化定義**:
+
 ```
 ∀r ∈ I. c(r, 𝒯) ≥ 1
 ```
+
 ここで c(r, 𝒯) は因果影響カウントです。
 
 **関連概念**: At-Most-Once、Exactly-Once、Delivery Guarantee
@@ -168,6 +187,7 @@ AsyncFunction: I × C → Future[O]
 **定義**: ストリームコンピューティングシステムが各入力データが最終的な外部世界への影響を**多くとも一度**保証するセマンティクス。データ損失を許容します。
 
 **形式化定義**:
+
 ```
 ∀r ∈ I. c(r, 𝒯) ≤ 1
 ```
@@ -193,6 +213,7 @@ AsyncFunction: I × C → Future[O]
 **定義**: Flink でデータフローに挿入される特殊な制御イベント。異なる Checkpoint のデータ境界を区切ります。
 
 **形式化定義**:
+
 ```
 Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 ```
@@ -206,6 +227,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 **定義**: 有限で有界なデータセットを処理する計算モード。計算開始前にデータが完全に利用可能です。
 
 **特徴**:
+
 - 入力データは有界 (Bounded)
 - 完全なデータセットにアクセス可能
 - 遅延は重要でなく、高スループットを追求
@@ -227,6 +249,7 @@ Barrier(n) = ⟨Type = CONTROL, checkpointId = n, timestamp = ts⟩
 **定義**: プロセス代数で2つのプロセスの動作等価性を判定する関係。2つのプロセスがすべての可能なアクションで相互にシミュレーションできることを要求します。
 
 **形式化定義**:
+
 ```
 R はバイシミュレーション ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'. Q→αQ' ∧ (P',Q')∈R
 ```
@@ -240,6 +263,7 @@ R はバイシミュレーション ⟺ ∀(P,Q)∈R. ∀α. P→αP' ⇒ ∃Q'.
 **定義**: 有限のデータ量を持つデータストリーム。バッチ処理のデータ抽象化です。
 
 **形式化定義**:
+
 ```
 Bounded(S) ⟺ |S| < ∞
 ```
@@ -263,6 +287,7 @@ Bounded(S) ⟺ |S| < ∞
 **定義**: Consistency As Logical Monotonicity —— 論理的単調なプログラムは協調なしで一貫性を保証できます。
 
 **形式化表現**:
+
 ```
 プログラム P が協調不要 ⟺ P は論理的単調
 ```
@@ -276,6 +301,7 @@ Bounded(S) ⟺ |S| < ∞
 **定義**: 因果依存関係の操作順序を保持する分散システムの一貫性モデル。
 
 **形式化定義**:
+
 ```
 ∀op_i, op_j. op_i ≺hb op_j ⇒ op_i ≺obs op_j
 ```
@@ -289,6 +315,7 @@ Bounded(S) ⟺ |S| < ∞
 **定義**: イベントストリームから複雑なパターンを検出し、複合イベントを生成する技術。
 
 **形式化定義**:
+
 ```
 CEP: Stream × Pattern → DetectedEvents
 ```
@@ -302,6 +329,7 @@ CEP: Stream × Pattern → DetectedEvents
 **定義**: Milner が1980年に提案したラベル付き同期に基づくプロセス代数。
 
 **構文**:
+
 ```
 P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 ```
@@ -323,6 +351,7 @@ P, Q ::= 0 | α.P | P + Q | P | Q | P \ L | P[f]
 **定義**: 分散ストリーム処理ジョブの特定時点でのグローバルな一貫した状態スナップショット。障害回復に使用されます。
 
 **形式化定義**:
+
 ```
 CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 ```
@@ -378,6 +407,7 @@ CP = ⟨ID, TS, {S_i}_{i∈Tasks}, Metadata⟩
 **定義**: ストリームデータベースで継続的に実行され、データ到着時に自動的に結果を更新するクエリ。
 
 **形式化定義**:
+
 ```
 q: S → 𝒱, ここで q は時変関数
 ```
@@ -399,6 +429,7 @@ q: S → 𝒱, ここで q は時変関数
 **定義**: Hoare が1985年に提案した同期通信と静的イベント名に基づくプロセス代数。
 
 **構文**:
+
 ```
 P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 ```
@@ -414,9 +445,11 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 **定義**: データがオペレーター間を流れる図として計算を表現するモデル。ストリームコンピューティングの核心理論基盤です。
 
 **形式化定義**:
+
 ```
 𝒢 = (V, E, P, Σ, 𝕋)
 ```
+
 ここで V は頂点集合、E は辺集合、P は処理関数、Σ は状態、𝕋 は時間モデルです。
 
 **関連概念**: DAG、Operator、Stream Graph
@@ -452,6 +485,7 @@ P, Q ::= STOP | SKIP | a → P | P □ Q | P ⊓ Q | P ||| Q | P |[A]| Q
 **定義**: 同じ入力が与えられた場合、システムが常に同じ出力を生成する性質。
 
 **形式化定義**:
+
 ```
 Deterministic(P) ⟺ ∀x. P(x) = P(x)
 ```
@@ -483,6 +517,7 @@ Deterministic(P) ⟺ ∀x. P(x) = P(x)
 **定義**: 外部データソースから外部データシンクまでのパイプライン全体の一貫性保証。
 
 **形式化定義**:
+
 ```
 End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOutput(Snk)
 ```
@@ -504,6 +539,7 @@ End-to-End-EO(J) ⟺ Replayable(Src) ∧ ConsistentCheckpoint(Ops) ∧ AtomicOut
 **定義**: データレコードが生成されたタイムスタンプ。データソースによって付与されます。
 
 **形式化定義**:
+
 ```
 t_e: Record → Timestamp
 ```
@@ -517,6 +553,7 @@ t_e: Record → Timestamp
 **定義**: 新しい更新がない場合、最終的にすべてのレプリカが同じ値に収束することを保証する一貫性モデル。
 
 **形式化定義**:
+
 ```
 ◇□(replicas converge)
 ```
@@ -530,6 +567,7 @@ t_e: Record → Timestamp
 **定義**: ストリームコンピューティングシステムが各入力データが最終的な外部世界への影響を**有してかつ唯一回のみ**保証するセマンティクス。
 
 **形式化定義**:
+
 ```
 ∀r ∈ I. c(r, 𝒯) = 1
 ```
@@ -553,6 +591,7 @@ t_e: Record → Timestamp
 **定義**: Flink ストリームコンピューティングフレームワークに基づいて構築された自律的インテリジェントエージェント。継続的な感知、決定、行動をサポートします。
 
 **形式化定義**:
+
 ```
 𝒜_Flink = ⟨𝒮_state, 𝒫_perception, 𝒟_decision, 𝒜_action, ℳ_memory, 𝒢_goal⟩
 ```
@@ -568,12 +607,14 @@ t_e: Record → Timestamp
 **定義**: Apache Flink の公式機能提案。AI Agent ネイティブランタイムサポートを導入し、ストリームコンピューティングと AI インテリジェントエージェントの深い統合を実現します。
 
 **コアコンポーネント**:
+
 - **Flink Agent Runtime**: Agent 実行環境
 - **MCP 統合**: Model Context Protocol サポート
 - **A2A プロトコル**: Agent 間相互運用
 - **Agentic Workflow**: インテリジェントエージェントワークフローオーケストレーション
 
 **形式化定義**:
+
 ```
 FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 ```
@@ -605,6 +646,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 **定義**: GPU の大規模並列計算能力を活用してストリーム処理オペレーターを実行。CUDA/OpenCL を通じて計算集約型操作を CPU から GPU にオフロードします。
 
 **形式化定義**:
+
 ```
 𝒪_GPU(D) = GPUKernel(Transfer(D_CPU→GPU))
 ```
@@ -630,6 +672,7 @@ FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 **定義**: すべてのレコードを含む単一ウィンドウ。通常はカスタムトリガーと共に使用されます。
 
 **形式化定義**:
+
 ```
 Global: wid_global = (-∞, +∞)
 ```
@@ -655,6 +698,7 @@ Global: wid_global = (-∞, +∞)
 **定義**: 操作が複数回適用されても、最初の適用以外のシステム状態に影響を与えない性質。
 
 **形式化定義**:
+
 ```
 f(x) = f(f(x))
 ```
@@ -780,6 +824,7 @@ f(x) = f(f(x))
 **定義**: Milner が提案したモバイルプロセス代数。動的チャネル作成と名前渡しをサポートします。
 
 **形式化定義**:
+
 ```
 P, Q ::= 0 | α.P | P + Q | P | Q | (νa)P | !P
 ```
@@ -829,6 +874,7 @@ P, Q ::= 0 | α.P | P + Q | P | Q | (νa)P | !P
 **定義**: アクティビティの期間に基づいてレコードをグループ化するウィンドウタイプ。ギャップ期間後にクローズされます。
 
 **形式化定義**:
+
 ```
 Session(gap): 連続するイベント間の間隔 < gap
 ```
@@ -858,6 +904,7 @@ Session(gap): 連続するイベント間の間隔 < gap
 **定義**: 固定サイズで指定されたスライド間隔で動くウィンドウタイプ。ウィンドウが重複する可能性があります。
 
 **形式化定義**:
+
 ```
 Sliding(size, slide): [t - size, t) で t = k × slide (k ∈ ℕ)
 ```
@@ -897,6 +944,7 @@ Sliding(size, slide): [t - size, t) で t = k × slide (k ∈ ℕ)
 **定義**: 連続的かつ無限のデータフローをリアルタイムで処理する計算モード。
 
 **特徴**:
+
 - 入力データは無限 (Unbounded)
 - 低遅延処理
 - 継続的な計算
@@ -954,6 +1002,7 @@ Sliding(size, slide): [t - size, t) で t = k × slide (k ∈ ℕ)
 **定義**: 固定サイズで隣接し、重複しないウィンドウタイプ。
 
 **形式化定義**:
+
 ```
 Tumbling(size): [k × size, (k+1) × size) (k ∈ ℕ)
 ```
@@ -977,6 +1026,7 @@ Tumbling(size): [k × size, (k+1) × size) (k ∈ ℕ)
 **定義**: 無限のデータ量を持つデータストリーム。ストリーム処理のデータ抽象化です。
 
 **形式化定義**:
+
 ```
 Unbounded(S) ⟺ |S| = ∞
 ```
@@ -992,6 +1042,7 @@ Unbounded(S) ⟺ |S| = ∞
 **定義**: イベント時間ストリーム処理で時間の進行を示すメタデータイベント。特定タイムスタンプ以前のすべてのイベントが到着したとマークします。
 
 **形式化定義**:
+
 ```
 WM(t) = max{ t_e | event e has arrived } - allowed_lateness
 ```

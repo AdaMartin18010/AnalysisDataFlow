@@ -293,6 +293,9 @@ $$C_{pm} = \frac{\text{每小时基础设施成本} \times 1000}{\Theta \times 3
 ### 6.1 Nexmark Flink实现配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Nexmark q8: Monitor New Users
 // 测试状态后端和定时器性能
 

@@ -24,7 +24,7 @@ docker-compose ps
 | Flink Web UI | <http://localhost:8081> | 作业监控和管理 |
 | Kafka UI | <http://localhost:8082> | Kafka 主题管理 |
 | MinIO Console | <http://localhost:9001> | 对象存储管理 (minioadmin/minioadmin) |
-| Jupyter Notebook | <http://localhost:8888> | 交互式开发 |
+| Jupyter Notebook | <[本地开发环境专用链接]> | 交互式开发 |
 
 ### 3. 验证环境
 

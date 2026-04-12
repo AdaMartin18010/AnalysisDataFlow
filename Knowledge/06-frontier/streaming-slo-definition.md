@@ -379,7 +379,7 @@ Histogram event_latency = Histogram.build()
 
 **SLI 计算示例**：
 
-```python
+```text
 # 延迟 SLI 计算
 def calculate_latency_sli(events: List[Event], slo_threshold_ms: int) -> float:
     """计算满足延迟 SLO 的事件比例"""

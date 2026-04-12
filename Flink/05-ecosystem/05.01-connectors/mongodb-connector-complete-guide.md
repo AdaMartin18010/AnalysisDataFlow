@@ -579,6 +579,10 @@ WHERE age >= 18;
 import org.apache.flink.connector.mongodb.source.MongoSource;
 import org.apache.flink.connector.mongodb.source.config.MongoChangeStreamOptions;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class MongoDBCDCExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -634,6 +638,8 @@ public class MongoDBCDCExample {
 **处理变更事件**：
 
 ```java
+import org.apache.flink.api.common.functions.MapFunction;
+
 // 将 Change Stream 事件转换为标准格式
 public class ChangeStreamProcessor
     implements MapFunction<ChangeStreamDocument<Document>, Row> {
@@ -671,6 +677,10 @@ public class ChangeStreamProcessor
 ```java
 import org.apache.flink.connector.mongodb.sink.MongoSink;
 import org.apache.flink.connector.mongodb.sink.config.MongoWriteOptions;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class MongoDBSinkExample {
     public static void main(String[] args) throws Exception {
@@ -779,6 +789,10 @@ WHERE status = 'completed';
 ```java
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class MongoDBCDCtoSinkExample {
     public static void main(String[] args) throws Exception {
@@ -1114,4 +1128,3 @@ mongodb://user:pass@host1:27017,host2:27017,host3:27017/mydb?replicaSet=rs0&auth
 [^4]: MongoDB Documentation, "Change Events", 2024. <https://www.mongodb.com/docs/manual/reference/change-events/>
 
 [^5]: Apache Flink Documentation, "Exactly Once Semantics", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/>
-

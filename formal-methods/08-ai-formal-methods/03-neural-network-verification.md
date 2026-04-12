@@ -227,18 +227,18 @@ $$\text{BaB}(f, \phi) = \text{SAT} \Rightarrow f \models \phi$$
 
 ### 6.1 β-CROWN 验证示例
 
-```python
+```text
 # β-CROWN: 完整的神经网络验证器
 from beta_crown import BetaCROWN
 
-# 加载神经网络（ONNX格式）
+# 加载神经网络(ONNX格式)
 model = BetaCROWN.load_model("mnist_classifier.onnx")
 
-# 定义输入区域（L∞扰动）
+# 定义输入区域(L∞扰动)
 x0 = load_image("digit_5.png")  # 原始输入
 epsilon = 0.03  # 扰动半径
 
-# 定义性质：分类标签不变
+# 定义性质:分类标签不变
 def property(output):
     return output[5] > output[i] for all i != 5
 

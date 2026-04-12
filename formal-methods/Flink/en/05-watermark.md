@@ -254,6 +254,9 @@ Late data refers to data with event time less than current Watermark but physica
 **Strategy 1: Drop (Default)**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 // allowedLateness defaults to 0, late data directly dropped
 ```
@@ -261,6 +264,9 @@ Late data refers to data with event time less than current Watermark but physica
 **Strategy 2: Allow Lateness Updates**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 .allowedLateness(Time.minutes(5))  // Extra 5 minutes retention
 ```
@@ -268,6 +274,9 @@ Late data refers to data with event time less than current Watermark but physica
 **Strategy 3: Side Output Capture**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 .sideOutputLateData(lateDataTag)
@@ -364,6 +373,9 @@ Where $L$ is Allowed Lateness.
 **Example 1: Ordered Log Stream**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Event> stream = env.fromSource(kafkaSource,
     WatermarkStrategy.<Event>forMonotonousTimestamps()
         .withIdleness(Duration.ofMinutes(5)),
@@ -373,6 +385,9 @@ DataStream<Event> stream = env.fromSource(kafkaSource,
 **Example 2: Out-of-Order Transaction Stream (Common Configuration)**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Transaction> stream = env.fromSource(kafkaSource,
     WatermarkStrategy.<Transaction>forBoundedOutOfOrderness(Duration.ofSeconds(10))
         .withIdleness(Duration.ofMinutes(1)),
@@ -386,6 +401,9 @@ DataStream<Transaction> stream = env.fromSource(kafkaSource,
 **Tumbling Window - Hourly PV Statistics**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(Event::getPageId)
     .window(TumblingEventTimeWindows.of(Time.hours(1)))
     .aggregate(new CountAggregate());
@@ -394,6 +412,9 @@ stream.keyBy(Event::getPageId)
 **Sliding Window - 5-Minute Moving Average**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(SensorReading::getSensorId)
     .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
     .aggregate(new AverageAggregate());
@@ -402,6 +423,9 @@ stream.keyBy(SensorReading::getSensorId)
 **Session Window - User Behavior Analysis**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream.keyBy(ClickEvent::getUserId)
     .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
     .allowedLateness(Time.minutes(10))
@@ -413,6 +437,10 @@ stream.keyBy(ClickEvent::getUserId)
 ### 6.4 Late Data Processing Example
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 
 SingleOutputStreamOperator<Result> mainResult = stream

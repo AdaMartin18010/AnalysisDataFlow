@@ -1,0 +1,156 @@
+# Jekyll Configuration for AnalysisDataFlow
+# GitHub Pages 站点配置
+# 版本: 4.2 | 更新日期: 2026-04-12
+
+# 站点基础配置
+title: "AnalysisDataFlow - 流计算形式化理论与工程实践"
+description: "流计算领域的「形式化理论补充 + 前沿探索实验室」- 深度原理理解、前沿技术探索、全景引擎对比、严格形式化分析"
+url: "https://analysisdataflow.github.io"
+baseurl: ""
+
+# 作者信息
+author:
+  name: "AnalysisDataFlow Team"
+  email: "contact@analysisdataflow.github.io"
+  twitter: "@AnalysisDataFlow"
+  github: "luyanfeng"
+
+# 社交媒体
+social:
+  name: AnalysisDataFlow
+  links:
+    - https://github.com/luyanfeng/AnalysisDataFlow
+
+# SEO 优化
+twitter:
+  username: "@AnalysisDataFlow"
+  card: summary_large_image
+
+facebook:
+  app_id: # 如果有Facebook App ID，请填入
+  publisher: # Facebook页面URL
+
+linkedin:
+  company: # LinkedIn公司页面
+
+# 语言设置
+lang: zh-CN
+languages:
+  - zh-CN
+  - en
+
+default_lang: zh-CN
+
+# 站点地图设置
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-redirect-from
+
+# SEO Tag 配置
+twitter:
+  username: AnalysisDataFlow
+logo: /visuals/logo.png
+
+# 站点地图排除
+exclude:
+  - .git/
+  - .github/
+  - .scripts/
+  - .vscode/
+  - .tasks/
+  - .templates/
+  - .improvement-tracking/
+  - archive/
+  - benchmark-data/
+  - CONFIG-TEMPLATES/
+  - docker/
+  - formal-methods/
+  - neo4j/
+  - patches/
+  - pdf/
+  - phase2-*/
+  - reconstruction/
+  - release/
+  - reports/
+  - scripts/
+  - tools/
+  - validation-output/
+  - Flink-IoT-Authority-Alignment/
+  - "*.py"
+  - "*.json"
+  - "*.yml"
+  - "*.yaml"
+  - "Makefile"
+  - "Dockerfile"
+  - "docker-compose.yml"
+  - "*.log"
+  - "*.csv"
+  - "BROKEN-LINKS-TODO.md"
+  - "link-check-report.json"
+
+# 包含特定文件
+include:
+  - _headers
+  - _redirects
+
+# Markdown处理
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+
+# 集合配置
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
+  tutorials:
+    output: true
+    permalink: /:collection/:path/
+  examples:
+    output: true
+    permalink: /:collection/:path/
+
+# 默认布局
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "AnalysisDataFlow Team"
+  - scope:
+      path: ""
+    values:
+      image: /visuals/social-preview.png
+      lang: zh-CN
+
+# 分页设置
+paginate: 10
+paginate_path: "/page/:num/"
+
+# Feed设置
+feed:
+  posts_limit: 20
+  excerpt_only: false
+
+# 性能优化
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: [html, head, body]
+
+# 安全设置
+safe: true
+incremental: false
+
+# GitHub Pages特定设置
+github:
+  repository_url: https://github.com/luyanfeng/AnalysisDataFlow
+  owner_name: luyanfeng
+  owner_url: https://github.com/luyanfeng

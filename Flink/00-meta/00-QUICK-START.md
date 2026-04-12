@@ -1,4 +1,8 @@
-﻿# Flink 2.4/2.5 快速开始指南
+# Flink 2.4/2.5 快速开始指南
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > **5分钟上手 Flink 2.4/2.5 | 新特性快速体验 | 生产级部署**
 >
@@ -609,6 +613,9 @@ GROUP BY event_type;
 **自适应执行模式：**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 配置自适应执行
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -718,6 +725,9 @@ GROUP BY category;
 **Java GPU 算子：**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // GPU 加速聚合
 DataStream<Transaction> transactions = ...;
 
@@ -799,6 +809,9 @@ cargo flink build --release
 **Flink 注册使用：**
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 注册 WASM UDF
 TableEnvironment tEnv = TableEnvironment.create(
     EnvironmentSettings.inStreamingMode()

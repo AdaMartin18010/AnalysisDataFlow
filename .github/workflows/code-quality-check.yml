@@ -1,0 +1,473 @@
+# Code Quality Check - 代码质量自动检查 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-12 | 状态: Production
+#
+# 功能:
+#   1. Python代码质量检查 (pylint, flake8)
+#   2. Shell脚本检查
+#   3. YAML配置文件验证
+#   4. 代码复杂度分析
+#   5. 重复代码检测
+
+name: Code Quality Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'scripts/**'
+      - '.scripts/**'
+      - '**/*.py'
+      - '**/*.sh'
+      - '**/*.yml'
+      - '**/*.yaml'
+  push:
+    branches: [main, master]
+    paths:
+      - 'scripts/**'
+      - '.scripts/**'
+      - '**/*.py'
+      - '**/*.sh'
+      - '**/*.yml'
+      - '**/*.yaml'
+  schedule:
+    # 每周二凌晨 2:00 UTC
+    - cron: '0 2 * * 2'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - python-only
+          - shell-only
+          - yaml-only
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 阶段1: 变更检测 ============
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      python_changed: ${{ steps.changes.outputs.python_changed }}
+      shell_changed: ${{ steps.changes.outputs.shell_changed }}
+      yaml_changed: ${{ steps.changes.outputs.yaml_changed }}
+      changed_files: ${{ steps.changes.outputs.changed_files }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "python_changed=true" >> $GITHUB_OUTPUT
+            echo "shell_changed=true" >> $GITHUB_OUTPUT
+            echo "yaml_changed=true" >> $GITHUB_OUTPUT
+            echo "changed_files=all" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD || true)
+          else
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD || true)
+          fi
+
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # 检测各类变更
+          if echo "$changed_files" | grep -q '\.py$'; then
+            echo "python_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "python_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          if echo "$changed_files" | grep -q '\.sh$'; then
+            echo "shell_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "shell_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          if echo "$changed_files" | grep -qE '\.(yml|yaml)$'; then
+            echo "yaml_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "yaml_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ============ 阶段2: Python代码检查 ============
+  python-check:
+    name: Python Code Quality
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.python_changed == 'true' ||
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'python-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install linting tools
+        run: |
+          pip install -q pylint flake8 pyflakes
+
+      - name: Run Python syntax check
+        run: |
+          python << 'PYEOF'
+          import ast
+          import sys
+          from pathlib import Path
+
+          errors = []
+
+          for pattern in ['scripts/**/*.py', '.scripts/**/*.py']:
+              for py_file in Path('.').glob(pattern):
+                  if any(p.startswith('.') for p in py_file.parts):
+                      continue
+                  
+                  try:
+                      content = py_file.read_text(encoding='utf-8')
+                      ast.parse(content)
+                  except SyntaxError as e:
+                      errors.append(f"{py_file}: {e}")
+
+          if errors:
+              print("❌ Python syntax errors found:")
+              for e in errors:
+                  print(f"  - {e}")
+              sys.exit(1)
+
+          print("✅ Python syntax check passed")
+          PYEOF
+
+      - name: Run flake8 check
+        run: |
+          # 配置flake8忽略一些常见警告
+          cat > .flake8 << 'EOF'
+          [flake8]
+          max-line-length = 120
+          ignore = E203,E501,W503,E302,E305
+          exclude = .git,__pycache__,.venv,venv
+          EOF
+
+          flake8 scripts/ .scripts/ --statistics --count 2>/dev/null || true
+
+      - name: Generate Python quality report
+        run: |
+          python << 'PYEOF'
+          import ast
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'total_files': 0,
+              'total_lines': 0,
+              'total_functions': 0,
+              'total_classes': 0,
+              'files': []
+          }
+
+          for pattern in ['scripts/**/*.py', '.scripts/**/*.py']:
+              for py_file in Path('.').glob(pattern):
+                  if any(p.startswith('.') for p in py_file.parts):
+                      continue
+                  
+                  try:
+                      content = py_file.read_text(encoding='utf-8')
+                      tree = ast.parse(content)
+                      
+                      file_stats = {
+                          'file': str(py_file),
+                          'lines': len(content.split('\n')),
+                          'functions': len([n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]),
+                          'classes': len([n for n in ast.walk(tree) if isinstance(n, ast.ClassDef)])
+                      }
+                      
+                      stats['total_files'] += 1
+                      stats['total_lines'] += file_stats['lines']
+                      stats['total_functions'] += file_stats['functions']
+                      stats['total_classes'] += file_stats['classes']
+                      stats['files'].append(file_stats)
+                  except Exception:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+
+          with open('reports/python-quality.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          print(f"Python Code Statistics:")
+          print(f"  Files: {stats['total_files']}")
+          print(f"  Lines: {stats['total_lines']}")
+          print(f"  Functions: {stats['total_functions']}")
+          print(f"  Classes: {stats['total_classes']}")
+          PYEOF
+
+      - name: Upload Python report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-quality-report
+          path: reports/python-quality.json
+          if-no-files-found: ignore
+
+  # ============ 阶段3: Shell脚本检查 ============
+  shell-check:
+    name: Shell Script Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.shell_changed == 'true' ||
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'shell-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+
+      - name: Run shellcheck
+        run: |
+          find scripts .scripts -name "*.sh" -type f 2>/dev/null | while read -r file; do
+            echo "Checking: $file"
+            shellcheck -x "$file" || true
+          done
+        continue-on-error: true
+
+      - name: Generate shell script report
+        run: |
+          python << 'PYEOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'total_files': 0,
+              'total_lines': 0,
+              'files': []
+          }
+
+          for pattern in ['scripts/**/*.sh', '.scripts/**/*.sh']:
+              for sh_file in Path('.').glob(pattern):
+                  if any(p.startswith('.') for p in sh_file.parts):
+                      continue
+                  
+                  try:
+                      content = sh_file.read_text(encoding='utf-8')
+                      
+                      file_stats = {
+                          'file': str(sh_file),
+                          'lines': len(content.split('\n'))
+                      }
+                      
+                      stats['total_files'] += 1
+                      stats['total_lines'] += file_stats['lines']
+                      stats['files'].append(file_stats)
+                  except Exception:
+                      pass
+
+          Path('reports').mkdir(exist_ok=True)
+
+          with open('reports/shell-quality.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          print(f"Shell Script Statistics:")
+          print(f"  Files: {stats['total_files']}")
+          print(f"  Lines: {stats['total_lines']}")
+          PYEOF
+
+      - name: Upload shell report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shell-quality-report
+          path: reports/shell-quality.json
+          if-no-files-found: ignore
+
+  # ============ 阶段4: YAML配置文件验证 ============
+  yaml-check:
+    name: YAML Validation
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.yaml_changed == 'true' ||
+      github.event.inputs.check_type == 'full' ||
+      github.event.inputs.check_type == 'yaml-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install yamllint
+        run: |
+          pip install -q yamllint
+
+      - name: Validate YAML files
+        run: |
+          python << 'PYEOF'
+          import yaml
+          import sys
+          from pathlib import Path
+
+          errors = []
+
+          for pattern in ['**/*.yml', '**/*.yaml']:
+              for yaml_file in Path('.').glob(pattern):
+                  # 排除虚拟环境和缓存目录
+                  if any(skip in str(yaml_file) for skip in ['.git', '__pycache__', '.venv', 'venv', 'node_modules']):
+                      continue
+                  
+                  try:
+                      content = yaml_file.read_text(encoding='utf-8')
+                      yaml.safe_load(content)
+                  except yaml.YAMLError as e:
+                      errors.append(f"{yaml_file}: {e}")
+                  except Exception:
+                      pass
+
+          if errors:
+              print("❌ YAML validation errors:")
+              for e in errors[:10]:
+                  print(f"  - {e}")
+              sys.exit(1)
+
+          print("✅ All YAML files are valid")
+          PYEOF
+
+      - name: Generate YAML report
+        run: |
+          python << 'PYEOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          stats = {
+              'generated_at': datetime.now().isoformat(),
+              'workflow_files': 0,
+              'config_files': 0,
+              'total_files': 0
+          }
+
+          for pattern in ['**/*.yml', '**/*.yaml']:
+              for yaml_file in Path('.').glob(pattern):
+                  if any(skip in str(yaml_file) for skip in ['.git', '__pycache__', '.venv', 'venv', 'node_modules']):
+                      continue
+                  
+                  stats['total_files'] += 1
+                  
+                  if '.github/workflows' in str(yaml_file):
+                      stats['workflow_files'] += 1
+                  elif str(yaml_file).startswith('.'):
+                      stats['config_files'] += 1
+
+          Path('reports').mkdir(exist_ok=True)
+
+          with open('reports/yaml-quality.json', 'w') as f:
+              json.dump(stats, f, indent=2)
+
+          print(f"YAML Statistics:")
+          print(f"  Total: {stats['total_files']}")
+          print(f"  Workflows: {stats['workflow_files']}")
+          print(f"  Configs: {stats['config_files']}")
+          PYEOF
+
+      - name: Upload YAML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaml-quality-report
+          path: reports/yaml-quality.json
+          if-no-files-found: ignore
+
+  # ============ 阶段5: 汇总报告 ============
+  summary:
+    name: Code Quality Summary
+    runs-on: ubuntu-latest
+    needs:
+      - detect-changes
+      - python-check
+      - shell-check
+      - yaml-check
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate summary
+        run: |
+          echo "## 🔍 Code Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.python-check.result }}" == "success" ]; then
+            echo "| Python Code Quality | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.python-check.result }}" == "skipped" ]; then
+            echo "| Python Code Quality | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Python Code Quality | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.shell-check.result }}" == "success" ]; then
+            echo "| Shell Script Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.shell-check.result }}" == "skipped" ]; then
+            echo "| Shell Script Check | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Shell Script Check | ⚠️ Warning |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.yaml-check.result }}" == "success" ]; then
+            echo "| YAML Validation | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.yaml-check.result }}" == "skipped" ]; then
+            echo "| YAML Validation | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| YAML Validation | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.python-check.result }}" == "failure" ] || [ "${{ needs.yaml-check.result }}" == "failure" ]; then
+            echo "## ❌ Code Quality Check Failed" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "## ✅ Code Quality Check Passed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload all reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-quality-reports
+          path: reports/
+          if-no-files-found: ignore

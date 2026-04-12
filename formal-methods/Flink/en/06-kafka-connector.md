@@ -271,6 +271,9 @@ linger.ms=0
 ### 6.1 Kafka Source with Watermark Generation
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Modern FLIP-27 Source API
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")

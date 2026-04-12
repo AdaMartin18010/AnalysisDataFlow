@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Flink/ Directory Guide - Flink-Specific Technology"
 source_file: "Flink/00-INDEX.md"
 source_version: "v3.3.0"

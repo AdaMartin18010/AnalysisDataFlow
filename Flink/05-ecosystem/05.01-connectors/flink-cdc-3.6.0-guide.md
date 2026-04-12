@@ -357,6 +357,8 @@ route:
 **兼容性论证**：
 
 ```java
+import java.util.Optional;
+
 // JDK 11代码示例（Flink CDC 3.6.0内部实现）
 public class SchemaRegistry {
     // var类型推断（JDK 10+）

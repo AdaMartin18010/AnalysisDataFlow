@@ -196,6 +196,9 @@ case class SourceActor(next: ActorRef) extends Actor {
 **Flink Exactly-Once 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);

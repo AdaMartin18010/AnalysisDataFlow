@@ -42,6 +42,10 @@ import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class BasicCEPExample {
 
     public static void main(String[] args) throws Exception {
@@ -116,6 +120,9 @@ public class BasicCEPExample {
 ### 步骤 2: 量词使用
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用量词简化模式定义
 Pattern<LoginEvent, ?> loginFailPattern = Pattern
     .<LoginEvent>begin("fail")
@@ -155,6 +162,9 @@ Pattern<Event, ?> greedyPattern = Pattern
 ### 步骤 3: 时间约束与模式
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 严格连续 (next): 事件必须紧邻
 Pattern<Event, ?> strictPattern = Pattern
     .<Event>begin("first")
@@ -184,6 +194,9 @@ Pattern<Event, ?> absencePattern = Pattern
 ### 步骤 4: 迭代条件
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用迭代条件检测上升趋势
 Pattern<StockPrice, ?> risingPattern = Pattern
     .<StockPrice>begin("start")
@@ -226,6 +239,10 @@ Pattern<StockPrice, ?> risingPattern = Pattern
 ### 步骤 5: 处理超时和旁路输出
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义超时标签
 OutputTag<TimeoutEvent> timeoutTag = new OutputTag<TimeoutEvent>("timeout"){};
 
@@ -267,6 +284,11 @@ DataStream<TimeoutResult> timeoutStream = result.getSideOutput(timeoutTag);
 ### 步骤 6: 复杂场景 - 订单欺诈检测
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionCEP {
 
     public static void main(String[] args) throws Exception {
@@ -338,6 +360,9 @@ public class FraudDetectionCEP {
 ### 测试用例
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 @Test
 public void testLoginFailurePattern() throws Exception {
     // 创建测试数据
@@ -368,6 +393,9 @@ public void testLoginFailurePattern() throws Exception {
 ### 练习 1: 实时营销场景
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 购物车放弃检测
 Pattern<UserAction, ?> cartAbandonmentPattern = Pattern
     .<UserAction>begin("add")
@@ -391,6 +419,9 @@ Pattern<UserAction, ?> couponPattern = Pattern
 ### 练习 2: IoT 设备异常检测
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 设备故障模式：温度持续上升后突然停止报告
 Pattern<SensorReading, ?> failurePattern = Pattern
     .<SensorReading>begin("rising")

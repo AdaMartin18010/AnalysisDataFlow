@@ -1,0 +1,435 @@
+# Performance Regression - 性能回归检测 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-12 | 状态: Production
+#
+# 功能:
+#   1. 文档构建性能检测
+#   2. 链接检查性能基准
+#   3. 定理验证性能监控
+#   4. 工作流执行时间趋势
+#   5. 性能回归告警
+
+name: Performance Regression
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - '.scripts/**'
+  schedule:
+    # 每周五凌晨 2:00 UTC (性能基准测试)
+    - cron: '0 2 * * 5'
+  workflow_dispatch:
+    inputs:
+      benchmark_type:
+        description: '基准测试类型'
+        required: true
+        default: 'standard'
+        type: choice
+        options:
+          - standard
+          - full
+          - quick
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 阶段1: 基准性能测试 ============
+  benchmark:
+    name: Performance Benchmark
+    runs-on: ubuntu-latest
+    outputs:
+      scan_time: ${{ steps.benchmark.outputs.scan_time }}
+      link_check_time: ${{ steps.benchmark.outputs.link_check_time }}
+      theorem_count: ${{ steps.benchmark.outputs.theorem_count }}
+      doc_count: ${{ steps.benchmark.outputs.doc_count }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run performance benchmark
+        id: benchmark
+        run: |
+          python << 'PYEOF'
+          import time
+          import re
+          import json
+          import os
+          from pathlib import Path
+          from datetime import datetime
+
+          results = {
+              'generated_at': datetime.now().isoformat(),
+              'timestamp': int(time.time()),
+              'tests': {}
+          }
+
+          # 测试1: 文档扫描性能
+          start = time.time()
+          all_docs = []
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              if Path(directory).exists():
+                  all_docs.extend(Path(directory).rglob('*.md'))
+          scan_time = time.time() - start
+
+          results['tests']['doc_scan'] = {
+              'duration': round(scan_time, 3),
+              'count': len(all_docs),
+              'unit': 'seconds'
+          }
+
+          # 测试2: 定理扫描性能
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+          
+          start = time.time()
+          theorem_count = 0
+          for doc in all_docs:
+              try:
+                  content = doc.read_text(encoding='utf-8')
+                  theorem_count += len(THEOREM_PATTERN.findall(content))
+              except Exception:
+                  pass
+          theorem_scan_time = time.time() - start
+
+          results['tests']['theorem_scan'] = {
+              'duration': round(theorem_scan_time, 3),
+              'count': theorem_count,
+              'unit': 'seconds'
+          }
+
+          # 测试3: 链接检查性能 (内部链接)
+          start = time.time()
+          link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+          
+          all_links = []
+          all_doc_paths = set(str(d).replace('\\', '/') for d in all_docs)
+          
+          for doc in all_docs:
+              try:
+                  content = doc.read_text(encoding='utf-8')
+                  for match in link_pattern.finditer(content):
+                      link_target = match.group(2)
+                      if not link_target.startswith(('http://', 'https://', 'mailto:', '#')):
+                          all_links.append(link_target)
+              except Exception:
+                  pass
+          
+          link_check_time = time.time() - start
+
+          results['tests']['link_check'] = {
+              'duration': round(link_check_time, 3),
+              'count': len(all_links),
+              'unit': 'seconds'
+          }
+
+          # 保存结果
+          Path('reports').mkdir(exist_ok=True)
+          
+          with open('reports/performance-benchmark.json', 'w') as f:
+              json.dump(results, f, indent=2)
+
+          # 输出到GitHub Actions
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"scan_time={scan_time:.3f}\n")
+              f.write(f"link_check_time={link_check_time:.3f}\n")
+              f.write(f"theorem_count={theorem_count}\n")
+              f.write(f"doc_count={len(all_docs)}\n")
+
+          print("Performance Benchmark Results:")
+          print(f"  Doc scan: {scan_time:.3f}s ({len(all_docs)} docs)")
+          print(f"  Theorem scan: {theorem_scan_time:.3f}s ({theorem_count} theorems)")
+          print(f"  Link check: {link_check_time:.3f}s ({len(all_links)} links)")
+          PYEOF
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-benchmark
+          path: reports/performance-benchmark.json
+
+  # ============ 阶段2: 历史对比与回归检测 ============
+  regression-check:
+    name: Regression Detection
+    runs-on: ubuntu-latest
+    needs: benchmark
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Load historical data
+        id: history
+        run: |
+          # 尝试加载历史性能数据
+          if [ -f .stats/performance-history.json ]; then
+            echo "Found historical data"
+            cp .stats/performance-history.json reports/performance-history.json
+          else
+            echo "No historical data found"
+            echo "[]" > reports/performance-history.json
+          fi
+
+      - name: Download current benchmark
+        uses: actions/download-artifact@v4
+        with:
+          name: performance-benchmark
+          path: reports/
+
+      - name: Detect regression
+        run: |
+          python << 'PYEOF'
+          import json
+          import sys
+          from pathlib import Path
+          from datetime import datetime
+
+          REGRESSION_THRESHOLD = 1.5  # 1.5x slowdown = regression
+
+          # 加载当前结果
+          with open('reports/performance-benchmark.json') as f:
+              current = json.load(f)
+
+          # 加载历史数据
+          history_file = Path('reports/performance-history.json')
+          if history_file.exists():
+              with open(history_file) as f:
+                  history = json.load(f)
+          else:
+              history = []
+
+          # 检查回归
+          regressions = []
+          warnings = []
+
+          if history:
+              # 计算历史平均值 (最近5次)
+              recent = history[-5:]
+              
+              for test_name, current_result in current['tests'].items():
+                  current_duration = current_result['duration']
+                  
+                  # 获取历史同测试的持续时间
+                  historical_durations = []
+                  for h in recent:
+                      if test_name in h.get('tests', {}):
+                          historical_durations.append(h['tests'][test_name]['duration'])
+                  
+                  if historical_durations:
+                      avg_duration = sum(historical_durations) / len(historical_durations)
+                      
+                      if current_duration > avg_duration * REGRESSION_THRESHOLD:
+                          regressions.append({
+                              'test': test_name,
+                              'current': current_duration,
+                              'historical_avg': round(avg_duration, 3),
+                              'ratio': round(current_duration / avg_duration, 2)
+                          })
+                      elif current_duration > avg_duration * 1.2:
+                          warnings.append({
+                              'test': test_name,
+                              'current': current_duration,
+                              'historical_avg': round(avg_duration, 3),
+                              'ratio': round(current_duration / avg_duration, 2)
+                          })
+
+          # 生成报告
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'current': current,
+              'regressions': regressions,
+              'warnings': warnings,
+              'has_regression': len(regressions) > 0
+          }
+
+          with open('reports/regression-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          # 更新历史数据
+          history.append(current)
+          history = history[-20:]  # 保留最近20次
+
+          Path('.stats').mkdir(exist_ok=True)
+          with open('.stats/performance-history.json', 'w') as f:
+              json.dump(history, f, indent=2)
+
+          print("Regression Detection Results:")
+          
+          if regressions:
+              print("\n❌ Performance regressions detected:")
+              for r in regressions:
+                  print(f"  - {r['test']}: {r['current']}s (was {r['historical_avg']}s, {r['ratio']}x slower)")
+          
+          if warnings:
+              print("\n⚠️ Performance warnings:")
+              for w in warnings:
+                  print(f"  - {w['test']}: {w['current']}s (was {w['historical_avg']}s, {w['ratio']}x slower)")
+          
+          if not regressions and not warnings:
+              print("\n✅ No performance regressions detected")
+
+          # 如果有严重回归，返回非零状态
+          if regressions:
+              sys.exit(1)
+          PYEOF
+
+      - name: Upload regression report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-report
+          path: |
+            reports/regression-report.json
+            .stats/performance-history.json
+
+  # ============ 阶段3: 趋势报告 ============
+  trend-report:
+    name: Performance Trend Report
+    runs-on: ubuntu-latest
+    needs: [benchmark, regression-check]
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate trend report
+        run: |
+          python << 'PYEOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          # 加载历史数据
+          history_file = Path('reports/performance-history.json')
+          if history_file.exists():
+              with open(history_file) as f:
+                  history = json.load(f)
+          else:
+              history = []
+
+          # 生成趋势报告
+          lines = [
+              "# Performance Trend Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Recent Benchmarks",
+              "",
+              "| Timestamp | Doc Scan (s) | Theorem Scan (s) | Link Check (s) |",
+              "|-----------|--------------|------------------|----------------|"
+          ]
+
+          # 显示最近10次
+          for h in history[-10:]:
+              ts = h.get('generated_at', 'N/A')[:19]
+              doc_scan = h.get('tests', {}).get('doc_scan', {}).get('duration', 0)
+              thm_scan = h.get('tests', {}).get('theorem_scan', {}).get('duration', 0)
+              link_check = h.get('tests', {}).get('link_check', {}).get('duration', 0)
+              lines.append(f"| {ts} | {doc_scan} | {thm_scan} | {link_check} |")
+
+          lines.append("")
+
+          # 计算平均值
+          if history:
+              avg_doc = sum(h.get('tests', {}).get('doc_scan', {}).get('duration', 0) for h in history) / len(history)
+              avg_thm = sum(h.get('tests', {}).get('theorem_scan', {}).get('duration', 0) for h in history) / len(history)
+              avg_link = sum(h.get('tests', {}).get('link_check', {}).get('duration', 0) for h in history) / len(history)
+
+              lines.extend([
+                  "## Historical Averages",
+                  "",
+                  f"| Test | Average Duration |",
+                  f"|------|------------------|",
+                  f"| Doc Scan | {avg_doc:.3f}s |",
+                  f"| Theorem Scan | {avg_thm:.3f}s |",
+                  f"| Link Check | {avg_link:.3f}s |",
+                  ""
+              ])
+
+          with open('reports/performance-trend.md', 'w') as f:
+              f.write('\n'.join(lines))
+
+          print("Performance trend report generated")
+          PYEOF
+
+      - name: Upload trend report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-trend-report
+          path: |
+            reports/performance-trend.md
+            .stats/performance-history.json
+          if-no-files-found: ignore
+
+  # ============ 阶段4: 汇总报告 ============
+  summary:
+    name: Performance Summary
+    runs-on: ubuntu-latest
+    needs:
+      - benchmark
+      - regression-check
+      - trend-report
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate summary
+        run: |
+          echo "## 📊 Performance Regression Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 基准测试指标
+          echo "### Benchmark Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Document Count | ${{ needs.benchmark.outputs.doc_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Theorem Count | ${{ needs.benchmark.outputs.theorem_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Scan Time | ${{ needs.benchmark.outputs.scan_time }}s |" >> $GITHUB_STEP_SUMMARY
+          echo "| Link Check Time | ${{ needs.benchmark.outputs.link_check_time }}s |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # 回归检测结果
+          if [ "${{ needs.regression-check.result }}" == "success" ]; then
+            echo "### ✅ No Performance Regressions Detected" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.regression-check.result }}" == "failure" ]; then
+            echo "### ❌ Performance Regressions Detected" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Check the regression report for details." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ⏭️ Regression Check Skipped" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Performance benchmark completed." >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for failures
+        if: needs.regression-check.result == 'failure'
+        run: |
+          echo "❌ Performance regression detected"
+          # 仅作为警告，不阻塞流程
+          exit 0

@@ -224,6 +224,13 @@ func DeviceMaintenanceWorkflow(
 ### IoT温度监控 Flink Job
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class TemperatureMonitorJob {
 
     public static void main(String[] args) throws Exception {

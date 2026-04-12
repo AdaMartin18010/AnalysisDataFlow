@@ -1,5 +1,9 @@
 # Flink Rust 原生 API 开发指南
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/09-language-foundations | 前置依赖: [Flink WASM UDF GA](flink-25-wasm-udf-ga.md) | 形式化等级: L3
 
 本文档介绍如何在 Flink 中使用 Rust 语言进行原生扩展开发。

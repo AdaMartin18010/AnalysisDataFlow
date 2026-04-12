@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink Agents (FLIP-531) - AI Agent原生运行时支持
 
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink 与 LLM 集成](./flink-llm-integration.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
@@ -512,6 +515,12 @@ SELECT * FROM AGENT_RUN(
 ```java
 // Def-F-12-31: DataStream API Agent 定义
 
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class CustomerSupportAgent {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -721,6 +730,9 @@ public class MainAgent extends KeyedProcessFunction<String, UserRequest, Respons
 
 ```java
 // 分层记忆管理
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class HierarchicalMemory {
     private ValueState<List<Message>> shortTermMemory;
     private MapState<String, Fact> longTermMemory;
@@ -764,6 +776,10 @@ public class HierarchicalMemory {
 
 ```java
 // 从特定 Checkpoint 重放 Agent
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class AgentReplay {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =

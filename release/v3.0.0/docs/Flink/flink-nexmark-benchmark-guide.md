@@ -493,6 +493,11 @@ CREATE TABLE Person (
 **查询级别调优**：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // q5 窗口聚合调优
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

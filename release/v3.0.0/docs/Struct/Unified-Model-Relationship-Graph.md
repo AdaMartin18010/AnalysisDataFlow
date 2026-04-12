@@ -243,6 +243,10 @@ Actor A:
 
 **Flink DataStream**:
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Event> stream = env
   .addSource(new KafkaSource<>())
   .map(e -> e.transform())

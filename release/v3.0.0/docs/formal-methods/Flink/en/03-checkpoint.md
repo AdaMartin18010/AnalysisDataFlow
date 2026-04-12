@@ -575,6 +575,10 @@ RocksDB's manifest file records metadata of all active SST files. Incremental Ch
 ### 6.1 Configuration: Aligned Checkpoint
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 // Enable Checkpoint, 10 second interval
@@ -605,6 +609,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.2 Configuration: Unaligned Checkpoint
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(10000);
@@ -629,6 +636,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.3 Configuration: Incremental Checkpoint
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(60000); // Incremental Checkpoint recommends longer interval
@@ -647,6 +657,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.4 Configuration: Changelog State Backend
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(60000);

@@ -750,6 +750,10 @@ $$\text{WordCount}(I) = \{(w, |\{e \in I_w\}|, win) \mid w \in \Sigma^*\}$$
 **Flink实现**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Tuple2<String, Integer>> wordCounts = env
     .addSource(new KafkaSource<String>("input-topic"))
     .flatMap((String value, Collector<String> out) -> {
@@ -808,6 +812,9 @@ $$Event = (sensor\_id: String, temperature: Double, timestamp: Long)$$
 **Watermark策略**：
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 WatermarkStrategy<SensorEvent> strategy = WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withIdleness(Duration.ofMinutes(5));
@@ -833,6 +840,9 @@ $$w(t) = \max_{e \in B(t)} \tau(e) - 30s$$
 若允许延迟1分钟：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 .allowedLateness(Time.minutes(1))
 ```

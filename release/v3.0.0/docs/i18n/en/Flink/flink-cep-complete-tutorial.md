@@ -354,6 +354,11 @@ object CEPScalaTutorial {
  * 案例：信用卡欺诈检测
  * 模式：小额测试 → 大额交易（5分钟内）
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionCEP {
 
     public static void main(String[] args) throws Exception {
@@ -438,6 +443,11 @@ public class FraudDetectionCEP {
  * 模式1: 5分钟内 3 次失败登录 → 成功登录（暴力破解）
  * 模式2: 异地登录（地理位置突变）
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class LoginAnomalyDetection {
 
     // 模式 1: 暴力破解检测
@@ -559,6 +569,11 @@ public class LoginAnomalyDetection {
  * 监控订单流程：创建 → 支付 → 发货 → 签收
  * 检测各环节超时
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class BusinessProcessMonitor {
 
     // 完整订单流程监控
@@ -651,6 +666,11 @@ public class BusinessProcessMonitor {
 /**
  * CEP 时间语义详解
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class CEPTimeSemantics {
 
     public static void main(String[] args) throws Exception {
@@ -698,6 +718,9 @@ public class CEPTimeSemantics {
 /**
  * CEP 中 Watermark 策略配置
  */
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class CEPWatermarkConfig {
 
     /**
@@ -758,6 +781,9 @@ public class CEPWatermarkConfig {
 /**
  * 基于配置动态生成 CEP 模式
  */
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicPatternBuilder {
 
     public static <T> Pattern<T, ?> buildPatternFromConfig(
@@ -819,6 +845,11 @@ public class DynamicPatternBuilder {
 /**
  * 同时检测多个 CEP 模式
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class MultiPatternDetection {
 
     public static void main(String[] args) throws Exception {
@@ -874,6 +905,9 @@ public class MultiPatternDetection {
 /**
  * CEP 调试工具
  */
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class CEPDebugging {
 
     /**

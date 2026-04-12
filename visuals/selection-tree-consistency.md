@@ -225,6 +225,9 @@ source.setCommitOffsetsOnCheckpoints(false);  // 立即提交偏移量
 **实现要点**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Flink 配置
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);
@@ -283,6 +286,9 @@ $$
 **实现要点**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Flink 配置
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -433,6 +439,9 @@ restart-strategy.fixed-delay.delay: 10s
 #### At-Most-Once 代码示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 env.disableCheckpointing();  // 禁用 Checkpoint
@@ -450,6 +459,10 @@ stream.addSink(new SimpleHttpSink());
 #### At-Least-Once 代码示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -471,6 +484,10 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 #### Exactly-Once 代码示例
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

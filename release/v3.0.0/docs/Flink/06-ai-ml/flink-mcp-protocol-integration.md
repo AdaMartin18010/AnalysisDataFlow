@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 与 MCP 协议集成：AI 驱动的实时流计算
 
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink LLM 集成](./flink-llm-integration.md), [Flink 异步 I/O](../02-core/async-execution-model.md) | **形式化等级**: L3 (工程实现)
@@ -459,6 +462,9 @@ $$
 **伪代码实现**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class IdempotentMcpCall extends RichAsyncFunction<Event, Result> {
     private transient McpClient client;
     private ValueState<String> requestIdState;
@@ -1157,6 +1163,9 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 /**
  * MCP 增强函数 - 在 Flink 流处理中调用外部 MCP 工具
  */
@@ -1251,6 +1260,9 @@ package org.flink.mcp.sql;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.functions.AsyncTableFunction;
 import org.apache.flink.table.functions.FunctionContext;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 /**
  * MCP SQL 表函数 - 在 Flink SQL 中调用 MCP 工具

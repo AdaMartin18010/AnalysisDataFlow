@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # FLIP-531 AI Agents 实现指南 (v0.2.x)
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
@@ -547,6 +550,10 @@ $$
 ```java
 import org.apache.flink.agent.embedding.*;
 import org.apache.flink.agent.vectorstore.*;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 /**
  * 0.2.0+ Embedding与Vector Store集成示例
@@ -1265,6 +1272,6 @@ gantt
 
 [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-531.md>
 
-[^2]: Anthropic, "Model Context Protocol Specification", 2025. <https://modelcontextprotocol.io/spec>
+[^2]: Anthropic, "Model Context Protocol Specification", 2025. <https://modelcontextprotocol.io/specification>
 
 [^3]: OpenAI, "Text Embedding Models Guide", 2025. <https://platform.openai.com/docs/guides/embeddings>

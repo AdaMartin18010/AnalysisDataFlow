@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AnalysisDataFlow PDF 导出工具 (简化版)
-===============================
+AnalysisDataFlow PDF 导出工具
+============================
 
 快速将 Markdown 文档导出为 PDF 格式。
 支持单文件导出、批量导出和合并导出。
@@ -16,6 +16,21 @@ AnalysisDataFlow PDF 导出工具 (简化版)
 依赖:
     - pandoc >= 2.14
     - xelatex (TeX Live 或 MiKTeX)
+
+示例:
+    # 导出单个文件
+    python pdf-export.py single README.md
+    python pdf-export.py single Struct/00-INDEX.md -o struct-index.pdf
+
+    # 批量导出目录
+    python pdf-export.py batch Struct/ -o pdf-output/struct/
+    python pdf-export.py batch Knowledge/
+
+    # 合并导出
+    python pdf-export.py merge file1.md file2.md -o combined.pdf
+    
+    # 检查依赖
+    python pdf-export.py check
 """
 
 import argparse
@@ -44,7 +59,10 @@ def check_dependencies() -> bool:
     Returns:
         bool: 所有依赖是否都已安装
     """
-    deps = {"pandoc": shutil.which("pandoc"), "xelatex": shutil.which("xelatex")}
+    deps = {
+        "pandoc": shutil.which("pandoc"), 
+        "xelatex": shutil.which("xelatex")
+    }
     
     all_installed = all(deps.values())
     
@@ -61,16 +79,20 @@ def check_dependencies() -> bool:
     else:
         print("✓ 所有依赖已安装")
         for name, path in deps.items():
-            # 获取版本信息
             try:
                 if name == "pandoc":
-                    result = subprocess.run([path, "--version"], capture_output=True, text=True, timeout=10)
+                    result = subprocess.run(
+                        [path, "--version"], 
+                        capture_output=True, 
+                        text=True, 
+                        timeout=10
+                    )
                     version = result.stdout.split('\n')[0] if result.stdout else "未知版本"
                     print(f"  - {name}: {version}")
                 else:
                     print(f"  - {name}: {path}")
-            except Exception:
-                print(f"  - {name}: {path}")
+            except (subprocess.TimeoutExpired, OSError) as e:
+                print(f"  - {name}: {path} (获取版本失败: {e})")
     
     return all_installed
 
@@ -224,7 +246,7 @@ def export_single(
     try:
         md_content = input_file.read_text(encoding='utf-8')
         title, author, date = parse_markdown_metadata(md_content)
-    except Exception as e:
+    except (IOError, UnicodeDecodeError) as e:
         print(f"⚠️  读取文件时出错: {e}")
         title, author, date = input_file.stem, "", datetime.now().strftime("%Y-%m-%d")
     
@@ -248,7 +270,7 @@ def export_single(
             "--highlight-style=tango",
             "-V", "geometry:margin=2.5cm",
             "-V", "colorlinks=true",
-            "-V", f"CJKmainfont=Noto Sans CJK SC"
+            "-V", "CJKmainfont=Noto Sans CJK SC"
         ]
         
         # 添加元数据变量
@@ -272,8 +294,11 @@ def export_single(
             
             if result.returncode == 0:
                 print(f"✅ 成功导出: {output_file}")
-                file_size = output_file.stat().st_size / 1024
-                print(f"   文件大小: {file_size:.1f} KB")
+                try:
+                    file_size = output_file.stat().st_size / 1024
+                    print(f"   文件大小: {file_size:.1f} KB")
+                except OSError:
+                    pass
                 
                 if verbose:
                     print(f"   标题: {title or '未提取'}")
@@ -293,7 +318,7 @@ def export_single(
         except subprocess.TimeoutExpired:
             print(f"❌ 导出超时（超过5分钟）")
             return False
-        except Exception as e:
+        except OSError as e:
             print(f"❌ 导出错误: {e}")
             return False
 
@@ -329,7 +354,8 @@ def export_batch(
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # 查找所有 Markdown 文件（排除隐藏目录和特定目录）
-    exclude_dirs = {'.git', '.github', 'node_modules', '__pycache__', '.vscode', '.idea'}
+    exclude_dirs = {'.git', '.github', 'node_modules', '__pycache__', 
+                    '.vscode', '.idea'}
     md_files = [
         f for f in input_dir.rglob("*.md")
         if not any(excluded in f.parts for excluded in exclude_dirs)
@@ -351,7 +377,6 @@ def export_batch(
         try:
             relative_path = md_file.relative_to(input_dir)
         except ValueError:
-            # 如果相对路径计算失败，使用文件名
             relative_path = Path(md_file.name)
         
         out_file = output_dir / relative_path.with_suffix(".pdf")
@@ -427,7 +452,7 @@ def export_merge(
             
             try:
                 content = md_file.read_text(encoding='utf-8')
-            except Exception as e:
+            except (IOError, UnicodeDecodeError) as e:
                 print(f"      ⚠️  读取失败: {e}")
                 continue
             
@@ -449,7 +474,7 @@ def export_merge(
         merged_file = temp_path / "merged.md"
         try:
             merged_file.write_text("\n".join(merged_content), encoding='utf-8')
-        except Exception as e:
+        except IOError as e:
             print(f"❌ 写入合并文件失败: {e}")
             return False
         
@@ -457,7 +482,7 @@ def export_merge(
         return export_single(merged_file, output_file, verbose=verbose)
 
 
-def main():
+def main() -> int:
     """主函数 - 命令行入口"""
     parser = argparse.ArgumentParser(
         description="AnalysisDataFlow PDF 导出工具",
@@ -475,7 +500,7 @@ def main():
   # 合并多个文件
   python pdf-export.py merge file1.md file2.md file3.md -o combined.pdf
   
-  # 合并时不在文档间添加分页符
+  # 合并时不添加分页符
   python pdf-export.py merge file1.md file2.md -o combined.pdf --no-page-breaks
 
   # 检查依赖
@@ -507,7 +532,9 @@ def main():
     # merge 命令
     merge_parser = subparsers.add_parser("merge", help="合并导出多个文件")
     merge_parser.add_argument("files", nargs="+", type=Path, help="输入文件列表")
-    merge_parser.add_argument("-o", "--output", type=Path, required=True, help="输出 PDF 文件")
+    merge_parser.add_argument(
+        "-o", "--output", type=Path, required=True, help="输出 PDF 文件"
+    )
     merge_parser.add_argument(
         "--no-page-breaks", 
         action="store_true", 
@@ -550,7 +577,9 @@ def main():
         
         elif args.command == "merge":
             add_page_breaks = not args.no_page_breaks
-            success = export_merge(args.files, args.output, add_page_breaks, verbose=verbose)
+            success = export_merge(
+                args.files, args.output, add_page_breaks, verbose=verbose
+            )
             return 0 if success else 1
         
         else:

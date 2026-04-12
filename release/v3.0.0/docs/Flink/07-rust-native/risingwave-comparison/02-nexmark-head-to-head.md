@@ -414,6 +414,10 @@ WHERE date_time > NOW() - INTERVAL '1 MINUTE';
 ### 6.2 Flink 等价实现对比
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink Nexmark Q5 实现
 DataStream<Bid> bids = env
     .addSource(new NexmarkSource("bid", 100000))

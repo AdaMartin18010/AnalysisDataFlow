@@ -370,6 +370,9 @@ CREATE TABLE user_events (
 **Table API 等效代码**：
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Java Table API
 TableDescriptor sourceDescriptor = TableDescriptor.forConnector("kafka")
     .schema(Schema.newBuilder()
@@ -1200,6 +1203,9 @@ FROM (
 ```java
 import org.apache.flink.table.functions.AggregateFunction;
 
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+
 /**
  * Def-F-03-15: 自定义加权平均 UDAF
  */
@@ -1393,6 +1399,9 @@ PatternStream<Row> patternStream = CEP.pattern(stream, pattern);
 
 ```java
 import org.apache.flink.table.functions.ScalarFunction;
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 
 /**
  * Def-F-03-17: 标量 UDF - 解析 User-Agent

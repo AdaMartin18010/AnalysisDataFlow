@@ -1175,6 +1175,11 @@ import org.apache.paimon.catalog.CatalogContext;
 import org.apache.paimon.catalog.CatalogFactory;
 import org.apache.paimon.options.Options;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class PaimonDataStreamIntegration {
 
     public static void main(String[] args) throws Exception {
@@ -1648,4 +1653,3 @@ flowchart TD
 *文档创建时间: 2026-04-03*
 *适用版本: Flink 1.18+ | Paimon 0.8+*
 *形式化等级: L4-L5*
-

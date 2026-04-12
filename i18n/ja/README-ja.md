@@ -1,4 +1,8 @@
-﻿# AnalysisDataFlow
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
+# AnalysisDataFlow
 
 [![日本語](https://img.shields.io/badge/日本語-🇯🇵-red)](./README-ja.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../../docs/i18n/en/00-OVERVIEW.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
 
@@ -247,4 +251,3 @@ Struct/01-foundation/ (理論基盤)
 ---
 
 > **翻訳者注記**: 本ドキュメントは原文の技術的な正確性を保持しつつ、日本の技術文書の慣習に従って翻訳されています。形式化定義と定理は元の英語表記を保持しています。最終更新: 2026-04-11
-

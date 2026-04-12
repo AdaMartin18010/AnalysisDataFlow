@@ -315,6 +315,9 @@ dataStream
 使用增量聚合替代全量计算：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 优化前：全量窗口计算
 .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 .apply(new FullWindowFunction());
@@ -375,7 +378,7 @@ dataStream
 **陈述**：给定边缘资源约束 $\mathcal{R}_{edge}$ 和数据流特征 $\mathcal{D}$，存在可行部署方案当且仅当：
 
 $$
-\exists \mathcal{P}_{edge}: \forall t \in [0, T]: 
+\exists \mathcal{P}_{edge}: \forall t \in [0, T]:
 \begin{cases}
 \sum_{op \in \mathcal{P}_{edge}} C(op, t) \leq C_{max} \\
 \sum_{op \in \mathcal{P}_{edge}} M(op, t) \leq M_{max} \\
@@ -386,19 +389,23 @@ $$
 **证明**：
 
 **步骤 1**: 建立资源消耗模型
+
 - 每个算子 $op$ 的资源消耗为时间的函数：$C(op, t), M(op, t)$
 - 本地缓冲区占用满足微分方程：$\frac{dB_{buf}}{dt} = R_{in}(t) - R_{out}(t) \cdot A(t)$
 
 **步骤 2**: 分析可行性条件
+
 - 当网络可用 $A(t)=1$ 时，需满足 $R_{out}(t) \geq R_{in}(t)$ 以避免缓冲区无限增长
 - 当网络不可用 $A(t)=0$ 时，需满足 $B_{buf}(t) \leq S_{available}$ 对所有 $t$ 成立
 
 **步骤 3**: 构造可行方案
+
 - 选择轻量级算子集 $\mathcal{P}_{edge}$ 使得 $\sum C(op) \leq C_{max} \cdot \eta_{util}$（通常 $\eta_{util} = 0.7$）
 - 配置状态TTL和增量检查点控制内存占用
 - 设置缓冲区上限为 $B_{max} = S_{available} \cdot 0.8$
 
 **步骤 4**: 验证充分性
+
 - 在网络可用期间，数据实时同步，缓冲区不积累
 - 在网络中断期间，缓冲区增长速率 $R_{in}$，最大可容纳 $T_{offline}^{max} = B_{max} / R_{in}$
 - 因此方案可行 ∎
@@ -435,7 +442,7 @@ $$
 
 ```yaml
 # 边缘节点配置
-edge_nodes: 
+edge_nodes:
   - name: edge-gateway-01
     device: NVIDIA Jetson Nano
     cpu: 4_cores
@@ -451,7 +458,7 @@ edge_nodes:
     network: WiFi_Ethernet
 
 # 云端集群
-cloud_cluster: 
+cloud_cluster:
   flink_version: 1.18
   taskmanagers: 10
   slots_per_tm: 4
@@ -524,15 +531,15 @@ log4j.logger.org.apache.flink.runtime.checkpoint: INFO
 ```yaml
 version: '3.8'
 
-services: 
+services:
   # MQTT Broker - 设备接入
-  mosquitto: 
+  mosquitto:
     image: eclipse-mosquitto:2.0
     container_name: edge-mosquitto
-    ports: 
+    ports:
       - "1883:1883"
       - "9001:9001"
-    volumes: 
+    volumes:
       - ./mosquitto/config:/mosquitto/config
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
@@ -541,45 +548,45 @@ services:
     cpus: 0.5
 
   # Flink JobManager (MiniCluster模式)
-  flink-jobmanager: 
+  flink-jobmanager:
     image: flink:1.18-scala_2.12
     container_name: edge-flink-jm
     command: standalone-job --job-classname com.example.EdgeProcessingJob
-    ports: 
+    ports:
       - "8081:8081"
-    volumes: 
+    volumes:
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
       - ./job.jar:/opt/flink/usrlib/job.jar
       - ./checkpoint-data:/opt/flink/checkpoints
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size=512m
           taskmanager.memory.process.size=1536m
     mem_limit: 512m
     cpus: 1.0
-    depends_on: 
+    depends_on:
       - mosquitto
     restart: unless-stopped
 
   # Flink TaskManager
-  flink-taskmanager: 
+  flink-taskmanager:
     image: flink:1.18-scala_2.12
     container_name: edge-flink-tm
     command: taskmanager
-    volumes: 
+    volumes:
       - ./flink-conf.yaml:/opt/flink/conf/flink-conf.yaml
       - ./checkpoint-data:/opt/flink/checkpoints
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
     mem_limit: 1536m
     cpus: 2.0
-    depends_on: 
+    depends_on:
       - flink-jobmanager
     restart: unless-stopped
 
   # 本地数据同步服务
-  sync-agent: 
+  sync-agent:
     image: alpine:latest
     container_name: edge-sync-agent
     command: >
@@ -596,14 +603,14 @@ services:
           sleep 60
         done
       "
-    volumes: 
+    volumes:
       - ./buffer-data:/data/buffer
     mem_limit: 128m
     cpus: 0.2
     restart: unless-stopped
 
-volumes: 
-  checkpoint-data: 
+volumes:
+  checkpoint-data:
   buffer-data:
 ```
 
@@ -620,6 +627,9 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * 边缘流处理作业 - IoT传感器数据预处理
@@ -919,16 +929,8 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Deployment & Operations", 2024. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/
+[^1]: Apache Flink Documentation, "Deployment & Operations", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/>
 
-[^2]: K3s Documentation, "Lightweight Kubernetes", Rancher Labs, 2024. https://docs.k3s.io/
+[^2]: K3s Documentation, "Lightweight Kubernetes", Rancher Labs, 2024. <https://docs.k3s.io/>
 
-[^3]: Eclipse Mosquitto, "MQTT Broker for IoT", Eclipse Foundation, 2024. https://mosquitto.org/documentation/
-
-[^4]: Weisong Shi, et al., "Edge Computing: Vision and Challenges", IEEE Internet of Things Journal, 3(5), 2016.
-
-[^5]: Satya Narayanan, "The Emergence of Edge Computing", Computer, 50(1), 2017.
-
-[^6]: Apache Flink, "State Backends", https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
-
-[^7]: NVIDIA Jetson Documentation, "Edge AI Platform", https://developer.nvidia.com/embedded/jetson
+[^3]: Eclipse Mosquitto, "MQTT Broker for IoT", Eclipse Foundation, 2024. <https://mosquitto.org/documentation/>

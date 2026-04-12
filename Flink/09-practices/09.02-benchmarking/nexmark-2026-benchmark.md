@@ -1,5 +1,9 @@
 # Nexmark 2026 流处理基准测试报告
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/09-practices | 前置依赖: [Flink 2.4/2.5基准测试](./flink-24-25-benchmark-results.md), [性能基准测试套件](./performance-benchmark-suite.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
@@ -96,6 +100,7 @@ n \geq 30, \quad CV = \frac{\sigma}{\mu} < 0.05, \quad CI_{95\%} < \pm 5\%
 $$
 
 其中：
+
 - $n$: 每个测试配置的重复次数
 - $CV$: 变异系数
 - $CI_{95\%}$: 95%置信区间半宽
@@ -461,9 +466,9 @@ function run_test() {
     local rate=$3
     local skew=$4
     local run=$5
-    
+
     echo "Testing: $engine, q$query, rate=$rate, skew=$skew, run=$run"
-    
+
     ./run-nexmark.sh \
         --engine=$engine \
         --query=q$query \
@@ -477,7 +482,7 @@ function run_test() {
 # 主测试循环
 for engine in "${ENGINES[@]}"; do
     warmup $engine
-    
+
     for query in "${QUERIES[@]}"; do
         for rate in "${EVENT_RATES[@]}"; do
             for skew in "${SKEW_FACTORS[@]}"; do
@@ -523,11 +528,11 @@ def calculate_statistics(df):
         'latency_p99': ['mean', 'std', 'min', 'max'],
         'latency_p50': ['mean', 'std']
     }).reset_index()
-    
+
     # 计算置信区间
     stats_df['throughput_ci'] = 1.96 * stats_df[('throughput', 'std')] / np.sqrt(30)
     stats_df['latency_ci'] = 1.96 * stats_df[('latency_p99', 'std')] / np.sqrt(30)
-    
+
     return stats_df
 
 def statistical_significance_test(df, engine1, engine2):
@@ -536,23 +541,23 @@ def statistical_significance_test(df, engine1, engine2):
     for query in df['query'].unique():
         data1 = df[(df['engine'] == engine1) & (df['query'] == query)]['throughput']
         data2 = df[(df['engine'] == engine2) & (df['query'] == query)]['throughput']
-        
+
         t_stat, p_value = stats.ttest_ind(data1, data2)
         cohen_d = (data1.mean() - data2.mean()) / np.sqrt((data1.std()**2 + data2.std()**2) / 2)
-        
+
         results[query] = {
             't_statistic': t_stat,
             'p_value': p_value,
             'cohens_d': cohen_d,
             'significant': p_value < 0.05
         }
-    
+
     return results
 
 def generate_heatmap(df):
     """生成性能热力图"""
     pivot = df.pivot(index='query', columns='engine', values='throughput_mean')
-    
+
     plt.figure(figsize=(12, 8))
     sns.heatmap(pivot, annot=True, fmt='.0f', cmap='YlOrRd', cbar_kws={'label': 'Throughput (events/s)'})
     plt.title('Nexmark 2026: Throughput Heatmap by Engine')
@@ -563,15 +568,15 @@ def generate_latency_comparison(df):
     """生成延迟对比图"""
     queries = ['q0', 'q3', 'q6', 'q8', 'q12', 'q16', 'q22', 'q23']
     engines = ['flink-2.4', 'flink-2.5', 'risingwave-2.0', 'spark-3.6']
-    
+
     fig, ax = plt.subplots(figsize=(14, 6))
     x = np.arange(len(queries))
     width = 0.2
-    
+
     for i, engine in enumerate(engines):
         data = df[df['engine'] == engine]['latency_p99_mean'].values
         ax.bar(x + i * width, data, width, label=engine)
-    
+
     ax.set_xlabel('Query')
     ax.set_ylabel('p99 Latency (ms)')
     ax.set_title('Nexmark 2026: Latency Comparison')
@@ -584,17 +589,17 @@ def generate_latency_comparison(df):
 if __name__ == '__main__':
     import sys
     results_dir = sys.argv[1]
-    
+
     df = load_results(results_dir)
     stats_df = calculate_statistics(df)
-    
+
     # 执行显著性检验
     sig_results = statistical_significance_test(df, 'flink-2.5', 'risingwave-2.0')
-    
+
     # 生成可视化
     generate_heatmap(stats_df)
     generate_latency_comparison(stats_df)
-    
+
     # 输出报告
     print("Statistical Significance Test Results (Flink 2.5 vs RisingWave 2.0):")
     for query, result in sig_results.items():
@@ -717,15 +722,15 @@ flowchart TD
     Env --> Deploy[部署集群]
     Deploy --> Warmup[5分钟预热]
     Warmup --> Test{选择引擎}
-    
+
     Test --> Flink[Flink测试]
     Test --> RW[RisingWave测试]
     Test --> Spark[Spark测试]
-    
+
     Flink --> Q0[Q0-Q23循环]
     RW --> Q0
     Spark --> Q0
-    
+
     Q0 --> Collect[采集30分钟数据]
     Collect --> Stats[统计分析]
     Stats --> Report[生成报告]
@@ -736,21 +741,13 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Beam Nexmark, "Nexmark: A Benchmark for Queries over Data Streams", Apache Beam Documentation, 2026. https://beam.apache.org/documentation/sdks/java/nexmark/
 
-[^2]: "Nexmark: Towards a Standard Benchmark for Query Processing over Data Streams", ACM SIGMOD 2024.
 
-[^3]: RisingWave Documentation, "Performance Benchmarks", 2026. https://docs.risingwave.com/
 
-[^4]: Apache Spark Documentation, "Structured Streaming Programming Guide", 2026. https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
 
-[^5]: "Stream Processing Benchmarking: A Survey", VLDB Journal, Vol. 35, 2026.
 
-[^6]: "Statistical Methods for Computer Performance Comparison", ACM Computing Surveys, 2025.
 
-[^7]: Apache Flink Documentation, "Benchmarking and Tuning", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/benchmarking/
 
-[^8]: "Comparative Analysis of Modern Stream Processing Engines", IEEE ICDE 2026.
 
 ---
 

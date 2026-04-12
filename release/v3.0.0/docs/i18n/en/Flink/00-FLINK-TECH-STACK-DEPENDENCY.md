@@ -232,6 +232,10 @@ Therefore, any stream processing requirement can be satisfied through compositio
 ### 6.1 Core → API Dependency Example
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // DataStream API uses Checkpoint mechanism internally
 DataStream<String> stream = env.socketTextStream("localhost", 9999);
 stream.keyBy(value -> value)

@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 2.1 前沿追踪 (Flink 2.1 Frontier Tracking)
 
 > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
@@ -330,6 +334,11 @@ $$1.2M \times 1.67 = 2.0M \checkmark$$
 ### 6.1 AI 集成开发实例
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // Flink 2.1 ML Inference Operator 示例
 public class FraudDetectionJob {
     public static void main(String[] args) throws Exception {

@@ -150,6 +150,12 @@ Flink提供了三种Watermark生成策略：
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // Pattern 01: 事件时间处理完整示例
 
 public class EventTimeProcessingPattern {
@@ -157,8 +163,8 @@ public class EventTimeProcessingPattern {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
         // 1. 定义迟到数据的侧输出标签
         final OutputTag<SensorReading> lateDataTag =
             new OutputTag<SensorReading>("late-data"){};
@@ -263,6 +269,14 @@ Flink提供了四种类型的窗口：
 
 ```java
 // Pattern 02: 窗口聚合模式 - 自定义Trigger示例
+
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class WindowedAggregationPattern {
 
@@ -402,6 +416,11 @@ import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class CEPPattern {
 
     public static void main(String[] args) throws Exception {
@@ -527,6 +546,10 @@ Flink的AsyncFunction抽象了这种模式。
 
 import org.apache.flink.streaming.api.functions.async.AsyncFunction;
 import org.apache.flink.streaming.api.functions.async.ResultFuture;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class AsyncIOPattern {
 
@@ -679,6 +702,14 @@ Flink提供了两种状态类型：
 ```java
 // Pattern 05: 状态管理 - UV去重统计
 
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class StateManagementPattern {
 
     public static void main(String[] args) throws Exception {
@@ -820,6 +851,12 @@ Pattern 06：侧输出模式。
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // Pattern 06: 侧输出模式 - 数据清洗与分流
 
 public class SideOutputPattern {
@@ -979,6 +1016,12 @@ Checkpoint配置需要根据业务调整：
 
 ```java
 // Pattern 07: Checkpoint与恢复配置
+
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class CheckpointPattern {
 
@@ -1144,6 +1187,13 @@ public class TwoPhaseCommitSink extends
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 多模式组合实战 - 实时风控架构
 
 public class CombinedPatterns {

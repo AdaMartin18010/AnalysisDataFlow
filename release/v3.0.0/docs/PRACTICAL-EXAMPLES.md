@@ -5,6 +5,10 @@
 ## 示例1: 实时WordCount
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class StreamingWordCount {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -37,6 +41,10 @@ public class StreamingWordCount {
 ## 示例2: 窗口聚合统计
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 每5分钟统计各品类销售额
 DataStream<SalesRecord> sales = ...;
 
@@ -49,6 +57,10 @@ DataStream<CategoryStats> stats = sales
 ## 示例3: 双流Join
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 订单流与支付流Join
 DataStream<Order> orders = ...;
 DataStream<Payment> payments = ...;
@@ -63,6 +75,9 @@ DataStream<EnrichedOrder> enriched = orders
 ## 示例4: 模式检测（CEP）
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 检测登录异常：5分钟内3次失败登录
 Pattern<LoginEvent, ?> loginFailPattern = Pattern
     .<LoginEvent>begin("first")

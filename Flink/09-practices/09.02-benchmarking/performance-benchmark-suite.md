@@ -473,6 +473,9 @@ $$W_{effective} = \frac{W_{raw}}{1 + \alpha \cdot R_{compression}}$$
 #### q0: PassThrough (基线测试)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // q0: 最简单的PassThrough，测试Source和Sink极限
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
 bids.addSink(new DummySink());
@@ -484,6 +487,12 @@ bids.addSink(new DummySink());
 #### q3: Local Item Suggestion (状态聚合)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // q3: 按类别统计当前拍卖品数量
 DataStream<Auction> auctions = env.addSource(new NexmarkSource("Auction"));
 
@@ -513,6 +522,12 @@ auctions
 #### q8: Monitor New Users (复杂状态)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // q8: 监控新用户的首次出价 - 黄金测试用例
 DataStream<Person> persons = env.addSource(new NexmarkSource("Person"));
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
@@ -577,6 +592,13 @@ persons
 #### 延迟测试套件
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * 端到端延迟测试
  * 在事件中注入发送时间戳，在Sink计算延迟
@@ -646,6 +668,11 @@ class LatencyMeasuringAggregate implements
  * 最大吞吐测试
  * 渐进增加负载直到延迟超过SLA
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ThroughputBenchmark {
 
     private static final long LATENCY_SLA_MS = 1000;
@@ -710,6 +737,11 @@ class AdaptiveLoadGenerator implements SourceFunction<Event> {
  * Checkpoint性能测试
  * 测量不同状态规模下的Checkpoint性能
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class CheckpointBenchmark {
 
     public static void main(String[] args) throws Exception {
@@ -873,42 +905,42 @@ env.java.opts.taskmanager: >
 # flink-deployment.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: flink-benchmark
   namespace: flink
-spec: 
+spec:
   image: flink:1.18-scala_2.12
   flinkVersion: v1.18
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: "4Gi"
       cpu: 2
     replicas: 1
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "16Gi"
       cpu: 8
     replicas: 8
-  job: 
+  job:
     jarURI: local:///opt/flink/examples/benchmarking/nexmark-benchmark.jar
     parallelism: 32
     upgradeMode: stateful
     state: running
-  podTemplate: 
-    spec: 
-      containers: 
+  podTemplate:
+    spec:
+      containers:
         - name: flink-main-container
-          volumeMounts: 
+          volumeMounts:
             - name: flink-config
               mountPath: /opt/flink/conf
             - name: checkpoint-storage
               mountPath: /data/checkpoints
-      volumes: 
+      volumes:
         - name: flink-config
-          configMap: 
+          configMap:
             name: flink-config
         - name: checkpoint-storage
-          persistentVolumeClaim: 
+          persistentVolumeClaim:
             claimName: flink-checkpoints
 ```
 
@@ -1219,7 +1251,7 @@ class FlinkMetricsCollector:
         resp = self.session.get(f"{self.jobmanager_url}/jobs/overview")
         resp.raise_for_status()
         return [job for job in resp.json().get("jobs", [])
-                if job.get("state") == "RUNNING"]:
+                if job.get("state") == "RUNNING"]
 
     def get_job_metrics(self, job_id: str) -> Dict:
         """获取作业级指标"""
@@ -1369,7 +1401,7 @@ def collect_continuous(collector: FlinkMetricsCollector,
     samples = []
     start_time = time.time()
 
-    print(f"开始收集指标，持续时间: {duration_seconds}秒")
+    print(f"开始收集指标,持续时间: {duration_seconds}秒")
 
     while time.time() - start_time < duration_seconds:
         try:
@@ -1442,8 +1474,7 @@ def main():
     print(f"结果已保存到: {args.output}")
 
 if __name__ == "__main__":
-    main()
-```
+    main()```
 
 ### 8.3 报告生成脚本
 
@@ -1529,7 +1560,7 @@ class ReportGenerator:
             <tbody>
         """
 
-        for result in sorted(self.data["nexmark"],:
+        for result in sorted(self.data["nexmark"],
                             key=lambda x: x.get("query", "")):
             query = result.get("query", "N/A")
             throughput = result.get("throughput", 0)
@@ -1678,7 +1709,7 @@ class ReportGenerator:
                 "issue": f"发现 {len(high_latency_queries)} 个查询p99延迟超过500ms",
                 "suggestions": [
                     "考虑启用对象复用 (pipeline.object-reuse: true)",
-                    "检查状态后端配置，考虑切换到Heap后端",
+                    "检查状态后端配置,考虑切换到Heap后端",
                     "增加并行度或优化数据倾斜"
                 ]
             })
@@ -1696,7 +1727,7 @@ class ReportGenerator:
                 "suggestions": [
                     "启用增量Checkpoint (state.backend.incremental: true)",
                     "增加Checkpoint并发上传数",
-                    "考虑使用更快的存储后端（如SSD）"
+                    "考虑使用更快的存储后端(如SSD)"
                 ]
             })
 

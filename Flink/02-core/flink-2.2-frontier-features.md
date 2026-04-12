@@ -707,6 +707,10 @@ WHERE o.amount > 100;   -- 过滤条件下推
 **Java DataStream API 示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 // Delta Join V2 DataStream API 配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -828,6 +832,10 @@ FROM contexts c;
 **Java 代码示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // VECTOR_SEARCH DataStream API 使用
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1041,6 +1049,9 @@ import org.apache.flink.core.io.InputStatus;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 自定义 RateLimiter 实现
 guavaRateLimiter rateLimiter = GuavaRateLimiter.create(1000); // 1000 记录/秒
 
@@ -1094,6 +1105,9 @@ cluster.scheduling.strategy: BALANCED_TASKS
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Java 代码配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 

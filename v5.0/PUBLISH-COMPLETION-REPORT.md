@@ -138,7 +138,7 @@ AnalysisDataFlow v5.0.0 "全面生态化" 版本已成功完成发布准备！
 ## 📞 联系方式
 
 - 官网: <https://analysisdataflow.org>
-- 论坛: <https://discuss.analysisdataflow.org>
+- 论坛: <[社区讨论版 - 待部署]>
 - 邮箱: <contact@analysisdataflow.org>
 - Twitter: @AnalysisDataFlow
 

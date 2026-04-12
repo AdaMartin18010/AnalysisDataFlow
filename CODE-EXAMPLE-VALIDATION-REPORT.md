@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 代码示例验证报告
 
 > **生成时间**: 2026-04-08 15:34:55
@@ -6259,7 +6262,7 @@ C:\Users\luyan\AppData\Local\Temp\tmpy
 
 - **错误**: expected '<document start>', but found ('<scalar>',)
   in "<unicode string>", line 11, column 1:
-    curl -X POST "<https://api.cloudf> ...
+    curl -X POST "<[链接不完整 - 需手动修复]> ...
     ^ (line: 11)
 - **错误行**: 11
 
@@ -7860,7 +7863,7 @@ expected a comment or a line break, but found '9'
     ^ (line: 9)
 could not find expected ':'
   in "<unicode string>", line 10, column 3:
-      "$schema": "<http://json-schem>
+      "$schema": "<[链接不完整 - 需手动修复]>
 - **错误行**: 9
 
 **问题 #22** (第 699 行, 语言: yaml)

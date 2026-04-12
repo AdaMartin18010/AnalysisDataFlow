@@ -661,6 +661,9 @@ env.addSource(source)
 
 ```java
 // 纯函数性：UDF 实现
+
+import org.apache.flink.api.common.state.ValueState;
+
 class PureMapFunction extends RichMapFunction<Event, Result> {
     @Override
     public Result map(Event event) {

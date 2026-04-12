@@ -110,6 +110,10 @@ pulsar-admin functions create \
 <!-- TRANSLATE: ### 示例 2: Flink 消费 Pulsar -->
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink Pulsar Source 配置
 PulsarSource<String> source = PulsarSource.builder()
     .setServiceUrl("pulsar://localhost:6650")

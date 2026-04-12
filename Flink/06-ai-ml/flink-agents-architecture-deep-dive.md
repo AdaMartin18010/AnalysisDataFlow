@@ -1,5 +1,9 @@
 # Flink Agents 架构深度解析
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
@@ -322,6 +326,12 @@ $$
 ### 6.1 Java: Agent 生命周期管理实现
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 /**
  * Agent 生命周期管理函数
  * 演示完整的生命周期状态转换

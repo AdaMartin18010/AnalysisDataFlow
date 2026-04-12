@@ -673,6 +673,9 @@ flowchart TD
 **关键配置**：
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 低延迟优化
 env.setBufferTimeout(5);  // 5ms 缓冲区超时
 env.getConfig().setAutoWatermarkInterval(10);

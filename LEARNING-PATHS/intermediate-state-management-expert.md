@@ -87,6 +87,7 @@ gantt
 
    // 3. ForStStateBackend (Flink 2.0+)
    env.setStateBackend(new ForStStateBackend());
+
 ```
 
    - 对比内存使用、CPU 占用、Checkpoint 时间
@@ -136,6 +137,9 @@ gantt
 
    ```java
    // 实现订单状态机
+
+import org.apache.flink.api.common.state.ValueState;
+
    public class OrderStateMachine extends KeyedProcessFunction<String, Order, Alert> {
      private ValueState<OrderState> state;
      private MapState<String, Long> timerState;
@@ -158,12 +162,12 @@ gantt
    }
 ```
 
-2. **大状态优化**
+1. **大状态优化**
    - 实现状态分区策略
    - 配置 RocksDB 内存和线程
    - 使用状态异步快照
 
-3. **状态监控配置**
+2. **状态监控配置**
    - 配置状态指标收集
    - 设置状态大小告警
    - 分析状态访问模式
@@ -198,6 +202,10 @@ gantt
 ### 解决方案
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session> {
   // 使用 MapState 存储会话事件，避免 ValueState 过大
   private MapState<Long, Event> sessionEvents;
@@ -262,6 +270,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    ```java
    // 使用 keyBy 进行自然分区
    stream.keyBy(event -> event.getUserId() % 1000)
+
 ```
 
 2. **RocksDB 调优**
@@ -275,7 +284,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    );
 ```
 
-3. **增量 Checkpoint**
+1. **增量 Checkpoint**
 
    ```java
    env.getCheckpointConfig().setCheckpointStorage(
@@ -283,6 +292,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
    );
    // 启用增量 Checkpoint
    env.getCheckpointConfig().enableUnalignedCheckpoints();
+
 ```
 
 ### 检查点
@@ -309,6 +319,9 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
 ### 2. 内存优化
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // 避免存储大对象
 // ❌ 不推荐
 ValueState<List<LargeObject>> largeListState;
@@ -372,4 +385,3 @@ public void processBatch(List<Event> events) {
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，状态管理专家路径 |
-

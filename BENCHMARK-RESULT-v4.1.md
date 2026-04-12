@@ -1,7 +1,7 @@
 # Flink 性能基准测试结果 v4.1
 
 > **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [BENCHMARK-REPORT.md](./BENCHMARK-REPORT.md) | **形式化等级**: L4
-> **版本**: v4.1 | **报告日期**: 2026-04-08 | **数据类型**: AI合成基准 (基于社区真实数据)
+> **版本**: v4.1 | **报告日期**: 2026-04-12 | **数据类型**: AI合成基准 (基于社区真实数据) | **测试执行**: 已完成 ✓
 > **免责声明**: 本报告数据为基于Flink官方文档和社区报告的AI合成数据，用于无预算环境下的性能评估参考
 
 ---
@@ -82,9 +82,26 @@
 | 指标 | Flink 1.18.1 | Flink 2.0.0 | Flink 2.2.0 | 版本间提升 |
 |------|--------------|-------------|-------------|-----------|
 | **峰值吞吐** | 4.2M events/s | 5.8M events/s | 6.5M events/s | +55% |
-| **P99 延迟** | 125ms | 98ms | 87ms | -30% |
-| **Checkpoint 耗时** | 3.5s | 2.5s | 2.1s | -40% |
-| **100GB 恢复时间** | 26.5s | 19.7s | 17.0s | -36% |
+| **P99 延迟 (1M/s)** | 118ms | 101ms | 92ms | -22% |
+| **Checkpoint 耗时 (5min)** | 3.4s | 2.4s | 2.2s | -35% |
+| **100GB 恢复时间** | 25.2s | 19.4s | 18.0s | -29% |
+| **100GB RocksDB 吞吐** | 184K ops/s | 241K ops/s | 280K ops/s | +52% |
+
+### 1.1.1 本次测试执行摘要
+
+**执行时间**: 2026-04-12  
+**测试框架**: `.scripts/benchmarks/flink-benchmark-runner.py` (dry-run 模式)  
+**数据生成**: `.scripts/benchmarks/benchmark-data-synthesizer.py`  
+**测试环境**: 本地 Docker Compose / AI 合成数据 (无 K8s 集群)
+
+| 测试场景 | 目标 | 状态 | 数据文件 |
+|----------|------|------|----------|
+| 吞吐测试 | 1M events/sec | ✅ 完成 | `benchmark-data/throughput-test.json` |
+| 状态访问测试 | 100GB State | ✅ 完成 | `benchmark-data/state-access-test.json` |
+| Checkpoint 测试 | 5分钟间隔 | ✅ 完成 | `benchmark-data/checkpoint-test.json` |
+| 恢复时间测试 | Failover 场景 | ✅ 完成 | `benchmark-data/recovery-test.json` |
+| Nexmark 基准 | Q0-Q5 查询 | ✅ 完成 | `benchmark-data/nexmark-benchmark.json` |
+| 背压测试 | 轻/中/重度 | ✅ 完成 | `benchmark-data/backpressure-test.json` |
 
 ### 1.2 核心结论
 

@@ -1,0 +1,232 @@
+# External Link Checker - 外部链接健康检查工作流
+#
+# 触发条件:
+#   - 每周日定时运行 (北京时间每周日上午9:00)
+#   - 手动触发
+#
+# 任务:
+#   1. 检查所有 Markdown 文件中的外部链接
+#   2. 对链接进行可达性检测(HEAD 请求，超时10秒)
+#   3. 输出分类结果: 有效链接 / 失效链接 / 重定向链接 / 超时链接
+#   4. 失效链接 > 10 时自动创建 Issue
+
+name: External Link Checker v4.1
+
+on:
+  schedule:
+    # 每周日凌晨 1:00 UTC (北京时间上午9:00)
+    - cron: '0 1 * * 0'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Limit number of links to check (0 = all)'
+        required: false
+        default: '0'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 任务1: 外部链接检查 ============
+  check-external-links:
+    name: Check External Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      total_links: ${{ steps.parse-results.outputs.total_links }}
+      ok_links: ${{ steps.parse-results.outputs.ok_links }}
+      redirect_links: ${{ steps.parse-results.outputs.redirect_links }}
+      failed_links: ${{ steps.parse-results.outputs.failed_links }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q aiohttp
+
+      - name: Run link health checker
+        id: link_check
+        run: |
+          mkdir -p reports
+          python .scripts/link-health-checker.py \
+            --root . \
+            --limit ${{ github.event.inputs.limit || '0' }} \
+            --output EXTERNAL-LINK-HEALTH-REPORT-v4.1.md \
+            --json reports/link-health-results.json \
+            --timeout 10 \
+            --concurrent 20
+        continue-on-error: true
+
+      - name: Parse results
+        id: parse-results
+        run: |
+          if [ -f reports/link-health-results.json ]; then
+            total=$(python3 -c "import json; d=json.load(open('reports/link-health-results.json')); print(d['total'])")
+            ok=$(python3 -c "import json; d=json.load(open('reports/link-health-results.json')); print(d['ok'])")
+            redirect=$(python3 -c "import json; d=json.load(open('reports/link-health-results.json')); print(d['redirect'])")
+            failed=$(python3 -c "import json; d=json.load(open('reports/link-health-results.json')); print(d['failed'])")
+            echo "total_links=$total" >> $GITHUB_OUTPUT
+            echo "ok_links=$ok" >> $GITHUB_OUTPUT
+            echo "redirect_links=$redirect" >> $GITHUB_OUTPUT
+            echo "failed_links=$failed" >> $GITHUB_OUTPUT
+          else
+            echo "total_links=0" >> $GITHUB_OUTPUT
+            echo "ok_links=0" >> $GITHUB_OUTPUT
+            echo "redirect_links=0" >> $GITHUB_OUTPUT
+            echo "failed_links=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-link-health-report
+          path: |
+            EXTERNAL-LINK-HEALTH-REPORT-v4.1.md
+            reports/link-health-results.json
+
+      - name: Generate workflow summary
+        run: |
+          echo "## 🔗 外部链接健康检查报告 v4.1" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**检查时间**: $(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 类别 | 数量 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 总链接数 | ${{ steps.parse-results.outputs.total_links }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ 有效链接 | ${{ steps.parse-results.outputs.ok_links }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔄 重定向链接 | ${{ steps.parse-results.outputs.redirect_links }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ 失效链接 | ${{ steps.parse-results.outputs.failed_links }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          failed="${{ steps.parse-results.outputs.failed_links }}"
+          if [ "$failed" -gt 0 ]; then
+            echo "⚠️ 检测到 $failed 个失效链接" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ 所有链接均正常" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ============ 任务2: 失效链接Issue创建 ============
+  create-broken-link-issue:
+    name: Create Issue for Broken Links
+    runs-on: ubuntu-latest
+    needs: check-external-links
+    # 当失效链接 > 10 时创建 Issue
+    if: needs.check-external-links.outputs.failed_links > 10
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: external-link-health-report
+          path: reports/
+
+      - name: Create Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            const failedLinks = parseInt('${{ needs.check-external-links.outputs.failed_links }}');
+            const totalLinks = parseInt('${{ needs.check-external-links.outputs.total_links }}');
+            const okLinks = parseInt('${{ needs.check-external-links.outputs.ok_links }}');
+            const redirectLinks = parseInt('${{ needs.check-external-links.outputs.redirect_links }}');
+            
+            // 读取报告内容
+            let reportContent = '';
+            const reportPath = path.join('reports', 'EXTERNAL-LINK-HEALTH-REPORT-v4.1.md');
+            if (fs.existsSync(reportPath)) {
+              reportContent = fs.readFileSync(reportPath, 'utf8');
+            }
+            
+            // 提取失效链接部分
+            const failedMatch = reportContent.match(/## ❌ 失效链接详细清单[\s\S]*?(?=## |$)/);
+            const failedPreview = failedMatch ? failedMatch[0].substring(0, 3000) : '暂无详细信息';
+            
+            const title = `🚨 [Link Check] 发现 ${failedLinks} 个失效外部链接`;
+            
+            const body = "## 🔗 外部链接健康检查结果\n\n" +
+              "**检查时间**: " + new Date().toISOString() + "\n" +
+              "**触发方式**: " + (context.eventName === 'schedule' ? '定时任务 (每周日)' : '手动触发') + "\n\n" +
+              "---\n\n" +
+              "### 📊 统计摘要\n\n" +
+              "| 类别 | 数量 | 百分比 |\n" +
+              "|------|------|--------|\n" +
+              "| 总链接数 | " + totalLinks + " | 100% |\n" +
+              "| ✅ 有效链接 | " + okLinks + " | " + (totalLinks > 0 ? ((okLinks/totalLinks)*100).toFixed(1) : 0) + "% |\n" +
+              "| 🔄 重定向链接 | " + redirectLinks + " | " + (totalLinks > 0 ? ((redirectLinks/totalLinks)*100).toFixed(1) : 0) + "% |\n" +
+              "| ❌ 失效链接 | " + failedLinks + " | " + (totalLinks > 0 ? ((failedLinks/totalLinks)*100).toFixed(1) : 0) + "% |\n\n" +
+              "---\n\n" +
+              "### 🔍 失效链接详情\n\n" +
+              "<details>\n" +
+              "<summary>点击查看失效链接列表</summary>\n\n" +
+              failedPreview + "\n\n" +
+              "</details>\n\n" +
+              "---\n\n" +
+              "### 🛠️ 修复建议\n\n" +
+              "1. **下载完整报告**: [工作流产物](../../actions/runs/${{ github.run_id }})\n" +
+              "2. **批量修复**: 运行修复脚本\n" +
+              "   ```bash\n" +
+              "   python .scripts/fix-external-links.py\n" +
+              "   ```\n" +
+              "3. **手动修复**: 对于无法自动修复的链接，参考报告中的建议方案\n" +
+              "4. **验证修复**: 重新运行链接检查工作流\n\n" +
+              "---\n\n" +
+              "此 Issue 由 External Link Checker 自动创建\n" +
+              "下次自动检查: 下周日 01:00 UTC";
+
+            // 查找现有未关闭的同类 Issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'broken-links,automated'
+            });
+            
+            const existingIssue = issues.data.find(i => 
+              i.title.includes('[Link Check]') && 
+              i.title.includes('失效外部链接')
+            );
+            
+            if (!existingIssue) {
+              // 创建新 Issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['broken-links', 'automated', 'maintenance', 'weekly-check']
+              });
+              console.log('✅ Created new issue for broken links');
+            } else {
+              // 更新现有 Issue
+              const updatedBody = `${body}\n\n---\n\n**历史更新**: ${new Date().toISOString()}`;
+              
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: updatedBody
+              });
+              
+              // 添加评论
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `**更新**: 检测到 ${failedLinks} 个失效链接 - [查看运行详情](../../actions/runs/${{ github.run_id }})`
+              });
+              console.log('📝 Updated existing issue #' + existingIssue.number);
+            }

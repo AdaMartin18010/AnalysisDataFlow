@@ -58,6 +58,9 @@
 ### 2.2 Flink CEP 基础
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // CEP 模式定义示例
 Pattern<LoginEvent, ?> pattern = Pattern
     .<LoginEvent>begin("first")

@@ -272,6 +272,14 @@ $$
 #### 5.2.1 PMU实时处理Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class PMUProcessingJob {
 
     public static void main(String[] args) throws Exception {
@@ -434,6 +442,12 @@ public class PMUProcessingJob {
 #### 5.2.2 负载预测Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class LoadForecastingJob {
 
     public static void main(String[] args) throws Exception {
@@ -577,6 +591,12 @@ public class LoadForecastingJob {
 #### 5.2.3 实时优化调度Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class RealtimeDispatchJob {
 
     public static void main(String[] args) throws Exception {

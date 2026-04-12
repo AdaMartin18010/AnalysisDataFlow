@@ -455,6 +455,10 @@ import org.elasticsearch.client.Requests;
 
 import java.util.*;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class ElasticsearchSinkExample {
 
     public static void main(String[] args) throws Exception {

@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 案例研究：高级欺诈检测与风险防控平台
 
 > **所属阶段**: Flink | **前置依赖**: [Flink/12-ai-ml/](../../06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4 (工程论证)
@@ -291,6 +295,13 @@ Flink检测 → 风险评分 → 案件分级 → 调查队列 → 人工审核 
 #### 5.2.1 实时图构建Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeGraphConstructionJob {
 
     public static void main(String[] args) throws Exception {
@@ -486,6 +497,12 @@ public class RealtimeGraphConstructionJob {
 #### 5.2.2 图神经网络推理Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class GNNInferenceJob {
 
     public static void main(String[] args) throws Exception {
@@ -616,6 +633,11 @@ public class GNNInferenceJob {
 #### 5.2.3 CEP欺诈模式检测
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class CEPFraudDetectionJob {
 
     public static void main(String[] args) throws Exception {

@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 
 > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md), [Flink状态管理](../02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
@@ -48,6 +51,9 @@ $$
 
 ```java
 // Def-F-12-101a: Agent记忆状态形式化
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class AgentMemoryState {
     // 工作记忆 - ValueState (会话级)
     private ValueState<ConversationContext> workingMemory;
@@ -679,6 +685,8 @@ graph LR
 **反模式1: 无界状态增长**
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // ❌ 错误：无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！
@@ -1839,6 +1847,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
+
 /**
  * 实时点击率预测 - 在线学习Pipeline
  */
@@ -2871,6 +2883,9 @@ GPT-3.5:      $0.0015 / 1K input tokens, $0.002 / 1K output tokens
 /**
  * 生产级Agent设计模式
  */
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ProductionAgentPatterns {
 
     // 1. 状态管理最佳实践

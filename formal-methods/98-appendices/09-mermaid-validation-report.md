@@ -1,4 +1,8 @@
-﻿# Mermaid 图表语法验证报告
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
+# Mermaid 图表语法验证报告
 
 > 验证日期: 2026-04-10
 > 验证范围: formal-methods/ 目录下所有 Markdown 文件
@@ -419,7 +423,7 @@ def process_file(filepath):
     def fix_mermaid_block(match):
         mermaid_content = match.group(1)
         fixed_content = fix_mermaid_chinese_nodes(mermaid_content)
-        return f'```mermaid\n{fixed_content}\n```'
+        return f''```mermaid\n{fixed_content}\n```'
 
     pattern = r'```mermaid\n(.*?)\n```'
     fixed = re.sub(pattern, fix_mermaid_block, content, flags=re.DOTALL)

@@ -83,6 +83,7 @@ gantt
    // - 注册 30 分钟 Timer
    // - 收到支付消息后取消 Timer
    // - Timer 触发时输出超时订单
+
 ```
 
 2. **复杂事件处理（CEP）基础**
@@ -134,12 +135,12 @@ gantt
    // - 实现规则热更新
 ```
 
-2. **状态优化实验**
+1. **状态优化实验**
    - 对比不同状态后端的性能
    - 实现状态增量清理
    - 优化大状态访问模式
 
-3. **Queryable State 实践**
+2. **Queryable State 实践**
    - 配置 Queryable State
    - 实现状态查询服务
    - 监控查询性能
@@ -224,6 +225,10 @@ gantt
 ### 性能优化技巧
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 1. 批量处理减少状态访问
 public void processElement(List<Element> elements, Context ctx) {
     // 批量读取状态，减少访问次数
@@ -275,4 +280,3 @@ StateTtlConfig ttlConfig = StateTtlConfig
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，DataStream 专家路径 |
-

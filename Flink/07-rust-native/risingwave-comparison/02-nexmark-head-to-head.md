@@ -414,6 +414,10 @@ WHERE date_time > NOW() - INTERVAL '1 MINUTE';
 ### 6.2 Flink 等价实现对比
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink Nexmark Q5 实现
 DataStream<Bid> bids = env
     .addSource(new NexmarkSource("bid", 100000))
@@ -440,22 +444,22 @@ env.getCheckpointConfig().setCheckpointInterval(60000);
 
 ```yaml
 # nexmark_benchmark_report.yaml
-benchmark_info: 
+benchmark_info:
   date: "2026-04-04"
   risingwave_version: "v1.7.0"
   flink_version: "1.18.0"
   hardware: "AWS c7g.2xlarge (Graviton3)"
 
-results: 
-  q5_window_aggregate: 
+results:
+  q5_window_aggregate:
     input_rate: "100000 events/sec"
-    risingwave: 
+    risingwave:
       p50_latency_ms: 45
       p99_latency_ms: 120
       cpu_utilization: 45
       memory_gb: 2.1
       max_throughput: 420000
-    flink: 
+    flink:
       p50_latency_ms: 280
       p99_latency_ms: 850
       cpu_utilization: 78
@@ -463,14 +467,14 @@ results:
       max_throughput: 95000
     speedup_ratio: 4.4
 
-  q8_join: 
+  q8_join:
     input_rate: "50000 events/sec"
-    risingwave: 
+    risingwave:
       p50_latency_ms: 85
       p99_latency_ms: 250
       state_size_gb: 12
       checkpoint_time_s: 2.1
-    flink: 
+    flink:
       p50_latency_ms: 520
       p99_latency_ms: 2100
       state_size_gb: 45
@@ -605,13 +609,13 @@ radar
 ```yaml
 # risingwave.yaml
 compute_nodes: 8
-  resources: 
+  resources:
     cpu: 8
     memory: 32Gi
   cache_capacity: 24Gi
 
 meta_nodes: 3
-  resources: 
+  resources:
     cpu: 4
     memory: 16Gi
 

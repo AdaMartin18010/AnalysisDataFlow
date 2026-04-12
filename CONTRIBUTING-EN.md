@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Contributing Guide
 
 > Welcome to the AnalysisDataFlow project! We are building the most comprehensive and rigorous knowledge base for stream computing.
@@ -875,6 +879,9 @@ Apache Flink implements Asynchronous Barrier Snapshotting (ABS) mechanism. ABS a
 
 ````markdown
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java code example
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -904,6 +911,9 @@ DataStream<Event> stream = env
 **Example**:
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // Set Watermark generation strategy, allowing 5 seconds of disorder
 // This value is determined based on business latency distribution
 WatermarkStrategy<Event> strategy = WatermarkStrategy

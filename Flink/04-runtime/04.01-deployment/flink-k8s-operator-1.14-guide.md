@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink Kubernetes Operator 1.14.0 完整指南
 
 > **所属阶段**: Flink/04-runtime/04.01-deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md) | **形式化等级**: L5 (工程严格)
@@ -150,6 +153,9 @@ IsStateless(App) ⇔ ∀op ∈ App.operators:
 无状态流应用在处理事件时不需要记住之前的事件。每个事件的处理完全独立于其他事件。这类应用在 Blue/Green 切换时无需状态迁移，可实现秒级切换。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 无状态流应用示例
 DataStream<Event> stream = env
     .addSource(kafkaConsumer)      // 从 Kafka 读取
@@ -596,6 +602,11 @@ FlinkBlueGreenDeployment
 **代码模式识别**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 无状态应用特征 - 无 keyed state
 DataStream<Result> process(DataStream<Event> input) {
     return input

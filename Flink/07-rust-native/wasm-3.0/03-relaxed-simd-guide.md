@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Relaxed SIMD 指令集指南
 
 > 所属阶段: Flink/14-rust-assembly-ecosystem/wasm-3.0 | 前置依赖: [01-wasm-3.0-spec-guide.md](./01-wasm-3.0-spec-guide.md) | 形式化等级: L4

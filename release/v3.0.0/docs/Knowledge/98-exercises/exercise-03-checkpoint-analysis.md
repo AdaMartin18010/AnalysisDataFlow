@@ -58,6 +58,9 @@
 ### 2.2 关键配置参数
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Checkpoint 配置示例
 env.enableCheckpointing(60000);  // 1分钟
 env.getCheckpointConfig().setCheckpointingMode(
@@ -182,6 +185,10 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(
 使用以下程序生成 Checkpoint 指标数据：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class CheckpointMetricsJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =

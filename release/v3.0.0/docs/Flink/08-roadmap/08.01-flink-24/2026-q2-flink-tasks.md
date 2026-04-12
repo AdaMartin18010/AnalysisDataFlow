@@ -409,6 +409,9 @@ RiskLevel ∈ {
 
 ```java
 // 优化前: Flink 1.x 同步模式
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class SyncBidProcessor extends ProcessFunction<Event, Result> {
     private ValueState<BidState> state;
 

@@ -48,6 +48,8 @@ CloudEvents是一个以通用方式描述事件数据的规范，定义了一组
 Flink中CloudEvents的表示：
 
 ```java
+import java.time.Instant;
+
 public class CloudEvent {
     // 必需属性
     private String specversion;  // 固定为 "1.0"

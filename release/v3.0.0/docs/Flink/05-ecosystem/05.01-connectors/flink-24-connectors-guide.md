@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
@@ -1126,6 +1129,9 @@ Phase 2 (Commit) 扩展性:
 **Kafka 3.x Source (KRaft 模式)**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Kafka 3.x Source with KRaft mode
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092,kafka-3:9092")
@@ -1499,6 +1505,9 @@ TableResult result = tableEnv.executeSql(""
 **AWS Kinesis 4.x 连接器**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // AWS Kinesis 4.x Source with Auto-Scaling
 Properties consumerConfig = new Properties();
 consumerConfig.put(AWSConfigConstants.AWS_REGION, "us-east-1");

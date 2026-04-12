@@ -10783,6 +10783,10 @@ Dataflow的所有概念都在USTM中有对应。
 **Dataflow程序**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<String> text = env.socketTextStream("localhost", 9999);
 
 DataStream<Tuple2<String, Integer>> wordCounts = text
@@ -10821,6 +10825,9 @@ Time Model:
 **Dataflow窗口**：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream
     .keyBy("userId")
     .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -12608,6 +12615,10 @@ graph TB
 **DataStream API核心操作** [^1]：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 DataStream<T> stream = env.addSource(...)
     .map(T -> R)
     .filter(R -> boolean)
@@ -12929,6 +12940,9 @@ $$
 **Flink程序**：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 env.socketTextStream("localhost", 9999)
    .flatMap(new Tokenizer())
    .keyBy(value -> value.f0)
@@ -15459,6 +15473,9 @@ $$
 **示例1: Flink 的一致性配置**
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // At-Least-Once
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);
@@ -20709,6 +20726,9 @@ SIMPLE_PIPELINE =
 **Dataflow**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream
     .keyBy(Event::getKey)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -20732,6 +20752,9 @@ WINDOW_AGGREGATION =
 **Dataflow**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 stream1.join(stream2)
     .where(Event1::getKey)
     .equalTo(Event2::getKey)

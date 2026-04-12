@@ -193,6 +193,7 @@ stream
        }
      }
    }
+
 ```
 
 2. **数据质量处理**
@@ -240,6 +241,9 @@ stream
 1. **实时告警系统**
 
    ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
    public class AlertDetector extends KeyedProcessFunction<String,
        SensorData, Alert> {
      private ValueState<AlertState> alertState;
@@ -268,7 +272,7 @@ stream
    }
 ```
 
-2. **时序数据分析**
+1. **时序数据分析**
 
    ```sql
    -- 设备状态统计
@@ -287,6 +291,7 @@ stream
    SELECT device_id, window_start, avg_temp
    FROM device_stats
    WHERE ABS(avg_temp - 25.0) > 3 * 2.0;  -- 均值25，标准差2
+
 ```
 
 ### 检查点 3.1
@@ -314,6 +319,9 @@ stream
 
    ```java
    // 设备状态机
+
+import org.apache.flink.api.common.state.ValueState;
+
    public class EquipmentStateMachine extends KeyedProcessFunction<String,
        EquipmentData, EquipmentStatus> {
      private ValueState<EquipmentState> state;
@@ -342,12 +350,12 @@ stream
    }
 ```
 
-3. **预测性维护**
+1. **预测性维护**
    - 设备健康度评分
    - 故障预测模型
    - 维护计划生成
 
-4. **可视化大屏**
+2. **可视化大屏**
    - 实时设备地图
    - 告警看板
    - 趋势分析
@@ -419,4 +427,3 @@ stream
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，IoT数据处理路径 |
-

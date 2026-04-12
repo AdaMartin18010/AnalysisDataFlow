@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 流计算行业白皮书 2027
 
 ## Stream Computing Industry Whitepaper 2027
@@ -437,6 +440,10 @@ Apache Flink社区提出的FLIP-531提案定义了AI原生流处理的愿景：
 AI与流计算最成熟的结合点是**实时特征工程**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink实时特征工程示例
 DataStream<FeatureVector> realTimeFeatures = events
     .keyBy(Event::getUserId)
@@ -957,6 +964,9 @@ graph TB
 #### 4.1.3 核心代码实现
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // CEP模式定义示例
 // 模式1: 地理位置异常（30分钟内跨500km以上）
 Pattern<EnrichedTransaction, ?> geoPattern = Pattern
@@ -1064,6 +1074,8 @@ graph TB
 #### 4.2.3 关键优化策略
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 // 会话特征聚合实现
 class SessionFeatureAggregate implements AggregateFunction<UserEvent, SessionAccumulator, SessionFeature> {
 

@@ -386,6 +386,9 @@ class OrderActor extends Actor {
 **代码示意**：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink CEP 模式定义
 Pattern<UserEvent, ?> pattern = Pattern.<UserEvent>begin("start")
     .where(evt -> evt.type == CLICK)

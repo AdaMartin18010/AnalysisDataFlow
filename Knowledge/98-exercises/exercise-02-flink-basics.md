@@ -92,6 +92,10 @@
 给定以下 Flink 程序：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<Event> stream = env
     .fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "Kafka")
     .setParallelism(4)
@@ -433,6 +437,9 @@ public class WordCount {
 给定以下问题代码：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 dataStream
     .keyBy(Event::getCategory)  // 假设 category 分布极不均匀
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))

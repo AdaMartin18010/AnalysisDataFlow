@@ -355,6 +355,9 @@ Change Stream 输出顺序:
 **乱序处理**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 使用 Watermark 处理可能的乱序
 DataStream<ChangeEvent> events = env
     .fromSource(
@@ -532,6 +535,10 @@ import org.apache.flink.connector.mongodb.source.MongoSource;
 import org.apache.flink.connector.mongodb.common.config.MongoConnectionOptions;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class MongoBatchSourceExample {
 
     public static void main(String[] args) throws Exception {
@@ -578,6 +585,10 @@ public class MongoBatchSourceExample {
 
 ```java
 import org.apache.flink.connector.mongodb.source.MongoChangeStreamSource;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class MongoCDCExample {
 
@@ -628,6 +639,10 @@ public class MongoCDCExample {
 
 ```java
 import org.apache.flink.connector.mongodb.sink.MongoSink;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class MongoSinkExample {
 
@@ -745,6 +760,13 @@ tableEnv.executeSql("""
 ### 6.6 聚合操作示例
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class MongoAggregationExample {
 
     public static void main(String[] args) throws Exception {

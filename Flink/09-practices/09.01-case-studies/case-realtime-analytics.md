@@ -678,6 +678,13 @@ $$
 ### 9.1 核心作业代码
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class RealtimeAnalyticsJob {
 
     public static void main(String[] args) throws Exception {
@@ -756,6 +763,9 @@ public class RealtimeAnalyticsJob {
 **聚合函数实现**：
 
 ```java
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class TransactionAggregateFunction
     implements AggregateFunction<Transaction, Accumulator, AggregatedResult> {
 
@@ -798,6 +808,9 @@ public class TransactionAggregateFunction
 ### 9.2 状态后端配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 private static void configureStateBackend(StreamExecutionEnvironment env) {
     // RocksDB 状态后端，启用增量 Checkpoint
     EmbeddedRocksDBStateBackend rocksDbBackend =
@@ -837,6 +850,10 @@ private static void configureStateBackend(StreamExecutionEnvironment env) {
 ### 9.3 Checkpoint 与容错配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 private static void configureCheckpoint(StreamExecutionEnvironment env) {
     CheckpointConfig checkpointConfig = env.getCheckpointConfig();
 
@@ -877,6 +894,9 @@ private static void configureCheckpoint(StreamExecutionEnvironment env) {
 
 ```java
 // 自定义 Watermark 生成策略
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class BoundedOutOfOrdernessWatermarks
     implements WatermarkStrategy<Transaction> {
 
@@ -920,6 +940,8 @@ public class BoundedOutOfOrdernessGenerator
 ### 9.5 监控与指标采集
 
 ```java
+import org.apache.flink.api.common.functions.RuntimeContext;
+
 // 自定义指标注册
 public class MetricsReporter {
 

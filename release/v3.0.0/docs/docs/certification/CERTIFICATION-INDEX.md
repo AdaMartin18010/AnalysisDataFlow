@@ -64,7 +64,7 @@ docs/certification/
 ### 按考试安排
 
 - [2026年考试时间表](./schedule-2026.md)
-- [考试报名入口](https://cert.analysisdataflow.org)
+- [考试报名入口]([认证系统 - 待部署])
 
 ### 按学习阶段
 
@@ -199,8 +199,8 @@ CSP → CSE（研究型）
 
 - **课程咨询**: <certification@analysisdataflow.org>
 - **考试支持**: <exam-tech@analysisdataflow.org>
-- **社区论坛**: <https://discuss.analysisdataflow.org>
-- **官方网站**: <https://cert.analysisdataflow.org>
+- **社区论坛**: <[社区讨论版 - 待部署]>
+- **官方网站**: <[认证系统 - 待部署]>
 
 ---
 

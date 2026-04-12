@@ -274,6 +274,10 @@ $$
 **Flink 实现骨架**：
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class OnlineLogisticRegression extends KeyedProcessFunction<String, Sample, Prediction> {
     private ValueState<double[]> modelState;  // θ
     private ValueState<Double> learningRateState;  // η
@@ -492,6 +496,10 @@ $$
 import org.apache.flink.ml.classification.logisticregression;
 import org.apache.flink.ml.feature.standardscaler;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 1. 构建在线学习管道
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -528,6 +536,10 @@ DataStream<Prediction> predictions = trainer
 ### 6.2 自定义 ProcessFunction 实现 SGD
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class OnlineSGDTrainer extends KeyedProcessFunction<String,
         LabeledVector, ModelUpdate> {
 
@@ -685,6 +697,10 @@ public class DriftDetector extends KeyedProcessFunction<String,
 ### 6.4 模型版本管理与 A/B 测试
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ModelVersionManager extends KeyedProcessFunction<String,
         Sample, Prediction> {
 
@@ -942,6 +958,9 @@ Drift Alert / Continue
 **3. Flink 集成检测**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用 FlinkCEP 进行漂移模式检测
 Pattern<Metric, ?> driftPattern = Pattern.<Metric>begin("start")
     .where(evt -> evt.errorRate > baseline * 1.2)
@@ -1050,6 +1069,8 @@ graph LR
 **大模型状态优化**：
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // 参数分片策略
 public class ShardedModelState {
     private static final int NUM_SHARDS = 100;
@@ -1162,7 +1183,7 @@ state.savepoints.dir: s3://bucket/savepoints
 
 [^4]: J. Gama et al., "A Survey on Concept Drift Adaptation," ACM Computing Surveys, 46(4), 2014. <https://doi.org/10.1145/2523813>
 
-[^5]: I. Katakis, G. Tsoumakas, and I. Vlahavas, "Tracking Recurring Contexts using Ensemble Classifiers: an Application to Email Filtering," Knowledge and Information Systems, 2010. <https://doi.org/10.1007/s10115-009-0226-2>
+[^5]: I. Katakis, G. Tsoumakas, and I. Vlahavas, "Tracking Recurring Contexts using Ensemble Classifiers: an Application to Email Filtering," Knowledge and Information Systems, 2010. <[DOI: 10.1007/s10115-009-0226-2]>
 
 [^6]: A. Rakhlin et al., "Making Gradient Descent Optimal for Strongly Convex Stochastic Optimization," ICML 2012. <https://arxiv.org/abs/1109.5647>
 

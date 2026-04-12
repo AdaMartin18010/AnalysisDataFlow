@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 外部链接健康检查报告
 
 **生成时间:** 2026-04-05 10:52:48
@@ -43,11 +46,11 @@
 | `NAVIGATION-INDEX.md` | 559 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIPs) | 404 | 客户端错误: HTTP 404 |
 | `P2-12-COMMUNITY-FEEDBACK-SYSTEM.md` | 280 | GitHub Issue Forms 文... | [https://docs.github.com/en/communities/using-templ...](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 23 | PDF | [https://dl.acm.org/doi/10.1145/129888.129894](https://dl.acm.org/doi/10.1145/129888.129894) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 25 | PDF | [https://dl.acm.org/doi/10.1145/872757.872857](https://dl.acm.org/doi/10.1145/872757.872857) | 403 | 客户端错误: 400, message='Can not decode cont... |
@@ -58,17 +61,17 @@
 | `REFERENCES.md` | 38 | PDF | [https://dl.acm.org/doi/10.1145/2460276.2462076](https://dl.acm.org/doi/10.1145/2460276.2462076) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 39 | 书籍 | [https://dataintensive.net/](https://dataintensive.net/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 41 | PDF | [https://www.usenix.org/legacy/publications/library...](https://www.usenix.org/legacy/publications/library/proceedings/osdi06/tech/full_papers/chang/chang.pdf) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 52 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/0890540192900084) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...]([Springer - Chapter]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 66 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 68 | PDF | [https://dl.acm.org/doi/10.1145/3001886.3001892](https://dl.acm.org/doi/10.1145/3001886.3001892) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 69 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/S0304397508004235) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 76 | PDF | [https://lamport.azurewebsites.net/pubs/tla+book.pd...](https://lamport.azurewebsites.net/pubs/tla+book.pdf) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 78 | PDF | [https://dl.acm.org/doi/10.1145/2699417](https://dl.acm.org/doi/10.1145/2699417) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...](https://link.springer.com/article/10.1023/A:1022964117327) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...]([Springer - Article]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 80 | PDF | [https://dl.acm.org/doi/10.1145/3009837.3009876](https://dl.acm.org/doi/10.1145/3009837.3009876) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 81 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 82 | PDF | [https://dl.acm.org/doi/10.1145/2737924.2737964](https://dl.acm.org/doi/10.1145/2737924.2737964) | 403 | 客户端错误: 400, message='Can not decode cont... |
@@ -86,10 +89,10 @@
 | `REFERENCES.md` | 111 | O'Reilly | [https://www.oreilly.com/library/view/kafka-the-def...](https://www.oreilly.com/library/view/kafka-the-definitive/9781492043072/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 112 | O'Reilly | [https://www.oreilly.com/library/view/kafka-the-def...](https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 124 | Wiley | [https://www.wiley.com/en-us/Distributed+Computing%...](https://www.wiley.com/en-us/Distributed+Computing%3A+Fundamentals%2C+Simulations%2C+and+Advanced+Topics%2C+2nd+Edition-p-9780471453246) | N/A | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 133 | Prentice Hall | [https://dl.acm.org/doi/book/10.5555/61960](https://dl.acm.org/doi/book/10.5555/61960) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 134 | CUP | [https://www.cambridge.org/core/books/space-and-mot...](https://www.cambridge.org/core/books/space-and-motion-of-communicating-agents/) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 138 | MIT Press | [https://mitpress.mit.edu/9780262731034/](https://mitpress.mit.edu/9780262731034/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 141 | PDF | [https://www.cs.ucl.ac.uk/staff/p.ohearn/seplogic/S...](https://www.cs.ucl.ac.uk/staff/p.ohearn/seplogic/Separation_Logic_Lecture_Notes.pdf) | N/A | 客户端错误: Cannot connect to host www.cs.ucl... |
@@ -124,7 +127,7 @@
 | `REFERENCES.md` | 249 | ACM DL | [https://dl.acm.org/doi/proceedings/10.1145/3371081](https://dl.acm.org/doi/proceedings/10.1145/3371081) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 282 | skitter-framework | [https://github.com/skitter-framework](https://github.com/skitter-framework) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 323 | spinroot/spin | [https://github.com/spinroot/spin](https://github.com/spinroot/spin) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://github.com/nusmv/nusmv) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://nusmv.fbk.eu/) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 337 | streamingledger | [https://github.com/streamingledger](https://github.com/streamingledger) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 343 | spring-tutorials/str... | [https://github.com/spring-tutorials/stream-process...](https://github.com/spring-tutorials/stream-processing) | 404 | 客户端错误: HTTP 404 |
 | `RELEASE-NOTES-v3.0.md` | 324 |  | [https://github.com/your-org/AnalysisDataFlow](https://github.com/your-org/AnalysisDataFlow) | 404 | 客户端错误: HTTP 404 |
@@ -152,11 +155,11 @@
 | `Flink\09-language-foundations\06-risingwave-deep-dive.md` | 2045 |  | [https://risingwave.com/blog/building-real-time-ai-...](https://risingwave.com/blog/building-real-time-ai-with-risingwave-a-case-study-of-kaito/) | 404 | 客户端错误: 400, message='Can not decode cont... |
 | `Knowledge\05-mapping-guides\migration-guides\05.4-flink-1x-to-2x-migration.md` | 3 | Flink 1.20 Migration... | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/upgrading/) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 23 | PDF | [https://dl.acm.org/doi/10.1145/129888.129894](https://dl.acm.org/doi/10.1145/129888.129894) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 25 | PDF | [https://dl.acm.org/doi/10.1145/872757.872857](https://dl.acm.org/doi/10.1145/872757.872857) | 403 | 客户端错误: 400, message='Can not decode cont... |
@@ -166,17 +169,17 @@
 | `REFERENCES.md` | 37 | PDF | [https://users.cs.duke.edu/~badi/papers/cap.pdf](https://users.cs.duke.edu/~badi/papers/cap.pdf) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 38 | PDF | [https://dl.acm.org/doi/10.1145/2460276.2462076](https://dl.acm.org/doi/10.1145/2460276.2462076) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 41 | PDF | [https://www.usenix.org/legacy/publications/library...](https://www.usenix.org/legacy/publications/library/proceedings/osdi06/tech/full_papers/chang/chang.pdf) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 52 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/0890540192900084) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...]([Springer - Chapter]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 66 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 68 | PDF | [https://dl.acm.org/doi/10.1145/3001886.3001892](https://dl.acm.org/doi/10.1145/3001886.3001892) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 69 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/S0304397508004235) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 76 | PDF | [https://lamport.azurewebsites.net/pubs/tla+book.pd...](https://lamport.azurewebsites.net/pubs/tla+book.pdf) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 78 | PDF | [https://dl.acm.org/doi/10.1145/2699417](https://dl.acm.org/doi/10.1145/2699417) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...](https://link.springer.com/article/10.1023/A:1022964117327) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...]([Springer - Article]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 80 | PDF | [https://dl.acm.org/doi/10.1145/3009837.3009876](https://dl.acm.org/doi/10.1145/3009837.3009876) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 81 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 82 | PDF | [https://dl.acm.org/doi/10.1145/2737924.2737964](https://dl.acm.org/doi/10.1145/2737924.2737964) | 403 | 客户端错误: 400, message='Can not decode cont... |
@@ -188,10 +191,10 @@
 | `REFERENCES.md` | 96 | PDF | [https://dl.acm.org/doi/10.1145/568522.568525](https://dl.acm.org/doi/10.1145/568522.568525) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 109 | O'Reilly | [https://www.oreilly.com/library/view/learning-spar...](https://www.oreilly.com/library/view/learning-spark/9781492050018/) | 403 | 客户端错误: HTTP 403 |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 133 | Prentice Hall | [https://dl.acm.org/doi/book/10.5555/61960](https://dl.acm.org/doi/book/10.5555/61960) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 134 | CUP | [https://www.cambridge.org/core/books/space-and-mot...](https://www.cambridge.org/core/books/space-and-motion-of-communicating-agents/) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 141 | PDF | [https://www.cs.ucl.ac.uk/staff/p.ohearn/seplogic/S...](https://www.cs.ucl.ac.uk/staff/p.ohearn/seplogic/Separation_Logic_Lecture_Notes.pdf) | N/A | 客户端错误: Cannot connect to host www.cs.ucl... |
 | `REFERENCES.md` | 158 | 文档 | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 404 | 客户端错误: HTTP 404 |
@@ -208,16 +211,16 @@
 | `REFERENCES.md` | 249 | ACM DL | [https://dl.acm.org/doi/proceedings/10.1145/3371081](https://dl.acm.org/doi/proceedings/10.1145/3371081) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 282 | skitter-framework | [https://github.com/skitter-framework](https://github.com/skitter-framework) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 323 | spinroot/spin | [https://github.com/spinroot/spin](https://github.com/spinroot/spin) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://github.com/nusmv/nusmv) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://nusmv.fbk.eu/) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 337 | streamingledger | [https://github.com/streamingledger](https://github.com/streamingledger) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 343 | spring-tutorials/str... | [https://github.com/spring-tutorials/stream-process...](https://github.com/spring-tutorials/stream-processing) | 404 | 客户端错误: HTTP 404 |
 | `BEST-PRACTICES.md` | 1523 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `RELEASE-NOTES-v3.0.md` | 340 |  | [https://github.com/your-org/AnalysisDataFlow/issue...](https://github.com/your-org/AnalysisDataFlow/issues) | 404 | 客户端错误: HTTP 404 |
 | `RELEASE-NOTES-v3.0.md` | 341 |  | [https://github.com/your-org/AnalysisDataFlow/discu...](https://github.com/your-org/AnalysisDataFlow/discussions) | 404 | 客户端错误: HTTP 404 |
 | `RELEASE-NOTES-v3.0.md` | 341 |  | [https://github.com/your-org/AnalysisDataFlow/discu...](https://github.com/your-org/AnalysisDataFlow/discussions) | 404 | 客户端错误: HTTP 404 |
@@ -226,27 +229,27 @@
 | `Flink\09-language-foundations\06-risingwave-deep-dive.md` | 2045 |  | [https://risingwave.com/blog/building-real-time-ai-...](https://risingwave.com/blog/building-real-time-ai-with-risingwave-a-case-study-of-kaito/) | 404 | 客户端错误: 400, message='Can not decode cont... |
 | `Knowledge\05-mapping-guides\migration-guides\05.4-flink-1x-to-2x-migration.md` | 3 | Flink 1.20 Migration... | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/upgrading/) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 23 | PDF | [https://dl.acm.org/doi/10.1145/129888.129894](https://dl.acm.org/doi/10.1145/129888.129894) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 25 | PDF | [https://dl.acm.org/doi/10.1145/872757.872857](https://dl.acm.org/doi/10.1145/872757.872857) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 26 | PDF | [https://dl.acm.org/doi/10.1145/1807167.1807189](https://dl.acm.org/doi/10.1145/1807167.1807189) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 34 | PDF | [https://dl.acm.org/doi/10.1145/1281100.1281103](https://dl.acm.org/doi/10.1145/1281100.1281103) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 38 | PDF | [https://dl.acm.org/doi/10.1145/2460276.2462076](https://dl.acm.org/doi/10.1145/2460276.2462076) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 52 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/0890540192900084) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 57 | PDF | [https://link.springer.com/chapter/10.1007/3-540-49...]([Springer - Chapter]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 66 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/foundation-for-actor-computation/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 68 | PDF | [https://dl.acm.org/doi/10.1145/3001886.3001892](https://dl.acm.org/doi/10.1145/3001886.3001892) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 69 | PDF | [https://www.sciencedirect.com/science/article/pii/...](https://www.sciencedirect.com/science/article/pii/S0304397508004235) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 78 | PDF | [https://dl.acm.org/doi/10.1145/2699417](https://dl.acm.org/doi/10.1145/2699417) | 403 | 客户端错误: 400, message='Can not decode cont... |
-| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...](https://link.springer.com/article/10.1023/A:1022964117327) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 79 | PDF | [https://link.springer.com/article/10.1023/A:102296...]([Springer - Article]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 80 | PDF | [https://dl.acm.org/doi/10.1145/3009837.3009876](https://dl.acm.org/doi/10.1145/3009837.3009876) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 81 | PDF | [https://www.cambridge.org/core/journals/journal-of...](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 82 | PDF | [https://dl.acm.org/doi/10.1145/2737924.2737964](https://dl.acm.org/doi/10.1145/2737924.2737964) | 403 | 客户端错误: 400, message='Can not decode cont... |
@@ -258,10 +261,10 @@
 | `REFERENCES.md` | 96 | PDF | [https://dl.acm.org/doi/10.1145/568522.568525](https://dl.acm.org/doi/10.1145/568522.568525) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 109 | O'Reilly | [https://www.oreilly.com/library/view/learning-spar...](https://www.oreilly.com/library/view/learning-spark/9781492050018/) | 403 | 客户端错误: HTTP 403 |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `REFERENCES.md` | 133 | Prentice Hall | [https://dl.acm.org/doi/book/10.5555/61960](https://dl.acm.org/doi/book/10.5555/61960) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 134 | CUP | [https://www.cambridge.org/core/books/space-and-mot...](https://www.cambridge.org/core/books/space-and-motion-of-communicating-agents/) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....](https://www.cambridge.org/core/books/picalculus/...) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 54 | 书籍 | [https://www.cambridge.org/core/books/picalculus/.....]([Cambridge - Pi Calculus]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 65 | 书籍 | [https://dl.acm.org/doi/book/10.5555/7920](https://dl.acm.org/doi/book/10.5555/7920) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 158 | 文档 | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 159 | 文档 | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/) | 404 | 客户端错误: HTTP 404 |
@@ -276,13 +279,13 @@
 | `REFERENCES.md` | 249 | ACM DL | [https://dl.acm.org/doi/proceedings/10.1145/3371081](https://dl.acm.org/doi/proceedings/10.1145/3371081) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `REFERENCES.md` | 282 | skitter-framework | [https://github.com/skitter-framework](https://github.com/skitter-framework) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 323 | spinroot/spin | [https://github.com/spinroot/spin](https://github.com/spinroot/spin) | 404 | 客户端错误: HTTP 404 |
-| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://github.com/nusmv/nusmv) | 404 | 客户端错误: HTTP 404 |
+| `REFERENCES.md` | 324 | nusmv/nusmv | [https://github.com/nusmv/nusmv](https://nusmv.fbk.eu/) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 337 | streamingledger | [https://github.com/streamingledger](https://github.com/streamingledger) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 343 | spring-tutorials/str... | [https://github.com/spring-tutorials/stream-process...](https://github.com/spring-tutorials/stream-processing) | 404 | 客户端错误: HTTP 404 |
 | `BEST-PRACTICES.md` | 1523 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `REFERENCES.md` | 18 | 书籍 | [https://www.oreilly.com/library/view/streaming-sys...](https://www.oreilly.com/library/view/streaming-systems/9781491983874/) | 403 | 客户端错误: HTTP 403 |
 | `reports\link-health-report.md` | 2874 | MementoWeb | [http://timetravel.mementoweb.org/](http://timetravel.mementoweb.org/) | N/A | 客户端错误: Cannot connect to host timetravel... |
@@ -291,7 +294,7 @@
 | `tutorials\00-5-MINUTE-QUICK-START.md` | 687 | Ververica Platform | [https://ververica.com/](https://ververica.com/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `tutorials\00-5-MINUTE-QUICK-START.md` | 722 |  | [http://localhost:8081](http://localhost:8081) | N/A | URL在排除列表中 |
 | `tutorials\01-introduction-script.md` | 315 |  | [https://github.com/AnalysisDataFlow](https://github.com/AnalysisDataFlow) | 404 | 客户端错误: HTTP 404 |
-| `tutorials\01-introduction-script.md` | 316 |  | [https://analysisdataflow.github.io/docs](https://analysisdataflow.github.io/docs) | 404 | 客户端错误: HTTP 404 |
+| `tutorials\01-introduction-script.md` | 316 |  | [https://analysisdataflow.github.io/docs]([项目文档站点 - 待部署]) | 404 | 客户端错误: HTTP 404 |
 | `visuals\selection-tree-formal.md` | 416 |  | [https://doi.org/10.1145/2699417](https://doi.org/10.1145/2699417) | N/A | URL在排除列表中 |
 | `visuals\selection-tree-formal.md` | 418 |  | [https://www.usenix.org/conference/nsdi25/presentat...](https://www.usenix.org/conference/nsdi25/presentation/howard) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `visuals\selection-tree-formal.md` | 420 |  | [https://doi.org/10.1145/1538788.1538814](https://doi.org/10.1145/1538788.1538814) | N/A | URL在排除列表中 |
@@ -300,11 +303,11 @@
 | `tutorials\interactive\flink-playground\README.md` | 24 |  | [http://localhost:8081](http://localhost:8081) | N/A | URL在排除列表中 |
 | `tutorials\interactive\flink-playground\README.md` | 25 |  | [http://localhost:8082](http://localhost:8082) | N/A | URL在排除列表中 |
 | `tutorials\interactive\flink-playground\README.md` | 26 |  | [http://localhost:9001](http://localhost:9001) | N/A | URL在排除列表中 |
-| `tutorials\interactive\flink-playground\README.md` | 27 |  | [http://localhost:8888](http://localhost:8888) | N/A | URL在排除列表中 |
+| `tutorials\interactive\flink-playground\README.md` | 27 |  | [http://localhost:8888]([本地开发环境专用链接]) | N/A | URL在排除列表中 |
 | `tutorials\interactive\hands-on-labs\lab-05-checkpoint.md` | 222 |  | [http://localhost:8081](http://localhost:8081) | N/A | URL在排除列表中 |
 | `Struct\01-foundation\01.03-actor-model-formalization.md` | 579 |  | [https://doc.akka.io/](https://doc.akka.io/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Struct\03-relationships\03.05-cross-model-mappings.md` | 802 |  | [https://doi.org/10.14778/2824032.2824076](https://doi.org/10.14778/2824032.2824076) | N/A | URL在排除列表中 |
-| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/](http://www.usingcsp.com/) | N/A | 客户端错误: Cannot connect to host www.usingc... |
+| `REFERENCES.md` | 51 | 书籍 | [http://www.usingcsp.com/]([CSP资源站点 - 链接已失效]) | N/A | 客户端错误: Cannot connect to host www.usingc... |
 | `Struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 1076 |  | [https://doi.org/10.1145/214451.214456](https://doi.org/10.1145/214451.214456) | N/A | URL在排除列表中 |
 | `Struct\04-proofs\04.03-chandy-lamport-consistency.md` | 989 |  | [https://doi.org/10.1145/214451.214456](https://doi.org/10.1145/214451.214456) | N/A | URL在排除列表中 |
 | `Struct\04-proofs\04.03-chandy-lamport-consistency.md` | 991 |  | [https://doi.org/10.1145/359545.359563](https://doi.org/10.1145/359545.359563) | N/A | URL在排除列表中 |
@@ -315,7 +318,7 @@
 | `Struct\04-proofs\04.06-dot-subtyping-completeness.md` | 1081 |  | [https://docs.scala-lang.org/tour/abstract-type-mem...](https://docs.scala-lang.org/tour/abstract-type-members.html) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Struct\04-proofs\04.06-dot-subtyping-completeness.md` | 1083 |  | [https://doi.org/10.1145/1094811.1094815](https://doi.org/10.1145/1094811.1094815) | N/A | URL在排除列表中 |
 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 788 |  | [https://doi.org/10.1007/978-3-642-22655-7_1](https://doi.org/10.1007/978-3-642-22655-7_1) | N/A | URL在排除列表中 |
-| `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 790 |  | [https://doi.org/10.1007/3-540-49443-4_14](https://doi.org/10.1007/3-540-49443-4_14) | N/A | URL在排除列表中 |
+| `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 790 |  | [https://doi.org/10.1007/3-540-49443-4_14]([DOI: 10.1007/3-540-49443-4_14]) | N/A | URL在排除列表中 |
 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 794 |  | [https://doi.org/10.4230/LIPIcs.CONCUR.2017.32](https://doi.org/10.4230/LIPIcs.CONCUR.2017.32) | N/A | URL在排除列表中 |
 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 798 |  | [https://doi.org/10.1145/3698034](https://doi.org/10.1145/3698034) | N/A | URL在排除列表中 |
 | `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 800 |  | [https://doi.org/10.1016/0304-3975(78)90036-1](https://doi.org/10.1016/0304-3975(78)90036-1) | N/A | URL在排除列表中 |
@@ -341,7 +344,7 @@
 | `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 898 |  | [https://doi.org/10.14778/2824032.2824076](https://doi.org/10.14778/2824032.2824076) | N/A | URL在排除列表中 |
 | `Knowledge\03-business-patterns\alibaba-double11-flink.md` | 1043 |  | [https://flink-forward.org/](https://flink-forward.org/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Knowledge\03-business-patterns\data-mesh-streaming-architecture-2026.md` | 582 |  | [https://www.idc.com/getdoc.jsp?containerId=US50397...](https://www.idc.com/getdoc.jsp?containerId=US50397723) | 404 | 客户端错误: HTTP 404 |
-| `Knowledge\03-business-patterns\fintech-realtime-risk-control.md` | 1021 |  | [https://doi.org/10.1109/ACCESS.2020.3025677](https://doi.org/10.1109/ACCESS.2020.3025677) | N/A | URL在排除列表中 |
+| `Knowledge\03-business-patterns\fintech-realtime-risk-control.md` | 1021 |  | [https://doi.org/10.1109/ACCESS.2020.3025677](https://ieeexplore.ieee.org/document/9210124) | N/A | URL在排除列表中 |
 | `Knowledge\03-business-patterns\fintech-realtime-risk-control.md` | 1023 |  | [https://doi.org/10.1016/j.eswa.2015.12.030](https://doi.org/10.1016/j.eswa.2015.12.030) | N/A | URL在排除列表中 |
 | `Knowledge\03-business-patterns\fintech-realtime-risk-control.md` | 1027 |  | [https://doi.org/10.1016/j.jss.2012.03.056](https://doi.org/10.1016/j.jss.2012.03.056) | N/A | URL在排除列表中 |
 | `Knowledge\03-business-patterns\fintech-realtime-risk-control.md` | 1031 |  | [https://www.fatf-gafi.org/recommendations.html](https://www.fatf-gafi.org/recommendations.html) | 403 | 客户端错误: HTTP 403 |
@@ -382,8 +385,8 @@
 | `Knowledge\09-anti-patterns\streaming-anti-patterns.md` | 1217 |  | [https://nightlies.apache.org/flink/flink-kubernete...](https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/autoscaling/) | 404 | 客户端错误: HTTP 404 |
 | `Knowledge\05-mapping-guides\migration-guides\05.4-flink-1x-to-2x-migration.md` | 3 | Flink 1.20 Migration... | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/upgrading/) | 404 | 客户端错误: HTTP 404 |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 555 |  | [https://nightlies.apache.org/flink/flink-docs-mast...](https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/) | 404 | 客户端错误: HTTP 404 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 557 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-500) | 404 | 客户端错误: HTTP 404 |
 | `Flink\01-architecture\datastream-v2-semantics.md` | 569 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-143) | 404 | 客户端错误: HTTP 404 |
@@ -424,12 +427,12 @@
 | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
 | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
-| `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/spec) | 404 | 客户端错误: HTTP 404 |
+| `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
 | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
-| `Flink\12-ai-ml\online-learning-algorithms.md` | 1165 |  | [https://doi.org/10.1007/s10115-009-0226-2](https://doi.org/10.1007/s10115-009-0226-2) | N/A | URL在排除列表中 |
+| `Flink\12-ai-ml\online-learning-algorithms.md` | 1165 |  | [https://doi.org/10.1007/s10115-009-0226-2]([DOI: 10.1007/s10115-009-0226-2]) | N/A | URL在排除列表中 |
 | `Flink\12-ai-ml\online-learning-algorithms.md` | 1169 |  | [https://doi.org/10.1137/1.9781611972771.42](https://doi.org/10.1137/1.9781611972771.42) | N/A | URL在排除列表中 |
 | `Flink\12-ai-ml\online-learning-algorithms.md` | 1171 |  | [https://doi.org/10.1145/2487575.2488200](https://doi.org/10.1145/2487575.2488200) | N/A | URL在排除列表中 |
-| `Flink\13-wasm\wasm-streaming.md` | 1272 |  | [https://bytecodealliance.org/articles/wasi-0-3](https://bytecodealliance.org/articles/wasi-0-3) | 404 | 客户端错误: HTTP 404 |
+| `Flink\13-wasm\wasm-streaming.md` | 1272 |  | [https://bytecodealliance.org/articles/wasi-0-3](https://bytecodealliance.org/articles) | 404 | 客户端错误: HTTP 404 |
 | `Flink\13-wasm\wasm-streaming.md` | 1278 |  | [https://www.akamai.com/company/press-room/press-re...](https://www.akamai.com/company/press-room/press-releases/akamai-completes-fermyon-acquisition) | 403 | 客户端错误: HTTP 403 |
 | `Flink\13-wasm\wasm-streaming.md` | 1280 |  | [https://platform.uno/blog/state-of-webassembly-202...](https://platform.uno/blog/state-of-webassembly-2025-2026/) | 404 | 客户端错误: HTTP 404 |
 | `Flink\14-lakehouse\README.md` | 84 |  | [https://delta.io/](https://delta.io/) | N/A | 客户端错误: 400, message='Can not decode cont... |
@@ -460,7 +463,7 @@
 | `Flink\14-rust-assembly-ecosystem\comparison\01-rust-streaming-engines-comparison.md` | 571 |  | [https://dl.acm.org/doi/10.1145/2517349.2522738](https://dl.acm.org/doi/10.1145/2517349.2522738) | 403 | 客户端错误: 400, message='Can not decode cont... |
 | `Flink\14-rust-assembly-ecosystem\flink-rust-ecosystem-trends-2026.md` | 615 |  | [https://www.streamingdata.tech/p/flink-forward-202...](https://www.streamingdata.tech/p/flink-forward-2025) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Flink\14-rust-assembly-ecosystem\iron-functions\VERSION-TRACKING.md` | 4 |  | [https://irontools.dev/docs/](https://irontools.dev/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
-| `Flink\14-rust-assembly-ecosystem\iron-functions\VERSION-TRACKING.md` | 5 |  | [https://github.com/irontools/iron-functions](https://github.com/irontools/iron-functions) | 404 | 客户端错误: HTTP 404 |
+| `Flink\14-rust-assembly-ecosystem\iron-functions\VERSION-TRACKING.md` | 5 |  | [https://github.com/irontools/iron-functions](https://github.com/iron-io/functions) | 404 | 客户端错误: HTTP 404 |
 | `Flink\14-rust-assembly-ecosystem\iron-functions\VERSION-TRACKING.md` | 80 | Iron Functions 文档 | [https://irontools.dev/docs/](https://irontools.dev/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `Flink\14-rust-assembly-ecosystem\trends\01-flink-rust-ecosystem-trends-2026.md` | 689 |  | [https://arrow.apache.org/benchmarks/](https://arrow.apache.org/benchmarks/) | 404 | 客户端错误: HTTP 404 |
 | `Flink\14-rust-assembly-ecosystem\trends\01-flink-rust-ecosystem-trends-2026.md` | 691 |  | [https://bytecodealliance.org/articles/WASI-Preview...](https://bytecodealliance.org/articles/WASI-Preview-2) | 404 | 客户端错误: HTTP 404 |
@@ -471,8 +474,8 @@
 | `i18n\i18n-architecture.md` | 208 | W3C i18n指南 | [https://www.w3.org/standards/webdesign/i18n](https://www.w3.org/standards/webdesign/i18n) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `docs\i18n\ARCHITECTURE.md` | 811 | Mozilla i18n Guide | [https://developer.mozilla.org/en-US/docs/Mozilla/A...](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `README.md` | 3 | ![Validate Project | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
-| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 4 | ![Update Statistics | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
+| `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 | `CONFIG-TEMPLATES\development\ide-config-guide.md` | 380 | Apache Flink IDE Set... | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/flinkDev/ide_setup/) | 404 | 客户端错误: HTTP 404 |
 | `CONFIG-TEMPLATES\development\ide-config-guide.md` | 382 | VS Code Java Extensi... | [https://code.visualstudio.com/docs/java/java-tutor...](https://code.visualstudio.com/docs/java/java-tutorial) | N/A | 客户端错误: 400, message='Can not decode cont... |
 | `CONFIG-TEMPLATES\production\ha-security-guide.md` | 464 | Kubernetes Network P... | [https://kubernetes.io/docs/concepts/services-netwo...](https://kubernetes.io/docs/concepts/services-networking/network-policies/) | N/A | 客户端错误: 400, message='Can not decode cont... |
@@ -482,8 +485,8 @@
 | 文件 | 行号 | 链接 | 错误信息 |
 |------|------|------|----------|
 | `FINAL-COMPLETION-REPORT-v6.0.md` | 380 | [https://developers.google.com/agent-to-agent](https://developers.google.com/agent-to-agent) | 请求超时 (尝试 2/2) |
-| `LINK-HEALTH-AUTOMATION.md` | 210 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
-| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-AUTOMATION.md` | 210 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
 | `REFERENCES.md` | 125 | [https://www.routledge.com/Distributed-Systems-An-Algorithmic...](https://www.routledge.com/Distributed-Systems-An-Algorithmic-Approach/Ghosh/p/book/9781466552975) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 214 | [https://cloud.google.com/dataflow/docs/concepts/streaming-pi...](https://cloud.google.com/dataflow/docs/concepts/streaming-pipelines) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 215 | [https://cloud.google.com/blog/products/data-analytics/stream...](https://cloud.google.com/blog/products/data-analytics/stream-processing-cloud-pubsub-cloud-dataflow) | 请求超时 (尝试 2/2) |
@@ -1316,9 +1319,9 @@
 | `FINAL-COMPLETION-REPORT-v6.0.md` | 380 | [https://developers.google.com/agent-to-agent](https://developers.google.com/agent-to-agent) | 请求超时 (尝试 2/2) |
 | `reports\link-health-report.md` | 553 | [https://github.com/rust-lang-nursery/wg-async](https://github.com/rust-lang-nursery/wg-async) | 请求超时 (尝试 3/3) |
 | `reports\link-health-report.md` | 556 | [https://github.com/apache/flink/tree/master/flink-wasm-udf](https://github.com/apache/flink/tree/master/flink-wasm-udf) | 请求超时 (尝试 3/3) |
-| `reports\link-health-report.md` | 591 | [https://github.com/irontools/iron-functions/releases](https://github.com/irontools/iron-functions/releases) | 请求超时 (尝试 3/3) |
-| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
-| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
+| `reports\link-health-report.md` | 591 | [https://github.com/irontools/iron-functions/releases](https://github.com/iron-io/functions/releases) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
 | `REFERENCES.md` | 125 | [https://www.routledge.com/Distributed-Systems-An-Algorithmic...](https://www.routledge.com/Distributed-Systems-An-Algorithmic-Approach/Ghosh/p/book/9781466552975) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 214 | [https://cloud.google.com/dataflow/docs/concepts/streaming-pi...](https://cloud.google.com/dataflow/docs/concepts/streaming-pipelines) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 215 | [https://cloud.google.com/blog/products/data-analytics/stream...](https://cloud.google.com/blog/products/data-analytics/stream-processing-cloud-pubsub-cloud-dataflow) | 请求超时 (尝试 2/2) |
@@ -1328,8 +1331,8 @@
 | `reports\link-health-report.md` | 1630 | [https://github.com/your-org/AnalysisDataFlow/graphs/contribu...](https://github.com/your-org/AnalysisDataFlow/graphs/contributors) | 请求超时 (尝试 3/3) |
 | `CONFIG-TEMPLATES\README.md` | 198 | [https://cloud.google.com/dataproc/docs/concepts/components/f...](https://cloud.google.com/dataproc/docs/concepts/components/flink) | 请求超时 (尝试 2/2) |
 | `FINAL-COMPLETION-REPORT-v6.0.md` | 380 | [https://developers.google.com/agent-to-agent](https://developers.google.com/agent-to-agent) | 请求超时 (尝试 2/2) |
-| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
-| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
+| `LINK-HEALTH-CHECK-COMPLETION-REPORT.md` | 205 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...]([内部CI链接 - 需手动验证]) | 请求超时 (尝试 3/3) |
 | `REFERENCES.md` | 125 | [https://www.routledge.com/Distributed-Systems-An-Algorithmic...](https://www.routledge.com/Distributed-Systems-An-Algorithmic-Approach/Ghosh/p/book/9781466552975) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 214 | [https://cloud.google.com/dataflow/docs/concepts/streaming-pi...](https://cloud.google.com/dataflow/docs/concepts/streaming-pipelines) | 请求超时 (尝试 2/2) |
 | `REFERENCES.md` | 215 | [https://cloud.google.com/blog/products/data-analytics/stream...](https://cloud.google.com/blog/products/data-analytics/stream-processing-cloud-pubsub-cloud-dataflow) | 请求超时 (尝试 2/2) |
@@ -1348,7 +1351,7 @@
 | `Flink\12-ai-ml\online-learning-algorithms.md` | 1157 | [https://www.cs.huji.ac.il/~shais/papers/OLsurvey.pdf](https://www.cs.huji.ac.il/~shais/papers/OLsurvey.pdf) | 请求超时 (尝试 2/2) |
 | `reports\link-health-report.md` | 553 | [https://github.com/rust-lang-nursery/wg-async](https://github.com/rust-lang-nursery/wg-async) | 请求超时 (尝试 3/3) |
 | `reports\link-health-report.md` | 556 | [https://github.com/apache/flink/tree/master/flink-wasm-udf](https://github.com/apache/flink/tree/master/flink-wasm-udf) | 请求超时 (尝试 3/3) |
-| `reports\link-health-report.md` | 591 | [https://github.com/irontools/iron-functions/releases](https://github.com/irontools/iron-functions/releases) | 请求超时 (尝试 3/3) |
+| `reports\link-health-report.md` | 591 | [https://github.com/irontools/iron-functions/releases](https://github.com/iron-io/functions/releases) | 请求超时 (尝试 3/3) |
 
 ## 📁 按文件统计
 

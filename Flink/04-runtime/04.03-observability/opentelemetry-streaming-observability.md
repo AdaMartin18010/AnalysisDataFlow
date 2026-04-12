@@ -925,6 +925,9 @@ import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class ObservableStreamingJob {
 
     public static void main(String[] args) throws Exception {

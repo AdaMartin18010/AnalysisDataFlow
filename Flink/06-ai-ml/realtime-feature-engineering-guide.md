@@ -186,6 +186,11 @@ DataStream<FeatureVector> features = events
     .window(TumblingProcessingTimeWindows.of(Time.minutes(5)))
     .aggregate(new UserBehaviorAggregator());
 
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 class UserBehaviorAggregator
     implements AggregateFunction<Event, UserAccumulator, FeatureVector> {
 
@@ -230,6 +235,10 @@ DataStream<SessionFeatures> sessionFeatures = events
     .keyBy(Event::getUserId)
     .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
     .process(new SessionFeatureProcessFunction());
+
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 class SessionFeatureProcessFunction
     extends ProcessWindowFunction<Event, SessionFeatures, String, TimeWindow> {

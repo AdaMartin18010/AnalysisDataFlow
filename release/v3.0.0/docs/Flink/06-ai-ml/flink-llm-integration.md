@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 与 LLM 集成：实时生成式 AI 应用
 
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink SQL 高级特性](../03-api/03.02-table-sql-api/built-in-functions-complete-list.md), [Flink ML 基础](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
@@ -513,6 +516,9 @@ LATERAL TABLE(
 
 ```java
 // Java API: 智能上下文截断
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class ContextWindowManager extends KeyedProcessFunction<String, Query, EnrichedQuery> {
     private static final int MAX_CONTEXT_TOKENS = 6000;
     private ValueState<List<String>> conversationHistory;

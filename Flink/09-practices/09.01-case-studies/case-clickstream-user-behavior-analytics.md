@@ -323,6 +323,8 @@ $$
 #### 5.2.1 客户端SDK埋点
 
 ```java
+import java.util.Map;
+
 // 客户端SDK核心设计
 public class ClickstreamSDK {
 
@@ -360,11 +362,18 @@ public class ClickstreamSDK {
 #### 5.2.2 Flink实时处理Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ClickstreamAnalyticsJob {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
         env.enableCheckpointing(60000);  // 1分钟checkpoint
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 
@@ -419,6 +428,9 @@ public class ClickstreamAnalyticsJob {
 #### 5.2.3 会话窗口聚合实现
 
 ```java
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class SessionAggregator implements AggregateFunction<ClickEvent, SessionAcc, UserSession> {
 
     @Override
@@ -463,6 +475,10 @@ public class SessionAggregator implements AggregateFunction<ClickEvent, SessionA
 #### 5.2.4 实时转化漏斗实现
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class FunnelProcessFunction extends KeyedProcessFunction<String, UserSession, FunnelResult> {
 
     private final List<FunnelStep> funnelDefinition;
@@ -634,6 +650,14 @@ GROUP BY funnel_name, step_index, step_name, window_start;
  * 4. 用户画像实时更新
  * 5. A/B测试实时指标
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class CompleteClickstreamAnalytics {
 
     // ==================== 配置常量 ====================

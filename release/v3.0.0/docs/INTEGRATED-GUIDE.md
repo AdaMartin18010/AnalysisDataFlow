@@ -56,6 +56,13 @@ Checkpoint 是流处理的容错基础：
 ### Flink 开发模式
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 创建执行环境
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

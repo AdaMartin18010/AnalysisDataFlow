@@ -265,6 +265,10 @@ GROUP BY
 **DataStream**：
 
 ```java
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 orders
     .assignTimestampsAndWatermarks(
         WatermarkStrategy.<Order>forBoundedOutOfOrderness(Duration.ofSeconds(30))
@@ -296,6 +300,9 @@ JOIN payments p
 **DataStream**：
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 orders
     .keyBy(Order::getOrderId)
     .intervalJoin(payments.keyBy(Payment::getOrderId))
@@ -315,6 +322,9 @@ orders
 **场景**：异步查询用户信息服务进行数据丰富。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class AsyncUserEnrichment extends AsyncFunction<Order, EnrichedOrder> {
     private transient AsyncHttpClient httpClient;
 

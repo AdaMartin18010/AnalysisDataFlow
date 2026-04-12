@@ -225,6 +225,9 @@ flowchart TD
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;
 
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // Def-F-02-84: 标准 TTL 配置模板
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))           // TTL 时长: 24小时
@@ -241,6 +244,9 @@ StateTtlConfig ttlConfig = StateTtlConfig
 #### 5.3.2 增量清理配置 (Heap State Backend)
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Def-F-02-85: 增量清理配置
 StateTtlConfig incrementalCleanup = StateTtlConfig
     .newBuilder(Time.hours(12))
@@ -342,6 +348,9 @@ CREATE TABLE user_events (
 **模板 1: 会话状态管理 (30分钟过期)**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 /**
  * Def-F-02-87: 生产级会话状态 TTL 配置
  * 场景：用户会话跟踪，30分钟无活动视为会话结束
@@ -416,6 +425,11 @@ import org.apache.flink.api.common.time.Time;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * Thm-F-02-60: 带 TTL 的用户会话状态管理
@@ -518,6 +532,9 @@ public class UserActionCounter extends KeyedProcessFunction<String, Action, Metr
 /**
  * Thm-F-02-62: 带 TTL 的事件缓冲区
  */
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class EventBuffer extends KeyedProcessFunction<String, Event, List<Event>> {
 
     private ListState<Event> eventBuffer;
@@ -571,6 +588,11 @@ import org.apache.flink.api.common.state.*;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.metrics.Gauge;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * Thm-F-02-63: 带状态大小监控的 TTL 状态
@@ -645,6 +667,12 @@ public class MonitoredStateFunction extends RichFlatMapFunction<Event, Output> {
 ### 6.3 处理延迟数据的 TTL 容错
 
 ```java
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+
 /**
  * Thm-F-02-64: 延迟数据容错模式
  *

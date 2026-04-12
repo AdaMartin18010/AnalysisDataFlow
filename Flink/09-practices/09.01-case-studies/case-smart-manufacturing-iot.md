@@ -504,6 +504,9 @@ CEP模式:   振动上升(5s内增加>30%)
 **CEP模式示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 Pattern.<SensorEvent>begin("vibration-rise")
     .where(new SimpleCondition<SensorEvent>() {
         @Override
@@ -723,6 +726,12 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * AutoTech智能制造实时分析引擎
@@ -1242,6 +1251,11 @@ public class SmartManufacturingEngine {
 ### 6.3 CEP故障模式检测实现
 
 ```java
+import org.apache.flink.cep.Pattern;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * CEP故障模式检测完整实现
  */
@@ -1363,6 +1377,8 @@ public class CEPFailureDetection {
 ### 6.4 数字孪生集成代码
 
 ```java
+import java.util.Map;
+
 /**
  * 数字孪生集成实现
  */
@@ -1503,6 +1519,8 @@ public class DigitalTwinIntegration {
 ### 6.5 能耗优化算法实现
 
 ```java
+import java.util.List;
+
 /**
  * 能耗优化算法实现
  */

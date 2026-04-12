@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 2.6/2.7 版本发布跟踪报告
 
 > 生成时间: 2026-04-05 09:46:42
@@ -87,7 +90,7 @@
 
 - [Flink 2.6/2.7 路线图](../version-tracking/flink-26-27-roadmap.md)
 - [Apache Flink 官方路线图](https://flink.apache.org/roadmap/)
-- [FLIP 提案索引](https://github.com/apache/flink/tree/master/flink-docs/docs/flips)
+- [FLIP 提案索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
 - [Flink JIRA](https://issues.apache.org/jira/browse/FLINK)
 - [GitHub Releases](https://github.com/apache/flink/releases)
 

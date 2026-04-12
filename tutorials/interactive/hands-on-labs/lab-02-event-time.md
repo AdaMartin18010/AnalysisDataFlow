@@ -130,6 +130,10 @@ public static class SensorSource implements SourceFunction<SensorReading> {
 ### 步骤 3: 处理延迟数据（侧输出）
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义侧输出标签
 private static final OutputTag<SensorReading> lateDataTag =
     new OutputTag<SensorReading>("late-data"){};

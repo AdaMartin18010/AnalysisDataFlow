@@ -101,6 +101,12 @@ public class TemperatureAlertFunction extends
 ### 步骤 2: ListState 示例 - 会话事件收集
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 public class SessionEventCollector extends
     KeyedProcessFunction<String, UserEvent, SessionSummary> {
 
@@ -166,6 +172,8 @@ public class SessionEventCollector extends
 ### 步骤 3: MapState 示例 - 用户行为计数
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
 public class UserBehaviorCounter extends
     KeyedProcessFunction<String, UserEvent, BehaviorReport> {
 
@@ -218,6 +226,8 @@ public class UserBehaviorCounter extends
 ### 步骤 4: ReducingState 示例 - 实时平均值
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
 public class RunningAverageFunction extends
     KeyedProcessFunction<String, SensorReading, AverageResult> {
 
@@ -271,6 +281,11 @@ public class RunningAverageFunction extends
 ```java
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 public class StatefulFunctionWithTTL extends KeyedProcessFunction<...> {
 
@@ -396,6 +411,10 @@ public void testTemperatureAlert() throws Exception {
 
 ```java
 // 订单状态机: CREATED -> PAID -> SHIPPED -> DELIVERED
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, Order> {
 
     private ValueState<OrderStatus> orderStatusState;
@@ -426,6 +445,10 @@ public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, 
 配置可查询状态用于外部监控：
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 // 启用状态查询
 ValueStateDescriptor<Long> descriptor =
     new ValueStateDescriptor<>("counter", Long.class);

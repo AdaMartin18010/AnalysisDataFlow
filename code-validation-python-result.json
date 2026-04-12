@@ -1,0 +1,876 @@
+{
+  "stats": {
+    "total_files": 3271,
+    "total_python_blocks": 1139,
+    "syntax_valid": 1091,
+    "syntax_invalid": 48,
+    "p0_errors": [
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+        "block_index": 1,
+        "line_number": 1450,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpsafb2ts4.py\", line 189\n    for result in sorted(self.data[\"checkpoint\"],:\n                                                 ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "#!/usr/bin/env python3\n# generate-report.py - 生成HTML性能测试报告\n\nimport json\nimport os\nimport sys\nfrom datetime import datetime\nfrom pathlib import Path\nfrom typing import Dict, List\nimport statistics\n\nclass ReportGenerator:\n    def __init__(self, results_dir: str):\n        self.results_dir = Path(result..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\100-PERCENT-COMPLETION-MASTER-PLAN.md",
+        "block_index": 0,
+        "line_number": 76,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp9u53l3r8.py\", line 4\n    Day 5-7: 人工审核批量修复结果，回滚错误修改\n                       ^\nSyntaxError: invalid character '，' (U+FF0C)\n",
+        "code_preview": "# 自动化修复脚本执行计划\nDay 1-2: 运行 .scripts/cross-ref-fixer.py --auto-fix (预计修复80个)\nDay 3-4: 运行 .scripts/validate-cross-refs.py --fix-suggestions (生成修复建议)\nDay 5-7: 人工审核批量修复结果，回滚错误修改"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\KNOWLEDGE-RELATIONSHIP-FINAL-100P-REPORT.md",
+        "block_index": 0,
+        "line_number": 242,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpjmgsgl7i.py\", line 4\n    ✅ 扫描10,483形式化元素\n    ^\nSyntaxError: invalid character '✅' (U+2705)\n",
+        "code_preview": "tools/theorem-dependency-validator.py\n\n功能:\n✅ 扫描10,483形式化元素\n✅ 检查依赖完整性 (95%覆盖)\n✅ 检测循环依赖\n✅ 识别孤立元素\n✅ 生成Mermaid/Graphviz可视化\n✅ 导出Neo4j兼容CSV\n✅ 生成Markdown/JSON报告\n\n输出:\n- validation-report.md (1,144行)\n- validation-report.json (12,512行)\n- dependency-graph.mermaid (184行)\n- dependency-graph.dot (1,094行)\n- neo4j-..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\KNOWLEDGE-RELATIONSHIP-RECONSTRUCTION-PLAN.md",
+        "block_index": 0,
+        "line_number": 126,
+        "error": "Sorry: IndentationError: unexpected indent (tmpkdifvm3z.py, line 2)",
+        "code_preview": "# 伪代码\n  for element in theorem_registry:\n      parse_dependencies(element)\n      check_completeness(element)\n      detect_missing_links(element)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\POST-100-PERCENT-ROADMAP-v4.1.md",
+        "block_index": 0,
+        "line_number": 98,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp63edde08.py\", line 5\n    - 运行测试（关键示例）\n          ^\nSyntaxError: invalid character '（' (U+FF08)\n",
+        "code_preview": "# .scripts/code-example-validator.py\n- 提取代码块\n- 语法检查\n- 依赖分析\n- 运行测试（关键示例）"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\docs\\chatbot-integration.md",
+        "block_index": 1,
+        "line_number": 164,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpmp5c_2zs.py\", line 24\n    if not doc_id.endswith(\"_rank\")],:\n                                     ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def reciprocal_rank_fusion(vector_results, keyword_results, k=60):\n    \"\"\"\n    Fuse results from vector and keyword search.\n\n    score = Σ 1/(k + rank)\n    \"\"\"\n    scores = {}\n\n    # Add vector search scores\n    for rank, doc in enumerate(vector_results):\n        doc_id = doc.id\n        scores[doc_i..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\pyflink-deep-guide.md",
+        "block_index": 4,
+        "line_number": 389,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpsh9tr7hq.py\", line 2\n    apache-flink==1.20.0\n                      ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# requirements.txt\napache-flink==1.20.0\npandas==2.0.3\nnumpy==1.24.3\nscikit-learn==1.3.0\n\n# 作业提交时指定依赖\nfrom pyflink.table import TableEnvironment\n\nt_env = TableEnvironment.create(...)\n\n# 添加 Python 文件\nt_env.add_python_file(\"/path/to/my_udf.py\")\nt_env.add_python_file(\"/path/to/requirements.txt\")\n\n# 或使用 ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\03.02-table-sql-api\\flink-python-udf.md",
+        "block_index": 0,
+        "line_number": 278,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp3xoy3k8t.py\", line 32\n    if x is not None else None:\n                              ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# scalar_udf_example.py\nfrom pyflink.table import DataTypes\nfrom pyflink.table.udf import udf\nimport hashlib\n\n# 定义标量函数：计算字符串的SHA256哈希\n@udf(result_type=DataTypes.STRING(),\n     func_type='general')  # 'general' 或 'pandas'\ndef sha256_hash(input_str: str) -> str:\n    \"\"\"\n    计算输入字符串的SHA256哈希值\n\n    Args..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\03.02-table-sql-api\\flink-table-sql-complete-guide.md",
+        "block_index": 5,
+        "line_number": 1508,
+        "error": "Sorry: IndentationError: unexpected indent (tmp1ote43ml.py, line 22)",
+        "code_preview": "from pyflink.table import ScalarFunction, DataTypes\nfrom pyflink.table.udf import udf\n\n# 方式1: 装饰器\n@udf(result_type=DataTypes.STRING())\ndef normalize_url(url: str) -> str:\n    \"\"\"标准化 URL\"\"\"\n    if url is None:\n        return None\n    return url.lower().strip().rstrip('/')\n\n# 方式2: 类实现\nclass NormalizeU..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+        "block_index": 13,
+        "line_number": 1021,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpokcpfdbt.py\", line 4\n    return await http_client.get(url)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'await' outside async function\n",
+        "code_preview": "# 危险配置：无并发限制\n@async_func(capacity=10000)  # 过高并发\ndef query_external_service(record):\n    return await http_client.get(url)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+        "block_index": 14,
+        "line_number": 1036,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpbkd_d78p.py\", line 6\n    )\nSyntaxError: invalid syntax\n",
+        "code_preview": "# 合理配置\n@async_func(\n    capacity=min(external_service_max_conns, 100),\n    timeout=5000,\n    retry_strategy=AsyncRetryStrategy(max_attempts=3)\n)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+        "block_index": 18,
+        "line_number": 1325,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp9u8qowz8.py\", line 17\n    def __init__(:\n                 ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "from dataclasses import dataclass\nfrom typing import List, Dict\nimport asyncio\n\n@dataclass\nclass FeatureRequest:\n    entity_id: str\n    feature_names: List[str]\n    timestamp: int\n\nclass AsyncFeatureServiceClient(AsyncFunction):\n    \"\"\"\n    异步特征服务客户端\n    支持批量特征获取，适用于实时推荐系统\n    \"\"\"\n\n    def __init__(..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\flink-language-support-complete-guide.md",
+        "block_index": 2,
+        "line_number": 861,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnzdinqlx.py\", line 3\n    apache-flink==1.19.0\n                      ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# requirements.txt 示例\n# Flink 核心依赖\napache-flink==1.19.0\napache-flink-libraries==1.19.0\n\n# Python UDF 依赖\npandas>=1.3.0\nnumpy>=1.21.0\npyarrow>=7.0.0  # 必需：用于Java-Python数据传输\n\n# 异步支持\naiohttp>=3.8.0\nasyncio-mqtt>=0.11.0\n\n# 机器学习\nscikit-learn>=1.0.0\nlightgbm>=3.3.0\n\n# 数据库连接\npsycopg2-binary>=2.9.0\nredis>=4...."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\06-ai-ml\\ai-agent-flink-deep-integration.md",
+        "block_index": 0,
+        "line_number": 772,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp49y0nz20.py\", line 212\n    for i, doc in enumerate(docs):\n                                 ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# ai_agent_flink_pyflink.py\nfrom pyflink.datastream import StreamExecutionEnvironment, CheckpointingMode\nfrom pyflink.datastream.state import ValueStateDescriptor, StateTtlConfig\nfrom pyflink.datastream.functions import KeyedProcessFunction, AsyncFunction\nfrom pyflink.common.time import Time\nfrom py..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\06-ai-ml\\flink-llm-realtime-inference-guide.md",
+        "block_index": 0,
+        "line_number": 649,
+        "error": "Sorry: IndentationError: unexpected indent (tmpvkrqhbtc.py, line 114)",
+        "code_preview": "from pyflink.datastream import StreamExecutionEnvironment, TimeCharacteristic\nfrom pyflink.datastream.functions import AsyncFunction, ResultFuture\nfrom pyflink.common.time import Time\nimport asyncio\nimport aiohttp\n\nclass CodeCompletionAsyncFunction(AsyncFunction):\n    \"\"\"代码补全异步推理函数\"\"\"\n\n    def __ini..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\07-rust-native\\vectorized-udfs\\01-vectorized-udf-intro.md",
+        "block_index": 0,
+        "line_number": 376,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpgb5adio6.py\", line 71\n    def vec_weighted_score(:\n                           ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# vectorized_udf_basic.py\nfrom pyflink.table import DataTypes, EnvironmentSettings, TableEnvironment\nfrom pyflink.table.udf import udf\nimport pandas as pd\nimport numpy as np\n\n# ============================================\n# 示例 1: 向量化数学运算 UDF\n# ============================================\n\n@udf(resul..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+        "block_index": 0,
+        "line_number": 1202,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpxpj7gqyi.py\", line 21\n    if job.get(\"state\") == \"RUNNING\"]:\n                                     ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "#!/usr/bin/env python3\n# collect-metrics.py - Flink指标收集和分析脚本\n\nimport json\nimport requests\nimport time\nimport sys\nfrom datetime import datetime\nfrom typing import Dict, List, Optional\n\nclass FlinkMetricsCollector:\n    def __init__(self, jobmanager_url: str = \"http://localhost:8081\"):\n        self.job..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+        "block_index": 1,
+        "line_number": 1451,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnnd_h9d0.py\", line 82\n    for result in sorted(self.data[\"nexmark\"],:\n                                              ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "#!/usr/bin/env python3\n# generate-report.py - 生成HTML性能测试报告\n\nimport json\nimport os\nimport sys\nfrom datetime import datetime\nfrom pathlib import Path\nfrom typing import Dict, List\nimport statistics\n\nclass ReportGenerator:\n    def __init__(self, results_dir: str):\n        self.results_dir = Path(result..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.04-security\\trusted-execution-flink.md",
+        "block_index": 0,
+        "line_number": 487,
+        "error": "Sorry: IndentationError: unexpected indent (tmpcxq2taj2.py, line 2)",
+        "code_preview": "# 飞地内执行\n   def process_patient_record(encrypted_record):\n       # 飞地内解密\n       record = decrypt_in_enclave(encrypted_record)\n\n       # 识别 PII 字段\n       pii_fields = extract_pii(record)\n\n       # 替换为 token\n       for field in pii_fields:\n           record[field] = generate_token(field_value)\n\n       ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 1,
+        "line_number": 412,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpu6mirz56.py\", line 2\n    n := 1\n      ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# 反例：不满足AST的程序\nn := 1\nwhile n > 0:\n    if random() < 0.5:\n        n := n + 1      # 以0.5概率增加\n    else:\n        n := n - 1      # 以0.5概率减少"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 2,
+        "line_number": 432,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp78_ecl8s.py\", line 3\n    n := 0 ⊕_p 1   # 以概率p保持0，以1-p变为1\n           ^\nSyntaxError: invalid character '⊕' (U+2295)\n",
+        "code_preview": "n := 0\nwhile n == 0:\n    n := 0 ⊕_p 1   # 以概率p保持0，以1-p变为1"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 3,
+        "line_number": 446,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp_3hp6bto.py\", line 1\n    n := 0\n      ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "n := 0\nwhile n == 0:\n    if random() < 0.5:\n        n := 1          # 终止\n    elif random() < 0.5:\n        pass            # 继续（概率0.25）\n    else:\n        n := 0          # 永不终止（概率0.25）"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 4,
+        "line_number": 595,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp2k4xjh17.py\", line 3\n    pivot_idx := random(low, high)      # 随机选择枢轴\n              ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def randomized_quicksort(A, low, high):\n    if low < high:\n        pivot_idx := random(low, high)      # 随机选择枢轴\n        pivot_idx := partition(A, low, high, pivot_idx)\n        randomized_quicksort(A, low, pivot_idx - 1)\n        randomized_quicksort(A, pivot_idx + 1, high)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 5,
+        "line_number": 653,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmplqzxcq0r.py\", line 2\n    sum := 0\n        ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def monte_carlo_integration(f, a, b, n):\n    sum := 0\n    for i from 1 to n:\n        x := uniform(a, b)      # 均匀采样\n        sum := sum + f(x)\n    return (b - a) * sum / n"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+        "block_index": 6,
+        "line_number": 702,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp021ko8hk.py\", line 2\n    position := n\n             ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def random_walk_with_absorption(n, target):\n    position := n\n    steps := 0\n    while 0 < position < target:\n        if random() < 0.5:\n            position := position + 1\n        else:\n            position := position - 1\n        steps := steps + 1\n    return position, steps"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\03-model-taxonomy\\02-computation-models\\dataflow-analysis-formal.md",
+        "block_index": 0,
+        "line_number": 450,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpx1kwjzp6.py\", line 3\n    IN = {n: ⊥ for n in cfg.nodes}\n             ^\nSyntaxError: invalid character '⊥' (U+22A5)\n",
+        "code_preview": "# Worklist 算法伪代码\ndef worklist_algorithm(cfg, transfer_functions, meet):\n    IN = {n: ⊥ for n in cfg.nodes}\n    OUT = {n: ⊥ for n in cfg.nodes}\n    worklist = set(cfg.nodes)\n\n    while worklist:\n        n = worklist.pop()\n\n        # 计算新的 IN\n        if n == cfg.entry:\n            new_in = INIT\n       ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+        "block_index": 0,
+        "line_number": 572,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp66f2kpzo.py\", line 17\n    apply H to q[i]\n          ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# QSL注释风格的量子程序\n\ndef grover_search(n, oracle):\n    \"\"\"\n    验证目标: 证明Grover算法以高概率找到目标状态\n\n    前置条件: { emp }\n    后置条件: { 测量结果为目标状态的概率 ≥ 1 - O(1/N) }\n    \"\"\"\n\n    # 分配n个量子比特\n    q = qnew(n)\n    # { q ↦q |0⟩^⊗n }\n\n    # 应用Hadamard门创建均匀叠加\n    for i in range(n):\n        apply H to q[i]\n    # { q ↦q |+⟩^⊗n = ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+        "block_index": 1,
+        "line_number": 616,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp4lzx0g0e.py\", line 13\n    apply H to q[i]\n          ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def qft(q, n):\n    \"\"\"\n    量子傅里叶变换的验证\n\n    规范: QFT|x⟩ = (1/√N) Σ_y e^(2πixy/N)|y⟩\n\n    前置条件: { q ↦q Σ_x α_x |x⟩ }\n    后置条件: { q ↦q Σ_y (Σ_x α_x e^(2πixy/N)/√N) |y⟩ }\n    \"\"\"\n\n    for i in range(n):\n        # 对第i个量子比特应用Hadamard\n        apply H to q[i]\n        # 创建关于该比特的叠加\n\n        # 受控旋转门\n        for..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+        "block_index": 2,
+        "line_number": 648,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpzdxpkcan.py\", line 19\n    apply CNOT(psi, alice)\n          ^^^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "def quantum_teleportation(psi, alice, bob):\n    \"\"\"\n    量子隐形传态协议\n\n    前置条件: {\n        psi ↦q |ψ⟩ ∧\n        alice, bob ↦q |Φ⁺⟩\n    }\n    后置条件: {\n        bob ↦q |ψ⟩ ∧\n        psi, alice ↦q 经典信息\n    }\n    \"\"\"\n\n    # Alice的操作\n    # 在psi和alice的量子比特上执行Bell测量\n\n    # 应用CNOT(psi, alice)\n    apply CNOT(psi, a..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\06-tools\\industrial\\aws-s3-formalization.md",
+        "block_index": 0,
+        "line_number": 259,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp43b0xd4m.py\", line 4\n    value = random_data(1MB)\n                        ^\nSyntaxError: invalid decimal literal\n",
+        "code_preview": "# Jepsen风格测试\ndef test_read_after_write():\n    key = generate_unique_key()\n    value = random_data(1MB)\n\n    # 写入\n    s3.put_object(Bucket='test', Key=key, Body=value)\n\n    # 立即读取\n    response = s3.get_object(Bucket='test', Key=key)\n    read_value = response['Body'].read()\n\n    # 验证\n    assert read_v..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\03-neural-network-verification.md",
+        "block_index": 0,
+        "line_number": 231,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpl3ixewmu.py\", line 13\n    return output[5] > output[i] for all i != 5\n                                 ^^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# β-CROWN: 完整的神经网络验证器\nfrom beta_crown import BetaCROWN\n\n# 加载神经网络（ONNX格式）\nmodel = BetaCROWN.load_model(\"mnist_classifier.onnx\")\n\n# 定义输入区域（L∞扰动）\nx0 = load_image(\"digit_5.png\")  # 原始输入\nepsilon = 0.03  # 扰动半径\n\n# 定义性质：分类标签不变\ndef property(output):\n    return output[5] > output[i] for all i != 5\n\n# 执行验证\nre..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\06-deepseek-prover-tutorial.md",
+        "block_index": 0,
+        "line_number": 110,
+        "error": "Sorry: IndentationError: unexpected indent (tmp8_kbd6v6.py, line 2)",
+        "code_preview": "# LeanDojo 风格的交互接口\n   from lean_dojo import Lean4Env\n   env = Lean4Env(\"mathlib4\")\n   state = env.run_tactic(\"intro h\", initial_state)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\06-deepseek-prover-tutorial.md",
+        "block_index": 1,
+        "line_number": 212,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp6y6go5fz.py\", line 2\n    +1.0   if proof_complete\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: expected 'else' after 'if' expression\n",
+        "code_preview": "R(tau) = {\n    +1.0   if proof_complete\n    +0.5   if partial_progress  # 目标分解\n    -0.1   if timeout\n    -0.5   if error            # Lean 编译错误\n}"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\08-neuro-symbolic-ai.md",
+        "block_index": 3,
+        "line_number": 523,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpt_b2km2q.py\", line 5\n    nn(mnist_net, [X], Y, [0,1,2,3,4,5,6,7,8,9]) :: digit(X,Y).\n                                                 ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "from deepproblog import Model\nfrom deepproblog.nn import Solver\n\n# 定义神经网络谓词\nnn(mnist_net, [X], Y, [0,1,2,3,4,5,6,7,8,9]) :: digit(X,Y).\n\n# 定义概率逻辑规则\naddition(X,Y,Z) :- digit(X,N1), digit(Y,N2), Z is N1+N2.\n\n# 创建模型并训练\nmodel = Model(\"addition.pl\", [mnist_net])\nmodel.fit(train_data, epochs=10)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\formal-methods\\98-appendices\\09-mermaid-validation-report.md",
+        "block_index": 0,
+        "line_number": 388,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp915me4qd.py\", line 38\n    return f'\n           ^\nSyntaxError: unterminated f-string literal (detected at line 38)\n",
+        "code_preview": "#!/usr/bin/env python3\n\"\"\"Mermaid 中文节点自动修复脚本\"\"\"\n\nimport re\nimport os\n\ndef fix_mermaid_chinese_nodes(content):\n    \"\"\"修复 Mermaid 代码块中中文节点的引号问题\"\"\"\n\n    def fix_node_content(match):\n        node_id = match.group(1)\n        shape_open = match.group(2)\n        content = match.group(3)\n        shape_close..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\i18n\\en\\Flink\\pyflink-deep-guide.md",
+        "block_index": 4,
+        "line_number": 266,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnlkq4aa9.py\", line 2\n    apache-flink==1.20.0\n                      ^^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# requirements.txt\napache-flink==1.20.0\npandas==2.0.3\nnumpy==1.24.3\nscikit-learn==1.3.0\n\n# 作业提交时指定依赖\nfrom pyflink.table import TableEnvironment\n\nt_env = TableEnvironment.create(...)\n\n# 添加 Python 文件\nt_env.add_python_file(\"/path/to/my_udf.py\")\nt_env.add_python_file(\"/path/to/requirements.txt\")\n\n# 或使用 ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\a2a-protocol-agent-communication.md",
+        "block_index": 1,
+        "line_number": 356,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpwz2fdykt.py\", line 8\n    async for event in a2a_client.send_subscribe(agent_url, task):\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'async for' outside async function\n",
+        "code_preview": "# ❌ 错误：阻塞等待长时任务\nresult = a2a_client.send_task_sync(\n    agent_url,\n    {\"query\": \"深度市场分析\"}  # 可能需要数小时\n)\n\n# 正确：使用异步 + 回调/SSE\nasync for event in a2a_client.send_subscribe(agent_url, task):\n    if event.type == \"status_update\":\n        update_ui(event.status)\n    elif event.type == \"artifact\":\n        ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\mcp-protocol-agent-streaming.md",
+        "block_index": 6,
+        "line_number": 450,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmppcn0t0jt.py\", line 41\n    answer, live_feed = await agent.handle_user_query(\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'await' outside function\n",
+        "code_preview": "# agent_workflow.py\nclass StreamingAnalyticsAgent:\n    def __init__(self):\n        self.mcp_client = MCPClient()\n        self.llm = OpenAIChatModel()\n\n    async def handle_user_query(self, query: str):\n        \"\"\"处理用户分析查询\"\"\"\n\n        # 步骤 1: LLM 理解意图并规划工具调用\n        plan = await self.llm.generate(\n  ..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-ai-streaming-architecture.md",
+        "block_index": 0,
+        "line_number": 161,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpzn_vsofk.py\", line 2\n    video_chunks = capture_video(duration=5s)  # 等待5秒\n                                          ^\nSyntaxError: invalid decimal literal\n",
+        "code_preview": "# 反模式: 批处理导致高延迟\nvideo_chunks = capture_video(duration=5s)  # 等待5秒\nresults = model.infer(video_chunks)        # 再处理\n\n# 正模式: 流式低延迟处理\nfor frame in stream_video():\n    result = model.infer_stream(frame)     # 每帧即时处理\n    yield result"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-ai-streaming-architecture.md",
+        "block_index": 1,
+        "line_number": 304,
+        "error": "Sorry: IndentationError: unexpected indent (tmpr4zt9bvj.py, line 57)",
+        "code_preview": "# multimodal_security_pipeline.py\nfrom pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.table import StreamTableEnvironment\nfrom pyflink.datastream.functions import AsyncFunction\n\nclass SecurityAnalyzer(AsyncFunction):\n    \"\"\"安全分析异步函数\"\"\"\n\n    async def async_invoke(self, event, resu..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-streaming-architecture.md",
+        "block_index": 3,
+        "line_number": 392,
+        "error": "Sorry: IndentationError: unexpected indent (tmpo3mmeuie.py, line 118)",
+        "code_preview": "from pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.common.typeinfo import Types\nimport asyncio\nimport websockets\nimport json\n\n# Gemini Live API 客户端\nclass GeminiLiveClient:\n    def __init__(self, api_key):\n        self.api_key = api_key\n        self.ws = None\n        self.audio_bu..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-streaming-architecture.md",
+        "block_index": 4,
+        "line_number": 594,
+        "error": "Sorry: IndentationError: unexpected indent (tmpcsc584or.py, line 55)",
+        "code_preview": "# 多模态实时翻译\nclass RealtimeTranslator:\n    def __init__(self, source_lang, target_lang):\n        self.gemini = GeminiLiveClient(api_key)\n        self.source_lang = source_lang\n        self.target_lang = target_lang\n\n    async def translate_stream(self, input_stream):\n        await self.gemini.connect()..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\realtime-digital-twin-streaming.md",
+        "block_index": 1,
+        "line_number": 258,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpwa8b3vk8.py\", line 2\n    model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)\n                                ^\nSyntaxError: invalid decimal literal\n",
+        "code_preview": "# ❌ 错误：追求100%物理精度\nmodel = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)\n# 计算耗时数小时，无法实时\n\n# ✅ 正确：降阶模型 (ROM)\nmodel = ReducedOrderModel(physics_constraints)\n# 毫秒级响应，保持关键特征"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\realtime-digital-twin-streaming.md",
+        "block_index": 2,
+        "line_number": 270,
+        "error": "Sorry: IndentationError: unexpected indent (tmpn5cy6h8n.py, line 7)",
+        "code_preview": "# ❌ 错误：直接使用原始传感器数据\nprediction = model.predict(raw_sensor_data)\n# 噪声导致误报\n\n# ✅ 正确：数据预处理流水线\nclean_data = pipeline(raw_sensor_data)\n    .kalman_filter()\n    .outlier_detection()\n    .feature_engineering()\nprediction = model.predict(clean_data)"
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\streaming-graph-processing-tgn.md",
+        "block_index": 3,
+        "line_number": 397,
+        "error": "Sorry: IndentationError: unexpected indent (tmp7x1s_m63.py, line 65)",
+        "code_preview": "from pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.graph import TemporalGraph\nimport torch\nimport torch.nn as nn\n\n# 定义TGN模型 (PyTorch)\nclass TGN(nn.Module):\n    def __init__(self, memory_dim, node_feat_dim, edge_feat_dim):\n        super().__init__()\n        self.memory_dim = memor..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\streaming-slo-definition.md",
+        "block_index": 0,
+        "line_number": 383,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpg9iqjmk_.py\", line 5\n    if e.processed_at - e.event_time <= slo_threshold_ms):\n                                                         ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# 延迟 SLI 计算\ndef calculate_latency_sli(events: List[Event], slo_threshold_ms: int) -> float:\n    \"\"\"计算满足延迟 SLO 的事件比例\"\"\"\n    compliant = sum(1 for e in events\n                   if e.processed_at - e.event_time <= slo_threshold_ms):\n    return compliant / len(events)\n\n# 可用性 SLI 计算\ndef calculate_availa..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.04-cost-optimization-patterns.md",
+        "block_index": 0,
+        "line_number": 366,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnaona7_l.py\", line 20\n    if (instance_type.memory_gb >= requirements['min_memory_gb'] and:\n                                                                    ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# 资源成本计算工具\nimport json\n\nclass ResourceOptimizer:\n    def __init__(self, pricing_data):\n        self.pricing = pricing_data\n\n    def calculate_optimal_config(self, requirements):\n        \"\"\"\n        requirements: {\n            'min_memory_gb': 4,\n            'min_cpu': 2,\n            'target_throughp..."
+      },
+      {
+        "level": "P0",
+        "type": "Syntax Error",
+        "file": ".\\release\\v3.0.0\\docs\\Struct\\01-foundation\\01.07-session-types.md",
+        "block_index": 0,
+        "line_number": 358,
+        "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpa_v6yd28.py\", line 2\n    def coordinator(ch: Channel[!int.?bool.&{commit.end, abort.end}]):\n                                ^\nSyntaxError: invalid syntax\n",
+        "code_preview": "# 协调者 (类型: S_C)\ndef coordinator(ch: Channel[!int.?bool.&{commit.end, abort.end}]):\n    ch.send(prepare_value)           # !int\n    vote = ch.receive()               # ?bool\n    if vote:\n        ch.select(\"commit\")           # & 选择 commit\n    else:\n        ch.select(\"abort\")            # & 选择 abort\n\n..."
+      }
+    ]
+  },
+  "p0_errors": [
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+      "block_index": 1,
+      "line_number": 1450,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpsafb2ts4.py\", line 189\n    for result in sorted(self.data[\"checkpoint\"],:\n                                                 ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "#!/usr/bin/env python3\n# generate-report.py - 生成HTML性能测试报告\n\nimport json\nimport os\nimport sys\nfrom datetime import datetime\nfrom pathlib import Path\nfrom typing import Dict, List\nimport statistics\n\nclass ReportGenerator:\n    def __init__(self, results_dir: str):\n        self.results_dir = Path(result..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\100-PERCENT-COMPLETION-MASTER-PLAN.md",
+      "block_index": 0,
+      "line_number": 76,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp9u53l3r8.py\", line 4\n    Day 5-7: 人工审核批量修复结果，回滚错误修改\n                       ^\nSyntaxError: invalid character '，' (U+FF0C)\n",
+      "code_preview": "# 自动化修复脚本执行计划\nDay 1-2: 运行 .scripts/cross-ref-fixer.py --auto-fix (预计修复80个)\nDay 3-4: 运行 .scripts/validate-cross-refs.py --fix-suggestions (生成修复建议)\nDay 5-7: 人工审核批量修复结果，回滚错误修改"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\KNOWLEDGE-RELATIONSHIP-FINAL-100P-REPORT.md",
+      "block_index": 0,
+      "line_number": 242,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpjmgsgl7i.py\", line 4\n    ✅ 扫描10,483形式化元素\n    ^\nSyntaxError: invalid character '✅' (U+2705)\n",
+      "code_preview": "tools/theorem-dependency-validator.py\n\n功能:\n✅ 扫描10,483形式化元素\n✅ 检查依赖完整性 (95%覆盖)\n✅ 检测循环依赖\n✅ 识别孤立元素\n✅ 生成Mermaid/Graphviz可视化\n✅ 导出Neo4j兼容CSV\n✅ 生成Markdown/JSON报告\n\n输出:\n- validation-report.md (1,144行)\n- validation-report.json (12,512行)\n- dependency-graph.mermaid (184行)\n- dependency-graph.dot (1,094行)\n- neo4j-..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\KNOWLEDGE-RELATIONSHIP-RECONSTRUCTION-PLAN.md",
+      "block_index": 0,
+      "line_number": 126,
+      "error": "Sorry: IndentationError: unexpected indent (tmpkdifvm3z.py, line 2)",
+      "code_preview": "# 伪代码\n  for element in theorem_registry:\n      parse_dependencies(element)\n      check_completeness(element)\n      detect_missing_links(element)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\POST-100-PERCENT-ROADMAP-v4.1.md",
+      "block_index": 0,
+      "line_number": 98,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp63edde08.py\", line 5\n    - 运行测试（关键示例）\n          ^\nSyntaxError: invalid character '（' (U+FF08)\n",
+      "code_preview": "# .scripts/code-example-validator.py\n- 提取代码块\n- 语法检查\n- 依赖分析\n- 运行测试（关键示例）"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\docs\\chatbot-integration.md",
+      "block_index": 1,
+      "line_number": 164,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpmp5c_2zs.py\", line 24\n    if not doc_id.endswith(\"_rank\")],:\n                                     ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def reciprocal_rank_fusion(vector_results, keyword_results, k=60):\n    \"\"\"\n    Fuse results from vector and keyword search.\n\n    score = Σ 1/(k + rank)\n    \"\"\"\n    scores = {}\n\n    # Add vector search scores\n    for rank, doc in enumerate(vector_results):\n        doc_id = doc.id\n        scores[doc_i..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\pyflink-deep-guide.md",
+      "block_index": 4,
+      "line_number": 389,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpsh9tr7hq.py\", line 2\n    apache-flink==1.20.0\n                      ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# requirements.txt\napache-flink==1.20.0\npandas==2.0.3\nnumpy==1.24.3\nscikit-learn==1.3.0\n\n# 作业提交时指定依赖\nfrom pyflink.table import TableEnvironment\n\nt_env = TableEnvironment.create(...)\n\n# 添加 Python 文件\nt_env.add_python_file(\"/path/to/my_udf.py\")\nt_env.add_python_file(\"/path/to/requirements.txt\")\n\n# 或使用 ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\03.02-table-sql-api\\flink-python-udf.md",
+      "block_index": 0,
+      "line_number": 278,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp3xoy3k8t.py\", line 32\n    if x is not None else None:\n                              ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# scalar_udf_example.py\nfrom pyflink.table import DataTypes\nfrom pyflink.table.udf import udf\nimport hashlib\n\n# 定义标量函数：计算字符串的SHA256哈希\n@udf(result_type=DataTypes.STRING(),\n     func_type='general')  # 'general' 或 'pandas'\ndef sha256_hash(input_str: str) -> str:\n    \"\"\"\n    计算输入字符串的SHA256哈希值\n\n    Args..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\03.02-table-sql-api\\flink-table-sql-complete-guide.md",
+      "block_index": 5,
+      "line_number": 1508,
+      "error": "Sorry: IndentationError: unexpected indent (tmp1ote43ml.py, line 22)",
+      "code_preview": "from pyflink.table import ScalarFunction, DataTypes\nfrom pyflink.table.udf import udf\n\n# 方式1: 装饰器\n@udf(result_type=DataTypes.STRING())\ndef normalize_url(url: str) -> str:\n    \"\"\"标准化 URL\"\"\"\n    if url is None:\n        return None\n    return url.lower().strip().rstrip('/')\n\n# 方式2: 类实现\nclass NormalizeU..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+      "block_index": 13,
+      "line_number": 1021,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpokcpfdbt.py\", line 4\n    return await http_client.get(url)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'await' outside async function\n",
+      "code_preview": "# 危险配置：无并发限制\n@async_func(capacity=10000)  # 过高并发\ndef query_external_service(record):\n    return await http_client.get(url)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+      "block_index": 14,
+      "line_number": 1036,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpbkd_d78p.py\", line 6\n    )\nSyntaxError: invalid syntax\n",
+      "code_preview": "# 合理配置\n@async_func(\n    capacity=min(external_service_max_conns, 100),\n    timeout=5000,\n    retry_strategy=AsyncRetryStrategy(max_attempts=3)\n)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\02-python-api.md",
+      "block_index": 18,
+      "line_number": 1325,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp9u8qowz8.py\", line 17\n    def __init__(:\n                 ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "from dataclasses import dataclass\nfrom typing import List, Dict\nimport asyncio\n\n@dataclass\nclass FeatureRequest:\n    entity_id: str\n    feature_names: List[str]\n    timestamp: int\n\nclass AsyncFeatureServiceClient(AsyncFunction):\n    \"\"\"\n    异步特征服务客户端\n    支持批量特征获取，适用于实时推荐系统\n    \"\"\"\n\n    def __init__(..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\03-api\\09-language-foundations\\flink-language-support-complete-guide.md",
+      "block_index": 2,
+      "line_number": 861,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnzdinqlx.py\", line 3\n    apache-flink==1.19.0\n                      ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# requirements.txt 示例\n# Flink 核心依赖\napache-flink==1.19.0\napache-flink-libraries==1.19.0\n\n# Python UDF 依赖\npandas>=1.3.0\nnumpy>=1.21.0\npyarrow>=7.0.0  # 必需：用于Java-Python数据传输\n\n# 异步支持\naiohttp>=3.8.0\nasyncio-mqtt>=0.11.0\n\n# 机器学习\nscikit-learn>=1.0.0\nlightgbm>=3.3.0\n\n# 数据库连接\npsycopg2-binary>=2.9.0\nredis>=4...."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\06-ai-ml\\ai-agent-flink-deep-integration.md",
+      "block_index": 0,
+      "line_number": 772,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp49y0nz20.py\", line 212\n    for i, doc in enumerate(docs):\n                                 ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# ai_agent_flink_pyflink.py\nfrom pyflink.datastream import StreamExecutionEnvironment, CheckpointingMode\nfrom pyflink.datastream.state import ValueStateDescriptor, StateTtlConfig\nfrom pyflink.datastream.functions import KeyedProcessFunction, AsyncFunction\nfrom pyflink.common.time import Time\nfrom py..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\06-ai-ml\\flink-llm-realtime-inference-guide.md",
+      "block_index": 0,
+      "line_number": 649,
+      "error": "Sorry: IndentationError: unexpected indent (tmpvkrqhbtc.py, line 114)",
+      "code_preview": "from pyflink.datastream import StreamExecutionEnvironment, TimeCharacteristic\nfrom pyflink.datastream.functions import AsyncFunction, ResultFuture\nfrom pyflink.common.time import Time\nimport asyncio\nimport aiohttp\n\nclass CodeCompletionAsyncFunction(AsyncFunction):\n    \"\"\"代码补全异步推理函数\"\"\"\n\n    def __ini..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\07-rust-native\\vectorized-udfs\\01-vectorized-udf-intro.md",
+      "block_index": 0,
+      "line_number": 376,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpgb5adio6.py\", line 71\n    def vec_weighted_score(:\n                           ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# vectorized_udf_basic.py\nfrom pyflink.table import DataTypes, EnvironmentSettings, TableEnvironment\nfrom pyflink.table.udf import udf\nimport pandas as pd\nimport numpy as np\n\n# ============================================\n# 示例 1: 向量化数学运算 UDF\n# ============================================\n\n@udf(resul..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+      "block_index": 0,
+      "line_number": 1202,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpxpj7gqyi.py\", line 21\n    if job.get(\"state\") == \"RUNNING\"]:\n                                     ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "#!/usr/bin/env python3\n# collect-metrics.py - Flink指标收集和分析脚本\n\nimport json\nimport requests\nimport time\nimport sys\nfrom datetime import datetime\nfrom typing import Dict, List, Optional\n\nclass FlinkMetricsCollector:\n    def __init__(self, jobmanager_url: str = \"http://localhost:8081\"):\n        self.job..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+      "block_index": 1,
+      "line_number": 1451,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnnd_h9d0.py\", line 82\n    for result in sorted(self.data[\"nexmark\"],:\n                                              ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "#!/usr/bin/env python3\n# generate-report.py - 生成HTML性能测试报告\n\nimport json\nimport os\nimport sys\nfrom datetime import datetime\nfrom pathlib import Path\nfrom typing import Dict, List\nimport statistics\n\nclass ReportGenerator:\n    def __init__(self, results_dir: str):\n        self.results_dir = Path(result..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Flink\\09-practices\\09.04-security\\trusted-execution-flink.md",
+      "block_index": 0,
+      "line_number": 487,
+      "error": "Sorry: IndentationError: unexpected indent (tmpcxq2taj2.py, line 2)",
+      "code_preview": "# 飞地内执行\n   def process_patient_record(encrypted_record):\n       # 飞地内解密\n       record = decrypt_in_enclave(encrypted_record)\n\n       # 识别 PII 字段\n       pii_fields = extract_pii(record)\n\n       # 替换为 token\n       for field in pii_fields:\n           record[field] = generate_token(field_value)\n\n       ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 1,
+      "line_number": 412,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpu6mirz56.py\", line 2\n    n := 1\n      ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# 反例：不满足AST的程序\nn := 1\nwhile n > 0:\n    if random() < 0.5:\n        n := n + 1      # 以0.5概率增加\n    else:\n        n := n - 1      # 以0.5概率减少"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 2,
+      "line_number": 432,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp78_ecl8s.py\", line 3\n    n := 0 ⊕_p 1   # 以概率p保持0，以1-p变为1\n           ^\nSyntaxError: invalid character '⊕' (U+2295)\n",
+      "code_preview": "n := 0\nwhile n == 0:\n    n := 0 ⊕_p 1   # 以概率p保持0，以1-p变为1"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 3,
+      "line_number": 446,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp_3hp6bto.py\", line 1\n    n := 0\n      ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "n := 0\nwhile n == 0:\n    if random() < 0.5:\n        n := 1          # 终止\n    elif random() < 0.5:\n        pass            # 继续（概率0.25）\n    else:\n        n := 0          # 永不终止（概率0.25）"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 4,
+      "line_number": 595,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp2k4xjh17.py\", line 3\n    pivot_idx := random(low, high)      # 随机选择枢轴\n              ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def randomized_quicksort(A, low, high):\n    if low < high:\n        pivot_idx := random(low, high)      # 随机选择枢轴\n        pivot_idx := partition(A, low, high, pivot_idx)\n        randomized_quicksort(A, low, pivot_idx - 1)\n        randomized_quicksort(A, pivot_idx + 1, high)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 5,
+      "line_number": 653,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmplqzxcq0r.py\", line 2\n    sum := 0\n        ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def monte_carlo_integration(f, a, b, n):\n    sum := 0\n    for i from 1 to n:\n        x := uniform(a, b)      # 均匀采样\n        sum := sum + f(x)\n    return (b - a) * sum / n"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\99-probabilistic-programming.md",
+      "block_index": 6,
+      "line_number": 702,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp021ko8hk.py\", line 2\n    position := n\n             ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def random_walk_with_absorption(n, target):\n    position := n\n    steps := 0\n    while 0 < position < target:\n        if random() < 0.5:\n            position := position + 1\n        else:\n            position := position - 1\n        steps := steps + 1\n    return position, steps"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\03-model-taxonomy\\02-computation-models\\dataflow-analysis-formal.md",
+      "block_index": 0,
+      "line_number": 450,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpx1kwjzp6.py\", line 3\n    IN = {n: ⊥ for n in cfg.nodes}\n             ^\nSyntaxError: invalid character '⊥' (U+22A5)\n",
+      "code_preview": "# Worklist 算法伪代码\ndef worklist_algorithm(cfg, transfer_functions, meet):\n    IN = {n: ⊥ for n in cfg.nodes}\n    OUT = {n: ⊥ for n in cfg.nodes}\n    worklist = set(cfg.nodes)\n\n    while worklist:\n        n = worklist.pop()\n\n        # 计算新的 IN\n        if n == cfg.entry:\n            new_in = INIT\n       ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+      "block_index": 0,
+      "line_number": 572,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp66f2kpzo.py\", line 17\n    apply H to q[i]\n          ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# QSL注释风格的量子程序\n\ndef grover_search(n, oracle):\n    \"\"\"\n    验证目标: 证明Grover算法以高概率找到目标状态\n\n    前置条件: { emp }\n    后置条件: { 测量结果为目标状态的概率 ≥ 1 - O(1/N) }\n    \"\"\"\n\n    # 分配n个量子比特\n    q = qnew(n)\n    # { q ↦q |0⟩^⊗n }\n\n    # 应用Hadamard门创建均匀叠加\n    for i in range(n):\n        apply H to q[i]\n    # { q ↦q |+⟩^⊗n = ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+      "block_index": 1,
+      "line_number": 616,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp4lzx0g0e.py\", line 13\n    apply H to q[i]\n          ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def qft(q, n):\n    \"\"\"\n    量子傅里叶变换的验证\n\n    规范: QFT|x⟩ = (1/√N) Σ_y e^(2πixy/N)|y⟩\n\n    前置条件: { q ↦q Σ_x α_x |x⟩ }\n    后置条件: { q ↦q Σ_y (Σ_x α_x e^(2πixy/N)/√N) |y⟩ }\n    \"\"\"\n\n    for i in range(n):\n        # 对第i个量子比特应用Hadamard\n        apply H to q[i]\n        # 创建关于该比特的叠加\n\n        # 受控旋转门\n        for..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\05-verification\\05-quantum\\02-quantum-separation-logic.md",
+      "block_index": 2,
+      "line_number": 648,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpzdxpkcan.py\", line 19\n    apply CNOT(psi, alice)\n          ^^^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "def quantum_teleportation(psi, alice, bob):\n    \"\"\"\n    量子隐形传态协议\n\n    前置条件: {\n        psi ↦q |ψ⟩ ∧\n        alice, bob ↦q |Φ⁺⟩\n    }\n    后置条件: {\n        bob ↦q |ψ⟩ ∧\n        psi, alice ↦q 经典信息\n    }\n    \"\"\"\n\n    # Alice的操作\n    # 在psi和alice的量子比特上执行Bell测量\n\n    # 应用CNOT(psi, alice)\n    apply CNOT(psi, a..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\06-tools\\industrial\\aws-s3-formalization.md",
+      "block_index": 0,
+      "line_number": 259,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp43b0xd4m.py\", line 4\n    value = random_data(1MB)\n                        ^\nSyntaxError: invalid decimal literal\n",
+      "code_preview": "# Jepsen风格测试\ndef test_read_after_write():\n    key = generate_unique_key()\n    value = random_data(1MB)\n\n    # 写入\n    s3.put_object(Bucket='test', Key=key, Body=value)\n\n    # 立即读取\n    response = s3.get_object(Bucket='test', Key=key)\n    read_value = response['Body'].read()\n\n    # 验证\n    assert read_v..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\03-neural-network-verification.md",
+      "block_index": 0,
+      "line_number": 231,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpl3ixewmu.py\", line 13\n    return output[5] > output[i] for all i != 5\n                                 ^^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# β-CROWN: 完整的神经网络验证器\nfrom beta_crown import BetaCROWN\n\n# 加载神经网络（ONNX格式）\nmodel = BetaCROWN.load_model(\"mnist_classifier.onnx\")\n\n# 定义输入区域（L∞扰动）\nx0 = load_image(\"digit_5.png\")  # 原始输入\nepsilon = 0.03  # 扰动半径\n\n# 定义性质：分类标签不变\ndef property(output):\n    return output[5] > output[i] for all i != 5\n\n# 执行验证\nre..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\06-deepseek-prover-tutorial.md",
+      "block_index": 0,
+      "line_number": 110,
+      "error": "Sorry: IndentationError: unexpected indent (tmp8_kbd6v6.py, line 2)",
+      "code_preview": "# LeanDojo 风格的交互接口\n   from lean_dojo import Lean4Env\n   env = Lean4Env(\"mathlib4\")\n   state = env.run_tactic(\"intro h\", initial_state)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\06-deepseek-prover-tutorial.md",
+      "block_index": 1,
+      "line_number": 212,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp6y6go5fz.py\", line 2\n    +1.0   if proof_complete\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: expected 'else' after 'if' expression\n",
+      "code_preview": "R(tau) = {\n    +1.0   if proof_complete\n    +0.5   if partial_progress  # 目标分解\n    -0.1   if timeout\n    -0.5   if error            # Lean 编译错误\n}"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\08-ai-formal-methods\\08-neuro-symbolic-ai.md",
+      "block_index": 3,
+      "line_number": 523,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpt_b2km2q.py\", line 5\n    nn(mnist_net, [X], Y, [0,1,2,3,4,5,6,7,8,9]) :: digit(X,Y).\n                                                 ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "from deepproblog import Model\nfrom deepproblog.nn import Solver\n\n# 定义神经网络谓词\nnn(mnist_net, [X], Y, [0,1,2,3,4,5,6,7,8,9]) :: digit(X,Y).\n\n# 定义概率逻辑规则\naddition(X,Y,Z) :- digit(X,N1), digit(Y,N2), Z is N1+N2.\n\n# 创建模型并训练\nmodel = Model(\"addition.pl\", [mnist_net])\nmodel.fit(train_data, epochs=10)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\formal-methods\\98-appendices\\09-mermaid-validation-report.md",
+      "block_index": 0,
+      "line_number": 388,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmp915me4qd.py\", line 38\n    return f'\n           ^\nSyntaxError: unterminated f-string literal (detected at line 38)\n",
+      "code_preview": "#!/usr/bin/env python3\n\"\"\"Mermaid 中文节点自动修复脚本\"\"\"\n\nimport re\nimport os\n\ndef fix_mermaid_chinese_nodes(content):\n    \"\"\"修复 Mermaid 代码块中中文节点的引号问题\"\"\"\n\n    def fix_node_content(match):\n        node_id = match.group(1)\n        shape_open = match.group(2)\n        content = match.group(3)\n        shape_close..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\i18n\\en\\Flink\\pyflink-deep-guide.md",
+      "block_index": 4,
+      "line_number": 266,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnlkq4aa9.py\", line 2\n    apache-flink==1.20.0\n                      ^^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# requirements.txt\napache-flink==1.20.0\npandas==2.0.3\nnumpy==1.24.3\nscikit-learn==1.3.0\n\n# 作业提交时指定依赖\nfrom pyflink.table import TableEnvironment\n\nt_env = TableEnvironment.create(...)\n\n# 添加 Python 文件\nt_env.add_python_file(\"/path/to/my_udf.py\")\nt_env.add_python_file(\"/path/to/requirements.txt\")\n\n# 或使用 ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\a2a-protocol-agent-communication.md",
+      "block_index": 1,
+      "line_number": 356,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpwz2fdykt.py\", line 8\n    async for event in a2a_client.send_subscribe(agent_url, task):\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'async for' outside async function\n",
+      "code_preview": "# ❌ 错误：阻塞等待长时任务\nresult = a2a_client.send_task_sync(\n    agent_url,\n    {\"query\": \"深度市场分析\"}  # 可能需要数小时\n)\n\n# 正确：使用异步 + 回调/SSE\nasync for event in a2a_client.send_subscribe(agent_url, task):\n    if event.type == \"status_update\":\n        update_ui(event.status)\n    elif event.type == \"artifact\":\n        ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\mcp-protocol-agent-streaming.md",
+      "block_index": 6,
+      "line_number": 450,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmppcn0t0jt.py\", line 41\n    answer, live_feed = await agent.handle_user_query(\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: 'await' outside function\n",
+      "code_preview": "# agent_workflow.py\nclass StreamingAnalyticsAgent:\n    def __init__(self):\n        self.mcp_client = MCPClient()\n        self.llm = OpenAIChatModel()\n\n    async def handle_user_query(self, query: str):\n        \"\"\"处理用户分析查询\"\"\"\n\n        # 步骤 1: LLM 理解意图并规划工具调用\n        plan = await self.llm.generate(\n  ..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-ai-streaming-architecture.md",
+      "block_index": 0,
+      "line_number": 161,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpzn_vsofk.py\", line 2\n    video_chunks = capture_video(duration=5s)  # 等待5秒\n                                          ^\nSyntaxError: invalid decimal literal\n",
+      "code_preview": "# 反模式: 批处理导致高延迟\nvideo_chunks = capture_video(duration=5s)  # 等待5秒\nresults = model.infer(video_chunks)        # 再处理\n\n# 正模式: 流式低延迟处理\nfor frame in stream_video():\n    result = model.infer_stream(frame)     # 每帧即时处理\n    yield result"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-ai-streaming-architecture.md",
+      "block_index": 1,
+      "line_number": 304,
+      "error": "Sorry: IndentationError: unexpected indent (tmpr4zt9bvj.py, line 57)",
+      "code_preview": "# multimodal_security_pipeline.py\nfrom pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.table import StreamTableEnvironment\nfrom pyflink.datastream.functions import AsyncFunction\n\nclass SecurityAnalyzer(AsyncFunction):\n    \"\"\"安全分析异步函数\"\"\"\n\n    async def async_invoke(self, event, resu..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-streaming-architecture.md",
+      "block_index": 3,
+      "line_number": 392,
+      "error": "Sorry: IndentationError: unexpected indent (tmpo3mmeuie.py, line 118)",
+      "code_preview": "from pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.common.typeinfo import Types\nimport asyncio\nimport websockets\nimport json\n\n# Gemini Live API 客户端\nclass GeminiLiveClient:\n    def __init__(self, api_key):\n        self.api_key = api_key\n        self.ws = None\n        self.audio_bu..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\multimodal-streaming-architecture.md",
+      "block_index": 4,
+      "line_number": 594,
+      "error": "Sorry: IndentationError: unexpected indent (tmpcsc584or.py, line 55)",
+      "code_preview": "# 多模态实时翻译\nclass RealtimeTranslator:\n    def __init__(self, source_lang, target_lang):\n        self.gemini = GeminiLiveClient(api_key)\n        self.source_lang = source_lang\n        self.target_lang = target_lang\n\n    async def translate_stream(self, input_stream):\n        await self.gemini.connect()..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\realtime-digital-twin-streaming.md",
+      "block_index": 1,
+      "line_number": 258,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpwa8b3vk8.py\", line 2\n    model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)\n                                ^\nSyntaxError: invalid decimal literal\n",
+      "code_preview": "# ❌ 错误：追求100%物理精度\nmodel = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)\n# 计算耗时数小时，无法实时\n\n# ✅ 正确：降阶模型 (ROM)\nmodel = ReducedOrderModel(physics_constraints)\n# 毫秒级响应，保持关键特征"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\realtime-digital-twin-streaming.md",
+      "block_index": 2,
+      "line_number": 270,
+      "error": "Sorry: IndentationError: unexpected indent (tmpn5cy6h8n.py, line 7)",
+      "code_preview": "# ❌ 错误：直接使用原始传感器数据\nprediction = model.predict(raw_sensor_data)\n# 噪声导致误报\n\n# ✅ 正确：数据预处理流水线\nclean_data = pipeline(raw_sensor_data)\n    .kalman_filter()\n    .outlier_detection()\n    .feature_engineering()\nprediction = model.predict(clean_data)"
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\streaming-graph-processing-tgn.md",
+      "block_index": 3,
+      "line_number": 397,
+      "error": "Sorry: IndentationError: unexpected indent (tmp7x1s_m63.py, line 65)",
+      "code_preview": "from pyflink.datastream import StreamExecutionEnvironment\nfrom pyflink.graph import TemporalGraph\nimport torch\nimport torch.nn as nn\n\n# 定义TGN模型 (PyTorch)\nclass TGN(nn.Module):\n    def __init__(self, memory_dim, node_feat_dim, edge_feat_dim):\n        super().__init__()\n        self.memory_dim = memor..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\06-frontier\\streaming-slo-definition.md",
+      "block_index": 0,
+      "line_number": 383,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpg9iqjmk_.py\", line 5\n    if e.processed_at - e.event_time <= slo_threshold_ms):\n                                                         ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# 延迟 SLI 计算\ndef calculate_latency_sli(events: List[Event], slo_threshold_ms: int) -> float:\n    \"\"\"计算满足延迟 SLO 的事件比例\"\"\"\n    compliant = sum(1 for e in events\n                   if e.processed_at - e.event_time <= slo_threshold_ms):\n    return compliant / len(events)\n\n# 可用性 SLI 计算\ndef calculate_availa..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.04-cost-optimization-patterns.md",
+      "block_index": 0,
+      "line_number": 366,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpnaona7_l.py\", line 20\n    if (instance_type.memory_gb >= requirements['min_memory_gb'] and:\n                                                                    ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# 资源成本计算工具\nimport json\n\nclass ResourceOptimizer:\n    def __init__(self, pricing_data):\n        self.pricing = pricing_data\n\n    def calculate_optimal_config(self, requirements):\n        \"\"\"\n        requirements: {\n            'min_memory_gb': 4,\n            'min_cpu': 2,\n            'target_throughp..."
+    },
+    {
+      "level": "P0",
+      "type": "Syntax Error",
+      "file": ".\\release\\v3.0.0\\docs\\Struct\\01-foundation\\01.07-session-types.md",
+      "block_index": 0,
+      "line_number": 358,
+      "error": "  File \"C:\\Users\\luyan\\AppData\\Local\\Temp\\tmpa_v6yd28.py\", line 2\n    def coordinator(ch: Channel[!int.?bool.&{commit.end, abort.end}]):\n                                ^\nSyntaxError: invalid syntax\n",
+      "code_preview": "# 协调者 (类型: S_C)\ndef coordinator(ch: Channel[!int.?bool.&{commit.end, abort.end}]):\n    ch.send(prepare_value)           # !int\n    vote = ch.receive()               # ?bool\n    if vote:\n        ch.select(\"commit\")           # & 选择 commit\n    else:\n        ch.select(\"abort\")            # & 选择 abort\n\n..."
+    }
+  ]
+}

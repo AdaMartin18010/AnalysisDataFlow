@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AI 原生流处理架构
 
 > 所属阶段: Flink/14-rust-assembly-ecosystem/ai-native-streaming/ | 前置依赖: [FLIP-531 AI Agents](../../06-ai-ml/flink-ai-ml-integration-complete-guide.md) | 形式化等级: L4
@@ -181,6 +184,9 @@ Regret_T / T = O(1/√T) → 0 (当 T → ∞)
 **Flink ML 在线学习实现**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink ML 在线逻辑回归
 OnlineLogisticRegression olr = new OnlineLogisticRegression()
     .setLearningRate(0.1)
@@ -394,6 +400,10 @@ Correctness: ∀W, Feature(W) = agg({v_i | t_i ∈ W})
 3. **状态一致性**：Checkpoint 机制保证恰好一次语义
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink 事件时间窗口聚合
 DataStream<Feature> features = stream
     .assignTimestampsAndWatermarks(

@@ -241,6 +241,11 @@ import org.apache.flink.connector.pulsar.source.PulsarSource;
 import org.apache.flink.connector.pulsar.source.enumerator.cursor.StartCursor;
 import org.apache.flink.connector.pulsar.source.reader.deserializer.PulsarDeserializationSchema;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class PulsarSourceExample {
 
     public static void main(String[] args) throws Exception {
@@ -360,6 +365,11 @@ graph LR
 
 ```java
 // Flink 消费 Functions 预处理后的数据
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class EnrichedStreamProcessing {
 
     public static void main(String[] args) throws Exception {
@@ -429,6 +439,9 @@ PulsarSink<String> optimizedSink = PulsarSink.builder()
 
 ```java
 // 处理 Schema 演进
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class SchemaEvolutionExample {
 
     public static void main(String[] args) {

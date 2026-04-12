@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程5: 状态管理与容错机制 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #e8f4f8; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #11998e; }
+        .objectives h4 { color: #11998e; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #856404; margin-bottom: 10px; }
+        .quiz { background: #f3e5f5; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #9c27b0; }
+        .quiz h4 { color: #7b1fa2; margin-bottom: 15px; }
+        .quiz-question { margin: 15px 0; padding: 15px; background: white; border-radius: 8px; }
+        .quiz-question p { font-weight: bold; margin-bottom: 10px; }
+        .quiz-options label { display: block; padding: 8px; cursor: pointer; }
+        .quiz-options label:hover { background: #f5f5f5; border-radius: 5px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #667eea; margin-bottom: 10px; }
+        .reading a { color: #667eea; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .progress-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .progress-dot.active { background: #667eea; color: white; }
+        .progress-dot.completed { background: #28a745; color: white; }
+        .note { background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3; }
+        .note h4 { color: #1976d2; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🔒 高级课程</span>
+            <span class="badge">⏱️ 约5小时</span>
+            <h1>课程5: 状态管理与容错机制</h1>
+            <p>深入理解 Flink 状态管理，掌握 Checkpoint 与 Exactly-Once 语义</p>
+            <div class="progress-indicator">
+                <div class="progress-dot active">1</div>
+                <div class="progress-dot">2</div>
+                <div class="progress-dot">3</div>
+                <div class="progress-dot">4</div>
+            </div>
+        </header>
+
+        <!-- 课节 5.1 -->
+        <div class="lesson">
+            <h2>5.1 状态管理基础</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Flink 中状态的类型和用途</li>
+                    <li>掌握 Keyed State 和 Operator State 的使用</li>
+                    <li>学会配置和访问状态</li>
+                    <li>理解状态生命周期管理</li>
+                </ul>
+            </div>
+
+            <h3>5.1.1 状态类型概述</h3>
+            <div class="code-block">
+<pre>Flink 状态类型分类:
+┌─────────────────────────────────────────────────────────────┐
+│  Keyed State (键控状态)                                      │
+│  ├─ ValueState<T>      - 单值状态                            │
+│  ├─ ListState<T>       - 列表状态                            │
+│  ├─ MapState<UK, UV>   - Map 结构状态                        │
+│  ├─ ReducingState<T>   - 用于聚合的归约状态                   │
+│  └─ AggregatingState<IN, OUT> - 用于聚合的聚合状态            │
+│                                                              │
+│  Operator State (算子状态)                                   │
+│  ├─ ListState<T>       - 列表状态                            │
+│  └─ BroadcastState<K, V> - 广播状态                          │
+│                                                              │
+│  State Backend (状态后端)                                    │
+│  ├─ MemoryStateBackend    - 内存存储 (测试用)                 │
+│  ├─ FsStateBackend        - 文件系统存储                     │
+│  └─ RocksDBStateBackend   - RocksDB 存储 (推荐生产)           │
+└─────────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>5.1.2 Keyed State 使用</h3>
+            <div class="code-block">
+<pre><span class="keyword">public class</span> CountWithKeyedState <span class="keyword">extends</span> KeyedProcessFunction&lt;String, Event, Result&gt; {
+    
+    <span class="comment">// 声明 ValueState</span>
+    <span class="keyword">private</span> ValueState&lt;Long&gt; countState;
+    <span class="keyword">private</span> ValueState&lt;Long&gt; lastTimestampState;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        <span class="comment">// 初始化状态描述符</span>
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .build();
+        
+        ValueStateDescriptor&lt;Long&gt; countDescriptor = 
+            <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"count"</span>, Types.LONG);
+        countDescriptor.enableTimeToLive(ttlConfig);
+        countState = getRuntimeContext().getState(countDescriptor);
+        
+        ValueStateDescriptor&lt;Long&gt; timestampDescriptor = 
+            <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"lastTimestamp"</span>, Types.LONG);
+        lastTimestampState = getRuntimeContext().getState(timestampDescriptor);
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processElement(Event event, Context ctx, Collector&lt;Result&gt; out) 
+            <span class="keyword">throws</span> Exception {
+        <span class="comment">// 获取当前状态值</span>
+        Long currentCount = countState.value();
+        <span class="keyword">if</span> (currentCount == <span class="keyword">null</span>) {
+            currentCount = 0L;
+        }
+        
+        <span class="comment">// 更新状态</span>
+        currentCount++;
+        countState.update(currentCount);
+        lastTimestampState.update(event.getTimestamp());
+        
+        <span class="comment">// 输出结果</span>
+        out.collect(<span class="keyword">new</span> Result(ctx.getCurrentKey(), currentCount));
+    }
+}
+
+<span class="comment">// 使用</span>
+stream.keyBy(Event::getUserId)
+    .process(<span class="keyword">new</span> CountWithKeyedState())
+    .print();</pre>
+            </div>
+
+            <h3>5.1.3 MapState 使用示例</h3>
+            <div class="code-block">
+<pre><span class="keyword">public class</span> UserSessionTracker <span class="keyword">extends</span> KeyedProcessFunction&lt;String, Event, SessionInfo&gt; {
+    
+    <span class="keyword">private</span> MapState&lt;String, Long&gt; pageVisitState;
+    <span class="keyword">private</span> ValueState&lt;Long&gt; sessionStartState;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        MapStateDescriptor&lt;String, Long&gt; pageDescriptor = 
+            <span class="keyword">new</span> MapStateDescriptor&lt;&gt;(
+                <span class="string">"pageVisits"</span>, 
+                Types.STRING, 
+                Types.LONG
+            );
+        pageVisitState = getRuntimeContext().getMapState(pageDescriptor);
+        
+        ValueStateDescriptor&lt;Long&gt; sessionDescriptor = 
+            <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"sessionStart"</span>, Types.LONG);
+        sessionStartState = getRuntimeContext().getState(sessionDescriptor);
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processElement(Event event, Context ctx, Collector&lt;SessionInfo&gt; out) 
+            <span class="keyword">throws</span> Exception {
+        String page = event.getPage();
+        
+        <span class="comment">// 更新页面访问计数</span>
+        Long count = pageVisitState.get(page);
+        <span class="keyword">if</span> (count == <span class="keyword">null</span>) {
+            count = 0L;
+        }
+        pageVisitState.put(page, count + 1);
+        
+        <span class="comment">// 检查会话开始时间</span>
+        <span class="keyword">if</span> (sessionStartState.value() == <span class="keyword">null</span>) {
+            sessionStartState.update(event.getTimestamp());
+        }
+        
+        <span class="comment">// 注册定时器用于会话超时检测</span>
+        ctx.timerService().registerEventTimeTimer(
+            event.getTimestamp() + Time.minutes(30).toMilliseconds()
+        );
+    }
+    
+    @Override
+    <span class="keyword">public void</span> onTimer(<span class="keyword">long</span> timestamp, OnTimerContext ctx, Collector&lt;SessionInfo&gt; out) 
+            <span class="keyword">throws</span> Exception {
+        <span class="comment">// 会话超时，输出会话统计</span>
+        Long sessionStart = sessionStartState.value();
+        <span class="keyword">if</span> (sessionStart != <span class="keyword">null</span>) {
+            Map&lt;String, Long&gt; pageStats = <span class="keyword">new</span> HashMap&lt;&gt;();
+            <span class="keyword">for</span> (Map.Entry&lt;String, Long&gt; entry : pageVisitState.entries()) {
+                pageStats.put(entry.getKey(), entry.getValue());
+            }
+            
+            out.collect(<span class="keyword">new</span> SessionInfo(
+                ctx.getCurrentKey(),
+                sessionStart,
+                timestamp,
+                pageStats
+            ));
+            
+            <span class="comment">// 清理状态</span>
+            pageVisitState.clear();
+            sessionStartState.clear();
+        }
+    }
+}</pre>
+            </div>
+
+            <div class="note">
+                <h4>⚠️ 状态注意事项</h4>
+                <ul>
+                    <li>状态只能在 KeyedStream 上使用 Keyed State</li>
+                    <li>状态大小会影响 Checkpoint 时间和恢复速度</li>
+                    <li>合理设置 TTL 避免状态无限增长</li>
+                    <li>使用 RocksDB 时注意内存和磁盘平衡</li>
+                </ul>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 5.1</h4>
+                <ol>
+                    <li>实现一个使用 ValueState 的去重算子 (按事件ID去重)</li>
+                    <li>使用 MapState 实现用户购物车状态管理</li>
+                    <li>配置状态 TTL，设置24小时过期</li>
+                    <li>实现定时清理过期状态的逻辑</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Keyed State 和 Operator State 的主要区别是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="A"> A. Keyed State 性能更好</label>
+                        <label><input type="radio" name="q1" value="B"> B. Keyed State 按 key 分区，Operator State 是全局的</label>
+                        <label><input type="radio" name="q1" value="C"> C. Operator State 支持更多类型</label>
+                        <label><input type="radio" name="q1" value="D"> D. 没有区别</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 状态 TTL 的作用是什么？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="A"> A. 提高查询速度</label>
+                        <label><input type="radio" name="q2" value="B"> B. 自动清理过期状态，控制状态大小</label>
+                        <label><input type="radio" name="q2" value="C"> C. 增加状态持久化频率</label>
+                        <label><input type="radio" name="q2" value="D"> D. 限制并发访问</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. MapState 适合什么场景？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="A"> A. 存储单个计数值</label>
+                        <label><input type="radio" name="q3" value="B"> B. 存储键值对集合，如用户访问的多个页面</label>
+                        <label><input type="radio" name="q3" value="C"> C. 存储有序列表</label>
+                        <label><input type="radio" name="q3" value="D"> D. 临时缓存</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-state-management-guide.md">Flink 状态管理完整指南</a></li>
+                    <li><a href="../labs/lab-04-state-ttl.html">🧪 实验4: 状态TTL可视化</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 5.2 -->
+        <div class="lesson">
+            <h2>5.2 Checkpoint 机制详解</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>深入理解 Checkpoint 的工作原理</li>
+                    <li>掌握 Barrier 的传播机制</li>
+                    <li>理解对齐 Checkpoint 与非对齐 Checkpoint</li>
+                    <li>学会配置和调优 Checkpoint</li>
+                </ul>
+            </div>
+
+            <h3>5.2.1 Checkpoint 流程</h3>
+            <div class="code-block">
+<pre>Checkpoint 执行流程:
+┌─────────────────────────────────────────────────────────────────┐
+│ 1. JM 触发 Checkpoint (定期或手动)                                │
+│        ↓                                                        │
+│ 2. JM 向 Source 发送 Checkpoint Barrier                          │
+│        ↓                                                        │
+│ 3. Source 注入 Barrier，保存偏移量，向下游广播                      │
+│        ↓                                                        │
+│ 4. 算子接收到 Barrier 后:                                        │
+│    ├─ 对齐模式: 阻塞其他输入，等待所有 Barrier 到达                 │
+│    └─ 快照状态，向下游广播 Barrier                                │
+│        ↓                                                        │
+│ 5. Sink 确认 Checkpoint 完成                                     │
+│        ↓                                                        │
+│ 6. JM 收集所有确认，标记 Checkpoint 完成                           │
+└─────────────────────────────────────────────────────────────────┘
+
+Barrier 对齐示意 (双输入算子):
+输入1: [A1]──[A2]──[Barrier]──[A3]──[A4]
+                              ↓ (等待)
+输入2: [B1]──[Barrier]────────[B2]──[B3]
+       
+对齐后: 先处理到 Barrier 的数据，对齐后快照状态</pre>
+            </div>
+
+            <h3>5.2.2 Checkpoint 配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// Checkpoint 基础配置</span>
+StreamExecutionEnvironment env = 
+    StreamExecutionEnvironment.getExecutionEnvironment();
+
+<span class="comment">// 启用 Checkpoint，每60秒触发一次</span>
+env.enableCheckpointing(60000);
+
+<span class="comment">// 高级配置</span>
+CheckpointConfig checkpointConfig = env.getCheckpointConfig();
+
+<span class="comment">// 模式: EXACTLY_ONCE 或 AT_LEAST_ONCE</span>
+checkpointConfig.setCheckpointingMode(
+    CheckpointingMode.EXACTLY_ONCE
+);
+
+<span class="comment">// 超时时间 (Checkpoint 超过此时长会被丢弃)</span>
+checkpointConfig.setCheckpointTimeout(600000); <span class="comment">// 10分钟</span>
+
+<span class="comment">// 最小间隔 (两次 Checkpoint 之间的最小间隔)</span>
+checkpointConfig.setMinPauseBetweenCheckpoints(30000); <span class="comment">// 30秒</span>
+
+<span class="comment">// 最大并发 Checkpoint 数</span>
+checkpointConfig.setMaxConcurrentCheckpoints(1);
+
+<span class="comment">// 外部化 Checkpoint (作业取消后仍保留)</span>
+checkpointConfig.enableExternalizedCheckpoints(
+    ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
+);
+
+<span class="comment">// 非对齐 Checkpoint (Flink 1.11+)</span>
+checkpointConfig.enableUnalignedCheckpoints();
+checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(30));</pre>
+            </div>
+
+            <h3>5.2.3 State Backend 配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// 配置 RocksDB State Backend (推荐用于大状态)</span>
+EmbeddedRocksDBStateBackend rocksDbBackend = 
+    <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>); <span class="comment">// true = 增量Checkpoint</span>
+
+<span class="comment">// 配置 RocksDB 内存</span>
+DefaultConfigurableOptionsFactory optionsFactory = 
+    <span class="keyword">new</span> DefaultConfigurableOptionsFactory();
+optionsFactory.setRocksDBOptions(<span class="string">"max_background_jobs"</span>, <span class="string">"4"</span>);
+optionsFactory.setRocksDBOptions(<span class="string">"write_buffer_size"</span>, <span class="string">"64MB"</span>);
+optionsFactory.setRocksDBOptions(<span class="string">"target_file_size_base"</span>, <span class="string">"32MB"</span>);
+
+rocksDbBackend.setRocksDBOptions(optionsFactory);
+
+<span class="comment">// 设置 Checkpoint 存储路径</span>
+rocksDbBackend.setCheckpointStorage(<span class="string">"hdfs://namenode:8020/flink/checkpoints"</span>);
+
+<span class="comment">// 应用配置</span>
+env.setStateBackend(rocksDbBackend);
+
+<span class="comment">// 状态监控指标</span>
+env.getConfig().setUseSnapshotCompression(<span class="keyword">true</span>); <span class="comment">// 启用压缩</span></pre>
+            </div>
+
+            <h3>5.2.4 非对齐 Checkpoint</h3>
+            <div class="code-block">
+<pre><span class="comment">// 非对齐 Checkpoint 配置</span>
+<span class="comment">// 适用场景: 高背压、低延迟要求、大并行度</span>
+
+checkpointConfig.enableUnalignedCheckpoints();
+
+<span class="comment">// 对齐超时 (超过此时间自动切换为非对齐)</span>
+checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(10));
+
+<span class="comment">// 非对齐 Checkpoint 原理:</span>
+<span class="comment">// 1. Barrier 不等待对齐，立即向下游传递</span>
+<span class="comment">// 2. 将缓冲的数据作为状态的一部分保存</span>
+<span class="comment">// 3. 恢复时从状态恢复缓冲数据</span>
+
+<span class="comment">// 内存限制 (控制非对齐 Checkpoint 的最大内存使用)</span>
+checkpointConfig.setAlignedCheckpointTimeout(Duration.ofMinutes(1));
+
+<span class="comment">// 注意: 非对齐 Checkpoint 会增加状态大小</span>
+<span class="comment">// 适合: 背压严重、端到端延迟敏感的场景</span>
+<span class="comment">// 不适合: 网络带宽受限、小缓冲区的场景</span></pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 5.2</h4>
+                <ol>
+                    <li>配置一个每30秒触发的 EXACTLY_ONCE Checkpoint</li>
+                    <li>启用 RocksDB 增量 Checkpoint，配置压缩</li>
+                    <li>在非对齐和对齐模式间切换，观察差异</li>
+                    <li>模拟故障并使用 Checkpoint 恢复作业</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Barrier 对齐的主要目的是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="A"> A. 提高处理速度</label>
+                        <label><input type="radio" name="q4" value="B"> B. 确保数据不丢失</label>
+                        <label><input type="radio" name="q4" value="C"> C. 确保所有输入流在一致的时间点快照</label>
+                        <label><input type="radio" name="q4" value="D"> D. 减少网络传输</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 非对齐 Checkpoint 的主要优势是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="A"> A. 状态更小</label>
+                        <label><input type="radio" name="q5" value="B"> B. 不受背压影响，Checkpoint 更稳定</label>
+                        <label><input type="radio" name="q5" value="C"> C. 配置更简单</label>
+                        <label><input type="radio" name="q5" value="D"> D. 恢复速度更快</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. RocksDB State Backend 适合什么场景？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="A"> A. 小状态、快速恢复</label>
+                        <label><input type="radio" name="q6" value="B"> B. 大状态、内存有限</label>
+                        <label><input type="radio" name="q6" value="C"> C. 低延迟要求</label>
+                        <label><input type="radio" name="q6" value="D"> D. 测试环境</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-checkpoint-internals.md">Checkpoint 内部原理详解</a></li>
+                    <li><a href="../labs/lab-02-checkpoint.html">🧪 实验2: Checkpoint机制模拟</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 5.3 -->
+        <div class="lesson">
+            <h2>5.3 Exactly-Once 语义实现</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解一致性级别的概念 (At-Most-Once, At-Least-Once, Exactly-Once)</li>
+                    <li>掌握端到端 Exactly-Once 的实现原理</li>
+                    <li>学会使用 Two-Phase Commit</li>
+                    <li>理解幂等写入和事务性写入</li>
+                </ul>
+            </div>
+
+            <h3>5.3.1 一致性级别对比</h3>
+            <div class="code-block">
+<pre>一致性级别对比:
+┌─────────────────────────────────────────────────────────────────┐
+│ At-Most-Once (最多一次)                                          │
+│ ├─ 特点: 不保证数据到达，可能丢失                                 │
+│ ├─ 实现: 不开启 Checkpoint，故障时从最新位置开始                  │
+│ └─ 适用: 允许数据丢失的统计类场景                                  │
+│                                                                 │
+│ At-Least-Once (至少一次)                                         │
+│ ├─ 特点: 保证数据不丢失，可能重复                                 │
+│ ├─ 实现: 开启 Checkpoint，故障时从上次 Checkpoint 恢复            │
+│ └─ 适用: 幂等写入或允许重复的场景                                  │
+│                                                                 │
+│ Exactly-Once (精确一次)                                          │
+│ ├─ 特点: 保证数据不丢失且不重复                                   │
+│ ├─ 实现: 两阶段提交 + 事务性 Sink                                 │
+│ └─ 适用: 金融交易、订单处理等对准确性要求高的场景                    │
+└─────────────────────────────────────────────────────────────────┘
+
+端到端 Exactly-Once 条件:
+1. Source 可重放 (如 Kafka 可重置 offset)
+2. Flink 内部 Exactly-Once (Checkpoint)
+3. Sink 支持事务或幂等写入</pre>
+            </div>
+
+            <h3>5.3.2 Two-Phase Commit</h3>
+            <div class="code-block">
+<pre>Two-Phase Commit (2PC) 协议:
+┌─────────────────────────────────────────────────────────────────┐
+│ 预提交阶段 (Pre-commit)                                          │
+│ 1. Flink 开始 Checkpoint                                          │
+│ 2. Sink 收到 Barrier，将数据写入外部系统但不提交                   │
+│ 3. Sink 将预提交状态保存到 Checkpoint                             │
+│        ↓                                                        │
+│ 提交阶段 (Commit)                                                │
+│ 4. JM 确认所有算子 Checkpoint 完成                                │
+│ 5. 通知 Sink 提交事务                                             │
+│ 6. 外部系统数据正式可见                                           │
+│        ↓                                                        │
+│ 故障恢复                                                         │
+│ 7. 如果 Checkpoint 失败，回滚预提交的事务                          │
+│ 8. 从上一个成功 Checkpoint 恢复                                   │
+└─────────────────────────────────────────────────────────────────┘
+
+Kafka Producer 事务示例:
+事务ID: flink-job-{jobId}-{subtaskId}</nProducer 配置:
+  transactional.id = flink-job-123-0
+  enable.idempotence = true
+  acks = all</pre>
+            </div>
+
+            <h3>5.3.3 实现 Exactly-Once Sink</h3>
+            <div class="code-block">
+<pre><span class="comment">// 使用 FlinkKafkaProducer (支持 Exactly-Once)</span>
+Properties props = <span class="keyword">new</span> Properties();
+props.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"localhost:9092"</span>);
+props.put(<span class="string">"transaction.timeout.ms"</span>, <span class="string">"900000"</span>); <span class="comment">// 15分钟</span>
+
+FlinkKafkaProducer&lt;String&gt; kafkaSink = <span class="keyword">new</span> FlinkKafkaProducer&lt;&gt;(
+    <span class="string">"output-topic"</span>,                              <span class="comment">// 目标 topic</span>
+    <span class="keyword">new</span> SimpleStringSchema(),                     <span class="comment">// 序列化</span>
+    props,
+    FlinkKafkaProducer.Semantic.EXACTLY_ONCE     <span class="comment">// 语义级别</span>
+);
+
+stream.addSink(kafkaSink);
+
+<span class="comment">// 自定义 TwoPhaseCommitSinkFunction</span>
+<span class="keyword">public class</span> ExactlyOnceFileSink <span class="keyword">extends</span> TwoPhaseCommitSinkFunction&lt;Event, 
+        ExactlyOnceFileSink.Transaction, ExactlyOnceFileSink.Transaction&gt; {
+    
+    <span class="keyword">private transient</span> FileSystem fs;
+    
+    <span class="keyword">public</span> ExactlyOnceFileSink() {
+        <span class="keyword">super</span>(
+            TypeInformation.of(Event.class).createSerializer(<span class="keyword">new</span> ExecutionConfig()),
+            TypeInformation.of(Transaction.class).createSerializer(<span class="keyword">new</span> ExecutionConfig())
+        );
+    }
+    
+    @Override
+    <span class="keyword">protected void</span> invoke(Transaction transaction, Event event, Context context) {
+        <span class="comment">// 写入临时文件</span>
+        transaction.write(event);
+    }
+    
+    @Override
+    <span class="keyword">protected Transaction beginTransaction() {
+        <span class="comment">// 创建临时事务文件</span>
+        String tempFile = <span class="string">"/tmp/"</span> + UUID.randomUUID();
+        <span class="keyword">return new</span> Transaction(tempFile);
+    }
+    
+    @Override
+    <span class="keyword">protected void</span> preCommit(Transaction transaction) {
+        <span class="comment">// 刷盘，确保数据持久化</span>
+        transaction.flush();
+    }
+    
+    @Override
+    <span class="keyword">protected void</span> commit(Transaction transaction) {
+        <span class="comment">// 将临时文件移动到正式目录</span>
+        transaction.commitToFinalLocation();
+    }
+    
+    @Override
+    <span class="keyword">protected void</span> abort(Transaction transaction) {
+        <span class="comment">// 删除临时文件</span>
+        transaction.rollback();
+    }
+}</pre>
+            </div>
+
+            <h3>5.3.4 幂等写入</h3>
+            <div class="code-block">
+<pre><span class="comment">// 幂等写入示例: Elasticsearch 按文档ID更新</span>
+ElasticsearchSink.Builder&lt;Event&gt; builder = <span class="keyword">new</span> ElasticsearchSink.Builder&lt;&gt;(
+    hosts,
+    <span class="keyword">new</span> ElasticsearchSinkFunction&lt;Event&gt;() {
+        <span class="keyword">public void</span> process(Event event, RuntimeContext ctx, RequestIndexer indexer) {
+            <span class="comment">// 使用确定性ID确保幂等</span>
+            String id = event.getUserId() + <span class="string">"_"</span> + event.getTimestamp();
+            
+            IndexRequest request = Requests.indexRequest()
+                .index(<span class="string">"events"</span>)
+                .id(id)  <span class="comment">// 幂等键</span>
+                .source(JsonUtils.toJson(event), XContentType.JSON);
+            
+            indexer.add(request);
+        }
+    }
+);
+
+<span class="comment">// Redis 幂等写入 (使用 SETNX)</span>
+<span class="keyword">public class</span> IdempotentRedisSink <span class="keyword">extends</span> RichSinkFunction&lt;Event&gt; {
+    <span class="keyword">private transient</span> Jedis jedis;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>);
+    }
+    
+    @Override
+    <span class="keyword">public void</span> invoke(Event event, Context context) {
+        String idempotencyKey = <span class="string">"event:"</span> + event.getEventId();
+        
+        <span class="comment">// SET key value NX EX 3600 - 仅当key不存在时才设置，1小时过期</span>
+        String result = jedis.set(idempotencyKey, <span class="string">"1"</span>, <span class="string">"NX"</span>, <span class="string">"EX"</span>, 3600);
+        
+        <span class="keyword">if</span> (<span class="string">"OK"</span>.equals(result)) {
+            <span class="comment">// 首次处理，执行写入</span>
+            processEvent(event);
+        } <span class="keyword">else</span> {
+            <span class="comment">// 重复数据，跳过</span>
+            log.info(<span class="string">"Duplicate event skipped: {}"</span>, event.getEventId());
+        }
+    }
+}</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 5.3</h4>
+                <ol>
+                    <li>配置 Kafka Sink 实现 Exactly-Once 语义</li>
+                    <li>实现一个自定义的 TwoPhaseCommitSinkFunction</li>
+                    <li>使用幂等ID实现 Elasticsearch 幂等写入</li>
+                    <li>模拟故障并验证 Exactly-Once 保证</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Two-Phase Commit 的核心思想是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="A"> A. 一次性写入所有数据</label>
+                        <label><input type="radio" name="q7" value="B"> B. 先预提交，确认成功后再正式提交</label>
+                        <label><input type="radio" name="q7" value="C"> C. 并行写入多个副本</label>
+                        <label><input type="radio" name="q7" value="D"> D. 异步批量写入</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 幂等写入的关键是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="A"> A. 使用高性能存储</label>
+                        <label><input type="radio" name="q8" value="B"> B. 使用确定性键，重复写入结果相同</label>
+                        <label><input type="radio" name="q8" value="C"> C. 增加重试次数</label>
+                        <label><input type="radio" name="q8" value="D"> D. 使用事务</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 实现端到端 Exactly-Once 需要满足哪些条件？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="A"> A. 只需要 Flink 内部 Checkpoint</label>
+                        <label><input type="radio" name="q9" value="B"> B. Source 可重放 + Checkpoint + 事务性 Sink</label>
+                        <label><input type="radio" name="q9" value="C"> C. 只需要 Sink 支持事务</label>
+                        <label><input type="radio" name="q9" value="D"> D. 只需要增大 Checkpoint 间隔</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-exactly-once-guide.md">Exactly-Once 实现指南</a></li>
+                    <li><a href="../labs/lab-06-exactly-once.html">🧪 实验6: 端到端Exactly-Once保证</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 5.4 -->
+        <div class="lesson">
+            <h2>5.4 Savepoint 与状态升级</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Savepoint 与 Checkpoint 的区别</li>
+                    <li>掌握手动触发和管理 Savepoint</li>
+                    <li>学会从 Savepoint 恢复作业</li>
+                    <li>理解状态迁移和作业升级</li>
+                </ul>
+            </div>
+
+            <h3>5.4.1 Savepoint vs Checkpoint</h3>
+            <div class="code-block">
+<pre>Savepoint 与 Checkpoint 对比:
+┌─────────────────────────────────────────────────────────────────┐
+│ Checkpoint                                                      │
+│ ├─ 自动周期性触发                                               │
+│ ├─ 主要用于故障恢复                                             │
+│ ├─ 可配置保留策略 (RETAIN/DELETE)                                │
+│ └─ 存储路径通常自动管理                                          │
+│                                                                 │
+│ Savepoint                                                       │
+│ ├─ 手动触发 (用户/运维操作)                                      │
+│ ├─ 用于计划内维护、升级、迁移                                    │
+│ ├─ 长期保留，不会自动删除                                        │
+│ ├─ 包含作业元数据，可在不同集群恢复                              │
+│ └─ 可指定自定义存储路径                                          │
+└─────────────────────────────────────────────────────────────────┘
+
+使用场景:
+- Checkpoint: 日常运行中的故障自动恢复
+- Savepoint: 
+  ├─ 作业版本升级 (代码变更)
+  ├─ Flink 版本升级
+  ├─ 集群迁移
+  ├─ 修改作业并行度
+  └─ 数据回放和调试</pre>
+            </div>
+
+            <h3>5.4.2 Savepoint 操作</h3>
+            <div class="code-block">
+<pre><span class="comment">// 触发 Savepoint (命令行)</span>
+<span class="comment">// 触发并取消作业</span>
+flink savepoint &lt;jobId&gt; [targetDirectory]
+
+<span class="comment">// 触发但不取消作业</span>
+flink savepoint &lt;jobId&gt; [targetDirectory] -y
+
+<span class="comment">// 示例</span>
+flink savepoint 123456789 hdfs:///flink/savepoints
+
+<span class="comment">// 从 Savepoint 恢复</span>
+flink run -s hdfs:///flink/savepoints/savepoint-123456-abc123 \
+  -c com.example.MyJob my-job.jar
+
+<span class="comment">// 代码中配置 Savepoint 路径</span>
+StreamExecutionEnvironment env = 
+    StreamExecutionEnvironment.getExecutionEnvironment();
+env.setStateBackend(<span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>));
+
+<span class="comment">// 配置默认 Savepoint 目录</span>
+env.getCheckpointConfig().setCheckpointStorage(<span class="string">"hdfs:///flink/checkpoints"</span>);
+
+<span class="comment">// 程序中触发 Savepoint (通过 REST API)</span>
+<span class="comment">// POST /jobs/:jobid/savepoints</span>
+<span class="comment">// { "cancel-job": false, "target-directory": "hdfs:///savepoints" }</span></pre>
+            </div>
+
+            <h3>5.4.3 状态迁移与作业升级</h3>
+            <div class="code-block">
+<pre><span class="comment">// 场景1: 修改算子名称后恢复</span>
+<span class="comment">// 使用 --allowNonRestoredState 跳过不兼容的状态</span>
+flink run -s &lt;savepointPath&gt; --allowNonRestoredState -c MyJob my-job.jar
+
+<span class="comment">// 场景2: 修改并行度</span>
+<span class="comment">// Keyed State 会自动重分区</span>
+<span class="comment">// Operator State 需要实现 ListState 接口支持重分区</span>
+
+<span class="comment">// 场景3: 状态类型变更</span>
+<span class="comment">// 使用 StateTtlConfig 或 StateDescriptor 的兼容性</span>
+
+<span class="comment">// 自定义状态迁移逻辑</span>
+<span class="keyword">public class</span> UpgradedJob <span class="keyword">extends</span> KeyedProcessFunction&lt;String, Event, Result&gt; {
+    
+    <span class="keyword">private</span> ValueState&lt;NewState&gt; newState;
+    <span class="keyword">private</span> ValueState&lt;OldState&gt; oldState; <span class="comment">// 保留旧状态引用</span>
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        <span class="comment">// 新状态</span>
+        newState = getRuntimeContext().getState(
+            <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"newState"</span>, NewState.class)
+        );
+        
+        <span class="comment">// 尝试读取旧状态 (如果存在)</span>
+        <span class="keyword">try</span> {
+            oldState = getRuntimeContext().getState(
+                <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"oldState"</span>, OldState.class)
+            );
+        } <span class="keyword">catch</span> (Exception e) {
+            <span class="comment">// 旧状态不存在或类型不匹配</span>
+            oldState = <span class="keyword">null</span>;
+        }
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processElement(Event event, Context ctx, Collector&lt;Result&gt; out) 
+            <span class="keyword">throws</span> Exception {
+        <span class="comment">// 迁移逻辑: 如果新状态为空但有旧状态，进行迁移</span>
+        <span class="keyword">if</span> (newState.value() == <span class="keyword">null</span> && oldState != <span class="keyword">null</span> && oldState.value() != <span class="keyword">null</span>) {
+            OldState old = oldState.value();
+            NewState migrated = migrateOldToNew(old);
+            newState.update(migrated);
+            oldState.clear(); <span class="comment">// 清理旧状态</span>
+        }
+        
+        <span class="comment">// 正常处理逻辑...</span>
+    }
+}</pre>
+            </div>
+
+            <h3>5.4.4 最佳实践</h3>
+            <div class="code-block">
+<pre><span class="comment">// 1. 配置自动清理过期的 Checkpoint/Savepoint</span>
+<span class="comment">// flink-conf.yaml</span>
+state.checkpoints.dir: hdfs:///flink/checkpoints
+state.savepoints.dir: hdfs:///flink/savepoints
+state.checkpoints.num-retained: 10
+
+<span class="comment">// 2. 监控 Checkpoint 指标</span>
+<span class="comment">// 关键指标:</span>
+<span class="comment">// - checkpointDuration: Checkpoint 持续时间</span>
+<span class="comment">// - checkpointedSize: Checkpoint 数据大小</span>
+<span class="comment">// - numberOfFailedCheckpoints: 失败次数</span>
+<span class="comment">// - latestRestoredCheckpointPath: 最近恢复的 Checkpoint</span>
+
+<span class="comment">// 3. 测试 Checkpoint/恢复流程</span>
+<span class="comment">// 定期执行故障演练</span>
+<span class="comment">// 验证恢复后数据准确性</span>
+
+<span class="comment">// 4. 版本兼容性检查清单</span>
+<span class="comment">// - 算子 UID 是否保持一致</span>
+<span class="comment">// - 状态类型是否兼容</span>
+<span class="comment">// - 状态名称是否变更</span>
+<span class="comment">// - 并行度变更是否支持</span></pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 5.4</h4>
+                <ol>
+                    <li>手动触发一个 Savepoint，然后取消作业</li>
+                    <li>修改作业代码后，从 Savepoint 恢复</li>
+                    <li>修改作业并行度，观察状态重分区</li>
+                    <li>实现状态迁移逻辑，处理新旧状态格式</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Savepoint 与 Checkpoint 的主要区别是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="A"> A. Savepoint 更快</label>
+                        <label><input type="radio" name="q10" value="B"> B. Savepoint 手动触发且长期保留，Checkpoint 自动触发</label>
+                        <label><input type="radio" name="q10" value="C"> C. Savepoint 状态更小</label>
+                        <label><input type="radio" name="q10" value="D"> D. Checkpoint 支持更多存储</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. 修改作业并行度后，Keyed State 如何处理？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q11" value="A"> A. 需要手动迁移</label>
+                        <label><input type="radio" name="q11" value="B"> B. 自动根据 key 重分区</label>
+                        <label><input type="radio" name="q11" value="C"> C. 状态丢失</label>
+                        <label><input type="radio" name="q11" value="D"> D. 不支持修改并行度</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 从 Savepoint 恢复时遇到不兼容状态，如何处理？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q12" value="A"> A. 无法恢复</label>
+                        <label><input type="radio" name="q12" value="B"> B. 使用 --allowNonRestoredState 跳过</label>
+                        <label><input type="radio" name="q12" value="C"> C. 修改 Flink 配置</label>
+                        <label><input type="radio" name="q12" value="D"> D. 删除 Savepoint</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-savepoint-best-practices.md">Savepoint 最佳实践</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/savepoints/" target="_blank">Savepoints</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="course-04-sql-table-api.html">← 上一课程</a>
+            <a href="course-06-performance-tuning.html">下一课程 →</a>
+        </div>
+    </div>
+</body>
+</html>

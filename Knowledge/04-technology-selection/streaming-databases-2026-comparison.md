@@ -1,5 +1,9 @@
 # 2026年流数据库全景对比分析
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [flink-vs-risingwave.md](./flink-vs-risingwave.md), [../../Flink/05-ecosystem/ecosystem/risingwave-integration-guide.md](../../Flink/05-ecosystem/ecosystem/risingwave-integration-guide.md) | **形式化等级**: L4-L5
 > **版本**: 2026.04 | **文档规模**: ~45KB | **覆盖系统**: 6个主流流数据库
 

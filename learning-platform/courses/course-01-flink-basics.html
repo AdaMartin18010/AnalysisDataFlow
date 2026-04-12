@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程1: Flink基础速成 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #e8f4f8; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #11998e; }
+        .objectives h4 { color: #11998e; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #856404; margin-bottom: 10px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #667eea; margin-bottom: 10px; }
+        .reading a { color: #667eea; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .progress-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .progress-dot.active { background: #667eea; color: white; }
+        .progress-dot.completed { background: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🚀 初级课程</span>
+            <span class="badge">⏱️ 约3小时</span>
+            <h1>课程1: Flink基础速成</h1>
+            <p>快速入门 Apache Flink，掌握 DataStream API 和流处理基础概念</p>
+            <div class="progress-indicator">
+                <div class="progress-dot active">1</div>
+                <div class="progress-dot">2</div>
+                <div class="progress-dot">3</div>
+                <div class="progress-dot">4</div>
+                <div class="progress-dot">5</div>
+            </div>
+        </header>
+
+        <!-- 课节 1.1 -->
+        <div class="lesson">
+            <h2>1.1 Flink简介与安装</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Flink 的核心架构和设计理念</li>
+                    <li>了解 Flink 与批处理系统的区别</li>
+                    <li>完成本地开发环境搭建</li>
+                    <li>运行第一个 Flink 示例程序</li>
+                </ul>
+            </div>
+
+            <h3>1.1.1 Flink 是什么</h3>
+            <p>Apache Flink 是一个开源的<strong>分布式流处理框架</strong>，具有以下核心特性：</p>
+            <ul style="margin: 15px 0 15px 30px;">
+                <li><strong>真正的流处理</strong>: 基于事件驱动的微批处理，而非 mini-batch</li>
+                <li><strong>高吞吐与低延迟</strong>: 每秒处理数百万事件，延迟可达毫秒级</li>
+                <li><strong>精确一次语义</strong>: 提供 Exactly-Once 状态一致性保证</li>
+                <li><strong>事件时间处理</strong>: 支持基于事件时间的窗口和 Watermark 机制</li>
+            </ul>
+
+            <h3>1.1.2 架构概览</h3>
+            <div class="code-block">
+<pre>┌─────────────────────────────────────────────────────────┐
+│                    Flink 架构层级                        │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │  DataStream │  │   Table API │  │    SQL          │  │
+│  │    API      │  │             │  │                 │  │
+│  └──────┬──────┘  └──────┬──────┘  └────────┬────────┘  │
+│         └─────────────────┴──────────────────┘          │
+│                          │                              │
+│  ┌───────────────────────┴───────────────────────────┐  │
+│  │              Core (流处理引擎)                      │  │
+│  │   ┌─────────┐  ┌─────────┐  ┌─────────────────┐   │  │
+│  │   │ 状态管理 │  │ Checkpoint│  │   Watermark     │   │  │
+│  │   └─────────┘  └─────────┘  └─────────────────┘   │  │
+│  └───────────────────────┬───────────────────────────┘  │
+│                          │                              │
+│  ┌───────────────────────┴───────────────────────────┐  │
+│  │              Runtime (执行层)                       │  │
+│  │   ┌─────────┐  ┌─────────┐  ┌─────────────────┐   │  │
+│  │   │ Task调度 │  │ 网络栈  │  │   内存管理       │   │  │
+│  │   └─────────┘  └─────────┘  └─────────────────┘   │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>1.1.3 环境搭建</h3>
+            <p><strong>Maven 依赖配置:</strong></p>
+            <div class="code-block">
+<pre><span class="comment">&lt;!-- pom.xml --&gt;</span>
+<span class="keyword">&lt;dependencies&gt;</span>
+    <span class="keyword">&lt;dependency&gt;</span>
+        <span class="keyword">&lt;groupId&gt;</span>org.apache.flink<span class="keyword">&lt;/groupId&gt;</span>
+        <span class="keyword">&lt;artifactId&gt;</span>flink-streaming-java<span class="keyword">&lt;/artifactId&gt;</span>
+        <span class="keyword">&lt;version&gt;</span>1.18.0<span class="keyword">&lt;/version&gt;</span>
+    <span class="keyword">&lt;/dependency&gt;</span>
+    <span class="keyword">&lt;dependency&gt;</span>
+        <span class="keyword">&lt;groupId&gt;</span>org.apache.flink<span class="keyword">&lt;/groupId&gt;</span>
+        <span class="keyword">&lt;artifactId&gt;</span>flink-clients<span class="keyword">&lt;/artifactId&gt;</span>
+        <span class="keyword">&lt;version&gt;</span>1.18.0<span class="keyword">&lt;/version&gt;</span>
+    <span class="keyword">&lt;/dependency&gt;</span>
+<span class="keyword">&lt;/dependencies&gt;</span></pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 1.1</h4>
+                <ol>
+                    <li>创建一个 Maven 项目，添加 Flink 依赖</li>
+                    <li>下载并启动本地 Flink 集群</li>
+                    <li>访问 Flink Web UI (默认 http://localhost:8081)</li>
+                    <li>提交示例 SocketTextStreamWordCount 作业</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-performance-benchmark-suite.md">Flink 性能基准测试指南</a></li>
+                    <li><a href="../../QUICK-START.md">项目快速入门指南</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/try-flink/local_installation/" target="_blank">本地安装指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 1.2 -->
+        <div class="lesson">
+            <h2>1.2 DataStream API基础</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 DataStream API 的核心概念</li>
+                    <li>理解 Source、Transformation、Sink 三大组件</li>
+                    <li>学会创建和转换 DataStream</li>
+                    <li>了解 Flink 的类型系统</li>
+                </ul>
+            </div>
+
+            <h3>1.2.1 程序基本结构</h3>
+            <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+
+<span class="keyword">public class</span> BasicStructure {
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        <span class="comment">// 1. 创建执行环境</span>
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 2. 创建数据源 (Source)</span>
+        DataStream&lt;String&gt; stream = env.fromElements(
+            <span class="string">"Flink"</span>, <span class="string">"Spark"</span>, <span class="string">"Storm"</span>
+        );
+        
+        <span class="comment">// 3. 数据转换 (Transformation)</span>
+        DataStream&lt;Integer&gt; lengths = stream
+            .map(String::length)
+            .filter(len -> len > 4);
+        
+        <span class="comment">// 4. 数据输出 (Sink)</span>
+        lengths.print();
+        
+        <span class="comment">// 5. 执行程序</span>
+        env.execute(<span class="string">"Basic Flink Job"</span>);
+    }
+}</pre>
+            </div>
+
+            <h3>1.2.2 常用 Transformation 操作</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr style="background: #667eea; color: white;">
+                    <th style="padding: 12px; text-align: left;">操作</th>
+                    <th style="padding: 12px; text-align: left;">描述</th>
+                    <th style="padding: 12px; text-align: left;">示例</th>
+                </tr>
+                <tr style="background: #f8f9fa;">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>map</code></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">一对一转换</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>.map(x -> x * 2)</code></td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>filter</code></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">条件过滤</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>.filter(x -> x > 0)</code></td>
+                </tr>
+                <tr style="background: #f8f9fa;">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>flatMap</code></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">一对多转换</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>.flatMap(new Tokenizer())</code></td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>keyBy</code></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">按键分组</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>.keyBy(Event::getUserId)</code></td>
+                </tr>
+                <tr style="background: #f8f9fa;">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>reduce</code></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">归约聚合</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>.reduce((a, b) -> a + b)</code></td>
+                </tr>
+            </table>
+
+            <div class="code-block">
+<pre><span class="comment">// Keyed Stream 示例: 按用户统计点击次数</span>
+DataStream&lt;ClickEvent&gt; clicks = env.addSource(<span class="keyword">new</span> ClickSource());
+
+clicks
+    .keyBy(ClickEvent::getUserId)           <span class="comment">// 按用户ID分组</span>
+    .map(<span class="keyword">new</span> RichMapFunction&lt;ClickEvent, UserStats&gt;() {
+        <span class="keyword">private</span> ValueState&lt;Long&gt; countState;
+        
+        @Override
+        <span class="keyword">public void</span> open(Configuration parameters) {
+            countState = getRuntimeContext().getState(
+                <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"count"</span>, Long.class)
+            );
+        }
+        
+        @Override
+        <span class="keyword">public</span> UserStats map(ClickEvent event) <span class="keyword">throws</span> Exception {
+            Long current = countState.value();
+            <span class="keyword">if</span> (current == <span class="keyword">null</span>) current = 0L;
+            current++;
+            countState.update(current);
+            <span class="keyword">return new</span> UserStats(event.getUserId(), current);
+        }
+    })
+    .print();</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 1.2</h4>
+                <ol>
+                    <li>创建一个 DataStream，从集合中读取整数 (1-100)</li>
+                    <li>使用 <code>filter</code> 过滤出偶数</li>
+                    <li>使用 <code>map</code> 将每个数平方</li>
+                    <li>使用 <code>keyBy</code> 按个位数分组，统计每组的和</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-data-types-reference.md">Flink 数据类型完整参考</a></li>
+                    <li><a href="../../Flink/flink-built-in-functions-reference.md">内置函数参考手册</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 1.3 -->
+        <div class="lesson">
+            <h2>1.3 第一个流处理应用</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>实现完整的 WordCount 流处理程序</li>
+                    <li>理解执行模式 (Local vs Cluster)</li>
+                    <li>学会调试和监控 Flink 作业</li>
+                    <li>掌握基本的故障排查技巧</li>
+                </ul>
+            </div>
+
+            <h3>1.3.1 WordCount 完整实现</h3>
+            <div class="code-block">
+<pre><span class="keyword">public class</span> StreamingWordCount {
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 设置并行度</span>
+        env.setParallelism(2);
+        
+        <span class="comment">// 从Socket读取数据 (nc -lk 9999)</span>
+        DataStream&lt;String&gt; text = env
+            .socketTextStream(<span class="string">"localhost"</span>, 9999);
+        
+        <span class="comment">// WordCount 逻辑</span>
+        DataStream&lt;WordCount&gt; wordCounts = text
+            .flatMap(<span class="keyword">new</span> Tokenizer())
+            .keyBy(Word::getWord)
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
+            .aggregate(<span class="keyword">new</span> CountAggregate());
+        
+        wordCounts.print().setParallelism(1);
+        
+        env.execute(<span class="string">"Streaming WordCount"</span>);
+    }
+    
+    <span class="comment">// 分词器</span>
+    <span class="keyword">static class</span> Tokenizer <span class="keyword">implements</span> FlatMapFunction&lt;String, Word&gt; {
+        @Override
+        <span class="keyword">public void</span> flatMap(String value, Collector&lt;Word&gt; out) {
+            <span class="keyword">for</span> (String word : value.toLowerCase().split(<span class="string">"\\W+"</span>)) {
+                <span class="keyword">if</span> (word.length() > 0) {
+                    out.collect(<span class="keyword">new</span> Word(word, 1));
+                }
+            }
+        }
+    }
+}</pre>
+            </div>
+
+            <h3>1.3.2 执行模式对比</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr style="background: #667eea; color: white;">
+                    <th style="padding: 12px; text-align: left;">模式</th>
+                    <th style="padding: 12px; text-align: left;">适用场景</th>
+                    <th style="padding: 12px; text-align: left;">启动方式</th>
+                </tr>
+                <tr style="background: #f8f9fa;">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Local</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">本地开发调试</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>env.getExecutionEnvironment()</code></td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Standalone</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">独立集群部署</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">bin/start-cluster.sh</td>
+                </tr>
+                <tr style="background: #f8f9fa;">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">YARN</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Hadoop 生态集成</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;"><code>bin/flink run -m yarn-cluster</code></td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Kubernetes</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">云原生部署</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Flink Kubernetes Operator</td>
+                </tr>
+            </table>
+
+            <div class="exercise">
+                <h4>✏️ 练习 1.3</h4>
+                <ol>
+                    <li>运行完整的 WordCount 程序</li>
+                    <li>在 Web UI 中观察作业的 DAG 图</li>
+                    <li>修改并行度，观察任务槽位的变化</li>
+                    <li>尝试不同的数据源 (Kafka、文件等)</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 课节 1.4 -->
+        <div class="lesson">
+            <h2>1.4 时间与Watermark</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解三种时间语义的区别</li>
+                    <li>掌握 Watermark 的概念和作用</li>
+                    <li>学会配置 Watermark 生成策略</li>
+                    <li>处理乱序数据</li>
+                </ul>
+            </div>
+
+            <h3>1.4.1 时间语义对比</h3>
+            <div class="code-block">
+<pre>时间语义类型:
+┌────────────────────────────────────────────────────────┐
+│ Event Time    │ 数据产生的时间 (嵌入在记录中)           │ ← 推荐用于生产 │
+│ Processing Time│ 数据被处理的时间 (机器本地时间)        │ ← 低延迟场景  │
+│ Ingestion Time│ 数据进入Flink的时间                    │ ← 特殊场景    │
+└────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>1.4.2 Watermark 机制</h3>
+            <p>Watermark 是一种特殊的<strong>时间戳标记</strong>，表示 "所有时间戳小于此值的事件都已到达"。</p>
+            
+            <div class="code-block">
+<pre><span class="comment">// 设置时间语义和 Watermark</span>
+env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+
+DataStream&lt;Event&gt; withTimestamps = events
+    <span class="comment">// 方式1: 使用内置策略 (允许5秒乱序)</span>
+    .assignTimestampsAndWatermarks(
+        WatermarkStrategy
+            .&lt;Event&gt;forBoundedOutOfOrderness(Duration.ofSeconds(5))
+            .withTimestampAssigner((event, timestamp) -> event.getEventTime())
+    );
+
+<span class="comment">// 方式2: 自定义 Watermark 生成器</span>
+DataStream&lt;Event&gt; withCustomWm = events
+    .assignTimestampsAndWatermarks(<span class="keyword">new</span> CustomWatermarkStrategy());</pre>
+            </div>
+
+            <h3>1.4.3 自定义 Watermark 策略</h3>
+            <div class="code-block">
+<pre><span class="keyword">public class</span> CustomWatermarkStrategy 
+    <span class="keyword">implements</span> WatermarkStrategy&lt;Event&gt; {
+    
+    @Override
+    <span class="keyword">public</span> WatermarkGenerator&lt;Event&gt; createWatermarkGenerator(
+            WatermarkGeneratorSupplier.Context context) {
+        <span class="keyword">return new</span> WatermarkGenerator&lt;Event&gt;() {
+            <span class="keyword">private long</span> maxTimestamp = Long.MIN_VALUE;
+            <span class="keyword">private final long</span> delay = 5000; <span class="comment">// 5秒延迟</span>
+            
+            @Override
+            <span class="keyword">public void</span> onEvent(Event event, <span class="keyword">long</span> timestamp, WatermarkOutput output) {
+                maxTimestamp = Math.max(maxTimestamp, event.getEventTime());
+            }
+            
+            @Override
+            <span class="keyword">public void</span> onPeriodicEmit(WatermarkOutput output) {
+                output.emitWatermark(<span class="keyword">new</span> Watermark(maxTimestamp - delay - 1));
+            }
+        };
+    }
+}</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 1.4</h4>
+                <ol>
+                    <li>创建一个生成带时间戳事件的 Source Function</li>
+                    <li>实现允许3秒乱序的 BoundedOutOfOrderness 策略</li>
+                    <li>观察 Watermark 在日志中的输出</li>
+                    <li>发送一个迟到事件，观察窗口如何处理</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../labs/lab-01-watermark.html">🧪 实验1: Watermark 可视化</a></li>
+                    <li><a href="../../Struct/Proof-Chains-Dataflow-Foundation.md">Dataflow 理论基础</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 1.5 -->
+        <div class="lesson">
+            <h2>1.5 基础窗口操作</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解窗口的基本概念</li>
+                    <li>掌握 Tumbling 和 Sliding 窗口</li>
+                    <li>学会使用窗口函数进行聚合</li>
+                    <li>了解窗口触发器和驱逐器</li>
+                </ul>
+            </div>
+
+            <h3>1.5.1 窗口类型</h3>
+            <div class="code-block">
+<pre>窗口类型对比:
+┌────────────────────────────────────────────────────────────┐
+│ Tumbling Window (滚动窗口)                                  │
+│   ├─ 固定大小、不重叠                                        │
+│   ├─ 例如: 每5分钟统计一次                                   │
+│   └─ [00:00,00:05), [00:05,00:10), [00:10,00:15)...        │
+│                                                             │
+│ Sliding Window (滑动窗口)                                   │
+│   ├─ 固定大小、可重叠                                        │
+│   ├─ 例如: 每5分钟计算过去10分钟的统计                       │
+│   └─ [00:00,00:10), [00:05,00:15), [00:10,00:20)...        │
+│                                                             │
+│ Session Window (会话窗口)                                   │
+│   ├─ 动态大小、由活动间隙决定                                 │
+│   ├─ 例如: 用户30分钟无活动则关闭窗口                         │
+│   └─ 适合分析用户行为会话                                    │
+└────────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>1.5.2 窗口 API 使用</h3>
+            <div class="code-block">
+<pre><span class="comment">// Tumbling Window 示例</span>
+DataStream&lt;Result&gt; tumblingResult = events
+    .keyBy(Event::getUserId)
+    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+    .aggregate(<span class="keyword">new</span> AverageAggregate());
+
+<span class="comment">// Sliding Window 示例</span>
+DataStream&lt;Result&gt; slidingResult = events
+    .keyBy(Event::getUserId)
+    .window(SlidingEventTimeWindows.of(Time.minutes(10), Time.minutes(5)))
+    .aggregate(<span class="keyword">new</span> CountAggregate());
+
+<span class="comment">// Session Window 示例</span>
+DataStream&lt;Result&gt; sessionResult = events
+    .keyBy(Event::getUserId)
+    .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
+    .allowedLateness(Time.minutes(5))  <span class="comment">// 允许5分钟迟到</span>
+    .sideOutputLateData(lateDataTag)    <span class="comment">// 迟到数据侧输出</span>
+    .aggregate(<span class="keyword">new</span> SessionAggregate());</pre>
+            </div>
+
+            <h3>1.5.3 窗口函数</h3>
+            <div class="code-block">
+<pre><span class="comment">// AggregateFunction: 增量聚合 (高效)</span>
+<span class="keyword">public class</span> CountAggregate <span class="keyword">implements</span> 
+    AggregateFunction&lt;Event, Long, Long&gt; {
+    
+    @Override
+    <span class="keyword">public</span> Long createAccumulator() { <span class="keyword">return</span> 0L; }
+    
+    @Override
+    <span class="keyword">public</span> Long add(Event value, Long accumulator) {
+        <span class="keyword">return</span> accumulator + 1;
+    }
+    
+    @Override
+    <span class="keyword">public</span> Long getResult(Long accumulator) { <span class="keyword">return</span> accumulator; }
+    
+    @Override
+    <span class="keyword">public</span> Long merge(Long a, Long b) { <span class="keyword">return</span> a + b; }
+}
+
+<span class="comment">// WindowFunction: 全量聚合 (可访问窗口元数据)</span>
+<span class="keyword">public class</span> MyWindowFunction <span class="keyword">implements</span> 
+    WindowFunction&lt;Event, Result, String, TimeWindow&gt; {
+    
+    @Override
+    <span class="keyword">public void</span> apply(String key, TimeWindow window, 
+                      Iterable&lt;Event&gt; input, Collector&lt;Result&gt; out) {
+        <span class="keyword">long</span> count = 0;
+        <span class="keyword">for</span> (Event e : input) count++;
+        
+        out.collect(<span class="keyword">new</span> Result(
+            key, 
+            count, 
+            window.getStart(), 
+            window.getEnd()
+        ));
+    }
+}</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 1.5</h4>
+                <ol>
+                    <li>实现一个每10秒滚动统计的窗口程序</li>
+                    <li>改用滑动窗口，每5秒计算过去15秒的统计</li>
+                    <li>尝试 Session Window，设置30秒会话超时</li>
+                    <li>比较不同窗口类型的输出差异</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Knowledge/cep-complete-tutorial.md">CEP 完整教程</a></li>
+                    <li><a href="../challenges/challenge-02-window-agg.html">🏆 挑战2: 窗口聚合优化</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="../index.html">← 返回首页</a>
+            <a href="course-02-design-patterns.html">下一课程 →</a>
+        </div>
+    </div>
+</body>
+</html>

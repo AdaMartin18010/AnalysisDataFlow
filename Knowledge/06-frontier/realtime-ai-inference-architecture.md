@@ -1,5 +1,9 @@
 # 实时AI推理架构
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [实时RAG架构](./real-time-rag-architecture.md), [多模态AI流处理](./multimodal-ai-streaming-architecture.md), [A2A协议与Agent通信](./a2a-protocol-agent-communication.md) | 形式化等级: L4
 
 ---
@@ -371,6 +375,11 @@ $$\min C_{total} \quad \text{s.t.} \quad \sum_{i=1}^{k} N_i \cdot acc_i \geq N \
 **核心代码**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class CustomerServiceAgent {
 
     public static void main(String[] args) throws Exception {

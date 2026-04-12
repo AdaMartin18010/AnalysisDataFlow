@@ -507,6 +507,9 @@ public class SessionAnalysisPTF extends ProcessTableFunction<Row> {
     input = @DataTypeHint("ROW<event_id STRING, event_time TIMESTAMP(3), payload STRING>"),
     output = @DataTypeHint("ROW<event_id STRING, event_time TIMESTAMP(3), payload STRING, is_duplicate BOOLEAN>")
 )
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class DeduplicationPTF extends ProcessTableFunction<Row> {
 
     private transient MapState<String, Boolean> seenEventIds;
@@ -559,6 +562,9 @@ public class DeduplicationPTF extends ProcessTableFunction<Row> {
 ```java
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 
 // 获取Table环境
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -711,6 +717,11 @@ SELECT * FROM ParametricSessionAnalysis(
     output = @DataTypeHint("ROW<user_id STRING, prediction_time TIMESTAMP(3), " +
                           "prediction DOUBLE, confidence DOUBLE>")
 )
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class MLInferencePTF extends ProcessTableFunction<Row> {
 
     private transient ValueState<UserFeatureVector> featureState;

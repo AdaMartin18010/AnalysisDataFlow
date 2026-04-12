@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Rust验证工具全景分析
 
 > **所属阶段**: Formal Methods/Tools/Industrial | **前置依赖**: [Rust形式化验证](05-rust-verification.md), [类型理论基础](../../01-foundations/05-type-theory.md) | **形式化等级**: L5

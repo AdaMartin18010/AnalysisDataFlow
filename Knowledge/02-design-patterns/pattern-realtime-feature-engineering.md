@@ -354,6 +354,11 @@ DataStream<UserSessionFeature> sessionFeatures = transactions
     .addSink(new RedisSink<>());
 
 // SessionAggregator 实现
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class SessionAggregator implements
     AggregateFunction<Transaction, SessionAcc, UserSessionFeature> {
 

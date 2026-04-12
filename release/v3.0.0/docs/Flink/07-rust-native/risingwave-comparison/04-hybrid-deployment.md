@@ -497,6 +497,9 @@ architecture:
 **Flink 输出到 Kafka**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink Kafka Sink 配置
 FlinkKafkaProducer<Order> producer = new FlinkKafkaProducer<>(
     "clean-orders",

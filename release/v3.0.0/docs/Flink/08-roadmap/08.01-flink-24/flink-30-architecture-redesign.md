@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 <!-- 版本状态标记: status=long-term-vision, target=2027-Q1 -->
 
 # Flink 3.0 架构重大变更完整文档
@@ -148,6 +151,9 @@ $$
 **执行模式自动选择**（2026年4月更新）:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 enum ExecutionMode {
     STREAMING,      // 无限流，低延迟优先
     BATCH,          // 有限数据集，吞吐优先
@@ -765,6 +771,11 @@ execution.interactive:
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 统一API使用示例
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -832,6 +843,11 @@ state.cache:
 
 ```java
 // 状态管理API示例
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class NextGenStateExample extends KeyedProcessFunction<String, Event, Result> {
 
     private ValueState<CountState> state;
@@ -935,6 +951,9 @@ spec:
 import org.apache.flink.api.UnifiedEnvironment;
 import org.apache.flink.api.dsl.*;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class UnifiedAPIExample {
     public static void main(String[] args) {
         // 统一环境
@@ -1021,6 +1040,10 @@ flink run \
 // 迁移前后的代码对比
 
 // ===== Flink 2.x 代码 =====
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class OldJob {
     public static void main(String[] args) {
         StreamExecutionEnvironment env =

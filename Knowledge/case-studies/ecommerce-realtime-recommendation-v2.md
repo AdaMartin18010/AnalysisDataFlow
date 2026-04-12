@@ -251,6 +251,12 @@ $$
 **Flink特征工程实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 用户行为特征计算
 DataStream<UserFeature> userFeatures = clickStream
     .keyBy(ClickEvent::getUserId)
@@ -310,6 +316,10 @@ userFeatures.addSink(new RedisSink<>(
 
 ```java
 // 异步模型推理
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class AsyncModelInference extends
     RichAsyncFunction<FeatureVector, Prediction> {
 

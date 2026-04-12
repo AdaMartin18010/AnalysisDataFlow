@@ -1,5 +1,9 @@
 # Google A2A (Agent-to-Agent) 协议技术分析
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [MCP协议分析](mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
@@ -349,7 +353,7 @@ class MathAgent:
 
 **反模式 2: 同步阻塞调用**
 
-```python
+```text
 # ❌ 错误：阻塞等待长时任务
 result = a2a_client.send_task_sync(
     agent_url,

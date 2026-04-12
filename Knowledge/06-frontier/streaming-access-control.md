@@ -775,6 +775,8 @@ CREATE TABLE user_activity (
 **血缘图构建**：
 
 ```java
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+
 // Flink ProcessFunction 中的血缘追踪
 class LineageTrackingFunction extends ProcessFunction<Record, Record> {
 

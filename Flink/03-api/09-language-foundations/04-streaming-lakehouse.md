@@ -696,6 +696,12 @@ FROM dws_gmv_5min;
 **场景**: 将 MySQL 数据库的变更实时同步到 Lakehouse
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 // Flink Java API: CDC 入湖完整 Pipeline
 public class MySQLToLakehousePipeline {
 

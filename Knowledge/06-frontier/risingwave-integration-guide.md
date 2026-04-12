@@ -480,6 +480,11 @@ $$
 **Flink 代码**（写入 RisingWave）：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink 作业：复杂事件处理后写入 RisingWave
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -595,6 +600,10 @@ CREATE SINK kafka_order_stats (
 **Flink CEP 处理**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink 读取 RisingWave 输出，进行复杂事件检测
 DataStream<OrderStats> statsStream = env
     .addSource(new FlinkKafkaConsumer<>("order-stats", new StatsSchema(), properties));
@@ -807,6 +816,10 @@ io.on('connection', (socket) => {
 **传统 Flink 实现的问题**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+
 // Flink 大状态 Join 的问题
 DataStream<Order> orders = env.addSource(...);
 DataStream<UserProfile> profiles = env.addSource(...);
@@ -948,6 +961,9 @@ GROUP BY item_id;
 **Flink 在线推理**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink 实时推荐计算
 DataStream<UserEvent> events = env.addSource(...);
 

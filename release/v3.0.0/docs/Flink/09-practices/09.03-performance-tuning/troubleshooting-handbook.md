@@ -474,6 +474,9 @@ state.backend.rocksdb.memory.fixed-per-slot: 256mb
 **步骤 4: 检查用户代码**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // 常见内存泄漏模式
 // 1. 静态集合持续增长
 private static final List<Object> cache = new ArrayList<>();
@@ -617,6 +620,9 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group flink
 **步骤 3: 检查 Watermark 生成策略**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 确保所有分支都生成 Watermark
 // 问题：Union 后 Watermark 取最小值，一个分支停滞则整体停滞
 DataStream<Event> stream1 = ...
@@ -672,6 +678,10 @@ hdfs dfs -cat /flink/checkpoints/{job-id}/chk-{checkpoint-id}/_metadata
 **步骤 2: 检查状态兼容性**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 // 作业代码变更可能导致状态不兼容
 // 1. State 类型变更
 ValueState<Integer> oldState; // 之前是 Integer

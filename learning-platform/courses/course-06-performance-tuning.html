@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程6: 性能调优与监控 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #667eea; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #e8f4f8; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #11998e; }
+        .objectives h4 { color: #11998e; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #856404; margin-bottom: 10px; }
+        .quiz { background: #f3e5f5; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #9c27b0; }
+        .quiz h4 { color: #7b1fa2; margin-bottom: 15px; }
+        .quiz-question { margin: 15px 0; padding: 15px; background: white; border-radius: 8px; }
+        .quiz-question p { font-weight: bold; margin-bottom: 10px; }
+        .quiz-options label { display: block; padding: 8px; cursor: pointer; }
+        .quiz-options label:hover { background: #f5f5f5; border-radius: 5px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #667eea; margin-bottom: 10px; }
+        .reading a { color: #667eea; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .progress-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .progress-dot.active { background: #667eea; color: white; }
+        .progress-dot.completed { background: #28a745; color: white; }
+        .note { background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3; }
+        .note h4 { color: #1976d2; margin-bottom: 8px; }
+        .metric-card { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .metric-card h5 { color: #667eea; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">⚡ 高级课程</span>
+            <span class="badge">⏱️ 约4小时</span>
+            <h1>课程6: 性能调优与监控</h1>
+            <p>掌握 Flink 性能调优技巧，建立完善的监控告警体系</p>
+            <div class="progress-indicator">
+                <div class="progress-dot active">1</div>
+                <div class="progress-dot">2</div>
+                <div class="progress-dot">3</div>
+                <div class="progress-dot">4</div>
+            </div>
+        </header>
+
+        <!-- 课节 6.1 -->
+        <div class="lesson">
+            <h2>6.1 背压诊断与优化</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解背压的产生原因和影响</li>
+                    <li>掌握背压的诊断方法</li>
+                    <li>学会 Credit-based 流控制机制</li>
+                    <li>掌握背压的常见解决方案</li>
+                </ul>
+            </div>
+
+            <h3>6.1.1 背压原理</h3>
+            <div class="code-block">
+<pre>背压 (Backpressure) 产生机制:
+┌─────────────────────────────────────────────────────────────────┐
+│  数据源 ──→ [Fast Operator] ──→ [Slow Operator] ──→ Sink       │
+│            (生产快)              (消费慢)                         │
+│                 ↑                                               │
+│                 └─ 缓冲区填满，向上游传播反压信号                   │
+│                                                                 │
+│  Credit-based Flow Control:                                     │
+│  1. 下游向上游发送 Credit (可用缓冲区数量)                        │
+│  2. 上游根据 Credit 发送数据                                      │
+│  3. Credit 为 0 时，上游停止发送                                  │
+│  4. 反压逐级向上游传播                                            │
+└─────────────────────────────────────────────────────────────────┘
+
+背压指标:
+- outPoolUsage: 输出缓冲区使用率
+- inPoolUsage: 输入缓冲区使用率
+- floatingBuffersUsage: 浮动缓冲区使用率
+- exclusiveBuffersUsage: 专用缓冲区使用率</pre>
+            </div>
+
+            <h3>6.1.2 背压诊断</h3>
+            <div class="code-block">
+<pre><span class="comment">// Web UI 观察指标</span>
+<span class="comment">// 1. 查看 Backpressure 标签 (OK / LOW / HIGH)</span>
+<span class="comment">// 2. 检查 Records Received/Sent 比例</span>
+<span class="comment">// 3. 观察 Checkpoint 时长是否增加</span>
+
+<span class="comment">// 代码中获取背压信息</span>
+<span class="comment">// 通过 REST API 获取指标</span>
+<span class="comment">// GET /jobs/:jobid/vertices/:vertexid/backpressure</span>
+
+<span class="comment">// 背压告警配置示例 (Prometheus + Alertmanager)</span>
+<span class="comment"># 规则文件: flink-alerts.yml</span>
+groups:
+  - name: flink_backpressure
+    rules:
+      - alert: FlinkHighBackpressure
+        expr: flink_taskmanager_job_task_backPressuredTimeMsPerSecond > 200
+        <span class="keyword">for</span>: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: <span class="string">"Flink job {{ $labels.job_name }} has high backpressure"</span>
+          description: <span class="string">"Task {{ $labels.task_name }} backpressure > 200ms/s"</span>
+
+<span class="comment">// 定位瓶颈算子</span>
+<span class="comment">// 方法1: 观察 Web UI 中 Records Received/Sent</span>
+<span class="comment">// 方法2: 对比各算子的 busyTimeMsPerSecond</span>
+<span class="comment">// 方法3: 火焰图分析 CPU 热点</span></pre>
+            </div>
+
+            <h3>6.1.3 背压解决方案</h3>
+            <div class="code-block">
+<pre><span class="comment">// 方案1: 增加并行度</span>
+stream.map(<span class="keyword">new</span> HeavyComputation())
+    .setParallelism(8)  <span class="comment">// 增加并行度</span>
+    .addSink(<span class="keyword">new</span> SlowSink());
+
+<span class="comment">// 方案2: 异步IO (避免阻塞)</span>
+AsyncDataStream.unorderedWait(
+    stream,
+    <span class="keyword">new</span> AsyncDatabaseRequest(),  <span class="comment">// 异步函数</span>
+    1000,  <span class="comment">// 超时时间</span>
+    TimeUnit.MILLISECONDS,
+    100    <span class="comment">// 并发请求数</span>
+);
+
+<span class="comment">// 方案3: 批量处理减少IO</span>
+stream.map(<span class="keyword">new</span> RichMapFunction&lt;Event, Result&gt;() {
+    <span class="keyword">private</span> List&lt;Event&gt; buffer = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    
+    @Override
+    <span class="keyword">public</span> Result map(Event event) {
+        buffer.add(event);
+        <span class="keyword">if</span> (buffer.size() >= 100) {
+            batchProcess(buffer);  <span class="comment">// 批量处理</span>
+            buffer.clear();
+        }
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+});
+
+<span class="comment">// 方案4: 增加缓冲区配置</span>
+<span class="comment">// flink-conf.yaml</span>
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.max: 256mb
+taskmanager.memory.network.min: 128mb
+
+<span class="comment">// 方案5: 拆分重算子</span>
+<span class="comment">// 将复杂算子拆分为多个简单算子，便于并行和优化</span>
+<span class="comment">// Before: 一个复杂算子</span>
+stream.map(complexFunction);
+
+<span class="comment">// After: 拆分后的流水线</span>
+stream
+    .map(step1)
+    .map(step2)
+    .map(step3);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 6.1</h4>
+                <ol>
+                    <li>在 Web UI 中观察背压指标，识别瓶颈算子</li>
+                    <li>将同步数据库查询改为 AsyncIO</li>
+                    <li>调整网络缓冲区配置，观察背压变化</li>
+                    <li>增加慢算子的并行度，验证背压缓解效果</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Credit-based 流控制的核心机制是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="A"> A. 上游主动控制发送速率</label>
+                        <label><input type="radio" name="q1" value="B"> B. 下游通过 Credit 告知上游可接收数据量</label>
+                        <label><input type="radio" name="q1" value="C"> C. 网络层自动限流</label>
+                        <label><input type="radio" name="q1" value="D"> D. 固定速率发送</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. AsyncIO 的主要作用是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="A"> A. 增加并发度</label>
+                        <label><input type="radio" name="q2" value="B"> B. 将同步阻塞IO转换为异步非阻塞</label>
+                        <label><input type="radio" name="q2" value="C"> C. 减少网络传输</label>
+                        <label><input type="radio" name="q2" value="D"> D. 提高序列化效率</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 背压通常首先出现在？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="A"> A. 数据源</label>
+                        <label><input type="radio" name="q3" value="B"> B. 处理速度慢的算子</label>
+                        <label><input type="radio" name="q3" value="C"> C. Sink</label>
+                        <label><input type="radio" name="q3" value="D"> D. 随机出现</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-backpressure-analysis.md">背压分析完整指南</a></li>
+                    <li><a href="../labs/lab-03-backpressure.html">🧪 实验3: 背压检测实验</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 6.2 -->
+        <div class="lesson">
+            <h2>6.2 内存与GC调优</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Flink 内存模型</li>
+                    <li>掌握 TaskManager 内存配置</li>
+                    <li>学会 JVM GC 调优</li>
+                    <li>掌握内存泄漏排查方法</li>
+                </ul>
+            </div>
+
+            <h3>6.2.1 Flink 内存模型</h3>
+            <div class="code-block">
+<pre>Flink TaskManager 内存结构:
+┌─────────────────────────────────────────────────────────────────┐
+│                         TaskManager 总内存                        │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    JVM Heap                             │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │   │
+│  │  │  Framework  │  │  Task Slots │  │  Network        │  │   │
+│  │  │  Heap       │  │  Heap       │  │  Memory         │  │   │
+│  │  │             │  │             │  │                 │  │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    Off-Heap Memory                      │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │   │
+│  │  │  Managed    │  │  JVM        │  │  Direct         │  │   │
+│  │  │  Memory     │  │  Metaspace  │  │  Memory         │  │   │
+│  │  │  (RocksDB)  │  │             │  │                 │  │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+
+内存配置参数:
+- taskmanager.memory.process.size: 总进程内存
+- taskmanager.memory.flink.size: Flink 内存
+- taskmanager.memory.managed.fraction: Managed 内存比例
+- taskmanager.memory.network.fraction: 网络内存比例</pre>
+            </div>
+
+            <h3>6.2.2 内存配置调优</h3>
+            <div class="code-block">
+<pre><span class="comment">// flink-conf.yaml 内存配置</span>
+
+<span class="comment"># 基础配置 (4GB 总内存)</span>
+taskmanager.memory.process.size: 4096m
+
+<span class="comment"># 托管内存 (RocksDB 使用)</span>
+taskmanager.memory.managed.fraction: 0.4
+taskmanager.memory.managed.size: 1536m
+
+<span class="comment"># 网络内存</span>
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.max: 256mb
+
+<span class="comment"># JVM 堆内存</span>
+taskmanager.memory.framework.heap.size: 128m
+taskmanager.memory.task.heap.size: 1024m
+
+<span class="comment"># JVM 直接内存</span>
+taskmanager.memory.framework.off-heap.size: 128m
+taskmanager.memory.task.off-heap.size: 256m
+
+<span class="comment"># JVM Metaspace</span>
+taskmanager.memory.jvm-metaspace.size: 256m
+
+<span class="comment">// 代码中配置 (覆盖配置文件)</span>
+Configuration conf = <span class="keyword">new</span> Configuration();
+conf.set(TaskManagerOptions.TOTAL_PROCESS_MEMORY, MemorySize.parse(<span class="string">"4g"</span>));
+conf.set(TaskManagerOptions.MANAGED_MEMORY_FRACTION, 0.4);
+
+StreamExecutionEnvironment env = 
+    StreamExecutionEnvironment.getExecutionEnvironment(conf);</pre>
+            </div>
+
+            <h3>6.2.3 GC 调优</h3>
+            <div class="code-block">
+<pre><span class="comment">// JVM 参数配置 (flink-conf.yaml)</span>
+
+<span class="comment"># G1GC 推荐配置 (JDK 8+)</span>
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=100
+  -XX:+UnlockExperimentalVMOptions
+  -XX:+UseCGroupMemoryLimitForHeap
+  -XX:ParallelGCThreads=4
+  -XX:ConcGCThreads=2
+
+<span class="comment"># 大堆内存 (32GB+) 配置</span>
+env.java.opts.taskmanager: >
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=200
+  -XX:G1HeapRegionSize=16m
+  -XX:G1NewSizePercent=20
+  -XX:G1MaxNewSizePercent=30
+  -XX:InitiatingHeapOccupancyPercent=35
+  -XX:G1MixedGCCountTarget=8
+
+<span class="comment">// GC 日志配置</span>
+env.java.opts.taskmanager: >
+  -Xloggc:gc.log
+  -XX:+PrintGCDetails
+  -XX:+PrintGCDateStamps
+  -XX:+PrintGCApplicationStoppedTime
+  -XX:+PrintAdaptiveSizePolicy
+  -XX:+UseGCLogFileRotation
+  -XX:NumberOfGCLogFiles=10
+  -XX:GCLogFileSize=10M
+
+<span class="comment">// 代码中优化对象分配</span>
+<span class="keyword">public class</span> OptimizedFunction <span class="keyword">extends</span> RichMapFunction&lt;Event, Result&gt; {
+    <span class="keyword">private transient</span> ObjectMapper mapper;
+    <span class="keyword">private transient</span> SimpleDateFormat dateFormat;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        <span class="comment">// 重用对象，避免频繁创建</span>
+        mapper = <span class="keyword">new</span> ObjectMapper();
+        dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);
+    }
+    
+    @Override
+    <span class="keyword">public</span> Result map(Event event) {
+        <span class="comment">// 避免在 map 中创建大量临时对象</span>
+        <span class="comment">// 使用对象池或重用对象</span>
+        Result result = resultPool.borrow();
+        <span class="keyword">try</span> {
+            <span class="comment">// 处理逻辑</span>
+            <span class="keyword">return</span> result;
+        } <span class="keyword">finally</span> {
+            resultPool.recycle(result);
+        }
+    }
+}</pre>
+            </div>
+
+            <h3>6.2.4 内存泄漏排查</h3>
+            <div class="code-block">
+<pre><span class="comment">// 常见内存泄漏场景</span>
+<span class="comment">// 1. 状态无限增长 (未设置 TTL)</span>
+StateTtlConfig ttlConfig = StateTtlConfig
+    .newBuilder(Time.hours(24))
+    .setUpdateType(OnCreateAndWrite)
+    .setStateVisibility(NeverReturnExpired)
+    .cleanupIncrementally(10, <span class="keyword">true</span>)  <span class="comment">// 增量清理</span>
+    .build();
+
+<span class="comment">// 2. 定时器未清理</span>
+<span class="keyword">public void</span> processElement(Event event, Context ctx) {
+    <span class="comment">// 注册定时器</span>
+    <span class="keyword">long</span> timerTimestamp = event.getTimestamp() + Time.minutes(30).toMilliseconds();
+    ctx.timerService().registerEventTimeTimer(timerTimestamp);
+}
+
+<span class="keyword">public void</span> onTimer(<span class="keyword">long</span> timestamp, OnTimerContext ctx) {
+    <span class="comment">// 处理完成后清理状态</span>
+    state.clear();
+    <span class="comment">// 不需要显式删除定时器，触发后自动删除</span>
+}
+
+<span class="comment">// 3. 监控指标</span>
+<span class="comment">// 关键指标:</span>
+<span class="comment">// - taskmanager_Status_JVM_Memory_Heap_Used: 堆内存使用</span>
+<span class="comment">// - taskmanager_Status_JVM_Memory_NonHeap_Used: 非堆内存使用</span>
+<span class="comment">// - taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Time: GC 时间</span>
+<span class="comment">// - taskmanager_job_task_operator_numRecordsIn: 处理记录数</span>
+
+<span class="comment">// 4. Heap Dump 分析</span>
+<span class="comment">// 生成 Heap Dump</span>
+jmap -dump:format=b,file=heapdump.hprof &lt;pid&gt;
+
+<span class="comment">// 或使用 JVM 参数在 OOM 时自动生成</span>
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/var/log/flink/heapdump.hprof</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 6.2</h4>
+                <ol>
+                    <li>配置 TaskManager 使用 G1GC，设置目标停顿时间100ms</li>
+                    <li>为状态配置 TTL 和清理策略</li>
+                    <li>分析 GC 日志，识别内存分配热点</li>
+                    <li>模拟内存泄漏场景，使用 Heap Dump 定位问题</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Flink 中 Managed Memory 主要用于？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="A"> A. 用户代码执行</label>
+                        <label><input type="radio" name="q4" value="B"> B. RocksDB 等状态后端</label>
+                        <label><input type="radio" name="q4" value="C"> C. 网络传输</label>
+                        <label><input type="radio" name="q4" value="D"> D. JVM 元数据</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. G1GC 的 MaxGCPauseMillis 参数作用是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="A"> A. 限制最大堆内存</label>
+                        <label><input type="radio" name="q5" value="B"> B. 设置目标 GC 停顿时间</label>
+                        <label><input type="radio" name="q5" value="C"> C. 设置 GC 线程数</label>
+                        <label><input type="radio" name="q5" value="D"> D. 设置新生代比例</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 如何排查 Flink 内存泄漏？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="A"> A. 增加堆内存</label>
+                        <label><input type="radio" name="q6" value="B"> B. 分析 Heap Dump，检查状态增长</label>
+                        <label><input type="radio" name="q6" value="C"> C. 重启 TaskManager</label>
+                        <label><input type="radio" name="q6" value="D"> D. 禁用 Checkpoint</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-memory-configuration.md">Flink 内存配置指南</a></li>
+                    <li>Flink 官方文档: <a href="https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/mem_setup/" target="_blank">Memory Setup</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 6.3 -->
+        <div class="lesson">
+            <h2>6.3 序列化与网络优化</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Flink 序列化机制</li>
+                    <li>掌握 POJO 和 Avro 序列化优化</li>
+                    <li>学会网络缓冲区调优</li>
+                    <li>理解对象重用和广播优化</li>
+                </ul>
+            </div>
+
+            <h3>6.3.1 序列化机制对比</h3>
+            <div class="code-block">
+<pre>Flink 序列化类型 (性能从高到低):
+┌─────────────────────────────────────────────────────────────────┐
+│ 1. Primitive Types (原生类型)                                    │
+│    ├─ int, long, double, boolean, byte[]                        │
+│    └─ 直接操作内存，最高效                                       │
+│                                                                 │
+│ 2. POJO (Plain Old Java Object)                                 │
+│    ├─ 满足条件的 Java 类                                         │
+│    ├─ 无参构造器、字段可访问、非 final                            │
+│    └─ 使用 POJO 序列化器 (字段级序列化)                           │
+│                                                                 │
+│ 3. Tuple / Row                                                  │
+│    ├─ Flink 内置类型                                             │
+│    └─ 预编译的序列化器                                           │
+│                                                                 │
+│ 4. Kryo (通用序列化)                                             │
+│    └─ 其他类型的 fallback                                        │
+│                                                                 │
+│ 5. Avro / Protobuf / Thrift                                     │
+│    └─ 外部Schema定义，跨语言支持                                  │
+└─────────────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>6.3.2 POJO 优化</h3>
+            <div class="code-block">
+<pre><span class="comment">// 优化前的类 (Kryo 序列化)</span>
+<span class="keyword">public class</span> Event {
+    <span class="keyword">private final</span> String userId;     <span class="comment">// final 字段不利于 POJO 识别</span>
+    <span class="keyword">private final long</span> timestamp;
+    
+    <span class="keyword">public</span> Event(String userId, <span class="keyword">long</span> timestamp) {
+        <span class="keyword">this</span>.userId = userId;
+        <span class="keyword">this</span>.timestamp = timestamp;
+    }
+    <span class="comment">// 只有 getter，没有 setter</span>
+}
+
+<span class="comment">// 优化后的 POJO (Flink 高效序列化)</span>
+<span class="keyword">public class</span> OptimizedEvent {
+    <span class="keyword">public</span> String userId;            <span class="comment">// 公共字段或使用 getter/setter</span>
+    <span class="keyword">public long</span> timestamp;
+    <span class="keyword">public int</span> categoryId;
+    <span class="keyword">public double</span> amount;
+    
+    <span class="keyword">public</span> OptimizedEvent() {}       <span class="comment">// 必须有无参构造器</span>
+    
+    <span class="keyword">public</span> OptimizedEvent(String userId, <span class="keyword">long</span> timestamp, 
+                         <span class="keyword">int</span> categoryId, <span class="keyword">double</span> amount) {
+        <span class="keyword">this</span>.userId = userId;
+        <span class="keyword">this</span>.timestamp = timestamp;
+        <span class="keyword">this</span>.categoryId = categoryId;
+        <span class="keyword">this</span>.amount = amount;
+    }
+    
+    <span class="comment">// 或使用 getter/setter</span>
+    <span class="keyword">public</span> String getUserId() { <span class="keyword">return</span> userId; }
+    <span class="keyword">public void</span> setUserId(String userId) { <span class="keyword">this</span>.userId = userId; }
+    <span class="comment">// ... 其他 getter/setter</span>
+}
+
+<span class="comment">// 注册自定义类型信息</span>
+env.registerType(OptimizedEvent.class);
+
+<span class="comment">// 使用 Avro 序列化 (跨语言、Schema演进)</span>
+<span class="keyword">@AvroName</span>(<span class="string">"UserEvent"</span>)
+<span class="keyword">public class</span> AvroEvent <span class="keyword">extends</span> SpecificRecordBase {
+    <span class="keyword">private CharSequence</span> userId;
+    <span class="keyword">private long</span> timestamp;
+    <span class="keyword">private double</span> amount;
+    
+    <span class="comment">// Avro 自动生成</span>
+}
+
+<span class="comment">// 使用 Avro 序列化器</span>
+AvroDeserializationSchema&lt;AvroEvent&gt; schema = 
+    AvroDeserializationSchema.forSpecific(AvroEvent.class);
+
+KafkaSource&lt;AvroEvent&gt; source = KafkaSource.&lt;AvroEvent&gt;builder()
+    .setValueOnlyDeserializer(schema)
+    .build();</pre>
+            </div>
+
+            <h3>6.3.3 网络传输优化</h3>
+            <div class="code-block">
+<pre><span class="comment">// 1. 缓冲区配置优化</span>
+<span class="comment">// flink-conf.yaml</span>
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 128mb
+taskmanager.memory.network.max: 512mb
+
+<span class="comment">// 2. 压缩配置</span>
+<span class="comment">// 启用网络压缩 (适用于大对象)</span>
+env.getConfig().setCompression(<span class="string">"LZ4"</span>);  <span class="comment">// 或 SNAPPY</span>
+
+<span class="comment">// 3. 对象重用</span>
+<span class="comment">// 在 map/filter 中重用对象 (注意: 仅当对象不缓存时使用)</span>
+env.getConfig().enableObjectReuse();
+
+<span class="comment">// 使用示例</span>
+stream.map(<span class="keyword">new</span> RichMapFunction&lt;Event, Result&gt;() {
+    <span class="keyword">private transient</span> Result reusedResult;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        reusedResult = <span class="keyword">new</span> Result();
+    }
+    
+    @Override
+    <span class="keyword">public</span> Result map(Event event) {
+        <span class="comment">// 重用对象，减少GC</span>
+        reusedResult.setUserId(event.getUserId());
+        reusedResult.setCalculatedValue(compute(event));
+        <span class="keyword">return</span> reusedResult;
+    }
+}).disableChaining();  <span class="comment">// 断开链，单独分配缓冲区</span>
+
+<span class="comment">// 4. 广播优化</span>
+<span class="comment">// 小数据集广播，避免 shuffle</span>
+DataStream&lt;Rule&gt; rules = env.fromCollection(loadRules())
+    .setParallelism(1)
+    .broadcast();  <span class="comment">// 广播到所有并行实例</span>
+
+stream.keyBy(Event::getUserId)
+    .connect(rules)
+    .process(<span class="keyword">new</span> KeyedBroadcastProcessFunction&lt;String, Event, Rule, Result&gt;() {
+        <span class="keyword">private final</span> MapStateDescriptor&lt;String, Rule&gt; ruleState = 
+            <span class="keyword">new</span> MapStateDescriptor&lt;&gt;(<span class="string">"rules"</span>, Types.STRING, Types.POJO(Rule.class));
+        
+        @Override
+        <span class="keyword">public void</span> processBroadcastElement(Rule rule, Context ctx, Collector&lt;Result&gt; out) {
+            <span class="comment">// 更新广播状态</span>
+            ctx.getBroadcastState(ruleState).put(rule.getRuleId(), rule);
+        }
+        
+        @Override
+        <span class="keyword">public void</span> processElement(Event event, ReadOnlyContext ctx, Collector&lt;Result&gt; out) {
+            Rule rule = ctx.getBroadcastState(ruleState).get(event.getRuleId());
+            <span class="comment">// 应用规则</span>
+        }
+    });
+
+<span class="comment">// 5. 分区策略优化</span>
+stream
+    <span class="comment">// 使用 rebalance 均匀分配 (默认 round-robin)</span>
+    .rebalance()
+    <span class="comment">// 或使用 rescale (本地优先)</span>
+    .rescale()
+    <span class="comment">// 或使用 broadcast (广播)</span>
+    .broadcast()
+    <span class="comment">// 或使用 global (单并行度)</span>
+    .global()
+    .map(processFunction);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 6.3</h4>
+                <ol>
+                    <li>将一个 Kryo 序列化的类改为 POJO 序列化，对比性能</li>
+                    <li>配置 LZ4 压缩，观察网络传输数据量变化</li>
+                    <li>使用对象重用优化 map 操作</li>
+                    <li>实现 Broadcast State 模式处理规则匹配</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Flink POJO 序列化的必要条件是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="A"> A. 实现 Serializable 接口</label>
+                        <label><input type="radio" name="q7" value="B"> B. 无参构造器、可访问字段或 getter/setter</label>
+                        <label><input type="radio" name="q7" value="C"> C. 继承特定基类</label>
+                        <label><input type="radio" name="q7" value="D"> D. 使用注解标记</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. enableObjectReuse() 的作用是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="A"> A. 增加内存使用</label>
+                        <label><input type="radio" name="q8" value="B"> B. 重用对象减少GC，但需要注意对象生命周期</label>
+                        <label><input type="radio" name="q8" value="C"> C. 启用多线程处理</label>
+                        <label><input type="radio" name="q8" value="D"> D. 禁用网络传输</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. Broadcast State 适用于什么场景？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="A"> A. 大数据集关联</label>
+                        <label><input type="radio" name="q9" value="B"> B. 小规则集/配置广播到所有并行实例</label>
+                        <label><input type="radio" name="q9" value="C"> C. 全局聚合</label>
+                        <label><input type="radio" name="q9" value="D"> D. 数据倾斜处理</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-serialization-optimization.md">序列化优化指南</a></li>
+                    <li><a href="../../Flink/flink-network-optimization.md">网络传输优化</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 6.4 -->
+        <div class="lesson">
+            <h2>6.4 监控与告警体系建设</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Flink Metrics 类型和使用</li>
+                    <li>学会集成 Prometheus + Grafana</li>
+                    <li>理解关键监控指标和告警规则</li>
+                    <li>掌握日志分析和故障排查</li>
+                </ul>
+            </div>
+
+            <h3>6.4.1 Flink Metrics 体系</h3>
+            <div class="code-block">
+<pre>Metrics 类型:
+┌─────────────────────────────────────────────────────────────────┐
+│ Counter    - 计数器 (如处理的记录数)                              │
+│ Gauge      - 瞬时值 (如队列大小、当前水位)                         │
+│ Histogram  - 分布统计 (如延迟分布)                                │
+│ Meter      - 速率 (如每秒处理记录数)                              │
+└─────────────────────────────────────────────────────────────────┘
+
+Metrics 级别:
+┌─────────────────────────────────────────────────────────────────┐
+│ JobManager 级别                                                  │
+│ ├─ numRegisteredTaskManagers                                     │
+│ ├─ numRunningJobs                                                │
+│ └─ taskSlotsAvailable / taskSlotsTotal                           │
+│                                                                 │
+│ TaskManager 级别                                                 │
+│ ├─ Status.JVM.Memory.Heap.Used                                   │
+│ ├─ Status.JVM.Memory.NonHeap.Used                                │
+│ ├─ Status.JVM.GarbageCollector.*                                 │
+│ └─ Status.Network.AvailableMemorySegments                          │
+│                                                                 │
+│ Job/Task 级别                                                    │
+│ ├─ numRecordsIn / numRecordsOut                                  │
+│ ├─ numRecordsInPerSecond / numRecordsOutPerSecond                │
+│ ├─ checkpointDuration                                            │
+│ ├─ checkpointedSize                                              │
+│ └─ backPressuredTimeMsPerSecond                                  │
+│                                                                 │
+│ Operator 级别                                                    │
+│ ├─ latency (延迟)                                                │
+│ └─ 自定义指标                                                     │
+└─────────────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <h3>6.4.2 自定义指标</h3>
+            <div class="code-block">
+<pre><span class="keyword">public class</span> MonitoredFunction <span class="keyword">extends</span> RichMapFunction&lt;Event, Result&gt; {
+    <span class="keyword">private transient</span> Counter eventCounter;
+    <span class="keyword">private transient</span> Histogram processingTimeHistogram;
+    <span class="keyword">private transient</span> Gauge&lt;Long&gt; queueSizeGauge;
+    
+    <span class="keyword">private transient</span> Queue&lt;Event&gt; buffer;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        MetricGroup metricGroup = getRuntimeContext()
+            .getMetricGroup()
+            .addGroup(<span class="string">"custom"</span>)
+            .addGroup(<span class="string">"myFunction"</span>);
+        
+        <span class="comment">// 计数器</span>
+        eventCounter = metricGroup.counter(<span class="string">"eventsProcessed"</span>);
+        
+        <span class="comment">// 直方图</span>
+        processingTimeHistogram = metricGroup
+            .histogram(<span class="string">"processingTimeMs"</span>, <span class="keyword">new</span> DropwizardHistogramWrapper(
+                <span class="keyword">new</span> com.codahale.metrics.Histogram(
+                    <span class="keyword">new</span> SlidingWindowReservoir(500)
+                )
+            ));
+        
+        <span class="comment">// Gauge (瞬时值)</span>
+        buffer = <span class="keyword">new</span> LinkedList&lt;&gt;();
+        queueSizeGauge = metricGroup.gauge(<span class="string">"bufferSize"</span>, () -> (<span class="keyword">long</span>) buffer.size());
+    }
+    
+    @Override
+    <span class="keyword">public</span> Result map(Event event) {
+        <span class="keyword">long</span> start = System.currentTimeMillis();
+        
+        <span class="comment">// 处理逻辑</span>
+        Result result = process(event);
+        
+        <span class="comment">// 记录指标</span>
+        eventCounter.inc();
+        processingTimeHistogram.update(System.currentTimeMillis() - start);
+        
+        <span class="keyword">return</span> result;
+    }
+}
+
+<span class="comment">// 报告器配置 (flink-conf.yaml)</span>
+metrics.reporters: prom,slf4j
+
+<span class="comment">// Prometheus 报告器</span>
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+
+<span class="comment">// SLF4J 报告器 (日志输出)</span>
+metrics.reporter.slf4j.class: org.apache.flink.metrics.slf4j.Slf4jReporter
+metrics.reporter.slf4j.interval: 60 SECONDS</pre>
+            </div>
+
+            <h3>6.4.3 Prometheus + Grafana 配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// prometheus.yml</span>
+scrape_configs:
+  - job_name: <span class="string">'flink-jobmanager'</span>
+    static_configs:
+      - targets: [<span class="string">'jobmanager:9249'</span>]
+    metrics_path: <span class="string">'/metrics'</span>
+  
+  - job_name: <span class="string">'flink-taskmanager'</span>
+    static_configs:
+      - targets:
+        - <span class="string">'taskmanager1:9249'</span>
+        - <span class="string">'taskmanager2:9249'</span>
+        - <span class="string">'taskmanager3:9249'</span>
+
+<span class="comment">// Grafana 告警规则示例</span>
+<span class="comment"># 规则文件: flink-alerts.yml</span>
+groups:
+  - name: flink_critical
+    rules:
+      - alert: FlinkJobFailed
+        expr: flink_jobmanager_numRunningJobs == 0
+        <span class="keyword">for</span>: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: <span class="string">"Flink job is not running"</span>
+
+      - alert: FlinkHighBackpressure
+        expr: |
+          (
+            flink_taskmanager_job_task_backPressuredTimeMsPerSecond 
+            / 1000
+          ) > 0.5
+        <span class="keyword">for</span>: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: <span class="string">"High backpressure in {{ $labels.task_name }}"</span>
+
+      - alert: FlinkCheckpointFailures
+        expr: |
+          rate(flink_jobmanager_checkpoint_numberOfFailedCheckpoints[5m]) > 0
+        <span class="keyword">for</span>: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: <span class="string">"Checkpoint failures detected"</span>
+
+      - alert: FlinkHighGC
+        expr: |
+          (
+            flink_taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Time 
+            / 1000
+          ) > 10
+        <span class="keyword">for</span>: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: <span class="string">"High GC time on {{ $labels.instance }}"</span></pre>
+            </div>
+
+            <h3>6.4.4 关键监控指标</h3>
+            <div class="code-block">
+<pre><span class="comment">// 关键监控 Dashboard 指标</span>
+
+<span class="comment">// 1. 作业健康度</span>
+- flink_jobmanager_numRunningJobs
+- flink_jobmanager_numFailedJobs
+- flink_jobmanager_uptime
+
+<span class="comment">// 2. 吞吐量</span>
+- flink_taskmanager_job_task_numRecordsInPerSecond
+- flink_taskmanager_job_task_numRecordsOutPerSecond
+- flink_taskmanager_job_task_numBytesInPerSecond
+- flink_taskmanager_job_task_numBytesOutPerSecond
+
+<span class="comment">// 3. 延迟</span>
+- flink_taskmanager_job_task_operator_latency
+- flink_taskmanager_job_task_backPressuredTimeMsPerSecond
+
+<span class="comment">// 4. Checkpoint 健康度</span>
+- flink_jobmanager_checkpoint_duration
+- flink_jobmanager_checkpointedSize
+- flink_jobmanager_checkpoint_numberOfFailedCheckpoints
+- flink_jobmanager_checkpoint_numberOfInProgressCheckpoints
+
+<span class="comment">// 5. 资源使用</span>
+- flink_taskmanager_Status_JVM_Memory_Heap_Used
+- flink_taskmanager_Status_JVM_Memory_Heap_Committed
+- flink_taskmanager_Status_JVM_Memory_NonHeap_Used
+- flink_taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Count
+- flink_taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Time
+
+<span class="comment">// 6. 网络健康度</span>
+- flink_taskmanager_Status_Network_AvailableMemorySegments
+- flink_taskmanager_Status_Network_UsedMemorySegments
+- flink_taskmanager_Status_Network_TotalMemorySegments
+
+<span class="comment">// 日志分析命令</span>
+<span class="comment">// 查找异常</span>
+grep -E <span class="string">"(Exception|Error|WARN)"</span> flink-*.log | tail -100
+
+<span class="comment">// 分析 Checkpoint</span>
+grep <span class="string">"Checkpoint"</span> flink-*.log | grep -E <span class="string">"(completed|failed)"</span>
+
+<span class="comment">// 统计错误频率</span>
+grep <span class="string">"Exception"</span> flink-*.log | awk <span class="string">'{print $1}'</span> | sort | uniq -c | sort -rn</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 6.4</h4>
+                <ol>
+                    <li>在作业中添加自定义 Counter 和 Histogram 指标</li>
+                    <li>配置 Prometheus Reporter，启动 Prometheus 采集</li>
+                    <li>在 Grafana 中创建 Dashboard，展示关键指标</li>
+                    <li>配置告警规则，当 Checkpoint 失败时发送通知</li>
+                </ol>
+            </div>
+
+            <div class="quiz">
+                <h4>📝 随堂测验</h4>
+                
+                <div class="quiz-question">
+                    <p>1. Flink Metrics 中，Gauge 的作用是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="A"> A. 计数累计值</label>
+                        <label><input type="radio" name="q10" value="B"> B. 记录瞬时值 (如队列大小)</label>
+                        <label><input type="radio" name="q10" value="C"> C. 统计延迟分布</label>
+                        <label><input type="radio" name="q10" value="D"> D. 计算处理速率</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. Prometheus 拉取 Flink 指标的端口默认是？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q11" value="A"> A. 8081</label>
+                        <label><input type="radio" name="q11" value="B"> B. 9249</label>
+                        <label><input type="radio" name="q11" value="C"> C. 9090</label>
+                        <label><input type="radio" name="q11" value="D"> D. 3000</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. 哪个指标最能反映作业是否存在背压？</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q12" value="A"> A. numRecordsInPerSecond</label>
+                        <label><input type="radio" name="q12" value="B"> B. backPressuredTimeMsPerSecond</label>
+                        <label><input type="radio" name="q12" value="C"> C. checkpointDuration</label>
+                        <label><input type="radio" name="q12" value="D"> D. heapMemoryUsed</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-metrics-monitoring.md">Flink 监控指标完整参考</a></li>
+                    <li><a href="../../OBSERVABILITY-GUIDE.md">可观测性建设指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="course-05-state-fault-tolerance.html">← 上一课程</a>
+            <a href="../index.html">返回首页 →</a>
+        </div>
+    </div>
+</body>
+</html>

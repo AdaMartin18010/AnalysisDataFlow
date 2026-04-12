@@ -1,0 +1,374 @@
+name: Update Knowledge Graph Data
+
+on:
+  # 当文档更新时触发
+  push:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'THEOREM-REGISTRY.md'
+  
+  # PR 合并前验证
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - '.scripts/kg-v2/**'
+  
+  # 定时更新 (每周日凌晨 2:00 UTC)
+  schedule:
+    - cron: '0 2 * * 0'
+  
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      update_type:
+        description: '更新类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - theorems_only
+          - frontier_only
+      force_update:
+        description: '强制更新'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # 检查数据变更
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should_update: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Check for relevant changes
+        id: check
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # 检查是否有相关文件变更
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+          
+          if echo "$CHANGED_FILES" | grep -qE "(Struct/|Knowledge/|Flink/|THEOREM-REGISTRY)"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📊 检测到相关文件变更，需要更新知识图谱"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✅ 无相关变更，跳过更新"
+          fi
+
+  # 生成增强数据
+  generate-data:
+    needs: check-changes
+    if: needs.check-changes.outputs.should_update == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Cache data generation
+        uses: actions/cache@v4
+        with:
+          path: |
+            .scripts/kg-v2/__pycache__
+          key: ${{ runner.os }}-kg-${{ hashFiles('.scripts/kg-v2/*.py') }}
+      
+      - name: Run data enhancement script
+        id: generate
+        run: |
+          echo "🚀 开始生成知识图谱数据..."
+          python .scripts/kg-v2/enhance-graph-data.py
+          
+          # 收集统计信息
+          if [ -f "knowledge-graph-data-enhanced.json" ]; then
+            NODE_COUNT=$(python -c "import json; print(len(json.load(open('knowledge-graph-data-enhanced.json'))['nodes']))")
+            EDGE_COUNT=$(python -c "import json; print(len(json.load(open('knowledge-graph-data-enhanced.json'))['edges']))")
+            echo "nodes=$NODE_COUNT" >> $GITHUB_OUTPUT
+            echo "edges=$EDGE_COUNT" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Validate generated data
+        run: |
+          echo "🔍 验证生成的数据..."
+          
+          # 验证 JSON 格式
+          python -c "
+          import json
+          files = [
+              'knowledge-graph-data-enhanced.json',
+              'knowledge-graph-theorems.json',
+              'knowledge-graph-frontier.json'
+          ]
+          
+          for f in files:
+              try:
+                  with open(f) as fp:
+                      data = json.load(fp)
+                  print(f'✅ {f}: 有效 JSON')
+                  
+                  # 验证必需字段
+                  if 'metadata' not in data:
+                      raise ValueError(f'{f}: 缺少 metadata 字段')
+                  if 'nodes' not in data:
+                      raise ValueError(f'{f}: 缺少 nodes 字段')
+                      
+              except Exception as e:
+                  print(f'❌ {f}: {e}')
+                  exit(1)
+          "
+          
+          echo "✅ 所有数据文件验证通过"
+      
+      - name: Generate data statistics
+        id: stats
+        run: |
+          echo "📊 生成数据统计..."
+          
+          python -c "
+          import json
+          from datetime import datetime
+          
+          # 读取增强数据
+          with open('knowledge-graph-data-enhanced.json') as f:
+              data = json.load(f)
+          
+          stats = data['metadata']['stats']
+          
+          print('知识图谱统计:')
+          print(f\"  总节点数: {stats['total_nodes']}\")
+          print(f\"  总边数: {stats['total_edges']}\")
+          print(f\"  节点类型分布:\")
+          for t, c in stats['by_type'].items():
+              print(f\"    - {t}: {c}\")
+          
+          # 保存统计信息
+          summary = {
+              'generated_at': datetime.utcnow().isoformat() + 'Z',
+              'total_nodes': stats['total_nodes'],
+              'total_edges': stats['total_edges'],
+              'by_type': stats['by_type']
+          }
+          
+          with open('knowledge-graph-stats.json', 'w') as f:
+              json.dump(summary, f, indent=2)
+          "
+          
+          echo "✅ 统计信息已保存"
+      
+      - name: Upload generated data
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-graph-data
+          path: |
+            knowledge-graph-data-enhanced.json
+            knowledge-graph-theorems.json
+            knowledge-graph-frontier.json
+            knowledge-graph-stats.json
+          retention-days: 30
+
+  # 创建更新 PR
+  create-pr:
+    needs: generate-data
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Download generated data
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-data
+          path: ./
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet knowledge-graph-*.json 2>/dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✅ 数据文件无变更"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📊 数据文件有变更"
+          fi
+      
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update knowledge graph data [automated]"
+          title: "🤖 Automated Knowledge Graph Data Update"
+          body: |
+            ## 知识图谱数据自动更新
+            
+            此 PR 由 GitHub Actions 自动生成，包含最新的知识图谱数据。
+            
+            ### 更新内容
+            - `knowledge-graph-data-enhanced.json` - 完整增强图谱数据
+            - `knowledge-graph-theorems.json` - 定理依赖网络数据
+            - `knowledge-graph-frontier.json` - 前沿趋势数据
+            
+            ### 统计信息
+            详见附件 `knowledge-graph-stats.json`
+            
+            ### 触发条件
+            - 事件类型: ${{ github.event_name }}
+            - 触发时间: ${{ github.event.head_commit.timestamp || github.event.schedule }}
+            
+            ---
+            *此 PR 由 `.github/workflows/update-knowledge-graph.yml` 自动生成*
+          branch: automated/kg-data-update
+          delete-branch: true
+          labels: |
+            automated
+            knowledge-graph
+            data-update
+
+  # 验证数据 (PR 时运行)
+  validate-data:
+    needs: generate-data
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Download generated data
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-data
+          path: ./
+      
+      - name: Run data validation
+        run: |
+          echo "🔍 运行数据验证..."
+          
+          python -c "
+          import json
+          
+          # 验证数据完整性
+          with open('knowledge-graph-data-enhanced.json') as f:
+              data = json.load(f)
+          
+          # 检查节点ID唯一性
+          node_ids = [n['id'] for n in data['nodes']]
+          if len(node_ids) != len(set(node_ids)):
+              duplicates = [id for id in set(node_ids) if node_ids.count(id) > 1]
+              print(f'❌ 发现重复节点ID: {duplicates}')
+              exit(1)
+          
+          # 检查边的有效性
+          node_id_set = set(node_ids)
+          invalid_edges = []
+          for edge in data['edges']:
+              if edge['source'] not in node_id_set:
+                  invalid_edges.append(f\"无效的源节点: {edge['source']}\")
+              if edge['target'] not in node_id_set:
+                  invalid_edges.append(f\"无效的目标节点: {edge['target']}\")
+          
+          if invalid_edges:
+              for e in invalid_edges[:10]:
+                  print(f'❌ {e}')
+              exit(1)
+          
+          print('✅ 数据验证通过:')
+          print(f'  - 节点数: {len(data[\"nodes\"])}')
+          print(f'  - 边数: {len(data[\"edges\"])}')
+          print(f'  - 所有节点ID唯一')
+          print(f'  - 所有边引用有效')
+          "
+
+  # 更新状态徽章
+  update-badges:
+    needs: [generate-data, create-pr]
+    runs-on: ubuntu-latest
+    if: always() && needs.generate-data.result == 'success'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Download stats
+        uses: actions/download-artifact@v4
+        with:
+          name: knowledge-graph-data
+          path: ./
+      
+      - name: Update badge data
+        run: |
+          python -c "
+          import json
+          
+          with open('knowledge-graph-stats.json') as f:
+              stats = json.load(f)
+          
+          badge_data = {
+              'schemaVersion': 1,
+              'label': 'Knowledge Graph',
+              'message': f\"{stats['total_nodes']} nodes, {stats['total_edges']} edges\",
+              'color': 'blue'
+          }
+          
+          with open('badges/kg-stats.json', 'w') as f:
+              json.dump(badge_data, f)
+          
+          print('✅ 徽章数据已更新')
+          "
+      
+      - name: Commit badge update
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update knowledge graph badge [automated]"
+          file_pattern: badges/kg-stats.json
+
+  # 通知
+  notify:
+    needs: [generate-data, create-pr]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Notification summary
+        run: |
+          echo "📊 知识图谱更新工作流完成"
+          echo ""
+          echo "任务状态:"
+          echo "  - 数据生成: ${{ needs.generate-data.result }}"
+          echo "  - PR 创建: ${{ needs.create-pr.result }}"
+          echo ""
+          
+          if [ "${{ needs.generate-data.result }}" == "success" ]; then
+            echo "✅ 知识图谱数据更新成功"
+          else
+            echo "❌ 知识图谱数据更新失败"
+          fi

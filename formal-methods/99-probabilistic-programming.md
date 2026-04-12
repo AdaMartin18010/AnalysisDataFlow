@@ -408,7 +408,7 @@ $$L \leq \text{wp}(P, f) \leq U$$
 
 考虑以下程序：
 
-```python
+```text
 # 反例：不满足AST的程序
 n := 1
 while n > 0:
@@ -428,7 +428,7 @@ $$\Pr[\text{终止}] < 1$$
 
 考虑修改版本：
 
-```python
+```text
 n := 0
 while n == 0:
     n := 0 ⊕_p 1   # 以概率p保持0，以1-p变为1
@@ -442,7 +442,7 @@ $$\mathbb{E}[\text{迭代次数}] = \sum_{k=1}^{\infty} k \cdot p^{k-1} (1-p) = 
 
 **反例 4.3.3：非几乎必然终止但有有限期望**
 
-```python
+```text
 n := 0
 while n == 0:
     if random() < 0.5:
@@ -591,7 +591,7 @@ $$[b] \cdot \text{wp}(C, I) + [\neg b] \cdot g \leq I$$
 
 **算法描述**：
 
-```python
+```text
 def randomized_quicksort(A, low, high):
     if low < high:
         pivot_idx := random(low, high)      # 随机选择枢轴
@@ -649,7 +649,7 @@ $$\{ n = |A| \} \, \text{randomized\_quicksort}(A) \, \{ \text{comparisons} \leq
 
 **算法描述**：Monte Carlo积分估计
 
-```python
+```text
 def monte_carlo_integration(f, a, b, n):
     sum := 0
     for i from 1 to n:
@@ -698,7 +698,7 @@ $$n \geq \frac{(b-a)^2 \cdot \text{Var}(f(U))}{\epsilon^2 \delta}$$
 
 **算法描述**：带吸收边界的随机游走
 
-```python
+```text
 def random_walk_with_absorption(n, target):
     position := n
     steps := 0

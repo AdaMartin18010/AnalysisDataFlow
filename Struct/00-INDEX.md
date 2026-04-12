@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Struct/ 形式理论文档索引
 
 > **文档定位**: Struct 目录导航索引 | **形式化等级**: L1-L6 全覆盖 | **版本**: 2026.04
@@ -478,6 +481,53 @@ pie
 
 ---
 
+## 增强交叉引用网络 (Enhanced Cross-References)
+
+### 到 Knowledge/ 的映射
+
+形式理论到工程实践的映射:
+
+| Struct 文档 | Knowledge 对应 | 映射类型 |
+|-------------|----------------|----------|
+| [01.01-unified-streaming-theory.md](./01-foundation/01.01-unified-streaming-theory.md) | [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md) | 理论→图谱 |
+| [01.03-actor-model-formalization.md](./01-foundation/01.03-actor-model-formalization.md) | [Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md) | 模型→对比 |
+| [02.01-determinism-in-streaming.md](./02-properties/02.01-determinism-in-streaming.md) | [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md) | 性质→模式 |
+| [02.02-consistency-hierarchy.md](./02-properties/02.02-consistency-hierarchy.md) | [Knowledge/02-design-patterns/pattern-checkpoint-recovery.md](../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md) | 层级→实现 |
+| [04.01-flink-checkpoint-correctness.md](./04-proofs/04.01-flink-checkpoint-correctness.md) | [Knowledge/05-mapping-guides/struct-to-flink-mapping.md](../Knowledge/05-mapping-guides/struct-to-flink-mapping.md) | 证明→代码 |
+
+### 到 Flink/ 的映射
+
+形式理论到 Flink 实现的映射:
+
+| Struct 文档 | Flink 对应 | 映射类型 |
+|-------------|------------|----------|
+| [04.01-flink-checkpoint-correctness.md](./04-proofs/04.01-flink-checkpoint-correctness.md) | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 证明→机制 |
+| [04.02-flink-exactly-once-correctness.md](./04-proofs/04.02-flink-exactly-once-correctness.md) | [Flink/02-core/exactly-once-semantics-deep-dive.md](../Flink/02-core/exactly-once-semantics-deep-dive.md) | 证明→语义 |
+| [02.03-watermark-monotonicity.md](./02-properties/02.03-watermark-monotonicity.md) | [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) | 定理→实现 |
+| [01.04-dataflow-model-formalization.md](./01-foundation/01.04-dataflow-model-formalization.md) | [Flink/01-concepts/flink-system-architecture-deep-dive.md](../Flink/01-concepts/flink-system-architecture-deep-dive.md) | 模型→架构 |
+| [03.02-flink-to-process-calculus.md](./03-relationships/03.02-flink-to-process-calculus.md) | [Flink/02-core/flink-state-management-complete-guide.md](../Flink/02-core/flink-state-management-complete-guide.md) | 编码→实践 |
+
+### 文档引用热力图
+
+```mermaid
+heatmap
+    title 文档引用热力 (引用数)
+    x-axis
+        "01-foundation"
+        "02-properties"
+        "03-relationships"
+        "04-proofs"
+        "05-comparative"
+        "06-frontier"
+        "07-tools"
+    y-axis
+        "引用数"
+    data
+        [35, 28, 22, 18, 15, 25, 12]
+```
+
+---
+
 > **文档规范**: 本文档遵循 [AGENTS.md](../AGENTS.md) 中的六段式模板规范
 > **定理编号**: 采用 `{类型}-{阶段}-{文档序号}-{顺序号}` 格式 (如 `Thm-S-01-01`)
-> **更新日期**: 2026-04-05
+> **更新日期**: 2026-04-12

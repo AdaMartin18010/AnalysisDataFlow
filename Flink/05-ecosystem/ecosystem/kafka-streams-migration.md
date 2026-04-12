@@ -74,6 +74,10 @@ KStream<String, String> stream = builder.stream("input-topic");
 **Flink DataStream**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -95,6 +99,9 @@ DataStream<String> stream = env.fromSource(
 **Flink Table API**:
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
 tableEnv.executeSql("""
@@ -127,6 +134,9 @@ KStream<String, Integer> transformed = stream
 **Flink DataStream**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Tuple2<String, Integer>> transformed = stream
     .filter(value -> value != null)
     .map(value -> Tuple2.of(value.f0, value.f1.length()))
@@ -161,6 +171,12 @@ KTable<String, Long> counts = stream
 **Flink DataStream**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 DataStream<Tuple2<String, Long>> counts = stream
     .keyBy(value -> value.f0)
     .countWindow(1000)
@@ -207,6 +223,10 @@ KStream<String, String> joined = stream1.join(
 **Flink DataStream**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<String> joined = stream1
     .join(stream2)
     .where(value -> value.f0)
@@ -276,6 +296,8 @@ public class UserStats {
 **Flink State**:
 
 ```java
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class UserStatsState {
     public long count = 0;
     public double sum = 0.0;
@@ -331,6 +353,9 @@ properties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
 **Flink**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(100);  // 100ms
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);
@@ -368,6 +393,11 @@ public void testTopology() {
 **Flink Test**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
 @Test
 public void testPipeline() throws Exception {
     StreamExecutionEnvironment env =

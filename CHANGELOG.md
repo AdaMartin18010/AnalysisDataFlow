@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Changelog
 
 All notable changes to the AnalysisDataFlow project will be documented in this file.
@@ -20,10 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Coq证明完善**: [ExactlyOnceCoq.v](reconstruction/phase4-verification/coq-proofs/ExactlyOnceCoq.v)
   - 7个Admitted证明骨架完成，3个核心引理已证明
   - 680行形式化证明代码
-- **新增Coq文件**: 
+- **新增Coq文件**:
   - `ExactlyOnceSemantics.v` (420行) - 语义完整证明
   - `WatermarkAlgebra.v` (363行) - Watermark代数完备性证明
-- **TLA+规范**: 
+- **TLA+规范**:
   - `StateBackendEquivalence.tla` (398行) - State Backend等价性验证
   - `Checkpoint.tla` (462行) - Checkpoint协议形式化
   - `ExactlyOnce.tla` (786行) - Exactly-Once端到端语义
@@ -430,13 +434,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/your-org/AnalysisDataFlow/compare/v3.6.0...HEAD
-[3.6.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.6.0
-[3.5.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.5.0
-[3.4.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.4.0
-[3.3.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.3.0
-[3.2.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.2.0
-[3.1.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.1.0
-[3.0.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.0.0
-[2.8.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.8.0
-[2.5.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.5.0
+[3.6.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.6.0
+[3.5.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.5.0
+[3.4.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.4.0
+[3.3.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.3.0
+[3.2.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.2.0
+[3.1.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.1.0
+[3.0.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.0.0
+[2.8.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.8.0
+[2.5.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.5.0

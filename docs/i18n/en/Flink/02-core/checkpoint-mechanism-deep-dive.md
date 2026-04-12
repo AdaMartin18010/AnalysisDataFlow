@@ -408,6 +408,9 @@ $$
 ### 6.1 Configuration Example: Aligned Checkpoint
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Aligned Checkpoint (default)
 env.enableCheckpointing(60000);  // 1 minute interval
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -423,6 +426,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 ### 6.2 Configuration Example: Unaligned Checkpoint
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Unaligned Checkpoint for high backpressure scenarios
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定理体系可视化仪表板</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00f260, #0575e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+        }
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00f260;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .chart-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .issue-list {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .issue-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            background: rgba(255,100,100,0.1);
+            border-left: 3px solid #ff6464;
+        }
+        .timestamp {
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 定理编号体系可视化仪表板</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">4,884</div>
+                <div class="stat-label">总定义数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">7,268</div>
+                <div class="stat-label">总引用数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">457</div>
+                <div class="stat-label">扫描文件数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">891</div>
+                <div class="stat-label">重复编号</div>
+            </div>
+        </div>
+        
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">📊 按类型分布</div>
+                <canvas id="typeChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">🗂️ 按阶段分布</div>
+                <canvas id="stageChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="issue-list">
+            <div class="chart-title">⚠️ 问题汇总</div>
+            <div class="issue-item">
+                <strong>重复编号:</strong> 891 个ID在多个位置定义
+            </div>
+            <div class="issue-item">
+                <strong>未注册元素:</strong> 3248 个定义未在注册表中
+            </div>
+            <div class="issue-item">
+                <strong>编号间隙:</strong> 检测到连续性缺口
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            生成时间: 2026-04-12 22:47:30
+        </div>
+    </div>
+    
+    <script>
+        // Type distribution chart
+        new Chart(document.getElementById('typeChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ["Theorem", "Definition", "Lemma", "Proposition", "Corollary"],
+                datasets: [{
+                    data: [1189, 2272, 754, 657, 12],
+                    backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#fff' }
+                    }
+                }
+            }
+        });
+        
+        // Stage distribution chart
+        new Chart(document.getElementById('stageChart'), {
+            type: 'bar',
+            data: {
+                labels: ["Struct", "Flink", "Knowledge", "Rust", "AI"],
+                datasets: [{
+                    label: '元素数量',
+                    data: [1197, 2373, 1224, 9, 81],
+                    backgroundColor: ['#6C5CE7', '#FD79A8', '#00B894', '#E17055', '#74B9FF']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#888' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#888' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

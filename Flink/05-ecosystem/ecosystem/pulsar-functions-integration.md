@@ -71,6 +71,9 @@ graph TB
 **Flink Pulsar Source**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Maven dependency
 // <artifactId>flink-connector-pulsar</artifactId>
 // <version>4.1.0-1.17</version>
@@ -259,6 +262,9 @@ PulsarSource<OrderEvent> source = PulsarSource.builder()
 **Flink Configuration**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(5000);
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);
@@ -320,6 +326,11 @@ graph LR
 ### 5.2 Multi-Tenant Analytics
 
 ```java
+import java.util.Map;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // Tenant isolation with Pulsar + Flink
 public class TenantAwareProcessor {
 

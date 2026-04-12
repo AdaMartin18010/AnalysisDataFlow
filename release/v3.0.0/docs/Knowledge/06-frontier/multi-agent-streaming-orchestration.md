@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 多Agent流式编排架构
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [ai-agent-streaming-architecture.md](ai-agent-streaming-architecture.md), [ai-agent-a2a-protocol.md](ai-agent-a2a-protocol.md) | **形式化等级**: L3-L5
@@ -525,6 +528,13 @@ graph TB
  * 多Agent流式编排引擎
  * 基于Flink的流处理能力实现动态Agent调度
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class MultiAgentOrchestrationEngine {
 
     public static void main(String[] args) throws Exception {
@@ -801,6 +811,10 @@ public class A2AStreamingIntegration {
 /**
  * 多Agent记忆同步管理器
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class MultiAgentMemorySync {
 
     /**
@@ -989,6 +1003,11 @@ graph TB
 **Flink实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class CustomerServiceOrchestration {
 
     public static void main(String[] args) throws Exception {

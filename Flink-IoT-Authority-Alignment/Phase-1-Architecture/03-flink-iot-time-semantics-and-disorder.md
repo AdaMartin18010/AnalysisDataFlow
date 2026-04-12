@@ -370,6 +370,10 @@ CREATE TABLE sensor_readings (
 **DataStream API标准配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 WatermarkStrategy<SensorEvent> strategy = WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withIdleness(Duration.ofMinutes(5))
@@ -568,6 +572,11 @@ CREATE TABLE sensor_readings (
 **DataStream API配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义迟到数据侧输出标签
 OutputTag<SensorEvent> lateDataTag = new OutputTag<SensorEvent>("late-data"){};
 
@@ -908,6 +917,13 @@ RTT = (T4 - T1) - (T3 - T2)
 **Flink服务端校正实现**:
 
 ```java
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class TimeCorrectionFunction
     extends ProcessFunction<SensorEvent, CorrectedEvent> {
 
@@ -1161,6 +1177,14 @@ GROUP BY
 **示例2: DataStream API Watermark配置**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class IoTWatermarkJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -1209,6 +1233,8 @@ public class IoTWatermarkJob {
 **示例3: 按传感器类型分层Watermark配置**
 
 ```java
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class TieredWatermarkStrategy implements
     WatermarkStrategy<SensorEvent> {
 
@@ -1266,6 +1292,12 @@ public class TieredWatermarkStrategy implements
 **示例4: 完整迟到数据处理流程**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class LateDataHandlingJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -1373,6 +1405,9 @@ CREATE TABLE kinesis_sensor_data (
 
 ```java
 // AWS Kinesis Watermark策略
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class AWSKinesisWatermarkStrategy {
 
     public static WatermarkStrategy<SensorEvent> create() {
@@ -1555,6 +1590,11 @@ WHERE r.dt = '${batch_date}' OR c.dt = '${batch_date}';
 **示例8: 设备时钟漂移检测与校正**
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class ClockDriftDetector
     extends KeyedProcessFunction<String, SensorEvent, CorrectedEvent> {
 

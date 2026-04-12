@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 2.5 迁移指南
 
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 发布](../08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
@@ -145,6 +148,11 @@ execution.runtime-mode: batch
 **无需修改**，完全兼容：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink 2.4 代码在 2.5 中无需修改
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -168,6 +176,9 @@ env.execute("My Job");
 **2.5 新增功能**（可选使用）：
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 启用自适应执行模式（可选）
 TableEnvironment tEnv = TableEnvironment.create(settings);
 tEnv.getConfig().set("execution.runtime-mode", "adaptive");

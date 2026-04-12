@@ -416,6 +416,10 @@ public class WebhookEventReporter implements EventReporter {
 ### 6.2 在 Flink 作业中使用自定义事件
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class OrderProcessingJob {
 
     public static void main(String[] args) throws Exception {

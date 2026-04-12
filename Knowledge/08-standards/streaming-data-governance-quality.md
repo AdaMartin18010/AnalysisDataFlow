@@ -950,6 +950,11 @@ class StreamingEntityResolution(KeyedProcessFunction):
 // Flink 状态清理: GDPR Right to Erasure 实现
 // ============================================================
 
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class GDPRComplianceJob {
 
     /**

@@ -125,6 +125,8 @@ public class UserBehaviorSource implements SourceFunction<UserBehavior> {
 ### Step 3: 实现计数聚合
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class CountAggregate implements
     AggregateFunction<UserBehavior, Long, Long> {
 
@@ -153,6 +155,9 @@ public class CountAggregate implements
 ### Step 4: 实现 Top N 计算
 
 ```java
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class TopNItems extends ProcessWindowFunction<
     Long,                    // 输入类型 (AggregateFunction的输出)
     List<ItemViewCount>,     // 输出类型
@@ -239,6 +244,12 @@ public class GlobalTopN extends KeyedProcessFunction<
 ### Step 5: 主程序
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class HotItemsJob {
 
     public static void main(String[] args) throws Exception {
@@ -371,6 +382,9 @@ windowedCounts.addSink(new RedisSink<>(
 
 ```java
 // 将当前窗口结果与上一窗口对比，输出增长最快的商品
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class TrendingItems extends CoProcessFunction<
     ItemViewCount,    // 当前窗口
     ItemViewCount,    // 上一窗口

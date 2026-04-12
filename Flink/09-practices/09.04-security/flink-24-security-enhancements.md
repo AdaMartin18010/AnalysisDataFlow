@@ -1,11 +1,13 @@
+# Flink 2.4 安全增强完整指南
+
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
 > 最后更新: 2026-04-04
-
----
-
-# Flink 2.4 安全增强完整指南
 
 > **所属阶段**: Flink/13-security | **前置依赖**: [Flink 安全特性完整指南](./flink-security-complete-guide.md), [Flink 2.3/2.4 路线图](../../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | **形式化等级**: L4-L5 | **状态**: preview
 
@@ -387,6 +389,9 @@ FROM users;
 **Java API 脱敏配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 创建脱敏配置
 DataMaskingConfig maskingConfig = DataMaskingConfig.builder()  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
     .withPolicy("PII_MASKING", policy -> policy
@@ -520,57 +525,57 @@ security.policies:
   # 模板 1: 数据分类策略
   - name: data-classification-policy
     type: classification
-    rules: 
+    rules:
       - classification: PII
-        patterns: 
+        patterns:
           - regex: '\b\d{3}-\d{2}-\d{4}\b'  # SSN
           - regex: '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'  # Email
-        actions: 
+        actions:
           - auto_encrypt
           - audit_access
 
       - classification: PCI
-        patterns: 
+        patterns:
           - regex: '\b4[0-9]{12}(?:[0-9]{3})?\b'  # Visa
           - luhn_check: true
-        actions: 
+        actions:
           - tokenize
           - restrict_export
 
       - classification: PHI
-        keywords: 
+        keywords:
           - diagnosis
           - medication
           - patient_id
-        actions: 
+        actions:
           - field_encrypt
           - require_hipaa_audit
 
   # 模板 2: 访问控制策略
   - name: rbac-policy
     type: authorization
-    roles: 
+    roles:
       - name: flink-admin
-        permissions: 
+        permissions:
           - resource: "*"
             actions: ["*"]
 
       - name: data-engineer
-        permissions: 
+        permissions:
           - resource: "jobs/*"
             actions: ["deploy", "cancel", "view"]
           - resource: "tables/*"
             actions: ["read", "write"]
           - resource: "tables/sensitive.*"
             actions: ["read"]
-            conditions: 
+            conditions:
               - masked: true
 
       - name: data-analyst
-        permissions: 
+        permissions:
           - resource: "tables/*"
             actions: ["read"]
-            conditions: 
+            conditions:
               - data_classification: ["public", "internal"]
           - resource: "views/anonymized/*"
             actions: ["read"]
@@ -578,32 +583,32 @@ security.policies:
   # 模板 3: 网络策略
   - name: network-security-policy
     type: network
-    rules: 
+    rules:
       - name: internal-only
-        source: 
+        source:
           cidr: ["10.0.0.0/8", "172.16.0.0/12"]
-        destination: 
+        destination:
           services: ["jobmanager", "taskmanager"]
         action: allow
 
       - name: tls-required
-        tls: 
+        tls:
           min_version: "1.3"
           cipher_suites: ["TLS_AES_256_GCM_SHA384"]
         services: ["*"]
         action: enforce
 
       - name: ui-restriction
-        source: 
+        source:
           not_cidr: ["10.0.0.0/8"]
-        destination: 
+        destination:
           service: "web-ui"
         action: deny
 
   # 模板 4: 审计策略
   - name: audit-policy
     type: audit
-    rules: 
+    rules:
       - events: ["LOGIN_FAILURE", "PERMISSION_DENIED"]
         severity: WARNING
         immediate_alert: true
@@ -1254,6 +1259,9 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.security.encryption.*;
 
+import org.apache.flink.table.api.TableEnvironment;
+
+
 public class FieldLevelEncryptionExample {
 
     public static void main(String[] args) {
@@ -1825,7 +1833,7 @@ flowchart TD
 ```yaml
 # Flink 2.4 生产安全加固检查清单
 
-tls_configuration: 
+tls_configuration:
   - [ ] 启用 TLS 1.3 (security.ssl.protocol: TLSv1.3)
   - [ ] 配置强密码套件 (AES-256-GCM 或 ChaCha20-Poly1305)
   - [ ] 禁用 TLS 1.0/1.1/1.2
@@ -1834,7 +1842,7 @@ tls_configuration:
   - [ ] 启用 OCSP Stapling
   - [ ] 配置会话恢复 (0-RTT 谨慎启用)
 
-authentication: 
+authentication:
   - [ ] 启用 OAuth 2.1
   - [ ] 强制 PKCE (所有授权码流程)
   - [ ] 配置精确重定向 URI
@@ -1843,14 +1851,14 @@ authentication:
   - [ ] 启用多因素认证 (MFA)
   - [ ] 配置会话超时 (建议 1 小时)
 
-authorization: 
+authorization:
   - [ ] 实施 RBAC
   - [ ] 配置最小权限
   - [ ] 启用 ABAC (细粒度场景)
   - [ ] 定期审查权限
   - [ ] 自动回收过期权限
 
-data_protection: 
+data_protection:
   - [ ] 识别敏感数据
   - [ ] 实施字段级加密 (FLE)
   - [ ] 配置动态脱敏
@@ -1859,7 +1867,7 @@ data_protection:
   - [ ] 启用令牌化 (PCI 场景)
   - [ ] 配置密钥轮换 (建议 90 天)
 
-audit_logging: 
+audit_logging:
   - [ ] 启用结构化审计日志
   - [ ] 配置日志完整性保护 (签名)
   - [ ] 设置实时导出到 SIEM
@@ -1867,21 +1875,21 @@ audit_logging:
   - [ ] 启用访问日志记录
   - [ ] 配置异常告警
 
-key_management: 
+key_management:
   - [ ] 使用外部 KMS (AWS/Azure/GCP/HCP)
   - [ ] 启用密钥轮换
   - [ ] 配置密钥版本控制
   - [ ] 实施密钥分级 (KEK/DEK)
   - [ ] 启用密钥访问审计
 
-network_security: 
+network_security:
   - [ ] 实施微分段
   - [ ] 配置安全组/防火墙
   - [ ] 限制管理端口访问
   - [ ] 启用流量加密 (服务网格可选)
   - [ ] 配置 DDoS 防护
 
-compliance: 
+compliance:
   - [ ] 启用自动合规检测
   - [ ] 配置合规评分阈值
   - [ ] 生成定期合规报告

@@ -152,6 +152,9 @@ public class KafkaConnectorDemo {
 #### 1.3 高级 Kafka Source 配置
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 带高级配置的 Kafka Source
 KafkaSource<Event> advancedSource = KafkaSource.<Event>builder()
     .setBootstrapServers("localhost:9092")
@@ -239,6 +242,9 @@ processedStream.sinkTo(advancedSink);
 
 ```java
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
@@ -454,6 +460,10 @@ import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import java.util.List;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class ElasticsearchConnectorDemo {
 
@@ -887,6 +897,9 @@ graph LR
 ### 练习 1: 多 Sink 输出
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 同一数据输出到多个目标
 SingleOutputStreamOperator<Result> result = input
     .keyBy(Event::getUserId)

@@ -1135,6 +1135,9 @@ Throughput
 **实践 1: 电商实时推荐系统**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 电商场景：流量波动大，存在热点商品
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

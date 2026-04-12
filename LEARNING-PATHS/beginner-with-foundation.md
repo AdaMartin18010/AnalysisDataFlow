@@ -81,6 +81,7 @@ gantt
    // 1. 使用 Spark Streaming 实现 WordCount
    // 2. 使用 Flink DataStream 实现 WordCount
    // 3. 对比延迟、吞吐量、语义保证
+
 ```
 
 2. **Checkpoint 配置实验**
@@ -131,12 +132,12 @@ gantt
    // 3. 对比 RocksDB 和 Heap 状态后端
 ```
 
-2. **端到端一致性项目**
+1. **端到端一致性项目**
    - Kafka → Flink → Kafka 管道
    - 配置两阶段提交
    - 模拟故障并验证数据一致性
 
-3. **故障恢复演练**
+2. **故障恢复演练**
    - 配置不同重启策略
    - 模拟 TaskManager 故障
    - 观察自动恢复过程
@@ -195,6 +196,9 @@ gantt
 ### 常用配置速查
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Checkpoint 配置
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -229,4 +233,3 @@ env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，针对有基础开发者快速入门 |
-

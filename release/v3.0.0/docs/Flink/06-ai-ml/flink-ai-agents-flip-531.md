@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink AI Agents (FLIP-531) 原生Agent支持
 
 > 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
@@ -38,6 +41,9 @@ $$
 
 ```java
 // Agent状态定义示例
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class AgentState {
     // 工作记忆 - ValueState
     private ValueState<ConversationContext> workingMemory;
@@ -283,6 +289,8 @@ RocksDB典型值：TB级
 **反模式1: 无界状态增长**
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // ❌ 错误：无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！

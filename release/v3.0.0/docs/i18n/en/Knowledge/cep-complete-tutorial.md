@@ -101,6 +101,10 @@ import org.apache.flink.cep.Pattern;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 定义欺诈检测模式：小额测试后大额交易
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("small-amount")
@@ -149,6 +153,9 @@ DataStream<Alert> alerts = patternStream
 <!-- TRANSLATE: ### 6.3 异常登录检测模式 -->
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 3分钟内 5 次失败登录后 1 次成功登录
 Pattern<LoginEvent, ?> suspiciousLogin = Pattern
     .<LoginEvent>begin("failed-logins")
@@ -191,6 +198,9 @@ patternStream
 <!-- TRANSLATE: ### 6.4 设备故障预测模式 -->
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 温度持续上升趋势后超过阈值
 Pattern<SensorReading, ?> overheatingPattern = Pattern
     .<SensorReading>begin("first")

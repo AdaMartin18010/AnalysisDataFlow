@@ -1,5 +1,14 @@
 # AnalysisDataFlow Docker Compose 配置
+# ===================================
 # 提供验证、统计和开发环境服务
+#
+# 使用方法:
+#   docker-compose up validate    # 运行验证
+#   docker-compose up stats       # 生成统计报告
+#   docker-compose up shell       # 交互式开发环境
+#   docker-compose up validate-project  # 验证项目结构
+#
+# 版本: 3.8
 
 version: "3.8"
 
@@ -30,6 +39,7 @@ services:
       "
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
 
   # 统计服务 - 生成项目统计报告
   stats:
@@ -55,6 +65,7 @@ services:
       "
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
 
   # Shell服务 - 交互式开发环境
   shell:
@@ -69,7 +80,8 @@ services:
     command: /bin/bash
     environment:
       - PYTHONUNBUFFERED=1
-      - PS1=\"\\[\\e[32m\\]adf\\[\\e[0m\\]:\\w\\$ \"
+      - PYTHONDONTWRITEBYTECODE=1
+      - PS1="\[\e[32m\]adf\[\e[0m\]:\w\$ "
 
   # 单独验证服务 - 可单独运行特定验证
   validate-project:
@@ -80,6 +92,8 @@ services:
     volumes:
       - .:/workspace:ro
     command: python3 .vscode/validate-project.py
+    environment:
+      - PYTHONUNBUFFERED=1
 
   validate-crossrefs:
     build:
@@ -89,6 +103,8 @@ services:
     volumes:
       - .:/workspace:ro
     command: python3 .vscode/validate-cross-refs.py
+    environment:
+      - PYTHONUNBUFFERED=1
 
   validate-mermaid:
     build:
@@ -98,3 +114,5 @@ services:
     volumes:
       - .:/workspace:ro
     command: python3 .vscode/validate-mermaid.py
+    environment:
+      - PYTHONUNBUFFERED=1

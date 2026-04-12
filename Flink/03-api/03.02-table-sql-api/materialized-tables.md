@@ -699,6 +699,10 @@ ON o.user_id = p.user_id;
 ### 6.7 DataStream 集成示例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+
 // 物化表转换为 DataStream 作业
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 

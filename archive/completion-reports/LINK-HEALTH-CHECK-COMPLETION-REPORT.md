@@ -202,7 +202,7 @@ python scripts/link-quick-fix.py --replace "https://broken-url.com" "https://new
 
 - **使用文档**: [LINK-HEALTH-AUTOMATION.md](./LINK-HEALTH-AUTOMATION.md)
 - **问题反馈**: 通过 GitHub Issues
-- **工作流查看**: [Actions](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml)
+- **工作流查看**: [Actions]([内部CI链接 - 需手动验证])
 
 ---
 

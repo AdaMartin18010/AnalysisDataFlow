@@ -373,6 +373,10 @@ $$\tau(e) < \min_i w_{in}^{(i)} \Rightarrow \forall i: \tau(e) < w_{in}^{(i)}$$
 ### 6.1 DataStream API代码与语义
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink程序
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())           // Source
@@ -393,6 +397,9 @@ Program = Sink ∘ Window(5min, avg) ∘ KeyBy(key) ∘ Filter(>0) ∘ Map(trans
 ### 6.2 Checkpoint配置与行为
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 检查点配置
 env.enableCheckpointing(60000);  // 60秒间隔
 env.getCheckpointConfig().setCheckpointingMode(

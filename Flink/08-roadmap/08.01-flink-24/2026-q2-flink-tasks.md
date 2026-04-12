@@ -409,6 +409,9 @@ RiskLevel ∈ {
 
 ```java
 // 优化前: Flink 1.x 同步模式
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class SyncBidProcessor extends ProcessFunction<Event, Result> {
     private ValueState<BidState> state;
 
@@ -439,7 +442,7 @@ public class AsyncBidProcessor extends AsyncProcessFunction<Event, Result> {
 
 ```yaml
 # benchmark-config.yaml
-test_scenarios: 
+test_scenarios:
   - name: "high_throughput"
     events_per_second: 1_680_000  # 目标: 1.68M e/s
     state_size: "100GB"
@@ -493,26 +496,26 @@ CompletableFuture.allOf(futures).join();
 # flink-deployment.yaml - 目标状态
 apiVersion: flink.apache.org/v1beta2
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: production-pipeline
-spec: 
+spec:
   flinkVersion: "2.0.0"
 
-  stateBackend: 
+  stateBackend:
     type: disaggregated
-    remoteStore: 
+    remoteStore:
       type: s3
       bucket: flink-state-prod
-    cache: 
+    cache:
       size: 2GB
       policy: LRU
 
-  checkpoint: 
+  checkpoint:
     mode: async_v2
     interval: 30s
     incremental: true
 
-  scaling: 
+  scaling:
     mode: auto
     minParallelism: 10
     maxParallelism: 100
@@ -700,4 +703,3 @@ quadrantChart
 | P1 | 4 | 95 人天 | 全团队 |
 | P2 | 3 | 65 人天 | 功能团队 |
 | **总计** | **10** | **275 人天** | **15 FTE** |
-

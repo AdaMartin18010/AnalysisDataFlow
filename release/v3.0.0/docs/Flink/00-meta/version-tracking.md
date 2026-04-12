@@ -154,7 +154,7 @@ python .scripts/flink-version-tracking/check-new-releases.py --update-docs
 | 数据源 | URL | 检查频率 |
 |--------|-----|----------|
 | Apache JIRA | <https://issues.apache.org/jira/browse/FLINK> | 每日 |
-| FLIP 提案 | <https://github.com/apache/flink/tree/master/flink-docs/docs/flips> | 每周 |
+| FLIP 提案 | <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals> | 每周 |
 | GitHub Releases | <https://github.com/apache/flink/releases> | 每日 |
 | 官方路线图 | <https://flink.apache.org/roadmap/> | 每周 |
 
@@ -194,7 +194,7 @@ python .scripts/flink-version-tracking/check-new-releases.py --update-docs
 
 - [Apache Flink 官网](https://flink.apache.org/)
 - [Flink 路线图](https://flink.apache.org/roadmap/)
-- [FLIP 索引](https://github.com/apache/flink/tree/master/flink-docs/docs/flips)
+- [FLIP 索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
 - [Flink JIRA](https://issues.apache.org/jira/browse/FLINK)
 - [GitHub 仓库](https://github.com/apache/flink)
 

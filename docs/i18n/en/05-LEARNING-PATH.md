@@ -1,4 +1,4 @@
-﻿---
+---
 title: "AnalysisDataFlow Learning Path Guide"
 source_file: "LEARNING-PATH-GUIDE.md"
 source_version: "v3.3.0"

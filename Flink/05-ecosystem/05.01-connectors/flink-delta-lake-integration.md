@@ -512,6 +512,9 @@ public void notifyCheckpointComplete(long checkpointId) {
 **批量读取 (DataStream API)**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DeltaSource<RowData> deltaSource = DeltaSource
     .forBoundedRowData(
         new Path("s3://bucket/delta-table"),
@@ -561,6 +564,9 @@ stream.sinkTo(deltaSink);
 **Checkpoint 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE
@@ -573,6 +579,11 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 ### 6.3 MySQL CDC -> Delta Lake 完整实现
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class MySqlCdcToDelta {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =

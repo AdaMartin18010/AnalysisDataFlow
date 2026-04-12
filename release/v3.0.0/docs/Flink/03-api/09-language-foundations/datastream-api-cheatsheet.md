@@ -36,6 +36,9 @@
 ### 1.2 代码示例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java: fromElements
 DataStream<Integer> numbers = env.fromElements(1, 2, 3, 4, 5);
 
@@ -78,6 +81,9 @@ val socketStream = env.socketTextStream("localhost", 9999)
 ### 1.4 Kafka Source示例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java: 新版KafkaSource (推荐)
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")
@@ -120,6 +126,9 @@ val stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Sou
 | `flatMap` | `FlatMapFunction<T,R>` | `DataStream<R>` | 继承 | 一对多展开 |
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java示例
 DataStream<Integer> mapped = stream.map(x -> x * 2);
 DataStream<Integer> filtered = stream.filter(x -> x > 0);
@@ -141,6 +150,9 @@ DataStream<String> flatMapped = stream.flatMap(
 | `process` | `KeyedStream<T>` | `DataStream<R>` | 处理函数 | 1.2+ |
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java: KeyedStream操作
 KeyedStream<Event, String> keyed = stream
     .keyBy(event -> event.getUserId());
@@ -166,6 +178,11 @@ DataStream<Double> aggregated = keyed.aggregate(
 | **全局窗口** | `GlobalWindows.create()` | 自定义触发器 | 自定义逻辑 |
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: Window操作示例
 
 // 滚动窗口 - 5分钟固定窗口
@@ -207,6 +224,10 @@ DataStream<Result> combined = keyed
 | **CoGroup** | `stream1.coGroup(stream2).where(k1).equalTo(k2)` | Event/Proc | 1.0+ |
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: Window Join
 DataStream<Result> joined = stream1
     .join(stream2)
@@ -238,6 +259,13 @@ DataStream<Result> intervalJoined = keyedStream1
 | `ProcessAllWindowFunction` | `AllWindowedStream` | 非Key窗口 | 全局窗口 |
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // Java: KeyedProcessFunction示例
 class CountWithTimeout extends KeyedProcessFunction<String, Event, Result> {
 
@@ -377,15 +405,19 @@ stream.sinkTo(fileSink);
 | **Ingestion Time** | `env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)` | 无需Watermark | 1.0+ |
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Java: 时间语义配置 (Flink 1.12+ 默认Event Time)
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 显式设置Event Time (Flink 1.12前需要)
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 // Flink 1.12+ 推荐方式
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 ```
 
 ### 4.2 Watermark生成策略
@@ -398,6 +430,9 @@ env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 | **空闲Source** | `.withIdleness(Duration)` | - | 处理空闲分区 |
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java: Watermark策略
 
 // 1. 有序数据 (无乱序)
@@ -445,6 +480,9 @@ DataStream<Event> withTimestamps = stream
 | **全局窗口** | `GlobalWindows.create()` | 全局 | 单个 |
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: 窗口分配器示例
 
 // 滚动窗口 - 按Event Time
@@ -474,6 +512,9 @@ DataStream<Event> withTimestamps = stream
 | **AllowedLateness** | 允许迟到数据处理 | `.allowedLateness(Time.minutes(10))` |
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: 触发器与延迟处理
 stream
     .keyBy(Event::getUserId)
@@ -503,6 +544,11 @@ stream
 
 ```java
 // Java: 状态声明
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class StatefulFunction extends KeyedProcessFunction<String, Event, Result> {
 
     // ValueState - 单值
@@ -584,6 +630,9 @@ public class StatefulFunction extends KeyedProcessFunction<String, Event, Result
 | `cleanupInRocksdbCompactFilter` | RocksDB清理 | - | 大状态 |
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: 状态TTL配置
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))                       // 24小时TTL
@@ -601,6 +650,10 @@ descriptor.enableTimeToLive(ttlConfig);
 ### 5.4 广播状态 (Broadcast State)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Java: 广播状态模式
 MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>("rules", Types.STRING, Types.POJO(Rule.class));
@@ -670,6 +723,10 @@ DataStream<Alert> alerts = eventStream
 | **SerializationException** | 序列化失败 | 检查Kryo/Avro配置 |
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java: 异常处理配置
 
 // Checkpoint配置
@@ -720,6 +777,12 @@ env.getCheckpointConfig().setCheckpointStorage("file:///checkpoint/dir");
 
 ```java
 // Java: 标准开发模板
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FlinkJob {
 
     public static void main(String[] args) throws Exception {
@@ -729,8 +792,8 @@ public class FlinkJob {
 
         // 2. 基础配置
         env.setParallelism(4);
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
         // 3. Checkpoint配置
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
@@ -812,7 +875,7 @@ pandoc datastream-api-cheatsheet.md \
 |------|------|
 | DataStream API官方文档 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/overview/> |
 | 时间语义详解 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/event-time/> |
-| 状态管理指南 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/> |
+| 状态管理指南 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state//> |
 | Kafka连接器 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/> |
 | Checkpoint配置 | <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/> |
 
@@ -932,6 +995,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 
 import java.time.Duration;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 public class QuickStartJob {
 

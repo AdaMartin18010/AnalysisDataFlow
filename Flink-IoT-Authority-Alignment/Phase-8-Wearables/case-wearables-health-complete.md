@@ -4891,12 +4891,12 @@ GROUP BY patient_id, window_start;
 
 ### 7.1 算法一：低血糖30分钟提前预测（LSTM模型）
 
-```python
+```text
 """
-算法1: 低血糖30分钟提前预测（LSTM模型）
+算法1: 低血糖30分钟提前预测(LSTM模型)
 作者: HealthAI Team
 日期: 2024-01
-描述: 基于历史血糖序列，使用LSTM神经网络预测未来30分钟血糖值，
+描述: 基于历史血糖序列,使用LSTM神经网络预测未来30分钟血糖值,
       提前预警低血糖风险。
 """
 
@@ -4918,8 +4918,8 @@ class HypoglycemiaPredictor:
     低血糖预测器 - 基于LSTM的30分钟血糖预测模型
 
     架构:
-    - 输入: 最近60个5分钟间隔的血糖读数（5小时历史）
-    - 输出: 未来6个5分钟间隔的血糖预测（30分钟前瞻）
+    - 输入: 最近60个5分钟间隔的血糖读数(5小时历史)
+    - 输出: 未来6个5分钟间隔的血糖预测(30分钟前瞻)
     - 特征: 原始血糖值 + 趋势特征 + 时间特征
     """
 
@@ -4932,8 +4932,8 @@ class HypoglycemiaPredictor:
         初始化预测器
 
         Args:
-            sequence_length: 输入序列长度（历史读数个数）
-            prediction_horizon: 预测时间步数（未来读数个数）
+            sequence_length: 输入序列长度(历史读数个数)
+            prediction_horizon: 预测时间步数(未来读数个数)
             lstm_units: LSTM隐藏单元数
             dropout_rate: Dropout比率
         """
@@ -4977,7 +4977,7 @@ class HypoglycemiaPredictor:
 
             Dense(32, activation='relu'),
 
-            # 输出层：预测6个未来血糖值
+            # 输出层:预测6个未来血糖值
             Dense(self.prediction_horizon, activation='linear')
         ])
 
@@ -5009,16 +5009,16 @@ class HypoglycemiaPredictor:
             glucose_series.reshape(-1, 1)
         ).flatten()
 
-        # 一阶差分（趋势）
+        # 一阶差分(趋势)
         first_diff = np.diff(glucose_series, prepend=glucose_series[0])
         first_diff_normalized = first_diff / np.std(first_diff) if np.std(first_diff) > 0 else first_diff
 
-        # 二阶差分（加速度）
+        # 二阶差分(加速度)
         second_diff = np.diff(first_diff, prepend=first_diff[0])
         second_diff_normalized = second_diff / np.std(second_diff) if np.std(second_diff) > 0 else second_diff
 
-        # 时间编码（小时sin/cos编码）
-        # 这里简化处理，实际应从时间戳提取
+        # 时间编码(小时sin/cos编码)
+        # 这里简化处理,实际应从时间戳提取
         time_encoded = np.sin(np.linspace(0, 2 * np.pi, n))
 
         features = np.stack([
@@ -5049,7 +5049,7 @@ class HypoglycemiaPredictor:
         X, y = [], []
         for i in range(0, len(features) - self.sequence_length - self.prediction_horizon + 1, step_size):
             X.append(features[i:i + self.sequence_length])
-            # 目标为原始血糖值（非标准化）
+            # 目标为原始血糖值(非标准化)
             y.append(glucose_data[i + self.sequence_length:i + self.sequence_length + self.prediction_horizon])
 
         return np.array(X), np.array(y)
@@ -5114,7 +5114,7 @@ class HypoglycemiaPredictor:
         预测未来30分钟血糖
 
         Args:
-            recent_glucose: 最近60个血糖读数（5小时历史）
+            recent_glucose: 最近60个血糖读数(5小时历史)
             return_confidence: 是否返回置信度
 
         Returns:
@@ -5200,10 +5200,10 @@ class HypoglycemiaPredictor:
         Clarke误差网格分析 - 评估CGM预测临床准确性
 
         Returns:
-            A区域比例（临床可接受）
+            A区域比例(临床可接受)
         """
         # 简化的Clarke网格实现
-        # A区域: 预测在参考值的20%范围内，或低血糖区域准确
+        # A区域: 预测在参考值的20%范围内,或低血糖区域准确
         in_a_zone = (
             (np.abs(predicted - reference) <= reference * 0.2) |
             ((reference < 70) & (predicted < 70))
@@ -5230,10 +5230,10 @@ if __name__ == '__main__':
 
 ### 7.2 算法二：血糖趋势平滑（Kalman滤波）
 
-```python
+```text
 """
-算法2: 血糖趋势平滑（Kalman滤波）
-描述: 使用卡尔曼滤波器平滑CGM数据，去除噪声同时保留真实趋势
+算法2: 血糖趋势平滑(Kalman滤波)
+描述: 使用卡尔曼滤波器平滑CGM数据,去除噪声同时保留真实趋势
 """
 
 import numpy as np
@@ -5272,8 +5272,8 @@ class GlucoseKalmanFilter:
         初始化滤波器
 
         Args:
-            process_noise: 过程噪声协方差Q（反映血糖自然变化的预期程度）
-            measurement_noise: 测量噪声协方差R（反映CGM设备精度）
+            process_noise: 过程噪声协方差Q(反映血糖自然变化的预期程度)
+            measurement_noise: 测量噪声协方差R(反映CGM设备精度)
             initial_uncertainty: 初始状态不确定性
         """
         self.Q = process_noise  # 过程噪声
@@ -5355,7 +5355,7 @@ class GlucoseKalmanFilter:
             (滤波后血糖值, 变化率估计, 估计不确定性)
         """
         if not self.initialized:
-            # 首次读数，直接初始化
+            # 首次读数,直接初始化
             self.state = KalmanState(x=measurement, p=self.R, v=0.0)
             self.initialized = True
             return measurement, 0.0, self.R
@@ -5460,10 +5460,10 @@ if __name__ == '__main__':
 
 ### 7.3 算法三：传感器故障检测（孤立森林）
 
-```python
+```text
 """
-算法3: 传感器故障检测（孤立森林）
-描述: 使用孤立森林算法检测异常的CGM读数模式，识别传感器故障
+算法3: 传感器故障检测(孤立森林)
+描述: 使用孤立森林算法检测异常的CGM读数模式,识别传感器故障
 """
 
 import numpy as np
@@ -5478,7 +5478,7 @@ class SensorFaultDetector:
     """
     CGM传感器故障检测器
 
-    基于孤立森林的无监督异常检测，识别以下故障模式:
+    基于孤立森林的无监督异常检测,识别以下故障模式:
     1. 数据 stuck/frozen (重复值)
     2. 异常跳变 (信号不稳定)
     3. 信号漂移 (校准问题)
@@ -5504,7 +5504,7 @@ class SensorFaultDetector:
         Args:
             contamination: 预期异常比例
             n_estimators: 孤立森林树数量
-            window_size: 分析窗口大小（读数个数）
+            window_size: 分析窗口大小(读数个数)
         """
         self.contamination = contamination
         self.n_estimators = n_estimators
@@ -5689,10 +5689,10 @@ class SensorFaultDetector:
     def _get_recommendation(self, fault_type: str) -> str:
         """获取故障处理建议"""
         recommendations = {
-            'FROZEN': '传感器可能卡住，建议重启设备或更换传感器',
-            'JUMP': '检测到异常跳变，请检查传感器贴合是否良好',
-            'DRIFT': '检测到信号漂移，建议进行指尖血校准',
-            'NOISE': '信号噪声过大，传感器可能老化，考虑更换',
+            'FROZEN': '传感器可能卡住,建议重启设备或更换传感器',
+            'JUMP': '检测到异常跳变,请检查传感器贴合是否良好',
+            'DRIFT': '检测到信号漂移,建议进行指尖血校准',
+            'NOISE': '信号噪声过大,传感器可能老化,考虑更换',
             'NORMAL': '传感器工作正常'
         }
         return recommendations.get(fault_type, '请检查传感器状态')
@@ -5753,10 +5753,10 @@ if __name__ == '__main__':
 
 ### 7.4 算法四：差分隐私噪声添加（拉普拉斯机制）
 
-```python
+```text
 """
-算法4: 差分隐私噪声添加（拉普拉斯机制）
-描述: 在数据发布前添加校准的拉普拉斯噪声，提供数学可证明的隐私保护
+算法4: 差分隐私噪声添加(拉普拉斯机制)
+描述: 在数据发布前添加校准的拉普拉斯噪声,提供数学可证明的隐私保护
 """
 
 import numpy as np
@@ -5805,7 +5805,7 @@ class LaplaceMechanism:
 
         Args:
             privacy_budget: 隐私预算账户
-            seed: 随机数种子（用于可重复性）
+            seed: 随机数种子(用于可重复性)
         """
         self.budget = privacy_budget
         self.rng = np.random.RandomState(seed)
@@ -5822,7 +5822,7 @@ class LaplaceMechanism:
             value: 原始查询结果
             sensitivity: 查询的全局敏感度
             epsilon: 此查询分配的隐私预算
-            query_name: 查询标识（用于审计）
+            query_name: 查询标识(用于审计)
 
         Returns:
             添加噪声后的结果
@@ -5854,7 +5854,7 @@ class LaplaceMechanism:
         """
         计数查询的差分隐私版本
 
-        敏感度 = 1（添加/删除一条记录改变计数最多为1）
+        敏感度 = 1(添加/删除一条记录改变计数最多为1)
         """
         noisy = self.add_noise(float(count), sensitivity=1.0,
                                epsilon=epsilon, query_name=query_name)
@@ -5869,7 +5869,7 @@ class LaplaceMechanism:
         """
         求和查询的差分隐私版本
 
-        敏感度 = upper_bound - lower_bound（ clip后的范围）
+        敏感度 = upper_bound - lower_bound( clip后的范围)
         """
         # Clip值到指定范围
         clipped = np.clip(values, lower_bound, upper_bound)
@@ -5888,7 +5888,7 @@ class LaplaceMechanism:
         """
         均值查询的差分隐私版本
 
-        使用分解机制: 先加噪计数，再加噪求和，然后相除
+        使用分解机制: 先加噪计数,再加噪求和,然后相除
         """
         # 分配隐私预算
         eps_count = epsilon * 0.2
@@ -5910,7 +5910,7 @@ class LaplaceMechanism:
         """
         直方图查询的差分隐私版本
 
-        每个桶独立添加噪声，敏感度=1
+        每个桶独立添加噪声,敏感度=1
         """
         hist, _ = np.histogram(values, bins=bins)
 
@@ -5997,7 +5997,7 @@ class PrivacyAccountant:
         """
         高级组合定理
 
-        对于k个(ε,δ)-DP机制的序列，组合后满足:
+        对于k个(ε,δ)-DP机制的序列,组合后满足:
         (ε', kδ + δ')-DP, 其中:
         ε' = √(2k ln(1/δ')) * ε + k * ε * (e^ε - 1) / (e^ε + 1)
         """
@@ -6021,7 +6021,7 @@ class PrivacyAccountant:
 
 # 使用示例
 if __name__ == '__main__':
-    # 初始化隐私预算（年度总预算1.0）
+    # 初始化隐私预算(年度总预算1.0)
     budget = PrivacyBudget(epsilon_total=1.0, delta=1e-6)
     mechanism = LaplaceMechanism(budget, seed=42)
 
@@ -6048,7 +6048,7 @@ if __name__ == '__main__':
     )
     print(f"平均血糖: 真实={true_mean:.2f}, 加噪后={noisy_mean:.2f}")
 
-    # 查询3: TIR（范围内时间比例）
+    # 查询3: TIR(范围内时间比例)
     in_range = np.sum((patient_glucose >= 70) & (patient_glucose <= 180))
     true_tir = in_range / len(patient_glucose) * 100
     noisy_tir = mechanism.add_noise(
@@ -6065,10 +6065,10 @@ if __name__ == '__main__':
 
 ### 7.5 算法五：多模态数据融合（Dempster-Shafer证据理论）
 
-```python
+```text
 """
-算法5: 多模态数据融合（Dempster-Shafer证据理论）
-描述: 融合CGM、心率、血压等多源数据，综合评估患者健康状态
+算法5: 多模态数据融合(Dempster-Shafer证据理论)
+描述: 融合CGM、心率、血压等多源数据,综合评估患者健康状态
 """
 
 import numpy as np
@@ -6101,7 +6101,7 @@ class DempsterShaferFusion:
     """
     Dempster-Shafer证据理论融合器
 
-    用于融合多个信息源（CGM、心率、血压等）的证据，
+    用于融合多个信息源(CGM、心率、血压等)的证据,
     得到综合的健康状态评估
     """
 
@@ -6111,7 +6111,7 @@ class DempsterShaferFusion:
         初始化
 
         Args:
-            frame_of_discernment: 辨识框架（所有可能的假设）
+            frame_of_discernment: 辨识框架(所有可能的假设)
         """
         if frame_of_discernment is None:
             frame_of_discernment = set(HealthHypothesis)
@@ -6132,7 +6132,7 @@ class DempsterShaferFusion:
         """
         Dempster组合规则
 
-        融合两个证据，返回新的证据列表
+        融合两个证据,返回新的证据列表
         """
         # 计算冲突系数K
         K = 0.0
@@ -6152,7 +6152,7 @@ class DempsterShaferFusion:
 
         # 归一化
         if K >= 1 - 1e-10:
-            # 完全冲突，返回原始证据的平均
+            # 完全冲突,返回原始证据的平均
             return [evidence1, evidence2]
 
         normalization_factor = 1 / (1 - K)
@@ -6266,7 +6266,7 @@ class MultiModalHealthFusion:
     """
     多模态健康数据融合器
 
-    整合CGM、心率、血压、睡眠等数据，综合评估健康风险
+    整合CGM、心率、血压、睡眠等数据,综合评估健康风险
     """
 
     def __init__(self):

@@ -372,7 +372,7 @@ flowchart TD
 
 ### 6.1 基础向量化 UDF（Python + Pandas）
 
-```python
+```text
 # vectorized_udf_basic.py
 from pyflink.table import DataTypes, EnvironmentSettings, TableEnvironment
 from pyflink.table.udf import udf
@@ -384,13 +384,13 @@ import numpy as np
 # ============================================
 
 @udf(result_type=DataTypes.DOUBLE(),
-     func_type='pandas',  # 关键：启用向量化模式
+     func_type='pandas',  # 关键:启用向量化模式
      udf_type='scalar')
 def vec_math_op(x: pd.Series) -> pd.Series:
     """
-    向量化数学运算：计算 (x^2 + 2x + 1) / log(x+2)
+    向量化数学运算:计算 (x^2 + 2x + 1) / log(x+2)
 
-    相比标量版本，性能提升 10-50x
+    相比标量版本,性能提升 10-50x
     """
     return (x ** 2 + 2 * x + 1) / np.log(x + 2)
 

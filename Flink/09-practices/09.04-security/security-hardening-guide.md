@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 安全加固完整指南
 
 > 所属阶段: Flink/ | 前置依赖: [flink-security-complete-guide.md](./flink-security-complete-guide.md), [flink-24-security-enhancements.md](./flink-24-security-enhancements.md) | 形式化等级: L3
@@ -268,22 +272,22 @@ public class OAuth2SecurityHandler implements SecurityHandler {
 # oauth2-proxy-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: flink-oauth2-proxy
-spec: 
+spec:
   replicas: 2
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       app: flink-oauth2-proxy
-  template: 
-    metadata: 
-      labels: 
+  template:
+    metadata:
+      labels:
         app: flink-oauth2-proxy
-    spec: 
-      containers: 
+    spec:
+      containers:
       - name: oauth2-proxy
         image: quay.io/oauth2-proxy/oauth2-proxy:v7.5.0
-        args: 
+        args:
         - --provider=oidc
         - --oidc-issuer-url=https://accounts.google.com
         - --client-id=${OAUTH_CLIENT_ID}
@@ -292,7 +296,7 @@ spec:
         - --upstream=http://flink-jobmanager:8081
         - --http-address=0.0.0.0:4180
         - --email-domain=*
-        ports: 
+        ports:
         - containerPort: 4180
 ```
 
@@ -687,6 +691,9 @@ env.getConfig().setStateEncryptionOptions(encryptionOptions);
 
 ```java
 // EncryptedValueState.java
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class EncryptedValueState<T> implements ValueState<T> {
     private final ValueState<byte[]> rawState;
     private final StateSerializer<T> serializer;
@@ -856,6 +863,9 @@ web.access-control-allow-credentials: true
 
 ```java
 // 动态数据脱敏和过滤
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RowLevelSecurityFilter<T> extends RichFilterFunction<T> {
     private final String currentUser;
     private final Set<String> allowedRegions;
@@ -1064,18 +1074,18 @@ class AuditingSourceContext<T> implements SourceContext<T> {
 # log-retention-policy.yaml
 apiVersion: batch/v1
 kind: CronJob
-metadata: 
+metadata:
   name: flink-audit-log-cleanup
-spec: 
+spec:
   schedule: "0 2 * * *"  # 每天凌晨2点执行
-  jobTemplate: 
-    spec: 
-      template: 
-        spec: 
-          containers: 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
           - name: cleanup
             image: amazon/aws-cli:latest
-            command: 
+            command:
             - /bin/sh
             - -c
             - |
@@ -1132,23 +1142,23 @@ spec:
 # .github/workflows/security-scan.yml
 name: Security Scan
 
-on: 
-  push: 
+on:
+  push:
     branches: [main, develop]
-  pull_request: 
+  pull_request:
     branches: [main]
-  schedule: 
+  schedule:
     - cron: '0 6 * * 1'  # 每周一早6点
 
-jobs: 
-  dependency-check: 
+jobs:
+  dependency-check:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v4
 
       - name: Run OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
-        with: 
+        with:
           project: 'flink-application'
           path: '.'
           format: 'ALL'
@@ -1158,7 +1168,7 @@ jobs:
 
       - name: Upload results
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: dependency-check-report
           path: reports/
 
@@ -1175,7 +1185,7 @@ jobs:
 ```yaml
 # .snyk配置文件
 version: v1.25.0
-ignore: 
+ignore:
   'SNYK-JAVA-COMMONSCODEC-561518':
     - '* > commons-codec:commons-codec@1.10':
         reason: 'Not exploitable in Flink context'
@@ -1217,17 +1227,17 @@ USER flinkuser
 # k8s-image-scanner-webhook.yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
-metadata: 
+metadata:
   name: image-security-webhook
-webhooks: 
+webhooks:
   - name: image-security.default.svc
-    rules: 
+    rules:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
-    clientConfig: 
-      service: 
+    clientConfig:
+      service:
         name: image-security-webhook
         namespace: default
         path: "/validate"
@@ -1235,8 +1245,8 @@ webhooks:
     admissionReviewVersions: ["v1"]
     sideEffects: None
     failurePolicy: Fail
-    namespaceSelector: 
-      matchLabels: 
+    namespaceSelector:
+      matchLabels:
         security-scan: enabled
 ```
 
@@ -1278,11 +1288,11 @@ done
 
 ```yaml
 # cis-flink-benchmark.yaml
-benchmark: 
+benchmark:
   version: "1.0"
   name: "CIS Apache Flink Benchmark"
 
-  checks: 
+  checks:
     - id: 1.1.1
       title: "Ensure SSL is enabled for internal communication"
       severity: HIGH
@@ -1615,33 +1625,33 @@ classloader.check-leaked-classloader: true
 # flink-security-deployment.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: production-flink-cluster
   namespace: flink-production
-spec: 
+spec:
   image: flink:1.18-scala_2.12-java11
   flinkVersion: v1.18
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: 4096m
       cpu: 2
     replicas: 3  # HA模式
-    podTemplate: 
-      spec: 
+    podTemplate:
+      spec:
         serviceAccountName: flink-jobmanager
-        securityContext: 
+        securityContext:
           runAsNonRoot: true
           runAsUser: 9999
           fsGroup: 9999
-        containers: 
+        containers:
         - name: flink-main-container
-          securityContext: 
+          securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities: 
-              drop: 
+            capabilities:
+              drop:
               - ALL
-          volumeMounts: 
+          volumeMounts:
           - name: ssl-certs
             mountPath: /etc/flink/ssl
             readOnly: true
@@ -1656,43 +1666,43 @@ spec:
             mountPath: /var/log/flink/audit
           - name: tmp
             mountPath: /tmp
-        volumes: 
+        volumes:
         - name: ssl-certs
-          secret: 
+          secret:
             secretName: flink-ssl-certs
             defaultMode: 0400
         - name: kerberos-keytab
-          secret: 
+          secret:
             secretName: flink-kerberos-keytab
             defaultMode: 0400
         - name: krb5-config
-          configMap: 
+          configMap:
             name: kerberos-config
         - name: audit-logs
           emptyDir: {}
         - name: tmp
           emptyDir: {}
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: 8192m
       cpu: 4
     replicas: 5
-    podTemplate: 
-      spec: 
+    podTemplate:
+      spec:
         serviceAccountName: flink-taskmanager
-        securityContext: 
+        securityContext:
           runAsNonRoot: true
           runAsUser: 9999
           fsGroup: 9999
-        containers: 
+        containers:
         - name: flink-main-container
-          securityContext: 
+          securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities: 
-              drop: 
+            capabilities:
+              drop:
               - ALL
-          volumeMounts: 
+          volumeMounts:
           - name: ssl-certs
             mountPath: /etc/flink/ssl
             readOnly: true
@@ -1705,19 +1715,19 @@ spec:
             readOnly: true
           - name: tmp
             mountPath: /tmp
-        volumes: 
+        volumes:
         - name: ssl-certs
-          secret: 
+          secret:
             secretName: flink-ssl-certs
         - name: kerberos-keytab
-          secret: 
+          secret:
             secretName: flink-kerberos-keytab
         - name: krb5-config
-          configMap: 
+          configMap:
             name: kerberos-config
         - name: tmp
           emptyDir: {}
-  flinkConfiguration: 
+  flinkConfiguration:
     security.ssl.internal.enabled: "true"
     security.ssl.rest.enabled: "true"
     security.kerberos.login.principal: "flink/_HOST@PRODUCTION.EXAMPLE.COM"
@@ -1730,22 +1740,22 @@ spec:
 # Network Policy - 限制Pod间通信
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata: 
+metadata:
   name: flink-network-policy
   namespace: flink-production
-spec: 
-  podSelector: 
-    matchLabels: 
+spec:
+  podSelector:
+    matchLabels:
       app.kubernetes.io/name: flink
-  policyTypes: 
+  policyTypes:
   - Ingress
   - Egress
-  ingress: 
+  ingress:
   - from:
     - podSelector:
-        matchLabels: 
+        matchLabels:
           app.kubernetes.io/name: flink
-    ports: 
+    ports:
     - protocol: TCP
       port: 6121
     - protocol: TCP
@@ -1756,26 +1766,26 @@ spec:
       port: 8443
   - from:
     - namespaceSelector:
-        matchLabels: 
+        matchLabels:
           name: ingress-nginx
-    ports: 
+    ports:
     - protocol: TCP
       port: 8443
-  egress: 
+  egress:
   - to:
     - podSelector:
-        matchLabels: 
+        matchLabels:
           app.kubernetes.io/name: flink
   - to:
     - namespaceSelector: {}
-      podSelector: 
-        matchLabels: 
+      podSelector:
+        matchLabels:
           app: zookeeper
-    ports: 
+    ports:
     - protocol: TCP
       port: 2181
   - to: []  # S3/Kafka等外部服务通过Egress规则控制
-    ports: 
+    ports:
     - protocol: TCP
       port: 443
     - protocol: TCP
@@ -2046,37 +2056,37 @@ graph LR
 # flink-certificate.yaml
 apiVersion: cert-manager.io/v1
 kind: Certificate
-metadata: 
+metadata:
   name: flink-internal-tls
   namespace: flink-production
-spec: 
+spec:
   secretName: flink-ssl-certs
-  issuerRef: 
+  issuerRef:
     name: internal-ca-issuer
     kind: ClusterIssuer
-  dnsNames: 
+  dnsNames:
   - flink-jobmanager
   - flink-jobmanager.flink-production.svc.cluster.local
   - '*.flink-taskmanager.flink-production.svc.cluster.local'
   duration: 2160h  # 90天
   renewBefore: 360h  # 15天前续期
-  privateKey: 
+  privateKey:
     algorithm: RSA
     encoding: PKCS1
     size: 4096
-  usages: 
+  usages:
   - server auth
   - client auth
 ---
 # 自动重启触发器
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: flink-cert-reloader
-spec: 
-  template: 
-    metadata: 
-      annotations: 
+spec:
+  template:
+    metadata:
+      annotations:
         # 证书更新时自动重启
         checksum/certs: "${FLINK_SSL_CERTS_CHECKSUM}"
 ```

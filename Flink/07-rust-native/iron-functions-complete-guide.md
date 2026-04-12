@@ -504,6 +504,10 @@ import org.apache.flink.table.types.DataType;
 import org.apache.flink.table.types.logical.LogicalType;
 import static org.apache.flink.table.api.DataTypes.*;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class IronWasmRowExample {
 
     public static void main(String[] args) {
@@ -555,6 +559,9 @@ FROM orders;
 
 ```java
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
 
 StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
@@ -730,6 +737,11 @@ pub fn decode_transfer_batch(input_json: String) -> FnResult<String> {
 #### Flink 作业集成
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // Ethereum 日志处理作业
 public class EthereumLogProcessor {
 

@@ -1,5 +1,9 @@
 # 2026年多Agent编排框架深度对比：LangGraph、CrewAI、AutoGen
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Knowledge/05-mapping-guides | **前置依赖**: [04-technology-selection](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L4 (工程分析+量化对比) | **更新日期**: 2026-04-02
 
 ---

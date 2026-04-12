@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 流计算系统故障排查手册
 
 > **适用版本**: v2.8+ | **适用范围**: Flink/Dataflow 流计算系统 | **更新日期**: 2026-04-03
@@ -188,6 +191,9 @@ graph LR
 
 ```java
 // ❌ 低效：同步外部调用
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class SyncFunction extends RichMapFunction<String, Result> {
     @Override
     public Result map(String value) {
@@ -260,6 +266,10 @@ flowchart TD
 #### 背压缓解配置
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 代码级别优化
 env.setBufferTimeout(100); // 减少Buffer等待时间
 
@@ -324,6 +334,11 @@ graph TB
 #### 两阶段聚合代码示例
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 第一阶段：加盐局部聚合
 DataStream<LocalAgg> localAgg = source
     .map(new RichMapFunction<Event, Event>() {
@@ -467,6 +482,12 @@ sequenceDiagram
 
 ```java
 // 方案1: 幂等Sink（推荐）
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class IdempotentSink extends RichSinkFunction<Event> {
     private transient RedisClient redis;
 
@@ -554,6 +575,12 @@ graph LR
 #### 完整Watermark配置
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 合理的Watermark策略
 WatermarkStrategy<Event> strategy = WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))  // 最大乱序延迟
@@ -612,6 +639,11 @@ flowchart TD
 
 ```java
 // 迟到数据处理完整示例
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class LateDataHandlingJob {
 
     public static void main(String[] args) throws Exception {

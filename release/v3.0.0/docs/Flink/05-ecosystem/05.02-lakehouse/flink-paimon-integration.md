@@ -1402,6 +1402,11 @@ import org.apache.paimon.catalog.CatalogContext;
 import org.apache.paimon.catalog.CatalogFactory;
 import org.apache.paimon.options.Options;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class PaimonDataStreamIntegration {
 
     public static void main(String[] args) throws Exception {
@@ -1512,6 +1517,10 @@ public class PaimonDataStreamIntegration {
  * 独立 Compaction 作业
  * 用于解耦写入与合并，避免影响写入延迟
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 public class PaimonCompactionJob {
 
     public static void main(String[] args) throws Exception {

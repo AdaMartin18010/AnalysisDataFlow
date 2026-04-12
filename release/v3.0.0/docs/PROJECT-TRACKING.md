@@ -304,7 +304,7 @@
 - <https://risingwave.com/blog/> (RisingWave 技术博客)
 - <https://conduktor.io/glossary/> (Conduktor 术语表)
 - <https://calcite.apache.org/docs/> (Apache Calcite)
-- <https://github.com/apache/flink/tree/master/flink-docs/docs/flips/> (Flink Wiki)
+- <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals/> (Flink Wiki)
 - <https://www.alibabacloud.com/blog/> (阿里云技术博客)
 
 ### 🔵 P5-AI - AI Agent流处理专题深化 ✅ 完成

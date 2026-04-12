@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挑战2: 窗口聚合优化 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section h2 { color: #11998e; margin-bottom: 20px; font-size: 1.5rem; }
+        .section h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        
+        .difficulty { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .difficulty-intermediate { background: #fff3cd; color: #856404; }
+        
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        
+        .hint { background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #2196f3; }
+        .hint h4 { color: #1976d2; margin-bottom: 8px; }
+        
+        .solution { display: none; background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4caf50; }
+        .solution.visible { display: block; }
+        .solution h4 { color: #2e7d32; margin-bottom: 10px; }
+        
+        .test-case { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #dee2e6; }
+        .test-case h4 { color: #495057; margin-bottom: 10px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        .btn-primary { background: #11998e; color: white; }
+        .btn-primary:hover { background: #0d7a6e; }
+        .btn-outline { background: white; color: #11998e; border: 2px solid #11998e; }
+        
+        .checklist { list-style: none; }
+        .checklist li { padding: 10px 0; border-bottom: 1px solid #eee; }
+        .checklist li:before {
+            content: "☐";
+            margin-right: 10px;
+            color: #11998e;
+            font-size: 1.2rem;
+        }
+        .checklist li.checked:before { content: "☑"; color: #27ae60; }
+        
+        .diagram { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a { padding: 12px 25px; background: #11998e; color: white; text-decoration: none; border-radius: 25px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🏆 编程挑战</span>
+            <span class="badge">200 积分</span>
+            <h1>挑战2: 窗口聚合优化</h1>
+            <p>优化复杂的窗口聚合操作，处理迟到数据和增量计算</p>
+        </header>
+
+        <div class="section">
+            <h2>📝 挑战描述</h2>
+            <span class="difficulty difficulty-intermediate">中级</span>
+            <p style="margin-top: 15px;">在实际生产环境中，窗口聚合面临数据倾斜、迟到数据和性能问题。本挑战要求你实现一个优化的窗口聚合方案，解决这些常见问题。</p>
+            
+            <h3>业务场景</h3>
+            <p>实时统计每个商品类目的订单金额，窗口大小为1分钟，需要：</p>
+            <ul class="checklist" id="requirements">
+                <li>使用两阶段聚合解决数据倾斜问题</li>
+                <li>实现增量聚合优化性能</li>
+                <li>处理迟到数据 (允许5分钟迟到)</li>
+                <li>迟到数据输出到侧输出流</li>
+                <li>支持 Session Window 动态合并</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ 两阶段聚合原理</h2>
+            <div class="diagram">
+                <pre style="font-family: monospace; font-size: 0.9rem;">
+┌─────────────────────────────────────────────────────────────────┐
+│                     两阶段聚合 (解决数据倾斜)                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   原始数据流                                                      │
+│      │                                                          │
+│      ▼                                                          │
+│   ┌──────────┐    第一阶段: 随机预聚合                             │
+│   │ Map      │    key = random(0-99) + "_" + category             │
+│   │ (预聚合)  │    → 局部聚合，分散热点                            │
+│   └────┬─────┘                                                  │
+│        │                                                        │
+│   ┌────▼─────┐    窗口聚合                                        │
+│   │ Window   │    按随机key聚合                                   │
+│   │ Aggregate│                                                   │
+│   └────┬─────┘                                                  │
+│        │                                                        │
+│   ┌────▼─────┐    第二阶段: 去除随机前缀                            │
+│   │ Map      │    key = original category                         │
+│   │ (去前缀)  │    → 提取原始key                                   │
+│   └────┬─────┘                                                  │
+│        │                                                        │
+│   ┌────▼─────┐    最终聚合                                        │
+│   │ Final    │    按原始key最终汇总                                │
+│   │ Aggregate│                                                   │
+│   └──────────┘                                                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔰 初始代码框架</h2>
+            <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.eventtime.WatermarkStrategy;
+<span class="keyword">import</span> org.apache.flink.api.common.functions.AggregateFunction;
+<span class="keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time;
+<span class="keyword">import</span> org.apache.flink.util.OutputTag;
+
+<span class="keyword">import</span> java.time.Duration;
+
+<span class="keyword">public class</span> OptimizedWindowAggregation {
+    <span class="comment">// 侧输出流标签 (用于迟到数据)</span>
+    <span class="keyword">private static final</span> OutputTag&lt;OrderEvent&gt; LATE_DATA_TAG = 
+        <span class="keyword">new</span> OutputTag&lt;OrderEvent&gt;(<span class="string">"late-data"</span>){};
+    
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// TODO 1: 创建带 Watermark 的数据流</span>
+        DataStream&lt;OrderEvent&gt; orders = ...
+        
+        <span class="comment">// TODO 2: 实现两阶段聚合</span>
+        DataStream&lt;CategoryStats&gt; result = orders
+            <span class="comment">// 第一阶段: 随机预聚合</span>
+            .map(<span class="comment">/* 添加随机前缀 */</span>)
+            .keyBy(<span class="comment">/* 按带前缀的key分组 */</span>)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .aggregate(<span class="keyword">new</span> SumAggregate())
+            <span class="comment">// 第二阶段: 去除前缀后最终聚合</span>
+            .map(<span class="comment">/* 去除随机前缀 */</span>)
+            .keyBy(<span class="comment">/* 按原始key分组 */</span>)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .aggregate(<span class="keyword">new</span> FinalSumAggregate());
+        
+        <span class="comment">// TODO 3: 获取迟到数据</span>
+        DataStream&lt;OrderEvent&gt; lateData = ...
+        
+        result.print(<span class="string">"main"</span>);
+        lateData.print(<span class="string">"late"</span>);
+        
+        env.execute();
+    }
+    
+    <span class="comment">// TODO: 实现 AggregateFunction (增量聚合)</span>
+    <span class="keyword">public static class</span> SumAggregate <span class="keyword">implements</span> 
+        AggregateFunction&lt;OrderEvent, ?, ?&gt; {
+        <span class="comment">// 实现创建累加器、添加元素、获取结果、合并累加器</span>
+    }
+    
+    <span class="comment">// 订单事件类</span>
+    <span class="keyword">public static class</span> OrderEvent {
+        <span class="keyword">public</span> String orderId;
+        <span class="keyword">public</span> String category;
+        <span class="keyword">public double</span> amount;
+        <span class="keyword">public long</span> timestamp;
+        
+        <span class="keyword">public</span> OrderEvent() {}
+        
+        <span class="keyword">public</span> OrderEvent(String orderId, String category, <span class="keyword">double</span> amount, <span class="keyword">long</span> timestamp) {
+            <span class="keyword">this</span>.orderId = orderId;
+            <span class="keyword">this</span>.category = category;
+            <span class="keyword">this</span>.amount = amount;
+            <span class="keyword">this</span>.timestamp = timestamp;
+        }
+    }
+    
+    <span class="comment">// 统计结果类</span>
+    <span class="keyword">public static class</span> CategoryStats {
+        <span class="keyword">public</span> String category;
+        <span class="keyword">public double</span> totalAmount;
+        <span class="keyword">public long</span> count;
+        
+        @Override
+        <span class="keyword">public</span> String toString() {
+            <span class="keyword">return</span> String.format(<span class="string">"CategoryStats{category='%s', totalAmount=%.2f, count=%d}"</span>,
+                category, totalAmount, count);
+        }
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 测试用例</h2>
+            
+            <div class="test-case">
+                <h4>测试用例 1: 基础聚合</h4>
+                <p><strong>输入:</strong> 1分钟内多个类目的订单</p>
+                <pre>Order("A001", "electronics", 100.0, 1000)
+Order("A002", "electronics", 200.0, 2000)
+Order("A003", "clothing", 50.0, 3000)
+Order("A004", "electronics", 150.0, 4000)</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>main&gt; CategoryStats{category='electronics', totalAmount=450.0, count=3}
+main&gt; CategoryStats{category='clothing', totalAmount=50.0, count=1}</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 2: 迟到数据处理</h4>
+                <p><strong>场景:</strong> Watermark 已经超过窗口结束时间后，迟到的订单</p>
+                <pre>// 正常订单 (在Watermark之前)
+Order("A005", "books", 30.0, 50000)
+
+// 迟到订单 (Watermark已推进到60000)
+Order("A006", "books", 20.0, 45000)  // 迟到5秒</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>main&gt; CategoryStats{category='books', totalAmount=30.0, count=1}
+late&gt; OrderEvent{orderId='A006', category='books', amount=20.0}</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 3: 数据倾斜测试</h4>
+                <p><strong>场景:</strong> 90% 订单集中在 "electronics" 类目</p>
+                <p><strong>验证:</strong> 两阶段聚合后，各个子任务的负载应该相对均衡</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 提示</h2>
+            
+            <div class="hint">
+                <h4>提示 1: 两阶段聚合实现</h4>
+                <p>第一阶段使用 <code>key.hashCode() % 100 + "_" + key</code> 生成随机前缀。</p>
+                <p>这样可以将有相同 key 的数据分散到 100 个不同的子任务中。</p>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 2: AggregateFunction</h4>
+                <p>实现四个方法：</p>
+                <ul>
+                    <li><code>createAccumulator()</code>: 创建累加器</li>
+                    <li><code>add(value, accumulator)</code>: 添加元素到累加器</li>
+                    <li><code>getResult(accumulator)</code>: 从累加器提取结果</li>
+                    <li><code>merge(a, b)</code>: 合并两个累加器 (用于会话窗口)</li>
+                </ul>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 3: 迟到数据处理</h4>
+                <p>使用 <code>.allowedLateness(Time.minutes(5))</code> 允许迟到。</p>
+                <p>使用 <code>.sideOutputLateData(LATE_DATA_TAG)</code> 将迟到数据发送到侧输出流。</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ 参考答案</h2>
+            <p>请先独立完成挑战，遇到困难再查看答案。</p>
+            <button class="btn btn-outline" onclick="toggleSolution()">显示/隐藏答案</button>
+            
+            <div class="solution" id="solution">
+                <h4>完整实现代码</h4>
+                <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.eventtime.WatermarkStrategy;
+<span class="keyword">import</span> org.apache.flink.api.common.functions.AggregateFunction;
+<span class="keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+<span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time;
+<span class="keyword">import</span> org.apache.flink.util.OutputTag;
+
+<span class="keyword">import</span> java.time.Duration;
+
+<span class="keyword">public class</span> OptimizedWindowAggregation {
+    <span class="keyword">private static final</span> OutputTag&lt;OrderEvent&gt; LATE_DATA_TAG = 
+        <span class="keyword">new</span> OutputTag&lt;OrderEvent&gt;(<span class="string">"late-data"</span>){};
+    
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 1. 创建带 Watermark 的数据流</span>
+        DataStream&lt;OrderEvent&gt; orders = env.fromElements(
+                <span class="keyword">new</span> OrderEvent(<span class="string">"A001"</span>, <span class="string">"electronics"</span>, 100.0, 1000L),
+                <span class="keyword">new</span> OrderEvent(<span class="string">"A002"</span>, <span class="string">"electronics"</span>, 200.0, 2000L),
+                <span class="keyword">new</span> OrderEvent(<span class="string">"A003"</span>, <span class="string">"clothing"</span>, 50.0, 3000L)
+            )
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.&lt;OrderEvent&gt;forBoundedOutOfOrderness(
+                    Duration.ofSeconds(5))
+                .withTimestampAssigner((event, timestamp) -> event.timestamp)
+            );
+        
+        <span class="comment">// 2. 两阶段聚合</span>
+        SingleOutputStreamOperator&lt;CategoryStats&gt; result = orders
+            <span class="comment">// 第一阶段: 随机预聚合</span>
+            .map(event -> {
+                <span class="keyword">int</span> randomPrefix = event.category.hashCode() % 100;
+                String prefixedKey = randomPrefix + <span class="string">"_"</span> + event.category;
+                <span class="keyword">return</span> Tuple2.of(prefixedKey, event);
+            })
+            .keyBy(t -> t.f0)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .aggregate(<span class="keyword">new</span> SumAggregate())
+            <span class="comment">// 第二阶段: 去除前缀后最终聚合</span>
+            .map(stats -> {
+                String category = stats.category.substring(stats.category.indexOf(<span class="string">"_"</span>) + 1);
+                <span class="keyword">return new</span> CategoryStats(category, stats.totalAmount, stats.count);
+            })
+            .keyBy(s -> s.category)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .allowedLateness(Time.minutes(5))
+            .sideOutputLateData(LATE_DATA_TAG)
+            .aggregate(<span class="keyword">new</span> FinalSumAggregate());
+        
+        <span class="comment">// 3. 获取迟到数据</span>
+        DataStream&lt;OrderEvent&gt; lateData = result.getSideOutput(LATE_DATA_TAG);
+        
+        result.print(<span class="string">"main"</span>);
+        lateData.print(<span class="string">"late"</span>);
+        
+        env.execute();
+    }
+    
+    <span class="comment">// 第一阶段聚合函数</span>
+    <span class="keyword">public static class</span> SumAggregate <span class="keyword">implements</span> 
+        AggregateFunction&lt;Tuple2&lt;String, OrderEvent&gt;, Acc, CategoryStats&gt; {
+        
+        @Override
+        <span class="keyword">public</span> Acc createAccumulator() {
+            <span class="keyword">return new</span> Acc(<span class="keyword">null</span>, 0.0, 0);
+        }
+        
+        @Override
+        <span class="keyword">public</span> Acc add(Tuple2&lt;String, OrderEvent&gt; value, Acc accumulator) {
+            <span class="keyword">if</span> (accumulator.category == <span class="keyword">null</span>) {
+                accumulator.category = value.f0;
+            }
+            accumulator.totalAmount += value.f1.amount;
+            accumulator.count++;
+            <span class="keyword">return</span> accumulator;
+        }
+        
+        @Override
+        <span class="keyword">public</span> CategoryStats getResult(Acc accumulator) {
+            <span class="keyword">return new</span> CategoryStats(accumulator.category, 
+                                     accumulator.totalAmount, accumulator.count);
+        }
+        
+        @Override
+        <span class="keyword">public</span> Acc merge(Acc a, Acc b) {
+            a.totalAmount += b.totalAmount;
+            a.count += b.count;
+            <span class="keyword">return</span> a;
+        }
+    }
+    
+    <span class="comment">// 第二阶段聚合函数</span>
+    <span class="keyword">public static class</span> FinalSumAggregate <span class="keyword">implements</span> 
+        AggregateFunction&lt;CategoryStats, Acc, CategoryStats&gt; {
+        
+        @Override
+        <span class="keyword">public</span> Acc createAccumulator() {
+            <span class="keyword">return new</span> Acc(<span class="keyword">null</span>, 0.0, 0);
+        }
+        
+        @Override
+        <span class="keyword">public</span> Acc add(CategoryStats value, Acc accumulator) {
+            <span class="keyword">if</span> (accumulator.category == <span class="keyword">null</span>) {
+                accumulator.category = value.category;
+            }
+            accumulator.totalAmount += value.totalAmount;
+            accumulator.count += value.count;
+            <span class="keyword">return</span> accumulator;
+        }
+        
+        @Override
+        <span class="keyword">public</span> CategoryStats getResult(Acc accumulator) {
+            <span class="keyword">return new</span> CategoryStats(accumulator.category, 
+                                     accumulator.totalAmount, accumulator.count);
+        }
+        
+        @Override
+        <span class="keyword">public</span> Acc merge(Acc a, Acc b) {
+            a.totalAmount += b.totalAmount;
+            a.count += b.count;
+            <span class="keyword">return</span> a;
+        }
+    }
+    
+    <span class="keyword">public static class</span> Acc {
+        String category;
+        <span class="keyword">double</span> totalAmount;
+        <span class="keyword">long</span> count;
+        
+        Acc(String category, <span class="keyword">double</span> totalAmount, <span class="keyword">long</span> count) {
+            <span class="keyword">this</span>.category = category;
+            <span class="keyword">this</span>.totalAmount = totalAmount;
+            <span class="keyword">this</span>.count = count;
+        }
+    }
+    
+    <span class="keyword">public static class</span> OrderEvent {
+        String orderId;
+        String category;
+        <span class="keyword">double</span> amount;
+        <span class="keyword">long</span> timestamp;
+        
+        OrderEvent() {}
+        
+        OrderEvent(String orderId, String category, <span class="keyword">double</span> amount, <span class="keyword">long</span> timestamp) {
+            <span class="keyword">this</span>.orderId = orderId;
+            <span class="keyword">this</span>.category = category;
+            <span class="keyword">this</span>.amount = amount;
+            <span class="keyword">this</span>.timestamp = timestamp;
+        }
+        
+        @Override
+        <span class="keyword">public</span> String toString() {
+            <span class="keyword">return</span> String.format(<span class="string">"OrderEvent{orderId='%s', category='%s', amount=%.2f}"</span>,
+                orderId, category, amount);
+        }
+    }
+    
+    <span class="keyword">public static class</span> CategoryStats {
+        String category;
+        <span class="keyword">double</span> totalAmount;
+        <span class="keyword">long</span> count;
+        
+        CategoryStats(String category, <span class="keyword">double</span> totalAmount, <span class="keyword">long</span> count) {
+            <span class="keyword">this</span>.category = category;
+            <span class="keyword">this</span>.totalAmount = totalAmount;
+            <span class="keyword">this</span>.count = count;
+        }
+        
+        @Override
+        <span class="keyword">public</span> String toString() {
+            <span class="keyword">return</span> String.format(<span class="string">"CategoryStats{category='%s', totalAmount=%.2f, count=%d}"</span>,
+                category, totalAmount, count);
+        }
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="challenge-01-wordcount.html">← 上一个挑战</a>
+            <a href="challenge-03-state-mgmt.html">下一个挑战 →</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSolution() {
+            document.getElementById('solution').classList.toggle('visible');
+        }
+        
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        });
+    </script>
+</body>
+</html>

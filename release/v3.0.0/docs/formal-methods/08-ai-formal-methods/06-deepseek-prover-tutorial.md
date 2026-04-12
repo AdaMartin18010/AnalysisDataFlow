@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # DeepSeek-Prover 教程：国产AI定理证明器实战指南
 
 > **所属阶段**: AI-Formal-Methods | **前置依赖**: [神经定理证明](01-neural-theorem-proving.md), [Lean 4](../05-verification/03-theorem-proving/03-lean4.md) | **形式化等级**: L4-L6

@@ -586,6 +586,10 @@ flowchart TB
 **Flink实现代码**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class EmergencyResponsePipeline {
 
     public static void main(String[] args) {

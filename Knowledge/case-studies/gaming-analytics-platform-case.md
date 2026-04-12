@@ -279,6 +279,12 @@ $$
 **Flink实时指标实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 实时DAU计算
 DataStream<DailyActiveUser> dauStream = loginEvents
     .assignTimestampsAndWatermarks(
@@ -403,6 +409,11 @@ allMetrics.addSink(new ClickHouseSink<>(
 
 ```java
 // A/B分流器
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ABTestAssignment extends
     RichMapFunction<GameEvent, GameEventWithVariant> {
 

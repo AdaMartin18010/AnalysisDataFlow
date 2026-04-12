@@ -1116,6 +1116,9 @@ spec:
 **批流一体优化方案**：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink批流一体作业示例
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

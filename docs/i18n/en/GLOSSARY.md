@@ -1,4 +1,4 @@
-﻿---
+---
 title: "AnalysisDataFlow Glossary"
 source_file: "GLOSSARY.md"
 source_version: "v3.3.0"

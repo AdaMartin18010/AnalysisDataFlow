@@ -468,6 +468,10 @@ import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
 
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 交易数据流
 val transactionStream: DataStream[Transaction] = env
   .fromSource(kafkaSource, watermarkStrategy, "Transactions")
@@ -501,6 +505,10 @@ val slidingAgg = sensorStream
   .aggregate(new AverageAggregate())
 
 // 平均值聚合（需维护SUM和COUNT）
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 class AverageAggregate extends AggregateFunction[SensorReading, (Double, Long), Double] {
   override def createAccumulator(): (Double, Long) = (0.0, 0L)
 
@@ -655,6 +663,9 @@ GROUP BY
 import org.apache.flink.streaming.api.windowing.triggers.ContinuousTrigger
 import org.apache.flink.streaming.api.windowing.evictors.CountEvictor
 
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 全局窗口 + 自定义触发器 + 驱逐器
 val topNStream = scoreStream
   .keyBy(_.gameId)
@@ -702,6 +713,10 @@ class TopNFunction(n: Int) extends ProcessWindowFunction[Score, RankEntry, Strin
 **Watermarks 与窗口结合完整示例** [^3][^6]：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 完整的窗口聚合流程配置
 DataStream<PageView> pageViews = env
   .fromSource(

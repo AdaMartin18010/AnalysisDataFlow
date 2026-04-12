@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # MCP协议与流处理集成架构
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink LLM集成](./real-time-rag-architecture.md), [RAG架构](./real-time-rag-architecture.md) | 形式化等级: L3-L4

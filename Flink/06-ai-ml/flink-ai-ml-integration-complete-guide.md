@@ -1,5 +1,9 @@
 # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md), [Flink状态管理](../02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 
 ---
@@ -47,6 +51,8 @@ $$
 **Agent状态类型映射**：
 
 ```java
+import org.apache.flink.api.common.state.ValueState;
+
 // Def-F-12-101a: Agent记忆状态形式化
 public class AgentMemoryState {
     // 工作记忆 - ValueState (会话级)
@@ -306,6 +312,8 @@ $$
 **重放实现**：
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // Def-F-12-108a: 可重放Agent设计
 public class ReplayableAgent {
     private ListState<Event> eventLog;      // 事件日志
@@ -679,6 +687,8 @@ graph LR
 **反模式1: 无界状态增长**
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // ❌ 错误：无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！
@@ -1839,6 +1849,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
+
 /**
  * 实时点击率预测 - 在线学习Pipeline
  */
@@ -2868,6 +2882,11 @@ GPT-3.5:      $0.0015 / 1K input tokens, $0.002 / 1K output tokens
 ### 9.1 Agent设计最佳实践
 
 ```java
+import org.apache.flink.api.common.state.StateTtlConfig;
+
+import org.apache.flink.api.common.state.ValueState;
+
+
 /**
  * 生产级Agent设计模式
  */

@@ -156,6 +156,9 @@ orders.filter((key, order) -> order.getAmount() > 100)
 **Flink 等效代码**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // DataStream API
 DataStream<Order> orders = env.fromKafka("orders", ...);
 

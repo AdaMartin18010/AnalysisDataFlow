@@ -979,6 +979,9 @@ class BatchInferenceUDF:
 **Java端配置**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink与Python进程集成
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

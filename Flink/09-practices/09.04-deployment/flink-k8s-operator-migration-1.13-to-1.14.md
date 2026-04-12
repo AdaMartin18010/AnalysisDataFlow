@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink Kubernetes Operator 1.13 到 1.14 迁移指南
 
 > **所属阶段**: Flink/09-practices/09.04-deployment | **前置依赖**: [flink-kubernetes-operator-1.14-guide.md](./flink-kubernetes-operator-1.14-guide.md) | **形式化等级**: L4 (工程规范)
@@ -73,7 +77,7 @@ BackwardCompatibility = ⟨ ConfigMap₁.₁₃, ConfigMap₁.₁₄, Validity, 
 **1.14 兼容性矩阵**：
 
 ```yaml
-CompatibilityMatrix: 
+CompatibilityMatrix:
   # Full 兼容
   - path: "spec.flinkVersion"
     compatibility: FULL
@@ -161,9 +165,9 @@ ConversionStrategy = { None, Webhook }
 # CRD 定义中的版本管理
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
-spec: 
+spec:
   group: flink.apache.org
-  versions: 
+  versions:
     - name: v1beta1
       served: true
       storage: false  # 1.14 不再是存储版本
@@ -173,8 +177,8 @@ spec:
     - name: v1beta2
       served: true
       storage: true   # 1.14 新存储版本
-      schema: 
-        openAPIV3Schema: 
+      schema:
+        openAPIV3Schema:
           # 新 Schema 包含 1.14 特性
 ```
 
@@ -200,23 +204,23 @@ PostUpgradeHook: 升级后执行的验证操作
 ```yaml
 apiVersion: flink.apache.org/v1beta1
 kind: OperatorUpgradeConfig
-metadata: 
+metadata:
   name: rolling-upgrade-config
-spec: 
+spec:
   strategy: RollingUpdate
-  rollingUpdate: 
+  rollingUpdate:
     batchSize: 5
     maxUnavailable: 2
     pauseBetweenBatches: 10m
 
-  hooks: 
-    preUpgrade: 
+  hooks:
+    preUpgrade:
       - name: validate-compatibility
         action: validateCRDCompatibility
       - name: backup-configs
         action: exportAllConfigurations
 
-    postUpgrade: 
+    postUpgrade:
       - name: verify-health
         action: verifyAllDeploymentsHealthy
         timeout: 30m
@@ -245,7 +249,7 @@ VerificationPoint = ⟨ Check, Expected, ActionOnFailure, Timeout ⟩
 **验证点清单**：
 
 ```yaml
-VerificationPoints: 
+VerificationPoints:
   - name: "Pre-Migration Backup"
     check: "All FlinkDeployments have valid checkpoint/savepoint"
     expected: "true"
@@ -419,47 +423,56 @@ CRD 存储版本升级过程中，资源状态保持一致：
 **策略 1：原地升级 (In-Place Upgrade)**
 
 适用场景：
+
 - 开发/测试环境
 - 非关键生产作业
 - 有维护窗口
 
 优点：
+
 - 简单快速
 - 无需额外资源
 
 缺点：
+
 - 短暂服务中断（Operator 重启期间）
 - 无法并行验证
 
 **策略 2：蓝绿升级 (Blue/Green Upgrade)**
 
 适用场景：
+
 - 关键生产环境
 - 零停机要求
 - 有资源冗余
 
 优点：
+
 - 零停机
 - 可并行验证
 - 快速回滚
 
 缺点：
+
 - 需要双倍资源
 - 配置复杂
 
 **策略 3：金丝雀升级 (Canary Upgrade)**
 
 适用场景：
+
 - 大规模集群
 - 风险可控
 - 渐进式验证
 
 优点：
+
 - 风险分散
 - 早期发现问题
 - 影响范围可控
 
 缺点：
+
 - 升级时间长
 - 需要精细监控
 
@@ -468,7 +481,7 @@ CRD 存储版本升级过程中，资源状态保持一致：
 **回滚触发条件**：
 
 ```yaml
-RollbackTriggers: 
+RollbackTriggers:
   - condition: "Operator pod CrashLoopBackOff > 3 times"
     action: IMMEDIATE_ROLLBACK
 
@@ -542,21 +555,21 @@ kubectl get flinkdeployments -A -o json | jq '.items[] | select(.status.jobStatu
 **2. 监控检查清单**
 
 ```yaml
-MonitoringChecklist: 
-  Operator: 
+MonitoringChecklist:
+  Operator:
     - Pod 状态: Running/Ready
     - 内存使用: < 80%
     - CPU 使用: < 70%
     - Reconcile 成功率: > 99%
     - API 响应时间: < 500ms
 
-  FlinkDeployments: 
+  FlinkDeployments:
     - 健康作业比例: > 98%
     - 平均启动时间: < 基准 + 20%
     - Checkpoint 成功率: > 99%
     - Savepoint 成功率: > 99%
 
-  Business: 
+  Business:
     - 端到端延迟: < 基准 + 10%
     - 吞吐量: > 基准 - 5%
     - 错误率: < 基准 + 50%
@@ -681,6 +694,7 @@ return Cluster₁.₁₄
    - 网络配置保持相同
 
 3. **验证方法**：
+
    ```python
    def verify_equivalence(config_113, config_114):
        # 运行基准测试
@@ -691,6 +705,7 @@ return Cluster₁.₁₄
        assert abs(baseline.throughput - migrated.throughput) / baseline.throughput < 0.05
        assert abs(baseline.latency_p99 - migrated.latency_p99) / baseline.latency_p99 < 0.10
        assert abs(baseline.resource_usage - migrated.resource_usage) / baseline.resource_usage < 0.15
+
 ```
 
 ---
@@ -906,22 +921,22 @@ done
 
 ```yaml
 # ========== values-1.13.yaml (旧配置) ==========
-image: 
+image:
   repository: apache/flink-kubernetes-operator
   tag: "1.13.0"
 
-operatorConfiguration: 
+operatorConfiguration:
   kubernetes.operator.reconcile.interval: 60s
   kubernetes.operator.resource.cleanup.timeout: 5m
 
-watchNamespaces: 
+watchNamespaces:
   - "flink-jobs"
 
-rbac: 
+rbac:
   create: true
 
-resources: 
-  limits: 
+resources:
+  limits:
     cpu: 1000m
     memory: 1Gi
 
@@ -929,96 +944,96 @@ replicaCount: 1
 
 ---
 # ========== values-1.14.yaml (迁移后) ==========
-image: 
+image:
   registry: "docker.io"  # 新增：支持私有镜像仓库
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
   pullPolicy: IfNotPresent
 
 # 新增：结构化配置
-operatorConfiguration: 
+operatorConfiguration:
   # 基础配置
-  core: 
+  core:
     reconcileInterval: 60s
     progressCheckInterval: 10s
 
   # 资源管理
-  resources: 
+  resources:
     cleanupTimeout: 5m
     creationTimeout: 10m
     upgradeTimeout: 15m
 
   # 新增：声明式资源管理
-  declarativeResourceManagement: 
+  declarativeResourceManagement:
     enabled: true
     defaultProfile: "medium"
     profileNamespace: "flink-operator"
 
   # 新增：Autoscaler V2 默认配置
-  autoscaler: 
+  autoscaler:
     enabled: true
     defaultAlgorithm: "v2"
     metricsWindow: "5m"
 
   # 新增：Session 集群增强
-  sessionCluster: 
-    enhancements: 
+  sessionCluster:
+    enhancements:
       enabled: true
       dynamicSlotAllocation: true
       warmPool: true
 
   # 新增：高可用 Leader 选举
-  leaderElection: 
+  leaderElection:
     enabled: true
     leaseDuration: 15s
     renewDeadline: 10s
 
-watchNamespaces: 
+watchNamespaces:
   - "flink-jobs"
   - "flink-production"  # 新增监控命名空间
 
 # 新增：RBAC 范围控制
-rbac: 
+rbac:
   create: true
   scope: cluster  # cluster | namespace
 
-resources: 
-  limits: 
+resources:
+  limits:
     cpu: 2000m      # 建议增加：新特性需要更多资源
     memory: 2Gi     # 建议增加
-  requests: 
+  requests:
     cpu: 500m
     memory: 512Mi
 
 # 新增：高可用配置
-highAvailability: 
+highAvailability:
   enabled: true
   replicas: 2
-  podDisruptionBudget: 
+  podDisruptionBudget:
     enabled: true
     minAvailable: 1
 
 # 新增：资源模板（声明式管理）
-resourceProfiles: 
+resourceProfiles:
   - name: "small"
-    jobManager: 
+    jobManager:
       memory: "2g"
       cpu: 1
-    taskManager: 
+    taskManager:
       memory: "2g"
       cpu: 1
   - name: "medium"
-    jobManager: 
+    jobManager:
       memory: "4g"
       cpu: 2
-    taskManager: 
+    taskManager:
       memory: "4g"
       cpu: 2
   - name: "large"
-    jobManager: 
+    jobManager:
       memory: "8g"
       cpu: 4
-    taskManager: 
+    taskManager:
       memory: "8g"
       cpu: 4
 ```
@@ -1059,29 +1074,29 @@ kubectl get pods -n flink-operator
 # ========== migration-plan.yaml ==========
 apiVersion: flink.apache.org/v1beta1
 kind: MigrationPlan
-metadata: 
+metadata:
   name: operator-113-to-114
-spec: 
+spec:
   sourceVersion: "1.13.0"
   targetVersion: "1.14.0"
 
-  phases: 
+  phases:
     # ========== 阶段 1: 开发环境 ==========
     - name: development
       environment: dev
       schedule: immediate
       riskLevel: low
 
-      preChecks: 
+      preChecks:
         - name: backup-configs
           command: kubectl get flinkdeployments -n flink-dev -o yaml > backup/dev-flinkdeployments.yaml
         - name: verify-ha
           assert: high-availability.enabled == true
 
-      migrationSteps: 
+      migrationSteps:
         - name: upgrade-operator
           action: helm-upgrade
-          params: 
+          params:
             chart: apache/flink-kubernetes-operator
             version: "1.14.0"
             namespace: flink-operator
@@ -1089,11 +1104,11 @@ spec:
 
         - name: migrate-configs
           action: run-migration-script
-          params: 
+          params:
             script: migrate_113_to_114.py
             inputDir: configs/dev
 
-      postChecks: 
+      postChecks:
         - name: verify-operator-health
           command: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=flink-kubernetes-operator -n flink-operator
           timeout: 5m
@@ -1102,7 +1117,7 @@ spec:
           command: kubectl get flinkdeployments -n flink-dev -o json | jq '.items[] | select(.status.jobStatus.state != "RUNNING")'
           expectedOutput: "[]"
 
-      rollback: 
+      rollback:
         trigger: any-step-failed
         action: helm-rollback
         targetRevision: previous
@@ -1114,33 +1129,33 @@ spec:
       dependsOn: [development]
       riskLevel: medium
 
-      preChecks: 
+      preChecks:
         - name: performance-baseline
           action: run-load-test
-          params: 
+          params:
             duration: 30m
             output: baseline-staging.json
 
-      migrationSteps: 
+      migrationSteps:
         - name: canary-upgrade
           action: canary-deployment
-          params: 
+          params:
             batchSize: 2
             maxUnavailable: 1
             pauseBetweenBatches: 15m
 
-      postChecks: 
+      postChecks:
         - name: performance-regression-test
           action: run-load-test
-          params: 
+          params:
             duration: 30m
-          validation: 
+          validation:
             - metric: throughput
               condition: ">= baseline * 0.95"
             - metric: latency_p99
               condition: "<= baseline * 1.10"
 
-      approval: 
+      approval:
         required: true
         approvers: ["team-lead", "sre-oncall"]
 
@@ -1152,24 +1167,24 @@ spec:
       dependsOn: [staging]
       riskLevel: high
 
-      scope: 
+      scope:
         namespaces: ["flink-production"]
         labelSelector: "canary=true"
         percentage: 10
 
-      migrationSteps: 
+      migrationSteps:
         - name: blue-green-upgrade
           action: blue-green-deployment
-          params: 
+          params:
             blueVersion: "1.13.0"
             greenVersion: "1.14.0"
             trafficSplit: "90:10"
-            switchCriteria: 
+            switchCriteria:
               minRunningTime: 30m
               maxErrorRate: 0.001
 
-      monitoring: 
-        metrics: 
+      monitoring:
+        metrics:
           - name: job-failure-rate
             query: rate(flink_jobmanager_job_failed_jobs[5m])
             threshold: 0.001
@@ -1177,10 +1192,10 @@ spec:
             query: rate(flink_jobmanager_checkpoint_count{status="failed"}[5m])
             threshold: 0.01
 
-      rollback: 
+      rollback:
         trigger: metric-threshold-exceeded
         action: traffic-switch
-        params: 
+        params:
           targetSplit: "100:0"  # 全部切回 Blue
 
     # ========== 阶段 4: 生产环境 - 全面推广 ==========
@@ -1190,19 +1205,19 @@ spec:
       dependsOn: [production-canary]
       riskLevel: high
 
-      scope: 
+      scope:
         namespaces: ["flink-production"]
         excludeLabelSelector: "critical=true"  # 关键作业最后迁移
 
-      migrationSteps: 
+      migrationSteps:
         - name: rolling-upgrade
           action: rolling-update
-          params: 
+          params:
             batchSize: 5
             maxUnavailable: 2
             pauseBetweenBatches: 30m
 
-      approval: 
+      approval:
         required: true
         approvers: ["vp-engineering", "sre-manager"]
 
@@ -1214,20 +1229,20 @@ spec:
       dependsOn: [production-full]
       riskLevel: critical
 
-      scope: 
+      scope:
         labelSelector: "critical=true"
 
-      migrationSteps: 
+      migrationSteps:
         - name: manual-upgrade
           action: manual-approval-required
-          params: 
+          params:
             requireSavepoint: true
             requireHealthCheck: true
 
-      approval: 
+      approval:
         required: true
         approvers: ["cto", "vp-engineering"]
-        manualChecklist: 
+        manualChecklist:
           - "All non-critical jobs migrated successfully"
           - "Performance metrics stable for 1 week"
           - "Disaster recovery tested"
@@ -1241,31 +1256,31 @@ spec:
 # ========== .github/workflows/operator-migration.yml ==========
 name: Flink Operator Migration 1.13 to 1.14
 
-on: 
-  workflow_dispatch: 
-    inputs: 
-      environment: 
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
         description: 'Target environment'
         required: true
         default: 'development'
         type: choice
-        options: 
+        options:
           - development
           - staging
           - production
-      dry_run: 
+      dry_run:
         description: 'Dry run mode'
         required: false
         default: true
         type: boolean
 
-jobs: 
+jobs:
   # ========== 前置检查 ==========
-  pre-checks: 
+  pre-checks:
     runs-on: ubuntu-latest
-    outputs: 
+    outputs:
       can_proceed: ${{ steps.checks.outputs.can_proceed }}
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -1274,12 +1289,12 @@ jobs:
 
       - name: Setup Helm
         uses: azure/setup-helm@v3
-        with: 
+        with:
           version: '3.13.0'
 
       - name: Configure kubeconfig
         uses: azure/k8s-set-context@v3
-        with: 
+        with:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
@@ -1312,11 +1327,11 @@ jobs:
           echo "can_proceed=true" >> $GITHUB_OUTPUT
 
   # ========== 备份配置 ==========
-  backup: 
+  backup:
     needs: pre-checks
     if: needs.pre-checks.outputs.can_proceed == 'true'
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Backup configurations
         run: |
           mkdir -p backup/${{ github.run_id }}
@@ -1335,18 +1350,18 @@ jobs:
 
       - name: Upload backup
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: migration-backup
           path: backup-${{ github.run_id }}.tar.gz
           retention-days: 30
 
   # ========== 执行迁移 ==========
-  migrate: 
+  migrate:
     needs: [pre-checks, backup]
     if: needs.pre-checks.outputs.can_proceed == 'true'
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -1418,14 +1433,14 @@ jobs:
           echo "✅ Migration successful!"
 
   # ========== 回滚（失败时）==========
-  rollback: 
+  rollback:
     needs: migrate
     if: failure() && github.event.inputs.dry_run != 'true'
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Download backup
         uses: actions/download-artifact@v4
-        with: 
+        with:
           name: migration-backup
 
       - name: Execute rollback
@@ -1718,21 +1733,3 @@ sequenceDiagram
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink Kubernetes Operator Documentation, "Upgrade Guide", 2026. https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-release-1.14/docs/operations/upgrade/
-
-[^2]: Apache Flink Kubernetes Operator, "Release Notes 1.14.0", 2026. https://github.com/apache/flink-kubernetes-operator/releases/tag/release-1.14.0
-
-[^3]: Kubernetes Documentation, "Upgrade a CustomResourceDefinition", 2026. https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/
-
-[^4]: Helm Documentation, "Helm Upgrade", 2026. https://helm.sh/docs/helm/helm_upgrade/
-
-[^5]: Apache Flink Documentation, "FLIP-138: Declarative Resource Management", 2021. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-138.md
-
-[^6]: Apache Flink Kubernetes Operator Documentation, "Backward Compatibility", 2026. https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-release-1.14/docs/concepts/compatibility/
-
-[^7]: Kubernetes Documentation, "Operator Pattern", 2026. https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
-
-[^8]: CNCF, "Operator Best Practices", 2025. https://operatorframework.io/docs/best-practices/
-
-[^9]: Shopify Engineering, "Zero-Downtime Kubernetes Operator Upgrades", 2025.

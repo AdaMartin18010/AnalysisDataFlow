@@ -133,6 +133,10 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 **Flink Exactly-Once 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

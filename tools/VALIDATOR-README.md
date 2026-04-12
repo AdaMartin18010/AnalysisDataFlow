@@ -240,7 +240,7 @@ TheoremDependencyValidator
 
 ### 数据模型
 
-```python
+```text
 FormalElement
 ├── id: str              # Thm-S-01-01
 ├── element_type: Enum   # THEOREM/DEFINITION/LEMMA/PROPOSITION/COROLLARY

@@ -783,6 +783,8 @@ public interface DeclarativeSlotPool {
 **优化策略**:
 
 ```java
+import java.util.List;
+
 // 1. 批量申请 + 背压控制
 class SlotPoolImpl {
     private static final int BATCH_SIZE = 100;

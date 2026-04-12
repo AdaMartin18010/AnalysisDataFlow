@@ -664,6 +664,9 @@ Checkpoint 触发:
 import org.apache.flink.connector.jdbc.source.JdbcSource;
 import org.apache.flink.connector.jdbc.source.reader.extractor.ResultExtractor;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 定义结果提取器
 ResultExtractor<MyRecord> extractor = (ResultSet rs) -> new MyRecord(
     rs.getLong("id"),
@@ -696,6 +699,9 @@ DataStream<MyRecord> stream = env.fromSource(
 import org.apache.flink.connector.jdbc.source.JdbcSource;
 import org.apache.flink.connector.jdbc.source.reader.extractor.ResultExtractor;
 import org.apache.flink.connector.jdbc.split.JdbcSplit;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 // 主键范围分区 Source
 JdbcSource<MyRecord> partitionedSource = JdbcSource.<MyRecord>builder()

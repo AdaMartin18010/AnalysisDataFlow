@@ -1228,6 +1228,8 @@ $$
 **增量Checkpoint分析**：
 
 ```java
+import java.util.List;
+
 // 增量Checkpoint结构
 class IncrementalStateHandle {
     List<StreamStateHandle> sharedStateHandles;      // 共享状态（来自之前Checkpoint）
@@ -1635,6 +1637,11 @@ public void snapshotState(FunctionSnapshotContext context) throws Exception {
 **具体有状态算子示例 - CountFunction**：
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class CountFunction extends RichFlatMapFunction<String, Tuple2<String, Integer>>
         implements CheckpointedFunction {
 
@@ -1695,6 +1702,10 @@ public class CountFunction extends RichFlatMapFunction<String, Tuple2<String, In
 **场景**: 复杂拓扑（3输入join操作）的Checkpoint对比
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 对齐Checkpoint配置
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 env.enableCheckpointing(60000);  // 60秒间隔

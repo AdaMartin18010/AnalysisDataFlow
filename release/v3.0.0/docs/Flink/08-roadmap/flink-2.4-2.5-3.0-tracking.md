@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 <!-- 版本状态标记: status=tracking, target=2026 -->
 > **版本跟踪说明**
 >
@@ -369,7 +372,7 @@
 - Apache Flink 官方下载: <https://flink.apache.org/downloads/>
 - Flink 2.0.0 发布说明: <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 - Flink 官方路线图: <https://flink.apache.org/what-is-flink/roadmap/>
-- FLIP 提案列表: <https://github.com/apache/flink/tree/master/flink-docs/docs/flips>
+- FLIP 提案列表: <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
 
 ### 社区资源
 

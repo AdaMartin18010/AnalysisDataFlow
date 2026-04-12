@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink Watermark 机制源码深度分析
 
 > **所属阶段**: Flink/10-internals | **前置依赖**: [Flink时间语义与Watermark](../02-core/time-semantics-and-watermark.md), [TaskManager源码分析](./taskmanager-source-analysis.md) | **形式化等级**: L5 | **源码版本**: Apache Flink 1.18/1.19
@@ -13,6 +17,9 @@
 **Def-F-10-01 (WatermarkStrategy)**: WatermarkStrategy 是 Flink 中定义时间戳提取和 Watermark 生成策略的顶层接口，位于 `org.apache.flink.streaming.api.watermark` 包。
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 源码位置: flink-streaming-java/src/main/java/org/apache/flink/streaming/api/watermark/WatermarkStrategy.java
 @Public
 public interface WatermarkStrategy<T>
@@ -242,6 +249,9 @@ $$
 ```java
 // 源码位置: flink-streaming-java/src/main/java/org/apache/flink/streaming/api/watermark/WatermarkStrategyWithIdleness.java
 @Internal
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class WatermarkStrategyWithIdleness<T> implements WatermarkStrategy<T> {
 
     // 被包装的基础策略
@@ -300,6 +310,9 @@ public class WatermarkStrategyWithIdleness<T> implements WatermarkStrategy<T> {
 **Def-F-10-09 (WindowAssigner)**: WindowAssigner 负责将元素分配到所属窗口的抽象类。
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 源码位置: flink-streaming-java/src/main/java/org/apache/flink/streaming/api/watermark/WindowAssigner.java
 @Public
 public abstract class WindowAssigner<T, W extends Window> implements Serializable {
@@ -452,6 +465,9 @@ public interface WatermarkAligner {
 **源码验证**:
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 源码位置: flink-streaming-java/src/main/java/org/apache/flink/streaming/api/watermark/WatermarkStrategy.java
 public interface WatermarkStrategy<T> extends TimestampAssignerSupplier<T>, WatermarkGeneratorSupplier<T> {
 
@@ -680,6 +696,10 @@ public class SourceOperator<OUT, SplitT extends SourceSplit>
 **最佳实践**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 协调配置示例
 DataStream<Event> withWatermark = stream
     .assignTimestampsAndWatermarks(
@@ -773,6 +793,9 @@ $$
 
 ```java
 // 源码分析: WatermarkStrategyWithIdleness
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class WatermarkStrategyWithIdleness<T> implements WatermarkStrategy<T> {
 
     @Override
@@ -844,6 +867,9 @@ WatermarkStrategy
     .withAlignment("alignment-group-1", Duration.ofSeconds(1));
 
 // 源码分析: WatermarkStrategyWithAlignment
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 public class WatermarkStrategyWithAlignment<T> implements WatermarkStrategy<T> {
 
     private final String alignmentGroupName;
@@ -1120,6 +1146,9 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 **有序流配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 适用于 Kafka 单分区、有序日志等场景
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -1133,6 +1162,9 @@ DataStream<Event> stream = env
 **有界乱序流配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 适用于网络传输导致的乱序场景
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -1253,6 +1285,10 @@ public class PunctuatedWatermarkGenerator<T extends MarkedEvent> implements Wate
 **Union 多源 Watermark 对齐**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 多源 Union 场景，需要配置空闲源处理
 WatermarkStrategy<MyEvent> strategy = WatermarkStrategy
     .<MyEvent>forBoundedOutOfOrderness(Duration.ofSeconds(30))
@@ -1272,6 +1308,10 @@ DataStream<MyEvent> unionStream = source1.union(source2);
 **Join 场景的 Watermark 对齐**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 双流 Join 场景
 DataStream<Order> orders = env.addSource(new OrderSource())
     .assignTimestampsAndWatermarks(
@@ -1302,6 +1342,10 @@ orders
 **带 Allowed Lateness 的窗口配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 侧输出标签定义
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 
@@ -1327,6 +1371,9 @@ resultStream
 /**
  * 保留窗口中最近 N 个元素的驱逐器
  */
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class KeepLastNEvictor<T> implements Evictor<T, TimeWindow> {
 
     private final int n;
@@ -1373,6 +1420,9 @@ stream
 ### 6.5 Watermark 对齐（Flink 1.17+）配置实例
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 多并发 Source 实例的 Watermark 对齐
 WatermarkStrategy<Event> alignedStrategy = WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))
@@ -2026,6 +2076,9 @@ public class RecordWriter<T> {
 **参数读取源码**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // flink-streaming-java/src/main/java/org/apache/flink/streaming/api/environment/StreamExecutionEnvironment.java
 public static final long DEFAULT_AUTO_WATERMARK_INTERVAL = 200L;
 
@@ -2111,6 +2164,9 @@ if (watermarkInterval > 0) {
 **解决方案**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 1. 增大乱序延迟
 WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(5))
 

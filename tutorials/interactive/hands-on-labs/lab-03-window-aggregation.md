@@ -148,6 +148,11 @@ package com.example;
 
 import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class SlidingWindowExample {
 
     public static void main(String[] args) throws Exception {
@@ -203,6 +208,10 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class SessionWindowExample {
 
@@ -367,6 +376,11 @@ public class ProcessWindowExample {
 ### 步骤 5: 增量聚合 + 全量处理结合
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 最佳实践：AggregateFunction + ProcessWindowFunction
 DataStream<WindowStats> results = stream
     .keyBy(record -> record.category)
@@ -407,6 +421,9 @@ public static class EnrichmentFunction extends
 ```java
 import org.apache.flink.streaming.api.windowing.triggers.Trigger;
 import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 // 自定义触发器：每收到10条数据触发一次
 public class CountTrigger extends Trigger<Object, TimeWindow> {
@@ -479,6 +496,9 @@ stream.keyBy(...)
 
 ```java
 // 测试不同窗口实现的性能
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class WindowBenchmark {
 
     // 方法1: 纯 AggregateFunction（推荐，内存友好）
@@ -509,6 +529,10 @@ public class WindowBenchmark {
 
 ```java
 // 根据数据量动态调整窗口
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicWindowAssigner extends WindowAssigner<Object, TimeWindow> {
 
     @Override
@@ -540,6 +564,9 @@ public class DynamicWindowAssigner extends WindowAssigner<Object, TimeWindow> {
 实现窗口结果的更新机制：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 使用 Side Output 处理迟到数据，并触发窗口重计算
 DataStream<WindowResult> mainResults = ...;
 DataStream<Element> lateData = mainResults.getSideOutput(lateDataTag);

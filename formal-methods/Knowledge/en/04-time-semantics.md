@@ -338,6 +338,10 @@ Therefore $e$ has been processed before the output watermark.
 ### 6.1 DataStream API Code and Semantics
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink program
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())           // Source
@@ -358,6 +362,9 @@ Program = Sink ∘ Window(5min, avg) ∘ KeyBy(key) ∘ Filter(>0) ∘ Map(trans
 ### 6.2 Checkpoint Configuration and Behavior
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Checkpoint configuration
 env.enableCheckpointing(60000);  // 60 second interval
 env.getCheckpointConfig().setCheckpointingMode(

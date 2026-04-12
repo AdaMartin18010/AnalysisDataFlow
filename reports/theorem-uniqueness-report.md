@@ -1,4 +1,7 @@
-﻿# Theorem Uniqueness Check Report
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+# Theorem Uniqueness Check Report
 
 **Generated**: 2026-04-11T21:18:11.268386
 
@@ -5165,6 +5168,9 @@ $$V(s) = \begin{cases} \text{NeverReturnExpired} & s \in S_{exp} \Rightarrow \te
 
 ```java
 // Def-F-02-84: 异步ListState窗口示例
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class AsyncWindowAggregateFunction extends KeyedProcessFunction<String, Event, WindowResult> {
 
 ```
@@ -5196,6 +5202,9 @@ public class AsyncSessionWindowFunction extends KeyedProcessFunction<String, Eve
 ```markdown
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Def-F-02-85: 增量清理配置
 StateTtlConfig incrementalCleanup = StateTtlConfig
     .newBuilder(Time.hours(12))

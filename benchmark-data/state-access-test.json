@@ -1,7 +1,7 @@
 {
   "test_type": "State Access Test",
   "description": "状态后端性能测试",
-  "timestamp": "2026-04-08T15:14:17.178004",
+  "timestamp": "2026-04-12T21:19:26.860513",
   "environment": {
     "flink_versions": [
       "1.18.1",
@@ -26,19 +26,19 @@
       "description": "10GB Heap State (内存状态)",
       "results": {
         "1.18.1": {
-          "get_latency_us": 0.47,
-          "put_latency_us": 1.12,
-          "throughput_kops": 861.32
+          "get_latency_us": 0.52,
+          "put_latency_us": 1.31,
+          "throughput_kops": 879.81
         },
         "2.0.0": {
-          "get_latency_us": 0.43,
-          "put_latency_us": 0.86,
-          "throughput_kops": 1118.3
+          "get_latency_us": 0.37,
+          "put_latency_us": 0.82,
+          "throughput_kops": 1057.11
         },
         "2.2.0": {
-          "get_latency_us": 0.35,
-          "put_latency_us": 0.82,
-          "throughput_kops": 1250.25
+          "get_latency_us": 0.33,
+          "put_latency_us": 0.84,
+          "throughput_kops": 1246.01
         }
       }
     },
@@ -46,22 +46,22 @@
       "description": "100GB RocksDB State",
       "results": {
         "1.18.1": {
-          "get_latency_us": 7.93,
-          "put_latency_us": 24.58,
-          "throughput_kops": 180.87,
-          "compaction_mb_s": 41.57
+          "get_latency_us": 8.52,
+          "put_latency_us": 24.93,
+          "throughput_kops": 184.11,
+          "compaction_mb_s": 46.22
         },
         "2.0.0": {
-          "get_latency_us": 6.43,
-          "put_latency_us": 16.67,
-          "throughput_kops": 246.74,
-          "compaction_mb_s": 65.53
+          "get_latency_us": 6.68,
+          "put_latency_us": 19.63,
+          "throughput_kops": 241.47,
+          "compaction_mb_s": 64.72
         },
         "2.2.0": {
-          "get_latency_us": 5.92,
-          "put_latency_us": 16.24,
-          "throughput_kops": 301.39,
-          "compaction_mb_s": 76.58
+          "get_latency_us": 5.04,
+          "put_latency_us": 15.5,
+          "throughput_kops": 280.02,
+          "compaction_mb_s": 80.3
         }
       }
     },
@@ -69,22 +69,22 @@
       "description": "500GB RocksDB State (大规模)",
       "results": {
         "1.18.1": {
-          "get_latency_us": 15.83,
-          "put_latency_us": 40.87,
-          "throughput_kops": 92.96,
-          "compaction_mb_s": 35.34
+          "get_latency_us": 15.95,
+          "put_latency_us": 44.64,
+          "throughput_kops": 94.26,
+          "compaction_mb_s": 32.51
         },
         "2.0.0": {
-          "get_latency_us": 11.39,
-          "put_latency_us": 32.91,
-          "throughput_kops": 138.1,
-          "compaction_mb_s": 55.94
+          "get_latency_us": 11.6,
+          "put_latency_us": 29.5,
+          "throughput_kops": 130.1,
+          "compaction_mb_s": 50.61
         },
         "2.2.0": {
-          "get_latency_us": 8.99,
-          "put_latency_us": 30.69,
-          "throughput_kops": 156.05,
-          "compaction_mb_s": 62.9
+          "get_latency_us": 10.28,
+          "put_latency_us": 25.97,
+          "throughput_kops": 156.64,
+          "compaction_mb_s": 65.84
         }
       }
     }

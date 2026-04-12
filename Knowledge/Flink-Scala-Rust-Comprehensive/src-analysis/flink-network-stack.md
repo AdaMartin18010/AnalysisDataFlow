@@ -583,6 +583,8 @@ sequenceDiagram
 ### 4.1 Credit-Based 流控算法
 
 ```java
+import java.util.Map;
+
 /**
  * Credit-Based 流控核心实现
  */

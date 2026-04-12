@@ -352,6 +352,10 @@ LogicalProject(...)
 - Key基数: 100万
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Join链实现
 DataStream<Result> result = orders
     .join(orderItems)
@@ -383,6 +387,9 @@ DataStream<Result> result = orders
 #### 5.2.2 DataStream MultiStreamJoin
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // MultiJoin风格实现（自定义Processor）
 DataStream<UnifiedResult> result =
     orders.connect(orderItems)
@@ -577,6 +584,10 @@ public class MultiJoinState<K, T1, T2, T3, T4> {
  * 四路MultiJoin Processor
  * 支持INNER和LEFT JOIN语义
  */
+
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
     extends KeyedCoProcessFunction<K,
         Either<T1, Either<T2, Either<T3, T4>>>, // 多流输入
@@ -750,6 +761,9 @@ public class JoinSignature implements Serializable {
 /**
  * 事件时间驱动的状态清理
  */
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class EventTimeStateCleanup<K, T extends HasEventTime>
     extends KeyedProcessFunction<K, T, T> {
 

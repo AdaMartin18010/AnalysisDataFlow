@@ -1214,7 +1214,7 @@ graph TB
 
 [^5]: Apache Flink Documentation, "Backpressure Monitoring," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/>
 
-[^6]: Apache Flink Documentation, "Flink Kubernetes Operator Auto-scaling," 2025. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/autoscaling/>
+[^6]: Apache Flink Documentation, "Flink Kubernetes Operator Auto-scaling," 2025. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations//>
 
 [^7]: Apache Flink Documentation, "State TTL," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/#state-time-to-live-ttl>
 

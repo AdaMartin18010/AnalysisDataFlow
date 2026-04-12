@@ -1,0 +1,582 @@
+# Theorem Validation - 定理编号自动验证 (v1.0)
+#
+# 版本: v1.0 | 日期: 2026-04-12 | 状态: Production
+#
+# 功能:
+#   1. 定理编号全局唯一性验证
+#   2. 定理编号格式规范检查
+#   3. THEOREM-REGISTRY.md 同步验证
+#   4. 编号连续性检查
+#   5. 自动修复建议生成
+#
+# 触发条件:
+#   - PR涉及定理相关文件变更
+#   - 手动触发
+#   - 每周定时检查
+
+name: Theorem Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.md'
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'THEOREM-REGISTRY.md'
+  push:
+    branches: [main, master]
+    paths:
+      - 'Struct/**'
+      - 'Knowledge/**'
+      - 'Flink/**'
+      - 'THEOREM-REGISTRY.md'
+  schedule:
+    # 每周三凌晨 2:00 UTC
+    - cron: '0 2 * * 3'
+  workflow_dispatch:
+    inputs:
+      validation_type:
+        description: '验证类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - uniqueness-only
+          - registry-only
+          - format-only
+          - auto-fix
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============ 阶段1: 变更检测 ============
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      changed_files: ${{ steps.changes.outputs.changed_files }}
+      should_validate: ${{ steps.changes.outputs.should_validate }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "changed_files=all" >> $GITHUB_OUTPUT
+            echo "should_validate=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD | grep '\.md$' || true)
+          else
+            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep '\.md$' || true)
+          fi
+
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$changed_files" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # 检查是否涉及定理相关文件
+          if echo "$changed_files" | grep -qE '(Struct/|Knowledge/|Flink/|THEOREM-REGISTRY\.md)'; then
+            echo "should_validate=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_validate=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ============ 阶段2: 定理唯一性验证 ============
+  uniqueness-check:
+    name: Theorem Uniqueness Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.should_validate == 'true' ||
+      github.event.inputs.validation_type == 'full' ||
+      github.event.inputs.validation_type == 'uniqueness-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run uniqueness checker
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          all_elements = defaultdict(list)
+          stats = {'total': 0, 'unique': 0, 'duplicates': 0}
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+
+                      for match in THEOREM_PATTERN.finditer(content):
+                          elem_id = match.group(0)
+                          all_elements[elem_id].append({
+                              'file': rel_path,
+                              'line': content[:match.start()].count('\n') + 1
+                          })
+                          stats['total'] += 1
+                  except Exception:
+                      pass
+
+          # 查找重复
+          duplicates = {k: v for k, v in all_elements.items() if len(v) > 1}
+          stats['unique'] = len(all_elements)
+          stats['duplicates'] = len(duplicates)
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': stats,
+              'duplicates': duplicates
+          }
+
+          with open('reports/theorem-uniqueness.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          # Markdown报告
+          lines = [
+              "# Theorem Uniqueness Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Elements | {stats['total']} |",
+              f"| Unique Elements | {stats['unique']} |",
+              f"| Duplicates | {stats['duplicates']} |",
+              ""
+          ]
+
+          if duplicates:
+              lines.extend([
+                  "## Duplicate Elements",
+                  "",
+                  "| Element ID | Count | Locations |",
+                  "|------------|-------|-----------|"
+              ])
+              for elem_id, locations in sorted(duplicates.items()):
+                  loc_str = ', '.join([f"{l['file']}:{l['line']}" for l in locations[:2]])
+                  if len(locations) > 2:
+                      loc_str += f' (+{len(locations)-2})'
+                  lines.append(f"| `{elem_id}` | {len(locations)} | {loc_str} |")
+              lines.append("")
+
+          with open('reports/theorem-uniqueness.md', 'w') as f:
+              f.write('\n'.join(lines))
+
+          print(f"Theorem Uniqueness Check:")
+          print(f"  Total: {stats['total']}")
+          print(f"  Unique: {stats['unique']}")
+          print(f"  Duplicates: {stats['duplicates']}")
+
+          if duplicates:
+              print("\n❌ Found duplicate theorem IDs:")
+              for elem_id in list(duplicates.keys())[:5]:
+                  print(f"  - {elem_id}")
+              sys.exit(1)
+
+          print("✅ All theorem IDs are unique")
+          PYEOF
+
+      - name: Upload uniqueness report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-uniqueness-report
+          path: |
+            reports/theorem-uniqueness.json
+            reports/theorem-uniqueness.md
+          if-no-files-found: ignore
+
+  # ============ 阶段3: 格式验证 ============
+  format-check:
+    name: Theorem Format Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.should_validate == 'true' ||
+      github.event.inputs.validation_type == 'full' ||
+      github.event.inputs.validation_type == 'format-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Validate theorem format
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          VALID_TYPES = {'Thm', 'Def', 'Lemma', 'Prop', 'Cor'}
+          VALID_STAGES = {'S': 'Struct', 'K': 'Knowledge', 'F': 'Flink'}
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          stats = {'total': 0, 'valid': 0, 'invalid': 0}
+          errors = []
+
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      rel_path = str(md_file.relative_to('.'))
+                      lines = content.split('\n')
+
+                      for line_num, line in enumerate(lines, 1):
+                          for match in THEOREM_PATTERN.finditer(line):
+                              elem_type, stage, doc_num, seq_num = match.groups()
+                              stats['total'] += 1
+
+                              errors_list = []
+                              if elem_type not in VALID_TYPES:
+                                  errors_list.append(f"Invalid type: {elem_type}")
+                              if stage not in VALID_STAGES:
+                                  errors_list.append(f"Invalid stage: {stage}")
+                              if not (1 <= int(doc_num) <= 99):
+                                  errors_list.append(f"Doc num out of range: {doc_num}")
+                              if not (1 <= int(seq_num) <= 99):
+                                  errors_list.append(f"Seq num out of range: {seq_num}")
+
+                              if errors_list:
+                                  stats['invalid'] += 1
+                                  errors.append({
+                                      'file': rel_path,
+                                      'line': line_num,
+                                      'element': match.group(0),
+                                      'errors': errors_list
+                                  })
+                              else:
+                                  stats['valid'] += 1
+                  except Exception:
+                      pass
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': stats,
+              'errors': errors[:20]
+          }
+
+          with open('reports/theorem-format.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          lines = [
+              "# Theorem Format Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| Total Elements | {stats['total']} |",
+              f"| ✅ Valid Format | {stats['valid']} |",
+              f"| ❌ Invalid Format | {stats['invalid']} |",
+              ""
+          ]
+
+          if errors:
+              lines.extend([
+                  "## Format Errors",
+                  "",
+                  "| File | Line | Element | Errors |",
+                  "|------|------|---------|--------|"
+              ])
+              for e in errors[:10]:
+                  err_str = ', '.join(e['errors'])
+                  lines.append(f"| {e['file']} | {e['line']} | `{e['element']}` | {err_str} |")
+              lines.append("")
+
+          with open('reports/theorem-format.md', 'w') as f:
+              f.write('\n'.join(lines))
+
+          print(f"Theorem Format Check:")
+          print(f"  Total: {stats['total']}")
+          print(f"  Valid: {stats['valid']}")
+          print(f"  Invalid: {stats['invalid']}")
+
+          if stats['invalid'] > 0:
+              print(f"\n❌ Found {stats['invalid']} invalid format elements")
+              sys.exit(1)
+
+          print("✅ All theorem formats are valid")
+          PYEOF
+
+      - name: Upload format report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-format-report
+          path: |
+            reports/theorem-format.json
+            reports/theorem-format.md
+          if-no-files-found: ignore
+
+  # ============ 阶段4: 注册表同步检查 ============
+  registry-sync:
+    name: Registry Sync Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.should_validate == 'true' ||
+      github.event.inputs.validation_type == 'full' ||
+      github.event.inputs.validation_type == 'registry-only'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Check registry synchronization
+        run: |
+          python << 'PYEOF'
+          import re
+          import sys
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          from collections import defaultdict
+
+          THEOREM_PATTERN = re.compile(r'\b(Thm|Def|Lemma|Prop|Cor)-([SKF])-(\d{2})-(\d{2})\b')
+
+          # 从文档收集
+          doc_elements = set()
+          for directory in ['Struct', 'Knowledge', 'Flink']:
+              dir_path = Path(directory)
+              if not dir_path.exists():
+                  continue
+
+              for md_file in dir_path.rglob('*.md'):
+                  if any(p.startswith('.') for p in md_file.parts):
+                      continue
+
+                  try:
+                      content = md_file.read_text(encoding='utf-8')
+                      for match in THEOREM_PATTERN.finditer(content):
+                          elem_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                          doc_elements.add(elem_id)
+                  except Exception:
+                      pass
+
+          # 从注册表收集
+          registry_elements = set()
+          registry_file = Path('THEOREM-REGISTRY.md')
+
+          if registry_file.exists():
+              content = registry_file.read_text(encoding='utf-8')
+              for match in THEOREM_PATTERN.finditer(content):
+                  elem_id = f"{match.group(1)}-{match.group(2)}-{match.group(3)}-{match.group(4)}"
+                  registry_elements.add(elem_id)
+
+          # 分析差异
+          only_in_docs = doc_elements - registry_elements
+          only_in_registry = registry_elements - doc_elements
+
+          # 生成报告
+          Path('reports').mkdir(exist_ok=True)
+
+          report = {
+              'generated_at': datetime.now().isoformat(),
+              'summary': {
+                  'in_documents': len(doc_elements),
+                  'in_registry': len(registry_elements),
+                  'in_sync': len(doc_elements & registry_elements),
+                  'only_in_docs': len(only_in_docs),
+                  'only_in_registry': len(only_in_registry)
+              },
+              'only_in_docs': sorted(list(only_in_docs))[:30],
+              'only_in_registry': sorted(list(only_in_registry))[:30]
+          }
+
+          with open('reports/theorem-registry-sync.json', 'w') as f:
+              json.dump(report, f, indent=2)
+
+          lines = [
+              "# Theorem Registry Sync Report",
+              "",
+              f"**Generated**: {datetime.now().isoformat()}",
+              "",
+              "## Summary",
+              "",
+              f"| Metric | Count |",
+              f"|--------|-------|",
+              f"| In Documents | {len(doc_elements)} |",
+              f"| In Registry | {len(registry_elements)} |",
+              f"| In Sync | {len(doc_elements & registry_elements)} |",
+              f"| Only in Docs | {len(only_in_docs)} |",
+              f"| Only in Registry | {len(only_in_registry)} |",
+              ""
+          ]
+
+          if only_in_docs:
+              lines.extend([
+                  "## Missing from Registry",
+                  "",
+                  "These elements are used in documents but not registered:",
+                  ""
+              ])
+              for elem in sorted(list(only_in_docs))[:15]:
+                  lines.append(f"- `{elem}`")
+              lines.append("")
+
+          if only_in_registry:
+              lines.extend([
+                  "## Only in Registry",
+                  "",
+                  "These elements are registered but not found in documents:",
+                  ""
+              ])
+              for elem in sorted(list(only_in_registry))[:15]:
+                  lines.append(f"- `{elem}`")
+              lines.append("")
+
+          with open('reports/theorem-registry-sync.md', 'w') as f:
+              f.write('\n'.join(lines))
+
+          print(f"Registry Sync Check:")
+          print(f"  In docs: {len(doc_elements)}")
+          print(f"  In registry: {len(registry_elements)}")
+          print(f"  Missing from registry: {len(only_in_docs)}")
+
+          if len(only_in_docs) > 0:
+              print(f"\n⚠️ {len(only_in_docs)} elements missing from registry")
+              # 警告级别，不阻塞
+          else:
+              print("✅ Registry is synchronized")
+          PYEOF
+        continue-on-error: true
+
+      - name: Upload registry sync report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-registry-sync-report
+          path: |
+            reports/theorem-registry-sync.json
+            reports/theorem-registry-sync.md
+          if-no-files-found: ignore
+
+  # ============ 阶段5: 汇总报告 ============
+  summary:
+    name: Theorem Validation Summary
+    runs-on: ubuntu-latest
+    needs:
+      - detect-changes
+      - uniqueness-check
+      - format-check
+      - registry-sync
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+        continue-on-error: true
+
+      - name: Generate summary
+        run: |
+          echo "## 📐 Theorem Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.uniqueness-check.result }}" == "success" ]; then
+            echo "| Uniqueness Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.uniqueness-check.result }}" == "skipped" ]; then
+            echo "| Uniqueness Check | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Uniqueness Check | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.format-check.result }}" == "success" ]; then
+            echo "| Format Check | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.format-check.result }}" == "skipped" ]; then
+            echo "| Format Check | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Format Check | ❌ Fail |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.registry-sync.result }}" == "success" ]; then
+            echo "| Registry Sync | ✅ Pass |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.registry-sync.result }}" == "skipped" ]; then
+            echo "| Registry Sync | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Registry Sync | ⚠️ Warning |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.uniqueness-check.result }}" == "failure" ] || [ "${{ needs.format-check.result }}" == "failure" ]; then
+            echo "## ❌ Theorem Validation Failed" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "## ✅ Theorem Validation Passed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload all reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-validation-reports
+          path: reports/
+          if-no-files-found: ignore

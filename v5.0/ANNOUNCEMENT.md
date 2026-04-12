@@ -231,7 +231,7 @@ AnalysisDataFlow是开源项目，欢迎各种形式的贡献：
 ## 📞 联系我们
 
 - 🌐 **网站**: <https://analysisdataflow.org>
-- 💬 **论坛**: <https://discuss.analysisdataflow.org>
+- 💬 **论坛**: <[社区讨论版 - 待部署]>
 - 🐦 **Twitter/X**: @AnalysisDataFlow
 - 💼 **LinkedIn**: AnalysisDataFlow
 - 📧 **邮件**: <contact@analysisdataflow.org>
@@ -406,7 +406,7 @@ Check it out: https://analysisdataflow.org
 ━━ 反馈与支持 ━━
 你的反馈对我们至关重要：
 • GitHub Issues: https://github.com/luyanfeng/AnalysisDataFlow/issues
-• 论坛: https://discuss.analysisdataflow.org
+• 论坛: [社区讨论版 - 待部署]
 • 邮件: contact@analysisdataflow.org
 
 感谢你对 AnalysisDataFlow 的支持！

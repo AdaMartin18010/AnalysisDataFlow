@@ -1157,6 +1157,10 @@ import org.apache.iceberg.Schema;
 import org.apache.iceberg.types.Types;
 import org.apache.hadoop.hive.conf.HiveConf;
 
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class IcebergStreamWriteExample {
 
     public static void main(String[] args) throws Exception {
@@ -1254,6 +1258,10 @@ import org.apache.iceberg.hive.HiveCatalog;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.data.RowData;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class IcebergStreamReadExample {
 
     public static void main(String[] args) throws Exception {
@@ -1332,6 +1340,11 @@ public class IcebergStreamReadExample {
 ### 6.3 完整 CDC Pipeline 实现
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class MySQLCDCToIcebergPipeline {
 
     public static void main(String[] args) throws Exception {
@@ -1735,6 +1748,9 @@ graph LR
 **Flink Checkpoint 调优**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 推荐配置
 env.enableCheckpointing(60000);  // 60s
 env.getCheckpointConfig().setCheckpointingMode(

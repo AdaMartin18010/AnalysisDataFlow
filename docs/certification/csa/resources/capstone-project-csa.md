@@ -151,6 +151,9 @@ graph TB
 **代码框架**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<OrderEvent> orderStream = env
     .addSource(new FlinkKafkaConsumer<>("order-events",
         new OrderEventDeserializationSchema(), properties))
@@ -180,6 +183,10 @@ DataStream<OrderEvent> orderStream = env
 **实现提示**:
 
 ```java
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 orderStream
     .keyBy(OrderEvent::getRegion)
     .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -211,6 +218,9 @@ orderStream
 **实现提示**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 orderStream
     .keyBy(OrderEvent::getCategory)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -234,6 +244,9 @@ orderStream
 
 ```java
 // UV 统计使用 MapState 保存用户ID
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class UvPvAggregate extends AggregateFunction<UserEvent, UvPvAcc, UvPvResult> {
     @Override
     public UvPvAcc createAccumulator() {
@@ -263,6 +276,9 @@ public class UvPvAggregate extends AggregateFunction<UserEvent, UvPvAcc, UvPvRes
 **实现提示**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 大额订单检测
 orderStream
     .filter(event -> event.getAmount() > 10000)
@@ -292,6 +308,9 @@ Pattern<OrderEvent, ?> pattern = Pattern
 **配置代码**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 env.enableCheckpointing(30000);
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);

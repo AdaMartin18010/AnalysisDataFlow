@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Changelog
 
 All notable changes to the AnalysisDataFlow project will be documented in this file.
@@ -430,12 +433,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[3.6.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.6.0
-[3.5.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.5.0
-[3.4.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.4.0
-[3.3.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.3.0
-[3.2.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.2.0
-[3.1.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.1.0
-[3.0.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v3.0.0
-[2.8.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.8.0
-[2.5.0]: https://github.com/your-org/AnalysisDataFlow/releases/tag/v2.5.0
+[3.6.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.6.0
+[3.5.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.5.0
+[3.4.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.4.0
+[3.3.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.3.0
+[3.2.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.2.0
+[3.1.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.1.0
+[3.0.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v3.0.0
+[2.8.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.8.0
+[2.5.0]: https://github.com/luyanfeng/AnalysisDataFlow/releases/tag/v2.5.0

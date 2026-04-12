@@ -1,0 +1,63 @@
+%% 流程图模板
+%% 适用于：业务流程、算法流程、操作流程
+%% 使用说明：
+%% 1. 根据流程步骤修改节点
+%% 2. 选择合适的节点形状
+%% 3. 添加判断分支和注释
+
+flowchart TD
+    %% ===== 样式定义 =====
+    classDef startEnd fill:#dcfce7,stroke:#16a34a,stroke-width:3px,color:#14532d
+    classDef process fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,stroke-dasharray: 5 5
+    classDef data fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#5b21b6
+    classDef error fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b
+    
+    %% ===== 流程节点 =====
+    Start([开始]):::startEnd
+    
+    Input[输入数据]:::data
+    Validate{数据<br/>有效?}:::decision
+    
+    Process1[步骤1: 数据预处理]:::process
+    Process2[步骤2: 核心处理]:::process
+    Process3[步骤3: 结果加工]:::process
+    
+    Check{检查<br/>通过?}:::decision
+    
+    Output[输出结果]:::data
+    ErrorHandle[错误处理]:::error
+    Log[记录日志]:::process
+    
+    End([结束]):::startEnd
+    
+    %% ===== 流程连接 =====
+    Start --> Input
+    Input --> Validate
+    
+    Validate -->|是| Process1
+    Validate -->|否| ErrorHandle
+    
+    Process1 --> Process2
+    Process2 --> Process3
+    Process3 --> Check
+    
+    Check -->|通过| Output
+    Check -->|失败| ErrorHandle
+    
+    ErrorHandle --> Log
+    Output --> Log
+    
+    Log --> End
+    
+    %% ===== 异常处理分支 =====
+    Process1 -.->|异常| ErrorHandle
+    Process2 -.->|异常| ErrorHandle
+    Process3 -.->|异常| ErrorHandle
+    
+    %% ===== 样式调整 =====
+    linkStyle default stroke:#6b7280,stroke-width:2px
+    linkStyle 2 stroke:#16a34a,stroke-width:2px
+    linkStyle 3 stroke:#dc2626,stroke-width:2px
+    linkStyle 6 stroke:#16a34a,stroke-width:2px
+    linkStyle 7 stroke:#dc2626,stroke-width:2px

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程3: 高级主题与调优 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #fc4a1a; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #f57c00; }
+        .objectives h4 { color: #e65100; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fce4ec; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #e91e63; }
+        .exercise h4 { color: #c2185b; margin-bottom: 10px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #fc4a1a; margin-bottom: 10px; }
+        .reading a { color: #fc4a1a; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #fc4a1a;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .tip { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #2196f3; }
+        .tip strong { color: #1976d2; }
+        .warning { background: #ffebee; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #f44336; }
+        .warning strong { color: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">⚡ 高级课程</span>
+            <span class="badge">⏱️ 约5小时</span>
+            <h1>课程3: 高级主题与调优</h1>
+            <p>Checkpoint、背压处理、性能调优和生产部署最佳实践</p>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">✓</div>
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">✓</div>
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: white; color: #fc4a1a; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">3</div>
+            </div>
+        </header>
+
+        <!-- 课节 3.1 -->
+        <div class="lesson">
+            <h2>3.1 Checkpoint与容错</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>深入理解 Checkpoint 机制</li>
+                    <li>掌握 Barrier 对齐与非对齐</li>
+                    <li>配置增量 Checkpoint</li>
+                    <li>实现 Exactly-Once 语义</li>
+                </ul>
+            </div>
+
+            <h3>3.1.1 Checkpoint 配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// Checkpoint 基础配置</span>
+CheckpointConfig checkpointConfig = env.getCheckpointConfig();
+
+<span class="comment">// 启用 Checkpoint，每10秒触发一次</span>
+env.enableCheckpointing(10000, CheckpointingMode.EXACTLY_ONCE);
+
+<span class="comment">// Checkpoint 存储</span>
+checkpointConfig.setCheckpointStorage(<span class="keyword">new</span> FileSystemCheckpointStorage(
+    <span class="string">"hdfs://namenode:8020/flink/checkpoints"</span>
+));
+
+<span class="comment">// 高级配置</span>
+checkpointConfig.setMinPauseBetweenCheckpoints(5000);     <span class="comment">// 最小间隔5秒</span>
+checkpointConfig.setCheckpointTimeout(60000);             <span class="comment">// 超时1分钟</span>
+checkpointConfig.setMaxConcurrentCheckpoints(1);          <span class="comment">// 最大并发1</span>
+checkpointConfig.enableExternalizedCheckpoints(
+    ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION  <span class="comment">// 取消时保留</span>
+);
+checkpointConfig.enableUnalignedCheckpoints();            <span class="comment">// 启用非对齐</span>
+checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(30)); <span class="comment">// 对齐超时</span></pre>
+            </div>
+
+            <h3>3.1.2 非对齐 Checkpoint (Unaligned Checkpoint)</h3>
+            <div class="tip">
+                <strong>💡 提示</strong>: Flink 1.11+ 引入了非对齐 Checkpoint，在反压场景下仍能快速完成 Checkpoint，避免 Checkpoint 超时。
+            </div>
+            
+            <div class="code-block">
+<pre><span class="comment">// 对齐 vs 非对齐 Checkpoint 对比</span>
+
+<span class="comment">// 对齐 Checkpoint (传统方式)</span>
+<span class="comment">// 1. Barrier 从 Source 向下游传播</span>
+<span class="comment">// 2. 每个算子等待所有输入通道的 Barrier 到达</span>
+<span class="comment">// 3. 阻塞数据流，进行状态快照</span>
+<span class="comment">// 缺点: 反压时 Barrier 传播慢，导致 Checkpoint 超时</span>
+
+<span class="comment">// 非对齐 Checkpoint (推荐)</span>
+checkpointConfig.enableUnalignedCheckpoints(<span class="keyword">true</span>);
+checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(10));
+<span class="comment">// 超过10秒未完成对齐，自动切换到非对齐模式</span>
+<span class="comment">// 非对齐模式将数据缓存到 Checkpoint 中，Barrier 可以跳过积压的数据</span></pre>
+            </div>
+
+            <h3>3.1.3 增量 Checkpoint</h3>
+            <div class="code-block">
+<pre><span class="comment">// RocksDB 增量 Checkpoint 配置</span>
+EmbeddedRocksDBStateBackend rocksDbBackend = 
+    <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>);  <span class="comment">// true = 增量</span>
+
+<span class="comment">// 增量 Checkpoint 参数调优</span>
+Configuration config = <span class="keyword">new</span> Configuration();
+config.setString(<span class="string">"state.backend.incremental"</span>, <span class="string">"true"</span>);
+config.setString(<span class="string">"state.backend.rocksdb.memory.managed"</span>, <span class="string">"true"</span>);
+config.setString(<span class="string">"state.backend.rocksdb.checkpoint.transfer.thread.num"</span>, <span class="string">"4"</span>);
+env.configure(config);
+
+<span class="comment">// 监控 Checkpoint 指标</span>
+<span class="comment">// - checkpointDuration: Checkpoint 耗时</span>
+<span class="comment">// - checkpointedSize: Checkpoint 数据大小</span>
+<span class="comment">// - numberOfFailedCheckpoints: 失败次数</span></pre>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ 注意</strong>: 增量 Checkpoint 虽然减少了数据量，但会增加恢复时间（需要按顺序重放增量）。对于超大状态，需要权衡 Checkpoint 频率和恢复时间。
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 3.1</h4>
+                <ol>
+                    <li>配置一个作业，启用非对齐 Checkpoint</li>
+                    <li>模拟反压场景，观察 Checkpoint 行为</li>
+                    <li>启用增量 Checkpoint，对比全量 Checkpoint 的时间</li>
+                    <li>手动触发 Savepoint，验证作业恢复</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../labs/lab-02-checkpoint.html">🧪 实验2: Checkpoint 机制模拟</a></li>
+                    <li><a href="../../Struct/Proof-Chains-Checkpoint-Correctness.md">Checkpoint 正确性证明链</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 3.2 -->
+        <div class="lesson">
+            <h2>3.2 背压与流量控制</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解背压产生的原因和影响</li>
+                    <li>掌握 Credit-based 流控制机制</li>
+                    <li>学会检测和解决背压</li>
+                    <li>实现自适应限流</li>
+                </ul>
+            </div>
+
+            <h3>3.2.1 背压检测</h3>
+            <div class="code-block">
+<pre><span class="comment">// 背压指标监控 (通过 REST API)</span>
+<span class="comment">// GET /jobs/{jobId}/vertices/{vertexId}/backpressure</span>
+
+<span class="comment">// 背压状态</span>
+<span class="comment">// OK: 无背压 (比值 0-0.1)</span>
+<span class="comment">// LOW: 轻度背压 (比值 0.1-0.5)</span>
+<span class="comment">// HIGH: 严重背压 (比值 > 0.5)</span>
+
+<span class="comment">// 代码中检测背压</span>
+<span class="keyword">public class</span> BackpressureMonitor <span class="keyword">extends</span> RichMapFunction&lt;Event, Event&gt; {
+    <span class="keyword">private transient</span> Meter outputRate;
+    <span class="keyword">private transient</span> Histogram latency;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        outputRate = getRuntimeContext()
+            .getMetricGroup()
+            .meter(<span class="string">"outputRate"</span>, <span class="keyword">new</span> MeterView(60));
+        latency = getRuntimeContext()
+            .getMetricGroup()
+            .histogram(<span class="string">"eventLatency"</span>, <span class="keyword">new</span> DropwizardHistogramWrapper(
+                <span class="keyword">new</span> com.codahale.metrics.Histogram(
+                    <span class="keyword">new</span> SlidingWindowReservoir(500)
+                )
+            ));
+    }
+    
+    @Override
+    <span class="keyword">public</span> Event map(Event event) {
+        outputRate.markEvent();
+        latency.update(System.currentTimeMillis() - event.getTimestamp());
+        <span class="keyword">return</span> event;
+    }
+}</pre>
+            </div>
+
+            <h3>3.2.2 自适应限流</h3>
+            <div class="code-block">
+<pre><span class="comment">// 基于 Buffer 膨胀率的自适应限流</span>
+<span class="keyword">public class</span> AdaptiveThrottler <span class="keyword">extends</span> RichMapFunction&lt;Event, Event&gt; {
+    <span class="keyword">private transient</span> double currentLimit;
+    <span class="keyword">private static final double</span> MAX_LIMIT = 10000;
+    <span class="keyword">private static final double</span> MIN_LIMIT = 100;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        currentLimit = MAX_LIMIT;
+        
+        <span class="comment">// 注册指标</span>
+        getRuntimeContext().getMetricGroup()
+            .gauge(<span class="string">"throttleLimit"</span>, () -> currentLimit);
+    }
+    
+    @Override
+    <span class="keyword">public</span> Event map(Event event) <span class="keyword">throws</span> Exception {
+        <span class="comment">// 获取当前 Buffer 膨胀率 (通过系统指标)</span>
+        <span class="keyword">double</span> bufferUsage = getBufferUsage();
+        
+        <span class="keyword">if</span> (bufferUsage > 0.8) {
+            <span class="comment">// 高负载，降低限流阈值</span>
+            currentLimit = Math.max(MIN_LIMIT, currentLimit * 0.9);
+        } <span class="keyword">else if</span> (bufferUsage < 0.3) {
+            <span class="comment">// 低负载，提高限流阈值</span>
+            currentLimit = Math.min(MAX_LIMIT, currentLimit * 1.1);
+        }
+        
+        <span class="comment">// 根据当前限流阈值决定是否处理</span>
+        <span class="keyword">if</span> (shouldProcess(currentLimit)) {
+            <span class="keyword">return</span> event;
+        } <span class="keyword">else</span> {
+            <span class="comment">// 丢弃或采样</span>
+            <span class="keyword">return null</span>;
+        }
+    }
+}</pre>
+            </div>
+
+            <h3>3.2.3 异步 IO 优化</h3>
+            <div class="code-block">
+<pre><span class="comment">// 使用 AsyncFunction 解决 IO 阻塞导致的背压</span>
+<span class="keyword">public class</span> AsyncDatabaseRequest 
+    <span class="keyword">extends</span> RichAsyncFunction&lt;String, EnrichedEvent&gt; {
+    
+    <span class="keyword">private transient</span> ExecutorService executor;
+    <span class="keyword">private transient</span> DatabaseClient client;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        executor = Executors.newFixedThreadPool(100);
+        client = <span class="keyword">new</span> DatabaseClient();
+    }
+    
+    @Override
+    <span class="keyword">public void</span> asyncInvoke(String key, ResultFuture&lt;EnrichedEvent&gt; resultFuture) {
+        CompletableFuture.supplyAsync(() -> client.query(key), executor)
+            .thenAccept(result -> {
+                resultFuture.complete(Collections.singletonList(
+                    <span class="keyword">new</span> EnrichedEvent(key, result)
+                ));
+            })
+            .exceptionally(throwable -> {
+                resultFuture.completeExceptionally(throwable);
+                <span class="keyword">return null</span>;
+            });
+    }
+    
+    @Override
+    <span class="keyword">public void</span> timeout(String key, ResultFuture&lt;EnrichedEvent&gt; resultFuture) {
+        resultFuture.complete(Collections.singletonList(
+            <span class="keyword">new</span> EnrichedEvent(key, <span class="keyword">null</span>)  <span class="comment">// 降级处理</span>
+        ));
+    }
+}
+
+<span class="comment">// 使用异步 IO</span>
+DataStream&lt;EnrichedEvent&gt; enriched = AsyncDataStream.unorderedWait(
+    inputStream,
+    <span class="keyword">new</span> AsyncDatabaseRequest(),
+    1000,    <span class="comment">// 超时 1秒</span>
+    TimeUnit.MILLISECONDS,
+    100      <span class="comment">// 最大并发请求数</span>
+);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 3.2</h4>
+                <ol>
+                    <li>在 Web UI 中观察背压指标，定位瓶颈算子</li>
+                    <li>实现一个简单的自适应限流器</li>
+                    <li>将同步 IO 改为 AsyncFunction，对比吞吐量</li>
+                    <li>调整并行度和网络缓冲区参数优化背压</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../labs/lab-03-backpressure.html">🧪 实验3: 背压检测实验</a></li>
+                    <li><a href="../../TROUBLESHOOTING.md">故障排查指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 3.3 -->
+        <div class="lesson">
+            <h2>3.3 性能调优实践</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握并行度规划方法</li>
+                    <li>优化序列化和内存使用</li>
+                    <li>调优网络参数</li>
+                    <li>识别和解决热点</li>
+                </ul>
+            </div>
+
+            <h3>3.3.1 并行度规划</h3>
+            <div class="code-block">
+<pre><span class="comment">// 全局并行度</span>
+env.setParallelism(8);
+
+<span class="comment">// 算子级并行度</span>
+stream
+    .map(<span class="keyword">new</span> HeavyComputation())
+    .setParallelism(16)           <span class="comment">// 计算密集型算子增加并行度</span>
+    .keyBy(Event::getUserId)
+    .window(...)
+    .aggregate(...)
+    .setParallelism(8)
+    .addSink(<span class="keyword">new</span> DatabaseSink())
+    .setParallelism(4);           <span class="comment">// IO 受限算子减少并行度</span>
+
+<span class="comment">// Slot 共享组 (隔离资源)</span>
+stream
+    .map(<span class="keyword">new</span> CPUIntensive())
+    .slotSharingGroup(<span class="string">"cpu"</span>)
+    .map(<span class="keyword">new</span> MemoryIntensive())
+    .slotSharingGroup(<span class="string">"memory"</span>);</pre>
+            </div>
+
+            <h3>3.3.2 序列化优化</h3>
+            <div class="code-block">
+<pre><span class="comment">// 使用 POJO 类型 (自动生成序列化器)</span>
+<span class="keyword">public class</span> UserEvent {
+    <span class="keyword">public</span> String userId;      <span class="comment">// public 字段或 getter/setter</span>
+    <span class="keyword">public long</span> timestamp;
+    <span class="keyword">public double</span> value;
+    
+    <span class="comment">// 必须提供无参构造器</span>
+    <span class="keyword">public</span> UserEvent() {}
+}
+
+<span class="comment">// 使用 Avro 序列化</span>
+AvroDeserializationSchema&lt;UserEvent&gt; avroSchema = 
+    AvroDeserializationSchema.forSpecific(UserEvent.class);
+
+<span class="comment">// 禁用通用快照 (仅当确定状态兼容时)</span>
+env.getConfig().setAutoTypeRegistrationEnabled(<span class="keyword">false</span>);
+
+<span class="comment">// 配置 Kryo 序列化</span>
+env.getConfig().addDefaultKryoSerializer(MyType.class, MySerializer.class);</pre>
+            </div>
+
+            <h3>3.3.3 网络调优</h3>
+            <div class="code-block">
+<pre><span class="comment">// flink-conf.yaml 网络参数</span>
+<span class="comment"># 网络内存</span>
+taskmanager.memory.network.fraction: 0.15
+taskmanager.memory.network.min: 256mb
+taskmanager.memory.network.max: 512mb
+
+<span class="comment"># Buffer 配置</span>
+taskmanager.memory.network.memory.buffer-size: 32kb
+taskmanager.memory.network.memory.buffers-per-channel: 50
+taskmanager.memory.network.memory.floating-buffers-per-gate: 16
+
+<span class="comment">// 代码中配置</span>
+Configuration conf = <span class="keyword">new</span> Configuration();
+conf.setString(<span class="string">"taskmanager.memory.network.fraction"</span>, <span class="string">"0.2"</span>);
+conf.setString(<span class="string">"akka.ask.timeout"</span>, <span class="string">"30s"</span>);
+conf.setString(<span class="string">"web.timeout"</span>, <span class="string">"60000"</span>);
+env.configure(conf);</pre>
+            </div>
+
+            <h3>3.3.4 热点解决</h3>
+            <div class="code-block">
+<pre><span class="comment">// 两阶段聚合解决热点</span>
+DataStream&lt;Result&gt; result = stream
+    <span class="comment">// 第一阶段: 随机预聚合</span>
+    .map(<span class="keyword">new</span> RichMapFunction&lt;Event, Tuple2&lt;String, Long&gt;&gt;() {
+        <span class="keyword">private</span> Random random;
+        
+        @Override
+        <span class="keyword">public void</span> open(Configuration parameters) {
+            random = <span class="keyword">new</span> Random();
+        }
+        
+        @Override
+        <span class="keyword">public</span> Tuple2&lt;String, Long&gt; map(Event event) {
+            <span class="comment">// 添加随机前缀分散热点</span>
+            String prefixedKey = random.nextInt(100) + <span class="string">"_"</span> + event.getKey();
+            <span class="keyword">return</span> Tuple2.of(prefixedKey, event.getValue());
+        }
+    })
+    .keyBy(t -> t.f0)
+    .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+    .aggregate(<span class="keyword">new</span> SumAggregate())
+    <span class="comment">// 第二阶段: 去除前缀后最终聚合</span>
+    .map(t -> {
+        String originalKey = t.f0.substring(t.f0.indexOf(<span class="string">"_"</span>) + 1);
+        <span class="keyword">return</span> Tuple2.of(originalKey, t.f1);
+    })
+    .keyBy(t -> t.f0)
+    .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+    .aggregate(<span class="keyword">new</span> FinalSumAggregate());</pre>
+            </div>
+
+            <div class="tip">
+                <strong>💡 性能调优检查清单</strong><br>
+                ✓ 使用 POJO 或 Avro 代替 Tuple<br>
+                ✓ 启用对象复用 (objectReuseEnabled)<br>
+                ✓ 使用 RocksDB 状态后端处理大状态<br>
+                ✓ 合理设置 Checkpoint 间隔<br>
+                ✓ 启用增量 Checkpoint<br>
+                ✓ 使用 AsyncFunction 处理外部 IO<br>
+                ✓ 避免在 UDF 中创建临时对象
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 3.3</h4>
+                <ol>
+                    <li>使用火焰图分析作业性能瓶颈</li>
+                    <li>实现两阶段聚合解决数据倾斜</li>
+                    <li>调整网络缓冲区参数，观察吞吐变化</li>
+                    <li>对比不同序列化方式的性能</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../BEST-PRACTICES.md">最佳实践指南</a></li>
+                    <li><a href="../../Flink/flink-performance-benchmark-suite.md">性能测试套件</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 3.4 -->
+        <div class="lesson">
+            <h2>3.4 生产环境部署</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>配置高可用 (HA) 模式</li>
+                    <li>设置监控告警</li>
+                    <li>掌握作业升级策略</li>
+                    <li>了解安全配置</li>
+                </ul>
+            </div>
+
+            <h3>3.4.1 HA 配置</h3>
+            <div class="code-block">
+<pre><span class="comment"># flink-conf.yaml - HA 配置</span>
+<span class="comment"># JobManager HA</span>
+high-availability: zookeeper
+high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
+high-availability.zookeeper.path.root: /flink
+high-availability.cluster-id: my-flink-cluster
+
+<span class="comment"># 持久化元数据</span>
+high-availability.storageDir: hdfs:///flink/recovery
+
+<span class="comment"># 多个 JobManager</span>
+jobmanager.rpc.address: jobmanager1,jobmanager2,jobmanager3</pre>
+            </div>
+
+            <h3>3.4.2 Kubernetes 部署</h3>
+            <div class="code-block">
+<pre><span class="comment"># Flink Kubernetes Operator 部署</span>
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: streaming-job
+spec:
+  image: flink:1.18
+  flinkVersion: v1.18
+  jobManager:
+    resource:
+      memory: <span class="string">"4Gi"</span>
+      cpu: 2
+    replicas: 3  <span class="comment"># HA 模式</span>
+  taskManager:
+    resource:
+      memory: <span class="string">"8Gi"</span>
+      cpu: 4
+    replicas: 5
+  job:
+    jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
+    parallelism: 20
+    upgradeMode: stateful  <span class="comment"># 有状态升级</span>
+    state: running
+  podTemplate:
+    spec:
+      containers:
+        - name: flink-main-container
+          env:
+            - name: ENABLE_BUILT_IN_PLUGINS
+              value: flink-metrics-prometheus,flink-gs-fs-hadoop</pre>
+            </div>
+
+            <h3>3.4.3 监控集成</h3>
+            <div class="code-block">
+<pre><span class="comment">// Prometheus 指标导出</span>
+<span class="comment"># flink-conf.yaml</span>
+metrics.reporters: prom
+metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+metrics.reporter.prom.port: 9249
+
+<span class="comment">// 自定义指标</span>
+<span class="keyword">public class</span> MonitoredFunction <span class="keyword">extends</span> RichMapFunction&lt;Event, Event&gt; {
+    <span class="keyword">private transient</span> Counter eventCounter;
+    <span class="keyword">private transient</span> Histogram processingTime;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        MetricGroup group = getRuntimeContext().getMetricGroup();
+        eventCounter = group.counter(<span class="string">"eventsProcessed"</span>);
+        processingTime = group.histogram(<span class="string">"processingTimeNs"</span>, 
+            <span class="keyword">new</span> DropwizardHistogramWrapper(
+                <span class="keyword">new</span> Histogram(<span class="keyword">new</span> SlidingWindowReservoir(500))));
+    }
+    
+    @Override
+    <span class="keyword">public</span> Event map(Event event) {
+        <span class="keyword">long</span> start = System.nanoTime();
+        Event result = process(event);
+        eventCounter.inc();
+        processingTime.update(System.nanoTime() - start);
+        <span class="keyword">return</span> result;
+    }
+}</pre>
+            </div>
+
+            <h3>3.4.4 Savepoint 升级</h3>
+            <div class="code-block">
+<pre><span class="comment"># 触发 Savepoint</span>
+flink savepoint &lt;jobId&gt; hdfs:///savepoints
+
+<span class="comment"># 从 Savepoint 启动 (允许非恢复状态)</span>
+flink run -s hdfs:///savepoints/savepoint-xxxxx \
+  --allowNonRestoredState \
+  -c com.example.Job my-job.jar
+
+<span class="comment">// 代码中指定 Savepoint 路径</span>
+env.setDefaultSavepointDirectory(<span class="string">"hdfs:///flink/savepoints"</span>);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 3.4</h4>
+                <ol>
+                    <li>在 Kubernetes 上部署 Flink 作业</li>
+                    <li>配置 Prometheus + Grafana 监控</li>
+                    <li>模拟 JobManager 故障，验证 HA 切换</li>
+                    <li>使用 Savepoint 进行作业版本升级</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../DEPLOYMENT-ARCHITECTURES.md">部署架构指南</a></li>
+                    <li><a href="../../Knowledge/production-checklist.md">生产检查清单</a></li>
+                    <li><a href="../../OBSERVABILITY-GUIDE.md">可观测性指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="course-02-design-patterns.html">← 上一课程</a>
+            <a href="../index.html">返回首页 →</a>
+        </div>
+    </div>
+</body>
+</html>

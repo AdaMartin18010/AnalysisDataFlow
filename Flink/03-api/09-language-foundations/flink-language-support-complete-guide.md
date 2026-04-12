@@ -301,6 +301,10 @@ import org.apache.flink.connector.jdbc.JdbcSink;
 import java.time.Duration;
 import java.math.BigDecimal;
 
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // Def-F-09-07: Java TypeInformation 显式声明
 public class JavaStreamingJob {
 
@@ -423,6 +427,10 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import static org.apache.flink.table.api.Expressions.*;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
+
 public class JavaTableExample {
     public static void main(String[] args) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -472,6 +480,10 @@ public class JavaTableExample {
 
 ```java
 @Configuration
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 public class FlinkSpringConfig {
 
     @Bean
@@ -857,7 +869,7 @@ print(df.head())
 
 #### Python 依赖管理
 
-```python
+```text
 # requirements.txt 示例
 # Flink 核心依赖
 apache-flink==1.19.0
@@ -1162,6 +1174,10 @@ FROM user_transactions;
 
 ```java
 // Java 调用 Scala 编写的 UDF
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class JavaWithScalaUDF {
 
     public static void main(String[] args) {

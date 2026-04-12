@@ -89,6 +89,10 @@
 **边缘-云分层 - 边缘端代码:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 边缘端: 数据过滤与聚合
 DataStream<SensorData> filtered = env
     .addSource(new MqttSource("tcp://edge-mqtt:1883", "sensors/+"))
@@ -117,6 +121,10 @@ dailyStats.writeAsText("hdfs://results/daily/" + date);
 **Lambda架构 - 速度层 (实时数据):**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 速度层: 实时增量计算
 DataStream<HourlyStats> realtimeStats = streamEnv
     .addSource(new KafkaSource<>("realtime-topic"))
@@ -129,6 +137,10 @@ realtimeStats.addSink(new RedisSink<>("realtime-view"));
 **Kappa架构 - 统一流处理:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Kappa: 所有数据通过流处理
 DataStream<SensorData> allData = env
     .addSource(new KafkaSource<>("all-sensor-data"))
@@ -171,6 +183,9 @@ allData.filter(d -> d.isHistorical())
 **基础MQTT Source配置:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 Properties mqttProps = new Properties();
 mqttProps.setProperty("brokerUrl", "tcp://mqtt.broker:1883");
 mqttProps.setProperty("topic", "sensors/+/temperature");
@@ -189,6 +204,9 @@ DataStream<SensorReading> mqttStream = env
 **MQTT Source - 多主题订阅:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 同时订阅多个主题
 List<String> topics = Arrays.asList(
     "sensors/+/temperature",
@@ -244,6 +262,9 @@ prodMqttProps.setProperty("ssl.key.path", "/certs/client.key");
 **基础Kafka Source (新API):**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 KafkaSource<SensorReading> kafkaSource = KafkaSource.<SensorReading>builder()
     .setBootstrapServers("kafka:9092")
     .setTopics("sensor-data", "device-events")
@@ -262,6 +283,9 @@ DataStream<SensorReading> kafkaStream = env.fromSource(
 **Kafka Source - 精确一次消费:**
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 KafkaSource<SensorReading> exactlyOnceSource = KafkaSource.<SensorReading>builder()
     .setBootstrapServers("kafka:9092")
     .setTopics("sensor-data")
@@ -282,6 +306,12 @@ env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
 **Kafka多分区处理:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 基于设备ID分区，保证同一设备数据顺序处理
 DataStream<SensorReading> partitionedStream = kafkaStream
     .keyBy(reading -> reading.getDeviceId())
@@ -320,6 +350,10 @@ DataStream<SensorReading> partitionedStream = kafkaStream
 **HTTP Source (Async I/O):**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 使用AsyncFunction批量获取外部API数据
 DataStream<DeviceConfig> deviceConfigs = sensorStream
     .keyBy(SensorReading::getDeviceId)
@@ -417,6 +451,11 @@ public class WebSocketSource extends RichSourceFunction<SensorReading>
 **滚动窗口 - 温度平均值:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 DataStream<AvgTemperature> avgTemp = sensorStream
     .keyBy(SensorReading::getSensorId)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -455,6 +494,10 @@ public static class AverageAggregate implements
 **滑动窗口 - 移动平均:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 每小时计算过去24小时的移动平均
 DataStream<MovingAverage> movingAvg = sensorStream
     .keyBy(SensorReading::getSensorId)
@@ -475,6 +518,10 @@ tableEnv.executeSql(sql);
 **会话窗口 - 设备活动分析:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 检测设备会话（30分钟无活动视为会话结束）
 DataStream<DeviceSession> sessions = sensorStream
     .keyBy(SensorReading::getDeviceId)
@@ -529,6 +576,10 @@ public static class SessionProcessFunction extends
 **Interval Join - 传感器配对分析:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 匹配5分钟内发生的相关事件
 DataStream<EnrichedReading> enriched = tempStream
     .keyBy(SensorReading::getLocationId)
@@ -583,6 +634,10 @@ ON s.sensor_id = d.device_id;
 **Lookup Join - 实时维度补全:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 异步查找设备元数据
 DataStream<EnrichedEvent> enriched = eventStream
     .asyncWaitFor(
@@ -640,6 +695,10 @@ DataStream<EnrichedEvent> enriched = eventStream
 **温度异常模式检测:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义模式: 温度持续升高后骤降(可能设备故障)
 Pattern<SensorReading, ?> tempAnomalyPattern = Pattern
     .<SensorReading>begin("rising")
@@ -707,6 +766,11 @@ Pattern<DeviceEvent, ?> offlinePattern = Pattern
     .within(Time.minutes(15));
 
 // 超时检测需要特殊处理 - 使用ProcessFunction + Timer
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class HeartbeatMonitor extends KeyedProcessFunction<String, DeviceEvent, Alert> {
     private ValueState<Long> lastHeartbeatState;
 
@@ -766,6 +830,9 @@ public class HeartbeatMonitor extends KeyedProcessFunction<String, DeviceEvent, 
 **InfluxDB写入:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // InfluxDB 2.x Sink
 InfluxDBConfig influxConfig = InfluxDBConfig.builder()
     .url("http://influxdb:8086")
@@ -1437,6 +1504,10 @@ configuration.setBoolean(StateBackendOptions.LOCAL_RECOVERY, true);
 **加盐两阶段聚合:**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 第一阶段: 加盐打散
 DataStream<AggregatedResult> phase1 = dataStream
     .map(new RichMapFunction<SensorReading, Tuple2<String, Double>>() {

@@ -394,6 +394,10 @@ $$\forall w: Output(w) \text{ committed} \iff \forall s \in S_A(w) \cup S_B(w): 
 ### 6.1 Flink Window Join
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Two-stream window join
 DataStream<Order> orders = ...
 DataStream<Shipment> shipments = ...
@@ -415,6 +419,10 @@ Join_{Tumbling(5min)}(Orders, Shipments, key = userId)
 ### 6.2 Interval Join Implementation
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Interval Join: Match purchases within 30 minutes of clicks
 DataStream<Click> clicks = ...
 DataStream<Purchase> purchases = ...

@@ -607,6 +607,13 @@ P(跨区移动) = 边界穿越事件 / 总移动事件 < 0.05
 
 ```java
 // Flink ETA计算作业核心逻辑
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ETACalculationJob {
 
     public static void main(String[] args) {
@@ -735,6 +742,12 @@ class ETACalculator extends KeyedCoProcessFunction<
 
 ```java
 // Surge Pricing Flink作业
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class SurgePricingJob {
 
     public static void main(String[] args) {
@@ -867,6 +880,13 @@ class SurgeCalculator extends KeyedCoProcessFunction<
 
 ```java
 // 欺诈检测Flink作业 (基于CEP)
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionJob {
 
     public static void main(String[] args) {

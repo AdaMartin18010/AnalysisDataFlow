@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink + Rust 生态系统 2025-2026 趋势分析
 
 > 所属阶段: Flink/趋势分析 | 前置依赖: [14.0-rust-assembly-overview](../00-MASTER-INDEX.md), [12.1-flink-rust-connector-adoption](../../05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | 形式化等级: L4 | 置信度: 高

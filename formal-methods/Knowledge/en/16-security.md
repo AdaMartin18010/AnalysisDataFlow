@@ -329,6 +329,9 @@ high-availability.zookeeper.client.acl: creator
 import org.apache.flink.runtime.security.SecurityConfiguration;
 import org.apache.flink.runtime.security.SecurityUtils;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 public class KerberosFlinkJob {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -350,6 +353,8 @@ public class KerberosFlinkJob {
 **Pattern 2: OAuth 2.0 / OIDC Integration**
 
 ```java
+import org.apache.flink.configuration.Configuration;
+
 // Flink REST API OAuth2 integration
 @Configuration
 public class FlinkSecurityConfig {

@@ -446,7 +446,7 @@ $$\alpha(f(c)) \sqsubseteq f^\#(\alpha(c))$$
 
 ### 6.5 Worklist 算法示例
 
-```python
+```text
 # Worklist 算法伪代码
 def worklist_algorithm(cfg, transfer_functions, meet):
     IN = {n: ⊥ for n in cfg.nodes}
@@ -465,7 +465,7 @@ def worklist_algorithm(cfg, transfer_functions, meet):
         # 计算新的 OUT
         new_out = transfer_functions[n](new_in)
 
-        # 如果变化，加入后继节点
+        # 如果变化,加入后继节点
         if new_out ≠ OUT[n]:
             OUT[n] = new_out
             worklist.add(succ(n))

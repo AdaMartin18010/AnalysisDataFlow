@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 调度器源码深度分析
 
 > **所属阶段**: Flink | **前置依赖**: [Flink 架构概述](../01-concepts/flink-architecture-evolution-1x-to-2x.md), [Checkpoint机制](../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
@@ -396,6 +400,8 @@ public class SpeculativeScheduler extends DefaultScheduler {
 #### 5.2.1 ExecutionGraph 构建过程
 
 ```java
+import java.util.List;
+
 public class ExecutionGraph {
     // 构建阶段
     public void attachJobGraph(List<JobVertex> vertices) {
@@ -488,6 +494,8 @@ public class SlotProfile {
 #### 5.3.3 资源匹配算法
 
 ```java
+import java.util.Collection;
+
 public class SlotSelectionStrategy {
     // 多维度资源匹配
     public Optional<SlotInfo> selectBestSlot(
@@ -751,6 +759,8 @@ public class FailoverCoordinator {
 #### 5.5.3 Checkpoint 恢复机制
 
 ```java
+import java.util.Set;
+
 public class CheckpointCoordinator {
     public boolean restoreLatestCheckpointedState(
         Set<ExecutionVertex> vertices,
@@ -791,6 +801,10 @@ public class CheckpointCoordinator {
 #### 6.1.1 DefaultScheduler 配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // flink-conf.yaml
 jobmanager.scheduler: default
 
@@ -825,6 +839,9 @@ scheduler.adaptive.max-parallelism: 128
 #### 6.1.3 AdaptiveBatchScheduler 配置
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 批处理配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -870,6 +887,9 @@ config.setAutoTypeRegistrationEnabled(true);
 #### 6.2.2 Slot 共享组配置
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 DataStream<Event> source = env.addSource(new KafkaSource<>())
     .slotSharingGroup("source-group");
 
@@ -903,6 +923,10 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 #### 6.3.2 程序级故障恢复
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 

@@ -1,5 +1,9 @@
 # Flink Agent工作流引擎
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flip-531-ai-agents-ga-guide.md), [Flink Agents MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
@@ -567,6 +571,12 @@ graph TB
 /**
  * Flink Agent工作流引擎核心实现
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class FlinkAgentWorkflowEngine {
 
     /**

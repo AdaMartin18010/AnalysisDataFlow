@@ -1,4 +1,8 @@
-﻿# AnalysisDataFlow
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
+# AnalysisDataFlow
 
 [![Deutsch](https://img.shields.io/badge/Deutsch-🇩🇪-red)](./README-de.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../../docs/i18n/en/00-OVERVIEW.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
 
@@ -246,4 +250,3 @@ Dieses Projekt ist unter der [Apache License 2.0](../../LICENSE) lizenziert.
 ---
 
 > **Übersetzer-Hinweis**: Dieses Dokument wurde unter Beibehaltung der technischen Genauigkeit des Originals und im Einklang mit den Gepflogenheiten deutscher technischer Dokumentation übersetzt. Formalisierte Definitionen und Theoreme behalten ihre englische Notation bei. Letztes Update: 2026-04-11
-

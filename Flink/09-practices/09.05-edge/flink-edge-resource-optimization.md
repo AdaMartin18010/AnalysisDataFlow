@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 边缘资源优化指南 (Flink Edge Resource Optimization)
 
 > **所属阶段**: Flink/09-practices/09.05-edge | **前置依赖**: [Flink 边缘流处理完整指南](./flink-edge-streaming-guide.md), [Flink on K3s部署指南](./flink-edge-kubernetes-k3s.md) | **形式化等级**: L3
@@ -638,23 +642,23 @@ taskmanager.network.memory.buffers-per-channel: 2
 
 ```yaml
 # Docker Compose
-services: 
-  flink-taskmanager: 
-    deploy: 
-      resources: 
-        limits: 
+services:
+  flink-taskmanager:
+    deploy:
+      resources:
+        limits:
           cpus: '1.5'
           memory: 2G
-        reservations: 
+        reservations:
           cpus: '1.0'
           memory: 1G
 
 # Kubernetes
-resources: 
-  requests: 
+resources:
+  requests:
     cpu: "1000m"
     memory: "1536Mi"
-  limits: 
+  limits:
     cpu: "1500m"
     memory: "2Gi"
 ```

@@ -13,8 +13,8 @@ last_sync: "2026-04-04T10:00:00Z"
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./README.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./README-EN.md)
 
 [![Validate Project](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml)
-[![Update Statistics](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
-[![Check Links](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
+[![Update Statistics]([内部CI Badge - 需手动验证])](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
+[![Check Links]([内部CI Badge - 需手动验证])](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
 
 > **Unified Stream Computing Theory and Practice Knowledge Base**
 >

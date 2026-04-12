@@ -437,6 +437,12 @@ import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDe
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.checkpoint.CheckpointingMode;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * 生产级Kafka WordCount
  * 包含Checkpoint、Watermark、监控等生产必备配置
@@ -808,6 +814,9 @@ for (String word : words) {
 **参考答案框架**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class TopNWordCount {
     public static void main(String[] args) throws Exception {
         // ... 环境设置 ...

@@ -260,6 +260,10 @@ $$
 **场景**: Twitter 实时社交网络，分析用户影响力传播和社区演化。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 从 DataStream 创建 SimpleEdgeStream
 DataStream<Edge<Long, Double>> tweetEdges = tweets
     .flatMap(new TweetToEdgeMapper())  // 提取关注/转发关系
@@ -300,6 +304,10 @@ communities
 **场景**: 实时交易网络，检测可疑的资金聚集和快速转移模式。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 构建交易边流
 DataStream<Edge<String, TransactionInfo>> txEdges = transactions
     .map(tx -> new Edge<>(
@@ -336,6 +344,10 @@ triangleCounts
 
 ```java
 // 定义顶点状态
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class VertexState {
     private long degree;
     private double pagerank;

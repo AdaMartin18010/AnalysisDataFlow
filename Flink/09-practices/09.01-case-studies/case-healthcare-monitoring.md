@@ -270,6 +270,14 @@ ATTENTION告警 → 电子白板提醒
 #### 5.2.1 生理数据处理Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class PhysiologicalDataProcessingJob {
 
     public static void main(String[] args) throws Exception {

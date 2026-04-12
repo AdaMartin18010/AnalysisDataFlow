@@ -609,6 +609,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 /**
  * Flink MQTT Source 集成示例
  */

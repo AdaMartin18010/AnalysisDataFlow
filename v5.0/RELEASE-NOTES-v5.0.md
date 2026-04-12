@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AnalysisDataFlow v5.0.0 发布说明
 
 > **版本**: v5.0.0 | **代号**: "全面生态化" | **发布日期**: 2027年1月15日
@@ -168,7 +171,7 @@ mindmap
 
 基于用户背景与目标的个性化推荐系统:
 
-```python
+```text
 # 示例: 学习路径推荐API
 GET /api/v1/learning-path/recommend
 {
@@ -323,7 +326,7 @@ v1.0.0 (2025-10-10) - 初始发布
 - 📖 **完整文档**: <https://docs.analysisdataflow.org>
 - 🎓 **学习平台**: <https://learn.analysisdataflow.org>
 - 🕸️ **知识图谱**: <https://graph.analysisdataflow.org>
-- 💬 **社区论坛**: <https://discuss.analysisdataflow.org>
+- 💬 **社区论坛**: <[社区讨论版 - 待部署]>
 - 🐙 **GitHub**: <https://github.com/luyanfeng/AnalysisDataFlow>
 - 🐦 **Twitter/X**: @AnalysisDataFlow
 - 💼 **LinkedIn**: AnalysisDataFlow

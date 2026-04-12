@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 向量搜索与流处理的融合：AI-Native数据库演进
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [实时RAG架构](real-time-rag-architecture.md), [RisingWave深度解析](risingwave-deep-dive.md) | 形式化等级: L3-L4
@@ -705,6 +708,10 @@ flowchart TB
 **Flink嵌入生成Pipeline**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class VisualEmbeddingPipeline {
 
     public static void main(String[] args) {

@@ -2146,6 +2146,10 @@ state.backend.hashmap.memory.managed: true
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Java API 配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -2214,6 +2218,9 @@ state.backend.rocksdb.thread.num: 4
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Java API 配置（高级调优）
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -2300,6 +2307,9 @@ execution.checkpointing.mode: EXACTLY_ONCE
 ```
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Java API 配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

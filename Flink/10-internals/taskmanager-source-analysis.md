@@ -712,6 +712,9 @@ taskmanager.heartbeat.timeout: 50000
 
 ```java
 // 示例: TaskSlot分配流程（简化版）
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class TaskSlotAllocationExample {
 
     public void demonstrateSlotAllocation(TaskSlotTable<Task> slotTable) {
@@ -924,6 +927,9 @@ public class InputGateExample {
 
 ```java
 // 示例: 自定义Task的生命周期实现
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class CustomInvokable extends AbstractInvokable {
 
     private transient RecordWriter<RowData> recordWriter;

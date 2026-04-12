@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink Agents 架构深度解析
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
@@ -326,6 +329,10 @@ $$
  * Agent 生命周期管理函数
  * 演示完整的生命周期状态转换
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class AgentLifecycleFunction
     extends KeyedProcessFunction<String, AgentEvent, AgentState> {
 

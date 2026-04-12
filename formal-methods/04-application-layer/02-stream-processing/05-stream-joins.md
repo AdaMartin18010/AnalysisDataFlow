@@ -316,6 +316,10 @@ $$\forall w: Output(w) \text{ committed} \iff \forall s \in S_A(w) \cup S_B(w): 
 ### 6.1 Flink窗口连接实现
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 双流窗口连接
 DataStream<Order> orders = ...
 DataStream<Shipment> shipments = ...
@@ -337,6 +341,10 @@ Join_{Tumbling(5min)}(Orders, Shipments, key = userId)
 ### 6.2 Interval Join实现
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Interval Join: 匹配点击后30分钟内的购买
 DataStream<Click> clicks = ...
 DataStream<Purchase> purchases = ...

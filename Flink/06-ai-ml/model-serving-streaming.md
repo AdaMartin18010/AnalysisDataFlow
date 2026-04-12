@@ -258,6 +258,10 @@ $$Speedup(B) = \frac{B \cdot T_{sequential}}{T_{batch}(B)} \approx \frac{B \cdot
 
 ```java
 // 定义外部模型服务调用
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class TFServingAsyncFunction
     extends RichAsyncFunction<FeatureVector, Prediction> {
 
@@ -417,6 +421,12 @@ routing_strategy:
 ### 实例4: 批量推理优化
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 // 批量累积 + 批量推理
 public class BatchInferenceFunction
     extends KeyedProcessFunction<String, FeatureVector, Prediction> {

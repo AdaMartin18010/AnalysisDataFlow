@@ -352,6 +352,10 @@ LogicalProject(...)
 - Key基数: 100万
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Join链实现
 DataStream<Result> result = orders
     .join(orderItems)
@@ -383,6 +387,9 @@ DataStream<Result> result = orders
 #### 5.2.2 DataStream MultiStreamJoin
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // MultiJoin风格实现（自定义Processor）
 DataStream<UnifiedResult> result =
     orders.connect(orderItems)
@@ -485,6 +492,8 @@ Flink SQL> EXPLAIN SELECT /*+ MULTI_JOIN() */ ...
 #### 6.2.1 统一POJO设计
 
 ```java
+import java.util.Map;
+
 /**
  * 多路Join的统一状态容器
  * 使用单一Keyed State存储所有流的记录
@@ -577,6 +586,10 @@ public class MultiJoinState<K, T1, T2, T3, T4> {
  * 四路MultiJoin Processor
  * 支持INNER和LEFT JOIN语义
  */
+
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
     extends KeyedCoProcessFunction<K,
         Either<T1, Either<T2, Either<T3, T4>>>, // 多流输入
@@ -712,6 +725,8 @@ public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
 #### 6.3.1 基于签名去重
 
 ```java
+import java.io.Serializable;
+
 /**
  * Join结果签名，用于去重
  */
@@ -747,6 +762,11 @@ public class JoinSignature implements Serializable {
 #### 6.3.2 基于Watermark的过期清理
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+
+
 /**
  * 事件时间驱动的状态清理
  */

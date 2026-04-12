@@ -348,6 +348,10 @@ WHERE window_start >= NOW() - INTERVAL '1 DAY';
 **Flink 等价实现**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink: 需要外部存储（如 Redis/MySQL）存储结果
 DataStream<Event> events = env
     .fromSource(kafkaSource, WatermarkStrategy.forMonotonousTimestamps(), "Kafka")
@@ -367,35 +371,35 @@ DataStream<Event> events = env
 # risingwave-compute.yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: risingwave-compute
-spec: 
+spec:
   replicas: 3  # 计算节点，可独立扩缩
-  template: 
-    spec: 
-      containers: 
+  template:
+    spec:
+      containers:
       - name: compute-node
         image: risingwavelabs/risingwave:v1.7.0
         command: ["compute-node"]
-        env: 
+        env:
         - name: RW_STATE_STORE
           value: "hummock+s3://risingwave-state"
-        resources: 
-          requests: 
+        resources:
+          requests:
             memory: "8Gi"
             cpu: "4"
 ---
 # risingwave-meta.yaml - 元数据服务
 apiVersion: apps/v1
 kind: StatefulSet
-metadata: 
+metadata:
   name: risingwave-meta
-spec: 
+spec:
   replicas: 3  # Raft 集群
   serviceName: risingwave-meta
-  template: 
-    spec: 
-      containers: 
+  template:
+    spec:
+      containers:
       - name: meta-node
         image: risingwavelabs/risingwave:v1.7.0
         command: ["meta-node"]

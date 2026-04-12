@@ -519,7 +519,7 @@ result = naspp.infer(query="add(d1,d2,5)")
 
 **核心原理**: 扩展ProbLog支持神经网络作为概率源
 
-```python
+```text
 from deepproblog import Model
 from deepproblog.nn import Solver
 

@@ -607,6 +607,9 @@ import org.apache.flink.util.Collector;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * CEP作弊检测模式定义
  */
@@ -785,6 +788,10 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternStream;
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 
 /**
  * 游戏实时分析与反作弊主应用
@@ -992,6 +999,10 @@ import com.game.analytics.model.*;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 
 /**
  * 风险评级处理函数
@@ -1265,80 +1276,80 @@ public class ClickHouseStatsSink extends org.apache.flink.streaming.api.function
 #### 6.1.7 配置文件 (application.yml)
 
 ```yaml
-flink: 
-  parallelism: 
+flink:
+  parallelism:
     default: 512
     kafka-source: 128
     cep-operator: 256
-  checkpointing: 
+  checkpointing:
     interval: 10000
     mode: EXACTLY_ONCE
     timeout: 60000
     min-pause: 5000
-  state: 
+  state:
     backend: rocksdb
     checkpoints-dir: s3://game-flink-checkpoints/
     savepoints-dir: s3://game-flink-savepoints/
 
-kafka: 
+kafka:
   bootstrap-servers: kafka1:9092,kafka2:9092,kafka3:9092
-  consumer: 
+  consumer:
     group-id: gaming-analytics-flink
     auto-offset-reset: latest
-    topics: 
+    topics:
       - game-events
       - combat-events
       - economy-events
       - social-events
-  producer: 
+  producer:
     topic-cheat-detections: cheat-detections
     acks: all
     retries: 3
 
-redis: 
-  cluster: 
-    nodes: 
+redis:
+  cluster:
+    nodes:
       - redis1:6379
       - redis2:6379
       - redis3:6379
     timeout: 5000
     max-redirects: 3
-    pool: 
+    pool:
       max-total: 128
       max-idle: 64
       min-idle: 16
 
-clickhouse: 
+clickhouse:
   url: jdbc:clickhouse://clickhouse:8123/game_analytics
   username: default
   password: ""
   batch-size: 10000
   flush-interval: 5000
 
-anti-cheat: 
-  rules: 
-    teleport: 
+anti-cheat:
+  rules:
+    teleport:
       enabled: true
       max-distance: 500.0
       time-window: 1000
       confidence: 0.85
-    aimbot: 
+    aimbot:
       enabled: true
       min-headshots: 3
       min-distance: 100.0
       time-window: 3000
       confidence: 0.80
-    speed-hack: 
+    speed-hack:
       enabled: true
       max-speed: 15.0
       consecutive-moves: 3
       time-window: 5000
       confidence: 0.75
-  ml: 
+  ml:
     model-path: s3://game-ml-models/anti-cheat/
     inference-batch-size: 32
     update-interval: 3600
-  risk: 
+  risk:
     ban-threshold: 0.95
     suspect-threshold: 0.70
     cooldown-hours: 24
@@ -1350,6 +1361,13 @@ anti-cheat:
 /**
  * 实时推荐系统 - 道具推荐
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeRecommendationJob {
 
     public static void main(String[] args) throws Exception {
@@ -1501,6 +1519,11 @@ public class RecommendationEngine extends KeyedProcessFunction<String, PlayerPro
  * 实时匹配系统
  * 基于玩家技能等级、网络延迟、等待时间动态匹配
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DynamicMatchmakingJob {
 
     public static void main(String[] args) throws Exception {
@@ -1617,6 +1640,10 @@ public class MatchmakingWindowFunction extends ProcessWindowFunction<
  * 实时排行榜系统
  * 使用Flink状态存储Top-N排行榜
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RealtimeLeaderboardJob {
 
     public static void main(String[] args) throws Exception {

@@ -1,10 +1,10 @@
 # Flink AI Agents (FLIP-531) 原生Agent支持
 
-> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
-> ⚠️ **前瞻性声明**
-> Flink Agents 目前为 Preview 版本 (0.2.0, 2026-02-06)，API 可能变更。
-> 最后更新: 2026-04-06
+> 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 
@@ -37,6 +37,8 @@ $$
 **Agent记忆** 利用Flink的分布式状态后端实现：
 
 ```java
+import org.apache.flink.api.common.state.ValueState;
+
 // Agent状态定义示例
 public class AgentState {
     // 工作记忆 - ValueState
@@ -283,6 +285,8 @@ RocksDB典型值：TB级
 **反模式1: 无界状态增长**
 
 ```java
+import org.apache.flink.api.common.state.ListState;
+
 // ❌ 错误：无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！

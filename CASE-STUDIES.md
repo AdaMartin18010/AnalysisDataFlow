@@ -116,6 +116,10 @@
     - [6.1 共性挑战](#61-共性挑战)
     - [6.2 成功要素](#62-成功要素)
     - [6.3 技术演进趋势](#63-技术演进趋势)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 行业案例对比矩阵](#71-行业案例对比矩阵)
+    - [7.2 案例架构演进时间线](#72-案例架构演进时间线)
+    - [7.3 行业决策树](#73-行业决策树)
   - [7. 引用参考](#7-引用参考)
 
 ---
@@ -261,6 +265,11 @@ graph LR
 **关键配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Watermark策略：业务时间 + 200ms延迟
 WatermarkStrategy<Transaction> strategy = WatermarkStrategy
     .<Transaction>forBoundedOutOfOrderness(Duration.ofMillis(200))
@@ -485,6 +494,9 @@ graph LR
 **解决方案**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Broadcast Stream 实现规则热更新
 MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>("rules", Types.STRING, Types.POJO(Rule.class));
@@ -600,6 +612,10 @@ graph TB
 **Flink特征计算Job**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 用户实时行为特征：最近1小时浏览品类
 DataStream<UserFeature> userFeatureStream = env
     .addSource(new UserBehaviorSource())
@@ -717,6 +733,10 @@ graph TB
 **热点Key处理**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // LocalKeyBy：本地预聚合减少网络 shuffle
 DataStream<Order> preAggregated = orderStream
     .keyBy(Order::getItemId)
@@ -891,6 +911,10 @@ DataStream<SensorData> processed = env
     .process(new ThresholdMonitorFunction());
 
 // 阈值监控函数
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+
 class ThresholdMonitorFunction extends KeyedProcessFunction<String, SensorData, Alert> {
     private ValueState<ThresholdConfig> thresholdState;
 
@@ -1136,6 +1160,9 @@ DataStream<PlayerAction> actionStream = env
     .process(new AntiCheatProcessFunction());
 
 // 外挂检测：异常点击频率
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 class AntiCheatProcessFunction extends KeyedProcessFunction<String, PlayerAction, Alert> {
     private ListState<PlayerAction> recentActions;
 
@@ -1417,6 +1444,10 @@ graph LR
 **日志解析与异常检测**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 日志模式识别
 DataStream<LogEvent> parsedLogs = env
     .addSource(new KafkaSource<>())
@@ -1574,6 +1605,71 @@ graph TB
 | **Serverless** | 托管流处理服务 | 降低运维 |
 
 ---
+
+## 7. 可视化 (Visualizations)
+
+### 7.1 行业案例对比矩阵
+
+**不同行业流计算应用特征对比**：
+
+```mermaid
+quadrantChart
+    title 流计算行业应用特征分布
+    x-axis 低复杂度 --> 高复杂度
+    y-axis 低实时性要求 --> 高实时性要求
+
+    quadrant-1 高性能计算
+    quadrant-2 复杂分析
+    quadrant-3 简单处理
+    quadrant-4 实时感知
+
+    实时风控: [0.85, 0.90]
+    高频交易: [0.90, 0.95]
+    反欺诈: [0.75, 0.85]
+    实时推荐: [0.80, 0.70]
+    实时库存: [0.65, 0.80]
+    设备监控: [0.50, 0.85]
+    预测维护: [0.55, 0.75]
+    实时对战: [0.60, 0.90]
+    反作弊: [0.65, 0.85]
+    日志分析: [0.30, 0.40]
+    ETL处理: [0.45, 0.50]
+    监控告警: [0.35, 0.65]
+```
+
+### 7.2 案例架构演进时间线
+
+```mermaid
+gantt
+    title 流计算架构演进时间线
+    dateFormat YYYY-MM-DD
+    axisFormat %Y
+
+    section 传统批处理
+    批处理ETL           :done, batch, 2015-01-01, 365d
+
+    section Lambda架构
+    实时层构建          :done, lambda1, 2016-01-01, 180d
+
+    section Kappa架构
+    流处理统一          :done, kappa1, 2017-01-01, 180d
+
+    section 现代流处理
+    云原生部署          :active, modern1, 2019-01-01, 365d
+    湖仓一体            :modern2, 2021-01-01, 730d
+```
+
+### 7.3 行业决策树
+
+```mermaid
+flowchart TD
+    Root[选择行业解决方案] --> Q1{业务领域?}
+    Q1 -->|金融| R1[金融风控方案]
+    Q1 -->|电商| R2[电商推荐方案]
+    Q1 -->|IoT| R3[IoT监控方案]
+    Q1 -->|游戏| R4[游戏反作弊方案]
+```
+
 
 ## 7. 引用参考
 

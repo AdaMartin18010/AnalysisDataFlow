@@ -209,7 +209,7 @@ python scripts/link-quick-fix.py --file README.md --line 42 --new-url "https://n
 
 ### 查看执行结果
 
-1. 访问 [Actions](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) 页面
+1. 访问 [Actions]([内部CI链接 - 需手动验证]) 页面
 2. 查看最新的工作流运行
 3. 下载 Artifact 获取完整报告
 

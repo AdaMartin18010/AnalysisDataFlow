@@ -210,6 +210,8 @@ $$TotalNetworkMemory = \sum_{i=1}^{n} LocalBufferPool_i.size$$
 **源码分析**: `NetworkBufferPool.java`
 
 ```java
+import java.util.Set;
+
 public class NetworkBufferPool {
     // 核心：全局内存段池
     private final Set<MemorySegment> availableMemorySegments;

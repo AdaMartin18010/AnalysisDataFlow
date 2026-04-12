@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AnalysisDataFlow 常见问题解答 (FAQ)
 
 > **版本**: v1.1 | **更新日期**: 2026-04-04 | **状态**: 与项目同步
@@ -380,6 +383,9 @@ Struct/01-foundation/ (理论基础)
 import org.apache.flink.ai.agents.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class AIAgentExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -493,6 +499,11 @@ spec:
 **Java API 代码示例**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Serverless 作业提交
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getServerlessEnvironment();
@@ -544,6 +555,9 @@ Serverless (按量计费):
 **配置示例**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -639,6 +653,10 @@ System.out.println("当前建议间隔: " + metrics.getRecommendedInterval());
 ```java
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class UnifiedStreamingBatch {
     public static void main(String[] args) {
@@ -751,6 +769,10 @@ execution:
 **DataStream API 统一处理**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // DataStream API 同样支持流批统一
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -824,6 +846,10 @@ DataStream<Detection> detections = images
     .slotSharingGroup("gpu-tasks");  // GPU 专用 slot
 
 // GPU UDF 示例
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class GPUDetectionFunction
     extends RichAsyncFunction<Image, Detection> {
 
@@ -887,6 +913,11 @@ spec:
 **性能基准测试**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // GPU vs CPU 性能对比测试
 public class GPUBenchmark {
     public static void main(String[] args) throws Exception {
@@ -1019,6 +1050,10 @@ wasm-opt -O3 -o udf-optimized.wasm target/wasm32-wasi/release/my_flink_udf.wasm
 **Flink 注册与使用**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+
 // Java API 注册 WASM UDF
 StreamTableEnvironment tableEnv = ...;
 
@@ -1363,6 +1398,8 @@ state:
 **迁移验证脚本**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 验证作业兼容性
 public class CompatibilityCheck {
     public static void main(String[] args) throws Exception {
@@ -1420,6 +1457,10 @@ public class CompatibilityCheck {
 **迁移准备检查清单**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 1. 逐步迁移到 Table API (推荐)
 // 旧: DataStream API
 DataStream<Row> result = env
@@ -1497,6 +1538,13 @@ checks:
 **兼容性测试框架**
 
 ```java
+import org.junit.runner.RunWith;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 // 3.0 兼容性测试
 @RunWith(FlinkCompatibilityRunner.class)
 @CompatibilityVersion(from = "2.5", to = "3.0")
@@ -1607,6 +1655,12 @@ backend.setMemoryManaged(true);
 **性能测试代码**
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 基准测试作业
 public class PerformanceBenchmark {
     public static void main(String[] args) throws Exception {
@@ -1682,6 +1736,9 @@ cost_savings:
 **优化建议**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 启用 2.4 所有优化
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1716,6 +1773,11 @@ env.getConfig().setBoolean("taskmanager.network.memory.buffer-debloat.enabled", 
 
 ```java
 // AI Agent 性能测试
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class AIAgentPerformanceTest {
 
     public static void main(String[] args) throws Exception {
@@ -1787,6 +1849,8 @@ public class MetricsExtractor implements MapFunction<AIResponse, Metrics> {
 **压力测试脚本**
 
 ```java
+import java.time.Duration;
+
 // 阶梯负载测试
 public class LoadTest {
     public static void main(String[] args) throws Exception {
@@ -1865,6 +1929,10 @@ benchmark:
 **性能优化建议**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 1. 启用语义缓存 (减少重复调用)
 AIAgentConfig config = AIAgentConfig.builder()
     .setCacheEnabled(true)

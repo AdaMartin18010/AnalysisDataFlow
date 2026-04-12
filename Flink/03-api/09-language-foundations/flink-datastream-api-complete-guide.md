@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink DataStream API 完整特性指南
 
 > **所属阶段**: Flink/09-language-foundations | **前置依赖**: [DataStream V2 API](./05-datastream-v2-api.md), [流处理语义形式化](../../../Struct/01-foundation/stream-processing-semantics-formalization.md) | **形式化等级**: L3-L4
@@ -87,6 +90,10 @@ DataStream<T> 类型层次:
 
 ```java
 // 核心类型参数
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class DataStream<T> {
     private final StreamExecutionEnvironment environment;
     private final Transformation<T> transformation;
@@ -174,6 +181,10 @@ $$
 **Java 代码示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Map: 字段提取与转换
 DataStream<String> ids = events.map(new MapFunction<Event, String>() {
     @Override
@@ -270,6 +281,10 @@ $$
 **Java KeyedStream API**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 // 基础 KeyedStream 操作
 KeyedStream<Event, String> keyed = events.keyBy(Event::getUserId);
 
@@ -388,6 +403,10 @@ $$
 **状态 TTL 配置**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // TTL 配置 (所有状态类型支持)
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
@@ -405,6 +424,13 @@ descriptor.enableTimeToLive(ttlConfig);
 **Java 状态使用完整示例**:
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class CountWithTimeoutFunction
     extends KeyedProcessFunction<String, Event, Result> {
 
@@ -528,6 +554,10 @@ $$
 **时间戳分配**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 方式 1: 从元素中提取时间戳
 DataStream<Event> withTimestamps = stream
     .assignTimestampsAndWatermarks(
@@ -546,8 +576,8 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
 
 ```java
 // 全局时间语义设置 (Flink 1.12+ 默认 EventTime)
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 // 算子级别时间类型 (TimerService)
 @Override
 public void onTimer(long timestamp, OnTimerContext ctx, Collector<Out> out) {
@@ -642,6 +672,10 @@ public class CustomWatermarkGenerator implements WatermarkGenerator<Event> {
 **迟到数据处理**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 窗口允许迟到数据
 stream
     .keyBy(Event::getUserId)
@@ -686,6 +720,9 @@ $$
 
 ```java
 // 异步查询外部数据库
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class AsyncDatabaseRequest
     extends RichAsyncFunction<String, Result> {
 
@@ -819,6 +856,13 @@ ProcessFunction 家族:
 **Java KeyedProcessFunction 完整示例**:
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class EventTimeTriggerFunction
     extends KeyedProcessFunction<String, Event, Alert> {
 
@@ -984,6 +1028,10 @@ CEP 架构:
 **Java CEP 完整示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义欺诈检测模式: 登录 -> 小额交易 -> 大额交易 (5分钟内)
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("login")
@@ -1056,6 +1104,9 @@ DataStream<Alert> result = patternStream
 **高级模式条件**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 迭代条件 (Iterative Condition)
 Pattern<Transaction, ?> complexPattern = Pattern
     .<Transaction>begin("start")
@@ -1126,6 +1177,12 @@ $$
 **Java 广播状态 API**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // 1. 定义广播状态描述符
 MapStateDescriptor<String, Rule> ruleStateDescriptor =
     new MapStateDescriptor<>(
@@ -1200,6 +1257,9 @@ DataStream<EnrichedEvent> enriched = eventStream
 **键控广播状态**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // 适用于需要键控状态 + 广播状态的场景
 KeyedBroadcastProcessFunction<String, Event, Rule, Result> {
 
@@ -1275,6 +1335,10 @@ $$
 **启用可查询状态**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 // 方式 1: 状态描述符设置
 ValueStateDescriptor<MyState> descriptor =
     new ValueStateDescriptor<>("myState", MyState.class);
@@ -1294,6 +1358,9 @@ public void open(Configuration parameters) {
 **客户端查询**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // 创建查询客户端
 QueryableStateClient client = new QueryableStateClient(
     "localhost",  // 代理地址
@@ -1475,6 +1542,11 @@ flowchart TD
 ### 3.4 DataStream API 与 Table API 互操作
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // DataStream -> Table
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
@@ -1524,6 +1596,10 @@ DataStream<ResultPojo> typedStream = tableEnv
 **数据倾斜处理**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 加盐处理热点键
 DataStream<Event> salted = events
     .map(event -> {
@@ -1629,6 +1705,8 @@ At-Least-Once 保证:
 **两阶段提交 Sink**:
 
 ```java
+import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+
 public class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
     extends RichSinkFunction<IN>
     implements CheckpointedFunction, CheckpointListener {
@@ -1691,6 +1769,12 @@ public class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 **Java 完整示例**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class TransformationExamples {
 
     public static void main(String[] args) throws Exception {
@@ -1756,6 +1840,11 @@ object TransformationExamples:
 **会话窗口与状态管理**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class SessionAnalytics {
 
     // 会话累加器
@@ -1853,6 +1942,13 @@ public class SessionAnalytics {
 **多种窗口类型示例**:
 
 ```java
+import org.apache.flink.api.common.functions.AggregateFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class WindowingExamples {
 
     public static void main(String[] args) throws Exception {
@@ -1943,6 +2039,12 @@ public class WindowingExamples {
 **Interval Join 示例**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class StreamJoinExamples {
 
     public static void main(String[] args) throws Exception {
@@ -2021,6 +2123,12 @@ public class StreamJoinExamples {
 **异步 HTTP 请求示例**:
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class AsyncIOExample {
 
     public static class AsyncEnrichmentFunction
@@ -2116,6 +2224,10 @@ public class AsyncIOExample {
 **复杂事件处理与侧输出**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class AdvancedProcessFunction {
 
     // 侧输出标签
@@ -2231,6 +2343,12 @@ public class AdvancedProcessFunction {
 **实时欺诈检测**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class FraudDetectionCEP {
 
     public static void main(String[] args) throws Exception {
@@ -2354,6 +2472,14 @@ public class FraudDetectionCEP {
 **动态规则引擎**:
 
 ```java
+import java.io.Serializable;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 public class DynamicRuleEngine {
 
     // 规则定义

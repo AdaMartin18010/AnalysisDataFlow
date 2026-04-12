@@ -157,7 +157,7 @@ Video ──►   │  (原生多模态)  │
 
 **设计原则1: 流式处理优先 (Streaming-First)**
 
-```python
+```text
 # 反模式: 批处理导致高延迟
 video_chunks = capture_video(duration=5s)  # 等待5秒
 results = model.infer(video_chunks)        # 再处理
@@ -227,6 +227,8 @@ graph TB
 **Prop-K-06-41** (异步推理模式): 为避免模型推理阻塞数据流，采用AsyncFunction模式：
 
 ```java
+import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+
 // Flink AsyncFunction实现多模态异步推理
 public class MultimodalInferenceAsync
     extends RichAsyncFunction<MultimodalEvent, InferenceResult> {
@@ -300,7 +302,7 @@ graph TB
 
 **关键代码实现**:
 
-```python
+```text
 # multimodal_security_pipeline.py
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment

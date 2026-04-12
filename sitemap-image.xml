@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- 
+    Image Sitemap for AnalysisDataFlow
+    版本: 4.2 | 更新日期: 2026-04-12
+  -->
+
+  <!-- 首页及相关图片 -->
+  <url>
+    <loc>https://analysisdataflow.github.io/</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/social-preview.png</image:loc>
+      <image:title>AnalysisDataFlow - 流计算形式化理论项目</image:title>
+      <image:caption>流计算领域的「形式化理论补充 + 前沿探索实验室」</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/logo.png</image:loc>
+      <image:title>AnalysisDataFlow Logo</image:title>
+    </image:image>
+  </url>
+
+  <!-- 知识图谱可视化页面 -->
+  <url>
+    <loc>https://analysisdataflow.github.io/knowledge-graph.html</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/knowledge-graph-preview.png</image:loc>
+      <image:title>知识图谱可视化 v1</image:title>
+      <image:caption>流计算领域知识图谱交互式可视化</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://analysisdataflow.github.io/knowledge-graph-v2.html</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/knowledge-graph-v2-preview.png</image:loc>
+      <image:title>知识图谱可视化 v2</image:title>
+      <image:caption>增强版知识图谱可视化</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://analysisdataflow.github.io/knowledge-graph-v3.html</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/knowledge-graph-v3-preview.png</image:loc>
+      <image:title>知识图谱可视化 v3</image:title>
+      <image:caption>流计算定理依赖关系图谱</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://analysisdataflow.github.io/knowledge-graph-v4.html</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/knowledge-graph-v4-preview.png</image:loc>
+      <image:title>知识图谱可视化 v4</image:title>
+      <image:caption>全面优化的知识图谱可视化系统</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://analysisdataflow.github.io/knowledge-graph-theorem.html</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/theorem-dependency-graph.png</image:loc>
+      <image:title>定理依赖关系图谱</image:title>
+      <image:caption>流计算核心理论的依赖关系可视化</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 可视化目录图片 -->
+  <url>
+    <loc>https://analysisdataflow.github.io/visuals/</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/streaming-landscape-2026.png</image:loc>
+      <image:title>流计算生态全景图 2026</image:title>
+      <image:caption>流计算技术与工具全景地图</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/flink-architecture-diagram.png</image:loc>
+      <image:title>Flink架构图</image:title>
+      <image:caption>Apache Flink运行时架构详解</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/consistency-hierarchy.png</image:loc>
+      <image:title>一致性层级图</image:title>
+      <image:caption>流处理系统一致性模型层次结构</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 白皮书图片 -->
+  <url>
+    <loc>https://analysisdataflow.github.io/whitepapers/</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/whitepaper-cover-2027.png</image:loc>
+      <image:title>流计算白皮书 2027</image:title>
+      <image:caption>流计算技术发展趋势与前沿展望</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 案例研究图片 -->
+  <url>
+    <loc>https://analysisdataflow.github.io/case-studies/</loc>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/case-study-double11.png</image:loc>
+      <image:title>双11案例 - 阿里巴巴Flink应用</image:title>
+      <image:caption>阿里巴巴双11实时计算平台架构</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://analysisdataflow.github.io/visuals/case-study-netflix.png</image:loc>
+      <image:title>Netflix流处理案例</image:title>
+      <image:caption>Netflix实时推荐系统架构</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

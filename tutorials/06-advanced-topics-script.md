@@ -148,6 +148,8 @@ Managed Memory是Flink 1.10+引入的特性，
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 状态后端深度配置
 
 public class StateBackendTuning {
@@ -307,6 +309,13 @@ RocksDB压缩清理是最高效的，
 
 ```java
 // 状态TTL与清理配置
+
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class StateTTLConfiguration {
 
@@ -468,6 +477,11 @@ Unaligned Checkpoint是Flink 1.11引入的新特性，
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 // Checkpoint调优完整配置
 
 public class CheckpointTuning {
@@ -652,6 +666,12 @@ Buffer Debloating是Flink 1.14引入的特性，
 ```java
 // 背压优化示例
 
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class BackpressureOptimization {
 
     public static void main(String[] args) throws Exception {
@@ -834,6 +854,13 @@ public class BackpressureOptimization {
 
 ```java
 // 数据倾斜处理方案
+
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class SkewHandling {
 
@@ -1028,6 +1055,11 @@ MiniBatch是Flink SQL的重要优化手段，
 ### 💻 代码演示
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
+
 // SQL优化示例
 
 public class SQLOptimization {
@@ -1198,6 +1230,13 @@ Flink 2.0引入了Disaggregated State架构，
 
 ```java
 // 大状态优化方案
+
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class LargeStateOptimization {
 

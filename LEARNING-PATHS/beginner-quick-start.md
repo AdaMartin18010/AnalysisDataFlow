@@ -123,8 +123,15 @@ curl http://localhost:8081
 ### 快速实验
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // 实验1: 三种时间语义对比
-env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+env.getConfig().setAutoWatermarkInterval(200);
 // 对比输出结果差异
 
 // 实验2: Checkpoint 配置
@@ -161,6 +168,11 @@ ValueState<Integer> counter = getRuntimeContext().getState(descriptor);
 **代码模板**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class QuickStartPipeline {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -250,6 +262,13 @@ public void open(Configuration parameters) {
 ### 常用代码片段
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 1. 环境配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -299,4 +318,3 @@ ValueState<Integer> state = getRuntimeContext().getState(descriptor);
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
 | v1.0 | 2026-04-04 | 初始版本，1周快速上手指南 |
-

@@ -37,6 +37,9 @@ Checkpoint = 一致性快照 = 所有算子状态 + 数据源偏移量
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 public class CheckpointExample {
 
     public static void main(String[] args) throws Exception {
@@ -85,13 +88,17 @@ import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.runtime.state.memory.MemoryStateBackend;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 public class StateBackendConfig {
 
     public static void configureStateBackend(StreamExecutionEnvironment env, String type) {
         switch (type) {
             case "memory":
                 // 内存状态后端（仅测试）
-                env.setStateBackend(new MemoryStateBackend(
+                env.setStateBackend(new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
+// 
                     5242880,  // 最大状态大小 5MB
                     true       // 异步快照
                 ));
@@ -229,6 +236,9 @@ public class SavepointTrigger {
 ### 测试恢复
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 @Test
 public void testCheckpointAndRestore() throws Exception {
     // 1. 启动作业

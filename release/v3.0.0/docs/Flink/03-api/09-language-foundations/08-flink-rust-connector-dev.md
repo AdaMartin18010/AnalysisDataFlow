@@ -2074,6 +2074,10 @@ mod tests {
 
 ```java
 @Testcontainers
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RustKafkaSourceIntegrationTest {
 
     @Container
@@ -2189,6 +2193,9 @@ java -XX:StartFlightRecording=settings=profile,filename=recording.jfr -jar app.j
 **端到端基准测试**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class ConnectorBenchmark {
 
     @Benchmark

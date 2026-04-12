@@ -1,4 +1,7 @@
-﻿# Chatbot Integration Guide
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+# Chatbot Integration Guide
 
 > **Project**: P3-7 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04
 
@@ -157,7 +160,7 @@ keyword_search:
 
 #### Reciprocal Rank Fusion (RRF)
 
-```python
+```text
 def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
     """
     Fuse results from vector and keyword search.

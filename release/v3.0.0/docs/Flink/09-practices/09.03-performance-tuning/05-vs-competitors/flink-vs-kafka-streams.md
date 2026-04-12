@@ -321,6 +321,9 @@ Scale_KS ≤ Partition_count × Instance_count
 **场景 1: 复杂事件处理 (CEP)**
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink CEP: 可以定义复杂模式
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("first")
@@ -344,6 +347,9 @@ Pattern<Transaction, ?> fraudPattern = Pattern
 **场景 3: 多源异构数据集成**
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink: 可轻松集成多源
 DataStream<Event1> kafka = env.fromSource(kafkaSource, ...);
 DataStream<Event2> pulsar = env.fromSource(pulsarSource, ...);
@@ -520,6 +526,9 @@ Score(R, E) = w1 · LatencyScore + w2 · StateScore + w3 · EcoScore + w4 · Ops
 **架构设计**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // Kafka Streams 实现
 StreamsBuilder builder = new StreamsBuilder();
 
@@ -570,6 +579,10 @@ public Integer getInventory(@PathVariable String productId) {
 **架构设计**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink CEP 实现
 DataStream<Transaction> transactions = env
     .fromSource(kafkaSource, WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)), "kafka");
@@ -1007,6 +1020,11 @@ streams.start();
 **Flink (DataStream API)**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 DataStream<String> source = env.fromSource(

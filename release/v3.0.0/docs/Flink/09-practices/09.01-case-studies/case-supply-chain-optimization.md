@@ -306,6 +306,12 @@ T0: 促销开始，库存充足
 #### 5.2.1 实时库存计算Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class RealtimeInventoryJob {
 
     public static void main(String[] args) throws Exception {
@@ -529,6 +535,14 @@ public class RealtimeInventoryJob {
 #### 5.2.2 实时需求预测Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RealtimeDemandForecastJob {
 
     public static void main(String[] args) throws Exception {
@@ -694,6 +708,11 @@ public class RealtimeDemandForecastJob {
 #### 5.2.3 运输路径优化Job
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class RouteOptimizationJob {
 
     public static void main(String[] args) throws Exception {

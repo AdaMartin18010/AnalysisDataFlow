@@ -1139,6 +1139,9 @@ public class UnifiedAccelUdf extends ScalarFunction {
 
 ```java
 // Flink Table API 使用统一加速 UDF
+
+import org.apache.flink.table.api.TableEnvironment;
+
 public class UnifiedAccelExample {
     public static void main(String[] args) {
         TableEnvironment tEnv = TableEnvironment.create(...);

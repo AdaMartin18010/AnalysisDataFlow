@@ -101,6 +101,9 @@ public class InventoryReleaseEvent {
 - 延迟数据处理
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 定义Side Output Tag
 public static final OutputTag<NotificationMessage> NOTIFICATION_TAG =
     new OutputTag<NotificationMessage>("notifications") {};
@@ -116,6 +119,13 @@ DataStream<NotificationMessage> notifications = results
 ### Step 1: 订单状态机实现
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class OrderProcessor extends
     KeyedProcessFunction<String, OrderEvent, OrderResult> {
 
@@ -418,6 +428,12 @@ public class OrderStatistics extends
 ### Step 3: 主程序（含Side Output处理）
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class OrderTimeoutJob {
 
     public static void main(String[] args) throws Exception {
@@ -537,6 +553,11 @@ public class NotificationSink implements SinkFunction<NotificationMessage> {
 /**
  * 库存释放处理器 - 处理超时订单的库存回滚
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class InventoryReleaseHandler extends
     KeyedProcessFunction<String, InventoryReleaseEvent, InventoryReleaseResult> {
 
@@ -748,6 +769,9 @@ public class MultiLevelTimeout extends KeyedProcessFunction<...> {
 
 ```java
 // 与库存系统联动
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class OrderWithInventory extends KeyedProcessFunction<...> {
 
     private ValueState<Integer> inventoryState;
@@ -784,6 +808,13 @@ public class OrderWithInventory extends KeyedProcessFunction<...> {
 #### 1. 核心状态机处理器（完整版）
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class OrderProcessor extends
     KeyedProcessFunction<String, OrderEvent, OrderResult> {
 

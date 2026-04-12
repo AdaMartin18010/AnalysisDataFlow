@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 2026 Streaming ETL工具全景对比
 
 > **所属阶段**: Knowledge/ | **前置依赖**: [Knowledge/04-technology-selection](../../Knowledge/04-technology-selection/) | **形式化等级**: L4

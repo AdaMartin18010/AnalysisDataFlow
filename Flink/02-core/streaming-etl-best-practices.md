@@ -553,6 +553,9 @@ env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL CDC")
 **适用场景**: 微服务架构、领域事件、事件溯源
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+
 // Kafka Source 配置（事件驱动）
 FlinkKafkaConsumer<Event> source = new FlinkKafkaConsumer<>(
     "domain-events",
@@ -687,6 +690,12 @@ $$
 **去重实现示例**:
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class DeduplicateFunction extends KeyedProcessFunction<String, Event, Event> {
     private ValueState<Boolean> seenState;
     private StateTtlConfig ttlConfig;
@@ -733,6 +742,11 @@ public class DeduplicateFunction extends KeyedProcessFunction<String, Event, Eve
 **窗口聚合优化**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 增量聚合 + 全量聚合组合
 DataStream<Result> result = stream
     .keyBy(Event::getUserId)
@@ -793,6 +807,9 @@ DataStream<Result> result = stream
 **Interval Join 示例**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 订单与支付在 5 分钟内匹配
 orderStream
     .keyBy(Order::getOrderId)
@@ -831,6 +848,9 @@ LEFT JOIN products FOR SYSTEM_TIME AS OF o.proc_time p
 Lookup Join 是一种异步维表关联模式，用于增强流数据：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class AsyncDatabaseRequest extends RichAsyncFunction<Event, EnrichedEvent> {
     private transient DataSource dataSource;
 
@@ -1305,6 +1325,9 @@ conf.set(AdaptiveSchedulerSettings.SCALING_INTERVAL, Duration.ofMinutes(1));
 **状态 TTL 优化**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
@@ -1532,6 +1555,13 @@ public class GracefulDegradationFunction extends RichMapFunction<Event, Result> 
 **场景**: 从 MySQL 实时同步订单数据到 StarRocks 实时数仓，包含清洗、关联和聚合。
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class OrderCdcEtlPipeline {
 
     public static void main(String[] args) throws Exception {

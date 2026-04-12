@@ -363,6 +363,10 @@ Flink 技术栈采用五层架构设计，遵循计算机系统经典的"抽象-
 **实例**：Checkpoint 机制支撑 DataStream API 的 Exactly-Once 语义
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // DataStream API 代码示例
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -384,6 +388,9 @@ env.setStateBackend(new RocksDBStateBackend("hdfs://..."));
 **实例**：Table API 依赖 Runtime 层的执行环境部署
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // Table API 代码示例
 TableEnvironment tableEnv = TableEnvironment.create(
     EnvironmentSettings.inStreamingMode()

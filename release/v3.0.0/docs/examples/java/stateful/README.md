@@ -63,7 +63,8 @@ java -jar target/flink-stateful-1.0.0.jar
 
 ```java
 // MemoryStateBackend - 开发测试
-env.setStateBackend(new MemoryStateBackend());
+env.setStateBackend(new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
+// ));
 
 // FsStateBackend - 文件系统
 env.setStateBackend(new FsStateBackend("file:///tmp/flink-state"));
@@ -75,6 +76,9 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend());
 ## 状态TTL配置
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)

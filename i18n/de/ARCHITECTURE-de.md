@@ -1,4 +1,8 @@
-﻿# AnalysisDataFlow Technische Architekturdokumentation
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
+# AnalysisDataFlow Technische Architekturdokumentation
 
 > **Version**: v1.0 | **Aktualisierungsdatum**: 2026-04-03 | **Status**: Produktion
 >
@@ -8,28 +12,33 @@
 
 ## Inhaltsverzeichnis
 
-- [1. Gesamtprojektarchitektur](#1-gesamtprojektarchitektur)
-  - [1.1 4-Schichten-Architektur-Übersicht](#11-4-schichten-architektur-übersicht)
-  - [1.2 Verantwortlichkeiten und Schnittstellen pro Schicht](#12-verantwortlichkeiten-und-schnittstellen-pro-schicht)
-  - [1.3 Datenfluss und Abhängigkeiten](#13-datenfluss-und-abhängigkeiten)
-- [2. Dokumentengenerierungsarchitektur](#2-dokumentengenerierungsarchitektur)
-  - [2.1 Markdown-Verarbeitungsablauf](#21-markdown-verarbeitungsablauf)
-  - [2.2 Mermaid-Diagramm-Rendering](#22-mermaid-diagramm-rendering)
-- [3. Verifikationssystemarchitektur](#3-verifikationssystemarchitektur)
-  - [3.1 Verifikationsskript-Architektur](#31-verifikationsskript-architektur)
-  - [3.2 CI/CD-Ablauf](#32-cicd-ablauf)
-  - [3.3 Qualitäts-Gate](#33-qualitäts-gate)
-- [4. Speicherarchitektur](#4-speicherarchitektur)
-  - [4.1 Dateiorganisationsstruktur](#41-dateiorganisationsstruktur)
-  - [4.2 Indexsystem](#42-indexsystem)
-  - [4.3 Versionsverwaltung](#43-versionsverwaltung)
-- [5. Erweiterungsarchitektur](#5-erweiterungsarchitektur)
-  - [5.1 Hinzufügen neuer Dokumente](#51-hinzufügen-neuer-dokumente)
-  - [5.2 Hinzufügen neuer Visualisierungen](#52-hinzufügen-neuer-visualisierungen)
-- [Anhang](#anhang)
-  - [A. Glossar](#a-glossar)
-  - [B. Verzeichnis-Zuordnungstabelle](#b-verzeichnis-zuordnungstabelle)
-  - [C. Verwandte Dokumente](#c-verwandte-dokumente)
+- [AnalysisDataFlow Technische Architekturdokumentation](#analysisdataflow-technische-architekturdokumentation)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [1. Gesamtprojektarchitektur](#1-gesamtprojektarchitektur)
+    - [1.1 4-Schichten-Architektur-Übersicht](#11-4-schichten-architektur-übersicht)
+    - [1.2 Verantwortlichkeiten und Schnittstellen pro Schicht](#12-verantwortlichkeiten-und-schnittstellen-pro-schicht)
+      - [Schicht 1: Struct/ - Formalisierte theoretische Grundlagen-Schicht](#schicht-1-struct---formalisierte-theoretische-grundlagen-schicht)
+      - [Schicht 2: Knowledge/ - Wissensanwendungs-Schicht](#schicht-2-knowledge---wissensanwendungs-schicht)
+      - [Schicht 3: Flink/ - Ingenieure-Implementierungs-Schicht](#schicht-3-flink---ingenieure-implementierungs-schicht)
+      - [Schicht 4: visuals/ - Visualisierungs-Navigations-Schicht](#schicht-4-visuals---visualisierungs-navigations-schicht)
+    - [1.3 Datenfluss und Abhängigkeiten](#13-datenfluss-und-abhängigkeiten)
+  - [2. Dokumentengenerierungsarchitektur](#2-dokumentengenerierungsarchitektur)
+    - [2.1 Markdown-Verarbeitungsablauf](#21-markdown-verarbeitungsablauf)
+    - [2.2 Mermaid-Diagramm-Rendering](#22-mermaid-diagramm-rendering)
+    - [7.2 Entscheidungsablaufdiagramm](#72-entscheidungsablaufdiagramm)
+    - [3.2 CI/CD-Ablauf](#32-cicd-ablauf)
+    - [3.3 Qualitäts-Gate](#33-qualitäts-gate)
+  - [4. Speicherarchitektur](#4-speicherarchitektur)
+    - [4.1 Dateiorganisationsstruktur](#41-dateiorganisationsstruktur)
+    - [4.2 Indexsystem](#42-indexsystem)
+    - [4.3 Versionsverwaltung](#43-versionsverwaltung)
+  - [5. Erweiterungsarchitektur](#5-erweiterungsarchitektur)
+    - [5.1 Hinzufügen neuer Dokumente](#51-hinzufügen-neuer-dokumente)
+    - [5.2 Hinzufügen neuer Visualisierungen](#52-hinzufügen-neuer-visualisierungen)
+  - [Anhang](#anhang)
+    - [A. Glossar](#a-glossar)
+    - [B. Verzeichnis-Zuordnungstabelle](#b-verzeichnis-zuordnungstabelle)
+    - [C. Verwandte Dokumente](#c-verwandte-dokumente)
 
 ---
 
@@ -341,6 +350,7 @@ flowchart TD
     Q1 -->|Ja| A[Option A]
     Q1 -->|Nein| B[Option B]
 ```
+
 ```
 
 **Rendering-Regeln**:
@@ -708,4 +718,3 @@ flowchart LR
 ---
 
 > **Übersetzer-Hinweis**: Dieses Dokument wurde im deutschen technischen Dokumentationsstil übersetzt. Architektur-Fachbegriffe, Systemkomponenten-Namen und Konfigurationsparameter sind identisch mit dem Original. Letztes Update: 2026-04-11
-

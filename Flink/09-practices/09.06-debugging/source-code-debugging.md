@@ -533,6 +533,9 @@ public class LocalDebugJob {
 **LocalEnvironment 配置参数**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 Configuration conf = new Configuration();
 
 // 启用 Web UI（默认端口 8081）
@@ -559,6 +562,9 @@ import org.apache.flink.runtime.testutils.MiniClusterResource;
 import org.apache.flink.runtime.testutils.MiniClusterResourceConfiguration;
 import org.junit.ClassRule;
 import org.junit.Test;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 
 public class MiniClusterDebugTest {
 
@@ -626,6 +632,9 @@ MiniClusterResourceConfiguration config =
 **算子测试调试示例**:
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 @Test
 public void testKeyedProcessFunction() throws Exception {
     KeyedProcessFunction<Integer, String, String> function =
@@ -1267,6 +1276,9 @@ env.getConfig().enableForceAvro();
 env.getConfig().setAutoWatermarkInterval(200);
 
 // 或优化 UDF 实现
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class OptimizedMap extends RichMapFunction<...> {
     // 复用对象避免频繁创建
     private transient OutputType reused;

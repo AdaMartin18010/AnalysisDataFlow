@@ -1,3 +1,7 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink vs Spark Streaming 对比 (Flink vs Spark Streaming)
 
 > 所属阶段: Flink/05-vs-competitors | 前置依赖: [Dataflow模型形式化](../../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | 形式化等级: L4

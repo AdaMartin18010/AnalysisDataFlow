@@ -248,6 +248,9 @@ Watermark 机制在以下边界条件下需要特别注意：
 ### 6.2 代码示例
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 WatermarkStrategy<Event> strategy = WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
     .withTimestampAssigner((event, timestamp) -> event.getEventTime());
@@ -392,6 +395,9 @@ Apache Flink 实现了异步屏障快照（Asynchronous Barrier Snapshotting，A
 ```markdown
 ✅ 正确：
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java 代码示例
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -422,6 +428,9 @@ DataStream<Event> stream = env.addSource(new KafkaSource<>())
 ### 5.3 代码注释
 
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // ✅ 正确：解释"为什么"
 // 设置 5 秒延迟是根据业务最大乱序时间确定的
 WatermarkStrategy<Event> strategy = WatermarkStrategy
@@ -443,6 +452,9 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
 
 ❌ 不完整的示例：
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 缺少 import 和上下文
 DataStream<String> result = stream.map(x -> x.toString());
 ```

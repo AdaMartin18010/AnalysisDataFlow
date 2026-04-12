@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Temporal与Flink分层架构整合指南
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [00.md](../../Flink/00-meta/00-INDEX.md), [stateful-serverless.md](./stateful-serverless.md) | 形式化等级: L4-L5
@@ -779,6 +782,13 @@ func DeviceMaintenanceWorkflowWithSaga(ctx workflow.Context, alert DeviceAlert) 
 /**
  * IoT温度监控Flink作业
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class TemperatureMonitorJob {
 
     public static void main(String[] args) throws Exception {
@@ -965,6 +975,11 @@ func handleWarningAlert(ctx workflow.Context, alert DeviceAlert) error {
 /**
  * 实时风控CEP检测
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FraudDetectionJob {
 
     public static void main(String[] args) throws Exception {
@@ -1180,6 +1195,10 @@ function determineRiskLevel(score: number): InvestigationStatus['riskLevel'] {
 /**
  * 订单实时处理Flink作业
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class OrderProcessingJob {
 
     public static void main(String[] args) throws Exception {

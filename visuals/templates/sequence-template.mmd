@@ -1,0 +1,73 @@
+%% 时序图模板
+%% 适用于：接口调用、交互流程、系统设计
+%% 使用说明：
+%% 1. 定义参与者和角色
+%% 2. 按时间顺序添加消息
+%% 3. 标注激活状态和注释
+
+sequenceDiagram
+    autonumber
+    
+    %% ===== 参与者定义 =====
+    actor User as 用户
+    participant Client as 客户端
+    participant Gateway as API网关
+    participant Service as 业务服务
+    participant Cache as 缓存层
+    participant DB as 数据库
+    participant MQ as 消息队列
+    
+    %% ===== 主流程 =====
+    User->>Client: 发起请求
+    activate Client
+    
+    Client->>Gateway: POST /api/resource
+    activate Gateway
+    
+    Gateway->>Gateway: 鉴权验证
+    
+    Gateway->>Service: 转发请求
+    activate Service
+    
+    %% 缓存查询
+    Service->>Cache: 查询缓存
+    activate Cache
+    Cache-->>Service: 缓存未命中
+    deactivate Cache
+    
+    %% 数据库操作
+    Service->>DB: 查询数据
+    activate DB
+    DB-->>Service: 返回结果
+    deactivate DB
+    
+    %% 更新缓存
+    Service->>Cache: 写入缓存
+    activate Cache
+    Cache-->>Service: 确认
+    deactivate Cache
+    
+    %% 异步消息
+    Service->>MQ: 发送事件
+    activate MQ
+    MQ-->>Service: 确认接收
+    deactivate MQ
+    
+    Service-->>Gateway: 返回数据
+    deactivate Service
+    
+    Gateway-->>Client: 响应结果
+    deactivate Gateway
+    
+    Client-->>User: 展示数据
+    deactivate Client
+    
+    %% ===== 注释说明 =====
+    Note over Client,Gateway: 请求需携带有效Token
+    Note right of Service: 核心业务流程
+    Note left of Cache: 使用Redis缓存
+    
+    %% ===== 备选流程（注释掉）=====
+    %% 当缓存命中时:
+    %% Cache-->>Service: 返回缓存数据
+    %% Service-->>Gateway: 直接返回

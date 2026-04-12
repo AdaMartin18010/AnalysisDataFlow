@@ -37,6 +37,8 @@ public class NetworkBuffer extends AbstractReferenceCountedByteBuf
 $$\text{MemoryManagerPool} = \langle \text{totalSize}, \text{pageSize}, \text{availablePages}, \text{ownerMap} \rangle$$
 
 ```java
+import java.util.List;
+
 // 源码位置: flink-runtime/src/main/java/org/apache/flink/runtime/memory/MemoryManager.java
 public class MemoryManager implements AutoCloseable {
     private final long memorySize;                          // 总内存大小

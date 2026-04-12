@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
@@ -546,6 +549,9 @@ env.java.opts.taskmanager: >
 **配置示例 6.4：ForSt StateBackend配置**
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 创建ForSt StateBackend
 ForStStateBackend forStBackend = new ForStStateBackend();  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
 
@@ -623,6 +629,9 @@ GROUP BY TUMBLE(rowtime, INTERVAL '1' MINUTE), u.user_id;
 **配置示例 6.6：动态分区裁剪配置**
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 创建分区表
 TableEnvironment tableEnv = TableEnvironment.create(settings);
 

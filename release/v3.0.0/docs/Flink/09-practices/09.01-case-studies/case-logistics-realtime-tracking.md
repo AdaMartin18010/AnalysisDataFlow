@@ -464,6 +464,11 @@ public class ETAPrediction {
 /**
  * 包裹实时位置追踪主作业
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class RealtimeTrackingJob {
 
     public static void main(String[] args) throws Exception {
@@ -568,6 +573,11 @@ public class RealtimeTrackingJob {
  * 地理围栏实时检测算子
  * Lemma-F-07-09: 检测概率优化
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 public class GeofenceDetectionFunction
     extends KeyedProcessFunction<String, PackageTrackingEvent, GeofenceEvent> {
 
@@ -632,6 +642,10 @@ public class GeofenceDetectionFunction
  * 预测性到达时间计算
  * Def-F-07-42: ETA Prediction Model
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ETAPredictionFunction
     extends KeyedProcessFunction<String, PackageTrackingEvent, ETAPrediction> {
 
@@ -736,6 +750,10 @@ public class ETAPredictionFunction
 /**
  * 配送异常检测：延误 / 丢失 / 损坏
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class AnomalyDetectionFunction
     extends KeyedProcessFunction<String, PackageTrackingEvent, ExceptionAlert> {
 

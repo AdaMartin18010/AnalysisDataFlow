@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # DataStream V2 API 语义分析 (DataStream V2 API Semantics)
 
 > **所属阶段**: Flink/01-architecture | **前置依赖**: [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L5
@@ -331,6 +334,11 @@ V2StateAccess = λd:StateDeclarationV2[S]. context.getState(d)
 
 ```java
 // V1: 编译通过，运行时失败
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 class BadV1Function extends ProcessFunction<Event, Result> {
     private ValueState<Long> countState;
 

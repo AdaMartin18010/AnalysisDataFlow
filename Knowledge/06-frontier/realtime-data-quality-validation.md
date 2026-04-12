@@ -261,6 +261,9 @@ flowchart TD
 在实际流处理系统中，通过以下机制实现上述条件：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink 分层验证模式
 DataStream<Event> validatedStream = source
     // L1: 格式验证 (100%覆盖, 失败进DLQ)
@@ -392,6 +395,8 @@ GROUP BY TUMBLE(timestamp, INTERVAL '1' MINUTE);
 ### 6.2 Data Quality Operator 实现
 
 ```java
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+
 /**
  * 通用数据质量验证算子
  * 支持：Schema验证、规则验证、异常检测

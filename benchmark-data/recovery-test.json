@@ -1,7 +1,7 @@
 {
   "test_type": "Recovery Test",
   "description": "故障恢复与状态重建测试",
-  "timestamp": "2026-04-08T15:14:17.178079",
+  "timestamp": "2026-04-12T21:19:26.860625",
   "environment": {
     "flink_versions": [
       "1.18.1",
@@ -26,19 +26,19 @@
       "description": "轻量级状态 (10GB) Failover",
       "results": {
         "1.18.1": {
-          "restart_time_ms": 4567.85,
-          "state_restore_ms": 2795.62,
-          "total_recovery_ms": 7236.37
+          "restart_time_ms": 4226.42,
+          "state_restore_ms": 3025.37,
+          "total_recovery_ms": 7400.69
         },
         "2.0.0": {
-          "restart_time_ms": 3381.79,
-          "state_restore_ms": 2309.04,
-          "total_recovery_ms": 5648.15
+          "restart_time_ms": 3337.45,
+          "state_restore_ms": 2023.77,
+          "total_recovery_ms": 5394.59
         },
         "2.2.0": {
-          "restart_time_ms": 2979.0,
-          "state_restore_ms": 1789.64,
-          "total_recovery_ms": 4339.89
+          "restart_time_ms": 2888.89,
+          "state_restore_ms": 1868.44,
+          "total_recovery_ms": 4292.08
         }
       }
     },
@@ -46,19 +46,19 @@
       "description": "中等状态 (100GB) Failover",
       "results": {
         "1.18.1": {
-          "restart_time_ms": 9026.97,
-          "state_restore_ms": 18947.99,
-          "total_recovery_ms": 24738.88
+          "restart_time_ms": 8619.52,
+          "state_restore_ms": 19686.41,
+          "total_recovery_ms": 25239.31
         },
         "2.0.0": {
-          "restart_time_ms": 5742.05,
-          "state_restore_ms": 13074.53,
-          "total_recovery_ms": 21166.4
+          "restart_time_ms": 5875.67,
+          "state_restore_ms": 12906.25,
+          "total_recovery_ms": 19431.15
         },
         "2.2.0": {
-          "restart_time_ms": 5735.79,
-          "state_restore_ms": 12173.32,
-          "total_recovery_ms": 18226.4
+          "restart_time_ms": 5915.29,
+          "state_restore_ms": 11679.89,
+          "total_recovery_ms": 17980.12
         }
       }
     },
@@ -66,19 +66,19 @@
       "description": "大规模状态 (500GB) Failover",
       "results": {
         "1.18.1": {
-          "restart_time_ms": 11322.52,
-          "state_restore_ms": 80496.09,
-          "total_recovery_ms": 96386.98
+          "restart_time_ms": 11415.69,
+          "state_restore_ms": 87049.61,
+          "total_recovery_ms": 98530.11
         },
         "2.0.0": {
-          "restart_time_ms": 8531.17,
-          "state_restore_ms": 61460.65,
-          "total_recovery_ms": 66405.63
+          "restart_time_ms": 8549.03,
+          "state_restore_ms": 64463.59,
+          "total_recovery_ms": 69354.56
         },
         "2.2.0": {
-          "restart_time_ms": 7655.37,
-          "state_restore_ms": 56077.94,
-          "total_recovery_ms": 63111.05
+          "restart_time_ms": 7231.28,
+          "state_restore_ms": 56065.58,
+          "total_recovery_ms": 63580.77
         }
       }
     },
@@ -86,19 +86,19 @@
       "description": "本地恢复优化 (100GB)",
       "results": {
         "1.18.1": {
-          "restart_time_ms": 8500.26,
-          "state_restore_ms": 9238.07,
-          "total_recovery_ms": 16497.37
+          "restart_time_ms": 8959.11,
+          "state_restore_ms": 9055.6,
+          "total_recovery_ms": 16189.43
         },
         "2.0.0": {
-          "restart_time_ms": 6099.53,
-          "state_restore_ms": 6310.48,
-          "total_recovery_ms": 13136.48
+          "restart_time_ms": 6491.54,
+          "state_restore_ms": 6601.89,
+          "total_recovery_ms": 11303.1
         },
         "2.2.0": {
-          "restart_time_ms": 5832.64,
-          "state_restore_ms": 5975.0,
-          "total_recovery_ms": 10277.64
+          "restart_time_ms": 5721.13,
+          "state_restore_ms": 5359.46,
+          "total_recovery_ms": 10940.61
         }
       }
     }

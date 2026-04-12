@@ -1,5 +1,9 @@
 # Temporal与Flink分层架构整合指南
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> 
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [00.md](../../Flink/00-meta/00-INDEX.md), [stateful-serverless.md](./stateful-serverless.md) | 形式化等级: L4-L5
 
 ## 目录
@@ -779,6 +783,13 @@ func DeviceMaintenanceWorkflowWithSaga(ctx workflow.Context, alert DeviceAlert) 
 /**
  * IoT温度监控Flink作业
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class TemperatureMonitorJob {
 
     public static void main(String[] args) throws Exception {
@@ -962,6 +973,12 @@ func handleWarningAlert(ctx workflow.Context, alert DeviceAlert) error {
 **Flink CEP模式检测**:
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * 实时风控CEP检测
  */
@@ -1177,6 +1194,11 @@ function determineRiskLevel(score: number): InvestigationStatus['riskLevel'] {
 **业务场景**: 用户下单 → Flink实时处理 → Temporal协调库存、支付、发货。
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 /**
  * 订单实时处理Flink作业
  */

@@ -1,5 +1,9 @@
 # Flink 流处理 TCO 成本分析 2026
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/09-practices | 前置依赖: [Flink 2.4/2.5基准测试](./flink-24-25-benchmark-results.md), [Nexmark 2026基准测试](./nexmark-2026-benchmark.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
@@ -65,6 +69,7 @@ C_{perf} = \frac{\text{TCO}_{annual}}{\Theta_{peak} \times U_{avg}} \quad \text{
 $$
 
 其中：
+
 - $\Theta_{avg}$: 平均处理吞吐 (events/s)
 - $\Theta_{peak}$: 峰值处理吞吐 (events/s)
 - $U_{avg}$: 平均资源利用率
@@ -196,21 +201,21 @@ graph TB
 ```mermaid
 flowchart TD
     Start[成本优化] --> Q1{当前C_unit?}
-    
+
     Q1 -->|>$0.50/M| Critical[紧急优化]
     Q1 -->|$0.25-0.50/M| Major[主要优化]
     Q1 -->|<$0.25/M| Minor[微调优化]
-    
+
     Critical --> C1{瓶颈?}
     C1 -->|资源浪费| C2[启用自动扩缩容]
     C1 -->|配置不当| C3[参数调优]
     C1 -->|选型错误| C4[更换实例类型]
-    
+
     Major --> M1{利用率?}
     M1 -->|<40%| M2[降配/合并集群]
     M1 -->|40-70%| M3[优化调度策略]
     M1 -->|>70%| M4[考虑架构升级]
-    
+
     Minor --> N1[预留实例优化]
     Minor --> N2[Spot实例混合]
     Minor --> N3[存储分层]
@@ -464,7 +469,7 @@ ROI: 300%+
       memory: "32Gi"
       cpu: 8
     replicas: 4-20  # 自动扩缩范围
-  
+
   autoscaling:
     enabled: true
     metric: "lagConsumeRate"
@@ -491,7 +496,7 @@ ROI: 500%+
   cluster.evenly-spread-out-slots: true
   kubernetes.pod-template.spec.nodeSelector:
     node-type: spot
-  
+
 预期节省: 15-25%
 风险: 实例回收率约5%/天
 ```
@@ -501,7 +506,7 @@ ROI: 500%+
 ```yaml
 分层配置 (ForSt State Backend):
   state.backend.forst.remote.uri: s3://flink-checkpoints/
-  
+
   # 热存储 (0-24h): S3 Standard
   # 温存储 (1-7d): S3 Infrequent Access
   # 冷存储 (>7d): S3 Glacier Instant Retrieval
@@ -558,7 +563,7 @@ class TCOCalculator:
     def __init__(self, cloud_provider: str = 'aws'):
         self.cloud_provider = cloud_provider
         self.pricing = self._load_pricing()
-    
+
     def _load_pricing(self) -> Dict:
         pricing_data = {
             'aws': {
@@ -573,38 +578,38 @@ class TCOCalculator:
             }
         }
         return pricing_data.get(self.cloud_provider, pricing_data['aws'])
-    
-    def calculate_compute_cost(self, configs: List[ResourceConfig], 
+
+    def calculate_compute_cost(self, configs: List[ResourceConfig],
                                reserved_instance_discount: float = 0.0) -> Dict:
         """计算计算成本"""
         total_hours = 730  # 月度小时数
-        
+
         on_demand_cost = sum(
-            config.hourly_cost * config.count * total_hours 
+            config.hourly_cost * config.count * total_hours
             for config in configs
         )
-        
+
         reserved_cost = on_demand_cost * (1 - reserved_instance_discount)
-        
+
         return {
             'on_demand_monthly': on_demand_cost,
             'reserved_monthly': reserved_cost,
             'savings': on_demand_cost - reserved_cost,
             'savings_percent': reserved_instance_discount * 100
         }
-    
+
     def calculate_storage_cost(self, config: StorageConfig,
                                tiering_strategy: Dict = None) -> Dict:
         """计算存储成本"""
-        base_cost = (config.ssd_gb * config.ssd_cost_per_gb + 
+        base_cost = (config.ssd_gb * config.ssd_cost_per_gb +
                      config.object_gb * config.object_cost_per_gb)
-        
+
         if tiering_strategy:
             # 应用分层策略
             hot_ratio = tiering_strategy.get('hot', 0.2)
             warm_ratio = tiering_strategy.get('warm', 0.3)
             cold_ratio = tiering_strategy.get('cold', 0.5)
-            
+
             tiered_cost = (
                 config.object_gb * hot_ratio * config.object_cost_per_gb +
                 config.object_gb * warm_ratio * config.object_cost_per_gb * 0.55 +
@@ -616,9 +621,9 @@ class TCOCalculator:
                 'savings': base_cost - tiered_cost,
                 'savings_percent': (base_cost - tiered_cost) / base_cost * 100
             }
-        
+
         return {'monthly': base_cost}
-    
+
     def calculate_full_tco(self, compute_configs: List[ResourceConfig],
                           storage_config: StorageConfig,
                           ops_fte: float = 0.5,
@@ -626,10 +631,10 @@ class TCOCalculator:
                           events_per_month: int = 5_000_000_000,
                           **kwargs) -> Dict:
         """计算完整TCO"""
-        
+
         # 基础设施成本
         compute = self.calculate_compute_cost(
-            compute_configs, 
+            compute_configs,
             kwargs.get('ri_discount', 0.35)
         )
         storage = self.calculate_storage_cost(
@@ -637,18 +642,18 @@ class TCOCalculator:
             kwargs.get('tiering', {'hot': 0.2, 'warm': 0.3, 'cold': 0.5})
         )
         network_monthly = kwargs.get('network_egress_gb', 10000) * 0.09
-        
+
         infra_cost = compute['reserved_monthly'] + storage['tiered_monthly'] + network_monthly
-        
+
         # 人力成本 (假设$150K/年/FTE)
         ops_cost = ops_fte * 12500  # 月度
         dev_cost = dev_fte * 12500
-        
+
         total_monthly = infra_cost + ops_cost + dev_cost
-        
+
         # 单位成本
         cost_per_million = total_monthly / (events_per_month / 1_000_000)
-        
+
         return {
             'monthly': {
                 'infrastructure': infra_cost,
@@ -660,7 +665,7 @@ class TCOCalculator:
             'cost_per_million_events': cost_per_million,
             'cost_efficiency_grade': self._grade_efficiency(cost_per_million)
         }
-    
+
     def _grade_efficiency(self, cost_per_m: float) -> str:
         """评估成本效率等级"""
         if cost_per_m < 0.10:
@@ -671,7 +676,7 @@ class TCOCalculator:
             return "一般"
         else:
             return "较差 - 需优化"
-    
+
     def generate_report(self, tco_result: Dict) -> str:
         """生成TCO报告"""
         report = f"""
@@ -703,18 +708,18 @@ class TCOCalculator:
 # 使用示例
 if __name__ == '__main__':
     calculator = TCOCalculator('aws')
-    
+
     # 配置资源
     compute_configs = [
         ResourceConfig('c7i.4xlarge', 16, 32, 0.68, 2),  # JM
         ResourceConfig('r7i.8xlarge', 32, 256, 2.16, 12)  # TM
     ]
-    
+
     storage_config = StorageConfig(
         ssd_gb=5000,
         object_gb=15000
     )
-    
+
     # 计算TCO
     tco = calculator.calculate_full_tco(
         compute_configs,
@@ -725,7 +730,7 @@ if __name__ == '__main__':
         ri_discount=0.35,
         tiering={'hot': 0.2, 'warm': 0.3, 'cold': 0.5}
     )
-    
+
     print(calculator.generate_report(tco))
 ```
 
@@ -812,25 +817,15 @@ xychart-beta
 
 ## 8. 引用参考 (References)
 
-[^1]: AWS Pricing Calculator, "EC2 Instance Pricing", 2026. https://calculator.aws/
 
-[^2]: Azure Pricing Calculator, "Virtual Machines Pricing", 2026. https://azure.microsoft.com/pricing/calculator/
 
-[^3]: Google Cloud Pricing Calculator, "Compute Engine Pricing", 2026. https://cloud.google.com/products/calculator
 
-[^4]: 阿里云定价计算器, "ECS实例价格", 2026. https://www.aliyun.com/price/product
 
-[^5]: "Cloud Cost Optimization Best Practices 2026", Gartner Research, 2026.
 
-[^6]: "FinOps Foundation: State of FinOps 2026", FinOps Foundation, 2026.
 
-[^7]: Apache Flink Documentation, "Resource Optimization Guide", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/resource-optimization/
 
-[^8]: "Total Cost of Ownership for Stream Processing Systems", IEEE Cloud Computing, Vol. 13, 2026.
 
-[^9]: Kubernetes Autoscaler Documentation, "Cluster Autoscaler Best Practices", 2026.
 
-[^10]: "Spot Instance Interruption Handling for Stateful Workloads", AWS Blog, 2026.
 
 ---
 
@@ -856,6 +851,7 @@ xychart-beta
 ### A.3 成本优化检查清单
 
 **基础设施优化**:
+
 - [ ] 已购买预留实例覆盖基线负载 (目标节省: 25-40%)
 - [ ] 已配置自动扩缩容应对峰值 (目标节省: 20-30%)
 - [ ] 已启用Spot实例混合部署 (目标节省: 15-25%)
@@ -863,6 +859,7 @@ xychart-beta
 - [ ] 已实施存储分层策略 (目标节省: 30-50%存储)
 
 **运维优化**:
+
 - [ ] 已实现基础设施即代码 (IaC)
 - [ ] 已配置成本监控和告警
 - [ ] 已建立资源标签体系
@@ -870,6 +867,7 @@ xychart-beta
 - [ ] 已建立成本分摊机制
 
 **架构优化**:
+
 - [ ] 已完成查询性能调优
 - [ ] 已优化状态后端配置
 - [ ] 已启用增量Checkpoint

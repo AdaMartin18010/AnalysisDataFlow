@@ -451,6 +451,9 @@ $$
 **场景**：微服务集群中同时存在 JSON 格式应用日志、Nginx 访问日志和 Syslog 系统日志 [^10]。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Flink 多格式日志解析作业
 DataStream<String> rawLogs = env
     .fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "Raw Logs");
@@ -529,6 +532,9 @@ unifiedLogs
     .process(new TraceAnalysisFunction());
 
 // Trace 分析函数
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 class TraceAnalysisFunction extends ProcessWindowFunction<
     StructuredLog, TraceSummary, String, TimeWindow> {
 
@@ -587,6 +593,10 @@ class TraceAnalysisFunction extends ProcessWindowFunction<
 **场景**：实时检测 ERROR 日志突增和已知错误模式 [^11][^12]。
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 错误率窗口统计
 DataStream<Alert> errorAlerts = unifiedLogs
     .filter(log -> "ERROR".equals(log.getLevel()))
@@ -658,6 +668,12 @@ DataStream<SlowRequestAlert> slowRequests = latencyMetrics
     .process(new SlowRequestDetector());
 
 // 慢请求检测逻辑
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 class SlowRequestDetector extends KeyedCoProcessFunction<
     String, LatencyMetric, ServiceLatencyStats, SlowRequestAlert> {
 

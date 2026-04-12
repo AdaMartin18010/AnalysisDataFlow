@@ -194,6 +194,9 @@ Flink测试体系
 Flink 提供 `OneInputStreamOperatorTestHarness` 用于测试单输入算子：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 1. 创建测试环境
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -229,6 +232,9 @@ testHarness.close();
 #### 5.1.2 状态逻辑测试
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 @Test
 public void testStatefulOperator() throws Exception {
     // 创建带状态的算子
@@ -297,6 +303,10 @@ public void testEnrichmentOperatorWithMock() throws Exception {
 #### 5.2.1 连接器集成测试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 @Test
 public void testKafkaSourceIntegration() throws Exception {
     // 使用 EmbeddedKafkaCluster
@@ -345,6 +355,9 @@ public void testKafkaSourceIntegration() throws Exception {
 #### 5.2.2 状态后端集成测试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 @Test
 public void testRocksDBStateBackend() throws Exception {
     StreamExecutionEnvironment env =
@@ -438,6 +451,9 @@ $$Completeness_{E2E} = \bigwedge_{i=1}^{4} Property_i$$
 #### 5.3.1 完整管道测试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 @Test
 public void testEndToEndPipeline() throws Exception {
     // 使用 TestContainers 启动外部服务
@@ -579,6 +595,10 @@ public void testFailureRecovery() throws Exception {
 ### 5.4 性能基准测试
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class PerformanceBenchmark {
 
     @Test
@@ -758,6 +778,10 @@ public class WindowedAggregationTest {
 /**
  * 使用 TestContainers 的集成测试
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class FlinkKafkaPostgresIntegrationTest {
 
     @ClassRule
@@ -882,6 +906,8 @@ public class FlinkKafkaPostgresIntegrationTest {
 ### 6.3 属性测试示例
 
 ```java
+import org.junit.runner.RunWith;
+
 /**
  * 使用 JUnit-Quickcheck 进行属性测试
  */
@@ -1419,6 +1445,12 @@ public class StreamTestDataGenerator {
 ### 附录 C: 测试性能基准模板
 
 ```java
+import org.junit.runner.RunWith;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * 流处理性能基准测试模板
  */

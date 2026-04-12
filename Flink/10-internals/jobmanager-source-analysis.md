@@ -620,6 +620,9 @@ public class CheckpointCoordinator {
 **场景**: 分析一个 WordCount 作业从提交到执行的完整源码流程。
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 1. 用户代码构建 StreamGraph
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -770,6 +773,9 @@ env.getCheckpointConfig().setCheckpointingMode(
 env.getCheckpointConfig().setMinPauseBetweenCheckpoints(500);
 
 // 源码追踪: CheckpointCoordinator 触发流程
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class CheckpointCoordinator {
 
     // 定时触发器
@@ -1673,6 +1679,8 @@ public class DefaultSlotSelectionStrategy implements SlotSelectionStrategy {
 ### B.4 CheckpointCoordinator 实现详解
 
 ```java
+import java.util.Map;
+
 /**
  * CheckpointCoordinator 实现详解
  * 文件: flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/CheckpointCoordinator.java

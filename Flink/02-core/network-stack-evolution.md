@@ -524,6 +524,9 @@ public class RemoteInputChannel {
 ### 6.4 Buffer Debloating 配置 (Flink 1.14+)
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Flink 1.14+ Buffer Debloating 配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

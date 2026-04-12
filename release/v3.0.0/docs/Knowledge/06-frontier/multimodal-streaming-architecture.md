@@ -531,6 +531,10 @@ env.execute("Multimodal Streaming with Gemini")
 ### 6.2 实时视频分析Agent
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class VideoAnalyticsAgent {
     public static void main(String[] args) {
         StreamExecutionEnvironment env =

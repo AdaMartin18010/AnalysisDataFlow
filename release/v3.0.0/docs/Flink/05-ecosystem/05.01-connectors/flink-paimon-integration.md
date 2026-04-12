@@ -1175,6 +1175,11 @@ import org.apache.paimon.catalog.CatalogContext;
 import org.apache.paimon.catalog.CatalogFactory;
 import org.apache.paimon.options.Options;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
+
 public class PaimonDataStreamIntegration {
 
     public static void main(String[] args) throws Exception {

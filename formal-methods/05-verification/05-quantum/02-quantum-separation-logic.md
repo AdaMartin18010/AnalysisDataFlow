@@ -568,7 +568,7 @@ $$
 
 **量子搜索算法验证 (Grover算法)**:
 
-```python
+```text
 # QSL注释风格的量子程序
 
 def grover_search(n, oracle):
@@ -612,7 +612,7 @@ def grover_search(n, oracle):
 
 **量子傅里叶变换验证**:
 
-```python
+```text
 def qft(q, n):
     """
     量子傅里叶变换的验证
@@ -644,7 +644,7 @@ def qft(q, n):
 
 **量子隐形传态完整实现**:
 
-```python
+```text
 def quantum_teleportation(psi, alice, bob):
     """
     量子隐形传态协议

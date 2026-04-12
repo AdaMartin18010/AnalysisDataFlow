@@ -390,6 +390,9 @@ $$R = \frac{N}{T_{batch}} \approx \frac{N}{L} \text{ (当 N 较大时)}$$
 ```java
 import org.apache.flink.connector.jdbc.*;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // JDBC Source 配置
 JdbcSourceBuilder<Order> sourceBuilder = JdbcSourceBuilder
     .<Order>builder()
@@ -534,6 +537,9 @@ public class CustomJdbcSink {
 ### 6.5 XA 事务配置示例
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 启用 Exactly-Once 语义
 JdbcExactlyOnceSink<Order> xaSink = JdbcExactlyOnceSink
     .<Order>builder()
@@ -709,6 +715,9 @@ com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException:
 **解决方案**:
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 1. 使用分区策略避免热点
 // 按主键分区，确保相同 _id 的数据进入同一 Task
 DataStream<Order> partitioned = orders

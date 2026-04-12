@@ -1,5 +1,9 @@
 # Flink Agents (FLIP-531) - AI Agent原生运行时支持
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink 与 LLM 集成](./flink-llm-integration.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
 
 ---
@@ -512,6 +516,12 @@ SELECT * FROM AGENT_RUN(
 ```java
 // Def-F-12-31: DataStream API Agent 定义
 
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class CustomerSupportAgent {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -720,6 +730,8 @@ public class MainAgent extends KeyedProcessFunction<String, UserRequest, Respons
 ### 6.4 记忆管理实现
 
 ```java
+import org.apache.flink.api.common.state.ValueState;
+
 // 分层记忆管理
 public class HierarchicalMemory {
     private ValueState<List<Message>> shortTermMemory;
@@ -763,6 +775,11 @@ public class HierarchicalMemory {
 ### 6.5 Checkpoint 重放调试
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 从特定 Checkpoint 重放 Agent
 public class AgentReplay {
     public static void main(String[] args) throws Exception {

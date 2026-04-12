@@ -57,6 +57,11 @@ public class SecurityAlert {
 ### Step 1: 基础 CEP 模式
 
 ```java
+import org.apache.flink.cep.Pattern;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class SecurityRules {
 
     // 模式1: 3次登录失败（5分钟内）
@@ -158,6 +163,11 @@ public class AlertHandler extends
 ### Step 3: 账户封禁状态管理
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class AccountBlocker extends KeyedProcessFunction<String, SecurityAlert, BlockedAccount> {
 
     private ValueState<Boolean> blockedState;
@@ -224,6 +234,12 @@ public class AccountBlocker extends KeyedProcessFunction<String, SecurityAlert, 
 ### Step 4: 主程序
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class SecurityDetectionJob {
 
     public static void main(String[] args) throws Exception {

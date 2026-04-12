@@ -280,7 +280,7 @@ from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import hashlib
 
-# 定义标量函数：计算字符串的SHA256哈希
+# 定义标量函数:计算字符串的SHA256哈希
 @udf(result_type=DataTypes.STRING(),
      func_type='general')  # 'general' 或 'pandas'
 def sha256_hash(input_str: str) -> str:
@@ -297,7 +297,7 @@ def sha256_hash(input_str: str) -> str:
         return None
     return hashlib.sha256(input_str.encode('utf-8')).hexdigest()
 
-# 向量化版本（性能更优）
+# 向量化版本(性能更优)
 import pandas as pd
 
 @udf(result_type=DataTypes.STRING(),
@@ -306,7 +306,7 @@ def sha256_hash_vectorized(input_series: pd.Series) -> pd.Series:
     """向量化版本的SHA256哈希函数"""
     return input_series.apply(
         lambda x: hashlib.sha256(x.encode('utf-8')).hexdigest()
-        if x is not None else None:
+        if x is not None else None
     )
 ```
 

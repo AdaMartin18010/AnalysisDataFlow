@@ -48,13 +48,13 @@
 |------|------|------|------|------|------|
 | F1 | Milner R. **"A Calculus of Communicating Systems"** | Springer LNCS 92 | 1980 | [Springer](https://link.springer.com/book/10.1007/3-540-10235-3) | CCS（通信系统演算）的奠基专著，进程代数领域的开创性工作 |
 | F2 | Hoare C.A.R. **"Communicating Sequential Processes"** | CACM | 1978 | [PDF](https://www.cs.cmu.edu/~crary/819-f09/Hoare78.pdf) | CSP（通信顺序进程）的原始论文，引入同步通信和进程组合 |
-| F3 | Hoare C.A.R. **"Communicating Sequential Processes"** | Prentice Hall | 1985 | [书籍](http://www.usingcsp.com/) | CSP 的完整书籍，形式化并发程序设计的标准参考 |
+| F3 | Hoare C.A.R. **"Communicating Sequential Processes"** | Prentice Hall | 1985 | [书籍]([CSP资源站点 - 链接已失效]) | CSP 的完整书籍，形式化并发程序设计的标准参考 |
 | F4 | Milner R., Parrow J., Walker D. **"A Calculus of Mobile Processes, I & II"** | Information and Computation | 1992 | [PDF](https://www.sciencedirect.com/science/article/pii/0890540192900084) | π-演算的原始论文，引入移动性和名称传递概念 |
 | F5 | Milner R. **"The Polyadic π-Calculus: A Tutorial"** | TU Munich Tech Report | 1993 | [PDF](https://www.lfcs.inf.ed.ac.uk/reports/91/ECS-LFCS-91-180/) | π-演算的教程形式，详细解释多adic通信和类型系统 |
-| F6 | Sangiorgi D., Walker D. **"The π-Calculus: A Theory of Mobile Processes"** | Cambridge University Press | 2001 | [书籍](https://www.cambridge.org/core/books/picalculus/...) | π-演算的权威教材，涵盖理论和应用 |
+| F6 | Sangiorgi D., Walker D. **"The π-Calculus: A Theory of Mobile Processes"** | Cambridge University Press | 2001 | [书籍]([Cambridge - Pi Calculus]) | π-演算的权威教材，涵盖理论和应用 |
 | F7 | Honda K. **"Types for Dyadic Interaction"** | CONCUR | 1993 | [PDF](https://link.springer.com/chapter/10.1007/3-540-57208-2_35) | 会话类型的奠基工作，引入双向通信的类型化 |
 | F8 | Honda K., Vasconcelos V.T., Kubo M. **"Language Primitives and Type Discipline for Structured Communication-Based Programming"** | ESOP | 1998 | [PDF](https://link.springer.com/chapter/10.1007/BFb0053567) | 会话类型的扩展，支持多路通信和递归 |
-| F9 | Gay S.J., Hole M. **"Types and Subtypes for Client-Server Interactions"** | ESOP | 1999 | [PDF](https://link.springer.com/chapter/10.1007/3-540-49099-X_21) | 客户端-服务器交互的类型系统，会话类型的应用 |
+| F9 | Gay S.J., Hole M. **"Types and Subtypes for Client-Server Interactions"** | ESOP | 1999 | [PDF]([Springer - Chapter]) | 客户端-服务器交互的类型系统，会话类型的应用 |
 | F10 | Carbone M., Honda K., Yoshida N. **"Structured Communication-Centred Programming for Web Services"** | ESOP | 2007 | [PDF](https://link.springer.com/chapter/10.1007/978-3-540-71316-6_2) | 会话类型在 Web 服务中的应用，多角色协议设计 |
 
 #### Actor 模型与类型理论
@@ -76,7 +76,7 @@
 | F18 | Lamport L. **"Specifying Concurrent Systems with TLA+"** | NATO ASI | 1999 | [PDF](https://lamport.azurewebsites.net/pubs/tla+book.pdf) | TLA+ 规约语言的介绍，形式化验证分布式系统 |
 | F19 | Lamport L. **"Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers"** | Addison-Wesley | 2002 | [书籍](https://lamport.azurewebsites.net/tla/book.html) | TLA+ 的权威教材，形式化规约的经典参考 |
 | F20 | Newcombe C., Rath T., Zhang F., et al. **"How Amazon Web Services Uses Formal Methods"** | CACM | 2015 | [PDF](https://dl.acm.org/doi/10.1145/2699417) | AWS 使用 TLA+ 进行形式化验证的工业实践 |
-| F21 | Joshi R., Lamport L., Matthews J., et al. **"Checking Cache-Coherence Protocols with TLA+"** | Form. Methods Syst. Des. | 2003 | [PDF](https://link.springer.com/article/10.1023/A:1022964117327) | 使用 TLA+ 验证缓存一致性协议 |
+| F21 | Joshi R., Lamport L., Matthews J., et al. **"Checking Cache-Coherence Protocols with TLA+"** | Form. Methods Syst. Des. | 2003 | [PDF]([Springer - Article]) | 使用 TLA+ 验证缓存一致性协议 |
 | F22 | Krogh-Jespersen M., Svendsen K., Birkedal L. **"A Relational Model of Types-and-Effects in Higher-Order Concurrent Separation Logic"** | POPL | 2017 | [PDF](https://dl.acm.org/doi/10.1145/3009837.3009876) | Iris 逻辑的基础，高阶并发分离逻辑 |
 | F23 | Jung R., Krebbers R., Jourdan J.H., et al. **"Iris from the Ground Up: A Modular Foundation for Higher-Order Concurrent Separation Logic"** | JFP | 2018 | [PDF](https://www.cambridge.org/core/journals/journal-of-functional-programming/article/iris-from-the-ground-up/...) | Iris 框架的完整描述，现代并发程序验证的基础 |
 | F24 | Sergey I., Nanevski A., Banerjee A. **"Mechanized Verification of Fine-grained Concurrent Programs"** | PLDI | 2015 | [PDF](https://dl.acm.org/doi/10.1145/2737924.2737964) | 细粒度并发程序的机器验证 |
@@ -128,11 +128,11 @@
 
 | 编号 | 作者 | 书名 | 出版社 | 年份 | 链接 |
 |------|------|------|--------|------|------|
-| B16 | Hoare C.A.R. | **Communicating Sequential Processes** | Prentice Hall | 1985 | [UsingCSP](http://www.usingcsp.com/) |
+| B16 | Hoare C.A.R. | **Communicating Sequential Processes** | Prentice Hall | 1985 | [UsingCSP]([CSP资源站点 - 链接已失效]) |
 | B17 | Roscoe A.W. | **The Theory and Practice of Concurrency** | Prentice Hall | 1997 | [PDF](https://www.cs.ox.ac.uk/people/bill.roscoe/publications/68b.pdf) |
 | B18 | Milner R. | **Communication and Concurrency** | Prentice Hall | 1989 | [Prentice Hall](https://dl.acm.org/doi/book/10.5555/61960) |
 | B19 | Milner R. | **The Space and Motion of Communicating Agents** | Cambridge University Press | 2009 | [CUP](https://www.cambridge.org/core/books/space-and-motion-of-communicating-agents/) |
-| B20 | Sangiorgi D., Walker D. | **The π-Calculus: A Theory of Mobile Processes** | Cambridge University Press | 2001 | [CUP](https://www.cambridge.org/core/books/picalculus/...) |
+| B20 | Sangiorgi D., Walker D. | **The π-Calculus: A Theory of Mobile Processes** | Cambridge University Press | 2001 | [CUP]([Cambridge - Pi Calculus]) |
 | B21 | Pierce B.C. | **Types and Programming Languages** | MIT Press | 2002 | [MIT Press](https://www.cis.upenn.edu/~bcpierce/tapl/) |
 | B22 | Pierce B.C. (ed.) | **Advanced Topics in Types and Programming Languages** | MIT Press | 2004 | [MIT Press](https://www.cis.upenn.edu/~bcpierce/attapl/) |
 | B23 | Winskel G. | **The Formal Semantics of Programming Languages: An Introduction** | MIT Press | 1993 | [MIT Press](https://mitpress.mit.edu/9780262731034/) |
@@ -158,7 +158,7 @@
 | D8 | Exactly-Once Semantics | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly-once/) | 端到端精确一次语义实现原理 |
 | D9 | Backpressure | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/) | 背压监控和处理，流量控制机制 |
 | D10 | Flink Architecture | v2.0 | [文档](https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/flink-architecture/) | Flink 运行时架构和组件详解 |
-| D11 | FLIP (Flink Improvement Proposals) | - | [GitHub](https://github.com/apache/flink/tree/master/flink-docs/docs/flips) | Flink 改进提案集合，了解 Flink 演进 |
+| D11 | FLIP (Flink Improvement Proposals) | - | [GitHub](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | Flink 改进提案集合，了解 Flink 演进 |
 | D12 | Flink ML | v2.3 | [文档](https://nightlies.apache.org/flink/flink-ml-docs-stable/) | Flink 机器学习库，实时 ML 推理 |
 | D13 | Stateful Functions | v3.2 | [文档](https://nightlies.apache.org/flink/flink-statefun-docs-stable/) | 状态函数库，事件驱动的有状态应用 |
 
@@ -321,7 +321,7 @@
 | V4 | VST | [PrincetonUniversity/VST](https://github.com/PrincetonUniversity/VST) | Coq | C 程序验证工具 |
 | V5 | CompCert | [AbsInt/CompCert](https://github.com/AbsInt/CompCert) | Coq | 认证 C 编译器 |
 | V6 | SPIN Model Checker | [spinroot/spin](https://github.com/spinroot/spin) | C | Promela 模型检测器 |
-| V7 | NuSMV | [nusmv/nusmv](https://github.com/nusmv/nusmv) | C | 符号模型检测器 |
+| V7 | NuSMV | [nusmv/nusmv](https://nusmv.fbk.eu/) | C | 符号模型检测器 |
 | V8 | Z3 Theorem Prover | [Z3Prover/z3](https://github.com/Z3Prover/z3) | C++ | 微软 SMT 求解器 |
 | V9 | CVC5 | [cvc5/cvc5](https://github.com/cvc5/cvc5) | C++ | SMT 求解器 |
 | V10 | Coq | [coq/coq](https://github.com/coq/coq) | OCaml | 交互式定理证明器 |

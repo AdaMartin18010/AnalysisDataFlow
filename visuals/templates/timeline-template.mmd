@@ -1,0 +1,41 @@
+%% 时间线/甘特图模板
+%% 适用于：项目规划、路线图、里程碑跟踪
+%% 使用说明：
+%% 1. 修改日期格式和任务时间
+%% 2. 调整任务分组
+%% 3. 标记关键里程碑
+
+gantt
+    title 项目路线图模板
+    dateFormat YYYY-MM-DD
+    axisFormat %m/%d
+    
+    %% ===== 阶段一：规划 =====
+    section 规划阶段
+    需求收集           :done, req, 2026-01-01, 14d
+    技术调研           :done, research, after req, 10d
+    架构设计           :done, design, after research, 14d
+    方案评审           :milestone, review1, after design, 0d
+    
+    %% ===== 阶段二：开发 =====
+    section 开发阶段
+    核心功能开发       :active, core, after review1, 30d
+    接口开发           :api, after review1, 20d
+    单元测试           :test, after core, 15d
+    集成测试           :integ, after api, 15d
+    开发完成           :milestone, devdone, after integ, 0d
+    
+    %% ===== 阶段三：部署 =====
+    section 部署阶段
+    预发布验证         :staging, after devdone, 10d
+    性能测试           :perf, after devdone, 10d
+    生产部署           :crit, deploy, after staging, 5d
+    上线监控           :monitor, after deploy, 7d
+    正式发布           :milestone, release, after monitor, 0d
+    
+    %% ===== 阶段四：优化 =====
+    section 优化阶段
+    性能优化           :opt, after release, 20d
+    文档完善           :docs, after release, 15d
+    用户培训           :training, after release, 10d
+    项目总结           :milestone, summary, after opt, 0d

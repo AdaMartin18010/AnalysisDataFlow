@@ -473,6 +473,9 @@ $$W_{effective} = \frac{W_{raw}}{1 + \alpha \cdot R_{compression}}$$
 #### q0: PassThrough (基线测试)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // q0: 最简单的PassThrough，测试Source和Sink极限
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
 bids.addSink(new DummySink());
@@ -484,6 +487,12 @@ bids.addSink(new DummySink());
 #### q3: Local Item Suggestion (状态聚合)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // q3: 按类别统计当前拍卖品数量
 DataStream<Auction> auctions = env.addSource(new NexmarkSource("Auction"));
 
@@ -513,6 +522,12 @@ auctions
 #### q8: Monitor New Users (复杂状态)
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.Types;
+
 // q8: 监控新用户的首次出价 - 黄金测试用例
 DataStream<Person> persons = env.addSource(new NexmarkSource("Person"));
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
@@ -581,6 +596,12 @@ persons
  * 端到端延迟测试
  * 在事件中注入发送时间戳，在Sink计算延迟
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class LatencyBenchmark {
 
     public static void main(String[] args) throws Exception {
@@ -646,6 +667,11 @@ class LatencyMeasuringAggregate implements
  * 最大吞吐测试
  * 渐进增加负载直到延迟超过SLA
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class ThroughputBenchmark {
 
     private static final long LATENCY_SLA_MS = 1000;
@@ -710,6 +736,11 @@ class AdaptiveLoadGenerator implements SourceFunction<Event> {
  * Checkpoint性能测试
  * 测量不同状态规模下的Checkpoint性能
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 public class CheckpointBenchmark {
 
     public static void main(String[] args) throws Exception {

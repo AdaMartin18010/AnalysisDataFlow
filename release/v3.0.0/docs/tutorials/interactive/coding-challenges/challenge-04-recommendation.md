@@ -71,6 +71,8 @@ public class ScoredItem {
 ### Step 1: 异步查询用户画像
 
 ```java
+import org.apache.flink.streaming.api.functions.async.AsyncFunction;
+
 public class AsyncProfileRequest extends
     AsyncFunction<UserBehavior, EnrichedBehavior> {
 
@@ -122,6 +124,12 @@ public class AsyncProfileRequest extends
 ### Step 2: 用户兴趣实时更新
 
 ```java
+import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
+
 public class InterestUpdater extends
     KeyedProcessFunction<String, EnrichedBehavior, UserProfile> {
 
@@ -270,6 +278,10 @@ public class CollaborativeFiltering extends
 ### Step 4: 内容推荐 + 混合排序
 
 ```java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class HybridRecommender extends CoProcessFunction<
     Recommendation,      // CF 推荐
     Recommendation,      // Content 推荐
@@ -362,6 +374,10 @@ public class HybridRecommender extends CoProcessFunction<
 ### Step 5: 主程序
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class RealtimeRecommendationJob {
 
     public static void main(String[] args) throws Exception {

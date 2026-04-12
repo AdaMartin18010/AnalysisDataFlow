@@ -1175,6 +1175,10 @@ import org.apache.iceberg.Schema;
 import org.apache.iceberg.types.Types;
 import org.apache.hadoop.hive.conf.HiveConf;
 
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 public class IcebergStreamWriteExample {
 
     public static void main(String[] args) throws Exception {
@@ -1281,6 +1285,10 @@ import org.apache.iceberg.hive.HiveCatalog;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.data.RowData;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class IcebergStreamReadExample {
 
     public static void main(String[] args) throws Exception {
@@ -1359,6 +1367,11 @@ public class IcebergStreamReadExample {
 #### 6.2.3 完整 CDC Pipeline
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.table.api.TableEnvironment;
+
+
 public class IcebergCDCPipeline {
 
     public static void main(String[] args) throws Exception {
@@ -1783,6 +1796,8 @@ WHERE order_id = 'ORD-12345'  -- 布隆过滤器加速
 #### 6.5.3 Compaction 作业
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // ============================================
 // 独立 Compaction 作业（Flink DataStream）
 // ============================================

@@ -489,6 +489,9 @@ security.module.factory.classes: org.apache.flink.runtime.security.modules.Hadoo
 ```
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // Flink SQL 行级安全策略示例
 TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.inStreamingMode());
 

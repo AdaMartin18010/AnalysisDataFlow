@@ -196,6 +196,10 @@ $$
 **Flink CEP实现**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 盗刷检测模式：短时间多笔异地交易
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("first")
@@ -259,6 +263,13 @@ DataStream<Alert> alerts = patternStream
 **实时特征工程**：
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 用户行为特征计算
 DataStream<UserFeature> userFeatures = transactionStream
     .keyBy(Transaction::getUserId)

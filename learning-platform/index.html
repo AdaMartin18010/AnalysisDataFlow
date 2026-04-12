@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流计算学习平台 - Stream Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .course-grid, .lab-grid, .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .course .card-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .lab .card-icon { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .challenge .card-icon { background: linear-gradient(135deg, #fc4a1a, #f7b733); }
+        
+        .card h3 {
+            font-size: 1.3rem;
+            color: #333;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .difficulty-beginner { background: #d4edda; color: #155724; }
+        .difficulty-intermediate { background: #fff3cd; color: #856404; }
+        .difficulty-advanced { background: #f8d7da; color: #721c24; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .stats-bar { gap: 15px; }
+            .main-content { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 流计算学习平台</h1>
+            <p>掌握 Apache Flink 与流处理核心技术</p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">核心课程</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">13</span>
+                    <span class="stat-label">课时内容</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">交互实验</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">编程挑战</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- 课程区域 -->
+            <section class="section">
+                <h2>📚 系统课程</h2>
+                <p>从基础到高级的完整学习路径，循序渐进掌握流计算技术。</p>
+                <div class="course-grid">
+                    <div class="card course" onclick="location.href='courses/course-01-flink-basics.html'">
+                        <div class="card-header">
+                            <div class="card-icon">🚀</div>
+                            <div>
+                                <h3>课程1: Flink基础速成</h3>
+                                <span class="difficulty difficulty-beginner">初级</span>
+                            </div>
+                        </div>
+                        <p>快速入门 Apache Flink，掌握 DataStream API、基本概念和第一个流处理应用。</p>
+                        <div class="card-meta">
+                            <span>⏱️ 5节课</span>
+                            <span>📖 约3小时</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card course" onclick="location.href='courses/course-02-design-patterns.html'">
+                        <div class="card-header">
+                            <div class="card-icon">🎨</div>
+                            <div>
+                                <h3>课程2: 流处理设计模式</h3>
+                                <span class="difficulty difficulty-intermediate">中级</span>
+                            </div>
+                        </div>
+                        <p>深入学习窗口操作、状态管理、Watermark 处理等核心设计模式。</p>
+                        <div class="card-meta">
+                            <span>⏱️ 4节课</span>
+                            <span>📖 约4小时</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card course" onclick="location.href='courses/course-03-advanced-topics.html'">
+                        <div class="card-header">
+                            <div class="card-icon">⚡</div>
+                            <div>
+                                <h3>课程3: 高级主题与调优</h3>
+                                <span class="difficulty difficulty-advanced">高级</span>
+                            </div>
+                        </div>
+                        <p>Checkpoint 机制、背压处理、性能调优和生产环境最佳实践。</p>
+                        <div class="card-meta">
+                            <span>⏱️ 4节课</span>
+                            <span>📖 约5小时</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 实验区域 -->
+            <section class="section">
+                <h2>🧪 交互实验</h2>
+                <p>动手实践，通过可视化实验深入理解核心机制。</p>
+                <div class="lab-grid">
+                    <div class="card lab" onclick="location.href='labs/lab-01-watermark.html'">
+                        <div class="card-header">
+                            <div class="card-icon">💧</div>
+                            <div>
+                                <h3>实验1: Watermark 可视化</h3>
+                                <span class="difficulty difficulty-intermediate">中级</span>
+                            </div>
+                        </div>
+                        <p>交互式探索 Watermark 的生成、传播机制，理解乱序数据处理。</p>
+                        <div class="card-meta">
+                            <span>🔬 交互实验</span>
+                            <span>⏱️ 约30分钟</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card lab" onclick="location.href='labs/lab-02-checkpoint.html'">
+                        <div class="card-header">
+                            <div class="card-icon">💾</div>
+                            <div>
+                                <h3>实验2: Checkpoint 机制模拟</h3>
+                                <span class="difficulty difficulty-advanced">高级</span>
+                            </div>
+                        </div>
+                        <p>模拟分布式 Checkpoint 过程，理解 Barrier 传播和状态快照。</p>
+                        <div class="card-meta">
+                            <span>🔬 交互实验</span>
+                            <span>⏱️ 约45分钟</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card lab" onclick="location.href='labs/lab-03-backpressure.html'">
+                        <div class="card-header">
+                            <div class="card-icon">⚠️</div>
+                            <div>
+                                <h3>实验3: 背压检测实验</h3>
+                                <span class="difficulty difficulty-advanced">高级</span>
+                            </div>
+                        </div>
+                        <p>可视化背压的传播过程，学习如何检测和解决背压问题。</p>
+                        <div class="card-meta">
+                            <span>🔬 交互实验</span>
+                            <span>⏱️ 约40分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 挑战区域 -->
+            <section class="section">
+                <h2>🏆 编程挑战</h2>
+                <p>通过实战编程挑战检验学习成果，提升编码能力。</p>
+                <div class="challenge-grid">
+                    <div class="card challenge" onclick="location.href='challenges/challenge-01-wordcount.html'">
+                        <div class="card-header">
+                            <div class="card-icon">📝</div>
+                            <div>
+                                <h3>挑战1: WordCount 实现</h3>
+                                <span class="difficulty difficulty-beginner">初级</span>
+                            </div>
+                        </div>
+                        <p>流处理界的"Hello World"，实现实时词频统计应用。</p>
+                        <div class="card-meta">
+                            <span>💻 编程挑战</span>
+                            <span>🏅 100积分</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card challenge" onclick="location.href='challenges/challenge-02-window-agg.html'">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div>
+                                <h3>挑战2: 窗口聚合优化</h3>
+                                <span class="difficulty difficulty-intermediate">中级</span>
+                            </div>
+                        </div>
+                        <p>优化复杂的窗口聚合操作，处理迟到数据和增量计算。</p>
+                        <div class="card-meta">
+                            <span>💻 编程挑战</span>
+                            <span>🏅 200积分</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card challenge" onclick="location.href='challenges/challenge-03-state-mgmt.html'">
+                        <div class="card-header">
+                            <div class="card-icon">🗃️</div>
+                            <div>
+                                <h3>挑战3: 状态管理设计</h3>
+                                <span class="difficulty difficulty-advanced">高级</span>
+                            </div>
+                        </div>
+                        <p>设计高效的状态管理方案，实现 Exactly-Once 语义。</p>
+                        <div class="card-meta">
+                            <span>💻 编程挑战</span>
+                            <span>🏅 300积分</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 学习路径 -->
+            <section class="section">
+                <h2>🎯 推荐学习路径</h2>
+                <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-top: 20px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                        <div>
+                            <strong>基础入门</strong>
+                            <p style="color: #666; margin: 0;">完成课程1 → 挑战1 → 实验1</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                        <div>
+                            <strong>进阶提升</strong>
+                            <p style="color: #666; margin: 0;">完成课程2 → 挑战2 → 实验2</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="width: 40px; height: 40px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                        <div>
+                            <strong>专家精通</strong>
+                            <p style="color: #666; margin: 0;">完成课程3 → 挑战3 → 实验3</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>流计算学习平台 v1.0 | 基于 AnalysisDataFlow 项目构建</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <a href="../README.md" style="color: rgba(255,255,255,0.8);">项目文档</a> | 
+                <a href="../INDEX.md" style="color: rgba(255,255,255,0.8);">知识索引</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // 简单的进度追踪功能
+        const updateProgress = () => {
+            const progress = JSON.parse(localStorage.getItem('learningProgress') || '{}');
+            // 这里可以添加进度更新逻辑
+        };
+        
+        // 页面加载时更新进度
+        document.addEventListener('DOMContentLoaded', updateProgress);
+    </script>
+</body>
+</html>

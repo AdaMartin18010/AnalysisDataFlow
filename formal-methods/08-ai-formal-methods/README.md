@@ -102,7 +102,7 @@
 | **AlphaProof** | <https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/> | DeepMind 官方博客 |
 | **LeanDojo** | <https://leandojo.org/> | 神经定理证明环境 |
 | **EuroProofNet WG5** | <https://europroofnet.github.io/wg5/> | 机器学习与定理证明 |
-| **Marabou** | <https://neuralnetworkverification.github.io/marabou/> | 神经网络验证器 |
+| **Marabou** | <https://github.com/NeuralNetworkVerification/Marabou/> | 神经网络验证器 |
 | **β-CROWN** | <https://github.com/Verified-Intelligence/beta-CROWN> | 完整NN验证器 |
 | **LemmaBench** | <https://arxiv.org/abs/2602.24173> | LLM数学能力基准 |
 

@@ -1,5 +1,9 @@
 # Flink 2.5 迁移指南
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 发布](../08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
 
 ---
@@ -86,6 +90,7 @@ dependencies {
 ### 3.1 状态后端配置
 
 **Flink 2.4 配置**:
+
 ```yaml
 # 2.4 配置
 state.backend: rocksdb
@@ -95,6 +100,7 @@ state.checkpoints.dir: s3://flink-checkpoints
 ```
 
 **Flink 2.5 等效配置**:
+
 ```yaml
 # 2.5 配置 (推荐)
 state.backend: forst                    # ForSt 成为推荐后端
@@ -143,6 +149,11 @@ execution.runtime-mode: batch
 **无需修改**，完全兼容：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // Flink 2.4 代码在 2.5 中无需修改
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -166,6 +177,9 @@ env.execute("My Job");
 **2.5 新增功能**（可选使用）：
 
 ```java
+
+import org.apache.flink.table.api.TableEnvironment;
+
 // 启用自适应执行模式（可选）
 TableEnvironment tEnv = TableEnvironment.create(settings);
 tEnv.getConfig().set("execution.runtime-mode", "adaptive");
@@ -232,6 +246,7 @@ flink run \
 ### 6.1 传统部署 → Serverless
 
 **传统部署 (2.4)**:
+
 ```yaml
 # flink-conf.yaml (2.4)
 jobmanager.memory.process.size: 2gb
@@ -241,6 +256,7 @@ parallelism.default: 4
 ```
 
 **Serverless 部署 (2.5)**:
+
 ```yaml
 # flink-conf.yaml (2.5)
 execution.mode: serverless
@@ -266,25 +282,25 @@ serverless.cold-start.warmup-pool-size: 2
 # flink-deployment-2.5.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: my-job
-spec: 
+spec:
   image: flink:2.5.0
   flinkVersion: v2.5
 
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: 2Gi
       cpu: 1
 
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: 4Gi
       cpu: 2
     # Serverless 配置 (新增)
-    serverless: 
+    serverless:
       enabled: true
-      scale-to-zero: 
+      scale-to-zero:
         enabled: true
         idle-timeout: 10m
 ```
@@ -296,11 +312,13 @@ spec:
 ### 7.1 启动失败
 
 **问题**: 作业启动时报告配置错误
+
 ```
 Caused by: IllegalArgumentException: Unknown configuration key: state.backend.rocksdb.memory.managed
 ```
 
 **解决**: 更新配置键名
+
 ```yaml
 # 旧配置
 state.backend.rocksdb.memory.managed: true
@@ -314,12 +332,14 @@ state.backend.forst.memory.managed: true
 **问题**: 迁移后作业吞吐量下降
 
 **排查步骤**:
+
 1. 检查状态后端配置是否正确
 2. 验证 Checkpoint 配置
 3. 对比 GC 日志
 4. 检查网络缓冲区配置
 
-**解决**: 
+**解决**:
+
 ```yaml
 # 调优网络缓冲区
 taskmanager.memory.network.min: 256mb
@@ -335,6 +355,7 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 **问题**: Scale-from-Zero 后恢复慢
 
 **解决**:
+
 ```yaml
 # 启用预热池
 serverless.cold-start.mode: warmup-pool
@@ -362,7 +383,8 @@ flink run \
     ./my-job-2.4.jar
 ```
 
-**注意**: 
+**注意**:
+
 - 2.5 新增特性 (如 Serverless) 在回滚后将不可用
 - 确保 2.4 配置与 2.5 兼容
 

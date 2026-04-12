@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink 生产环境部署检查清单 (Production Deployment Checklist)
 
 > **所属阶段**: Knowledge/09-engineering | **前置依赖**: [3.10-flink-production-checklist.md](./3.10-flink-production-checklist.md), [Flink/3.9-state-backends-deep-comparison.md](../Flink/3.9-state-backends-deep-comparison.md) | **形式化等级**: L3-L4

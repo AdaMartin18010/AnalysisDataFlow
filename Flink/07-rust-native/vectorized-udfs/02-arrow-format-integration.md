@@ -652,6 +652,9 @@ import org.apache.flink.table.runtime.arrow.*;
 import java.io.*;
 import java.util.*;
 
+import org.apache.flink.api.common.typeinfo.Types;
+
+
 /**
  * Flink-Arrow 集成示例
  * 展示 RowData 与 Arrow 格式的相互转换

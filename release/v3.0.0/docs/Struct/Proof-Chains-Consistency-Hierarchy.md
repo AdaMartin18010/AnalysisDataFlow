@@ -748,6 +748,9 @@ WatermarkStrategy
 **Flink 配置**:
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // Source: Kafka 可重放
 FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
     "input-topic",

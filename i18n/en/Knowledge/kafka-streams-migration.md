@@ -77,6 +77,9 @@ orders.filter((key, order) -> order.getAmount() > 100)
 <!-- TRANSLATE: **Flink 等效代码**: -->
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // DataStream API
 DataStream<Order> orders = env.fromKafka("orders", ...);
 
@@ -156,4 +159,3 @@ def export_rocksdb_to_parquet(db_path: str, output_path: str):
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
-

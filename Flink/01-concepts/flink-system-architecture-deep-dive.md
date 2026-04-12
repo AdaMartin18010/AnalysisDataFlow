@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink系统架构深度分析
 
 > 所属阶段: Flink/ 01-concepts | 前置依赖: [flink-runtime-overview.md](./flink-runtime-overview.md), [flink-dataflow-model.md](../00-foundations/flink-dataflow-model.md) | 形式化等级: L4 (工程论证+源码级)
@@ -383,6 +386,9 @@ Akka的学习曲线较陡，调试困难（异步消息栈追踪复杂）。Flin
 **阶段1: 客户端处理 (Client-Side)**
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // StreamExecutionEnvironment.execute() 入口
 public JobExecutionResult execute(String jobName) throws Exception {
     // 1. 生成StreamGraph（逻辑图）
@@ -559,6 +565,10 @@ where:
 **示例 F-01-01 [WordCount从代码到执行]**：
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 用户代码
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1209,6 +1219,10 @@ graph TB
 ### 10.1 Slot配置优化
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // flink-conf.yaml 关键配置
 
 taskmanager.numberOfTaskSlots: 4  # 每个TM的Slot数

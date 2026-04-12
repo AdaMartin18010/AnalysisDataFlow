@@ -216,6 +216,9 @@ graph LR
 **测试模式**:
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // 内存测试模式
 @Test
 public void testPipeline() {

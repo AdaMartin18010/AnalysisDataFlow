@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AI Agent 数据库工作负载：前沿架构分析
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [04-technology-selection/database-selection-guide.md](../04-technology-selection/storage-selection-guide.md), [Flink/03-flink-state-management.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4
@@ -475,6 +478,10 @@ class AgentDatabaseManager {
 
 ```java
 // Flink 作业：Agent 任务编排与数据库生命周期管理
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 public class AgentOrchestrationJob {
 
     public static void main(String[] args) throws Exception {

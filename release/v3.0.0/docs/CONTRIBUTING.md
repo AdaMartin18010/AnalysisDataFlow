@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 社区贡献者完整指南 (Contributing Guide)
 
 > 欢迎来到 AnalysisDataFlow 项目！我们致力于打造流计算领域最全面、最严谨的知识库。
@@ -851,6 +854,9 @@ Apache Flink 实现了异步屏障快照（Asynchronous Barrier Snapshotting，A
 **示例**：
 ````markdown
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // Java 代码示例
 DataStream<Event> stream = env
     .addSource(new KafkaSource<>())
@@ -878,6 +884,9 @@ DataStream<Event> stream = env
 
 **示例**：
 ```java
+
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+
 // 设置 Watermark 生成策略，允许 5 秒乱序
 // 这是根据业务延迟分布确定的值
 WatermarkStrategy<Event> strategy = WatermarkStrategy

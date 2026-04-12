@@ -799,6 +799,9 @@ public class MilvusIndexUpdateSink extends RichSinkFunction<EmbeddedChunk> {
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 /**
  * 流式RAG完整作业
  *

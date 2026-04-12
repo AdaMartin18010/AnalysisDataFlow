@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # AnalysisDataFlow 差异化定位声明
 
 > **版本**: v1.0 | **生效日期**: 2026-04-05 | **状态**: 正式发布
@@ -213,6 +216,9 @@ graph TD
 **官方文档**: "如何配置 Checkpoint 间隔"
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 官方文档示例
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);

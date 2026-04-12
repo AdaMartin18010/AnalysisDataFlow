@@ -579,6 +579,10 @@ WHERE age >= 18;
 import org.apache.flink.connector.mongodb.source.MongoSource;
 import org.apache.flink.connector.mongodb.source.config.MongoChangeStreamOptions;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 public class MongoDBCDCExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -671,6 +675,10 @@ public class ChangeStreamProcessor
 ```java
 import org.apache.flink.connector.mongodb.sink.MongoSink;
 import org.apache.flink.connector.mongodb.sink.config.MongoWriteOptions;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 
 public class MongoDBSinkExample {
     public static void main(String[] args) throws Exception {
@@ -779,6 +787,10 @@ WHERE status = 'completed';
 ```java
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+
 
 public class MongoDBCDCtoSinkExample {
     public static void main(String[] args) throws Exception {

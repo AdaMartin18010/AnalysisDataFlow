@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # 内容新鲜度标记系统设计文档
 
 > 所属阶段: Meta/Quality-Assurance | 前置依赖: [PROJECT-TRACKING.md](../PROJECT-TRACKING.md) | 形式化等级: L2

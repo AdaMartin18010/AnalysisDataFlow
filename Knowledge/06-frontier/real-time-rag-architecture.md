@@ -297,6 +297,8 @@ flowchart TB
 **优化1: 嵌入并行化**
 
 ```java
+import org.apache.flink.streaming.api.functions.async.AsyncFunction;
+
 // Flink AsyncFunction实现
 class EmbeddingAsyncFn extends AsyncFunction<Document, Vector> {
     @Override
@@ -311,6 +313,8 @@ class EmbeddingAsyncFn extends AsyncFunction<Document, Vector> {
 **优化2: 向量批处理写入**
 
 ```java
+import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+
 // 批量Sink减少网络RTT
 class VectorBulkSink extends RichSinkFunction<Vector> {
     private List<Vector> buffer = new ArrayList<>();

@@ -1,5 +1,9 @@
 # AI Agent流处理模式
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink状态管理](../04-runtime/04.3-state-management.md) | **形式化等级**: L4-L5
 
 ## 执行摘要
@@ -403,6 +407,11 @@ $$Recovery(S_{checkpoint}, Events_{unacked}) \equiv NormalExecution(Events_{full
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
 
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 /**
  * 单Agent事件驱动ProcessFunction
  *
@@ -532,6 +541,9 @@ public class SingleAgentProcessFunction
 ```java
 import org.apache.flink.api.common.state.MapState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * Agent状态管理示例
@@ -819,6 +831,9 @@ public class ToolCallingFramework {
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.ConnectedStreams;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 /**
  * 多Agent流水线编排
  *
@@ -985,6 +1000,13 @@ class ResponseGenerationAgent
 
 ```java
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * 智能运维Agent (AIOps Agent)

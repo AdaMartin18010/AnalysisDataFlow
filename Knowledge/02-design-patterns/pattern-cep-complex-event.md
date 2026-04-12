@@ -329,6 +329,8 @@ Flink CEP 提供两种窗口语义：
 Flink CEP 使用 Keyed State 存储每个 key 的 NFA 状态：
 
 ```java
+import java.util.List;
+
 // 伪代码：CEP 状态存储
 class CEPState {
     // 当前活跃的 NFA 状态集合
@@ -450,6 +452,10 @@ import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 // 定义欺诈检测模式：异地登录 → 修改密码 → 大额转账（30分钟内）
 Pattern<TransactionEvent, ?> fraudPattern = Pattern
     .<TransactionEvent>begin("login")
@@ -512,6 +518,10 @@ DataStream<AlertEvent> alerts = patternStream
 **示例 2: IoT 设备故障检测** [^6][^9]
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 定义设备故障模式：高温 → 振动尖峰（30秒内）
 Pattern<SensorEvent, ?> failurePattern = Pattern
     .<SensorEvent>begin("highTemp")
@@ -565,6 +575,9 @@ DataStream<FailureAlert> failures = patternStream
 **示例 3: 使用量词修饰符** [^8]
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 模式：连续3次登录失败，然后成功登录（可能是暴力破解）
 Pattern<LoginEvent, ?> bruteForcePattern = Pattern
     .<LoginEvent>begin("failedLogins")
@@ -597,6 +610,9 @@ Pattern<DeviceEvent, ?> networkGlitchPattern = Pattern
 **示例 4: 使用 followedByAny 处理非确定性** [^8]
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 模式：A 后跟 B，但 A 可能有多个后续 B 候选（贪婪匹配）
 Pattern<Event, ?> greedyPattern = Pattern
     .<Event>begin("start")
@@ -613,6 +629,9 @@ Pattern<Event, ?> greedyPattern = Pattern
 **示例 5: 使用 AND / OR 组合** [^8]
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 复合条件：同一设备上温度高 或 压力高，然后停机
 Pattern<AlarmEvent, ?> shutdownPattern = Pattern
     .<AlarmEvent>begin("alarm")
@@ -637,6 +656,9 @@ Pattern<AlarmEvent, ?> shutdownPattern = Pattern
 **示例 6: 使用侧输出处理超时** [^4][^9]
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 定义输出标签用于捕获超时事件
 OutputTag<String> timeoutTag = new OutputTag<String>("timeout"){};
 
@@ -716,6 +738,9 @@ HAVING count(*) > 10 AND avg(amount) > 5000;
 **优化 1: 尽早过滤减少候选事件** [^4][^9]
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+
 // 优化前：所有事件都进入 CEP 引擎
 Pattern<Event, ?> unoptimized = Pattern
     .<Event>begin("start")
@@ -738,6 +763,9 @@ Pattern<Event, ?> optimized = Pattern
 **优化 2: 合理设置时间窗口** [^9]
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 窗口过小：可能错过有效匹配
 .within(Time.seconds(5))   // 太紧张
 
@@ -751,6 +779,9 @@ Pattern<Event, ?> optimized = Pattern
 **优化 3: 使用 RocksDB 状态后端** [^9]
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 大状态 CEP 作业必须使用 RocksDB
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 
@@ -1003,4 +1034,3 @@ $$
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-

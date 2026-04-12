@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挑战3: 状态管理设计 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section h2 { color: #fc4a1a; margin-bottom: 20px; font-size: 1.5rem; }
+        .section h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        
+        .difficulty { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .difficulty-advanced { background: #f8d7da; color: #721c24; }
+        
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        
+        .hint { background: #fce4ec; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #e91e63; }
+        .hint h4 { color: #c2185b; margin-bottom: 8px; }
+        
+        .solution { display: none; background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4caf50; }
+        .solution.visible { display: block; }
+        .solution h4 { color: #2e7d32; margin-bottom: 10px; }
+        
+        .test-case { background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #dee2e6; }
+        .test-case h4 { color: #495057; margin-bottom: 10px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        .btn-primary { background: #fc4a1a; color: white; }
+        .btn-primary:hover { background: #e03e0d; }
+        .btn-outline { background: white; color: #fc4a1a; border: 2px solid #fc4a1a; }
+        
+        .checklist { list-style: none; }
+        .checklist li { padding: 10px 0; border-bottom: 1px solid #eee; }
+        .checklist li:before {
+            content: "☐";
+            margin-right: 10px;
+            color: #fc4a1a;
+            font-size: 1.2rem;
+        }
+        .checklist li.checked:before { content: "☑"; color: #27ae60; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a { padding: 12px 25px; background: #fc4a1a; color: white; text-decoration: none; border-radius: 25px; }
+        
+        .architecture {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🏆 编程挑战</span>
+            <span class="badge">300 积分</span>
+            <h1>挑战3: 状态管理设计</h1>
+            <p>设计高效的状态管理方案，实现 Exactly-Once 语义</p>
+        </header>
+
+        <div class="section">
+            <h2>📝 挑战描述</h2>
+            <span class="difficulty difficulty-advanced">高级</span>
+            <p style="margin-top: 15px;">在大规模流处理作业中，状态管理是核心挑战之一。本挑战要求你设计一个高效、可靠的状态管理方案，处理用户行为去重和会话分析场景。</p>
+            
+            <h3>业务场景</h3>
+            <p>实时用户行为分析系统，需要：</p>
+            <ul class="checklist" id="requirements">
+                <li>24小时内用户行为去重 (使用 ValueState)</li>
+                <li>用户会话分析 (使用 MapState 存储会话属性)</li>
+                <li>状态 TTL 自动清理过期数据 (24小时)</li>
+                <li>使用 RocksDB 状态后端处理大规模状态</li>
+                <li>实现作业重启后的状态恢复</li>
+                <li>监控状态大小和访问延迟</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ 架构设计</h2>
+            <div class="architecture">
+                <pre style="font-family: monospace; font-size: 0.85rem; text-align: left; display: inline-block;">
+┌─────────────────────────────────────────────────────────────────┐
+│                      用户行为去重系统架构                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌──────────────┐                                              │
+│   │  Kafka Source │                                              │
+│   └──────┬───────┘                                              │
+│          │                                                      │
+│   ┌──────▼───────┐    ┌──────────────────────────────────┐      │
+│   │ Deduplicate  │    │ ValueState&lt;Boolean&gt;              │      │
+│   │ (去重算子)    │───▶│ - 24小时TTL                     │      │
+│   └──────┬───────┘    │ - 清理过期状态                   │      │
+│          │            └──────────────────────────────────┘      │
+│   ┌──────▼───────┐                                              │
+│   │ Session      │    ┌──────────────────────────────────┐      │
+│   │ Analyzer     │───▶│ MapState&lt;String, Integer&gt;        │      │
+│   │ (会话分析)    │    │ - 页面访问计数                   │      │
+│   └──────┬───────┘    │ - 停留时长累加                   │      │
+│          │            └──────────────────────────────────┘      │
+│   ┌──────▼───────┐                                              │
+│   │  Kafka Sink  │                                              │
+│   └──────────────┘                                              │
+│                                                                 │
+│   状态后端: RocksDB (增量Checkpoint)                              │
+│   TTL策略: 24小时过期 + 全量Snapshot清理                          │
+└─────────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔰 初始代码框架</h2>
+            <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.state.*;
+<span class="keyword">import</span> org.apache.flink.api.common.time.Time;
+<span class="keyword">import</span> org.apache.flink.configuration.Configuration;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+<span class="keyword">import</span> org.apache.flink.util.Collector;
+
+<span class="keyword">public class</span> StateManagementChallenge {
+    
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// TODO 1: 配置 RocksDB 状态后端</span>
+        env.setStateBackend(...);
+        env.enableCheckpointing(60000);
+        
+        <span class="comment">// TODO 2: 创建数据流</span>
+        DataStream&lt;UserEvent&gt; events = ...
+        
+        <span class="comment">// TODO 3: 实现去重 + 会话分析</span>
+        DataStream&lt;SessionResult&gt; result = events
+            .keyBy(UserEvent::getUserId)
+            .process(<span class="keyword">new</span> DeduplicateAndAnalyzeFunction());
+        
+        result.print();
+        env.execute();
+    }
+    
+    <span class="comment">// TODO: 实现 KeyedProcessFunction</span>
+    <span class="keyword">public static class</span> DeduplicateAndAnalyzeFunction 
+        <span class="keyword">extends</span> KeyedProcessFunction&lt;String, UserEvent, SessionResult&gt; {
+        
+        <span class="comment">// 去重状态</span>
+        <span class="keyword">private</span> ValueState&lt;Boolean&gt; seenState;
+        
+        <span class="comment">// 会话状态</span>
+        <span class="keyword">private</span> MapState&lt;String, Integer&gt; sessionState;
+        
+        <span class="comment">// 会话开始时间</span>
+        <span class="keyword">private</span> ValueState&lt;Long&gt; sessionStartTime;
+        
+        @Override
+        <span class="keyword">public void</span> open(Configuration parameters) {
+            <span class="comment">// TODO: 初始化状态，配置TTL</span>
+        }
+        
+        @Override
+        <span class="keyword">public void</span> processElement(UserEvent event, Context ctx, 
+                                  Collector&lt;SessionResult&gt; out) {
+            <span class="comment">// TODO: 实现去重逻辑</span>
+            
+            <span class="comment">// TODO: 更新会话状态</span>
+            
+            <span class="comment">// TODO: 检查会话是否超时 (30分钟无活动)</span>
+            
+            <span class="comment">// TODO: 输出会话分析结果</span>
+        }
+    }
+    
+    <span class="keyword">public static class</span> UserEvent {
+        String userId;
+        String eventId;      <span class="comment">// 用于去重</span>
+        String pageUrl;      <span class="comment">// 页面URL</span>
+        String eventType;    <span class="comment">// click/view/scroll</span>
+        <span class="keyword">long</span> timestamp;
+        
+        <span class="comment">// constructors, getters...</span>
+    }
+    
+    <span class="keyword">public static class</span> SessionResult {
+        String userId;
+        <span class="keyword">int</span> pageViewCount;
+        <span class="keyword">int</span> uniquePageCount;
+        <span class="keyword">long</span> sessionDuration;  <span class="comment">// 毫秒</span>
+        <span class="keyword">boolean</span> isNewSession;
+        
+        @Override
+        <span class="keyword">public</span> String toString() {
+            <span class="keyword">return</span> String.format(
+                <span class="string">"SessionResult{user='%s', views=%d, unique=%d, duration=%dms, new=%b}"</span>,
+                userId, pageViewCount, uniquePageCount, sessionDuration, isNewSession
+            );
+        }
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 测试用例</h2>
+            
+            <div class="test-case">
+                <h4>测试用例 1: 基础去重</h4>
+                <p><strong>输入:</strong></p>
+                <pre>UserEvent("user1", "evt-001", "/home", "view", 1000)
+UserEvent("user1", "evt-001", "/home", "view", 2000)  // 重复事件
+UserEvent("user1", "evt-002", "/product", "view", 3000)</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>只处理 evt-001 和 evt-002 各一次</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 2: 会话超时</h4>
+                <p><strong>输入:</strong></p>
+                <pre>UserEvent("user1", "evt-001", "/home", "view", 0)
+UserEvent("user1", "evt-002", "/product", "view", 60000)    // 1分钟后
+UserEvent("user1", "evt-003", "/cart", "view", 1900000)     // 30分钟后</pre>
+                <p><strong>预期输出:</strong></p>
+                <pre>前两个事件属于同一会话
+第三个事件触发新会话 (超时)</pre>
+            </div>
+            
+            <div class="test-case">
+                <h4>测试用例 3: TTL 清理</h4>
+                <p><strong>场景:</strong> 验证 24小时后状态是否被正确清理</p>
+                <p><strong>验证:</strong> 查看 RocksDB 状态大小是否稳定</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 提示</h2>
+            
+            <div class="hint">
+                <h4>提示 1: TTL 配置</h4>
+                <div class="code-block">
+<pre>StateTtlConfig ttlConfig = StateTtlConfig
+    .newBuilder(Time.hours(24))
+    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+    .cleanupFullSnapshot()  <span class="comment">// Checkpoint时清理</span>
+    .build();
+
+ValueStateDescriptor&lt;Boolean&gt; descriptor = 
+    <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"seen"</span>, Boolean.class);
+descriptor.enableTimeToLive(ttlConfig);</pre>
+                </div>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 2: RocksDB 配置</h4>
+                <div class="code-block">
+<pre>EmbeddedRocksDBStateBackend rocksDbBackend = 
+    <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>);  <span class="comment">// 增量Checkpoint</span>
+env.setStateBackend(rocksDbBackend);
+env.getCheckpointConfig().setCheckpointStorage(<span class="string">"hdfs:///checkpoints"</span>);</pre>
+                </div>
+            </div>
+            
+            <div class="hint">
+                <h4>提示 3: 会话超时检测</h4>
+                <p>使用 TimerService 注册定时器，当会话超时时触发回调。</p>
+                <div class="code-block">
+<pre><span class="comment">// 注册30分钟后的定时器</span>ctx.timerService().registerEventTimeTimer(
+    event.timestamp + 30 * 60 * 1000
+);</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ 参考答案</h2>
+            <p>请先独立完成挑战，遇到困难再查看答案。</p>
+            <button class="btn btn-outline" onclick="toggleSolution()">显示/隐藏答案</button>
+            
+            <div class="solution" id="solution">
+                <h4>完整实现代码</h4>
+                <div class="code-block">
+<pre><span class="keyword">import</span> org.apache.flink.api.common.state.*;
+<span class="keyword">import</span> org.apache.flink.api.common.time.Time;
+<span class="keyword">import</span> org.apache.flink.configuration.Configuration;
+<span class="keyword">import</span> org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+<span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="keyword">import</span> org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+<span class="keyword">import</span> org.apache.flink.util.Collector;
+
+<span class="keyword">public class</span> StateManagementChallenge {
+    
+    <span class="keyword">public static void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        StreamExecutionEnvironment env = 
+            StreamExecutionEnvironment.getExecutionEnvironment();
+        
+        <span class="comment">// 配置 RocksDB 状态后端</span>
+        EmbeddedRocksDBStateBackend rocksDbBackend = 
+            <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>);
+        env.setStateBackend(rocksDbBackend);
+        env.enableCheckpointing(60000);
+        
+        <span class="comment">// 模拟数据</span>
+        DataStream&lt;UserEvent&gt; events = env.fromElements(
+            <span class="keyword">new</span> UserEvent(<span class="string">"user1"</span>, <span class="string">"evt-001"</span>, <span class="string">"/home"</span>, <span class="string">"view"</span>, 1000),
+            <span class="keyword">new</span> UserEvent(<span class="string">"user1"</span>, <span class="string">"evt-001"</span>, <span class="string">"/home"</span>, <span class="string">"view"</span>, 2000),  <span class="comment">// 重复</span>
+            <span class="keyword">new</span> UserEvent(<span class="string">"user1"</span>, <span class="string">"evt-002"</span>, <span class="string">"/product"</span>, <span class="string">"view"</span>, 61000)
+        );
+        
+        DataStream&lt;SessionResult&gt; result = events
+            .keyBy(UserEvent::getUserId)
+            .process(<span class="keyword">new</span> DeduplicateAndAnalyzeFunction());
+        
+        result.print();
+        env.execute();
+    }
+    
+    <span class="keyword">public static class</span> DeduplicateAndAnalyzeFunction 
+        <span class="keyword">extends</span> KeyedProcessFunction&lt;String, UserEvent, SessionResult&gt; {
+        
+        <span class="keyword">private static final long</span> SESSION_TIMEOUT = 30 * 60 * 1000; <span class="comment">// 30分钟</span>
+        
+        <span class="keyword">private</span> ValueState&lt;Boolean&gt; seenState;
+        <span class="keyword">private</span> MapState&lt;String, Integer&gt; pageViewState;
+        <span class="keyword">private</span> ValueState&lt;Long&gt; sessionStartState;
+        <span class="keyword">private</span> ValueState&lt;Long&gt; lastActivityState;
+        
+        @Override
+        <span class="keyword">public void</span> open(Configuration parameters) {
+            <span class="comment">// TTL 配置: 24小时</span>
+            StateTtlConfig ttlConfig = StateTtlConfig
+                .newBuilder(Time.hours(24))
+                .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+                .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+                .cleanupFullSnapshot()
+                .build();
+            
+            <span class="comment">// 去重状态</span>
+            ValueStateDescriptor&lt;Boolean&gt; seenDescriptor = 
+                <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"seen"</span>, Boolean.class);
+            seenDescriptor.enableTimeToLive(ttlConfig);
+            seenState = getRuntimeContext().getState(seenDescriptor);
+            
+            <span class="comment">// 页面访问状态</span>
+            MapStateDescriptor&lt;String, Integer&gt; pageViewDescriptor = 
+                <span class="keyword">new</span> MapStateDescriptor&lt;&gt;(<span class="string">"pageViews"</span>, String.class, Integer.class);
+            pageViewDescriptor.enableTimeToLive(ttlConfig);
+            pageViewState = getRuntimeContext().getMapState(pageViewDescriptor);
+            
+            <span class="comment">// 会话时间状态</span>
+            ValueStateDescriptor&lt;Long&gt; sessionStartDescriptor = 
+                <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"sessionStart"</span>, Long.class);
+            sessionStartDescriptor.enableTimeToLive(ttlConfig);
+            sessionStartState = getRuntimeContext().getState(sessionStartDescriptor);
+            
+            ValueStateDescriptor&lt;Long&gt; lastActivityDescriptor = 
+                <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"lastActivity"</span>, Long.class);
+            lastActivityDescriptor.enableTimeToLive(ttlConfig);
+            lastActivityState = getRuntimeContext().getState(lastActivityDescriptor);
+        }
+        
+        @Override
+        <span class="keyword">public void</span> processElement(UserEvent event, Context ctx, 
+                                  Collector&lt;SessionResult&gt; out) <span class="keyword">throws</span> Exception {
+            String eventKey = event.userId + <span class="string">":"</span> + event.eventId;
+            
+            <span class="comment">// 去重检查</span>
+            <span class="keyword">if</span> (seenState.value() != <span class="keyword">null</span>) {
+                <span class="keyword">return</span>; <span class="comment">// 重复事件，忽略</span>
+            }
+            seenState.update(<span class="keyword">true</span>);
+            
+            <span class="comment">// 检查会话超时</span>
+            Long lastActivity = lastActivityState.value();
+            <span class="keyword">boolean</span> isNewSession = <span class="keyword">false</span>;
+            
+            <span class="keyword">if</span> (lastActivity == <span class="keyword">null</span> || 
+                event.timestamp - lastActivity > SESSION_TIMEOUT) {
+                <span class="comment">// 新会话</span>
+                isNewSession = <span class="keyword">true</span>;
+                sessionStartState.update(event.timestamp);
+                pageViewState.clear();
+            }
+            
+            <span class="comment">// 更新页面访问统计</span>
+            String pageKey = event.pageUrl;
+            Integer count = pageViewState.get(pageKey);
+            <span class="keyword">if</span> (count == <span class="keyword">null</span>) count = 0;
+            pageViewState.put(pageKey, count + 1);
+            
+            <span class="comment">// 更新活动时间</span>
+            lastActivityState.update(event.timestamp);
+            
+            <span class="comment">// 计算会话统计</span>
+            <span class="keyword">int</span> totalViews = 0;
+            <span class="keyword">int</span> uniquePages = 0;
+            <span class="keyword">for</span> (Integer c : pageViewState.values()) {
+                totalViews += c;
+                uniquePages++;
+            }
+            
+            Long sessionStart = sessionStartState.value();
+            <span class="keyword">long</span> duration = sessionStart != <span class="keyword">null</span> ? 
+                event.timestamp - sessionStart : 0;
+            
+            <span class="comment">// 注册会话超时定时器</span>
+            ctx.timerService().registerEventTimeTimer(
+                event.timestamp + SESSION_TIMEOUT
+            );
+            
+            <span class="comment">// 输出结果</span>
+            out.collect(<span class="keyword">new</span> SessionResult(
+                event.userId,
+                totalViews,
+                uniquePages,
+                duration,
+                isNewSession
+            ));
+        }
+        
+        @Override
+        <span class="keyword">public void</span> onTimer(<span class="keyword">long</span> timestamp, OnTimerContext ctx, 
+                          Collector&lt;SessionResult&gt; out) <span class="keyword">throws</span> Exception {
+            <span class="comment">// 会话超时，清理状态</span>
+            Long lastActivity = lastActivityState.value();
+            <span class="keyword">if</span> (lastActivity != <span class="keyword">null</span> && timestamp >= lastActivity + SESSION_TIMEOUT) {
+                pageViewState.clear();
+                sessionStartState.clear();
+                lastActivityState.clear();
+            }
+        }
+    }
+    
+    <span class="keyword">public static class</span> UserEvent {
+        String userId;
+        String eventId;
+        String pageUrl;
+        String eventType;
+        <span class="keyword">long</span> timestamp;
+        
+        UserEvent() {}
+        
+        UserEvent(String userId, String eventId, String pageUrl, 
+                  String eventType, <span class="keyword">long</span> timestamp) {
+            <span class="keyword">this</span>.userId = userId;
+            <span class="keyword">this</span>.eventId = eventId;
+            <span class="keyword">this</span>.pageUrl = pageUrl;
+            <span class="keyword">this</span>.eventType = eventType;
+            <span class="keyword">this</span>.timestamp = timestamp;
+        }
+        
+        String getUserId() { <span class="keyword">return</span> userId; }
+    }
+    
+    <span class="keyword">public static class</span> SessionResult {
+        String userId;
+        <span class="keyword">int</span> pageViewCount;
+        <span class="keyword">int</span> uniquePageCount;
+        <span class="keyword">long</span> sessionDuration;
+        <span class="keyword">boolean</span> isNewSession;
+        
+        SessionResult(String userId, <span class="keyword">int</span> pageViewCount, <span class="keyword">int</span> uniquePageCount,
+                     <span class="keyword">long</span> sessionDuration, <span class="keyword">boolean</span> isNewSession) {
+            <span class="keyword">this</span>.userId = userId;
+            <span class="keyword">this</span>.pageViewCount = pageViewCount;
+            <span class="keyword">this</span>.uniquePageCount = uniquePageCount;
+            <span class="keyword">this</span>.sessionDuration = sessionDuration;
+            <span class="keyword">this</span>.isNewSession = isNewSession;
+        }
+        
+        @Override
+        <span class="keyword">public</span> String toString() {
+            <span class="keyword">return</span> String.format(
+                <span class="string">"SessionResult{user='%s', views=%d, unique=%d, duration=%dms, new=%b}"</span>,
+                userId, pageViewCount, uniquePageCount, sessionDuration, isNewSession
+            );
+        }
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="challenge-02-window-agg.html">← 上一个挑战</a>
+            <a href="../index.html">返回首页 →</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSolution() {
+            document.getElementById('solution').classList.toggle('visible');
+        }
+        
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -448,6 +448,9 @@ Flink provides a comprehensive Web UI at `http://localhost:8081` with:
 ### 5.2 Metrics Integration
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 // Enable Prometheus metrics reporter
 Configuration conf = new Configuration();
 conf.setString("metrics.reporters", "prometheus");

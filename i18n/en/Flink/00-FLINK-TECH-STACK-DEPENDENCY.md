@@ -232,6 +232,10 @@ Therefore, any stream processing requirement can be satisfied through compositio
 ### 6.1 Core → API Dependency Example
 
 ```java
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // DataStream API uses Checkpoint mechanism internally
 DataStream<String> stream = env.socketTextStream("localhost", 9999);
 stream.keyBy(value -> value)
@@ -261,6 +265,7 @@ env.addSource(source);  // Runtime initializes connector
 ### 6.4 Ecosystem → Practices Dependency Example
 
 Production checklist for Kafka connector:
+
 - [ ] Configure appropriate `fetch.min.bytes`
 - [ ] Set `enable.auto.commit` to false (use Flink checkpoint)
 - [ ] Monitor consumer lag
@@ -278,32 +283,32 @@ graph TB
         P2[Case Studies]
         P3[Roadmap]
     end
-    
+
     subgraph "Layer 4: Ecosystem"
         E1[Connectors]
         E2[AI/ML]
         E3[Graph Processing]
     end
-    
+
     subgraph "Layer 3: Runtime"
         R1[JobManager]
         R2[TaskManager]
         R3[Scheduler]
     end
-    
+
     subgraph "Layer 2: API"
         A1[DataStream API]
         A2[Table/SQL API]
         A3[Python API]
     end
-    
+
     subgraph "Layer 1: Core"
         C1[Checkpoint]
         C2[State Backend]
         C3[Network]
         C4[Time]
     end
-    
+
     P1 --> E1
     E1 --> R1
     R1 --> A1
@@ -315,9 +320,6 @@ graph TB
 
 ## 8. References
 
-[^1]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
-[^2]: T. Akidau et al., "MillWheel: Fault-Tolerant Stream Processing at Internet Scale", VLDB, 2013.
-[^3]: Apache Flink Documentation, "Flink Architecture", https://nightlies.apache.org/flink/flink-docs-stable/
 
 ---
 

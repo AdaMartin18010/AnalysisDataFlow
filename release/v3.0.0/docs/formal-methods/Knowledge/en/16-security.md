@@ -329,6 +329,9 @@ high-availability.zookeeper.client.acl: creator
 import org.apache.flink.runtime.security.SecurityConfiguration;
 import org.apache.flink.runtime.security.SecurityUtils;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+
 public class KerberosFlinkJob {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();

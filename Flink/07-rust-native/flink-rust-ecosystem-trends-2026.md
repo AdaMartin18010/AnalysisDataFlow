@@ -1,5 +1,9 @@
 # Flink + Rust 生态趋势总结（2026 展望）
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/ | 前置依赖: [Flink WASM UDF 生态](../03-api/09-language-foundations/flink-25-wasm-udf-ga.md), [Flink 2.x 路线图](../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | 形式化等级: L4
 
 ---

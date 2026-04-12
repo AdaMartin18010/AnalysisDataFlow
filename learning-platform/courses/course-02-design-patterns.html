@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程2: 流处理设计模式 | 流计算学习平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        .lesson { background: white; border-radius: 15px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .lesson h2 { color: #11998e; margin-bottom: 20px; font-size: 1.5rem; }
+        .lesson h3 { color: #444; margin: 25px 0 15px; font-size: 1.2rem; }
+        .objectives { background: #e8f8f5; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #11998e; }
+        .objectives h4 { color: #11998e; margin-bottom: 10px; }
+        .objectives ul { margin-left: 20px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 10px; overflow-x: auto; margin: 15px 0; }
+        .code-block code { font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9rem; }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .exercise { background: #fff8e1; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .exercise h4 { color: #f57c00; margin-bottom: 10px; }
+        .reading { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .reading h4 { color: #11998e; margin-bottom: 10px; }
+        .reading a { color: #11998e; text-decoration: none; }
+        .reading a:hover { text-decoration: underline; }
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav a {
+            padding: 12px 25px;
+            background: #11998e;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.2s;
+        }
+        .nav a:hover { transform: scale(1.05); }
+        .mermaid { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">🎨 中级课程</span>
+            <span class="badge">⏱️ 约4小时</span>
+            <h1>课程2: 流处理设计模式</h1>
+            <p>深入学习窗口操作、状态管理、CEP和连接器集成</p>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">✓</div>
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: white; color: #11998e; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">2</div>
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</div>
+            </div>
+        </header>
+
+        <!-- 课节 2.1 -->
+        <div class="lesson">
+            <h2>2.1 窗口高级特性</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Session Window 的动态特性</li>
+                    <li>理解自定义 Trigger 和 Evictor</li>
+                    <li>学会处理迟到数据</li>
+                    <li>掌握多流合并窗口 (Join/CoGroup)</li>
+                </ul>
+            </div>
+
+            <h3>2.1.1 Session Window 深入</h3>
+            <p>Session Window 根据活动间隙动态划分窗口，非常适合分析用户行为会话。</p>
+            
+            <div class="code-block">
+<pre><span class="comment">// 动态会话窗口 (间隙由数据决定)</span>
+DataStream&lt;Result&gt; dynamicSession = events
+    .keyBy(Event::getUserId)
+    .window(<span class="keyword">new</span> DynamicSessionWindow(Time.minutes(30)))
+    .allowedLateness(Time.minutes(10))
+    .sideOutputLateData(lateDataTag)
+    .process(<span class="keyword">new</span> SessionProcessFunction());
+
+<span class="comment">// 自定义 Session Window 合并逻辑</span>
+<span class="keyword">public class</span> SessionProcessFunction 
+    <span class="keyword">extends</span> ProcessWindowFunction&lt;Event, Result, String, TimeWindow&gt; {
+    
+    @Override
+    <span class="keyword">public void</span> process(String key, Context context, 
+                       Iterable&lt;Event&gt; elements, Collector&lt;Result&gt; out) {
+        <span class="keyword">long</span> sessionStart = Long.MAX_VALUE;
+        <span class="keyword">long</span> sessionEnd = Long.MIN_VALUE;
+        <span class="keyword">int</span> eventCount = 0;
+        
+        <span class="keyword">for</span> (Event e : elements) {
+            sessionStart = Math.min(sessionStart, e.getTimestamp());
+            sessionEnd = Math.max(sessionEnd, e.getTimestamp());
+            eventCount++;
+        }
+        
+        <span class="keyword">long</span> sessionDuration = sessionEnd - sessionStart;
+        out.collect(<span class="keyword">new</span> Result(key, eventCount, sessionDuration));
+    }
+}</pre>
+            </div>
+
+            <h3>2.1.2 自定义 Trigger</h3>
+            <div class="code-block">
+<pre><span class="comment">// 自定义触发器: 当计数达到100时提前触发</span>
+<span class="keyword">public class</span> CountTrigger&lt;T&gt; <span class="keyword">extends</span> Trigger&lt;T, TimeWindow&gt; {
+    <span class="keyword">private final long</span> maxCount;
+    <span class="keyword">private final</span> ReducingStateDescriptor&lt;Long&gt; stateDesc;
+    
+    <span class="keyword">public</span> CountTrigger(<span class="keyword">long</span> maxCount) {
+        <span class="keyword">this</span>.maxCount = maxCount;
+        <span class="keyword">this</span>.stateDesc = <span class="keyword">new</span> ReducingStateDescriptor&lt;&gt;(
+            <span class="string">"count"</span>, Long::sum, LongSerializer.INSTANCE);
+    }
+    
+    @Override
+    <span class="keyword">public</span> TriggerResult onElement(T element, <span class="keyword">long</span> timestamp, 
+                                   TimeWindow window, TriggerContext ctx) <span class="keyword">throws</span> Exception {
+        ReducingState&lt;Long&gt; count = ctx.getPartitionedState(stateDesc);
+        count.add(1L);
+        
+        <span class="keyword">if</span> (count.get() >= maxCount) {
+            count.clear();
+            <span class="keyword">return</span> TriggerResult.FIRE_AND_PURGE;
+        }
+        <span class="keyword">return</span> TriggerResult.CONTINUE;
+    }
+    
+    @Override
+    <span class="keyword">public</span> TriggerResult onProcessingTime(<span class="keyword">long</span> time, TimeWindow window, 
+                                         TriggerContext ctx) {
+        <span class="keyword">return</span> TriggerResult.FIRE;
+    }
+    
+    @Override
+    <span class="keyword">public</span> TriggerResult onEventTime(<span class="keyword">long</span> time, TimeWindow window, 
+                                    TriggerContext ctx) {
+        <span class="keyword">return</span> time == window.maxTimestamp() ? 
+            TriggerResult.FIRE : TriggerResult.CONTINUE;
+    }
+}</pre>
+            </div>
+
+            <h3>2.1.3 窗口 Join 操作</h3>
+            <div class="code-block">
+<pre><span class="comment">// Tumbling Window Join</span>
+DataStream&lt;Order&gt; orders = ...;
+DataStream&lt;Payment&gt; payments = ...;
+
+DataStream&lt;OrderPayment&gt; joined = orders
+    .join(payments)
+    .where(Order::getOrderId)
+    .equalTo(Payment::getOrderId)
+    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+    .apply(<span class="keyword">new</span> JoinFunction&lt;Order, Payment, OrderPayment&gt;() {
+        @Override
+        <span class="keyword">public</span> OrderPayment join(Order order, Payment payment) {
+            <span class="keyword">return new</span> OrderPayment(order, payment);
+        }
+    });
+
+<span class="comment">// Interval Join (基于时间区间的 Join)</span>
+DataStream&lt;OrderPayment&gt; intervalJoined = orders
+    .keyBy(Order::getOrderId)
+    .intervalJoin(payments.keyBy(Payment::getOrderId))
+    .between(Time.minutes(-10), Time.minutes(5))  <span class="comment">// 订单前10分钟到后5分钟</span>
+    .process(<span class="keyword">new</span> ProcessJoinFunction&lt;Order, Payment, OrderPayment&gt;() {
+        @Override
+        <span class="keyword">public void</span> processElement(Order order, Payment payment, 
+                                  Context ctx, Collector&lt;OrderPayment&gt; out) {
+            out.collect(<span class="keyword">new</span> OrderPayment(order, payment));
+        }
+    });</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 2.1</h4>
+                <ol>
+                    <li>实现一个自定义 Trigger，在事件计数达到阈值或时间到达时触发</li>
+                    <li>使用 Session Window 分析用户浏览会话时长</li>
+                    <li>实现 Interval Join 关联订单和支付事件</li>
+                    <li>处理迟到数据到侧输出流</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 课节 2.2 -->
+        <div class="lesson">
+            <h2>2.2 状态管理基础</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 Keyed State 和 Operator State 的区别</li>
+                    <li>掌握 ValueState、ListState、MapState 的使用</li>
+                    <li>学会状态过期 (TTL) 配置</li>
+                    <li>了解状态后端选型</li>
+                </ul>
+            </div>
+
+            <h3>2.2.1 状态类型对比</h3>
+            <div class="mermaid">
+```mermaid
+graph TB
+    A[Flink 状态] --> B[Keyed State]
+    A --> C[Operator State]
+    B --> D[ValueState]
+    B --> E[ListState]
+    B --> F[MapState]
+    B --> G[ReducingState]
+    B --> H[AggregatingState]
+    C --> I[ListState]
+    C --> J[BroadcastState]
+```
+            </div>
+
+            <h3>2.2.2 Keyed State 使用</h3>
+            <div class="code-block">
+<pre><span class="comment">// 使用 ValueState 实现去重</span>
+<span class="keyword">public class</span> DeduplicateFunction 
+    <span class="keyword">extends</span> KeyedProcessFunction&lt;String, Event, Event&gt; {
+    
+    <span class="keyword">private</span> ValueState&lt;Boolean&gt; seenState;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(OnCreateAndWrite)
+            .setStateVisibility(NeverReturnExpired)
+            .cleanupFullSnapshot()
+            .build();
+        
+        ValueStateDescriptor&lt;Boolean&gt; descriptor = 
+            <span class="keyword">new</span> ValueStateDescriptor&lt;&gt;(<span class="string">"seen"</span>, Boolean.class);
+        descriptor.enableTimeToLive(ttlConfig);
+        seenState = getRuntimeContext().getState(descriptor);
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processElement(Event event, Context ctx, Collector&lt;Event&gt; out) 
+            <span class="keyword">throws</span> Exception {
+        <span class="keyword">if</span> (seenState.value() == <span class="keyword">null</span>) {
+            seenState.update(<span class="keyword">true</span>);
+            out.collect(event);  <span class="comment">// 首次出现，输出</span>
+        }
+        <span class="comment">// 重复事件被丢弃</span>
+    }
+}
+
+<span class="comment">// 使用 MapState 实现用户属性累积</span>
+<span class="keyword">public class</span> UserProfileFunction 
+    <span class="keyword">extends</span> KeyedProcessFunction&lt;String, Event, UserProfile&gt; {
+    
+    <span class="keyword">private</span> MapState&lt;String, Integer&gt; attributeCounts;
+    
+    @Override
+    <span class="keyword">public void</span> open(Configuration parameters) {
+        attributeCounts = getRuntimeContext().getMapState(
+            <span class="keyword">new</span> MapStateDescriptor&lt;&gt;(<span class="string">"attributes"</span>, String.class, Integer.class)
+        );
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processElement(Event event, Context ctx, 
+                              Collector&lt;UserProfile&gt; out) <span class="keyword">throws</span> Exception {
+        String attr = event.getAttribute();
+        Integer count = attributeCounts.get(attr);
+        <span class="keyword">if</span> (count == <span class="keyword">null</span>) count = 0;
+        attributeCounts.put(attr, count + 1);
+        
+        <span class="comment">// 构建用户画像</span>
+        UserProfile profile = <span class="keyword">new</span> UserProfile(ctx.getCurrentKey());
+        <span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : attributeCounts.entries()) {
+            profile.addAttribute(entry.getKey(), entry.getValue());
+        }
+        out.collect(profile);
+    }
+}</pre>
+            </div>
+
+            <h3>2.2.3 状态后端配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// MemoryStateBackend (仅测试使用)</span>
+env.setStateBackend(<span class="keyword">new</span> MemoryStateBackend());
+
+<span class="comment">// FsStateBackend (已弃用，建议使用 HashMapStateBackend + Checkpoint)</span>
+env.setStateBackend(<span class="keyword">new</span> HashMapStateBackend());
+env.getCheckpointConfig().setCheckpointStorage(<span class="string">"file:///checkpoints"</span>);
+
+<span class="comment">// EmbeddedRocksDBStateBackend (大状态场景)</span>
+EmbeddedRocksDBStateBackend rocksDbBackend = 
+    <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>);  <span class="comment">// 启用增量Checkpoint</span>
+env.setStateBackend(rocksDbBackend);
+env.getCheckpointConfig().setCheckpointStorage(<span class="string">"hdfs:///flink-checkpoints"</span>);
+
+<span class="comment">// RocksDB 内存调优</span>
+DefaultConfigurableStateBackend configurableBackend = 
+    <span class="keyword">new</span> EmbeddedRocksDBStateBackend(<span class="keyword">true</span>);
+Configuration rocksDbConfig = <span class="keyword">new</span> Configuration();
+rocksDbConfig.setString(<span class="string">"state.backend.rocksdb.memory.managed"</span>, <span class="string">"true"</span>);
+rocksDbConfig.setString(<span class="string">"state.backend.rocksdb.predefined-options"</span>, <span class="string">"FLASH_SSD_OPTIMIZED"</span>);
+env.configure(rocksDbConfig);</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 2.2</h4>
+                <ol>
+                    <li>使用 ValueState 实现 24 小时去重逻辑</li>
+                    <li>使用 MapState 实现用户标签累积统计</li>
+                    <li>配置 RocksDB 状态后端，观察内存和磁盘使用</li>
+                    <li>对比不同状态后端的 Checkpoint 性能</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/flink-state-backends-comparison.md">状态后端深度对比</a></li>
+                    <li><a href="../challenges/challenge-03-state-mgmt.html">🏆 挑战3: 状态管理设计</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 2.3 -->
+        <div class="lesson">
+            <h2>2.3 复杂事件处理(CEP)</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>理解 CEP 的核心概念</li>
+                    <li>掌握 Pattern API 的使用</li>
+                    <li>学会定义时间约束和量词</li>
+                    <li>实现欺诈检测等复杂场景</li>
+                </ul>
+            </div>
+
+            <h3>2.3.1 Pattern API 基础</h3>
+            <div class="code-block">
+<pre><span class="comment">// 定义模式: 登录失败3次后成功登录 (可能的暴力破解)</span>
+Pattern&lt;LoginEvent, ?&gt; pattern = Pattern
+    .&lt;LoginEvent&gt;begin(<span class="string">"failures"</span>)
+        .where(<span class="keyword">new</span> SimpleCondition&lt;LoginEvent&gt;() {
+            @Override
+            <span class="keyword">public boolean</span> filter(LoginEvent event) {
+                <span class="keyword">return</span> event.getStatus().equals(<span class="string">"FAIL"</span>);
+            }
+        })
+        .times(3)                    <span class="comment">// 恰好3次</span>
+        .within(Time.minutes(5))     <span class="comment">// 5分钟内</span>
+    .next(<span class="string">"success"</span>)                <span class="comment">// 紧接着</span>
+        .where(<span class="keyword">new</span> SimpleCondition&lt;LoginEvent&gt;() {
+            @Override
+            <span class="keyword">public boolean</span> filter(LoginEvent event) {
+                <span class="keyword">return</span> event.getStatus().equals(<span class="string">"SUCCESS"</span>);
+            }
+        })
+    .within(Time.minutes(10));
+
+<span class="comment">// 应用模式</span>
+PatternStream&lt;LoginEvent&gt; patternStream = CEP.pattern(
+    loginEvents.keyBy(LoginEvent::getUserId), 
+    pattern
+);
+
+<span class="comment">// 处理匹配结果</span>
+DataStream&lt;Alert&gt; alerts = patternStream
+    .process(<span class="keyword">new</span> PatternProcessFunction&lt;LoginEvent, Alert&gt;() {
+        @Override
+        <span class="keyword">public void</span> processMatch(
+            Map&lt;String, List&lt;LoginEvent&gt;&gt; match,
+            Context ctx,
+            Collector&lt;Alert&gt; out) {
+            
+            List&lt;LoginEvent&gt; failures = match.get(<span class="string">"failures"</span>);
+            LoginEvent success = match.get(<span class="string">"success"</span>).get(0);
+            
+            out.collect(<span class="keyword">new</span> Alert(
+                success.getUserId(),
+                <span class="string">"SUSPICIOUS_LOGIN"</span>,
+                <span class="string">"3 failures followed by success from IP: "</span> + success.getIp()
+            ));
+        }
+    });</pre>
+            </div>
+
+            <h3>2.3.2 高级 Pattern 特性</h3>
+            <div class="code-block">
+<pre><span class="comment">// 量词修饰符</span>
+Pattern&lt;Event, ?&gt; complexPattern = Pattern
+    .&lt;Event&gt;begin(<span class="string">"start"</span>)
+        .where(evt -> evt.getType().equals(<span class="string">"A"</span>))
+    .followedBy(<span class="string">"middle"</span>)           <span class="comment">// 宽松连续 (允许其他事件穿插)</span>
+        .where(evt -> evt.getType().equals(<span class="string">"B"</span>))
+        .oneOrMore()                  <span class="comment">// 1次或多次</span>
+        .greedy()                     <span class="comment">// 贪婪匹配</span>
+    .followedByAny(<span class="string">"end"</span>)           <span class="comment">// 从任意分支继续</span>
+        .where(evt -> evt.getType().equals(<span class="string">"C"</span>))
+    .within(Time.seconds(30));
+
+<span class="comment">// 迭代条件 (基于之前事件的条件)</span>
+Pattern&lt;Event, ?&gt; iterativePattern = Pattern
+    .&lt;Event&gt;begin(<span class="string">"start"</span>)
+    .next(<span class="string">"middle"</span>)
+        .where(<span class="keyword">new</span> IterativeCondition&lt;Event&gt;() {
+            @Override
+            <span class="keyword">public boolean</span> filter(Event event, Context&lt;Event&gt; ctx) <span class="keyword">throws</span> Exception {
+                <span class="keyword">double</span> startTemp = ctx.getEventsForPattern(<span class="string">"start"</span>)
+                    .iterator().next().getTemperature();
+                <span class="keyword">return</span> event.getTemperature() > startTemp + 10;
+            }
+        })
+    .within(Time.minutes(2));</pre>
+            </div>
+
+            <h3>2.3.3 超时处理</h3>
+            <div class="code-block">
+<pre><span class="comment">// 处理模式匹配超时 (部分匹配)</span>
+OutputTag&lt;TimeoutEvent&gt; timeoutTag = <span class="keyword">new</span> OutputTag&lt;TimeoutEvent&gt;(<span class="string">"timeout"</span>){};
+
+Pattern&lt;OrderEvent, ?&gt; orderPattern = Pattern
+    .&lt;OrderEvent&gt;begin(<span class="string">"create"</span>)
+        .where(evt -> evt.getType().equals(<span class="string">"CREATE"</span>))
+    .next(<span class="string">"pay"</span>)
+        .where(evt -> evt.getType().equals(<span class="string">"PAY"</span>))
+    .within(Time.minutes(30));  <span class="comment">// 30分钟内必须支付</span>
+
+SingleOutputStreamOperator&lt;OrderResult&gt; resultStream = CEP.pattern(
+    orderEvents.keyBy(OrderEvent::getOrderId),
+    orderPattern
+).process(<span class="keyword">new</span> PatternTimeoutHandler());
+
+<span class="keyword">public class</span> PatternTimeoutHandler 
+    <span class="keyword">extends</span> PatternProcessFunction&lt;OrderEvent, OrderResult&gt;
+    <span class="keyword">implements</span> TimedOutPartialMatchHandler&lt;OrderEvent&gt; {
+    
+    @Override
+    <span class="keyword">public void</span> processMatch(Map&lt;String, List&lt;OrderEvent&gt;&gt; match, 
+                           Context ctx, Collector&lt;OrderResult&gt; out) {
+        out.collect(<span class="keyword">new</span> OrderResult(match.get(<span class="string">"create"</span>).get(0).getOrderId(), 
+                                     <span class="string">"SUCCESS"</span>));
+    }
+    
+    @Override
+    <span class="keyword">public void</span> processTimedOutMatch(Map&lt;String, List&lt;OrderEvent&gt;&gt; match,
+                                    Context ctx) {
+        OrderEvent create = match.get(<span class="string">"create"</span>).get(0);
+        ctx.output(timeoutTag, <span class="keyword">new</span> TimeoutEvent(create.getOrderId(), 
+                                                   <span class="string">"PAY_TIMEOUT"</span>));
+    }
+}</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 2.3</h4>
+                <ol>
+                    <li>实现信用卡欺诈检测模式 (短时间内异地消费)</li>
+                    <li>使用迭代条件实现温度异常检测</li>
+                    <li>处理订单支付超时场景</li>
+                    <li>优化 Pattern 性能，减少状态存储</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Knowledge/cep-complete-tutorial.md">CEP 完整教程</a></li>
+                    <li><a href="../../Flink/flink-cep-complete-tutorial.md">Flink CEP 深度指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 课节 2.4 -->
+        <div class="lesson">
+            <h2>2.4 连接器与集成</h2>
+            
+            <div class="objectives">
+                <h4>🎯 学习目标</h4>
+                <ul>
+                    <li>掌握 Kafka 连接器的使用</li>
+                    <li>理解 Exactly-Once  Sink 实现</li>
+                    <li>学会自定义 Source 和 Sink</li>
+                    <li>了解 CDC (变更数据捕获)</li>
+                </ul>
+            </div>
+
+            <h3>2.4.1 Kafka Source 配置</h3>
+            <div class="code-block">
+<pre><span class="comment">// Kafka Source (Flink 1.14+ 新 API)</span>
+KafkaSource&lt;String&gt; kafkaSource = KafkaSource
+    .&lt;String&gt;builder()
+    .setBootstrapServers(<span class="string">"kafka:9092"</span>)
+    .setTopics(<span class="string">"input-topic"</span>)
+    .setGroupId(<span class="string">"flink-consumer-group"</span>)
+    .setStartingOffsets(OffsetsInitializer.earliest())
+    .setValueOnlyDeserializer(<span class="keyword">new</span> SimpleStringSchema())
+    .setProperty(<span class="string">"isolation.level"</span>, <span class="string">"read_committed"</span>)  <span class="comment">// 读已提交</span>
+    .build();
+
+DataStream&lt;String&gt; stream = env.fromSource(
+    kafkaSource,
+    WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)),
+    <span class="string">"Kafka Source"
+);
+
+<span class="comment">// Kafka Sink (Exactly-Once)</span>
+KafkaSink&lt;String&gt; kafkaSink = KafkaSink
+    .&lt;String&gt;builder()
+    .setBootstrapServers(<span class="string">"kafka:9092"</span>)
+    .setRecordSerializer(
+        KafkaRecordSerializationSchema.builder()
+            .setTopic(<span class="string">"output-topic"</span>)
+            .setValueSerializationSchema(<span class="keyword">new</span> SimpleStringSchema())
+            .build()
+    )
+    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+    .setTransactionalIdPrefix(<span class="string">"flink-tx-"</span>)
+    .build();
+
+stream.sinkTo(kafkaSink);</pre>
+            </div>
+
+            <h3>2.4.2 JDBC Sink (幂等写入)</h3>
+            <div class="code-block">
+<pre><span class="comment">// JDBC Sink 实现 Exactly-Once (基于幂等性)</span>
+JdbcSink.sink(
+    <span class="string">"INSERT INTO user_stats (user_id, count, updated_at) "</span> +
+    <span class="string">"VALUES (?, ?, ?) "</span> +
+    <span class="string">"ON CONFLICT (user_id) DO UPDATE SET "</span> +
+    <span class="string">"count = EXCLUDED.count, updated_at = EXCLUDED.updated_at"</span>,  <span class="comment">// PostgreSQL upsert</span>
+    (ps, stat) -> {
+        ps.setString(1, stat.getUserId());
+        ps.setLong(2, stat.getCount());
+        ps.setTimestamp(3, Timestamp.from(Instant.now()));
+    },
+    JdbcExecutionOptions.builder()
+        .withBatchSize(1000)
+        .withBatchIntervalMs(200)
+        .withMaxRetries(5)
+        .build(),
+    <span class="keyword">new</span> JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+        .withUrl(<span class="string">"jdbc:postgresql://localhost:5432/mydb"</span>)
+        .withDriverName(<span class="string">"org.postgresql.Driver"</span>)
+        .withUsername(<span class="string">"user"</span>)
+        .withPassword(<span class="string">"pass"</span>)
+        .build()
+);</pre>
+            </div>
+
+            <h3>2.4.3 自定义 Source Function</h3>
+            <div class="code-block">
+<pre><span class="comment">// 自定义并行 Source</span>
+<span class="keyword">public class</span> CustomSource <span class="keyword">implements</span> ParallelSourceFunction&lt;Event&gt;, 
+                                              CheckpointListener {
+    
+    <span class="keyword">private volatile boolean</span> running = <span class="keyword">true</span>;
+    <span class="keyword">private transient</span> ListState&lt;Long&gt; offsetState;
+    <span class="keyword">private long</span> currentOffset = 0;
+    
+    @Override
+    <span class="keyword">public void</span> run(SourceContext&lt;Event&gt; ctx) <span class="keyword">throws</span> Exception {
+        <span class="keyword">while</span> (running) {
+            <span class="keyword">synchronized</span> (ctx.getCheckpointLock()) {
+                Event event = fetchEvent(currentOffset);
+                <span class="keyword">if</span> (event != <span class="keyword">null</span>) {
+                    ctx.collectWithTimestamp(event, event.getTimestamp());
+                    currentOffset++;
+                }
+            }
+            Thread.sleep(100);
+        }
+    }
+    
+    @Override
+    <span class="keyword">public void</span> snapshotState(FunctionSnapshotContext context) <span class="keyword">throws</span> Exception {
+        offsetState.update(Collections.singletonList(currentOffset));
+    }
+    
+    @Override
+    <span class="keyword">public void</span> initializeState(FunctionInitializationContext context) <span class="keyword">throws</span> Exception {
+        offsetState = context.getOperatorStateStore().getListState(
+            <span class="keyword">new</span> ListStateDescriptor&lt;&gt;(<span class="string">"offset"</span>, Long.class)
+        );
+        <span class="keyword">if</span> (context.isRestored()) {
+            <span class="keyword">for</span> (Long offset : offsetState.get()) {
+                currentOffset = offset;
+            }
+        }
+    }
+    
+    @Override
+    <span class="keyword">public void</span> cancel() { running = <span class="keyword">false</span>; }
+}</pre>
+            </div>
+
+            <div class="exercise">
+                <h4>✏️ 练习 2.4</h4>
+                <ol>
+                    <li>配置 Kafka Source，实现消费者组重平衡测试</li>
+                    <li>实现一个自定义的 REST API Source</li>
+                    <li>配置 JDBC Sink 的批量写入和失败重试</li>
+                    <li>测试端到端的 Exactly-Once 语义</li>
+                </ol>
+            </div>
+
+            <div class="reading">
+                <h4>📖 延伸阅读</h4>
+                <ul>
+                    <li><a href="../../Flink/kafka-streams-migration.md">Kafka Streams 迁移指南</a></li>
+                    <li><a href="../../Flink/jdbc-connector-guide.md">JDBC 连接器完整指南</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav">
+            <a href="course-01-flink-basics.html">← 上一课程</a>
+            <a href="course-03-advanced-topics.html">下一课程 →</a>
+        </div>
+    </div>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

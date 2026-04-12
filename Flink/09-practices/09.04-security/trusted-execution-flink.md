@@ -286,6 +286,7 @@ graph TB
    ```text
    Enclave 启动时：
    MRENCLAVE = SHA256(CODE_INIT || DATA_INIT || HEAP_INIT)
+
 ```
 
    攻击者无法伪造匹配特定 MRENCLAVE 的恶意代码
@@ -299,11 +300,12 @@ graph TB
 
    只有具有相同 MRENCLAVE 的飞地可以解封密钥
 
-3. **安全输入通道**
+1. **安全输入通道**
 
    ```text
    Data_in = Decrypt(K_session, Ciphertext)
    K_session 派生自 RA-TLS 握手
+
 ```
 
    输入数据仅对经过远程证明的飞地可见
@@ -319,12 +321,14 @@ graph TB
 **协议步骤**:
 
 ```
+
 1. V → P: Challenge = {N_v, T_expiry}
 2. P → V: Quote = Sign(AK, MRENCLAVE || MRSIGNER || Hash(N_v || P_pk))
 3. V → AS: Verify(Quote)
 4. AS → V: AttestationResult = {Status, TCB_level}
 5. V: Verify(Status == OK && TCB_level >= MIN_LEVEL)
 6. V → P: {K_session}_P_pk
+
 ```
 
 **安全属性验证**:
@@ -480,19 +484,22 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
 1. **PII 识别与脱敏**（飞地内）
 
    ```python
-   # 飞地内执行
-   def process_patient_record(encrypted_record):
-       # 飞地内解密
-       record = decrypt_in_enclave(encrypted_record)
 
-       # 识别 PII 字段
-       pii_fields = extract_pii(record)
+# 飞地内执行
 
-       # 替换为 token
-       for field in pii_fields:
-           record[field] = generate_token(field_value)
+def process_patient_record(encrypted_record):
+    # 飞地内解密
+    record = decrypt_in_enclave(encrypted_record)
 
-       return record
+    # 识别 PII 字段
+    pii_fields = extract_pii(record)
+
+    # 替换为 token
+    for field in pii_fields:
+        record[field] = generate_token(field_value)
+
+    return record
+
 ```
 
 2. **差分隐私噪声添加**
@@ -506,7 +513,7 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
        return result + noise
 ```
 
-3. **审计日志（飞地签名）**
+1. **审计日志（飞地签名）**
 
    ```text
    LogEntry = {
@@ -515,6 +522,7 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
        data_hash: SHA256(input_data),
        enclave_signature: Sign(AK, log_content)
    }
+
 ```
 
 **合规性保证**:

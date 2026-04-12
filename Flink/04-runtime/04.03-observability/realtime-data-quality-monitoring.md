@@ -594,6 +594,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.util.OutputTag;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+
 public class QualityPipeline {
 
     public static void buildPipeline(
@@ -824,6 +828,9 @@ checks for orders:
 /**
  * 质量指标窗口聚合
  */
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class QualityMetricsAggregateFunction
     extends AggregateFunction<QualityEvent, QualityAccumulator, QualityMetrics> {
 
@@ -875,6 +882,9 @@ public class QualityMetricsAggregateFunction
 /**
  * 质量告警处理器
  */
+
+import org.apache.flink.api.common.state.ValueState;
+
 public class QualityAlertHandler extends ProcessFunction<QualityMetrics, Alert> {
 
     private final AlertConfiguration config;

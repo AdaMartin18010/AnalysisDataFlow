@@ -1,5 +1,9 @@
 # Flink 2.5 完整路线图
 
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+>
+> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.4 跟踪](../08.01-flink-24/flink-2.4-tracking.md) | 形式化等级: L3
 > **版本**: 2.5.0 | **状态**: 🟡 规划中 | **目标发布**: 2026 Q3
 
@@ -39,20 +43,20 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 消除流处理和批处理的执行引擎差异，实现真正的统一执行。
 
 ```yaml
-核心组件: 
-  StreamBatchUnifiedOptimizer: 
+核心组件:
+  StreamBatchUnifiedOptimizer:
     - 统一执行计划生成器
     - 统一 Cost Model
     - 自适应执行策略选择
     状态: 🔄 设计中 (40%)
 
-  UnifiedTaskExecutor: 
+  UnifiedTaskExecutor:
     - 统一 Task 执行模型
     - 统一状态访问接口
     - 统一 Checkpoint 机制
     状态: 📋 规划中 (20%)
 
-  AdaptiveModeSelector: 
+  AdaptiveModeSelector:
     - 自动执行模式检测
     - 运行时模式切换
     - 混合执行支持
@@ -74,8 +78,8 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 将 Serverless Flink 从 Beta 推进到 GA，实现真正的按需计算。
 
 ```yaml
-核心能力: 
-  Scale-to-Zero: 
+核心能力:
+  Scale-to-Zero:
     - 无流量时资源释放至 0
     - 自动休眠与唤醒
     - 成本优化报告
@@ -107,7 +111,7 @@ Flink 2.5 聚焦三大核心主题：
 **目标**: 将 FLIP-531 (AI Agent) 扩展到生产级推理服务。
 
 ```yaml
-核心优化: 
+核心优化:
   Batch Inference:
     - 动态批处理
     - 批大小自适应

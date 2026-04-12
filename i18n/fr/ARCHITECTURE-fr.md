@@ -1,4 +1,8 @@
-﻿# Documentation d'architecture technique AnalysisDataFlow
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+>
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
+# Documentation d'architecture technique AnalysisDataFlow
 
 > **Version** : v1.0 | **Date de mise à jour** : 2026-04-03 | **Statut** : Production
 >
@@ -8,28 +12,33 @@
 
 ## Table des matières
 
-- [1. Architecture globale du projet](#1-architecture-globale-du-projet)
-  - [1.1 Vue d'ensemble de l'architecture à 4 couches](#11-vue-densemble-de-larchitecture-à-4-couches)
-  - [1.2 Responsabilités et interfaces par couche](#12-responsabilités-et-interfaces-par-couche)
-  - [1.3 Flux de données et dépendances](#13-flux-de-données-et-dépendances)
-- [2. Architecture de génération de documents](#2-architecture-de-génération-de-documents)
-  - [2.1 Flux de traitement Markdown](#21-flux-de-traitement-markdown)
-  - [2.2 Rendu de diagrammes Mermaid](#22-rendu-de-diagrammes-mermaid)
-- [3. Architecture du système de vérification](#3-architecture-du-système-de-vérification)
-  - [3.1 Architecture des scripts de vérification](#31-architecture-des-scripts-de-vérification)
-  - [3.2 Flux CI/CD](#32-flux-cicd)
-  - [3.3 Portail de qualité](#33-portail-de-qualité)
-- [4. Architecture de stockage](#4-architecture-de-stockage)
-  - [4.1 Structure d'organisation des fichiers](#41-structure-dorganisation-des-fichiers)
-  - [4.2 Système d'index](#42-système-dindex)
-  - [4.3 Gestion de versions](#43-gestion-de-versions)
-- [5. Architecture d'extension](#5-architecture-dextension)
-  - [5.1 Ajout de nouveaux documents](#51-ajout-de-nouveaux-documents)
-  - [5.2 Ajout de nouvelles visualisations](#52-ajout-de-nouvelles-visualisations)
-- [Annexe](#annexe)
-  - [A. Glossaire](#a-glossaire)
-  - [B. Table de correspondance des répertoires](#b-table-de-correspondance-des-répertoires)
-  - [C. Documents connexes](#c-documents-connexes)
+- [Documentation d'architecture technique AnalysisDataFlow](#documentation-darchitecture-technique-analysisdataflow)
+  - [Table des matières](#table-des-matières)
+  - [1. Architecture globale du projet](#1-architecture-globale-du-projet)
+    - [1.1 Vue d'ensemble de l'architecture à 4 couches](#11-vue-densemble-de-larchitecture-à-4-couches)
+    - [1.2 Responsabilités et interfaces par couche](#12-responsabilités-et-interfaces-par-couche)
+      - [Couche 1 : Struct/ - Couche des fondements théoriques formalisés](#couche-1--struct---couche-des-fondements-théoriques-formalisés)
+      - [Couche 2 : Knowledge/ - Couche d'application des connaissances](#couche-2--knowledge---couche-dapplication-des-connaissances)
+      - [Couche 3 : Flink/ - Couche d'implémentation d'ingénierie](#couche-3--flink---couche-dimplémentation-dingénierie)
+      - [Couche 4 : visuals/ - Couche de navigation visualisée](#couche-4--visuals---couche-de-navigation-visualisée)
+    - [1.3 Flux de données et dépendances](#13-flux-de-données-et-dépendances)
+  - [2. Architecture de génération de documents](#2-architecture-de-génération-de-documents)
+    - [2.1 Flux de traitement Markdown](#21-flux-de-traitement-markdown)
+    - [2.2 Rendu de diagrammes Mermaid](#22-rendu-de-diagrammes-mermaid)
+    - [7.2 Diagramme de flux de décision](#72-diagramme-de-flux-de-décision)
+    - [3.2 Flux CI/CD](#32-flux-cicd)
+    - [3.3 Portail de qualité](#33-portail-de-qualité)
+  - [4. Architecture de stockage](#4-architecture-de-stockage)
+    - [4.1 Structure d'organisation des fichiers](#41-structure-dorganisation-des-fichiers)
+    - [4.2 Système d'index](#42-système-dindex)
+    - [4.3 Gestion de versions](#43-gestion-de-versions)
+  - [5. Architecture d'extension](#5-architecture-dextension)
+    - [5.1 Ajout de nouveaux documents](#51-ajout-de-nouveaux-documents)
+    - [5.2 Ajout de nouvelles visualisations](#52-ajout-de-nouvelles-visualisations)
+  - [Annexe](#annexe)
+    - [A. Glossaire](#a-glossaire)
+    - [B. Table de correspondance des répertoires](#b-table-de-correspondance-des-répertoires)
+    - [C. Documents connexes](#c-documents-connexes)
 
 ---
 
@@ -341,6 +350,7 @@ flowchart TD
     Q1 -->|Oui| A[Option A]
     Q1 -->|Non| B[Option B]
 ```
+
 ```
 
 **Règles de rendu** :
@@ -708,4 +718,3 @@ flowchart LR
 ---
 
 > **Note du traducteur** : Ce document a été traduit selon le style des documents techniques français. Les termes techniques d'architecture, les noms des composants système et les paramètres de configuration sont identiques à l'original. Dernière mise à jour : 2026-04-11
-

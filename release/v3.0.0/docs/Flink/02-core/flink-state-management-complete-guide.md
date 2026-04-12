@@ -549,6 +549,9 @@ $$
 #### 4.3.2 Checkpoint 配置参数
 
 ```java
+
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 // 基础配置
 env.enableCheckpointing(60000);  // 60秒间隔
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
@@ -695,6 +698,9 @@ import org.apache.flink.api.common.time.Time;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 /**
  * Def-F-02-98: 带 TTL 的会话状态管理
@@ -949,6 +955,9 @@ public class IncrementalAggregator extends KeyedProcessFunction<String, SensorRe
 /**
  * Def-F-02-102: 复杂聚合 - AggregatingState 应用
  */
+
+import org.apache.flink.api.common.functions.AggregateFunction;
+
 public class ComplexAggregator extends KeyedProcessFunction<String, Trade, TradeStatistics> {
 
     private AggregatingState<Trade, TradeStatistics> tradeStats;
@@ -1013,6 +1022,12 @@ public class ComplexAggregator extends KeyedProcessFunction<String, Trade, Trade
 /**
  * Def-F-02-103: 动态规则处理 - BroadcastState 应用
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class DynamicRuleProcessor {
 
     public static void main(String[] args) throws Exception {
@@ -1105,6 +1120,9 @@ public class DynamicRuleProcessor {
 /**
  * Thm-F-02-93: State Backend 综合配置
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 public class StateBackendConfiguration {
 
     /**
@@ -1372,6 +1390,9 @@ state.backend.forst.restore.mode: LAZY
 #### 8.2.1 ValueState 优化
 
 ```java
+
+import org.apache.flink.api.common.typeinfo.Types;
+
 // 使用原始类型减少装箱开销
 ValueStateDescriptor<Long> descriptor = new ValueStateDescriptor<>(
     "counter",
@@ -1493,6 +1514,9 @@ $$
 $$
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 计算示例
 Time windowSize = Time.hours(1);
 Time allowedLateness = Time.minutes(30);
@@ -1566,6 +1590,9 @@ getRuntimeContext().getMetricGroup().gauge("stateSizeBytes",
 **解决策略**:
 
 ```java
+
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 // 策略 1：启用 TTL
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
@@ -1623,6 +1650,9 @@ public void processElement(Event event, Context ctx, Collector<Result> out) {
 #### 8.6.1 启用 Changelog State Backend
 
 ```java
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 /**
  * Def-F-02-105: Changelog State Backend 生产配置
  * 场景：需要秒级恢复的金融交易处理
@@ -1711,7 +1741,7 @@ flink run -s <savepoint-path> -c <main-class> <jar-file>
 
 [^2]: K. Mani Chandy and Leslie Lamport, "Distributed Snapshots: Determining Global States of Distributed Systems", ACM Transactions on Computer Systems, Vol. 3, No. 1, 1985.
 
-[^3]: Apache Flink Documentation, "Queryable State", <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state/>
+[^3]: Apache Flink Documentation, "Queryable State", <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state//>
 
 [^4]: Apache Flink Documentation, "State Backends", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 

@@ -302,6 +302,9 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
+
+
 // 构建 Kafka Source（Flink 1.14+ 新 API）
 KafkaSource<Event> source = KafkaSource.<Event>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092")
@@ -366,6 +369,12 @@ glueProps.setProperty("aws.region", "us-east-1");
 ```java
 import org.apache.flink.streaming.api.checkpointing.CheckpointingMode;
 import org.apache.flink.streaming.api.checkpointing.CheckpointConfig;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 
 public class ExactlyOnceKafkaPipeline {
     public static void main(String[] args) throws Exception {
@@ -742,4 +751,3 @@ properties.setProperty("group.instance.id", "flink-instance-" + taskId);
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
-

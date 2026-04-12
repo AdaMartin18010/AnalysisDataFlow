@@ -1,3 +1,6 @@
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> 
+> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 # Flink Agents 设计模式目录
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md), [FLIP-531 AI Agents](flink-agents-flip-531.md) | **形式化等级**: L3-L4
@@ -172,6 +175,10 @@ Loop:
  * ReAct Pattern Implementation
  * Interleaves reasoning and action execution
  */
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+
 public class ReActAgentFunction
     extends KeyedProcessFunction<String, UserQuery, AgentResponse> {
 
@@ -610,6 +617,12 @@ Orchestrator:
  * Orchestrator-Workers Pattern
  * Central coordination with parallel worker execution
  */
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class OrchestratorWorkersJob {
 
     public static void main(String[] args) throws Exception {
