@@ -117,6 +117,7 @@
 **文件**: `Knowledge/99-kubernetes-scheduler.md`
 
 **核心内容**:
+
 - Pod调度算法（预选+优选）
 - 资源分配策略（CPU/Memory/GPU）
 - 亲和性/反亲和性约束
@@ -124,6 +125,7 @@
 - 形式化规约（TLA+）
 
 **形式化要求**:
+
 - 调度算法的霍尔逻辑规约
 - 资源约束可满足性证明
 - 死锁/饥饿避免分析
@@ -137,6 +139,7 @@
 **文件**: `Knowledge/99-raft-consensus.md`
 
 **核心内容**:
+
 - 领导者选举（安全性+活性）
 - 日志复制（一致性保证）
 - 成员变更（联合共识）
@@ -144,6 +147,7 @@
 - 完整TLA+规约和证明
 
 **形式化要求**:
+
 - 安全性定理：已提交日志永不改变
 - 活性定理：最终所有节点达成一致
 - 状态机安全证明
@@ -157,6 +161,7 @@
 **文件**: `Knowledge/99-llvm-ir-semantics.md`
 
 **核心内容**:
+
 - SSA形式与φ节点
 - 指令语义（算术、内存、控制流）
 - 优化 passes 正确性
@@ -164,6 +169,7 @@
 - 与CompCert的对比
 
 **形式化要求**:
+
 - 操作语义规则（大步+小步）
 - 类型保持定理
 - 优化前后的语义等价
@@ -195,6 +201,7 @@
 ### 翻译质量检查单
 
 每篇翻译完成后检查：
+
 - [ ] 所有`Def-*` `Thm-*` `Lemma-*`编号保留
 - [ ] 所有Mermaid图标签翻译为英文
 - [ ] 参考文献格式统一（GB/T 7714 → APA）
@@ -244,11 +251,12 @@ formal-methods/
 **文件**: `Lambda/Syntax.lean`, `Lambda/Operational.lean`, `Lambda/Typing.lean`, `Lambda/Safety.lean`
 
 **证明内容**:
+
 ```lean
 -- 进度定理 (Progress)
 theorem progress : ∀ e τ, ⊢ e : τ → Value e ∨ ∃ e', e ⟶ e'
 
--- 保持定理 (Preservation)  
+-- 保持定理 (Preservation)
 theorem preservation : ∀ e e' τ, ⊢ e : τ → e ⟶ e' → ⊢ e' : τ
 
 -- 类型安全 (Type Safety)
@@ -256,6 +264,7 @@ theorem type_safety : ∀ e τ, ⊢ e : τ → ¬(e ⟶* Error)
 ```
 
 **验收标准**:
+
 - [ ] Lake build 成功
 - [ ] 无sorry/axiom
 - [ ] 每个定理有完整证明脚本
@@ -268,6 +277,7 @@ theorem type_safety : ∀ e τ, ⊢ e : τ → ¬(e ⟶* Error)
 **目标**: 参数多态的类型安全
 
 **证明内容**:
+
 - 类型抽象和应用
 - 类型替换引理
 - 类型保持定理
@@ -279,6 +289,7 @@ theorem type_safety : ∀ e τ, ⊢ e : τ → ¬(e ⟶* Error)
 **目标**: 互模拟等价的形式化
 
 **证明内容**:
+
 - 强互模拟的定义
 - 弱互模拟的定义
 - 互模拟是同余关系
@@ -312,6 +323,7 @@ theorem type_safety : ∀ e τ, ⊢ e : τ → ¬(e ⟶* Error)
 ### 规约结构
 
 每个TLA+文件必须包含：
+
 - CONSTANT 声明（可配置参数）
 - VARIABLE 声明（状态变量）
 - Init 谓词（初始状态）
@@ -326,11 +338,11 @@ theorem type_safety : ∀ e τ, ⊢ e : τ → ¬(e ⟶* Error)
 CONSTANTS
   Node = {n1, n2, n3}
   Value = {v1, v2}
-  
+
 INVARIANTS
   TypeInvariant
   SafetyProperty
-  
+
 PROPERTIES
   LivenessProperty
 ```
@@ -348,16 +360,17 @@ PROPERTIES
 **要求**: 从公理出发，无跳步地推导到结论
 
 **模板**:
+
 ```markdown
 **证明**:
 1. 基础情况：...
    - 根据Def-X-XX，...
    - 由Lemma-X-XX，...
-   
+
 2. 归纳步骤：假设...，证明...
    - 由归纳假设，...
    - 应用Thm-X-XX，...
-   
+
 3. 结论：因此，QED。
 ```
 
@@ -366,6 +379,7 @@ PROPERTIES
 **要求**: 对每个"如果"条件，构造违反条件的反例
 
 **模板**:
+
 ```markdown
 **反例 X.1** (当条件Y不成立时):
 - 构造：...
@@ -378,16 +392,17 @@ PROPERTIES
 **要求**: 算法时间/空间复杂度的完整分析
 
 **模板**:
+
 ```markdown
 **复杂度分析**:
 - **时间复杂度**: T(n) = O(...)
   - 最坏情况：...
   - 平均情况：...
-  
+
 - **空间复杂度**: S(n) = O(...)
   - 栈深度：...
   - 堆分配：...
-  
+
 - **下界**: Ω(...)证明
   - 信息论下界：...
 ```
@@ -397,6 +412,7 @@ PROPERTIES
 **要求**: 证明不同定义的等价性
 
 **模板**:
+
 ```markdown
 **等价性定理** (Thm-X-XX):
 定义A与定义B等价，即 A ⇔ B
@@ -424,10 +440,12 @@ PROPERTIES
 **工具**: Python + Graphviz + Mermaid
 
 **输出**:
+
 - `visuals/theorem-dependency-graph.svg` (全局大图)
 - 每篇文档的局部依赖图 (Mermaid)
 
 **数据结构**:
+
 ```json
 {
   "theorems": [
@@ -439,11 +457,13 @@ PROPERTIES
 ### 7.2 概念谱系图
 
 **内容**:
+
 - 从原始概念到派生概念的演化
 - 不同分支之间的交叉引用
 - 历史发展时间线
 
 **输出**:
+
 - `visuals/concept-lineage-mindmap.mmd`
 - `visuals/historical-timeline.mmd`
 
@@ -462,6 +482,7 @@ PROPERTIES
 **脚本**: `.scripts/doc-code-consistency.py`
 
 **功能**:
+
 - 检查文档中引用的定理是否在Lean/Coq中有实现
 - 检查定义文本与代码定义是否一致
 - 生成不一致报告
@@ -471,10 +492,12 @@ PROPERTIES
 **工作流**: `.github/workflows/formal-code-ci.yml`
 
 **触发条件**:
+
 - 每次push到main分支
 - 每周定期运行
 
 **步骤**:
+
 1. 检出代码
 2. 安装Lean 4工具链
 3. lake build (Lean)
@@ -485,6 +508,7 @@ PROPERTIES
 ### 8.3 定理编号验证增强
 
 **增强`.scripts/theorem-validator.py`**:
+
 - 检查Lean代码中的定理名与文档编号对应
 - 检查引用链路完整性
 - 检查重复定义

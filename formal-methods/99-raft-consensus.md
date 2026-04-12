@@ -10,7 +10,8 @@
 
 **Def-K-99-07: 领导者 (Leader)**
 
-在一个Raft集群中，领导者是唯一被授权处理客户端请求的节点。形式化地，设集群节点集合为 $N = \{n_1, n_2, ..., n_k\}$，在任意任期 $t$ 内，至多存在一个领导者 $L_t \in N$，满足：
+在一个Raft集群中，领导者是唯一被授权处理客户端请求的节点。
+形式化地，设集群节点集合为 $N = \{n_1, n_2, ..., n_k\}$，在任意任期 $t$ 内，至多存在一个领导者 $L_t \in N$，满足：
 
 $$
 \forall t \in \mathbb{N}, \forall n_i, n_j \in N: \\
@@ -1704,6 +1705,7 @@ Raft节点的状态转换遵循一个清晰的三状态有限状态机模型。
 
 **状态机说明**：
 节点在任意时刻处于以下三种状态之一：
+
 - **Follower（跟随者）**：被动状态，响应RPC请求
 - **Candidate（候选人）**：主动发起选举，请求投票
 - **Leader（领导者）**：处理客户端请求，协调日志复制
@@ -1713,17 +1715,17 @@ Raft节点的状态转换遵循一个清晰的三状态有限状态机模型。
 ```mermaid
 stateDiagram-v2
     [*] --> Follower: 初始化
-    
+
     Follower --> Candidate: 选举超时
     Candidate --> Leader: 获得多数票
     Candidate --> Follower: 发现更高任期
     Candidate --> Candidate: 选举超时（新任期）
-    
+
     Leader --> Follower: 发现更高任期
-    
+
     Follower --> Follower: 收到有效心跳/AppendEntries
     Follower --> Follower: 投票给候选人
-    
+
     Leader --> Leader: 发送心跳/日志复制
 ```
 
@@ -1744,6 +1746,7 @@ stateDiagram-v2
 领导者选举是Raft的核心机制，确保系统在领导者故障时能够自动恢复。
 
 **流程说明**：
+
 1. 跟随者在选举超时后转换为候选人
 2. 候选人增加任期并广播投票请求
 3. 节点根据日志新旧程度决定是否投票
@@ -1755,31 +1758,31 @@ flowchart TD
     A[节点作为Follower运行] --> B{选举超时?}
     B -->|是| C[转换为Candidate]
     B -->|否| A
-    
+
     C --> D[任期Term += 1]
     D --> E[投票给自己]
     E --> F[重置选举定时器]
     F --> G[并行发送RequestVote RPC]
-    
+
     G --> H{收到更高任期?}
     H -->|是| I[转换为Follower]
     H -->|否| J{收到多数票?}
-    
+
     J -->|是| K[转换为Leader]
     J -->|否| L{选举超时?}
     L -->|是| C
     L -->|否| G
-    
+
     K --> M[初始化nextIndex和matchIndex]
     M --> N[发送心跳消息]
     N --> O[保持Leader状态]
     O --> P{收到更高任期?}
     P -->|是| I
     P -->|否| N
-    
+
     I --> Q[更新Term]
     Q --> A
-    
+
     style K fill:#90EE90
     style C fill:#FFD700
     style I fill:#FFB6C1
@@ -1812,6 +1815,7 @@ flowchart TD
 日志复制确保所有节点的状态机以相同顺序执行相同命令，是Raft一致性的核心。
 
 **时序说明**：
+
 1. 客户端向领导者发送请求
 2. 领导者追加日志条目到本地
 3. 领导者并行发送AppendEntries到所有跟随者
@@ -1829,18 +1833,18 @@ sequenceDiagram
     participant F2 as Follower<br/>N2
     participant F4 as Follower<br/>N4
     participant F5 as Follower<br/>N5
-    
+
     C->>L: SET x=10
     activate L
     L->>L: 追加条目<br/>{idx:5, term:2, cmd}
-    
+
     par 并行复制
         L->>F1: AppendEntries<br/>prevIdx:4, prevTerm:2<br/>entries:[{5,2,cmd}]
         L->>F2: AppendEntries<br/>prevIdx:4, prevTerm:2<br/>entries:[{5,2,cmd}]
         L->>F4: AppendEntries<br/>prevIdx:4, prevTerm:2<br/>entries:[{5,2,cmd}]
         L->>F5: AppendEntries<br/>prevIdx:4, prevTerm:2<br/>entries:[{5,2,cmd}]
     end
-    
+
     F1->>F1: 验证prev匹配
     F1->>L: Success=true
     F2->>F2: 验证prev匹配
@@ -1849,31 +1853,31 @@ sequenceDiagram
     F4->>L: Success=true
     F5->>F5: prev不匹配<br/>(term冲突)
     F5->>L: Success=false<br/>conflictInfo
-    
+
     L->>L: 收到3/5成功<br/>(多数派)
     L->>L: commitIndex=5
     L->>L: 应用到状态机
     L-->>C: 响应成功
     deactivate L
-    
+
     Note over L,F5: 处理N5的日志不一致
-    
+
     L->>F5: AppendEntries<br/>prevIdx:3, prevTerm:1<br/>entries:[{4,2,cmd}]
     F5->>F5: 删除冲突条目
     F5->>F5: 追加新条目
     F5->>L: Success=true
-    
+
     L->>F5: AppendEntries<br/>prevIdx:4, prevTerm:2<br/>entries:[{5,2,cmd}]
     F5->>F5: 追加条目
     F5->>L: Success=true
-    
+
     Note over F1,F5: 心跳传播commitIndex
-    
+
     L->>F1: Heartbeat<br/>leaderCommit=5
     L->>F2: Heartbeat<br/>leaderCommit=5
     L->>F4: Heartbeat<br/>leaderCommit=5
     L->>F5: Heartbeat<br/>leaderCommit=5
-    
+
     par 应用已提交条目
         F1->>F1: commitIndex=5<br/>应用到状态机
         F2->>F2: commitIndex=5<br/>应用到状态机
@@ -1886,7 +1890,7 @@ sequenceDiagram
 
 ```
 领导者N3日志: [1,1] [2,1] [3,2] [4,2] [5,2]
-跟随者N5日志: [1,1] [2,1] [3,1] 
+跟随者N5日志: [1,1] [2,1] [3,1]
 
 第1次尝试:
   N3 -> N5: AppendEntries, prevIdx=4, prevTerm=2, entries=[{5,2}]
@@ -1906,33 +1910,19 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Diego Ongaro and John Ousterhout. "In Search of an Understandable Consensus Algorithm." In Proceedings of the 2014 USENIX Annual Technical Conference (USENIX ATC '14), Philadelphia, PA, June 2014. https://raft.github.io/raft.pdf
 
-[^2]: Diego Ongaro. "Consensus: Bridging Theory and Practice." PhD dissertation, Stanford University, 2014. https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf
 
-[^3]: Leslie Lamport. "The Part-Time Parliament." ACM Transactions on Computer Systems, 16(2):133-169, May 1998. https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf
 
-[^4]: Leslie Lamport. "Paxos Made Simple." ACM SIGACT News, 32(4):18-25, December 2001. https://lamport.azurewebsites.net/pubs/paxos-simple.pdf
 
-[^5]: TLA+ Specification for Raft. GitHub repository: https://github.com/ongardie/raft.tla
 
-[^6]: Leslie Lamport. "Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers." Addison-Wesley, 2002. https://lamport.azurewebsites.net/tla/book.html
 
-[^7]: Brian M. Oki and Barbara H. Liskov. "Viewstamped Replication: A New Primary Copy Method to Support Highly-Available Distributed Systems." In Proceedings of the 7th ACM Symposium on Principles of Distributed Computing (PODC '88), Toronto, Canada, August 1988. https://pmg.csail.mit.edu/papers/vr.pdf
 
-[^8]: Miguel Castro and Barbara Liskov. "Practical Byzantine Fault Tolerance." In Proceedings of the 3rd USENIX Symposium on Operating Systems Design and Implementation (OSDI '99), New Orleans, LA, February 1999. https://pmg.csail.mit.edu/papers/osdi99.pdf
 
-[^9]: etcd Documentation - Raft Consensus. https://etcd.io/docs/v3.5/learning/raft/
 
-[^10]: Heidi Howard, Malte Schwarzkopf, Anil Madhavapeddy, and Jon Crowcroft. "Raft Refloated: Do We Have Consensus?" ACM SIGOPS Operating Systems Review, 49(1):12-21, January 2015. https://www.cl.cam.ac.uk/~ms705/pub/papers/2015-osr-raft.pdf
 
-[^11]: Heidi Howard and Richard Mortier. "Paxos vs Raft: Have We Reached Consensus on Distributed Consensus?" In Proceedings of the 7th Workshop on Principles and Practice of Consistency for Distributed Data (PaPoC '20), Heraklion, Greece, April 2020. https://arxiv.org/abs/2004.05074
 
-[^12]: Mahesh Balakrishnan, Dahlia Malkhi, Ted Wobber, et al. "Tango: Distributed Data Structures over a Shared Log." In Proceedings of the 24th ACM Symposium on Operating Systems Principles (SOSP '13), Farminton, PA, November 2013. https://www.microsoft.com/en-us/research/publication/tango-distributed-data-structures-over-shared-log/
 
-[^13]: etcd Raft Library. GitHub repository: https://github.com/etcd-io/raft
 
-[^14]: Raft Consensus Visualization. The Secret Lives of Data, https://thesecretlivesofdata.com/raft/
 
 ---
 
@@ -1966,24 +1956,24 @@ type RaftNode struct {
     currentTerm int64      // 最新任期
     votedFor    int        // 当前任期投票给的候选人
     log         []LogEntry // 日志条目
-    
+
     // 易失状态（所有服务器）
     commitIndex int64      // 已知提交的最高索引
     lastApplied int64      // 已应用到状态机的最高索引
-    
+
     // 易失状态（仅领导者）
     nextIndex   map[int]int64  // 每个服务器的下一个日志索引
     matchIndex  map[int]int64  // 每个服务器已知复制的最高索引
-    
+
     // 状态机
     state       NodeState
     id          int
     peers       []int
-    
+
     // 通道
     applyCh     chan ApplyMsg
     receiveCh   chan Message
-    
+
     // 定时器
     electionTimer  *time.Timer
     heartbeatTimer *time.Timer
@@ -2000,15 +1990,15 @@ const (
 // 主事件循环
 func (r *RaftNode) Run() {
     r.resetElectionTimer()
-    
+
     for {
         select {
         case msg := <-r.receiveCh:
             r.handleMessage(msg)
-            
+
         case <-r.electionTimer.C:
             r.handleElectionTimeout()
-            
+
         case <-r.heartbeatTimer.C:
             if r.state == StateLeader {
                 r.broadcastHeartbeat()
@@ -2026,7 +2016,7 @@ func (r *RaftNode) handleMessage(msg Message) {
         r.votedFor = -1
         r.resetElectionTimer()
     }
-    
+
     switch msg.Type {
     case MsgAppendEntries:
         r.handleAppendEntries(msg)
@@ -2044,22 +2034,22 @@ func (r *RaftNode) handleElectionTimeout() {
     if r.state == StateLeader {
         return
     }
-    
+
     // 转换为候选人
     r.state = StateCandidate
     r.currentTerm++
     r.votedFor = r.id
     votesGranted := 1
-    
+
     r.resetElectionTimer()
-    
+
     // 并行请求投票
     lastLogIndex := int64(len(r.log))
     lastLogTerm := int64(0)
     if lastLogIndex > 0 {
         lastLogTerm = r.log[lastLogIndex-1].Term
     }
-    
+
     for _, peer := range r.peers {
         if peer == r.id {
             continue
@@ -2077,17 +2067,17 @@ func (r *RaftNode) handleAppendEntries(msg Message) {
         To:         msg.From,
         Success:    false,
     }
-    
+
     // 重置选举定时器（收到有效心跳）
     r.resetElectionTimer()
     r.state = StateFollower
-    
+
     // 回复过期的领导者
     if msg.Term < r.currentTerm {
         r.send(response)
         return
     }
-    
+
     // 日志匹配检查
     if msg.PrevLogIndex > 0 {
         if msg.PrevLogIndex > int64(len(r.log)) {
@@ -2107,7 +2097,7 @@ func (r *RaftNode) handleAppendEntries(msg Message) {
             return
         }
     }
-    
+
     // 追加新条目
     for i, entry := range msg.Entries {
         idx := msg.PrevLogIndex + int64(i) + 1
@@ -2122,13 +2112,13 @@ func (r *RaftNode) handleAppendEntries(msg Message) {
             r.log = append(r.log, entry)
         }
     }
-    
+
     // 更新commitIndex
     if msg.LeaderCommit > r.commitIndex {
         r.commitIndex = min(msg.LeaderCommit, int64(len(r.log)))
         r.applyCommitted()
     }
-    
+
     response.Success = true
     r.send(response)
 }
@@ -2142,15 +2132,15 @@ func (r *RaftNode) handleRequestVote(msg Message) {
         To:      msg.From,
         Granted: false,
     }
-    
+
     if msg.Term < r.currentTerm {
         r.send(response)
         return
     }
-    
+
     // 检查是否可以投票
     canVote := r.votedFor == -1 || r.votedFor == msg.CandidateId
-    
+
     if canVote {
         // 检查日志是否至少一样新
         lastLogIndex := int64(len(r.log))
@@ -2158,17 +2148,17 @@ func (r *RaftNode) handleRequestVote(msg Message) {
         if lastLogIndex > 0 {
             lastLogTerm = r.log[lastLogIndex-1].Term
         }
-        
+
         logIsUpToDate := msg.LastLogTerm > lastLogTerm ||
             (msg.LastLogTerm == lastLogTerm && msg.LastLogIndex >= lastLogIndex)
-        
+
         if logIsUpToDate {
             r.votedFor = msg.CandidateId
             r.resetElectionTimer()
             response.Granted = true
         }
     }
-    
+
     r.send(response)
 }
 
@@ -2208,7 +2198,7 @@ func (r *RaftNode) applyCommitted() {
 
 ---
 
-*文档版本: 1.0*  
-*创建日期: 2026-04-10*  
-*最后更新: 2026-04-10*  
+*文档版本: 1.0*
+*创建日期: 2026-04-10*
+*最后更新: 2026-04-10*
 *状态: 完整*

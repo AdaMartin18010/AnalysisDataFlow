@@ -393,4 +393,3 @@ flowchart TD
 [^1]: J. Woodcock et al., "Industrial Application of Formal Methods: A Survey of Practitioners", IEEE TSE, 2024.
 [^2]: B. Mueller, "Smashing Ethereum Smart Contracts for Fun and Real Profit", HITB SECCONF, 2018.
 [^3]: K. G. Larsen et al., "Verification of Real-Time Systems using UPPAAL", Handbook of Model Checking, 2018.
-

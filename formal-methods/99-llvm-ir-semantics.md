@@ -8,7 +8,8 @@
 
 ### Def-K-99-14: LLVM IR (Intermediate Representation)
 
-**LLVM IR**（Low Level Virtual Machine Intermediate Representation，低级虚拟机中间表示）是一种强类型的、低级的、通用的编译器中间表示语言。它为多种编程语言的编译器提供了一套统一的中间表示层，实现了"前端-优化器-后端"解耦的编译器架构。
+**LLVM IR**（Low Level Virtual Machine Intermediate Representation，低级虚拟机中间表示）是一种强类型的、低级的、通用的编译器中间表示语言。
+它为多种编程语言的编译器提供了一套统一的中间表示层，实现了"前端-优化器-后端"解耦的编译器架构。
 
 形式化地，LLVM IR 可以定义为一个五元组：
 
@@ -2018,7 +2019,7 @@ graph TB
     Entry -->|cond = true| Then[then<br/>ret i32 %a]
     Entry -->|cond = false| Else[else<br/>ret i32 %b]
     end
-    
+
     style Entry fill:#e1f5ff,stroke:#01579b
     style Then fill:#c8e6c9,stroke:#2e7d32
     style Else fill:#c8e6c9,stroke:#2e7d32
@@ -2037,7 +2038,7 @@ graph TB
     C -->|i > n| FE[for.end<br/>%result.final = phi [%mul, L]]
     FE --> R2[return<br/>ret i32 %result.final]
     end
-    
+
     style E fill:#e3f2fd,stroke:#1565c0
     style R fill:#c8e6c9,stroke:#2e7d32
     style L fill:#fff3e0,stroke:#ef6c00
@@ -2063,7 +2064,7 @@ flowchart TD
     H --> I[为每个定义分配版本号]
     I --> J[替换使用点为正确的版本]
     K[结束: SSA形式代码]
-    
+
     style A fill:#e3f2fd,stroke:#1565c0
     style K fill:#c8e6c9,stroke:#2e7d32
     style B fill:#fff3e0,stroke:#ef6c00
@@ -2078,15 +2079,15 @@ graph LR
     subgraph "步骤1: 原始代码"
     S1[x = 5<br/>if cond:<br/>    x = x + 1<br/>y = x * 2]
     end
-    
+
     subgraph "步骤2: 插入PHI"
     S2[x0 = 5<br/>if cond:<br/>    x1 = x0 + 1<br/>x2 = phi(x1, x0)<br/>y = x2 * 2]
     end
-    
+
     subgraph "步骤3: 最终SSA"
     S3[x0 = 5<br/>if cond:<br/>    x1 = x0 + 1<br/>x2 = phi[x1, if.then], [x0, entry]<br/>y0 = x2 * 2]
     end
-    
+
     S1 -->|插入PHI节点| S2
     S2 -->|重命名变量| S3
 ```
@@ -2100,21 +2101,21 @@ graph TD
     Type[LLVM IR类型] --> Void[void]
     Type --> FirstClass[第一类类型]
     Type --> Derived[派生类型]
-    
+
     FirstClass --> Primitive[原始类型]
     FirstClass --> Aggregate[聚合类型]
-    
+
     Primitive --> Integer[整数类型<br/>i1, i8, i16, i32, i64, i128]
     Primitive --> FloatPoint[浮点类型<br/>float, double, fp128]
     Primitive --> Pointer[指针类型<br/>i32*, i8*]
     Primitive --> Label[label<br/>基本块标签]
-    
+
     Aggregate --> Array[数组类型<br/>[10 x i32]]
     Aggregate --> Struct[结构体类型<br/>{i32, float, i8*}]
     Aggregate --> Vector[向量类型<br/><4 x float>]
-    
+
     Derived --> Function[函数类型<br/>i32 (i32, i32)*]
-    
+
     style Type fill:#e3f2fd,stroke:#1565c0
     style FirstClass fill:#fff3e0,stroke:#ef6c00
     style Derived fill:#f3e5f5,stroke:#7b1fa2
@@ -2137,17 +2138,17 @@ flowchart TD
     G --> H[向量化]
     H --> I[CGSCC Passes]
     I --> J[代码生成准备]
-    
+
     subgraph "分析Pass"
     K[支配树分析]
     L[循环分析]
     M[别名分析]
     end
-    
+
     C -.->|依赖| K
     G -.->|依赖| L
     G -.->|依赖| M
-    
+
     style A fill:#e3f2fd,stroke:#1565c0
     style J fill:#c8e6c9,stroke:#2e7d32
     style D fill:#fff3e0,stroke:#ef6c00
@@ -2161,25 +2162,17 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: LLVM Project, "LLVM Language Reference Manual," 2025. https://llvm.org/docs/LangRef.html
 
-[^2]: C. Lattner and V. Adve, "LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation," in Proceedings of the International Symposium on Code Generation and Optimization (CGO), 2004, pp. 75-86. https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf
 
-[^3]: R. Cytron, J. Ferrante, B. K. Rosen, M. N. Wegman, and F. K. Zadeck, "Efficiently Computing Static Single Assignment Form and the Control Dependence Graph," ACM Transactions on Programming Languages and Systems (TOPLAS), vol. 13, no. 4, pp. 451-490, 1991. https://doi.org/10.1145/115372.115320
 
-[^4]: J. Zhao, S. Nagarakatte, M. M. K. Martin, and S. Zdancewic, "Formalizing the LLVM Intermediate Representation for Verified Program Transformations," in Proceedings of the 39th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL), 2012, pp. 427-440. https://doi.org/10.1145/2103656.2103709
+[^4]: J. Zhao, S. Nagarakatte, M. M. K. Martin, and S. Zdancewic, "Formalizing the LLVM Intermediate Representation for Verified Program Transformations," in Proceedings of the 39th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL), 2012, pp. 427-440. <https://doi.org/10.1145/2103656.2103709>
 
-[^5]: Y. K. Tan, M. O. Myreen, R. Kumar, A. C. J. Fox, S. Owens, and M. Norrish, "The Verified CakeML Compiler Backend," Journal of Functional Programming, vol. 29, e2, 2019. https://doi.org/10.1017/S0956796818000229
+[^5]: Y. K. Tan, M. O. Myreen, R. Kumar, A. C. J. Fox, S. Owens, and M. Norrish, "The Verified CakeML Compiler Backend," Journal of Functional Programming, vol. 29, e2, 2019. <https://doi.org/10.1017/S0956796818000229>
 
-[^6]: A. W. Appel, "Modern Compiler Implementation in ML," Cambridge University Press, 1998. （包含SSA形式的详细讨论）
 
-[^7]: S. S. Muchnick, "Advanced Compiler Design and Implementation," Morgan Kaufmann Publishers, 1997. （涵盖数据流分析和优化技术）
 
-[^8]: K. Cooper and L. Torczon, "Engineering a Compiler," 2nd Edition, Morgan Kaufmann, 2011. （编译器工程实践经典教材）
 
-[^9]: F. M. Q. Pereira and J. Palsberg, "Register Allocation via Graph Coloring," in Companion to the 23rd ACM SIGPLAN Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA), 2008, pp. 759-760. https://doi.org/10.1145/1449764.1449803
 
-[^10]: A. Aho, M. Lam, R. Sethi, and J. Ullman, "Compilers: Principles, Techniques, and Tools (Dragon Book)," 2nd Edition, Addison-Wesley, 2006. （编译器设计的经典教材）
 
 ---
 
@@ -2273,7 +2266,7 @@ flowchart TD
 ---
 
 > **文档信息**
-> 
+>
 > - **文档编号**: 99-llvm-ir-semantics.md
 > - **版本**: v1.0
 > - **创建日期**: 2026-04-10
@@ -2281,4 +2274,3 @@ flowchart TD
 > - **形式化元素**: 7定义, 3引理, 1命题, 2定理
 > - **字数统计**: 约 12,000 字
 > - **文档大小**: 约 45KB
-

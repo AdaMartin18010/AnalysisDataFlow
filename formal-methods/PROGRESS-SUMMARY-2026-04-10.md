@@ -51,7 +51,7 @@
 
 **Lean 4 项目 (7模块)**:
 
-```
+```text
 formal-code/lean4/
 ├── FormalMethods/
 │   ├── Lambda.lean              # Lambda演算主模块
