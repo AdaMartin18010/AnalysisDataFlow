@@ -6,6 +6,16 @@
 
 ---
 
+## 新增深度文档 (2026-Q3 AI for Streaming专题)
+
+| 文档 | 主题 | 行数 | 形式化元素 |
+|:-----|:-----|:----:|:----------:|
+| [llm-streaming-inference-architecture.md](./llm-streaming-inference-architecture.md) | LLM实时推理架构 | 771 | 13 |
+| [streaming-rag-implementation-patterns.md](./streaming-rag-implementation-patterns.md) | 流式RAG实现模式 | 735 | 16 |
+| [ai-agent-streaming-patterns.md](./ai-agent-streaming-patterns.md) | AI Agent流处理模式 | 987 | 20 |
+| [vector-db-streaming-integration-guide.md](./vector-db-streaming-integration-guide.md) | 向量数据库流式集成 | 327 | 10 |
+| [realtime-feature-engineering-guide.md](./realtime-feature-engineering-guide.md) | 实时特征工程指南 | 294 | 13 |
+
 ## 目录结构导航
 
 ```
