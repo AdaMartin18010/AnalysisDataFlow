@@ -1,0 +1,503 @@
+# 监控告警工作流
+# AnalysisDataFlow 项目性能监控体系
+#
+# 功能:
+#   1. 定期运行性能监控脚本
+#   2. 检查质量指标阈值
+#   3. 生成告警通知
+#   4. 发送邮件/Slack通知
+#   5. 创建 GitHub Issue
+
+name: Monitoring Alerts
+
+on:
+  # 定时触发 - 每小时检查一次
+  schedule:
+    - cron: '0 * * * *'
+  
+  # 每日深度检查
+  schedule:
+    - cron: '0 9 * * *'  # 每天上午9点
+  
+  # 每周全面报告
+  schedule:
+    - cron: '0 9 * * 1'  # 每周一上午9点
+  
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - quick       # 快速检查 (仅文档统计)
+          - standard    # 标准检查 (包含链接)
+          - full        # 全面检查 (所有指标)
+          - weekly      # 周报生成
+      alert_level:
+        description: '告警级别'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - critical    # 仅严重告警
+          - warning     # 警告及以上
+          - info        # 所有级别
+
+env:
+  PYTHON_VERSION: '3.11'
+  CHECK_TYPE: ${{ github.event.inputs.check_type || 'standard' }}
+  ALERT_LEVEL: ${{ github.event.inputs.alert_level || 'warning' }}
+
+jobs:
+  # ============ 任务1: 性能监控 ============
+  performance-monitoring:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    outputs:
+      quality_score: ${{ steps.metrics.outputs.quality_score }}
+      doc_count: ${{ steps.metrics.outputs.doc_count }}
+      link_health: ${{ steps.metrics.outputs.link_health }}
+      alert_count: ${{ steps.metrics.outputs.alert_count }}
+      has_critical: ${{ steps.metrics.outputs.has_critical }}
+      report_path: ${{ steps.metrics.outputs.report_path }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run performance monitor
+        id: monitor
+        run: |
+          mkdir -p monitoring
+          
+          # 根据检查类型设置参数
+          if [ "${{ env.CHECK_TYPE }}" == "quick" ]; then
+            python .scripts/performance-monitor.py --path . --quick
+          else
+            python .scripts/performance-monitor.py --path . --update-history
+          fi
+          
+          # 检查退出码
+          EXIT_CODE=$?
+          echo "monitor_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          
+          if [ $EXIT_CODE -eq 2 ]; then
+            echo "status=critical" >> $GITHUB_OUTPUT
+          elif [ $EXIT_CODE -eq 1 ]; then
+            echo "status=warning" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Extract metrics
+        id: metrics
+        run: |
+          REPORT_FILE="monitoring/performance-report.json"
+          
+          if [ -f "$REPORT_FILE" ]; then
+            # 提取关键指标
+            QUALITY=$(jq -r '.metrics.quality_score.overall // 0' "$REPORT_FILE")
+            DOC_COUNT=$(jq -r '.metrics.documents.total // 0' "$REPORT_FILE")
+            LINK_HEALTH=$(jq -r '.metrics.link_health.health_rate // 100' "$REPORT_FILE")
+            ALERT_COUNT=$(jq -r '.metrics.alerts | length // 0' "$REPORT_FILE")
+            HAS_CRITICAL=$(jq -r '.metrics.alerts | map(select(.severity == "critical")) | length > 0' "$REPORT_FILE")
+            
+            echo "quality_score=$QUALITY" >> $GITHUB_OUTPUT
+            echo "doc_count=$DOC_COUNT" >> $GITHUB_OUTPUT
+            echo "link_health=$LINK_HEALTH" >> $GITHUB_OUTPUT
+            echo "alert_count=$ALERT_COUNT" >> $GITHUB_OUTPUT
+            echo "has_critical=$HAS_CRITICAL" >> $GITHUB_OUTPUT
+            echo "report_path=$REPORT_FILE" >> $GITHUB_OUTPUT
+            
+            # 输出摘要
+            echo "## 📊 监控指标" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **质量评分**: $QUALITY" >> $GITHUB_STEP_SUMMARY
+            echo "- **文档数量**: $DOC_COUNT" >> $GITHUB_STEP_SUMMARY
+            echo "- **链接健康率**: $LINK_HEALTH%" >> $GITHUB_STEP_SUMMARY
+            echo "- **告警数量**: $ALERT_COUNT" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Error: Report file not found"
+            exit 1
+          fi
+
+      - name: Upload monitoring report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-report
+          path: |
+            monitoring/performance-report.json
+            monitoring/performance-report.md
+            monitoring/metrics-history.json
+          retention-days: 30
+
+  # ============ 任务2: 链接失效告警 ============
+  link-health-alert:
+    name: Link Health Alert
+    runs-on: ubuntu-latest
+    needs: performance-monitoring
+    if: |
+      needs.performance-monitoring.outputs.link_health != '' &&
+      fromJSON(needs.performance-monitoring.outputs.link_health) < 95.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download monitoring report
+        uses: actions/download-artifact@v4
+        with:
+          name: monitoring-report
+          path: monitoring/
+
+      - name: Check link health threshold
+        id: check_links
+        run: |
+          LINK_HEALTH="${{ needs.performance-monitoring.outputs.link_health }}"
+          BROKEN_LINKS=$(jq -r '.metrics.link_health.broken_links // 0' monitoring/performance-report.json)
+          
+          echo "link_health=$LINK_HEALTH" >> $GITHUB_OUTPUT
+          echo "broken_links=$BROKEN_LINKS" >> $GITHUB_OUTPUT
+          
+          # 确定严重级别
+          if (( $(echo "$LINK_HEALTH < 90.0" | bc -l) )); then
+            echo "severity=critical" >> $GITHUB_OUTPUT
+            echo "## 🔴 严重: 链接健康告警" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "severity=warning" >> $GITHUB_OUTPUT
+            echo "## 🟡 警告: 链接健康告警" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **链接健康率**: ${LINK_HEALTH}%" >> $GITHUB_STEP_SUMMARY
+          echo "- **失效链接**: ${BROKEN_LINKS} 个" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create GitHub Issue (Critical)
+        if: steps.check_links.outputs.severity == 'critical'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🔴 [CRITICAL] 链接健康率严重下降: ${process.env.LINK_HEALTH}%`;
+            const body = `## 链接健康告警
+            
+            **时间**: ${new Date().toISOString()}
+            **链接健康率**: ${process.env.LINK_HEALTH}%
+            **失效链接**: ${process.env.BROKEN_LINKS} 个
+            **阈值**: 90%
+            
+            ### 建议操作
+            1. 运行链接检查脚本: \`python .scripts/performance-monitor.py\`
+            2. 查看详细报告: \`monitoring/performance-report.md\`
+            3. 修复失效链接
+            4. 重新运行检查确认修复
+            
+            ---
+            *自动生成的告警 Issue*`;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['monitoring', 'link-health', 'critical', 'auto-generated']
+            });
+        env:
+          LINK_HEALTH: ${{ steps.check_links.outputs.link_health }}
+          BROKEN_LINKS: ${{ steps.check_links.outputs.broken_links }}
+
+  # ============ 任务3: 质量评分告警 ============
+  quality-score-alert:
+    name: Quality Score Alert
+    runs-on: ubuntu-latest
+    needs: performance-monitoring
+    if: |
+      needs.performance-monitoring.outputs.quality_score != '' &&
+      fromJSON(needs.performance-monitoring.outputs.quality_score) < 85.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download monitoring report
+        uses: actions/download-artifact@v4
+        with:
+          name: monitoring-report
+          path: monitoring/
+
+      - name: Check quality threshold
+        id: check_quality
+        run: |
+          QUALITY="${{ needs.performance-monitoring.outputs.quality_score }}"
+          
+          # 提取详细评分
+          COMPLETENESS=$(jq -r '.metrics.quality_score.completeness // 0' monitoring/performance-report.json)
+          CONSISTENCY=$(jq -r '.metrics.quality_score.consistency // 0' monitoring/performance-report.json)
+          COVERAGE=$(jq -r '.metrics.quality_score.coverage // 0' monitoring/performance-report.json)
+          MAINTAINABILITY=$(jq -r '.metrics.quality_score.maintainability // 0' monitoring/performance-report.json)
+          
+          echo "quality=$QUALITY" >> $GITHUB_OUTPUT
+          echo "completeness=$COMPLETENESS" >> $GITHUB_OUTPUT
+          echo "consistency=$CONSISTENCY" >> $GITHUB_OUTPUT
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+          echo "maintainability=$MAINTAINABILITY" >> $GITHUB_OUTPUT
+          
+          if (( $(echo "$QUALITY < 70.0" | bc -l) )); then
+            echo "severity=critical" >> $GITHUB_OUTPUT
+            echo "## 🔴 严重: 质量评分告警" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "severity=warning" >> $GITHUB_OUTPUT
+            echo "## 🟡 警告: 质量评分告警" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **总体评分**: $QUALITY" >> $GITHUB_STEP_SUMMARY
+          echo "- **完整性**: $COMPLETENESS" >> $GITHUB_STEP_SUMMARY
+          echo "- **一致性**: $CONSISTENCY" >> $GITHUB_STEP_SUMMARY
+          echo "- **覆盖率**: $COVERAGE" >> $GITHUB_STEP_SUMMARY
+          echo "- **可维护性**: $MAINTAINABILITY" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create GitHub Issue
+        if: steps.check_quality.outputs.severity == 'critical'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🔴 [CRITICAL] 质量评分严重下降: ${process.env.QUALITY}`;
+            const body = `## 质量评分告警
+            
+            **时间**: ${new Date().toISOString()}
+            **总体评分**: ${process.env.QUALITY}
+            **阈值**: 70
+            
+            ### 详细评分
+            - 完整性: ${process.env.COMPLETENESS}
+            - 一致性: ${process.env.CONSISTENCY}
+            - 覆盖率: ${process.env.COVERAGE}
+            - 可维护性: ${process.env.MAINTAINABILITY}
+            
+            ### 建议操作
+            1. 检查最近的质量下降原因
+            2. 优先修复失效链接 (影响一致性)
+            3. 补充缺失的文档或代码示例
+            4. 运行质量检查: \`python .scripts/performance-monitor.py\`
+            
+            ---
+            *自动生成的告警 Issue*`;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['monitoring', 'quality', 'critical', 'auto-generated']
+            });
+        env:
+          QUALITY: ${{ steps.check_quality.outputs.quality }}
+          COMPLETENESS: ${{ steps.check_quality.outputs.completeness }}
+          CONSISTENCY: ${{ steps.check_quality.outputs.consistency }}
+          COVERAGE: ${{ steps.check_quality.outputs.coverage }}
+          MAINTAINABILITY: ${{ steps.check_quality.outputs.maintainability }}
+
+  # ============ 任务4: 构建失败告警 ============
+  build-failure-alert:
+    name: Build Failure Alert
+    runs-on: ubuntu-latest
+    needs: performance-monitoring
+    if: failure()
+    steps:
+      - name: Notify build failure
+        run: |
+          echo "## ❌ 构建失败告警" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "监控脚本执行失败，请检查日志。" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🔴 [CRITICAL] 监控脚本执行失败: ${new Date().toISOString()}`;
+            const body = `## 构建失败告警
+            
+            **时间**: ${new Date().toISOString()}
+            **工作流**: ${context.workflow}
+            **运行ID**: ${context.runId}
+            
+            ### 可能原因
+            1. 脚本语法错误
+            2. 依赖缺失
+            3. 文件权限问题
+            4. 磁盘空间不足
+            
+            ### 建议操作
+            1. 查看工作流运行日志
+            2. 本地测试脚本: \`python .scripts/performance-monitor.py\`
+            3. 检查 Python 环境
+            
+            ---
+            *自动生成的告警 Issue*`;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['monitoring', 'build-failure', 'critical', 'auto-generated']
+            });
+
+  # ============ 任务5: 周报生成 ============
+  weekly-report:
+    name: Generate Weekly Report
+    runs-on: ubuntu-latest
+    needs: performance-monitoring
+    if: github.event.schedule == '0 9 * * 1' || env.CHECK_TYPE == 'weekly'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 需要完整历史
+
+      - name: Download monitoring report
+        uses: actions/download-artifact@v4
+        with:
+          name: monitoring-report
+          path: monitoring/
+
+      - name: Generate weekly report
+        run: |
+          python << 'PYEOF'
+          import json
+          import re
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          
+          # 读取历史数据
+          history_path = Path("monitoring/metrics-history.json")
+          history = {"records": []}
+          if history_path.exists():
+              with open(history_path, 'r') as f:
+                  history = json.load(f)
+          
+          # 获取当前数据
+          with open("monitoring/performance-report.json", 'r') as f:
+              current = json.load(f)
+          
+          # 计算日期范围
+          end_date = datetime.now()
+          start_date = end_date - timedelta(days=7)
+          
+          # 读取模板
+          template_path = Path("monitoring/weekly-report-template.md")
+          if template_path.exists():
+              template = template_path.read_text(encoding='utf-8')
+          else:
+              print("Template not found, using basic format")
+              template = "# Weekly Report\n\nGenerated at {{generated_at}}"
+          
+          # 基础替换
+          replacements = {
+              "{{start_date}}": start_date.strftime("%Y-%m-%d"),
+              "{{end_date}}": end_date.strftime("%Y-%m-%d"),
+              "{{generated_at}}": end_date.strftime("%Y-%m-%d %H:%M:%S"),
+              "{{quality_overall}}": str(current.get("metrics", {}).get("quality_score", {}).get("overall", 0)),
+              "{{doc_count}}": str(current.get("metrics", {}).get("documents", {}).get("total", 0)),
+              "{{link_health_rate}}": str(current.get("metrics", {}).get("link_health", {}).get("health_rate", 100)),
+              "{{formal_elements}}": str(current.get("metrics", {}).get("formal_elements", {}).get("total", 0)),
+              "{{code_blocks}}": str(current.get("metrics", {}).get("code_examples", {}).get("total_blocks", 0)),
+          }
+          
+          # 简单替换
+          report = template
+          for key, value in replacements.items():
+              report = report.replace(key, value)
+          
+          # 保存周报
+          report_filename = f"weekly-report-{end_date.strftime('%Y-W%U')}.md"
+          report_path = Path("monitoring") / report_filename
+          with open(report_path, 'w', encoding='utf-8') as f:
+              f.write(report)
+          
+          print(f"Weekly report generated: {report_path}")
+          
+          # 同时保存为最新周报
+          latest_path = Path("monitoring/weekly-report-latest.md")
+          with open(latest_path, 'w', encoding='utf-8') as f:
+              f.write(report)
+          
+          print(f"Latest weekly report updated: {latest_path}")
+          PYEOF
+
+      - name: Upload weekly report
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report
+          path: monitoring/weekly-report-*.md
+          retention-days: 90
+
+      - name: Commit weekly report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -f "monitoring/weekly-report-latest.md" ]; then
+            git add monitoring/weekly-report-latest.md
+            git add monitoring/metrics-history.json
+            
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "chore: update weekly monitoring report [skip ci]"
+              git push
+            fi
+          fi
+        continue-on-error: true
+
+  # ============ 任务6: 汇总通知 ============
+  notification-summary:
+    name: Notification Summary
+    runs-on: ubuntu-latest
+    needs: 
+      - performance-monitoring
+      - link-health-alert
+      - quality-score-alert
+    if: always()
+    steps:
+      - name: Summary
+        run: |
+          echo "## 📊 监控告警汇总" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 性能监控状态
+          if [ "${{ needs.performance-monitoring.result }}" == "success" ]; then
+            echo "| 检查项 | 状态 | 值 |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|------|-----|" >> $GITHUB_STEP_SUMMARY
+            echo "| 性能监控 | ✅ 成功 | - |" >> $GITHUB_STEP_SUMMARY
+            echo "| 质量评分 | - | ${{ needs.performance-monitoring.outputs.quality_score }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| 文档数量 | - | ${{ needs.performance-monitoring.outputs.doc_count }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| 链接健康 | - | ${{ needs.performance-monitoring.outputs.link_health }}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| 告警数量 | - | ${{ needs.performance-monitoring.outputs.alert_count }} |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 性能监控 | ❌ 失败 | - |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # 告警状态
+          if [ "${{ needs.performance-monitoring.outputs.has_critical }}" == "true" ]; then
+            echo "## 🔴 存在严重告警" >> $GITHUB_STEP_SUMMARY
+            echo "请立即查看并处理！" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.performance-monitoring.outputs.alert_count }}" != "0" ]; then
+            echo "## 🟡 存在告警" >> $GITHUB_STEP_SUMMARY
+            echo "建议尽快查看并处理。" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ✅ 所有指标正常" >> $GITHUB_STEP_SUMMARY
+            echo "当前无告警。" >> $GITHUB_STEP_SUMMARY
+          fi

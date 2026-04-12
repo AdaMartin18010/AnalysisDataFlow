@@ -12,6 +12,7 @@
 | Localhost 链接 | 1 | 6 | - |
 
 **总计**:
+
 - 修复的链接数量: **255**
 - 修改的文件数量: **86**
 
@@ -230,17 +231,21 @@
 ## 修复规则说明
 
 ### 404 Not Found 修复策略
+
 1. 使用Wayback Machine获取存档链接
 2. 更新为已知的有效新URL
 3. 无法修复的标记为 `[链接已失效]` 或具体说明
 
 ### Placeholder 链接修复
+
 - 将 `your-org/your-repo` 替换为实际仓库路径 `luyanfeng/AnalysisDataFlow`
 
 ### Localhost 链接修复
+
 - 添加说明文字 `[本地开发环境专用链接]`
 
 ### Connection Error 链接修复
+
 - 替换为已知有效URL或标记说明
 
 ## 建议后续操作

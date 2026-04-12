@@ -117,8 +117,8 @@
 | [https://doi.org/10.1007/s00778-004-0128-y](https://doi.org/10.1007/s00778-004-0128-y) | release/v3.0.0/docs/Knowledge/02-de | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1007/s00778-023-00823-4](https://doi.org/10.1007/s00778-023-00823-4) | Struct/06-frontier/academic-frontie | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1007/s10115-009-0226-2](https://doi.org/10.1007/s10115-009-0226-2) | release/v3.0.0/docs/EXTERNAL-LINK-H | 使用Archive.org备份或查找论文最新位置 |
-| [https://doi.org/10.1016/0304-3975(78](https://doi.org/10.1016/0304-3975(78) | release/v3.0.0/docs/reports/link-he | 使用Archive.org备份或查找论文最新位置 |
-| [https://doi.org/10.1016/0890-5401(92](https://doi.org/10.1016/0890-5401(92) | EXTERNAL-LINK-HEALTH-REPORT-v4.1.md | 使用Archive.org备份或查找论文最新位置 |
+| [https://doi.org/10.1016/0304-3975(78](<https://doi.org/10.1016/0304-3975(78)> | release/v3.0.0/docs/reports/link-he | 使用Archive.org备份或查找论文最新位置 |
+| [https://doi.org/10.1016/0890-5401(92](<https://doi.org/10.1016/0890-5401(92)> | EXTERNAL-LINK-HEALTH-REPORT-v4.1.md | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1016/j.jretconser.2025.xxxxx](https://doi.org/10.1016/j.jretconser.2025.xxxxx) | Flink-IoT-Authority-Alignment/Phase | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1038/s41586-024-08144-8](https://doi.org/10.1038/s41586-024-08144-8) | formal-methods/07-future/03-ai-form | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1109/ACCESS.2020.3025677](https://doi.org/10.1109/ACCESS.2020.3025677) | release/v3.0.0/docs/Knowledge/03-bu | 使用Archive.org备份或查找论文最新位置 |
@@ -381,7 +381,7 @@
 | [https://en.wikipedia.org/wiki/Hoare_logic](https://en.wikipedia.org/wiki/Hoare_logic) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/L%C3%B6wenheim%E2%80%93Skolem_...](https://en.wikipedia.org/wiki/L%C3%B6wenheim%E2%80%93Skolem_theorem) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Model_checking](https://en.wikipedia.org/wiki/Model_checking) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
-| [https://en.wikipedia.org/wiki/Paxos_(computer_science](https://en.wikipedia.org/wiki/Paxos_(computer_science) | EXTERNAL-LINK-HEALTH-REPORT-v4.1.md | 临时性问题，稍后重试或使用替代链接 |
+| [https://en.wikipedia.org/wiki/Paxos_(computer_science](<https://en.wikipedia.org/wiki/Paxos_(computer_science)> | EXTERNAL-LINK-HEALTH-REPORT-v4.1.md | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Paxos_(computer_science)](https://en.wikipedia.org/wiki/Paxos_(computer_science)) | release/v3.0.0/docs/reports/link-va | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Petri_net](https://en.wikipedia.org/wiki/Petri_net) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Process_calculus](https://en.wikipedia.org/wiki/Process_calculus) | formal-methods/98-appendices/wikipe | 临时性问题，稍后重试或使用替代链接 |
@@ -1253,7 +1253,7 @@
 | [https://en.wikipedia.org/wiki/Hoare_logic](https://en.wikipedia.org/wiki/Hoare_logic) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/L%C3%B6wenheim%E2%80...](https://en.wikipedia.org/wiki/L%C3%B6wenheim%E2%80%93Skolem_theorem) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Model_checking](https://en.wikipedia.org/wiki/Model_checking) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
-| [https://en.wikipedia.org/wiki/Paxos_(computer_scie...](https://en.wikipedia.org/wiki/Paxos_(computer_science) | Timeout | EXTERNAL-LINK-HEALTH-REPO | 临时性问题，稍后重试或使用替代链接 |
+| [https://en.wikipedia.org/wiki/Paxos_(computer_scie...](<https://en.wikipedia.org/wiki/Paxos_(computer_science)> | Timeout | EXTERNAL-LINK-HEALTH-REPO | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Paxos_(computer_scie...](https://en.wikipedia.org/wiki/Paxos_(computer_science)) | Timeout | release/v3.0.0/docs/repor | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Petri_net](https://en.wikipedia.org/wiki/Petri_net) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Process_calculus](https://en.wikipedia.org/wiki/Process_calculus) | Timeout | formal-methods/98-appendi | 临时性问题，稍后重试或使用替代链接 |

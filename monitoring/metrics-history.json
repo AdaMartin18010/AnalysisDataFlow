@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "project": "AnalysisDataFlow",
+    "version": "1.0.0",
+    "created_at": "2026-04-12T23:00:00+08:00",
+    "description": "项目质量指标历史趋势数据",
+    "retention_policy": "保留最近52周的数据"
+  },
+  "schema": {
+    "record_fields": [
+      {
+        "name": "timestamp",
+        "type": "string",
+        "format": "ISO8601",
+        "description": "记录时间戳"
+      },
+      {
+        "name": "document_count",
+        "type": "integer",
+        "description": "文档总数"
+      },
+      {
+        "name": "code_blocks",
+        "type": "integer",
+        "description": "代码块数量"
+      },
+      {
+        "name": "code_lines",
+        "type": "integer",
+        "description": "代码总行数"
+      },
+      {
+        "name": "link_health_rate",
+        "type": "float",
+        "description": "链接健康率(%)"
+      },
+      {
+        "name": "broken_links",
+        "type": "integer",
+        "description": "失效链接数"
+      },
+      {
+        "name": "total_links",
+        "type": "integer",
+        "description": "总链接数"
+      },
+      {
+        "name": "formal_elements",
+        "type": "integer",
+        "description": "形式化元素总数"
+      },
+      {
+        "name": "theorems",
+        "type": "integer",
+        "description": "定理数量"
+      },
+      {
+        "name": "definitions",
+        "type": "integer",
+        "description": "定义数量"
+      },
+      {
+        "name": "lemmas",
+        "type": "integer",
+        "description": "引理数量"
+      },
+      {
+        "name": "propositions",
+        "type": "integer",
+        "description": "命题数量"
+      },
+      {
+        "name": "corollaries",
+        "type": "integer",
+        "description": "推论数量"
+      },
+      {
+        "name": "mermaid_charts",
+        "type": "integer",
+        "description": "Mermaid图表数"
+      },
+      {
+        "name": "images",
+        "type": "integer",
+        "description": "图片数量"
+      },
+      {
+        "name": "quality_score",
+        "type": "float",
+        "description": "总体质量评分"
+      },
+      {
+        "name": "quality_completeness",
+        "type": "float",
+        "description": "完整性评分"
+      },
+      {
+        "name": "quality_consistency",
+        "type": "float",
+        "description": "一致性评分"
+      },
+      {
+        "name": "quality_coverage",
+        "type": "float",
+        "description": "覆盖率评分"
+      },
+      {
+        "name": "quality_maintainability",
+        "type": "float",
+        "description": "可维护性评分"
+      },
+      {
+        "name": "build_time",
+        "type": "float",
+        "description": "构建时间(秒)"
+      },
+      {
+        "name": "doc_lines",
+        "type": "integer",
+        "description": "文档总行数"
+      },
+      {
+        "name": "doc_size_bytes",
+        "type": "integer",
+        "description": "文档总大小(字节)"
+      }
+    ]
+  },
+  "records": [
+    {
+      "timestamp": "2026-04-12T23:00:00+08:00",
+      "document_count": 851,
+      "code_blocks": 4750,
+      "code_lines": 31000,
+      "link_health_rate": 100.0,
+      "broken_links": 0,
+      "total_links": 37500,
+      "formal_elements": 9627,
+      "theorems": 1952,
+      "definitions": 4698,
+      "lemmas": 1622,
+      "propositions": 1234,
+      "corollaries": 121,
+      "mermaid_charts": 1700,
+      "images": 450,
+      "quality_score": 98.5,
+      "quality_completeness": 100.0,
+      "quality_consistency": 100.0,
+      "quality_coverage": 95.0,
+      "quality_maintainability": 99.0,
+      "build_time": 45.2,
+      "doc_lines": 365916,
+      "doc_size_bytes": 32505856
+    },
+    {
+      "timestamp": "2026-04-12T23:17:34.029528",
+      "document_count": 1035,
+      "code_blocks": 12255,
+      "link_health_rate": 96.74,
+      "formal_elements": 9487,
+      "quality_score": 99.19,
+      "build_time": 0.8235623836517334
+    }
+  ],
+  "trends": {
+    "document_growth": 184,
+    "code_growth": 7505,
+    "quality_change": 0.69
+  },
+  "aggregations": {
+    "weekly": [],
+    "monthly": []
+  },
+  "milestones": [
+    {
+      "date": "2026-04-12",
+      "event": "性能监控体系建立",
+      "description": "完成性能监控脚本、告警规则、周报模板等基础设施建设",
+      "metrics_snapshot": {
+        "document_count": 851,
+        "quality_score": 98.5,
+        "link_health_rate": 100.0
+      }
+    },
+    {
+      "date": "2026-04-11",
+      "event": "项目100%完成",
+      "description": "AnalysisDataFlow 项目达到100%完成状态",
+      "metrics_snapshot": {
+        "document_count": 851,
+        "quality_score": 98.5,
+        "link_health_rate": 100.0
+      }
+    },
+    {
+      "date": "2026-04-06",
+      "event": "v3.4 关系梳理完成",
+      "description": "500+关系边建立完成",
+      "metrics_snapshot": {
+        "document_count": 838,
+        "quality_score": 97.0,
+        "link_health_rate": 99.5
+      }
+    },
+    {
+      "date": "2026-04-04",
+      "event": "v3.3 路线图发布",
+      "description": "Flink 2.4/2.5/3.0 100子任务完成",
+      "metrics_snapshot": {
+        "document_count": 825,
+        "quality_score": 96.5,
+        "link_health_rate": 99.0
+      }
+    }
+  ],
+  "targets": {
+    "document_count": {
+      "weekly_growth": 5,
+      "monthly_growth": 20,
+      "yearly_target": 1000
+    },
+    "quality_score": {
+      "minimum": 85.0,
+      "target": 95.0,
+      "excellent": 98.0
+    },
+    "link_health_rate": {
+      "minimum": 95.0,
+      "target": 99.0,
+      "excellent": 100.0
+    },
+    "code_blocks": {
+      "weekly_growth": 50,
+      "monthly_growth": 200,
+      "yearly_target": 6000
+    },
+    "formal_elements": {
+      "weekly_growth": 20,
+      "monthly_growth": 100,
+      "yearly_target": 12000
+    }
+  },
+  "growth_projections": {
+    "description": "基于历史数据的增长预测",
+    "document_count": {
+      "current": 851,
+      "projected_next_month": 871,
+      "projected_next_quarter": 911,
+      "projected_next_year": 1051
+    },
+    "quality_score": {
+      "current": 98.5,
+      "projected_next_month": 98.7,
+      "projected_next_quarter": 99.0,
+      "projected_next_year": 99.5
+    }
+  }
+}

@@ -1,0 +1,566 @@
+# 质量指标仪表板配置
+# AnalysisDataFlow 项目性能监控体系
+# 版本: 1.0.0
+
+---
+# ========== 仪表板元数据 ==========
+dashboard:
+  name: "AnalysisDataFlow 质量监控仪表板"
+  version: "1.0.0"
+  description: "全面跟踪项目质量指标、性能趋势和健康状况"
+  refresh_interval: "1h"
+  timezone: "Asia/Shanghai"
+
+# ========== 指标定义 ==========
+metrics:
+  # ---- 文档指标 ----
+  - id: "doc_count"
+    name: "文档总数"
+    description: "项目中 Markdown 文档的总数量"
+    category: "documents"
+    unit: "篇"
+    type: "gauge"
+    data_source: "filesystem"
+    collection_interval: "1h"
+    
+  - id: "doc_lines"
+    name: "文档总行数"
+    description: "所有 Markdown 文档的总行数"
+    category: "documents"
+    unit: "行"
+    type: "gauge"
+    data_source: "filesystem"
+    collection_interval: "1h"
+    
+  - id: "doc_size"
+    name: "文档总大小"
+    description: "所有 Markdown 文档的总大小"
+    category: "documents"
+    unit: "MB"
+    type: "gauge"
+    data_source: "filesystem"
+    collection_interval: "1h"
+    
+  # ---- 代码示例指标 ----
+  - id: "code_blocks"
+    name: "代码块数量"
+    description: "文档中代码块的总数量"
+    category: "code"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  - id: "code_lines"
+    name: "代码总行数"
+    description: "所有代码块中的代码行数"
+    category: "code"
+    unit: "行"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  - id: "languages_count"
+    name: "编程语言数"
+    description: "代码示例覆盖的编程语言数量"
+    category: "code"
+    unit: "种"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  # ---- 链接健康指标 ----
+  - id: "total_links"
+    name: "总链接数"
+    description: "文档中所有链接的总数量"
+    category: "links"
+    unit: "个"
+    type: "gauge"
+    data_source: "link_checker"
+    collection_interval: "30m"
+    
+  - id: "link_health_rate"
+    name: "链接健康率"
+    description: "有效链接占总链接的百分比"
+    category: "links"
+    unit: "%"
+    type: "gauge"
+    data_source: "link_checker"
+    collection_interval: "30m"
+    min_value: 0
+    max_value: 100
+    
+  - id: "broken_links"
+    name: "失效链接数"
+    description: "无法访问或指向不存在的链接数量"
+    category: "links"
+    unit: "个"
+    type: "gauge"
+    data_source: "link_checker"
+    collection_interval: "30m"
+    
+  # ---- 形式化元素指标 ----
+  - id: "formal_elements"
+    name: "形式化元素总数"
+    description: "定理、定义、引理等形式化元素的总数量"
+    category: "formal"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  - id: "theorems"
+    name: "定理数量"
+    description: "严格形式化定理的数量"
+    category: "formal"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  - id: "definitions"
+    name: "定义数量"
+    description: "形式化定义的数量"
+    category: "formal"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  # ---- 可视化指标 ----
+  - id: "mermaid_charts"
+    name: "Mermaid 图表数"
+    description: "使用 Mermaid 语法的图表数量"
+    category: "visualizations"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  - id: "images"
+    name: "图片数量"
+    description: "文档中嵌入的图片数量"
+    category: "visualizations"
+    unit: "个"
+    type: "gauge"
+    data_source: "content_analysis"
+    collection_interval: "1h"
+    
+  # ---- 质量评分指标 ----
+  - id: "quality_overall"
+    name: "总体质量评分"
+    description: "项目整体质量综合评分"
+    category: "quality"
+    unit: "分"
+    type: "gauge"
+    data_source: "calculated"
+    collection_interval: "1h"
+    min_value: 0
+    max_value: 100
+    
+  - id: "quality_completeness"
+    name: "完整性评分"
+    description: "文档结构完整性评分"
+    category: "quality"
+    unit: "分"
+    type: "gauge"
+    data_source: "calculated"
+    collection_interval: "1h"
+    min_value: 0
+    max_value: 100
+    
+  - id: "quality_consistency"
+    name: "一致性评分"
+    description: "文档间一致性评分"
+    category: "quality"
+    unit: "分"
+    type: "gauge"
+    data_source: "calculated"
+    collection_interval: "1h"
+    min_value: 0
+    max_value: 100
+    
+  - id: "quality_coverage"
+    name: "覆盖率评分"
+    description: "代码示例和用例覆盖率评分"
+    category: "quality"
+    unit: "分"
+    type: "gauge"
+    data_source: "calculated"
+    collection_interval: "1h"
+    min_value: 0
+    max_value: 100
+    
+  - id: "quality_maintainability"
+    name: "可维护性评分"
+    description: "项目可维护性评分"
+    category: "quality"
+    unit: "分"
+    type: "gauge"
+    data_source: "calculated"
+    collection_interval: "1h"
+    min_value: 0
+    max_value: 100
+    
+  # ---- 构建性能指标 ----
+  - id: "build_time"
+    name: "构建时间"
+    description: "监控脚本执行时间"
+    category: "performance"
+    unit: "秒"
+    type: "gauge"
+    data_source: "monitoring"
+    collection_interval: "1h"
+    
+  - id: "check_duration"
+    name: "检查耗时"
+    description: "各项检查的平均耗时"
+    category: "performance"
+    unit: "秒"
+    type: "gauge"
+    data_source: "monitoring"
+    collection_interval: "1h"
+
+# ========== 阈值设置 ==========
+thresholds:
+  # ---- 文档阈值 ----
+  doc_count:
+    warning:
+      min: 800
+      max: 10000
+    critical:
+      min: 500
+      max: 50000
+    target: 1000
+      
+  doc_lines:
+    warning:
+      min: 100000
+    critical:
+      min: 50000
+    target: 400000
+    
+  # ---- 链接健康阈值 ----
+  link_health_rate:
+    warning:
+      min: 95.0
+    critical:
+      min: 90.0
+    target: 99.0
+    
+  broken_links:
+    warning:
+      max: 10
+    critical:
+      max: 50
+    target: 0
+    
+  # ---- 代码示例阈值 ----
+  code_blocks:
+    warning:
+      min: 4000
+    critical:
+      min: 3000
+    target: 5000
+    
+  # ---- 质量评分阈值 ----
+  quality_overall:
+    warning:
+      min: 85.0
+    critical:
+      min: 70.0
+    target: 95.0
+    
+  quality_completeness:
+    warning:
+      min: 80.0
+    critical:
+      min: 60.0
+    target: 95.0
+    
+  quality_consistency:
+    warning:
+      min: 90.0
+    critical:
+      min: 80.0
+    target: 98.0
+    
+  quality_coverage:
+    warning:
+      min: 80.0
+    critical:
+      min: 60.0
+    target: 90.0
+    
+  quality_maintainability:
+    warning:
+      min: 80.0
+    critical:
+      min: 60.0
+    target: 90.0
+    
+  # ---- 性能阈值 ----
+  build_time:
+    warning:
+      max: 300  # 5分钟
+    critical:
+      max: 600  # 10分钟
+    target: 120  # 2分钟
+
+# ========== 告警规则 ==========
+alerts:
+  # ---- 链接失效告警 ----
+  - id: "link_health_critical"
+    name: "链接健康严重告警"
+    description: "当链接健康率低于90%时触发"
+    severity: "critical"
+    condition: "link_health_rate < 90.0"
+    evaluation_window: "5m"
+    cooldown: "30m"
+    actions:
+      - "notify_email"
+      - "notify_slack"
+      - "create_issue"
+    message_template: |
+      🔴 严重: 链接健康率降至 {{link_health_rate}}%
+      失效链接: {{broken_links}} 个
+      请立即检查链接健康状况！
+      
+  - id: "link_health_warning"
+    name: "链接健康警告"
+    description: "当链接健康率低于95%时触发"
+    severity: "warning"
+    condition: "link_health_rate < 95.0"
+    evaluation_window: "10m"
+    cooldown: "1h"
+    actions:
+      - "notify_slack"
+    message_template: |
+      🟡 警告: 链接健康率降至 {{link_health_rate}}%
+      建议检查并修复失效链接。
+      
+  - id: "broken_links_spike"
+    name: "失效链接激增"
+    description: "当失效链接数量突然增加时触发"
+    severity: "warning"
+    condition: "broken_links_delta > 10"
+    evaluation_window: "1h"
+    cooldown: "2h"
+    actions:
+      - "notify_slack"
+      
+  # ---- 质量评分告警 ----
+  - id: "quality_score_critical"
+    name: "质量评分严重告警"
+    description: "当总体质量评分低于70分时触发"
+    severity: "critical"
+    condition: "quality_overall < 70.0"
+    evaluation_window: "15m"
+    cooldown: "1h"
+    actions:
+      - "notify_email"
+      - "notify_slack"
+      - "create_issue"
+    message_template: |
+      🔴 严重: 项目质量评分降至 {{quality_overall}}
+      完整性: {{quality_completeness}}
+      一致性: {{quality_consistency}}
+      覆盖率: {{quality_coverage}}
+      可维护性: {{quality_maintainability}}
+      
+  - id: "quality_score_warning"
+    name: "质量评分警告"
+    description: "当总体质量评分低于85分时触发"
+    severity: "warning"
+    condition: "quality_overall < 85.0"
+    evaluation_window: "30m"
+    cooldown: "2h"
+    actions:
+      - "notify_slack"
+      
+  # ---- 构建告警 ----
+  - id: "build_time_warning"
+    name: "构建时间警告"
+    description: "当构建时间超过5分钟时触发"
+    severity: "warning"
+    condition: "build_time > 300"
+    evaluation_window: "1h"
+    cooldown: "2h"
+    actions:
+      - "notify_slack"
+    message_template: |
+      🟡 构建时间异常: {{build_time}} 秒
+      建议优化监控脚本性能。
+      
+  - id: "build_failure"
+    name: "构建失败"
+    description: "当监控脚本执行失败时触发"
+    severity: "critical"
+    condition: "build_status == 'failed'"
+    evaluation_window: "5m"
+    cooldown: "15m"
+    actions:
+      - "notify_email"
+      - "notify_slack"
+      
+  # ---- 文档数量告警 ----
+  - id: "doc_count_drop"
+    name: "文档数量下降"
+    description: "当文档数量异常减少时触发"
+    severity: "warning"
+    condition: "doc_count_delta < -50"
+    evaluation_window: "1h"
+    cooldown: "4h"
+    actions:
+      - "notify_slack"
+      
+  # ---- 形式化元素告警 ----
+  - id: "formal_elements_growth"
+    name: "形式化元素增长"
+    description: "当形式化元素数量快速增长时触发（正面告警）"
+    severity: "info"
+    condition: "formal_elements_delta > 100"
+    evaluation_window: "24h"
+    cooldown: "24h"
+    actions:
+      - "notify_slack"
+    message_template: |
+      ✅ 形式化元素增长: +{{formal_elements_delta}}
+      当前总数: {{formal_elements}}
+
+# ========== 通知渠道 ==========
+notifications:
+  email:
+    enabled: true
+    smtp_server: "${SMTP_SERVER}"
+    smtp_port: 587
+    from_address: "monitoring@analysisdataflow.org"
+    to_addresses:
+      - "admin@analysisdataflow.org"
+      - "maintainers@analysisdataflow.org"
+    
+  slack:
+    enabled: true
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#quality-monitoring"
+    username: "质量监控机器人"
+    icon_emoji: ":chart_with_upwards_trend:"
+    
+  github:
+    enabled: true
+    repo: "AnalysisDataFlow/AnalysisDataFlow"
+    issue_labels:
+      - "quality"
+      - "monitoring"
+      - "auto-generated"
+    
+  webhook:
+    enabled: false
+    url: "${CUSTOM_WEBHOOK_URL}"
+    headers:
+      Authorization: "Bearer ${WEBHOOK_TOKEN}"
+
+# ========== 面板布局 ==========
+layout:
+  rows:
+    - name: "概览"
+      panels:
+        - metric: "quality_overall"
+          type: "gauge"
+          size: "large"
+          thresholds: [70, 85, 95]
+          
+        - metric: "doc_count"
+          type: "stat"
+          size: "medium"
+          
+        - metric: "formal_elements"
+          type: "stat"
+          size: "medium"
+          
+        - metric: "link_health_rate"
+          type: "gauge"
+          size: "medium"
+          thresholds: [90, 95, 99]
+          
+    - name: "趋势"
+      panels:
+        - metric: "quality_overall"
+          type: "graph"
+          size: "large"
+          time_range: "30d"
+          
+        - metric: "doc_count"
+          type: "graph"
+          size: "medium"
+          time_range: "30d"
+          
+        - metric: "link_health_rate"
+          type: "graph"
+          size: "medium"
+          time_range: "7d"
+          
+    - name: "详细指标"
+      panels:
+        - metric: "quality_completeness"
+          type: "bar"
+          size: "small"
+          
+        - metric: "quality_consistency"
+          type: "bar"
+          size: "small"
+          
+        - metric: "quality_coverage"
+          type: "bar"
+          size: "small"
+          
+        - metric: "quality_maintainability"
+          type: "bar"
+          size: "small"
+          
+    - name: "告警"
+      panels:
+        - type: "alert_list"
+          size: "full"
+          filters:
+            severity: ["critical", "warning"]
+            state: ["firing", "pending"]
+
+# ========== 数据源配置 ==========
+data_sources:
+  filesystem:
+    type: "local"
+    base_path: "."
+    
+  link_checker:
+    type: "script"
+    script: ".scripts/performance-monitor.py"
+    args: ["--path", ".", "--quick"]
+    
+  content_analysis:
+    type: "script"
+    script: ".scripts/performance-monitor.py"
+    args: ["--path", "."]
+    
+  monitoring:
+    type: "internal"
+    metrics_path: "monitoring/performance-report.json"
+    
+  calculated:
+    type: "derived"
+    formulas:
+      quality_overall: "(quality_completeness + quality_consistency + quality_coverage + quality_maintainability) / 4"
+
+# ========== 历史数据配置 ==========
+history:
+  retention_period: "1y"
+  aggregation:
+    - interval: "1h"
+      retention: "7d"
+    - interval: "1d"
+      retention: "90d"
+    - interval: "1w"
+      retention: "1y"
+  storage:
+    type: "json"
+    path: "monitoring/metrics-history.json"
