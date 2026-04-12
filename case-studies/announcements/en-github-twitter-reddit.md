@@ -9,6 +9,7 @@
 We're collecting **production case studies** from organizations using stream processing technologies (Apache Flink, Kafka Streams, Spark Streaming, etc.) to build an authoritative, open-source industrial practice knowledge base.
 
 **Why share your story?**
+
 - 🌍 Help thousands of developers solve similar challenges
 - 🏆 Showcase your organization's technical excellence
 - 🌟 Gain community recognition and networking opportunities
@@ -41,11 +42,11 @@ We're collecting **production case studies** from organizations using stream pro
 
 ## Case Study Requirements
 
-✅ **Production Environment** - Systems running in production (not POC)  
-✅ **Quantified Metrics** - Throughput, latency, cluster size  
-✅ **Architecture Diagram** - System design and data flow  
-✅ **Lessons Learned** - Challenges faced and solutions found  
-✅ **No Sensitive Data** - All confidential information removed  
+✅ **Production Environment** - Systems running in production (not POC)
+✅ **Quantified Metrics** - Throughput, latency, cluster size
+✅ **Architecture Diagram** - System design and data flow
+✅ **Lessons Learned** - Challenges faced and solutions found
+✅ **No Sensitive Data** - All confidential information removed
 
 ---
 
@@ -60,6 +61,7 @@ We understand the sensitivity of production information:
 | 🔒 **Fully Anonymous** | Only technical architecture shared, no company information revealed |
 
 **Additional Protections:**
+
 - All cases reviewed for sensitive information before publication
 - No company information published without explicit authorization
 - Cases can be updated or removed at any time upon request
@@ -86,12 +88,12 @@ We understand the sensitivity of production information:
 3. Fill in the information following the template
 4. Submit the issue and wait for review
 
-**Estimated time**: 30-40 minutes  
+**Estimated time**: 30-40 minutes
 **Review period**: 5-7 business days
 
 ### Option 2: Direct Email
 
-If GitHub is not accessible, email your case to: [project-email]  
+If GitHub is not accessible, email your case to: [project-email]
 (Subject: Industrial Case Study Submission)
 
 ---
@@ -123,16 +125,16 @@ A complete case study includes 8 sections:
 
 ## FAQ
 
-**Q: My company has strict information policies. Can I still participate?**  
+**Q: My company has strict information policies. Can I still participate?**
 A: Absolutely! We support fully anonymous submissions. You only need to share technical solutions and architecture without revealing any company information.
 
-**Q: Can I update or remove my case after publication?**  
+**Q: Can I update or remove my case after publication?**
 A: Yes. You can request updates or removal at any time, and we'll process within 2 business days.
 
-**Q: What if my case doesn't pass review?**  
+**Q: What if my case doesn't pass review?**
 A: The review team will provide specific feedback for improvement, and you can resubmit.
 
-**Q: Is there a deadline for submission?**  
+**Q: Is there a deadline for submission?**
 A: This collection is ongoing, but we recommend submitting before December 2026 to be included in the annual case collection.
 
 ---
@@ -144,7 +146,7 @@ A: This collection is ongoing, but we recommend submitting before December 2026 
 ```
 🏭 Calling all stream processing practitioners!
 
-We're collecting production case studies from organizations using 
+We're collecting production case studies from organizations using
 Flink, Kafka Streams, and Spark Streaming.
 
 ✅ Anonymous submission supported
@@ -165,7 +167,7 @@ Submit: [GitHub Issue Link]
 
 Hey r/apacheflink community!
 
-We're building an open-source knowledge base of industrial stream 
+We're building an open-source knowledge base of industrial stream
 processing case studies and looking for contributors.
 
 **What we need:**
@@ -199,5 +201,5 @@ Would love to hear your stories!
 
 ---
 
-*Last updated: 2026-04-12*  
+*Last updated: 2026-04-12*
 *Collection period: 2026 Q2 - Q4*

@@ -1,7 +1,7 @@
 # Martin Kleppmann 个性化邀请邮件
 
-> **状态**: 已准备待发送  
-> **优先级**: ⭐⭐⭐⭐⭐  
+> **状态**: 已准备待发送
+> **优先级**: ⭐⭐⭐⭐⭐
 > **发送日期**: 2026-04-12
 
 ---
@@ -26,14 +26,16 @@ AnalysisDataFlow is an open, rigorous, and navigable knowledge repository that b
 - **Explore** the frontier of AI-driven streaming, real-time ML, and emerging paradigms
 
 **Key Statistics:**
+
 - 📚 **1,000+** documentation pages
-- 📐 **10,000+** formalized theorems and definitions  
+- 📐 **10,000+** formalized theorems and definitions
 - 🔗 **Comprehensive** cross-references and dependency graphs
 - 🌐 **Bilingual** support (Chinese and English)
 
 ### Why We Reach Out to You Specifically
 
 Your book **"Designing Data-Intensive Applications"** has become the de facto standard reference for anyone building distributed data systems. Chapter 11 ("Stream Processing") in particular has shaped how developers understand:
+
 - **Event sourcing and CQRS patterns**
 - **Stream processing vs. batch processing trade-offs**
 - **Exactly-once semantics and idempotency**
@@ -42,6 +44,7 @@ Your book **"Designing Data-Intensive Applications"** has become the de facto st
 Beyond DDIA, your research on **CRDTs**, **local-first software**, and **distributed systems consistency** at Cambridge represents some of the most rigorous thinking in the field.
 
 We have been deeply influenced by your work. In AnalysisDataFlow:
+
 - Our **consistency model section** extensively references your research
 - The **"State Management"** chapter draws heavily from your insights on stream processing state
 - We maintain a **dedicated reading list** featuring your papers and talks
@@ -58,6 +61,7 @@ We see a natural synergy between AnalysisDataFlow and your vision:
 | Book format (static) | Living document (continuously updated) |
 
 Your guidance would help us:
+
 - Ensure our content maintains the clarity and depth that DDIA readers expect
 - Bridge the gap between accessible explanations and formal theory
 - Reach the global audience that has benefited from your work
@@ -95,6 +99,7 @@ Most engagement is asynchronous through email and collaborative documents.
 ### Next Steps
 
 If you are interested, I would be delighted to:
+
 1. Schedule a brief 30-minute call to discuss the role in more detail
 2. Share our **Advisory Board Charter** for your review
 3. Answer any questions you may have
@@ -105,10 +110,10 @@ Thank you for considering this invitation. Your expertise would be invaluable to
 
 Warm regards,
 
-[Your Full Name]  
-[Your Title]  
-AnalysisDataFlow Project Team  
-📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)  
+[Your Full Name]
+[Your Title]
+AnalysisDataFlow Project Team
+📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)
 🌐 [https://github.com/luyanfeng/AnalysisDataFlow](https://github.com/luyanfeng/AnalysisDataFlow)
 
 ---

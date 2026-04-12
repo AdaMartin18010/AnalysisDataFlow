@@ -1,8 +1,8 @@
 # 📧 个性化邮件发送清单
 
-> **活动**: 2026 流计算工业案例征集  
-> **目标**: 21家行业标杆公司  
-> **发送周期**: 2026年4月22日 - 4月30日  
+> **活动**: 2026 流计算工业案例征集
+> **目标**: 21家行业标杆公司
+> **发送周期**: 2026年4月22日 - 4月30日
 > **版本**: v1.0
 
 ---
@@ -39,7 +39,7 @@
 
 ## 📧 Batch 1: 已建立联系公司（4月22日）
 
-> **发送时间**: 2026年4月22日 09:00 CST  
+> **发送时间**: 2026年4月22日 09:00 CST
 > **邮件类型**: 跟进邮件，推进案例编写
 
 | # | 公司 | 地区 | 联系人状态 | 邮件主题 | 跟进重点 | 状态 |
@@ -50,6 +50,7 @@
 | 4 | **Confluent** | 美国 | 📧 已发送邀请 | Stream Processing Case Study Partnership | 合作机会 | ⬜ 待发送 |
 
 **Batch 1 跟进计划**:
+
 - 发送后3天：检查邮件打开情况
 - 发送后7天：如无回复，发送跟进邮件
 - 发送后14天：最后一次跟进，提供简化参与方式
@@ -58,7 +59,7 @@
 
 ## 📧 Batch 2: 国际头部公司（4月24日）
 
-> **发送时间**: 2026年4月24日 09:00 CST  
+> **发送时间**: 2026年4月24日 09:00 CST
 > **邮件类型**: 正式邀请，强调国际影响力
 
 | # | 公司 | 地区 | 潜在案例方向 | 邮件主题 | 个性化要点 | 状态 |
@@ -70,6 +71,7 @@
 | 9 | **美团** | 中国 | 实时调度、配送优化 | 美团实时计算案例征集 | 强调配送场景价值 | ⬜ 待发送 |
 
 **Batch 2 跟进计划**:
+
 - 发送后5天：首次跟进
 - 发送后10天：二次跟进，分享活动进展
 - 发送后21天：最后跟进，邀请推荐其他同事
@@ -78,7 +80,7 @@
 
 ## 📧 Batch 3: 中国头部互联网公司（4月26日）
 
-> **发送时间**: 2026年4月26日 09:00 CST  
+> **发送时间**: 2026年4月26日 09:00 CST
 > **邮件类型**: 正式邀请，强调国内影响力
 
 | # | 公司 | 地区 | 潜在案例方向 | 邮件主题 | 个性化要点 | 状态 |
@@ -90,6 +92,7 @@
 | 14 | **Spotify** | 瑞典 | 实时推荐 | Spotify Real-time Recommendation | 提及音频流处理特色 | ⬜ 待发送 |
 
 **Batch 3 跟进计划**:
+
 - 发送后5天：首次跟进
 - 发送后12天：二次跟进，提供案例撰写支持
 - 发送后21天：最后跟进
@@ -98,7 +101,7 @@
 
 ## 📧 Batch 4: 潜力公司（4月28日）
 
-> **发送时间**: 2026年4月28日 09:00 CST  
+> **发送时间**: 2026年4月28日 09:00 CST
 > **邮件类型**: 正式邀请，强调技术社区价值
 
 | # | 公司 | 地区 | 潜在案例方向 | 邮件主题 | 个性化要点 | 状态 |
@@ -110,6 +113,7 @@
 | 19 | **Snowflake** | 美国 | 流式入仓 | Snowflake Streaming Ingestion | 强调Snowpipe | ⬜ 待发送 |
 
 **Batch 4 跟进计划**:
+
 - 发送后7天：首次跟进
 - 发送后14天：二次跟进
 - 发送后28天：最后跟进
@@ -118,7 +122,7 @@
 
 ## 📧 Batch 5: 补充联系（4月30日）
 
-> **发送时间**: 2026年4月30日 09:00 CST  
+> **发送时间**: 2026年4月30日 09:00 CST
 > **邮件类型**: 正式邀请
 
 | # | 公司 | 地区 | 潜在案例方向 | 邮件主题 | 个性化要点 | 状态 |
@@ -127,6 +131,7 @@
 | 21 | **Cloudflare** | 美国 | DDoS检测、安全分析 | Cloudflare Security Analytics | 提及边缘计算 | ⬜ 待发送 |
 
 **Batch 5 跟进计划**:
+
 - 发送后7天：首次跟进
 - 发送后14天：最后跟进
 
@@ -156,11 +161,11 @@ Batch 5       -          -       首次跟进      -      最后跟进
 
 Hi [Name],
 
-I hope this email finds you well. I wanted to follow up on my previous 
+I hope this email finds you well. I wanted to follow up on my previous
 email regarding our industrial case study collection for stream processing.
 
-We've already received enthusiastic responses from several major tech 
-companies, and I believe [Company]'s experience would be incredibly 
+We've already received enthusiastic responses from several major tech
+companies, and I believe [Company]'s experience would be incredibly
 valuable to the community.
 
 Would you be open to a brief 15-minute call to discuss this opportunity?
@@ -182,7 +187,7 @@ Quick update on our case study collection:
 ✅ 5 case studies already submitted
 ✅ Featured coverage planned on major tech media
 
-We'd love to include [Company]'s story. Even a brief case summary 
+We'd love to include [Company]'s story. Even a brief case summary
 would be valuable - our team can help with the write-up.
 
 Let me know if you'd like to discuss!
@@ -200,8 +205,8 @@ Hi [Name],
 
 This is my final follow-up regarding the case study collection.
 
-If now is not the right time, I completely understand. However, if 
-you know someone else at [Company] who might be interested, I'd 
+If now is not the right time, I completely understand. However, if
+you know someone else at [Company] who might be interested, I'd
 greatly appreciate an introduction.
 
 Thanks for your time, and feel free to reach out if circumstances change.

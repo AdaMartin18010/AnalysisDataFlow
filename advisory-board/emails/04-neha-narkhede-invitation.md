@@ -1,7 +1,7 @@
 # Neha Narkhede 个性化邀请邮件
 
-> **状态**: 已准备待发送  
-> **优先级**: ⭐⭐⭐⭐⭐  
+> **状态**: 已准备待发送
+> **优先级**: ⭐⭐⭐⭐⭐
 > **发送日期**: 2026-04-12
 
 ---
@@ -26,14 +26,16 @@ AnalysisDataFlow is an open, rigorous, and navigable knowledge repository that b
 - **Explore** the frontier of AI-driven streaming, real-time ML, and emerging paradigms
 
 **Key Statistics:**
+
 - 📚 **1,000+** documentation pages
-- 📐 **10,000+** formalized theorems and definitions  
+- 📐 **10,000+** formalized theorems and definitions
 - 🔗 **Comprehensive** cross-references and dependency graphs
 - 🌐 **Bilingual** support (Chinese and English)
 
 ### Why We Reach Out to You Specifically
 
 As a **co-founder of Apache Kafka** and former CTO of Confluent, you have fundamentally shaped the **log-centric architecture** that underpins modern stream processing. The principles you helped establish:
+
 - **Event streaming as the central nervous system**
 - **Logs as the source of truth**
 - **Real-time data pipelines** enabling the Kappa architecture
@@ -69,6 +71,7 @@ In AnalysisDataFlow, we position Kafka as a **critical component** of the stream
 ```
 
 Your insights would be invaluable in:
+
 - **Validating our event streaming architecture documentation**
 - **Bridging messaging systems (Kafka) and processing engines (Flink)**
 - **Understanding the evolution from Kafka to Kafka Streams and beyond**
@@ -107,6 +110,7 @@ Most engagement is asynchronous through email and collaborative documents.
 ### Next Steps
 
 If you are interested, I would be delighted to:
+
 1. Schedule a brief 30-minute call to discuss the role in more detail
 2. Share our **Advisory Board Charter** for your review
 3. Answer any questions you may have
@@ -117,10 +121,10 @@ Thank you for considering this invitation. Your expertise would be invaluable to
 
 Warm regards,
 
-[Your Full Name]  
-[Your Title]  
-AnalysisDataFlow Project Team  
-📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)  
+[Your Full Name]
+[Your Title]
+AnalysisDataFlow Project Team
+📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)
 🌐 [https://github.com/luyanfeng/AnalysisDataFlow](https://github.com/luyanfeng/AnalysisDataFlow)
 
 ---

@@ -55,6 +55,7 @@ Flink/
 | Backpressure | [02-core-mechanisms/backpressure-and-flow-control.md](../Flink/02-core-mechanisms/backpressure-and-flow-control.md) | Backpressure propagation |
 
 **Checkpoint Deep Dive**:
+
 - **Barrier**: Special record triggering state snapshots
 - **Alignment**: Synchronizing barriers across parallel instances
 - **State Backend**: Storage mechanism for keyed and operator state
@@ -157,24 +158,28 @@ Flink/
 ## Key Concepts (English)
 
 ### Checkpointing
+
 - **Distributed Snapshots**: Periodic consistent snapshots of distributed state
 - **Barrier**: Special control record triggering state snapshots
 - **Alignment**: Synchronizing barriers across parallel instances
 - **Exactly-Once**: End-to-end exactly-once processing guarantee
 
 ### State Management
+
 - **Keyed State**: State scoped to a specific key
 - **Operator State**: State not associated with any key
 - **State Backend**: Pluggable storage implementation
 - **Queryable State**: Direct access to runtime state
 
 ### Time Semantics
+
 - **Event Time**: Timestamp when event occurred (business time)
 - **Processing Time**: Timestamp when event is processed (wall clock)
 - **Ingestion Time**: Timestamp when event enters the system
 - **Watermark**: Progress indicator for event time
 
 ### Windows
+
 - **Tumbling Window**: Fixed-size, non-overlapping windows
 - **Sliding Window**: Fixed-size, overlapping windows
 - **Session Window**: Dynamic windows by activity gaps

@@ -35,8 +35,9 @@ AnalysisDataFlow is an open, rigorous, and navigable knowledge repository that b
 - **Explore** the frontier of AI-driven streaming, real-time ML, and emerging paradigms
 
 **Key Statistics:**
+
 - 📚 **1,000+** documentation pages
-- 📐 **10,000+** formalized theorems and definitions  
+- 📐 **10,000+** formalized theorems and definitions
 - 🔗 **Comprehensive** cross-references and dependency graphs
 - 🌐 **Bilingual** support (Chinese and English)
 
@@ -75,6 +76,7 @@ Most engagement is asynchronous through email and collaborative documents.
 ### Next Steps
 
 If you are interested, I would be delighted to:
+
 1. Schedule a brief 30-minute call to discuss the role in more detail
 2. Share our **Advisory Board Charter** for your review
 3. Answer any questions you may have
@@ -85,10 +87,10 @@ Thank you for considering this invitation. Your expertise would be invaluable to
 
 Warm regards,
 
-[Your Full Name]  
-[Your Title]  
-AnalysisDataFlow Project Team  
-📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)  
+[Your Full Name]
+[Your Title]
+AnalysisDataFlow Project Team
+📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)
 🌐 [https://github.com/luyanfeng/AnalysisDataFlow](https://github.com/luyanfeng/AnalysisDataFlow)
 
 ---
@@ -119,6 +121,7 @@ AnalysisDataFlow 是一个开放、严谨、可导航的知识库，致力于连
 - **前沿探索**: 探索 AI 驱动的流处理、实时机器学习等新兴范式
 
 **核心数据**:
+
 - 📚 **1000+** 技术文档页面
 - 📐 **10000+** 形式化定理和定义
 - 🔗 **完整的** 交叉引用和依赖关系图谱
@@ -159,6 +162,7 @@ AnalysisDataFlow 是一个开放、严谨、可导航的知识库，致力于连
 ### 后续步骤
 
 如果您有兴趣，我很乐意：
+
 1. 安排一次30分钟的简短通话，详细讨论顾问职责
 2. 分享我们的 **顾问委员会章程** 供您审阅
 3. 解答您可能有的任何问题
@@ -170,10 +174,10 @@ AnalysisDataFlow 是一个开放、严谨、可导航的知识库，致力于连
 此致
 敬礼！
 
-[您的全名]  
-[您的职位]  
-AnalysisDataFlow 项目团队  
-📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)  
+[您的全名]
+[您的职位]
+AnalysisDataFlow 项目团队
+📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)
 🌐 [https://github.com/luyanfeng/AnalysisDataFlow](https://github.com/luyanfeng/AnalysisDataFlow)
 
 ---
@@ -227,6 +231,7 @@ Your acceptance is a tremendous honor for our project, and we are thrilled to ha
 ### Onboarding Information
 
 **Your Advisor Profile:**
+
 - **Name**: [Full Name]
 - **Title**: [Academic/Professional Title]
 - **Affiliation**: [Organization]
@@ -259,6 +264,7 @@ Your acceptance is a tremendous honor for our project, and we are thrilled to ha
 ### Upcoming Events
 
 **First Board Meeting**: [Date, Time, Timezone]
+
 - **Format**: Video conference (link to be provided)
 - **Duration**: 2 hours
 - **Agenda**: [Attach/Link to Agenda]
@@ -268,6 +274,7 @@ Your acceptance is a tremendous honor for our project, and we are thrilled to ha
 ### Contact Information
 
 **Your Primary Contacts:**
+
 - **Board Coordinator**: [Name], [email]
 - **Technical Lead**: [Name], [email]
 - **Administrative Support**: [Name], [email]
@@ -278,6 +285,7 @@ For time-sensitive matters, please reach out to [Name] at [phone/email].
 ### Resources
 
 Please find attached:
+
 1. **Advisory Board Charter** (PDF)
 2. **Project Overview Deck** (PDF)
 3. **Current Roadmap** (Link)
@@ -291,8 +299,8 @@ Once again, welcome to the team! We are excited to work with you.
 
 Warm regards,
 
-[Your Full Name]  
-[Your Title]  
+[Your Full Name]
+[Your Title]
 AnalysisDataFlow Project Team
 
 ---
@@ -314,6 +322,7 @@ I am pleased to introduce our newest advisory board member, **[Full Name]**!
 [Name] is [brief bio highlighting relevant expertise and achievements].
 
 **Key Highlights:**
+
 - [Notable achievement or position]
 - [Contribution to the field]
 - [Relevant expertise area]
@@ -322,6 +331,7 @@ I am pleased to introduce our newest advisory board member, **[Full Name]**!
 [Context on how they can contribute to the project]
 
 **Contact:**
+
 - Email: [email]
 - LinkedIn: [link] (if public)
 

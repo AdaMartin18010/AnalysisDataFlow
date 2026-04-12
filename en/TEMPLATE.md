@@ -15,14 +15,33 @@ Brief introduction to the topic. Explain what this document covers and why it ma
 
 ## Table of Contents
 
-- [1. Definitions](#1-definitions)
-- [2. Properties](#2-properties)
-- [3. Relations](#3-relations)
-- [4. Argumentation](#4-argumentation)
-- [5. Proof / Engineering Argument](#5-proof--engineering-argument)
-- [6. Examples](#6-examples)
-- [7. Visualizations](#7-visualizations)
-- [8. References](#8-references)
+- [Document Title](#document-title)
+  - [Table of Contents](#table-of-contents)
+  - [1. Definitions](#1-definitions)
+    - [Def-X-XX-01: \[Concept Name\]](#def-x-xx-01-concept-name)
+    - [Def-X-XX-02: \[Another Concept\]](#def-x-xx-02-another-concept)
+  - [2. Properties](#2-properties)
+    - [Lemma-X-XX-01: \[Property Name\]](#lemma-x-xx-01-property-name)
+    - [Prop-X-XX-01: \[Proposition Name\]](#prop-x-xx-01-proposition-name)
+  - [3. Relations](#3-relations)
+    - [Relation 1: \[Concept A\] to \[Concept B\]](#relation-1-concept-a-to-concept-b)
+    - [Relation 2: \[Another Relationship\]](#relation-2-another-relationship)
+  - [4. Argumentation](#4-argumentation)
+    - [4.1 \[Topic of Argumentation\]](#41-topic-of-argumentation)
+    - [4.2 \[Another Topic\]](#42-another-topic)
+  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+    - [Thm-X-XX-01: \[Theorem Name\]](#thm-x-xx-01-theorem-name)
+    - [Engineering Argument: \[Engineering Decision\]](#engineering-argument-engineering-decision)
+  - [6. Examples](#6-examples)
+    - [Example 1: \[Simple Example\]](#example-1-simple-example)
+    - [Example 2: \[Real-World Scenario\]](#example-2-real-world-scenario)
+  - [7. Visualizations](#7-visualizations)
+    - [Figure 1: \[Diagram Title\]](#figure-1-diagram-title)
+    - [Figure 2: \[Another Diagram\]](#figure-2-another-diagram)
+  - [8. References](#8-references)
+    - [Recommended Reading](#recommended-reading)
+  - [Cross-References](#cross-references)
+  - [Document Metadata](#document-metadata)
 
 ---
 
@@ -33,6 +52,7 @@ Brief introduction to the topic. Explain what this document covers and why it ma
 **Definition**: Formal mathematical or technical definition of the concept.
 
 **Formal Representation**:
+
 ```
 Mathematical notation or formal syntax
 ```
@@ -40,6 +60,7 @@ Mathematical notation or formal syntax
 **Intuitive Explanation**: Provide a clear, accessible explanation for practitioners.
 
 **Key Components**:
+
 | Component | Symbol | Description |
 |-----------|--------|-------------|
 | Component 1 | $A$ | Description of component 1 |
@@ -97,6 +118,7 @@ Describe how these concepts relate to each other.
 ### 4.1 [Topic of Argumentation]
 
 Present the reasoning process, including:
+
 - Auxiliary theorems or lemmas
 - Counterexample analysis
 - Boundary condition discussions
@@ -146,7 +168,7 @@ Present the reasoning process, including:
 
 ```java
 // Example code snippet
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // Configuration
@@ -178,7 +200,7 @@ graph TB
     B -->|No| D[Action 2]
     C --> E[End]
     D --> E
-    
+
     style A fill:#e1f5fe
     style E fill:#c8e6c9
 ```
@@ -191,12 +213,12 @@ flowchart TD
         L1A[Component A]
         L1B[Component B]
     end
-    
+
     subgraph Layer2["Layer 2"]
         L2A[Component C]
         L2B[Component D]
     end
-    
+
     L1A --> L2A
     L1B --> L2B
 ```
@@ -205,9 +227,6 @@ flowchart TD
 
 ## 8. References
 
-[^1]: Author Name, "Paper Title", Conference/Journal, Year. [URL or DOI]
-[^2]: Apache Flink Documentation, "Feature Name", Version. https://nightlies.apache.org/flink/
-[^3]: Book Author, *Book Title*, Publisher, Year.
 
 ### Recommended Reading
 
@@ -238,7 +257,7 @@ flowchart TD
 ---
 
 > **Document Standard**: This document follows the [AGENTS.md](../../AGENTS.md) six-section template.
-> 
+>
 > **Theorem Numbering**: Uses `{Type}-{Stage}-{DocNum}-{SeqNum}` format (e.g., `Thm-S-01-01`)
-> 
+>
 > **Last Updated**: 2026-04-12 | **Version**: v1.0

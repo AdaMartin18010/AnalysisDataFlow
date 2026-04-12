@@ -62,6 +62,7 @@ pie
 All English documents include navigation links to their Chinese counterparts at the top of each page.
 
 **Switch to Chinese**: Use the language badge at the top of any English document:
+
 ```markdown
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](../README.md)
 ```

@@ -53,24 +53,30 @@ The **Struct/** directory contains the most rigorous formal theoretical document
 ## Key Theorems (English Summary)
 
 ### Thm-S-01-01: USTM Completeness
+
 **Statement**: The Unified Streaming Theory Meta-model (USTM) provides a complete formal framework for describing stream computing systems across six expressiveness levels.
 
 **Key Components**:
+
 - $(\mathcal{L}, \mathcal{M}, \mathcal{P}, \mathcal{C}, \mathcal{S}, \mathcal{T}, \Sigma, \Phi)$
 - Six expressiveness levels from L1 (descriptive) to L6 (mechanized verification)
 
 ### Thm-S-02-01: Determinism Preservation
+
 **Statement**: A stream processing system is deterministic if and only if all operators are pure functions and channel ordering is preserved.
 
 **Conditions**:
+
 1. Pure function operators: $f: \mathcal{D}_{in} \rightarrow \mathcal{D}_{out}$
 2. FIFO channel semantics
 3. No external side effects
 
 ### Thm-S-04-01: Checkpoint Correctness
+
 **Statement**: Flink's checkpoint mechanism guarantees consistent global snapshots with no orphan messages.
 
 **Proof Structure**:
+
 1. Barrier alignment invariants
 2. State consistency at alignment points
 3. Exactly-once processing guarantee
@@ -93,10 +99,12 @@ The **Struct/** directory contains the most rigorous formal theoretical document
 ## Cross-References
 
 ### Chinese Documentation
+
 - [Struct/ Full Index](../Struct/00-INDEX.md) - Complete Chinese navigation
 - [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) - All formal elements registry
 
 ### English Documentation
+
 - [Knowledge/ Index](./KNOWLEDGE-INDEX.md) - Engineering practice navigation
 - [Flink/ Index](./FLINK-INDEX.md) - Flink-specific technology navigation
 

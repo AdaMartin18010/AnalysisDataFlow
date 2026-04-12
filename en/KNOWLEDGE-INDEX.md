@@ -25,6 +25,7 @@ Systematic mapping of stream computing core concepts.
 | Streaming Models Mindmap | [01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md) | Knowledge map from theory to practice |
 
 **Key Concepts**:
+
 - **Concurrency Paradigms**: Actor (message passing), CSP (synchronous channels), Dataflow (stream graphs), Threads (shared memory)
 - **Streaming Engines**: Flink, Spark Streaming, Kafka Streams, RisingWave comparison
 - **Time Semantics**: Event time vs Processing time vs Ingestion time
@@ -56,6 +57,7 @@ Industry-specific stream computing applications.
 | Gaming | Gaming Analytics | [03-business-patterns/gaming-analytics.md](../Knowledge/03-business-patterns/gaming-analytics.md) |
 
 **Alibaba Double 11**:
+
 - [alibaba-double11-flink.md](../Knowledge/03-business-patterns/alibaba-double11-flink.md) - Large-scale stream processing architecture
 
 ### 04. Technology Selection
@@ -84,6 +86,7 @@ Theory-to-code and migration guides.
 Emerging trends in stream computing.
 
 #### Real-time AI & Agents
+
 | Document | Chinese Path | Topic |
 |----------|-------------|-------|
 | AI Agent Streaming Architecture | [06-frontier/ai-agent-streaming-architecture.md](../Knowledge/06-frontier/ai-agent-streaming-architecture.md) | Stream computing driven agent workflows |
@@ -92,6 +95,7 @@ Emerging trends in stream computing.
 | Real-time RAG | [06-frontier/real-time-rag-architecture.md](../Knowledge/06-frontier/real-time-rag-architecture.md) | Streaming knowledge base updates |
 
 #### Streaming Databases
+
 | Document | Chinese Path | Topic |
 |----------|-------------|-------|
 | Streaming Databases Overview | [06-frontier/streaming-databases.md](../Knowledge/06-frontier/streaming-databases.md) | Architecture and capabilities |
@@ -99,6 +103,7 @@ Emerging trends in stream computing.
 | Vector Search Convergence | [06-frontier/vector-search-streaming-convergence.md](../Knowledge/06-frontier/vector-search-streaming-convergence.md) | Real-time vector index updates |
 
 #### Serverless & Cloud Native
+
 | Document | Chinese Path | Topic |
 |----------|-------------|-------|
 | Serverless Streaming | [06-frontier/serverless-stream-processing-architecture.md](../Knowledge/06-frontier/serverless-stream-processing-architecture.md) | Elastic workloads and cost optimization |
@@ -135,15 +140,19 @@ Common pitfalls and mitigation strategies.
 ### By Role
 
 **Architect**:
+
 1. Concept Atlas → Technology Selection → Frontier Technologies
 
 **Developer**:
+
 1. Design Patterns → Best Practices → Anti-Patterns
 
 **Data Engineer**:
+
 1. Business Patterns → Mapping Guides → Case Studies
 
 **Operations Engineer**:
+
 1. Best Practices → Anti-Patterns → Standards
 
 ---

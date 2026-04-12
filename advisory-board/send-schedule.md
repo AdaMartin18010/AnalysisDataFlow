@@ -81,7 +81,7 @@
 
 | 配置项 | 要求 | 状态 |
 |--------|------|------|
-| 发件人邮箱 | advisory-board@analysisdataflow.org | ⏳ 待配置 |
+| 发件人邮箱 | <advisory-board@analysisdataflow.org> | ⏳ 待配置 |
 | 邮件签名 | 包含姓名、职位、联系方式 | ⏳ 待配置 |
 | 回复地址 | 可接收回复的邮箱 | ⏳ 待配置 |
 | 邮件客户端 | 支持Markdown/PDF附件 | ⏳ 待配置 |

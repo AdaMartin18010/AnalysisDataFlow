@@ -44,7 +44,7 @@
 
 ### 发送技术检查
 
-- [ ] 发件人邮箱已设置 (email@analysisdataflow.org)
+- [ ] 发件人邮箱已设置 (<email@analysisdataflow.org>)
 - [ ] 邮件签名已配置
 - [ ] 回复地址正确
 - [ ] 附件大小检查 (< 10MB)
@@ -192,7 +192,7 @@
 
 ### 即时待办 (发送前)
 
-- [ ] 配置发件人邮箱 (email@analysisdataflow.org)
+- [ ] 配置发件人邮箱 (<email@analysisdataflow.org>)
 - [ ] 设置邮件签名
 - [ ] 将Markdown邮件转换为HTML格式 (如需要)
 - [ ] 附件PDF生成 (如需要)
