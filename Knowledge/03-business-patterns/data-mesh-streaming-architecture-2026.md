@@ -4,6 +4,43 @@
 
 ---
 
+## 目录
+
+- [Data Mesh 与流处理深度融合：2026架构实践指南](#data-mesh-与流处理深度融合2026架构实践指南)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 Data Mesh 形式化定义](#11-data-mesh-形式化定义)
+    - [1.2 流数据产品定义](#12-流数据产品定义)
+    - [1.3 域导向流所有权](#13-域导向流所有权)
+    - [1.4 联邦流治理](#14-联邦流治理)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [2.1 Data Mesh 2026状态分析](#21-data-mesh-2026状态分析)
+    - [2.2 可扩展性边界](#22-可扩展性边界)
+    - [2.3 治理复杂度](#23-治理复杂度)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 Data Mesh vs Data Fabric 对比矩阵](#31-data-mesh-vs-data-fabric-对比矩阵)
+    - [3.2 选择决策框架](#32-选择决策框架)
+    - [3.3 混合模式可能性](#33-混合模式可能性)
+    - [3.4 流处理与Data Mesh的关系](#34-流处理与data-mesh的关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 去中心化必然性论证](#41-去中心化必然性论证)
+    - [4.2 流处理加速Data Mesh价值实现](#42-流处理加速data-mesh价值实现)
+    - [4.3 反例分析：何时不应采用Data Mesh](#43-反例分析何时不应采用data-mesh)
+  - [5. 工程论证 (Proof / Engineering Argument)](#5-工程论证-proof--engineering-argument)
+    - [5.1 Data Mesh实施路径](#51-data-mesh实施路径)
+    - [5.2 Data Mesh成熟度模型](#52-data-mesh成熟度模型)
+    - [5.3 技术栈推荐论证](#53-技术栈推荐论证)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 金融行业案例：实时欺诈检测](#61-金融行业案例实时欺诈检测)
+    - [6.2 电商行业案例：大规模个性化推荐](#62-电商行业案例大规模个性化推荐)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 Data Mesh流架构全景图](#71-data-mesh流架构全景图)
+    - [7.2 Data Mesh vs Data Fabric 决策树](#72-data-mesh-vs-data-fabric-决策树)
+    - [7.3 ROI对比分析](#73-roi对比分析)
+    - [7.4 技术栈映射图](#74-技术栈映射图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+  - [附录 A: 流数据产品模板](#附录-a-流数据产品模板)
+
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 Data Mesh 形式化定义

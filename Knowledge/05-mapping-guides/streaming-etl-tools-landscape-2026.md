@@ -1,11 +1,58 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 2026 Streaming ETL工具全景对比
 
 > **所属阶段**: Knowledge/ | **前置依赖**: [Knowledge/04-technology-selection](../../Knowledge/04-technology-selection/) | **形式化等级**: L4
 
 ---
+
+## 目录
+
+- [2026 Streaming ETL工具全景对比](#2026-streaming-etl工具全景对比)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-05-30: Streaming ETL形式化定义](#def-k-05-30-streaming-etl形式化定义)
+    - [Def-K-05-31: 工具分类学](#def-k-05-31-工具分类学)
+    - [Def-K-05-32: 核心指标维度](#def-k-05-32-核心指标维度)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-05-15: 事件流平台性能边界](#lemma-k-05-15-事件流平台性能边界)
+    - [Lemma-K-05-16: 流处理引擎能力边界](#lemma-k-05-16-流处理引擎能力边界)
+    - [Lemma-K-05-17: 云原生服务约束](#lemma-k-05-17-云原生服务约束)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [Thm-K-05-15: Streaming ETL工具生态关系定理](#thm-k-05-15-streaming-etl工具生态关系定理)
+    - [Thm-K-05-16: Flink差异化定位定理](#thm-k-05-16-flink差异化定位定理)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 工具对比矩阵](#41-工具对比矩阵)
+      - [事件流平台详细对比](#事件流平台详细对比)
+      - [流处理引擎详细对比](#流处理引擎详细对比)
+      - [云原生服务详细对比](#云原生服务详细对比)
+      - [CDC工具详细对比](#cdc工具详细对比)
+    - [4.2 统一平台对比](#42-统一平台对比)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-K-05-17: 选型决策框架定理](#thm-k-05-17-选型决策框架定理)
+      - [维度1: 延迟要求 ($w\_{latency}$)](#维度1-延迟要求-w_latency)
+      - [维度2: 状态复杂度 ($w\_{state}$)](#维度2-状态复杂度-w_state)
+      - [维度3: 运维能力 ($w\_{ops}$)](#维度3-运维能力-w_ops)
+      - [维度4: 生态系统 ($w\_{eco}$)](#维度4-生态系统-w_eco)
+    - [5.2 生产部署架构建议](#52-生产部署架构建议)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 多工具组合案例: 电商平台实时Pipeline](#61-多工具组合案例-电商平台实时pipeline)
+    - [6.2 Python生态系统案例: PyFlink vs PySpark vs Bytewax](#62-python生态系统案例-pyflink-vs-pyspark-vs-bytewax)
+      - [工具对比](#工具对比)
+      - [Bytewax示例代码](#bytewax示例代码)
+      - [PyFlink等效代码](#pyflink等效代码)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 2026 Streaming ETL工具全景图](#71-2026-streaming-etl工具全景图)
+    - [7.2 选型决策树](#72-选型决策树)
+    - [7.3 Flink生态定位图](#73-flink生态定位图)
+    - [7.4 性能-复杂度权衡矩阵](#74-性能-复杂度权衡矩阵)
+    - [7.5 2026新兴趋势路线图](#75-2026新兴趋势路线图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+  - [附录: 快速参考表](#附录-快速参考表)
+    - [A. 工具选型速查表](#a-工具选型速查表)
+    - [B. 成本模型对比](#b-成本模型对比)
 
 ## 1. 概念定义 (Definitions)
 

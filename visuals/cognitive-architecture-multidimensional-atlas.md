@@ -12,6 +12,7 @@
 $$\mathcal{CA} = \langle P, C, D, A, M, L \rangle$$
 
 其中：
+
 - $P$ = 感知模块 (Perception)
 - $C$ = 认知模块 (Cognition)
 - $D$ = 决策模块 (Decision)
@@ -40,6 +41,7 @@ $$\mathcal{L}_P = \langle S, F, E \rangle$$
 - $E$: 事件检测算子 $E: F \times \Delta t \rightarrow \mathcal{E}$
 
 **流计算映射**:
+
 - Source → 传感器数据接入
 - Map → 特征提取
 - Filter → 噪声过滤
@@ -54,6 +56,7 @@ $$\mathcal{L}_C = \langle R, K, I \rangle$$
 - $I$: 整合函数 $I: \mathcal{E} \times M \rightarrow R$
 
 **流计算映射**:
+
 - KeyBy → 概念分组
 - Window → 上下文聚合
 - ProcessFunction → 复杂推理
@@ -68,6 +71,7 @@ $$\mathcal{L}_D = \langle \mathcal{O}, U, \pi \rangle$$
 - $\pi$: 策略函数 $\pi: R \rightarrow \Delta(\mathcal{O})$
 
 **流计算映射**:
+
 - Aggregate → 多因素综合
 - Reduce → 最优选择
 - Pattern → 策略匹配
@@ -82,6 +86,7 @@ $$\mathcal{L}_A = \langle \mathcal{A}, T, \Gamma \rangle$$
 - $\Gamma$: 执行反馈函数
 
 **流计算映射**:
+
 - Sink → 执行输出
 - SideOutput → 监控反馈
 
@@ -93,6 +98,7 @@ $$\mathcal{L}_A = \langle \mathcal{A}, T, \Gamma \rangle$$
 $$\mathcal{S}_t = \langle M_t^S, M_t^W, M_t^L, C_t, G_t \rangle$$
 
 其中：
+
 - $M_t^S$: 感觉记忆状态 (Sensory Memory)
 - $M_t^W$: 工作记忆状态 (Working Memory)
 - $M_t^L$: 长时记忆状态 (Long-term Memory)
@@ -105,6 +111,7 @@ $$\mathcal{S}_t = \langle M_t^S, M_t^W, M_t^L, C_t, G_t \rangle$$
 $$\mathcal{C}: \mathcal{S}_t \times \mathcal{P}_t \rightarrow \mathcal{S}_{t+1} \times \mathcal{A}_t$$
 
 其中：
+
 - 输入: 当前状态 $\mathcal{S}_t$ 和感知 $\mathcal{P}_t$
 - 输出: 下一状态 $\mathcal{S}_{t+1}$ 和行动 $\mathcal{A}_t$
 
@@ -114,6 +121,7 @@ $$\mathcal{C}: \mathcal{S}_t \times \mathcal{P}_t \rightarrow \mathcal{S}_{t+1} 
 $$\llbracket \mathcal{CA} \rrbracket_{stream}: \mathcal{P}^\omega \rightarrow \mathcal{A}^\omega$$
 
 将无限感知序列映射到无限行动序列，满足：
+
 - **因果性**: $\mathcal{A}_t$ 仅依赖于 $\mathcal{P}_{\leq t}$
 - **有限记忆**: 存在 $k$ 使得 $\mathcal{A}_t$ 仅依赖于 $\mathcal{P}_{[t-k, t]}$
 - **计算可追踪性**: 每个 $\mathcal{A}_t$ 可在有限时间内计算
@@ -129,6 +137,7 @@ $$\llbracket \mathcal{CA} \rrbracket_{stream}: \mathcal{P}^\omega \rightarrow \m
 
 **证明**:
 给定输入 $s \in S$:
+
 1. $e = E(f(s))$ (感知处理)
 2. $r = I(e, m)$ (认知表征)
 3. $o = \pi(r)$ (决策选择)
@@ -141,6 +150,7 @@ $$\llbracket \mathcal{CA} \rrbracket_{stream}: \mathcal{P}^\omega \rightarrow \m
 
 **证明**:
 设 $a \in \mathcal{A}$ 为执行的行动，$\Gamma(a)$ 为环境反馈。根据环境模型：
+
 - 环境状态 $E_{t+1} = \mathcal{T}(E_t, a)$
 - 新感知 $s_{t+1} = \Omega(E_{t+1})$
 
@@ -163,6 +173,7 @@ $$\Delta_{total} = \sum_{i \in \{P,C,D,A\}} \delta_i + \delta_{comm}$$
 $$\Lambda_{system} = \min(\lambda_P, \lambda_C, \lambda_D, \lambda_A)$$
 
 **优化策略**:
+
 - 对瓶颈层进行水平扩展
 - 使用异步处理解耦延迟
 - 实施背压控制防止过载
@@ -237,53 +248,53 @@ graph TB
         E2[数字信号]
         E3[传感器网络]
     end
-    
+
     subgraph LP["🔍 感知层 Perception Layer"]
         P1[传感器接入<br/>Source]
         P2[信号预处理<br/>Map/Filter]
         P3[特征提取<br/>FlatMap]
         P4[事件检测<br/>ProcessFunction]
-        
+
         P1 --> P2 --> P3 --> P4
     end
-    
+
     subgraph LC["🧠 认知层 Cognition Layer"]
         C1[知识表征<br/>KeyedState]
         C2[模式识别<br/>Window]
         C3[推理引擎<br/>ProcessFunction]
         C4[语义整合<br/>CoProcessFunction]
-        
+
         C1 --> C2 --> C3 --> C4
     end
-    
+
     subgraph LD["⚖️ 决策层 Decision Layer"]
         D1[策略评估<br/>Aggregate]
         D2[效用计算<br/>Reduce]
         D3[最优选择<br/>MaxBy]
         D4[风险分析<br/>Pattern CEPT]
-        
+
         D1 --> D2 --> D3 --> D4
     end
-    
+
     subgraph LA["🎯 行动层 Action Layer"]
         A1[动作生成<br/>Map]
         A2[执行调度<br/>ProcessFunction]
         A3[效应器控制<br/>Sink]
         A4[反馈采集<br/>SideOutput]
-        
+
         A1 --> A2 --> A3 --> A4
     end
-    
+
     E1 --> P1
     E2 --> P1
     E3 --> P1
-    
+
     P4 -->|感知流| C1
     C4 -->|认知表征| D1
     D4 -->|决策结果| A1
-    
+
     A4 -.->|环境反馈| ENV
-    
+
     style LP fill:#e1f5ff,stroke:#01579b,stroke-width:2px
     style LC fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     style LD fill:#fff3e0,stroke:#e65100,stroke-width:2px
@@ -302,79 +313,83 @@ graph TB
 **详细接口规范**:
 
 **感知层接口**:
+
 ```typescript
 interface PerceptionLayer {
     // 输入: 原始感官数据
     input: RawSensorData;
-    
+
     // 处理函数
     preprocess: (data: RawSensorData) => PreprocessedData;
     extractFeatures: (data: PreprocessedData) => FeatureVector;
     detectEvents: (features: FeatureVector, timeWindow: Duration) => EventStream;
-    
+
     // 输出: 结构化事件流
     output: EventStream;
-    
+
     // 状态: 轻量级缓存
     state: BufferState;
 }
 ```
 
 **认知层接口**:
+
 ```typescript
 interface CognitionLayer {
     // 输入: 事件流 + 记忆状态
     input: EventStream;
     memory: WorkingMemory;
-    
+
     // 处理函数
     represent: (event: Event, memory: Memory) => KnowledgeRepresentation;
     reason: (knowledge: Knowledge, rules: RuleSet) => InferenceResult;
     integrate: (results: InferenceResult[]) => UnifiedUnderstanding;
-    
+
     // 输出: 认知表征
     output: CognitiveRepresentation;
-    
+
     // 状态: KeyedState
     state: KeyedState<Knowledge>;
 }
 ```
 
 **决策层接口**:
+
 ```typescript
 interface DecisionLayer {
     // 输入: 认知表征
     input: CognitiveRepresentation;
-    
+
     // 处理函数
     evaluateStrategies: (context: Context) => StrategyEvaluation[];
     computeUtility: (strategies: Strategy[]) => UtilityVector;
     selectOptimal: (utilities: UtilityVector) => Decision;
     analyzeRisk: (decision: Decision, scenarios: Scenario[]) => RiskAssessment;
-    
+
     // 输出: 决策结果
     output: Decision;
-    
+
     // 状态: ValueState
     state: ValueState<DecisionContext>;
 }
 ```
 
 **行动层接口**:
+
 ```typescript
 interface ActionLayer {
     // 输入: 决策结果
     input: Decision;
-    
+
     // 处理函数
     generateActions: (decision: Decision) => ActionSequence;
     scheduleExecution: (actions: Action[]) => ExecutionPlan;
     controlActuators: (plan: ExecutionPlan) => EffectorCommands;
     collectFeedback: (commands: Command[]) => FeedbackStream;
-    
+
     // 输出: 执行反馈
     output: FeedbackStream;
-    
+
     // 状态: 无状态
     state: Stateless;
 }
@@ -390,21 +405,21 @@ interface ActionLayer {
 graph TB
     subgraph PARADIGMS["知识表示范式对比"]
         direction TB
-        
+
         subgraph SYM["🔤 符号主义 Symbolic"]
             S1[逻辑表示]
             S2[知识图谱]
             S3[规则系统]
             S4[本体论]
         end
-        
+
         subgraph CONN["🔗 连接主义 Connectionist"]
             C1[神经网络]
             C2[分布式表征]
             C3[向量嵌入]
             C4[注意力机制]
         end
-        
+
         subgraph BEH["🎯 行为主义 Behaviorist"]
             B1[状态-行动映射]
             B2[奖励信号]
@@ -412,24 +427,24 @@ graph TB
             B4[探索-利用]
         end
     end
-    
+
     subgraph STREAM["流计算对应技术"]
         direction TB
-        
+
         subgraph SYM_TECH["符号主义实现"]
             ST1[CEP引擎<br/>Flink CEP]
             ST2[规则引擎<br/>Drools/Drools Fusion]
             ST3[事件模式<br/>Pattern API]
             ST4[复杂查询<br/>Continuous SQL]
         end
-        
+
         subgraph CONN_TECH["连接主义实现"]
             CT1[在线推理<br/>TensorFlow Serving]
             CT2[流式特征<br/>Feature Store]
             CT3[嵌入计算<br/>Stream Embedding]
             CT4[注意力窗口<br/>Temporal Attention]
         end
-        
+
         subgraph BEH_TECH["行为主义实现"]
             BT1[在线RL<br/>Stream RL]
             BT2[奖励流<br/>Reward Stream]
@@ -437,22 +452,22 @@ graph TB
             BT4[探索调度<br/>Bandit Algorithms]
         end
     end
-    
+
     S1 --> ST1
     S2 --> ST2
     S3 --> ST3
     S4 --> ST4
-    
+
     C1 --> CT1
     C2 --> CT2
     C3 --> CT3
     C4 --> CT4
-    
+
     B1 --> BT1
     B2 --> BT2
     B3 --> BT3
     B4 --> BT4
-    
+
     style SYM fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style CONN fill:#fce4ec,stroke:#c2185b,stroke-width:2px
     style BEH fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
@@ -474,18 +489,21 @@ graph TB
 
 **符号主义表示**:
 $$\mathcal{K}_{sym} = \langle \mathcal{L}, \mathcal{A}, \mathcal{R} \rangle$$
+
 - $\mathcal{L}$: 形式语言（一阶逻辑、描述逻辑）
 - $\mathcal{A}$: 公理集合
 - $\mathcal{R}$: 推理规则集合
 
 **连接主义表示**:
 $$\mathcal{K}_{conn} = \langle \mathcal{N}, \mathcal{W}, \mathcal{A} \rangle$$
+
 - $\mathcal{N}$: 网络拓扑结构
 - $\mathcal{W}$: 权重矩阵集合
 - $\mathcal{A}$: 激活函数族
 
 **行为主义表示**:
 $$\mathcal{K}_{beh} = \langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R} \rangle$$
+
 - $\mathcal{S}$: 状态空间
 - $\mathcal{A}$: 行动空间
 - $\mathcal{P}$: 转移概率 $P(s'|s,a)$
@@ -500,43 +518,43 @@ $$\mathcal{K}_{beh} = \langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}
 ```mermaid
 flowchart TD
     ROOT(["🤔 推理类型选择<br/>Reasoning Type Selection"])
-    
+
     Q1{"是否有完整规则集？"}
     Q2{"是否有足够历史数据？"}
     Q3{"是否需要解释推理过程？"}
     Q4{"数据是否带标签？"}
     Q5{"是否需要实时适应？"}
-    
+
     DED["🔍 演绎推理<br/>Deductive Reasoning<br/><br/>从一般到特殊<br/>逻辑必然性<br/>规则驱动"]
     IND["📊 归纳推理<br/>Inductive Reasoning<br/><br/>从特殊到一般<br/>统计规律性<br/>数据驱动"]
     ABD["💡 溯因推理<br/>Abductive Reasoning<br/><br/>从结果到原因<br/>最佳解释<br/>假设驱动"]
     ANA["🔬 类比推理<br/>Analogical Reasoning<br/><br/>模式迁移<br/>相似性匹配<br/>案例驱动"]
-    
+
     ROOT --> Q1
-    
+
     Q1 -->|是| Q3
     Q1 -->|否| Q2
-    
+
     Q2 -->|是| Q4
     Q2 -->|否| ABD
-    
+
     Q3 -->|是| DED
     Q3 -->|否| Q5
-    
+
     Q4 -->|是| IND
     Q4 -->|否| ANA
-    
+
     Q5 -->|是| IND
     Q5 -->|否| DED
-    
+
     DED --> DED_APP["流式应用:<br/>• 规则验证<br/>• 合规检查<br/>• 权限判定<br/>• 公式推导"]
-    
+
     IND --> IND_APP["流式应用:<br/>• 趋势预测<br/>• 分类识别<br/>• 聚类分析<br/>• 异常检测"]
-    
+
     ABD --> ABD_APP["流式应用:<br/>• 根因分析<br/>• 故障诊断<br/>• 假设生成<br/>• 证据推理"]
-    
+
     ANA --> ANA_APP["流式应用:<br/>• 案例推荐<br/>• 模式迁移<br/>• 异常类比<br/>• 经验复用"]
-    
+
     style ROOT fill:#f5f5f5,stroke:#333,stroke-width:3px
     style DED fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style IND fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
@@ -600,60 +618,60 @@ $$\mathcal{R}_{ana}: \mathcal{C} \times \mathcal{C} \times \mathcal{P} \rightarr
 graph TB
     subgraph LEARNING["学习范式分类"]
         direction TB
-        
+
         subgraph SUP["📚 监督学习<br/>Supervised Learning"]
             S1[分类 Classification]
             S2[回归 Regression]
             S3[序列标注 Sequence Labeling]
         end
-        
+
         subgraph UNSUP["🔍 无监督学习<br/>Unsupervised Learning"]
             U1[聚类 Clustering]
             U2[降维 Dimensionality Reduction]
             U3[密度估计 Density Estimation]
         end
-        
+
         subgraph RL["🎮 强化学习<br/>Reinforcement Learning"]
             R1[策略优化 Policy Optimization]
             R2[价值学习 Value Learning]
             R3[模型学习 Model Learning]
         end
     end
-    
+
     subgraph STREAM_LEARN["流式学习适配"]
         direction TB
-        
+
         subgraph SL_STREAM["监督流学习"]
             SL1[在线监督学习<br/>Online Supervised]
             SL2[增量学习<br/>Incremental Learning]
             SL3[主动学习<br/>Active Learning]
         end
-        
+
         subgraph UL_STREAM["无监督流学习"]
             UL1[流式聚类<br/>Stream Clustering]
             UL2[概念漂移检测<br/>Drift Detection]
             UL3[异常检测<br/>Anomaly Detection]
         end
-        
+
         subgraph RL_STREAM["流式强化学习"]
             RL1[在线策略更新<br/>Online Policy Update]
             RL2[流式奖励处理<br/>Reward Stream Processing]
             RL3[环境适应<br/>Environment Adaptation]
         end
     end
-    
+
     S1 --> SL1
     S2 --> SL2
     S3 --> SL3
-    
+
     U1 --> UL1
     U2 --> UL2
     U3 --> UL3
-    
+
     R1 --> RL1
     R2 --> RL2
     R3 --> RL3
-    
+
     style SUP fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style UNSUP fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
     style RL fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
@@ -685,18 +703,21 @@ graph TB
 
 **监督学习边界**:
 $$\mathcal{L}_{sup}: (\mathcal{X} \times \mathcal{Y})^* \rightarrow (\mathcal{X} \rightarrow \mathcal{Y})$$
+
 - 输入: 带标签样本流 $(x_t, y_t)$
 - 输出: 预测函数 $h_t: \mathcal{X} \rightarrow \mathcal{Y}$
 - 目标: $\min \mathbb{E}[\ell(h_t(x), y)]$
 
 **无监督学习边界**:
 $$\mathcal{L}_{unsup}: \mathcal{X}^* \rightarrow \mathcal{P}(\mathcal{X})$$
+
 - 输入: 无标签样本流 $x_t$
 - 输出: 数据分布模型或结构
 - 目标: $\max \text{likelihood}$ 或 $\min \text{reconstruction error}$
 
 **强化学习边界**:
 $$\mathcal{L}_{rl}: (\mathcal{S} \times \mathcal{A} \times \mathbb{R})^* \rightarrow (\mathcal{S} \rightarrow \Delta(\mathcal{A}))$$
+
 - 输入: 状态-行动-奖励三元组流 $(s_t, a_t, r_t)$
 - 输出: 策略 $\pi_t: \mathcal{S} \rightarrow \Delta(\mathcal{A})$
 - 目标: $\max \mathbb{E}[\sum_{t} \gamma^t r_t]$
@@ -728,16 +749,16 @@ gantt
     section 反应式架构
     简单反射Agent       :1950, 1965
     基于条件的反射      :1965, 1975
-    
+
     section 慎思式架构
     符号AI系统         :1970, 1990
     BDI架构           :1980, 2000
     SOAR架构          :1985, 2010
-    
+
     section 混合架构
     三层架构          :1990, 2010
     智能体框架        :1995, 2020
-    
+
     section 现代架构
     认知架构集成      :2000, 2026
     流认知Agent       :2015, 2026
@@ -748,7 +769,7 @@ gantt
 graph TB
     subgraph EVOLUTION["Agent架构演化路径"]
         direction TB
-        
+
         L1["🦎 Level 1<br/>简单反射<br/>Simple Reflex"]
         L2["🐍 Level 2<br/>基于模型的反射<br/>Model-based Reflex"]
         L3["🦊 Level 3<br/>基于目标的Agent<br/>Goal-based Agent"]
@@ -757,20 +778,20 @@ graph TB
         L6["🦅 Level 6<br/>认知架构Agent<br/>Cognitive Architecture"]
         L7["🐉 Level 7<br/>流认知Agent<br/>Streaming Cognitive Agent"]
     end
-    
+
     subgraph STREAMING["与流处理系统融合"]
         direction TB
-        
+
         S1["事件驱动架构<br/>EDA"]
         S2["复杂事件处理<br/>CEP"]
         S3["流处理引擎<br/>Flink/Spark"]
         S4["状态流处理<br/>Stateful Streaming"]
         S5["认知流处理<br/>Cognitive Streaming"]
     end
-    
+
     subgraph FEATURES["关键特性演进"]
         direction TB
-        
+
         F1["条件-行动规则"]
         F2["内部状态模型"]
         F3["未来状态预测"]
@@ -779,9 +800,9 @@ graph TB
         F6["认知能力集成"]
         F7["实时认知流处理"]
     end
-    
+
     L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
-    
+
     L1 -.->|触发| S1
     L2 -.->|状态更新| S2
     L3 -.->|复杂计算| S3
@@ -789,7 +810,7 @@ graph TB
     L5 -.->|在线学习| S4
     L6 -.->|认知推理| S5
     L7 -.->|融合| S5
-    
+
     L1 -.-> F1
     L2 -.-> F2
     L3 -.-> F3
@@ -797,7 +818,7 @@ graph TB
     L5 -.-> F5
     L6 -.-> F6
     L7 -.-> F7
-    
+
     style L1 fill:#ffebee,stroke:#c62828,stroke-width:1px
     style L2 fill:#fff3e0,stroke:#ef6c00,stroke-width:1px
     style L3 fill:#fffde7,stroke:#f9a825,stroke-width:1px
@@ -860,32 +881,32 @@ graph LR
         P1[感官输入] --> P2[特征提取]
         P2 --> P3[模式识别]
     end
-    
+
     subgraph COGNITION["认知阶段"]
         C1[情境理解] --> C2[知识检索]
         C2 --> C3[推理计算]
     end
-    
+
     subgraph DECISION["决策阶段"]
         D1[目标评估] --> D2[策略选择]
         D2 --> D3[行动规划]
     end
-    
+
     subgraph ACTION["行动阶段"]
         A1[动作生成] --> A2[执行控制]
         A2 --> A3[环境效应]
     end
-    
+
     subgraph ENVIRONMENT["环境"]
         E[外部世界]
     end
-    
+
     P3 --> C1
     C3 --> D1
     D3 --> A1
     A3 --> E
     E -.-> P1
-    
+
     style PERCEPTION fill:#e3f2fd,stroke:#1565c0
     style COGNITION fill:#f3e5f5,stroke:#7b1fa2
     style DECISION fill:#fff3e0,stroke:#ef6c00
@@ -897,6 +918,7 @@ graph LR
 $$\text{PAC}: \mathcal{S}^\omega \rightarrow \mathcal{A}^\omega$$
 
 循环函数将感知序列映射到行动序列，满足：
+
 - 因果性: $a_t$ 仅依赖于 $s_{\leq t}$
 - 有界延迟: $\exists \Delta: a_t$ 在 $s_t$ 到达后 $\Delta$ 时间内产生
 - 适应性: $\lim_{t \rightarrow \infty} \text{Performance}(\text{PAC}, t) \geq P_{threshold}$
@@ -907,32 +929,32 @@ $$\text{PAC}: \mathcal{S}^\omega \rightarrow \mathcal{A}^\omega$$
 graph TB
     subgraph MEMORY["认知记忆系统"]
         direction TB
-        
+
         subgraph SENSORY["感觉记忆<br/>Sensory Memory"]
             SM1[视觉记忆<br/>~500ms]
             SM2[听觉记忆<br/>~2-4s]
         end
-        
+
         subgraph SHORT["短时记忆<br/>Short-term Memory"]
             STM1[工作记忆<br/>~30s]
             STM2[注意焦点<br/>4±1 chunks]
         end
-        
+
         subgraph LONG["长时记忆<br/>Long-term Memory"]
             direction TB
-            
+
             subgraph EXPLICIT["外显记忆"]
                 EP[情景记忆]
                 SEM[语义记忆]
             end
-            
+
             subgraph IMPLICIT["内隐记忆"]
                 PROC[程序记忆]
                 PRIM[启动效应]
             end
         end
     end
-    
+
     subgraph STREAMING_MAP["流计算映射"]
         SM1 -.->|Buffer| B1[Flink Buffer]
         SM2 -.->|Buffer| B1
@@ -942,7 +964,7 @@ graph TB
         SEM -.->|Global State| T2[Broadcast State]
         PROC -.->|Checkpoint| C1[Checkpoint State]
     end
-    
+
     style SENSORY fill:#ffebee,stroke:#c62828
     style SHORT fill:#fff3e0,stroke:#ef6c00
     style LONG fill:#e8f5e9,stroke:#2e7d32
@@ -959,6 +981,7 @@ $$\mathcal{M} = \langle M_S, M_W, M_L, \mathcal{R}, \mathcal{W} \rangle$$
 - $\mathcal{W}$: 写入操作 $\mathcal{W}: M \times Data \rightarrow M$
 
 **记忆访问延迟**:
+
 | 记忆类型 | 容量 | 持续时间 | 流计算对应 | 访问延迟 |
 |---------|------|---------|-----------|---------|
 | 感觉记忆 | 非常大 | < 1s | Buffer | 亚毫秒 |
@@ -971,40 +994,40 @@ $$\mathcal{M} = \langle M_S, M_W, M_L, \mathcal{R}, \mathcal{W} \rangle$$
 graph TB
     subgraph ATTENTION["注意力机制架构"]
         direction TB
-        
+
         INPUT["输入信号<br/>Input Signals"]
-        
+
         subgraph SELECTIVE["选择性注意"]
             S1[空间注意<br/>Spatial Attention]
             S2[特征注意<br/>Feature Attention]
             S3[时序注意<br/>Temporal Attention]
         end
-        
+
         subgraph MECHANISMS["注意机制类型"]
             M1[软注意<br/>Soft Attention<br/>可微分权重]
             M2[硬注意<br/>Hard Attention<br/>离散选择]
             M3[自注意<br/>Self Attention<br/>内部关联]
         end
-        
+
         OUTPUT["加权输出<br/>Attended Output"]
     end
-    
+
     subgraph STREAM_ATTENTION["流式注意机制"]
         SA1[滑动窗口注意<br/>Sliding Window]
         SA2[事件触发注意<br/>Event-triggered]
         SA3[优先级调度<br/>Priority Scheduling]
         SA4[背压感知<br/>Backpressure-aware]
     end
-    
+
     INPUT --> SELECTIVE
     SELECTIVE --> MECHANISMS
     MECHANISMS --> OUTPUT
-    
+
     M1 -.-> SA1
     M2 -.-> SA2
     S3 -.-> SA3
     S1 -.-> SA4
-    
+
     style INPUT fill:#e3f2fd,stroke:#1565c0
     style OUTPUT fill:#e8f5e9,stroke:#2e7d32
 ```
@@ -1014,6 +1037,7 @@ graph TB
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 其中：
+
 - $Q$: 查询向量
 - $K$: 键向量
 - $V$: 值向量
@@ -1029,7 +1053,7 @@ $$\text{StreamAttention}(x_t, \mathcal{H}_{t-1}) = f(x_t, \mathcal{H}_{t-1})$$
 flowchart TD
     subgraph CONTROL["认知控制流程"]
         START(["认知周期开始"])
-        
+
         PERCEPT["感知处理<br/>Perceptual Processing"]
         ENCODE["编码与表征<br/>Encoding"]
         RETRIEVE["记忆检索<br/>Memory Retrieval"]
@@ -1037,10 +1061,10 @@ flowchart TD
         DECIDE["决策制定<br/>Decision Making"]
         ACT["行动执行<br/>Action Execution"]
         LEARN["学习更新<br/>Learning Update"]
-        
+
         END(["周期结束"])
     end
-    
+
     subgraph FLOW["流计算实现"]
         F1[SourceFunction]
         F2[Map/ProcessFunction]
@@ -1050,9 +1074,9 @@ flowchart TD
         F6[SinkFunction]
         F7[SideOutput<br/>状态更新]
     end
-    
+
     START --> PERCEPT --> ENCODE --> RETRIEVE --> REASON --> DECIDE --> ACT --> LEARN --> END
-    
+
     PERCEPT -.-> F1
     ENCODE -.-> F2
     RETRIEVE -.-> F3
@@ -1060,7 +1084,7 @@ flowchart TD
     DECIDE -.-> F5
     ACT -.-> F6
     LEARN -.-> F7
-    
+
     style START fill:#e8f5e9,stroke:#2e7d32
     style END fill:#ffebee,stroke:#c62828
 ```
@@ -1071,54 +1095,54 @@ flowchart TD
 graph TB
     subgraph MAS["多Agent系统架构"]
         direction TB
-        
+
         subgraph AGENT1["Agent A"]
             A1_P[感知]
             A1_C[认知]
             A1_D[决策]
             A1_A[行动]
         end
-        
+
         subgraph AGENT2["Agent B"]
             A2_P[感知]
             A2_C[认知]
             A2_D[决策]
             A2_A[行动]
         end
-        
+
         subgraph AGENT3["Agent C"]
             A3_P[感知]
             A3_C[认知]
             A3_D[决策]
             A3_A[行动]
         end
-        
+
         subgraph COMMUNICATION["通信层"]
             MSG[消息传递]
             SHD[共享状态]
             COORD[协调机制]
         end
     end
-    
+
     subgraph STREAM_MAS["流式多Agent实现"]
         SM1[事件总线<br/>Event Bus]
         SM2[共享KeyedState<br/>Shared State]
         SM3[协调流<br/>Coordination Stream]
         SM4[分布式模式匹配<br/>Distributed CEP]
     end
-    
+
     A1_A --> MSG
     A2_A --> MSG
     A3_A --> MSG
-    
+
     MSG --> A1_P
     MSG --> A2_P
     MSG --> A3_P
-    
+
     SHD -.-> SM2
     COORD -.-> SM3
     MSG -.-> SM1
-    
+
     style AGENT1 fill:#e3f2fd,stroke:#1565c0
     style AGENT2 fill:#e8f5e9,stroke:#2e7d32
     style AGENT3 fill:#fff3e0,stroke:#ef6c00
@@ -1134,26 +1158,26 @@ graph LR
         L3[高负荷]
         L4[过载]
     end
-    
+
     subgraph BP["流处理背压"]
         B1[正常处理]
         B2[轻度背压]
         B3[重度背压]
         B4[系统拒绝]
     end
-    
+
     subgraph STRATEGY["应对策略"]
         S1[加速处理]
         S2[选择性注意]
         S3[任务队列]
         S4[丢弃低优先级]
     end
-    
+
     L1 --> B1
     L2 --> B2
     L3 --> B3
     L4 --> B4
-    
+
     B1 -.-> S1
     B2 -.-> S2
     B3 -.-> S3
@@ -1166,42 +1190,42 @@ graph LR
 graph TB
     subgraph HYBRID["认知-流融合架构"]
         direction TB
-        
+
         subgraph EDGE["边缘层"]
             E1[传感器]
             E2[边缘Agent]
             E3[本地CEP]
         end
-        
+
         subgraph FOG["雾计算层"]
             F1[区域协调器]
             F2[分布式状态]
             F3[局部决策]
         end
-        
+
         subgraph CLOUD["云中心层"]
             C1[全局认知引擎]
             C2[历史分析]
             C3[模型训练]
         end
-        
+
         subgraph FEEDBACK["反馈回路"]
             FB1[模型更新]
             FB2[策略下发]
             FB3[知识同步]
         end
     end
-    
+
     E1 --> E2 --> E3
     E3 --> F1
     F1 --> F2 --> F3
     F3 --> C1
     C1 --> C2 --> C3
-    
+
     C3 -.-> FB1 -.-> F2
     C1 -.-> FB2 -.-> F1
     C2 -.-> FB3 -.-> E2
-    
+
     style EDGE fill:#e8f5e9,stroke:#2e7d32
     style FOG fill:#fff3e0,stroke:#ef6c00
     style CLOUD fill:#e3f2fd,stroke:#1565c0
@@ -1213,25 +1237,25 @@ graph TB
 graph LR
     subgraph PERFORMANCE["认知处理性能模型"]
         direction TB
-        
+
         INPUT["输入速率 λ"]
-        
+
         subgraph PROCESSING["处理能力"]
             MU["服务率 μ"]
             RHO["利用率 ρ = λ/μ"]
         end
-        
+
         subgraph METRICS["性能指标"]
             LAT["延迟 L"]
             QUEUE["队列长度 Q"]
             THROUGH["吞吐量 T"]
         end
-        
+
         CONSTRAINT["约束: ρ < 1"]
-        
+
         OUTPUT["稳定输出"]
     end
-    
+
     INPUT --> MU
     MU --> RHO
     RHO --> LAT
@@ -1254,6 +1278,7 @@ graph LR
 **证明**:
 
 需证对于任意 $x, y \in \mathcal{CA}$:
+
 1. $\Phi(x \circ y) = \Phi(x) \circ \Phi(y)$ （运算保持）
 2. $\Phi(e_{\mathcal{CA}}) = e_{\mathcal{SC}}$ （单位元保持）
 
@@ -1285,12 +1310,14 @@ $$\Delta_{total} \leq n \cdot \delta_{max} + (n-1) \cdot \delta_{comm}$$
 **工程论证**:
 
 在实际Flink实现中：
+
 1. **感知层**: Source → Map/Filter，延迟主要由网络IO决定
 2. **认知层**: KeyBy → ProcessFunction，延迟由状态访问和计算复杂度决定
 3. **决策层**: Window → Aggregate，延迟由窗口大小决定
 4. **行动层**: Sink，延迟由外部系统响应决定
 
 通过以下优化可满足实时约束：
+
 - 使用异步IO减少等待时间
 - 使用增量计算减少窗口延迟
 - 使用内存状态后端减少状态访问延迟
@@ -1300,10 +1327,11 @@ $$\Delta_{total} \leq n \cdot \delta_{max} + (n-1) \cdot \delta_{comm}$$
 
 **定理 6.3.1 (分布式认知一致性)**
 > 在分布式流认知系统中，若满足：
+>
 > 1. 使用事件时间语义
 > 2. 状态更新是单调的
 > 3. Watermark传播正确
-> 
+>
 > 则全局认知状态最终一致。
 
 **证明概要**:
@@ -1515,28 +1543,28 @@ flowchart TB
         C_D[决策层<br/>Decision]
         C_A[行动层<br/>Action]
     end
-    
+
     subgraph STREAMING["流计算层"]
         S_P[Source<br/>Map/Filter]
         S_C[KeyedProcess<br/>Window/Aggregate]
         S_D[Reduce<br/>Pattern/CEP]
         S_A[Sink<br/>SideOutput]
     end
-    
+
     subgraph STATE["状态管理层"]
         ST_P[无状态/Buffer]
         ST_C[KeyedState<br/>ValueState]
         ST_D[AggregatingState]
         ST_A[无状态]
     end
-    
+
     subgraph TIME["时间语义层"]
         T_P[Processing Time]
         T_C[Event Time<br/>Watermark]
         T_D[Event Time<br/>Window Trigger]
         T_A[Processing Time]
     end
-    
+
     C_P --> S_P --> ST_P --> T_P
     C_C --> S_C --> ST_C --> T_C
     C_D --> S_D --> ST_D --> T_D
@@ -1553,12 +1581,12 @@ gantt
     流处理引擎成熟     :2015-01, 2020-01
     状态管理完善       :2017-01, 2021-01
     事件时间语义       :2016-01, 2019-01
-    
+
     section 认知集成
     CEP与规则引擎     :2018-01, 2021-01
     ML推理集成        :2019-01, 2022-01
     图处理集成        :2020-01, 2023-01
-    
+
     section 高级特性
     在线学习          :2021-01, 2024-01
     多Agent协调       :2022-01, 2025-01
@@ -1569,21 +1597,6 @@ gantt
 
 ## 9. 引用参考 (References)
 
-[^1]: Anderson, J. R. (2007). *How Can the Human Mind Occur in the Physical Universe?*. Oxford University Press.
-[^2]: Newell, A. (1990). *Unified Theories of Cognition*. Harvard University Press.
-[^3]: Laird, J. E. (2012). *The Soar Cognitive Architecture*. MIT Press.
-[^4]: Franklin, S., & Patterson, F. G. (2006). The LIDA Architecture: Adding New Modes of Learning to an Intelligent, Autonomous, Software Agent. *Integrated Design and Process Technology*.
-[^5]: Akidau, T., et al. (2015). The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing. *PVLDB*, 8(12).
-[^6]: Carbone, P., et al. (2015). Apache Flink: Stream and Batch Processing in a Single Engine. *IEEE Data Engineering Bulletin*.
-[^7]: Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson.
-[^8]: Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction* (2nd ed.). MIT Press.
-[^9]: Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press.
-[^10]: Dean, J., & Ghemawat, S. (2008). MapReduce: Simplified Data Processing on Large Clusters. *Communications of the ACM*, 51(1).
-[^11]: Kahneman, D. (2011). *Thinking, Fast and Slow*. Farrar, Straus and Giroux.
-[^12]: Baars, B. J. (1988). *A Cognitive Theory of Consciousness*. Cambridge University Press.
-[^13]: Shanahan, M. (2010). *Embodiment and the Inner Life*. Oxford University Press.
-[^14]: Tononi, G. (2008). Consciousness as Integrated Information: A Provisional Manifesto. *The Biological Bulletin*, 215(3).
-[^15]: Langley, P., Laird, J. E., & Rogers, S. (2009). Cognitive Architectures: Research Issues and Challenges. *Cognitive Systems Research*, 10(2).
 
 ---
 
@@ -1593,12 +1606,14 @@ gantt
 
 **定义 A.1.1 (认知代数)**
 认知架构形成一个代数结构 $\mathcal{A} = \langle \mathcal{L}, \circ, \eta, \mu \rangle$，其中：
+
 - $\mathcal{L} = \{\mathcal{L}_P, \mathcal{L}_C, \mathcal{L}_D, \mathcal{L}_A\}$ 是认知层次集合
 - $\circ: \mathcal{L} \times \mathcal{L} \rightarrow \mathcal{L}$ 是层次组合运算
 - $\eta: I \rightarrow \mathcal{L}$ 是单位态射
 - $\mu: \mathcal{L} \circ \mathcal{L} \rightarrow \mathcal{L}$ 是乘法自然变换
 
 **性质 A.1.2 (认知代数定律)**:
+
 1. **结合律**: $(\mathcal{L}_i \circ \mathcal{L}_j) \circ \mathcal{L}_k = \mathcal{L}_i \circ (\mathcal{L}_j \circ \mathcal{L}_k)$
 2. **单位元**: $\exists \mathcal{L}_{id}: \mathcal{L}_{id} \circ \mathcal{L}_i = \mathcal{L}_i \circ \mathcal{L}_{id} = \mathcal{L}_i$
 3. **封闭性**: $\forall \mathcal{L}_i, \mathcal{L}_j \in \mathcal{L}: \mathcal{L}_i \circ \mathcal{L}_j \in \mathcal{L}$
@@ -1607,6 +1622,7 @@ gantt
 
 **定义 A.2.1 (流认知函子)**
 函子 $\mathcal{F}: \mathbf{Cog} \rightarrow \mathbf{Stream}$ 将认知范畴映射到流处理范畴，满足：
+
 - 对象映射: $\mathcal{F}(\mathcal{L}_i) = S_i$ (流算子)
 - 态射映射: $\mathcal{F}(f: \mathcal{L}_i \rightarrow \mathcal{L}_j) = g: S_i \rightarrow S_j$
 - 恒等保持: $\mathcal{F}(id_{\mathcal{L}_i}) = id_{S_i}$
@@ -1614,6 +1630,7 @@ gantt
 
 **定理 A.2.2 (函子保持结构)**:
 函子 $\mathcal{F}$ 保持：
+
 - 初始对象: $\mathcal{F}(\mathcal{L}_0) = \emptyset$ (空流)
 - 终止对象: $\mathcal{F}(\mathcal{L}_1) = \text{Discard}$ (丢弃算子)
 - 积: $\mathcal{F}(\mathcal{L}_i \times \mathcal{L}_j) = S_i \oplus S_j$ (流合并)
@@ -1623,16 +1640,19 @@ gantt
 
 **定义 A.3.1 (推理系统)**
 推理系统是一个三元组 $\mathcal{R} = \langle \mathcal{L}, \mathcal{A}, \vdash \rangle$，其中：
+
 - $\mathcal{L}$: 形式语言
 - $\mathcal{A} \subseteq \mathcal{L}$: 公理集
 - $\vdash \subseteq 2^{\mathcal{L}} \times \mathcal{L}$: 推导关系
 
 不同类型推理的区别在于推导关系的性质：
+
 - **演绎**: $\Gamma \vdash_{ded} \phi$ 当且仅当 $\Gamma \models \phi$ (语义蕴涵)
 - **归纳**: $\Gamma \vdash_{ind} \phi$ 当且仅当 $\phi$ 是 $\Gamma$ 的最佳概括
 - **溯因**: $\Gamma \vdash_{abd} \phi$ 当且仅当 $\phi$ 是 $\Gamma$ 的最佳解释
 
 **公理 A.3.2 (演绎推理公理)**:
+
 1. **自反性**: $\phi \vdash \phi$
 2. **单调性**: 若 $\Gamma \vdash \phi$ 且 $\Gamma \subseteq \Gamma'$，则 $\Gamma' \vdash \phi$
 3. **传递性**: 若 $\Gamma \vdash \phi$ 且 $\Gamma, \phi \vdash \psi$，则 $\Gamma \vdash \psi$
@@ -1643,6 +1663,7 @@ gantt
 
 **定义 A.4.1 (学习空间)**
 学习空间是一个五元组 $\mathcal{LS} = \langle \mathcal{H}, \mathcal{D}, \mathcal{L}, \mathcal{E}, \mathcal{P} \rangle$：
+
 - $\mathcal{H}$: 假设空间
 - $\mathcal{D}$: 数据分布
 - $\mathcal{L}$: 损失函数
@@ -1651,6 +1672,7 @@ gantt
 
 **公理 A.4.2 (在线学习收敛)**:
 对于在线学习算法 $\mathcal{A}$，若满足：
+
 1. 凸损失函数
 2. 有界梯度
 3. 适当学习率 $\eta_t \propto 1/\sqrt{t}$
@@ -1660,6 +1682,7 @@ $$R_T = \sum_{t=1}^T \ell_t(w_t) - \min_w \sum_{t=1}^T \ell_t(w) = O(\sqrt{T})$$
 
 **公理 A.4.3 (强化学习收敛)**:
 对于表格型Q-learning，若满足：
+
 1. 所有状态-行动对被无限次访问
 2. 学习率满足 $\sum_t \alpha_t(s,a) = \infty$ 且 $\sum_t \alpha_t(s,a)^2 < \infty$
 3. 折扣因子 $\gamma < 1$
@@ -1678,6 +1701,7 @@ $$\mathcal{C}(\mathcal{T}) = \log_2 |\mathcal{H}_{\mathcal{T}}|$$
 流认知系统的负载定义为：
 $$\mathcal{L}(t) = \alpha \cdot \lambda(t) + \beta \cdot \sigma(t) + \gamma \cdot \mu(t)$$
 其中：
+
 - $\lambda(t)$: 输入速率
 - $\sigma(t)$: 状态访问频率
 - $\mu(t)$: 内存使用量
@@ -1711,4 +1735,5 @@ $$\mathcal{L}(t) = \alpha \cdot \lambda(t) + \beta \cdot \sigma(t) + \gamma \cdo
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-12 | 状态: 已完成*
+*文档路径: visuals/cognitive-architecture-multidimensional-atlas.md*
 *文档大小目标: 60-70KB | 实际大小: 见文件系统*
