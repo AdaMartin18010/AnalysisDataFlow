@@ -54,8 +54,8 @@
 
 ## 运维与调优
 
-- [生产检查清单](../../../../Flink/08-operations/production-checklist.md)
-- [性能调优指南](../../../../Flink/08-operations/performance-tuning-guide.md)
+- [生产检查清单](../../../../Knowledge/production-checklist.md)
+- [性能调优指南](../../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
 - [监控配置指南](../../../../Flink/08-operations/monitoring-basics.md)
 - [部署架构指南](../../../../DEPLOYMENT-ARCHITECTURES.md)
 
@@ -141,4 +141,3 @@ services:
 ---
 
 [返回课程大纲 →](../syllabus-csp.md)
-

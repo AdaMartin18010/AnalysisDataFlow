@@ -1,6 +1,6 @@
 # Apache Flink Formal Model
 
-> **Unit**: formal-methods/04-application-layer/02-stream-processing | **Prerequisites**: [01-stream-formalization](01-stream-formalization.md), [03-window-semantics](03-window-semantics.md) | **Formalization Level**: L5-L6
+> **Unit**: formal-methods/04-application-layer/02-stream-processing | **Prerequisites**: [01-stream-formalization](../../04-application-layer/02-stream-processing/01-stream-formalization.md), [03-window-semantics](03-window-semantics.md) | **Formalization Level**: L5-L6
 
 ## 1. Concept Definitions (Definitions)
 

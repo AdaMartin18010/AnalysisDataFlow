@@ -513,6 +513,6 @@ graph TB
 
 ---
 
-> **相关文档**: [TLA+](../academic/04-tla-toolbox.md) | [分布式系统验证](../04-application-layer/03-cloud-native/02-kubernetes-verification.md) | [AWS TLA+案例](01-aws-zelkova-tiros.md)
+> **相关文档**: [TLA+](../academic/04-tla-toolbox.md) | [分布式系统验证](../../04-application-layer/03-cloud-native/02-kubernetes-verification.md) | [AWS TLA+案例](01-aws-zelkova-tiros.md)
 >
 > **外部链接**: [FizzBee 官网](https://fizzbee.io/) | [FizzBee GitHub](https://github.com/fizzbee-io/fizzbee)

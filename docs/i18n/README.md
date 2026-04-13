@@ -36,7 +36,7 @@ The English documentation includes the following core guides:
 
 ### 1. Terminology Consistency
 
-- Core terms follow the project's [Glossary](../../../GLOSSARY.md) and [GLOSSARY-EN.md](../../../GLOSSARY-EN.md)
+- Core terms follow the project's [Glossary](../../GLOSSARY.md) and [GLOSSARY-EN.md](../../archive/deprecated/GLOSSARY-EN.md)
 - Technical product names remain untranslated (Apache Flink, Apache Kafka, etc.)
 - Code examples and configuration parameters remain unchanged
 
@@ -82,14 +82,15 @@ docs/i18n/
 ### Switching Languages
 
 Language switch badges are available at the top of:
-- Root [README.md](../../../README.md)
-- Root [README-EN.md](../../../README-EN.md)
+
+- Root [README.md](../README.md)
+- Root [README-EN.md](../../README-EN.md)
 - Each i18n documentation page
 
 ### Navigation
 
 - Use the [English Sidebar](./en/_sidebar.md) for English documentation navigation
-- Use the [Knowledge/00-INDEX.md](../../../Knowledge/00-INDEX.md) for Chinese navigation
+- Use the [Knowledge/00-INDEX.md](../../en/00-INDEX.md) for Chinese navigation
 
 ---
 

@@ -218,33 +218,39 @@ Month 2: Practice and Frontier
 ### Common Problems by Category
 
 #### Checkpoint Issues
-- [Checkpoint timeout](../../Flink/02-core/checkpoint-mechanism-deep-dive.md#checkpoint-timeout)
-- [Incremental checkpoint not working](../../Flink/02-core/checkpoint-mechanism-deep-dive.md#incremental-checkpoint)
+
+- [Checkpoint timeout](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md#checkpoint-timeout)
+- [Incremental checkpoint not working](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md#incremental-checkpoint)
 
 #### Watermark Issues
-- [Watermark not advancing](../../Flink/02-core/time-semantics-and-watermark.md#watermark-stuck)
-- [Late data handling](../../Knowledge/02-design-patterns/pattern-event-time-processing.md#late-data)
+
+- [Watermark not advancing](../../../Flink/02-core/time-semantics-and-watermark.md#watermark-stuck)
+- [Late data handling](../../../Knowledge/02-design-patterns/pattern-event-time-processing.md#late-data)
 
 #### Performance Issues
-- [Backpressure diagnosis](../../Flink/02-core/backpressure-and-flow-control.md)
-- [State backend selection](../../Flink/02-core/flink-state-management-complete-guide.md)
+
+- [Backpressure diagnosis](../../../Flink/02-core/backpressure-and-flow-control.md)
+- [State backend selection](../../../Flink/02-core/flink-state-management-complete-guide.md)
 
 ---
 
 ## 4. Recommended Reading Order
 
 ### Minimum Reading (1 Day)
+
 1. This Quick Start Guide
-2. [Struct/01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md) - Overview
-3. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) - Core mechanism
+2. [Struct/01.01-unified-streaming-theory.md](../../../USTM-F-Reconstruction/archive/original-struct/01-foundation/01.01-unified-streaming-theory.md) - Overview
+3. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) - Core mechanism
 
 ### Essential Reading (1 Week)
+
 Add to minimum:
-4. [Knowledge/02-design-patterns/pattern-event-time-processing.md](../../Knowledge/02-design-patterns/pattern-event-time-processing.md)
-5. [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md)
-6. [Flink/02-core/exactly-once-semantics-deep-dive.md](../../Flink/02-core/exactly-once-semantics-deep-dive.md)
+4. [Knowledge/02-design-patterns/pattern-event-time-processing.md](../../../Knowledge/02-design-patterns/pattern-event-time-processing.md)
+5. [Struct/02-properties/02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md)
+6. [Flink/02-core/exactly-once-semantics-deep-dive.md](../../../Flink/02-core/exactly-once-semantics-deep-dive.md)
 
 ### Complete Reading (1 Month)
+
 All documents in priority order as listed in project tracking.
 
 ---
@@ -254,19 +260,21 @@ All documents in priority order as listed in project tracking.
 ### Search Strategies
 
 1. **By Keyword**: Use the search function in your editor/IDE
-2. **By Theorem Number**: Look up in [THEOREM-REGISTRY.md](../../THEOREM-REGISTRY.md)
+2. **By Theorem Number**: Look up in [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md)
 3. **By Topic**: Follow the navigation in each section's INDEX.md
 
 ### Cross-Reference Navigation
 
 Documents link to each other using relative paths:
+
 ```markdown
-See [Def-S-04-01](../../Struct/01-foundation/01.04-dataflow-model-formalization.md#def-s-04-01)
+See [Def-S-04-01](../../../USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md#def-s-04-01)
 ```
 
 ### Version Information
 
 Each document includes:
+
 - **Version**: When it was last updated
 - **Prerequisites**: Documents you should read first
 - **Formalization Level**: L1 (conceptual) to L6 (Turing-complete)
@@ -275,4 +283,3 @@ Each document includes:
 
 *Last Updated: 2026-04-09*
 *Translation Version: 1.0*
-

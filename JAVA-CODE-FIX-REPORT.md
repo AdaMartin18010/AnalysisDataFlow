@@ -42,6 +42,7 @@
 ## 修复示例
 
 ### 修复前 (缺少import)
+
 ```java
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -49,6 +50,7 @@ DataStream<Event> stream = env.addSource(...);
 ```
 
 ### 修复后 (添加import)
+
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -59,6 +61,7 @@ DataStream<Event> stream = env.addSource(...);
 ```
 
 ### 修复前 (使用弃用API)
+
 ```java
 // 设置事件时间语义
 env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
@@ -66,6 +69,7 @@ stream.assignTimestampsAndWatermarks(...);
 ```
 
 ### 修复后 (使用新API)
+
 ```java
 // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
 env.getConfig().setAutoWatermarkInterval(200);
@@ -79,156 +83,206 @@ stream.assignTimestampsAndWatermarks(
 
 
 ### AI-STREAMING-RESEARCH-REPORT-2024-2025.md
+
 - 添加 1 个import语句
 
 ### CASE-STUDIES.md
+
 - 添加 13 个import语句
 
 ### CODE-VALIDATION-JAVA-REPORT.md
+
 - 添加 82 个import语句
 
 ### CONFIG-TEMPLATES\development\ide-config-guide.md
+
 - 添加 1 个import语句
 
 ### CONTRIBUTING-EN.md
+
 - 添加 2 个import语句
 
 ### CONTRIBUTING.md
+
 - 添加 2 个import语句
 
 ### DEPLOYMENT-ARCHITECTURES.md
+
 - 添加 1 个import语句
 
 ### FAQ.md
+
 - 添加 27 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-1-Architecture\03-flink-iot-time-semantics-and-disorder.md
+
 - 添加 18 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-13-Water-Management\25-flink-iot-smart-water-management.md
+
 - 添加 1 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-2-Processing\04-flink-iot-hierarchical-downsampling.md
+
 - 添加 2 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-3-Deployment\07-flink-iot-performance-tuning.md
+
 - 添加 4 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-4-Case-Study\08-flink-iot-complete-case-study.md
+
 - 添加 2 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-4-Case-Study\09-flink-iot-pattern-catalog.md
+
 - 添加 35 个import语句
 
 ### Flink-IoT-Authority-Alignment\Phase-7-Smart-Retail\case-smart-retail-complete.md
+
 - 添加 1 个import语句
 
 ### Flink\00-FLINK-TECH-STACK-DEPENDENCY.md
+
 - 添加 3 个import语句
 
 ### Flink\00-meta\00-QUICK-START.md
+
 - 添加 3 个import语句
 
 ### Flink\01-concepts\datastream-v2-semantics.md
+
 - 添加 3 个import语句
 
 ### Flink\01-concepts\flink-system-architecture-deep-dive.md
+
 - 添加 5 个import语句
 
 ### Flink\02-core\adaptive-execution-engine-v2.md
+
 - 添加 1 个import语句
 
 ### Flink\02-core\async-execution-model.md
+
 - 添加 2 个import语句
 
 ### Flink\02-core\checkpoint-mechanism-deep-dive.md
+
 - 添加 6 个import语句
 
 ### Flink\02-core\delta-join-production-guide.md
+
 - 添加 2 个import语句
 
 ### Flink\02-core\delta-join.md
+
 - 添加 2 个import语句
 
 ### Flink\02-core\exactly-once-end-to-end.md
+
 - 添加 3 个import语句
 
 ### Flink\02-core\exactly-once-semantics-deep-dive.md
+
 - 添加 4 个import语句
 
 ### Flink\02-core\flink-2.0-forst-state-backend.md
+
 - 添加 3 个import语句
 
 ### Flink\02-core\flink-2.2-frontier-features.md
+
 - 添加 6 个import语句
 
 ### Flink\02-core\flink-state-management-complete-guide.md
+
 - 添加 12 个import语句
 
 ### Flink\02-core\flink-state-ttl-best-practices.md
+
 - 添加 12 个import语句
 
 ### Flink\02-core\forst-state-backend.md
+
 - 添加 2 个import语句
 
 ### Flink\02-core\multi-way-join-optimization.md
+
 - 添加 6 个import语句
 
 ### Flink\02-core\network-stack-evolution.md
+
 - 添加 1 个import语句
 
 ### Flink\02-core\smart-checkpointing-strategies.md
+
 - 添加 5 个import语句
 
 ### Flink\02-core\state-backend-evolution-analysis.md
+
 - 添加 2 个import语句
 - 修复弃用API: MemoryStateBackend -> HashMapStateBackend
 
 ### Flink\02-core\state-backends-deep-comparison.md
+
 - 添加 2 个import语句
 
 ### Flink\02-core\streaming-etl-best-practices.md
+
 - 添加 16 个import语句
 
 ### Flink\02-core\time-semantics-and-watermark.md
+
 - 添加 11 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\data-types-complete-reference.md
+
 - 添加 3 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\flink-cep-complete-guide.md
+
 - 添加 9 个import语句
 - 修复弃用API: setStreamTimeCharacteristic(EventTime) -> WatermarkStrategy
 
 ### Flink\03-api\03.02-table-sql-api\flink-process-table-functions.md
+
 - 添加 5 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\flink-table-sql-complete-guide.md
+
 - 添加 3 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\materialized-tables.md
+
 - 添加 2 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\model-ddl-and-ml-predict.md
+
 - 添加 2 个import语句
 
 ### Flink\03-api\03.02-table-sql-api\sql-vs-datastream-comparison.md
+
 - 添加 4 个import语句
 
 ### Flink\03-api\09-language-foundations\04-streaming-lakehouse.md
+
 - 添加 2 个import语句
 
 ### Flink\03-api\09-language-foundations\07-rust-streaming-landscape.md
+
 - 添加 1 个import语句
 
 ### Flink\03-api\09-language-foundations\08-flink-rust-connector-dev.md
+
 - 添加 3 个import语句
 
 ### Flink\03-api\09-language-foundations\datastream-api-cheatsheet.md
+
 - 添加 28 个import语句
 - 修复弃用API: setStreamTimeCharacteristic(EventTime) -> WatermarkStrategy, setStreamTimeCharacteristic(EventTime) -> WatermarkStrategy
 
 ### Flink\03-api\09-language-foundations\flink-25-wasm-udf-ga.md
+
 - 添加 1 个import语句
 
 ... 还有 639 个文件已修复

@@ -319,7 +319,7 @@ val future = client.getKvState(
 
 **Formal Relations** [^12]:
 
-The formal foundation of this pattern is in [`Struct/02-properties/02.05-type-safety-derivation.md`](../../Struct/02-properties/02.05-type-safety-derivation.md), where FGG generic properties provide theoretical foundation for Keyed State type safety.
+The formal foundation of this pattern is in [`Struct/02-properties/02.05-type-safety-derivation.md`](../../../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.05-type-safety-derivation.md), where FGG generic properties provide theoretical foundation for Keyed State type safety.
 
 ```
 Knowledge Relations:
@@ -403,15 +403,14 @@ This section establishes the formal connection between the Stateful Computation 
 
 [^8]: Flink Queryable State. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state//>
 
-[^9]: Flink State Backend Selection. [Flink/06-engineering/state-backend-selection.md](../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
+[^9]: Flink State Backend Selection. [Flink/06-engineering/state-backend-selection.md](../../../../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
 
 [^10]: Flink Time Semantics. [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
 [^11]: Flink Checkpoint Mechanism. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
-[^12]: Type Safety Derivation. [Struct/02-properties/02.05-type-safety-derivation.md](../../Struct/02-properties/02.05-type-safety-derivation.md)
+[^12]: Type Safety Derivation. [Struct/02-properties/02.05-type-safety-derivation.md](../../../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.05-type-safety-derivation.md)
 
 ---
 
 *Document Version: v1.0 | Last Updated: 2026-04-02*
-

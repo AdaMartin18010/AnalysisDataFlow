@@ -58,16 +58,16 @@
 
 ### Reference Documents
 
-- [Architecture Guide](../../ARCHITECTURE.md)
-- [Theorem Registry](../../THEOREM-REGISTRY.md)
-- [Project Tracking](../../PROJECT-TRACKING.md)
-- [Value Proposition](../../VALUE-PROPOSITION.md)
+- [Architecture Guide](../../../en/ARCHITECTURE.md)
+- [Theorem Registry](../../../THEOREM-REGISTRY.md)
+- [Project Tracking](../../../PROJECT-TRACKING.md)
+- [Value Proposition](../../../VALUE-PROPOSITION.md)
 
 ### Guides
 
-- [Best Practices](../../BEST-PRACTICES.md)
-- [Troubleshooting](../../TROUBLESHOOTING.md)
-- [FAQ](../../FAQ.md)
+- [Best Practices](../../../BEST-PRACTICES.md)
+- [Troubleshooting](../../../TROUBLESHOOTING.md)
+- [FAQ](../../../FAQ.md)
 
 ---
 

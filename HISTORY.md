@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 项目历史记录
 
 > **文档版本**: v1.0 | **最后更新**: 2026-04-03 | **状态**: 项目完成归档
@@ -612,7 +613,7 @@ gantt
 
 - [CHANGELOG.md](CHANGELOG.md) - 详细版本变更记录
 - [PROJECT-TRACKING.md](PROJECT-TRACKING.md) - 项目进度看板
-- [PROJECT-VERSION-TRACKING.md](PROJECT-VERSION-TRACKING.md) - 版本追踪手册
+- [PROJECT-VERSION-TRACKING.md](archive/tracking-reports/PROJECT-VERSION-TRACKING.md) - 版本追踪手册
 - [THEOREM-REGISTRY.md](THEOREM-REGISTRY.md) - 定理注册表
 - [AGENTS.md](AGENTS.md) - Agent工作规范
 

@@ -1,6 +1,6 @@
 # 工作流系统形式化目标与技术栈
 
-> **所属单元**: formal-methods/04-application-layer/01-workflow | **前置依赖**: [formal-methods/03-distributed-systems/02-consensus-protocols](../../03-distributed-systems/02-consensus-protocols.md) | **形式化等级**: L4-L5
+> **所属单元**: formal-methods/04-application-layer/01-workflow | **前置依赖**: [formal-methods/03-distributed-systems/02-consensus-protocols](../04-blockchain-verification/02-consensus-protocols.md) | **形式化等级**: L4-L5
 
 ## 1. 概念定义 (Definitions)
 
@@ -298,7 +298,7 @@ flowchart TD
 
 工作流形式化与可串行化（Serializability）在并发控制和执行正确性方面密切相关。工作流系统的活动执行可视为事务，需要保证并发执行的正确性。
 
-- 详见：[可串行化](../../../98-appendices/wikipedia-concepts/16-serializability.md)
+- 详见：[可串行化](../../98-appendices/wikipedia-concepts/16-serializability.md)
 
 工作流与可串行化的对应关系：
 

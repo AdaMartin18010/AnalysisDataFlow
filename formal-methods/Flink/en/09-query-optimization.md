@@ -485,5 +485,5 @@ flowchart TD
 **Related Documents**:
 
 - [SQL Semantics](./08-sql-semantics.md)
-- [Flink SQL Calcite Optimizer](../../Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md)
+- [Flink SQL Calcite Optimizer](../../../Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md)
 - [Flink Architecture Overview](./01-architecture-overview.md)

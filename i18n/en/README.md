@@ -47,7 +47,7 @@ terminology_verified: true
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-> 📖 **Value Proposition**: [VALUE-PROPOSITION.md](./VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](./CONTENT-BOUNDARY.md)
+> 📖 **Value Proposition**: [VALUE-PROPOSITION.md](../../VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](../../CONTENT-BOUNDARY.md)
 
 ---
 
@@ -99,7 +99,7 @@ This project is a comprehensive organization and system construction of **theore
 
 - **🗺️ v3.3 Roadmap Released**: [ROADMAP-v3.3-and-beyond.md](ROADMAP-v3.3-and-beyond.md) - Planning P0-P3 priority tasks, cross-reference fixes, Flink release tracking, quality gate enhancements
 - **v3.2 Full Progress Completed**: E1-E4 error fixes + B3/B5 foundation improvements + O1-O4 optimizations + D2-D4 ecosystem | 12 new documents | 62 document modifications | 650KB new content
-- **✅ E1-E4 Error Fixes Completed**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - Term unification, link fixes, document alignment completed
+- **✅ E1-E4 Error Fixes Completed**: [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](../../archive/completion-reports/E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) - Term unification, link fixes, document alignment completed
 - **📚 New tutorials Directory Entry**: Quick Start Guide [5-Minute Quick Start](tutorials/00-5-MINUTE-QUICK-START.md) | [Environment Setup](tutorials/01-environment-setup.md) | [First Job](tutorials/02-first-flink-job.md)
 - **📖 New Cheat Sheets**: [DataStream API Cheat Sheet](Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheat Sheet](Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md)
 - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - ⚠️ Forward-looking technology vision, not official commitment
@@ -171,7 +171,7 @@ Global unified numbering: `{type}-{stage}-{document_number}-{sequence_number}`
 
 ## Contribution Guidelines
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) and [AGENTS.md](./AGENTS.md) for detailed contribution guidelines.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) and [AGENTS.md](../../AGENTS.md) for detailed contribution guidelines.
 
 ### Quick Start
 

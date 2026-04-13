@@ -331,7 +331,7 @@ graph LR
 
 ## 9. Related Concepts
 
-- [CAP Theorem Detailed Analysis](../../03-model-taxonomy/04-consistency/02-cap-theorem.md) - Complete formal analysis and proof of CAP theorem
+- [CAP Theorem Detailed Analysis](../../../03-model-taxonomy/04-consistency/02-cap-theorem.md) - Complete formal analysis and proof of CAP theorem
 - [Consensus](13-consensus.md)
 - [Linearizability](15-linearizability.md)
-- [Consistency Models](01-consistency-spectrum.md)
+- [Consistency Models](../../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)

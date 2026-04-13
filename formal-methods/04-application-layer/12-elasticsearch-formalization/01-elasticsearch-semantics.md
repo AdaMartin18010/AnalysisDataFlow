@@ -1,6 +1,6 @@
 # Elasticsearch 分布式搜索引擎形式语义
 
-> **所属阶段**: Knowledge | **前置依赖**: [Struct/02-consistent-models/03-eventual-consistency.md](../../Struct/02-consistent-models/03-eventual-consistency.md), [Knowledge/02-streaming-systems/05-state-management.md](../../Knowledge/02-streaming-systems/05-state-management.md) | **形式化等级**: L4-L5 | **状态**: Draft
+> **所属阶段**: Knowledge | **前置依赖**: [Struct/02-consistent-models/03-eventual-consistency.md](../../Struct/02-consistent-models/03-eventual-consistency.md), [Knowledge/02-streaming-systems/05-state-management.md](../../Knowledge/en/05-state-management.md) | **形式化等级**: L4-L5 | **状态**: Draft
 
 ---
 

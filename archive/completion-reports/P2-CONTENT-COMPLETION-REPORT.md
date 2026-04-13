@@ -14,15 +14,15 @@
 
 | 序号 | 文档 ID | 文档路径 | 状态 | 大小 | 形式化元素 |
 |------|---------|----------|------|------|-----------|
-| 1 | P2-1 | [Flink/data-types-complete-reference.md](./Flink/data-types-complete-reference.md) | ✅ | 10.3 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
-| 2 | P2-2 | [Flink/built-in-functions-reference.md](./Flink/built-in-functions-reference.md) | ✅ | 12.0 KB | 4 Def, 2 Lemma, 3 Prop, 2 Thm |
-| 3 | P2-3 | [Flink/jdbc-connector-guide.md](./Flink/jdbc-connector-guide.md) | ✅ | 11.2 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
-| 4 | P2-4 | [Flink/elasticsearch-connector-guide.md](./Flink/elasticsearch-connector-guide.md) | ✅ | 11.6 KB | 4 Def, 1 Lemma, 1 Prop, 2 Thm |
-| 5 | P2-5 | [Flink/mongodb-connector-guide.md](./Flink/mongodb-connector-guide.md) | ✅ | 13.0 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
-| 6 | P2-6 | [Knowledge/cep-complete-tutorial.md](./Knowledge/cep-complete-tutorial.md) | ✅ | 13.5 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
-| 7 | P2-7 | [Knowledge/production-checklist.md](./Knowledge/production-checklist.md) | ✅ | 13.9 KB | 3 Def, 2 Lemma, 1 Prop, 1 Thm |
-| 8 | P2-8 | [Flink/pyflink-deep-guide.md](./Flink/pyflink-deep-guide.md) | ✅ | 13.3 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
-| 9 | P2-9 | [Flink/state-backends-comparison.md](./Flink/state-backends-comparison.md) | ✅ | 14.6 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 1 | P2-1 | [Flink/data-types-complete-reference.md](../../Flink/data-types-complete-reference.md) | ✅ | 10.3 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 2 | P2-2 | [Flink/built-in-functions-reference.md](../../Flink/built-in-functions-reference.md) | ✅ | 12.0 KB | 4 Def, 2 Lemma, 3 Prop, 2 Thm |
+| 3 | P2-3 | [Flink/jdbc-connector-guide.md](../../Flink/jdbc-connector-guide.md) | ✅ | 11.2 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 4 | P2-4 | [Flink/elasticsearch-connector-guide.md](../../Flink/elasticsearch-connector-guide.md) | ✅ | 11.6 KB | 4 Def, 1 Lemma, 1 Prop, 2 Thm |
+| 5 | P2-5 | [Flink/mongodb-connector-guide.md](../../Flink/mongodb-connector-guide.md) | ✅ | 13.0 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 6 | P2-6 | [Knowledge/cep-complete-tutorial.md](../../Knowledge/cep-complete-tutorial.md) | ✅ | 13.5 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 7 | P2-7 | [Knowledge/production-checklist.md](../../Knowledge/production-checklist.md) | ✅ | 13.9 KB | 3 Def, 2 Lemma, 1 Prop, 1 Thm |
+| 8 | P2-8 | [Flink/pyflink-deep-guide.md](../../Flink/pyflink-deep-guide.md) | ✅ | 13.3 KB | 3 Def, 2 Lemma, 1 Prop, 2 Thm |
+| 9 | P2-9 | [Flink/state-backends-comparison.md](../../Flink/state-backends-comparison.md) | ✅ | 14.6 KB | 4 Def, 2 Lemma, 1 Prop, 2 Thm |
 
 **统计汇总**：
 

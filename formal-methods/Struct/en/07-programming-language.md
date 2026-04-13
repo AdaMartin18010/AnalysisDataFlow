@@ -558,7 +558,7 @@ graph TB
 - [Curry-Howard Correspondence](08-curry-howard.md)
 - [Set Theory](22-set-theory.md)
 - [Category Theory](24-category-theory.md)
-- [Theorem Proving](03-theorem-proving.md)
+- [Theorem Proving](../../98-appendices/wikipedia-concepts/en/03-theorem-proving.md)
 
 ---
 

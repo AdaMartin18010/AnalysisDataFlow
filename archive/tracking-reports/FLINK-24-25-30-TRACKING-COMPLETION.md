@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 2.4/2.5/3.0 版本跟踪完成报告
 
 > **报告版本**: v1.0 | **创建日期**: 2026-04-04 | **状态**: ✅ 跟踪系统已建立
@@ -326,27 +327,27 @@ checkpointing.intelligent.strategy: cost-based
 
 ### 版本跟踪文档
 
-- [Flink 2.4跟踪](Flink/08-roadmap/flink-2.4-tracking.md)
-- [Flink 2.5前瞻](Flink/08-roadmap/flink-2.5-preview.md)
-- [Flink 3.0愿景](Flink/08-roadmap/flink-30-architecture-redesign.md)
-- [版本对比矩阵](Flink/08-roadmap/flink-version-comparison-matrix.md)
+- [Flink 2.4跟踪](../../Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
+- [Flink 2.5前瞻](../../Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md)
+- [Flink 3.0愿景](../../Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md)
+- [版本对比矩阵](../../Flink/08-roadmap/08.01-flink-24/flink-version-comparison-matrix.md)
 
 ### 前瞻特性文档
 
 #### Flink 2.4
 
-- [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
+- [FLIP-531 AI Agents GA](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
 - [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
 - [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
-- [Flink 2.4连接器指南](Flink/04-connectors/flink-24-connectors-guide.md)
-- [Serverless Flink GA](Flink/10-deployment/serverless-flink-ga-guide.md)
-- [ANSI SQL 2023兼容](Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md)
+- [Flink 2.4连接器指南](../../Flink/05-ecosystem/05.01-connectors/flink-24-connectors-guide.md)
+- [Serverless Flink GA](../../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md)
+- [ANSI SQL 2023兼容](Flink/03-api/03.02-table-sql-api/ansi-sql-2023-compliance-guide.md)
 
 #### Flink 2.5
 
-- [流批一体深化](Flink/08-roadmap/flink-25-stream-batch-unification.md)
-- [GPU加速](Flink/12-ai-ml/flink-25-gpu-acceleration.md)
-- [WASM UDF GA](Flink/09-language-foundations/flink-25-wasm-udf-ga.md)
+- [流批一体深化](../../Flink/08-roadmap/08.01-flink-24/flink-25-stream-batch-unification.md)
+- [GPU加速](Flink/06-ai-ml/flink-25-gpu-acceleration.md)
+- [WASM UDF GA](../../Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md)
 
 ---
 
@@ -431,4 +432,3 @@ gh workflow run flink-release-tracker.yml
 **下次检查时间**: 2026-04-04 23:30:00 (每6小时)
 
 **维护责任人**: AnalysisDataFlow 项目团队
-

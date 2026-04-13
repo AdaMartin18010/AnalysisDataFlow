@@ -235,7 +235,7 @@ $$\forall k \in \mathcal{K}: \text{Checkpoint}(k, t) \text{ 包含所有 } e \in
 
 ### Prop-K-SS-01: 弹性伸缩上界
 
-**命题 (弹性伸缩上界)**: 
+**命题 (弹性伸缩上界)**:
 
 给定负载 $\lambda$、单实例处理能力 $\mu$、冷启动时间 $T_{cold}$，系统能达到的最大实例数 $N_{max}$ 满足：
 
@@ -565,7 +565,7 @@ $$\min_{n_{min}} \alpha \cdot \mathbb{E}[T_{response}] + \beta \cdot \mathcal{C}
 - 预温浪费：实例长期空闲
 - 按需启动更经济
 
-**最优策略**: 
+**最优策略**:
 $$n_{min}^*(t) = f(\lambda(t), \frac{d\lambda}{dt})$$
 
 即预温实例数应随负载及其变化率动态调整。
@@ -634,7 +634,7 @@ $$\text{Suitable}_{serverless} = \bigwedge_{i} C_i$$
 
 ### Thm-K-SS-01: Serverless正确性定理
 
-**定理 (Serverless正确性)**: 
+**定理 (Serverless正确性)**:
 
 给定输入事件流 $\mathcal{E}$，Serverless系统 $\mathcal{S}$ 产生的输出满足：
 
@@ -658,12 +658,12 @@ $$\text{Apply}(f, \mathcal{E}) = [f(e_{i_1}), f(e_{i_2}), ..., f(e_{i_m})]$$
 
 **步骤2**: 证明调度无关性
 
-**引理 (调度等价性)**: 
+**引理 (调度等价性)**:
 
 对于任意两个合法的调度 $\Lambda_1, \Lambda_2$：
 $$\text{Output}(\mathcal{S}_{\Lambda_1}, \mathcal{E}) = \text{Output}(\mathcal{S}_{\Lambda_2}, \mathcal{E})$$
 
-**证明**: 
+**证明**:
 - Serverless函数按定义是无状态的
 - 每个事件 $e$ 独立地被调度到某个实例
 - 由于 $f$ 的确定性，$f(e)$ 不依赖于调度选择
@@ -671,7 +671,7 @@ $$\text{Output}(\mathcal{S}_{\Lambda_1}, \mathcal{E}) = \text{Output}(\mathcal{S
 
 **步骤3**: 证明事件处理完整性
 
-**引理 (处理完整性)**: 
+**引理 (处理完整性)**:
 
 在至少一次交付保证下：
 $$\forall e \in \mathcal{E}: \exists t: \text{Processed}(e, t) = 1$$
@@ -1017,45 +1017,45 @@ graph TB
         A4[IoT Core]
         A5[EventBridge]
     end
-    
+
     subgraph "Control Plane"
         B1[Scheduler]
         B2[Auto Scaler]
         B3[Load Balancer]
     end
-    
+
     subgraph "Function Execution"
         C1[Warm Pool]
         C2[Cold Start]
         C3[Execution Environment]
     end
-    
+
     subgraph "State & Storage"
         D1[DynamoDB]
         D2[S3]
         D3[ElastiCache]
         D4[Step Functions]
     end
-    
+
     A1 --> B1
     A2 --> B1
     A3 --> B1
     A4 --> B1
     A5 --> B1
-    
+
     B1 --> B2
     B2 --> B3
-    
+
     B3 --> C1
     B3 --> C2
     C2 --> C3
     C1 --> C3
-    
+
     C3 --> D1
     C3 --> D2
     C3 --> D3
     C3 --> D4
-    
+
     D4 -.-> B1
     D1 -.-> C3
 ```
@@ -1069,45 +1069,45 @@ graph TB
 ```mermaid
 flowchart TD
     Start([Load Monitor]) --> Metric{Metrics Collection}
-    
+
     Metric --> CPU[CPU Utilization]
     Metric --> MEM[Memory Usage]
     Metric --> LAT[Request Latency]
     Metric --> QUE[Queue Depth]
-    
+
     CPU --> Eval[Evaluate Thresholds]
     MEM --> Eval
     LAT --> Eval
     QUE --> Eval
-    
+
     Eval --> CheckHigh{Load > Upper Threshold?}
     CheckHigh -->|Yes| ScaleUp[Scale Up Decision]
     CheckHigh -->|No| CheckLow{Load < Lower Threshold?}
-    
+
     CheckLow -->|Yes| ScaleDown[Scale Down Decision]
     CheckLow -->|No| Maintain[Maintain Current]
-    
+
     ScaleUp --> CalcUp{Calculate Instances}
     CalcUp --> FormulaUp["n_new = ceil(n_current × scale_up_factor)<br/>scale_up_factor = 1.5 ~ 2.0"]
-    
+
     ScaleDown --> CalcDown{Calculate Instances}
     CalcDown --> FormulaDown["n_new = floor(n_current × scale_down_factor)<br/>scale_down_factor = 0.7 ~ 0.8"]
-    
+
     FormulaUp --> LimitCheck{Within Limits?}
     FormulaDown --> LimitCheck
-    
+
     LimitCheck -->|n_new > n_max| CapMax[n_new = n_max]
     LimitCheck -->|n_new < n_min| CapMin[n_new = n_min]
     LimitCheck -->|Within Range| Apply[Apply Change]
-    
+
     CapMax --> Apply
     CapMin --> Apply
     Maintain --> Apply
-    
+
     Apply --> Execute[Execute Scaling]
     Execute --> Cooldown[Cooldown Period]
     Cooldown --> Start
-    
+
     style ScaleUp fill:#ff9999
     style ScaleDown fill:#99ff99
     style Maintain fill:#ffff99
@@ -1125,40 +1125,40 @@ flowchart TD
         A[Event Arrival] --> B{Pool Check}
         B -->|Warm Instance Available| C[Route to Warm]
         B -->|No Warm Instance| D[Initiate Cold Start]
-        
+
         D --> E[Create Sandbox]
         E --> F[Initialize Runtime]
         F --> G[Load Dependencies]
         G --> H[Execute Handler]
         H --> I[Function Execution]
-        
+
         C --> I
     end
-    
+
     subgraph "Optimization Strategies"
         J[Provisioned Concurrency] --> K[Pre-warmed Pool]
         L[Lazy Loading] --> M[On-demand Dependency]
         N[Runtime Optimization] --> O[Compiled Language]
         P[Container Reuse] --> Q[Sandbox Recycling]
     end
-    
+
     subgraph "Timing Analysis"
         R[Sandbox: 50-200ms]
         S[Runtime: 100-500ms]
         T[Dependencies: 200-2000ms]
         U[Handler: 10-100ms]
     end
-    
+
     K -.-> B
     M -.-> G
     O -.-> F
     Q -.-> E
-    
+
     E -.-> R
     F -.-> S
     G -.-> T
     H -.-> U
-    
+
     style A fill:#e1f5ff
     style I fill:#e1ffe1
     style D fill:#ffe1e1
@@ -1174,26 +1174,26 @@ flowchart TD
 graph LR
     subgraph "Cost Comparison"
         direction TB
-        
+
         subgraph "Serverless"
             A1[Fixed: $0]<-->A2[Variable: $/invocation]
             A1 --> A3[Low Base Cost]
             A2 --> A4[Linear with Load]
         end
-        
+
         subgraph "VM/Container"
             B1[Fixed: $/hour]<-->B2[Variable: $0]
             B1 --> B3[High Base Cost]
             B2 --> B4[Constant at Scale]
         end
     end
-    
+
     subgraph "Cost Curves"
         C1[Low Load<br/>Serverless Wins]
         C2[Breakeven Point<br/>~12M invocations/month]
         C3[High Load<br/>VM Wins]
     end
-    
+
     A4 --> C1
     A4 --> C2
     B4 --> C2
@@ -1219,49 +1219,49 @@ xychart-beta
 ```mermaid
 stateDiagram-v2
     [*] --> Idle: Function Created
-    
+
     Idle --> Initializing: Event Arrived
-    
+
     Initializing --> LoadingState: Load Checkpoint
     Initializing --> CreatingState: New State Key
-    
+
     LoadingState --> Processing: State Ready
     CreatingState --> Processing: State Initialized
-    
+
     Processing --> Checkpointing: Batch Complete
     Processing --> Failed: Error
-    
+
     Checkpointing --> Processing: Continue
     Checkpointing --> Saving: Persist State
-    
+
     Saving --> Processing: Success
     Saving --> Failed: Save Error
-    
+
     Failed --> Recovering: Retry Policy
     Failed --> Terminated: Max Retries
-    
+
     Recovering --> LoadingState: Load Last Checkpoint
-    
+
     Processing --> Idle: Timeout
     Processing --> Terminated: Completion
-    
+
     Terminated --> [*]
     Idle --> Terminated: GC
-    
+
     note right of Processing
         Active State Operations:
         - Read/Write State
         - Process Events
         - Accumulate Results
     end note
-    
+
     note right of Checkpointing
         Checkpoint Strategy:
         - Time-based: every N seconds
         - Count-based: every M events
         - Size-based: every X MB
     end note
-    
+
     note left of Recovering
         Recovery Process:
         1. Identify failed partition
@@ -1284,51 +1284,51 @@ graph LR
         I2[Producer 2]
         I3[Producer N]
     end
-    
+
     subgraph "Ingestion"
         B1[(Event Buffer)]
         B2{Partitioner}
     end
-    
+
     subgraph "Function Pool"
         F1[Function Instance 1]
         F2[Function Instance 2]
         F3[Function Instance N]
     end
-    
+
     subgraph "State Layer"
         S1[(State Store)]
         S2[Cache Layer]
     end
-    
+
     subgraph "Output Layer"
         O1[Sink 1]
         O2[Sink 2]
         O3[Sink N]
     end
-    
+
     I1 --> B1
     I2 --> B1
     I3 --> B1
-    
+
     B1 --> B2
     B2 -->|Partition 0| F1
     B2 -->|Partition 1| F2
     B2 -->|Partition N| F3
-    
+
     F1 <-->|Read/Write| S1
     F2 <-->|Read/Write| S1
     F3 <-->|Read/Write| S1
-    
+
     F1 <-->|Cache| S2
     F2 <-->|Cache| S2
     F3 <-->|Cache| S2
-    
+
     F1 --> O1
     F1 --> O2
     F2 --> O2
     F3 --> O3
-    
+
     style B1 fill:#ffeecc
     style S1 fill:#ccffee
     style S2 fill:#ffccff

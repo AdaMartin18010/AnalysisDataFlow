@@ -107,7 +107,7 @@
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
 - [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md)
-- [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
+- [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
 
 **面试重点**:
 
@@ -136,8 +136,8 @@
 
 **推荐文档**:
 
-- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/07-case-studies/case-realtime-analytics.md)
-- [Flink/07-case-studies/case-ecommerce-realtime-recommendation.md](../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md)
+- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
+- [Flink/07-case-studies/case-ecommerce-realtime-recommendation.md](../Flink/09-practices/09.01-case-studies/case-ecommerce-realtime-recommendation.md)
 - [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md)
 
 **面试重点**:
@@ -353,4 +353,3 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
-

@@ -308,9 +308,9 @@ gantt
 ### 项目文档
 
 - [📋 项目跟踪看板](../PROJECT-TRACKING.md)
-- [📖 完整完成报告](../FINAL-COMPLETION-REPORT-v6.0.md)
+- [📖 完整完成报告](../archive/completion-reports/FINAL-COMPLETION-REPORT-v6.0.md)
 - [🎯 定理注册表](../THEOREM-REGISTRY.md)
-- [📝 版本追踪](../PROJECT-VERSION-TRACKING.md)
+- [📝 版本追踪](../archive/tracking-reports/PROJECT-VERSION-TRACKING.md)
 - [🤖 Agent工作规范](../AGENTS.md)
 
 ### 自动化工具

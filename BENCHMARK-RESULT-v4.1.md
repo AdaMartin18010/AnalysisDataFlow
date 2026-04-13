@@ -12,6 +12,7 @@
   - [目录](#目录)
   - [1. 执行摘要 (Executive Summary)](#1-执行摘要-executive-summary)
     - [1.1 关键发现](#11-关键发现)
+    - [1.1.1 本次测试执行摘要](#111-本次测试执行摘要)
     - [1.2 核心结论](#12-核心结论)
   - [2. 测试环境 (Test Environment)](#2-测试环境-test-environment)
     - [2.1 模拟集群配置](#21-模拟集群配置)
@@ -89,9 +90,9 @@
 
 ### 1.1.1 本次测试执行摘要
 
-**执行时间**: 2026-04-12  
-**测试框架**: `.scripts/benchmarks/flink-benchmark-runner.py` (dry-run 模式)  
-**数据生成**: `.scripts/benchmarks/benchmark-data-synthesizer.py`  
+**执行时间**: 2026-04-12
+**测试框架**: `.scripts/benchmarks/flink-benchmark-runner.py` (dry-run 模式)
+**数据生成**: `.scripts/benchmarks/benchmark-data-synthesizer.py`
 **测试环境**: 本地 Docker Compose / AI 合成数据 (无 K8s 集群)
 
 | 测试场景 | 目标 | 状态 | 数据文件 |

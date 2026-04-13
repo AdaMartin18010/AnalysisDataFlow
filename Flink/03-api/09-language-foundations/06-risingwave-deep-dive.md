@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # RisingWave 深度解析：Rust 原生流数据库与 Flink 对比分析
 
 > 所属阶段: Flink/09-language-foundations | 前置依赖: [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../../09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md), [Knowledge/06-frontier/risingwave-deep-dive.md](../../../Knowledge/06-frontier/risingwave-deep-dive.md) | 形式化等级: L4 | **版本**: RisingWave 2.0+ / Flink 1.18+
@@ -2060,4 +2061,3 @@ GROUP BY user_id;
 - Flink/05-vs-competitors/flink-vs-spark-streaming.md - Flink vs Spark 对比
 - Flink/02-core/forst-state-backend.md - Flink ForSt 状态后端
 - Flink/09-language-foundations/03-rust-native.md - Flink Rust UDF 集成
-

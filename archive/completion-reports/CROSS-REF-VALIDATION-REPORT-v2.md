@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 交叉引用完整性验证报告 v2
 
 > **验证时间**: 2026-04-04 11:39:47
@@ -123,7 +124,7 @@
 
 #### TOOLCHAIN.md
 
-- `[text](./path/to/file.md)` → `[text](./Flink/00-INDEX.md)`
+- `[text](./path/to/file.md)` → `[text](../../USTM-F-Reconstruction/archive/original-struct/00-INDEX.md)`
 
 ### 第三轮修复 (12个)
 
@@ -157,11 +158,11 @@
 
 #### tutorials/interactive/README.md (5个)
 
-- [Struct索引](./Struct/00-INDEX.md) - 形式理论文档导航
-- [Knowledge索引](./Knowledge/00-INDEX.md) - 知识结构文档导航
-- [Flink索引](./Flink/00-INDEX.md) - Flink专项文档导航
-- [AGENTS.md](./AGENTS.md) - 项目规范文档
-- [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) - 项目进度跟踪
+- [Struct索引](../../USTM-F-Reconstruction/archive/original-struct/00-INDEX.md) - 形式理论文档导航
+- [Knowledge索引](../../USTM-F-Reconstruction/archive/original-struct/00-INDEX.md) - 知识结构文档导航
+- [Flink索引](../../USTM-F-Reconstruction/archive/original-struct/00-INDEX.md) - Flink专项文档导航
+- [AGENTS.md](../../AGENTS.md) - 项目规范文档
+- [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md) - 项目进度跟踪
 
 #### visuals/layer-decidability.md (2个)
 
@@ -296,4 +297,3 @@
 ---
 
 *报告生成时间: 2026-04-04 11:39:47*
-

@@ -1,7 +1,7 @@
 # Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 <!-- 版本状态标记: status=preview, since=2.4, feature=adaptive-execution-v2 -->

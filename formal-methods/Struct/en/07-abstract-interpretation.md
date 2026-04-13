@@ -1,6 +1,6 @@
 # Abstract Interpretation Theory
 
-> **Stage**: 03-model-taxonomy/02-computation-models | **Prerequisites**: [01-order-theory.md](../../01-foundations/01-order-theory.md), [dataflow-analysis-formal.md](./dataflow-analysis-formal.md) | **Formalization Level**: L5-L6
+> **Stage**: 03-model-taxonomy/02-computation-models | **Prerequisites**: [01-order-theory.md](../../01-foundations/01-order-theory.md), [dataflow-analysis-formal.md](../../03-model-taxonomy/02-computation-models/dataflow-analysis-formal.md) | **Formalization Level**: L5-L6
 
 ## 1. Definitions
 

@@ -3120,9 +3120,9 @@ graph BT
 
 ### 前置依赖
 
-- [00.01-category-theory-foundation.md](./00.01-category-theory-foundation.md) - 范畴论基础 (Def-M-01~10)
-- [00.02-lattice-order-theory.md](./00.02-lattice-order-theory.md) - 格论基础 (Def-M-11~20)
-- [00.03-type-theory-foundation.md](./00.03-type-theory-foundation.md) - 类型论基础 (Def-M-21~30)
+- [00.01-category-theory-foundation.md](../00-meta/00.01-category-theory-foundation.md) - 范畴论基础 (Def-M-01~10)
+- [00.02-lattice-order-theory.md](../00-meta/00.02-lattice-order-theory.md) - 格论基础 (Def-M-11~20)
+- [00.03-type-theory-foundation.md](../00-meta/00.03-type-theory-foundation.md) - 类型论基础 (Def-M-21~30)
 
 ### 后续文档
 
@@ -4137,8 +4137,8 @@ graph LR
 
 ### 后续文档
 
-- [01.02-unified-time-model.md](./01.02-unified-time-model.md) - 统一时间模型
-- [01.03-operator-algebra.md](./01.03-operator-algebra.md) - 算子代数
+- [01.02-unified-time-model.md](../01-unified-model/01.02-unified-time-model.md) - 统一时间模型
+- [01.03-operator-algebra.md](../01-unified-model/01.03-operator-algebra.md) - 算子代数
 - [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md) - 基础引理库
 
 ### 本文档关键定义
@@ -4209,7 +4209,7 @@ graph LR
 
 本文档依赖以下文档：
 
-- 流的数学定义: [01.01-stream-mathematical-definition.md](./01.01-stream-mathematical-definition.md)
+- 流的数学定义: [01.01-stream-mathematical-definition.md](../01-unified-model/01.01-stream-mathematical-definition.md)
 - 格论基础: [00.02-lattice-order-theory.md](../00-meta/00.02-lattice-order-theory.md)
 
 ---
@@ -5125,7 +5125,7 @@ graph LR
 
 本文档依赖以下文档：
 
-- 流的数学定义: [01.01-stream-mathematical-definition.md](./01.01-stream-mathematical-definition.md)
+- 流的数学定义: [01.01-stream-mathematical-definition.md](../01-unified-model/01.01-stream-mathematical-definition.md)
 - 范畴论基础: [00.01-category-theory-foundation.md](../00-meta/00.01-category-theory-foundation.md)
 
 ---
@@ -6027,8 +6027,8 @@ graph LR
 
 本文档依赖以下文档：
 
-- 算子代数: [01.03-operator-algebra.md](./01.03-operator-algebra.md)
-- 流的数学定义: [01.01-stream-mathematical-definition.md](./01.01-stream-mathematical-definition.md)
+- 算子代数: [01.03-operator-algebra.md](../01-unified-model/01.03-operator-algebra.md)
+- 流的数学定义: [01.01-stream-mathematical-definition.md](../01-unified-model/01.01-stream-mathematical-definition.md)
 - 范畴论基础: [00.01-category-theory-foundation.md](../00-meta/00.01-category-theory-foundation.md)
 
 ---
@@ -6875,9 +6875,9 @@ graph LR
 
 本文档依赖以下文档：
 
-- 统一时间模型: [01.02-unified-time-model.md](./01.02-unified-time-model.md)
-- 组合理论: [01.04-composition-theory.md](./01.04-composition-theory.md)
-- 算子代数: [01.03-operator-algebra.md](./01.03-operator-algebra.md)
+- 统一时间模型: [01.02-unified-time-model.md](../01-unified-model/01.02-unified-time-model.md)
+- 组合理论: [01.04-composition-theory.md](../01-unified-model/01.04-composition-theory.md)
+- 算子代数: [01.03-operator-algebra.md](../01-unified-model/01.03-operator-algebra.md)
 
 ---
 
@@ -7234,13 +7234,13 @@ graph TB
 
 ### 前置依赖
 
-- [01.02-unified-time-model.md](./01.02-unified-time-model.md) - 统一时间模型
-- [01.04-composition-theory.md](./01.04-composition-theory.md) - 组合理论
+- [01.02-unified-time-model.md](../01-unified-model/01.02-unified-time-model.md) - 统一时间模型
+- [01.04-composition-theory.md](../01-unified-model/01.04-composition-theory.md) - 组合理论
 - [00.03-type-theory-foundation.md](../00-meta/00.03-type-theory-foundation.md) - 类型论基础
 
 ### 后续文档
 
-- [01.00-unified-streaming-theory-v2.md](./01.00-unified-streaming-theory-v2.md) - USTM整合
+- [01.00-unified-streaming-theory-v2.md](../01-unified-model/01.00-unified-streaming-theory-v2.md) - USTM整合
 - [02.06-session-types-in-ustm.md](../02-model-instantiation/02.06-session-types-in-ustm.md) - 会话类型实例化
 - [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md) - 基础引理库
 
@@ -7272,11 +7272,11 @@ graph TB
 
 本文档整合阶段二的所有文档：
 
-- 流的数学定义: [01.01-stream-mathematical-definition.md](./01.01-stream-mathematical-definition.md)
-- 统一时间模型: [01.02-unified-time-model.md](./01.02-unified-time-model.md)
-- 算子代数: [01.03-operator-algebra.md](./01.03-operator-algebra.md)
-- 组合理论: [01.04-composition-theory.md](./01.04-composition-theory.md)
-- USTM核心语义: [01.05-ustm-core-semantics.md](./01.05-ustm-core-semantics.md)
+- 流的数学定义: [01.01-stream-mathematical-definition.md](../01-unified-model/01.01-stream-mathematical-definition.md)
+- 统一时间模型: [01.02-unified-time-model.md](../01-unified-model/01.02-unified-time-model.md)
+- 算子代数: [01.03-operator-algebra.md](../01-unified-model/01.03-operator-algebra.md)
+- 组合理论: [01.04-composition-theory.md](../01-unified-model/01.04-composition-theory.md)
+- USTM核心语义: [01.05-ustm-core-semantics.md](../01-unified-model/01.05-ustm-core-semantics.md)
 
 ---
 
@@ -7960,11 +7960,11 @@ graph TB
 - [00.01-category-theory-foundation.md](../00-meta/00.01-category-theory-foundation.md) - 范畴论基础
 - [00.02-lattice-order-theory.md](../00-meta/00.02-lattice-order-theory.md) - 格论基础
 - [00.03-type-theory-foundation.md](../00-meta/00.03-type-theory-foundation.md) - 类型论基础
-- [01.01-stream-mathematical-definition.md](./01.01-stream-mathematical-definition.md) - 流的数学定义
-- [01.02-unified-time-model.md](./01.02-unified-time-model.md) - 统一时间模型
-- [01.03-operator-algebra.md](./01.03-operator-algebra.md) - 算子代数
-- [01.04-composition-theory.md](./01.04-composition-theory.md) - 组合理论
-- [01.05-ustm-core-semantics.md](./01.05-ustm-core-semantics.md) - USTM核心语义
+- [01.01-stream-mathematical-definition.md](../01-unified-model/01.01-stream-mathematical-definition.md) - 流的数学定义
+- [01.02-unified-time-model.md](../01-unified-model/01.02-unified-time-model.md) - 统一时间模型
+- [01.03-operator-algebra.md](../01-unified-model/01.03-operator-algebra.md) - 算子代数
+- [01.04-composition-theory.md](../01-unified-model/01.04-composition-theory.md) - 组合理论
+- [01.05-ustm-core-semantics.md](../01-unified-model/01.05-ustm-core-semantics.md) - USTM核心语义
 
 ### 后续文档
 
@@ -7973,8 +7973,8 @@ graph TB
 
 ### 相关证明
 
-- [Thm-U-07](./01.00-unified-streaming-theory-v2.md#thm-u-07-ustm图灵完备性) - USTM图灵完备性
-- [Thm-U-08](./01.00-unified-streaming-theory-v2.md#thm-u-08-ustm一致性) - USTM一致性
+- [Thm-U-07](../01-unified-model/01.00-unified-streaming-theory-v2.md#thm-u-07-ustm图灵完备性) - USTM图灵完备性
+- [Thm-U-08](../01-unified-model/01.00-unified-streaming-theory-v2.md#thm-u-08-ustm一致性) - USTM一致性
 
 ---
 
@@ -8707,13 +8707,13 @@ graph TB
 
 ### 后续文档
 
-- [02.01-actor-in-ustm.md](./02.01-actor-in-ustm.md) - Actor模型实例化
-- [02.02-csp-in-ustm.md](./02.02-csp-in-ustm.md) - CSP实例化
-- [02.03-dataflow-in-ustm.md](./02.03-dataflow-in-ustm.md) - Dataflow实例化
-- [02.04-petri-net-in-ustm.md](./02.04-petri-net-in-ustm.md) - Petri网实例化
-- [02.05-pi-calculus-in-ustm.md](./02.05-pi-calculus-in-ustm.md) - π-演算实例化
-- [02.06-session-types-in-ustm.md](./02.06-session-types-in-ustm.md) - 会话类型实例化
-- [02.07-flink-in-ustm.md](./02.07-flink-in-ustm.md) - Flink实例化
+- [02.01-actor-in-ustm.md](../02-model-instantiation/02.01-actor-in-ustm.md) - Actor模型实例化
+- [02.02-csp-in-ustm.md](../02-model-instantiation/02.02-csp-in-ustm.md) - CSP实例化
+- [02.03-dataflow-in-ustm.md](../02-model-instantiation/02.03-dataflow-in-ustm.md) - Dataflow实例化
+- [02.04-petri-net-in-ustm.md](../02-model-instantiation/02.04-petri-net-in-ustm.md) - Petri网实例化
+- [02.05-pi-calculus-in-ustm.md](../02-model-instantiation/02.05-pi-calculus-in-ustm.md) - π-演算实例化
+- [02.06-session-types-in-ustm.md](../02-model-instantiation/02.06-session-types-in-ustm.md) - 会话类型实例化
+- [02.07-flink-in-ustm.md](../02-model-instantiation/02.07-flink-in-ustm.md) - Flink实例化
 - [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) - 编码理论
 
 ### 本文档关键定理
@@ -8731,7 +8731,7 @@ graph TB
 
 # 02.01 Actor模型实例化 (Actor Model in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.03-actor-model-formalization](../archive/original-struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L4
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.03-actor-model-formalization](../archive/original-struct/01-foundation/01.03-actor-model-formalization.md) | **形式化等级**: L4
 > **文档定位**: 将Actor模型严格嵌入USTM，建立编码函数与正确性证明
 
 ---
@@ -9526,7 +9526,7 @@ graph TD
 
 # 02.02 CSP模型实例化 (CSP in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.05-csp-formalization](../archive/original-struct/01-foundation/01.05-csp-formalization.md) | **形式化等级**: L3
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.05-csp-formalization](../archive/original-struct/01-foundation/01.05-csp-formalization.md) | **形式化等级**: L3
 > **文档定位**: 将CSP严格嵌入USTM，建立同步通信模型到流计算的编码
 
 ---
@@ -10225,7 +10225,7 @@ graph LR
 
 # 02.03 Dataflow模型实例化 (Dataflow in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.04-dataflow-model-formalization](../archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L4-L5
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.04-dataflow-model-formalization](../archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L4-L5
 > **文档定位**: 将Dataflow模型严格嵌入USTM，建立数据驱动计算到流计算核心的直接映射
 
 ---
@@ -10923,7 +10923,7 @@ graph TB
 
 # 02.04 Petri网实例化 (Petri Net in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.06-petri-net-formalization](../archive/original-struct/01-foundation/01.06-petri-net-formalization.md) | **形式化等级**: L2-L4
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.06-petri-net-formalization](../archive/original-struct/01-foundation/01.06-petri-net-formalization.md) | **形式化等级**: L2-L4
 > **文档定位**: 将Petri网严格嵌入USTM，建立令牌触发模型到流计算的编码
 
 ---
@@ -11577,7 +11577,7 @@ graph TB
 
 # 02.05 π-演算实例化 (π-Calculus in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.02-process-calculus-primer](../archive/original-struct/01-foundation/01.02-process-calculus-primer.md) | **形式化等级**: L4
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.02-process-calculus-primer](../archive/original-struct/01-foundation/01.02-process-calculus-primer.md) | **形式化等级**: L4
 > **文档定位**: 将π-演算严格嵌入USTM，建立移动进程模型到流计算的编码
 
 ---
@@ -12077,7 +12077,7 @@ graph TB
 
 # 02.06 会话类型实例化 (Session Types in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.07-session-types](../archive/original-struct/01-foundation/01.07-session-types.md) | **形式化等级**: L4-L5
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.07-session-types](../archive/original-struct/01-foundation/01.07-session-types.md) | **形式化等级**: L4-L5
 > **文档定位**: 将会话类型严格嵌入USTM，建立协议类型系统到流计算的编码
 
 ---
@@ -12548,7 +12548,7 @@ graph TB
 
 # 02.07 Flink实例化 (Flink in USTM)
 
-> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](./02.00-model-instantiation-framework.md), [01.04-dataflow-model-formalization](../archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/02-model-instantiation | **前置依赖**: [02.00-model-instantiation-framework](../02-model-instantiation/02.00-model-instantiation-framework.md), [01.04-dataflow-model-formalization](../archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L6
 > **文档定位**: 将Flink严格嵌入USTM，建立工业流计算系统到统一元模型的编码
 
 ---
@@ -13039,7 +13039,7 @@ graph TB
 
 ### 前置依赖
 
-- [02.00-model-instantiation-framework.md](./02.00-model-instantiation-framework.md) - 模型实例化框架
+- [02.00-model-instantiation-framework.md](../02-model-instantiation/02.00-model-instantiation-framework.md) - 模型实例化框架
 - [01.00-unified-streaming-theory-v2.md](../01-unified-model/01.00-unified-streaming-theory-v2.md) - USTM整合
 
 ### 后续文档
@@ -14189,7 +14189,7 @@ mindmap
 
 # 确定性定理完整证明 (Determinism Theorem Complete Proof)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](./03.01-fundamental-lemmas.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md) | **形式化等级**: L6
 
 ---
 
@@ -14870,7 +14870,7 @@ graph TB
 
 # 一致性格定理 (Consistency Lattice Theorem)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](./03.01-fundamental-lemmas.md), [03.02-determinism-theorem-proof.md](./03.02-determinism-theorem-proof.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md), [03.02-determinism-theorem-proof.md](../03-proof-chains/03.02-determinism-theorem-proof.md) | **形式化等级**: L6
 
 ---
 
@@ -15557,7 +15557,7 @@ xychart-beta
 
 # Watermark单调性完整证明 (Watermark Monotonicity Complete Proof)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](./03.01-fundamental-lemmas.md), [03.03-consistency-lattice-theorem.md](./03.03-consistency-lattice-theorem.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md), [03.03-consistency-lattice-theorem.md](../03-proof-chains/03.03-consistency-lattice-theorem.md) | **形式化等级**: L6
 
 ---
 
@@ -16243,7 +16243,7 @@ graph TB
 
 # Checkpoint正确性完整证明 (Checkpoint Correctness Complete Proof)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.02-determinism-theorem-proof.md](./03.02-determinism-theorem-proof.md), [03.03-consistency-lattice-theorem.md](./03.03-consistency-lattice-theorem.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.02-determinism-theorem-proof.md](../03-proof-chains/03.02-determinism-theorem-proof.md), [03.03-consistency-lattice-theorem.md](../03-proof-chains/03.03-consistency-lattice-theorem.md) | **形式化等级**: L6
 
 ---
 
@@ -16848,7 +16848,7 @@ stateDiagram-v2
 
 # Exactly-Once语义完整证明 (Exactly-Once Semantics Complete Proof)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.03-consistency-lattice-theorem.md](./03.03-consistency-lattice-theorem.md), [03.05-checkpoint-correctness-proof.md](./03.05-checkpoint-correctness-proof.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.03-consistency-lattice-theorem.md](../03-proof-chains/03.03-consistency-lattice-theorem.md), [03.05-checkpoint-correctness-proof.md](../03-proof-chains/03.05-checkpoint-correctness-proof.md) | **形式化等级**: L6
 
 ---
 
@@ -17483,7 +17483,7 @@ sequenceDiagram
 
 # 类型安全性完整证明 (Type Safety Complete Proof)
 
-> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](./03.01-fundamental-lemmas.md), [03.02-determinism-theorem-proof.md](./03.02-determinism-theorem-proof.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/03-proof-chains | **前置依赖**: [03.01-fundamental-lemmas.md](../03-proof-chains/03.01-fundamental-lemmas.md), [03.02-determinism-theorem-proof.md](../03-proof-chains/03.02-determinism-theorem-proof.md) | **形式化等级**: L6
 
 ---
 
@@ -19323,11 +19323,11 @@ flowchart TB
 
 | 文档路径 | 内容 | 关联方式 |
 |----------|------|----------|
-| [04.02-actor-csp-encoding.md](./04.02-actor-csp-encoding.md) | Actor与CSP双向编码 | 具体编码实例 |
-| [04.03-dataflow-csp-encoding.md](./04.03-dataflow-csp-encoding.md) | Dataflow到CSP编码 | 具体编码实例 |
-| [04.04-expressiveness-hierarchy-v2.md](./04.04-expressiveness-hierarchy-v2.md) | 表达能力层次 | 层次关系 |
-| [04.05-coq-formalization.md](./04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
-| [04.06-tla-plus-specifications.md](./04.06-tla-plus-specifications.md) | TLA+规约 | 模型检验 |
+| [04.02-actor-csp-encoding.md](../04-encoding-verification/04.02-actor-csp-encoding.md) | Actor与CSP双向编码 | 具体编码实例 |
+| [04.03-dataflow-csp-encoding.md](../04-encoding-verification/04.03-dataflow-csp-encoding.md) | Dataflow到CSP编码 | 具体编码实例 |
+| [04.04-expressiveness-hierarchy-v2.md](../04-encoding-verification/04.04-expressiveness-hierarchy-v2.md) | 表达能力层次 | 层次关系 |
+| [04.05-coq-formalization.md](../04-encoding-verification/04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
+| [04.06-tla-plus-specifications.md](../04-encoding-verification/04.06-tla-plus-specifications.md) | TLA+规约 | 模型检验 |
 
 
 ---
@@ -19340,8 +19340,8 @@ flowchart TB
 
 ### 后续文档
 
-- [04.02-actor-csp-encoding.md](./04.02-actor-csp-encoding.md) - Actor-CSP编码
-- [04.03-dataflow-csp-encoding.md](./04.03-dataflow-csp-encoding.md) - Dataflow-CSP编码
+- [04.02-actor-csp-encoding.md](../04-encoding-verification/04.02-actor-csp-encoding.md) - Actor-CSP编码
+- [04.03-dataflow-csp-encoding.md](../04-encoding-verification/04.03-dataflow-csp-encoding.md) - Dataflow-CSP编码
 
 ---
 
@@ -19353,7 +19353,7 @@ flowchart TB
 
 # Actor与CSP双向编码 (Actor-CSP Bidirectional Encoding)
 
-> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](./04.01-encoding-theory.md) | **形式化等级**: L5-L6
+> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) | **形式化等级**: L5-L6
 > **文档编号**: S-F-04-02 | **版本**: 2026.04 | **周次**: 第28周
 
 ---
@@ -20169,9 +20169,9 @@ sequenceDiagram
 
 | 文档路径 | 内容 | 关联方式 |
 |----------|------|----------|
-| [04.01-encoding-theory.md](./04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
-| [04.03-dataflow-csp-encoding.md](./04.03-dataflow-csp-encoding.md) | Dataflow到CSP编码 | 对比编码 |
-| [04.05-coq-formalization.md](./04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
+| [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
+| [04.03-dataflow-csp-encoding.md](../04-encoding-verification/04.03-dataflow-csp-encoding.md) | Dataflow到CSP编码 | 对比编码 |
+| [04.05-coq-formalization.md](../04-encoding-verification/04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
 
 
 ---
@@ -20194,7 +20194,7 @@ sequenceDiagram
 
 # Dataflow到CSP编码 (Dataflow-to-CSP Encoding)
 
-> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](./04.01-encoding-theory.md), [04.02-actor-csp-encoding.md](./04.02-actor-csp-encoding.md) | **形式化等级**: L5-L6
+> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md), [04.02-actor-csp-encoding.md](../04-encoding-verification/04.02-actor-csp-encoding.md) | **形式化等级**: L5-L6
 > **文档编号**: S-F-04-03 | **版本**: 2026.04 | **周次**: 第29周
 
 ---
@@ -20947,9 +20947,9 @@ sequenceDiagram
 
 | 文档路径 | 内容 | 关联方式 |
 |----------|------|----------|
-| [04.01-encoding-theory.md](./04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
-| [04.02-actor-csp-encoding.md](./04.02-actor-csp-encoding.md) | Actor-CSP编码 | 对比编码 |
-| [04.05-coq-formalization.md](./04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
+| [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
+| [04.02-actor-csp-encoding.md](../04-encoding-verification/04.02-actor-csp-encoding.md) | Actor-CSP编码 | 对比编码 |
+| [04.05-coq-formalization.md](../04-encoding-verification/04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
 
 ---
 
@@ -20961,7 +20961,7 @@ sequenceDiagram
 
 # 表达能力层次v2 - 严格版本 (Expressiveness Hierarchy v2 - Strict)
 
-> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](./04.01-encoding-theory.md), [阶段四证明链](../03-proof-chains/) | **形式化等级**: L5-L6
+> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md), [阶段四证明链](../03-proof-chains/) | **形式化等级**: L5-L6
 > **文档编号**: S-F-04-04 | **版本**: 2026.04 | **周次**: 第30周
 
 ---
@@ -21569,8 +21569,8 @@ graph TB
 
 | 文档路径 | 内容 | 关联方式 |
 |----------|------|----------|
-| [04.01-encoding-theory.md](./04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
-| [04.05-coq-formalization.md](./04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
+| [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) | 编码一般理论 | 理论基础 |
+| [04.05-coq-formalization.md](../04-encoding-verification/04.05-coq-formalization.md) | Coq形式化 | 机械化验证 |
 | ../../Struct/03-relationships/03.03-expressiveness-hierarchy.md | v1版本 | 对比基准 |
 
 ---
@@ -21596,7 +21596,7 @@ graph TB
 
 # Coq形式化实现 (Coq Formalization)
 
-> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](./04.01-encoding-theory.md), [04.04-expressiveness-hierarchy-v2.md](./04.04-expressiveness-hierarchy-v2.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md), [04.04-expressiveness-hierarchy-v2.md](../04-encoding-verification/04.04-expressiveness-hierarchy-v2.md) | **形式化等级**: L6
 > **文档编号**: S-F-04-05 | **版本**: 2026.04 | **周次**: 第31周
 
 ---
@@ -21930,9 +21930,9 @@ Qed.
 
 | 文档路径 | 内容 |
 |----------|------|
-| [04.01-encoding-theory.md](./04.01-encoding-theory.md) | 编码理论 |
-| [04.02-actor-csp-encoding.md](./04.02-actor-csp-encoding.md) | Actor-CSP编码 |
-| [04.04-expressiveness-hierarchy-v2.md](./04.04-expressiveness-hierarchy-v2.md) | 层次理论 |
+| [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md) | 编码理论 |
+| [04.02-actor-csp-encoding.md](../04-encoding-verification/04.02-actor-csp-encoding.md) | Actor-CSP编码 |
+| [04.04-expressiveness-hierarchy-v2.md](../04-encoding-verification/04.04-expressiveness-hierarchy-v2.md) | 层次理论 |
 
 
 ---
@@ -21946,7 +21946,7 @@ Qed.
 
 ### 证明助手项目
 
-- [proof-assistant/coq/README.md](./proof-assistant/coq/README.md) - Coq项目说明
+- [proof-assistant/coq/README.md](../../pdf/README.md) - Coq项目说明
 
 ---
 
@@ -21958,7 +21958,7 @@ Qed.
 
 # TLA+规约 (TLA+ Specifications)
 
-> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](./04.01-encoding-theory.md), [04.03-dataflow-csp-encoding.md](./04.03-dataflow-csp-encoding.md) | **形式化等级**: L6
+> **所属阶段**: USTM-F/04-encoding-verification | **前置依赖**: [04.01-encoding-theory.md](../04-encoding-verification/04.01-encoding-theory.md), [04.03-dataflow-csp-encoding.md](../04-encoding-verification/04.03-dataflow-csp-encoding.md) | **形式化等级**: L6
 > **文档编号**: S-F-04-06 | **版本**: 2026.04 | **周次**: 第32周
 
 ---
@@ -22662,7 +22662,7 @@ BarrierAlignmentSafety ==
 
 | 文档路径 | 内容 |
 |----------|------|
-| [04.03-dataflow-csp-encoding.md](./04.03-dataflow-csp-encoding.md) | Dataflow编码 |
+| [04.03-dataflow-csp-encoding.md](../04-encoding-verification/04.03-dataflow-csp-encoding.md) | Dataflow编码 |
 | Flink/专项文档 | Flink架构 |
 
 
@@ -22677,7 +22677,7 @@ BarrierAlignmentSafety ==
 
 ### 证明助手项目
 
-- [proof-assistant/tla/README.md](./proof-assistant/tla/README.md) - TLA+项目说明
+- [proof-assistant/tla/README.md](../../pdf/README.md) - TLA+项目说明
 
 ---
 
@@ -22690,11 +22690,11 @@ BarrierAlignmentSafety ==
 
 ## 依赖关系图
 
-详见: [USTM-F-DEPENDENCY-GRAPH.md](./USTM-F-DEPENDENCY-GRAPH.md)
+详见: [USTM-F-DEPENDENCY-GRAPH.md](../USTM-F-DEPENDENCY-GRAPH.md)
 
 ## 导航索引
 
-详见: [USTM-F-NAVIGATION.md](./USTM-F-NAVIGATION.md)
+详见: [USTM-F-NAVIGATION.md](../USTM-F-NAVIGATION.md)
 
 ---
 

@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink State Backends 深度对比 -->
 
-<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4 -->
+<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | 形式化等级: L4 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->

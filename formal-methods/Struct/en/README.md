@@ -294,7 +294,7 @@ This documentation is licensed under [CC BY-SA 4.0](https://creativecommons.org/
 
 ## 🌐 Language Versions
 
-- [中文 (Chinese)](../README.md)
+- [中文 (Chinese)](README.md)
 - [English](README.md) (This document)
 
 ---

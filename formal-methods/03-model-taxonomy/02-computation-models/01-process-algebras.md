@@ -1,6 +1,6 @@
 # 进程演算家族
 
-> **所属单元**: formal-methods/03-model-taxonomy/02-computation-models | **前置依赖**: [01-system-models/03-communication-models](../../01-system-models/03-communication-models.md) | **形式化等级**: L5-L6
+> **所属单元**: formal-methods/03-model-taxonomy/02-computation-models | **前置依赖**: [01-system-models/03-communication-models](../01-system-models/03-communication-models.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 

@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 官方文档对标分析报告
 
 > **分析日期**: 2026-04-04 | **分析版本**: Flink 1.16-3.0 | **项目文档版本**: v2.9
@@ -97,15 +98,15 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
-| **DataStream API Overview** | ⚠️ 部分 | [datastream-v2-semantics.md](Flink/01-architecture/datastream-v2-semantics.md) | 60% | 缺少基础API入门教程 |
+| **DataStream API Overview** | ⚠️ 部分 | [datastream-v2-semantics.md](Flink/01-concepts/datastream-v2-semantics.md) | 60% | 缺少基础API入门教程 |
 | **Time & Watermarks** | ✅ 完整 | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) | 90% | 深度足够，缺少快速入门 |
 | **State Management** | ✅ 完整 | [flink-state-management-complete-guide.md](Flink/02-core/flink-state-management-complete-guide.md) | 95% | 覆盖全面 |
 | **Checkpointing** | ✅ 完整 | [checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md) | 95% | 理论与工程结合好 |
 | **Exactly-Once** | ✅ 完整 | [exactly-once-end-to-end.md](Flink/02-core/exactly-once-end-to-end.md) | 95% | 包含端到端实现 |
 | **Backpressure** | ✅ 完整 | [backpressure-and-flow-control.md](Flink/02-core/backpressure-and-flow-control.md) | 90% | 深度优秀 |
-| **Table API Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-sql-table-api/flink-table-sql-complete-guide.md) | 70% | 缺少基础教程 |
-| **SQL Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-sql-table-api/flink-table-sql-complete-guide.md) | 70% | 缺少SQL基础入门 |
-| **Window Functions** | ✅ 完整 | [flink-sql-window-functions-deep-dive.md](Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md) | 85% | 深度足够 |
+| **Table API Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | 70% | 缺少基础教程 |
+| **SQL Overview** | ⚠️ 部分 | [flink-table-sql-complete-guide.md](Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | 70% | 缺少SQL基础入门 |
+| **Window Functions** | ✅ 完整 | [flink-sql-window-functions-deep-dive.md](Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) | 85% | 深度足够 |
 | **Data Types** | ❌ 缺失 | - | 0% | **关键缺失** |
 | **Built-in Functions** | ❌ 缺失 | - | 0% | **关键缺失** |
 
@@ -113,28 +114,28 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
-| **Kafka Connector** | ✅ 完整 | [kafka-integration-patterns.md](Flink/04-connectors/kafka-integration-patterns.md) | 85% | 覆盖主要场景 |
+| **Kafka Connector** | ✅ 完整 | [kafka-integration-patterns.md](../../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) | 85% | 覆盖主要场景 |
 | **JDBC Connector** | ❌ 缺失 | - | 0% | **缺失** |
 | **FileSystem Connector** | ❌ 缺失 | - | 0% | **缺失** |
 | **Elasticsearch Connector** | ❌ 缺失 | - | 0% | **缺失** |
-| **Paimon Connector** | ✅ 完整 | [flink-paimon-integration.md](Flink/04-connectors/flink-paimon-integration.md) | 90% | 深度优秀 |
-| **Iceberg Connector** | ✅ 完整 | [flink-iceberg-integration.md](Flink/04-connectors/flink-iceberg-integration.md) | 90% | 深度优秀 |
-| **Delta Lake Connector** | ✅ 完整 | [flink-delta-lake-integration.md](Flink/04-connectors/flink-delta-lake-integration.md) | 85% | 覆盖良好 |
-| **CDC Connectors** | ✅ 完整 | [flink-cdc-3.0-data-integration.md](Flink/04-connectors/flink-cdc-3.0-data-integration.md) | 90% | 前沿特性覆盖 |
+| **Paimon Connector** | ✅ 完整 | [flink-paimon-integration.md](../../Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md) | 90% | 深度优秀 |
+| **Iceberg Connector** | ✅ 完整 | [flink-iceberg-integration.md](../../Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md) | 90% | 深度优秀 |
+| **Delta Lake Connector** | ✅ 完整 | [flink-delta-lake-integration.md](../../Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md) | 85% | 覆盖良好 |
+| **CDC Connectors** | ✅ 完整 | [flink-cdc-3.0-data-integration.md](../../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md) | 90% | 前沿特性覆盖 |
 | **Custom Connector Development** | ❌ 缺失 | - | 0% | **缺失** |
 
 ### 2.3 部署与运维文档对比
 
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
-| **Local Deployment** | ⚠️ 部分 | [00-QUICK-START.md](Flink/00-QUICK-START.md) | 40% | 只有Docker方式 |
+| **Local Deployment** | ⚠️ 部分 | [00-QUICK-START.md](../../Flink/00-meta/00-QUICK-START.md) | 40% | 只有Docker方式 |
 | **Standalone Cluster** | ❌ 缺失 | - | 0% | **缺失** |
 | **YARN Deployment** | ❌ 缺失 | - | 0% | **缺失** |
-| **Kubernetes Deployment** | ✅ 完整 | [kubernetes-deployment-production-guide.md](Flink/10-deployment/kubernetes-deployment-production-guide.md) | 90% | 覆盖全面 |
-| **Flink Kubernetes Operator** | ✅ 完整 | [flink-kubernetes-operator-deep-dive.md](Flink/10-deployment/flink-kubernetes-operator-deep-dive.md) | 90% | 深度优秀 |
-| **Serverless Deployment** | ✅ 完整 | [serverless-flink-ga-guide.md](Flink/10-deployment/serverless-flink-ga-guide.md) | 90% | 前沿特性 |
-| **Memory Configuration** | ⚠️ 部分 | [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | 60% | 分散在调优文档 |
-| **High Availability** | ⚠️ 部分 | [flink-deployment-ops-complete-guide.md](Flink/10-deployment/flink-deployment-ops-complete-guide.md) | 50% | **需补充** |
+| **Kubernetes Deployment** | ✅ 完整 | [kubernetes-deployment-production-guide.md](../../Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md) | 90% | 覆盖全面 |
+| **Flink Kubernetes Operator** | ✅ 完整 | [flink-kubernetes-operator-deep-dive.md](../../Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md) | 90% | 深度优秀 |
+| **Serverless Deployment** | ✅ 完整 | [serverless-flink-ga-guide.md](../../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) | 90% | 前沿特性 |
+| **Memory Configuration** | ⚠️ 部分 | [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | 60% | 分散在调优文档 |
+| **High Availability** | ⚠️ 部分 | [flink-deployment-ops-complete-guide.md](../../Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md) | 50% | **需补充** |
 | **Production Readiness Checklist** | ❌ 缺失 | - | 0% | **关键缺失** |
 | **Upgrading Applications** | ❌ 缺失 | - | 0% | **缺失** |
 
@@ -143,19 +144,19 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
 | **CEP (Complex Event Processing)** | ❌ 缺失 | - | 0% | **关键缺失** |
-| **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](Flink/14-graph/flink-gelly.md) | 50% | 覆盖不足 |
-| **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/12-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
-| **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
+| **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](../../Flink/05-ecosystem/05.04-graph/flink-gelly.md) | 50% | 覆盖不足 |
+| **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/06-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
+| **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
 | **Stateful Functions** | ❌ 缺失 | - | 0% | **缺失** |
 
 ### 2.5 运维与监控文档对比
 
 | 官方文档主题 | 项目覆盖 | 覆盖文档 | 完整度 | 差距分析 |
 |-------------|---------|---------|--------|---------|
-| **Metrics System** | ✅ 完整 | [metrics-and-monitoring.md](Flink/15-observability/metrics-and-monitoring.md) | 85% | 覆盖良好 |
-| **Monitoring** | ✅ 完整 | [flink-observability-complete-guide.md](Flink/15-observability/flink-observability-complete-guide.md) | 85% | 覆盖良好 |
-| **Distributed Tracing** | ✅ 完整 | [distributed-tracing.md](Flink/15-observability/distributed-tracing.md) | 80% | 覆盖良好 |
-| **OpenTelemetry Integration** | ✅ 完整 | [flink-opentelemetry-observability.md](Flink/15-observability/flink-opentelemetry-observability.md) | 85% | 前沿特性 |
+| **Metrics System** | ✅ 完整 | [metrics-and-monitoring.md](../../Flink/04-runtime/04.03-observability/metrics-and-monitoring.md) | 85% | 覆盖良好 |
+| **Monitoring** | ✅ 完整 | [flink-observability-complete-guide.md](../../Flink/04-runtime/04.03-observability/flink-observability-complete-guide.md) | 85% | 覆盖良好 |
+| **Distributed Tracing** | ✅ 完整 | [distributed-tracing.md](../../Flink/04-runtime/04.03-observability/distributed-tracing.md) | 80% | 覆盖良好 |
+| **OpenTelemetry Integration** | ✅ 完整 | [flink-opentelemetry-observability.md](../../Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md) | 85% | 前沿特性 |
 | **State Management Operations** | ⚠️ 部分 | [flink-state-management-complete-guide.md](Flink/02-core/flink-state-management-complete-guide.md) | 60% | **需补充运维操作** |
 | **Logging** | ❌ 缺失 | - | 0% | **缺失** |
 
@@ -163,18 +164,18 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 
 | 官方特性 | 项目覆盖 | 覆盖文档 | 状态 |
 |---------|---------|---------|------|
-| **Disaggregated State (Flink 2.0)** | ✅ 完整 | [disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 已覆盖 |
+| **Disaggregated State (Flink 2.0)** | ✅ 完整 | [disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 已覆盖 |
 | **Async Execution Model (Flink 2.0)** | ✅ 完整 | [flink-2.0-async-execution-model.md](Flink/02-core/flink-2.0-async-execution-model.md) | 已覆盖 |
-| **Materialized Tables (Flink 1.20)** | ✅ 完整 | [materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 已覆盖 |
+| **Materialized Tables (Flink 1.20)** | ✅ 完整 | [materialized-tables.md](Flink/03-api/03.02-table-sql-api/materialized-tables.md) | 已覆盖 |
 | **File Merging for Checkpointing** | ⚠️ 部分 | [smart-checkpointing-strategies.md](Flink/02-core/smart-checkpointing-strategies.md) | 提及但未深入 |
 | **Batch Job Recovery** | ❌ 缺失 | - | **缺失** |
 | **Dynamic Partition Pruning** | ❌ 缺失 | - | **缺失** |
 | **Runtime Filter** | ❌ 缺失 | - | **缺失** |
-| **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
-| **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/12-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
-| **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](Flink/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
-| **Serverless GA** | ✅ 完整 | [serverless-flink-ga-guide.md](Flink/10-deployment/serverless-flink-ga-guide.md) | **前沿领先** |
-| **ANSI SQL 2023 Compliance** | ✅ 完整 | [ansi-sql-2023-compliance-guide.md](Flink/03-sql-table-api/ansi-sql-2023-compliance-guide.md) | **前沿领先** |
+| **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
+| **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/06-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
+| **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](../../Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
+| **Serverless GA** | ✅ 完整 | [serverless-flink-ga-guide.md](../../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) | **前沿领先** |
+| **ANSI SQL 2023 Compliance** | ✅ 完整 | [ansi-sql-2023-compliance-guide.md](Flink/03-api/03.02-table-sql-api/ansi-sql-2023-compliance-guide.md) | **前沿领先** |
 
 ---
 
@@ -473,8 +474,8 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 ### 项目文档
 
 - [项目Flink索引](Flink/00-INDEX.md)
-- [项目快速开始](Flink/00-QUICK-START.md)
-- [项目版本跟踪](./PROJECT-VERSION-TRACKING.md)
+- [项目快速开始](../../Flink/00-meta/00-QUICK-START.md)
+- [项目版本跟踪](../tracking-reports/PROJECT-VERSION-TRACKING.md)
 
 ---
 
@@ -516,4 +517,3 @@ Apache Flink Official Docs (nightlies.apache.org/flink/flink-docs-stable/)
 *报告生成时间: 2026-04-04*
 *分析工具: 项目文档索引 + 官方文档结构抓取*
 *版本: v1.0*
-

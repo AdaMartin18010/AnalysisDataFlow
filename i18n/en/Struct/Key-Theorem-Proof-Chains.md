@@ -13,7 +13,7 @@ terminology_verified: true
 
 # Key Theorem Proof Chains
 
-> **Stage**: Struct/ | **Prerequisites**: [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) | **Formalization Level**: L4-L6
+> **Stage**: Struct/ | **Prerequisites**: [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md) | **Formalization Level**: L4-L6
 
 This document organizes the complete proof chains of key theorems in the project, showing the dependency relationships and derivation paths from basic definitions to final theorems.
 
@@ -240,4 +240,4 @@ graph TD
 
 ---
 
-*For Chinese version, see [Struct/Key-Theorem-Proof-Chains.md](../../Struct/Key-Theorem-Proof-Chains.md)*
+*For Chinese version, see [Struct/Key-Theorem-Proof-Chains.md](../../../Struct/Key-Theorem-Proof-Chains.md)*

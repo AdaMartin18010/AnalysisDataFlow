@@ -373,7 +373,7 @@ python .scripts/fix_broken_links.py process-report \
 
 ## 📚 参考文档
 
-- [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) - 项目进度跟踪
+- [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md) - 项目进度跟踪
 - [link_checker.py](./.scripts/link_checker.py) - 链接检查脚本
 - [fix_broken_links.py](./.scripts/fix_broken_links.py) - 链接修复脚本
 - [validate_api_params.py](./.scripts/validate_api_params.py) - API验证脚本

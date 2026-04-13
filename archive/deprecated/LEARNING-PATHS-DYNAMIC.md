@@ -856,4 +856,3 @@ python .scripts/learning-path-recommender.py --interactive
 ```
 
 **反馈与支持**: 如有问题或建议，请参考项目反馈渠道。
-

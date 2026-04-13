@@ -112,7 +112,7 @@ Stream Calculus operators satisfy the following algebraic laws:
 
 ### 3.1 Stream Processing Model Comparison
 
-**Industrial Implementation**: [Apache Flink Formal Model](./04-flink-formalization.md) - Formal definition of Flink computational model and Exactly-Once semantics
+**Industrial Implementation**: [Apache Flink Formal Model](../../04-application-layer/02-stream-processing/04-flink-formalization.md) - Formal definition of Flink computational model and Exactly-Once semantics
 
 | Feature | KPN | Dataflow | Actor Model | Stream Calculus |
 |---------|-----|----------|-------------|-----------------|

@@ -2777,4 +2777,4 @@ open http://localhost:8081
 > **文档结束**
 >
 > 本文档完成于 2026-04-05，覆盖智能工厂设备监控系统的完整技术方案。
-> 如需更新或反馈问题，请参考 [CONTRIBUTING.md](../../../CONTRIBUTING.md)
+> 如需更新或反馈问题，请参考 [CONTRIBUTING.md](../../CONTRIBUTING.md)

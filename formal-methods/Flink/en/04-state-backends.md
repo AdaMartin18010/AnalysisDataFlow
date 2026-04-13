@@ -1,6 +1,6 @@
 # Flink State Backends Deep Comparison
 
-> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | **Formal Level**: L4
+> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](../../../Flink/02-core/flink-state-management-complete-guide.md) | **Formal Level**: L4
 
 ---
 

@@ -263,4 +263,4 @@ Proof Theorems: 190/190 (100%)
 
 ---
 
-*For Chinese version, see [Struct/00-STRUCT-DERIVATION-CHAIN.md](../../Struct/00-STRUCT-DERIVATION-CHAIN.md)*
+*For Chinese version, see [Struct/00-STRUCT-DERIVATION-CHAIN.md](../../../Struct/00-STRUCT-DERIVATION-CHAIN.md)*

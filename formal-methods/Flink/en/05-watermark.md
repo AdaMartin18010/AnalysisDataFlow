@@ -1,6 +1,6 @@
 # Flink Time Semantics and Watermark
 
-> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [Flink Deployment Architecture](../01-concepts/deployment-architectures.md) | **Formal Level**: L4
+> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [Flink Deployment Architecture](../../../Flink/01-concepts/deployment-architectures.md) | **Formal Level**: L4
 
 ---
 
@@ -158,7 +158,7 @@ $$
 4. Subtract constant $\delta$ from both sides, get $w(t_2) \geq w(t_1)$
 5. Q.E.D.
 
-**Semantic Explanation**: Watermark monotonicity is the core invariant guaranteeing window results are "calculated only once". Detailed formal proof see **Thm-S-09-01** in [Struct/02-properties/02.03-watermark-monotonicity.md](../../Struct/02-properties/02.03-watermark-monotonicity.md).
+**Semantic Explanation**: Watermark monotonicity is the core invariant guaranteeing window results are "calculated only once". Detailed formal proof see **Thm-S-09-01** in [Struct/02-properties/02.03-watermark-monotonicity.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.03-watermark-monotonicity.md).
 
 ---
 

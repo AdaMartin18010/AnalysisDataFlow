@@ -1,6 +1,6 @@
 # 形式化方法发展史
 
-> 所属阶段: formal-methods/07-future | 前置依赖: [01-foundations/03-logic-foundations.md](../../01-foundations/03-logic-foundations.md), [99-references/classical-papers.md](../../99-references/classical-papers.md) | 形式化等级: L1-L3
+> 所属阶段: formal-methods/07-future | 前置依赖: [01-foundations/03-logic-foundations.md](../01-foundations/03-logic-foundations.md), [99-references/classical-papers.md](../99-references/classical-papers.md) | 形式化等级: L1-L3
 
 ## 1. 概念定义 (Definitions)
 

@@ -1,7 +1,7 @@
 # AI Agent 数据库工作负载：前沿架构分析
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [04-technology-selection/database-selection-guide.md](../04-technology-selection/storage-selection-guide.md), [Flink/03-flink-state-management.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4

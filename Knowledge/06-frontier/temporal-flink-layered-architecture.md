@@ -1,7 +1,7 @@
 # Temporal与Flink分层架构整合指南
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [00.md](../../Flink/00-meta/00-INDEX.md), [stateful-serverless.md](./stateful-serverless.md) | 形式化等级: L4-L5

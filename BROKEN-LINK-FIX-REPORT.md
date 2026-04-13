@@ -29,7 +29,7 @@
 **修复前**:
 
 ```markdown
-- [FLINK-24-25-30-COMPLETION-REPORT.md](./FLINK-24-25-30-COMPLETION-REPORT.md)
+- [FLINK-24-25-30-COMPLETION-REPORT.md](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md)
 ```
 
 **修复后**:
@@ -65,7 +65,7 @@
 **修复前**:
 
 ```markdown
-- [FLINK-24-25-30-COMPLETION-REPORT.md](./FLINK-24-25-30-COMPLETION-REPORT.md)
+- [FLINK-24-25-30-COMPLETION-REPORT.md](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md)
 ```
 
 **修复后**:
@@ -85,7 +85,7 @@
 **修复前**:
 
 ```markdown
-> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [Flink性能调优指南](./Flink/06-engineering/performance-tuning-guide.md), ...
+> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [Flink性能调优指南](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md), ...
 ```
 
 **修复后**:
@@ -99,7 +99,7 @@
 **修复前**:
 
 ```markdown
-- [Flink/06-engineering/performance-tuning-guide.md](./Flink/06-engineering/performance-tuning-guide.md) —— Flink性能调优详细指南
+- [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) —— Flink性能调优详细指南
 ```
 
 **修复后**:

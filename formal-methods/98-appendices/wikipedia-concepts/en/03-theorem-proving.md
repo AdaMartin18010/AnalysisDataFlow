@@ -250,7 +250,7 @@ graph TB
 
 | Concept | Relationship | Description |
 |---------|--------------|-------------|
-| **SMT Solvers** | Tool Implementation | [SMT Solvers](../../05-verification/03-theorem-proving/02-smt-solvers.md) - Automated verification tools based on theory combination |
+| **SMT Solvers** | Tool Implementation | [SMT Solvers](../../../05-verification/03-theorem-proving/02-smt-solvers.md) - Automated verification tools based on theory combination |
 | **First-order Logic (FOL)** | Foundation | Core processing object of ATP, decidable but incomplete |
 | **Type Theory** | Curry-Howard | Deep correspondence between proofs and programs |
 | **Hoare Logic** | Application Instance | Formal system for program correctness verification |
@@ -773,21 +773,15 @@ graph TD
 
 ### Wikipedia References
 
-[^1]: Wikipedia, "Automated theorem proving", https://en.wikipedia.org/wiki/Automated_theorem_proving
-[^2]: Wikipedia, "Interactive theorem proving", https://en.wikipedia.org/wiki/Proof_assistant
 
 ### Classic Literature
 
-[^3]: J.A. Robinson, "A Machine-Oriented Logic Based on the Resolution Principle," JACM, 1965.
-[^4]: R. Milner, "Logic for Computable Functions: Description of a Machine Implementation," Stanford AIM-169, 1972.
-[^5]: T. Coquand and G. Huet, "The Calculus of Constructions," Information and Computation, 1988.
-[^6]: G. Gentzen, "The Collected Papers of Gerhard Gentzen," North-Holland, 1969.
 
 ---
 
 ## 9. Related Concepts
 
-- [Coq/Isabelle Theorem Proving](../../05-verification/03-theorem-proving/01-coq-isabelle.md) - Detailed mainstream theorem proving tools
+- [Coq/Isabelle Theorem Proving](../../../05-verification/03-theorem-proving/01-coq-isabelle.md) - Detailed mainstream theorem proving tools
 - [Formal Methods](01-formal-methods.md)
 - [Model Checking](02-model-checking.md)
 - [Process Calculus](04-process-calculus.md)

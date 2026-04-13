@@ -254,6 +254,7 @@
 70: FROM documents;
 71:
 ```
+
 ```
 
 **🟡 [SQL-006] VECTOR_SEARCH函数**
@@ -741,7 +742,9 @@
 >>> 1233: env.execute("Async OpenAI Inference")
 1234:
 ```
+
 1235:
+
 ```
 
 #### Flink\03-api\09-language-foundations\06-risingwave-deep-dive.md
@@ -1474,6 +1477,7 @@
 742: FROM messages m;
 743:
 ```
+
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -1775,6 +1779,7 @@
 376: ORDER BY similarity DESC;
 377:
 ```
+
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -2023,6 +2028,7 @@
 1206: // env.getConfig().setBoolean("ai.agent.enabled", true);
 1207:
 ```
+
 ```
 
 **🔴 [CFG-001] AI Agent启用配置**
@@ -2784,11 +2790,11 @@
 **代码片段**：
 
 ```markdown
-89: | [03-api/03.02-table-sql-api/data-types-complete-reference.md](03-api/03.02-table-sql-api/data-types-complete-reference.md) | 数据类型完整参考 | 1.17+ |
-90: | [03-api/03.02-table-sql-api/flink-python-udf.md](03-api/03.02-table-sql-api/flink-python-udf.md) | Python UDF 开发指南 | 1.17+ |
->>> 91: | [03-api/03.02-table-sql-api/flink-vector-search-rag.md](03-api/03.02-table-sql-api/flink-vector-search-rag.md) | 向量搜索与 RAG 实现 | 1.20+ |
-92: | [03-api/03.02-table-sql-api/vector-search.md](03-api/03.02-table-sql-api/vector-search.md) | 向量搜索功能指南 | 1.20+ |
-93: | [03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md](03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | Model DDL 与 ML 预测 | 1.19+ |
+89: | [03-api/03.02-table-sql-api/data-types-complete-reference.md](../Flink/data-types-complete-reference.md) | 数据类型完整参考 | 1.17+ |
+90: | [03-api/03.02-table-sql-api/flink-python-udf.md](../Flink/03-api/03.02-table-sql-api/flink-python-udf.md) | Python UDF 开发指南 | 1.17+ |
+>>> 91: | [03-api/03.02-table-sql-api/flink-vector-search-rag.md](../Flink/03-api/03.02-table-sql-api/flink-vector-search-rag.md) | 向量搜索与 RAG 实现 | 1.20+ |
+92: | [03-api/03.02-table-sql-api/vector-search.md](../Flink/06-ai-ml/ai-ml/evolution/vector-search.md) | 向量搜索功能指南 | 1.20+ |
+93: | [03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md](../Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | Model DDL 与 ML 预测 | 1.19+ |
 ```
 
 **🔴 [DEP-004] Flink Vector Search依赖**
@@ -2800,11 +2806,11 @@
 **代码片段**：
 
 ```markdown
-89: | [03-api/03.02-table-sql-api/data-types-complete-reference.md](03-api/03.02-table-sql-api/data-types-complete-reference.md) | 数据类型完整参考 | 1.17+ |
-90: | [03-api/03.02-table-sql-api/flink-python-udf.md](03-api/03.02-table-sql-api/flink-python-udf.md) | Python UDF 开发指南 | 1.17+ |
->>> 91: | [03-api/03.02-table-sql-api/flink-vector-search-rag.md](03-api/03.02-table-sql-api/flink-vector-search-rag.md) | 向量搜索与 RAG 实现 | 1.20+ |
-92: | [03-api/03.02-table-sql-api/vector-search.md](03-api/03.02-table-sql-api/vector-search.md) | 向量搜索功能指南 | 1.20+ |
-93: | [03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md](03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | Model DDL 与 ML 预测 | 1.19+ |
+89: | [03-api/03.02-table-sql-api/data-types-complete-reference.md](../Flink/data-types-complete-reference.md) | 数据类型完整参考 | 1.17+ |
+90: | [03-api/03.02-table-sql-api/flink-python-udf.md](../Flink/03-api/03.02-table-sql-api/flink-python-udf.md) | Python UDF 开发指南 | 1.17+ |
+>>> 91: | [03-api/03.02-table-sql-api/flink-vector-search-rag.md](../Flink/03-api/03.02-table-sql-api/flink-vector-search-rag.md) | 向量搜索与 RAG 实现 | 1.20+ |
+92: | [03-api/03.02-table-sql-api/vector-search.md](../Flink/06-ai-ml/ai-ml/evolution/vector-search.md) | 向量搜索功能指南 | 1.20+ |
+93: | [03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md](../Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | Model DDL 与 ML 预测 | 1.19+ |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -2816,11 +2822,11 @@
 **代码片段**：
 
 ```markdown
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
->>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+>>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -2832,11 +2838,11 @@
 **代码片段**：
 
 ```markdown
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
->>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+>>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
 ```
 
 #### Flink\00-meta\00-QUICK-START.md
@@ -2868,10 +2874,12 @@
 ```markdown
 979:
 ```
+
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
 983: ├── [Flink/12-ai-ml/flink-llm-integration.md]
+
 ```
 
 #### Flink\06-ai-ml\flink-25-gpu-acceleration.md
@@ -2921,7 +2929,7 @@
 ```markdown
 1: # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../Flink/02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -2939,7 +2947,7 @@
 ```markdown
 1: # FLIP-531 AI Agents GA 完整实现指南
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](../Flink/06-ai-ml/flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -2957,7 +2965,7 @@
 ```markdown
 1: # Flink与向量数据库集成 - Milvus/PgVector/Pinecone
 2:
->>> 3: > 所属阶段: Flink | 前置依赖: [11.4-flink-ml-inference.md](./flink-realtime-ml-inference.md), [JDBC连接器](../04-connectors/jdbc-connector-complete-guide.md) | 形式化等级: L3
+>>> 3: > 所属阶段: Flink | 前置依赖: [11.4-flink-ml-inference.md](../Flink/06-ai-ml/flink-realtime-ml-inference.md), [JDBC连接器](../Flink/05-ecosystem/05.01-connectors/jdbc-connector-complete-guide.md) | 形式化等级: L3
 4:
 5: ## 1. 概念定义 (Definitions)
 ```
@@ -3010,7 +3018,9 @@
 >>> 1287: COPY flink-gpu-udf.jar /opt/flink/usrlib/
 1288:
 ```
+
 1289:
+
 ```
 
 #### Flink\08-roadmap\08.01-flink-24\flink-2.3-2.4-roadmap.md
@@ -3146,7 +3156,7 @@
 ```markdown
 1: # 内容平台实时推荐系统生产案例
 2:
->>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](./10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
+>>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](../Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
 4:
 5: ---
 ```
@@ -3162,7 +3172,7 @@
 ```markdown
 1: # 内容平台实时推荐系统生产案例
 2:
->>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](./10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
+>>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](../Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
 4:
 5: ---
 ```
@@ -3264,9 +3274,9 @@
 **代码片段**：
 
 ```markdown
-48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | #性能优化 #生产实践 |
-49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
->>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
+48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | #性能优化 #生产实践 |
+49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
+>>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
 51: | 8 | **统一流计算理论** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | #理论基础 #USTM |
 52: | 9 | **事件时间处理模式** | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | #设计模式 #时间窗口 |
 ```
@@ -3280,9 +3290,9 @@
 **代码片段**：
 
 ```markdown
-48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | #性能优化 #生产实践 |
-49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
->>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
+48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | #性能优化 #生产实践 |
+49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
+>>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
 51: | 8 | **统一流计算理论** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | #理论基础 #USTM |
 52: | 9 | **事件时间处理模式** | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | #设计模式 #时间窗口 |
 ```
@@ -3298,9 +3308,9 @@
 ```markdown
 71: | 主题 | 关键文档 | 搜索关键词 |
 72: |------|----------|-----------|
->>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
-74: | **LLM集成** | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
-75: | **在线学习** | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
+>>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
+74: | **LLM集成** | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
+75: | **在线学习** | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -3314,9 +3324,9 @@
 ```markdown
 71: | 主题 | 关键文档 | 搜索关键词 |
 72: |------|----------|-----------|
->>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
-74: | **LLM集成** | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
-75: | **在线学习** | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
+>>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
+74: | **LLM集成** | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
+75: | **在线学习** | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -3330,9 +3340,9 @@
 ```markdown
 119: | 文档 | 路径 | 标签 |
 120: |------|------|------|
->>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
-122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
-123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/13-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
+>>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
+122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
+123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -3346,9 +3356,9 @@
 ```markdown
 119: | 文档 | 路径 | 标签 |
 120: |------|------|------|
->>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
-122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
-123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/13-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
+>>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
+122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
+123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -3360,9 +3370,9 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
-167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
->>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+>>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) |
 169:
 170: ---
 ```
@@ -3376,9 +3386,9 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
-167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
->>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+>>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) |
 169:
 170: ---
 ```
@@ -3860,6 +3870,7 @@
 48: <artifactId>flink-serverless</artifactId>         # ❌ 不存在
 49:
 ```
+
 ```
 
 #### archive\deprecated\MAINTENANCE-NOTICE.md
@@ -3995,9 +4006,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 **🔴 [DEP-001] Flink AI Agent依赖**
@@ -4011,9 +4022,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 #### docs\i18n\en\README.md
@@ -4027,11 +4038,11 @@
 **代码片段**：
 
 ```markdown
-56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../../../Flink/14-graph/flink-gelly-streaming-graph-processing.md)
-57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../../../Knowledge/06-frontier/multimodal-streaming-architecture.md)
->>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md)
-59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../../../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
-60: - **Smart Casual Verification**: [New Formal Verification Method](../../../Struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
+56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
+57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../Knowledge/06-frontier/multimodal-streaming-architecture.md)
+>>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
+59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
+60: - **Smart Casual Verification**: [New Formal Verification Method](../USTM-F-Reconstruction/archive/original-struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
 ```
 
 #### reports\link-fix-report.md
@@ -4120,7 +4131,9 @@
 >>> 60: | flink-ai-agent <!-- 设计阶段，尚未发布 --> | AI Agent支持 |
 61:
 ```
+
 62:
+
 ```
 
 #### visuals\radar-frontier.md
@@ -4192,7 +4205,7 @@
 240: | **目标版本** | Flink 2.4.0 |
 >>> 241: | **预计发布时间** | 2026 Q3-Q4 |
 242: | **最后更新** | 2026-04-04 |
-243: | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+243: | **跟踪系统** | [.tasks/flink-release-tracker.md](../.tasks/flink-release-tracker.md) |
 ```
 
 #### .tasks\flink-release-tracker.md
@@ -4241,10 +4254,10 @@
 
 ```markdown
 243: |------|------|------|
-244: | [08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md](08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md) | Flink 2.1 前沿追踪 | 2.1 |
->>> 245: | [08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md](08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md) | 2026 Q2 任务清单 | - |
-246: | [08-roadmap/08.01-flink-24/community-dynamics-tracking.md](08-roadmap/08.01-flink-24/community-dynamics-tracking.md) | 社区动态追踪 | - |
-247: | [version-tracking/flink-26-27-roadmap.md](version-tracking/flink-26-27-roadmap.md) | Flink 2.6-2.7 路线图 | 2.6 - 2.7 |
+244: | [08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md](../Flink/08-roadmap/08.01-flink-24/flink-2.1-frontier-tracking.md) | Flink 2.1 前沿追踪 | 2.1 |
+>>> 245: | [08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md](../Flink/08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md) | 2026 Q2 任务清单 | - |
+246: | [08-roadmap/08.01-flink-24/community-dynamics-tracking.md](../Flink/08-roadmap/08.01-flink-24/community-dynamics-tracking.md) | 社区动态追踪 | - |
+247: | [version-tracking/flink-26-27-roadmap.md](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md) | Flink 2.6-2.7 路线图 | 2.6 - 2.7 |
 ```
 
 #### Flink\00-meta\version-tracking.md
@@ -4261,7 +4274,7 @@
 35: | 版本 | 状态 | 预计/实际发布 | 下载链接 | 跟踪文档 |
 36: |------|------|--------------|----------|----------|
 >>> 37: | 2.3.0 | 开发中 | 2026 Q1 | - | - |
-38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](./08-roadmap/flink-2.4-tracking.md) |
+38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](../Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
 39: | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
 ```
 
@@ -4276,9 +4289,9 @@
 ```markdown
 36: |------|------|--------------|----------|----------|
 37: | 2.3.0 | 开发中 | 2026 Q1 | - | - |
->>> 38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](./08-roadmap/flink-2.4-tracking.md) |
+>>> 38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](../Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
 39: | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
-40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
+40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -4291,10 +4304,10 @@
 
 ```markdown
 37: | 2.3.0 | 开发中 | 2026 Q1 | - | - |
-38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](./08-roadmap/flink-2.4-tracking.md) |
+38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](../Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
 >>> 39: | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
-40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
-41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
+40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
+41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -4306,10 +4319,10 @@
 **代码片段**：
 
 ```markdown
-38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](./08-roadmap/flink-2.4-tracking.md) |
+38: | 2.4.0 | 前瞻 | 2026 Q3-Q4 | - | [2.4 跟踪](../Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md) |
 39: | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
->>> 40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
-41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
+>>> 40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
+41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
 42: | 3.0.0 | 愿景 | 2027+ | - | - |
 ```
 
@@ -4323,8 +4336,8 @@
 
 ```markdown
 39: | 2.5.0 | 规划中 | 2026 Q2-Q3 | - | - |
-40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
->>> 41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](./version-tracking/flink-26-27-roadmap.md)** |
+40: | **2.6.0** | 🔍 前瞻 | **2026 Q2** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
+>>> 41: | **2.7.0** | 🔍 前瞻 | **2026 Q4** | - | **[2.6/2.7 跟踪](../Flink/00-meta/version-tracking/flink-26-27-roadmap.md)** |
 42: | 3.0.0 | 愿景 | 2027+ | - | - |
 43:
 ```
@@ -4542,7 +4555,7 @@
 10: > | **文档状态** | 🔍 前瞻 (Preview) |
 >>> 11: > | **预计发布时间** | 2026 Q3-Q4 |
 12: > | **最后更新** | 2026-04-04 |
-13: > | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+13: > | **跟踪系统** | [.tasks/flink-release-tracker.md](../.tasks/flink-release-tracker.md) |
 ```
 
 #### Flink\03-api\09-language-foundations\10-wasi-component-model.md
@@ -4626,7 +4639,7 @@
 10: > | **文档状态** | 🔍 前瞻 (Preview) |
 >>> 11: > | **预计发布时间** | 2026 Q3-Q4 |
 12: > | **最后更新** | 2026-04-04 |
-13: > | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
+13: > | **跟踪系统** | [.tasks/flink-release-tracker.md](../.tasks/flink-release-tracker.md) |
 ```
 
 #### Flink\05-ecosystem\05.03-wasm-udf\wasi-0.3-async-preview.md
@@ -4662,6 +4675,7 @@
 613: 阶段 4 (2027): 可选移除 0.2 适配层
 614:
 ```
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5509,7 +5523,7 @@
 ```markdown
 >>> 1: # 2026 Q2 Flink 推进任务 (2026 Q2 Flink Tasks)
 2:
-3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
+3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5523,7 +5537,7 @@
 ```markdown
 >>> 1: # 2026 Q2 Flink 推进任务 (2026 Q2 Flink Tasks)
 2:
-3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
+3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5536,7 +5550,7 @@
 
 ```markdown
 2:
-3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
+3: > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 >>> 4: > **文档类型**: 工程路线图 | **规划周期**: 2026 Q2 (4月-6月) | **状态**: 已批准
 5:
 6: ---
@@ -5700,10 +5714,12 @@
 ```markdown
 337:
 ```
+
 338:
 >>> 339: ### 6.2 重要讨论跟踪 (2025 Q1)
 340:
 341: #### 核心设计讨论
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5782,9 +5798,9 @@
 **代码片段**：
 
 ```markdown
-563: - [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
-564: - [../../Flink/01-architecture/disaggregated-state-analysis.md](../../Flink/01-architecture/disaggregated-state-analysis.md) - 分离状态存储分析
->>> 565: - [../../Flink/08-roadmap/2026-q2-flink-tasks.md](../../Flink/08-roadmap/2026-q2-flink-tasks.md) - 2026 Q2 推进任务
+563: - [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
+564: - [../../Flink/01-architecture/disaggregated-state-analysis.md](../Flink/01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
+>>> 565: - [../../Flink/08-roadmap/2026-q2-flink-tasks.md](../Flink/08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md) - 2026 Q2 推进任务
 566:
 567: ---
 ```
@@ -5817,7 +5833,7 @@
 
 ```markdown
 18:
-19: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
+19: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](../Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | 形式化等级: L3
 >>> 20: > **版本**: 2.4.0-preview | **状态**: 🔍 前瞻 | **目标发布**: 2026 Q3-Q4
 21:
 22: ---
@@ -5868,7 +5884,7 @@
 
 ```markdown
 18:
-19: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
+19: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](../Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md) | 形式化等级: L3
 >>> 20: > **版本**: 2.5.0-preview | **状态**: 🔍 前瞻 | **目标发布**: 2027 Q1-Q2
 21:
 22: ## 1. 概念定义 (Definitions)
@@ -6014,7 +6030,7 @@
 
 ```markdown
 19:
-20: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4路线图](flink-2.3-2.4-roadmap.md), [Flink 1.x vs 2.0对比](../01-architecture/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L5
+20: > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4路线图](../Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md), [Flink 1.x vs 2.0对比](../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | 形式化等级: L5
 >>> 21: > **版本**: 3.0-vision | **状态**: 🔭 愿景 | **目标发布**: 2027 Q1-Q2 (预估)
 22:
 23: ---
@@ -6539,10 +6555,12 @@
 ```markdown
 43:
 ```
+
 44:
 >>> 45: ## 2. 雷达概览 (2026 Q2)
 46:
 47: ### 2.1 技术全景
+
 ```
 
 #### TECH-RADAR\evolution-timeline.md
@@ -7244,9 +7262,11 @@
 255:
 256:
 ```
+
 >>> 257: 2026 Q3-Q4: Flink 2.4 GA 发布
 258:     ├── 2026-08: Feature Freeze
 259:     ├── 2026-09: RC1 发布
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -7718,11 +7738,11 @@
 **代码片段**：
 
 ```markdown
-313: | [06-ai-ml/rag-streaming-architecture.md](06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
->>> 315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+313: | [06-ai-ml/rag-streaming-architecture.md](../Flink/06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+>>> 315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7734,11 +7754,11 @@
 **代码片段**：
 
 ```markdown
-313: | [06-ai-ml/rag-streaming-architecture.md](06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
->>> 315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+313: | [06-ai-ml/rag-streaming-architecture.md](../Flink/06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+>>> 315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7750,11 +7770,11 @@
 **代码片段**：
 
 ```markdown
-313: | [06-ai-ml/rag-streaming-architecture.md](06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
->>> 315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+313: | [06-ai-ml/rag-streaming-architecture.md](../Flink/06-ai-ml/rag-streaming-architecture.md) | RAG 流式架构 | 1.20+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+>>> 315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7766,11 +7786,11 @@
 **代码片段**：
 
 ```markdown
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
->>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+>>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7782,11 +7802,11 @@
 **代码片段**：
 
 ```markdown
-314: | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
->>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
-317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+314: | [06-ai-ml/vector-database-integration.md](../Flink/06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+>>> 316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7798,11 +7818,11 @@
 **代码片段**：
 
 ```markdown
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
->>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
-319: | [06-ai-ml/flink-mcp-protocol-integration.md](06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+>>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+319: | [06-ai-ml/flink-mcp-protocol-integration.md](../Flink/06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7814,11 +7834,11 @@
 **代码片段**：
 
 ```markdown
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
->>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
-319: | [06-ai-ml/flink-mcp-protocol-integration.md](06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+>>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+319: | [06-ai-ml/flink-mcp-protocol-integration.md](../Flink/06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -7830,11 +7850,11 @@
 **代码片段**：
 
 ```markdown
-315: | [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
-316: | [06-ai-ml/flink-ai-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
->>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
-318: | [06-ai-ml/ai-agent-flink-deep-integration.md](06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
-319: | [06-ai-ml/flink-mcp-protocol-integration.md](06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
+315: | [06-ai-ml/flink-agents-flip-531.md](../Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531 AI Agents | 2.4+ |
+316: | [06-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents 详解 | 2.4+ |
+>>> 317: | [06-ai-ml/flip-531-ai-agents-ga-guide.md](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 GA 指南 | 2.4+ |
+318: | [06-ai-ml/ai-agent-flink-deep-integration.md](../Flink/06-ai-ml/ai-agent-flink-deep-integration.md) | AI Agent 深度集成 | 2.4+ |
+319: | [06-ai-ml/flink-mcp-protocol-integration.md](../Flink/06-ai-ml/flink-mcp-protocol-integration.md) | MCP 协议集成 | 2.5+ |
 ```
 
 #### Flink\00-meta\00-QUICK-START.md
@@ -7866,10 +7886,12 @@
 ```markdown
 979:
 ```
+
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
 983: ├── [Flink/12-ai-ml/flink-llm-integration.md]
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -8811,7 +8833,7 @@
 ```markdown
 1: # AI Agent 与 Flink 深度集成技术指南
 2:
->>> 3: > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](./flink-agents-flip-531.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)
+>>> 3: > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](../Flink/06-ai-ml/flink-agents-flip-531.md), [Flink ML 架构](../Flink/06-ai-ml/flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)
 4:
 5: ---
 ```
@@ -8827,7 +8849,7 @@
 ```markdown
 1: # AI Agent 与 Flink 深度集成技术指南
 2:
->>> 3: > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](./flink-agents-flip-531.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)
+>>> 3: > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](../Flink/06-ai-ml/flink-agents-flip-531.md), [Flink ML 架构](../Flink/06-ai-ml/flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)
 4:
 5: ---
 ```
@@ -8943,7 +8965,7 @@
 ```markdown
 >>> 1: # Flink Agents (FLIP-531) - AI Agent原生运行时支持
 2:
-3: > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink 与 LLM 集成](./flink-llm-integration.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
+3: > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink 与 LLM 集成](../Flink/06-ai-ml/flink-llm-integration.md), [Flink ML 架构](../Flink/06-ai-ml/flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -8973,10 +8995,12 @@
 ```markdown
 242:
 ```
+
 243: ┌─────────────────────────────────────────────────────────────────┐
 >>> 244: │                     FLIP-531 特性依赖图                          │
 245: ├─────────────────────────────────────────────────────────────────┤
 246: │                                                                 │
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9041,7 +9065,7 @@
 ```markdown
 >>> 1: # Flink AI Agents (FLIP-531) 原生Agent支持
 2:
-3: > 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](flink-llm-integration.md), [MCP协议](../../Knowledge/06-frontier/../06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
+3: > 所属阶段: Flink/12-ai-ml | 前置依赖: [Flink LLM集成](../Flink/06-ai-ml/flink-llm-integration.md), [MCP协议](../Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9073,7 +9097,7 @@
 ```markdown
 >>> 1: # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 2:
-3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
+3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../Flink/02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9087,7 +9111,7 @@
 ```markdown
 1: # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../Flink/02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -9103,7 +9127,7 @@
 ```markdown
 1: # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../02-core-mechanisms/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-sql-table-api/), [Flink状态管理](../Flink/02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -9298,7 +9322,7 @@
 ```markdown
 >>> 1: # FLIP-531 AI Agents GA 完整实现指南
 2:
-3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](../Flink/06-ai-ml/flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) | **形式化等级**: L3-L4
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9312,7 +9336,7 @@
 ```markdown
 1: # FLIP-531 AI Agents GA 完整实现指南
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](../Flink/06-ai-ml/flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -9328,7 +9352,7 @@
 ```markdown
 1: # FLIP-531 AI Agents GA 完整实现指南
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](../Flink/06-ai-ml/flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -9344,7 +9368,7 @@
 ```markdown
 1: # FLIP-531 AI Agents GA 完整实现指南
 2:
->>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](flink-agents-flip-531.md) | **形式化等级**: L3-L4
+>>> 3: > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink AI Agents基础](../Flink/06-ai-ml/flink-ai-agents-flip-531.md), [Flink Agents FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) | **形式化等级**: L3-L4
 4:
 5: ---
 ```
@@ -9622,7 +9646,7 @@
 ```markdown
 1: # AI 原生流处理架构
 2:
->>> 3: > 所属阶段: Flink/14-rust-assembly-ecosystem/ai-native-streaming/ | 前置依赖: [FLIP-531 AI Agents](../../../12-ai-ml/flink-ai-ml-integration-complete-guide.md) | 形式化等级: L4
+>>> 3: > 所属阶段: Flink/14-rust-assembly-ecosystem/ai-native-streaming/ | 前置依赖: [FLIP-531 AI Agents](../Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | 形式化等级: L4
 4:
 5: ## 1. 概念定义 (Definitions)
 ```
@@ -9638,10 +9662,12 @@
 ```markdown
 280:
 ```
+
 281:
 >>> 282: ### 3.2 与 FLIP-531 AI Agents 的集成关系
 283:
 284: | 组件 | FLIP-531 角色 | AI 原生流处理角色 | 集成点 |
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -10222,10 +10248,12 @@
 ```markdown
 378:
 ```
+
 379:
 >>> 380: ### 7.2 FLIP-531架构
 381:
 382: ```mermaid
+
 ```
 
 #### Flink\08-roadmap\08.01-flink-24\flink-2.4-tracking.md
@@ -10257,10 +10285,12 @@
 ```markdown
 40:
 ```
+
 41:
 >>> 42: ### Def-F-08-71: AI Agent GA (FLIP-531 Completion)
 43:
 44: **FLIP-531 GA** 标志着 Flink AI Agents 从实验性 MVP 升级到生产就绪：
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -10991,9 +11021,11 @@
 884:
 885:
 ```
+
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11157,7 +11189,7 @@
 ```markdown
 1: # 内容平台实时推荐系统生产案例
 2:
->>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](./10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
+>>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](../Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
 4:
 5: ---
 ```
@@ -11173,7 +11205,7 @@
 ```markdown
 1: # 内容平台实时推荐系统生产案例
 2:
->>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](./10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
+>>> 3: > **所属阶段**: Knowledge/10-case-studies/social-media | **前置依赖**: [./10.4.1-content-recommendation.md](../Knowledge/10-case-studies/social-media/10.4.1-content-recommendation.md), [../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | **形式化等级**: L4
 4:
 5: ---
 ```
@@ -11353,9 +11385,9 @@
 **代码片段**：
 
 ```markdown
-48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | #性能优化 #生产实践 |
-49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
->>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
+48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | #性能优化 #生产实践 |
+49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
+>>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
 51: | 8 | **统一流计算理论** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | #理论基础 #USTM |
 52: | 9 | **事件时间处理模式** | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | #设计模式 #时间窗口 |
 ```
@@ -11369,9 +11401,9 @@
 **代码片段**：
 
 ```markdown
-48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | #性能优化 #生产实践 |
-49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
->>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
+48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | #性能优化 #生产实践 |
+49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
+>>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
 51: | 8 | **统一流计算理论** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | #理论基础 #USTM |
 52: | 9 | **事件时间处理模式** | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | #设计模式 #时间窗口 |
 ```
@@ -11385,9 +11417,9 @@
 **代码片段**：
 
 ```markdown
-48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) | #性能优化 #生产实践 |
-49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
->>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
+48: | 5 | **性能调优指南** | [Flink/06-engineering/performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | #性能优化 #生产实践 |
+49: | 6 | **SQL vs DataStream对比** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) | #API选型 #SQL |
+>>> 50: | 7 | **Flink AI Agents FLIP-531** | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #前沿 |
 51: | 8 | **统一流计算理论** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | #理论基础 #USTM |
 52: | 9 | **事件时间处理模式** | [Knowledge/02-design-patterns/pattern-event-time-processing.md](Knowledge/02-design-patterns/pattern-event-time-processing.md) | #设计模式 #时间窗口 |
 ```
@@ -11403,9 +11435,9 @@
 ```markdown
 71: | 主题 | 关键文档 | 搜索关键词 |
 72: |------|----------|-----------|
->>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
-74: | **LLM集成** | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
-75: | **在线学习** | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
+>>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
+74: | **LLM集成** | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
+75: | **在线学习** | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11419,9 +11451,9 @@
 ```markdown
 71: | 主题 | 关键文档 | 搜索关键词 |
 72: |------|----------|-----------|
->>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
-74: | **LLM集成** | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
-75: | **在线学习** | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
+>>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
+74: | **LLM集成** | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
+75: | **在线学习** | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11435,9 +11467,9 @@
 ```markdown
 71: | 主题 | 关键文档 | 搜索关键词 |
 72: |------|----------|-----------|
->>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
-74: | **LLM集成** | [flink-llm-integration.md](Flink/12-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
-75: | **在线学习** | [online-learning-algorithms.md](Flink/12-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
+>>> 73: | **AI Agents** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AIAgent #FLIP-531 #MCP |
+74: | **LLM集成** | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | #LLM #RAG #向量检索 |
+75: | **在线学习** | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | #OnlineLearning #ML #模型训练 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11451,9 +11483,9 @@
 ```markdown
 119: | 文档 | 路径 | 标签 |
 120: |------|------|------|
->>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
-122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
-123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/13-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
+>>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
+122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
+123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11467,9 +11499,9 @@
 ```markdown
 119: | 文档 | 路径 | 标签 |
 120: |------|------|------|
->>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
-122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
-123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/13-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
+>>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
+122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
+123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11483,9 +11515,9 @@
 ```markdown
 119: | 文档 | 路径 | 标签 |
 120: |------|------|------|
->>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
-122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
-123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/13-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
+>>> 121: | Flink AI Agents FLIP-531 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | #AI #Agent #MCP #A2A |
+122: | AI/ML集成完整指南 | [Flink/12-ai-ml/flink-ai-ml-integration-complete-guide.md](Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | #AI #ML #集成指南 |
+123: | 安全完整指南 | [Flink/13-security/flink-security-complete-guide.md](Flink/09-practices/09.04-security/flink-security-complete-guide.md) | #Security #合规 #加密 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -11497,9 +11529,9 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
-167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
->>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+>>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) |
 169:
 170: ---
 ```
@@ -11513,9 +11545,9 @@
 **代码片段**：
 
 ```markdown
-166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md) |
-167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
->>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md) |
+166: | **延迟高** | [time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md) → [performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+167: | **选型困惑** | [sql-vs-datastream-comparison.md](Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) → [flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+>>> 168: | **AI集成** | [flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) → [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) |
 169:
 170: ---
 ```
@@ -11633,8 +11665,8 @@
 ```markdown
 90: | 技术 | 版本 | 说明 | 相关文档 |
 91: |------|------|------|----------|
->>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/12-ai-ml/flink-agents-flip-531.md) |
-93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/09-language-foundations/09-wasm-udf-frameworks.md) |
+>>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) |
+93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md) |
 94: | **Gleam** | - | 类型安全函数式语言 | |
 ```
 
@@ -11649,8 +11681,8 @@
 ```markdown
 90: | 技术 | 版本 | 说明 | 相关文档 |
 91: |------|------|------|----------|
->>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/12-ai-ml/flink-agents-flip-531.md) |
-93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/09-language-foundations/09-wasm-udf-frameworks.md) |
+>>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) |
+93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md) |
 94: | **Gleam** | - | 类型安全函数式语言 | |
 ```
 
@@ -11665,8 +11697,8 @@
 ```markdown
 90: | 技术 | 版本 | 说明 | 相关文档 |
 91: |------|------|------|----------|
->>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/12-ai-ml/flink-agents-flip-531.md) |
-93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/09-language-foundations/09-wasm-udf-frameworks.md) |
+>>> 92: | **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) |
+93: | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md) |
 94: | **Gleam** | - | 类型安全函数式语言 | |
 ```
 
@@ -12361,9 +12393,9 @@
 **代码片段**：
 
 ```markdown
-143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](Flink/14-graph/flink-gelly.md) | 50% | 覆盖不足 |
-144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/12-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
->>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
+143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](../Flink/05-ecosystem/05.04-graph/flink-gelly.md) | 50% | 覆盖不足 |
+144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/06-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
+>>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
 146: | **Stateful Functions** | ❌ 缺失 | - | 0% | **缺失** |
 147:
 ```
@@ -12377,9 +12409,9 @@
 **代码片段**：
 
 ```markdown
-143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](Flink/14-graph/flink-gelly.md) | 50% | 覆盖不足 |
-144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/12-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
->>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
+143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](../Flink/05-ecosystem/05.04-graph/flink-gelly.md) | 50% | 覆盖不足 |
+144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/06-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
+>>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
 146: | **Stateful Functions** | ❌ 缺失 | - | 0% | **缺失** |
 147:
 ```
@@ -12393,9 +12425,9 @@
 **代码片段**：
 
 ```markdown
-143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](Flink/14-graph/flink-gelly.md) | 50% | 覆盖不足 |
-144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/12-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
->>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
+143: | **Gelly Graph Processing** | ⚠️ 部分 | [flink-gelly.md](../Flink/05-ecosystem/05.04-graph/flink-gelly.md) | 50% | 覆盖不足 |
+144: | **Flink ML** | ✅ 完整 | [flink-ml-architecture.md](Flink/06-ai-ml/flink-ml-architecture.md) | 85% | 覆盖良好 |
+>>> 145: | **AI Agents (FLIP-531)** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 95% | **前沿领先** |
 146: | **Stateful Functions** | ❌ 缺失 | - | 0% | **缺失** |
 147:
 ```
@@ -12411,9 +12443,9 @@
 ```markdown
 168: | **Dynamic Partition Pruning** | ❌ 缺失 | - | **缺失** |
 169: | **Runtime Filter** | ❌ 缺失 | - | **缺失** |
->>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
-171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/12-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
-172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](Flink/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
+>>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
+171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/06-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
+172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](../Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -12427,9 +12459,9 @@
 ```markdown
 168: | **Dynamic Partition Pruning** | ❌ 缺失 | - | **缺失** |
 169: | **Runtime Filter** | ❌ 缺失 | - | **缺失** |
->>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
-171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/12-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
-172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](Flink/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
+>>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
+171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/06-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
+172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](../Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -12443,9 +12475,9 @@
 ```markdown
 168: | **Dynamic Partition Pruning** | ❌ 缺失 | - | **缺失** |
 169: | **Runtime Filter** | ❌ 缺失 | - | **缺失** |
->>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
-171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/12-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
-172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](Flink/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
+>>> 170: | **FLIP-531 AI Agents** | ✅ 完整 | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | **前沿领先** |
+171: | **GPU Acceleration** | ✅ 完整 | [flink-25-gpu-acceleration.md](Flink/06-ai-ml/flink-25-gpu-acceleration.md) | **前沿领先** |
+172: | **WASM UDF** | ✅ 完整 | [flink-25-wasm-udf-ga.md](../Flink/03-api/09-language-foundations/flink-25-wasm-udf-ga.md) | **前沿领先** |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -12758,9 +12790,11 @@
 884:
 885:
 ```
+
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13121,7 +13155,9 @@
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
 88:
 ```
+
 89:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13154,7 +13190,9 @@
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
 88:
 ```
+
 89:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13424,7 +13462,7 @@
 ```markdown
 325: #### Flink 2.4
 326:
->>> 327: - [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
+>>> 327: - [FLIP-531 AI Agents GA](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
 328: - [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
 329: - [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
 ```
@@ -13440,7 +13478,7 @@
 ```markdown
 325: #### Flink 2.4
 326:
->>> 327: - [FLIP-531 AI Agents GA](Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md)
+>>> 327: - [FLIP-531 AI Agents GA](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
 328: - [智能检查点策略](Flink/02-core/smart-checkpointing-strategies.md)
 329: - [自适应执行引擎v2](Flink/02-core/adaptive-execution-engine-v2.md)
 ```
@@ -13508,9 +13546,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13524,9 +13562,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13540,9 +13578,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13556,9 +13594,9 @@
 ```markdown
 249: | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 250: |------|------|------|----------|----------|----------|
->>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+>>> 251: | FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 252: | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13570,10 +13608,10 @@
 **代码片段**：
 
 ```markdown
-253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
-254: | FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 2026-04-01 |
->>> 255: | FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
-256: | FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-sql-table-api/vector-search.md) | 2026-04-01 |
+253: | FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
+254: | FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-api/03.02-table-sql-api/materialized-tables.md) | 2026-04-01 |
+>>> 255: | FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
+256: | FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-api/03.02-table-sql-api/vector-search.md) | 2026-04-01 |
 257:
 ```
 
@@ -13586,9 +13624,9 @@
 **代码片段**：
 
 ```markdown
-254: | FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 2026-04-01 |
-255: | FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
->>> 256: | FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-sql-table-api/vector-search.md) | 2026-04-01 |
+254: | FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-api/03.02-table-sql-api/materialized-tables.md) | 2026-04-01 |
+255: | FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
+>>> 256: | FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-api/03.02-table-sql-api/vector-search.md) | 2026-04-01 |
 257:
 258: ### 4.3 项目发布时间表
 ```
@@ -13604,11 +13642,11 @@
 **代码片段**：
 
 ```markdown
-51: - **📖 New Cheat Sheets**: [DataStream API Cheat Sheet](../../../Flink/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheat Sheet](../../../Flink/03-sql-table-api/sql-functions-cheatsheet.md)
-52: - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../../../Flink/08-roadmap/flink-version-evolution-complete-guide.md) - Compute-Storage Separation GA, Cloud-Native Scheduling, AI-Native Architecture
->>> 53: - **AI Agents GA Highlights**: [Flink AI Agents Production Release](../../../Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
-54: - **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../../../Flink/10-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow Serverless modes
-55: - **Flink 2.3 Roadmap**: [Flink 2.3 New Features Preview](../../../Flink/08-roadmap/flink-2.3-2.4-roadmap.md)
+51: - **📖 New Cheat Sheets**: [DataStream API Cheat Sheet](../Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheat Sheet](../Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md)
+52: - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - Compute-Storage Separation GA, Cloud-Native Scheduling, AI-Native Architecture
+>>> 53: - **AI Agents GA Highlights**: [Flink AI Agents Production Release](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
+54: - **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow Serverless modes
+55: - **Flink 2.3 Roadmap**: [Flink 2.3 New Features Preview](../Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md)
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13620,11 +13658,11 @@
 **代码片段**：
 
 ```markdown
-56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../../../Flink/14-graph/flink-gelly-streaming-graph-processing.md)
-57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../../../Knowledge/06-frontier/multimodal-streaming-architecture.md)
->>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md)
-59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../../../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
-60: - **Smart Casual Verification**: [New Formal Verification Method](../../../Struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
+56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
+57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../Knowledge/06-frontier/multimodal-streaming-architecture.md)
+>>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
+59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
+60: - **Smart Casual Verification**: [New Formal Verification Method](../USTM-F-Reconstruction/archive/original-struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13636,11 +13674,11 @@
 **代码片段**：
 
 ```markdown
-56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../../../Flink/14-graph/flink-gelly-streaming-graph-processing.md)
-57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../../../Knowledge/06-frontier/multimodal-streaming-architecture.md)
->>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../../../Flink/12-ai-ml/flink-ai-agents-flip-531.md)
-59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../../../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
-60: - **Smart Casual Verification**: [New Formal Verification Method](../../../Struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
+56: - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](../Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
+57: - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](../Knowledge/06-frontier/multimodal-streaming-architecture.md)
+>>> 58: - **Flink AI Agents**: [FLIP-531 AI Agent Integration](../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
+59: - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](../Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent Interoperability
+60: - **Smart Casual Verification**: [New Formal Verification Method](../USTM-F-Reconstruction/archive/original-struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid methods
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13670,10 +13708,10 @@
 **代码片段**：
 
 ```markdown
-51: - **📖 New Cheatsheets**: [DataStream API Cheatsheet](../../Flink/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheatsheet](../../Flink/03-sql-table-api/sql-functions-cheatsheet.md)
-52: - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../../Flink/08-roadmap/flink-version-evolution-complete-guide.md) - Storage-compute separation GA, cloud-native scheduling, AI-native architecture
->>> 53: - **AI Agents GA Highlights**: [Flink AI Agents Production Release](../../Flink/12-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
-54: - **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../../Flink/10-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow serverless modes
+51: - **📖 New Cheatsheets**: [DataStream API Cheatsheet](../Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheatsheet](../Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md)
+52: - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](../Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - Storage-compute separation GA, cloud-native scheduling, AI-native architecture
+>>> 53: - **AI Agents GA Highlights**: [Flink AI Agents Production Release](../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - LLM integration, intelligent decision flows, AutoML pipelines
+54: - **Serverless Flink Highlights**: [Serverless Flink Complete Guide](../Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) - AWS EMR Serverless, Azure Stream Analytics, GCP Dataflow serverless modes
 55:
 ```
 
@@ -15094,4 +15132,3 @@
 ---
 
 *报告生成时间: 2026-04-05 14:37:30*
-

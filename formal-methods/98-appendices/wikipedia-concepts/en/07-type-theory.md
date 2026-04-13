@@ -312,7 +312,7 @@ Expressiveness vs decidability trade-offs, complexity of type checking
 
 ## 9. Related Concepts
 
-- [Type Theory Foundations](../../01-foundations/05-type-theory.md) - More in-depth formalization of type theory
+- [Type Theory Foundations](../../../01-foundations/05-type-theory.md) - More in-depth formalization of type theory
 - [Curry-Howard Correspondence](08-curry-howard.md)
 - [Set Theory](22-set-theory.md)
 - [Category Theory](24-category-theory.md)

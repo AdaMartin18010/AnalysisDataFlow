@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 专项修订任务 - 检查报告
 
 > 生成时间: 2026-04-06
@@ -114,7 +115,7 @@
    [02-core/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanisms-deep-dive.md)
 
    <!-- 修改后 -->
-   [02-core/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md)
+   [02-core/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)
    ```
 
 2. **为 Flink 2.0/2.2 文档添加发布标记**

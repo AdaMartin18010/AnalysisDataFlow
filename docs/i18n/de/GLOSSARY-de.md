@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow Glossar (Deutsch)
 
 > **Version**: v1.0 | **Aktualisiert**: 2026-04-11 | **Umfang**: Gesamtprojekt
@@ -242,5 +243,5 @@ Watermark(t) ≜ monotonic_timestamp_indicator(t)
 
 **Verwandte Dokumente**:
 
-- [Englisches Glossar](../../GLOSSARY-en.md)
-- [Chinesisches Glossar](../../GLOSSARY.md)
+- [Englisches Glossar](../../../GLOSSARY-en.md)
+- [Chinesisches Glossar](../../../GLOSSARY.md)

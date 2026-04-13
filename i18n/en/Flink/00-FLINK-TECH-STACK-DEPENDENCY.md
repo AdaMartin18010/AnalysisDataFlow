@@ -323,4 +323,4 @@ graph TB
 
 ---
 
-*For Chinese version, see [Flink/00-FLINK-TECH-STACK-DEPENDENCY.md](../../Flink/00-FLINK-TECH-STACK-DEPENDENCY.md)*
+*For Chinese version, see [Flink/00-FLINK-TECH-STACK-DEPENDENCY.md](../../../Flink/00-FLINK-TECH-STACK-DEPENDENCY.md)*

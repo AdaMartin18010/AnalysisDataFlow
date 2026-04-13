@@ -73,27 +73,27 @@ graph TB
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
 | **Apache Flink** | 2.0+ | 流计算核心引擎，Exactly-Once语义 | [Flink指南](../Flink/00-INDEX.md) |
-| **Flink SQL/Table API** | 2.0+ | 声明式流处理，生产级稳定 | [SQL指南](../Flink/03-sql-table-api/flink-table-sql-complete-guide.md) |
+| **Flink SQL/Table API** | 2.0+ | 声明式流处理，生产级稳定 | [SQL指南](../Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) |
 | **Java 21** | LTS | Flink 主推语言，虚拟线程支持 | |
-| **Kafka Client** | 3.7+ | 流数据摄入标准 | [集成指南](../Flink/04-connectors/kafka-integration-patterns.md) |
-| **Scala 2.12/2.13** | - | Flink 原生支持，类型推导强 | [类型系统](../Flink/09-language-foundations/01.01-scala-types-for-streaming.md) |
+| **Kafka Client** | 3.7+ | 流数据摄入标准 | [集成指南](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) |
+| **Scala 2.12/2.13** | - | Flink 原生支持，类型推导强 | [类型系统](../Flink/03-api/09-language-foundations/01.01-scala-types-for-streaming.md) |
 
 #### Trial (试用)
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Flink Python (PyFlink)** | 2.0+ | Python 生态集成，ML场景 | [PyFlink](../Flink/09-language-foundations/02-python-api.md) |
-| **Rust Native Streaming** | - | 高性能原生实现 | [Rust生态](../Flink/09-language-foundations/07-rust-streaming-landscape.md) |
-| **RisingWave** | 2.0+ | 流处理数据库，物化视图 | [RisingWave](../Flink/09-language-foundations/06-risingwave-deep-dive.md) |
-| **Timely Dataflow** | - | Rust 分布式计算框架 | [Timely](../Flink/09-language-foundations/07.01-timely-dataflow-optimization.md) |
-| **Flink CDC** | 3.2+ | 变更数据捕获集成 | [CDC指南](../Flink/04-connectors/flink-cdc-3.0-data-integration.md) |
+| **Flink Python (PyFlink)** | 2.0+ | Python 生态集成，ML场景 | [PyFlink](../Flink/03-api/09-language-foundations/02-python-api.md) |
+| **Rust Native Streaming** | - | 高性能原生实现 | [Rust生态](../Flink/03-api/09-language-foundations/07-rust-streaming-landscape.md) |
+| **RisingWave** | 2.0+ | 流处理数据库，物化视图 | [RisingWave](../Flink/03-api/09-language-foundations/06-risingwave-deep-dive.md) |
+| **Timely Dataflow** | - | Rust 分布式计算框架 | [Timely](../Flink/03-api/09-language-foundations/07.01-timely-dataflow-optimization.md) |
+| **Flink CDC** | 3.2+ | 变更数据捕获集成 | [CDC指南](../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md) |
 
 #### Assess (评估)
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/12-ai-ml/flink-agents-flip-531.md) |
-| **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/09-language-foundations/09-wasm-udf-frameworks.md) |
+| **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) |
+| **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md) |
 | **Gleam** | - | 类型安全函数式语言 | |
 | **Kotlin Flow** | - | Kotlin 协程流处理 | |
 | **Zig** | - | 系统级高性能语言 | |
@@ -112,20 +112,20 @@ graph TB
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Apache Kafka** | 3.7+ | 流数据平台事实标准 | [Kafka集成](../Flink/04-connectors/kafka-integration-patterns.md) |
-| **Apache Paimon** | 0.9+ | 流式湖仓存储 | [Paimon](../Flink/14-lakehouse/flink-paimon-integration.md) |
-| **Apache Iceberg** | 1.6+ | 湖仓表格式标准 | [Iceberg](../Flink/04-connectors/flink-iceberg-integration.md) |
-| **RocksDB** | - | 嵌入式状态存储 | [状态后端](../Flink/06-engineering/state-backend-selection.md) |
+| **Apache Kafka** | 3.7+ | 流数据平台事实标准 | [Kafka集成](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) |
+| **Apache Paimon** | 0.9+ | 流式湖仓存储 | [Paimon](../Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md) |
+| **Apache Iceberg** | 1.6+ | 湖仓表格式标准 | [Iceberg](../Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md) |
+| **RocksDB** | - | 嵌入式状态存储 | [状态后端](../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) |
 | **PostgreSQL** | 16+ | 流维表/CDC源 | |
 
 #### Trial (试用)
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Delta Lake 2.0** | 3.2+ | 统一批流存储 | [Delta集成](../Flink/04-connectors/flink-delta-lake-integration.md) |
+| **Delta Lake 2.0** | 3.2+ | 统一批流存储 | [Delta集成](../Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md) |
 | **Hudi** | 0.15+ | 近实时数据湖 | |
 | **ForSt State Backend** | - | Flink 2.0 远程状态 | [ForSt](../Flink/02-core/flink-2.0-forst-state-backend.md) |
-| **Fluss (Fluss)** | - | Kafka 兼容流存储 | [Fluss](../Flink/04-connectors/fluss-integration.md) |
+| **Fluss (Fluss)** | - | Kafka 兼容流存储 | [Fluss](../Flink/05-ecosystem/05.01-connectors/fluss-integration.md) |
 
 #### Assess (评估)
 
@@ -133,8 +133,8 @@ graph TB
 |------|------|------|----------|
 | **Apache Ozone** | - | 分布式对象存储 | |
 | **Ceph** | - | 统一存储系统 | |
-| **Tiered Storage** | - | 分层存储架构 | [分层存储](../Flink/01-architecture/disaggregated-state-analysis.md) |
-| **Vector DB (PGVector)** | - | AI 向量存储 | [向量搜索](../Flink/12-ai-ml/vector-database-integration.md) |
+| **Tiered Storage** | - | 分层存储架构 | [分层存储](../Flink/01-concepts/disaggregated-state-analysis.md) |
+| **Vector DB (PGVector)** | - | AI 向量存储 | [向量搜索](../Flink/06-ai-ml/vector-database-integration.md) |
 
 #### Hold (暂缓)
 
@@ -151,10 +151,10 @@ graph TB
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Kubernetes** | 1.29+ | 容器编排标准 | [K8s部署](../Flink/10-deployment/kubernetes-deployment-production-guide.md) |
-| **Flink Kubernetes Operator** | 1.9+ | 生产级部署 | [Operator](../Flink/10-deployment/flink-kubernetes-operator-deep-dive.md) |
-| **Prometheus + Grafana** | - | 监控可观测性 | [监控指南](../Flink/15-observability/flink-observability-complete-guide.md) |
-| **OpenTelemetry** | - | 分布式追踪 | [OTel](../Flink/15-observability/opentelemetry-streaming-observability.md) |
+| **Kubernetes** | 1.29+ | 容器编排标准 | [K8s部署](../Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md) |
+| **Flink Kubernetes Operator** | 1.9+ | 生产级部署 | [Operator](../Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md) |
+| **Prometheus + Grafana** | - | 监控可观测性 | [监控指南](../Flink/04-runtime/04.03-observability/flink-observability-complete-guide.md) |
+| **OpenTelemetry** | - | 分布式追踪 | [OTel](../Flink/04-runtime/04.03-observability/opentelemetry-streaming-observability.md) |
 | **Istio/Envoy** | - | 服务网格 | |
 
 #### Trial (试用)
@@ -164,14 +164,14 @@ graph TB
 | **Serverless Flink** | - | 无服务器流处理 | [Serverless](../Knowledge/06-frontier/serverless-stream-processing-architecture.md) |
 | **eBPF** | - | 内核级可观测性 | |
 | **Cilium** | - | eBPF 网络与安全 | |
-| **GPUs for Inference** | - | 流式ML推理 | [ML推理](../Flink/12-ai-ml/flink-realtime-ml-inference.md) |
-| **Confidential Computing** | - | 可信执行环境 | [机密计算](../Flink/13-security/trusted-execution-flink.md) |
+| **GPUs for Inference** | - | 流式ML推理 | [ML推理](../Flink/06-ai-ml/flink-realtime-ml-inference.md) |
+| **Confidential Computing** | - | 可信执行环境 | [机密计算](../Flink/09-practices/09.04-security/trusted-execution-flink.md) |
 
 #### Assess (评估)
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **WebAssembly Runtime** | WASI 0.3 | Wasm 运行时 | [Wasm](../Flink/13-wasm/wasm-streaming.md) |
+| **WebAssembly Runtime** | WASI 0.3 | Wasm 运行时 | [Wasm](../Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md) |
 | **Unikernels** | - | 单内核技术 | |
 | **DPU/IPU** | - | 数据/基础设施处理单元 | |
 | **Quantum-safe Crypto** | - | 后量子密码 | |
@@ -190,8 +190,8 @@ graph TB
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Debezium** | 2.7+ | CDC 数据捕获 | [CDC集成](../Flink/04-connectors/04.04-cdc-debezium-integration.md) |
-| **dbt** | 1.8+ | 数据转换 | [dbt集成](../Flink/06-engineering/flink-dbt-integration.md) |
+| **Debezium** | 2.7+ | CDC 数据捕获 | [CDC集成](../Flink/05-ecosystem/05.01-connectors/04.04-cdc-debezium-integration.md) |
+| **dbt** | 1.8+ | 数据转换 | [dbt集成](../Flink/09-practices/09.03-performance-tuning/flink-dbt-integration.md) |
 | **Apache Airflow** | 2.9+ | 工作流编排 | |
 | **Schema Registry** | - | 数据契约管理 | |
 | **DataHub** | - | 数据目录 | |
@@ -202,7 +202,7 @@ graph TB
 |------|------|------|----------|
 | **Temporal** | - | 工作流即代码 | [Temporal](../Knowledge/06-frontier/temporal-flink-layered-architecture.md) |
 | **Flink SQL Gateway** | - | 远程SQL执行 | |
-| **Great Expectations** | - | 数据质量 | [数据质量](../Flink/15-observability/realtime-data-quality-monitoring.md) |
+| **Great Expectations** | - | 数据质量 | [数据质量](../Flink/04-runtime/04.03-observability/realtime-data-quality-monitoring.md) |
 | **Soda Core** | - | 数据可观测性 | |
 
 #### Assess (评估)

@@ -375,7 +375,7 @@ sequenceDiagram
 
 故障模型是分布式计算理论的核心组成部分。分布式系统的设计和分析必须考虑各种故障场景，故障模型提供了形式化的方法来描述和推理这些场景。
 
-- 详见：[分布式计算](../../../98-appendices/wikipedia-concepts/11-distributed-computing.md)
+- 详见：[分布式计算](../../98-appendices/wikipedia-concepts/11-distributed-computing.md)
 
 分布式计算中的关键故障相关概念：
 

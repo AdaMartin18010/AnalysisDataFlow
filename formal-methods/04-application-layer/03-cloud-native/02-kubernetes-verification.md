@@ -1130,7 +1130,7 @@ graph LR
 
 Kubernetes形式化验证与Raft共识算法密切相关。Kubernetes使用etcd作为其分布式键值存储，etcd基于Raft算法实现强一致性保证。
 
-- 详见：[Raft共识算法](../../../98-appendices/wikipedia-concepts/19-raft.md)
+- 详见：[Raft共识算法](../../98-appendices/wikipedia-concepts/19-raft.md)
 
 etcd中的Raft实现：
 

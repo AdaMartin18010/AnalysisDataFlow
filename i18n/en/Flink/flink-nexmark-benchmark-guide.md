@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink Nexmark 基准测试指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking | **前置依赖**: [性能基准测试套件指南](./flink-performance-benchmark-suite.md), [Table SQL API 完全指南](./03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L3 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking | **前置依赖**: [性能基准测试套件指南](./flink-performance-benchmark-suite.md), [Table SQL API 完全指南](../../../Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L3 -->
 <!-- TRANSLATE: > **版本**: v1.0 | **更新日期**: 2026-04-08 | **文档规模**: ~18KB -->
 
 
@@ -102,7 +102,7 @@ graph TB
         Q7[q7 Stream-Stream Join]
         Q8[q8 Stream-Table Join]
     end
-    
+
     subgraph SQL特性
         S1[SELECT / WHERE]
         S2[UDF]
@@ -112,7 +112,7 @@ graph TB
         S6[Interval Join]
         S7[Lookup Join]
     end
-    
+
     subgraph Flink算子
         F1[Source]
         F2[Calc]
@@ -121,7 +121,7 @@ graph TB
         F5[Async Lookup]
         F6[Sink]
     end
-    
+
     Q0 --> S1 --> F1 --> F2 --> F6
     Q1 --> S1 --> F1 --> F2 --> F6
     Q5 --> S3 --> S4 --> F1 --> F3 --> F6
@@ -177,7 +177,7 @@ $$
 erDiagram
     PERSON ||--o{ BID : places
     AUCTION ||--o{ BID : receives
-    
+
     PERSON {
         bigint id PK
         string name
@@ -186,7 +186,7 @@ erDiagram
         string state
         timestamp datetime
     }
-    
+
     AUCTION {
         bigint id PK
         string item
@@ -198,7 +198,7 @@ erDiagram
         bigint seller
         bigint category
     }
-    
+
     BID {
         bigint auction FK
         bigint bidder FK
@@ -220,28 +220,28 @@ graph BT
         Q2[q2 Selection]
         Q3[q3 Local Item]
     end
-    
+
     subgraph Category II
         Q4[q4 Average Price]
         Q5[q5 Hot Items]
         Q6[q6 AVG by Seller]
         Q7[q7 Highest Bid]
     end
-    
+
     subgraph Category III
         Q8[q8 Monitor New Users]
         Q9[q9 Winning Bids]
         Q10[q10 Auction Trends]
         Q11[q11 Session Bids]
     end
-    
+
     subgraph Category IV
         Q12[q12 Top Bidders]
         Q13[q13 Connected Bidders]
         Q14[q14 Top Categories]
         Q15[q15 Reserved Bids]
     end
-    
+
     Q0 -.-> Q1
     Q1 -.-> Q2
     Q2 -.-> Q4
@@ -256,7 +256,7 @@ graph BT
     Q9 -.-> Q13
     Q10 -.-> Q14
     Q11 -.-> Q15
-    
+
     style Q0 fill:#e1f5fe
     style Q5 fill:#fff3e0
     style Q8 fill:#e8f5e9
@@ -267,7 +267,7 @@ graph BT
 <!-- TRANSLATE: **关联文档**： -->
 
 <!-- TRANSLATE: - [性能基准测试套件指南](./flink-performance-benchmark-suite.md) —— 自动化测试框架 -->
-<!-- TRANSLATE: - [Table SQL API 完全指南](./03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) —— SQL 查询编写 -->
-<!-- TRANSLATE: - [窗口函数深度解析](./03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) —— 窗口语义详解 -->
-<!-- TRANSLATE: - [Join 优化分析](./03-api/03.02-table-sql-api/query-optimization-analysis.md) —— Join 性能优化 -->
+<!-- TRANSLATE: - [Table SQL API 完全指南](../../../Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) —— SQL 查询编写 -->
+<!-- TRANSLATE: - [窗口函数深度解析](../../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) —— 窗口语义详解 -->
+<!-- TRANSLATE: - [Join 优化分析](../../../Flink/03-api/03.02-table-sql-api/query-optimization-analysis.md) —— Join 性能优化 -->
 <!-- TRANSLATE: - [YCSB 基准测试指南](./flink-nexmark-benchmark-guide.md) —— 键值状态访问测试 -->

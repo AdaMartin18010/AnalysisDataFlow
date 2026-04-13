@@ -1,6 +1,6 @@
 # 流方程求解 (Stream Equation Solving)
 
-> 所属阶段: Struct | 前置依赖: [Unified Streaming Theory](../../../../Struct/01-foundation/01.01-unified-streaming-theory.md) | 形式化等级: L3-L4
+> 所属阶段: Struct | 前置依赖: [Unified Streaming Theory](../../../USTM-F-Reconstruction/archive/original-struct/01-foundation/01.01-unified-streaming-theory.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

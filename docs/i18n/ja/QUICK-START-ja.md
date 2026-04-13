@@ -152,8 +152,8 @@ Week 2: 核心メカニズム深化
 ### 4.1 ナビゲーションツール
 
 - **知識グラフ**: [knowledge-graph.html](../../knowledge-graph.html)
-- **定理依存関係**: [THEOREM-REGISTRY.md](../../THEOREM-REGISTRY.md)
-- **ナビゲーション索引**: [NAVIGATION-INDEX.md](../../NAVIGATION-INDEX.md)
+- **定理依存関係**: [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md)
+- **ナビゲーション索引**: [NAVIGATION-INDEX.md](../../../NAVIGATION-INDEX.md)
 
 ### 4.2 検索ヒント
 
@@ -168,4 +168,3 @@ grep -r "Thm-F-02" Flink/
 ---
 
 *最終更新: 2026-04-11 | 日本語版翻訳完了*
-

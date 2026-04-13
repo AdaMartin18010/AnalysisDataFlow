@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # 学习路径动态推荐系统 -->
 
-<!-- TRANSLATE: > **所属阶段**: Knowledge | **前置依赖**: [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md), [learning-path-recommender.py](../learning-path-recommender.js) | **形式化等级**: L3 -->
+<!-- TRANSLATE: > **所属阶段**: Knowledge | **前置依赖**: [LEARNING-PATH-GUIDE.md](../../../LEARNING-PATH-GUIDE.md), [learning-path-recommender.py](../learning-path-recommender.js) | **形式化等级**: L3 -->
 
 <!-- TRANSLATE: ## 1. 概念定义 -->
 

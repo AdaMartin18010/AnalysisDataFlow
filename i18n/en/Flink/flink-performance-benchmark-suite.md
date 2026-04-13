@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink 性能基准测试套件指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking | **前置依赖**: [Flink 部署运维完全指南](./04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md), [性能调优指南](./09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L3 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking | **前置依赖**: [Flink 部署运维完全指南](../../../Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md), [性能调优指南](../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L3 -->
 <!-- TRANSLATE: > **版本**: v3.3.0 | **更新日期**: 2026-04-08 | **文档规模**: ~20KB -->
 
 
@@ -101,23 +101,23 @@ $$
 ```yaml
 flink:
   version: ["1.18.1", "2.0.0", "2.2.0"]
-  
+
 jobmanager:
   replicas: 1
   memory: 4Gi
   cpu: 2
-  
+
 taskmanager:
   replicas: 8
   memory: 8Gi
   cpu: 4
   slots: 4
-  
+
 state:
   backend: rocksdb
   checkpoints.dir: s3://flink-benchmark/checkpoints
   savepoints.dir: s3://flink-benchmark/savepoints
-  
+
 execution:
   checkpointing:
     interval: 5min
@@ -138,30 +138,30 @@ graph TB
         T3[Checkpoint测试]
         T4[恢复测试]
     end
-    
+
     subgraph Flink组件
         C1[网络栈<br/>Netty/信用流控]
         C2[状态后端<br/>RocksDB/ForSt]
         C3[Checkpoint机制<br/>Barrier/对齐]
         C4[故障恢复<br/>JM HA/重启策略]
     end
-    
+
     subgraph 指标输出
         M1[吞吐/延迟]
         M2[访问延迟]
         M3[完成时间/大小]
         M4[端到端恢复时间]
     end
-    
+
     T1 -->|压力测试| C1
     T1 --> M1
-    
+
     T2 -->|压力测试| C2
     T2 --> M2
-    
+
     T3 -->|验证| C3
     T3 --> M3
-    
+
     T4 -->|验证| C4
     T4 --> M4
 ```
@@ -214,7 +214,7 @@ graph TB
     subgraph 负载生成层
         LG[Nexmark Generator<br/>自定义 Generator]
     end
-    
+
     subgraph Kubernetes集群
         subgraph Flink集群
             JM[JobManager<br/>HA配置]
@@ -222,23 +222,23 @@ graph TB
             TM2[TaskManager-2]
             TMn[TaskManager-n]
         end
-        
+
         subgraph 监控系统
             PROM[Prometheus]
             GRAF[Grafana]
         end
     end
-    
+
     subgraph 存储层
         S3[(S3/对象存储<br/>Checkpoint/Savepoint)]
         LOCAL[(本地SSD<br/>RocksDB)]
     end
-    
+
     subgraph 控制平面
         RUNNER[Benchmark Runner<br/>自动化脚本]
         REPORT[Report Generator]
     end
-    
+
     LG --> TM1 & TM2 & TMn
     JM --> TM1 & TM2 & TMn
     TM1 & TM2 & TMn --> S3
@@ -259,24 +259,24 @@ flowchart TD
     C -->|否| D[初始化环境]
     C -->|是| E[部署 Flink 集群]
     D --> E
-    
+
     E --> F[等待集群就绪]
     F --> G[提交测试作业]
-    
+
     G --> H[预热阶段]
     H --> I{测试类型?}
-    
+
     I -->|吞吐测试| J[收集吞吐/延迟指标]
     I -->|状态测试| K[收集状态访问延迟]
     I -->|Checkpoint| L[监控 Checkpoint 进度]
     I -->|恢复测试| M[注入故障]
-    
+
     J --> N[收集资源使用指标]
     K --> N
     L --> N
     M --> O[等待恢复完成]
     O --> N
-    
+
     N --> P[清理集群]
     P --> Q[保存结果]
     Q --> R{更多测试?}
@@ -288,8 +288,8 @@ flowchart TD
 
 <!-- TRANSLATE: **关联文档**： -->
 
-<!-- TRANSLATE: - [Flink 部署运维完全指南](./04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md) —— 生产环境部署参考 -->
-<!-- TRANSLATE: - [性能调优指南](./09-practices/09.03-performance-tuning/performance-tuning-guide.md) —— 基于基准测试的调优建议 -->
+<!-- TRANSLATE: - [Flink 部署运维完全指南](../../../Flink/04-runtime/04.01-deployment/flink-deployment-ops-complete-guide.md) —— 生产环境部署参考 -->
+<!-- TRANSLATE: - [性能调优指南](../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) —— 基于基准测试的调优建议 -->
 <!-- TRANSLATE: - [Nexmark 基准测试指南](./flink-nexmark-benchmark-guide.md) —— 标准 SQL 基准测试详解 -->
 <!-- TRANSLATE: - [YCSB 基准测试指南](./flink-nexmark-benchmark-guide.md) —— 键值状态访问测试 -->
-<!-- TRANSLATE: - [状态后端深度对比](./02-core/state-backends-deep-comparison.md) —— 不同状态后端性能对比 -->
+<!-- TRANSLATE: - [状态后端深度对比](../../../Flink/02-core/state-backends-deep-comparison.md) —— 不同状态后端性能对比 -->

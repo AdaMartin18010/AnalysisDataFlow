@@ -693,7 +693,7 @@ timeline
 
 Distributed computing and failure models are closely related. Failure models define possible failure behavior patterns of components in distributed systems, forming the foundation for distributed system design and analysis.
 
-- See: [Failure Models](../03-model-taxonomy/01-system-models/02-failure-models.md)
+- See: [Failure Models](../../../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 Major failure models in distributed systems include:
 - **Fail-Stop**: Process crashes and is detectable

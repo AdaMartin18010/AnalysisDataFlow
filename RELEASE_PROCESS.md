@@ -40,6 +40,7 @@
 ### 发布分支管理
 
 发布流程：
+
 1. 从 main 分支创建 release/v{版本号} 分支
 2. 进行最终测试
 3. 如发现问题则修复
@@ -78,11 +79,13 @@ git push -u origin release/v{版本号}
 ### 2. 测试阶段
 
 运行验证脚本：
+
 - make validate-docs
 - make check-links
 - make check-theorems
 
 手动验证：
+
 - 核心文档结构完整性
 - 交叉引用正确性
 - Mermaid 图表渲染

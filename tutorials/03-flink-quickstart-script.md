@@ -772,8 +772,8 @@ flowchart TD
 
 ## 🔗 相关文档
 
-- [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
-- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/04-connectors/kafka-integration-patterns.md)
+- [Flink/01-architecture/deployment-architectures.md](../Flink/01-concepts/deployment-architectures.md)
+- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md)
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 
 ---

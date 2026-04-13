@@ -955,7 +955,7 @@ flowchart TD
 
 Raft共识算法与Kubernetes形式化验证密切相关。Kubernetes使用etcd作为其分布式键值存储，而etcd正是基于Raft算法实现强一致性。
 
-- 详见：[Kubernetes形式化验证](../../../04-application-layer/03-cloud-native/02-kubernetes-verification.md)
+- 详见：[Kubernetes形式化验证](../../04-application-layer/03-cloud-native/02-kubernetes-verification.md)
 
 Raft在Kubernetes中的应用：
 

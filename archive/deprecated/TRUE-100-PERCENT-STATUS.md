@@ -222,4 +222,4 @@
 
 ---
 
-[🏠 返回主页](README.md) | [📜 查看证书](FINAL-SIGNED-CERTIFICATE.md) | [📊 查看统计](STATISTICS-REPORT.md)
+[🏠 返回主页](README.md) | [📜 查看证书](../completion-reports/FINAL-SIGNED-CERTIFICATE.md) | [📊 查看统计](../completion-reports/STATISTICS-REPORT.md)

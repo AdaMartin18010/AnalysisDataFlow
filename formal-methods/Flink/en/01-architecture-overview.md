@@ -1,6 +1,6 @@
 # Flink Architecture Overview: Evolution from 1.x to 2.x
 
-> **Stage**: Flink/01-concepts | **Prerequisites**: [flink-1.x-vs-2.0-comparison.md](./flink-1.x-vs-2.0-comparison.md) | **Formal Level**: L5
+> **Stage**: Flink/01-concepts | **Prerequisites**: [flink-1.x-vs-2.0-comparison.md](../../../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) | **Formal Level**: L5
 
 ---
 
@@ -534,6 +534,6 @@ flowchart LR
 
 **Related Documents**:
 
-- [flink-1.x-vs-2.0-comparison.md](./flink-1.x-vs-2.0-comparison.md) - Detailed architecture comparison
-- [disaggregated-state-analysis.md](./disaggregated-state-analysis.md) - Disaggregated state storage design
-- [datastream-v2-semantics.md](./datastream-v2-semantics.md) - DataStream V2 semantics analysis
+- [flink-1.x-vs-2.0-comparison.md](../../../Flink/01-concepts/flink-1.x-vs-2.0-comparison.md) - Detailed architecture comparison
+- [disaggregated-state-analysis.md](../../../Flink/01-concepts/disaggregated-state-analysis.md) - Disaggregated state storage design
+- [datastream-v2-semantics.md](../../../Flink/01-concepts/datastream-v2-semantics.md) - DataStream V2 semantics analysis

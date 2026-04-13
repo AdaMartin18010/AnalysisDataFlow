@@ -1,6 +1,6 @@
 # 当前挑战：形式化方法在分布式系统中的瓶颈
 
-> **所属阶段**: Struct/形式理论 | **前置依赖**: [06-applications/01-distributed-systems](../06-applications/01-distributed-systems.md), [05-verification/02-model-checking](../05-verification/02-model-checking.md) | **形式化等级**: L4-L5
+> **所属阶段**: Struct/形式理论 | **前置依赖**: [06-applications/01-distributed-systems](../06-applications/01-distributed-systems.md), [05-verification/02-model-checking](../98-appendices/wikipedia-concepts/02-model-checking.md) | **形式化等级**: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

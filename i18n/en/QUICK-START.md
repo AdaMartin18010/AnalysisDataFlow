@@ -188,9 +188,9 @@ flowchart TD
 
 ### 4.1 Navigation Index
 
-- **Complete Index**: [NAVIGATION-INDEX.md](./NAVIGATION-INDEX.md)
-- **Learning Paths**: [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md)
-- **Theorem Registry**: [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md)
+- **Complete Index**: [NAVIGATION-INDEX.md](../../NAVIGATION-INDEX.md)
+- **Learning Paths**: [LEARNING-PATH-GUIDE.md](../../LEARNING-PATH-GUIDE.md)
+- **Theorem Registry**: [THEOREM-REGISTRY.md](../../THEOREM-REGISTRY.md)
 
 ### 4.2 Interactive Tools
 
@@ -210,8 +210,8 @@ flowchart TD
 Found issues? Have suggestions? Welcome to contribute!
 
 - **Issues**: [GitHub Issues](../../issues)
-- **Contribution Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md)
-- **Agent Guide**: [AGENTS.md](./AGENTS.md)
+- **Contribution Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
+- **Agent Guide**: [AGENTS.md](../../AGENTS.md)
 
 ---
 

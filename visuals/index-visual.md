@@ -184,14 +184,14 @@ graph TB
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
 | 背压严重 | Credit-based流控调优、增加并行度 | [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md) |
-| Source背压 | 下游处理慢，需加并行度或优化 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
-| Sink背压 | 批量优化、异步写入 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
+| Source背压 | 下游处理慢，需加并行度或优化 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+| Sink背压 | 批量优化、异步写入 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
 
 #### 数据倾斜问题
 
 | 问题症状 | 解决方案 | 参考文档 |
 |----------|----------|----------|
-| 热点Key | 加盐、两阶段聚合、自定义分区器 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
+| 热点Key | 加盐、两阶段聚合、自定义分区器 | [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
 | 窗口倾斜 | 自定义窗口分配器、允许延迟 | [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md) |
 
 #### 延迟优化问题
@@ -200,7 +200,7 @@ graph TB
 |----------|----------|----------|
 | 延迟抖动 | GC调优、Debloating、异步执行 | [Flink/02-core/async-execution-model.md](../Flink/02-core/async-execution-model.md) |
 | Watermark延迟 | 调整Watermark生成策略 | [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) |
-| 模型推理延迟高 | 异步推理、模型缓存 | [Flink/12-ai-ml/model-serving-streaming.md](../Flink/12-ai-ml/model-serving-streaming.md) |
+| 模型推理延迟高 | 异步推理、模型缓存 | [Flink/12-ai-ml/model-serving-streaming.md](../Flink/06-ai-ml/model-serving-streaming.md) |
 
 #### Exactly-Once问题
 
@@ -228,16 +228,16 @@ graph TB
 
 | 技术组件 | 用途 | 关键文档 |
 |----------|------|----------|
-| **Kafka Integration** | Source/Sink连接器 | [Flink/04-connectors/kafka-integration-patterns.md](../Flink/04-connectors/kafka-integration-patterns.md) |
-| **Kafka Streams** | 轻量级流处理 | [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/05-vs-competitors/flink-vs-kafka-streams.md) |
-| **CDC/Debezium** | 变更数据捕获 | [Flink/04-connectors/04.04-cdc-debezium-integration.md](../Flink/04-connectors/04.04-cdc-debezium-integration.md) |
+| **Kafka Integration** | Source/Sink连接器 | [Flink/04-connectors/kafka-integration-patterns.md](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md) |
+| **Kafka Streams** | 轻量级流处理 | [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md) |
+| **CDC/Debezium** | 变更数据捕获 | [Flink/04-connectors/04.04-cdc-debezium-integration.md](../Flink/05-ecosystem/05.01-connectors/04.04-cdc-debezium-integration.md) |
 
 #### Spark 生态
 
 | 技术组件 | 用途 | 关键文档 |
 |----------|------|----------|
-| **Spark Streaming** | 批流统一处理 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
-| **Structured Streaming** | 结构化流处理 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
+| **Spark Streaming** | 批流统一处理 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+| **Structured Streaming** | 结构化流处理 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
 
 #### 流数据库
 
@@ -259,10 +259,10 @@ graph TB
 
 | 技术组件 | 用途 | 关键文档 |
 |----------|------|----------|
-| **RocksDB** | 状态后端 | [Flink/06-engineering/state-backend-selection.md](../Flink/06-engineering/state-backend-selection.md) |
-| **Paimon** | 流批统一存储 | [Flink/14-lakehouse/flink-paimon-integration.md](../Flink/14-lakehouse/flink-paimon-integration.md) |
-| **Iceberg** | 数据湖表格式 | [Flink/14-lakehouse/flink-iceberg-integration.md](../Flink/14-lakehouse/flink-iceberg-integration.md) |
-| **Delta Lake** | ACID数据湖 | [Flink/04-connectors/flink-delta-lake-integration.md](../Flink/04-connectors/flink-delta-lake-integration.md) |
+| **RocksDB** | 状态后端 | [Flink/06-engineering/state-backend-selection.md](../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) |
+| **Paimon** | 流批统一存储 | [Flink/14-lakehouse/flink-paimon-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md) |
+| **Iceberg** | 数据湖表格式 | [Flink/14-lakehouse/flink-iceberg-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md) |
+| **Delta Lake** | ACID数据湖 | [Flink/04-connectors/flink-delta-lake-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md) |
 
 ---
 
@@ -288,8 +288,8 @@ graph TB
 | 场景需求 | 推荐模式 | 技术栈 | 关键文档 |
 |----------|----------|--------|----------|
 | 设备数据处理 | P01 Event Time + P05 State + P07 Checkpoint | Flink + Kafka | [Knowledge/03-business-patterns/iot-stream-processing.md](../Knowledge/03-business-patterns/iot-stream-processing.md) |
-| 智能制造 | 边缘预处理 + 云端聚合 | Flink + 边缘网关 | [Flink/07-case-studies/case-smart-manufacturing-iot.md](../Flink/07-case-studies/case-smart-manufacturing-iot.md) |
-| 智能电网 | 时序数据处理 + 实时告警 | Flink + 时序数据库 | [Flink/07-case-studies/case-smart-grid-energy-management.md](../Flink/07-case-studies/case-smart-grid-energy-management.md) |
+| 智能制造 | 边缘预处理 + 云端聚合 | Flink + 边缘网关 | [Flink/07-case-studies/case-smart-manufacturing-iot.md](../Flink/09-practices/09.01-case-studies/case-smart-manufacturing-iot.md) |
+| 智能电网 | 时序数据处理 + 实时告警 | Flink + 时序数据库 | [Flink/07-case-studies/case-smart-grid-energy-management.md](../Flink/09-practices/09.01-case-studies/case-smart-grid-energy-management.md) |
 
 #### 游戏
 
@@ -302,7 +302,7 @@ graph TB
 | 场景需求 | 推荐模式 | 技术栈 | 关键文档 |
 |----------|----------|--------|----------|
 | 日志分析 | P02 Windowed Aggregation + P06 Side Output | Flink + ES | [Knowledge/03-business-patterns/log-monitoring.md](../Knowledge/03-business-patterns/log-monitoring.md) |
-| 用户行为分析 | Clickstream处理 + 会话窗口 | Flink + Kafka | [Flink/07-case-studies/case-clickstream-user-behavior-analytics.md](../Flink/07-case-studies/case-clickstream-user-behavior-analytics.md) |
+| 用户行为分析 | Clickstream处理 + 会话窗口 | Flink + Kafka | [Flink/07-case-studies/case-clickstream-user-behavior-analytics.md](../Flink/09-practices/09.01-case-studies/case-clickstream-user-behavior-analytics.md) |
 
 ---
 
@@ -691,7 +691,7 @@ python .vscode/search.py "checkpoint exactly-once" --category Struct --operator 
 | **Knowledge索引** | 工程实践知识导航 | [Knowledge/00-INDEX.md](../Knowledge/00-INDEX.md) |
 | **Flink索引** | Flink专项技术导航 | [Flink/00-INDEX.md](../Flink/00-INDEX.md) |
 | **定理注册表** | 形式化元素全局索引 | [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) |
-| **知识地图** | 可视化知识架构 | [PROJECT-MAP.md](../PROJECT-MAP.md) |
+| **知识地图** | 可视化知识架构 | [PROJECT-MAP.md](../archive/deprecated/PROJECT-MAP.md) |
 | **快速上手** | 5分钟快速入门 | [QUICK-START.md](../QUICK-START.md) |
 | **搜索指南** | 全文搜索使用指南 | [SEARCH-GUIDE.md](../SEARCH-GUIDE.md) |
 
@@ -700,9 +700,9 @@ python .vscode/search.py "checkpoint exactly-once" --category Struct --operator 
 | 决策类型 | 参考文档 |
 |----------|----------|
 | **流处理引擎选型** | [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md) |
-| **Flink vs Spark选型** | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
-| **SQL vs DataStream API** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-sql-table-api/sql-vs-datastream-comparison.md) |
-| **状态后端选型** | [Flink/06-engineering/state-backend-selection.md](../Flink/06-engineering/state-backend-selection.md) |
+| **Flink vs Spark选型** | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) |
+| **SQL vs DataStream API** | [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md) |
+| **状态后端选型** | [Flink/06-engineering/state-backend-selection.md](../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) |
 | **流数据库选型** | [Knowledge/04-technology-selection/streaming-database-guide.md](../Knowledge/04-technology-selection/streaming-database-guide.md) |
 | **并发范式选型** | [Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md](../Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md) |
 
@@ -712,8 +712,8 @@ python .vscode/search.py "checkpoint exactly-once" --category Struct --operator 
 |----------|----------|
 | **Checkpoint问题** | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) |
 | **背压问题** | [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md) |
-| **性能调优** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
-| **内存溢出** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md) |
+| **性能调优** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
+| **内存溢出** | [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) |
 | **Exactly-Once失效** | [Flink/02-core/exactly-once-end-to-end.md](../Flink/02-core/exactly-once-end-to-end.md) |
 
 ---

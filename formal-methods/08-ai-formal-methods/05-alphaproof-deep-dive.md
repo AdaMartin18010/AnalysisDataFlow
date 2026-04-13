@@ -1,6 +1,6 @@
 # AlphaProof: 神经定理证明系统深度解析
 
-> 所属阶段: formal-methods/ | 前置依赖: [01-foundations/README.md](../01-foundations/README.md), [06-tools/lean4-integration.md](../06-tools/lean4-integration.md) | 形式化等级: L6 (严格形式化)
+> 所属阶段: formal-methods/ | 前置依赖: [01-foundations/README.md](README.md), [06-tools/lean4-integration.md](../06-tools/lean4-integration.md) | 形式化等级: L6 (严格形式化)
 
 ---
 

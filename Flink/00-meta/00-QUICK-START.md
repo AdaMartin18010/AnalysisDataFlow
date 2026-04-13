@@ -1,7 +1,7 @@
 # Flink 2.4/2.5 快速开始指南
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > **5分钟上手 Flink 2.4/2.5 | 新特性快速体验 | 生产级部署**
@@ -1147,5 +1147,3 @@ graph LR
 > - [Flink 2.4 完整跟踪](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 > - [Flink 2.5 预览](../08-roadmap/08.01-flink-24/flink-2.5-preview.md)
 > - [Serverless Flink GA 指南](../04-runtime/04.01-deployment/serverless-flink-ga-guide.md)
-
-

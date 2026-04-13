@@ -62,7 +62,7 @@
 - **Symbol**: $A, B, S$
 - **Definition**: A collection of distinct, well-defined objects; fundamental structure in mathematics
 - **Related Definitions**: Def-S-01-01
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Element](#element), [Subset](#subset), [Power Set](#power-set)
 
 #### Element
@@ -73,7 +73,7 @@
 - **Symbol**: $
 - **Definition**: A single object belonging to a set
 - **Related Definitions**: Def-S-01-02
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Subset
 
@@ -83,7 +83,7 @@
 - **Symbol**: $
 - **Definition**: Set A is a subset of B if and only if every element of A belongs to B
 - **Related Theorems**: Thm-S-01-01 (Transitivity)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Proper Subset](#proper-subset), [Power Set](#power-set)
 
 #### Proper Subset
@@ -93,7 +93,7 @@
 - **Abbreviation**: —
 - **Symbol**: $
 - **Definition**: A is a subset of B and A is not equal to B
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Power Set
 
@@ -103,7 +103,7 @@
 - **Symbol**: $\mathcal{P}(A)$ or $2^A$
 - **Definition**: The set of all subsets of A
 - **Related Theorems**: Thm-S-01-02 ($|\mathcal{P}(A)| = 2^{|A|}$)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Union
 
@@ -113,7 +113,7 @@
 - **Symbol**: $
 - **Definition**: The set of all elements belonging to A or B
 - **Related Theorems**: Thm-S-01-03 (Commutativity, Associativity)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Intersection
 
@@ -122,7 +122,7 @@
 - **Abbreviation**: —
 - **Symbol**: $
 - **Definition**: The set of elements belonging to both A and B
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Difference
 
@@ -131,7 +131,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\setminus$ or $-$
 - **Definition**: The set of elements in A but not in B
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Complement
 
@@ -140,7 +140,7 @@
 - **Abbreviation**: —
 - **Symbol**: $A^c$ or $\overline{A}$
 - **Definition**: All elements in the universal set U that are not in A
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Cartesian Product
 
@@ -149,7 +149,7 @@
 - **Abbreviation**: —
 - **Symbol**: $
 - **Definition**: Set of ordered pairs $(a,b)$ where $a \in A, b \in B$
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Relation](#relation), [Function](#function)
 
 ---
@@ -163,7 +163,7 @@
 - **Abbreviation**: —
 - **Symbol**: $R \subseteq A \times B$
 - **Definition**: A subset of the Cartesian product between sets, representing some connection between elements
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Equivalence Relation](#equivalence-relation), [Partial Order](#partial-order)
 
 #### Function / Mapping
@@ -174,7 +174,7 @@
 - **Symbol**: $f: A \to B$
 - **Definition**: A special binary relation where each element of A maps to exactly one element of B
 - **Related Definitions**: Def-S-01-10
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Injection
 
@@ -182,7 +182,7 @@
 - **Chinese**: 单射 / 入射
 - **Abbreviation**: —
 - **Definition**: Different inputs map to different outputs: $f(a) = f(b) \Rightarrow a = b$
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Surjection
 
@@ -190,7 +190,7 @@
 - **Chinese**: 满射 / 上映射
 - **Abbreviation**: —
 - **Definition**: Every element in B has a preimage: $\forall b \in B, \exists a: f(a) = b$
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Bijection
 
@@ -199,7 +199,7 @@
 - **Abbreviation**: —
 - **Definition**: A function that is both injective and surjective
 - **Related Theorems**: Thm-S-01-05 (Existence of inverse function)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Equivalence Relation
 
@@ -208,7 +208,7 @@
 - **Abbreviation**: —
 - **Definition**: A relation satisfying reflexivity, symmetry, and transitivity
 - **Related Definitions**: Def-S-01-15
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Equivalence Class](#equivalence-class), [Quotient Set](#quotient-set)
 
 #### Equivalence Class
@@ -218,7 +218,7 @@
 - **Abbreviation**: —
 - **Symbol**: $[a]_R$
 - **Definition**: The set of all elements equivalent to a
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Quotient Set
 
@@ -227,7 +227,7 @@
 - **Abbreviation**: —
 - **Symbol**: $A/R$
 - **Definition**: The set of all equivalence classes
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Partial Order
 
@@ -235,7 +235,7 @@
 - **Chinese**: 偏序关系
 - **Abbreviation**: —
 - **Definition**: A relation satisfying reflexivity, antisymmetry, and transitivity
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Total Order](#total-order), [Hasse Diagram](#hasse-diagram)
 
 #### Total Order
@@ -244,7 +244,7 @@
 - **Chinese**: 全序关系 / 线性序
 - **Abbreviation**: —
 - **Definition**: A partial order where any two elements are comparable
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 ---
 
@@ -256,7 +256,7 @@
 - **Chinese**: 偏序集
 - **Abbreviation**: Poset
 - **Definition**: A set equipped with a partial order relation $(P, \leq)$
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Supremum
 
@@ -265,7 +265,7 @@
 - **Abbreviation**: sup / LUB
 - **Symbol**: $\sup$ or $\bigvee$
 - **Definition**: The smallest element that is greater than or equal to all elements of a subset
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Infimum
 
@@ -274,7 +274,7 @@
 - **Abbreviation**: inf / GLB
 - **Symbol**: $\inf$ or $\bigwedge$
 - **Definition**: The greatest element that is less than or equal to all elements of a subset
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Lattice
 
@@ -283,7 +283,7 @@
 - **Abbreviation**: —
 - **Definition**: A poset where any two elements have a supremum and an infimum
 - **Related Theorems**: Thm-S-01-08 (Algebraic definition of lattices)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Complete Lattice](#complete-lattice), [Distributive Lattice](#distributive-lattice)
 
 #### Complete Lattice
@@ -293,7 +293,7 @@
 - **Abbreviation**: —
 - **Definition**: A lattice where every subset has a supremum and an infimum
 - **Related Theorems**: Thm-S-01-09 (Knaster-Tarski Theorem)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Distributive Lattice
 
@@ -301,7 +301,7 @@
 - **Chinese**: 分配格
 - **Abbreviation**: —
 - **Definition**: A lattice satisfying distributive law: $a \wedge (b \vee c) = (a \wedge b) \vee (a \wedge c)$
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Hasse Diagram
 
@@ -309,7 +309,7 @@
 - **Chinese**: Hasse图
 - **Abbreviation**: —
 - **Definition**: A simplified diagram representing a poset, omitting self-loops and transitive edges
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 
 #### Galois Connection
 
@@ -319,7 +319,7 @@
 - **Symbol**: $(\alpha, \gamma)$
 - **Definition**: A pair of monotone functions between posets satisfying specific adjoint conditions
 - **Related Theorems**: Thm-S-05-12 (Foundation of Abstract Interpretation)
-- **First Appearance**: [01-order-theory.md](../../01-foundations/01-order-theory.md)
+- **First Appearance**: [01-order-theory.md](../01-foundations/01-order-theory.md)
 - **Cross-references**: [Abstract Interpretation](#abstract-interpretation)
 
 ---
@@ -333,7 +333,7 @@
 - **Abbreviation**: FP
 - **Definition**: A point satisfying $f(x) = x$
 - **Related Theorems**: Thm-S-01-10 (Banach Fixed Point Theorem)
-- **First Appearance**: [04-domain-theory.md](../../01-foundations/04-domain-theory.md)
+- **First Appearance**: [04-domain-theory.md](../01-foundations/04-domain-theory.md)
 
 #### Least Fixed Point
 
@@ -343,7 +343,7 @@
 - **Symbol**: $\text{lfp}(f)$
 - **Definition**: The smallest among all fixed points
 - **Related Theorems**: Thm-S-01-11 (Kleene's Theorem)
-- **First Appearance**: [04-domain-theory.md](../../01-foundations/04-domain-theory.md)
+- **First Appearance**: [04-domain-theory.md](../01-foundations/04-domain-theory.md)
 
 #### Greatest Fixed Point
 
@@ -352,7 +352,7 @@
 - **Abbreviation**: GFP
 - **Symbol**: $\text{gfp}(f)$
 - **Definition**: The greatest among all fixed points
-- **First Appearance**: [04-domain-theory.md](../../01-foundations/04-domain-theory.md)
+- **First Appearance**: [04-domain-theory.md](../01-foundations/04-domain-theory.md)
 
 ---
 
@@ -367,7 +367,7 @@
 - **Abbreviation**: —
 - **Definition**: A declarative sentence with a definite truth value
 - **Related Definitions**: Def-S-02-01
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Conjunction
 
@@ -376,7 +376,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\land$
 - **Definition**: True when both propositions are true
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Disjunction
 
@@ -385,7 +385,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\lor$
 - **Definition**: True when at least one proposition is true
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Implication
 
@@ -394,7 +394,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Rightarrow$ or $\to$
 - **Definition**: False when antecedent is true and consequent is false; otherwise true
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Equivalence
 
@@ -403,7 +403,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Leftrightarrow$ or $\leftrightarrow$
 - **Definition**: True when both sides have the same truth value
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Negation
 
@@ -412,7 +412,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\neg$ or $\sim$
 - **Definition**: Truth value negation
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Tautology
 
@@ -421,7 +421,7 @@
 - **Abbreviation**: —
 - **Definition**: A propositional formula true under all assignments
 - **Related Theorems**: Thm-S-02-01 (Completeness)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Contradiction
 
@@ -429,7 +429,7 @@
 - **Chinese**: 矛盾式 / 永假式
 - **Abbreviation**: —
 - **Definition**: A propositional formula false under all assignments
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Satisfiability
 
@@ -438,7 +438,7 @@
 - **Abbreviation**: SAT
 - **Definition**: There exists an assignment making the formula true
 - **Related Theorems**: Thm-S-02-02 (SAT is NP-complete)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Normal Form
 
@@ -447,7 +447,7 @@
 - **Abbreviation**: NF
 - **Definition**: Standard form of formula representation
 - **Categories**: [CNF](#conjunctive-normal-form), [DNF](#disjunctive-normal-form)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 ---
 
@@ -460,7 +460,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\forall$
 - **Definition**: "For all" — indicates all elements in the domain satisfy a property
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Existential Quantifier
 
@@ -469,7 +469,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\exists$
 - **Definition**: "There exists" — indicates at least one element in the domain satisfies a property
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Unique Existence
 
@@ -478,7 +478,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\exists!$
 - **Definition**: "There exists a unique"
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Predicate
 
@@ -486,7 +486,7 @@
 - **Chinese**: 谓词
 - **Abbreviation**: —
 - **Definition**: A truth-valued function with parameters
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Interpretation
 
@@ -494,7 +494,7 @@
 - **Chinese**: 解释 / 释义
 - **Abbreviation**: —
 - **Definition**: A mapping that gives concrete semantics to symbols
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Model
 
@@ -503,7 +503,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\mathcal{M} \models \phi$
 - **Definition**: An interpretation that makes a formula true
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 - **Cross-references**: [Model Checking](#model-checking)
 
 #### Validity
@@ -513,7 +513,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\models \phi$
 - **Definition**: True under all interpretations
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Consistency
 
@@ -522,7 +522,7 @@
 - **Abbreviation**: —
 - **Definition**: A set of formulas has a model (is satisfiable)
 - **Related Theorems**: Thm-S-02-05 (Compactness Theorem)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Completeness
 
@@ -531,7 +531,7 @@
 - **Abbreviation**: —
 - **Definition**: All valid formulas are provable
 - **Related Theorems**: Thm-S-02-06 (Gödel's Completeness Theorem)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Deduction Theorem
 
@@ -540,7 +540,7 @@
 - **Abbreviation**: —
 - **Definition**: $\Gamma \cup \{\phi\} \vdash \psi \Leftrightarrow \Gamma \vdash \phi \to \psi$
 - **Related Theorems**: Thm-S-02-07
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 ---
 
@@ -552,7 +552,7 @@
 - **Chinese**: 自然演绎
 - **Abbreviation**: ND
 - **Definition**: A proof system that mimics intuitive reasoning
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Sequent Calculus
 
@@ -560,7 +560,7 @@
 - **Chinese**: 相继式演算
 - **Abbreviation**: SC
 - **Definition**: A proof system by Gentzen using sequents $\Gamma \vdash \Delta$
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Resolution
 
@@ -568,7 +568,7 @@
 - **Chinese**: 归结原理
 - **Abbreviation**: —
 - **Definition**: Fundamental rule for automated theorem proving: $\frac{A \lor B, \neg B \lor C}{A \lor C}$
-- **First Appearance**: [05-verification/03-theorem-proving/02-smt-solvers.md](../../05-verification/03-theorem-proving/02-smt-solvers.md)
+- **First Appearance**: [05-verification/03-theorem-proving/02-smt-solvers.md](../05-verification/03-theorem-proving/02-smt-solvers.md)
 
 #### Proof by Contradiction
 
@@ -576,7 +576,7 @@
 - **Chinese**: 反证法 / 归谬法
 - **Abbreviation**: —
 - **Definition**: Assume the conclusion is false and derive a contradiction
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Mathematical Induction
 
@@ -585,7 +585,7 @@
 - **Abbreviation**: MI
 - **Definition**: Method for proving propositions about natural numbers: base case + inductive step
 - **Related Theorems**: Thm-S-02-10 (Well-founded Induction Principle)
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 - **Cross-references**: [Structural Induction](#structural-induction), [Coinduction](#coinduction)
 
 #### Structural Induction
@@ -594,7 +594,7 @@
 - **Chinese**: 结构归纳法
 - **Abbreviation**: SI
 - **Definition**: Induction applied over recursive data structures
-- **First Appearance**: [03-logic-foundations.md](../../01-foundations/03-logic-foundations.md)
+- **First Appearance**: [03-logic-foundations.md](../01-foundations/03-logic-foundations.md)
 
 #### Coinduction
 
@@ -603,7 +603,7 @@
 - **Abbreviation**: —
 - **Definition**: Method for proving equivalence of infinite data structures
 - **Related Theorems**: Thm-S-02-11 (Greatest Fixed Point Principle)
-- **First Appearance**: [06-coalgebra-advanced.md](../../01-foundations/06-coalgebra-advanced.md)
+- **First Appearance**: [06-coalgebra-advanced.md](../01-foundations/06-coalgebra-advanced.md)
 - **Cross-references**: [Bisimulation](#bisimulation)
 
 ---
@@ -617,7 +617,7 @@
 - **Abbreviation**: LTL
 - **Definition**: Logic describing temporal properties along single paths
 - **Related Definitions**: Def-S-02-50
-- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../../05-verification/01-logic/01-tla-plus.md)
+- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../05-verification/01-logic/01-tla-plus.md)
 - **Cross-references**: [CTL](#ctl), [State Space](#state-space)
 
 #### CTL (Computation Tree Logic)
@@ -626,7 +626,7 @@
 - **Chinese**: 计算树逻辑
 - **Abbreviation**: CTL
 - **Definition**: Logic quantifying temporal properties over all paths in the computation tree
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### CTL* (Extended CTL)
 
@@ -634,7 +634,7 @@
 - **Chinese**: 扩展计算树逻辑
 - **Abbreviation**: CTL*
 - **Definition**: Expressive superset of both LTL and CTL
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Globally
 
@@ -643,7 +643,7 @@
 - **Abbreviation**: G
 - **Symbol**: $\Box$ or $\mathbf{G}$
 - **Definition**: Holds in all future states
-- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../../05-verification/01-logic/01-tla-plus.md)
+- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../05-verification/01-logic/01-tla-plus.md)
 
 #### Finally / Eventually
 
@@ -652,7 +652,7 @@
 - **Abbreviation**: F
 - **Symbol**: $\Diamond$ or $\mathbf{F}$
 - **Definition**: Holds in some future state
-- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../../05-verification/01-logic/01-tla-plus.md)
+- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../05-verification/01-logic/01-tla-plus.md)
 
 #### Next
 
@@ -661,7 +661,7 @@
 - **Abbreviation**: X
 - **Symbol**: $\bigcirc$ or $\mathbf{X}$
 - **Definition**: Holds in the next state
-- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../../05-verification/01-logic/01-tla-plus.md)
+- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../05-verification/01-logic/01-tla-plus.md)
 
 #### Until
 
@@ -670,7 +670,7 @@
 - **Abbreviation**: U
 - **Symbol**: $\mathcal{U}$
 - **Definition**: Left side holds until right side holds
-- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../../05-verification/01-logic/01-tla-plus.md)
+- **First Appearance**: [05-verification/01-logic/01-tla-plus.md](../05-verification/01-logic/01-tla-plus.md)
 
 #### Path Quantifiers
 
@@ -679,7 +679,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\mathbf{A}$ (All), $\mathbf{E}$ (Exists)
 - **Definition**: For all / there exists a path
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Fairness
 
@@ -688,7 +688,7 @@
 - **Abbreviation**: —
 - **Definition**: System scheduling satisfies certain fairness constraints
 - **Categories**: Weak Fairness, Strong Fairness
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 ---
 
@@ -704,7 +704,7 @@
 - **Symbol**: $A, B, T$
 - **Definition**: Classification of values determining what operations can be performed
 - **Related Definitions**: Def-S-03-01
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Term
 
@@ -712,7 +712,7 @@
 - **Chinese**: 项 / 项元
 - **Abbreviation**: —
 - **Definition**: An element or value within a type
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Judgment
 
@@ -721,7 +721,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Gamma \vdash t : A$
 - **Definition**: In context $\Gamma$, term $t$ has type $A$
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Context
 
@@ -730,7 +730,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Gamma, \Delta$
 - **Definition**: A sequence of variable declarations
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Typing Rule
 
@@ -738,7 +738,7 @@
 - **Chinese**: 类型规则
 - **Abbreviation**: —
 - **Definition**: Inference rules for deriving the types of terms
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Function Type
 
@@ -747,7 +747,7 @@
 - **Abbreviation**: —
 - **Symbol**: $A \to B$
 - **Definition**: Type of functions from A to B
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Product Type
 
@@ -756,7 +756,7 @@
 - **Abbreviation**: —
 - **Symbol**: $A \times B$ or $(A, B)$
 - **Definition**: Type of ordered pairs
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Sum Type
 
@@ -765,7 +765,7 @@
 - **Abbreviation**: —
 - **Symbol**: $A + B$ or $A | B$
 - **Definition**: Type that is either A or B
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Unit Type
 
@@ -774,7 +774,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\mathbf{1}$ or $\text{unit}$
 - **Definition**: Type with exactly one value
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Empty Type
 
@@ -783,7 +783,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\mathbf{0}$ or $\text{void}$
 - **Definition**: Type with no values
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 ---
 
@@ -796,7 +796,7 @@
 - **Abbreviation**: DT
 - **Definition**: Type system where types can depend on values
 - **Related Definitions**: Def-S-03-15
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Pi Type / Dependent Function Type
 
@@ -805,7 +805,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Pi(x:A).B(x)$ or $(x:A) \to B(x)$
 - **Definition**: Function type where return type depends on parameter value
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Sigma Type / Dependent Pair Type
 
@@ -814,7 +814,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Sigma(x:A).B(x)$
 - **Definition**: Pair type where second component's type depends on first component
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Polymorphism
 
@@ -823,7 +823,7 @@
 - **Abbreviation**: —
 - **Definition**: Type abstraction allowing code to work with multiple types
 - **Categories**: [Parametric Polymorphism](#parametric-polymorphism), [Subtyping Polymorphism](#subtyping), [Ad-hoc Polymorphism](#ad-hoc-polymorphism)
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Parametric Polymorphism
 
@@ -831,7 +831,7 @@
 - **Chinese**: 参数多态
 - **Abbreviation**: —
 - **Definition**: Type parameterization, as in generics
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Type Constructor
 
@@ -839,7 +839,7 @@
 - **Chinese**: 类型构造器
 - **Abbreviation**: —
 - **Definition**: Operations that construct new types from existing types
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Higher-Kinded Types
 
@@ -848,7 +848,7 @@
 - **Abbreviation**: HKT
 - **Definition**: Types of type constructors
 - **Symbol**: $* \to *$
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 ---
 
@@ -861,7 +861,7 @@
 - **Abbreviation**: —
 - **Definition**: Well-typed programs cannot go wrong
 - **Related Theorems**: Thm-S-03-01 (Progress + Preservation)
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Progress
 
@@ -870,7 +870,7 @@
 - **Abbreviation**: —
 - **Definition**: Well-typed non-value terms can continue to reduce
 - **Related Lemmas**: Lemma-S-03-01
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Preservation
 
@@ -879,7 +879,7 @@
 - **Abbreviation**: —
 - **Definition**: Reduction preserves types
 - **Related Lemmas**: Lemma-S-03-02
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Strong Normalization
 
@@ -888,7 +888,7 @@
 - **Abbreviation**: SN
 - **Definition**: All well-typed terms can reduce to normal form
 - **Related Theorems**: Thm-S-03-05 (Girard's Theorem)
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Type Inference
 
@@ -897,7 +897,7 @@
 - **Abbreviation**: —
 - **Definition**: Automatically deriving the types of terms
 - **Related Theorems**: Thm-S-03-06 (Hindley-Milner Completeness)
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 ---
 
@@ -910,7 +910,7 @@
 - **Abbreviation**: CHI
 - **Definition**: Correspondence between propositions and types, proofs and programs, proof reduction and computation
 - **Related Theorems**: Thm-S-03-10
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 - **Cross-references**: [Proof Assistant](#proof-assistant)
 
 #### Proofs as Programs
@@ -919,7 +919,7 @@
 - **Chinese**: 证明即程序
 - **Abbreviation**: —
 - **Definition**: Constructing proofs is equivalent to writing programs
-- **First Appearance**: [05-type-theory.md](../../01-foundations/05-type-theory.md)
+- **First Appearance**: [05-type-theory.md](../01-foundations/05-type-theory.md)
 
 #### Proof Assistant
 
@@ -928,7 +928,7 @@
 - **Abbreviation**: ITP
 - **Definition**: Software tools that assist in constructing formal proofs
 - **Representatives**: Coq, Isabelle/HOL, Agda, Lean
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 ---
 
@@ -944,7 +944,7 @@
 - **Symbol**: $P, Q, R$
 - **Definition**: A computational entity with independent execution flow
 - **Related Definitions**: Def-S-04-01
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### CCS (Calculus of Communicating Systems)
 
@@ -952,7 +952,7 @@
 - **Chinese**: 通信系统演算
 - **Abbreviation**: CCS
 - **Definition**: Process calculus by Milner based on labeled synchronization
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### CSP (Communicating Sequential Processes)
 
@@ -960,7 +960,7 @@
 - **Chinese**: 通信顺序进程
 - **Abbreviation**: CSP
 - **Definition**: Process algebra by Hoare emphasizing synchronous communication
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### ACP (Algebra of Communicating Processes)
 
@@ -968,7 +968,7 @@
 - **Chinese**: 通信进程的代数
 - **Abbreviation**: ACP
 - **Definition**: Process algebra by Bergstra and Klop emphasizing algebraic methods
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Pi Calculus
 
@@ -976,7 +976,7 @@
 - **Chinese**: π演算
 - **Abbreviation**: —
 - **Definition**: Process calculus supporting mobility, can describe topology changes
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Action
 
@@ -986,7 +986,7 @@
 - **Symbol**: $\alpha, \beta, a, b$
 - **Definition**: Atomic operations that a process can perform
 - **Categories**: [Input](#input-action), [Output](#output-action), [Internal](#internal-action)
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Input Action
 
@@ -995,7 +995,7 @@
 - **Abbreviation**: —
 - **Symbol**: $a(x)$ or $c?x$
 - **Definition**: Action receiving a value from a channel
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Output Action
 
@@ -1004,7 +1004,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\bar{a}\langle v\rangle$ or $c!v$
 - **Definition**: Action sending a value to a channel
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Internal Action
 
@@ -1013,7 +1013,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\tau$
 - **Definition**: Unobservable internal computation action
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Channel
 
@@ -1022,7 +1022,7 @@
 - **Abbreviation**: —
 - **Symbol**: $a, b, c$
 - **Definition**: Medium for inter-process communication
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 ---
 
@@ -1035,7 +1035,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\alpha.P$ or $\cdot$
 - **Definition**: First perform action $\alpha$, then behave as process $P$
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Choice
 
@@ -1044,7 +1044,7 @@
 - **Abbreviation**: —
 - **Symbol**: $P + Q$
 - **Definition**: Choose to execute either P or Q
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Parallel Composition
 
@@ -1053,7 +1053,7 @@
 - **Abbreviation**: —
 - **Symbol**: $P \parallel Q$ or $P \mid Q$
 - **Definition**: P and Q execute concurrently, can interact
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Restriction / Hiding
 
@@ -1062,7 +1062,7 @@
 - **Abbreviation**: —
 - **Symbol**: $P \setminus L$ or $(\nu a)P$
 - **Definition**: Restrict process to communicate only on specific channels
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Relabeling / Renaming
 
@@ -1071,7 +1071,7 @@
 - **Abbreviation**: —
 - **Symbol**: $P[f]$ or $P[a/b]$
 - **Definition**: Rename action names according to function f
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 #### Recursion
 
@@ -1080,7 +1080,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\text{rec } X.P$ or $\mu X.P$
 - **Definition**: Define processes with infinite behavior
-- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
+- **First Appearance**: [02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md)
 
 ---
 
@@ -1094,7 +1094,7 @@
 - **Symbol**: $\sim$ (strong), $\approx$ (weak)
 - **Definition**: Relation where two processes are behaviorally indistinguishable
 - **Related Definitions**: Def-S-04-20
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Strong Bisimulation
 
@@ -1104,7 +1104,7 @@
 - **Symbol**: $\sim$
 - **Definition**: Requires each action to match precisely
 - **Related Theorems**: Thm-S-04-01 (Congruence)
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Weak Bisimulation
 
@@ -1113,7 +1113,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\approx$
 - **Definition**: Bisimulation ignoring internal $\tau$ actions
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Trace Equivalence
 
@@ -1121,7 +1121,7 @@
 - **Chinese**: 迹等价
 - **Abbreviation**: —
 - **Definition**: Two processes have the same observable action sequences
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Testing Equivalence
 
@@ -1129,7 +1129,7 @@
 - **Chinese**: 测试等价
 - **Abbreviation**: —
 - **Definition**: Behavioral equivalence based on external observer testing
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Bisimulation Proof Method
 
@@ -1138,7 +1138,7 @@
 - **Abbreviation**: —
 - **Definition**: Method of constructing bisimulation relations to prove process equivalence
 - **Related Theorems**: Thm-S-04-05 (Existence of maximum bisimulation)
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 ---
 
@@ -1151,7 +1151,7 @@
 - **Abbreviation**: —
 - **Definition**: Basic unit of concurrent computation, encapsulating state and behavior
 - **Related Definitions**: Def-S-04-30
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Message Passing
 
@@ -1159,7 +1159,7 @@
 - **Chinese**: 消息传递
 - **Abbreviation**: MP
 - **Definition**: Asynchronous communication between Actors
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Mailbox
 
@@ -1167,7 +1167,7 @@
 - **Chinese**: 邮箱
 - **Abbreviation**: —
 - **Definition**: Buffer where Actors receive messages
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Behavior
 
@@ -1175,7 +1175,7 @@
 - **Chinese**: 行为
 - **Abbreviation**: —
 - **Definition**: Pattern of how an Actor responds to messages
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 #### Supervision
 
@@ -1183,7 +1183,7 @@
 - **Chinese**: 监督
 - **Abbreviation**: —
 - **Definition**: When an Actor fails, parent Actor handles recovery
-- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../../03-model-taxonomy/02-computation-models/01-process-algebras.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/01-process-algebras.md](../03-model-taxonomy/02-computation-models/01-process-algebras.md)
 
 ---
 
@@ -1198,7 +1198,7 @@
 - **Abbreviation**: —
 - **Definition**: Specification defining visibility rules for read/write operations in distributed storage
 - **Related Definitions**: Def-S-05-01
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Linearizability
 
@@ -1207,7 +1207,7 @@
 - **Abbreviation**: —
 - **Definition**: Operations appear to complete instantaneously at some point on a global timeline
 - **Related Theorems**: Thm-S-05-01 (Linearizability implies sequential consistency)
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Sequential Consistency
 
@@ -1215,7 +1215,7 @@
 - **Chinese**: 顺序一致性
 - **Abbreviation**: SC
 - **Definition**: All processes see the same order of operations
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Causal Consistency
 
@@ -1224,7 +1224,7 @@
 - **Abbreviation**: —
 - **Definition**: Causally related operations are seen in the same order by all processes
 - **Related Theorems**: Thm-S-05-02 (Causal consistency implementation)
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 - **Cross-references**: [Causality](#causality)
 
 #### Eventual Consistency
@@ -1233,7 +1233,7 @@
 - **Chinese**: 最终一致性
 - **Abbreviation**: EC
 - **Definition**: If no new updates are made, all replicas eventually converge to the same value
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Read Your Writes
 
@@ -1241,7 +1241,7 @@
 - **Chinese**: 读己之写
 - **Abbreviation**: RYW
 - **Definition**: A process can always read its latest writes
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Monotonic Reads
 
@@ -1249,7 +1249,7 @@
 - **Chinese**: 单调读
 - **Abbreviation**: MR
 - **Definition**: If a process reads a value, subsequent reads will not see earlier values
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Monotonic Writes
 
@@ -1257,7 +1257,7 @@
 - **Chinese**: 单调写
 - **Abbreviation**: MW
 - **Definition**: Write operations take effect in the order they were issued
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Session Guarantees
 
@@ -1265,7 +1265,7 @@
 - **Chinese**: 会话保证
 - **Abbreviation**: —
 - **Definition**: Consistency guarantees at the session level
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 ---
 
@@ -1277,7 +1277,7 @@
 - **Chinese**: 容错
 - **Abbreviation**: FT
 - **Definition**: System's ability to continue correct operation despite component failures
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Crash-Stop
 
@@ -1285,7 +1285,7 @@
 - **Chinese**: 崩溃停止
 - **Abbreviation**: —
 - **Definition**: Failure mode: process stops running and never recovers
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Crash-Recovery
 
@@ -1293,7 +1293,7 @@
 - **Chinese**: 崩溃恢复
 - **Abbreviation**: —
 - **Definition**: Failure mode: process stops but may recover later
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Byzantine Fault
 
@@ -1301,7 +1301,7 @@
 - **Chinese**: 拜占庭故障
 - **Abbreviation**: —
 - **Definition**: Failure mode: process may arbitrarily deviate from protocol, including malicious behavior
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Omission Fault
 
@@ -1309,7 +1309,7 @@
 - **Chinese**: 遗漏故障
 - **Abbreviation**: —
 - **Definition**: Failure mode: process may omit sending or receiving messages
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Consensus
 
@@ -1318,7 +1318,7 @@
 - **Abbreviation**: —
 - **Definition**: Property that all non-faulty processes agree on a value
 - **Related Definitions**: Def-S-05-10
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Safety
 
@@ -1327,7 +1327,7 @@
 - **Abbreviation**: —
 - **Definition**: Property that "nothing bad ever happens"
 - **Related Theorems**: Thm-S-05-10 (Consensus Safety)
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### Liveness
 
@@ -1336,7 +1336,7 @@
 - **Abbreviation**: —
 - **Definition**: Property that "something good eventually happens"
 - **Related Theorems**: Thm-S-05-11 (Consensus Liveness)
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### FLP Impossibility
 
@@ -1345,7 +1345,7 @@
 - **Abbreviation**: FLP
 - **Definition**: Impossibility result for consensus in asynchronous systems by Fischer, Lynch, and Paterson
 - **Related Theorems**: Thm-S-05-15 (FLP)
-- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../../03-model-taxonomy/01-system-models/02-failure-models.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/02-failure-models.md](../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 #### CAP Theorem
 
@@ -1354,7 +1354,7 @@
 - **Abbreviation**: CAP
 - **Definition**: Consistency, Availability, and Partition tolerance cannot all be satisfied simultaneously
 - **Related Theorems**: Thm-S-05-16 (CAP)
-- **First Appearance**: [03-model-taxonomy/04-consistency/02-cap-theorem.md](../../03-model-taxonomy/04-consistency/02-cap-theorem.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/02-cap-theorem.md](../03-model-taxonomy/04-consistency/02-cap-theorem.md)
 
 ---
 
@@ -1366,7 +1366,7 @@
 - **Chinese**: 物理时钟
 - **Abbreviation**: —
 - **Definition**: Clock based on real time, such as UTC
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Logical Clock
 
@@ -1374,7 +1374,7 @@
 - **Chinese**: 逻辑时钟
 - **Abbreviation**: —
 - **Definition**: Clock used to capture causal relationships, such as Lamport timestamps
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Lamport Timestamp
 
@@ -1383,7 +1383,7 @@
 - **Abbreviation**: —
 - **Definition**: Monotonically increasing counter for determining event partial order
 - **Related Definitions**: Def-S-05-20
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Vector Clock
 
@@ -1392,7 +1392,7 @@
 - **Abbreviation**: VC
 - **Definition**: Extended logical clock that can precisely identify concurrent events
 - **Related Theorems**: Thm-S-05-20 (Vector Clock Correctness)
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Happens-Before Relation
 
@@ -1402,7 +1402,7 @@
 - **Symbol**: $\to$ or $\rightarrow$
 - **Definition**: Partial order relation defined by Lamport
 - **Related Definitions**: Def-S-05-21
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Concurrent Events
 
@@ -1411,7 +1411,7 @@
 - **Abbreviation**: —
 - **Symbol**: $a \parallel b$
 - **Definition**: Two events that are not related by happens-before
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Causality
 
@@ -1419,7 +1419,7 @@
 - **Chinese**: 因果关系
 - **Abbreviation**: —
 - **Definition**: Causal dependency relationship between events
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 #### Clock Synchronization
 
@@ -1427,7 +1427,7 @@
 - **Chinese**: 时钟同步
 - **Abbreviation**: —
 - **Definition**: Process of maintaining consistency among distributed node clocks
-- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- **First Appearance**: [03-model-taxonomy/04-consistency/01-consistency-spectrum.md](../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 ---
 
@@ -1439,7 +1439,7 @@
 - **Chinese**: 复制
 - **Abbreviation**: —
 - **Definition**: Storing data copies on multiple nodes to improve availability
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 #### Primary-Backup Replication
 
@@ -1447,7 +1447,7 @@
 - **Chinese**: 主从复制
 - **Abbreviation**: —
 - **Definition**: Single primary node handles writes, backup nodes replicate and handle reads
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 #### Multi-Master Replication
 
@@ -1455,7 +1455,7 @@
 - **Chinese**: 多主复制
 - **Abbreviation**: MMR
 - **Definition**: Multiple nodes can handle write operations simultaneously
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 #### Quorum
 
@@ -1464,7 +1464,7 @@
 - **Abbreviation**: —
 - **Definition**: Minimum number of replica acknowledgments required for read/write operations
 - **Related Theorems**: Thm-S-05-25 (Quorum Intersection Theorem)
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 #### Sharding
 
@@ -1472,7 +1472,7 @@
 - **Chinese**: 分片
 - **Abbreviation**: —
 - **Definition**: Horizontal partitioning strategy distributing data across multiple nodes
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 #### Consistent Hashing
 
@@ -1481,7 +1481,7 @@
 - **Abbreviation**: CH
 - **Definition**: Sharding algorithm that minimizes reallocation
 - **Related Theorems**: Thm-S-05-26 (Consistent Hashing Load Balancing)
-- **First Appearance**: [03-model-taxonomy/03-resource-deployment/01-virtualization.md](../../03-model-taxonomy/03-resource-deployment/01-virtualization.md)
+- **First Appearance**: [03-model-taxonomy/03-resource-deployment/01-virtualization.md](../03-model-taxonomy/03-resource-deployment/01-virtualization.md)
 
 #### Lease
 
@@ -1489,7 +1489,7 @@
 - **Chinese**: 租约
 - **Abbreviation**: —
 - **Definition**: Time-limited authorization mechanism used for primary node election
-- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../../03-model-taxonomy/01-system-models/01-sync-async.md)
+- **First Appearance**: [03-model-taxonomy/01-system-models/01-sync-async.md](../03-model-taxonomy/01-system-models/01-sync-async.md)
 
 ---
 
@@ -1504,7 +1504,7 @@
 - **Abbreviation**: MC
 - **Definition**: Technique for automatically verifying temporal logic properties by exhaustive exploration of system state space
 - **Related Definitions**: Def-S-06-01
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### State Space
 
@@ -1512,7 +1512,7 @@
 - **Chinese**: 状态空间
 - **Abbreviation**: —
 - **Definition**: Set of all possible states of a system
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### State Space Explosion
 
@@ -1520,7 +1520,7 @@
 - **Chinese**: 状态爆炸
 - **Abbreviation**: SSE
 - **Definition**: Phenomenon where the number of states grows exponentially with system size
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Kripke Structure
 
@@ -1529,7 +1529,7 @@
 - **Abbreviation**: —
 - **Definition**: Formal model of state transition systems used for model checking
 - **Related Definitions**: Def-S-06-05
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Büchi Automaton
 
@@ -1537,7 +1537,7 @@
 - **Chinese**: Büchi自动机
 - **Abbreviation**: BA
 - **Definition**: $\omega$-automaton used for verifying infinite behaviors
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Counterexample
 
@@ -1545,7 +1545,7 @@
 - **Chinese**: 反例
 - **Abbreviation**: CEX
 - **Definition**: Execution trace that violates a property
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### State Compression
 
@@ -1553,7 +1553,7 @@
 - **Chinese**: 状态压缩
 - **Abbreviation**: —
 - **Definition**: Techniques for reducing the size of state space representation
-- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../../05-verification/02-model-checking/01-explicit-state.md)
+- **First Appearance**: [05-verification/02-model-checking/01-explicit-state.md](../05-verification/02-model-checking/01-explicit-state.md)
 
 #### Symbolic Model Checking
 
@@ -1562,7 +1562,7 @@
 - **Abbreviation**: SMC
 - **Definition**: Using symbolic representations like BDDs to handle state space
 - **Related Theorems**: Thm-S-06-01 (Symbolic Model Checking Completeness)
-- **First Appearance**: [05-verification/02-model-checking/02-symbolic-mc.md](../../05-verification/02-model-checking/02-symbolic-mc.md)
+- **First Appearance**: [05-verification/02-model-checking/02-symbolic-mc.md](../05-verification/02-model-checking/02-symbolic-mc.md)
 
 #### Partial Order Reduction
 
@@ -1571,7 +1571,7 @@
 - **Abbreviation**: POR
 - **Definition**: Technique to reduce explored states by exploiting independence
 - **Related Theorems**: Thm-S-06-02 (POR Preservation)
-- **First Appearance**: [05-verification/02-model-checking/02-symbolic-mc.md](../../05-verification/02-model-checking/02-symbolic-mc.md)
+- **First Appearance**: [05-verification/02-model-checking/02-symbolic-mc.md](../05-verification/02-model-checking/02-symbolic-mc.md)
 
 ---
 
@@ -1584,7 +1584,7 @@
 - **Abbreviation**: TP
 - **Definition**: Method using mathematical logic and inference rules to prove systems satisfy specifications
 - **Related Definitions**: Def-S-06-10
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Hoare Logic
 
@@ -1593,7 +1593,7 @@
 - **Abbreviation**: —
 - **Definition**: Program reasoning system based on preconditions and postconditions
 - **Related Definitions**: Def-S-06-11
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Hoare Triple
 
@@ -1602,7 +1602,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\{P\}C\{Q\}$
 - **Definition**: If precondition P holds, executing C ensures postcondition Q
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Weakest Precondition
 
@@ -1612,7 +1612,7 @@
 - **Symbol**: $wp(C, Q)$
 - **Definition**: The weakest condition that guarantees Q holds after executing C
 - **Related Theorems**: Thm-S-06-10 (Weakest Precondition Existence)
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Strongest Postcondition
 
@@ -1621,7 +1621,7 @@
 - **Abbreviation**: SP
 - **Symbol**: $sp(P, C)$
 - **Definition**: The strongest condition guaranteed to hold after executing C from P
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Loop Invariant
 
@@ -1629,7 +1629,7 @@
 - **Chinese**: 循环不变式
 - **Abbreviation**: —
 - **Definition**: Predicate that holds before and after each iteration of a loop
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Separation Logic
 
@@ -1638,7 +1638,7 @@
 - **Abbreviation**: SL
 - **Definition**: Extension of Hoare logic for reasoning about heap memory
 - **Related Theorems**: Thm-S-06-15 (Frame Rule)
-- **First Appearance**: [05-verification/01-logic/03-separation-logic.md](../../05-verification/01-logic/03-separation-logic.md)
+- **First Appearance**: [05-verification/01-logic/03-separation-logic.md](../05-verification/01-logic/03-separation-logic.md)
 
 ---
 
@@ -1651,7 +1651,7 @@
 - **Abbreviation**: AI
 - **Definition**: Static analysis theory for deriving program dynamic properties through approximate computation
 - **Related Definitions**: Def-S-06-20
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Concrete Domain
 
@@ -1660,7 +1660,7 @@
 - **Abbreviation**: —
 - **Symbol**: $(C, \sqsubseteq_C)$
 - **Definition**: Precise semantic domain of actual program execution
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Abstract Domain
 
@@ -1669,7 +1669,7 @@
 - **Abbreviation**: —
 - **Symbol**: $(A, \sqsubseteq_A)$
 - **Definition**: Simplified domain used for approximate analysis
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Abstraction Function
 
@@ -1678,7 +1678,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\alpha: C \to A$
 - **Definition**: Mapping from concrete values to abstract values
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Concretization Function
 
@@ -1687,7 +1687,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\gamma: A \to C$
 - **Definition**: Mapping from abstract values to sets of concrete values
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Widening Operator
 
@@ -1697,7 +1697,7 @@
 - **Symbol**: $\nabla$
 - **Definition**: Acceleration operator ensuring convergence of abstract iteration
 - **Related Theorems**: Thm-S-06-20 (Widening Convergence)
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 #### Narrowing Operator
 
@@ -1706,7 +1706,7 @@
 - **Abbreviation**: —
 - **Symbol**: $\Delta$
 - **Definition**: Improvement operator refining widening results
-- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
+- **First Appearance**: [03-model-taxonomy/02-computation-models/abstract-interpretation.md](../03-model-taxonomy/02-computation-models/abstract-interpretation.md)
 
 ---
 
@@ -1719,7 +1719,7 @@
 - **Abbreviation**: —
 - **Definition**: Precise description of system behavior using rigorous mathematical notation
 - **Related Definitions**: Def-S-06-30
-- **First Appearance**: [05-verification/01-logic/05-mit-spec-language.md](../../05-verification/01-logic/05-mit-spec-language.md)
+- **First Appearance**: [05-verification/01-logic/05-mit-spec-language.md](../05-verification/01-logic/05-mit-spec-language.md)
 
 #### Refinement
 
@@ -1728,7 +1728,7 @@
 - **Abbreviation**: —
 - **Definition**: Correctness-preserving transformation from high-level specification to low-level implementation
 - **Related Theorems**: Thm-S-06-25 (Refinement Transitivity)
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Refinement Checking
 
@@ -1736,7 +1736,7 @@
 - **Chinese**: 精化验证
 - **Abbreviation**: RC
 - **Definition**: Technique for verifying that implementation satisfies specification
-- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../../05-verification/03-theorem-proving/01-coq-isabelle.md)
+- **First Appearance**: [05-verification/03-theorem-proving/01-coq-isabelle.md](../05-verification/03-theorem-proving/01-coq-isabelle.md)
 
 #### Design by Contract
 
@@ -1744,7 +1744,7 @@
 - **Chinese**: 契约式编程
 - **Abbreviation**: DbC
 - **Definition**: Software design method based on pre/post/invariant contracts
-- **First Appearance**: [05-verification/03-theorem-proving/06-dafny.md](../../05-verification/03-theorem-proving/06-dafny.md)
+- **First Appearance**: [05-verification/03-theorem-proving/06-dafny.md](../06-tools/academic/06-dafny.md)
 
 #### Deterministic Simulation Testing
 
@@ -1752,7 +1752,7 @@
 - **Chinese**: 确定性模拟测试
 - **Abbreviation**: DST
 - **Definition**: Testing technique that makes concurrent system execution reproducible by controlling thread interleaving
-- **First Appearance**: [06-tools/industrial/07-shuttle-turmoil.md](../../06-tools/industrial/07-shuttle-turmoil.md)
+- **First Appearance**: [06-tools/industrial/07-shuttle-turmoil.md](../06-tools/industrial/07-shuttle-turmoil.md)
 
 #### Smart Casual Verification
 
@@ -1760,7 +1760,7 @@
 - **Chinese**: Smart Casual验证
 - **Abbreviation**: SCV
 - **Definition**: Hybrid verification method combining formal specification, model checking, and trace validation (proposed by Microsoft)
-- **First Appearance**: [06-tools/industrial/azure-service-fabric.md](../../06-tools/industrial/azure-service-fabric.md)
+- **First Appearance**: [06-tools/industrial/azure-service-fabric.md](../06-tools/industrial/azure-service-fabric.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # Flink Checkpoint Mechanism Deep Dive
 
-> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) | **Formal Level**: L4
+> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) | **Formal Level**: L4
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 1. Definitions
 
-This section establishes rigorous formal definitions for the Flink Checkpoint mechanism, laying the theoretical foundation for subsequent analysis. All definitions are consistent with the semantic hierarchy definitions in [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md)[^1][^2].
+This section establishes rigorous formal definitions for the Flink Checkpoint mechanism, laying the theoretical foundation for subsequent analysis. All definitions are consistent with the semantic hierarchy definitions in [02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md)[^1][^2].
 
 ---
 
@@ -228,7 +228,7 @@ This section derives core properties of the Checkpoint mechanism from definition
 4. Thus $S_t^{(n)}$ precisely corresponds to the state induced by "input up to $Barrier(n)$", neither ahead nor behind.
 5. Q.E.D.
 
-> **Inference [Theory→Implementation]**: Barrier alignment is the core mechanism for Flink to implement internal consistency (see [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) Def-S-08-06).
+> **Inference [Theory→Implementation]**: Barrier alignment is the core mechanism for Flink to implement internal consistency (see [02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) Def-S-08-06).
 
 ---
 
@@ -314,7 +314,7 @@ $$
 \text{Flink-Checkpoint} \approx \text{Chandy-Lamport-Snapshot}
 $$
 
-> **See**: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) Relation 2 provides more detailed correspondence analysis.
+> **See**: [02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) Relation 2 provides more detailed correspondence analysis.
 
 ---
 
@@ -338,7 +338,7 @@ $$
 \text{Checkpoint} + \text{Replayable Source} + \text{Atomic Sink} \implies \text{Exactly-Once}
 $$
 
-> **See**: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) Thm-S-08-02 provides complete correctness proof for end-to-end Exactly-Once.
+> **See**: [02.02-consistency-hierarchy.md](../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) Thm-S-08-02 provides complete correctness proof for end-to-end Exactly-Once.
 
 ---
 
@@ -515,7 +515,7 @@ I.e., $tr$ and $tr'$ completely coincide after $C_n$. Observer cannot distinguis
 
 ∎
 
-> **Note**: More detailed formal proof see [04.01-flink-checkpoint-correctness.md](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md).
+> **Note**: More detailed formal proof see [04.01-flink-checkpoint-correctness.md](../../../USTM-F-Reconstruction/archive/original-struct/04-proofs/04.01-flink-checkpoint-correctness.md).
 
 ---
 

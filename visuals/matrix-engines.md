@@ -1,6 +1,6 @@
 # 流处理引擎八维对比矩阵
 
-> **所属阶段**: Visuals | **前置依赖**: [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md), [Knowledge/04-technology-selection/flink-vs-risingwave.md](../Knowledge/04-technology-selection/flink-vs-risingwave.md), [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/05-vs-competitors/flink-vs-kafka-streams.md) | **形式化等级**: L3-L4
+> **所属阶段**: Visuals | **前置依赖**: [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md), [Knowledge/04-technology-selection/flink-vs-risingwave.md](../Knowledge/04-technology-selection/flink-vs-risingwave.md), [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md) | **形式化等级**: L3-L4
 > **版本**: 2026.04 | **文档规模**: ~15KB
 
 ---
@@ -489,8 +489,8 @@ flowchart TD
 
 - [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md) — 通用选型指南
 - [Knowledge/04-technology-selection/flink-vs-risingwave.md](../Knowledge/04-technology-selection/flink-vs-risingwave.md) — Flink vs RisingWave深度对比
-- [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/05-vs-competitors/flink-vs-kafka-streams.md) — Flink vs Kafka Streams对比
-- [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/05-vs-competitors/flink-vs-spark-streaming.md) — Flink vs Spark Streaming对比
+- [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md) — Flink vs Kafka Streams对比
+- [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md) — Flink vs Spark Streaming对比
 - [Knowledge/06-frontier/streaming-database-ecosystem-comparison.md](../Knowledge/06-frontier/streaming-database-ecosystem-comparison.md) — 流数据库生态对比
 
 ---

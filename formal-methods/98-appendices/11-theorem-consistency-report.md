@@ -475,8 +475,8 @@ if __name__ == '__main__':
 ### 9.2 参考文档
 
 - [全局定理索引](./03-theorem-index.md) - 被检查的索引文件
-- [AGENTS.md](../../../AGENTS.md) - 文档编号规范说明
-- [BEST-PRACTICES.md](../../../BEST-PRACTICES.md) - 形式化文档编写最佳实践
+- [AGENTS.md](../../AGENTS.md) - 文档编号规范说明
+- [BEST-PRACTICES.md](../../BEST-PRACTICES.md) - 形式化文档编写最佳实践
 
 ---
 

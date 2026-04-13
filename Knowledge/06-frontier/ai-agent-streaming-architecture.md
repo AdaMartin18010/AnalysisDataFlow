@@ -1,7 +1,7 @@
 # AI Agent流式处理架构：实时推理与行动系统
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [realtime-ai-streaming-2026.md](realtime-ai-streaming-2026.md), [ai-agent-database-workloads.md](ai-agent-database-workloads.md), [real-time-rag-architecture.md](real-time-rag-architecture.md) | **形式化等级**: L3-L4

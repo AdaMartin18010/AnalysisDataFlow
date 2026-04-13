@@ -7,6 +7,7 @@
 本指南详细说明如何将 AnalysisDataFlow 知识图谱 v2.0 部署到可访问的在线环境。
 
 ### 部署目标
+
 - **GitHub Pages**: 主部署目标，免费且与代码库集成
 - **Cloudflare Pages**: 备选方案，提供全球 CDN 加速
 - **自定义域名**: 可选，通过 Cloudflare 配置
@@ -84,6 +85,7 @@ python .scripts/kg-v2/optimize-assets.py
 ```
 
 优化内容包括：
+
 - JSON 文件 gzip 压缩 (节省 ~70% 体积)
 - 生成 Service Worker 实现离线访问
 - 生成 Web App Manifest
@@ -146,6 +148,7 @@ NODE_VERSION=20
 #### 4. 部署预览
 
 每次 PR 自动创建预览链接：
+
 ```
 https://<branch-name>.analysisdataflow.pages.dev
 ```
@@ -196,6 +199,7 @@ Settings:
 #### 5. 性能优化
 
 **Speed** → **Optimization**：
+
 - Auto Minify: 启用 HTML, CSS, JS
 - Brotli: 启用
 - Early Hints: 启用
@@ -220,6 +224,7 @@ Settings:
 **创建索引**: `analysisdataflow_kg`
 
 **索引配置**:
+
 ```json
 {
   "searchableAttributes": [
@@ -366,6 +371,7 @@ search.start();
 如需使用自定义域名：
 
 1. **DNS 配置**:
+
    ```
    CNAME kg.analysisdataflow.com → <username>.github.io
    ```
@@ -376,6 +382,7 @@ search.start();
    - 勾选 Enforce HTTPS
 
 3. **验证 DNS**:
+
    ```bash
    dig kg.analysisdataflow.com +nostats +nocomments +nocmd
    ```
@@ -412,6 +419,7 @@ Sitemap: https://kg.analysisdataflow.com/sitemap.xml
 ### 3. 结构化数据
 
 已配置 Schema.org SoftwareApplication 标记：
+
 - 应用名称
 - 描述
 - 许可证信息
@@ -456,18 +464,22 @@ Sitemap: https://kg.analysisdataflow.com/sitemap.xml
 ### 常见问题
 
 **1. GitHub Pages 404**
+
 - 确保已启用 GitHub Pages (Settings → Pages)
 - 检查 Source 设置为 GitHub Actions
 
 **2. 静态资源加载失败**
+
 - 检查 `knowledge-graph-site/.nojekyll` 文件存在
 - 验证文件路径大小写（Linux 区分大小写）
 
 **3. 搜索无结果**
+
 - 验证 `search-index.json` 已生成
 - 检查 Algolia 索引配置和 API 密钥
 
 **4. Service Worker 未注册**
+
 - 确保使用 HTTPS 访问
 - 检查浏览器支持情况
 

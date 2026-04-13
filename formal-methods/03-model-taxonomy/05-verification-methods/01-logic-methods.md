@@ -1,6 +1,6 @@
 ﻿# 逻辑方法
 
-> **所属单元**: formal-methods/03-model-taxonomy/05-verification-methods | **前置依赖**: [04-consistency/02-cap-theorem](../../04-consistency/02-cap-theorem.md) | **形式化等级**: L5-L6
+> **所属单元**: formal-methods/03-model-taxonomy/05-verification-methods | **前置依赖**: [04-consistency/02-cap-theorem](../04-consistency/02-cap-theorem.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 

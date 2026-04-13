@@ -41,7 +41,7 @@
 
 - [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md)
 - [Knowledge/98-exercises/exercise-02-flink-basics.md](../Knowledge/98-exercises/exercise-02-flink-basics.md)
-- [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
+- [Flink/01-architecture/deployment-architectures.md](../Flink/01-concepts/deployment-architectures.md)
 
 **实践任务**:
 
@@ -90,7 +90,7 @@
 
 **推荐文档**:
 
-- [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-sql-table-api/sql-vs-datastream-comparison.md)
+- [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md)
 - [Knowledge/02-design-patterns/pattern-stateful-computation.md](../Knowledge/02-design-patterns/pattern-stateful-computation.md)
 - [Knowledge/98-exercises/exercise-02-flink-basics.md](../Knowledge/98-exercises/exercise-02-flink-basics.md)
 
@@ -115,7 +115,7 @@
 
 **推荐文档**:
 
-- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/07-case-studies/case-realtime-analytics.md)
+- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
 - [Knowledge/98-exercises/README.md](../Knowledge/98-exercises/README.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
 
@@ -275,4 +275,3 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
-

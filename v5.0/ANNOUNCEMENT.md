@@ -243,7 +243,7 @@ AnalysisDataFlow是开源项目，欢迎各种形式的贡献：
 - [📄 完整发布说明](./RELEASE-NOTES-v5.0.md)
 - [📋 发布检查清单](./RELEASE-CHECKLIST.md)
 - [🎉 社区活动计划](./COMMUNITY-EVENT-PLAN.md)
-- [📊 项目统计报告](../STATISTICS-REPORT.md)
+- [📊 项目统计报告](../archive/completion-reports/STATISTICS-REPORT.md)
 
 ---
 

@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow
 
 [![日本語](https://img.shields.io/badge/日本語-🇯🇵-red)](./README-ja.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../en/README.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
@@ -55,10 +56,10 @@
 
 ### テーマ別ナビゲーション
 
-- **理論基盤**: [Struct/ 統一流コンピューティング理論](../../Struct/00-INDEX.md)
+- **理論基盤**: [Struct/ 統一流コンピューティング理論](../../../en/00-INDEX.md)
 - **デザインパターン**: [Knowledge/ ストリーム処理核心パターン](../../Knowledge/02-design-patterns/)
-- **Flink 核心**: [Flink/ Checkpointメカニズム](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
-- **最先端技術**: [Knowledge/06-frontier/ AI-Nativeデータベース](../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **Flink 核心**: [Flink/ Checkpointメカニズム](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- **最先端技術**: [Knowledge/06-frontier/ AI-Nativeデータベース](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
 - **アンチパターン**: [Knowledge/09-anti-patterns/ ストリーム処理アンチパターン](../../Knowledge/09-anti-patterns/)
 
 ---
@@ -97,7 +98,7 @@
 
 ## 参加方法
 
-このプロジェクトに参加したい場合は、[CONTRIBUTING.md](../../CONTRIBUTING.md) を参照してください。
+このプロジェクトに参加したい場合は、[CONTRIBUTING.md](../../../CONTRIBUTING.md) を参照してください。
 
 ---
 

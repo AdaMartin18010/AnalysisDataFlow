@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 项目维护手册
 
 > **版本**: v1.0 | **生效日期**: 2026-04-03 | **维护人员**: 项目维护团队
@@ -809,7 +810,7 @@ python .vscode/validate-mermaid.py
 
 - [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md) - 定理/定义全局注册表
 - [PROJECT-TRACKING.md](./PROJECT-TRACKING.md) - 项目进度跟踪
-- [PROJECT-VERSION-TRACKING.md](./PROJECT-VERSION-TRACKING.md) - 版本变更记录
+- [PROJECT-VERSION-TRACKING.md](archive/tracking-reports/PROJECT-VERSION-TRACKING.md) - 版本变更记录
 - [AGENTS.md](./AGENTS.md) - Agent 工作规范
 - [README.md](./README.md) - 项目概览
 
@@ -822,4 +823,3 @@ python .vscode/validate-mermaid.py
 ---
 
 *本手册版本: v1.0 | 最后更新: 2026-04-03 | 下次审查: 2026-07-03*
-

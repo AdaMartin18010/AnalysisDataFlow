@@ -43,8 +43,8 @@
 - [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md)
 - [Knowledge/04-technology-selection/flink-vs-risingwave.md](../Knowledge/04-technology-selection/flink-vs-risingwave.md)
 - [Knowledge/04-technology-selection/streaming-database-guide.md](../Knowledge/04-technology-selection/streaming-database-guide.md)
-- [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/05-vs-competitors/flink-vs-spark-streaming.md)
-- [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/05-vs-competitors/flink-vs-kafka-streams.md)
+- [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md)
+- [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md)
 
 **实践任务**:
 
@@ -67,11 +67,11 @@
 
 **推荐文档**:
 
-- [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
-- [Flink/01-architecture/disaggregated-state-analysis.md](../Flink/01-architecture/disaggregated-state-analysis.md)
-- [Flink/04-connectors/flink-cdc-3.0-data-integration.md](../Flink/04-connectors/flink-cdc-3.0-data-integration.md)
-- [Flink/04-connectors/flink-paimon-integration.md](../Flink/04-connectors/flink-paimon-integration.md)
-- [Flink/14-lakehouse/streaming-lakehouse-architecture.md](../Flink/14-lakehouse/streaming-lakehouse-architecture.md)
+- [Flink/01-architecture/deployment-architectures.md](../Flink/01-concepts/deployment-architectures.md)
+- [Flink/01-architecture/disaggregated-state-analysis.md](../Flink/01-concepts/disaggregated-state-analysis.md)
+- [Flink/04-connectors/flink-cdc-3.0-data-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md)
+- [Flink/04-connectors/flink-paimon-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md)
+- [Flink/14-lakehouse/streaming-lakehouse-architecture.md](../Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md)
 - [Knowledge/02-design-patterns/pattern-checkpoint-recovery.md](../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md)
 
 **实践任务**:
@@ -95,10 +95,10 @@
 
 **推荐文档**:
 
-- [Flink/10-deployment/kubernetes-deployment-production-guide.md](../Flink/10-deployment/kubernetes-deployment-production-guide.md)
-- [Flink/06-engineering/flink-tco-cost-optimization-guide.md](../Flink/06-engineering/flink-tco-cost-optimization-guide.md)
-- [Flink/13-security/streaming-security-best-practices.md](../Flink/13-security/streaming-security-best-practices.md)
-- [Flink/15-observability/flink-opentelemetry-observability.md](../Flink/15-observability/flink-opentelemetry-observability.md)
+- [Flink/10-deployment/kubernetes-deployment-production-guide.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md)
+- [Flink/06-engineering/flink-tco-cost-optimization-guide.md](../Flink/09-practices/09.03-performance-tuning/flink-tco-cost-optimization-guide.md)
+- [Flink/13-security/streaming-security-best-practices.md](../Flink/09-practices/09.04-security/streaming-security-best-practices.md)
+- [Flink/15-observability/flink-opentelemetry-observability.md](../Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
 
 **实践任务**:
@@ -126,7 +126,7 @@
 - [Knowledge/03-business-patterns/uber-realtime-platform.md](../Knowledge/03-business-patterns/uber-realtime-platform.md)
 - [Knowledge/03-business-patterns/alibaba-double11-flink.md](../Knowledge/03-business-patterns/alibaba-double11-flink.md)
 - [Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md](../Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md)
-- [Flink/07-case-studies/case-financial-realtime-risk-control.md](../Flink/07-case-studies/case-financial-realtime-risk-control.md)
+- [Flink/07-case-studies/case-financial-realtime-risk-control.md](../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
 **实践任务**:
 

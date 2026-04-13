@@ -223,7 +223,7 @@ Struct/01-foundation/ (Theoretical Foundation)
 This project is licensed under [Apache License 2.0](./LICENSE).
 
 - [LICENSE](./LICENSE) - Full license text
-- [LICENSE-NOTICE.md](./LICENSE-NOTICE.md) - License notice and usage guide
+- [LICENSE-NOTICE.md](archive/deprecated/LICENSE-NOTICE.md) - License notice and usage guide
 
 Copyright 2026 AdaMartin18010
 
@@ -234,4 +234,3 @@ Copyright 2026 AdaMartin18010
 - [中文版 README](README.md) - Chinese Version
 - [GLOSSARY-EN.md](GLOSSARY-EN.md) - English Glossary
 - [QUICK-START-EN.md](QUICK-START-EN.md) - English Quick Start Guide
-

@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 形式化元素唯一性检查报告
 
 > **检查时间**: 2026-04-09 12:18:35
@@ -1785,7 +1786,7 @@
 - 文件: `Flink\02-core\time-semantics-and-watermark.md` (第229行)
   上下文: `1. 由 Def-F-02-04，$w(t) = \max(\text{EventTime}_{\text{seen}}) - \delta$...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-iot-stream-processing.md` (第247行)
-  上下文: `**配置依据**（参见 [Def-F-02-04](../../02-core/time-semantics-and-watermark.md)）：...`
+  上下文: `**配置依据**（参见 [Def-F-02-04](Flink/02-core/time-semantics-and-watermark.md)）：...`
 
 #### Def-F-02-05
 
@@ -1810,7 +1811,7 @@
 - 文件: `Flink\02-core\time-semantics-and-watermark.md` (第144行)
   上下文: `### Def-F-02-05: Allowed Lateness (允许延迟)...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-iot-stream-processing.md` (第253行)
-  上下文: `| 允许延迟 | 30s | [Def-F-02-05](../../02-core/time-semantics-and-watermark.md) |...`
+  上下文: `| 允许延迟 | 30s | [Def-F-02-05](Flink/02-core/time-semantics-and-watermark.md) |...`
 
 #### Def-F-02-06
 
@@ -1847,7 +1848,7 @@
 - 文件: `Flink\02-core\time-semantics-and-watermark.md` (第483行)
   上下文: `3. 由 Def-F-02-06，窗口分配 $W(r)$ 仅取决于 $\text{EventTime}(r)$。因此对任意 $r \in S$，$W(r)$ 在 $O_1$ 和 $O_2$ 下相同。...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-iot-stream-processing.md` (第255行)
-  上下文: `**窗口触发条件**（参见 [Def-F-02-06](../../02-core/time-semantics-and-watermark.md)）：...`
+  上下文: `**窗口触发条件**（参见 [Def-F-02-06](Flink/02-core/time-semantics-and-watermark.md)）：...`
 
 #### Def-F-02-07
 
@@ -6924,7 +6925,7 @@
 - 文件: `Knowledge\06-frontier\edge-streaming-patterns.md` (第10行)
   上下文: `- [Def-K-06-12: 边缘计算 (Edge Computing)](#def-k-06-12-边缘计算-edge-computing)...`
 - 文件: `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` (第177行)
-  上下文: `**形式化定义**（参见 [Def-K-06-12](../06-frontier/streaming-databases.md)）：...`
+  上下文: `**形式化定义**（参见 [Def-K-06-12](Knowledge/06-frontier/streaming-databases.md)）：...`
 - 文件: `Knowledge\06-frontier\edge-streaming-patterns.md` (第50行)
   上下文: `### Def-K-06-12: 边缘计算 (Edge Computing)...`
 - 文件: `Knowledge\06-frontier\streaming-databases.md` (第10行)
@@ -7955,7 +7956,7 @@
 - 文件: `Knowledge\02-design-patterns\pattern-stateful-computation.md` (第320行)
   上下文: `| **Def-S-03-01** | 经典 Actor 四元组 | Struct/01.03 | Keyed State 的并发模型基础：⟨α, b, m, σ⟩ |...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第429行)
-  上下文: `**形式化定义** ([Def-S-03-01](../../Struct/01-foundation/01.03-actor-model-formalization.md)):...`
+  上下文: `**形式化定义** ([Def-S-03-01](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.03-actor-model-formalization.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第899行)
   上下文: `S6[Def-S-03-01<br/>Actor 模型]...`
 
@@ -8034,7 +8035,7 @@
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第418行)
   上下文: `D3[Def-S-04-01<br/>Dataflow]...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第555行)
-  上下文: `| [Def-S-04-01 Dataflow](./01-foundation/01.04-dataflow-model-formalization.md) | [streaming-models-...`
+  上下文: `| [Def-S-04-01 Dataflow](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) | [streaming-models-...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第563行)
   上下文: `- Def-S-04-01 → Def-K-01-03 (Dataflow 定义对应)...`
 - 文件: `Struct\01-foundation\01.04-dataflow-model-formalization.md` (第12行)
@@ -8072,7 +8073,7 @@
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第70行)
   上下文: `| **直接映射** | $\mathcal{M}_{direct}(f) = i$ | 理论概念直接对应代码类/方法 | Def-S-04-01 $\to$`DataStream`|...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第187行)
-  上下文: `**形式化定义** ([Def-S-04-01](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):...`
+  上下文: `**形式化定义** ([Def-S-04-01](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第614行)
   上下文: `由 Def-S-04-01，Dataflow 图的确定性依赖于算子纯函数性和通道 FIFO 性。Flink 实现中：...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第894行)
@@ -8082,7 +8083,7 @@
 - 文件: `Flink\09-practices\09.01-case-studies\case-realtime-analytics.md` (第450行)
   上下文: `1. **无环性**（Def-S-04-01）：作业 DAG 通过 Flink API 保证无环...`
 - 文件: `Flink\09-practices\09.03-performance-tuning\05-vs-competitors\flink-vs-spark-streaming.md` (第151行)
-  上下文: `根据 [Dataflow 模型形式化](../../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 的 Def-S-...`
+  上下文: `根据 [Dataflow 模型形式化](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) 的 Def-S-...`
 
 #### Def-S-04-02
 
@@ -8103,7 +8104,7 @@
 - 文件: `Struct\01-foundation\01.04-dataflow-model-formalization.md` (第310行)
   上下文: `**关键观察**：对于无状态算子 Map$(f)$，由于 $f$ 逐元素应用，记录的并发关系 $r_1 \parallel r_2$ 不会影响输出——输出多重集就是 $\{f(r) \mid r \i...`
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第169行)
-  上下文: `1. 由 [Def-S-04-02](../01-foundation/01.04-dataflow-model-formalization.md#def-s-04-02-算子语义)，算子的输出依赖于...`
+  上下文: `1. 由 [Def-S-04-02](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md#def-s-04-02-算子语义)，算子的输出依赖于...`
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第718行)
   上下文: `D2[Def-S-04-02<br/>算子语义]...`
 - 文件: `Struct\02-properties\02.03-watermark-monotonicity.md` (第253行)
@@ -8111,7 +8112,7 @@
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第148行)
   上下文: `考虑 Def-S-04-02 (算子语义) 到 Flink`RichFunction`的映射：...`
 - 文件: `Flink\09-practices\09.03-performance-tuning\05-vs-competitors\flink-vs-spark-streaming.md` (第151行)
-  上下文: `根据 [Dataflow 模型形式化](../../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 的 Def-S-...`
+  上下文: `根据 [Dataflow 模型形式化](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) 的 Def-S-...`
 
 #### Def-S-04-03
 
@@ -8185,7 +8186,7 @@
 - 文件: `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` (第855行)
   上下文: `| **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 窗口触发依赖 Watermark 单调性 |...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第241行)
-  上下文: `**形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S...`
+  上下文: `**形式化定义** ([Def-S-04-04](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第754行)
   上下文: `// Watermark 策略 (对应 Def-S-04-04)...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第895行)
@@ -8234,18 +8235,18 @@
 - 文件: `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` (第892行)
   上下文: `| 允许延迟 |`.allowedLateness()`| Def-S-04-05 的 F 参数 |...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第745行)
-  上下文: `**理论模型** ([Def-S-04-05](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):...`
+  上下文: `**理论模型** ([Def-S-04-05](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md)):...`
 - 文件: `Flink\01-concepts\datastream-v2-semantics.md` (第282行)
   上下文: `| **Window/Trigger** |`WindowOperator` + `Trigger`| Def-S-04-05 |...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-realtime-analytics.md` (第460行)
-  上下文: `本案例的多层窗口设计直接应用 [Def-S-04-05](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 的窗...`
+  上下文: `本案例的多层窗口设计直接应用 [Def-S-04-05](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md) 的窗...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-realtime-analytics.md` (第473行)
-  上下文: `**窗口触发条件验证**（参见 [Def-S-04-05](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：...`
+  上下文: `**窗口触发条件验证**（参见 [Def-S-04-05](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md)）：...`
 
 #### Def-S-05-01
 
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第556行)
-  上下文: `| [Def-S-05-01 CSP](./01-foundation/01.05-csp-formalization.md) | [concurrency-paradigms-matrix.md](...`
+  上下文: `| [Def-S-05-01 CSP](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.05-csp-formalization.md) | [concurrency-paradigms-matrix.md](...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第419行)
   上下文: `D4[Def-S-05-01<br/>CSP]...`
 - 文件: `Struct\01-foundation\01.05-csp-formalization.md` (第12行)
@@ -8302,7 +8303,7 @@
 - 文件: `Struct\01-foundation\01.06-petri-net-formalization.md` (第12行)
   上下文: `- [Def-S-06-01 (Place/Transition Net - P/T 网)](#def-s-06-01-place-transition-net---pt-网)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第557行)
-  上下文: `| [Def-S-06-01 Petri Net](./01-foundation/01.06-petri-net-formalization.md) | [streaming-models-mind...`
+  上下文: `| [Def-S-06-01 Petri Net](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.06-petri-net-formalization.md) | [streaming-models-mind...`
 - 文件: `Struct\01-foundation\01.06-petri-net-formalization.md` (第50行)
   上下文: `### Def-S-06-01 (Place/Transition Net - P/T 网) {#def-s-06-04-着色-petri-网--colored-petri-net-cpn}...`
 - 文件: `Struct\01-foundation\01.06-petri-net-formalization.md` (第634行)
@@ -8429,7 +8430,7 @@
 - 文件: `Struct\00-STRUCT-DERIVATION-CHAIN.md` (第59行)
   上下文: `Def-S-07-01 (确定性流处理系统)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第571行)
-  上下文: `| [Def-S-07-01 确定性](./02-properties/02.01-determinism-in-streaming.md#def-s-07-01-确定性流处理系统) | [patte...`
+  上下文: `| [Def-S-07-01 确定性](USTM-F-Reconstruction/archive/original-struct/02-properties/02.01-determinism-in-streaming.md#def-s-07-01-确定性流处理系统) | [patte...`
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第12行)
   上下文: `- [Def-S-07-01 (确定性流处理系统)](#def-s-07-01-确定性流处理系统)...`
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第51行)
@@ -8552,11 +8553,11 @@
 - 文件: `Struct\02-properties\02.02-consistency-hierarchy.md` (第12行)
   上下文: `- [Def-S-08-01 (Dataflow 执行轨迹)](#def-s-08-01-dataflow-执行轨迹)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第572行)
-  上下文: `| [Def-S-08-01 一致性层级](./02-properties/02.02-consistency-hierarchy.md) | [pattern-event-time-processi...`
+  上下文: `| [Def-S-08-01 一致性层级](USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) | [pattern-event-time-processi...`
 - 文件: `Struct\02-properties\02.02-consistency-hierarchy.md` (第57行)
   上下文: `### Def-S-08-01 (Dataflow 执行轨迹)...`
 - 文件: `Struct\06-frontier\06.01-open-problems-streaming-verification.md` (第275行)
-  上下文: `| **At-Most-Once** | P-完全 | 幂等性验证 | [Def-S-08-01](../02-properties/02.02-consistency-hierarchy.md) |...`
+  上下文: `| **At-Most-Once** | P-完全 | 幂等性验证 | [Def-S-08-01](USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) |...`
 - 文件: `Struct\08-standards\streaming-sql-standard.md` (第7行)
   上下文: `### Def-S-08-01: SQL:2011流扩展 (SQL:2011 Stream Extensions)...`
 - 文件: `Knowledge\02-design-patterns\pattern-side-output.md` (第392行)
@@ -8693,7 +8694,7 @@
 - 文件: `Struct\00-STRUCT-DERIVATION-CHAIN.md` (第85行)
   上下文: `Def-S-09-01 (事件时间严格定义)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第574行)
-  上下文: `| [Def-S-09-01 活性/安全性](./02-properties/02.04-liveness-and-safety.md) | [pattern-checkpoint-recovery....`
+  上下文: `| [Def-S-09-01 活性/安全性](USTM-F-Reconstruction/archive/original-struct/02-properties/02.04-liveness-and-safety.md) | [pattern-checkpoint-recovery....`
 - 文件: `Struct\02-properties\02.03-watermark-monotonicity.md` (第12行)
   上下文: `- [Def-S-09-01 (事件时间 Event Time)](#def-s-09-01-事件时间-event-time)...`
 - 文件: `Struct\02-properties\02.03-watermark-monotonicity.md` (第45行)
@@ -8724,7 +8725,7 @@
 - 文件: `Struct\02-properties\02.03-watermark-monotonicity.md` (第285行)
   上下文: `**推论 2 (结果完备性)**：若 Watermark $w$ 满足完整性断言（Def-S-09-02），且窗口 $W$ 在 $w \geq t_{\text{end}}(W) + L$ 时触发，则...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第150行)
-  上下文: `由 [02.03-watermark-monotonicity.md](../02-properties/02.03-watermark-monotonicity.md) 的 **Def-S-09-0...`
+  上下文: `由 [02.03-watermark-monotonicity.md](USTM-F-Reconstruction/archive/original-struct/02-properties/02.03-watermark-monotonicity.md) 的 **Def-S-09-0...`
 - 文件: `Knowledge\02-design-patterns\pattern-async-io-enrichment.md` (第368行)
   上下文: `| **Def-S-09-02** | Watermark 进度语义 | Struct/02.03 | 无序模式下 Watermark 推进约束 |...`
 - 文件: `Knowledge\02-design-patterns\pattern-event-time-processing.md` (第619行)
@@ -8900,7 +8901,7 @@
 - 文件: `Struct\03-relationships\03.04-bisimulation-equivalences.md` (第169行)
   上下文: `2. **对称性**：由 Def-S-15-01 的 zig-zag 条件对称性直接可得。若 $\mathcal{R}$ 是强互模拟，则 $\mathcal{R}^{-1} = \{(t, s) \m...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第420行)
-  上下文: `由互模拟定义（[Def-S-15-01](../03-relationships/03.04-bisimulation-equivalences.md)），$\mathcal{R}$ 是弱互模拟关系，...`
+  上下文: `由互模拟定义（[Def-S-15-01](USTM-F-Reconstruction/archive/original-struct/03-relationships/03.04-bisimulation-equivalences.md)），$\mathcal{R}$ 是弱互模拟关系，...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第493行)
   上下文: `验证 $\mathcal{R}_{EPP}$ 满足强互模拟条件（[Def-S-15-01](../03-relationships/03.04-bisimulation-equivalences.md...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第1300行)
@@ -8917,7 +8918,7 @@
 - 文件: `Struct\03-relationships\03.04-bisimulation-equivalences.md` (第73行)
   上下文: `### Def-S-15-02. 弱互模拟与分支互模拟 (Weak & Branching Bisimulation) {#def-s-15-02-弱互模拟与分支互模拟}...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第380行)
-  上下文: `其中 $\approx$ 为弱互模拟等价（参见 [Def-S-15-02](../03-relationships/03.04-bisimulation-equivalences.md)）。...`
+  上下文: `其中 $\approx$ 为弱互模拟等价（参见 [Def-S-15-02](USTM-F-Reconstruction/archive/original-struct/03-relationships/03.04-bisimulation-equivalences.md)）。...`
 
 #### Def-S-15-03
 
@@ -9033,7 +9034,7 @@
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第71行)
   上下文: `| **分解映射** | $\mathcal{M}_{decomp}(f) = \{i_1, ..., i_n\}$ | 理论概念分解为多个实现组件 | Def-S-17-01 $\to$ {`Che...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第284行)
-  上下文: `**形式化定义** ([Def-S-17-01](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)):...`
+  上下文: `**形式化定义** ([Def-S-17-01](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.01-flink-checkpoint-correctness.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第302行)
   上下文: `// 理论: Def-S-17-01 Barrier 语义 + Def-S-17-03 对齐机制...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第324行)
@@ -9080,7 +9081,7 @@
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第95行)
   上下文: `**关键观察**: Flink 的 Checkpoint 机制通过 Chandy-Lamport 算法实现了 Def-S-17-02 一致全局状态的语义保持——尽管实现中增加了异步优化，但核心性质（无...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第332行)
-  上下文: `**形式化定义** ([Def-S-17-02](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)):...`
+  上下文: `**形式化定义** ([Def-S-17-02](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.01-flink-checkpoint-correctness.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第897行)
   上下文: `S4[Def-S-17-02<br/>一致割集]...`
 
@@ -9167,7 +9168,7 @@
 - 文件: `Struct\04-proofs\04.02-flink-exactly-once-correctness.md` (第475行)
   上下文: `这正是 Exactly-Once 的定义（Def-S-18-01）。...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第374行)
-  上下文: `**形式化定义** ([Def-S-18-01](../../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)):...`
+  上下文: `**形式化定义** ([Def-S-18-01](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.02-flink-exactly-once-correctness.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第391行)
   上下文: `// 理论: Def-S-18-01 Exactly-Once + Def-S-18-03 2PC...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第898行)
@@ -11484,7 +11485,7 @@
 - 文件: `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` (第872行)
   上下文: `| Window + Async I/O | 聚合前富化顺序保持 | Lemma-S-04-02 |...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第241行)
-  上下文: `**形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S...`
+  上下文: `**形式化定义** ([Def-S-04-04](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S...`
 
 #### Lemma-S-05-01
 
@@ -11696,7 +11697,7 @@
 #### Lemma-S-08-02
 
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第573行)
-  上下文: `| [Lemma-S-08-02 Watermark 单调性](./02-properties/02.03-watermark-monotonicity.md) | [pattern-event-ti...`
+  上下文: `| [Lemma-S-08-02 Watermark 单调性](USTM-F-Reconstruction/archive/original-struct/02-properties/02.03-watermark-monotonicity.md) | [pattern-event-ti...`
 - 文件: `Struct\00-STRUCT-DERIVATION-CHAIN.md` (第165行)
   上下文: `| Lemma-S-08-01 + Lemma-S-08-02 | Thm-S-08-02 (端到端 Exactly-Once) | 构造性证明 | 容错系统 |...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第579行)
@@ -14522,7 +14523,7 @@
 - 文件: `Flink\09-practices\09.01-case-studies\case-realtime-analytics.md` (第497行)
   上下文: `| 恢复语义 | Exactly-Once | Thm-F-02-01 |...`
 - 文件: `Flink\09-practices\09.01-case-studies\case-realtime-analytics.md` (第502行)
-  上下文: `由 [Thm-F-02-01](../../02-core/checkpoint-mechanism-deep-dive.md)，故障恢复后的系统状态等价于故障前的某个 consistent cut，...`
+  上下文: `由 [Thm-F-02-01](Flink/02-core/checkpoint-mechanism-deep-dive.md)，故障恢复后的系统状态等价于故障前的某个 consistent cut，...`
 
 #### Thm-F-02-02
 
@@ -15997,7 +15998,7 @@
 - 文件: `Struct\01-foundation\01.05-csp-formalization.md` (第315行)
   上下文: `存在从 CSP 到 π-演算的迹保持编码，但 π-演算支持运行时名字创建 $(\nu a)$ 与名字传递，CSP 的静态命名无法模拟动态拓扑变化。因此 **CSP $\subset$ π-演算**（严...`
 - 文件: `Struct\01-foundation\01.06-petri-net-formalization.md` (第354行)
-  上下文: `详见 [01.02-process-calculus-primer.md](./01.02-process-calculus-primer.md) 中 Thm-S-02-01 与关系 2。...`
+  上下文: `详见 [01.02-process-calculus-primer.md](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.02-process-calculus-primer.md) 中 Thm-S-02-01 与关系 2。...`
 - 文件: `Struct\03-relationships\03.03-expressiveness-hierarchy.md` (第361行)
   上下文: `- **编码存在**：由 Thm-S-02-01（见 [../01-foundation/01.02-process-calculus-primer.md](../01-foundation/01.0...`
 - 文件: `Struct\05-comparative-analysis\05.03-encoding-completeness-analysis.md` (第278行)
@@ -16078,7 +16079,7 @@
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第766行)
   上下文: `- 粗边框绿色节点（Thm-S-07-01）是本文档的核心贡献，它继承了 Thm-S-04-01 并扩展到完整的流计算确定性框架；...`
 - 文件: `Struct\02-properties\02.02-consistency-hierarchy.md` (第376行)
-  上下文: `前置文档 [01.04-dataflow-model-formalization.md](../01-foundation/01.04-dataflow-model-formalization.md)...`
+  上下文: `前置文档 [01.04-dataflow-model-formalization.md](USTM-F-Reconstruction/archive/original-struct/01-foundation/01.04-dataflow-model-formalization.md)...`
 - 文件: `Struct\02-properties\02.02-consistency-hierarchy.md` (第466行)
   上下文: `> **推断 [Theory→Implementation]**：Barrier 对齐是 Flink 实现内部一致性的核心机制。它确保了恢复后的算子状态与无故障执行到同一逻辑时刻的状态等价，为 Dat...`
 - 文件: `Struct\02-properties\02.03-watermark-monotonicity.md` (第160行)
@@ -16209,7 +16210,7 @@
 - 文件: `Struct\02-properties\02.01-determinism-in-streaming.md` (第766行)
   上下文: `- 粗边框绿色节点（Thm-S-07-01）是本文档的核心贡献，它继承了 Thm-S-04-01 并扩展到完整的流计算确定性框架；...`
 - 文件: `Struct\06-frontier\06.02-choreographic-streaming-programming.md` (第416行)
-  上下文: `**步骤 5**: 由 [02.01-determinism-in-streaming.md](../02-properties/02.01-determinism-in-streaming.md) ...`
+  上下文: `**步骤 5**: 由 [02.01-determinism-in-streaming.md](USTM-F-Reconstruction/archive/original-struct/02-properties/02.01-determinism-in-streaming.md) ...`
 - 文件: `Struct\07-tools\coq-mechanization.md` (第394行)
   上下文: `### Thm-S-07-01: Watermark单调性的Coq形式化...`
 - 文件: `Struct\07-tools\coq-mechanization.md` (第396行)
@@ -16303,7 +16304,7 @@
 - 文件: `Struct\02-properties\02.02-consistency-hierarchy.md` (第720行)
   上下文: `- 结合 Flink 内部 Checkpoint（引理 4.2）和 Kafka Source 可重放（引理 4.1），根据 Thm-S-08-02，该作业在效果上等价于端到端 Exactly-Once...`
 - 文件: `Struct\04-proofs\04.01-flink-checkpoint-correctness.md` (第386行)
-  上下文: `结合 [02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) 中的 Thm-S-08-02（...`
+  上下文: `结合 [02.02-consistency-hierarchy.md](USTM-F-Reconstruction/archive/original-struct/02-properties/02.02-consistency-hierarchy.md) 中的 Thm-S-08-02（...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第401行)
   上下文: `> **参见**: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md...`
 
@@ -16351,11 +16352,11 @@
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第574行)
   上下文: `**与 Thm-S-09-01 的联系**：...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第1160行)
-  上下文: `由 [02.03-watermark-monotonicity.md](../02-properties/02.03-watermark-monotonicity.md) 的 **Thm-S-09-0...`
+  上下文: `由 [02.03-watermark-monotonicity.md](USTM-F-Reconstruction/archive/original-struct/02-properties/02.03-watermark-monotonicity.md) 的 **Thm-S-09-0...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第1324行)
   上下文: `T9[Thm-S-09-01<br/>Watermark 单调性] --> P20[Prop-S-20-01<br/>单调性兼容]...`
 - 文件: `Struct\06-frontier\06.01-open-problems-streaming-verification.md` (第453行)
-  上下文: `- **Thm-S-09-01**: Watermark 单调性定理（见 [02.03](../02-properties/02.03-watermark-monotonicity.md)）...`
+  上下文: `- **Thm-S-09-01**: Watermark 单调性定理（见 [02.03](USTM-F-Reconstruction/archive/original-struct/02-properties/02.03-watermark-monotonicity.md)）...`
 - 文件: `Knowledge\02-design-patterns\pattern-cep-complex-event.md` (第874行)
   上下文: `| **Thm-S-09-01** | Watermark 单调性定理 | Struct/02.03 | CEP 时间窗口不会重复触发 |...`
 - 文件: `Knowledge\02-design-patterns\pattern-event-time-processing.md` (第230行)
@@ -16415,7 +16416,7 @@
 - 文件: `Struct\04-proofs\04.05-type-safety-fg-fgg.md` (第664行)
   上下文: `| Thm-S-21-01 (Type Safety) | Thm-S-11-01 |...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第481行)
-  上下文: `**形式化定义** ([Thm-S-11-01](../../Struct/02-properties/02.05-type-safety-derivation.md)):...`
+  上下文: `**形式化定义** ([Thm-S-11-01](USTM-F-Reconstruction/archive/original-struct/02-properties/02.05-type-safety-derivation.md)):...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第900行)
   上下文: `S7[Thm-S-11-01<br/>类型安全]...`
 - 文件: `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` (第1031行)
@@ -16450,7 +16451,7 @@
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第431行)
   上下文: `T3[Thm-S-12-01<br/>Actor→CSP编码]...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第587行)
-  上下文: `| [Thm-S-12-01 Actor→CSP Encoding](./03-relationships/03.01-actor-to-csp-encoding.md) | [pattern-asy...`
+  上下文: `| [Thm-S-12-01 Actor→CSP Encoding](USTM-F-Reconstruction/archive/original-struct/03-relationships/03.01-actor-to-csp-encoding.md) | [pattern-asy...`
 - 文件: `Struct\03-relationships\03.01-actor-to-csp-encoding.md` (第696行)
   上下文: `- 顶层绿色节点为主要定理（Thm-S-12-01），构成了编码语义保持性的完整证明。...`
 - 文件: `Struct\03-relationships\03.01-actor-to-csp-encoding.md` (第804行)
@@ -16488,7 +16489,7 @@
 - 文件: `Struct\00-STRUCT-DERIVATION-CHAIN.md` (第391行)
   上下文: `| Def-S-D-05 | 编码→Checkpoint 推导 | Flink 编码关系到 Checkpoint 正确性证明 | Thm-S-13-01 → Thm-S-17-01 |...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第588行)
-  上下文: `| [Thm-S-13-01 Flink→Process Calculus](./03-relationships/03.02-flink-to-process-calculus.md) | [pat...`
+  上下文: `| [Thm-S-13-01 Flink→Process Calculus](USTM-F-Reconstruction/archive/original-struct/03-relationships/03.02-flink-to-process-calculus.md) | [pat...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第594行)
   上下文: `- Thm-S-13-01 (Flink 到进程演算编码) → pattern-stateful-computation.md 的 "状态算子语义等价性保证"...`
 - 文件: `Struct\03-relationships\03.02-flink-to-process-calculus.md` (第28行)
@@ -16505,7 +16506,7 @@
 - 文件: `Struct\03-relationships\03.03-expressiveness-hierarchy.md` (第31行)
   上下文: `- [Thm-S-14-01. 表达能力严格层次定理](#thm-s-14-01-表达能力严格层次定理)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第589行)
-  上下文: `| [Thm-S-14-01 表达力层级](./03-relationships/03.03-expressiveness-hierarchy.md) | [engine-selection-guid...`
+  上下文: `| [Thm-S-14-01 表达力层级](USTM-F-Reconstruction/archive/original-struct/03-relationships/03.03-expressiveness-hierarchy.md) | [engine-selection-guid...`
 - 文件: `Struct\03-relationships\03.03-expressiveness-hierarchy.md` (第335行)
   上下文: `### Thm-S-14-01. 表达能力严格层次定理...`
 - 文件: `Struct\03-relationships\03.03-expressiveness-hierarchy.md` (第429行)
@@ -16606,9 +16607,9 @@
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第429行)
   上下文: `T1[Thm-S-17-01<br/>Checkpoint正确性]...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第602行)
-  上下文: `| [Thm-S-17-01 Checkpoint 正确性](./04-proofs/04.01-flink-checkpoint-correctness.md) | [pattern-checkpo...`
+  上下文: `| [Thm-S-17-01 Checkpoint 正确性](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.01-flink-checkpoint-correctness.md) | [pattern-checkpo...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第603行)
-  上下文: `| [Thm-S-17-01 Checkpoint 正确性](./04-proofs/04.01-flink-checkpoint-correctness.md) | [07.01-flink-pro...`
+  上下文: `| [Thm-S-17-01 Checkpoint 正确性](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.01-flink-checkpoint-correctness.md) | [07.01-flink-pro...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第610行)
   上下文: `Thm-S-17-01 证明 Barrier 对齐保证一致性...`
 - 文件: `Struct\04-proofs\04.01-flink-checkpoint-correctness.md` (第32行)
@@ -16697,7 +16698,7 @@
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第430行)
   上下文: `T2[Thm-S-18-01<br/>Exactly-Once]...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第604行)
-  上下文: `| [Thm-S-18-01 Exactly-Once](./04-proofs/04.02-flink-exactly-once-correctness.md) | [07.01-flink-pro...`
+  上下文: `| [Thm-S-18-01 Exactly-Once](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.02-flink-exactly-once-correctness.md) | [07.01-flink-pro...`
 - 文件: `Struct\04-proofs\04.02-flink-exactly-once-correctness.md` (第3行)
   上下文: `> **定理编号**: Thm-S-18-01 | **形式化等级**: L5 | **状态**: 已验证...`
 - 文件: `Struct\04-proofs\04.02-flink-exactly-once-correctness.md` (第34行)
@@ -16769,7 +16770,7 @@
 - 文件: `Struct\04-proofs\04.03-chandy-lamport-consistency.md` (第32行)
   上下文: `- [Thm-S-19-01 (Chandy-Lamport 算法记录一致全局状态)](#thm-s-19-01-chandy-lamport-算法记录一致全局状态)...`
 - 文件: `Struct\Struct-to-Knowledge-Mapping.md` (第605行)
-  上下文: `| [Thm-S-19-01 Chandy-Lamport](./04-proofs/04.03-chandy-lamport-consistency.md) | [streaming-anti-pa...`
+  上下文: `| [Thm-S-19-01 Chandy-Lamport](USTM-F-Reconstruction/archive/original-struct/04-proofs/04.03-chandy-lamport-consistency.md) | [streaming-anti-pa...`
 - 文件: `Struct\04-proofs\04.03-chandy-lamport-consistency.md` (第211行)
   上下文: `本节从第 1 节的定义出发，推导 Chandy-Lamport 快照算法的核心性质。所有引理均为定理 Thm-S-19-01 的证明提供必要支撑。...`
 - 文件: `Struct\04-proofs\04.03-chandy-lamport-consistency.md` (第516行)

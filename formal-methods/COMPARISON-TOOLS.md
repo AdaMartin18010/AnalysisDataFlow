@@ -1,6 +1,6 @@
 # 验证工具对比
 
-> 所属阶段: formal-methods/ | 前置依赖: [06-tools/README.md](06-tools/README.md), [COMPARISON-MODELS.md](COMPARISON-MODELS.md), [COMPARISON-LOGICS.md](COMPARISON-LOGICS.md) | 形式化等级: L3
+> 所属阶段: formal-methods/ | 前置依赖: [06-tools/README.md](README.md), [COMPARISON-MODELS.md](COMPARISON-MODELS.md), [COMPARISON-LOGICS.md](COMPARISON-LOGICS.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

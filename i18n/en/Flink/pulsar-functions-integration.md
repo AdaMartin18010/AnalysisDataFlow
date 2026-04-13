@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink 与 Apache Pulsar Functions 集成指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [Flink Connectors Overview](05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | **形式化等级**: L4 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [Flink Connectors Overview](../../../Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) | **形式化等级**: L4 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
@@ -188,4 +188,3 @@ GROUP BY region, window_start;
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
-

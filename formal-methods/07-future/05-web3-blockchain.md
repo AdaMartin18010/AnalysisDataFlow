@@ -1,6 +1,6 @@
 # Web3与区块链形式化
 
-> 所属阶段: formal-methods/07-future | 前置依赖: [04-application-layer/01-distributed-systems.md](../04-application-layer/01-distributed-systems.md), [05-verification/03-model-checking.md](../05-verification/03-model-checking.md) | 形式化等级: L4-L6
+> 所属阶段: formal-methods/07-future | 前置依赖: [04-application-layer/01-distributed-systems.md](../04-application-layer/01-distributed-systems.md), [05-verification/03-model-checking.md](../Struct/en/03-model-checking.md) | 形式化等级: L4-L6
 
 ## 1. 概念定义 (Definitions)
 

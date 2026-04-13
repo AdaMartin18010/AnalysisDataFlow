@@ -8,14 +8,53 @@
 
 ## 目录
 
-- [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-- [2. 属性推导 (Properties)](#2-属性推导-properties)
-- [3. 关系建立 (Relations)](#3-关系建立-relations)
-- [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
-- [6. 实例验证 (Examples)](#6-实例验证-examples)
-- [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-- [8. 引用参考 (References)](#8-引用参考-references)
+- [流计算最佳实践汇总](#流计算最佳实践汇总)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 最佳实践六大领域](#11-最佳实践六大领域)
+    - [1.2 最佳实践结构模板](#12-最佳实践结构模板)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 最佳实践与反模式的对应关系](#31-最佳实践与反模式的对应关系)
+    - [3.2 跨领域依赖关系](#32-跨领域依赖关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 最佳实践的必要性论证](#41-最佳实践的必要性论证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 设计最佳实践](#51-设计最佳实践)
+      - [5.1.1 状态设计](#511-状态设计)
+      - [5.1.2 窗口设计](#512-窗口设计)
+      - [5.1.3 时间语义设计](#513-时间语义设计)
+    - [5.2 开发最佳实践](#52-开发最佳实践)
+      - [5.2.1 代码组织](#521-代码组织)
+      - [5.2.2 测试策略](#522-测试策略)
+      - [5.2.3 性能优化](#523-性能优化)
+    - [5.3 部署最佳实践](#53-部署最佳实践)
+      - [5.3.1 资源配置](#531-资源配置)
+      - [5.3.2 扩缩容策略](#532-扩缩容策略)
+      - [5.3.3 版本管理](#533-版本管理)
+    - [5.4 运维最佳实践](#54-运维最佳实践)
+      - [5.4.1 监控配置](#541-监控配置)
+      - [5.4.2 告警调优](#542-告警调优)
+      - [5.4.3 故障恢复](#543-故障恢复)
+    - [5.5 安全最佳实践](#55-安全最佳实践)
+      - [5.5.1 数据加密](#551-数据加密)
+      - [5.5.2 访问控制](#552-访问控制)
+      - [5.5.3 审计日志](#553-审计日志)
+    - [5.6 成本优化最佳实践](#56-成本优化最佳实践)
+      - [5.6.1 资源利用率](#561-资源利用率)
+      - [5.6.2 存储优化](#562-存储优化)
+      - [5.6.3 计算优化](#563-计算优化)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 综合最佳实践应用案例](#61-综合最佳实践应用案例)
+    - [6.2 最佳实践检查清单汇总](#62-最佳实践检查清单汇总)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 最佳实践全景图](#71-最佳实践全景图)
+    - [7.2 实施路线图](#72-实施路线图)
+    - [7.3 最佳实践投入产出矩阵](#73-最佳实践投入产出矩阵)
+    - [7.4 技术选型决策树](#74-技术选型决策树)
+    - [7.5 架构分层可视化](#75-架构分层可视化)
+    - [7.6 故障排查流程](#76-故障排查流程)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -1525,28 +1564,28 @@ quadrantChart
     title 流计算最佳实践投入产出评估
     x-axis 低投入成本 --> 高投入成本
     y-axis 低业务价值 --> 高业务价值
-    
+
     quadrant-1 高价值投资 ★★★
     quadrant-2 战略性投资 ★★☆
     quadrant-3 低优先级 ★☆☆
     quadrant-4 快速收益 ★★☆
-    
+
     %% 高价值 + 低投入 = 快速收益
     Kryo序列化优化: [0.15, 0.85]
     POJO类型规范: [0.10, 0.80]
     Checkpoint调优: [0.25, 0.90]
     监控告警配置: [0.20, 0.75]
-    
+
     %% 高价值 + 高投入 = 高价值投资
     状态后端优化: [0.75, 0.90]
     自定义序列化: [0.80, 0.85]
     智能扩缩容: [0.70, 0.80]
     算法重构: [0.85, 0.88]
-    
+
     %% 低价值 + 低投入 = 低优先级
     代码格式化: [0.10, 0.20]
     文档补充: [0.15, 0.25]
-    
+
     %% 低价值 + 高投入 = 战略性投资（通常避免）
     自研框架: [0.90, 0.30]
     全面重构: [0.80, 0.40]
@@ -1571,49 +1610,49 @@ flowchart TD
     classDef result fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
     classDef warning fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b
     classDef start fill:#dbeafe,stroke:#2563eb,stroke-width:3px,color:#1e3a8a
-    
+
     Root[如何选择<br/>流处理技术栈?]:::start
-    
+
     Q1{延迟要求<br/>< 100ms?}:::decision
     Q2{数据量级<br/>> 100万/s?}:::decision
     Q3{需要精确<br/>一次语义?}:::decision
     Q4{复杂状态<br/>计算?}:::decision
     Q5{SQL优先<br/>开发?}:::decision
     Q6{已有Kafka<br/>基础设施?}:::decision
-    
+
     R1[Flink<br/>★★★★★]:::result
     R2[Spark Streaming<br/>★★★★☆]:::result
     R3[Kafka Streams<br/>★★★★☆]:::result
     R4[Storm<br/>★★☆☆☆]:::warning
     R5[ksqlDB<br/>★★★☆☆]:::result
     R6[Pulsar Functions<br/>★★★☆☆]:::result
-    
+
     Root --> Q1
-    
+
     %% 延迟分支
     Q1 -->|是| Q4
     Q1 -->|否| Q2
-    
+
     %% 吞吐量分支
     Q2 -->|是| Q3
     Q2 -->|否| Q6
-    
+
     %% 一致性分支
     Q3 -->|是| R1
     Q3 -->|否| R2
-    
+
     %% 状态分支
     Q4 -->|是| R1
     Q4 -->|否| Q5
-    
+
     %% SQL分支
     Q5 -->|是| R5
     Q5 -->|否| R4
-    
+
     %% Kafka分支
     Q6 -->|是| R3
     Q6 -->|否| Q3
-    
+
     %% 补充路径
     Q6 -.->|轻量级| R6
     Q4 -.->|批流统一| R2
@@ -1630,38 +1669,38 @@ flowchart TB
     classDef storage fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e
     classDef serve fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#5b21b6
     classDef monitor fill:#ccfbf1,stroke:#0891b2,stroke-width:2px,color:#115e59
-    
+
     subgraph Ingestion[数据采集层]
         Kafka[(Kafka<br/>消息队列)]:::ingest
         Source1[日志采集]:::ingest
         Source2[数据库CDC]:::ingest
         Source3[IoT设备]:::ingest
     end
-    
+
     subgraph Processing[流处理层]
         FlinkJob[Flink<br/>流处理作业]:::process
         Checkpoint[(Checkpoint<br/>状态快照)]:::process
         State[(State Backend<br/>状态存储)]:::process
     end
-    
+
     subgraph Storage[数据存储层]
         Hot[(热存储<br/>Redis/Druid)]:::storage
         Warm[(温存储<br/>ClickHouse)]:::storage
         Cold[(冷存储<br/>S3/HDFS)]:::storage
     end
-    
+
     subgraph Serving[数据服务层]
         API[REST API]:::serve
         Dashboard[监控大屏]:::serve
         Alert[告警系统]:::serve
     end
-    
+
     subgraph Monitoring[运维监控层]
         Prometheus[指标采集]:::monitor
         Grafana[可视化]:::monitor
         ES[日志分析]:::monitor
     end
-    
+
     Source1 --> Kafka
     Source2 --> Kafka
     Source3 --> Kafka
@@ -1689,29 +1728,29 @@ flowchart TD
     classDef action fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
     classDef resolve fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
     classDef critical fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#991b1b
-    
+
     Start[发现故障] --> Q1{作业状态?}:::decision
-    
+
     Q1 -->|FAILED| Q2{失败原因?}:::decision
     Q1 -->|RESTARTING| Q3{恢复次数?}:::decision
     Q1 -->|RUNNING| Q4{数据延迟?}:::decision
-    
+
     Q2 -->|OOM| A1[增加内存<br/>优化状态]:::action
     Q2 -->|超时| A2[调整超时<br/>检查网络]:::action
     Q2 -->|代码异常| A3[修复代码<br/>重新部署]:::action
-    
+
     Q3 -->|> 3次| A4[检查依赖服务<br/>降低负载]:::critical
     Q3 -->|< 3次| A5[观察自动恢复]:::action
-    
+
     Q4 -->|延迟增加| Q5{CPU使用率?}:::decision
     Q4 -->|数据丢失| A6[检查Checkpoint<br/>数据回放]:::critical
-    
+
     Q5 -->|> 80%| A7[增加并行度<br/>优化计算]:::action
     Q5 -->|< 80%| Q6{网络/IO?}:::decision
-    
+
     Q6 -->|网络瓶颈| A8[调整缓冲区<br/>优化序列化]:::action
     Q6 -->|IO瓶颈| A9[异步IO<br/>批量写入]:::action
-    
+
     A1 --> Verify[验证恢复]:::resolve
     A2 --> Verify
     A3 --> Verify
@@ -1721,7 +1760,7 @@ flowchart TD
     A7 --> Verify
     A8 --> Verify
     A9 --> Verify
-    
+
     Verify -->|未解决| Escalate[升级处理<br/>联系专家]:::critical
     Verify -->|已解决| Record[记录根因<br/>更新预案]:::resolve
 ```

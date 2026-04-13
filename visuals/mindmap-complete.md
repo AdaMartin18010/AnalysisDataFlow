@@ -424,7 +424,7 @@ graph LR
 | Struct/ | [Struct/00-INDEX.md](../Struct/00-INDEX.md) | 形式化理论导航 |
 | Knowledge/ | [Knowledge/00-INDEX.md](../Knowledge/00-INDEX.md) | 工程实践导航 |
 | Flink/ | [Flink/00-INDEX.md](../Flink/00-INDEX.md) | Flink技术导航 |
-| 根目录 | [00.md](../00.md) | 项目总览与路线图 |
+| 根目录 | [00.md](../archive/deprecated/00.md) | 项目总览与路线图 |
 | 根目录 | [README.md](../README.md) | 项目介绍与快速开始 |
 
 ### 定理注册表

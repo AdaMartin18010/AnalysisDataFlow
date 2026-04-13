@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink vs Materialize: 现代流处理系统对比分析 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [流数据库对比](../Knowledge/04-technology-selection/streaming-database-guide.md) | **形式化等级**: L5 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [流数据库对比](../../../Knowledge/04-technology-selection/streaming-database-guide.md) | **形式化等级**: L5 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
@@ -111,4 +111,3 @@ GROUP BY user_id;
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
-

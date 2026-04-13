@@ -694,7 +694,7 @@ timeline
 
 分布式计算与故障模型密切相关。故障模型定义了分布式系统中组件可能失效的行为模式，是分布式系统设计和分析的基础。
 
-- 详见：[故障模型](../03-model-taxonomy/01-system-models/02-failure-models.md)
+- 详见：[故障模型](../../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 分布式系统中的主要故障模型包括：
 - **Fail-Stop**: 进程崩溃且可被检测

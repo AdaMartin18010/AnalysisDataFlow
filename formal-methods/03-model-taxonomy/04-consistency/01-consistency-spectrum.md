@@ -1,6 +1,6 @@
 ﻿# 一致性谱系
 
-> **所属单元**: formal-methods/03-model-taxonomy/04-consistency | **前置依赖**: [03-resource-deployment/03-elasticity](../../03-resource-deployment/03-elasticity.md) | **形式化等级**: L5-L6
+> **所属单元**: formal-methods/03-model-taxonomy/04-consistency | **前置依赖**: [03-resource-deployment/03-elasticity](../03-resource-deployment/03-elasticity.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 
@@ -407,7 +407,7 @@ graph TB
 
 一致性谱系中的线性一致性（Linearizability）是强一致性的关键级别。它要求所有操作看起来在调用和响应之间的某个瞬间原子执行，且与全局实时顺序一致。
 
-- 详见：[线性一致性](../../../98-appendices/wikipedia-concepts/15-linearizability.md)
+- 详见：[线性一致性](../../98-appendices/wikipedia-concepts/15-linearizability.md)
 
 线性一致性的核心特性：
 

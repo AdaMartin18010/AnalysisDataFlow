@@ -1,7 +1,7 @@
 # 2026年实时AI流处理架构：Streaming AI的技术拐点
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
-> 
+>
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [实时RAG架构](real-time-rag-architecture.md), [向量搜索与流处理融合](vector-search-streaming-convergence.md) | 形式化等级: L3-L4

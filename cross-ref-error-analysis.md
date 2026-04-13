@@ -51,7 +51,7 @@
 [Flink核心机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
 # 正确
-[Flink核心机制](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+[Flink核心机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 ```
 
 ### 2. 旧目录结构引用 (30%)
@@ -89,7 +89,7 @@
 [自适应执行V2](flink-24/flink-24-adaptive-execution-v2.md)
 
 # 修复后（指向路线图）
-[自适应执行V2](../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
+[自适应执行V2](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 ```
 
 ### 5. 锚点错误 (2%)

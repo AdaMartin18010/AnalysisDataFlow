@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow
 
 [![Deutsch](https://img.shields.io/badge/Deutsch-🇩🇪-red)](./README-de.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../en/README.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
@@ -55,10 +56,10 @@ Dieses Projekt ist eine umfassende Zusammenstellung und Systematisierung von **T
 
 ### Themenbasierte Navigation
 
-- **Theoretische Grundlagen**: [Struct/ Unified Streaming Theory](../../Struct/00-INDEX.md)
+- **Theoretische Grundlagen**: [Struct/ Unified Streaming Theory](../../../en/00-INDEX.md)
 - **Designmuster**: [Knowledge/ Stream Processing Core Patterns](../../Knowledge/02-design-patterns/)
-- **Flink Core**: [Flink/ Checkpoint-Mechanismus](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
-- **Cutting-Edge**: [Knowledge/06-frontier/ AI-Native Datenbanken](../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **Flink Core**: [Flink/ Checkpoint-Mechanismus](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- **Cutting-Edge**: [Knowledge/06-frontier/ AI-Native Datenbanken](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
 - **Antipatterns**: [Knowledge/09-anti-patterns/ Stream Processing Antipatterns](../../Knowledge/09-anti-patterns/)
 
 ---
@@ -97,7 +98,7 @@ Dieses Projekt ist eine umfassende Zusammenstellung und Systematisierung von **T
 
 ## Mitwirkung
 
-Wenn Sie zu diesem Projekt beitragen möchten, konsultieren Sie bitte [CONTRIBUTING.md](../../CONTRIBUTING.md).
+Wenn Sie zu diesem Projekt beitragen möchten, konsultieren Sie bitte [CONTRIBUTING.md](../../../CONTRIBUTING.md).
 
 ---
 

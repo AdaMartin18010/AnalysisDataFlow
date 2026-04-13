@@ -876,7 +876,7 @@ graph TB
 
 ### Related Concepts
 
-- [Explicit-state Model Checking](../../05-verification/02-model-checking/01-explicit-state.md) - Detailed model checking implementation techniques
+- [Explicit-state Model Checking](../../../05-verification/02-model-checking/01-explicit-state.md) - Detailed model checking implementation techniques
 
 ### Wikipedia References
 

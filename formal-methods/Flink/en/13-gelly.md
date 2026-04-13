@@ -1,6 +1,6 @@
 # Flink Gelly: Large-Scale Graph Processing
 
-> **Stage**: Flink/Graph | **Prerequisites**: [Flink DataStream API](../Flink/02-core/flink-datastream-api-complete-guide.md), [Batch Processing](../Flink/01-concepts/flink-architecture-evolution-1x-to-2x.md) | **Formal Level**: L4-L5
+> **Stage**: Flink/Graph | **Prerequisites**: [Flink DataStream API](../../../Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [Batch Processing](../../../Flink/01-concepts/flink-architecture-evolution-1x-to-2x.md) | **Formal Level**: L4-L5
 
 ---
 
@@ -511,6 +511,6 @@ graph LR
 
 **Related Documents**:
 
-- [Flink DataStream API](../Flink/02-core/flink-datastream-api-complete-guide.md)
-- [Streaming Graph Processing](../Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
+- [Flink DataStream API](../../../Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md)
+- [Streaming Graph Processing](../../../Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
 - [Flink Architecture Overview](./01-architecture-overview.md)

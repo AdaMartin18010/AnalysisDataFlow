@@ -511,12 +511,12 @@ graph TD
 
 ## 9. Related Concepts
 
-- [Model Checking](02-model-checking.md)
-- [Theorem Proving](03-theorem-proving.md)
-- [Process Calculus](04-process-calculus.md)
-- [Temporal Logic](05-temporal-logic.md)
-- [Hoare Logic](06-hoare-logic.md)
-- [Type Theory](07-type-theory.md)
+- [Model Checking](../../98-appendices/wikipedia-concepts/en/02-model-checking.md)
+- [Theorem Proving](../../98-appendices/wikipedia-concepts/en/03-theorem-proving.md)
+- [Process Calculus](../../98-appendices/wikipedia-concepts/en/04-process-calculus.md)
+- [Temporal Logic](../../98-appendices/wikipedia-concepts/en/05-temporal-logic.md)
+- [Hoare Logic](../../98-appendices/wikipedia-concepts/en/06-hoare-logic.md)
+- [Type Theory](../../98-appendices/wikipedia-concepts/en/07-type-theory.md)
 
 ---
 

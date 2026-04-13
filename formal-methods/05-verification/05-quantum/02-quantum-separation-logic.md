@@ -1,6 +1,6 @@
 # 量子分离逻辑 (Quantum Separation Logic)
 
-> 所属阶段: Struct/ | 前置依赖: [01-quantum-hoare-logic.md](./01-quantum-hoare-logic.md), [形式化验证基础](../../03-foundations/README.md) | 形式化等级: L6
+> 所属阶段: Struct/ | 前置依赖: [01-quantum-hoare-logic.md](./01-quantum-hoare-logic.md), [形式化验证基础](../03-theorem-proving/coq-proofs/README.md) | 形式化等级: L6
 
 ---
 

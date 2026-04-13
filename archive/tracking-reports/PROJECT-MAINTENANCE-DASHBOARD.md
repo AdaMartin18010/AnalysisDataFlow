@@ -248,12 +248,12 @@ flowchart LR
 
 | FLIP | 标题 | 状态 | 目标版本 | 文档链接 | 更新日期 |
 |------|------|------|----------|----------|----------|
-| FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
+| FLIP-531 | AI Agent Support | 🟡 进行中 | 2.3 | [Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 2026-04-03 |
 | FLIP-400 | Adaptive Scheduler V2 | ✅ 完成 | 2.2 | [Flink/02-core/adaptive-execution-engine-v2.md](Flink/02-core/adaptive-execution-engine-v2.md) | 2026-04-02 |
-| FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-architecture/disaggregated-state-analysis.md) | 2026-04-01 |
-| FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-sql-table-api/materialized-tables.md) | 2026-04-01 |
-| FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-sql-table-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
-| FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-sql-table-api/vector-search.md) | 2026-04-01 |
+| FLIP-445 | Disaggregated State | ✅ 完成 | 2.0 | [Flink/01-architecture/disaggregated-state-analysis.md](Flink/01-concepts/disaggregated-state-analysis.md) | 2026-04-01 |
+| FLIP-490 | Materialized Table | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/materialized-tables.md](Flink/03-api/03.02-table-sql-api/materialized-tables.md) | 2026-04-01 |
+| FLIP-500 | Model DDL | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/model-ddl-and-ml-predict.md](Flink/03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | 2026-04-01 |
+| FLIP-520 | VECTOR_SEARCH | ✅ 完成 | 2.2 | [Flink/03-sql-table-api/vector-search.md](Flink/03-api/03.02-table-sql-api/vector-search.md) | 2026-04-01 |
 
 ### 4.3 项目发布时间表
 
@@ -541,4 +541,3 @@ flowchart TB
 - 🎉 里程碑达成
 - 🆕 新增
 - 🔮 规划中
-

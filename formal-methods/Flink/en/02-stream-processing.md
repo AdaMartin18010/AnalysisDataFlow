@@ -1,6 +1,6 @@
 # Flink Stream Processing: Backpressure and Flow Control
 
-> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [Flink Deployment Architecture](../01-concepts/deployment-architectures.md) | **Formal Level**: L3-L4
+> **Stage**: Flink/02-core-mechanisms | **Prerequisites**: [Flink Deployment Architecture](../../../Flink/01-concepts/deployment-architectures.md) | **Formal Level**: L3-L4
 
 ---
 

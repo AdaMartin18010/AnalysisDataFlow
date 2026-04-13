@@ -7,30 +7,32 @@
 
 ## 目录
 
-- [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-  - [Def-FYB-01 (YCSB 模型)](#def-fyb-01-ycsb-模型)
-  - [Def-FYB-02 (工作负载定义)](#def-fyb-02-工作负载定义)
-  - [Def-FYB-03 (状态访问模式)](#def-fyb-03-状态访问模式)
-- [2. 属性推导 (Properties)](#2-属性推导-properties)
-  - [Prop-FYB-01 (读写比与性能关系)](#prop-fyb-01-读写比与性能关系)
-  - [Prop-FYB-02 (键分布影响)](#prop-fyb-02-键分布影响)
-- [3. 关系建立 (Relations)](#3-关系建立-relations)
-  - [关系 1: YCSB 工作负载与 Flink 状态后端映射](#关系-1-ycsb-工作负载与-flink-状态后端映射)
-  - [关系 2: 访问模式与调优策略关联](#关系-2-访问模式与调优策略关联)
-- [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-  - [4.1 YCSB 在流计算中的适配](#41-ycsb-在流计算中的适配)
-  - [4.2 对比测试方法论](#42-对比测试方法论)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-  - [Thm-FYB-01 (状态后端选择定理)](#thm-fyb-01-状态后端选择定理)
-- [6. 实例验证 (Examples)](#6-实例验证-examples)
-  - [6.1 YCSB 环境搭建](#61-ycsb-环境搭建)
-  - [6.2 标准工作负载配置](#62-标准工作负载配置)
-  - [6.3 Flink 集成实现](#63-flink-集成实现)
-  - [6.4 对比测试方法](#64-对比测试方法)
-- [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-  - [7.1 YCSB-Flink 集成架构](#71-ycsb-flink-集成架构)
-  - [7.2 工作负载特征对比](#72-工作负载特征对比)
-- [8. 引用参考 (References)](#8-引用参考-references)
+- [Flink YCSB 基准测试指南](#flink-ycsb-基准测试指南)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-FYB-01 (YCSB 模型)](#def-fyb-01-ycsb-模型)
+    - [Def-FYB-02 (工作负载定义)](#def-fyb-02-工作负载定义)
+    - [Def-FYB-03 (状态访问模式)](#def-fyb-03-状态访问模式)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-FYB-01 (读写比与性能关系)](#prop-fyb-01-读写比与性能关系)
+    - [Prop-FYB-02 (键分布影响)](#prop-fyb-02-键分布影响)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: YCSB 工作负载与 Flink 状态后端映射](#关系-1-ycsb-工作负载与-flink-状态后端映射)
+    - [关系 2: 访问模式与调优策略关联](#关系-2-访问模式与调优策略关联)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 YCSB 在流计算中的适配](#41-ycsb-在流计算中的适配)
+    - [4.2 对比测试方法论](#42-对比测试方法论)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-FYB-01 (状态后端选择定理)](#thm-fyb-01-状态后端选择定理)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 YCSB 环境搭建](#61-ycsb-环境搭建)
+    - [6.2 标准工作负载配置](#62-标准工作负载配置)
+    - [6.3 Flink 集成实现](#63-flink-集成实现)
+    - [6.4 对比测试方法](#64-对比测试方法)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 YCSB-Flink 集成架构](#71-ycsb-flink-集成架构)
+    - [7.2 工作负载特征对比](#72-工作负载特征对比)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -153,25 +155,25 @@ graph TB
         W4[D: Read Latest]
         W5[F: RMW]
     end
-    
+
     subgraph Flink状态后端
         S1[HashMapStateBackend]
         S2[EmbeddedRocksDBStateBackend]
         S3[ForStStateBackend<br/>Flink 2.0+]
     end
-    
+
     subgraph 性能特征
         P1[低延迟<br/>内存限制]
         P2[大状态支持<br/>磁盘IO]
         P3[云原生<br/>远程存储]
     end
-    
+
     W1 -->|Write Heavy| S2 --> P2
     W2 -->|Read Heavy| S1 --> P1
     W3 -->|Read Only| S1 --> P1
     W4 -->|Mixed| S3 --> P3
     W5 -->|RMW| S3 --> P3
-    
+
     W1 -.->|中小状态| S1
     W2 -.->|超大状态| S3
 ```
@@ -293,55 +295,55 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 
 // FlinkYcsbAdapter.java
 public class FlinkYcsbAdapter {
-    
+
     public static void main(String[] args) throws Exception {
         ParameterTool params = ParameterTool.fromArgs(args);
-        
+
         String workload = params.get("workload", "b");  // 默认 read-heavy
         int stateSizeGb = params.getInt("state-size-gb", 10);
         int durationSec = params.getInt("duration", 300);
-        
-        StreamExecutionEnvironment env = 
+
+        StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
-        
+
         // 配置状态后端
         configureStateBackend(env, params);
-        
+
         // 创建 YCSB 数据流
         DataStream<YcsbOperation> source = env
             .addSource(new YcsbGeneratorSource(
-                workload, 
+                workload,
                 stateSizeGb * 1_000_000L,  // 键数量
                 durationSec
             ))
             .setParallelism(8);
-        
+
         // 执行状态操作
         DataStream<YcsbResult> result = source
             .keyBy(op -> op.getKey())
             .process(new YcsbStateFunction(workload));
-        
+
         // 输出结果
         result.addSink(new MetricsSink());
-        
+
         env.execute("YCSB Benchmark - Workload " + workload);
     }
-    
+
     private static void configureStateBackend(
-            StreamExecutionEnvironment env, 
+            StreamExecutionEnvironment env,
             ParameterTool params) {
         String backend = params.get("state.backend", "rocksdb");
-        
+
         if ("hashmap".equals(backend)) {
             env.setStateBackend(new HashMapStateBackend());
         } else if ("rocksdb".equals(backend)) {
-            EmbeddedRocksDBStateBackend rocksDb = 
+            EmbeddedRocksDBStateBackend rocksDb =
                 new EmbeddedRocksDBStateBackend(true);  // 增量
             env.setStateBackend(rocksDb);
         } else if ("forst".equals(backend)) {
             env.setStateBackend(new ForStStateBackend());
         }
-        
+
         // Checkpoint 配置
         env.enableCheckpointing(60000);  // 1分钟
         env.getCheckpointConfig().setCheckpointStorage(
@@ -362,12 +364,12 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class YcsbStateFunction extends KeyedProcessFunction<
     String, YcsbOperation, YcsbResult> {
-    
+
     private ValueState<YcsbRecord> valueState;
     private transient Meter readMeter;
     private transient Meter updateMeter;
     private transient Histogram latencyHistogram;
-    
+
     @Override
     public void open(OpenContext ctx) {
         StateTtlConfig ttlConfig = StateTtlConfig
@@ -375,39 +377,39 @@ public class YcsbStateFunction extends KeyedProcessFunction<
             .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
             .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
             .build();
-        
-        ValueStateDescriptor<YcsbRecord> descriptor = 
+
+        ValueStateDescriptor<YcsbRecord> descriptor =
             new ValueStateDescriptor<>("ycsb-record", YcsbRecord.class);
         descriptor.enableTimeToLive(ttlConfig);
         valueState = getRuntimeContext().getState(descriptor);
-        
+
         // 注册指标
         readMeter = ctx.getMetrics().meter("ycsb.reads");
         updateMeter = ctx.getMetrics().meter("ycsb.updates");
         latencyHistogram = ctx.getMetrics().histogram("ycsb.latency");
     }
-    
+
     @Override
     public void processElement(
-            YcsbOperation op, 
+            YcsbOperation op,
             KeyedProcessFunction<String, YcsbOperation, YcsbResult>.Context ctx,
             Collector<YcsbResult> out) throws Exception {
-        
+
         long start = System.nanoTime();
         YcsbRecord record;
-        
+
         switch (op.getType()) {
             case READ:
                 record = valueState.value();
                 readMeter.markEvent();
                 break;
-                
+
             case UPDATE:
                 record = op.getRecord();
                 valueState.update(record);
                 updateMeter.markEvent();
                 break;
-                
+
             case READ_MODIFY_WRITE:
                 record = valueState.value();
                 if (record != null) {
@@ -418,14 +420,14 @@ public class YcsbStateFunction extends KeyedProcessFunction<
                 valueState.update(record);
                 updateMeter.markEvent();
                 break;
-                
+
             default:
                 throw new IllegalArgumentException("Unknown op: " + op.getType());
         }
-        
+
         long latency = (System.nanoTime() - start) / 1_000_000;  // ms
         latencyHistogram.update(latency);
-        
+
         out.collect(new YcsbResult(op.getKey(), op.getType(), latency, record));
     }
 }
@@ -488,26 +490,26 @@ requestdistribution=uniform
 
 ```java
 public class YcsbGeneratorSource extends RichParallelSourceFunction<YcsbOperation> {
-    
+
     private final String workload;
     private final long totalKeys;
     private final int durationSec;
     private final Random random;
-    
+
     private volatile boolean running = true;
-    
+
     @Override
     public void run(SourceContext<YcsbOperation> ctx) throws Exception {
         long startTime = System.currentTimeMillis();
         long opCount = 0;
-        
+
         // 根据工作负载确定操作比例
         double readRatio = getReadRatio(workload);
         double updateRatio = getUpdateRatio(workload);
-        
-        while (running && 
+
+        while (running &&
                (System.currentTimeMillis() - startTime) < durationSec * 1000) {
-            
+
             // 生成操作
             double r = random.nextDouble();
             YcsbOperation.Type type;
@@ -518,32 +520,32 @@ public class YcsbGeneratorSource extends RichParallelSourceFunction<YcsbOperatio
             } else {
                 type = YcsbOperation.Type.READ_MODIFY_WRITE;
             }
-            
+
             // 生成键 (Zipfian 分布)
             String key = generateZipfianKey(totalKeys);
-            
+
             // 生成值
             YcsbRecord record = generateRecord();
-            
+
             synchronized (ctx.getCheckpointLock()) {
                 ctx.collect(new YcsbOperation(key, type, record));
             }
-            
+
             opCount++;
-            
+
             // 速率控制 (目标 100K ops/s per parallel instance)
             if (opCount % 1000 == 0) {
                 Thread.sleep(10);
             }
         }
     }
-    
+
     private String generateZipfianKey(long totalKeys) {
         // Zipfian 分布实现
         double zipf = zipfianSample(totalKeys, 1.0);
         return String.format("user%010d", (long)(zipf * totalKeys));
     }
-    
+
     @Override
     public void cancel() {
         running = false;
@@ -569,14 +571,14 @@ mkdir -p $RESULTS_DIR
 for backend in "${STATE_BACKENDS[@]}"; do
     for workload in "${WORKLOADS[@]}"; do
         for size in "${STATE_SIZES[@]}"; do
-            
+
             # 跳过不可能的组合
             if [[ "$backend" == "hashmap" && $size -gt 10 ]]; then
                 continue
             fi
-            
+
             echo "Running: backend=$backend, workload=$workload, size=${size}GB"
-            
+
             # 运行测试
             flink run \
                 -c org.apache.flink.ycsb.FlinkYcsbAdapter \
@@ -586,7 +588,7 @@ for backend in "${STATE_BACKENDS[@]}"; do
                 --state-size-gb $size \
                 --duration 300 \
                 --output $RESULTS_DIR/${backend}_${workload}_${size}gb.json
-            
+
             # 收集指标
             sleep 30
         done
@@ -619,42 +621,42 @@ graph TB
         YG[YCSB Generator<br/>Zipfian/Uniform分布]
         KL[Key Group<br/>分区器]
     end
-    
+
     subgraph Flink集群
         subgraph Source
             S1[Parallel Source 1]
             S2[Parallel Source 2]
             Sn[Parallel Source n]
         end
-        
+
         subgraph KeyedProcessFunction
             KP1[状态操作<br/>ValueState]
             KP2[状态操作<br/>ValueState]
             KPn[状态操作<br/>ValueState]
         end
-        
+
         subgraph Metrics
             M1[Prometheus<br/>PushGateway]
             M2[Grafana<br/>Dashboard]
         end
     end
-    
+
     subgraph 状态后端
         HM[(HashMap<br/>JVM Heap)]
         RB[(RocksDB<br/>本地磁盘)]
         FS[(ForSt<br/>云存储)]
     end
-    
+
     YG --> KL
     KL --> S1 & S2 & Sn
     S1 --> KP1
     S2 --> KP2
     Sn --> KPn
-    
+
     KP1 -.->|小状态| HM
     KP2 -.->|大状态| RB
     KPn -.->|云原生| FS
-    
+
     KP1 & KP2 & KPn --> M1 --> M2
 ```
 
@@ -665,11 +667,11 @@ xychart-beta
     title "YCSB 工作负载 - 读写比对比"
     x-axis ["Workload A", "Workload B", "Workload C", "Workload D", "Workload F"]
     y-axis "百分比" 0 --> 100
-    
+
     bar [50, 95, 100, 95, 50]
     bar [50, 5, 0, 5, 0]
     bar [0, 0, 0, 0, 50]
-    
+
     annotation 1, 50 "Read"
     annotation 1, 50 "Update"
     annotation 5, 50 "RMW"
@@ -679,11 +681,6 @@ xychart-beta
 
 ## 8. 引用参考 (References)
 
-[^1]: B. Cooper et al., "Benchmarking Cloud Serving Systems with YCSB", ACM SoCC 2010.
-[^2]: YCSB GitHub Repository. https://github.com/brianfrankcooper/YCSB
-[^3]: Apache Flink State Backends Documentation. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
-[^4]: RocksDB Tuning Guide. https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide
-[^5]: Flink ForSt State Backend (FLIP-292). https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-292.md
 
 ---
 

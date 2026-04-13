@@ -694,7 +694,7 @@ timeline
 
 Distributed computing is closely related to fault models. Fault models define the behavior patterns of possible failures of components in distributed systems and are the foundation for distributed system design and analysis.
 
-- See: [Fault Models](../03-model-taxonomy/01-system-models/02-failure-models.md)
+- See: [Fault Models](../../03-model-taxonomy/01-system-models/02-failure-models.md)
 
 Major fault models in distributed systems include:
 - **Fail-Stop**: Process crashes and can be detected
@@ -767,12 +767,12 @@ The choice of fault model directly affects the complexity and fault tolerance of
 
 ## 9. Related Concepts
 
-- [Byzantine Fault Tolerance](12-byzantine-fault-tolerance.md)
-- [Consensus](13-consensus.md)
-- [CAP Theorem](14-cap-theorem.md)
-- [Linearizability](15-linearizability.md)
-- [Paxos](18-paxos.md)
-- [Raft](19-raft.md)
+- [Byzantine Fault Tolerance](../../98-appendices/wikipedia-concepts/en/12-byzantine-fault-tolerance.md)
+- [Consensus](../../98-appendices/wikipedia-concepts/en/13-consensus.md)
+- [CAP Theorem](../../98-appendices/wikipedia-concepts/en/14-cap-theorem.md)
+- [Linearizability](../../98-appendices/wikipedia-concepts/en/15-linearizability.md)
+- [Paxos](../../98-appendices/wikipedia-concepts/en/18-paxos.md)
+- [Raft](../../98-appendices/wikipedia-concepts/en/19-raft.md)
 
 ---
 

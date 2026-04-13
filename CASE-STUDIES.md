@@ -16,7 +16,7 @@
 | 路径 | 内容 | 案例数 |
 |------|------|:------:|
 | [Knowledge/10-case-studies/00-INDEX.md](./Knowledge/10-case-studies/00-INDEX.md) | **详细行业案例研究集** | 9个 |
-| [Flink/07-case-studies/](./Flink/07-case-studies/case-realtime-analytics.md) | Flink专项案例 | 15个 |
+| [Flink/07-case-studies/](Flink/09-practices/09.01-case-studies/case-realtime-analytics.md) | Flink专项案例 | 15个 |
 | [Knowledge/03-business-patterns/](./Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | 业务模式模式库 | 10个 |
 
 ### 🆕 新增详细案例（Knowledge/10-case-studies/） {#新增详细案例}

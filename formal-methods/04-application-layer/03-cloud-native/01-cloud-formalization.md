@@ -1,6 +1,6 @@
 # 云原生形式化目标
 
-> **所属单元**: formal-methods/04-application-layer/03-cloud-native | **前置依赖**: [formal-methods/03-distributed-systems/02-consensus-protocols](../../03-distributed-systems/02-consensus-protocols.md) | **形式化等级**: L4-L5
+> **所属单元**: formal-methods/04-application-layer/03-cloud-native | **前置依赖**: [formal-methods/03-distributed-systems/02-consensus-protocols](../04-blockchain-verification/02-consensus-protocols.md) | **形式化等级**: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

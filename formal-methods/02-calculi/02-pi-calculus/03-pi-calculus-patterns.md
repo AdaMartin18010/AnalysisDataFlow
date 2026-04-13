@@ -1,6 +1,6 @@
 # π-Calculus 设计模式 (π-Calculus Design Patterns)
 
-> 所属阶段: Struct | 前置依赖: [01.02-process-calculus-primer.md](../../../../Struct/01-foundation/01.02-process-calculus-primer.md) | 形式化等级: L3-L4
+> 所属阶段: Struct | 前置依赖: [01.02-process-calculus-primer.md](../../../USTM-F-Reconstruction/archive/original-struct/01-foundation/01.02-process-calculus-primer.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

@@ -1,6 +1,6 @@
 # Model Checking
 
-> **Stage**: formal-methods/98-appendices/wikipedia-concepts | **Prerequisites**: [Formal Methods](01-formal-methods.md) | **Formalization Level**: L1-L6
+> **Stage**: formal-methods/98-appendices/wikipedia-concepts | **Prerequisites**: [Formal Methods](../../98-appendices/wikipedia-concepts/en/01-formal-methods.md) | **Formalization Level**: L1-L6
 >
 > **Wikipedia Standard Definition**: Model checking is a method for checking whether a finite-state model of a system meets a given specification.
 >

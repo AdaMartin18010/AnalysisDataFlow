@@ -1,6 +1,6 @@
 # 工作流与流计算对比
 
-> 所属阶段: formal-methods/ | 前置依赖: [04-application-layer/WORKFLOW-SEMANTICS.md](04-application-layer/WORKFLOW-SEMANTICS.md), [Flink/](../Flink/README.md) | 形式化等级: L4
+> 所属阶段: formal-methods/ | 前置依赖: [04-application-layer/WORKFLOW-SEMANTICS.md](04-application-layer/WORKFLOW-SEMANTICS.md), [Flink/](README.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

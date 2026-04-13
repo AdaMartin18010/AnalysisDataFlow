@@ -1534,8 +1534,8 @@ mindmap
 ## 🔗 相关文档
 
 - [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
-- [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
-- [Flink/03-sql-table-api/query-optimization-analysis.md](../Flink/03-sql-table-api/query-optimization-analysis.md)
+- [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
+- [Flink/03-sql-table-api/query-optimization-analysis.md](../Flink/03-api/03.02-table-sql-api/query-optimization-analysis.md)
 - [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)
 
 ---

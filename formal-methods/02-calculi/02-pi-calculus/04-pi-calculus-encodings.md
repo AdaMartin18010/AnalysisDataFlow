@@ -1,6 +1,6 @@
 # π-Calculus 编码技术 (π-Calculus Encoding Techniques)
 
-> 所属阶段: Struct | 前置依赖: [01.02-process-calculus-primer.md](../../../../Struct/01-foundation/01.02-process-calculus-primer.md) | 形式化等级: L4-L5
+> 所属阶段: Struct | 前置依赖: [01.02-process-calculus-primer.md](../../../USTM-F-Reconstruction/archive/original-struct/01-foundation/01.02-process-calculus-primer.md) | 形式化等级: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

@@ -6,16 +6,39 @@
 
 ## 目录
 
-- [概述](#概述)
-- [数据文件结构](#数据文件结构)
-- [数据结构说明](#数据结构说明)
-  - [增强数据 (knowledge-graph-data-enhanced.json)](#增强数据-knowledge-graph-data-enhancedjson)
-  - [定理网络数据 (knowledge-graph-theorems.json)](#定理网络数据-knowledge-graph-theoremsjson)
-  - [前沿趋势数据 (knowledge-graph-frontier.json)](#前沿趋势数据-knowledge-graph-frontierjson)
-- [图谱视图说明](#图谱视图说明)
-- [更新流程](#更新流程)
-- [扩展指南](#扩展指南)
-- [API 参考](#api-参考)
+- [AnalysisDataFlow 知识图谱数据指南](#analysisdataflow-知识图谱数据指南)
+  - [目录](#目录)
+  - [概述](#概述)
+  - [数据文件结构](#数据文件结构)
+  - [数据结构说明](#数据结构说明)
+    - [增强数据 (knowledge-graph-data-enhanced.json)](#增强数据-knowledge-graph-data-enhancedjson)
+      - [元数据 (metadata)](#元数据-metadata)
+      - [节点 (nodes)](#节点-nodes)
+      - [边 (edges)](#边-edges)
+      - [视图配置 (views)](#视图配置-views)
+    - [定理网络数据 (knowledge-graph-theorems.json)](#定理网络数据-knowledge-graph-theoremsjson)
+      - [数据结构](#数据结构)
+    - [前沿趋势数据 (knowledge-graph-frontier.json)](#前沿趋势数据-knowledge-graph-frontierjson)
+      - [数据结构](#数据结构-1)
+  - [图谱视图说明](#图谱视图说明)
+    - [1. 概念层次结构视图 (Concept Hierarchy)](#1-概念层次结构视图-concept-hierarchy)
+    - [2. 定理依赖网络视图 (Theorem Network)](#2-定理依赖网络视图-theorem-network)
+    - [3. 文档交叉引用网络视图 (Document Network)](#3-文档交叉引用网络视图-document-network)
+    - [4. 学术前沿趋势视图 (Frontier Trends)](#4-学术前沿趋势视图-frontier-trends)
+  - [更新流程](#更新流程)
+    - [手动更新](#手动更新)
+    - [自动更新 (GitHub Actions)](#自动更新-github-actions)
+  - [扩展指南](#扩展指南)
+    - [添加新的节点类型](#添加新的节点类型)
+    - [添加新的视图](#添加新的视图)
+    - [集成外部数据源](#集成外部数据源)
+  - [API 参考](#api-参考)
+    - [GraphDataEnhancer 类](#graphdataenhancer-类)
+      - [方法](#方法)
+      - [数据类](#数据类)
+  - [故障排除](#故障排除)
+    - [常见问题](#常见问题)
+  - [参考](#参考)
 
 ---
 
@@ -276,6 +299,7 @@ graph TD
 展示定理、定义、引理之间的依赖关系。
 
 **特性**:
+
 - 节点按阶段着色 (Struct/知识/Flink)
 - 边表示证明依赖
 - 支持按类型筛选
@@ -287,6 +311,7 @@ graph TD
 展示文档之间的引用关系。
 
 **特性**:
+
 - 节点大小表示文档数量
 - 边表示跨目录引用
 - 聚类布局按阶段分组
@@ -298,6 +323,7 @@ graph TD
 展示研究热点和趋势。
 
 **特性**:
+
 - 环形布局
 - 颜色表示发展趋势
 - 关键词标签
@@ -364,9 +390,9 @@ node = Node(
 )
 ```
 
-2. **更新数据文档**: 在本文档中添加新类型的说明
+1. **更新数据文档**: 在本文档中添加新类型的说明
 
-3. **更新可视化**: 在 HTML 文件中添加对应的渲染逻辑
+2. **更新可视化**: 在 HTML 文件中添加对应的渲染逻辑
 
 ### 添加新的视图
 
@@ -383,7 +409,7 @@ node = Node(
 }
 ```
 
-2. **在 knowledge-graph-v2.html 中添加视图切换**:
+1. **在 knowledge-graph-v2.html 中添加视图切换**:
 
 ```javascript
 case 'new_view':
@@ -427,6 +453,7 @@ def fetch_external_data(self) -> List[Dict]:
 #### 数据类
 
 **Node**: 图谱节点
+
 - `id`: 唯一标识
 - `label`: 显示标签
 - `type`: 节点类型
@@ -436,6 +463,7 @@ def fetch_external_data(self) -> List[Dict]:
 - `metadata`: 附加元数据
 
 **Edge**: 图谱边
+
 - `source`: 源节点ID
 - `target`: 目标节点ID
 - `type`: 边类型
@@ -451,6 +479,7 @@ def fetch_external_data(self) -> List[Dict]:
 **Q: 数据文件生成失败**
 
 检查：
+
 1. THEOREM-REGISTRY.md 是否存在
 2. 文档目录结构是否正确
 3. Python 依赖是否安装
@@ -458,6 +487,7 @@ def fetch_external_data(self) -> List[Dict]:
 **Q: 节点数量不正确**
 
 可能原因：
+
 - 定理注册表格式变更
 - 文档目录结构调整
 - 正则表达式需要更新
@@ -465,6 +495,7 @@ def fetch_external_data(self) -> List[Dict]:
 **Q: 可视化不显示数据**
 
 检查：
+
 1. JSON 文件路径是否正确
 2. 数据格式是否有效
 3. 浏览器控制台错误信息

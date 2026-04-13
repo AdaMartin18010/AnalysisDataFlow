@@ -18,7 +18,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: > **Project**: P3-8 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04 -->
 <!-- TRANSLATE: > -->
-<!-- TRANSLATE: > **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) -->
+<!-- TRANSLATE: > **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../../../en/00-INDEX.md) -->
 
 <!-- TRANSLATE: This document describes the design and implementation of a personalized learning path recommendation engine for the AnalysisDataFlow knowledge base. -->
 

@@ -672,7 +672,7 @@ xychart-beta
 
 - [Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md](./Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) —— Flink性能调优详细指南
 - [Knowledge/04-technology-selection/flink-vs-risingwave.md](./Knowledge/04-technology-selection/flink-vs-risingwave.md) —— Flink与RisingWave深度对比
-- [Flink/11-benchmarking/streaming-benchmarks.md](./Flink/11-benchmarking/streaming-benchmarks.md) —— 流处理Benchmark方法论
+- [Flink/11-benchmarking/streaming-benchmarks.md](Flink/09-practices/09.02-benchmarking/streaming-benchmarks.md) —— 流处理Benchmark方法论
 
 ---
 

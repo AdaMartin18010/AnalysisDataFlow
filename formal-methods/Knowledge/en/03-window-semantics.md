@@ -1,6 +1,6 @@
 # Window Semantics and Pane Decomposition
 
-> **Unit**: formal-methods/04-application-layer/02-stream-processing | **Prerequisites**: [02-kahn-theorem](./02-kahn-theorem.md) | **Formalization Level**: L4-L5
+> **Unit**: formal-methods/04-application-layer/02-stream-processing | **Prerequisites**: [02-kahn-theorem](../../04-application-layer/02-stream-processing/02-kahn-theorem.md) | **Formalization Level**: L4-L5
 
 ## 1. Concept Definitions (Definitions)
 

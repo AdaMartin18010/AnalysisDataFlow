@@ -235,7 +235,7 @@ mindmap
 - 模型服务: TensorFlow Serving
 - 规则引擎: Drools / EasyRules
 
-**参考文档**: [金融实时风控](../Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | [Flink金融案例](../Flink/07-case-studies/case-financial-realtime-risk-control.md)
+**参考文档**: [金融实时风控](../Knowledge/03-business-patterns/fintech-realtime-risk-control.md) | [Flink金融案例](../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
 ---
 
@@ -262,7 +262,7 @@ mindmap
 - 模型服务: 自研/TensorFlow Serving
 - 缓存: Redis Cluster
 
-**参考文档**: [实时推荐系统](../Knowledge/03-business-patterns/real-time-recommendation.md) | [电商推荐案例](../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md) | [阿里双11](../Knowledge/03-business-patterns/alibaba-double11-flink.md)
+**参考文档**: [实时推荐系统](../Knowledge/03-business-patterns/real-time-recommendation.md) | [电商推荐案例](../Flink/09-practices/09.01-case-studies/case-ecommerce-realtime-recommendation.md) | [阿里双11](../Knowledge/03-business-patterns/alibaba-double11-flink.md)
 
 ---
 
@@ -288,7 +288,7 @@ mindmap
 - 边缘网关: 自研/开源边缘框架
 - 协议: MQTT / CoAP / HTTP
 
-**参考文档**: [IoT流处理](../Knowledge/03-business-patterns/iot-stream-processing.md) | [IoT案例](../Flink/07-case-studies/case-iot-stream-processing.md) | [智能制造](../Flink/07-case-studies/case-smart-manufacturing-iot.md)
+**参考文档**: [IoT流处理](../Knowledge/03-business-patterns/iot-stream-processing.md) | [IoT案例](../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md) | [智能制造](../Flink/09-practices/09.01-case-studies/case-smart-manufacturing-iot.md)
 
 ---
 
@@ -314,7 +314,7 @@ mindmap
 - 时序存储: ClickHouse / TDengine
 - 实时推送: WebSocket
 
-**参考文档**: [游戏实时分析](../Knowledge/03-business-patterns/gaming-analytics.md) | [游戏案例](../Flink/07-case-studies/case-gaming-realtime-analytics.md)
+**参考文档**: [游戏实时分析](../Knowledge/03-business-patterns/gaming-analytics.md) | [游戏案例](../Flink/09-practices/09.01-case-studies/case-gaming-realtime-analytics.md)
 
 ---
 
@@ -603,14 +603,14 @@ flowchart TD
 
 ### 6.2 Flink/ 案例文档
 
-- [金融风控案例](../Flink/07-case-studies/case-financial-realtime-risk-control.md)
-- [电商推荐案例](../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md)
-- [IoT案例](../Flink/07-case-studies/case-iot-stream-processing.md)
-- [游戏案例](../Flink/07-case-studies/case-gaming-realtime-analytics.md)
-- [智能电网](../Flink/07-case-studies/case-smart-grid-energy-management.md)
-- [智能制造](../Flink/07-case-studies/case-smart-manufacturing-iot.md)
-- [物流追踪](../Flink/07-case-studies/case-logistics-realtime-tracking.md)
-- [点击流分析](../Flink/07-case-studies/case-clickstream-user-behavior-analytics.md)
+- [金融风控案例](../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
+- [电商推荐案例](../Flink/09-practices/09.01-case-studies/case-ecommerce-realtime-recommendation.md)
+- [IoT案例](../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
+- [游戏案例](../Flink/09-practices/09.01-case-studies/case-gaming-realtime-analytics.md)
+- [智能电网](../Flink/09-practices/09.01-case-studies/case-smart-grid-energy-management.md)
+- [智能制造](../Flink/09-practices/09.01-case-studies/case-smart-manufacturing-iot.md)
+- [物流追踪](../Flink/09-practices/09.01-case-studies/case-logistics-realtime-tracking.md)
+- [点击流分析](../Flink/09-practices/09.01-case-studies/case-clickstream-user-behavior-analytics.md)
 
 ### 6.3 设计模式文档
 

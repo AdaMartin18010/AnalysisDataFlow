@@ -1,6 +1,6 @@
 # 项目版本追踪手册 - 手工维护指南
 
-> 所属阶段: 项目管理 | 前置依赖: [AGENTS.md](./AGENTS.md) | 形式化等级: L3 (工程管理)
+> 所属阶段: 项目管理 | 前置依赖: [AGENTS.md](../../AGENTS.md) | 形式化等级: L3 (工程管理)
 
 ## 1. 概念定义 (Definitions)
 
@@ -22,7 +22,7 @@
 
 ## 3. 关系建立 (Relations)
 
-- 本手册 → [PROJECT-TRACKING.md](./PROJECT-TRACKING.md): 版本更新触发文档更新任务
+- 本手册 → [PROJECT-TRACKING.md](../../PROJECT-TRACKING.md): 版本更新触发文档更新任务
 - 本手册 → Flink/ 目录: 技术版本变更驱动文档内容更新
 - 本手册 → Struct/ 目录: 学术前沿进展影响理论章节扩展
 

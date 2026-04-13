@@ -1,7 +1,7 @@
 # Paper TODO List - 学术前沿内容补充计划
 
-> **创建日期**: 2026-04-12  
-> **关联文档**: [ACADEMIC-FRONTIER-GAP-ANALYSIS.md](./ACADEMIC-FRONTIER-GAP-ANALYSIS.md)  
+> **创建日期**: 2026-04-12
+> **关联文档**: [ACADEMIC-FRONTIER-GAP-ANALYSIS.md](./ACADEMIC-FRONTIER-GAP-ANALYSIS.md)
 > **适用范围**: AnalysisDataFlow项目 v3.9+
 
 ---
@@ -287,5 +287,5 @@
 
 ---
 
-*最后更新: 2026-04-12*  
+*最后更新: 2026-04-12*
 *维护者: AnalysisDataFlow项目团队*

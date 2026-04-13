@@ -63,19 +63,19 @@ where:
 ```mermaid
 flowchart TD
     A[Start: Select Concurrency Model] --> B{Stateful?}
-    
+
     B -->|Yes| C{Dynamic Topology?}
     B -->|No| D{Determinism Required?}
-    
+
     C -->|Yes| E[Actor Model<br/>Dynamic actor creation]
     C -->|No| F[CSP<br/>Static process network]
-    
+
     D -->|Yes| G[CSP<br/>Synchronous determinism]
     D -->|No| H{Stream Processing?}
-    
+
     H -->|Yes| I[Dataflow<br/>Stream operators]
     H -->|No| J[π-Calculus<br/>Maximum expressiveness]
-    
+
     E --> K{Formal Verification?}
     K -->|Yes| L[Use Actor + TLA+]
     K -->|No| M[Standard Actor]
@@ -86,16 +86,16 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Stream Processing System] --> B{Latency Requirement?}
-    
+
     B -->|< 100ms| C{Stateful?}
     B -->|> 100ms| D{Exactly-Once?}
-    
+
     C -->|Yes| E[Flink<br/>Stateful stream processing]
     C -->|No| F[Kafka Streams<br/>Lightweight stateless]
-    
+
     D -->|Required| G[Flink<br/>Checkpoint-based exactly-once]
     D -->|At-Least-Once| H[Spark Streaming<br/>Micro-batch]
-    
+
     E --> I{Complex Event Processing?}
     I -->|Yes| J[Flink CEP<br/>Pattern matching]
     I -->|No| K[Standard Dataflow]
@@ -106,13 +106,13 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Distributed System Design] --> B{Failure Model?}
-    
+
     B -->|Crash-Stop| C{Message Loss?}
     B -->|Byzantine| D[Specialized consensus<br/>PBFT/Tendermint]
-    
+
     C -->|Possible| E{Ordering Guarantee?}
     C -->|Reliable| F[CSP + FIFO channels]
-    
+
     E -->|Total Order| G[Paxos/Raft<br/>Consensus-based]
     E -->|Causal| H[Actor Model<br/>Mailbox semantics]
 ```
@@ -153,6 +153,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 ### 4.1 IoT Sensor Data Processing
 
 **Requirements**:
+
 - High throughput (1M+ events/sec)
 - Stateful aggregation
 - Low latency (< 1s)
@@ -161,6 +162,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 **Decision Path**: Dataflow → Flink
 
 **Justification**:
+
 - Dataflow natively supports stream processing
 - Flink provides production-ready exactly-once
 - Stateful operators match aggregation needs
@@ -168,6 +170,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 ### 4.2 Financial Trading System
 
 **Requirements**:
+
 - Deterministic execution
 - Low latency (< 10ms)
 - Complex event patterns
@@ -176,6 +179,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 **Decision Path**: CSP → Custom implementation
 
 **Justification**:
+
 - CSP provides deterministic synchronization
 - Synchronous communication for ordering
 - Formal semantics for audit trails
@@ -183,6 +187,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 ### 4.3 Microservices Orchestration
 
 **Requirements**:
+
 - Dynamic service discovery
 - Fault isolation
 - Message-driven
@@ -191,6 +196,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 **Decision Path**: Actor → Akka/Pekko
 
 **Justification**:
+
 - Actor model matches service boundaries
 - Natural fault isolation via supervision
 - Async messaging for loose coupling
@@ -204,6 +210,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 **Theorem (Thm-S-10-01)**: The decision tree framework provides complete coverage of model selection space.
 
 **Proof Sketch**:
+
 1. Decision dimensions cover all key requirements
 2. Each path terminates with a valid model choice
 3. All models are covered by at least one path
@@ -213,6 +220,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 **Theorem (Thm-S-10-02)**: Given accurate weights, the selection function returns the Pareto-optimal model.
 
 **Proof Sketch**:
+
 1. Fitness function aggregates all requirements
 2. Argmax selects highest-scoring model
 3. Pareto-optimality follows from total ordering
@@ -221,11 +229,7 @@ Legend: ✓✓✓ = Excellent, ✓✓ = Good, ✓ = Fair, △ = Possible with en
 
 ## References
 
-[^1]: G. Agha, "Actors: A Model of Concurrent Computation in Distributed Systems", MIT Press, 1986.
-[^2]: C.A.R. Hoare, "Communicating Sequential Processes", Prentice Hall, 1985.
-[^3]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
-[^4]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE DEBull, 2015.
 
 ---
 
-*For Chinese version, see [Struct/Model-Selection-Decision-Tree.md](../../Struct/Model-Selection-Decision-Tree.md)*
+*For Chinese version, see [Struct/Model-Selection-Decision-Tree.md](../../../Struct/Model-Selection-Decision-Tree.md)*

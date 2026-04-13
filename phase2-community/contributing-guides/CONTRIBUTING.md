@@ -186,7 +186,7 @@ Content...
 ### Getting Started
 
 1. Check the [i18n directory](../i18n/) for your language
-2. See [translation status](../i18n/README.md) for pending work
+2. See [translation status](../README.md) for pending work
 3. Claim a document by opening an issue
 
 ### Translation Standards
@@ -290,7 +290,7 @@ tlc ModelName.tla
 
 ## Questions?
 
-- Check [FAQ](../docs/FAQ.md)
+- Check [FAQ](../../FAQ.md)
 - Open a [GitHub Discussion](../../discussions)
 - Contact maintainers: <maintainers@analysisdataflow.org>
 

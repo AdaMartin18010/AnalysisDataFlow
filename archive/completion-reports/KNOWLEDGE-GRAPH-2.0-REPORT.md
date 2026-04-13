@@ -274,7 +274,7 @@ python scripts/doc-relationship-mapper.py
 
 ## 📖 使用指南
 
-详细使用说明请参考: [KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md)
+详细使用说明请参考: [KNOWLEDGE-GRAPH-GUIDE.md](../../KNOWLEDGE-GRAPH-GUIDE.md)
 
 ### 核心功能演示
 

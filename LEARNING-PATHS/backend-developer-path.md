@@ -40,8 +40,8 @@
 **推荐文档**:
 
 - [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md)
-- [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
-- [Flink/09-language-foundations/02.01-java-api-from-scala.md](../Flink/09-language-foundations/02.01-java-api-from-scala.md)
+- [Flink/01-architecture/deployment-architectures.md](../Flink/01-concepts/deployment-architectures.md)
+- [Flink/09-language-foundations/02.01-java-api-from-scala.md](../Flink/03-api/09-language-foundations/02.01-java-api-from-scala.md)
 
 **实践任务**:
 
@@ -91,9 +91,9 @@
 
 **推荐文档**:
 
-- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/04-connectors/kafka-integration-patterns.md)
-- [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-sql-table-api/sql-vs-datastream-comparison.md)
-- [Flink/10-deployment/kubernetes-deployment.md](../Flink/10-deployment/kubernetes-deployment.md)
+- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md)
+- [Flink/03-sql-table-api/sql-vs-datastream-comparison.md](../Flink/03-api/03.02-table-sql-api/sql-vs-datastream-comparison.md)
+- [Flink/10-deployment/kubernetes-deployment.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment.md)
 - [Knowledge/02-design-patterns/pattern-async-io-enrichment.md](../Knowledge/02-design-patterns/pattern-async-io-enrichment.md)
 
 **实践任务**:
@@ -117,8 +117,8 @@
 
 **推荐文档**:
 
-- [Flink/15-observability/metrics-and-monitoring.md](../Flink/15-observability/metrics-and-monitoring.md)
-- [Flink/15-observability/distributed-tracing.md](../Flink/15-observability/distributed-tracing.md)
+- [Flink/15-observability/metrics-and-monitoring.md](../Flink/04-runtime/04.03-observability/metrics-and-monitoring.md)
+- [Flink/15-observability/distributed-tracing.md](../Flink/04-runtime/04.03-observability/distributed-tracing.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
 - [Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md](../Knowledge/09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md)
 
@@ -235,4 +235,3 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
-

@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Knowledge-to-Flink 层级映射 -->
 
-<!-- TRANSLATE: > **所属阶段**: Knowledge/05-mapping-guides | **前置依赖**: [Struct-to-Flink-Mapping.md](./05-mapping-guides/struct-to-flink-mapping.md), [Theory-to-Code-Patterns.md](./05-mapping-guides/theory-to-code-patterns.md) | **形式化等级**: L4 -->
+<!-- TRANSLATE: > **所属阶段**: Knowledge/05-mapping-guides | **前置依赖**: [Struct-to-Flink-Mapping.md](../../../Knowledge/05-mapping-guides/struct-to-flink-mapping.md), [Theory-to-Code-Patterns.md](../../../Knowledge/05-mapping-guides/theory-to-code-patterns.md) | **形式化等级**: L4 -->
 
 
 <!-- TRANSLATE: ## 1. 概念定义 (Definitions) -->
@@ -132,24 +132,24 @@ Knowledge/                    Flink/
 
 <!-- TRANSLATE: | Knowledge设计模式 | Flink实现文档 | 源码位置 | 映射说明 | -->
 <!-- TRANSLATE: |------------------|--------------|----------|----------| -->
-<!-- TRANSLATE: | [pattern-checkpoint-recovery.md](./02-design-patterns/pattern-checkpoint-recovery.md) | [checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | `CheckpointCoordinator` | 容错模式→Checkpoint协调器实现 | -->
-<!-- TRANSLATE: | [pattern-stateful-computation.md](./02-design-patterns/pattern-stateful-computation.md) | [state-backend-evolution-analysis.md](../Flink/02-core/state-backend-evolution-analysis.md) | `RocksDBStateBackend` | 状态模式→状态后端实现 | -->
-<!-- TRANSLATE: | [pattern-event-time-processing.md](./02-design-patterns/pattern-event-time-processing.md) | [time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) | `WatermarkStrategy` | 时间模式→水印机制实现 | -->
-<!-- TRANSLATE: | [pattern-windowed-aggregation.md](./02-design-patterns/pattern-windowed-aggregation.md) | [flink-sql-window-functions-deep-dive.md](../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) | `WindowOperator` | 窗口模式→窗口算子实现 | -->
-<!-- TRANSLATE: | [pattern-async-io-enrichment.md](./02-design-patterns/pattern-async-io-enrichment.md) | [async-execution-model.md](../Flink/02-core/async-execution-model.md) | `AsyncWaitOperator` | 异步IO模式→异步等待算子 | -->
-<!-- TRANSLATE: | [pattern-cep-complex-event.md](./02-design-patterns/pattern-cep-complex-event.md) | [flink-cep-complete-guide.md](../Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md) | `CEPOperator` | CEP模式→复杂事件处理算子 | -->
-<!-- TRANSLATE: | [pattern-side-output.md](./02-design-patterns/pattern-side-output.md) | [flink-datastream-api-complete-guide.md](../Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md) | `ProcessFunction` | 旁路输出模式→ProcessFunction实现 | -->
+<!-- TRANSLATE: | [pattern-checkpoint-recovery.md](../../../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md) | [checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | `CheckpointCoordinator` | 容错模式→Checkpoint协调器实现 | -->
+<!-- TRANSLATE: | [pattern-stateful-computation.md](../../../Knowledge/02-design-patterns/pattern-stateful-computation.md) | [state-backend-evolution-analysis.md](../../../Flink/02-core/state-backend-evolution-analysis.md) | `RocksDBStateBackend` | 状态模式→状态后端实现 | -->
+<!-- TRANSLATE: | [pattern-event-time-processing.md](../../../Knowledge/02-design-patterns/pattern-event-time-processing.md) | [time-semantics-and-watermark.md](../../../Flink/02-core/time-semantics-and-watermark.md) | `WatermarkStrategy` | 时间模式→水印机制实现 | -->
+<!-- TRANSLATE: | [pattern-windowed-aggregation.md](../../../Knowledge/02-design-patterns/pattern-windowed-aggregation.md) | [flink-sql-window-functions-deep-dive.md](../../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) | `WindowOperator` | 窗口模式→窗口算子实现 | -->
+<!-- TRANSLATE: | [pattern-async-io-enrichment.md](../../../Knowledge/02-design-patterns/pattern-async-io-enrichment.md) | [async-execution-model.md](../../../Flink/02-core/async-execution-model.md) | `AsyncWaitOperator` | 异步IO模式→异步等待算子 | -->
+<!-- TRANSLATE: | [pattern-cep-complex-event.md](../../../Knowledge/02-design-patterns/pattern-cep-complex-event.md) | [flink-cep-complete-guide.md](../../../Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md) | `CEPOperator` | CEP模式→复杂事件处理算子 | -->
+<!-- TRANSLATE: | [pattern-side-output.md](../../../Knowledge/02-design-patterns/pattern-side-output.md) | [flink-datastream-api-complete-guide.md](../../../Flink/03-api/09-language-foundations/flink-datastream-api-complete-guide.md) | `ProcessFunction` | 旁路输出模式→ProcessFunction实现 | -->
 
 
 <!-- TRANSLATE: ### 6.3 技术选型→Flink配置映射表 -->
 
 <!-- TRANSLATE: | Knowledge选型指南 | Flink配置文档 | 映射说明 | -->
 <!-- TRANSLATE: |------------------|--------------|----------| -->
-<!-- TRANSLATE: | [engine-selection-guide.md](./04-technology-selection/engine-selection-guide.md) | [flink-state-backends-comparison.md](../Flink/flink-state-backends-comparison.md) | 引擎选择指南→状态后端对比 | -->
-<!-- TRANSLATE: | [streaming-database-guide.md](./04-technology-selection/streaming-database-guide.md) | [flink-vs-risingwave-deep-dive.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md) | 流数据库指南→Flink vs RisingWave深度对比 | -->
-<!-- TRANSLATE: | [paradigm-selection-guide.md](./04-technology-selection/paradigm-selection-guide.md) | [datastream-v2-semantics.md](../Flink/01-concepts/datastream-v2-semantics.md) | 范式选择指南→DataStream V2语义 | -->
-<!-- TRANSLATE: | [storage-selection-guide.md](./04-technology-selection/storage-selection-guide.md) | [state-backends-deep-comparison.md](../Flink/3.9-state-backends-deep-comparison.md) | 存储选择指南→状态后端深度对比 | -->
-<!-- TRANSLATE: | [flink-vs-risingwave.md](./04-technology-selection/flink-vs-risingwave.md) | [risingwave-integration-guide.md](../Flink/05-ecosystem/ecosystem/risingwave-integration-guide.md) | Flink对比指南→RisingWave集成指南 | -->
+<!-- TRANSLATE: | [engine-selection-guide.md](../../../Knowledge/04-technology-selection/engine-selection-guide.md) | [flink-state-backends-comparison.md](../Flink/flink-state-backends-comparison.md) | 引擎选择指南→状态后端对比 | -->
+<!-- TRANSLATE: | [streaming-database-guide.md](../../../Knowledge/04-technology-selection/streaming-database-guide.md) | [flink-vs-risingwave-deep-dive.md](../../../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md) | 流数据库指南→Flink vs RisingWave深度对比 | -->
+<!-- TRANSLATE: | [paradigm-selection-guide.md](../../../Knowledge/04-technology-selection/paradigm-selection-guide.md) | [datastream-v2-semantics.md](../../../Flink/01-concepts/datastream-v2-semantics.md) | 范式选择指南→DataStream V2语义 | -->
+<!-- TRANSLATE: | [storage-selection-guide.md](../../../Knowledge/04-technology-selection/storage-selection-guide.md) | [state-backends-deep-comparison.md](../Flink/3.9-state-backends-deep-comparison.md) | 存储选择指南→状态后端深度对比 | -->
+<!-- TRANSLATE: | [flink-vs-risingwave.md](../../../Knowledge/04-technology-selection/flink-vs-risingwave.md) | [risingwave-integration-guide.md](../../../Knowledge/06-frontier/risingwave-integration-guide.md) | Flink对比指南→RisingWave集成指南 | -->
 
 
 <!-- TRANSLATE: ## 7. 可视化 (Visualizations) -->

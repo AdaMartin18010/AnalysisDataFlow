@@ -705,7 +705,7 @@ stateDiagram-v2
 
 可串行化（Serializability）与工作流形式化在并发控制和执行正确性方面有深入联系。工作流系统中的事务执行需要保证一致性，而可串行化提供了事务调度的理论基础。
 
-- 详见：[工作流系统形式化目标与技术栈](../../../04-application-layer/01-workflow/01-workflow-formalization.md)
+- 详见：[工作流系统形式化目标与技术栈](../../04-application-layer/01-workflow/01-workflow-formalization.md)
 
 可串行化与工作流形式化的关联：
 

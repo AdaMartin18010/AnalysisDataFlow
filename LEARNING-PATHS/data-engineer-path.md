@@ -42,7 +42,7 @@
 
 - [Knowledge/01-concept-atlas/streaming-models-mindmap.md](../Knowledge/01-concept-atlas/streaming-models-mindmap.md)
 - [Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md](../Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md)
-- [Flink/01-architecture/deployment-architectures.md](../Flink/01-architecture/deployment-architectures.md)
+- [Flink/01-architecture/deployment-architectures.md](../Flink/01-concepts/deployment-architectures.md)
 - [Flink/02-core/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md)
 
 **实践任务**:
@@ -93,11 +93,11 @@
 
 **推荐文档**:
 
-- [Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md](../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md)
-- [Flink/03-sql-table-api/materialized-tables.md](../Flink/03-sql-table-api/materialized-tables.md)
-- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/04-connectors/kafka-integration-patterns.md)
-- [Flink/04-connectors/flink-cdc-3.0-data-integration.md](../Flink/04-connectors/flink-cdc-3.0-data-integration.md)
-- [Flink/10-deployment/kubernetes-deployment.md](../Flink/10-deployment/kubernetes-deployment.md)
+- [Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md](../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
+- [Flink/03-sql-table-api/materialized-tables.md](../Flink/03-api/03.02-table-sql-api/materialized-tables.md)
+- [Flink/04-connectors/kafka-integration-patterns.md](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md)
+- [Flink/04-connectors/flink-cdc-3.0-data-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md)
+- [Flink/10-deployment/kubernetes-deployment.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment.md)
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
@@ -124,9 +124,9 @@
 **推荐文档**:
 
 - [Flink/02-core/backpressure-and-flow-control.md](../Flink/02-core/backpressure-and-flow-control.md)
-- [Flink/06-engineering/performance-tuning-guide.md](../Flink/06-engineering/performance-tuning-guide.md)
-- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/07-case-studies/case-realtime-analytics.md)
-- [Flink/07-case-studies/case-ecommerce-realtime-recommendation.md](../Flink/07-case-studies/case-ecommerce-realtime-recommendation.md)
+- [Flink/06-engineering/performance-tuning-guide.md](../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
+- [Flink/07-case-studies/case-realtime-analytics.md](../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
+- [Flink/07-case-studies/case-ecommerce-realtime-recommendation.md](../Flink/09-practices/09.01-case-studies/case-ecommerce-realtime-recommendation.md)
 - [Knowledge/03-business-patterns/iot-stream-processing.md](../Knowledge/03-business-patterns/iot-stream-processing.md)
 - [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md)
 
@@ -249,4 +249,3 @@
 ---
 
 *此学习路径为AnalysisDataFlow项目预定义路径*
-

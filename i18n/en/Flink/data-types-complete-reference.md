@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink Data Types 完整参考 -->
 
-<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [Flink/00-QUICK-START.md](00-meta/00-QUICK-START.md) | 形式化等级: L4 -->
+<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [Flink/00-QUICK-START.md](../../../Flink/00-meta/00-QUICK-START.md) | 形式化等级: L4 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->

@@ -240,8 +240,8 @@ Struct/01-foundation/ (theoretische Grundlagen)
 Dieses Projekt ist unter der [Apache License 2.0](../../LICENSE) lizenziert.
 
 - [LICENSE](../../LICENSE) - Vollständiger Lizenztext
-- [LICENSE-NOTICE.md](../../LICENSE-NOTICE.md) - Lizenz-Erklärung und Nutzungsleitfaden
-- [THIRD-PARTY-NOTICES.md](../../THIRD-PARTY-NOTICES.md) - Drittanbieter-Erklärungen und Danksagungen
+- [LICENSE-NOTICE.md](../../archive/deprecated/LICENSE-NOTICE.md) - Lizenz-Erklärung und Nutzungsleitfaden
+- [THIRD-PARTY-NOTICES.md](../../archive/deprecated/THIRD-PARTY-NOTICES.md) - Drittanbieter-Erklärungen und Danksagungen
 
 ---
 

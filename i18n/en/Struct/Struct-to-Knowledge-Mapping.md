@@ -158,8 +158,8 @@ Checklist-K-03-01: "Verify checkpoint interval is less than maximum tolerable do
 | Struct Doc | Knowledge Docs | Relationship |
 |------------|----------------|--------------|
 | [00-INDEX.md](./00-INDEX.md) | [00-INDEX.md](../Knowledge/00-INDEX.md) | Parallel structure |
-| [01.04-dataflow-model-formalization.md](./01-foundation/01.04-dataflow-model-formalization.md) | [02-design-patterns/](../Knowledge/02-design-patterns/) | Theory → Patterns |
-| [02.02-consistency-hierarchy.md](./02-properties/02.02-consistency-hierarchy.md) | [04-selection/](../Knowledge/04-selection/) | Properties → Selection |
+| [01.04-dataflow-model-formalization.md](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | [02-design-patterns/](../Knowledge/02-design-patterns/) | Theory → Patterns |
+| [02.02-consistency-hierarchy.md](../../../Struct/02-properties/02.02-consistency-hierarchy.md) | [04-selection/](../Knowledge/04-selection/) | Properties → Selection |
 | [Unified-Model-Relationship-Graph.md](./Unified-Model-Relationship-Graph.md) | [Knowledge-to-Flink-Mapping.md](../Knowledge/Knowledge-to-Flink-Mapping.md) | Model mappings |
 
 ### 4.2 Bidirectional Mapping
@@ -234,4 +234,4 @@ graph TD
 
 ---
 
-*For Chinese version, see [Struct/Struct-to-Knowledge-Mapping.md](../../Struct/Struct-to-Knowledge-Mapping.md)*
+*For Chinese version, see [Struct/Struct-to-Knowledge-Mapping.md](../../../Struct/Struct-to-Knowledge-Mapping.md)*

@@ -1,6 +1,6 @@
 # 形式化模型对比矩阵
 
-> 所属阶段: formal-methods/ | 前置依赖: [01-foundations/README.md](01-foundations/README.md), [03-model-taxonomy/README.md](03-model-taxonomy/README.md) | 形式化等级: L4
+> 所属阶段: formal-methods/ | 前置依赖: [01-foundations/README.md](README.md), [03-model-taxonomy/README.md](README.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

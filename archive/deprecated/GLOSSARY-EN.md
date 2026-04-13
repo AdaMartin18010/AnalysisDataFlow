@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow Glossary (English)
 
 > **Version**: v1.0 | **Last Updated**: 2026-04-04 | **Scope**: Full Project
@@ -2342,5 +2343,4 @@ WM(t): t_event ≤ t is considered complete
 
 ---
 
-*This document is the English version of the AnalysisDataFlow project glossary. For the Chinese source version, please refer to [GLOSSARY.md](./GLOSSARY.md)*
-
+*This document is the English version of the AnalysisDataFlow project glossary. For the Chinese source version, please refer to [GLOSSARY.md](../../GLOSSARY.md)*

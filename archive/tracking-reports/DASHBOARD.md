@@ -325,9 +325,9 @@ graph LR
 
 ### 相关文档
 
-- [项目主文档](./README.md)
-- [进度跟踪](./PROJECT-TRACKING.md)
-- [定理注册表](./THEOREM-REGISTRY.md)
+- [项目主文档](../../README.md)
+- [进度跟踪](../../PROJECT-TRACKING.md)
+- [定理注册表](../../THEOREM-REGISTRY.md)
 
 ---
 

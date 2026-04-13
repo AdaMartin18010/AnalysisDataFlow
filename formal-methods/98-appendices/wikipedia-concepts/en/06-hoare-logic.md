@@ -565,7 +565,7 @@ mindmap
 
 Hoare Logic is the theoretical foundation of Separation Logic. Separation Logic extends Hoare Logic to handle heap memory and pointer operations in formal verification.
 
-- See: [Separation Logic](../../05-verification/01-logic/03-separation-logic.md)
+- See: [Separation Logic](../../../05-verification/01-logic/03-separation-logic.md)
 
 **Evolution from Hoare Logic to Separation Logic**:
 

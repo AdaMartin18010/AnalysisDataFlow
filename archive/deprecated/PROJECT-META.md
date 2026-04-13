@@ -74,9 +74,9 @@ AnalysisDataFlow/
 ## 引用
 
 - JSON 元数据文件: [`PROJECT-META.json`](./PROJECT-META.json)
-- 项目跟踪: [`PROJECT-TRACKING.md`](./PROJECT-TRACKING.md)
-- 定理注册表: [`THEOREM-REGISTRY.md`](./THEOREM-REGISTRY.md)
-- Agent 工作规范: [`AGENTS.md`](./AGENTS.md)
+- 项目跟踪: [`PROJECT-TRACKING.md`](../../PROJECT-TRACKING.md)
+- 定理注册表: [`THEOREM-REGISTRY.md`](../../THEOREM-REGISTRY.md)
+- Agent 工作规范: [`AGENTS.md`](../../AGENTS.md)
 
 ---
 

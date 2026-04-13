@@ -66,7 +66,7 @@ pie
 | Consistency Hierarchy | Struct/02-properties/02.02-consistency-hierarchy.md | 1 week |
 | Watermark Monotonicity | Struct/02-properties/02.03-watermark-monotonicity.md | 1 week |
 
-**Timeline**: April - June 2026  
+**Timeline**: April - June 2026
 **Total Effort**: ~9 weeks
 
 ### P2: Design Patterns & Best Practices (Q3 2026)
@@ -83,7 +83,7 @@ pie
 | Performance Tuning Patterns | Knowledge/07-best-practices/07.02-performance-tuning-patterns.md | 5 days |
 | Troubleshooting Guide | Knowledge/07-best-practices/07.03-troubleshooting-guide.md | 5 days |
 
-**Timeline**: July - September 2026  
+**Timeline**: July - September 2026
 **Total Effort**: ~4 weeks
 
 ### P3: Flink Core Mechanisms (Q4 2026)
@@ -100,7 +100,7 @@ pie
 | Kafka Integration Patterns | Flink/04-connectors/kafka-integration-patterns.md | 1 week |
 | Kubernetes Deployment Guide | Flink/10-deployment/kubernetes-deployment-production-guide.md | 1 week |
 
-**Timeline**: October - December 2026  
+**Timeline**: October - December 2026
 **Total Effort**: ~8 weeks
 
 ### P4: Business Patterns & Case Studies (2027+)
@@ -188,6 +188,7 @@ Draft Translation → Technical Review → Language Review → Final Approval
 ### Recognition
 
 Contributors will be:
+
 - Listed in CONTRIBUTORS.md
 - Mentioned in release notes
 - Awarded "Translation Champion" badges
@@ -248,6 +249,7 @@ Contributors will be:
 ### Appendix C: Document Template
 
 English documents must follow the six-section structure:
+
 1. Definitions
 2. Properties
 3. Relations

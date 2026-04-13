@@ -255,4 +255,4 @@ $$R + W \leq N \Rightarrow \text{AP系统}$$
 - [CAP定理详解](../../03-model-taxonomy/04-consistency/02-cap-theorem.md) - CAP定理的完整形式化分析与证明
 - [Consensus](13-consensus.md)
 - [Linearizability](15-linearizability.md)
-- [Consistency Models](01-consistency-spectrum.md)
+- [Consistency Models](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)

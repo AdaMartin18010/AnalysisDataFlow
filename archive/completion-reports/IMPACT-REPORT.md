@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 项目影响力报告
 
 > **版本**: v1.0 | **日期**: 2026-04-04 | **状态**: 正式发布
@@ -521,8 +522,8 @@ gantt
 
 ### 项目文档索引
 
-- **总入口**: [README.md](./README.md)
-- **定理注册表**: [THEOREM-REGISTRY.md](./THEOREM-REGISTRY.md)
+- **总入口**: [README.md](../../README.md)
+- **定理注册表**: [THEOREM-REGISTRY.md](../../THEOREM-REGISTRY.md)
 - **项目状态**: [PROJECT-STATUS-FINAL.md](./PROJECT-STATUS-FINAL.md)
 - **完成报告**: [FINAL-COMPLETION-REPORT-v7.0.md](./FINAL-COMPLETION-REPORT-v7.0.md)
 

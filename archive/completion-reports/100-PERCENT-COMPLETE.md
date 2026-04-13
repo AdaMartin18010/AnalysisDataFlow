@@ -201,7 +201,7 @@
 - [项目完成证书](PROJECT-COMPLETION-CERTIFICATE.md)
 - [完成确认书](COMPLETION-CONFIRMATION.md)
 - [最终验证报告](FINAL-VALIDATION-REPORT.md)
-- [v3.0发布说明](RELEASE-NOTES-v3.0.md)
+- [v3.0发布说明](../deprecated/RELEASE-NOTES-v3.0.md)
 - [项目跟踪](PROJECT-TRACKING.md)
 - [定理注册表](THEOREM-REGISTRY.md)
 

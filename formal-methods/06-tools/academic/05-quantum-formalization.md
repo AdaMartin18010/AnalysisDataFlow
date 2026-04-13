@@ -1,6 +1,6 @@
 # 量子计算形式化方法
 
-> **所属单元**: Tools/Academic | **前置依赖**: [霍尔逻辑](../../05-verification/02-techniques/01-hoare-logic.md), [分离逻辑](../../05-verification/02-techniques/03-separation-logic.md) | **形式化等级**: L6
+> **所属单元**: Tools/Academic | **前置依赖**: [霍尔逻辑](../../05-verification/02-techniques/01-hoare-logic.md), [分离逻辑](../../05-verification/01-logic/03-separation-logic.md) | **形式化等级**: L6
 
 ## 1. 概念定义 (Definitions)
 

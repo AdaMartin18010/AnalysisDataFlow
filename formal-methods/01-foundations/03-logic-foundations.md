@@ -105,7 +105,7 @@ $$\{P\} C \{Q\} \text{ 有效} \Leftrightarrow P \Rightarrow wp(C, Q)$$
 
 ### 3.1 逻辑与计算模型的对应
 
-**扩展阅读**: [抽象解释理论](../../03-model-taxonomy/02-computation-models/abstract-interpretation.md) - 程序静态分析的形式化基础
+**扩展阅读**: [抽象解释理论](../03-model-taxonomy/02-computation-models/abstract-interpretation.md) - 程序静态分析的形式化基础
 
 | 计算模型 | 验证逻辑 | 典型性质 |
 |----------|----------|----------|

@@ -241,8 +241,8 @@ Struct/01-foundation/ (理論基盤)
 本プロジェクトは [Apache License 2.0](../../LICENSE) ライセンスで提供されています。
 
 - [LICENSE](../../LICENSE) - 完全なライセンステキスト
-- [LICENSE-NOTICE.md](../../LICENSE-NOTICE.md) - ライセンス説明と使用ガイド
-- [THIRD-PARTY-NOTICES.md](../../THIRD-PARTY-NOTICES.md) - サードパーティ声明と引用謝辞
+- [LICENSE-NOTICE.md](../../archive/deprecated/LICENSE-NOTICE.md) - ライセンス説明と使用ガイド
+- [THIRD-PARTY-NOTICES.md](../../archive/deprecated/THIRD-PARTY-NOTICES.md) - サードパーティ声明と引用謝辞
 
 ---
 

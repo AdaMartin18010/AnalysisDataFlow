@@ -1,5 +1,5 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 [证明未完成] reconstruction/phase4-verification/coq-proofs/ExactlyOnceCoq.v 包含Admitted标记，证明不完整
 [待完善] E:\_src\AnalysisDataFlow\100-PERCENT-COMPLETION-MASTER-PLAN.md 包含待办标记

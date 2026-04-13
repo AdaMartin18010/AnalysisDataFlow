@@ -279,18 +279,17 @@ Struct/01-foundation/ (Theoretical Foundation)
 This project is licensed under [Apache License 2.0](../../../LICENSE).
 
 - [LICENSE](../../../LICENSE) - Full license text
-- [LICENSE-NOTICE.md](../../../LICENSE-NOTICE.md) - License notice and usage guide
-- [THIRD-PARTY-NOTICES.md](../../../THIRD-PARTY-NOTICES.md) - Third-party notices and acknowledgments
+- [LICENSE-NOTICE.md](../../../archive/deprecated/LICENSE-NOTICE.md) - License notice and usage guide
+- [THIRD-PARTY-NOTICES.md](../../../archive/deprecated/THIRD-PARTY-NOTICES.md) - Third-party notices and acknowledgments
 
 ---
 
 ## Language Switch
 
-- [中文版本](../../zh/00-OVERVIEW.md) | [English Version](./00-OVERVIEW.md)
+- [中文版本](00-OVERVIEW.md) | [English Version](./00-OVERVIEW.md)
 
 ---
 
 > **Document Specification**: This document follows the six-section template specification in [AGENTS.md](../../../AGENTS.md)
 > **Theorem Numbering**: Uses `{Type}-{Stage}-{DocNum}-{SeqNum}` format (e.g., `Thm-S-01-01`)
 > **Last Updated**: 2026-04-08
-

@@ -1,6 +1,6 @@
 # Bisimulation
 
-> **Stage**: Struct | **Prerequisites**: [Process Calculus](../03-models/process-algebra.md), [Labeled Transition System](../01-foundations/lts.md) | **Formalization Level**: L5
+> **Stage**: Struct | **Prerequisites**: [Process Calculus](../../99-references/by-topic/process-algebra.md), [Labeled Transition System](../01-foundations/lts.md) | **Formalization Level**: L5
 
 ---
 

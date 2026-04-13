@@ -49,6 +49,7 @@
 #### PR 审查清单
 
 **内容审查**:
+
 - [ ] 技术内容准确性
 - [ ] 六段式模板符合度
 - [ ] 定理/定义编号规范性
@@ -56,12 +57,14 @@
 - [ ] Mermaid 图表正确性
 
 **格式审查**:
+
 - [ ] Markdown 语法
 - [ ] 文件命名规范
 - [ ] 中英文混排规范
 - [ ] 术语使用一致性
 
 **流程审查**:
+
 - [ ] 关联 Issue 已处理
 - [ ] THEOREM-REGISTRY.md 已更新（如适用）
 - [ ] PROJECT-TRACKING.md 已更新（如适用）
@@ -200,8 +203,8 @@ flowchart TD
 | 渠道 | 地址 | 用途 |
 |-----|------|------|
 | GitHub | @luyanruyr | 日常协作 |
-| 项目邮箱 | maintainers@analysisdataflow.org | 正式沟通 |
-| 安全报告 | security@analysisdataflow.org | 安全漏洞 |
+| 项目邮箱 | <maintainers@analysisdataflow.org> | 正式沟通 |
+| 安全报告 | <security@analysisdataflow.org> | 安全漏洞 |
 
 ---
 

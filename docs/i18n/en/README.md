@@ -33,7 +33,7 @@
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-> 📖 **Value Proposition Details**: [VALUE-PROPOSITION.md](../../VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](../../CONTENT-BOUNDARY.md)
+> 📖 **Value Proposition Details**: [VALUE-PROPOSITION.md](../../../VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](../../../CONTENT-BOUNDARY.md)
 
 ---
 
@@ -67,19 +67,19 @@ This project is a comprehensive梳理 and system construction of **theoretical m
 
 ### Navigation by Topic
 
-- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../../Struct/00-INDEX.md)
+- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../../../en/00-INDEX.md)
 - **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](../../Knowledge/02-design-patterns/)
-- **Flink Core**: [Flink/ Checkpoint Mechanism](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
-- **Frontier Technology**: [Knowledge/06-frontier/ AI-Native Database](../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **Flink Core**: [Flink/ Checkpoint Mechanism](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- **Frontier Technology**: [Knowledge/06-frontier/ AI-Native Database](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
 - **Anti-Patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-Patterns](../../Knowledge/09-anti-patterns/)
 
 ### Visualization Quick Entry
 
-- **Decision Trees**: [visuals/ Technology Selection Decision Trees](../../visuals/selection-tree-streaming.md)
-- **Comparison Matrices**: [visuals/ Engine Comparison Matrices](../../visuals/matrix-engines.md)
-- **Mind Maps**: [visuals/ Knowledge Mind Maps](../../visuals/mindmap-complete.md)
+- **Decision Trees**: [visuals/ Technology Selection Decision Trees](../../../visuals/selection-tree-streaming.md)
+- **Comparison Matrices**: [visuals/ Engine Comparison Matrices](../../../visuals/matrix-engines.md)
+- **Mind Maps**: [visuals/ Knowledge Mind Maps](../../../visuals/mindmap-complete.md)
 - **Knowledge Graphs**: [visuals/ Concept Relation Graphs](../../knowledge-graph.html)
-- **Architecture Gallery**: [visuals/ System Architecture Diagrams](../../visuals/struct-model-relations.md)
+- **Architecture Gallery**: [visuals/ System Architecture Diagrams](../../../visuals/struct-model-relations.md)
 
 ---
 
@@ -148,7 +148,7 @@ This is a community knowledge base project. Contributions are welcome:
 3. **Code Examples**: Provide verified code snippets
 4. **Visualization**: Create diagrams and charts
 
-Please see [CONTRIBUTING.md](../../CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING.md](../../../CONTRIBUTING.md) for details.
 
 ---
 
@@ -164,4 +164,4 @@ This project is licensed under [CC BY-SA 4.0](../../LICENSE) - Creative Commons 
 - Stream Processing Research Community
 - All contributors to this project
 
-See [ACKNOWLEDGMENTS.md](../../ACKNOWLEDGMENTS.md) for complete list.
+See [ACKNOWLEDGMENTS.md](../../../ACKNOWLEDGMENTS.md) for complete list.

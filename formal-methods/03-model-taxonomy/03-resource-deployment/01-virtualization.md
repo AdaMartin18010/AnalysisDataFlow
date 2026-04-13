@@ -1,6 +1,6 @@
 # 虚拟化形式化
 
-> **所属单元**: formal-methods/03-model-taxonomy/03-resource-deployment | **前置依赖**: [02-computation-models/03-net-models](../../02-computation-models/03-net-models.md) | **形式化等级**: L4-L5
+> **所属单元**: formal-methods/03-model-taxonomy/03-resource-deployment | **前置依赖**: [02-computation-models/03-net-models](../02-computation-models/03-net-models.md) | **形式化等级**: L4-L5
 
 ## 1. 概念定义 (Definitions)
 

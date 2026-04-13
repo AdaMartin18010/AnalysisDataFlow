@@ -764,12 +764,12 @@ graph TD
 ## 9. Related Concepts
 
 - [Coq/Isabelle Theorem Proving](../../05-verification/03-theorem-proving/01-coq-isabelle.md) - Detailed explanation of mainstream theorem proving tools
-- [Formal Methods](01-formal-methods.md)
+- [Formal Methods](../../98-appendices/wikipedia-concepts/en/01-formal-methods.md)
 - [Model Checking](03-model-checking.md)
-- [Process Calculus](04-process-calculus.md)
-- [Temporal Logic](05-temporal-logic.md)
-- [Hoare Logic](06-hoare-logic.md)
-- [Type Theory](07-type-theory.md)
+- [Process Calculus](../../98-appendices/wikipedia-concepts/en/04-process-calculus.md)
+- [Temporal Logic](../../98-appendices/wikipedia-concepts/en/05-temporal-logic.md)
+- [Hoare Logic](../../98-appendices/wikipedia-concepts/en/06-hoare-logic.md)
+- [Type Theory](../../98-appendices/wikipedia-concepts/en/07-type-theory.md)
 
 ---
 

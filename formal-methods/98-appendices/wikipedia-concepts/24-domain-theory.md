@@ -56,6 +56,7 @@ $$\forall x, y \in S. (x \sqsubseteq y \lor y \sqsubseteq x)$$
 2. **定向最小上界存在**: 对任意定向子集 $S \subseteq D$，最小上界 $\bigsqcup S$ 存在
 
 形式化地，$\bigsqcup S$ 满足：
+
 - **上界**: $\forall x \in S. x \sqsubseteq \bigsqcup S$
 - **最小性**: $\forall y \in D. (\forall x \in S. x \sqsubseteq y) \Rightarrow \bigsqcup S \sqsubseteq y$
 
@@ -304,6 +305,7 @@ $$\nu f = \sqcap_{n \geq 0} f^n(\top)$$
 **步骤1**: 证明序列 $\{f^n(\bot)\}_{n \geq 0}$ 是链。
 
 通过归纳：
+
 - 基础: $\bot \sqsubseteq f(\bot)$（$\bot$ 是最小元）
 - 归纳: 假设 $f^n(\bot) \sqsubseteq f^{n+1}(\bot)$，由单调性 $f^{n+1}(\bot) \sqsubseteq f^{n+2}(\bot)$
 
@@ -774,8 +776,8 @@ graph TD
 - [Type Theory](07-type-theory.md)
 - [Category Theory](25-category-theory.md)
 - [Formal Methods](01-formal-methods.md)
-- [Order Theory](../01-foundations/01-order-theory.md)
-- [Lambda Calculus](../02-calculi/01-w-calculus-family/01-omega-calculus.md)
+- [Order Theory](../../01-foundations/01-order-theory.md)
+- [Lambda Calculus](../../02-calculi/01-w-calculus-family/01-omega-calculus.md)
 
 ---
 

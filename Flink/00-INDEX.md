@@ -7,6 +7,7 @@
 **Flink/** 目录收录 Apache Flink 流计算框架的完整技术文档，涵盖从核心概念到生产实践的各个方面。
 
 **核心定位**:
+
 - 🏗️ 架构设计: Flink 系统架构与部署模式
 - ⚙️ 核心机制: Checkpoint、状态管理、时间语义
 - 🔌 API 生态: DataStream、Table API、SQL
@@ -259,13 +260,13 @@ graph LR
         S2[Exactly-Once 证明]
         S3[Watermark 单调性]
     end
-    
+
     subgraph Flink
         F1[Checkpoint 机制]
         F2[Exactly-Once 语义]
         F3[时间语义]
     end
-    
+
     S1 -.->|理论支撑| F1
     S2 -.->|理论支撑| F2
     S3 -.->|理论支撑| F3
@@ -280,13 +281,13 @@ graph LR
         K2[最佳实践]
         K3[案例研究]
     end
-    
+
     subgraph Flink
         F1[Checkpoint]
         F2[状态管理]
         F3[连接器]
     end
-    
+
     K1 -.->|模式应用| F1
     K2 -.->|实践指导| F2
     K3 -.->|场景示例| F3

@@ -494,5 +494,5 @@ flowchart TD
 **Related Documents**:
 
 - [Query Optimization](./09-query-optimization.md)
-- [Flink Table API Complete Guide](../Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md)
-- [Window Functions Deep Dive](../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
+- [Flink Table API Complete Guide](../../../Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md)
+- [Window Functions Deep Dive](../../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)

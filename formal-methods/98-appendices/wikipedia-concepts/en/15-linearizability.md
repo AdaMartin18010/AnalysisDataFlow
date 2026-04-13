@@ -612,7 +612,7 @@ mindmap
 
 Linearizability is a core concept in the consistency spectrum, located between strict consistency and sequential consistency. It provides single-object strong consistency guarantees and is the gold standard for distributed storage system design.
 
-- See: [Consistency Spectrum](../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
+- See: [Consistency Spectrum](../../../03-model-taxonomy/04-consistency/01-consistency-spectrum.md)
 
 Consistency hierarchy relationship:
 

@@ -1,6 +1,6 @@
 # 互模拟 (Bisimulation)
 
-> **所属阶段**: Struct | **前置依赖**: [进程演算](../03-models/process-algebra.md), [标记转移系统](../01-foundations/lts.md) | **形式化等级**: L5
+> **所属阶段**: Struct | **前置依赖**: [进程演算](../../99-references/by-topic/process-algebra.md), [标记转移系统](../01-foundations/lts.md) | **形式化等级**: L5
 
 ---
 

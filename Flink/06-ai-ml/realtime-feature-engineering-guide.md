@@ -97,6 +97,26 @@ $$Consistency = 1 - |E[f_{online}] - E[f_{offline}]|$$
 
 ---
 
+### Def-AI-10-09: 特征转换链 (Feature Transformation Chain)
+
+**定义**: 特征转换链 $\mathcal{T}$ 是有序的特征变换序列：
+
+$$\mathcal{T} = [\phi_1, \phi_2, ..., \phi_n], \quad f_{out} = (\phi_n \circ ... \circ \phi_1)(f_{in})$$
+
+**约束**: 每个变换的输入维度必须匹配前一个变换的输出维度。
+
+---
+
+### Def-AI-10-10: 特征服务延迟 (Feature Serving Latency)
+
+**定义**: 特征服务延迟 $L_{serve}$ 是从发起特征查询到返回特征值的时间间隔：
+
+$$L_{serve} = L_{network} + L_{lookup} + L_{serialize}$$
+
+其中 $L_{lookup}$ 包含缓存命中或数据库查询时间。
+
+---
+
 ## 2. 属性推导 (Properties)
 
 ### Thm-AI-10-01: 窗口聚合正确性
@@ -104,6 +124,10 @@ $$Consistency = 1 - |E[f_{online}] - E[f_{offline}]|$$
 **定理**: 在允许延迟的窗口中，聚合结果最终一致：
 
 $$\lim_{t \to \infty} \bigoplus_{e \in W(t)} f(e) = \bigoplus_{e \in W_{complete}} f(e)$$
+
+**证明**: 随着允许延迟 $allowed\_lateness$ 内的迟到事件全部到达，窗口状态不再变化，聚合结果收敛到完整窗口的聚合值。
+
+**∎**
 
 ---
 
@@ -120,6 +144,55 @@ $$f_{online} = f_{offline} \iff Logic_{online} = Logic_{offline} \land Data_{onl
 **定理**: 漂移检测的灵敏度 $\alpha$ 与误报率 $\beta$ 满足：
 
 $$\alpha = 1 - \beta \cdot \frac{\sigma_{baseline}}{\sigma_{current}}$$
+
+---
+
+### Thm-AI-10-04: 特征一致性保持定理
+
+**定理**: 在Flink的Checkpoint机制下，特征状态在故障恢复后保持一致：
+
+$$S_{recovered} = S_{pre\_failure} \iff \forall f \in State: checkpoint(f) = restore(f)$$
+
+**证明**:
+
+1. Flink Checkpoint 周期性地对算子状态进行一致性快照。
+2. 恢复时，状态从最近的快照加载。
+3. 由于输入源支持重放 (如 Kafka 的 offset 重放)，未确认的事件会被重新处理。
+4. 若特征计算算子满足幂等性 (如增量聚合满足结合律)，则重放不会改变最终状态。
+
+因此，恢复后的特征状态与故障前一致。
+
+**∎**
+
+---
+
+### Lemma-AI-10-01: 状态特征内存上界
+
+**引理**: 使用键控状态存储的特征，其单键内存占用上界为：
+
+$$Memory_{per\_key} \leq \sum_{i=1}^{n} (dim(f_i) \cdot sizeof(type(f_i)) + overhead_{state})$$
+
+其中 $overhead_{state}$ 为Flink状态后端的元数据开销 (RocksDB 约 50-100 字节/条目)。
+
+---
+
+### Lemma-AI-10-02: 特征漂移检测下界
+
+**引理**: 基于滑动窗口的漂移检测，其最小可检测漂移量 $\delta_{min}$ 受窗口大小 $W$ 限制：
+
+$$\delta_{min} \geq \frac{c}{\sqrt{W}}$$
+
+其中 $c$ 为与置信水平相关的常数。
+
+**证明**: 由中心极限定理，窗口内样本均值的估计误差为 $O(1/\sqrt{W})$。因此，小于该量级的漂移无法被可靠检测。
+
+**∎**
+
+---
+
+### Prop-AI-10-01: 窗口特征可合并性
+
+**命题**: 若聚合操作 $\bigoplus$ 满足结合律和交换律，则窗口特征支持增量合并，无需保留原始事件序列。
 
 ---
 
@@ -162,6 +235,42 @@ graph TB
 | Session | 用户行为 | 大 |
 | Global | 全量统计 | 极大 |
 
+### 4.2 特征漂移检测策略
+
+在实际生产环境中，特征漂移可能由季节变化、用户行为迁移、业务活动等多种因素触发。有效的检测策略需要平衡灵敏度与误报率：
+
+**策略1: 滑动窗口统计检验**
+
+- 维护两个滑动窗口：基线窗口 (Baseline) 和当前窗口 (Current)
+- 定期执行双样本 KS 检验或 t 检验
+- 当 p-value < 0.05 时触发漂移告警
+- 优点：理论基础扎实；缺点：对高维特征需要逐维检验
+
+**策略2: PSI (Population Stability Index)**
+
+- 将特征分布分箱后计算 PSI 值
+- $PSI < 0.1$: 无显著漂移
+- $0.1 \leq PSI < 0.25$: 中度漂移
+- $PSI \geq 0.25$: 显著漂移
+- 优点：可解释性强，金融业务广泛使用；缺点：分箱策略影响结果
+
+**策略3: 在线学习监控**
+
+- 监控在线模型预测的分布变化 (如预测概率的熵)
+- 间接反映输入特征的漂移
+- 优点：与业务指标直接相关；缺点：无法定位具体漂移特征
+
+**选型建议**: 对关键特征组合使用 PSI + KS 检验；对大规模特征集使用在线学习监控进行粗筛。
+
+### 4.3 在线离线一致性保障
+
+训练- serving 偏差的根本原因在于在线和离线特征计算路径不一致。保障一致性的工程实践包括：
+
+1. **统一计算逻辑**: 使用 Flink SQL 或统一的 UDF 定义特征计算，同时应用于批处理和流处理作业。
+2. **共享Feature Store**: 在线和离线从同一注册表 (Feature Registry) 读取特征定义，避免"同名不同义"。
+3. **回溯验证**: 定期将在线特征值与按相同时间戳计算的离线特征值对比，差异率应 $< 0.1\%$。
+4. **时间旅行 (Time Travel)**: 离线训练时按 `event_timestamp` 获取特征值，避免数据泄露。
+
 ---
 
 ## 5. 形式证明/工程论证 (Proof)
@@ -173,6 +282,53 @@ graph TB
 $$Agg_{t+1} = Combine(Agg_t, Value_{t+1})$$
 
 **可合并性条件**: 存在 $Combine$ 函数满足结合律和交换律。
+
+**形式化证明**:
+
+设聚合函数 $Agg$ 的累加器为 $Acc$。增量聚合要求：
+
+$$Acc_{t+1} = Add(Acc_t, v_{t+1})$$
+
+对于迟到事件 $v_{late}$，若窗口已触发输出，则需支持合并：
+
+$$Acc_{merged} = Merge(Acc_{window1}, Acc_{window2})$$
+
+**结合律**: $(a \oplus b) \oplus c = a \oplus (b \oplus c)$
+**交换律**: $a \oplus b = b \oplus a$
+
+满足上述条件的聚合 (如 SUM, COUNT, MIN, MAX) 必然产生与全量重算一致的结果。对于 AVG，可分解为 $(sum, count)$ 二元组，分别满足结合律和交换律，因此 AVG 也是可增量聚合的。
+
+**∎**
+
+### 5.2 特征一致性证明
+
+**场景**: 在线特征计算在 Flink 流作业中执行，离线特征在 Spark 批作业中执行。两者使用相同的特征定义。
+
+**假设**:
+
+- $Logic_{stream} \equiv Logic_{batch}$ (计算逻辑等价)
+- $Input_{stream}(t) = Input_{batch}(t)$ (时间戳 $t$ 的输入数据一致)
+- $State_{stream}(t_0) = State_{batch}(t_0)$ (初始状态一致)
+
+**证明**:
+
+对任意特征 $f$ 和时间 $t$:
+
+在线计算: $f_{online}(t) = Logic_{stream}(Input_{stream}(t), State_{stream}(t-1))$
+离线计算: $f_{offline}(t) = Logic_{batch}(Input_{batch}(t), State_{batch}(t-1))$
+
+由假设1和2：
+$$Logic_{stream}(Input_{stream}(t), \cdot) = Logic_{batch}(Input_{batch}(t), \cdot)$$
+
+由假设3及数学归纳法，对所有 $t \geq t_0$:
+$$State_{stream}(t) = State_{batch}(t)$$
+
+因此：
+$$\forall t: f_{online}(t) = f_{offline}(t)$$
+
+即在线离线特征完全一致。
+
+**∎**
 
 ---
 
@@ -336,59 +492,3 @@ class FeastSink(SinkFunction[FeatureRow]):
 ```
 
 ---
-
-## 7. 可视化 (Visualizations)
-
-### 实时特征工程流水线
-
-```mermaid
-graph LR
-    A[Raw Events] --> B[Preprocessing]
-    B --> C{Feature Type}
-
-    C -->|Raw| D[Direct Mapping]
-    C -->|Aggregate| E[Window Operator]
-    C -->|Stateful| F[KeyedProcessFunction]
-    C -->|Derived| G[Transformation]
-
-    D --> H[Feature Store]
-    E --> H
-    F --> H
-    G --> H
-
-    H --> I[Online Serving]
-    H --> J[Offline Training]
-```
-
-### Feature Store集成架构
-
-```mermaid
-graph TB
-    subgraph "Stream Processing"
-        F[Flink Job]
-        FE[Feature Engineering]
-    end
-
-    subgraph "Feature Store"
-        REG[Feature Registry]
-        OL[Online Store<br/>Redis/DynamoDB]
-        OF[Offline Store<br/>S3/BigQuery]
-    end
-
-    subgraph "Consumers"
-        S[Model Serving]
-        T[Training Pipeline]
-    end
-
-    F --> FE
-    FE --> OL
-    FE --> OF
-    REG -.-> OL
-    REG -.-> OF
-    OL --> S
-    OF --> T
-```
-
----
-
-## 8. 引用参考 (References)

@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # CEP (Complex Event Processing) 完整教程 -->
 
-<!-- TRANSLATE: > 所属阶段: Knowledge | 前置依赖: [Flink/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L4 -->
+<!-- TRANSLATE: > 所属阶段: Knowledge | 前置依赖: [Flink/time-semantics-and-watermark.md](../../../Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L4 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->

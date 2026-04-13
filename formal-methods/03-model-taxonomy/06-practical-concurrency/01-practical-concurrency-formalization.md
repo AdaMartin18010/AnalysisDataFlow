@@ -1,6 +1,6 @@
 # 实用并发的形式化理论
 
-> **所属阶段**: Struct | **前置依赖**: [形式化方法基础](../01-foundations/05-type-theory.md), [进程代数](../02-calculi/02-pi-calculus/01-pi-calculus-basics.md) | **形式化等级**: L4
+> **所属阶段**: Struct | **前置依赖**: [形式化方法基础](../../01-foundations/05-type-theory.md), [进程代数](../../02-calculi/02-pi-calculus/01-pi-calculus-basics.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 

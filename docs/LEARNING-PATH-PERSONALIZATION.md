@@ -370,7 +370,7 @@ async def get_personalized_recommendations(
 ## 10. 参考
 
 - [learning-path-recommender.py](../.scripts/learning-path-recommender.py) - 基础推荐系统
-- [P2-12-COMMUNITY-FEEDBACK-SYSTEM.md](../P2-12-COMMUNITY-FEEDBACK-SYSTEM.md) - 社区反馈系统
+- [P2-12-COMMUNITY-FEEDBACK-SYSTEM.md](../archive/deprecated/P2-12-COMMUNITY-FEEDBACK-SYSTEM.md) - 社区反馈系统
 - [knowledge-graph.html](../knowledge-graph.html) - 知识图谱可视化
 
 ---

@@ -104,8 +104,8 @@
 - ✅ **英文核心文档**: 4篇英文翻译完成
 - ✅ **全面生态对齐**: Go/Rust/Flink多语言生态
 
-**📊 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md)  
-**📅 项目时间线**: [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md)  
+**📊 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md)
+**📅 项目时间线**: [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md)
 **🏆 贡献者荣誉墙**: [CONTRIBUTORS-HALL-OF-FAME.md](./CONTRIBUTORS-HALL-OF-FAME.md)
 
 ---
@@ -138,7 +138,7 @@
 - **🎉 100%完成里程碑**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](./100-PERCENT-COMPLETION-FINAL-REPORT.md) - 项目全面达成100%完成
 - **✅ 交叉引用清零**: [cross-ref-fix-report.md](./cross-ref-fix-report.md) - 730个错误已全部修复
 - **🔬 形式化验证完成**: [COQ-COMPILATION-REPORT.md](./reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) | [TLA-MODEL-CHECK-REPORT.md](./reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md)
-- **📚 Flink 2.4/2.5/3.0完成**: [FLINK-24-25-30-COMPLETION-REPORT.md](./FLINK-24-25-30-COMPLETION-REPORT.md) - 100个子任务全部交付
+- **📚 Flink 2.4/2.5/3.0完成**: [FLINK-24-25-30-COMPLETION-REPORT.md](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md) - 100个子任务全部交付
 - **🤖 AI Agent深化**: [ai-agent-streaming-architecture.md](./Knowledge/06-frontier/ai-agent-streaming-architecture.md) - Multi-Agent流编排
 - **🔗 关系梳理完成**: [PROJECT-RELATIONSHIP-MASTER-GRAPH.md](./PROJECT-RELATIONSHIP-MASTER-GRAPH.md) - 500+关系边
 - **📖 新增教程系列**: [5分钟入门](tutorials/00-5-MINUTE-QUICK-START.md) | [环境搭建](tutorials/01-environment-setup.md) | [第一个作业](tutorials/02-first-flink-job.md)
@@ -295,7 +295,7 @@ Struct/01-foundation/ (理论基础)
 >
 > ✅ **发布清单**: 详见 [FINAL-RELEASE-CHECKLIST.md](./FINAL-RELEASE-CHECKLIST.md) - 发布准备状态
 >
-> 🗺️ **版本跟踪**: 详见 [PROJECT-VERSION-TRACKING.md](./PROJECT-VERSION-TRACKING.md) 了解完整版本历史
+> 🗺️ **版本跟踪**: 详见 [PROJECT-VERSION-TRACKING.md](archive/tracking-reports/PROJECT-VERSION-TRACKING.md) 了解完整版本历史
 >
 > 🗺️ **未来路线图**: 详见 [ROADMAP-v3.3-and-beyond.md](./ROADMAP-v3.3-and-beyond.md) 了解v3.3规划
 >
@@ -384,7 +384,7 @@ Struct/01-foundation/ (理论基础)
 本项目采用 [Apache License 2.0](./LICENSE) 许可证授权。
 
 - [LICENSE](./LICENSE) - 完整许可证文本
-- [LICENSE-NOTICE.md](./LICENSE-NOTICE.md) - 许可证说明与使用指南
-- [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) - 第三方声明与引用致谢
+- [LICENSE-NOTICE.md](archive/deprecated/LICENSE-NOTICE.md) - 许可证说明与使用指南
+- [THIRD-PARTY-NOTICES.md](archive/deprecated/THIRD-PARTY-NOTICES.md) - 第三方声明与引用致谢
 
 Copyright 2026 AdaMartin18010

@@ -1034,9 +1034,9 @@ kubectl port-forward svc/<job-name>-rest 8081:80
 
 ## 🔗 相关文档
 
-- [Flink/10-deployment/kubernetes-deployment.md](../Flink/10-deployment/kubernetes-deployment.md)
-- [Flink/10-deployment/flink-kubernetes-operator-deep-dive.md](../Flink/10-deployment/flink-kubernetes-operator-deep-dive.md)
-- [Flink/15-observability/metrics-and-monitoring.md](../Flink/15-observability/metrics-and-monitoring.md)
+- [Flink/10-deployment/kubernetes-deployment.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment.md)
+- [Flink/10-deployment/flink-kubernetes-operator-deep-dive.md](../Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md)
+- [Flink/15-observability/metrics-and-monitoring.md](../Flink/04-runtime/04.03-observability/metrics-and-monitoring.md)
 
 ---
 

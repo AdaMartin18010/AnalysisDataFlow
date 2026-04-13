@@ -608,7 +608,7 @@ Struct/01-foundation/ (理论基础)
 | 文档 | 路径 | 内容 |
 |------|------|------|
 | **项目跟踪** | [PROJECT-TRACKING.md](PROJECT-TRACKING.md) | 进度看板、完成状态 |
-| **版本跟踪** | [PROJECT-VERSION-TRACKING.md](PROJECT-VERSION-TRACKING.md) | 版本历史、变更记录 |
+| **版本跟踪** | [PROJECT-VERSION-TRACKING.md](archive/tracking-reports/PROJECT-VERSION-TRACKING.md) | 版本历史、变更记录 |
 | **v3.3路线图** | [ROADMAP-v3.3-and-beyond.md](ROADMAP-v3.3-and-beyond.md) | 未来规划、P0-P3任务 |
 | **定理注册表** | [THEOREM-REGISTRY.md](THEOREM-REGISTRY.md) | 所有定理/定义索引 |
 | **Agent工作规范** | [AGENTS.md](AGENTS.md) | 文档编写规范 |
@@ -628,11 +628,11 @@ Struct/01-foundation/ (理论基础)
 | 报告 | 路径 | 内容 |
 |------|------|------|
 | **最终验证报告** | [FINAL-VALIDATION-REPORT.md](FINAL-VALIDATION-REPORT.md) | 全面验证结果 |
-| **v3.2完成报告** | [FULL-COMPLETION-REPORT-v3.2.md](FULL-COMPLETION-REPORT-v3.2.md) | v3.2全面推进总结 |
-| **完成报告v5.0** | [FINAL-COMPLETION-REPORT-v5.0.md](FINAL-COMPLETION-REPORT-v5.0.md) | v5.0交付总结 |
-| **E1-E4修复报告** | [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) | 准确性修复 |
-| **Flink-Scala-Rust报告** | [FLINK-SCALA-RUST-COMPLETION-REPORT.md](FLINK-SCALA-RUST-COMPLETION-REPORT.md) | 多语言专项 |
-| **持续扩展报告** | [CONTINUOUS-EXPANSION-REPORT.md](CONTINUOUS-EXPANSION-REPORT.md) | 扩展记录 |
+| **v3.2完成报告** | [FULL-COMPLETION-REPORT-v3.2.md](archive/completion-reports/FULL-COMPLETION-REPORT-v3.2.md) | v3.2全面推进总结 |
+| **完成报告v5.0** | [FINAL-COMPLETION-REPORT-v5.0.md](archive/completion-reports/FINAL-COMPLETION-REPORT-v5.0.md) | v5.0交付总结 |
+| **E1-E4修复报告** | [E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md](archive/completion-reports/E1-E4-ACCURACY-FIX-COMPLETION-REPORT.md) | 准确性修复 |
+| **Flink-Scala-Rust报告** | [FLINK-SCALA-RUST-COMPLETION-REPORT.md](archive/completion-reports/FLINK-SCALA-RUST-COMPLETION-REPORT.md) | 多语言专项 |
+| **持续扩展报告** | [CONTINUOUS-EXPANSION-REPORT.md](archive/completion-reports/CONTINUOUS-EXPANSION-REPORT.md) | 扩展记录 |
 
 ### 6.4 更新日志
 

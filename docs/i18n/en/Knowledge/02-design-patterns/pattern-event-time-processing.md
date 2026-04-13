@@ -695,15 +695,14 @@ This section establishes the formal connection between Event Time Processing pat
 
 [^4]: Flink Time Semantics and Watermark, see [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
 
-[^5]: Financial Risk Control Real-time Fraud Detection Case, see [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
+[^5]: Financial Risk Control Real-time Fraud Detection Case, see [Flink/07-case-studies/case-financial-realtime-risk-control.md](../../../../../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md)
 
-[^6]: IoT Stream Processing Industrial Case, see [Flink/07-case-studies/case-iot-stream-processing.md](../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
+[^6]: IoT Stream Processing Industrial Case, see [Flink/07-case-studies/case-iot-stream-processing.md](../../../../../Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md)
 
-[^7]: Real-time ETL Deep Analysis, see [Flink/07-case-studies/case-realtime-analytics.md](../../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
+[^7]: Real-time ETL Deep Analysis, see [Flink/07-case-studies/case-realtime-analytics.md](../../../../../Flink/09-practices/09.01-case-studies/case-realtime-analytics.md)
 
-[^8]: CEP Complex Event Processing Pattern, see [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
+[^8]: CEP Complex Event Processing Pattern, see [Flink/03-api-patterns/flink-cep-deep-dive.md](../../../../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
 
 ---
 
 *Document Version: v1.0 | Last Updated: 2026-04-02 | Status: Complete*
-

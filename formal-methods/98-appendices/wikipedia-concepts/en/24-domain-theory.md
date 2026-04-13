@@ -505,8 +505,8 @@ mindmap
 - [Type Theory](07-type-theory.md)
 - [Category Theory](25-category-theory.md)
 - [Formal Methods](01-formal-methods.md)
-- [Order Theory](../01-foundations/01-order-theory.md)
-- [Lambda Calculus](../02-calculi/01-w-calculus-family/01-omega-calculus.md)
+- [Order Theory](../../../01-foundations/01-order-theory.md)
+- [Lambda Calculus](../../../02-calculi/01-w-calculus-family/01-omega-calculus.md)
 
 ---
 

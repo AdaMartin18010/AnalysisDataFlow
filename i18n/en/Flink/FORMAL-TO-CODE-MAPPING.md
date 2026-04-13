@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink 形式化定义与源码实现对照表 -->
 
-<!-- TRANSLATE: > 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](./02-core/checkpoint-mechanism-deep-dive.md), [exactly-once-semantics-deep-dive.md](./02-core/exactly-once-semantics-deep-dive.md) | 形式化等级: L5 -->
+<!-- TRANSLATE: > 所属阶段: Flink/02-core-mechanisms | 前置依赖: [checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md), [exactly-once-semantics-deep-dive.md](../../../Flink/02-core/exactly-once-semantics-deep-dive.md) | 形式化等级: L5 -->
 
 <!-- TRANSLATE: 本文档建立 Flink 形式化定义与 Apache Flink 源码实现之间的严格映射关系，为理论验证和工程实践提供双向参考。 -->
 
@@ -138,8 +138,3 @@ flink-state-backends/       # 状态后端实现
 
 
 <!-- TRANSLATE: ## 10. 引用参考 (References) -->
-
-
-
-
-

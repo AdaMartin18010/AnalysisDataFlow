@@ -1,6 +1,6 @@
 ﻿# 可判定性谱系与层次架构映射
 
-> 所属阶段: Visuals | 前置依赖: [00.md](../00.md), [Struct/03-relationships/03.03-expressiveness-hierarchy.md](../Struct/03-relationships/03.03-expressiveness-hierarchy.md), [Knowledge/06-frontier/stateful-serverless.md](../Knowledge/06-frontier/stateful-serverless.md) | 形式化等级: L2-L4
+> 所属阶段: Visuals | 前置依赖: [00.md](../archive/deprecated/00.md), [Struct/03-relationships/03.03-expressiveness-hierarchy.md](../Struct/03-relationships/03.03-expressiveness-hierarchy.md), [Knowledge/06-frontier/stateful-serverless.md](../Knowledge/06-frontier/stateful-serverless.md) | 形式化等级: L2-L4
 
 ---
 
@@ -89,8 +89,8 @@ $$
 |-----------|--------------|-----------|
 | $D_2$ 半可判定层 | [01-core/checkpoint-mechanism.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) - Checkpoint机制 | Barrier对齐、快照一致性 |
 | $D_2$ 半可判定层 | [01-core/watermark-mechanism.md](../Flink/02-core/time-semantics-and-watermark.md) - Watermark机制 | 时间假设、窗口触发 |
-| $D_2$ 半可判定层 | [02-features/cep-complex-event-processing.md](../Flink/03-sql-table-api/flink-sql-window-functions-deep-dive.md) - CEP | 模式匹配、流识别 |
-| $D_3$ 准可判定层 | [03-integrations/stateful-functions.md](../Flink/04-connectors/flink-connectors-ecosystem-complete-guide.md) - Stateful Functions | 状态持久化、恰好一次语义 |
+| $D_2$ 半可判定层 | [02-features/cep-complex-event-processing.md](../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) - CEP | 模式匹配、流识别 |
+| $D_3$ 准可判定层 | [03-integrations/stateful-functions.md](../Flink/05-ecosystem/05.01-connectors/flink-connectors-ecosystem-complete-guide.md) - Stateful Functions | 状态持久化、恰好一次语义 |
 
 **Flink/ 判定性定位**: 流计算实现层，在**半可判定性**（$D_2$）与**准可判定性**（$D_3$）边界上通过时间边界和检查点创造局部可判定性。
 

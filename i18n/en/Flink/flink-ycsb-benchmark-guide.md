@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # Flink YCSB 基准测试指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking (P2) | **前置依赖**: [性能基准测试套件指南](./flink-performance-benchmark-suite.md), [状态后端深度对比](./02-core/state-backends-deep-comparison.md) | **形式化等级**: L3 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking (P2) | **前置依赖**: [性能基准测试套件指南](./flink-performance-benchmark-suite.md), [状态后端深度对比](../../../Flink/02-core/state-backends-deep-comparison.md) | **形式化等级**: L3 -->
 <!-- TRANSLATE: > **版本**: v1.0 | **更新日期**: 2026-04-08 | **文档规模**: ~15KB -->
 
 
@@ -96,25 +96,25 @@ graph TB
         W4[D: Read Latest]
         W5[F: RMW]
     end
-    
+
     subgraph Flink状态后端
         S1[HashMapStateBackend]
         S2[EmbeddedRocksDBStateBackend]
         S3[ForStStateBackend<br/>Flink 2.0+]
     end
-    
+
     subgraph 性能特征
         P1[低延迟<br/>内存限制]
         P2[大状态支持<br/>磁盘IO]
         P3[云原生<br/>远程存储]
     end
-    
+
     W1 -->|Write Heavy| S2 --> P2
     W2 -->|Read Heavy| S1 --> P1
     W3 -->|Read Only| S1 --> P1
     W4 -->|Mixed| S3 --> P3
     W5 -->|RMW| S3 --> P3
-    
+
     W1 -.->|中小状态| S1
     W2 -.->|超大状态| S3
 ```
@@ -178,42 +178,42 @@ graph TB
         YG[YCSB Generator<br/>Zipfian/Uniform分布]
         KL[Key Group<br/>分区器]
     end
-    
+
     subgraph Flink集群
         subgraph Source
             S1[Parallel Source 1]
             S2[Parallel Source 2]
             Sn[Parallel Source n]
         end
-        
+
         subgraph KeyedProcessFunction
             KP1[状态操作<br/>ValueState]
             KP2[状态操作<br/>ValueState]
             KPn[状态操作<br/>ValueState]
         end
-        
+
         subgraph Metrics
             M1[Prometheus<br/>PushGateway]
             M2[Grafana<br/>Dashboard]
         end
     end
-    
+
     subgraph 状态后端
         HM[(HashMap<br/>JVM Heap)]
         RB[(RocksDB<br/>本地磁盘)]
         FS[(ForSt<br/>云存储)]
     end
-    
+
     YG --> KL
     KL --> S1 & S2 & Sn
     S1 --> KP1
     S2 --> KP2
     Sn --> KPn
-    
+
     KP1 -.->|小状态| HM
     KP2 -.->|大状态| RB
     KPn -.->|云原生| FS
-    
+
     KP1 & KP2 & KPn --> M1 --> M2
 ```
 
@@ -224,11 +224,11 @@ xychart-beta
     title "YCSB 工作负载 - 读写比对比"
     x-axis ["Workload A", "Workload B", "Workload C", "Workload D", "Workload F"]
     y-axis "百分比" 0 --> 100
-    
+
     bar [50, 95, 100, 95, 50]
     bar [50, 5, 0, 5, 0]
     bar [0, 0, 0, 0, 50]
-    
+
     annotation 1, 50 "Read"
     annotation 1, 50 "Update"
     annotation 5, 50 "RMW"
@@ -238,7 +238,7 @@ xychart-beta
 <!-- TRANSLATE: **关联文档**： -->
 
 <!-- TRANSLATE: - [性能基准测试套件指南](./flink-performance-benchmark-suite.md) —— 自动化测试框架 -->
-<!-- TRANSLATE: - [状态后端深度对比](./02-core/state-backends-deep-comparison.md) —— 后端选型详细分析 -->
+<!-- TRANSLATE: - [状态后端深度对比](../../../Flink/02-core/state-backends-deep-comparison.md) —— 后端选型详细分析 -->
 <!-- TRANSLATE: - [Nexmark 基准测试指南](./flink-nexmark-benchmark-guide.md) —— SQL 基准测试 -->
-<!-- TRANSLATE: - [ForSt 状态后端指南](./02-core/forst-state-backend.md) —— ForSt 详细配置 -->
-<!-- TRANSLATE: - [状态管理完全指南](./02-core/flink-state-management-complete-guide.md) —— 状态管理深度解析 -->
+<!-- TRANSLATE: - [ForSt 状态后端指南](../../../Flink/02-core/forst-state-backend.md) —— ForSt 详细配置 -->
+<!-- TRANSLATE: - [状态管理完全指南](../../../Flink/02-core/flink-state-management-complete-guide.md) —— 状态管理深度解析 -->

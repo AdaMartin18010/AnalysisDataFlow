@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Chatbot Integration Guide
 
 > **Project**: P3-7 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04
@@ -708,7 +709,7 @@ chatbot:
 ## 8. References
 
 - [AI-SEARCH-DESIGN.md](./ai-features/AI-SEARCH-DESIGN.md) - AI Search Enhancement Design
-- [RAG Streaming Architecture](../Flink/12-ai-ml/rag-streaming-architecture.md) - RAG implementation in Flink
+- [RAG Streaming Architecture](../Flink/06-ai-ml/rag-streaming-architecture.md) - RAG implementation in Flink
 - [Vector Search Integration](../Knowledge/06-frontier/vector-search-streaming-convergence.md) - Vector search concepts
 
 ---
@@ -718,4 +719,3 @@ chatbot:
 | Version | Date | Changes |
 |---------|------|---------|
 | v1.0 | 2026-04-04 | Initial version |
-

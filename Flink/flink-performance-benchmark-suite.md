@@ -7,30 +7,32 @@
 
 ## 目录
 
-- [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-  - [Def-FBS-01 (基准测试框架)](#def-fbs-01-基准测试框架)
-  - [Def-FBS-02 (性能指标定义)](#def-fbs-02-性能指标定义)
-  - [Def-FBS-03 (测试环境规范)](#def-fbs-03-测试环境规范)
-- [2. 属性推导 (Properties)](#2-属性推导-properties)
-  - [Prop-FBS-01 (测试结果可复现性)](#prop-fbs-01-测试结果可复现性)
-  - [Prop-FBS-02 (性能退化边界)](#prop-fbs-02-性能退化边界)
-- [3. 关系建立 (Relations)](#3-关系建立-relations)
-  - [关系 1: 测试类型与系统组件映射](#关系-1-测试类型与系统组件映射)
-  - [关系 2: 性能指标关联性](#关系-2-性能指标关联性)
-- [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-  - [4.1 测试环境标准化](#41-测试环境标准化)
-  - [4.2 测试工具链选型](#42-测试工具链选型)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-  - [Thm-FBS-01 (基准测试有效性定理)](#thm-fbs-01-基准测试有效性定理)
-- [6. 实例验证 (Examples)](#6-实例验证-examples)
-  - [6.1 快速开始](#61-快速开始)
-  - [6.2 吞吐测试完整示例](#62-吞吐测试完整示例)
-  - [6.3 状态访问测试示例](#63-状态访问测试示例)
-  - [6.4 Checkpoint 测试示例](#64-checkpoint-测试示例)
-- [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-  - [7.1 测试架构图](#71-测试架构图)
-  - [7.2 基准测试流程图](#72-基准测试流程图)
-- [8. 引用参考 (References)](#8-引用参考-references)
+- [Flink 性能基准测试套件指南](#flink-性能基准测试套件指南)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-FBS-01 (基准测试框架)](#def-fbs-01-基准测试框架)
+    - [Def-FBS-02 (性能指标定义)](#def-fbs-02-性能指标定义)
+    - [Def-FBS-03 (测试环境规范)](#def-fbs-03-测试环境规范)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-FBS-01 (测试结果可复现性)](#prop-fbs-01-测试结果可复现性)
+    - [Prop-FBS-02 (性能退化边界)](#prop-fbs-02-性能退化边界)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: 测试类型与系统组件映射](#关系-1-测试类型与系统组件映射)
+    - [关系 2: 性能指标关联性](#关系-2-性能指标关联性)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 测试环境标准化](#41-测试环境标准化)
+    - [4.2 测试工具链选型](#42-测试工具链选型)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-FBS-01 (基准测试有效性定理)](#thm-fbs-01-基准测试有效性定理)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 快速开始](#61-快速开始)
+    - [6.2 吞吐测试完整示例](#62-吞吐测试完整示例)
+    - [6.3 状态访问测试示例](#63-状态访问测试示例)
+    - [6.4 Checkpoint 测试示例](#64-checkpoint-测试示例)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 测试架构图](#71-测试架构图)
+    - [7.2 基准测试流程图](#72-基准测试流程图)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -115,23 +117,23 @@ $$
 ```yaml
 flink:
   version: ["1.18.1", "2.0.0", "2.2.0"]
-  
+
 jobmanager:
   replicas: 1
   memory: 4Gi
   cpu: 2
-  
+
 taskmanager:
   replicas: 8
   memory: 8Gi
   cpu: 4
   slots: 4
-  
+
 state:
   backend: rocksdb
   checkpoints.dir: s3://flink-benchmark/checkpoints
   savepoints.dir: s3://flink-benchmark/savepoints
-  
+
 execution:
   checkpointing:
     interval: 5min
@@ -185,30 +187,30 @@ graph TB
         T3[Checkpoint测试]
         T4[恢复测试]
     end
-    
+
     subgraph Flink组件
         C1[网络栈<br/>Netty/信用流控]
         C2[状态后端<br/>RocksDB/ForSt]
         C3[Checkpoint机制<br/>Barrier/对齐]
         C4[故障恢复<br/>JM HA/重启策略]
     end
-    
+
     subgraph 指标输出
         M1[吞吐/延迟]
         M2[访问延迟]
         M3[完成时间/大小]
         M4[端到端恢复时间]
     end
-    
+
     T1 -->|压力测试| C1
     T1 --> M1
-    
+
     T2 -->|压力测试| C2
     T2 --> M2
-    
+
     T3 -->|验证| C3
     T3 --> M3
-    
+
     T4 -->|验证| C4
     T4 --> M4
 ```
@@ -449,7 +451,7 @@ graph TB
     subgraph 负载生成层
         LG[Nexmark Generator<br/>自定义 Generator]
     end
-    
+
     subgraph Kubernetes集群
         subgraph Flink集群
             JM[JobManager<br/>HA配置]
@@ -457,23 +459,23 @@ graph TB
             TM2[TaskManager-2]
             TMn[TaskManager-n]
         end
-        
+
         subgraph 监控系统
             PROM[Prometheus]
             GRAF[Grafana]
         end
     end
-    
+
     subgraph 存储层
         S3[(S3/对象存储<br/>Checkpoint/Savepoint)]
         LOCAL[(本地SSD<br/>RocksDB)]
     end
-    
+
     subgraph 控制平面
         RUNNER[Benchmark Runner<br/>自动化脚本]
         REPORT[Report Generator]
     end
-    
+
     LG --> TM1 & TM2 & TMn
     JM --> TM1 & TM2 & TMn
     TM1 & TM2 & TMn --> S3
@@ -494,24 +496,24 @@ flowchart TD
     C -->|否| D[初始化环境]
     C -->|是| E[部署 Flink 集群]
     D --> E
-    
+
     E --> F[等待集群就绪]
     F --> G[提交测试作业]
-    
+
     G --> H[预热阶段]
     H --> I{测试类型?}
-    
+
     I -->|吞吐测试| J[收集吞吐/延迟指标]
     I -->|状态测试| K[收集状态访问延迟]
     I -->|Checkpoint| L[监控 Checkpoint 进度]
     I -->|恢复测试| M[注入故障]
-    
+
     J --> N[收集资源使用指标]
     K --> N
     L --> N
     M --> O[等待恢复完成]
     O --> N
-    
+
     N --> P[清理集群]
     P --> Q[保存结果]
     Q --> R{更多测试?}
@@ -524,11 +526,6 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Benchmarking", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/benchmarking/
-[^2]: Apache Flink Nexmark Benchmark Suite. https://github.com/apache/flink/tree/master/flink-examples/flink-examples-streaming/src/main/java/org/apache/flink/streaming/examples/nexmark
-[^3]: Yahoo! Cloud Serving Benchmark (YCSB). https://github.com/brianfrankcooper/YCSB
-[^4]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
-[^5]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
 
 ---
 

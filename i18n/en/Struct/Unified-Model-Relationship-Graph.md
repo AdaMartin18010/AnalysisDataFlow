@@ -13,7 +13,7 @@ terminology_verified: true
 
 # Unified Model Relationship Graph
 
-> **Stage**: Struct/ | **Prerequisites**: [01.01-unified-streaming-theory.md](./01-foundation/01.01-unified-streaming-theory.md) | **Formalization Level**: L4-L5
+> **Stage**: Struct/ | **Prerequisites**: [01.01-unified-streaming-theory.md](../../../Struct/01-foundation/01.01-unified-streaming-theory.md) | **Formalization Level**: L4-L5
 
 This document establishes the unified relationship graph among Actor model, CSP, Dataflow model, and Process Calculus, providing a formal mapping framework for comparing and transforming between different concurrency models.
 
@@ -89,9 +89,9 @@ graph LR
 
 | From | To | Encoding | Complexity | Reference |
 |------|-----|----------|------------|-----------|
-| Actor | CSP | Thm-S-09-01 | O(n) | [Actor→CSP](./01-foundation/01.03-actor-model-formalization.md) |
+| Actor | CSP | Thm-S-09-01 | O(n) | [Actor→CSP](../../../Struct/01-foundation/01.03-actor-model-formalization.md) |
 | CSP | π-Calculus | Thm-S-09-03 | O(1) | Standard embedding |
-| Dataflow | Actor | Thm-S-09-04 | O(m) | [Dataflow→Actor](./01-foundation/01.04-dataflow-model-formalization.md) |
+| Dataflow | Actor | Thm-S-09-04 | O(m) | [Dataflow→Actor](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md) |
 | Flink | π-Calculus | Thm-S-03-02 | O(n+m) | [Flink→π](./03-relationships/01-flink-to-process-calculus.md) |
 
 ---
@@ -280,4 +280,4 @@ graph LR
 
 ---
 
-*For Chinese version, see [Struct/Unified-Model-Relationship-Graph.md](../../Struct/Unified-Model-Relationship-Graph.md)*
+*For Chinese version, see [Struct/Unified-Model-Relationship-Graph.md](../../../Struct/Unified-Model-Relationship-Graph.md)*

@@ -16,7 +16,7 @@ terminology_verified: false
 
 <!-- TRANSLATE: # RisingWave 与 Flink 深度集成指南 -->
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [Flink vs RisingWave 对比](../Knowledge/04-technology-selection/flink-vs-risingwave.md) | **形式化等级**: L5 -->
+<!-- TRANSLATE: > **所属阶段**: Flink/ | **前置依赖**: [Flink vs RisingWave 对比](../../../Knowledge/04-technology-selection/flink-vs-risingwave.md) | **形式化等级**: L5 -->
 
 
 <!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
@@ -141,4 +141,3 @@ Table result = tableEnv.sqlQuery(
 
 
 <!-- TRANSLATE: ## 8. 引用参考 (References) -->
-

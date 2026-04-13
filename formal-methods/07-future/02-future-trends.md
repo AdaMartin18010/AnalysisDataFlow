@@ -1,6 +1,6 @@
 # 未来趋势：形式化方法的新范式
 
-> **所属阶段**: Struct/形式理论 | **前置依赖**: [07-future/01-current-challenges](01-current-challenges.md), [05-verification/03-theorem-proving](../05-verification/03-theorem-proving.md) | **形式化等级**: L5-L6
+> **所属阶段**: Struct/形式理论 | **前置依赖**: [07-future/01-current-challenges](01-current-challenges.md), [05-verification/03-theorem-proving](../98-appendices/wikipedia-concepts/03-theorem-proving.md) | **形式化等级**: L5-L6
 
 ## 1. 概念定义 (Definitions)
 

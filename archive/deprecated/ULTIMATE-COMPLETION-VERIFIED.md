@@ -119,4 +119,4 @@
 
 ---
 
-[🏠 返回主页](README.md) | [📊 查看统计](STATISTICS-REPORT.md) | [🙏 致谢](ACKNOWLEDGMENTS.md)
+[🏠 返回主页](README.md) | [📊 查看统计](../completion-reports/STATISTICS-REPORT.md) | [🙏 致谢](ACKNOWLEDGMENTS.md)

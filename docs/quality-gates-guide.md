@@ -422,7 +422,7 @@ python .scripts/quick-check.py --files "docs/file1.md,docs/file2.md"
 ## 10. 相关文档
 
 - [PROJECT-TRACKING.md](../PROJECT-TRACKING.md) - 项目进度跟踪
-- [LINK-HEALTH-AUTOMATION.md](../LINK-HEALTH-AUTOMATION.md) - 链接健康自动化
+- [LINK-HEALTH-AUTOMATION.md](../archive/deprecated/LINK-HEALTH-AUTOMATION.md) - 链接健康自动化
 - [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) - 定理编号注册表
 
 ---

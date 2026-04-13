@@ -12,9 +12,9 @@
 >
 > ✅ **P3 - 国际化+AI功能+生态扩展**: 12项任务全部完成 | 英文术语表 | 核心文档翻译 | AI辅助脚本 | 生态集成指南
 >
-> ✅ **P2 缺失内容补充**: 9篇核心文档全部完成 | [完成报告](P2-CONTENT-COMPLETION-REPORT.md) | 78个形式化元素 | 114KB新内容
+> ✅ **P2 缺失内容补充**: 9篇核心文档全部完成 | [完成报告](archive/completion-reports/P2-CONTENT-COMPLETION-REPORT.md) | 78个形式化元素 | 114KB新内容
 >
-> ✅ **Flink 2.4/2.5/3.0 特性深度跟踪**: 100个子任务全部完成 | 新增100篇文档 | [完成报告](FLINK-24-25-30-COMPLETION-REPORT.md)
+> ✅ **Flink 2.4/2.5/3.0 特性深度跟踪**: 100个子任务全部完成 | 新增100篇文档 | [完成报告](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md)
 >
 > ⚠️ **重要声明**: Flink 2.4/2.5/3.0 相关内容为**前瞻性技术愿景**，基于社区讨论和趋势分析，
 > **不代表 Apache Flink 官方承诺**。FLIP-531 等特性处于早期讨论阶段，尚未成为正式 FLIP。
@@ -403,9 +403,9 @@
 |--------|----------|------|--------|
 | P2-1 | Data Types完整参考 | ✅ 已完成 | [flink-data-types-reference.md](./Flink/flink-data-types-reference.md) |
 | P2-2 | Built-in Functions完整列表 | ✅ 已完成 | [flink-built-in-functions-reference.md](./Flink/flink-built-in-functions-reference.md) |
-| P2-3 | JDBC Connector详细指南 | ✅ 已完成 | [Flink JDBC Connector指南](Flink/connectors/flink-jdbc-connector-guide.md) |
-| P2-4 | Elasticsearch Connector指南 | ✅ 已完成 | [Flink ES Connector指南](Flink/connectors/flink-elasticsearch-connector-guide.md) |
-| P2-5 | MongoDB Connector指南 | ✅ 已完成 | [Flink MongoDB Connector指南](Flink/connectors/flink-mongodb-connector-guide.md) |
+| P2-3 | JDBC Connector详细指南 | ✅ 已完成 | [Flink JDBC Connector指南](Flink/05-ecosystem/05.01-connectors/flink-jdbc-connector-guide.md) |
+| P2-4 | Elasticsearch Connector指南 | ✅ 已完成 | [Flink ES Connector指南](Flink/05-ecosystem/05.01-connectors/flink-elasticsearch-connector-guide.md) |
+| P2-5 | MongoDB Connector指南 | ✅ 已完成 | [Flink MongoDB Connector指南](Flink/05-ecosystem/05.01-connectors/flink-mongodb-connector-guide.md) |
 | P2-6 | CEP库完整教程 | ✅ 已完成 | [Flink/flink-cep-complete-tutorial.md](./Flink/flink-cep-complete-tutorial.md) |
 | P2-7 | Production Checklist | ✅ 已完成 | [Knowledge/production-deployment-checklist.md](./Knowledge/production-deployment-checklist.md) |
 | P2-8 | PyFlink深度指南 | ✅ 已完成 | [Flink/flink-pyflink-deep-dive.md](./Flink/flink-pyflink-deep-dive.md) |
@@ -689,10 +689,10 @@
 | P3-6 | 文档摘要自动生成 | ✅ 完成 | [.scripts/doc-summarizer.py](.scripts/doc-summarizer.py) |
 | P3-7 | 问答机器人集成 | ✅ 完成 | [docs/chatbot-integration.md](docs/chatbot-integration.md) |
 | P3-8 | 学习路径个性化推荐 | ✅ 完成 | [Knowledge/personalized-learning-engine.md](Knowledge/personalized-learning-engine.md) |
-| P3-9 | RisingWave集成指南 | ✅ 完成 | [Flink/ecosystem/risingwave-integration-guide.md](Flink/ecosystem/risingwave-integration-guide.md) |
-| P3-10 | Materialize对比分析 | ✅ 完成 | [Flink/ecosystem/materialize-comparison.md](Flink/ecosystem/materialize-comparison.md) |
-| P3-11 | Kafka Streams迁移指南 | ✅ 完成 | [Flink/ecosystem/kafka-streams-migration.md](Flink/ecosystem/kafka-streams-migration.md) |
-| P3-12 | Pulsar Functions集成 | ✅ 完成 | [Flink/ecosystem/pulsar-functions-integration.md](Flink/ecosystem/pulsar-functions-integration.md) |
+| P3-9 | RisingWave集成指南 | ✅ 完成 | [Flink/ecosystem/risingwave-integration-guide.md](Flink/risingwave-integration-guide.md) |
+| P3-10 | Materialize对比分析 | ✅ 完成 | [Flink/ecosystem/materialize-comparison.md](Flink/materialize-comparison.md) |
+| P3-11 | Kafka Streams迁移指南 | ✅ 完成 | [Flink/ecosystem/kafka-streams-migration.md](Knowledge/kafka-streams-migration.md) |
+| P3-12 | Pulsar Functions集成 | ✅ 完成 | [Flink/ecosystem/pulsar-functions-integration.md](Flink/pulsar-functions-integration.md) |
 
 ---
 
@@ -1389,7 +1389,7 @@
 ## Flink 2.4/2.5/3.0 特性深度跟踪 (100子任务) ✅
 
 > **日期**: 2026-04-04 | **任务规模**: 100个子任务 | **文档位置**: `Flink/roadmap/`
-> **完成报告**: [FLINK-24-25-30-COMPLETION-REPORT.md](FLINK-24-25-30-COMPLETION-REPORT.md)
+> **完成报告**: [FLINK-24-25-30-COMPLETION-REPORT.md](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md)
 
 ### 📊 任务完成统计
 
