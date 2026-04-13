@@ -1,0 +1,14 @@
+{
+  "test_name": "recovery-tm-failure",
+  "injection": {
+    "injected_at": "2026-04-13T14:38:42.763878",
+    "target": "taskmanager-2"
+  },
+  "recovery": {
+    "detection_time_ms": 2500,
+    "restart_time_ms": 22000,
+    "total_recovery_ms": 24500,
+    "data_loss": false
+  },
+  "status": "success"
+}

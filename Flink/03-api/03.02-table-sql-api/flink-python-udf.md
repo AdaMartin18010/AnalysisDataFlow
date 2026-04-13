@@ -513,7 +513,7 @@ GROUP BY category;
 
 ### 6.6 依赖管理与虚拟环境
 
-```yaml
+```text
 # requirements.txt 示例
 # Flink Python UDF依赖文件
 

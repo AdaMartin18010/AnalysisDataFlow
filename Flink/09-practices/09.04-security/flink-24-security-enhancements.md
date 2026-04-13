@@ -162,7 +162,7 @@ $$\text{OAuth}_{2.1} = (G_{grant}, P_{pkce}, S_{state}, R_{redirect}, T_{token})
 ```yaml
 # flink-conf.yaml
 security.oauth.enabled: true
-security.oauth.version: "2.1"  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+security.oauth.version: "2.1"  # [Flink 2.4 前瞻] 配置参数可能变动
 security.oauth.provider: keycloak  # 或 auth0, azure-ad, okta
 
 # PKCE 配置

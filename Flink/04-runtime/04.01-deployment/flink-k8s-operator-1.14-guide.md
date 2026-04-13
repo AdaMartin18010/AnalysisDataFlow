@@ -192,7 +192,7 @@ FlinkBlueGreenDeployment := ⟨ Spec, Status, Blue, Green, Traffic ⟩
 
 **Blue/Green Spec 结构**：
 
-```yaml
+```text
 BlueSpec := {
   deploymentName: string,      # FlinkDeployment 引用
   version: string,             # 版本标识

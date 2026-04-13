@@ -406,7 +406,7 @@ Week 4: 趋势洞察
 ### Rust UDF 开发
 
 - Iron Functions: <https://irontools.dev/>
-- RisingWave UDF: <https://docs.risingwave.com/sql/udfs/udfs>
+- RisingWave UDF: <https://docs.risingwave.com/sql/udfs/>
 - Apache Flink WASM: <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/datastream_tutorial/>
 
 ### Rust 流引擎

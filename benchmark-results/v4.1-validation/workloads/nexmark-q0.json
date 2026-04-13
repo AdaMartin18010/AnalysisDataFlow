@@ -1,0 +1,17 @@
+{
+  "job_name": "nexmark-q0-benchmark",
+  "jar_path": "benchmark-data/flink-sql-gateway.jar",
+  "parallelism": 48,
+  "config": {
+    "execution.checkpointing.interval": "60s",
+    "execution.checkpointing.min-pause-between-checkpoints": "30s",
+    "state.backend": "rocksdb",
+    "state.backend.incremental": "true",
+    "table.exec.source.default-phase": "CONTINUOUS_UNBOUNDED"
+  },
+  "nexmark_config": {
+    "nexmark.workload.queries": "q0",
+    "nexmark.workload.events.num": -1,
+    "nexmark.workload.events.per.second": 4000000
+  }
+}

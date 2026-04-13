@@ -1,0 +1,17 @@
+{
+  "job_name": "recovery-failure-benchmark",
+  "jar_path": "benchmark-data/stateful-benchmark.jar",
+  "parallelism": 48,
+  "config": {
+    "execution.checkpointing.interval": "60000ms",
+    "state.backend": "rocksdb",
+    "state.backend.incremental": "true",
+    "taskmanager.memory.managed.fraction": "0.5"
+  },
+  "workload_config": {
+    "keyspace.size": 1000000,
+    "ops.per.second": 100000,
+    "read.ratio": 0.5,
+    "write.ratio": 0.5
+  }
+}

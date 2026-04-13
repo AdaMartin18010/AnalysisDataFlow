@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://analysisdataflow.github.io/AnalysisDataFlow/sitemap.xml

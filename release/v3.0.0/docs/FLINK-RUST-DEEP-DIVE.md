@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink Rust 生态系统深度解析
 
 > **针对**: Flink Rust 所有主题的深度梳理
@@ -405,7 +406,7 @@ Week 4: 趋势洞察
 ### Rust UDF 开发
 
 - Iron Functions: <https://irontools.dev/>
-- RisingWave UDF: <https://docs.risingwave.com/sql/udfs/udfs>
+- RisingWave UDF: <https://docs.risingwave.com/sql/udfs/>
 - Apache Flink WASM: <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/datastream_tutorial/>
 
 ### Rust 流引擎

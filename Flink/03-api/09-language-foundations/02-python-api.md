@@ -398,7 +398,7 @@ env.get_config().get_configuration().set_string(
 
 **层次化依赖策略**
 
-```yaml
+```text
 # 1. 基础依赖 (所有作业共享)
 # Dockerfile
 FROM flink:1.18-scala_2.12

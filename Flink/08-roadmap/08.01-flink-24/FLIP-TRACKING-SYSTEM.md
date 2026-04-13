@@ -427,9 +427,9 @@ flips:
       impact: "Medium"
 
   connectors:
-    <!-- FLIP状态: Draft/Under Discussion -->
-    <!-- 预计正式编号: FLIP-443 (Connector Improvements) -->
-    <!-- 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-443 -->
+    # FLIP状态: Draft/Under Discussion
+    # 预计正式编号: FLIP-443 (Connector Improvements)
+    # 跟踪: https://github.com/apache/flink/tree/master/flink-docs/docs/flips/FLIP-443
     - id: FLIP-443
       title: "Connector Improvements"
       impact: "Medium"

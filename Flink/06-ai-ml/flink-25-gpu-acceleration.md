@@ -1052,7 +1052,7 @@ kind: FlinkDeployment
 metadata:
   name: flink-gpu-job
 spec:
-  image: flink:2.5-gpu-cuda12  <!-- 前瞻性镜像: Flink 2.5规划中 -->
+  image: flink:2.5-gpu-cuda12  # 前瞻性镜像: Flink 2.5规划中
   flinkVersion: v2.5
 
   jobManager:

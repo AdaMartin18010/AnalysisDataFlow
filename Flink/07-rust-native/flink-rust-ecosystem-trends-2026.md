@@ -435,7 +435,7 @@ flink sql -e "
 
 ### 6.3 Cloudflare Pipelines + Arroyo 集成
 
-```yaml
+```toml
 # wrangler.toml - Cloudflare Workers 配置
 name = "realtime-analytics"
 main = "src/index.ts"

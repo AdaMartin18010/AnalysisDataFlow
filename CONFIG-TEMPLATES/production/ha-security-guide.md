@@ -47,7 +47,7 @@ Flink 生产环境安全包括以下层面:
 
 **推荐配置 (3 节点或 5 节点):**
 
-```yaml
+```properties
 # ZooKeeper 配置 (zoo.cfg)
 tickTime=2000
 dataDir=/var/lib/zookeeper

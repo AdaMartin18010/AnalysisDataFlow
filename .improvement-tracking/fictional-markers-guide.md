@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 虚构内容标记指南
 
 > 本文档定义如何标记项目中的虚构 API、配置参数、Maven 依赖和发布时间线。
@@ -210,7 +211,7 @@ serverless.enabled: true
 ```markdown
 > 📝 **FLIP-531 提案阶段**
 >
-> `CREATE AGENT` 语法为 [FLIP-531](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) 提案的概念设计，
+> `CREATE AGENT` 语法为 [FLIP-531](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) 提案的概念设计，
 > 目前处于讨论阶段，尚未正式发布。API 可能在最终实现中发生变化。
 ```
 

@@ -668,7 +668,7 @@ graph TB
 
 [^1]: H. Zhang et al., "FaaSFlow: Enable Efficient Workflow Execution for Function-as-a-Service," in *Proceedings of the 2024 ACM International Conference on Management of Data (SIGMOD)*, 2024. <https://doi.org/10.1145/3654960>
 
-[^2]: J. Li et al., "DataFlower: Dataflow-Driven Function Orchestration for Serverless Computing," in *Proceedings of the 2024 IEEE 40th International Conference on Data Engineering (ICDE)*, 2024. <https://doi.ieeecomputersociety.org/10.1109/ICDE60146.2024>
+[^2]: J. Li et al., "DataFlower: Dataflow-Driven Function Orchestration for Serverless Computing," in *Proceedings of the 2024 IEEE 40th International Conference on Data Engineering (ICDE)*, 2024. <[DOI: 10.1109/ICDE60146.2024]>
 
 [^3]: A. Agache et al., "Firecracker: Lightweight Virtualization for Serverless Applications," in *Proceedings of the 17th USENIX Symposium on Networked Systems Design and Implementation (NSDI)*, 2020. <https://www.usenix.org/conference/nsdi20/presentation/agache>
 

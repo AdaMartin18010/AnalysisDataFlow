@@ -740,7 +740,7 @@ spec:
               memory: 8Gi
               cpu: 4000m
   # 基于指标的 HPA
-  ---
+---
   apiVersion: autoscaling/v2
   kind: HorizontalPodAutoscaler
   metadata:
@@ -773,6 +773,7 @@ spec:
           - type: Percent
             value: 10
             periodSeconds: 60
+
 ```
 
 **扩缩容检查清单**:
@@ -1565,7 +1566,7 @@ gantt
 
 [^5]: Apache Flink Documentation, "Configuration," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/config/>
 
-[^6]: Apache Flink Kubernetes Operator, "Autoscaler," 2025. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/docs/operations/autoscaler/>
+[^6]: Apache Flink Kubernetes Operator, "Autoscaler," 2025. <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/docs/operations/>
 
 [^7]: Apache Flink Documentation, "Metrics and Monitoring," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/>
 

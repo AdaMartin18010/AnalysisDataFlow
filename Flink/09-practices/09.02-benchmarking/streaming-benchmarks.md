@@ -370,8 +370,11 @@ scrape_configs:
     static_configs:
       - targets: ['taskmanager:9249']
     metrics_path: /metrics
+```
 
 # 关键Grafana查询
+
+```promql
 # 吞吐量
 rate(flink_taskmanager_job_task_numRecordsIn[1m])
 

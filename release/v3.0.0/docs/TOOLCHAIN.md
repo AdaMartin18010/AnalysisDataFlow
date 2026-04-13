@@ -464,7 +464,7 @@ mkdocs new .
 site_name: AnalysisDataFlow
 site_description: 流计算理论、工程与实践知识库
 site_author: AnalysisDataFlow Team
-site_url: https://analysisdataflow.github.io/
+site_url: https://github.com/luyanfeng/AnalysisDataFlow/
 
 theme:
   name: material
@@ -558,7 +558,7 @@ git submodule add https://github.com/alex-shpak/hugo-book.git themes/hugo-book
 
 # 配置 config.toml
 cat > config.toml << 'EOF'
-baseURL = 'https://analysisdataflow.github.io/'
+baseURL = 'https://github.com/luyanfeng/AnalysisDataFlow/'
 languageCode = 'zh-CN'
 title = 'AnalysisDataFlow'
 theme = 'hugo-book'

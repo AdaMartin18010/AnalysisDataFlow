@@ -133,7 +133,7 @@ python .scripts/seo-optimizer.py --full-audit
 ```
 User-agent: *
 Allow: /
-Sitemap: https://analysisdataflow.github.io/sitemap.xml
+Sitemap: /sitemap.xml
 
 # 允许索引
 Allow: /Struct/
@@ -242,7 +242,7 @@ Disallow: /.github/
 
 1. 使用Google账号登录
 2. 点击 "添加属性"
-3. 选择 "网址前缀"，输入: `https://analysisdataflow.github.io`
+3. 选择 "网址前缀"，输入: `https://github.com/luyanfeng/AnalysisDataFlow`
 4. 验证网站所有权:
    - 方式A: HTML文件验证 (下载文件上传到根目录)
    - 方式B: HTML标记 (添加meta标签到首页)
@@ -469,7 +469,7 @@ python -c "import xml.etree.ElementTree as ET; ET.parse('sitemap.xml')"
 
 #### 2. 页面未被索引
 
-**症状**: 搜索site:analysisdataflow.github.io返回结果少
+**症状**: 搜索site:github.com/luyanfeng/AnalysisDataFlow返回结果少
 
 **排查步骤**:
 

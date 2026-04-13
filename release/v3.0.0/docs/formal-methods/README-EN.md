@@ -415,7 +415,7 @@ Unit 8 **AI Formal Methods** explores the intersection of artificial intelligenc
 | Community | Description | Link |
 |-----------|-------------|------|
 | **TLA+ Google Group** | TLA+ user community and discussions | <https://groups.google.com/g/tlaplus> |
-| **Coq Discourse** | Coq theorem prover community forum | <https://coq.discourse.group/> |
+| **Coq Zulip Chat** | Coq theorem prover community forum | <https://coq.zulipchat.com/> |
 | **Lean Zulip Chat** | Lean prover real-time chat community | <https://leanprover.zulipchat.com/> |
 | **Isabelle Mailing List** | Isabelle/HOL user mailing list | <https://lists.cam.ac.uk/mailman/listinfo/cl-isabelle-users> |
 | **Formal Methods World** | Global formal methods community hub | <https://www.formal-methods.com/> |

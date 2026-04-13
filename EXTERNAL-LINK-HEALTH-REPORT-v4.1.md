@@ -125,7 +125,7 @@
 | [https://doi.org/10.1109/LICS.1986.13](https://doi.org/10.1109/LICS.1986.13) | release/v3.0.0/docs/formal-methods/ | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1145/3028098](https://doi.org/10.1145/3028098) | Struct/06-frontier/06.04-pdot-path- | 使用Archive.org备份或查找论文最新位置 |
 | [https://doi.org/10.1145/3138088](https://doi.org/10.1145/3138088) | USTM-F-Reconstruction/archive/origi | 使用Archive.org备份或查找论文最新位置 |
-| [https://doi.org/10.1145/3698034](https://doi.org/10.1145/3698034) | release/v3.0.0/docs/Struct/06-front | 使用Archive.org备份或查找论文最新位置 |
+| [https://doi.org/10.1145/3698034]([DOI: 10.1145/3698034]) | release/v3.0.0/docs/Struct/06-front | 使用Archive.org备份或查找论文最新位置 |
 | [https://downloads.apache.org/flink/flink-${VERSION}/apache-f...](https://downloads.apache.org/flink/flink-${VERSION}/apache-flink-${VERSION}-bin-scala_2.12.tgz) | release/v3.0.0/docs/reports/link-va | 检查Flink版本号是否正确，可能需要更新到最新版本 |
 | [https://downloads.apache.org/flink/flink-1.20.0/flink-1.20.0...](https://downloads.apache.org/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz) | release/v3.0.0/docs/reports/link-va | 检查Flink版本号是否正确，可能需要更新到最新版本 |
 | [https://downloads.apache.org/flink/flink-kubernetes-operator...](https://downloads.apache.org/flink/flink-kubernetes-operator-) | release/v3.0.0/docs/reports/link-va | 检查Flink版本号是否正确，可能需要更新到最新版本 |

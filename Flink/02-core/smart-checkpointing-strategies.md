@@ -2040,11 +2040,12 @@ execution.checkpointing.storage.async-upload.threads: 16
 - **解决**:
 
   ```yaml
-  execution.checkpointing.unaligned.enabled: true
-  state.backend.incremental: true
-  execution.checkpointing.timeout: 30min
 
-```
+execution.checkpointing.unaligned.enabled: true
+state.backend.incremental: true
+execution.checkpointing.timeout: 30min
+
+  ```
 
 **问题 2: 增量比例过低**
 
@@ -2056,9 +2057,9 @@ execution.checkpointing.storage.async-upload.threads: 16
 - **解决**:
 
   ```yaml
-  state.backend.rocksdb.compaction.style: UNIVERSAL
-  execution.checkpointing.incremental.gc.retention: 12h
-```
+state.backend.rocksdb.compaction.style: UNIVERSAL
+execution.checkpointing.incremental.gc.retention: 12h
+  ```
 
 **问题 3: 恢复时间过长**
 
@@ -2070,10 +2071,11 @@ execution.checkpointing.storage.async-upload.threads: 16
 - **解决**:
 
   ```yaml
-  execution.checkpointing.storage.tiered.enabled: true
-  execution.checkpointing.storage.read-ahead.enabled: true
 
-```
+execution.checkpointing.storage.tiered.enabled: true
+execution.checkpointing.storage.read-ahead.enabled: true
+
+  ```
 
 **问题 4: 自适应间隔振荡**
 
@@ -2085,10 +2087,10 @@ execution.checkpointing.storage.async-upload.threads: 16
 - **解决**:
 
   ```yaml
-  execution.checkpointing.adaptive.kp: 0.3
-  execution.checkpointing.adaptive.ki: 0.05
-  execution.checkpointing.adaptive.smoothing-factor: 0.8
-```
+execution.checkpointing.adaptive.kp: 0.3
+execution.checkpointing.adaptive.ki: 0.05
+execution.checkpointing.adaptive.smoothing-factor: 0.8
+  ```
 
 ### 10.4 最佳实践清单
 
@@ -2143,7 +2145,7 @@ execution.checkpointing.storage.async-upload.threads: 16
 
 [^8]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
 
-[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. <https://flink.apache.org/news/2021/01/11/incremental-checkpointing.html>
+[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. <https://flink.apache.org/>
 
 [^10]: F. McSherry et al., "Differential Dataflow", CIDR, 2013.
 

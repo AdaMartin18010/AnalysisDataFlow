@@ -284,8 +284,8 @@ timeline_patterns:
 ### 7.3 参考资源
 
 - [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/)
-- [FLIP-531: AI Agents](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531)
-- [FLIP-540: VECTOR_SEARCH](https://cwiki.apache.org/confluence/display/FLINK/FLIP-540)
+- [FLIP-531: AI Agents](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531:+Initiate+Flink+Agents+as+a+new+Sub-Project)
+- [FLIP-540: VECTOR_SEARCH](https://cwiki.apache.org/confluence/display/FLINK/FLIP-540:+Support+VECTOR_SEARCH+in+Flink+SQL)
 - [Maven Central Flink 仓库](https://search.maven.org/search?q=g:org.apache.flink)
 
 ---

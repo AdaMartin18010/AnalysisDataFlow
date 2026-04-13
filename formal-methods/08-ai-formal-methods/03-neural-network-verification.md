@@ -538,4 +538,4 @@ timeline
 
 > **相关文档**: [神经定理证明](01-neural-theorem-proving.md) | [抽象解释](../03-model-taxonomy/02-computation-models/abstract-interpretation.md) | [SMT求解器](../05-verification/03-theorem-proving/02-smt-solvers.md)
 >
-> **外部链接**: [β-CROWN](https://github.com/Verified-Intelligence/beta-CROWN) | [Marabou](https://neuralnetworkverification.github.io/marabou/) | [ERAN](https://github.com/eth-sri/eran/) | [VNN-COMP](https://sites.google.com/view/vnn2024)
+> **外部链接**: [β-CROWN](https://github.com/Verified-Intelligence/beta-CROWN) | [Marabou](https://github.com/NeuralNetworkVerification/Marabou) | [ERAN](https://github.com/eth-sri/eran/) | [VNN-COMP](https://sites.google.com/view/vnn2024)

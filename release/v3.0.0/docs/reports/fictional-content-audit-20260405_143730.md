@@ -254,6 +254,7 @@
 70: FROM documents;
 71:
 ```
+
 ```
 
 **🟡 [SQL-006] VECTOR_SEARCH函数**
@@ -741,7 +742,9 @@
 >>> 1233: env.execute("Async OpenAI Inference")
 1234:
 ```
+
 1235:
+
 ```
 
 #### Flink\03-api\09-language-foundations\06-risingwave-deep-dive.md
@@ -1474,6 +1477,7 @@
 742: FROM messages m;
 743:
 ```
+
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -1775,6 +1779,7 @@
 376: ORDER BY similarity DESC;
 377:
 ```
+
 ```
 
 **🟡 [SQL-005] ML_PREDICT函数**
@@ -2023,6 +2028,7 @@
 1206: // env.getConfig().setBoolean("ai.agent.enabled", true);
 1207:
 ```
+
 ```
 
 **🔴 [CFG-001] AI Agent启用配置**
@@ -2868,10 +2874,12 @@
 ```markdown
 979:
 ```
+
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
 983: ├── [Flink/12-ai-ml/flink-llm-integration.md]
+
 ```
 
 #### Flink\06-ai-ml\flink-25-gpu-acceleration.md
@@ -3010,7 +3018,9 @@
 >>> 1287: COPY flink-gpu-udf.jar /opt/flink/usrlib/
 1288:
 ```
+
 1289:
+
 ```
 
 #### Flink\08-roadmap\08.01-flink-24\flink-2.3-2.4-roadmap.md
@@ -3860,6 +3870,7 @@
 48: <artifactId>flink-serverless</artifactId>         # ❌ 不存在
 49:
 ```
+
 ```
 
 #### archive\deprecated\MAINTENANCE-NOTICE.md
@@ -4120,7 +4131,9 @@
 >>> 60: | flink-ai-agent <!-- 设计阶段，尚未发布 --> | AI Agent支持 |
 61:
 ```
+
 62:
+
 ```
 
 #### visuals\radar-frontier.md
@@ -4662,6 +4675,7 @@
 613: 阶段 4 (2027): 可选移除 0.2 适配层
 614:
 ```
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -5700,10 +5714,12 @@
 ```markdown
 337:
 ```
+
 338:
 >>> 339: ### 6.2 重要讨论跟踪 (2025 Q1)
 340:
 341: #### 核心设计讨论
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -6539,10 +6555,12 @@
 ```markdown
 43:
 ```
+
 44:
 >>> 45: ## 2. 雷达概览 (2026 Q2)
 46:
 47: ### 2.1 技术全景
+
 ```
 
 #### TECH-RADAR\evolution-timeline.md
@@ -7244,9 +7262,11 @@
 255:
 256:
 ```
+
 >>> 257: 2026 Q3-Q4: Flink 2.4 GA 发布
 258:     ├── 2026-08: Feature Freeze
 259:     ├── 2026-09: RC1 发布
+
 ```
 
 **🟢 [TIME-001] Flink 2.3+版本发布时间预测**
@@ -7866,10 +7886,12 @@
 ```markdown
 979:
 ```
+
 980: 模块 1: Flink AI Agents
 >>> 981: ├── [Flink/12-ai-ml/flink-ai-agents-flip-531.md]
 982: │   └── FLIP-531 AI Agents 完整指南
 983: ├── [Flink/12-ai-ml/flink-llm-integration.md]
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -8679,7 +8701,7 @@
 ```markdown
 555: [^1]: Apache Flink Documentation, "DataStream API v2 (Experimental)", 2025. <https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/>
 556:
->>> 557: [^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-500>
+>>> 557: [^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
 558:
 559: [^3]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Eng. Bull.*, 38(4), 2015.
 ```
@@ -8695,7 +8717,7 @@
 ```markdown
 555: [^1]: Apache Flink Documentation, "DataStream API v2 (Experimental)", 2025. <https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/>
 556:
->>> 557: [^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-500>
+>>> 557: [^2]: Apache Flink, "FLIP-500: DataStream API v2", Apache Flink Improvement Proposals, 2024. <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
 558:
 559: [^3]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Eng. Bull.*, 38(4), 2015.
 ```
@@ -8973,10 +8995,12 @@
 ```markdown
 242:
 ```
+
 243: ┌─────────────────────────────────────────────────────────────────┐
 >>> 244: │                     FLIP-531 特性依赖图                          │
 245: ├─────────────────────────────────────────────────────────────────┤
 246: │                                                                 │
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9489,9 +9513,9 @@
 ```markdown
 2242: ## 8. 引用参考 (References)
 2243:
->>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
+>>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
 2245:
-2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specification>
+2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specificationification>
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9505,9 +9529,9 @@
 ```markdown
 2242: ## 8. 引用参考 (References)
 2243:
->>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-531>
+>>> 2244: [^1]: Apache Flink FLIP-531, "Native AI Agent Support", 2025. <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
 2245:
-2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specification>
+2246: [^2]: Anthropic, "Model Context Protocol Specification 2.0", 2025. <https://modelcontextprotocol.io/specificationification>
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -9638,10 +9662,12 @@
 ```markdown
 280:
 ```
+
 281:
 >>> 282: ### 3.2 与 FLIP-531 AI Agents 的集成关系
 283:
 284: | 组件 | FLIP-531 角色 | AI 原生流处理角色 | 集成点 |
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -10222,10 +10248,12 @@
 ```markdown
 378:
 ```
+
 379:
 >>> 380: ### 7.2 FLIP-531架构
 381:
 382: ```mermaid
+
 ```
 
 #### Flink\08-roadmap\08.01-flink-24\flink-2.4-tracking.md
@@ -10257,10 +10285,12 @@
 ```markdown
 40:
 ```
+
 41:
 >>> 42: ### Def-F-08-71: AI Agent GA (FLIP-531 Completion)
 43:
 44: **FLIP-531 GA** 标志着 Flink AI Agents 从实验性 MVP 升级到生产就绪：
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -10991,9 +11021,11 @@
 884:
 885:
 ```
+
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -12758,9 +12790,11 @@
 884:
 885:
 ```
+
 >>> 886: FLIP-531 = ⟨ℛ_agent, ℐ_mcp, 𝒫_a2a, 𝒲_workflow⟩
 887: ```
 888:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13121,7 +13155,9 @@
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
 88:
 ```
+
 89:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13154,7 +13190,9 @@
 >>> 87:   FLIPs: [FLIP-600, FLIP-601, FLIP-602]
 88:
 ```
+
 89:
+
 ```
 
 **🟡 [FLIP-002] 未确认FLIP编号**
@@ -13740,7 +13778,7 @@
 ```markdown
 386: | `README.md` | 5 | ![Check Links | [https://github.com/luyanfeng/AnalysisDataFlow/acti...]([内部CI Badge - 需手动验证]) | 404 | 客户端错误: HTTP 404 |
 387: | `Flink\01-architecture\datastream-v2-semantics.md` | 555 |  | [https://nightlies.apache.org/flink/flink-docs-mast...](https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/v2/) | 404 | 客户端错误: HTTP 404 |
->>> 388: | `Flink\01-architecture\datastream-v2-semantics.md` | 557 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-500) | 404 | 客户端错误: HTTP 404 |
+>>> 388: | `Flink\01-architecture\datastream-v2-semantics.md` | 557 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
 389: | `Flink\01-architecture\datastream-v2-semantics.md` | 569 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-143) | 404 | 客户端错误: HTTP 404 |
 390: | `Knowledge\02-design-patterns\pattern-stateful-computation.md` | 404 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state/) | 404 | 客户端错误: HTTP 404 |
 ```
@@ -13756,8 +13794,8 @@
 ```markdown
 424: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
->>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
-427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
+>>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
+427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/specification](https://modelcontextprotocol.io/specificationification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
 ```
 
@@ -13772,8 +13810,8 @@
 ```markdown
 424: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
->>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
-427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
+>>> 426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
+427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/specification](https://modelcontextprotocol.io/specificationification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
 ```
 
@@ -13787,8 +13825,8 @@
 
 ```markdown
 425: | `Flink\09-language-foundations\datastream-api-cheatsheet.md` | 815 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/) | 404 | 客户端错误: HTTP 404 |
-426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
->>> 427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/spec](https://modelcontextprotocol.io/specification) | 404 | 客户端错误: HTTP 404 |
+426: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
+>>> 427: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2246 |  | [https://modelcontextprotocol.io/specification](https://modelcontextprotocol.io/specificationification) | 404 | 客户端错误: HTTP 404 |
 428: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1163 |  | [https://doi.org/10.1145/2523813](https://doi.org/10.1145/2523813) | N/A | URL在排除列表中 |
 429: | `Flink\12-ai-ml\online-learning-algorithms.md` | 1165 |  | [https://doi.org/10.1007/s10115-009-0226-2]([DOI: 10.1007/s10115-009-0226-2]) | N/A | URL在排除列表中 |
 ```
@@ -13804,7 +13842,7 @@
 ```markdown
 441: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 442: | `Flink\flink-24\flink-24-adaptive-execution-v2.md` | 267 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-160) | 404 | 客户端错误: HTTP 404 |
->>> 443: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
+>>> 443: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
 444: | `Flink\flink-24\flink-24-new-connectors.md` | 306 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-27) | 404 | 客户端错误: HTTP 404 |
 445: | `BEST-PRACTICES.md` | 1523 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/) | 404 | 客户端错误: HTTP 404 |
 ```
@@ -13820,7 +13858,7 @@
 ```markdown
 441: | `Flink\09-language-foundations\07-rust-streaming-landscape.md` | 963 |  | [https://materialize.com/docs/](https://materialize.com/docs/) | N/A | 客户端错误: 400, message='Can not decode cont... |
 442: | `Flink\flink-24\flink-24-adaptive-execution-v2.md` | 267 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-160) | 404 | 客户端错误: HTTP 404 |
->>> 443: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531) | 404 | 客户端错误: HTTP 404 |
+>>> 443: | `Flink\12-ai-ml\flip-531-ai-agents-ga-guide.md` | 2244 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals) | 404 | 客户端错误: HTTP 404 |
 444: | `Flink\flink-24\flink-24-new-connectors.md` | 306 |  | [https://cwiki.apache.org/confluence/display/FLINK/...](https://cwiki.apache.org/confluence/display/FLINK/FLIP-27) | 404 | 客户端错误: HTTP 404 |
 445: | `BEST-PRACTICES.md` | 1523 |  | [https://nightlies.apache.org/flink/flink-docs-stab...](https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/tuning/) | 404 | 客户端错误: HTTP 404 |
 ```

@@ -1,5 +1,5 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
@@ -2142,7 +2142,7 @@ execution.checkpointing.storage.async-upload.threads: 16
 
 [^8]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
 
-[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. <https://flink.apache.org/news/2021/01/11/incremental-checkpointing.html>
+[^9]: Apache Flink Blog, "Incremental Checkpointing in Apache Flink", 2021. <https://flink.apache.org/>
 
 [^10]: F. McSherry et al., "Differential Dataflow", CIDR, 2013.
 

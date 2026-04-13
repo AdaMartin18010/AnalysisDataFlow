@@ -1,0 +1,1352 @@
+[
+  {
+    "file": "CASE-STUDIES.md",
+    "block_idx": "2",
+    "line_num": 267,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\TempValidation.java:5: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "CASE-STUDIES.md",
+    "block_idx": "6",
+    "line_num": 496,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\TempValidation.java:5: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "CASE-STUDIES.md",
+    "block_idx": "13",
+    "line_num": 819,
+    "lang": "java",
+    "error": ": 错误: 找不到文件: C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\TempValidation.java",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "CASE-STUDIES.md",
+    "block_idx": "15",
+    "line_num": 904,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\ThresholdMonitorFunction.java:2: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "CASE-STUDIES.md",
+    "block_idx": "21",
+    "line_num": 1155,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\AntiCheatProcessFunction.java:2: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "CODE-QUALITY-FINAL-REPORT.md",
+    "block_idx": "5",
+    "line_num": 290,
+    "lang": "python",
+    "error": ": SyntaxError: unexpected indent",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "0",
+    "line_num": 32,
+    "lang": "python",
+    "error": ": SyntaxError: '(' was never closed",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "1",
+    "line_num": 62,
+    "lang": "python",
+    "error": ": SyntaxError: invalid character '，' (U+FF0C)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "2",
+    "line_num": 82,
+    "lang": "python",
+    "error": ": SyntaxError: unterminated triple-quoted string literal (detected at line 13)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "3",
+    "line_num": 107,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "5",
+    "line_num": 153,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "6",
+    "line_num": 173,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "7",
+    "line_num": 206,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "8",
+    "line_num": 243,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "9",
+    "line_num": 261,
+    "lang": "python",
+    "error": ": SyntaxError: expected '('",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "10",
+    "line_num": 287,
+    "lang": "python",
+    "error": ": SyntaxError: '(' was never closed",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "12",
+    "line_num": 341,
+    "lang": "python",
+    "error": ": SyntaxError: '(' was never closed",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "13",
+    "line_num": 367,
+    "lang": "python",
+    "error": ": SyntaxError: unexpected indent",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "14",
+    "line_num": 396,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "15",
+    "line_num": 428,
+    "lang": "python",
+    "error": ": SyntaxError: invalid character '✅' (U+2705)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "16",
+    "line_num": 457,
+    "lang": "python",
+    "error": ": SyntaxError: unexpected indent",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "18",
+    "line_num": 506,
+    "lang": "python",
+    "error": ": SyntaxError: '(' was never closed",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "19",
+    "line_num": 534,
+    "lang": "python",
+    "error": ": SyntaxError: invalid decimal literal",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "20",
+    "line_num": 552,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "23",
+    "line_num": 620,
+    "lang": "python",
+    "error": ": SyntaxError: invalid decimal literal",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "24",
+    "line_num": 637,
+    "lang": "python",
+    "error": ": SyntaxError: unexpected indent",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "26",
+    "line_num": 685,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "27",
+    "line_num": 710,
+    "lang": "python",
+    "error": ": SyntaxError: unterminated triple-quoted string literal (detected at line 13)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "29",
+    "line_num": 761,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "30",
+    "line_num": 787,
+    "lang": "python",
+    "error": ": SyntaxError: '[' was never closed",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "31",
+    "line_num": 815,
+    "lang": "python",
+    "error": ": SyntaxError: invalid character '⊥' (U+22A5)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "32",
+    "line_num": 844,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "33",
+    "line_num": 876,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "34",
+    "line_num": 907,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "35",
+    "line_num": 942,
+    "lang": "python",
+    "error": ": SyntaxError: invalid decimal literal",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "36",
+    "line_num": 972,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "37",
+    "line_num": 1000,
+    "lang": "python",
+    "error": ": SyntaxError: unexpected indent",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "38",
+    "line_num": 1018,
+    "lang": "python",
+    "error": ": SyntaxError: expected 'else' after 'if' expression",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "39",
+    "line_num": 1040,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "41",
+    "line_num": 1098,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "42",
+    "line_num": 1119,
+    "lang": "python",
+    "error": ": SyntaxError: invalid character '⊕' (U+2295)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "43",
+    "line_num": 1136,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "44",
+    "line_num": 1158,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "45",
+    "line_num": 1178,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "46",
+    "line_num": 1198,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CODE-VALIDATION-PYTHON-REPORT.md",
+    "block_idx": "47",
+    "line_num": 1224,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CONFIG-TEMPLATES\\production\\ha-security-guide.md",
+    "block_idx": "1",
+    "line_num": 50,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "CONFIG-TEMPLATES\\scenarios\\scenario-comparison.md",
+    "block_idx": "7",
+    "line_num": 197,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "DEPLOYMENT-ARCHITECTURES.md",
+    "block_idx": "4",
+    "line_num": 196,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\TempValidation.java:4: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "5",
+    "line_num": 382,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\AIAgentExample.java:2: 错误: 程序包org.apache.flink.streaming.api.environment不存在",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "13",
+    "line_num": 653,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\UnifiedStreamingBatch.java:2: 错误: 找不到符号",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "16",
+    "line_num": 825,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\GPUDetectionFunction.java:2: 错误: 未命名类 是预览功能，默认情况下禁用。",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "18",
+    "line_num": 915,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\GPUBenchmark.java:1: 错误: 程序包org.apache.flink.streaming.api.environment不存在",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "35",
+    "line_num": 1400,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\CompatibilityCheck.java:1: 错误: 程序包org.apache.flink.streaming.api.environment不存在",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "38",
+    "line_num": 1540,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\MigrationCompatibilityTest.java:1: 错误: 程序包org.junit.runner不存在",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "42",
+    "line_num": 1657,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\PerformanceBenchmark.java:1: 错误: 程序包org.apache.flink.streaming.api.environment不存在",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "45",
+    "line_num": 1774,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\AIAgentPerformanceTest.java:48: 错误: 类 MetricsExtractor 是公共的, 应在名为 MetricsExtractor.java 的文件中声明",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "FAQ.md",
+    "block_idx": "46",
+    "line_num": 1851,
+    "lang": "java",
+    "error": ": C:\\Users\\luyan\\AppData\\Local\\Temp\\java_compile_tmp\\LoadTest.java:13: 错误: 找不到符号",
+    "type": ": 依赖缺失（非语法错误）",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-1-Architecture\\01-flink-iot-foundation-and-architecture.md",
+    "block_idx": "8",
+    "line_num": 738,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-1-Architecture\\01-flink-iot-foundation-and-architecture.md",
+    "block_idx": "10",
+    "line_num": 1122,
+    "lang": "yaml",
+    "error": ": could not determine a constructor for the tag '!Ref'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-3-Deployment\\06-flink-iot-cloud-native-deployment.md",
+    "block_idx": "7",
+    "line_num": 366,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): MEMORY_RETENTION := 24 hours",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-3-Deployment\\06-flink-iot-cloud-native-deployment.md",
+    "block_idx": "32",
+    "line_num": 3264,
+    "lang": "yaml",
+    "error": ": while parsing a flow node",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-4-Case-Study\\08-flink-iot-complete-case-study.md",
+    "block_idx": "16",
+    "line_num": 1735,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink-IoT-Authority-Alignment\\Phase-8-Wearables\\case-wearables-health-complete.md",
+    "block_idx": "27",
+    "line_num": 2839,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): AND AVG(glucose_mgdl) > 200;...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\00-meta\\00-QUICK-START.md",
+    "block_idx": "9",
+    "line_num": 327,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE TOOL search_products~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\delta-join-production-guide.md",
+    "block_idx": "0",
+    "line_num": 59,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): 'debezium.skipped.operations' = 'd'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\delta-join-production-guide.md",
+    "block_idx": "24",
+    "line_num": 1339,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): 'lookup.async' = 'true',",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\delta-join-production-guide.md",
+    "block_idx": "25",
+    "line_num": 1347,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): 'lookup.cache.max-rows' = '200000',",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\flink-2.2-frontier-features.md",
+    "block_idx": "8",
+    "line_num": 732,
+    "lang": "sql",
+    "error": ": 未闭合的括号",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\smart-checkpointing-strategies.md",
+    "block_idx": "40",
+    "line_num": 2042,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\smart-checkpointing-strategies.md",
+    "block_idx": "41",
+    "line_num": 2058,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\smart-checkpointing-strategies.md",
+    "block_idx": "42",
+    "line_num": 2072,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\smart-checkpointing-strategies.md",
+    "block_idx": "43",
+    "line_num": 2087,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\02-core\\state-backend-evolution-analysis.md",
+    "block_idx": "1",
+    "line_num": 284,
+    "lang": "java",
+    "error": ": 括号不匹配: (=3, )=4",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\ansi-sql-2023-compliance-guide.md",
+    "block_idx": "0",
+    "line_num": 104,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): MATCH_RECOGNIZE (",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\flink-materialized-table-deep-dive.md",
+    "block_idx": "1",
+    "line_num": 114,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): DISTRIBUTED BY HASH(user_id) INTO 16 BUCKETS",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\flink-python-udf.md",
+    "block_idx": "9",
+    "line_num": 516,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\flink-table-sql-complete-guide.md",
+    "block_idx": "12",
+    "line_num": 501,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL~~ (未来可能的语法)...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\model-ddl-and-ml-predict.md",
+    "block_idx": "0",
+    "line_num": 19,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\model-ddl-and-ml-predict.md",
+    "block_idx": "15",
+    "line_num": 652,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL internal_classifier~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\03.02-table-sql-api\\vector-search.md",
+    "block_idx": "5",
+    "line_num": 368,
+    "lang": "sql",
+    "error": ": 未闭合的括号",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\03-api\\09-language-foundations\\02-python-api.md",
+    "block_idx": "13",
+    "line_num": 401,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\flink-k8s-operator-1.14-guide.md",
+    "block_idx": "8",
+    "line_num": 195,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\flink-k8s-operator-1.14-guide.md",
+    "block_idx": "43",
+    "line_num": 985,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\flink-kubernetes-autoscaler-deep-dive.md",
+    "block_idx": "18",
+    "line_num": 471,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\multi-cloud-deployment-templates.md",
+    "block_idx": "9",
+    "line_num": 912,
+    "lang": "yaml",
+    "error": ": could not determine a constructor for the tag '!Ref'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\multi-cloud-deployment-templates.md",
+    "block_idx": "20",
+    "line_num": 2453,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.01-deployment\\serverless-flink-ga-guide.md",
+    "block_idx": "14",
+    "line_num": 775,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.03-observability\\split-level-watermark-metrics.md",
+    "block_idx": "8",
+    "line_num": 372,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\04-runtime\\04.03-observability\\split-level-watermark-metrics.md",
+    "block_idx": "9",
+    "line_num": 386,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.01-connectors\\04.04-cdc-debezium-integration.md",
+    "block_idx": "10",
+    "line_num": 615,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): wal_level = logical",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.01-connectors\\04.04-cdc-debezium-integration.md",
+    "block_idx": "20",
+    "line_num": 1080,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): wal_level = logical",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.01-connectors\\flink-24-connectors-guide.md",
+    "block_idx": "42",
+    "line_num": 1598,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.01-connectors\\flink-jdbc-connector-guide.md",
+    "block_idx": "28",
+    "line_num": 808,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): XA RECOVER;...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.02-lakehouse\\flink-paimon-integration.md",
+    "block_idx": "30",
+    "line_num": 1561,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): curl http://flink-jobmanager:9241/metrics...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\05.02-lakehouse\\streaming-lakehouse-deep-dive-2026.md",
+    "block_idx": "35",
+    "line_num": 1445,
+    "lang": "yaml",
+    "error": ": while scanning a simple key",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\05-ecosystem\\ecosystem\\risingwave-integration-guide.md",
+    "block_idx": "11",
+    "line_num": 356,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): processed.executeInsert(\"risingwave_sink\");...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-22-data-ai-platform.md",
+    "block_idx": "1",
+    "line_num": 57,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ML_PREDICT(",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-22-data-ai-platform.md",
+    "block_idx": "16",
+    "line_num": 1026,
+    "lang": "sql",
+    "error": ": 未闭合的括号",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-25-gpu-acceleration.md",
+    "block_idx": "14",
+    "line_num": 1048,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-agents-flip-531.md",
+    "block_idx": "4",
+    "line_num": 464,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE AGENT customer_support_agent~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-agents-flip-531.md",
+    "block_idx": "10",
+    "line_num": 509,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE AGENT sales_analytics_agent~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "4",
+    "line_num": 189,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): COSINE_SIMILARITY(u, v) = DOT(u, v) / (NORM_L2(u) * NORM_L2(...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "5",
+    "line_num": 202,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL <model_name>~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "9",
+    "line_num": 375,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): FOR AGENT <agent_name>",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "20",
+    "line_num": 1345,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE AGENT customer_support_agent~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "23",
+    "line_num": 2033,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL gpt35_economy~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-ai-ml-integration-complete-guide.md",
+    "block_idx": "37",
+    "line_num": 3042,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL <name>~~ WITH ('provider' = 'openai', ...);...",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "0",
+    "line_num": 35,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "1",
+    "line_num": 56,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ML_PREDICT(",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "5",
+    "line_num": 292,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL gpt4_chat~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "8",
+    "line_num": 368,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL sentiment_analyzer~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "11",
+    "line_num": 435,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE MODEL translator~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-integration.md",
+    "block_idx": "12",
+    "line_num": 464,
+    "lang": "sql",
+    "error": ": 未闭合的括号",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\flink-llm-realtime-inference-guide.md",
+    "block_idx": "19",
+    "line_num": 1128,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\06-ai-ml\\rag-streaming-architecture.md",
+    "block_idx": "4",
+    "line_num": 863,
+    "lang": "sql",
+    "error": ": 未闭合的括号",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\07-rust-native\\arroyo-update\\01-arroyo-cloudflare-acquisition.md",
+    "block_idx": "15",
+    "line_num": 523,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\07-rust-native\\flash-engine\\05-flink-compatibility.md",
+    "block_idx": "22",
+    "line_num": 485,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): 迁移步骤:",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\07-rust-native\\flash-engine\\05-flink-compatibility.md",
+    "block_idx": "23",
+    "line_num": 527,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): 迁移注意事项:",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\07-rust-native\\flink-rust-ecosystem-trends-2026.md",
+    "block_idx": "5",
+    "line_num": 438,
+    "lang": "yaml",
+    "error": ": expected '<document start>', but found '<scalar>'",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\07-rust-native\\risingwave-comparison\\02-nexmark-head-to-head.md",
+    "block_idx": "14",
+    "line_num": 609,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\FLIP-TRACKING-SYSTEM.md",
+    "block_idx": "4",
+    "line_num": 393,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\community-dynamics-tracking.md",
+    "block_idx": "14",
+    "line_num": 424,
+    "lang": "yaml",
+    "error": ": sequence entries are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.3-2.4-roadmap.md",
+    "block_idx": "10",
+    "line_num": 314,
+    "lang": "yaml",
+    "error": ": while parsing a block collection",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.4-tracking.md",
+    "block_idx": "12",
+    "line_num": 522,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): ~~CREATE TOOL crm_search~~ (未来可能的语法)",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.4-tracking.md",
+    "block_idx": "23",
+    "line_num": 981,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.4-tracking.md",
+    "block_idx": "33",
+    "line_num": 1398,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.4-tracking.md",
+    "block_idx": "34",
+    "line_num": 1422,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.5-preview.md",
+    "block_idx": "0",
+    "line_num": 42,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-2.5-preview.md",
+    "block_idx": "2",
+    "line_num": 97,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-25-stream-batch-unification.md",
+    "block_idx": "28",
+    "line_num": 1247,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-30-architecture-redesign.md",
+    "block_idx": "4",
+    "line_num": 204,
+    "lang": "yaml",
+    "error": ": while parsing a block collection",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "2",
+    "line_num": 138,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "3",
+    "line_num": 174,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "5",
+    "line_num": 210,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "6",
+    "line_num": 246,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "7",
+    "line_num": 299,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "9",
+    "line_num": 342,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.01-flink-24\\flink-version-evolution-complete-guide.md",
+    "block_idx": "12",
+    "line_num": 412,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.02-flink-25\\flink-25-roadmap.md",
+    "block_idx": "0",
+    "line_num": 16,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.02-flink-25\\flink-25-roadmap.md",
+    "block_idx": "1",
+    "line_num": 45,
+    "lang": "yaml",
+    "error": ": while parsing a block collection",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.02-flink-25\\flink-25-roadmap.md",
+    "block_idx": "2",
+    "line_num": 80,
+    "lang": "yaml",
+    "error": ": while parsing a block collection",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\08-roadmap\\08.02-flink-25\\flink-25-roadmap.md",
+    "block_idx": "3",
+    "line_num": 113,
+    "lang": "yaml",
+    "error": ": while parsing a block collection",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.01-case-studies\\case-fraud-detection-advanced.md",
+    "block_idx": "7",
+    "line_num": 765,
+    "lang": "sql",
+    "error": ": 可能的语法问题 (UNKNOWN): HSET user:stats:{user_id}",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+    "block_idx": "18",
+    "line_num": 1481,
+    "lang": "python",
+    "error": ": SyntaxError: invalid syntax",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.02-benchmarking\\streaming-benchmarks.md",
+    "block_idx": "5",
+    "line_num": 361,
+    "lang": "yaml",
+    "error": ": while scanning a simple key",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.04-deployment\\flink-k8s-operator-migration-1.13-to-1.14.md",
+    "block_idx": "17",
+    "line_num": 557,
+    "lang": "yaml",
+    "error": ": while scanning a block scalar",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.04-deployment\\flink-kubernetes-operator-1.14-guide.md",
+    "block_idx": "1",
+    "line_num": 73,
+    "lang": "yaml",
+    "error": ": mapping values are not allowed here",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.04-deployment\\flink-kubernetes-operator-1.14-guide.md",
+    "block_idx": "10",
+    "line_num": 299,
+    "lang": "yaml",
+    "error": ": while scanning a simple key",
+    "type": "",
+    "code": ""
+  },
+  {
+    "file": "Flink\\09-practices\\09.04-security\\flink-24-security-enhancements.md",
+    "block_idx": "4",
+    "line_num": 162,
+    "lang": "yaml",
+    "error": ": while parsing a block mapping",
+    "type": "",
+    "code": ""
+  }
+]

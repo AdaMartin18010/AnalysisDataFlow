@@ -1,0 +1,43 @@
+{
+  "total_files": 3489,
+  "total_blocks": 10074,
+  "valid_blocks": 9622,
+  "invalid_blocks": 452,
+  "fixed_blocks": 0,
+  "dependency_errors": 107,
+  "by_language": {
+    "java": {
+      "total": 4632,
+      "valid": 4503,
+      "invalid": 129,
+      "fixed": 0,
+      "compiled": 120,
+      "dependency_errors": 107
+    },
+    "yaml": {
+      "total": 2260,
+      "valid": 2120,
+      "invalid": 140,
+      "fixed": 0,
+      "compiled": 0,
+      "dependency_errors": 0
+    },
+    "python": {
+      "total": 1266,
+      "valid": 1174,
+      "invalid": 92,
+      "fixed": 0,
+      "compiled": 0,
+      "dependency_errors": 0
+    },
+    "sql": {
+      "total": 1916,
+      "valid": 1825,
+      "invalid": 91,
+      "fixed": 0,
+      "compiled": 0,
+      "dependency_errors": 0
+    }
+  },
+  "timestamp": "2026-04-13T22:48:52.523443"
+}

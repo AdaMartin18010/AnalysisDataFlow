@@ -513,14 +513,15 @@ SELECT
 FROM user_behavior
 WHERE behavior = 'click'
 GROUP BY item_id;
+```
 
 迁移步骤:
+
 1. 在 Flash 平台创建作业
 2. 复用原 SQL 代码（无需修改）
 3. 配置 ForStDB Mini（状态 < 1GB）
 4. 启动验证
 5. 性能对比: Flink 50K TPS → Flash 350K TPS (7x)
-```
 
 **案例 2: 复杂窗口作业迁移**
 
@@ -536,13 +537,14 @@ FROM user_events
 GROUP BY
     user_id,
     SESSION(ts, INTERVAL '10' MINUTE);
+```
 
 迁移注意事项:
+
 - Session Window 原生支持度 ~70%
 - 部分逻辑可能回退到 Java 运行时
 - 建议先测试再生产
 - 实际性能: 4-5x 提升（低于简单作业）
-```
 
 **案例 3: DataStream 作业迁移**
 
@@ -556,6 +558,7 @@ DataStream<Event> stream = env
     .map(new DeserializationMapper())
     .keyBy(Event::getUserId)
     .process(new CustomProcessFunction());
+```
 
 迁移建议:
 方案 A（推荐）: 重构为 SQL/Table API
@@ -565,7 +568,6 @@ DataStream<Event> stream = env
 方案 B（保守）: 保持 DataStream，回退执行
     - 无需代码修改
     - 性能提升有限（0-30%）
-```
 
 ### 6.2 迁移检查清单
 

@@ -288,11 +288,11 @@ python .scripts/code-quality-checker.py --format json --output report.json
 
 2. **使用描述性变量名**
    ```python
-   # ✅ 推荐
-   user_profiles = load_user_data()
+# ✅ 推荐
+user_profiles = load_user_data()
 
-   # ❌ 避免
-   up = load()
+# ❌ 避免
+up = load()
    ```
 
 3. **完善的文档字符串**

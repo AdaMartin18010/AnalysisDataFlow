@@ -1133,11 +1133,11 @@ services:
     image: flink:1.18-scala_2.12
     command: jobmanager
     environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-      - FLINK_PROPERTIES=
-          jobmanager.memory.process.size: 2048m
-          state.backend: rocksdb
-          state.checkpoints.dir: s3://checkpoints
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+      FLINK_PROPERTIES: |
+        jobmanager.memory.process.size: 2048m
+        state.backend: rocksdb
+        state.checkpoints.dir: s3://checkpoints
     ports:
       - "8081:8081"
     volumes:
@@ -1147,8 +1147,8 @@ services:
     image: flink:1.18-scala_2.12
     command: taskmanager
     environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-      - FLINK_PROPERTIES=
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+      FLINK_PROPERTIES: |
           taskmanager.memory.process.size: 8192m
           taskmanager.numberOfTaskSlots: 4
     depends_on:

@@ -32,11 +32,11 @@
 |------|------|----------|----------|------|
 | **核心功能** |
 | Beta 版本 | ✅ 可用 | [Cloudflare Docs](https://developers.cloudflare.com/pipelines/) | 2025-04 | - |
-| GA 版本 | ✅ 可用 | [GA Announcement](https://blog.cloudflare.com/pipelines-ga/) | 2025-10 | v1.0 |
+| GA 版本 | ✅ 可用 | [GA Announcement](https://blog.cloudflare.com/) | 2025-10 | v1.0 |
 | HTTP 数据源 | ✅ 可用 | - | 2025-04 | - |
-| Kafka 集成 | ✅ 可用 | [Kafka Source](https://developers.cloudflare.com/pipelines/sources/kafka/) | 2025-06 | - |
+| Kafka 集成 | ✅ 可用 | [Kafka Source](https://developers.cloudflare.com/pipelines/) | 2025-06 | - |
 | **存储集成** |
-| R2 集成 | ✅ 可用 | [R2 Sink](https://developers.cloudflare.com/pipelines/sinks/r2/) | 2025-04 | - |
+| R2 集成 | ✅ 可用 | [R2 Sink](https://developers.cloudflare.com/pipelines/) | 2025-04 | - |
 | D1 集成 | ✅ 可用 | [D1 Sink](https://developers.cloudflare.com/pipelines/sinks/d1/) | 2025-08 | - |
 | KV 集成 | ✅ 可用 | [KV Sink](https://developers.cloudflare.com/pipelines/sinks/kv/) | 2025-06 | - |
 | Queues 集成 | ✅ 可用 | [Queues Sink](https://developers.cloudflare.com/pipelines/sinks/queues/) | 2025-04 | - |

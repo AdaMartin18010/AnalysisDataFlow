@@ -734,7 +734,7 @@ echo "验证完成!"
 
 ## 10. 参考文献
 
-[^1]: Apache Flink Documentation. "Exactly-once Semantics". <https://flink.apache.org/documentation/exactly-once.html>
+[^1]: Apache Flink Documentation. "Exactly-once Semantics". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly_once/>
 
 [^2]: Carbone, P., et al. (2017). "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing". Proceedings of the VLDB Endowment.
 
@@ -748,7 +748,7 @@ echo "验证完成!"
 
 [^7]: Flink Documentation. "Two-Phase Commit Sink Functions". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/streaming/api/functions/sink/TwoPhaseCommitSinkFunction.html>
 
-[^8]: Apache Kafka Documentation. "Configuring Producers for Transactions". <https://kafka.apache.org/documentation/producer-configs>
+[^8]: Apache Kafka Documentation. "Configuring Producers for Transactions". <https://kafka.apache.org/documentation/#producerconfigs>
 
 [^9]: Flink Documentation. "JdbcXaSinkFunction". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/connector/jdbc/xa/JdbcXaSinkFunction.html>
 

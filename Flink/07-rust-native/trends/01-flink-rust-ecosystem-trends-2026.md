@@ -690,9 +690,9 @@ timeline
 
 ## 8. 引用参考 (References)
 
-[^1]: P. Boncz, M. Zukowski, N. Nes, "MonetDB/X100: Hyper-Pipelining Query Execution", CIDR 2005; also see Apache Arrow performance benchmarks at <https://arrow.apache.org/benchmarks/>
+[^1]: P. Boncz, M. Zukowski, N. Nes, "MonetDB/X100: Hyper-Pipelining Query Execution", CIDR 2005; also see Apache Arrow performance benchmarks at <https://arrow.apache.org/>
 
-[^2]: WebAssembly System Interface (WASI) Preview 2, Bytecode Alliance, January 2024. <https://bytecodealliance.org/articles/WASI-Preview-2>
+[^2]: WebAssembly System Interface (WASI) Preview 2, Bytecode Alliance, January 2024. <https://bytecodealliance.org/articles>
 
 [^3]: FLIP-459: WebAssembly UDF Support, Apache Flink JIRA. <https://issues.apache.org/jira/browse/FLINK-34342>
 

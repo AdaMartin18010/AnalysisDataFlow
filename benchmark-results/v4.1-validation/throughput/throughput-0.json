@@ -1,0 +1,13 @@
+{
+  "test_name": "nexmark-0",
+  "target_throughput_meps": 4.0,
+  "start_time": "2026-04-13T14:38:36.158483",
+  "duration_seconds": 600,
+  "metrics": {
+    "actual_throughput_meps": 3.92,
+    "latency_p50_ms": 12,
+    "latency_p99_ms": 48,
+    "backpressure_detected": false
+  },
+  "status": "success"
+}

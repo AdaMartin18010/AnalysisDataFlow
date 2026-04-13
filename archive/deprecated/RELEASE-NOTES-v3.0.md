@@ -323,7 +323,7 @@ python scripts/validate_links.py
 
 - 🏠 **GitHub 仓库**: <https://github.com/your-org/AnalysisDataFlow>
 - 📖 **在线文档**: <https://analysisdataflow.readthedocs.io>
-- 🌐 **项目官网**: <https://analysisdataflow.github.io>
+- 🌐 **项目官网**: <https://github.com/luyanfeng/AnalysisDataFlow>
 
 ### 文档索引
 

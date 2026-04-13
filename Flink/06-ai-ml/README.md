@@ -559,7 +559,7 @@ mindmap
 ### 11.1 官方资源
 
 - 🔗 [Flink ML 文档](https://nightlies.apache.org/flink/flink-ml-docs-stable/)
-- 🔗 [FLIP-531 提案](https://cwiki.apache.org/confluence/display/FLINK/FLIP-531)
+- 🔗 [FLIP-531 提案](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
 - 🔗 [Google A2A 协议](https://github.com/google/a2a)
 - 🔗 [Anthropic MCP](https://modelcontextprotocol.io/)
 

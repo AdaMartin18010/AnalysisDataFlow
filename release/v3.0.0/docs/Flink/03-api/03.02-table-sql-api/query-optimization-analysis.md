@@ -823,7 +823,7 @@ SET execution.checkpointing.max-concurrent-checkpoints = '1';
 
 [^2]: Apache Flink. "Blink Planner Migration." Flink 1.9 Release Notes. <https://flink.apache.org/news/2019/08/22/release-1.9.0.html>
 
-[^3]: Apache Calcite. "HepPlanner - Heuristic Planner." Calcite Source Code. <https://calcite.apache.org/javadocs/core/org/apache/calcite/plan/hep/HepPlanner.html>
+[^3]: Apache Calcite. "HepPlanner - Heuristic Planner." Calcite Source Code. <https://github.com/apache/calcite/blob/main/core/src/main/java/org/apache/calcite/plan/hep/HepPlanner.java>
 
 [^4]: Graefe, G. "The Cascades Framework for Query Optimization." IEEE Data Engineering Bulletin, 1995.
 

@@ -848,7 +848,7 @@ stateDiagram-v2
 
 ## 8. 引用参考 (References)
 
-[^1]: MIT 6.826, "Principles of Computer Systems", Lecture 10: Practical Concurrency. <https://ocw.mit.edu/courses/6-826-principles-of-computer-systems-fall-2002/>
+[^1]: MIT 6.826, "Principles of Computer Systems", Lecture 10: Practical Concurrency. <https://ocw.mit.edu/courses/6-826-principles-of-computer-systems/>
 
 [^2]: Herlihy, M. & Shavit, N. (2012). The Art of Multiprocessor Programming, Morgan Kaufmann. Chapter 2: Mutual Exclusion.
 

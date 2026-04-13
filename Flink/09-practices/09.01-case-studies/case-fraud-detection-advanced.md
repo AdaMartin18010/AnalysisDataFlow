@@ -762,7 +762,7 @@ public class CEPFraudDetectionJob {
 
 ### 5.3 特征存储设计
 
-```sql
+```redis
 -- Redis 特征表结构
 -- 用户实时统计特征
 HSET user:stats:{user_id}

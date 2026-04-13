@@ -520,7 +520,7 @@ impl CheckpointCoordinator {
 
 **场景：实时日志分析管道**
 
-```yaml
+```toml
 # wrangler.toml - Cloudflare Workers 配置
 name = "log-pipeline"
 main = "src/index.ts"

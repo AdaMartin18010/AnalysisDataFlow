@@ -1667,7 +1667,7 @@ class ReportGenerator:
             <tbody>
         """
 
-        for result in sorted(self.data["checkpoint"],:
+        for result in sorted(self.data["checkpoint"],
                             key=lambda x: x.get("state_size_mb", 0)):
             state_size = result.get("state_size_mb", 0)
             avg_duration = result.get("avg_duration_ms", 0) / 1000

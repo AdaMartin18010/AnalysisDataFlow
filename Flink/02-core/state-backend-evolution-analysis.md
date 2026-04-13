@@ -290,8 +290,7 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置 MemoryStateBackend (已弃用)
-MemoryStateBackend memoryBackend = new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
-//
+MemoryStateBackend memoryBackend = new MemoryStateBackend(
     "hdfs://checkpoints",  // Checkpoint 存储路径
     true                    // 异步快照
 );

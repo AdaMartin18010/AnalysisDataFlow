@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 白皮书索引
 
 ## Whitepaper Index
@@ -147,7 +148,7 @@
 | **Flink企业落地指南** | 60+ | ~39KB | [📄 PDF](./pdf/flink-enterprise-implementation-guide.pdf) |
 | **实时AI架构实践白皮书** | 50+ | ~39KB | [📄 PDF](./pdf/realtime-ai-architecture-practice.pdf) |
 
-**在线下载页面**: [https://analysisdataflow.github.io/whitepapers/](https://analysisdataflow.github.io/whitepapers/)
+**在线下载页面**: [./](./)
 
 ### 格式说明
 

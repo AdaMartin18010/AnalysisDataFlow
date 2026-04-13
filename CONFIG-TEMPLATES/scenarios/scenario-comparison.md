@@ -194,11 +194,11 @@ kubectl scale deployment flink-taskmanager --replicas=10
 
 ### 6.2 场景混合部署
 
-```yaml
-# 在同一集群支持多种场景
-# 使用 Slot Sharing Group 隔离
+```java
+// 在同一集群支持多种场景
+// 使用 Slot Sharing Group 隔离
 
-# 作业 1: 低延迟
+// 作业 1: 低延迟
 env.getConfig().setExecutionBufferTimeout(0);
 stream.slotSharingGroup("latency-critical");
 

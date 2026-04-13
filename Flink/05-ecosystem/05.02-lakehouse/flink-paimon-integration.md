@@ -1558,19 +1558,19 @@ public class PaimonCompactionJob {
 
 ### 6.16 监控指标配置
 
-```sql
--- ============================================
--- 监控指标配置
--- ============================================
+```shell
+# ============================================
+# 监控指标配置
+# ============================================
 
--- Paimon 自动暴露的指标
--- 通过 Flink Metrics Reporter 收集
+# Paimon 自动暴露的指标
+# 通过 Flink Metrics Reporter 收集
 
--- 表级别指标
--- paimon.table.<table_name>.snapshot.latest
+# 表级别指标
+# paimon.table.<table_name>.snapshot.latest
 curl http://flink-jobmanager:9241/metrics
 
--- 或使用 Prometheus 集成
+# 或使用 Prometheus 集成
 ```
 
 **关键监控指标**：

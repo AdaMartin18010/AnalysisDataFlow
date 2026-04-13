@@ -1,0 +1,32 @@
+{
+  "test_name": "checkpoint-stress",
+  "state_size_gb": 100,
+  "start_time": "2026-04-13T14:38:41.713859",
+  "interval_results": [
+    {
+      "checkpoint_interval_ms": 30000,
+      "average_duration_ms": 52000,
+      "max_duration_ms": 58000,
+      "size_mb": 102400,
+      "alignment_duration_ms": 2400,
+      "failure_rate": 0.0
+    },
+    {
+      "checkpoint_interval_ms": 60000,
+      "average_duration_ms": 45000,
+      "max_duration_ms": 58000,
+      "size_mb": 102400,
+      "alignment_duration_ms": 2400,
+      "failure_rate": 0.0
+    },
+    {
+      "checkpoint_interval_ms": 120000,
+      "average_duration_ms": 52000,
+      "max_duration_ms": 58000,
+      "size_mb": 102400,
+      "alignment_duration_ms": 2400,
+      "failure_rate": 0.0
+    }
+  ],
+  "status": "success"
+}

@@ -186,8 +186,8 @@ graph TB
 
 | 课程 | 机构 | 讲师 | 平台 | 链接 |
 |-----|------|-----|------|------|
-| **6.826** | MIT | Kaashoek, Zeldovich | 官网 | <https://pdos.csail.mit.edu/6.826> [^1] |
-| **CS 263** | UC Berkeley | Stoica | 官网 | <https://cs263.readthedocs.io> [^2] |
+| **6.826** | MIT | Kaashoek, Zeldovich | 官网 | <https://pdos.csail.mit.edu/6.826/> [^1] |
+| **CS 263** | UC Berkeley | Stoica | 官网 | <[链接已失效: cs263.readthedocs.io]> [^2] |
 | **Interactive Computer Theorem Proving** | CMU | various | 官网 | <https://www.cs.cmu.edu/~fp/courses/theorem-proving/> [^3] |
 | **Advanced Topics in Programming Languages** | MIT | various | OCW | MIT OpenCourseWare [^4] |
 
@@ -277,7 +277,7 @@ graph TB
 | **coq-club** | Coq用户与开发者 | <https://sympa.inria.fr/sympa/subscribe/coq-club> |
 | **isabelle-users** | Isabelle用户 | <https://lists.cam.ac.uk/mailman/listinfo/cl-isabelle-users> |
 | **lean-user** | Lean用户 | <https://groups.google.com/g/lean-user> |
-| **spin_list** | SPIN用户 | <http://spinroot.com/spin/maillist.html> |
+| **spin_list** | SPIN用户 | <https://spinroot.com/spin/> |
 | **tlaplus** | TLA+用户 | <https://groups.google.com/g/tlaplus> |
 
 #### Discord/Slack社区
@@ -459,9 +459,9 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: MIT PDOS, "6.826 Principles of Computer Systems," <https://pdos.csail.mit.edu/6.826>
+[^1]: MIT PDOS, "6.826 Principles of Computer Systems," <https://pdos.csail.mit.edu/6.826/>
 
-[^2]: UC Berkeley, "CS 263 Graduate Systems," <https://cs263.readthedocs.io>
+[^2]: UC Berkeley, "CS 263 Graduate Systems," <[链接已失效: cs263.readthedocs.io]>
 
 [^3]: CMU, "Interactive Computer Theorem Proving," <https://www.cs.cmu.edu/~fp/courses/theorem-proving/>
 

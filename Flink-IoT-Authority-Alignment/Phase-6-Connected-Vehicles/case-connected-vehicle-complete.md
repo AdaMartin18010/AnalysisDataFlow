@@ -5569,7 +5569,7 @@ Uber的H3六边形网格系统提供了更均匀的空间划分：
 #### L.2 技术博客与白皮书
 
 1. **Ververica (原data Artisans)**. "Stream Processing Concepts: A Step-by-Step Guide."
-   - <https://www.ververica.com/blog/stream-processing-concepts>
+   - <https://www.ververica.com/blog/>
    - Flink创始团队撰写的流处理概念详解
 
 2. **Confluent**. "Kafka Streams vs. Flink: A Comparative Analysis."

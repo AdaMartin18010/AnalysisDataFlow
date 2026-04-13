@@ -73,7 +73,7 @@
 
 | 编号 | 引用 | 会议 | 年份 | 链接 | 摘要 |
 |------|------|------|------|------|------|
-| F18 | Lamport L. **"Specifying Concurrent Systems with TLA+"** | NATO ASI | 1999 | [PDF](https://lamport.azurewebsites.net/pubs/tla+book.pdf) | TLA+ 规约语言的介绍，形式化验证分布式系统 |
+| F18 | Lamport L. **"Specifying Concurrent Systems with TLA+"** | NATO ASI | 1999 | [PDF](https://lamport.azurewebsites.net/tla/book.html) | TLA+ 规约语言的介绍，形式化验证分布式系统 |
 | F19 | Lamport L. **"Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers"** | Addison-Wesley | 2002 | [书籍](https://lamport.azurewebsites.net/tla/book.html) | TLA+ 的权威教材，形式化规约的经典参考 |
 | F20 | Newcombe C., Rath T., Zhang F., et al. **"How Amazon Web Services Uses Formal Methods"** | CACM | 2015 | [PDF](https://dl.acm.org/doi/10.1145/2699417) | AWS 使用 TLA+ 进行形式化验证的工业实践 |
 | F21 | Joshi R., Lamport L., Matthews J., et al. **"Checking Cache-Coherence Protocols with TLA+"** | Form. Methods Syst. Des. | 2003 | [PDF]([Springer - Article]) | 使用 TLA+ 验证缓存一致性协议 |
@@ -220,7 +220,7 @@
 | T7 | LinkedIn | Samza: Stateful Stream Processing at LinkedIn | [Blog](https://engineering.linkedin.com/blog/2016/12/samza--stateful-stream-processing-at-linkedin) | Samza 的设计与实现 |
 | T8 | LinkedIn | How LinkedIn Uses Apache Kafka | [Blog](https://engineering.linkedin.com/blog/2019/apache-kafka) | Kafka 在 LinkedIn 的应用 |
 | T9 | Twitter | Heron: Real-Time Stream Processing at Twitter | [Blog](https://blog.twitter.com/engineering/en_us/topics/infrastructure/2015/flying-faster-with-twitter-heron) | Heron 替代 Storm 的演进 |
-| T10 | Amazon | Streaming ETL with AWS | [Blog](https://aws.amazon.com/blogs/big-data/etl-on-aws/) | AWS 流式 ETL 方案 |
+| T10 | Amazon | Streaming ETL with AWS | [Blog](https://aws.amazon.com/blogs/big-data/) | AWS 流式 ETL 方案 |
 | T11 | Confluent | Kafka Streams vs. Flink | [Blog](https://www.confluent.io/blog/kafka-streams-vs-flink/) | Kafka Streams 与 Flink 对比 |
 | T12 | Confluent | Exactly-Once Semantics in Apache Kafka | [Blog](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/) | Kafka 精确一次语义详解 |
 | T13 | Data Artisans (Ververica) | The Future of Apache Flink | [Blog](https://www.ververica.com/blog) | Flink 社区动态和路线图 |
