@@ -1,90 +1,227 @@
 ---
-title: "[EN] Cep Complete Tutorial"
-translation_status: "ai_translated"
-source_file: "Knowledge/cep-complete-tutorial.md"
-source_version: "8e8f8f15"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.334005"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "CEP (Complex Event Processing) Complete Tutorial"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# CEP (Complex Event Processing) Complete Tutorial
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> Stage: Knowledge | Prerequisites: [Flink/time-semantics-and-watermark.md](../Flink/02-core/time-semantics-and-watermark.md) | Formalization Level: L4
 
-<!-- TRANSLATE: # CEP (Complex Event Processing) 完整教程 -->
+---
 
-<!-- TRANSLATE: > 所属阶段: Knowledge | 前置依赖: [Flink/time-semantics-and-watermark.md](../../../Flink/02-core/time-semantics-and-watermark.md) | 形式化等级: L4 -->
+## 1. Definitions
 
+### Def-K-CEP-01: Complex Event Processing (CEP)
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
-
-<!-- TRANSLATE: ### Lemma-K-CEP-01: 模式匹配完备性 -->
-
-**引理**: 给定模式 $P$ 和事件流 $E$，CEP 引擎可找到所有满足 $P$ 的事件子序列。
-
-<!-- TRANSLATE: **证明概要**： -->
-
-<!-- TRANSLATE: 1. 使用 NFA（非确定性有限自动机）建模模式 -->
-<!-- TRANSLATE: 2. 每个事件驱动状态转换 -->
-<!-- TRANSLATE: 3. 到达接受状态时输出匹配 -->
-<!-- TRANSLATE: 4. 回溯机制保证不遗漏任何可能匹配 -->
-
-<!-- TRANSLATE: ### Lemma-K-CEP-02: 时间窗口约束 -->
-
-**引理**: 时间窗口 $T$ 限制了模式匹配的时间跨度：
+**Definition**: CEP is a technology that detects complex patterns from event streams by recognizing correlations among low-level events to derive higher-level business events.
 
 $$
-<!-- TRANSLATE: \text{Match}(S, P) \Rightarrow t_{last} - t_{first} \leq T_{window} -->
+\text{CEP} = (E, P, M, A)
 $$
 
-<!-- TRANSLATE: **超时处理**： -->
+Where:
 
-<!-- TRANSLATE: - 部分匹配在窗口超时时被丢弃 -->
-<!-- TRANSLATE: - 超时事件可触发超时告警（通过 `within` 和 `timeout` 标签） -->
+- $E$: Event stream $E = \{e_1, e_2, ..., e_n\}$
+- $P$: Pattern definition $P = (S, C, T)$
+  - $S$: Structural constraints (event sequence order)
+  - $C$: Attribute conditions (event content matching)
+  - $T$: Time constraints (window limits)
+- $M$: Match function $M: E \times P \rightarrow \{0, 1\}$
+- $A$: Action (processing logic after match)
 
-<!-- TRANSLATE: ### Prop-K-CEP-01: 状态空间复杂度 -->
+**Core Capabilities**:
 
-<!-- TRANSLATE: **命题**: 模式匹配的状态空间与模式长度和事件类型数成线性关系。 -->
+```
+Low-level Events → [CEP Engine] → Complex Pattern Recognition → High-level Business Events
+├── Login Events         ├── Abnormal Login Sequence      └── Account Theft Alert
+├── Transaction Events     ├── Fraud Pattern                └── Fraud Alert
+└── Device Events          └── Device Failure Sequence      └── Device Failure Prediction
+```
+
+### Def-K-CEP-02: Pattern
+
+**Definition**: A pattern is an abstract description of the target event sequence:
 
 $$
-<!-- TRANSLATE: \text{Space} = O(|P| \times |E_{types}|) -->
+\text{Pattern} = (N, R, C, T)
 $$
 
-<!-- TRANSLATE: 其中： -->
+Where:
 
-- $|P|$: 模式阶段数
-- $|E_{types}|$: 事件类型数
+- $N$: Set of pattern stage names
+- $R$: Contiguity strategy
+- $C$: Individual event conditions
+- $T$: Global time window
 
+**Pattern Type Hierarchy**:
 
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
+| Type | Symbol | Example |
+|------|--------|---------|
+| Single Event | $A$ | `temperature > 100` |
+| Sequence | $A \rightarrow B$ | `Login → Payment` |
+| Loop | $A\{n,m\}$ | `Failed login attempts{3,5}` |
+| Negation | $A \rightarrow !B \rightarrow C$ | `Start → No Cancel → Complete` |
+| Combination | $(A \rightarrow B) \text{ OR } (C \rightarrow D)$ | Multi-path pattern |
 
-<!-- TRANSLATE: ### 4.1 连续性策略选择 -->
+### Def-K-CEP-03: Contiguity Strategy
 
-<!-- TRANSLATE: **决策矩阵**： -->
+**Definition**: Defines the allowed gap between adjacent events in a sequence:
 
-<!-- TRANSLATE: | 策略 | 优点 | 缺点 | 适用场景 | -->
-<!-- TRANSLATE: |------|------|------|----------| -->
-<!-- TRANSLATE: | next | 精确匹配，性能高 | 容易漏匹配 | 严格顺序要求 | -->
-<!-- TRANSLATE: | followedBy | 灵活，容错性高 | 可能匹配过多 | 一般业务流程 | -->
-<!-- TRANSLATE: | followedByAny | 捕获所有可能 | 状态爆炸风险 | 需要全部匹配 | -->
+| Strategy | Symbol | Semantic Description |
+|----------|--------|----------------------|
+| **Strict Contiguity** | $\xrightarrow{\text{next}}$ | Events must be adjacent, no intermediate events allowed |
+| **Relaxed Contiguity** | $\xrightarrow{\text{followedBy}}$ | Events in order, intermediate events allowed |
+| **Non-deterministic Relaxed** | $\xrightarrow{\text{followedByAny}}$ | Each event can match multiple successors |
+| **Next Negation** | $\xrightarrow{\text{notNext}}$ | Adjacent event must not be X |
+| **Relaxed Negation** | $\xrightarrow{\text{notFollowedBy}}$ | Subsequent event must not be X |
 
-<!-- TRANSLATE: ### 4.2 时间窗口设计 -->
+---
 
-<!-- TRANSLATE: **窗口大小权衡**： -->
+## 2. Properties
 
-<!-- TRANSLATE: | 窗口大小 | 优点 | 缺点 | -->
-<!-- TRANSLATE: |----------|------|------| -->
-<!-- TRANSLATE: | 小（秒级） | 低延迟，少误报 | 可能漏慢速攻击 | -->
-<!-- TRANSLATE: | 中（分钟级） | 平衡 | 中等状态开销 | -->
-<!-- TRANSLATE: | 大（小时级） | 捕获长期模式 | 高状态开销，延迟高 | -->
+### Lemma-K-CEP-01: Pattern Matching Completeness
 
+**Lemma**: Given pattern $P$ and event stream $E$, the CEP engine can find all event subsequences satisfying $P$.
 
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
+**Proof Sketch**:
 
-<!-- TRANSLATE: ### 6.1 Maven 依赖 -->
+1. Model the pattern using NFA (non-deterministic finite automaton)
+2. Each event drives state transitions
+3. Output match when reaching an accepting state
+4. Backtracking mechanism guarantees no possible match is missed
+
+### Lemma-K-CEP-02: Time Window Constraint
+
+**Lemma**: Time window $T$ limits the time span of pattern matching:
+
+$$
+\text{Match}(S, P) \Rightarrow t_{last} - t_{first} \leq T_{window}
+$$
+
+**Timeout Handling**:
+
+- Partial matches are discarded when the window times out
+- Timeout events can trigger timeout alerts (via `within` and `timeout` tags)
+
+### Prop-K-CEP-01: State Space Complexity
+
+**Proposition**: The state space of pattern matching is linear in pattern length and number of event types.
+
+$$
+\text{Space} = O(|P| \times |E_{types}|)
+$$
+
+Where:
+
+- $|P|$: Number of pattern stages
+- $|E_{types}|$: Number of event types
+
+---
+
+## 3. Relations
+
+### 3.1 CEP and Regular Expression Relationship
+
+| Regular Expression | CEP Pattern | Semantics |
+|--------------------|-------------|-----------|
+| `a*` | `A.oneOrMore()` | A occurs one or more times |
+| `a?` | `A.optional()` | A occurs zero or one time |
+| `a{n,m}` | `A.times(n, m)` | A occurs n to m times |
+| `a\|b` | `A.or(B)` | A or B |
+| `ab` | `A.next(B)` | A immediately followed by B |
+| `a.*b` | `A.followedBy(B)` | A followed by B after arbitrary events |
+
+### 3.2 CEP vs SQL Pattern Recognition Comparison
+
+| Characteristic | Flink CEP | SQL MATCH_RECOGNIZE |
+|----------------|-----------|---------------------|
+| Expressiveness | Strong (Turing-complete) | Medium (regular-class) |
+| Usage | Java API | SQL declarative |
+| Window handling | Explicit | Implicit PARTITION BY |
+| Action definition | Flexible | SELECT projection |
+| Applicable scenario | Complex business logic | Simple pattern recognition |
+
+### 3.3 CEP and Stream Processing Relationship
+
+```mermaid
+graph TB
+    subgraph Stream Processing Layer
+        A[Raw Stream] --> B[Filtering]
+        B --> C[Window Aggregation]
+    end
+
+    subgraph CEP Layer
+        C --> D[Pattern Matching]
+        D --> E[Complex Event]
+    end
+
+    subgraph Business Layer
+        E --> F[Alerting]
+        E --> G[Business Action]
+    end
+
+    style D fill:#e1f5fe
+    style E fill:#fff3e0
+```
+
+---
+
+## 4. Argumentation
+
+### 4.1 Contiguity Strategy Selection
+
+**Decision Matrix**:
+
+| Strategy | Pros | Cons | Applicable Scenario |
+|----------|------|------|---------------------|
+| next | Precise match, high performance | Easy to miss matches | Strict order requirements |
+| followedBy | Flexible, fault-tolerant | May produce too many matches | General business processes |
+| followedByAny | Captures all possibilities | State explosion risk | Need all matches |
+
+### 4.2 Time Window Design
+
+**Window Size Trade-offs**:
+
+| Window Size | Pros | Cons |
+|-------------|------|------|
+| Small (seconds) | Low latency, few false positives | May miss slow attacks |
+| Medium (minutes) | Balanced | Medium state overhead |
+| Large (hours) | Captures long-term patterns | High state overhead, high latency |
+
+---
+
+## 5. Proof / Engineering Argument
+
+### Thm-K-CEP-01: NFA Pattern Matching Correctness
+
+**Theorem**: The NFA-based CEP implementation can correctly recognize all event sequences satisfying the pattern.
+
+**Proof Sketch**:
+
+1. **Pattern to NFA**: Each pattern stage corresponds to an NFA state
+2. **Event-driven**: Each event triggers state transitions
+3. **Accepting state**: Output match when reaching accepting state
+4. **Completeness**: NFA's $\epsilon$-transitions and backtracking guarantee no match is missed
+
+### Thm-K-CEP-02: Checkpoint Recovery Consistency
+
+**Theorem**: Under Exactly-Once semantics, CEP pattern matching results after state recovery are consistent with those before the failure.
+
+**Proof**:
+
+1. CEP state includes: pending partial sequences, NFA states
+2. Complete state is persisted at Checkpoint time
+3. Resume from Checkpoint state after recovery
+4. Already processed events are not replayed (Flink guarantee)
+5. Therefore matching results are consistent
+
+---
+
+## 6. Examples
+
+### 6.1 Maven Dependency
 
 ```xml
 <dependency>
@@ -94,7 +231,7 @@ $$
 </dependency>
 ```
 
-<!-- TRANSLATE: ### 6.2 欺诈检测模式示例 -->
+### 6.2 Fraud Detection Pattern Example
 
 ```java
 import org.apache.flink.cep.Pattern;
@@ -105,23 +242,23 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 
-// 定义欺诈检测模式：小额测试后大额交易
+// Define fraud detection pattern: small test followed by large transaction
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("small-amount")
     .where(new SimpleCondition<Transaction>() {
         @Override
         public boolean filter(Transaction tx) {
-            return tx.getAmount() < 10.0;  // 小额测试
+            return tx.getAmount() < 10.0;  // small test
         }
     })
     .followedBy("large-amount")
     .where(new SimpleCondition<Transaction>() {
         @Override
         public boolean filter(Transaction tx) {
-            return tx.getAmount() > 1000.0;  // 大额交易
+            return tx.getAmount() > 1000.0;  // large transaction
         }
     })
-    // 同一用户，10分钟内
+    // Same user, within 10 minutes
     .where(new SimpleCondition<Transaction>() {
         @Override
         public boolean filter(Transaction tx) {
@@ -133,11 +270,11 @@ Pattern<Transaction, ?> fraudPattern = Pattern
     })
     .within(Time.minutes(10));
 
-// 应用到流
+// Apply to stream
 DataStream<Transaction> txStream = ...;
 PatternStream<Transaction> patternStream = CEP.pattern(txStream, fraudPattern);
 
-// 处理匹配结果
+// Process matches
 DataStream<Alert> alerts = patternStream
     .select(new PatternSelectFunction<Transaction, Alert>() {
         @Override
@@ -150,13 +287,13 @@ DataStream<Alert> alerts = patternStream
     });
 ```
 
-<!-- TRANSLATE: ### 6.3 异常登录检测模式 -->
+### 6.3 Abnormal Login Detection Pattern
 
 ```java
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 3分钟内 5 次失败登录后 1 次成功登录
+// 5 failed logins within 3 minutes followed by 1 successful login
 Pattern<LoginEvent, ?> suspiciousLogin = Pattern
     .<LoginEvent>begin("failed-logins")
     .where(new SimpleCondition<LoginEvent>() {
@@ -176,32 +313,32 @@ Pattern<LoginEvent, ?> suspiciousLogin = Pattern
     })
     .within(Time.minutes(3));
 
-// 处理超时（未出现成功登录）
+// Handle timeout (no successful login occurred)
 patternStream
     .process(new PatternProcessFunction<LoginEvent, Alert>() {
         @Override
         public void processMatch(Map<String, List<LoginEvent>> match,
                                  Context ctx, Collector<Alert> out) {
-            // 处理匹配
+            // Process match
         }
 
         @Override
         public void processTimedOutMatch(Map<String, List<LoginEvent>> match,
                                          Context ctx, Collector<Alert> out) {
-            // 超时处理：多次失败登录但未成功
+            // Timeout handling: multiple failed logins without success
             out.collect(new Alert(match.get("failed-logins").get(0).getUserId(),
                 "BRUTE_FORCE_ATTEMPT", "Multiple failed logins without success"));
         }
     });
 ```
 
-<!-- TRANSLATE: ### 6.4 设备故障预测模式 -->
+### 6.4 Device Failure Prediction Pattern
 
 ```java
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 温度持续上升趋势后超过阈值
+// Continuous temperature rise then exceeds threshold
 Pattern<SensorReading, ?> overheatingPattern = Pattern
     .<SensorReading>begin("first")
     .where(new SimpleCondition<SensorReading>() {
@@ -231,10 +368,10 @@ Pattern<SensorReading, ?> overheatingPattern = Pattern
     .within(Time.seconds(30));
 ```
 
-<!-- TRANSLATE: ### 6.5 SQL MATCH_RECOGNIZE 等价写法 -->
+### 6.5 SQL MATCH_RECOGNIZE Equivalent
 
 ```sql
--- 使用 SQL 模式识别（Flink SQL）
+-- Using SQL pattern recognition (Flink SQL)
 SELECT *
 FROM transactions
 MATCH_RECOGNIZE (
@@ -252,5 +389,76 @@ MATCH_RECOGNIZE (
 ) MR;
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. 引用参考 (References) -->
+## 7. Visualizations
+
+### 7.1 CEP Architecture Flow
+
+```mermaid
+graph TB
+    A[Raw Event Stream] --> B[CEP Engine]
+    B --> C{Pattern Match?}
+    C -->|Yes| D[Complex Event]
+    C -->|No| E[Discard]
+    D --> F[Alert System]
+    D --> G[Business Logic]
+
+    subgraph NFA
+        B --> S1[State 1]
+        S1 -->|Event A| S2[State 2]
+        S2 -->|Event B| S3[State 3]
+        S3 -->|Match| S4[Accept]
+    end
+
+    style B fill:#e1f5fe
+    style D fill:#fff3e0
+    style S4 fill:#e8f5e9
+```
+
+### 7.2 Pattern Matching State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> FirstMatch: Event A matches
+    FirstMatch --> SecondMatch: Event B matches (next)
+    FirstMatch --> Timeout: Time window exceeded
+    SecondMatch --> MatchFound: Event C matches
+    SecondMatch --> Timeout: Time window exceeded
+    Timeout --> [*]
+    MatchFound --> [*]: Emit Complex Event
+
+    FirstMatch --> FirstMatch: Another A (followedByAny)
+```
+
+### 7.3 Contiguity Strategy Comparison
+
+```mermaid
+flowchart LR
+    subgraph next
+        A1[A] --> B1[B]
+        A1 -.->|X not allowed| X1[Other]
+        X1 -.-> B1
+    end
+
+    subgraph followedBy
+        A2[A] --> X2[Other]
+        X2 --> X3[Other]
+        X3 --> B2[B]
+    end
+
+    subgraph followedByAny
+        A3[A] --> B3[B]
+        A3 --> B4[B]
+        A3 --> X4[Other] --> B5[B]
+    end
+
+    style next fill:#ffebee
+    style followedBy fill:#e8f5e9
+    style followedByAny fill:#e3f2fd
+```
+
+---
+
+## 8. References

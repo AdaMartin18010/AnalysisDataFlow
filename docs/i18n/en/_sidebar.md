@@ -7,7 +7,9 @@
 ## 🚀 Getting Started
 
 - [Project Overview](00-OVERVIEW.md)
+- [Documentation Index](00-INDEX.md)
 - [Quick Start Guide](04-QUICK-START.md)
+- [Flink Quick Start](FLINK-QUICK-START.md)
 - [Learning Path Guide](05-LEARNING-PATH.md)
 - [Glossary](GLOSSARY.md)
 
@@ -58,15 +60,20 @@
 
 ### Reference Documents
 
-- [Architecture Guide](../../../en/ARCHITECTURE.md)
+- [Architecture Guide](./ARCHITECTURE.md)
 - [Theorem Registry](../../../THEOREM-REGISTRY.md)
 - [Project Tracking](../../../PROJECT-TRACKING.md)
 - [Value Proposition](../../../VALUE-PROPOSITION.md)
 
 ### Guides
 
-- [Best Practices](../../../BEST-PRACTICES.md)
-- [Troubleshooting](../../../TROUBLESHOOTING.md)
+- [Architecture Guide](./ARCHITECTURE.md)
+- [Best Practices](./BEST-PRACTICES.md)
+- [Troubleshooting](./TROUBLESHOOTING.md)
+- [Observability Guide](./OBSERVABILITY-GUIDE.md)
+- [Knowledge Graph Guide](./KNOWLEDGE-GRAPH-GUIDE.md)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Document Template](./TEMPLATE.md)
 - [FAQ](../../../FAQ.md)
 
 ---

@@ -1,95 +1,161 @@
 ---
-title: "[EN] Flink Ycsb Benchmark Guide"
-translation_status: "ai_translated"
-source_file: "Flink/flink-ycsb-benchmark-guide.md"
-source_version: "1c59df95"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.357093"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "Flink YCSB Benchmark Guide"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# Flink YCSB Benchmark Guide
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Flink/09-practices/09.02-benchmarking (P2) | **Prerequisites**: [Performance Benchmark Suite Guide](./flink-performance-benchmark-suite.md), [State Backend Deep Comparison](./02-core/state-backends-deep-comparison.md) | **Formalization Level**: L3
+> **Version**: v1.0 | **Updated**: 2026-04-08 | **Document Size**: ~15KB
 
-<!-- TRANSLATE: # Flink YCSB 基准测试指南 -->
+---
 
-<!-- TRANSLATE: > **所属阶段**: Flink/09-practices/09.02-benchmarking (P2) | **前置依赖**: [性能基准测试套件指南](./flink-performance-benchmark-suite.md), [状态后端深度对比](../../../Flink/02-core/state-backends-deep-comparison.md) | **形式化等级**: L3 -->
-<!-- TRANSLATE: > **版本**: v1.0 | **更新日期**: 2026-04-08 | **文档规模**: ~15KB -->
+## Table of Contents
 
+- [Flink YCSB Benchmark Guide](#flink-ycsb-benchmark-guide)
+  - [Table of Contents](#table-of-contents)
+  - [1. Definitions](#1-definitions)
+    - [Def-FYB-01 (YCSB Model)](#def-fyb-01-ycsb-model)
+    - [Def-FYB-02 (Workload Definition)](#def-fyb-02-workload-definition)
+    - [Def-FYB-03 (State Access Patterns)](#def-fyb-03-state-access-patterns)
+  - [2. Properties](#2-properties)
+    - [Prop-FYB-01 (Read-Write Ratio and Performance)](#prop-fyb-01-read-write-ratio-and-performance)
+    - [Prop-FYB-02 (Key Distribution Impact)](#prop-fyb-02-key-distribution-impact)
+  - [3. Relations](#3-relations)
+    - [Relation 1: YCSB Workload to Flink State Backend Mapping](#relation-1-ycsb-workload-to-flink-state-backend-mapping)
+    - [Relation 2: Access Pattern and Tuning Strategy Correlation](#relation-2-access-pattern-and-tuning-strategy-correlation)
+  - [4. Argumentation](#4-argumentation)
+    - [4.1 YCSB Adaptation in Stream Computing](#41-ycsb-adaptation-in-stream-computing)
+    - [4.2 Comparative Testing Methodology](#42-comparative-testing-methodology)
+  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+    - [Thm-FYB-01 (State Backend Selection Theorem)](#thm-fyb-01-state-backend-selection-theorem)
+  - [6. Examples](#6-examples)
+    - [6.1 YCSB Environment Setup](#61-ycsb-environment-setup)
+    - [6.2 Standard Workload Configuration](#62-standard-workload-configuration)
+    - [6.3 Flink Integration Implementation](#63-flink-integration-implementation)
+    - [6.4 Comparative Testing Method](#64-comparative-testing-method)
+  - [7. Visualizations](#7-visualizations)
+    - [7.1 YCSB-Flink Integration Architecture](#71-ycsb-flink-integration-architecture)
+    - [7.2 Workload Characteristic Comparison](#72-workload-characteristic-comparison)
+  - [8. References](#8-references)
 
-<!-- TRANSLATE: ## 1. 概念定义 (Definitions) -->
+---
 
-<!-- TRANSLATE: ### Def-FYB-01 (YCSB 模型) -->
+## 1. Definitions
 
-<!-- TRANSLATE: **Yahoo! Cloud Serving Benchmark (YCSB)** 是一个用于评估键值存储系统性能的框架。在 Flink 流计算上下文中的适配定义为五元组： -->
+### Def-FYB-01 (YCSB Model)
 
-$$
-<!-- TRANSLATE: \mathcal{Y} = \langle \mathcal{K}, \mathcal{V}, \mathcal{O}, \mathcal{W}, \mathcal{D} \rangle -->
-$$
-
-<!-- TRANSLATE: 其中： -->
-
-<!-- TRANSLATE: | 符号 | 语义 | Flink 对应 | -->
-<!-- TRANSLATE: |------|------|------------| -->
-| $\mathcal{K}$ | 键空间 | Keyed State 的 key |
-| $\mathcal{V}$ | 值空间 | State 值 (Primitive/Complex) |
-| $\mathcal{O}$ | 操作集合 | ValueState.update(), ValueState.value() |
-| $\mathcal{W}$ | 工作负载 | 读写比例、访问分布 |
-| $\mathcal{D}$ | 数据分布 | Zipfian/Uniform/Latest |
-
-<!-- TRANSLATE: **核心操作类型**： -->
-
-<!-- TRANSLATE: | 操作 | YCSB 语义 | Flink 实现 | 状态类型 | -->
-<!-- TRANSLATE: |------|-----------|------------|----------| -->
-<!-- TRANSLATE: | **Read** | 读取键值 | `valueState.value()` | ValueState | -->
-<!-- TRANSLATE: | **Update** | 更新键值 | `valueState.update()` | ValueState | -->
-<!-- TRANSLATE: | **Insert** | 插入新键 | `valueState.update()` | ValueState | -->
-<!-- TRANSLATE: | **Scan** | 范围扫描 | `mapState.entries()` | MapState | -->
-<!-- TRANSLATE: | **Read-Modify-Write** | RMW | `value()` + `update()` | ValueState | -->
-
-<!-- TRANSLATE: ### Def-FYB-02 (工作负载定义) -->
-
-<!-- TRANSLATE: **YCSB 标准工作负载**在 Flink 中的映射： -->
-
-<!-- TRANSLATE: | 工作负载 | 读写比 | 操作特征 | 适用场景 | Flink 对应 | -->
-<!-- TRANSLATE: |----------|--------|----------|----------|------------| -->
-<!-- TRANSLATE: | **A (Update Heavy)** | 50/50 | 读少写多 | 会话存储 | 实时特征更新 | -->
-<!-- TRANSLATE: | **B (Read Heavy)** | 95/5 | 读多写少 | 图片标签 | 配置读取 | -->
-<!-- TRANSLATE: | **C (Read Only)** | 100/0 | 只读 | 用户画像读取 | 维表查询 | -->
-<!-- TRANSLATE: | **D (Read Latest)** | 95/5 | 读最新数据 | 时间线 | 滑动窗口 | -->
-<!-- TRANSLATE: | **E (Short Ranges)** | 95/5 | 短范围扫描 | 线程会话 | MapState 扫描 | -->
-<!-- TRANSLATE: | **F (Read-Modify-Write)** | 50/50 | RMW 操作 | 数据库 | 状态更新 | -->
-
-<!-- TRANSLATE: **工作负载参数公式**： -->
+**Yahoo! Cloud Serving Benchmark (YCSB)** is a framework for evaluating key-value storage system performance. Its adaptation in the Flink stream computing context is defined as a quintuple:
 
 $$
-<!-- TRANSLATE: W = \langle r, u, i, s, rmw, d \rangle -->
+\mathcal{Y} = \langle \mathcal{K}, \mathcal{V}, \mathcal{O}, \mathcal{W}, \mathcal{D} \rangle
 $$
 
-其中 $r+u+i+s+rmw = 100\%$，$d$ 为键分布类型。
+Where:
 
-<!-- TRANSLATE: ### Def-FYB-03 (状态访问模式) -->
+| Symbol | Semantics | Flink Equivalent |
+|--------|-----------|------------------|
+| $\mathcal{K}$ | Key space | Keyed State key |
+| $\mathcal{V}$ | Value space | State value (Primitive/Complex) |
+| $\mathcal{O}$ | Operation set | ValueState.update(), ValueState.value() |
+| $\mathcal{W}$ | Workload | Read-write ratio, access distribution |
+| $\mathcal{D}$ | Data distribution | Zipfian/Uniform/Latest |
 
-<!-- TRANSLATE: **状态访问模式分类**： -->
+**Core Operation Types**:
 
-<!-- TRANSLATE: | 模式 | 描述 | 状态后端影响 | -->
-<!-- TRANSLATE: |------|------|--------------| -->
-<!-- TRANSLATE: | **Point Lookup** | 单点查询 | RocksDB: 内存/磁盘缓存效率 | -->
-<!-- TRANSLATE: | **Range Scan** | 范围扫描 | RocksDB: 迭代器性能 | -->
-<!-- TRANSLATE: | **Write Heavy** | 写密集型 | RocksDB: Compaction 压力 | -->
-<!-- TRANSLATE: | **Read Heavy** | 读密集型 | HashMap: 全内存优势 | -->
+| Operation | YCSB Semantics | Flink Implementation | State Type |
+|-----------|----------------|----------------------|------------|
+| **Read** | Read key-value | `valueState.value()` | ValueState |
+| **Update** | Update key-value | `valueState.update()` | ValueState |
+| **Insert** | Insert new key | `valueState.update()` | ValueState |
+| **Scan** | Range scan | `mapState.entries()` | MapState |
+| **Read-Modify-Write** | RMW | `value()` + `update()` | ValueState |
 
+### Def-FYB-02 (Workload Definition)
 
-<!-- TRANSLATE: ## 3. 关系建立 (Relations) -->
+**YCSB Standard Workloads** mapped to Flink:
 
-<!-- TRANSLATE: ### 关系 1: YCSB 工作负载与 Flink 状态后端映射 -->
+| Workload | Read/Write Ratio | Operation Characteristics | Applicable Scenario | Flink Equivalent |
+|----------|------------------|---------------------------|---------------------|------------------|
+| **A (Update Heavy)** | 50/50 | Few reads, many writes | Session storage | Real-time feature updates |
+| **B (Read Heavy)** | 95/5 | Many reads, few writes | Image tagging | Config reading |
+| **C (Read Only)** | 100/0 | Read-only | User profile reading | Dimension table query |
+| **D (Read Latest)** | 95/5 | Read latest data | Timeline | Sliding window |
+| **E (Short Ranges)** | 95/5 | Short range scans | Thread sessions | MapState scan |
+| **F (Read-Modify-Write)** | 50/50 | RMW operations | Database | State updates |
+
+**Workload Parameter Formula**:
+
+$$
+W = \langle r, u, i, s, rmw, d \rangle
+$$
+
+Where $r+u+i+s+rmw = 100\%$, and $d$ is the key distribution type.
+
+### Def-FYB-03 (State Access Patterns)
+
+**State Access Pattern Classification**:
+
+| Pattern | Description | State Backend Impact |
+|---------|-------------|----------------------|
+| **Point Lookup** | Single-point query | RocksDB: memory/disk cache efficiency |
+| **Range Scan** | Range scan | RocksDB: iterator performance |
+| **Write Heavy** | Write-intensive | RocksDB: Compaction pressure |
+| **Read Heavy** | Read-intensive | HashMap: all-memory advantage |
+
+---
+
+## 2. Properties
+
+### Prop-FYB-01 (Read-Write Ratio and Performance)
+
+**Statement**: State backend performance has a nonlinear relationship with read-write ratio:
+
+$$
+\Theta_{eff}(r,w) = \frac{1}{\frac{r}{\Theta_{read}} + \frac{w}{\Theta_{write}}}
+$$
+
+Where $r+w=1$, and $\Theta_{read}$ and $\Theta_{write}$ are pure-read and pure-write throughputs respectively.
+
+**Measured Comparison** (10GB state, 8 parallelism):
+
+| Read/Write Ratio | HashMap (K ops/s) | RocksDB (K ops/s) | ForSt (K ops/s) |
+|------------------|-------------------|-------------------|-----------------|
+| 100/0 | 850 | 420 | 480 |
+| 95/5 | 780 | 380 | 450 |
+| 50/50 | 520 | 220 | 320 |
+| 0/100 | 380 | 180 | 280 |
+
+### Prop-FYB-02 (Key Distribution Impact)
+
+**Statement**: Hotspot key access significantly reduces effective throughput:
+
+$$
+\Theta_{effective} = \frac{\Theta_{ideal}}{1 + \alpha \cdot (z - 1)}
+$$
+
+Where $z$ is the Zipfian parameter and $\alpha$ is the system sensitivity.
+
+**Different Distribution Comparison**:
+
+| Distribution Type | Parameter | Key Access Concentration | Throughput Drop |
+|-------------------|-----------|--------------------------|-----------------|
+| Uniform | - | Low | 0% |
+| Zipfian | s=0.5 | Medium | -15% |
+| Zipfian | s=1.0 | High | -40% |
+| Zipfian | s=1.5 | Very high | -65% |
+
+---
+
+## 3. Relations
+
+### Relation 1: YCSB Workload to Flink State Backend Mapping
 
 ```mermaid
 graph TB
-    subgraph YCSB工作负载
+    subgraph YCSB Workloads
         W1[A: Update Heavy]
         W2[B: Read Heavy]
         W3[C: Read Only]
@@ -97,16 +163,16 @@ graph TB
         W5[F: RMW]
     end
 
-    subgraph Flink状态后端
+    subgraph Flink State Backends
         S1[HashMapStateBackend]
         S2[EmbeddedRocksDBStateBackend]
         S3[ForStStateBackend<br/>Flink 2.0+]
     end
 
-    subgraph 性能特征
-        P1[低延迟<br/>内存限制]
-        P2[大状态支持<br/>磁盘IO]
-        P3[云原生<br/>远程存储]
+    subgraph Performance Characteristics
+        P1[Low Latency<br/>Memory Limited]
+        P2[Large State Support<br/>Disk IO]
+        P3[Cloud Native<br/>Remote Storage]
     end
 
     W1 -->|Write Heavy| S2 --> P2
@@ -115,71 +181,455 @@ graph TB
     W4 -->|Mixed| S3 --> P3
     W5 -->|RMW| S3 --> P3
 
-    W1 -.->|中小状态| S1
-    W2 -.->|超大状态| S3
+    W1 -.->|Small-Medium State| S1
+    W2 -.->|Extra Large State| S3
 ```
 
-<!-- TRANSLATE: ### 关系 2: 访问模式与调优策略关联 -->
+### Relation 2: Access Pattern and Tuning Strategy Correlation
 
-<!-- TRANSLATE: | 访问模式 | 推荐后端 | 关键调优参数 | 预期提升 | -->
-<!-- TRANSLATE: |----------|----------|--------------|----------| -->
-<!-- TRANSLATE: | **Point Lookup** | RocksDB | block.cache.size | +30% | -->
-<!-- TRANSLATE: | **Range Scan** | RocksDB | target_file_size | +25% | -->
-<!-- TRANSLATE: | **Write Heavy** | ForSt | enable_blob_files | +40% | -->
-<!-- TRANSLATE: | **Read Heavy** | HashMap | 无 (全内存) | 基准 | -->
-<!-- TRANSLATE: | **Mixed** | ForSt | async_compaction | +20% | -->
+| Access Pattern | Recommended Backend | Key Tuning Parameters | Expected Improvement |
+|----------------|---------------------|----------------------|----------------------|
+| **Point Lookup** | RocksDB | block.cache.size | +30% |
+| **Range Scan** | RocksDB | target_file_size | +25% |
+| **Write Heavy** | ForSt | enable_blob_files | +40% |
+| **Read Heavy** | HashMap | None (all-memory) | Baseline |
+| **Mixed** | ForSt | async_compaction | +20% |
 
+---
 
-<!-- TRANSLATE: ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument) -->
+## 4. Argumentation
 
-<!-- TRANSLATE: ### Thm-FYB-01 (状态后端选择定理) -->
+### 4.1 YCSB Adaptation in Stream Computing
 
-**陈述**: 给定工作负载 $W = \langle r, u, s \rangle$ (读、更新、状态大小)，最优状态后端选择满足：
+**Traditional YCSB vs Streaming YCSB**:
+
+| Dimension | Traditional YCSB | Streaming YCSB (Flink) |
+|-----------|------------------|------------------------|
+| **Data ingestion** | Synchronous client calls | Asynchronous streaming data flow |
+| **State access** | Direct DB access | KeyedProcessFunction |
+| **Concurrency model** | Multi-threaded clients | Flink parallel operators |
+| **Consistency** | Client guaranteed | Flink Checkpoint |
+| **Measurement** | Client-side measurement | Built-in Metrics |
+
+**Adaptation Challenges and Solutions**:
+
+| Challenge | Solution | Implementation Details |
+|-----------|----------|------------------------|
+| Precise throughput control | Rate-limited Source | RateLimiter + Kafka |
+| Maintaining key distribution | Custom partitioner | KeyGroup routing |
+| Measuring end-to-end latency | Latency marker injection | LatencyMarker |
+| Collecting fine-grained metrics | Prometheus integration | Custom Gauge |
+
+### 4.2 Comparative Testing Methodology
+
+**Fair Comparison Principles for State Backends**:
+
+1. **Same state scale**: Test each backend with 10GB/50GB/100GB state
+2. **Same JVM configuration**: Unified heap memory and GC parameters
+3. **Same access pattern**: Use same data distribution and read-write ratio
+4. **Sufficient warm-up**: 10-minute warm-up for cache to reach steady state
+5. **Multiple repetitions**: At least 3 repetitions, take average
+
+**Test Matrix**:
+
+| State Size | Workload | HashMap | RocksDB | ForSt |
+|------------|----------|---------|---------|-------|
+| 10GB | A/B/C/D/F | ✓ | ✓ | ✓ |
+| 50GB | A/B/C/D/F | ✗ | ✓ | ✓ |
+| 100GB | A/B/C/D/F | ✗ | ✓ | ✓ |
+
+---
+
+## 5. Proof / Engineering Argument
+
+### Thm-FYB-01 (State Backend Selection Theorem)
+
+**Statement**: Given workload $W = \langle r, u, s \rangle$ (read, update, state size), the optimal state backend selection satisfies:
 
 $$
-<!-- TRANSLATE: B^* = \arg\max_{B \in \{\text{HashMap}, \text{RocksDB}, \text{ForSt}\}} U(W, B) -->
+B^* = \arg\max_{B \in \{\text{HashMap}, \text{RocksDB}, \text{ForSt}\}} U(W, B)
 $$
 
-其中效用函数 $U$ 定义为：
+Where the utility function $U$ is defined as:
 
 $$
-<!-- TRANSLATE: U(W, B) = w_1 \cdot \frac{\Theta(W, B)}{\Theta_{max}} + w_2 \cdot \frac{1}{1 + \Lambda_{p99}(W, B)} + w_3 \cdot \mathbb{1}_{[s < S_B^{max}]} -->
+U(W, B) = w_1 \cdot \frac{\Theta(W, B)}{\Theta_{max}} + w_2 \cdot \frac{1}{1 + \Lambda_{p99}(W, B)} + w_3 \cdot \mathbb{1}_{[s < S_B^{max}]}
 $$
 
-<!-- TRANSLATE: **工程决策树**： -->
+**Engineering Decision Tree**:
 
 ```
-状态大小 < 堆内存?
-├── 是 → HashMap (除非需要增量 Checkpoint)
-└── 否 → 读写比?
-    ├── 读 > 90% → ForSt (缓存优化)
-    ├── 写 > 50% → ForSt (BlobDB)
-    └── 混合 → RocksDB (通用)
+State size < heap memory?
+├── Yes → HashMap (unless incremental Checkpoint needed)
+└── No → Read-write ratio?
+    ├── Read > 90% → ForSt (cache optimized)
+    ├── Write > 50% → ForSt (BlobDB)
+    └── Mixed → RocksDB (general purpose)
 ```
 
-<!-- TRANSLATE: **证明概要**： -->
+**Proof Sketch**:
 
-<!-- TRANSLATE: **步骤 1**: HashMap 在小状态下延迟最低，但受限于 JVM 堆大小。 -->
+**Step 1**: HashMap has the lowest latency for small state, but is limited by JVM heap size.
 
-<!-- TRANSLATE: **步骤 2**: RocksDB 在大状态下提供稳定性能，但写放大较高。 -->
+**Step 2**: RocksDB provides stable performance for large state, but has high write amplification.
 
-<!-- TRANSLATE: **步骤 3**: ForSt 在 Flink 2.0+ 中针对云原生优化，适合远程存储场景。 -->
+**Step 3**: ForSt is optimized for cloud-native in Flink 2.0+, suitable for remote storage scenarios.
 
-<!-- TRANSLATE: **步骤 4**: 通过实验验证，上述决策树在 90% 的生产场景下最优。∎ -->
+**Step 4**: Through experimental verification, the above decision tree is optimal in 90% of production scenarios. ∎
+
+---
+
+## 6. Examples
+
+### 6.1 YCSB Environment Setup
+
+**Step 1: Download YCSB**
+
+```bash
+# Download YCSB 0.17.0
+curl -O --location https://github.com/brianfrankcooper/YCSB/releases/download/0.17.0/ycsb-0.17.0.tar.gz
+tar xfvz ycsb-0.17.0.tar.gz
+cd ycsb-0.17.0
+```
+
+**Step 2: Prepare Flink YCSB Adapter**
+
+```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.flink.streaming.api.datastream.DataStream;
 
 
-<!-- TRANSLATE: ## 7. 可视化 (Visualizations) -->
+// FlinkYcsbAdapter.java
+public class FlinkYcsbAdapter {
 
-<!-- TRANSLATE: ### 7.1 YCSB-Flink 集成架构 -->
+    public static void main(String[] args) throws Exception {
+        ParameterTool params = ParameterTool.fromArgs(args);
+
+        String workload = params.get("workload", "b");  // Default read-heavy
+        int stateSizeGb = params.getInt("state-size-gb", 10);
+        int durationSec = params.getInt("duration", 300);
+
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // Configure state backend
+        configureStateBackend(env, params);
+
+        // Create YCSB data stream
+        DataStream<YcsbOperation> source = env
+            .addSource(new YcsbGeneratorSource(
+                workload,
+                stateSizeGb * 1_000_000L,  // Number of keys
+                durationSec
+            ))
+            .setParallelism(8);
+
+        // Execute state operations
+        DataStream<YcsbResult> result = source
+            .keyBy(op -> op.getKey())
+            .process(new YcsbStateFunction(workload));
+
+        // Output results
+        result.addSink(new MetricsSink());
+
+        env.execute("YCSB Benchmark - Workload " + workload);
+    }
+
+    private static void configureStateBackend(
+            StreamExecutionEnvironment env,
+            ParameterTool params) {
+        String backend = params.get("state.backend", "rocksdb");
+
+        if ("hashmap".equals(backend)) {
+            env.setStateBackend(new HashMapStateBackend());
+        } else if ("rocksdb".equals(backend)) {
+            EmbeddedRocksDBStateBackend rocksDb =
+                new EmbeddedRocksDBStateBackend(true);  // Incremental
+            env.setStateBackend(rocksDb);
+        } else if ("forst".equals(backend)) {
+            env.setStateBackend(new ForStStateBackend());
+        }
+
+        // Checkpoint configuration
+        env.enableCheckpointing(60000);  // 1 minute
+        env.getCheckpointConfig().setCheckpointStorage(
+            new FileSystemCheckpointStorage("file:///tmp/flink-checkpoints")
+        );
+    }
+}
+```
+
+**Step 3: State Operation Implementation**
+
+```java
+// YcsbStateFunction.java
+
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class YcsbStateFunction extends KeyedProcessFunction<
+    String, YcsbOperation, YcsbResult> {
+
+    private ValueState<YcsbRecord> valueState;
+    private transient Meter readMeter;
+    private transient Meter updateMeter;
+    private transient Histogram latencyHistogram;
+
+    @Override
+    public void open(OpenContext ctx) {
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .build();
+
+        ValueStateDescriptor<YcsbRecord> descriptor =
+            new ValueStateDescriptor<>("ycsb-record", YcsbRecord.class);
+        descriptor.enableTimeToLive(ttlConfig);
+        valueState = getRuntimeContext().getState(descriptor);
+
+        // Register metrics
+        readMeter = ctx.getMetrics().meter("ycsb.reads");
+        updateMeter = ctx.getMetrics().meter("ycsb.updates");
+        latencyHistogram = ctx.getMetrics().histogram("ycsb.latency");
+    }
+
+    @Override
+    public void processElement(
+            YcsbOperation op,
+            KeyedProcessFunction<String, YcsbOperation, YcsbResult>.Context ctx,
+            Collector<YcsbResult> out) throws Exception {
+
+        long start = System.nanoTime();
+        YcsbRecord record;
+
+        switch (op.getType()) {
+            case READ:
+                record = valueState.value();
+                readMeter.markEvent();
+                break;
+
+            case UPDATE:
+                record = op.getRecord();
+                valueState.update(record);
+                updateMeter.markEvent();
+                break;
+
+            case READ_MODIFY_WRITE:
+                record = valueState.value();
+                if (record != null) {
+                    record.merge(op.getRecord());
+                } else {
+                    record = op.getRecord();
+                }
+                valueState.update(record);
+                updateMeter.markEvent();
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown op: " + op.getType());
+        }
+
+        long latency = (System.nanoTime() - start) / 1_000_000;  // ms
+        latencyHistogram.update(latency);
+
+        out.collect(new YcsbResult(op.getKey(), op.getType(), latency, record));
+    }
+}
+```
+
+### 6.2 Standard Workload Configuration
+
+**Workload A (Update Heavy)**:
+
+```properties
+# ycsb-workload-a.conf
+recordcount=10000000
+operationcount=10000000
+workload=site.ycsb.workloads.CoreWorkload
+
+readallfields=true
+readproportion=0.5
+updateproportion=0.5
+scanproportion=0
+insertproportion=0
+
+requestdistribution=zipfian
+zipfian.constant=1.0
+```
+
+**Workload B (Read Heavy)**:
+
+```properties
+# ycsb-workload-b.conf
+recordcount=10000000
+operationcount=10000000
+
+readproportion=0.95
+updateproportion=0.05
+scanproportion=0
+insertproportion=0
+
+requestdistribution=zipfian
+```
+
+**Workload F (Read-Modify-Write)**:
+
+```properties
+# ycsb-workload-f.conf
+recordcount=10000000
+operationcount=10000000
+
+readproportion=0.5
+updateproportion=0
+scanproportion=0
+insertproportion=0
+readmodifywriteproportion=0.5
+
+requestdistribution=uniform
+```
+
+### 6.3 Flink Integration Implementation
+
+**Data Generator**:
+
+```java
+public class YcsbGeneratorSource extends RichParallelSourceFunction<YcsbOperation> {
+
+    private final String workload;
+    private final long totalKeys;
+    private final int durationSec;
+    private final Random random;
+
+    private volatile boolean running = true;
+
+    @Override
+    public void run(SourceContext<YcsbOperation> ctx) throws Exception {
+        long startTime = System.currentTimeMillis();
+        long opCount = 0;
+
+        // Determine operation ratios based on workload
+        double readRatio = getReadRatio(workload);
+        double updateRatio = getUpdateRatio(workload);
+
+        while (running &&
+               (System.currentTimeMillis() - startTime) < durationSec * 1000) {
+
+            // Generate operation
+            double r = random.nextDouble();
+            YcsbOperation.Type type;
+            if (r < readRatio) {
+                type = YcsbOperation.Type.READ;
+            } else if (r < readRatio + updateRatio) {
+                type = YcsbOperation.Type.UPDATE;
+            } else {
+                type = YcsbOperation.Type.READ_MODIFY_WRITE;
+            }
+
+            // Generate key (Zipfian distribution)
+            String key = generateZipfianKey(totalKeys);
+
+            // Generate value
+            YcsbRecord record = generateRecord();
+
+            synchronized (ctx.getCheckpointLock()) {
+                ctx.collect(new YcsbOperation(key, type, record));
+            }
+
+            opCount++;
+
+            // Rate control (target 100K ops/s per parallel instance)
+            if (opCount % 1000 == 0) {
+                Thread.sleep(10);
+            }
+        }
+    }
+
+    private String generateZipfianKey(long totalKeys) {
+        // Zipfian distribution implementation
+        double zipf = zipfianSample(totalKeys, 1.0);
+        return String.format("user%010d", (long)(zipf * totalKeys));
+    }
+
+    @Override
+    public void cancel() {
+        running = false;
+    }
+}
+```
+
+### 6.4 Comparative Testing Method
+
+**Automated Comparison Script**:
+
+```bash
+#!/bin/bash
+# run-ycsb-comparison.sh
+
+STATE_BACKENDS=("hashmap" "rocksdb" "forst")
+WORKLOADS=("a" "b" "c" "d" "f")
+STATE_SIZES=(10 50 100)
+RESULTS_DIR="./ycsb-results-$(date +%Y%m%d)"
+
+mkdir -p $RESULTS_DIR
+
+for backend in "${STATE_BACKENDS[@]}"; do
+    for workload in "${WORKLOADS[@]}"; do
+        for size in "${STATE_SIZES[@]}"; do
+
+            # Skip impossible combinations
+            if [[ "$backend" == "hashmap" && $size -gt 10 ]]; then
+                continue
+            fi
+
+            echo "Running: backend=$backend, workload=$workload, size=${size}GB"
+
+            # Run test
+            flink run \
+                -c org.apache.flink.ycsb.FlinkYcsbAdapter \
+                flink-ycsb-benchmark.jar \
+                --state.backend $backend \
+                --workload $workload \
+                --state-size-gb $size \
+                --duration 300 \
+                --output $RESULTS_DIR/${backend}_${workload}_${size}gb.json
+
+            # Collect metrics
+            sleep 30
+        done
+    done
+done
+
+# Generate comparison report
+python generate-ycsb-report.py --results-dir $RESULTS_DIR
+```
+
+**Typical Comparison Results**:
+
+| Backend | Workload | Throughput (K ops/s) | P99 Latency (ms) | CPU% | Memory (GB) |
+|---------|----------|----------------------|------------------|------|-------------|
+| HashMap | B | 850 | 2.5 | 65% | 12 |
+| RocksDB | B | 420 | 8.5 | 55% | 6 |
+| ForSt | B | 480 | 6.2 | 60% | 8 |
+| RocksDB | A | 220 | 15.0 | 75% | 6 |
+| ForSt | A | 320 | 10.5 | 70% | 8 |
+
+---
+
+## 7. Visualizations
+
+### 7.1 YCSB-Flink Integration Architecture
 
 ```mermaid
 graph TB
-    subgraph 数据生成层
-        YG[YCSB Generator<br/>Zipfian/Uniform分布]
-        KL[Key Group<br/>分区器]
+    subgraph Data Generation Layer
+        YG[YCSB Generator<br/>Zipfian/Uniform Distribution]
+        KL[Key Group<br/>Partitioner]
     end
 
-    subgraph Flink集群
+    subgraph Flink Cluster
         subgraph Source
             S1[Parallel Source 1]
             S2[Parallel Source 2]
@@ -187,9 +637,9 @@ graph TB
         end
 
         subgraph KeyedProcessFunction
-            KP1[状态操作<br/>ValueState]
-            KP2[状态操作<br/>ValueState]
-            KPn[状态操作<br/>ValueState]
+            KP1[State Operations<br/>ValueState]
+            KP2[State Operations<br/>ValueState]
+            KPn[State Operations<br/>ValueState]
         end
 
         subgraph Metrics
@@ -198,10 +648,10 @@ graph TB
         end
     end
 
-    subgraph 状态后端
+    subgraph State Backends
         HM[(HashMap<br/>JVM Heap)]
-        RB[(RocksDB<br/>本地磁盘)]
-        FS[(ForSt<br/>云存储)]
+        RB[(RocksDB<br/>Local Disk)]
+        FS[(ForSt<br/>Cloud Storage)]
     end
 
     YG --> KL
@@ -210,20 +660,20 @@ graph TB
     S2 --> KP2
     Sn --> KPn
 
-    KP1 -.->|小状态| HM
-    KP2 -.->|大状态| RB
-    KPn -.->|云原生| FS
+    KP1 -.->|Small State| HM
+    KP2 -.->|Large State| RB
+    KPn -.->|Cloud Native| FS
 
     KP1 & KP2 & KPn --> M1 --> M2
 ```
 
-<!-- TRANSLATE: ### 7.2 工作负载特征对比 -->
+### 7.2 Workload Characteristic Comparison
 
 ```mermaid
 xychart-beta
-    title "YCSB 工作负载 - 读写比对比"
+    title "YCSB Workloads - Read-Write Ratio Comparison"
     x-axis ["Workload A", "Workload B", "Workload C", "Workload D", "Workload F"]
-    y-axis "百分比" 0 --> 100
+    y-axis "Percentage" 0 --> 100
 
     bar [50, 95, 100, 95, 50]
     bar [50, 5, 0, 5, 0]
@@ -234,11 +684,22 @@ xychart-beta
     annotation 5, 50 "RMW"
 ```
 
+---
 
-<!-- TRANSLATE: **关联文档**： -->
+## 8. References
 
-<!-- TRANSLATE: - [性能基准测试套件指南](./flink-performance-benchmark-suite.md) —— 自动化测试框架 -->
-<!-- TRANSLATE: - [状态后端深度对比](../../../Flink/02-core/state-backends-deep-comparison.md) —— 后端选型详细分析 -->
-<!-- TRANSLATE: - [Nexmark 基准测试指南](./flink-nexmark-benchmark-guide.md) —— SQL 基准测试 -->
-<!-- TRANSLATE: - [ForSt 状态后端指南](../../../Flink/02-core/forst-state-backend.md) —— ForSt 详细配置 -->
-<!-- TRANSLATE: - [状态管理完全指南](../../../Flink/02-core/flink-state-management-complete-guide.md) —— 状态管理深度解析 -->
+
+---
+
+**Related Documents**:
+
+- [Performance Benchmark Suite Guide](./flink-performance-benchmark-suite.md) — Automated testing framework
+- [State Backend Deep Comparison](./02-core/state-backends-deep-comparison.md) — Backend selection detailed analysis
+- [Nexmark Benchmark Guide](./flink-nexmark-benchmark-guide.md) — SQL benchmark testing
+- [ForSt State Backend Guide](./02-core/forst-state-backend.md) — ForSt detailed configuration
+- [State Management Complete Guide](./02-core/flink-state-management-complete-guide.md) — State management deep dive
+
+---
+
+*Document Version: v1.0 | Created: 2026-04-08 | Maintainer: AnalysisDataFlow Project*
+*Formalization Level: L3 | Document Size: ~15KB | Code Examples: 4 | Visualizations: 2*

@@ -1,129 +1,366 @@
-﻿---
-title: "[EN] Flink Pyflink Deep Dive"
-translation_status: "ai_translated"
-source_file: "Flink/flink-pyflink-deep-dive.md"
-source_version: "37b0d7a2"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.354199"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+---
+title: "PyFlink Deep Dive: Architecture Principles and Engineering Practices"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# PyFlink Deep Dive: Architecture Principles and Engineering Practices
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Flink/ Engineering Practice | **Prerequisites**: [Flink/09-language-foundations/pyflink-complete-guide.md](../../../Flink/03-api/09-language-foundations/pyflink-complete-guide.md), [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **Formalization Level**: L3-L4
+> **Version**: 2026.04 | **Applicable Versions**: Flink 1.18+ - 2.5+ | **Python**: 3.9+
 
-<!-- TRANSLATE: # PyFlink 深度指南：架构原理与工程实践 -->
+---
 
-<!-- TRANSLATE: > **所属阶段**: Flink/ 工程实践 | **前置依赖**: [Flink/09-language-foundations/pyflink-complete-guide.md](../../../Flink/03-api/09-language-foundations/pyflink-complete-guide.md), [Flink/02-core/checkpoint-mechanism-deep-dive.md](02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L3-L4 -->
-<!-- TRANSLATE: > **版本**: 2026.04 | **适用版本**: Flink 1.18+ - 2.5+ | **Python**: 3.9+ -->
+## 1. Definitions
 
+### Def-F-Py-01: PyFlink Architecture Model
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
-
-<!-- TRANSLATE: ### Lemma-F-Py-01: PyFlink UDF 序列化开销 -->
-
-<!-- TRANSLATE: **引理**: PyFlink UDF 的数据序列化开销满足： -->
+**Formal Definition**: The PyFlink architecture is a cross-language execution framework defined as a 6-tuple:
 
 $$
-<!-- TRANSLATE: T_{total} = T_{arrow\_ser} + T_{grpc\_trans} + T_{py\_exec} + T_{arrow\_deser} -->
+\mathcal{P}_{Flink} = (P_{vm}, J_{vm}, B_{bridge}, S_{ser}, E_{exec}, C_{coord})
 $$
 
-<!-- TRANSLATE: 其中各分量近似值为： -->
+Where:
 
-<!-- TRANSLATE: | 操作 | 时间复杂度 | 典型延迟 (10K rows) | -->
-<!-- TRANSLATE: |------|-----------|-------------------| -->
-| Arrow 序列化 | $O(n)$ | 1-5 ms |
-| gRPC 传输 | $O(n)$ | 2-10 ms (本地) / 10-50 ms (远程) |
-<!-- TRANSLATE: | Python 执行 | 取决于 UDF | 10-1000+ ms | -->
-| Arrow 反序列化 | $O(n)$ | 1-5 ms |
+- $P_{vm}$: Python VM execution layer, running user Python code and UDFs
+- $J_{vm}$: Java VM execution layer, running the Flink core engine
+- $B_{bridge}$: Bidirectional communication bridge (Apache Beam Portability Framework)
+- $S_{ser}$: Serialization layer (Apache Arrow + Protobuf + cloudpickle)
+- $E_{exec}$: Execution environment abstraction layer
+- $C_{coord}$: Cross-language coordinator (JobMaster ↔ Python Driver)
 
-<!-- TRANSLATE: **优化方向**: Python 执行是主要瓶颈，应优先优化 UDF 代码。 -->
+**Architecture Layer Diagram**
 
-<!-- TRANSLATE: ### Lemma-F-Py-02: Bundle Size 与吞吐量关系 -->
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Application Layer                             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────────┐  │
+│  │  Table API  │  │ DataStream  │  │     ML Pipeline API         │  │
+│  │   (Python)  │  │   (Python)  │  │      (PyFlink ML)           │  │
+│  └──────┬──────┘  └──────┬──────┘  └─────────────┬───────────────┘  │
+├───────┼────────────────┼───────────────────────┼──────────────────┤
+│       ▼                ▼                       ▼                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │              PyFlink Python API Layer                        │   │
+│  │    (pyflink.table / pyflink.datastream / pyflink.ml)       │   │
+│  └───────────────────────────┬─────────────────────────────────┘   │
+├──────────────────────────────┼─────────────────────────────────────┤
+│                              ▼                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │           Apache Beam Portability Framework                 │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │   │
+│  │  │  Fn API     │  │  State API  │  │   Metrics API       │  │   │
+│  │  │ (UDF Exec)  │  │(State Ops)  │  │ (Monitoring)        │  │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────────────┘  │   │
+│  └───────────────────────────┬─────────────────────────────────┘   │
+├──────────────────────────────┼─────────────────────────────────────┤
+│                              ▼                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │              gRPC Communication Channel                     │   │
+│  │         (Bundle Processing / Streaming Data Exchange)       │   │
+│  └───────────────────────────┬─────────────────────────────────┘   │
+├──────────────────────────────┼─────────────────────────────────────┤
+│                              ▼                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │              Flink Java Runtime Core                        │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │   │
+│  │  │TaskManager  │  │Checkpointing│  │    Network Stack    │  │   │
+│  │  │(Task Exec)  │  │   (State)   │  │  (Shuffle/Backpressure)│  │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-<!-- TRANSLATE: **引理**: Bundle 大小与吞吐量之间存在最优平衡点： -->
+### Def-F-Py-02: Python VM ↔ JVM Communication Protocol
+
+**Formal Definition**: The cross-language communication protocol is defined as:
 
 $$
-<!-- TRANSLATE: Throughput_{optimal} = f(BundleSize) \text{ where } \frac{d(Throughput)}{d(BundleSize)} = 0 -->
+\mathcal{C}_{proto} = (T_{transport}, S_{serialization}, B_{batching}, F_{flow})
 $$
 
-<!-- TRANSLATE: **典型特征**: -->
+Where:
 
-<!-- TRANSLATE: | Bundle 大小 | 延迟 | 吞吐量 | 适用场景 | -->
-<!-- TRANSLATE: |------------|------|--------|---------| -->
-<!-- TRANSLATE: | 1-10 | 极低 | 低 | 延迟敏感型 | -->
-<!-- TRANSLATE: | 100-1000 | 中等 | 高 | 通用场景 | -->
-<!-- TRANSLATE: | 10000+ | 较高 | 饱和 | 批处理模式 | -->
+| Component | Technical Implementation | Function Description |
+|-----------|-------------------------|----------------------|
+| $T_{transport}$ | gRPC over HTTP/2 | Bidirectional streaming communication channel |
+| $S_{serialization}$ | Apache Arrow (columnar) | Efficient batch data serialization |
+| $B_{batching}$ | Bundle Processing | Micro-batch processing optimization |
+| $F_{flow}$ | Flow control / backpressure | Prevent memory overflow |
 
-<!-- TRANSLATE: ### Prop-F-Py-01: Python UDF 与 Java UDF 性能对比 -->
+**Communication Flow**
 
-<!-- TRANSLATE: **命题**: 在典型流处理场景下，Python UDF 与 Java UDF 的性能关系为： -->
+```
+Python Driver                    Java JobManager
+     │                                │
+     │  1. Submit Job (JobGraph)      │
+     │ ─────────────────────────────> │
+     │                                │
+     │  2. Deploy Tasks               │
+     │ <───────────────────────────── │
+     │                                │
+Python Worker(s)                Java TaskManager(s)
+     │                                │
+     │  3. gRPC Channel Establish     │
+     │ <════════════════════════════> │
+     │                                │
+     │  4. Arrow Data Streaming       │
+     │ <════════════════════════════> │
+     │     (Input Data → UDF → Output)│
+     │                                │
+     │  5. State Operations via State API
+     │ <════════════════════════════> │
+     │                                │
+     │  6. Checkpoint Coordination    │
+     │ <════════════════════════════> │
+```
+
+### Def-F-Py-03: UDF Execution Model
+
+**Formal Definition**: The Python UDF execution model is defined as:
 
 $$
-<!-- TRANSLATE: Throughput_{PythonUDF} \approx 0.3 \times Throughput_{JavaUDF} -->
+\mathcal{U}_{exec} = (W_{pool}, Q_{input}, Q_{output}, P_{process}, T_{thread})
 $$
 
-<!-- TRANSLATE: **例外情况** (Python UDF 可能更快): -->
+Where:
 
-<!-- TRANSLATE: 1. 涉及复杂数学运算且使用 NumPy/Pandas 向量化 -->
-<!-- TRANSLATE: 2. 调用原生 Python ML 库 (scikit-learn, PyTorch) -->
-<!-- TRANSLATE: 3. 需要与 Python 生态深度集成 -->
+- $W_{pool}$: Python Worker process pool
+- $Q_{input}$: Input data queue (Arrow format)
+- $Q_{output}$: Output data queue (Arrow format)
+- $P_{process}$: UDF processing logic
+- $T_{thread}$: Thread management strategy
 
+**Bundle Processing Mechanism**
 
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Bundle Processing Cycle                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Java TM                    gRPC Channel              Python    │
+│  ────────                   ─────────────            Worker     │
+│     │                             │                      │      │
+│     │  Start Bundle               │                      │      │
+│     │ ─────────────────────────>  │                      │      │
+│     │                             │  Initialize Context  │      │
+│     │                             │ ──────────────────>  │      │
+│     │                             │                      │      │
+│     │  Process Element [Batch]    │                      │      │
+│     │ ─────────────────────────>  │  Arrow RecordBatch   │      │
+│     │  (Arrow Data)               │ ──────────────────>  │      │
+│     │                             │                      │      │
+│     │                             │  Execute UDF         │      │
+│     │                             │  ┌──────────────┐    │      │
+│     │                             │  │ Map/FlatMap  │    │      │
+│     │                             │  │ Filter/Agg   │    │      │
+│     │                             │  └──────────────┘    │      │
+│     │                             │                      │      │
+│     │                             │  Return Results      │      │
+│     │  Output Elements            │ <──────────────────  │      │
+│     │ <─────────────────────────  │  (Arrow Data)        │      │
+│     │                             │                      │      │
+│     │  Finish Bundle              │                      │      │
+│     │ ─────────────────────────>  │  Flush State         │      │
+│     │                             │ ──────────────────>  │      │
+│     │                             │                      │      │
+│     │  Checkpoint State           │                      │      │
+│     │ <═════════════════════════> │  Persist State       │      │
+│     │                             │                      │      │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-<!-- TRANSLATE: ### PyFlink 适用场景分析 -->
+---
 
-<!-- TRANSLATE: **优势场景** -->
+## 2. Properties
 
-<!-- TRANSLATE: 1. **数据科学与 ML 集成** -->
-<!-- TRANSLATE:    - 直接使用 scikit-learn、PyTorch、TensorFlow -->
-<!-- TRANSLATE:    - Pandas DataFrame 原生支持 -->
-<!-- TRANSLATE:    - 特征工程与模型推理一体化 -->
+### Lemma-F-Py-01: PyFlink UDF Serialization Overhead
 
-<!-- TRANSLATE: 2. **快速原型开发** -->
-<!-- TRANSLATE:    - Python 语法简洁，开发效率高 -->
-<!-- TRANSLATE:    - 丰富的第三方库生态 -->
-<!-- TRANSLATE:    - 与 Jupyter Notebook 集成 -->
+**Lemma**: The data serialization overhead of PyFlink UDFs satisfies:
 
-<!-- TRANSLATE: 3. **复杂计算逻辑** -->
-<!-- TRANSLATE:    - 字符串/文本处理 (NLP 任务) -->
-<!-- TRANSLATE:    - 复杂数学运算 (NumPy/SciPy) -->
-<!-- TRANSLATE:    - 自定义业务逻辑 -->
+$$
+T_{total} = T_{arrow\_ser} + T_{grpc\_trans} + T_{py\_exec} + T_{arrow\_deser}
+$$
 
-<!-- TRANSLATE: **劣势场景** -->
+The approximate values of each component are:
 
-<!-- TRANSLATE: 1. **极高吞吐量要求** -->
-<!-- TRANSLATE:    - 纯 Java UDF 性能更优 -->
-<!-- TRANSLATE:    - 跨语言序列化开销 -->
+| Operation | Time Complexity | Typical Latency (10K rows) |
+|-----------|-----------------|---------------------------|
+| Arrow serialization | $O(n)$ | 1-5 ms |
+| gRPC transmission | $O(n)$ | 2-10 ms (local) / 10-50 ms (remote) |
+| Python execution | Depends on UDF | 10-1000+ ms |
+| Arrow deserialization | $O(n)$ | 1-5 ms |
 
-<!-- TRANSLATE: 2. **极低延迟要求** -->
-<!-- TRANSLATE:    - Bundle 处理引入批处理延迟 -->
-<!-- TRANSLATE:    - gRPC 通信开销 -->
+**Optimization Direction**: Python execution is the main bottleneck; prioritize optimizing UDF code.
 
+### Lemma-F-Py-02: Bundle Size and Throughput Relationship
 
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
+**Lemma**: There is an optimal balance point between bundle size and throughput:
 
-<!-- TRANSLATE: ### 6.1 Table API in Python -->
+$$
+Throughput_{optimal} = f(BundleSize) \text{ where } \frac{d(Throughput)}{d(BundleSize)} = 0
+$$
 
-<!-- TRANSLATE: #### 基础 Table API 操作 -->
+**Typical Characteristics**:
+
+| Bundle Size | Latency | Throughput | Applicable Scenarios |
+|-------------|---------|------------|----------------------|
+| 1-10 | Very low | Low | Latency-sensitive |
+| 100-1000 | Medium | High | General scenarios |
+| 10000+ | Higher | Saturated | Batch processing mode |
+
+### Prop-F-Py-01: Python UDF vs Java UDF Performance Comparison
+
+**Proposition**: In typical stream processing scenarios, the performance relationship between Python UDFs and Java UDFs is:
+
+$$
+Throughput_{PythonUDF} \approx 0.3 \times Throughput_{JavaUDF}
+$$
+
+**Exceptions** (Python UDF may be faster):
+
+1. Complex mathematical operations using NumPy/Pandas vectorization
+2. Calling native Python ML libraries (scikit-learn, PyTorch)
+3. Deep integration with the Python ecosystem required
+
+---
+
+## 3. Relations
+
+### Table API vs DataStream API Comparison
+
+```mermaid
+graph TB
+    subgraph "API Layers"
+        SQL[SQL API<br/>Declarative]
+        Table[Table API<br/>Declarative/Hybrid]
+        DS[DataStream API<br/>Imperative]
+    end
+
+    subgraph "Python Implementation"
+        PySQL[pyflink.table<br/>TableEnvironment.sql_query]
+        PyTable[pyflink.table<br/>Table API]
+        PyDS[pyflink.datastream<br/>StreamExecutionEnvironment]
+    end
+
+    subgraph "Underlying Execution"
+        Opt[Calcite Optimizer]
+        Plan[Execution Plan]
+        Exec[Flink Runtime]
+    end
+
+    SQL --> PySQL
+    Table --> PyTable
+    DS --> PyDS
+
+    PySQL --> Opt
+    PyTable --> Opt
+    PyDS --> Plan
+
+    Opt --> Plan
+    Plan --> Exec
+
+    style SQL fill:#e3f2fd
+    style Table fill:#e3f2fd
+    style DS fill:#fff3e0
+    style PySQL fill:#c8e6c9
+    style PyTable fill:#c8e6c9
+    style PyDS fill:#ffccbc
+```
+
+**Selection Decision Matrix**
+
+| Scenario | Recommended API | Reason |
+|----------|-----------------|--------|
+| Complex ETL | Table API | Optimizer automatically optimizes execution plan |
+| Complex event processing | DataStream API | Fine-grained control over time/state |
+| Real-time feature engineering | Table API + Pandas UDF | Integration with ML ecosystem |
+| Need low-level control | DataStream API | Directly operate State/Timer |
+| SQL migration | Table API (SQL) | Minimize migration cost |
+
+---
+
+## 4. Argumentation
+
+### PyFlink Applicable Scenario Analysis
+
+**Advantageous Scenarios**
+
+1. **Data Science & ML Integration**
+   - Direct use of scikit-learn, PyTorch, TensorFlow
+   - Native Pandas DataFrame support
+   - Feature engineering and model inference unified
+
+2. **Rapid Prototyping**
+   - Concise Python syntax, high development efficiency
+   - Rich third-party library ecosystem
+   - Jupyter Notebook integration
+
+3. **Complex Computation Logic**
+   - String/text processing (NLP tasks)
+   - Complex mathematical operations (NumPy/SciPy)
+   - Custom business logic
+
+**Disadvantageous Scenarios**
+
+1. **Extremely High Throughput Requirements**
+   - Pure Java UDFs have better performance
+   - Cross-language serialization overhead
+
+2. **Extremely Low Latency Requirements**
+   - Bundle processing introduces batch latency
+   - gRPC communication overhead
+
+---
+
+## 5. Proof / Engineering Argument
+
+### Thm-F-Py-01: PyFlink Exactly-Once Semantic Guarantee
+
+**Theorem**: With correct configuration, PyFlink can provide the same Exactly-Once processing semantics as Java Flink.
+
+**Proof Sketch**:
+
+1. **State consistency**: Python UDF state is delegated to the Java State Backend via the State API
+   $$
+   State_{Python} \xrightarrow{State API} State_{Java} \xrightarrow{Checkpoint} PersistentStorage
+   $$
+
+2. **Checkpoint coordination**: Python Workers participate in the two-phase Checkpoint protocol
+   - Phase 1: Synchronous snapshot (stop processing)
+   - Phase 2: Asynchronous persistence (resume processing)
+
+3. **Data replay**: On failure, recover from Checkpoint and replay data from Source
+   $$
+   Recovery: Checkpoint_{n} \rightarrow State_{restored} + Source_{replay}
+   $$
+
+**Engineering Constraint**: Python UDFs must satisfy idempotency or state determinism; otherwise duplicate processing may occur.
+
+---
+
+## 6. Examples
+
+### 6.1 Table API in Python
+
+#### Basic Table API Operations
 
 ```python
 from pyflink.table import EnvironmentSettings, TableEnvironment, DataTypes
 from pyflink.table.expressions import col, lit
 
-# 创建 Table Environment
+# Create Table Environment
 env_settings = EnvironmentSettings.in_streaming_mode()
 table_env = TableEnvironment.create(env_settings)
 
-# 配置 Checkpoint
+# Configure Checkpoint
 table_env.get_config().get_configuration().set_string(
     "execution.checkpointing.interval", "10s"
 )
 
-# 创建 Kafka Source 表
+# Create Kafka Source table
 table_env.execute_sql("""
 CREATE TABLE user_events (
     user_id STRING,
@@ -140,7 +377,7 @@ CREATE TABLE user_events (
 )
 """)
 
-# 创建 MySQL Sink 表
+# Create MySQL Sink table
 table_env.execute_sql("""
 CREATE TABLE event_stats (
     event_type STRING,
@@ -157,7 +394,7 @@ CREATE TABLE event_stats (
 )
 """)
 
-# 定义聚合逻辑
+# Define aggregation logic
 result = table_env.from_path("user_events") \
     .window(
         Tumble.over(lit(1).hours).on(col("event_time")).alias("w")
@@ -170,62 +407,62 @@ result = table_env.from_path("user_events") \
         col("w").start.alias("window_start")
     )
 
-# 执行写入
+# Execute insert
 result.execute_insert("event_stats").wait()
 ```
 
-<!-- TRANSLATE: #### 窗口操作详解 -->
+#### Window Operations in Detail
 
 ```python
 from pyflink.table import Tumble, Slide, Session
 from pyflink.table.expressions import col
 
-# Tumble Window (滚动窗口)
+# Tumble Window
 tumble_result = table_env.from_path("events") \
     .window(Tumble.over(lit(5).minutes).on(col("event_time")).alias("w")) \
     .group_by(col("user_id"), col("w")) \
     .select(col("user_id"), col("w").start, col("w").end, col("amount").sum)
 
-# Slide Window (滑动窗口)
+# Slide Window
 slide_result = table_env.from_path("events") \
     .window(Slide.over(lit(10).minutes).every(lit(2).minutes).on(col("event_time")).alias("w")) \
     .group_by(col("user_id"), col("w")) \
     .select(col("user_id"), col("w").start, col("amount").avg)
 
-# Session Window (会话窗口)
+# Session Window
 session_result = table_env.from_path("events") \
     .window(Session.with_gap(lit(30).minutes).on(col("event_time")).alias("w")) \
     .group_by(col("user_id"), col("w")) \
     .select(col("user_id"), col("w").start, col("w").end, col("event").count)
 ```
 
-<!-- TRANSLATE: ### 6.2 DataStream API in Python -->
+### 6.2 DataStream API in Python
 
-<!-- TRANSLATE: #### 基础 DataStream 操作 -->
+#### Basic DataStream Operations
 
 ```python
 from pyflink.datastream import StreamExecutionEnvironment, TimeCharacteristic
 from pyflink.datastream.functions import MapFunction, FlatMapFunction, FilterFunction
 from pyflink.common.typeinfo import Types
 
-# 创建执行环境
+# Create execution environment
 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_parallelism(4)
 env.set_stream_time_characteristic(TimeCharacteristic.EventTime)
 
-# 启用 Checkpoint
+# Enable Checkpoint
 env.enable_checkpointing(60000)  # 60 seconds
 env.get_checkpoint_config().set_checkpointing_mode(
     CheckpointingMode.EXACTLY_ONCE
 )
 
-# 创建数据源
+# Create data source
 kafka_props = {
     'bootstrap.servers': 'kafka:9092',
     'group.id': 'pyflink-consumer'
 }
 
-# 定义数据类型
+# Define data type
 from pyflink.common.serialization import SimpleStringSchema
 
 ds = env.add_source(
@@ -236,7 +473,7 @@ ds = env.add_source(
     )
 )
 
-# Map 操作
+# Map operation
 class ParseJson(MapFunction):
     def map(self, value):
         import json
@@ -244,10 +481,10 @@ class ParseJson(MapFunction):
 
 parsed = ds.map(ParseJson(), output_type=Types.MAP(Types.STRING(), Types.STRING()))
 
-# Filter 操作
+# Filter operation
 filtered = parsed.filter(lambda x: x.get('status') == 'active')
 
-# FlatMap 操作
+# FlatMap operation
 class ExplodeEvents(FlatMapFunction):
     def flat_map(self, value, collector):
         events = value.get('events', [])
@@ -277,7 +514,7 @@ result.add_sink(FlinkKafkaProducer(
 env.execute("Python DataStream Job")
 ```
 
-<!-- TRANSLATE: #### 状态操作示例 -->
+#### State Operation Example
 
 ```python
 from pyflink.datastream.functions import KeyedProcessFunction
@@ -289,7 +526,7 @@ class CountWithTimeout(KeyedProcessFunction):
         self.state = None
 
     def open(self, runtime_context):
-        # 定义 ValueState
+        # Define ValueState
         state_descriptor = ValueStateDescriptor(
             "last_count",
             Types.TUPLE([Types.STRING(), Types.LONG(), Types.LONG()])
@@ -302,9 +539,9 @@ class CountWithTimeout(KeyedProcessFunction):
         current_count = 0
 
         if current is None:
-            # 首次访问
+            # First access
             current_count = 1
-            # 注册定时器 (5秒后触发)
+            # Register timer (trigger after 5 seconds)
             ctx.timer_service().register_event_time_timer(
                 ctx.timestamp() + 5000
             )
@@ -316,29 +553,29 @@ class CountWithTimeout(KeyedProcessFunction):
         return [(value['user_id'], current_count)]
 
     def on_timer(self, timestamp, ctx):
-        # 定时器触发逻辑
+        # Timer trigger logic
         result = self.state.value()
         if result:
             print(f"User {result[0]} had {result[1]} events in 5 seconds")
             self.state.clear()
 ```
 
-<!-- TRANSLATE: ### 6.3 UDF 开发 -->
+### 6.3 UDF Development
 
-<!-- TRANSLATE: #### 普通 Python UDF -->
+#### Regular Python UDF
 
 ```python
 from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 
-# Scalar UDF (标量函数)
+# Scalar UDF
 @udf(result_type=DataTypes.STRING())
 def hash_user_id(user_id: str) -> str:
-    """对用户ID进行哈希处理"""
+    """Hash the user ID"""
     import hashlib
     return hashlib.md5(user_id.encode()).hexdigest()[:8]
 
-# 注册并使用
+# Register and use
 table_env.create_temporary_function("hash_user_id", hash_user_id)
 
 result = table_env.sql_query("""
@@ -349,7 +586,7 @@ result = table_env.sql_query("""
     FROM user_events
 """)
 
-# Table API 使用
+# Table API usage
 result = table_env.from_path("user_events") \
     .select(
         hash_user_id(col("user_id")).alias("short_id"),
@@ -358,29 +595,29 @@ result = table_env.from_path("user_events") \
     )
 ```
 
-<!-- TRANSLATE: #### Pandas UDF (向量化执行) -->
+#### Pandas UDF (Vectorized Execution)
 
 ```python
 from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import pandas as pd
 
-# 使用 pandas_udf 装饰器启用向量化执行
+# Enable vectorized execution using pandas_udf decorator
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def calculate_discount(prices: pd.Series,
                        categories: pd.Series,
                        user_types: pd.Series) -> pd.Series:
     """
-    向量化折扣计算
-    利用 Pandas 批量处理能力，比逐行处理快 10-100x
+    Vectorized discount calculation.
+    Leverages Pandas batch processing, 10-100x faster than row-by-row.
     """
     discounts = pd.Series(0.0, index=prices.index)
 
-    # VIP 用户额外折扣
+    # Extra discount for VIP users
     vip_mask = user_types == 'VIP'
     discounts[vip_mask] += 0.1
 
-    # 品类折扣
+    # Category discounts
     category_discounts = {
         'electronics': 0.05,
         'clothing': 0.15,
@@ -390,16 +627,16 @@ def calculate_discount(prices: pd.Series,
         cat_mask = categories == cat
         discounts[cat_mask] += disc
 
-    # 满减折扣
+    # Threshold discount
     price_mask = prices > 1000
     discounts[price_mask] += 0.05
 
-    # 折扣上限 30%
+    # Max discount cap 30%
     discounts = discounts.clip(upper=0.3)
 
     return prices * (1 - discounts)
 
-# 使用 Pandas UDF
+# Use Pandas UDF
 result = table_env.from_path("orders") \
     .select(
         col("order_id"),
@@ -412,17 +649,17 @@ result = table_env.from_path("orders") \
     )
 ```
 
-<!-- TRANSLATE: #### Aggregate UDF -->
+#### Aggregate UDF
 
 ```python
 from pyflink.table.udf import udaf, AggregateFunction
 from pyflink.table import DataTypes
 
 class WeightedAverage(AggregateFunction):
-    """自定义加权平均聚合函数"""
+    """Custom weighted average aggregate function"""
 
     def create_accumulator(self):
-        # 返回 (sum, count) 元组
+        # Return (sum, count) tuple
         return (0.0, 0)
 
     def accumulate(self, accumulator, value, weight):
@@ -459,11 +696,11 @@ class WeightedAverage(AggregateFunction):
             DataTypes.FIELD("weight", DataTypes.INT())
         ])
 
-# 注册并使用
+# Register and use
 weighted_avg = udaf(WeightedAverage())
 table_env.create_temporary_function("weighted_avg", weighted_avg)
 
-# SQL 中使用
+# Use in SQL
 result = table_env.sql_query("""
     SELECT
         category,
@@ -473,9 +710,9 @@ result = table_env.sql_query("""
 """)
 ```
 
-<!-- TRANSLATE: ### 6.4 与 ML 生态集成 -->
+### 6.4 ML Ecosystem Integration
 
-<!-- TRANSLATE: #### PyTorch 模型推理 -->
+#### PyTorch Model Inference
 
 ```python
 import torch
@@ -484,7 +721,7 @@ from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import pandas as pd
 
-# 定义简单的神经网络模型
+# Define simple neural network model
 class RecommendationModel(nn.Module):
     def __init__(self, input_dim=10, hidden_dim=64, output_dim=5):
         super().__init__()
@@ -496,7 +733,7 @@ class RecommendationModel(nn.Module):
         x = self.relu(self.fc1(x))
         return self.fc2(x)
 
-# 加载预训练模型
+# Load pre-trained model
 model = RecommendationModel()
 model.load_state_dict(torch.load('recommendation_model.pth'))
 model.eval()
@@ -504,29 +741,29 @@ model.eval()
 @udf(result_type=DataTypes.ARRAY(DataTypes.FLOAT()), udf_type="pandas")
 def predict_scores(features: pd.Series) -> pd.Series:
     """
-    使用 PyTorch 模型进行批量推理
+    Batch inference using PyTorch model.
 
     Args:
-        features: JSON 字符串数组，每个元素是特征向量
+        features: Array of JSON strings, each element is a feature vector.
 
     Returns:
-        每个样本对所有商品的预测分数
+        Predicted scores of each sample for all items.
     """
     import json
     import numpy as np
 
-    # 解析特征
+    # Parse features
     feature_list = [json.loads(f) for f in features]
     feature_tensor = torch.tensor(feature_list, dtype=torch.float32)
 
-    # 批量推理
+    # Batch inference
     with torch.no_grad():
         predictions = model(feature_tensor)
 
-    # 转换为 Python 列表
+    # Convert to Python list
     return pd.Series(predictions.numpy().tolist())
 
-# 使用模型推理
+# Use model inference
 result = table_env.sql_query("""
     SELECT
         user_id,
@@ -536,33 +773,33 @@ result = table_env.sql_query("""
 """)
 ```
 
-<!-- TRANSLATE: #### TensorFlow 集成 -->
+#### TensorFlow Integration
 
 ```python
 import tensorflow as tf
 from pyflink.table.udf import udf
 import pandas as pd
 
-# 加载 TensorFlow 模型
+# Load TensorFlow model
 model = tf.keras.models.load_model('fraud_detection_model')
 
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def fraud_probability(features: pd.Series) -> pd.Series:
     """
-    欺诈检测模型推理
+    Fraud detection model inference.
     """
     import json
     import numpy as np
 
-    # 解析输入特征
+    # Parse input features
     X = np.array([json.loads(f) for f in features])
 
-    # 模型推理
+    # Model inference
     predictions = model.predict(X, verbose=0)
 
     return pd.Series(predictions.flatten())
 
-# 在流处理中使用
+# Use in stream processing
 result = table_env.sql_query("""
     SELECT
         transaction_id,
@@ -577,7 +814,7 @@ result = table_env.sql_query("""
 """)
 ```
 
-<!-- TRANSLATE: #### Scikit-learn 集成 -->
+#### Scikit-learn Integration
 
 ```python
 from sklearn.ensemble import RandomForestClassifier
@@ -586,7 +823,7 @@ from pyflink.table.udf import udf
 import pandas as pd
 import numpy as np
 
-# 加载 scikit-learn 模型
+# Load scikit-learn model
 clf = joblib.load('classification_model.pkl')
 
 @udf(result_type=DataTypes.ROW([
@@ -595,14 +832,14 @@ clf = joblib.load('classification_model.pkl')
 ]), udf_type="pandas")
 def classify_with_confidence(features: pd.Series) -> pd.DataFrame:
     """
-    使用 scikit-learn 进行分类，返回类别和置信度
+    Classify using scikit-learn, returning class and confidence.
     """
     import json
 
-    # 解析特征
+    # Parse features
     X = np.array([json.loads(f) for f in features])
 
-    # 预测
+    # Predict
     predictions = clf.predict(X)
     probabilities = clf.predict_proba(X)
     confidences = np.max(probabilities, axis=1)
@@ -613,41 +850,41 @@ def classify_with_confidence(features: pd.Series) -> pd.DataFrame:
     })
 ```
 
-<!-- TRANSLATE: ### 6.5 性能优化 -->
+### 6.5 Performance Optimization
 
-<!-- TRANSLATE: #### 向量化执行优化 -->
+#### Vectorized Execution Optimization
 
 ```python
 from pyflink.table import EnvironmentSettings, TableEnvironment
 
-# 启用向量化执行
+# Enable vectorized execution
 env_settings = EnvironmentSettings.in_streaming_mode()
 table_env = TableEnvironment.create(env_settings)
 
-# 配置 Python UDF 执行优化
+# Configure Python UDF execution optimization
 config = table_env.get_config().get_configuration()
 
-# 启用 Arrow 优化
+# Enable Arrow optimization
 config.set_string("python.fn-execution.bundle.size", "1000")
 config.set_string("python.fn-execution.bundle.time", "1000")
 config.set_string("python.fn-execution.arrow.batch.size", "10000")
 
-# 设置 Python Worker 数量 (建议 = Task slot 数量)
+# Set Python Worker count (recommended = Task slot count)
 config.set_string("python.fn-execution.parallelism", "4")
 
-# 内存配置
+# Memory configuration
 config.set_string("python.fn-execution.memory.managed", "true")
 config.set_string("taskmanager.memory.task.off-heap.size", "512mb")
 ```
 
-<!-- TRANSLATE: #### UDF 性能调优 -->
+#### UDF Performance Tuning
 
 ```python
 """
-PyFlink UDF 性能优化最佳实践
+PyFlink UDF performance optimization best practices
 """
 
-# ❌ 低效写法：逐行处理
+# ❌ Inefficient: row-by-row processing
 @udf(result_type=DataTypes.DOUBLE())
 def slow_process(value):
     result = 0
@@ -655,15 +892,15 @@ def slow_process(value):
         result += value[i] ** 2
     return result
 
-# ✅ 高效写法：使用 NumPy 向量化
+# ✅ Efficient: use NumPy vectorization
 import numpy as np
 
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def fast_process(values: pd.Series) -> pd.Series:
-    # 使用 NumPy 向量化操作
+    # Use NumPy vectorized operations
     return np.sum(values ** 2, axis=1)
 
-# ❌ 低效写法：频繁创建对象
+# ❌ Inefficient: frequent object creation
 @udf(result_type=DataTypes.STRING())
 def slow_transform(data):
     result = []
@@ -671,34 +908,34 @@ def slow_transform(data):
         result.append(item.strip().upper())
     return ','.join(result)
 
-# ✅ 高效写法：减少中间对象
+# ✅ Efficient: reduce intermediate objects
 import re
 
-# 预编译正则表达式 (在模块级别)
+# Pre-compile regex at module level
 SPLIT_PATTERN = re.compile(r',\s*')
 
 @udf(result_type=DataTypes.STRING(), udf_type="pandas")
 def fast_transform(data: pd.Series) -> pd.Series:
-    # 使用 Pandas 原生方法
+    # Use Pandas native methods
     return data.str.split(',').str.join(',').str.upper()
 ```
 
-<!-- TRANSLATE: ### 6.6 调试技巧 -->
+### 6.6 Debugging Techniques
 
-<!-- TRANSLATE: #### 本地调试配置 -->
+#### Local Debug Configuration
 
 ```python
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
 
-# 创建本地执行环境 (方便调试)
+# Create local execution environment (convenient for debugging)
 env = StreamExecutionEnvironment.get_execution_environment()
-env.set_parallelism(1)  # 单并行度便于调试
+env.set_parallelism(1)  # Single parallelism for easier debugging
 
-# 启用详细日志
+# Enable detailed logs
 env.get_config().set_auto_watermark_interval(0)
 
-# 使用内存数据快速测试
+# Use in-memory data for quick testing
 test_data = [
     ("user1", "click", 100),
     ("user2", "purchase", 200),
@@ -714,22 +951,22 @@ ds = env.from_collection(
     ])
 )
 
-# 打印中间结果进行调试
+# Print intermediate results for debugging
 ds.print()
 
-# 或者收集结果到 Python 列表
+# Or collect results to Python list
 results = ds.execute_and_collect()
 for result in results:
     print(f"Debug: {result}")
 ```
 
-<!-- TRANSLATE: #### 日志记录与监控 -->
+#### Logging and Monitoring
 
 ```python
 import logging
 from pyflink.table.udf import udf
 
-# 配置 Python Worker 日志
+# Configure Python Worker logs
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -738,7 +975,7 @@ logger = logging.getLogger('pyflink.udf')
 
 @udf(result_type=DataTypes.STRING())
 def debug_transform(value):
-    """带日志的 UDF，便于排查问题"""
+    """UDF with logging for easier troubleshooting"""
     logger.info(f"Processing value: {value}")
 
     try:
@@ -749,8 +986,8 @@ def debug_transform(value):
         logger.error(f"Failed processing {value}: {str(e)}")
         raise
 
-# 在 Flink UI 中查看 Metrics
-# 1. 自定义 Counter
+# View Metrics in Flink UI
+# 1. Custom Counter
 from pyflink.metrics import Counter
 
 class MonitoredMap(MapFunction):
@@ -759,7 +996,7 @@ class MonitoredMap(MapFunction):
         self.error_count = None
 
     def open(self, runtime_context):
-        # 获取或创建 metrics
+        # Get or create metrics
         self.processed_count = runtime_context.get_metrics_group().counter("processed")
         self.error_count = runtime_context.get_metrics_group().counter("errors")
 
@@ -772,17 +1009,17 @@ class MonitoredMap(MapFunction):
             raise
 ```
 
-<!-- TRANSLATE: #### 常见错误排查 -->
+#### Common Error Troubleshooting
 
 ```python
 """
-PyFlink 常见问题与解决方案
+PyFlink common issues and solutions
 """
 
-# 问题 1: ImportError: No module named 'xxx'
-# 解决方案：确保依赖在 Python Worker 中可用
+# Issue 1: ImportError: No module named 'xxx'
+# Solution: Ensure dependencies are available in Python Worker
 
-# 方式 1: 使用 requirements.txt
+# Method 1: Use requirements.txt
 from pyflink.table import TableEnvironment
 
 table_env.set_python_requirements(
@@ -790,32 +1027,32 @@ table_env.set_python_requirements(
     requirements_cache_dir="/path/to/cache"
 )
 
-# 方式 2: 使用 Conda 环境
+# Method 2: Use Conda environment
 table_env.set_python_executable("/path/to/conda/env/bin/python")
 
-# 方式 3: 打包依赖文件
+# Method 3: Package dependency files
 table_env.add_python_archive("/path/to/site-packages.zip", "deps")
 
-# 问题 2: Serialization Error
-# 确保 UDF 中使用的对象可序列化
+# Issue 2: Serialization Error
+# Ensure objects used in UDFs are serializable
 
 from typing import List
 import pickle
 
-# ❌ 错误：使用不可序列化的对象
+# ❌ Wrong: using non-serializable objects
 @udf(result_type=DataTypes.STRING())
 def bad_udf(value):
-    # 在每次调用时创建连接，效率低且可能有线程问题
+    # Creating connection on each call is inefficient and may have thread issues
     conn = create_database_connection()
     return conn.query(value)
 
-# ✅ 正确：在 open() 中初始化
+# ✅ Correct: initialize in open()
 class GoodUdf(ScalarFunction):
     def __init__(self):
         self.conn = None
 
     def open(self, runtime_context):
-        # 在每个 Python Worker 进程中初始化一次
+        # Initialize once per Python Worker process
         self.conn = create_database_connection()
 
     def eval(self, value):
@@ -825,20 +1062,139 @@ class GoodUdf(ScalarFunction):
         if self.conn:
             self.conn.close()
 
-# 问题 3: 内存溢出 (OOM)
-# 解决方案：控制 batch size 和内存使用
+# Issue 3: Out of Memory (OOM)
+# Solution: control batch size and memory usage
 
 config = table_env.get_config().get_configuration()
 
-# 减小 batch size
+# Reduce batch size
 config.set_string("python.fn-execution.bundle.size", "100")
 
-# 限制 Arrow buffer 大小
+# Limit Arrow buffer size
 config.set_string("python.fn-execution.arrow.batch.size", "1000")
 
-# 启用背压
+# Enable backpressure
 config.set_string("python.fn-execution.streaming.enabled", "true")
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. 引用参考 (References) -->
+## 7. Visualizations
+
+### PyFlink Architecture Panorama
+
+```mermaid
+graph TB
+    subgraph "User Application"
+        APP[Python Application]
+    end
+
+    subgraph "PyFlink Layer"
+        PT[pyflink.table]
+        PD[pyflink.datastream]
+        PM[pyflink.ml]
+    end
+
+    subgraph "Beam Portability"
+        FN[Fn API]
+        ST[State API]
+        MT[Metrics API]
+    end
+
+    subgraph "Communication"
+        GRPC[gRPC Channel]
+        ARROW[Apache Arrow]
+    end
+
+    subgraph "Flink Runtime"
+        JM[JobManager]
+        TM[TaskManager]
+        SB[State Backend]
+        CP[Checkpointing]
+    end
+
+    APP --> PT & PD & PM
+    PT & PD & PM --> FN & ST & MT
+    FN & ST & MT --> GRPC
+    GRPC --> ARROW
+    ARROW --> TM
+    TM --> JM
+    TM --> SB
+    SB --> CP
+
+    style APP fill:#e3f2fd
+    style PT fill:#c8e6c9
+    style PD fill:#c8e6c9
+    style PM fill:#c8e6c9
+    style GRPC fill:#fff9c4
+    style TM fill:#ffccbc
+```
+
+### UDF Execution Flow
+
+```mermaid
+sequenceDiagram
+    participant J as Java TaskManager
+    participant G as gRPC Channel
+    participant P as Python Worker
+
+    J->>G: Start Bundle
+    G->>P: Initialize Context
+
+    loop Batch Processing
+        J->>G: Arrow RecordBatch
+        G->>P: Deserialize
+        P->>P: Execute UDF
+        P->>G: Serialize Results
+        G->>J: Arrow RecordBatch
+    end
+
+    J->>G: Finish Bundle
+    G->>P: Flush State
+    P->>G: State Checkpoint
+    G->>J: Persist State
+```
+
+### Performance Optimization Decision Tree
+
+```mermaid
+flowchart TD
+    A[Need to optimize PyFlink performance?] --> B{Performance bottleneck type?}
+
+    B -->|Serialization overhead| C[Enable Arrow optimization]
+    B -->|UDF execution slow| D{UDF type?}
+    B -->|Insufficient throughput| E[Adjust Bundle Size]
+
+    C --> C1[Configure arrow.batch.size]
+    C --> C2[Use pandas_udf]
+
+    D -->|Scalar| F[Use pandas_udf]
+    D -->|Aggregation| G[Implement efficient accumulator]
+    D -->|Table| H[Consider Table Function optimization]
+
+    E --> E1[Increase bundle.size]
+    E --> E2[Decrease bundle.time]
+
+    F --> F1[Use NumPy vectorization]
+    F --> F2[Avoid Python loops]
+
+    C1 --> I[Verify performance improvement]
+    C2 --> I
+    F1 --> I
+    F2 --> I
+    G --> I
+    H --> I
+    E1 --> I
+    E2 --> I
+
+    I --> J{Target reached?}
+    J -->|No| B
+    J -->|Yes| K[Optimization complete]
+
+    style A fill:#e3f2fd
+    style K fill:#c8e6c9
+```
+
+---
+
+## 8. References

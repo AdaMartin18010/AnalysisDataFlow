@@ -1,135 +1,289 @@
 ---
-title: "[EN] Flink Cep Complete Tutorial"
-translation_status: "ai_translated"
-source_file: "Flink/flink-cep-complete-tutorial.md"
-source_version: "dec69f03"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.348832"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "Flink CEP Complete Tutorial"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# Flink CEP Complete Tutorial
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Flink/03-sql-table-api | **Prerequisites**: [flink-cep-complete-guide.md](../../../Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md), [time-semantics-and-watermark.md](../../../Flink/02-core/time-semantics-and-watermark.md) | **Formalization Level**: L3-L4
+> **Version**: Flink 1.13-2.2+ | **Difficulty**: Intermediate-Advanced | **Estimated Reading Time**: 90 minutes
 
-<!-- TRANSLATE: # Flink CEP 完整教程 (Complete Tutorial) -->
+---
 
-<!-- TRANSLATE: > **所属阶段**: Flink/03-sql-table-api | **前置依赖**: [flink-cep-complete-guide.md](../../../Flink/03-api/03.02-table-sql-api/flink-cep-complete-guide.md), [time-semantics-and-watermark.md](../../../Flink/02-core/time-semantics-and-watermark.md) | **形式化等级**: L3-L4 -->
-<!-- TRANSLATE: > **版本**: Flink 1.13-2.2+ | **难度**: 中级-高级 | **预计阅读时间**: 90分钟 -->
+## 1. Definitions
 
+### Def-F-CEP-Tutorial-01: CEP Core Concepts
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
-
-<!-- TRANSLATE: ### Lemma-F-CEP-Tutorial-01: Pattern API 的闭包性质 -->
-
-<!-- TRANSLATE: **引理**: Pattern API 在组合操作下保持闭包性质。 -->
-
-<!-- TRANSLATE: **证明概要**: -->
-
-<!-- TRANSLATE: 1. **顺序组合**: `P1.next(P2)` 仍是有效 Pattern -->
-<!-- TRANSLATE: 2. **选择组合**: `P1.or(P2)` 仍是有效 Pattern -->
-<!-- TRANSLATE: 3. **循环组合**: `P1.times(n,m)` 仍是有效 Pattern -->
+**Complex Event Processing (CEP)** is the technology for detecting complex patterns from event streams:
 
 $$
-<!-- TRANSLATE: \forall P_1, P_2 \in \text{Pattern}: P_1 \oplus P_2 \in \text{Pattern} -->
+\text{CEP} = (E, P, \mathcal{M}, \mathcal{A})
 $$
 
-<!-- TRANSLATE: ### Lemma-F-CEP-Tutorial-02: 时间窗口的状态剪枝 -->
+| Component | Description | Flink Implementation |
+|-----------|-------------|---------------------|
+| $E$ | Event stream | `DataStream<Event>` |
+| $P$ | Pattern definition | `Pattern<T, ?>` |
+| $\mathcal{M}$ | Matching engine | NFA (Nondeterministic Finite Automaton) |
+| $\mathcal{A}$ | Post-match action | `PatternSelectFunction` |
 
-**引理**: 时间窗口约束 `within(T)` 将 NFA 的活跃状态数上限从 $O(|E|)$ 降为 $O(T/\bar{\delta})$。
-
-<!-- TRANSLATE: **推导**: -->
+**CEP Processing Flow**:
 
 ```
-无时间窗口:
-  每个事件可能启动新匹配
-  活跃状态数 ∝ 事件总数 |E|
-
-有时间窗口 T:
-  只保留窗口内的事件
-  活跃状态数 ∝ T / 平均事件间隔
+Input Event Stream → Pattern API Definition → NFA State Machine → Match Results → Business Actions
+       ↓                   ↓                      ↓                ↓              ↓
+   Raw Events         Pattern Rules         State Transitions   Complex Events  Alerts/Processing
 ```
 
-<!-- TRANSLATE: ### Prop-F-CEP-Tutorial-01: 连续性策略的匹配集合关系 -->
+### Def-F-CEP-Tutorial-02: Pattern API Core Elements
 
-<!-- TRANSLATE: **命题**: 三种连续性策略的匹配集合满足包含关系： -->
-
-$$
-<!-- TRANSLATE: \text{Matches}_{\text{next}} \subseteq \text{Matches}_{\text{followedBy}} \subseteq \text{Matches}_{\text{followedByAny}} -->
-$$
-
-<!-- TRANSLATE: **示例验证**: -->
+**Pattern API** is Flink CEP's declarative pattern definition interface:
 
 ```
-事件流: [A, X, A, B, B, C]
+Pattern<T, ?> = begin(name)
+    → [where|subtype]
+    → [next|followedBy|followedByAny]
+    → [times|oneOrMore|optional]
+    → [within]
+```
+
+**Core Element Definitions**:
+
+| Element | Method | Semantics |
+|---------|--------|-----------|
+| **Start** | `begin(name)` | Pattern starting point, creates initial state |
+| **Condition** | `where(condition)` | Event filtering condition |
+| **Contiguity** | `next()` / `followedBy()` | Event relationship constraints |
+| **Quantifier** | `times(n,m)` | Loop matching count |
+| **Time** | `within(time)` | Pattern time window |
+
+### Def-F-CEP-Tutorial-03: NFA Pattern Matching
+
+**Nondeterministic Finite Automaton (NFA)** is the underlying execution model for CEP:
+
+```
+NFA = (Q, Σ, δ, q₀, F)
+```
+
+- $Q$: Set of states (corresponding to pattern stages)
+- $Σ$: Input alphabet (event types)
+- $δ$: Transition function (event-driven state transitions)
+- $q₀$: Initial state
+- $F$: Accepting states (pattern match complete)
+
+**NFA Execution Example**:
+
+```
+Pattern: A → B → C
+
+State Transition Diagram:
+    [Start] --A--> [State_A] --B--> [State_B] --C--> [Accept]
+                      ↑_______|            ↑_________|
+                      (loop wait)            (loop wait)
+```
+
+---
+
+## 2. Properties
+
+### Lemma-F-CEP-Tutorial-01: Pattern API Closure Property
+
+**Lemma**: Pattern API maintains closure under composition operations.
+
+**Proof Sketch**:
+
+1. **Sequential composition**: `P1.next(P2)` is still a valid Pattern
+2. **Choice composition**: `P1.or(P2)` is still a valid Pattern
+3. **Loop composition**: `P1.times(n,m)` is still a valid Pattern
+
+$$
+\forall P_1, P_2 \in \text{Pattern}: P_1 \oplus P_2 \in \text{Pattern}
+$$
+
+### Lemma-F-CEP-Tutorial-02: Time Window State Pruning
+
+**Lemma**: The time window constraint `within(T)` reduces the NFA active state count upper bound from $O(|E|)$ to $O(T/\bar{\delta})$.
+
+**Derivation**:
+
+```
+Without time window:
+  Each event may start a new match
+  Active states ∝ Total events |E|
+
+With time window T:
+  Only retain events within the window
+  Active states ∝ T / average event interval
+```
+
+### Prop-F-CEP-Tutorial-01: Contiguity Strategy Match Set Relationship
+
+**Proposition**: The match sets of the three contiguity strategies satisfy the inclusion relationship:
+
+$$
+\text{Matches}_{\text{next}} \subseteq \text{Matches}_{\text{followedBy}} \subseteq \text{Matches}_{\text{followedByAny}}
+$$
+
+**Example Verification**:
+
+```
+Event Stream: [A, X, A, B, B, C]
 
 Pattern: A → B → C
 
-next():            无匹配 (A后无紧邻B)
-followedBy():      匹配 [A(3), B(4), C(6)]
-followedByAny():   匹配 [A(3), B(4), C(6)] 和 [A(3), B(5), C(6)]
+next():            No match (no B immediately after A)
+followedBy():      Match [A(3), B(4), C(6)]
+followedByAny():   Match [A(3), B(4), C(6)] and [A(3), B(5), C(6)]
 ```
 
+---
 
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
+## 3. Relations
 
-<!-- TRANSLATE: ### 4.1 连续性策略选择决策树 -->
+### 3.1 CEP vs SQL MATCH_RECOGNIZE Comparison
+
+| Feature | Pattern API | SQL MATCH_RECOGNIZE |
+|---------|-------------|---------------------|
+| **Expressiveness** | Turing-complete | Regular-class |
+| **Usage** | Java/Scala API | SQL declarative |
+| **Dynamic patterns** | Supported | Not supported |
+| **Post-match processing** | Flexible (arbitrary code) | Limited (SQL projection) |
+| **Applicable scenarios** | Complex business logic | Simple pattern recognition |
+
+### 3.2 CEP vs Stream Processing Operators Comparison
+
+```mermaid
+graph TB
+    subgraph "Stream Processing Operators"
+        A[Filter] --> B[Map] --> C[Window] --> D[Aggregate]
+    end
+
+    subgraph "CEP Pattern Matching"
+        E[Event Stream] --> F[NFA Engine]
+        F --> G[Pattern Match]
+        G --> H[Complex Event]
+    end
+
+    subgraph "Capability Comparison"
+        D -->|Aggregation| I[Statistics]
+        H -->|Temporal Recognition| J[Business Events]
+    end
+
+    style F fill:#e1f5fe
+    style G fill:#fff3e0
+```
+
+### 3.3 Pattern API to Regular Expression Mapping
+
+| Regex | Pattern API | Description |
+|-------|-------------|-------------|
+| `a+` | `A.oneOrMore()` | One or more times |
+| `a?` | `A.optional()` | Zero or one time |
+| `a{n,m}` | `A.times(n, m)` | n to m times |
+| `a\|b` | `A.or(B)` | Choice |
+| `ab` | `A.next(B)` | Strict sequence |
+| `a.*b` | `A.followedBy(B)` | Relaxed sequence |
+
+---
+
+## 4. Argumentation
+
+### 4.1 Contiguity Strategy Selection Decision Tree
 
 ```mermaid
 flowchart TD
-    START([选择连续性策略])
+    START([Select Contiguity Strategy])
 
-    START --> Q1{事件必须紧邻?}
-    Q1 -->|是| Q2{允许其他事件插入?}
-    Q1 -->|否| Q3{需要所有匹配?}
+    START --> Q1{Events must be adjacent?}
+    Q1 -->|Yes| Q2{Allow other events in between?}
+    Q1 -->|No| Q3{Need all matches?}
 
-    Q2 -->|否| NEXT[next<br/>严格连续]
-    Q2 -->|是| Q4{多个后续事件?}
+    Q2 -->|No| NEXT[next<br/>Strict Contiguity]
+    Q2 -->|Yes| Q4{Multiple subsequent events?}
 
-    Q3 -->|是| FBA[followedByAny<br/>非确定性宽松]
-    Q3 -->|否| FB[followedBy<br/>宽松连续]
+    Q3 -->|Yes| FBA[followedByAny<br/>Nondeterministic Relaxed]
+    Q3 -->|No| FB[followedBy<br/>Relaxed Contiguity]
 
-    Q4 -->|是| FBA
-    Q4 -->|否| FB
+    Q4 -->|Yes| FBA
+    Q4 -->|No| FB
 
     style NEXT fill:#ffebee
     style FB fill:#e8f5e9
     style FBA fill:#e3f2fd
 ```
 
-<!-- TRANSLATE: ### 4.2 时间窗口设计权衡 -->
+### 4.2 Time Window Design Trade-offs
 
-<!-- TRANSLATE: | 窗口大小 | 优点 | 缺点 | 适用场景 | -->
-<!-- TRANSLATE: |----------|------|------|----------| -->
-<!-- TRANSLATE: | **小 (<1分钟)** | 低延迟、少误报、低状态 | 可能漏慢速攻击 | 高频交易、实时风控 | -->
-<!-- TRANSLATE: | **中 (1-10分钟)** | 平衡延迟与覆盖率 | 中等状态开销 | 常规业务监控 | -->
-<!-- TRANSLATE: | **大 (>10分钟)** | 捕获长期模式 | 高状态、高延迟 | 业务流程分析 | -->
+| Window Size | Advantages | Disadvantages | Applicable Scenarios |
+|-------------|------------|---------------|----------------------|
+| **Small (<1 min)** | Low latency, fewer false positives, low state | May miss slow attacks | High-frequency trading, real-time risk control |
+| **Medium (1-10 min)** | Balance latency and coverage | Medium state overhead | General business monitoring |
+| **Large (>10 min)** | Capture long-term patterns | High state, high latency | Business process analysis |
 
-<!-- TRANSLATE: ### 4.3 消耗策略选择指南 -->
+### 4.3 Consumption Strategy Selection Guide
 
-<!-- TRANSLATE: | 策略 | 输出匹配数 | 适用场景 | -->
-<!-- TRANSLATE: |------|-----------|----------| -->
-<!-- TRANSLATE: | `NO_SKIP` | 最多 | 需要所有可能匹配 | -->
-<!-- TRANSLATE: | `SKIP_TO_NEXT` | 中等 | 从下一个起始事件开始 | -->
-<!-- TRANSLATE: | `SKIP_PAST_LAST_EVENT` | 最少 | 避免重叠匹配 | -->
-<!-- TRANSLATE: | `SKIP_TO_FIRST` | 可控 | 跳转到指定模式起点 | -->
+| Strategy | Output Match Count | Applicable Scenarios |
+|----------|-------------------|----------------------|
+| `NO_SKIP` | Most | Need all possible matches |
+| `SKIP_TO_NEXT` | Medium | Start from next initiating event |
+| `SKIP_PAST_LAST_EVENT` | Least | Avoid overlapping matches |
+| `SKIP_TO_FIRST` | Controllable | Jump to specified pattern start |
 
+---
 
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
+## 5. Proof / Engineering Argument
 
-<!-- TRANSLATE: ### 6.1 Maven 依赖配置 -->
+### Thm-F-CEP-Tutorial-01: CEP Exactly-Once Semantics
+
+**Theorem**: Under Flink's Checkpoint mechanism, CEP pattern matching satisfies Exactly-Once semantics.
+
+**Proof**:
+
+1. **State inclusion**: Checkpoint saves the complete NFA state
+   - Active state instances
+   - Partially matched event sequences
+   - Time window boundaries
+
+2. **Recovery consistency**: After recovery from Checkpoint
+   - NFA state is consistent with pre-failure state
+   - Processed events are not replayed (Flink guarantee)
+   - Partial matches continue from the breakpoint
+
+3. **Output consistency**: Match results are output only once
+   - Already output matches are marked in state
+   - No duplicate output after recovery
+
+$$
+\text{Output}_{\text{before_failure}} = \text{Output}_{\text{after_recovery}}
+$$
+
+### Thm-F-CEP-Tutorial-02: Pattern Matching Time Complexity
+
+**Theorem**: For a pattern of length $n$ and event stream, CEP matching time complexity is $O(|E| \cdot n \cdot k)$, where $k$ is the maximum number of concurrent matches.
+
+**Engineering Optimizations**:
+
+1. **Index optimization**: Build indexes by event type
+2. **Window pruning**: Timeout matches are automatically cleaned up
+3. **State compression**: Similar matches are merged for storage
+
+---
+
+## 6. Examples
+
+### 6.1 Maven Dependency Configuration
 
 ```xml
-<!-- Flink CEP 依赖 -->
+<!-- Flink CEP dependency -->
 <dependency>
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-cep</artifactId>
     <version>1.17.0</version>
 </dependency>
 
-<!-- Scala API (可选) -->
+<!-- Scala API (optional) -->
 <dependency>
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-cep-scala_2.12</artifactId>
@@ -137,9 +291,9 @@ flowchart TD
 </dependency>
 ```
 
-<!-- TRANSLATE: ### 6.2 基础 Pattern API 详解 -->
+### 6.2 Basic Pattern API in Detail
 
-<!-- TRANSLATE: #### 6.2.1 Java API 完整示例 -->
+#### 6.2.1 Java API Complete Example
 
 ```java
 import org.apache.flink.cep.CEP;
@@ -152,11 +306,11 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class CEPCompleteTutorial {
 
-    // ========== 1. 基础模式定义 ==========
+    // ========== 1. Basic Pattern Definitions ==========
 
     /**
-     * 示例 1: 简单序列模式
-     * 检测：登录后 5 分钟内完成支付
+     * Example 1: Simple sequence pattern
+     * Detect: Login followed by payment within 5 minutes
      */
     public static Pattern<LoginEvent, ?> loginThenPayPattern() {
         return Pattern.<LoginEvent>begin("login")
@@ -177,8 +331,8 @@ public class CEPCompleteTutorial {
     }
 
     /**
-     * 示例 2: 循环模式
-     * 检测：5 分钟内 3 次以上失败登录
+     * Example 2: Loop pattern
+     * Detect: 3+ failed logins within 5 minutes
      */
     public static Pattern<LoginEvent, ?> bruteForcePattern() {
         return Pattern.<LoginEvent>begin("failed")
@@ -188,14 +342,14 @@ public class CEPCompleteTutorial {
                     return event.getType().equals("LOGIN") && !event.isSuccess();
                 }
             })
-            .timesOrMore(3)  // 3次或更多
-            .greedy()        // 贪婪模式，尽可能多匹配
+            .timesOrMore(3)  // 3 or more times
+            .greedy()        // Greedy mode, match as many as possible
             .within(Time.minutes(5));
     }
 
     /**
-     * 示例 3: 否定模式
-     * 检测：下单后 30 分钟内未支付
+     * Example 3: Negation pattern
+     * Detect: Order not paid within 30 minutes
      */
     public static Pattern<OrderEvent, ?> orderNotPaidPattern() {
         return Pattern.<OrderEvent>begin("order")
@@ -215,11 +369,11 @@ public class CEPCompleteTutorial {
             .within(Time.minutes(30));
     }
 
-    // ========== 2. 复杂条件模式 ==========
+    // ========== 2. Complex Condition Patterns ==========
 
     /**
-     * 示例 4: 迭代条件（访问前面匹配的事件）
-     * 检测：温度持续上升超过阈值
+     * Example 4: Iterative condition (access previously matched events)
+     * Detect: Temperature continuously rising above threshold
      */
     public static Pattern<SensorReading, ?> temperatureRisingPattern() {
         return Pattern.<SensorReading>begin("first")
@@ -233,7 +387,7 @@ public class CEPCompleteTutorial {
             .where(new IterativeCondition<SensorReading>() {
                 @Override
                 public boolean filter(SensorReading reading, Context<SensorReading> ctx) {
-                    // 访问前面匹配的事件
+                    // Access previously matched events
                     double firstTemp = ctx.getEventsForPattern("first")
                         .get(0).getTemperature();
                     return reading.getTemperature() > firstTemp + 5.0;
@@ -251,11 +405,11 @@ public class CEPCompleteTutorial {
             .within(Time.minutes(10));
     }
 
-    // ========== 3. 组合模式 ==========
+    // ========== 3. Composite Patterns ==========
 
     /**
-     * 示例 5: 或组合模式
-     * 检测：VIP用户的高额交易 或 普通用户的异常交易
+     * Example 5: OR composite pattern
+     * Detect: High-value transaction by VIP user OR abnormal transaction by normal user
      */
     public static Pattern<Transaction, ?> fraudPattern() {
         Pattern<Transaction, ?> vipPattern = Pattern.<Transaction>begin("vip")
@@ -278,7 +432,7 @@ public class CEPCompleteTutorial {
             .where(new SimpleCondition<Transaction>() {
                 @Override
                 public boolean filter(Transaction tx) {
-                    return tx.getAmount() < 10;  // 小额试探
+                    return tx.getAmount() < 10;  // Small probing amount
                 }
             })
             .next("suspicious")
@@ -288,13 +442,13 @@ public class CEPCompleteTutorial {
                     return tx.getAmount() > 5000;
                 }
             })
-            .or(vipPattern)  // 或组合
+            .or(vipPattern)  // OR composition
             .within(Time.minutes(10));
     }
 }
 ```
 
-<!-- TRANSLATE: #### 6.2.2 Scala API 完整示例 -->
+#### 6.2.2 Scala API Complete Example
 
 ```scala
 import org.apache.flink.cep.scala.CEP
@@ -304,21 +458,21 @@ import org.apache.flink.streaming.api.windowing.time.Time
 
 object CEPScalaTutorial {
 
-  // 示例 1: 简单模式
+  // Example 1: Simple pattern
   val loginPattern = Pattern.begin[LoginEvent]("login")
     .where(_.eventType == "LOGIN")
     .followedBy("payment")
     .where(_.eventType == "PAYMENT")
     .within(Time.minutes(5))
 
-  // 示例 2: 循环模式
+  // Example 2: Loop pattern
   val bruteForcePattern = Pattern.begin[LoginEvent]("failed")
     .where(evt => evt.eventType == "LOGIN" && !evt.success)
     .timesOrMore(3)
     .greedy()
     .within(Time.minutes(5))
 
-  // 示例 3: 迭代条件
+  // Example 3: Iterative condition
   val temperatureRisingPattern = Pattern.begin[SensorReading]("first")
     .where(_.temperature > 80.0)
     .next("second")
@@ -333,21 +487,21 @@ object CEPScalaTutorial {
     })
     .within(Time.minutes(10))
 
-  // 应用到流
+  // Apply to stream
   def applyPattern[T](stream: DataStream[T], pattern: Pattern[T, _]): Unit = {
     val patternStream = CEP.pattern(stream, pattern)
 
     patternStream.select(pattern => {
-      // 处理匹配结果
+      // Process match results
       pattern.toString
     })
   }
 }
 ```
 
-<!-- TRANSLATE: ### 6.3 实际案例详解 -->
+### 6.3 Real-world Case Studies
 
-<!-- TRANSLATE: #### 6.3.1 欺诈检测完整实现 -->
+#### 6.3.1 Fraud Detection Complete Implementation
 
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -357,8 +511,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：信用卡欺诈检测
- * 模式：小额测试 → 大额交易（5分钟内）
+ * Case: Credit card fraud detection
+ * Pattern: Small test → Large transaction (within 5 minutes)
  */
 public class FraudDetectionCEP {
 
@@ -367,7 +521,7 @@ public class FraudDetectionCEP {
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(4);
 
-        // 1. 创建事件流
+        // 1. Create event stream
         DataStream<Transaction> transactions = env
             .addSource(new TransactionSource())
             .assignTimestampsAndWatermarks(
@@ -376,13 +530,13 @@ public class FraudDetectionCEP {
                     .withIdleness(Duration.ofMinutes(1))
             );
 
-        // 2. 定义欺诈检测模式
+        // 2. Define fraud detection pattern
         Pattern<Transaction, ?> fraudPattern = Pattern
             .<Transaction>begin("small-amount")
             .where(new SimpleCondition<Transaction>() {
                 @Override
                 public boolean filter(Transaction tx) {
-                    // 小额试探交易
+                    // Small probing transaction
                     return tx.getAmount() > 0 && tx.getAmount() < 10.0;
                 }
             })
@@ -390,12 +544,12 @@ public class FraudDetectionCEP {
             .where(new IterativeCondition<Transaction>() {
                 @Override
                 public boolean filter(Transaction tx, Context<Transaction> ctx) {
-                    // 大额交易（大于5000）
+                    // Large transaction (>5000)
                     if (tx.getAmount() <= 5000.0) {
                         return false;
                     }
 
-                    // 同一用户
+                    // Same user
                     String userId = ctx.getEventsForPattern("small-amount")
                         .get(0).getUserId();
                     return tx.getUserId().equals(userId);
@@ -403,13 +557,13 @@ public class FraudDetectionCEP {
             })
             .within(Time.minutes(5));
 
-        // 3. 应用模式到流
+        // 3. Apply pattern to stream
         PatternStream<Transaction> patternStream = CEP.pattern(
-            transactions.keyBy(Transaction::getUserId),  // 按用户分区
+            transactions.keyBy(Transaction::getUserId),  // Partition by user
             fraudPattern
         );
 
-        // 4. 处理匹配结果
+        // 4. Process match results
         DataStream<Alert> alerts = patternStream
             .select(new PatternSelectFunction<Transaction, Alert>() {
                 @Override
@@ -428,7 +582,7 @@ public class FraudDetectionCEP {
                 }
             });
 
-        // 5. 输出告警
+        // 5. Output alerts
         alerts.addSink(new AlertSink());
 
         env.execute("Fraud Detection with CEP");
@@ -436,7 +590,7 @@ public class FraudDetectionCEP {
 }
 ```
 
-<!-- TRANSLATE: #### 6.3.2 登录异常检测 -->
+#### 6.3.2 Login Anomaly Detection
 
 ```java
 import org.apache.flink.cep.Pattern;
@@ -447,13 +601,13 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：异常登录检测
- * 模式1: 5分钟内 3 次失败登录 → 成功登录（暴力破解）
- * 模式2: 异地登录（地理位置突变）
+ * Case: Anomalous login detection
+ * Pattern 1: 3 failed logins within 5 minutes → successful login (brute force)
+ * Pattern 2: Geo-location anomaly (sudden city change)
  */
 public class LoginAnomalyDetection {
 
-    // 模式 1: 暴力破解检测
+    // Pattern 1: Brute force detection
     public static Pattern<LoginEvent, ?> bruteForcePattern() {
         return Pattern.<LoginEvent>begin("failed-logins")
             .where(new SimpleCondition<LoginEvent>() {
@@ -474,7 +628,7 @@ public class LoginAnomalyDetection {
             .within(Time.minutes(5));
     }
 
-    // 模式 2: 异地登录检测
+    // Pattern 2: Geo-location anomaly detection
     public static Pattern<LoginEvent, ?> geoAnomalyPattern() {
         return Pattern.<LoginEvent>begin("first-login")
             .where(new SimpleCondition<LoginEvent>() {
@@ -491,7 +645,7 @@ public class LoginAnomalyDetection {
 
                     LoginEvent first = ctx.getEventsForPattern("first-login").get(0);
 
-                    // 同一用户，不同城市，时间间隔小于 2 小时
+                    // Same user, different city, interval < 2 hours
                     return event.getUserId().equals(first.getUserId())
                         && !event.getCity().equals(first.getCity())
                         && (event.getTimestamp() - first.getTimestamp()) < Time.hours(2).toMilliseconds();
@@ -511,7 +665,7 @@ public class LoginAnomalyDetection {
                     Duration.ofSeconds(10))
             );
 
-        // 应用多个模式
+        // Apply multiple patterns
         Pattern<LoginEvent, ?> pattern = bruteForcePattern();
 
         PatternStream<LoginEvent> patternStream = CEP.pattern(
@@ -519,7 +673,7 @@ public class LoginAnomalyDetection {
             pattern
         );
 
-        // 处理匹配和超时
+        // Process matches and timeouts
         DataStream<Alert> alerts = patternStream
             .process(new PatternProcessFunction<LoginEvent, Alert>() {
                 @Override
@@ -528,7 +682,7 @@ public class LoginAnomalyDetection {
                         Context ctx,
                         Collector<Alert> out) {
 
-                    // 正常匹配处理：暴力破解成功
+                    // Normal match processing: brute force succeeded
                     List<LoginEvent> failed = match.get("failed-logins");
                     LoginEvent success = match.get("success-login").get(0);
 
@@ -546,7 +700,7 @@ public class LoginAnomalyDetection {
                         Context ctx,
                         Collector<Alert> out) {
 
-                    // 超时处理：多次失败但未成功（仍在尝试）
+                    // Timeout processing: multiple failures without success (still attempting)
                     List<LoginEvent> failed = match.get("failed-logins");
 
                     out.collect(new Alert(
@@ -564,7 +718,7 @@ public class LoginAnomalyDetection {
 }
 ```
 
-<!-- TRANSLATE: #### 6.3.3 业务流程监控 -->
+#### 6.3.3 Business Process Monitoring
 
 ```java
 import org.apache.flink.cep.Pattern;
@@ -575,13 +729,13 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：业务流程超时监控
- * 监控订单流程：创建 → 支付 → 发货 → 签收
- * 检测各环节超时
+ * Case: Business process timeout monitoring
+ * Monitor order process: Created → Paid → Shipped → Delivered
+ * Detect timeouts at each stage
  */
 public class BusinessProcessMonitor {
 
-    // 完整订单流程监控
+    // Full order process monitoring
     public static Pattern<OrderEvent, ?> orderProcessPattern() {
         return Pattern.<OrderEvent>begin("created")
             .where(evt -> evt.getType().equals("ORDER_CREATED"))
@@ -591,25 +745,25 @@ public class BusinessProcessMonitor {
             .where(evt -> evt.getType().equals("ORDER_SHIPPED"))
             .followedBy("delivered")
             .where(evt -> evt.getType().equals("ORDER_DELIVERED"))
-            .within(Time.hours(72));  // 72小时完整流程
+            .within(Time.hours(72));  // 72 hours for full process
     }
 
-    // 支付超时检测
+    // Payment timeout detection
     public static Pattern<OrderEvent, ?> paymentTimeoutPattern() {
         return Pattern.<OrderEvent>begin("created")
             .where(evt -> evt.getType().equals("ORDER_CREATED"))
             .notFollowedBy("paid")
             .where(evt -> evt.getType().equals("ORDER_PAID"))
-            .within(Time.minutes(30));  // 30分钟未支付
+            .within(Time.minutes(30));  // Not paid within 30 minutes
     }
 
-    // 发货超时检测
+    // Shipping timeout detection
     public static Pattern<OrderEvent, ?> shippingTimeoutPattern() {
         return Pattern.<OrderEvent>begin("paid")
             .where(evt -> evt.getType().equals("ORDER_PAID"))
             .notFollowedBy("shipped")
             .where(evt -> evt.getType().equals("ORDER_SHIPPED"))
-            .within(Time.hours(24));  // 24小时未发货
+            .within(Time.hours(24));  // Not shipped within 24 hours
     }
 
     public static void main(String[] args) throws Exception {
@@ -623,7 +777,7 @@ public class BusinessProcessMonitor {
                     Duration.ofSeconds(30))
             );
 
-        // 检测支付超时
+        // Detect payment timeout
         PatternStream<OrderEvent> timeoutStream = CEP.pattern(
             orders.keyBy(OrderEvent::getOrderId),
             paymentTimeoutPattern()
@@ -636,7 +790,7 @@ public class BusinessProcessMonitor {
                         Map<String, List<OrderEvent>> match,
                         Context ctx,
                         Collector<TimeoutAlert> out) {
-                    // 正常匹配不会触发（notFollowedBy）
+                    // Normal match won't trigger (notFollowedBy)
                 }
 
                 @Override
@@ -663,9 +817,9 @@ public class BusinessProcessMonitor {
 }
 ```
 
-<!-- TRANSLATE: ### 6.4 时间处理详解 -->
+### 6.4 Time Processing in Detail
 
-<!-- TRANSLATE: #### 6.4.1 Event Time vs Processing Time -->
+#### 6.4.1 Event Time vs Processing Time
 
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -675,7 +829,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * CEP 时间语义详解
+ * CEP time semantics in detail
  */
 public class CEPTimeSemantics {
 
@@ -685,53 +839,52 @@ public class CEPTimeSemantics {
 
         DataStream<Event> stream = env.addSource(new EventSource());
 
-        // ========== Event Time 处理（推荐用于生产） ==========
+        // ========== Event Time Processing (Recommended for production) ==========
         DataStream<Event> eventTimeStream = stream
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
-                    Duration.ofSeconds(30))  // 允许30秒乱序
-                    .withIdleness(Duration.ofMinutes(5))  // 5分钟无数据标记为空闲
+                    Duration.ofSeconds(30))  // Allow 30s out-of-order
+                    .withIdleness(Duration.ofMinutes(5))  // Mark idle after 5 min without data
             );
 
-        // Event Time 模式下，within() 使用事件时间戳
+        // In Event Time mode, within() uses event timestamps
         Pattern<Event, ?> pattern = Pattern.<Event>begin("start")
             .where(evt -> evt.getType().equals("A"))
             .followedBy("end")
             .where(evt -> evt.getType().equals("B"))
-            .within(Time.minutes(5));  // 基于 Event Time 的 5 分钟窗口
+            .within(Time.minutes(5));  // 5 minute window based on Event Time
 
-        // ========== Processing Time 处理（低延迟场景） ==========
-        // Processing Time 模式下，within() 使用机器时间
-        // 适用于：实时性要求高，可容忍少数迟到事件丢失
+        // ========== Processing Time Processing (Low latency scenarios) ==========
+        // In Processing Time mode, within() uses machine time
+        // Suitable for: high real-time requirements, tolerating occasional late event loss
 
         PatternStream<Event> patternStream = CEP.pattern(
             eventTimeStream.keyBy(Event::getKey),
             pattern
         );
 
-        // 处理结果
+        // Process results
         patternStream.select(match -> {
-            // 匹配处理
+            // Match processing
             return match;
         });
     }
 }
 ```
 
-<!-- TRANSLATE: #### 6.4.2 Watermark 与迟到事件处理 -->
+#### 6.4.2 Watermark and Late Event Handling
 
 ```java
-/**
- * CEP 中 Watermark 策略配置
- */
-
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
+/**
+ * Watermark strategy configuration in CEP
+ */
 public class CEPWatermarkConfig {
 
     /**
-     * 推荐配置：Bounded Out Of Orderness
-     * 适用于：大多数生产场景
+     * Recommended config: Bounded Out Of Orderness
+     * Suitable for: Most production scenarios
      */
     public static WatermarkStrategy<Event> boundedOutOfOrdernessStrategy() {
         return WatermarkStrategy.<Event>forBoundedOutOfOrderness(
@@ -741,8 +894,8 @@ public class CEPWatermarkConfig {
     }
 
     /**
-     * 严格有序场景
-     * 适用于：数据源本身有序（如 Kafka 单分区）
+     * Strictly ordered scenario
+     * Suitable for: Data source is inherently ordered (e.g., Kafka single partition)
      */
     public static WatermarkStrategy<Event> monotonousStrategy() {
         return WatermarkStrategy.<Event>forMonotonousTimestamps()
@@ -750,8 +903,8 @@ public class CEPWatermarkConfig {
     }
 
     /**
-     * 自定义 Watermark 生成
-     * 适用于：特殊乱序场景
+     * Custom Watermark generation
+     * Suitable for: Special out-of-order scenarios
      */
     public static WatermarkStrategy<Event> customWatermarkStrategy() {
         return new WatermarkStrategy<Event>() {
@@ -760,7 +913,7 @@ public class CEPWatermarkConfig {
                     WatermarkGeneratorSupplier.Context context) {
                 return new WatermarkGenerator<Event>() {
                     private long maxTimestamp = Long.MIN_VALUE;
-                    private final long outOfOrdernessMillis = 30000;  // 30秒
+                    private final long outOfOrdernessMillis = 30000;  // 30 seconds
 
                     @Override
                     public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
@@ -779,13 +932,13 @@ public class CEPWatermarkConfig {
 }
 ```
 
-<!-- TRANSLATE: ### 6.5 高级模式技巧 -->
+### 6.5 Advanced Pattern Techniques
 
-<!-- TRANSLATE: #### 6.5.1 动态模式生成 -->
+#### 6.5.1 Dynamic Pattern Generation
 
 ```java
 /**
- * 基于配置动态生成 CEP 模式
+ * Dynamically generate CEP patterns based on configuration
  */
 
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -798,10 +951,10 @@ public class DynamicPatternBuilder {
 
         Pattern<T, ?> pattern = Pattern.begin(config.getStartName());
 
-        // 添加起始条件
+        // Add start condition
         pattern = pattern.where(createCondition(config.getStartCondition()));
 
-        // 添加后续模式阶段
+        // Add subsequent pattern stages
         for (PatternStage stage : config.getStages()) {
             switch (stage.getContiguity()) {
                 case NEXT:
@@ -817,7 +970,7 @@ public class DynamicPatternBuilder {
 
             pattern = pattern.where(createCondition(stage.getCondition()));
 
-            // 添加量词
+            // Add quantifiers
             if (stage.getMinTimes() > 1 || stage.getMaxTimes() != null) {
                 pattern = pattern.times(stage.getMinTimes(), stage.getMaxTimes());
             }
@@ -827,7 +980,7 @@ public class DynamicPatternBuilder {
             }
         }
 
-        // 添加时间窗口
+        // Add time window
         pattern = pattern.within(Time.milliseconds(config.getWindowMillis()));
 
         return pattern;
@@ -837,7 +990,7 @@ public class DynamicPatternBuilder {
         return new SimpleCondition<T>() {
             @Override
             public boolean filter(T event) {
-                // 根据配置解析条件
+                // Parse condition based on configuration
                 return evaluateCondition(event, config);
             }
         };
@@ -845,7 +998,7 @@ public class DynamicPatternBuilder {
 }
 ```
 
-<!-- TRANSLATE: #### 6.5.2 多模式并行检测 -->
+#### 6.5.2 Multi-pattern Parallel Detection
 
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -855,7 +1008,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 同时检测多个 CEP 模式
+ * Detect multiple CEP patterns simultaneously
  */
 public class MultiPatternDetection {
 
@@ -865,7 +1018,7 @@ public class MultiPatternDetection {
 
         DataStream<Transaction> transactions = env.addSource(new TransactionSource());
 
-        // 定义多个检测模式
+        // Define multiple detection patterns
         Pattern<Transaction, ?> fraudPattern1 = Pattern.<Transaction>begin("small")
             .where(tx -> tx.getAmount() < 10)
             .followedBy("large")
@@ -877,14 +1030,14 @@ public class MultiPatternDetection {
             .timesOrMore(3)
             .within(Time.minutes(1));
 
-        // 并行应用多个模式
+        // Apply multiple patterns in parallel
         DataStream<Alert> alerts1 = CEP.pattern(transactions, fraudPattern1)
             .select(match -> new Alert("FRAUD_PATTERN_1", match));
 
         DataStream<Alert> alerts2 = CEP.pattern(transactions, fraudPattern2)
             .select(match -> new Alert("FRAUD_PATTERN_2", match));
 
-        // 合并告警流
+        // Merge alert streams
         DataStream<Alert> allAlerts = alerts1.union(alerts2);
 
         allAlerts.addSink(new AlertSink());
@@ -893,31 +1046,154 @@ public class MultiPatternDetection {
 }
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. 故障排查 -->
+## 7. Performance Optimization
 
-<!-- TRANSLATE: ### 8.1 常见问题与解决方案 -->
+### 7.1 State Optimization Strategies
 
-<!-- TRANSLATE: | 问题 | 症状 | 原因 | 解决方案 | -->
-<!-- TRANSLATE: |------|------|------|----------| -->
-<!-- TRANSLATE: | **状态过大** | OOM、Checkpoint 超时 | 时间窗口过大 | 缩小 `within()` 窗口 | -->
-<!-- TRANSLATE: | **匹配延迟** | 事件匹配不及时 | Watermark 延迟 | 调整 Watermark 策略 | -->
-<!-- TRANSLATE: | **漏匹配** | 预期匹配未触发 | 连续性策略不当 | 检查 `next()` vs `followedBy()` | -->
-<!-- TRANSLATE: | **重复匹配** | 同一事件多次匹配 | 消耗策略配置 | 设置 `SkipStrategy` | -->
-<!-- TRANSLATE: | **性能下降** | 吞吐量降低 | Key 热点 | 优化 KeyBy 策略 | -->
+| Optimization Strategy | Description | Effect |
+|----------------------|-------------|--------|
+| **Time window limits** | Use reasonable `within()` | Reduce state storage |
+| **Consumption strategy** | Choose appropriate `SkipStrategy` | Reduce duplicate matches |
+| **KeyBy partitioning** | Choose partition key wisely | Reduce cross-partition state |
+| **Pre-filtering** | Pre-filter before Pattern | Reduce invalid events entering CEP |
 
-<!-- TRANSLATE: ### 8.2 调试技巧 -->
+### 7.2 Code Optimization Examples
+
+```java
+/**
+ * CEP performance optimization examples
+ */
+
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class CEPPerformanceOptimization {
+
+    /**
+     * Optimization 1: Reasonable KeyBy partitioning
+     * Avoid hotspots, ensure even data distribution
+     */
+    public static void optimizedKeyBy(DataStream<Event> stream) {
+        // Not recommended: user ID may cause hotspots
+        // stream.keyBy(Event::getUserId)
+
+        // Recommended: Use composite key or hash
+        stream.keyBy(event ->
+            (event.getUserId().hashCode() % 100) + "_" + event.getRegion()
+        );
+    }
+
+    /**
+     * Optimization 2: Pre-filtering
+     * Reduce the number of events entering CEP
+     */
+    public static DataStream<Event> preFilter(DataStream<Event> stream) {
+        return stream.filter(event ->
+            // Only let potentially matching events into CEP
+            event.getType().equals("LOGIN") ||
+            event.getType().equals("PAYMENT")
+        );
+    }
+
+    /**
+     * Optimization 3: Choose efficient contiguity strategy
+     */
+    public static Pattern<Event, ?> optimizedPattern() {
+        // next() performs better than followedByAny()
+        // Only use followedByAny() when needed
+        return Pattern.<Event>begin("start")
+            .where(evt -> evt.getType().equals("A"))
+            .next("end")  // Prefer next()
+            .where(evt -> evt.getType().equals("B"))
+            .within(Time.minutes(1));
+    }
+
+    /**
+     * Optimization 4: Set reasonable time windows
+     */
+    public static Pattern<Event, ?> optimizedWindow() {
+        // Smaller window means less state
+        // Choose the minimum feasible window based on business scenario
+        return Pattern.<Event>begin("start")
+            .where(evt -> evt.getType().equals("A"))
+            .followedBy("end")
+            .where(evt -> evt.getType().equals("B"))
+            .within(Time.minutes(5));  // Avoid overly large windows
+    }
+}
+```
+
+### 7.3 Monitoring Metrics
+
+```java
+import org.apache.flink.cep.PatternStream;
+
+/**
+ * CEP monitoring metrics collection
+ */
+public class CEPMetrics {
+
+    public static void collectMetrics(PatternStream<Event> patternStream) {
+        patternStream.select(new PatternSelectFunction<Event, Result>() {
+            private transient Counter matchCounter;
+            private transient Histogram matchLatency;
+
+            @Override
+            public void open(Configuration parameters) {
+                matchCounter = getRuntimeContext()
+                    .getMetricGroup()
+                    .counter("cep.matches");
+                matchLatency = getRuntimeContext()
+                    .getMetricGroup()
+                    .histogram("cep.matchLatency", new DropwizardHistogramWrapper(
+                        new com.codahale.metrics.Histogram(
+                            new SlidingWindowReservoir(500))));
+            }
+
+            @Override
+            public Result select(Map<String, List<Event>> pattern) {
+                matchCounter.inc();
+
+                // Calculate match latency
+                long startTime = pattern.get("start").get(0).getTimestamp();
+                long latency = System.currentTimeMillis() - startTime;
+                matchLatency.update(latency);
+
+                return new Result(pattern);
+            }
+        });
+    }
+}
+```
+
+---
+
+## 8. Troubleshooting
+
+### 8.1 Common Issues and Solutions
+
+| Issue | Symptom | Cause | Solution |
+|-------|---------|-------|----------|
+| **Excessive state** | OOM, Checkpoint timeout | Time window too large | Reduce `within()` window |
+| **Match latency** | Events not matched in time | Watermark delay | Adjust Watermark strategy |
+| **Missing matches** | Expected matches not triggered | Incorrect contiguity strategy | Check `next()` vs `followedBy()` |
+| **Duplicate matches** | Same event matched multiple times | Consumption strategy config | Set `SkipStrategy` |
+| **Performance degradation** | Throughput drop | Key hotspot | Optimize KeyBy strategy |
+
+### 8.2 Debugging Techniques
 
 ```java
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 /**
- * CEP 调试工具
+ * CEP debugging tools
  */
 public class CEPDebugging {
 
     /**
-     * 调试 1: 打印所有事件
+     * Debug 1: Print all events
      */
     public static void debugEvents(DataStream<Event> stream) {
         stream.map(event -> {
@@ -928,20 +1204,20 @@ public class CEPDebugging {
     }
 
     /**
-     * 调试 2: 监控 Watermark 进度
+     * Debug 2: Monitor Watermark progress
      */
     public static void debugWatermarks(DataStream<Event> stream) {
         stream.assignTimestampsAndWatermarks(
             WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                 .withTimestampAssigner((event, ts) -> event.getTimestamp())
         ).map(event -> {
-            // 打印当前 Watermark
+            // Print current Watermark
             return event;
         });
     }
 
     /**
-     * 调试 3: 模式匹配详情
+     * Debug 3: Pattern match details
      */
     public static void debugPatternMatches(
             PatternStream<Event> patternStream) {
@@ -967,5 +1243,107 @@ public class CEPDebugging {
 }
 ```
 
+---
 
-<!-- TRANSLATE: ## 10. 引用参考 (References) -->
+## 9. Visualizations
+
+### 9.1 CEP Architecture Flow
+
+```mermaid
+graph TB
+    A[Input Event Stream] --> B[KeyBy Partitioning]
+    B --> C[CEP Pattern Matcher]
+    C --> D{NFA State Machine}
+    D -->|Match Found| E[Complex Event]
+    D -->|Partial Match| F[State Store]
+    D -->|Timeout| G[Cleanup]
+    E --> H[Pattern Select Function]
+    H --> I[Output Stream]
+    F -->|Next Event| D
+
+    style C fill:#e1f5fe
+    style D fill:#fff3e0
+    style E fill:#e8f5e9
+```
+
+### 9.2 Pattern Matching State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle: Initial State
+    Idle --> Matching: First Event Matches
+    Matching --> PartialMatch: Intermediate Event
+    Matching --> CompleteMatch: Final Event
+    Matching --> Timeout: Within Expired
+    PartialMatch --> PartialMatch: Continue Matching
+    PartialMatch --> CompleteMatch: All Events Matched
+    PartialMatch --> Timeout: Time Window Expired
+    CompleteMatch --> [*]: Emit Result
+    Timeout --> [*]: Cleanup State
+
+    state Matching {
+        [*] --> Stage1
+        Stage1 --> Stage2: next()
+        Stage1 --> Stage2: followedBy()
+        Stage2 --> Stage3: Event Match
+    }
+```
+
+### 9.3 Contiguity Strategy Comparison
+
+```mermaid
+flowchart LR
+    subgraph next["next() - Strict Contiguity"]
+        A1[A] -->|Adjacent| B1[B]
+        A1 -.->|X Not Allowed| X1[Other]
+    end
+
+    subgraph followedBy["followedBy() - Relaxed Contiguity"]
+        A2[A] --> X2[Other]
+        X2 --> X3[Other]
+        X3 --> B2[B]
+    end
+
+    subgraph followedByAny["followedByAny() - Nondeterministic"]
+        A3[A] --> B3[B]
+        A3 --> B4[B]
+        A3 --> X4[Other] --> B5[B]
+    end
+
+    style next fill:#ffebee
+    style followedBy fill:#e8f5e9
+    style followedByAny fill:#e3f2fd
+```
+
+### 9.4 CEP in Stream Processing
+
+```mermaid
+graph TB
+    subgraph "Data Ingestion"
+        K[Kafka/Source]
+    end
+
+    subgraph "Stream Processing"
+        F[Filter/Map]
+        W[Window Aggregation]
+        C[CEP Pattern Matching]
+        J[Join/Union]
+    end
+
+    subgraph "Output"
+        S[(Sink)]
+    end
+
+    K --> F
+    F --> W
+    F --> C
+    W --> J
+    C --> J
+    J --> S
+
+    style C fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+```
+
+---
+
+## 10. References

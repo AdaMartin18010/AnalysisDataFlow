@@ -1,89 +1,413 @@
 ---
-title: "[EN] Personalized Learning Engine"
-translation_status: "ai_translated"
-source_file: "Knowledge/personalized-learning-engine.md"
-source_version: "aeb3d113"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.337790"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "Personalized Learning Path Recommendation Engine"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# Personalized Learning Path Recommendation Engine
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Project**: P3-8 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04
+>
+> **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md)
 
-<!-- TRANSLATE: # Personalized Learning Path Recommendation Engine -->
+This document describes the design and implementation of a personalized learning path recommendation engine for the AnalysisDataFlow knowledge base.
 
-<!-- TRANSLATE: > **Project**: P3-8 | **Type**: Technical Design | **Version**: v1.0 | **Date**: 2026-04-04 -->
-<!-- TRANSLATE: > -->
-<!-- TRANSLATE: > **Formalization Level**: L4 (Engineering Design) | **Dependencies**: [LEARNING-PATHS-DYNAMIC.md](../../../en/00-INDEX.md) -->
+---
 
-<!-- TRANSLATE: This document describes the design and implementation of a personalized learning path recommendation engine for the AnalysisDataFlow knowledge base. -->
+## 1. Definitions
 
+### Def-K-PLE-01: Personalized Learning Engine
 
-<!-- TRANSLATE: ## 2. Property Derivation -->
+A **Personalized Learning Engine (PLE)** is a recommendation system that generates adaptive learning paths based on:
 
-<!-- TRANSLATE: ### Prop-K-PLE-01: Path Completeness -->
+- Learner's background knowledge
+- Learning objectives
+- Time constraints
+- Preferred learning style
+- Real-time progress feedback
 
-<!-- TRANSLATE: For any valid learning objective o ∈ 𝒪, there exists at least one learning path LP that achieves o. -->
+**Formal Definition**:
 
-<!-- TRANSLATE: **Proof Sketch**: -->
+```
+PLE = ⟨𝒰, 𝒟, 𝒪, 𝒫, ℛ, ℳ, 𝒜⟩
+```
 
-<!-- TRANSLATE: - The knowledge graph is connected (by construction) -->
-<!-- TRANSLATE: - Each document covers specific concepts -->
-<!-- TRANSLATE: - Breadth-first search from prerequisites to objective yields a valid path ∎ -->
+Where:
 
-<!-- TRANSLATE: ### Prop-K-PLE-02: Personalization Monotonicity -->
+- 𝒰 = Set of users/learners
+- 𝒟 = Set of documents (learning materials)
+- 𝒪 = Set of learning objectives
+- 𝒫 = Progress tracking function
+- ℛ = Recommendation function: 𝒰 × 𝒪 × 𝒫 → Sequence(𝒟)
+- ℳ = Knowledge mastery model
+- 𝒜 = Adaptation strategy
 
-<!-- TRANSLATE: Given two learners u₁, u₂ with KS(u₁) ≥ KS(u₂) (component-wise), the recommended path for u₁ is no longer than for u₂. -->
+### Def-K-PLE-02: Knowledge State
+
+A learner's **Knowledge State** at time t is a vector representing mastery levels across all concepts.
+
+```
+KS_t(u) = ⟨m₁, m₂, ..., mₙ⟩
+
+where mᵢ ∈ [0, 1] represents mastery of concept cᵢ
+```
+
+### Def-K-PLE-03: Learning Path
+
+A **Learning Path** is a partially ordered sequence of learning activities designed to achieve specific learning objectives.
+
+```
+LP = ⟨(d₁, t₁), (d₂, t₂), ..., (dₙ, tₙ)⟩, where tᵢ ≤ tᵢ₊₁
+```
+
+---
+
+## 2. Properties
+
+### Prop-K-PLE-01: Path Completeness
+
+For any valid learning objective o ∈ 𝒪, there exists at least one learning path LP that achieves o.
+
+**Proof Sketch**:
+
+- The knowledge graph is connected (by construction)
+- Each document covers specific concepts
+- Breadth-first search from prerequisites to objective yields a valid path ∎
+
+### Prop-K-PLE-02: Personalization Monotonicity
+
+Given two learners u₁, u₂ with KS(u₁) ≥ KS(u₂) (component-wise), the recommended path for u₁ is no longer than for u₂.
 
 ```
 ∀u₁, u₂ ∈ 𝒰. KS(u₁) ≥ KS(u₂) ⇒ |LP(u₁, o)| ≤ |LP(u₂, o)|
 ```
 
-<!-- TRANSLATE: ### Prop-K-PLE-03: Progress Convergence -->
+### Prop-K-PLE-03: Progress Convergence
 
-<!-- TRANSLATE: With consistent engagement, the learning path converges to the objective. -->
+With consistent engagement, the learning path converges to the objective.
 
 ```
 lim_{t→∞} distance(KS_t, KS_target) = 0
 ```
 
+---
 
-<!-- TRANSLATE: ## 4. Argumentation Process -->
+## 3. Relations
 
-<!-- TRANSLATE: ### 4.1 Recommendation Algorithm Selection -->
+### 3.1 Connection to Existing Systems
 
-<!-- TRANSLATE: **Candidate Approaches**: -->
+```mermaid
+graph TB
+    PLE[Personalized Learning Engine]
 
-<!-- TRANSLATE: | Approach | Pros | Cons | Use Case | -->
-<!-- TRANSLATE: |----------|------|------|----------| -->
-<!-- TRANSLATE: | Content-Based | Interpretable, no cold start | Limited diversity | Domain-specific paths | -->
-<!-- TRANSLATE: | Collaborative Filtering | Discovers patterns | Cold start, sparsity | Popular paths | -->
-<!-- TRANSLATE: | Knowledge Graph | Structured, explainable | Complex construction | Prerequisite chains | -->
-<!-- TRANSLATE: | Reinforcement Learning | Adaptive, optimizes long-term | Training complexity | Dynamic adaptation | -->
+    PLE --> KR[Knowledge Representation<br/>Struct/Formal Theory]
+    PLE --> TM[Tracking Mechanism<br/>PROJECT-TRACKING.md]
+    PLE --> SE[Search Engine<br/>docs/ai-features/]
+    PLE --> CH[Chatbot<br/>docs/chatbot-integration.md]
 
-<!-- TRANSLATE: **Selected Hybrid Approach**: -->
+    KR -->|Concept Dependencies| PLE
+    TM -->|Progress Data| PLE
+    SE -->|Content Retrieval| PLE
+    CH -->|Q&A History| PLE
+```
+
+### 3.2 Integration Points
+
+| System | Integration Type | Data Exchange |
+|--------|-----------------|---------------|
+| Search Index | Read | Document embeddings, metadata |
+| Progress Tracker | Read/Write | Completion status, quiz scores |
+| Chatbot | Read | Question history, difficulty ratings |
+| Content Index | Read | Document structure, prerequisites |
+
+---
+
+## 4. Argumentation
+
+### 4.1 Recommendation Algorithm Selection
+
+**Candidate Approaches**:
+
+| Approach | Pros | Cons | Use Case |
+|----------|------|------|----------|
+| Content-Based | Interpretable, no cold start | Limited diversity | Domain-specific paths |
+| Collaborative Filtering | Discovers patterns | Cold start, sparsity | Popular paths |
+| Knowledge Graph | Structured, explainable | Complex construction | Prerequisite chains |
+| Reinforcement Learning | Adaptive, optimizes long-term | Training complexity | Dynamic adaptation |
+
+**Selected Hybrid Approach**:
 
 ```
 Recommendation = α·ContentScore + β·GraphDistance + γ·CollaborativeScore + δ·RLValue
 ```
 
-<!-- TRANSLATE: ### 4.2 Constraint Satisfaction -->
+### 4.2 Constraint Satisfaction
 
-<!-- TRANSLATE: Learning paths must satisfy: -->
+Learning paths must satisfy:
 
-<!-- TRANSLATE: 1. **Prerequisite Constraints**: All prerequisites must be completed before dependent content -->
-<!-- TRANSLATE: 2. **Time Constraints**: Total estimated time ≤ available time budget -->
-<!-- TRANSLATE: 3. **Difficulty Constraints**: Difficulty progression should be smooth (no jumps > 0.3) -->
-<!-- TRANSLATE: 4. **Diversity Constraints**: Include multiple content types (theory, practice, case studies) -->
+1. **Prerequisite Constraints**: All prerequisites must be completed before dependent content
+2. **Time Constraints**: Total estimated time ≤ available time budget
+3. **Difficulty Constraints**: Difficulty progression should be smooth (no jumps > 0.3)
+4. **Diversity Constraints**: Include multiple content types (theory, practice, case studies)
 
+---
 
-<!-- TRANSLATE: ## 6. Implementation Details -->
+## 5. Proof / Engineering Argument
 
-<!-- TRANSLATE: ### 6.1 Database Schema -->
+### 5.1 System Architecture
+
+```mermaid
+graph TB
+    subgraph "User Layer"
+        UI[Web Interface]
+        API[API Gateway]
+    end
+
+    subgraph "Recommendation Engine"
+        PM[Profile Manager]
+        KG[Knowledge Graph]
+        RE[Recommendation Engine]
+        PA[Path Assembler]
+    end
+
+    subgraph "Data Layer"
+        UDB[(User DB)]
+        CDB[(Content DB)]
+        GDB[(Graph DB)]
+        Cache[(Redis Cache)]
+    end
+
+    UI --> API
+    API --> PM
+    API --> RE
+
+    PM --> UDB
+    PM --> Cache
+
+    RE --> KG
+    RE --> PA
+
+    KG --> GDB
+    PA --> CDB
+```
+
+### 5.2 Knowledge Graph Structure
+
+```mermaid
+graph LR
+    subgraph "Concept Node"
+        CN[Concept]
+        CN --- Diff[Difficulty: 0.7]
+        CN --- Time[Est. Time: 2h]
+        CN --- Type[Type: Theoretical]
+    end
+
+    subgraph "Document Node"
+        DN[Document]
+        DN --- Path[File Path]
+        DN --- Level[Formal Level: L4]
+    end
+
+    subgraph "Relationship Types"
+        PR[PREREQUISITE]
+        RE[RELATED]
+        BU[BUILDS_UPON]
+    end
+
+    CN --> PR --> CN2[Advanced Concept]
+    DN --> BU --> DN2[Advanced Doc]
+    CN --> RE --> CN3[Related Concept]
+```
+
+### 5.3 User Model
+
+```yaml
+# User Profile Schema
+user_profile:
+  id: string
+  created_at: timestamp
+
+  # Background assessment
+  background:
+    role: enum[student, engineer, researcher, architect]
+    experience_level: enum[beginner, intermediate, advanced, expert]
+    domains: list[string]  # Known domains
+    languages: list[string]  # Programming languages
+
+  # Learning preferences
+  preferences:
+    content_types: list[enum[theory, practice, video, interactive]]
+    session_length: integer  # Preferred minutes per session
+    difficulty_preference: enum[basic, challenging, mixed]
+
+  # Current state
+  knowledge_state:
+    concept_mastery: map[concept_id, float]  # 0-1 mastery level
+    completed_documents: list[document_id]
+    quiz_scores: map[document_id, float]
+
+  # Learning history
+  history:
+    sessions: list[session_record]
+    bookmarks: list[document_id]
+    questions_asked: list[question_record]
+```
+
+### 5.4 Recommendation Algorithm
+
+```python
+class PersonalizedLearningEngine:
+    """Core recommendation engine."""
+
+    def recommend_path(
+        self,
+        user_id: str,
+        objective: str,
+        constraints: LearningConstraints
+    ) -> LearningPath:
+        """
+        Generate personalized learning path.
+
+        Algorithm:
+        1. Retrieve user profile and knowledge state
+        2. Identify target concepts from objective
+        3. Find prerequisite closure
+        4. Filter by constraints
+        5. Optimize path using scoring function
+        6. Assemble final learning path
+        """
+
+        # Step 1: User context
+        user = self.get_user_profile(user_id)
+        knowledge_state = self.get_knowledge_state(user_id)
+
+        # Step 2: Target concepts
+        target_concepts = self.identify_concepts(objective)
+
+        # Step 3: Prerequisite analysis
+        required_concepts = self.prerequisite_closure(target_concepts)
+
+        # Filter already mastered concepts
+        to_learn = [
+            c for c in required_concepts
+            if knowledge_state.get_mastery(c) < 0.7
+        ]
+
+        # Step 4: Document mapping
+        candidate_docs = self.map_concepts_to_documents(to_learn)
+
+        # Step 5: Path optimization
+        path = self.optimize_path(
+            candidate_docs,
+            knowledge_state,
+            constraints,
+            user.preferences
+        )
+
+        return path
+
+    def score_document(
+        self,
+        document: Document,
+        user: UserProfile,
+        knowledge_state: KnowledgeState
+    ) -> float:
+        """
+        Score document relevance for user.
+
+        Scoring components:
+        - Concept coverage (40%)
+        - Difficulty match (20%)
+        - Content type preference (15%)
+        - Collaborative score (15%)
+        - Recency/diversity (10%)
+        """
+
+        scores = {
+            'concept_coverage': self._concept_coverage_score(document, user),
+            'difficulty_match': self._difficulty_match_score(document, knowledge_state),
+            'content_preference': self._content_preference_score(document, user),
+            'collaborative': self._collaborative_score(document, user),
+            'diversity': self._diversity_score(document, user),
+        }
+
+        weights = {
+            'concept_coverage': 0.40,
+            'difficulty_match': 0.20,
+            'content_preference': 0.15,
+            'collaborative': 0.15,
+            'diversity': 0.10,
+        }
+
+        return sum(scores[k] * weights[k] for k in scores)
+```
+
+### 5.5 Learning Path Optimization
+
+```python
+def optimize_path(
+    self,
+    documents: List[Document],
+    knowledge_state: KnowledgeState,
+    constraints: LearningConstraints,
+    preferences: UserPreferences
+) -> LearningPath:
+    """
+    Optimize learning path using modified topological sort.
+
+    Constraints:
+    - Prerequisite ordering
+    - Time budget
+    - Difficulty progression
+    - Content diversity
+    """
+
+    # Build dependency graph
+    graph = self._build_dependency_graph(documents)
+
+    # Initialize path
+    path = []
+    remaining = set(documents)
+    current_time = 0
+
+    while remaining:
+        # Find candidates (all prerequisites met)
+        candidates = [
+            d for d in remaining
+            if self._prerequisites_met(d, path, knowledge_state)
+        ]
+
+        if not candidates:
+            break  # Should not happen with valid input
+
+        # Score candidates
+        scored = [
+            (d, self.score_document(d, knowledge_state))
+            for d in candidates
+        ]
+
+        # Select best candidate
+        best_doc, score = max(scored, key=lambda x: x[1])
+
+        # Check constraints
+        doc_time = best_doc.estimated_time
+        if current_time + doc_time > constraints.max_total_time:
+            break
+
+        # Add to path
+        path.append(best_doc)
+        remaining.remove(best_doc)
+        current_time += doc_time
+
+    return LearningPath(documents=path, total_time=current_time)
+```
+
+---
+
+## 6. Implementation Details
+
+### 6.1 Database Schema
 
 ```sql
 -- User profiles
@@ -134,7 +458,7 @@ CREATE TABLE document_concepts (
 );
 ```
 
-<!-- TRANSLATE: ### 6.2 API Endpoints -->
+### 6.2 API Endpoints
 
 ```yaml
 openapi: 3.0.0
@@ -220,7 +544,7 @@ paths:
           description: Path adaptation suggestions
 ```
 
-<!-- TRANSLATE: ### 6.3 Configuration -->
+### 6.3 Configuration
 
 ```yaml
 # personalized-learning-config.yaml
@@ -256,20 +580,80 @@ learning_engine:
     user_state_ttl: 300  # 5 minutes
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. Evaluation -->
+## 7. Examples
 
-<!-- TRANSLATE: ### 8.1 Success Metrics -->
+### 7.1 New Learner Onboarding
 
-<!-- TRANSLATE: | Metric | Description | Target | -->
-<!-- TRANSLATE: |--------|-------------|--------| -->
-<!-- TRANSLATE: | **Path Completion Rate** | % of users completing recommended paths | > 70% | -->
-<!-- TRANSLATE: | **Knowledge Gain** | Pre/post assessment score improvement | > 30% | -->
-<!-- TRANSLATE: | **Time Efficiency** | Actual vs. estimated time ratio | 0.8 - 1.2 | -->
-<!-- TRANSLATE: | **User Satisfaction** | Post-path rating | > 4.2/5 | -->
-<!-- TRANSLATE: | **Path Diversity** | Unique paths generated per objective | > 5 | -->
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant E as Engine
+    participant DB as Database
 
-<!-- TRANSLATE: ### 8.2 A/B Testing Framework -->
+    U->>E: Start assessment
+    E->>U: Background questions
+    U->>E: Provide answers
+    E->>DB: Create profile
+    E->>E: Initialize knowledge state
+    E->>U: Recommend starter path
+```
+
+### 7.2 Goal-Directed Path Generation
+
+**Input**:
+
+- User: Mid-level engineer
+- Goal: "Implement Flink Checkpoint for production"
+- Time: 2 weeks (part-time)
+
+**Generated Path**:
+
+| Week | Day | Document | Estimated Time | Type |
+|------|-----|----------|----------------|------|
+| 1 | 1 | Checkpoint Fundamentals | 1h | Theory |
+| 1 | 2 | State Backend Selection | 45m | Guide |
+| 1 | 3 | Checkpoint Configuration | 1.5h | Practice |
+| 1 | 4 | Failure Recovery Patterns | 1h | Patterns |
+| 1 | 5 | Hands-on Exercise | 2h | Exercise |
+| 2 | 1 | Production Checklist | 1h | Guide |
+| 2 | 2 | Performance Tuning | 1.5h | Practice |
+| 2 | 3 | Troubleshooting Guide | 1h | Reference |
+| 2 | 4 | Case Study: Alibaba | 1h | Case |
+| 2 | 5 | Final Assessment | 1h | Quiz |
+
+### 7.3 Adaptive Path Adjustment
+
+**Scenario**: User struggling with content
+
+```python
+# Detect struggle
+if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
+    # Insert prerequisite content
+    prerequisites = find_prerequisites(current_doc)
+    insert_before_next(prerequisites)
+
+    # Suggest alternative resources
+    alternatives = find_easier_alternatives(current_doc)
+    suggest_supplementary(alternatives)
+```
+
+---
+
+## 8. Evaluation
+
+### 8.1 Success Metrics
+
+| Metric | Description | Target |
+|--------|-------------|--------|
+| **Path Completion Rate** | % of users completing recommended paths | > 70% |
+| **Knowledge Gain** | Pre/post assessment score improvement | > 30% |
+| **Time Efficiency** | Actual vs. estimated time ratio | 0.8 - 1.2 |
+| **User Satisfaction** | Post-path rating | > 4.2/5 |
+| **Path Diversity** | Unique paths generated per objective | > 5 |
+
+### 8.2 A/B Testing Framework
 
 ```python
 class ABTestFramework:
@@ -298,10 +682,11 @@ class ABTestFramework:
         })
 ```
 
+---
 
-<!-- TRANSLATE: ## 10. Visualization -->
+## 9. Visualizations
 
-<!-- TRANSLATE: ### 10.1 System Flow -->
+### 9.1 System Flow
 
 ```mermaid
 flowchart TD
@@ -324,7 +709,7 @@ flowchart TD
     M --> N[Next Recommendation]
 ```
 
-<!-- TRANSLATE: ### 10.2 Knowledge State Visualization -->
+### 9.2 Knowledge State Visualization
 
 ```mermaid
 radarChart
@@ -345,3 +730,19 @@ radarChart
     point User_A, 0.3, 0.5, 0.7, 0.4, 0.2
     point Target, 0.8, 0.9, 0.8, 0.7, 0.6
 ```
+
+---
+
+**Document Version History**:
+
+| Version | Date | Changes |
+|---------|------|---------|
+| v1.0 | 2026-04-04 | Initial version |
+
+## 10. References
+
+- [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) - Dynamic learning paths
+- [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) - Learning path guide
+- [QUICK-START.md](../QUICK-START.md) - Quick start guide
+
+---

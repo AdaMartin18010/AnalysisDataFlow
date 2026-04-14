@@ -1,282 +1,273 @@
 ---
-title: "[EN] Learning Path Recommender"
-translation_status: "ai_translated"
-source_file: "Knowledge/learning-path-recommender.md"
-source_version: "d672daf2"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.336690"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "Dynamic Learning Path Recommender System"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# Dynamic Learning Path Recommender System
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> **Stage**: Knowledge | **Prerequisites**: [LEARNING-PATH-GUIDE.md](../../../LEARNING-PATH-GUIDE.md), [learning-path-recommender.py](../../../.scripts/learning-path-recommender.py) | **Formalization Level**: L3
 
-<!-- TRANSLATE: # 学习路径动态推荐系统 -->
+## 1. Definitions
 
-<!-- TRANSLATE: > **所属阶段**: Knowledge | **前置依赖**: [LEARNING-PATH-GUIDE.md](../../../LEARNING-PATH-GUIDE.md), [learning-path-recommender.py](../learning-path-recommender.js) | **形式化等级**: L3 -->
+### Def-K-LPR-01: Learning Path Recommender System
 
-<!-- TRANSLATE: ## 1. 概念定义 -->
+A learning path recommender system is an intelligent system that automatically generates personalized learning sequences for learners based on user profiles, knowledge graphs, and content features.
 
-<!-- TRANSLATE: ### Def-K-LPR-01: 学习路径推荐系统 (Learning Path Recommender System) -->
+**Formal Definition**:
 
-<!-- TRANSLATE: 学习路径推荐系统是一种基于用户画像、知识图谱和内容特征，自动为学习者生成个性化学习序列的智能系统。 -->
+- Let $\mathcal{U}$ be the user profile space, $\mathcal{C}$ the content space, and $\mathcal{P}$ the path space
+- The recommendation function $f: \mathcal{U} \times \mathcal{C} \rightarrow \mathcal{P}$ maps user-content pairs to learning paths
+- The optimization objective is to maximize the learning effectiveness function $E(p, u)$, where $p \in \mathcal{P}$, $u \in \mathcal{U}$
 
-<!-- TRANSLATE: **形式化定义**: -->
+### Def-K-LPR-02: User Profile
 
-- 设用户画像空间为 $\mathcal{U}$，内容空间为 $\mathcal{C}$，路径空间为 $\mathcal{P}$
-- 推荐函数 $f: \mathcal{U} \times \mathcal{C} \rightarrow \mathcal{P}$ 将用户-内容映射为学习路径
-- 优化目标为最大化学习效果函数 $E(p, u)$，其中 $p \in \mathcal{P}$, $u \in \mathcal{U}$
-
-<!-- TRANSLATE: ### Def-K-LPR-02: 用户画像 (User Profile) -->
-
-<!-- TRANSLATE: 用户画像是对学习者特征的多维向量表示： -->
+A user profile is a multi-dimensional vector representation of a learner's characteristics:
 
 $$
-<!-- TRANSLATE: \vec{u} = (r, e, g, t, i, k, h) -->
+\vec{u} = (r, e, g, t, i, k, h)
 $$
 
-<!-- TRANSLATE: 其中： -->
+Where:
 
-- $r \in \{\text{student}, \text{developer}, \text{architect}, \text{researcher}\}$: 角色
-- $e \in \{\text{beginner}, \text{intermediate}, \text{advanced}\}$: 经验等级
-- $g \in \{\text{theory}, \text{practice}, \text{interview}, \text{research}\}$: 学习目标
-- $t \in \{\text{short}, \text{medium}, \text{long}\}$: 时间框架
-- $i \subseteq \mathcal{T}$: 兴趣标签集合
-- $k \subseteq \mathcal{C}$: 已掌握内容集合
-- $h \in \mathbb{N}^+$: 每周可用小时数
+- $r \in \{\text{student}, \text{developer}, \text{architect}, \text{researcher}\}$: Role
+- $e \in \{\text{beginner}, \text{intermediate}, \text{advanced}\}$: Experience level
+- $g \in \{\text{theory}, \text{practice}, \text{interview}, \text{research}\}$: Learning goal
+- $t \in \{\text{short}, \text{medium}, \text{long}\}$: Time frame
+- $i \subseteq \mathcal{T}$: Interest tag set
+- $k \subseteq \mathcal{C}$: Mastered content set
+- $h \in \mathbb{N}^+$: Weekly available hours
 
-<!-- TRANSLATE: ### Def-K-LPR-03: 学习路径 (Learning Path) -->
+### Def-K-LPR-03: Learning Path
 
-<!-- TRANSLATE: 学习路径是有序的学习内容序列，满足依赖约束： -->
-
-$$
-<!-- TRANSLATE: p = \langle c_1, c_2, \ldots, c_n \rangle -->
-$$
-
-其中 $\forall i > 1, \text{deps}(c_i) \subseteq \{c_1, \ldots, c_{i-1}\}$
-
-<!-- TRANSLATE: **路径质量度量**: -->
-
-- 完整性: $\text{Completeness}(p) = \frac{|\bigcup_{c \in p} \text{concepts}(c)|}{|\text{TargetConcepts}|}$
-- 连贯性: $\text{Coherence}(p) = \frac{1}{n-1}\sum_{i=1}^{n-1} \text{sim}(c_i, c_{i+1})$
-- 难度平滑度: $\text{Smoothness}(p) = \frac{1}{n-1}\sum_{i=1}^{n-1} |\text{level}(c_i) - \text{level}(c_{i+1})|$
-
-<!-- TRANSLATE: ## 2. 属性推导 -->
-
-<!-- TRANSLATE: ### Lemma-K-LPR-01: 路径存在性 -->
-
-**命题**: 对于任意目标内容集合 $T \subseteq \mathcal{C}$，若依赖图 $G_\text{deps}$ 无环，则存在至少一条有效学习路径覆盖 $T$。
-
-<!-- TRANSLATE: **证明概要**: -->
-
-1. 构建依赖图 $G_\text{deps} = (V, E)$，其中 $V = \bigcup_{c \in T} \text{closure}(c)$
-2. 对无环有向图进行拓扑排序得到序列 $p$
-3. 该序列满足 $\forall c_i \in p, \text{deps}(c_i) \subseteq \{c_j | j < i\}$
-4. 故 $p$ 为有效学习路径 ∎
-
-<!-- TRANSLATE: ### Lemma-K-LPR-02: 最优路径唯一性 -->
-
-**命题**: 给定优化目标函数 $E(p, u)$，最优学习路径不一定唯一。
-
-**反例**: 设两个路径 $p_1, p_2$ 覆盖相同概念集，难度曲线互补，对特定用户具有相同效用值，则两者均为最优。
-
-<!-- TRANSLATE: ### Prop-K-LPR-01: 推荐多样性边界 -->
-
-对于包含 $n$ 个内容项的推荐列表，Top-$k$ 推荐的内容覆盖率上限为：
+A learning path is an ordered sequence of learning content satisfying dependency constraints:
 
 $$
-<!-- TRANSLATE: \text{Coverage}(k) \leq \min\left(k \cdot \frac{|\mathcal{T}|}{n}, |\mathcal{T}|\right) -->
+p = \langle c_1, c_2, \ldots, c_n \rangle
 $$
 
-其中 $\mathcal{T}$ 为系统中所有主题标签集合。
+Where $\forall i > 1, \text{deps}(c_i) \subseteq \{c_1, \ldots, c_{i-1}\}$
 
-<!-- TRANSLATE: ## 3. 关系建立 -->
+**Path Quality Metrics**:
 
-<!-- TRANSLATE: ### 与知识图谱的关系 -->
+- Completeness: $\text{Completeness}(p) = \frac{|\bigcup_{c \in p} \text{concepts}(c)|}{|\text{TargetConcepts}|}$
+- Coherence: $\text{Coherence}(p) = \frac{1}{n-1}\sum_{i=1}^{n-1} \text{sim}(c_i, c_{i+1})$
+- Difficulty Smoothness: $\text{Smoothness}(p) = \frac{1}{n-1}\sum_{i=1}^{n-1} |\text{level}(c_i) - \text{level}(c_{i+1})|$
+
+## 2. Properties
+
+### Lemma-K-LPR-01: Path Existence
+
+**Lemma**: For any target content set $T \subseteq \mathcal{C}$, if the dependency graph $G_\text{deps}$ is acyclic, then there exists at least one valid learning path covering $T$.
+
+**Proof Sketch**:
+
+1. Construct dependency graph $G_\text{deps} = (V, E)$, where $V = \bigcup_{c \in T} \text{closure}(c)$
+2. Topologically sort the acyclic directed graph to obtain sequence $p$
+3. This sequence satisfies $\forall c_i \in p, \text{deps}(c_i) \subseteq \{c_j | j < i\}$
+4. Therefore $p$ is a valid learning path ∎
+
+### Lemma-K-LPR-02: Optimal Path Uniqueness
+
+**Lemma**: Given an optimization objective function $E(p, u)$, the optimal learning path is not necessarily unique.
+
+**Counterexample**: Let two paths $p_1, p_2$ cover the same concept set with complementary difficulty curves, and have the same utility value for a specific user. Then both are optimal.
+
+### Prop-K-LPR-01: Recommendation Diversity Bound
+
+For a recommendation list containing $n$ content items, the upper bound of Top-$k$ content coverage is:
+
+$$
+\text{Coverage}(k) \leq \min\left(k \cdot \frac{|\mathcal{T}|}{n}, |\mathcal{T}|\right)
+$$
+
+Where $\mathcal{T}$ is the set of all topic tags in the system.
+
+## 3. Relations
+
+### Relationship with Knowledge Graph
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    知识图谱 (Knowledge Graph)            │
+│                    Knowledge Graph                       │
 │  ┌──────────┐      ┌──────────┐      ┌──────────┐      │
-│  │  概念A   │──────│  概念B   │──────│  概念C   │      │
+│  │ Concept A│──────│ Concept B│──────│ Concept C│      │
 │  └──────────┘      └──────────┘      └──────────┘      │
 │       │                 │                 │             │
 │       └─────────────────┼─────────────────┘             │
 │                         ▼                               │
 │              ┌──────────────────┐                      │
-│              │  依赖关系提取     │                      │
+│              │ Dependency Extraction                    │
 │              └────────┬─────────┘                      │
 └───────────────────────┼─────────────────────────────────┘
                         ▼
 ┌─────────────────────────────────────────────────────────┐
-│                 学习路径推荐系统                          │
+│              Learning Path Recommender                   │
 │  ┌──────────┐      ┌──────────┐      ┌──────────┐      │
-│  │ 阶段1    │  →   │  阶段2   │  →   │  阶段3   │      │
-│  │ (基础)   │      │ (进阶)   │      │ (高级)   │      │
+│  │ Stage 1  │  →   │ Stage 2  │  →   │ Stage 3  │      │
+│  │ (Basic)  │      │(Advanced)│      │ (Expert) │      │
 │  └──────────┘      └──────────┘      └──────────┘      │
 └─────────────────────────────────────────────────────────┘
 ```
 
-<!-- TRANSLATE: ### 与学习理论的关系 -->
+### Relationship with Learning Theory
 
-<!-- TRANSLATE: | 学习理论 | 在本系统中的体现 | -->
-<!-- TRANSLATE: |---------|----------------| -->
-<!-- TRANSLATE: | **建构主义** | 学习路径按概念依赖构建，新知识建立在旧知识基础上 | -->
-<!-- TRANSLATE: | **间隔重复** | 系统推荐在适当时间回顾已学内容 | -->
-<!-- TRANSLATE: | **掌握学习** | 每个阶段设置检查点，确保掌握后再进阶 | -->
-<!-- TRANSLATE: | **个性化学习** | 根据用户画像调整路径难度和节奏 | -->
+| Learning Theory | Manifestation in This System |
+|-----------------|------------------------------|
+| **Constructivism** | Learning paths are built from concept dependencies; new knowledge is constructed on top of existing knowledge |
+| **Spaced Repetition** | The system recommends reviewing learned content at appropriate intervals |
+| **Mastery Learning** | Checkpoints are set at each stage to ensure mastery before advancing |
+| **Personalized Learning** | Path difficulty and pace are adjusted based on user profiles |
 
-<!-- TRANSLATE: ## 4. 论证过程 -->
+## 4. Argumentation
 
-<!-- TRANSLATE: ### 推荐算法选择论证 -->
+### Recommendation Algorithm Selection
 
-<!-- TRANSLATE: #### 候选算法对比 -->
+#### Candidate Algorithm Comparison
 
-<!-- TRANSLATE: | 算法 | 优势 | 劣势 | 适用性 | -->
-<!-- TRANSLATE: |------|------|------|--------| -->
-<!-- TRANSLATE: | **协同过滤** | 发现隐藏模式 | 冷启动问题 | 中（需大量用户数据） | -->
-<!-- TRANSLATE: | **基于内容** | 可解释性强 | 过度特化 | 高（内容特征丰富） | -->
-<!-- TRANSLATE: | **知识图谱** | 考虑概念依赖 | 构建成本高 | 高（已有图谱） | -->
-<!-- TRANSLATE: | **强化学习** | 动态优化 | 训练复杂 | 中（需交互数据） | -->
+| Algorithm | Advantages | Disadvantages | Applicability |
+|-----------|------------|---------------|---------------|
+| **Collaborative Filtering** | Discovers hidden patterns | Cold start problem | Medium (requires large user data) |
+| **Content-Based** | Strong interpretability | Over-specialization | High (rich content features) |
+| **Knowledge Graph** | Considers concept dependencies | High construction cost | High (existing graph) |
+| **Reinforcement Learning** | Dynamic optimization | Complex training | Medium (requires interaction data) |
 
-<!-- TRANSLATE: **决策**: 采用混合推荐策略 -->
+**Decision**: Adopt a hybrid recommendation strategy
 
-<!-- TRANSLATE: - 主体: 基于内容的推荐（利用文档元数据） -->
-<!-- TRANSLATE: - 增强: 知识图谱约束（确保概念依赖完整） -->
-<!-- TRANSLATE: - 补充: 协同过滤（当有足够用户数据时） -->
+- Primary: Content-based recommendation (utilizing document metadata)
+- Enhancement: Knowledge graph constraints (ensuring concept dependency completeness)
+- Supplement: Collaborative filtering (when sufficient user data is available)
 
-<!-- TRANSLATE: ### 冷启动问题处理 -->
+### Cold Start Handling
 
-<!-- TRANSLATE: 对于新用户，系统采用以下策略： -->
+For new users, the system adopts the following strategies:
 
-<!-- TRANSLATE: 1. **基于角色的默认路径**: 根据用户选择的角色加载预设路径模板 -->
-<!-- TRANSLATE: 2. **热门内容推荐**: 推荐系统中 popularity 最高的内容 -->
-<!-- TRANSLATE: 3. **探索性问题**: 通过3-5个问题快速构建初步画像 -->
+1. **Role-based default path**: Load preset path templates based on the user's selected role
+2. **Popular content recommendation**: Recommend the most popular content in the system
+3. **Exploratory questions**: Quickly build an initial profile through 3-5 questions
 
-<!-- TRANSLATE: ### 路径更新策略 -->
+### Path Update Strategy
 
-当用户完成学习内容 $c$ 后，系统重新计算：
-
-$$
-<!-- TRANSLATE: \mathcal{P}' = \{p \setminus \{c\} | p \in \mathcal{P}, c \in p\} -->
-$$
-
-<!-- TRANSLATE: 并更新用户画像： -->
+When a user completes learning content $c$, the system recalculates:
 
 $$
-<!-- TRANSLATE: k' = k \cup \{c\} -->
+\mathcal{P}' = \{p \setminus \{c\} | p \in \mathcal{P}, c \in p\}
 $$
 
-<!-- TRANSLATE: ## 5. 形式证明 / 工程论证 -->
+And updates the user profile:
 
-<!-- TRANSLATE: ### Thm-K-LPR-01: 推荐收敛性 -->
+$$
+k' = k \cup \{c\}
+$$
 
-**定理**: 在有限内容空间 $\mathcal{C}$ 和单调递增的已学集合 $k$ 条件下，推荐算法最多在 $|\mathcal{C}|$ 次迭代后收敛到空推荐。
+## 5. Proof / Engineering Argument
 
-<!-- TRANSLATE: **证明**: -->
+### Thm-K-LPR-01: Recommendation Convergence
 
-1. 每次推荐后，用户至少学习一个新内容：$|k_{t+1}| > |k_t|$
-2. 由于 $|\mathcal{C}|$ 有限，最多 $|\mathcal{C}|$ 次后 $k = \mathcal{C}$
-3. 当 $k = \mathcal{C}$ 时，候选集 $\{c \in \mathcal{C} | c \notin k\} = \emptyset$
-<!-- TRANSLATE: 4. 故算法收敛 ∎ -->
+**Theorem**: Under the conditions of a finite content space $\mathcal{C}$ and a monotonically increasing learned set $k$, the recommendation algorithm converges to an empty recommendation after at most $|\mathcal{C}|$ iterations.
 
-<!-- TRANSLATE: ### 工程实现论证 -->
+**Proof**:
 
-<!-- TRANSLATE: #### 推荐引擎架构 -->
+1. After each recommendation, the user learns at least one new content item: $|k_{t+1}| > |k_t|$
+2. Since $|\mathcal{C}|$ is finite, after at most $|\mathcal{C}|$ iterations $k = \mathcal{C}$
+3. When $k = \mathcal{C}$, the candidate set $\{c \in \mathcal{C} | c \notin k\} = \emptyset$
+4. Therefore the algorithm converges ∎
+
+### Engineering Implementation Argument
+
+#### Recommendation Engine Architecture
 
 ```mermaid
 flowchart TD
-    A[用户画像输入] --> B[特征提取]
-    B --> C[内容候选生成]
-    C --> D[知识图谱过滤]
-    D --> E[多目标排序]
-    E --> F[Top-K选择]
-    F --> G[路径组织]
-    G --> H[输出学习路径]
+    A[User Profile Input] --> B[Feature Extraction]
+    B --> C[Content Candidate Generation]
+    C --> D[Knowledge Graph Filtering]
+    D --> E[Multi-objective Ranking]
+    E --> F[Top-K Selection]
+    F --> G[Path Organization]
+    G --> H[Output Learning Path]
 
-    I[内容库] --> C
-    J[依赖图] --> D
-    K[反馈数据] --> E
+    I[Content Library] --> C
+    J[Dependency Graph] --> D
+    K[Feedback Data] --> E
 ```
 
-<!-- TRANSLATE: #### 核心组件说明 -->
+#### Core Component Description
 
-<!-- TRANSLATE: 1. **ContentLibrary**: 管理所有学习内容，支持按难度、主题、类型检索 -->
-<!-- TRANSLATE: 2. **RecommendationEngine**: 实现推荐算法，生成个性化路径 -->
-<!-- TRANSLATE: 3. **DependencyResolver**: 解析内容依赖关系，确保路径有效性 -->
-<!-- TRANSLATE: 4. **OutputGenerator**: 生成多种格式输出（Markdown/JSON/检查清单） -->
+1. **ContentLibrary**: Manages all learning content, supporting retrieval by difficulty, topic, and type
+2. **RecommendationEngine**: Implements recommendation algorithms to generate personalized paths
+3. **DependencyResolver**: Resolves content dependency relationships to ensure path validity
+4. **OutputGenerator**: Generates multiple output formats (Markdown/JSON/Checklist)
 
-<!-- TRANSLATE: ## 6. 实例验证 -->
+## 6. Examples
 
-<!-- TRANSLATE: ### 用例1: 开发者快速入门路径 -->
+### Use Case 1: Developer Quick Start Path
 
-<!-- TRANSLATE: **用户画像**: -->
+**User Profile**:
 
-<!-- TRANSLATE: - 角色: developer -->
-<!-- TRANSLATE: - 经验: intermediate -->
-<!-- TRANSLATE: - 目标: practice -->
-<!-- TRANSLATE: - 时间: medium (1月) -->
+- Role: developer
+- Experience: intermediate
+- Goal: practice
+- Time: medium (1 month)
 
-<!-- TRANSLATE: **生成的路径**: -->
+**Generated Path**:
 
-<!-- TRANSLATE: | 阶段 | 内容 | 难度 | 预计时间 | -->
-<!-- TRANSLATE: |------|------|------|----------| -->
-<!-- TRANSLATE: | 基础 | Flink架构概览 | L2 | 2h | -->
-<!-- TRANSLATE: | 基础 | 并发范式对比 | L2 | 2h | -->
-<!-- TRANSLATE: | 核心 | Checkpoint机制 | L3 | 4h | -->
-<!-- TRANSLATE: | 核心 | 状态后端选择 | L3 | 3h | -->
-<!-- TRANSLATE: | 应用 | Kafka集成模式 | L3 | 3h | -->
-<!-- TRANSLATE: | 应用 | 性能调优指南 | L4 | 5h | -->
+| Stage | Content | Difficulty | Estimated Time |
+|-------|---------|------------|----------------|
+| Basic | Flink Architecture Overview | L2 | 2h |
+| Basic | Concurrency Paradigm Comparison | L2 | 2h |
+| Core | Checkpoint Mechanism | L3 | 4h |
+| Core | State Backend Selection | L3 | 3h |
+| Applied | Kafka Integration Patterns | L3 | 3h |
+| Applied | Performance Tuning Guide | L4 | 5h |
 
-<!-- TRANSLATE: **预期检查点**: -->
+**Expected Checkpoints**:
 
-<!-- TRANSLATE: - [x] 能够独立开发Flink DataStream应用 -->
-<!-- TRANSLATE: - [x] 能够诊断和解决常见运行问题 -->
-<!-- TRANSLATE: - [ ] 掌握生产环境部署最佳实践 -->
+- [x] Able to independently develop Flink DataStream applications
+- [x] Able to diagnose and resolve common runtime issues
+- [ ] Master production deployment best practices
 
-<!-- TRANSLATE: ### 用例2: 研究者理论路径 -->
+### Use Case 2: Researcher Theory Path
 
-<!-- TRANSLATE: **用户画像**: -->
+**User Profile**:
 
-<!-- TRANSLATE: - 角色: researcher -->
-<!-- TRANSLATE: - 经验: advanced -->
-<!-- TRANSLATE: - 目标: theory -->
-<!-- TRANSLATE: - 时间: long (3月) -->
+- Role: researcher
+- Experience: advanced
+- Goal: theory
+- Time: long (3 months)
 
-<!-- TRANSLATE: **生成的路径**: -->
+**Generated Path**:
 
-<!-- TRANSLATE: | 阶段 | 内容 | 难度 | 预计时间 | -->
-<!-- TRANSLATE: |------|------|------|----------| -->
-<!-- TRANSLATE: | 基础 | 统一流计算理论 | L6 | 8h | -->
-<!-- TRANSLATE: | 基础 | 进程演算基础 | L4 | 6h | -->
-<!-- TRANSLATE: | 进阶 | 一致性层次结构 | L5 | 6h | -->
-<!-- TRANSLATE: | 进阶 | Watermark单调性定理 | L5 | 8h | -->
-<!-- TRANSLATE: | 研究 | Checkpoint正确性证明 | L6 | 12h | -->
+| Stage | Content | Difficulty | Estimated Time |
+|-------|---------|------------|----------------|
+| Basic | Unified Streaming Theory | L6 | 8h |
+| Basic | Process Calculus Fundamentals | L4 | 6h |
+| Advanced | Consistency Hierarchy | L5 | 6h |
+| Advanced | Watermark Monotonicity Theorem | L5 | 8h |
+| Research | Checkpoint Correctness Proof | L6 | 12h |
 
-<!-- TRANSLATE: ## 7. 可视化 -->
+## 7. Visualizations
 
-<!-- TRANSLATE: ### 推荐系统数据流 -->
+### Recommender System Data Flow
 
 ```mermaid
 flowchart LR
-    subgraph Input["输入层"]
-        U[用户画像]
-        C[内容库]
+    subgraph Input["Input Layer"]
+        U[User Profile]
+        C[Content Library]
     end
 
-    subgraph Processing["处理层"]
-        F[特征匹配]
-        D[依赖解析]
-        S[路径排序]
+    subgraph Processing["Processing Layer"]
+        F[Feature Matching]
+        D[Dependency Resolution]
+        S[Path Sorting]
     end
 
-    subgraph Output["输出层"]
-        P1[最短路径]
-        P2[平衡路径]
-        P3[全面路径]
+    subgraph Output["Output Layer"]
+        P1[Shortest Path]
+        P2[Balanced Path]
+        P3[Comprehensive Path]
     end
 
     U --> F
@@ -288,47 +279,83 @@ flowchart LR
     S --> P3
 ```
 
-<!-- TRANSLATE: ### 路径生成决策树 -->
+### Path Generation Decision Tree
 
 ```mermaid
 flowchart TD
-    A[开始] --> B{用户角色?}
-    B -->|student| C[基础路径模板]
-    B -->|developer| D[实践路径模板]
-    B -->|architect| E[架构路径模板]
-    B -->|researcher| F[理论路径模板]
+    A[Start] --> B{User Role?}
+    B -->|student| C[Basic Path Template]
+    B -->|developer| D[Practice Path Template]
+    B -->|architect| E[Architecture Path Template]
+    B -->|researcher| F[Theory Path Template]
 
-    C --> G{经验等级?}
+    C --> G{Experience Level?}
     D --> G
     E --> G
     F --> G
 
-    G -->|beginner| H[难度1-3]
-    G -->|intermediate| I[难度2-4]
-    G -->|advanced| J[难度3-6]
+    G -->|beginner| H[Difficulty 1-3]
+    G -->|intermediate| I[Difficulty 2-4]
+    G -->|advanced| J[Difficulty 3-6]
 
-    H --> K{时间框架?}
+    H --> K{Time Frame?}
     I --> K
     J --> K
 
-    K -->|short| L[选择核心内容]
-    K -->|medium| M[选择重点内容]
-    K -->|long| N[选择全面内容]
+    K -->|short| L[Select Core Content]
+    K -->|medium| M[Select Key Content]
+    K -->|long| N[Select Comprehensive Content]
 
-    L --> O[解析依赖关系]
+    L --> O[Resolve Dependencies]
     M --> O
     N --> O
 
-    O --> P[拓扑排序]
-    P --> Q[生成学习路径]
+    O --> P[Topological Sort]
+    P --> Q[Generate Learning Path]
 ```
 
-<!-- TRANSLATE: ## 8. 引用参考 -->
+## 8. References
 
+---
 
+## Appendix A: User Guide
 
+### Command Line Usage
 
+```bash
+# Interactive mode
+python .scripts/learning-path-recommender.py
 
+# Generate path from configuration file
+python .scripts/learning-path-recommender.py --config profile.json --output my-path.md
 
+# Generate popular recommendations
+python .scripts/learning-path-recommender.py --recommend popular --output recommendations.md
+```
 
-<!-- TRANSLATE: *本文档由 P2-12 任务自动生成 | 版本: v1.0 | 日期: 2026-04-04* -->
+### Configuration File Example
+
+```json
+{
+  "role": "developer",
+  "experience": "intermediate",
+  "goal": "practice",
+  "timeframe": "medium",
+  "weekly_hours": 10,
+  "interests": ["flink", "kafka", "performance"],
+  "known_topics": ["streaming-basics"],
+  "preferred_formats": ["markdown", "code"]
+}
+```
+
+### Output Formats
+
+The system supports three output formats:
+
+- **Markdown**: Complete learning path document with stage divisions and checkpoints
+- **JSON**: Structured data for programmatic processing
+- **Checklist**: Concise checklist format
+
+---
+
+*This document was automatically generated by Task P2-12 | Version: v1.0 | Date: 2026-04-04*

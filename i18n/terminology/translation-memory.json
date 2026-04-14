@@ -1,0 +1,1597 @@
+{
+  "version": "1.0.0",
+  "description": "AnalysisDataFlow Translation Memory",
+  "last_updated": "2026-04-15",
+  "total_entries": 227,
+  "entries": [
+    {
+      "type": "phrase",
+      "source": "# 标题",
+      "target": "# Title",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 1. 概念定义 (Definitions)",
+      "target": "## 1. Definitions",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 2. 属性推导 (Properties)",
+      "target": "## 2. Properties",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 3. 关系建立 (Relations)",
+      "target": "## 3. Relations",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 4. 论证过程 (Argumentation)",
+      "target": "## 4. Argumentation",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)",
+      "target": "## 5. Proof / Engineering Argument",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 6. 实例验证 (Examples)",
+      "target": "## 6. Examples",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 7. 可视化 (Visualizations)",
+      "target": "## 7. Visualizations",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "## 8. 引用参考 (References)",
+      "target": "## 8. References",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 1.1 设计目标",
+      "target": "### 1.1 Design Goals",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 1.2 多语言网站方案",
+      "target": "### 1.2 Multilingual Site Strategy",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 2.1 问题背景与动机",
+      "target": "### 2.1 Problem Background and Motivation",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 3.1 核心概念映射",
+      "target": "### 3.1 Core Concept Mapping",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 4.1 辅助定理",
+      "target": "### 4.1 Auxiliary Theorems",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 5.1 主要定理",
+      "target": "### 5.1 Main Theorem",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 6.1 简化实例",
+      "target": "### 6.1 Simplified Example",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "### 7.1 层次结构图",
+      "target": "### 7.1 Hierarchy Diagram",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 定义",
+      "target": "#### Definition",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 引理",
+      "target": "#### Lemma",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 定理",
+      "target": "#### Theorem",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 命题",
+      "target": "#### Proposition",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 推论",
+      "target": "#### Corollary",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 证明",
+      "target": "#### Proof",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "#### 反例",
+      "target": "#### Counterexample",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> 所属阶段:",
+      "target": "> Stage:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> 前置依赖:",
+      "target": "> Prerequisites:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> 形式化等级:",
+      "target": "> Formalization Level:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **版本**:",
+      "target": "> **Version**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **生效日期**:",
+      "target": "> **Effective Date**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **状态**:",
+      "target": "> **Status**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **最后更新**:",
+      "target": "> **Last Updated**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **Translation Date**:",
+      "target": "> **Translation Date**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **English Translation**",
+      "target": "> **English Translation**",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "原文:",
+      "target": "Original:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "翻译状态:",
+      "target": "Translation Status:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "源版本:",
+      "target": "Source Version:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "最后同步:",
+      "target": "Last Sync:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**定义**:",
+      "target": "**Definition**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**直观解释**:",
+      "target": "**Intuitive Explanation**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**定义动机**:",
+      "target": "**Definition Motivation**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**符号说明**:",
+      "target": "**Notation**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "严格的形式化定义",
+      "target": "Rigorous formal definition",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "直观解释如下",
+      "target": "The intuitive explanation is as follows",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "形式化地，我们有",
+      "target": "Formally, we have",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "设 ",
+      "target": "Let ",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "若且唯若",
+      "target": "if and only if",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "当且仅当",
+      "target": "if and only if",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "对于任意",
+      "target": "For any",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "存在",
+      "target": "there exists",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "使得",
+      "target": "such that",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "满足以下条件",
+      "target": "satisfies the following conditions",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "定义为",
+      "target": "is defined as",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "记作",
+      "target": "denoted as",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "其中",
+      "target": "where",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "换言之",
+      "target": "In other words",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "等价于",
+      "target": "is equivalent to",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "由此可得",
+      "target": "It follows that",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**证明**:",
+      "target": "**Proof**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**证明概要**:",
+      "target": "**Proof Sketch**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "证毕。",
+      "target": "∎",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "由归纳假设，",
+      "target": "By the induction hypothesis,",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "根据定义，",
+      "target": "By definition,",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "根据引理",
+      "target": "By Lemma",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "根据定理",
+      "target": "By Theorem",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "Contradiction.",
+      "target": "Contradiction.",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "矛盾。",
+      "target": "Contradiction.",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "不失一般性，",
+      "target": "Without loss of generality,",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "假设相反，",
+      "target": "Assume for contradiction that",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "我们分两种情况讨论：",
+      "target": "We consider two cases:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "基础情况：",
+      "target": "Base case:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "归纳步骤：",
+      "target": "Inductive step:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "由此推出",
+      "target": "This implies",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "因此，",
+      "target": "Therefore,",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "综上所述，",
+      "target": "In summary,",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "即得所求。",
+      "target": "which completes the proof.",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**性质**:",
+      "target": "**Property**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**引理**:",
+      "target": "**Lemma**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**定理**:",
+      "target": "**Theorem**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**命题**:",
+      "target": "**Proposition**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "**推论**:",
+      "target": "**Corollary**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "从定义直接推导的引理与性质",
+      "target": "Lemmas and properties derived directly from definitions",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "主要定理的完整证明",
+      "target": "Complete proof of the main theorem",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "辅助定理、反例分析、边界讨论、构造性说明",
+      "target": "Auxiliary theorems, counterexample analysis, boundary discussion, and constructive explanations",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "简化实例、代码片段、配置示例、真实案例",
+      "target": "Simplified examples, code snippets, configuration examples, and real-world cases",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "至少包含一个",
+      "target": "must contain at least one",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "编号",
+      "target": "numbered",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "必须包含",
+      "target": "must contain",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "严格的形式化定义",
+      "target": "rigorous formal definition",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "源码位置",
+      "target": "Source Location",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "源码实现",
+      "target": "Source Implementation",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "源码验证",
+      "target": "Source Code Verification",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "配置参数",
+      "target": "Configuration Parameters",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "配置示例",
+      "target": "Configuration Example",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "完整示例",
+      "target": "Complete Example",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "适用场景",
+      "target": "Applicable Scenarios",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "解决方案",
+      "target": "Solution",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "工作流程",
+      "target": "Workflow",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "端到端",
+      "target": "End-to-End",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "一致性保证",
+      "target": "Consistency Guarantee",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "状态后端",
+      "target": "State Backend",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "大状态",
+      "target": "Large State",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "小状态",
+      "target": "Small State",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "低延迟",
+      "target": "Low Latency",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "高吞吐",
+      "target": "High Throughput",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "恢复时间",
+      "target": "Recovery Time",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "本地磁盘",
+      "target": "Local Disk",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "堆内存",
+      "target": "Heap Memory",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "快照流程",
+      "target": "Snapshot Flow",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "下图展示了",
+      "target": "The figure below illustrates",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "如上图所示",
+      "target": "As shown in the figure above",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "思维导图",
+      "target": "Mind Map",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "层次图",
+      "target": "Hierarchy Diagram",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "执行树",
+      "target": "Execution Tree",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "对比矩阵",
+      "target": "Comparison Matrix",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "决策树",
+      "target": "Decision Tree",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "场景树",
+      "target": "Scenario Tree",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "证明依赖图",
+      "target": "Proof Dependency Graph",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "状态转移图",
+      "target": "State Transition Diagram",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "表 1",
+      "target": "Table 1",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "图 1",
+      "target": "Figure 1",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **注意**:",
+      "target": "> **Note**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **警告**:",
+      "target": "> **Warning**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **提示**:",
+      "target": "> **Tip**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> **重要**:",
+      "target": "> **Important**:",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> ⚠️ **",
+      "target": "> ⚠️ **",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> 📝 **",
+      "target": "> 📝 **",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> ✅ **",
+      "target": "> ✅ **",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "> ❌ **",
+      "target": "> ❌ **",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "与其他概念/模型/系统的关联、映射、编码关系",
+      "target": "Relationships, mappings, and encodings with other concepts, models, and systems",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "映射到",
+      "target": "maps to",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "编码为",
+      "target": "encodes to",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "蕴含",
+      "target": "implies",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "被蕴含于",
+      "target": "is implied by",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "语义保持",
+      "target": "semantics-preserving",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "双向模拟",
+      "target": "bisimulation",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "使用 [^n] 上标格式，在文档末尾集中列出引用。",
+      "target": "Use [^n] superscript format and list references at the end of the document.",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "优先引用的权威来源",
+      "target": "Preferred authoritative sources",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "课程",
+      "target": "Courses",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "论文",
+      "target": "Papers",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "官方文档",
+      "target": "Official Documentation",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "phrase",
+      "source": "经典书籍",
+      "target": "Classic Books",
+      "context": "general",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "流处理",
+      "target": "Stream Processing",
+      "context": "基础概念",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "批处理",
+      "target": "Batch Processing",
+      "context": "基础概念",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "检查点",
+      "target": "Checkpoint",
+      "context": "容错机制",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "水印",
+      "target": "Watermark",
+      "context": "时间语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "窗口",
+      "target": "Window",
+      "context": "时间语义",
+      "notes": "具体窗口类型应使用完整名称如Tumbling Window, Sliding Window"
+    },
+    {
+      "type": "term",
+      "source": "恰好一次",
+      "target": "Exactly-Once",
+      "context": "一致性语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "至少一次",
+      "target": "At-Least-Once",
+      "context": "一致性语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "最多一次",
+      "target": "At-Most-Once",
+      "context": "一致性语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "背压",
+      "target": "Backpressure",
+      "context": "流量控制",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "状态管理",
+      "target": "State Management",
+      "context": "状态处理",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "事件时间",
+      "target": "Event Time",
+      "context": "时间语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "处理时间",
+      "target": "Processing Time",
+      "context": "时间语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "摄取时间",
+      "target": "Ingestion Time",
+      "context": "时间语义",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "Actor 模型",
+      "target": "Actor Model",
+      "context": "并发模型",
+      "notes": "首字母大写表示模型概念"
+    },
+    {
+      "type": "term",
+      "source": "通信顺序进程",
+      "target": "Communicating Sequential Processes",
+      "context": "并发模型",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "消息传递",
+      "target": "Message Passing",
+      "context": "并发模型",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "共享内存",
+      "target": "Shared Memory",
+      "context": "并发模型",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "信道",
+      "target": "Channel",
+      "context": "并发模型",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "进程演算",
+      "target": "Process Calculus",
+      "context": "形式化方法",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "双模拟",
+      "target": "Bisimulation",
+      "context": "形式化方法",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "迹等价",
+      "target": "Trace Equivalence",
+      "context": "形式化方法",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "类型系统",
+      "target": "Type System",
+      "context": "形式化方法",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "会话类型",
+      "target": "Session Types",
+      "context": "形式化方法",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "数据流模型",
+      "target": "Dataflow Model",
+      "context": "基础概念",
+      "notes": "Dataflow Model特指Google Dataflow论文中的模型"
+    },
+    {
+      "type": "term",
+      "source": "算子",
+      "target": "Operator",
+      "context": "基础概念",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "Source",
+      "target": "Source",
+      "context": "基础概念",
+      "notes": "保留英文，但在解释时可使用'数据源'"
+    },
+    {
+      "type": "term",
+      "source": "Sink",
+      "target": "Sink",
+      "context": "基础概念",
+      "notes": "保留英文，但在解释时可使用'数据汇'"
+    },
+    {
+      "type": "term",
+      "source": "有界数据",
+      "target": "Bounded Data",
+      "context": "基础概念",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "无界数据",
+      "target": "Unbounded Data",
+      "context": "基础概念",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "JobManager",
+      "target": "JobManager",
+      "context": "架构组件",
+      "notes": "保留英文，不要翻译"
+    },
+    {
+      "type": "term",
+      "source": "TaskManager",
+      "target": "TaskManager",
+      "context": "架构组件",
+      "notes": "保留英文，不要翻译"
+    },
+    {
+      "type": "term",
+      "source": "任务槽",
+      "target": "Task Slot",
+      "context": "架构组件",
+      "notes": "Slot单独使用时可保留英文"
+    },
+    {
+      "type": "term",
+      "source": "并行度",
+      "target": "Parallelism",
+      "context": "架构组件",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "算子链",
+      "target": "Operator Chain",
+      "context": "架构组件",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "Barrier",
+      "target": "Barrier",
+      "context": "核心机制",
+      "notes": "保留英文"
+    },
+    {
+      "type": "term",
+      "source": "对齐检查点",
+      "target": "Aligned Checkpoint",
+      "context": "核心机制",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "非对齐检查点",
+      "target": "Unaligned Checkpoint",
+      "context": "核心机制",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "递增检查点",
+      "target": "Incremental Checkpoint",
+      "context": "核心机制",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "Savepoint",
+      "target": "Savepoint",
+      "context": "核心机制",
+      "notes": "保留英文"
+    },
+    {
+      "type": "term",
+      "source": "两阶段提交",
+      "target": "Two-Phase Commit",
+      "context": "容错",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "预写日志",
+      "target": "Write-Ahead Log",
+      "context": "容错",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "内存状态后端",
+      "target": "MemoryStateBackend",
+      "context": "状态管理",
+      "notes": "类名保留英文"
+    },
+    {
+      "type": "term",
+      "source": "文件系统状态后端",
+      "target": "FsStateBackend",
+      "context": "状态管理",
+      "notes": "类名保留英文"
+    },
+    {
+      "type": "term",
+      "source": "RocksDB状态后端",
+      "target": "RocksDBStateBackend",
+      "context": "状态管理",
+      "notes": "类名保留英文"
+    },
+    {
+      "type": "term",
+      "source": "键控状态",
+      "target": "Keyed State",
+      "context": "状态管理",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "算子状态",
+      "target": "Operator State",
+      "context": "状态管理",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "广播状态",
+      "target": "Broadcast State",
+      "context": "状态管理",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "状态存活时间",
+      "target": "State Time-To-Live",
+      "context": "状态管理",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "DataStream API",
+      "target": "DataStream API",
+      "context": "API",
+      "notes": "保留英文"
+    },
+    {
+      "type": "term",
+      "source": "Table API",
+      "target": "Table API",
+      "context": "API",
+      "notes": "保留英文"
+    },
+    {
+      "type": "term",
+      "source": "侧输出",
+      "target": "Side Output",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "处理函数",
+      "target": "ProcessFunction",
+      "context": "API",
+      "notes": "类名保留英文"
+    },
+    {
+      "type": "term",
+      "source": "异步I/O",
+      "target": "Async I/O",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "时间特征",
+      "target": "Time Characteristic",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "允许延迟",
+      "target": "Allowed Lateness",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "水印策略",
+      "target": "Watermark Strategy",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "空闲超时",
+      "target": "Idleness Timeout",
+      "context": "API",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "自适应调度器",
+      "target": "Adaptive Scheduler",
+      "context": "性能优化",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "声明式资源管理",
+      "target": "Declarative Resource Management",
+      "context": "部署",
+      "notes": ""
+    },
+    {
+      "type": "term",
+      "source": "统一流理论",
+      "target": "Unified Streaming Theory",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "进程演算基础",
+      "target": "Foundations of Process Calculus",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "双模拟等价",
+      "target": "Bisimulation Equivalence",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "对偶性",
+      "target": "Duality",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "通信兼容性",
+      "target": "Communication Compatibility",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "编码存在性",
+      "target": "Encoding Existence",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "图灵完备性",
+      "target": "Turing Completeness",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "可判定性",
+      "target": "Decidability",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "发散语义",
+      "target": "Divergence Semantics",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "向后兼容",
+      "target": "Backward Compatibility",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "向前兼容",
+      "target": "Forward Compatibility",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "到达曲线",
+      "target": "Arrival Curve",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "二进制会话类型",
+      "target": "Binary Session Types",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "进程组合层次结构",
+      "target": "Process Composition Hierarchy",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "内部选择",
+      "target": "Internal Choice",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "外部选择",
+      "target": "External Choice",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "流数据库",
+      "target": "Stream Database",
+      "context": "基础概念",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "物化视图",
+      "target": "Materialized View",
+      "context": "基础概念",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "增量维护",
+      "target": "Incremental Maintenance",
+      "context": "基础概念",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "模型形式化",
+      "target": "Model Formalization",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "定义动机",
+      "target": "Definition Motivation",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "证明概要",
+      "target": "Proof Sketch",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "由归纳假设",
+      "target": "By Induction Hypothesis",
+      "context": "形式化方法",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "状态大小",
+      "target": "State Size",
+      "context": "状态管理",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "自适应检查点间隔",
+      "target": "Adaptive Checkpoint Interval",
+      "context": "容错",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "事务性",
+      "target": "Transactional",
+      "context": "容错",
+      "notes": "candidate-term-2026-04-15"
+    },
+    {
+      "type": "term",
+      "source": "吞吐量",
+      "target": "Throughput",
+      "context": "性能优化",
+      "notes": "candidate-term-2026-04-15"
+    }
+  ]
+}

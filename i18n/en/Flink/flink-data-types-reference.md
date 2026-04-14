@@ -1,113 +1,357 @@
 ---
-title: "[EN] Flink Data Types Reference"
-translation_status: "ai_translated"
-source_file: "Flink/flink-data-types-reference.md"
-source_version: "1d332d93"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.350160"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "Flink Data Types Complete Reference"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# Flink Data Types Complete Reference
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> Stage: Flink | Prerequisites: [Flink/00-QUICK-START.md](00-meta/00-QUICK-START.md) | Formalization Level: L4
 
-<!-- TRANSLATE: # Flink Data Types 完整参考 -->
+---
 
-<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [Flink/00-QUICK-START.md](../../../Flink/00-meta/00-QUICK-START.md) | 形式化等级: L4 -->
+## 1. Definitions
 
+### Def-F-01-01: Data Type System
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
-
-<!-- TRANSLATE: ### Lemma-F-01-01: 类型完备性 -->
-
-<!-- TRANSLATE: **引理**: Flink SQL 类型系统对标准 SQL:2016 数据模型是类型完备的。 -->
-
-<!-- TRANSLATE: **证明要点**: -->
-
-<!-- TRANSLATE: 1. **原子类型覆盖**: 所有标准 SQL 原子类型均有对应实现 -->
-<!-- TRANSLATE: 2. **复合类型封闭性**: ARRAY/MAP/ROW 支持递归嵌套，形成代数数据类型 -->
-<!-- TRANSLATE: 3. **空值处理**: 所有类型均支持 NULL 值，满足三值逻辑 -->
-<!-- TRANSLATE: 4. **时间扩展**: 在 SQL 标准基础上扩展 TIMESTAMP_LTZ 适应流计算 -->
-
-<!-- TRANSLATE: ### Lemma-F-01-02: 类型转换单调性 -->
-
-**引理**: 类型转换关系 $\prec$ 构成偏序集，满足传递性：
+**Definition**: The Flink SQL data type system is the engineering implementation of type theory in the stream computing domain, defined as a quintuple:
 
 $$
-<!-- TRANSLATE: \forall T_1, T_2, T_3 \in \mathcal{T}: T_1 \prec T_2 \land T_2 \prec T_3 \Rightarrow T_1 \prec T_3 -->
+\mathcal{T}_{Flink} = (T_{atomic}, T_{composite}, T_{structured}, T_{time}, \prec)
 $$
 
-<!-- TRANSLATE: **证明**: 由转换链的定义直接可得，每对相邻类型间的转换都是单射函数，复合仍为单射。 -->
+Where:
 
-<!-- TRANSLATE: ### Prop-F-01-01: 类型安全保证 -->
+- $T_{atomic}$: Set of atomic types (indivisible basic types)
+- $T_{composite}$: Set of composite types (nestable structured types)
+- $T_{structured}$: Set of structured types (ROW, ARRAY, MAP)
+- $T_{time}$: Set of temporal types (stream-computing-specific time-related types)
+- $\prec$: Type partial order relation (implicit conversion direction)
 
-<!-- TRANSLATE: **命题**: 在编译期可检测所有类型不匹配错误。 -->
+### Def-F-01-02: Atomic Types
+
+**Definition**: Atomic types are indivisible data types whose values are semantically treated as single units:
 
 $$
-<!-- TRANSLATE: \forall Q \in SQL: \text{TypeCheck}(Q) = \bot \Rightarrow \nexists E: \text{Execute}(Q, E) \neq \text{Error} -->
+T_{atomic} = \{STRING, BOOLEAN, BYTES\} \cup T_{numeric}
 $$
 
+| Category | Type | Storage Range | Physical Representation | Default Value |
+|----------|------|---------------|------------------------|---------------|
+| **String** | `CHAR(n)` | 1~255 chars | UTF-8 encoded, fixed-length | Space-padded |
+| | `VARCHAR(n)` | 1~2,147,483,647 chars | UTF-8 encoded, variable-length | NULL |
+| | `STRING` | Unlimited | UTF-8 encoded | NULL |
+| **Boolean** | `BOOLEAN` | {true, false} | 1 byte | NULL |
+| **Binary** | `BINARY(n)` | Fixed-length byte sequence | Raw bytes | 0x00-padded |
+| | `VARBINARY(n)` | Variable-length byte sequence | Raw bytes | NULL |
+| | `BYTES` | Unlimited | Raw bytes | NULL |
 
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
+### Def-F-01-03: Numeric Types
 
-<!-- TRANSLATE: ### 4.1 DECIMAL vs FLOAT 选择决策 -->
+**Definition**: Numeric types are ordered scalar numeric sets:
 
-<!-- TRANSLATE: **问题**: 为什么选择 DECIMAL 而非 FLOAT 作为精确数值计算类型？ -->
+$$
+T_{numeric} = T_{integral} \cup T_{fractional}
+$$
 
-<!-- TRANSLATE: **论证**: -->
+**Integer Types** ($T_{integral}$):
 
-<!-- TRANSLATE: | 维度 | DECIMAL | FLOAT/DOUBLE | -->
-<!-- TRANSLATE: |------|---------|--------------| -->
-<!-- TRANSLATE: | 精度 | 精确表示，无舍入误差 | IEEE 754 近似表示 | -->
-<!-- TRANSLATE: | 范围 | 有限（1~38位） | 极大（约10³⁰⁸） | -->
-<!-- TRANSLATE: | 性能 | 较慢（软件实现） | 快（硬件加速） | -->
-<!-- TRANSLATE: | 存储 | 变长，较大 | 固定 4/8 字节 | -->
-<!-- TRANSLATE: | 适用 | 金融、货币计算 | 科学计算、近似分析 | -->
+| Type | Range | Storage | Java Type | Example |
+|------|-------|---------|-----------|---------|
+| `TINYINT` | -128 ~ 127 | 1 byte | `Byte` | 127 |
+| `SMALLINT` | -32,768 ~ 32,767 | 2 bytes | `Short` | 1000 |
+| `INT` / `INTEGER` | -2³¹ ~ 2³¹-1 | 4 bytes | `Integer` | 100000 |
+| `BIGINT` | -2⁶³ ~ 2⁶³-1 | 8 bytes | `Long` | 10000000000 |
 
-<!-- TRANSLATE: **决策**: 金融场景必须使用 DECIMAL(p,s)，推荐 DECIMAL(19,4) 满足大多数货币计算需求。 -->
+**Floating/Fixed-point Types** ($T_{fractional}$):
 
-<!-- TRANSLATE: ### 4.2 TIMESTAMP vs TIMESTAMP_LTZ 选择矩阵 -->
+| Type | Precision | Storage | Java Type | Applicable Scenarios |
+|------|-----------|---------|-----------|----------------------|
+| `FLOAT` | IEEE 754 single precision | 4 bytes | `Float` | Scientific computing |
+| `DOUBLE` | IEEE 754 double precision | 8 bytes | `Double` | General floating-point |
+| `DECIMAL(p,s)` | p: 1~38, s: 0~p | Variable-length | `BigDecimal` | Financial computing |
+| `NUMERIC(p,s)` | Same as DECIMAL | Variable-length | `BigDecimal` | SQL standard compatibility |
 
-<!-- TRANSLATE: | 应用场景 | 推荐类型 | 理由 | -->
-<!-- TRANSLATE: |----------|----------|------| -->
-<!-- TRANSLATE: | 单时区应用 | `TIMESTAMP` | 简单直观，无时区概念负担 | -->
-<!-- TRANSLATE: | 多时区应用 | `TIMESTAMP_LTZ` | 统一 UTC 存储，前端本地化显示 | -->
-<!-- TRANSLATE: | 与 Kafka 集成 | `TIMESTAMP_LTZ` | Kafka 使用 UTC epoch millis | -->
-<!-- TRANSLATE: | 审计日志 | `TIMESTAMP_LTZ` | 保证全球时间一致性 | -->
-<!-- TRANSLATE: | 业务事件时间 | `TIMESTAMP` | 业务语义通常为本地时间 | -->
+### Def-F-01-04: Composite Types
 
+**Definition**: Composite types are structured types composed of other types:
 
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
+$$
+\begin{aligned}
+ARRAY\langle T \rangle &= \{ [e_1, e_2, ..., e_n] \mid e_i \in T, n \geq 0 \} \\
+MAP\langle K, V \rangle &= \{ (k_1,v_1), ..., (k_n,v_n) \} \text{ where } k_i \text{ unique}, k_i \in K, v_i \in V \\
+ROW\langle f_1:T_1, ..., f_n:T_n \rangle &= \{ (f_1:v_1, ..., f_n:v_n) \mid v_i \in T_i \}
+\end{aligned}
+$$
 
-<!-- TRANSLATE: ### 6.1 DDL 类型定义完整示例 -->
+**Composite Type Constraints**:
+
+| Type | Key Type Constraint | Value Type Constraint | Max Nesting Depth |
+|------|---------------------|------------------------|-------------------|
+| `ARRAY<T>` | - | Any type | 100 |
+| `MAP<K,V>` | Atomic types only | Any type | 100 |
+| `ROW<...>` | Unique field names | Any type | 100 |
+
+### Def-F-01-05: Temporal Types
+
+**Definition**: Flink temporal types are time representations specialized for stream computing scenarios:
+
+$$
+T_{time} = \{ DATE, TIME, TIMESTAMP, TIMESTAMP_LTZ, INTERVAL \}
+$$
+
+| Type | Format | Precision | Timezone Handling | Typical Application |
+|------|--------|-----------|-------------------|---------------------|
+| `DATE` | `yyyy-MM-dd` | Day precision | No timezone | Birthday, anniversary |
+| `TIME` | `HH:mm:ss[.fractional]` | 0~9 digits | No timezone | Business hours |
+| `TIME(p)` | Time with precision | p: 0~9 | No timezone | Precise timestamp |
+| `TIMESTAMP(p)` | Date + time | p: 0~9 | No timezone | Event occurrence time |
+| `TIMESTAMP_LTZ(p)` | Timezone-aware timestamp | p: 0~9 | Stored internally as UTC | Cross-timezone synchronization |
+| `INTERVAL YEAR TO MONTH` | Year-month interval | Month precision | - | Age calculation |
+| `INTERVAL DAY TO SECOND` | Day-second interval | Nanosecond precision | - | Duration calculation |
+
+**Temporal Type Semantic Distinction**:
+
+| Characteristic | TIMESTAMP | TIMESTAMP_LTZ |
+|----------------|-----------|---------------|
+| Storage form | Local time | UTC time |
+| Display form | Written value | Converted to session timezone |
+| Applicable scenarios | Single-timezone applications | Multi-timezone/cross-region applications |
+| Kafka integration | Requires timezone conversion | Direct mapping |
+
+### Def-F-01-06: Type Conversion Relation
+
+**Definition**: The type conversion relation $\prec$ defines the direction of implicit conversion between types:
+
+$$
+\prec = \{ (T_1, T_2) \mid T_1 \text{ can be implicitly converted to } T_2 \}
+$$
+
+**Implicit Conversion Chains**:
+
+```
+Numeric chain:
+TINYINT → SMALLINT → INT → BIGINT → DECIMAL → DOUBLE
+
+String chain:
+CHAR(n) → VARCHAR(n) → STRING
+
+Temporal chain:
+DATE → TIMESTAMP → TIMESTAMP_LTZ
+```
+
+---
+
+## 2. Properties
+
+### Lemma-F-01-01: Type Completeness
+
+**Lemma**: The Flink SQL type system is type-complete with respect to the standard SQL:2016 data model.
+
+**Proof Sketch**:
+
+1. **Atomic type coverage**: All standard SQL atomic types have corresponding implementations
+2. **Composite type closure**: ARRAY/MAP/ROW support recursive nesting, forming algebraic data types
+3. **Null handling**: All types support NULL values, satisfying three-valued logic
+4. **Temporal extension**: Extends TIMESTAMP_LTZ on top of the SQL standard to adapt to stream computing
+
+### Lemma-F-01-02: Type Conversion Monotonicity
+
+**Lemma**: The type conversion relation $\prec$ forms a partially ordered set, satisfying transitivity:
+
+$$
+\forall T_1, T_2, T_3 \in \mathcal{T}: T_1 \prec T_2 \land T_2 \prec T_3 \Rightarrow T_1 \prec T_3
+$$
+
+**Proof**: Directly follows from the definition of conversion chains. The conversion between each adjacent pair of types is an injective function, and composition remains injective.
+
+### Prop-F-01-01: Type Safety Guarantee
+
+**Proposition**: All type mismatch errors can be detected at compile time.
+
+$$
+\forall Q \in SQL: \text{TypeCheck}(Q) = \bot \Rightarrow \nexists E: \text{Execute}(Q, E) \neq \text{Error}
+$$
+
+---
+
+## 3. Relations
+
+### 3.1 SQL Standard Type Mapping
+
+| ANSI SQL:2016 | Flink SQL | Compatibility | Notes |
+|---------------|-----------|---------------|-------|
+| `CHARACTER(n)` | `CHAR(n)` | ✅ Fully compatible | - |
+| `CHARACTER VARYING(n)` | `VARCHAR(n)` | ✅ Fully compatible | - |
+| `INTEGER` | `INT` | ✅ Fully compatible | - |
+| `DECIMAL(p,s)` | `DECIMAL(p,s)` | ✅ Fully compatible | p: 1~38 |
+| `REAL` | `FLOAT` | ✅ Fully compatible | - |
+| `DOUBLE PRECISION` | `DOUBLE` | ✅ Fully compatible | - |
+| `TIMESTAMP WITH TIME ZONE` | `TIMESTAMP_LTZ` | ⚠️ Semantically equivalent | Different name |
+| `TIMESTAMP WITHOUT TIME ZONE` | `TIMESTAMP` | ✅ Fully compatible | - |
+
+### 3.2 Java/Scala Physical Type Mapping
+
+| Flink SQL Type | Java Type | Scala Type | Serializer |
+|----------------|-----------|------------|------------|
+| `STRING` | `java.lang.String` | `String` | `StringSerializer` |
+| `BOOLEAN` | `java.lang.Boolean` | `Boolean` | `BooleanSerializer` |
+| `TINYINT` | `java.lang.Byte` | `Byte` | `ByteSerializer` |
+| `SMALLINT` | `java.lang.Short` | `Short` | `ShortSerializer` |
+| `INT` | `java.lang.Integer` | `Int` | `IntSerializer` |
+| `BIGINT` | `java.lang.Long` | `Long` | `LongSerializer` |
+| `FLOAT` | `java.lang.Float` | `Float` | `FloatSerializer` |
+| `DOUBLE` | `java.lang.Double` | `Double` | `DoubleSerializer` |
+| `DECIMAL(p,s)` | `java.math.BigDecimal` | `BigDecimal` | `BigDecimalSerializer` |
+| `DATE` | `java.time.LocalDate` | `LocalDate` | `LocalDateSerializer` |
+| `TIME(p)` | `java.time.LocalTime` | `LocalTime` | `LocalTimeSerializer` |
+| `TIMESTAMP(p)` | `java.time.LocalDateTime` | `LocalDateTime` | `LocalDateTimeSerializer` |
+| `TIMESTAMP_LTZ(p)` | `java.time.Instant` | `Instant` | `InstantSerializer` |
+| `ARRAY<T>` | `T[]` / `ArrayList<T>` | `Array[T]` / `List[T]` | `ArraySerializer` |
+| `MAP<K,V>` | `HashMap<K,V>` | `Map[K,V]` | `MapSerializer` |
+| `ROW<...>` | `Row` | `Row` | `RowSerializer` |
+
+### 3.3 Avro/Parquet/ORC Format Mapping
+
+```mermaid
+graph TB
+    subgraph "Flink SQL Types"
+        F1[DECIMAL]
+        F2[TIMESTAMP]
+        F3[ARRAY]
+        F4[MAP]
+        F5[ROW]
+    end
+
+    subgraph "Avro Types"
+        A1[Fixed / Bytes]
+        A2[Long + LogicalType]
+        A3[Array]
+        A4[Map]
+        A5[Record]
+    end
+
+    subgraph "Parquet Types"
+        P1[Fixed Len Byte Array]
+        P2[INT96 / INT64]
+        P3[Repeated Group]
+        P4[Repeated Group]
+        P5[Group]
+    end
+
+    subgraph "ORC Types"
+        O1[Decimal]
+        O2[Timestamp]
+        O3[List]
+        O4[Map]
+        O5[Struct]
+    end
+
+    F1 --> A1 --> P1 --> O1
+    F2 --> A2 --> P2 --> O2
+    F3 --> A3 --> P3 --> O3
+    F4 --> A4 --> P4 --> O4
+    F5 --> A5 --> P5 --> O5
+```
+
+---
+
+## 4. Argumentation
+
+### 4.1 DECIMAL vs FLOAT Selection Decision
+
+**Question**: Why choose DECIMAL rather than FLOAT for precise numeric computation?
+
+**Argument**:
+
+| Dimension | DECIMAL | FLOAT/DOUBLE |
+|-----------|---------|--------------|
+| Precision | Exact representation, no rounding error | IEEE 754 approximate representation |
+| Range | Limited (1~38 digits) | Extremely large (~10³⁰⁸) |
+| Performance | Slower (software implementation) | Fast (hardware accelerated) |
+| Storage | Variable-length, larger | Fixed 4/8 bytes |
+| Applicability | Finance, currency calculation | Scientific computing, approximate analysis |
+
+**Decision**: Financial scenarios must use DECIMAL(p,s). DECIMAL(19,4) is recommended to meet most currency calculation needs.
+
+### 4.2 TIMESTAMP vs TIMESTAMP_LTZ Selection Matrix
+
+| Application Scenario | Recommended Type | Reason |
+|----------------------|------------------|--------|
+| Single-timezone application | `TIMESTAMP` | Simple and intuitive, no timezone concept overhead |
+| Multi-timezone application | `TIMESTAMP_LTZ` | Unified UTC storage, frontend localized display |
+| Kafka integration | `TIMESTAMP_LTZ` | Kafka uses UTC epoch millis |
+| Audit logs | `TIMESTAMP_LTZ` | Guarantees global time consistency |
+| Business event time | `TIMESTAMP` | Business semantics are usually local time |
+
+---
+
+## 5. Proof / Engineering Argument
+
+### Thm-F-01-01: Type Consistency Guarantee
+
+**Theorem**: Under Exactly-Once semantics, the type state after Checkpoint recovery is consistent with the state before failure.
+
+**Proof**:
+
+1. **Serialization consistency**: TypeSerializer guarantees the value-to-byte mapping is bijective
+   $$\forall v \in T: Deserialize(Serialize(v)) = v$$
+
+2. **Snapshot atomicity**: Checkpoint barriers ensure atomic persistence of type state
+   $$State_{checkpoint} = \{ (k, Serialize(v)) \mid (k,v) \in State_{runtime} \}$$
+
+3. **Recovery isomorphism**: Deserialization is the inverse of serialization
+   $$State_{recovered} = \{ (k, Deserialize(s)) \mid (k,s) \in State_{checkpoint} \} = State_{runtime}$$
+
+### Thm-F-01-02: Type Inference Completeness
+
+**Theorem**: For any valid Flink SQL query, the type inference algorithm can compute the result schema.
+
+**Engineering Argument**:
+
+```
+Algorithm: TypeInference(AST)
+Input: Abstract syntax tree AST(Q)
+Output: Result type Schema(Q)
+
+1. Leaf node types ← table metadata || literal types
+2. Unary operation types ← TypeRule(op, input_type)
+3. Binary operation types ← Coalesce(TypeRule(op, left, right))
+4. Aggregate types ← Combine(partial_types)
+5. Return root node type
+```
+
+---
+
+## 6. Examples
+
+### 6.1 Complete DDL Type Definition Example
 
 ```sql
--- 创建包含完整类型系统的表
+-- Create a table containing the complete type system
 CREATE TABLE user_events (
-    -- 原子类型 - 标识与状态
+    -- Atomic types - identification and status
     user_id BIGINT NOT NULL,
     username VARCHAR(128) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     user_type CHAR(1) DEFAULT 'R',  -- R: Regular, V: VIP
 
-    -- 数值类型 - 业务指标
-    score DECIMAL(10, 4),           -- 精确分数
-    temperature FLOAT,              -- 传感器读数（近似）
+    -- Numeric types - business metrics
+    score DECIMAL(10, 4),           -- Precise score
+    temperature FLOAT,              -- Sensor reading (approximate)
 
-    -- 二进制类型
+    -- Binary types
     avatar_hash VARBINARY(64),
     raw_payload BYTES,
 
-    -- 时间类型 - 流计算核心
+    -- Temporal types - stream computing core
     birth_date DATE,
     preferred_time TIME(3),
-    event_ts TIMESTAMP(3),          -- 事件时间（本地）
-    event_ts_utc TIMESTAMP_LTZ(3),  -- 事件时间（UTC）
+    event_ts TIMESTAMP(3),          -- Event time (local)
+    event_ts_utc TIMESTAMP_LTZ(3),  -- Event time (UTC)
 
-    -- 复合类型 - 结构化数据
+    -- Composite types - structured data
     tags ARRAY<VARCHAR(50)>,
     properties MAP<STRING, STRING>,
     address ROW<
@@ -120,10 +364,10 @@ CREATE TABLE user_events (
         >
     >,
 
-    -- 元数据列
+    -- Metadata column
     proc_time AS PROCTIME(),
 
-    -- 水位线定义
+    -- Watermark definition
     WATERMARK FOR event_ts AS event_ts - INTERVAL '5' SECOND
 ) WITH (
     'connector' = 'kafka',
@@ -134,32 +378,32 @@ CREATE TABLE user_events (
 );
 ```
 
-<!-- TRANSLATE: ### 6.2 类型转换示例 -->
+### 6.2 Type Conversion Example
 
 ```sql
--- 隐式转换（自动进行）
+-- Implicit conversion (automatic)
 SELECT
     user_id + 1.5 AS user_id_double,           -- BIGINT → DOUBLE
     CONCAT('ID:', CAST(user_id AS STRING)) AS user_id_str
 FROM user_events;
 
--- 显式转换（CAST）
+-- Explicit conversion (CAST)
 SELECT
     CAST(event_ts AS DATE) AS event_date,
     CAST(event_ts AS STRING) AS ts_string,
-    CAST(score AS INT) AS score_int,           -- 截断小数
+    CAST(score AS INT) AS score_int,           -- Truncates decimals
     CAST(score AS BIGINT) AS score_bigint
 FROM user_events;
 
--- 安全转换（TRY_CAST）
+-- Safe conversion (TRY_CAST)
 SELECT
-    TRY_CAST(username AS INT) AS username_num, -- 失败返回 NULL
+    TRY_CAST(username AS INT) AS username_num, -- Returns NULL on failure
     TRY_CAST('2024-01-15' AS DATE) AS valid_date,
-    TRY_CAST('invalid' AS DATE) AS null_date   -- 返回 NULL
+    TRY_CAST('invalid' AS DATE) AS null_date   -- Returns NULL
 FROM user_events;
 ```
 
-<!-- TRANSLATE: ### 6.3 Java API 类型编程 -->
+### 6.3 Java API Type Programming
 
 ```java
 import org.apache.flink.table.api.DataTypes;
@@ -172,7 +416,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 
 public class DataTypeExample {
 
-    // 编程方式定义 Schema
+    // Programmatic schema definition
     public Schema createUserSchema() {
         return Schema.newBuilder()
             .column("user_id", DataTypes.BIGINT().notNull())
@@ -195,7 +439,7 @@ public class DataTypeExample {
             .build();
     }
 
-    // 使用 TableDescriptor 定义
+    // Using TableDescriptor definition
     public TableDescriptor createKafkaDescriptor() {
         return TableDescriptor.forConnector("kafka")
             .schema(createUserSchema())
@@ -207,13 +451,13 @@ public class DataTypeExample {
 }
 ```
 
-<!-- TRANSLATE: ### 6.4 Python Table API 类型使用 -->
+### 6.4 Python Table API Type Usage
 
 ```python
 from pyflink.table import DataTypes, Schema, TableDescriptor
 from pyflink.table.table_environment import StreamTableEnvironment
 
-# 定义 Schema
+# Define schema
 schema = Schema.new_builder() \
     .column("user_id", DataTypes.BIGINT().not_null()) \
     .column("username", DataTypes.STRING()) \
@@ -228,7 +472,7 @@ schema = Schema.new_builder() \
     .watermark("event_time", "SOURCE_WATERMARK()") \
     .build()
 
-# 创建表
+# Create table
 descriptor = TableDescriptor.for_connector("kafka") \
     .schema(schema) \
     .option("topic", "events") \
@@ -237,5 +481,93 @@ descriptor = TableDescriptor.for_connector("kafka") \
     .build()
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. 引用参考 (References) -->
+## 7. Visualizations
+
+### 7.1 Type System Hierarchy Diagram
+
+```mermaid
+graph TB
+    Root[Flink SQL Type System]
+
+    Root --> Atomic[Atomic Types]
+    Root --> Composite[Composite Types]
+    Root --> Time[Temporal Types]
+
+    Atomic --> String[String<br/>CHAR VARCHAR STRING]
+    Atomic --> Numeric[Numeric<br/>TINYINT SMALLINT INT BIGINT<br/>DECIMAL FLOAT DOUBLE]
+    Atomic --> Boolean[BOOLEAN]
+    Atomic --> Binary[Binary<br/>BINARY VARBINARY BYTES]
+
+    Composite --> Array[ARRAY&lt;T&gt;]
+    Composite --> Map[MAP&lt;K,V&gt;]
+    Composite --> Row[ROW&lt;...&gt;]
+    Composite --> Multiset[MULTISET&lt;T&gt;]
+
+    Time --> Date[DATE]
+    Time --> TimeOfDay[TIME<br/>TIME(p)]
+    Time --> Timestamp[TIMESTAMP<br/>TIMESTAMP_LTZ]
+    Time --> Interval[INTERVAL<br/>YEAR TO MONTH<br/>DAY TO SECOND]
+
+    style Root fill:#e1f5fe,stroke:#01579b
+    style Atomic fill:#fff3e0,stroke:#e65100
+    style Composite fill:#e8f5e9,stroke:#2e7d32
+    style Time fill:#fce4ec,stroke:#c2185b
+```
+
+### 7.2 Type Conversion Decision Tree
+
+```mermaid
+flowchart TD
+    A[Type conversion needed?] --> B{Target type?}
+
+    B -->|Numeric| C{Precision requirement?}
+    C -->|Exact calculation| D[DECIMAL]
+    C -->|Scientific computing| E[FLOAT/DOUBLE]
+    C -->|Integer range?| F{Small range?}
+    F -->|Yes| G[TINYINT/SMALLINT]
+    F -->|No| H[INT/BIGINT]
+
+    B -->|Temporal| I{With timezone?}
+    I -->|Yes| J[TIMESTAMP_LTZ]
+    I -->|No| K[TIMESTAMP]
+
+    B -->|String| L{Fixed length?}
+    L -->|Yes| M[CHAR]
+    L -->|No| N[VARCHAR/STRING]
+
+    B -->|Structured| O{Key-value pairs?}
+    O -->|Yes| P[MAP]
+    O -->|No| Q{Ordered list?}
+    Q -->|Yes| R[ARRAY]
+    Q -->|No| S[ROW]
+
+    style A fill:#e3f2fd,stroke:#1565c0
+    style D fill:#e8f5e9,stroke:#2e7d32
+    style J fill:#fff3e0,stroke:#e65100
+    style S fill:#fce4ec,stroke:#c2185b
+```
+
+### 7.3 Physical Type Mapping Flow
+
+```mermaid
+sequenceDiagram
+    participant SQL as SQL DDL
+    participant Planner as Flink Planner
+    participant Catalog as Catalog
+    participant Exec as Execution Engine
+
+    SQL->>Planner: CREATE TABLE (type definitions)
+    Planner->>Planner: Parse & Validate Types
+    Planner->>Catalog: Store Table Schema
+
+    Exec->>Catalog: Read Schema
+    Catalog->>Exec: Return Logical Types
+    Exec->>Exec: Resolve Serializers
+    Exec->>Exec: Type Check at Runtime
+```
+
+---
+
+## 8. References

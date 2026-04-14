@@ -1,0 +1,89 @@
+site_name: AnalysisDataFlow
+site_url: https://your-domain.com/
+repo_url: https://github.com/luyanfeng/AnalysisDataFlow
+
+# Theme configuration
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+# Plugin configuration
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      languages:
+        - locale: zh
+          name: 中文
+          default: true
+          build: true
+          site_name: AnalysisDataFlow
+        - locale: en
+          name: English
+          build: true
+          site_name: AnalysisDataFlow
+
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex:
+      generic: true
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Navigation (optional - can be auto-generated from folder structure)
+# nav:
+#   - Home: index.md
+#   - English: en/index.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/luyanfeng/AnalysisDataFlow
+  version:
+    provider: mike

@@ -1,119 +1,249 @@
 ---
-title: "[EN] Pyflink Deep Guide"
-translation_status: "ai_translated"
-source_file: "Flink/pyflink-deep-guide.md"
-source_version: "e9b3d58c"
-translator: "AI"
-reviewer: null
-translated_at: "2026-04-08T15:15:06.362997"
-reviewed_at: null
-quality_score: null
-terminology_verified: false
+title: "PyFlink Deep Dive Guide"
+translation_status: "ai_translated_reviewed"
+source_version: "v4.1"
+last_sync: "2026-04-15"
 ---
 
+# PyFlink Deep Dive Guide
 
-<!-- AI Translation Template - Replace <!-- TRANSLATE --> markers with actual translation -->
+> Stage: Flink | Prerequisites: [data-types-complete-reference.md](./data-types-complete-reference.md) | Formalization Level: L3
 
-<!-- TRANSLATE: # PyFlink 深度指南 -->
+---
 
-<!-- TRANSLATE: > 所属阶段: Flink | 前置依赖: [data-types-complete-reference.md](./data-types-complete-reference.md) | 形式化等级: L3 -->
+## 1. Definitions
 
+### Def-F-PyFlink-01: PyFlink Architecture
 
-<!-- TRANSLATE: ## 2. 属性推导 (Properties) -->
-
-<!-- TRANSLATE: ### Lemma-F-PyFlink-01: UDF 序列化开销 -->
-
-<!-- TRANSLATE: **引理**: Python UDF 相比 Java UDF 有额外的序列化开销： -->
+**Definition**: PyFlink is Apache Flink's Python API, bridging Python and the JVM via Py4J:
 
 $$
-<!-- TRANSLATE: T_{py\_udf} = T_{java\_udf} + T_{serialization} + T_{py4j} -->
+\text{PyFlink} = (Python\_API, Py4J\_Bridge, JVM\_Runtime, UDF\_Engine)
 $$
 
-<!-- TRANSLATE: 其中： -->
-
-- $T_{serialization}$: Python 对象与 Flink 行格式转换
-- $T_{py4j}$: Py4J 桥接通信开销
-
-<!-- TRANSLATE: **优化策略**： -->
-
-<!-- TRANSLATE: - 使用 Pandas UDF 批量处理 -->
-<!-- TRANSLATE: - 启用对象重用 -->
-<!-- TRANSLATE: - 减少 UDF 调用次数 -->
-
-<!-- TRANSLATE: ### Lemma-F-PyFlink-02: 依赖管理边界 -->
-
-<!-- TRANSLATE: **引理**: PyFlink 作业依赖需满足以下条件才能正确分发： -->
-
-<!-- TRANSLATE: 1. **Requirements 文件**: 列出所有 pip 依赖 -->
-<!-- TRANSLATE: 2. **虚拟环境打包**: 或使用 `pyflink.shaded` 方式 -->
-<!-- TRANSLATE: 3. **资源文件**: 通过 `add_python_file()` 添加 -->
-
-<!-- TRANSLATE: ### Prop-F-PyFlink-01: Pandas UDF 性能优势 -->
-
-<!-- TRANSLATE: **命题**: Pandas UDF 在处理批量数据时性能显著优于普通 Python UDF。 -->
-
-<!-- TRANSLATE: **原因**： -->
-
-<!-- TRANSLATE: 1. 向量化计算（避免 Python 循环） -->
-<!-- TRANSLATE: 2. 批量序列化（减少 IPC 开销） -->
-<!-- TRANSLATE: 3. Arrow 内存格式（零拷贝） -->
-
-
-<!-- TRANSLATE: ## 4. 论证过程 (Argumentation) -->
-
-<!-- TRANSLATE: ### 4.1 PyFlink vs Java Flink 选择 -->
-
-<!-- TRANSLATE: | 维度 | PyFlink | Java Flink | -->
-<!-- TRANSLATE: |------|---------|------------| -->
-<!-- TRANSLATE: | 开发效率 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | -->
-<!-- TRANSLATE: | 运行时性能 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | -->
-<!-- TRANSLATE: | 生态集成 | Python ML | Java 生态 | -->
-<!-- TRANSLATE: | 调试体验 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | -->
-<!-- TRANSLATE: | 生产稳定性 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | -->
-
-<!-- TRANSLATE: **推荐场景**： -->
-
-<!-- TRANSLATE: - **PyFlink**: ML 集成、快速原型、数据科学团队 -->
-<!-- TRANSLATE: - **Java Flink**: 生产核心链路、极致性能要求 -->
-
-<!-- TRANSLATE: ### 4.2 UDF 类型选择决策 -->
+**Architecture Layers**:
 
 ```
-是否需要 Python ML 库?
-    ├─ 否 → Java/Scala UDF（性能最优）
-    └─ 是 → 数据量?
-              ├─ 小 → 普通 Python UDF
-              └─ 大 → Pandas UDF（向量化）
+┌─────────────────────────────────────┐
+│         Python Application          │
+│  (Table API / DataStream API / SQL) │
+├─────────────────────────────────────┤
+│           Py4J Bridge               │
+│    (Python ←→ JVM Gateway)          │
+├─────────────────────────────────────┤
+│         Flink Runtime (JVM)         │
+│  (JobManager / TaskManager)         │
+├─────────────────────────────────────┤
+│      Python UDF Execution           │
+│  (Beam Portability / Process)       │
+└─────────────────────────────────────┘
 ```
 
+### Def-F-PyFlink-02: Python UDF Types
 
-<!-- TRANSLATE: ## 6. 实例验证 (Examples) -->
+**Definition**: PyFlink supports multiple UDF types, classified by execution location:
 
-<!-- TRANSLATE: ### 6.1 环境安装 -->
+| UDF Type | Execution Location | Applicable Scenario | Performance |
+|----------|--------------------|---------------------|-------------|
+| **ScalarFunction** | TaskManager | Row-by-row transformation | Medium |
+| **TableFunction** | TaskManager | 1:N expansion | Medium |
+| **AggregateFunction** | TaskManager | Aggregation computation | Medium |
+| **Pandas UDF** | Python Worker | Vectorized computation | High |
+
+### Def-F-PyFlink-03: Execution Environment
+
+**Definition**: PyFlink execution environment configuration:
+
+$$
+\mathcal{E}_{py} = (P_{ver}, F_{ver}, V_{env}, E_{mode})
+$$
+
+Where:
+
+- $P_{ver}$: Python version (3.9-3.12)
+- $F_{ver}$: Flink version (1.18+)
+- $V_{env}$: Virtual environment configuration
+- $E_{mode}$: Execution mode $\{local, remote, yarn, k8s\}$
+
+---
+
+## 2. Properties
+
+### Lemma-F-PyFlink-01: UDF Serialization Overhead
+
+**Lemma**: Python UDFs have additional serialization overhead compared to Java UDFs:
+
+$$
+T_{py\_udf} = T_{java\_udf} + T_{serialization} + T_{py4j}
+$$
+
+Where:
+
+- $T_{serialization}$: Conversion between Python objects and Flink row format
+- $T_{py4j}$: Py4J bridge communication overhead
+
+**Optimization Strategies**:
+
+- Use Pandas UDFs for batch processing
+- Enable object reuse
+- Reduce UDF invocation frequency
+
+### Lemma-F-PyFlink-02: Dependency Management Boundary
+
+**Lemma**: PyFlink job dependencies must meet the following conditions for correct distribution:
+
+1. **Requirements file**: Lists all pip dependencies
+2. **Virtual environment packaging**: Or use `pyflink.shaded` approach
+3. **Resource files**: Added via `add_python_file()`
+
+### Prop-F-PyFlink-01: Pandas UDF Performance Advantage
+
+**Proposition**: Pandas UDFs significantly outperform regular Python UDFs when processing batched data.
+
+**Reasons**:
+
+1. Vectorized computation (avoids Python loops)
+2. Batch serialization (reduces IPC overhead)
+3. Arrow memory format (zero-copy)
+
+---
+
+## 3. Relations
+
+### 3.1 PyFlink and Java Flink Relationship
+
+```mermaid
+graph TB
+    subgraph Python
+        A[PyFlink Code]
+        B[pyflink.table]
+        C[pyflink.datastream]
+    end
+
+    subgraph Py4J
+        D[Gateway Server]
+        E[Callback Server]
+    end
+
+    subgraph JVM
+        F[TableEnvironment]
+        G[StreamExecutionEnvironment]
+        H[JobGraph]
+    end
+
+    A --> B
+    A --> C
+    B --> D
+    C --> D
+    D --> F
+    D --> G
+    F --> H
+    G --> H
+```
+
+### 3.2 UDF Execution Mode Comparison
+
+| Characteristic | Python UDF | Pandas UDF | Java UDF |
+|----------------|------------|------------|----------|
+| Language | Python | Python | Java/Scala |
+| Execution | Per-row call | Batch call | In-JVM |
+| Performance | Lower | Higher | Highest |
+| Ecosystem | Python full ecosystem | Pandas/NumPy | Java ecosystem |
+| Debugging | Easy | Easy | More complex |
+
+### 3.3 Deployment Mode Mapping
+
+| PyFlink API | Deployment Target | Applicable Scenario |
+|-------------|-------------------|---------------------|
+| `TableEnvironment` | Local/Cluster | SQL/Table jobs |
+| `StreamExecutionEnvironment` | Local/Cluster | DataStream jobs |
+| `remote()` | Remote cluster | Submit to existing cluster |
+| Kubernetes | K8s | Cloud-native deployment |
+
+---
+
+## 4. Argumentation
+
+### 4.1 PyFlink vs Java Flink Selection
+
+| Dimension | PyFlink | Java Flink |
+|-----------|---------|------------|
+| Development efficiency | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Runtime performance | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Ecosystem integration | Python ML | Java ecosystem |
+| Debugging experience | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Production stability | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+
+**Recommended Scenarios**:
+
+- **PyFlink**: ML integration, rapid prototyping, data science teams
+- **Java Flink**: Production core pipelines, extreme performance requirements
+
+### 4.2 UDF Type Selection Decision
+
+```
+Need Python ML libraries?
+    ├─ No → Java/Scala UDF (optimal performance)
+    └─ Yes → Data volume?
+              ├─ Small → Regular Python UDF
+              └─ Large → Pandas UDF (vectorized)
+```
+
+---
+
+## 5. Proof / Engineering Argument
+
+### Thm-F-PyFlink-01: Pandas UDF Throughput
+
+**Theorem**: At batch size $N$, Pandas UDF throughput is $O(N)$ times that of regular Python UDFs.
+
+**Engineering Argument**:
+
+1. **Python UDF**: Called once per row, $N$ function call overheads
+2. **Pandas UDF**: Called once per batch, 1 function call overhead
+3. **Vectorization**: Pandas operations use underlying C optimizations
+4. **Serialization**: Arrow format reduces serialization overhead
+
+### Thm-F-PyFlink-02: Dependency Consistency
+
+**Theorem**: Using `requirements.txt` + `set_python_executable()` guarantees dependency consistency.
+
+**Proof**:
+
+1. `requirements.txt` locks dependency versions
+2. Virtual environment packaging ensures environment isolation
+3. Distributed to all TaskManagers during job submission
+4. Uses the specified Python interpreter at runtime
+
+---
+
+## 6. Examples
+
+### 6.1 Environment Installation
 
 ```bash
-# 创建虚拟环境
+# Create virtual environment
 python -m venv pyflink_env
 source pyflink_env/bin/activate  # Windows: pyflink_env\Scripts\activate
 
-# 安装 PyFlink
+# Install PyFlink
 pip install apache-flink==1.20.0
 
-# 验证安装
+# Verify installation
 python -c "from pyflink.table import TableEnvironment; print('PyFlink installed')"
 ```
 
-<!-- TRANSLATE: ### 6.2 Table API 示例 -->
+### 6.2 Table API Example
 
 ```python
 from pyflink.table import TableEnvironment, EnvironmentSettings
 from pyflink.table.expressions import col
 
-# 创建执行环境
+# Create execution environment
 env_settings = EnvironmentSettings.in_streaming_mode()
 t_env = TableEnvironment.create(env_settings)
 
-# 创建源表
+# Create source table
 t_env.execute_sql("""
     CREATE TABLE user_events (
         user_id STRING,
@@ -129,7 +259,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 创建结果表
+# Create result table
 t_env.execute_sql("""
     CREATE TABLE event_stats (
         event_type STRING PRIMARY KEY NOT ENFORCED,
@@ -144,7 +274,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 定义处理逻辑
+# Define processing logic
 result = t_env.from_path("user_events") \
     .group_by(col("event_type")) \
     .select(
@@ -153,27 +283,27 @@ result = t_env.from_path("user_events") \
         col("user_id").count.alias("event_count")
     )
 
-# 写入结果
+# Write result
 result.execute_insert("event_stats").wait()
 ```
 
-<!-- TRANSLATE: ### 6.3 Python UDF 示例 -->
+### 6.3 Python UDF Example
 
 ```python
 from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import hashlib
 
-# 标量 UDF
+# Scalar UDF
 @udf(result_type=DataTypes.STRING())
 def hash_user_id(user_id: str) -> str:
-    """为用户 ID 生成哈希值"""
+    """Generate hash for user ID"""
     return hashlib.md5(user_id.encode()).hexdigest()[:8]
 
-# 注册 UDF
+# Register UDF
 t_env.create_temporary_function("hash_user_id", hash_user_id)
 
-# 使用 UDF
+# Use UDF
 result = t_env.from_path("user_events") \
     .select(
         col("user_id"),
@@ -184,7 +314,7 @@ result = t_env.from_path("user_events") \
 result.execute().print()
 ```
 
-<!-- TRANSLATE: ### 6.4 Pandas UDF 示例 -->
+### 6.4 Pandas UDF Example
 
 ```python
 from pyflink.table import DataTypes
@@ -192,21 +322,21 @@ from pyflink.table.udf import udf
 import pandas as pd
 import numpy as np
 
-# Pandas 标量 UDF（向量化）
+# Pandas scalar UDF (vectorized)
 @udf(result_type=DataTypes.DOUBLE(), func_type="pandas")
 def normalize_amount(amount: pd.Series) -> pd.Series:
-    """标准化金额（Z-score）"""
+    """Normalize amount (Z-score)"""
     mean = amount.mean()
     std = amount.std()
     return (amount - mean) / std
 
-# Pandas 表 UDF（1:N 展开）
+# Pandas table UDF (1:N expansion)
 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("quantile", DataTypes.STRING()),
     DataTypes.FIELD("value", DataTypes.DOUBLE())
 ]), func_type="pandas")
 def calculate_quantiles(amount: pd.Series) -> pd.DataFrame:
-    """计算分位数"""
+    """Calculate quantiles"""
     quantiles = [0.25, 0.5, 0.75, 0.95]
     values = [amount.quantile(q) for q in quantiles]
     return pd.DataFrame({
@@ -214,7 +344,7 @@ def calculate_quantiles(amount: pd.Series) -> pd.DataFrame:
         "value": values
     })
 
-# 注册并使用
+# Register and use
 t_env.create_temporary_function("normalize_amount", normalize_amount)
 
 result = t_env.from_path("user_events") \
@@ -225,19 +355,19 @@ result = t_env.from_path("user_events") \
     )
 ```
 
-<!-- TRANSLATE: ### 6.5 DataStream API 示例 -->
+### 6.5 DataStream API Example
 
 ```python
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction
 
-# 创建环境
+# Create environment
 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 添加 Kafka 连接器
+# Add Kafka connector
 env.add_jars("file:///path/to/flink-connector-kafka.jar")
 
-# 自定义 MapFunction
+# Custom MapFunction
 class ParseEvent(MapFunction):
     def map(self, value):
         import json
@@ -248,7 +378,7 @@ class ParseEvent(MapFunction):
             event['timestamp']
         )
 
-# 构建流处理作业
+# Build stream processing job
 dstream = env \
     .add_source(...) \
     .map(ParseEvent()) \
@@ -256,11 +386,11 @@ dstream = env \
     .key_by(lambda x: x[0]) \
     .reduce(lambda a, b: (a[0], a[1], a[2] + b[2]))
 
-# 执行
+# Execute
 env.execute("PyFlink DataStream Job")
 ```
 
-<!-- TRANSLATE: ### 6.6 依赖管理示例 -->
+### 6.6 Dependency Management Example
 
 ```text
 # requirements.txt
@@ -269,18 +399,99 @@ pandas==2.0.3
 numpy==1.24.3
 scikit-learn==1.3.0
 
-# 作业提交时指定依赖
+# Specify dependencies during job submission
 from pyflink.table import TableEnvironment
 
 t_env = TableEnvironment.create(...)
 
-# 添加 Python 文件
+# Add Python files
 t_env.add_python_file("/path/to/my_udf.py")
 t_env.add_python_file("/path/to/requirements.txt")
 
-# 或使用 conda 环境
+# Or use conda environment
 # t_env.set_python_executable("/path/to/conda/env/bin/python")
 ```
 
+---
 
-<!-- TRANSLATE: ## 8. 引用参考 (References) -->
+## 7. Visualizations
+
+### 7.1 PyFlink Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph Python Client
+        A[Python Code]
+        B[PyFlink API]
+        C[Py4J Client]
+    end
+
+    subgraph JVM Gateway
+        D[Gateway Server]
+        E[TableEnvironment]
+        F[StreamEnvironment]
+    end
+
+    subgraph Flink Cluster
+        G[JobManager]
+        H[TaskManager]
+        I[Python Worker]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    E --> G
+    F --> G
+    G --> H
+    H -->|UDF| I
+
+    style C fill:#e1f5fe
+    style D fill:#fff3e0
+    style I fill:#e8f5e9
+```
+
+### 7.2 UDF Execution Flow
+
+```mermaid
+sequenceDiagram
+    participant TM as TaskManager
+    participant Py as Python Worker
+    participant Pandas as Pandas/NumPy
+
+    TM->>Py: Arrow Batch
+    Py->>Pandas: to_pandas()
+    Pandas->>Pandas: Vectorized computation
+    Pandas->>Py: Result
+    Py->>TM: Arrow Batch
+
+    Note over TM,Py: Regular UDF: row-by-row processing<br/>Pandas UDF: batch processing
+```
+
+### 7.3 Deployment Mode Decision Tree
+
+```mermaid
+flowchart TD
+    A[PyFlink Deployment] --> B{Development stage?}
+    B -->|Development/Debug| C[Local Mode]
+    B -->|Production| D{Existing cluster?}
+
+    D -->|Standalone| E[Remote Cluster]
+    D -->|YARN| F[YARN Deployment]
+    D -->|Kubernetes| G[K8s Deployment]
+    D -->|None| H[Local Cluster]
+
+    C --> I[IDE Debug]
+    E --> J[Session/Per-Job]
+    F --> K[Session/Per-Job/Application]
+    G --> L[Native K8s]
+
+    style C fill:#e8f5e9
+    style G fill:#e1f5fe
+```
+
+---
+
+## 8. References

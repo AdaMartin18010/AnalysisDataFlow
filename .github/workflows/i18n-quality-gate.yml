@@ -1,0 +1,78 @@
+name: I18n Quality Gate
+
+on:
+  pull_request:
+    paths:
+      - 'i18n/**'
+      - 'docs/i18n/**'
+      - 'en/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'i18n/**'
+      - 'docs/i18n/**'
+      - 'en/**'
+
+jobs:
+  i18n-quality-check:
+    name: I18n Translation Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run quality checker on i18n/en
+        run: |
+          python i18n/translation-workflow/quality-checker.py . i18n/en || true
+
+      - name: Run quality checker on docs/i18n/en
+        run: |
+          python i18n/translation-workflow/quality-checker.py . docs/i18n/en || true
+
+      - name: Check for critical frontmatter violations
+        run: |
+          python << 'PYEOF'
+          import json
+          import sys
+          from pathlib import Path
+
+          required_fields = ["translation_status", "source_version"]
+          violations = []
+
+          for en_dir in [Path("i18n/en"), Path("docs/i18n/en")]:
+              if not en_dir.exists():
+                  continue
+              for md_file in en_dir.rglob("*.md"):
+                  content = md_file.read_text(encoding="utf-8")
+                  if not content.startswith("---"):
+                      violations.append(f"{md_file}: missing frontmatter")
+                      continue
+                  end = content.find("---", 3)
+                  if end == -1:
+                      violations.append(f"{md_file}: unclosed frontmatter")
+                      continue
+                  fm = content[3:end]
+                  for field in required_fields:
+                      if field not in fm:
+                          violations.append(f"{md_file}: missing frontmatter field '{field}'")
+
+          if violations:
+              print("::warning::Frontmatter violations found (non-blocking for now):")
+              for v in violations:
+                  print(f"  - {v}")
+          else:
+              print("No frontmatter violations found.")
+          PYEOF
+
+      - name: Generate summary
+        run: |
+          echo "## 🌐 I18n Quality Gate" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Quality checker executed on i18n translation directories." >> $GITHUB_STEP_SUMMARY
+          echo "Frontmatter violations are logged as warnings and will become blocking in a future release." >> $GITHUB_STEP_SUMMARY

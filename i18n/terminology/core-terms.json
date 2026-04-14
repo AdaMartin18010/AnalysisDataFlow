@@ -1,9 +1,18 @@
 {
   "version": "4.0-prep",
   "description": "AnalysisDataFlow 核心术语库 (v4.0国际化)",
-  "last_updated": "2026-04-08",
-  "total_terms": 30,
-  "categories": ["基础概念", "并发模型", "形式化方法", "时间语义", "容错机制", "状态处理", "流量控制", "一致性语义"],
+  "last_updated": "2026-04-15",
+  "total_terms": 58,
+  "categories": [
+    "基础概念",
+    "并发模型",
+    "形式化方法",
+    "时间语义",
+    "容错机制",
+    "状态处理",
+    "流量控制",
+    "一致性语义"
+  ],
   "terms": [
     {
       "id": "CT-001",
@@ -12,12 +21,20 @@
       "abbreviation": "SP",
       "definition": "对无界数据流进行实时计算的处理模式",
       "definition_en": "A processing pattern for real-time computation on unbounded data streams",
-      "context": ["Flink", "Kafka", "Dataflow", "Spark Streaming"],
+      "context": [
+        "Flink",
+        "Kafka",
+        "Dataflow",
+        "Spark Streaming"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["数据流处理", "流式处理"],
+      "forbidden_variants": [
+        "数据流处理",
+        "流式处理"
+      ],
       "usage_examples": {
         "zh": "流处理系统能够实时分析用户行为数据",
         "en": "Stream Processing systems can analyze user behavior data in real-time"
@@ -30,12 +47,18 @@
       "abbreviation": "BP",
       "definition": "对有界数据集进行离线计算的模式",
       "definition_en": "A processing pattern for offline computation on bounded datasets",
-      "context": ["Hadoop", "Spark", "Flink"],
+      "context": [
+        "Hadoop",
+        "Spark",
+        "Flink"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["批量处理"],
+      "forbidden_variants": [
+        "批量处理"
+      ],
       "usage_examples": {
         "zh": "批处理适用于大规模历史数据分析",
         "en": "Batch Processing is suitable for large-scale historical data analysis"
@@ -48,12 +71,19 @@
       "abbreviation": "CP",
       "definition": "分布式系统的全局一致性快照",
       "definition_en": "A globally consistent snapshot of a distributed system state",
-      "context": ["Flink", "Spark Streaming", "Fault Tolerance"],
+      "context": [
+        "Flink",
+        "Spark Streaming",
+        "Fault Tolerance"
+      ],
       "category": "容错机制",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["快照点", "检查站点"],
+      "forbidden_variants": [
+        "快照点",
+        "检查站点"
+      ],
       "usage_examples": {
         "zh": "Flink通过周期性检查点实现容错",
         "en": "Flink achieves fault tolerance through periodic Checkpoints"
@@ -66,12 +96,19 @@
       "abbreviation": "WM",
       "definition": "表示事件时间进展的时间戳标记",
       "definition_en": "A timestamp marker indicating the progress of event time",
-      "context": ["Flink", "Event Time", "Out-of-order"],
+      "context": [
+        "Flink",
+        "Event Time",
+        "Out-of-order"
+      ],
       "category": "时间语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["水位线", "时间戳水印"],
+      "forbidden_variants": [
+        "水位线",
+        "时间戳水印"
+      ],
       "usage_examples": {
         "zh": "水印用于处理乱序事件",
         "en": "Watermarks are used to handle out-of-order events"
@@ -84,12 +121,19 @@
       "abbreviation": "",
       "definition": "将流数据切分为有界集合的逻辑边界",
       "definition_en": "A logical boundary that divides stream data into bounded sets",
-      "context": ["Flink", "Time Window", "Count Window"],
+      "context": [
+        "Flink",
+        "Time Window",
+        "Count Window"
+      ],
       "category": "时间语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["时间窗口", "滑动窗口"],
+      "forbidden_variants": [
+        "时间窗口",
+        "滑动窗口"
+      ],
       "notes": "具体窗口类型应使用完整名称如Tumbling Window, Sliding Window",
       "usage_examples": {
         "zh": "窗口操作将无限流转换为有限批",
@@ -103,12 +147,19 @@
       "abbreviation": "EO",
       "definition": "每条记录被处理且仅被处理一次的语义保证",
       "definition_en": "A semantic guarantee that each record is processed exactly one time",
-      "context": ["Flink", "Consistency", "Fault Tolerance"],
+      "context": [
+        "Flink",
+        "Consistency",
+        "Fault Tolerance"
+      ],
       "category": "一致性语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["仅一次", "精确一次"],
+      "forbidden_variants": [
+        "仅一次",
+        "精确一次"
+      ],
       "usage_examples": {
         "zh": "Flink提供端到端恰好一次保证",
         "en": "Flink provides end-to-end Exactly-Once guarantees"
@@ -121,12 +172,18 @@
       "abbreviation": "ALO",
       "definition": "每条记录至少被处理一次的语义保证",
       "definition_en": "A semantic guarantee that each record is processed at least one time",
-      "context": ["Kafka", "Storm", "Reliability"],
+      "context": [
+        "Kafka",
+        "Storm",
+        "Reliability"
+      ],
       "category": "一致性语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["最少一次"],
+      "forbidden_variants": [
+        "最少一次"
+      ],
       "usage_examples": {
         "zh": "至少一次语义允许重复处理",
         "en": "At-Least-Once semantics allow duplicate processing"
@@ -139,12 +196,17 @@
       "abbreviation": "AMO",
       "definition": "每条记录最多被处理一次的语义保证",
       "definition_en": "A semantic guarantee that each record is processed at most one time",
-      "context": ["Messaging", "Delivery Guarantee"],
+      "context": [
+        "Messaging",
+        "Delivery Guarantee"
+      ],
       "category": "一致性语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["最多处理一次"],
+      "forbidden_variants": [
+        "最多处理一次"
+      ],
       "usage_examples": {
         "zh": "最多一次语义可能导致数据丢失",
         "en": "At-Most-Once semantics may lead to data loss"
@@ -157,12 +219,19 @@
       "abbreviation": "BP",
       "definition": "消费者向生产者反馈处理能力的机制",
       "definition_en": "A mechanism where consumers signal their processing capacity to producers",
-      "context": ["Flink", "Flow Control", "Reactive Streams"],
+      "context": [
+        "Flink",
+        "Flow Control",
+        "Reactive Streams"
+      ],
       "category": "流量控制",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["反压", "反向压力"],
+      "forbidden_variants": [
+        "反压",
+        "反向压力"
+      ],
       "usage_examples": {
         "zh": "背压防止系统因过载而崩溃",
         "en": "Backpressure prevents system overload and crashes"
@@ -175,12 +244,18 @@
       "abbreviation": "",
       "definition": "流计算中有状态算子的状态维护机制",
       "definition_en": "The mechanism for maintaining state of stateful operators in stream computation",
-      "context": ["Flink", "State Backend", "Fault Tolerance"],
+      "context": [
+        "Flink",
+        "State Backend",
+        "Fault Tolerance"
+      ],
       "category": "状态处理",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["状态维护"],
+      "forbidden_variants": [
+        "状态维护"
+      ],
       "usage_examples": {
         "zh": "状态管理是流处理的核心挑战",
         "en": "State Management is a core challenge in stream processing"
@@ -193,12 +268,18 @@
       "abbreviation": "",
       "definition": "数据产生的时间戳",
       "definition_en": "The timestamp when the data was originally generated",
-      "context": ["Flink", "Time Semantics", "Timestamp"],
+      "context": [
+        "Flink",
+        "Time Semantics",
+        "Timestamp"
+      ],
       "category": "时间语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["业务时间"],
+      "forbidden_variants": [
+        "业务时间"
+      ],
       "usage_examples": {
         "zh": "事件时间反映了数据实际发生的时间",
         "en": "Event Time reflects when the event actually occurred"
@@ -211,12 +292,17 @@
       "abbreviation": "",
       "definition": "数据被处理的时间戳",
       "definition_en": "The timestamp when the data is being processed",
-      "context": ["Flink", "Time Semantics"],
+      "context": [
+        "Flink",
+        "Time Semantics"
+      ],
       "category": "时间语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["执行时间"],
+      "forbidden_variants": [
+        "执行时间"
+      ],
       "usage_examples": {
         "zh": "处理时间是最简单但最不准确的时间语义",
         "en": "Processing Time is the simplest but least accurate time semantics"
@@ -229,12 +315,17 @@
       "abbreviation": "",
       "definition": "数据进入系统的时间戳",
       "definition_en": "The timestamp when data enters the processing system",
-      "context": ["Flink", "Time Semantics"],
+      "context": [
+        "Flink",
+        "Time Semantics"
+      ],
       "category": "时间语义",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["摄入时间"],
+      "forbidden_variants": [
+        "摄入时间"
+      ],
       "usage_examples": {
         "zh": "摄取时间是事件时间和处理时间的折中",
         "en": "Ingestion Time is a compromise between Event and Processing Time"
@@ -247,12 +338,19 @@
       "abbreviation": "",
       "definition": "基于消息传递的并发计算模型",
       "definition_en": "A concurrency model based on message passing",
-      "context": ["Akka", "Pekko", "Erlang", "Concurrency"],
+      "context": [
+        "Akka",
+        "Pekko",
+        "Erlang",
+        "Concurrency"
+      ],
       "category": "并发模型",
       "verified": true,
       "verified_by": "expert-002",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["演员模型"],
+      "forbidden_variants": [
+        "演员模型"
+      ],
       "notes": "首字母大写表示模型概念",
       "usage_examples": {
         "zh": "Actor模型强调隔离和异步消息传递",
@@ -266,12 +364,18 @@
       "abbreviation": "CSP",
       "definition": "Hoare提出的并发形式化语言",
       "definition_en": "A formal language for concurrency proposed by C.A.R. Hoare",
-      "context": ["Go", "Occam", "Concurrency Theory"],
+      "context": [
+        "Go",
+        "Occam",
+        "Concurrency Theory"
+      ],
       "category": "并发模型",
       "verified": true,
       "verified_by": "expert-002",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["通信顺序过程"],
+      "forbidden_variants": [
+        "通信顺序过程"
+      ],
       "usage_examples": {
         "zh": "Go语言的channel机制源于CSP",
         "en": "Go's channel mechanism is derived from CSP"
@@ -284,12 +388,19 @@
       "abbreviation": "",
       "definition": "进程间通过发送/接收消息通信的方式",
       "definition_en": "Inter-process communication via send/receive messages",
-      "context": ["Actor", "CSP", "MPI", "IPC"],
+      "context": [
+        "Actor",
+        "CSP",
+        "MPI",
+        "IPC"
+      ],
       "category": "并发模型",
       "verified": true,
       "verified_by": "expert-002",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["消息传送"],
+      "forbidden_variants": [
+        "消息传送"
+      ],
       "usage_examples": {
         "zh": "消息传递避免了共享内存的竞态条件",
         "en": "Message Passing avoids race conditions of shared memory"
@@ -302,12 +413,18 @@
       "abbreviation": "",
       "definition": "进程通过共享内存区域通信的方式",
       "definition_en": "Inter-process communication via a shared memory region",
-      "context": ["Multi-threading", "Locks", "Synchronization"],
+      "context": [
+        "Multi-threading",
+        "Locks",
+        "Synchronization"
+      ],
       "category": "并发模型",
       "verified": true,
       "verified_by": "expert-002",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["共享存储"],
+      "forbidden_variants": [
+        "共享存储"
+      ],
       "usage_examples": {
         "zh": "共享内存需要同步机制防止竞态条件",
         "en": "Shared Memory requires synchronization to prevent race conditions"
@@ -320,12 +437,19 @@
       "abbreviation": "",
       "definition": "CSP中进程间通信的管道",
       "definition_en": "A communication pipe between processes in CSP",
-      "context": ["Go", "CSP", "Communication"],
+      "context": [
+        "Go",
+        "CSP",
+        "Communication"
+      ],
       "category": "并发模型",
       "verified": true,
       "verified_by": "expert-002",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["通道", "管道"],
+      "forbidden_variants": [
+        "通道",
+        "管道"
+      ],
       "usage_examples": {
         "zh": "信道是CSP中的核心抽象",
         "en": "Channel is the core abstraction in CSP"
@@ -338,12 +462,19 @@
       "abbreviation": "",
       "definition": "描述并发进程行为的形式化语言",
       "definition_en": "A formal language for describing concurrent process behavior",
-      "context": ["CCS", "CSP", "π-Calculus", "Formal Methods"],
+      "context": [
+        "CCS",
+        "CSP",
+        "π-Calculus",
+        "Formal Methods"
+      ],
       "category": "形式化方法",
       "verified": true,
       "verified_by": "expert-003",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["进程计算"],
+      "forbidden_variants": [
+        "进程计算"
+      ],
       "usage_examples": {
         "zh": "进程演算为并发系统提供了严格的数学基础",
         "en": "Process Calculus provides rigorous mathematical foundations for concurrent systems"
@@ -356,12 +487,18 @@
       "abbreviation": "",
       "definition": "验证进程等价关系的形式化方法",
       "definition_en": "A formal method for verifying process equivalence relations",
-      "context": ["Process Calculus", "Equivalence", "Verification"],
+      "context": [
+        "Process Calculus",
+        "Equivalence",
+        "Verification"
+      ],
       "category": "形式化方法",
       "verified": true,
       "verified_by": "expert-003",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["双向模拟"],
+      "forbidden_variants": [
+        "双向模拟"
+      ],
       "usage_examples": {
         "zh": "双模拟是进程等价性的最强形式",
         "en": "Bisimulation is the strongest form of process equivalence"
@@ -374,12 +511,17 @@
       "abbreviation": "",
       "definition": "基于可观测行为迹的等价关系",
       "definition_en": "An equivalence relation based on observable behavior traces",
-      "context": ["Process Calculus", "Verification"],
+      "context": [
+        "Process Calculus",
+        "Verification"
+      ],
       "category": "形式化方法",
       "verified": true,
       "verified_by": "expert-003",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["轨迹等价"],
+      "forbidden_variants": [
+        "轨迹等价"
+      ],
       "usage_examples": {
         "zh": "迹等价比双模拟更弱但更容易验证",
         "en": "Trace Equivalence is weaker than Bisimulation but easier to verify"
@@ -392,12 +534,18 @@
       "abbreviation": "",
       "definition": "为程序赋予类型以确保正确性的规则集",
       "definition_en": "A set of rules that assigns types to programs to ensure correctness",
-      "context": ["Type Theory", "Programming Languages", "Safety"],
+      "context": [
+        "Type Theory",
+        "Programming Languages",
+        "Safety"
+      ],
       "category": "形式化方法",
       "verified": true,
       "verified_by": "expert-003",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["类型体系"],
+      "forbidden_variants": [
+        "类型体系"
+      ],
       "usage_examples": {
         "zh": "强类型系统能在编译时捕获错误",
         "en": "Strong Type Systems can catch errors at compile time"
@@ -410,12 +558,18 @@
       "abbreviation": "",
       "definition": "描述通信协议的类型系统",
       "definition_en": "A type system for describing communication protocols",
-      "context": ["Communication", "Type Theory", "Concurrency"],
+      "context": [
+        "Communication",
+        "Type Theory",
+        "Concurrency"
+      ],
       "category": "形式化方法",
       "verified": true,
       "verified_by": "expert-003",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["会话类型系统"],
+      "forbidden_variants": [
+        "会话类型系统"
+      ],
       "usage_examples": {
         "zh": "会话类型确保通信协议的正确性",
         "en": "Session Types ensure correctness of communication protocols"
@@ -428,12 +582,18 @@
       "abbreviation": "",
       "definition": "描述数据流动和转换的抽象模型",
       "definition_en": "An abstract model describing data flow and transformation",
-      "context": ["Flink", "Dataflow", "Stream Processing"],
+      "context": [
+        "Flink",
+        "Dataflow",
+        "Stream Processing"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["数据流"],
+      "forbidden_variants": [
+        "数据流"
+      ],
       "notes": "Dataflow Model特指Google Dataflow论文中的模型",
       "usage_examples": {
         "zh": "Dataflow模型统一了批处理和流处理",
@@ -447,12 +607,19 @@
       "abbreviation": "",
       "definition": "流计算中的基本处理单元",
       "definition_en": "The basic processing unit in stream computation",
-      "context": ["Flink", "DataStream API", "Processing"],
+      "context": [
+        "Flink",
+        "DataStream API",
+        "Processing"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["操作符", "操作数"],
+      "forbidden_variants": [
+        "操作符",
+        "操作数"
+      ],
       "usage_examples": {
         "zh": "map和filter是常用的算子",
         "en": "map and filter are commonly used Operators"
@@ -465,12 +632,19 @@
       "abbreviation": "",
       "definition": "数据流的输入端",
       "definition_en": "The input endpoint of a data stream",
-      "context": ["Flink", "Connector", "Input"],
+      "context": [
+        "Flink",
+        "Connector",
+        "Input"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["源", "数据源"],
+      "forbidden_variants": [
+        "源",
+        "数据源"
+      ],
       "notes": "保留英文，但在解释时可使用'数据源'",
       "usage_examples": {
         "zh": "KafkaSource从Kafka读取数据",
@@ -484,12 +658,19 @@
       "abbreviation": "",
       "definition": "数据流的输出端",
       "definition_en": "The output endpoint of a data stream",
-      "context": ["Flink", "Connector", "Output"],
+      "context": [
+        "Flink",
+        "Connector",
+        "Output"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["汇", "数据汇"],
+      "forbidden_variants": [
+        "汇",
+        "数据汇"
+      ],
       "notes": "保留英文，但在解释时可使用'数据汇'",
       "usage_examples": {
         "zh": "JDBC Sink将数据写入数据库",
@@ -503,12 +684,17 @@
       "abbreviation": "",
       "definition": "具有明确开始和结束的数据集",
       "definition_en": "A dataset with definite beginning and end",
-      "context": ["Batch Processing", "Data Characteristics"],
+      "context": [
+        "Batch Processing",
+        "Data Characteristics"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["边界数据"],
+      "forbidden_variants": [
+        "边界数据"
+      ],
       "usage_examples": {
         "zh": "历史日志是有界数据的典型例子",
         "en": "Historical logs are typical examples of Bounded Data"
@@ -521,12 +707,17 @@
       "abbreviation": "",
       "definition": "持续产生、没有明确结束的数据流",
       "definition_en": "A data stream that is continuously generated without definite end",
-      "context": ["Stream Processing", "Data Characteristics"],
+      "context": [
+        "Stream Processing",
+        "Data Characteristics"
+      ],
       "category": "基础概念",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["无限数据"],
+      "forbidden_variants": [
+        "无限数据"
+      ],
       "usage_examples": {
         "zh": "实时传感器数据是无界数据",
         "en": "Real-time sensor data is Unbounded Data"
@@ -539,15 +730,581 @@
       "abbreviation": "",
       "definition": "存储和访问流处理状态的机制",
       "definition_en": "The mechanism for storing and accessing stream processing state",
-      "context": ["Flink", "State Management", "Storage"],
+      "context": [
+        "Flink",
+        "State Management",
+        "Storage"
+      ],
       "category": "状态处理",
       "verified": true,
       "verified_by": "expert-001",
       "verified_at": "2026-04-08",
-      "forbidden_variants": ["状态后端存储"],
+      "forbidden_variants": [
+        "状态后端存储"
+      ],
       "usage_examples": {
         "zh": "RocksDB State Backend适合大状态场景",
         "en": "RocksDB State Backend is suitable for large state scenarios"
+      }
+    },
+    {
+      "id": "CT-031",
+      "term": "统一流理论",
+      "en": "Unified Streaming Theory",
+      "abbreviation": "",
+      "definition": "统一流理论的定义",
+      "definition_en": "Unified batch and stream processing theoretical model",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "统一流理论是流计算中的重要概念",
+        "en": "Unified Streaming Theory is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-032",
+      "term": "进程演算基础",
+      "en": "Foundations of Process Calculus",
+      "abbreviation": "",
+      "definition": "进程演算基础的定义",
+      "definition_en": "Basic concepts of CCS, CSP, and π-calculus",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "进程演算基础是流计算中的重要概念",
+        "en": "Foundations of Process Calculus is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-033",
+      "term": "双模拟等价",
+      "en": "Bisimulation Equivalence",
+      "abbreviation": "",
+      "definition": "双模拟等价的定义",
+      "definition_en": "Strongest form of process equivalence",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "双模拟等价是流计算中的重要概念",
+        "en": "Bisimulation Equivalence is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-034",
+      "term": "迹等价",
+      "en": "Trace Equivalence",
+      "abbreviation": "",
+      "definition": "迹等价的定义",
+      "definition_en": "Equivalence based on observable behavior traces",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "迹等价是流计算中的重要概念",
+        "en": "Trace Equivalence is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-035",
+      "term": "会话类型",
+      "en": "Session Types",
+      "abbreviation": "",
+      "definition": "会话类型的定义",
+      "definition_en": "Type system for describing communication protocols",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "会话类型是流计算中的重要概念",
+        "en": "Session Types is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-036",
+      "term": "对偶性",
+      "en": "Duality",
+      "abbreviation": "",
+      "definition": "对偶性的定义",
+      "definition_en": "Complementary relationship between session types",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "对偶性是流计算中的重要概念",
+        "en": "Duality is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-037",
+      "term": "通信兼容性",
+      "en": "Communication Compatibility",
+      "abbreviation": "",
+      "definition": "通信兼容性的定义",
+      "definition_en": "Guarantee that dual session types can communicate without deadlock",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "通信兼容性是流计算中的重要概念",
+        "en": "Communication Compatibility is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-038",
+      "term": "编码存在性",
+      "en": "Encoding Existence",
+      "abbreviation": "",
+      "definition": "编码存在性的定义",
+      "definition_en": "Whether one calculus can be encoded into another preserving semantics",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "编码存在性是流计算中的重要概念",
+        "en": "Encoding Existence is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-039",
+      "term": "图灵完备性",
+      "en": "Turing Completeness",
+      "abbreviation": "",
+      "definition": "图灵完备性的定义",
+      "definition_en": "Ability of a system to simulate any Turing machine",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "图灵完备性是流计算中的重要概念",
+        "en": "Turing Completeness is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-040",
+      "term": "可判定性",
+      "en": "Decidability",
+      "abbreviation": "",
+      "definition": "可判定性的定义",
+      "definition_en": "Whether a property can be algorithmically decided",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "可判定性是流计算中的重要概念",
+        "en": "Decidability is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-041",
+      "term": "发散语义",
+      "en": "Divergence Semantics",
+      "abbreviation": "",
+      "definition": "发散语义的定义",
+      "definition_en": "Behavioral semantics considering infinite internal computation",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "发散语义是流计算中的重要概念",
+        "en": "Divergence Semantics is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-042",
+      "term": "向后兼容",
+      "en": "Backward Compatibility",
+      "abbreviation": "",
+      "definition": "向后兼容的定义",
+      "definition_en": "Ability to work with older versions or models",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "向后兼容是流计算中的重要概念",
+        "en": "Backward Compatibility is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-043",
+      "term": "向前兼容",
+      "en": "Forward Compatibility",
+      "abbreviation": "",
+      "definition": "向前兼容的定义",
+      "definition_en": "Ability to work with future versions or models",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "向前兼容是流计算中的重要概念",
+        "en": "Forward Compatibility is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-044",
+      "term": "到达曲线",
+      "en": "Arrival Curve",
+      "abbreviation": "",
+      "definition": "到达曲线的定义",
+      "definition_en": "Network calculus concept bounding traffic arrival patterns",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "到达曲线是流计算中的重要概念",
+        "en": "Arrival Curve is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-045",
+      "term": "二进制会话类型",
+      "en": "Binary Session Types",
+      "abbreviation": "",
+      "definition": "二进制会话类型的定义",
+      "definition_en": "Session types between exactly two participants",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "二进制会话类型是流计算中的重要概念",
+        "en": "Binary Session Types is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-046",
+      "term": "进程组合层次结构",
+      "en": "Process Composition Hierarchy",
+      "abbreviation": "",
+      "definition": "进程组合层次结构的定义",
+      "definition_en": "Hierarchical structure of process combinators",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "进程组合层次结构是流计算中的重要概念",
+        "en": "Process Composition Hierarchy is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-047",
+      "term": "内部选择",
+      "en": "Internal Choice",
+      "abbreviation": "",
+      "definition": "内部选择的定义",
+      "definition_en": "Process selects one of several branches autonomously",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "内部选择是流计算中的重要概念",
+        "en": "Internal Choice is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-048",
+      "term": "外部选择",
+      "en": "External Choice",
+      "abbreviation": "",
+      "definition": "外部选择的定义",
+      "definition_en": "Process offers several branches to the environment",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "外部选择是流计算中的重要概念",
+        "en": "External Choice is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-049",
+      "term": "事件时间",
+      "en": "Event Time",
+      "abbreviation": "",
+      "definition": "事件时间的定义",
+      "definition_en": "Timestamp when an event actually occurred",
+      "context": [
+        "时间语义"
+      ],
+      "category": "时间语义",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "事件时间是流计算中的重要概念",
+        "en": "Event Time is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-050",
+      "term": "处理时间",
+      "en": "Processing Time",
+      "abbreviation": "",
+      "definition": "处理时间的定义",
+      "definition_en": "Timestamp when an event is processed by the system",
+      "context": [
+        "时间语义"
+      ],
+      "category": "时间语义",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "处理时间是流计算中的重要概念",
+        "en": "Processing Time is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-051",
+      "term": "摄取时间",
+      "en": "Ingestion Time",
+      "abbreviation": "",
+      "definition": "摄取时间的定义",
+      "definition_en": "Timestamp when data enters the processing system",
+      "context": [
+        "时间语义"
+      ],
+      "category": "时间语义",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "摄取时间是流计算中的重要概念",
+        "en": "Ingestion Time is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-052",
+      "term": "流数据库",
+      "en": "Stream Database",
+      "abbreviation": "",
+      "definition": "流数据库的定义",
+      "definition_en": "Database optimized for continuous stream queries",
+      "context": [
+        "基础概念"
+      ],
+      "category": "基础概念",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "流数据库是流计算中的重要概念",
+        "en": "Stream Database is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-053",
+      "term": "物化视图",
+      "en": "Materialized View",
+      "abbreviation": "",
+      "definition": "物化视图的定义",
+      "definition_en": "Pre-computed view stored for fast query access",
+      "context": [
+        "基础概念"
+      ],
+      "category": "基础概念",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "物化视图是流计算中的重要概念",
+        "en": "Materialized View is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-054",
+      "term": "增量维护",
+      "en": "Incremental Maintenance",
+      "abbreviation": "",
+      "definition": "增量维护的定义",
+      "definition_en": "Updating materialized views incrementally",
+      "context": [
+        "基础概念"
+      ],
+      "category": "基础概念",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "增量维护是流计算中的重要概念",
+        "en": "Incremental Maintenance is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-055",
+      "term": "模型形式化",
+      "en": "Model Formalization",
+      "abbreviation": "",
+      "definition": "模型形式化的定义",
+      "definition_en": "Process of giving precise mathematical meaning to a model",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "模型形式化是流计算中的重要概念",
+        "en": "Model Formalization is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-056",
+      "term": "定义动机",
+      "en": "Definition Motivation",
+      "abbreviation": "",
+      "definition": "定义动机的定义",
+      "definition_en": "Rationale behind a formal definition",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "定义动机是流计算中的重要概念",
+        "en": "Definition Motivation is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-057",
+      "term": "证明概要",
+      "en": "Proof Sketch",
+      "abbreviation": "",
+      "definition": "证明概要的定义",
+      "definition_en": "High-level outline of a formal proof",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "证明概要是流计算中的重要概念",
+        "en": "Proof Sketch is an important concept in stream computing"
+      }
+    },
+    {
+      "id": "CT-058",
+      "term": "由归纳假设",
+      "en": "By Induction Hypothesis",
+      "abbreviation": "",
+      "definition": "由归纳假设的定义",
+      "definition_en": "Standard proof step in inductive arguments",
+      "context": [
+        "形式化方法"
+      ],
+      "category": "形式化方法",
+      "verified": true,
+      "verified_by": "agent-2026-04-15",
+      "verified_at": "2026-04-15",
+      "forbidden_variants": [],
+      "usage_examples": {
+        "zh": "由归纳假设是流计算中的重要概念",
+        "en": "By Induction Hypothesis is an important concept in stream computing"
       }
     }
   ]
