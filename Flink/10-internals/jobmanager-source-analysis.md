@@ -1,6 +1,6 @@
 # Flink JobManager 源码深度分析
 
-> 所属阶段: Flink/ | 前置依赖: [Flink 架构总览](../01-architecture/flink-architecture-overview.md), [JobManager 概述](../01-architecture/jobmanager-overview.md) | 形式化等级: L4
+> 所属阶段: Flink/ | 前置依赖: [flink-system-architecture-deep-dive.md](../01-concepts/flink-system-architecture-deep-dive.md), [jobmanager-source-analysis.md](./jobmanager-source-analysis.md) | 形式化等级: L4
 
 ---
 

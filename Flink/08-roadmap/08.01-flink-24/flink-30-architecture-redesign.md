@@ -26,7 +26,7 @@
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-08 | [Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-flink-30/](../08.03-Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-flink-30/) |
+> | 2026-04-08 | [08.03-flink-30/](../08.03-flink-30/) |
 
 ---
 
@@ -1441,6 +1441,6 @@ gantt
 **关联文档**:
 
 - [Flink 2.5 预览](flink-2.5-preview.md) - Flink 2.5 路线图
-- [Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/](../08.02-Flink/08-roadmap/08.02-Flink/08-roadmap/08.02-flink-25/) - Flink 2.5 详细跟踪
-- [Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-flink-30/](../08.03-Flink/08-roadmap/08.03-Flink/08-roadmap/08.03-flink-30/) - Flink 3.0 详细跟踪
+- [08.02-flink-25/](../08.02-flink-25/) - Flink 2.5 详细跟踪
+- [08.03-flink-30/](../08.03-flink-30/) - Flink 3.0 详细跟踪
 - [Flink 1.x vs 2.0对比](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0架构对比

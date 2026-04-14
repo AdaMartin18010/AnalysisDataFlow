@@ -1,6 +1,6 @@
 # Serverless流计算形式化理论
 
-> 所属阶段: Knowledge/Frontier | 前置依赖: [Struct/03-semantics](../Struct/), [Knowledge/05-ecosystem/cloud-native-streaming.md](../05-ecosystem/) | 形式化等级: L5-L6
+> 所属阶段: Knowledge/Frontier | 前置依赖: [Struct/00-INDEX.md](../../Struct/00-INDEX.md), [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | 形式化等级: L5-L6
 
 ---
 

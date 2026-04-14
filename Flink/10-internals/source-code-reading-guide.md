@@ -1,6 +1,6 @@
 # Flink 源码阅读指南
 
-> 所属阶段: Flink/10-internals | 前置依赖: [Flink架构概览](../04-runtime/flink-architecture-overview.md), [Flink运行机制](../04-runtime/flink-runtime-mechanisms.md) | 形式化等级: L3 (工程实践)
+> 所属阶段: Flink/10-internals | 前置依赖: [flink-system-architecture-deep-dive.md](../01-concepts/flink-system-architecture-deep-dive.md), [Flink/04-runtime/README.md](../04-runtime/README.md) | 形式化等级: L3 (工程实践)
 
 ## 1. 概念定义 (Definitions)
 

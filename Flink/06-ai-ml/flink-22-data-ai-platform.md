@@ -1,6 +1,6 @@
 # Flink 2.2.0 Data + AI 平台深度解析
 
-> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink ML架构](flink-ml-architecture.md), [Flink AI/ML集成指南](flink-ai-ml-integration-complete-guide.md), [Flink SQL基础](../03-table-api-sql/flink-sql-complete-guide.md) | **形式化等级**: L4
+> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink ML架构](flink-ml-architecture.md), [Flink AI/ML集成指南](flink-ai-ml-integration-complete-guide.md), [flink-table-sql-complete-guide.md](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 

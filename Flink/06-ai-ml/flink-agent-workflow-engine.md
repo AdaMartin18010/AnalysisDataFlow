@@ -345,6 +345,68 @@ graph TB
 | **A2A Client** | 委托任务 | Outgoing | Task状态追踪 |
 | **A2A Server** | 接收委托 | Incoming | Task生命周期 |
 
+#### Agent 协议三层架构
+
+在 MCP 与 A2A 之外，**AIP（Agent Identity Protocol）** 作为身份层协议，与 A2A（通信层）、MCP（工具层）共同构成 Agent 互操作的三层架构：
+
+- **AIP（L1-Identity）**：负责 Agent 身份注册、发现、验证与信誉评估
+- **A2A（L2-Communication）**：负责 Agent 之间的任务委托、消息传递与状态同步
+- **MCP（L3-Tools）**：负责 Agent 与外部工具、数据源、上下文的交互
+
+三层协议与 Flink Agent 工作流引擎的集成关系如下：
+
+```mermaid
+graph TB
+    subgraph "Flink Agent工作流引擎"
+        F1[工作流编排层]
+        F2[Agent执行层]
+        F3[状态管理层]
+    end
+
+    subgraph "协议适配层"
+        P1[MCP Client Adapter<br/>工具层]
+        P2[MCP Server Adapter<br/>工具层]
+        P3[A2A Client Adapter<br/>通信层]
+        P4[A2A Server Adapter<br/>通信层]
+        P5[AIP Adapter<br/>身份层]
+    end
+
+    subgraph "外部Agent生态"
+        E1[MCP Tool Server]
+        E2[A2A Remote Agent]
+        E3[AIP Registry]
+        E4[Function Calling API]
+    end
+
+    F1 --> F2
+    F2 --> F3
+
+    F2 --> P1
+    F2 --> P2
+    F2 --> P3
+    F2 --> P4
+    F2 --> P5
+
+    P1 --> E1
+    P2 --> E1
+    P3 --> E2
+    P5 --> E3
+
+    F2 -.->|Function Calling| E4
+
+    style P5 fill:#e3f2fd
+```
+
+**集成模式扩展**：
+
+| 协议 | 层级 | 用途 | 适配器类型 | 状态管理 |
+|------|------|------|------------|----------|
+| **AIP** | L1-Identity | Agent 身份发现与验证 | Discovery/Auth | 身份缓存 |
+| **A2A Client** | L2-Communication | 委托任务 | Outgoing | Task状态追踪 |
+| **A2A Server** | L2-Communication | 接收委托 | Incoming | Task生命周期 |
+| **MCP Client** | L3-Tools | 调用工具 | Outgoing | 缓存工具结果 |
+| **MCP Server** | L3-Tools | 暴露为工具 | Incoming | 无状态 |
+
 ---
 
 ### 3.3 与Flink生态组件关系

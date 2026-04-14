@@ -1,6 +1,6 @@
 # 图流处理形式化理论
 
-> **所属阶段**: Struct/06-frontier | **前置依赖**: [05.04-distributed-state-machine](../05-distributed-systems/05.04-distributed-state-machine.md), [03.04-session-types](../03-advanced-topics/03.04-session-types.md) | **形式化等级**: L5
+> **所属阶段**: Struct/06-frontier | **前置依赖**: [Struct/00-INDEX.md](../../Struct/00-INDEX.md), [session-types.md](../../Struct/01-foundation/01.07-session-types.md) | **形式化等级**: L5
 
 ---
 
@@ -1566,9 +1566,9 @@ Def-S-GS-01 (图流处理系统)
 
 **前置依赖文档**：
 
-- [05.04-distributed-state-machine](../05-distributed-systems/05.04-distributed-state-machine.md): 分布式状态机理论为图流的状态维护提供基础
-- [03.04-session-types](../03-advanced-topics/03.04-session-types.md): 会话类型理论为图流通信模式提供形式化框架
-- [04.02-fault-tolerance](../04-applications/04.02-fault-tolerance.md): 容错机制确保图流处理的一致性保证
+- [Struct/00-INDEX.md](../../Struct/00-INDEX.md): 分布式状态机理论为图流的状态维护提供基础
+- [session-types.md](../../Struct/01-foundation/01.07-session-types.md): 会话类型理论为图流通信模式提供形式化框架
+- [Struct/00-INDEX.md](../../Struct/00-INDEX.md): 容错机制确保图流处理的一致性保证
 
 **后续引用文档**：
 

@@ -131,6 +131,13 @@ class CrossRefValidator:
         header_pattern = r'^#{1,6}\s+(.+)$'
         for match in re.finditer(header_pattern, content, re.MULTILINE):
             title = match.group(1).strip()
+            # 提取自定义锚点 {#anchor}
+            custom_anchor_match = re.search(r'\{#([^}]+)\}\s*$', title)
+            if custom_anchor_match:
+                custom_anchor = custom_anchor_match.group(1).strip()
+                anchors.add(custom_anchor)
+                anchors.add(custom_anchor.lower())
+            # 同时从标题生成GitHub风格锚点
             anchor = self.generate_anchor(title)
             anchors.add(anchor)
             anchors.add(anchor.lower())
@@ -251,11 +258,17 @@ class CrossRefValidator:
                 lines = f.readlines()
             
             self.stats['files_checked'] += 1
-            content = ''.join(lines)
             
-            # 找到所有链接及其行号
+            # 找到所有链接及其行号，跳过代码块
             link_pattern = r'\[([^\]]*)\]\(([^)]+)\)'
+            in_code_block = False
             for line_num, line in enumerate(lines, 1):
+                stripped = line.strip()
+                if stripped.startswith('```'):
+                    in_code_block = not in_code_block
+                    continue
+                if in_code_block:
+                    continue
                 for match in re.finditer(link_pattern, line):
                     text, link = match.groups()
                     self.validate_link(text, link, file_path, line_num)

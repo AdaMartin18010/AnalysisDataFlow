@@ -1,6 +1,6 @@
 # 流式RAG形式化理论 (Streaming RAG Formal Theory)
 
-> **所属阶段**: Struct/06-frontier | **前置依赖**: [Struct/05.04-dataflow-semantics.md](../05-core/05.04-dataflow-semantics.md), [Knowledge/06-rag-systems/](../Knowledge/06-rag-systems/) | **形式化等级**: L5 (严格形式化)
+> **所属阶段**: Struct/06-frontier | **前置依赖**: [dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [real-time-rag-architecture.md](../../Knowledge/06-frontier/real-time-rag-architecture.md) | **形式化等级**: L5 (严格形式化)
 >
 > **状态**: 核心定理已证明 ✅ | **最后更新**: 2026-04-12
 

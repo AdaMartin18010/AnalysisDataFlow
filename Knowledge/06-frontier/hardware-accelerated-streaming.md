@@ -1,6 +1,6 @@
 # 硬件加速流处理 (Hardware Accelerated Streaming)
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [05-design-patterns/stream-processing-patterns.md](../05-design-patterns/stream-processing-patterns.md), [../Flink/04-runtime/network-stack.md](../../Flink/04-runtime/network-stack.md) | **形式化等级**: L4 (工程论证)
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md), [network-stack-internals.md](../../Flink/10-internals/network-stack-internals.md) | **形式化等级**: L4 (工程论证)
 
 ---
 

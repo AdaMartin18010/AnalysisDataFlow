@@ -1,6 +1,6 @@
 # Flink 边缘 AI 推理优化
 
-> 所属阶段: Flink/09-practices/09.05-edge | 前置依赖: [flink-edge-deployment.md](./flink-edge-deployment.md), [../../06-ai-ml/flink-llm-realtime-inference-guide.md](../../06-ai-ml/flink-llm-realtime-inference-guide.md) | 形式化等级: L4
+> 所属阶段: Flink/09-practices/09.05-edge | 前置依赖: [flink-edge-streaming-guide.md](./flink-edge-streaming-guide.md), [../../06-ai-ml/flink-llm-realtime-inference-guide.md](../../06-ai-ml/flink-llm-realtime-inference-guide.md) | 形式化等级: L4
 
 ---
 

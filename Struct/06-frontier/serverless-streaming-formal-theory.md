@@ -1,6 +1,6 @@
 # Serverless流计算形式化理论
 
-> **所属阶段**: Struct/ Frontier | **前置依赖**: [Struct/05-systems/distributed-streaming-systems.md](../05-systems/distributed-streaming-systems.md), [Knowledge/03-patterns/elastic-scaling-patterns.md](../../Knowledge/03-patterns/elastic-scaling-patterns.md) | **形式化等级**: L5 (严格证明)
+> **所属阶段**: Struct/ Frontier | **前置依赖**: [Struct/00-INDEX.md](../../Struct/00-INDEX.md), [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | **形式化等级**: L5 (严格证明)
 
 ---
 

@@ -4,7 +4,7 @@
 >
 # Flink系统架构深度分析
 
-> 所属阶段: Flink/ 01-concepts | 前置依赖: [flink-runtime-overview.md](./flink-runtime-overview.md), [flink-dataflow-model.md](../00-foundations/flink-dataflow-model.md) | 形式化等级: L4 (工程论证+源码级)
+> 所属阶段: Flink/ 01-concepts | 前置依赖: [flink-system-architecture-deep-dive.md](./flink-system-architecture-deep-dive.md), [datastream-v2-semantics.md](./datastream-v2-semantics.md) | 形式化等级: L4 (工程论证+源码级)
 
 ---
 

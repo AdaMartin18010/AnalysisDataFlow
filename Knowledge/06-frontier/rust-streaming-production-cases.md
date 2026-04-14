@@ -1,6 +1,6 @@
 # Rust流计算工业落地案例集
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [../05-ecosystem/rust-streaming-ecosystem.md](../05-ecosystem/rust-streaming-ecosystem.md), [../../Struct/03-concurrency/actor-model-formalization.md](../../Struct/03-concurrency/actor-model-formalization.md) | 形式化等级: L3
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md), [01.03-actor-model-formalization.md](../../Struct/01-foundation/01.03-actor-model-formalization.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

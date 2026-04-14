@@ -1,6 +1,6 @@
 # 学习型优化器在流处理中的应用
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [Flink/03-execution/optimizer.md](../../Flink/03-execution/optimizer.md), [Knowledge/05-business/streaming-performance-tuning.md](../05-business/streaming-performance-tuning.md) | **形式化等级**: L3-L5
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [flink-sql-calcite-optimizer-deep-dive.md](../../Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md), [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | **形式化等级**: L3-L5
 
 > **状态**: 前沿研究 | **最后更新**: 2026-04-12 | **引用论文**: SIGMOD 2024, CIDR 2023, VLDB 2022
 

@@ -1,6 +1,6 @@
 # Flink 运行时与运维概览
 
-> 所属阶段: Flink | 前置依赖: [Flink 核心概念](../01-core-concepts/) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [Flink/01-concepts/](../01-concepts/) | 形式化等级: L4
 
 本文档是 Flink 运行时层级的权威导航中心，全面覆盖 Flink 作业的部署、运维和可观测性。从分布式执行的核心概念（JobManager、TaskManager、Slot、Task）到生产环境的部署模式、运维操作和监控体系，本目录为 Flink 平台工程师和 SRE 提供完整的技术参考。
 
@@ -153,7 +153,7 @@ flowchart LR
 | 场景 | 关键操作 | 参考文档 |
 |------|----------|----------|
 | **作业部署** | jar 提交、SQL 提交、镜像部署 | [Kubernetes 部署指南](./04.01-deployment/kubernetes-deployment.md) |
-| **状态管理** | Savepoint、Checkpoint 操作 | [状态管理](../02-state/) |
+| **状态管理** | Savepoint、Checkpoint 操作 | [Flink/02-core/](../02-core/) |
 | **扩缩容** | 并行度调整、资源配置 | [Autoscaling 深度解析](./04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md) |
 | **故障恢复** | 重启策略、故障排查 | [生产检查清单](./04.02-operations/production-checklist.md) |
 | **版本升级** | 状态兼容性、滚动升级 | [升级策略](./04.01-deployment/evolution/upgrade-strategy.md) |

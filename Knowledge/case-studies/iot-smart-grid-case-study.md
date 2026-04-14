@@ -1,6 +1,6 @@
 # IoT智能电网实时数据处理案例研究
 
-> **所属阶段**: Knowledge/case-studies/iot | **前置依赖**: [Knowledge/Knowledge/case-studies/10.3.1-smart-meter-data-processing.md](../../Knowledge/case-studies/10.3.1-smart-meter-data-processing.md) | **形式化等级**: L5
+> **所属阶段**: Knowledge/case-studies/iot | **前置依赖**: [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | **形式化等级**: L5
 > **案例编号**: CS-I-02 | **完成日期**: 2026-04-11 | **版本**: v1.0
 
 ---

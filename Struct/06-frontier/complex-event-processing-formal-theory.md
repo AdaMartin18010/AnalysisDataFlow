@@ -1,6 +1,6 @@
 # 复杂事件处理(CEP)形式化理论
 
-> **所属阶段**: Struct/06-frontier | **前置依赖**: [06.1-dataflow-model-formalization.md](../06-frontier/dataflow-model-formalization.md), [03.3-temporal-logics.md](../03-extensions/temporal-logics.md) | **形式化等级**: L5 | **文档编号**: Struct-06-CEP
+> **所属阶段**: Struct/06-frontier | **前置依赖**: [dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Struct/00-INDEX.md](../../Struct/00-INDEX.md) | **形式化等级**: L5 | **文档编号**: Struct-06-CEP
 
 ---
 

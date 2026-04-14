@@ -46,9 +46,9 @@ $$TTL_{eff}(k) = \min(TTL_{local}, TTL_{source})$$
 
 ---
 
-### Def-F-02-25: VECTOR_SEARCH 向量搜索算子（规划中）
+### Def-F-02-25: VECTOR_SEARCH 向量搜索算子（GA）
 
-<!-- 注: VECTOR_SEARCH 为向量搜索功能（规划中），尚未正式发布 -->
+<!-- Flink 2.2.0 正式发布: VECTOR_SEARCH 已 GA -->
 
 **定义**: `VECTOR_SEARCH` 是 Flink 2.2 引入的流式向量相似度搜索 SQL 函数，用于在高维向量空间中执行实时近邻检索。
 
@@ -285,7 +285,7 @@ $$\text{HitRate} \geq 1 - \frac{1-\alpha}{1-\alpha^{C+1}} \cdot \alpha^C$$
 
 ### Prop-F-02-08: VECTOR_SEARCH 与 ML_PREDICT 的组合复杂度
 
-<!-- 注: 以下涉及 VECTOR_SEARCH 和 ML_PREDICT 的内容均为规划功能，尚未正式发布 -->
+<!-- Flink 2.2.0 正式发布: VECTOR_SEARCH 与 ML_PREDICT 均已 GA -->
 
 **命题**: 在端到端 RAG 管道中，设嵌入模型推理延迟为 $L_{embed}$，向量搜索延迟为 $L_{search}$，则：
 
@@ -401,7 +401,7 @@ $$\max_{i,j}(|tasks(tm_i) - tasks(tm_j)|) \leq 1$$
 | MySQL/PostgreSQL | ✅ | 连接池缓存 | ✅ | 传统维表关联 |
 | Redis | ✅ | 内存缓存 | ❌ | 热点数据缓存 |
 
-### 3.3 VECTOR_SEARCH（规划中）与 ML_PREDICT（实验性）协作关系
+### 3.3 VECTOR_SEARCH（GA）与 ML_PREDICT（GA）协作关系
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -410,8 +410,8 @@ $$\max_{i,j}(|tasks(tm_i) - tasks(tm_j)|) \leq 1$$
 │                                                                     │
 │   ┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐  │
 │   │  用户查询 │───▶│ ML_PREDICT  │───▶│ VECTOR_  │───▶│ LLM生成  │  │
-│   │   流     │    │ (实验性)   │    │ SEARCH   │    │  回复    │  │
-│   └──────────┘    └─────────────┘    │ (规划中) │    └──────────┘  │
+│   │   流     │    │ (GA)       │    │ SEARCH   │    │  回复    │  │
+│   └──────────┘    └─────────────┘    │ (GA)     │    └──────────┘  │
 │   │   流     │    │ (嵌入模型)   │    │ SEARCH   │    │  回复    │  │
 │   └──────────┘    └─────────────┘    └──────────┘    └──────────┘  │
 │                          │                  │                      │
@@ -426,9 +426,9 @@ $$\max_{i,j}(|tasks(tm_i) - tasks(tm_j)|) \leq 1$$
 │   │   组件        │      职责         │        计算复杂度          │  │
 │   ├──────────────┼──────────────────┼───────────────────────────┤  │
 │   │ ML_PREDICT   │ 文本 → 向量嵌入   │ O(d_model) ~ 10-100ms     │  │
-│   │              │ (实验性)         │                           │  │
+│   │              │ (GA)             │                           │  │
 │   │ VECTOR_SEARCH│ 向量 → Top-K近邻  │ O(log n) ~ 1-10ms (ANN)   │  │
-│   │              │ (规划中)         │                           │  │
+│   │              │ (GA)             │                           │  │
 │   │ LLM生成      │ 上下文 → 生成回复 │ O(gen_len) ~ 100-1000ms   │  │
 │   └──────────────┴──────────────────┴───────────────────────────┘  │
 │                                                                     │
@@ -1213,7 +1213,7 @@ graph TB
             A1 --> A1c[Filter Pushdown]
             A1 --> A1d[Multi-level Cache]
 
-            A2[VECTOR_SEARCH（规划中）] --> A2a[ML_PREDICT（实验性）Integration]
+            A2[VECTOR_SEARCH（GA）] --> A2a[ML_PREDICT（GA）Integration]
             A2 --> A2b[Real-time RAG]
             A2 --> A2c[Vector DB Connectors]
 
@@ -1303,12 +1303,12 @@ flowchart LR
     end
 
     subgraph "Embedding"
-        B --> C[ML_PREDICT（实验性）]
+        B --> C[ML_PREDICT（GA）]
         C --> D[Query Vector<br/>ℝ^d]
     end
 
     subgraph "Retrieval"
-        D --> E[VECTOR_SEARCH（规划中）]
+        D --> E[VECTOR_SEARCH（GA）]
         F[Document Vector DB] --> E
         E --> G[Top-K Results<br/>doc_ids + scores]
     end
@@ -1316,7 +1316,7 @@ flowchart LR
     subgraph "Generation"
         G --> H[Context Assembly]
         H --> I[LLM Prompt]
-        I --> J[ML_PREDICT（实验性）<br/>GPT-4/Claude]
+        I --> J[ML_PREDICT（GA）<br/>GPT-4/Claude]
         J --> K[Generated Answer]
     end
 
@@ -1430,7 +1430,7 @@ gantt
     dateFormat YYYY-MM-DD
     section SQL/API
     Delta Join V2 (CDC/Projection/Cache) :active, dj2, 2025-01-01, 90d
-    VECTOR_SEARCH (RAG)（规划中）        :active, vs, 规划中, 规划中（以官方为准）
+    VECTOR_SEARCH (RAG)（GA）            :done, vs, 2025-12-04, 0d
     Materialized Table V2 (Optional Freshness) :active, mt2, 2025-01-15, 75d
     SinkUpsertMaterializer V2            :active, sum2, 2025-01-01, 60d
 
@@ -1446,7 +1446,7 @@ gantt
     Protobuf 4.x Upgrade                 :done, pb4, 2025-01-01, 30d
 
     section Release
-    Flink 2.2.0 Release                  :milestone, release, 规划中（以官方为准）, 0d
+    Flink 2.2.0 Release                  :milestone, release, 2025-12-04, 0d
 ```
 
 ## 8. 引用参考 (References)

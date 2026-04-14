@@ -231,6 +231,30 @@ $$
 | **L4: 存储层** | Kafka/Pulsar | 数据持久化 |
 | **L5: 源层** | IoT/日志/业务DB | 数据产生 |
 
+### 3.4 MCP 生态现状与治理
+
+MCP 由 Anthropic 于 2024-11 推出，现由 **Linux Foundation AAIF**（AI Alliance Innovation Foundation）治理[^1]。截至 2026-02，MCP 生态规模达到 **~97M 月下载量**，公共 MCP 服务器数量超过 **5800+**[^2]。
+
+#### Def-K-06-226: MCP Ecosystem
+
+**MCP 生态系统** 定义为围绕 Model Context Protocol 形成的服务提供者、客户端宿主、工具开发者与治理机构的集合：
+
+$$
+\text{MCP-Eco} \triangleq \langle \mathcal{S}_{pub}, \mathcal{H}_{client}, \mathcal{D}_{tool}, \mathcal{G}_{AAIF} \rangle
+$$
+
+其中：
+
+- $\mathcal{S}_{pub}$: 公共 MCP Server 集合（~5800+）
+- $\mathcal{H}_{client}$: 宿主应用集合（IDE、聊天客户端等）
+- $\mathcal{D}_{tool}$: 工具开发者社区
+- $\mathcal{G}_{AAIF}$: Linux Foundation AAIF 治理机构
+
+**治理特征**：
+- 开放标准：协议规范由 AAIF 维护并持续演进
+- 社区驱动：服务器注册、能力分类、安全审计由社区贡献
+- 厂商中立：Anthropic 保留发起者角色，但协议决策由基金会主导
+
 ## 4. 论证过程 (Argumentation)
 
 ### 4.1 为什么用流处理作为 MCP Server？
@@ -659,3 +683,6 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
+
+[^1]: Anthropic, "Model Context Protocol", 2024-11. https://modelcontextprotocol.io/
+[^2]: Linux Foundation AAIF, "MCP Ecosystem Report", 2026-02. https://lf-ai-foundation.org/

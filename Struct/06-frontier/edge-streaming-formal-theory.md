@@ -1,6 +1,6 @@
 # 边缘流计算形式化理论
 
-> 所属阶段: Struct/06-frontier | 前置依赖: [Struct/05-distribution/consistency-models.md](../05-distribution/consistency-models.md), [Struct/04-fault-tolerance/checkpoint-formal.md](../04-fault-tolerance/checkpoint-formal.md) | 形式化等级: L5
+> 所属阶段: Struct/06-frontier | 前置依赖: [consistency-models.md](../../Knowledge/01-concept-atlas/01.05-consistency-models.md), [checkpoint-correctness.md](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 形式化等级: L5
 
 ---
 

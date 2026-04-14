@@ -1,6 +1,6 @@
 # Flink GitOps 部署模式
 
-> **所属阶段**: Flink/09-practices/09.04-deployment/ | **前置依赖**: [Flink K8s Operator 基础](../09.04-deployment/flink-kubernetes-operator-guide.md) | **形式化等级**: L4
+> **所属阶段**: Flink/09-practices/09.04-deployment/ | **前置依赖**: [flink-kubernetes-operator-1.14-guide.md](./flink-kubernetes-operator-1.14-guide.md) | **形式化等级**: L4
 
 ---
 

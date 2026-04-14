@@ -1,6 +1,6 @@
 # 联邦流学习：联邦学习+流处理的隐私保护与分布式训练
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [流处理基础](../01-concept-atlas/stream-processing-fundamentals.md), [边缘流处理架构](edge-streaming-architecture.md) | 形式化等级: L4-L5 | 版本: v1.0 (2026)
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [01.01-stream-processing-fundamentals.md](../01-concept-atlas/01.01-stream-processing-fundamentals.md), [边缘流处理架构](edge-streaming-architecture.md) | 形式化等级: L4-L5 | 版本: v1.0 (2026)
 
 ---
 

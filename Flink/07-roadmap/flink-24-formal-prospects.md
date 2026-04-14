@@ -4,7 +4,7 @@
 >
 > ⚠️ **重要提示**: 本文档基于Flink社区公开路线图和FLIP提案进行前瞻性分析，描述的特性尚未正式发布，实现细节可能大幅变更。仅供技术规划和架构设计参考。
 
-> **所属阶段**: Flink/07-roadmap | **前置依赖**: [Flink 2.3/2.4 路线图](../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md), [FLIP-531 Flink Agents](../../06-ai-ml/flink-agents-flip-531.md), [异步执行模型](../../02-core/async-execution-model.md) | **形式化等级**: L3-L4 (工程论证+形式化分析)
+> **所属阶段**: Flink/07-roadmap | **前置依赖**: [Flink 2.3/2.4 路线图](../08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md), [FLIP-531 Flink Agents](../06-ai-ml/flink-ai-agents-flip-531.md), [async-execution-model.md](../02-core/async-execution-model.md) | **形式化等级**: L3-L4 (工程论证+形式化分析)
 
 ---
 

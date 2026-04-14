@@ -535,5 +535,5 @@ graph LR
 **关联文档**:
 
 - [统一流计算理论](../01.01-unified-streaming-theory.md)
-- [Flink背压与流量控制](../../Flink/02-core/backpressure-and-flow-control.md)
-- [性能调优模式](../../../Knowledge/02-design-patterns/pattern-backpressure-handling.md)
+- [Flink背压与流量控制](../../../Flink/02-core/backpressure-and-flow-control.md)
+- [性能调优模式](../../../Knowledge/02-design-patterns/02.03-backpressure-handling-patterns.md)

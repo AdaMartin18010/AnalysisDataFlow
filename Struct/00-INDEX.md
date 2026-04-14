@@ -8,10 +8,10 @@
 
 | 指标 | 数量 | 更新 |
 |------|------|------|
-| **总文档数** | 50+ 篇 | +7新文档 |
-| **定理 (Thm)** | 380+ | +15新定理 |
-| **定义 (Def)** | 850+ | +25新定义 |
-| **引理/命题** | 1700+ | +30新引理 |
+| **总文档数** | 53+ 篇 | +3新文档 |
+| **定理 (Thm)** | 385+ | +5新定理 |
+| **定义 (Def)** | 858+ | +8新定义 |
+| **引理/命题** | 1705+ | +5新引理 |
 | **形式化等级覆盖** | L1-L6 | 完整 |
 
 ---
@@ -78,7 +78,7 @@
 | [05.03-encoding-completeness-analysis.md](./05-comparative-analysis/05.03-encoding-completeness-analysis.md) | 编码完备性 | L4-L5 |
 | [05.04-concurrency-models-2025-comparison.md](./05-comparative-analysis/05.04-concurrency-models-2025-comparison.md) | 并发模型2025 | L5 |
 
-### 06-frontier/ 前沿研究 (12篇) [100%]
+### 06-frontier/ 前沿研究 (13篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -87,10 +87,11 @@
 | [06.03-ai-agent-session-types.md](./06-frontier/06.03-ai-agent-session-types.md) | AI Agent与会话类型 | L5 |
 | [06.04-pdot-path-dependent-types.md](./06-frontier/06.04-pdot-path-dependent-types.md) | pDOT路径依赖类型 | L5-L6 |
 | [06.05-ai-agent-streaming-formalization.md](./06-frontier/06.05-ai-agent-streaming-formalization.md) | AI Agent流式形式化 | L5-L6 |
+| **[06.10-transactional-cloud-dataflow-actor.md](./06-frontier/06.10-transactional-cloud-dataflow-actor.md)** | 事务性云Dataflow+Actor | L5-L6 | 🆕 |
 | **[probabilistic-streaming](./06-frontier/probabilistic-streaming/probabilistic-stream-semantics.md)** | 概率流处理语义 | L5-L6 | 🆕 |
 | **[first-person-choreographies](./06-frontier/first-person-choreographies/first-person-cp-advanced.md)** | 1CP前沿 | L6 | 🆕 |
 
-### 07-tools/ 工具实践 (7篇) [100%]
+### 07-tools/ 工具实践 (10篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -99,6 +100,8 @@
 | [model-checking-practice.md](./07-tools/model-checking-practice.md) | 模型检查实践 | L4 |
 | [smart-casual-verification.md](./07-tools/smart-casual-verification.md) | Smart Casual验证 | L4-L5 |
 | [tla-for-flink.md](./07-tools/tla-for-flink.md) | TLA+验证Flink | L5 |
+| **[model-checking-guided-testing.md](./07-tools/model-checking-guided-testing.md)** | Mocket模型检查引导测试 | L5 | 🆕 |
+| **[trillium-aneris-distributed-verification.md](./07-tools/trillium-aneris-distributed-verification.md)** | Trillium/Aneris分布式验证 | L6 | 🆕 |
 | **[ai-formal-verification](./07-tools/ai-formal-verification/ai-formal-verification-integration.md)** | AI+形式验证融合 | L6 | 🆕 |
 
 ### 08-standards/ 标准规范 (2篇) [100%]
@@ -113,6 +116,9 @@
 
 | 新增领域 | 文档路径 | 关键贡献 |
 |---------|---------|---------|
+| **事务性云Dataflow+Actor** | `06-frontier/06.10-transactional-cloud-dataflow-actor.md` | TCDA模型、跨服务可串行化、exactly-once |
+| **Mocket引导测试** | `07-tools/model-checking-guided-testing.md` | TLA+反例→测试用例、规格-实现鸿沟弥合 |
+| **Trillium/Aneris验证** | `07-tools/trillium-aneris-distributed-verification.md` | 网络协议精化、分布式系统容错验证 |
 | **AI+形式验证融合** | `07-tools/ai-formal-verification/` | FoVer框架、神经证明证书、PRM形式化 |
 | **Network Calculus** | `01-foundation/network-calculus/` | 延迟边界分析、积压分析、Min-Plus代数 |
 | **概率流处理** | `06-frontier/probabilistic-streaming/` | PAC语义、随机处理器、近似正确性 |

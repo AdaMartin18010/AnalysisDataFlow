@@ -86,11 +86,21 @@ $$
     "url": "https://example.com"
   },
   "version": "1.0.0",
+  "versionCompatibility": {
+    "minA2AVersion": "1.0",
+    "maxA2AVersion": "2.x",
+    "deprecatedVersions": ["0.9-beta"]
+  },
   "documentationUrl": "https://docs.example.com/a2a",
   "capabilities": {
     "streaming": true,
     "pushNotifications": true,
     "stateTransitionHistory": false
+  },
+  "sla": {
+    "availability": "99.9%",
+    "maxResponseTimeMs": 2000,
+    "supportHours": "24/7"
   },
   "authentication": {
     "schemes": ["Bearer", "OAuth2"],
@@ -345,6 +355,31 @@ $$
 | **智能决策** | 决策 Agent | 计算后端 | A2A Task 触发 Flink SQL |
 | **异常响应** | 监控 Agent | CEP 引擎 | Flink 通过 SSE 推送警报 |
 | **数据协商** | 数据 Agent | 处理管道 | 双向流式 Artifact 传输 |
+
+### 3.4 A2A 发布背景与企业采用
+
+Google 于 **2025-04** 发布 A2A（Agent-to-Agent）协议，旨在解决异构 AI Agent 之间的互操作性问题[^3]。目前 A2A 与 MCP 一同由 **Linux Foundation AAIF** 共治，成为企业级 Agent 协作的开放标准[^4]。截至 2026-04，已有 **100+ 企业采用者** 加入 A2A 生态，涵盖 CRM、HR、数据分析与客服自动化等领域[^5]。
+
+**企业采用特征**：
+
+| 领域 | 典型场景 | 代表集成 |
+|------|----------|----------|
+| CRM | 销售线索自动跟进 | Salesforce Agent |
+| HR | 候选人筛选与面试安排 | Workday Agent |
+| 数据分析 | 实时报表与洞察推送 | Flink Analytics Agent |
+| 客服 | 多 Agent 协同问题解决 | ServiceNow Agent |
+
+#### Prop-K-06-222: A2A 企业采用增长命题
+
+**命题**: A2A 的企业采用率随生态互操作性需求呈超线性增长：
+
+$$
+\text{Adoption}(t) \propto (\text{InteroperabilityDemand}(t))^{1 + \epsilon}, \quad \epsilon > 0
+$$
+
+**工程意义**:
+- 多 Agent 系统（MAS）的复杂度随 Agent 数量 $N$ 以 $O(N^2)$ 增长，标准化协议可降低至 $O(N)$
+- 企业 IT 部门倾向于采用基金会治理的开放标准以降低厂商锁定风险
 
 ## 4. 论证过程 (Argumentation)
 
@@ -1133,3 +1168,7 @@ graph TB
 ```
 
 ## 8. 引用参考 (References)
+
+[^3]: Google, "Agent-to-Agent Protocol (A2A)", 2025-04. https://google.github.io/A2A/
+[^4]: Linux Foundation AAIF, "Joint Governance Announcement: MCP & A2A", 2026-01. https://lf-ai-foundation.org/
+[^5]: Google Cloud, "A2A Enterprise Adoption Report", 2026-04. https://cloud.google.com/

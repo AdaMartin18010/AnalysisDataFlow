@@ -1,6 +1,6 @@
 # Flink 与流计算 2027 趋势预测
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [08.01-flink-24/](./08.01-flink-24/) 系列文档, [07-roadmap/](./07-roadmap/) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [08.01-flink-24/](./08.01-flink-24/) 系列文档, [07-roadmap/](../07-roadmap/) | 形式化等级: L3
 
 ---
 

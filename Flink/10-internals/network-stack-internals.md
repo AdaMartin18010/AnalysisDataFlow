@@ -1,6 +1,6 @@
 # Flink网络栈与BackPressure机制源码深度分析
 
-> **所属阶段**: Flink | **前置依赖**: [Flink架构概览](../01-overview/flink-architecture.md), [TaskManager内部机制](./taskmanager-source-analysis.md) | **形式化等级**: L4 | **源码版本**: Flink 1.18-1.19 | **核心包**: `org.apache.flink.runtime.io.network`
+> **所属阶段**: Flink | **前置依赖**: [flink-system-architecture-deep-dive.md](../01-concepts/flink-system-architecture-deep-dive.md), [TaskManager内部机制](./taskmanager-source-analysis.md) | **形式化等级**: L4 | **源码版本**: Flink 1.18-1.19 | **核心包**: `org.apache.flink.runtime.io.network`
 
 ---
 

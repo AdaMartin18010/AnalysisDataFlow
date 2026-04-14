@@ -1,6 +1,6 @@
 # 流数据湖形式化理论
 
-> **所属阶段**: Struct/Frontier | **前置依赖**: [Struct/02-core/02.02-streaming-semantics.md](../02-core/02.02-streaming-semantics.md), [Struct/03-ecosystem/03.01-state-management.md](../03-ecosystem/03.01-state-management.md), [Knowledge/03-storage/lakehouse-storage-architecture.md](../../Knowledge/03-storage/lakehouse-storage-architecture.md) | **形式化等级**: L6 (严格形式化)
+> **所属阶段**: Struct/Frontier | **前置依赖**: [edge-streaming-semantics.md](../../Struct/01-foundation/01.09-edge-streaming-semantics.md), [state-management-concepts.md](../../Knowledge/01-concept-atlas/01.04-state-management-concepts.md), [streaming-lakehouse-iceberg-delta.md](../../Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md) | **形式化等级**: L6 (严格形式化)
 
 ---
 

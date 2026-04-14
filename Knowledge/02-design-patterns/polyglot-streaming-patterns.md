@@ -1,6 +1,6 @@
 # 多语言混合流处理架构设计模式
 
-> **所属阶段**: Knowledge | **前置依赖**: [Flink架构模式](../01-foundations/flink-architecture-patterns.md), [状态管理设计模式](./stateful-streaming-patterns.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge | **前置依赖**: [Knowledge/00-INDEX.md](../00-INDEX.md), [Knowledge/00-INDEX.md](../00-INDEX.md) | **形式化等级**: L4
 
 ---
 

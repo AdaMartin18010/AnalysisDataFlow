@@ -1,4 +1,4 @@
-﻿# 设计模式: 复杂事件处理 (Pattern: Complex Event Processing)
+# 设计模式: 复杂事件处理 (Pattern: Complex Event Processing)
 
 > **模式编号**: 03/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5
 >
@@ -10,41 +10,64 @@
 
 - [设计模式: 复杂事件处理 (Pattern: Complex Event Processing)](#设计模式-复杂事件处理-pattern-complex-event-processing)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem--context)
-    - [1.1 原始事件与业务语义之间的鸿沟](#11-原始事件与业务语义之间的鸿沟)
-    - [1.2 时序关联的复杂性](#12-时序关联的复杂性)
-    - [1.3 业务场景中的典型挑战](#13-业务场景中的典型挑战)
-  - [2. 解决方案 (Solution)](#2-解决方案-solution)
-    - [2.1 核心概念定义](#21-核心概念定义)
-    - [2.2 模式匹配语义](#22-模式匹配语义)
-    - [2.3 时间关联机制](#23-时间关联机制)
-    - [2.4 CEP 系统架构](#24-cep-系统架构)
-    - [2.5 模式结构图](#25-模式结构图)
-  - [3. 实现示例 (Implementation)](#3-实现示例-implementation)
-    - [3.1 Flink CEP 基础用法](#31-flink-cep-基础用法)
-    - [3.2 时间约束与模式修饰符](#32-时间约束与模式修饰符)
-    - [3.3 复杂模式组合](#33-复杂模式组合)
-    - [3.4 Esper CEP 对比实现](#34-esper-cep-对比实现)
-    - [3.5 性能优化策略](#35-性能优化策略)
-  - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
-    - [4.1 推荐使用场景](#41-推荐使用场景)
-    - [4.2 不推荐场景](#42-不推荐场景)
-  - [6. 形式化保证 (Formal Guarantees)](#6-形式化保证-formal-guarantees)
-    - [6.1 依赖的形式化定义](#61-依赖的形式化定义)
-    - [6.2 满足的形式化性质](#62-满足的形式化性质)
-    - [6.3 模式组合时的性质保持](#63-模式组合时的性质保持)
-    - [6.4 边界条件与约束](#64-边界条件与约束)
-    - [6.5 CEP 形式化语义](#65-cep-形式化语义)
-  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
-  - [7. 引用参考 (References)](#7-引用参考-references)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-02-09 (复杂事件)](#def-k-02-09-复杂事件)
+    - [Def-K-02-10 (模式)](#def-k-02-10-模式)
+    - [Def-K-02-11 (模式匹配)](#def-k-02-11-模式匹配)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-K-02-06 (模式匹配复杂度边界)](#prop-k-02-06-模式匹配复杂度边界)
+    - [Prop-K-02-07 (时间窗口有界性)](#prop-k-02-07-时间窗口有界性)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [与 Event Time Processing 的关系](#与-event-time-processing-的关系)
+    - [与 Stateful Computation 的关系](#与-stateful-computation-的关系)
+    - [与 Async I/O Enrichment 的关系](#与-async-io-enrichment-的关系)
+    - [与 Checkpoint & Recovery 的关系](#与-checkpoint--recovery-的关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 原始事件与业务语义之间的鸿沟](#41-原始事件与业务语义之间的鸿沟)
+    - [4.2 时序关联的复杂性](#42-时序关联的复杂性)
+    - [4.3 适用场景与性能边界](#43-适用场景与性能边界)
+  - [8. 形式化保证 (Formal Guarantees)](#8-形式化保证-formal-guarantees)
+    - [8.1 依赖的形式化定义](#81-依赖的形式化定义)
+    - [8.2 满足的形式化性质](#82-满足的形式化性质)
+    - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
+    - [8.4 边界条件与约束](#84-边界条件与约束)
+    - [8.5 CEP 形式化语义](#85-cep-形式化语义)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 NFA 编码正确性论证](#51-nfa-编码正确性论证)
+    - [5.2 CEP 系统架构的工程论证](#52-cep-系统架构的工程论证)
+    - [5.3 性能边界与优化论证](#53-性能边界与优化论证)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 Flink CEP 基础用法](#61-flink-cep-基础用法)
+    - [6.2 时间约束与模式修饰符](#62-时间约束与模式修饰符)
+    - [6.3 复杂模式组合](#63-复杂模式组合)
+    - [6.4 Esper CEP 对比实现](#64-esper-cep-对比实现)
+    - [6.5 性能优化策略](#65-性能优化策略)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 CEP 模式匹配流程图](#71-cep-模式匹配流程图)
+    - [7.2 CEP 系统层次结构图](#72-cep-系统层次结构图)
+    - [7.3 Flink CEP 选型决策树](#73-flink-cep-选型决策树)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
-## 1. 问题与背景 (Problem / Context)
+## 1. 概念定义 (Definitions)
 
-### 1.1 原始事件与业务语义之间的鸿沟
+### Def-K-02-09 (复杂事件)
 
-在流处理系统中，底层数据源产生的是**原始事件 (Raw Events)**，而业务决策需要基于**复合事件 (Complex Events)** 进行判断。这种语义层级差异表现为 [^1][^2]：
+**定义**: 复杂事件 (Complex Event) 是从原始事件流中通过模式匹配提取的高阶事件，定义为四元组 [^3][^8]：
+
+$$
+\text{CE} = (E_{\text{constituents}}, \phi_{\text{pattern}}, \Delta_{\text{window}}, a_{\text{derived}})
+$$
+
+其中：
+
+- $E_{\text{constituents}}$: 构成此复杂事件的原子事件集合
+- $\phi_{\text{pattern}}$: 匹配模式谓词
+- $\Delta_{\text{window}}$: 时间窗口约束
+- $a_{\text{derived}}$: 派生属性（如风险评分、置信度）
+
+**事件层级** [^1][^2]：
 
 | 层级 | 事件类型 | 示例 | 处理复杂度 |
 |------|---------|------|-----------|
@@ -53,17 +76,141 @@
 | **L2** | 复合事件 (Complex) | 温度持续上升+振动异常 = 设备故障 | 多事件关联 |
 | **L3** | 情境事件 (Situational) | 跨设备、跨时间、跨领域的业务情境 | 复杂推理 |
 
-**形式化描述** [^3]：
+---
 
-设原始事件流为 $E_{raw} = \{e_1, e_2, \ldots, e_n\}$，其中每个事件 $e_i = (t_i, a_i, v_i)$ 包含时间戳、属性集和值。业务关注的复合事件 $E_{complex}$ 是原始事件的模式匹配结果：
+### Def-K-02-10 (模式)
+
+**定义**: 模式 (Pattern) 是对事件序列的约束描述，定义为五元组 [^3][^4]：
 
 $$
-E_{complex} = \{ (e_{i_1}, e_{i_2}, \ldots, e_{i_k}) \mid \text{Pattern}(e_{i_1}, e_{i_2}, \ldots, e_{i_k}) = \text{true} \}
+\mathcal{P} = (N, E_{\text{NFA}}, \Sigma_{\text{predicates}}, \Delta_{\text{time}}, C_{\text{correlation}})
+$$
+
+其中：
+
+- $N$: NFA (非确定性有限自动机) 状态集合
+- $E_{\text{NFA}}$: NFA 状态转移边
+- $\Sigma_{\text{predicates}}$: 事件谓词字母表
+- $\Delta_{\text{time}}$: 时间约束函数
+- $C_{\text{correlation}}$: 事件关联条件
+
+---
+
+### Def-K-02-11 (模式匹配)
+
+**定义**: 模式匹配是从输入事件流中识别满足模式 $\mathcal{P}$ 的所有事件子序列的函数 [^3][^8]：
+
+$$
+\text{Match}: \text{Stream}(E) \times \mathcal{P} \to \mathcal{P}(\text{Seq}(E))
+$$
+
+其中 $\mathcal{P}(\text{Seq}(E))$ 表示事件序列的幂集。匹配结果满足：
+
+$$
+\forall \sigma \in \text{Match}(S, \mathcal{P}): \mathcal{P}(\sigma) = \text{true}
+$$
+
+---
+
+## 2. 属性推导 (Properties)
+
+### Prop-K-02-06 (模式匹配复杂度边界)
+
+**命题**: CEP 模式匹配的时间复杂度与空间复杂度取决于模式结构，存在明确的上界 [^3]。
+
+| 模式类型 | 时间复杂度 | 空间复杂度 | 说明 |
+|---------|-----------|-----------|------|
+| 简单顺序 (A→B) | $O(n)$ | $O(1)$ | 单次遍历 |
+| Kleene 星号 (A*) | $O(n^2)$ | $O(n)$ | 需维护多个活跃匹配 |
+| 交替 (A\|B) | $O(n \cdot |\mathcal{P}|)$ | $O(|\mathcal{P}|)$ | NFA 并行状态 |
+| 带关联 (A→B, sameKey) | $O(n \cdot k)$ | $O(k)$ | $k$ 为 key 数量 |
+
+**推导**:
+
+1. 每个输入事件最多触发 NFA 中所有活跃状态的一次转移评估
+2. 活跃状态数受模式复杂度和时间窗口约束双重限制
+3. 在 Keyed 分区下，复杂度按 key 独立计算，因此总复杂度与 key 数量线性相关
+4. 实际生产中推荐模式长度不超过 10-20 个步骤，以避免 NFA 状态爆炸
+
+---
+
+### Prop-K-02-07 (时间窗口有界性)
+
+**命题**: 设模式匹配的时间窗口为 $\Delta$，对于任意事件序列 $\sigma = \langle e_1, e_2, \ldots, e_n \rangle$，其可被模式接受的前提是首尾事件的时间差不超过窗口上界：
+
+$$
+\text{Within}(\sigma, \Delta) \iff t_{\text{last}}(\sigma) - t_{\text{first}}(\sigma) \leq \Delta
+$$
+
+**工程意义**:
+
+- 窗口上界 $\Delta$ 确保部分匹配不会无限期累积
+- Watermark 推进超过 $t_{\text{first}} + \Delta$ 后，未完成的部分匹配可被安全清理
+- 该性质与 **Thm-S-09-01** (Watermark 单调性定理) 结合，保证了超时清理的确定性
+
+---
+
+## 3. 关系建立 (Relations)
+
+### 与 Event Time Processing 的关系
+
+CEP 模式匹配深度依赖事件时间语义 [^4][^11]：
+
+- 模式中的 `.within(Time)` 约束以事件时间为度量基准
+- Watermark 单调性（**Thm-S-09-01**）保证模式匹配时间边界的确定性
+- 迟到事件通过侧输出隔离，不影响已匹配结果的完整性
+
+### 与 Stateful Computation 的关系
+
+CEP 的 NFA 状态机使用 Keyed State 实现 [^9][^12]：
+
+- 每个 key 维护独立的 NFA 活跃状态集合
+- 状态更新在单 key 内串行化，满足 **Thm-S-03-01** 的局部确定性
+- Checkpoint 机制保证 NFA 状态恢复的一致性（**Thm-S-17-01**）
+
+### 与 Async I/O Enrichment 的关系
+
+复杂事件可能需要异步查询外部上下文来补全属性 [^5][^6]：
+
+- 例如：欺诈检测中在匹配转账模式后，异步查询用户历史风控评分
+- Async I/O 的乱序完成需与 CEP 的顺序保持模式协调
+- 外部查询的超时结果可路由到 CEP 的侧输出进行降级处理
+
+### 与 Checkpoint & Recovery 的关系
+
+CEP 状态恢复依赖 Checkpoint 机制 [^11][^13]：
+
+- Checkpoint 捕获 NFA 的活跃状态和部分匹配缓冲区
+- 恢复后从 checkpointed 状态继续模式匹配，保证已处理事件不会被重复匹配
+- 端到端 Exactly-Once 需要配合可重放 Source 和事务 Sink（**Thm-S-18-01**）
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+### 4.1 原始事件与业务语义之间的鸿沟
+
+在流处理系统中，底层数据源产生的是**原始事件 (Raw Events)**，而业务决策需要基于**复合事件 (Complex Events)** 进行判断。这种语义层级差异表现为 [^1][^2]：
+
+**形式化描述** [^3]：
+
+设原始事件流为 $E_{\text{raw}} = \{e_1, e_2, \ldots, e_n\}$，其中每个事件 $e_i = (t_i, a_i, v_i)$ 包含时间戳、属性集和值。业务关注的复合事件 $E_{\text{complex}}$ 是原始事件的模式匹配结果：
+
+$$
+E_{\text{complex}} = \{ (e_{i_1}, e_{i_2}, \ldots, e_{i_k}) \mid \text{Pattern}(e_{i_1}, e_{i_2}, \ldots, e_{i_k}) = \text{true} \}
 $$
 
 其中 Pattern 是用户定义的事件序列约束条件。
 
-### 1.2 时序关联的复杂性
+**业务场景中的典型挑战**:
+
+- **金融欺诈检测** [^5]: 欺诈者采用多步骤攻击（异地登录 → 修改密码 → 大额转账），单事件阈值无法识别分散的小额试探交易
+- **IoT 设备故障预测** [^6]: 多传感器指标的协同异常（温度持续上升 + 振动尖峰）比单指标阈值更能降低误报率
+- **网络安全入侵检测** [^7]: APT 攻击跨数天甚至数周的缓慢渗透，需要识别跨长时间窗口的事件关联
+
+---
+
+### 4.2 时序关联的复杂性
 
 CEP 的核心挑战在于处理事件之间的**时间关系** [^1][^4]：
 
@@ -108,122 +255,126 @@ $$
 
 其中 $\phi_i$ 是事件间的属性约束，$\theta$ 是总时间窗口约束。
 
-### 1.3 业务场景中的典型挑战
+---
 
-**场景 1: 金融欺诈检测** [^5]
+### 4.3 适用场景与性能边界
 
-欺诈者通常采用多步骤攻击策略：
+**推荐使用场景** [^4][^8]：
 
-```
-时间线:
-═══════════════════════════════════════════════════════════════►
+| 场景 | 典型模式 | CEP 优势 | 配置建议 |
+|------|---------|---------|---------|
+| **实时欺诈检测** | 登录→密码修改→转账 | 识别多步攻击链 | 30min 窗口，按用户分区 |
+| **IoT 设备故障预测** | 多传感器协同异常 | 降低单指标误报 | 30s-5min 窗口，按设备分区 |
+| **网络安全入侵检测** | 扫描→渗透→窃取 | 跨长窗口关联 | 1-24h 窗口，按 IP 分区 |
+| **业务流程监控** | 订单→支付→发货 | SLA 超时告警 | 按订单分区，带超时处理 |
+| **金融交易监控** | 价格异动序列 | 识别市场操纵 | 秒级窗口，按标的分区 |
 
-欺诈模式示例:
-┌─────────────────────────────────────────────────────────────┐
-│  步骤1: 登录异常地点  ──▶  步骤2: 修改支付密码  ──▶  步骤3: 大额转账  │
-│  t=10:00:00            t=10:05:23              t=10:08:45   │
-│  └──────────────────────┴────────────────────────┘          │
-│         必须在 30 分钟内完成                                 │
-│         且 IP 地址跨越 3 个时区                              │
-└─────────────────────────────────────────────────────────────┘
+**不推荐场景** [^8]：
 
-正常模式对比:
-┌─────────────────────────────────────────────────────────────┐
-│  步骤1: 日常地点登录  ──▶  步骤2: 正常消费  ──▶  步骤3: 小额转账   │
-│  t=09:00:00            t=12:30:00           t=18:00:00      │
-│  时间跨度大，地点一致                                        │
-└─────────────────────────────────────────────────────────────┘
-```
+| 场景 | 理由 | 替代方案 |
+|------|------|---------|
+| 简单阈值告警 | CEP 引入不必要的复杂度 | 直接 Filter + 窗口聚合 |
+| 极低延迟 (<50ms) | NFA 匹配有固定开销 | 状态机原生实现 |
+| 无时间约束的关联 | 无限窗口导致状态膨胀 | 会话窗口 + 超时清理 |
+| 纯统计分析 | CEP 不擅长聚合计算 | SQL/Table API |
+| 跨长周期的复杂推理 | 状态维护成本过高 | 规则引擎 (Drools) |
 
-若仅基于单事件阈值（如"单笔交易 > 10万元则告警"），会漏过分散的小额试探交易。
-
-**场景 2: IoT 设备故障预测** [^6]
-
-工业设备的故障往往伴随多传感器指标的协同异常：
-
-| 传感器 | 正常范围 | 预警阈值 | 故障阈值 |
-|-------|---------|---------|---------|
-| 温度 | 20-60°C | > 70°C | > 85°C |
-| 振动 | 0.1-2.0 mm/s | > 5.0 mm/s | > 10.0 mm/s |
-| 电流 | 5-15 A | > 20 A | > 30 A |
-
-**故障模式**: 温度持续上升（5分钟内从 50°C → 75°C）**且** 振动在 30 秒内出现尖峰（> 8 mm/s）→ 轴承磨损预警
-
-仅用单指标阈值会产生大量误报（温度季节性波动），多指标时序关联可显著降低误报率。
-
-**场景 3: 网络安全入侵检测** [^7]
-
-APT (Advanced Persistent Threat) 攻击的特征是缓慢、多阶段的渗透：
+**性能边界** [^8][^9]：
 
 ```
-攻击链 (Kill Chain):
-═══════════════════════════════════════════════════════════════►
-
-Reconnaissance ──▶ Weaponization ──▶ Delivery ──▶ Exploitation
-  (扫描端口)        (制作木马)        (钓鱼邮件)      (漏洞利用)
-      │                                                  │
-      └──────────────────────────────────────────────────┘
-                        可能跨越数天甚至数周
+┌─────────────────────────────────────────────────────────────────┐
+│                    Flink CEP 性能边界                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  单并行度吞吐: 5,000 - 50,000 events/s (取决于模式复杂度)          │
+│  典型延迟: 100ms - 5s (含窗口等待)                               │
+│  最大模式长度: 10-20 个步骤 (避免 NFA 状态爆炸)                    │
+│  推荐窗口大小: < 1 小时 (状态管理开销)                            │
+│  最大 Key 数量: 取决于状态后端 (RocksDB 支持 TB 级)                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
-
-CEP 需要识别跨长时间窗口的事件关联，同时处理海量正常流量的噪声。
 
 ---
 
-## 2. 解决方案 (Solution)
+## 8. 形式化保证 (Formal Guarantees)
 
-### 2.1 核心概念定义
+本节建立 CEP 复杂事件处理模式与 Struct/ 理论层的形式化连接。
 
-**定义 1: 复杂事件 (Complex Event)** [^3][^8]
+### 8.1 依赖的形式化定义
 
-复杂事件是从原始事件流中通过模式匹配提取的高阶事件，定义为四元组：
+| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
+|----------|------|------|-----------------|
+| **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 定义 CEP 时间窗口的进度边界 |
+| **Def-S-08-04** | Exactly-Once 语义 | Struct/02.02 | 复杂事件输出因果影响计数 = 1 |
+| **Def-S-10-01** | 安全性 (Safety) | Struct/02.04 | 模式匹配不会产生假阳性 (可通过有限执行验证) |
+| **Def-S-10-02** | 活性 (Liveness) | Struct/02.04 | 有效模式最终会被检测到 (在公平性假设下) |
+
+### 8.2 满足的形式化性质
+
+| 定理/引理编号 | 名称 | 来源 | 保证内容 |
+|---------------|------|------|----------|
+| **Thm-S-09-01** | Watermark 单调性定理 | Struct/02.03 | CEP 时间窗口不会重复触发 |
+| **Lemma-S-04-02** | Watermark 单调性引理 | Struct/01.04 | NFA 状态机的事件时间推进保持单调 |
+| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | Keyed CEP 状态更新串行化，保证局部确定性 |
+| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | CEP NFA 状态快照的一致性保证 |
+
+### 8.3 模式组合时的性质保持
+
+**CEP + Event Time 组合**：
+
+- Watermark 单调性保证模式匹配的时间边界确定
+- 迟到数据通过侧输出隔离，不影响已匹配结果
+
+**CEP + Stateful Computation 组合**：
+
+- NFA 状态使用 Keyed State 实现，满足 **Thm-S-03-01** 的局部确定性
+- Checkpoint 机制保证 NFA 状态恢复的一致性
+
+**CEP + Windowed Aggregation 组合**：
+
+- 窗口聚合结果可作为 CEP 的原子事件输入
+- 窗口触发事件时间戳作为 CEP 的时序基准
+
+### 8.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| 模式窗口有界 | $\text{within}(\Delta), \Delta < \infty$ | 无限窗口导致状态膨胀 |
+| NFA 状态有限 | 活跃匹配数 $\leq C_{\max}$ | 状态爆炸，内存耗尽 |
+| 事件时间有序 | $t_e(e_i) \leq t_e(e_{i+1}) + \delta$ | 严重乱序导致模式漏检 |
+| Key 分区一致性 | $\text{hash}(k) \mod \text{parallelism}$ 固定 | Key 漂移导致状态丢失 |
+
+### 8.5 CEP 形式化语义
+
+CEP 模式匹配可形式化为**时序正则表达式**的求值问题：
 
 $$
-\text{CE} = (E_{constituents}, \phi_{pattern}, \Delta_{window}, a_{derived})
+\mathcal{L}(\mathcal{P}) = \{ \sigma \in \text{Stream}(E) \mid \sigma \models \mathcal{P} \}
 $$
 
-其中：
+其中 $\mathcal{P}$ 为模式，$\sigma$ 为事件序列，$\models$ 为满足关系。
 
-- $E_{constituents}$: 构成此复杂事件的原子事件集合
-- $\phi_{pattern}$: 匹配模式谓词
-- $\Delta_{window}$: 时间窗口约束
-- $a_{derived}$: 派生属性（如风险评分、置信度）
+**NFA 编码保持性**：
 
-**定义 2: 模式 (Pattern)** [^3][^4]
+- 模式 $\mathcal{P}$ 编译为 NFA $N_{\mathcal{P}}$
+- $N_{\mathcal{P}}$ 接受的语言等于 $\mathcal{L}(\mathcal{P})$
+- Checkpoint 捕获 NFA 状态，保证恢复后语言等价
 
-模式是对事件序列的约束描述，定义为五元组：
+这与 [Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 中定义的 Dataflow 模型形成互补：
 
-$$
-\mathcal{P} = (N, E_{NFA}, \Sigma_{predicates}, \Delta_{time}, C_{correlation})
-$$
+- Dataflow 模型关注**算子组合**与**时间语义**
+- CEP 模型关注**事件序列识别**与**模式匹配**
 
-其中：
+---
 
-- $N$: NFA (非确定性有限自动机) 状态集合
-- $E_{NFA}$: NFA 状态转移边
-- $\Sigma_{predicates}$: 事件谓词字母表
-- $\Delta_{time}$: 时间约束函数
-- $C_{correlation}$: 事件关联条件
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-**定义 3: 模式匹配 (Pattern Matching)** [^3][^8]
+### 5.1 NFA 编码正确性论证
 
-模式匹配是从输入事件流中识别满足模式 $\mathcal{P}$ 的所有事件子序列的函数：
+**工程论证**: CEP 引擎将模式编译为 NFA 的过程保持语义等价性。
 
-$$
-\text{Match}: \text{Stream}(E) \times \mathcal{P} \to \mathcal{P}(\text{Seq}(E))
-$$
-
-其中 $\mathcal{P}(\text{Seq}(E))$ 表示事件序列的幂集。匹配结果满足：
-
-$$
-\forall \sigma \in \text{Match}(S, \mathcal{P}): \mathcal{P}(\sigma) = \text{true}
-$$
-
-### 2.2 模式匹配语义
-
-**NFA-based 匹配引擎** [^4][^8]：
-
-CEP 引擎通常将模式编译为 NFA，每个状态代表模式匹配的一个阶段：
+NFA-based 匹配引擎 [^4][^8]：
 
 ```
 模式: A → B → C (A 后接 B 后接 C)
@@ -242,59 +393,16 @@ NFA 表示:
        └───────────────┘  新事件到达，从 q₀ 开始匹配
 ```
 
-**模式匹配算法复杂度** [^3]：
+**论证结构**:
 
-| 模式类型 | 时间复杂度 | 空间复杂度 | 说明 |
-|---------|-----------|-----------|------|
-| 简单顺序 (A→B) | $O(n)$ | $O(1)$ | 单次遍历 |
-| Kleene 星号 (A*) | $O(n^2)$ | $O(n)$ | 需维护多个活跃匹配 |
-| 交替 (A\|B) | $O(n \cdot |\mathcal{P}|)$ | $O(|\mathcal{P}|)$ | NFA 并行状态 |
-| 带关联 (A→B, sameKey) | $O(n \cdot k)$ | $O(k)$ | $k$ 为 key 数量 |
+1. **模式到 NFA 的映射是满射**: 对于 CEP 支持的每种模式构造（顺序、选择、量词、时间窗口），均存在对应的 NFA 子结构
+2. **NFA 执行保持模式语义**: NFA 状态转移条件对应模式谓词 $\Sigma_{\text{predicates}}$，状态路径对应事件序列 $\sigma$
+3. **接受条件等价**: NFA 到达接受状态当且仅当事件序列满足模式的所有约束（包括时间窗口 $\Delta_{\text{time}}$ 和属性关联 $C_{\text{correlation}}$）
+4. **无假阳性**: 若 $\sigma$ 被 NFA 接受，则必有 $\mathcal{P}(\sigma) = \text{true}$（安全性，**Def-S-10-01**）
 
-### 2.3 时间关联机制
+---
 
-**时间窗口约束** [^1][^4]：
-
-时间窗口定义了模式匹配的最大跨度，超过窗口的部分匹配将被丢弃：
-
-$$
-\text{Within}(\sigma, \Delta) \iff t_{last}(\sigma) - t_{first}(\sigma) \leq \Delta
-$$
-
-Flink CEP 提供两种窗口语义：
-
-| 窗口类型 | API | 语义 |
-|---------|-----|------|
-| **连续窗口** | `.within(Time)` | 首尾事件时间差 ≤ 窗口 |
-| **超时机制** | `.within(Time)` | 部分匹配超期清理 |
-
-**时间模式修饰符** [^4][^8]：
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                      时间模式修饰符                                       │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  相对时间约束 (Relative Time)                                            │
-│  ├── next: 紧接下一事件                                                  │
-│  ├── followedBy: 之后任意事件（允许间隔）                                  │
-│  └── followedByAny: 之后任意事件（非确定性选择）                           │
-│                                                                         │
-│  绝对时间约束 (Absolute Time)                                            │
-│  ├── within(Time): 总时间窗口                                            │
-│  ├── times(n): 恰好重复 n 次                                             │
-│  ├── timesOrMore(n): 至少 n 次                                           │
-│  └── optional(): 可选（零次或一次）                                       │
-│                                                                         │
-│  连续性修饰符 (Contiguity)                                               │
-│  ├── strict: 严格连续，中间无其他事件                                      │
-│  ├── relaxed: 松散连续，允许其他事件                                       │
-│  └── non-deterministic: 非确定性松弛                                     │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-### 2.4 CEP 系统架构
+### 5.2 CEP 系统架构的工程论证
 
 **Flink CEP 架构** [^4][^8]：
 
@@ -324,125 +432,38 @@ Flink CEP 提供两种窗口语义：
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**状态管理** [^4][^9]：
+**架构设计原则**:
 
-Flink CEP 使用 Keyed State 存储每个 key 的 NFA 状态：
-
-```java
-import java.util.List;
-
-// 伪代码：CEP 状态存储
-class CEPState {
-    // 当前活跃的 NFA 状态集合
-    List<NFAState> activeStates;
-
-    // 部分匹配的事件序列
-    List<PartialMatch> pendingMatches;
-
-    // 超时时间戳管理
-    PriorityQueue<Timestamp> timeoutQueue;
-}
-```
-
-状态清理策略：
-
-1. **完整匹配清理**: 模式成功匹配后，释放相关状态
-2. **超时清理**: 超过 `.within()` 设置的时间窗口后，丢弃部分匹配
-3. **Watermark 驱动**: 当 Watermark 推进超过部分匹配的最大可能完成时间
-
-### 2.5 模式结构图
-
-**CEP 模式匹配流程图**：
-
-```mermaid
-flowchart TD
-    subgraph "Input Stream"
-        I1[Event A<br/>t=10:00:00]
-        I2[Event B<br/>t=10:00:05]
-        I3[Event C<br/>t=10:00:08]
-        I4[Event X<br/>t=10:00:12]
-    end
-
-    subgraph "NFA Engine"
-        N1["State q₀<br/>(START)"]
-        N2["State q₁<br/>(After A)"]
-        N3["State q₂<br/>(After B)"]
-        N4["State q₃<br/>(MATCH)"]
-        N5["Timeout Handler"]
-    end
-
-    subgraph "Output"
-        O1[Complex Event<br/>Pattern Matched]
-        O2[Partial Match<br/>Discarded]
-    end
-
-    I1 -->|"matches A"| N1
-    N1 -->|"transition"| N2
-    I2 -->|"matches B"| N2
-    N2 -->|"transition"| N3
-    I3 -->|"matches C"| N3
-    N3 -->|"within 30s"| N4
-    N4 --> O1
-
-    I4 -->|"no match"| N5
-    N5 -->|"timeout"| O2
-
-    style N4 fill:#c8e6c9,stroke:#2e7d32
-    style O1 fill:#c8e6c9,stroke:#2e7d32
-    style N5 fill:#ffcdd2,stroke:#c62828
-    style O2 fill:#ffcdd2,stroke:#c62828
-```
-
-**CEP 系统层次结构**：
-
-```mermaid
-graph TB
-    subgraph "应用层"
-        A1[欺诈检测规则]
-        A2[设备故障预测]
-        A3[安全入侵检测]
-    end
-
-    subgraph "模式层 (Pattern DSL)"
-        P1["Pattern.begin()<br/>.where()<br/>.next()<br/>.within()"]
-        P2[EPL 声明式语句]
-    end
-
-    subgraph "运行时层"
-        R1[NFA 引擎]
-        R2[状态管理]
-        R3[时间调度器]
-    end
-
-    subgraph "基础层"
-        B1[Flink DataStream]
-        B2[Keyed State Backend]
-        B3[Watermark System]
-    end
-
-    A1 --> P1
-    A2 --> P1
-    A3 --> P2
-    P1 --> R1
-    P2 --> R1
-    R1 --> R2
-    R1 --> R3
-    R2 --> B2
-    R3 --> B3
-    R1 --> B1
-
-    style A1 fill:#e3f2fd,stroke:#1565c0
-    style A2 fill:#e3f2fd,stroke:#1565c0
-    style A3 fill:#e3f2fd,stroke:#1565c0
-    style P1 fill:#fff9c4,stroke:#f57f17
-    style R1 fill:#c8e6c9,stroke:#2e7d32
-```
+1. **KeyBy 前置**: 确保同一业务实体（用户/设备/订单）的事件路由到同一并行实例，满足状态更新的串行化
+2. **NFA Compiler 独立**: 模式在作业提交时编译为状态机，运行时只执行状态转移，降低匹配开销
+3. **Event Buffer 与 State Manager 分离**: 缓冲区管理待处理事件，状态管理器持久化 NFA 状态，两者通过 Checkpoint 协同保证一致性
+4. **Timeout Handler 与 Watermark 协同**: 超时清理由 Watermark 推进驱动，避免使用系统时钟导致的非确定性
 
 ---
 
-## 3. 实现示例 (Implementation)
+### 5.3 性能边界与优化论证
 
-### 3.1 Flink CEP 基础用法
+**优化 1: 尽早过滤减少候选事件** [^4][^9]
+
+在模式匹配前通过 `filter()` 减少进入 CEP 引擎的事件量，可显著降低 NFA 活跃状态数。
+
+**优化 2: 合理设置时间窗口** [^9]
+
+窗口过小可能错过有效匹配；窗口过大导致状态积压。推荐基于业务分析确定窗口大小，典型值为 30 秒至 30 分钟。
+
+**优化 3: 使用 RocksDB 状态后端** [^9]
+
+大状态 CEP 作业必须使用 RocksDB，配合状态 TTL 自动清理过期匹配，防止内存溢出。
+
+**优化 4: 模式去重减少 NFA 分支** [^8]
+
+精确的过滤条件可减少 NFA 的并行活跃状态数，将时间复杂度从 $O(n^2)$ 降至接近 $O(n)$。
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 6.1 Flink CEP 基础用法
 
 **示例 1: 金融欺诈检测** [^5][^8]
 
@@ -570,7 +591,9 @@ DataStream<FailureAlert> failures = patternStream
     });
 ```
 
-### 3.2 时间约束与模式修饰符
+---
+
+### 6.2 时间约束与模式修饰符
 
 **示例 3: 使用量词修饰符** [^8]
 
@@ -624,7 +647,9 @@ Pattern<Event, ?> greedyPattern = Pattern
     .within(Time.minutes(10));
 ```
 
-### 3.3 复杂模式组合
+---
+
+### 6.3 复杂模式组合
 
 **示例 5: 使用 AND / OR 组合** [^8]
 
@@ -689,7 +714,9 @@ DataStream<ComplexEvent> result = patternStream
 DataStream<String> timeouts = result.getSideOutput(timeoutTag);
 ```
 
-### 3.4 Esper CEP 对比实现
+---
+
+### 6.4 Esper CEP 对比实现
 
 **Esper 声明式 EPL (Event Processing Language)** [^10]：
 
@@ -733,7 +760,9 @@ HAVING count(*) > 10 AND avg(amount) > 5000;
 | **学习曲线** | 陡峭（需懂 Flink） | 平缓（类 SQL） |
 | **生态集成** | 与 Flink 生态深度集成 | 独立系统 |
 
-### 3.5 性能优化策略
+---
+
+### 6.5 性能优化策略
 
 **优化 1: 尽早过滤减少候选事件** [^4][^9]
 
@@ -773,7 +802,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 .within(Time.hours(24))    // 太宽松
 
 // 推荐：基于业务分析确定
-.within(Time.minutes(30))  // 平衡延迟和内存
+.within(Time.minutes(30));  // 平衡延迟和内存
 ```
 
 **优化 3: 使用 RocksDB 状态后端** [^9]
@@ -818,190 +847,126 @@ Pattern<Event, ?> efficient = Pattern
 
 ---
 
-## 4. 适用场景 (When to Use)
+## 7. 可视化 (Visualizations)
 
-### 4.1 推荐使用场景
+### 7.1 CEP 模式匹配流程图
 
-| 场景 | 典型模式 | CEP 优势 | 配置建议 |
-|------|---------|---------|---------|
-| **实时欺诈检测** [^5] | 登录→密码修改→转账 | 识别多步攻击链 | 30min 窗口，按用户分区 |
-| **IoT 设备故障预测** [^6] | 多传感器协同异常 | 降低单指标误报 | 30s-5min 窗口，按设备分区 |
-| **网络安全入侵检测** [^7] | 扫描→渗透→窃取 | 跨长窗口关联 | 1-24h 窗口，按 IP 分区 |
-| **业务流程监控** | 订单→支付→发货 | SLA 超时告警 | 按订单分区，带超时处理 |
-| **金融交易监控** | 价格异动序列 | 识别市场操纵 | 秒级窗口，按标的分区 |
-| **供应链异常检测** | 延迟→库存预警 | 多维度关联 | 按仓库/供应商分区 |
+以下 Mermaid 图展示了 NFA 引擎处理事件序列的完整流程：
 
-**Flink CEP 选型决策树** [^8]：
+```mermaid
+flowchart TD
+    subgraph "Input Stream"
+        I1[Event A<br/>t=10:00:00]
+        I2[Event B<br/>t=10:00:05]
+        I3[Event C<br/>t=10:00:08]
+        I4[Event X<br/>t=10:00:12]
+    end
 
-```
-开始评估
-    │
-    ▼
-┌─────────────────────────┐
-│ 数据量 > 100K events/s? │──是──▶ Flink CEP 是最佳选择
-└─────────────────────────┘──否──▶ 继续
-    │
-    ▼
-┌─────────────────────────┐
-│ 需要分布式容错?          │──是──▶ Flink CEP 是最佳选择
-└─────────────────────────┘──否──▶ 继续
-    │
-    ▼
-┌─────────────────────────┐
-│ 延迟要求 < 100ms?        │──是──▶ 考虑 Esper 或原生实现
-└─────────────────────────┘──否──▶ 继续
-    │
-    ▼
-┌─────────────────────────┐
-│ 模式复杂度极高?          │──是──▶ 考虑 Esper（EPL 更强大）
-└─────────────────────────┘──否──▶ Flink CEP 足够
-```
+    subgraph "NFA Engine"
+        N1["State q₀<br/>(START)"]
+        N2["State q₁<br/>(After A)"]
+        N3["State q₂<br/>(After B)"]
+        N4["State q₃<br/>(MATCH)"]
+        N5[Timeout Handler]
+    end
 
-### 4.2 不推荐场景
+    subgraph "Output"
+        O1[Complex Event<br/>Pattern Matched]
+        O2[Partial Match<br/>Discarded]
+    end
 
-| 场景 | 理由 | 替代方案 |
-|------|------|---------|
-| **简单阈值告警** | CEP 引入不必要的复杂度 | 直接 Filter + 窗口聚合 |
-| **极低延迟 (<50ms)** | NFA 匹配有固定开销 | 状态机原生实现 |
-| **无时间约束的关联** | 无限窗口导致状态膨胀 | 会话窗口 + 超时清理 |
-| **纯统计分析** | CEP 不擅长聚合计算 | SQL/Table API |
-| **跨长周期的复杂推理** | 状态维护成本过高 | 规则引擎 (Drools) |
+    I1 -->|"matches A"| N1
+    N1 -->|"transition"| N2
+    I2 -->|"matches B"| N2
+    N2 -->|"transition"| N3
+    I3 -->|"matches C"| N3
+    N3 -->|"within 30s"| N4
+    N4 --> O1
 
-**性能边界** [^8][^9]：
+    I4 -->|"no match"| N5
+    N5 -->|"timeout"| O2
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Flink CEP 性能边界                            │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  单并行度吞吐: 5,000 - 50,000 events/s (取决于模式复杂度)          │
-│  典型延迟: 100ms - 5s (含窗口等待)                               │
-│  最大模式长度: 10-20 个步骤 (避免 NFA 状态爆炸)                    │
-│  推荐窗口大小: < 1 小时 (状态管理开销)                            │
-│  最大 Key 数量: 取决于状态后端 (RocksDB 支持 TB 级)                │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+    style N4 fill:#c8e6c9,stroke:#2e7d32
+    style O1 fill:#c8e6c9,stroke:#2e7d32
+    style N5 fill:#ffcdd2,stroke:#c62828
+    style O2 fill:#ffcdd2,stroke:#c62828
 ```
 
 ---
 
-## 6. 形式化保证 (Formal Guarantees)
+### 7.2 CEP 系统层次结构图
 
-本节建立 CEP 复杂事件处理模式与 Struct/ 理论层的形式化连接。
+以下 Mermaid 图展示了 CEP 在流处理系统中的层次结构：
 
-### 6.1 依赖的形式化定义
+```mermaid
+graph TB
+    subgraph "应用层"
+        A1[欺诈检测规则]
+        A2[设备故障预测]
+        A3[安全入侵检测]
+    end
 
-| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
-|----------|------|------|-----------------|
-| **Def-S-04-04** | Watermark 语义 | Struct/01.04 | 定义 CEP 时间窗口的进度边界 |
-| **Def-S-08-04** | Exactly-Once 语义 | Struct/02.02 | 复杂事件输出因果影响计数 = 1 |
-| **Def-S-10-01** | 安全性 (Safety) | Struct/02.04 | 模式匹配不会产生假阳性 (可通过有限执行验证) |
-| **Def-S-10-02** | 活性 (Liveness) | Struct/02.04 | 有效模式最终会被检测到 (在公平性假设下) |
+    subgraph "模式层 (Pattern DSL)"
+        P1["Pattern.begin()<br/>.where()<br/>.next()<br/>.within()"]
+        P2[EPL 声明式语句]
+    end
 
-### 6.2 满足的形式化性质
+    subgraph "运行时层"
+        R1[NFA 引擎]
+        R2[状态管理]
+        R3[时间调度器]
+    end
 
-| 定理/引理编号 | 名称 | 来源 | 保证内容 |
-|---------------|------|------|----------|
-| **Thm-S-09-01** | Watermark 单调性定理 | Struct/02.03 | CEP 时间窗口不会重复触发 |
-| **Lemma-S-04-02** | Watermark 单调性引理 | Struct/01.04 | NFA 状态机的事件时间推进保持单调 |
-| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | Keyed CEP 状态更新串行化，保证局部确定性 |
-| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | CEP NFA 状态快照的一致性保证 |
+    subgraph "基础层"
+        B1[Flink DataStream]
+        B2[Keyed State Backend]
+        B3[Watermark System]
+    end
 
-### 6.3 模式组合时的性质保持
+    A1 --> P1
+    A2 --> P1
+    A3 --> P2
+    P1 --> R1
+    P2 --> R1
+    R1 --> R2
+    R1 --> R3
+    R2 --> B2
+    R3 --> B3
+    R1 --> B1
 
-**CEP + Event Time 组合**：
-
-- Watermark 单调性保证模式匹配的时间边界确定
-- 迟到数据通过侧输出隔离，不影响已匹配结果
-
-**CEP + Stateful Computation 组合**：
-
-- NFA 状态使用 Keyed State 实现，满足 Thm-S-03-01 的局部确定性
-- Checkpoint 机制保证 NFA 状态恢复的一致性
-
-**CEP + Windowed Aggregation 组合**：
-
-- 窗口聚合结果可作为 CEP 的原子事件输入
-- 窗口触发事件时间戳作为 CEP 的时序基准
-
-### 6.4 边界条件与约束
-
-| 约束条件 | 形式化描述 | 违反后果 |
-|----------|-----------|----------|
-| 模式窗口有界 | within(Δ), Δ < ∞ | 无限窗口导致状态膨胀 |
-| NFA 状态有限 | 活跃匹配数 ≤ C_max | 状态爆炸，内存耗尽 |
-| 事件时间有序 | t_e(e_i) ≤ t_e(e_{i+1}) + δ | 严重乱序导致模式漏检 |
-| Key 分区一致性 | hash(k) mod parallelism 固定 | Key 漂移导致状态丢失 |
-
-### 6.5 CEP 形式化语义
-
-CEP 模式匹配可形式化为**时序正则表达式**的求值问题：
-
-$$
-\mathcal{L}(\mathcal{P}) = \{ \sigma \in \text{Stream}(E) \mid \sigma \models \mathcal{P} \}
-$$
-
-其中 $\mathcal{P}$ 为模式，$\sigma$ 为事件序列，$\models$ 为满足关系。
-
-**NFA 编码保持性**：
-
-- 模式 $\mathcal{P}$ 编译为 NFA $N_{\mathcal{P}}$
-- $N_{\mathcal{P}}$ 接受的语言等于 $\mathcal{L}(\mathcal{P})$
-- Checkpoint 捕获 NFA 状态，保证恢复后语言等价
+    style A1 fill:#e3f2fd,stroke:#1565c0
+    style A2 fill:#e3f2fd,stroke:#1565c0
+    style A3 fill:#e3f2fd,stroke:#1565c0
+    style P1 fill:#fff9c4,stroke:#f57f17
+    style R1 fill:#c8e6c9,stroke:#2e7d32
+```
 
 ---
 
-## 5. 相关模式 (Related Patterns)
+### 7.3 Flink CEP 选型决策树
 
-| 模式 | 关系 | 说明 |
-|------|------|------|
-| **Pattern 01: Event Time Processing** | 依赖 | CEP 时间窗口依赖 Event Time 语义保证正确性 [^4][^11] |
-| **Pattern 02: Stateful Computation** | 依赖 | CEP NFA 状态使用 Keyed State 实现 [^9][^12] |
-| **Pattern 04: Async I/O Enrichment** | 配合 | 复杂事件可能需要异步查询外部上下文 [^5][^6] |
-| **Pattern 05: Windowed Aggregation** | 前置 | CEP 通常作用于窗口聚合后的派生事件流 |
-| **Pattern 06: Side Output Pattern** | 配合 | 未匹配事件或超时事件通过侧输出隔离处理 [^4][^9] |
-| **Pattern 07: Checkpoint & Recovery** | 依赖 | CEP 状态恢复依赖 Checkpoint 机制 [^11][^13] |
+以下决策树帮助在不同场景下选择是否使用 Flink CEP：
 
-**与 Flink 生态的集成** [^4][^8]：
+```mermaid
+flowchart TD
+    A[开始评估] --> B{数据量 > <br/>100K events/s ?}
+    B -->|是| C[Flink CEP<br/>是最佳选择]
+    B -->|否| D{需要分布式容错 ?}
+    D -->|是| C
+    D -->|否| E{延迟要求 <br/>< 100ms ?}
+    E -->|是| F[考虑 Esper<br/>或原生实现]
+    E -->|否| G{模式复杂度极高 ?}
+    G -->|是| H[考虑 Esper<br/>EPL 更强大]
+    G -->|否| C
 
+    style C fill:#c8e6c9,stroke:#2e7d32
+    style F fill:#fff9c4,stroke:#f57f17
+    style H fill:#e1bee7,stroke:#6a1b9a
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                     Flink CEP 在生态中的位置                         │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  Kafka/Pulsar ──▶ DataStream API ──▶ CEP.pattern() ──▶ Sink        │
-│                        │                │                           │
-│                        ▼                ▼                           │
-│                  Window/Join ──▶  PatternStream                     │
-│                        │                │                           │
-│                        ▼                ▼                           │
-│                  KeyedProcess ──▶  Alert/Action                     │
-│                                                                     │
-│  相关 Flink 组件:                                                    │
-│  - [Flink/02-core/time-semantics-and-watermark.md]       │
-│  - [Flink/02-core/checkpoint-mechanism-deep-dive.md]     │
-│  - [Flink/09-practices/09.01-case-studies/case-iot-stream-processing.md]            │
-│  - [Flink/05-vs-competitors/flink-vs-spark-streaming.md]            │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-**与理论模型的关系** [^3][^14]：
-
-CEP 模式匹配可形式化为**时序正则表达式 (Temporal Regular Expressions)** 的求值问题：
-
-$$
-\mathcal{L}(\mathcal{P}) = \{ \sigma \in \text{Stream}(E) \mid \sigma \models \mathcal{P} \}
-$$
-
-这与 [Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) 中定义的 Dataflow 模型形成互补：
-
-- Dataflow 模型关注**算子组合**与**时间语义**
-- CEP 模型关注**事件序列识别**与**模式匹配**
 
 ---
 
-## 7. 引用参考 (References)
+## 9. 引用参考 (References)
 
 [^1]: D. Luckham, *The Power of Events: An Introduction to Complex Event Processing in Distributed Enterprise Systems*, Addison-Wesley, 2002.
 

@@ -8,7 +8,7 @@
 
 Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehensive knowledge base for stream computing theory and practice.
 
-**Current Status**: 6 core English documents available, with ongoing expansion planned.
+**Current Status**: 8 core English documents available, with ongoing expansion planned.
 
 ---
 
@@ -24,6 +24,8 @@ Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehens
 | [GLOSSARY.md](./GLOSSARY.md) | Technical terminology glossary | [../GLOSSARY-en.md](../GLOSSARY-en.md) |
 | [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) | Learning path navigation guide | [../LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) |
 | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Stream computing troubleshooting manual | [../TROUBLESHOOTING.md](../TROUBLESHOOTING.md) |
+| [OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) | Stream processing observability guide | [../OBSERVABILITY-GUIDE.md](../OBSERVABILITY-GUIDE.md) |
+| [KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) | Knowledge graph guide | [../KNOWLEDGE-GRAPH-GUIDE.md](../KNOWLEDGE-GRAPH-GUIDE.md) |
 
 ### Directory-Specific Indexes
 
@@ -42,8 +44,8 @@ Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehens
 ```mermaid
 pie
     title English Documentation Coverage
-    "Core Documents" : 6
-    "Planned Translations" : 48
+    "Core Documents" : 8
+    "Planned Translations" : 46
     "Future Releases" : 100
 ```
 
@@ -108,11 +110,11 @@ See [I18N-ROADMAP.md](../I18N-ROADMAP.md) for detailed internationalization plan
 
 | Metric | Count |
 |--------|-------|
-| English Documents | 6 |
+| English Documents | 8 |
 | Total Chinese Documents | 940+ |
 | Translation Coverage | ~0.6% |
 | Target Coverage (2026) | 10% |
 
 ---
 
-*Last updated: 2026-04-14 | Version: v3.9*
+*Last updated: 2026-04-14 | Version: v4.1*

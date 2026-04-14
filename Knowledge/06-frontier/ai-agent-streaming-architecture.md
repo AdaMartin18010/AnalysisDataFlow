@@ -920,6 +920,60 @@ guardrails:
       retention_limit: 30d
 ```
 
+**身份与委托治理 (Identity & Attestation)**:
+
+### Def-K-06-118: Agent 身份 (Agent Identity)
+
+**定义**: Agent 身份是在分布式系统中唯一标识和验证 AI Agent 的凭证集合，形式化为：
+
+$$
+\mathcal{I}_{agent} \triangleq \langle did, pk, \mathcal{C}_{cap}, \mathcal{T}_{valid} \rangle
+$$
+
+其中：
+
+- $did$: 去中心化标识符（Decentralized Identifier）
+- $pk$: Agent 的公钥，用于签名验证
+- $\mathcal{C}_{cap}$: 能力声明集合
+- $\mathcal{T}_{valid}$: 身份有效期时间窗口
+
+### Def-K-06-119: 委托证明 (Delegation Attestation)
+
+**定义**: 委托证明是身份所有者授权 Agent 在限定范围内代表其行事的密码学凭证：
+
+$$
+\mathcal{D}_{attest} \triangleq Sign_{sk_{owner}}(agent_{did}, scope, expiry, nonce)
+$$
+
+其中 $scope$ 定义了 Agent 可调用的工具集合、可访问的数据分类级别以及操作配额限制。
+
+**AIP（Agent Identity Protocol）治理集成**:
+
+AIP 填补了 MCP/A2A 在身份验证、授权委托和行为溯源方面的空白。在企业级 Agent 部署中，AIP 提供以下核心能力：
+
+| 能力 | 描述 | 对 Guardrails 的补强 |
+|------|------|----------------------|
+| **可验证身份** | 每个 Agent 拥有独立的 DID 和公私钥对 | 防止匿名/伪造 Agent 调用敏感工具 |
+| **委托凭证** | 所有者通过签名 VC 限定 Agent 权限 | 实现动态最小权限原则 |
+| **行为溯源** | 每次工具调用携带签名日志 | 满足金融/医疗行业的可审计性要求 |
+
+**NIST AI RMF 与 NCCoE 2026 合规要求**:
+
+根据 NIST AI RMF 和 NCCoE 2026 年软件/AI Agent 身份项目，企业级 Agent 部署必须满足以下合规控制点：
+
+| NIST 功能 | 控制要求 | 行业影响 |
+|-----------|----------|----------|
+| **GOVERN-1** | 建立 Agent 资产清单，明确责任主体 | 所有受监管行业强制要求 |
+| **MAP-1** | 识别 Agent 的上下文、用途和利益相关者 | 高风险 AI 系统（EU AI Act） |
+| **MEASURE-2** | 持续监控 Agent 行为和工具调用异常 | 金融风控、医疗诊断系统 |
+| **MANAGE-2** | 制定异常响应和权限回收 playbook | 关键基础设施运营者 |
+
+**行业合规刚需说明**:
+
+- **金融行业**: SEC AI 指南要求所有参与投资决策或客户交互的 AI 系统具备完整的行为审计链。AIP 的签名日志和委托凭证是满足该要求的必要技术组件。
+- **医疗行业**: HIPAA 和 GDPR 要求任何访问 PHI（受保护健康信息）的系统必须实现身份可追溯性和最小权限访问。AIP 的 DID 绑定和动态授权直接对应这些要求。
+- **关键基础设施**: NIST CSF 2.0 和 EO 14110 要求 AI 系统在网络边界和身份边界上实施严格管控。AIP 与零信任网络架构的集成是合规部署的关键。
+
 **可观测性 (Tracing)**:
 
 ```mermaid

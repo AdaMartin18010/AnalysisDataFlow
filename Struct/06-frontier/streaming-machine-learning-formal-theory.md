@@ -1,6 +1,6 @@
 # 流式机器学习形式化理论 (Streaming Machine Learning Formal Theory)
 
-> 所属阶段: Struct/ | 前置依赖: [Struct/04-semantics/time-semantics-formalization.md](../04-semantics/time-semantics-formalization.md), [Struct/05-complexity/complexity-classification.md](../05-complexity/complexity-classification.md) | 形式化等级: L5 (严格数学形式化)
+> 所属阶段: Struct/ | 前置依赖: [time-semantics.md](../../Knowledge/01-concept-atlas/01.02-time-semantics.md), [Struct/00-INDEX.md](../../Struct/00-INDEX.md) | 形式化等级: L5 (严格数学形式化)
 
 ---
 

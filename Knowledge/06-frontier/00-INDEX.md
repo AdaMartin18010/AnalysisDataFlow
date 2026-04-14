@@ -46,7 +46,7 @@
 | [edge-ai-streaming-architecture.md](edge-ai-streaming-architecture.md) | 边缘AI流架构 | L4 | ~36KB | 3定义+2定理 |
 | [edge-llm-realtime-inference.md](edge-llm-realtime-inference.md) | 边缘LLM推理 | L4-L5 | ~38KB | 2定义+2定理 |
 | [edge-streaming-advanced-2026.md](edge-streaming-advanced-2026.md) | 边缘流深化 ⭐NEW | L4-L5 | ~35KB | 3定义+2定理 |
-| [iot-selfhealing-research-report.md](../IoT-SELFHEALING-RESEARCH-REPORT.md) | IoT自愈建模 | L4 | ~42KB | 3定义+2定理 |
+| [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | IoT自愈建模 | L4 | ~42KB | 3定义+2定理 |
 | [cloud-edge-continuum.md](cloud-edge-continuum.md) | 云边连续体 | L4 | ~35KB | 2定义+1命题 |
 
 ### 事务流与一致性
@@ -98,7 +98,7 @@
 | [streaming-data-mesh-architecture.md](streaming-data-mesh-architecture.md) | 流数据网格 | L4 | ~40KB | 3定义+2定理 |
 | [realtime-data-mesh-practice.md](realtime-data-mesh-practice.md) | 实时数据网格实践 | L3-L4 | ~35KB | 2定义+1命题 |
 | [realtime-data-product-architecture.md](realtime-data-product-architecture.md) | 实时数据产品 | L4 | ~38KB | 3定义+2命题 |
-| [streaming-data-quality-validation.md](streaming-data-quality-validation.md) | 流数据质量验证 | L4 | ~35KB | 2定义+2引理 |
+| [Knowledge/06-frontier/00-INDEX.md](./00-INDEX.md) | 流数据质量验证 | L4 | ~35KB | 2定义+2引理 |
 | [streaming-access-control.md](streaming-access-control.md) | 流访问控制 | L4 | ~32KB | 2定义+1定理 |
 | [streaming-security-compliance.md](streaming-security-compliance.md) | 安全与合规 | L3-L4 | ~38KB | 2定义+2命题 |
 

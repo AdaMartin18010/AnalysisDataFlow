@@ -342,6 +342,75 @@ ParallelMap : (α → β) → Stream α → Stream β
    \frac{\{P(x)\} f(x) \{Q(y)\}}{\{\text{StreamInv}(s, P)\}\ \text{ParallelMap}\ f\ s\ \{\text{StreamInv}(s\', Q)\}\}
    $$
 
+### 5.4 2024-2025 年分布式验证进展
+
+近年来，Iris 及其扩展框架在分布式系统形式化验证领域取得了显著进展，特别是在网络协议和分布式一致性算法的模块化验证方面。
+
+**Two-Phase Commit 的 Iris 验证**:
+
+研究团队使用基于 Iris 扩展的 Aneris 逻辑完整验证了 Two-Phase Commit 协议在丢包网络环境下的正确性。核心成果包括：
+
+- 将**协调者日志**和**参与者准备状态**建模为跨节点持久化的 Iris 幽灵资源
+- 证明了即使在网络分区或协调者崩溃场景下，事务原子性仍然保持
+- 形式化定义了提交决定的全局一致性：所有存活参与者最终对同一事务达成一致的提交/中止决策
+
+形式化表述：
+
+$$
+\text{2PC-Atomicity} \triangleq \Box(\forall T. \text{committed}(T) \lor \text{aborted}(T) \Rightarrow \forall p \in \text{Participants}(T). \text{decision}(p, T) = \text{decision}_{global}(T))
+$$
+
+**Paxos 的模块化验证**:
+
+利用 Trillium 框架的协议组合性，Paxos 共识算法被分解为可独立验证的子协议：
+
+1. **Leader Election 子协议**：验证在任一届期内最多存在一个被公认的 leader
+2. **Log Replication 子协议**：验证已提交的日志条目不会被覆盖或丢失
+3. **安全性组合**：通过 Trillium 的组合规则将两个子协议的安全性质组合为完整 Paxos safety
+
+这一分解策略使得 Paxos 的形式化验证工程从传统的人年级别缩短到人月级别。
+
+**CRDT 的收敛性证明**:
+
+在 Iris 中对 CRDT（Conflict-free Replicated Data Types）进行了系统化的形式化：
+
+**Def-S-07-21: CRDT 状态收敛断言**
+
+对于在节点集合 $N$ 上复制的 CRDT，其状态收敛断言定义为：
+
+$$
+\text{CRDT-Converge}(c, N) \triangleq \forall n_1, n_2 \in N. \text{delivered}_{n_1}(c) = \text{delivered}_{n_2}(c) \Rightarrow \text{state}_{n_1}(c) = \text{state}_{n_2}(c)
+$$
+
+其中 $\text{delivered}_n(c)$ 表示节点 $n$ 已收到的所有更新操作集合。
+
+**Def-S-07-22: 分布式持久化日志资源 (Persistent Log Resource)**
+
+在 Aneris 扩展的 Iris 逻辑中，节点 $n$ 上关于事务 $T$ 的持久化日志资源定义为：
+
+$$
+\text{PersistLog}(n, T, v) \triangleq \ell_n \mapsto v * \Box(\ell_n \mapsto v)
+$$
+
+其中 $\ell_n$ 是节点 $n$ 的持久化存储位置，$v \in \{ \text{PREPARED}, \text{COMMITTED}, \text{ABORTED} \}$ 是事务 $T$ 的状态。该断言的持久性模态 $\Box$ 确保即使节点崩溃重启，日志资源仍然保持有效。
+
+**Prop-S-07-09: CRDT 最终收敛性**
+
+若网络满足"最终交付"（eventual delivery）假设，则：
+
+$$
+\Diamond(\forall n_1, n_2 \in N. \text{delivered}_{n_1}(c) = \text{delivered}_{n_2}(c))
+$$
+
+这一性质在 Iris 中被编码为时序逻辑不变式，并通过归纳法证明：CRDT 的合并操作满足交换律、结合律和幂等律，确保不同节点以任意顺序应用更新后最终状态一致。
+
+**Trillium 与 Aneris 的引入**:
+
+- **Trillium**：作为 Iris 在协议层的扩展，提供了网络协议实现与规格之间的模块化精化验证。其核心价值在于协议组合性——已验证的协议可以像乐高积木一样组合，而无需重新证明整个系统。
+- **Aneris**：作为 Iris 在分布式系统层的扩展，显式建模了真实网络语义（丢包、乱序、重复），支持端到端验证分布式应用程序。
+
+详见新建文档 [trillium-aneris-distributed-verification.md](./trillium-aneris-distributed-verification.md)。
+
 ---
 
 ## 6. 实例验证 (Examples)

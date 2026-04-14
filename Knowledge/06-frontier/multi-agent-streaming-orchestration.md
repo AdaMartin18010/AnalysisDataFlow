@@ -956,6 +956,110 @@ spec:
     tracing.sampler: 0.1
 ```
 
+### Def-K-06-205: Agent 身份边界 (Agent Identity Boundary)
+
+**定义**: Agent 身份边界是多 Agent 系统中基于身份和委托关系构建的安全隔离域，形式化为：
+
+$$
+\mathcal{B}_{identity} \triangleq \langle \mathcal{A}_{domain}, \mathcal{P}_{delegate}, \mathcal{L}_{audit}, \mathcal{R}_{least} \rangle
+$$
+
+其中：
+
+- $\mathcal{A}_{domain}$: 属于同一安全域的 Agent 集合
+- $\mathcal{P}_{delegate}$: 域内 Agent 间的委托关系图
+- $\mathcal{L}_{audit}$: 跨域和域内操作的审计日志策略
+- $\mathcal{R}_{least}$: 最小权限原则的执行规则
+
+**NIST 合规要求下的架构调整**:
+
+在 NIST AI RMF 和 NCCoE 2026 项目的合规框架下，多 Agent 生产部署架构必须做出以下调整：
+
+| 调整项 | 具体要求 | 架构影响 |
+|--------|----------|----------|
+| **身份边界** | 每个 Agent 必须具有可验证身份（AIP DID） | 在编排层前增加 AIP 身份验证网关 |
+| **审计日志** | 所有 Agent 间通信和工具调用必须记录 | 引入集中式不可篡改审计存储 |
+| **最小权限** | Agent 只能访问完成任务所需的最小工具集 | 部署动态策略引擎（OPA / Cedar） |
+| **委托链验证** | 跨 Agent 任务分配必须携带可验证委托凭证 | Orchestrator 签发子任务委托证明 |
+
+**AIP 与 A2A 的集成方式**:
+
+AIP 和 A2A 在多 Agent 架构中承担互补职责：
+
+$$
+\text{安全编排} = \underbrace{\text{AIP}}_{\text{可验证委托 + 身份绑定}} \times \underbrace{\text{A2A}}_{\text{任务编排 + 流式通信}}
+$$
+
+**集成模式**:
+
+1. **身份发现阶段**: A2A 的 Agent Card 扩展 AIP DID 字段，支持通过 AIP 注册中心验证 Agent 身份
+2. **任务委托阶段**: Orchestrator 通过 AIP 为子任务生成委托凭证（Delegation VC），Worker Agent 接收任务时验证凭证有效性
+3. **通信安全阶段**: A2A 的 SSE 连接在 TLS 之上叠加 AIP 签名，确保消息来源可验证
+4. **审计归档阶段**: 所有 A2A 消息和 AIP 委托凭证哈希写入集中审计链
+
+### 含 AIP 身份验证层的部署架构图
+
+```mermaid
+graph TB
+    subgraph "接入层"
+        LB[负载均衡]
+        AIP_GW[AIP 身份验证网关]
+    end
+
+    subgraph "编排层"
+        ORCH[Orchestrator Agent]
+        ROUT[Router Agent]
+        POL[策略引擎<br/>最小权限 / 动态授权]
+    end
+
+    subgraph "A2A 通信总线"
+        MSG[消息队列<br/>Kafka / Pulsar]
+        A2A[A2A 协议层<br/>SSE + 任务生命周期]
+    end
+
+    subgraph "Worker Agent 层"
+        W1[Worker A]
+        W2[Worker B]
+        W3[Worker C]
+    end
+
+    subgraph "MCP 工具层"
+        MCP1[MCP 服务器 A]
+        MCP2[MCP 服务器 B]
+    end
+
+    subgraph "安全与审计"
+        AUDIT[不可篡改审计日志]
+        AIP_REG[AIP 注册中心]
+    end
+
+    LB --> AIP_GW
+    AIP_GW --> ORCH
+    AIP_GW --> ROUT
+    ORCH --> POL
+    ROUT --> POL
+    POL --> MSG
+    MSG --> A2A
+    A2A --> W1
+    A2A --> W2
+    A2A --> W3
+    W1 --> MCP1
+    W2 --> MCP2
+    W3 --> MCP1
+    W1 --> AUDIT
+    W2 --> AUDIT
+    W3 --> AUDIT
+    ORCH --> AUDIT
+    AIP_GW --> AIP_REG
+    W1 --> AIP_REG
+    W2 --> AIP_REG
+    W3 --> AIP_REG
+
+    style AIP_GW fill:#e3f2fd
+    style POL fill:#fff3e0
+    style AUDIT fill:#e8f5e9
+```
+
 ---
 
 ## 6. 实例验证 (Examples)

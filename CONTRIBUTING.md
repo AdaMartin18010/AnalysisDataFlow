@@ -22,6 +22,7 @@
   - [2.2 定理定义编号规范](#22-定理定义编号规范)
   - [2.3 Mermaid图表规范](#23-mermaid图表规范)
   - [2.4 引用格式规范](#24-引用格式规范)
+  - [2.5 基于最新网络信息更新文档的SOP](#25-基于最新网络信息更新文档的sop)
 - [3. Pull Request流程](#3-pull-request流程)
   - [3.1 Fork和分支](#31-fork和分支)
   - [3.2 提交规范](#32-提交规范)
@@ -402,6 +403,44 @@ sequenceDiagram
 - 间接引用需追溯原始出处
 - 优先使用 DOI 或稳定 URL
 - 提交前验证外部链接可访问
+
+### 2.5 基于最新网络信息更新文档的SOP
+
+当外部技术生态发生重大变化（如 Flink 新版本发布、新 FLIP 接受、AI 协议规范更新、新论文发表）时，贡献者应遵循以下标准作业流程（SOP）更新项目文档：
+
+#### SOP 六步法
+
+| 步骤 | 行动 | 检查清单 |
+|------|------|----------|
+| **1. 信息源验证** | 确认信息来源的权威性 | □ 官方发布（Apache Flink Blog/Release/JIRA）<br>□ 顶级论文（VLDB/SIGMOD/OSDI/SOSP/NSDI）<br>□ 知名技术博客（Confluent/Ververica/Databricks）<br>□ 标准组织公告（NIST/IETF/LF AI & Data） |
+| **2. 影响评估** | 识别需要更新的文档范围 | □ 版本跟踪文档（version-tracking/roadmap）<br>□ 概念定义文档（Struct/Knowledge 基础理论）<br>□ 工程实践文档（Flink 配置/部署/调优）<br>□ 案例研究（case-studies）<br>□ 英文翻译（en/） |
+| **3. 状态标记更新** | 区分"已发布"与"前瞻规划" | □ GA/Released 功能移除"尚未正式发布"注释<br>□ Preview/Draft 功能保留风险等级声明<br>□ 虚构 API/参数添加`<!-- 概念设计 -->`注释 |
+| **4. 六段式结构检查** | 确保新增/修改内容符合模板 | □ 概念定义 ≥ 1 个 `Def-*`<br>□ 属性推导 ≥ 1 个 `Lemma-*`/`Prop-*`<br>□ 形式证明/工程论证 ≥ 1 个 `Thm-*`<br>□ 可视化 ≥ 1 个 Mermaid 图<br>□ 引用 ≥ 3 条权威来源 |
+| **5. 交叉引用与编号检查** | 维护文档网络的完整性 | □ 新增定理已更新 `THEOREM-REGISTRY.md`<br>□ 新增文档已纳入对应 `00-INDEX.md`/`README.md`<br>□ 内部链接（`[text](./path.md#anchor)`）已验证可访问<br>□ 形式化元素编号无冲突 |
+| **6. PR 前质量门禁** | 通过自动化检查 | □ 运行 `.scripts/cross-ref-checker-v2.py`<br>□ 运行 `.scripts/six-section-validator.py`<br>□ 运行 `.scripts/mermaid-syntax-checker.py`<br>□ 提交 PR 并等待 GitHub Actions 通过 |
+
+#### 模板示例：更新 FLIP 状态
+
+```markdown
+## 变更摘要
+- **信息源**: Apache Flink Community Update (2026-03)
+- **变更内容**: FLIP-564 标题从 "HTTP/3 Protocol Support" 修正为 "FROM_CHANGELOG/TO_CHANGELOG Built-in PTFs"
+- **影响文档**:
+  - `Flink/00-meta/version-tracking/flink-26-27-roadmap.md`
+  - `Flink/00-meta/version-tracking/flink-26-27-status-report.md`
+  - `Flink/08-roadmap/08.01-flink-24/FLIP-TRACKING-SYSTEM.md`
+- **新增 FLIP**: FLIP-555 (Native S3), FLIP-566 (IMMUTABLE columns)
+- **检查项**:
+  - [x] 六段式结构合规
+  - [x] 形式化编号无冲突
+  - [x] 交叉引用已验证
+  - [x] 外部链接可访问
+```
+
+**注意事项**：
+- 对于前瞻性内容，即使基于官方讨论，也**必须**添加风险声明（`> ⚠️ 前瞻性声明`）
+- 禁止将虚构的 API、Maven 坐标、配置参数呈现为既定事实
+- 涉及安全/合规的内容（如 MCP 认证、NIST 标准）需特别标注来源和生效日期
 
 ---
 

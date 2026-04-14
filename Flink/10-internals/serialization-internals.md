@@ -1,6 +1,6 @@
 # Flink序列化框架源码深度分析
 
-> **所属阶段**: Flink Internals | **前置依赖**: [DataStream API基础](../03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [类型系统理论基础](../../Struct/01-foundations/01.01-type-systems.md) | **形式化等级**: L4 (源码级分析)
+> **所属阶段**: Flink Internals | **前置依赖**: [DataStream API基础](../03-api/09-language-foundations/flink-datastream-api-complete-guide.md), [01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md) | **形式化等级**: L4 (源码级分析)
 
 ---
 

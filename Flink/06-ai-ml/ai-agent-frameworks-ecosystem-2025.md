@@ -268,6 +268,51 @@ $\mathcal{C}_{comm}$为通信开销。
 
 ---
 
+### 1.7 Agent 协议栈分层模型
+
+**Def-F-06-310: Agent Protocol Stack (L1/L2 分层)**
+
+Agent 技术栈按职责划分为协议层（L1）与编排/应用框架层（L2）：
+
+$$
+\text{AgentStack} \triangleq \langle \mathcal{L}_1, \mathcal{L}_2, \mathcal{L}_3 \rangle
+$$
+
+其中：
+
+- $\mathcal{L}_1$（协议层）: 标准化 Agent 与外部系统的交互契约，包括 MCP（工具/上下文）、A2A（Agent 间通信）、AIP（Agent 身份）
+- $\mathcal{L}_2$（编排框架层）: 提供 Agent 编排、协作与执行能力，包括 LangGraph、AutoGen、CrewAI、FLIP-531
+- $\mathcal{L}_3$（应用层）: 面向业务的 Agent 应用与垂直解决方案
+
+**Def-F-06-311: L1 Protocol Layer**
+
+L1 协议层定义为 Agent 生态的互操作性基础设施：
+
+$$
+\mathcal{L}_1 \triangleq \langle \text{MCP}, \text{A2A}, \text{AIP} \rangle
+$$
+
+职责边界：
+- **MCP**：Agent ↔ Tool/Context 的标准化接口
+- **A2A**：Agent ↔ Agent 的协作与任务委托协议
+- **AIP**：Agent 身份发现、验证与信誉层（Identity Layer）
+
+**Def-F-06-312: L2 Orchestration Framework Layer**
+
+L2 编排框架层定义为实现 Agent 工作流、多 Agent 协作与状态管理的软件框架：
+
+$$
+\mathcal{L}_2 \triangleq \langle \text{LangGraph}, \text{AutoGen}, \text{CrewAI}, \text{FLIP-531} \rangle
+$$
+
+核心能力：
+- **LangGraph**：状态图驱动的循环推理与条件分支
+- **AutoGen**：对话驱动的多 Agent 协商与代码生成
+- **CrewAI**：角色扮演与任务流水线编排
+- **FLIP-531**：流原生 Agent 执行与状态一致性
+
+---
+
 ## 2. 属性推导 (Properties)
 
 ### 2.1 响应性保证
@@ -471,7 +516,56 @@ graph TD
 
 ---
 
-### 3.3 与流计算的关系矩阵
+### 3.3 Agent 技术栈分层映射
+
+基于 Def-F-06-310 的分层模型，2025 年主流 Agent 技术栈可按 L1（协议层）与 L2（编排框架层）重新分类：
+
+| 层级 | 组件 | 职责 | 代表技术 |
+|------|------|------|----------|
+| **L1: 协议层** | 互操作协议 | 标准化通信契约 | MCP / A2A / AIP |
+| **L2: 编排框架层** | 编排引擎 | Agent 工作流与协作 | LangGraph / AutoGen / CrewAI / FLIP-531 |
+| **L3: 应用层** | 垂直应用 | 面向业务的 Agent 解决方案 | 客服 Agent / 风控 Agent / RAG Agent |
+
+**协议层与框架层的集成关系**：
+
+```mermaid
+graph TD
+    subgraph L1["L1: 协议层"]
+        MCP[MCP<br/>工具/上下文]
+        A2A[A2A<br/>Agent通信]
+        AIP[AIP<br/>身份层]
+    end
+
+    subgraph L2["L2: 编排框架层"]
+        LG[LangGraph]
+        AG[AutoGen]
+        CR[CrewAI]
+        FL[FLIP-531]
+    end
+
+    subgraph App["L3: 应用层"]
+        APP1[客服Agent]
+        APP2[风控Agent]
+        APP3[数据分析Agent]
+    end
+
+    L1 -->|标准化接口| L2
+    L2 -->|编排执行| App
+```
+
+### 3.4 "协议 + 框架" 组合选型矩阵
+
+| 组合 | 适用场景 | 优势 | 劣势 | 推荐指数 |
+|------|----------|------|------|----------|
+| **MCP + LangGraph** | 工具链丰富的单 Agent 推理 | 动态工具选择、图结构清晰 | 多 Agent 协作能力有限 | ⭐⭐⭐⭐ |
+| **A2A + AutoGen** | 多 Agent 对话协商 | 原生群聊、代码生成 | 状态持久化需自建 | ⭐⭐⭐⭐ |
+| **MCP + FLIP-531** | 实时流处理 Agent | 毫秒级延迟、原生 Checkpoint | 学习曲线陡峭 | ⭐⭐⭐⭐⭐ |
+| **A2A + CrewAI** | 角色化任务流水线 | 角色分工明确、产出可控 | 动态适应性较弱 | ⭐⭐⭐ |
+| **MCP/A2A/AIP + LangGraph** | 企业级复合 Agent 系统 | 三层解耦、生态开放 | 架构复杂度高 | ⭐⭐⭐⭐⭐ |
+
+---
+
+### 3.5 与流计算的关系矩阵
 
 ```mermaid
 flowchart LR
@@ -498,7 +592,7 @@ flowchart LR
 
 ---
 
-### 3.4 Confluent与Flink对比分析
+### 3.6 Confluent与Flink对比分析
 
 | 特性维度 | Confluent Streaming Agents | Flink Agents (FLIP-531) |
 |----------|---------------------------|------------------------|

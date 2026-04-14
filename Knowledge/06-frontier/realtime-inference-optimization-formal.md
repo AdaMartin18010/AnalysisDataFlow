@@ -1,6 +1,6 @@
 # 实时推理优化形式化
 
-> **所属阶段**: Knowledge/Frontier | **前置依赖**: [流处理性能模型](../04-performance/streaming-performance-models.md), [AI推理架构](./realtime-ai-inference-architecture.md) | **形式化等级**: L5
+> **所属阶段**: Knowledge/Frontier | **前置依赖**: [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md), [AI推理架构](./realtime-ai-inference-architecture.md) | **形式化等级**: L5
 
 本文档对LLM实时推理与流计算结合的性能优化进行形式化分析，建立严格的数学模型以指导系统设计与参数调优。
 

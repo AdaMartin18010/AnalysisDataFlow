@@ -1,6 +1,6 @@
 # 事务流处理深度解析 (Transactional Stream Processing Deep Dive)
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [Knowledge/01-concept-atlas/stream-processing-fundamentals](../../Knowledge/01-concept-atlas/stream-processing-fundamentals.md), [Flink/03-processing-guarantees/exactly-once-semantics](../../Flink/03-processing-guarantees/exactly-once-semantics.md) | **形式化等级**: L4-L5
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [01.01-stream-processing-fundamentals.md](../../Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md), [exactly-once-semantics-deep-dive.md](../../Flink/02-core/exactly-once-semantics-deep-dive.md) | **形式化等级**: L4-L5
 >
 > **关键词**: Transactional Stream Processing, Exactly-Once, Deterministic Execution, Calvin, Styx, SFaaS, T-Rex, Distributed Transactions
 >

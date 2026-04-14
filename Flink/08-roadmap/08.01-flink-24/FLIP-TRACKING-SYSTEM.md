@@ -373,6 +373,7 @@ $$
 | FLIP-449 | JSON Functions | Released | 2.3 | 100% |
 | FLIP-488 | Delta Join | Released | 2.1 | 100% |
 | FLIP-493 | Window Table-Valued Functions | Released | 2.2 | 100% |
+| FLIP-566 | IMMUTABLE Columns Constraint | Discussing | 2.6 | 5% |
 | FLIP-5XX | ANSI SQL 2023 Compliance | Draft | 2.5 | 15% |
 
 #### 连接器与生态 FLIP
@@ -382,6 +383,7 @@ $$
 | FLIP-319 | Kafka 2PC Support | Released | 2.3 | Kafka Connector |
 | FLIP-453 | Paimon Integration | Released | 2.2 | Table Store |
 | FLIP-495 | Iceberg Integration | Released | 2.1 | Lakehouse |
+| FLIP-555 | Native S3 FileSystem | Accepted | 2.6 | S3 FileSystem |
 | FLIP-5XX | Universal CDC Connector | In Progress | 2.4 | CDC |
 
 ---

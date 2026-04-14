@@ -1,6 +1,6 @@
 # Rust 2024 Edition 新特性与流计算优化指南
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Knowledge/06-frontier/rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md), [Struct/03-relations/03.05-concurrency-model-comparison.md](../../Struct/03-relations/03.05-concurrency-model-comparison.md) | 形式化等级: L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Knowledge/06-frontier/rust-streaming-ecosystem.md](./rust-streaming-ecosystem.md), [05.04-concurrency-models-2025-comparison.md](../../Struct/05-comparative-analysis/05.04-concurrency-models-2025-comparison.md) | 形式化等级: L4
 
 ---
 

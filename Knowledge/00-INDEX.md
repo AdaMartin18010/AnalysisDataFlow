@@ -144,6 +144,7 @@ Knowledge/
 | [ai-agent-streaming-architecture.md](06-frontier/ai-agent-streaming-architecture.md) | AI Agent流式架构: 流计算驱动智能体工作流 | Agent系统、AI工作流编排 |
 | [mcp-protocol-agent-streaming.md](06-frontier/mcp-protocol-agent-streaming.md) | MCP协议与Agent流式处理 | AI工具集成、协议标准 |
 | [a2a-protocol-agent-communication.md](06-frontier/a2a-protocol-agent-communication.md) | A2A协议: Agent间通信标准与流式实现 | 多Agent协作、Google A2A |
+| [mcp-security-governance-2026.md](06-frontier/mcp-security-governance-2026.md) | MCP/A2A安全治理与企业合规 | Agent安全、NIST合规、企业AuthZ |
 | [ai-agent-a2a-protocol.md](06-frontier/ai-agent-a2a-protocol.md) | AI Agent A2A协议详细解析 | Agent通信、企业级AI |
 | [real-time-rag-architecture.md](06-frontier/real-time-rag-architecture.md) | 实时RAG架构: 流式知识库更新与检索 | 实时知识增强、动态RAG |
 | [multimodal-streaming-architecture.md](06-frontier/multimodal-streaming-architecture.md) | 多模态流处理架构: 文本/图像/音频实时处理 | 多媒体AI、实时内容理解 |

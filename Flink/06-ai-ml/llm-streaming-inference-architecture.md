@@ -1,6 +1,6 @@
 # LLM实时推理架构
 
-> **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink异步处理](../04-runtime/04.3-state-management.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/AI-ML | **前置依赖**: [flink-state-management-complete-guide.md](../02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4-L5
 
 ## 执行摘要
 

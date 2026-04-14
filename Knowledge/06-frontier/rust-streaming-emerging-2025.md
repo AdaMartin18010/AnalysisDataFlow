@@ -1,6 +1,6 @@
 # Rust流计算新兴项目深度分析 (2024-2025)
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink架构深度分析](../../Flink/01-architecture-overview.md), [流计算核心理论](../../Struct/01-foundations/streaming-theory.md) | 形式化等级: L4
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [flink-system-architecture-deep-dive.md](../../Flink/01-concepts/flink-system-architecture-deep-dive.md), [01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

@@ -1,4 +1,4 @@
-﻿# 设计模式: 有状态计算 (Pattern: Stateful Computation)
+# 设计模式: 有状态计算 (Pattern: Stateful Computation)
 
 > **模式编号**: 05/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5
 >
@@ -10,38 +10,224 @@
 
 - [设计模式: 有状态计算 (Pattern: Stateful Computation)](#设计模式-有状态计算-pattern-stateful-computation)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem)](#1-问题与背景-problem)
-    - [1.1 分布式有状态计算的挑战](#11-分布式有状态计算的挑战)
-    - [1.2 核心矛盾三角](#12-核心矛盾三角)
-  - [2. 解决方案 (Solution)](#2-解决方案-solution)
-    - [2.1 核心概念定义](#21-核心概念定义)
-    - [2.2 状态后端选型](#22-状态后端选型)
-    - [2.3 状态 TTL (Time-To-Live)](#23-状态-ttl-time-to-live)
-    - [2.4 状态分区 (State Partitioning)](#24-状态分区-state-partitioning)
-    - [2.5 可查询状态 (Queryable State)](#25-可查询状态-queryable-state)
-    - [2.6 状态管理架构图](#26-状态管理架构图)
-  - [3. 实现示例 (Implementation)](#3-实现示例-implementation)
-    - [3.1 Keyed State 基础用法](#31-keyed-state-基础用法)
-    - [3.2 状态 TTL 配置](#32-状态-ttl-配置)
-    - [3.3 状态后端配置](#33-状态后端配置)
-    - [3.4 Queryable State 实现](#34-queryable-state-实现)
-  - [4. 适用场景 (When to Use)](#4-适用场景-when-to-use)
-    - [4.1 推荐使用](#41-推荐使用)
-    - [4.2 不推荐](#42-不推荐)
-  - [6. 形式化保证 (Formal Guarantees)](#6-形式化保证-formal-guarantees)
-    - [6.1 依赖的形式化定义](#61-依赖的形式化定义)
-    - [6.2 满足的形式化性质](#62-满足的形式化性质)
-    - [6.3 模式组合时的性质保持](#63-模式组合时的性质保持)
-    - [6.4 边界条件与约束](#64-边界条件与约束)
-    - [6.5 状态后端的形式化特性](#65-状态后端的形式化特性)
-  - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
-  - [7. 引用参考 (References)](#7-引用参考-references)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-02-04 (Operator State)](#def-k-02-04-operator-state)
+    - [Def-K-02-05 (Keyed State)](#def-k-02-05-keyed-state)
+    - [Def-K-02-06 (State Backend)](#def-k-02-06-state-backend)
+    - [Def-K-02-07 (状态 TTL)](#def-k-02-07-状态-ttl)
+    - [Def-K-02-08 (可查询状态)](#def-k-02-08-可查询状态)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Prop-K-02-03 (状态分区确定性)](#prop-k-02-03-状态分区确定性)
+    - [Prop-K-02-04 (TTL 有效性边界)](#prop-k-02-04-ttl-有效性边界)
+    - [Prop-K-02-05 (状态后端访问延迟)](#prop-k-02-05-状态后端访问延迟)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [与 Event Time 处理的关系](#与-event-time-处理的关系)
+    - [与窗口聚合的关系](#与窗口聚合的关系)
+    - [与 Checkpoint 机制的关系](#与-checkpoint-机制的关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 分布式有状态计算的挑战](#41-分布式有状态计算的挑战)
+    - [4.2 状态后端选型论证](#42-状态后端选型论证)
+    - [4.3 适用场景分析](#43-适用场景分析)
+  - [8. 形式化保证 (Formal Guarantees)](#8-形式化保证-formal-guarantees)
+    - [8.1 依赖的形式化定义](#81-依赖的形式化定义)
+    - [8.2 满足的形式化性质](#82-满足的形式化性质)
+    - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
+    - [8.4 边界条件与约束](#84-边界条件与约束)
+    - [8.5 状态后端的形式化特性](#85-状态后端的形式化特性)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 Keyed State 局部确定性论证](#51-keyed-state-局部确定性论证)
+    - [5.2 增量 Checkpoint 一致性论证](#52-增量-checkpoint-一致性论证)
+    - [5.3 状态后端选型的工程权衡](#53-状态后端选型的工程权衡)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 Keyed State 基础用法](#61-keyed-state-基础用法)
+    - [6.2 状态 TTL 配置](#62-状态-ttl-配置)
+    - [6.3 状态后端配置](#63-状态后端配置)
+    - [6.4 Queryable State 实现](#64-queryable-state-实现)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 状态管理架构图](#71-状态管理架构图)
+    - [7.2 状态后端选型决策树](#72-状态后端选型决策树)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
-## 1. 问题与背景 (Problem)
+## 1. 概念定义 (Definitions)
 
-### 1.1 分布式有状态计算的挑战
+### Def-K-02-04 (Operator State)
+
+**定义**: Operator State 是绑定于算子实例的全局状态，流中所有记录共享同一份状态副本 [^1]。
+
+形式化地，设算子实例为 $o_i$，则：
+
+$$
+S_{\text{operator}}(o_i) \in \mathcal{V}
+$$
+
+其中 $\mathcal{V}$ 为状态值空间。Operator State 的典型用途包括：Kafka Source 的偏移量记录、Broadcast State 的全局配置表。
+
+---
+
+### Def-K-02-05 (Keyed State)
+
+**定义**: Keyed State 是按 key 分区的局部状态，每个 key 拥有独立的状态副本 [^1]。
+
+$$
+S_{\text{keyed}}: (\text{TaskInstance} \times \text{Key}) \to \text{StateValue}
+$$
+
+Keyed State 的访问严格限制在 `keyBy()` 之后的算子中，Flink 保证同一 key 的所有记录路由到同一并行子任务，确保状态更新的串行化（**Thm-S-03-01**）。
+
+**状态类型** [^1]：
+
+| 类型 | 描述 | 场景 |
+|------|------|------|
+| ValueState | 单值状态 | 计数器 |
+| ListState | 列表状态 | 历史记录 |
+| MapState | Map 结构 | 键值集合 |
+| ReducingState | 可规约状态 | 增量聚合 |
+
+---
+
+### Def-K-02-06 (State Backend)
+
+**定义**: State Backend 是 Flink 中负责状态存储、访问和 Checkpoint 快照持久化的可插拔抽象层 [^2]。
+
+$$
+\mathcal{B} = (S_{\text{storage}}, \Phi_{\text{access}}, \Psi_{\text{snapshot}}, \Omega_{\text{recovery}})
+$$
+
+其中：
+
+- $S_{\text{storage}}$: 物理存储介质（JVM Heap 或本地磁盘）
+- $\Phi_{\text{access}}$: 状态读写接口
+- $\Psi_{\text{snapshot}}$: 异步快照机制
+- $\Omega_{\text{recovery}}$: 故障恢复流程
+
+**主要实现对比**：
+
+| 特性 | HashMapStateBackend | RocksDBStateBackend |
+|------|---------------------|---------------------|
+| 存储位置 | JVM Heap 内存 | 本地磁盘 (RocksDB) |
+| 状态大小限制 | 受限于 TaskManager 内存 | 受限于本地磁盘容量 |
+| 访问延迟 | 极低 (内存直接访问) | 低 (内存 + 磁盘缓存) |
+| 增量 Checkpoint | 支持（需配置） | 原生支持（基于 SST） |
+| 大状态支持 | 不适合 (> 100MB) | 适合 (TB 级) |
+
+---
+
+### Def-K-02-07 (状态 TTL)
+
+**定义**: TTL (Time-To-Live) 定义了状态的有效生存周期，超过 TTL 的状态被视为过期并触发清理 [^6]。
+
+$$
+\text{Valid}(S_k, t) \iff t - \text{LastAccess}(S_k) < \text{TTL}
+$$
+
+**清理策略**：
+
+| 策略 | 触发时机 | 适用后端 |
+|------|----------|----------|
+| Full Snapshot | Checkpoint 时 | 通用 |
+| Incremental | 状态访问时 | 通用 |
+| RocksDB Compaction | 压缩时 | RocksDB 专用 |
+
+---
+
+### Def-K-02-08 (可查询状态)
+
+**定义**: 可查询状态 (Queryable State) 允许外部客户端通过 RPC 只读访问算子内部的 Keyed State [^8]。
+
+```
+Client ──RPC──► Queryable State Server ◄──Local── Task Manager
+                                                │
+                                                ▼
+                                          Keyed State
+```
+
+**限制**：只读访问、仅支持 Keyed State、网络开销较高。Queryable State 在 Flink 1.17+ 中已标记为 deprecated，推荐使用 REST API 或外部存储替代 [^8]。
+
+---
+
+## 2. 属性推导 (Properties)
+
+### Prop-K-02-03 (状态分区确定性)
+
+**命题**: Keyed State 按 key 的哈希值分布到并行子任务，同一 key 的所有记录必然路由到同一子任务。
+
+$$
+\text{Partition}(key) = \text{hash}(key) \mod \text{parallelism}
+$$
+
+**推导**:
+
+1. `keyBy()` 算子基于 key 的哈希值进行分区
+2. Flink 的数据交换层保证同一分区号的数据发送到同一 Task 实例
+3. 因此同一 key 的状态更新在单线程内串行执行
+4. 结合 **Lemma-S-03-01** (Actor 邮箱串行处理引理)，Keyed State 的更新满足局部确定性（**Thm-S-03-01**）
+
+---
+
+### Prop-K-02-04 (TTL 有效性边界)
+
+**命题**: 设状态最后访问时间为 $t_{\text{last}}$，TTL 为 $T$，则状态 $S_k$ 在时刻 $t$ 有效的充要条件为：
+
+$$
+t - t_{\text{last}} < T
+$$
+
+**工程约束**:
+
+- TTL 清理是异步/惰性的，过期状态可能在清理前仍被短暂访问
+- `StateVisibility.NeverReturnExpired` 配置可确保过期状态不会被返回
+- TTL 设置应小于 Checkpoint 保留周期，避免状态膨胀导致恢复时间增长
+
+---
+
+### Prop-K-02-05 (状态后端访问延迟)
+
+**命题**: 设状态大小为 $|S|$，HashMapStateBackend 的访问延迟为 $O(1)$，与状态大小无关；RocksDBStateBackend 的访问延迟为 $O(\log |S|)$（基于 LSM-Tree 的层级查找）。
+
+**性能对比**（典型场景）:
+
+| 状态大小 | HashMap 访问延迟 | RocksDB 访问延迟 | 推荐 |
+|---------|-----------------|-----------------|------|
+| 10 MB | ~0.1 μs | ~5 μs | HashMap |
+| 100 MB | ~0.5 μs | ~5 μs | HashMap |
+| 1 GB | OOM | ~10 μs | RocksDB |
+| 100 GB | N/A | ~50 μs | RocksDB |
+
+---
+
+## 3. 关系建立 (Relations)
+
+### 与 Event Time 处理的关系
+
+有状态计算与 Event Time 深度耦合 [^10]：
+
+- 状态访问可结合事件时间戳实现时间窗口状态（如会话窗口）
+- Watermark 推进可驱动状态过期清理（TTL）
+- 事件时间的单调性保证状态按正确时序更新
+
+### 与窗口聚合的关系
+
+窗口聚合内部依赖 Keyed State 实现 [^11]：
+
+- Tumbling/Sliding/Session Window 的聚合结果存储在 ValueState 或 ListState 中
+- 窗口触发器状态（Trigger State）与计算状态分离存储
+- 窗口的 Allowed Lateness 机制依赖状态的持久化保留
+
+### 与 Checkpoint 机制的关系
+
+Checkpoint 是有状态计算容错的基础 [^2][^9]：
+
+- 状态后端实现 **Thm-S-17-01** 的快照要求，捕获一致全局状态
+- 增量 Checkpoint 仅持久化状态变更部分，优化存储效率但不改变一致性保证
+- 故障恢复时从 Checkpoint 重建状态，结合 Source 重放实现 Exactly-Once（**Thm-S-18-01**）
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+### 4.1 分布式有状态计算的挑战
 
 在分布式流处理中，有状态计算需要维护跨事件的上下文信息：
 
@@ -60,7 +246,7 @@ $$
 
 即输出依赖于历史累积状态，使得故障恢复必须精确还原历史状态。
 
-### 1.2 核心矛盾三角
+**核心矛盾三角**：
 
 ```
          一致性 (Consistency)
@@ -78,32 +264,21 @@ $$
 
 ---
 
-## 2. 解决方案 (Solution)
+### 4.2 状态后端选型论证
 
-### 2.1 核心概念定义
+**HashMapStateBackend 适用场景** [^9]：
 
-**Operator State**：绑定于算子实例，所有记录共享同一份状态 [^1]
+- 状态大小 < 100MB
+- 需要极低访问延迟（< 1ms）
+- 短窗口聚合（分钟级）
+- 配置参数状态
 
-**Keyed State**：按 key 分区，每个 key 拥有独立状态副本 [^1]：
+**RocksDBStateBackend 适用场景** [^9]：
 
-$$
-S_{keyed}: (TaskInstance \times Key) \to StateValue
-$$
-
-**State Backend**：负责状态存储、访问和快照的抽象层 [^2]：
-
-$$
-\mathcal{B} = (S_{storage}, \Phi_{access}, \Psi_{snapshot}, \Omega_{recovery})
-$$
-
-### 2.2 状态后端选型
-
-| 特性 | HashMapStateBackend | RocksDBStateBackend |
-|------|---------------------|---------------------|
-| 存储位置 | JVM Heap | 本地磁盘 |
-| 状态容量 | 几 MB - 几 GB | TB 级 |
-| 访问延迟 | ~10-100 ns | 1-100 μs |
-| 增量 Checkpoint | ❌ 不支持 | ✅ 原生支持 |
+- 状态大小 > 100MB 或未知
+- 长窗口聚合（小时/天级）
+- 大 Keyspace（百万级 Key）
+- 增量 Checkpoint 优化存储成本
 
 **选型决策树** [^9]：
 
@@ -113,55 +288,239 @@ $$
 └── 否 ──► RocksDBStateBackend (大状态)
 ```
 
-### 2.3 状态 TTL (Time-To-Live)
+---
 
-TTL 定义状态的生存周期 [^6]：
+### 4.3 适用场景分析
 
-$$
-\text{Valid}(S_k, t) \iff t - \text{LastAccess}(S_k) < TTL
-$$
+**推荐使用** [^1][^9]：
 
-**清理策略**：
-
-| 策略 | 触发时机 | 适用后端 |
-|------|----------|----------|
-| Full Snapshot | Checkpoint 时 | 通用 |
-| Incremental | 状态访问时 | 通用 |
-| RocksDB Compaction | 压缩时 | RocksDB 专用 |
-
-### 2.4 状态分区 (State Partitioning)
-
-Keyed State 按 key 哈希分布到并行子任务 [^4]：
-
-$$
-\text{Partition}(key) = hash(key) \mod parallelism
-$$
-
-**保证**：同一 key 的所有记录路由到同一子任务，确保状态更新的串行化。
-
-**状态类型** [^1]：
-
-| 类型 | 描述 | 场景 |
+| 场景 | 理由 | 配置 |
 |------|------|------|
-| ValueState | 单值状态 | 计数器 |
-| ListState | 列表状态 | 历史记录 |
-| MapState | Map 结构 | 键值集合 |
-| ReducingState | 可规约状态 | 增量聚合 |
+| 会话窗口 | 跨事件维护会话 | ValueState + TTL |
+| 累积指标 | 日/月累计统计 | ReducingState + 增量 Checkpoint |
+| CEP 模式匹配 | NFA 状态机 | MapState + 短 TTL |
+| 去重过滤 | 精确去重 | ValueState + 过期清理 |
 
-### 2.5 可查询状态 (Queryable State)
+**不推荐** [^1]：
 
-允许外部客户端通过 RPC 读取算子状态 [^8]：
+| 场景 | 理由 | 替代 |
+|------|------|------|
+| 纯无状态转换 | 无需状态 | map/filter |
+| 大对象缓存 | 不适合缓存 | Redis |
+| 跨作业共享 | 作业隔离 | 外部数据库 |
 
+---
+
+## 8. 形式化保证 (Formal Guarantees)
+
+本节建立有状态计算模式与 Struct/ 理论层的形式化连接。
+
+### 8.1 依赖的形式化定义
+
+| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
+|----------|------|------|-----------------|
+| **Def-S-03-01** | 经典 Actor 四元组 | Struct/01.03 | Keyed State 的并发模型基础：$\langle \alpha, b, m, \sigma \rangle$ |
+| **Def-S-04-01** | Dataflow 图 (DAG) | Struct/01.04 | 状态算子作为带状态顶点 $\langle V, E, P, \Sigma, \mathbb{T} \rangle$ |
+| **Def-S-17-02** | 一致全局状态 | Struct/04.01 | Checkpoint 捕获的状态必须构成一致割集 |
+| **Def-S-18-05** | 幂等性 | Struct/04.02 | 状态更新重放需满足幂等性 |
+
+### 8.2 满足的形式化性质
+
+| 定理/引理编号 | 名称 | 来源 | 保证内容 |
+|---------------|------|------|----------|
+| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | 单 Key 状态更新串行化，保证局部确定性 |
+| **Lemma-S-03-01** | Actor 邮箱串行处理引理 | Struct/01.03 | 同一 Key 的消息按 FIFO 处理 |
+| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | 状态快照构成一致全局状态 |
+| **Thm-S-18-01** | Exactly-Once 正确性定理 | Struct/04.02 | 状态恢复 + Source 重放 = Exactly-Once |
+| **Lemma-S-18-03** | 状态恢复一致性引理 | Struct/04.02 | 恢复后状态与故障前某时刻一致 |
+
+### 8.3 模式组合时的性质保持
+
+**Stateful Computation + Event Time 组合**：
+
+- 状态访问可结合事件时间戳实现时间窗口状态
+- Watermark 驱动状态过期清理（TTL）
+
+**Stateful Computation + Checkpoint 组合**：
+
+- 状态后端实现 **Thm-S-17-01** 的快照要求
+- 增量 Checkpoint 优化不改变一致性保证
+
+**Stateful Computation + Windowed Aggregation 组合**：
+
+- 窗口状态使用 Keyed State 实现
+- 窗口触发器状态与计算状态分离存储
+
+### 8.4 边界条件与约束
+
+| 约束条件 | 形式化描述 | 违反后果 |
+|----------|-----------|----------|
+| Key 分区固定 | $\text{hash}(k) \mod \text{parallelism}$ 不变 | Key 漂移，状态丢失 |
+| 状态大小有限 | $\|S\| < \infty$ | OOM，作业崩溃 |
+| TTL 配置合理 | TTL < Checkpoint 间隔 $\times N$ | 状态膨胀，恢复时间增长 |
+| 并发访问隔离 | 单 Key 单线程访问 | 数据竞争，状态损坏 |
+
+### 8.5 状态后端的形式化特性
+
+| 后端类型 | 存储模型 | 一致性保证 | 适用场景 |
+|----------|----------|-----------|----------|
+| HashMapStateBackend | 内存 KV | **Thm-S-17-01** | 小状态 (<100MB) |
+| RocksDBStateBackend | LSM-Tree | **Thm-S-17-01** | 大状态 (TB级) |
+
+---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+### 5.1 Keyed State 局部确定性论证
+
+**定理声明**（引用 **Thm-S-03-01**）[^12]：
+
+> 在 Actor 模型中，单个 Actor 的局部执行是确定性的，即对于相同的初始状态和相同的消息序列，输出状态序列唯一。
+
+**向 Flink Keyed State 的映射**:
+
+1. Flink 的 `keyBy()` 将流按 key 分区，等价于为每个 key 创建一个逻辑 Actor
+2. 同一 key 的所有记录按 FIFO 顺序投递到同一 Task 线程（**Lemma-S-03-01**）
+3. Keyed State 的 `update()` 操作在单线程内串行执行，无数据竞争
+4. 因此，Keyed State 的演化满足局部确定性
+
+**工程意义**: 局部确定性是保证故障恢复后可复现性的基础。即使不同 key 的并行处理存在调度非确定性，单个 key 的状态演化路径是确定的。
+
+---
+
+### 5.2 增量 Checkpoint 一致性论证
+
+**论证目标**: 证明增量 Checkpoint 在优化存储效率的同时，不破坏全局状态一致性（**Thm-S-17-01**）。
+
+**论证结构**:
+
+1. **状态快照的完备性**: 每次 Checkpoint 捕获的增量变更加上基线全量状态，可完整重建该时刻的全局状态
+2. **SST 不可变性**: RocksDB 的 SST 文件一旦生成不再修改，增量快照只需引用新增 SST，天然满足一致性割集要求
+3. **恢复正确性**: 恢复时 Flink 自动合并基线与增量文件，重建的状态与全量快照语义等价
+4. **无孤儿消息**: 增量 Checkpoint 不改变 Barrier 对齐语义，因此在途消息的处理与全量快照一致（**Lemma-S-17-04**）
+
+**结论**: 增量 Checkpoint 是 **Thm-S-17-01** 的优化实现，而非弱化实现。
+
+---
+
+### 5.3 状态后端选型的工程权衡
+
+**权衡矩阵**:
+
+| 维度 | HashMapStateBackend | RocksDBStateBackend |
+|------|---------------------|---------------------|
+| 访问延迟 | ~10-100 ns | 1-100 μs |
+| 状态容量 | 几 MB - 几 GB | TB 级 |
+| GC 影响 | 大状态导致频繁 Full GC | 对 JVM Heap 影响极小 |
+| 增量 Checkpoint | 不支持（对象级比较开销大） | 原生支持（SST 级） |
+| 恢复速度 | 快（内存加载） | 中等（需重建 LSM-Tree） |
+
+**决策规则**:
+
+$$
+\text{Backend} = \begin{cases}
+\text{HashMap} & \text{if } |S| < 0.3 \times \text{TM\_Heap} \land \text{Latency} < 1\text{ms} \\
+\text{RocksDB} & \text{otherwise}
+\end{cases}
+$$
+
+其中 $|S|$ 为预估状态大小，TM_Heap 为 TaskManager 堆内存。
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 6.1 Keyed State 基础用法
+
+```scala
+class UserVisitCounter extends ProcessFunction[UserEvent, UserStats] {
+  private var visitCountState: ValueState[Long] = _
+
+  override def open(parameters: Configuration): Unit = {
+    val descriptor = new ValueStateDescriptor[Long](
+      "visit-count", classOf[Long]
+    )
+    visitCountState = getRuntimeContext.getState(descriptor)
+  }
+
+  override def processElement(
+    event: UserEvent,
+    ctx: Context,
+    out: Collector[UserStats]
+  ): Unit = {
+    val currentCount = Option(visitCountState.value()).getOrElse(0L)
+    val newCount = currentCount + 1
+    visitCountState.update(newCount)
+    out.collect(UserStats(event.userId, newCount))
+  }
+}
 ```
-Client ──RPC──► Queryable State Server ◄──Local── Task Manager
-                                                │
-                                                ▼
-                                          Keyed State
+
+---
+
+### 6.2 状态 TTL 配置
+
+```scala
+val ttlConfig = StateTtlConfig
+  .newBuilder(Time.minutes(30))
+  .setUpdateType(OnCreateAndWrite)
+  .setStateVisibility(NeverReturnExpired)
+  .cleanupFullSnapshot()
+  .build()
+
+val descriptor = new ValueStateDescriptor[SessionInfo](
+  "session", classOf[SessionInfo]
+)
+descriptor.enableTimeToLive(ttlConfig)
 ```
 
-**限制**：只读访问、仅支持 Keyed State、网络开销较高。
+---
 
-### 2.6 状态管理架构图
+### 6.3 状态后端配置
+
+**HashMapStateBackend** (小状态) [^9]：
+
+```scala
+env.setStateBackend(new HashMapStateBackend())
+env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
+```
+
+**RocksDBStateBackend** (大状态 + 增量) [^9]：
+
+```scala
+val rocksDbBackend = new EmbeddedRocksDBStateBackend(true) // true=增量
+env.setStateBackend(rocksDbBackend)
+env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
+```
+
+---
+
+### 6.4 Queryable State 实现
+
+```scala
+val descriptor = new ValueStateDescriptor[UserProfile](
+  "user-profile", classOf[UserProfile]
+)
+descriptor.setQueryable("queryable-user-profile")
+```
+
+外部查询 [^8]：
+
+```scala
+val client = new QueryableStateClient("jobmanager", 9069)
+val future = client.getKvState(
+  jobId, "queryable-user-profile", "user_123",
+  keySerializer, stateDescriptor
+)
+```
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 7.1 状态管理架构图
+
+以下 Mermaid 图展示了有状态计算模式的核心组件和层级关系：
 
 ```mermaid
 graph TB
@@ -206,194 +565,30 @@ graph TB
 
 ---
 
-## 3. 实现示例 (Implementation)
+### 7.2 状态后端选型决策树
 
-### 3.1 Keyed State 基础用法
+以下决策树帮助在不同场景下选择合适的状态后端：
 
-```scala
-class UserVisitCounter extends ProcessFunction[UserEvent, UserStats] {
-  private var visitCountState: ValueState[Long] = _
+```mermaid
+flowchart TD
+    A[状态后端选型] --> B{状态大小 <br/>< TM 堆内存的 30% ?}
+    B -->|是| C{延迟要求 < 1ms ?}
+    B -->|否| D[RocksDBStateBackend<br/>大状态/增量 Checkpoint]
 
-  override def open(parameters: Configuration): Unit = {
-    val descriptor = new ValueStateDescriptor[Long](
-      "visit-count", classOf[Long]
-    )
-    visitCountState = getRuntimeContext.getState(descriptor)
-  }
+    C -->|是| E[HashMapStateBackend<br/>低延迟/内存访问]
+    C -->|否| F{需要增量 Checkpoint ?}
+    F -->|是| D
+    F -->|否| G[HashMapStateBackend<br/>中等状态]
 
-  override def processElement(
-    event: UserEvent,
-    ctx: Context,
-    out: Collector[UserStats]
-  ): Unit = {
-    val currentCount = Option(visitCountState.value()).getOrElse(0L)
-    val newCount = currentCount + 1
-    visitCountState.update(newCount)
-    out.collect(UserStats(event.userId, newCount))
-  }
-}
-```
-
-### 3.2 状态 TTL 配置
-
-```scala
-val ttlConfig = StateTtlConfig
-  .newBuilder(Time.minutes(30))
-  .setUpdateType(OnCreateAndWrite)
-  .setStateVisibility(NeverReturnExpired)
-  .cleanupFullSnapshot()
-  .build()
-
-val descriptor = new ValueStateDescriptor[SessionInfo](
-  "session", classOf[SessionInfo]
-)
-descriptor.enableTimeToLive(ttlConfig)
-```
-
-### 3.3 状态后端配置
-
-**HashMapStateBackend** (小状态)：
-
-```scala
-env.setStateBackend(new HashMapStateBackend())
-env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
-```
-
-**RocksDBStateBackend** (大状态 + 增量) [^9]：
-
-```scala
-val rocksDbBackend = new EmbeddedRocksDBStateBackend(true) // true=增量
-env.setStateBackend(rocksDbBackend)
-env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
-```
-
-### 3.4 Queryable State 实现
-
-```scala
-val descriptor = new ValueStateDescriptor[UserProfile](
-  "user-profile", classOf[UserProfile]
-)
-descriptor.setQueryable("queryable-user-profile")
-```
-
-外部查询 [^8]：
-
-```scala
-val client = new QueryableStateClient("jobmanager", 9069)
-val future = client.getKvState(
-  jobId, "queryable-user-profile", "user_123",
-  keySerializer, stateDescriptor
-)
+    style A fill:#e3f2fd,stroke:#1565c0
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style D fill:#fff9c4,stroke:#f57f17
+    style G fill:#e1bee7,stroke:#6a1b9a
 ```
 
 ---
 
-## 4. 适用场景 (When to Use)
-
-### 4.1 推荐使用
-
-| 场景 | 理由 | 配置 |
-|------|------|------|
-| 会话窗口 | 跨事件维护会话 | ValueState + TTL |
-| 累积指标 | 日/月累计统计 | ReducingState + 增量 Checkpoint |
-| CEP 模式匹配 | NFA 状态机 | MapState + 短 TTL |
-| 去重过滤 | 精确去重 | ValueState + 过期清理 |
-
-### 4.2 不推荐
-
-| 场景 | 理由 | 替代 |
-|------|------|------|
-| 纯无状态转换 | 无需状态 | map/filter |
-| 大对象缓存 | 不适合缓存 | Redis |
-| 跨作业共享 | 作业隔离 | 外部数据库 |
-
----
-
-## 6. 形式化保证 (Formal Guarantees)
-
-本节建立有状态计算模式与 Struct/ 理论层的形式化连接。
-
-### 6.1 依赖的形式化定义
-
-| 定义编号 | 名称 | 来源 | 在本模式中的作用 |
-|----------|------|------|-----------------|
-| **Def-S-03-01** | 经典 Actor 四元组 | Struct/01.03 | Keyed State 的并发模型基础：⟨α, b, m, σ⟩ |
-| **Def-S-04-01** | Dataflow 图 (DAG) | Struct/01.04 | 状态算子作为带状态顶点 ⟨V, E, P, Σ, 𝕋⟩ |
-| **Def-S-17-02** | 一致全局状态 | Struct/04.01 | Checkpoint 捕获的状态必须构成一致割集 |
-| **Def-S-18-05** | 幂等性 | Struct/04.02 | 状态更新重放需满足幂等性 |
-
-### 6.2 满足的形式化性质
-
-| 定理/引理编号 | 名称 | 来源 | 保证内容 |
-|---------------|------|------|----------|
-| **Thm-S-03-01** | Actor 局部确定性定理 | Struct/01.03 | 单 Key 状态更新串行化，保证局部确定性 |
-| **Lemma-S-03-01** | Actor 邮箱串行处理引理 | Struct/01.03 | 同一 Key 的消息按 FIFO 处理 |
-| **Thm-S-17-01** | Checkpoint 一致性定理 | Struct/04.01 | 状态快照构成一致全局状态 |
-| **Thm-S-18-01** | Exactly-Once 正确性定理 | Struct/04.02 | 状态恢复 + Source 重放 = Exactly-Once |
-| **Lemma-S-18-03** | 状态恢复一致性引理 | Struct/04.02 | 恢复后状态与故障前某时刻一致 |
-
-### 6.3 模式组合时的性质保持
-
-**Stateful Computation + Event Time 组合**：
-
-- 状态访问可结合事件时间戳实现时间窗口状态
-- Watermark 驱动状态过期清理（TTL）
-
-**Stateful Computation + Checkpoint 组合**：
-
-- 状态后端实现 Thm-S-17-01 的快照要求
-- 增量 Checkpoint 优化不改变一致性保证
-
-**Stateful Computation + Windowed Aggregation 组合**：
-
-- 窗口状态使用 Keyed State 实现
-- 窗口触发器状态与计算状态分离存储
-
-### 6.4 边界条件与约束
-
-| 约束条件 | 形式化描述 | 违反后果 |
-|----------|-----------|----------|
-| Key 分区固定 | hash(k) mod parallelism 不变 | Key 漂移，状态丢失 |
-| 状态大小有限 | |S| < ∞ | OOM，作业崩溃 |
-| TTL 配置合理 | TTL < Checkpoint 间隔 × N | 状态膨胀，恢复时间增长 |
-| 并发访问隔离 | 单 Key 单线程访问 | 数据竞争，状态损坏 |
-
-### 6.5 状态后端的形式化特性
-
-| 后端类型 | 存储模型 | 一致性保证 | 适用场景 |
-|----------|----------|-----------|----------|
-| HashMapStateBackend | 内存 KV | Thm-S-17-01 | 小状态 (<100MB) |
-| RocksDBStateBackend | LSM-Tree | Thm-S-17-01 | 大状态 (TB级) |
-
----
-
-## 5. 相关模式 (Related Patterns)
-
-| 模式 | 关系 | 说明 |
-|------|------|------|
-| **Pattern 01: Event Time** | 依赖 | 状态计算依赖 Event Time 语义 [^10] |
-| **Pattern 02: Windowed Aggregation** | 依赖 | 窗口内部使用 Keyed State [^11] |
-| **Pattern 07: Checkpoint** | 依赖 | Checkpoint 是容错基础 [^2][^9] |
-
-**形式化关联** [^12]：
-
-本模式的形式化基础参见 [`Struct/02-properties/02.05-type-safety-derivation.md`](../../Struct/02-properties/02.05-type-safety-derivation.md)，其中 FGG 泛型性质为 Keyed State 的类型安全提供理论基础。
-
-```
-知识关联:
-Struct/02-properties/02.05-type-safety-derivation.md
-├── FGG 泛型 ──► KeyedState<T> 类型安全
-└── DOT 路径依赖 ──► State-Key 绑定
-
-Flink/02-core/
-├── checkpoint-mechanism-deep-dive.md
-├── exactly-once-end-to-end.md
-└── time-semantics-and-watermark.md
-```
-
----
-
-## 7. 引用参考 (References)
+## 9. 引用参考 (References)
 
 [^1]: Flink State Documentation. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/>
 

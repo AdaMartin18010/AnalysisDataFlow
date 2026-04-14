@@ -1,6 +1,6 @@
 # 电商实时推荐系统案例研究
 
-> **所属阶段**: Knowledge/case-studies/ecommerce | **前置依赖**: [Knowledge/Knowledge/case-studies/10.2.1-realtime-recommendation-engine.md](../../Knowledge/case-studies/10.2.1-realtime-recommendation-engine.md) | **形式化等级**: L5
+> **所属阶段**: Knowledge/case-studies/ecommerce | **前置依赖**: [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | **形式化等级**: L5
 > **案例编号**: CS-E-02 | **完成日期**: 2026-04-11 | **版本**: v2.0
 
 ---

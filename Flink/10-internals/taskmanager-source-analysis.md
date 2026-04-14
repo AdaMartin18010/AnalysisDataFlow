@@ -1,6 +1,6 @@
 # TaskManager源码深度分析
 
-> **所属阶段**: Flink | **前置依赖**: [Flink架构概述](../01-architecture/flink-architecture-overview.md), [JobManager源码分析](../10-internals/jobmanager-source-analysis.md) | **形式化等级**: L5 | **源码版本**: Apache Flink 1.18/1.19
+> **所属阶段**: Flink | **前置依赖**: [flink-system-architecture-deep-dive.md](../01-concepts/flink-system-architecture-deep-dive.md), [JobManager源码分析](../10-internals/jobmanager-source-analysis.md) | **形式化等级**: L5 | **源码版本**: Apache Flink 1.18/1.19
 
 ---
 

@@ -32,7 +32,9 @@
 | FLIP-561 | AI/ML Integration Enhancement | 2.7 | FlipStatus.PLANNED | 5% |
 | FLIP-562 | Streaming-Batch Unified Execution | 2.7 | FlipStatus.PLANNED | 5% |
 | FLIP-563 | Materialized View Enhancement | 2.7 | FlipStatus.PLANNED | 5% |
-| FLIP-564 | HTTP/3 Protocol Support | 2.7 | FlipStatus.PLANNED | 0% |
+| FLIP-564 | FROM_CHANGELOG / TO_CHANGELOG Built-in PTFs | 2.7 | FlipStatus.PLANNED | 0% |
+| FLIP-555 | Flink Native S3 FileSystem | 2.6 | FlipStatus.ACCEPTED | 15% |
+| FLIP-566 | IMMUTABLE Columns Constraint | 2.7 | FlipStatus.DISCUSSING | 5% |
 
 ---
 

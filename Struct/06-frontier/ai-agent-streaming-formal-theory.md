@@ -1,6 +1,6 @@
 # AI Agent流计算形式化理论
 
-> 所属阶段: Struct/06-frontier | 前置依赖: [Actor模型形式化理论](../01-foundation/01-actor-model-formal.md), [Dataflow形式化语义](../01-foundation/02-dataflow-formal-semantics.md), [流处理一致性模型](../02-properties/01-consistency-models.md) | 形式化等级: L5-L6
+> 所属阶段: Struct/06-frontier | 前置依赖: [Actor模型形式化理论](../../Struct/01-foundation/01.03-actor-model-formalization.md), [Dataflow形式化语义](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [流处理一致性模型](../../Knowledge/01-concept-atlas/01.05-consistency-models.md) | 形式化等级: L5-L6
 
 ---
 

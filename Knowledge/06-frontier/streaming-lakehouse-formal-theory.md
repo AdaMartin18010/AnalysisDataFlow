@@ -1,6 +1,6 @@
 # 流数据湖(Stream Lakehouse)形式化理论
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [流计算基础理论](../01-concept-atlas/stream-processing-fundamentals.md), [状态管理形式化](../01-concept-atlas/state-management-formal.md) | **形式化等级**: L5-L6
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [01.01-stream-processing-fundamentals.md](../01-concept-atlas/01.01-stream-processing-fundamentals.md), [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L5-L6
 
 ---
 

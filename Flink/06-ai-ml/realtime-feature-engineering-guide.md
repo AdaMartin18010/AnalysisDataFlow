@@ -1,6 +1,6 @@
 # 实时特征工程与Feature Store指南
 
-> **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink窗口](../03-api/03.3-window-concepts.md) | **形式化等级**: L3-L4
+> **所属阶段**: Flink/AI-ML | **前置依赖**: [flink-sql-window-functions-deep-dive.md](../03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md) | **形式化等级**: L3-L4
 
 ## 执行摘要
 

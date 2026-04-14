@@ -4,7 +4,7 @@
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
-> **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink状态管理](../04-runtime/04.3-state-management.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/AI-ML | **前置依赖**: [flink-state-management-complete-guide.md](../02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4-L5
 
 ## 执行摘要
 

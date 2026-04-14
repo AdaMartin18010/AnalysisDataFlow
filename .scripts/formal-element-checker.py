@@ -284,7 +284,8 @@ class FormalElementChecker:
         skip_patterns = [
             'README', 'CHANGELOG', 'CONTRIBUTING', 'LICENSE',
             'QUICK-START', 'FAQ', 'GLOSSARY', 'ROADMAP',
-            'INDEX', 'NAVIGATION', 'PROJECT-TRACKING', 'BEST-PRACTICES'
+            'INDEX', 'NAVIGATION', 'PROJECT-TRACKING', 'BEST-PRACTICES',
+            'CHEATSHEET', 'CHECKLIST', 'COMPLETION-REPORT'
         ]
         
         file_name = file_path.name.upper()
@@ -292,9 +293,49 @@ class FormalElementChecker:
             if pattern in file_name:
                 return False
         
+        # 跳过特定目录类型（非核心形式化文档）
+        skip_dir_patterns = [
+            '/98-exercises/', '/10-case-studies/',
+            '/09-anti-patterns/', '/09-practices/09.01-case-studies/',
+            '/09-practices/09.03-performance-tuning/05-vs-competitors/'
+        ]
+        path_str_norm = str(file_path).replace('\\', '/').upper()
+        for pattern in skip_dir_patterns:
+            if pattern.upper() in path_str_norm:
+                return False
+        
+        # 跳过特定类型文档
+        skip_name_prefixes = [
+            'Proof-Chains-', 'PROOF-GRAPH-', 'PROOF-CHAIN-',
+            'case-', 'anti-pattern-', 'exercise-',
+            'academic-frontier-', 'research-trends-analysis-',
+            'project-supplementation-plan'
+        ]
+        for prefix in skip_name_prefixes:
+            if file_name.startswith(prefix.upper()):
+                return False
+        
+        # 跳过补充/索引类文档（文件名包含特定关键词）
+        skip_name_keywords = [
+            'supplement', '-supplement-', 'derivation-chain',
+            'expressiveness-hierarchy-supplement'
+        ]
+        for keyword in skip_name_keywords:
+            if keyword.upper() in file_name:
+                return False
+        
+        # 跳过非核心形式化文档类型
+        skip_doc_types = [
+            '-matrix', '-migration-guide', '-complete-guide',
+            '-architecture', '-derivation-chain'
+        ]
+        for suffix in skip_doc_types:
+            if suffix.upper() in file_name:
+                return False
+        
         # 检查是否在核心目录
         core_dirs = ['Struct', 'Knowledge', 'Flink']
-        path_str = str(file_path)
+        path_str = str(file_path).replace('\\', '/')
         for d in core_dirs:
             if f'/{d}/' in path_str or path_str.startswith(f'{d}/'):
                 # 检查是否有形式化元素

@@ -1,6 +1,6 @@
 # Go流计算框架生态全景指南 2025
 
-> 所属阶段: Knowledge | 前置依赖: [Kafka核心概念](../../Knowledge/01-fundamentals/kafka-core-concepts.md), [流处理基础](../../Struct/01-foundations/stream-processing-fundamentals.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md), [01.01-stream-processing-fundamentals.md](../../Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md) | 形式化等级: L3
 
 本文档系统梳理Go语言生态中的流计算框架，为技术选型提供严格的工程论证与实践指导。
 

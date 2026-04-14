@@ -206,7 +206,7 @@ python .scripts/notify-flink-updates.py --notify
 |------|------|------|------|----------|
 | 流批统一执行引擎 | FLIP-562 | 📋 规划中 | 5% | 高 |
 | SQL 物化视图增强 | FLIP-563 | 📋 规划中 | 5% | 中 |
-| 新网络协议 (HTTP/3) | FLIP-564 | 📋 规划中 | 0% | 低 |
+| FROM_CHANGELOG / TO_CHANGELOG 内置 PTFs | FLIP-564 | 📋 规划中 | 0% | 高 |
 
 ---
 

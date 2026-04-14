@@ -4,7 +4,7 @@
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
-> 所属阶段: Flink | 前置依赖: [Flink 核心概念](../01-core-concepts/) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [Flink/01-concepts/](../01-concepts/) | 形式化等级: L3
 
 本文档是 Flink API 层级的权威导航中心，系统性地整理了 Flink 提供的所有编程接口与查询语言。从底层的 DataStream API 到声明式的 Table API & SQL，再到多语言支持体系（Java、Scala、Python、Rust），本目录为流处理开发者提供完整的技术选型和实现参考。
 
@@ -66,9 +66,9 @@ DataStream API 是 Flink 的**核心编程接口**，为无界和有界数据流
 | 特性 | 说明 | 文档链接 |
 |------|------|----------|
 | 类型系统 | 基于 TypeInformation 的强类型支持 | [类型推导机制](./09-language-foundations/01.02-typeinformation-derivation.md) |
-| 时间语义 | Event Time / Processing Time / Ingestion Time | [时间处理指南](../01-core-concepts/) |
-| 状态管理 | Keyed State、Operator State 完整支持 | [状态管理](../02-state/) |
-| 容错机制 | 基于 Checkpoint 的 Exactly-Once 语义 | [容错机制](../01-core-concepts/) |
+| 时间语义 | Event Time / Processing Time / Ingestion Time | [Flink/01-concepts/](../01-concepts/) |
+| 状态管理 | Keyed State、Operator State 完整支持 | [Flink/02-core/](../02-core/) |
+| 容错机制 | 基于 Checkpoint 的 Exactly-Once 语义 | [Flink/01-concepts/](../01-concepts/) |
 
 ### 2.3 快速入门文档
 

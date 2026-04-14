@@ -1,6 +1,6 @@
 # 2025年流计算语言生态全景图
 
-> 所属阶段: Knowledge | 前置依赖: [流计算基础概念](./streaming-concepts.md), [Flink架构分析](../../Flink/README.md) | 形式化等级: L3
+> 所属阶段: Knowledge | 前置依赖: [Knowledge/00-INDEX.md](../00-INDEX.md), [Flink/00-INDEX.md](../../Flink/00-INDEX.md) | 形式化等级: L3
 
 ---
 
