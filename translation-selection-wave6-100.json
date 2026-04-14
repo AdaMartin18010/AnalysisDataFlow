@@ -1,0 +1,406 @@
+{
+  "generated_at": "2026-04-15",
+  "wave": 6,
+  "docs": [
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/99-appendix/cross-reference-index.md",
+      "SizeKB": 20.3
+    },
+    {
+      "Path": "Flink/07-rust-native/flash-engine/03-forstdb-storage.md",
+      "SizeKB": 20.36
+    },
+    {
+      "Path": "Knowledge/case-studies/iot-smart-grid-case-study.md",
+      "SizeKB": 20.42
+    },
+    {
+      "Path": "Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md",
+      "SizeKB": 20.46
+    },
+    {
+      "Path": "Flink/09-practices/09.02-benchmarking/performance-benchmarking-guide.md",
+      "SizeKB": 20.46
+    },
+    {
+      "Path": "Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md",
+      "SizeKB": 20.49
+    },
+    {
+      "Path": "Flink/07-rust-native/flink-rust-ecosystem-trends-2026.md",
+      "SizeKB": 20.58
+    },
+    {
+      "Path": "Flink/03-api/09-language-foundations/01.01-scala-types-for-streaming.md",
+      "SizeKB": 20.58
+    },
+    {
+      "Path": "Flink/06-ai-ml/model-serving-streaming.md",
+      "SizeKB": 20.62
+    },
+    {
+      "Path": "Flink/07-rust-native/simd-optimization/05-arm-neon-sve-guide.md",
+      "SizeKB": 20.7
+    },
+    {
+      "Path": "Flink/03-api/09-language-foundations/07.01-timely-dataflow-optimization.md",
+      "SizeKB": 20.75
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md",
+      "SizeKB": 20.75
+    },
+    {
+      "Path": "Flink/09-practices/09.03-performance-tuning/jdk-11-migration-guide.md",
+      "SizeKB": 20.92
+    },
+    {
+      "Path": "Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md",
+      "SizeKB": 20.96
+    },
+    {
+      "Path": "Flink/06-ai-ml/flink-ml-architecture.md",
+      "SizeKB": 20.97
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/risingwave-architecture-src.md",
+      "SizeKB": 21.03
+    },
+    {
+      "Path": "Knowledge/98-exercises/exercise-01-process-calculus.md",
+      "SizeKB": 21.03
+    },
+    {
+      "Path": "Flink/07-rust-native/THEOREM-INDEX.md",
+      "SizeKB": 21.08
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/04-rust-engines/04.04-arroyo-cloudflare.md",
+      "SizeKB": 21.13
+    },
+    {
+      "Path": "Struct/06-frontier/project-supplementation-plan.md",
+      "SizeKB": 21.14
+    },
+    {
+      "Path": "Flink/07-rust-native/risingwave-comparison/01-risingwave-architecture.md",
+      "SizeKB": 21.14
+    },
+    {
+      "Path": "Flink/01-concepts/deployment-architectures.md",
+      "SizeKB": 21.15
+    },
+    {
+      "Path": "Flink/09-practices/09.03-performance-tuning/05-vs-competitors/linkedin-samza-deep-dive.md",
+      "SizeKB": 21.18
+    },
+    {
+      "Path": "Struct/07-tools/model-checking-practice.md",
+      "SizeKB": 21.18
+    },
+    {
+      "Path": "Flink/02-core/delta-join.md",
+      "SizeKB": 21.26
+    },
+    {
+      "Path": "Flink/06-ai-ml/README.md",
+      "SizeKB": 21.27
+    },
+    {
+      "Path": "Knowledge/06-frontier/multi-cloud-streaming-architecture.md",
+      "SizeKB": 21.29
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/event-reporting.md",
+      "SizeKB": 21.33
+    },
+    {
+      "Path": "Flink/07-rust-native/simd-optimization/03-jni-assembly-bridge.md",
+      "SizeKB": 21.46
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/03-scala-rust-interop/03.05-interop-comparison.md",
+      "SizeKB": 21.46
+    },
+    {
+      "Path": "Struct/06-frontier/research-trends-analysis-2024-2026.md",
+      "SizeKB": 21.49
+    },
+    {
+      "Path": "Flink/07-rust-native/risingwave-comparison/02-nexmark-head-to-head.md",
+      "SizeKB": 21.5
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/flink-serverless-architecture.md",
+      "SizeKB": 21.53
+    },
+    {
+      "Path": "Flink/09-practices/09.04-deployment/flink-k8s-operator-new-features-1.14.md",
+      "SizeKB": 21.56
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/trusted-execution-flink.md",
+      "SizeKB": 21.57
+    },
+    {
+      "Path": "Flink/07-rust-native/arroyo-update/IMPACT-ANALYSIS.md",
+      "SizeKB": 21.65
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-materialized-view-architecture.md",
+      "SizeKB": 21.7
+    },
+    {
+      "Path": "Knowledge/08-standards/streaming-data-governance.md",
+      "SizeKB": 21.75
+    },
+    {
+      "Path": "Flink/06-ai-ml/flink-agents-production-checklist.md",
+      "SizeKB": 21.86
+    },
+    {
+      "Path": "Knowledge/06-frontier/realtime-ml-inference/06.04.01-ml-model-serving.md",
+      "SizeKB": 21.95
+    },
+    {
+      "Path": "Flink/07-rust-native/flash-engine/04-nexmark-benchmark-analysis.md",
+      "SizeKB": 21.97
+    },
+    {
+      "Path": "Flink/09-practices/09.05-edge/flink-edge-ai-optimization.md",
+      "SizeKB": 22.08
+    },
+    {
+      "Path": "Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md",
+      "SizeKB": 22.15
+    },
+    {
+      "Path": "Flink/07-rust-native/flash-engine/02-falcon-vector-layer.md",
+      "SizeKB": 22.21
+    },
+    {
+      "Path": "Knowledge/06-frontier/realtime-data-mesh-practice.md",
+      "SizeKB": 22.26
+    },
+    {
+      "Path": "Knowledge/06-frontier/mcp-security-governance-2026.md",
+      "SizeKB": 22.28
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/risingwave-udf-rust-src.md",
+      "SizeKB": 22.29
+    },
+    {
+      "Path": "Knowledge/10-case-studies/gaming/10.5.3-gaming-analytics-platform.md",
+      "SizeKB": 22.32
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/wasi-03-async-src.md",
+      "SizeKB": 22.35
+    },
+    {
+      "Path": "Knowledge/06-frontier/data-streaming-landscape-2025.md",
+      "SizeKB": 22.42
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/materialize-differential-src.md",
+      "SizeKB": 22.43
+    },
+    {
+      "Path": "Knowledge/06-frontier/realtime-data-quality-validation.md",
+      "SizeKB": 22.47
+    },
+    {
+      "Path": "Knowledge/01-concept-atlas/streaming-languages-landscape-2025.md",
+      "SizeKB": 22.47
+    },
+    {
+      "Path": "Knowledge/06-frontier/serverless-streaming-architecture.md",
+      "SizeKB": 22.49
+    },
+    {
+      "Path": "Knowledge/10-case-studies/annual-case-collection-2026.md",
+      "SizeKB": 22.63
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md",
+      "SizeKB": 22.79
+    },
+    {
+      "Path": "Knowledge/98-exercises/exercise-03-checkpoint-analysis.md",
+      "SizeKB": 22.94
+    },
+    {
+      "Path": "Flink/01-concepts/flink-1.x-vs-2.0-comparison.md",
+      "SizeKB": 22.98
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/04-rust-engines/04.05-vectorization-simd.md",
+      "SizeKB": 23.0
+    },
+    {
+      "Path": "Knowledge/07-best-practices/07.03-troubleshooting-guide.md",
+      "SizeKB": 23.1
+    },
+    {
+      "Path": "Flink/08-roadmap/08.01-flink-24/2026-q2-flink-tasks.md",
+      "SizeKB": 23.16
+    },
+    {
+      "Path": "Knowledge/07-best-practices/07.05-security-hardening-guide.md",
+      "SizeKB": 23.17
+    },
+    {
+      "Path": "Flink/03-api/03.02-table-sql-api/flink-materialized-table-deep-dive.md",
+      "SizeKB": 23.21
+    },
+    {
+      "Path": "Knowledge/06-frontier/faas-dataflow.md",
+      "SizeKB": 23.22
+    },
+    {
+      "Path": "Flink/03-api/03.02-table-sql-api/flink-python-udf.md",
+      "SizeKB": 23.43
+    },
+    {
+      "Path": "Flink/03-api/03.02-table-sql-api/vector-search.md",
+      "SizeKB": 23.5
+    },
+    {
+      "Path": "Knowledge/09-anti-patterns/anti-pattern-01-global-state-abuse.md",
+      "SizeKB": 23.61
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.01-flink-2x-architecture.md",
+      "SizeKB": 23.71
+    },
+    {
+      "Path": "Flink/01-concepts/datastream-v2-semantics.md",
+      "SizeKB": 23.76
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/streaming-metrics-monitoring-slo.md",
+      "SizeKB": 23.82
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-databases.md",
+      "SizeKB": 24.14
+    },
+    {
+      "Path": "Flink/03-flink-23/flink-23-overview.md",
+      "SizeKB": 24.22
+    },
+    {
+      "Path": "Flink/03-api/09-language-foundations/00-INDEX.md",
+      "SizeKB": 24.25
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/iron-functions-wasm-src.md",
+      "SizeKB": 24.31
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.05-flink-cloud-native.md",
+      "SizeKB": 24.35
+    },
+    {
+      "Path": "Flink/07-rust-native/wasm-3.0/01-wasm-3.0-spec-guide.md",
+      "SizeKB": 24.43
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.04-flink-sql-table-api.md",
+      "SizeKB": 24.54
+    },
+    {
+      "Path": "Flink/07-rust-native/wasi-0.3-async/01-wasi-0.3-spec-guide.md",
+      "SizeKB": 24.66
+    },
+    {
+      "Path": "Flink/07-rust-native/simd-optimization/02-avx2-avx512-guide.md",
+      "SizeKB": 24.68
+    },
+    {
+      "Path": "Flink/03-api/09-language-foundations/02.02-flink-scala-api-community.md",
+      "SizeKB": 24.75
+    },
+    {
+      "Path": "Knowledge/06-frontier/realtime-data-product-architecture.md",
+      "SizeKB": 24.84
+    },
+    {
+      "Path": "Knowledge/06-frontier/serverless-stream-processing-architecture.md",
+      "SizeKB": 24.86
+    },
+    {
+      "Path": "Knowledge/07-best-practices/07.04-cost-optimization-patterns.md",
+      "SizeKB": 24.87
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/src-analysis/wasm-udf-performance-src.md",
+      "SizeKB": 24.9
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.03-flink-state-backends.md",
+      "SizeKB": 24.94
+    },
+    {
+      "Path": "Flink/03-api/03.02-table-sql-api/data-types-complete-reference.md",
+      "SizeKB": 24.94
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-graph-processing-tgn.md",
+      "SizeKB": 25.06
+    },
+    {
+      "Path": "Flink/07-rust-native/flash-engine/05-flink-compatibility.md",
+      "SizeKB": 25.06
+    },
+    {
+      "Path": "Knowledge/case-studies/fraud-detection-production-case.md",
+      "SizeKB": 25.17
+    },
+    {
+      "Path": "Flink/06-ai-ml/flink-agents-patterns-catalog.md",
+      "SizeKB": 25.19
+    },
+    {
+      "Path": "Flink/09-practices/09.02-benchmarking/tco-analysis-2026.md",
+      "SizeKB": 25.21
+    },
+    {
+      "Path": "Knowledge/case-studies/gaming-analytics-platform-case.md",
+      "SizeKB": 25.41
+    },
+    {
+      "Path": "Flink/03-flink-23/flink-23-adaptive-scheduler.md",
+      "SizeKB": 25.44
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/05-architecture-patterns/05.02-migration-strategies.md",
+      "SizeKB": 25.64
+    },
+    {
+      "Path": "Knowledge/06-frontier/federated-streaming-learning.md",
+      "SizeKB": 25.68
+    },
+    {
+      "Path": "Flink/09-practices/09.07-performance/flink-performance-tuning-methodology.md",
+      "SizeKB": 25.76
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md",
+      "SizeKB": 25.79
+    },
+    {
+      "Path": "Knowledge/06-frontier/realtime-digital-twin-streaming.md",
+      "SizeKB": 25.9
+    },
+    {
+      "Path": "Struct/06-frontier/06.10-transactional-cloud-dataflow-actor.md",
+      "SizeKB": 25.96
+    },
+    {
+      "Path": "Flink/03-flink-23/flink-22-to-23-migration.md",
+      "SizeKB": 26.14
+    }
+  ]
+}
