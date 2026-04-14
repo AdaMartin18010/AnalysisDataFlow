@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T04:41:52.302950",
+  "generated_at": "2026-04-15T04:59:49.672272",
   "source_language": "zh",
   "source_documents": {
     "root": 3,
@@ -14,11 +14,11 @@
     "i18n/en": {
       "label": "AI Translation Workspace",
       "counts": {
-        "total": 294,
+        "total": 300,
         "categories": {
           "root": 10,
-          "Flink": 156,
-          "Knowledge": 95,
+          "Flink": 159,
+          "Knowledge": 98,
           "Struct": 33
         }
       }
@@ -37,7 +37,7 @@
     }
   },
   "summary": {
-    "total_english_docs": 325,
-    "estimated_coverage_percent": 42.43
+    "total_english_docs": 331,
+    "estimated_coverage_percent": 43.21
   }
 }

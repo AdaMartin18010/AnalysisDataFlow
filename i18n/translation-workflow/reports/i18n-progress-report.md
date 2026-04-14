@@ -1,14 +1,14 @@
 # I18n Translation Progress Report
 
-**Generated**: 2026-04-15T04:41:52.302950
+**Generated**: 2026-04-15T04:59:49.672272
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Chinese Source Docs | 766 |
-| English Translated Docs (all dirs) | 325 |
-| Estimated Coverage | 42.43% |
+| English Translated Docs (all dirs) | 331 |
+| Estimated Coverage | 43.21% |
 
 ## Source Documents
 
@@ -23,7 +23,7 @@
 
 | Directory | Label | Total Docs |
 |-----------|-------|------------|
-| i18n/en | AI Translation Workspace | 294 |
+| i18n/en | AI Translation Workspace | 300 |
 | docs/i18n/en | Documentation Site Source | 31 |
 
 ## Notes
