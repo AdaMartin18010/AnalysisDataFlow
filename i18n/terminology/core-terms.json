@@ -2,7 +2,7 @@
   "version": "4.0-prep",
   "description": "AnalysisDataFlow 核心术语库 (v4.0国际化)",
   "last_updated": "2026-04-08",
-  "total_terms": 258,
+  "total_terms": 30,
   "categories": ["基础概念", "并发模型", "形式化方法", "时间语义", "容错机制", "状态处理", "流量控制", "一致性语义"],
   "terms": [
     {

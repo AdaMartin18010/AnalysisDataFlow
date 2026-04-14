@@ -1,6 +1,6 @@
 {
   "project": "AnalysisDataFlow",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "default_locale": "zh",
   "supported_locales": [
     {
@@ -17,7 +17,7 @@
       "name_en": "English",
       "direction": "ltr",
       "is_source": false,
-      "completeness": 5
+      "completeness": 8
     }
   ],
   "translation": {

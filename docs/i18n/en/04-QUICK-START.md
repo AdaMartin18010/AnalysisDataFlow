@@ -522,5 +522,265 @@ L₁: Regular (P-Complete) ── FSM, Regex
 
 > 📌 **Note**: This document is a quick start guide. For detailed content, please refer to directory indexes and specific documents.
 >
-> 📅 **Last Updated**: 2026-04-08 | 📝 **Version**: v1.0
+---
+
+## Appendix: Hands-On Flink Quick Start
+
+> Merged from en/QUICK-START.md — practical getting-started content for new Flink users.
+
+### A.1 Your First Flink Program
+
+#### Prerequisites
+
+Before running your first Flink program, ensure you have:
+
+- Java 11 or higher installed
+- Apache Maven 3.6+ or Gradle 7+
+- An IDE (IntelliJ IDEA recommended)
+
+#### Project Setup
+
+Create a new Maven project with the following `pom.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>flink-quickstart</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <flink.version>1.18.0</flink.version>
+    </properties>
+
+    <dependencies>
+        <!-- Flink Core -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+#### WordCount Example
+
+Create `WordCount.java`:
+
+```java
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.Collector;
+
+public class WordCount {
+    public static void main(String[] args) throws Exception {
+        // 1. Create execution environment
+        final StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 2. Set parallelism (default: number of CPU cores)
+        env.setParallelism(2);
+
+        // 3. Create data source (socket stream)
+        DataStream<String> text = env.socketTextStream("localhost", 9999);
+
+        // 4. Transform: split lines into words and count
+        DataStream<Tuple2<String, Integer>> wordCounts = text
+            .flatMap(new Tokenizer())
+            .keyBy(value -> value.f0)
+            .window(TumblingEventTimeWindows.of(Time.seconds(5)))
+            .sum(1);
+
+        // 5. Print results to stdout
+        wordCounts.print();
+
+        // 6. Execute the job
+        env.execute("Socket Window WordCount");
+    }
+
+    // Tokenizer: splits lines into (word, 1) tuples
+    public static class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
+        @Override
+        public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
+            // Normalize and split the line
+            String[] words = value.toLowerCase().split("\\W+");
+
+            // Emit (word, 1) for each word
+            for (String word : words) {
+                if (word.length() > 0) {
+                    out.collect(new Tuple2<>(word, 1));
+                }
+            }
+        }
+    }
+}
+```
+
+#### Running the Program
+
+**Step 1**: Start a socket server
+
+```bash
+nc -lk 9999
+```
+
+**Step 2**: Run the Flink program from your IDE or using Maven:
+
+```bash
+mvn compile exec:java -Dexec.mainClass="WordCount"
+```
+
+**Step 3**: Type sentences in the socket server and observe the output.
+
+---
+
+### A.2 Flink Installation Guide
+
+#### Local Standalone Setup
+
+**Download and Extract**:
+
+```bash
+# Download Flink 1.18.0
+curl -LO https://archive.apache.org/dist/flink/flink-1.18.0/flink-1.18.0-bin-scala_2.12.tgz
+
+# Extract
+tar -xzf flink-1.18.0-bin-scala_2.12.tgz
+cd flink-1.18.0
+```
+
+**Start Local Cluster**:
+
+```bash
+# Start cluster
+./bin/start-cluster.sh
+
+# Check Web UI at http://localhost:8081
+```
+
+**Submit Job**:
+
+```bash
+./bin/flink run -c WordCount /path/to/your-job.jar
+```
+
+**Stop Cluster**:
+
+```bash
+./bin/stop-cluster.sh
+```
+
+#### Docker Setup
+
+```bash
+# Pull Flink image
+docker pull flink:1.18.0-scala_2.12
+
+# Run job manager
+docker run -d --name flink-jobmanager \
+  -p 8081:8081 \
+  -e JOB_MANAGER_RPC_ADDRESS=jobmanager \
+  flink:1.18.0-scala_2.12 jobmanager
+
+# Run task manager
+docker run -d --name flink-taskmanager \
+  --link flink-jobmanager:jobmanager \
+  -e JOB_MANAGER_RPC_ADDRESS=jobmanager \
+  flink:1.18.0-scala_2.12 taskmanager
+```
+
+#### Kubernetes Setup
+
+```bash
+# Using Flink Kubernetes Operator
+helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.6.0/
+helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator
+
+# Deploy a Flink job
+kubectl apply -f - <<EOF
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: wordcount-job
+spec:
+  image: flink:1.18
+  flinkVersion: v1.18
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    jarURI: local:///opt/flink/examples/streaming/WordCount.jar
+    parallelism: 2
+EOF
+```
+
+---
+
+### A.3 Monitoring and Observability
+
+#### Web UI
+
+Flink provides a comprehensive Web UI at `http://localhost:8081` with:
+
+- Job overview and status
+- Task execution details
+- Checkpoint statistics
+- Backpressure monitoring
+- Metrics visualization
+
+#### Metrics Integration
+
+```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+// Enable Prometheus metrics reporter
+Configuration conf = new Configuration();
+conf.setString("metrics.reporters", "prometheus");
+conf.setString("metrics.reporter.prometheus.class",
+    "org.apache.flink.metrics.prometheus.PrometheusReporter");
+conf.setString("metrics.reporter.prometheus.port", "9249");
+
+StreamExecutionEnvironment env =
+    StreamExecutionEnvironment.getExecutionEnvironment(conf);
+```
+
+#### Logging Configuration
+
+```yaml
+# log4j2.properties
+rootLogger.level = INFO
+rootLogger.appenderRef.console.ref = ConsoleAppender
+
+# Flink specific logging
+logger.flink.name = org.apache.flink
+logger.flink.level = INFO
+```
+
+---
+
+> 📅 **Last Updated**: 2026-04-15 | 📝 **Version**: v1.0
 

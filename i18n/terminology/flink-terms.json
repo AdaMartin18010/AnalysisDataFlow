@@ -2,7 +2,7 @@
   "version": "4.0-prep",
   "description": "Flink 专有术语库 (v4.0国际化)",
   "last_updated": "2026-04-08",
-  "total_terms": 156,
+  "total_terms": 30,
   "flink_versions": ["1.18", "1.19", "2.0", "2.1"],
   "categories": ["架构组件", "核心机制", "API", "状态管理", "容错", "部署", "性能优化"],
   "terms": [

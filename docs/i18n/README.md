@@ -10,8 +10,8 @@
 |----------|------|--------|------|--------------|
 | 🇨🇳 中文 (Chinese) | zh | ✅ Active | [./zh/](./zh/) | 100% (Source) |
 | 🇬🇧 English | en | ✅ Active | [./en/](./en/) | Core Docs |
-| 🇯🇵 日本語 (Japanese) | ja | 📝 Planned | - | - |
-| 🇰🇷 한국어 (Korean) | ko | 📝 Planned | - | - |
+| 🇯🇵 日本語 (Japanese) | ja | 📝 Partial (4 docs) | [./ja/](./ja/) | ~1% |
+| 🇰🇷 한국어 (Korean) | ko | ⏸️ On Hold | - | - |
 
 ---
 
@@ -29,6 +29,15 @@ The English documentation includes the following core guides:
 | **Learning Path** | Learning path guide | [en/05-LEARNING-PATH.md](./en/05-LEARNING-PATH.md) |
 | **Glossary** | Terminology reference | [en/GLOSSARY.md](./en/GLOSSARY.md) |
 | **Sidebar** | Navigation sidebar | [en/_sidebar.md](./en/_sidebar.md) |
+| **00-Index** | English documentation index | [en/00-INDEX.md](./en/00-INDEX.md) |
+| **Architecture** | System architecture overview | [en/ARCHITECTURE.md](./en/ARCHITECTURE.md) |
+| **Best Practices** | Flink production best practices | [en/BEST-PRACTICES.md](./en/BEST-PRACTICES.md) |
+| **Contributing** | Contribution guidelines | [en/CONTRIBUTING.md](./en/CONTRIBUTING.md) |
+| **Flink Quick Start** | Flink-specific quick start | [en/FLINK-QUICK-START.md](./en/FLINK-QUICK-START.md) |
+| **Knowledge Graph** | Knowledge graph guide | [en/KNOWLEDGE-GRAPH-GUIDE.md](./en/KNOWLEDGE-GRAPH-GUIDE.md) |
+| **Observability** | Stream processing observability | [en/OBSERVABILITY-GUIDE.md](./en/OBSERVABILITY-GUIDE.md) |
+| **Template** | Document template | [en/TEMPLATE.md](./en/TEMPLATE.md) |
+| **Troubleshooting** | Troubleshooting manual | [en/TROUBLESHOOTING.md](./en/TROUBLESHOOTING.md) |
 
 ---
 
@@ -63,13 +72,23 @@ docs/i18n/
 ├── zh/                    # Chinese (source language)
 │   └── README.md          # Pointer to root Chinese docs
 ├── en/                    # English
+│   ├── README.md
 │   ├── 00-OVERVIEW.md
+│   ├── 00-INDEX.md
 │   ├── 01-STRUCT-GUIDE.md
 │   ├── 02-KNOWLEDGE-GUIDE.md
 │   ├── 03-FLINK-GUIDE.md
 │   ├── 04-QUICK-START.md
 │   ├── 05-LEARNING-PATH.md
+│   ├── ARCHITECTURE.md
+│   ├── BEST-PRACTICES.md
+│   ├── CONTRIBUTING.md
+│   ├── FLINK-QUICK-START.md
 │   ├── GLOSSARY.md
+│   ├── KNOWLEDGE-GRAPH-GUIDE.md
+│   ├── OBSERVABILITY-GUIDE.md
+│   ├── TEMPLATE.md
+│   ├── TROUBLESHOOTING.md
 │   └── _sidebar.md
 └── templates/             # Translation templates
     └── translation-template.md
@@ -100,10 +119,10 @@ Language switch badges are available at the top of:
 
 | Category | Total Docs | Translated | Progress |
 |----------|------------|------------|----------|
-| Core Guides | 8 | 8 | ✅ 100% |
-| Struct/ | 43 | 0 | 📋 Planned |
-| Knowledge/ | 134 | 0 | 📋 Planned |
-| Flink/ | 173 | 0 | 📋 Planned |
+| Core Guides | 17 | 17 | ✅ Active |
+| Struct/ | 93 | 7 | 🚧 ~8% |
+| Knowledge/ | 262 | 3 | 🚧 ~1% |
+| Flink/ | 408 | 1 | 🚧 ~0.2% |
 
 ---
 
@@ -124,4 +143,6 @@ All i18n documentation follows the same [Apache License 2.0](../../../LICENSE) a
 
 ---
 
-> **Last Updated**: 2026-04-08
+> **Last Updated**: 2026-04-15
+>
+> **Note**: Directory unification in progress. Root `en/` files are being consolidated into `docs/i18n/en/`. See [i18n/ARCHITECTURE.md](../i18n/ARCHITECTURE.md) for details.

@@ -47,7 +47,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Analyze translation progress
+      - name: Generate translation progress report
+        run: |
+          python i18n/translation-workflow/report-generator.py
+
+      - name: Check root-level EN document pairs
         run: |
           python << 'PYEOF'
           import re
@@ -56,10 +60,12 @@ jobs:
           from datetime import datetime
           from collections import defaultdict
 
-          # 定义需要翻译的核心文档
+          # 定义需要翻译的核心文档（根目录级别）
           CORE_DOCS = {
-              'README.md': 'README-EN.md',
-              'QUICK-START.md': 'QUICK-START-EN.md',
+              'README.md': ['README-EN.md', 'en/README.md', 'docs/i18n/en/README.md', 'i18n/en/README.md'],
+              'QUICK-START.md': ['QUICK-START-EN.md', 'en/QUICK-START.md', 'docs/i18n/en/QUICK-START.md', 'i18n/en/QUICK-START.md'],
+              'ARCHITECTURE.md': ['ARCHITECTURE-EN.md', 'en/ARCHITECTURE.md', 'docs/i18n/en/ARCHITECTURE.md', 'i18n/en/ARCHITECTURE.md'],
+              'GLOSSARY.md': ['GLOSSARY-EN.md', 'en/GLOSSARY.md', 'docs/i18n/en/GLOSSARY.md', 'i18n/en/GLOSSARY.md'],
           }
 
           stats = {
@@ -71,20 +77,28 @@ jobs:
               'details': []
           }
 
-          for zh_file, en_file in CORE_DOCS.items():
+          for zh_file, en_candidates in CORE_DOCS.items():
               zh_path = Path(zh_file)
-              en_path = Path(en_file)
-              
+              # 查找第一个存在的英文版本
+              en_path = None
+              en_file = None
+              for candidate in en_candidates:
+                  cpath = Path(candidate)
+                  if cpath.exists():
+                      en_path = cpath
+                      en_file = candidate
+                      break
+
               status = {
                   'zh_file': zh_file,
                   'en_file': en_file,
                   'status': 'unknown'
               }
-              
+
               if not zh_path.exists():
                   status['status'] = 'missing_zh'
                   stats['missing_translation'] += 1
-              elif not en_path.exists():
+              elif en_path is None or not en_path.exists():
                   status['status'] = 'missing_en'
                   status['zh_size'] = zh_path.stat().st_size
                   stats['missing_translation'] += 1
@@ -92,15 +106,16 @@ jobs:
                   # 比较文件修改时间
                   zh_mtime = zh_path.stat().st_mtime
                   en_mtime = en_path.stat().st_mtime
-                  
+
                   zh_size = zh_path.stat().st_size
                   en_size = en_path.stat().st_size
-                  
+
                   status['zh_size'] = zh_size
                   status['en_size'] = en_size
                   status['zh_mtime'] = zh_mtime
                   status['en_mtime'] = en_mtime
-                  
+                  status['en_file'] = en_file
+
                   # 简单比较：如果中文文档比英文新超过7天，则需要更新
                   if zh_mtime > en_mtime + 7 * 24 * 3600:
                       status['status'] = 'needs_update'
@@ -109,14 +124,14 @@ jobs:
                   else:
                       status['status'] = 'up_to_date'
                       stats['up_to_date'] += 1
-              
+
               stats['details'].append(status)
 
           # 生成报告
           Path('reports').mkdir(exist_ok=True)
-          
+
           report_lines = [
-              "# I18n Translation Progress Report",
+              "# I18n Translation Progress Report (Root Docs)",
               "",
               f"**Generated**: {stats['generated_at']}",
               "",
@@ -140,12 +155,12 @@ jobs:
                   "| Chinese | English | Days Behind |",
                   "|---------|---------|-------------|"
               ])
-              
+
               for doc in needs_update:
                   report_lines.append(
-                      f"| {doc['zh_file']} | {doc['en_file']} | {doc.get('days_behind', 'N/A')} |"
+                      f"| {doc['zh_file']} | {doc.get('en_file', 'N/A')} | {doc.get('days_behind', 'N/A')} |"
                   )
-              
+
               report_lines.append("")
 
           # 缺失翻译的文档
@@ -157,13 +172,13 @@ jobs:
                   "| File | Status | Size |",
                   "|------|--------|------|"
               ])
-              
+
               for doc in missing:
                   size = doc.get('zh_size', doc.get('en_size', 0))
                   status = 'Missing EN' if doc['status'] == 'missing_en' else 'Missing ZH'
                   file_name = doc['zh_file'] if doc['status'] == 'missing_en' else doc['en_file']
                   report_lines.append(f"| {file_name} | {status} | {size} bytes |")
-              
+
               report_lines.append("")
 
           # 保存JSON报告
@@ -174,7 +189,7 @@ jobs:
           with open('reports/i18n-progress-report.md', 'w') as f:
               f.write('\n'.join(report_lines))
 
-          print(f"Translation Progress:")
+          print(f"Translation Progress (Root Docs):")
           print(f"  Up to date: {stats['up_to_date']}/{stats['total_doc_pairs']}")
           print(f"  Needs update: {stats['needs_update']}")
           print(f"  Missing: {stats['missing_translation']}")
@@ -187,6 +202,8 @@ jobs:
           path: |
             reports/i18n-progress-report.md
             reports/i18n-progress.json
+            i18n/translation-workflow/reports/i18n-progress-report.json
+            i18n/translation-workflow/reports/i18n-progress-report.md
 
   # ============ 任务2: 检查i18n目录一致性 ============
   check-i18n-consistency:
@@ -210,34 +227,37 @@ jobs:
           from datetime import datetime
           from collections import defaultdict
 
-          i18n_dir = Path('i18n')
-          
+          dirs_to_scan = [Path('i18n'), Path('docs/i18n')]
+
           stats = {
               'generated_at': datetime.now().isoformat(),
               'languages': {},
               'issues': []
           }
 
-          if not i18n_dir.exists():
-              stats['issues'].append({
-                  'type': 'missing_directory',
-                  'message': 'i18n directory does not exist'
-              })
-          else:
+          for base_dir in dirs_to_scan:
+              if not base_dir.exists():
+                  stats['issues'].append({
+                      'type': 'missing_directory',
+                      'message': f'{base_dir} directory does not exist'
+                  })
+                  continue
+
               # 扫描各语言目录
-              for lang_dir in i18n_dir.iterdir():
+              for lang_dir in base_dir.iterdir():
                   if lang_dir.is_dir():
                       lang_code = lang_dir.name
                       md_files = list(lang_dir.rglob('*.md'))
-                      
-                      stats['languages'][lang_code] = {
+
+                      key = f"{base_dir}/{lang_code}"
+                      stats['languages'][key] = {
                           'file_count': len(md_files),
                           'files': [str(f.relative_to(lang_dir)).replace('\\', '/') for f in md_files]
                       }
 
           # 生成报告
           Path('reports').mkdir(exist_ok=True)
-          
+
           report_lines = [
               "# i18n Directory Consistency Report",
               "",
@@ -250,23 +270,23 @@ jobs:
                   "## ❌ Issues",
                   ""
               ])
-              
+
               for issue in stats['issues']:
                   report_lines.append(f"- **{issue['type']}**: {issue['message']}")
-              
+
               report_lines.append("")
 
           if stats['languages']:
               report_lines.extend([
                   "## Language Statistics",
                   "",
-                  "| Language | File Count |",
-                  "|----------|------------|"
+                  "| Directory | File Count |",
+                  "|-----------|------------|"
               ])
-              
+
               for lang, info in sorted(stats['languages'].items()):
                   report_lines.append(f"| {lang} | {info['file_count']} |")
-              
+
               report_lines.append("")
 
           # 保存报告
@@ -313,30 +333,52 @@ jobs:
           from pathlib import Path
           from datetime import datetime
 
-          # 检查根目录中英文文档对应关系
-          zh_docs = list(Path('.').glob('*.md'))
-          en_docs = list(Path('.').glob('*-EN.md'))
-          
+          # 扫描所有英文翻译目录
+          en_dirs = {
+              'i18n/en': Path('i18n/en'),
+              'docs/i18n/en': Path('docs/i18n/en'),
+          }
+
           report = {
               'generated_at': datetime.now().isoformat(),
-              'zh_documents': [f.name for f in zh_docs if not f.name.endswith('-EN.md') and f.name != 'README.md'],
-              'en_documents': [f.name for f in en_docs],
+              'en_directories': {},
+              'root_zh_docs': [f.name for f in Path('.').glob('*.md') if not f.name.endswith('-EN.md')],
+              'root_en_docs': [f.name for f in Path('.').glob('*-EN.md')],
               'suggestions': []
           }
 
-          # 建议需要创建英文版的文档
-          for zh_doc in zh_docs:
+          for label, en_dir in en_dirs.items():
+              if en_dir.exists():
+                  report['en_directories'][label] = [
+                      str(f.relative_to(en_dir)).replace('\\', '/')
+                      for f in en_dir.rglob('*.md')
+                  ]
+
+          # 建议需要创建英文版的根目录文档
+          for zh_doc in Path('.').glob('*.md'):
               if zh_doc.name.endswith('-EN.md'):
                   continue
-              
-              expected_en = zh_doc.stem + '-EN.md'
-              if not Path(expected_en).exists():
-                  # 检查文档大小和内容重要性
+              if zh_doc.name == 'README.md':
+                  continue
+
+              # 检查是否已有英文版（根目录、i18n/en/、docs/i18n/en/、en/）
+              has_en = False
+              expected_locations = [
+                  Path(zh_doc.stem + '-EN.md'),
+                  Path('en') / zh_doc.name,
+                  Path('i18n/en') / zh_doc.name,
+                  Path('docs/i18n/en') / zh_doc.name,
+              ]
+              for loc in expected_locations:
+                  if loc.exists():
+                      has_en = True
+                      break
+
+              if not has_en:
                   size = zh_doc.stat().st_size
                   if size > 10000:  # 大于10KB的文档建议翻译
                       report['suggestions'].append({
                           'zh_file': zh_doc.name,
-                          'suggested_en_file': expected_en,
                           'priority': 'high' if size > 50000 else 'medium',
                           'size': size
                       })
@@ -346,7 +388,7 @@ jobs:
 
           # 生成报告
           Path('reports').mkdir(exist_ok=True)
-          
+
           lines = [
               "# Document Structure Sync Report",
               "",
@@ -354,26 +396,28 @@ jobs:
               "",
               "## Summary",
               "",
-              f"- Chinese documents: {len(report['zh_documents'])}",
-              f"- English documents: {len(report['en_documents'])}",
-              f"- Translation suggestions: {len(report['suggestions'])}",
-              ""
+              f"- Root Chinese documents: {len(report['root_zh_docs'])}",
+              f"- Root English documents (-EN.md): {len(report['root_en_docs'])}",
           ]
+          for label, files in report['en_directories'].items():
+              lines.append(f"- {label} documents: {len(files)}")
+          lines.append(f"- Translation suggestions: {len(report['suggestions'])}")
+          lines.append("")
 
           if report['suggestions']:
               lines.extend([
                   "## 📋 Translation Suggestions",
                   "",
-                  "| Priority | Chinese File | Suggested English File | Size |",
-                  "|----------|-------------|----------------------|------|"
+                  "| Priority | Chinese File | Size |",
+                  "|----------|-------------|------|"
               ])
-              
+
               for sug in report['suggestions'][:20]:
                   size_kb = sug['size'] / 1024
                   lines.append(
-                      f"| {sug['priority']} | {sug['zh_file']} | {sug['suggested_en_file']} | {size_kb:.1f} KB |"
+                      f"| {sug['priority']} | {sug['zh_file']} | {size_kb:.1f} KB |"
                   )
-              
+
               lines.append("")
 
           with open('reports/i18n-structure-sync-report.md', 'w') as f:
@@ -408,16 +452,16 @@ jobs:
         run: |
           echo "## 🌐 I18n Sync Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ "${{ needs.check-translation-progress.result }}" == "success" ]; then
             echo "| Translation Progress | ✅ OK |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Translation Progress | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.check-i18n-consistency.result }}" == "success" ]; then
             echo "| i18n Consistency | ✅ OK |" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ needs.check-i18n-consistency.result }}" == "skipped" ]; then
@@ -425,12 +469,12 @@ jobs:
           else
             echo "| i18n Consistency | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.sync-document-structure.result }}" == "success" ]; then
             echo "| Structure Sync | ✅ OK |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| Structure Sync | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Download detailed reports from the Artifacts section." >> $GITHUB_STEP_SUMMARY

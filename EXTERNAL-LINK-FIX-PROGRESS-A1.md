@@ -1,7 +1,7 @@
 # 外部链接修复进度报告 (A1)
 
-**报告时间**: 2026-04-13  
-**任务**: 修复 `EXTERNAL-LINK-HEALTH-REPORT-v4.1.md` 中标记为 404 Not Found 的高价值外部链接  
+**报告时间**: 2026-04-13
+**任务**: 修复 `EXTERNAL-LINK-HEALTH-REPORT-v4.1.md` 中标记为 404 Not Found 的高价值外部链接
 **修复原则**: 最小改动、精确替换、只修改来源文件中的 Markdown 链接文本
 
 ---
@@ -52,6 +52,7 @@
 | 7 | `Flink/08-roadmap/2027-trends-prediction.md` | `FLIP-531` | `FLIP-531:+Initiate+Flink+Agents+as+a+new+Sub-Project` |
 
 > **说明**: 以下链接已包含完整标题（如 `FLIP-160%3A+Adaptive+Batch+Scheduler`），未做额外修改：
+>
 > - `Flink/10-internals/scheduler-source-analysis.md` (FLIP-160/168/138)
 > - `USTM-F-Reconstruction/archive/original-struct/07-tools/tla-for-flink.md` (FLIP-XXX+Generic+WAL+Sink)
 
